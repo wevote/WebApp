@@ -37,7 +37,6 @@ class ShareModal extends Component {
   constructor (props) {
     super(props);
     this.state = {
-      pathname: '',
       chosenPreventSharingOpinions: false,
       currentFullUrlToShare: '',
       currentFriendList: [],
@@ -78,7 +77,6 @@ class ShareModal extends Component {
       chosenPreventSharingOpinions,
       currentFriendList,
       currentFullUrlToShare,
-      pathname: this.props.pathname,
       shareModalStep: shareModalStep || 'ballotShareOptions',
       urlWithSharedItemCode,
       urlWithSharedItemCodeAllOpinions,
@@ -208,12 +206,14 @@ class ShareModal extends Component {
   }
 
   closeShareModal () {
-    this.props.closeShareModal(this.state.pathname);
+    const { location: { pathname } } = window;
+    this.props.closeShareModal(pathname);
   }
 
   render () {
     renderLog('ShareModal');  // Set LOG_RENDER_EVENTS to log all renders
     // console.log('ShareModal render');
+    const { location: { pathname } } = window;
     const { classes } = this.props;
     const {
       chosenPreventSharingOpinions, currentFullUrlToShare, shareModalStep,
@@ -292,7 +292,7 @@ class ShareModal extends Component {
         <Dialog
           classes={{ paper: classes.dialogPaper }}
           open={this.props.show}
-          onClose={() => { this.props.closeShareModal(this.state.pathname); }}
+          onClose={() => { this.props.closeShareModal(pathname); }}
         >
           <ModalTitleArea firstSlide>
             <div>
@@ -525,7 +525,7 @@ class ShareModal extends Component {
       //   <Dialog
       //     classes={{ paper: classes.dialogPaper }}
       //     open={this.props.show}
-      //     onClose={() => { this.props.closeShareModal(this.state.pathname); }}
+      //     onClose={() => { this.props.closeShareModal(pathname); }}
       //   >
       //     <ModalTitleArea onSignInSlide>
       //       <Title onSignInSlide bold>Sign In</Title>
@@ -548,7 +548,7 @@ class ShareModal extends Component {
         <Dialog
           classes={{ paper: classes.dialogPaper }}
           open={this.props.show}
-          onClose={() => { this.props.closeShareModal(this.state.pathname); }}
+          onClose={() => { this.props.closeShareModal(pathname); }}
         >
           <ModalTitleArea>
             <Button className={classes.backButton} color="primary" onClick={() => { this.setStep('ballotShareOptions'); }}>
@@ -588,7 +588,7 @@ class ShareModal extends Component {
         <Dialog
           classes={{ paper: classes.dialogPaper }}
           open={this.props.show}
-          onClose={() => { this.props.closeShareModal(this.state.pathname); }}
+          onClose={() => { this.props.closeShareModal(pathname); }}
         >
           <ModalTitleArea>
             <Button className={classes.backButton} color="primary" onClick={() => { this.setStep('ballotShareOptions'); }}>
@@ -630,7 +630,6 @@ class ShareModal extends Component {
 ShareModal.propTypes = {
   classes: PropTypes.object,
   voterIsSignedIn: PropTypes.bool,
-  pathname: PropTypes.string,
   show: PropTypes.bool,
   shareModalStep: PropTypes.string,
   closeShareModal: PropTypes.func.isRequired,

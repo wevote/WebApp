@@ -21,7 +21,7 @@ class OrganizationVoterGuideMobileDetails extends Component {
 
   componentDidMount () {
     this.twitterStoreListener = TwitterStore.addListener(this.onTwitterStoreChange.bind(this));
-    const { params } = this.props;
+    const { match: { params } } = this.props;
     const { twitter_handle: incomingTwitterHandle } = params;
     // console.log('OrganizationVoterGuideMobileDetails, twitter_handle:', incomingTwitterHandle);
     TwitterActions.twitterIdentityRetrieve(incomingTwitterHandle);
@@ -33,12 +33,12 @@ class OrganizationVoterGuideMobileDetails extends Component {
   // eslint-disable-next-line camelcase,react/sort-comp
   UNSAFE_componentWillReceiveProps (nextProps) {
     // console.log('OrganizationVoterGuideMobileDetails componentWillReceiveProps');
-    const { params } = nextProps;
+    const { match: { params: nextParams } } = nextProps;
     const { incomingTwitterHandle } = this.state;
-    const { twitter_handle: nextIncomingTwitterHandle } = params;
+    const { twitter_handle: nextIncomingTwitterHandle } = nextParams;
     if (incomingTwitterHandle && nextIncomingTwitterHandle && incomingTwitterHandle.toLowerCase() !== nextIncomingTwitterHandle.toLowerCase()) {
       // We need this test to prevent an infinite loop
-      // console.log('OrganizationVoterGuideMobileDetails componentWillReceiveProps, different twitterHandle: ', nextProps.params.twitter_handle);
+      // console.log('OrganizationVoterGuideMobileDetails componentWillReceiveProps, different twitterHandle: ', nextParams.twitter_handle);
       TwitterActions.twitterIdentityRetrieve(nextIncomingTwitterHandle);
     }
   }
@@ -96,7 +96,7 @@ class OrganizationVoterGuideMobileDetails extends Component {
 }
 OrganizationVoterGuideMobileDetails.propTypes = {
   activeRoute: PropTypes.string,
-  params: PropTypes.object,
+  match: PropTypes.object,
 };
 
 const EmptyContainer = styled.div`

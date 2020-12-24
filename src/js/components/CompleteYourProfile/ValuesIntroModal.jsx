@@ -17,7 +17,6 @@ class ValuesIntroModal extends Component {
     super(props);
     this.state = {
       atLeastOneValueChosen: false,
-      pathname: '',
     };
   }
 
@@ -26,7 +25,6 @@ class ValuesIntroModal extends Component {
     IssueActions.issuesFollowedRetrieve();
 
     this.setState({
-      pathname: this.props.pathname,
     });
   }
 
@@ -42,25 +40,28 @@ class ValuesIntroModal extends Component {
   }
 
   closeThisModal = () => {
-    this.props.toggleFunction(this.state.pathname);
+    const { location: { pathname } } = window;
+    this.props.toggleFunction(pathname);
   }
 
   valuesIntroCompleted = () => {
     // Mark this so we know to show 'How it Works' as completed
+    const { location: { pathname } } = window;
     VoterActions.voterUpdateInterfaceStatusFlags(VoterConstants.VALUES_INTRO_COMPLETED);
-    this.props.toggleFunction(this.state.pathname);
+    this.props.toggleFunction(pathname);
   }
 
   render () {
     renderLog('ValuesIntroModal');  // Set LOG_RENDER_EVENTS to log all renders
     const { classes } = this.props;
     const { atLeastOneValueChosen } = this.state;
+    const { location: { pathname } } = window;
 
     return (
       <Dialog
         classes={{ paper: classes.dialogPaper }}
         open={this.props.show}
-        onClose={() => { this.props.toggleFunction(this.state.pathname); }}
+        onClose={() => { this.props.toggleFunction(pathname); }}
       >
         <ModalTitleArea>
           <div>
@@ -110,7 +111,6 @@ class ValuesIntroModal extends Component {
 }
 ValuesIntroModal.propTypes = {
   classes: PropTypes.object,
-  pathname: PropTypes.string,
   show: PropTypes.bool,
   toggleFunction: PropTypes.func.isRequired,
 };

@@ -123,6 +123,10 @@ class ItemPositionStatementActionBar2020 extends Component {
     }
   }
 
+  handleFocus (e) {
+    e.target.blur();
+  }
+
   onVoterStoreChange () {
     this.setState({
       // voterIsSignedIn: VoterStore.getVoterIsSignedIn(),
@@ -150,10 +154,6 @@ class ItemPositionStatementActionBar2020 extends Component {
     const { voterTextStatement } = this.state;
     // console.log('ItemPositionStatementActionBar2020 ballotItemWeVoteId:', ballotItemWeVoteId, 'ballotItemType: ', ballotItemType, 'voterTextStatement: ', voterTextStatement);
     SupportActions.voterPositionCommentSave(ballotItemWeVoteId, ballotItemType, voterTextStatement);
-  }
-
-  handleFocus (e) {
-    e.target.blur();
   }
 
   render () {

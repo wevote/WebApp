@@ -1,9 +1,10 @@
+import cookies from './cookies';
 import { isIOSAppOnMac, isCordova, isWebApp } from './cordovaUtils';
 import { startsWith, stringContains } from './textFormat';
 
 
 // We have to do all this, because we allow urls like https://wevote.us/aclu where "aclu" is a twitter account.
-// Based on the path, decide if we want theaterMode, contentFullWidthMode, or voterGuideMode
+// Based on the pathname parameter, decide if we want theaterMode, contentFullWidthMode, or voterGuideMode
 export function getApplicationViewBooleans (pathname) {
   let inTheaterMode = false;
   let contentFullWidthMode = false;
@@ -291,3 +292,23 @@ export function setZenDeskHelpVisibility (pathname) {
   }
 }
 
+let weVoteBrandingOffGlobal;
+export function weVoteBrandingOff () {
+  if (weVoteBrandingOffGlobal !== undefined) {
+    return weVoteBrandingOffGlobal;
+  }
+  const { location: { query } } = window;
+  const weVoteBrandingOffFromUrl = query ? query.we_vote_branding_off : false;
+  const weVoteBrandingOffFromCookie = cookies.getItem('we_vote_branding_off');
+  const oneDayExpires = 86400;
+  if (weVoteBrandingOffFromUrl && !weVoteBrandingOffFromCookie) {
+    cookies.setItem('we_vote_branding_off', weVoteBrandingOffFromUrl, oneDayExpires, '/');
+  }
+
+  if (weVoteBrandingOffFromUrl || weVoteBrandingOffFromCookie) {
+    cookies.setItem('show_full_navigation', '1', Infinity, '/');
+  }
+
+  weVoteBrandingOffGlobal = weVoteBrandingOffFromUrl || weVoteBrandingOffFromCookie;
+  return weVoteBrandingOffGlobal;
+}

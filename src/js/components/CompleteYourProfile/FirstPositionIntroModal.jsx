@@ -15,17 +15,12 @@ class FirstPositionIntroModal extends Component {
     super(props);
     this.state = {
       explanationText: 'Please click the "CHOOSE" or "OPPOSE" button.',
-      pathname: '',
     };
   }
 
   componentDidMount () {
     // this.friendStoreListener = FriendStore.addListener(this.onFriendStoreChange.bind(this));
     // FriendActions.currentFriends();
-
-    this.setState({
-      pathname: this.props.pathname,
-    });
   }
 
   componentWillUnmount () {
@@ -40,13 +35,15 @@ class FirstPositionIntroModal extends Component {
   // }
 
   closeThisModal = () => {
-    this.props.toggleFunction(this.state.pathname);
+    const { location: { pathname } } = window;
+    this.props.toggleFunction(pathname);
   };
 
   personalizedScoreIntroCompleted = () => {
     // Mark this so we know to show 'How it Works' as completed
+    const { location: { pathname } } = window;
     VoterActions.voterUpdateInterfaceStatusFlags(VoterConstants.PERSONALIZED_SCORE_INTRO_COMPLETED);
-    this.props.toggleFunction(this.state.pathname);
+    this.props.toggleFunction(pathname);
   };
 
   // clickNextStepButton = () => {
@@ -95,13 +92,14 @@ class FirstPositionIntroModal extends Component {
   render () {
     renderLog('FirstPositionIntroModal');  // Set LOG_RENDER_EVENTS to log all renders
     const { classes } = this.props;
+    const { location: { pathname } } = window;
     const { /* actionButtonText */ explanationText, hideNextStepButton, showPersonalizedScoreArrow } = this.state;
 
     return (
       <Dialog
         classes={{ paper: classes.dialogPaper }}
         open={this.props.show}
-        onClose={() => { this.props.toggleFunction(this.state.pathname); }}
+        onClose={() => { this.props.toggleFunction(pathname); }}
       >
         <ModalTitleArea>
           <div>
@@ -163,7 +161,6 @@ class FirstPositionIntroModal extends Component {
 }
 FirstPositionIntroModal.propTypes = {
   classes: PropTypes.object,
-  pathname: PropTypes.string,
   show: PropTypes.bool,
   toggleFunction: PropTypes.func.isRequired,
 };

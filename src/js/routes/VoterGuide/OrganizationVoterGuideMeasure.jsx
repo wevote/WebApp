@@ -25,46 +25,50 @@ export default class OrganizationVoterGuideMeasure extends Component {
       allCachedPositionsByMeasureWeVoteId: [],
       // Eventually we could use this getVoterGuidesToFollowForBallotItemId with measureWeVoteId, but we can't now
       //  because we don't always have the ballot_item_we_vote_id for certain API calls like organizationFollow
-      // guides_to_follow_list: VoterGuideStore.getVoterGuidesToFollowForBallotItemId(this.props.params.measure_we_vote_id)
+      // guides_to_follow_list: VoterGuideStore.getVoterGuidesToFollowForBallotItemId(params.measure_we_vote_id)
       voterGuidesToFollowForLatestBallotItem: [],
     };
   }
 
   componentDidMount () {
+    const { match: { params } } = this.props;
     this.measureStoreListener = MeasureStore.addListener(this.onMeasureStoreChange.bind(this));
-    MeasureActions.measureRetrieve(this.props.params.measure_we_vote_id);
-    MeasureActions.positionListForBallotItemPublic(this.props.params.measure_we_vote_id);
-    MeasureActions.positionListForBallotItemFromFriends(this.props.params.measure_we_vote_id);
+    MeasureActions.measureRetrieve(params.measure_we_vote_id);
+    MeasureActions.positionListForBallotItemPublic(params.measure_we_vote_id);
+    MeasureActions.positionListForBallotItemFromFriends(params.measure_we_vote_id);
 
     this.voterGuideStoreListener = VoterGuideStore.addListener(this.onVoterGuideStoreChange.bind(this));
-    VoterGuideActions.voterGuidesToFollowRetrieveByBallotItem(this.props.params.measure_we_vote_id, 'MEASURE');
+    VoterGuideActions.voterGuidesToFollowRetrieveByBallotItem(params.measure_we_vote_id, 'MEASURE');
 
     OrganizationActions.organizationsFollowedRetrieve();
 
     // TODO CREATE THIS
-    // AnalyticsActions.saveActionMeasure(VoterStore.electionId(), this.props.params.measure_we_vote_id);
+    // AnalyticsActions.saveActionMeasure(VoterStore.electionId(), params.measure_we_vote_id);
     this.setState({
-      measureWeVoteId: this.props.params.measure_we_vote_id,
-      allCachedPositionsByMeasureWeVoteId: MeasureStore.getAllCachedPositionsByMeasureWeVoteId(this.props.params.measure_we_vote_id),
+      measureWeVoteId: params.measure_we_vote_id,
+      allCachedPositionsByMeasureWeVoteId: MeasureStore.getAllCachedPositionsByMeasureWeVoteId(params.measure_we_vote_id),
       voterGuidesToFollowForLatestBallotItem: VoterGuideStore.getVoterGuidesToFollowForLatestBallotItem(),
     });
   }
 
-  // eslint-disable-next-line camelcase,react/sort-comp
+  // eslint-disable-next-line camelcase
   UNSAFE_componentWillReceiveProps (nextProps) {
+    // eslint-disable camelcase,react/sort-comp,react/prop-types
     // When a new measure is passed in, update this component to show the new data
-    if (nextProps.params.measure_we_vote_id !== this.state.measureWeVoteId) {
-      MeasureActions.measureRetrieve(nextProps.params.measure_we_vote_id);
-      MeasureActions.positionListForBallotItemPublic(nextProps.params.measure_we_vote_id);
-      MeasureActions.positionListForBallotItemFromFriends(nextProps.params.measure_we_vote_id);
-      VoterGuideActions.voterGuidesToFollowRetrieveByBallotItem(nextProps.params.measure_we_vote_id, 'MEASURE');
+    const { match: { params: nextParams } } = nextProps;
+    if (nextParams.measure_we_vote_id !== this.state.measureWeVoteId) {
+      MeasureActions.measureRetrieve(nextParams.measure_we_vote_id);
+      MeasureActions.positionListForBallotItemPublic(nextParams.measure_we_vote_id);
+      MeasureActions.positionListForBallotItemFromFriends(nextParams.measure_we_vote_id);
+      VoterGuideActions.voterGuidesToFollowRetrieveByBallotItem(nextParams.measure_we_vote_id, 'MEASURE');
       this.setState({
-        measureWeVoteId: nextProps.params.measure_we_vote_id,
-        allCachedPositionsByMeasureWeVoteId: MeasureStore.getAllCachedPositionsByMeasureWeVoteId(nextProps.params.measure_we_vote_id),
+        measureWeVoteId: nextParams.measure_we_vote_id,
+        allCachedPositionsByMeasureWeVoteId: MeasureStore.getAllCachedPositionsByMeasureWeVoteId(nextParams.measure_we_vote_id),
         voterGuidesToFollowForLatestBallotItem: VoterGuideStore.getVoterGuidesToFollowForLatestBallotItem(),
       });
     }
   }
+  // eslint-enable camelcase,react/sort-comp,react/prop-types
 
   componentWillUnmount () {
     this.measureStoreListener.remove();
@@ -112,6 +116,7 @@ export default class OrganizationVoterGuideMeasure extends Component {
     const descriptionText = `Information about ${measureName}`;
     const voter = VoterStore.getVoter();
     const measureAdminEditUrl = `${webAppConfig.WE_VOTE_SERVER_ROOT_URL}m/${this.state.measure.id}/edit/?google_civic_election_id=${VoterStore.electionId()}&state_code=`;
+    const { match: { params }  } = this.props;
 
     return (
       <section className="card">
@@ -126,6 +131,7 @@ export default class OrganizationVoterGuideMeasure extends Component {
               <PositionList
                 incomingPositionList={this.state.allCachedPositionsByMeasureWeVoteId}
                 ballotItemDisplayName={this.state.measure.ballot_item_display_name}
+                params={params}
               />
             </div>
           ) : null}
@@ -164,5 +170,5 @@ export default class OrganizationVoterGuideMeasure extends Component {
   }
 }
 OrganizationVoterGuideMeasure.propTypes = {
-  params: PropTypes.object.isRequired,
+  match: PropTypes.object.isRequired,
 };

@@ -1,9 +1,9 @@
 import React from 'react';
-import { browserHistory, hashHistory } from 'react-router';
+import { createBrowserHistory, createHashHistory } from 'history';
+import { useHistory } from "react-router-dom";
 import webAppConfig from '../config';
 import { cordovaOffsetLog, oAuthLog } from './logging';
 import { dumpObjProps } from './appleSiliconUtils';
-
 
 /* global $  */
 
@@ -21,6 +21,8 @@ export function isWebApp () {
   return !isCordova();
 }
 
+// export const history = isWebApp() ? createBrowserHistory() : createHashHistory();
+
 export function isIOS () {
   if (isWebApp()) return false;
   // console.log("<><><><> uuid:  " + window.device.uuid);
@@ -31,7 +33,7 @@ export function isIOS () {
 export function isIOSAppOnMac () {
   if (isWebApp()) return false;
   const { isiOSAppOnMac } = window.device;
-  // Our fork of cordova-plugin-device exposes the underlyinng native code variable isiOSAppOnMac
+  // Our fork of cordova-plugin-device exposes the underlying native code variable isiOSAppOnMac
   return isiOSAppOnMac;
 }
 
@@ -59,12 +61,9 @@ export function isAndroid () {
 
 // see https://github.com/ReactTraining/react-router/blob/v3/docs/guides/Histories.md
 export function historyPush (route) {
-  // console.log("historyPush, route:", route);
-  if (isCordova()) {
-    hashHistory.push(route);
-  } else {
-    browserHistory.push(route);
-  }
+  console.log(`historyPush ******** ${route} *******`);
+  const history = useHistory();
+  history.push(route);
 }
 
 // Webapp image paths are "absolute" relative to the running webapp cwd,

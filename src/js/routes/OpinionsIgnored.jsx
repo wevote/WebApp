@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router';
+import { Link } from 'react-router-dom';
 import Helmet from 'react-helmet';
 import { renderLog } from '../utils/logging';
 import OpinionsIgnoredList from '../components/Organization/OpinionsIgnoredList';

@@ -4,12 +4,12 @@ import styled from 'styled-components';
 import { Button, AppBar, Toolbar, Tabs, Tab, IconButton, Tooltip } from '@material-ui/core';
 import { Place, AccountCircle } from '@material-ui/icons';
 import { withStyles } from '@material-ui/core/styles';
+import { useHistory } from 'react-router-dom';
 import { hasIPhoneNotch, historyPush, isIOSAppOnMac, isCordova, isWebApp } from '../../utils/cordovaUtils';
 import AdviserIntroModal from '../CompleteYourProfile/AdviserIntroModal';
 import AppActions from '../../actions/AppActions';
 import AppStore from '../../stores/AppStore';
 import BallotActions from '../../actions/BallotActions';
-import cookies from '../../utils/cookies';
 import FirstPositionIntroModal from '../CompleteYourProfile/FirstPositionIntroModal';
 import FriendStore from '../../stores/FriendStore';
 import HeaderBarProfilePopUp from './HeaderBarProfilePopUp';
@@ -31,15 +31,20 @@ import displayFriendsTabs from '../../utils/displayFriendsTabs';
 import ShareModal from '../Share/ShareModal';
 import signInModalGlobalState from '../Widgets/signInModalGlobalState';
 import { voterPhoto } from '../../utils/voterPhoto';
+import { weVoteBrandingOff } from '../../utils/applicationUtils';
 import ImageUploadModal from '../Settings/ImageUploadModal';
 
 // const webAppConfig = require('../../config');
 
+const historyPush2 = (route) => {
+  const history = useHistory();
+  history.push(route);
+};
 
 class HeaderBar extends Component {
   static goToGetStarted () {
     const getStartedNow = '/ready';
-    historyPush(getStartedNow);
+    historyPush2(getStartedNow);
   }
 
   constructor (props) {
@@ -88,9 +93,8 @@ class HeaderBar extends Component {
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
     // this.onBallotStoreChange();
 
+    const voter = VoterStore.getVoter();
     const voterFirstName = VoterStore.getFirstName();
-    const weVoteBrandingOffFromUrl = this.props.location.query ? this.props.location.query.we_vote_branding_off : 0;
-    const weVoteBrandingOffFromCookie = cookies.getItem('we_vote_branding_off');
     this.setState({
       componentDidMountFinished: true,
       chosenSiteLogoUrl: AppStore.getChosenSiteLogoUrl(),
@@ -107,10 +111,9 @@ class HeaderBar extends Component {
       showSignInModal: AppStore.showSignInModal(),
       showValuesIntroModal: AppStore.showValuesIntroModal(),
       showImageUploadModal: AppStore.showImageUploadModal(),
-      voter: this.props.voter,
+      voter,
       voterFirstName,
-      voterIsSignedIn: this.props.voter && this.props.voter.is_signed_in,
-      we_vote_branding_off: weVoteBrandingOffFromUrl || weVoteBrandingOffFromCookie,
+      voterIsSignedIn: voter && voter.is_signed_in,
     });
   }
 
@@ -195,17 +198,18 @@ class HeaderBar extends Component {
     if (this.state.showSelectBallotModalHideElections !== nextState.showSelectBallotModalHideElections) {
       return true;
     }
-    const currentPathnameExists = this.props.location && this.props.location.pathname;
-    const nextPathnameExists = nextProps.location && nextProps.location.pathname;
-    // One exists, and the other doesn't
-    if ((currentPathnameExists && !nextPathnameExists) || (!currentPathnameExists && nextPathnameExists)) {
-      // console.log("HeaderBar shouldComponentUpdate: PathnameExistsDifference");
-      return true;
-    }
-    if (currentPathnameExists && nextPathnameExists && this.props.location.pathname !== nextProps.location.pathname) {
-      // console.log("HeaderBar shouldComponentUpdate: this.props.location.pathname", this.props.location.pathname, ", nextProps.location.pathname", nextProps.location.pathname);
-      return true;
-    }
+    // const { location: { pathname } } = window;
+    // const currentPathnameExists = pathname !== undefined;
+    // const nextPathnameExists = nextProps.location && nextProps.location.pathname;
+    // // One exists, and the other doesn't
+    // if ((currentPathnameExists && !nextPathnameExists) || (!currentPathnameExists && nextPathnameExists)) {
+    //   // console.log("HeaderBar shouldComponentUpdate: PathnameExistsDifference");
+    //   return true;
+    // }
+    // if (currentPathnameExists && nextPathnameExists && pathname !== nextProps.location.pathname) {
+    //   // console.log("HeaderBar shouldComponentUpdate: pathname", pathname, ", nextProps.location.pathname", nextProps.location.pathname);
+    //   return true;
+    // }
     const thisVoterExists = this.state.voter !== undefined;
     const nextVoterExists = nextState.voter !== undefined;
     if (nextVoterExists && !thisVoterExists) {
@@ -303,7 +307,7 @@ class HeaderBar extends Component {
   }
 
   getSelectedTab = () => {
-    const { pathname } = this.props;
+    const { location: { pathname } } = window;
     if (typeof pathname !== 'undefined' && pathname) {
       if (startsWith('/ready', pathname.toLowerCase())) return 0;
       if (startsWith('/ballot', pathname.toLowerCase())) return 1;
@@ -313,7 +317,9 @@ class HeaderBar extends Component {
     return false;
   };
 
-  handleNavigation = (to) => historyPush(to);
+  handleNavigation = (to) => {
+    historyPush2(to);
+  }
 
   closeAdviserIntroModal = () => {
     AppActions.setShowAdviserIntroModal(false);
@@ -338,11 +344,11 @@ class HeaderBar extends Component {
   closeShareModal () {
     AppActions.setShowShareModal(false);
     AppActions.setShareModalStep('');
-    const { pathname } = this.props;
+    const { location: { pathname } } = window;
     if (stringContains('/modal/share', pathname) && isWebApp()) {
       const pathnameWithoutModalShare = pathname.replace('/modal/share', '');  // Cordova
       // console.log('Navigation closeShareModal ', pathnameWithoutModalShare)
-      historyPush(pathnameWithoutModalShare);
+      historyPush2(pathnameWithoutModalShare);
     }
   }
 
@@ -358,7 +364,7 @@ class HeaderBar extends Component {
   toggleSelectBallotModal (destinationUrlForHistoryPush = '', showSelectBallotModalHideAddress = false, showSelectBallotModalHideElections = false) {
     const { showSelectBallotModal } = this.state;
     if (showSelectBallotModal && destinationUrlForHistoryPush && destinationUrlForHistoryPush !== '') {
-      historyPush(destinationUrlForHistoryPush);
+      historyPush2(destinationUrlForHistoryPush);
     } else if (!showSelectBallotModal) {
       // console.log('Ballot toggleSelectBallotModal, BallotActions.voterBallotListRetrieve()');
       BallotActions.voterBallotListRetrieve(); // Retrieve a list of ballots for the voter from other elections
@@ -416,7 +422,10 @@ class HeaderBar extends Component {
     if (!this.state.componentDidMountFinished) {
       return null;
     }
-    const { classes, pathname, location } = this.props;
+
+    const { classes } = this.props;
+    const { location: { pathname } } = window;
+
     const {
       chosenSiteLogoUrl, hideWeVoteLogo, paidAccountUpgradeMode, scrolledDown, shareModalStep,
       showAdviserIntroModal, showEditAddressButton, showFirstPositionIntroModal,
@@ -430,7 +439,6 @@ class HeaderBar extends Component {
     const ballotBaseUrl = stringContains('/ready', pathname.toLowerCase().slice(0, 7)) ? '/ready' : '/ballot';
     // const numberOfIncomingFriendRequests = friendInvitationsSentToMe.length || 0;
     const showFullNavigation = true;
-    const weVoteBrandingOff = this.state.we_vote_branding_off;
     const showingBallot = stringContains('/ballot', pathname.toLowerCase().slice(0, 7));
     const showingFriendsTabs = displayFriendsTabs();
     const voterPhotoUrlMedium = voterPhoto(voter);
@@ -489,7 +497,7 @@ class HeaderBar extends Component {
       </Tooltip>
     );
 
-    const doNotShowWeVoteLogo = weVoteBrandingOff || hideWeVoteLogo;
+    const doNotShowWeVoteLogo = weVoteBrandingOff() || hideWeVoteLogo;
     const showWeVoteLogo = !doNotShowWeVoteLogo;
     const cordovaOverrides = isWebApp() ? {} : { marginLeft: 0, padding: '0 0 0 8px', right: 'unset' };
     let appBarCname = 'page-header ';
@@ -585,7 +593,6 @@ class HeaderBar extends Component {
                       toggleSignInModal={this.toggleSignInModal}
                       transitionToYourVoterGuide={this.transitionToYourVoterGuide}
                       voter={voter}
-                      weVoteBrandingOff={this.state.we_vote_branding_off}
                     />
                   )}
                 </NotificationsAndProfileWrapper>
@@ -616,7 +623,6 @@ class HeaderBar extends Component {
                         toggleSignInModal={this.toggleSignInModal}
                         transitionToYourVoterGuide={this.transitionToYourVoterGuide}
                         voter={voter}
-                        weVoteBrandingOff={this.state.we_vote_branding_off}
                       />
                     )}
                   </NotificationsAndProfileWrapper>
@@ -654,8 +660,6 @@ class HeaderBar extends Component {
             ballotBaseUrl={ballotBaseUrl}
             hideAddressEdit={showSelectBallotModalHideAddress}
             hideElections={showSelectBallotModalHideElections}
-            location={location}
-            pathname={pathname}
             show={showSelectBallotModal}
             toggleFunction={this.toggleSelectBallotModal}
           />
@@ -663,7 +667,6 @@ class HeaderBar extends Component {
         {showPaidAccountUpgradeModal && (
           <PaidAccountUpgradeModal
             initialPricingPlan={paidAccountUpgradeMode}
-            pathname={pathname}
             show={showPaidAccountUpgradeModal}
             toggleFunction={this.closePaidAccountUpgradeModal}
           />
@@ -671,7 +674,6 @@ class HeaderBar extends Component {
         {showShareModal && (
           <ShareModal
             voterIsSignedIn={voterIsSignedIn}
-            pathname={pathname}
             show={showShareModal}
             shareModalStep={shareModalStep}
             closeShareModal={this.closeShareModal}
@@ -679,35 +681,30 @@ class HeaderBar extends Component {
         )}
         {showAdviserIntroModal && (
           <AdviserIntroModal
-            pathname={pathname}
             show={showAdviserIntroModal}
             toggleFunction={this.closeAdviserIntroModal}
           />
         )}
         {showFirstPositionIntroModal && (
           <FirstPositionIntroModal
-            pathname={pathname}
             show={showFirstPositionIntroModal}
             toggleFunction={this.closeFirstPositionIntroModal}
           />
         )}
         {showPersonalizedScoreIntroModal && (
           <PersonalizedScoreIntroModal
-            pathname={pathname}
             show={showPersonalizedScoreIntroModal}
             toggleFunction={this.closePersonalizedScoreIntroModal}
           />
         )}
         {showValuesIntroModal && (
           <ValuesIntroModal
-            pathname={pathname}
             show={showValuesIntroModal}
             toggleFunction={this.closeValuesIntroModal}
           />
         )}
         {showImageUploadModal && (
           <ImageUploadModal
-            pathname={pathname}
             show={showImageUploadModal}
             toggleFunction={this.closeImageUploadModal}
           />
@@ -717,9 +714,6 @@ class HeaderBar extends Component {
   }
 }
 HeaderBar.propTypes = {
-  location: PropTypes.object,
-  voter: PropTypes.object,
-  pathname: PropTypes.string,
   classes: PropTypes.object,
 };
 

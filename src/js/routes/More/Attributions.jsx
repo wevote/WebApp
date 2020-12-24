@@ -1,6 +1,6 @@
 import React from 'react';
 import Helmet from 'react-helmet';
-import { Link } from 'react-router';
+import { Link } from 'react-router-dom';
 import { renderLog } from '../../utils/logging';
 import attributions from '../../attributions';
 

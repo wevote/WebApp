@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
 import Helmet from 'react-helmet';
-import { Link } from 'react-router';
+import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { Button } from '@material-ui/core';
@@ -135,7 +135,8 @@ class WelcomeForVoters extends PureComponent {
 
   render () {
     renderLog('WelcomeForVoters');  // Set LOG_RENDER_EVENTS to log all renders
-    const { classes, pathname } = this.props;
+    const { classes } = this.props;
+    const { location: { pathname } } = window;
     // console.log('WelcomeForVoters, pathname: ', pathname);
     const {
       emailAddressSubmitted, emailAddressVerifiedCount, showVerifyModal,
@@ -326,7 +327,6 @@ class WelcomeForVoters extends PureComponent {
 }
 WelcomeForVoters.propTypes = {
   classes: PropTypes.object,
-  pathname: PropTypes.string,
 };
 
 const styles = (theme) => ({

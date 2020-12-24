@@ -10,7 +10,7 @@ import VoterGuideStore from '../../stores/VoterGuideStore';
 import VoterStore from '../../stores/VoterStore';
 import { isProperlyFormattedVoterGuideWeVoteId } from '../../utils/textFormat';
 
-// Take in this.props.params.organization_we_vote_id and this.props.params.google_civic_election_id and
+// Take in params.organization_we_vote_id and params.google_civic_election_id and
 // redirect to the correct voter guide edit page
 export default class OrganizationVoterGuideEdit extends Component {
   constructor (props) {
@@ -24,9 +24,10 @@ export default class OrganizationVoterGuideEdit extends Component {
   }
 
   componentDidMount () {
-    let organizationWeVoteId = this.props.params.organization_we_vote_id;
-    let googleCivicElectionId = this.props.params.google_civic_election_id;
-    // console.log('OrganizationVoterGuideEdit, componentDidMount, this.props.params.organization_we_vote_id: ', organizationWeVoteId, ', this.props.params.google_civic_election_id: ', googleCivicElectionId);
+    const { match: { params } } = this.props;
+    let organizationWeVoteId = params.organization_we_vote_id;
+    let googleCivicElectionId = params.google_civic_election_id;
+    // console.log('OrganizationVoterGuideEdit, componentDidMount, params.organization_we_vote_id: ', organizationWeVoteId, ', params.google_civic_election_id: ', googleCivicElectionId);
 
     let tryToCreateVoterGuide = false;
     let continueLookingForLocalVoterGuide = true;
@@ -172,5 +173,5 @@ export default class OrganizationVoterGuideEdit extends Component {
   }
 }
 OrganizationVoterGuideEdit.propTypes = {
-  params: PropTypes.object.isRequired,
+  match: PropTypes.object.isRequired,
 };

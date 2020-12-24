@@ -5,7 +5,7 @@ import filter from 'lodash-es/filter';
 import AnalyticsActions from '../actions/AnalyticsActions';
 import CheckBox from '../components/Connect/CheckBox';
 import webAppConfig from '../config';
-import { historyPush } from '../utils/cordovaUtils';
+import { isWebApp, historyPush } from '../utils/cordovaUtils';
 import FacebookActions from '../actions/FacebookActions';
 import FriendActions from '../actions/FriendActions';
 import FacebookStore from '../stores/FacebookStore';

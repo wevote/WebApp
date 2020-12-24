@@ -44,8 +44,8 @@ class FriendInvitationOnboarding extends Component {
     // this.appStoreListener = AppStore.addListener(this.onAppStoreChange.bind(this));
     this.friendStoreListener = FriendStore.addListener(this.onFriendStoreChange.bind(this));
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
-    const { invitationSecretKey } = this.props.params;
-    // console.log('FriendInvitationOnboarding, componentDidMount, this.props.params.invitation_secret_key: ', invitationSecretKey);
+    const { match: { params: { invitationSecretKey }  } } = this.props;
+    // console.log('FriendInvitationOnboarding, componentDidMount, invitation_secret_key: ', invitationSecretKey);
     if (invitationSecretKey) {
       this.friendInvitationInformation(invitationSecretKey);
     }
@@ -175,7 +175,6 @@ class FriendInvitationOnboarding extends Component {
           <HowItWorksDescription>
             <PersonalizedScoreIntroBody
               markPersonalizedScoreIntroCompleted={this.markPersonalizedScoreIntroCompleted}
-              pathname=""
               show
             />
           </HowItWorksDescription>
@@ -191,7 +190,7 @@ class FriendInvitationOnboarding extends Component {
   }
 
   nextSlide () {
-    const { invitationSecretKey } = this.props.params;
+    const { match: { params: { invitationSecretKey } } } = this.props;
     if (invitationSecretKey) {
       this.friendInvitationInformation(invitationSecretKey);
     }
@@ -301,7 +300,7 @@ class FriendInvitationOnboarding extends Component {
 }
 FriendInvitationOnboarding.propTypes = {
   classes: PropTypes.object,
-  params: PropTypes.object,
+  match: PropTypes.object,
 };
 
 const styles = (theme) => ({

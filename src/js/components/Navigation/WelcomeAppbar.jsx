@@ -334,7 +334,6 @@ class WelcomeAppbar extends Component {
                       toggleSignInModal={this.toggleSignInModal}
                       transitionToYourVoterGuide={this.transitionToYourVoterGuide}
                       voter={this.state.voter}
-                      weVoteBrandingOff={this.state.we_vote_branding_off}
                     />
                   )}
                 </div>
@@ -379,7 +378,6 @@ class WelcomeAppbar extends Component {
                       toggleSignInModal={this.toggleSignInModal}
                       transitionToYourVoterGuide={this.transitionToYourVoterGuide}
                       voter={this.state.voter}
-                      weVoteBrandingOff={this.state.we_vote_branding_off}
                     />
                   )}
                 </div>

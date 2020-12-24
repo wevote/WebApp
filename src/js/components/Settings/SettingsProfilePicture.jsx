@@ -1,10 +1,8 @@
-import React, { Component } from 'react';
-import Helmet from 'react-helmet';
-import { Link } from 'react-router';
-import PropTypes from 'prop-types';
-import styled from 'styled-components';
-import { withStyles } from '@material-ui/core/styles';
 import { Button, FormControlLabel, Radio, RadioGroup } from '@material-ui/core';
+import { withStyles } from '@material-ui/core/styles';
+import React, { Component } from 'react';
+// import PropTypes from 'prop-types';
+import styled from 'styled-components';
 import AppActions from '../../actions/AppActions';
 
 class SettingsProfilePicture extends Component {
@@ -32,27 +30,40 @@ class SettingsProfilePicture extends Component {
         <div className="row">
           <CustomColumns className="col">
             <ProfilePictureOption>
-              <FormControlLabel value="custom" control={<Radio color="primary" />} label="Custom picture" />
-              <Seperator />
-              <ProfilePicture src="../../../img/global/photos/Aaron_Travis-200x200.jpg" />
+              <FormControlLabel value="custom"
+                                control={<Radio color="primary"/>}
+                                label="Custom picture"/>
+              <Seperator/>
+              <ProfilePicture
+                src="../../../img/global/photos/Aaron_Travis-200x200.jpg"/>
               {value === 'custom' && (
                 <>
-                  <Button onClick={() => AppActions.setShowImageUploadModal(true)} classes={{ root: classes.button }} color="primary" variant="contained" fullWidth>Upload</Button>
-                  <Button color="primary" variant="outlined" fullWidth>Remove</Button>
+                  <Button
+                    onClick={() => AppActions.setShowImageUploadModal(true)}
+                    classes={{ root: classes.button }} color="primary"
+                    variant="contained" fullWidth>Upload</Button>
+                  <Button color="primary" variant="outlined"
+                          fullWidth>Remove</Button>
                 </>
               )}
             </ProfilePictureOption>
           </CustomColumns>
           <CustomColumns className="col">
             <ProfilePictureOption>
-              <FormControlLabel value="facebook" control={<Radio color="primary" />} label="Facebook picture" />
-              <Seperator />
-              <ProfilePicture src="../../../img/global/photos/Aaron_Travis-200x200.jpg" />
+              <FormControlLabel value="facebook"
+                                control={<Radio color="primary"/>}
+                                label="Facebook picture"/>
+              <Seperator/>
+              <ProfilePicture
+                src="../../../img/global/photos/Aaron_Travis-200x200.jpg"/>
             </ProfilePictureOption>
           </CustomColumns>
           <CustomColumns className="col">
             <ProfilePictureOption>
-              <FormControlLabel value="twitter" control={<Radio color="primary" />} label="Twitter picture" />
+              <FormControlLabel value="twitter"
+                                control={<Radio color="primary" />}
+                                label="Twitter picture"
+              />
               <Seperator />
               <ProfilePicture src="../../../img/global/photos/Aaron_Travis-200x200.jpg" />
             </ProfilePictureOption>
@@ -62,6 +73,9 @@ class SettingsProfilePicture extends Component {
     );
   }
 }
+// SettingsProfilePicture.propTypes = {
+//   classes: PropTypes.object,
+// };
 
 const styles = () => ({
   button: {
@@ -113,12 +127,12 @@ const ProfilePicture = styled.img`
   margin: 0 auto;
 `;
 
-const SectionTitle = styled.h2`
-  width: fit-content;
-  font-weight: bold;
-  font-size: 22px;
-  margin-bottom: 16px;
-  margin-top: 32px;
-`;
+// const SectionTitle = styled.h2`
+//   width: fit-content;
+//   font-weight: bold;
+//   font-size: 22px;
+//   margin-bottom: 16px;
+//   margin-top: 32px;
+// `;
 
 export default withStyles(styles)(SettingsProfilePicture);

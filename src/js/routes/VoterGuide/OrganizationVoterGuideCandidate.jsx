@@ -22,6 +22,7 @@ import webAppConfig from '../../config';
 import { renderLog } from '../../utils/logging';
 
 // This is based on routes/Ballot/Candidate - TO BE DEPRECATED?
+// TODO: Not called anywhere Dec 2020, delete when Dale agrees
 class OrganizationVoterGuideCandidate extends Component {
   constructor (props) {
     super(props);
@@ -31,7 +32,7 @@ class OrganizationVoterGuideCandidate extends Component {
       candidateWeVoteId: '',
       // Eventually we could use this getVoterGuidesToFollowForBallotItemId with candidateWeVoteId, but we can't now
       //  because we don't always have the ballot_item_we_vote_id for certain API calls like organizationFollow
-      // guidesToFollowList: VoterGuideStore.getVoterGuidesToFollowForBallotItemId(this.props.params.candidate_we_vote_id)
+      // guidesToFollowList: VoterGuideStore.getVoterGuidesToFollowForBallotItemId(params.candidate_we_vote_id)
       voterGuidesToFollowForLatestBallotItem: [],
       organizationWeVoteId: '',
     };
@@ -39,7 +40,8 @@ class OrganizationVoterGuideCandidate extends Component {
 
   componentDidMount () {
     // console.log('Candidate componentDidMount');
-    const { candidate_we_vote_id: candidateWeVoteId, organization_we_vote_id: organizationWeVoteId } = this.props.params;
+    const { match: { params } } = this.props;
+    const { candidate_we_vote_id: candidateWeVoteId, organization_we_vote_id: organizationWeVoteId } = params;
     this.candidateStoreListener = CandidateStore.addListener(this.onCandidateStoreChange.bind(this));
     CandidateActions.candidateRetrieve(candidateWeVoteId);
     CandidateActions.positionListForBallotItemPublic(candidateWeVoteId);
@@ -65,7 +67,8 @@ class OrganizationVoterGuideCandidate extends Component {
   UNSAFE_componentWillReceiveProps (nextProps) {
     // console.log('Candidate componentWillReceiveProps');
     const { candidateWeVoteId: priorCandidateWeVoteId } = this.state;
-    const { candidate_we_vote_id: candidateWeVoteId } = nextProps.params;
+    const { match: { params: nextParams } } = nextProps;
+    const { candidate_we_vote_id: candidateWeVoteId } = nextParams;
     // When a new candidate is passed in, update this component to show the new data
     if (candidateWeVoteId !== priorCandidateWeVoteId) {
       CandidateActions.candidateRetrieve(candidateWeVoteId);
@@ -113,7 +116,7 @@ class OrganizationVoterGuideCandidate extends Component {
   render () {
     renderLog('OrganizationVoterGuideCandidate');  // Set LOG_RENDER_EVENTS to log all renders
     const NO_VOTER_GUIDES_TEXT = 'We could not find any more voter guides to follow related to this candidate.';
-    const { classes } = this.props;
+    const { classes, match: { params } } = this.props;
     const { allCachedPositionsForThisCandidate, candidate, organizationWeVoteId } = this.state;
     if (!candidate || !candidate.ballot_item_display_name) {
       // TODO DALE If the candidate we_vote_id is not valid, we need to update this with a notice
@@ -152,6 +155,7 @@ class OrganizationVoterGuideCandidate extends Component {
                 <PositionList
                   incomingPositionList={allCachedPositionsForThisCandidate}
                   ballotItemDisplayName={candidate.ballot_item_display_name}
+                  params={params}
                   positionListExistsTitle={(
                     <PositionListIntroductionText>
                       <Info classes={{ root: classes.informationIcon }} />
@@ -214,7 +218,7 @@ class OrganizationVoterGuideCandidate extends Component {
 }
 OrganizationVoterGuideCandidate.propTypes = {
   classes: PropTypes.object,
-  params: PropTypes.object.isRequired,
+  match: PropTypes.object.isRequired,
 };
 
 const styles = () => ({

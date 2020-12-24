@@ -1,7 +1,7 @@
 import React, { Suspense, lazy } from 'react';
 // import Loadable from 'react-loadable';
-// import { IndexRedirect, Route } from 'react-router';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+// import { IndexRedirect, Route } from 'react-router-dom';
+import { Router, Route, Switch } from 'react-router-dom';
 // import ApplicationForReady from './ApplicationForReady';
 // import PageNotFound from './routes/PageNotFound';
 import GetReady from './routes/ReadyNoApi';

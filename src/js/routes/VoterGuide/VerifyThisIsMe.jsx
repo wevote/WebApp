@@ -41,11 +41,12 @@ class VerifyThisIsMe extends Component {
   }
 
   componentDidMount () {
+    const { match: { params } } = this.props;
     // console.log("VerifyThisIsMe, Entering componentDidMount");
     AppActions.storeSignInStartFullUrl(); // Store cookie so we return to this page after sign in
     this.onVoterStoreChange();
-    // console.log(`VerifyThisIsMe, componentDidMount: ${this.props.params.twitter_handle}`);
-    TwitterActions.twitterIdentityRetrieve(this.props.params.twitter_handle);
+    // console.log(`VerifyThisIsMe, componentDidMount: ${params.twitter_handle}`);
+    TwitterActions.twitterIdentityRetrieve(params.twitter_handle);
 
     this.organizationStoreListener = OrganizationStore.addListener(this.onOrganizationStoreChange.bind(this));
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
@@ -116,8 +117,9 @@ class VerifyThisIsMe extends Component {
   }
 
   voterSignOut = () => {
+    const { match: { params } } = this.props;
     VoterSessionActions.voterSignOut();
-    TwitterActions.twitterIdentityRetrieve(this.props.params.twitter_handle);
+    TwitterActions.twitterIdentityRetrieve(params.twitter_handle);
   }
 
   render () {
@@ -125,6 +127,14 @@ class VerifyThisIsMe extends Component {
 
     // Manage the control over this organization voter guide
     const { candidate, organization, twitterHandle, voter } = this.state;
+
+    if (twitterHandle === undefined) {
+      // December 16, 2020
+      console.log('ERROR: twitterHandle is undefined in VerifyThisIsMe, skipping verification');
+      return '';
+    }
+
+    const { match: { params } } = this.props;
     const signedInTwitter = voter === undefined ? false : voter.signed_in_twitter;
     let signedInWithThisTwitterAccount = false;
     if (signedInTwitter) {
@@ -144,7 +154,7 @@ class VerifyThisIsMe extends Component {
       return LoadingWheel;
     } else if (this.state.kindOfOwner === 'POLITICIAN') {
       // console.log("VerifyThisIsMe this.state.kindOfOwner === POLITICIAN");
-      this.props.params.we_vote_id = this.state.ownerWeVoteId;
+      params.we_vote_id = this.state.ownerWeVoteId;
       return (
         <span>
           <Helmet title="Claim This Page - We Vote" />
@@ -191,7 +201,7 @@ class VerifyThisIsMe extends Component {
     } else if (this.state.kindOfOwner === 'ORGANIZATION') {
       // console.log("VerifyThisIsMe this.state.kindOfOwner === ORGANIZATION");
       // console.log(`VerifyThisIsMe this.state.ownerWeVoteId: ${this.state.ownerWeVoteId}`);
-      this.props.params.we_vote_id = this.state.ownerWeVoteId;
+      params.we_vote_id = this.state.ownerWeVoteId;
 
       if (!organization) {
         return <div>{LoadingWheel}</div>;
@@ -255,11 +265,11 @@ class VerifyThisIsMe extends Component {
               </BackToVoterGuideWrapper>
             </div>
           </div>
-          {this.props.params.we_vote_id && (
+          {params.we_vote_id && (
             <div className="card">
               <div className="card-main">
                 <OrganizationCard organization={organization} />
-                <FollowToggle organizationWeVoteId={this.props.params.we_vote_id} />
+                <FollowToggle organizationWeVoteId={params.we_vote_id} />
               </div>
             </div>
           )}
@@ -329,7 +339,7 @@ class VerifyThisIsMe extends Component {
   }
 }
 VerifyThisIsMe.propTypes = {
-  params: PropTypes.object,
+  match: PropTypes.object,
   twitter_handle: PropTypes.string,
 };
 

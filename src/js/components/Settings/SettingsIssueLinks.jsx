@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Helmet from 'react-helmet';
-import { Link } from 'react-router';
+import { Link } from 'react-router-dom';
 import BrowserPushMessage from '../Widgets/BrowserPushMessage';
 import IssueActions from '../../actions/IssueActions';
 import IssueLinkToggle from '../Values/IssueLinkToggle';
@@ -47,6 +47,7 @@ export default class SettingsIssueLinks extends Component {
   }
 
   componentDidMount () {
+    const { params } = this.props;
     const newState = {};
     this.onVoterStoreChange();
     this.issueStoreListener = IssueStore.addListener(this.onIssueStoreChange.bind(this));
@@ -62,7 +63,7 @@ export default class SettingsIssueLinks extends Component {
     }
 
     const defaultActiveTab = this.getDefaultActiveIssueTab();
-    const activeTab = this.props.params.active_tab || defaultActiveTab;
+    const activeTab = params.active_tab || defaultActiveTab;
     newState.activeTab = activeTab;
 
     this.setState(newState);
@@ -156,14 +157,15 @@ export default class SettingsIssueLinks extends Component {
     }
     let issuesToDisplay = [];
 
-    const activeTab = this.props.params.active_tab || this.state.activeTab;
+    const { params } = this.props;
+    const activeTab = params.active_tab || this.state.activeTab;
     const issuesToLinkUrl = '/settings/issues/issues_to_link';
     const issuesLinkedUrl = '/settings/issues/issues_linked';
 
     const isLinkedFalse = false;
     const isLinkedTrue = true;
     // console.log('this.state.activeTab ', this.state.activeTab);
-    // console.log('this.props.params.active_tab ', this.props.params.active_tab );
+    // console.log('params.active_tab ', params.active_tab );
     // console.log('-----------------------------------------------------')
     switch (activeTab) {
       case 'issues_to_link':
@@ -225,6 +227,6 @@ export default class SettingsIssueLinks extends Component {
   }
 }
 SettingsIssueLinks.propTypes = {
-  params: PropTypes.object.isRequired,
   organizationWeVoteId: PropTypes.string,
+  params: PropTypes.object,
 };

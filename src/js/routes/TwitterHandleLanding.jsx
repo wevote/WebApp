@@ -1,19 +1,19 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
 import { Button } from '@material-ui/core';
-import { Link } from 'react-router';
+import PropTypes from 'prop-types';
+import React, { Component } from 'react';
 import Helmet from 'react-helmet';
-import Candidate from './Ballot/Candidate';
-import DelayedLoad from '../components/Widgets/DelayedLoad';
-import LoadingWheel from '../components/LoadingWheel';
-import { renderLog } from '../utils/logging';
-import OrganizationVoterGuide from './VoterGuide/OrganizationVoterGuide';
+import { Link } from 'react-router-dom';
 import OrganizationActions from '../actions/OrganizationActions';
-import PositionListForFriends from './VoterGuide/PositionListForFriends';
 import TwitterActions from '../actions/TwitterActions';
+import LoadingWheel from '../components/LoadingWheel';
+import DelayedLoad from '../components/Widgets/DelayedLoad';
 import TwitterStore from '../stores/TwitterStore';
-import UnknownTwitterAccount from './VoterGuide/UnknownTwitterAccount';
 import VoterStore from '../stores/VoterStore';
+import { renderLog } from '../utils/logging';
+import Candidate from './Ballot/Candidate';
+import OrganizationVoterGuide from './VoterGuide/OrganizationVoterGuide';
+import PositionListForFriends from './VoterGuide/PositionListForFriends';
+import UnknownTwitterAccount from './VoterGuide/UnknownTwitterAccount';
 
 export default class TwitterHandleLanding extends Component {
   constructor (props) {
@@ -27,10 +27,10 @@ export default class TwitterHandleLanding extends Component {
   componentDidMount () {
     this.twitterStoreListener = TwitterStore.addListener(this.onTwitterStoreChange.bind(this));
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
-    TwitterActions.resetTwitterHandleLanding();
-    const { activeRoute, params } = this.props;
-    const { twitter_handle: twitterHandle } = params;
-    // console.log(`TwitterHandleLanding componentDidMount, twitterHandle: ${twitterHandle}`);
+
+    const { activeRoute, match: { params: { twitter_handle: twitterHandle } } } = this.props;
+
+    // console.log(`-------- TwitterHandleLanding componentDidMount, twitterHandle: ${twitterHandle}`);
     this.setState({
       activeRoute,
       twitterHandle,
@@ -42,8 +42,7 @@ export default class TwitterHandleLanding extends Component {
   // eslint-disable-next-line camelcase,react/sort-comp
   UNSAFE_componentWillReceiveProps (nextProps) {
     // console.log('TwitterHandleLanding componentWillReceiveProps');
-    const { activeRoute, params } = nextProps;
-    const { twitter_handle: nextTwitterHandle } = params;
+    const { match: { location: { pathname: activeRoute }, params: { twitter_handle: nextTwitterHandle } } } = nextProps;
     const { twitterHandle } = this.state;
     this.setState({
       activeRoute,
@@ -105,7 +104,7 @@ export default class TwitterHandleLanding extends Component {
   render () {
     renderLog('TwitterHandleLanding');  // Set LOG_RENDER_EVENTS to log all renders
     if (this.state.status === undefined) {
-      // console.log('TwitterHandleLanding this.state.status undefined');
+      console.log('TwitterHandleLanding this.state.status undefined');
       // Show a loading wheel while this component's data is loading
       return LoadingWheel;
     }
@@ -113,6 +112,7 @@ export default class TwitterHandleLanding extends Component {
     const {
       activeRoute, voter, kindOfOwner, ownerWeVoteId, twitterHandle: twitterHandleBeingViewed,
     } = this.state;
+    const { match: { params } } = this.props;
     const signedInTwitter = voter === undefined ? false : voter.signed_in_twitter;
     let signedInWithThisTwitterAccount = false;
     let lookingAtPositionsForFriendsOnly = false;
@@ -141,18 +141,17 @@ export default class TwitterHandleLanding extends Component {
     // }
 
     if (kindOfOwner === 'CANDIDATE') {
-      this.props.params.candidate_we_vote_id = ownerWeVoteId;
+      params.candidate_we_vote_id = ownerWeVoteId;
       return <Candidate candidate_we_vote_id {...this.props} />;
     } else if (kindOfOwner === 'ORGANIZATION') {
-      this.props.params.organization_we_vote_id = ownerWeVoteId;
+      params.organization_we_vote_id = ownerWeVoteId;
       if (lookingAtPositionsForFriendsOnly) {
-        return <PositionListForFriends {...this.props} />;
+        return <PositionListForFriends params={params} />;
       } else {
         return (
           <OrganizationVoterGuide
             {...this.props}
-            location={this.props.location}
-            params={this.props.params}
+            params={params}
             activeRoute={activeRoute}
           />
         );
@@ -168,8 +167,7 @@ export default class TwitterHandleLanding extends Component {
             <Helmet title="Not Found - We Vote" />
             <h3 className="h3">Claim Your Page</h3>
             <div className="medium">
-              We were not able to find an account for this
-              Twitter Handle
+              We were not able to find an account for this Twitter Handle
               { twitterHandleBeingViewed ? (
                 <span>
                   {' '}
@@ -204,6 +202,5 @@ export default class TwitterHandleLanding extends Component {
 }
 TwitterHandleLanding.propTypes = {
   activeRoute: PropTypes.string,
-  params: PropTypes.object,
-  location: PropTypes.object.isRequired,
+  match: PropTypes.object,
 };

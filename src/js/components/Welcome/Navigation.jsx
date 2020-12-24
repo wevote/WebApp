@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { Link } from 'react-router';
+import { Link } from 'react-router-dom';
 
 const LogoContainer = styled.div`
   @media (max-width: ${({ theme }) => theme.breakpoints.md}) {

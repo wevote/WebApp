@@ -58,6 +58,7 @@ class Vote extends Component {
   }
 
   componentDidMount () {
+    const { match: { params } } = this.props;
     const ballotBaseUrl = '/ballot';
     this.appStoreListener = AppStore.addListener(this.onAppStoreChange.bind(this));
 
@@ -74,14 +75,14 @@ class Vote extends Component {
       });
     }
 
-    let googleCivicElectionIdFromUrl = this.props.params.google_civic_election_id || 0;
+    let googleCivicElectionIdFromUrl = params.google_civic_election_id || 0;
 
     // console.log('googleCivicElectionIdFromUrl: ', googleCivicElectionIdFromUrl);
-    let ballotReturnedWeVoteId = this.props.params.ballot_returned_we_vote_id || '';
+    let ballotReturnedWeVoteId = params.ballot_returned_we_vote_id || '';
     ballotReturnedWeVoteId = ballotReturnedWeVoteId === 'none' ? '' : ballotReturnedWeVoteId;
 
-    // console.log('this.props.params.ballot_returned_we_vote_id: ', this.props.params.ballot_returned_we_vote_id);
-    let ballotLocationShortcut = this.props.params.ballot_location_shortcut || '';
+    // console.log('params.ballot_returned_we_vote_id: ', params.ballot_returned_we_vote_id);
+    let ballotLocationShortcut = params.ballot_location_shortcut || '';
     ballotLocationShortcut = ballotLocationShortcut.trim();
     ballotLocationShortcut = ballotLocationShortcut === 'none' ? '' : ballotLocationShortcut;
     let googleCivicElectionId = 0;
@@ -166,26 +167,24 @@ class Vote extends Component {
     //   AnalyticsActions.saveActionBallotVisit(VoterStore.electionId());
     // }
 
-    const { location } = this.props;
-    const { pathname } = location;
     this.setState({
       completionLevelFilterType,
       ballotReturnedWeVoteId,
       ballotLocationShortcut,
       googleCivicElectionId: parseInt(googleCivicElectionId, 10),
-      pathname,
     });
   }
 
   // eslint-disable-next-line camelcase,react/sort-comp
   UNSAFE_componentWillReceiveProps (nextProps) {
     // console.log('Ballot componentWillReceiveProps');
+    const { match: { params: nextParams } } = nextProps;
 
     // We don't want to let the googleCivicElectionId disappear
-    const googleCivicElectionId = nextProps.params.google_civic_election_id || this.state.googleCivicElectionId;
-    let ballotReturnedWeVoteId = nextProps.params.ballot_returned_we_vote_id || '';
+    const googleCivicElectionId = nextParams.google_civic_election_id || this.state.googleCivicElectionId;
+    let ballotReturnedWeVoteId = nextParams.ballot_returned_we_vote_id || '';
     ballotReturnedWeVoteId = ballotReturnedWeVoteId.trim();
-    let ballotLocationShortcut = nextProps.params.ballot_location_shortcut || '';
+    let ballotLocationShortcut = nextParams.ballot_location_shortcut || '';
     ballotLocationShortcut = ballotLocationShortcut.trim();
     const completionLevelFilterType = 'filterDecided';
 
@@ -201,7 +200,6 @@ class Vote extends Component {
         ballotLocationShortcut,
         completionLevelFilterType,
         googleCivicElectionId: parseInt(googleCivicElectionId, 10),
-        pathname: nextProps.location.pathname,
       });
 
       // if (googleCivicElectionId && googleCivicElectionId !== 0) {
@@ -246,6 +244,8 @@ class Vote extends Component {
 
   onVoterStoreChange () {
     // console.log('Ballot.jsx onVoterStoreChange, voter: ', VoterStore.getVoter());
+    const { location: { pathname } } = window;
+
     if (this.state.mounted) {
       let considerOpeningBallotIntroModal = true;
       if (this.state.waitUntilVoterSignInCompletes) {
@@ -255,8 +255,8 @@ class Vote extends Component {
           this.setState({
             waitUntilVoterSignInCompletes: undefined,
           });
-          // console.log('onVoterStoreChange, about to historyPush(this.state.pathname):', this.state.pathname);
-          historyPush(this.state.pathname);
+          // console.log('onVoterStoreChange, about to historyPush(pathname):', pathname);
+          historyPush(pathname);
         }
       }
 
@@ -484,7 +484,7 @@ class Vote extends Component {
                       </div>
                       <Card>
                         <EmptyBallotMessageContainer>
-                          <Ballot classes={{ root: classes.ballotIconRoot }} />
+                          <Ballot classes={{ root: classes.ballotIconRoot }} location={window.location} />
                           <EmptyBallotText>You haven&apos;t chosen any candidates or measures yet. Go to &quot;Ballot&quot; to decide what to vote for.</EmptyBallotText>
                           <Button
                             classes={{ root: classes.ballotButtonRoot }}
@@ -492,7 +492,7 @@ class Vote extends Component {
                             variant="contained"
                             onClick={() => historyPush('/ballot')}
                           >
-                            <Ballot classes={{ root: classes.ballotButtonIconRoot }} />
+                            <Ballot classes={{ root: classes.ballotButtonIconRoot }} location={window.location} />
                             Go to Ballot
                           </Button>
                         </EmptyBallotMessageContainer>
@@ -518,9 +518,7 @@ class Vote extends Component {
   }
 }
 Vote.propTypes = {
-  location: PropTypes.object,
-  pathname: PropTypes.string,
-  params: PropTypes.object,
+  match: PropTypes.object,
   classes: PropTypes.object,
 };
 

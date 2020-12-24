@@ -39,7 +39,8 @@ class VoterGuidesUnderOneValue extends Component {
 
   // eslint-disable-next-line camelcase,react/sort-comp
   UNSAFE_componentWillReceiveProps (nextProps) {
-    const issue = IssueStore.getIssueBySlug(nextProps.params.value_slug);
+    const { match: { params: nextParams } } = nextProps;
+    const issue = IssueStore.getIssueBySlug(nextParams.value_slug);
     const voterGuidesForValue = VoterGuideStore.getVoterGuidesForValue(issue.issue_we_vote_id);
     const voterGuidesForValueLength = voterGuidesForValue.length || 0;
     this.setState({
@@ -66,8 +67,9 @@ class VoterGuidesUnderOneValue extends Component {
   }
 
   onIssueStoreChange () {
-    const issue = IssueStore.getIssueBySlug(this.props.params.value_slug);
-    // console.log('VoterGuidesUnderOneValue onIssueStoreChange, value_slug', this.props.params.value_slug);
+    const { match: { params: { value_slug: valueSlug } } } = this.props;
+    const issue = IssueStore.getIssueBySlug(valueSlug);
+    // console.log('VoterGuidesUnderOneValue onIssueStoreChange, valueSlug', valueSlug);
     if (issue && issue.issue_name) {
       const voterGuidesForValue = VoterGuideStore.getVoterGuidesForValue(issue.issue_we_vote_id);
       const voterGuidesForValueLength = voterGuidesForValue.length || 0;
@@ -125,7 +127,7 @@ class VoterGuidesUnderOneValue extends Component {
               <br />
               <Card>
                 <EmptyValueMessageContainer id="noEndorsements">
-                  <Ballot classes={{ root: classes.ballotIconRoot }} />
+                  <Ballot classes={{ root: classes.ballotIconRoot }} location={window.location} />
                   <EmptyValueText>There are no endorsements for this issue yet. Click &quot;Add Endorsements&quot; to help people who trust you make better voting decisions.</EmptyValueText>
                   <Button
                     id="addEndorsements"
@@ -134,7 +136,7 @@ class VoterGuidesUnderOneValue extends Component {
                     onClick={() => historyPush('/settings/voterguidelist')}
                     variant="contained"
                   >
-                    <Ballot classes={{ root: classes.ballotButtonIconRoot }} />
+                    <Ballot classes={{ root: classes.ballotButtonIconRoot }} location={window.location} />
                     Add Endorsements
                   </Button>
                 </EmptyValueMessageContainer>
@@ -162,7 +164,7 @@ class VoterGuidesUnderOneValue extends Component {
   }
 }
 VoterGuidesUnderOneValue.propTypes = {
-  params: PropTypes.object.isRequired,
+  match: PropTypes.object.isRequired,
   classes: PropTypes.object,
 };
 

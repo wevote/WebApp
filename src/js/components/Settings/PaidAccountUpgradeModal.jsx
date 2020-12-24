@@ -47,7 +47,6 @@ class PaidAccountUpgradeModal extends Component {
         status: 'From constructor',
         success: false,
       },
-      pathname: undefined,
       paidAccountProcessStep: 'choosePlan',
       pricingPlanChosen: undefined,
       radioGroupValue: 'annualPlanRadio',
@@ -79,20 +78,12 @@ class PaidAccountUpgradeModal extends Component {
     }
     this.setState({
       defaultPricing,
-      pathname: this.props.pathname,
     });
     this.handleResize();
     this.onDonateStoreChange(); // Load up default pricing
     window.addEventListener('resize', this.handleResize);
     DonateActions.donationRefreshDonationList();
     this.donateStoreListener = DonateStore.addListener(this.onDonateStoreChange);
-  }
-
-  // eslint-disable-next-line camelcase,react/sort-comp
-  UNSAFE_componentWillReceiveProps (nextProps) {
-    this.setState({
-      pathname: nextProps.pathname,
-    });
   }
 
   shouldComponentUpdate (nextProps, nextState) {
@@ -284,6 +275,7 @@ class PaidAccountUpgradeModal extends Component {
   }
 
   pricingPlanChosenFunction = (pricingPlanChosen) => {
+    const { location: { pathname } } = window;
     // console.log('pricingPlanChosenFunction pricingPlanChosen:', pricingPlanChosen);
     const pricingPlanChosenCleaned = pricingPlanChosen || '';
     const { activePaidPlanChosen, radioGroupValue, defaultPricing, lastCouponResponseReceivedFromAPI } = this.state;
@@ -304,7 +296,7 @@ class PaidAccountUpgradeModal extends Component {
         pricingPlanChosen: pricingPlanChosenCleaned,
       });
     } else {
-      this.props.toggleFunction(this.state.pathname);
+      this.props.toggleFunction(pathname);
     }
 
     // let currentSelectedPlanCostForPro = 0;
@@ -526,7 +518,8 @@ class PaidAccountUpgradeModal extends Component {
   }
 
   closePaidAccountUpgradeModal () {
-    this.props.toggleFunction(this.state.pathname);
+    const { location: { pathname } } = window;
+    this.props.toggleFunction(pathname);
   }
 
   convertPriceFromPenniesToDollars (priceInPennies) {
@@ -553,6 +546,7 @@ class PaidAccountUpgradeModal extends Component {
 
   render () {
     renderLog('PaidAccountUpgradeModal');  // Set LOG_RENDER_EVENTS to log all renders
+    const { location: { pathname } } = window;
     const { classes } = this.props;
     const {
       activePaidPlanChosen, activePaidPlanChosenDisplay, amountPaidViaStripe, numberOfMonthsService,
@@ -968,7 +962,7 @@ class PaidAccountUpgradeModal extends Component {
               </Button>
               <Button
                 color="primary"
-                onClick={() => { this.props.toggleFunction(this.state.pathname); }}
+                onClick={() => { this.props.toggleFunction(pathname); }}
                 variant="contained"
               >
                 Back To Settings
@@ -995,7 +989,7 @@ class PaidAccountUpgradeModal extends Component {
             <ButtonsContainer>
               <Button
                 color="primary"
-                onClick={() => { this.props.toggleFunction(this.state.pathname); }}
+                onClick={() => { this.props.toggleFunction(pathname); }}
                 variant="contained"
               >
                 Continue
@@ -1009,7 +1003,7 @@ class PaidAccountUpgradeModal extends Component {
       <Dialog
         classes={{ paper: classes.dialogPaper }}
         open={this.props.show}
-        onClose={() => { this.props.toggleFunction(this.state.pathname); }}
+        onClose={() => { this.props.toggleFunction(pathname); }}
       >
         <ModalTitleArea noBoxShadowMode={(paidAccountProcessStep !== 'choosePlan')}>
           {backToButton}
@@ -1042,7 +1036,6 @@ PaidAccountUpgradeModal.propTypes = {
   classes: PropTypes.object,
   initialPaidAccountProcessStep: PropTypes.string,
   initialPricingPlan: PropTypes.string,
-  pathname: PropTypes.string,
   show: PropTypes.bool,
   // stripe: PropTypes.object,
   toggleFunction: PropTypes.func.isRequired,

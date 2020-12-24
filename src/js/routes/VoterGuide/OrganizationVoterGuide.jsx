@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { Link } from 'react-router';
+import { Link } from 'react-router-dom';
 import { Button } from '@material-ui/core';
 import AnalyticsActions from '../../actions/AnalyticsActions';
 import AppActions from '../../actions/AppActions';
@@ -46,19 +46,24 @@ export default class OrganizationVoterGuide extends Component {
   }
 
   componentDidMount () {
+    const { match: { params: {
+      organization_we_vote_id: organizationWeVoteId,
+      modal_to_show: modalToShow,
+      shared_item_code: sharedItemCode,
+      action_variable: actionVariable,
+    } } } = this.props;
     // We can enter OrganizationVoterGuide with either organizationWeVoteId or voter_guide_we_vote_id
-    // console.log('OrganizationVoterGuide, componentDidMount, this.props.params: ', this.props.params);
+    // console.log('OrganizationVoterGuide, componentDidMount, params: ', params);
     this.voterGuideStoreListener = VoterGuideStore.addListener(this.onVoterGuideStoreChange.bind(this));
     this.organizationStoreListener = OrganizationStore.addListener(this.onOrganizationStoreChange.bind(this));
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
     this.setState({
-      voterGuideFollowersList: VoterGuideStore.getVoterGuidesFollowingOrganization(this.props.params.organization_we_vote_id),
-      voterGuideFollowedList: VoterGuideStore.getVoterGuidesFollowedByOrganization(this.props.params.organization_we_vote_id),
+      voterGuideFollowersList: VoterGuideStore.getVoterGuidesFollowingOrganization(organizationWeVoteId),
+      voterGuideFollowedList: VoterGuideStore.getVoterGuidesFollowedByOrganization(organizationWeVoteId),
     });
-    const { organization_we_vote_id: organizationWeVoteId } = this.props.params;
     const { organizationHasBeenRetrievedOnce, voterGuideAnalyticsHasBeenSavedOnce } = this.state;
     if (organizationWeVoteId) {
-      OrganizationActions.organizationRetrieve(this.props.params.organization_we_vote_id);
+      OrganizationActions.organizationRetrieve(organizationWeVoteId);
       organizationHasBeenRetrievedOnce[organizationWeVoteId] = true;
       AnalyticsActions.saveActionVoterGuideVisit(organizationWeVoteId, VoterStore.electionId());
       voterGuideAnalyticsHasBeenSavedOnce[organizationWeVoteId] = true;
@@ -68,14 +73,13 @@ export default class OrganizationVoterGuide extends Component {
       });
     }
 
-    const modalToOpen = this.props.params.modal_to_show || '';
+    const modalToOpen = modalToShow || '';
     // console.log('componentDidMount modalToOpen:', modalToOpen);
     if (modalToOpen === 'share') {
       this.modalOpenTimer = setTimeout(() => {
         AppActions.setShowShareModal(true);
       }, 1000);
     } else if (modalToOpen === 'sic') { // sic = Shared Item Code
-      const sharedItemCode = this.props.params.shared_item_code || '';
       // console.log('componentDidMount sharedItemCode:', sharedItemCode);
       if (sharedItemCode) {
         this.modalOpenTimer = setTimeout(() => {
@@ -89,15 +93,15 @@ export default class OrganizationVoterGuide extends Component {
     }
 
     // positionListForOpinionMaker is called in js/components/VoterGuide/VoterGuidePositions
-    // console.log('action_variable:' + this.props.params.action_variable);
-    if (this.props.params.action_variable === AUTO_FOLLOW && organizationWeVoteId) {
+    // console.log('action_variable:' + params.action_variable);
+    if (actionVariable === AUTO_FOLLOW && organizationWeVoteId) {
       // If we are here,
       // console.log('Auto following');
       AnalyticsActions.saveActionVoterGuideAutoFollow(organizationWeVoteId, VoterStore.electionId());
       OrganizationActions.organizationFollow(organizationWeVoteId);
 
       // Now redirect to the same page without the '/af' in the route
-      const currentPathName = this.props.location.pathname;
+      const { location: { pathname: currentPathName } } = window;
 
       // AUTO_FOLLOW is 'af'
       const currentPathNameWithoutAutoFollow = currentPathName.replace(`/${AUTO_FOLLOW}`, '');
@@ -121,21 +125,22 @@ export default class OrganizationVoterGuide extends Component {
 
   // eslint-disable-next-line camelcase,react/sort-comp
   UNSAFE_componentWillReceiveProps (nextProps) {
-    // console.log('OrganizationVoterGuide, componentWillReceiveProps, nextProps.params.organization_we_vote_id: ', nextProps.params.organization_we_vote_id);
+    const { match: { params: nextParams } } = nextProps;
+    // console.log('OrganizationVoterGuide, componentWillReceiveProps, nextParams.organization_we_vote_id: ', nextParams.organization_we_vote_id);
     // When a new organization is passed in, update this component to show the new data
-    // if (nextProps.params.action_variable === AUTO_FOLLOW) {
+    // if (nextParams.action_variable === AUTO_FOLLOW) {
     // Wait until we get the path without the '/af' action variable
     // console.log('OrganizationVoterGuide, componentWillReceiveProps - waiting');
     // } else
 
-    // console.log('OrganizationVoterGuide, componentWillReceiveProps, nextProps.params: ', nextProps.params);
-    const { organization_we_vote_id: organizationWeVoteId } = nextProps.params;
+    // console.log('OrganizationVoterGuide, componentWillReceiveProps, nextParams: ', nextProps.params);
+    const { organization_we_vote_id: organizationWeVoteId } = nextParams;
     if (organizationWeVoteId) {
       this.setState({
         organizationWeVoteId,
         autoFollowRedirectHappening: false,
-        voterGuideFollowersList: VoterGuideStore.getVoterGuidesFollowingOrganization(nextProps.params.organization_we_vote_id),
-        voterGuideFollowedList: VoterGuideStore.getVoterGuidesFollowedByOrganization(nextProps.params.organization_we_vote_id),
+        voterGuideFollowersList: VoterGuideStore.getVoterGuidesFollowingOrganization(nextParams.organization_we_vote_id),
+        voterGuideFollowedList: VoterGuideStore.getVoterGuidesFollowedByOrganization(nextParams.organization_we_vote_id),
       });
 
       // We refresh the data for all three tabs here on the top level
@@ -283,6 +288,8 @@ export default class OrganizationVoterGuide extends Component {
     if (!this.state.organization || !this.state.voter || this.state.autoFollowRedirectHappening) {
       return <div>{LoadingWheel}</div>;
     }
+    const { match: { params } } = this.props;
+    const { location } = window;
 
     const isVoterOwner = this.state.organization.organization_we_vote_id !== undefined &&
       this.state.organization.organization_we_vote_id === this.state.voter.linked_organization_we_vote_id;
@@ -447,9 +454,9 @@ export default class OrganizationVoterGuide extends Component {
               <OrganizationVoterGuideTabs
                 activeRoute={activeRoute}
                 activeRouteChanged={this.changeActiveRoute}
-                location={this.props.location}
+                location={location}
                 organizationWeVoteId={organizationWeVoteId}
-                params={this.props.params}
+                params={params}
                 ref={(ref) => { this.organizationVoterGuideTabsReference = ref; }}
               />
             </div>
@@ -461,8 +468,7 @@ export default class OrganizationVoterGuide extends Component {
 }
 OrganizationVoterGuide.propTypes = {
   activeRoute: PropTypes.string,
-  location: PropTypes.object.isRequired,
-  params: PropTypes.object.isRequired,
+  match: PropTypes.object.isRequired,
 };
 
 const Wrapper = styled.div`

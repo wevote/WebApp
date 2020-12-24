@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router';
+import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import ReactSVG from 'react-svg';
+import { ReactSVG } from 'react-svg';
 import { withStyles } from '@material-ui/core/styles';
 import { Card } from '@material-ui/core';
 import { Ballot, Info } from '@material-ui/icons';
@@ -40,13 +40,21 @@ const groupedFilters = [
 const islandFilters = [
   {
     filterName: 'showOrganizationsFilter',
-    icon: <ReactSVG src={cordovaDot(organizationIcon)} svgStyle={{ backgroundColor: '#fff', borderRadius: '3px', fill: '#555', width: '16px', height: '16px' }} alt="Visible to Public" />,
+    icon: <ReactSVG
+      src={cordovaDot(organizationIcon)}
+      beforeInjection={(svg) => svg.setAttribute('style', { backgroundColor: '#fff', borderRadius: '3px', fill: '#555', width: '16px', height: '16px' })}
+      alt="Visible to Public"
+    />,
     filterDisplayName: 'Organizations',
     filterId: 'islandFilterOrganizations',
   },
   {
     filterName: 'showPublicFiguresFilter',
-    icon: <ReactSVG src={cordovaDot(groupIcon)} svgStyle={{ backgroundColor: '#fff', borderRadius: '3px', fill: '#555', width: '16px', height: '16px' }} alt="Visible to Public" />,
+    icon: <ReactSVG
+      src={cordovaDot(groupIcon)}
+      beforeInjection={(svg) => svg.setAttribute('style', { backgroundColor: '#fff', borderRadius: '3px', fill: '#555', width: '16px', height: '16px' })}
+      alt="Visible to Public"
+    />,
     filterDisplayName: 'Public Figures',
     filterId: 'islandFilterOrganizations',
   },
@@ -58,6 +66,7 @@ const islandFilters = [
   },
 ];
 
+// December 2020:  This seems abandoned
 class Opinions2020 extends Component {
   constructor (props) {
     super(props);
@@ -87,6 +96,7 @@ class Opinions2020 extends Component {
   }
 
   componentDidMount () {
+    const { match: { params } } = this.props;
     this.setState({
       componentDidMount: true,
       numberOfBallotItemsToDisplay: 5,
@@ -96,7 +106,7 @@ class Opinions2020 extends Component {
     this.voterGuideStoreListener = VoterGuideStore.addListener(this.onVoterGuideStoreChange.bind(this));
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
 
-    const { searchTextDefault, selectedFilter } = this.props.params;
+    const { searchTextDefault, selectedFilter } = params;
     const selectedFiltersAddDefault = ['sortByAlphabetical'];
     // console.log('componentDidMount searchTextDefault:', searchTextDefault);
     if (selectedFilter) {
@@ -763,7 +773,7 @@ class Opinions2020 extends Component {
         ) : (
           <Card>
             <EmptyBallotMessageContainer>
-              <Ballot classes={{ root: classes.ballotIconRoot }} />
+              <Ballot classes={{ root: classes.ballotIconRoot }} location={window.location} />
               <EmptyBallotText>
                 No results found.
                 {' '}
@@ -793,7 +803,7 @@ class Opinions2020 extends Component {
 }
 Opinions2020.propTypes = {
   classes: PropTypes.object,
-  params: PropTypes.object,
+  match: PropTypes.object,
 };
 
 const styles = (theme) => ({

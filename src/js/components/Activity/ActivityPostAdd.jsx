@@ -47,6 +47,10 @@ class ActivityPostAdd extends Component {
     return { hasError: true };
   }
 
+  handleFocus (e) {
+    e.target.blur();
+  }
+
   onVoterStoreChange () {
     const voter = VoterStore.getVoter();
     const { voter_photo_url_medium: voterPhotoUrlMedium } = voter;
@@ -69,10 +73,6 @@ class ActivityPostAdd extends Component {
     this.setState({
       statementText: e.target.value,
     });
-  }
-
-  handleFocus (e) {
-    e.target.blur();
   }
 
   render () {

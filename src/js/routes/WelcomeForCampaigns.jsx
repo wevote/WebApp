@@ -112,7 +112,8 @@ class WelcomeForCampaigns extends PureComponent {
 
   render () {
     renderLog('WelcomeForCampaigns');  // Set LOG_RENDER_EVENTS to log all renders
-    const { classes, pathname } = this.props;
+    const { classes } = this.props;
+    const { location: { pathname } } = window;
     // console.log('WelcomeForCampaigns, pathname: ', pathname);
     const { voter } = this.state;
     const voterIsSignedIn = voter.is_signed_in;
@@ -285,7 +286,6 @@ class WelcomeForCampaigns extends PureComponent {
 }
 WelcomeForCampaigns.propTypes = {
   classes: PropTypes.object,
-  pathname: PropTypes.string,
 };
 
 const styles = () => ({

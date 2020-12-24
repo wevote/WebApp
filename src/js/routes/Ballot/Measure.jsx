@@ -47,10 +47,11 @@ class Measure extends Component {
 
   componentDidMount () {
     // console.log('Measure componentDidMount');
+    const { match: { params } } = this.props;
     this.appStoreListener = AppStore.addListener(this.onAppStoreChange.bind(this));
     this.measureStoreListener = MeasureStore.addListener(this.onMeasureStoreChange.bind(this));
     this.voterGuideStoreListener = VoterGuideStore.addListener(this.onVoterGuideStoreChange.bind(this));
-    const { measure_we_vote_id: measureWeVoteId } = this.props.params;
+    const { measure_we_vote_id: measureWeVoteId } = params;
     MeasureActions.measureRetrieve(measureWeVoteId);
     if (measureWeVoteId &&
       !this.localPositionListHasBeenRetrievedOnce(measureWeVoteId) &&
@@ -96,13 +97,13 @@ class Measure extends Component {
       allCachedPositionsForThisMeasure,
       allCachedPositionsForThisMeasureLength,
     });
-    const modalToOpen = this.props.params.modal_to_show || '';
+    const modalToOpen = params.modal_to_show || '';
     if (modalToOpen === 'share') {
       this.modalOpenTimer = setTimeout(() => {
         AppActions.setShowShareModal(true);
       }, 1000);
     } else if (modalToOpen === 'sic') { // sic = Shared Item Code
-      const sharedItemCode = this.props.params.shared_item_code || '';
+      const sharedItemCode = params.shared_item_code || '';
       if (sharedItemCode) {
         this.modalOpenTimer = setTimeout(() => {
           AppActions.setShowSharedItemModal(sharedItemCode);
@@ -115,13 +116,14 @@ class Measure extends Component {
 
   // eslint-disable-next-line camelcase,react/sort-comp
   UNSAFE_componentWillReceiveProps (nextProps) {
-    const modalToOpen = nextProps.params.modal_to_show || '';
+    const { match: { params: nextParams } } = nextProps;
+    const modalToOpen = nextParams.modal_to_show || '';
     if (modalToOpen === 'share') {
       this.modalOpenTimer = setTimeout(() => {
         AppActions.setShowShareModal(true);
       }, 1000);
     } else if (modalToOpen === 'sic') { // sic = Shared Item Code
-      const sharedItemCode = nextProps.params.shared_item_code || '';
+      const sharedItemCode = nextParams.shared_item_code || '';
       if (sharedItemCode) {
         this.modalOpenTimer = setTimeout(() => {
           AppActions.setShowSharedItemModal(sharedItemCode);
@@ -129,9 +131,9 @@ class Measure extends Component {
       }
     }
     // When a new measure is passed in, update this component to show the new data
-    // console.log('componentWillReceiveProps nextProps.params.measure_we_vote_id:', nextProps.params.measure_we_vote_id, ', this.state.measureWeVoteId:', this.state.measureWeVoteId);
-    if (nextProps.params.measure_we_vote_id !== this.state.measureWeVoteId) {
-      const { measure_we_vote_id: measureWeVoteId } = nextProps.params;
+    // console.log('componentWillReceiveProps nextParams.measure_we_vote_id:', nextParams.measure_we_vote_id, ', this.state.measureWeVoteId:', this.state.measureWeVoteId);
+    if (nextParams.measure_we_vote_id !== this.state.measureWeVoteId) {
+      const { measure_we_vote_id: measureWeVoteId } = nextParams;
       MeasureActions.measureRetrieve(measureWeVoteId);
       if (measureWeVoteId && !this.localPositionListHasBeenRetrievedOnce(measureWeVoteId) && !BallotStore.positionListHasBeenRetrievedOnce(measureWeVoteId)) {
         MeasureActions.positionListForBallotItemPublic(measureWeVoteId);
@@ -153,7 +155,7 @@ class Measure extends Component {
           positionListFromFriendsHasBeenRetrievedOnce,
         });
       }
-      // VoterGuideActions.voterGuidesToFollowRetrieveByBallotItem(nextProps.params.measure_we_vote_id, 'MEASURE');
+      // VoterGuideActions.voterGuidesToFollowRetrieveByBallotItem(nextParams.measure_we_vote_id, 'MEASURE');
       const measure = MeasureStore.getMeasure(measureWeVoteId);
       let measureBallotItemDisplayName = '';
       if (measure && measure.ballot_item_display_name) {
@@ -256,7 +258,7 @@ class Measure extends Component {
 
   render () {
     renderLog('Measure');  // Set LOG_RENDER_EVENTS to log all renders
-    const { classes } = this.props;
+    const { classes, match: { params } } = this.props;
     const { allCachedPositionsForThisMeasure, measure, scrolledDown } = this.state;
 
     if (!measure || !measure.ballot_item_display_name) {
@@ -310,7 +312,7 @@ class Measure extends Component {
               <PositionList
                 incomingPositionList={allCachedPositionsForThisMeasure}
                 ballotItemDisplayName={measure.ballot_item_display_name}
-                params={this.props.params}
+                params={params}
                 positionListExistsTitle={(
                   <PositionListIntroductionText>
                     <Info classes={{ root: classes.informationIcon }} />
@@ -354,7 +356,7 @@ class Measure extends Component {
 }
 Measure.propTypes = {
   classes: PropTypes.object,
-  params: PropTypes.object.isRequired,
+  match: PropTypes.object.isRequired,
 };
 
 const styles = () => ({

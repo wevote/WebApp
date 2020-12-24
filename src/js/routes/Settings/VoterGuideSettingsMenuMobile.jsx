@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import React, { Component } from 'react';
 import { renderLog } from '../../utils/logging';
 import OrganizationActions from '../../actions/OrganizationActions';
 import OrganizationStore from '../../stores/OrganizationStore';
@@ -22,18 +22,19 @@ export default class VoterGuideSettingsMenuMobile extends Component {
   }
 
   componentDidMount () {
-    if (this.props.params.edit_mode) {
-      this.setState({ editMode: this.props.params.edit_mode });
+    const { match: { params: { edit_mode: editMode, voter_guide_we_vote_id: VoterGuideWeVoteId } } } = this.props;
+    if (editMode) {
+      this.setState({ editMode });
     } else {
       this.setState({ editMode: '' });
     }
     // Get Voter Guide information
     let voterGuideFound = false;
-    if (this.props.params.voter_guide_we_vote_id) {
+    if (VoterGuideWeVoteId) {
       this.setState({
-        voterGuideWeVoteId: this.props.params.voter_guide_we_vote_id,
+        voterGuideWeVoteId: VoterGuideWeVoteId,
       });
-      const voterGuide = VoterGuideStore.getVoterGuideByVoterGuideId(this.props.params.voter_guide_we_vote_id);
+      const voterGuide = VoterGuideStore.getVoterGuideByVoterGuideId(VoterGuideWeVoteId);
       if (voterGuide && voterGuide.we_vote_id) {
         this.setState({
           voterGuide,
@@ -71,13 +72,15 @@ export default class VoterGuideSettingsMenuMobile extends Component {
 
   // eslint-disable-next-line camelcase,react/sort-comp
   UNSAFE_componentWillReceiveProps (nextProps) {
-    if (nextProps.params.edit_mode) {
-      this.setState({ editMode: nextProps.params.edit_mode });
+    const { match: { params } } = this.props;
+    const { match: { nextParams } } = nextProps;
+    if (nextParams.edit_mode) {
+      this.setState({ editMode: nextParams.edit_mode });
     }
-    if (nextProps.params.voter_guide_we_vote_id) {
+    if (nextParams.voter_guide_we_vote_id) {
       this.setState({
-        voterGuide: VoterGuideStore.getVoterGuideByVoterGuideId(this.props.params.voter_guide_we_vote_id),
-        voterGuideWeVoteId: nextProps.params.voter_guide_we_vote_id,
+        voterGuide: VoterGuideStore.getVoterGuideByVoterGuideId(params.voter_guide_we_vote_id),
+        voterGuideWeVoteId: nextParams.voter_guide_we_vote_id,
       });
     }
   }
@@ -159,5 +162,5 @@ export default class VoterGuideSettingsMenuMobile extends Component {
   }
 }
 VoterGuideSettingsMenuMobile.propTypes = {
-  params: PropTypes.object,
+  match: PropTypes.object,
 };

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { withStyles, withTheme } from '@material-ui/core/styles';
 import styled from 'styled-components';
-import ReactSVG from 'react-svg';
+import { ReactSVG } from 'react-svg';
 import { Chip } from '@material-ui/core';
 import CandidateStore from '../../stores/CandidateStore';
 import { cordovaDot } from '../../utils/cordovaUtils';
@@ -94,8 +94,9 @@ class ValueIconAndText extends Component {
       <PopoverWrapper>
         <PopoverHeader>
           <PopoverTitleIcon>
-            <ReactSVG src={cordovaDot(`/img/global/svg-icons/issues/${oneIssue.issue_icon_local_path}.svg`)}
-              svgStyle={{ fill: '#fff', padding: '1px 1px 1px 0px' }}
+            <ReactSVG
+              src={cordovaDot(`/img/global/svg-icons/issues/${oneIssue.issue_icon_local_path}.svg`)}
+              beforeInjection={(svg) => svg.setAttribute('style', { fill: '#fff', padding: '1px 1px 1px 0px' })}
             />
           </PopoverTitleIcon>
           <PopoverTitleText>
@@ -183,7 +184,7 @@ class ValueIconAndText extends Component {
             avatar={oneIssue.issue_icon_local_path ? (
               <ReactSVG
                 src={cordovaDot(`/img/global/svg-icons/issues/${oneIssue.issue_icon_local_path}.svg`)}
-                svgStyle={{ fill: svgFill, padding: '1px 1px 1px 0px' }}
+                beforeInjection={(svg) => svg.setAttribute('style', { fill: svgFill, padding: '1px 1px 1px 0px' })}
               />
             ) : <span />}
             classes={{ root: classes.chipStyle }}

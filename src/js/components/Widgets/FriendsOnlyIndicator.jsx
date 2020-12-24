@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import ReactSVG from 'react-svg';
+import { ReactSVG } from 'react-svg';
 import Tooltip from 'react-bootstrap/Tooltip';
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 import { cordovaDot } from '../../utils/cordovaUtils';
@@ -25,10 +25,22 @@ export default class FriendsOnlyIndicator extends Component {
     let visibilityIcon = '';
     if (isFriendsOnly) {
       labelText = 'This is only visible to We Vote friends.';
-      visibilityIcon = <ReactSVG src={cordovaDot(groupIcon)} svgStyle={{ backgroundColor: '#fff', borderRadius: '3px', fill: '#555', width: '16px', height: '16px', display: 'flex', verticalAlign: 'unset'  }} alt="Visible to Friends Only" />;
+      visibilityIcon = (
+        <ReactSVG
+          src={cordovaDot(groupIcon)}
+          beforeInjection={(svg) => svg.setAttribute('style', { backgroundColor: '#fff', borderRadius: '3px', fill: '#555', width: '16px', height: '16px', display: 'flex', verticalAlign: 'unset' })}
+          alt="Visible to Friends Only"
+        />
+      );
     } else {
       labelText = 'This is visible to the public.';
-      visibilityIcon = <ReactSVG src={cordovaDot(publicIcon)} svgStyle={{ backgroundColor: '#fff', borderRadius: '3px', fill: '#555', width: '16px', height: '16px', display: 'flex', verticalAlign: 'unset' }} alt="Visible to Public" />;
+      visibilityIcon = (
+        <ReactSVG src={cordovaDot(publicIcon)}
+                  beforeInjection={(svg) => svg.setAttribute('style',
+                    { backgroundColor: '#fff', borderRadius: '3px', fill: '#555', width: '16px', height: '16px', display: 'flex', verticalAlign: 'unset' })}
+                  alt="Visible to Public"
+        />
+      );
     }
 
     const tooltip = <Tooltip id="tooltip">{labelText}</Tooltip>;

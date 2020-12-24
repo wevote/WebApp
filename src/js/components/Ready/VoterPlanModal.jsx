@@ -76,18 +76,11 @@ class VoterPlanModal extends Component {
     this.setVoterPlanSavedStates(savedVoterPlan, true);
     if (this.props.show) {
       hideZenDeskHelpVisibility();
-    }
-    AnalyticsActions.saveActionModalVoterPlan(VoterStore.electionId());
-  }
-
-  // eslint-disable-next-line camelcase,react/sort-comp
-  UNSAFE_componentWillReceiveProps (nextProps) {
-    const { pathname } = this.props;
-    if (nextProps.show) {
-      hideZenDeskHelpVisibility();
     } else {
+      const { location: { pathname } } = window;
       setZenDeskHelpVisibility(pathname);
     }
+    AnalyticsActions.saveActionModalVoterPlan(VoterStore.electionId());
   }
 
   componentDidUpdate (prevProps, prevState) {
@@ -140,10 +133,36 @@ class VoterPlanModal extends Component {
   }
 
   componentWillUnmount () {
-    const { pathname } = this.props;
+    const { location: { pathname } } = window;
     this.ballotStoreListener.remove();
     this.readyStoreListener.remove();
     setZenDeskHelpVisibility(pathname);
+  }
+
+
+  handleVotingLocationAddressChange = (event) => {
+    this.setState({ votingLocationAddress: event.target.value });
+  };
+
+  handleLocationToDeliverBallotChange (event) {
+    this.setState({ locationToDeliverBallot: event.target.value });
+  }
+
+  handleModeOfTransportChange (event) {
+    this.setState({ modeOfTransport: event.target.value });
+  }
+
+  handleApproximateTimeChange (event) {
+    this.setState({ approximateTime: event.target.value });
+  }
+
+  handleVotingRoughDateChange (event) {
+    this.setState({ votingRoughDate: event.target.value });
+  }
+
+  handleVotingRoughDateClick (event) {
+    console.log(event.target.value);
+    this.setState({ votingRoughDate: event.target.value });
   }
 
   onBallotStoreChange () {
@@ -190,7 +209,7 @@ class VoterPlanModal extends Component {
 
   onSaveVoterPlanButton = (event) => {
     // console.log('onSaveVoterPlanButton');
-    const { pathname } = this.props;
+    const { location: { pathname } } = window;
     const { showToPublic, stateCode, voterPlanDataSerialized, voterPlanText } = this.state;
     const googleCivicElectionId = VoterStore.electionId();
     ReadyActions.voterPlanSave(googleCivicElectionId, showToPublic, stateCode, voterPlanDataSerialized, voterPlanText);
@@ -228,31 +247,6 @@ class VoterPlanModal extends Component {
     }
   }
 
-  handleVotingLocationAddressChange = (event) => {
-    this.setState({ votingLocationAddress: event.target.value });
-  };
-
-  handleLocationToDeliverBallotChange (event) {
-    this.setState({ locationToDeliverBallot: event.target.value });
-  }
-
-  handleModeOfTransportChange (event) {
-    this.setState({ modeOfTransport: event.target.value });
-  }
-
-  handleApproximateTimeChange (event) {
-    this.setState({ approximateTime: event.target.value });
-  }
-
-  handleVotingRoughDateChange (event) {
-    this.setState({ votingRoughDate: event.target.value });
-  }
-
-  handleVotingRoughDateClick (event) {
-    console.log(event.target.value);
-    this.setState({ votingRoughDate: event.target.value });
-  }
-
   generateVoterPlanText () {
     const {
       approximateTime, electionDateMonthYear, locationToDeliverBallot, modeOfTransport,
@@ -275,13 +269,14 @@ class VoterPlanModal extends Component {
   }
 
   closeVoterPlanModal () {
-    const { pathname } = this.props;
+    const { location: { pathname } } = window;
     this.props.toggleFunction(pathname);
   }
 
   render () {
     renderLog('VoterPlanModal');  // Set LOG_RENDER_EVENTS to log all renders
-    const { classes, pathname } = this.props;
+    const { classes } = this.props;
+    const { location: { pathname } } = window;
     const {
       approximateTime, electionDateMonthYear, locationToDeliverBallot, modeOfTransport,
       savedVoterPlanFound, voterPlanChangedLocally, votingLocationAddress, votingRoughDate,
@@ -558,7 +553,6 @@ class VoterPlanModal extends Component {
 }
 VoterPlanModal.propTypes = {
   classes: PropTypes.object,
-  pathname: PropTypes.string,
   show: PropTypes.bool,
   toggleFunction: PropTypes.func.isRequired,
 };
@@ -702,16 +696,16 @@ const ModalTitleArea = styled.div`
   width: 100%;
   padding: ${(props) => (props.firstSlide ? '24px 24px 12px 24px' : '10px 14px')};
   z-index: 999;
-  box-shadow: 0px 0px 25px 0px #ddd;
+  box-shadow: 0 0 25px 0 #ddd;
   @media (min-width: 769px) {
     // border-bottom: 2px solid #f7f7f7;
-    box-shadow: 0px 0px 25px 0px #ddd;
+    box-shadow: 0 0 25px 0 #ddd;
   }
   display: flex;
 `;
 
 const ModalFooter = styled.div`
-  box-shadow: 0px 0px 25px 0px #ddd;
+  box-shadow: 0 0 25px 0 #ddd;
   margin-bottom: 12px !important;
   padding: 12px 12px 0 12px;
   position: sticky;

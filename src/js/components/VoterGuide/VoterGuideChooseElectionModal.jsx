@@ -26,8 +26,10 @@ class VoterGuideChooseElectionModal extends Component {
 
   shouldComponentUpdate (nextProps) {
     // This lifecycle method tells the component to NOT render if componentWillReceiveProps didn't see any changes
-    if (this.props.pathname !== nextProps.pathname) {
-      // console.log('this.props.pathname:', this.props.pathname, ', nextProps.pathname:', nextProps.pathname);
+    const { pathname } = window;
+    const { pathname: nextPathname } = nextProps;
+    if (pathname !== nextPathname) {
+      // console.log('pathname:', pathname, ', nextProps.pathname:', nextPathname);
       return true;
     }
     if (this.props.organization_we_vote_id !== nextProps.organization_we_vote_id) {
@@ -76,9 +78,9 @@ class VoterGuideChooseElectionModal extends Component {
 VoterGuideChooseElectionModal.propTypes = {
   classes: PropTypes.object,
   organization_we_vote_id: PropTypes.string, // If looking at voter guide, we pass in the parent organization_we_vote_id
-  pathname: PropTypes.string,
   show: PropTypes.bool,
   toggleFunction: PropTypes.func.isRequired,
+  pathname: PropTypes.string,
 };
 
 const styles = (theme) => ({

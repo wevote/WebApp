@@ -48,7 +48,7 @@ class BallotShowAllItemsFooter extends Component {
         <div className={classes.card}>
           <div className={classes.cardBody}>
             <Typography id="ballotSummaryFooter-showMoreBallotItems" variant="h2" classes={{ root: classes.typography }}>
-              <Ballot className={classes.icon} />
+              <Ballot className={classes.icon} location={window.location} />
               Show All Ballot Items
             </Typography>
             <Row className="row">

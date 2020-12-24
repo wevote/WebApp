@@ -1,16 +1,14 @@
 import React, { Suspense } from 'react';
 import { render } from 'react-dom';
-import {
-  browserHistory, hashHistory, Router, applyRouterMiddleware,
-} from 'react-router';
-import { useScroll } from 'react-router-scroll';
+// import { useScroll } from 'react-router-scroll';
 import { MuiThemeProvider } from '@material-ui/core/styles';
 import { ThemeProvider } from 'styled-components';
-import { isCordova, isWebApp } from './utils/cordovaUtils';
+import { isCordova } from './utils/cordovaUtils';
 import routes from './Root';
 import muiTheme from './mui-theme';
 import styledTheme from './styled-theme';
 import { renderLog } from './utils/logging';
+import WeVoteRouter from './WeVoteRouter';
 
 // May 2020, this was moved into a separate file, so that the imports can be delayed
 // until after the cordova 'deviceready' event (if we are in Cordova).
@@ -20,17 +18,17 @@ export default function startReactApp () {
   console.log('startReactApp first line in startReactApp');
   console.log('startReactApp isCordova(): ', isCordova());
 
+  // const { history } = window;  // BrowserRouter knows about ReactTraining/history, So this should not be necessary, Dec 2020
+
   const element = (
     // eslint-disable-next-line react/jsx-filename-extension
     <Suspense fallback={<div>&nbsp;</div>}>
       <MuiThemeProvider theme={muiTheme}>
         <ThemeProvider theme={styledTheme}>
-          <Router
-            history={isWebApp() ? browserHistory : hashHistory}
-            render={applyRouterMiddleware(useScroll(() => true))}
-          >
+          {/* <WeVoteRouter history={history}> */}
+          <WeVoteRouter>
             {routes()}
-          </Router>
+          </WeVoteRouter>
         </ThemeProvider>
       </MuiThemeProvider>
     </Suspense>

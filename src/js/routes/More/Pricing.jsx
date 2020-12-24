@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import Helmet from 'react-helmet';
-import { Link } from 'react-router';
+import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { withStyles } from '@material-ui/core/styles';
@@ -361,13 +361,14 @@ class Pricing extends Component {
   }
 
   componentDidMount () {
+    const { match: { params } } = this.props;
     this.onVoterStoreChange();
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
     let pricingChoice = '';
     if (this.props.initialPricingChoice === 'campaigns' || this.props.initialPricingChoice === 'organizations') {
       pricingChoice = this.props.initialPricingChoice;
-    } else if (this.props.params && this.props.params.pricing_choice) {
-      pricingChoice = this.props.params.pricing_choice;
+    } else if (params && params.pricing_choice) {
+      pricingChoice = params.pricing_choice;
     }
     const currentPricingChoice = (pricingChoice === 'campaigns') ? 'forCampaigns' : 'forOrganizations';
     // console.log('componentDidMount, pricingChoice: ', pricingChoice, 'currentPricingChoice: ', currentPricingChoice);
@@ -385,8 +386,9 @@ class Pricing extends Component {
   UNSAFE_componentWillReceiveProps (nextProps) {
     this.onVoterStoreChange();
     let pricingChoice = '';
-    if (nextProps.params && nextProps.params.pricing_choice) {
-      pricingChoice = nextProps.params.pricing_choice;
+    const { match: { params: nextParams } } = nextProps;
+    if (nextParams && nextParams.pricing_choice) {
+      pricingChoice = nextParams.pricing_choice;
     }
     const currentPricingChoice = (pricingChoice === 'campaigns') ? 'forCampaigns' : 'forOrganizations';
     // console.log('componentWillReceiveProps, pricingChoice: ', pricingChoice, 'currentPricingChoice: ', currentPricingChoice);
@@ -632,7 +634,7 @@ Pricing.propTypes = {
   initialPricingChoice: PropTypes.string,
   initialPricingPlan: PropTypes.string,
   modalDisplayMode: PropTypes.bool,
-  params: PropTypes.object,
+  match: PropTypes.object,
   pricingPlanChosenFunction: PropTypes.func,
 };
 

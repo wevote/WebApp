@@ -15,7 +15,6 @@ class HowItWorksModal extends Component {
   constructor (props) {
     super(props);
     this.state = {
-      pathname: '',
     };
 
     this.closeHowItWorksModal = this.closeHowItWorksModal.bind(this);
@@ -26,26 +25,20 @@ class HowItWorksModal extends Component {
     FriendActions.currentFriends();
 
     this.setState({
-      pathname: this.props.pathname,
       currentFriendsList: FriendStore.currentFriends(),
     });
     if (this.props.show) {
       hideZenDeskHelpVisibility();
-    }
-  }
-
-  // eslint-disable-next-line camelcase,react/sort-comp
-  UNSAFE_componentWillReceiveProps (nextProps) {
-    if (nextProps.show) {
-      hideZenDeskHelpVisibility();
     } else {
-      setZenDeskHelpVisibility(this.props.pathname);
+      const { location: { pathname } } = window;
+      setZenDeskHelpVisibility(pathname);
     }
   }
 
   componentWillUnmount () {
+    const { location: { pathname } } = window;
     this.friendStoreListener.remove();
-    setZenDeskHelpVisibility(this.props.pathname);
+    setZenDeskHelpVisibility(pathname);
   }
 
   onFriendStoreChange () {
@@ -56,18 +49,20 @@ class HowItWorksModal extends Component {
   }
 
   closeHowItWorksModal () {
-    this.props.toggleFunction(this.state.pathname);
+    const { location: { pathname } } = window;
+    this.props.toggleFunction(pathname);
   }
 
   render () {
     renderLog('HowItWorksModal');  // Set LOG_RENDER_EVENTS to log all renders
     const { classes } = this.props;
+    const { location: { pathname } } = window;
 
     return (
       <Dialog
         classes={{ paper: classes.dialogPaper }}
         open={this.props.show}
-        onClose={() => { this.props.toggleFunction(this.state.pathname); }}
+        onClose={() => { this.props.toggleFunction(pathname); }}
       >
         <ModalTitleArea>
           <div>
@@ -95,7 +90,6 @@ class HowItWorksModal extends Component {
 }
 HowItWorksModal.propTypes = {
   classes: PropTypes.object,
-  pathname: PropTypes.string,
   show: PropTypes.bool,
   toggleFunction: PropTypes.func.isRequired,
 };

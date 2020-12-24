@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router';
+import { Link } from 'react-router-dom';
 import { isProperlyFormattedVoterGuideWeVoteId } from '../../utils/textFormat';
 import { isWebApp } from '../../utils/cordovaUtils';
 import { renderLog } from '../../utils/logging';
@@ -40,8 +40,9 @@ export default class SettingsDashboard extends Component {
   }
 
   componentDidMount () {
-    if (this.props.params.edit_mode) {
-      this.setState({ editMode: this.props.params.edit_mode });
+    const { match: { params } } = this.props;
+    if (params.edit_mode) {
+      this.setState({ editMode: params.edit_mode });
     } else {
       this.setState({ editMode: 'address' });
     }
@@ -74,11 +75,11 @@ export default class SettingsDashboard extends Component {
     }
     // Get Voter Guide information
     // let voterGuideFound = false;
-    if (this.props.params.voter_guide_we_vote_id && isProperlyFormattedVoterGuideWeVoteId(this.props.params.voter_guide_we_vote_id)) {
+    if (params.voter_guide_we_vote_id && isProperlyFormattedVoterGuideWeVoteId(params.voter_guide_we_vote_id)) {
       this.setState({
-        voterGuideWeVoteId: this.props.params.voter_guide_we_vote_id,
+        voterGuideWeVoteId: params.voter_guide_we_vote_id,
       });
-      const voterGuide = VoterGuideStore.getVoterGuideByVoterGuideId(this.props.params.voter_guide_we_vote_id);
+      const voterGuide = VoterGuideStore.getVoterGuideByVoterGuideId(params.voter_guide_we_vote_id);
       if (voterGuide && voterGuide.we_vote_id) {
         if (voterGuide.google_civic_election_id && voterGuide.google_civic_election_id !== BallotStore.currentBallotGoogleCivicElectionId) {
           // console.log("VoterGuideSettingsDashboard componentDidMount retrieving ballot for: ", voterGuide.google_civic_election_id);
@@ -91,6 +92,7 @@ export default class SettingsDashboard extends Component {
   // eslint-disable-next-line camelcase,react/sort-comp
   UNSAFE_componentWillReceiveProps (nextProps) {
     const voter = VoterStore.getVoter();
+    const { match: { params: nextParams } } = nextProps;
     this.setState({
       voter,
     });
@@ -112,14 +114,14 @@ export default class SettingsDashboard extends Component {
       }
     }
 
-    if (nextProps.params.edit_mode) {
-      this.setState({ editMode: nextProps.params.edit_mode });
+    if (nextParams.edit_mode) {
+      this.setState({ editMode: nextParams.edit_mode });
     }
-    if (nextProps.params.voter_guide_we_vote_id && isProperlyFormattedVoterGuideWeVoteId(nextProps.params.voter_guide_we_vote_id)) {
+    if (nextParams.voter_guide_we_vote_id && isProperlyFormattedVoterGuideWeVoteId(nextParams.voter_guide_we_vote_id)) {
       this.setState({
-        voterGuideWeVoteId: nextProps.params.voter_guide_we_vote_id,
+        voterGuideWeVoteId: nextParams.voter_guide_we_vote_id,
       });
-      const voterGuide = VoterGuideStore.getVoterGuideByVoterGuideId(nextProps.params.voter_guide_we_vote_id);
+      const voterGuide = VoterGuideStore.getVoterGuideByVoterGuideId(nextParams.voter_guide_we_vote_id);
       if (voterGuide && voterGuide.we_vote_id) {
         if (voterGuide.google_civic_election_id && voterGuide.google_civic_election_id !== BallotStore.currentBallotGoogleCivicElectionId) {
           // console.log("VoterGuideSettingsDashboard componentDidMount retrieving ballot for: ", voterGuide.google_civic_election_id);
@@ -301,5 +303,5 @@ export default class SettingsDashboard extends Component {
   }
 }
 SettingsDashboard.propTypes = {
-  params: PropTypes.object,
+  match: PropTypes.object,
 };

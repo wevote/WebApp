@@ -20,9 +20,10 @@ export default class SharedItemLanding extends Component {
   }
 
   componentDidMount () {
-    // console.log('SharedItemLanding componentDidMount, this.props.params.shared_item_code: ', this.props.params.shared_item_code);
-    const customLinkString = this.props.params.custom_link_string;
-    const sharedItemCode = this.props.params.shared_item_code;
+    const { match: { params } } = this.props;
+    // console.log('SharedItemLanding componentDidMount, params.shared_item_code: ', params.shared_item_code);
+    const customLinkString = params.custom_link_string;
+    const sharedItemCode = params.shared_item_code;
     // console.log('componentDidMount sharedItemCode:', sharedItemCode);
     this.setState({
       componentDidMount: true,
@@ -97,5 +98,5 @@ export default class SharedItemLanding extends Component {
   }
 }
 SharedItemLanding.propTypes = {
-  params: PropTypes.object,
+  match: PropTypes.object,
 };

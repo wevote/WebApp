@@ -26,6 +26,7 @@ import VoterActions from './actions/VoterActions';
 import VoterStore from './stores/VoterStore';
 import webAppConfig from './config';
 
+
 class Application extends Component {
   constructor (props) {
     super(props);
@@ -36,6 +37,10 @@ class Application extends Component {
   }
 
   componentDidMount () {
+    const voterDeviceId = VoterStore.voterDeviceId();
+    VoterActions.voterRetrieve();
+    // console.log('===== VoterRetrieve from Application, voterDeviceId:', voterDeviceId);
+
     let { hostname } = window.location;
     hostname = hostname || '';
     AppActions.siteConfigurationRetrieve(hostname);
@@ -44,9 +49,6 @@ class Application extends Component {
     if (isCordova()) {
       initializationForCordova();
     }
-
-    const voterDeviceId = VoterStore.voterDeviceId();
-    VoterActions.voterRetrieve();
 
     // console.log('Application, componentDidMount, voterDeviceId:', voterDeviceId);
     if (voterDeviceId) {
@@ -69,20 +71,9 @@ class Application extends Component {
 
   // eslint-disable-next-line no-unused-vars
   componentDidUpdate (prevProps, prevState, nextContent) {
-    // console.log('Application componentDidUpdate');
-    const { location: { pathname } } = this.props;
+    console.log('Application componentDidUpdate');
+    const { location: { pathname } } = window;
     const { lastZenDeskVisibilityPathName } = this.state;
-    // Dale 2020-07: This is throwing a 'Cannot dispatch in the middle of a dispatch' violation
-    // const { voteMode, voterGuideMode } = getApplicationViewBooleans(pathname);
-    // console.log('AppStore.showEditAddressButton()', AppStore.showEditAddressButton());
-    // if (!voterGuideMode && AppStore.showEditAddressButton()) {
-    //   AppActions.setShowEditAddressButton(false);
-    // }
-    // if (!voteMode &&
-    //   ((voterGuideMode && !AppStore.showEditAddressButton()) ||
-    //     stringContains('/ballot', pathname.toLowerCase().slice(0, 7)))) {
-    //   AppActions.setShowEditAddressButton(true);
-    // }
     if (stringContains('/ballot', pathname.toLowerCase().slice(0, 7)) ||
         stringContains('/ready', pathname.toLowerCase().slice(0, 7))) {
       if (!AppStore.showEditAddressButton()) {
@@ -212,24 +203,11 @@ class Application extends Component {
   };
 
   incomingVariableManagement () {
-    // console.log('Application, incomingVariableManagement, this.props.location.query: ', this.props.location.query);
-    if (this.props.location.query) {
+    console.log('Application, incomingVariableManagement, this.props.location.query: ', this.props.location.query);
+    const { location: { pathname, query } } = window;
+    if (query) {
       // Cookie needs to expire in One day i.e. 24*60*60 = 86400
       let atLeastOneQueryVariableFound = false;
-      const oneDayExpires = 86400;
-      const weVoteBrandingOffFromUrl = this.props.location.query ? this.props.location.query.we_vote_branding_off : 0;
-      const weVoteBrandingOffFromCookie = cookies.getItem('we_vote_branding_off') || 0;
-      if (weVoteBrandingOffFromUrl && !weVoteBrandingOffFromCookie) {
-        cookies.setItem('we_vote_branding_off', weVoteBrandingOffFromUrl, oneDayExpires, '/');
-      }
-
-      if (weVoteBrandingOffFromUrl || weVoteBrandingOffFromCookie) {
-        cookies.setItem('show_full_navigation', '1', Infinity, '/');
-      }
-
-      // Currently not used, but it seems like it should be
-      // this.setState({ we_vote_branding_off: weVoteBrandingOffFromUrl || weVoteBrandingOffFromCookie });
-
       const { hide_intro_modal: hideIntroModal } = this.props.location.query;
       const hideIntroModalFromUrl = this.props.location.query ? hideIntroModal : 0;
       const hideIntroModalFromUrlTrue = hideIntroModalFromUrl === 1 || hideIntroModalFromUrl === '1' || hideIntroModalFromUrl === 'true';
@@ -241,6 +219,7 @@ class Application extends Component {
       const hideIntroModalFromCookie = cookies.getItem('hide_intro_modal');
       const hideIntroModalFromCookieTrue = hideIntroModalFromCookie === 1 || hideIntroModalFromCookie === '1' || hideIntroModalFromCookie === 'true';
       if (hideIntroModalFromUrlTrue && !hideIntroModalFromCookieTrue) {
+        const oneDayExpires = 86400;
         cookies.setItem('hide_intro_modal', hideIntroModalFromUrl, oneDayExpires, '/');
       }
 
@@ -281,10 +260,10 @@ class Application extends Component {
           }
         }
 
-        if (atLeastOneQueryVariableFound && this.props.location.pathname) {
+        if (atLeastOneQueryVariableFound && pathname) {
           // console.log('atLeastOneQueryVariableFound push: ', atLeastOneQueryVariableFound);
-          // console.log('this.props.location.pathname: ', this.props.location.pathname);
-          historyPush(this.props.location.pathname);
+          // console.log('pathname: ', pathname);
+          historyPush(pathname);
         }
       }
     }
@@ -292,10 +271,11 @@ class Application extends Component {
 
   render () {
     renderLog('Application');  // Set LOG_RENDER_EVENTS to log all renders
-    const { location: { pathname } } = this.props;
+    const { location: { pathname } } = window;
+    const { params } = this.props;
     const { StripeCheckout } = window;
     const waitForStripe = (String(pathname) === '/more/donate' && StripeCheckout === undefined);
-    // console.log('Application render, pathname:', pathname);
+    console.log('Application render, pathname:', pathname);
 
     if (this.state.voter === undefined || this.props.location === undefined || waitForStripe) {
       if (waitForStripe) {
@@ -343,7 +323,7 @@ class Application extends Component {
       voterGuideMode,
     } = getApplicationViewBooleans(pathname);
     // console.log('showShareButtonFooter:', showShareButtonFooter);
-    // dumpObjProps('Application params', this.props.params);
+    // dumpObjProps('Application params', params);
     // const nextReleaseFeaturesEnabled = webAppConfig.ENABLE_NEXT_RELEASE_FEATURES === undefined ? false : webAppConfig.ENABLE_NEXT_RELEASE_FEATURES;
 
     if (extensionPageMode || sharedItemLandingPage || twitterSignInMode) {
@@ -374,12 +354,7 @@ class Application extends Component {
       return (
         <div className={this.getAppBaseClass()} id="app-base-id">
           <ToastContainer closeButton={false} className={getToastClass()} />
-          <Header params={this.props.params}
-                  location={this.props.location}
-                  pathname={pathname}
-                  voter={this.state.voter}
-                  weVoteBrandingOff={this.state.weVoteBrandingOff}
-          />
+          <Header params={params} pathname={pathname} />
           <SnackNotifier />
           <Wrapper id="voterGuideModes" padTop={cordovaVoterGuideTopPadding()}>
             <div className="page-content-container">
@@ -390,11 +365,11 @@ class Application extends Component {
           </Wrapper>
           {showFooterBar && (
             <div className={isWebApp() ? 'footroom-wrapper' : 'footroom-wrapper-cordova'}>
-              <FooterBar location={this.props.location} pathname={pathname} voter={this.state.voter} />
+              <FooterBar />
             </div>
           )}
           {showShareButtonFooter && (
-            <ShareButtonFooter pathname={pathname} />
+            <ShareButtonFooter />
           )}
         </div>
       );
@@ -403,12 +378,7 @@ class Application extends Component {
       return (
         <div className={this.getAppBaseClass()} id="app-base-id">
           <ToastContainer closeButton={false} className={getToastClass()} />
-          <Header params={this.props.params}
-                  location={this.props.location}
-                  pathname={pathname}
-                  voter={this.state.voter}
-                  weVoteBrandingOff={this.state.weVoteBrandingOff}
-          />
+          <Header params={params} pathname={pathname} />
           <SnackNotifier />
           <Wrapper id="settings" padTop={cordovaScrollablePaneTopPadding()}>
             <div className="page-content-container">
@@ -419,11 +389,11 @@ class Application extends Component {
           </Wrapper>
           {showFooterBar && (
             <div className={isWebApp() ? 'footroom-wrapper' : 'footroom-wrapper-cordova'}>
-              <FooterBar location={this.props.location} pathname={pathname} voter={this.state.voter} />
+              <FooterBar />
             </div>
           )}
           {showShareButtonFooter && (
-            <ShareButtonFooter pathname={pathname} />
+            <ShareButtonFooter />
           )}
         </div>
       );
@@ -433,13 +403,7 @@ class Application extends Component {
     return (
       <div className={this.getAppBaseClass()} id="app-base-id">
         <ToastContainer closeButton={false} className={getToastClass()} />
-        <Header
-          params={this.props.params}
-          location={this.props.location}
-          pathname={pathname}
-          voter={this.state.voter}
-          weVoteBrandingOff={this.state.weVoteBrandingOff}
-        />
+        <Header params={params} pathname={pathname} />
         <SnackNotifier />
         { typeof pathname !== 'undefined' && pathname &&
           (String(pathname) === '/for-campaigns' ||
@@ -469,18 +433,18 @@ class Application extends Component {
           )}
         {showFooterBar && (
           <div className={isWebApp() ? 'footroom-wrapper' : 'footroom-wrapper-cordova'}>
-            <FooterBar location={this.props.location} pathname={pathname} voter={this.state.voter} />
+            <FooterBar />
           </div>
         )}
         {showShareButtonFooter && (
-          <ShareButtonFooter pathname={pathname} />
+          <ShareButtonFooter  />
         )}
       </div>
     );
   }
 }
 Application.propTypes = {
-  children: PropTypes.element,
+  children: PropTypes.object,
   location: PropTypes.object,
   params: PropTypes.object,
 };
@@ -490,20 +454,20 @@ const Wrapper = styled.div`
 `;
 
 const LoadingScreen = styled.div`
-  position: 'fixed',
-  height: '100vh',
-  width: '100vw',
-  display: 'flex',
+  position: fixed,
+  height: 100vh,
+  width: 100vw,
+  display: flex,
   top: 0,
   left: 0,
-  background-color: '#2E3C5D',
-  justify-content: 'center',
-  align-items: 'center',
-  font-size: '30px',
-  color: '#fff',
-  flex-direction: 'column',
+  background-color: #2E3C5D,
+  justify-content: center,
+  align-items: center,
+  font-size: 30px,
+  color: #fff,
+  flex-direction: column,
   @media print{
-    color: '#2E3C5D';
+    color: #2E3C5D,
   }
 `;
 

@@ -70,6 +70,40 @@ class FilterBaseSearch extends Component {
     this.organizationStoreListener.remove();
   }
 
+  handleSearch (event) { // eslint-disable-line consistent-return
+    // if search bar always open, isSearching is toggled only when input is given text is cleared with 'x' button
+    if (this.props.alwaysOpen && event.target.value && !this.props.isSearching) {
+      this.toggleSearch();
+    }
+    clearTimeout(this.timer);
+
+    const { searchText: priorSearchText } = this.state;
+    let { value: searchText } = event.target;
+    searchText = searchText.trimStart();
+
+    if (priorSearchText !== searchText) {
+      this.setState({ searchText });
+    }
+    // If search value is empty, exit
+    if (!searchText.length) return [];
+
+    this.timer = setTimeout(() => {
+      if (!searchText) {
+        return [];
+      }
+
+      // If search value one character or less, exit
+      if (searchText.length <= 1) return [];
+
+      this.searchNewItems(searchText);
+      // Filter out items without the search terms, and put the most likely search result at the top
+      // Only return results if they get past the filter
+      const sortedFiltered = sortBy(this.filterItems(searchText), ['searchPriority']).reverse().filter((item) => item.searchPriority > 0);
+      // console.log('sortedFiltered:', sortedFiltered);
+      return this.props.onFilterBaseSearch(searchText, sortedFiltered.length ? sortedFiltered : []);
+    }, delayBeforeSearchExecution);
+  }
+
   onBallotStoreChange () {
     // console.log('FilterBaseSearch onBallotStoreChange');
     const { opinionsAndBallotItemsSearchMode } = this.props;
@@ -163,39 +197,6 @@ class FilterBaseSearch extends Component {
     }
   }
 
-  handleSearch (event) { // eslint-disable-line consistent-return
-    // if search bar always open, isSearching is toggled only when input is given text is cleared with 'x' button
-    if (this.props.alwaysOpen && event.target.value && !this.props.isSearching) {
-      this.toggleSearch();
-    }
-    clearTimeout(this.timer);
-
-    const { searchText: priorSearchText } = this.state;
-    let { value: searchText } = event.target;
-    searchText = searchText.trimStart();
-
-    if (priorSearchText !== searchText) {
-      this.setState({ searchText });
-    }
-    // If search value is empty, exit
-    if (!searchText.length) return [];
-
-    this.timer = setTimeout(() => {
-      if (!searchText) {
-        return [];
-      }
-
-      // If search value one character or less, exit
-      if (searchText.length <= 1) return [];
-
-      this.searchNewItems(searchText);
-      // Filter out items without the search terms, and put the most likely search result at the top
-      // Only return results if they get past the filter
-      const sortedFiltered = sortBy(this.filterItems(searchText), ['searchPriority']).reverse().filter((item) => item.searchPriority > 0);
-      // console.log('sortedFiltered:', sortedFiltered);
-      return this.props.onFilterBaseSearch(searchText, sortedFiltered.length ? sortedFiltered : []);
-    }, delayBeforeSearchExecution);
-  }
 
   render () {
     const { alwaysOpen, classes, isSearching, searchTextLarge, theme } = this.props;

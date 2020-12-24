@@ -6,7 +6,7 @@ import AppStore from '../../stores/AppStore';
 import { dumpCssFromId } from '../../utils/appleSiliconUtils';
 import { cordovaTopHeaderTopMargin } from '../../utils/cordovaOffsets';
 import displayFriendsTabs from '../../utils/displayFriendsTabs';
-import { getApplicationViewBooleans } from '../../utils/applicationUtils';
+import { getApplicationViewBooleans, weVoteBrandingOff } from '../../utils/applicationUtils';
 import { hasIPhoneNotch, historyPush, isIOSAppOnMac, isCordova, isIOS, isIPad, isWebApp } from '../../utils/cordovaUtils';
 import HeaderBackToBallot from './HeaderBackToBallot';
 import HeaderBackTo from './HeaderBackTo';
@@ -18,6 +18,7 @@ import { startsWith, stringContains } from '../../utils/textFormat';
 import { renderLog } from '../../utils/logging';
 import SharedItemModal from '../Share/SharedItemModal';
 import VoterPlanModal from '../Ready/VoterPlanModal';
+import VoterStore from '../../stores/VoterStore';
 
 const appleSiliconDebug = false;
 
@@ -50,9 +51,10 @@ export default class Header extends Component {
   }
 
   shouldComponentUpdate (nextProps, nextState) {
+    const { location: { pathname } } = window;
     if (this.state.activityTidbitWeVoteIdForDrawer !== nextState.activityTidbitWeVoteIdForDrawer) return true;
     if (this.state.organizationModalBallotItemWeVoteId !== nextState.organizationModalBallotItemWeVoteId) return true;
-    if (this.props.pathname !== nextProps.pathname) return true;
+    if (pathname !== nextProps.pathname) return true;
     if (this.state.sharedItemCode !== nextState.sharedItemCode) return true;
     if (this.state.showActivityTidbitDrawer !== nextState.showActivityTidbitDrawer) return true;
     if (this.state.showHowItWorksModal !== nextState.showHowItWorksModal) return true;
@@ -70,6 +72,10 @@ export default class Header extends Component {
   componentWillUnmount () {
     this.appStoreListener.remove();
     window.removeEventListener('resize', this.handleResize);
+  }
+
+  handleResize () {
+    this.setState({ windowWidth: window.innerWidth });
   }
 
   onAppStoreChange () {
@@ -104,22 +110,18 @@ export default class Header extends Component {
 
   closeSharedItemModal () {
     AppActions.setShowSharedItemModal('');
-    const { pathname } = this.props;
+    const { location: { pathname } } = window;
     if (stringContains('/modal/sic/', pathname)) {
       const pathnameWithoutModalSharedItem = pathname.substring(0, pathname.indexOf('/modal/sic/'));
       historyPush(pathnameWithoutModalSharedItem);
     }
   }
 
-  handleResize () {
-    this.setState({ windowWidth: window.innerWidth });
-  }
-
-
   render () {
     renderLog('Header');  // Set LOG_RENDER_EVENTS to log all renders
 
-    const { params, location, pathname, voter, weVoteBrandingOff } = this.props;
+    const { params } = this.props;
+    const { location: { pathname } } = window;
     const {
       activityTidbitWeVoteIdForDrawer, sharedItemCode, showActivityTidbitDrawer,
       showHowItWorksModal, showVoterPlanModal, showOrganizationModal, showSharedItemModal,
@@ -129,6 +131,7 @@ export default class Header extends Component {
       showBackToFriends, showBackToBallotHeader, showBackToSettingsDesktop,
       showBackToSettingsMobile, showBackToValues, showBackToVoterGuide, showBackToVoterGuides,
     } = getApplicationViewBooleans(pathname);
+    const voter = VoterStore.getVoter();
     let iPhoneSpacer = '';
     if (isCordova() && isIOS() && hasIPhoneNotch()) {
       iPhoneSpacer = <div className="ios-notched-spacer" />;
@@ -138,7 +141,7 @@ export default class Header extends Component {
 
     // console.log('organizationModalBallotItemWeVoteId: ', this.state.organizationModalBallotItemWeVoteId);
 
-    let pageHeaderClasses = weVoteBrandingOff ? 'page-header__container_branding_off headroom' : 'page-header__container headroom';
+    let pageHeaderClasses = weVoteBrandingOff() ? 'page-header__container_branding_off headroom' : 'page-header__container headroom';
     if (isIPad() && !isIOSAppOnMac()) {
       pageHeaderClasses = pageHeaderClasses.replace('page-header__container', 'page-header__container_ipad');
     }
@@ -159,13 +162,13 @@ export default class Header extends Component {
       if (showBackToVoterGuide) {
         const backToVoterGuideLinkDesktop = pathname.substring(0, pathname.indexOf('/m/')); // Remove the "/m/followers", "/m/following", or "/m/friends" from the end of the string
         // console.log('pathname:', pathname, ', backToVoterGuideLinkDesktop:', backToVoterGuideLinkDesktop);
-        headerBarObject = <HeaderBackTo backToLink={backToVoterGuideLinkDesktop} backToLinkText="Back" location={location} params={params} />;
+        headerBarObject = <HeaderBackTo backToLink={backToVoterGuideLinkDesktop} backToLinkText="Back" />;
       } else if (showBackToBallotHeader) {
-        headerBarObject = <HeaderBackToBallot location={location} params={params} pathname={pathname} voter={voter} />;
+        headerBarObject = <HeaderBackToBallot params={params} />;
       } else if (showBackToVoterGuides) {
-        headerBarObject = <HeaderBackToVoterGuides location={location} params={params} pathname={pathname} voter={voter} />;
+        headerBarObject = <HeaderBackToVoterGuides params={params} />;
       } else {
-        headerBarObject = <HeaderBar location={location} pathname={pathname} voter={voter} />;
+        headerBarObject = <HeaderBar />;
       }
       return (
         <div id="app-header">
@@ -177,14 +180,12 @@ export default class Header extends Component {
           </div>
           {showHowItWorksModal && (
             <HowItWorksModal
-              pathname={pathname}
               show={showHowItWorksModal}
               toggleFunction={this.closeHowItWorksModal}
             />
           )}
           {showVoterPlanModal && (
             <VoterPlanModal
-              pathname={pathname}
               show={showVoterPlanModal}
               toggleFunction={this.closeVoterPlanModal}
             />
@@ -192,16 +193,15 @@ export default class Header extends Component {
           {showOrganizationModal && (
             <OrganizationModal
               isSignedIn={voter.is_signed_in}
-              pathname={pathname}
               show={showOrganizationModal}
               ballotItemWeVoteId={this.state.organizationModalBallotItemWeVoteId}
               modalOpen={showOrganizationModal}
               toggleFunction={this.closeOrganizationModal}
+              params={params}
             />
           )}
           {showSharedItemModal && (
             <SharedItemModal
-              pathname={pathname}
               sharedItemCode={sharedItemCode}
               show={showSharedItemModal}
               closeSharedItemModal={this.closeSharedItemModal}
@@ -224,11 +224,11 @@ export default class Header extends Component {
               { showBackToSettingsDesktop && (
                 <span>
                   <span className="u-show-desktop-tablet">
-                    <HeaderBackTo backToLink={backToSettingsLinkDesktop} backToLinkText={backToSettingsLinkText} location={location} params={params} />
+                    <HeaderBackTo backToLink={backToSettingsLinkDesktop} backToLinkText={backToSettingsLinkText} />
                   </span>
                   { !showBackToVoterGuides && !showBackToSettingsMobile && (
                     <span className="u-show-mobile">
-                      <HeaderBar location={location} pathname={pathname} voter={voter} />
+                      <HeaderBar />
                     </span>
                   )}
                 </span>
@@ -236,31 +236,29 @@ export default class Header extends Component {
               { showBackToSettingsMobile && (
                 <span>
                   <span className={isWebApp() ? 'u-show-mobile' : ''}>
-                    <HeaderBackTo backToLink={backToSettingsLinkMobile} backToLinkText={backToSettingsLinkText} location={location} params={params} />
+                    <HeaderBackTo backToLink={backToSettingsLinkMobile} backToLinkText={backToSettingsLinkText} />
                   </span>
                   { isWebApp() && !showBackToVoterGuides && !showBackToSettingsDesktop && (
                     <span className="u-show-desktop-tablet">
-                      <HeaderBar location={location} pathname={pathname} voter={voter} />
+                      <HeaderBar />
                     </span>
                   )}
                 </span>
               )}
               { showBackToVoterGuides &&
-                <HeaderBackToVoterGuides location={location} params={params} pathname={pathname} voter={voter} />}
+                <HeaderBackToVoterGuides params={params} />}
               { !showBackToVoterGuides && !showBackToSettingsDesktop && !showBackToSettingsMobile &&
-                <HeaderBar location={location} pathname={pathname} voter={voter} />}
+                <HeaderBar />}
             </div>
           </div>
           {showHowItWorksModal && (
             <HowItWorksModal
-              pathname={pathname}
               show={showHowItWorksModal}
               toggleFunction={this.closeHowItWorksModal}
             />
           )}
           {showVoterPlanModal && (
             <VoterPlanModal
-              pathname={pathname}
               show={showVoterPlanModal}
               toggleFunction={this.closeVoterPlanModal}
             />
@@ -268,16 +266,15 @@ export default class Header extends Component {
           {showOrganizationModal && (
             <OrganizationModal
               isSignedIn={voter.is_signed_in}
-              pathname={pathname}
               show={showOrganizationModal}
               ballotItemWeVoteId={this.state.organizationModalBallotItemWeVoteId}
               modalOpen={showOrganizationModal}
               toggleFunction={this.closeOrganizationModal}
+              params={params}
             />
           )}
           {showSharedItemModal && (
             <SharedItemModal
-              pathname={pathname}
               sharedItemCode={sharedItemCode}
               show={showSharedItemModal}
               closeSharedItemModal={this.closeSharedItemModal}
@@ -300,20 +297,18 @@ export default class Header extends Component {
           <div className={isWebApp ? 'headroom-wrapper-webapp__default' : ''} id="headroom-wrapper">
             <div className={pageHeaderClasses} style={cordovaTopHeaderTopMargin()} id="header-container">
               { showBackToValues ?
-                <HeaderBackTo backToLink={backToValuesLink} backToLinkText={backToValuesLinkText} location={location} params={params} /> :
-                <HeaderBar location={location} pathname={pathname} voter={voter} />}
+                <HeaderBackTo backToLink={backToValuesLink} backToLinkText={backToValuesLinkText} /> :
+                <HeaderBar />}
             </div>
           </div>
           {showHowItWorksModal && (
             <HowItWorksModal
-              pathname={pathname}
               show={showHowItWorksModal}
               toggleFunction={this.closeHowItWorksModal}
             />
           )}
           {showVoterPlanModal && (
             <VoterPlanModal
-              pathname={pathname}
               show={showVoterPlanModal}
               toggleFunction={this.closeVoterPlanModal}
             />
@@ -321,16 +316,15 @@ export default class Header extends Component {
           {showOrganizationModal && (
             <OrganizationModal
               isSignedIn={voter.is_signed_in}
-              pathname={pathname}
               show={showOrganizationModal}
               ballotItemWeVoteId={this.state.organizationModalBallotItemWeVoteId}
               modalOpen={showOrganizationModal}
               toggleFunction={this.closeOrganizationModal}
+              params={params}
             />
           )}
           {showSharedItemModal && (
             <SharedItemModal
-              pathname={pathname}
               sharedItemCode={sharedItemCode}
               show={showSharedItemModal}
               closeSharedItemModal={this.closeSharedItemModal}
@@ -348,20 +342,18 @@ export default class Header extends Component {
           <div className={isWebApp ? 'headroom-wrapper-webapp__default' : ''} id="headroom-wrapper">
             <div className={pageHeaderClasses} style={cordovaTopHeaderTopMargin()} id="header-container">
               { showBackToFriends ?
-                <HeaderBackTo backToLink={backToFriendsLink} backToLinkText={backToFriendsLinkText} location={location} params={params} /> :
-                <HeaderBar location={location} pathname={pathname} voter={voter} />}
+                <HeaderBackTo backToLink={backToFriendsLink} backToLinkText={backToFriendsLinkText} /> :
+                <HeaderBar />}
             </div>
           </div>
           {showHowItWorksModal && (
             <HowItWorksModal
-              pathname={pathname}
               show={showHowItWorksModal}
               toggleFunction={this.closeHowItWorksModal}
             />
           )}
           {showVoterPlanModal && (
             <VoterPlanModal
-              pathname={pathname}
               show={showVoterPlanModal}
               toggleFunction={this.closeVoterPlanModal}
             />
@@ -369,16 +361,15 @@ export default class Header extends Component {
           {showOrganizationModal && (
             <OrganizationModal
               isSignedIn={voter.is_signed_in}
-              pathname={pathname}
               show={showOrganizationModal}
               ballotItemWeVoteId={this.state.organizationModalBallotItemWeVoteId}
               modalOpen={showOrganizationModal}
               toggleFunction={this.closeOrganizationModal}
+              params={params}
             />
           )}
           {showSharedItemModal && (
             <SharedItemModal
-              pathname={pathname}
               sharedItemCode={sharedItemCode}
               show={showSharedItemModal}
               closeSharedItemModal={this.closeSharedItemModal}
@@ -420,8 +411,8 @@ export default class Header extends Component {
           >
             <div className={pageHeaderClasses} style={cordovaTopHeaderTopMargin()} id="header-container">
               { showBackToBallotHeader ?
-                <HeaderBackToBallot location={location} params={params} pathname={pathname} voter={voter} /> :
-                <HeaderBar location={location} pathname={pathname} voter={voter} />}
+                <HeaderBackToBallot params={params} /> :
+                <HeaderBar />}
             </div>
           </div>
           {showActivityTidbitDrawer && (
@@ -434,14 +425,12 @@ export default class Header extends Component {
           )}
           {showHowItWorksModal && (
             <HowItWorksModal
-              pathname={pathname}
               show={showHowItWorksModal}
               toggleFunction={this.closeHowItWorksModal}
             />
           )}
           {showVoterPlanModal && (
             <VoterPlanModal
-              pathname={pathname}
               show={showVoterPlanModal}
               toggleFunction={this.closeVoterPlanModal}
             />
@@ -449,16 +438,15 @@ export default class Header extends Component {
           {showOrganizationModal && (
             <OrganizationModal
               isSignedIn={voter.is_signed_in}
-              pathname={pathname}
               show={showOrganizationModal}
               ballotItemWeVoteId={this.state.organizationModalBallotItemWeVoteId}
               modalOpen={showOrganizationModal}
               toggleFunction={this.closeOrganizationModal}
+              params={params}
             />
           )}
           {showSharedItemModal && (
             <SharedItemModal
-              pathname={pathname}
               sharedItemCode={sharedItemCode}
               show={showSharedItemModal}
               closeSharedItemModal={this.closeSharedItemModal}
@@ -471,8 +459,5 @@ export default class Header extends Component {
 }
 Header.propTypes = {
   params: PropTypes.object,
-  location: PropTypes.object,
-  pathname: PropTypes.string,
-  voter: PropTypes.object,
-  weVoteBrandingOff: PropTypes.bool,
+  pathname: PropTypes.string.isRequired,
 };

@@ -33,7 +33,7 @@ class PageNotFound extends Component {
                   variant="contained"
                   onClick={() => historyPush('/ballot')}
                 >
-                  <Ballot classes={{ root: classes.ballotButtonIconRoot }} />
+                  <Ballot classes={{ root: classes.ballotButtonIconRoot }} location={window.location} />
                   Go to Ballot
                 </Button>
               </EmptyBallotMessageContainer>

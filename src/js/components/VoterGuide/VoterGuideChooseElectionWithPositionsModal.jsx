@@ -26,9 +26,11 @@ class VoterGuideChooseElectionWithPositionsModal extends Component {
   }
 
   shouldComponentUpdate (nextProps) {
+    const { location: { pathname } } = window;
+
     // This lifecycle method tells the component to NOT render if componentWillReceiveProps didn't see any changes
-    if (this.props.pathname !== nextProps.pathname) {
-      // console.log('this.props.pathname:', this.props.pathname, ', nextProps.pathname:', nextProps.pathname);
+    if (pathname !== nextProps.pathname) {
+      // console.log('pathname:', pathname, ', nextProps.pathname:', nextProps.pathname);
       return true;
     }
     if (this.props.organizationWeVoteId !== nextProps.organizationWeVoteId) {
@@ -41,7 +43,8 @@ class VoterGuideChooseElectionWithPositionsModal extends Component {
 
   render () {
     renderLog('VoterGuideChooseElectionWithPositionsModal');  // Set LOG_RENDER_EVENTS to log all renders
-    const { classes, organizationWeVoteId, pathname, show } = this.props;
+    const { classes, organizationWeVoteId, show } = this.props;
+    const { location: { pathname } } = window;
     const ballotBaseUrl = calculateBallotBaseUrlForVoterGuide(this.props.ballotBaseUrl, pathname);
 
     return (
@@ -82,9 +85,9 @@ VoterGuideChooseElectionWithPositionsModal.propTypes = {
   ballotBaseUrl: PropTypes.string,
   classes: PropTypes.object,
   organizationWeVoteId: PropTypes.string, // If looking at voter guide, we pass in the parent organizationWeVoteId
-  pathname: PropTypes.string,
   show: PropTypes.bool,
   toggleFunction: PropTypes.func.isRequired,
+  pathname: PropTypes.string,
 };
 
 const styles = (theme) => ({

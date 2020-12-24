@@ -20,6 +20,7 @@ import {
 import AnalyticsActions from '../../actions/AnalyticsActions';
 import AppActions from '../../actions/AppActions';
 import AppStore from '../../stores/AppStore';
+import LoadingWheel from '../LoadingWheel';
 import OpenExternalWebSite from '../Widgets/OpenExternalWebSite';
 import ReadMore from '../Widgets/ReadMore';
 import ShareActions from '../../actions/ShareActions';
@@ -62,7 +63,7 @@ class ShareButtonFooter extends Component {
   }
 
   componentDidMount () {
-    const { pathname } = this.props;
+    const { pathname } = window.location;
     this.appStoreListener = AppStore.addListener(this.onAppStoreChange.bind(this));
     this.shareStoreListener = ShareStore.addListener(this.onShareStoreChange.bind(this));
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
@@ -189,7 +190,8 @@ class ShareButtonFooter extends Component {
   }
 
   getCurrentFullUrl () {
-    let currentFullUrl = window.location.href || '';
+    const { location: { href } } = window;
+    let currentFullUrl = href || '';
     // Handles localhost and Cordova, always builds url to wevote.us
     if (startsWith('https://localhost', currentFullUrl)) {
       currentFullUrl = currentFullUrl.replace(/https:\/\/localhost.*?\//, 'https://wevote.us/');
@@ -213,7 +215,7 @@ class ShareButtonFooter extends Component {
   }
 
   handleShareButtonClick = () => {
-    const { pathname } = this.props;
+    const { location: { pathname } } = window;
     const { currentFullUrlAdjusted } = this.state;
     const currentFullUrlToShare = currentFullUrlAdjusted.replace('/modal/share', '');
 
@@ -381,7 +383,7 @@ class ShareButtonFooter extends Component {
   openShareModal (shareFooterStep) {
     AppActions.setShowShareModal(true);
     AppActions.setShareModalStep(shareFooterStep);
-    const { pathname } = window.location;
+    const { location: { pathname } } = window;
     if (!stringContains('/modal/share', pathname) && isWebApp()) {
       const pathnameWithModalShare = `${pathname}/modal/share`;
       // console.log('openShareModal ', pathnameWithModalShare);
@@ -415,7 +417,8 @@ class ShareButtonFooter extends Component {
 
   render () {
     renderLog('ShareButtonFooter');  // Set LOG_RENDER_EVENTS to log all renders
-    const { classes, pathname } = this.props;
+    const { classes } = this.props;
+    const { location: { pathname } } = window;
     const {
       candidateShare, chosenPreventSharingOpinions, currentFullUrlToShare,
       hideShareButtonFooter, measureShare, officeShare,
@@ -430,6 +433,12 @@ class ShareButtonFooter extends Component {
     if (hideShareButtonFooter) {
       return null;
     }
+
+    if (!VoterStore.getVoter().voter_we_vote_id) {
+      console.log('ShareButtonFooter, waiting for voterRetrieve to complete');
+      return LoadingWheel;
+    }
+
     const titleText = 'This is a website I am using to get ready to vote.';
     // let emailSubjectEncoded = '';
     // let emailBodyEncoded = '';
@@ -857,7 +866,6 @@ class ShareButtonFooter extends Component {
 }
 ShareButtonFooter.propTypes = {
   classes: PropTypes.object,
-  pathname: PropTypes.string,
 };
 
 const styles = () => ({

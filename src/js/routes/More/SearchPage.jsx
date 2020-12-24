@@ -19,7 +19,8 @@ export default class SearchPage extends Component {
 
   componentDidMount () {
     // When we first enter we want to retrieve values to have for a click in the search box
-    const textFromSearchField = this.props.params.encoded_search_string || '';
+    const { match: { params } } = this.props;
+    const textFromSearchField = params.encoded_search_string || '';
     this.setState({ textFromSearchField });
 
     // Search type one - Recent searches
@@ -39,8 +40,9 @@ export default class SearchPage extends Component {
   // eslint-disable-next-line camelcase,react/sort-comp
   UNSAFE_componentWillReceiveProps (nextProps) {
     this.onSearchAllStoreChange();
-    if (nextProps.params.encoded_search_string) {
-      this.setState({ textFromSearchField: nextProps.params.encoded_search_string || '' });
+    const { match: { params: nextParams } } = nextProps;
+    if (nextParams.encoded_search_string) {
+      this.setState({ textFromSearchField: nextParams.encoded_search_string || '' });
     }
   }
 
@@ -98,5 +100,5 @@ export default class SearchPage extends Component {
   }
 }
 SearchPage.propTypes = {
-  params: PropTypes.object.isRequired,
+  match: PropTypes.object.isRequired,
 };

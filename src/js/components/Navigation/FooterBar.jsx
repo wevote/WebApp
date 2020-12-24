@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { withStyles } from '@material-ui/core/styles';
 import { BottomNavigation, BottomNavigationAction } from '@material-ui/core';
@@ -15,7 +14,7 @@ import VoterStore from '../../stores/VoterStore';
 
 
 function isFriendsTabSelected () {
-  const { pathname } = window.location;
+  const { location: { pathname } } = window;
   return (stringContains('/friends', pathname.toLowerCase()));
 }
 
@@ -112,7 +111,7 @@ class FooterBar extends React.Component {
   };
 
   getSelectedTab = () => {
-    const { pathname } = this.props;
+    const { location: { pathname } } = window;
     if (stringContains('/ready', pathname.toLowerCase())) return 0;
     if (stringContains('/ballot', pathname.toLowerCase())) return 1;
     if (stringContains('/value', pathname.toLowerCase()) || stringContains('/opinions', pathname.toLowerCase())) return 2; // '/values'
@@ -186,8 +185,6 @@ class FooterBar extends React.Component {
   }
 }
 FooterBar.propTypes = {
-  // classes: PropTypes.object,
-  pathname: PropTypes.string,
 };
 
 const styles = () => ({

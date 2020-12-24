@@ -46,15 +46,16 @@ class SettingsNotificationsUnsubscribe extends Component {
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
     let emailSubscriptionSecretKey = '';
     let smsSubscriptionSecretKey = '';
-    if (this.props.params) {
-      if (this.props.params.email_subscription_secret_key) {
-        emailSubscriptionSecretKey = this.props.params.email_subscription_secret_key;
+    const { match: { params } } = this.props;
+    if (params) {
+      if (params.email_subscription_secret_key) {
+        emailSubscriptionSecretKey = params.email_subscription_secret_key;
         this.setState({
           emailSubscriptionSecretKey,
         });
         AnalyticsActions.saveActionUnsubscribeEmailPage(VoterStore.electionId());
-      } else if (this.props.params.sms_subscription_secret_key) {
-        smsSubscriptionSecretKey = this.props.params.sms_subscription_secret_key;
+      } else if (params.sms_subscription_secret_key) {
+        smsSubscriptionSecretKey = params.sms_subscription_secret_key;
         this.setState({
           smsSubscriptionSecretKey,
         });
@@ -538,7 +539,7 @@ class SettingsNotificationsUnsubscribe extends Component {
 }
 SettingsNotificationsUnsubscribe.propTypes = {
   classes: PropTypes.object,
-  params: PropTypes.object,
+  match: PropTypes.object,
 };
 
 const styles = () => ({

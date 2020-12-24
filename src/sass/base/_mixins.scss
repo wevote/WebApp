@@ -2,8 +2,8 @@
 // This file contains all application-wide Sass mixins.
 // ----------------------------------------------------------------------------
 
-@import './mixins/breakpoints';
-@import './mixins/media-object';
+@import './src/sass/mixins/_breakpoints';
+@import './src/sass/mixins/_media-object';
 
 
 /// Event wrapper

@@ -22,33 +22,36 @@ export default class OrganizationVoterGuideOffice extends Component {
   }
 
   componentDidMount () {
+    const { match: { params } } = this.props;
     this.officeStoreListener = OfficeStore.addListener(this.onOfficeStoreChange.bind(this));
-    const office = OfficeStore.getOffice(this.props.params.office_we_vote_id);
+    const office = OfficeStore.getOffice(params.office_we_vote_id);
     if (!office || !office.ballot_item_display_name) {
-      OfficeActions.officeRetrieve(this.props.params.office_we_vote_id);
+      OfficeActions.officeRetrieve(params.office_we_vote_id);
     } else {
       this.setState({ office });
     }
     this.setState({
-      office_we_vote_id: this.props.params.office_we_vote_id,
-      organization_we_vote_id: this.props.params.organization_we_vote_id,
+      office_we_vote_id: params.office_we_vote_id,
+      organization_we_vote_id: params.organization_we_vote_id,
     });
 
-    AnalyticsActions.saveActionOffice(VoterStore.electionId(), this.props.params.office_we_vote_id);
+    AnalyticsActions.saveActionOffice(VoterStore.electionId(), params.office_we_vote_id);
     // console.log("OrganizationVoterGuideOffice, organization_we_vote_id: ", this.props.params.organization_we_vote_id);
   }
 
-  // eslint-disable-next-line camelcase,react/sort-comp
+  // eslint-disable camelcase, react/sort-comp, react/prop-types
   UNSAFE_componentWillReceiveProps (nextProps) {
     // When a new office is passed in, update this component to show the new data
-    const office = OfficeStore.getOffice(nextProps.params.office_we_vote_id);
+    const { match: { params: nextParams } } = nextProps;
+    const office = OfficeStore.getOffice(nextParams.office_we_vote_id);
     if (!office || !office.ballot_item_display_name) {
-      this.setState({ office_we_vote_id: nextProps.params.office_we_vote_id });
-      OfficeActions.officeRetrieve(nextProps.params.office_we_vote_id);
+      this.setState({ office_we_vote_id: nextParams.office_we_vote_id });
+      OfficeActions.officeRetrieve(nextParams.office_we_vote_id);
     } else {
-      this.setState({ office, office_we_vote_id: nextProps.params.office_we_vote_id });
+      this.setState({ office, office_we_vote_id: nextParams.office_we_vote_id });
     }
   }
+  // eslint-enable camelcase,react/sort-comp,react/prop-types
 
   componentWillUnmount () {
     this.officeStoreListener.remove();
@@ -99,5 +102,5 @@ export default class OrganizationVoterGuideOffice extends Component {
   }
 }
 OrganizationVoterGuideOffice.propTypes = {
-  params: PropTypes.object.isRequired,
+  match: PropTypes.object.isRequired,
 };

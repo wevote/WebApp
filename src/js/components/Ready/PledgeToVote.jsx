@@ -101,6 +101,11 @@ class PledgeToVote extends React.Component {
     }
   }
 
+  handleChange () {
+    const { shareNameAndEmail } = this.state;
+    this.setState({ shareNameAndEmail: !shareNameAndEmail });
+  }
+
   setCommentsToDisplay () {
     const commentsWrapper = document.getElementById('comments-wrapper');
 
@@ -143,11 +148,6 @@ class PledgeToVote extends React.Component {
     commentsWrapper.style.maxHeight = `${commentsWrapper.lastElementChild.clientHeight + commentsWrapper.lastElementChild.previousElementSibling.clientHeight + 16}px`;
 
     commentsWrapper.style.height = `${commentsWrapper.lastElementChild.clientHeight + commentsWrapper.lastElementChild.previousElementSibling.clientHeight + 16}px`;
-  }
-
-  handleChange () {
-    const { shareNameAndEmail } = this.state;
-    this.setState({ shareNameAndEmail: !shareNameAndEmail });
   }
 
   render () {
