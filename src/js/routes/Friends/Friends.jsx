@@ -10,7 +10,7 @@ import AnalyticsActions from '../../actions/AnalyticsActions';
 import AppStore from '../../stores/AppStore';
 import BrowserPushMessage from '../../components/Widgets/BrowserPushMessage';
 import { cordovaBallotFilterTopMargin, cordovaFriendsWrapper } from '../../utils/cordovaOffsets';
-import { cordovaDot, historyPush, isCordova, isWebApp } from '../../utils/cordovaUtils';
+import { cordovaDot, historyPushV5, isCordova, isWebApp } from '../../utils/cordovaUtils';
 import displayFriendsTabs from '../../utils/displayFriendsTabs';
 import FacebookSignInCard from '../../components/Facebook/FacebookSignInCard';
 import FirstAndLastNameRequiredAlert from '../../components/Widgets/FirstAndLastNameRequiredAlert';
@@ -43,12 +43,12 @@ const testimonial = 'Instead of searching through emails and social media for re
 class Friends extends Component {
   static getDerivedStateFromProps (props, state) {
     const { defaultTabItem } = state;
-    const { match: { params: { tabItem } } } = props;
+    const { history, match: { params: { tabItem } } } = props;
     // console.log('Friends getDerivedStateFromProps defaultTabItem:', defaultTabItem, ', tabItem:', tabItem);
     // We only redirect when in mobile mode (when "displayFriendsTabs()" is true), a tab param has not been passed in, and we have a defaultTab specified
     // This solves an edge case where you re-click the Friends Footer tab when you are in the friends section
     if (displayFriendsTabs() && tabItem === undefined && defaultTabItem) {
-      historyPush(`/friends/${defaultTabItem}`);
+      historyPushV5(history, `/friends/${defaultTabItem}`);
     }
     return null;
   }
@@ -193,7 +193,7 @@ class Friends extends Component {
     return selectedTab;
   }
 
-  handleNavigation = (to) => historyPush(to);
+  handleNavigation = (to) => historyPushV5(this.props.history, to);
 
   resetDefaultTabForMobile (friendInvitationsSentToMe, suggestedFriendList, friendInvitationsSentByMe) {
     const { match: { params: { tabItem } } } = this.props;
@@ -600,6 +600,7 @@ class Friends extends Component {
 Friends.propTypes = {
   classes: PropTypes.object,
   match: PropTypes.object,
+  history: PropTypes.object,
 };
 
 const styles = () => ({

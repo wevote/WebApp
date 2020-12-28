@@ -1,24 +1,24 @@
-import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import ActivityTidbitDrawer from '../Activity/ActivityTidbitDrawer';
+import React, { Component } from 'react';
 import AppActions from '../../actions/AppActions';
 import AppStore from '../../stores/AppStore';
+import VoterStore from '../../stores/VoterStore';
 import { dumpCssFromId } from '../../utils/appleSiliconUtils';
-import { cordovaTopHeaderTopMargin } from '../../utils/cordovaOffsets';
-import displayFriendsTabs from '../../utils/displayFriendsTabs';
 import { getApplicationViewBooleans, weVoteBrandingOff } from '../../utils/applicationUtils';
-import { hasIPhoneNotch, historyPush, isIOSAppOnMac, isCordova, isIOS, isIPad, isWebApp } from '../../utils/cordovaUtils';
-import HeaderBackToBallot from './HeaderBackToBallot';
+import { cordovaTopHeaderTopMargin } from '../../utils/cordovaOffsets';
+import { hasIPhoneNotch, historyPushV5, isCordova, isIOS, isIOSAppOnMac, isIPad, isWebApp } from '../../utils/cordovaUtils';
+import displayFriendsTabs from '../../utils/displayFriendsTabs';
+import { renderLog } from '../../utils/logging';
+import { startsWith, stringContains } from '../../utils/textFormat';
+import ActivityTidbitDrawer from '../Activity/ActivityTidbitDrawer';
+import HowItWorksModal from '../CompleteYourProfile/HowItWorksModal';
+import VoterPlanModal from '../Ready/VoterPlanModal';
+import SharedItemModal from '../Share/SharedItemModal';
+import OrganizationModal from '../VoterGuide/OrganizationModal';
 import HeaderBackTo from './HeaderBackTo';
+import HeaderBackToBallot from './HeaderBackToBallot';
 import HeaderBackToVoterGuides from './HeaderBackToVoterGuides';
 import HeaderBar from './HeaderBar';
-import HowItWorksModal from '../CompleteYourProfile/HowItWorksModal';
-import OrganizationModal from '../VoterGuide/OrganizationModal';
-import { startsWith, stringContains } from '../../utils/textFormat';
-import { renderLog } from '../../utils/logging';
-import SharedItemModal from '../Share/SharedItemModal';
-import VoterPlanModal from '../Ready/VoterPlanModal';
-import VoterStore from '../../stores/VoterStore';
 
 const appleSiliconDebug = false;
 
@@ -113,7 +113,8 @@ export default class Header extends Component {
     const { location: { pathname } } = window;
     if (stringContains('/modal/sic/', pathname)) {
       const pathnameWithoutModalSharedItem = pathname.substring(0, pathname.indexOf('/modal/sic/'));
-      historyPush(pathnameWithoutModalSharedItem);
+      const { history } = this.props;
+      historyPushV5(history, pathnameWithoutModalSharedItem);
     }
   }
 
@@ -460,4 +461,5 @@ export default class Header extends Component {
 Header.propTypes = {
   params: PropTypes.object,
   pathname: PropTypes.string.isRequired,
+  history: PropTypes.object,
 };

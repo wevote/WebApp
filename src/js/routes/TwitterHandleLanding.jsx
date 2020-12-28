@@ -30,7 +30,7 @@ export default class TwitterHandleLanding extends Component {
 
     const { activeRoute, match: { params: { twitter_handle: twitterHandle } } } = this.props;
 
-    // console.log(`-------- TwitterHandleLanding componentDidMount, twitterHandle: ${twitterHandle}`);
+    // console.log(`TwitterHandleLanding componentDidMount, twitterHandle: ${twitterHandle}`);
     this.setState({
       activeRoute,
       twitterHandle,
@@ -104,7 +104,7 @@ export default class TwitterHandleLanding extends Component {
   render () {
     renderLog('TwitterHandleLanding');  // Set LOG_RENDER_EVENTS to log all renders
     if (this.state.status === undefined) {
-      console.log('TwitterHandleLanding this.state.status undefined');
+      // console.log('TwitterHandleLanding this.state.status undefined');
       // Show a loading wheel while this component's data is loading
       return LoadingWheel;
     }

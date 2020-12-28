@@ -275,7 +275,7 @@ class Application extends Component {
     const { params } = this.props;
     const { StripeCheckout } = window;
     const waitForStripe = (String(pathname) === '/more/donate' && StripeCheckout === undefined);
-    console.log('Application render, pathname:', pathname);
+    // console.log('Application render, pathname:', pathname);
 
     if (this.state.voter === undefined || this.props.location === undefined || waitForStripe) {
       if (waitForStripe) {
@@ -354,7 +354,7 @@ class Application extends Component {
       return (
         <div className={this.getAppBaseClass()} id="app-base-id">
           <ToastContainer closeButton={false} className={getToastClass()} />
-          <Header params={params} pathname={pathname} />
+          <Header params={params} pathname={pathname} history={this.props.history} />
           <SnackNotifier />
           <Wrapper id="voterGuideModes" padTop={cordovaVoterGuideTopPadding()}>
             <div className="page-content-container">
@@ -378,7 +378,7 @@ class Application extends Component {
       return (
         <div className={this.getAppBaseClass()} id="app-base-id">
           <ToastContainer closeButton={false} className={getToastClass()} />
-          <Header params={params} pathname={pathname} />
+          <Header params={params} pathname={pathname} history={this.props.history} />
           <SnackNotifier />
           <Wrapper id="settings" padTop={cordovaScrollablePaneTopPadding()}>
             <div className="page-content-container">
@@ -403,7 +403,7 @@ class Application extends Component {
     return (
       <div className={this.getAppBaseClass()} id="app-base-id">
         <ToastContainer closeButton={false} className={getToastClass()} />
-        <Header params={params} pathname={pathname} />
+        <Header params={params} pathname={pathname} history={this.props.history} />
         <SnackNotifier />
         { typeof pathname !== 'undefined' && pathname &&
           (String(pathname) === '/for-campaigns' ||
@@ -454,20 +454,20 @@ const Wrapper = styled.div`
 `;
 
 const LoadingScreen = styled.div`
-  position: fixed,
-  height: 100vh,
-  width: 100vw,
-  display: flex,
+  position: 'fixed',
+  height: '100vh',
+  width: '100vw',
+  display: 'flex',
   top: 0,
   left: 0,
-  background-color: #2E3C5D,
-  justify-content: center,
-  align-items: center,
-  font-size: 30px,
-  color: #fff,
-  flex-direction: column,
+  background-color: '#2E3C5D',
+  justify-content: 'center',
+  align-items: 'center',
+  font-size: '30px',
+  color: '#fff',
+  flex-direction: 'column',
   @media print{
-    color: #2E3C5D,
+    color: '#2E3C5D';
   }
 `;
 

@@ -1,11 +1,10 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { Button, AppBar, Toolbar, Tabs, Tab, IconButton, Tooltip } from '@material-ui/core';
+import { Button, AppBar, Toolbar, Tabs, IconButton, Tooltip } from '@material-ui/core';
 import { Place, AccountCircle } from '@material-ui/icons';
 import { withStyles } from '@material-ui/core/styles';
-import { useHistory } from 'react-router-dom';
-import { hasIPhoneNotch, historyPush, isIOSAppOnMac, isCordova, isWebApp } from '../../utils/cordovaUtils';
+import { hasIPhoneNotch, isIOSAppOnMac, isCordova, isWebApp } from '../../utils/cordovaUtils';
 import AdviserIntroModal from '../CompleteYourProfile/AdviserIntroModal';
 import AppActions from '../../actions/AppActions';
 import AppStore from '../../stores/AppStore';
@@ -33,19 +32,17 @@ import signInModalGlobalState from '../Widgets/signInModalGlobalState';
 import { voterPhoto } from '../../utils/voterPhoto';
 import { weVoteBrandingOff } from '../../utils/applicationUtils';
 import ImageUploadModal from '../Settings/ImageUploadModal';
-
-// const webAppConfig = require('../../config');
-
-const historyPush2 = (route) => {
-  const history = useHistory();
-  history.push(route);
-};
+import TabWithPushHistory from './TabWithPushHistory';
 
 class HeaderBar extends Component {
-  static goToGetStarted () {
-    const getStartedNow = '/ready';
-    historyPush2(getStartedNow);
-  }
+  // static goToGetStarted () {
+  //   const { location: { host } } = window;
+  //   const getStartedNow = '/ready';
+  //   const newHref = host + getStartedNow;
+  //   // const history = useHistory();
+  //   // history.push(getStartedNow);
+  //   window.location.href = newHref;
+  // }
 
   constructor (props) {
     super(props);
@@ -317,9 +314,10 @@ class HeaderBar extends Component {
     return false;
   };
 
-  handleNavigation = (to) => {
-    historyPush2(to);
-  }
+  // handleNavigation = (to) => {
+  //   const history = useHistory();
+  //   history.push(to);
+  // }
 
   closeAdviserIntroModal = () => {
     AppActions.setShowAdviserIntroModal(false);
@@ -344,11 +342,15 @@ class HeaderBar extends Component {
   closeShareModal () {
     AppActions.setShowShareModal(false);
     AppActions.setShareModalStep('');
-    const { location: { pathname } } = window;
-    if (stringContains('/modal/share', pathname) && isWebApp()) {
-      const pathnameWithoutModalShare = pathname.replace('/modal/share', '');  // Cordova
+    const { location: { href } } = window;
+    if (stringContains('/modal/share', href) && isWebApp()) {
+      const pathnameWithoutModalShare = href.replace('/modal/share', '');  // Cordova
       // console.log('Navigation closeShareModal ', pathnameWithoutModalShare)
-      historyPush2(pathnameWithoutModalShare);
+      // December 2020, is there a downside of just setting location?  Otherwise refactor to a “function component”
+      // const history = useHistory();
+      // history.push(pathnameWithoutModalShare);
+      // TODO: Dec 2020, this is a hack that needs to be fixed, and it doesn't work
+      window.location.href = pathnameWithoutModalShare;
     }
   }
 
@@ -361,23 +363,25 @@ class HeaderBar extends Component {
     this.setState({ profilePopUpOpen: !profilePopUpOpen });
   }
 
-  toggleSelectBallotModal (destinationUrlForHistoryPush = '', showSelectBallotModalHideAddress = false, showSelectBallotModalHideElections = false) {
+  // December 2020: destinationUrlForHistoryPush is not defined in this class, so we never make the HistoryPush
+  toggleSelectBallotModal (showSelectBallotModalHideAddress = false, showSelectBallotModalHideElections = false) {
     const { showSelectBallotModal } = this.state;
-    if (showSelectBallotModal && destinationUrlForHistoryPush && destinationUrlForHistoryPush !== '') {
-      historyPush2(destinationUrlForHistoryPush);
-    } else if (!showSelectBallotModal) {
+    // if (showSelectBallotModal && destinationUrlForHistoryPush && destinationUrlForHistoryPush !== '') {
+    //   historyPush(destinationUrlForHistoryPush);
+    // } else
+    if (!showSelectBallotModal) {
       // console.log('Ballot toggleSelectBallotModal, BallotActions.voterBallotListRetrieve()');
       BallotActions.voterBallotListRetrieve(); // Retrieve a list of ballots for the voter from other elections
     }
     AppActions.setShowSelectBallotModal(!showSelectBallotModal, showSelectBallotModalHideAddress, showSelectBallotModalHideElections);
   }
 
-  closeNewVoterGuideModal () {
-    // console.log('HeaderBar closeNewVoterGuideModal');
-    AppActions.setShowNewVoterGuideModal(false);
-    // signInModalGlobalState.set('isShowingSignInModal', false);
-    HeaderBar.goToGetStarted();
-  }
+  // closeNewVoterGuideModal () {
+  //   // console.log('HeaderBar closeNewVoterGuideModal');
+  //   AppActions.setShowNewVoterGuideModal(false);
+  //   // signInModalGlobalState.set('isShowingSignInModal', false);
+  //   HeaderBar.goToGetStarted();
+  // }
 
   closeSignInModal () {
     // console.log('HeaderBar closeSignInModal');
@@ -530,33 +534,16 @@ class HeaderBar extends Component {
                 classes={{ indicator: classes.indicator }}
               >
                 {showFullNavigation && (
-                  <Tab classes={{ root: classes.tabRootReady }} id="readyTabHeaderBar" label="Ready?" onClick={() => this.handleNavigation('/ready')} />
+                  <TabWithPushHistory classes={{ root: classes.tabRootReady }} id="readyTabHeaderBar" label="Ready?" to="/ready" />
+                  // <Tab classes={{ root: classes.tabRootReady }} id="readyTabHeaderBar" label="Ready?" onClick={() => this.handleNavigation('/ready')} />
                 )}
                 {showFullNavigation && (
-                  <Tab classes={{ root: classes.tabRootBallot }} id="ballotTabHeaderBar" label="Ballot" onClick={() => this.handleNavigation('/ballot')} />
+                  <TabWithPushHistory classes={{ root: classes.tabRootBallot }} id="ballotTabHeaderBar" label="Ballot" to="/ballot" />
+                  // <Tab classes={{ root: classes.tabRootBallot }} id="ballotTabHeaderBar" label="Ballot" onClick={() => this.handleNavigation('/ballot')} />
                 )}
-                <Tab classes={{ root: classes.tabRootValues }} id="valuesTabHeaderBar" label="Opinions" onClick={() => this.handleNavigation('/values')} />
-                {/* OFF FOR NOW showFullNavigation && (
-                  <Tab
-                    classes={(numberOfIncomingFriendRequests > 0) ? { root: classes.tabRootIncomingFriendRequests } : { root: classes.tabRootFriends }}
-                    id="friendsTabHeaderBar"
-                    label={(
-                      <FriendTabWrapper incomingFriendRequests={(numberOfIncomingFriendRequests > 0)}>
-                        <Badge
-                          classes={{ badge: classes.headerBadge }}
-                          badgeContent={numberOfIncomingFriendRequests}
-                          color="primary"
-                          max={9}
-                        >
-                          Friends
-                        </Badge>
-                      </FriendTabWrapper>
-                    )}
-                    onClick={() => this.handleNavigation('/friends')}
-                  />
-                ) */}
+                <TabWithPushHistory classes={{ root: classes.tabRootValues }} id="valuesTabHeaderBar" label="Opinions" to="/values" />
                 {(showFullNavigation) && (
-                  <Tab classes={{ root: classes.tabRootNews }} id="activityTabHeaderBar" label="Discuss" onClick={() => this.handleNavigation('/news')} />
+                  <TabWithPushHistory classes={{ root: classes.tabRootNews }} id="activityTabHeaderBar" label="Discuss" to="/news" />
                 )}
               </Tabs>
             </div>
@@ -715,6 +702,7 @@ class HeaderBar extends Component {
 }
 HeaderBar.propTypes = {
   classes: PropTypes.object,
+  history: PropTypes.object,
 };
 
 const styles = (theme) => ({

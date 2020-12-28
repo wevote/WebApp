@@ -4,6 +4,7 @@ import { useHistory } from "react-router-dom";
 import webAppConfig from '../config';
 import { cordovaOffsetLog, oAuthLog } from './logging';
 import { dumpObjProps } from './appleSiliconUtils';
+import { stringContains } from './textFormat';
 
 /* global $  */
 
@@ -59,11 +60,27 @@ export function isAndroid () {
   return isCordova() && platform === 'Android';  // Ignore the "Condition is always false" warning.  This line works correctly.
 }
 
-// see https://github.com/ReactTraining/react-router/blob/v3/docs/guides/Histories.md
+// Setting href does not change the history object, the name was retained from the v3 react-router implementation.
+// For the V4 router (Jan 2020) this simply changes the url and browsed page without using history
+// If history retention is needed, see TabWithPushHistory.jsx for an example of how to do it.
+// See v5: https://reactrouter.com/native/api/Hooks/usehistory
+// See v3: https://reactrouter.com/native/api/Hooks/usehistory
 export function historyPush (route) {
   console.log(`historyPush ******** ${route} *******`);
-  const history = useHistory();
-  history.push(route);
+  // v3 code:
+  // const history = useHistory();
+  // history.push(route);
+  // v5 work around:
+  const { location: { origin } } = window; // origin: "https://localhost:3000"
+  window.location.href = origin + route;
+}
+
+export function historyPushV5 (history, route) {
+  if (history) {
+    history.push(route);
+  } else {
+    window.location.replace(route);
+  }
 }
 
 // Webapp image paths are "absolute" relative to the running webapp cwd,

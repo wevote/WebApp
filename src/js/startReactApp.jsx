@@ -25,7 +25,6 @@ export default function startReactApp () {
     <Suspense fallback={<div>&nbsp;</div>}>
       <MuiThemeProvider theme={muiTheme}>
         <ThemeProvider theme={styledTheme}>
-          {/* <WeVoteRouter history={history}> */}
           <WeVoteRouter>
             {routes()}
           </WeVoteRouter>

@@ -231,7 +231,13 @@ export default class OrganizationVoterGuideTabs extends Component {
       activeRoute, allOrganizationPositionsLength, organizationWeVoteId,
       pathname, showElectionsWithOrganizationVoterGuidesModal, voter,
     } = this.state;
-    const { match: { params } } = this.props;
+    let params;
+    if (this.props.match) {
+      params = this.props.match.params;    // From Root.js URL
+    } else {
+      params = this.props.params;          // From pushHistory
+    }
+
     if (!pathname || !activeRoute || !organizationWeVoteId || !voter) {
       return <div>{LoadingWheel}</div>;
     }
@@ -372,5 +378,5 @@ OrganizationVoterGuideTabs.propTypes = {
   activeRoute: PropTypes.string,
   activeRouteChanged: PropTypes.func,
   organizationWeVoteId: PropTypes.string.isRequired,
-  match: PropTypes.object.isRequired,
+  match: PropTypes.object,
 };
