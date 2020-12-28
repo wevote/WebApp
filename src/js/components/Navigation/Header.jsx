@@ -121,7 +121,7 @@ export default class Header extends Component {
   render () {
     renderLog('Header');  // Set LOG_RENDER_EVENTS to log all renders
 
-    const { params } = this.props;
+    const { history, params } = this.props;
     const { location: { pathname } } = window;
     const {
       activityTidbitWeVoteIdForDrawer, sharedItemCode, showActivityTidbitDrawer,
@@ -412,7 +412,7 @@ export default class Header extends Component {
           >
             <div className={pageHeaderClasses} style={cordovaTopHeaderTopMargin()} id="header-container">
               { showBackToBallotHeader ?
-                <HeaderBackToBallot params={params} /> :
+                <HeaderBackToBallot params={params} history={history} /> :
                 <HeaderBar />}
             </div>
           </div>

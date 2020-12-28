@@ -79,6 +79,7 @@ export function historyPushV5 (history, route) {
   if (history) {
     history.push(route);
   } else {
+    console.warn('historyPushV5 did not receive a valid history object, reloading the app with .replace()');
     window.location.replace(route);
   }
 }

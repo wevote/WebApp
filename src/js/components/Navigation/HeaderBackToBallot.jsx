@@ -8,7 +8,7 @@ import AppActions from '../../actions/AppActions';
 import AppStore from '../../stores/AppStore';
 import { dumpCssFromId } from '../../utils/appleSiliconUtils';
 import CandidateStore from '../../stores/CandidateStore';
-import { hasIPhoneNotch, historyPush, isAndroid, isIOSAppOnMac, isCordova, isIPad, isWebApp } from '../../utils/cordovaUtils';
+import { hasIPhoneNotch, historyPushV5, isAndroid, isIOSAppOnMac, isCordova, isIPad, isWebApp } from '../../utils/cordovaUtils';
 import HeaderBackToButton from './HeaderBackToButton';
 import HeaderBarProfilePopUp from './HeaderBarProfilePopUp';
 import HeaderNotificationMenu from './HeaderNotificationMenu';
@@ -498,7 +498,11 @@ class HeaderBackToBallot extends Component {
   }
 
   onVoterStoreChange () {
-    const { params: { candidate_we_vote_id: candidateWeVoteId } } = this.props;
+    let candidateWeVoteId;  // Will not receive this param if you reload the page in the browser with Cmd+Shift+R
+    if (this.props.params) {
+      const { params: { candidate_we_vote_id: candID } } = this.props;
+      candidateWeVoteId = candID;
+    }
     const voter = VoterStore.getVoter();
     const voterFirstName = VoterStore.getFirstName();
     const voterIsSignedIn = voter.is_signed_in;
@@ -563,7 +567,8 @@ class HeaderBackToBallot extends Component {
     if (stringContains('/modal/share', pathname) && isWebApp()) {
       const pathnameWithoutModalShare = pathname.replace('/modal/share', '');
       // console.log('navigation closeShareModal ', pathnameWithoutModalShare);
-      historyPush(pathnameWithoutModalShare);
+      const { history } = this.props;
+      historyPushV5(history, pathnameWithoutModalShare);
     }
   }
 
@@ -810,7 +815,7 @@ class HeaderBackToBallot extends Component {
 }
 HeaderBackToBallot.propTypes = {
   classes: PropTypes.object,
-  params: PropTypes.object.isRequired,
+  params: PropTypes.object,
 };
 
 const styles = (theme) => ({
