@@ -50,7 +50,7 @@ export default class TwitterHandleLanding extends Component {
     // console.log('TwitterHandleLanding componentWillReceiveProps activeRoute:', activeRoute);
     if (nextTwitterHandle && twitterHandle.toLowerCase() !== nextTwitterHandle.toLowerCase()) {
       // We need this test to prevent an infinite loop
-      // console.log('TwitterHandleLanding componentWillReceiveProps, different twitterHandle: ', nextProps.params.twitter_handle);
+      console.log('TwitterHandleLanding componentWillReceiveProps, different twitterHandle: ', nextProps.params.twitter_handle);
       TwitterActions.resetTwitterHandleLanding();
       TwitterActions.twitterIdentityRetrieve(nextTwitterHandle);
       this.setState({
@@ -60,9 +60,12 @@ export default class TwitterHandleLanding extends Component {
   }
 
   componentWillUnmount () {
-    TwitterActions.resetTwitterHandleLanding();
     this.twitterStoreListener.remove();
     this.voterStoreListener.remove();
+    // console.log('TwitterHandleLanding componentWillUnmount, TwitterActions.resetTwitterHandleLanding()');
+    // Dec 2020: caused "invariant.js:42 Uncaught Invariant Violation: Dispatch.dispatch(...): Cannot dispatch in the middle of a dispatch."
+    // so hopefully this is not needed:
+    // TwitterActions.resetTwitterHandleLanding();
   }
 
   onTwitterStoreChange () {

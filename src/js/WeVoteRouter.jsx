@@ -25,6 +25,7 @@ import webAppConfig from './config';
 //   replace: ƒ replace(path, state)
 
 // Possible: https://stackoverflow.com/questions/59402649/how-can-i-use-history-pushpath-in-react-router-5-1-2-in-stateful-component
+// Possible: https://stackoverflow.com/questions/63400050/refactoring-react-class-to-hooks-entity-update-component
 
 export default class WeVoteRouter extends BrowserRouter {
   constructor (props) {

@@ -93,7 +93,8 @@ hostname = hostname || '';
 const weVoteSites = ['wevote.us', 'quality.wevote.us', 'localhost', 'silicon', ''];   // localhost on Cordova is a ''
 const isWeVoteMarketingSite = weVoteSites.includes(String(hostname));
 const isNotWeVoteMarketingSite = !isWeVoteMarketingSite;
-
+// eslint-disable-next-line quotes
+const bcand3TermRegex = `/:twitter_handle/btcand/:back_to_cand_we_vote_id/b/:back_to_variable($)?`;
 /* eslint-disable react/jsx-props-no-spreading */
 const routes = () => {
   // console.log('window.innerWidth:', window.innerWidth);
@@ -348,7 +349,9 @@ const routes = () => {
             <Route path=":twitter_handle/m/following" component={(props) => <OrganizationVoterGuideMobileDetails {...props} activeRoute="following" />} />
             <Route path=":twitter_handle/m/followers" component={(props) => <OrganizationVoterGuideMobileDetails {...props} activeRoute="followers" />} />
             <Route path=":twitter_handle/:action_variable" component={TwitterHandleLanding} />
-            <Route path=":twitter_handle/btcand/:back_to_cand_we_vote_id/b/:back_to_variable" component={TwitterHandleLanding} />
+            {/* Next line handles: ":twitter_handle/btcand/:back_to_cand_we_vote_id/b/:back_to_variable" */}
+            <Route path={bcand3TermRegex} component={TwitterHandleLanding} />
+            <Route path=":twitter_handle/btcand/:back_to_cand_we_vote_id/b/:back_to_variable/modal/:modal_to_show/:shared_item_code" component={TwitterHandleLanding} />
             <Route path=":twitter_handle/btcand/:back_to_cand_we_vote_id/b/:back_to_variable/modal/:modal_to_show/:shared_item_code" component={TwitterHandleLanding} />
             <Route path=":twitter_handle/btcand/:back_to_cand_we_vote_id/b/:back_to_variable/modal/:modal_to_show" component={TwitterHandleLanding} />
             <Route path=":twitter_handle/btcand/:back_to_cand_we_vote_id/b/:back_to_variable/m/friends" component={(props) => <OrganizationVoterGuideMobileDetails {...props} activeRoute="friends" />} />

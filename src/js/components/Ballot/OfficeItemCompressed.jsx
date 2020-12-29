@@ -15,7 +15,7 @@ import OfficeActions from '../../actions/OfficeActions';
 import ShowMoreFooter from '../Navigation/ShowMoreFooter';
 import SupportStore from '../../stores/SupportStore';
 import TopCommentByBallotItem from '../Widgets/TopCommentByBallotItem';
-import { historyPush, isCordova } from '../../utils/cordovaUtils';
+import { historyPushV5, isCordova } from '../../utils/cordovaUtils';
 import { renderLog } from '../../utils/logging';
 import { sortCandidateList } from '../../utils/positionFunctions';
 import { arrayContains, toTitleCase } from '../../utils/textFormat';
@@ -211,13 +211,15 @@ class OfficeItemCompressed extends Component {
   }
 
   goToCandidateLink (candidateWeVoteId) {
+    const { history } = this.props;
     const candidateLink = this.getCandidateLink(candidateWeVoteId);
-    historyPush(candidateLink);
+    historyPushV5(history, candidateLink);
   }
 
   goToOfficeLink () {
     const officeLink = this.getOfficeLink();
-    historyPush(officeLink);
+    const { history } = this.props;
+    historyPushV5(history, officeLink);
   }
 
   generateCandidates () {
@@ -445,7 +447,7 @@ const Column = styled.div`
 
 const CandidateInfo = styled.div`
   border: 1px solid ${({ theme }) => theme.colors.grayBorder};
-  display: block !important;
+  // display: block !important;  Dec2020: As found had two display lines, second overwrote the first
   display: flex;
   flex-flow: column;
   height: 100%;

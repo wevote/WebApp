@@ -430,7 +430,7 @@ class ShareButtonFooter extends Component {
     const { showFooterBar } = getApplicationViewBooleans(pathname);
 
     // Hide if scrolled down the page
-    if (hideShareButtonFooter) {
+    if (hideShareButtonFooter || !showFooterBar) {
       return null;
     }
 

@@ -72,6 +72,7 @@ export function historyPush (route) {
   // history.push(route);
   // v5 work around:
   const { location: { origin } } = window; // origin: "https://localhost:3000"
+  console.warn('DEPRECATED historyPush (full reload) was called for route:', route);
   window.location.href = origin + route;
 }
 
@@ -79,7 +80,7 @@ export function historyPushV5 (history, route) {
   if (history) {
     history.push(route);
   } else {
-    console.warn('historyPushV5 did not receive a valid history object, reloading the app with .replace()');
+    console.error('historyPushV5 did not receive a valid history object, reloading the app with .replace()');
     window.location.replace(route);
   }
 }
