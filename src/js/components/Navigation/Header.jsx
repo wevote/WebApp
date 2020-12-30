@@ -6,7 +6,7 @@ import VoterStore from '../../stores/VoterStore';
 import { dumpCssFromId } from '../../utils/appleSiliconUtils';
 import { getApplicationViewBooleans, weVoteBrandingOff } from '../../utils/applicationUtils';
 import { cordovaTopHeaderTopMargin } from '../../utils/cordovaOffsets';
-import { hasIPhoneNotch, historyPushV5, isCordova, isIOS, isIOSAppOnMac, isIPad, isWebApp } from '../../utils/cordovaUtils';
+import { hasIPhoneNotch, historyPush, isCordova, isIOS, isIOSAppOnMac, isIPad, isWebApp } from '../../utils/cordovaUtils';
 import displayFriendsTabs from '../../utils/displayFriendsTabs';
 import { renderLog } from '../../utils/logging';
 import { startsWith, stringContains } from '../../utils/textFormat';
@@ -51,6 +51,7 @@ export default class Header extends Component {
   }
 
   shouldComponentUpdate (nextProps, nextState) {
+    console.log('HEADER shouldComponentUpdate ===================================');
     const { location: { pathname } } = window;
     if (this.state.activityTidbitWeVoteIdForDrawer !== nextState.activityTidbitWeVoteIdForDrawer) return true;
     if (this.state.organizationModalBallotItemWeVoteId !== nextState.organizationModalBallotItemWeVoteId) return true;
@@ -113,16 +114,15 @@ export default class Header extends Component {
     const { location: { pathname } } = window;
     if (stringContains('/modal/sic/', pathname)) {
       const pathnameWithoutModalSharedItem = pathname.substring(0, pathname.indexOf('/modal/sic/'));
-      const { history } = this.props;
-      historyPushV5(history, pathnameWithoutModalSharedItem);
+      historyPush(pathnameWithoutModalSharedItem);
     }
   }
 
   render () {
     renderLog('Header');  // Set LOG_RENDER_EVENTS to log all renders
 
-    const { history, params } = this.props;
-    console.log('Header props', this.props);
+    const { params } = this.props;
+    console.log('Header global.weVoteGlobalHistory', global.weVoteGlobalHistory);
     const { location: { pathname } } = window;
     const {
       activityTidbitWeVoteIdForDrawer, sharedItemCode, showActivityTidbitDrawer,
@@ -164,9 +164,9 @@ export default class Header extends Component {
       if (showBackToVoterGuide) {
         const backToVoterGuideLinkDesktop = pathname.substring(0, pathname.indexOf('/m/')); // Remove the "/m/followers", "/m/following", or "/m/friends" from the end of the string
         // console.log('pathname:', pathname, ', backToVoterGuideLinkDesktop:', backToVoterGuideLinkDesktop);
-        headerBarObject = <HeaderBackTo backToLink={backToVoterGuideLinkDesktop} backToLinkText="Back" history={history} />;
+        headerBarObject = <HeaderBackTo backToLink={backToVoterGuideLinkDesktop} backToLinkText="Back" />;
       } else if (showBackToBallotHeader) {
-        headerBarObject = <HeaderBackToBallot params={params} history={history} />;
+        headerBarObject = <HeaderBackToBallot params={params} />;
       } else if (showBackToVoterGuides) {
         headerBarObject = <HeaderBackToVoterGuides params={params} />;
       } else {
@@ -226,7 +226,7 @@ export default class Header extends Component {
               { showBackToSettingsDesktop && (
                 <span>
                   <span className="u-show-desktop-tablet">
-                    <HeaderBackTo backToLink={backToSettingsLinkDesktop} backToLinkText={backToSettingsLinkText} history={history} />
+                    <HeaderBackTo backToLink={backToSettingsLinkDesktop} backToLinkText={backToSettingsLinkText} />
                   </span>
                   { !showBackToVoterGuides && !showBackToSettingsMobile && (
                     <span className="u-show-mobile">
@@ -241,7 +241,6 @@ export default class Header extends Component {
                     <HeaderBackTo
                       backToLink={backToSettingsLinkMobile}
                       backToLinkText={backToSettingsLinkText}
-                      history={history}
                     />
                   </span>
                   { isWebApp() && !showBackToVoterGuides && !showBackToSettingsDesktop && (
@@ -303,7 +302,7 @@ export default class Header extends Component {
           <div className={isWebApp ? 'headroom-wrapper-webapp__default' : ''} id="headroom-wrapper">
             <div className={pageHeaderClasses} style={cordovaTopHeaderTopMargin()} id="header-container">
               { showBackToValues ?
-                <HeaderBackTo backToLink={backToValuesLink} backToLinkText={backToValuesLinkText} history={history} /> :
+                <HeaderBackTo backToLink={backToValuesLink} backToLinkText={backToValuesLinkText} /> :
                 <HeaderBar />}
             </div>
           </div>
@@ -348,7 +347,7 @@ export default class Header extends Component {
           <div className={isWebApp ? 'headroom-wrapper-webapp__default' : ''} id="headroom-wrapper">
             <div className={pageHeaderClasses} style={cordovaTopHeaderTopMargin()} id="header-container">
               { showBackToFriends ?
-                <HeaderBackTo backToLink={backToFriendsLink} backToLinkText={backToFriendsLinkText} history={history} /> :
+                <HeaderBackTo backToLink={backToFriendsLink} backToLinkText={backToFriendsLinkText} /> :
                 <HeaderBar />}
             </div>
           </div>
@@ -417,7 +416,7 @@ export default class Header extends Component {
           >
             <div className={pageHeaderClasses} style={cordovaTopHeaderTopMargin()} id="header-container">
               { showBackToBallotHeader ?
-                <HeaderBackToBallot params={params} history={history} /> :
+                <HeaderBackToBallot params={params} /> :
                 <HeaderBar />}
             </div>
           </div>
@@ -466,5 +465,4 @@ export default class Header extends Component {
 Header.propTypes = {
   params: PropTypes.object,
   pathname: PropTypes.string.isRequired,
-  history: PropTypes.object,
 };

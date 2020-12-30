@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { withStyles, withTheme } from '@material-ui/core/styles';
 import { ArrowForward } from '@material-ui/icons';
 import { Button } from '@material-ui/core';
+import LinkWithPushHistory from '../Navigation/LinkWithPushHistory';
 import BallotItemSupportOpposeCountDisplay from '../Widgets/BallotItemSupportOpposeCountDisplay';
 import BallotStore from '../../stores/BallotStore';
 import CandidateStore from '../../stores/CandidateStore';
@@ -15,7 +15,7 @@ import OfficeActions from '../../actions/OfficeActions';
 import ShowMoreFooter from '../Navigation/ShowMoreFooter';
 import SupportStore from '../../stores/SupportStore';
 import TopCommentByBallotItem from '../Widgets/TopCommentByBallotItem';
-import { historyPushV5, isCordova } from '../../utils/cordovaUtils';
+import { historyPush, isCordova } from '../../utils/cordovaUtils';
 import { renderLog } from '../../utils/logging';
 import { sortCandidateList } from '../../utils/positionFunctions';
 import { arrayContains, toTitleCase } from '../../utils/textFormat';
@@ -211,15 +211,13 @@ class OfficeItemCompressed extends Component {
   }
 
   goToCandidateLink (candidateWeVoteId) {
-    const { history } = this.props;
     const candidateLink = this.getCandidateLink(candidateWeVoteId);
-    historyPushV5(history, candidateLink);
+    historyPush(candidateLink);
   }
 
   goToOfficeLink () {
     const officeLink = this.getOfficeLink();
-    const { history } = this.props;
-    historyPushV5(history, officeLink);
+    historyPush(officeLink);
   }
 
   generateCandidates () {
@@ -365,14 +363,18 @@ class OfficeItemCompressed extends Component {
           name={officeWeVoteId}
         />
         {/* Desktop */}
-        <Link id={`officeItemCompressedTopNameLink-${officeWeVoteId}`} to={this.getOfficeLink()}>
-          <Title>
-            {ballotItemDisplayName}
-            <ArrowForward
-              classes={{ root: classes.cardHeaderIconRoot }}
-            />
-          </Title>
-        </Link>
+        <LinkWithPushHistory
+          id={`officeItemCompressedTopNameLink-${officeWeVoteId}`}
+          to={this.getOfficeLink()}
+          childMarkup={(
+            <Title>
+              {ballotItemDisplayName}
+              <ArrowForward
+                classes={{ root: classes.cardHeaderIconRoot }}
+              />
+            </Title>
+          )}
+        />
         {/* *************************
           Display either a) the candidates the voter supports, or b) the first several candidates running for this office
           ************************* */}

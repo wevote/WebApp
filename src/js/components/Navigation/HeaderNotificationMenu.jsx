@@ -6,7 +6,7 @@ import { Badge, IconButton, Menu, MenuItem } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 import ActivityActions from '../../actions/ActivityActions';
 import ActivityStore from '../../stores/ActivityStore';
-import { historyPushV5, isIOSAppOnMac, setIconBadgeMessageCount } from '../../utils/cordovaUtils';
+import { historyPush, isIOSAppOnMac, setIconBadgeMessageCount } from '../../utils/cordovaUtils';
 import ImageHandler from '../ImageHandler';
 import { renderLog } from '../../utils/logging';
 import { createDescriptionOfFriendPosts } from '../../utils/activityUtils';
@@ -58,21 +58,19 @@ class HeaderNotificationMenu extends Component {
   }
 
   onMenuItemClick (activityNotice) {
-    const { history } = this.props;
     if (activityNotice.activity_notice_id > 0) {
       ActivityActions.activityNoticeListRetrieve([activityNotice.activity_notice_id]);
     }
     this.handleClose();
     if (activityNotice && activityNotice.activity_tidbit_we_vote_id) {
-      historyPushV5(history, `/news/a/${activityNotice.activity_tidbit_we_vote_id}`);
+      historyPush(`/news/a/${activityNotice.activity_tidbit_we_vote_id}`);
     } else {
-      historyPushV5(history, '/news');
+      historyPush('/news');
     }
   }
 
   onSettingsClick = () => {
-    const { history } = this.props;
-    historyPushV5(history, '/settings/notifications');
+    historyPush('/settings/notifications');
   }
 
   generateMenuItemList = (allActivityNotices) => {
@@ -270,7 +268,6 @@ class HeaderNotificationMenu extends Component {
 }
 HeaderNotificationMenu.propTypes = {
   classes: PropTypes.object,
-  history: PropTypes.object,
 };
 
 const styles = (theme) => ({

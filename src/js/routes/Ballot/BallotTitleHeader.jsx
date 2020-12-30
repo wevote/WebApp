@@ -7,6 +7,7 @@ import { Settings } from '@material-ui/icons';
 import { isAndroid, isAndroidSizeFold, isIOSAppOnMac, isIPad, isIPhone3p5in, isIPhone4in, isWebApp } from '../../utils/cordovaUtils';
 import ShareButtonDesktopTablet from '../../components/Share/ShareButtonDesktopTablet';
 import DelayedLoad from '../../components/Widgets/DelayedLoad';
+import { renderLog } from '../../utils/logging';
 import { shortenText } from '../../utils/textFormat';
 // import webAppConfig from '../../config';
 
@@ -38,6 +39,7 @@ class BallotTitleHeader extends Component {
   }
 
   render () {
+    renderLog('BallotTitleHeader');  // Set LOG_RENDER_EVENTS to log all renders
     // const nextReleaseFeaturesEnabled = webAppConfig.ENABLE_NEXT_RELEASE_FEATURES === undefined ? false : webAppConfig.ENABLE_NEXT_RELEASE_FEATURES;
     const { classes, electionName, electionDayTextObject, scrolled } = this.props;
 

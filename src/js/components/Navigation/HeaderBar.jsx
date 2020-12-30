@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import { Button, AppBar, Toolbar, Tabs, IconButton, Tooltip } from '@material-ui/core';
 import { Place, AccountCircle } from '@material-ui/icons';
 import { withStyles } from '@material-ui/core/styles';
-import { hasIPhoneNotch, historyPushV5, isIOSAppOnMac, isCordova, isWebApp } from '../../utils/cordovaUtils';
+import { hasIPhoneNotch, historyPush, isIOSAppOnMac, isCordova, isWebApp } from '../../utils/cordovaUtils';
 import AdviserIntroModal from '../CompleteYourProfile/AdviserIntroModal';
 import AppActions from '../../actions/AppActions';
 import AppStore from '../../stores/AppStore';
@@ -344,10 +344,9 @@ class HeaderBar extends Component {
     AppActions.setShareModalStep('');
     const { location: { href } } = window;
     if (stringContains('/modal/share', href) && isWebApp()) {
-      const { history } = this.props;
       const pathnameWithoutModalShare = href.replace('/modal/share', '');  // Cordova
       // console.log('Navigation closeShareModal ', pathnameWithoutModalShare)
-      historyPushV5.push(history, pathnameWithoutModalShare);
+      historyPush.push(null, pathnameWithoutModalShare);
     }
   }
 
@@ -424,7 +423,7 @@ class HeaderBar extends Component {
       return null;
     }
 
-    const { classes, history } = this.props;
+    const { classes } = this.props;
     const { location: { pathname } } = window;
 
     const {
@@ -550,7 +549,7 @@ class HeaderBar extends Component {
                   <div>
                     {showEditAddressButton && editAddressButtonHtml}
                   </div>
-                  <HeaderNotificationMenu history={history} />
+                  <HeaderNotificationMenu />
                   <div id="profileAvatarHeaderBar"
                     className={`header-nav__avatar-container ${isCordova() ? 'header-nav__avatar-cordova' : undefined}`}
                     style={isCordova() ? { marginBottom: 2 } : {}}
@@ -586,7 +585,7 @@ class HeaderBar extends Component {
                     <div>
                       {showEditAddressButton && editAddressButtonHtml}
                     </div>
-                    <HeaderNotificationMenu history={history} />
+                    <HeaderNotificationMenu />
                     <IconButton
                       classes={{ root: classes.iconButtonRoot }}
                       id="profileAvatarHeaderBar"
@@ -619,7 +618,7 @@ class HeaderBar extends Component {
                 <div>
                   {showEditAddressButton && editAddressButtonHtml}
                 </div>
-                <HeaderNotificationMenu history={history} />
+                <HeaderNotificationMenu />
                 <Button
                   color="primary"
                   classes={{ root: classes.headerButtonRoot }}
@@ -699,7 +698,6 @@ class HeaderBar extends Component {
 }
 HeaderBar.propTypes = {
   classes: PropTypes.object,
-  history: PropTypes.object,
 };
 
 const styles = (theme) => ({

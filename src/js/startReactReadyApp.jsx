@@ -2,7 +2,6 @@ import React from 'react';
 import { render } from 'react-dom';
 import { Router /* , applyRouterMiddleware */ } from 'react-router-dom';
 // import { useScroll } from 'react-router-scroll';
-import { createBrowserHistory } from 'history';
 import { MuiThemeProvider } from '@material-ui/core/styles';
 import { ThemeProvider } from 'styled-components';
 import muiTheme from './mui-theme';
@@ -21,14 +20,12 @@ String.prototype.numberOfNeedlesFoundInString = numberOfNeedlesFoundInString; //
 function startReactReadyApp () {
   renderLog('startReactReadyApp');  // Set LOG_RENDER_EVENTS to log all renders
   console.log('startReactReadyApp first line in startReactReadyApp');
-  const history = createBrowserHistory();
+  // TODO: This should not be necessary with V5 react-router <Router history={history} >
   const element = (
     // eslint-disable-next-line react/jsx-filename-extension
     <MuiThemeProvider theme={muiTheme}>
       <ThemeProvider theme={styledTheme}>
-        <Router
-          history={history}
-        >
+        <Router>
           {routes()}
         </Router>
       </ThemeProvider>

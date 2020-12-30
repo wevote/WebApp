@@ -11,7 +11,7 @@ export function getApplicationViewBooleans (pathname) {
   let extensionPageMode = false;
   let friendsMode = false;
   const pathnameLowerCase = pathname.toLowerCase() || '';
-  // console.log('applicationUtils, pathnameLowerCase:', pathnameLowerCase);
+  console.log('getApplicationViewBooleans, pathnameLowerCase:', pathnameLowerCase);
   let readyMode = false;
   let settingsMode = false;
   let sharedItemLandingPage = false;
@@ -219,7 +219,7 @@ export function getApplicationViewBooleans (pathname) {
     showShareButtonFooter = !isIOSAppOnMac();
   }
 
-  // console.log('applicationUtils, showFooterBar: ', showFooterBar, ', pathnameLowerCase:', pathnameLowerCase, ', showBackToSettingsMobile:', showBackToSettingsMobile);
+  console.log('getApplicationViewBooleans, showBackToBallotHeader: ', showBackToBallotHeader, ' showFooterBar: ', showFooterBar, ', pathnameLowerCase:', pathnameLowerCase, ', showBackToSettingsMobile:', showBackToSettingsMobile);
 
   return {
     inTheaterMode,

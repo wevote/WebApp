@@ -88,13 +88,15 @@ polyfillFixes('Root.jsx');
 // See /js/components/Navigation/HeaderBar.jsx for show_full_navigation cookie
 // const ballotHasBeenVisited = cookies.getItem('ballot_has_been_visited');
 const firstVisit = !cookies.getItem('voter_device_id');
-const { history } = window;
+// const { history } = window;
+// const history = useHistory();
+// const history = global.weVoteGlobalHistory;
 let { hostname } = window.location;
 hostname = hostname || '';
 const weVoteSites = ['wevote.us', 'quality.wevote.us', 'localhost', 'silicon', ''];   // localhost on Cordova is a ''
 const isWeVoteMarketingSite = weVoteSites.includes(String(hostname));
 const isNotWeVoteMarketingSite = !isWeVoteMarketingSite;
-const bcand3TermRegex = '/:twitter_handle/btcand/:back_to_cand_we_vote_id/b/:back_to_variable($)?';
+// const bcand3TermRegex = '/:twitter_handle/btcand/:back_to_cand_we_vote_id/b/:back_to_variable($)?';
 /* eslint-disable react/jsx-props-no-spreading */
 const routes = () => {
   // console.log('window.innerWidth:', window.innerWidth);
@@ -115,7 +117,7 @@ const routes = () => {
       {/* </Suspense> */}
       <Suspense fallback={<div>Loading...</div>}>
         {/* <Route path="/settings/notifications/esk/:email_subscription_secret_key" component={componentLoader('SettingsNotificationsUnsubscribe')} /> */}
-        <Application history={history} location={window.location}>
+        <Application location={window.location}>
           {/* <Route component={({ match }) => { */}
           <Switch>
             {/* <Route component={componentLoader('Intro')} /> */}
@@ -350,7 +352,7 @@ const routes = () => {
             <Route path=":twitter_handle/m/followers" component={(props) => <OrganizationVoterGuideMobileDetails {...props} activeRoute="followers" />} />
             <Route path=":twitter_handle/:action_variable" component={TwitterHandleLanding} />
             {/* Next line handles: ":twitter_handle/btcand/:back_to_cand_we_vote_id/b/:back_to_variable" */}
-            <Route path={bcand3TermRegex} component={TwitterHandleLanding} />
+            <Route path="/:twitter_handle/btcand/:back_to_cand_we_vote_id/b/:back_to_variable($)?" component={TwitterHandleLanding} />
             <Route path=":twitter_handle/btcand/:back_to_cand_we_vote_id/b/:back_to_variable/modal/:modal_to_show/:shared_item_code" component={TwitterHandleLanding} />
             <Route path=":twitter_handle/btcand/:back_to_cand_we_vote_id/b/:back_to_variable/modal/:modal_to_show/:shared_item_code" component={TwitterHandleLanding} />
             <Route path=":twitter_handle/btcand/:back_to_cand_we_vote_id/b/:back_to_variable/modal/:modal_to_show" component={TwitterHandleLanding} />
@@ -381,7 +383,7 @@ const routes = () => {
             <Route path=":twitter_handle/btmeas/:back_to_meas_we_vote_id/b/:back_to_variable/:action_variable/m/friends" component={(props) => <OrganizationVoterGuideMobileDetails {...props} activeRoute="friends" />} />
             <Route path=":twitter_handle/btmeas/:back_to_meas_we_vote_id/b/:back_to_variable/:action_variable/m/followers" component={(props) => <OrganizationVoterGuideMobileDetails {...props} activeRoute="followers" />} />
             <Route path=":twitter_handle/btmeas/:back_to_meas_we_vote_id/b/:back_to_variable/:action_variable/m/following" component={(props) => <OrganizationVoterGuideMobileDetails {...props} activeRoute="following" />} />
-            <Route path=":twitter_handle" component={TwitterHandleLanding} />
+            <Route path=":twitter_handle($)?" component={TwitterHandleLanding} />
             <Route path=":twitter_handle/modal/:modal_to_show/:shared_item_code" component={TwitterHandleLanding} />
             <Route path=":twitter_handle/modal/:modal_to_show" component={TwitterHandleLanding} />
             <Route path="*" component={PageNotFound} />

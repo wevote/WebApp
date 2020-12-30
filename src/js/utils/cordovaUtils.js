@@ -1,10 +1,9 @@
 import React from 'react';
-import { createBrowserHistory, createHashHistory } from 'history';
-import { useHistory } from "react-router-dom";
+// import { createBrowserHistory, createHashHistory } from 'history';
+// import { useHistory } from "react-router-dom";
 import webAppConfig from '../config';
 import { cordovaOffsetLog, oAuthLog } from './logging';
 import { dumpObjProps } from './appleSiliconUtils';
-import { stringContains } from './textFormat';
 
 /* global $  */
 
@@ -64,26 +63,28 @@ export function isAndroid () {
 // For the V4 router (Jan 2020) this simply changes the url and browsed page without using history
 // If history retention is needed, see TabWithPushHistory.jsx for an example of how to do it.
 // See v5: https://reactrouter.com/native/api/Hooks/usehistory
-// See v3: https://reactrouter.com/native/api/Hooks/usehistory
+// See v3: https://github.com/ReactTraining/react-router/blob/v3/docs/guides/Histories.md
 export function historyPush (route) {
   console.log(`historyPush ******** ${route} *******`);
-  // v3 code:
+  // react-router v3 code:
   // const history = useHistory();
   // history.push(route);
-  // v5 work around:
-  const { location: { origin } } = window; // origin: "https://localhost:3000"
-  console.warn('DEPRECATED historyPush (full reload) was called for route:', route);
-  window.location.href = origin + route;
+  // HTML5 Test hack (reloads app from zero, does not save route in history)
+  // window.location.href = origin + route;
+  global.weVoteGlobalHistory.push(route);
 }
 
-export function historyPushV5 (history, route) {
-  if (history) {
-    history.push(route);
-  } else {
-    console.error('historyPushV5 did not receive a valid history object, reloading the app with .replace()');
-    window.location.replace(route);
-  }
-}
+// export function historyPushV5 (history, route) {
+//   // TODO: BEGIN TEST HACK
+//   // if (history  && history.push) {
+//   //   history.push(route);
+//   // } else {
+//   //   console.error('historyPushV5 did not receive a valid history object, reloading the app with .replace()');
+//   //   window.location.replace(route);
+//   // }
+//   // TODO: END TEST HACK
+//   global.weVoteGlobalHistory.push(route);
+// }
 
 // Webapp image paths are "absolute" relative to the running webapp cwd,
 // for Cordova, we need them to include the http path to the server.
