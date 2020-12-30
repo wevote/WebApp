@@ -1,10 +1,11 @@
 import React, { Component, Suspense } from 'react';
+import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import GuideList from '../VoterGuide/GuideList';
-import VoterGuideStore from '../../stores/VoterGuideStore';
+import { historyPushV5 } from '../../utils/cordovaUtils';
 import { renderLog } from '../../utils/logging';
 import ShowMoreFooter from '../Navigation/ShowMoreFooter';
-import { historyPush } from '../../utils/cordovaUtils';
+import VoterGuideStore from '../../stores/VoterGuideStore';
 
 
 export default class PublicFiguresToFollowPreview extends Component {
@@ -33,7 +34,8 @@ export default class PublicFiguresToFollowPreview extends Component {
   }
 
   goToPublicFigures () {
-    historyPush('/opinions/f/showPublicFiguresFilter');
+    const { history } = this.props;
+    historyPushV5(history, '/opinions/f/showPublicFiguresFilter');
   }
 
   render () {
@@ -72,6 +74,9 @@ export default class PublicFiguresToFollowPreview extends Component {
     );
   }
 }
+PublicFiguresToFollowPreview.propTypes = {
+  history: PropTypes.object,
+};
 
 const SectionDescription = styled.h2`
   font-weight: 200;

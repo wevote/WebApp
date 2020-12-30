@@ -88,6 +88,7 @@ polyfillFixes('Root.jsx');
 // See /js/components/Navigation/HeaderBar.jsx for show_full_navigation cookie
 // const ballotHasBeenVisited = cookies.getItem('ballot_has_been_visited');
 const firstVisit = !cookies.getItem('voter_device_id');
+let { history } = window;
 let { hostname } = window.location;
 hostname = hostname || '';
 const weVoteSites = ['wevote.us', 'quality.wevote.us', 'localhost', 'silicon', ''];   // localhost on Cordova is a ''
@@ -114,7 +115,7 @@ const routes = () => {
       {/* </Suspense> */}
       <Suspense fallback={<div>Loading...</div>}>
         {/* <Route path="/settings/notifications/esk/:email_subscription_secret_key" component={componentLoader('SettingsNotificationsUnsubscribe')} /> */}
-        <Application location={window.location}>
+        <Application history={history} location={window.location}>
           {/* <Route component={({ match }) => { */}
           <Switch>
             {/* <Route component={componentLoader('Intro')} /> */}
