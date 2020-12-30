@@ -71,20 +71,9 @@ export function historyPush (route) {
   // history.push(route);
   // HTML5 Test hack (reloads app from zero, does not save route in history)
   // window.location.href = origin + route;
+  // IMPORTANT:  The HTML5 window.history, is very different from the react-router V5 history, don't use window.history!
   global.weVoteGlobalHistory.push(route);
 }
-
-// export function historyPushV5 (history, route) {
-//   // TODO: BEGIN TEST HACK
-//   // if (history  && history.push) {
-//   //   history.push(route);
-//   // } else {
-//   //   console.error('historyPushV5 did not receive a valid history object, reloading the app with .replace()');
-//   //   window.location.replace(route);
-//   // }
-//   // TODO: END TEST HACK
-//   global.weVoteGlobalHistory.push(route);
-// }
 
 // Webapp image paths are "absolute" relative to the running webapp cwd,
 // for Cordova, we need them to include the http path to the server.
