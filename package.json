@@ -142,8 +142,7 @@
     "react-usa-map": "^1.5.0",
     "styled-components": "^5.2.1",
     "superagent": "^6.1.0",
-    "unused-webpack-plugin": "^2.4.0",
-    "webpack": "^5.11.1"
+    "unused-webpack-plugin": "^2.4.0"
   },
   "@comment dependencies": [
     "December 2020:",
@@ -232,6 +231,7 @@
     "vinyl-buffer": "^1.0.1",
     "vinyl-source-stream": "^2.0.0",
     "webdriverio": "^6.10.5",
+    "webpack": "^5.11.0",
     "webpack-bundle-analyzer": "^4.2.0",
     "webpack-cli": "^4.3.0",
     "webpack-dev-server": "^4.0.0-beta.0",
