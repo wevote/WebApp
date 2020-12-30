@@ -66,7 +66,7 @@ const islandFilters = [
   },
 ];
 
-// December 2020:  This seems abandoned
+// This component is replacing Opinions
 class Opinions2020 extends Component {
   constructor (props) {
     super(props);
@@ -96,7 +96,7 @@ class Opinions2020 extends Component {
   }
 
   componentDidMount () {
-    const { match: { params } } = this.props;
+    const { match: params } = this.props;
     this.setState({
       componentDidMount: true,
       numberOfBallotItemsToDisplay: 5,
