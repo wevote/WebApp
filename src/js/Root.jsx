@@ -93,8 +93,7 @@ hostname = hostname || '';
 const weVoteSites = ['wevote.us', 'quality.wevote.us', 'localhost', 'silicon', ''];   // localhost on Cordova is a ''
 const isWeVoteMarketingSite = weVoteSites.includes(String(hostname));
 const isNotWeVoteMarketingSite = !isWeVoteMarketingSite;
-// eslint-disable-next-line quotes
-const bcand3TermRegex = `/:twitter_handle/btcand/:back_to_cand_we_vote_id/b/:back_to_variable($)?`;
+const bcand3TermRegex = '/:twitter_handle/btcand/:back_to_cand_we_vote_id/b/:back_to_variable($)?';
 /* eslint-disable react/jsx-props-no-spreading */
 const routes = () => {
   // console.log('window.innerWidth:', window.innerWidth);

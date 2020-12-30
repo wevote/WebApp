@@ -635,7 +635,7 @@ class HeaderBackToBallot extends Component {
       shareModalStep, showShareModal, voter, voterFirstName, voterIsSignedIn,
     } = this.state;
     const voterPhotoUrlMedium = voterPhoto(voter);
-    const { classes } = this.props;
+    const { classes, history } = this.props;
     const { location: { pathname } } = window;
 
     // console.log('HeaderBackToBallot googleCivicElectionId:', googleCivicElectionId);
@@ -723,7 +723,7 @@ class HeaderBackToBallot extends Component {
           />
 
           <NotificationsAndProfileWrapper className="u-cursor--pointer">
-            <HeaderNotificationMenu />
+            <HeaderNotificationMenu history={history} />
             {voterIsSignedIn ? (
               <span onClick={this.toggleAccountMenu}>
                 {voterPhotoUrlMedium ? (
@@ -815,6 +815,7 @@ class HeaderBackToBallot extends Component {
 }
 HeaderBackToBallot.propTypes = {
   classes: PropTypes.object,
+  history: PropTypes.object,
   params: PropTypes.object,
 };
 

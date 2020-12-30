@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Button } from '@material-ui/core';
 import { ArrowBack, ArrowBackIos } from '@material-ui/icons';
 import { withStyles } from '@material-ui/core/styles';
-import { historyPush, isIOS } from '../../utils/cordovaUtils';
+import { historyPushV5, isIOS } from '../../utils/cordovaUtils';
 
 import { shortenText } from '../../utils/textFormat';
 import { renderLog } from '../../utils/logging';
@@ -22,7 +22,7 @@ const styles = {
 class HeaderBackToButton extends Component {
   render () {
     renderLog('HeaderBackToButton');  // Set LOG_RENDER_EVENTS to log all renders
-    const { classes, className, backToLink, backToLinkText } = this.props;
+    const { classes, className, backToLink, backToLinkText, history } = this.props;
 
     return (
       <Button
@@ -31,7 +31,7 @@ class HeaderBackToButton extends Component {
         classes={{ root: classes.root }}
         className={`page-header__backToButton ${className}`}
         id="backToLinkTabHeader"
-        onClick={() => historyPush(backToLink)}
+        onClick={() => historyPushV5(history, backToLink)}
       >
         {isIOS() ? (
           <ArrowBackIos className="button-icon" />
@@ -50,6 +50,7 @@ HeaderBackToButton.propTypes = {
   backToLinkText: PropTypes.string,
   className: PropTypes.string,
   classes: PropTypes.object,
+  history: PropTypes.object,
 };
 
 export default withStyles(styles)(HeaderBackToButton);

@@ -122,6 +122,7 @@ export default class Header extends Component {
     renderLog('Header');  // Set LOG_RENDER_EVENTS to log all renders
 
     const { history, params } = this.props;
+    console.log('Header props', this.props);
     const { location: { pathname } } = window;
     const {
       activityTidbitWeVoteIdForDrawer, sharedItemCode, showActivityTidbitDrawer,
@@ -163,9 +164,9 @@ export default class Header extends Component {
       if (showBackToVoterGuide) {
         const backToVoterGuideLinkDesktop = pathname.substring(0, pathname.indexOf('/m/')); // Remove the "/m/followers", "/m/following", or "/m/friends" from the end of the string
         // console.log('pathname:', pathname, ', backToVoterGuideLinkDesktop:', backToVoterGuideLinkDesktop);
-        headerBarObject = <HeaderBackTo backToLink={backToVoterGuideLinkDesktop} backToLinkText="Back" />;
+        headerBarObject = <HeaderBackTo backToLink={backToVoterGuideLinkDesktop} backToLinkText="Back" history={history} />;
       } else if (showBackToBallotHeader) {
-        headerBarObject = <HeaderBackToBallot params={params} />;
+        headerBarObject = <HeaderBackToBallot params={params} history={history} />;
       } else if (showBackToVoterGuides) {
         headerBarObject = <HeaderBackToVoterGuides params={params} />;
       } else {
@@ -225,7 +226,7 @@ export default class Header extends Component {
               { showBackToSettingsDesktop && (
                 <span>
                   <span className="u-show-desktop-tablet">
-                    <HeaderBackTo backToLink={backToSettingsLinkDesktop} backToLinkText={backToSettingsLinkText} />
+                    <HeaderBackTo backToLink={backToSettingsLinkDesktop} backToLinkText={backToSettingsLinkText} history={history} />
                   </span>
                   { !showBackToVoterGuides && !showBackToSettingsMobile && (
                     <span className="u-show-mobile">
@@ -237,7 +238,11 @@ export default class Header extends Component {
               { showBackToSettingsMobile && (
                 <span>
                   <span className={isWebApp() ? 'u-show-mobile' : ''}>
-                    <HeaderBackTo backToLink={backToSettingsLinkMobile} backToLinkText={backToSettingsLinkText} />
+                    <HeaderBackTo
+                      backToLink={backToSettingsLinkMobile}
+                      backToLinkText={backToSettingsLinkText}
+                      history={history}
+                    />
                   </span>
                   { isWebApp() && !showBackToVoterGuides && !showBackToSettingsDesktop && (
                     <span className="u-show-desktop-tablet">
@@ -298,7 +303,7 @@ export default class Header extends Component {
           <div className={isWebApp ? 'headroom-wrapper-webapp__default' : ''} id="headroom-wrapper">
             <div className={pageHeaderClasses} style={cordovaTopHeaderTopMargin()} id="header-container">
               { showBackToValues ?
-                <HeaderBackTo backToLink={backToValuesLink} backToLinkText={backToValuesLinkText} /> :
+                <HeaderBackTo backToLink={backToValuesLink} backToLinkText={backToValuesLinkText} history={history} /> :
                 <HeaderBar />}
             </div>
           </div>
@@ -343,7 +348,7 @@ export default class Header extends Component {
           <div className={isWebApp ? 'headroom-wrapper-webapp__default' : ''} id="headroom-wrapper">
             <div className={pageHeaderClasses} style={cordovaTopHeaderTopMargin()} id="header-container">
               { showBackToFriends ?
-                <HeaderBackTo backToLink={backToFriendsLink} backToLinkText={backToFriendsLinkText} /> :
+                <HeaderBackTo backToLink={backToFriendsLink} backToLinkText={backToFriendsLinkText} history={history} /> :
                 <HeaderBar />}
             </div>
           </div>

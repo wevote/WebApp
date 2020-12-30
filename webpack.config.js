@@ -180,10 +180,10 @@ module.exports = {
     // ],
   }),
   plugins: [
-    new CleanWebpackPlugin(),
-    ...(single ? [] : [
-      new ids.HashedModuleIdsPlugin(),
-    ]),
+    // new CleanWebpackPlugin(),
+    // ...(single ? [] : [
+    //   new ids.HashedModuleIdsPlugin(),
+    // ]),
     new HtmlWebpackPlugin(single ? {
       template: './src/index.html',
     } : {

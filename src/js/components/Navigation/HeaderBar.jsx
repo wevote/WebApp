@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import { Button, AppBar, Toolbar, Tabs, IconButton, Tooltip } from '@material-ui/core';
 import { Place, AccountCircle } from '@material-ui/icons';
 import { withStyles } from '@material-ui/core/styles';
-import { hasIPhoneNotch, isIOSAppOnMac, isCordova, isWebApp } from '../../utils/cordovaUtils';
+import { hasIPhoneNotch, historyPushV5, isIOSAppOnMac, isCordova, isWebApp } from '../../utils/cordovaUtils';
 import AdviserIntroModal from '../CompleteYourProfile/AdviserIntroModal';
 import AppActions from '../../actions/AppActions';
 import AppStore from '../../stores/AppStore';
@@ -344,13 +344,10 @@ class HeaderBar extends Component {
     AppActions.setShareModalStep('');
     const { location: { href } } = window;
     if (stringContains('/modal/share', href) && isWebApp()) {
+      const { history } = this.props;
       const pathnameWithoutModalShare = href.replace('/modal/share', '');  // Cordova
       // console.log('Navigation closeShareModal ', pathnameWithoutModalShare)
-      // December 2020, is there a downside of just setting location?  Otherwise refactor to a “function component”
-      // const history = useHistory();
-      // history.push(pathnameWithoutModalShare);
-      // TODO: Dec 2020, this is a hack that needs to be fixed, and it doesn't work
-      window.location.href = pathnameWithoutModalShare;
+      historyPushV5.push(history, pathnameWithoutModalShare);
     }
   }
 
@@ -427,7 +424,7 @@ class HeaderBar extends Component {
       return null;
     }
 
-    const { classes } = this.props;
+    const { classes, history } = this.props;
     const { location: { pathname } } = window;
 
     const {
@@ -553,7 +550,7 @@ class HeaderBar extends Component {
                   <div>
                     {showEditAddressButton && editAddressButtonHtml}
                   </div>
-                  <HeaderNotificationMenu />
+                  <HeaderNotificationMenu history={history} />
                   <div id="profileAvatarHeaderBar"
                     className={`header-nav__avatar-container ${isCordova() ? 'header-nav__avatar-cordova' : undefined}`}
                     style={isCordova() ? { marginBottom: 2 } : {}}
@@ -589,7 +586,7 @@ class HeaderBar extends Component {
                     <div>
                       {showEditAddressButton && editAddressButtonHtml}
                     </div>
-                    <HeaderNotificationMenu />
+                    <HeaderNotificationMenu history={history} />
                     <IconButton
                       classes={{ root: classes.iconButtonRoot }}
                       id="profileAvatarHeaderBar"
@@ -622,7 +619,7 @@ class HeaderBar extends Component {
                 <div>
                   {showEditAddressButton && editAddressButtonHtml}
                 </div>
-                <HeaderNotificationMenu />
+                <HeaderNotificationMenu history={history} />
                 <Button
                   color="primary"
                   classes={{ root: classes.headerButtonRoot }}
