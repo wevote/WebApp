@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import ReactSVG from 'react-svg';
+import { ReactSVG } from 'react-svg';
 import styled from 'styled-components';
 import { withStyles, withTheme } from '@material-ui/core/styles';
 import { CheckCircle, ThumbUp, ThumbDown } from '@material-ui/icons';
@@ -156,7 +156,7 @@ class PositionSummaryListForPopover extends Component {
                       <IssueIcon key={`issueInScore-${issue.issue_we_vote_id}`}>
                         <ReactSVG
                           src={cordovaDot(`/img/global/svg-icons/issues/${issue.issue_icon_local_path}.svg`)}
-                          svgStyle={{ fill: '#555', padding: '1px 1px 1px 0px' }}
+                          beforeInjection={(svg) => svg.setAttribute('style', { fill: '#555', padding: '1px 1px 1px 0px' })}
                         />
                       </IssueIcon>
                     ))}

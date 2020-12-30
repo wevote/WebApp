@@ -1,9 +1,10 @@
 import React from 'react';
-import { browserHistory, hashHistory } from 'react-router';
+import { createBrowserHistory, createHashHistory } from 'history';
+import { useHistory } from "react-router-dom";
 import webAppConfig from '../config';
 import { cordovaOffsetLog, oAuthLog } from './logging';
 import { dumpObjProps } from './appleSiliconUtils';
-
+import { stringContains } from './textFormat';
 
 /* global $  */
 
@@ -21,6 +22,8 @@ export function isWebApp () {
   return !isCordova();
 }
 
+// export const history = isWebApp() ? createBrowserHistory() : createHashHistory();
+
 export function isIOS () {
   if (isWebApp()) return false;
   // console.log("<><><><> uuid:  " + window.device.uuid);
@@ -31,7 +34,7 @@ export function isIOS () {
 export function isIOSAppOnMac () {
   if (isWebApp()) return false;
   const { isiOSAppOnMac } = window.device;
-  // Our fork of cordova-plugin-device exposes the underlyinng native code variable isiOSAppOnMac
+  // Our fork of cordova-plugin-device exposes the underlying native code variable isiOSAppOnMac
   return isiOSAppOnMac;
 }
 
@@ -57,13 +60,28 @@ export function isAndroid () {
   return isCordova() && platform === 'Android';  // Ignore the "Condition is always false" warning.  This line works correctly.
 }
 
-// see https://github.com/ReactTraining/react-router/blob/v3/docs/guides/Histories.md
+// Setting href does not change the history object, the name was retained from the v3 react-router implementation.
+// For the V4 router (Jan 2020) this simply changes the url and browsed page without using history
+// If history retention is needed, see TabWithPushHistory.jsx for an example of how to do it.
+// See v5: https://reactrouter.com/native/api/Hooks/usehistory
+// See v3: https://reactrouter.com/native/api/Hooks/usehistory
 export function historyPush (route) {
-  // console.log("historyPush, route:", route);
-  if (isCordova()) {
-    hashHistory.push(route);
+  console.log(`historyPush ******** ${route} *******`);
+  // v3 code:
+  // const history = useHistory();
+  // history.push(route);
+  // v5 work around:
+  const { location: { origin } } = window; // origin: "https://localhost:3000"
+  console.warn('DEPRECATED historyPush (full reload) was called for route:', route);
+  window.location.href = origin + route;
+}
+
+export function historyPushV5 (history, route) {
+  if (history) {
+    history.push(route);
   } else {
-    browserHistory.push(route);
+    console.error('historyPushV5 did not receive a valid history object, reloading the app with .replace()');
+    window.location.replace(route);
   }
 }
 

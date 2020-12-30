@@ -16,7 +16,7 @@ import {
 import AnalyticsActions from '../../actions/AnalyticsActions';
 import BallotElectionListWithFilters from './BallotElectionListWithFilters';
 import EditAddressInPlace from '../Widgets/EditAddressInPlace';
-import MapChart from '../Widgets/MapChart/MapChart';
+// import MapChart from '../Widgets/MapChart/MapChart';
 import { renderLog } from '../../utils/logging';
 import { calculateBallotBaseUrl } from '../../utils/textFormat';
 import { hasIPhoneNotch } from '../../utils/cordovaUtils';
@@ -44,8 +44,9 @@ class SelectBallotModal extends Component {
   //
   // shouldComponentUpdate (nextProps, nextState) {
   //   // This lifecycle method tells the component to NOT render if componentWillReceiveProps didn't see any changes
-  //   if (this.props.pathname !== nextProps.pathname) {
-  //     // console.log('this.props.pathname:', this.props.pathname, ', nextProps.pathname:', nextProps.pathname);
+  //   const { location: { pathname } } = window;
+  //   if (pathname !== nextProps.pathname) {
+  //     // console.log('pathname:', pathname, ', nextProps.pathname:', nextProps.pathname);
   //     return true;
   //   }
   //   if (this.state.selectedState !== nextState.selectedState) return true;
@@ -90,7 +91,8 @@ class SelectBallotModal extends Component {
 
   render () {
     renderLog('SelectBallotModal');  // Set LOG_RENDER_EVENTS to log all renders
-    const { classes, hideAddressEdit, hideElections, pathname } = this.props;
+    const { classes, hideAddressEdit, hideElections } = this.props;
+    const { location: { pathname } } = window;
     const { editingAddress } = this.state;
     const ballotBaseUrl = calculateBallotBaseUrl(this.props.ballotBaseUrl, pathname);
 
@@ -129,23 +131,23 @@ class SelectBallotModal extends Component {
                     address={voterAddressObject}
                     ballotBaseUrl={ballotBaseUrl}
                     defaultIsEditingAddress={editingAddress}
-                    pathname={pathname}
                     toggleFunction={this.props.toggleFunction}
                     toggleEditingAddress={this.toggleEditingAddress}
                   />
                 </EditAddressInPlaceWrapperMobile>
               )}
-              {!editingAddress && (
-                <MapChartWrapper>
-                  <MapChart onClickFunction={this.mapHandler} />
-                </MapChartWrapper>
-              )}
+              {/* TODO: December 2020: Restore the d3 based map chart. */}
+              {/*{!editingAddress && (*/}
+              {/*  <MapChartWrapper>*/}
+              {/*  <MapChart onClickFunction={this.mapHandler} />*/}
+              {/*  </MapChartWrapper>*/}
+              {/*)}*/}
             </div>
-            {!editingAddress && (
-              <MapChartWrapperDesktop className="u-show-desktop">
-                <MapChart onClickFunction={this.mapHandler} />
-              </MapChartWrapperDesktop>
-            )}
+            {/*{!editingAddress && (*/}
+            {/*  <MapChartWrapperDesktop className="u-show-desktop">*/}
+            {/*    <MapChart onClickFunction={this.mapHandler} />*/}
+            {/*  </MapChartWrapperDesktop>*/}
+            {/*)}*/}
             <SidebarWrapper>
               <div className="u-show-desktop">
                 {!hideAddressEdit && (
@@ -153,7 +155,6 @@ class SelectBallotModal extends Component {
                     address={voterAddressObject}
                     ballotBaseUrl={ballotBaseUrl}
                     defaultIsEditingAddress={editingAddress}
-                    pathname={pathname}
                     toggleFunction={this.props.toggleFunction}
                     toggleEditingAddress={this.toggleEditingAddress}
                   />
@@ -259,7 +260,6 @@ SelectBallotModal.propTypes = {
   hideAddressEdit: PropTypes.bool,
   hideElections: PropTypes.bool,
   organization_we_vote_id: PropTypes.string, // If looking at voter guide, we pass in the parent organization_we_vote_id
-  pathname: PropTypes.string,
   show: PropTypes.bool,
   toggleFunction: PropTypes.func.isRequired,
 };
@@ -379,7 +379,7 @@ const MapChartWrapperDesktop = styled.div`
 const SidebarWrapper = styled.div`
   padding: 16px;
   @media (max-width: 575px) {
-    padding-top: 0px;
+    padding-top: 0;
   }
   @media(min-width: 576px) {
     max-width: 50%;
@@ -402,7 +402,6 @@ const ToggleGroup = styled.div`
 `;
 
 const PriorButton = styled(Button)`
-  width: 50%;
   position: relative;
   right: -2px;
   width: calc(50% + 2px);
@@ -413,10 +412,9 @@ const PriorButton = styled(Button)`
 const UpcomingButton = styled(Button)`
   border-top-left-radius: 0 !important;
   border-bottom-left-radius: 0 !important;
-  width: 50%;
   position: relative;
   left: -2px;
-  width: calc(50% + 2px);s
+  width: calc(50% + 2px);
   z-index: 0;
 `;
 

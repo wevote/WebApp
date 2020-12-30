@@ -287,7 +287,6 @@ class SharedItemModal extends Component {
         <PersonalizedScoreDescription>
           <PersonalizedScoreIntroBody
             markPersonalizedScoreIntroCompleted={this.markPersonalizedScoreIntroCompleted}
-            pathname=""
             show
             stepAdvanced={this.personalizedScoreStepAdvanced}
             toggleFunction={this.personalizedScoreIntroModalToggle}

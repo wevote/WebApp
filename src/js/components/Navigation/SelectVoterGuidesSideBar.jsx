@@ -65,6 +65,7 @@ export default class SelectVoterGuidesSideBar extends Component {
   render () {
     renderLog('SelectVoterGuidesSideBar');  // Set LOG_RENDER_EVENTS to log all renders
     const { showNewVoterGuideModal, voterGuidesOwnedByVoter } = this.state;
+    const { location: { pathname } } = window;
     let voterGuideLinksHtml = <span />;
     if (voterGuidesOwnedByVoter) {
       voterGuideLinksHtml = voterGuidesOwnedByVoter.map((voterGuide) => {
@@ -109,6 +110,7 @@ export default class SelectVoterGuidesSideBar extends Component {
           <VoterGuideChooseElectionModal
             show={showNewVoterGuideModal}
             toggleFunction={this.closeNewVoterGuideModal}
+            pathname={pathname}
           />
         )}
       </div>

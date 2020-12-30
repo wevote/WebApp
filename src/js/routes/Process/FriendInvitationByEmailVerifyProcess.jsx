@@ -27,8 +27,8 @@ export default class FriendInvitationByEmailVerifyProcess extends Component {
   componentDidMount () {
     this.appStoreListener = AppStore.addListener(this.onAppStoreChange.bind(this));
     this.friendStoreListener = FriendStore.addListener(this.onFriendStoreChange.bind(this));
-    const { invitation_secret_key: invitationSecretKey } = this.props.params;
-    // console.log('FriendInvitationByEmailVerifyProcess, componentDidMount, this.props.params.invitation_secret_key: ', invitationSecretKey);
+    const { match: { params: { invitation_secret_key: invitationSecretKey } } } = this.props;
+    // console.log('FriendInvitationByEmailVerifyProcess, componentDidMount, params.invitation_secret_key: ', invitationSecretKey);
     const hostname = AppStore.getHostname();
     if (invitationSecretKey && hostname && hostname !== '') {
       this.friendInvitationByEmailVerify(invitationSecretKey);
@@ -45,7 +45,7 @@ export default class FriendInvitationByEmailVerifyProcess extends Component {
   }
 
   onAppStoreChange () {
-    const { invitation_secret_key: invitationSecretKey } = this.props.params;
+    const { match: { params: { invitation_secret_key: invitationSecretKey } } } = this.props;
     const { friendInvitationByEmailVerifyCalled, friendInvitationInformationCalled } = this.state;
     const hostname = AppStore.getHostname();
     if (!friendInvitationByEmailVerifyCalled && invitationSecretKey && hostname && hostname !== '') {
@@ -68,7 +68,7 @@ export default class FriendInvitationByEmailVerifyProcess extends Component {
   }
 
   onFriendStoreChange () {
-    const { invitation_secret_key: invitationSecretKey } = this.props.params;
+    const { match: { params: { invitation_secret_key: invitationSecretKey } } } = this.props;
     const { friendInvitationByEmailVerifyCalled, friendInvitationInformationCalled } = this.state;
     const hostname = AppStore.getHostname();
     if (friendInvitationByEmailVerifyCalled && !friendInvitationInformationCalled && invitationSecretKey && hostname && hostname !== '') {
@@ -126,7 +126,7 @@ export default class FriendInvitationByEmailVerifyProcess extends Component {
 
   render () {
     renderLog('FriendInvitationByEmailVerifyProcess');  // Set LOG_RENDER_EVENTS to log all renders
-    const { invitation_secret_key: invitationSecretKey } = this.props.params;
+    const { match: { params: { invitation_secret_key: invitationSecretKey } } } = this.props;
     const { friendInvitationInformation, hostname, invitationStatus, saving, yesPleaseMergeAccounts } = this.state;
     // console.log('FriendInvitationByEmailVerifyProcess, invitationStatus:', invitationStatus);
 
@@ -250,5 +250,5 @@ export default class FriendInvitationByEmailVerifyProcess extends Component {
   }
 }
 FriendInvitationByEmailVerifyProcess.propTypes = {
-  params: PropTypes.object,
+  match: PropTypes.object,
 };

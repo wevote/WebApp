@@ -117,6 +117,20 @@ class BallotStatusMessage extends Component {
     this.voterStoreListener.remove();
   }
 
+  handleMessageClose () {
+    // setting cookie to track the elections where user has closed the warning messages for them
+    if (this.props.googleCivicElectionId) {
+      const { electionsWithBallotStatusMessageClosed } = this.state;
+      const electionsWithBallotStatusMessageClosedUpdated = [...electionsWithBallotStatusMessageClosed, this.props.googleCivicElectionId];
+      const electionsWithBallotStatusMessageClosedForCookie = JSON.stringify(electionsWithBallotStatusMessageClosedUpdated);
+      cookies.setItem('elections_with_ballot_status_message_closed', electionsWithBallotStatusMessageClosedForCookie, Infinity, '/');
+      this.setState({
+        electionsWithBallotStatusMessageClosed: electionsWithBallotStatusMessageClosedUpdated,
+        open: false,
+      });
+    }
+  }
+
   onBallotStoreChange () {
     let ballotLocationDisplayName = '';
     const { googleCivicElectionId } = this.state;
@@ -165,20 +179,6 @@ class BallotStatusMessage extends Component {
       voterEnteredAddress,
       voterSpecificBallotFromGoogleCivic,
     });
-  }
-
-  handleMessageClose () {
-    // setting cookie to track the elections where user has closed the warning messages for them
-    if (this.props.googleCivicElectionId) {
-      const { electionsWithBallotStatusMessageClosed } = this.state;
-      const electionsWithBallotStatusMessageClosedUpdated = [...electionsWithBallotStatusMessageClosed, this.props.googleCivicElectionId];
-      const electionsWithBallotStatusMessageClosedForCookie = JSON.stringify(electionsWithBallotStatusMessageClosedUpdated);
-      cookies.setItem('elections_with_ballot_status_message_closed', electionsWithBallotStatusMessageClosedForCookie, Infinity, '/');
-      this.setState({
-        electionsWithBallotStatusMessageClosed: electionsWithBallotStatusMessageClosedUpdated,
-        open: false,
-      });
-    }
   }
 
   render () {

@@ -21,7 +21,7 @@ export default class SignInEmailProcess extends Component {
 
   componentDidMount () {
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
-    const { email_secret_key: emailSecretKey } = this.props.params;
+    const { match: { params: { email_secret_key: emailSecretKey } } } = this.props;
     oAuthLog('SignInEmailProcess, componentDidMount, this.props.params.emailSecretKey: ', emailSecretKey);
     this.voterEmailAddressSignIn(emailSecretKey);
   }
@@ -50,7 +50,7 @@ export default class SignInEmailProcess extends Component {
 
   render () {
     renderLog('SignInEmailProcess');  // Set LOG_RENDER_EVENTS to log all renders
-    const { email_secret_key: emailSecretKey } = this.props.params;
+    const { match: { params: { email_secret_key: emailSecretKey } } } = this.props;
     const voterIsSignedIn = this.state.voter && this.state.voter.is_signed_in;
     oAuthLog('SignInEmailProcess, emailSecretKey:', emailSecretKey);
     if (!emailSecretKey ||
@@ -194,6 +194,6 @@ export default class SignInEmailProcess extends Component {
   }
 }
 SignInEmailProcess.propTypes = {
-  params: PropTypes.object,
+  match: PropTypes.object,
   email_secret_key: PropTypes.string,
 };

@@ -7,7 +7,6 @@ import { Place, AccountCircle } from '@material-ui/icons';
 import AppStore from '../../stores/AppStore';
 import AppActions from '../../actions/AppActions';
 import BallotStore from '../../stores/BallotStore';
-import cookies from '../../utils/cookies';
 import { isCordova, isWebApp, historyPush, hasIPhoneNotch } from '../../utils/cordovaUtils';
 import EndorsementModeTabs from './EndorsementModeTabs';
 import HeaderBackToButton from './HeaderBackToButton';
@@ -52,8 +51,9 @@ class HeaderBackToVoterGuides extends Component {
 
   componentDidMount () {
     // console.log('HeaderBackToVoterGuides componentDidMount, this.props: ', this.props);
+    const { params } = this.props;
     this.setState({
-      voterGuideWeVoteId: this.props.params.voter_guide_we_vote_id,
+      voterGuideWeVoteId: params.voter_guide_we_vote_id,
     });
     let voterGuide;
     if (this.state.voterGuideWeVoteId && isProperlyFormattedVoterGuideWeVoteId(this.state.voterGuideWeVoteId)) {
@@ -76,8 +76,8 @@ class HeaderBackToVoterGuides extends Component {
     // let officeName;
     let organization = {};
     let organizationWeVoteId;
-    if (this.props.params) {
-      organizationWeVoteId = this.props.params.organization_we_vote_id || '';
+    if (params) {
+      organizationWeVoteId = params.organization_we_vote_id || '';
       organization = OrganizationStore.getOrganizationByWeVoteId(organizationWeVoteId);
       if (organizationWeVoteId && organizationWeVoteId !== '' && !organization.organization_we_vote_id) {
         // Retrieve the organization object
@@ -89,15 +89,12 @@ class HeaderBackToVoterGuides extends Component {
     const voter = VoterStore.getVoter();
     const voterFirstName = VoterStore.getFirstName();
     const voterIsSignedIn = voter.is_signed_in;
-    const weVoteBrandingOffFromUrl = this.props.location.query ? this.props.location.query.we_vote_branding_off : 0;
-    const weVoteBrandingOffFromCookie = cookies.getItem('we_vote_branding_off');
     this.setState({
       showNewVoterGuideModal: AppStore.showNewVoterGuideModal(),
       showSignInModal: AppStore.showSignInModal(),
       voter,
       voterFirstName,
       voterIsSignedIn,
-      we_vote_branding_off: weVoteBrandingOffFromUrl || weVoteBrandingOffFromCookie,
     });
   }
 
@@ -108,8 +105,9 @@ class HeaderBackToVoterGuides extends Component {
     // let officeName;
     let organization = {};
     let organizationWeVoteId;
-    if (nextProps.params) {
-      organizationWeVoteId = nextProps.params.organization_we_vote_id || '';
+    const { params: nextParams } = nextProps;
+    if (nextParams) {
+      organizationWeVoteId = nextParams.organization_we_vote_id || '';
       organization = OrganizationStore.getOrganizationByWeVoteId(organizationWeVoteId);
       if (organizationWeVoteId && organizationWeVoteId !== '' && !organization.organization_we_vote_id) {
         // Retrieve the organization object
@@ -119,8 +117,6 @@ class HeaderBackToVoterGuides extends Component {
 
     // console.log('organizationWeVoteId: ', organizationWeVoteId);
 
-    const weVoteBrandingOffFromUrl = nextProps.location.query ? nextProps.location.query.we_vote_branding_off : 0;
-    const weVoteBrandingOffFromCookie = cookies.getItem('we_vote_branding_off');
     const voter = VoterStore.getVoter();
     const voterFirstName = VoterStore.getFirstName();
     const voterIsSignedIn = voter.is_signed_in;
@@ -128,13 +124,12 @@ class HeaderBackToVoterGuides extends Component {
       voter,
       voterFirstName,
       voterIsSignedIn,
-      we_vote_branding_off: weVoteBrandingOffFromUrl || weVoteBrandingOffFromCookie,
-      voterGuideWeVoteId: nextProps.params.voter_guide_we_vote_id,
+      voterGuideWeVoteId: nextParams.voter_guide_we_vote_id,
     });
 
     let voterGuide;
-    if (nextProps.params.voter_guide_we_vote_id && isProperlyFormattedVoterGuideWeVoteId(nextProps.params.voter_guide_we_vote_id)) {
-      voterGuide = VoterGuideStore.getVoterGuideByVoterGuideId(nextProps.params.voter_guide_we_vote_id);
+    if (nextParams.voter_guide_we_vote_id && isProperlyFormattedVoterGuideWeVoteId(nextParams.voter_guide_we_vote_id)) {
+      voterGuide = VoterGuideStore.getVoterGuideByVoterGuideId(nextParams.voter_guide_we_vote_id);
       if (voterGuide && voterGuide.we_vote_id) {
         this.setState({
           voterGuide,
@@ -254,7 +249,8 @@ class HeaderBackToVoterGuides extends Component {
       profilePopUpOpen, showNewVoterGuideModal, showSignInModal,
       voter, voterFirstName, voterIsSignedIn,
     } = this.state;
-    const { classes, pathname } = this.props;
+    const { classes } = this.props;
+    const { location: { pathname } } = window;
     const voterPhotoUrlMedium = voterPhoto(voter);
 
     let backToLink = '/settings/voterguidelist'; // default
@@ -269,7 +265,7 @@ class HeaderBackToVoterGuides extends Component {
         backToLink = '/settings/voterguidesmenu';
       }
     } else if (stringContains('/settings/general', pathnameLowerCase) || stringContains('/settings/positions', pathnameLowerCase)) {
-      // const voterGuideWeVoteId = this.props.params.voter_guide_we_vote_id;
+      // const voterGuideWeVoteId = params.voter_guide_we_vote_id;
       backToOrganizationLinkText = ''; // Back to 'Your Endorsements'
       backToLink = '/settings/voterguidelist';
     } else if (stringContains('/vg/', pathnameLowerCase) && stringContains('/settings', pathnameLowerCase)) {
@@ -365,7 +361,6 @@ class HeaderBackToVoterGuides extends Component {
                   toggleSignInModal={this.toggleSignInModal}
                   transitionToYourVoterGuide={this.transitionToYourVoterGuide}
                   voter={voter}
-                  weVoteBrandingOff={this.state.we_vote_branding_off}
                 />
                 )}
               </span>
@@ -410,6 +405,7 @@ class HeaderBackToVoterGuides extends Component {
           <VoterGuideChooseElectionModal
             show={showNewVoterGuideModal}
             toggleFunction={this.toggleVoterGuideModal}
+            pathname={pathname}
           />
         )}
       </AppBar>
@@ -418,9 +414,7 @@ class HeaderBackToVoterGuides extends Component {
 }
 HeaderBackToVoterGuides.propTypes = {
   classes: PropTypes.object,
-  location: PropTypes.object,
   params: PropTypes.object.isRequired,
-  pathname: PropTypes.string,
 };
 
 const styles = (theme) => ({

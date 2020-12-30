@@ -11,7 +11,6 @@ class AdviserIntroModal extends Component {
   constructor (props) {
     super(props);
     this.state = {
-      pathname: '',
     };
   }
 
@@ -20,7 +19,6 @@ class AdviserIntroModal extends Component {
     // FriendActions.currentFriends();
 
     this.setState({
-      pathname: this.props.pathname,
     });
   }
 
@@ -36,18 +34,20 @@ class AdviserIntroModal extends Component {
   // }
 
   closeThisModal = () => {
-    this.props.toggleFunction(this.state.pathname);
+    const { location: { pathname } } = window;
+    this.props.toggleFunction(pathname);
   }
 
   render () {
     renderLog('AdviserIntroModal');  // Set LOG_RENDER_EVENTS to log all renders
     const { classes } = this.props;
+    const { location: { pathname } } = window;
 
     return (
       <Dialog
         classes={{ paper: classes.dialogPaper }}
         open={this.props.show}
-        onClose={() => { this.props.toggleFunction(this.state.pathname); }}
+        onClose={() => { this.props.toggleFunction(pathname); }}
       >
         <ModalTitleArea>
           <div>
@@ -77,7 +77,6 @@ class AdviserIntroModal extends Component {
 }
 AdviserIntroModal.propTypes = {
   classes: PropTypes.object,
-  pathname: PropTypes.string,
   show: PropTypes.bool,
   toggleFunction: PropTypes.func.isRequired,
 };

@@ -21,8 +21,8 @@ export default class VerifyEmailProcess extends Component {
 
   componentDidMount () {
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
-    const { email_secret_key: emailSecretKey } = this.props.params;
-    console.log('VerifyEmailProcess, componentDidMount, this.props.params.email_secret_key: ', emailSecretKey);
+    const { match: { params: { email_secret_key: emailSecretKey } } } = this.props;
+    console.log('VerifyEmailProcess, componentDidMount, this.match.props.params.email_secret_key: ', emailSecretKey);
     this.voterEmailAddressVerify(emailSecretKey);
   }
 
@@ -95,7 +95,7 @@ export default class VerifyEmailProcess extends Component {
 
   render () {
     renderLog('VerifyEmailProcess');  // Set LOG_RENDER_EVENTS to log all renders
-    const { email_secret_key: emailSecretKey } = this.props.params;
+    const { match: { params: { email_secret_key: emailSecretKey } } } = this.props;
     console.log('VerifyEmailProcess, emailSecretKey:', emailSecretKey);
     if (!emailSecretKey ||
       this.state.saving ||
@@ -121,7 +121,8 @@ export default class VerifyEmailProcess extends Component {
     if (this.state.yesPleaseMergeAccounts) {
       // Go ahead and merge this voter record with the voter record that the emailSecretKey belongs to
       console.log('this.voterMergeTwoAccountsByEmailKey emailSecretKey:', emailSecretKey);
-      this.voterMergeTwoAccountsByEmailKey(emailSecretKey, this.state.voter.has_data_to_preserve);
+      const { has_data_to_preserve: hasDataToPreserve } = this.state.voter;
+      this.voterMergeTwoAccountsByEmailKey(emailSecretKey, hasDataToPreserve);
       // return <span>this.voterMergeTwoAccountsByEmailKey</span>;
       return LoadingWheel;
     }
@@ -187,6 +188,6 @@ export default class VerifyEmailProcess extends Component {
   }
 }
 VerifyEmailProcess.propTypes = {
-  params: PropTypes.object,
+  match: PropTypes.object,
   email_secret_key: PropTypes.string,
 };

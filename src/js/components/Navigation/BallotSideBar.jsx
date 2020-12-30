@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router';
+import { Link } from 'react-router-dom';
 import { withStyles } from '@material-ui/core/styles';
 import { List, Typography } from '@material-ui/core';
 import styled from 'styled-components';
@@ -31,6 +31,8 @@ class BallotSideBar extends Component {
   }
 
   shouldComponentUpdate (nextProps, nextState) {
+    const { location: { pathname } } = window;
+
     // This lifecycle method tells the component to NOT render if componentWillReceiveProps didn't see any changes
     if (this.state.componentDidMountFinished === false) {
       // console.log('shouldComponentUpdate: componentDidMountFinished === false');
@@ -52,10 +54,10 @@ class BallotSideBar extends Component {
       // console.log('shouldComponentUpdate: changed this.props.displayTitle', this.props.displayTitle, ', nextState.displayTitle', nextProps.displayTitle);
       return true;
     }
-    if (this.props.pathname !== nextProps.pathname) {
-      // console.log('shouldComponentUpdate: changed this.props.pathname', this.props.pathname, ', nextState.pathname', nextProps.pathname);
-      return true;
-    }
+    // if (pathname !== nextProps.pathname) {
+    //   // console.log('shouldComponentUpdate: changed pathname', pathname, ', nextState.pathname', nextProps.pathname);
+    //   return true;
+    // }
     if (this.props.raceLevelFilterItemsInThisBallot !== nextProps.raceLevelFilterItemsInThisBallot) {
       return true;
     }
@@ -68,6 +70,13 @@ class BallotSideBar extends Component {
 
   componentWillUnmount () {
     this.ballotStoreListener.remove();
+  }
+
+  handleClick () {
+    // Fullscreen mode won't pass an onClick function, since the BallotSideBar does not go away after a click
+    if (this.props.onClick) {
+      this.props.onClick();
+    }
   }
 
   onBallotStoreChange () {
@@ -100,13 +109,6 @@ class BallotSideBar extends Component {
       return orderedArray;
     } else {
       return {};
-    }
-  }
-
-  handleClick () {
-    // Fullscreen mode won't pass an onClick function, since the BallotSideBar does not go away after a click
-    if (this.props.onClick) {
-      this.props.onClick();
     }
   }
 
@@ -241,16 +243,12 @@ class BallotSideBar extends Component {
     }
   }
 }
-BallotSideBar.defaultProps = {
-  pathname: '/ballot',
-};
 BallotSideBar.propTypes = {
   ballotWithAllItemsByFilterType: PropTypes.array,
   ballotItemLinkHasBeenClicked: PropTypes.func,
   displayTitle: PropTypes.bool,
   displaySubtitles: PropTypes.bool,
   onClick: PropTypes.func,
-  pathname: PropTypes.string,
   raceLevelFilterItemsInThisBallot: PropTypes.array,
   classes: PropTypes.object,
   activeRaceItem: PropTypes.string,

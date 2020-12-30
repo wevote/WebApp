@@ -24,7 +24,6 @@ class PersonalizedScoreIntroBody extends Component {
       explanationTextBottomBlue: null,
       openAdviserMaterialUIPopover: false,
       openSupportOpposeCountDisplayModal: false,
-      pathname: '',
       supportOpposeCountDisplayModalTutorialOn: true,
       supportOpposeCountDisplayModalTutorialText: null,
       showPersonalizedScoreDownArrow: false,
@@ -241,28 +240,24 @@ class PersonalizedScoreIntroBody extends Component {
     const { personalizedScoreSteps } = this.state;
     this.setState(personalizedScoreSteps[1]);
     this.setState({
-      pathname: this.props.pathname,
     });
+    const { location: { pathname } } = window;
     if (this.props.show) {
       hideZenDeskHelpVisibility();
-    }
-  }
-
-  // eslint-disable-next-line camelcase,react/sort-comp
-  UNSAFE_componentWillReceiveProps (nextProps) {
-    if (nextProps.show) {
-      hideZenDeskHelpVisibility();
     } else {
-      setZenDeskHelpVisibility(this.props.pathname);
+      setZenDeskHelpVisibility(pathname);
     }
   }
 
   componentWillUnmount () {
-    setZenDeskHelpVisibility(this.props.pathname);
+    const { location: { pathname } } = window;
+
+    setZenDeskHelpVisibility(pathname);
   }
 
   closeThisModal = () => {
-    setZenDeskHelpVisibility(this.props.pathname);
+    const { location: { pathname } } = window;
+    setZenDeskHelpVisibility(pathname);
     const { currentStep } = this.state;
     const currentStepCompletedThreshold = 7;
     if (currentStep >= currentStepCompletedThreshold) {
@@ -270,7 +265,7 @@ class PersonalizedScoreIntroBody extends Component {
       VoterActions.voterUpdateInterfaceStatusFlags(VoterConstants.PERSONALIZED_SCORE_INTRO_COMPLETED);
     }
     if (this.props.toggleFunction) {
-      this.props.toggleFunction(this.state.pathname);
+      this.props.toggleFunction(pathname);
     }
   };
 
@@ -440,7 +435,6 @@ class PersonalizedScoreIntroBody extends Component {
 PersonalizedScoreIntroBody.propTypes = {
   classes: PropTypes.object,
   inModal: PropTypes.bool,
-  pathname: PropTypes.string,
   markPersonalizedScoreIntroCompleted: PropTypes.func,
   show: PropTypes.bool,
   stepAdvanced: PropTypes.func,

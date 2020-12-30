@@ -68,7 +68,7 @@ class Ready extends Component {
     ActivityActions.activityNoticeListRetrieve();
     FriendActions.suggestedFriendList();
 
-    let { modalToOpen } = this.props.params;
+    let { match: { params: { modalToOpen, shared_item_code: sharedItemCode } } } = this.props;
     modalToOpen = modalToOpen || '';
     // console.log('componentDidMount modalToOpen:', modalToOpen);
     if (modalToOpen === 'share') {
@@ -76,7 +76,7 @@ class Ready extends Component {
         AppActions.setShowShareModal(true);
       }, 1000);
     } else if (modalToOpen === 'sic') { // sic = Shared Item Code
-      const sharedItemCode = this.props.params.shared_item_code || '';
+      sharedItemCode = sharedItemCode || '';
       // console.log('componentDidMount sharedItemCode:', sharedItemCode);
       if (sharedItemCode) {
         this.modalOpenTimer = setTimeout(() => {
@@ -330,7 +330,7 @@ class Ready extends Component {
   }
 }
 Ready.propTypes = {
-  params: PropTypes.object,
+  match: PropTypes.object,
 };
 
 const styles = (theme) => ({

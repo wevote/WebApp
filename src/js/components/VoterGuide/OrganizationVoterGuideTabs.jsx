@@ -20,7 +20,7 @@ import { renderLog } from '../../utils/logging';
 export default class OrganizationVoterGuideTabs extends Component {
   // static getDerivedStateFromProps (props, state) {
   //   const { defaultTabItem } = state;
-  //   // console.log('Friends getDerivedStateFromProps defaultTabItem:', defaultTabItem, ', this.props.params.tabItem:', props.params.tabItem);
+  //   // console.log('Friends getDerivedStateFromProps defaultTabItem:', defaultTabItem, ', params.tabItem:', props.params.tabItem);
   //   // We only redirect when in mobile mode (when "displayFriendsTabs()" is true), a tab param has not been passed in, and we have a defaultTab specified
   //   // This solves an edge case where you re-click the Friends Footer tab when you are in the friends section
   //   if (displayFriendsTabs() && props.params.tabItem === undefined && defaultTabItem) {
@@ -75,7 +75,7 @@ export default class OrganizationVoterGuideTabs extends Component {
       allOrganizationPositionsLength,
       organizationWeVoteId,
       organization: OrganizationStore.getOrganizationByWeVoteId(organizationWeVoteId),
-      pathname: this.props.location.pathname,
+      pathname: window.location.pathname,
       showElectionsWithOrganizationVoterGuidesModal: AppStore.showElectionsWithOrganizationVoterGuidesModal(),
       voter: VoterStore.getVoter(),
     });
@@ -115,9 +115,9 @@ export default class OrganizationVoterGuideTabs extends Component {
         activeRoute: nextProps.activeRoute,
       });
     }
-    this.setState({
-      pathname: nextProps.location.pathname,
-    });
+    // this.setState({
+    //   pathname: nextProps.location.pathname,
+    // });
   }
 
   // 2019-09-29 Dale: I'm having trouble getting the first voter guide page to display Ballot items without this commented out
@@ -150,19 +150,9 @@ export default class OrganizationVoterGuideTabs extends Component {
     window.removeEventListener('scroll', this.handleScroll);
   }
 
-  onAppStoreChange () {
-    this.setState({
-      showElectionsWithOrganizationVoterGuidesModal: AppStore.showElectionsWithOrganizationVoterGuidesModal(),
-    });
-  }
-
-  onVoterGuideStoreChange () {
-    // console.log('OrganizationVoterGuideTabs, onVoterGuideStoreChange, organization: ', this.state.organization);
-    const { organization_we_vote_id: organizationWeVoteId } = this.state.organization;
-    this.setState({
-      voterGuideFollowedList: VoterGuideStore.getVoterGuidesFollowedByOrganization(organizationWeVoteId),
-      voterGuideFollowersList: VoterGuideStore.getVoterGuidesFollowingOrganization(organizationWeVoteId),
-    });
+  handleScroll () {
+    this.setState({ scrollDownValue: window.scrollY });
+    // console.log('Scrolling', window.scrollY);
   }
 
   onOrganizationStoreChange () {
@@ -182,9 +172,19 @@ export default class OrganizationVoterGuideTabs extends Component {
     });
   }
 
-  handleScroll () {
-    this.setState({ scrollDownValue: window.scrollY });
-    // console.log('Scrolling', window.scrollY);
+  onVoterGuideStoreChange () {
+    // console.log('OrganizationVoterGuideTabs, onVoterGuideStoreChange, organization: ', this.state.organization);
+    const { organization_we_vote_id: organizationWeVoteId } = this.state.organization;
+    this.setState({
+      voterGuideFollowedList: VoterGuideStore.getVoterGuidesFollowedByOrganization(organizationWeVoteId),
+      voterGuideFollowersList: VoterGuideStore.getVoterGuidesFollowingOrganization(organizationWeVoteId),
+    });
+  }
+
+  onAppStoreChange () {
+    this.setState({
+      showElectionsWithOrganizationVoterGuidesModal: AppStore.showElectionsWithOrganizationVoterGuidesModal(),
+    });
   }
 
   switchTab (destinationTab) {
@@ -231,6 +231,13 @@ export default class OrganizationVoterGuideTabs extends Component {
       activeRoute, allOrganizationPositionsLength, organizationWeVoteId,
       pathname, showElectionsWithOrganizationVoterGuidesModal, voter,
     } = this.state;
+    let params;
+    if (this.props.match) {
+      params = this.props.match.params;    // From Root.js URL
+    } else {
+      params = this.props.params;          // From pushHistory
+    }
+
     if (!pathname || !activeRoute || !organizationWeVoteId || !voter) {
       return <div>{LoadingWheel}</div>;
     }
@@ -271,7 +278,7 @@ export default class OrganizationVoterGuideTabs extends Component {
       //       organizationWeVoteId={organizationWeVoteId}
       //       activeRoute={activeRoute}
       //       location={this.props.location}
-      //       params={this.props.params}
+      //       params={params}
       //       ref={(ref) => { this.voterGuideBallotReference = ref; }}
       //     />
       //   );
@@ -286,9 +293,9 @@ export default class OrganizationVoterGuideTabs extends Component {
               null }
             <VoterGuideEndorsements
               activeRoute={activeRoute}
-              location={this.props.location}
+              location={window.location}
               organizationWeVoteId={organizationWeVoteId}
-              params={this.props.params}
+              params={params}
             />
           </>
         );
@@ -358,9 +365,9 @@ export default class OrganizationVoterGuideTabs extends Component {
           <VoterGuideChooseElectionWithPositionsModal
             ballotBaseUrl="/ballot"
             organizationWeVoteId={organizationWeVoteId}
-            pathname={pathname}
             show={showElectionsWithOrganizationVoterGuidesModal}
             toggleFunction={this.closeShowElectionsWithOrganizationVoterGuidesModal}
+            pathname={pathname}
           />
         )}
       </div>
@@ -371,6 +378,5 @@ OrganizationVoterGuideTabs.propTypes = {
   activeRoute: PropTypes.string,
   activeRouteChanged: PropTypes.func,
   organizationWeVoteId: PropTypes.string.isRequired,
-  location: PropTypes.object.isRequired,
-  params: PropTypes.object.isRequired,
+  match: PropTypes.object,
 };

@@ -54,10 +54,15 @@ class Candidate extends Component {
 
   componentDidMount () {
     // console.log('Candidate componentDidMount');
+    const { match: { params: {
+      candidate_we_vote_id: candidateWeVoteId,
+      organization_we_vote_id: organizationWeVoteId,
+      modal_to_show: modalToShow,
+      shared_item_code: sharedItemCode,
+    } } } = this.props;
     this.appStoreListener = AppStore.addListener(this.onAppStoreChange.bind(this));
     this.candidateStoreListener = CandidateStore.addListener(this.onCandidateStoreChange.bind(this));
     this.voterGuideStoreListener = VoterGuideStore.addListener(this.onVoterGuideStoreChange.bind(this));
-    const { candidate_we_vote_id: candidateWeVoteId, organization_we_vote_id: organizationWeVoteId } = this.props.params;
     // console.log('candidateWeVoteId:', candidateWeVoteId);
     if (candidateWeVoteId) {
       const candidate = CandidateStore.getCandidate(candidateWeVoteId);
@@ -124,14 +129,13 @@ class Candidate extends Component {
       organizationWeVoteId,
       scrolledDown: AppStore.getScrolledDown(),
     });
-    const modalToOpen = this.props.params.modal_to_show || '';
+    const modalToOpen = modalToShow || '';
     if (modalToOpen === 'share') {
       this.modalOpenTimer = setTimeout(() => {
         AppActions.setShowShareModal(true);
       }, 1000);
     } else if (modalToOpen === 'sic') { // sic = Shared Item Code
-      const sharedItemCode = this.props.params.shared_item_code || '';
-      if (sharedItemCode) {
+      if (sharedItemCode || '') {
         this.modalOpenTimer = setTimeout(() => {
           AppActions.setShowSharedItemModal(sharedItemCode);
         }, 1000);
@@ -144,13 +148,14 @@ class Candidate extends Component {
   // eslint-disable-next-line camelcase,react/sort-comp
   UNSAFE_componentWillReceiveProps (nextProps) {
     // console.log('Candidate componentWillReceiveProps');
-    const modalToOpen = nextProps.params.modal_to_show || '';
+    const { match: { params: nextParams } } = nextProps;
+    const modalToOpen = nextParams.modal_to_show || '';
     if (modalToOpen === 'share') {
       this.modalOpenTimer = setTimeout(() => {
         AppActions.setShowShareModal(true);
       }, 1000);
     } else if (modalToOpen === 'sic') { // sic = Shared Item Code
-      const sharedItemCode = nextProps.params.shared_item_code || '';
+      const sharedItemCode = nextParams.shared_item_code || '';
       if (sharedItemCode) {
         this.modalOpenTimer = setTimeout(() => {
           AppActions.setShowSharedItemModal(sharedItemCode);
@@ -267,7 +272,7 @@ class Candidate extends Component {
 
   render () {
     renderLog('Candidate');  // Set LOG_RENDER_EVENTS to log all renders
-    const { classes } = this.props;
+    const { classes, match: { params } } = this.props;
     const { allCachedPositionsForThisCandidate, candidate, organizationWeVoteId, scrolledDown } = this.state;
     // console.log('candidate: ', candidate);
     if (!candidate || !candidate.ballot_item_display_name) {
@@ -333,7 +338,7 @@ class Candidate extends Component {
               <PositionList
                 incomingPositionList={allCachedPositionsForThisCandidate}
                 ballotItemDisplayName={candidate.ballot_item_display_name}
-                params={this.props.params}
+                params={params}
                 positionListExistsTitle={(
                   <PositionListIntroductionText>
                     <Info classes={{ root: classes.informationIcon }} />
@@ -383,7 +388,7 @@ class Candidate extends Component {
 }
 Candidate.propTypes = {
   classes: PropTypes.object,
-  params: PropTypes.object.isRequired,
+  match: PropTypes.object.isRequired,
 };
 
 const styles = () => ({

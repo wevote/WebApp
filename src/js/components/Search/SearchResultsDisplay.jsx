@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
-import { Link } from 'react-router';
+import { Link } from 'react-router-dom';
 import { capitalizeString } from '../../utils/textFormat';
 import ImageHandler from '../ImageHandler';
 

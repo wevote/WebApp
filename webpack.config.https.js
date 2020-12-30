@@ -15,13 +15,11 @@ const { InjectManifest } = require('workbox-webpack-plugin');
 
 const port = process.env.PORT || 3000;
 const single = process.env.BUNDLE && process.env.BUNDLE === 'SINGLE';
-const isHTTPS = process.env.PROTOCOL && process.env.PROTOCOL === 'HTTPS';
 
 // Set isProduction to false, to enable the interactive bundle analyser and the Unused component analyzer
 const isProduction = true;   // Developers can set this to be false, but in git it should always be true
 
 module.exports = {
-  // mode: isHTTPS ? 'production' : 'development',
   mode: 'development',
   entry: {
     bundle: ['./src/js/index.js', './src/sass/main.scss'],
@@ -167,23 +165,21 @@ module.exports = {
         },
       },
     },
-    // minimizer: [
-    //   new UglifyJsPlugin({
-    //     sourceMap: true,
-    //     uglifyOptions: {
-    //       ecma: 8,
-    //       mangle: false,
-    //       keep_classnames: true,
-    //       keep_fnames: true,
-    //     },
-    //   }),
-    // ],
+    minimizer: [
+      new UglifyJsPlugin({
+        sourceMap: true,
+        uglifyOptions: {
+          ecma: 8,
+          mangle: false,
+          keep_classnames: true,
+          keep_fnames: true,
+        },
+      }),
+    ],
   }),
   plugins: [
-    // new CleanWebpackPlugin(),
-    // ...(single ? [] : [
-    //   new ids.HashedModuleIdsPlugin(),
-    // ]),
+    new CleanWebpackPlugin(),
+    new ids.HashedModuleIdsPlugin(),
     new HtmlWebpackPlugin(single ? {
       template: './src/index.html',
     } : {
@@ -205,9 +201,18 @@ module.exports = {
     ]),
     new CopyPlugin({
       patterns: [
-        { from: 'src/extension.html', to: '.' },
-        { from: 'src/robots.txt', to: '.' },
-        { from: 'src/css/', to: 'css/' },
+        {
+          from: 'src/extension.html',
+          to: '.',
+        },
+        {
+          from: 'src/robots.txt',
+          to: '.',
+        },
+        {
+          from: 'src/css/',
+          to: 'css/',
+        },
         {
           from: 'src/img',
           to: 'img/',
@@ -221,11 +226,9 @@ module.exports = {
     }),
     // Strip from bundle.js, all moment.js locales except “en”
     new MomentLocalesPlugin(),
-    // December 2020: 40MB is too big, but what is needed today
     new InjectManifest({
       swSrc: './src/serviceWorker.js',
       swDest: 'sw.js',
-      maximumFileSizeToCacheInBytes: 40000000,
     }),
     ...(isProduction ? [] : [
       new UnusedWebpackPlugin({  // Set isProduction to false to list (likely) unused files
@@ -293,7 +296,7 @@ module.exports = {
     modules: [path.resolve(__dirname, 'src'), 'node_modules'],
     extensions: ['.js', '.jsx'],
   },
-  devServer: (isHTTPS ? {
+  devServer: {
     https: {
       key: fs.readFileSync('./src/cert/server.key'),
       cert: fs.readFileSync('./src/cert/server.crt'),
@@ -302,12 +305,6 @@ module.exports = {
     port,
     historyApiFallback: true,
     open: true,
-  } : {
-    host: 'localhost',
-    port,
-    historyApiFallback: true,
-    open: true,
-  }),
-  // devtool: isHTTPS ? 'source-map' : 'inline-cheap-module-source-map',
+  },
   devtool: 'inline-cheap-module-source-map',
 };

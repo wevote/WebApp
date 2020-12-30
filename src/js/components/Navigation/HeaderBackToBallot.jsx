@@ -8,8 +8,7 @@ import AppActions from '../../actions/AppActions';
 import AppStore from '../../stores/AppStore';
 import { dumpCssFromId } from '../../utils/appleSiliconUtils';
 import CandidateStore from '../../stores/CandidateStore';
-import cookies from '../../utils/cookies';
-import { hasIPhoneNotch, historyPush, isAndroid, isIOSAppOnMac, isCordova, isIPad, isWebApp } from '../../utils/cordovaUtils';
+import { hasIPhoneNotch, historyPushV5, isAndroid, isIOSAppOnMac, isCordova, isIPad, isWebApp } from '../../utils/cordovaUtils';
 import HeaderBackToButton from './HeaderBackToButton';
 import HeaderBarProfilePopUp from './HeaderBarProfilePopUp';
 import HeaderNotificationMenu from './HeaderNotificationMenu';
@@ -65,7 +64,8 @@ class HeaderBackToBallot extends Component {
   }
 
   componentDidMount () {
-    // console.log('HeaderBackToBallot componentDidMount, this.props: ', this.props);
+    console.log('HeaderBackToBallot componentDidMount, this.props: ', this.props);
+    const { params } = this.props;
     this.appStoreListener = AppStore.addListener(this.onAppStoreChange.bind(this));
     this.candidateStoreListener = CandidateStore.addListener(this.onCandidateStoreChange.bind(this));
     this.measureStoreListener = MeasureStore.addListener(this.onMeasureStoreChange.bind(this));
@@ -80,10 +80,10 @@ class HeaderBackToBallot extends Component {
     let officeName;
     let organization = {};
     let organizationWeVoteId;
-    if (this.props.params) {
-      candidateWeVoteId = this.props.params.candidate_we_vote_id || '';
-      measureWeVoteId = this.props.params.measure_we_vote_id || '';
-      officeWeVoteId = this.props.params.office_we_vote_id || '';
+    if (params) {
+      candidateWeVoteId = params.candidate_we_vote_id || '';
+      measureWeVoteId = params.measure_we_vote_id || '';
+      officeWeVoteId = params.office_we_vote_id || '';
       if (candidateWeVoteId && candidateWeVoteId !== '') {
         const candidate = CandidateStore.getCandidate(candidateWeVoteId);
         // console.log('HeaderBackToBallot, candidateWeVoteId:', candidateWeVoteId, ', candidate:', candidate);
@@ -132,16 +132,16 @@ class HeaderBackToBallot extends Component {
           officeWeVoteId,
         });
       }
-      const backToCandidateWeVoteId = this.props.params.back_to_cand_we_vote_id || '';
-      const backToMeasureWeVoteId = this.props.params.back_to_meas_we_vote_id || '';
+      const backToCandidateWeVoteId = params.back_to_cand_we_vote_id || '';
+      const backToMeasureWeVoteId = params.back_to_meas_we_vote_id || '';
       if (backToMeasureWeVoteId) {
         const backToMeasure = MeasureStore.getMeasure(backToMeasureWeVoteId);
         this.setState({
           backToMeasure,
         });
       }
-      const backToVariable = this.props.params.back_to_variable || '';
-      organizationWeVoteId = this.props.params.organization_we_vote_id || '';
+      const backToVariable = params.back_to_variable || '';
+      organizationWeVoteId = params.organization_we_vote_id || '';
       organization = OrganizationStore.getOrganizationByWeVoteId(organizationWeVoteId);
       if (organizationWeVoteId && organizationWeVoteId !== '' && !organization.organization_we_vote_id) {
         // Retrieve the organization object
@@ -166,8 +166,6 @@ class HeaderBackToBallot extends Component {
     // console.log('candidateWeVoteId: ', candidateWeVoteId);
     // console.log('organizationWeVoteId: ', organizationWeVoteId);
 
-    const weVoteBrandingOffFromUrl = this.props.location.query ? this.props.location.query.we_vote_branding_off : 0;
-    const weVoteBrandingOffFromCookie = cookies.getItem('we_vote_branding_off');
     const voter = VoterStore.getVoter();
     const voterFirstName = VoterStore.getFirstName();
     const voterIsSignedIn = voter.is_signed_in;
@@ -181,7 +179,6 @@ class HeaderBackToBallot extends Component {
       voterFirstName,
       voterIsSignedIn,
       voterPhotoUrlMedium,
-      we_vote_branding_off: weVoteBrandingOffFromUrl || weVoteBrandingOffFromCookie,
     });
 
     if (isIOSAppOnMac() && appleSiliconDebug) {
@@ -189,10 +186,12 @@ class HeaderBackToBallot extends Component {
     }
   }
 
-  // eslint-disable-next-line camelcase,react/sort-comp
+  // eslint-disable-next-line camelcase
   UNSAFE_componentWillReceiveProps (nextProps) {
     // WARN: Warning: componentWillReceiveProps has been renamed, and is not recommended for use. See https://fb.me/react-unsafe-component-lifecycles for details.
     // console.log('HeaderBackToBallot componentWillReceiveProps, nextProps: ', nextProps);
+    const { params } = this.props;
+    const { params: nextParams } = nextProps;
     let candidateWeVoteId;
     let googleCivicElectionId;
     let measureWeVoteId;
@@ -200,10 +199,10 @@ class HeaderBackToBallot extends Component {
     let officeName;
     let organization = {};
     let organizationWeVoteId;
-    if (nextProps.params) {
-      candidateWeVoteId = nextProps.params.candidate_we_vote_id || '';
-      measureWeVoteId = this.props.params.measure_we_vote_id || '';
-      officeWeVoteId = nextProps.params.office_we_vote_id || '';
+    if (nextParams) {
+      candidateWeVoteId = nextParams.candidate_we_vote_id || '';
+      measureWeVoteId = params.measure_we_vote_id || '';
+      officeWeVoteId = nextParams.office_we_vote_id || '';
       if (candidateWeVoteId && candidateWeVoteId !== '') {
         const candidate = CandidateStore.getCandidate(candidateWeVoteId);
         // console.log('HeaderBackToBallot, candidateWeVoteId:', candidateWeVoteId, ', candidate:', candidate);
@@ -252,16 +251,16 @@ class HeaderBackToBallot extends Component {
           officeWeVoteId,
         });
       }
-      const backToCandidateWeVoteId = nextProps.params.back_to_cand_we_vote_id || '';
-      const backToMeasureWeVoteId = nextProps.params.back_to_meas_we_vote_id || '';
+      const backToCandidateWeVoteId = nextParams.back_to_cand_we_vote_id || '';
+      const backToMeasureWeVoteId = nextParams.back_to_meas_we_vote_id || '';
       if (backToMeasureWeVoteId) {
         const backToMeasure = MeasureStore.getMeasure(backToMeasureWeVoteId);
         this.setState({
           backToMeasure,
         });
       }
-      const backToVariable = nextProps.params.back_to_variable || '';
-      organizationWeVoteId = nextProps.params.organization_we_vote_id || '';
+      const backToVariable = nextParams.back_to_variable || '';
+      organizationWeVoteId = nextParams.organization_we_vote_id || '';
       organization = OrganizationStore.getOrganizationByWeVoteId(organizationWeVoteId);
       if (organizationWeVoteId && organizationWeVoteId !== '' && !organization.organization_we_vote_id) {
         // Retrieve the organization object
@@ -287,8 +286,6 @@ class HeaderBackToBallot extends Component {
 
     // console.log('organizationWeVoteId: ', organizationWeVoteId);
 
-    const weVoteBrandingOffFromUrl = nextProps.location.query ? nextProps.location.query.we_vote_branding_off : 0;
-    const weVoteBrandingOffFromCookie = cookies.getItem('we_vote_branding_off');
     const voter = VoterStore.getVoter();
     const voterFirstName = VoterStore.getFirstName();
     const voterIsSignedIn = voter.is_signed_in;
@@ -300,9 +297,9 @@ class HeaderBackToBallot extends Component {
       voterFirstName,
       voterIsSignedIn,
       voterPhotoUrlMedium,
-      we_vote_branding_off: weVoteBrandingOffFromUrl || weVoteBrandingOffFromCookie,
     });
   }
+  // eslint-enable camelcase,react/sort-comp,react/prop-types
 
   shouldComponentUpdate (nextProps, nextState) {
     // This lifecycle method tells the component to NOT render if not needed
@@ -501,13 +498,17 @@ class HeaderBackToBallot extends Component {
   }
 
   onVoterStoreChange () {
+    let candidateWeVoteId;  // Will not receive this param if you reload the page in the browser with Cmd+Shift+R
+    if (this.props.params) {
+      const { params: { candidate_we_vote_id: candID } } = this.props;
+      candidateWeVoteId = candID;
+    }
     const voter = VoterStore.getVoter();
     const voterFirstName = VoterStore.getFirstName();
     const voterIsSignedIn = voter.is_signed_in;
     const voterPhotoUrlMedium = voter.voter_photo_url_medium;
     let googleCivicElectionId;
-    if (this.props.params) {
-      const candidateWeVoteId = this.props.params.candidate_we_vote_id || '';
+    if (candidateWeVoteId || '') {
       if (candidateWeVoteId && candidateWeVoteId !== '') {
         const candidate = CandidateStore.getCandidate(candidateWeVoteId);
         // console.log('HeaderBackToBallot, candidateWeVoteId:', candidateWeVoteId, ', candidate:', candidate);
@@ -561,11 +562,13 @@ class HeaderBackToBallot extends Component {
   closeShareModal = () => {
     AppActions.setShowShareModal(false);
     AppActions.setShareModalStep('');
-    const { pathname } = this.props;
+    const { location: { pathname } } = window;
+
     if (stringContains('/modal/share', pathname) && isWebApp()) {
       const pathnameWithoutModalShare = pathname.replace('/modal/share', '');
       // console.log('navigation closeShareModal ', pathnameWithoutModalShare);
-      historyPush(pathnameWithoutModalShare);
+      const { history } = this.props;
+      historyPushV5(history, pathnameWithoutModalShare);
     }
   }
 
@@ -632,7 +635,8 @@ class HeaderBackToBallot extends Component {
       shareModalStep, showShareModal, voter, voterFirstName, voterIsSignedIn,
     } = this.state;
     const voterPhotoUrlMedium = voterPhoto(voter);
-    const { classes, pathname } = this.props;
+    const { classes, history } = this.props;
+    const { location: { pathname } } = window;
 
     // console.log('HeaderBackToBallot googleCivicElectionId:', googleCivicElectionId);
 
@@ -719,7 +723,7 @@ class HeaderBackToBallot extends Component {
           />
 
           <NotificationsAndProfileWrapper className="u-cursor--pointer">
-            <HeaderNotificationMenu />
+            <HeaderNotificationMenu history={history} />
             {voterIsSignedIn ? (
               <span onClick={this.toggleAccountMenu}>
                 {voterPhotoUrlMedium ? (
@@ -763,7 +767,6 @@ class HeaderBackToBallot extends Component {
                     toggleSignInModal={this.toggleSignInModal}
                     transitionToYourVoterGuide={this.transitionToYourVoterGuide}
                     voter={voter}
-                    weVoteBrandingOff={this.state.we_vote_branding_off}
                   />
                 )}
               </span>
@@ -801,7 +804,6 @@ class HeaderBackToBallot extends Component {
         {showShareModal && (
           <ShareModal
             voterIsSignedIn={voterIsSignedIn}
-            pathname={pathname}
             show={showShareModal}
             shareModalStep={shareModalStep}
             closeShareModal={this.closeShareModal}
@@ -813,9 +815,8 @@ class HeaderBackToBallot extends Component {
 }
 HeaderBackToBallot.propTypes = {
   classes: PropTypes.object,
-  location: PropTypes.object,
-  params: PropTypes.object.isRequired,
-  pathname: PropTypes.string,
+  history: PropTypes.object,
+  params: PropTypes.object,
 };
 
 const styles = (theme) => ({

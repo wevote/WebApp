@@ -30,16 +30,18 @@ class VoterGuideSettingsDashboard extends Component {
 
   componentDidMount () {
     // console.log('VoterGuideSettingsDashboard componentDidMount');
-    // if (this.props.params.edit_mode) {  // We are going to ignore the incoming edit_mode
+    const { match: { params } } = this.props;
+    // if (params.edit_mode) {  // We are going to ignore the incoming edit_mode
     this.onAppStoreChange();
     // Get Voter Guide information
-    // console.log('this.props.params.voter_guide_we_vote_id:', this.props.params.voter_guide_we_vote_id);
+    // const { match: { params } } = this.props;
+    // console.log('params.voter_guide_we_vote_id:', params.voter_guide_we_vote_id);
     // let voterGuideFound = false;
-    if (this.props.params.voter_guide_we_vote_id && isProperlyFormattedVoterGuideWeVoteId(this.props.params.voter_guide_we_vote_id)) {
+    if (params.voter_guide_we_vote_id && isProperlyFormattedVoterGuideWeVoteId(params.voter_guide_we_vote_id)) {
       this.setState({
-        voterGuideWeVoteId: this.props.params.voter_guide_we_vote_id,
+        voterGuideWeVoteId: params.voter_guide_we_vote_id,
       });
-      const voterGuide = VoterGuideStore.getVoterGuideByVoterGuideId(this.props.params.voter_guide_we_vote_id);
+      const voterGuide = VoterGuideStore.getVoterGuideByVoterGuideId(params.voter_guide_we_vote_id);
       if (voterGuide && voterGuide.we_vote_id) {
         this.setState({
           localGoogleCivicElectionId: voterGuide.google_civic_election_id,
@@ -69,14 +71,15 @@ class VoterGuideSettingsDashboard extends Component {
   // eslint-disable-next-line camelcase,react/sort-comp
   UNSAFE_componentWillReceiveProps (nextProps) {
     // console.log('VoterGuideSettingsDashboard componentDidMount');
+    const { match: { params: nextParams } } = nextProps;
     this.onAppStoreChange();
-    // console.log('nextProps.params.voter_guide_we_vote_id:', nextProps.params.voter_guide_we_vote_id);
-    if (nextProps.params.voter_guide_we_vote_id && isProperlyFormattedVoterGuideWeVoteId(nextProps.params.voter_guide_we_vote_id)) {
-      const voterGuide = VoterGuideStore.getVoterGuideByVoterGuideId(nextProps.params.voter_guide_we_vote_id);
+    // console.log('nextParams.voter_guide_we_vote_id:', nextParams.voter_guide_we_vote_id);
+    if (nextParams.voter_guide_we_vote_id && isProperlyFormattedVoterGuideWeVoteId(nextParams.voter_guide_we_vote_id)) {
+      const voterGuide = VoterGuideStore.getVoterGuideByVoterGuideId(nextParams.voter_guide_we_vote_id);
       this.setState({
         localGoogleCivicElectionId: voterGuide.google_civic_election_id,
         voterGuide,
-        voterGuideWeVoteId: nextProps.params.voter_guide_we_vote_id,
+        voterGuideWeVoteId: nextParams.voter_guide_we_vote_id,
       });
     }
   }
@@ -227,7 +230,7 @@ class VoterGuideSettingsDashboard extends Component {
   }
 }
 VoterGuideSettingsDashboard.propTypes = {
-  params: PropTypes.object,
+  match: PropTypes.object,
 };
 
 const styles = () => ({

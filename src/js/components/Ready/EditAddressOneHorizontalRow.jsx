@@ -76,6 +76,18 @@ class EditAddressOneHorizontalRow extends Component {
     return { hasError: true };
   }
 
+
+  handleKeyPress (event) {
+    // console.log('EditAddressOneHorizontalRow, handleKeyPress, event: ', event, ', event.keyCode:', event.keyCode);
+    // console.log('this.autoComplete:', this.autoComplete);
+    // console.log('handleKeyPress');
+    const enterAndSpaceKeyCodes = [13]; // We actually don't want to use the space character to save, 32
+    if (enterAndSpaceKeyCodes.includes(event.keyCode)) {
+      event.preventDefault();
+      this.voterAddressSaveLocal(event);
+    }
+  }
+
   onBallotStoreChange () {
     // console.log('EditAddressOneHorizontalRow, onBallotStoreChange, this.state:', this.state);
     const { saveUrl } = this.props;
@@ -127,17 +139,6 @@ class EditAddressOneHorizontalRow extends Component {
       this.setState({
         textForMapSearch: place.name,
       });
-    }
-  }
-
-  handleKeyPress (event) {
-    // console.log('EditAddressOneHorizontalRow, handleKeyPress, event: ', event, ', event.keyCode:', event.keyCode);
-    // console.log('this.autoComplete:', this.autoComplete);
-    // console.log('handleKeyPress');
-    const enterAndSpaceKeyCodes = [13]; // We actually don't want to use the space character to save, 32
-    if (enterAndSpaceKeyCodes.includes(event.keyCode)) {
-      event.preventDefault();
-      this.voterAddressSaveLocal(event);
     }
   }
 

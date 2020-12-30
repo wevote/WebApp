@@ -20,25 +20,19 @@ class PersonalizedScoreIntroModal extends Component {
   componentDidMount () {
     if (this.props.show) {
       hideZenDeskHelpVisibility();
-    }
-  }
-
-  // eslint-disable-next-line camelcase,react/sort-comp
-  UNSAFE_componentWillReceiveProps (nextProps) {
-    if (nextProps.show) {
-      hideZenDeskHelpVisibility();
     } else {
-      setZenDeskHelpVisibility(this.props.pathname);
+      const { location: { pathname } } = window;
+      setZenDeskHelpVisibility(pathname);
     }
   }
 
   componentWillUnmount () {
-    const { pathname } = this.props;
+    const { location: { pathname } } = window;
     setZenDeskHelpVisibility(pathname);
   }
 
   closeThisModal = () => {
-    const { pathname } = this.props;
+    const { location: { pathname } } = window;
     setZenDeskHelpVisibility(pathname);
     const { currentStep } = this.state;
     const currentStepCompletedThreshold = 7;
@@ -50,7 +44,7 @@ class PersonalizedScoreIntroModal extends Component {
   };
 
   personalizedScoreIntroCompleted = () => {
-    const { pathname } = this.props;
+    const { location: { pathname } } = window;
     // Mark this so we know to show 'How it Works' as completed
     VoterActions.voterUpdateInterfaceStatusFlags(VoterConstants.PERSONALIZED_SCORE_INTRO_COMPLETED);
     this.props.toggleFunction(pathname);
@@ -58,7 +52,7 @@ class PersonalizedScoreIntroModal extends Component {
 
   render () {
     renderLog('PersonalizedScoreIntroModal');  // Set LOG_RENDER_EVENTS to log all renders
-    const { classes, pathname, show } = this.props;
+    const { classes, show } = this.props;
 
     if (!show) {
       return null;
@@ -88,7 +82,6 @@ class PersonalizedScoreIntroModal extends Component {
           <PersonalizedScoreIntroBody
             inModal
             // markPersonalizedScoreIntroCompleted={this.markPersonalizedScoreIntroCompleted} // Not needed here
-            pathname={pathname}
             show={show}
             toggleFunction={this.props.toggleFunction}
           />
@@ -99,7 +92,6 @@ class PersonalizedScoreIntroModal extends Component {
 }
 PersonalizedScoreIntroModal.propTypes = {
   classes: PropTypes.object,
-  pathname: PropTypes.string,
   show: PropTypes.bool,
   toggleFunction: PropTypes.func.isRequired,
 };

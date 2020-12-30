@@ -108,7 +108,17 @@ class AddressBox extends Component {
   // See https://reactjs.org/docs/error-boundaries.html
   static getDerivedStateFromError (error) { // eslint-disable-line no-unused-vars
     // Update state so the next render will show the fallback UI, We should have a "Oh snap" page
+    console.log('AddressBox error', error);
     return { hasError: true };
+  }
+
+  handleKeyPress (event) {
+    // console.log('AddressBox, handleKeyPress, event: ', event);
+    const enterAndSpaceKeyCodes = [13]; // We actually don't want to use the space character to save, 32
+    if (enterAndSpaceKeyCodes.includes(event.keyCode)) {
+      event.preventDefault();
+      this.voterAddressSaveLocal(event);
+    }
   }
 
   onVoterStoreChange () {
@@ -150,15 +160,6 @@ class AddressBox extends Component {
       this.setState({
         textForMapSearch: place.name,
       });
-    }
-  }
-
-  handleKeyPress (event) {
-    // console.log('AddressBox, handleKeyPress, event: ', event);
-    const enterAndSpaceKeyCodes = [13]; // We actually don't want to use the space character to save, 32
-    if (enterAndSpaceKeyCodes.includes(event.keyCode)) {
-      event.preventDefault();
-      this.voterAddressSaveLocal(event);
     }
   }
 

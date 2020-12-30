@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router';
+import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { withStyles, withTheme } from '@material-ui/core/styles';
 import { Button } from '@material-ui/core';
 import { Info, ThumbDown, ThumbUp } from '@material-ui/icons';
-import ReactSVG from 'react-svg';
+import { ReactSVG } from 'react-svg';
 import AppActions from '../../actions/AppActions';
 import { cordovaDot } from '../../utils/cordovaUtils';
 import FollowToggle from '../Widgets/FollowToggle';
@@ -213,17 +213,18 @@ class PositionItem extends Component {
     let speakerLink = position.speaker_twitter_handle ? `/${position.speaker_twitter_handle}` : voterGuideWeVoteIdLink;
     let backToCandidateFound = false;
     let backToMeasureFound = false;
-    if (this.props.params) {
-      if (this.props.params.candidate_we_vote_id) {
-        speakerLink += `/btcand/${this.props.params.candidate_we_vote_id}`;
+    const { params } = this.props;
+    if (params) {
+      if (params.candidate_we_vote_id) {
+        speakerLink += `/btcand/${params.candidate_we_vote_id}`;
         backToCandidateFound = true;
-      } else if (this.props.params.measure_we_vote_id) {
-        speakerLink += `/btmeas/${this.props.params.measure_we_vote_id}`;
+      } else if (params.measure_we_vote_id) {
+        speakerLink += `/btmeas/${params.measure_we_vote_id}`;
         backToMeasureFound = true;
       }
       if (backToCandidateFound || backToMeasureFound) {
-        if (this.props.params.back_to_variable) {
-          speakerLink += `/b/${this.props.params.back_to_variable}`;
+        if (params.back_to_variable) {
+          speakerLink += `/b/${params.back_to_variable}`;
         }
       }
     }
@@ -684,8 +685,8 @@ class PositionItem extends Component {
 PositionItem.propTypes = {
   classes: PropTypes.object,
   position: PropTypes.object.isRequired,
-  params: PropTypes.object,
   searchResultsNode: PropTypes.object,
+  params: PropTypes.object,
 };
 
 const styles = (theme) => ({
@@ -776,7 +777,7 @@ const DesktopItemNameContainer = styled.div`
 `;
 
 const DesktopItemNameIssueContainer = styled.div`
-  padding: 0px;
+  padding: 0;
 `;
 
 const DesktopItemTwitter = styled.div`

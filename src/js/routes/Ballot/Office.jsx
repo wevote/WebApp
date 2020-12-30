@@ -37,9 +37,10 @@ class Office extends Component {
   }
 
   componentDidMount () {
+    const { match: { params } } = this.props;
     this.candidateStoreListener = CandidateStore.addListener(this.onCandidateStoreChange.bind(this));
     this.officeStoreListener = OfficeStore.addListener(this.onOfficeStoreChange.bind(this));
-    const officeWeVoteId = this.props.params.office_we_vote_id;
+    const officeWeVoteId = params.office_we_vote_id;
     const office = OfficeStore.getOffice(officeWeVoteId);
     // console.log('officeWeVoteId:', officeWeVoteId, ', office:', office);
     if (office && office.ballot_item_display_name && office.candidate_list) {
@@ -99,13 +100,13 @@ class Office extends Component {
     if (VoterStore.electionId() && !IssueStore.issuesUnderBallotItemsRetrieveCalled(VoterStore.electionId())) {
       IssueActions.issuesUnderBallotItemsRetrieve(VoterStore.electionId());
     }
-    const modalToOpen = this.props.params.modal_to_show || '';
+    const modalToOpen = params.modal_to_show || '';
     if (modalToOpen === 'share') {
       this.modalOpenTimer = setTimeout(() => {
         AppActions.setShowShareModal(true);
       }, 1000);
     } else if (modalToOpen === 'sic') { // sic = Shared Item Code
-      const sharedItemCode = this.props.params.shared_item_code || '';
+      const sharedItemCode = params.shared_item_code || '';
       if (sharedItemCode) {
         this.modalOpenTimer = setTimeout(() => {
           AppActions.setShowSharedItemModal(sharedItemCode);
@@ -113,19 +114,20 @@ class Office extends Component {
       }
     }
     ActivityActions.activityNoticeListRetrieve();
-    AnalyticsActions.saveActionOffice(VoterStore.electionId(), this.props.params.office_we_vote_id);
+    AnalyticsActions.saveActionOffice(VoterStore.electionId(), params.office_we_vote_id);
   }
 
   // eslint-disable-next-line camelcase,react/sort-comp
   UNSAFE_componentWillReceiveProps (nextProps) {
     // console.log('Office componentWillReceiveProps');
-    const modalToOpen = nextProps.params.modal_to_show || '';
+    const { match: { params: nextParams } } = nextProps;
+    const modalToOpen = nextParams.modal_to_show || '';
     if (modalToOpen === 'share') {
       this.modalOpenTimer = setTimeout(() => {
         AppActions.setShowShareModal(true);
       }, 1000);
     } else if (modalToOpen === 'sic') { // sic = Shared Item Code
-      const sharedItemCode = nextProps.params.shared_item_code || '';
+      const sharedItemCode = nextParams.shared_item_code || '';
       if (sharedItemCode) {
         this.modalOpenTimer = setTimeout(() => {
           AppActions.setShowSharedItemModal(sharedItemCode);
@@ -144,10 +146,11 @@ class Office extends Component {
   }
 
   onCandidateStoreChange () {
+    const { match: { params } } = this.props;
     let { candidateList } = this.state;
     let { officeWeVoteId } = this.state;
     if (!officeWeVoteId) {
-      officeWeVoteId = this.props.params.office_we_vote_id;
+      officeWeVoteId = params.office_we_vote_id;
     }
     // console.log('onCandidateStoreChange officeWeVoteId:', officeWeVoteId, ', candidateList:', candidateList);
     let newCandidate;
@@ -203,9 +206,10 @@ class Office extends Component {
   }
 
   onOfficeStoreChange () {
+    const { match: { params } } = this.props;
     let { officeWeVoteId } = this.state;
     if (!officeWeVoteId) {
-      officeWeVoteId = this.props.params.office_we_vote_id;
+      officeWeVoteId = params.office_we_vote_id;
     }
     const office = OfficeStore.getOffice(officeWeVoteId);
     // console.log('Office.jsx onOfficeStoreChange:', officeWeVoteId, ', office:', office);
@@ -340,7 +344,7 @@ class Office extends Component {
   }
 }
 Office.propTypes = {
-  params: PropTypes.object.isRequired,
+  match: PropTypes.object.isRequired,
 };
 
 const OfficeWrapper = styled.div`

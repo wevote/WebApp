@@ -27,18 +27,21 @@ class ImageUploadModal extends Component {
   }
 
   closeThisModal = () => {
-    this.props.toggleFunction(this.state.pathname);
+    const { location: { pathname } } = window;
+    this.props.toggleFunction(pathname);
   }
 
   render () {
     renderLog('ImageUploadModal');  // Set LOG_RENDER_EVENTS to log all renders
     const { classes } = this.props;
+    const { location: { pathname } } = window;
+
 
     return (
       <Dialog
         classes={{ paper: classes.dialogPaper }}
         open={this.props.show}
-        onClose={() => { this.props.toggleFunction(this.state.pathname); }}
+        onClose={() => { this.props.toggleFunction(pathname); }}
       >
         <ModalTitleArea>
           <div>
@@ -70,7 +73,6 @@ class ImageUploadModal extends Component {
 }
 ImageUploadModal.propTypes = {
   classes: PropTypes.object,
-  pathname: PropTypes.string,
   show: PropTypes.bool,
   toggleFunction: PropTypes.func.isRequired,
 };
@@ -133,35 +135,35 @@ const Title = styled.h3`
   }
 `;
 
-const ExplanationText = styled.div`
-  color: #2e3c5d;
-  font-size: 18px;
-  font-weight: 600;
-  margin: 24px 0 18px 0;
-  padding: 0;
-  @include breakpoints (max mid-small) {
-    font-size: 16px;
-  }
-`;
-
-const ExplanationTextLighter = styled.div`
-  font-size: 14px;
-  font-weight: 400;
-  margin: 24px 0 0 0;
-  @include breakpoints (max mid-small) {
-    font-size: 14px;
-  }
-`;
-
-const ValuesListWrapper = styled.div`
-`;
-
-const ContinueButtonWrapper = styled.div`
-  width: 100%;
-  padding-top: 12px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-`;
+// const ExplanationText = styled.div`
+//   color: #2e3c5d;
+//   font-size: 18px;
+//   font-weight: 600;
+//   margin: 24px 0 18px 0;
+//   padding: 0;
+//   @include breakpoints (max mid-small) {
+//     font-size: 16px;
+//   }
+// `;
+//
+// const ExplanationTextLighter = styled.div`
+//   font-size: 14px;
+//   font-weight: 400;
+//   margin: 24px 0 0 0;
+//   @include breakpoints (max mid-small) {
+//     font-size: 14px;
+//   }
+// `;
+//
+// const ValuesListWrapper = styled.div`
+// `;
+//
+// const ContinueButtonWrapper = styled.div`
+//   width: 100%;
+//   padding-top: 12px;
+//   display: flex;
+//   align-items: center;
+//   justify-content: space-between;
+// `;
 
 export default withTheme(withStyles(styles)(ImageUploadModal));

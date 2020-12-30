@@ -40,15 +40,15 @@ class VoterGuideEndorsements extends Component {
   }
 
   componentDidMount () {
-    const { organizationWeVoteId } = this.props;
+    const { organizationWeVoteId, params } = this.props;
     // console.log('VoterGuideEndorsements componentDidMount, organizationWeVoteId:', organizationWeVoteId);
     const ballotBaseUrl = calculateBallotBaseUrl(null, this.props.location.pathname);
-    let googleCivicElectionIdFromUrl = this.props.params.google_civic_election_id || 0;
+    let googleCivicElectionIdFromUrl = params.google_civic_election_id || 0;
     // console.log('googleCivicElectionIdFromUrl: ', googleCivicElectionIdFromUrl);
-    let ballotReturnedWeVoteId = this.props.params.ballot_returned_we_vote_id || '';
+    let ballotReturnedWeVoteId = params.ballot_returned_we_vote_id || '';
     ballotReturnedWeVoteId = ballotReturnedWeVoteId === 'none' ? '' : ballotReturnedWeVoteId;
-    // console.log('this.props.params.ballot_returned_we_vote_id: ', this.props.params.ballot_returned_we_vote_id);
-    let ballotLocationShortcut = this.props.params.ballot_location_shortcut || '';
+    // console.log('params.ballot_returned_we_vote_id: ', params.ballot_returned_we_vote_id);
+    let ballotLocationShortcut = params.ballot_location_shortcut || '';
     ballotLocationShortcut = ballotLocationShortcut.trim();
     ballotLocationShortcut = ballotLocationShortcut === 'none' ? '' : ballotLocationShortcut;
     let googleCivicElectionId = 0;
@@ -240,7 +240,7 @@ class VoterGuideEndorsements extends Component {
   render () {
     renderLog('VoterGuideEndorsements');  // Set LOG_RENDER_EVENTS to log all renders
     // console.log('VoterGuideEndorsements render');
-    const { classes } = this.props;
+    const { classes, params } = this.props;
     const {
       allOrganizationPositions, allOrganizationPositionsLength,
       clearSearchTextNow, currentGoogleCivicElectionId,
@@ -299,7 +299,7 @@ class VoterGuideEndorsements extends Component {
                     <VoterGuidePositionList
                       incomingPositionList={allOrganizationPositions}
                       organizationWeVoteId={organizationWeVoteId}
-                      params={this.props.params}
+                      params={params}
                       positionListExistsTitle={(
                         <PositionListIntroductionText>
                           <Info classes={{ root: classes.informationIcon }} />
@@ -314,7 +314,7 @@ class VoterGuideEndorsements extends Component {
                 <Card>
                   <DelayedLoad showLoadingText waitBeforeShow={2000}>
                     <EmptyBallotMessageContainer>
-                      <Ballot classes={{ root: classes.ballotIconRoot }} />
+                      <Ballot classes={{ root: classes.ballotIconRoot }} location={window.location} />
                       <EmptyBallotText>
                         No endorsements have been found for
                         {' '}

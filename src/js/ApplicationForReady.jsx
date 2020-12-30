@@ -132,13 +132,7 @@ class ApplicationForReady extends Component {
     return (
       <div className={this.getAppBaseClass()} id="app-base-id">
         <ToastContainer closeButton={false} className={getToastClass()} />
-        {/* <Header */}
-        {/*  params={this.props.params} */}
-        {/*  location={this.props.location} */}
-        {/*  pathname={pathname} */}
-        {/*  voter={this.state.voter} */}
-        {/*  weVoteBrandingOff={this.state.weVoteBrandingOff} */}
-        {/* /> */}
+        {/* <Header params={params} pathname={pathname}  /> */}
         <SnackNotifier />
         {/*  padTop={cordovaScrollablePaneTopPadding()} */}
         <Wrapper>
@@ -157,7 +151,7 @@ class ApplicationForReady extends Component {
         {/*  </div> */}
         {/* )} */}
         {/* {showShareButtonFooter && ( */}
-        {/*  <ShareButtonFooter pathname={pathname} /> */}
+        {/*  <ShareButtonFooter /> */}
         {/* )} */}
       </div>
     );
@@ -166,7 +160,7 @@ class ApplicationForReady extends Component {
 ApplicationForReady.propTypes = {
   children: PropTypes.element,
   location: PropTypes.object,
-  // params: PropTypes.object,
+  // match: PropTypes.object,
 };
 
 const Wrapper = styled.div`

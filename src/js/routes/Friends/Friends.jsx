@@ -10,7 +10,7 @@ import AnalyticsActions from '../../actions/AnalyticsActions';
 import AppStore from '../../stores/AppStore';
 import BrowserPushMessage from '../../components/Widgets/BrowserPushMessage';
 import { cordovaBallotFilterTopMargin, cordovaFriendsWrapper } from '../../utils/cordovaOffsets';
-import { cordovaDot, historyPush, isCordova, isWebApp } from '../../utils/cordovaUtils';
+import { cordovaDot, historyPushV5, isCordova, isWebApp } from '../../utils/cordovaUtils';
 import displayFriendsTabs from '../../utils/displayFriendsTabs';
 import FacebookSignInCard from '../../components/Facebook/FacebookSignInCard';
 import FirstAndLastNameRequiredAlert from '../../components/Widgets/FirstAndLastNameRequiredAlert';
@@ -43,11 +43,12 @@ const testimonial = 'Instead of searching through emails and social media for re
 class Friends extends Component {
   static getDerivedStateFromProps (props, state) {
     const { defaultTabItem } = state;
-    // console.log('Friends getDerivedStateFromProps defaultTabItem:', defaultTabItem, ', this.props.params.tabItem:', props.params.tabItem);
+    const { history, match: { params: { tabItem } } } = props;
+    // console.log('Friends getDerivedStateFromProps defaultTabItem:', defaultTabItem, ', tabItem:', tabItem);
     // We only redirect when in mobile mode (when "displayFriendsTabs()" is true), a tab param has not been passed in, and we have a defaultTab specified
     // This solves an edge case where you re-click the Friends Footer tab when you are in the friends section
-    if (displayFriendsTabs() && props.params.tabItem === undefined && defaultTabItem) {
-      historyPush(`/friends/${defaultTabItem}`);
+    if (displayFriendsTabs() && tabItem === undefined && defaultTabItem) {
+      historyPushV5(history, `/friends/${defaultTabItem}`);
     }
     return null;
   }
@@ -167,9 +168,10 @@ class Friends extends Component {
   }
 
   getSelectedTab () {
+    const { match: { params: { tabItem } } } = this.props;
     const { currentFriendList, defaultTabItem, friendInvitationsSentByMe, friendInvitationsSentToMe, suggestedFriendList } = this.state;
-    // console.log('getSelectedTab this.props.params.tabItem:', this.props.params.tabItem, ', defaultTabItem:', defaultTabItem);
-    let selectedTab = this.props.params.tabItem || defaultTabItem;
+    // console.log('getSelectedTab tabItem:', tabItem, ', defaultTabItem:', defaultTabItem);
+    let selectedTab = tabItem || defaultTabItem;
     // Don't return a selected tab if the tab isn't available
     if (String(selectedTab) === 'requests') {
       if (friendInvitationsSentToMe.length < 1) {
@@ -191,13 +193,14 @@ class Friends extends Component {
     return selectedTab;
   }
 
-  handleNavigation = (to) => historyPush(to);
+  handleNavigation = (to) => historyPushV5(this.props.history, to);
 
   resetDefaultTabForMobile (friendInvitationsSentToMe, suggestedFriendList, friendInvitationsSentByMe) {
+    const { match: { params: { tabItem } } } = this.props;
     let defaultTabItem;
-    if (this.props.params.tabItem) {
+    if (tabItem) {
       // If the voter is directed to a friends tab, make that the default
-      defaultTabItem = this.props.params.tabItem;
+      defaultTabItem = tabItem;
     } else if (friendInvitationsSentToMe && friendInvitationsSentToMe.length > 0) {
       defaultTabItem = 'requests';
     } else if (suggestedFriendList && suggestedFriendList.length > 0) {
@@ -208,9 +211,9 @@ class Friends extends Component {
       defaultTabItem = 'invite';
     }
     this.setState({ defaultTabItem });
-    // console.log('resetDefaultTabForMobile defaultTabItem:', defaultTabItem, ', this.props.params.tabItem:', this.props.params.tabItem);
+    // console.log('resetDefaultTabForMobile defaultTabItem:', defaultTabItem, ', tabItem:', tabItem);
     // We only redirect when in mobile mode, when "displayFriendsTabs()" is true
-    if (displayFriendsTabs() && defaultTabItem !== this.props.params.tabItem) {
+    if (displayFriendsTabs() && defaultTabItem !== tabItem) {
       this.handleNavigation(`/friends/${defaultTabItem}`);
     }
   }
@@ -221,7 +224,7 @@ class Friends extends Component {
       currentFriendList, friendActivityExists, friendsHeaderUnpinned, friendInvitationsSentByMe,
       friendInvitationsSentToMe, suggestedFriendList, voter, voterIsSignedIn,
     } = this.state;
-    const { classes } = this.props;
+    const { classes, match: { params: { tabItem } } } = this.props;
 
     // console.log('friendsHeaderUnpinned', friendsHeaderUnpinned);
 
@@ -234,7 +237,7 @@ class Friends extends Component {
     // console.log('friendActivityExists:', friendActivityExists, ', voterIsSignedIn:', voterIsSignedIn);
 
     // Generate mobileContentToDisplay
-    switch (this.props.params.tabItem) {
+    switch (tabItem) {
       case 'requests':
         mobileContentToDisplay = (
           <>
@@ -385,7 +388,7 @@ class Friends extends Component {
     }
 
     // Generate desktopContentToDisplay
-    switch (this.props.params.tabItem) {
+    switch (tabItem) {
       case 'requests':
         desktopContentToDisplay = (
           <FriendInvitationsSentToMe />
@@ -596,7 +599,8 @@ class Friends extends Component {
 }
 Friends.propTypes = {
   classes: PropTypes.object,
-  params: PropTypes.object,
+  match: PropTypes.object,
+  history: PropTypes.object,
 };
 
 const styles = () => ({

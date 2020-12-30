@@ -12,7 +12,8 @@ import ThisIsMeAction from '../../components/Widgets/ThisIsMeAction';
 export default class PositionListForFriends extends Component {
   constructor (props) {
     super(props);
-    this.state = { organizationWeVoteId: this.props.params.organization_we_vote_id };
+    const { params } = this.props;
+    this.state = { organizationWeVoteId: params.organization_we_vote_id };
   }
 
   componentDidMount () {
@@ -27,17 +28,22 @@ export default class PositionListForFriends extends Component {
     OrganizationActions.positionListForOpinionMakerForFriends(organizationWeVoteId, false, true);
   }
 
-  // eslint-disable-next-line camelcase,react/sort-comp
+  // eslint-disable-next-line camelcase, react/sort-comp, react/prop-types
   UNSAFE_componentWillReceiveProps (nextProps) {
+    const { params: nextParams } = nextProps;
+    // eslint-disable react/sort-comp, react/prop-types
     // When a new candidate is passed in, update this component to show the new data
-    this.setState({ organizationWeVoteId: nextProps.params.organization_we_vote_id });
+    // eslint-disable-next-line camelcase, react/sort-comp, react/prop-types
+    this.setState({ organizationWeVoteId: nextParams.organization_we_vote_id });
 
-    OrganizationActions.organizationRetrieve(nextProps.params.organization_we_vote_id);
+    // eslint-disable-next-line camelcase, react/sort-comp, react/prop-types
+    OrganizationActions.organizationRetrieve(nextParams.organization_we_vote_id);
     // Positions for this organization, for this voter / election
-    OrganizationActions.positionListForOpinionMakerForFriends(nextProps.params.organization_we_vote_id, true);
+    OrganizationActions.positionListForOpinionMakerForFriends(nextParams.organization_we_vote_id, true);
     // Positions for this organization, NOT including for this voter / election
-    OrganizationActions.positionListForOpinionMakerForFriends(nextProps.params.organization_we_vote_id, false, true);
+    OrganizationActions.positionListForOpinionMakerForFriends(nextParams.organization_we_vote_id, false, true);
   }
+  // eslint-enable camelcase, react/sort-comp, react/prop-types
 
   componentWillUnmount () {
     this.organizationStoreListener.remove();

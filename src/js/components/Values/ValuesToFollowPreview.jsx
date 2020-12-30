@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router';
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { withTheme } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';

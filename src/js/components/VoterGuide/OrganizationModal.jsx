@@ -32,7 +32,6 @@ class OrganizationModal extends Component {
     this.state = {
       allCachedPositionsForThisBallotItem: [],
       modalOpen: this.props.modalOpen,
-      pathname: '',
       positionListFromFriendsHasBeenRetrievedOnce: {},
       positionListHasBeenRetrievedOnce: {},
       voterGuidesFromFriendsUpcomingHasBeenRetrievedOnce: {},
@@ -147,7 +146,6 @@ class OrganizationModal extends Component {
 
     this.setState({
       modalOpen: this.props.modalOpen,
-      pathname: this.props.pathname,
     });
   }
 
@@ -228,16 +226,17 @@ class OrganizationModal extends Component {
   }
 
   closeOrganizationModal () {
+    const { location: { pathname } } = window;
     this.setState({ modalOpen: false });
     setTimeout(() => {
-      this.props.toggleFunction(this.state.pathname);
+      this.props.toggleFunction(pathname);
     }, 500);
   }
 
   render () {
     // console.log(this.props.candidate_we_vote_id);
     renderLog('OrganizationModal');  // Set LOG_RENDER_EVENTS to log all renders
-    const { classes, organizationWeVoteId, ballotItemWeVoteId } = this.props;
+    const { classes, organizationWeVoteId, ballotItemWeVoteId, params } = this.props;
     const { allCachedPositionsForThisBallotItem, ballotItemDisplayName, isCandidate, isMeasure, modalOpen } = this.state;
 
     return (
@@ -282,7 +281,7 @@ class OrganizationModal extends Component {
                 <PositionList
                   ballotItemDisplayName={ballotItemDisplayName}
                   incomingPositionList={allCachedPositionsForThisBallotItem}
-                  params={this.props.params}
+                  params={params}
                   positionListExistsTitle={(
                     <PositionListIntroductionText>
                       <Info classes={{ root: classes.informationIcon }} />
@@ -306,9 +305,8 @@ OrganizationModal.propTypes = {
   classes: PropTypes.object,
   modalOpen: PropTypes.bool,
   organizationWeVoteId: PropTypes.string,
-  params: PropTypes.object,
-  pathname: PropTypes.string,
   toggleFunction: PropTypes.func.isRequired,
+  params: PropTypes.object,
 };
 
 const styles = () => ({

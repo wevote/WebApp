@@ -174,6 +174,7 @@ class IssuesByBallotItemDisplayList extends Component {
   };
 
   handleDelayedIssueRender = () => {
+    // console.log('handleDelayedIssueRender ----------------');
     const { issueRenderCount, issuesToRenderLength, totalRemainingWidth } = this.state;
     // Get the remaining width with some allowed buffer room
     const bufferedRemainingWidth = totalRemainingWidth + 40;

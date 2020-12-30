@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import ReactSVG from 'react-svg';
+import { ReactSVG } from 'react-svg';
 import { cordovaDot } from '../../utils/cordovaUtils';
 import OpenExternalWebSite from './OpenExternalWebSite';
 import positionIcon from '../../../img/global/svg-icons/positions-icon-24-x-24.svg';
@@ -47,11 +47,7 @@ class EndorsementCard extends PureComponent {
       <ReactSVG
         src={cordovaDot(positionIcon)}
         alt=""
-        svgStyle={
-          {
-            width: '20px',
-          }
-        }
+        beforeInjection={(svg) => svg.setAttribute('style', 'width: 20px')}
       />
     );
     if (whiteOnBlue) {
@@ -60,16 +56,7 @@ class EndorsementCard extends PureComponent {
       icon = (
         <ReactSVG
           src={cordovaDot(positionIcon)}
-          svgStyle={
-            {
-              backgroundColor: '#2e3c5d', // '#fff'
-              borderRadius: '3px',
-              fill: '#fff', // '#2e3c5d'
-              padding: '2px',
-              width: '24px',
-              height: '24px',
-            }
-          }
+          beforeInjection={(svg) => svg.setAttribute('style', 'backgroundColor: #2e3c5d, borderRadius: 3px, fill: #fff, padding: 2px, width: 24px, height: 24px')}
           alt=""
         />
       );

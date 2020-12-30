@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import Helmet from 'react-helmet';
-import { Link } from 'react-router';
+import { Link } from 'react-router-dom';
 import Table from 'react-bootstrap/Table';
 import { cordovaDot, isCordova, isWebApp } from '../../utils/cordovaUtils';
 import DeviceDialog from '../../components/Widgets/DeviceDialog';

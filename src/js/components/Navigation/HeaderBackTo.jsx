@@ -7,7 +7,6 @@ import { withStyles } from '@material-ui/core/styles';
 import AppStore from '../../stores/AppStore';
 import AppActions from '../../actions/AppActions';
 import { dumpCssFromId } from '../../utils/appleSiliconUtils';
-import cookies from '../../utils/cookies';
 import { hasIPhoneNotch, historyPush, isIOSAppOnMac, isCordova, isWebApp, isIPad } from '../../utils/cordovaUtils';
 import HeaderBackToButton from './HeaderBackToButton';
 import HeaderBarProfilePopUp from './HeaderBarProfilePopUp';
@@ -50,8 +49,6 @@ class HeaderBackTo extends Component {
     this.appStoreListener = AppStore.addListener(this.onAppStoreChange.bind(this));
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
 
-    const weVoteBrandingOffFromUrl = this.props.location.query ? this.props.location.query.we_vote_branding_off : 0;
-    const weVoteBrandingOffFromCookie = cookies.getItem('we_vote_branding_off');
     const voter = VoterStore.getVoter();
     const voterFirstName = VoterStore.getFirstName();
     const voterIsSignedIn = voter.is_signed_in;
@@ -65,7 +62,6 @@ class HeaderBackTo extends Component {
       voterIsSignedIn,
       voterPhotoUrlMedium,
       voterWeVoteId: voter.we_vote_id || voterWeVoteId,
-      we_vote_branding_off: weVoteBrandingOffFromUrl || weVoteBrandingOffFromCookie,
     });
     if (isIOSAppOnMac() && appleSiliconDebug) {
       console.log('before dummpCss headerBackToAppBar');
@@ -77,8 +73,6 @@ class HeaderBackTo extends Component {
   UNSAFE_componentWillReceiveProps (nextProps) {
     // WARN: Warning: componentWillReceiveProps has been renamed, and is not recommended for use. See https://fb.me/react-unsafe-component-lifecycles for details.
     // console.log('HeaderBackTo componentWillReceiveProps, nextProps: ', nextProps);
-    const weVoteBrandingOffFromUrl = nextProps.location.query ? nextProps.location.query.we_vote_branding_off : 0;
-    const weVoteBrandingOffFromCookie = cookies.getItem('we_vote_branding_off');
     const voter = VoterStore.getVoter();
     const voterFirstName = VoterStore.getFirstName();
     const voterIsSignedIn = voter.is_signed_in;
@@ -91,7 +85,6 @@ class HeaderBackTo extends Component {
       voterIsSignedIn,
       voterPhotoUrlMedium,
       voterWeVoteId: voter.we_vote_id || nextProps.voterWeVoteId,
-      we_vote_branding_off: weVoteBrandingOffFromUrl || weVoteBrandingOffFromCookie,
     });
   }
 
@@ -217,7 +210,7 @@ class HeaderBackTo extends Component {
   render () {
     renderLog('HeaderBackTo');  // Set LOG_RENDER_EVENTS to log all renders
     // console.log('HeaderBackTo render');
-    const { classes } = this.props;
+    const { classes, history } = this.props;
     const {
       backToLink, backToLinkText, profilePopUpOpen, showSignInModal,
       voter, voterFirstName, voterIsSignedIn,
@@ -232,7 +225,7 @@ class HeaderBackTo extends Component {
       }
     }());
 
-    const { pathname } = window.location;  // Oct 9, 2020: Previously this came as a prop
+    const { location: { pathname } } = window;
     const shareButtonInHeader = pathname && stringContains('/office', pathname.toLowerCase());
     const cordovaOverrides = isWebApp() ? {} : { marginLeft: 0, padding: '4px 0 0 9px', right: 'unset' };
     if (isIOSAppOnMac() || isIPad()) {
@@ -248,11 +241,12 @@ class HeaderBackTo extends Component {
             backToLinkText={backToLinkText}
             className="HeaderBackTo"
             id="backToLinkTabHeader"
+            history={history}
           />
 
           {isWebApp() && (
           <NotificationsAndProfileWrapper className="u-cursor--pointer">
-            <HeaderNotificationMenu />
+            <HeaderNotificationMenu history={history} />
             {voterIsSignedIn ? (
               <span>
                 {voterPhotoUrlMedium ? (
@@ -295,7 +289,6 @@ class HeaderBackTo extends Component {
                   toggleSignInModal={this.toggleSignInModal}
                   transitionToYourVoterGuide={this.transitionToYourVoterGuide}
                   voter={voter}
-                  weVoteBrandingOff={this.state.we_vote_branding_off}
                 />
                 )}
               </span>
@@ -328,7 +321,6 @@ HeaderBackTo.propTypes = {
   backToLink: PropTypes.string,
   backToLinkText: PropTypes.string,
   classes: PropTypes.object,
-  location: PropTypes.object,
   voterWeVoteId: PropTypes.string,
 };
 

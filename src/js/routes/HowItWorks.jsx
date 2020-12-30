@@ -123,17 +123,18 @@ class HowItWorks extends Component {
   }
 
   componentDidMount () {
+    const { match: { params } } = this.props;
     this.onVoterStoreChange();
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
     if (!this.props.inModal) {
-      if (this.props.params.category_string === 'for-campaigns') {
+      if (params.category_string === 'for-campaigns') {
         this.setState({
           getStartedMode: 'getStartedForCampaigns',
           getStartedUrl: '/settings/profile',
           selectedCategoryIndex: 2,
           selectedStepIndex: 0,
         });
-      } else if (this.props.params.category_string === 'for-organizations') {
+      } else if (params.category_string === 'for-organizations') {
         this.setState({
           getStartedMode: 'getStartedForOrganizations',
           getStartedUrl: '/settings/profile',
@@ -164,15 +165,16 @@ class HowItWorks extends Component {
 
   // eslint-disable-next-line camelcase,react/sort-comp
   UNSAFE_componentWillReceiveProps (nextProps) {
+    const { match: { params: nextParams } } = nextProps;
     if (!this.props.inModal) {
-      if (nextProps.params.category_string === 'for-campaigns') {
+      if (nextParams.category_string === 'for-campaigns') {
         this.setState({
           getStartedMode: 'getStartedForCampaigns',
           getStartedUrl: '/settings/profile',
           selectedCategoryIndex: 2,
           selectedStepIndex: 0,
         });
-      } else if (nextProps.params.category_string === 'for-organizations') {
+      } else if (nextParams.category_string === 'for-organizations') {
         this.setState({
           getStartedMode: 'getStartedForOrganizations',
           getStartedUrl: '/settings/profile',
@@ -401,7 +403,7 @@ class HowItWorks extends Component {
 HowItWorks.propTypes = {
   classes: PropTypes.object,
   inModal: PropTypes.bool,
-  params: PropTypes.object,
+  match: PropTypes.object,
 };
 
 const styles = ({

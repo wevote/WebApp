@@ -68,7 +68,7 @@ function checkShouldUpdate (state, nextState) {
     return true;
   }
   if (state.location !== nextState.location) {
-    // console.log("shouldComponentUpdate: state.location", state.location, ", nextState.location", nextState.location);
+    console.log('shouldComponentUpdate: state.location', state.location, ', nextState.location', nextState.location);
     return true;
   }
   if (state.loadingMoreItems !== nextState.loadingMoreItems) {

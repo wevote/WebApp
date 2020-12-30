@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import ReactSVG from 'react-svg';
+import { ReactSVG } from 'react-svg';
 import styled from 'styled-components';
 import { Chip } from '@material-ui/core';
 import { withStyles, withTheme } from '@material-ui/core/styles';
@@ -117,9 +117,7 @@ class IssuesByOrganizationDisplayList extends Component {
           <PopoverTitleIcon>
             <ReactSVG
               src={cordovaDot(`/img/global/svg-icons/issues/${oneIssue.issue_icon_local_path}.svg`)}
-              svgStyle={{
-                fill: '#2e3c5d', padding: '1px 1px 1px 0px',
-              }}
+              beforeInjection={(svg) => svg.setAttribute('style', { fill: '#2e3c5d', padding: '1px 1px 1px 0px' })}
             />
           </PopoverTitleIcon>
           <PopoverTitleText>
@@ -181,7 +179,7 @@ class IssuesByOrganizationDisplayList extends Component {
           avatar={oneIssue.issue_icon_local_path ? (
             <ReactSVG
               src={cordovaDot(`/img/global/svg-icons/issues/${oneIssue.issue_icon_local_path}.svg`)}
-              svgStyle={{ fill: svgFill, padding: '1px 1px 1px 0px' }}
+              beforeInjection={(svg) => svg.setAttribute('style', { fill: svgFill, padding: '1px 1px 1px 0px' })}
             />
           ) : <span />}
           classes={{ root: classes.chipStyle }}

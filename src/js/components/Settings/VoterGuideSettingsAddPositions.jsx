@@ -515,7 +515,7 @@ class VoterGuideSettingsAddPositions extends Component {
           <div className="container">
             <Card>
               <EmptyBallotMessageContainer>
-                <Ballot classes={{ root: classes.ballotIconRoot }} />
+                <Ballot classes={{ root: classes.ballotIconRoot }} location={window.location} />
                 <EmptyBallotText>You haven&apos;t endorsed any candidates or measures yet. Click &quot;Add Endorsements&quot; to help people who trust you make better voting decisions.</EmptyBallotText>
                 <Button
                   classes={{ root: classes.ballotButtonRoot }}
@@ -523,7 +523,7 @@ class VoterGuideSettingsAddPositions extends Component {
                   variant="contained"
                   onClick={() => this.goToDifferentVoterGuideSettingsDashboardTab('addpositions')}
                 >
-                  <Ballot classes={{ root: classes.ballotButtonIconRoot }} />
+                  <Ballot classes={{ root: classes.ballotButtonIconRoot }} location={window.location} />
                   Add Endorsements
                 </Button>
               </EmptyBallotMessageContainer>
@@ -638,7 +638,7 @@ class VoterGuideSettingsAddPositions extends Component {
           ) : (
             <Card>
               <EmptyBallotMessageContainer>
-                <Ballot classes={{ root: classes.ballotIconRoot }} />
+                <Ballot classes={{ root: classes.ballotIconRoot }} location={window.location} />
                 <EmptyBallotText>
                   No results found.
                   {' '}
@@ -803,7 +803,7 @@ class VoterGuideSettingsAddPositions extends Component {
           ) : (
             <Card>
               <EmptyBallotMessageContainer>
-                <Ballot classes={{ root: classes.ballotIconRoot }} />
+                <Ballot classes={{ root: classes.ballotIconRoot }} location={window.location} />
                 <EmptyBallotText>
                   No results found.
                   {' '}

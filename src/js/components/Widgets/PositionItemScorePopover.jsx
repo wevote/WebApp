@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import ReactSVG from 'react-svg';
+import { ReactSVG } from 'react-svg';
 import { CheckCircle, Info, ThumbUp, ThumbDown } from '@material-ui/icons';
 import { withStyles, withTheme } from '@material-ui/core/styles';
 import styled from 'styled-components';
@@ -273,7 +273,7 @@ class PositionItemScorePopover extends Component {
                       <PopoverTitleIcon>
                         <ReactSVG
                           src={cordovaDot(`/img/global/svg-icons/issues/${issue.issue_icon_local_path}.svg`)}
-                          svgStyle={{ fill: '#555', padding: '1px 1px 1px 0px' }}
+                          beforeInjection={(svg) => svg.setAttribute('style', { fill: '#555', padding: '1px 1px 1px 0px' })}
                         />
                       </PopoverTitleIcon>
                       <ScoreExplanationText>

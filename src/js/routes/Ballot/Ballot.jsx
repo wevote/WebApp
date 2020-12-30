@@ -26,7 +26,7 @@ import cookies from '../../utils/cookies';
 import CompleteYourProfile from '../../components/CompleteYourProfile/CompleteYourProfile';
 import { cordovaBallotFilterTopMargin } from '../../utils/cordovaOffsets';
 import cordovaScrollablePaneTopPadding from '../../utils/cordovaScrollablePaneTopPadding';
-import { chipLabelText, historyPush, isIOSAppOnMac, isCordova, isWebApp, isAndroid, getAndroidSize, isIPadGiantSize } from '../../utils/cordovaUtils';
+import { chipLabelText, historyPushV5, isIOSAppOnMac, isCordova, isWebApp, isAndroid, getAndroidSize, isIPadGiantSize } from '../../utils/cordovaUtils';
 import DelayedLoad from '../../components/Widgets/DelayedLoad';
 import EditAddressOneHorizontalRow from '../../components/Ready/EditAddressOneHorizontalRow';
 import ElectionActions from '../../actions/ElectionActions';
@@ -45,7 +45,7 @@ import SuggestedFriendsPreview from '../../components/Friends/SuggestedFriendsPr
 import SupportActions from '../../actions/SupportActions';
 import SupportStore from '../../stores/SupportStore';
 import { startsWith } from '../../utils/textFormat';
-import { checkShouldUpdate, formatVoterBallotList } from './utils';
+import { checkShouldUpdate, formatVoterBallotList } from './utils/ballotUtils';
 import ValuesToFollowPreview from '../../components/Values/ValuesToFollowPreview';
 import VoterActions from '../../actions/VoterActions';
 import VoterGuideStore from '../../stores/VoterGuideStore';
@@ -112,7 +112,8 @@ class Ballot extends Component {
   }
 
   componentDidMount () {
-    const currentPathname = window.location.pathname;
+    const { location: { pathname: currentPathname } } = window;
+    const { history } = this.props;
     // console.log('componentDidMount, Current pathname:', currentPathname);
     const ballotBaseUrl = '/ballot';
     this.appStoreListener = AppStore.addListener(this.onAppStoreChange.bind(this));
@@ -148,14 +149,15 @@ class Ballot extends Component {
       }
     }
 
-    let googleCivicElectionIdFromUrl = this.props.params.google_civic_election_id || 0;
+    const { match: { params } } = this.props;
+    let googleCivicElectionIdFromUrl = params.google_civic_election_id || 0;
 
     // console.log('googleCivicElectionIdFromUrl: ', googleCivicElectionIdFromUrl);
-    let ballotReturnedWeVoteId = this.props.params.ballot_returned_we_vote_id || '';
+    let ballotReturnedWeVoteId = params.ballot_returned_we_vote_id || '';
     ballotReturnedWeVoteId = ballotReturnedWeVoteId === 'none' ? '' : ballotReturnedWeVoteId;
 
-    // console.log('this.props.params.ballot_returned_we_vote_id: ', this.props.params.ballot_returned_we_vote_id);
-    let ballotLocationShortcut = this.props.params.ballot_location_shortcut || '';
+    // console.log('params.ballot_returned_we_vote_id: ', params.ballot_returned_we_vote_id);
+    let ballotLocationShortcut = params.ballot_location_shortcut || '';
     ballotLocationShortcut = ballotLocationShortcut.trim();
     ballotLocationShortcut = ballotLocationShortcut === 'none' ? '' : ballotLocationShortcut;
     let googleCivicElectionId = 0;
@@ -176,13 +178,13 @@ class Ballot extends Component {
         BallotActions.voterBallotItemsRetrieve(0, '', ballotLocationShortcut);
 
         // Change the URL to match
-        historyPush(`${ballotBaseUrl}/${ballotLocationShortcut}`);
+        historyPushV5(history, `${ballotBaseUrl}/${ballotLocationShortcut}`);
       } else if (ballotReturnedWeVoteId !== '') {
         // Change the ballot on load to make sure we are getting what we expect from the url
         BallotActions.voterBallotItemsRetrieve(0, ballotReturnedWeVoteId, '');
 
         // Change the URL to match
-        historyPush(`${ballotBaseUrl}/id/${ballotReturnedWeVoteId}`);
+        historyPushV5(history, `${ballotBaseUrl}/id/${ballotReturnedWeVoteId}`);
       } else if (googleCivicElectionIdFromUrl !== 0) {
         // Change the ballot on load to make sure we are getting what we expect from the url
         if (googleCivicElectionId !== googleCivicElectionIdFromUrl) {
@@ -196,7 +198,7 @@ class Ballot extends Component {
           if (!currentPathnameStartsWithNewUrl) {
             // As long as the current pathname starts with the new URL, do NOT redirect
             // console.log('REDIRECTING TO ballotElectionUrl');
-            historyPush(ballotElectionUrl);
+            historyPushV5(history, ballotElectionUrl);
           }
         }
 
@@ -210,12 +212,12 @@ class Ballot extends Component {
         // console.log('ballotElectionUrl2: ', ballotElectionUrl2);
         const currentPathnameStartsWithNewUrl2 = currentPathname && startsWith(ballotElectionUrl2, currentPathname);
         if (!currentPathnameStartsWithNewUrl2) {
-          historyPush(ballotElectionUrl2);
+          historyPushV5(history, ballotElectionUrl2);
         }
       }
     } else if (BallotStore.ballotProperties && BallotStore.ballotProperties.ballot_found === false) { // No ballot found
       // console.log('if (BallotStore.ballotProperties && BallotStore.ballotProperties.ballot_found === false');
-      historyPush('/settings/location');
+      historyPushV5(history, '/settings/location');
     } else if (ballotWithItemsFromCompletionFilterType === undefined) {
       // console.log('WebApp doesn\'t know the election or have ballot data, so ask the API server to return best guess');
       BallotActions.voterBallotItemsRetrieve(0, '', '');
@@ -268,8 +270,8 @@ class Ballot extends Component {
       AnalyticsActions.saveActionBallotVisit(VoterStore.electionId());
     }
 
-    const { location } = this.props;
-    const { pathname } = location;
+    const { location: { hash } } = window;
+
     this.setState({
       ballotElectionList: BallotStore.ballotElectionList(),
       completionLevelFilterType,
@@ -277,25 +279,22 @@ class Ballot extends Component {
       ballotLocationShortcut,
       googleCivicElectionId: parseInt(googleCivicElectionId, 10),
       issuesFollowedCount: IssueStore.getIssuesVoterIsFollowingLength(),
-      location,
-      pathname,
       raceLevelFilterType: BallotStore.getRaceLevelFilterTypeSaved() || 'All',
     });
 
-    const { hash } = location;
-    if (location && hash) {
+    if (hash) {
       // this.hashLinkScroll();
       this.setState({ lastHashUsedInLinkScroll: hash });
     }
 
-    const modalToOpen = this.props.params.modal_to_show || '';
+    const modalToOpen = params.modal_to_show || '';
     // console.log('componentDidMount modalToOpen:', modalToOpen);
     if (modalToOpen === 'share') {
       this.modalOpenTimer = setTimeout(() => {
         AppActions.setShowShareModal(true);
       }, 1000);
     } else if (modalToOpen === 'sic') { // sic = Shared Item Code
-      const sharedItemCode = this.props.params.shared_item_code || '';
+      const sharedItemCode = params.shared_item_code || '';
       if (sharedItemCode) {
         this.modalOpenTimer = setTimeout(() => {
           AppActions.setShowSharedItemModal(sharedItemCode);
@@ -314,13 +313,14 @@ class Ballot extends Component {
   // eslint-disable-next-line camelcase,react/sort-comp
   UNSAFE_componentWillReceiveProps (nextProps) {
     // WARN: Warning: componentWillReceiveProps has been renamed, and is not recommended for use. See https://fb.me/react-unsafe-component-lifecycles for details.
-    // console.log('Ballot UNSAFE_componentWillReceiveProps');
+    console.log('Ballot UNSAFE_componentWillReceiveProps');
+    const { match: { params: nextParams } } = nextProps;
 
     // We don't want to let the googleCivicElectionId disappear
-    const googleCivicElectionId = nextProps.params.google_civic_election_id || this.state.googleCivicElectionId;
-    let ballotReturnedWeVoteId = nextProps.params.ballot_returned_we_vote_id || '';
+    const googleCivicElectionId = nextParams.google_civic_election_id || this.state.googleCivicElectionId;
+    let ballotReturnedWeVoteId = nextParams.ballot_returned_we_vote_id || '';
     ballotReturnedWeVoteId = ballotReturnedWeVoteId.trim();
-    let ballotLocationShortcut = nextProps.params.ballot_location_shortcut || '';
+    let ballotLocationShortcut = nextParams.ballot_location_shortcut || '';
     ballotLocationShortcut = ballotLocationShortcut.trim();
     const completionLevelFilterType = BallotStore.getCompletionLevelFilterTypeSaved() || 'all';
 
@@ -337,8 +337,6 @@ class Ballot extends Component {
         ballotLocationShortcut,
         completionLevelFilterType,
         googleCivicElectionId: parseInt(googleCivicElectionId, 10),
-        location: nextProps.location,
-        pathname: nextProps.location.pathname,
       });
       if (googleCivicElectionId !== this.state.googleCivicElectionId) {
         this.setState({
@@ -354,19 +352,19 @@ class Ballot extends Component {
       // console.log('Ballot componentWillReceiveProps NO changes found');
     }
 
-    const modalToOpen = nextProps.params.modal_to_show || '';
+    const modalToOpen = nextParams.modal_to_show || '';
     // console.log('UNSAFE_componentWillReceiveProps modalToOpen:', modalToOpen);
     if (modalToOpen === 'share') {
       AppActions.setShowShareModal(true);
     } else if (modalToOpen === 'sic') { // sic = Shared Item Code
-      const sharedItemCode = nextProps.params.shared_item_code || '';
+      const sharedItemCode = nextParams.shared_item_code || '';
       // console.log('UNSAFE_componentWillReceiveProps sharedItemCode:', sharedItemCode);
       if (sharedItemCode) {
         AppActions.setShowSharedItemModal(sharedItemCode);
       }
     }
 
-    if (nextProps.location && nextProps.location.hash) {
+    if (nextProps.location && nextProps.location.hash)  {
       // this.hashLinkScroll();
       this.setState({ lastHashUsedInLinkScroll: nextProps.location.hash });
     }
@@ -374,6 +372,9 @@ class Ballot extends Component {
 
   shouldComponentUpdate (nextProps, nextState) {
     // This lifecycle method tells the component to NOT render if componentWillReceiveProps didn't see any changes
+    if (window) {
+      return true;   // TODO: remove this hack
+    }
     return checkShouldUpdate(this.state, nextState);
   }
 
@@ -536,10 +537,13 @@ class Ballot extends Component {
   onVoterStoreChange () {
     // console.log('Ballot.jsx onVoterStoreChange');
     const { mounted, googleCivicElectionId } = this.state;
+    const { location: { pathname, query } } = window;
+    const { history } = this.props;
+
     if (mounted) {
       let voterRefreshTimerOn = false;
-      if (this.props.location && this.props.location.query && this.props.location.query.voter_refresh_timer_on) {
-        voterRefreshTimerOn = (this.props.location.query.voter_refresh_timer_on);
+      if (query && query.voter_refresh_timer_on) {
+        voterRefreshTimerOn = (query.voter_refresh_timer_on);
         // console.log('onVoterStoreChange voterRefreshTimerOn: ', voterRefreshTimerOn);
       } else {
         // console.log('onVoterStoreChange voterRefreshTimerOn is FALSE');
@@ -548,9 +552,9 @@ class Ballot extends Component {
         const voter = VoterStore.getVoter();
         const { numberOfVoterRetrieveAttempts } = this.state;
         if (voter && voter.is_signed_in) {
-          // console.log('onVoterStoreChange, about to historyPush(this.state.pathname):', this.state.pathname);
+          // console.log('onVoterStoreChange, about to historyPushV5(history, pathname):', pathname);
           // Return to the same page without the 'voter_refresh_timer_on' variable
-          historyPush(this.state.pathname);
+          historyPushV5(history, pathname);
         } else if (numberOfVoterRetrieveAttempts < 3) {
           // console.log('About to startTimerToRetrieveVoter');
           this.startTimerToRetrieveVoter();
@@ -558,7 +562,7 @@ class Ballot extends Component {
           // We have exceeded the number of allowed attempts and want to 'turn off' the request to refresh the voter object
           // Return to the same page without the 'voter_refresh_timer_on' variable
           // console.log('Exiting voterRefreshTimerOn');
-          historyPush(this.state.pathname);
+          historyPushV5(history, pathname);
         }
       } else {
         // console.log('Ballot.jsx onVoterStoreChange VoterStore.getVoter: ', VoterStore.getVoter());
@@ -966,10 +970,11 @@ class Ballot extends Component {
 
   toggleSelectBallotModal (destinationUrlForHistoryPush = '', hideAddressEdit = false, hideElections = false) {
     const { showSelectBallotModal } = this.state;
+    const { history } = this.props;
     // console.log('Ballot toggleSelectBallotModal, destinationUrlForHistoryPush:', destinationUrlForHistoryPush, ', showSelectBallotModal:', showSelectBallotModal);
     if (showSelectBallotModal && destinationUrlForHistoryPush && destinationUrlForHistoryPush !== '') {
       // console.log('toggleSelectBallotModal destinationUrlForHistoryPush:', destinationUrlForHistoryPush);
-      historyPush(destinationUrlForHistoryPush);
+      historyPushV5(history, destinationUrlForHistoryPush);
     } else {
       // console.log('Ballot toggleSelectBallotModal, BallotActions.voterBallotListRetrieve()');
       BallotActions.voterBallotListRetrieve(); // Retrieve a list of ballots for the voter from other elections
@@ -1048,7 +1053,9 @@ class Ballot extends Component {
   render () {
     renderLog('Ballot');  // Set LOG_RENDER_EVENTS to log all renders
     const ballotBaseUrl = '/ballot';
-    const { classes } = this.props;
+    const { classes, history } = this.props;
+    const { location: { pathname, search } } = window;
+
     const {
       ballotHeaderUnpinned, ballotSearchResults, ballotWithAllItems, ballotWithItemsFromCompletionFilterType,
       completionLevelFilterType, doubleFilteredBallotItemsLength, isSearching, issuesFollowedCount,
@@ -1171,7 +1178,7 @@ class Ballot extends Component {
 
     if (ballotWithItemsFromCompletionFilterType.length === 0 && inRemainingDecisionsMode) {
       // console.log('inRemainingDecisionsMode historyPush');
-      historyPush(this.state.pathname);
+      historyPushV5(history, pathname);
     }
     const showAddressVerificationForm = !locationGuessClosed || !textForMapSearch;
 
@@ -1410,6 +1417,7 @@ class Ballot extends Component {
                                   candidateList={item.candidate_list}
                                   candidatesToShowForSearchResults={item.candidatesToShowForSearchResults}
                                   weVoteId={item.we_vote_id}
+                                  history={history}
                                 />
                               </>
                             </DelayedLoad>
@@ -1468,7 +1476,7 @@ class Ballot extends Component {
                         activeRaceItem={raceLevelFilterType}
                         displayTitle
                         displaySubtitles
-                        rawUrlVariablesString={this.props.location.search}
+                        rawUrlVariablesString={search}
                         ballotWithAllItemsByFilterType={this.state.ballotWithItemsFromCompletionFilterType}
                         ballotItemLinkHasBeenClicked={this.ballotItemLinkHasBeenClicked}
                         raceLevelFilterItemsInThisBallot={raceLevelFilterItemsInThisBallot}
@@ -1505,9 +1513,9 @@ class Ballot extends Component {
 }
 Ballot.propTypes = {
   classes: PropTypes.object,
+  history: PropTypes.object,
   location: PropTypes.object,
-  params: PropTypes.object,
-  pathname: PropTypes.string,
+  match: PropTypes.object,
 };
 
 const BallotListWrapper = styled.div`

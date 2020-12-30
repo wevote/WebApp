@@ -62,7 +62,8 @@ class News extends Component {
   }
 
   componentDidMount () {
-    const activityTidbitWeVoteIdForDrawer = this.props.params.activity_tidbit_we_vote_id || '';
+    const { match: { params } } = this.props;
+    const activityTidbitWeVoteIdForDrawer = params.activity_tidbit_we_vote_id || '';
     let redirectInProgress = false;
     if (activityTidbitWeVoteIdForDrawer) {
       const destinationLocalUrlWithModal = `/news/a/${activityTidbitWeVoteIdForDrawer}`;
@@ -464,7 +465,7 @@ class News extends Component {
   }
 }
 News.propTypes = {
-  params: PropTypes.object,
+  match: PropTypes.object,
 };
 
 const ActivityPostAddWrapper = styled.div`

@@ -382,9 +382,9 @@ class PositionList extends Component {
               <div key={`${onePosition.position_we_vote_id}-${onePosition.voter_guide_we_vote_id}-${onePosition.speaker_display_name}`}>
                 <PositionItem
                   ballotItemDisplayName={this.props.ballotItemDisplayName}
-                  params={this.props.params}
                   position={onePosition}
                   searchResultsNode={searchResultsNode}
+                  params={this.props.params}
                 />
               </div>
             );
@@ -409,8 +409,8 @@ class PositionList extends Component {
 PositionList.propTypes = {
   ballotItemDisplayName: PropTypes.string.isRequired,
   incomingPositionList: PropTypes.array.isRequired,
-  params: PropTypes.object,
   positionListExistsTitle: PropTypes.object,
+  params: PropTypes.object,
 };
 
 const styles = () => ({
