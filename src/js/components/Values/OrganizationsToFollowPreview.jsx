@@ -1,10 +1,11 @@
 import React, { Component, Suspense } from 'react';
+import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import GuideList from '../VoterGuide/GuideList';
-import VoterGuideStore from '../../stores/VoterGuideStore';
+import { historyPushV5 } from '../../utils/cordovaUtils';
 import { renderLog } from '../../utils/logging';
 import ShowMoreFooter from '../Navigation/ShowMoreFooter';
-import { historyPush } from '../../utils/cordovaUtils';
+import VoterGuideStore from '../../stores/VoterGuideStore';
 
 
 export default class OrganizationsToFollowPreview extends Component {
@@ -34,7 +35,8 @@ export default class OrganizationsToFollowPreview extends Component {
   }
 
   goToOrganizations () {
-    historyPush('/opinions/f/showOrganizationsFilter');
+    const { history } = this.props;
+    historyPushV5(history, '/opinions/f/showOrganizationsFilter');
   }
 
   render () {
@@ -73,6 +75,9 @@ export default class OrganizationsToFollowPreview extends Component {
     );
   }
 }
+OrganizationsToFollowPreview.propTypes = {
+  history: PropTypes.object,
+};
 
 const SectionDescription = styled.div`
   font-weight: 200;

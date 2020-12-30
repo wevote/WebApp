@@ -6,7 +6,7 @@ import AppActions from './actions/AppActions';
 import AppStore from './stores/AppStore';
 import { getApplicationViewBooleans, setZenDeskHelpVisibility } from './utils/applicationUtils';
 import cookies from './utils/cookies';
-import { getToastClass, historyPush, isIOSAppOnMac, isCordova, isWebApp } from './utils/cordovaUtils';
+import { getToastClass, historyPushV5, isIOSAppOnMac, isCordova, isWebApp } from './utils/cordovaUtils';
 import { cordovaContainerMainOverride, cordovaVoterGuideTopPadding } from './utils/cordovaOffsets';
 import cordovaScrollablePaneTopPadding from './utils/cordovaScrollablePaneTopPadding';
 import DelayedLoad from './components/Widgets/DelayedLoad';
@@ -205,6 +205,7 @@ class Application extends Component {
   incomingVariableManagement () {
     console.log('Application, incomingVariableManagement, this.props.location.query: ', this.props.location.query);
     const { location: { pathname, query } } = window;
+    const { history } = this.props;
     if (query) {
       // Cookie needs to expire in One day i.e. 24*60*60 = 86400
       let atLeastOneQueryVariableFound = false;
@@ -263,7 +264,7 @@ class Application extends Component {
         if (atLeastOneQueryVariableFound && pathname) {
           // console.log('atLeastOneQueryVariableFound push: ', atLeastOneQueryVariableFound);
           // console.log('pathname: ', pathname);
-          historyPush(pathname);
+          historyPushV5(history, pathname);
         }
       }
     }
@@ -272,7 +273,8 @@ class Application extends Component {
   render () {
     renderLog('Application');  // Set LOG_RENDER_EVENTS to log all renders
     const { location: { pathname } } = window;
-    const { params } = this.props;
+    const { history, params } = this.props;
+
     const { StripeCheckout } = window;
     const waitForStripe = (String(pathname) === '/more/donate' && StripeCheckout === undefined);
     // console.log('Application render, pathname:', pathname);
@@ -354,7 +356,7 @@ class Application extends Component {
       return (
         <div className={this.getAppBaseClass()} id="app-base-id">
           <ToastContainer closeButton={false} className={getToastClass()} />
-          <Header params={params} pathname={pathname} history={this.props.history} />
+          <Header params={params} pathname={pathname} history={history} />
           <SnackNotifier />
           <Wrapper id="voterGuideModes" padTop={cordovaVoterGuideTopPadding()}>
             <div className="page-content-container">
@@ -378,7 +380,7 @@ class Application extends Component {
       return (
         <div className={this.getAppBaseClass()} id="app-base-id">
           <ToastContainer closeButton={false} className={getToastClass()} />
-          <Header params={params} pathname={pathname} history={this.props.history} />
+          <Header params={params} pathname={pathname} history={history} />
           <SnackNotifier />
           <Wrapper id="settings" padTop={cordovaScrollablePaneTopPadding()}>
             <div className="page-content-container">
@@ -403,7 +405,7 @@ class Application extends Component {
     return (
       <div className={this.getAppBaseClass()} id="app-base-id">
         <ToastContainer closeButton={false} className={getToastClass()} />
-        <Header params={params} pathname={pathname} history={this.props.history} />
+        <Header params={params} pathname={pathname} history={history} />
         <SnackNotifier />
         { typeof pathname !== 'undefined' && pathname &&
           (String(pathname) === '/for-campaigns' ||
@@ -445,6 +447,7 @@ class Application extends Component {
 }
 Application.propTypes = {
   children: PropTypes.object,
+  history: PropTypes.object,
   location: PropTypes.object,
   params: PropTypes.object,
 };
