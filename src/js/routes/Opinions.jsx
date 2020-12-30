@@ -7,6 +7,7 @@ import SearchGuidesToFollowBox from '../components/Search/SearchGuidesToFollowBo
 import GuideList from '../components/VoterGuide/GuideList';
 
 
+// 2020: We are deprecating this Component in favor of Opinions2020
 export default class Opinions extends Component {
   constructor (props) {
     super(props);

@@ -38,7 +38,7 @@ import StripeElementsTest from './routes/More/StripeElementsTest';
 import TermsOfService from './routes/More/TermsOfService';
 import VerifyRegistration from './routes/More/VerifyRegistration';
 import WeVoteBallotEmbed from './routes/More/WeVoteBallotEmbed';
-import Opinions from './routes/Opinions';
+import Opinions2020 from './routes/Opinions2020';
 import OpinionsFollowed from './routes/OpinionsFollowed';
 import OpinionsIgnored from './routes/OpinionsIgnored';
 import PageNotFound from './routes/PageNotFound';
@@ -199,9 +199,9 @@ const routes = () => {
             <Route path="/settings/:edit_mode/:voter_guide_we_vote_id" component={SettingsDashboard} />
 
             {/* Ballot Off-shoot Pages */}
-            <Route path="/opinions" component={Opinions} />
-            <Route path="/opinions/f/:selectedFilter" component={Opinions} />
-            <Route path="/opinions/s/:searchTextDefault" component={Opinions} />
+            <Route path="/opinions" component={Opinions2020} />
+            <Route path="/opinions/f/:selectedFilter" component={Opinions2020} />
+            <Route path="/opinions/s/:searchTextDefault" component={Opinions2020} />
             <Route path="/opinions_followed" component={OpinionsFollowed} />
             <Route path="/opinions_ignored" component={OpinionsIgnored} />
 
