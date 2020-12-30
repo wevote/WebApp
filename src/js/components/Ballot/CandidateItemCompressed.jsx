@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import TextTruncate from 'react-text-truncate';
 import BallotItemSupportOpposeCountDisplay from '../Widgets/BallotItemSupportOpposeCountDisplay';
@@ -11,6 +10,7 @@ import { renderLog } from '../../utils/logging';
 import OrganizationStore from '../../stores/OrganizationStore';
 import SupportStore from '../../stores/SupportStore';
 import VoterGuideStore from '../../stores/VoterGuideStore';
+import LinkWithPushHistory from '../Navigation/LinkWithPushHistory';
 
 export default class CandidateItemCompressed extends Component {
   constructor (props) {
@@ -119,26 +119,32 @@ export default class CandidateItemCompressed extends Component {
         </div>
         <div className="o-media-object u-flex-auto u-min-50 u-push--sm u-stack--sm">
           {/* Candidate Photo, only shown in Desktop */}
-          <Link to={this.getCandidateLink(this.state.oneCandidate.we_vote_id)}>
-            <ImageHandler
-              className={avatarCompressed}
-              sizeClassName="icon-candidate-small u-push--sm "
-              imageUrl={this.state.oneCandidate.candidate_photo_url_medium}
-              alt="candidate-photo"
-              kind_of_ballot_item="CANDIDATE"
-            />
-          </Link>
+          <LinkWithPushHistory
+            to={this.getCandidateLink(this.state.oneCandidate.we_vote_id)}
+            childMarkup={(
+              <ImageHandler
+                className={avatarCompressed}
+                sizeClassName="icon-candidate-small u-push--sm "
+                imageUrl={this.state.oneCandidate.candidate_photo_url_medium}
+                alt="candidate-photo"
+                kind_of_ballot_item="CANDIDATE"
+              />
+            )}
+          />
           <div className="o-media-object__body u-flex u-flex-column u-flex-auto u-justify-between">
             {/* Candidate Name */}
             <h4 className="card-main__candidate-name u-f5">
-              <Link to={this.getCandidateLink(this.state.oneCandidate.we_vote_id)}>
-                <TextTruncate
-                  line={1}
-                  truncateText="…"
-                  text={this.state.oneCandidate.ballot_item_display_name}
-                  textTruncateChild={null}
-                />
-              </Link>
+              <LinkWithPushHistory
+                to={this.getCandidateLink(this.state.oneCandidate.we_vote_id)}
+                childMarkup={(
+                  <TextTruncate
+                    line={1}
+                    truncateText="…"
+                    text={this.state.oneCandidate.ballot_item_display_name}
+                    textTruncateChild={null}
+                  />
+                )}
+              />
             </h4>
             {/* Description under candidate name */}
             <LearnMore

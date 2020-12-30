@@ -26,7 +26,7 @@ import cookies from '../../utils/cookies';
 import CompleteYourProfile from '../../components/CompleteYourProfile/CompleteYourProfile';
 import { cordovaBallotFilterTopMargin } from '../../utils/cordovaOffsets';
 import cordovaScrollablePaneTopPadding from '../../utils/cordovaScrollablePaneTopPadding';
-import { chipLabelText, historyPushV5, isIOSAppOnMac, isCordova, isWebApp, isAndroid, getAndroidSize, isIPadGiantSize } from '../../utils/cordovaUtils';
+import { chipLabelText, historyPush, isIOSAppOnMac, isCordova, isWebApp, isAndroid, getAndroidSize, isIPadGiantSize } from '../../utils/cordovaUtils';
 import DelayedLoad from '../../components/Widgets/DelayedLoad';
 import EditAddressOneHorizontalRow from '../../components/Ready/EditAddressOneHorizontalRow';
 import ElectionActions from '../../actions/ElectionActions';
@@ -113,7 +113,6 @@ class Ballot extends Component {
 
   componentDidMount () {
     const { location: { pathname: currentPathname } } = window;
-    const { history } = this.props;
     // console.log('componentDidMount, Current pathname:', currentPathname);
     const ballotBaseUrl = '/ballot';
     this.appStoreListener = AppStore.addListener(this.onAppStoreChange.bind(this));
@@ -178,13 +177,13 @@ class Ballot extends Component {
         BallotActions.voterBallotItemsRetrieve(0, '', ballotLocationShortcut);
 
         // Change the URL to match
-        historyPushV5(history, `${ballotBaseUrl}/${ballotLocationShortcut}`);
+        historyPush(`${ballotBaseUrl}/${ballotLocationShortcut}`);
       } else if (ballotReturnedWeVoteId !== '') {
         // Change the ballot on load to make sure we are getting what we expect from the url
         BallotActions.voterBallotItemsRetrieve(0, ballotReturnedWeVoteId, '');
 
         // Change the URL to match
-        historyPushV5(history, `${ballotBaseUrl}/id/${ballotReturnedWeVoteId}`);
+        historyPush(`${ballotBaseUrl}/id/${ballotReturnedWeVoteId}`);
       } else if (googleCivicElectionIdFromUrl !== 0) {
         // Change the ballot on load to make sure we are getting what we expect from the url
         if (googleCivicElectionId !== googleCivicElectionIdFromUrl) {
@@ -198,7 +197,7 @@ class Ballot extends Component {
           if (!currentPathnameStartsWithNewUrl) {
             // As long as the current pathname starts with the new URL, do NOT redirect
             // console.log('REDIRECTING TO ballotElectionUrl');
-            historyPushV5(history, ballotElectionUrl);
+            historyPush(ballotElectionUrl);
           }
         }
 
@@ -212,12 +211,12 @@ class Ballot extends Component {
         // console.log('ballotElectionUrl2: ', ballotElectionUrl2);
         const currentPathnameStartsWithNewUrl2 = currentPathname && startsWith(ballotElectionUrl2, currentPathname);
         if (!currentPathnameStartsWithNewUrl2) {
-          historyPushV5(history, ballotElectionUrl2);
+          historyPush(ballotElectionUrl2);
         }
       }
     } else if (BallotStore.ballotProperties && BallotStore.ballotProperties.ballot_found === false) { // No ballot found
       // console.log('if (BallotStore.ballotProperties && BallotStore.ballotProperties.ballot_found === false');
-      historyPushV5(history, '/settings/location');
+      historyPush('/settings/location');
     } else if (ballotWithItemsFromCompletionFilterType === undefined) {
       // console.log('WebApp doesn\'t know the election or have ballot data, so ask the API server to return best guess');
       BallotActions.voterBallotItemsRetrieve(0, '', '');
@@ -538,7 +537,6 @@ class Ballot extends Component {
     // console.log('Ballot.jsx onVoterStoreChange');
     const { mounted, googleCivicElectionId } = this.state;
     const { location: { pathname, query } } = window;
-    const { history } = this.props;
 
     if (mounted) {
       let voterRefreshTimerOn = false;
@@ -552,9 +550,9 @@ class Ballot extends Component {
         const voter = VoterStore.getVoter();
         const { numberOfVoterRetrieveAttempts } = this.state;
         if (voter && voter.is_signed_in) {
-          // console.log('onVoterStoreChange, about to historyPushV5(history, pathname):', pathname);
+          // console.log('onVoterStoreChange, about to historyPush(pathname):', pathname);
           // Return to the same page without the 'voter_refresh_timer_on' variable
-          historyPushV5(history, pathname);
+          historyPush(pathname);
         } else if (numberOfVoterRetrieveAttempts < 3) {
           // console.log('About to startTimerToRetrieveVoter');
           this.startTimerToRetrieveVoter();
@@ -562,7 +560,7 @@ class Ballot extends Component {
           // We have exceeded the number of allowed attempts and want to 'turn off' the request to refresh the voter object
           // Return to the same page without the 'voter_refresh_timer_on' variable
           // console.log('Exiting voterRefreshTimerOn');
-          historyPushV5(history, pathname);
+          historyPush(pathname);
         }
       } else {
         // console.log('Ballot.jsx onVoterStoreChange VoterStore.getVoter: ', VoterStore.getVoter());
@@ -970,11 +968,10 @@ class Ballot extends Component {
 
   toggleSelectBallotModal (destinationUrlForHistoryPush = '', hideAddressEdit = false, hideElections = false) {
     const { showSelectBallotModal } = this.state;
-    const { history } = this.props;
     // console.log('Ballot toggleSelectBallotModal, destinationUrlForHistoryPush:', destinationUrlForHistoryPush, ', showSelectBallotModal:', showSelectBallotModal);
     if (showSelectBallotModal && destinationUrlForHistoryPush && destinationUrlForHistoryPush !== '') {
       // console.log('toggleSelectBallotModal destinationUrlForHistoryPush:', destinationUrlForHistoryPush);
-      historyPushV5(history, destinationUrlForHistoryPush);
+      historyPush(destinationUrlForHistoryPush);
     } else {
       // console.log('Ballot toggleSelectBallotModal, BallotActions.voterBallotListRetrieve()');
       BallotActions.voterBallotListRetrieve(); // Retrieve a list of ballots for the voter from other elections
@@ -1053,7 +1050,7 @@ class Ballot extends Component {
   render () {
     renderLog('Ballot');  // Set LOG_RENDER_EVENTS to log all renders
     const ballotBaseUrl = '/ballot';
-    const { classes, history } = this.props;
+    const { classes } = this.props;
     const { location: { pathname, search } } = window;
 
     const {
@@ -1178,7 +1175,7 @@ class Ballot extends Component {
 
     if (ballotWithItemsFromCompletionFilterType.length === 0 && inRemainingDecisionsMode) {
       // console.log('inRemainingDecisionsMode historyPush');
-      historyPushV5(history, pathname);
+      historyPush(pathname);
     }
     const showAddressVerificationForm = !locationGuessClosed || !textForMapSearch;
 
@@ -1417,7 +1414,6 @@ class Ballot extends Component {
                                   candidateList={item.candidate_list}
                                   candidatesToShowForSearchResults={item.candidatesToShowForSearchResults}
                                   weVoteId={item.we_vote_id}
-                                  history={history}
                                 />
                               </>
                             </DelayedLoad>
@@ -1513,7 +1509,6 @@ class Ballot extends Component {
 }
 Ballot.propTypes = {
   classes: PropTypes.object,
-  history: PropTypes.object,
   location: PropTypes.object,
   match: PropTypes.object,
 };

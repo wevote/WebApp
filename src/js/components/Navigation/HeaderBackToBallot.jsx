@@ -8,7 +8,7 @@ import AppActions from '../../actions/AppActions';
 import AppStore from '../../stores/AppStore';
 import { dumpCssFromId } from '../../utils/appleSiliconUtils';
 import CandidateStore from '../../stores/CandidateStore';
-import { hasIPhoneNotch, historyPushV5, isAndroid, isIOSAppOnMac, isCordova, isIPad, isWebApp } from '../../utils/cordovaUtils';
+import { hasIPhoneNotch, historyPush, isAndroid, isIOSAppOnMac, isCordova, isIPad, isWebApp } from '../../utils/cordovaUtils';
 import HeaderBackToButton from './HeaderBackToButton';
 import HeaderBarProfilePopUp from './HeaderBarProfilePopUp';
 import HeaderNotificationMenu from './HeaderNotificationMenu';
@@ -567,8 +567,7 @@ class HeaderBackToBallot extends Component {
     if (stringContains('/modal/share', pathname) && isWebApp()) {
       const pathnameWithoutModalShare = pathname.replace('/modal/share', '');
       // console.log('navigation closeShareModal ', pathnameWithoutModalShare);
-      const { history } = this.props;
-      historyPushV5(history, pathnameWithoutModalShare);
+      historyPush(pathnameWithoutModalShare);
     }
   }
 
@@ -635,7 +634,7 @@ class HeaderBackToBallot extends Component {
       shareModalStep, showShareModal, voter, voterFirstName, voterIsSignedIn,
     } = this.state;
     const voterPhotoUrlMedium = voterPhoto(voter);
-    const { classes, history } = this.props;
+    const { classes } = this.props;
     const { location: { pathname } } = window;
 
     // console.log('HeaderBackToBallot googleCivicElectionId:', googleCivicElectionId);
@@ -723,7 +722,7 @@ class HeaderBackToBallot extends Component {
           />
 
           <NotificationsAndProfileWrapper className="u-cursor--pointer">
-            <HeaderNotificationMenu history={history} />
+            <HeaderNotificationMenu />
             {voterIsSignedIn ? (
               <span onClick={this.toggleAccountMenu}>
                 {voterPhotoUrlMedium ? (
@@ -815,7 +814,6 @@ class HeaderBackToBallot extends Component {
 }
 HeaderBackToBallot.propTypes = {
   classes: PropTypes.object,
-  history: PropTypes.object,
   params: PropTypes.object,
 };
 

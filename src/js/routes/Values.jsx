@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
 import Helmet from 'react-helmet';
 import styled from 'styled-components';
 import AddEndorsements from '../components/Widgets/AddEndorsements';
@@ -95,7 +94,6 @@ export default class Values extends Component {
     if (!this.state.voter) {
       return LoadingWheel;
     }
-    const { history } = this.props;
     const { issuesFollowedCount, issuesToFollowShouldBeDisplayed, voterIsSignedIn } = this.state;
 
     let publicFiguresBlockToDisplay = null;
@@ -105,7 +103,7 @@ export default class Values extends Component {
       publicFiguresBlockToDisplay = <PublicFiguresFollowedPreview />;
     } else {
       // console.log('PublicFiguresToFollowPreview');
-      publicFiguresBlockToDisplay = <PublicFiguresToFollowPreview history={history} />;
+      publicFiguresBlockToDisplay = <PublicFiguresToFollowPreview />;
     }
 
     let organizationsBlockToDisplay = null;
@@ -113,7 +111,7 @@ export default class Values extends Component {
     if (organizationsFollowedCount > 0) {
       organizationsBlockToDisplay = <NetworkOpinionsFollowed />;
     } else {
-      organizationsBlockToDisplay = <OrganizationsToFollowPreview history={history} />;
+      organizationsBlockToDisplay = <OrganizationsToFollowPreview />;
     }
 
     return (
@@ -200,7 +198,6 @@ export default class Values extends Component {
   }
 }
 Values.propTypes = {
-  history: PropTypes.object,
 };
 
 const SectionDescription = styled.div`

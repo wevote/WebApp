@@ -379,4 +379,5 @@ OrganizationVoterGuideTabs.propTypes = {
   activeRouteChanged: PropTypes.func,
   organizationWeVoteId: PropTypes.string.isRequired,
   match: PropTypes.object,
+  params: PropTypes.object,
 };

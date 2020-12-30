@@ -210,7 +210,7 @@ class HeaderBackTo extends Component {
   render () {
     renderLog('HeaderBackTo');  // Set LOG_RENDER_EVENTS to log all renders
     // console.log('HeaderBackTo render');
-    const { classes, history } = this.props;
+    const { classes } = this.props;
     const {
       backToLink, backToLinkText, profilePopUpOpen, showSignInModal,
       voter, voterFirstName, voterIsSignedIn,
@@ -241,12 +241,11 @@ class HeaderBackTo extends Component {
             backToLinkText={backToLinkText}
             className="HeaderBackTo"
             id="backToLinkTabHeader"
-            history={history}
           />
 
           {isWebApp() && (
           <NotificationsAndProfileWrapper className="u-cursor--pointer">
-            <HeaderNotificationMenu history={history} />
+            <HeaderNotificationMenu />
             {voterIsSignedIn ? (
               <span>
                 {voterPhotoUrlMedium ? (

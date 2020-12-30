@@ -435,7 +435,7 @@ class ShareButtonFooter extends Component {
     }
 
     if (!VoterStore.getVoter().voter_we_vote_id) {
-      console.log('ShareButtonFooter, waiting for voterRetrieve to complete');
+      console.log('ShareButtonFooter, waiting for voterRetrieve to complete -- DEC 2020 debug, we shouldn\'t be getting this if the footer is not displayed!');
       return LoadingWheel;
     }
 

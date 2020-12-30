@@ -112,6 +112,5 @@ export default class Intro extends Component {
   }
 }
 Intro.propTypes = {
-  history: PropTypes.object,
   children: PropTypes.object,
 };

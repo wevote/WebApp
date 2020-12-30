@@ -206,4 +206,5 @@ export default class TwitterHandleLanding extends Component {
 TwitterHandleLanding.propTypes = {
   activeRoute: PropTypes.string,
   match: PropTypes.object,
+  params: PropTypes.object,
 };
