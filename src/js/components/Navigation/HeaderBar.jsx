@@ -346,7 +346,7 @@ class HeaderBar extends Component {
     if (stringContains('/modal/share', href) && isWebApp()) {
       const pathnameWithoutModalShare = href.replace('/modal/share', '');  // Cordova
       // console.log('Navigation closeShareModal ', pathnameWithoutModalShare)
-      historyPush.push(null, pathnameWithoutModalShare);
+      historyPush.push(pathnameWithoutModalShare);
     }
   }
 
