@@ -31,6 +31,6 @@ LinkWithPushHistory.propTypes = {
   id: PropTypes.string,
   className: PropTypes.object,
   onClick: PropTypes.object,
-  to: PropTypes.object.isRequired,
+  to: PropTypes.string,
   childMarkup: PropTypes.object,
 };

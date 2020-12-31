@@ -15,6 +15,8 @@ import OrganizationVoterGuide from './VoterGuide/OrganizationVoterGuide';
 import PositionListForFriends from './VoterGuide/PositionListForFriends';
 import UnknownTwitterAccount from './VoterGuide/UnknownTwitterAccount';
 
+// The component that gets called for paths like https://localhost:3000/sierraclub
+// A Twitter handle is the username that appears at the end of your unique Twitter URL
 export default class TwitterHandleLanding extends Component {
   constructor (props) {
     super(props);
@@ -29,13 +31,13 @@ export default class TwitterHandleLanding extends Component {
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
 
     const { activeRoute, match: { params: { twitter_handle: twitterHandle } } } = this.props;
-
+    const twitterHandle2 = twitterHandle || window.location.pathname.substring(1);
     // console.log(`TwitterHandleLanding componentDidMount, twitterHandle: ${twitterHandle}`);
     this.setState({
       activeRoute,
-      twitterHandle,
+      twitterHandle2,
     });
-    TwitterActions.twitterIdentityRetrieve(twitterHandle);
+    TwitterActions.twitterIdentityRetrieve(twitterHandle2);
     this.onVoterStoreChange();
   }
 

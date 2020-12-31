@@ -6,12 +6,14 @@ import { startsWith, stringContains } from './textFormat';
 // We have to do all this, because we allow urls like https://wevote.us/aclu where "aclu" is a twitter account.
 // Based on the pathname parameter, decide if we want theaterMode, contentFullWidthMode, or voterGuideMode
 export function getApplicationViewBooleans (pathname) {
+  // We don't want to do all the work to create the footer, fire off api queries, etc., only to then set "display: none" based on a breakpoint!
+  const isSmallScreen = window.screen.width < 992;
   let inTheaterMode = false;
   let contentFullWidthMode = false;
   let extensionPageMode = false;
   let friendsMode = false;
   const pathnameLowerCase = pathname.toLowerCase() || '';
-  console.log('getApplicationViewBooleans, pathnameLowerCase:', pathnameLowerCase);
+  // console.log('getApplicationViewBooleans, pathnameLowerCase:', pathnameLowerCase);
   let readyMode = false;
   let settingsMode = false;
   let sharedItemLandingPage = false;
@@ -202,10 +204,10 @@ export function getApplicationViewBooleans (pathname) {
       startsWith('/settings/tools', pathnameLowerCase) ||
       startsWith('/settings', pathnameLowerCase)) {
     // We want to SHOW the footer bar on the above path patterns
-    showFooterBar = !isIOSAppOnMac();
+    showFooterBar = !isIOSAppOnMac() && isSmallScreen;
   } else {
     // We need to default to True because of URLs like: https://WeVote.US/orlandosentinel
-    showFooterBar = !isIOSAppOnMac();
+    showFooterBar = !isIOSAppOnMac() && isSmallScreen;
   }
 
   let showShareButtonFooter = false;
@@ -216,10 +218,10 @@ export function getApplicationViewBooleans (pathname) {
     startsWith('/office', pathnameLowerCase) ||
     startsWith('/ready', pathnameLowerCase) ||
     (voterGuideMode && !onFollowSubPage)) {
-    showShareButtonFooter = !isIOSAppOnMac();
+    showShareButtonFooter = !isIOSAppOnMac() && isSmallScreen;
   }
 
-  console.log('getApplicationViewBooleans, showBackToBallotHeader: ', showBackToBallotHeader, ' showFooterBar: ', showFooterBar, ', pathnameLowerCase:', pathnameLowerCase, ', showBackToSettingsMobile:', showBackToSettingsMobile);
+  // console.log('getApplicationViewBooleans, showBackToBallotHeader: ', showBackToBallotHeader, ' showFooterBar: ', showFooterBar, ', pathnameLowerCase:', pathnameLowerCase, ', showBackToSettingsMobile:', showBackToSettingsMobile);
 
   return {
     inTheaterMode,

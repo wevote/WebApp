@@ -122,7 +122,7 @@ export default class Header extends Component {
     renderLog('Header');  // Set LOG_RENDER_EVENTS to log all renders
 
     const { params } = this.props;
-    console.log('Header global.weVoteGlobalHistory', global.weVoteGlobalHistory);
+    // console.log('Header global.weVoteGlobalHistory', global.weVoteGlobalHistory);
     const { location: { pathname } } = window;
     const {
       activityTidbitWeVoteIdForDrawer, sharedItemCode, showActivityTidbitDrawer,
