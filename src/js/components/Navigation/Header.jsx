@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import AppActions from '../../actions/AppActions';
+import webAppConfig from '../../config';
 import AppStore from '../../stores/AppStore';
 import VoterStore from '../../stores/VoterStore';
 import { dumpCssFromId } from '../../utils/appleSiliconUtils';
@@ -32,6 +33,7 @@ export default class Header extends Component {
       showVoterPlanModal: false,
       showOrganizationModal: false,
       showSharedItemModal: false,
+      priorPath: '',
     };
 
     this.closeHowItWorksModal = this.closeHowItWorksModal.bind(this);
@@ -39,6 +41,16 @@ export default class Header extends Component {
     this.closeOrganizationModal = this.closeOrganizationModal.bind(this);
     this.closeSharedItemModal = this.closeSharedItemModal.bind(this);
     this.handleResize = this.handleResize.bind(this);
+    global.weVoteGlobalHistory.listen((location, action) => {
+      if (location.pathname !== this.state.priorPath) {
+        // Re-render the Header if the path changed (Needed for React-router V5)
+        this.setState({ priorPath: window.locationPathname });
+      }
+      if (webAppConfig.LOG_ROUTING) {
+        console.log(`Header: The current URL is ${location.pathname}${location.search}${location.hash}`);
+        console.log(`Header: The last navigation action was ${action}`, JSON.stringify(global.weVoteGlobalHistory, null, 2));
+      }
+    });
   }
 
   componentDidMount () {
