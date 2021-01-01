@@ -31,7 +31,7 @@ class BallotSideBar extends Component {
   }
 
   shouldComponentUpdate (nextProps, nextState) {
-    const { location: { pathname } } = window;
+    // const { location: { pathname } } = window;
 
     // This lifecycle method tells the component to NOT render if componentWillReceiveProps didn't see any changes
     if (this.state.componentDidMountFinished === false) {

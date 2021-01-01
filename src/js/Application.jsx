@@ -39,7 +39,7 @@ class Application extends Component {
   componentDidMount () {
     const voterDeviceId = VoterStore.voterDeviceId();
     VoterActions.voterRetrieve();
-    console.log('===== VoterRetrieve from Application, voterDeviceId:', voterDeviceId);
+    // console.log('===== VoterRetrieve from Application, voterDeviceId:', voterDeviceId);
 
     let { hostname } = window.location;
     hostname = hostname || '';
@@ -275,7 +275,6 @@ class Application extends Component {
     renderLog('Application');  // Set LOG_RENDER_EVENTS to log all renders
     const { location: { pathname } } = window;
     const { params } = this.props;
-
     const { StripeCheckout } = window;
     const waitForStripe = (String(pathname) === '/more/donate' && StripeCheckout === undefined);
     // console.log('Application render, pathname:', pathname);
