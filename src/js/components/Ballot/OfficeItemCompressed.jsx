@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { withStyles, withTheme } from '@material-ui/core/styles';
 import { ArrowForward } from '@material-ui/icons';
 import { Button } from '@material-ui/core';
-import LinkWithPushHistory from '../Navigation/LinkWithPushHistory';
 import BallotItemSupportOpposeCountDisplay from '../Widgets/BallotItemSupportOpposeCountDisplay';
 import BallotStore from '../../stores/BallotStore';
 import CandidateStore from '../../stores/CandidateStore';
@@ -363,18 +363,14 @@ class OfficeItemCompressed extends Component {
           name={officeWeVoteId}
         />
         {/* Desktop */}
-        <LinkWithPushHistory
-          id={`officeItemCompressedTopNameLink-${officeWeVoteId}`}
-          to={this.getOfficeLink()}
-          childMarkup={(
-            <Title>
-              {ballotItemDisplayName}
-              <ArrowForward
-                classes={{ root: classes.cardHeaderIconRoot }}
-              />
-            </Title>
-          )}
-        />
+        <Link id={`officeItemCompressedTopNameLink-${officeWeVoteId}`} to={this.getOfficeLink()}>
+          <Title>
+            {ballotItemDisplayName}
+            <ArrowForward
+              classes={{ root: classes.cardHeaderIconRoot }}
+            />
+          </Title>
+        </Link>
         {/* *************************
           Display either a) the candidates the voter supports, or b) the first several candidates running for this office
           ************************* */}

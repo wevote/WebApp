@@ -63,7 +63,7 @@ export default class Header extends Component {
   }
 
   shouldComponentUpdate (nextProps, nextState) {
-    console.log('HEADER shouldComponentUpdate ===================================');
+    // console.log('HEADER shouldComponentUpdate');
     const { location: { pathname } } = window;
     if (this.state.activityTidbitWeVoteIdForDrawer !== nextState.activityTidbitWeVoteIdForDrawer) return true;
     if (this.state.organizationModalBallotItemWeVoteId !== nextState.organizationModalBallotItemWeVoteId) return true;
