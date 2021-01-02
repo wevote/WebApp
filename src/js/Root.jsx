@@ -57,6 +57,7 @@ import ClaimYourPage from './routes/Settings/ClaimYourPage';
 import HamburgerMenu from './routes/Settings/HamburgerMenu';
 import Location from './routes/Settings/Location';
 import SettingsDashboard from './routes/Settings/SettingsDashboard';
+import SettingsDashboardWithParams from './routes/Settings/SettingsDashboardWithParams';
 import SettingsMenuMobile from './routes/Settings/SettingsMenuMobile';
 import VoterGuideListDashboard from './routes/Settings/VoterGuideListDashboard';
 import VoterGuideSettingsDashboard from './routes/Settings/VoterGuideSettingsDashboard';
@@ -186,19 +187,19 @@ const routes = () => {
 
             {/* Your Settings go in this structure... */}
             {/* Complete path on one line for searching */}
-            <Route path="/settings" component={SettingsDashboard} />
-            <Route path="/settings/claim" component={ClaimYourPage} />
-            <Route path="/settings/hamburger" component={HamburgerMenu} />
-            <Route path="/settings/location" component={Location} />
-            <Route path="/settings/menu" component={SettingsMenuMobile} />
-            <Route path="/settings/voterguidelist" component={VoterGuideListDashboard} />
-            <Route path="/settings/voterguidesmenu" component={VoterGuidesMenuMobile} />
+            <Route exact path="/settings" component={SettingsDashboard} />
+            <Route exact path="/settings/claim" component={ClaimYourPage} />
+            <Route exact path="/settings/hamburger" component={HamburgerMenu} />
+            <Route exact path="/settings/location" component={Location} />
+            <Route exact path="/settings/menu" component={SettingsMenuMobile} />
+            <Route exact path="/settings/voterguidelist" component={VoterGuideListDashboard} />
+            <Route exact path="/settings/voterguidesmenu" component={VoterGuidesMenuMobile} />
             {/* settings/:edit_mode includes "/settings/account", "/settings/address", "/settings/domain", "/settings/election",
               "/settings/issues_linked", "/settings/issues_to_link", "/settings/issues", "/settings/notifications",
                 "/settings/profile", "/settings/text", "/settings/tools" */}
-            <Route path="/settings/:edit_mode" component={SettingsDashboard} />
-            <Route path="/settings/issues/:edit_mode" component={SettingsDashboard} />
-            <Route path="/settings/:edit_mode/:voter_guide_we_vote_id" component={SettingsDashboard} />
+            <Route path="/settings/issues/:edit_mode" render={(props) => (<SettingsDashboardWithParams {...props} />)} />
+            <Route path="/settings/:edit_mode" render={(props) => (<SettingsDashboardWithParams {...props} />)} />
+            <Route path="/settings/:edit_mode/:voter_guide_we_vote_id" render={(props) => (<SettingsDashboardWithParams {...props} />)} />
 
             {/* Ballot Off-shoot Pages */}
             <Route path="/opinions" component={Opinions2020} />

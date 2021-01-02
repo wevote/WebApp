@@ -136,9 +136,11 @@ export default class SettingsDashboard extends Component {
   }
 
   componentWillUnmount () {
-    this.organizationStoreListener.remove();
-    this.voterGuideStoreListener.remove();
-    this.voterStoreListener.remove();
+    if (this.organizationStoreListener) {
+      this.organizationStoreListener.remove();
+      this.voterGuideStoreListener.remove();
+      this.voterStoreListener.remove();
+    }
   }
 
   onOrganizationStoreChange () {
