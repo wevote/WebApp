@@ -182,7 +182,7 @@ export function cordovaVoterGuideTopPadding () {
   } else if (isAndroid()) {
     return '0px';
   }
-  return '0px';
+  return '12px';
 }
 
 // <Toolbar classes={{ root: classes.toolbar }} disableGutters style={{ top: cordovaWelcomeAppToolbarTop() }}>

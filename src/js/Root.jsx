@@ -57,7 +57,6 @@ import ClaimYourPage from './routes/Settings/ClaimYourPage';
 import HamburgerMenu from './routes/Settings/HamburgerMenu';
 import Location from './routes/Settings/Location';
 import SettingsDashboard from './routes/Settings/SettingsDashboard';
-import SettingsDashboardWithParams from './routes/Settings/SettingsDashboardWithParams';
 import SettingsMenuMobile from './routes/Settings/SettingsMenuMobile';
 import VoterGuideListDashboard from './routes/Settings/VoterGuideListDashboard';
 import VoterGuideSettingsDashboard from './routes/Settings/VoterGuideSettingsDashboard';
@@ -71,7 +70,6 @@ import VoterGuidesUnderOneValue from './routes/Values/VoterGuidesUnderOneValue';
 import Vote from './routes/Vote';
 import OrganizationVoterGuide from './routes/VoterGuide/OrganizationVoterGuide';
 import OrganizationVoterGuideCandidate from './routes/VoterGuide/OrganizationVoterGuideCandidate';
-import OrganizationVoterGuideEdit from './routes/VoterGuide/OrganizationVoterGuideEdit';
 import OrganizationVoterGuideMeasure from './routes/VoterGuide/OrganizationVoterGuideMeasure';
 import OrganizationVoterGuideMobileDetails from './routes/VoterGuide/OrganizationVoterGuideMobileDetails';
 import OrganizationVoterGuideOffice from './routes/VoterGuide/OrganizationVoterGuideOffice';
@@ -83,6 +81,7 @@ import YourPage from './routes/YourPage';
 import componentLoader from './utils/componentLoader';
 import cookies from './utils/cookies';
 import { isWebApp, polyfillFixes } from './utils/cordovaUtils';
+import RouterV5SendMatch from './utils/RouterV5SendMatch';
 
 polyfillFixes('Root.jsx');
 
@@ -197,9 +196,9 @@ const routes = () => {
             {/* settings/:edit_mode includes "/settings/account", "/settings/address", "/settings/domain", "/settings/election",
               "/settings/issues_linked", "/settings/issues_to_link", "/settings/issues", "/settings/notifications",
                 "/settings/profile", "/settings/text", "/settings/tools" */}
-            <Route path="/settings/issues/:edit_mode" render={(props) => (<SettingsDashboardWithParams {...props} />)} />
-            <Route path="/settings/:edit_mode" render={(props) => (<SettingsDashboardWithParams {...props} />)} />
-            <Route path="/settings/:edit_mode/:voter_guide_we_vote_id" render={(props) => (<SettingsDashboardWithParams {...props} />)} />
+            <Route path="/settings/issues/:edit_mode" render={(props) => (<RouterV5SendMatch componentName="SettingsDashboard" {...props} />)} />
+            <Route path="/settings/:edit_mode" render={(props) => (<RouterV5SendMatch componentName="SettingsDashboard" {...props} />)} />
+            <Route path="/settings/:edit_mode/:voter_guide_we_vote_id" render={(props) => (<RouterV5SendMatch componentName="SettingsDashboard" {...props} />)} />
 
             {/* Ballot Off-shoot Pages */}
             <Route path="/opinions" component={Opinions2020} />
@@ -307,8 +306,8 @@ const routes = () => {
             <Route path="/voterguide/:organization_we_vote_id/btmeas/:back_to_meas_we_vote_id/b/:back_to_variable/:action_variable/m/friends" component={(props) => <OrganizationVoterGuideMobileDetails {...props} activeRoute="friends" />} />
             <Route path="/voterguide/:organization_we_vote_id/btmeas/:back_to_meas_we_vote_id/b/:back_to_variable/:action_variable/m/followers" component={(props) => <OrganizationVoterGuideMobileDetails {...props} activeRoute="followers" />} />
             <Route path="/voterguide/:organization_we_vote_id/btmeas/:back_to_meas_we_vote_id/b/:back_to_variable/:action_variable/m/following" component={(props) => <OrganizationVoterGuideMobileDetails {...props} activeRoute="following" />} />
-            <Route path="/voterguideedit/:organization_we_vote_id" component={OrganizationVoterGuideEdit} />
-            <Route path="/voterguideedit/:organization_we_vote_id/:google_civic_election_id" component={OrganizationVoterGuideEdit} />
+            <Route path="/voterguideedit/:organization_we_vote_id" render={(props) => (<RouterV5SendMatch componentName="OrganizationVoterGuideEdit" {...props} />)} />
+            <Route path="/voterguideedit/:organization_we_vote_id/:google_civic_election_id" render={(props) => (<RouterV5SendMatch componentName="OrganizationVoterGuideEdit" {...props} />)} />
 
             {/* Voter Guide Settings go in this structure... "/vg/wvYYvgYY/settings/positions", "/vg/wvYYvgYY/settings/addpositions" */}
             <Route path="/vg/:voter_guide_we_vote_id/settings" component={VoterGuideSettingsDashboard} />
