@@ -52,9 +52,13 @@ class HeaderBackToVoterGuides extends Component {
   componentDidMount () {
     // console.log('HeaderBackToVoterGuides componentDidMount, this.props: ', this.props);
     const { params } = this.props;
-    this.setState({
-      voterGuideWeVoteId: params.voter_guide_we_vote_id,
-    });
+    if (params && params.voter_guide_we_vote_id) {
+      // Jan 2021: Did this ever work?  We receive organization_we_vote_id in the params
+      // This is an example of why "Prop spreading" is a good thing to forbid
+      this.setState({
+        voterGuideWeVoteId: params.voter_guide_we_vote_id,
+      });
+    }
     let voterGuide;
     if (this.state.voterGuideWeVoteId && isProperlyFormattedVoterGuideWeVoteId(this.state.voterGuideWeVoteId)) {
       voterGuide = VoterGuideStore.getVoterGuideByVoterGuideId(this.state.voterGuideWeVoteId);
@@ -124,7 +128,7 @@ class HeaderBackToVoterGuides extends Component {
       voter,
       voterFirstName,
       voterIsSignedIn,
-      voterGuideWeVoteId: nextParams.voter_guide_we_vote_id,
+      voterGuideWeVoteId: nextParams ? nextParams.voter_guide_we_vote_id : undefined,
     });
 
     let voterGuide;
@@ -414,7 +418,7 @@ class HeaderBackToVoterGuides extends Component {
 }
 HeaderBackToVoterGuides.propTypes = {
   classes: PropTypes.object,
-  params: PropTypes.object.isRequired,
+  params: PropTypes.object,
 };
 
 const styles = (theme) => ({
@@ -497,7 +501,7 @@ const PreviewButtonWrapper = styled.div`
 `;
 
 const VoterGuideTitle = styled.div`
-  align-items: left;
+  align-items: left;  // TODO: This is nonsense css, and this div is incorrectly styled
   margin-left: 30px;
   width: 100%;
 `;

@@ -105,6 +105,7 @@ export default class OrganizationVoterGuideEdit extends Component {
       this.goToVoterGuideForDifferentElection(voterGuideSaveResults.we_vote_id);
     } else {
       const { organizationWeVoteId } = this.state;
+      // 2012-1-1: This getVoterGuideForOrganizationId call seems useless... we don't do anything with the response
       VoterGuideStore.getVoterGuideForOrganizationId(organizationWeVoteId);
     }
   }
@@ -169,6 +170,7 @@ export default class OrganizationVoterGuideEdit extends Component {
     }
 
     // This component is to redirect to the voter guide for this organization for this election
+    console.error('OrganizationVoterGuideEdit returned null, which is really bad, since it a top level component that responds to a Route');
     return null;
   }
 }
