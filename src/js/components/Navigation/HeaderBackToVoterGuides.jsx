@@ -273,7 +273,7 @@ class HeaderBackToVoterGuides extends Component {
       backToOrganizationLinkText = ''; // Back to 'Your Endorsements'
       backToLink = '/settings/voterguidelist';
     } else if (stringContains('/settings/positions', pathnameLowerCase)) {
-      backToOrganizationLinkText = 'Voter Guide List';
+      backToOrganizationLinkText = 'Your Endorsements';
       backToLink = '/settings/voterguidelist';
     } else if (stringContains('/vg/', pathnameLowerCase) && stringContains('/settings', pathnameLowerCase)) {
       backToOrganizationLinkText = ''; // Back to 'Your Endorsements'
