@@ -64,7 +64,7 @@ class HeaderBackToBallot extends Component {
   }
 
   componentDidMount () {
-    console.log('HeaderBackToBallot componentDidMount, this.props: ', this.props);
+    // console.log('HeaderBackToBallot componentDidMount, this.props: ', this.props);
     const { params } = this.props;
     this.appStoreListener = AppStore.addListener(this.onAppStoreChange.bind(this));
     this.candidateStoreListener = CandidateStore.addListener(this.onCandidateStoreChange.bind(this));

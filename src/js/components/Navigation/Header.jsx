@@ -41,6 +41,7 @@ export default class Header extends Component {
     this.closeOrganizationModal = this.closeOrganizationModal.bind(this);
     this.closeSharedItemModal = this.closeSharedItemModal.bind(this);
     this.handleResize = this.handleResize.bind(this);
+    // 2021-1-3: This is a workaround for the difficulty of nesting components in react-router V5, it should not be necessary
     global.weVoteGlobalHistory.listen((location, action) => {
       if (location.pathname !== this.state.priorPath) {
         // Re-render the Header if the path changed (Needed for React-router V5)
@@ -68,6 +69,7 @@ export default class Header extends Component {
     if (this.state.activityTidbitWeVoteIdForDrawer !== nextState.activityTidbitWeVoteIdForDrawer) return true;
     if (this.state.organizationModalBallotItemWeVoteId !== nextState.organizationModalBallotItemWeVoteId) return true;
     if (pathname !== nextProps.pathname) return true;
+    if (this.state.priorPath === undefined) return true;
     if (this.state.sharedItemCode !== nextState.sharedItemCode) return true;
     if (this.state.showActivityTidbitDrawer !== nextState.showActivityTidbitDrawer) return true;
     if (this.state.showHowItWorksModal !== nextState.showHowItWorksModal) return true;
