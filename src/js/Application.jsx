@@ -82,7 +82,7 @@ class Application extends Component {
 
   // eslint-disable-next-line no-unused-vars
   componentDidUpdate (prevProps, prevState, nextContent) {
-    console.log('Application componentDidUpdate');
+    // console.log('Application componentDidUpdate');
     const { location: { pathname } } = window;
     const { lastZenDeskVisibilityPathName } = this.state;
     if (stringContains('/ballot', pathname.toLowerCase().slice(0, 7)) ||

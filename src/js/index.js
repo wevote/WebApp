@@ -34,20 +34,20 @@ function startApp () {
       console.log('Cordova startupApp keyboard plugin found');
       shrinkView(true); // eslint-disable-line no-undef
       disableScrollingInShrinkView(true); // eslint-disable-line no-undef
-    } else console.log('ERROR: Cordova mapChartFunctions.js startApp keyboard plugin WAS NOT found');
+    } else console.log('ERROR: Cordova index.js startApp keyboard plugin WAS NOT found');
   }
   startReactApp();
 }
 
 // begin of inline startup code
-console.log('mapChartFunctions.js loaded');
-polyfillFixes('mapChartFunctions.js');
+console.log('index.js loaded');
+polyfillFixes('index.js');
 
 // ServiceWorker setup for Workbox Progressive Web App (PWA)
 if ('ENABLE_WORKBOX_SERVICE_WORKER' in webAppConfig &&
     webAppConfig.ENABLE_WORKBOX_SERVICE_WORKER &&
     'serviceWorker' in navigator) {
-  // console.log('Cordova mapChartFunctions.js ENABLE_WORKBOX_SERVICE_WORKER');
+  // console.log('Cordova index.js ENABLE_WORKBOX_SERVICE_WORKER');
 
   window.addEventListener('load', () => {
     // Preload /ballot/vote so that it will be in cache even if the first visit is while offline
@@ -64,10 +64,10 @@ if ('ENABLE_WORKBOX_SERVICE_WORKER' in webAppConfig &&
 
 if (isWebApp()) {
   document.addEventListener('AppleIDSignInOnSuccess', (data) => {
-    console.log('AppleIDSignInOnSuccessListener mapChartFunctions.js data:', data);
+    console.log('AppleIDSignInOnSuccessListener index.js data:', data);
   });
   document.addEventListener('AppleIDSignInOnFailure', (error) => {
-    console.log('AppleIDSignInOnFailureListener mapChartFunctions.js ERROR:', error);
+    console.log('AppleIDSignInOnFailureListener index.js ERROR:', error);
   });
 }
 

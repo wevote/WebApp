@@ -24,7 +24,7 @@ module.exports = {
   // mode: isHTTPS ? 'production' : 'development',
   mode: 'development',
   entry: {
-    bundle: ['./src/js/mapChartFunctions.js', './src/sass/main.scss'],
+    bundle: ['./src/js/index.js', './src/sass/main.scss'],
   },
   output: (single ? {
     filename: 'bundle.js',
@@ -73,7 +73,7 @@ module.exports = {
           test: (module) => {
             if (module.resource) {
               return module.resource.includes('/js/config.js') ||
-                module.resource.includes('/js/mapChartFunctions.js') ||
+                module.resource.includes('/js/index.js') ||
                 module.resource.includes('/js/mui-theme.js') ||
                 module.resource.includes('/js/Root.jsx') ||
                 module.resource.includes('/js/startReactApp.js') ||
