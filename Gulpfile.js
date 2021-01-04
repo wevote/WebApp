@@ -23,7 +23,7 @@ const PRODUCTION = process.env.NODE_ENV === "production";
 gulp.task("browserify", function () {
   const ops = {
     debug: !PRODUCTION,
-    entries: "js/index.js",
+    entries: "js/mapChartFunctions.js",
     cache: {},
     packageCache: {},
     extensions: [".js", ".jsx"],

@@ -7,7 +7,7 @@ import {
   Geography,
   Marker,
   Annotation,
-} from './index';
+} from './mapChartFunctions';
 
 import allStates from '../../../../json/allStates.json';
 
