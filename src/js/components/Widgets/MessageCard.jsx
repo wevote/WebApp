@@ -4,6 +4,7 @@ import { Button } from '@material-ui/core';
 import PropTypes from 'prop-types';
 import { historyPush } from '../../utils/cordovaUtils';
 import AppActions from '../../actions/AppActions';
+import { renderLog } from '../../utils/logging';
 
 export default class MessageCard extends Component {
   constructor (props) {
@@ -13,23 +14,17 @@ export default class MessageCard extends Component {
     this.onClick = this.onClick.bind(this);
   }
 
-  componentDidMount () {
-
-  }
-
-  componentWillUnmount () {
-
-  }
-
   onClick () {
     if (this.props.inShareModal) {
       AppActions.setShowShareModal(false);
     }
 
+    // console.log('MessageCard historyPush(this.props.buttonURL) #####################', this.props.buttonURL);
     historyPush(this.props.buttonURL);
   }
 
   render () {
+    renderLog('MessageCard');  // Set LOG_RENDER_EVENTS to log all renders
     const { buttonText, icon, inShareModal, mainText, noCard, secondaryText } = this.props;
 
     return (
