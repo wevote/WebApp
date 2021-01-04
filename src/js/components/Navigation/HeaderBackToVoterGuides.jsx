@@ -268,9 +268,12 @@ class HeaderBackToVoterGuides extends Component {
       } else {
         backToLink = '/settings/voterguidesmenu';
       }
-    } else if (stringContains('/settings/general', pathnameLowerCase) || stringContains('/settings/positions', pathnameLowerCase)) {
+    } else if (stringContains('/settings/general', pathnameLowerCase)) {
       // const voterGuideWeVoteId = params.voter_guide_we_vote_id;
       backToOrganizationLinkText = ''; // Back to 'Your Endorsements'
+      backToLink = '/settings/voterguidelist';
+    } else if (stringContains('/settings/positions', pathnameLowerCase)) {
+      backToOrganizationLinkText = "Settings";
       backToLink = '/settings/voterguidelist';
     } else if (stringContains('/vg/', pathnameLowerCase) && stringContains('/settings', pathnameLowerCase)) {
       backToOrganizationLinkText = ''; // Back to 'Your Endorsements'
