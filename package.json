@@ -73,7 +73,7 @@
     "test": "npm run lint && npx stylelint --config ./.stylelintrc \"./src/sass/**/*\"",
     "start": "webpack-dev-server",
     "start-https-old": "PROTOCOL=HTTPS webpack-dev-server",
-    "start-https": "PROTOCOL=HTTPS webpack serve ",
+    "start-https": "PROTOCOL=HTTPS webpack serve --host localhost",
     "start-https-singleBundle": "BUNDLE=SINGLE PROTOCOL=HTTPS webpack serve",
     "start-prod-local": "node ./server-prod-local.js",
     "start-profile": "node --inspect-brk ./node_modules/.bin/gulp",
