@@ -214,7 +214,7 @@ class Application extends Component {
   };
 
   incomingVariableManagement () {
-    console.log('Application, incomingVariableManagement, this.props.location.query: ', this.props.location.query);
+    // console.log('Application, incomingVariableManagement, this.props.location.query: ', this.props.location.query);
     const { location: { pathname, query } } = window;
     if (query) {
       // Cookie needs to expire in One day i.e. 24*60*60 = 86400

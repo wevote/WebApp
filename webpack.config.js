@@ -300,11 +300,13 @@ module.exports = {
     },
     host: 'localhost',
     port,
+    public: `localhost:${port}`,
     historyApiFallback: true,
     open: true,
   } : {
     host: 'localhost',
     port,
+    public: `localhost:${port}`,
     historyApiFallback: true,
     open: true,
   }),
