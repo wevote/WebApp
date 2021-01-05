@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { historyPush } from '../../utils/cordovaUtils';
 import LoadingWheel from '../../components/LoadingWheel';
 import { renderLog } from '../../utils/logging';
+import BallotActions from '../../actions/BallotActions';
 import OrganizationActions from '../../actions/OrganizationActions';
 import OrganizationStore from '../../stores/OrganizationStore';
 import VoterGuideActions from '../../actions/VoterGuideActions';
@@ -18,12 +19,14 @@ export default class OrganizationVoterGuideEdit extends Component {
     this.state = {
       googleCivicElectionId: 0,
       organizationWeVoteId: '',
-      organization: {},
       voter: {},
     };
   }
 
   componentDidMount () {
+    this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
+    this.voterGuideStoreListener = VoterGuideStore.addListener(this.onVoterGuideStoreChange.bind(this));
+    this.organizationStoreListener = OrganizationStore.addListener(this.onOrganizationStoreChange.bind(this));
     const { match: { params } } = this.props;
     let organizationWeVoteId = params.organization_we_vote_id;
     let googleCivicElectionId = params.google_civic_election_id;
@@ -59,7 +62,7 @@ export default class OrganizationVoterGuideEdit extends Component {
       if (!googleCivicElectionId) {
         googleCivicElectionId = VoterStore.electionId();
       }
-      // console.log('componentDidMount googleCivicElectionId:', googleCivicElectionId);
+      // console.log('componentDidMount SECOND googleCivicElectionId:', googleCivicElectionId);
 
       // Now that we have gathered the org id or election id from local stores, try getting the Voter Guide again
       if (organizationWeVoteId && googleCivicElectionId) {
@@ -85,10 +88,6 @@ export default class OrganizationVoterGuideEdit extends Component {
       // console.log('OrganizationVoterGuideEdit, componentDidMount, calling VoterGuideActions.voterGuideSave(googleCivicElectionId)');
       VoterGuideActions.voterGuideSave(googleCivicElectionId);
     }
-
-    this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
-    this.voterGuideStoreListener = VoterGuideStore.addListener(this.onVoterGuideStoreChange.bind(this));
-    this.organizationStoreListener = OrganizationStore.addListener(this.onOrganizationStoreChange.bind(this));
   }
 
   componentWillUnmount () {
@@ -101,19 +100,37 @@ export default class OrganizationVoterGuideEdit extends Component {
     const voter = VoterStore.getVoter();
     const voterGuideSaveResults = VoterGuideStore.getVoterGuideSaveResults();
     // console.log('onVoterGuideStoreChange voterGuideSaveResults:', voterGuideSaveResults);
-    if (voterGuideSaveResults && voter && voterGuideSaveResults.organization_we_vote_id !== voter.linked_organization_we_vote_id) {
+    if (voterGuideSaveResults && voter && voterGuideSaveResults.organization_we_vote_id === voter.linked_organization_we_vote_id) {
       this.goToVoterGuideForDifferentElection(voterGuideSaveResults.we_vote_id);
     } else {
       const { organizationWeVoteId } = this.state;
+      let { googleCivicElectionId } = this.state;
       // 2012-1-1: This getVoterGuideForOrganizationId call seems useless... we don't do anything with the response
-      VoterGuideStore.getVoterGuideForOrganizationId(organizationWeVoteId);
+      // VoterGuideStore.getVoterGuideForOrganizationId(organizationWeVoteId);
+
+      if (!googleCivicElectionId) {
+        googleCivicElectionId = VoterStore.electionId();
+      }
+      // console.log('onVoterGuideStoreChange googleCivicElectionId:', googleCivicElectionId);
+
+      // Now that we have gathered the org id or election id from local stores, try getting the Voter Guide again
+      if (organizationWeVoteId && googleCivicElectionId) {
+        // Simplest case where we get both variables
+        const voterGuide = VoterGuideStore.getVoterGuideForOrganizationIdAndElection(organizationWeVoteId, googleCivicElectionId);
+        // console.log('voterGuide: ', voterGuide);
+        if (voterGuide && voterGuide.we_vote_id && isProperlyFormattedVoterGuideWeVoteId(voterGuide.we_vote_id)) {
+          historyPush(`/vg/${voterGuide.we_vote_id}/settings/positions`);
+        }
+      }
     }
   }
 
   onVoterStoreChange () {
+    const voter = VoterStore.getVoter();
     this.setState({
-      voter: VoterStore.getVoter(),
+      voter,
     });
+    // console.log('onVoterStoreChange voter:', voter);
     let { googleCivicElectionId } = this.state;
     if (!googleCivicElectionId) {
       googleCivicElectionId = VoterStore.electionId();
@@ -124,16 +141,14 @@ export default class OrganizationVoterGuideEdit extends Component {
         VoterGuideActions.voterGuideSave(googleCivicElectionId);
         // console.log('onVoterStoreChange New googleCivicElectionId found: ', googleCivicElectionId);
         // When the result comes back from voterGuideSave, onVoterGuideStoreChange triggers a call to goToVoterGuideForDifferentElection
+      } else {
+        BallotActions.voterBallotItemsRetrieve();
       }
     }
     // console.log('onVoterStoreChange googleCivicElectionId at end:', googleCivicElectionId);
   }
 
   onOrganizationStoreChange () {
-    const { organizationWeVoteId } = this.state;
-    this.setState({
-      organization: OrganizationStore.getOrganizationByWeVoteId(organizationWeVoteId),
-    });
     let { googleCivicElectionId } = this.state;
     if (!googleCivicElectionId) {
       googleCivicElectionId = VoterStore.electionId();
@@ -156,13 +171,14 @@ export default class OrganizationVoterGuideEdit extends Component {
 
   render () {
     renderLog('OrganizationVoterGuideEdit');  // Set LOG_RENDER_EVENTS to log all renders
-    const { organization, organizationWeVoteId, voter } = this.state;
-    // console.log('organization:', organization, ', organizationWeVoteId:', organizationWeVoteId, ', voter:', voter);
-    if (!organization || !organizationWeVoteId || !voter) {
+    const { organizationWeVoteId, voter } = this.state;
+    if (!organizationWeVoteId || !voter) {
+      // console.log('MISSING organizationWeVoteId:', organizationWeVoteId, ' or voter:', voter);
       return <div>{LoadingWheel}</div>;
     }
-
-    const isVoterOwner = organizationWeVoteId && organizationWeVoteId === voter.linked_organization_we_vote_id;
+    const { linked_organization_we_vote_id: linkedOrganizationWeVoteId } = voter;
+    // console.log('organizationWeVoteId:', organizationWeVoteId, ', linkedOrganizationWeVoteId:', linkedOrganizationWeVoteId);
+    const isVoterOwner = organizationWeVoteId === linkedOrganizationWeVoteId;
     // console.log('isVoterOwner:', isVoterOwner);
 
     if (!isVoterOwner) {
@@ -170,8 +186,8 @@ export default class OrganizationVoterGuideEdit extends Component {
     }
 
     // This component is to redirect to the voter guide for this organization for this election
-    console.error('OrganizationVoterGuideEdit returned null, which is really bad, since it a top level component that responds to a Route');
-    return null;
+    // console.log('OrganizationVoterGuideEdit is waiting for data...');
+    return <div>{LoadingWheel}</div>;
   }
 }
 OrganizationVoterGuideEdit.propTypes = {
