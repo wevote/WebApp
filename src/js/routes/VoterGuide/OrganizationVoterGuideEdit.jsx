@@ -101,7 +101,7 @@ export default class OrganizationVoterGuideEdit extends Component {
     const voter = VoterStore.getVoter();
     const voterGuideSaveResults = VoterGuideStore.getVoterGuideSaveResults();
     // console.log('onVoterGuideStoreChange voterGuideSaveResults:', voterGuideSaveResults);
-    if (voterGuideSaveResults && voter && voterGuideSaveResults.organization_we_vote_id === voter.linked_organization_we_vote_id) {
+    if (voterGuideSaveResults && voter && voterGuideSaveResults.organization_we_vote_id !== voter.linked_organization_we_vote_id) {
       this.goToVoterGuideForDifferentElection(voterGuideSaveResults.we_vote_id);
     } else {
       const { organizationWeVoteId } = this.state;

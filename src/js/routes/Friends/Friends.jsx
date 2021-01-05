@@ -47,7 +47,7 @@ class Friends extends Component {
     // console.log('Friends getDerivedStateFromProps defaultTabItem:', defaultTabItem, ', tabItem:', tabItem);
     // We only redirect when in mobile mode (when "displayFriendsTabs()" is true), a tab param has not been passed in, and we have a defaultTab specified
     // This solves an edge case where you re-click the Friends Footer tab when you are in the friends section
-    if (displayFriendsTabs() && tabItem === undefined && defaultTabItem) {
+    if (displayFriendsTabs() && tabItem === undefined && defaultTabItem && defaultTabItem.length) {
       historyPush(`/friends/${defaultTabItem}`);
     }
     return null;

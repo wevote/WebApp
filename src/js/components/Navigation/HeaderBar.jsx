@@ -24,7 +24,7 @@ import ValuesIntroModal from '../CompleteYourProfile/ValuesIntroModal';
 import VoterGuideActions from '../../actions/VoterGuideActions';
 import VoterSessionActions from '../../actions/VoterSessionActions';
 import VoterStore from '../../stores/VoterStore';
-import { shortenText, startsWith, stringContains } from '../../utils/textFormat';
+import { getBooleanValue, shortenText, startsWith, stringContains } from '../../utils/textFormat';
 import shouldHeaderRetreat from '../../utils/shouldHeaderRetreat';
 import displayFriendsTabs from '../../utils/displayFriendsTabs';
 import ShareModal from '../Share/ShareModal';
@@ -103,8 +103,8 @@ class HeaderBar extends Component {
       showFirstPositionIntroModal: AppStore.showFirstPositionIntroModal(),
       showPersonalizedScoreIntroModal: AppStore.showPersonalizedScoreIntroModal(),
       showSelectBallotModal: AppStore.showSelectBallotModal(),
-      showSelectBallotModalHideAddress: AppStore.showSelectBallotModalHideAddress(),
-      showSelectBallotModalHideElections: AppStore.showSelectBallotModalHideElections(),
+      showSelectBallotModalHideAddress: getBooleanValue(AppStore.showSelectBallotModalHideAddress()),
+      showSelectBallotModalHideElections: getBooleanValue(AppStore.showSelectBallotModalHideElections()),
       showSignInModal: AppStore.showSignInModal(),
       showValuesIntroModal: AppStore.showValuesIntroModal(),
       showImageUploadModal: AppStore.showImageUploadModal(),

@@ -209,8 +209,8 @@ const routes = () => {
 
             {/* Friend related Pages */}
             {/* /friends/current */}
-            <Route path="/friends" component={Friends} />
-            <Route path="/friends/:tabItem" component={Friends} />
+            <Route exact path="/friends" component={Friends} />
+            <Route exact path="/friends/:tabItem" component={Friends} />
             <Route path="/facebook_invitable_friends" component={FacebookInvitableFriends} />
             <Route path="/wevoteintro/newfriend/:invitationSecretKey" component={FriendInvitationOnboarding} />
 

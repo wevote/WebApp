@@ -34,6 +34,17 @@ class Application extends Component {
       // Do not define voter here. We rely on it being undefined
       voter_initial_retrieve_needed: true,
     };
+    // 2021-1-3: This is a workaround for the difficulty of nesting components in react-router V5, it should not be necessary
+    global.weVoteGlobalHistory.listen((location, action) => {
+      if (location.pathname !== this.state.priorPath) {
+        // Re-render the Application if the path changed (Needed for React-router V5)
+        this.setState({ priorPath: window.locationPathname });
+      }
+      if (webAppConfig.LOG_ROUTING) {
+        console.log(`Application: The current URL is ${location.pathname}${location.search}${location.hash}`);
+        console.log(`Application: The last navigation action was ${action}`, JSON.stringify(global.weVoteGlobalHistory, null, 2));
+      }
+    });
   }
 
   componentDidMount () {
@@ -71,7 +82,7 @@ class Application extends Component {
 
   // eslint-disable-next-line no-unused-vars
   componentDidUpdate (prevProps, prevState, nextContent) {
-    console.log('Application componentDidUpdate');
+    // console.log('Application componentDidUpdate');
     const { location: { pathname } } = window;
     const { lastZenDeskVisibilityPathName } = this.state;
     if (stringContains('/ballot', pathname.toLowerCase().slice(0, 7)) ||
@@ -339,7 +350,7 @@ class Application extends Component {
       return (
         <div className="app-base" id="app-base-id">
           <Wrapper id="theatre" padTop={cordovaScrollablePaneTopPadding()}>
-            <div className="page-content-container">
+            <div className="page-content-container" id="theatre-debug-marker">
               <div className="container-fluid">
                 <div className="row">
                   <div className="col-12 container-main">
@@ -359,7 +370,7 @@ class Application extends Component {
           <Header params={params} pathname={pathname} />
           <SnackNotifier />
           <Wrapper id="voterGuideModes" padTop={cordovaVoterGuideTopPadding()}>
-            <div className="page-content-container">
+            <div className="page-content-container" id="voterguide-debug-marker">
               <div className={voterGuideCreatorMode ? 'container-voter-guide-creator' : 'container-voter-guide'}>
                 { this.props.children }
               </div>
@@ -383,7 +394,7 @@ class Application extends Component {
           <Header params={params} pathname={pathname} />
           <SnackNotifier />
           <Wrapper id="settings" padTop={cordovaScrollablePaneTopPadding()}>
-            <div className="page-content-container">
+            <div className="page-content-container" id="settings-debug-marker">
               <div className="container-settings">
                 { this.props.children }
               </div>
@@ -424,7 +435,7 @@ class Application extends Component {
           ) :
           (
             <Wrapper id="most-common" padTop={cordovaScrollablePaneTopPadding()}>
-              <div className="page-content-container">
+              <div className="page-content-container" id="other-not-excluded-debug-marker">
                 <div className="container-fluid">
                   <div id="container-main-in-application" className="container-main" style={{ paddingTop: `${cordovaContainerMainOverride()}` }}>
                     { this.props.children }

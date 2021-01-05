@@ -3,7 +3,8 @@ import { isIOSAppOnMac, isCordova, isWebApp } from './cordovaUtils';
 import { startsWith, stringContains } from './textFormat';
 
 
-// We have to do all this, because we allow urls like https://wevote.us/aclu where "aclu" is a twitter account.
+// We have to do all this, because we allow urls where the path starts with a twitter username (handle)
+// as a result every path has to be evaluated for an exact routable match, and what is left is a twitter handle path.
 // Based on the pathname parameter, decide if we want theaterMode, contentFullWidthMode, or voterGuideMode
 export function getApplicationViewBooleans (pathname) {
   // We don't want to do all the work to create the footer, fire off api queries, etc., only to then set "display: none" based on a breakpoint!
@@ -89,7 +90,9 @@ export function getApplicationViewBooleans (pathname) {
     pathnameLowerCase === '/facebook_invitable_friends') {
     contentFullWidthMode = true;
     friendsMode = true;
-  } else {
+  } else if (stringContains('/vg/', pathnameLowerCase)) {    // TODO: Check voter guide mode STEVE ---------------------------------------------------------------
+    voterGuideMode = true;
+  } else if (stringContains('/btcand/', pathnameLowerCase)) {
     voterGuideMode = true;
   }
 
@@ -206,8 +209,9 @@ export function getApplicationViewBooleans (pathname) {
     // We want to SHOW the footer bar on the above path patterns
     showFooterBar = !isIOSAppOnMac() && isSmallScreen;
   } else {
-    // We need to default to True because of URLs like: https://WeVote.US/orlandosentinel
+    // URLs like: https://WeVote.US/orlandosentinel  (The URL pathname consists of a Twitter Handle only)
     showFooterBar = !isIOSAppOnMac() && isSmallScreen;
+    contentFullWidthMode = true;
   }
 
   let showShareButtonFooter = false;

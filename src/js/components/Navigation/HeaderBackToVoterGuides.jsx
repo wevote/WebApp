@@ -132,7 +132,7 @@ class HeaderBackToVoterGuides extends Component {
     });
 
     let voterGuide;
-    if (nextParams.voter_guide_we_vote_id && isProperlyFormattedVoterGuideWeVoteId(nextParams.voter_guide_we_vote_id)) {
+    if (nextParams && nextParams.voter_guide_we_vote_id && isProperlyFormattedVoterGuideWeVoteId(nextParams.voter_guide_we_vote_id)) {
       voterGuide = VoterGuideStore.getVoterGuideByVoterGuideId(nextParams.voter_guide_we_vote_id);
       if (voterGuide && voterGuide.we_vote_id) {
         this.setState({
@@ -268,9 +268,12 @@ class HeaderBackToVoterGuides extends Component {
       } else {
         backToLink = '/settings/voterguidesmenu';
       }
-    } else if (stringContains('/settings/general', pathnameLowerCase) || stringContains('/settings/positions', pathnameLowerCase)) {
+    } else if (stringContains('/settings/general', pathnameLowerCase)) {
       // const voterGuideWeVoteId = params.voter_guide_we_vote_id;
       backToOrganizationLinkText = ''; // Back to 'Your Endorsements'
+      backToLink = '/settings/voterguidelist';
+    } else if (stringContains('/settings/positions', pathnameLowerCase)) {
+      backToOrganizationLinkText = 'Your Endorsements';
       backToLink = '/settings/voterguidelist';
     } else if (stringContains('/vg/', pathnameLowerCase) && stringContains('/settings', pathnameLowerCase)) {
       backToOrganizationLinkText = ''; // Back to 'Your Endorsements'

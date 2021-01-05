@@ -16,7 +16,7 @@ import {
 import AnalyticsActions from '../../actions/AnalyticsActions';
 import BallotElectionListWithFilters from './BallotElectionListWithFilters';
 import EditAddressInPlace from '../Widgets/EditAddressInPlace';
-// import MapChart from '../Widgets/MapChart/MapChart';
+import MapChart from '../Widgets/MapChart/MapChart';
 import { renderLog } from '../../utils/logging';
 import { calculateBallotBaseUrl } from '../../utils/textFormat';
 import { hasIPhoneNotch } from '../../utils/cordovaUtils';
@@ -136,18 +136,17 @@ class SelectBallotModal extends Component {
                   />
                 </EditAddressInPlaceWrapperMobile>
               )}
-              {/* TODO: December 2020: Restore the d3 based map chart. */}
-              {/*{!editingAddress && (*/}
-              {/*  <MapChartWrapper>*/}
-              {/*  <MapChart onClickFunction={this.mapHandler} />*/}
-              {/*  </MapChartWrapper>*/}
-              {/*)}*/}
+              {!editingAddress && (
+                <MapChartWrapper>
+                  <MapChart onClickFunction={this.mapHandler} />
+                </MapChartWrapper>
+              )}
             </div>
-            {/*{!editingAddress && (*/}
-            {/*  <MapChartWrapperDesktop className="u-show-desktop">*/}
-            {/*    <MapChart onClickFunction={this.mapHandler} />*/}
-            {/*  </MapChartWrapperDesktop>*/}
-            {/*)}*/}
+            {!editingAddress && (
+              <MapChartWrapperDesktop className="u-show-desktop">
+                <MapChart onClickFunction={this.mapHandler} />
+              </MapChartWrapperDesktop>
+            )}
             <SidebarWrapper>
               <div className="u-show-desktop">
                 {!hideAddressEdit && (
