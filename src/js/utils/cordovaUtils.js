@@ -59,19 +59,13 @@ export function isAndroid () {
   return isCordova() && platform === 'Android';  // Ignore the "Condition is always false" warning.  This line works correctly.
 }
 
-// Setting href does not change the history object, the name was retained from the v3 react-router implementation.
-// For the V4 router (Jan 2020) this simply changes the url and browsed page without using history
-// If history retention is needed, see TabWithPushHistory.jsx for an example of how to do it.
+// If history retention is not working, see TabWithPushHistory.jsx for an example of how to do it.
 // See v5: https://reactrouter.com/native/api/Hooks/usehistory
-// See v3: https://github.com/ReactTraining/react-router/blob/v3/docs/guides/Histories.md
+// IMPORTANT:  The HTML5 window.history, is very different from the react-router V5 history, don't use window.history!
 export function historyPush (route) {
-  console.log(`historyPush ******** ${route} *******`);
-  // react-router v3 code:
-  // const history = useHistory();
-  // history.push(route);
-  // HTML5 Test hack (reloads app from zero, does not save route in history)
-  // window.location.href = origin + route;
-  // IMPORTANT:  The HTML5 window.history, is very different from the react-router V5 history, don't use window.history!
+  if (webAppConfig.LOG_ROUTING) {
+    console.log(`historyPush ******** ${route} *******`);
+  }
   global.weVoteGlobalHistory.push(route);
 }
 
