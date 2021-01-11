@@ -3,6 +3,7 @@ import Helmet from 'react-helmet';
 import { Link } from 'react-router-dom';
 import { renderLog } from '../../utils/logging';
 import attributions from '../../attributions';
+import compileDate from '../../compileDate';
 
 export default class Attributions extends React.Component {
   static getProps () {
@@ -51,6 +52,10 @@ export default class Attributions extends React.Component {
           { attributions.map((oneLicense) => (
             Attributions.parseLicense(oneLicense)
           ))}
+        </div>
+        <div style={{ padding: '16px' }}>
+          Compile date:&nbsp;&nbsp;
+          { compileDate }
         </div>
       </div>
     );
