@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import PageNotFound from '../routes/PageNotFound';
+import Ready from '../routes/Ready';
 import SettingsDashboard from '../routes/Settings/SettingsDashboard';
 import OrganizationVoterGuideEdit from '../routes/VoterGuide/OrganizationVoterGuideEdit';
 import { renderLog } from './logging';
@@ -17,6 +18,10 @@ export default function RouterV5SendMatch (props) {
     case 'OrganizationVoterGuideEdit':
       return (
         <OrganizationVoterGuideEdit match={match} />
+      );
+    case 'Ready':
+      return (
+        <Ready match={match} />
       );
     case 'SettingsDashboard':
       return (

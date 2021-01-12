@@ -44,13 +44,14 @@ import ShowMoreItems from '../../components/Widgets/ShowMoreItems';
 import SuggestedFriendsPreview from '../../components/Friends/SuggestedFriendsPreview';
 import SupportActions from '../../actions/SupportActions';
 import SupportStore from '../../stores/SupportStore';
-import { startsWith } from '../../utils/textFormat';
+import { getBooleanValue, startsWith } from '../../utils/textFormat';
 import { checkShouldUpdate, formatVoterBallotList } from './utils/ballotUtils';
 import ValuesToFollowPreview from '../../components/Values/ValuesToFollowPreview';
 import VoterActions from '../../actions/VoterActions';
 import VoterGuideStore from '../../stores/VoterGuideStore';
 import VoterStore from '../../stores/VoterStore';
 import webAppConfig from '../../config';
+
 
 const TYPES = require('keymirror')({
   OFFICE: null,
@@ -977,7 +978,7 @@ class Ballot extends Component {
       BallotActions.voterBallotListRetrieve(); // Retrieve a list of ballots for the voter from other elections
     }
 
-    AppActions.setShowSelectBallotModal(!showSelectBallotModal, hideAddressEdit, hideElections);
+    AppActions.setShowSelectBallotModal(!showSelectBallotModal, getBooleanValue(hideAddressEdit), getBooleanValue(hideElections));
   }
 
   // Needed to scroll to anchor tags based on hash in url (as done for bookmarks)

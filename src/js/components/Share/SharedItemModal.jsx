@@ -203,7 +203,7 @@ class SharedItemModal extends Component {
   }
 
   closeSharedItemModalLocal = () => {
-    // console.log('voterVerifySecretCode this.props.closeSharedItemModal:', this.props.closeSharedItemModal);
+    // console.log('SharedItemModal this.props.closeSharedItemModal:', this.props.closeSharedItemModal);
     const { personalizedScoreIntroWatchedThisSession } = this.state;
     if (personalizedScoreIntroWatchedThisSession) {
       VoterActions.voterUpdateInterfaceStatusFlags(VoterConstants.PERSONALIZED_SCORE_INTRO_COMPLETED);
