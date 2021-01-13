@@ -257,7 +257,9 @@ export function hideZenDeskHelpVisibility () {
   if (isWebApp()) {
     try {
       const { zE } = global;
-      zE('webWidget', 'show');
+      if (zE) {     // This library is delayed load, and may not have loaded yet
+        zE('webWidget', 'show');
+      }
     } catch (err) {
       console.log('hideZenDeskHelpVisibility global.zE failure hide, ', err);
     }
@@ -269,7 +271,9 @@ export function showZenDeskHelpVisibility () {
   if (isWebApp()) {
     try {
       const { zE } = global;
-      zE('webWidget', 'show');
+      if (zE) {
+        zE('webWidget', 'show');
+      }
     } catch (err) {
       console.log('hideZenDeskHelpVisibility global.zE failure show, ', err);
     }

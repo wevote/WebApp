@@ -125,10 +125,10 @@ const routes = () => {
             <Route path="/news" component={News} />
             <Route path="/news/a/:activity_tidbit_we_vote_id" component={News} />
             <Route path="/news/a/" component={News} />
-            <Route path="/ready" component={Ready} />
+            <Route exact path="/ready" component={Ready} />
             <Route path="/ready/election/:google_civic_election_id" component={Ready} />
-            <Route path="/ready/modal/:modal_to_show/:shared_item_code" component={Ready} />
-            <Route path="/ready/modal/:modal_to_show" component={Ready} />
+            <Route path="/ready/modal/:modal_to_show/:shared_item_code" render={(props) => (<RouterV5SendMatch componentName="Ready" {...props} />)} />
+            <Route path="/ready/modal/:modal_to_show" render={(props) => (<RouterV5SendMatch componentName="Ready" {...props} />)} />
             <Route path="/register" component={Register} />
             <Route path="/ballot" component={Ballot} />
             {/* Subpages BallotIndex ?????????????? */}

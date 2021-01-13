@@ -107,6 +107,7 @@ class StickyPopover extends Component {
           target={target}
           placement={placement}
           className="u-position-relative"
+          flip={false}
         >
           <Popover
             id={popoverId}

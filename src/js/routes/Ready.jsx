@@ -68,14 +68,14 @@ class Ready extends Component {
     ActivityActions.activityNoticeListRetrieve();
     FriendActions.suggestedFriendList();
 
-    let { match: { params: { modalToOpen, shared_item_code: sharedItemCode } } } = this.props;
-    modalToOpen = modalToOpen || '';
+    let { match: { params: { modal_to_show: modalToShow, shared_item_code: sharedItemCode } } } = this.props;
+    modalToShow = modalToShow || '';
     // console.log('componentDidMount modalToOpen:', modalToOpen);
-    if (modalToOpen === 'share') {
+    if (modalToShow === 'share') {
       this.modalOpenTimer = setTimeout(() => {
         AppActions.setShowShareModal(true);
       }, 1000);
-    } else if (modalToOpen === 'sic') { // sic = Shared Item Code
+    } else if (modalToShow === 'sic') { // sic = Shared Item Code
       sharedItemCode = sharedItemCode || '';
       // console.log('componentDidMount sharedItemCode:', sharedItemCode);
       if (sharedItemCode) {
