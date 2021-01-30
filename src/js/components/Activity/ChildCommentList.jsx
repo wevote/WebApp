@@ -10,7 +10,7 @@ import AppActions from '../../actions/AppActions';
 import ReactionStore from '../../stores/ReactionStore';
 import ReactionActions from '../../actions/ReactionActions';
 import { renderLog } from '../../utils/logging';
-import { timeFromDate } from '../../utils/textFormat';
+import { timeFromDate } from '../../utils/dateFormat';
 import VoterStore from '../../stores/VoterStore';
 
 

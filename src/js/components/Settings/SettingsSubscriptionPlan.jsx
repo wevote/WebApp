@@ -17,7 +17,8 @@ import OrganizationStore from '../../stores/OrganizationStore';
 import { renderLog } from '../../utils/logging';
 import SettingsAccount from './SettingsAccount';
 import VoterStore from '../../stores/VoterStore';
-import { formatDateToYearMonthDay, stringContains } from '../../utils/textFormat';
+import { formatDateToYearMonthDay } from '../../utils/dateFormat';
+import { stringContains } from '../../utils/textFormat';
 import DelayedLoad from '../Widgets/DelayedLoad';
 
 class SettingsSubscriptionPlan extends Component {

@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import { Button, Checkbox, FormControlLabel, TextField } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 import { renderLog } from '../../utils/logging';
-import { formatDateToYearMonthDay } from '../../utils/textFormat';
+import { formatDateToYearMonthDay } from '../../utils/dateFormat';
 
 class PledgeToVote extends React.Component {
   constructor (props) {

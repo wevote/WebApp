@@ -34,7 +34,8 @@ import SettingsAccount from '../../components/Settings/SettingsAccount';
 import ShowMoreItems from '../../components/Widgets/ShowMoreItems';
 import SuggestedFriendsPreview from '../../components/Friends/SuggestedFriendsPreview';
 import Testimonial from '../../components/Widgets/Testimonial';
-import { formatDateToMonthDayYear, startsWith, timeFromDate } from '../../utils/textFormat';
+import { formatDateToMonthDayYear, timeFromDate } from '../../utils/dateFormat';
+import { startsWith } from '../../utils/textFormat';
 import TwitterSignInCard from '../../components/Twitter/TwitterSignInCard';
 import VoterStore from '../../stores/VoterStore';
 

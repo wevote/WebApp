@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import BallotStore from '../../stores/BallotStore';
 import { renderLog } from '../../utils/logging';
-import { formatDateToMonthDayYear } from '../../utils/textFormat';
+import { formatDateToMonthDayYear } from '../../utils/dateFormat';
 
 class ElectionCountdown extends React.Component {
   constructor (props) {
