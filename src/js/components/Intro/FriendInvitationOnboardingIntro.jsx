@@ -10,7 +10,8 @@ import ImageHandler from '../ImageHandler';
 import logoDark from '../../../img/global/svg-icons/we-vote-logo-horizontal-color-dark-141x46.svg';
 import ReadMore from '../Widgets/ReadMore';
 import { renderLog } from '../../utils/logging';
-import { convertToInteger, formatDateToMonthDayYear } from '../../utils/textFormat';
+import { formatDateToMonthDayYear } from '../../utils/dateFormat';
+import { convertToInteger } from '../../utils/textFormat';
 
 class FriendInvitationOnboardingIntro extends Component {
   constructor (props) {

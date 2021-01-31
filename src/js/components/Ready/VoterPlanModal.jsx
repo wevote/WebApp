@@ -11,7 +11,7 @@ import OpenExternalWebSite from '../Widgets/OpenExternalWebSite';
 import ReadyActions from '../../actions/ReadyActions';
 import ReadyStore from '../../stores/ReadyStore';
 import { renderLog } from '../../utils/logging';
-import { formatDateToMonthDayYear } from '../../utils/textFormat';
+import { formatDateToMonthDayYear } from '../../utils/dateFormat';
 import VoterStore from '../../stores/VoterStore';
 import { hideZenDeskHelpVisibility, setZenDeskHelpVisibility } from '../../utils/applicationUtils';
 import webAppConfig from '../../config';

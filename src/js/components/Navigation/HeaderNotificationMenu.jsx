@@ -10,7 +10,8 @@ import { historyPush, isIOSAppOnMac, setIconBadgeMessageCount } from '../../util
 import ImageHandler from '../ImageHandler';
 import { renderLog } from '../../utils/logging';
 import { createDescriptionOfFriendPosts } from '../../utils/activityUtils';
-import { returnFirstXWords, startsWith, timeFromDate } from '../../utils/textFormat';
+import { timeFromDate } from '../../utils/dateFormat';
+import { returnFirstXWords, startsWith } from '../../utils/textFormat';
 
 
 class HeaderNotificationMenu extends Component {

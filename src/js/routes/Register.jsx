@@ -15,7 +15,7 @@ import ReadyActions from '../actions/ReadyActions';
 import { renderLog } from '../utils/logging';
 import VoterStore from '../stores/VoterStore';
 import { formatStateName } from '../utils/formatStateName';
-import { formatDateToMonthDayYear } from '../utils/textFormat';
+import { formatDateToMonthDayYear } from '../utils/dateFormat';
 import voteDotOrg from '../../img/global/logos/vote_dot_org_logo-530x200.png';
 import turboVote from '../../img/global/logos/turbovote-logo.png';
 

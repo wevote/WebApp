@@ -1,7 +1,5 @@
 // textFormat.js
 
-import moment from 'moment';
-
 export function abbreviateNumber (num) {
   // =< 1,000,000 - round to hundred-thousand (1.4M)
   if (num >= 1000000) {
@@ -199,18 +197,6 @@ export function extractTwitterHandleFromTextString (incomingString) {
   return lowerCaseString;
 }
 
-export function formatDateToMonthDayYear (dateString) {
-  // console.log('dateString:', dateString);
-  const momentDate = moment(dateString, 'YYYY-MM-DD');
-  return momentDate.format('MMM Do, YYYY');
-}
-
-export function formatDateToYearMonthDay (dateString) {
-  // console.log('dateString:', dateString);
-  const momentDate = moment(dateString, 'YYYY-MM-DD');
-  return momentDate.format('YYYY/M/D');
-}
-
 export function isNumber (value) {
   return typeof value === 'number' && Number.isFinite(value);
 }
@@ -390,13 +376,6 @@ export const vimeoRegX = /http(s)?:\/\/(www\.)?vimeo.com\/(\d+)(\/)?(#.*)?/;
 // This must be placed after declaration of stringContains
 export function isProperlyFormattedVoterGuideWeVoteId (voterGuideWeVoteId) {
   return voterGuideWeVoteId && stringContains('wv', voterGuideWeVoteId) && stringContains('vg', voterGuideWeVoteId);
-}
-
-export function timeFromDate (dateString) {
-  if (!dateString || dateString === '') {
-    return '';
-  }
-  return moment.utc(dateString).fromNow();
 }
 
 export function getBooleanValue (thing) {

@@ -12,7 +12,8 @@ import OrganizationPopoverCard from '../Organization/OrganizationPopoverCard';
 import ReadMore from '../Widgets/ReadMore';
 import StickyPopover from '../Ballot/StickyPopover';
 import { createDescriptionOfFriendPosts } from '../../utils/activityUtils';
-import { numberWithCommas, timeFromDate } from '../../utils/textFormat';
+import { timeFromDate } from '../../utils/dateFormat';
+import { numberWithCommas } from '../../utils/textFormat';
 import VoterStore from '../../stores/VoterStore';
 
 class ActivitySpeakerCard extends Component {
