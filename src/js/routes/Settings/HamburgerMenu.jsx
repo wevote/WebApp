@@ -1,14 +1,16 @@
 import React, { Component } from 'react';
+import Table from 'react-bootstrap/Table';
 import Helmet from 'react-helmet';
 import { Link } from 'react-router-dom';
-import Table from 'react-bootstrap/Table';
-import { cordovaDot, isCordova, isWebApp } from '../../utils/cordovaUtils';
+import anonymous from '../../../img/global/icons/avatar-generic.png';
+import avatarGeneric from '../../../img/global/svg-icons/avatar-generic.svg';
+import LoadingWheel from '../../components/LoadingWheel';
+import HamburgerMenuRow from '../../components/Navigation/HamburgerMenuRow';
 import DeviceDialog from '../../components/Widgets/DeviceDialog';
 import VoterStore from '../../stores/VoterStore';
-import HamburgerMenuRow from '../../components/Navigation/HamburgerMenuRow';
-import LoadingWheel from '../../components/LoadingWheel';
+import { cordovaDot, isCordova, isWebApp } from '../../utils/cordovaUtils';
+import LazyImage from '../../utils/LazyImage';
 import { renderLog } from '../../utils/logging';
-import avatarGeneric from '../../../img/global/svg-icons/avatar-generic.svg';
 import { voterPhoto } from '../../utils/voterPhoto';
 
 const webAppConfig = require('../../config');
@@ -65,9 +67,10 @@ export default class HamburgerMenu extends Component {
       >
         {voterPhotoUrlMedium ? (
           <div className={isWebApp() ? 'header-nav__avatar' : 'header-nav__avatar-cordova header-nav__cordova'}>
-            <img
+            <LazyImage
               alt="Signed in voter"
               src={voterPhotoUrlMedium}
+              placeholder={anonymous}
               height={34}
               width={34}
               style={{ maxWidth: 'unset' }}

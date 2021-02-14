@@ -4,7 +4,9 @@ import styled from 'styled-components';
 import { Button, AppBar, Toolbar, Tabs, IconButton, Tooltip } from '@material-ui/core';
 import { Place, AccountCircle } from '@material-ui/icons';
 import { withStyles } from '@material-ui/core/styles';
+import anonymous from '../../../img/global/icons/avatar-generic.png';
 import { hasIPhoneNotch, historyPush, isIOSAppOnMac, isCordova, isWebApp } from '../../utils/cordovaUtils';
+import LazyImage from '../../utils/LazyImage';
 import AdviserIntroModal from '../CompleteYourProfile/AdviserIntroModal';
 import AppActions from '../../actions/AppActions';
 import AppStore from '../../stores/AppStore';
@@ -550,9 +552,10 @@ class HeaderBar extends Component {
                     style={isCordova() ? { marginBottom: 2 } : {}}
                     onClick={this.toggleProfilePopUp}
                   >
-                    <img
+                    <LazyImage
                       className="header-nav__avatar"
                       src={voterPhotoUrlMedium}
+                      placeholder={anonymous}
                       style={{
                         marginLeft: 16,
                       }}
