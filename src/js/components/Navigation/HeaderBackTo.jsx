@@ -4,10 +4,12 @@ import styled from 'styled-components';
 import { AccountCircle } from '@material-ui/icons';
 import { AppBar, IconButton, Toolbar, Button } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
+import anonymous from '../../../img/global/icons/avatar-generic.png';
 import AppStore from '../../stores/AppStore';
 import AppActions from '../../actions/AppActions';
 import { dumpCssFromId } from '../../utils/appleSiliconUtils';
 import { hasIPhoneNotch, historyPush, isIOSAppOnMac, isCordova, isWebApp, isIPad } from '../../utils/cordovaUtils';
+import LazyImage from '../../utils/LazyImage';
 import HeaderBackToButton from './HeaderBackToButton';
 import HeaderBarProfilePopUp from './HeaderBarProfilePopUp';
 import HeaderNotificationMenu from './HeaderNotificationMenu';
@@ -255,9 +257,10 @@ class HeaderBackTo extends Component {
                       className={`header-nav__avatar-container ${isCordova() ? 'header-nav__avatar-cordova' : undefined}`}
                       onClick={this.toggleProfilePopUp}
                     >
-                      <img
+                      <LazyImage
                         className="header-nav__avatar"
                         src={voterPhotoUrlMedium}
+                        placeholder={anonymous}
                         height={34}
                         width={34}
                         alt="Your Settings"

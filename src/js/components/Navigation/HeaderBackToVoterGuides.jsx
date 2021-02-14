@@ -4,10 +4,12 @@ import styled from 'styled-components';
 import { withStyles } from '@material-ui/core/styles';
 import { Button, AppBar, Toolbar, Tooltip, IconButton } from '@material-ui/core';
 import { Place, AccountCircle } from '@material-ui/icons';
+import anonymous from '../../../img/global/icons/avatar-generic.png';
 import AppStore from '../../stores/AppStore';
 import AppActions from '../../actions/AppActions';
 import BallotStore from '../../stores/BallotStore';
 import { isCordova, isWebApp, historyPush, hasIPhoneNotch } from '../../utils/cordovaUtils';
+import LazyImage from '../../utils/LazyImage';
 import EndorsementModeTabs from './EndorsementModeTabs';
 import HeaderBackToButton from './HeaderBackToButton';
 import HeaderBarProfilePopUp from './HeaderBarProfilePopUp';
@@ -333,9 +335,10 @@ class HeaderBackToVoterGuides extends Component {
                     className={`header-nav__avatar-container ${isCordova() ? 'header-nav__avatar-cordova' : undefined}`}
                     onClick={this.toggleProfilePopUp}
                   >
-                    <img
+                    <LazyImage
                       className="header-nav__avatar"
                       src={voterPhotoUrlMedium}
+                      placeholder={anonymous}
                       style={{
                         marginLeft: 16,
                       }}

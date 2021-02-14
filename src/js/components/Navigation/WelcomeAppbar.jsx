@@ -22,6 +22,10 @@ import VoterGuideActions from '../../actions/VoterGuideActions';
 import VoterStore from '../../stores/VoterStore';
 import VoterSessionActions from '../../actions/VoterSessionActions';
 import { voterPhoto } from '../../utils/voterPhoto';
+import anonymous from '../../../img/global/icons/avatar-generic.png';
+import LazyImage from '../../utils/LazyImage';
+
+
 
 class WelcomeAppbar extends Component {
   constructor (props) {
@@ -302,9 +306,10 @@ class WelcomeAppbar extends Component {
                       className="header-nav__avatar-container"
                       onClick={this.toggleProfilePopUp}
                     >
-                      <img
+                      <LazyImage
                         className="header-nav__avatar"
                         src={voterPhotoUrlMedium}
+                        placeholder={anonymous}
                         height={34}
                         width={34}
                         alt="generic avatar"
@@ -348,9 +353,10 @@ class WelcomeAppbar extends Component {
                       id="profileAvatarHeaderBar"
                       onClick={this.toggleProfilePopUp}
                     >
-                      <img
+                      <LazyImage
                         className="header-nav__avatar"
                         src={voterPhotoUrlMedium}
+                        placeholder={anonymous}
                         height={24}
                         width={24}
                         alt="generic avatar"
