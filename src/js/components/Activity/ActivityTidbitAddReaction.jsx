@@ -1,9 +1,9 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import styled from 'styled-components';
-import { withStyles, withTheme } from '@material-ui/core/styles';
 import { IconButton } from '@material-ui/core';
+import { withStyles, withTheme } from '@material-ui/core/styles';
 import { Message, ThumbUp } from '@material-ui/icons'; // Reply,
+import PropTypes from 'prop-types';
+import React, { Component } from 'react';
+import styled from 'styled-components';
 import AppActions from '../../actions/AppActions';
 import ReactionActions from '../../actions/ReactionActions';
 import ReactionStore from '../../stores/ReactionStore';

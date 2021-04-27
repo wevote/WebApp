@@ -1,14 +1,15 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import styled from 'styled-components';
-import { withStyles, withTheme } from '@material-ui/core/styles';
 import { IconButton } from '@material-ui/core';
+import { withStyles, withTheme } from '@material-ui/core/styles';
 import { ThumbUp } from '@material-ui/icons';
-import ActivityStore from '../../stores/ActivityStore';
+import PropTypes from 'prop-types';
+import React, { Component } from 'react';
+import styled from 'styled-components';
 import AppActions from '../../actions/AppActions';
-import { renderLog } from '../../utils/logging';
+import ActivityStore from '../../stores/ActivityStore';
 import ReactionStore from '../../stores/ReactionStore';
-import StickyPopover from '../Ballot/StickyPopover';
+import { renderLog } from '../../utils/logging';
+
+const StickyPopover = React.lazy(() => import('../Ballot/StickyPopover'));
 
 
 class ActivityTidbitReactionsSummary extends Component {

@@ -1,7 +1,8 @@
-import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import SuggestedFriendDisplayForList from './SuggestedFriendDisplayForList';
+import React, { Component } from 'react';
 import { renderLog } from '../../utils/logging';
+
+const SuggestedFriendDisplayForList = React.lazy(() => import('./SuggestedFriendDisplayForList'));
 
 export default class SuggestedFriendList extends Component {
   constructor (props) {

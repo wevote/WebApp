@@ -1,8 +1,8 @@
 import { ReduceStore } from 'flux/utils';
+import FriendActions from '../actions/FriendActions'; // eslint-disable-line import/no-cycle
+import VoterActions from '../actions/VoterActions'; // eslint-disable-line import/no-cycle
 import Dispatcher from '../dispatcher/Dispatcher';
-import FriendActions from '../actions/FriendActions';  // eslint-disable-line import/no-cycle
 import { arrayContains } from '../utils/textFormat';
-import VoterActions from '../actions/VoterActions';  // eslint-disable-line import/no-cycle
 
 class FriendStore extends ReduceStore {
   getInitialState () {

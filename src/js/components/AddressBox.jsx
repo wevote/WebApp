@@ -1,17 +1,16 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import { EditLocation } from '@material-ui/icons';
+import { Button, InputBase, Paper } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
-import { Paper, InputBase, Button } from '@material-ui/core';
+import { EditLocation } from '@material-ui/icons';
+import PropTypes from 'prop-types';
+import React, { Component } from 'react';
 import BallotActions from '../actions/BallotActions';
-import BallotStore from '../stores/BallotStore';
-import cookies from '../utils/cookies';
-import { historyPush, isCordova, isWebApp, prepareForCordovaKeyboard,
-  restoreStylesAfterCordovaKeyboard } from '../utils/cordovaUtils';
-import LoadingWheel from './LoadingWheel';
-import { renderLog } from '../utils/logging';
 import VoterActions from '../actions/VoterActions';
+import BallotStore from '../stores/BallotStore';
 import VoterStore from '../stores/VoterStore';
+import cookies from '../utils/cookies';
+import { historyPush, isCordova, isWebApp, prepareForCordovaKeyboard, restoreStylesAfterCordovaKeyboard } from '../utils/cordovaUtils';
+import { renderLog } from '../utils/logging';
+import LoadingWheel from './LoadingWheel';
 
 class AddressBox extends Component {
   constructor (props) {

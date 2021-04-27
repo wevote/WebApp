@@ -1,26 +1,28 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
+import { Button, Card, CircularProgress } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 import { Ballot } from '@material-ui/icons';
-import { Button, Card, CircularProgress } from '@material-ui/core';
+import PropTypes from 'prop-types';
+import React, { Component } from 'react';
 import styled from 'styled-components';
 import AppActions from '../../actions/AppActions';
-import BallotItemForAddPositions from './BallotItemForAddPositions';
 import BallotActions from '../../actions/BallotActions';
-import BallotStore from '../../stores/BallotStore';
-import { renderLog } from '../../utils/logging';
-import FilterBase from '../Filter/FilterBase';
-import { historyPush } from '../../utils/cordovaUtils';
-import LoadingWheel from '../LoadingWheel';
-import NumberOfItemsFound from '../Widgets/NumberOfItemsFound';
 import OrganizationActions from '../../actions/OrganizationActions';
+import BallotStore from '../../stores/BallotStore';
 import OrganizationStore from '../../stores/OrganizationStore';
-import SettingsAddBallotItemsFilter from '../Filter/SettingsAddBallotItemsFilter';
-import SettingsSeePositionsFilter from '../Filter/SettingsSeePositionsFilter';
-import ShowMoreItems from '../Widgets/ShowMoreItems';
-import { isProperlyFormattedVoterGuideWeVoteId } from '../../utils/textFormat';
-import VoterStore from '../../stores/VoterStore';
 import VoterGuideStore from '../../stores/VoterGuideStore';
+import VoterStore from '../../stores/VoterStore';
+import { historyPush } from '../../utils/cordovaUtils';
+import { renderLog } from '../../utils/logging';
+import { isProperlyFormattedVoterGuideWeVoteId } from '../../utils/textFormat';
+import LoadingWheel from '../LoadingWheel';
+
+const BallotItemForAddPositions = React.lazy(() => import('./BallotItemForAddPositions'));
+const FilterBase = React.lazy(() => import('../Filter/FilterBase'));
+const NumberOfItemsFound = React.lazy(() => import('../Widgets/NumberOfItemsFound'));
+const SettingsAddBallotItemsFilter = React.lazy(() => import('../Filter/SettingsAddBallotItemsFilter'));
+const SettingsSeePositionsFilter = React.lazy(() => import('../Filter/SettingsSeePositionsFilter'));
+const ShowMoreItems = React.lazy(() => import('../Widgets/ShowMoreItems'));
+
 
 
 const groupedFilters = [

@@ -1,9 +1,9 @@
-import React from 'react';
-import PropTypes from 'prop-types';
 import { withStyles, withTheme } from '@material-ui/core/styles';
+import PropTypes from 'prop-types';
+import React from 'react';
+import cookies from '../../utils/cookies';
 import { renderLog } from '../../utils/logging';
 import Testimonial from '../Widgets/Testimonial';
-import cookies from '../../utils/cookies';
 
 class FriendsPromoBox extends React.Component {
   constructor (props) {

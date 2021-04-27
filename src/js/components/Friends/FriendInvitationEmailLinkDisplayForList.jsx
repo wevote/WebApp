@@ -1,13 +1,13 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
 import { Button } from '@material-ui/core';
+import PropTypes from 'prop-types';
+import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
-import { isWebApp } from '../../utils/cordovaUtils';
 import FriendActions from '../../actions/FriendActions';
-import ImageHandler from '../ImageHandler';
 import VoterStore from '../../stores/VoterStore';
+import { isWebApp } from '../../utils/cordovaUtils';
 import { renderLog } from '../../utils/logging';
+import ImageHandler from '../ImageHandler';
 
 class FriendInvitationEmailLinkDisplayForList extends Component {
   constructor (props) {

@@ -1,33 +1,35 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import Helmet from 'react-helmet';
-import styled from 'styled-components';
 import { withStyles } from '@material-ui/core/styles';
 import { Info } from '@material-ui/icons';
-import { isWebApp } from '../../utils/cordovaUtils';
-import { capitalizeString } from '../../utils/textFormat';
-import LoadingWheel from '../../components/LoadingWheel';
-import { renderLog } from '../../utils/logging';
+import PropTypes from 'prop-types';
+import React, { Component } from 'react';
+import Helmet from 'react-helmet';
+import styled from 'styled-components';
 import ActivityActions from '../../actions/ActivityActions';
 import AnalyticsActions from '../../actions/AnalyticsActions';
 import AppActions from '../../actions/AppActions';
+import MeasureActions from '../../actions/MeasureActions';
+import OrganizationActions from '../../actions/OrganizationActions';
+import LoadingWheel from '../../components/LoadingWheel';
+import webAppConfig from '../../config';
 import AppStore from '../../stores/AppStore';
 import BallotStore from '../../stores/BallotStore';
-import DelayedLoad from '../../components/Widgets/DelayedLoad';
-import EndorsementCard from '../../components/Widgets/EndorsementCard';
-import MeasureItem from '../../components/Ballot/MeasureItem';
-import MeasureStickyHeader from '../../components/Ballot/MeasureStickyHeader';
-import MeasureActions from '../../actions/MeasureActions';
 import MeasureStore from '../../stores/MeasureStore';
-import OpenExternalWebSite from '../../components/Widgets/OpenExternalWebSite';
-import OrganizationActions from '../../actions/OrganizationActions';
-import PositionList from '../../components/Ballot/PositionList';
-import ViewOnBallotpedia from '../../components/Widgets/ViewOnBallotpedia';
 import VoterGuideStore from '../../stores/VoterGuideStore';
 import VoterStore from '../../stores/VoterStore';
-import webAppConfig from '../../config';
-import SearchOnGoogle from '../../components/Widgets/SearchOnGoogle';
-import ShareButtonDesktopTablet from '../../components/Share/ShareButtonDesktopTablet';
+import { isWebApp } from '../../utils/cordovaUtils';
+import { renderLog } from '../../utils/logging';
+import { capitalizeString } from '../../utils/textFormat';
+
+const DelayedLoad = React.lazy(() => import('../../components/Widgets/DelayedLoad'));
+const EndorsementCard = React.lazy(() => import('../../components/Widgets/EndorsementCard'));
+const MeasureItem = React.lazy(() => import('../../components/Ballot/MeasureItem'));
+const MeasureStickyHeader = React.lazy(() => import('../../components/Ballot/MeasureStickyHeader'));
+const OpenExternalWebSite = React.lazy(() => import('../../components/Widgets/OpenExternalWebSite'));
+const PositionList = React.lazy(() => import('../../components/Ballot/PositionList'));
+const SearchOnGoogle = React.lazy(() => import('../../components/Widgets/SearchOnGoogle'));
+const ShareButtonDesktopTablet = React.lazy(() => import('../../components/Share/ShareButtonDesktopTablet'));
+const ViewOnBallotpedia = React.lazy(() => import('../../components/Widgets/ViewOnBallotpedia'));
+
 
 // The component /routes/VoterGuide/OrganizationVoterGuideMeasure is based on this component
 class Measure extends Component {

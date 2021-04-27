@@ -1,10 +1,11 @@
-import React, { Component } from 'react';
-import Overlay from 'react-bootstrap/Overlay';
-import Popover from 'react-bootstrap/Popover';
-import styled from 'styled-components';
-import PropTypes from 'prop-types';
 import { withStyles, withTheme } from '@material-ui/core/styles';
+import PropTypes from 'prop-types';
+import React, { Component } from 'react';
+import styled from 'styled-components';
 import { renderLog } from '../../utils/logging';
+
+const Overlay = React.lazy(() => import('react-bootstrap/Overlay'));
+const Popover = React.lazy(() => import('react-bootstrap/Popover'));
 
 class StickyPopover extends Component {
   constructor (props) {

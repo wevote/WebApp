@@ -1,15 +1,16 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import styled from 'styled-components';
-import { Dialog, DialogContent, DialogTitle, IconButton, Typography, Radio, FormControlLabel, FormControl } from '@material-ui/core';
-import { Close } from '@material-ui/icons';
+import { Dialog, DialogContent, DialogTitle, FormControl, FormControlLabel, IconButton, Radio, Typography } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
-import { renderLog } from '../../utils/logging';
-import { isCordova, isWebApp } from '../../utils/cordovaUtils';
-import SettingsAccount from '../Settings/SettingsAccount';
+import { Close } from '@material-ui/icons';
+import PropTypes from 'prop-types';
+import React, { Component } from 'react';
+import styled from 'styled-components';
 import ActivityStore from '../../stores/ActivityStore';
 import VoterStore from '../../stores/VoterStore';
-import { openSnackbar } from '../Widgets/SnackNotifier';
+import { isCordova, isWebApp } from '../../utils/cordovaUtils';
+import { renderLog } from '../../utils/logging';
+
+const SettingsAccount = React.lazy(() => import('../Settings/SettingsAccount'));
+const { openSnackbar } = React.lazy(() => import('../Widgets/SnackNotifier'));
 
 class ActivityPostPublicToggle extends Component {
   constructor (props) {

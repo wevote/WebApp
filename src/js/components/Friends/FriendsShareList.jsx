@@ -1,9 +1,10 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import { FormControl, FormGroup, FormControlLabel, Checkbox, Button } from '@material-ui/core';
+import { Button, Checkbox, FormControl, FormControlLabel, FormGroup } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
+import PropTypes from 'prop-types';
+import React, { Component } from 'react';
 import { renderLog } from '../../utils/logging';
-import FriendsShareListItem from './FriendsShareListItem';
+
+const FriendsShareListItem = React.lazy(() => import('./FriendsShareListItem'));
 
 class FriendShareList extends Component {
   constructor (props) {

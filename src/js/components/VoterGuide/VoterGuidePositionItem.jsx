@@ -1,24 +1,25 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import styled from 'styled-components';
-import { ReactSVG } from 'react-svg';
 import { withStyles } from '@material-ui/core/styles';
+import PropTypes from 'prop-types';
+import React, { Component } from 'react';
+import styled from 'styled-components';
 import AppActions from '../../actions/AppActions';
-import BallotItemVoterGuideSupportOpposeDisplay from '../Widgets/BallotItemVoterGuideSupportOpposeDisplay';
-import BallotItemSupportOpposeCountDisplay from '../Widgets/BallotItemSupportOpposeCountDisplay';
-import BallotStore from '../../stores/BallotStore';
 import CandidateActions from '../../actions/CandidateActions';
-import CandidateStore from '../../stores/CandidateStore';
-import { cordovaDot } from '../../utils/cordovaUtils';
-import ImageHandler from '../ImageHandler';
-import { renderLog } from '../../utils/logging';
 import MeasureActions from '../../actions/MeasureActions';
+import BallotStore from '../../stores/BallotStore';
+import CandidateStore from '../../stores/CandidateStore';
 import MeasureStore from '../../stores/MeasureStore';
-import OfficeNameText from '../Widgets/OfficeNameText';
-import OpenExternalWebSite from '../Widgets/OpenExternalWebSite';
 import OrganizationStore from '../../stores/OrganizationStore';
-import ReadMore from '../Widgets/ReadMore';
+import { cordovaDot } from '../../utils/cordovaUtils';
+import { renderLog } from '../../utils/logging';
 import { capitalizeString, numberWithCommas, startsWith, stringContains } from '../../utils/textFormat';
+import ImageHandler from '../ImageHandler';
+
+const { ReactSVG } = React.lazy(() => import('react-svg'));
+const BallotItemVoterGuideSupportOpposeDisplay = React.lazy(() => import('../Widgets/BallotItemVoterGuideSupportOpposeDisplay'));
+const BallotItemSupportOpposeCountDisplay = React.lazy(() => import('../Widgets/BallotItemSupportOpposeCountDisplay'));
+const OfficeNameText = React.lazy(() => import('../Widgets/OfficeNameText'));
+const OpenExternalWebSite = React.lazy(() => import('../Widgets/OpenExternalWebSite'));
+const ReadMore = React.lazy(() => import('../Widgets/ReadMore'));
 
 class VoterGuidePositionItem extends Component {
   constructor (props) {

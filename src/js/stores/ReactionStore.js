@@ -1,8 +1,9 @@
 import { ReduceStore } from 'flux/utils';
-import Dispatcher from '../dispatcher/Dispatcher';
 import ReactionActions from '../actions/ReactionActions';
-import { arrayContains, removeValueFromArray } from '../utils/textFormat';
+import Dispatcher from '../dispatcher/Dispatcher';
 import VoterStore from './VoterStore';
+
+import { arrayContains, removeValueFromArray } from '../utils/textFormat';
 
 class ReactionStore extends ReduceStore {
   getInitialState () {

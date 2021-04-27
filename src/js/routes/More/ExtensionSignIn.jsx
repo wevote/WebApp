@@ -1,12 +1,14 @@
+import { Button } from '@material-ui/core';
+import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import styled from 'styled-components';
-import PropTypes from 'prop-types';
-import { Button } from '@material-ui/core';
-import { renderLog } from '../../utils/logging';
 import LoadingWheel from '../../components/LoadingWheel';
-import SettingsAccount from '../../components/Settings/SettingsAccount';
 import VoterStore from '../../stores/VoterStore';
-import DelayedLoad from '../../components/Widgets/DelayedLoad';
+import { renderLog } from '../../utils/logging';
+
+const DelayedLoad = React.lazy(() => import('../../components/Widgets/DelayedLoad'));
+const SettingsAccount = React.lazy(() => import('../../components/Settings/SettingsAccount'));
+
 
 
 class ExtensionSignIn extends Component {

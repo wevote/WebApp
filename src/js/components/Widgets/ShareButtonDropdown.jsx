@@ -2,7 +2,8 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { isWebApp } from '../../utils/cordovaUtils';
 import { renderLog } from '../../utils/logging';
-import CopyLinkModal from './CopyLinkModal';
+
+const CopyLinkModal = React.lazy(() => import('./CopyLinkModal'));
 
 export default class ShareButtonDropDown extends Component {
   constructor (props) {

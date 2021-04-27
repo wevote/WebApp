@@ -1,19 +1,21 @@
+import { Button, Card } from '@material-ui/core';
+import { withStyles } from '@material-ui/core/styles';
+import { Ballot } from '@material-ui/icons';
+import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
 import Helmet from 'react-helmet';
 import styled from 'styled-components';
-import PropTypes from 'prop-types';
-import { Ballot } from '@material-ui/icons';
-import { Button, Card } from '@material-ui/core';
-import { withStyles } from '@material-ui/core/styles';
-import { renderLog } from '../../utils/logging';
-import DelayedLoad from '../../components/Widgets/DelayedLoad';
-import { historyPush } from '../../utils/cordovaUtils';
-import GuideList from '../../components/VoterGuide/GuideList';
 import IssueActions from '../../actions/IssueActions';
 import IssueStore from '../../stores/IssueStore';
-import IssueCard from '../../components/Values/IssueCard';
-import ValuesList from './ValuesList';
 import VoterGuideStore from '../../stores/VoterGuideStore';
+import VoterStore from '../../stores/VoterStore';
+import { historyPush } from '../../utils/cordovaUtils';
+import { renderLog } from '../../utils/logging';
+
+const DelayedLoad = React.lazy(() => import('../../components/Widgets/DelayedLoad'));
+const GuideList = React.lazy(() => import('../../components/VoterGuide/GuideList'));
+const IssueCard = React.lazy(() => import('../../components/Values/IssueCard'));
+const ValuesList = React.lazy(() => import('./ValuesList'));
 
 class VoterGuidesUnderOneValue extends Component {
   constructor (props) {
@@ -31,10 +33,7 @@ class VoterGuidesUnderOneValue extends Component {
     this.issueStoreListener = IssueStore.addListener(this.onIssueStoreChange);
     this.voterGuideStoreListener = VoterGuideStore.addListener(this.onVoterGuideStoreChange.bind(this));
     this.onIssueStoreChange();
-    if (!IssueStore.issueDescriptionsRetrieveCalled()) {
-      IssueActions.issueDescriptionsRetrieve();
-      // IssueActions.issueDescriptionsRetrieveCalled(); // TODO: Move this to AppActions? Currently throws error: "Cannot dispatch in the middle of a dispatch"
-    }
+    IssueActions.issueDescriptionsRetrieve(VoterStore.getVoterWeVoteId());
   }
 
   // eslint-disable-next-line camelcase,react/sort-comp

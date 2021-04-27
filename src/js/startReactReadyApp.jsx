@@ -1,15 +1,16 @@
-import React from 'react';
-import { render } from 'react-dom';
-import { Router /* , applyRouterMiddleware */ } from 'react-router-dom';
-// import { useScroll } from 'react-router-scroll';
 import { MuiThemeProvider } from '@material-ui/core/styles';
+import React from 'react';
+import { Router } from 'react-router-dom';
 import { ThemeProvider } from 'styled-components';
-import muiTheme from './mui-theme';
-import routes from './RootForReady';
-import styledTheme from './styled-theme';
 import { polyfillFixes } from './utils/cordovaUtils';
 import { renderLog } from './utils/logging';
 import { numberOfNeedlesFoundInString } from './utils/searchFunctions';
+// const { useScroll } = React.lazy(() => import('react-router-scroll'));
+
+const { render } = React.lazy(() => import('react-dom'));
+const muiTheme = React.lazy(() => import('./mui-theme'));
+const routes = React.lazy(() => import('./RootForReady'));
+const styledTheme = React.lazy(() => import('./styled-theme'));
 
 polyfillFixes('startReactReadyApp');
 

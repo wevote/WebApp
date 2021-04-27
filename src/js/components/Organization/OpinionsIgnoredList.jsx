@@ -1,8 +1,9 @@
-import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import FollowToggle from '../Widgets/FollowToggle';
-import VoterGuideDisplayForList from '../VoterGuide/VoterGuideDisplayForList';
+import React, { Component } from 'react';
 import { renderLog } from '../../utils/logging';
+
+const FollowToggle = React.lazy(() => import('../Widgets/FollowToggle'));
+const VoterGuideDisplayForList = React.lazy(() => import('../VoterGuide/VoterGuideDisplayForList'));
 
 // NOTE FROM DALE: When OpinionsIgnoredList is refactored, this should be refactored to display Organizations instead of Voter Guides
 export default class OpinionsIgnoredList extends Component {

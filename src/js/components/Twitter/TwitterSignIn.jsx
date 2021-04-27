@@ -1,15 +1,14 @@
-import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { oAuthLog, renderLog } from '../../utils/logging';
-import $ajax from '../../utils/service';
-import cookies from '../../utils/cookies';
-import {
-  isWebApp, cordovaOpenSafariView, isIOS, isAndroid, historyPush,
-} from '../../utils/cordovaUtils';
-import SplitIconButton from '../Widgets/SplitIconButton';
-import { shortenText, startsWith } from '../../utils/textFormat';
+import React, { Component } from 'react';
 import TwitterActions from '../../actions/TwitterActions';
 import webAppConfig from '../../config';
+import cookies from '../../utils/cookies';
+import { cordovaOpenSafariView, historyPush, isAndroid, isIOS, isWebApp } from '../../utils/cordovaUtils';
+import { oAuthLog, renderLog } from '../../utils/logging';
+import $ajax from '../../utils/service';
+import { shortenText, startsWith } from '../../utils/textFormat';
+
+const SplitIconButton = React.lazy(() => import('../Widgets/SplitIconButton'));
 
 const returnURL = `${webAppConfig.WE_VOTE_URL_PROTOCOL + webAppConfig.WE_VOTE_HOSTNAME}/twitter_sign_in`;
 

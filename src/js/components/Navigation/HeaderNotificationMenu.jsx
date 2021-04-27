@@ -1,17 +1,19 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import styled from 'styled-components';
-import { Notifications } from '@material-ui/icons';
 import { Badge, IconButton, Menu, MenuItem } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
+import { Notifications } from '@material-ui/icons';
+import PropTypes from 'prop-types';
+import React, { Component } from 'react';
+import styled from 'styled-components';
 import ActivityActions from '../../actions/ActivityActions';
 import ActivityStore from '../../stores/ActivityStore';
-import { historyPush, isIOSAppOnMac, setIconBadgeMessageCount } from '../../utils/cordovaUtils';
-import ImageHandler from '../ImageHandler';
-import { renderLog } from '../../utils/logging';
 import { createDescriptionOfFriendPosts } from '../../utils/activityUtils';
+import { historyPush, isIOSAppOnMac, setIconBadgeMessageCount } from '../../utils/cordovaUtils';
 import { timeFromDate } from '../../utils/dateFormat';
+import initializejQuery from '../../utils/initializejQuery';
+import initializeMoment from '../../utils/initializeMoment';
+import { renderLog } from '../../utils/logging';
 import { returnFirstXWords, startsWith } from '../../utils/textFormat';
+import ImageHandler from '../ImageHandler';
 
 
 class HeaderNotificationMenu extends Component {
@@ -26,11 +28,15 @@ class HeaderNotificationMenu extends Component {
   }
 
   componentDidMount () {
-    // console.log('HeaderBackTo componentDidMount, this.props: ', this.props);
-    this.activityStoreListener = ActivityStore.addListener(this.onActivityStoreChange.bind(this));
-    ActivityActions.activityNoticeListRetrieve();
-    ActivityActions.activityListRetrieve();
-    if (!isIOSAppOnMac()) setIconBadgeMessageCount(0);
+    // console.log('HeaderNotificationMenu componentDidMount, this.props: ', this.props);
+    initializejQuery(() => {
+      this.timer = setTimeout(() => {
+        this.activityStoreListener = ActivityStore.addListener(this.onActivityStoreChange.bind(this));
+        ActivityActions.activityNoticeListRetrieve();
+        ActivityActions.activityListRetrieve();
+        if (!isIOSAppOnMac()) setIconBadgeMessageCount(0);
+      }, 3000);
+    });
   }
 
   componentDidCatch (error, info) {
@@ -39,22 +45,30 @@ class HeaderNotificationMenu extends Component {
   }
 
   componentWillUnmount () {
-    this.activityStoreListener.remove();
+    if (this.activityStoreListener) {
+      this.activityStoreListener.remove();
+    }
+    if (this.timer) {
+      clearTimeout(this.timer);
+      this.timer = null;
+    }
   }
 
   onActivityStoreChange () {
-    const allActivityNotices = ActivityStore.allActivityNotices();
-    // console.log('allActivityNotices:', allActivityNotices);
-    const activityNoticeIdListNotSeen = allActivityNotices
-      .filter((activityNotice) => activityNotice.activity_notice_seen === false)
-      .map((activityNotice) => activityNotice.activity_notice_id);
-    // console.log('activityNoticeIdListNotSeen:', activityNoticeIdListNotSeen);
-    const menuItemList = this.generateMenuItemList(allActivityNotices);
-    if (!isIOSAppOnMac()) setIconBadgeMessageCount(activityNoticeIdListNotSeen.length);
-    this.setState({
-      activityNoticeIdListNotSeen,
-      allActivityNoticesNotSeenCount: activityNoticeIdListNotSeen.length,
-      menuItemList,
+    initializeMoment(() => {
+      const allActivityNotices = ActivityStore.allActivityNotices();
+      // console.log('allActivityNotices:', allActivityNotices);
+      const activityNoticeIdListNotSeen = allActivityNotices
+        .filter((activityNotice) => activityNotice.activity_notice_seen === false)
+        .map((activityNotice) => activityNotice.activity_notice_id);
+      // console.log('activityNoticeIdListNotSeen:', activityNoticeIdListNotSeen);
+      const menuItemList = this.generateMenuItemList(allActivityNotices);
+      if (!isIOSAppOnMac()) setIconBadgeMessageCount(activityNoticeIdListNotSeen.length);
+      this.setState({
+        activityNoticeIdListNotSeen,
+        allActivityNoticesNotSeenCount: activityNoticeIdListNotSeen.length,
+        menuItemList,
+      });
     });
   }
 

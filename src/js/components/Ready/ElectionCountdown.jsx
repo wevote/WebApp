@@ -1,10 +1,11 @@
-import React from 'react';
-import moment from 'moment';
-import styled from 'styled-components';
 import PropTypes from 'prop-types';
+import React from 'react';
+import styled from 'styled-components';
+import BallotActions from '../../actions/BallotActions';
 import BallotStore from '../../stores/BallotStore';
-import { renderLog } from '../../utils/logging';
 import { formatDateToMonthDayYear } from '../../utils/dateFormat';
+import initializeMoment from '../../utils/initializeMoment';
+import { renderLog } from '../../utils/logging';
 
 class ElectionCountdown extends React.Component {
   constructor (props) {
@@ -18,8 +19,10 @@ class ElectionCountdown extends React.Component {
   }
 
   componentDidMount () {
-    this.onBallotStoreChange();
-    this.ballotStoreListener = BallotStore.addListener(this.onBallotStoreChange.bind(this));
+    initializeMoment(() => {
+      this.onBallotStoreChange();
+      this.ballotStoreListener = BallotStore.addListener(this.onBallotStoreChange.bind(this));
+    });
   }
 
   componentWillUnmount () {
@@ -33,10 +36,12 @@ class ElectionCountdown extends React.Component {
   onBallotStoreChange () {
     const { daysOnlyMode } = this.props;
     const electionDayText = BallotStore.currentBallotElectionDate;
+    if (electionDayText === undefined) {
+      BallotActions.voterBallotItemsRetrieve();
+    }
     // console.log('electionDayText:', electionDayText);
     if (electionDayText) {
-      // const electionDayTextFormatted = electionDayText ? moment(electionDayText).format('MMM Do, YYYY') : '';
-      const electionDayTextDateFormatted = electionDayText ? moment(electionDayText).format('MM/DD/YYYY') : '';
+      const electionDayTextDateFormatted = electionDayText && window.moment ? window.moment(electionDayText).format('MM/DD/YYYY') : '';
       // console.log('electionDayTextFormatted: ', electionDayTextFormatted, ', electionDayTextDateFormatted:', electionDayTextDateFormatted);
       const electionDate = new Date(electionDayTextDateFormatted);
       this.setState({

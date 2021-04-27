@@ -1,19 +1,20 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import styled from 'styled-components';
-import { withStyles } from '@material-ui/core/styles';
 import { CircularProgress } from '@material-ui/core';
-import { Comment, Info, ThumbUp, ThumbDown } from '@material-ui/icons';
-import { renderLog } from '../../utils/logging';
-import FilterBase from '../Filter/FilterBase';
+import { withStyles } from '@material-ui/core/styles';
+import { Comment, Info, ThumbDown, ThumbUp } from '@material-ui/icons';
+import PropTypes from 'prop-types';
+import React, { Component } from 'react';
+import styled from 'styled-components';
 import FriendActions from '../../actions/FriendActions';
-import FriendStore from '../../stores/FriendStore';
-import NumberOfItemsFound from '../Widgets/NumberOfItemsFound';
 import OrganizationActions from '../../actions/OrganizationActions';
+import FriendStore from '../../stores/FriendStore';
 import OrganizationStore from '../../stores/OrganizationStore';
-import PositionItem from './PositionItem';
-import ShowMoreItems from '../Widgets/ShowMoreItems';
-import VoterGuideOrganizationFilter from '../Filter/VoterGuideOrganizationFilter';
+import { renderLog } from '../../utils/logging';
+
+const FilterBase = React.lazy(() => import('../Filter/FilterBase'));
+const NumberOfItemsFound = React.lazy(() => import('../Widgets/NumberOfItemsFound'));
+const PositionItem = React.lazy(() => import('./PositionItem'));
+const ShowMoreItems = React.lazy(() => import('../Widgets/ShowMoreItems'));
+const VoterGuideOrganizationFilter = React.lazy(() => import('../Filter/VoterGuideOrganizationFilter'));
 
 
 const groupedFilters = [

@@ -1,7 +1,7 @@
-import Dispatcher from 'flux/lib/Dispatcher';
-import $ajax from '../utils/service';
 import { httpLog } from '../utils/logging';
+import $ajax from '../utils/service';
 
+const Dispatcher = require('flux').Dispatcher;
 
 Dispatcher.prototype.$ajax = $ajax;
 

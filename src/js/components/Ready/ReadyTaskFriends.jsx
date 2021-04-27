@@ -1,12 +1,13 @@
-import React from 'react';
-import PropTypes from 'prop-types';
 import { withStyles, withTheme } from '@material-ui/core/styles';
 import { ArrowForward, CheckCircle } from '@material-ui/icons';
+import PropTypes from 'prop-types';
+import React from 'react';
 import { cordovaDot, historyPush } from '../../utils/cordovaUtils';
-import register0Percent from '../../../img/global/svg-icons/ready/register-0-percent.svg';
-import register100Percent from '../../../img/global/svg-icons/ready/register-100-percent.svg';
 import { renderLog } from '../../utils/logging';
-import {
+
+const register0Percent = '../../../img/global/svg-icons/ready/register-0-percent.svg';
+const register100Percent = '../../../img/global/svg-icons/ready/register-100-percent.svg';
+const {
   ButtonLeft,
   ButtonText,
   Icon,
@@ -18,7 +19,7 @@ import {
   SubTitle,
   Title,
   TitleRowWrapper,
-} from './ReadyTaskStyles';
+} = React.lazy(() => import('./ReadyTaskStyles'));
 
 class ReadyTaskFriends extends React.Component {
   constructor (props) {

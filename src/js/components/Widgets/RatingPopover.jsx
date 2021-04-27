@@ -1,9 +1,10 @@
-import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import React, { Component } from 'react';
 import { cordovaDot } from '../../utils/cordovaUtils';
 import { renderLog } from '../../utils/logging';
-import downArrowColorIcon from '../../../img/global/icons/down-arrow-color-icon.svg';
-import upArrowColorIcon from '../../../img/global/icons/up-arrow-color-icon.svg';
+
+const downArrowColorIcon = '../../../img/global/icons/down-arrow-color-icon.svg';
+const upArrowColorIcon = '../../../img/global/icons/up-arrow-color-icon.svg';
 
 export default class RatingPopover extends Component {
   render () {

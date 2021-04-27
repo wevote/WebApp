@@ -1,11 +1,13 @@
-import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import React, { Component } from 'react';
 import Helmet from 'react-helmet';
-import request from 'superagent';
-import webAppConfig from '../../config';
+// import webAppConfig from '../../config';
 import { renderLog } from '../../utils/logging';
-import AddressBox from '../../components/AddressBox';
 import { numberWithCommas } from '../../utils/textFormat';
+
+// const request = React.lazy(() => import('superagent'));  // TODO 4/25/21:  Use jquery instead of introducing another library
+
+const AddressBox = React.lazy(() => import('../../components/AddressBox'));
 
 export default class Intro extends Component {
   constructor (props) {
@@ -26,27 +28,29 @@ export default class Intro extends Component {
   }
 
   getVoterCount () {
-    request
-      .get(`${webAppConfig.WE_VOTE_SERVER_API_ROOT_URL}voterCount/`)
-      .end((err, res) => {
-        if (err) throw err;
-
-        this.setState({
-          voterCount: res.body.voter_count,
-        });
-      });
+    // request
+    //   .get(`${webAppConfig.WE_VOTE_SERVER_API_ROOT_URL}voterCount/`)
+    //   .end((err, res) => {
+    //     if (err) throw err;
+    //
+    //     this.setState({
+    //       voterCount: res.body.voter_count,
+    //     });
+    //   });
+    return 0;
   }
 
   getOrgCount () {
-    request
-      .get(`${webAppConfig.WE_VOTE_SERVER_API_ROOT_URL}organizationCount/`)
-      .end((err, res) => {
-        if (err) throw err;
-
-        this.setState({
-          orgCount: res.body.organization_count,
-        });
-      });
+    // request
+    //   .get(`${webAppConfig.WE_VOTE_SERVER_API_ROOT_URL}organizationCount/`)
+    //   .end((err, res) => {
+    //     if (err) throw err;
+    //
+    //     this.setState({
+    //       orgCount: res.body.organization_count,
+    //     });
+    //   });
+    return 0;
   }
 
   render () {

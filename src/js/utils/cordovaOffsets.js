@@ -1,11 +1,7 @@
 import CordovaPageConstants from '../constants/CordovaPageConstants';
-import { cordovaOffsetLog } from './logging';
+import { getAndroidSize, hasIPhoneNotch, isAndroid, isAndroidSimulator, isCordova, isIOS, isIOSAppOnMac, isIPad, isIPhone4in, isIPhone4p7in, isIPhone5p5in, isIPhone5p8in, isIPhone6p1in, isIPhone6p5in, isSimulator, isWebApp } from './cordovaUtils';
 import { pageEnumeration } from './cordovaUtilsPageEnumeration';
-import {
-  getAndroidSize, hasIPhoneNotch,
-  isAndroid, isAndroidSimulator, isIOSAppOnMac, isCordova, isIOS, isIPad,
-  isIPhone4in, isIPhone4p7in, isIPhone5p5in, isIPhone5p8in, isIPhone6p1in, isIPhone6p5in, isSimulator, isWebApp,
-} from './cordovaUtils';
+import { cordovaOffsetLog } from './logging';
 
 
 // <div className="page-content-container" style={{ marginTop: `${cordovaBallotFilterTopMargin()}` }}>

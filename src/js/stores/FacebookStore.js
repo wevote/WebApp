@@ -1,10 +1,10 @@
 import { ReduceStore } from 'flux/utils';
-import Dispatcher from '../dispatcher/Dispatcher';
 import FacebookActions from '../actions/FacebookActions';
-import FacebookConstants from '../constants/FacebookConstants';
 import FriendActions from '../actions/FriendActions';
-import signInModalGlobalState from '../components/Widgets/signInModalGlobalState';
 import VoterActions from '../actions/VoterActions';
+import signInModalGlobalState from '../components/Widgets/signInModalGlobalState';
+import FacebookConstants from '../constants/FacebookConstants';
+import Dispatcher from '../dispatcher/Dispatcher';
 
 class FacebookStore extends ReduceStore {
   getInitialState () {

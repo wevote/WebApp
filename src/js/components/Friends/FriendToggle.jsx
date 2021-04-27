@@ -1,13 +1,14 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
 import { Button } from '@material-ui/core';
+import PropTypes from 'prop-types';
+import React, { Component } from 'react';
 import styled from 'styled-components';
 import FriendActions from '../../actions/FriendActions';
-import FriendsIcon from '../Widgets/FriendsIcon';
 import FriendStore from '../../stores/FriendStore';
-import SuggestedFriendToggle from './SuggestedFriendToggle';
 import VoterStore from '../../stores/VoterStore';
 import { renderLog } from '../../utils/logging';
+
+const FriendsIcon = React.lazy(() => import('../Widgets/FriendsIcon'));
+const SuggestedFriendToggle = React.lazy(() => import('./SuggestedFriendToggle'));
 
 export default class FriendToggle extends Component {
   constructor (props) {

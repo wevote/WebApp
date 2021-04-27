@@ -1,15 +1,16 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
 import { Button } from '@material-ui/core';
 import { CheckCircle, NotInterested } from '@material-ui/icons';
-import FriendStore from '../../stores/FriendStore';
-import { historyPush } from '../../utils/cordovaUtils';
-import VoterGuideStore from '../../stores/VoterGuideStore';
-import { renderLog } from '../../utils/logging';
+import PropTypes from 'prop-types';
+import React, { Component } from 'react';
 import OrganizationActions from '../../actions/OrganizationActions';
+import FriendStore from '../../stores/FriendStore';
 import OrganizationStore from '../../stores/OrganizationStore';
+import VoterGuideStore from '../../stores/VoterGuideStore';
 import VoterStore from '../../stores/VoterStore';
-import { openSnackbar } from './SnackNotifier';
+import { historyPush } from '../../utils/cordovaUtils';
+import { renderLog } from '../../utils/logging';
+
+const { openSnackbar } = React.lazy(() => import('./SnackNotifier'));
 
 export default class FollowToggle extends Component {
   constructor (props) {
@@ -166,6 +167,13 @@ export default class FollowToggle extends Component {
     }
   }
 
+  handleIgnoreLocal () {
+    // Some parent components need to react with this organization is ignored
+    if (this.props.handleIgnore) {
+      this.props.handleIgnore();
+    }
+  }
+
   startFollowingLocalState () {
     this.setState({
       isFollowing: true,
@@ -246,13 +254,6 @@ export default class FollowToggle extends Component {
     followFunction();
     openSnackbar({ message: toastMessage });
     this.startFollowingLocalState();
-  }
-
-  handleIgnoreLocal () {
-    // Some parent components need to react with this organization is ignored
-    if (this.props.handleIgnore) {
-      this.props.handleIgnore();
-    }
   }
 
   ignoreInstantly (ignoreFunction, currentBallotIdInUrl, urlWithoutHash, ballotItemWeVoteId) {

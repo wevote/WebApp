@@ -1,5 +1,6 @@
 import React from 'react';
-import { arrayContains } from './textFormat';
+
+const { arrayContains } = React.lazy(() => import('./textFormat'));
 
 export default function voterGuidePositionSearchPriority (originalString, item) {
   // console.log('voterGuidePositionSearchPriority, originalString: ', originalString);

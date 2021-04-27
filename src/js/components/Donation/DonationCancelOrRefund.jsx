@@ -1,11 +1,11 @@
-import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import Button from 'react-bootstrap/Button';
-import Table from 'react-bootstrap/Table';
-import Modal from 'react-bootstrap/Modal';
-import moment from 'moment';
+import React, { Component } from 'react';
 import DonateActions from '../../actions/DonateActions';
 import { renderLog } from '../../utils/logging';
+
+const Button = React.lazy(() => import('react-bootstrap/Button'));
+const Table = React.lazy(() => import('react-bootstrap/Table'));
+const Modal = React.lazy(() => import('react-bootstrap/Modal'));
 
 export default class DonationCancelOrRefund extends Component {
   constructor (props) {
@@ -68,7 +68,7 @@ export default class DonationCancelOrRefund extends Component {
               <tbody>
                 <tr>
                   <td>Created:</td>
-                  <td>{moment.utc(item.created).local().format('MMM D, YYYY,  h:mm a')}</td>
+                  <td>{window.moment ? window.moment.utc(item.created).local().format('MMM D, YYYY,  h:mm a') : ''}</td>
                 </tr>
                 <tr>
                   <td>{refundDonation ? 'Amount' : 'Monthly payment'}</td>

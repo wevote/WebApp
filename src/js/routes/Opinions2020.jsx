@@ -1,32 +1,34 @@
+import { Card } from '@material-ui/core';
+import { withStyles } from '@material-ui/core/styles';
+import { Ballot, Info } from '@material-ui/icons';
+import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import PropTypes from 'prop-types';
-import { ReactSVG } from 'react-svg';
-import { withStyles } from '@material-ui/core/styles';
-import { Card } from '@material-ui/core';
-import { Ballot, Info } from '@material-ui/icons';
 import styled from 'styled-components';
 import ActivityActions from '../actions/ActivityActions';
 import AnalyticsActions from '../actions/AnalyticsActions';
-import BallotItemForOpinions from '../components/OpinionsAndBallotItems/BallotItemForOpinions';
 import BallotActions from '../actions/BallotActions';
-import BallotStore from '../stores/BallotStore';
-import CandidateSearchItemForOpinions from '../components/OpinionsAndBallotItems/CandidateSearchItemForOpinions';
-import { renderLog } from '../utils/logging';
-import FilterBase from '../components/Filter/FilterBase';
-import groupIcon from '../../img/global/svg-icons/group-icon.svg';
-import { cordovaDot } from '../utils/cordovaUtils';
-import LoadingWheel from '../components/LoadingWheel';
-import NumberOfItemsFound from '../components/Widgets/NumberOfItemsFound';
 import OrganizationActions from '../actions/OrganizationActions';
-import organizationIcon from '../../img/global/svg-icons/organization-icon.svg';
+import LoadingWheel from '../components/LoadingWheel';
+import BallotStore from '../stores/BallotStore';
 import OrganizationStore from '../stores/OrganizationStore';
-import OpinionsAndBallotItemsFilter from '../components/Filter/OpinionsAndBallotItemsFilter';
-import ShowMoreItems from '../components/Widgets/ShowMoreItems';
-import { arrayContains, stringContains } from '../utils/textFormat';
-import VoterGuideDisplayForListForOpinions from '../components/OpinionsAndBallotItems/VoterGuideDisplayForListForOpinions';
 import VoterGuideStore from '../stores/VoterGuideStore';
 import VoterStore from '../stores/VoterStore';
+import { cordovaDot } from '../utils/cordovaUtils';
+import { renderLog } from '../utils/logging';
+import { arrayContains, stringContains } from '../utils/textFormat';
+
+const BallotItemForOpinions = React.lazy(() => import('../components/OpinionsAndBallotItems/BallotItemForOpinions'));
+const CandidateSearchItemForOpinions = React.lazy(() => import('../components/OpinionsAndBallotItems/CandidateSearchItemForOpinions'));
+const FilterBase = React.lazy(() => import('../components/Filter/FilterBase'));
+const NumberOfItemsFound = React.lazy(() => import('../components/Widgets/NumberOfItemsFound'));
+const OpinionsAndBallotItemsFilter = React.lazy(() => import('../components/Filter/OpinionsAndBallotItemsFilter'));
+const ShowMoreItems = React.lazy(() => import('../components/Widgets/ShowMoreItems'));
+const VoterGuideDisplayForListForOpinions = React.lazy(() => import('../components/OpinionsAndBallotItems/VoterGuideDisplayForListForOpinions'));
+const groupIcon = '../../img/global/svg-icons/group-icon.svg';
+const organizationIcon = '../../img/global/svg-icons/organization-icon.svg';
+const { ReactSVG } = React.lazy(() => import('react-svg'));
+
 
 
 const groupedFilters = [

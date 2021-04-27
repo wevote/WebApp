@@ -1,38 +1,41 @@
-import React, { Component } from 'react';
+import { withStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
+import React, { Component, Suspense } from 'react';
 import Helmet from 'react-helmet';
 import styled from 'styled-components';
-import { withStyles } from '@material-ui/core/styles';
 import ActivityActions from '../actions/ActivityActions';
 import AnalyticsActions from '../actions/AnalyticsActions';
 import AppActions from '../actions/AppActions';
-import AppStore from '../stores/AppStore';
 import BallotActions from '../actions/BallotActions';
-import BallotStore from '../stores/BallotStore';
-import BrowserPushMessage from '../components/Widgets/BrowserPushMessage';
-import cookies from '../utils/cookies';
-import EditAddressOneHorizontalRow from '../components/Ready/EditAddressOneHorizontalRow';
-import ElectionCountdown from '../components/Ready/ElectionCountdown';
-import FindOpinionsForm from '../components/ReadyNoApi/FindOpinionsForm';
-import FirstAndLastNameRequiredAlert from '../components/Widgets/FirstAndLastNameRequiredAlert';
 import FriendActions from '../actions/FriendActions';
-import { historyPush, isAndroid, isIOS, isWebApp } from '../utils/cordovaUtils';
 import IssueActions from '../actions/IssueActions';
-import IssueStore from '../stores/IssueStore';
-import ReadMore from '../components/Widgets/ReadMore';
 import ReadyActions from '../actions/ReadyActions';
-import ReadyIntroduction from '../components/ReadyNoApi/ReadyIntroduction';
-import ReadyTaskBallot from '../components/Ready/ReadyTaskBallot';
-import ReadyTaskFriends from '../components/Ready/ReadyTaskFriends';
-import ReadyTaskPlan from '../components/Ready/ReadyTaskPlan';
-import ReadyTaskRegister from '../components/Ready/ReadyTaskRegister';
-import ReadyInformationDisclaimer from '../components/Ready/ReadyInformationDisclaimer';
-import { renderLog } from '../utils/logging';
-import ShareButtonDesktopTablet from '../components/Share/ShareButtonDesktopTablet';
-import ValuesToFollowPreview from '../components/Values/ValuesToFollowPreview';
-import VoterStore from '../stores/VoterStore';
 import webAppConfig from '../config';
-// import PledgeToVote from '../components/Ready/PledgeToVote';
+import AppStore from '../stores/AppStore';
+import BallotStore from '../stores/BallotStore';
+import IssueStore from '../stores/IssueStore';
+import VoterStore from '../stores/VoterStore';
+import cookies from '../utils/cookies';
+import { historyPush, isAndroid, isIOS, isWebApp } from '../utils/cordovaUtils';
+import initializejQuery from '../utils/initializejQuery';
+import { renderLog } from '../utils/logging';
+
+const BrowserPushMessage = React.lazy(() => import('../components/Widgets/BrowserPushMessage'));
+const EditAddressOneHorizontalRow = React.lazy(() => import('../components/Ready/EditAddressOneHorizontalRow'));
+const ElectionCountdown = React.lazy(() => import('../components/Ready/ElectionCountdown'));
+const FindOpinionsForm = React.lazy(() => import('../components/Ready/FindOpinionsForm'));
+const ReadMore = React.lazy(() => import('../components/Widgets/ReadMore'));
+const FirstAndLastNameRequiredAlert = React.lazy(() => import('../components/Widgets/FirstAndLastNameRequiredAlert'));
+// const PledgeToVote = React.lazy(() => import('../components/Ready/PledgeToVote'));
+const ReadyIntroduction = React.lazy(() => import('../components/Ready/ReadyIntroduction'));
+const ReadyInformationDisclaimer = React.lazy(() => import('../components/Ready/ReadyInformationDisclaimer'));
+const ReadyTaskBallot = React.lazy(() => import('../components/Ready/ReadyTaskBallot'));
+const ReadyTaskFriends = React.lazy(() => import('../components/Ready/ReadyTaskFriends'));
+const ReadyTaskPlan = React.lazy(() => import('../components/Ready/ReadyTaskPlan'));
+const ReadyTaskRegister = React.lazy(() => import('../components/Ready/ReadyTaskRegister'));
+const ShareButtonDesktopTablet = React.lazy(() => import('../components/Share/ShareButtonDesktopTablet'));
+const ValuesToFollowPreview = React.lazy(() => import('../components/Values/ValuesToFollowPreview'));
+
 
 const nextReleaseFeaturesEnabled = webAppConfig.ENABLE_NEXT_RELEASE_FEATURES === undefined ? false : webAppConfig.ENABLE_NEXT_RELEASE_FEATURES;
 
@@ -56,39 +59,50 @@ class Ready extends Component {
     this.onAppStoreChange();
     this.onIssueStoreChange();
     this.onVoterStoreChange();
-    if (!IssueStore.issueDescriptionsRetrieveCalled()) {
-      IssueActions.issueDescriptionsRetrieve();
-    }
-    IssueActions.issuesFollowedRetrieve();
-    if (!BallotStore.ballotFound) {
-      // console.log('WebApp doesn't know the election or have ballot data, so ask the API server to return best guess');
-      BallotActions.voterBallotItemsRetrieve(0, '', '');
-    }
-    ReadyActions.voterPlansForVoterRetrieve();
-    ActivityActions.activityNoticeListRetrieve();
-    FriendActions.suggestedFriendList();
+    initializejQuery(() => {
+      // April `8, 2021: TODO: Thee API calls are always executed in pairs, they should be a single API
+      IssueActions.issueDescriptionsRetrieve(VoterStore.getVoterWeVoteId());
+      IssueActions.issuesFollowedRetrieve(VoterStore.getVoterWeVoteId());
+      this.positionItemTimer = setTimeout(() => {
+        // This is a performance killer, so let's delay it for a few seconds
+        if (!BallotStore.ballotFound) {
+          // console.log('WebApp doesn't know the election or have ballot data, so ask the API server to return best guess');
+          BallotActions.voterBallotItemsRetrieve(0, '', '');
+        }
+      }, 5000);  // April 19, 2021: Tuned to keep performance above 83.  LCP at 597ms.
 
-    let { match: { params: { modal_to_show: modalToShow, shared_item_code: sharedItemCode } } } = this.props;
-    modalToShow = modalToShow || '';
-    // console.log('componentDidMount modalToOpen:', modalToOpen);
-    if (modalToShow === 'share') {
-      this.modalOpenTimer = setTimeout(() => {
-        AppActions.setShowShareModal(true);
-      }, 1000);
-    } else if (modalToShow === 'sic') { // sic = Shared Item Code
-      sharedItemCode = sharedItemCode || '';
-      // console.log('componentDidMount sharedItemCode:', sharedItemCode);
-      if (sharedItemCode) {
-        this.modalOpenTimer = setTimeout(() => {
-          AppActions.setShowSharedItemModal(sharedItemCode);
-        }, 1000);
+
+      ReadyActions.voterPlansForVoterRetrieve();
+      ActivityActions.activityNoticeListRetrieve();
+      FriendActions.suggestedFriendList();
+      let modalToShow = '';
+      let sharedItemCode = '';
+      if (this.props.match) {
+        const { match: { params: { modal_to_show: mts, shared_item_code: sic } } } = this.props;
+        modalToShow = mts;
+        sharedItemCode = sic;
       }
-    }
+      modalToShow = modalToShow || '';
+      // console.log('componentDidMount modalToOpen:', modalToOpen);
+      if (modalToShow === 'share') {
+        this.modalOpenTimer = setTimeout(() => {
+          AppActions.setShowShareModal(true);
+        }, 1000);
+      } else if (modalToShow === 'sic') { // sic = Shared Item Code
+        sharedItemCode = sharedItemCode || '';
+        // console.log('componentDidMount sharedItemCode:', sharedItemCode);
+        if (sharedItemCode) {
+          this.modalOpenTimer = setTimeout(() => {
+            AppActions.setShowSharedItemModal(sharedItemCode);
+          }, 1000);
+        }
+      }
 
-    AnalyticsActions.saveActionReadyVisit(VoterStore.electionId());
-    this.setState({
-      locationGuessClosed: cookies.getItem('location_guess_closed'),
-      textForMapSearch: VoterStore.getTextForMapSearch(),
+      AnalyticsActions.saveActionReadyVisit(VoterStore.electionId());
+      this.setState({
+        locationGuessClosed: cookies.getItem('location_guess_closed'),
+        textForMapSearch: VoterStore.getTextForMapSearch(),
+      });
     });
   }
 
@@ -104,6 +118,15 @@ class Ready extends Component {
       clearTimeout(this.modalOpenTimer);
       this.modalOpenTimer = null;
     }
+    if (this.positionItemTimer) {
+      clearTimeout(this.positionItemTimer);
+      this.positionItemTimer = null;
+    }
+  }
+
+  static getDerivedStateFromError (error) {       // eslint-disable-line no-unused-vars
+    console.log('Error in Ready: ', error);
+    return { hasError: true };
   }
 
   onAppStoreChange () {
@@ -282,7 +305,9 @@ class Ready extends Component {
                 </div>
               </Card>
               <div className="u-cursor--pointer" onClick={this.goToBallot}>
-                <ElectionCountdown daysOnlyMode />
+                <Suspense fallback={<SuspenseCard>&nbsp;</SuspenseCard>}>
+                  <ElectionCountdown daysOnlyMode />
+                </Suspense>
               </div>
               {(chosenReadyIntroductionTitle || chosenReadyIntroductionText) && (
                 <Card className="card">
@@ -321,7 +346,7 @@ class Ready extends Component {
                   />
                 </ValuesListWrapper>
               )}
-              {/* {nextReleaseFeaturesEnabled && <PledgeToVote />} */}
+              {/* nextReleaseFeaturesEnabled && <PledgeToVote /> */}
             </div>
           </div>
         </PageContainer>
@@ -363,6 +388,14 @@ const EditAddressWrapper = styled.div`
 
 const ElectionCountdownMobileTabletWrapper = styled.div`
   margin-top: -37px; // 29px for height of ShareButtonDesktopTablet - 8px for margin-top
+`;
+
+const SuspenseCard = styled.div`
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 290px;
+  height: 138px;
 `;
 
 const FindWrapper = styled.div`

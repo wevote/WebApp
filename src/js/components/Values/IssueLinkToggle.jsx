@@ -1,11 +1,12 @@
-import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import Button from 'react-bootstrap/Button';
-import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
-import Popover from 'react-bootstrap/Popover';
+import React, { Component } from 'react';
 import IssueActions from '../../actions/IssueActions';
-import IssueImageDisplay from './IssueImageDisplay';
 import { renderLog } from '../../utils/logging';
+
+const Button = React.lazy(() => import('react-bootstrap/Button'));
+const OverlayTrigger = React.lazy(() => import('react-bootstrap/OverlayTrigger'));
+const Popover = React.lazy(() => import('react-bootstrap/Popover'));
+const IssueImageDisplay = React.lazy(() => import('./IssueImageDisplay'));
 
 export default class IssueLinkToggle extends Component {
   constructor (props) {

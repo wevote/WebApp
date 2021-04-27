@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import AppActions from '../../actions/AppActions';
+import VoterActions from '../../actions/VoterActions';
 import webAppConfig from '../../config';
 import AppStore from '../../stores/AppStore';
 import VoterStore from '../../stores/VoterStore';
@@ -9,17 +10,19 @@ import { getApplicationViewBooleans, weVoteBrandingOff } from '../../utils/appli
 import { cordovaTopHeaderTopMargin } from '../../utils/cordovaOffsets';
 import { hasIPhoneNotch, historyPush, isCordova, isIOS, isIOSAppOnMac, isIPad, isWebApp } from '../../utils/cordovaUtils';
 import displayFriendsTabs from '../../utils/displayFriendsTabs';
+import initializejQuery from '../../utils/initializejQuery';
 import { renderLog } from '../../utils/logging';
 import { startsWith, stringContains } from '../../utils/textFormat';
-import ActivityTidbitDrawer from '../Activity/ActivityTidbitDrawer';
-import HowItWorksModal from '../CompleteYourProfile/HowItWorksModal';
-import VoterPlanModal from '../Ready/VoterPlanModal';
-import SharedItemModal from '../Share/SharedItemModal';
-import OrganizationModal from '../VoterGuide/OrganizationModal';
-import HeaderBackTo from './HeaderBackTo';
-import HeaderBackToBallot from './HeaderBackToBallot';
-import HeaderBackToVoterGuides from './HeaderBackToVoterGuides';
-import HeaderBar from './HeaderBar';
+
+const ActivityTidbitDrawer = React.lazy(() => import('../Activity/ActivityTidbitDrawer'));
+const HeaderBackTo = React.lazy(() => import('./HeaderBackTo'));
+const HeaderBackToBallot = React.lazy(() => import('./HeaderBackToBallot'));
+const HeaderBackToVoterGuides = React.lazy(() => import('./HeaderBackToVoterGuides'));
+const HeaderBar = React.lazy(() => import('./HeaderBar'));
+const HowItWorksModal = React.lazy(() => import('../CompleteYourProfile/HowItWorksModal'));
+const OrganizationModal = React.lazy(() => import('../VoterGuide/OrganizationModal'));
+const SharedItemModal = React.lazy(() => import('../Share/SharedItemModal'));
+const VoterPlanModal = React.lazy(() => import('../Ready/VoterPlanModal'));
 
 const appleSiliconDebug = false;
 
@@ -61,6 +64,12 @@ export default class Header extends Component {
     if (isIOSAppOnMac() && appleSiliconDebug) {
       dumpCssFromId('header-container');
     }
+    initializejQuery(() => {
+      console.log('initialized jQuery in Header');
+      if (VoterStore.getVoterWeVoteId() === '') {
+        VoterActions.voterRetrieve();
+      }
+    });
   }
 
   shouldComponentUpdate (nextProps, nextState) {
@@ -478,5 +487,5 @@ export default class Header extends Component {
 }
 Header.propTypes = {
   params: PropTypes.object,
-  pathname: PropTypes.string.isRequired,
+  pathname: PropTypes.string,
 };

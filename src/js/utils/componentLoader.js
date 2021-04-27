@@ -31,8 +31,6 @@ export default function componentLoader (componentName) {
       return React.lazy(() => import('../routes/More/Donate'));
     case 'DonateThankYou':
       return React.lazy(() => import('../routes/More/DonateThankYou'));
-    case 'StripeElementsTest':
-      return React.lazy(() => import('../routes/More/StripeElementsTest'));
     case 'ElectionReminder':
       return React.lazy(() => import('../routes/More/ElectionReminder'));
     case 'Elections':
@@ -97,9 +95,9 @@ export default function componentLoader (componentName) {
       return React.lazy(() => import('../routes/More/Privacy'));
     case 'ProcessingDonation':
       return React.lazy(() => import('../routes/More/ProcessingDonation'));
+    // case 'ReadyNoApi':
+    //   return React.lazy(() => import('../routes/ReadyNoApi'));
     default:
-    case 'ReadyNoApi':
-      return React.lazy(() => import('../routes/ReadyNoApi'));
     case 'Ready':
       return React.lazy(() => import('../routes/Ready'));
     case 'ReadyRedirect':

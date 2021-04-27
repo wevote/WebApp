@@ -1,4 +1,5 @@
 import Dispatcher from '../dispatcher/Dispatcher';
+
 import VoterActions from './VoterActions';
 import VoterSessionActions from './VoterSessionActions';
 

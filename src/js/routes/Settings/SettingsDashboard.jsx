@@ -1,31 +1,32 @@
-import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import { isProperlyFormattedVoterGuideWeVoteId } from '../../utils/textFormat';
-import { isWebApp } from '../../utils/cordovaUtils';
-import { renderLog } from '../../utils/logging';
 import BallotActions from '../../actions/BallotActions';
-import BallotStore from '../../stores/BallotStore';
 import OrganizationActions from '../../actions/OrganizationActions';
-import OrganizationStore from '../../stores/OrganizationStore';
-import SelectVoterGuidesSideBar from '../../components/Navigation/SelectVoterGuidesSideBar';
-import SettingsAccount from '../../components/Settings/SettingsAccount';
-import SettingsAddress from '../../components/Settings/SettingsAddress';
-import SettingsAnalytics from '../../components/Settings/SettingsAnalytics';
-import SettingsDomain from '../../components/Settings/SettingsDomain';
-import SettingsElection from '../../components/Settings/SettingsElection';
-import SettingsIssueLinks from '../../components/Settings/SettingsIssueLinks';
-import SettingsNotifications from '../../components/Settings/SettingsNotifications';
-import SettingsPersonalSideBar from '../../components/Navigation/SettingsPersonalSideBar';
-import SettingsProfile from '../../components/Settings/SettingsProfile';
-import SettingsPromotedOrganizations from '../../components/Settings/SettingsPromotedOrganizations';
-import SettingsSharing from '../../components/Settings/SettingsSharing';
-import SettingsSiteText from '../../components/Settings/SettingsSiteText';
-import SettingsSubscriptionPlan from '../../components/Settings/SettingsSubscriptionPlan';
-import ToolsToShareOnOtherWebsites from '../../components/Settings/ToolsToShareOnOtherWebsites';
 import VoterGuideActions from '../../actions/VoterGuideActions';
+import BallotStore from '../../stores/BallotStore';
+import OrganizationStore from '../../stores/OrganizationStore';
 import VoterGuideStore from '../../stores/VoterGuideStore';
 import VoterStore from '../../stores/VoterStore';
+import { isWebApp } from '../../utils/cordovaUtils';
+import { renderLog } from '../../utils/logging';
+import { isProperlyFormattedVoterGuideWeVoteId } from '../../utils/textFormat';
+
+const SelectVoterGuidesSideBar = React.lazy(() => import('../../components/Navigation/SelectVoterGuidesSideBar'));
+const SettingsAccount = React.lazy(() => import('../../components/Settings/SettingsAccount'));
+const SettingsAddress = React.lazy(() => import('../../components/Settings/SettingsAddress'));
+const SettingsAnalytics = React.lazy(() => import('../../components/Settings/SettingsAnalytics'));
+const SettingsDomain = React.lazy(() => import('../../components/Settings/SettingsDomain'));
+const SettingsElection = React.lazy(() => import('../../components/Settings/SettingsElection'));
+const SettingsIssueLinks = React.lazy(() => import('../../components/Settings/SettingsIssueLinks'));
+const SettingsNotifications = React.lazy(() => import('../../components/Settings/SettingsNotifications'));
+const SettingsPersonalSideBar = React.lazy(() => import('../../components/Navigation/SettingsPersonalSideBar'));
+const SettingsProfile = React.lazy(() => import('../../components/Settings/SettingsProfile'));
+const SettingsPromotedOrganizations = React.lazy(() => import('../../components/Settings/SettingsPromotedOrganizations'));
+const SettingsSharing = React.lazy(() => import('../../components/Settings/SettingsSharing'));
+const SettingsSiteText = React.lazy(() => import('../../components/Settings/SettingsSiteText'));
+const SettingsSubscriptionPlan = React.lazy(() => import('../../components/Settings/SettingsSubscriptionPlan'));
+const ToolsToShareOnOtherWebsites = React.lazy(() => import('../../components/Settings/ToolsToShareOnOtherWebsites'));
 
 export default class SettingsDashboard extends Component {
   constructor (props) {

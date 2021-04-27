@@ -1,11 +1,11 @@
 import { Component } from 'react';
-import { historyPush } from '../../utils/cordovaUtils';
 import FacebookActions from '../../actions/FacebookActions';
+import LoadingWheel from '../../components/LoadingWheel';
 import FacebookStore from '../../stores/FacebookStore';
 import FriendStore from '../../stores/FriendStore';
-import LoadingWheel from '../../components/LoadingWheel';
-import { renderLog } from '../../utils/logging';
 import VoterStore from '../../stores/VoterStore';
+import { historyPush } from '../../utils/cordovaUtils';
+import { renderLog } from '../../utils/logging';
 
 
 export default class FacebookLandingProcess extends Component {

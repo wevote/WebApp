@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
-import { renderLog } from '../../utils/logging';
 import OrganizationActions from '../../actions/OrganizationActions';
-import OrganizationStore from '../../stores/OrganizationStore';
-import SelectVoterGuidesSideBar from '../../components/Navigation/SelectVoterGuidesSideBar';
 import VoterGuideActions from '../../actions/VoterGuideActions';
+import OrganizationStore from '../../stores/OrganizationStore';
 import VoterGuideStore from '../../stores/VoterGuideStore';
 import VoterStore from '../../stores/VoterStore';
+import { renderLog } from '../../utils/logging';
+
+const SelectVoterGuidesSideBar = React.lazy(() => import('../../components/Navigation/SelectVoterGuidesSideBar'));
 
 export default class VoterGuidesMenuMobile extends Component {
   constructor (props) {

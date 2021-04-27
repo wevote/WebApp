@@ -1,19 +1,20 @@
-import React, { Component } from 'react';
-import Alert from 'react-bootstrap/Alert';
-import PropTypes from 'prop-types';
-import styled from 'styled-components';
+import { Button, InputBase, Paper } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
-import { Button, Paper, InputBase } from '@material-ui/core';
 import { Delete, Mail } from '@material-ui/icons';
-import LoadingWheel from '../LoadingWheel';
+import PropTypes from 'prop-types';
+import React, { Component } from 'react';
+import styled from 'styled-components';
+import VoterActions from '../../actions/VoterActions';
+import VoterStore from '../../stores/VoterStore';
 import { blurTextFieldAndroid, focusTextFieldAndroid, isCordova, isWebApp } from '../../utils/cordovaUtils';
 import isMobileScreenSize from '../../utils/isMobileScreenSize';
 import { renderLog } from '../../utils/logging';
-import OpenExternalWebSite from '../Widgets/OpenExternalWebSite';
-import SettingsVerifySecretCode from './SettingsVerifySecretCode';
-import VoterActions from '../../actions/VoterActions';
-import VoterStore from '../../stores/VoterStore';
+import LoadingWheel from '../LoadingWheel';
 import signInModalGlobalState from '../Widgets/signInModalGlobalState';
+
+const Alert = React.lazy(() => import('react-bootstrap/Alert'));
+const OpenExternalWebSite = React.lazy(() => import('../Widgets/OpenExternalWebSite'));
+const SettingsVerifySecretCode = React.lazy(() => import('./SettingsVerifySecretCode'));
 
 /* global $ */
 

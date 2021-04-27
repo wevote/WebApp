@@ -1,10 +1,10 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
 import { Button } from '@material-ui/core';
-import { cordovaDot, historyPush } from '../../utils/cordovaUtils';
+import PropTypes from 'prop-types';
+import React, { Component } from 'react';
 import DonateActions from '../../actions/DonateActions';
-import { renderLog } from '../../utils/logging';
 import webAppConfig from '../../config';
+import { cordovaDot, historyPush } from '../../utils/cordovaUtils';
+import { renderLog } from '../../utils/logging';
 
 export default class DonationForm extends Component {
   constructor (props) {

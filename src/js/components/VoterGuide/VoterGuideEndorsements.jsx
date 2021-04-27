@@ -1,27 +1,28 @@
-import React, { Component } from 'react';
+import { Card } from '@material-ui/core';
+import { withStyles } from '@material-ui/core/styles';
+import { Ballot, Info } from '@material-ui/icons';
 import PropTypes from 'prop-types';
+import React, { Component } from 'react';
 import Helmet from 'react-helmet';
 import styled from 'styled-components';
-import { Card } from '@material-ui/core';
-import { Ballot, Info } from '@material-ui/icons';
-import { withStyles } from '@material-ui/core/styles';
-import { calculateBallotBaseUrl, capitalizeString } from '../../utils/textFormat';
 import BallotActions from '../../actions/BallotActions';
-import BallotSearchResults from '../Ballot/BallotSearchResults';
+import OrganizationActions from '../../actions/OrganizationActions';
+import SupportActions from '../../actions/SupportActions';
+import VoterGuideActions from '../../actions/VoterGuideActions';
 import BallotStore from '../../stores/BallotStore';
-import DelayedLoad from '../Widgets/DelayedLoad';
-import EndorsementCard from '../Widgets/EndorsementCard';
-import FooterDoneBar from '../Navigation/FooterDoneBar';
+import OrganizationStore from '../../stores/OrganizationStore';
+import SupportStore from '../../stores/SupportStore';
+import VoterStore from '../../stores/VoterStore';
 import { historyPush } from '../../utils/cordovaUtils';
 import { renderLog } from '../../utils/logging';
-import OrganizationActions from '../../actions/OrganizationActions';
-import OrganizationStore from '../../stores/OrganizationStore';
-import SupportActions from '../../actions/SupportActions';
-import SupportStore from '../../stores/SupportStore';
-import ThisIsMeAction from '../Widgets/ThisIsMeAction';
-import VoterGuideActions from '../../actions/VoterGuideActions';
-import VoterGuidePositionList from './VoterGuidePositionList';
-import VoterStore from '../../stores/VoterStore';
+import { calculateBallotBaseUrl, capitalizeString } from '../../utils/textFormat';
+
+const BallotSearchResults = React.lazy(() => import('../Ballot/BallotSearchResults'));
+const DelayedLoad = React.lazy(() => import('../Widgets/DelayedLoad'));
+const EndorsementCard = React.lazy(() => import('../Widgets/EndorsementCard'));
+const FooterDoneBar = React.lazy(() => import('../Navigation/FooterDoneBar'));
+const ThisIsMeAction = React.lazy(() => import('../Widgets/ThisIsMeAction'));
+const VoterGuidePositionList = React.lazy(() => import('./VoterGuidePositionList'));
 
 class VoterGuideEndorsements extends Component {
   constructor (props) {

@@ -1,13 +1,13 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import moment from 'moment';
 import { Snackbar } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
+import PropTypes from 'prop-types';
+import React, { Component } from 'react';
 import BallotStore from '../../stores/BallotStore';
-import cookies from '../../utils/cookies';
 import ElectionStore from '../../stores/ElectionStore';
-import { renderLog } from '../../utils/logging';
 import VoterStore from '../../stores/VoterStore';
+import cookies from '../../utils/cookies';
+import initializeMoment from '../../utils/initializeMoment';
+import { renderLog } from '../../utils/logging';
 
 const styles = (theme) => ({
   anchorOriginBottomCenter: {
@@ -36,6 +36,7 @@ class BallotStatusMessage extends Component {
       open: true,
     };
 
+    initializeMoment(() => {});
     this.handleMessageClose = this.handleMessageClose.bind(this);
   }
 
@@ -185,13 +186,12 @@ class BallotStatusMessage extends Component {
     renderLog('BallotStatusMessage');  // Set LOG_RENDER_EVENTS to log all renders
     const { classes } = this.props;
     let messageString = '';
-    const today = moment(new Date());
+    const today = window.moment ? window.moment(new Date()) : '--x--';
     const isVotingDay = today.isSame(this.state.electionDayText, 'day');
 
     if (isVotingDay) {
-      messageString = `It is Voting Day,  ${
-        moment(this.state.electionDayText).format('MMM Do, YYYY')
-      }.  If you haven't already voted, please go vote!`;
+      const dateText = window.moment ? window.moment(this.state.electionDayText).format('MMM Do, YYYY') : '';
+      messageString = `It is Voting Day,  ${dateText}.  If you haven't already voted, please go vote!`;
       // I don't think this is necessary on election day.
       // messageString += !this.state.voterSpecificBallotFromGoogleCivic && this.state.ballotLocationChosen && this.state.ballotLocationDisplayName ?
       //   "  Some items shown below may not have been on your official ballot." : "  Some items below may not have been on your official ballot.";
@@ -210,7 +210,9 @@ class BallotStatusMessage extends Component {
     } else {
       let messageInPastString;
       if (this.state.electionDayText) {
-        messageInPastString = `This election was held on ${moment(this.state.electionDayText).format('MMM Do, YYYY')}.`;
+        const dateText = window.moment ? window.moment(this.state.electionDayText).format('MMM Do, YYYY') : '';
+
+        messageInPastString = `This election was held on ${dateText}.`;
       } else {
         messageInPastString = ''; // Was "This election has passed." but it showed up inaccurately.
       }

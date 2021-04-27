@@ -1,7 +1,8 @@
-import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import TextTruncate from 'react-text-truncate';
+import React, { Component } from 'react';
 import { renderLog } from '../../utils/logging';
+
+const TextTruncate = React.lazy(() => import('react-text-truncate'));  // TODO APRIL 2021:  This doesn't support the latest React libs, can't we do the same with css?
 
 export default class ReadMore extends Component {
   constructor (...args) {
@@ -36,7 +37,7 @@ export default class ReadMore extends Component {
     let {
       textToDisplay, linkText, numberOfLines, collapseText,
     } = this.props;
-    // default prop valuess
+    // default prop values
     if (numberOfLines === undefined) {
       numberOfLines = 3;
     }

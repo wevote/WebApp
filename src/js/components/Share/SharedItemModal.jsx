@@ -1,34 +1,35 @@
-import React, { Component } from 'react';
-import moment from 'moment';
-import PropTypes from 'prop-types';
-import styled from 'styled-components';
-import { withStyles, withTheme } from '@material-ui/core/styles';
-import clsx from 'clsx';
 import { Button, Dialog, IconButton } from '@material-ui/core';
+import { withStyles, withTheme } from '@material-ui/core/styles';
 import { Close, Info } from '@material-ui/icons';
-import { hideZenDeskHelpVisibility, showZenDeskHelpVisibility } from '../../utils/applicationUtils';
-import BallotStore from '../../stores/BallotStore';
+import clsx from 'clsx';
+import PropTypes from 'prop-types';
+import React, { Component } from 'react';
+import styled from 'styled-components';
 import BallotActions from '../../actions/BallotActions';
+import OrganizationActions from '../../actions/OrganizationActions';
+import ShareActions from '../../actions/ShareActions';
+import VoterActions from '../../actions/VoterActions';
+import VoterConstants from '../../constants/VoterConstants';
+import BallotStore from '../../stores/BallotStore';
+import OrganizationStore from '../../stores/OrganizationStore';
+import ShareStore from '../../stores/ShareStore';
+import VoterStore from '../../stores/VoterStore';
+import { hideZenDeskHelpVisibility, showZenDeskHelpVisibility } from '../../utils/applicationUtils';
 import { cordovaFooterHeight, cordovaNetworkNextButtonTop } from '../../utils/cordovaOffsets';
 import { hasIPhoneNotch, isCordova, isWebApp } from '../../utils/cordovaUtils';
-import FollowToggle from '../Widgets/FollowToggle';
-import FriendToggle from '../Friends/FriendToggle';
-import ImageHandler from '../ImageHandler';
-import { isSpeakerTypeOrganization, isSpeakerTypePublicFigure } from '../../utils/organization-functions';
-import OrganizationActions from '../../actions/OrganizationActions';
-import OrganizationStore from '../../stores/OrganizationStore';
-import PersonalizedScoreIntroBody from '../CompleteYourProfile/PersonalizedScoreIntroBody';
-import { renderLog } from '../../utils/logging';
-import SettingsAccount from '../Settings/SettingsAccount';
-import ShareActions from '../../actions/ShareActions';
-import SharedItemIntroduction from './SharedItemIntroduction';
-import ShareStore from '../../stores/ShareStore';
-import StepsChips from '../Widgets/StepsChips';
 import { formatDateToMonthDayYear } from '../../utils/dateFormat';
+import initializeMoment from '../../utils/initializeMoment';
+import { renderLog } from '../../utils/logging';
+import { isSpeakerTypeOrganization, isSpeakerTypePublicFigure } from '../../utils/organization-functions';
 import { convertToInteger, startsWith } from '../../utils/textFormat';
-import VoterConstants from '../../constants/VoterConstants';
-import VoterStore from '../../stores/VoterStore';
-import VoterActions from '../../actions/VoterActions';
+import ImageHandler from '../ImageHandler';
+
+const FollowToggle = React.lazy(() => import('../Widgets/FollowToggle'));
+const FriendToggle = React.lazy(() => import('../Friends/FriendToggle'));
+const PersonalizedScoreIntroBody = React.lazy(() => import('../CompleteYourProfile/PersonalizedScoreIntroBody'));
+const SettingsAccount = React.lazy(() => import('../Settings/SettingsAccount'));
+const SharedItemIntroduction = React.lazy(() => import('./SharedItemIntroduction'));
+const StepsChips = React.lazy(() => import('../Widgets/StepsChips'));
 
 class SharedItemModal extends Component {
   constructor (props) {
@@ -48,6 +49,7 @@ class SharedItemModal extends Component {
     };
     this.nextSlide = this.nextSlide.bind(this);
     this.previousSlide = this.previousSlide.bind(this);
+    initializeMoment(() => {});
   }
 
   componentDidMount () {
@@ -119,8 +121,7 @@ class SharedItemModal extends Component {
     const electionDayText = BallotStore.currentBallotElectionDate;
     // console.log('electionDayText:', electionDayText);
     if (electionDayText) {
-      // const electionDayTextFormatted = electionDayText ? moment(electionDayText).format('MMM Do, YYYY') : '';
-      const electionDayTextDateFormatted = electionDayText ? moment(electionDayText).format('MM/DD/YYYY') : '';
+      const electionDayTextDateFormatted = electionDayText && window.moment ? window.moment(electionDayText).format('MM/DD/YYYY') : '--x--';
       // console.log('electionDayTextFormatted: ', electionDayTextFormatted, ', electionDayTextDateFormatted:', electionDayTextDateFormatted);
       const electionDate = new Date(electionDayTextDateFormatted);
       if (electionDate) {

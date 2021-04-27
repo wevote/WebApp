@@ -1,6 +1,7 @@
+import React, { Component } from 'react';
+
 import { Button, FormControlLabel, Radio, RadioGroup } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
-import React, { Component } from 'react';
 // import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import AppActions from '../../actions/AppActions';
@@ -31,19 +32,28 @@ class SettingsProfilePicture extends Component {
           <CustomColumns className="col">
             <ProfilePictureOption>
               <FormControlLabel value="custom"
-                                control={<Radio color="primary"/>}
-                                label="Custom picture"/>
-              <Seperator/>
-              <ProfilePicture
-                src="../../../img/global/photos/Aaron_Travis-200x200.jpg"/>
+                                control={<Radio color="primary" />}
+                                label="Custom picture"
+              />
+              <Seperator />
+              <ProfilePicture src="../../../img/global/photos/Aaron_Travis-200x200.jpg" />
               {value === 'custom' && (
                 <>
                   <Button
                     onClick={() => AppActions.setShowImageUploadModal(true)}
-                    classes={{ root: classes.button }} color="primary"
-                    variant="contained" fullWidth>Upload</Button>
-                  <Button color="primary" variant="outlined"
-                          fullWidth>Remove</Button>
+                    classes={{ root: classes.button }}
+                    color="primary"
+                    variant="contained"
+                    fullWidth
+                  >
+                    Upload
+                  </Button>
+                  <Button color="primary"
+                          variant="outlined"
+                          fullWidth
+                  >
+                    Remove
+                  </Button>
                 </>
               )}
             </ProfilePictureOption>
@@ -51,11 +61,11 @@ class SettingsProfilePicture extends Component {
           <CustomColumns className="col">
             <ProfilePictureOption>
               <FormControlLabel value="facebook"
-                                control={<Radio color="primary"/>}
-                                label="Facebook picture"/>
-              <Seperator/>
-              <ProfilePicture
-                src="../../../img/global/photos/Aaron_Travis-200x200.jpg"/>
+                                control={<Radio color="primary" />}
+                                label="Facebook picture"
+              />
+              <Seperator />
+              <ProfilePicture src="../../../img/global/photos/Aaron_Travis-200x200.jpg" />
             </ProfilePictureOption>
           </CustomColumns>
           <CustomColumns className="col">

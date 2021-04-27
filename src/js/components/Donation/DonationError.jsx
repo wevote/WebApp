@@ -1,7 +1,8 @@
-import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import Badge from 'react-bootstrap/Badge';
+import React, { Component } from 'react';
 import { renderLog } from '../../utils/logging';
+
+const Badge = React.lazy(() => import('react-bootstrap/Badge'));
 
 export default class DonationError extends Component {
   render () {

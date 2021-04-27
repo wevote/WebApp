@@ -1,23 +1,25 @@
-import React, { Component } from 'react';
-import Helmet from 'react-helmet';
-import PropTypes from 'prop-types';
-import styled from 'styled-components';
 import { Button } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
-import ffwdLogo from '../../img/global/logos/ffwd-logo.png';
-import googleLogo from '../../img/global/logos/google-logo.svg';
-import voteDotOrgLogo from '../../img/global/logos/vote_dot_org_logo-530x200.png';
-import vipLogo from '../../img/global/logos/vip-logo-1000x208.png';
+import PropTypes from 'prop-types';
+import React, { Component } from 'react';
+
+import Helmet from 'react-helmet';
+import styled from 'styled-components';
 import AnalyticsActions from '../actions/AnalyticsActions';
 import AppActions from '../actions/AppActions';
-import WelcomeFooter from '../components/Welcome/WelcomeFooter';
-import cordovaScrollablePaneTopPadding from '../utils/cordovaScrollablePaneTopPadding';
-import { historyPush, cordovaDot } from '../utils/cordovaUtils';
-import { renderLog } from '../utils/logging';
 import Testimonial from '../components/Widgets/Testimonial';
 import VoterStore from '../stores/VoterStore';
-import { Title, BlueTitle, SubTitle, Video, PlayerContainer } from '../components/Welcome/HeaderWelcome';
-import Section, {
+import cordovaScrollablePaneTopPadding from '../utils/cordovaScrollablePaneTopPadding';
+import { cordovaDot, historyPush } from '../utils/cordovaUtils';
+import { renderLog } from '../utils/logging';
+
+const ffwdLogo = React.lazy(() => import('../../img/global/logos/ffwd-logo.png'));
+const googleLogo = '../../img/global/logos/google-logo.svg';
+const voteDotOrgLogo = React.lazy(() => import('../../img/global/logos/vote_dot_org_logo-530x200.png'));
+const vipLogo = React.lazy(() => import('../../img/global/logos/vip-logo-1000x208.png'));
+const WelcomeFooter = React.lazy(() => import('../components/Welcome/WelcomeFooter'));
+const { Title, BlueTitle, SubTitle, Video, PlayerContainer } = React.lazy(() => import('../components/Welcome/HeaderWelcome'));
+const {
   SectionTitle,
   SectionTitleBold,
   DescriptionContainer,
@@ -28,8 +30,9 @@ import Section, {
   Bold,
   NetworkContainer,
   NetworkImage,
-} from '../components/Welcome/Section';
-import WelcomeAppbar from '../components/Navigation/WelcomeAppbar';
+} = React.lazy(() => import('../components/Welcome/Section'));
+const Section = React.lazy(() => import('../components/Welcome/Section'));
+const WelcomeAppbar = React.lazy(() => import('../components/Navigation/WelcomeAppbar'));
 
 class WelcomeForOrganizations extends Component {
   constructor (props) {

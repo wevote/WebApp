@@ -1,15 +1,15 @@
 import { ReduceStore } from 'flux/utils';
-import AppStore from './AppStore'; // eslint-disable-line import/no-cycle
 import BallotActions from '../actions/BallotActions';
-import cookies from '../utils/cookies';
-import Dispatcher from '../dispatcher/Dispatcher';
 import FacebookActions from '../actions/FacebookActions'; // eslint-disable-line import/no-cycle
 import FriendActions from '../actions/FriendActions'; // eslint-disable-line import/no-cycle
 import OrganizationActions from '../actions/OrganizationActions';
-import { stringContains } from '../utils/textFormat';
 import VoterActions from '../actions/VoterActions'; // eslint-disable-line import/no-cycle
 import VoterGuideActions from '../actions/VoterGuideActions';
 import signInModalGlobalState from '../components/Widgets/signInModalGlobalState';
+import Dispatcher from '../dispatcher/Dispatcher';
+import cookies from '../utils/cookies';
+import { stringContains } from '../utils/textFormat';
+import AppStore from './AppStore'; // eslint-disable-line import/no-cycle
 
 class VoterStore extends ReduceStore {
   getInitialState () {

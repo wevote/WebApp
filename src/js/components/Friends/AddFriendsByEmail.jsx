@@ -1,20 +1,20 @@
-import React, { Component } from 'react';
-import styled from 'styled-components';
-import PropTypes from 'prop-types';
-import Alert from 'react-bootstrap/Alert';
-import { TextField, Button } from '@material-ui/core';
+import { Button, TextField } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 import { Close } from '@material-ui/icons';
-import DelayedLoad from '../Widgets/DelayedLoad';
-import isMobileScreenSize from '../../utils/isMobileScreenSize';
+import PropTypes from 'prop-types';
+import React, { Component } from 'react';
+import styled from 'styled-components';
 import FriendActions from '../../actions/FriendActions';
 import FriendStore from '../../stores/FriendStore';
-import LoadingWheel from '../LoadingWheel';
-import SettingsAccount from '../Settings/SettingsAccount';
 import VoterStore from '../../stores/VoterStore';
-import { validatePhoneOrEmail } from '../../utils/regex-checks';
+import { blurTextFieldAndroid, focusTextFieldAndroid } from '../../utils/cordovaUtils';
+import isMobileScreenSize from '../../utils/isMobileScreenSize';
 import { renderLog } from '../../utils/logging';
-import { focusTextFieldAndroid, blurTextFieldAndroid } from '../../utils/cordovaUtils';
+import { validatePhoneOrEmail } from '../../utils/regex-checks';
+
+const DelayedLoad = React.lazy(() => import('../Widgets/DelayedLoad'));
+const SettingsAccount = React.lazy(() => import('../Settings/SettingsAccount'));
+const Alert = React.lazy(() => import('react-bootstrap/Alert'));
 
 
 class AddFriendsByEmail extends Component {
@@ -243,7 +243,8 @@ class AddFriendsByEmail extends Component {
     const atLeastOneValidated = friendsToInvite.length !== 0 || validatePhoneOrEmail(friendContactInfo);
 
     if (loading) {
-      return LoadingWheel;
+      // HACK TODO return LoadingWheel;
+      return '<div>LoadingWheel</div>';
     }
     return (
       <div>

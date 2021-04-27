@@ -1,20 +1,21 @@
-import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import React, { Component } from 'react';
 import styled from 'styled-components';
 import ActivityStore from '../../stores/ActivityStore';
-import avatarGenericIcon from '../../../img/global/svg-icons/avatar-generic.svg';
-import { cordovaDot } from '../../utils/cordovaUtils';
-import FriendsOnlyIndicator from '../Widgets/FriendsOnlyIndicator';
-import LoadingWheel from '../LoadingWheel';
-import { renderLog } from '../../utils/logging';
-import OpenExternalWebSite from '../Widgets/OpenExternalWebSite';
-import OrganizationPopoverCard from '../Organization/OrganizationPopoverCard';
-import ReadMore from '../Widgets/ReadMore';
-import StickyPopover from '../Ballot/StickyPopover';
-import { createDescriptionOfFriendPosts } from '../../utils/activityUtils';
-import { timeFromDate } from '../../utils/dateFormat';
-import { numberWithCommas } from '../../utils/textFormat';
 import VoterStore from '../../stores/VoterStore';
+import { createDescriptionOfFriendPosts } from '../../utils/activityUtils';
+import { cordovaDot } from '../../utils/cordovaUtils';
+import { timeFromDate } from '../../utils/dateFormat';
+import { renderLog } from '../../utils/logging';
+import { numberWithCommas } from '../../utils/textFormat';
+import LoadingWheel from '../LoadingWheel';
+
+const FriendsOnlyIndicator = React.lazy(() => import('../Widgets/FriendsOnlyIndicator'));
+const OpenExternalWebSite = React.lazy(() => import('../Widgets/OpenExternalWebSite'));
+const OrganizationPopoverCard = React.lazy(() => import('../Organization/OrganizationPopoverCard'));
+const ReadMore = React.lazy(() => import('../Widgets/ReadMore'));
+const StickyPopover = React.lazy(() => import('../Ballot/StickyPopover'));
+const avatarGenericIcon = '../../../img/global/svg-icons/avatar-generic.svg';
 
 class ActivitySpeakerCard extends Component {
   constructor (props) {

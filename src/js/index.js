@@ -1,7 +1,9 @@
+import React from 'react';
 import webAppConfig from './config';
-import startReactApp from './startReactApp';
+import { getCordovaScreenHeight, isIPad, isWebApp, polyfillFixes } from './utils/cordovaUtils';
 import { numberOfNeedlesFoundInString } from './utils/searchFunctions';
-import { isWebApp, isIPad, getCordovaScreenHeight, polyfillFixes } from './utils/cordovaUtils';
+
+const startReactApp = React.lazy(() => import('./startReactApp'));
 
 // If in Cordova, need this function before cordovaUtils might be loaded
 function localIsCordova () {

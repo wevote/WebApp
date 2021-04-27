@@ -1,10 +1,10 @@
 import { ReduceStore } from 'flux/utils';
-import Dispatcher from '../dispatcher/AppDispatcher';
 import VoterActions from '../actions/VoterActions'; // eslint-disable-line import/no-cycle
-import VoterStore from './VoterStore'; // eslint-disable-line import/no-cycle
-import webAppConfig from '../config'; // eslint-disable-line import/no-cycle
+import webAppConfig from '../config';
+import Dispatcher from '../dispatcher/Dispatcher';
 import { isCordova } from '../utils/cordovaUtils'; // eslint-disable-line import/no-cycle
 import { stringContains } from '../utils/textFormat';
+import VoterStore from './VoterStore'; // eslint-disable-line import/no-cycle
 
 /**
  * AppStore allows you to store state information, in situations where there is no API call needed

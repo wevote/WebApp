@@ -1,12 +1,14 @@
+import { withTheme } from '@material-ui/core/styles';
 import React, { Component } from 'react';
 import styled from 'styled-components';
-import { withTheme } from '@material-ui/core/styles';
 import IssueActions from '../../actions/IssueActions';
-import IssueCardCompressed from './IssueCardCompressed';
 import IssueStore from '../../stores/IssueStore';
-import { renderLog } from '../../utils/logging';
-import ShowMoreFooter from '../Navigation/ShowMoreFooter';
+import VoterStore from '../../stores/VoterStore';
 import { historyPush } from '../../utils/cordovaUtils';
+import { renderLog } from '../../utils/logging';
+
+const IssueCardCompressed = React.lazy(() => import('./IssueCardCompressed'));
+const ShowMoreFooter = React.lazy(() => import('../Navigation/ShowMoreFooter'));
 
 class ValuesFollowedPreview extends Component {
   constructor (props) {
@@ -19,11 +21,8 @@ class ValuesFollowedPreview extends Component {
   componentDidMount () {
     this.issueStoreListener = IssueStore.addListener(this.onIssueStoreChange.bind(this));
     this.onIssueStoreChange();
-    if (!IssueStore.issueDescriptionsRetrieveCalled()) {
-      IssueActions.issueDescriptionsRetrieve();
-      // IssueActions.issueDescriptionsRetrieveCalled(); // TODO: Move this to AppActions? Currently throws error: "Cannot dispatch in the middle of a dispatch"
-    }
-    IssueActions.issuesFollowedRetrieve();
+    IssueActions.issueDescriptionsRetrieve(VoterStore.getVoterWeVoteId());
+    IssueActions.issuesFollowedRetrieve(VoterStore.getVoterWeVoteId());
   }
 
   componentWillUnmount () {

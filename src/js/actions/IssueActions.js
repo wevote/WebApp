@@ -1,8 +1,26 @@
 import Dispatcher from '../dispatcher/Dispatcher';
+import cookies from '../utils/cookies';
+
+let uniqueKeyIssuesDescriptionRetrieve = '';
+let uniqueKeyIssuesFollowedRetrieve = '';
+
 
 export default {
-  issueDescriptionsRetrieve () {
-    Dispatcher.loadEndpoint('issueDescriptionsRetrieve', {});
+  issueDescriptionsRetrieve (voterWeVoteId) {
+    /*
+    April 2021: We were firing off issueDescriptionsRetrieve four times upon loading the Ready page.
+    As of today we are calling this API in 19 places in the code, including two from within stores.
+    Calling Actions from Stores is highly discouraged, it just makes a tangle that is tons of work
+    to fix at a later time.
+    Rather than untangle the reason for all those API calls, we now save the current voterWeVoteID, and
+    ignore the call if that ID has not changed.  If we really want to call this more than once for the same
+    login, just pass in a unique string, like a timestamp, and the api will fire.
+    */
+    const uniqueKey = voterWeVoteId && voterWeVoteId.length ? voterWeVoteId : cookies.getItem('voter_device_id');
+    if (uniqueKey !== uniqueKeyIssuesDescriptionRetrieve) {
+      uniqueKeyIssuesDescriptionRetrieve = uniqueKey;
+      Dispatcher.loadEndpoint('issueDescriptionsRetrieve', {});
+    }
   },
 
   issueDescriptionsRetrieveCalled () {
@@ -13,8 +31,24 @@ export default {
     Dispatcher.dispatch({ type: 'issuesUnderBallotItemsRetrieveCalled', payload: googleCivicElectionId });
   },
 
-  issuesFollowedRetrieve () {
-    Dispatcher.loadEndpoint('issuesFollowedRetrieve', {});
+  issuesFollowedRetrieve (voterWeVoteId) {
+    /*
+    April 2021: We were firing off issuesFollowedRetrieve five times upon loading the Ready page.
+    Part of the problem was that we had copied similar classes without thinking through exactly
+    how often we actually needed to call this API.  API calls are expensive and precious, especially
+    if they are called on the first page load -- that is how the Google Lighthouse measures performance.
+    As of today we are calling this API in 19 places in the code, including two from within stores.
+    Calling Actions from Stores is highly discouraged, it just makes a tangle that is tons of work
+    to fix at a later time.
+    Rather than untangle the reason for all those API calls, we now save the current voterWeVoteID, and
+    ignore the call if that ID has not changed.  If we really want to call this more than once for the same
+    login, just pass in a unique string, like a timestamp, and the api will fire.
+    */
+    const uniqueKey = voterWeVoteId.length ? voterWeVoteId : cookies.getItem('voter_device_id');
+    if (uniqueKey !== uniqueKeyIssuesFollowedRetrieve) {
+      uniqueKeyIssuesFollowedRetrieve = uniqueKey;
+      Dispatcher.loadEndpoint('issuesFollowedRetrieve', {});
+    }
   },
 
   issuesUnderBallotItemsRetrieve (googleCivicElectionId, ballot_location_shortcut = '', ballot_returned_we_vote_id = '') {

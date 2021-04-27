@@ -1,13 +1,9 @@
 import React, { Component } from 'react';
+
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { withStyles, withTheme } from '@material-ui/core/styles';
-import {
-  FormControl,
-  IconButton,
-  InputAdornment,
-  TextField,
-} from '@material-ui/core';
+import { FormControl, IconButton, InputAdornment, TextField } from '@material-ui/core';
 import { AccountCircle, Send } from '@material-ui/icons';
 import ActivityActions from '../../actions/ActivityActions';
 import ActivityStore from '../../stores/ActivityStore';

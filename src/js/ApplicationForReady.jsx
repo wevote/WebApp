@@ -1,14 +1,15 @@
+import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import * as PropTypes from 'prop-types';
-import { ToastContainer } from 'react-toastify';
 import styled from 'styled-components';
 import { getToastClass, isCordova, isWebApp } from './utils/cordovaUtils';
-// import { cordovaContainerMainOverride, cordovaScrollablePaneTopPadding } from './utils/cordovaOffsets';
-// import FooterBar from './components/Navigation/FooterBar';
-// import Header from './components/Navigation/Header';
 import { renderLog } from './utils/logging';
-// import ShareButtonFooter from './components/Share/ShareButtonFooter';
-import SnackNotifier from './components/Widgets/SnackNotifier';
+// import { cordovaContainerMainOverride, cordovaScrollablePaneTopPadding } from './utils/cordovaOffsets';
+// const FooterBar = React.lazy(() => import('./components/Navigation/FooterBar'));
+// const Header = React.lazy(() => import('./components/Navigation/Header'));
+
+const { ToastContainer } = React.lazy(() => import('react-toastify'));
+const SnackNotifier = React.lazy(() => import('./components/Widgets/SnackNotifier'));
+// const ShareButtonFooter = React.lazy(() => import('./components/Share/ShareButtonFooter'));
 
 class ApplicationForReady extends Component {
   constructor (props) {

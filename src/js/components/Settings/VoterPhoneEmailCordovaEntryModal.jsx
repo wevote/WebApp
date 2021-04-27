@@ -1,14 +1,15 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
 import { Dialog, DialogContent } from '@material-ui/core';
+import { withStyles, withTheme } from '@material-ui/core/styles';
 import { MailOutline, Message } from '@material-ui/icons';
 import clsx from 'clsx';
-import { withStyles, withTheme } from '@material-ui/core/styles';
-import SplitIconButton from '../Widgets/SplitIconButton';
-import VoterEmailAddressEntry from './VoterEmailAddressEntry';
-import VoterPhoneVerificationEntry from './VoterPhoneVerificationEntry';
-import { isCordova, restoreStylesAfterCordovaKeyboard, isIPhone3p5in, isIPhone4in, isIPhone4p7in } from '../../utils/cordovaUtils';
+import PropTypes from 'prop-types';
+import React, { Component } from 'react';
+import { isCordova, isIPhone3p5in, isIPhone4in, isIPhone4p7in, restoreStylesAfterCordovaKeyboard } from '../../utils/cordovaUtils';
 import { renderLog } from '../../utils/logging';
+
+const SplitIconButton = React.lazy(() => import('../Widgets/SplitIconButton'));
+const VoterEmailAddressEntry = React.lazy(() => import('./VoterEmailAddressEntry'));
+const VoterPhoneVerificationEntry = React.lazy(() => import('./VoterPhoneVerificationEntry'));
 
 
 // Work around for dialog placement in Cordova when virtual keyboard appears

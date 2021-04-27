@@ -1,16 +1,18 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import styled from 'styled-components';
-import { Close } from '@material-ui/icons';
-import { Dialog, DialogContent, IconButton, Button } from '@material-ui/core';
+import { Button, Dialog, DialogContent, IconButton } from '@material-ui/core';
 import { withStyles, withTheme } from '@material-ui/core/styles';
-import { hasIPhoneNotch } from '../../utils/cordovaUtils';
-import { renderLog } from '../../utils/logging';
-import FriendInvitationOnboardingValuesList from '../Values/FriendInvitationOnboardingValuesList';
+import { Close } from '@material-ui/icons';
+import PropTypes from 'prop-types';
+import React, { Component } from 'react';
+import styled from 'styled-components';
 import IssueActions from '../../actions/IssueActions';
-import IssueStore from '../../stores/IssueStore';
 import VoterActions from '../../actions/VoterActions';
 import VoterConstants from '../../constants/VoterConstants';
+import IssueStore from '../../stores/IssueStore';
+import VoterStore from '../../stores/VoterStore';
+import { hasIPhoneNotch } from '../../utils/cordovaUtils';
+import { renderLog } from '../../utils/logging';
+
+const FriendInvitationOnboardingValuesList = React.lazy(() => import('../Values/FriendInvitationOnboardingValuesList'));
 
 class ValuesIntroModal extends Component {
   constructor (props) {
@@ -22,7 +24,7 @@ class ValuesIntroModal extends Component {
 
   componentDidMount () {
     this.issueStoreListener = IssueStore.addListener(this.onIssueStoreChange.bind(this));
-    IssueActions.issuesFollowedRetrieve();
+    IssueActions.issuesFollowedRetrieve(VoterStore.getVoterWeVoteId());
 
     this.setState({
     });

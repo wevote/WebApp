@@ -1,14 +1,15 @@
-import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import React, { Component } from 'react';
 import styled from 'styled-components';
-import { oAuthLog, renderLog } from '../../utils/logging';
-import AppStore from '../../stores/AppStore';
 import FacebookActions from '../../actions/FacebookActions';
-import FacebookStore from '../../stores/FacebookStore';
-import signInModalGlobalState from '../Widgets/signInModalGlobalState';
-import SplitIconButton from '../Widgets/SplitIconButton';
-import VoterStore from '../../stores/VoterStore';
 import VoterActions from '../../actions/VoterActions';
+import AppStore from '../../stores/AppStore';
+import FacebookStore from '../../stores/FacebookStore';
+import VoterStore from '../../stores/VoterStore';
+import { oAuthLog, renderLog } from '../../utils/logging';
+import signInModalGlobalState from '../Widgets/signInModalGlobalState';
+
+const SplitIconButton = React.lazy(() => import('../Widgets/SplitIconButton'));
 
 
 class FacebookSignIn extends Component {

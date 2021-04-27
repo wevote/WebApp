@@ -1,30 +1,31 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import styled from 'styled-components';
-import { AccountCircle, Close, Menu } from '@material-ui/icons';
-import { AppBar, Toolbar, Button, IconButton } from '@material-ui/core';
+import { AppBar, Button, IconButton, Toolbar } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
-import { renderLog } from '../../utils/logging';
+import { AccountCircle, Close, Menu } from '@material-ui/icons';
+import PropTypes from 'prop-types';
+import React, { Component } from 'react';
+import styled from 'styled-components';
+import AppActions from '../../actions/AppActions';
+import OrganizationActions from '../../actions/OrganizationActions';
+import VoterGuideActions from '../../actions/VoterGuideActions';
+import VoterSessionActions from '../../actions/VoterSessionActions';
+import AppStore from '../../stores/AppStore';
+import VoterStore from '../../stores/VoterStore';
 import cookies from '../../utils/cookies';
-import Navigation, { LogoContainer, Divider, NavLink, MobileNavigationMenu, MobileNavDivider, NavRow } from '../Welcome/Navigation';
-import HeaderBarLogo from './HeaderBarLogo';
 import { cordovaWelcomeAppToolbarTop } from '../../utils/cordovaOffsets';
 import { historyPush } from '../../utils/cordovaUtils';
-import AppStore from '../../stores/AppStore';
-import AppActions from '../../actions/AppActions';
-import HeaderBarProfilePopUp from './HeaderBarProfilePopUp';
-import OrganizationActions from '../../actions/OrganizationActions';
-// eslint-disable-next-line import/no-cycle
-import PaidAccountUpgradeModal from '../Settings/PaidAccountUpgradeModal';
-import SignInModal from '../Widgets/SignInModal';
-import { shortenText } from '../../utils/textFormat';
-import VoterGuideActions from '../../actions/VoterGuideActions';
-import VoterStore from '../../stores/VoterStore';
-import VoterSessionActions from '../../actions/VoterSessionActions';
-import { voterPhoto } from '../../utils/voterPhoto';
-import anonymous from '../../../img/global/icons/avatar-generic.png';
 import LazyImage from '../../utils/LazyImage';
+import { renderLog } from '../../utils/logging';
+import { shortenText } from '../../utils/textFormat';
+import { voterPhoto } from '../../utils/voterPhoto';
 
+const Navigation = React.lazy(() => import('../Welcome/Navigation'));
+const { LogoContainer, Divider, NavLink, MobileNavigationMenu, MobileNavDivider, NavRow } = React.lazy(() => import('../Welcome/Navigation'));
+const HeaderBarLogo = React.lazy(() => import('./HeaderBarLogo'));
+const HeaderBarProfilePopUp = React.lazy(() => import('./HeaderBarProfilePopUp'));
+// TODO: Backport "@stripe/react-stripe-js" use from Campaigns
+// const PaidAccountUpgradeModal = React.lazy(() => import('../Settings/PaidAccountUpgradeModal'));
+const SignInModal = React.lazy(() => import('../Widgets/SignInModal'));
+const anonymous = React.lazy(() => import('../../../img/global/icons/avatar-generic.png'));
 
 
 class WelcomeAppbar extends Component {
@@ -464,15 +465,16 @@ class WelcomeAppbar extends Component {
             closeFunction={this.closeSignInModal}
           />
         )}
-        {showPaidAccountUpgradeModal && (
-          <PaidAccountUpgradeModal
-            initialPaidAccountProcessStep="payForPlan"
-            initialPricingPlan={paidAccountUpgradeMode}
-            pathname={pathname}
-            show={showPaidAccountUpgradeModal}
-            toggleFunction={this.closePaidAccountUpgradeModal}
-          />
-        )}
+        {/* TODO: Backport "@stripe/react-stripe-js" use from Campaigns */}
+        {/* {showPaidAccountUpgradeModal && ( */}
+        {/*  <PaidAccountUpgradeModal */}
+        {/*    initialPaidAccountProcessStep="payForPlan" */}
+        {/*    initialPricingPlan={paidAccountUpgradeMode} */}
+        {/*    pathname={pathname} */}
+        {/*    show={showPaidAccountUpgradeModal} */}
+        {/*    toggleFunction={this.closePaidAccountUpgradeModal} */}
+        {/*  /> */}
+        {/* )} */}
       </AppBar>
     );
   }

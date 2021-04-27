@@ -1,12 +1,11 @@
+import React from 'react';
 import CordovaPageConstants from '../constants/CordovaPageConstants';
 import VoterStore from '../stores/VoterStore';
-import showBallotDecisionsTabs from '../utilsApi/showBallotDecisionsTabs';
-import { cordovaOffsetLog } from './logging';
+import { getAndroidSize, hasAndroidNotch, hasIPhoneNotch, isAndroid, isAndroidSimulator, isIOS, isIOSAppOnMac, isIPad, isIPhone4in, isIPhone4p7in, isIPhone5p5in, isIPhone6p1in, isIPhone6p5in, isSimulator } from './cordovaUtils';
 import { pageEnumeration } from './cordovaUtilsPageEnumeration';
-import { getAndroidSize, hasAndroidNotch, hasIPhoneNotch,
-  isAndroid, isAndroidSimulator, isIOSAppOnMac, isIOS, isIPad,
-  isIPhone4in, isIPhone4p7in, isIPhone5p5in, isIPhone6p1in, isIPhone6p5in, isSimulator,
-} from './cordovaUtils';
+import { cordovaOffsetLog } from './logging';
+
+const showBallotDecisionsTabs = React.lazy(() => import('../utilsApi/showBallotDecisionsTabs'));
 
 
 // <Wrapper padTop={cordovaScrollablePaneTopPadding()}>

@@ -1,21 +1,22 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import styled from 'styled-components';
 import { withStyles, withTheme } from '@material-ui/core/styles';
 import { ArrowForward, CheckCircle } from '@material-ui/icons';
+import PropTypes from 'prop-types';
+import React from 'react';
+import styled from 'styled-components';
 import AppActions from '../../actions/AppActions';
-import ballot0Percent from '../../../img/global/svg-icons/ready/ballot-0-percent.svg';
-import ballot50Percent from '../../../img/global/svg-icons/ready/ballot-50-percent.svg';
-import ballot100Percent from '../../../img/global/svg-icons/ready/ballot-100-percent.svg';
 import BallotActions from '../../actions/BallotActions';
+import VoterConstants from '../../constants/VoterConstants';
 import BallotStore from '../../stores/BallotStore';
-import { cordovaDot, historyPush } from '../../utils/cordovaUtils';
-import { renderLog } from '../../utils/logging';
-import { ButtonLeft, ButtonText, Icon, PercentComplete, ReadyCard, StyledButton, StyledCheckbox, StyledCheckboxCompleted, SubTitle, TitleRowWrapper } from './ReadyTaskStyles';
-import ShowMoreButtons from '../ReadyNoApi/ShowMoreButtons';
 import SupportStore from '../../stores/SupportStore';
 import VoterStore from '../../stores/VoterStore';
-import VoterConstants from '../../constants/VoterConstants';
+import { cordovaDot, historyPush } from '../../utils/cordovaUtils';
+import { renderLog } from '../../utils/logging';
+import ShowMoreButtons from './ShowMoreButtons';
+import { ButtonLeft, ButtonText, Icon, PercentComplete, ReadyCard, StyledButton, StyledCheckbox, StyledCheckboxCompleted, SubTitle, TitleRowWrapper } from './ReadyTaskStyles';
+
+const ballot0Percent = '../../../img/global/svg-icons/ready/ballot-0-percent.svg';
+const ballot50Percent = '../../../img/global/svg-icons/ready/ballot-50-percent.svg';
+const ballot100Percent = '../../../img/global/svg-icons/ready/ballot-100-percent.svg';
 
 class ReadyTaskBallot extends React.Component {
   constructor (props) {
@@ -837,6 +838,48 @@ const styles = (theme) => ({
       fontSize: 14,
     },
   },
+  backgroundClip: 'border-box',
+  backgroundColor: 'rgb(255, 255, 255)',
+  borderBottomColor: 'rgb(51, 51, 51)',
+  borderBottomLeftRadius: 4,
+  borderBottomRightRadius: 4,
+  borderBottomStyle: 'none',
+  borderBottomWidth: 0,
+  borderImageOutset: 0,
+  borderImageRepeat: 'stretch',
+  borderImageSlice: '100%',
+  borderImageSource: 'none',
+  borderImageWidth: 1,
+  borderLeftColor: 'rgb(51, 51, 51)',
+  borderLeftStyle: 'none',
+  borderLeftWidth: 0,
+  borderRightColor: 'rgb(51, 51, 51)',
+  borderRightStyle: 'none',
+  borderRightWidth: 0,
+  borderTopColor: 'rgb(51, 51, 51)',
+  borderTopLeftRadius: 4,
+  borderTopRightRadius: 4,
+  borderTopStyle: 'none',
+  borderTopWidth: 0,
+  boxShadow: 'rgba(0, 0, 0, 0.2) 0px 1px 3px 0px, rgba(0, 0, 0, 0.14) 0px 1px 1px 0px, rgba(0, 0, 0, 0.12) 0px 2px 1px -1px',
+  boxSizing: 'content-box',
+  color: 'rgb(51, 51, 51)',
+  display: 'flex',
+  flexDirection: 'column',
+  fontFamily: '"Nunito Sans", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, sans-serif',
+  fontSize: 16,
+  height: 173,
+  lineHeight: 22,
+  marginBottom: 16,
+  minWidth: 0,
+  overflowWrap: 'normal',
+  paddingBottom: 16,
+  paddingLeft: 82,
+  paddingRight: 16,
+  paddingTop: 16,
+  position: 'relative',
+  textSizeAdjust: '100%',
+  width: 562,
 });
 
 const BallotToDoTitle = styled.h3`

@@ -1,11 +1,12 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import styled from 'styled-components';
 import { withStyles } from '@material-ui/core/styles';
-import BallotItemSupportOpposeCountDisplay from '../Widgets/BallotItemSupportOpposeCountDisplay';
-import { renderLog } from '../../utils/logging';
-import VoterGuideStore from '../../stores/VoterGuideStore';
+import PropTypes from 'prop-types';
+import React, { Component } from 'react';
+import styled from 'styled-components';
 import SupportStore from '../../stores/SupportStore';
+import VoterGuideStore from '../../stores/VoterGuideStore';
+import { renderLog } from '../../utils/logging';
+
+const BallotItemSupportOpposeCountDisplay = React.lazy(() => import('../Widgets/BallotItemSupportOpposeCountDisplay'));
 
 
 class MeasureItemReadyToVote extends Component {

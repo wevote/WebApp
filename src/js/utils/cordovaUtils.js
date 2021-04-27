@@ -1,9 +1,10 @@
 import React from 'react';
-// import { createBrowserHistory, createHashHistory } from 'history';
-// import { useHistory } from "react-router-dom";
+// const { createBrowserHistory, createHashHistory } = React.lazy(() => import('history'));
+// const { useHistory } = React.lazy(() => import("react-router-dom"));
 import webAppConfig from '../config';
 import { cordovaOffsetLog, oAuthLog } from './logging';
-import { dumpObjProps } from './appleSiliconUtils';
+
+const { dumpObjProps } = React.lazy(() => import('./appleSiliconUtils'));
 
 /* global $  */
 

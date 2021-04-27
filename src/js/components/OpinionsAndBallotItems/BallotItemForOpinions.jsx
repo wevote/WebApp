@@ -1,10 +1,11 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import styled from 'styled-components';
 import { withStyles, withTheme } from '@material-ui/core/styles';
+import PropTypes from 'prop-types';
+import React, { Component } from 'react';
+import styled from 'styled-components';
 import { renderLog } from '../../utils/logging';
-import MeasureItemForOpinions from './MeasureItemForOpinions';
-import OfficeItemForOpinions from './OfficeItemForOpinions';
+
+const MeasureItemForOpinions = React.lazy(() => import('./MeasureItemForOpinions'));
+const OfficeItemForOpinions = React.lazy(() => import('./OfficeItemForOpinions'));
 
 
 class BallotItemForOpinions extends Component {

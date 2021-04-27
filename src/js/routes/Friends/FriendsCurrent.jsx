@@ -1,14 +1,15 @@
 import React, { Component } from 'react';
 import Helmet from 'react-helmet';
 import styled from 'styled-components';
-import filter from 'lodash-es/filter';
-import FriendList from '../../components/Friends/FriendList';
 import FriendActions from '../../actions/FriendActions';
 import FriendStore from '../../stores/FriendStore';
-import MessageCard from '../../components/Widgets/MessageCard';
-import { renderLog } from '../../utils/logging';
-import SearchBar from '../../components/Search/SearchBar';
 import sortFriendListByMutualFriends from '../../utils/friendFunctions';
+import { renderLog } from '../../utils/logging';
+
+const filter = React.lazy(() => import('lodash-es/filter'));
+const FriendList = React.lazy(() => import('../../components/Friends/FriendList'));
+const MessageCard = React.lazy(() => import('../../components/Widgets/MessageCard'));
+const SearchBar = React.lazy(() => import('../../components/Search/SearchBar'));
 
 export default class FriendsCurrent extends Component {
   constructor (props) {

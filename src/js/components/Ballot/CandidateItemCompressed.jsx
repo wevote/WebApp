@@ -1,16 +1,17 @@
+import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import PropTypes from 'prop-types';
-import TextTruncate from 'react-text-truncate';
-import BallotItemSupportOpposeCountDisplay from '../Widgets/BallotItemSupportOpposeCountDisplay';
 import CandidateStore from '../../stores/CandidateStore';
-import { historyPush, isCordova } from '../../utils/cordovaUtils';
-import ImageHandler from '../ImageHandler';
-import LearnMore from '../Widgets/LearnMore';
-import { renderLog } from '../../utils/logging';
 import OrganizationStore from '../../stores/OrganizationStore';
 import SupportStore from '../../stores/SupportStore';
 import VoterGuideStore from '../../stores/VoterGuideStore';
+import { historyPush, isCordova } from '../../utils/cordovaUtils';
+import { renderLog } from '../../utils/logging';
+import ImageHandler from '../ImageHandler';
+
+const TextTruncate = React.lazy(() => import('react-text-truncate'));
+const BallotItemSupportOpposeCountDisplay = React.lazy(() => import('../Widgets/BallotItemSupportOpposeCountDisplay'));
+const LearnMore = React.lazy(() => import('../Widgets/LearnMore'));
 
 export default class CandidateItemCompressed extends Component {
   constructor (props) {

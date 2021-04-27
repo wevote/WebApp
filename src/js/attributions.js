@@ -136,9 +136,6 @@ module.exports = [
   // Jan 2019, https://github.com/nfl/react-helmet/blob/master/LICENSE
   'nfl/react-helmet is licensed under the MIT License (MIT)\n' +
   'Copyright (c) 2015 NFL\n',
-  // https://github.com/zeroasterisk/react-iframe-resizer-super/blob/master/LICENSE
-  'zeroasterisk/react-iframe-resizer-super is licensed under the MIT License (MIT)\n' +
-  'Copyright (c) 2016 Your Name. <name@emailprovider.io>',
   // Jan 2021, https://gitlab.com/catamphetamine/react-phone-number-input/-/blob/master/LICENSE
   'catamphetamine/react-phone-number-input is licensed under the MIT License (MIT)\n' +
   'Copyright (c) 2016 @catamphetamine <purecatamphetamine@gmail.com>\n',

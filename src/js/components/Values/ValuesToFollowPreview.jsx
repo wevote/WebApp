@@ -1,17 +1,19 @@
+import { withTheme } from '@material-ui/core/styles';
+import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
-import { withTheme } from '@material-ui/core/styles';
-import PropTypes from 'prop-types';
-import FriendInvitationOnboardingValuesList from './FriendInvitationOnboardingValuesList';
-import { historyPush } from '../../utils/cordovaUtils';
-import ImageHandler from '../ImageHandler';
 import IssueActions from '../../actions/IssueActions';
 import IssueStore from '../../stores/IssueStore';
-import { renderLog } from '../../utils/logging';
-import ShowMoreFooter from '../Navigation/ShowMoreFooter';
-import { arrayContains } from '../../utils/textFormat';
 import VoterGuideStore from '../../stores/VoterGuideStore';
+import VoterStore from '../../stores/VoterStore';
+import { historyPush } from '../../utils/cordovaUtils';
+import { renderLog } from '../../utils/logging';
+import { arrayContains } from '../../utils/textFormat';
+import ImageHandler from '../ImageHandler';
+
+const FriendInvitationOnboardingValuesList = React.lazy(() => import('./FriendInvitationOnboardingValuesList'));
+const ShowMoreFooter = React.lazy(() => import('../Navigation/ShowMoreFooter'));
 
 class ValuesToFollowPreview extends Component {
   constructor (props) {
@@ -27,11 +29,8 @@ class ValuesToFollowPreview extends Component {
     this.voterGuideStoreListener = VoterGuideStore.addListener(this.onVoterGuideStoreChange.bind(this));
     this.onIssueStoreChange();
     this.onVoterGuideStoreChange();
-    if (!IssueStore.issueDescriptionsRetrieveCalled()) {
-      IssueActions.issueDescriptionsRetrieve();
-      // IssueActions.issueDescriptionsRetrieveCalled(); // TODO: Move this to AppActions? Currently throws error: 'Cannot dispatch in the middle of a dispatch'
-    }
-    IssueActions.issuesFollowedRetrieve();
+    IssueActions.issueDescriptionsRetrieve(VoterStore.getVoterWeVoteId());
+    IssueActions.issuesFollowedRetrieve(VoterStore.getVoterWeVoteId());
   }
 
   componentWillUnmount () {

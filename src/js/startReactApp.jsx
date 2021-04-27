@@ -1,14 +1,15 @@
-import React, { Suspense } from 'react';
-import { render } from 'react-dom';
-// import { useScroll } from 'react-router-scroll';
 import { MuiThemeProvider } from '@material-ui/core/styles';
+import React, { Suspense } from 'react';
 import { ThemeProvider } from 'styled-components';
 import { isCordova } from './utils/cordovaUtils';
-import routes from './Root';
-import muiTheme from './mui-theme';
-import styledTheme from './styled-theme';
 import { renderLog } from './utils/logging';
-import WeVoteRouter from './WeVoteRouter';
+// const { useScroll } = React.lazy(() => import('react-router-scroll'));
+
+const WeVoteRouter = React.lazy(() => import('./WeVoteRouter'));
+const muiTheme = React.lazy(() => import('./mui-theme'));
+const routes = React.lazy(() => import('./Root'));
+const styledTheme = React.lazy(() => import('./styled-theme'));
+const { render } = React.lazy(() => import('react-dom'));
 
 // May 2020, this was moved into a separate file, so that the imports can be delayed
 // until after the cordova 'deviceready' event (if we are in Cordova).

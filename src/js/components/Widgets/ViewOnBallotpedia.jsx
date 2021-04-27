@@ -1,10 +1,11 @@
-import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import React, { Component } from 'react';
 import styled from 'styled-components';
-import OpenExternalWebSite from './OpenExternalWebSite';
 import { cordovaDot } from '../../utils/cordovaUtils';
-import ballotpediaIcon from '../../../img/global/logos/ballotpedia-initials-57x33.png';
-import SplitIconButton from './SplitIconButton';
+
+const OpenExternalWebSite = React.lazy(() => import('./OpenExternalWebSite'));
+const ballotpediaIcon = React.lazy(() => import('../../../img/global/logos/ballotpedia-initials-57x33.png'));
+const SplitIconButton = React.lazy(() => import('./SplitIconButton'));
 
 
 class ViewOnBallotpedia extends Component {

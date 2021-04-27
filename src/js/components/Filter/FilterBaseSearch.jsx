@@ -1,20 +1,21 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
+import { IconButton, InputBase } from '@material-ui/core';
 import { withStyles, withTheme } from '@material-ui/core/styles';
-import { InputBase, IconButton } from '@material-ui/core';
-import { Search, Close } from '@material-ui/icons';
+import { Close, Search } from '@material-ui/icons';
+import PropTypes from 'prop-types';
+import React, { Component } from 'react';
 import styled from 'styled-components';
-import sortBy from 'lodash-es/sortBy';
-import { blurTextFieldAndroid, focusTextFieldAndroid, isAndroidSizeFold, isCordova } from '../../utils/cordovaUtils';
-import ballotSearchPriority from '../../utils/ballotSearchPriority';
 import BallotActions from '../../actions/BallotActions';
-import BallotStore from '../../stores/BallotStore';
-import opinionsAndBallotItemsSearchPriority from '../../utils/opinionsAndBallotItemsSearchPriority';
 import OrganizationActions from '../../actions/OrganizationActions';
+import BallotStore from '../../stores/BallotStore';
 import OrganizationStore from '../../stores/OrganizationStore';
+import ballotSearchPriority from '../../utils/ballotSearchPriority';
+import { blurTextFieldAndroid, focusTextFieldAndroid, isAndroidSizeFold, isCordova } from '../../utils/cordovaUtils';
+import opinionsAndBallotItemsSearchPriority from '../../utils/opinionsAndBallotItemsSearchPriority';
 import positionSearchPriority from '../../utils/positionSearchPriority';
 import { arrayContains } from '../../utils/textFormat';
 import voterGuidePositionSearchPriority from '../../utils/voterGuidePositionSearchPriority';
+
+const sortBy = React.lazy(() => import('lodash-es/sortBy'));
 
 const delayBeforeSearchExecution = 600;
 

@@ -1,12 +1,11 @@
 /* eslint-disable no-nested-ternary */
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import moment from 'moment';
 import styled from 'styled-components';
 import { Button } from '@material-ui/core';
 import BallotActions from '../../actions/BallotActions';
 import BallotStore from '../../stores/BallotStore';
-import DelayedLoad from '../Widgets/DelayedLoad';
+import initializeMoment from '../../utils/initializeMoment';
 import { historyPush } from '../../utils/cordovaUtils';
 import { renderLog } from '../../utils/logging';
 import LoadingWheel from '../LoadingWheel';
@@ -16,6 +15,8 @@ import VoterStore from '../../stores/VoterStore';
 import { cleanArray } from '../../utils/textFormat';
 import VoterGuideStore from '../../stores/VoterGuideStore';
 import VoterGuideActions from '../../actions/VoterGuideActions';
+
+const DelayedLoad = React.lazy(() => import('../Widgets/DelayedLoad'));
 
 
 export default class BallotElectionListWithFilters extends Component {
@@ -30,6 +31,7 @@ export default class BallotElectionListWithFilters extends Component {
       voterBallotListHasBeenRetrievedOnce: false,
       voterGuideHasBeenRetrievedOnce: {},
     };
+    initializeMoment(() => {});
     this.executeDifferentElection = this.executeDifferentElection.bind(this);
     this.goToBallotForDifferentElection = this.goToBallotForDifferentElection.bind(this);
   }
@@ -312,7 +314,7 @@ export default class BallotElectionListWithFilters extends Component {
     const renderedList = list.map((election) => {
       // console.log('election: ', election);
       if (!election.election_description_text || election.election_description_text === '') return null;
-      const electionDateTomorrowMoment = moment(election.election_day_text, 'YYYY-MM-DD').add(1, 'days');
+      const electionDateTomorrowMoment = window.moment ? window.moment(election.election_day_text, 'YYYY-MM-DD').add(1, 'days') : '';
       const electionDateTomorrow = electionDateTomorrowMoment.format('YYYY-MM-DD');
       let electionStateCodeList = [];
       if (election && election.state_code_list) {
@@ -332,7 +334,7 @@ export default class BallotElectionListWithFilters extends Component {
             >
               <ButtonContentsWrapper>
                 <ElectionTitle>
-                  {moment(election.election_day_text).format('MMM Do, YYYY')}
+                  {window.moment ? window.moment(election.election_day_text).format('MMM Do, YYYY') : ''}
                   {' - '}
                   {election.election_description_text.split(' in')[0]}
                 </ElectionTitle>
@@ -367,7 +369,7 @@ export default class BallotElectionListWithFilters extends Component {
     const renderedList = list.filter((filterItem) => filterItem.state_code_list && filterItem.state_code_list.includes(this.props.stateToShow)).map((election) => {
       // console.log('election.election_description_text: ', election.election_description_text, 'election.election_day_text: ', election.election_day_text);
       if (!election.election_description_text || election.election_description_text === '') return null;
-      const electionDateTomorrowMoment = moment(election.election_day_text, 'YYYY-MM-DD').add(1, 'days');
+      const electionDateTomorrowMoment = window.moment ? window.moment(election.election_day_text, 'YYYY-MM-DD').add(1, 'days') : '';
       const electionDateTomorrow = electionDateTomorrowMoment.format('YYYY-MM-DD');
       let electionStateCodeList = [];
       if (election && election.state_code_list) {
@@ -387,7 +389,7 @@ export default class BallotElectionListWithFilters extends Component {
             >
               <ButtonContentsWrapper>
                 <ElectionTitle>
-                  {moment(election.election_day_text).format('MMM Do, YYYY')}
+                  {window.moment ? window.moment(election.election_day_text).format('MMM Do, YYYY') : ''}
                   {' - '}
                   {election.election_description_text.split(' in')[0]}
                 </ElectionTitle>
@@ -421,7 +423,7 @@ export default class BallotElectionListWithFilters extends Component {
       return null;
     }
     const renderedList = list.map((election) => {
-      const electionDateTomorrowMoment = moment(election.election_day_text, 'YYYY-MM-DD').add(1, 'days');
+      const electionDateTomorrowMoment = window.moment ? window.moment(election.election_day_text, 'YYYY-MM-DD').add(1, 'days') : '';
       const electionDateTomorrow = electionDateTomorrowMoment.format('YYYY-MM-DD');
       let electionStateCodeList = [];
       if (election && election.state_code_list) {
@@ -442,7 +444,7 @@ export default class BallotElectionListWithFilters extends Component {
               >
                 <ButtonContentsWrapper>
                   <ElectionTitle>
-                    {moment(election.election_day_text).format('MMM Do, YYYY')}
+                    {window.moment ? window.moment(election.election_day_text).format('MMM Do, YYYY') : ''}
                     {' - '}
                     {election.election_description_text.split(' in')[0]}
                   </ElectionTitle>
@@ -475,7 +477,7 @@ export default class BallotElectionListWithFilters extends Component {
       return null;
     }
     const renderedList = list.filter((filterItem) => filterItem.state_code_list && filterItem.state_code_list.includes(this.props.stateToShow)).map((election) => {
-      const electionDateTomorrowMoment = moment(election.election_day_text, 'YYYY-MM-DD').add(1, 'days');
+      const electionDateTomorrowMoment = window.moment ? window.moment(election.election_day_text, 'YYYY-MM-DD').add(1, 'days') : '';
       const electionDateTomorrow = electionDateTomorrowMoment.format('YYYY-MM-DD');
       let electionStateCodeList = [];
       if (election && election.state_code_list) {
@@ -497,7 +499,7 @@ export default class BallotElectionListWithFilters extends Component {
                 {' '}
                 <ButtonContentsWrapper>
                   <ElectionTitle>
-                    {moment(election.election_day_text).format('MMM Do, YYYY')}
+                    {window.moment ? window.moment(election.election_day_text).format('MMM Do, YYYY') : ''}
                     {' - '}
                     {election.election_description_text.split(' in')[0]}
                   </ElectionTitle>
@@ -536,7 +538,7 @@ export default class BallotElectionListWithFilters extends Component {
         </div>
       );
     }
-    const currentDate = moment().format('YYYY-MM-DD');
+    const currentDate = window.moment ? window.moment().format('YYYY-MM-DD') : '';
     const { hideUpcomingElectionTitle } = this.props;
     let { showPriorElectionsList, hideUpcomingElectionsList } = this.props;
     // console.log('this.state.ballotElectionList:', this.state.ballotElectionList);

@@ -1,15 +1,16 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import { CheckCircle, ArrowDropDown } from '@material-ui/icons';
-import { Menu, MenuItem, Button } from '@material-ui/core';
+import { Button, Menu, MenuItem } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
+import { ArrowDropDown, CheckCircle } from '@material-ui/icons';
+import PropTypes from 'prop-types';
+import React, { Component } from 'react';
 import IssueActions from '../../actions/IssueActions';
 import IssueStore from '../../stores/IssueStore';
-import { renderLog } from '../../utils/logging';
 import VoterStore from '../../stores/VoterStore';
 import { historyPush } from '../../utils/cordovaUtils';
+import { renderLog } from '../../utils/logging';
 import { shortenText } from '../../utils/textFormat';
-import { openSnackbar } from '../Widgets/SnackNotifier';
+
+const { openSnackbar } = React.lazy(() => import('../Widgets/SnackNotifier'));
 
 
 class IssueFollowToggleButton extends Component {

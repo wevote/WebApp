@@ -1,7 +1,8 @@
-import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import React, { Component } from 'react';
 import { renderLog } from '../../utils/logging';
-import OrganizationVoterGuideCandidateItem from './OrganizationVoterGuideCandidateItem';
+
+const OrganizationVoterGuideCandidateItem = React.lazy(() => import('./OrganizationVoterGuideCandidateItem'));
 
 // This is related to components/Ballot/CandidateList.jsx
 export default class OrganizationVoterGuideCandidateList extends Component {

@@ -1,11 +1,12 @@
 import { ReduceStore } from 'flux/utils';
-import Dispatcher from '../dispatcher/Dispatcher';
 import OfficeActions from '../actions/OfficeActions';
-import OfficeStore from './OfficeStore';
+import Dispatcher from '../dispatcher/Dispatcher';
+
 import { mostLikelyOfficeDictFromList } from '../utils/candidateFunctions';
-import { cordovaDot } from '../utils/cordovaUtils';  // eslint-disable-line import/no-cycle
-import { extractNumberOfPositionsFromPositionList } from '../utils/positionFunctions';  // eslint-disable-line import/no-cycle
+import { cordovaDot } from '../utils/cordovaUtils'; // eslint-disable-line import/no-cycle
+import { extractNumberOfPositionsFromPositionList } from '../utils/positionFunctions'; // eslint-disable-line import/no-cycle
 import { stringContains } from '../utils/textFormat';
+import OfficeStore from './OfficeStore';
 
 class CandidateStore extends ReduceStore {
   getInitialState () {

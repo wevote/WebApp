@@ -1,9 +1,9 @@
-import React, { PureComponent } from 'react';
-import styled, { withTheme } from 'styled-components';
 import { Button } from '@material-ui/core';
-import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import { ArrowLeft, ArrowRight } from '@material-ui/icons';
+import PropTypes from 'prop-types';
+import React, { PureComponent } from 'react';
+import styled, { withTheme } from 'styled-components';
 import { cordovaDot } from '../../utils/cordovaUtils';
 
 class AnnotatedSlideshow extends PureComponent {

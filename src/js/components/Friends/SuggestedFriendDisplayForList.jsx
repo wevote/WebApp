@@ -1,14 +1,15 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
-import styled from 'styled-components';
 import { Button } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
-import ImageHandler from '../ImageHandler';
+import PropTypes from 'prop-types';
+import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
+import styled from 'styled-components';
 import FriendActions from '../../actions/FriendActions';
-import SuggestedFriendToggle from './SuggestedFriendToggle';
-import { removeTwitterNameFromDescription } from '../../utils/textFormat';
 import { renderLog } from '../../utils/logging';
+import { removeTwitterNameFromDescription } from '../../utils/textFormat';
+import ImageHandler from '../ImageHandler';
+
+const SuggestedFriendToggle = React.lazy(() => import('./SuggestedFriendToggle'));
 
 class SuggestedFriendDisplayForList extends Component {
   constructor (props) {

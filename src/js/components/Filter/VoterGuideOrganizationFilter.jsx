@@ -1,15 +1,16 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import styled from 'styled-components';
-import uniqBy from 'lodash-es/uniqBy';
-import { FormControlLabel, Checkbox } from '@material-ui/core';
+import { Checkbox, FormControlLabel } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
+import PropTypes from 'prop-types';
+import React, { Component } from 'react';
+import styled from 'styled-components';
 import FriendStore from '../../stores/FriendStore';
-import getGroupedFilterSecondClass from './utils/grouped-filter-second-class';
 import IssueStore from '../../stores/IssueStore';
-import { renderLog } from '../../utils/logging';
 import ShareStore from '../../stores/ShareStore';
 import VoterStore from '../../stores/VoterStore';
+import { renderLog } from '../../utils/logging';
+import getGroupedFilterSecondClass from './utils/grouped-filter-second-class';
+
+const uniqBy = React.lazy(() => import('lodash-es/uniqBy'));
 
 const groupTypeIdentifiers = ['C', 'C3', 'C4', 'G', 'NP', 'O', 'P'];
 const privateCitizenIdentifiers = ['I', 'V'];

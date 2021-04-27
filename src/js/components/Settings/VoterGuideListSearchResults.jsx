@@ -1,15 +1,16 @@
-import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import React, { Component } from 'react';
 import styled from 'styled-components';
-import { renderLog } from '../../utils/logging';
 import BallotActions from '../../actions/BallotActions';
-import BallotStore from '../../stores/BallotStore';
-import voterGuideSearchPriority from '../../utils/voterGuideSearchPriority';
-import BallotItemForAddPositions from './BallotItemForAddPositions';
-import DelayedLoad from '../Widgets/DelayedLoad';
 import OrganizationActions from '../../actions/OrganizationActions';
-import SearchBar from '../Search/SearchBar';
-import ShowMoreItems from '../Widgets/ShowMoreItems';
+import BallotStore from '../../stores/BallotStore';
+import { renderLog } from '../../utils/logging';
+import voterGuideSearchPriority from '../../utils/voterGuideSearchPriority';
+
+const BallotItemForAddPositions = React.lazy(() => import('./BallotItemForAddPositions'));
+const DelayedLoad = React.lazy(() => import('../Widgets/DelayedLoad'));
+const SearchBar = React.lazy(() => import('../Search/SearchBar'));
+const ShowMoreItems = React.lazy(() => import('../Widgets/ShowMoreItems'));
 
 
 class VoterGuideListSearchResults extends Component {

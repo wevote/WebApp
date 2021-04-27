@@ -1,21 +1,22 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import styled from 'styled-components';
 import { Button, Card } from '@material-ui/core';
-import { ArrowForward } from '@material-ui/icons';
 import { withStyles, withTheme } from '@material-ui/core/styles';
-import BallotStore from '../../stores/BallotStore';
-import BallotItemSupportOpposeCountDisplay from '../Widgets/BallotItemSupportOpposeCountDisplay';
-import { historyPush } from '../../utils/cordovaUtils';
-import DelayedLoad from '../Widgets/DelayedLoad';
-import extractNumber from '../../utils/extractNumber';
+import { ArrowForward } from '@material-ui/icons';
+import PropTypes from 'prop-types';
+import React, { Component } from 'react';
+import styled from 'styled-components';
 import MeasureActions from '../../actions/MeasureActions';
+import BallotStore from '../../stores/BallotStore';
 import MeasureStore from '../../stores/MeasureStore';
-import ShowMoreFooter from '../Navigation/ShowMoreFooter';
 import SupportStore from '../../stores/SupportStore';
+import { historyPush } from '../../utils/cordovaUtils';
+import extractNumber from '../../utils/extractNumber';
 import { renderLog } from '../../utils/logging';
 import { capitalizeString, shortenText, stripHtmlFromString } from '../../utils/textFormat';
-import TopCommentByBallotItem from '../Widgets/TopCommentByBallotItem';
+
+const BallotItemSupportOpposeCountDisplay = React.lazy(() => import('../Widgets/BallotItemSupportOpposeCountDisplay'));
+const DelayedLoad = React.lazy(() => import('../Widgets/DelayedLoad'));
+const ShowMoreFooter = React.lazy(() => import('../Navigation/ShowMoreFooter'));
+const TopCommentByBallotItem = React.lazy(() => import('../Widgets/TopCommentByBallotItem'));
 
 
 class MeasureItemCompressed extends Component {

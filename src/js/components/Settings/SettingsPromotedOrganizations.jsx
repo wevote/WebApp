@@ -1,13 +1,14 @@
+import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import Helmet from 'react-helmet';
-import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import LoadingWheel from '../LoadingWheel';
 import OrganizationStore from '../../stores/OrganizationStore';
-import { renderLog } from '../../utils/logging';
-import SettingsAccount from './SettingsAccount';
 import VoterStore from '../../stores/VoterStore';
-import DelayedLoad from '../Widgets/DelayedLoad';
+import { renderLog } from '../../utils/logging';
+import LoadingWheel from '../LoadingWheel';
+
+const SettingsAccount = React.lazy(() => import('./SettingsAccount'));
+const DelayedLoad = React.lazy(() => import('../Widgets/DelayedLoad'));
 
 export default class SettingsPromotedOrganizations extends Component {
   constructor (props) {

@@ -1,25 +1,26 @@
-import React, { Component } from 'react';
+import { Button } from '@material-ui/core';
+import { withStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
-import Alert from 'react-bootstrap/Alert';
+import React, { Component } from 'react';
 import Helmet from 'react-helmet';
 import styled from 'styled-components';
-import { withStyles } from '@material-ui/core/styles';
-import { Button } from '@material-ui/core';
 import AppActions from '../../actions/AppActions';
-import CandidateItem from '../../components/Ballot/CandidateItem';
-import CandidateStore from '../../stores/CandidateStore';
-import { historyPush } from '../../utils/cordovaUtils';
-import FollowToggle from '../../components/Widgets/FollowToggle';
-import LoadingWheel from '../../components/LoadingWheel';
-import OrganizationCard from '../../components/VoterGuide/OrganizationCard';
-import OrganizationStore from '../../stores/OrganizationStore';
-import { renderLog } from '../../utils/logging';
-import TwitterAccountCard from '../../components/Twitter/TwitterAccountCard';
 import TwitterActions from '../../actions/TwitterActions';
-import TwitterSignIn from '../../components/Twitter/TwitterSignIn';
-import TwitterStore from '../../stores/TwitterStore';
 import VoterSessionActions from '../../actions/VoterSessionActions';
+import LoadingWheel from '../../components/LoadingWheel';
+import CandidateStore from '../../stores/CandidateStore';
+import OrganizationStore from '../../stores/OrganizationStore';
+import TwitterStore from '../../stores/TwitterStore';
 import VoterStore from '../../stores/VoterStore';
+import { historyPush } from '../../utils/cordovaUtils';
+import { renderLog } from '../../utils/logging';
+
+const Alert = React.lazy(() => import('react-bootstrap/Alert'));
+const CandidateItem = React.lazy(() => import('../../components/Ballot/CandidateItem'));
+const FollowToggle = React.lazy(() => import('../../components/Widgets/FollowToggle'));
+const OrganizationCard = React.lazy(() => import('../../components/VoterGuide/OrganizationCard'));
+const TwitterAccountCard = React.lazy(() => import('../../components/Twitter/TwitterAccountCard'));
+const TwitterSignIn = React.lazy(() => import('../../components/Twitter/TwitterSignIn'));
 
 class VerifyThisIsMe extends Component {
   constructor (props) {

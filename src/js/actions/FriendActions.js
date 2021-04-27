@@ -1,4 +1,5 @@
 import Dispatcher from '../dispatcher/Dispatcher';
+
 import AppStore from '../stores/AppStore'; // eslint-disable-line import/no-cycle
 
 export default {

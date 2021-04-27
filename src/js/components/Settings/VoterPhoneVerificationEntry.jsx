@@ -1,20 +1,22 @@
-import React, { Component } from 'react';
-import styled from 'styled-components';
-import PropTypes from 'prop-types';
-import { isValidPhoneNumber } from 'react-phone-number-input';
+import { Button, InputBase, Paper } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 import { Delete, Phone } from '@material-ui/icons';
-import { Paper, InputBase, Button } from '@material-ui/core';
-import Alert from 'react-bootstrap/Alert';
-import { isCordova, isWebApp } from '../../utils/cordovaUtils';
-import isMobileScreenSize from '../../utils/isMobileScreenSize';
-import LoadingWheel from '../LoadingWheel';
-import { renderLog } from '../../utils/logging';
-import OpenExternalWebSite from '../Widgets/OpenExternalWebSite';
-import SettingsVerifySecretCode from './SettingsVerifySecretCode';
-import signInModalGlobalState from '../Widgets/signInModalGlobalState';
+import PropTypes from 'prop-types';
+import React, { Component } from 'react';
+import { isValidPhoneNumber } from 'react-phone-number-input';
+import styled from 'styled-components';
 import VoterActions from '../../actions/VoterActions';
 import VoterStore from '../../stores/VoterStore';
+import { isCordova, isWebApp } from '../../utils/cordovaUtils';
+import isMobileScreenSize from '../../utils/isMobileScreenSize';
+import { renderLog } from '../../utils/logging';
+import LoadingWheel from '../LoadingWheel';
+import signInModalGlobalState from '../Widgets/signInModalGlobalState';
+
+const Alert = React.lazy(() => import('react-bootstrap/Alert'));
+const OpenExternalWebSite = React.lazy(() => import('../Widgets/OpenExternalWebSite'));
+const SettingsVerifySecretCode = React.lazy(() => import('./SettingsVerifySecretCode'));
+
 
 /* global $ */
 

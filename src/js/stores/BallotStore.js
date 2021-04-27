@@ -1,13 +1,13 @@
 import { ReduceStore } from 'flux/utils';
 import assign from 'object-assign';
-import Dispatcher from '../dispatcher/Dispatcher';
 import BallotActions from '../actions/BallotActions';
 import CandidateActions from '../actions/CandidateActions';
 import MeasureActions from '../actions/MeasureActions'; // eslint-disable-line import/no-cycle
-import SupportStore from './SupportStore'; // eslint-disable-line import/no-cycle
-import VoterStore from './VoterStore'; // eslint-disable-line import/no-cycle
+import Dispatcher from '../dispatcher/Dispatcher';
 import { stringContains } from '../utils/textFormat';
 import convertVoterGuideToElection from '../utils/voterGuideFunctions';
+import SupportStore from './SupportStore'; // eslint-disable-line import/no-cycle
+import VoterStore from './VoterStore'; // eslint-disable-line import/no-cycle
 
 // December 2018:  We want to work toward being airbnb style compliant, but for now these are disabled in this file to minimize massive changes
 /* eslint no-param-reassign: 0 */
@@ -652,7 +652,7 @@ class BallotStore extends ReduceStore {
         if (!action.res || !action.res.success) return state;
 
         voterBallotList = action.res.voter_ballot_list;
-        // console.log('BallotStore, voterBallotListRetrieve response received, voterBallotList: ', voterBallotList);
+        console.log('BallotStore, voterBallotListRetrieve response received, voterBallotList: ', voterBallotList);
         return {
           ...state,
           ballotElectionList: voterBallotList || [],

@@ -1,9 +1,10 @@
-import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import CandidateItem from './CandidateItem';
-import DelayedLoad from '../Widgets/DelayedLoad';
-import { renderLog } from '../../utils/logging';
+import React, { Component } from 'react';
 import { historyPush } from '../../utils/cordovaUtils';
+import { renderLog } from '../../utils/logging';
+
+const CandidateItem = React.lazy(() => import('./CandidateItem'));
+const DelayedLoad = React.lazy(() => import('../Widgets/DelayedLoad'));
 
 // This is related to components/VoterGuide/OrganizationVoterGuideCandidateList.jsx
 export default class CandidateList extends Component {

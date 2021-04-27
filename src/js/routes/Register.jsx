@@ -1,23 +1,24 @@
-import React, { Component } from 'react';
+import { Button, Card, CardContent, FormControl, InputLabel, Select } from '@material-ui/core';
+import { withStyles } from '@material-ui/core/styles';
+import { CheckCircle } from '@material-ui/icons';
 import PropTypes from 'prop-types';
+import React, { Component } from 'react';
 import Helmet from 'react-helmet';
 import styled from 'styled-components';
-import { withStyles } from '@material-ui/core/styles';
-import { Button, Card, CardContent, FormControl, InputLabel, Select } from '@material-ui/core';
-import { CheckCircle } from '@material-ui/icons';
 import AnalyticsActions from '../actions/AnalyticsActions';
-import AppStore from '../stores/AppStore';
 import BallotActions from '../actions/BallotActions';
-import BallotStore from '../stores/BallotStore';
-import BrowserPushMessage from '../components/Widgets/BrowserPushMessage';
-import LoadingWheel from '../components/LoadingWheel';
 import ReadyActions from '../actions/ReadyActions';
-import { renderLog } from '../utils/logging';
+import LoadingWheel from '../components/LoadingWheel';
+import AppStore from '../stores/AppStore';
+import BallotStore from '../stores/BallotStore';
 import VoterStore from '../stores/VoterStore';
-import { formatStateName } from '../utils/formatStateName';
 import { formatDateToMonthDayYear } from '../utils/dateFormat';
-import voteDotOrg from '../../img/global/logos/vote_dot_org_logo-530x200.png';
-import turboVote from '../../img/global/logos/turbovote-logo.png';
+import { formatStateName } from '../utils/formatStateName';
+import { renderLog } from '../utils/logging';
+
+const BrowserPushMessage = React.lazy(() => import('../components/Widgets/BrowserPushMessage'));
+const voteDotOrg = React.lazy(() => import('../../img/global/logos/vote_dot_org_logo-530x200.png'));
+const turboVote = React.lazy(() => import('../../img/global/logos/turbovote-logo.png'));
 
 /* Styled Input confuses lint in this case, so we disable */
 /* eslint-disable jsx-a11y/label-has-associated-control */
@@ -47,8 +48,7 @@ class Register extends Component {
   }
 
   shouldComponentUpdate (nextState) {
-    if (this.state.majorStep !== nextState.majorStep) return true;
-    return false;
+    return this.state.majorStep !== nextState.majorStep;
   }
 
   componentDidCatch (error, info) {
@@ -58,17 +58,6 @@ class Register extends Component {
   componentWillUnmount () {
     this.appStoreListener.remove();
     this.voterStoreListener.remove();
-  }
-
-  onAppStoreChange () {
-    // this.setState({
-    //   chosenReadyIntroductionText: AppStore.getChosenReadyIntroductionText(),
-    //   chosenReadyIntroductionTitle: AppStore.getChosenReadyIntroductionTitle(),
-    // });
-  }
-
-  onVoterStoreChange () {
-    this.setState({ voter: VoterStore.getVoter() });
   }
 
   // goToBallot = () => {
@@ -82,6 +71,17 @@ class Register extends Component {
       this.setState({ selectedState: e.target.value });
     }
     // console.log(e.target.value);
+  }
+
+  onAppStoreChange () {
+    // this.setState({
+    //   chosenReadyIntroductionText: AppStore.getChosenReadyIntroductionText(),
+    //   chosenReadyIntroductionTitle: AppStore.getChosenReadyIntroductionTitle(),
+    // });
+  }
+
+  onVoterStoreChange () {
+    this.setState({ voter: VoterStore.getVoter() });
   }
 
   render () {

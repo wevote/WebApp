@@ -1,12 +1,13 @@
-import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
+import React, { PureComponent } from 'react';
 import styled from 'styled-components';
-import { ReactSVG } from 'react-svg';
-import { cordovaDot } from '../../utils/cordovaUtils';
-import OpenExternalWebSite from './OpenExternalWebSite';
-import positionIcon from '../../../img/global/svg-icons/positions-icon-24-x-24.svg';
-import SplitIconButton from './SplitIconButton';
 import VoterStore from '../../stores/VoterStore';
+import { cordovaDot } from '../../utils/cordovaUtils';
+
+const { ReactSVG } = React.lazy(() => import('react-svg'));
+const OpenExternalWebSite = React.lazy(() => import('./OpenExternalWebSite'));
+const positionIcon = '../../../img/global/svg-icons/positions-icon-24-x-24.svg';
+const SplitIconButton = React.lazy(() => import('./SplitIconButton'));
 
 class EndorsementCard extends PureComponent {
   constructor (props) {

@@ -1,10 +1,10 @@
 // Position related functions
-import IssueStore from '../stores/IssueStore';  // eslint-disable-line import/no-cycle
-import CandidateStore from '../stores/CandidateStore';  // eslint-disable-line import/no-cycle
-import FriendStore from '../stores/FriendStore';  // eslint-disable-line import/no-cycle
-import MeasureStore from '../stores/MeasureStore';  // eslint-disable-line import/no-cycle
-import OrganizationStore from '../stores/OrganizationStore';  // eslint-disable-line import/no-cycle
-import SupportStore from '../stores/SupportStore';  // eslint-disable-line import/no-cycle
+import CandidateStore from '../stores/CandidateStore'; // eslint-disable-line import/no-cycle
+import FriendStore from '../stores/FriendStore'; // eslint-disable-line import/no-cycle
+import IssueStore from '../stores/IssueStore'; // eslint-disable-line import/no-cycle
+import MeasureStore from '../stores/MeasureStore'; // eslint-disable-line import/no-cycle
+import OrganizationStore from '../stores/OrganizationStore'; // eslint-disable-line import/no-cycle
+import SupportStore from '../stores/SupportStore'; // eslint-disable-line import/no-cycle
 import { arrayContains, stringContains } from './textFormat';
 
 export function isOrganizationInVotersNetwork (organizationWeVoteId) {

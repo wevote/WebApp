@@ -1,9 +1,9 @@
-import React, { Component } from 'react';
-import styled from 'styled-components';
 import { Button } from '@material-ui/core';
 import PropTypes from 'prop-types';
-import { historyPush } from '../../utils/cordovaUtils';
+import React, { Component } from 'react';
+import styled from 'styled-components';
 import AppActions from '../../actions/AppActions';
+import { historyPush } from '../../utils/cordovaUtils';
 import { renderLog } from '../../utils/logging';
 
 export default class MessageCard extends Component {

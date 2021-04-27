@@ -1,6 +1,6 @@
 import React from 'react';
-import { renderLog } from '../../utils/logging';
 import FacebookActions from '../../actions/FacebookActions';
+import { renderLog } from '../../utils/logging';
 
 class FacebookLogout extends React.Component {
   didClickFacebookLogoutButton () {

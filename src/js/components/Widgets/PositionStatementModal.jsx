@@ -1,31 +1,21 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import styled from 'styled-components';
-import { Close } from '@material-ui/icons';
+import { Button, Dialog, DialogContent, DialogTitle, IconButton, InputBase } from '@material-ui/core';
 import { withStyles, withTheme } from '@material-ui/core/styles';
-import {
-  Button,
-  Dialog,
-  DialogTitle,
-  IconButton,
-  DialogContent,
-  InputBase,
-} from '@material-ui/core';
-import { renderLog } from '../../utils/logging';
-import CandidateStore from '../../stores/CandidateStore';
-import {
-  cordovaDot,
-  hasIPhoneNotch, prepareForCordovaKeyboard,
-  restoreStylesAfterCordovaKeyboard,
-} from '../../utils/cordovaUtils';
-import FirstAndLastNameRequiredAlert from './FirstAndLastNameRequiredAlert';
-import ItemActionBar from './ItemActionBar/ItemActionBar';
-import MeasureStore from '../../stores/MeasureStore';
-import stockAvatar from '../../../img/global/icons/avatar-generic.png';
+import { Close } from '@material-ui/icons';
+import PropTypes from 'prop-types';
+import React, { Component } from 'react';
+import styled from 'styled-components';
 import SupportActions from '../../actions/SupportActions';
+import CandidateStore from '../../stores/CandidateStore';
+import MeasureStore from '../../stores/MeasureStore';
 import SupportStore from '../../stores/SupportStore';
 import VoterStore from '../../stores/VoterStore';
+import { cordovaDot, hasIPhoneNotch, prepareForCordovaKeyboard, restoreStylesAfterCordovaKeyboard } from '../../utils/cordovaUtils';
+import { renderLog } from '../../utils/logging';
 import { stringContains } from '../../utils/textFormat';
+
+const FirstAndLastNameRequiredAlert = React.lazy(() => import('./FirstAndLastNameRequiredAlert'));
+const ItemActionBar = React.lazy(() => import('./ItemActionBar/ItemActionBar'));
+const stockAvatar = React.lazy(() => import('../../../img/global/icons/avatar-generic.png'));
 
 class PositionStatementModal extends Component {
   constructor (props) {

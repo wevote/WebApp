@@ -1,15 +1,16 @@
-import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import React, { Component } from 'react';
 import styled from 'styled-components';
 import CandidateStore from '../../stores/CandidateStore';
-import FollowToggle from '../Widgets/FollowToggle';
 import MeasureStore from '../../stores/MeasureStore';
-import { stringContains } from '../../utils/textFormat';
-import VoterGuideDisplayForList from './VoterGuideDisplayForList';
 import { renderLog } from '../../utils/logging';
-import EndorsementCard from '../Widgets/EndorsementCard';
-import { openSnackbar } from '../Widgets/SnackNotifier';
-import ShowMoreItems from '../Widgets/ShowMoreItems';
+import { stringContains } from '../../utils/textFormat';
+
+const FollowToggle = React.lazy(() => import('../Widgets/FollowToggle'));
+const VoterGuideDisplayForList = React.lazy(() => import('./VoterGuideDisplayForList'));
+const EndorsementCard = React.lazy(() => import('../Widgets/EndorsementCard'));
+const { openSnackbar } = React.lazy(() => import('../Widgets/SnackNotifier'));
+const ShowMoreItems = React.lazy(() => import('../Widgets/ShowMoreItems'));
 
 class GuideList extends Component {
   constructor (props) {
@@ -99,6 +100,23 @@ class GuideList extends Component {
     window.removeEventListener('scroll', this.onScroll);
   }
 
+  handleIgnore (organizationWeVoteId) {
+    const { voterGuideList } = this.state;
+    // OrganizationActions.organizationFollowIgnore(organizationWeVoteId); // This is run within FollowToggle
+    const newVoterGuideList = voterGuideList.filter(
+      (org) => org.organization_we_vote_id !== organizationWeVoteId,
+    );
+    let voterGuideListCount = 0;
+    if (newVoterGuideList) {
+      voterGuideListCount = newVoterGuideList.length;
+    }
+    this.setState({
+      voterGuideList: newVoterGuideList,
+      voterGuideListCount,
+    });
+    openSnackbar({ message: 'Added to ignore list.' });
+  }
+
   onScroll () {
     const showMoreItemsElement =  document.querySelector('#showMoreItemsId');
     // console.log('showMoreItemsElement: ', showMoreItemsElement);
@@ -177,23 +195,6 @@ class GuideList extends Component {
       return sortedOrganizations;
     }
     return organizationsList;
-  }
-
-  handleIgnore (organizationWeVoteId) {
-    const { voterGuideList } = this.state;
-    // OrganizationActions.organizationFollowIgnore(organizationWeVoteId); // This is run within FollowToggle
-    const newVoterGuideList = voterGuideList.filter(
-      (org) => org.organization_we_vote_id !== organizationWeVoteId,
-    );
-    let voterGuideListCount = 0;
-    if (newVoterGuideList) {
-      voterGuideListCount = newVoterGuideList.length;
-    }
-    this.setState({
-      voterGuideList: newVoterGuideList,
-      voterGuideListCount,
-    });
-    openSnackbar({ message: 'Added to ignore list.' });
   }
 
   render () {

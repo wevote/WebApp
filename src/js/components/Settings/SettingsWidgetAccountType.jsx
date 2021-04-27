@@ -1,16 +1,13 @@
-import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import React, { Component } from 'react';
 import styled from 'styled-components';
 import AnalyticsActions from '../../actions/AnalyticsActions';
-import {
-  prepareForCordovaKeyboard,
-  restoreStylesAfterCordovaKeyboard,
-} from '../../utils/cordovaUtils';
-import LoadingWheel from '../LoadingWheel';
 import OrganizationActions from '../../actions/OrganizationActions';
 import OrganizationStore from '../../stores/OrganizationStore';
 import VoterStore from '../../stores/VoterStore';
+import { prepareForCordovaKeyboard, restoreStylesAfterCordovaKeyboard } from '../../utils/cordovaUtils';
 import { renderLog } from '../../utils/logging';
+import LoadingWheel from '../LoadingWheel';
 
 const delayBeforeRemovingSavedStatus = 2000;
 

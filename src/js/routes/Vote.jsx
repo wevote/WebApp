@@ -1,34 +1,35 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import Helmet from 'react-helmet';
-import moment from 'moment';
-import { Ballot } from '@material-ui/icons';
 import { Button, Card } from '@material-ui/core';
-import styled from 'styled-components';
 import { withStyles } from '@material-ui/core/styles';
+import { Ballot } from '@material-ui/icons';
+import PropTypes from 'prop-types';
+import React, { Component } from 'react';
+import Helmet from 'react-helmet';
+import styled from 'styled-components';
 import BallotActions from '../actions/BallotActions';
+import ElectionActions from '../actions/ElectionActions';
+import IssueActions from '../actions/IssueActions';
+import OrganizationActions from '../actions/OrganizationActions';
+import SupportActions from '../actions/SupportActions';
+import VoterActions from '../actions/VoterActions';
 import AppStore from '../stores/AppStore';
-import BallotItemReadyToVote from '../components/Vote/BallotItemReadyToVote';
-import FilterBaseSearch from '../components/Filter/FilterBaseSearch';
 import BallotStore from '../stores/BallotStore';
-import BallotTitleHeader from './Ballot/BallotTitleHeader';
-import BrowserPushMessage from '../components/Widgets/BrowserPushMessage';
+import IssueStore from '../stores/IssueStore';
+import SupportStore from '../stores/SupportStore';
+import VoterGuideStore from '../stores/VoterGuideStore';
+import VoterStore from '../stores/VoterStore';
 import cookies from '../utils/cookies';
 import { cordovaVoteMiniHeader } from '../utils/cordovaOffsets';
 import cordovaScrollablePaneTopPadding from '../utils/cordovaScrollablePaneTopPadding';
 import { historyPush, isCordova, isWebApp } from '../utils/cordovaUtils';
-import ElectionActions from '../actions/ElectionActions';
-import FindPollingLocation from '../components/Vote/FindPollingLocation';
-import IssueActions from '../actions/IssueActions';
-import IssueStore from '../stores/IssueStore';
+import initializeMoment from '../utils/initializeMoment';
 import { renderLog } from '../utils/logging';
-import OrganizationActions from '../actions/OrganizationActions';
-import ReturnOfficialBallot from '../components/Vote/ReturnOfficialBallot';
-import SupportActions from '../actions/SupportActions';
-import SupportStore from '../stores/SupportStore';
-import VoterActions from '../actions/VoterActions';
-import VoterGuideStore from '../stores/VoterGuideStore';
-import VoterStore from '../stores/VoterStore';
+
+const BallotItemReadyToVote = React.lazy(() => import('../components/Vote/BallotItemReadyToVote'));
+const FilterBaseSearch = React.lazy(() => import('../components/Filter/FilterBaseSearch'));
+const BallotTitleHeader = React.lazy(() => import('./Ballot/BallotTitleHeader'));
+const BrowserPushMessage = React.lazy(() => import('../components/Widgets/BrowserPushMessage'));
+const FindPollingLocation = React.lazy(() => import('../components/Vote/FindPollingLocation'));
+const ReturnOfficialBallot = React.lazy(() => import('../components/Vote/ReturnOfficialBallot'));
 
 
 class Vote extends Component {
@@ -54,6 +55,7 @@ class Vote extends Component {
       ballotSearchResults: [],
     };
 
+    initializeMoment(() => {});
     this.updateOfficeDisplayUnfurledTracker = this.updateOfficeDisplayUnfurledTracker.bind(this);
   }
 
@@ -152,11 +154,8 @@ class Vote extends Component {
     // Once a voter hits the ballot, they have gone through orientation
     cookies.setItem('ballot_has_been_visited', '1', Infinity, '/');
 
-    if (!IssueStore.issueDescriptionsRetrieveCalled()) {
-      IssueActions.issueDescriptionsRetrieve();
-      // IssueActions.issueDescriptionsRetrieveCalled(); // TODO: Move this to AppActions? Currently throws error: "Cannot dispatch in the middle of a dispatch"
-    }
-    IssueActions.issuesFollowedRetrieve();
+    IssueActions.issueDescriptionsRetrieve(VoterStore.getVoterWeVoteId());
+    IssueActions.issuesFollowedRetrieve(VoterStore.getVoterWeVoteId());
     ElectionActions.electionsRetrieve();
     OrganizationActions.organizationsFollowedRetrieve();
     VoterActions.voterRetrieve(); // This is needed to update the interface status settings
@@ -404,7 +403,8 @@ class Vote extends Component {
     // const ballot_caveat = BallotStore.ballotProperties.ballot_caveat; // ballotProperties might be undefined
     const electionName = BallotStore.currentBallotElectionName;
     const electionDayText = BallotStore.currentBallotElectionDate;
-    const electionDayTextObject = electionDayText ? <span>{moment(electionDayText).format('MMM Do, YYYY')}</span> : <span />;
+    const dateText = window.moment ? window.moment(electionDayText).format('MMM Do, YYYY') : '--x--';
+    const electionDayTextObject = electionDayText ? <span>{dateText}</span> : <span />;
     // console.log("electionName: ", electionName, ", electionDayText: ", electionDayText);
 
     let votePaddingClass = 'cordova-dummy-class';

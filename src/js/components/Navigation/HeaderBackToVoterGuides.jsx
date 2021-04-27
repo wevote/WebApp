@@ -1,34 +1,31 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import styled from 'styled-components';
+import { AppBar, Button, IconButton, Toolbar, Tooltip } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
-import { Button, AppBar, Toolbar, Tooltip, IconButton } from '@material-ui/core';
-import { Place, AccountCircle } from '@material-ui/icons';
-import anonymous from '../../../img/global/icons/avatar-generic.png';
-import AppStore from '../../stores/AppStore';
+import { AccountCircle, Place } from '@material-ui/icons';
+import PropTypes from 'prop-types';
+import React, { Component } from 'react';
+import styled from 'styled-components';
 import AppActions from '../../actions/AppActions';
-import BallotStore from '../../stores/BallotStore';
-import { isCordova, isWebApp, historyPush, hasIPhoneNotch } from '../../utils/cordovaUtils';
-import LazyImage from '../../utils/LazyImage';
-import EndorsementModeTabs from './EndorsementModeTabs';
-import HeaderBackToButton from './HeaderBackToButton';
-import HeaderBarProfilePopUp from './HeaderBarProfilePopUp';
-import isMobile from '../../utils/isMobile';
 import OrganizationActions from '../../actions/OrganizationActions';
-import OrganizationStore from '../../stores/OrganizationStore';
-import { renderLog } from '../../utils/logging';
-import {
-  isProperlyFormattedVoterGuideWeVoteId,
-  shortenText,
-  stringContains,
-} from '../../utils/textFormat';
-import SignInModal from '../Widgets/SignInModal';
 import VoterGuideActions from '../../actions/VoterGuideActions';
-import VoterGuideChooseElectionModal from '../VoterGuide/VoterGuideChooseElectionModal';
 import VoterSessionActions from '../../actions/VoterSessionActions';
-import VoterStore from '../../stores/VoterStore';
+import AppStore from '../../stores/AppStore';
+import BallotStore from '../../stores/BallotStore';
+import OrganizationStore from '../../stores/OrganizationStore';
 import VoterGuideStore from '../../stores/VoterGuideStore';
+import VoterStore from '../../stores/VoterStore';
+import { hasIPhoneNotch, historyPush, isCordova, isWebApp } from '../../utils/cordovaUtils';
+import isMobile from '../../utils/isMobile';
+import LazyImage from '../../utils/LazyImage';
+import { renderLog } from '../../utils/logging';
+import { isProperlyFormattedVoterGuideWeVoteId, shortenText, stringContains } from '../../utils/textFormat';
 import { voterPhoto } from '../../utils/voterPhoto';
+
+const anonymous = React.lazy(() => import('../../../img/global/icons/avatar-generic.png'));
+const EndorsementModeTabs = React.lazy(() => import('./EndorsementModeTabs'));
+const HeaderBackToButton = React.lazy(() => import('./HeaderBackToButton'));
+const HeaderBarProfilePopUp = React.lazy(() => import('./HeaderBarProfilePopUp'));
+const SignInModal = React.lazy(() => import('../Widgets/SignInModal'));
+const VoterGuideChooseElectionModal = React.lazy(() => import('../VoterGuide/VoterGuideChooseElectionModal'));
 
 class HeaderBackToVoterGuides extends Component {
   constructor (props) {

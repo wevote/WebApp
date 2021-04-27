@@ -1,14 +1,15 @@
-import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import React, { Component } from 'react';
 import BallotActions from '../../actions/BallotActions';
-import BallotItemSearchResult from './BallotItemSearchResult';
+import OrganizationActions from '../../actions/OrganizationActions';
 import BallotStore from '../../stores/BallotStore';
 import { cordovaDot } from '../../utils/cordovaUtils';
 import { renderLog } from '../../utils/logging';
-import OrganizationActions from '../../actions/OrganizationActions';
-import SearchBar from '../Search/SearchBar';
-import thumbUpIcon from '../../../img/global/svg-icons/thumbs-up-icon.svg';
-import thumbDownIcon from '../../../img/global/svg-icons/thumbs-down-icon.svg';
+
+const BallotItemSearchResult = React.lazy(() => import('./BallotItemSearchResult'));
+const SearchBar = React.lazy(() => import('../Search/SearchBar'));
+const thumbUpIcon = '../../../img/global/svg-icons/thumbs-up-icon.svg';
+const thumbDownIcon = '../../../img/global/svg-icons/thumbs-down-icon.svg';
 
 
 export default class BallotSearchResults extends Component {

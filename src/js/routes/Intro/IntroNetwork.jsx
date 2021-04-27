@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
 import Helmet from 'react-helmet';
-import Slider from 'react-slick';
 import { cordovaDot, getAndroidSize, historyPush, isAndroid, isWebApp } from '../../utils/cordovaUtils';
-import IntroNetworkSafety from '../../components/Intro/IntroNetworkSafety';
-import IntroNetworkDefinition from '../../components/Intro/IntroNetworkDefinition';
-import IntroNetworkBallotIsNext from '../../components/Intro/IntroNetworkBallotIsNext';
 import { renderLog } from '../../utils/logging';
-import closeIcon from '../../../img/global/icons/x-close.png';
+
+const Slider = React.lazy(() => import('react-slick'));
+const IntroNetworkSafety = React.lazy(() => import('../../components/Intro/IntroNetworkSafety'));
+const IntroNetworkDefinition = React.lazy(() => import('../../components/Intro/IntroNetworkDefinition'));
+const IntroNetworkBallotIsNext = React.lazy(() => import('../../components/Intro/IntroNetworkBallotIsNext'));
+const closeIcon = React.lazy(() => import('../../../img/global/icons/x-close.png'));
 
 export default class IntroNetwork extends Component {
   static goToReadyLink () {

@@ -1,15 +1,16 @@
+import { withStyles } from '@material-ui/core/styles';
 import React, { Component } from 'react';
+import Helmet from 'react-helmet';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
-import { withStyles } from '@material-ui/core/styles';
-import Helmet from 'react-helmet';
 import { isWebApp } from '../../utils/cordovaUtils';
 import { renderLog } from '../../utils/logging';
-import OpenExternalWebSite from '../../components/Widgets/OpenExternalWebSite';
-import { organizationalDonors, teamOfVolunteers } from '../../components/More/people';
-import WelcomeAppbar from '../../components/Navigation/WelcomeAppbar';
-import Section from '../../components/Welcome/Section';
-import WelcomeFooter from '../../components/Welcome/WelcomeFooter';
+
+const OpenExternalWebSite = React.lazy(() => import('../../components/Widgets/OpenExternalWebSite'));
+const Section = React.lazy(() => import('../../components/Welcome/Section'));
+const WelcomeAppbar = React.lazy(() => import('../../components/Navigation/WelcomeAppbar'));
+const WelcomeFooter = React.lazy(() => import('../../components/Welcome/WelcomeFooter'));
+const { organizationalDonors, teamOfVolunteers } = React.lazy(() => import('../../components/More/people'));
 
 class Credits extends Component {
   static getProps () {

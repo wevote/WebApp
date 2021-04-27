@@ -1,5 +1,5 @@
 import Dispatcher from '../dispatcher/Dispatcher';
-import AppStore from '../stores/AppStore'; // eslint-disable-line import/no-cycle
+import AppStore  from '../stores/AppStore'; // eslint-disable-line import/no-cycle
 
 // Dec 2018: Keep this comment as a cheat-sheet for the enumerated values sent by the API
 // ACTION_VOTER_GUIDE_VISIT = 1;

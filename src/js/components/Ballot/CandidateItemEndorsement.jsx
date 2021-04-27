@@ -1,18 +1,19 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import styled from 'styled-components';
 // import { createMuiTheme, MuiThemeProvider } from '@material-ui/core';
-import { TextField, Button } from '@material-ui/core';
+import { Button, TextField } from '@material-ui/core';
 import { createMuiTheme, MuiThemeProvider, withStyles } from '@material-ui/core/styles';
-import CandidateStore from '../../stores/CandidateStore';
-import { historyPush } from '../../utils/cordovaUtils';
-import ImageHandler from '../ImageHandler';
-import { renderLog } from '../../utils/logging';
-import OfficeNameText from '../Widgets/OfficeNameText';
-import OpenExternalWebSite from '../Widgets/OpenExternalWebSite';
+import PropTypes from 'prop-types';
+import React, { Component } from 'react';
+import styled from 'styled-components';
 import VoterGuidePossibilityActions from '../../actions/VoterGuidePossibilityActions';
+import CandidateStore from '../../stores/CandidateStore';
 import VoterGuidePossibilityStore from '../../stores/VoterGuidePossibilityStore';
+import { historyPush } from '../../utils/cordovaUtils';
+import { renderLog } from '../../utils/logging';
 import { abbreviateNumber, numberWithCommas } from '../../utils/textFormat';
+import ImageHandler from '../ImageHandler';
+
+const OfficeNameText = React.lazy(() => import('../Widgets/OfficeNameText'));
+const OpenExternalWebSite = React.lazy(() => import('../Widgets/OpenExternalWebSite'));
 
 /* global $ */
 

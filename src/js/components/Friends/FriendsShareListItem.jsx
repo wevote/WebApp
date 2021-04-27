@@ -1,9 +1,9 @@
-import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
-import ImageHandler from '../ImageHandler';
 import { renderLog } from '../../utils/logging';
+import ImageHandler from '../ImageHandler';
 
 class FriendsShareListItem extends Component {
   render () {

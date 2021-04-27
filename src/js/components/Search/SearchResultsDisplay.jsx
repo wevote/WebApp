@@ -1,9 +1,10 @@
-import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import classNames from 'classnames';
+import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { capitalizeString } from '../../utils/textFormat';
 import ImageHandler from '../ImageHandler';
+
+const classNames = React.lazy(() => import('classnames'));
 
 export default class SearchResultsDisplay extends Component {
   searchHasContent () {

@@ -1,22 +1,23 @@
+import { Button, FormControl, FormControlLabel, InputBase, Radio, RadioGroup } from '@material-ui/core';
+import { withStyles } from '@material-ui/core/styles';
+import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import Helmet from 'react-helmet';
-import PropTypes from 'prop-types';
-import { withStyles } from '@material-ui/core/styles';
-import { Button, FormControl, FormControlLabel, Radio, RadioGroup, InputBase } from '@material-ui/core';
 import styled from 'styled-components';
 import AppActions from '../../actions/AppActions';
-import { cordovaOpenSafariView, isWebApp } from '../../utils/cordovaUtils';
-import LoadingWheel from '../LoadingWheel';
-import OpenExternalWebSite from '../Widgets/OpenExternalWebSite';
 import OrganizationActions from '../../actions/OrganizationActions';
 import OrganizationStore from '../../stores/OrganizationStore';
-import PremiumableButton from '../Widgets/PremiumableButton';
-import { renderLog } from '../../utils/logging';
-import SettingsAccount from './SettingsAccount';
-import SettingsAccountLevelChip from './SettingsAccountLevelChip';
 import VoterStore from '../../stores/VoterStore';
+import { cordovaOpenSafariView, isWebApp } from '../../utils/cordovaUtils';
+import { renderLog } from '../../utils/logging';
 import { voterFeaturePackageExceedsOrEqualsRequired } from '../../utils/pricingFunctions';
-import DelayedLoad from '../Widgets/DelayedLoad';
+import LoadingWheel from '../LoadingWheel';
+
+const DelayedLoad = React.lazy(() => import('../Widgets/DelayedLoad'));
+const OpenExternalWebSite = React.lazy(() => import('../Widgets/OpenExternalWebSite'));
+const PremiumableButton = React.lazy(() => import('../Widgets/PremiumableButton'));
+const SettingsAccount = React.lazy(() => import('./SettingsAccount'));
+const SettingsAccountLevelChip = React.lazy(() => import('./SettingsAccountLevelChip'));
 
 
 class SettingsDomain extends Component {

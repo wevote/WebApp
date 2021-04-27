@@ -1,14 +1,15 @@
-import React, { Component } from 'react';
 import { Button } from '@material-ui/core';
+import React, { Component } from 'react';
 import styled from 'styled-components';
 import AppActions from '../../actions/AppActions';
 import AppStore from '../../stores/AppStore';
 import ElectionStore from '../../stores/ElectionStore';
-import { renderLog } from '../../utils/logging';
-import SelectVoterGuidesSideBarLink from './SelectVoterGuidesSideBarLink';
-import VoterGuideChooseElectionModal from '../VoterGuide/VoterGuideChooseElectionModal';
 import VoterGuideStore from '../../stores/VoterGuideStore';
 import VoterStore from '../../stores/VoterStore';
+import { renderLog } from '../../utils/logging';
+
+const SelectVoterGuidesSideBarLink = React.lazy(() => import('./SelectVoterGuidesSideBarLink'));
+const VoterGuideChooseElectionModal = React.lazy(() => import('../VoterGuide/VoterGuideChooseElectionModal'));
 
 export default class SelectVoterGuidesSideBar extends Component {
   constructor (props) {

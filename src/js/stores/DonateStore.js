@@ -1,6 +1,6 @@
 import { ReduceStore } from 'flux/utils';
-import Dispatcher from '../dispatcher/Dispatcher';
 import OrganizationActions from '../actions/OrganizationActions';
+import Dispatcher from '../dispatcher/Dispatcher';
 import VoterStore from './VoterStore';
 
 class DonateStore extends ReduceStore {

@@ -1,13 +1,14 @@
-import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import React, { Component } from 'react';
 import ReactPlayer from 'react-player';
 import { cordovaDot } from '../../utils/cordovaUtils';
 import { renderLog } from '../../utils/logging';
-import OpenExternalWebSite from './OpenExternalWebSite';
-import ReadMore from './ReadMore';
 import { startsWith, vimeoRegX, youTubeRegX } from '../../utils/textFormat';
-import thumbsUpColorIcon from '../../../img/global/svg-icons/thumbs-up-color-icon.svg';
-import thumbsDownColorIcon from '../../../img/global/svg-icons/thumbs-down-color-icon.svg';
+
+const OpenExternalWebSite = React.lazy(() => import('./OpenExternalWebSite'));
+const ReadMore = React.lazy(() => import('./ReadMore'));
+const thumbsUpColorIcon = '../../../img/global/svg-icons/thumbs-up-color-icon.svg';
+const thumbsDownColorIcon = '../../../img/global/svg-icons/thumbs-down-color-icon.svg';
 
 export default class PositionSupportOpposeSnippet extends Component {
   render () {

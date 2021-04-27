@@ -1,25 +1,27 @@
+// import { ArrowBackIos } from '@material-ui/icons';
+// import { Edit } from '@material-ui/icons';
+
+import { Button, Table, TableBody, TableCell, TableHead, TableRow } from '@material-ui/core';
+import { withStyles } from '@material-ui/core/styles';
+import { CheckCircle } from '@material-ui/icons';
+import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import Helmet from 'react-helmet';
-import PropTypes from 'prop-types';
 import styled from 'styled-components';
-// import { Edit } from '@material-ui/icons';
-// import { ArrowBackIos } from '@material-ui/icons';
-import { CheckCircle } from '@material-ui/icons';
-import { Button, TableRow, TableHead, TableCell, TableBody, Table } from '@material-ui/core';
-import { withStyles } from '@material-ui/core/styles';
 import AppActions from '../../actions/AppActions';
-import { isWebApp, cordovaOpenSafariView } from '../../utils/cordovaUtils';
-import CreateConfiguredVersion from './CreateConfiguredVersion';
-import DonateStore from '../../stores/DonateStore';
 import DonateActions from '../../actions/DonateActions';
-import LoadingWheel from '../LoadingWheel';
+import DonateStore from '../../stores/DonateStore';
 import OrganizationStore from '../../stores/OrganizationStore';
-import { renderLog } from '../../utils/logging';
-import SettingsAccount from './SettingsAccount';
 import VoterStore from '../../stores/VoterStore';
+import { cordovaOpenSafariView, isWebApp } from '../../utils/cordovaUtils';
 import { formatDateToYearMonthDay } from '../../utils/dateFormat';
+import { renderLog } from '../../utils/logging';
 import { stringContains } from '../../utils/textFormat';
-import DelayedLoad from '../Widgets/DelayedLoad';
+import LoadingWheel from '../LoadingWheel';
+
+const CreateConfiguredVersion = React.lazy(() => import('./CreateConfiguredVersion'));
+const DelayedLoad = React.lazy(() => import('../Widgets/DelayedLoad'));
+const SettingsAccount = React.lazy(() => import('./SettingsAccount'));
 
 class SettingsSubscriptionPlan extends Component {
   constructor (props) {

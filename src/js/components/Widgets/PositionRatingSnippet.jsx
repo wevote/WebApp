@@ -1,10 +1,11 @@
-import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { renderLog } from '../../utils/logging';
+import React, { Component } from 'react';
 import { cordovaDot } from '../../utils/cordovaUtils';
-import upArrowColorIcon from '../../../img/global/icons/up-arrow-color-icon.svg';
-import downArrowColorIcon from '../../../img/global/icons/down-arrow-color-icon.svg';
-import mixedRatingIcon from '../../../img/global/icons/mixed-rating-icon.svg';
+import { renderLog } from '../../utils/logging';
+
+const upArrowColorIcon = '../../../img/global/icons/up-arrow-color-icon.svg';
+const downArrowColorIcon = '../../../img/global/icons/down-arrow-color-icon.svg';
+const mixedRatingIcon = '../../../img/global/icons/mixed-rating-icon.svg';
 
 export default class PositionRatingSnippet extends Component {
   render () {

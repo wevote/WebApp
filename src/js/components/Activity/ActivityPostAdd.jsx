@@ -1,14 +1,15 @@
-import React, { Component } from 'react';
-import styled from 'styled-components';
+import { Card, InputBase } from '@material-ui/core';
 import { withStyles, withTheme } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
-import { InputBase, Card } from '@material-ui/core';
-import ActivityPostModal from './ActivityPostModal';
+import React, { Component } from 'react';
+import styled from 'styled-components';
 import VoterStore from '../../stores/VoterStore';
-import stockAvatar from '../../../img/global/icons/avatar-generic.png';
 import { cordovaNewsPaddingTop } from '../../utils/cordovaOffsets';
 import { cordovaDot, isCordova } from '../../utils/cordovaUtils';
 import { renderLog } from '../../utils/logging';
+
+const ActivityPostModal = React.lazy(() => import('./ActivityPostModal'));
+const stockAvatar = React.lazy(() => import('../../../img/global/icons/avatar-generic.png'));
 
 
 class ActivityPostAdd extends Component {

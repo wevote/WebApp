@@ -1,13 +1,14 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import styled from 'styled-components';
-import { withTheme, withStyles } from '@material-ui/core/styles';
+import { withStyles, withTheme } from '@material-ui/core/styles';
 import { ArrowDropDown, ArrowDropUp } from '@material-ui/icons';
-import { historyPush } from '../../utils/cordovaUtils';
-import { arrayContains, toTitleCase } from '../../utils/textFormat';
-import CandidateItemForAddPositions from './CandidateItemForAddPositions';
+import PropTypes from 'prop-types';
+import React, { Component } from 'react';
+import styled from 'styled-components';
 import CandidateStore from '../../stores/CandidateStore';
+import { historyPush } from '../../utils/cordovaUtils';
 import { renderLog } from '../../utils/logging';
+import { arrayContains, toTitleCase } from '../../utils/textFormat';
+
+const CandidateItemForAddPositions = React.lazy(() => import('./CandidateItemForAddPositions'));
 
 class OfficeItemForAddPositions extends Component {
   constructor (props) {

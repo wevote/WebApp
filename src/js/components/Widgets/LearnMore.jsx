@@ -1,10 +1,11 @@
-import React, { Component } from 'react';
 import { Button } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
-import TextTruncate from 'react-text-truncate';
-import OpenExternalWebSite from './OpenExternalWebSite';
+import React, { Component } from 'react';
 import { renderLog } from '../../utils/logging';
+
+const TextTruncate = React.lazy(() => import('react-text-truncate'));
+const OpenExternalWebSite = React.lazy(() => import('./OpenExternalWebSite'));
 
 class LearnMore extends Component {
   constructor (props) {

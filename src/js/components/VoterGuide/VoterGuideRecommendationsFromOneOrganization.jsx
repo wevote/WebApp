@@ -1,8 +1,9 @@
-import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { renderLog } from '../../utils/logging';
+import React, { Component } from 'react';
 import VoterGuideStore from '../../stores/VoterGuideStore';
-import GuideList from './GuideList';
+import { renderLog } from '../../utils/logging';
+
+const GuideList = React.lazy(() => import('./GuideList'));
 
 
 export default class VoterGuideRecommendationsFromOneOrganization extends Component {

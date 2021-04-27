@@ -1,19 +1,21 @@
-import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import React, { Component } from 'react';
 import Helmet from 'react-helmet';
 import styled from 'styled-components';
-import Button from 'react-bootstrap/Button';
-import filter from 'lodash-es/filter';
-import DelayedLoad from '../Widgets/DelayedLoad';
-import GuideList from './GuideList';
-import LoadingWheel from '../LoadingWheel';
 import OrganizationActions from '../../actions/OrganizationActions';
-import OrganizationStore from '../../stores/OrganizationStore';
-import SearchBar from '../Search/SearchBar';
 import VoterGuideActions from '../../actions/VoterGuideActions';
+import OrganizationStore from '../../stores/OrganizationStore';
 import VoterGuideStore from '../../stores/VoterGuideStore';
-import { renderLog } from '../../utils/logging';
 import VoterStore from '../../stores/VoterStore';
+import { renderLog } from '../../utils/logging';
+import LoadingWheel from '../LoadingWheel';
+
+const Button = React.lazy(() => import('react-bootstrap/Button'));
+const DelayedLoad = React.lazy(() => import('../Widgets/DelayedLoad'));
+const GuideList = React.lazy(() => import('./GuideList'));
+const SearchBar = React.lazy(() => import('../Search/SearchBar'));
+const filter = React.lazy(() => import('lodash-es/filter'));
+
 
 class VoterGuideFollowing extends Component {
   constructor (props) {

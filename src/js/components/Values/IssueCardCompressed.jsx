@@ -1,13 +1,14 @@
+import { withTheme } from '@material-ui/core/styles';
+import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { withTheme } from '@material-ui/core/styles';
-import IssueFollowToggleButton from './IssueFollowToggleButton';
-import { convertNameToSlug } from '../../utils/textFormat';
 import { renderLog } from '../../utils/logging';
-import IssueImageDisplay from './IssueImageDisplay';
-import ReadMore from '../Widgets/ReadMore';
+import { convertNameToSlug } from '../../utils/textFormat';
+
+const IssueFollowToggleButton = React.lazy(() => import('./IssueFollowToggleButton'));
+const IssueImageDisplay = React.lazy(() => import('./IssueImageDisplay'));
+const ReadMore = React.lazy(() => import('../Widgets/ReadMore'));
 
 class IssueCardCompressed extends Component {
   constructor (props) {

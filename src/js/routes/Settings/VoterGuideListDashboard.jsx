@@ -1,17 +1,18 @@
 import React, { Component } from 'react';
 import Helmet from 'react-helmet';
 import styled from 'styled-components';
-import DelayedLoad from '../../components/Widgets/DelayedLoad';
-import { cordovaDot } from '../../utils/cordovaUtils';
-import { renderLog } from '../../utils/logging';
 import OrganizationActions from '../../actions/OrganizationActions';
-import OrganizationStore from '../../stores/OrganizationStore';
-import SelectVoterGuidesSideBar from '../../components/Navigation/SelectVoterGuidesSideBar';
-import SettingsAccount from '../../components/Settings/SettingsAccount';
 import VoterGuideActions from '../../actions/VoterGuideActions';
+import OrganizationStore from '../../stores/OrganizationStore';
 import VoterGuideStore from '../../stores/VoterGuideStore';
 import VoterStore from '../../stores/VoterStore';
-import VoterGuideListSearchResults from '../../components/Settings/VoterGuideListSearchResults';
+import { cordovaDot } from '../../utils/cordovaUtils';
+import { renderLog } from '../../utils/logging';
+
+const DelayedLoad = React.lazy(() => import('../../components/Widgets/DelayedLoad'));
+const SelectVoterGuidesSideBar = React.lazy(() => import('../../components/Navigation/SelectVoterGuidesSideBar'));
+const SettingsAccount = React.lazy(() => import('../../components/Settings/SettingsAccount'));
+const VoterGuideListSearchResults = React.lazy(() => import('../../components/Settings/VoterGuideListSearchResults'));
 
 
 class VoterGuideListDashboard extends Component {

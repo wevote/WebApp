@@ -1,26 +1,18 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import styled from 'styled-components';
-import { Close } from '@material-ui/icons';
+import { Button, Dialog, DialogContent, DialogTitle, FormControl, IconButton, InputLabel, Select } from '@material-ui/core';
 import { withStyles, withTheme } from '@material-ui/core/styles';
-import {
-  Button,
-  Dialog,
-  DialogTitle,
-  IconButton,
-  DialogContent,
-  Select,
-  FormControl,
-  InputLabel,
-} from '@material-ui/core';
+import { Close } from '@material-ui/icons';
+import PropTypes from 'prop-types';
+import React, { Component } from 'react';
+import styled from 'styled-components';
 import AnalyticsActions from '../../actions/AnalyticsActions';
-import BallotElectionListWithFilters from './BallotElectionListWithFilters';
-import EditAddressInPlace from '../Widgets/EditAddressInPlace';
-import MapChart from '../Widgets/MapChart/MapChart';
+import VoterStore from '../../stores/VoterStore';
+import { hasIPhoneNotch } from '../../utils/cordovaUtils';
+// const MapChart = React.lazy(() => import('../Widgets/MapChart/MapChart'));
 import { renderLog } from '../../utils/logging';
 import { calculateBallotBaseUrl } from '../../utils/textFormat';
-import { hasIPhoneNotch } from '../../utils/cordovaUtils';
-import VoterStore from '../../stores/VoterStore';
+
+const BallotElectionListWithFilters = React.lazy(() => import('./BallotElectionListWithFilters'));
+const EditAddressInPlace = React.lazy(() => import('../Widgets/EditAddressInPlace'));
 
 
 class SelectBallotModal extends Component {
@@ -136,17 +128,21 @@ class SelectBallotModal extends Component {
                   />
                 </EditAddressInPlaceWrapperMobile>
               )}
+              {/*
               {!editingAddress && (
                 <MapChartWrapper>
                   <MapChart onClickFunction={this.mapHandler} />
                 </MapChartWrapper>
               )}
+              */}
             </div>
+            {/*
             {!editingAddress && (
               <MapChartWrapperDesktop className="u-show-desktop">
                 <MapChart onClickFunction={this.mapHandler} />
               </MapChartWrapperDesktop>
             )}
+            */}
             <SidebarWrapper>
               <div className="u-show-desktop">
                 {!hideAddressEdit && (

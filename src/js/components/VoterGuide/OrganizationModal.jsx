@@ -1,30 +1,31 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import styled from 'styled-components';
-import { Info } from '@material-ui/icons';
-import { withStyles, withTheme } from '@material-ui/core/styles';
 import { Drawer, IconButton } from '@material-ui/core';
+import { withStyles, withTheme } from '@material-ui/core/styles';
+import { Info } from '@material-ui/icons';
+import PropTypes from 'prop-types';
+import React, { Component } from 'react';
+import styled from 'styled-components';
 import AnalyticsActions from '../../actions/AnalyticsActions';
-import BallotStore from '../../stores/BallotStore';
 import CandidateActions from '../../actions/CandidateActions';
-import CandidateItem from '../Ballot/CandidateItem';
-import CandidateStore from '../../stores/CandidateStore';
-import { hasIPhoneNotch } from '../../utils/cordovaUtils';
-import DelayedLoad from '../Widgets/DelayedLoad';
 import IssueActions from '../../actions/IssueActions';
-import IssueStore from '../../stores/IssueStore';
 import MeasureActions from '../../actions/MeasureActions';
-import MeasureItem from '../Ballot/MeasureItem';
-import MeasureStore from '../../stores/MeasureStore';
 import OrganizationActions from '../../actions/OrganizationActions';
-import OrganizationStore from '../../stores/OrganizationStore';
-import PositionList from '../Ballot/PositionList';
-import { renderLog } from '../../utils/logging';
-import { convertToInteger, stringContains } from '../../utils/textFormat';
-import VoterGuideStore from '../../stores/VoterGuideStore';
 import VoterGuideActions from '../../actions/VoterGuideActions';
+import BallotStore from '../../stores/BallotStore';
+import CandidateStore from '../../stores/CandidateStore';
+import IssueStore from '../../stores/IssueStore';
+import MeasureStore from '../../stores/MeasureStore';
+import OrganizationStore from '../../stores/OrganizationStore';
+import VoterGuideStore from '../../stores/VoterGuideStore';
 import VoterStore from '../../stores/VoterStore';
 import { cordovaDrawerTopMargin } from '../../utils/cordovaOffsets';
+import { hasIPhoneNotch } from '../../utils/cordovaUtils';
+import { renderLog } from '../../utils/logging';
+import { convertToInteger, stringContains } from '../../utils/textFormat';
+
+const CandidateItem = React.lazy(() => import('../Ballot/CandidateItem'));
+const DelayedLoad = React.lazy(() => import('../Widgets/DelayedLoad'));
+const MeasureItem = React.lazy(() => import('../Ballot/MeasureItem'));
+const PositionList = React.lazy(() => import('../Ballot/PositionList'));
 
 class OrganizationModal extends Component {
   constructor (props) {
@@ -136,10 +137,8 @@ class OrganizationModal extends Component {
       });
     }
 
-    if (!IssueStore.issueDescriptionsRetrieveCalled()) {
-      IssueActions.issueDescriptionsRetrieve();
-    }
-    IssueActions.issuesFollowedRetrieve();
+    IssueActions.issueDescriptionsRetrieve(VoterStore.getVoterWeVoteId());
+    IssueActions.issuesFollowedRetrieve(VoterStore.getVoterWeVoteId());
     if (VoterStore.electionId() && !IssueStore.issuesUnderBallotItemsRetrieveCalled(VoterStore.electionId())) {
       IssueActions.issuesUnderBallotItemsRetrieve(VoterStore.electionId());
     }

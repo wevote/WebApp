@@ -1,23 +1,24 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import styled from 'styled-components';
 import { withStyles, withTheme } from '@material-ui/core/styles';
-import { ArrowRightAlt, Done, Comment, NotInterested, ThumbUp, ThumbDown } from '@material-ui/icons';
+import { ArrowRightAlt, Comment, Done, NotInterested, ThumbDown, ThumbUp } from '@material-ui/icons';
+import PropTypes from 'prop-types';
+import React, { Component } from 'react';
+import styled from 'styled-components';
+import SupportActions from '../../actions/SupportActions';
 import CandidateStore from '../../stores/CandidateStore';
 import FriendStore from '../../stores/FriendStore';
 import IssueStore from '../../stores/IssueStore';
-import ItemActionBar from './ItemActionBar/ItemActionBar';
-import { renderLog } from '../../utils/logging';
 import MeasureStore from '../../stores/MeasureStore';
 import OrganizationStore from '../../stores/OrganizationStore';
-import ShowMoreFooter from '../Navigation/ShowMoreFooter';
 import SupportStore from '../../stores/SupportStore';
+import { renderLog } from '../../utils/logging';
+import { getPositionListSummaryIncomingDataStats, getPositionSummaryListForBallotItem } from '../../utils/positionFunctions';
 import { stringContains } from '../../utils/textFormat';
-import StickyPopover from '../Ballot/StickyPopover';
-import { getPositionSummaryListForBallotItem, getPositionListSummaryIncomingDataStats } from '../../utils/positionFunctions';
-import PositionSummaryListForPopover from './PositionSummaryListForPopover';
-import SupportActions from '../../actions/SupportActions';
-import { openSnackbar } from './SnackNotifier';
+
+const ItemActionBar = React.lazy(() => import('./ItemActionBar/ItemActionBar'));
+const ShowMoreFooter = React.lazy(() => import('../Navigation/ShowMoreFooter'));
+const StickyPopover = React.lazy(() => import('../Ballot/StickyPopover'));
+const PositionSummaryListForPopover = React.lazy(() => import('./PositionSummaryListForPopover'));
+const { openSnackbar } = React.lazy(() => import('./SnackNotifier'));
 
 class BallotItemSupportOpposeCountDisplay extends Component {
   static closePositionsPopover () {
@@ -95,121 +96,121 @@ class BallotItemSupportOpposeCountDisplay extends Component {
     this.onCachedPositionsOrIssueStoreChange();
   }
 
-  // eslint-disable-next-line camelcase,react/sort-comp
-  UNSAFE_componentWillReceiveProps (nextProps) {
-    // console.log('BallotItemSupportOpposeCountDisplay componentWillReceiveProps, nextProps: ', nextProps);
-    let ballotItemDisplayName;
-    const { ballotItemWeVoteId } = nextProps;
-    const isCandidate = stringContains('cand', ballotItemWeVoteId);
-    const isMeasure = stringContains('meas', ballotItemWeVoteId);
-    if (isCandidate) {
-      const candidate = CandidateStore.getCandidate(ballotItemWeVoteId);
-      ballotItemDisplayName = candidate.ballot_item_display_name || this.props.ballotItemDisplayName;
-      const countResults = CandidateStore.getNumberOfPositionsByCandidateWeVoteId(ballotItemWeVoteId);
-      const { numberOfAllSupportPositions, numberOfAllOpposePositions, numberOfAllInfoOnlyPositions } = countResults;
-      this.setState({
-        ballotItemDisplayName,
-        numberOfAllSupportPositions,
-        numberOfAllOpposePositions,
-        numberOfAllInfoOnlyPositions,
-      });
-    } else if (isMeasure) {
-      const measure = MeasureStore.getMeasure(ballotItemWeVoteId);
-      ballotItemDisplayName = measure.ballot_item_display_name || this.props.ballotItemDisplayName;
-      const countResults = MeasureStore.getNumberOfPositionsByMeasureWeVoteId(ballotItemWeVoteId);
-      const { numberOfAllSupportPositions, numberOfAllOpposePositions, numberOfAllInfoOnlyPositions } = countResults;
-      this.setState({
-        ballotItemDisplayName,
-        numberOfAllSupportPositions,
-        numberOfAllOpposePositions,
-        numberOfAllInfoOnlyPositions,
-      });
-    }
-    this.setState(() => ({
-      ballotItemDisplayName,
-      ballotItemWeVoteId,
-      isCandidate,
-      isMeasure,
-    }));
-    this.onCachedPositionsOrIssueStoreChange();
-  }
+  // // eslint-disable-next-line camelcase,react/sort-comp
+  // UNSAFE_componentWillReceiveProps (nextProps) {
+  //   // console.log('BallotItemSupportOpposeCountDisplay componentWillReceiveProps, nextProps: ', nextProps);
+  //   let ballotItemDisplayName;
+  //   const { ballotItemWeVoteId } = nextProps;
+  //   const isCandidate = stringContains('cand', ballotItemWeVoteId);
+  //   const isMeasure = stringContains('meas', ballotItemWeVoteId);
+  //   if (isCandidate) {
+  //     const candidate = CandidateStore.getCandidate(ballotItemWeVoteId);
+  //     ballotItemDisplayName = candidate.ballot_item_display_name || this.props.ballotItemDisplayName;
+  //     const countResults = CandidateStore.getNumberOfPositionsByCandidateWeVoteId(ballotItemWeVoteId);
+  //     const { numberOfAllSupportPositions, numberOfAllOpposePositions, numberOfAllInfoOnlyPositions } = countResults;
+  //     this.setState({
+  //       ballotItemDisplayName,
+  //       numberOfAllSupportPositions,
+  //       numberOfAllOpposePositions,
+  //       numberOfAllInfoOnlyPositions,
+  //     });
+  //   } else if (isMeasure) {
+  //     const measure = MeasureStore.getMeasure(ballotItemWeVoteId);
+  //     ballotItemDisplayName = measure.ballot_item_display_name || this.props.ballotItemDisplayName;
+  //     const countResults = MeasureStore.getNumberOfPositionsByMeasureWeVoteId(ballotItemWeVoteId);
+  //     const { numberOfAllSupportPositions, numberOfAllOpposePositions, numberOfAllInfoOnlyPositions } = countResults;
+  //     this.setState({
+  //       ballotItemDisplayName,
+  //       numberOfAllSupportPositions,
+  //       numberOfAllOpposePositions,
+  //       numberOfAllInfoOnlyPositions,
+  //     });
+  //   }
+  //   this.setState(() => ({
+  //     ballotItemDisplayName,
+  //     ballotItemWeVoteId,
+  //     isCandidate,
+  //     isMeasure,
+  //   }));
+  //   this.onCachedPositionsOrIssueStoreChange();
+  // }
 
-  shouldComponentUpdate (nextProps, nextState) {
-    // This lifecycle method tells the component to NOT render if componentWillReceiveProps didn't see any changes
-    if (this.state.componentDidMountFinished === false) {
-      // console.log('shouldComponentUpdate: componentDidMountFinished === false');
-      return true;
-    }
-    if (this.state.ballotItemDisplayName !== nextState.ballotItemDisplayName) {
-      // console.log('this.state.ballotItemDisplayName:', this.state.ballotItemDisplayName, ', nextState.ballotItemDisplayName:', nextState.ballotItemDisplayName);
-      return true;
-    }
-    if (this.state.ballotItemWeVoteId !== nextState.ballotItemWeVoteId) {
-      // console.log('this.state.ballotItemWeVoteId:', this.state.ballotItemWeVoteId, ', nextState.ballotItemWeVoteId:', nextState.ballotItemWeVoteId);
-      return true;
-    }
-    if (this.state.controlAdviserMaterialUIPopoverFromProp !== nextState.controlAdviserMaterialUIPopoverFromProp) {
-      // console.log('this.state.controlAdviserMaterialUIPopoverFromProp:', this.state.controlAdviserMaterialUIPopoverFromProp, ', nextState.controlAdviserMaterialUIPopoverFromProp:', nextState.controlAdviserMaterialUIPopoverFromProp);
-      return true;
-    }
-    if (this.state.issueWeVoteIdsLinkedToByOrganizationDictLength !== nextState.issueWeVoteIdsLinkedToByOrganizationDictLength) {
-      // console.log('this.state.issueWeVoteIdsLinkedToByOrganizationDictLength:', this.state.issueWeVoteIdsLinkedToByOrganizationDictLength, ', nextState.issueWeVoteIdsLinkedToByOrganizationDictLength:', nextState.issueWeVoteIdsLinkedToByOrganizationDictLength);
-      return true;
-    }
-    if (this.state.numberOfAllSupportPositions !== nextState.numberOfAllSupportPositions) {
-      return true;
-    }
-    if (this.state.numberOfAllOpposePositions !== nextState.numberOfAllOpposePositions) {
-      return true;
-    }
-    if (this.state.numberOfAllInfoOnlyPositions !== nextState.numberOfAllInfoOnlyPositions) {
-      return true;
-    }
-    if (this.props.closeSupportOpposeCountDisplayModal !== nextProps.closeSupportOpposeCountDisplayModal) {
-      return true;
-    }
-    if (this.props.openAdviserMaterialUIPopover !== nextProps.openAdviserMaterialUIPopover) {
-      return true;
-    }
-    if (this.props.openSupportOpposeCountDisplayModal !== nextProps.openSupportOpposeCountDisplayModal) {
-      return true;
-    }
-    if (this.state.organizationWeVoteIdsVoterIsFollowingLength !== nextState.organizationWeVoteIdsVoterIsFollowingLength) {
-      // console.log('this.state.organizationWeVoteIdsVoterIsFollowingLength:', this.state.organizationWeVoteIdsVoterIsFollowingLength, ', nextState.organizationWeVoteIdsVoterIsFollowingLength:', nextState.organizationWeVoteIdsVoterIsFollowingLength);
-      return true;
-    }
-    if (this.state.positionsInNetworkSummaryListLength !== nextState.positionsInNetworkSummaryListLength) {
-      return true;
-    }
-    if (this.state.positionsOutOfNetworkSummaryListLength !== nextState.positionsOutOfNetworkSummaryListLength) {
-      return true;
-    }
-    if (this.props.supportOpposeCountDisplayModalTutorialOn !== nextProps.supportOpposeCountDisplayModalTutorialOn) {
-      return true;
-    }
-    if (this.props.supportOpposeCountDisplayModalTutorialText !== nextProps.supportOpposeCountDisplayModalTutorialText) {
-      return true;
-    }
-    if (this.props.showDownArrow !== nextProps.showDownArrow) {
-      return true;
-    }
-    if (this.props.showUpArrow !== nextProps.showUpArrow) {
-      return true;
-    }
-    if (this.state.voterPersonalNetworkScore !== nextState.voterPersonalNetworkScore) {
-      // console.log('this.state.voterPersonalNetworkScore:', this.state.voterPersonalNetworkScore, ', nextState.voterPersonalNetworkScore:', nextState.voterPersonalNetworkScore);
-      return true;
-    }
-    if (this.state.voterOpposesBallotItem !== nextState.voterOpposesBallotItem) {
-      // console.log('this.state.voterOpposesBallotItem:', this.state.voterOpposesBallotItem, ', nextState.voterOpposesBallotItem:', nextState.voterOpposesBallotItem);
-      return true;
-    }
-    if (this.state.voterSupportsBallotItem !== nextState.voterSupportsBallotItem) {
-      // console.log('this.state.voterSupportsBallotItem:', this.state.voterSupportsBallotItem, ', nextState.voterSupportsBallotItem:', nextState.voterSupportsBallotItem);
-      return true;
-    }
-    return false;
-  }
+  // shouldComponentUpdate (nextProps, nextState) {
+  //   // This lifecycle method tells the component to NOT render if componentWillReceiveProps didn't see any changes
+  //   if (this.state.componentDidMountFinished === false) {
+  //     // console.log('shouldComponentUpdate: componentDidMountFinished === false');
+  //     return true;
+  //   }
+  //   if (this.state.ballotItemDisplayName !== nextState.ballotItemDisplayName) {
+  //     // console.log('this.state.ballotItemDisplayName:', this.state.ballotItemDisplayName, ', nextState.ballotItemDisplayName:', nextState.ballotItemDisplayName);
+  //     return true;
+  //   }
+  //   if (this.state.ballotItemWeVoteId !== nextState.ballotItemWeVoteId) {
+  //     // console.log('this.state.ballotItemWeVoteId:', this.state.ballotItemWeVoteId, ', nextState.ballotItemWeVoteId:', nextState.ballotItemWeVoteId);
+  //     return true;
+  //   }
+  //   if (this.state.controlAdviserMaterialUIPopoverFromProp !== nextState.controlAdviserMaterialUIPopoverFromProp) {
+  //     // console.log('this.state.controlAdviserMaterialUIPopoverFromProp:', this.state.controlAdviserMaterialUIPopoverFromProp, ', nextState.controlAdviserMaterialUIPopoverFromProp:', nextState.controlAdviserMaterialUIPopoverFromProp);
+  //     return true;
+  //   }
+  //   if (this.state.issueWeVoteIdsLinkedToByOrganizationDictLength !== nextState.issueWeVoteIdsLinkedToByOrganizationDictLength) {
+  //     // console.log('this.state.issueWeVoteIdsLinkedToByOrganizationDictLength:', this.state.issueWeVoteIdsLinkedToByOrganizationDictLength, ', nextState.issueWeVoteIdsLinkedToByOrganizationDictLength:', nextState.issueWeVoteIdsLinkedToByOrganizationDictLength);
+  //     return true;
+  //   }
+  //   if (this.state.numberOfAllSupportPositions !== nextState.numberOfAllSupportPositions) {
+  //     return true;
+  //   }
+  //   if (this.state.numberOfAllOpposePositions !== nextState.numberOfAllOpposePositions) {
+  //     return true;
+  //   }
+  //   if (this.state.numberOfAllInfoOnlyPositions !== nextState.numberOfAllInfoOnlyPositions) {
+  //     return true;
+  //   }
+  //   if (this.props.closeSupportOpposeCountDisplayModal !== nextProps.closeSupportOpposeCountDisplayModal) {
+  //     return true;
+  //   }
+  //   if (this.props.openAdviserMaterialUIPopover !== nextProps.openAdviserMaterialUIPopover) {
+  //     return true;
+  //   }
+  //   if (this.props.openSupportOpposeCountDisplayModal !== nextProps.openSupportOpposeCountDisplayModal) {
+  //     return true;
+  //   }
+  //   if (this.state.organizationWeVoteIdsVoterIsFollowingLength !== nextState.organizationWeVoteIdsVoterIsFollowingLength) {
+  //     // console.log('this.state.organizationWeVoteIdsVoterIsFollowingLength:', this.state.organizationWeVoteIdsVoterIsFollowingLength, ', nextState.organizationWeVoteIdsVoterIsFollowingLength:', nextState.organizationWeVoteIdsVoterIsFollowingLength);
+  //     return true;
+  //   }
+  //   if (this.state.positionsInNetworkSummaryListLength !== nextState.positionsInNetworkSummaryListLength) {
+  //     return true;
+  //   }
+  //   if (this.state.positionsOutOfNetworkSummaryListLength !== nextState.positionsOutOfNetworkSummaryListLength) {
+  //     return true;
+  //   }
+  //   if (this.props.supportOpposeCountDisplayModalTutorialOn !== nextProps.supportOpposeCountDisplayModalTutorialOn) {
+  //     return true;
+  //   }
+  //   if (this.props.supportOpposeCountDisplayModalTutorialText !== nextProps.supportOpposeCountDisplayModalTutorialText) {
+  //     return true;
+  //   }
+  //   if (this.props.showDownArrow !== nextProps.showDownArrow) {
+  //     return true;
+  //   }
+  //   if (this.props.showUpArrow !== nextProps.showUpArrow) {
+  //     return true;
+  //   }
+  //   if (this.state.voterPersonalNetworkScore !== nextState.voterPersonalNetworkScore) {
+  //     // console.log('this.state.voterPersonalNetworkScore:', this.state.voterPersonalNetworkScore, ', nextState.voterPersonalNetworkScore:', nextState.voterPersonalNetworkScore);
+  //     return true;
+  //   }
+  //   if (this.state.voterOpposesBallotItem !== nextState.voterOpposesBallotItem) {
+  //     // console.log('this.state.voterOpposesBallotItem:', this.state.voterOpposesBallotItem, ', nextState.voterOpposesBallotItem:', nextState.voterOpposesBallotItem);
+  //     return true;
+  //   }
+  //   if (this.state.voterSupportsBallotItem !== nextState.voterSupportsBallotItem) {
+  //     // console.log('this.state.voterSupportsBallotItem:', this.state.voterSupportsBallotItem, ', nextState.voterSupportsBallotItem:', nextState.voterSupportsBallotItem);
+  //     return true;
+  //   }
+  //   return false;
+  // }
 
   componentDidCatch (error, info) {
     // We should get this information to Splunk!
@@ -262,6 +263,10 @@ class BallotItemSupportOpposeCountDisplay extends Component {
     let voterSupportsBallotItem = SupportStore.voterSupportsList[ballotItemWeVoteId] || false;
     let voterOpposesBallotItem = SupportStore.voterOpposesList[ballotItemWeVoteId] || false;
 
+    // console.log(allCachedPositionsLength);
+    // const b1 = allCachedPositionsLength !== undefined;
+    // const b2 = currentFriendsOrganizationWeVoteIdsLength || issueWeVoteIdsLinkedToByOrganizationDictLength || organizationWeVoteIdsVoterIsFollowingLength;
+    // const minimumPositionSummaryListVariablesFound = b1 && b2;
     const minimumPositionSummaryListVariablesFound = !!(allCachedPositionsLength !== undefined && (currentFriendsOrganizationWeVoteIdsLength || issueWeVoteIdsLinkedToByOrganizationDictLength || organizationWeVoteIdsVoterIsFollowingLength));
     const changedPositionSummaryListVariablesFound = !!((allCachedPositionsLength !== priorAllCachedPositionsLength) || (allIssuesVoterIsFollowingLength !== priorAllIssuesVoterIsFollowingLength) || (currentFriendsOrganizationWeVoteIdsLength !== priorCurrentFriendsOrganizationWeVoteIdsLength) || (issueWeVoteIdsLinkedToByOrganizationDictLength !== priorIssueWeVoteIdsLinkedToByOrganizationDictLength) || (organizationWeVoteIdsVoterIsFollowingLength !== priorOrganizationWeVoteIdsVoterIsFollowingLength) || (voterOpposesListLength !== priorVoterOpposesListLength) || (voterSupportsListLength !== priorVoterSupportsListLength));
     const changedVoterPosition = !!((voterOpposesBallotItem !== priorVoterOpposesBallotItem) || (voterSupportsBallotItem !== priorVoterSupportsBallotItem));
@@ -269,6 +274,8 @@ class BallotItemSupportOpposeCountDisplay extends Component {
 
     const refreshPositionSummaryList = !!((minimumPositionSummaryListVariablesFound && changedPositionSummaryListVariablesFound) || changedVoterPosition);
     // console.log('refreshPositionSummaryList: ', refreshPositionSummaryList, ballotItemWeVoteId);
+    let firstStateBatch;
+    let secondStateBatch;
     if (refreshPositionSummaryList) {
       const limitToThisIssue = false;
       const showPositionsInVotersNetwork = true;
@@ -279,7 +286,7 @@ class BallotItemSupportOpposeCountDisplay extends Component {
       const positionsInNetworkSummaryListLength = positionsInNetworkSummaryList.length;
       const positionsOutOfNetworkSummaryList = getPositionSummaryListForBallotItem(ballotItemWeVoteId, limitToThisIssue, doNotShowPositionsInVotersNetwork, showPositionsOutOfVotersNetwork);
       const positionsOutOfNetworkSummaryListLength = positionsOutOfNetworkSummaryList.length;
-      this.setState({
+      firstStateBatch = {
         allCachedPositionsLength,
         allIssuesVoterIsFollowingLength,
         currentFriendsOrganizationWeVoteIdsLength,
@@ -291,7 +298,7 @@ class BallotItemSupportOpposeCountDisplay extends Component {
         positionsOutOfNetworkSummaryListLength,
         voterOpposesListLength,
         voterSupportsListLength,
-      });
+      };
       const ballotItemStatSheet = SupportStore.getBallotItemStatSheet(ballotItemWeVoteId);
       // Network Score
       let numberOfSupportPositionsForScore = 0;
@@ -302,7 +309,10 @@ class BallotItemSupportOpposeCountDisplay extends Component {
       let voterPersonalNetworkScoreIsNegative = false;
       let voterPersonalNetworkScoreIsPositive = false;
       if (ballotItemStatSheet) {
-        ({ voterOpposesBallotItem, voterSupportsBallotItem } = ballotItemStatSheet);
+        ({
+          voterOpposesBallotItem,
+          voterSupportsBallotItem,
+        } = ballotItemStatSheet);
         numberOfSupportPositionsForScore = parseInt(ballotItemStatSheet.numberOfSupportPositionsForScore) || 0;
         numberOfOpposePositionsForScore = parseInt(ballotItemStatSheet.numberOfOpposePositionsForScore) || 0;
         // console.log('numberOfSupportPositionsForScore:', numberOfSupportPositionsForScore);
@@ -327,7 +337,7 @@ class BallotItemSupportOpposeCountDisplay extends Component {
       if (numberOfSupportPositionsForScore || numberOfOpposePositionsForScore) {
         voterPersonalScoreHasBeenCalculated = true;
       }
-      this.setState({
+      secondStateBatch = {
         showVoterPersonalScore,
         voterPersonalNetworkScore,
         voterPersonalNetworkScoreIsNegative,
@@ -336,8 +346,11 @@ class BallotItemSupportOpposeCountDisplay extends Component {
         voterPersonalScoreHasBeenCalculated,
         voterOpposesBallotItem,
         voterSupportsBallotItem,
-      });
+      };
     }
+    // Don't set state twice in the same function
+    const combinedState = Object.assign({}, firstStateBatch, secondStateBatch); // eslint-disable-line prefer-object-spread
+    this.setState(combinedState);
   }
 
   onCandidateStoreChange () {

@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
-import { historyPush } from '../../utils/cordovaUtils';
-import FriendList from './FriendList';
 import FriendActions from '../../actions/FriendActions';
 import FriendStore from '../../stores/FriendStore';
-import { renderLog } from '../../utils/logging';
+import { historyPush } from '../../utils/cordovaUtils';
 import sortFriendListByMutualFriends from '../../utils/friendFunctions';
+import { renderLog } from '../../utils/logging';
+
+const FriendList = React.lazy(() => import('./FriendList'));
 
 export default class FriendsCurrentPreview extends Component {
   constructor (props) {

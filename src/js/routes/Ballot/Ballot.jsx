@@ -1,56 +1,57 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import Helmet from 'react-helmet';
-import moment from 'moment';
-import styled from 'styled-components';
 import { Badge, Chip, CircularProgress, Link } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
+import PropTypes from 'prop-types';
+import React, { Component } from 'react';
+import Helmet from 'react-helmet';
+import styled from 'styled-components';
 import ActivityActions from '../../actions/ActivityActions';
-import AddFriendsByEmail from '../../components/Friends/AddFriendsByEmail';
-import AddressBox from '../../components/AddressBox';
 import AnalyticsActions from '../../actions/AnalyticsActions';
 import AppActions from '../../actions/AppActions';
-import AppStore from '../../stores/AppStore';
 import BallotActions from '../../actions/BallotActions';
-import BallotDecisionsTabs from '../../components/Navigation/BallotDecisionsTabs';
-import BallotItemCompressed from '../../components/Ballot/BallotItemCompressed';
-import { dumpCssFromId } from '../../utils/appleSiliconUtils';
-import BallotTitleHeader from './BallotTitleHeader';
-import BallotSideBar from '../../components/Navigation/BallotSideBar';
-import FilterBaseSearch from '../../components/Filter/FilterBaseSearch';
-import BallotStatusMessage from '../../components/Ballot/BallotStatusMessage';
-import BallotStore from '../../stores/BallotStore';
-import BallotShowAllItemsFooter from '../../components/Navigation/BallotShowAllItemsFooter';
-import BrowserPushMessage from '../../components/Widgets/BrowserPushMessage';
-import cookies from '../../utils/cookies';
-import CompleteYourProfile from '../../components/CompleteYourProfile/CompleteYourProfile';
-import { cordovaBallotFilterTopMargin } from '../../utils/cordovaOffsets';
-import cordovaScrollablePaneTopPadding from '../../utils/cordovaScrollablePaneTopPadding';
-import { chipLabelText, historyPush, isIOSAppOnMac, isCordova, isWebApp, isAndroid, getAndroidSize, isIPadGiantSize } from '../../utils/cordovaUtils';
-import DelayedLoad from '../../components/Widgets/DelayedLoad';
-import EditAddressOneHorizontalRow from '../../components/Ready/EditAddressOneHorizontalRow';
 import ElectionActions from '../../actions/ElectionActions';
-import ElectionStore from '../../stores/ElectionStore';
-import isMobile from '../../utils/isMobile';
-import isMobileScreenSize from '../../utils/isMobileScreenSize';
-import mapCategoryFilterType from '../../utils/map-category-filter-type';
 import IssueActions from '../../actions/IssueActions';
-import IssueStore from '../../stores/IssueStore';
-import OpenExternalWebSite from '../../components/Widgets/OpenExternalWebSite';
 import OrganizationActions from '../../actions/OrganizationActions';
-import { renderLog } from '../../utils/logging';
-import showBallotDecisionsTabs from '../../utilsApi/showBallotDecisionsTabs';
-import ShowMoreItems from '../../components/Widgets/ShowMoreItems';
-import SuggestedFriendsPreview from '../../components/Friends/SuggestedFriendsPreview';
 import SupportActions from '../../actions/SupportActions';
-import SupportStore from '../../stores/SupportStore';
-import { getBooleanValue, startsWith } from '../../utils/textFormat';
-import { checkShouldUpdate, formatVoterBallotList } from './utils/ballotUtils';
-import ValuesToFollowPreview from '../../components/Values/ValuesToFollowPreview';
 import VoterActions from '../../actions/VoterActions';
+import webAppConfig from '../../config';
+import AppStore from '../../stores/AppStore';
+import BallotStore from '../../stores/BallotStore';
+import ElectionStore from '../../stores/ElectionStore';
+import IssueStore from '../../stores/IssueStore';
+import SupportStore from '../../stores/SupportStore';
 import VoterGuideStore from '../../stores/VoterGuideStore';
 import VoterStore from '../../stores/VoterStore';
-import webAppConfig from '../../config';
+import { dumpCssFromId } from '../../utils/appleSiliconUtils';
+import cookies from '../../utils/cookies';
+import { cordovaBallotFilterTopMargin } from '../../utils/cordovaOffsets';
+import cordovaScrollablePaneTopPadding from '../../utils/cordovaScrollablePaneTopPadding';
+import { chipLabelText, getAndroidSize, historyPush, isAndroid, isCordova, isIOSAppOnMac, isIPadGiantSize, isWebApp } from '../../utils/cordovaUtils';
+import initializeMoment from '../../utils/initializeMoment';
+import isMobile from '../../utils/isMobile';
+import isMobileScreenSize from '../../utils/isMobileScreenSize';
+import { renderLog } from '../../utils/logging';
+import mapCategoryFilterType from '../../utils/map-category-filter-type';
+import { getBooleanValue, startsWith } from '../../utils/textFormat';
+import { checkShouldUpdate, formatVoterBallotList } from './utils/ballotUtils';
+import showBallotDecisionsTabs from '../../utilsApi/showBallotDecisionsTabs';
+
+const AddFriendsByEmail = React.lazy(() => import('../../components/Friends/AddFriendsByEmail'));
+const AddressBox = React.lazy(() => import('../../components/AddressBox'));
+const BallotDecisionsTabs = React.lazy(() => import('../../components/Navigation/BallotDecisionsTabs'));
+const BallotItemCompressed = React.lazy(() => import('../../components/Ballot/BallotItemCompressed'));
+const BallotShowAllItemsFooter = React.lazy(() => import('../../components/Navigation/BallotShowAllItemsFooter'));
+const BallotSideBar = React.lazy(() => import('../../components/Navigation/BallotSideBar'));
+const BallotStatusMessage = React.lazy(() => import('../../components/Ballot/BallotStatusMessage'));
+const BallotTitleHeader = React.lazy(() => import('./BallotTitleHeader'));
+const BrowserPushMessage = React.lazy(() => import('../../components/Widgets/BrowserPushMessage'));
+const CompleteYourProfile = React.lazy(() => import('../../components/CompleteYourProfile/CompleteYourProfile'));
+const DelayedLoad = React.lazy(() => import('../../components/Widgets/DelayedLoad'));
+const EditAddressOneHorizontalRow = React.lazy(() => import('../../components/Ready/EditAddressOneHorizontalRow'));
+const FilterBaseSearch = React.lazy(() => import('../../components/Filter/FilterBaseSearch'));
+const OpenExternalWebSite = React.lazy(() => import('../../components/Widgets/OpenExternalWebSite'));
+const ShowMoreItems = React.lazy(() => import('../../components/Widgets/ShowMoreItems'));
+const SuggestedFriendsPreview = React.lazy(() => import('../../components/Friends/SuggestedFriendsPreview'));
+const ValuesToFollowPreview = React.lazy(() => import('../../components/Values/ValuesToFollowPreview'));
 
 
 const TYPES = require('keymirror')({
@@ -110,6 +111,8 @@ class Ballot extends Component {
     this.toggleSelectBallotModal = this.toggleSelectBallotModal.bind(this);
     this.updateOfficeDisplayUnfurledTracker = this.updateOfficeDisplayUnfurledTracker.bind(this);
     this.onScroll = this.onScroll.bind(this);
+
+    initializeMoment(() => {});
   }
 
   componentDidMount () {
@@ -225,11 +228,9 @@ class Ballot extends Component {
 
     // console.log('Ballot, googleCivicElectionId: ', googleCivicElectionId, ', ballotLocationShortcut: ', ballotLocationShortcut, 'ballotReturnedWeVoteId: ', ballotReturnedWeVoteId);
     // console.log('VoterStore.election_id: ', VoterStore.electionId());
-    if (!IssueStore.issueDescriptionsRetrieveCalled()) {
-      IssueActions.issueDescriptionsRetrieve();
-      // IssueActions.issueDescriptionsRetrieveCalled(); // TODO: Move this to AppActions? Currently throws error: 'Cannot dispatch in the middle of a dispatch'
-    }
-    IssueActions.issuesFollowedRetrieve();
+    IssueActions.issueDescriptionsRetrieve(VoterStore.getVoterWeVoteId());
+    IssueActions.issuesFollowedRetrieve(VoterStore.getVoterWeVoteId());
+
     if (googleCivicElectionId || ballotLocationShortcut || ballotReturnedWeVoteId) {
       // console.log('CALLING IssueActions.issuesUnderBallotItemsRetrieve');
       let callIssuesUnderBallotItemRetrieve = true;
@@ -1167,7 +1168,7 @@ class Ballot extends Component {
       </DelayedLoad>
     ) : null;
 
-    const electionDayTextFormatted = electionDayText ? moment(electionDayText).format('MMM Do, YYYY') : '';
+    const electionDayTextFormatted = electionDayText && window.moment ? window.moment(electionDayText).format('MMM Do, YYYY') : '';
     const electionDayTextObject = <span>{electionDayTextFormatted}</span>;
     // console.log('electionName: ', electionName, ', electionDayTextFormatted: ', electionDayTextFormatted);
 

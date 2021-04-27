@@ -1,14 +1,14 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import styled from 'styled-components';
 import { Chip, FormControlLabel, Input, MenuItem, Select } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
-import { arrayContains, removeValueFromArray } from '../../utils/textFormat';
-import { convertStateCodeToStateText, convertStateTextToStateCode, stateCodeMap } from '../../utils/addressFunctions';
+import PropTypes from 'prop-types';
+import React, { Component } from 'react';
+import styled from 'styled-components';
 import BallotActions from '../../actions/BallotActions';
 import BallotStore from '../../stores/BallotStore';
+import { convertStateCodeToStateText, convertStateTextToStateCode, stateCodeMap } from '../../utils/addressFunctions';
 import { renderLog } from '../../utils/logging';
 import { isSpeakerTypeIndividual, isSpeakerTypeOrganization, isSpeakerTypePublicFigure } from '../../utils/organization-functions';
+import { arrayContains, removeValueFromArray } from '../../utils/textFormat';
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;

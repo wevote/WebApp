@@ -1,13 +1,14 @@
-import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import React, { Component } from 'react';
 import AppActions from '../../actions/AppActions';
+import VoterActions from '../../actions/VoterActions';
+import LoadingWheel from '../../components/LoadingWheel';
+import VoterStore from '../../stores/VoterStore';
 import cookies from '../../utils/cookies';
 import { historyPush } from '../../utils/cordovaUtils';
-import LoadingWheel from '../../components/LoadingWheel';
 import { oAuthLog, renderLog } from '../../utils/logging';
-import VoterActions from '../../actions/VoterActions';
-import VoterStore from '../../stores/VoterStore';
-import WouldYouLikeToMergeAccountsOld from '../../components/WouldYouLikeToMergeAccountsOld';
+
+const WouldYouLikeToMergeAccountsOld = React.lazy(() => import('../../components/WouldYouLikeToMergeAccountsOld'));
 
 export default class SignInEmailProcess extends Component {
   constructor (props) {

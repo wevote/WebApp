@@ -1,19 +1,20 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import styled from 'styled-components';
-import Alert from 'react-bootstrap/Alert';
-import { Link } from 'react-router-dom';
 import { withStyles, withTheme } from '@material-ui/core/styles';
 import { MoreHoriz } from '@material-ui/icons';
-import ActivityPositionList from './ActivityPositionList';
-import ActivityPostModal from './ActivityPostModal';
-import ActivitySpeakerCard from './ActivitySpeakerCard';
-import ActivityStore from '../../stores/ActivityStore';
+import PropTypes from 'prop-types';
+import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
+import styled from 'styled-components';
 import AppActions from '../../actions/AppActions';
-import DelayedLoad from '../Widgets/DelayedLoad';
+import ActivityStore from '../../stores/ActivityStore';
 import OrganizationStore from '../../stores/OrganizationStore';
-import { renderLog } from '../../utils/logging';
 import VoterStore from '../../stores/VoterStore';
+import { renderLog } from '../../utils/logging';
+
+const Alert = React.lazy(() => import('react-bootstrap/Alert'));
+const ActivityPositionList = React.lazy(() => import('./ActivityPositionList'));
+const ActivityPostModal = React.lazy(() => import('./ActivityPostModal'));
+const ActivitySpeakerCard = React.lazy(() => import('./ActivitySpeakerCard'));
+const DelayedLoad = React.lazy(() => import('../Widgets/DelayedLoad'));
 
 
 class ActivityTidbitItem extends Component {

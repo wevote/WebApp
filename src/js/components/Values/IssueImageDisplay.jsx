@@ -1,9 +1,9 @@
-import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import ImageHandler from '../ImageHandler';
-import { renderLog } from '../../utils/logging';
-import { cordovaDot } from '../../utils/cordovaUtils';
+import React, { Component } from 'react';
 import IssueStore from '../../stores/IssueStore';
+import { cordovaDot } from '../../utils/cordovaUtils';
+import { renderLog } from '../../utils/logging';
+import ImageHandler from '../ImageHandler';
 
 
 export default class IssueImageDisplay extends Component {

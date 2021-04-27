@@ -1,186 +1,33 @@
 <!DOCTYPE html>
 <!--
-    index.html for the We Vote WebApp
+    index.html for the We Vote Campaigns
 -->
-<html lang="en">
+<html lang='en'>
   <head>
+<!--    <title><%= htmlWebpackPlugin.options.title %></title>-->
     <meta
       name="description"
       content="We Vote helps you vote your values, with help from your friends and other people you trust. Through our nonpartisan, open source platform, we'll help you become a better voter, up and down the ballot."
     />
-    <title>We Vote</title>
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
     <meta http-equiv="Pragma" content="no-cache" />
     <meta http-equiv="Expires" content="0" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
-    <!-- Feb 2018 WeVote: re 'viewport-fit=cover' see https://issues.apache.org/jira/browse/CB-12886 -->
-    <meta name="google-site-verification" content="aoySVJTrXsoneV19gyPf2KEG1TbGxiNBR_94g5YV8kU" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5, viewport-fit=cover">
     <meta charset="utf-8">
     <meta property="og:url"           content="https://WeVote.US" />
     <meta property="og:type"          content="website" />
-    <meta property="og:title"         content="We Vote" />
+    <meta property="og:title"         content="We Vote Web App" />
     <meta property="og:description"   content="View your ballot. Learn from friends. Share your vision." />
     <meta property="og:image"         content="https://WeVote.US/img/global/logos/we-vote-logo-wordmark-vertical-color-on-white-256x256.png" />
     <base href="/">
     <link href="/css/main.css" rel="stylesheet" type="text/css" />
-
-    <link rel="apple-touch-icon" sizes="180x180" href="/img/global/icons/apple-touch-icon.png">
-    <link rel="icon" type="image/png" sizes="256x256" href="/img/global/icons/android-chrome-256x256.png">
-    <link rel="icon" type="image/png" sizes="192x192" href="/img/global/icons/android-chrome-192x192.png">
     <link rel="icon" type="image/png" sizes="32x32" href="/img/global/icons/favicon-32x32.png" >
     <link rel="icon" type="image/png" sizes="16x16" href="/img/global/icons/favicon-16x16.png" >
     <link rel="icon" sizes="48x48" href="/img/global/icons/favicon.ico" >
-
-    <link rel="preload" as="style" onload="this.rel='stylesheet'" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.css"/>
-    <link rel="preload" as="style" onload="this.rel='stylesheet'" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick-theme.min.css" />
-    <link rel="preload" as="style" onload="this.rel='stylesheet'" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-social/4.12.0/bootstrap-social.min.css" />
   </head>
   <body>
-    <div id="app" class="app-wrapper">
-      <div>
-        <div style="
-          align-items: center;
-          background-color: #fff;
-          color: #0d5470;
-          display: flex;
-          flex-direction: column;
-          font-size: 30px;
-          height: 100vh;
-          justify-content: center;
-          left: 0;
-          margin: 15px;
-          position: fixed;
-          top: 0;
-          width: 100vw;
-          ">
-          <div id="loadingMessage">Your election is loading...</div>
-        </div>
-      </div>
+    <div>
+      <div id="app"></div>
     </div>
-    <!-- This adds over a second delay to main thread, but is required by core bundle.js //-->
-    <script src="https://code.jquery.com/jquery-3.5.0.min.js"></script>
-    <script type="text/javascript" async defer src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-
-    <script type="text/javascript">
-      let firstExistingScript = document.getElementsByTagName('script')[0];
-
-      let scriptElementForBootstrap = document.createElement('script');
-      scriptElementForBootstrap.src = 'https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.4.1/js/bootstrap.min.js';
-      scriptElementForBootstrap.type = 'text/javascript';
-      // firstExistingScript = document.getElementsByTagName('script')[0];
-      firstExistingScript.parentNode.insertBefore(scriptElementForBootstrap, firstExistingScript);
-
-      if (document.documentMode) {
-        //  https://gs.statcounter.com/browser-market-share/all/united-states-of-america                                           48%     35%      4%     5%      0.06%
-        document.getElementById('loadingMessage').innerHTML = "We're sorry, we no longer support Internet Explorer. We recommend Chrome, Safari, Firefox, Edge or Chromium.";
-        console.log('NOT LOADING appleid.auth.js for those who still are using Internet Explorer');
-      } else {
-        let scriptElementForAppleIdAuth = document.createElement('script');
-        scriptElementForAppleIdAuth.src = 'https://appleid.cdn-apple.com/appleauth/static/jsapi/appleid/1/en_US/appleid.auth.js';
-        scriptElementForAppleIdAuth.type = 'text/javascript';
-        firstExistingScript.parentNode.insertBefore(scriptElementForAppleIdAuth, firstExistingScript);
-      }
-
-      const productionSpeed = true;    // SET false WHEN SPEED TESTING
-      if (productionSpeed) {
-        setTimeout(() => {
-          if (!window.leanLoadForChromeExtension) {
-            let scriptElementForGoogleAnalytics = document.createElement('script');
-            scriptElementForGoogleAnalytics.src = '/javascript/google-analytics.js';
-            firstExistingScript = document.getElementsByTagName('script')[0];
-            firstExistingScript.parentNode.insertBefore(scriptElementForGoogleAnalytics, firstExistingScript);
-
-            let scriptElementForGoogleTagManager = document.createElement('script');
-            scriptElementForGoogleTagManager.src = '/javascript/google-tag-manager.js';
-            firstExistingScript = document.getElementsByTagName('script')[0];
-            firstExistingScript.parentNode.insertBefore(scriptElementForGoogleTagManager, firstExistingScript);
-          }
-        }, 3000);
-
-        setTimeout(() => {
-          // We don't want Fontawesome blocking DOMContentLoad
-          if (!window.leanLoadForChromeExtension) {
-            let linkElementForFontAwesome = document.createElement('link');
-            linkElementForFontAwesome.rel = 'stylesheet';
-            linkElementForFontAwesome.href = 'https://use.fontawesome.com/releases/v5.8.2/css/all.css';
-            linkElementForFontAwesome.as = 'style';
-            linkElementForFontAwesome.crossOrigin = 'anonymous';
-            linkElementForFontAwesome.integrity = 'sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay';
-            let firstExistingLink = document.getElementsByTagName('link')[0];
-            firstExistingLink.parentNode.insertBefore(linkElementForFontAwesome, firstExistingLink);
-
-            let scriptElementForTwitterWidgets = document.createElement('script');
-            scriptElementForTwitterWidgets.src = 'https://platform.twitter.com/widgets.js';
-            scriptElementForTwitterWidgets.type = 'text/javascript';
-            let firstExistingScript = document.getElementsByTagName('script')[0];
-            firstExistingScript.parentNode.insertBefore(scriptElementForTwitterWidgets, firstExistingScript);
-          }
-        }, 4000);
-
-        setTimeout(() => {
-          // ZenDesk load delay so it doesn't block main thread
-          if (!window.leanLoadForChromeExtension) {
-            let scriptElementForZenDesk = document.createElement('script');
-            scriptElementForZenDesk.id = 'ze-snippet';
-            scriptElementForZenDesk.src = 'https://static.zdassets.com/ekr/snippet.js?key=117d80d3-9e4e-4aac-8a1c-1ca9ade4266d';
-            let firstExistingScript = document.getElementsByTagName('script')[0];
-            firstExistingScript.parentNode.insertBefore(scriptElementForZenDesk, firstExistingScript);
-          }
-        }, 15000);
-
-        setTimeout(() => {
-          // Delay Stripe load so it doesn't block main thread
-          if (!window.leanLoadForChromeExtension) {
-            let firstExistingScript = document.getElementsByTagName('script')[0];
-            let scriptElement1 = document.createElement('script');
-            scriptElement1.src = 'https://checkout.stripe.com/checkout.js';
-            scriptElement1.type = 'text/javascript';
-            firstExistingScript.parentNode.insertBefore(scriptElement1, firstExistingScript);
-
-            let scriptElement2 = document.createElement('script');
-            scriptElement2.src = 'https://js.stripe.com/v3/';
-            scriptElement2.type = 'text/javascript';
-            firstExistingScript.parentNode.insertBefore(scriptElement2, firstExistingScript);
-          }
-        }, 16000);
-
-        setTimeout(() => {
-          // Maps load so it doesn't block main thread
-          if (!window.leanLoadForChromeExtension) {
-            let scriptElementForMaps = document.createElement('script');
-            scriptElementForMaps.src = 'https://maps.googleapis.com/maps/api/js?key=AIzaSyCM0vM1mzh56OuA5IfgW_U6Qd9jD99WH6M&callback=initMap&libraries=places';
-            let firstExistingScript = document.getElementsByTagName('script')[0];
-            firstExistingScript.parentNode.insertBefore(scriptElementForMaps, firstExistingScript);
-          }
-        }, 20000);
-      }
-
-      function initMap () {
-        //
-      }
-    </script>
-    <script>
-      {/* Zendesk settings */}
-      window.zESettings = {
-        webWidget: {
-          color: {
-            theme: '#2E3C5D',
-            launcher: '#fff',
-            launcherText: '#757575',
-          },
-          chat: {
-            connectOnPageLoad: false,
-          },
-          offset: {
-            vertical: '-2px',
-            horizontal: '-10px',
-            mobile: {
-              vertical: '-2px',
-              horizontal: '-10px',
-            },
-          },
-        }
-      };
-    </script>
   </body>
 </html>

@@ -1,20 +1,21 @@
+import { withStyles } from '@material-ui/core/styles';
+import { Info } from '@material-ui/icons';
+import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import Helmet from 'react-helmet';
 import { Link } from 'react-router-dom';
-import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { withStyles } from '@material-ui/core/styles';
-import { Info } from '@material-ui/icons';
 import AnalyticsActions from '../../actions/AnalyticsActions';
-import BrowserPushMessage from '../Widgets/BrowserPushMessage';
-import LoadingWheel from '../LoadingWheel';
-import { renderLog } from '../../utils/logging';
-import SettingsWidgetAccountType from './SettingsWidgetAccountType';
-import SettingsWidgetFirstLastName from './SettingsWidgetFirstLastName';
-import SettingsWidgetOrganizationDescription from './SettingsWidgetOrganizationDescription';
-import SettingsWidgetOrganizationWebsite from './SettingsWidgetOrganizationWebsite';
-import SettingsProfilePicture from './SettingsProfilePicture';
 import VoterStore from '../../stores/VoterStore';
+import { renderLog } from '../../utils/logging';
+import LoadingWheel from '../LoadingWheel';
+
+const BrowserPushMessage = React.lazy(() => import('../Widgets/BrowserPushMessage'));
+const SettingsProfilePicture = React.lazy(() => import('./SettingsProfilePicture'));
+const SettingsWidgetAccountType = React.lazy(() => import('./SettingsWidgetAccountType'));
+const SettingsWidgetFirstLastName = React.lazy(() => import('./SettingsWidgetFirstLastName'));
+const SettingsWidgetOrganizationDescription = React.lazy(() => import('./SettingsWidgetOrganizationDescription'));
+const SettingsWidgetOrganizationWebsite = React.lazy(() => import('./SettingsWidgetOrganizationWebsite'));
 
 
 class SettingsProfile extends Component {

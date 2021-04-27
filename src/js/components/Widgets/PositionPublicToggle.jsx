@@ -1,17 +1,18 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import styled from 'styled-components';
-import { Dialog, DialogContent, DialogTitle, IconButton, Typography, Radio, FormControlLabel, FormControl } from '@material-ui/core';
-import { Close } from '@material-ui/icons';
+import { Dialog, DialogContent, DialogTitle, FormControl, FormControlLabel, IconButton, Radio, Typography } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
-import { renderLog } from '../../utils/logging';
-import { isCordova, isWebApp } from '../../utils/cordovaUtils'; // hasIPhoneNotch,
-import isMobileScreenSize from '../../utils/isMobileScreenSize';
-import SettingsAccount from '../Settings/SettingsAccount';
+import { Close } from '@material-ui/icons';
+import PropTypes from 'prop-types';
+import React, { Component } from 'react';
+import styled from 'styled-components';
 import SupportActions from '../../actions/SupportActions';
 import SupportStore from '../../stores/SupportStore';
 import VoterStore from '../../stores/VoterStore';
-import { openSnackbar } from './SnackNotifier';
+import { isCordova, isWebApp } from '../../utils/cordovaUtils'; // hasIPhoneNotch,
+import isMobileScreenSize from '../../utils/isMobileScreenSize';
+import { renderLog } from '../../utils/logging';
+
+const SettingsAccount = React.lazy(() => import('../Settings/SettingsAccount'));
+const { openSnackbar } = React.lazy(() => import('./SnackNotifier'));
 // import VoterActions from '../../actions/VoterActions';
 // import VoterConstants from '../../constants/VoterConstants';
 

@@ -1,17 +1,18 @@
 import React, { Component } from 'react';
-import Table from 'react-bootstrap/Table';
 import Helmet from 'react-helmet';
 import { Link } from 'react-router-dom';
-import anonymous from '../../../img/global/icons/avatar-generic.png';
-import avatarGeneric from '../../../img/global/svg-icons/avatar-generic.svg';
 import LoadingWheel from '../../components/LoadingWheel';
-import HamburgerMenuRow from '../../components/Navigation/HamburgerMenuRow';
-import DeviceDialog from '../../components/Widgets/DeviceDialog';
 import VoterStore from '../../stores/VoterStore';
 import { cordovaDot, isCordova, isWebApp } from '../../utils/cordovaUtils';
 import LazyImage from '../../utils/LazyImage';
 import { renderLog } from '../../utils/logging';
 import { voterPhoto } from '../../utils/voterPhoto';
+
+const Table = React.lazy(() => import('react-bootstrap/Table'));
+const anonymous = React.lazy(() => import('../../../img/global/icons/avatar-generic.png'));
+const avatarGeneric = '../../../img/global/svg-icons/avatar-generic.svg';
+const HamburgerMenuRow = React.lazy(() => import('../../components/Navigation/HamburgerMenuRow'));
+const DeviceDialog = React.lazy(() => import('../../components/Widgets/DeviceDialog'));
 
 const webAppConfig = require('../../config');
 

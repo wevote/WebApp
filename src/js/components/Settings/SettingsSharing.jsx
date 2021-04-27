@@ -1,24 +1,26 @@
+import { Button, Switch } from '@material-ui/core';
+import { withStyles } from '@material-ui/core/styles';
+import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import Helmet from 'react-helmet';
-import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { withStyles } from '@material-ui/core/styles';
-import { Button, Switch } from '@material-ui/core';
 import AppActions from '../../actions/AppActions';
-import { cordovaDot, cordovaOpenSafariView, isWebApp } from '../../utils/cordovaUtils';
-import CreateConfiguredVersion from './CreateConfiguredVersion';
-import LoadingWheel from '../LoadingWheel';
 import OrganizationActions from '../../actions/OrganizationActions';
 import OrganizationStore from '../../stores/OrganizationStore';
-import PremiumableButton from '../Widgets/PremiumableButton';
-import { renderLog } from '../../utils/logging';
-import SeeTheseSettingsInAction from './SeeTheseSettingsInAction';
-import SettingsAccount from './SettingsAccount';
-import SettingsAccountLevelChip from './SettingsAccountLevelChip';
-import { ImageDescription, PreviewImage, DescriptionText, SharingRow, SharingColumn, GiantTextInput, HiddenInput, Actions } from './SettingsStyled';
 import VoterStore from '../../stores/VoterStore';
+import { cordovaDot, cordovaOpenSafariView, isWebApp } from '../../utils/cordovaUtils';
+import { renderLog } from '../../utils/logging';
 import { voterFeaturePackageExceedsOrEqualsRequired } from '../../utils/pricingFunctions';
-import DelayedLoad from '../Widgets/DelayedLoad';
+import LoadingWheel from '../LoadingWheel';
+
+const CreateConfiguredVersion = React.lazy(() => import('./CreateConfiguredVersion'));
+const DelayedLoad = React.lazy(() => import('../Widgets/DelayedLoad'));
+const PremiumableButton = React.lazy(() => import('../Widgets/PremiumableButton'));
+const SeeTheseSettingsInAction = React.lazy(() => import('./SeeTheseSettingsInAction'));
+const SettingsAccount = React.lazy(() => import('./SettingsAccount'));
+const SettingsAccountLevelChip = React.lazy(() => import('./SettingsAccountLevelChip'));
+const { ImageDescription, PreviewImage, DescriptionText, SharingRow, SharingColumn, GiantTextInput, HiddenInput, Actions } = React.lazy(() => import('./SettingsStyled'));
+
 
 class SettingsSharing extends Component {
   constructor (props) {

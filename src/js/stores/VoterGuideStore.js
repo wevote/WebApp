@@ -1,13 +1,13 @@
 import { ReduceStore } from 'flux/utils';
-import Dispatcher from '../dispatcher/Dispatcher';
 import OrganizationActions from '../actions/OrganizationActions';
-import OrganizationStore from './OrganizationStore';  // eslint-disable-line import/no-cycle
 import SupportActions from '../actions/SupportActions';
 import VoterGuideActions from '../actions/VoterGuideActions';
-import VoterStore from './VoterStore';  // eslint-disable-line import/no-cycle
-import { arrayContains, convertToInteger } from '../utils/textFormat';
+import Dispatcher from '../dispatcher/Dispatcher';
 import { isSpeakerTypeOrganization, isSpeakerTypePublicFigure } from '../utils/organization-functions';
+import { arrayContains, convertToInteger } from '../utils/textFormat';
 import convertVoterGuideToElection from '../utils/voterGuideFunctions';
+import OrganizationStore from './OrganizationStore'; // eslint-disable-line import/no-cycle
+import VoterStore from './VoterStore'; // eslint-disable-line import/no-cycle
 
 class VoterGuideStore extends ReduceStore {
   // The store keeps nested attributes of voter guides in allCachedVoterGuides, whereas the followed, ignoring, to_follow are just lists of ids.

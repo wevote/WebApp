@@ -2,10 +2,11 @@ import React, { Component } from 'react';
 import Helmet from 'react-helmet';
 import { Link } from 'react-router-dom';
 import { renderLog } from '../../utils/logging';
-import OpenExternalWebSite from '../../components/Widgets/OpenExternalWebSite';
-import ToolBar from './ToolBar';
 
-export default class About extends Component {
+const OpenExternalWebSite = React.lazy(() => import('../../components/Widgets/OpenExternalWebSite'));
+const ToolBar = React.lazy(() => import('./ToolBar'));
+
+export default class FAQ extends Component {
   static getProps () {
     return {};
   }

@@ -1,8 +1,9 @@
-import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import React, { Component } from 'react';
 import { renderLog } from '../../utils/logging';
-import ThisIsMeAction from '../../components/Widgets/ThisIsMeAction';
-import TwitterAccountCard from '../../components/Twitter/TwitterAccountCard';
+
+const ThisIsMeAction = React.lazy(() => import('../../components/Widgets/ThisIsMeAction'));
+const TwitterAccountCard = React.lazy(() => import('../../components/Twitter/TwitterAccountCard'));
 
 export default class UnknownTwitterAccount extends Component {
   constructor (props) {

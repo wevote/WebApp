@@ -1,10 +1,11 @@
-import React, { Component } from 'react';
+import { withStyles, withTheme } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
+import React, { Component } from 'react';
 import styled from 'styled-components';
-import { withTheme, withStyles } from '@material-ui/core/styles';
 import { historyPush } from '../../utils/cordovaUtils';
-import CandidateItemForOpinions from './CandidateItemForOpinions';
 import { renderLog } from '../../utils/logging';
+
+const CandidateItemForOpinions = React.lazy(() => import('./CandidateItemForOpinions'));
 
 class CandidateSearchItemForOpinions extends Component {
   constructor (props) {

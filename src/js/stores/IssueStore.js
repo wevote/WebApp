@@ -1,13 +1,13 @@
 import { ReduceStore } from 'flux/utils';
-import Dispatcher from '../dispatcher/Dispatcher';
-import BallotStore from './BallotStore';  // eslint-disable-line import/no-cycle
 import IssueActions from '../actions/IssueActions';
-import OrganizationStore from './OrganizationStore';  // eslint-disable-line import/no-cycle
-import VoterActions from '../actions/VoterActions';  // eslint-disable-line import/no-cycle
+import VoterActions from '../actions/VoterActions'; // eslint-disable-line import/no-cycle
 import VoterConstants from '../constants/VoterConstants';
-import VoterGuideStore from './VoterGuideStore';  // eslint-disable-line import/no-cycle
-import VoterStore from './VoterStore';  // eslint-disable-line import/no-cycle
+import Dispatcher from '../dispatcher/Dispatcher';
 import { arrayContains, convertNameToSlug, removeValueFromArray } from '../utils/textFormat';
+import BallotStore from './BallotStore'; // eslint-disable-line import/no-cycle
+import OrganizationStore from './OrganizationStore'; // eslint-disable-line import/no-cycle
+import VoterGuideStore from './VoterGuideStore'; // eslint-disable-line import/no-cycle
+import VoterStore from './VoterStore'; // eslint-disable-line import/no-cycle
 
 class IssueStore extends ReduceStore {
   getInitialState () {
@@ -386,7 +386,7 @@ class IssueStore extends ReduceStore {
       case 'issueFollow':
         // // When a voter follows or unfollows an issue on the ballot intro modal screen, update the voter guide list
         // VoterGuideActions.voterGuidesToFollowRetrieveByIssuesFollowed(); // DALE 2019-12-26 Testing without this
-        IssueActions.issuesFollowedRetrieve();
+        IssueActions.issuesFollowedRetrieve(VoterStore.getVoterWeVoteId());
         if (action.res.google_civic_election_id && action.res.google_civic_election_id > 0) {
           voterElectionId = action.res.google_civic_election_id;
         } else {
@@ -446,7 +446,7 @@ class IssueStore extends ReduceStore {
         return revisedState;
 
       case 'issueDescriptionsRetrieveCalled':
-        // Make note that allBallotItemsRetrieved has been called - do not call again
+        // Make note that issueDescriptionsRetrieveCalled has been called - do not call again
         return { ...state, issueDescriptionsRetrieveCalled: action.payload };
 
       case 'issuesFollowedRetrieve':
@@ -518,7 +518,7 @@ class IssueStore extends ReduceStore {
         return revisedState;
 
       case 'issuesUnderBallotItemsRetrieveCalled':
-        // Make note that allBallotItemsRetrieved has been called - do not call again
+        // Make note that issuesUnderBallotItemsRetrieveCalled has been called - do not call again
         issuesUnderBallotItemsRetrieveCalled = state.issuesUnderBallotItemsRetrieveCalled || {};
         issuesUnderBallotItemsRetrieveCalled[action.payload] = true;
         return { ...state, issuesUnderBallotItemsRetrieveCalled };
@@ -857,12 +857,12 @@ class IssueStore extends ReduceStore {
       case 'voterFacebookSignInRetrieve':
       case 'voterMergeTwoAccounts':
       case 'voterVerifySecretCode':
-        IssueActions.issuesFollowedRetrieve();
+        IssueActions.issuesFollowedRetrieve(VoterStore.getVoterWeVoteId());
         return this.resetState();
 
       case 'voterSignOut':
         // console.log('resetting IssueStore');
-        IssueActions.issuesFollowedRetrieve();
+        IssueActions.issuesFollowedRetrieve(VoterStore.getVoterWeVoteId());
         return this.resetState();
 
       default:

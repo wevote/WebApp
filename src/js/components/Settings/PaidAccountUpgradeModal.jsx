@@ -1,20 +1,23 @@
-import React, { Component } from 'react';
-import { Elements, StripeProvider } from 'react-stripe-elements';
-import PropTypes from 'prop-types';
-import styled from 'styled-components';
 import { Button, Dialog, DialogContent, FormControl, FormControlLabel, IconButton, OutlinedInput, Radio, RadioGroup } from '@material-ui/core';
-import { Close, ArrowBack, ArrowBackIos } from '@material-ui/icons';
 import { withStyles, withTheme } from '@material-ui/core/styles';
-import { renderLog } from '../../utils/logging';
+import { ArrowBack, ArrowBackIos, Close } from '@material-ui/icons';
+import PropTypes from 'prop-types';
+import React, { Component } from 'react';
+import styled from 'styled-components';
+import DonateActions from '../../actions/DonateActions';
+import webAppConfig from '../../config';
+import DonateStore from '../../stores/DonateStore';
 import { hasIPhoneNotch, isIOS } from '../../utils/cordovaUtils';
 import extractNumber from '../../utils/extractNumber';
+import { renderLog } from '../../utils/logging';
 import { numberWithCommas, stringContains } from '../../utils/textFormat';
-import DonateStore from '../../stores/DonateStore';
-import DonateActions from '../../actions/DonateActions';
-import OpenExternalWebSite from '../Widgets/OpenExternalWebSite';
-import Pricing from '../../routes/More/Pricing'; // eslint-disable-line import/no-cycle
-import SettingsStripePayment from './SettingsStripePayment';
-import webAppConfig from '../../config';
+
+// April 2021:  Need to convert over to the up-to-date (allowed by stripe) "@stripe/react-stripe-js"
+// TODO: Backport "@stripe/react-stripe-js" use from Campaigns
+const { Elements, StripeProvider } = React.lazy(() => import('react-stripe-elements'));
+const OpenExternalWebSite = React.lazy(() => import('../Widgets/OpenExternalWebSite'));
+const Pricing = React.lazy(() => import('../../routes/More/Pricing'));  // eslint-disable-line import/no-cycle
+const SettingsStripePayment = React.lazy(() => import('./SettingsStripePayment'));
 
 /* global $ */
 

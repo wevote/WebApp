@@ -1,43 +1,30 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import styled from 'styled-components';
+import { Button, Drawer, MenuItem } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
-import {
-  Comment,
-  ArrowBackIos,
-  Reply,
-  FileCopyOutlined,
-  Info,
-} from '@material-ui/icons';
-import { Drawer, MenuItem, Button } from '@material-ui/core';
-import {
-  EmailIcon,
-  EmailShareButton,
-  FacebookIcon,
-  FacebookShareButton, TwitterIcon,
-  TwitterShareButton,
-} from 'react-share';
+import { ArrowBackIos, Comment, FileCopyOutlined, Info, Reply } from '@material-ui/icons';
+import PropTypes from 'prop-types';
+import React, { Component } from 'react';
+import styled from 'styled-components';
 import AnalyticsActions from '../../actions/AnalyticsActions';
 import AppActions from '../../actions/AppActions';
-import AppStore from '../../stores/AppStore';
-import LoadingWheel from '../LoadingWheel';
-import OpenExternalWebSite from '../Widgets/OpenExternalWebSite';
-import ReadMore from '../Widgets/ReadMore';
 import ShareActions from '../../actions/ShareActions';
-import ShareModalOption from './ShareModalOption';
+import AppStore from '../../stores/AppStore';
 import ShareStore from '../../stores/ShareStore';
 import VoterStore from '../../stores/VoterStore';
-import isMobile from '../../utils/isMobile';
-import { androidFacebookClickHandler, androidTwitterClickHandler, cordovaSocialSharingByEmail } from './shareButtonCommon';
-import {
-  getApplicationViewBooleans,
-  hideZenDeskHelpVisibility, showZenDeskHelpVisibility,
-} from '../../utils/applicationUtils';
-import { historyPush, isAndroid, isCordova, isWebApp } from '../../utils/cordovaUtils';
-import { openSnackbar } from '../Widgets/SnackNotifier';
-import { renderLog } from '../../utils/logging';
+import { getApplicationViewBooleans, hideZenDeskHelpVisibility, showZenDeskHelpVisibility } from '../../utils/applicationUtils';
 import { shareBottomOffset } from '../../utils/cordovaOffsets';
+import { historyPush, isAndroid, isCordova, isWebApp } from '../../utils/cordovaUtils';
+import isMobile from '../../utils/isMobile';
+import { renderLog } from '../../utils/logging';
 import { startsWith, stringContains } from '../../utils/textFormat';
+import LoadingWheel from '../LoadingWheel';
+
+const OpenExternalWebSite = React.lazy(() => import('../Widgets/OpenExternalWebSite'));
+const ReadMore = React.lazy(() => import('../Widgets/ReadMore'));
+const ShareModalOption = React.lazy(() => import('./ShareModalOption'));
+const { EmailIcon, EmailShareButton, FacebookIcon, FacebookShareButton, TwitterIcon, TwitterShareButton } = React.lazy(() => import('react-share'));
+const { androidFacebookClickHandler, androidTwitterClickHandler, cordovaSocialSharingByEmail } = React.lazy(() => import('./shareButtonCommon'));
+const { openSnackbar } = React.lazy(() => import('../Widgets/SnackNotifier'));
+
 
 class ShareButtonFooter extends Component {
   constructor (props) {

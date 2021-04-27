@@ -1,30 +1,31 @@
+import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import * as PropTypes from 'prop-types';
-import { ToastContainer } from 'react-toastify';
 import styled from 'styled-components';
 import AppActions from './actions/AppActions';
+import ElectionActions from './actions/ElectionActions';
+import FriendActions from './actions/FriendActions';
+import OrganizationActions from './actions/OrganizationActions';
+import VoterActions from './actions/VoterActions';
+import signInModalGlobalState from './components/Widgets/signInModalGlobalState';
+import webAppConfig from './config';
 import AppStore from './stores/AppStore';
+import VoterStore from './stores/VoterStore';
 import { getApplicationViewBooleans, setZenDeskHelpVisibility } from './utils/applicationUtils';
 import cookies from './utils/cookies';
-import { getToastClass, historyPush, isIOSAppOnMac, isCordova, isWebApp } from './utils/cordovaUtils';
 import { cordovaContainerMainOverride, cordovaVoterGuideTopPadding } from './utils/cordovaOffsets';
 import cordovaScrollablePaneTopPadding from './utils/cordovaScrollablePaneTopPadding';
-import DelayedLoad from './components/Widgets/DelayedLoad';
+import { getToastClass, historyPush, isCordova, isIOSAppOnMac, isWebApp } from './utils/cordovaUtils';
 import displayFriendsTabs from './utils/displayFriendsTabs';
-import ElectionActions from './actions/ElectionActions';
-import FooterBar from './components/Navigation/FooterBar';
-import FriendActions from './actions/FriendActions';
-import Header from './components/Navigation/Header';
-import OrganizationActions from './actions/OrganizationActions';
 import { renderLog, routingLog } from './utils/logging';
-import ShareButtonFooter from './components/Share/ShareButtonFooter';
-import signInModalGlobalState from './components/Widgets/signInModalGlobalState';
-import SnackNotifier from './components/Widgets/SnackNotifier';
 import { stringContains } from './utils/textFormat';
-import { initializationForCordova, removeCordovaSpecificListeners } from './startCordova';
-import VoterActions from './actions/VoterActions';
-import VoterStore from './stores/VoterStore';
-import webAppConfig from './config';
+
+const DelayedLoad = React.lazy(() => import('./components/Widgets/DelayedLoad'));
+const FooterBar = React.lazy(() => import('./components/Navigation/FooterBar'));
+const Header = React.lazy(() => import('./components/Navigation/Header'));
+const ShareButtonFooter = React.lazy(() => import('./components/Share/ShareButtonFooter'));
+const SnackNotifier = React.lazy(() => import('./components/Widgets/SnackNotifier'));
+const { ToastContainer } = React.lazy(() => import('react-toastify'));
+const { initializationForCordova, removeCordovaSpecificListeners } = React.lazy(() => import('./startCordova'));
 
 
 class Application extends Component {

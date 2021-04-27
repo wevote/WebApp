@@ -1,10 +1,11 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import styled from 'styled-components';
 import { Button } from '@material-ui/core';
-import { Place } from '@material-ui/icons';
 import { withStyles } from '@material-ui/core/styles';
-import OpenExternalWebSite from '../Widgets/OpenExternalWebSite';
+import { Place } from '@material-ui/icons';
+import PropTypes from 'prop-types';
+import React, { Component } from 'react';
+import styled from 'styled-components';
+
+const OpenExternalWebSite = React.lazy(() => import('../Widgets/OpenExternalWebSite'));
 
 class FindPollingLocation extends Component {
   constructor (props) {

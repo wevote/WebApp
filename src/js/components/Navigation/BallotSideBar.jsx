@@ -1,13 +1,14 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
-import { withStyles } from '@material-ui/core/styles';
 import { List, Typography } from '@material-ui/core';
+import { withStyles } from '@material-ui/core/styles';
+import PropTypes from 'prop-types';
+import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import BallotStore from '../../stores/BallotStore';
-import BallotSideBarLink from './BallotSideBarLink';
 import { renderLog } from '../../utils/logging';
-import BallotSummaryAccordion from './BallotSummaryAccordion';
+
+const BallotSideBarLink = React.lazy(() => import('./BallotSideBarLink'));
+const BallotSummaryAccordion = React.lazy(() => import('./BallotSummaryAccordion'));
 
 // December 2018:  We want to work toward being airbnb style compliant, but for now these are disabled in this file to minimize massive changes
 /* eslint no-restricted-syntax: 1 */

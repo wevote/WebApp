@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
-import Button from 'react-bootstrap/Button';
-import { historyPush } from '../../utils/cordovaUtils';
-import LoadingWheel from '../LoadingWheel';
-import { renderLog } from '../../utils/logging';
 import FriendActions from '../../actions/FriendActions';
 import FriendStore from '../../stores/FriendStore';
 import VoterStore from '../../stores/VoterStore';
+import { historyPush } from '../../utils/cordovaUtils';
+import { renderLog } from '../../utils/logging';
+import LoadingWheel from '../LoadingWheel';
+
+const Button = React.lazy(() => import('react-bootstrap/Button'));
 
 // this is currently not called by the interface
 export default class AddFriendsByEmailBulk extends Component {

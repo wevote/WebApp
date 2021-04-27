@@ -1,19 +1,20 @@
+import { withStyles } from '@material-ui/core/styles';
+import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import Helmet from 'react-helmet';
 import { Link } from 'react-router-dom';
-import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { withStyles } from '@material-ui/core/styles';
 import AppActions from '../../actions/AppActions';
+import VoterStore from '../../stores/VoterStore';
 import cordovaScrollablePaneTopPadding from '../../utils/cordovaScrollablePaneTopPadding';
 import { renderLog } from '../../utils/logging';
-import WelcomeFooter from '../../components/Welcome/WelcomeFooter';
-import Section from '../../components/Welcome/Section';
-import PricingCard from '../../components/More/PricingCard';
-import PricingSwitch from '../../components/Widgets/PricingSwitch';
-import VoterStore from '../../stores/VoterStore';
+
 // eslint-disable-next-line import/no-cycle
-import WelcomeAppbar from '../../components/Navigation/WelcomeAppbar';
+const PricingCard = React.lazy(() => import('../../components/More/PricingCard'));
+const PricingSwitch = React.lazy(() => import('../../components/Widgets/PricingSwitch'));
+const Section = React.lazy(() => import('../../components/Welcome/Section'));
+const WelcomeAppbar = React.lazy(() => import('../../components/Navigation/WelcomeAppbar'));
+const WelcomeFooter = React.lazy(() => import('../../components/Welcome/WelcomeFooter'));
 
 
 class Pricing extends Component {

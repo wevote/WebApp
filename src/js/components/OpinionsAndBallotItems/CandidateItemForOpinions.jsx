@@ -1,16 +1,17 @@
+import { withStyles, withTheme } from '@material-ui/core/styles';
+import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { withTheme, withStyles } from '@material-ui/core/styles';
 import CandidateStore from '../../stores/CandidateStore';
-import ImageHandler from '../ImageHandler';
-import ItemActionBar from '../Widgets/ItemActionBar/ItemActionBar';
-import ItemPositionStatementActionBar from '../Widgets/ItemPositionStatementActionBar';
-import { renderLog } from '../../utils/logging';
 import SupportStore from '../../stores/SupportStore';
-import { abbreviateNumber, numberWithCommas } from '../../utils/textFormat';
 import { historyPush, isCordova } from '../../utils/cordovaUtils';
+import { renderLog } from '../../utils/logging';
+import { abbreviateNumber, numberWithCommas } from '../../utils/textFormat';
+import ImageHandler from '../ImageHandler';
+
+const ItemActionBar = React.lazy(() => import('../Widgets/ItemActionBar/ItemActionBar'));
+const ItemPositionStatementActionBar = React.lazy(() => import('../Widgets/ItemPositionStatementActionBar'));
 
 
 class CandidateItemForOpinions extends Component {

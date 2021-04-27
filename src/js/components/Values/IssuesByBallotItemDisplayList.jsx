@@ -1,12 +1,13 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import styled from 'styled-components';
 import { MoreHoriz } from '@material-ui/icons';
+import PropTypes from 'prop-types';
+import React, { Component } from 'react';
+import styled from 'styled-components';
 import IssueStore from '../../stores/IssueStore';
-import ValueIconAndText from './ValueIconAndText';
 import VoterGuideStore from '../../stores/VoterGuideStore';
-import signInModalGlobalState from '../Widgets/signInModalGlobalState';
 import { renderLog } from '../../utils/logging';
+import signInModalGlobalState from '../Widgets/signInModalGlobalState';
+
+const ValueIconAndText = React.lazy(() => import('./ValueIconAndText'));
 
 // Show a voter a horizontal list of all of the issues they are following that relate to this ballot item
 class IssuesByBallotItemDisplayList extends Component {

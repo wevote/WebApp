@@ -1,37 +1,39 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import Helmet from 'react-helmet';
-import styled from 'styled-components';
 import { withStyles } from '@material-ui/core/styles';
 import { Info } from '@material-ui/icons';
+import PropTypes from 'prop-types';
+import React, { Component } from 'react';
+import Helmet from 'react-helmet';
+import styled from 'styled-components';
 import ActivityActions from '../../actions/ActivityActions';
 import AnalyticsActions from '../../actions/AnalyticsActions';
 import AppActions from '../../actions/AppActions';
+import CandidateActions from '../../actions/CandidateActions';
+import IssueActions from '../../actions/IssueActions';
+import OrganizationActions from '../../actions/OrganizationActions';
+import VoterGuideActions from '../../actions/VoterGuideActions';
+import LoadingWheel from '../../components/LoadingWheel';
+import webAppConfig from '../../config';
 import AppStore from '../../stores/AppStore';
 import BallotStore from '../../stores/BallotStore';
-import CandidateActions from '../../actions/CandidateActions';
-import CandidateItem from '../../components/Ballot/CandidateItem';
-import ShareButtonDesktopTablet from '../../components/Share/ShareButtonDesktopTablet';
-import CandidateStickyHeader from '../../components/Ballot/CandidateStickyHeader';
 import CandidateStore from '../../stores/CandidateStore';
-import { isWebApp } from '../../utils/cordovaUtils';
-import { capitalizeString, convertToInteger } from '../../utils/textFormat';
-import DelayedLoad from '../../components/Widgets/DelayedLoad';
-import EndorsementCard from '../../components/Widgets/EndorsementCard';
-import IssueActions from '../../actions/IssueActions';
 import IssueStore from '../../stores/IssueStore';
-import LoadingWheel from '../../components/LoadingWheel';
-import { renderLog } from '../../utils/logging';
-import OpenExternalWebSite from '../../components/Widgets/OpenExternalWebSite';
-import OrganizationActions from '../../actions/OrganizationActions';
-import PositionList from '../../components/Ballot/PositionList';
-import SearchOnGoogle from '../../components/Widgets/SearchOnGoogle';
-import ThisIsMeAction from '../../components/Widgets/ThisIsMeAction';
-import ViewOnBallotpedia from '../../components/Widgets/ViewOnBallotpedia';
-import VoterGuideActions from '../../actions/VoterGuideActions';
 import VoterGuideStore from '../../stores/VoterGuideStore';
 import VoterStore from '../../stores/VoterStore';
-import webAppConfig from '../../config';
+import { isWebApp } from '../../utils/cordovaUtils';
+import { renderLog } from '../../utils/logging';
+import { capitalizeString, convertToInteger } from '../../utils/textFormat';
+
+const CandidateItem = React.lazy(() => import('../../components/Ballot/CandidateItem'));
+const CandidateStickyHeader = React.lazy(() => import('../../components/Ballot/CandidateStickyHeader'));
+const DelayedLoad = React.lazy(() => import('../../components/Widgets/DelayedLoad'));
+const EndorsementCard = React.lazy(() => import('../../components/Widgets/EndorsementCard'));
+const OpenExternalWebSite = React.lazy(() => import('../../components/Widgets/OpenExternalWebSite'));
+const PositionList = React.lazy(() => import('../../components/Ballot/PositionList'));
+const SearchOnGoogle = React.lazy(() => import('../../components/Widgets/SearchOnGoogle'));
+const ShareButtonDesktopTablet = React.lazy(() => import('../../components/Share/ShareButtonDesktopTablet'));
+const ThisIsMeAction = React.lazy(() => import('../../components/Widgets/ThisIsMeAction'));
+const ViewOnBallotpedia = React.lazy(() => import('../../components/Widgets/ViewOnBallotpedia'));
+
 
 // const nextReleaseFeaturesEnabled = webAppConfig.ENABLE_NEXT_RELEASE_FEATURES === undefined ? false : webAppConfig.ENABLE_NEXT_RELEASE_FEATURES;
 
@@ -113,11 +115,8 @@ class Candidate extends Component {
     OrganizationActions.organizationsFollowedRetrieve();
 
     const allCachedPositionsForThisCandidate = CandidateStore.getAllCachedPositionsByCandidateWeVoteId(candidateWeVoteId);
-    if (!IssueStore.issueDescriptionsRetrieveCalled()) {
-      IssueActions.issueDescriptionsRetrieve();
-      // IssueActions.issueDescriptionsRetrieveCalled(); // TODO: Move this to AppActions? Currently throws error: 'Cannot dispatch in the middle of a dispatch'
-    }
-    IssueActions.issuesFollowedRetrieve();
+    IssueActions.issueDescriptionsRetrieve(VoterStore.getVoterWeVoteId());
+    IssueActions.issuesFollowedRetrieve(VoterStore.getVoterWeVoteId());
     if (VoterStore.electionId() && !IssueStore.issuesUnderBallotItemsRetrieveCalled(VoterStore.electionId())) {
       IssueActions.issuesUnderBallotItemsRetrieve(VoterStore.electionId());
       // IssueActions.issuesUnderBallotItemsRetrieveCalled(VoterStore.electionId()); // TODO: Move this to AppActions? Currently throws error: 'Cannot dispatch in the middle of a dispatch'

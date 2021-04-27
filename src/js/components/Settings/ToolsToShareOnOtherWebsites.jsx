@@ -1,10 +1,11 @@
+import PropTypes from 'prop-types';
 import React from 'react';
 import Helmet from 'react-helmet';
 import styled from 'styled-components';
-import PropTypes from 'prop-types';
-import CodeCopier from '../Widgets/CodeCopier';
 import cordovaScrollablePaneTopPadding from '../../utils/cordovaScrollablePaneTopPadding';
-import OpenExternalWebSite from '../Widgets/OpenExternalWebSite';
+
+const CodeCopier = React.lazy(() => import('../Widgets/CodeCopier'));
+const OpenExternalWebSite = React.lazy(() => import('../Widgets/OpenExternalWebSite'));
 
 
 export default function ToolsToShareOnOtherWebsites (props) {
