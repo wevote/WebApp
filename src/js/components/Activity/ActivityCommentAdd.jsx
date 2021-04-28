@@ -1,15 +1,14 @@
-import React, { Component } from 'react';
-
-import PropTypes from 'prop-types';
-import styled from 'styled-components';
-import { withStyles, withTheme } from '@material-ui/core/styles';
 import { FormControl, IconButton, InputAdornment, TextField } from '@material-ui/core';
+import { withStyles, withTheme } from '@material-ui/core/styles';
 import { AccountCircle, Send } from '@material-ui/icons';
+import PropTypes from 'prop-types';
+import React, { Component } from 'react';
+import styled from 'styled-components';
 import ActivityActions from '../../actions/ActivityActions';
-import ActivityStore from '../../stores/ActivityStore';
 import AppActions from '../../actions/AppActions';
-import { renderLog } from '../../utils/logging';
+import ActivityStore from '../../stores/ActivityStore';
 import VoterStore from '../../stores/VoterStore';
+import { renderLog } from '../../utils/logging';
 
 
 class ActivityCommentAdd extends Component {

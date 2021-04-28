@@ -2,6 +2,7 @@ import cookies from './cookies';
 import { isIOSAppOnMac, isCordova, isWebApp } from './cordovaUtils';
 import { startsWith, stringContains } from './textFormat';
 
+
 // We have to do all this, because we allow urls where the path starts with a twitter username (handle)
 // as a result every path has to be evaluated for an exact routable match, and what is left is a twitter handle path.
 // Based on the pathname parameter, decide if we want theaterMode, contentFullWidthMode, or voterGuideMode

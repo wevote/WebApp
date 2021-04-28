@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import TestimonialPhoto from '../../img/global/photos/Dale_McGrew-200x200.jpg';
 import AnalyticsActions from '../actions/AnalyticsActions';
 import IssueActions from '../actions/IssueActions';
+import LoadingWheel from '../components/LoadingWheel';
 import Testimonial from '../components/Widgets/Testimonial';
 import IssueStore from '../stores/IssueStore';
 import VoterStore from '../stores/VoterStore';
@@ -90,8 +91,7 @@ export default class Values extends Component {
   render () {
     renderLog('Values');  // Set LOG_RENDER_EVENTS to log all renders
     if (!this.state.voter) {
-      // HACK TODO return LoadingWheel;
-      return '<div>LoadingWheel</div>';
+      return LoadingWheel;
     }
     const { issuesFollowedCount, issuesToFollowShouldBeDisplayed, voterIsSignedIn } = this.state;
 

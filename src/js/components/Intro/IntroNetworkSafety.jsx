@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-
 import PropTypes from 'prop-types';
 import { cordovaNetworkNextButtonTop } from '../../utils/cordovaOffsets';
 import { cordovaDot } from '../../utils/cordovaUtils';

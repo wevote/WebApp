@@ -1,20 +1,20 @@
 /* eslint-disable no-nested-ternary */
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import styled from 'styled-components';
 import { Button } from '@material-ui/core';
+import PropTypes from 'prop-types';
+import React, { Component } from 'react';
+import styled from 'styled-components';
 import BallotActions from '../../actions/BallotActions';
-import BallotStore from '../../stores/BallotStore';
-import initializeMoment from '../../utils/initializeMoment';
-import { historyPush } from '../../utils/cordovaUtils';
-import { renderLog } from '../../utils/logging';
-import LoadingWheel from '../LoadingWheel';
 import OrganizationActions from '../../actions/OrganizationActions';
 import VoterActions from '../../actions/VoterActions';
-import VoterStore from '../../stores/VoterStore';
-import { cleanArray } from '../../utils/textFormat';
-import VoterGuideStore from '../../stores/VoterGuideStore';
 import VoterGuideActions from '../../actions/VoterGuideActions';
+import BallotStore from '../../stores/BallotStore';
+import VoterGuideStore from '../../stores/VoterGuideStore';
+import VoterStore from '../../stores/VoterStore';
+import { historyPush } from '../../utils/cordovaUtils';
+import initializeMoment from '../../utils/initializeMoment';
+import { renderLog } from '../../utils/logging';
+import { cleanArray } from '../../utils/textFormat';
+import LoadingWheel from '../LoadingWheel';
 
 const DelayedLoad = React.lazy(() => import('../Widgets/DelayedLoad'));
 

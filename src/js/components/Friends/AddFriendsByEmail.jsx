@@ -11,6 +11,7 @@ import { blurTextFieldAndroid, focusTextFieldAndroid } from '../../utils/cordova
 import isMobileScreenSize from '../../utils/isMobileScreenSize';
 import { renderLog } from '../../utils/logging';
 import { validatePhoneOrEmail } from '../../utils/regex-checks';
+import LoadingWheel from '../LoadingWheel';
 
 const DelayedLoad = React.lazy(() => import('../Widgets/DelayedLoad'));
 const SettingsAccount = React.lazy(() => import('../Settings/SettingsAccount'));
@@ -243,8 +244,7 @@ class AddFriendsByEmail extends Component {
     const atLeastOneValidated = friendsToInvite.length !== 0 || validatePhoneOrEmail(friendContactInfo);
 
     if (loading) {
-      // HACK TODO return LoadingWheel;
-      return '<div>LoadingWheel</div>';
+      return LoadingWheel;
     }
     return (
       <div>

@@ -2,7 +2,6 @@ import { ReduceStore } from 'flux/utils';
 import assign from 'object-assign';
 import Dispatcher from '../dispatcher/Dispatcher';
 
-
 class OfficeStore extends ReduceStore {
   getInitialState () {
     return {

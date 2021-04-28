@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-
 import { historyPush } from '../../utils/cordovaUtils';
 import { renderLog } from '../../utils/logging';
 import webAppConfig from '../../config';

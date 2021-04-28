@@ -263,10 +263,6 @@ class BallotItemSupportOpposeCountDisplay extends Component {
     let voterSupportsBallotItem = SupportStore.voterSupportsList[ballotItemWeVoteId] || false;
     let voterOpposesBallotItem = SupportStore.voterOpposesList[ballotItemWeVoteId] || false;
 
-    // console.log(allCachedPositionsLength);
-    // const b1 = allCachedPositionsLength !== undefined;
-    // const b2 = currentFriendsOrganizationWeVoteIdsLength || issueWeVoteIdsLinkedToByOrganizationDictLength || organizationWeVoteIdsVoterIsFollowingLength;
-    // const minimumPositionSummaryListVariablesFound = b1 && b2;
     const minimumPositionSummaryListVariablesFound = !!(allCachedPositionsLength !== undefined && (currentFriendsOrganizationWeVoteIdsLength || issueWeVoteIdsLinkedToByOrganizationDictLength || organizationWeVoteIdsVoterIsFollowingLength));
     const changedPositionSummaryListVariablesFound = !!((allCachedPositionsLength !== priorAllCachedPositionsLength) || (allIssuesVoterIsFollowingLength !== priorAllIssuesVoterIsFollowingLength) || (currentFriendsOrganizationWeVoteIdsLength !== priorCurrentFriendsOrganizationWeVoteIdsLength) || (issueWeVoteIdsLinkedToByOrganizationDictLength !== priorIssueWeVoteIdsLinkedToByOrganizationDictLength) || (organizationWeVoteIdsVoterIsFollowingLength !== priorOrganizationWeVoteIdsVoterIsFollowingLength) || (voterOpposesListLength !== priorVoterOpposesListLength) || (voterSupportsListLength !== priorVoterSupportsListLength));
     const changedVoterPosition = !!((voterOpposesBallotItem !== priorVoterOpposesBallotItem) || (voterSupportsBallotItem !== priorVoterSupportsBallotItem));
@@ -309,10 +305,7 @@ class BallotItemSupportOpposeCountDisplay extends Component {
       let voterPersonalNetworkScoreIsNegative = false;
       let voterPersonalNetworkScoreIsPositive = false;
       if (ballotItemStatSheet) {
-        ({
-          voterOpposesBallotItem,
-          voterSupportsBallotItem,
-        } = ballotItemStatSheet);
+        ({ voterOpposesBallotItem, voterSupportsBallotItem } = ballotItemStatSheet);
         numberOfSupportPositionsForScore = parseInt(ballotItemStatSheet.numberOfSupportPositionsForScore) || 0;
         numberOfOpposePositionsForScore = parseInt(ballotItemStatSheet.numberOfOpposePositionsForScore) || 0;
         // console.log('numberOfSupportPositionsForScore:', numberOfSupportPositionsForScore);
