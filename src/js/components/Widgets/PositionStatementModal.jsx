@@ -16,6 +16,8 @@ import { stringContains } from '../../utils/textFormat';
 const FirstAndLastNameRequiredAlert = React.lazy(() => import('./FirstAndLastNameRequiredAlert'));
 const ItemActionBar = React.lazy(() => import('./ItemActionBar/ItemActionBar'));
 const stockAvatar = React.lazy(() => import('../../../img/global/icons/avatar-generic.png'));
+// const anonymous = '../../../img/global/icons/avatar-generic.png';
+
 
 class PositionStatementModal extends Component {
   constructor (props) {

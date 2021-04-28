@@ -328,48 +328,48 @@ const Row = styled.div`
   }
 `;
 
-const MapChartWrapper = styled.div`
-  display: block;
-  width: 100%;
-  padding: 12px;
-  top: 0;
-  svg {
-    margin-top: -22px;
-  }
-  @media(min-width: 576px) {
-    width: auto;
-    flex: 1 1 0;
-  }
-  // @media (min-width: 860px) {
-  //   display: block;
-  //   width: 50%;
-  //   padding: 16px;
-  //   position: sticky;
-  //   top: 0;
-  //   svg {
-  //     margin-top: -36px;
-  //   }
-  // }
-`;
+// const MapChartWrapper = styled.div`
+//   display: block;
+//   width: 100%;
+//   padding: 12px;
+//   top: 0;
+//   svg {
+//     margin-top: -22px;
+//   }
+//   @media(min-width: 576px) {
+//     width: auto;
+//     flex: 1 1 0;
+//   }
+//   // @media (min-width: 860px) {
+//   //   display: block;
+//   //   width: 50%;
+//   //   padding: 16px;
+//   //   position: sticky;
+//   //   top: 0;
+//   //   svg {
+//   //     margin-top: -36px;
+//   //   }
+//   // }
+// `;
 
-const MapChartWrapperDesktop = styled.div`
-  display: block;
-  width: 50%;
-  padding: 12px;
-  top: 0;
-  svg {
-    margin-top: -22px;
-  }
-  @media (min-width: 860px) {
-    display: block;
-    padding: 16px;
-    position: sticky;
-    top: 0;
-    svg {
-      margin-top: -36px;
-    }
-  }
-`;
+// const MapChartWrapperDesktop = styled.div`
+//   display: block;
+//   width: 50%;
+//   padding: 12px;
+//   top: 0;
+//   svg {
+//     margin-top: -22px;
+//   }
+//   @media (min-width: 860px) {
+//     display: block;
+//     padding: 16px;
+//     position: sticky;
+//     top: 0;
+//     svg {
+//       margin-top: -36px;
+//     }
+//   }
+// `;
 
 const SidebarWrapper = styled.div`
   padding: 16px;

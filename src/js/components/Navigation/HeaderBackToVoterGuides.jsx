@@ -20,12 +20,13 @@ import { renderLog } from '../../utils/logging';
 import { isProperlyFormattedVoterGuideWeVoteId, shortenText, stringContains } from '../../utils/textFormat';
 import { voterPhoto } from '../../utils/voterPhoto';
 
-const anonymous = React.lazy(() => import('../../../img/global/icons/avatar-generic.png'));
 const EndorsementModeTabs = React.lazy(() => import('./EndorsementModeTabs'));
 const HeaderBackToButton = React.lazy(() => import('./HeaderBackToButton'));
 const HeaderBarProfilePopUp = React.lazy(() => import('./HeaderBarProfilePopUp'));
 const SignInModal = React.lazy(() => import('../Widgets/SignInModal'));
 const VoterGuideChooseElectionModal = React.lazy(() => import('../VoterGuide/VoterGuideChooseElectionModal'));
+const anonymous = '../../../img/global/icons/avatar-generic.png';
+
 
 class HeaderBackToVoterGuides extends Component {
   constructor (props) {

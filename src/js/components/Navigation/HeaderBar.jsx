@@ -427,7 +427,7 @@ class HeaderBar extends Component {
     const { location: { pathname } } = window;
 
     const {
-      chosenSiteLogoUrl, hideWeVoteLogo, paidAccountUpgradeMode, scrolledDown, shareModalStep,
+      chosenSiteLogoUrl, hideWeVoteLogo, /* paidAccountUpgradeMode, */ scrolledDown, shareModalStep,
       showAdviserIntroModal, showEditAddressButton, showFirstPositionIntroModal,
       showPaidAccountUpgradeModal, showPersonalizedScoreIntroModal,
       showSelectBallotModal, showSelectBallotModalHideAddress, showSelectBallotModalHideElections,

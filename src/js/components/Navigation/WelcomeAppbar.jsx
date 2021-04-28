@@ -25,7 +25,7 @@ const HeaderBarProfilePopUp = React.lazy(() => import('./HeaderBarProfilePopUp')
 // TODO: Backport "@stripe/react-stripe-js" use from Campaigns
 // const PaidAccountUpgradeModal = React.lazy(() => import('../Settings/PaidAccountUpgradeModal'));
 const SignInModal = React.lazy(() => import('../Widgets/SignInModal'));
-const anonymous = React.lazy(() => import('../../../img/global/icons/avatar-generic.png'));
+const anonymous = '../../../img/global/icons/avatar-generic.png';
 
 
 class WelcomeAppbar extends Component {
@@ -196,7 +196,7 @@ class WelcomeAppbar extends Component {
   render () {
     renderLog('WelcomeAppbar');  // Set LOG_RENDER_EVENTS to log all renders
     const { classes, pathname } = this.props;
-    const { paidAccountUpgradeMode, showMobileNavigationMenu, showPaidAccountUpgradeModal, showSignInModal, voterFirstName, voterIsSignedIn, voter } = this.state;
+    const { /* paidAccountUpgradeMode, */ showMobileNavigationMenu, /* showPaidAccountUpgradeModal, */ showSignInModal, voterFirstName, voterIsSignedIn, voter } = this.state;
     const voterPhotoUrlMedium = voterPhoto(voter);
     let showWelcomeForVoters = false;
     let showWelcomeForOrganizations = false;

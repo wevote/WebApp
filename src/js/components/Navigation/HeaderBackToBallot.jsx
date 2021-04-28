@@ -21,7 +21,7 @@ import { renderLog } from '../../utils/logging';
 import { shortenText, stringContains } from '../../utils/textFormat';
 import { voterPhoto } from '../../utils/voterPhoto';
 
-const anonymous = React.lazy(() => import('../../../img/global/icons/avatar-generic.png'));
+const anonymous = '../../../img/global/icons/avatar-generic.png';
 const HeaderBackToButton = React.lazy(() => import('./HeaderBackToButton'));
 const HeaderBarProfilePopUp = React.lazy(() => import('./HeaderBarProfilePopUp'));
 const HeaderNotificationMenu = React.lazy(() => import('./HeaderNotificationMenu'));

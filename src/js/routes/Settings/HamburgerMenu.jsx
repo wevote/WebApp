@@ -9,11 +9,11 @@ import { renderLog } from '../../utils/logging';
 import { voterPhoto } from '../../utils/voterPhoto';
 
 const Table = React.lazy(() => import('react-bootstrap/Table'));
-const anonymous = React.lazy(() => import('../../../img/global/icons/avatar-generic.png'));
 const avatarGeneric = '../../../img/global/svg-icons/avatar-generic.svg';
 const HamburgerMenuRow = React.lazy(() => import('../../components/Navigation/HamburgerMenuRow'));
 const DeviceDialog = React.lazy(() => import('../../components/Widgets/DeviceDialog'));
 
+const anonymous = '../../../img/global/icons/avatar-generic.png';
 const webAppConfig = require('../../config');
 
 
