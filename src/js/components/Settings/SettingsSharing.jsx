@@ -12,6 +12,7 @@ import { cordovaDot, cordovaOpenSafariView, isWebApp } from '../../utils/cordova
 import { renderLog } from '../../utils/logging';
 import { voterFeaturePackageExceedsOrEqualsRequired } from '../../utils/pricingFunctions';
 import LoadingWheel from '../LoadingWheel';
+import { Actions, DescriptionText, GiantTextInput, HiddenInput, ImageDescription, PreviewImage, SharingColumn, SharingRow } from './SettingsStyled';
 
 const CreateConfiguredVersion = React.lazy(() => import('./CreateConfiguredVersion'));
 const DelayedLoad = React.lazy(() => import('../Widgets/DelayedLoad'));
@@ -19,7 +20,6 @@ const PremiumableButton = React.lazy(() => import('../Widgets/PremiumableButton'
 const SeeTheseSettingsInAction = React.lazy(() => import('./SeeTheseSettingsInAction'));
 const SettingsAccount = React.lazy(() => import('./SettingsAccount'));
 const SettingsAccountLevelChip = React.lazy(() => import('./SettingsAccountLevelChip'));
-const { ImageDescription, PreviewImage, DescriptionText, SharingRow, SharingColumn, GiantTextInput, HiddenInput, Actions } = React.lazy(() => import('./SettingsStyled'));
 
 
 class SettingsSharing extends Component {

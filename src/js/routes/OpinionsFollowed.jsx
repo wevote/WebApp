@@ -1,4 +1,4 @@
-import { filter } from 'lodash';
+import { filter } from 'lodash-es';
 import React, { Component } from 'react';
 import Helmet from 'react-helmet';
 import { Link } from 'react-router-dom';

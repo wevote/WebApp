@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import styled from 'styled-components';
 import AppActions from '../../actions/AppActions';
 import AppStore from '../../stores/AppStore';
 import cookies from '../../utils/cookies';
@@ -184,12 +185,12 @@ export default class TwitterSignInProcess extends Component {
       return (
         <div className="twitter_sign_in_root">
           <div className="page-content-container" style={{ paddingTop: `${cordovaScrollablePaneTopPadding()}` }}>
-            <div style={{ textAlign: 'center' }}>
-              Waiting for response from Twitter...
-            </div>
-            <div className="u-loading-spinner__wrapper">
-              <div className="u-loading-spinner">Please wait...</div>
-            </div>
+            <LoadingDiv>
+              <span>
+                Waiting for a response from Twitter...
+              </span>
+              {LoadingWheel}
+            </LoadingDiv>
           </div>
         </div>
       );
@@ -244,12 +245,12 @@ export default class TwitterSignInProcess extends Component {
       return (
         <div className="twitter_sign_in_root">
           <div className="page-content-container" style={{ paddingTop: `${cordovaScrollablePaneTopPadding()}` }}>
-            <div style={{ textAlign: 'center' }}>
-              Loading your account...
-            </div>
-            <div className="u-loading-spinner__wrapper">
-              <div className="u-loading-spinner">Please wait...</div>
-            </div>
+            <LoadingDiv>
+              <span>
+                Loading your account...
+              </span>
+              {LoadingWheel}
+            </LoadingDiv>
           </div>
         </div>
       );
@@ -260,3 +261,9 @@ export default class TwitterSignInProcess extends Component {
     }
   }
 }
+
+const LoadingDiv = styled.div`
+  font-size: 18px;
+  padding-top: 50px;
+  text-align: center;
+`;

@@ -2,12 +2,13 @@ import { Button } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 import React, { PureComponent } from 'react';
-
 import Helmet from 'react-helmet';
 import styled from 'styled-components';
 import AnalyticsActions from '../actions/AnalyticsActions';
 import AppActions from '../actions/AppActions';
 import VoterActions from '../actions/VoterActions';
+import { BlueTitle, SubTitle, Title } from '../components/Welcome/headerWelcomeStyles';
+import { Section, Description, DescriptionContainer, DescriptionImageColumn, DescriptionLeftColumn, Image, NetworkContainer, NetworkImage, SectionTitle, SectionTitleBold } from '../components/Welcome/sectionStyles';
 import Testimonial from '../components/Widgets/Testimonial';
 import VoterConstants from '../constants/VoterConstants';
 import VoterStore from '../stores/VoterStore';
@@ -21,19 +22,6 @@ const googleLogo = '../../img/global/logos/google-logo.svg';
 const voteDotOrgLogo = React.lazy(() => import('../../img/global/logos/vote_dot_org_logo-530x200.png'));
 const vipLogo = React.lazy(() => import('../../img/global/logos/vip-logo-1000x208.png'));
 const WelcomeFooter = React.lazy(() => import('../components/Welcome/WelcomeFooter'));
-const { Title, BlueTitle, SubTitle } = React.lazy(() => import('../components/Welcome/headerWelcomeStyles'));
-const {
-  SectionTitle,
-  DescriptionContainer,
-  DescriptionLeftColumn,
-  DescriptionImageColumn,
-  Description,
-  Image,
-  NetworkContainer,
-  NetworkImage,
-  SectionTitleBold,
-} = React.lazy(() => import('../components/Welcome/sectionStyles'));
-const Section = React.lazy(() => import('../components/Welcome/sectionStyles'));
 const WelcomeAppbar = React.lazy(() => import('../components/Navigation/WelcomeAppbar'));
 
 class WelcomeForCampaigns extends PureComponent {

@@ -70,7 +70,7 @@
     "iframe-resizer-react": "^1.1.0",
     "jquery": "~3.5.1",
     "keymirror": "~0.1.1",
-    "lodash": "^4.17.21",
+    "lodash-es": "^4.17.21",
     "material-ui-dropzone": "~3.5.0",
     "moment": "~2.29.1",
     "object-assign": "~4.1.1",

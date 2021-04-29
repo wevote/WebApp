@@ -6,6 +6,7 @@ import Helmet from 'react-helmet';
 import styled from 'styled-components';
 import AppActions from '../actions/AppActions';
 import VoterActions from '../actions/VoterActions';
+import { Container, Title } from '../components/Welcome/howItWorksHeaderStyles';
 import VoterConstants from '../constants/VoterConstants';
 import VoterStore from '../stores/VoterStore';
 import cordovaScrollablePaneTopPadding from '../utils/cordovaScrollablePaneTopPadding';
@@ -18,7 +19,6 @@ const HeaderSwitch = React.lazy(() => import('../components/Widgets/HeaderSwitch
 const StepsChips = React.lazy(() => import('../components/Widgets/StepsChips'));
 const WelcomeAppbar = React.lazy(() => import('../components/Navigation/WelcomeAppbar'));
 const WelcomeFooter = React.lazy(() => import('../components/Welcome/WelcomeFooter'));
-const { Container, Title } = React.lazy(() => import('../components/Welcome/howItWorksHeaderStyles'));
 
 class HowItWorks extends Component {
   constructor (props) {

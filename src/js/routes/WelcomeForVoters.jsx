@@ -1,4 +1,4 @@
-import { Button } from '@material-ui/core';
+import { Button, Link } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 import { Email, LocationOn, Person } from '@material-ui/icons';
 import PropTypes from 'prop-types';
@@ -8,7 +8,7 @@ import styled from 'styled-components';
 import AnalyticsActions from '../actions/AnalyticsActions';
 import VoterActions from '../actions/VoterActions';
 import { BlueTitle, PlayerContainer, SubTitle, Title, Video } from '../components/Welcome/headerWelcomeStyles';
-import Section, { Bold, Description, DescriptionContainer, DescriptionImageColumn, DescriptionLeftColumn,
+import { Section, Bold, Description, DescriptionContainer, DescriptionImageColumn, DescriptionLeftColumn,
   GetStarted, Image, NetworkContainer, NetworkImage, SectionTitle, SectionTitleBold, SignUpContainer,
   SignUpMessage, Step, StepLabel, StepNumber } from '../components/Welcome/sectionStyles';
 import VoterConstants from '../constants/VoterConstants';

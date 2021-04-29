@@ -253,8 +253,13 @@ class DonateStore extends ReduceStore {
           active_paid_plan: activePaidPlan,
           donation_list: completeDonationJournalList,
         } = action.res);
-        donationJournalList = completeDonationJournalList.filter((item) => (item.is_organization_plan === false));
-        subscriptionJournalHistory = completeDonationJournalList.filter((item) => (item.is_organization_plan === true));
+
+        if (completeDonationJournalList) {
+          donationJournalList = completeDonationJournalList.filter((item) => (item.is_organization_plan === false));
+          subscriptionJournalHistory = completeDonationJournalList.filter((item) => (item.is_organization_plan === true));
+        } else {
+          console.error('undefined completeDonationJournalList in DonateStore donationHistory');
+        }
         return {
           ...state,
           activePaidPlan,

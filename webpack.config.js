@@ -62,6 +62,8 @@ module.exports = {
           '/**/cert/',
           '/**/global/svg-icons/',
           '/*.test.js',
+          '/**/config*.*',
+          '/sass/',
           '/robots.txt',
         ],
         root: __dirname,

@@ -1,4 +1,4 @@
-import { filter } from 'lodash';
+import { filter } from 'lodash-es';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import Helmet from 'react-helmet';

@@ -195,6 +195,7 @@ const SignUpMessage = styled.div`
 `;
 
 export {
+  Section,
   SectionTitle,
   SectionTitleBold,
   Step,

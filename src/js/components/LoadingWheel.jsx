@@ -1,11 +1,13 @@
 import React from 'react';
-import { CircularProgress } from '@material-ui/core';
+import { CircularProgress, Box } from '@material-ui/core';
 
 const LoadingWheel = (
-  <div style={{ margin: '10% 0 0 45%' }}>
-    <CircularProgress />
-    <div style={{ margin: '16px 0 0 -10px' }}>Loading...</div>
-  </div>
+  <Box style={{ display: 'flex', justifyContent: 'center', flexDirection: 'column', alignItems: "center" }}>
+    <div style={{ padding: '30px' }}>
+      <CircularProgress />
+    </div>
+    <div>Loading...</div>
+  </Box>
 );
 
 export default LoadingWheel;

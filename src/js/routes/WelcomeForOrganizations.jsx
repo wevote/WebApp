@@ -2,11 +2,12 @@ import { Button } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-
 import Helmet from 'react-helmet';
 import styled from 'styled-components';
 import AnalyticsActions from '../actions/AnalyticsActions';
 import AppActions from '../actions/AppActions';
+import { BlueTitle, PlayerContainer, SubTitle, Title, Video } from '../components/Welcome/headerWelcomeStyles';
+import { Bold, Description, DescriptionContainer, DescriptionImageColumn, DescriptionLeftColumn, Image, NetworkContainer, NetworkImage, Section, SectionTitle, SectionTitleBold } from '../components/Welcome/sectionStyles';
 import Testimonial from '../components/Widgets/Testimonial';
 import VoterStore from '../stores/VoterStore';
 import cordovaScrollablePaneTopPadding from '../utils/cordovaScrollablePaneTopPadding';
@@ -15,24 +16,12 @@ import { renderLog } from '../utils/logging';
 
 const ffwdLogo = React.lazy(() => import('../../img/global/logos/ffwd-logo.png'));
 const googleLogo = '../../img/global/logos/google-logo.svg';
-const voteDotOrgLogo = React.lazy(() => import('../../img/global/logos/vote_dot_org_logo-530x200.png'));
 const vipLogo = React.lazy(() => import('../../img/global/logos/vip-logo-1000x208.png'));
 const WelcomeFooter = React.lazy(() => import('../components/Welcome/WelcomeFooter'));
-const { Title, BlueTitle, SubTitle, Video, PlayerContainer } = React.lazy(() => import('../components/Welcome/headerWelcomeStyles'));
-const {
-  SectionTitle,
-  SectionTitleBold,
-  DescriptionContainer,
-  DescriptionLeftColumn,
-  DescriptionImageColumn,
-  Description,
-  Image,
-  Bold,
-  NetworkContainer,
-  NetworkImage,
-} = React.lazy(() => import('../components/Welcome/sectionStyles'));
-const Section = React.lazy(() => import('../components/Welcome/sectionStyles'));
 const WelcomeAppbar = React.lazy(() => import('../components/Navigation/WelcomeAppbar'));
+
+const voteDotOrgLogo = '../../img/global/logos/vote_dot_org_logo-530x200.png';
+
 
 class WelcomeForOrganizations extends Component {
   constructor (props) {

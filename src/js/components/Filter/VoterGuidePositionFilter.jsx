@@ -1,6 +1,6 @@
 import { Checkbox, FormControlLabel } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
-import { uniqBy } from 'lodash';
+import { uniqBy } from 'lodash-es';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import styled from 'styled-components';
