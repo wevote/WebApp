@@ -8,6 +8,7 @@ import VoterStore from '../../stores/VoterStore';
 import cookies from '../../utils/cookies';
 import initializeMoment from '../../utils/initializeMoment';
 import { renderLog } from '../../utils/logging';
+import LoadingWheel from '../LoadingWheel';
 
 const styles = (theme) => ({
   anchorOriginBottomCenter: {
@@ -36,8 +37,8 @@ class BallotStatusMessage extends Component {
       open: true,
     };
 
-    initializeMoment(() => {});
     this.handleMessageClose = this.handleMessageClose.bind(this);
+    initializeMoment(() => {});
   }
 
   componentDidMount () {
@@ -186,11 +187,16 @@ class BallotStatusMessage extends Component {
     renderLog('BallotStatusMessage');  // Set LOG_RENDER_EVENTS to log all renders
     const { classes } = this.props;
     let messageString = '';
-    const today = window.moment ? window.moment(new Date()) : '--x--';
+
+    if (!window.moment) {
+      return LoadingWheel;
+    }
+
+    const today = window.moment(new Date());
     const isVotingDay = today.isSame(this.state.electionDayText, 'day');
 
     if (isVotingDay) {
-      const dateText = window.moment ? window.moment(this.state.electionDayText).format('MMM Do, YYYY') : '';
+      const dateText = window.moment(this.state.electionDayText).format('MMM Do, YYYY');
       messageString = `It is Voting Day,  ${dateText}.  If you haven't already voted, please go vote!`;
       // I don't think this is necessary on election day.
       // messageString += !this.state.voterSpecificBallotFromGoogleCivic && this.state.ballotLocationChosen && this.state.ballotLocationDisplayName ?

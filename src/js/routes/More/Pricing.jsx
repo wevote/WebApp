@@ -12,7 +12,7 @@ import { renderLog } from '../../utils/logging';
 // eslint-disable-next-line import/no-cycle
 const PricingCard = React.lazy(() => import('../../components/More/PricingCard'));
 const PricingSwitch = React.lazy(() => import('../../components/Widgets/PricingSwitch'));
-const Section = React.lazy(() => import('../../components/Welcome/Section'));
+const Section = React.lazy(() => import('../../components/Welcome/sectionStyles'));
 const WelcomeAppbar = React.lazy(() => import('../../components/Navigation/WelcomeAppbar'));
 const WelcomeFooter = React.lazy(() => import('../../components/Welcome/WelcomeFooter'));
 

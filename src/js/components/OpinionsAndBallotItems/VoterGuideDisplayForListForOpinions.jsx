@@ -3,6 +3,7 @@ import { withStyles, withTheme } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
+import { ReactSVG } from 'react-svg';
 import styled from 'styled-components';
 import AppActions from '../../actions/AppActions';
 import FriendStore from '../../stores/FriendStore';
@@ -14,7 +15,6 @@ import { isSpeakerTypeIndividual, isSpeakerTypeOrganization } from '../../utils/
 import { numberWithCommas } from '../../utils/textFormat';
 import ImageHandler from '../ImageHandler';
 
-const { ReactSVG } = React.lazy(() => import('react-svg'));
 const FollowToggle = React.lazy(() => import('../Widgets/FollowToggle'));
 const IssuesByOrganizationDisplayList = React.lazy(() => import('../Values/IssuesByOrganizationDisplayList'));
 const OrganizationPopoverCard = React.lazy(() => import('../Organization/OrganizationPopoverCard'));

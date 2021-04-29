@@ -1,3 +1,4 @@
+import { filter } from 'lodash';
 import React, { Component } from 'react';
 import Helmet from 'react-helmet';
 import AnalyticsActions from '../actions/AnalyticsActions';
@@ -14,7 +15,6 @@ import { oAuthLog, renderLog } from '../utils/logging';
 const Button = React.lazy(() => import('react-bootstrap/Button'));
 const CheckBox = React.lazy(() => import('../components/Connect/CheckBox'));
 const WouldYouLikeToMergeAccounts = React.lazy(() => import('../components/WouldYouLikeToMergeAccounts'));
-const filter = React.lazy(() => import('lodash-es/filter'));
 
 
 // December 2018:  We want to work toward being airbnb style compliant, but for now these are disabled in this file to minimize massive changes

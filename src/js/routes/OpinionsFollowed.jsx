@@ -1,3 +1,4 @@
+import { filter } from 'lodash';
 import React, { Component } from 'react';
 import Helmet from 'react-helmet';
 import { Link } from 'react-router-dom';
@@ -5,7 +6,6 @@ import OrganizationActions from '../actions/OrganizationActions';
 import OrganizationStore from '../stores/OrganizationStore';
 import { renderLog } from '../utils/logging';
 
-const filter = React.lazy(() => import('lodash-es/filter'));
 const OpinionsFollowedList = React.lazy(() => import('../components/Organization/OpinionsFollowedList'));
 const SearchBar = React.lazy(() => import('../components/Search/SearchBar'));
 

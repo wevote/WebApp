@@ -9,6 +9,7 @@ import OrganizationActions from '../../actions/OrganizationActions';
 import FriendStore from '../../stores/FriendStore';
 import OrganizationStore from '../../stores/OrganizationStore';
 import { renderLog } from '../../utils/logging';
+import LoadingWheel from '../LoadingWheel';
 
 const FilterBase = React.lazy(() => import('../Filter/FilterBase'));
 const NumberOfItemsFound = React.lazy(() => import('../Widgets/NumberOfItemsFound'));
@@ -285,7 +286,7 @@ class PositionList extends Component {
     renderLog('PositionList');  // Set LOG_RENDER_EVENTS to log all renders
     if (!positionList) {
       // console.log('PositionList Loading...');
-      return <div>Loading...</div>;
+      return LoadingWheel;
     }
     const {
       filteredPositionList, filteredPositionListLength, isSearching, loadingMoreItems,

@@ -1,3 +1,4 @@
+import { filter } from 'lodash';
 import React, { Component } from 'react';
 import Helmet from 'react-helmet';
 import styled from 'styled-components';
@@ -6,7 +7,6 @@ import FriendStore from '../../stores/FriendStore';
 import sortFriendListByMutualFriends from '../../utils/friendFunctions';
 import { renderLog } from '../../utils/logging';
 
-const filter = React.lazy(() => import('lodash-es/filter'));
 const FriendList = React.lazy(() => import('../../components/Friends/FriendList'));
 const MessageCard = React.lazy(() => import('../../components/Widgets/MessageCard'));
 const SearchBar = React.lazy(() => import('../../components/Search/SearchBar'));

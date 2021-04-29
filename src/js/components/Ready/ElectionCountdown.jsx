@@ -4,7 +4,6 @@ import styled from 'styled-components';
 import BallotActions from '../../actions/BallotActions';
 import BallotStore from '../../stores/BallotStore';
 import { formatDateToMonthDayYear } from '../../utils/dateFormat';
-import initializeMoment from '../../utils/initializeMoment';
 import { renderLog } from '../../utils/logging';
 
 class ElectionCountdown extends React.Component {
@@ -19,10 +18,8 @@ class ElectionCountdown extends React.Component {
   }
 
   componentDidMount () {
-    initializeMoment(() => {
-      this.onBallotStoreChange();
-      this.ballotStoreListener = BallotStore.addListener(this.onBallotStoreChange.bind(this));
-    });
+    this.onBallotStoreChange();
+    this.ballotStoreListener = BallotStore.addListener(this.onBallotStoreChange.bind(this));
   }
 
   componentWillUnmount () {

@@ -26,7 +26,6 @@ import cookies from '../../utils/cookies';
 import { cordovaBallotFilterTopMargin } from '../../utils/cordovaOffsets';
 import cordovaScrollablePaneTopPadding from '../../utils/cordovaScrollablePaneTopPadding';
 import { chipLabelText, getAndroidSize, historyPush, isAndroid, isCordova, isIOSAppOnMac, isIPadGiantSize, isWebApp } from '../../utils/cordovaUtils';
-import initializeMoment from '../../utils/initializeMoment';
 import isMobile from '../../utils/isMobile';
 import isMobileScreenSize from '../../utils/isMobileScreenSize';
 import { renderLog } from '../../utils/logging';
@@ -111,8 +110,6 @@ class Ballot extends Component {
     this.toggleSelectBallotModal = this.toggleSelectBallotModal.bind(this);
     this.updateOfficeDisplayUnfurledTracker = this.updateOfficeDisplayUnfurledTracker.bind(this);
     this.onScroll = this.onScroll.bind(this);
-
-    initializeMoment(() => {});
   }
 
   componentDidMount () {

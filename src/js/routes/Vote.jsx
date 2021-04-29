@@ -21,7 +21,6 @@ import cookies from '../utils/cookies';
 import { cordovaVoteMiniHeader } from '../utils/cordovaOffsets';
 import cordovaScrollablePaneTopPadding from '../utils/cordovaScrollablePaneTopPadding';
 import { historyPush, isCordova, isWebApp } from '../utils/cordovaUtils';
-import initializeMoment from '../utils/initializeMoment';
 import { renderLog } from '../utils/logging';
 
 const BallotItemReadyToVote = React.lazy(() => import('../components/Vote/BallotItemReadyToVote'));
@@ -55,7 +54,6 @@ class Vote extends Component {
       ballotSearchResults: [],
     };
 
-    initializeMoment(() => {});
     this.updateOfficeDisplayUnfurledTracker = this.updateOfficeDisplayUnfurledTracker.bind(this);
   }
 

@@ -11,7 +11,6 @@ import BallotStore from '../../stores/BallotStore';
 import VoterGuideStore from '../../stores/VoterGuideStore';
 import VoterStore from '../../stores/VoterStore';
 import { historyPush } from '../../utils/cordovaUtils';
-import initializeMoment from '../../utils/initializeMoment';
 import { renderLog } from '../../utils/logging';
 import { cleanArray } from '../../utils/textFormat';
 import LoadingWheel from '../LoadingWheel';
@@ -31,7 +30,6 @@ export default class BallotElectionListWithFilters extends Component {
       voterBallotListHasBeenRetrievedOnce: false,
       voterGuideHasBeenRetrievedOnce: {},
     };
-    initializeMoment(() => {});
     this.executeDifferentElection = this.executeDifferentElection.bind(this);
     this.goToBallotForDifferentElection = this.goToBallotForDifferentElection.bind(this);
   }

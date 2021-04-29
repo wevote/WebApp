@@ -17,9 +17,8 @@ import LazyImage from '../../utils/LazyImage';
 import { renderLog } from '../../utils/logging';
 import { shortenText } from '../../utils/textFormat';
 import { voterPhoto } from '../../utils/voterPhoto';
+import { Divider, LogoContainer, MobileNavDivider, MobileNavigationMenu, Navigation, NavLink, NavRow } from '../Welcome/navigationStyles';
 
-const Navigation = React.lazy(() => import('../Welcome/Navigation'));
-const { LogoContainer, Divider, NavLink, MobileNavigationMenu, MobileNavDivider, NavRow } = React.lazy(() => import('../Welcome/Navigation'));
 const HeaderBarLogo = React.lazy(() => import('./HeaderBarLogo'));
 const HeaderBarProfilePopUp = React.lazy(() => import('./HeaderBarProfilePopUp'));
 // TODO: Backport "@stripe/react-stripe-js" use from Campaigns

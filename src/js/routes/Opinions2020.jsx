@@ -4,6 +4,7 @@ import { Ballot, Info } from '@material-ui/icons';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
+import { ReactSVG } from 'react-svg';
 import styled from 'styled-components';
 import ActivityActions from '../actions/ActivityActions';
 import AnalyticsActions from '../actions/AnalyticsActions';
@@ -27,8 +28,6 @@ const ShowMoreItems = React.lazy(() => import('../components/Widgets/ShowMoreIte
 const VoterGuideDisplayForListForOpinions = React.lazy(() => import('../components/OpinionsAndBallotItems/VoterGuideDisplayForListForOpinions'));
 const groupIcon = '../../img/global/svg-icons/group-icon.svg';
 const organizationIcon = '../../img/global/svg-icons/organization-icon.svg';
-const { ReactSVG } = React.lazy(() => import('react-svg'));
-
 
 
 const groupedFilters = [

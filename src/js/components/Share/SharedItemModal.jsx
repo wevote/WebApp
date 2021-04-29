@@ -18,7 +18,6 @@ import { hideZenDeskHelpVisibility, showZenDeskHelpVisibility } from '../../util
 import { cordovaFooterHeight, cordovaNetworkNextButtonTop } from '../../utils/cordovaOffsets';
 import { hasIPhoneNotch, isCordova, isWebApp } from '../../utils/cordovaUtils';
 import { formatDateToMonthDayYear } from '../../utils/dateFormat';
-import initializeMoment from '../../utils/initializeMoment';
 import { renderLog } from '../../utils/logging';
 import { isSpeakerTypeOrganization, isSpeakerTypePublicFigure } from '../../utils/organization-functions';
 import { convertToInteger, startsWith } from '../../utils/textFormat';
@@ -49,7 +48,6 @@ class SharedItemModal extends Component {
     };
     this.nextSlide = this.nextSlide.bind(this);
     this.previousSlide = this.previousSlide.bind(this);
-    initializeMoment(() => {});
   }
 
   componentDidMount () {

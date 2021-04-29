@@ -12,6 +12,7 @@ import FriendActions from '../../actions/FriendActions';
 import OrganizationActions from '../../actions/OrganizationActions';
 import ReactionActions from '../../actions/ReactionActions';
 import LoadingWheel from '../../components/LoadingWheel';
+import { PreviewImage } from '../../components/Settings/SettingsStyled';
 import Testimonial from '../../components/Widgets/Testimonial';
 import ActivityStore from '../../stores/ActivityStore';
 import BallotStore from '../../stores/BallotStore';
@@ -38,7 +39,6 @@ const SettingsAccount = React.lazy(() => import('../../components/Settings/Setti
 const ShowMoreItems = React.lazy(() => import('../../components/Widgets/ShowMoreItems'));
 const SuggestedFriendsPreview = React.lazy(() => import('../../components/Friends/SuggestedFriendsPreview'));
 const TwitterSignInCard = React.lazy(() => import('../../components/Twitter/TwitterSignInCard'));
-const { PreviewImage } = React.lazy(() => import('../../components/Settings/SettingsStyled'));
 
 
 const STARTING_NUMBER_OF_ACTIVITY_TIDBITS_TO_DISPLAY = 10;

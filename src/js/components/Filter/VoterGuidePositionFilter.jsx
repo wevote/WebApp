@@ -1,5 +1,6 @@
 import { Checkbox, FormControlLabel } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
+import { uniqBy } from 'lodash';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import styled from 'styled-components';
@@ -9,8 +10,6 @@ import { convertStateCodeFilterToStateCode } from '../../utils/addressFunctions'
 import { renderLog } from '../../utils/logging';
 import { convertToInteger } from '../../utils/textFormat';
 import getGroupedFilterSecondClass from './utils/grouped-filter-second-class';
-
-const uniqBy = React.lazy(() => import('lodash-es/uniqBy'));
 
 
 class VoterGuidePositionFilter extends Component {

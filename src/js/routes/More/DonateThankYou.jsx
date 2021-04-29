@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import { renderLog } from '../../utils/logging';
 
 const DonationListForm = React.lazy(() => import('../../components/Donation/DonationListForm'));
-const Section = React.lazy(() => import('../../components/Welcome/Section'));
+const Section = React.lazy(() => import('../../components/Welcome/sectionStyles'));
 const WelcomeAppbar = React.lazy(() => import('../../components/Navigation/WelcomeAppbar'));
 const WelcomeFooter = React.lazy(() => import('../../components/Welcome/WelcomeFooter'));
 

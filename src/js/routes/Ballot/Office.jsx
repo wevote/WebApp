@@ -21,7 +21,7 @@ import { sortCandidateList } from '../../utils/positionFunctions';
 import { capitalizeString } from '../../utils/textFormat';
 
 const CandidateList = React.lazy(() => import('../../components/Ballot/CandidateList'));
-const daleMcGrewJpm = React.lazy(() => import('../../../img/global/photos/Dale_McGrew-200x200.jpg'));
+const daleMcGrewJpm = '../../../img/global/photos/Dale_McGrew-200x200.jpg';
 
 
 

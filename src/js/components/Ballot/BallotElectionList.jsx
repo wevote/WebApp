@@ -9,7 +9,6 @@ import BallotStore from '../../stores/BallotStore';
 import VoterStore from '../../stores/VoterStore';
 import { convertStateCodeToStateText } from '../../utils/addressFunctions';
 import { historyPush } from '../../utils/cordovaUtils';
-import initializeMoment from '../../utils/initializeMoment';
 import { renderLog } from '../../utils/logging';
 import { cleanArray } from '../../utils/textFormat';
 import LoadingWheel from '../LoadingWheel';
@@ -40,7 +39,6 @@ export default class BallotElectionList extends Component {
       updatedElectionId: '',
     };
 
-    initializeMoment(() => {});
     this.ballotStoreListener = BallotStore.addListener(this.onBallotStoreChange.bind(this));
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
   }
@@ -167,7 +165,7 @@ export default class BallotElectionList extends Component {
 
   renderUpcomingElectionList (list, currentDate) {
     const renderedList = list.map((item) => {
-      const electionDateTomorrowMoment = window.moment ? window.moment(item.election_day_text, 'YYYY-MM-DD').add(1, 'days') : '';
+      const electionDateTomorrowMoment = window.moment(item.election_day_text, 'YYYY-MM-DD').add(1, 'days');
       const electionDateTomorrow = electionDateTomorrowMoment.format('YYYY-MM-DD');
       return electionDateTomorrow > currentDate ? (
         <div key={`upcoming-election-${item.google_civic_election_id}`}>
@@ -211,7 +209,7 @@ export default class BallotElectionList extends Component {
                   </span>
                 </ElectionName>
                 <ElectionDate>
-                  {window.moment ? window.moment(item.election_day_text).format('MMM Do, YYYY') : ''}
+                  {window.moment(item.election_day_text).format('MMM Do, YYYY')}
                 </ElectionDate>
               </ButtonContentsWrapper>
             </Button>
@@ -225,7 +223,7 @@ export default class BallotElectionList extends Component {
 
   renderPriorElectionList (list, currentDate) {
     const renderedList = list.map((item) => {
-      const electionDateTomorrowMoment = window.moment ? window.moment(item.election_day_text, 'YYYY-MM-DD').add(1, 'days') : '';
+      const electionDateTomorrowMoment = window.moment(item.election_day_text, 'YYYY-MM-DD').add(1, 'days');
       const electionDateTomorrow = electionDateTomorrowMoment.format('YYYY-MM-DD');
       return electionDateTomorrow > currentDate ?
         null : (
@@ -270,7 +268,7 @@ export default class BallotElectionList extends Component {
                     </span>
                   </ElectionName>
                   <ElectionDate>
-                    {window.moment ? window.moment(item.election_day_text).format('MMM Do, YYYY') : ''}
+                    {window.moment(item.election_day_text).format('MMM Do, YYYY')}
                   </ElectionDate>
                 </ButtonContentsWrapper>
               </Button>
@@ -292,8 +290,11 @@ export default class BallotElectionList extends Component {
         </div>
       );
     }
+    if (!window.moment) {
+      return LoadingWheel;
+    }
 
-    const currentDate = window.moment ? window.moment().format('YYYY-MM-DD') : '';
+    const currentDate = window.moment().format('YYYY-MM-DD');
 
     const ballotElectionListUpcomingSorted = this.props.ballotElectionList.concat();
     // We want to sort ascending so the next upcoming election is first

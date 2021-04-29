@@ -10,7 +10,6 @@ import { createDescriptionOfFriendPosts } from '../../utils/activityUtils';
 import { historyPush, isIOSAppOnMac, setIconBadgeMessageCount } from '../../utils/cordovaUtils';
 import { timeFromDate } from '../../utils/dateFormat';
 import initializejQuery from '../../utils/initializejQuery';
-import initializeMoment from '../../utils/initializeMoment';
 import { renderLog } from '../../utils/logging';
 import { returnFirstXWords, startsWith } from '../../utils/textFormat';
 import ImageHandler from '../ImageHandler';
@@ -55,20 +54,18 @@ class HeaderNotificationMenu extends Component {
   }
 
   onActivityStoreChange () {
-    initializeMoment(() => {
-      const allActivityNotices = ActivityStore.allActivityNotices();
-      // console.log('allActivityNotices:', allActivityNotices);
-      const activityNoticeIdListNotSeen = allActivityNotices
-        .filter((activityNotice) => activityNotice.activity_notice_seen === false)
-        .map((activityNotice) => activityNotice.activity_notice_id);
-      // console.log('activityNoticeIdListNotSeen:', activityNoticeIdListNotSeen);
-      const menuItemList = this.generateMenuItemList(allActivityNotices);
-      if (!isIOSAppOnMac()) setIconBadgeMessageCount(activityNoticeIdListNotSeen.length);
-      this.setState({
-        activityNoticeIdListNotSeen,
-        allActivityNoticesNotSeenCount: activityNoticeIdListNotSeen.length,
-        menuItemList,
-      });
+    const allActivityNotices = ActivityStore.allActivityNotices();
+    // console.log('allActivityNotices:', allActivityNotices);
+    const activityNoticeIdListNotSeen = allActivityNotices
+      .filter((activityNotice) => activityNotice.activity_notice_seen === false)
+      .map((activityNotice) => activityNotice.activity_notice_id);
+    // console.log('activityNoticeIdListNotSeen:', activityNoticeIdListNotSeen);
+    const menuItemList = this.generateMenuItemList(allActivityNotices);
+    if (!isIOSAppOnMac()) setIconBadgeMessageCount(activityNoticeIdListNotSeen.length);
+    this.setState({
+      activityNoticeIdListNotSeen,
+      allActivityNoticesNotSeenCount: activityNoticeIdListNotSeen.length,
+      menuItemList,
     });
   }
 

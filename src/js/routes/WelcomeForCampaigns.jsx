@@ -21,7 +21,7 @@ const googleLogo = '../../img/global/logos/google-logo.svg';
 const voteDotOrgLogo = React.lazy(() => import('../../img/global/logos/vote_dot_org_logo-530x200.png'));
 const vipLogo = React.lazy(() => import('../../img/global/logos/vip-logo-1000x208.png'));
 const WelcomeFooter = React.lazy(() => import('../components/Welcome/WelcomeFooter'));
-const { Title, BlueTitle, SubTitle } = React.lazy(() => import('../components/Welcome/HeaderWelcome'));
+const { Title, BlueTitle, SubTitle } = React.lazy(() => import('../components/Welcome/headerWelcomeStyles'));
 const {
   SectionTitle,
   DescriptionContainer,
@@ -32,8 +32,8 @@ const {
   NetworkContainer,
   NetworkImage,
   SectionTitleBold,
-} = React.lazy(() => import('../components/Welcome/Section'));
-const Section = React.lazy(() => import('../components/Welcome/Section'));
+} = React.lazy(() => import('../components/Welcome/sectionStyles'));
+const Section = React.lazy(() => import('../components/Welcome/sectionStyles'));
 const WelcomeAppbar = React.lazy(() => import('../components/Navigation/WelcomeAppbar'));
 
 class WelcomeForCampaigns extends PureComponent {

@@ -4,6 +4,7 @@ import { Info, ThumbDown, ThumbUp } from '@material-ui/icons';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
+import { ReactSVG } from 'react-svg';
 import styled from 'styled-components';
 import AppActions from '../../actions/AppActions';
 import OrganizationActions from '../../actions/OrganizationActions';
@@ -19,7 +20,6 @@ import { isOrganizationInVotersNetwork } from '../../utils/positionFunctions';
 import { numberWithCommas, startsWith } from '../../utils/textFormat';
 import ImageHandler from '../ImageHandler';
 
-const { ReactSVG } = React.lazy(() => import('react-svg'));
 const FollowToggle = React.lazy(() => import('../Widgets/FollowToggle'));
 const IssuesByOrganizationDisplayList = React.lazy(() => import('../Values/IssuesByOrganizationDisplayList'));
 const OpenExternalWebSite = React.lazy(() => import('../Widgets/OpenExternalWebSite'));

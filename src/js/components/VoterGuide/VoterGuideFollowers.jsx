@@ -1,3 +1,4 @@
+import { filter } from 'lodash';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import Helmet from 'react-helmet';
@@ -13,7 +14,6 @@ import LoadingWheel from '../LoadingWheel';
 const DelayedLoad = React.lazy(() => import('../Widgets/DelayedLoad'));
 const GuideList = React.lazy(() => import('./GuideList'));
 const SearchBar = React.lazy(() => import('../Search/SearchBar'));
-const filter = React.lazy(() => import('lodash-es/filter'));
 
 
 class VoterGuideFollowers extends Component {

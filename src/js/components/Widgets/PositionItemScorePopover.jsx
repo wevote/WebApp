@@ -2,6 +2,7 @@ import { withStyles, withTheme } from '@material-ui/core/styles';
 import { CheckCircle, Info, ThumbDown, ThumbUp } from '@material-ui/icons';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
+import { ReactSVG } from 'react-svg';
 import styled from 'styled-components';
 import FriendStore from '../../stores/FriendStore';
 import IssueStore from '../../stores/IssueStore';
@@ -9,7 +10,6 @@ import OrganizationStore from '../../stores/OrganizationStore';
 import { cordovaDot } from '../../utils/cordovaUtils';
 import { isOrganizationInVotersNetwork } from '../../utils/positionFunctions';
 
-const { ReactSVG } = React.lazy(() => import('react-svg'));
 const FollowToggle = React.lazy(() => import('./FollowToggle'));
 const FriendsIcon = React.lazy(() => import('./FriendsIcon'));
 

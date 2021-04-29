@@ -2,11 +2,11 @@ import { withStyles, withTheme } from '@material-ui/core/styles';
 import { CheckCircle, ThumbDown, ThumbUp } from '@material-ui/icons';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
+import { ReactSVG } from 'react-svg';
 import styled from 'styled-components';
 import { cordovaDot } from '../../utils/cordovaUtils';
 import { cleanArray } from '../../utils/textFormat';
 
-const { ReactSVG } = React.lazy(() => import('react-svg'));
 const FollowToggle = React.lazy(() => import('./FollowToggle'));
 const FriendsIcon = React.lazy(() => import('./FriendsIcon'));
 const MaterialUIPopover = React.lazy(() => import('./MaterialUIPopover'));

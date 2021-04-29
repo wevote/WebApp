@@ -4,11 +4,13 @@ import { Email, LocationOn, Person } from '@material-ui/icons';
 import PropTypes from 'prop-types';
 import React, { PureComponent } from 'react';
 import Helmet from 'react-helmet';
-import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import AnalyticsActions from '../actions/AnalyticsActions';
 import VoterActions from '../actions/VoterActions';
-import Testimonial from '../components/Widgets/Testimonial';
+import { BlueTitle, PlayerContainer, SubTitle, Title, Video } from '../components/Welcome/headerWelcomeStyles';
+import Section, { Bold, Description, DescriptionContainer, DescriptionImageColumn, DescriptionLeftColumn,
+  GetStarted, Image, NetworkContainer, NetworkImage, SectionTitle, SectionTitleBold, SignUpContainer,
+  SignUpMessage, Step, StepLabel, StepNumber } from '../components/Welcome/sectionStyles';
 import VoterConstants from '../constants/VoterConstants';
 import VoterStore from '../stores/VoterStore';
 import cordovaScrollablePaneTopPadding from '../utils/cordovaScrollablePaneTopPadding';
@@ -16,36 +18,21 @@ import { cordovaDot, historyPush } from '../utils/cordovaUtils';
 import { renderLog } from '../utils/logging';
 import { validateEmail } from '../utils/regex-checks';
 
-const ffwdLogo = React.lazy(() => import('../../img/global/logos/ffwd-logo.png'));
-const googleLogo = '../../img/global/logos/google-logo.svg';
-const voteDotOrgLogo = React.lazy(() => import('../../img/global/logos/vote_dot_org_logo-530x200.png'));
-const vipLogo = React.lazy(() => import('../../img/global/logos/vip-logo-1000x208.png'));
-const { Title, BlueTitle, SubTitle, Video, PlayerContainer } = React.lazy(() => import('../components/Welcome/HeaderWelcome'));
 const AddressBoxWelcome = React.lazy(() => import('../components/Welcome/AddressBoxWelcome'));
 const WelcomeFooter = React.lazy(() => import('../components/Welcome/WelcomeFooter'));
 const SettingsVerifySecretCode = React.lazy(() => import('../components/Settings/SettingsVerifySecretCode'));
 const TextBox = React.lazy(() => import('../components/Welcome/TextBox'));
-const {
-  SectionTitle,
-  SectionTitleBold,
-  Step,
-  StepNumber,
-  StepLabel,
-  GetStarted,
-  DescriptionContainer,
-  DescriptionLeftColumn,
-  DescriptionImageColumn,
-  Description,
-  Image,
-  Bold,
-  NetworkContainer,
-  NetworkImage,
-  SignUpContainer,
-  SignUpMessage,
-} = React.lazy(() => import('../components/Welcome/Section'));
-const Section = React.lazy(() => import('../components/Welcome/Section'));
 const WelcomeAppbar = React.lazy(() => import('../components/Navigation/WelcomeAppbar'));
-const welcomeForVotersImage = React.lazy(() => import('../../img/welcome/WelcomeForVoters-Ballot-20190507.png'));
+const Testimonial = React.lazy(() => import('../components/Widgets/Testimonial'));
+
+// import SettingsVerifySecretCode from '../components/Settings/SettingsVerifySecretCode';
+
+const ffwdLogo = '../../img/global/logos/ffwd-logo.png';
+const googleLogo = '../../img/global/logos/google-logo.svg';
+const vipLogo = '../../img/global/logos/vip-logo-1000x208.png';
+const voteDotOrgLogo = '../../img/global/logos/vote_dot_org_logo-530x200.png';
+const welcomeForVotersImage = '../../img/welcome/WelcomeForVoters-Ballot-20190507.png';
+
 
 class WelcomeForVoters extends PureComponent {
   constructor (props) {

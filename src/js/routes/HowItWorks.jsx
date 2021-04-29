@@ -13,12 +13,12 @@ import { historyPush, isCordova } from '../utils/cordovaUtils';
 import { renderLog } from '../utils/logging';
 
 const AnnotatedSlideshow = React.lazy(() => import('../components/Widgets/AnnotatedSlideshow'));
-const Header = React.lazy(() => import('../components/Welcome/HowItWorksHeader'));
+const Header = React.lazy(() => import('../components/Welcome/howItWorksHeaderStyles'));
 const HeaderSwitch = React.lazy(() => import('../components/Widgets/HeaderSwitch'));
 const StepsChips = React.lazy(() => import('../components/Widgets/StepsChips'));
 const WelcomeAppbar = React.lazy(() => import('../components/Navigation/WelcomeAppbar'));
 const WelcomeFooter = React.lazy(() => import('../components/Welcome/WelcomeFooter'));
-const { Container, Title } = React.lazy(() => import('../components/Welcome/HowItWorksHeader'));
+const { Container, Title } = React.lazy(() => import('../components/Welcome/howItWorksHeaderStyles'));
 
 class HowItWorks extends Component {
   constructor (props) {

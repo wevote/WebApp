@@ -89,7 +89,7 @@ const VoterGuidesUnderOneValue = React.lazy(() => import('./js/routes/Values/Vot
 const WeVoteBallotEmbed = React.lazy(() => import('./js/routes/More/WeVoteBallotEmbed'));
 const WelcomeForCampaigns = React.lazy(() => import('./js/routes/WelcomeForCampaigns'));
 const WelcomeForOrganizations = React.lazy(() => import('./js/routes/WelcomeForOrganizations'));
-// const WelcomeForVoters = React.lazy(() => import('./js/routes/WelcomeForVoters'));
+const WelcomeForVoters = React.lazy(() => import('./js/routes/WelcomeForVoters'));
 const YourPage = React.lazy(() => import('./js/routes/YourPage'));
 
 // There are just too many props spreading, if someone can figure out an alternative...
@@ -183,6 +183,8 @@ class App extends Component {
                     <Route exact path="/ballot" component={Ballot} />
                     <Route exact path="/friends" component={Friends} />
                     <Route exact path="/friends/:tabItem" component={Friends} />
+                    <Route exact path="/"><Ready /></Route>
+                    <Route exact path="/ready"><Ready /></Route>
                     <Route exact path="/settings" component={SettingsDashboard} />
                     <Route exact path="/settings/claim" component={ClaimYourPage} />
                     <Route exact path="/settings/hamburger" component={HamburgerMenu} />
@@ -190,7 +192,7 @@ class App extends Component {
                     <Route exact path="/settings/menu" component={SettingsMenuMobile} />
                     <Route exact path="/settings/voterguidelist" component={VoterGuideListDashboard} />
                     <Route exact path="/settings/voterguidesmenu" component={VoterGuidesMenuMobile} />
-                    <Route path="/"><Ready /></Route>
+                    <Route exact path="/twitter_sign_in"><TwitterSignInProcess setShowHeaderFooter={this.setShowHeaderFooter} /></Route>
                     <Route path="/-/:custom_link_string" component={SharedItemLanding} />
                     <Route path="/-:shared_item_code" component={SharedItemLanding} />
                     <Route path="/:twitter_handle/btcand/:back_to_cand_we_vote_id/b/:back_to_variable($)?" component={TwitterHandleLanding} />
@@ -294,7 +296,6 @@ class App extends Component {
                     <Route path="/settings/:edit_mode/:voter_guide_we_vote_id" render={(props) => (<RouterV5SendMatch componentName="SettingsDashboard" {...props} />)} />
                     <Route path="/settings/issues/:edit_mode" render={(props) => (<RouterV5SendMatch componentName="SettingsDashboard" {...props} />)} />
                     <Route path="/sign_in_email/:email_secret_key" component={SignInEmailProcess} />
-                    <Route path="/twitter_sign_in"><TwitterSignInProcess setShowHeaderFooter={this.setShowHeaderFooter} /></Route>
                     <Route path="/twittersigninprocess/:sign_in_step" component={TwitterSignInProcess} />
                     <Route path="/value/:value_slug" component={VoterGuidesUnderOneValue} />
                     <Route path="/values" component={Values} />
@@ -362,7 +363,7 @@ class App extends Component {
                     <Route path="/voterguide/:organization_we_vote_id/positions/modal/:modal_to_show/:shared_item_code" component={(props) => <OrganizationVoterGuide {...props} activeRoute="positions" />} />
                     <Route path="/voterguideedit/:organization_we_vote_id" render={(props) => (<RouterV5SendMatch componentName="OrganizationVoterGuideEdit" {...props} />)} />
                     <Route path="/voterguideedit/:organization_we_vote_id/:google_civic_election_id" render={(props) => (<RouterV5SendMatch componentName="OrganizationVoterGuideEdit" {...props} />)} />
-                    {/* <Route path="/welcome" component={isNotWeVoteMarketingSite ? ReadyRedirect : (props) => <WelcomeForVoters {...props} pathname="/welcome" />} /> */}
+                    <Route path="/welcome" component={isNotWeVoteMarketingSite ? ReadyRedirect : (props) => <WelcomeForVoters {...props} pathname="/welcome" />} />
                     <Route path="/wevoteintro/network" component={IntroNetwork} />
                     <Route path="/wevoteintro/newfriend/:invitationSecretKey" component={FriendInvitationOnboarding} />
                     <Route path="/yourpage" component={YourPage} />

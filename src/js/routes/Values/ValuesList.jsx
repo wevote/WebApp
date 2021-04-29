@@ -1,3 +1,4 @@
+import { filter } from 'lodash';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import Helmet from 'react-helmet';
@@ -7,7 +8,6 @@ import IssueStore from '../../stores/IssueStore';
 import VoterStore from '../../stores/VoterStore';
 import { renderLog } from '../../utils/logging';
 
-const filter = React.lazy(() => import('lodash-es/filter'));
 const DelayedLoad = React.lazy(() => import('../../components/Widgets/DelayedLoad'));
 const IssueCard = React.lazy(() => import('../../components/Values/IssueCard'));
 const ReadMore = React.lazy(() => import('../../components/Widgets/ReadMore'));

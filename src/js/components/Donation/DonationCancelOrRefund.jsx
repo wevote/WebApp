@@ -68,6 +68,7 @@ export default class DonationCancelOrRefund extends Component {
               <tbody>
                 <tr>
                   <td>Created:</td>
+                  {/* TODO: wrap with initializeMoment */}
                   <td>{window.moment ? window.moment.utc(item.created).local().format('MMM D, YYYY,  h:mm a') : ''}</td>
                 </tr>
                 <tr>

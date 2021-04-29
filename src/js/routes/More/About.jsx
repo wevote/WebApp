@@ -6,8 +6,8 @@ import styled from 'styled-components';
 import AnalyticsActions from '../../actions/AnalyticsActions';
 import { weVoteBoard, weVoteFounders, weVoteStaff } from '../../components/More/people';
 import ShowMoreButtons from '../../components/Ready/ShowMoreButtons';
-import { Title } from '../../components/Welcome/HeaderWelcome';
-import { Bold, DescriptionContainer, MemberListContainer, SectionTitle } from '../../components/Welcome/Section';
+import { Title } from '../../components/Welcome/headerWelcomeStyles';
+import { Bold, DescriptionContainer, MemberListContainer, SectionTitle } from '../../components/Welcome/sectionStyles';
 import VoterStore from '../../stores/VoterStore';
 import cordovaScrollablePaneTopPadding from '../../utils/cordovaScrollablePaneTopPadding';
 import { cordovaDot } from '../../utils/cordovaUtils';
@@ -15,7 +15,7 @@ import { renderLog } from '../../utils/logging';
 
 const WelcomeFooter = React.lazy(() => import('../../components/Welcome/WelcomeFooter'));
 const OpenExternalWebSite = React.lazy(() => import('../../components/Widgets/OpenExternalWebSite'));
-const Section = React.lazy(() => import('../../components/Welcome/Section'));
+const Section = React.lazy(() => import('../../components/Welcome/sectionStyles'));
 const TeamMemberDisplayForList = React.lazy(() => import('../../components/More/TeamMemberDisplayForList'));
 const ToolBar = React.lazy(() => import('./ToolBar'));
 // TODO April 2021: Commented out, too many issue for a rarely used page.  Revisit and fix.

@@ -2,6 +2,7 @@ import { Chip } from '@material-ui/core';
 import { withStyles, withTheme } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
+import { ReactSVG } from 'react-svg';
 import styled from 'styled-components';
 import CandidateStore from '../../stores/CandidateStore';
 import IssueStore from '../../stores/IssueStore';
@@ -9,7 +10,6 @@ import { cordovaDot } from '../../utils/cordovaUtils';
 import { renderLog } from '../../utils/logging';
 import { getPositionSummaryListForBallotItem } from '../../utils/positionFunctions';
 
-const { ReactSVG } = React.lazy(() => import('react-svg'));
 const IssueFollowToggleButton = React.lazy(() => import('./IssueFollowToggleButton'));
 const PositionSummaryListForPopover = React.lazy(() => import('../Widgets/PositionSummaryListForPopover'));
 const ReadMore = React.lazy(() => import('../Widgets/ReadMore'));

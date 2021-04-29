@@ -2,7 +2,6 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import DonateActions from '../../actions/DonateActions';
 import DonateStore from '../../stores/DonateStore';
-import initializeMoment from '../../utils/initializeMoment';
 import { renderLog } from '../../utils/logging';
 import LoadingWheel from '../LoadingWheel';
 
@@ -37,7 +36,6 @@ export default class DonationList extends Component {
     this.state = {
       donationJournalList: null,
     };
-    initializeMoment(() => {});
     this.isMobile = this.isMobile.bind(this);
   }
 
@@ -97,11 +95,13 @@ export default class DonationList extends Component {
                     if ((recordEnum === 'PAYMENT_FROM_UI' || recordEnum === 'PAYMENT_AUTO_SUBSCRIPTION') &&
                         ((!showOrganizationPlan && !isOrgPlan) || (showOrganizationPlan && isOrgPlan))) {
                       const refundDays = parseInt(refundDaysLimit, 10);
+                      // TODO: wrap with initializeMoment
                       const active =
                         window.moment && window.moment.utc(created).local().isAfter(window.moment(new Date()).subtract(refundDays, 'days')) &&
                         !stripeStatus.includes('refund');
                       return (
                         <tr key={`${chargeId}-${subscriptionId}-donations`}>
+                          {/* TODO: wrap with initializeMoment */}
                           <td>{window.moment ? window.moment.utc(created).format('MMM D, YYYY') : ''}</td>
                           <td>{amount}</td>
                           <td hidden={isMobile}>
@@ -156,8 +156,10 @@ export default class DonationList extends Component {
                     if (recordEnum === 'SUBSCRIPTION_SETUP_AND_INITIAL' &&
                       ((!showOrganizationPlan && !isOrgPlan) || (showOrganizationPlan && isOrgPlan))) {
                       const active = subscriptionCanceledAt === 'None' && subscriptionEndedAt === 'None';
+                      // TODO: wrap with initializeMoment
                       const cancel = subscriptionCanceledAt !== 'None' && window.moment ?
                         window.moment.utc(subscriptionCanceledAt).format('MMM D, YYYY') : '';
+                      // TODO: wrap with initializeMoment
                       const lastcharged = lastCharged === 'None' && window.moment ? '' :
                         window.moment.utc(lastCharged).format('MMM D, YYYY');
                       const waiting = amount === '0.00';
@@ -165,6 +167,7 @@ export default class DonationList extends Component {
                       return (
                         <tr key={`${chargeId}-${subscriptionId}-donationJournalList`}>
                           <td hidden={isMobile}>{active ? 'Active' : '----'}</td>
+                          {/* TODO: wrap with initializeMoment */}
                           <td>{window.moment ? window.moment.utc(created).format('MMM D, YYYY') : ''}</td>
                           <td>{!waiting ? amount : 'waiting'}</td>
                           <td hidden={isMobile}>{!waiting ? lastcharged : 'waiting'}</td>

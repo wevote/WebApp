@@ -1,6 +1,7 @@
 import { withStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
+import { ReactSVG } from 'react-svg';
 import styled from 'styled-components';
 import AppActions from '../../actions/AppActions';
 import CandidateActions from '../../actions/CandidateActions';
@@ -14,7 +15,6 @@ import { renderLog } from '../../utils/logging';
 import { capitalizeString, numberWithCommas, startsWith, stringContains } from '../../utils/textFormat';
 import ImageHandler from '../ImageHandler';
 
-const { ReactSVG } = React.lazy(() => import('react-svg'));
 const BallotItemVoterGuideSupportOpposeDisplay = React.lazy(() => import('../Widgets/BallotItemVoterGuideSupportOpposeDisplay'));
 const BallotItemSupportOpposeCountDisplay = React.lazy(() => import('../Widgets/BallotItemSupportOpposeCountDisplay'));
 const OfficeNameText = React.lazy(() => import('../Widgets/OfficeNameText'));

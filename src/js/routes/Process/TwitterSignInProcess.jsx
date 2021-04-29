@@ -169,9 +169,11 @@ export default class TwitterSignInProcess extends Component {
 
   render () {
     renderLog('TwitterSignInProcess');  // Set LOG_RENDER_EVENTS to log all renders
-    const { hostname, mergingTwoAccounts, redirectInProgress, twitterAuthResponse, yesPleaseMergeAccounts } = this.state;
+    const { mergingTwoAccounts, redirectInProgress, twitterAuthResponse, yesPleaseMergeAccounts } = this.state;
     // console.log('TwitterSignInProcess render, redirectInProgress:', redirectInProgress);
-    if (redirectInProgress || !hostname || hostname === '') {
+
+    // if (redirectInProgress || !hostname || hostname === '') {
+    if (redirectInProgress) {
       return null;
     }
 
