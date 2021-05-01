@@ -1,5 +1,6 @@
 /* jshint esversion: 6 */
 const CopyPlugin = require('copy-webpack-plugin');
+const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 const ESLintPlugin = require('eslint-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MomentLocalesPlugin = require('moment-locales-webpack-plugin');
@@ -37,6 +38,11 @@ module.exports = {
           },
         ],
       },
+    ],
+  },
+  optimization: {
+    minimizer: [
+      new CssMinimizerPlugin(),
     ],
   },
   resolve: {
@@ -92,6 +98,10 @@ module.exports = {
         blocking: false,
         parallel: true,
       },
+    }),
+    new webpack.DefinePlugin({
+      // PRODUCTION: JSON.stringify(true),
+      'process.env.NODE_ENV': JSON.stringify('production'),
     }),
   ],
   devServer: (isHTTPS ? {

@@ -19,6 +19,7 @@
     "start-https-analysis": "node buildDateFile.js && PROTOCOL=HTTPS && ANALYSIS=1 webpack serve --mode development",
     "start-minified": "webpack serve --mode production",
     "start-minified-analysis": "ANALYSIS=1 webpack serve --mode development",
+    "start-minified-analysis-prod": "ANALYSIS=1 webpack serve --mode production",
     "test": "echo \"No test specified\" && exit 0"
   },
   "devDependencies": {
@@ -34,6 +35,7 @@
     "babel-plugin-styled-components": "^1.12.0",
     "clean-webpack-plugin": "^3.0.0",
     "copy-webpack-plugin": "^7.0.0",
+    "css-minimizer-webpack-plugin": "^2.0.0",
     "eslint": "^7.24.0",
     "eslint-config-airbnb": "^18.2.1",
     "eslint-plugin-import": "^2.22.1",

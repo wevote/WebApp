@@ -4,15 +4,17 @@ import styled from 'styled-components';
 import BallotActions from '../../actions/BallotActions';
 import BallotStore from '../../stores/BallotStore';
 import { formatDateToMonthDayYear } from '../../utils/dateFormat';
+import initializeMoment from '../../utils/initializeMoment';
 import { renderLog } from '../../utils/logging';
 
 class ElectionCountdown extends React.Component {
   constructor (props) {
     super(props);
     this.state = {
-      electionDate: null,
+      electionDateMDY: '',
       electionIsToday: false,
       electionInPast: false,
+      t0: performance.now(),
     };
     this.setNewTime = this.setNewTime.bind(this);
   }
@@ -34,27 +36,40 @@ class ElectionCountdown extends React.Component {
     const { daysOnlyMode } = this.props;
     const electionDayText = BallotStore.currentBallotElectionDate;
     if (electionDayText === undefined) {
-      BallotActions.voterBallotItemsRetrieve();
+      const { t0 } = this.state;
+      let { initialDelay } = this.props;
+      initialDelay = initialDelay || 0;
+      if (initialDelay === 0) {
+        BallotActions.voterBallotItemsRetrieve();
+      } else {
+        const delay = initialDelay - performance.now() - t0;
+        this.loadDelay = setTimeout(() => {
+          BallotActions.voterBallotItemsRetrieve();
+        }, delay);
+      }
     }
     // console.log('electionDayText:', electionDayText);
-    if (electionDayText) {
-      const electionDayTextDateFormatted = electionDayText && window.moment ? window.moment(electionDayText).format('MM/DD/YYYY') : '';
-      // console.log('electionDayTextFormatted: ', electionDayTextFormatted, ', electionDayTextDateFormatted:', electionDayTextDateFormatted);
-      const electionDate = new Date(electionDayTextDateFormatted);
-      this.setState({
-        electionDate,
-      });
-      let refreshIntervalInMilliseconds = 1000; // One second
-      if (daysOnlyMode) {
-        this.setNewTime(electionDate);
-        refreshIntervalInMilliseconds = 3600000; // One hours worth of milliseconds
+    initializeMoment(() => {
+      if (electionDayText) {
+        const { moment } = window;
+        const electionDayMDYSlash = moment(electionDayText).format('MM/DD/YYYY');
+        const electionDate = new Date(electionDayMDYSlash);
+        const electionDateMDY = formatDateToMonthDayYear(electionDate);
+        this.setState({
+          electionDateMDY,
+        });
+        let refreshIntervalInMilliseconds = 1000; // One second
+        if (daysOnlyMode) {
+          this.setNewTime(electionDate);
+          refreshIntervalInMilliseconds = 3600000; // One hours worth of milliseconds
+        }
+        if (this.timeInterval) {
+          clearInterval(this.timeInterval);
+          this.timeInterval = null;
+        }
+        this.timeInterval = setInterval(() => this.setNewTime(electionDate), refreshIntervalInMilliseconds);
       }
-      if (this.timeInterval) {
-        clearInterval(this.timeInterval);
-        this.timeInterval = null;
-      }
-      this.timeInterval = setInterval(() => this.setNewTime(electionDate), refreshIntervalInMilliseconds);
-    }
+    });
   }
 
   setNewTime (electionDate) {
@@ -119,7 +134,7 @@ class ElectionCountdown extends React.Component {
   render () {
     renderLog('ElectionCountdown');  // Set LOG_RENDER_EVENTS to log all renders
     const { daysOnlyMode } = this.props;
-    const { days, daysMobile, electionIsToday, electionInPast, hours, minutes, seconds, electionDate } = this.state;
+    const { days, daysMobile, electionIsToday, electionInPast, hours, minutes, seconds, electionDateMDY } = this.state;
     const timeStillLoading = !(days || hours || minutes || seconds);
     const electionIsUpcomingHtml = (
       <Card className="card">
@@ -142,11 +157,11 @@ class ElectionCountdown extends React.Component {
             </div>
             <div>
               <CardSubTitle center>
-                {(electionDate) ? (
+                {(electionDateMDY) ? (
                   <>
                     until your next election on
                     {' '}
-                    {formatDateToMonthDayYear(electionDate)}
+                    {electionDateMDY}
                     .
                   </>
                 ) : (
@@ -194,11 +209,11 @@ class ElectionCountdown extends React.Component {
               </div>
               <div>
                 <CardSubTitle center desktopMode>
-                  {(electionDate) ? (
+                  {(electionDateMDY) ? (
                     <>
                       until your next election on
                       {' '}
-                      {formatDateToMonthDayYear(electionDate)}
+                      {electionDateMDY}
                       .
                     </>
                   ) : (
@@ -224,11 +239,11 @@ class ElectionCountdown extends React.Component {
             </div>
             <div>
               <CardSubTitle center>
-                {(electionDate) ? (
+                {(electionDateMDY) ? (
                   <>
                     Your election is today
                     {' '}
-                    {formatDateToMonthDayYear(electionDate)}
+                    {electionDateMDY}
                     .
                   </>
                 ) : (
@@ -252,11 +267,11 @@ class ElectionCountdown extends React.Component {
               </div>
               <div>
                 <CardSubTitle center desktopMode>
-                  {(electionDate) ? (
+                  {(electionDateMDY) ? (
                     <>
                       Your election is today
                       {' '}
-                      {formatDateToMonthDayYear(electionDate)}
+                      {electionDateMDY}
                       .
                     </>
                   ) : (
@@ -282,12 +297,11 @@ class ElectionCountdown extends React.Component {
             </div>
             <div>
               <CardSubTitle center>
-                {(electionDate) ? (
+                {(electionDateMDY) ? (
                   <>
-                    This election was on
+                    This election was held on
                     {' '}
-                    {formatDateToMonthDayYear(electionDate)}
-                    .
+                    {electionDateMDY}
                   </>
                 ) : (
                   <>
@@ -311,11 +325,11 @@ class ElectionCountdown extends React.Component {
               </div>
               <div>
                 <CardSubTitle center desktopMode>
-                  {(electionDate) ? (
+                  {(electionDateMDY) ? (
                     <>
                       This election was on
                       {' '}
-                      {formatDateToMonthDayYear(electionDate)}
+                      {electionDateMDY}
                       .
                     </>
                   ) : (
@@ -342,11 +356,13 @@ class ElectionCountdown extends React.Component {
 }
 ElectionCountdown.propTypes = {
   daysOnlyMode: PropTypes.bool,
+  initialDelay: PropTypes.number,
 };
 
 const Card = styled.div`
   padding-top: 4px;
   padding-bottom: 8px;
+  min-height: 176px;
 `;
 
 const CardTitleUpcoming = styled.h1`
@@ -392,7 +408,7 @@ const CardSubTitle = styled.h3`
   font-size: ${(props) => (props.desktopMode ? '18px' : '22px')};
   font-weight: 700;
   color: #2E3C5D !important;
-  width: fit-content;
+  // width: fit-content;
   margin-bottom: 0 !important;
   margin-top: ${(props) => (props.desktopMode ? '24px' : null)};
   width: 100%;
@@ -418,7 +434,7 @@ const TimeFlex = styled.div`
 `;
 
 const TimeSection = styled.div`
-  padding: 0px 8px;
+  padding: 0 8px;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;

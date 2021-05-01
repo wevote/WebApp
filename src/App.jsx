@@ -2,6 +2,7 @@ import React, { Component, Suspense } from 'react';
 import { MuiThemeProvider } from '@material-ui/core/styles';
 import { Redirect, Route, Switch } from 'react-router-dom';
 import styled, { ThemeProvider } from 'styled-components';
+import VoterActions from './js/actions/VoterActions';
 import ErrorBoundary from './js/components/Widgets/ErrorBoundary';
 import WeVoteRouter from './js/components/Widgets/WeVoteRouter';
 import muiTheme from './js/mui-theme';
@@ -12,6 +13,7 @@ import initializejQuery from './js/utils/initializejQuery';
 import { renderLog } from './js/utils/logging';
 import Header from './js/components/Navigation/Header';
 import RouterV5SendMatch from './js/utils/RouterV5SendMatch';
+import VoterStore from './js/stores/VoterStore';
 
 // const MainFooter  = React.lazy(() => import('./js/components/Navigation/MainFooter'));
 
@@ -101,6 +103,7 @@ class App extends Component {
     this.state = {
       doShowHeader: true,
       doShowFooter: true,
+      isInitialized: false,
     };
     this.setShowHeader = this.setShowHeader.bind(this);
     this.setShowFooter = this.setShowFooter.bind(this);
@@ -130,6 +133,10 @@ class App extends Component {
     return { hasError: true };
   }
 
+  componentDidMount () {
+    this.InitializeOnce();
+  }
+
   componentDidCatch (error, info) {
     // We should get this information to Splunk!
     console.error('App caught error: ', `${error} with info: `, info);
@@ -151,6 +158,28 @@ class App extends Component {
     });
   }
 
+  InitializeOnce () {
+    const { isInitialized } = this.state;
+    if (isInitialized) {
+      return;
+    }
+
+    this.positionItemTimer = setTimeout(() => {
+      // April 2021: This takes a half second to complete, and does tons more than
+      // you would think server side.  But it should not be necessary on every voterRetrieve,
+      // but if there are some odd cases where it has to be called agian, deal with them as
+      // special cases.
+      // voter_device_id won't be set for first time visitors, until the first API call completes!
+      const voterDeviceId = VoterStore.voterDeviceId();
+      if (voterDeviceId) {
+        VoterActions.voterAddressRetrieve(voterDeviceId);
+        this.setState({ isInitialized: true });
+      } else {
+        console.error('Attempted to send voterAddressRetrieve before we have a voterDeviceId!');
+      }
+    }, 3000);  // April 30, 2021: Tuned to keep performance up
+  }
+
   render () {
     renderLog('App');
     const { doShowHeader, doShowFooter, jQueryInitialized } = this.state;
@@ -162,9 +191,6 @@ class App extends Component {
     const isNotWeVoteMarketingSite = !isWeVoteMarketingSite;
     const firstVisit = !cookies.getItem('voter_device_id');
 
-    if (!jQueryInitialized) {
-      // return ' ';  // This could be a loading spinner, but it goes by so fast
-    }
     console.log(window.location.href);
 
     return (

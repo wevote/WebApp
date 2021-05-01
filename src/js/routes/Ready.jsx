@@ -46,6 +46,7 @@ class Ready extends Component {
       chosenReadyIntroductionText: '',
       chosenReadyIntroductionTitle: '',
       issuesDisplayDecisionHasBeenMade: false,
+      issuesQueriesMade: false,
       issuesShouldBeDisplayed: false,
       textForMapSearch: '',
       voterIsSignedIn: false,
@@ -60,21 +61,21 @@ class Ready extends Component {
     this.onIssueStoreChange();
     this.onVoterStoreChange();
     initializejQuery(() => {
-      // April `8, 2021: TODO: Thee API calls are always executed in pairs, they should be a single API
-      IssueActions.issueDescriptionsRetrieve(VoterStore.getVoterWeVoteId());
-      IssueActions.issuesFollowedRetrieve(VoterStore.getVoterWeVoteId());
       this.positionItemTimer = setTimeout(() => {
         // This is a performance killer, so let's delay it for a few seconds
         if (!BallotStore.ballotFound) {
           // console.log('WebApp doesn't know the election or have ballot data, so ask the API server to return best guess');
           BallotActions.voterBallotItemsRetrieve(0, '', '');
         }
-      }, 5000);  // April 19, 2021: Tuned to keep performance above 83.  LCP at 597ms.
+      }, 5000);  // April 19, 2021: Tuned to keep performance above 83.  LCP at 597ms
 
-
+      // this.positionItemTimer2 = setTimeout(() => {
       ReadyActions.voterPlansForVoterRetrieve();
       ActivityActions.activityNoticeListRetrieve();
       FriendActions.suggestedFriendList();
+      // }, 2500);
+
+
       let modalToShow = '';
       let sharedItemCode = '';
       if (this.props.match) {
@@ -98,7 +99,10 @@ class Ready extends Component {
         }
       }
 
-      AnalyticsActions.saveActionReadyVisit(VoterStore.electionId());
+      this.analyticsTimer = setTimeout(() => {
+        AnalyticsActions.saveActionReadyVisit(VoterStore.electionId());
+      }, 8000);
+
       this.setState({
         locationGuessClosed: cookies.getItem('location_guess_closed'),
         textForMapSearch: VoterStore.getTextForMapSearch(),
@@ -156,9 +160,19 @@ class Ready extends Component {
 
   onVoterStoreChange () {
     const textForMapSearch = VoterStore.getTextForMapSearch();
+    const { issuesQueriesMade } = this.state;
+    if (!issuesQueriesMade) {
+      this.delayIssuesTimer = setTimeout(() => {
+        // April 18, 2021: TODO: These API calls are always executed in pairs, they probably should be a single API
+        // They take 1.15 seconds to complete! (in parallel)
+        IssueActions.issueDescriptionsRetrieve(VoterStore.getVoterWeVoteId());
+        IssueActions.issuesFollowedRetrieve(VoterStore.getVoterWeVoteId());
+      }, 1000);
+    }
     this.setState({
       textForMapSearch,
       voterIsSignedIn: VoterStore.getVoterIsSignedIn(),
+      issuesQueriesMade: true,
     });
   }
 
@@ -209,7 +223,7 @@ class Ready extends Component {
                   className="u-cursor--pointer u-show-mobile-tablet"
                   onClick={this.goToBallot}
                 >
-                  <ElectionCountdown daysOnlyMode />
+                  <ElectionCountdown daysOnlyMode initialDelay={4000} />
                 </ElectionCountdownMobileTabletWrapper>
               </MobileTabletCountdownWrapper>
               {(chosenReadyIntroductionTitle || chosenReadyIntroductionText) && (
@@ -306,7 +320,7 @@ class Ready extends Component {
               </Card>
               <div className="u-cursor--pointer" onClick={this.goToBallot}>
                 <Suspense fallback={<SuspenseCard>&nbsp;</SuspenseCard>}>
-                  <ElectionCountdown daysOnlyMode />
+                  <ElectionCountdown daysOnlyMode initialDelay={4000} />
                 </Suspense>
               </div>
               {(chosenReadyIntroductionTitle || chosenReadyIntroductionText) && (

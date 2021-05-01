@@ -1,11 +1,14 @@
 import initializeMoment from './initializeMoment';
 
 export function formatDateToMonthDayYear (dateString) {
-  initializeMoment(() => {
-    // console.log('dateString:', dateString);
-    const momentDate = window.moment(dateString, 'YYYY-MM-DD');
-    return momentDate.format('MMM Do, YYYY');
-  });
+  if (!window.moment) {
+    initializeMoment(() => {
+      const momentDate = window.moment(dateString, 'YYYY-MM-DD');
+      return momentDate.format('MMM Do, YYYY');
+    });
+  }
+  const momentDate = window.moment(dateString, 'YYYY-MM-DD');
+  return momentDate.format('MMM Do, YYYY');
 }
 
 export function formatDateToYearMonthDay (dateString) {

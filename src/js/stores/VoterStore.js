@@ -721,7 +721,8 @@ class VoterStore extends ReduceStore {
               this.setVoterDeviceIdCookie(voterDeviceId);
             }
 
-            VoterActions.voterAddressRetrieve(voterDeviceId);
+            // Actions should not be called from stores!   Moved to App.jsx
+            // VoterActions.voterAddressRetrieve(voterDeviceId);
 
             // FriendsInvitationList.jsx is choking on this because calling this
             // results in an infinite loop cycling between voterRetrieve and getFaceProfilePicture which
@@ -738,8 +739,14 @@ class VoterStore extends ReduceStore {
             // console.log("voter_device_id not returned by voterRetrieve");
           }
         }
-        if (incomingVoter.linked_organization_we_vote_id) {
-          OrganizationActions.organizationRetrieve(incomingVoter.linked_organization_we_vote_id);
+        // April 29, 2021 TODO: If this is such an important set of data, we should make a combined Voter and Organiztion retrieve
+        // because this fires on the initial page load and takes almost a full second to return, blocking one of six available http channels
+        // Firing actions from stores should be avoided
+        // The following (new) condition blocks a organizationRetrieve on the first voterRetrieve
+        if (this.getState().voter.we_vote_id) {
+          if (incomingVoter.linked_organization_we_vote_id) {
+            OrganizationActions.organizationRetrieve(incomingVoter.linked_organization_we_vote_id);
+          }
         }
         // if (incomingVoter.signed_in_with_apple) {
         //   // Completing the logical OR that can't be conveniently made in the server, since Sign in with Apple is device_id specific
