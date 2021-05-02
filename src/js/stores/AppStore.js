@@ -102,7 +102,8 @@ class AppStore extends ReduceStore {
   }
 
   isOnWeVoteRootUrl () {
-    return this.getState().onWeVoteRootUrl || isCordova() || stringContains('localhost:', window.location.href);
+    const weVoteURL = this.getState().onWeVoteRootUrl || false;
+    return weVoteURL || isCordova() || stringContains('localhost:', window.location.href);
   }
 
   isOnWeVoteSubdomainUrl () {
@@ -339,6 +340,7 @@ class AppStore extends ReduceStore {
           } else {
             onChosenFullDomainUrl = true;
           }
+          // May 2021: This code doesn't need an API call to generate an answer, abandoning querying the store to get the answer
           if (hostname === 'wevote.us' || hostname === 'quality.wevote.us' || hostname === 'localhost' || isCordova()) {
             // We should move this to the server if we can't change the Facebook sign in root url
             onFacebookSupportedDomainUrl = true;

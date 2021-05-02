@@ -631,6 +631,8 @@ class IssueStore extends ReduceStore {
         }
         issuesUnderBallotItemsRetrieveCalled = state.issuesUnderBallotItemsRetrieveCalled || {};
         if (voterElectionId && !this.issuesUnderBallotItemsRetrieveCalled(voterElectionId)) {
+          // TODO: We really don't want to be calling actions from a Store, especially something this inefficient
+          // TODO: May 2021, Something is broken here --This fetches 34,868 rows of data and executes in the range of 500ms to 10 seconds
           IssueActions.issuesUnderBallotItemsRetrieve(voterElectionId);
           issuesUnderBallotItemsRetrieveCalled[voterElectionId] = true;
         }

@@ -82,6 +82,8 @@ export default class SettingsAccount extends Component {
     }
     const oneDayExpires = 86400;
     let pathname = '';
+    const { hostname } = window.location;
+    const isOnFacebookSupportedDomainUrl = hostname === 'wevote.us' || hostname === 'quality.wevote.us' || hostname === 'localhost' || isCordova() || window.location.href.includes('ngrok');
 
     const getStartedMode = AppStore.getStartedMode();
     AnalyticsActions.saveActionAccountPage(VoterStore.electionId());
@@ -126,7 +128,7 @@ export default class SettingsAccount extends Component {
     } else {
       const isOnWeVoteRootUrl = AppStore.isOnWeVoteRootUrl();
       const isOnWeVoteSubdomainUrl = AppStore.isOnWeVoteSubdomainUrl();
-      const isOnFacebookSupportedDomainUrl = AppStore.isOnFacebookSupportedDomainUrl() || window.location.href.includes('ngrok');
+      // No need to query an api to get this answer.  Creates an unneeded dependency:  const isOnFacebookSupportedDomainUrl = AppStore.isOnFacebookSupportedDomainUrl() || window.location.href.includes('ngrok');
       let pleaseSignInSubTitle = '';
       if (isOnWeVoteRootUrl || isOnWeVoteSubdomainUrl || isOnFacebookSupportedDomainUrl) {
         pleaseSignInSubTitle = 'Don\'t worry, we won\'t post anything automatically.';
@@ -139,7 +141,7 @@ export default class SettingsAccount extends Component {
     this.setState({
       isOnWeVoteRootUrl: AppStore.isOnWeVoteRootUrl(),
       isOnWeVoteSubdomainUrl: AppStore.isOnWeVoteSubdomainUrl(),
-      isOnFacebookSupportedDomainUrl: AppStore.isOnFacebookSupportedDomainUrl(),
+      isOnFacebookSupportedDomainUrl,
     });
 
     const delayBeforeClearingStatus = 500;
@@ -198,7 +200,7 @@ export default class SettingsAccount extends Component {
     this.setState({
       isOnWeVoteRootUrl: AppStore.isOnWeVoteRootUrl(),
       isOnWeVoteSubdomainUrl: AppStore.isOnWeVoteSubdomainUrl(),
-      isOnFacebookSupportedDomainUrl: AppStore.isOnFacebookSupportedDomainUrl(),
+      isOnFacebookSupportedDomainUrl: AppStore.isOnFacebookSupportedDomainUrl() || this.state.isOnFacebookSupportedDomainUrl,
     });
   }
 

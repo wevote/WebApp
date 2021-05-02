@@ -6,6 +6,8 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import VoterStore from '../../stores/VoterStore';
 import { historyPush, isAndroid, isCordova, isIOS, isIPhone3p5in, isIPhone4in, isIPhone4p7in, isIPhone5p5in, isIPhone5p8in, isIPhone6p1in, isIPhone6p5in, isWebApp, isWebAppHeight0to568, isWebAppHeight569to667, isWebAppHeight668to736, isWebAppHeight737to896, restoreStylesAfterCordovaKeyboard } from '../../utils/cordovaUtils';
+import initializeAppleSDK from '../../utils/initializeAppleSDK';
+import initializeFacebookSDK from '../../utils/initializeFacebookSDK';
 import { renderLog } from '../../utils/logging';
 import { stringContains } from '../../utils/textFormat';
 import signInModalGlobalState from './signInModalGlobalState';
@@ -26,6 +28,13 @@ class SignInModal extends Component {
   componentDidMount () {
     this.onVoterStoreChange();
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
+    const { FB, AppleID } = window;
+    if (!FB) {
+      initializeFacebookSDK();
+    }
+    if (!AppleID) {
+      initializeAppleSDK();
+    }
   }
 
   componentDidUpdate () {
