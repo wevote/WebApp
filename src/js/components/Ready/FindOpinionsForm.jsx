@@ -293,6 +293,8 @@ const OuterWrapper = styled.div`
   display: flex;
   justify-content: center;
   padding: 0 !important;
+  min-height: 100px;
+  max-width: 260px;
 `;
 
 const PublicFiguresAndOrganizationsList = styled.div`

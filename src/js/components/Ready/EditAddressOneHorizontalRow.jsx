@@ -211,7 +211,7 @@ class EditAddressOneHorizontalRow extends Component {
           </AddressLabel>
           <form onSubmit={this.voterAddressSaveSubmit} style={notMobile ? {} : { width: '100%' }}>
             <InternalFormWrapper>
-              <Paper className={classes.paperInputForm} elevation={2}>
+              <Paper className={classes.paperInputForm} elevation={2} style={{ minWidth: 250 }}>
                 <EditLocation className="ion-input-icon" />
                 <InputBase
                   className={classes.inputBase}
@@ -228,25 +228,27 @@ class EditAddressOneHorizontalRow extends Component {
                   id="editAddressOneHorizontalRowTextForMapSearch"
                 />
               </Paper>
-              <Button
-                classes={{ root: classes.saveButton }}
-                color="primary"
-                fullWidth={notMobile}
-                id="editAddressOneHorizontalRowSaveButton"
-                onClick={this.voterAddressSaveSubmit}
-                variant="contained"
-              >
-                {(textForMapSearch) ? (
-                  <>
-                    <span className="u-show-desktop-tablet u-no-break">Refresh Ballot</span>
-                    <span className="u-show-mobile">Confirm</span>
-                  </>
-                ) : (
-                  <>
-                    Save
-                  </>
-                )}
-              </Button>
+              <ButtonWrapper>
+                <Button
+                  classes={{ root: classes.saveButton }}
+                  color="primary"
+                  fullWidth={notMobile}
+                  id="editAddressOneHorizontalRowSaveButton"
+                  onClick={this.voterAddressSaveSubmit}
+                  variant="contained"
+                >
+                  {(textForMapSearch) ? (
+                    <>
+                      <span className="u-show-desktop-tablet u-no-break">Refresh Ballot</span>
+                      <span className="u-show-mobile">Confirm</span>
+                    </>
+                  ) : (
+                    <>
+                      Save
+                    </>
+                  )}
+                </Button>
+              </ButtonWrapper>
             </InternalFormWrapper>
           </form>
         </InnerWrapper>
@@ -318,6 +320,10 @@ const InternalFormWrapper = styled.div`
 const OuterWrapper = styled.div`
   margin-bottom: 8px !important;
   width: 100%;
+`;
+
+const ButtonWrapper = styled.div`
+  min-width: 208px;
 `;
 
 const InnerWrapper = styled.div`

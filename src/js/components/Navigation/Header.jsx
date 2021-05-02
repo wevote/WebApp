@@ -98,12 +98,17 @@ export default class Header extends Component {
     window.removeEventListener('resize', this.handleResize);
   }
 
-  handleResize () {
-    this.setState({ windowWidth: window.innerWidth });
+  handleResize (event) {
+    // console.log('handleResize in Header');
+    const { currentTarget, target } = event;
+    if (currentTarget.innerWidth !== target.innerWidth) {
+      console.log('handleResize in Header detected resizing');
+      this.setState({ windowWidth: window.innerWidth });
+    }
   }
 
   onAppStoreChange () {
-    // console.log('Header, onAppStoreChange');
+    console.log('Header, onAppStoreChange');
     this.setState({
       activityTidbitWeVoteIdForDrawer: AppStore.activityTidbitWeVoteIdForDrawer(),
       organizationModalBallotItemWeVoteId: AppStore.organizationModalBallotItemWeVoteId(),

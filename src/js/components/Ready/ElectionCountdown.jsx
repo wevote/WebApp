@@ -149,9 +149,9 @@ class ElectionCountdown extends React.Component {
                     {daysMobile === '1' ? 'day' : 'days'}
                   </>
                 ) : (
-                  <DaysLargeText>
-                    &mdash; days
-                  </DaysLargeText>
+                  <DaysFindingText>
+                    Finding the election...
+                  </DaysFindingText>
                 )}
               </CardTitleUpcoming>
             </div>
@@ -164,11 +164,7 @@ class ElectionCountdown extends React.Component {
                     {electionDateMDY}
                     .
                   </>
-                ) : (
-                  <>
-                    until your next election on...
-                  </>
-                )}
+                ) : (<></>)}
               </CardSubTitle>
             </div>
           </div>
@@ -362,7 +358,7 @@ ElectionCountdown.propTypes = {
 const Card = styled.div`
   padding-top: 4px;
   padding-bottom: 8px;
-  min-height: 176px;
+  min-height: 190px;
 `;
 
 const CardTitleUpcoming = styled.h1`
@@ -422,8 +418,10 @@ const CardSubTitle = styled.h3`
   }
 `;
 
-const DaysLargeText = styled.div`
+const DaysFindingText = styled.div`
   color: #ccc;
+  font-size: 20px;
+  margin-top: 20px;
 `;
 
 const TimeFlex = styled.div`

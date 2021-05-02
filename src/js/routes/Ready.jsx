@@ -162,12 +162,12 @@ class Ready extends Component {
     const textForMapSearch = VoterStore.getTextForMapSearch();
     const { issuesQueriesMade } = this.state;
     if (!issuesQueriesMade) {
-      this.delayIssuesTimer = setTimeout(() => {
-        // April 18, 2021: TODO: These API calls are always executed in pairs, they probably should be a single API
-        // They take 1.15 seconds to complete! (in parallel)
-        IssueActions.issueDescriptionsRetrieve(VoterStore.getVoterWeVoteId());
-        IssueActions.issuesFollowedRetrieve(VoterStore.getVoterWeVoteId());
-      }, 1000);
+      // this.delayIssuesTimer = setTimeout(() => {
+      // April 18, 2021: TODO: These API calls are always executed in pairs, they probably should be a single API
+      // They take 1.15 seconds to complete! (in parallel)
+      IssueActions.issueDescriptionsRetrieve(VoterStore.getVoterWeVoteId());
+      IssueActions.issuesFollowedRetrieve(VoterStore.getVoterWeVoteId());
+      // }, 400);
     }
     this.setState({
       textForMapSearch,

@@ -17,7 +17,7 @@ const port = process.env.PORT || 3000;
 const isHTTPS = process.env.PROTOCOL && process.env.PROTOCOL === 'HTTPS';
 const bundleAnalysis = process.env.ANALYSIS || false;  // enable the interactive bundle analyser and the Unused component analyzer
 
-module.exports = {
+module.exports = (env, argv) => ({
   entry: path.resolve(__dirname, './src/index.jsx'),
   module: {
     rules: [
@@ -99,10 +99,14 @@ module.exports = {
         parallel: true,
       },
     }),
-    new webpack.DefinePlugin({
-      // PRODUCTION: JSON.stringify(true),
-      'process.env.NODE_ENV': JSON.stringify('production'),
-    }),
+    ...(argv.mode === 'production' ? [
+      new webpack.DefinePlugin({
+        // We need to get webpack into production mode, to make it include the much smaller minimized libraries
+        // especially for React itself.
+        // PRODUCTION: JSON.stringify(true),
+        'process.env.NODE_ENV': JSON.stringify('production'),
+      }),
+    ] : []),
   ],
   devServer: (isHTTPS ? {
     contentBase: path.resolve(__dirname, './build'),
@@ -125,4 +129,4 @@ module.exports = {
     open: true,
   }),
   devtool: 'source-map',
-};
+});

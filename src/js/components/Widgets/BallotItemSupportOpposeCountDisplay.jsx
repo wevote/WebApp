@@ -135,82 +135,82 @@ class BallotItemSupportOpposeCountDisplay extends Component {
   //   this.onCachedPositionsOrIssueStoreChange();
   // }
 
-  // shouldComponentUpdate (nextProps, nextState) {
-  //   // This lifecycle method tells the component to NOT render if componentWillReceiveProps didn't see any changes
-  //   if (this.state.componentDidMountFinished === false) {
-  //     // console.log('shouldComponentUpdate: componentDidMountFinished === false');
-  //     return true;
-  //   }
-  //   if (this.state.ballotItemDisplayName !== nextState.ballotItemDisplayName) {
-  //     // console.log('this.state.ballotItemDisplayName:', this.state.ballotItemDisplayName, ', nextState.ballotItemDisplayName:', nextState.ballotItemDisplayName);
-  //     return true;
-  //   }
-  //   if (this.state.ballotItemWeVoteId !== nextState.ballotItemWeVoteId) {
-  //     // console.log('this.state.ballotItemWeVoteId:', this.state.ballotItemWeVoteId, ', nextState.ballotItemWeVoteId:', nextState.ballotItemWeVoteId);
-  //     return true;
-  //   }
-  //   if (this.state.controlAdviserMaterialUIPopoverFromProp !== nextState.controlAdviserMaterialUIPopoverFromProp) {
-  //     // console.log('this.state.controlAdviserMaterialUIPopoverFromProp:', this.state.controlAdviserMaterialUIPopoverFromProp, ', nextState.controlAdviserMaterialUIPopoverFromProp:', nextState.controlAdviserMaterialUIPopoverFromProp);
-  //     return true;
-  //   }
-  //   if (this.state.issueWeVoteIdsLinkedToByOrganizationDictLength !== nextState.issueWeVoteIdsLinkedToByOrganizationDictLength) {
-  //     // console.log('this.state.issueWeVoteIdsLinkedToByOrganizationDictLength:', this.state.issueWeVoteIdsLinkedToByOrganizationDictLength, ', nextState.issueWeVoteIdsLinkedToByOrganizationDictLength:', nextState.issueWeVoteIdsLinkedToByOrganizationDictLength);
-  //     return true;
-  //   }
-  //   if (this.state.numberOfAllSupportPositions !== nextState.numberOfAllSupportPositions) {
-  //     return true;
-  //   }
-  //   if (this.state.numberOfAllOpposePositions !== nextState.numberOfAllOpposePositions) {
-  //     return true;
-  //   }
-  //   if (this.state.numberOfAllInfoOnlyPositions !== nextState.numberOfAllInfoOnlyPositions) {
-  //     return true;
-  //   }
-  //   if (this.props.closeSupportOpposeCountDisplayModal !== nextProps.closeSupportOpposeCountDisplayModal) {
-  //     return true;
-  //   }
-  //   if (this.props.openAdviserMaterialUIPopover !== nextProps.openAdviserMaterialUIPopover) {
-  //     return true;
-  //   }
-  //   if (this.props.openSupportOpposeCountDisplayModal !== nextProps.openSupportOpposeCountDisplayModal) {
-  //     return true;
-  //   }
-  //   if (this.state.organizationWeVoteIdsVoterIsFollowingLength !== nextState.organizationWeVoteIdsVoterIsFollowingLength) {
-  //     // console.log('this.state.organizationWeVoteIdsVoterIsFollowingLength:', this.state.organizationWeVoteIdsVoterIsFollowingLength, ', nextState.organizationWeVoteIdsVoterIsFollowingLength:', nextState.organizationWeVoteIdsVoterIsFollowingLength);
-  //     return true;
-  //   }
-  //   if (this.state.positionsInNetworkSummaryListLength !== nextState.positionsInNetworkSummaryListLength) {
-  //     return true;
-  //   }
-  //   if (this.state.positionsOutOfNetworkSummaryListLength !== nextState.positionsOutOfNetworkSummaryListLength) {
-  //     return true;
-  //   }
-  //   if (this.props.supportOpposeCountDisplayModalTutorialOn !== nextProps.supportOpposeCountDisplayModalTutorialOn) {
-  //     return true;
-  //   }
-  //   if (this.props.supportOpposeCountDisplayModalTutorialText !== nextProps.supportOpposeCountDisplayModalTutorialText) {
-  //     return true;
-  //   }
-  //   if (this.props.showDownArrow !== nextProps.showDownArrow) {
-  //     return true;
-  //   }
-  //   if (this.props.showUpArrow !== nextProps.showUpArrow) {
-  //     return true;
-  //   }
-  //   if (this.state.voterPersonalNetworkScore !== nextState.voterPersonalNetworkScore) {
-  //     // console.log('this.state.voterPersonalNetworkScore:', this.state.voterPersonalNetworkScore, ', nextState.voterPersonalNetworkScore:', nextState.voterPersonalNetworkScore);
-  //     return true;
-  //   }
-  //   if (this.state.voterOpposesBallotItem !== nextState.voterOpposesBallotItem) {
-  //     // console.log('this.state.voterOpposesBallotItem:', this.state.voterOpposesBallotItem, ', nextState.voterOpposesBallotItem:', nextState.voterOpposesBallotItem);
-  //     return true;
-  //   }
-  //   if (this.state.voterSupportsBallotItem !== nextState.voterSupportsBallotItem) {
-  //     // console.log('this.state.voterSupportsBallotItem:', this.state.voterSupportsBallotItem, ', nextState.voterSupportsBallotItem:', nextState.voterSupportsBallotItem);
-  //     return true;
-  //   }
-  //   return false;
-  // }
+  shouldComponentUpdate (nextProps, nextState) {
+    // This lifecycle method tells the component to NOT render if componentWillReceiveProps didn't see any changes
+    if (this.state.componentDidMountFinished === false) {
+      // console.log('shouldComponentUpdate: componentDidMountFinished === false');
+      return true;
+    }
+    if (this.state.ballotItemDisplayName !== nextState.ballotItemDisplayName) {
+      // console.log('this.state.ballotItemDisplayName:', this.state.ballotItemDisplayName, ', nextState.ballotItemDisplayName:', nextState.ballotItemDisplayName);
+      return true;
+    }
+    if (this.state.ballotItemWeVoteId !== nextState.ballotItemWeVoteId) {
+      // console.log('this.state.ballotItemWeVoteId:', this.state.ballotItemWeVoteId, ', nextState.ballotItemWeVoteId:', nextState.ballotItemWeVoteId);
+      return true;
+    }
+    if (this.state.controlAdviserMaterialUIPopoverFromProp !== nextState.controlAdviserMaterialUIPopoverFromProp) {
+      // console.log('this.state.controlAdviserMaterialUIPopoverFromProp:', this.state.controlAdviserMaterialUIPopoverFromProp, ', nextState.controlAdviserMaterialUIPopoverFromProp:', nextState.controlAdviserMaterialUIPopoverFromProp);
+      return true;
+    }
+    if (this.state.issueWeVoteIdsLinkedToByOrganizationDictLength !== nextState.issueWeVoteIdsLinkedToByOrganizationDictLength) {
+      // console.log('this.state.issueWeVoteIdsLinkedToByOrganizationDictLength:', this.state.issueWeVoteIdsLinkedToByOrganizationDictLength, ', nextState.issueWeVoteIdsLinkedToByOrganizationDictLength:', nextState.issueWeVoteIdsLinkedToByOrganizationDictLength);
+      return true;
+    }
+    if (this.state.numberOfAllSupportPositions !== nextState.numberOfAllSupportPositions) {
+      return true;
+    }
+    if (this.state.numberOfAllOpposePositions !== nextState.numberOfAllOpposePositions) {
+      return true;
+    }
+    if (this.state.numberOfAllInfoOnlyPositions !== nextState.numberOfAllInfoOnlyPositions) {
+      return true;
+    }
+    if (this.props.closeSupportOpposeCountDisplayModal !== nextProps.closeSupportOpposeCountDisplayModal) {
+      return true;
+    }
+    if (this.props.openAdviserMaterialUIPopover !== nextProps.openAdviserMaterialUIPopover) {
+      return true;
+    }
+    if (this.props.openSupportOpposeCountDisplayModal !== nextProps.openSupportOpposeCountDisplayModal) {
+      return true;
+    }
+    if (this.state.organizationWeVoteIdsVoterIsFollowingLength !== nextState.organizationWeVoteIdsVoterIsFollowingLength) {
+      // console.log('this.state.organizationWeVoteIdsVoterIsFollowingLength:', this.state.organizationWeVoteIdsVoterIsFollowingLength, ', nextState.organizationWeVoteIdsVoterIsFollowingLength:', nextState.organizationWeVoteIdsVoterIsFollowingLength);
+      return true;
+    }
+    if (this.state.positionsInNetworkSummaryListLength !== nextState.positionsInNetworkSummaryListLength) {
+      return true;
+    }
+    if (this.state.positionsOutOfNetworkSummaryListLength !== nextState.positionsOutOfNetworkSummaryListLength) {
+      return true;
+    }
+    if (this.props.supportOpposeCountDisplayModalTutorialOn !== nextProps.supportOpposeCountDisplayModalTutorialOn) {
+      return true;
+    }
+    if (this.props.supportOpposeCountDisplayModalTutorialText !== nextProps.supportOpposeCountDisplayModalTutorialText) {
+      return true;
+    }
+    if (this.props.showDownArrow !== nextProps.showDownArrow) {
+      return true;
+    }
+    if (this.props.showUpArrow !== nextProps.showUpArrow) {
+      return true;
+    }
+    if (this.state.voterPersonalNetworkScore !== nextState.voterPersonalNetworkScore) {
+      // console.log('this.state.voterPersonalNetworkScore:', this.state.voterPersonalNetworkScore, ', nextState.voterPersonalNetworkScore:', nextState.voterPersonalNetworkScore);
+      return true;
+    }
+    if (this.state.voterOpposesBallotItem !== nextState.voterOpposesBallotItem) {
+      // console.log('this.state.voterOpposesBallotItem:', this.state.voterOpposesBallotItem, ', nextState.voterOpposesBallotItem:', nextState.voterOpposesBallotItem);
+      return true;
+    }
+    if (this.state.voterSupportsBallotItem !== nextState.voterSupportsBallotItem) {
+      // console.log('this.state.voterSupportsBallotItem:', this.state.voterSupportsBallotItem, ', nextState.voterSupportsBallotItem:', nextState.voterSupportsBallotItem);
+      return true;
+    }
+    return false;
+  }
 
   componentDidCatch (error, info) {
     // We should get this information to Splunk!

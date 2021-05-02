@@ -177,7 +177,7 @@ class App extends Component {
       } else {
         console.error('Attempted to send voterAddressRetrieve before we have a voterDeviceId!');
       }
-    }, 3000);  // April 30, 2021: Tuned to keep performance up
+    }, 400);  // April 30, 2021: Tuned to keep performance up
   }
 
   render () {
