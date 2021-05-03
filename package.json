@@ -20,7 +20,10 @@
     "start-minified": "webpack serve --mode production",
     "start-minified-analysis": "ANALYSIS=1 webpack serve --mode development",
     "start-minified-analysis-prod": "ANALYSIS=1 webpack serve --mode production",
-    "test": "echo \"No test specified\" && exit 0"
+    "test": "echo \"No test specified\" && exit 0",
+    "autoTest": " mocha --require @babel/register --require tests/component/index.js \"./tests/component/tests.js\" && npm run lint",
+    "snyk-protect": "snyk protect",
+    "prepare": "npm run snyk-protect"
   },
   "devDependencies": {
     "@babel/core": "^7.12.3",
