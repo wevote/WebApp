@@ -26,7 +26,6 @@ const ElectionCountdown = React.lazy(() => import('../components/Ready/ElectionC
 const FindOpinionsForm = React.lazy(() => import('../components/Ready/FindOpinionsForm'));
 const ReadMore = React.lazy(() => import('../components/Widgets/ReadMore'));
 const FirstAndLastNameRequiredAlert = React.lazy(() => import('../components/Widgets/FirstAndLastNameRequiredAlert'));
-// const PledgeToVote = React.lazy(() => import('../components/Ready/PledgeToVote'));
 const ReadyIntroduction = React.lazy(() => import('../components/Ready/ReadyIntroduction'));
 const ReadyInformationDisclaimer = React.lazy(() => import('../components/Ready/ReadyInformationDisclaimer'));
 const ReadyTaskBallot = React.lazy(() => import('../components/Ready/ReadyTaskBallot'));
@@ -35,6 +34,7 @@ const ReadyTaskPlan = React.lazy(() => import('../components/Ready/ReadyTaskPlan
 const ReadyTaskRegister = React.lazy(() => import('../components/Ready/ReadyTaskRegister'));
 const ShareButtonDesktopTablet = React.lazy(() => import('../components/Share/ShareButtonDesktopTablet'));
 const ValuesToFollowPreview = React.lazy(() => import('../components/Values/ValuesToFollowPreview'));
+// const PledgeToVote = React.lazy(() => import('../components/Ready/PledgeToVote'));
 
 
 const nextReleaseFeaturesEnabled = webAppConfig.ENABLE_NEXT_RELEASE_FEATURES === undefined ? false : webAppConfig.ENABLE_NEXT_RELEASE_FEATURES;
