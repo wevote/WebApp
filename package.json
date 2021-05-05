@@ -49,6 +49,7 @@
     "eslint-webpack-plugin": "^2.4.3",
     "file-loader": "^6.2.0",
     "html-webpack-plugin": "^5.3.1",
+    "mocha": "^8.3.2",
     "moment-locales-webpack-plugin": "^1.2.0",
     "pre-commit": "^1.2.2",
     "react-hot-loader": "^4.13.0",
