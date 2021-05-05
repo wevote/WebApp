@@ -1,8 +1,10 @@
+import { Button } from '@material-ui/core';
 import PropTypes from 'prop-types';
 import React from 'react';
 import styled from 'styled-components';
 import BallotActions from '../../actions/BallotActions';
 import BallotStore from '../../stores/BallotStore';
+import { historyPush } from '../../utils/cordovaUtils';
 import { formatDateToMonthDayYear } from '../../utils/dateFormat';
 import initializeMoment from '../../utils/initializeMoment';
 import { renderLog } from '../../utils/logging';
@@ -15,6 +17,7 @@ class ElectionCountdown extends React.Component {
       electionIsToday: false,
       electionInPast: false,
       t0: performance.now(),
+      showButton: false,
     };
     this.setNewTime = this.setNewTime.bind(this);
   }
@@ -22,6 +25,16 @@ class ElectionCountdown extends React.Component {
   componentDidMount () {
     this.onBallotStoreChange();
     this.ballotStoreListener = BallotStore.addListener(this.onBallotStoreChange.bind(this));
+    this.addressSuggestiontimer = setTimeout(() => {
+      const { electionDateMDY } = this.state;
+      const { location: { pathname } } = window;
+      if (electionDateMDY.length === 0) {
+        console.log('history push or button appears');
+        if (pathname === '' || pathname === '/' || pathname === '/ready-light') {
+          this.setState({ showButton: true });
+        }
+      }
+    }, 5000);
   }
 
   componentWillUnmount () {
@@ -134,7 +147,7 @@ class ElectionCountdown extends React.Component {
   render () {
     renderLog('ElectionCountdown');  // Set LOG_RENDER_EVENTS to log all renders
     const { daysOnlyMode } = this.props;
-    const { days, daysMobile, electionIsToday, electionInPast, hours, minutes, seconds, electionDateMDY } = this.state;
+    const { days, daysMobile, electionIsToday, electionInPast, hours, minutes, seconds, electionDateMDY, showButton } = this.state;
     const timeStillLoading = !(days || hours || minutes || seconds);
     const electionIsUpcomingHtml = (
       <Card className="card">
@@ -149,9 +162,22 @@ class ElectionCountdown extends React.Component {
                     {daysMobile === '1' ? 'day' : 'days'}
                   </>
                 ) : (
-                  <DaysFindingText>
-                    Finding the election...
-                  </DaysFindingText>
+                  <div style={{ margin: 26 }}>
+                    { showButton ? (
+                      <Button
+                        variant="outlined"
+                        color="primary"
+                        id="goToHeavyButton"
+                        onClick={() => historyPush('/ballot')}
+                      >
+                        Choose Election
+                      </Button>
+                    ) : (
+                      <DaysFindingText>
+                        Finding the election...
+                      </DaysFindingText>
+                    )}
+                  </div>
                 )}
               </CardTitleUpcoming>
             </div>

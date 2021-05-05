@@ -55,8 +55,9 @@ export default {
   voterBallotItemsRetrieve (googleCivicElectionId = 0, ballot_returned_we_vote_id = '', ballot_location_shortcut = '') {
     if (googleCivicElectionId === 0 && voterBallotItemRetrievedWithZeroCivicId) {
       // Yuck
-      console.log('We only allow voterBallotItemsRetrieve with googleCivicElectionId === 0, once per sessionj');
+      console.log('We only allow voterBallotItemsRetrieve with googleCivicElectionId === 0, once per session');
     } else {
+      console.log('BallotActions voterBallotItemsRetrieve with googleCivicElectionId: ', googleCivicElectionId);
       if (googleCivicElectionId === 0) voterBallotItemRetrievedWithZeroCivicId = true;
       Dispatcher.loadEndpoint('voterBallotItemsRetrieve', {
         use_test_election: false,

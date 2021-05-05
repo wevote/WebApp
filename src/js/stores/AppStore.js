@@ -239,6 +239,7 @@ class AppStore extends ReduceStore {
     }
   }
 
+
   reduce (state, action) {
     let apiStatus;
     let apiSuccess;

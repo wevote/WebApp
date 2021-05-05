@@ -1,12 +1,11 @@
 /* eslint-disable */
+import React, { createContext, useMemo, useCallback, useContext, useState, useEffect, memo, useRef, Fragment } from 'react';
 import PropTypes from 'prop-types';
-import React, { createContext, Fragment, memo, useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react';
-
-const d3Geo = React.lazy(() => import('d3-geo'));
-const { geoPath: geoPath$1, geoGraticule } = React.lazy(() => import('d3-geo'));
-const { feature } = React.lazy(() => import('topojson-client'));
-const { zoom, zoomIdentity } = React.lazy(() => import('d3-zoom'));
-const { select, event } = React.lazy(() => import('d3-selection'));
+import * as d3Geo from 'd3-geo';
+import { geoPath as geoPath$1, geoGraticule } from 'd3-geo';
+import { feature } from 'topojson-client';
+import { zoom, zoomIdentity } from 'd3-zoom';
+import { select } from 'd3-selection';
 
 const _extends = Object.assign || function (target) {
   for (let i = 1; i < arguments.length; i++) {
@@ -464,12 +463,12 @@ function useZoomPan (_ref) {
   useEffect(() => {
     const svg = select(mapRef.current);
 
-    function handleZoomStart () {
+    function handleZoomStart (event) {
       if (!onMoveStart || bypassEvents.current) return;
       onMoveStart({ coordinates: projection.invert(getCoords(width, height, event.transform)), zoom: event.transform.k }, event);
     }
 
-    function handleZoom () {
+    function handleZoom (event) {
       if (bypassEvents.current) return;
       const { transform } = event;
       const { sourceEvent } = event;
@@ -479,7 +478,7 @@ function useZoomPan (_ref) {
       onMove({ x: transform.x, y: transform.y, k: transform.k, dragging: sourceEvent }, event);
     }
 
-    function handleZoomEnd () {
+    function handleZoomEnd (event) {
       if (bypassEvents.current) {
         bypassEvents.current = false;
         return;

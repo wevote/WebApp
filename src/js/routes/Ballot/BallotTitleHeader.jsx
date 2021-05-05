@@ -16,6 +16,15 @@ const DelayedLoad = React.lazy(() => import('../../components/Widgets/DelayedLoa
 
 
 class BallotTitleHeader extends Component {
+  shouldComponentUpdate (nextProps) {
+    // This lifecycle method tells the component to NOT render if componentWillReceiveProps didn't see any changes
+    if (this.props.electionName !== nextProps.electionName) {
+      // console.log('this.props.electionName:', this.props.electionName, ', nextProps.electionName:', nextProps.electionName);
+      return true;
+    }
+    return false;
+  }
+
   shortenElectionNameCordova () {
     if (isIPhone3p5in() || isIPhone4in()) {
       return 26;  // iphone5-or-smaller

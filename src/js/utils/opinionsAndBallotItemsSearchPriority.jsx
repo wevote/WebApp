@@ -1,6 +1,4 @@
-import React from 'react';
-
-const { arrayContains } = React.lazy(() => import('./textFormat'));
+import { arrayContains } from './textFormat';
 
 export default function opinionsAndBallotItemsSearchPriority (originalString, item, ignoreDescriptionFields = false) {
   // console.log('opinionsAndBallotItemsSearchPriority, originalString: ', originalString);

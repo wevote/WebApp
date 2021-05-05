@@ -9,6 +9,7 @@ import BallotStore from '../../stores/BallotStore';
 import VoterStore from '../../stores/VoterStore';
 import { convertStateCodeToStateText } from '../../utils/addressFunctions';
 import { historyPush } from '../../utils/cordovaUtils';
+import { electionDateTomorrowFormatted, formatDateMMMDoYYYY } from '../../utils/dateFormat';
 import { renderLog } from '../../utils/logging';
 import { cleanArray } from '../../utils/textFormat';
 import LoadingWheel from '../LoadingWheel';
@@ -165,8 +166,7 @@ export default class BallotElectionList extends Component {
 
   renderUpcomingElectionList (list, currentDate) {
     const renderedList = list.map((item) => {
-      const electionDateTomorrowMoment = window.moment(item.election_day_text, 'YYYY-MM-DD').add(1, 'days');
-      const electionDateTomorrow = electionDateTomorrowMoment.format('YYYY-MM-DD');
+      const electionDateTomorrow = electionDateTomorrowFormatted(item.election_day_text);
       return electionDateTomorrow > currentDate ? (
         <div key={`upcoming-election-${item.google_civic_election_id}`}>
           <dl>
@@ -209,7 +209,7 @@ export default class BallotElectionList extends Component {
                   </span>
                 </ElectionName>
                 <ElectionDate>
-                  {window.moment(item.election_day_text).format('MMM Do, YYYY')}
+                  {formatDateMMMDoYYYY(item.election_day_text)}
                 </ElectionDate>
               </ButtonContentsWrapper>
             </Button>
@@ -223,8 +223,7 @@ export default class BallotElectionList extends Component {
 
   renderPriorElectionList (list, currentDate) {
     const renderedList = list.map((item) => {
-      const electionDateTomorrowMoment = window.moment(item.election_day_text, 'YYYY-MM-DD').add(1, 'days');
-      const electionDateTomorrow = electionDateTomorrowMoment.format('YYYY-MM-DD');
+      const electionDateTomorrow = electionDateTomorrowFormatted(item.election_day_text);
       return electionDateTomorrow > currentDate ?
         null : (
           <div key={`prior-election-${item.google_civic_election_id}`}>
@@ -268,7 +267,7 @@ export default class BallotElectionList extends Component {
                     </span>
                   </ElectionName>
                   <ElectionDate>
-                    {window.moment(item.election_day_text).format('MMM Do, YYYY')}
+                    {formatDateMMMDoYYYY(item.election_day_text)}
                   </ElectionDate>
                 </ButtonContentsWrapper>
               </Button>

@@ -6,6 +6,7 @@ import BallotStore from '../../stores/BallotStore';
 import ElectionStore from '../../stores/ElectionStore';
 import VoterStore from '../../stores/VoterStore';
 import cookies from '../../utils/cookies';
+import { formatDateMMMDoYYYY } from '../../utils/dateFormat';
 import initializeMoment from '../../utils/initializeMoment';
 import { renderLog } from '../../utils/logging';
 import LoadingWheel from '../LoadingWheel';
@@ -196,7 +197,7 @@ class BallotStatusMessage extends Component {
     const isVotingDay = today.isSame(this.state.electionDayText, 'day');
 
     if (isVotingDay) {
-      const dateText = window.moment(this.state.electionDayText).format('MMM Do, YYYY');
+      const dateText = formatDateMMMDoYYYY(this.state.electionDayText);
       messageString = `It is Voting Day,  ${dateText}.  If you haven't already voted, please go vote!`;
       // I don't think this is necessary on election day.
       // messageString += !this.state.voterSpecificBallotFromGoogleCivic && this.state.ballotLocationChosen && this.state.ballotLocationDisplayName ?
@@ -216,7 +217,7 @@ class BallotStatusMessage extends Component {
     } else {
       let messageInPastString;
       if (this.state.electionDayText) {
-        const dateText = window.moment ? window.moment(this.state.electionDayText).format('MMM Do, YYYY') : '';
+        const dateText = formatDateMMMDoYYYY(this.state.electionDayText);
 
         messageInPastString = `This election was held on ${dateText}.`;
       } else {

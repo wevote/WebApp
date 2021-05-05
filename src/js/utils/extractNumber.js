@@ -1,6 +1,4 @@
-import React from 'react';
-
-const { isNumber, isString } = React.lazy(() => import('./textFormat'));
+import { isNumber, isString } from './textFormat';
 
 export default function extractNumber (string) {
   if (!string) return '';

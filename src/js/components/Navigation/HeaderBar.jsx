@@ -362,14 +362,14 @@ class HeaderBar extends Component {
   // December 2020: destinationUrlForHistoryPush is not defined in this class, so we never make the HistoryPush
   toggleSelectBallotModal (showSelectBallotModalHideAddress = false, showSelectBallotModalHideElections = false) {
     const { showSelectBallotModal } = this.state;
-    // if (showSelectBallotModal && destinationUrlForHistoryPush && destinationUrlForHistoryPush !== '') {
-    //   historyPush(destinationUrlForHistoryPush);
-    // } else
     if (!showSelectBallotModal) {
       // console.log('Ballot toggleSelectBallotModal, BallotActions.voterBallotListRetrieve()');
       BallotActions.voterBallotListRetrieve(); // Retrieve a list of ballots for the voter from other elections
     }
-    AppActions.setShowSelectBallotModal(!showSelectBallotModal, showSelectBallotModalHideAddress, showSelectBallotModalHideElections);
+    // May 5, 2021:  We were running into "invariant.js:40 Uncaught Invariant Violation: Dispatch.dispatch(...): Cannot dispatch in the middle of a dispatch."
+    // In both the major "speed" refactored branch, and on the older wevote.us when trying to close the  BallotElectionListWithFilters.  So this workaround updates the store without a dispatch.
+    // So just close the dialog, to avoid this API call: AppActions.setShowSelectBallotModal(!showSelectBallotModal, showSelectBallotModalHideAddress, showSelectBallotModalHideElections);
+    this.setState({ showSelectBallotModal: false });
   }
 
   // closeNewVoterGuideModal () {
@@ -450,7 +450,7 @@ class HeaderBar extends Component {
             <IconButton
               classes={{ root: classes.iconButtonRoot }}
               id="changeAddressOrElectionHeaderBarElection"
-              onClick={() => this.toggleSelectBallotModal('', false, false)}
+              onClick={() => this.toggleSelectBallotModal(false, false)}
             >
               <Place />
             </IconButton>
@@ -458,7 +458,7 @@ class HeaderBar extends Component {
               color="primary"
               classes={{ root: classes.addressButtonRoot }}
               id="changeAddressOrElectionHeaderBarText"
-              onClick={() => this.toggleSelectBallotModal('', false, false)}
+              onClick={() => this.toggleSelectBallotModal(false, false)}
             >
               Address & Elections
             </Button>
@@ -469,7 +469,7 @@ class HeaderBar extends Component {
             <IconButton
               classes={{ root: classes.iconButtonRoot }}
               id="changeAddressOnlyHeaderBar"
-              onClick={() => this.toggleSelectBallotModal('', false, true)}
+              onClick={() => this.toggleSelectBallotModal(false, true)}
             >
               <Place />
             </IconButton>
@@ -477,7 +477,7 @@ class HeaderBar extends Component {
               color="primary"
               classes={{ root: classes.addressButtonRoot }}
               id="changeAddressOnlyHeaderBarText"
-              onClick={() => this.toggleSelectBallotModal('', false, true)}
+              onClick={() => this.toggleSelectBallotModal(false, true)}
             >
               Address
             </Button>
@@ -488,7 +488,7 @@ class HeaderBar extends Component {
             <IconButton
               classes={{ root: classes.iconButtonRoot }}
               id="changeAddressOnlyHeaderBar"
-              onClick={() => this.toggleSelectBallotModal('', false, true)}
+              onClick={() => this.toggleSelectBallotModal(false, true)}
             >
               <Place />
             </IconButton>
@@ -530,12 +530,10 @@ class HeaderBar extends Component {
                 classes={{ indicator: classes.indicator }}
               >
                 {showFullNavigation && (
-                  <TabWithPushHistory classes={{ root: classes.tabRootReady }} id="readyTabHeaderBar" label="Ready?" to="/ready" />
-                  // <Tab classes={{ root: classes.tabRootReady }} id="readyTabHeaderBar" label="Ready?" onClick={() => this.handleNavigation('/ready')} />
+                  <TabWithPushHistory classes={{ root: classes.tabRootReady }} id="readyTabHeaderBar" label="Ready?" to="/ready-heavy" />
                 )}
                 {showFullNavigation && (
                   <TabWithPushHistory classes={{ root: classes.tabRootBallot }} id="ballotTabHeaderBar" label="Ballot" to="/ballot" />
-                  // <Tab classes={{ root: classes.tabRootBallot }} id="ballotTabHeaderBar" label="Ballot" onClick={() => this.handleNavigation('/ballot')} />
                 )}
                 <TabWithPushHistory classes={{ root: classes.tabRootValues }} id="valuesTabHeaderBar" label="Opinions" to="/values" />
                 {(showFullNavigation) && (

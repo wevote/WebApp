@@ -1,19 +1,17 @@
-import React, { Component, Suspense } from 'react';
 import { MuiThemeProvider } from '@material-ui/core/styles';
+import React, { Component, Suspense } from 'react';
 import { Redirect, Route, Switch } from 'react-router-dom';
 import styled, { ThemeProvider } from 'styled-components';
-import VoterActions from './js/actions/VoterActions';
+import Header from './js/components/Navigation/Header';
 import ErrorBoundary from './js/components/Widgets/ErrorBoundary';
 import WeVoteRouter from './js/components/Widgets/WeVoteRouter';
 import muiTheme from './js/mui-theme';
 import styledTheme from './js/styled-theme';
 import cookies from './js/utils/cookies';
-import { isWebApp } from './js/utils/cordovaUtils';
 import initializejQuery from './js/utils/initializejQuery';
+// import initializeOnce from './js/utils/initializeOnce';
 import { renderLog } from './js/utils/logging';
-import Header from './js/components/Navigation/Header';
 import RouterV5SendMatch from './js/utils/RouterV5SendMatch';
-import VoterStore from './js/stores/VoterStore';
 
 // const MainFooter  = React.lazy(() => import('./js/components/Navigation/MainFooter'));
 
@@ -64,6 +62,8 @@ const Pricing = React.lazy(() => import('./js/routes/More/Pricing'));
 const Privacy = React.lazy(() => import('./js/routes/More/Privacy'));
 const ProcessingDonation = React.lazy(() => import('./js/routes/More/ProcessingDonation'));
 const Ready = React.lazy(() => import('./js/routes/Ready'));
+const ReadyHeavy = React.lazy(() => import('./js/routes/ReadyHeavy'));
+const ReadyLight = React.lazy(() => import('./js/routes/ReadyLight'));
 const ReadyRedirect = React.lazy(() => import('./js/routes/ReadyRedirect'));
 const Register = React.lazy(() => import('./js/routes/Register'));
 const RegisterToVote = React.lazy(() => import('./js/routes/More/RegisterToVote'));
@@ -104,10 +104,12 @@ class App extends Component {
       doShowHeader: true,
       doShowFooter: true,
       isInitialized: false,
+      showReadyLight: true,
     };
     this.setShowHeader = this.setShowHeader.bind(this);
     this.setShowFooter = this.setShowFooter.bind(this);
     this.setShowHeaderFooter = this.setShowHeaderFooter.bind(this);
+    this.setShowReadyHeavy = this.setShowReadyHeavy.bind(this);
 
     // lazyLoader('bootstrap-social-css').then((result) => {
     //   console.log('lazy loader for bootstrap-social-css returned: ', result);
@@ -134,7 +136,8 @@ class App extends Component {
   }
 
   componentDidMount () {
-    this.InitializeOnce();
+    // initializeOnce();
+    // this.InitializeOnce();
   }
 
   componentDidCatch (error, info) {
@@ -143,14 +146,17 @@ class App extends Component {
   }
 
   setShowHeader (doShowHeader) {
+    console.log('-----------HEADER setShowHeader');
     this.setState({ doShowHeader });
   }
 
   setShowFooter (doShowFooter) {
+    console.log('-----------HEADER setShowFooter');
     this.setState({ doShowFooter });
   }
 
   setShowHeaderFooter (doShow) {
+    console.log('-----------HEADER setShowHeaderFooter', doShow);
     // console.log('setShowHeaderFooter -------------- doShow:', doShow);
     this.setState({
       doShowHeader: doShow,
@@ -158,31 +164,35 @@ class App extends Component {
     });
   }
 
-  InitializeOnce () {
-    const { isInitialized } = this.state;
-    if (isInitialized) {
-      return;
-    }
+  // InitializeOnce () {
+  //   const { isInitialized } = this.state;
+  //   if (isInitialized) {
+  //     return;
+  //   }
+  //
+  //   this.positionItemTimer = setTimeout(() => {
+  //     // April 2021: This takes a half second to complete, and does tons more than
+  //     // you would think server side.  But it should not be necessary on every voterRetrieve,
+  //     // but if there are some odd cases where it has to be called agian, deal with them as
+  //     // special cases.
+  //     // voter_device_id won't be set for first time visitors, until the first API call completes!
+  //     const voterDeviceId = VoterStore.voterDeviceId();
+  //     if (voterDeviceId) {
+  //       VoterActions.voterAddressRetrieve(voterDeviceId);
+  //       this.setState({ isInitialized: true });
+  //     } else {
+  //       console.error('Attempted to send voterAddressRetrieve before we have a voterDeviceId!');
+  //     }
+  //   }, 5000);  // April 30, 2021: Tuned to keep performance up
+  // }
 
-    this.positionItemTimer = setTimeout(() => {
-      // April 2021: This takes a half second to complete, and does tons more than
-      // you would think server side.  But it should not be necessary on every voterRetrieve,
-      // but if there are some odd cases where it has to be called agian, deal with them as
-      // special cases.
-      // voter_device_id won't be set for first time visitors, until the first API call completes!
-      const voterDeviceId = VoterStore.voterDeviceId();
-      if (voterDeviceId) {
-        VoterActions.voterAddressRetrieve(voterDeviceId);
-        this.setState({ isInitialized: true });
-      } else {
-        console.error('Attempted to send voterAddressRetrieve before we have a voterDeviceId!');
-      }
-    }, 400);  // April 30, 2021: Tuned to keep performance up
+  setShowReadyHeavy () {
+    this.setState({ showReadyLight: false });
   }
 
   render () {
     renderLog('App');
-    const { doShowHeader, doShowFooter, jQueryInitialized } = this.state;
+    const { doShowHeader, doShowFooter, jQueryInitialized, showReadyLight } = this.state;
     // console.log(`App doShowHeader: ${doShowHeader}, doShowFooter:${doShowFooter}`);
     let { hostname } = window.location;
     hostname = hostname || '';
@@ -203,14 +213,21 @@ class App extends Component {
                   <Header params={{ }} pathname={window.location.href} />
                   {/* <MainHeaderBar displayHeader={doShowHeader} /> */}
                   <Switch>
-
-
                     <Route exact path="/about"><About /></Route>
                     <Route exact path="/ballot" component={Ballot} />
                     <Route exact path="/friends" component={Friends} />
                     <Route exact path="/friends/:tabItem" component={Friends} />
-                    <Route exact path="/"><Ready /></Route>
-                    <Route exact path="/ready"><Ready /></Route>
+                    <Route exact path="/">
+                      {() => {
+                        if (showReadyLight) {
+                          return <ReadyLight showReadyHeavy={this.setShowReadyHeavy} />;
+                        } else {
+                          return <ReadyHeavy />;
+                        }
+                      }}
+                    </Route>
+                    {/* <Route exact path="/ready"><Ready /></Route> */}
+                    <Route exact path="/ready"><Redirect to="/" /></Route>
                     <Route exact path="/settings" component={SettingsDashboard} />
                     <Route exact path="/settings/claim" component={ClaimYourPage} />
                     <Route exact path="/settings/hamburger" component={HamburgerMenu} />
@@ -314,6 +331,7 @@ class App extends Component {
                     <Route path="/opinions_followed" component={OpinionsFollowed} />
                     <Route path="/opinions_ignored" component={OpinionsIgnored} />
                     {/* <Route exact path="/ready"><Redirect to="/" /></Route> */}
+                    <Route exact path="/ready-heavy"><ReadyHeavy /></Route>
                     <Route path="/ready/election/:google_civic_election_id" component={Ready} />
                     <Route path="/ready/modal/:modal_to_show" render={(props) => (<RouterV5SendMatch componentName="Ready" {...props} />)} />
                     <Route path="/ready/modal/:modal_to_show/:shared_item_code" render={(props) => (<RouterV5SendMatch componentName="Ready" {...props} />)} />

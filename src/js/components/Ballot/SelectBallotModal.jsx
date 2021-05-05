@@ -7,12 +7,12 @@ import styled from 'styled-components';
 import AnalyticsActions from '../../actions/AnalyticsActions';
 import VoterStore from '../../stores/VoterStore';
 import { hasIPhoneNotch } from '../../utils/cordovaUtils';
-// const MapChart = React.lazy(() => import('../Widgets/MapChart/MapChart'));
 import { renderLog } from '../../utils/logging';
 import { calculateBallotBaseUrl } from '../../utils/textFormat';
 
 const BallotElectionListWithFilters = React.lazy(() => import('./BallotElectionListWithFilters'));
 const EditAddressInPlace = React.lazy(() => import('../Widgets/EditAddressInPlace'));
+const MapChart = React.lazy(() => import('../Widgets/MapChart/MapChart'));
 
 
 class SelectBallotModal extends Component {
@@ -128,21 +128,17 @@ class SelectBallotModal extends Component {
                   />
                 </EditAddressInPlaceWrapperMobile>
               )}
-              {/*
               {!editingAddress && (
                 <MapChartWrapper>
                   <MapChart onClickFunction={this.mapHandler} />
                 </MapChartWrapper>
               )}
-              */}
             </div>
-            {/*
             {!editingAddress && (
               <MapChartWrapperDesktop className="u-show-desktop">
                 <MapChart onClickFunction={this.mapHandler} />
               </MapChartWrapperDesktop>
             )}
-            */}
             <SidebarWrapper>
               <div className="u-show-desktop">
                 {!hideAddressEdit && (
@@ -328,48 +324,48 @@ const Row = styled.div`
   }
 `;
 
-// const MapChartWrapper = styled.div`
-//   display: block;
-//   width: 100%;
-//   padding: 12px;
-//   top: 0;
-//   svg {
-//     margin-top: -22px;
-//   }
-//   @media(min-width: 576px) {
-//     width: auto;
-//     flex: 1 1 0;
-//   }
-//   // @media (min-width: 860px) {
-//   //   display: block;
-//   //   width: 50%;
-//   //   padding: 16px;
-//   //   position: sticky;
-//   //   top: 0;
-//   //   svg {
-//   //     margin-top: -36px;
-//   //   }
-//   // }
-// `;
+const MapChartWrapper = styled.div`
+  display: block;
+  width: 100%;
+  padding: 12px;
+  top: 0;
+  svg {
+    margin-top: -22px;
+  }
+  @media(min-width: 576px) {
+    width: auto;
+    flex: 1 1 0;
+  }
+  // @media (min-width: 860px) {
+  //   display: block;
+  //   width: 50%;
+  //   padding: 16px;
+  //   position: sticky;
+  //   top: 0;
+  //   svg {
+  //     margin-top: -36px;
+  //   }
+  // }
+`;
 
-// const MapChartWrapperDesktop = styled.div`
-//   display: block;
-//   width: 50%;
-//   padding: 12px;
-//   top: 0;
-//   svg {
-//     margin-top: -22px;
-//   }
-//   @media (min-width: 860px) {
-//     display: block;
-//     padding: 16px;
-//     position: sticky;
-//     top: 0;
-//     svg {
-//       margin-top: -36px;
-//     }
-//   }
-// `;
+const MapChartWrapperDesktop = styled.div`
+  display: block;
+  width: 50%;
+  padding: 12px;
+  top: 0;
+  svg {
+    margin-top: -22px;
+  }
+  @media (min-width: 860px) {
+    display: block;
+    padding: 16px;
+    position: sticky;
+    top: 0;
+    svg {
+      margin-top: -36px;
+    }
+  }
+`;
 
 const SidebarWrapper = styled.div`
   padding: 16px;

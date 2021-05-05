@@ -6,6 +6,7 @@ import ElectionActions from './actions/ElectionActions';
 import FriendActions from './actions/FriendActions';
 import OrganizationActions from './actions/OrganizationActions';
 import VoterActions from './actions/VoterActions';
+import Header from './components/Navigation/Header';
 import signInModalGlobalState from './components/Widgets/signInModalGlobalState';
 import webAppConfig from './config';
 import AppStore from './stores/AppStore';
@@ -21,7 +22,6 @@ import { stringContains } from './utils/textFormat';
 
 const DelayedLoad = React.lazy(() => import('./components/Widgets/DelayedLoad'));
 const FooterBar = React.lazy(() => import('./components/Navigation/FooterBar'));
-const Header = React.lazy(() => import('./components/Navigation/Header'));
 const ShareButtonFooter = React.lazy(() => import('./components/Share/ShareButtonFooter'));
 const SnackNotifier = React.lazy(() => import('./components/Widgets/SnackNotifier'));
 const { ToastContainer } = React.lazy(() => import('react-toastify'));

@@ -715,10 +715,13 @@ class Ballot extends Component {
   }
 
   onIssueStoreChange () {
-    // console.log('Ballot, onIssueStoreChange');
-    this.setState({
-      issuesFollowedCount: IssueStore.getIssuesVoterIsFollowingLength(),
-    });
+    // console.log('Ballot, onIssueStoreChange IssueStore.getIssuesVoterIsFollowingLength() ', IssueStore.getIssuesVoterIsFollowingLength());
+    const { issuesFollowedCount } = this.state;
+    if (issuesFollowedCount && issuesFollowedCount !== IssueStore.getIssuesVoterIsFollowingLength()) {
+      this.setState({
+        issuesFollowedCount: IssueStore.getIssuesVoterIsFollowingLength(),
+      });
+    }
   }
 
   onVoterGuideStoreChange () {

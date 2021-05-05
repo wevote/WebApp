@@ -1,6 +1,4 @@
-import React from 'react';
-
-const { arrayContains } = React.lazy(() => import('./textFormat'));
+import { arrayContains } from './textFormat';
 
 export default function positionSearchPriority (originalString, item) {
   // console.log('positionSearchPriority, originalString: ', originalString);

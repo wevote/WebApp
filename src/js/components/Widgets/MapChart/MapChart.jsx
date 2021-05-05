@@ -1,9 +1,8 @@
 import React from 'react';
+import { geoCentroid } from 'd3-geo';
 import styled from 'styled-components';
-
-const { geoCentroid } = React.lazy(() => import('d3-geo'));
-const { ComposableMap, Geographies, Geography, Marker, Annotation } = React.lazy(() => import('./mapChartFunctions'));
-const allStates = React.lazy(() => import('../../../../json/allStates.json'));
+import allStates from '../../../../json/allStates.json';
+import { Annotation, ComposableMap, Geographies, Geography, Marker } from './mapChartFunctions';
 
 const geoUrl = 'https://cdn.jsdelivr.net/npm/us-atlas@3/states-10m.json';
 

@@ -1,6 +1,4 @@
-import React from 'react';
-
-const { arrayContains } = React.lazy(() => import('./textFormat'));
+import { arrayContains } from './textFormat';
 
 export default function ballotSearchPriority (originalString, item, ignoreDescriptionFields = false) {
   // console.log('ballotSearchPriority, originalString: ', originalString, 'item.ballot_item_display_name:', item.ballot_item_display_name);

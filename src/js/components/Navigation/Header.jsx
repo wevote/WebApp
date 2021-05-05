@@ -39,6 +39,7 @@ export default class Header extends Component {
       priorPath: '',
     };
 
+    console.log('-----------HEADER constructor');
     this.closeHowItWorksModal = this.closeHowItWorksModal.bind(this);
     this.closeVoterPlanModal = this.closeVoterPlanModal.bind(this);
     this.closeOrganizationModal = this.closeOrganizationModal.bind(this);
@@ -46,10 +47,12 @@ export default class Header extends Component {
     this.handleResize = this.handleResize.bind(this);
     // 2021-1-3: This is a workaround for the difficulty of nesting components in react-router V5, it should not be necessary
     global.weVoteGlobalHistory.listen((location, action) => {
-      if (location.pathname !== this.state.priorPath) {
-        // Re-render the Header if the path changed (Needed for React-router V5)
-        this.setState({ priorPath: window.locationPathname });
-      }
+      // TODO: Experimentally commented out 2021-5-3
+      // if (location.pathname !== this.state.priorPath) {
+      //   // Re-render the Header if the path changed (Needed for React-router V5)
+      //   console.log('-----------HEADER Re-render the Header if the path changed');
+      //   this.setState({ priorPath: window.locationPathname });
+      // }
       if (webAppConfig.LOG_ROUTING) {
         console.log(`Header: The current URL is ${location.pathname}${location.search}${location.hash}`);
         console.log(`Header: The last navigation action was ${action}`, JSON.stringify(global.weVoteGlobalHistory, null, 2));
@@ -58,6 +61,7 @@ export default class Header extends Component {
   }
 
   componentDidMount () {
+    console.log('-----------HEADER componentDidMount');
     this.appStoreListener = AppStore.addListener(this.onAppStoreChange.bind(this));
     this.setState({ windowWidth: window.innerWidth });
     window.addEventListener('resize', this.handleResize);
@@ -73,7 +77,7 @@ export default class Header extends Component {
   }
 
   shouldComponentUpdate (nextProps, nextState) {
-    // console.log('HEADER shouldComponentUpdate');
+    console.log('-----------HEADER shouldComponentUpdate');
     const { location: { pathname } } = window;
     if (this.state.activityTidbitWeVoteIdForDrawer !== nextState.activityTidbitWeVoteIdForDrawer) return true;
     if (this.state.organizationModalBallotItemWeVoteId !== nextState.organizationModalBallotItemWeVoteId) return true;
@@ -94,21 +98,23 @@ export default class Header extends Component {
   }
 
   componentWillUnmount () {
+    console.log('-----------HEADER componentWillUnmount');
     this.appStoreListener.remove();
     window.removeEventListener('resize', this.handleResize);
   }
 
   handleResize (event) {
-    // console.log('handleResize in Header');
+    console.log('-----------HEADER handleResize entry');
     const { currentTarget, target } = event;
     if (currentTarget.innerWidth !== target.innerWidth) {
+      console.log('-----------HEADER handleResize RESIZE');
       console.log('handleResize in Header detected resizing');
       this.setState({ windowWidth: window.innerWidth });
     }
   }
 
   onAppStoreChange () {
-    console.log('Header, onAppStoreChange');
+    console.log('-----------Header, onAppStoreChange');
     this.setState({
       activityTidbitWeVoteIdForDrawer: AppStore.activityTidbitWeVoteIdForDrawer(),
       organizationModalBallotItemWeVoteId: AppStore.organizationModalBallotItemWeVoteId(),
