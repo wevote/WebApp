@@ -197,10 +197,11 @@ export default class SettingsAccount extends Component {
   }
 
   onAppStoreChange () {
+    const { isOnFacebookSupportedDomainUrl } = this.state;
     this.setState({
       isOnWeVoteRootUrl: AppStore.isOnWeVoteRootUrl(),
       isOnWeVoteSubdomainUrl: AppStore.isOnWeVoteSubdomainUrl(),
-      isOnFacebookSupportedDomainUrl: AppStore.isOnFacebookSupportedDomainUrl() || this.state.isOnFacebookSupportedDomainUrl,
+      isOnFacebookSupportedDomainUrl: AppStore.isOnFacebookSupportedDomainUrl() || isOnFacebookSupportedDomainUrl,
     });
   }
 

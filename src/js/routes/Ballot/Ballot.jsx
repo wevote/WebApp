@@ -1076,7 +1076,7 @@ class Ballot extends Component {
     // console.log(ballotWithAllItems);
     // console.log('window.innerWidth:', window.innerWidth);
     const textForMapSearch = VoterStore.getTextForMapSearch();
-    console.log('Ballot VoterStore.getTextForMapSearch(): ', textForMapSearch);
+    // console.log('Ballot VoterStore.getTextForMapSearch(): ', textForMapSearch);
 
     let padBallotWindowBottomForCordova = '';
     if (isCordova()) {

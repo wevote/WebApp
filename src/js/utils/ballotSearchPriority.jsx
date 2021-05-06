@@ -1,3 +1,4 @@
+import React from 'react';
 import { arrayContains } from './textFormat';
 
 export default function ballotSearchPriority (originalString, item, ignoreDescriptionFields = false) {
