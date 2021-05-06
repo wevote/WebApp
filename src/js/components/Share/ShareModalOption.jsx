@@ -4,9 +4,9 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 import AppStore from '../../stores/AppStore';
 import { renderLog } from '../../utils/logging';
+import { openSnackbar } from '../Widgets/SnackNotifier';
 
 const CopyToClipboard = React.lazy(() => import('react-copy-to-clipboard'));
-const { openSnackbar } = React.lazy(() => import('../Widgets/SnackNotifier'));
 const OpenExternalWebSite = React.lazy(() => import('../Widgets/OpenExternalWebSite'));
 
 class ShareModalOption extends Component {

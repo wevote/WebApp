@@ -9,8 +9,7 @@ import VoterGuideStore from '../../stores/VoterGuideStore';
 import VoterStore from '../../stores/VoterStore';
 import { historyPush } from '../../utils/cordovaUtils';
 import { renderLog } from '../../utils/logging';
-
-const { openSnackbar } = React.lazy(() => import('./SnackNotifier'));
+import { openSnackbar } from './SnackNotifier';
 
 export default class FollowToggle extends Component {
   constructor (props) {

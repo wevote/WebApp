@@ -493,6 +493,7 @@ class VoterStore extends ReduceStore {
         };
 
       case 'voterAddressRetrieve':
+      case 'voterAddressOnlyRetrieve':
         // console.log('VoterStore, voterAddressRetrieve, address:', action.res);
         address = action.res || {};
         return {

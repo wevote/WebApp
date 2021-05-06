@@ -10,9 +10,9 @@ import VoterStore from '../../stores/VoterStore';
 import { isCordova, isWebApp } from '../../utils/cordovaUtils'; // hasIPhoneNotch,
 import isMobileScreenSize from '../../utils/isMobileScreenSize';
 import { renderLog } from '../../utils/logging';
+import { openSnackbar } from './SnackNotifier';
 
 const SettingsAccount = React.lazy(() => import('../Settings/SettingsAccount'));
-const { openSnackbar } = React.lazy(() => import('./SnackNotifier'));
 // import VoterActions from '../../actions/VoterActions';
 // import VoterConstants from '../../constants/VoterConstants';
 

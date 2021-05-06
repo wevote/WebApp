@@ -131,6 +131,14 @@ class Ballot extends Component {
       mounted: true,
     });
 
+    const voterDeviceId = VoterStore.voterDeviceId();
+    if (voterDeviceId) {
+      const address = VoterStore.getTextForMapSearch();
+      if (address.length === 0) {
+        VoterActions.voterAddressOnlyRetrieve(voterDeviceId);
+      }
+    }
+
     const completionLevelFilterType = BallotStore.getCompletionLevelFilterTypeSaved() || 'all';
     const ballotWithItemsFromCompletionFilterType = BallotStore.getBallotByCompletionLevelFilterType(completionLevelFilterType);
     if (ballotWithItemsFromCompletionFilterType !== undefined) {
@@ -1068,6 +1076,7 @@ class Ballot extends Component {
     // console.log(ballotWithAllItems);
     // console.log('window.innerWidth:', window.innerWidth);
     const textForMapSearch = VoterStore.getTextForMapSearch();
+    console.log('Ballot VoterStore.getTextForMapSearch(): ', textForMapSearch);
 
     let padBallotWindowBottomForCordova = '';
     if (isCordova()) {

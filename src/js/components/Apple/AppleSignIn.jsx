@@ -6,8 +6,7 @@ import webAppConfig from '../../config';
 import cookies from '../../utils/cookies';
 import { isAndroid, isIOS, isWebApp } from '../../utils/cordovaUtils';
 import { oAuthLog, renderLog } from '../../utils/logging';
-
-const { openSnackbar } = React.lazy(() => import('../Widgets/SnackNotifier'));
+import { openSnackbar } from '../Widgets/SnackNotifier';
 
 class AppleSignIn extends Component {
   constructor (props) {

@@ -17,6 +17,7 @@ class SnackNotifier extends Component {
   }
 
   componentDidMount () {
+    console.log('SnackNotifier componentDidMount');
     openSnackbarFn = this.openSnackbar;
   }
 

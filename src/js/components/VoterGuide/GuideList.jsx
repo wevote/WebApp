@@ -5,11 +5,11 @@ import CandidateStore from '../../stores/CandidateStore';
 import MeasureStore from '../../stores/MeasureStore';
 import { renderLog } from '../../utils/logging';
 import { stringContains } from '../../utils/textFormat';
+import { openSnackbar } from '../Widgets/SnackNotifier';
 
 const FollowToggle = React.lazy(() => import('../Widgets/FollowToggle'));
 const VoterGuideDisplayForList = React.lazy(() => import('./VoterGuideDisplayForList'));
 const EndorsementCard = React.lazy(() => import('../Widgets/EndorsementCard'));
-const { openSnackbar } = React.lazy(() => import('../Widgets/SnackNotifier'));
 const ShowMoreItems = React.lazy(() => import('../Widgets/ShowMoreItems'));
 
 class GuideList extends Component {

@@ -5,8 +5,7 @@ import OrganizationActions from '../../actions/OrganizationActions';
 import OrganizationStore from '../../stores/OrganizationStore';
 import { renderLog } from '../../utils/logging';
 import ImageHandler from '../ImageHandler';
-
-const { openSnackbar } = React.lazy(() => import('./SnackNotifier'));
+import { openSnackbar } from './SnackNotifier';
 
 export default class CodeCopier extends Component {
   constructor (props) {

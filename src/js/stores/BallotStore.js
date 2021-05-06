@@ -555,6 +555,10 @@ class BallotStore extends ReduceStore {
         // BallotActions.voterBallotItemsRetrieve();  // Avoid calling actions from Stores, it often results in unintended useless API queries
         return state;
 
+      case 'voterAddressOnlyRetrieve':
+        // voterAddressRetrieve causes a cascade of other actions, rather than untangle the cascade...
+        return state;
+
       case 'voterBallotItemsRetrieve':
         // console.log('BallotStore, voterBallotItemsRetrieve response received, action.res:', action.res);
         // Exit if we don't have a successful response

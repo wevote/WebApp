@@ -12,6 +12,7 @@ import initializejQuery from './js/utils/initializejQuery';
 // import initializeOnce from './js/utils/initializeOnce';
 import { renderLog } from './js/utils/logging';
 import RouterV5SendMatch from './js/utils/RouterV5SendMatch';
+import SnackNotifier from './js/components/Widgets/SnackNotifier';
 
 // const MainFooter  = React.lazy(() => import('./js/components/Navigation/MainFooter'));
 
@@ -211,6 +212,7 @@ class App extends Component {
               <WeVoteRouter>
                 <WeVoteBody>
                   <Header params={{ }} pathname={window.location.href} />
+                  <SnackNotifier />
                   {/* <MainHeaderBar displayHeader={doShowHeader} /> */}
                   <Switch>
                     <Route exact path="/about"><About /></Route>

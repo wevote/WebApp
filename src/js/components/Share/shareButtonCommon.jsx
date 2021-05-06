@@ -1,7 +1,5 @@
-import React from 'react';
 import { cordovaOpenSafariView } from '../../utils/cordovaUtils';
-
-const { openSnackbar } = React.lazy(() => import('../Widgets/SnackNotifier'));
+import { openSnackbar } from '../Widgets/SnackNotifier';
 
 export function androidFacebookClickHandler (linkToBeShared) {
   // react-share in Cordova for Android, navigates to the URL instead of opening a "tab" with a return 'X' button

@@ -9,8 +9,7 @@ import VoterStore from '../../stores/VoterStore';
 import { historyPush } from '../../utils/cordovaUtils';
 import { renderLog } from '../../utils/logging';
 import { shortenText } from '../../utils/textFormat';
-
-const { openSnackbar } = React.lazy(() => import('../Widgets/SnackNotifier'));
+import { openSnackbar } from '../Widgets/SnackNotifier';
 
 
 class IssueFollowToggleButton extends Component {

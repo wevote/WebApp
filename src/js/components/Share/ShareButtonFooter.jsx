@@ -17,13 +17,13 @@ import isMobile from '../../utils/isMobile';
 import { renderLog } from '../../utils/logging';
 import { startsWith, stringContains } from '../../utils/textFormat';
 import LoadingWheel from '../LoadingWheel';
+import { openSnackbar } from '../Widgets/SnackNotifier';
 
 const OpenExternalWebSite = React.lazy(() => import('../Widgets/OpenExternalWebSite'));
 const ReadMore = React.lazy(() => import('../Widgets/ReadMore'));
 const ShareModalOption = React.lazy(() => import('./ShareModalOption'));
 const { EmailIcon, EmailShareButton, FacebookIcon, FacebookShareButton, TwitterIcon, TwitterShareButton } = React.lazy(() => import('react-share'));
 const { androidFacebookClickHandler, androidTwitterClickHandler, cordovaSocialSharingByEmail } = React.lazy(() => import('./shareButtonCommon'));
-const { openSnackbar } = React.lazy(() => import('../Widgets/SnackNotifier'));
 
 
 class ShareButtonFooter extends Component {
