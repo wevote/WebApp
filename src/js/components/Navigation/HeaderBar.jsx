@@ -360,6 +360,7 @@ class HeaderBar extends Component {
   }
 
   // December 2020: destinationUrlForHistoryPush is not defined in this class, so we never make the HistoryPush
+  // eslint-disable-next-line no-unused-vars
   toggleSelectBallotModal (showSelectBallotModalHideAddress = false, showSelectBallotModalHideElections = false) {
     const { showSelectBallotModal } = this.state;
     if (!showSelectBallotModal) {
