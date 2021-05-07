@@ -1,0 +1,25 @@
+{
+  "type": "interpreter-config",
+  "configurations": [
+    {
+      "settings": [
+        {
+          "driverOptions": {
+            "host": "ondemand.saucelabs.com",
+            "port": 80
+          },
+          "browserOptions": {
+            "platform": "Windows 10",
+            "browserName": "firefox",
+            "version": "48",
+            "username": "${SAUCE_USERNAME}",
+            "accessKey": "${SAUCE_ACCESS_KEY}"
+          }
+        }
+      ],
+      "scripts": [
+        "tests/selenium/tests/*"
+      ]
+    }
+  ]
+}

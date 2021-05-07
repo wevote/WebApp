@@ -10,9 +10,9 @@
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
-#WeVoteUSA Code of Conduct
+# WeVoteUSA Code of Conduct
 ---
-##Conduct
+## Conduct
 
 *  We are committed to providing a friendly, safe and welcoming environment for all, regardless of level of experience, gender, gender identity and expression, sexual orientation, disability, personal appearance, body size, race, ethnicity, age, religion, nationality, or other similar characteristic.
 * On public communication channels, please avoid using overtly sexual nicknames or other nicknames that might detract from a friendly, safe and welcoming environment for all.
@@ -26,7 +26,7 @@ Respect that people have differences of opinion and that every design or impleme
 ---
 
 
-##Moderation
+## Moderation
 
 These are the policies for upholding our community's standards of conduct. If you feel that a thread needs moderation, please contact the WeVoteUSA moderation team.
 

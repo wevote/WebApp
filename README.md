@@ -1,57 +1,53 @@
-<!-- START doctoc generated TOC please keep comment here to allow auto update -->
-<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
-## Contents
+# We Vote WebApp
 
-- [We Vote WebApp - README Home](#we-vote-webapp---readme-home)
-- [Installing WebApp](#installing-webapp)
-- [Working with WebApp](#working-with-webapp)
-- [Contributing to the Project](#contributing-to-the-project)
-- [How to Submit Code / Pull Requests](#how-to-submit-code--pull-requests)
-
-<!-- END doctoc generated TOC please keep comment here to allow auto update -->
-
-# We Vote WebApp - README Home
-
-[![Build Status](https://travis-ci.org/wevote/WebApp.svg?branch=develop)](https://travis-ci.org/wevote/WebApp) [![Coverage Status](https://coveralls.io/repos/github/wevote/WebApp/badge.svg?branch=master)](https://coveralls.io/github/wevote/WebApp?branch=master) [![Build status](https://ci.appveyor.com/api/projects/status/g7dvmiax01d9ydjr?svg=true)](https://ci.appveyor.com/project/pertrai1/webapp)
-
-![We Vote USA](unclesamewevote.jpg)
+[![Build Status](https://travis-ci.org/wevote/WebApp.svg?branch=develop)](https://travis-ci.org/wevote/WebApp)
+[![Sauce Test Status](https://saucelabs.com/buildstatus/WeVote)](https://saucelabs.com/u/WeVote)
 
 This WebApp repository contains a Node/React/Flux Javascript application. Using data from
 Google Civic API, Vote Smart, MapLight, TheUnitedStates.io and the Voting Information Project, we give voters a social way to interact with ballot data.
 
-Interested in volunteering? [Starting presentation here](https://prezi.com/5v4drd74pt6n/we-vote-introduction-strategic-landscape/). Please also [read about our values](https://wevote.hackpad.com/Community-Rules-C0sn7DhZhDt) and [see our Code of Conduct](CODE_OF_CONDUCT.md)
+Interested in [volunteering or applying for an internship](https://www.idealist.org/en/nonprofit/f917ce3db61a46cb8ad2b0d4e335f0af-we-vote-oakland#opportunities)? [Starting presentation here](https://prezi.com/5v4drd74pt6n/we-vote-introduction-strategic-landscape/). 
+Please also [read about our values](https://docs.google.com/document/d/12qBXevI3mVKUsGmXL8mrDMPnWJ1SYw9zX9LGW5cozgg/edit) and 
+[see our Code of Conduct](CODE_OF_CONDUCT.md)
+To join us, please [review our openings here](https://www.idealist.org/en/nonprofit/f917ce3db61a46cb8ad2b0d4e335f0af-we-vote-oakland#opportunities), and express your interest by emailing JoinUs@WeVote.US
 
-You can see our current wireframe mockup for a San Francisco ballot here:
-http://start.wevoteusa.org/
+Our current Beta version is here [https://WeVote.US](https://WeVote.US) and we are working on version 2 now!
 
-And finally, our current live version is here: https://wevote.me
+## Installing WebApp
+Our installation process is built to allow engineers all over America to contribute to We Vote.
+It may seem complicated, but it allows anyone to be in a position to make suggestions, and get involved.
 
-# Installing WebApp
-1. [Overview](docs/installing/README_INSTALLING.md)
+Manual Installation
+1. [Preparing the Environment on Your Machine](docs/installing/ENVIRONMENT.md)
 
-2. [Preparing the Environment on Your Machine](docs/installing/ENVIRONMENT.md)
+2. [Bringing Code to Your Machine](docs/installing/CLONING_CODE.md)
 
-3. [Bringing Code to Your Machine](docs/installing/CLONING_CODE.md)
+3. [Running WebApp for the First Time](docs/installing/RUNNING_FIRST_TIME.md)
 
-4. [Running WebApp for the First Time](docs/installing/RUNNING_FIRST_TIME.md)
+Automated Installation
+1. [Run automated scripts](docs/installing/AUTOMATED_INSTALLATION.md)
 
-# Working with WebApp
+## Working with WebApp
 1. [Working with WebApp Day-to-Day](docs/working/README_WORKING_WITH_WEB_APP.md)
 
 2. [Debugging Tools and Tips](docs/working/DEBUGGING_TOOLS.md)
 
 3. [Issues and Reporting Bugs](docs/working/ISSUES.md)
 
-# Contributing to the Project
+4. [Styling Guidelines](docs/working/STYLING.md)
+
+5. [Want to sign in with Facebook or Twitter on localhost?](docs/working/SECURE_CERTIFICATE.md)
+
+Thanks to BrowserStack for helping us with automated testing!
+
+<a href="https://www.browserstack.com" target="_blank" rel="noopener noreferrer"><img src='src/img/global/logos/browserstack-logo-600x315.png' width='150' height='79'/></a>
+
+## Contributing to the Project
 Please read the following before you start contributing to the project. Thank you!
 
-1. [Overview](docs/contributing/index.md)
+[Coding Standards and Best Practices](docs/contributing/CONTRIBUTING_STANDARDS.md)
 
-2. [Our Culture and Philosophy](docs/contributing/CONTRIBUTING_PHILOSOPHY.md)
-
-3. [Coding Standards and Best Practices](docs/contributing/CONTRIBUTING_STANDARDS.md)
-
-# How to Submit Code / Pull Requests
+## How to Submit Code / Pull Requests
 1. [What the Heck is a Pull Request?](docs/contributing/PULL_REQUEST_BACKGROUND.md)
 
 2. [Before Your First Pull Request](docs/contributing/PULL_REQUEST_SETUP.md)
@@ -63,5 +59,13 @@ Please read the following before you start contributing to the project. Thank yo
 5. [Troubleshooting Pull Request Problems](docs/contributing/PULL_REQUEST_TROUBLESHOOTING.md)
 
 6. [Approving Pull Requests](docs/contributing/APPROVING_PULL_REQUESTS.md)
+
+7. [Progressive Web App Feature](docs/working/PROGRESSIVE_WEB_APP.MD)
+
+## Testing WebApp
+
+1. [Introduction to WebApp testing](docs/testing/README_TESTING.md)
+
+2. [Explanation of various files](docs/testing/EXPLAIN_FILES.md)
 
 Welcome aboard!!

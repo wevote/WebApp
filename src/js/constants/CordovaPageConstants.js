@@ -1,0 +1,38 @@
+import keyMirror from 'keymirror';
+
+const CordovaPageConstants = {
+  ballotVote: null,
+  settingsAccount: null,
+  moreAbout: null,
+  settingsHamburger: null,
+  settingsNotifications: null,
+  settingsSubscription: null,
+  settingsVoterGuideLst: null,
+  moreTools: null,
+  moreTerms: null,
+  valuesList: null,
+  officeWild: null,
+  settingsWild: null,
+  wevoteintroWild: null,
+  ballotSmHdrWild: null,
+  ballotLgHdrWild: null,
+  candidateWild: null,
+  measureWild: null,
+  valueWild: null,
+  voterGuideCreatorWild: null,
+  welcomeWild: null,
+  candidate: null,
+  friends: null,
+  opinions: null,
+  opinionsPubFigs: null,
+  values: null,
+  voterGuideWild: null,
+  ready: null,
+  twitterSignIn: null,
+  twitterInfoPage: null,
+  news: null,
+  twitterIdMFollowers: null,
+  defaultVal: null,
+};
+
+export default keyMirror(CordovaPageConstants);

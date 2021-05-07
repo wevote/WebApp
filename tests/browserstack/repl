@@ -1,0 +1,13 @@
+simpleTextInput = async (id, value) => { const el = await $(`#${id}`); await el.setValue(value); };
+selectTextInput = async (selector, value) => { const el = await $(selector); await el.setValue(value); };
+simpleClick = async (id) => { const el = await $(`#${id}`); await el.click(); };
+hiddenClick = async (id) => { await browser.executeAsync((i, done) => { document.getElementById(i).click(); done(); }, id) };
+hiddenClickNth = async (selector, number) => { await browser.executeAsync((s, n, done) => { document.querySelectorAll(s)[n].click(); done(); }, selector, number) };
+hiddenTextInputNth = async (selector, number, value) => { await browser.executeAsync((s, n, v, done) => { document.querySelectorAll(s)[n].value = v; done(); }, selector, number, value) };
+selectClick = async (selector, value) => { const el = await $(selector); await el.click(); };
+scrollIntoViewSimple = async (id) => { const el = await $(`#${id}`); await el.scrollIntoView(); };
+scrollIntoViewSelect = async (selector) => { const clickableItem = await $(selector); await clickableItem.scrollIntoView(); }
+hiddenSelectClick = async (selector) => { await browser.executeAsync((s, done) => { document.querySelector(s).click(); done(); }, selector) };
+hiddenTextInput = async (id, input) => { await browser.executeAsync((i, v, done) => { document.getElementById(i).value = v; done(); }, id, input); }
+scrollDown = async (amount) => { await browser.executeAsync((y, done) => { scroll(0, y); done(); }, amount); }
+clearTextInputValue = async (elementIdName) => { const clickableSelector = `#${elementIdName}`; const clickableItem = await $(clickableSelector); await clickableItem.setValue('\uE003\uE003\uE003\uE003\uE003\uE003\uE003\uE003\uE003\uE003\uE003\uE003\uE003\uE003\uE003\uE003\uE003  \uE003\uE003\uE003\uE003\uE003\uE003\uE003\uE003\uE003\uE003\uE003\uE003\uE003'); }

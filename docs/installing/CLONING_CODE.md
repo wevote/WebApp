@@ -1,49 +1,64 @@
-<!-- START doctoc generated TOC please keep comment here to allow auto update -->
-<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
-## Contents
-
-- [Bringing Code to Your Machine](#bringing-code-to-your-machine)
-  - [Setting up your repository for work](#setting-up-your-repository-for-work)
-    - [Clone the repo](#clone-the-repo)
-  - [](#)
-
-<!-- END doctoc generated TOC please keep comment here to allow auto update -->
-
 # Bringing Code to Your Machine
+[Go back to Readme Home](../../README.md)
+
+## Set up your environment
+
+Make sure you have created a place to put all of the code from Github, for example:
+
+    $ mkdir /Users/<YOUR NAME HERE>/MyProjects/
 
 ## Setting up your repository for work
 
-1.Install and configure git on your local machine.
+1. Install and configure git on your local machine if it is not already installed. See instructions [here](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git).
 
-2.Create a fork of wevote/WebApp.git  
+1. Create a fork of wevote/WebApp.git repository. You can do this from https://github.com/wevote/WebApp with the "Fork" button (upper right of screen)
 
-3.Clone your fork  
+1. Using your terminal program, change directory into the local folder on your computer where you want the WebApp repository to be downloaded (replacing "<YOUR NAME HERE>" with your login name, and <YOUR GITHUB USERNAME HERE> with your github username) and clone your fork:  
+  
+    `cd /Users/<YOUR NAME HERE>/MyProjects/`
 
-`git clone https://github.com/username/WebApp.git`  
+    `git clone https://github.com/<YOUR GITHUB USERNAME HERE>/WebApp.git`
 
-4.In your local repository, set up a remote for upstream:  
-`$ git remote add upstream git@github.com:wevote/WebApp.git`  
+1. Change into your local WebApp repository folder, and set up a remote for upstream:
 
-5.Create ssh keys: `ssh-keygen -t rsa -C "youremail@somedomain.com"`  
+    `cd /Users/<YOUR NAME HERE>/MyProjects/WebApp`
 
-6.`ssh-add ~/.ssh/id_rsa`  
+    `$ git remote add upstream git@github.com:wevote/WebApp.git`  
 
-7.`pbcopy < ~/.ssh/id_rsa.pub`  
+#### Windows machines only
 
-8.Go paste your keys into Github, under SSH Keys for your account.  
+5. Set the line endings to LF in git so ESLint doesn't flag CRLF line endings as errors
 
-9.Set up a git client where origin is a fork of the repository (e.g.
-  pertrai1/WebApp), and upstream is the real deal (e.g. wevote/WebApp) 
+    $ git config --global core.autocrlf false
 
-### Clone the repo
+Next, set `* text=auto` in your `.gitattributes` file (you may need to create this file in your root WebApp folder)
 
-* Click the GitHub fork button to create your own fork
-* Clone your fork of the repo to your dev system
+    * text=auto
 
-```
-git clone git@github.com:pertrai1/wevote.git
-```
+Finally, set the core.eol to LF
 
+    $ git config --global core.eol lf
+
+
+### Create and set up SSH keys. (For Windows machines, refer to [these instructions instead](https://help.github.com/articles/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent/#platform-windows)).
+
+  1. Create SSH key: 
+  
+     `ssh-keygen -t rsa -C "youremail@somedomain.com"`
+   
+  2. Add SSH private keys into the SSH authentication agent:
+  
+     `ssh-add ~/.ssh/id_rsa`
+
+  3. Copy the contents of the *public* key file into your computer's clipboard:
+  
+     `pbcopy < ~/.ssh/id_rsa.pub`
+
+  4. Go to your "Settings" page in GitHub (click on your avatar on the top right). In the left navigation, choose "SSH and GPG keys".
+  
+  5. Click the "New SSH key" button on the top right.
+  
+  6. Paste the contents of the "~/.ssh/id_rsa.pub" key file (which you just copied in step 3) into the "Key" text area, and give it any Title you would like.
 
 ---
 

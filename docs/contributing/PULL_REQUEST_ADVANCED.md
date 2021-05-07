@@ -101,8 +101,9 @@ Define a remote for their github repo, e.g.
 `git remote add pertrai1 https://github.com/pertrai1/WebApp.git`
 
 Now fetch their changes and rebase on top of the branch they have that change in:
-`git fetch pertrai1`
-`git rebase pertrai1/pertrai1_branchname`
+
+    git fetch pertrai1
+    git rebase pertrai1/pertrai1_branchname
 
 If there are collisions, these files are removed from your git commit. Hunt them down by searching for seven > characters ‘>>>>>>>’ in your project. Resolve any conflicts in your editor. git status will also show the affected files (in red, since they’re not part of a commit)
 

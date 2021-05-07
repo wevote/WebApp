@@ -1,17 +1,27 @@
-var Dispatcher = require("flux/lib/Dispatcher");
+import Dispatcher from 'flux/lib/Dispatcher';
+import $ajax from '../utils/service';
+import { httpLog } from '../utils/logging';
 
-Dispatcher.prototype.$ajax = require("../utils/service").$ajax;
+
+Dispatcher.prototype.$ajax = $ajax;
 
 Dispatcher.prototype.loadEndpoint = function (endpoint, data = {}) {
   if (this.$ajax instanceof Function !== true) throw new Error("$ajax handler not initialized");
 
-  this.$ajax({
+  // console.log("Ajax request in Dispatcher: " + endpoint);
+  return this.$ajax({
     endpoint,
-    data: data,
-    success: (res) => this.dispatch({ type: endpoint, res }),
-    error: (err) => this.dispatch({ type: "error-" + endpoint, err })
+    data,
+    success: (res) => {
+      httpLog(`AJAX Response to endpoint: ${endpoint}`);
+      this.dispatch({ type: endpoint, res });
+    },
+
+    error: (err) => {
+      httpLog(`AJAX ERROR Response to endpoint: ${endpoint}`);
+      this.dispatch({ type: `error-${endpoint}`, err });
+    },
   });
 };
 
-
-module.exports = new Dispatcher();
+export default new Dispatcher();

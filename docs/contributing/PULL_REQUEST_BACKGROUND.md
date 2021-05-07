@@ -18,6 +18,9 @@ http://nvie.com/posts/a-successful-git-branching-model/
 
 Collaborating on projects using pull requests: https://help.github.com/categories/collaborating-on-projects-using-pull-requests/
 
+We also created [this handy chart](https://docs.google.com/drawings/d/1ED4X3Gpy_UruGDSiO8FjjxQeGOmQqIApguodHDo6-ok/edit) 
+to show the various steps working with pull requests.
+
 ## Code staging areas:
 
 1) wevote/WebApp, master branch (github servers): Used for working releases

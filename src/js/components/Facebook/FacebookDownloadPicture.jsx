@@ -1,26 +1,33 @@
-import React, { PropTypes } from "react";
+import React from 'react';
 
-import FacebookActionCreators from "../../actions/FacebookActionCreators";
+import FacebookActions from '../../actions/FacebookActions';
+import { renderLog } from '../../utils/logging';
 
 class FacebookDownloadPicture extends React.Component {
-  static propTypes = {
-    userId: PropTypes.string
-  };
+  // See https://reactjs.org/docs/error-boundaries.html
+  static getDerivedStateFromError (error) { // eslint-disable-line no-unused-vars
+    // Update state so the next render will show the fallback UI, We should have a "Oh snap" page
+    return { hasError: true };
+  }
 
-    constructor (props) {
-        super(props);
-    }
+  componentDidCatch (error, info) {
+    // We should get this information to Splunk!
+    console.error('FacebookDownloadPicture caught error: ', `${error} with info: `, info);
+  }
 
-    render () {
-        return <div>
-                <h5>Download Picture:</h5>
-                <button ref="downloadPictureButton" onClick={() => this.didClickDownloadPicture()}>Download FB Picture</button>
-            </div>;
-    }
+  didClickDownloadPicture () {
+    FacebookActions.getFacebookProfilePicture();
+  }
 
-    didClickDownloadPicture () {
-        FacebookActionCreators.getFacebookProfilePicture(this.props.userId);
-    }
+  render () {
+    renderLog('FacebookDownloadPicture');  // Set LOG_RENDER_EVENTS to log all renders
+    return (
+      <div>
+        <h5 className="h5">Download Picture:</h5>
+        <button id="downloadPictureButton" onClick={() => this.didClickDownloadPicture()} type="button">Download FB Picture</button>
+      </div>
+    );
+  }
 }
 
 export default FacebookDownloadPicture;

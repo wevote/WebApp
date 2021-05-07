@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="13403.566 333.971 266.679 42.529">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: #eb2424;
+      }
+
+      .cls-2 {
+        fill: #41ef2b;
+      }
+
+      .cls-3 {
+        fill: none;
+        stroke: #fff;
+        stroke-linecap: round;
+        stroke-width: 4px;
+      }
+
+      .cls-4 {
+        fill: #fff;
+        font-size: 28px;
+        font-family: HelveticaNeue, Helvetica Neue;
+      }
+    </style>
+  </defs>
+  <g id="position_bar" data-name="position bar" transform="translate(13314)">
+    <rect id="Rectangle_42" data-name="Rectangle 42" class="cls-1" width="110" height="20.658" rx="10" transform="translate(171 349)"/>
+    <path id="Path_641" data-name="Path 641" class="cls-2" d="M23.863,11.931A21.264,21.264,0,1,1,2.6-9.333,21.266,21.266,0,0,1,23.863,11.931" transform="translate(108.233 343.304)"/>
+    <path id="Path_640" data-name="Path 640" class="cls-3" d="M0,0V25.821" transform="translate(110.831 342.324)"/>
+    <path id="Path_639" data-name="Path 639" class="cls-3" d="M6.606,0-5.167,11.773" transform="translate(104.226 342.324)"/>
+    <path id="Path_638" data-name="Path 638" class="cls-3" d="M0,0,12.531,12.534" transform="translate(110.831 342.324)"/>
+    <path id="Path_637" data-name="Path 637" class="cls-3" d="M0,14.488V-11.333" transform="translate(342.473 353.657)"/>
+    <path id="Path_636" data-name="Path 636" class="cls-3" d="M0,6.606,11.773-5.167" transform="translate(342.473 361.54)"/>
+    <path id="Path_635" data-name="Path 635" class="cls-3" d="M7.031,7.033-5.5-5.5" transform="translate(335.441 361.113)"/>
+    <path id="Rectangle_43" data-name="Rectangle 43" class="cls-2" d="M10,0H65a0,0,0,0,1,0,0V20.658a0,0,0,0,1,0,0H10a10,10,0,0,1-10-10V10A10,10,0,0,1,10,0Z" transform="translate(171 349)"/>
+    <text id="_9" data-name="9" class="cls-4" transform="translate(146 367)"><tspan x="0" y="0">9</tspan></text>
+    <text id="_7" data-name="7" class="cls-4" transform="translate(301 367)"><tspan x="0" y="0">7</tspan></text>
+  </g>
+</svg>

@@ -1,10 +1,9 @@
-var Promise = require("es6-promise").Promise;
-var assign = require("object-assign");
+import Promise from 'es6-promise';
+import assign from 'object-assign';
 
-var _callbacks = [];
-var _promises = [];
+const _callbacks = [];
 
-var Dispatcher = function () {};
+const Dispatcher = () => {};
 Dispatcher.prototype = assign({}, Dispatcher.prototype, {
 
   /**
@@ -12,7 +11,7 @@ Dispatcher.prototype = assign({}, Dispatcher.prototype, {
    * @param {function} callback The callback to be registered.
    * @return {number} The index of the callback within the _callbacks array.
    */
-  register: function (callback) {
+  register (callback) {
     _callbacks.push(callback);
     return _callbacks.length - 1; // index
   },
@@ -21,28 +20,21 @@ Dispatcher.prototype = assign({}, Dispatcher.prototype, {
    * dispatch
    * @param  {object} payload The data from the action.
    */
-  dispatch: function (payload) {
+  dispatch (payload) {
     // First create array of promises for callbacks to reference.
-    var resolves = [];
-    var rejects = [];
-    _promises = _callbacks.map(function (_, i) {
-      return new Promise(function (resolve, reject) {
-        resolves[i] = resolve;
-        rejects[i] = reject;
-      });
-    });
+    const resolves = [];
+    const rejects = [];
     // Dispatch to callbacks and resolve/reject promises.
-    _callbacks.forEach(function (callback, i) {
+    _callbacks.forEach((callback, i) => {
       // Callback can return an obj, to resolve, or a promise, to chain.
       // See waitFor() for why this might be useful.
-      Promise.resolve(callback(payload)).then(function () {
+      Promise.resolve(callback(payload)).then(() => {
         resolves[i](payload);
-      }, function () {
-        rejects[i](new Error("Dispatcher callback unsuccessful"));
+      }, () => {
+        rejects[i](new Error('Dispatcher callback unsuccessful'));
       });
     });
-    _promises = [];
-  }
+  },
 });
 
-module.exports = Dispatcher;
+export default Dispatcher;

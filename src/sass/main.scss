@@ -1,62 +1,120 @@
 // @charset 'UTF-8';
 
-// 1. Configuration and helpers
-@import
-  './utils/_variables',
-  './utils/_functions',
-  './utils/_mixins',
-  './utils/_app';
+// ===============================================
+// 1. Setup
+// ===============================================
 
-// 2. Vendors
-@import
-  './vendor/_normalize',
-  './vendor/_vendors';
+@import '~bootstrap/dist/css/bootstrap';
 
-// 3. Base stuff
-@import
-  './base/_base',
-  './base/_fonts',
-  './base/_typography',
-  './base/_helpers';
+// -------------------------------
+// Base Variables & Mixins
+// -------------------------------
+@import 'base/variables';
+@import 'base/functions';
+@import 'base/mixins';
+@import 'base/normalize'; // * not sure this is necessary w/ Bootstrap - Jeff
 
-// 4. Layout-related sections
-@import
-  './layout/_boxmodel',
-  './layout/_header',
-  './layout/_footer',
-  './layout/_root',
-  './layout/_lists';
 
-// 5. Elements
-@import
-  './elements/_buttons';
+// ===============================================
+// 2. Base Styles
+// ===============================================
 
-// 6. Components
-@import
-  './components/_badges',
-  './components/_ballotList',
-  './components/_itemActionbar',
-  './components/_candidate',
-  './components/_starAction',
-  './components/_position',
-  './components/_navigator',
-  './components/_ignore',
-  './components/_organization',
-  './components/_header',
-  './components/_opinions';
+@import 'base/_base';
+@import 'base/_fonts';
+@import 'base/_typography';
+@import 'base/_images';
 
-// 7. Page-specific styles
-@import
-  './pages/_home';
+// ===============================================
+// 3. Vendor
+// ===============================================
 
-// 8. Themes
-@import
-  './themes/default';
+// ===============================================
+// 4. Utility & Helpers
+// ===============================================
 
-// 9. Media Queries
-@import
-  './layout/mediaquery';
+@import 'utilities/utility';
+@import 'utilities/u-bg-colors';
+@import 'utilities/u-flexbox';
+@import 'utilities/u-typography';
+@import 'utilities/u-layout';
 
-// 10. Trumps - !important
-@import
-  './utils/trumps.scss';
+
+// ===============================================
+// 5. Objects, Components, Sections, Templates
+// ===============================================
+
+
+@import 'objects/o-media-object';
+
+// -------------------------------
+// Smaller Elements
+// -------------------------------
+// Relatively simple patterns for (often) smaller UI elements
+
+@import 'components/buttons';
+@import 'components/loading-spinner';
+@import 'components/nps-input';
+@import 'components/twitter-followers';
+
+// -------------------------------
+// Reusable Components & Design Patterns
+// -------------------------------
+// 'Components' that are abstracted and used in more than one or two places
+
+@import 'components/account';
+@import 'components/card';
+@import 'components/network-positions';
+@import 'components/position';
+@import 'components/tabs';
+
+// -------------------------------
+// React Components
+// -------------------------------
+// Styles specific to React Components
+
+@import 'components/about';
+@import 'components/ballot';
+@import 'components/ballotList';
+@import 'components/friends';
+@import 'components/itemActionBar';
+@import 'components/itemPositionStatementActionBar';
+@import 'components/searchbar'; // move if necessary
+@import 'components/settings';
+@import 'components/bootstrap3LeftBehind';
+@import 'components/filter';
+
+// -------------------------------
+// Sections
+// -------------------------------
+// Larger areas that are not limited to a single component
+
+@import 'components/ballotModals';
+@import 'components/device-menu';
+@import 'components/header';
+@import 'components/footer';
+@import 'components/intro-modal';
+@import 'components/intro-story';
+@import 'components/issues';
+// @import 'components/loading-screen'; // 2020-06 Deprecated by Dale
+@import 'components/modal-content';
+@import 'components/more-tools';
+@import 'components/navigator';
+@import 'components/network';
+@import 'components/scratchpad';
+@import 'components/voter-guide';
+@import 'components/voter-guide-get-started';
+
+@import 'routes/welcome';
+
+// ===============================================
+// 6. Overrides
+// ===============================================
+
+@import 'overrides/overrides.scss';
+@import 'overrides/print.scss';
+
+// ===============================================
+// 7. If you know a better way, then feel free to change how we pull in these styles
+// ===============================================
+
+@import 'vendor/react-toggle-style';

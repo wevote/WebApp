@@ -1,76 +1,85 @@
-import { Button } from "react-bootstrap";
-import GuideStore from "../stores/GuideStore";
-import SearchBox from "../components/SearchBox";
-import VoterStore from "../stores/VoterStore";
-import GuideList from "../components/VoterGuide/GuideList";
-import { Link } from "react-router";
-import React, {Component, PropTypes } from "react";
+import React, { Component, Suspense } from 'react';
+import { Link } from 'react-router-dom';
+import Helmet from 'react-helmet';
+import { renderLog } from '../utils/logging';
+import VoterGuideStore from '../stores/VoterGuideStore';
+import SearchGuidesToFollowBox from '../components/Search/SearchGuidesToFollowBox';
+import GuideList from '../components/VoterGuide/GuideList';
 
-/* VISUAL DESIGN HERE: https://invis.io/TR4A1NYAQ */
 
+// 2020: We are deprecating this Component in favor of Opinions2020
 export default class Opinions extends Component {
-  static propTypes = {
-    history: PropTypes.object,
-    children: PropTypes.object
-  };
-
-  constructor (props){
+  constructor (props) {
     super(props);
-    this.state = {guideList: [], ballot_has_guides: null};
+    this.state = {
+      ballotHasGuides: VoterGuideStore.ballotHasGuides(),
+      voterGuidesToFollowAll: VoterGuideStore.getVoterGuidesToFollowAll(),
+    };
   }
 
   componentDidMount () {
-    this._onChange();
-    this.listener = GuideStore.addListener(this._onChange.bind(this));
+    this.voterGuideStoreListener = VoterGuideStore.addListener(this.onVoterGuideStoreChange.bind(this));
   }
 
-  _onChange () {
-    this.setState({ guideList: GuideStore.toFollowList(),
-                  ballot_has_guides: GuideStore.ballotHasGuides(),
-                  address: VoterStore.getAddress() });
+  componentWillUnmount () {
+    this.voterGuideStoreListener.remove();
   }
 
-  componentWillUnmount (){
-    this.listener.remove();
+  onVoterGuideStoreChange () {
+    this.setState({
+      ballotHasGuides: VoterGuideStore.ballotHasGuides(),
+      voterGuidesToFollowAll: VoterGuideStore.getVoterGuidesToFollowAll(),
+    });
+  }
+
+  getCurrentRoute () {
+    const currentRoute = '/opinions';
+    return currentRoute;
+  }
+
+  getFollowingType () {
+    switch (this.getCurrentRoute()) {
+      case '/opinions':
+        return 'WHO_YOU_CAN_FOLLOW';
+      case '/opinions_followed':
+      default:
+        return 'WHO_YOU_FOLLOW';
+    }
   }
 
   render () {
-    const { ballot_has_guides, guideList, address } = this.state;
-    let guides;
-    var floatRight = {
-        float: "right"
+    renderLog('Opinions');  // Set LOG_RENDER_EVENTS to log all renders
+    const { ballotHasGuides, voterGuidesToFollowAll } = this.state;
+    const floatRight = {
+      float: 'right',
     };
 
-    if ( address === "" ){
-      guides = <div>
-          <span style={floatRight}>
-              <Link to="/settings/location"><Button bsStyle="primary">Enter my address &#x21AC;</Button></Link>
-          </span>
-          <p>Enter your address so we can find voter guides to follow.</p>
-        </div>;
-
-    } else {
-        guides = <div>
-          <p>
-            Find opinions about items on ballot (ordered by Twitter followers).
-          </p>
-          <SearchBox />
-          { ballot_has_guides ?
-            <p></p> :
-            <p>There are no organizations with opinions on your ballot. Here are some popular organizations</p>
-          }
-        <GuideList organizations={guideList}/>
-        </div>;
-      }
-
-    const content =
+    return (
       <div className="opinion-view">
-        <div className="container-fluid well gutter-top--small fluff-full1">
-          <h3 className="text-center">More Opinions I Can Follow</h3>
-          {guides}
+        <Helmet title="Build Your Network - We Vote" />
+        <h1 className="h1">Build Your Network</h1>
+        <div>
+          <p>
+            Find opinions about your ballot (ordered by Twitter followers).
+            Follow those you trust. Stop Following at any time.
+            Following won&apos;t add you to mailing lists.
+            <span style={floatRight} className="d-print-none">
+              <Link to="/opinions_followed" className="u-margin-left--md u-no-break">See organizations you follow</Link>
+            </span>
+          </p>
+          <SearchGuidesToFollowBox />
+          { ballotHasGuides ?
+            <p /> :
+            <p>There are no organizations with opinions on your ballot. Here are some popular organizations:</p>}
+          <div className="card">
+            <Suspense fallback={<span>Loading...</span>}>
+              <GuideList incomingVoterGuideList={voterGuidesToFollowAll} />
+            </Suspense>
+          </div>
         </div>
-      </div>;
-
-    return content;
+        <Link className="pull-right" to="/opinions_ignored">Organizations you are ignoring</Link>
+        <br />
+      </div>
+    );
   }
 }

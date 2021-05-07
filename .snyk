@@ -1,0 +1,91 @@
+# Snyk (https://snyk.io) policy file, patches or ignores known vulnerabilities.
+version: v1.19.0
+ignore: {}
+# patches apply the minimum changes required to fix a vulnerability
+patch:
+  SNYK-JS-LODASH-450202:
+    - lodash:
+        patched: '2019-07-04T03:07:14.083Z'
+    - node-sass > sass-graph > lodash:
+        patched: '2019-07-04T03:07:14.083Z'
+    - styled-components > babel-plugin-styled-components > lodash:
+        patched: '2019-07-04T03:07:14.083Z'
+    - node-sass > gaze > globule > lodash:
+        patched: '2019-07-04T03:07:14.083Z'
+    - styled-components > @babel/helper-module-imports > @babel/types > lodash:
+        patched: '2019-07-04T03:07:14.083Z'
+    - styled-components > babel-plugin-styled-components > @babel/helper-annotate-as-pure > @babel/types > lodash:
+        patched: '2019-07-04T03:07:14.083Z'
+  SNYK-JS-HTTPSPROXYAGENT-469131:
+    - snyk > proxy-agent > https-proxy-agent:
+        patched: '2019-10-04T03:05:20.920Z'
+    - snyk > proxy-agent > pac-proxy-agent > https-proxy-agent:
+        patched: '2019-10-04T03:05:20.920Z'
+  SNYK-JS-TREEKILL-536781:
+    - snyk > snyk-sbt-plugin > tree-kill:
+        patched: '2019-12-12T03:06:33.992Z'
+  SNYK-JS-LODASH-567746:
+    - snyk > lodash:
+        patched: '2020-05-01T03:05:39.212Z'
+    - react-phone-number-input > react-responsive-ui > lodash:
+        patched: '2020-05-01T03:05:39.212Z'
+    - snyk > @snyk/dep-graph > lodash:
+        patched: '2020-05-01T03:05:39.212Z'
+    - snyk > inquirer > lodash:
+        patched: '2020-05-01T03:05:39.212Z'
+    - snyk > snyk-config > lodash:
+        patched: '2020-05-01T03:05:39.212Z'
+    - snyk > snyk-mvn-plugin > lodash:
+        patched: '2020-05-01T03:05:39.212Z'
+    - snyk > snyk-nodejs-lockfile-parser > lodash:
+        patched: '2020-05-01T03:05:39.212Z'
+    - snyk > snyk-nuget-plugin > lodash:
+        patched: '2020-05-01T03:05:39.212Z'
+    - styled-components > @babel/traverse > lodash:
+        patched: '2020-05-01T03:05:39.212Z'
+    - styled-components > babel-plugin-styled-components > lodash:
+        patched: '2020-05-01T03:05:39.212Z'
+    - snyk > @snyk/dep-graph > graphlib > lodash:
+        patched: '2020-05-01T03:05:39.212Z'
+    - snyk > snyk-go-plugin > graphlib > lodash:
+        patched: '2020-05-01T03:05:39.212Z'
+    - snyk > snyk-nodejs-lockfile-parser > graphlib > lodash:
+        patched: '2020-05-01T03:05:39.212Z'
+    - snyk > @snyk/snyk-cocoapods-plugin > @snyk/dep-graph > lodash:
+        patched: '2020-05-01T03:05:39.212Z'
+    - snyk > snyk-nuget-plugin > dotnet-deps-parser > lodash:
+        patched: '2020-05-01T03:05:39.212Z'
+    - snyk > snyk-php-plugin > @snyk/composer-lockfile-parser > lodash:
+        patched: '2020-05-01T03:05:39.212Z'
+    - styled-components > @babel/traverse > @babel/generator > lodash:
+        patched: '2020-05-01T03:05:39.212Z'
+    - snyk > @snyk/snyk-cocoapods-plugin > @snyk/dep-graph > graphlib > lodash:
+        patched: '2020-05-01T03:05:39.212Z'
+    - snyk > @snyk/snyk-cocoapods-plugin > @snyk/cocoapods-lockfile-parser > @snyk/ruby-semver > lodash:
+        patched: '2020-05-01T03:05:39.212Z'
+    - styled-components > babel-plugin-styled-components > @babel/helper-annotate-as-pure > @babel/types > lodash:
+        patched: '2020-05-01T03:05:39.212Z'
+    - styled-components > @babel/traverse > @babel/helper-split-export-declaration > @babel/types > lodash:
+        patched: '2020-05-01T03:05:39.212Z'
+    - snyk > @snyk/snyk-cocoapods-plugin > @snyk/cocoapods-lockfile-parser > @snyk/dep-graph > graphlib > lodash:
+        patched: '2020-05-01T03:05:39.212Z'
+    - styled-components > @babel/traverse > @babel/helper-function-name > @babel/template > @babel/types > lodash:
+        patched: '2020-05-01T03:05:39.212Z'
+    - wdio > selenium-standalone > lodash:
+        patched: '2020-08-22T21:58:11.586Z'
+    - wdio > selenium-standalone > async > lodash:
+        patched: '2020-08-22T21:58:11.586Z'
+    - wdio > webdriverio > archiver > lodash:
+        patched: '2020-08-22T21:58:11.586Z'
+    - wdio > webdriverio > inquirer > lodash:
+        patched: '2020-08-22T21:58:11.586Z'
+    - wdio > webdriverio > archiver > async > lodash:
+        patched: '2020-08-22T21:58:11.586Z'
+    - wdio > webdriverio > archiver > archiver-utils > lodash:
+        patched: '2020-08-22T21:58:11.586Z'
+    - wdio > webdriverio > archiver > zip-stream > lodash:
+        patched: '2020-08-22T21:58:11.586Z'
+    - wdio > webdriverio > gaze > globule > lodash:
+        patched: '2020-08-22T21:58:11.586Z'
+    - wdio > webdriverio > archiver > zip-stream > archiver-utils > lodash:
+        patched: '2020-08-22T21:58:11.586Z'

@@ -1,253 +1,258 @@
-import { $ajax } from "../utils/service";
-import FacebookConstants from "../constants/FacebookConstants";
-import FacebookDispatcher from "../dispatcher/FacebookDispatcher";
-import VoterStore from "../stores/VoterStore";
-import {EventEmitter} from "events";
-import service from "../utils/service";
+import { ReduceStore } from 'flux/utils';
+import Dispatcher from '../dispatcher/Dispatcher';
+import FacebookActions from '../actions/FacebookActions';
+import FacebookConstants from '../constants/FacebookConstants';
+import FriendActions from '../actions/FriendActions';
+import signInModalGlobalState from '../components/Widgets/signInModalGlobalState';
+import VoterActions from '../actions/VoterActions';
 
-const cookies = require("../utils/cookies");
-const FACEBOOK_CHANGE_EVENT = "FACEBOOK_CHANGE_EVENT";
-
-const FacebookAPIWorker = {
-  voterFacebookPhotoSave: function (photo_url, success ) {
-    console.log("FacebookAPIWorker.voterFacebookPhotoSave");
-    return service.get({
-      endpoint: "voterPhotoSave",
-      query: {
-        voter_device_id: cookies.getItem("voter_device_id"),
-        facebook_profile_image_url_https: photo_url
-      }, success
-    });
-  },
-
-  facebookSignIn: function (facebook_id, facebook_email, callback) {
-    // console.log("In FacebookStore.js, FacebookAPIWorker.facebookSignIn, facebook_id: ", facebook_id);
-    return $ajax({
-      type: "GET",
-      endpoint: "facebookSignIn",
-      data: {
-        facebook_id: facebook_id,
-        facebook_email: facebook_email
-      },
-      success: (result) => {
-        callback(result);
-      },
-      error: (err) => {
-        callback(err);
-      }
-    });
-  },
-
-  /**
-   * Disconnect facebook from this account by removing the facebook_id from the db
-   * @param  {String}   voter_device_id will be passed
-   * @return {Boolean}  Was the disconnection successful?
-   */
-  facebookDisconnect: function (callback) {
-    // console.log("In FacebookStore.js, FacebookAPIWorker.facebookSignIn");
-    if (callback instanceof Function === false) throw new Error("facebookDisconnect, missing callback function");
-
-    $ajax({
-      type: "GET",
-      endpoint: "facebookDisconnect",
-      success: (response) => {
-        callback(response);
-      },
-      error: (err) => callback(err)
-    });
-
+class FacebookStore extends ReduceStore {
+  getInitialState () {
+    return {
+      authData: {},
+      emailData: {},
+      appRequestAlreadyProcessed: false,
+      facebookFriendsNotExist: false,
+      facebookInvitableFriendsRetrieved: false,
+    };
   }
-};
 
-class FacebookStore extends EventEmitter {
-    constructor () {
-        super();
-        this.facebookAuthData = {};
-        this.faebookPictureData = {};
+  get facebookAuthData () {
+    return this.getState().authData;
+  }
+
+  get facebookEmailData () {
+    return this.getState().emailData;
+  }
+
+  get facebookUserId () {
+    return this.getState().userId;
+  }
+
+  getFacebookAuthResponse () {
+    return {
+      accessToken: this.accessToken,
+      facebookIsLoggedIn: this.loggedIn,
+      userId: this.userId,
+
+      // facebookPictureStatus: this.getState().facebookPictureStatus,
+      // facebookPictureUrl: this.getState().facebookPictureUrl,
+      facebook_retrieve_attempted: this.getState().facebook_retrieve_attempted,
+      facebook_sign_in_found: this.getState().facebook_sign_in_found,
+      facebook_sign_in_verified: this.getState().facebook_sign_in_verified,
+      facebook_sign_in_failed: this.getState().facebook_sign_in_failed,
+      facebook_secret_key: this.getState().facebook_secret_key,
+      facebook_profile_image_url_https: this.getState().facebook_profile_image_url_https,
+      voter_has_data_to_preserve: this.getState().voter_has_data_to_preserve,
+      existing_facebook_account_found: this.getState().existing_facebook_account_found,
+      voter_we_vote_id_attached_to_facebook: this.getState().voter_we_vote_id_attached_to_facebook,
+      voter_we_vote_id_attached_to_facebook_email: this.getState().voter_we_vote_id_attached_to_facebook_email,
+
+      // yes_please_merge_accounts: this.getState().yes_please_merge_accounts,
+    };
+  }
+
+  getFacebookData () {
+    return {
+      userId: this.facebookEmailData.id,
+      email: this.facebookEmailData.email,
+    };
+  }
+
+  get loggedIn () {
+    if (!this.facebookAuthData) {
+      return undefined;
     }
 
-    setFacebookAuthData (data) {
-        this.facebookAuthData = data;
-        this.emitChange();
+    return this.facebookAuthData.status === 'connected';
+  }
+
+  get userId () {
+    if (!this.facebookAuthData || !this.facebookAuthData.authResponse) {
+      return undefined;
     }
 
-    get loggedIn () {
-        if (!this.facebookAuthData) {
-            return;
-        }
+    return this.facebookAuthData.authResponse.userID;
+  }
 
-        return this.facebookAuthData.status === "connected";
+  get accessToken () {
+    if (!this.facebookAuthData || !this.facebookAuthData.authResponse) {
+      return undefined;
     }
 
-    get userId () {
-        if (!this.facebookAuthData || !this.facebookAuthData.authResponse) {
-            return;
-        }
+    return this.facebookAuthData.authResponse.accessToken;
+  }
 
-        return this.facebookAuthData.authResponse.userID;
-    }
+  facebookFriendsUsingWeVoteList () {
+    return this.getState().facebook_friends_using_we_vote_list || [];
+  }
 
-    get accessToken () {
-        if (!this.facebookAuthData || !this.facebookAuthData.authResponse) {
-            return;
-        }
+  facebookInvitableFriends () {
+    const {
+      facebookInvitableFriendsList, facebookInvitableFriendsRetrieved, facebookFriendsNotExist,
+    } = this.getState();
+    return {
+      facebook_invitable_friends_list: facebookInvitableFriendsList,
+      facebook_friends_not_exist: facebookFriendsNotExist,
+      facebook_invitable_friends_retrieved: facebookInvitableFriendsRetrieved,
+    };
+  }
 
-        return this.facebookAuthData.authResponse.accessToken;
-    }
+  facebookAppRequestAlreadyProcessed () {
+    return this.getState().appRequestAlreadyProcessed;
+  }
 
-    get facebookPictureUrl () {
-        if (!this.facebookPictureData || !this.facebookPictureData.url) {
-            return;
-        }
+  reduce (state, action) {
+    let facebookFriendsNotExist = false;
+    const facebookInvitableFriendsRetrieved = true;
+    let facebookInvitableFriendsList = [];
+    let appRequestAlreadyProcessed = false;
+    const facebookUserId = this.userId;
+    let facebookProfileImageUrlHttps = '';
 
-        return this.facebookPictureData.url;
-    }
+    switch (action.type) {
+      case FacebookConstants.FACEBOOK_LOGGED_IN:
+        signInModalGlobalState.set('waitingForFacebookApiCompletion', false);
 
-    setFacebookPictureData (type, data) {
-        this.facebookPictureStatus = type;
+        // console.log("FACEBOOK_LOGGED_IN action.data:", action.data);
+        FacebookActions.saveFacebookSignInAuth(action.data.authResponse);
+        FacebookActions.getFacebookData();     // Includes a save
+        return {
+          ...state,
+          authData: action.data,
+        };
 
-        if (data) {
-            this.facebookPictureData = data.data;
+      case FacebookConstants.FACEBOOK_RECEIVED_DATA:
+
+        // Cache the data in the API server
+        // console.log("FACEBOOK_RECEIVED_DATA action.data:", action.data);
+        FacebookActions.voterFacebookSignInData(action.data);  // Steve this calls a save to the server
+        FacebookActions.getFacebookProfilePicture();
+        return {
+          ...state,
+          emailData: action.data,
+        };
+
+      case FacebookConstants.FACEBOOK_RECEIVED_INVITABLE_FRIENDS:
+
+        // console.log("FacebookStore, FacebookConstants.FACEBOOK_RECEIVED_INVITABLE_FRIENDS");
+        // Cache the data in the API server
+        // FacebookActions.getFacebookInvitableFriendsList(action.data.id);
+        if (action.data.invitable_friends) {
+          facebookInvitableFriendsList = action.data.invitable_friends.data;
         } else {
-            this.facebookPictureData = {};
+          facebookFriendsNotExist = true;
         }
 
-        this.emitChange();
-    }
+        // console.log("FACEBOOK_RECEIVED_INVITABLE_FRIENDS: ", facebook_invitable_friends_list);
+        return {
+          ...state,
+          facebookInvitableFriendsList,
+          facebookFriendsNotExist,
+          facebookInvitableFriendsRetrieved,
+        };
 
-    saveFacebookPictureData (data) {
-        if (data) {
-          FacebookAPIWorker
-            .voterFacebookPhotoSave(
-              data.data.url, () => this.emit(FACEBOOK_CHANGE_EVENT)
-          );
+      case FacebookConstants.FACEBOOK_READ_APP_REQUESTS:
+
+        // console.log("FacebookStore appreqests:", action.data.apprequests);
+        if (action.data.apprequests) {
+          const apprequestsData = action.data.apprequests.data[0];
+          const recipientFacebookUserId = apprequestsData.to.id;
+          const senderFacebookId = apprequestsData.from.id;
+          const facebookRequestId = apprequestsData.id;
+          FriendActions.friendInvitationByFacebookVerify(facebookRequestId, recipientFacebookUserId, senderFacebookId);
+        } else {
+          appRequestAlreadyProcessed = true;
         }
-    }
 
-    saveFacebookAuthData () {
-        if (this.facebookAuthData) {
-          console.log("In FacebookStore.js, saveFacebookAuthData: ", this.facebookAuthData);
-          console.log("userID: ", this.facebookAuthData.authResponse.userID);
-          FacebookAPIWorker
-            .facebookSignIn(
-              this.facebookAuthData.authResponse.userID, false, () => this.emit(FACEBOOK_CHANGE_EVENT)
-          );
+        // console.log("app_request_already_processed", app_request_already_processed);
+        return {
+          ...state,
+          appRequestAlreadyProcessed,
+        };
+
+      case FacebookConstants.FACEBOOK_DELETE_APP_REQUEST:
+        return {
+          ...state,
+        };
+
+      case 'voterFacebookSignInRetrieve':
+        // console.log("FacebookStore voterFacebookSignInRetrieve, facebook_sign_in_verified: ", action.res.facebook_sign_in_verified);
+        signInModalGlobalState.set('waitingForFacebookApiCompletion', false);
+        if (action.res.facebook_sign_in_verified) {
+          VoterActions.voterRetrieve();
         }
-    }
 
-    connectWithFacebook () {
-      if (this.facebookAuthData) {
-        // console.log("In FacebookStore.js, connectWithFacebook, this.facebookAuthData: ", this.facebookAuthData);
-        // console.log("userID: ", this.facebookAuthData.authResponse.userID);
-        FacebookAPIWorker
-          .facebookSignIn(this.facebookAuthData.authResponse.userID, false, () => {
-            // console.log("Call to FacebookAPIWorker.facebookSignIn has completed");
-            this.emit(FACEBOOK_CHANGE_EVENT);
-            // Once we have connected to Facebook, grab a fresh version of the voter
-            VoterStore.getLocation( (err) => {
-              if (err) handleVoterError(err);
-              VoterStore.retrieveFreshVoterObject( (_err, voter_object) => {
-                if (_err) {
-                  handleVoterError(_err);
-                } else {
-                  // console.log("facebookStore.connectWithFacebook, voter: ", voter_object);
-                  // Finally, update all components listening for changes in Voter Store
-                  VoterStore.emitChange();
-                }
-              });
-            });
-          }
-        );
-      }
-    }
+        return {
+          ...state,
+          voter_device_id: action.res.voter_device_id,
+          voter_has_data_to_preserve: action.res.voter_has_data_to_preserve,
+          facebook_retrieve_attempted: action.res.facebook_retrieve_attempted,
+          facebook_sign_in_found: action.res.facebook_sign_in_found,
+          facebook_sign_in_verified: action.res.facebook_sign_in_verified,
+          facebook_sign_in_failed: action.res.facebook_sign_in_failed,
+          facebook_secret_key: action.res.facebook_secret_key,
 
-    disconnectFromFacebook () {
-      FacebookAPIWorker
-        .facebookDisconnect(
-          () => {
-            // console.log("FacebookAPIWorker.facebookDisconnect has completed");
-            this.emit(FACEBOOK_CHANGE_EVENT);
-            // Once we have disconnected from Facebook, grab a fresh version of the voter
-            VoterStore.getLocation( (err) => {
-              if (err) handleVoterError(err);
-              VoterStore.retrieveFreshVoterObject( (_err, voter_object) => {
-                if (_err) {
-                  handleVoterError(_err);
-                } else {
-                  // console.log("facebookStore.dispatchToken: FACEBOOK_SIGN_IN_DISCONNECT, voter: ", voter_object);
-                  // Finally, update all components listening for changes in Voter Store
-                  VoterStore.emitChange();
-                }
-              });
-            });
-          }
-      );
-    }
+          // yes_please_merge_accounts: action.res.yes_please_merge_accounts,
+          existing_facebook_account_found: action.res.existing_facebook_account_found,
+          voter_we_vote_id_attached_to_facebook: action.res.voter_we_vote_id_attached_to_facebook,
+          voter_we_vote_id_attached_to_facebook_email: action.res.voter_we_vote_id_attached_to_facebook_email,
 
-    emitChange () {
-        this.emit(FACEBOOK_CHANGE_EVENT);
-    }
+          // facebook_email: action.res.facebook_email,
+          // facebook_first_name: action.res.facebook_first_name,
+          // facebook_middle_name: action.res.facebook_middle_name,
+          // facebook_last_name: action.res.facebook_last_name,
+          facebook_profile_image_url_https: action.res.facebook_profile_image_url_https,
+          facebook_friends_list: action.res.facebook_friends_list,
+        };
 
-    addChangeListener (callback) {
-        this.on(FACEBOOK_CHANGE_EVENT, callback);
-    }
+      case 'voterFacebookSignInSave':
 
-    removeChangeListener (callback) {
-        this.removeListener(FACEBOOK_CHANGE_EVENT, callback);
-    }
-}
+        // console.log("FacebookStore voterFacebookSignInSave, minimum_data_saved: ", action.res.minimum_data_saved);
+        if (action.res.minimum_data_saved) {
+          // Only reach out for the Facebook Sign In information if the save_profile_data call has completed
+          // TODO: We need a check here to prevent an infinite loop if the local voter_device_id isn't recognized by server
+          // console.log("FacebookStore voterFacebookSignInSave, voter exists");
+          FacebookActions.voterFacebookSignInRetrieve();
+        }
 
-function sleep (milliseconds) {
-  var start = new Date().getTime();
-  for (var i = 0; i < 1e7; i++) {
-    if (new Date().getTime() - start > milliseconds) break;
+        return state;
+
+      case 'voterSignOut':
+
+        // console.log("resetting FacebookStore");
+        return {
+          authData: {},
+          pictureData: {},
+          emailData: {},
+        };
+
+      /* Sept 6, 2017, has been replaced by facebook Game API friends list */
+      case 'facebookFriendsAction':
+        return {
+          ...state,
+          facebook_friends_using_we_vote_list: action.res.facebook_friends_using_we_vote_list,
+        };
+
+      case FacebookConstants.FACEBOOK_SIGN_IN_DISCONNECT:
+        this.disconnectFromFacebook();
+        return state;
+
+      case FacebookConstants.FACEBOOK_RECEIVED_PICTURE:
+        if (action.data && action.data.picture && action.data.picture.data && action.data.picture.data.url) {
+          FacebookActions.voterFacebookSignInPhoto(facebookUserId, action.data.picture.data);
+          facebookProfileImageUrlHttps = action.data.picture.data.url;
+        }
+
+        return {
+          ...state,
+          facebook_profile_image_url_https: facebookProfileImageUrlHttps,
+        };
+
+      default:
+        return state;
+    }
   }
 }
 
-function handleVoterError (err) {
-  console.error("FacebookStore.js, Error initializing voter object", err);
-}
-
-// initialize the store as a singleton
-const facebookStore = new FacebookStore();
-
-facebookStore.dispatchToken = FacebookDispatcher.register((action) => {
-    if (action.actionType === FacebookConstants.FACEBOOK_INITIALIZED) {
-        facebookStore.setFacebookAuthData(action.data);
-    }
-
-    if (action.actionType === FacebookConstants.FACEBOOK_LOGGED_IN) {
-        // console.log("facebookStore, actionType: FACEBOOK_LOGGED_IN, action.data: ", action.data);
-        facebookStore.setFacebookAuthData(action.data); // TODO set this up so following functions are dependent
-        facebookStore.connectWithFacebook();
-    }
-
-    if (action.actionType === FacebookConstants.FACEBOOK_LOGGED_OUT) {
-        facebookStore.setFacebookAuthData(action.data);
-    }
-
-    //if (action.actionType === FacebookConstants.FACEBOOK_SIGN_IN_CONNECT) {
-    //  // Dale exploring need for this vs. 'FACEBOOK_LOGGED_IN'?
-    //  console.log("facebookStore.dispatchToken: FACEBOOK_SIGN_IN_CONNECT");
-    //  facebookStore.connectWithFacebook();
-    //}
-
-    if (action.actionType === FacebookConstants.FACEBOOK_SIGN_IN_DISCONNECT) {
-      // console.log("facebookStore.dispatchToken: FACEBOOK_SIGN_IN_DISCONNECT");
-      facebookStore.disconnectFromFacebook();
-    }
-
-    if (action.actionType === FacebookConstants.FACEBOOK_GETTING_PICTURE) {
-        facebookStore.setFacebookPictureData(action.actionType, action.data);
-    }
-
-    if (action.actionType === FacebookConstants.FACEBOOK_RECEIVED_PICTURE) {
-        console.log("FACEBOOK_RECEIVED_PICTURE");
-        facebookStore.setFacebookPictureData(action.actionType, action.data);
-        facebookStore.saveFacebookPictureData(action.data);
-        facebookStore.saveFacebookAuthData();
-        // We could use facebookStore.connectWithFacebook() here
-    }
-});
-
-module.exports = facebookStore;
+export default new FacebookStore(Dispatcher);

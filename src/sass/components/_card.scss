@@ -1,0 +1,548 @@
+// 'Card' styling for Candidates, Organizations, etc.
+$outline-radius: 3px;
+
+@include media-object('.card-main__media-object', '.card-main__media-object-anchor', '.card-main__media-object-content');
+
+.card {
+  // position: relative !important;
+  $item-padding: $space-md;
+  background-color: $white;
+  border-radius: $radius-sm;
+  box-shadow: $default-box-shadow;
+  margin-bottom: $space-md;
+  // overflow-y: none;
+  border: none;
+  @include clearfix;
+  @include breakpoints(max mid-small) {
+    margin-bottom: $space-sm;
+    margin-right: $gutter-offset;
+    margin-left: $gutter-offset;
+    border-radius: $radius-none;
+    [class^='col'] & {
+      margin-right: $gutter-offset;
+      margin-left: $gutter-offset;
+    }
+  }
+  &__body {
+    padding: $item-padding;
+  }
+
+  // ----------------------------------------
+  // Card 'Main'
+  // the main subject of the card (candidate, measure, organizations, etc.)
+
+
+  &-main { // primary subject of card
+    // position: relative;
+    // border: 1px solid $white;
+    padding: $space-md $item-padding $space-sm;
+    font-size: 14px; // remove once global defaults are set
+    @include print {
+      padding: $space-none;
+    }
+    &__location-guess {
+      position: relative;
+      display: flex;
+      margin-bottom: $space-md;
+      font-size: 14px;
+      background-color: $white;
+      background-clip: border-box;
+      border: 2px solid #999;
+    }
+
+    &--outline {
+      border: 1px solid $link-color;
+      border-radius: $outline-radius;
+      text-decoration: none !important;
+    }
+
+    &__no-underline *,
+    &--outline a {
+      text-decoration: none !important;
+    }
+
+    &__content {
+      position: relative;
+      @include print {
+        border-top: 1px solid $gray-mid;
+        padding-top: $space-md;
+      }
+    }
+
+    &__media-object {
+      // additional styling set with 'media-object' mixin
+      @include breakpoints (mid-small) {
+        min-width: 260px; // Reset to 320px when bsPrefix="card-popover" bug is fixed
+      }
+    }
+
+    &__media-object-anchor {
+      // additional styling set with 'media-object' mixin
+      display: flex;
+      flex-direction: column;
+    }
+
+    &__media-object-content {
+      // additional styling set with 'media-object' mixin
+      @include breakpoints (mid-small) {
+        //more space and spacing for candidate bio
+        padding: $space-xs $space-lg;
+        margin-bottom: $space-lg;
+        font-size: 16px;
+      }
+    }
+
+    &__avatar {
+      // max-width: 60px;
+      border-radius: $radius-xs;
+      width: 48px;
+      &__testimonial {
+        border-radius: $radius-rounded;
+        border-style: solid;
+        border-width: 1px;
+        border-color: $gray-border;
+        height: 40px;
+        display: block;
+        margin-left: $space-auto;
+        margin-right: $space-auto;
+        margin-top: $space-md;
+        // filter: grayscale(100%);
+      }
+      .card-main & {
+        @include breakpoints(mid-small) {
+          // max-width: 60px;
+          width: 48px;
+        }
+        border-radius: $radius-rounded;
+      }
+      @include print {
+        width: 48px;
+      }
+    }
+
+    &__avatar-border {
+      border-style: solid;
+      border-width: 1px;
+      border-color: $gray-border;
+    }
+
+    &__avatar-compressed {
+      // March 2019, The paths are different in Cordova. Please don't put URLs in scss
+      background-image: url('../img/global/svg-icons/avatar-generic.svg');
+      border-radius: $radius-xs;
+      width: 40px;
+      height: 40px;
+      .card-main & {
+        @include breakpoints(mid-small) {
+          width: 40px;
+        }
+        border-radius: $radius-rounded;
+      }
+      @include print {
+        width: 40px;
+      }
+    }
+
+    &__avatar-compressed-cordova {
+      // March 2019, The paths are different in Cordova. Please don't put URLs in scss
+      background-image: url('https://wevote.us/img/global/svg-icons/avatar-generic.svg');
+      border-radius: $radius-xs;
+      width: 40px;
+      height: 40px;
+      .card-main & {
+        @include breakpoints(mid-small) {
+          width: 40px;
+        }
+        border-radius: $radius-rounded;
+      }
+      @include print {
+        width: 40px;
+      }
+    }
+
+    &__org-avatar {
+      max-width: 50px;
+      @include breakpoints(mid-small) {
+        max-width: 80px;
+      }
+    }
+
+    .icon-lg { // temp - for placeholder icons
+      font-size: 50px;
+      @include breakpoints(mid-small) {
+        font-size: 80px;
+      }
+    }
+
+    &__flex {
+      display: flex;
+      align-content: center;
+      justify-content: flex-start;
+    }
+
+    &__position-icon {
+      display: inline-block;
+      margin-right: $space-xs;
+      vertical-align: text-bottom;
+    }
+
+    &__candidate-name {
+      font-weight: 400;
+    }
+
+    &__candidate-name-link {
+      color: $link-color;
+    }
+
+    &__candidate-party-description {
+      font-size: .7rem;
+      color: $gray-dark;
+    }
+
+    &__candidate-description {
+      font-size: .875rem;
+      color: $gray-mid;
+    }
+
+    &__display-name {
+      font-family: $heading-font-stack;
+      display: inline-block;
+      font-size: 18px;
+      font-weight: 700;
+      // margin-right: 24px; // space for bookmark button
+      margin-right: $space-sm;  // space between candidate name and description
+      margin-bottom: $space-sm;
+      vertical-align: middle;
+      @include breakpoints(mid-small) {
+        font-size: 18px;
+      }
+      @include print {
+        font-size: 22px;
+      }
+      &--inline {
+        margin: $space-none;
+        padding: $space-xs $space-sm;
+      }
+    }
+
+    &__description {
+      color: $gray-dark;
+      font-size: 14px;
+    }
+
+    &__rating-description {
+      font-size: .875em;
+
+      &__header {
+        color: $popover-link-color;
+      }
+    }
+
+    &__description-container {
+
+      &--truncated {
+        $line-height: 25px;
+        $text-container-height: $line-height * 2;
+        $read-more-width: 7em;
+        $truncated-text-spacer: $space-xs;
+        overflow: hidden;
+        position: relative;
+        height: $text-container-height;
+        // line-height: $line-height;
+
+        &::before {
+          content: '';
+          float: left;
+          width: $truncated-text-spacer;
+          height: $text-container-height;
+        }
+
+        > *:first-child {
+          float: right;
+          width: 100%;
+          margin-left: -($truncated-text-spacer); // stylelint-disable-line sh-waqar/declaration-use-variable
+        }
+
+        &::after {
+          // content: '\00A0 Read More';
+          box-sizing: content-box;
+          float: right;
+          position: relative;
+          top: -($line-height);
+          left: 100%;
+          width: $read-more-width;
+          margin-left: -($read-more-width);  // stylelint-disable-line sh-waqar/declaration-use-variable
+          padding-right: $space-xs;
+          text-align: right;
+          background-size: 100% 100%;
+          background: linear-gradient(to right, rgba(255, 255, 255, 0), white 15%, white); // stylelint-disable-line declaration-block-no-shorthand-property-overrides
+          font-style: normal;
+          color: $link-color;
+        }
+      }
+    }
+
+    &__candidate-read-more-link {
+      margin-left: $space-sm;
+      top: 0;
+      font-family: $body-font-stack;
+      font-size: 14px;
+      font-weight: 100 !important;
+      color: $link-color;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+    }
+
+    &__measure-read-more-link {
+      margin-left: $space-sm;
+      font-family: $body-font-stack;
+      font-size: 14px;
+      font-weight: 100 !important;
+      color: $link-color;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+    }
+
+    &__ballot-name-group {
+      display: block;
+    }
+
+    &__ballot-name-item {
+      float: left;
+    }
+
+    &__ballot-name-link {
+      color: $link-color;
+    }
+
+    &__ballot-name {
+      font-weight: 600;
+    }
+
+    &__ballot-read-more-link {
+      margin-left: $space-sm;
+      font-family: $body-font-stack;
+      font-size: 14px;
+      font-weight: 100 !important;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+    }
+
+    &__read-more-link {
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      text-indent: -9999px;
+      z-index: 5;
+    }
+
+    &__button-linked {
+      pointer-events: none !important;
+    }
+
+    &__office-item {
+      max-width: 960px;
+      width: 100%;
+    }
+  } // end .card-main
+
+  // ----------------------------------------
+  // Card 'Child'
+  // previously 'position-item' - candidates or orgs/users and their positions under a card-main
+
+  @include media-object('.card-child', '.card-child__media-object-anchor', '.card-child__media-object-content');
+
+  .card-child {
+    padding: $item-padding;
+    background-color: $gray-pale;
+    border: 1px solid #e7e7e7;
+    margin: -1px 0 12px 0; // stylelint-disable-line sh-waqar/declaration-use-variable
+    @include breakpoints(max mid-small) {
+      margin-left: -($item-padding); // stylelint-disable-line sh-waqar/declaration-use-variable
+      margin-right: -($item-padding); // stylelint-disable-line sh-waqar/declaration-use-variable
+    }
+
+    &__list-group {
+      padding: $space-none;
+      margin: $space-none;
+      @include breakpoints(max mid-small) {
+        padding: $space-none $item-padding;
+      }
+      .card__additional-heading {
+        @include breakpoints(max mid-small) {
+          margin-right: $space-none;
+          margin-left: $space-none;
+        }
+      }
+    }
+
+    &__avatar { // placed on the actual image
+      max-width: 50px;
+      @include breakpoints(max mid-small) {
+        max-width: 32px;
+      }
+      &--round {
+        border-radius: $radius-rounded;
+        max-width: 50px;
+        @include breakpoints(max mid-small) {
+          max-width: 32px;
+        }
+        @include print {
+          max-width: 50px; // TODO TESTING - not working
+        }
+      }
+    }
+    .icon-lg { // temp - for placeholder icons
+      font-size: 50px;
+      @include print {
+        max-width: 50px; // TODO TESTING - not working
+      }
+    }
+
+    &__media-object-content { // positioning for media-object pattern
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      @include breakpoints(medium) {
+        flex-direction: row;
+      }
+    }
+
+    &__content {
+      flex: auto;
+    }
+
+    &__content-text {
+      flex: auto;
+      margin: $space-md;
+      @include breakpoints(max mid-small) {
+        margin-right: $space-none;
+        margin-left: $space-none;
+      }
+    }
+
+    &__display-name {
+      font-family: $heading-font-stack;
+      // font-size: 18px;
+      margin-bottom: $space-xs;
+      flex: auto;
+    }
+
+    &__organization-description {
+      color: $gray-mid;
+    }
+
+    &__fine_print {
+      font-size: .75em;
+      color: $gray-dark;
+      margin-top: $space-md;
+    }
+
+    &__follow-buttons {
+      display: flex;
+      align-items: flex-end;
+      .btn {
+        margin: $space-none $space-xs $space-none $space-none;
+      }
+      .twitter-followers__badge {
+        margin: $space-xs $space-none;
+      }
+      @include breakpoints(medium) {
+        flex-direction: column;
+        .btn {
+          margin: $space-none $space-none $space-xs;
+        }
+        .twitter-followers__badge {
+          margin: $space-none;
+        }
+      }
+    }
+
+    &__additional {
+      display: flex;
+      margin-top: $space-sm;
+      @include breakpoints(medium) {
+        flex-direction: column;
+        padding-left: $space-md;
+        margin-top: inherit; // stylelint-disable-line sh-waqar/declaration-use-variable
+        text-align: right;
+      }
+    }
+    &--not-followed &__additional {
+      margin-top: $space-md; // for follow buttons
+    }
+
+    .bookmark-action {
+      order: 4;
+      position: relative;
+      // top: 15px;
+      // right: 10px;
+    }
+
+    .public-friends-indicator {
+      color: $gray-mid;
+      display: inline-block;
+      top: 16px;
+      height: 18px;
+    }
+  } // end .card-child
+
+  // ----------------------------------------
+
+  &__blue,
+  &__blue * {
+    color: $link-color !important;
+  }
+
+  &__additional {
+    @include clearfix;
+    border-top: 5px solid $gray-lighter;
+  }
+
+  &__additional-heading {
+    font-family: $heading-font-stack;
+    font-size: 18px;
+    margin: $space-md $item-padding;
+  }
+
+  &__additional-text {
+    margin: $space-md $item-padding;
+  }
+
+  &__no-additional {
+    margin: $space-md $item-padding;
+  }
+}
+
+// October 2018 There is a problem with bsPrefix="card-popover" -- this code will be used when that is fixed
+.card-popover {
+  padding-top: $space-none;
+  padding-left: $space-none;
+  padding-right: $space-none;
+  background-color: $white;
+  max-width: 350px;
+  @include breakpoints (max mid-small) {
+    max-width: 290px;
+  }
+
+  &__width--minimum {
+    max-width: 290px; // Remove when bsPrefix="card-popover" bug is fixed
+    width: 90vw;
+  }
+}
+
+.card-popover-body {
+  max-width: 290px; // Remove when bsPrefix="card-popover" bug is fixed
+  padding: $space-inset-xs;
+}
+
+.card-popover-header {
+  background-color: $brand-blue;
+  color: $white;
+}

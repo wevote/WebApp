@@ -1,17 +1,24 @@
-import React from "react";
-import FacebookActionCreators from "../../actions/FacebookActionCreators";
+import React from 'react';
+import { renderLog } from '../../utils/logging';
+import FacebookActions from '../../actions/FacebookActions';
 
 class FacebookLogout extends React.Component {
-    constructor (props) {
-        super(props);
-    }
-    render () {
-        return <button ref="logoutButton" onClick={this.didClickFacebookLogoutButton}>Sign Out of Facebook</button>;
-    }
+  didClickFacebookLogoutButton () {
+    FacebookActions.logout();
+  }
 
-    didClickFacebookLogoutButton (e) {
-        FacebookActionCreators.logout();
-    }
+  render () {
+    renderLog('FacebookLogout');  // Set LOG_RENDER_EVENTS to log all renders
+    return (
+      <button
+        ref="logoutButton" // eslint-disable-line
+        onClick={this.didClickFacebookLogoutButton}
+        type="button"
+      >
+        Sign Out of Facebook
+      </button>
+    );
+  }
 }
 
 export default FacebookLogout;
