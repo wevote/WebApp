@@ -1,11 +1,12 @@
-import React from 'react';
 import PropTypes from 'prop-types';
-import styled from 'styled-components';
+import React from 'react';
 import { Link } from 'react-router-dom';
+import styled from 'styled-components';
 import { cordovaDot, isCordova } from '../../utils/cordovaUtils';
-import logoLight from '../../../img/global/svg-icons/we-vote-logo-horizontal-color-200x66.svg';
-import logoDark from '../../../img/global/svg-icons/we-vote-logo-horizontal-color-dark-141x46.svg';
-import DelayedLoad from '../Widgets/DelayedLoad';
+
+const logoLight = '../../../img/global/svg-icons/we-vote-logo-horizontal-color-200x66.svg';
+const logoDark = '../../../img/global/svg-icons/we-vote-logo-horizontal-color-dark-141x46.svg';
+const DelayedLoad = React.lazy(() => import('../Widgets/DelayedLoad'));
 
 const HeaderBarLogo = ({ chosenSiteLogoUrl, isBeta, light }) => (
   <HeaderBarWrapper>

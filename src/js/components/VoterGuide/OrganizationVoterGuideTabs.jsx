@@ -1,21 +1,21 @@
-import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import LoadingWheel from '../LoadingWheel';
+import React, { Component } from 'react';
 import AppActions from '../../actions/AppActions';
-import AppStore from '../../stores/AppStore';
 import OrganizationActions from '../../actions/OrganizationActions';
-import OrganizationStore from '../../stores/OrganizationStore';
-import SettingsAccount from '../Settings/SettingsAccount';
 import VoterGuideActions from '../../actions/VoterGuideActions';
-import VoterGuideChooseElectionWithPositionsModal from './VoterGuideChooseElectionWithPositionsModal';
-import VoterGuideFollowers from './VoterGuideFollowers';
-import VoterGuideFollowing from './VoterGuideFollowing';
-import VoterGuideEndorsements from './VoterGuideEndorsements';
+import AppStore from '../../stores/AppStore';
+import OrganizationStore from '../../stores/OrganizationStore';
 import VoterGuideStore from '../../stores/VoterGuideStore';
 import VoterStore from '../../stores/VoterStore';
-import { abbreviateNumber, arrayContains } from '../../utils/textFormat';
 import { renderLog } from '../../utils/logging';
-// import VoterGuideBallot from './VoterGuideBallot';  // We can delete after 2020-08-31
+import { abbreviateNumber, arrayContains } from '../../utils/textFormat';
+import LoadingWheel from '../LoadingWheel';
+
+const SettingsAccount = React.lazy(() => import('../Settings/SettingsAccount'));
+const VoterGuideChooseElectionWithPositionsModal = React.lazy(() => import('./VoterGuideChooseElectionWithPositionsModal'));
+const VoterGuideEndorsements = React.lazy(() => import('./VoterGuideEndorsements'));
+const VoterGuideFollowers = React.lazy(() => import('./VoterGuideFollowers'));
+const VoterGuideFollowing = React.lazy(() => import('./VoterGuideFollowing'));
 
 export default class OrganizationVoterGuideTabs extends Component {
   // static getDerivedStateFromProps (props, state) {

@@ -1,14 +1,14 @@
+import { IconButton, InputBase } from '@material-ui/core';
+import { withStyles, withTheme } from '@material-ui/core/styles';
+import { Search } from '@material-ui/icons';
+import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { IconButton, InputBase } from '@material-ui/core';
-import { Search } from '@material-ui/icons';
-import { withStyles, withTheme } from '@material-ui/core/styles';
-import { renderLog } from '../../utils/logging';
-import { blurTextFieldAndroid, focusTextFieldAndroid, historyPush, isAndroid, isCordova, isIOS } from '../../utils/cordovaUtils';
-import ImageHandler from '../ImageHandler';
 import VoterGuideStore from '../../stores/VoterGuideStore';
+import { blurTextFieldAndroid, focusTextFieldAndroid, historyPush, isAndroid, isCordova, isIOS } from '../../utils/cordovaUtils';
+import { renderLog } from '../../utils/logging';
+import ImageHandler from '../ImageHandler';
 
 class FindOpinionsForm extends Component {
   constructor (props) {
@@ -293,6 +293,8 @@ const OuterWrapper = styled.div`
   display: flex;
   justify-content: center;
   padding: 0 !important;
+  min-height: 100px;
+  max-width: 260px;
 `;
 
 const PublicFiguresAndOrganizationsList = styled.div`

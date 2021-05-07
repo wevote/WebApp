@@ -1,28 +1,29 @@
 import React, { Component } from 'react';
 import Helmet from 'react-helmet';
 import styled from 'styled-components';
-import AddEndorsements from '../components/Widgets/AddEndorsements';
-import AddFriendsByEmail from '../components/Friends/AddFriendsByEmail';
-import AnalyticsActions from '../actions/AnalyticsActions';
-import BrowserPushMessage from '../components/Widgets/BrowserPushMessage';
-import { cordovaDot } from '../utils/cordovaUtils';
-import FindOpinionsForm from '../components/ReadyNoApi/FindOpinionsForm';
-import FirstAndLastNameRequiredAlert from '../components/Widgets/FirstAndLastNameRequiredAlert';
-import IssueActions from '../actions/IssueActions';
-import IssueStore from '../stores/IssueStore';
-import LoadingWheel from '../components/LoadingWheel';
-import { renderLog } from '../utils/logging';
-import NetworkOpinionsFollowed from '../components/Values/NetworkOpinionsFollowed';
-import OrganizationsToFollowPreview from '../components/Values/OrganizationsToFollowPreview';
-import PublicFiguresFollowedPreview from '../components/Values/PublicFiguresFollowedPreview';
-import PublicFiguresToFollowPreview from '../components/Values/PublicFiguresToFollowPreview';
-import SuggestedFriendsPreview from '../components/Friends/SuggestedFriendsPreview';
-import Testimonial from '../components/Widgets/Testimonial';
 import TestimonialPhoto from '../../img/global/photos/Dale_McGrew-200x200.jpg';
-import TwitterSignInCard from '../components/Twitter/TwitterSignInCard';
-import ValuesFollowedPreview from '../components/Values/ValuesFollowedPreview';
-import ValuesToFollowPreview from '../components/Values/ValuesToFollowPreview';
+import AnalyticsActions from '../actions/AnalyticsActions';
+import IssueActions from '../actions/IssueActions';
+import LoadingWheel from '../components/LoadingWheel';
+import Testimonial from '../components/Widgets/Testimonial';
+import IssueStore from '../stores/IssueStore';
 import VoterStore from '../stores/VoterStore';
+import { cordovaDot } from '../utils/cordovaUtils';
+import { renderLog } from '../utils/logging';
+
+const AddEndorsements = React.lazy(() => import('../components/Widgets/AddEndorsements'));
+const AddFriendsByEmail = React.lazy(() => import('../components/Friends/AddFriendsByEmail'));
+const BrowserPushMessage = React.lazy(() => import('../components/Widgets/BrowserPushMessage'));
+const FindOpinionsForm = React.lazy(() => import('../components/Ready/FindOpinionsForm'));
+const FirstAndLastNameRequiredAlert = React.lazy(() => import('../components/Widgets/FirstAndLastNameRequiredAlert'));
+const NetworkOpinionsFollowed = React.lazy(() => import('../components/Values/NetworkOpinionsFollowed'));
+const OrganizationsToFollowPreview = React.lazy(() => import('../components/Values/OrganizationsToFollowPreview'));
+const PublicFiguresFollowedPreview = React.lazy(() => import('../components/Values/PublicFiguresFollowedPreview'));
+const PublicFiguresToFollowPreview = React.lazy(() => import('../components/Values/PublicFiguresToFollowPreview'));
+const SuggestedFriendsPreview = React.lazy(() => import('../components/Friends/SuggestedFriendsPreview'));
+const TwitterSignInCard = React.lazy(() => import('../components/Twitter/TwitterSignInCard'));
+const ValuesFollowedPreview = React.lazy(() => import('../components/Values/ValuesFollowedPreview'));
+const ValuesToFollowPreview = React.lazy(() => import('../components/Values/ValuesToFollowPreview'));
 
 // const facebookInfoText = "By signing into Facebook here, you can choose which friends you want to talk politics with, and avoid the trolls (or that guy from work who rambles on)! You control who is in your We Vote network.";
 
@@ -45,10 +46,8 @@ export default class Values extends Component {
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
     this.onIssueStoreChange();
     this.onVoterStoreChange();
-    if (!IssueStore.issueDescriptionsRetrieveCalled()) {
-      IssueActions.issueDescriptionsRetrieve();
-    }
-    IssueActions.issuesFollowedRetrieve();
+    IssueActions.issueDescriptionsRetrieve(VoterStore.getVoterWeVoteId());
+    IssueActions.issuesFollowedRetrieve(VoterStore.getVoterWeVoteId());
     AnalyticsActions.saveActionNetwork(VoterStore.electionId());
   }
 

@@ -1,17 +1,18 @@
-import React, { PureComponent } from 'react';
+import { withStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
+import React, { PureComponent } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
-import { withStyles } from '@material-ui/core/styles';
-import ImageHandler from '../ImageHandler';
-import { removeTwitterNameFromDescription } from '../../utils/textFormat';
 import { renderLog } from '../../utils/logging';
-import PositionRatingSnippet from '../Widgets/PositionRatingSnippet';
-import PositionInformationOnlySnippet from '../Widgets/PositionInformationOnlySnippet';
-import PositionSupportOpposeSnippet from '../Widgets/PositionSupportOpposeSnippet';
-import ReadMore from '../Widgets/ReadMore';
-import StickyPopover from '../Ballot/StickyPopover';
-import OrganizationPopoverCard from '../Organization/OrganizationPopoverCard';
+import { removeTwitterNameFromDescription } from '../../utils/textFormat';
+import ImageHandler from '../ImageHandler';
+
+const PositionRatingSnippet = React.lazy(() => import('../Widgets/PositionRatingSnippet'));
+const PositionInformationOnlySnippet = React.lazy(() => import('../Widgets/PositionInformationOnlySnippet'));
+const PositionSupportOpposeSnippet = React.lazy(() => import('../Widgets/PositionSupportOpposeSnippet'));
+const ReadMore = React.lazy(() => import('../Widgets/ReadMore'));
+const StickyPopover = React.lazy(() => import('../Ballot/StickyPopover'));
+const OrganizationPopoverCard = React.lazy(() => import('../Organization/OrganizationPopoverCard'));
 
 
 // VoterGuideDisplayForList is used by GuideList for viewing voter guides you can follow on the Candidate

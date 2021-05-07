@@ -1,12 +1,13 @@
-import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import React, { Component } from 'react';
 import Helmet from 'react-helmet';
-import { isCordova } from '../../utils/cordovaUtils';
-import { makeSearchLink } from '../../utils/searchFunctions';
-import { renderLog } from '../../utils/logging';
 import SearchAllActions from '../../actions/SearchAllActions';
 import SearchAllStore from '../../stores/SearchAllStore';
-import SearchResultsDisplay from '../../components/Search/SearchResultsDisplay';
+import { isCordova } from '../../utils/cordovaUtils';
+import { renderLog } from '../../utils/logging';
+import { makeSearchLink } from '../../utils/searchFunctions';
+
+const SearchResultsDisplay = React.lazy(() => import('../../components/Search/SearchResultsDisplay'));
 
 export default class SearchPage extends Component {
   constructor (props) {

@@ -1,13 +1,13 @@
 import { ReduceStore } from 'flux/utils';
 import assign from 'object-assign';
-import Dispatcher from '../dispatcher/Dispatcher';
 import BallotActions from '../actions/BallotActions';
 import CandidateActions from '../actions/CandidateActions';
 import MeasureActions from '../actions/MeasureActions'; // eslint-disable-line import/no-cycle
-import SupportStore from './SupportStore'; // eslint-disable-line import/no-cycle
-import VoterStore from './VoterStore'; // eslint-disable-line import/no-cycle
+import Dispatcher from '../dispatcher/Dispatcher';
 import { stringContains } from '../utils/textFormat';
 import convertVoterGuideToElection from '../utils/voterGuideFunctions';
+import SupportStore from './SupportStore'; // eslint-disable-line import/no-cycle
+import VoterStore from './VoterStore'; // eslint-disable-line import/no-cycle
 
 // December 2018:  We want to work toward being airbnb style compliant, but for now these are disabled in this file to minimize massive changes
 /* eslint no-param-reassign: 0 */
@@ -553,6 +553,10 @@ class BallotStore extends ReduceStore {
         // console.log('BallotStore, voterAddressRetrieve response received, calling voterBallotItemsRetrieve now.');
         // DALE NOTE: 2020-02-11 Experimenting with this off
         // BallotActions.voterBallotItemsRetrieve();  // Avoid calling actions from Stores, it often results in unintended useless API queries
+        return state;
+
+      case 'voterAddressOnlyRetrieve':
+        // voterAddressRetrieve causes a cascade of other actions, rather than untangle the cascade...
         return state;
 
       case 'voterBallotItemsRetrieve':

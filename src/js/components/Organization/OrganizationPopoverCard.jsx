@@ -1,18 +1,19 @@
-import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import Button from 'react-bootstrap/Button';
+import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
-import FollowToggle from '../Widgets/FollowToggle';
-import LoadingWheel from '../LoadingWheel';
-import OpenExternalWebSite from '../Widgets/OpenExternalWebSite';
-import OrganizationStore from '../../stores/OrganizationStore';
 import OrganizationActions from '../../actions/OrganizationActions';
-import ParsedTwitterDescription from '../Twitter/ParsedTwitterDescription';
+import OrganizationStore from '../../stores/OrganizationStore';
 import VoterStore from '../../stores/VoterStore';
+import { historyPush } from '../../utils/cordovaUtils';
 import { renderLog } from '../../utils/logging';
 import { numberWithCommas, removeTwitterNameFromDescription } from '../../utils/textFormat';
-import { historyPush } from '../../utils/cordovaUtils';
+import LoadingWheel from '../LoadingWheel';
+
+const Button = React.lazy(() => import('react-bootstrap/Button'));
+const FollowToggle = React.lazy(() => import('../Widgets/FollowToggle'));
+const OpenExternalWebSite = React.lazy(() => import('../Widgets/OpenExternalWebSite'));
+const ParsedTwitterDescription = React.lazy(() => import('../Twitter/ParsedTwitterDescription'));
 
 class OrganizationPopoverCard extends Component {
   constructor (props) {

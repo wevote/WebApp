@@ -1,8 +1,8 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import styled from 'styled-components';
+import { FormControl, InputLabel, Select } from '@material-ui/core';
 import { withStyles, withTheme } from '@material-ui/core/styles';
-import { Select, FormControl, InputLabel } from '@material-ui/core';
+import PropTypes from 'prop-types';
+import React, { Component } from 'react';
+import styled from 'styled-components';
 import { convertStateCodeToStateText } from '../../utils/addressFunctions';
 import { renderLog } from '../../utils/logging';
 

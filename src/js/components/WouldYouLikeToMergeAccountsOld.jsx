@@ -1,14 +1,15 @@
-import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import Alert from 'react-bootstrap/Alert';
-import Button from 'react-bootstrap/Button';
+import React, { Component } from 'react';
 import FacebookActions from '../actions/FacebookActions';
-import FacebookStore from '../stores/FacebookStore';
-import { historyPush } from '../utils/cordovaUtils';
-import LoadingWheel from './LoadingWheel';
-import { renderLog } from '../utils/logging';
 import VoterActions from '../actions/VoterActions';
+import FacebookStore from '../stores/FacebookStore';
 import VoterStore from '../stores/VoterStore';
+import { historyPush } from '../utils/cordovaUtils';
+import { renderLog } from '../utils/logging';
+import LoadingWheel from './LoadingWheel';
+
+const Alert = React.lazy(() => import('react-bootstrap/Alert'));
+const Button = React.lazy(() => import('react-bootstrap/Button'));
 
 export default class WouldYouLikeToMergeAccountsOld extends Component {
   constructor (props) {

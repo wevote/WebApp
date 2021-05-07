@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
-import { historyPush } from '../utils/cordovaUtils';
-import LoadingWheel from '../components/LoadingWheel';
-import { renderLog } from '../utils/logging';
-import TwitterHandleBox from '../components/Twitter/TwitterHandleBox';
 import VoterActions from '../actions/VoterActions';
+import LoadingWheel from '../components/LoadingWheel';
 import VoterStore from '../stores/VoterStore';
+import { historyPush } from '../utils/cordovaUtils';
+import { renderLog } from '../utils/logging';
+
+const TwitterHandleBox = React.lazy(() => import('../components/Twitter/TwitterHandleBox'));
 
 // This file is only for use with people who aren't signed in
 export default class YourPage extends Component {

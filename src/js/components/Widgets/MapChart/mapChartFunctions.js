@@ -5,7 +5,7 @@ import * as d3Geo from 'd3-geo';
 import { geoPath as geoPath$1, geoGraticule } from 'd3-geo';
 import { feature } from 'topojson-client';
 import { zoom, zoomIdentity } from 'd3-zoom';
-import { select, event } from 'd3-selection';
+import { select } from 'd3-selection';
 
 const _extends = Object.assign || function (target) {
   for (let i = 1; i < arguments.length; i++) {
@@ -463,12 +463,12 @@ function useZoomPan (_ref) {
   useEffect(() => {
     const svg = select(mapRef.current);
 
-    function handleZoomStart () {
+    function handleZoomStart (event) {
       if (!onMoveStart || bypassEvents.current) return;
       onMoveStart({ coordinates: projection.invert(getCoords(width, height, event.transform)), zoom: event.transform.k }, event);
     }
 
-    function handleZoom () {
+    function handleZoom (event) {
       if (bypassEvents.current) return;
       const { transform } = event;
       const { sourceEvent } = event;
@@ -478,7 +478,7 @@ function useZoomPan (_ref) {
       onMove({ x: transform.x, y: transform.y, k: transform.k, dragging: sourceEvent }, event);
     }
 
-    function handleZoomEnd () {
+    function handleZoomEnd (event) {
       if (bypassEvents.current) {
         bypassEvents.current = false;
         return;

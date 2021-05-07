@@ -1,15 +1,16 @@
-import React, { Component } from 'react';
-import { CardElement, injectStripe } from 'react-stripe-elements';
-import PropTypes from 'prop-types';
-import { withStyles } from '@material-ui/core/styles';
 import { Button } from '@material-ui/core';
+import { withStyles } from '@material-ui/core/styles';
+import PropTypes from 'prop-types';
+import React, { Component } from 'react';
 import styled from 'styled-components';
-import LoadingWheel from '../LoadingWheel';
-import { renderLog } from '../../utils/logging';
-import VoterStore from '../../stores/VoterStore';
 import DonateActions from '../../actions/DonateActions';
 import DonateStore from '../../stores/DonateStore';
+import VoterStore from '../../stores/VoterStore';
+import { renderLog } from '../../utils/logging';
 import { numberWithCommas } from '../../utils/textFormat';
+import LoadingWheel from '../LoadingWheel';
+
+const { CardElement, injectStripe } = React.lazy(() => import('react-stripe-elements'));
 
 
 class SettingsStripePayment extends Component {

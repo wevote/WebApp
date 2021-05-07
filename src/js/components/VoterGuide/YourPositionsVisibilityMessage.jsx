@@ -1,7 +1,8 @@
-import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import FriendsOnlyIndicator from '../Widgets/FriendsOnlyIndicator';
+import React, { Component } from 'react';
 import { renderLog } from '../../utils/logging';
+
+const FriendsOnlyIndicator = React.lazy(() => import('../Widgets/FriendsOnlyIndicator'));
 
 export default class YourPositionsVisibilityMessage extends Component {
   constructor (props) {

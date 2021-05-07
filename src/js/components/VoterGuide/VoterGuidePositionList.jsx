@@ -1,22 +1,23 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import styled from 'styled-components';
-import { withStyles } from '@material-ui/core/styles';
 import { CircularProgress } from '@material-ui/core';
+import { withStyles } from '@material-ui/core/styles';
 // import { Comment } from '@material-ui/icons';
-import { Info, ThumbUp, ThumbDown } from '@material-ui/icons';
+import { Info, ThumbDown, ThumbUp } from '@material-ui/icons';
+import PropTypes from 'prop-types';
+import React, { Component } from 'react';
+import styled from 'styled-components';
+import FriendActions from '../../actions/FriendActions';
+import OrganizationActions from '../../actions/OrganizationActions';
+import FriendStore from '../../stores/FriendStore';
+import OrganizationStore from '../../stores/OrganizationStore';
 import { getStateCodesFoundInObjectList } from '../../utils/addressFunctions';
 import { renderLog } from '../../utils/logging';
-import FilterBase from '../Filter/FilterBase';
-import FriendActions from '../../actions/FriendActions';
-import FriendStore from '../../stores/FriendStore';
-import NumberOfItemsFound from '../Widgets/NumberOfItemsFound';
-import OrganizationActions from '../../actions/OrganizationActions';
-import OrganizationStore from '../../stores/OrganizationStore';
-import VoterGuidePositionFilter from '../Filter/VoterGuidePositionFilter';
-import VoterGuidePositionItem from './VoterGuidePositionItem';
-import ShowMoreItems from '../Widgets/ShowMoreItems';
 import { arrayContains } from '../../utils/textFormat';
+
+const FilterBase = React.lazy(() => import('../Filter/FilterBase'));
+const NumberOfItemsFound = React.lazy(() => import('../Widgets/NumberOfItemsFound'));
+const ShowMoreItems = React.lazy(() => import('../Widgets/ShowMoreItems'));
+const VoterGuidePositionFilter = React.lazy(() => import('../Filter/VoterGuidePositionFilter'));
+const VoterGuidePositionItem = React.lazy(() => import('./VoterGuidePositionItem'));
 
 
 // Thumbs up/down needs to be fixed

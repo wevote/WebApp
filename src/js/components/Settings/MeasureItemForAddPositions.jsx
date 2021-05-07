@@ -1,13 +1,14 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import styled from 'styled-components';
 import { Card } from '@material-ui/core';
 import { withStyles, withTheme } from '@material-ui/core/styles';
-import { renderLog } from '../../utils/logging';
-import ItemActionBar from '../Widgets/ItemActionBar/ItemActionBar';
+import PropTypes from 'prop-types';
+import React, { Component } from 'react';
+import styled from 'styled-components';
 import SupportStore from '../../stores/SupportStore';
+import { renderLog } from '../../utils/logging';
 import { capitalizeString, shortenText } from '../../utils/textFormat';
-import ItemPositionStatementActionBar from '../Widgets/ItemPositionStatementActionBar';
+
+const ItemActionBar = React.lazy(() => import('../Widgets/ItemActionBar/ItemActionBar'));
+const ItemPositionStatementActionBar = React.lazy(() => import('../Widgets/ItemPositionStatementActionBar'));
 
 
 class MeasureItemForAddPositions extends Component {

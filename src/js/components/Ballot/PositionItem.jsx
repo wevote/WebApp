@@ -1,31 +1,32 @@
+import { Button } from '@material-ui/core';
+import { withStyles, withTheme } from '@material-ui/core/styles';
+import { Info, ThumbDown, ThumbUp } from '@material-ui/icons';
+import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import PropTypes from 'prop-types';
-import styled from 'styled-components';
-import { withStyles, withTheme } from '@material-ui/core/styles';
-import { Button } from '@material-ui/core';
-import { Info, ThumbDown, ThumbUp } from '@material-ui/icons';
 import { ReactSVG } from 'react-svg';
+import styled from 'styled-components';
 import AppActions from '../../actions/AppActions';
-import { cordovaDot } from '../../utils/cordovaUtils';
-import FollowToggle from '../Widgets/FollowToggle';
-import FriendStore from '../../stores/FriendStore';
-import ImageHandler from '../ImageHandler';
-import IssuesByOrganizationDisplayList from '../Values/IssuesByOrganizationDisplayList';
-import IssueStore from '../../stores/IssueStore';
-import { isSpeakerTypeIndividual, isSpeakerTypeOrganization } from '../../utils/organization-functions';
-import OpenExternalWebSite from '../Widgets/OpenExternalWebSite';
-import OrganizationPopoverCard from '../Organization/OrganizationPopoverCard';
 import OrganizationActions from '../../actions/OrganizationActions';
+import FriendStore from '../../stores/FriendStore';
+import IssueStore from '../../stores/IssueStore';
 import OrganizationStore from '../../stores/OrganizationStore';
-import { isOrganizationInVotersNetwork } from '../../utils/positionFunctions';
-import PositionItemScorePopover from '../Widgets/PositionItemScorePopover';
-import ReadMore from '../Widgets/ReadMore';
-import { renderLog } from '../../utils/logging';
-import { numberWithCommas, startsWith } from '../../utils/textFormat';
-import StickyPopover from './StickyPopover';
 import VoterGuideStore from '../../stores/VoterGuideStore';
 import VoterStore from '../../stores/VoterStore';
+import { cordovaDot } from '../../utils/cordovaUtils';
+import { renderLog } from '../../utils/logging';
+import { isSpeakerTypeIndividual, isSpeakerTypeOrganization } from '../../utils/organization-functions';
+import { isOrganizationInVotersNetwork } from '../../utils/positionFunctions';
+import { numberWithCommas, startsWith } from '../../utils/textFormat';
+import ImageHandler from '../ImageHandler';
+
+const FollowToggle = React.lazy(() => import('../Widgets/FollowToggle'));
+const IssuesByOrganizationDisplayList = React.lazy(() => import('../Values/IssuesByOrganizationDisplayList'));
+const OpenExternalWebSite = React.lazy(() => import('../Widgets/OpenExternalWebSite'));
+const OrganizationPopoverCard = React.lazy(() => import('../Organization/OrganizationPopoverCard'));
+const PositionItemScorePopover = React.lazy(() => import('../Widgets/PositionItemScorePopover'));
+const ReadMore = React.lazy(() => import('../Widgets/ReadMore'));
+const StickyPopover = React.lazy(() => import('./StickyPopover'));
 
 class PositionItem extends Component {
   constructor (props) {

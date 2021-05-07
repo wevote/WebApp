@@ -1,30 +1,34 @@
-import React, { Component } from 'react';
-import Button from 'react-bootstrap/Button';
-import Helmet from 'react-helmet';
 import PropTypes from 'prop-types';
+import React, { Component } from 'react';
+import Helmet from 'react-helmet';
 import styled from 'styled-components';
-import cookies from '../../utils/cookies';
 import AnalyticsActions from '../../actions/AnalyticsActions';
 import AppActions from '../../actions/AppActions';
-import AppleSignIn from '../Apple/AppleSignIn';
-import AppStore from '../../stores/AppStore';
-import BrowserPushMessage from '../Widgets/BrowserPushMessage';
-import { historyPush, isCordova, isIPhone4in, isIPhone4p7in, restoreStylesAfterCordovaKeyboard } from '../../utils/cordovaUtils';
 import FacebookActions from '../../actions/FacebookActions';
-import FacebookStore from '../../stores/FacebookStore';
-import FacebookSignIn from '../Facebook/FacebookSignIn';
-import LoadingWheel from '../LoadingWheel';
-import { oAuthLog, renderLog } from '../../utils/logging';
-import signInModalGlobalState from '../Widgets/signInModalGlobalState';
-import { stringContains } from '../../utils/textFormat';
 import TwitterActions from '../../actions/TwitterActions';
-import TwitterSignIn from '../Twitter/TwitterSignIn';
 import VoterActions from '../../actions/VoterActions';
-import VoterEmailAddressEntry from './VoterEmailAddressEntry';
 import VoterSessionActions from '../../actions/VoterSessionActions';
+import AppStore from '../../stores/AppStore';
+import FacebookStore from '../../stores/FacebookStore';
 import VoterStore from '../../stores/VoterStore';
-import VoterPhoneVerificationEntry from './VoterPhoneVerificationEntry';
-import VoterPhoneEmailCordovaEntryModal from './VoterPhoneEmailCordovaEntryModal';
+import cookies from '../../utils/cookies';
+import { historyPush, isCordova, isIPhone4in, isIPhone4p7in, restoreStylesAfterCordovaKeyboard } from '../../utils/cordovaUtils';
+import initializeAppleSDK from '../../utils/initializeAppleSDK';
+import { oAuthLog, renderLog } from '../../utils/logging';
+import { stringContains } from '../../utils/textFormat';
+import LoadingWheel from '../LoadingWheel';
+import signInModalGlobalState from '../Widgets/signInModalGlobalState';
+
+
+// import initializeAppleSDK from '../../utils/initializeAppleSDK';
+const AppleSignIn = React.lazy(() => import('../Apple/AppleSignIn'));
+const BrowserPushMessage = React.lazy(() => import('../Widgets/BrowserPushMessage'));
+const Button = React.lazy(() => import('react-bootstrap/Button'));
+const FacebookSignIn = React.lazy(() => import('../Facebook/FacebookSignIn'));
+const TwitterSignIn = React.lazy(() => import('../Twitter/TwitterSignIn'));
+const VoterEmailAddressEntry = React.lazy(() => import('./VoterEmailAddressEntry'));
+const VoterPhoneEmailCordovaEntryModal = React.lazy(() => import('./VoterPhoneEmailCordovaEntryModal'));
+const VoterPhoneVerificationEntry = React.lazy(() => import('./VoterPhoneVerificationEntry'));
 
 /* global $ */
 
@@ -66,6 +70,7 @@ export default class SettingsAccount extends Component {
   // componentWillMount is used in WebApp
   componentDidMount () {
     // console.log("SettingsAccount componentDidMount");
+    initializeAppleSDK(null);
     this.onVoterStoreChange();
     this.appStoreListener = AppStore.addListener(this.onAppStoreChange.bind(this));
     this.facebookStoreListener = FacebookStore.addListener(this.onFacebookChange.bind(this));
@@ -77,6 +82,8 @@ export default class SettingsAccount extends Component {
     }
     const oneDayExpires = 86400;
     let pathname = '';
+    const { hostname } = window.location;
+    const isOnFacebookSupportedDomainUrl = hostname === 'wevote.us' || hostname === 'quality.wevote.us' || hostname === 'localhost' || isCordova() || window.location.href.includes('ngrok');
 
     const getStartedMode = AppStore.getStartedMode();
     AnalyticsActions.saveActionAccountPage(VoterStore.electionId());
@@ -121,7 +128,7 @@ export default class SettingsAccount extends Component {
     } else {
       const isOnWeVoteRootUrl = AppStore.isOnWeVoteRootUrl();
       const isOnWeVoteSubdomainUrl = AppStore.isOnWeVoteSubdomainUrl();
-      const isOnFacebookSupportedDomainUrl = AppStore.isOnFacebookSupportedDomainUrl() || window.location.href.includes('ngrok');
+      // No need to query an api to get this answer.  Creates an unneeded dependency:  const isOnFacebookSupportedDomainUrl = AppStore.isOnFacebookSupportedDomainUrl() || window.location.href.includes('ngrok');
       let pleaseSignInSubTitle = '';
       if (isOnWeVoteRootUrl || isOnWeVoteSubdomainUrl || isOnFacebookSupportedDomainUrl) {
         pleaseSignInSubTitle = 'Don\'t worry, we won\'t post anything automatically.';
@@ -134,7 +141,7 @@ export default class SettingsAccount extends Component {
     this.setState({
       isOnWeVoteRootUrl: AppStore.isOnWeVoteRootUrl(),
       isOnWeVoteSubdomainUrl: AppStore.isOnWeVoteSubdomainUrl(),
-      isOnFacebookSupportedDomainUrl: AppStore.isOnFacebookSupportedDomainUrl(),
+      isOnFacebookSupportedDomainUrl,
     });
 
     const delayBeforeClearingStatus = 500;
@@ -190,10 +197,11 @@ export default class SettingsAccount extends Component {
   }
 
   onAppStoreChange () {
+    const { isOnFacebookSupportedDomainUrl } = this.state;
     this.setState({
       isOnWeVoteRootUrl: AppStore.isOnWeVoteRootUrl(),
       isOnWeVoteSubdomainUrl: AppStore.isOnWeVoteSubdomainUrl(),
-      isOnFacebookSupportedDomainUrl: AppStore.isOnFacebookSupportedDomainUrl(),
+      isOnFacebookSupportedDomainUrl: AppStore.isOnFacebookSupportedDomainUrl() || isOnFacebookSupportedDomainUrl,
     });
   }
 

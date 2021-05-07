@@ -1,12 +1,13 @@
+import { withStyles } from '@material-ui/core/styles';
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
-import { withStyles } from '@material-ui/core/styles';
-import OpenExternalWebSite from '../Widgets/OpenExternalWebSite';
 import OrganizationStore from '../../stores/OrganizationStore';
-import { renderLog } from '../../utils/logging';
-import SettingsAccount from './SettingsAccount';
 import VoterStore from '../../stores/VoterStore';
+import { renderLog } from '../../utils/logging';
+
+const OpenExternalWebSite = React.lazy(() => import('../Widgets/OpenExternalWebSite'));
+const SettingsAccount = React.lazy(() => import('./SettingsAccount'));
 
 class SeeTheseSettingsInAction extends Component {
   constructor (props) {

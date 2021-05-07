@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
 import Helmet from 'react-helmet';
 import styled from 'styled-components';
-import SuggestedFriendList from '../../components/Friends/SuggestedFriendList';
 import FriendActions from '../../actions/FriendActions';
 import FriendStore from '../../stores/FriendStore';
-import MessageCard from '../../components/Widgets/MessageCard';
-import { renderLog } from '../../utils/logging';
 import sortFriendListByMutualFriends from '../../utils/friendFunctions';
+import { renderLog } from '../../utils/logging';
+
+const SuggestedFriendList = React.lazy(() => import('../../components/Friends/SuggestedFriendList'));
+const MessageCard = React.lazy(() => import('../../components/Widgets/MessageCard'));
 
 export default class SuggestedFriends extends Component {
   constructor (props) {

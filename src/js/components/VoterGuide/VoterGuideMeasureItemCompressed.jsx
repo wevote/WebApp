@@ -1,13 +1,14 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
 import { withStyles, withTheme } from '@material-ui/core/styles';
-import { renderLog } from '../../utils/logging';
+import PropTypes from 'prop-types';
+import React, { Component } from 'react';
 import MeasureActions from '../../actions/MeasureActions';
-import MeasureStore from '../../stores/MeasureStore';
 import OrganizationActions from '../../actions/OrganizationActions';
+import MeasureStore from '../../stores/MeasureStore';
 import OrganizationStore from '../../stores/OrganizationStore';
 import SupportStore from '../../stores/SupportStore';
-import VoterGuidePositionItem from './VoterGuidePositionItem';
+import { renderLog } from '../../utils/logging';
+
+const VoterGuidePositionItem = React.lazy(() => import('./VoterGuidePositionItem'));
 
 
 class VoterGuideMeasureItemCompressed extends Component {

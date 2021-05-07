@@ -1,14 +1,15 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import Helmet from 'react-helmet';
-import styled from 'styled-components';
 import { Badge } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
-import FriendInvitationList from '../../components/Friends/FriendInvitationList';
+import PropTypes from 'prop-types';
+import React, { Component } from 'react';
+import Helmet from 'react-helmet';
+import styled from 'styled-components';
 import FriendActions from '../../actions/FriendActions';
 import FriendStore from '../../stores/FriendStore';
 import { renderLog } from '../../utils/logging';
-import MessageCard from '../../components/Widgets/MessageCard';
+
+const FriendInvitationList = React.lazy(() => import('../../components/Friends/FriendInvitationList'));
+const MessageCard = React.lazy(() => import('../../components/Widgets/MessageCard'));
 
 class FriendInvitationsSentToMe extends Component {
   constructor (props) {

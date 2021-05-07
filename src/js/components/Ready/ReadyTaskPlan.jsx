@@ -1,16 +1,17 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import styled from 'styled-components';
 import { withStyles, withTheme } from '@material-ui/core/styles';
 import { ArrowForward } from '@material-ui/icons';
+import PropTypes from 'prop-types';
+import React from 'react';
+import styled from 'styled-components';
 import AppActions from '../../actions/AppActions';
-import { cordovaDot } from '../../utils/cordovaUtils';
-import plan0Percent from '../../../img/global/svg-icons/ready/plan-0-percent.svg';
-import plan100Percent from '../../../img/global/svg-icons/ready/plan-100-percent.svg';
 import ReadyStore from '../../stores/ReadyStore';
-import { ButtonLeft, ButtonText, Icon, PercentComplete, ReadyCard, StyledButton, StyledCheckbox, SubTitle, TitleRowWrapper } from './ReadyTaskStyles';
 import VoterStore from '../../stores/VoterStore';
+import { cordovaDot } from '../../utils/cordovaUtils';
 import { renderLog } from '../../utils/logging';
+import { ButtonLeft, ButtonText, Icon, PercentComplete, ReadyCard, StyledButton, StyledCheckbox, SubTitle, TitleRowWrapper } from './ReadyTaskStyles';
+
+const plan0Percent = '../../../img/global/svg-icons/ready/plan-0-percent.svg';
+const plan100Percent = '../../../img/global/svg-icons/ready/plan-100-percent.svg';
 
 class ReadyTaskPlan extends React.Component {
   constructor (props) {

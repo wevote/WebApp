@@ -1,15 +1,8 @@
 import React from 'react';
 import { geoCentroid } from 'd3-geo';
 import styled from 'styled-components';
-import {
-  ComposableMap,
-  Geographies,
-  Geography,
-  Marker,
-  Annotation,
-} from './mapChartFunctions';
-
 import allStates from '../../../../json/allStates.json';
+import { Annotation, ComposableMap, Geographies, Geography, Marker } from './mapChartFunctions';
 
 const geoUrl = 'https://cdn.jsdelivr.net/npm/us-atlas@3/states-10m.json';
 

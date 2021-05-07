@@ -1,13 +1,13 @@
 import { ReduceStore } from 'flux/utils';
 import assign from 'object-assign';
-import Dispatcher from '../dispatcher/Dispatcher';
-import CandidateStore from './CandidateStore';  // eslint-disable-line import/no-cycle
-import MeasureStore from './MeasureStore';  // eslint-disable-line import/no-cycle
-import { extractScoreFromNetworkFromPositionList } from '../utils/positionFunctions';  // eslint-disable-line import/no-cycle
-import { stringContains } from '../utils/textFormat';
 import CandidateActions from '../actions/CandidateActions';
 import MeasureActions from '../actions/MeasureActions';
 import SupportActions from '../actions/SupportActions';
+import Dispatcher from '../dispatcher/Dispatcher';
+import { extractScoreFromNetworkFromPositionList } from '../utils/positionFunctions'; // eslint-disable-line import/no-cycle
+import { stringContains } from '../utils/textFormat';
+import CandidateStore from './CandidateStore'; // eslint-disable-line import/no-cycle
+import MeasureStore from './MeasureStore'; // eslint-disable-line import/no-cycle
 
 class SupportStore extends ReduceStore {
   getInitialState () {

@@ -1,15 +1,15 @@
-import React, { Component } from 'react';
-import styled from 'styled-components';
+import { Button, InputBase, Paper } from '@material-ui/core';
 import { withStyles, withTheme } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
-import { Paper, InputBase, Button } from '@material-ui/core';
+import React, { Component } from 'react';
+import styled from 'styled-components';
+import SupportActions from '../../actions/SupportActions';
+import SupportStore from '../../stores/SupportStore';
+import VoterStore from '../../stores/VoterStore';
 import { prepareForCordovaKeyboard, restoreStylesAfterCordovaKeyboard } from '../../utils/cordovaUtils';
 import isMobileScreenSize from '../../utils/isMobileScreenSize';
 import { renderLog } from '../../utils/logging';
 import { shortenText } from '../../utils/textFormat';
-import SupportActions from '../../actions/SupportActions';
-import SupportStore from '../../stores/SupportStore';
-import VoterStore from '../../stores/VoterStore';
 
 class ItemPositionStatementActionBar extends Component {
   constructor (props) {

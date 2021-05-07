@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
-import OpenExternalWebSite from './OpenExternalWebSite';
 import { cordovaDot } from '../../utils/cordovaUtils';
-import positionIcon from '../../../img/global/svg-icons/positions-icon-24-x-24.svg';
-import SplitIconButton from './SplitIconButton';
+
+const OpenExternalWebSite = React.lazy(() => import('./OpenExternalWebSite'));
+const positionIcon = '../../../img/global/svg-icons/positions-icon-24-x-24.svg';
+const SplitIconButton = React.lazy(() => import('./SplitIconButton'));
 
 const text = 'Don\'t see your favorite organization or endorsement? We Vote is nonpartisan and welcomes public endorsements of candidates and measures from any organization or public figure.';
 

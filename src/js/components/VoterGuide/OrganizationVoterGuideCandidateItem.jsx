@@ -1,15 +1,16 @@
-import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import BallotItemSupportOpposeComment from '../Widgets/BallotItemSupportOpposeComment';
 import CandidateStore from '../../stores/CandidateStore';
-import { historyPush } from '../../utils/cordovaUtils';
-import ImageHandler from '../ImageHandler';
-import { renderLog } from '../../utils/logging';
-import OfficeNameText from '../Widgets/OfficeNameText';
-import ParsedTwitterDescription from '../Twitter/ParsedTwitterDescription';
 import VoterGuideStore from '../../stores/VoterGuideStore';
+import { historyPush } from '../../utils/cordovaUtils';
+import { renderLog } from '../../utils/logging';
 import { abbreviateNumber, numberWithCommas } from '../../utils/textFormat';
+import ImageHandler from '../ImageHandler';
+
+const BallotItemSupportOpposeComment = React.lazy(() => import('../Widgets/BallotItemSupportOpposeComment'));
+const OfficeNameText = React.lazy(() => import('../Widgets/OfficeNameText'));
+const ParsedTwitterDescription = React.lazy(() => import('../Twitter/ParsedTwitterDescription'));
 
 // This is related to /js/components/Ballot/CandidateItem.jsx
 export default class OrganizationVoterGuideCandidateItem extends Component {

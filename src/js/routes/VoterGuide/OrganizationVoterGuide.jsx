@@ -1,26 +1,27 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import styled from 'styled-components';
-import { Link } from 'react-router-dom';
 import { Button } from '@material-ui/core';
+import PropTypes from 'prop-types';
+import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
+import styled from 'styled-components';
 import AnalyticsActions from '../../actions/AnalyticsActions';
 import AppActions from '../../actions/AppActions';
-import DelayedLoad from '../../components/Widgets/DelayedLoad';
-import FollowToggle from '../../components/Widgets/FollowToggle';
 import FriendActions from '../../actions/FriendActions';
-import FriendToggle from '../../components/Friends/FriendToggle';
-import LoadingWheel from '../../components/LoadingWheel';
 import OrganizationActions from '../../actions/OrganizationActions';
-import OrganizationCard from '../../components/VoterGuide/OrganizationCard';
+import LoadingWheel from '../../components/LoadingWheel';
 import OrganizationStore from '../../stores/OrganizationStore';
-import OrganizationVoterGuideCard from '../../components/VoterGuide/OrganizationVoterGuideCard';
-import OrganizationVoterGuideTabs from '../../components/VoterGuide/OrganizationVoterGuideTabs';
-import ShareButtonDesktopTablet from '../../components/Share/ShareButtonDesktopTablet';
 import VoterGuideStore from '../../stores/VoterGuideStore';
 import VoterStore from '../../stores/VoterStore';
-import { isWebApp, historyPush, isIPad } from '../../utils/cordovaUtils';
-import { isSpeakerTypePrivateCitizen } from '../../utils/organization-functions';
+import { historyPush, isIPad, isWebApp } from '../../utils/cordovaUtils';
 import { renderLog } from '../../utils/logging';
+import { isSpeakerTypePrivateCitizen } from '../../utils/organization-functions';
+
+const DelayedLoad = React.lazy(() => import('../../components/Widgets/DelayedLoad'));
+const FollowToggle = React.lazy(() => import('../../components/Widgets/FollowToggle'));
+const FriendToggle = React.lazy(() => import('../../components/Friends/FriendToggle'));
+const OrganizationCard = React.lazy(() => import('../../components/VoterGuide/OrganizationCard'));
+const OrganizationVoterGuideCard = React.lazy(() => import('../../components/VoterGuide/OrganizationVoterGuideCard'));
+const OrganizationVoterGuideTabs = React.lazy(() => import('../../components/VoterGuide/OrganizationVoterGuideTabs'));
+const ShareButtonDesktopTablet = React.lazy(() => import('../../components/Share/ShareButtonDesktopTablet'));
 
 const AUTO_FOLLOW = 'af';
 

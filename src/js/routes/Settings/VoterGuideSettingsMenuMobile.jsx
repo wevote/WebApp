@@ -1,13 +1,14 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import { renderLog } from '../../utils/logging';
 import OrganizationActions from '../../actions/OrganizationActions';
-import OrganizationStore from '../../stores/OrganizationStore';
-import SettingsBannerAndOrganizationCard from '../../components/Settings/SettingsBannerAndOrganizationCard';
 import VoterGuideActions from '../../actions/VoterGuideActions';
-import VoterGuideSettingsSideBar from '../../components/Navigation/VoterGuideSettingsSideBar';
+import OrganizationStore from '../../stores/OrganizationStore';
 import VoterGuideStore from '../../stores/VoterGuideStore';
 import VoterStore from '../../stores/VoterStore';
+import { renderLog } from '../../utils/logging';
+
+const SettingsBannerAndOrganizationCard = React.lazy(() => import('../../components/Settings/SettingsBannerAndOrganizationCard'));
+const VoterGuideSettingsSideBar = React.lazy(() => import('../../components/Navigation/VoterGuideSettingsSideBar'));
 
 export default class VoterGuideSettingsMenuMobile extends Component {
   constructor (props) {

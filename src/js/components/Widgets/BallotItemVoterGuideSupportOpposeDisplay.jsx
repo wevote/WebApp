@@ -1,15 +1,16 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import styled from 'styled-components';
 import { withStyles, withTheme } from '@material-ui/core/styles';
-import { Info, ThumbUp, ThumbDown } from '@material-ui/icons';
-import { isCordova } from '../../utils/cordovaUtils';
-import ImageHandler from '../ImageHandler';
-import { renderLog } from '../../utils/logging';
-import FriendsOnlyIndicator from './FriendsOnlyIndicator';
+import { Info, ThumbDown, ThumbUp } from '@material-ui/icons';
+import PropTypes from 'prop-types';
+import React, { Component } from 'react';
+import styled from 'styled-components';
 import OrganizationStore from '../../stores/OrganizationStore';
-import PositionItemScorePopover from './PositionItemScorePopover';
-import StickyPopover from '../Ballot/StickyPopover';
+import { isCordova } from '../../utils/cordovaUtils';
+import { renderLog } from '../../utils/logging';
+import ImageHandler from '../ImageHandler';
+
+const FriendsOnlyIndicator = React.lazy(() => import('./FriendsOnlyIndicator'));
+const PositionItemScorePopover = React.lazy(() => import('./PositionItemScorePopover'));
+const StickyPopover = React.lazy(() => import('../Ballot/StickyPopover'));
 
 class BallotItemVoterGuideSupportOpposeDisplay extends Component {
   static closePositionsPopover () {

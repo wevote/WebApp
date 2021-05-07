@@ -1,11 +1,12 @@
-import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import React, { Component } from 'react';
 import { cordovaDot } from '../utils/cordovaUtils';
 import { renderLog } from '../utils/logging';
-import avatarGenericIcon from '../../img/global/svg-icons/avatar-generic.svg';
-import issueGenericIcon from '../../img/global/svg-icons/issue-generic.svg';
-import issuePhotoGenericIcon from '../../img/global/svg-icons/issue-photo-generic.svg';
-import organizationIcon from '../../img/global/svg-icons/organization-icon.svg';
+
+const avatarGenericIcon = '../../img/global/svg-icons/avatar-generic.svg';
+const issueGenericIcon = '../../img/global/svg-icons/issue-generic.svg';
+const issuePhotoGenericIcon = '../../img/global/svg-icons/issue-photo-generic.svg';
+const organizationIcon = '../../img/global/svg-icons/organization-icon.svg';
 
 export default class ImageHandler extends Component {
   constructor (props) {

@@ -1,15 +1,16 @@
-import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import React, { Component } from 'react';
 import Helmet from 'react-helmet';
 import { Link } from 'react-router-dom';
-import BrowserPushMessage from '../Widgets/BrowserPushMessage';
 import IssueActions from '../../actions/IssueActions';
-import IssueLinkToggle from '../Values/IssueLinkToggle';
 import IssueStore from '../../stores/IssueStore';
-import { renderLog } from '../../utils/logging';
-import SettingsAccount from './SettingsAccount';
 import VoterStore from '../../stores/VoterStore';
-import DelayedLoad from '../Widgets/DelayedLoad';
+import { renderLog } from '../../utils/logging';
+
+const BrowserPushMessage = React.lazy(() => import('../Widgets/BrowserPushMessage'));
+const IssueLinkToggle = React.lazy(() => import('../Values/IssueLinkToggle'));
+const SettingsAccount = React.lazy(() => import('./SettingsAccount'));
+const DelayedLoad = React.lazy(() => import('../Widgets/DelayedLoad'));
 
 const PROCHOICE = 'wv02issue63';
 const PROLIFE = 'wv02issue64';

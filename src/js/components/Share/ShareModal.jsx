@@ -1,37 +1,28 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import styled from 'styled-components';
-import { Close, People, FileCopyOutlined, ArrowBackIos } from '@material-ui/icons';
-import { Dialog, DialogContent, IconButton, Tooltip, Button } from '@material-ui/core';
+import { Button, Dialog, DialogContent, IconButton, Tooltip } from '@material-ui/core';
 import { withStyles, withTheme } from '@material-ui/core/styles';
-import {
-  EmailIcon,
-  EmailShareButton,
-  FacebookIcon,
-  FacebookShareButton, TwitterIcon,
-  TwitterShareButton,
-} from 'react-share';
+import { ArrowBackIos, Close, FileCopyOutlined, People } from '@material-ui/icons';
+import PropTypes from 'prop-types';
+import React, { Component } from 'react';
+import styled from 'styled-components';
 import AnalyticsActions from '../../actions/AnalyticsActions';
 import AppActions from '../../actions/AppActions';
-import AppStore from '../../stores/AppStore';
 import FriendActions from '../../actions/FriendActions';
-import FriendStore from '../../stores/FriendStore';
-import FriendsShareList from '../Friends/FriendsShareList';
-import MessageCard from '../Widgets/MessageCard';
-import OpenExternalWebSite from '../Widgets/OpenExternalWebSite';
 import ShareActions from '../../actions/ShareActions';
-import ShareModalOption from './ShareModalOption';
+import AppStore from '../../stores/AppStore';
+import FriendStore from '../../stores/FriendStore';
 import ShareStore from '../../stores/ShareStore';
 import VoterStore from '../../stores/VoterStore';
-import {
-  androidFacebookClickHandler,
-  androidTwitterClickHandler,
-  cordovaSocialSharingByEmail,
-} from './shareButtonCommon';
 import { cordovaDot, hasIPhoneNotch, isAndroid, isCordova, isWebApp } from '../../utils/cordovaUtils';
-import { renderLog } from '../../utils/logging';
 import sortFriendListByMutualFriends from '../../utils/friendFunctions';
+import { renderLog } from '../../utils/logging';
 import { stringContains } from '../../utils/textFormat';
+
+const { EmailIcon, EmailShareButton, FacebookIcon, FacebookShareButton, TwitterIcon, TwitterShareButton } = React.lazy(() => import('react-share'));
+const FriendsShareList = React.lazy(() => import('../Friends/FriendsShareList'));
+const MessageCard = React.lazy(() => import('../Widgets/MessageCard'));
+const OpenExternalWebSite = React.lazy(() => import('../Widgets/OpenExternalWebSite'));
+const ShareModalOption = React.lazy(() => import('./ShareModalOption'));
+const { androidFacebookClickHandler, androidTwitterClickHandler, cordovaSocialSharingByEmail } = React.lazy(() => import('./shareButtonCommon'));
 
 class ShareModal extends Component {
   constructor (props) {

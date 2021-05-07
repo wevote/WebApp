@@ -1,23 +1,24 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import styled from 'styled-components';
 import { withStyles, withTheme } from '@material-ui/core/styles';
-import { ArrowRightAlt, Done, Comment, NotInterested, ThumbUp, ThumbDown } from '@material-ui/icons';
+import { ArrowRightAlt, Comment, Done, NotInterested, ThumbDown, ThumbUp } from '@material-ui/icons';
+import PropTypes from 'prop-types';
+import React, { Component } from 'react';
+import styled from 'styled-components';
+import SupportActions from '../../actions/SupportActions';
 import CandidateStore from '../../stores/CandidateStore';
 import FriendStore from '../../stores/FriendStore';
 import IssueStore from '../../stores/IssueStore';
-import ItemActionBar from './ItemActionBar/ItemActionBar';
-import { renderLog } from '../../utils/logging';
 import MeasureStore from '../../stores/MeasureStore';
 import OrganizationStore from '../../stores/OrganizationStore';
-import ShowMoreFooter from '../Navigation/ShowMoreFooter';
 import SupportStore from '../../stores/SupportStore';
+import { renderLog } from '../../utils/logging';
+import { getPositionListSummaryIncomingDataStats, getPositionSummaryListForBallotItem } from '../../utils/positionFunctions';
 import { stringContains } from '../../utils/textFormat';
-import StickyPopover from '../Ballot/StickyPopover';
-import { getPositionSummaryListForBallotItem, getPositionListSummaryIncomingDataStats } from '../../utils/positionFunctions';
-import PositionSummaryListForPopover from './PositionSummaryListForPopover';
-import SupportActions from '../../actions/SupportActions';
 import { openSnackbar } from './SnackNotifier';
+
+const ItemActionBar = React.lazy(() => import('./ItemActionBar/ItemActionBar'));
+const ShowMoreFooter = React.lazy(() => import('../Navigation/ShowMoreFooter'));
+const StickyPopover = React.lazy(() => import('../Ballot/StickyPopover'));
+const PositionSummaryListForPopover = React.lazy(() => import('./PositionSummaryListForPopover'));
 
 class BallotItemSupportOpposeCountDisplay extends Component {
   static closePositionsPopover () {
@@ -95,44 +96,44 @@ class BallotItemSupportOpposeCountDisplay extends Component {
     this.onCachedPositionsOrIssueStoreChange();
   }
 
-  // eslint-disable-next-line camelcase,react/sort-comp
-  UNSAFE_componentWillReceiveProps (nextProps) {
-    // console.log('BallotItemSupportOpposeCountDisplay componentWillReceiveProps, nextProps: ', nextProps);
-    let ballotItemDisplayName;
-    const { ballotItemWeVoteId } = nextProps;
-    const isCandidate = stringContains('cand', ballotItemWeVoteId);
-    const isMeasure = stringContains('meas', ballotItemWeVoteId);
-    if (isCandidate) {
-      const candidate = CandidateStore.getCandidate(ballotItemWeVoteId);
-      ballotItemDisplayName = candidate.ballot_item_display_name || this.props.ballotItemDisplayName;
-      const countResults = CandidateStore.getNumberOfPositionsByCandidateWeVoteId(ballotItemWeVoteId);
-      const { numberOfAllSupportPositions, numberOfAllOpposePositions, numberOfAllInfoOnlyPositions } = countResults;
-      this.setState({
-        ballotItemDisplayName,
-        numberOfAllSupportPositions,
-        numberOfAllOpposePositions,
-        numberOfAllInfoOnlyPositions,
-      });
-    } else if (isMeasure) {
-      const measure = MeasureStore.getMeasure(ballotItemWeVoteId);
-      ballotItemDisplayName = measure.ballot_item_display_name || this.props.ballotItemDisplayName;
-      const countResults = MeasureStore.getNumberOfPositionsByMeasureWeVoteId(ballotItemWeVoteId);
-      const { numberOfAllSupportPositions, numberOfAllOpposePositions, numberOfAllInfoOnlyPositions } = countResults;
-      this.setState({
-        ballotItemDisplayName,
-        numberOfAllSupportPositions,
-        numberOfAllOpposePositions,
-        numberOfAllInfoOnlyPositions,
-      });
-    }
-    this.setState(() => ({
-      ballotItemDisplayName,
-      ballotItemWeVoteId,
-      isCandidate,
-      isMeasure,
-    }));
-    this.onCachedPositionsOrIssueStoreChange();
-  }
+  // // eslint-disable-next-line camelcase,react/sort-comp
+  // UNSAFE_componentWillReceiveProps (nextProps) {
+  //   // console.log('BallotItemSupportOpposeCountDisplay componentWillReceiveProps, nextProps: ', nextProps);
+  //   let ballotItemDisplayName;
+  //   const { ballotItemWeVoteId } = nextProps;
+  //   const isCandidate = stringContains('cand', ballotItemWeVoteId);
+  //   const isMeasure = stringContains('meas', ballotItemWeVoteId);
+  //   if (isCandidate) {
+  //     const candidate = CandidateStore.getCandidate(ballotItemWeVoteId);
+  //     ballotItemDisplayName = candidate.ballot_item_display_name || this.props.ballotItemDisplayName;
+  //     const countResults = CandidateStore.getNumberOfPositionsByCandidateWeVoteId(ballotItemWeVoteId);
+  //     const { numberOfAllSupportPositions, numberOfAllOpposePositions, numberOfAllInfoOnlyPositions } = countResults;
+  //     this.setState({
+  //       ballotItemDisplayName,
+  //       numberOfAllSupportPositions,
+  //       numberOfAllOpposePositions,
+  //       numberOfAllInfoOnlyPositions,
+  //     });
+  //   } else if (isMeasure) {
+  //     const measure = MeasureStore.getMeasure(ballotItemWeVoteId);
+  //     ballotItemDisplayName = measure.ballot_item_display_name || this.props.ballotItemDisplayName;
+  //     const countResults = MeasureStore.getNumberOfPositionsByMeasureWeVoteId(ballotItemWeVoteId);
+  //     const { numberOfAllSupportPositions, numberOfAllOpposePositions, numberOfAllInfoOnlyPositions } = countResults;
+  //     this.setState({
+  //       ballotItemDisplayName,
+  //       numberOfAllSupportPositions,
+  //       numberOfAllOpposePositions,
+  //       numberOfAllInfoOnlyPositions,
+  //     });
+  //   }
+  //   this.setState(() => ({
+  //     ballotItemDisplayName,
+  //     ballotItemWeVoteId,
+  //     isCandidate,
+  //     isMeasure,
+  //   }));
+  //   this.onCachedPositionsOrIssueStoreChange();
+  // }
 
   shouldComponentUpdate (nextProps, nextState) {
     // This lifecycle method tells the component to NOT render if componentWillReceiveProps didn't see any changes
@@ -269,6 +270,8 @@ class BallotItemSupportOpposeCountDisplay extends Component {
 
     const refreshPositionSummaryList = !!((minimumPositionSummaryListVariablesFound && changedPositionSummaryListVariablesFound) || changedVoterPosition);
     // console.log('refreshPositionSummaryList: ', refreshPositionSummaryList, ballotItemWeVoteId);
+    let firstStateBatch;
+    let secondStateBatch;
     if (refreshPositionSummaryList) {
       const limitToThisIssue = false;
       const showPositionsInVotersNetwork = true;
@@ -279,7 +282,7 @@ class BallotItemSupportOpposeCountDisplay extends Component {
       const positionsInNetworkSummaryListLength = positionsInNetworkSummaryList.length;
       const positionsOutOfNetworkSummaryList = getPositionSummaryListForBallotItem(ballotItemWeVoteId, limitToThisIssue, doNotShowPositionsInVotersNetwork, showPositionsOutOfVotersNetwork);
       const positionsOutOfNetworkSummaryListLength = positionsOutOfNetworkSummaryList.length;
-      this.setState({
+      firstStateBatch = {
         allCachedPositionsLength,
         allIssuesVoterIsFollowingLength,
         currentFriendsOrganizationWeVoteIdsLength,
@@ -291,7 +294,7 @@ class BallotItemSupportOpposeCountDisplay extends Component {
         positionsOutOfNetworkSummaryListLength,
         voterOpposesListLength,
         voterSupportsListLength,
-      });
+      };
       const ballotItemStatSheet = SupportStore.getBallotItemStatSheet(ballotItemWeVoteId);
       // Network Score
       let numberOfSupportPositionsForScore = 0;
@@ -327,7 +330,7 @@ class BallotItemSupportOpposeCountDisplay extends Component {
       if (numberOfSupportPositionsForScore || numberOfOpposePositionsForScore) {
         voterPersonalScoreHasBeenCalculated = true;
       }
-      this.setState({
+      secondStateBatch = {
         showVoterPersonalScore,
         voterPersonalNetworkScore,
         voterPersonalNetworkScoreIsNegative,
@@ -336,8 +339,11 @@ class BallotItemSupportOpposeCountDisplay extends Component {
         voterPersonalScoreHasBeenCalculated,
         voterOpposesBallotItem,
         voterSupportsBallotItem,
-      });
+      };
     }
+    // Don't set state twice in the same function
+    const combinedState = Object.assign({}, firstStateBatch, secondStateBatch); // eslint-disable-line prefer-object-spread
+    this.setState(combinedState);
   }
 
   onCandidateStoreChange () {

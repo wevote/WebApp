@@ -1,11 +1,12 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import { Dialog, DialogTitle, IconButton, Typography, DialogContent } from '@material-ui/core';
-import { Close } from '@material-ui/icons';
+import { Dialog, DialogContent, DialogTitle, IconButton, Typography } from '@material-ui/core';
 import { withStyles, withTheme } from '@material-ui/core/styles';
-import BallotElectionListWithFilters from '../Ballot/BallotElectionListWithFilters';
+import { Close } from '@material-ui/icons';
+import PropTypes from 'prop-types';
+import React, { Component } from 'react';
 import { renderLog } from '../../utils/logging';
 import { calculateBallotBaseUrlForVoterGuide } from '../../utils/textFormat';
+
+const BallotElectionListWithFilters = React.lazy(() => import('../Ballot/BallotElectionListWithFilters'));
 
 class VoterGuideChooseElectionWithPositionsModal extends Component {
   constructor (props) {

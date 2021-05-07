@@ -1,12 +1,13 @@
-import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import React, { Component } from 'react';
 import { ReactSVG } from 'react-svg';
-import Tooltip from 'react-bootstrap/Tooltip';
-import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 import { cordovaDot } from '../../utils/cordovaUtils';
 import { renderLog } from '../../utils/logging';
-import groupIcon from '../../../img/global/svg-icons/group-icon.svg';
-import publicIcon from '../../../img/global/svg-icons/public-icon.svg';
+
+const Tooltip = React.lazy(() => import('react-bootstrap/Tooltip'));
+const OverlayTrigger = React.lazy(() => import('react-bootstrap/OverlayTrigger'));
+const groupIcon = '../../../img/global/svg-icons/group-icon.svg';
+const publicIcon = '../../../img/global/svg-icons/public-icon.svg';
 
 export default class FriendsOnlyIndicator extends Component {
   constructor (props) {

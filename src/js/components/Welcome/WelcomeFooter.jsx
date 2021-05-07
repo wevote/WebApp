@@ -1,13 +1,14 @@
-import React, { Component } from 'react';
+import { Button } from '@material-ui/core';
+import { withStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
+import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
-import { withStyles } from '@material-ui/core/styles';
-import { Button } from '@material-ui/core';
-import appStoreIcon from '../../../img/global/logos/download_on_the_app_store_badge_us-uk_blk.svg';
 import { cordovaDot, historyPush, isWebApp } from '../../utils/cordovaUtils';
-import googlePlayIcon from '../../../img/global/logos/google-play-badge-cropped.png';
-import OpenExternalWebSite from '../Widgets/OpenExternalWebSite';
+
+const appStoreIcon = '../../../img/global/logos/download_on_the_app_store_badge_us-uk_blk.svg';
+const googlePlayIcon = React.lazy(() => import('../../../img/global/logos/google-play-badge-cropped.png'));
+const OpenExternalWebSite = React.lazy(() => import('../Widgets/OpenExternalWebSite'));
 
 
 class WelcomeFooter extends Component {

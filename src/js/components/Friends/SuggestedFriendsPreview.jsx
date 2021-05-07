@@ -1,13 +1,14 @@
+import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { historyPush } from '../../utils/cordovaUtils';
-import SuggestedFriendList from './SuggestedFriendList';
 import FriendActions from '../../actions/FriendActions';
 import FriendStore from '../../stores/FriendStore';
-import { renderLog } from '../../utils/logging';
+import { historyPush } from '../../utils/cordovaUtils';
 import sortFriendListByMutualFriends from '../../utils/friendFunctions';
+import { renderLog } from '../../utils/logging';
+
+const SuggestedFriendList = React.lazy(() => import('./SuggestedFriendList'));
 
 export default class SuggestedFriendsPreview extends Component {
   constructor (props) {

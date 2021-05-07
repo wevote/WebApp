@@ -1,14 +1,15 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import styled from 'styled-components';
 import { Badge } from '@material-ui/core';
-import { FilterList } from '@material-ui/icons';
 import { withStyles } from '@material-ui/core/styles';
-import getGroupedFilterSecondClass from './utils/grouped-filter-second-class';
+import { FilterList } from '@material-ui/icons';
+import PropTypes from 'prop-types';
+import React from 'react';
+import styled from 'styled-components';
 import { getAllStateCodeFilters } from '../../utils/addressFunctions';
-import FilterBaseSearch from './FilterBaseSearch';
 import { renderLog } from '../../utils/logging';
-import StateDropDown from './StateDropDown';
+import getGroupedFilterSecondClass from './utils/grouped-filter-second-class';
+
+const FilterBaseSearch = React.lazy(() => import('./FilterBaseSearch'));
+const StateDropDown = React.lazy(() => import('./StateDropDown'));
 
 const defaultSortFilters = ['sortByMagic', 'sortByNetwork', 'sortByReach'];
 

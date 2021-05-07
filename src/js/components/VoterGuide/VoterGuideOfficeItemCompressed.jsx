@@ -1,13 +1,14 @@
-import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { toTitleCase } from '../../utils/textFormat';
+import React, { Component } from 'react';
 import CandidateStore from '../../stores/CandidateStore';
 import IssueStore from '../../stores/IssueStore';
-import { renderLog } from '../../utils/logging';
 import OrganizationStore from '../../stores/OrganizationStore';
 import SupportStore from '../../stores/SupportStore';
-import VoterGuidePositionItem from './VoterGuidePositionItem';
 import VoterGuideStore from '../../stores/VoterGuideStore';
+import { renderLog } from '../../utils/logging';
+import { toTitleCase } from '../../utils/textFormat';
+
+const VoterGuidePositionItem = React.lazy(() => import('./VoterGuidePositionItem'));
 
 
 // This is based on components/Ballot/OfficeItemCompressed

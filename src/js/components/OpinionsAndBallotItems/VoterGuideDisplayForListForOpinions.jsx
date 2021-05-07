@@ -1,24 +1,25 @@
+import { Button, Card } from '@material-ui/core';
+import { withStyles, withTheme } from '@material-ui/core/styles';
+import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import PropTypes from 'prop-types';
-import styled from 'styled-components';
-import { withStyles, withTheme } from '@material-ui/core/styles';
-import { Button, Card } from '@material-ui/core';
 import { ReactSVG } from 'react-svg';
+import styled from 'styled-components';
 import AppActions from '../../actions/AppActions';
-import { cordovaDot } from '../../utils/cordovaUtils';
-import FollowToggle from '../Widgets/FollowToggle';
 import FriendStore from '../../stores/FriendStore';
-import ImageHandler from '../ImageHandler';
-import IssuesByOrganizationDisplayList from '../Values/IssuesByOrganizationDisplayList';
 import IssueStore from '../../stores/IssueStore';
+import OrganizationStore from '../../stores/OrganizationStore';
+import { cordovaDot } from '../../utils/cordovaUtils';
+import { renderLog } from '../../utils/logging';
 import { isSpeakerTypeIndividual, isSpeakerTypeOrganization } from '../../utils/organization-functions';
 import { numberWithCommas } from '../../utils/textFormat';
-import OrganizationPopoverCard from '../Organization/OrganizationPopoverCard';
-import OrganizationStore from '../../stores/OrganizationStore';
-import ReadMore from '../Widgets/ReadMore';
-import StickyPopover from '../Ballot/StickyPopover';
-import { renderLog } from '../../utils/logging';
+import ImageHandler from '../ImageHandler';
+
+const FollowToggle = React.lazy(() => import('../Widgets/FollowToggle'));
+const IssuesByOrganizationDisplayList = React.lazy(() => import('../Values/IssuesByOrganizationDisplayList'));
+const OrganizationPopoverCard = React.lazy(() => import('../Organization/OrganizationPopoverCard'));
+const ReadMore = React.lazy(() => import('../Widgets/ReadMore'));
+const StickyPopover = React.lazy(() => import('../Ballot/StickyPopover'));
 
 class voterGuideDisplayForListForOpinions extends Component {
   constructor (props) {

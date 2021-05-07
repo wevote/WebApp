@@ -1,15 +1,16 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import styled from 'styled-components';
 import { Avatar } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
-import BallotItemSupportOpposeCountDisplay from '../Widgets/BallotItemSupportOpposeCountDisplay';
-import { isCordova } from '../../utils/cordovaUtils';
-import ImageHandler from '../ImageHandler';
-import { renderLog } from '../../utils/logging';
-import VoterGuideStore from '../../stores/VoterGuideStore';
+import PropTypes from 'prop-types';
+import React, { Component } from 'react';
+import styled from 'styled-components';
 import SupportStore from '../../stores/SupportStore';
+import VoterGuideStore from '../../stores/VoterGuideStore';
+import { isCordova } from '../../utils/cordovaUtils';
+import { renderLog } from '../../utils/logging';
 import { toTitleCase } from '../../utils/textFormat';
+import ImageHandler from '../ImageHandler';
+
+const BallotItemSupportOpposeCountDisplay = React.lazy(() => import('../Widgets/BallotItemSupportOpposeCountDisplay'));
 
 
 class OfficeItemReadyToVote extends Component {

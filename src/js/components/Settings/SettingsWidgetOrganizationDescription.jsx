@@ -10,7 +10,7 @@ import { renderLog } from '../../utils/logging';
 import OrganizationActions from '../../actions/OrganizationActions';
 import OrganizationStore from '../../stores/OrganizationStore';
 import VoterStore from '../../stores/VoterStore';
-// import Textarea from 'react-textarea-autosize';
+// const Textarea = React.lazy(() => import('react-textarea-autosize'));
 
 const delayBeforeApiUpdateCall = 1200;
 const delayBeforeRemovingSavedStatus = 4000;

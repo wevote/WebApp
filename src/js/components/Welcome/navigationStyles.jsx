@@ -57,5 +57,5 @@ const NavRow = styled.div`
   justify-content: space-between;
 `;
 
-export { LogoContainer, NavLink, Divider, MobileNavigationMenu, MobileNavDivider, NavRow };
-export default Navigation;
+export { Navigation, LogoContainer, NavLink, Divider, MobileNavigationMenu, MobileNavDivider, NavRow };
+

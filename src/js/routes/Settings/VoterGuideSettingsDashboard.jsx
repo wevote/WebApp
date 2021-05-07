@@ -1,18 +1,19 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import styled from 'styled-components';
 import { withStyles } from '@material-ui/core/styles';
-import { renderLog } from '../../utils/logging';
-import AppStore from '../../stores/AppStore';
+import PropTypes from 'prop-types';
+import React, { Component } from 'react';
+import styled from 'styled-components';
 import BallotActions from '../../actions/BallotActions';
-import BallotStore from '../../stores/BallotStore';
 import OrganizationActions from '../../actions/OrganizationActions';
-import OrganizationStore from '../../stores/OrganizationStore';
 import VoterGuideActions from '../../actions/VoterGuideActions';
-import VoterGuideSettingsAddPositions from '../../components/Settings/VoterGuideSettingsAddPositions';
+import AppStore from '../../stores/AppStore';
+import BallotStore from '../../stores/BallotStore';
+import OrganizationStore from '../../stores/OrganizationStore';
 import VoterGuideStore from '../../stores/VoterGuideStore';
 import VoterStore from '../../stores/VoterStore';
+import { renderLog } from '../../utils/logging';
 import { isProperlyFormattedVoterGuideWeVoteId } from '../../utils/textFormat';
+
+const VoterGuideSettingsAddPositions = React.lazy(() => import('../../components/Settings/VoterGuideSettingsAddPositions'));
 
 class VoterGuideSettingsDashboard extends Component {
   constructor (props) {

@@ -1,20 +1,21 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import styled from 'styled-components';
-import { withStyles, withTheme } from '@material-ui/core/styles';
 import { Drawer, IconButton } from '@material-ui/core';
-import { cordovaDrawerTopMargin } from '../../utils/cordovaOffsets';
-import ActivityCommentAdd from './ActivityCommentAdd';
+import { withStyles, withTheme } from '@material-ui/core/styles';
+import PropTypes from 'prop-types';
+import React, { Component } from 'react';
+import styled from 'styled-components';
 import ActivityStore from '../../stores/ActivityStore';
-import ActivityTidbitAddReaction from './ActivityTidbitAddReaction';
-import ActivityTidbitComments from './ActivityTidbitComments';
-import ActivityTidbitItem from './ActivityTidbitItem';
-import ActivityTidbitReactionsSummary from './ActivityTidbitReactionsSummary';
 import { hideZenDeskHelpVisibility, showZenDeskHelpVisibility } from '../../utils/applicationUtils';
+import { cordovaDrawerTopMargin } from '../../utils/cordovaOffsets';
 import { historyPush, isCordova } from '../../utils/cordovaUtils';
-import DelayedLoad from '../Widgets/DelayedLoad';
 import { renderLog } from '../../utils/logging';
 import { startsWith } from '../../utils/textFormat';
+
+const ActivityCommentAdd = React.lazy(() => import('./ActivityCommentAdd'));
+const ActivityTidbitAddReaction = React.lazy(() => import('./ActivityTidbitAddReaction'));
+const ActivityTidbitComments = React.lazy(() => import('./ActivityTidbitComments'));
+const ActivityTidbitItem = React.lazy(() => import('./ActivityTidbitItem'));
+const ActivityTidbitReactionsSummary = React.lazy(() => import('./ActivityTidbitReactionsSummary'));
+const DelayedLoad = React.lazy(() => import('../Widgets/DelayedLoad'));
 
 
 class ActivityTidbitDrawer extends Component {

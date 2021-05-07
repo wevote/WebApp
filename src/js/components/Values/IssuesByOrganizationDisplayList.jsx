@@ -1,16 +1,17 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import { ReactSVG } from 'react-svg';
-import styled from 'styled-components';
 import { Chip } from '@material-ui/core';
 import { withStyles, withTheme } from '@material-ui/core/styles';
-import { cordovaDot } from '../../utils/cordovaUtils';
-import IssueFollowToggleButton from './IssueFollowToggleButton';
+import PropTypes from 'prop-types';
+import React, { Component } from 'react';
+import { ReactSVG } from 'react-svg';
+import styled from 'styled-components';
 import IssueStore from '../../stores/IssueStore';
-import ReadMore from '../Widgets/ReadMore';
-import { renderLog } from '../../utils/logging';
-import StickyPopover from '../Ballot/StickyPopover';
 import VoterGuideStore from '../../stores/VoterGuideStore';
+import { cordovaDot } from '../../utils/cordovaUtils';
+import { renderLog } from '../../utils/logging';
+
+const IssueFollowToggleButton = React.lazy(() => import('./IssueFollowToggleButton'));
+const ReadMore = React.lazy(() => import('../Widgets/ReadMore'));
+const StickyPopover = React.lazy(() => import('../Ballot/StickyPopover'));
 
 // Show a voter a horizontal list of all of the issues they are following that relate to this ballot item
 class IssuesByOrganizationDisplayList extends Component {

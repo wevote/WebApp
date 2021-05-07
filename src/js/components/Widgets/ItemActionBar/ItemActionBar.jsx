@@ -1,25 +1,26 @@
-import React, { PureComponent } from 'react';
-import PropTypes from 'prop-types';
-import Tooltip from 'react-bootstrap/Tooltip';
-import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
-import { withStyles } from '@material-ui/core/styles';
-import styled from 'styled-components';
 import { Button, Dialog } from '@material-ui/core';
-import { Done, ThumbUp, ThumbDown, Comment, NotInterested } from '@material-ui/icons';
+import { withStyles } from '@material-ui/core/styles';
+import { Comment, Done, NotInterested, ThumbDown, ThumbUp } from '@material-ui/icons';
+import PropTypes from 'prop-types';
+import React, { PureComponent } from 'react';
+import styled from 'styled-components';
+import SupportActions from '../../../actions/SupportActions';
+import VoterActions from '../../../actions/VoterActions';
+import webAppConfig from '../../../config';
+import VoterConstants from '../../../constants/VoterConstants';
+import SupportStore from '../../../stores/SupportStore';
+import VoterStore from '../../../stores/VoterStore';
 import { cordovaDot } from '../../../utils/cordovaUtils';
 import { renderLog } from '../../../utils/logging';
 import { stringContains } from '../../../utils/textFormat';
-import ShareButtonDropDown from '../ShareButtonDropdown';
-import SupportActions from '../../../actions/SupportActions';
-import VoterActions from '../../../actions/VoterActions';
-import VoterConstants from '../../../constants/VoterConstants';
-import VoterStore from '../../../stores/VoterStore';
-import PositionPublicToggle from '../PositionPublicToggle';
-import SupportStore from '../../../stores/SupportStore';
-import webAppConfig from '../../../config';
-import shareIconSvg from '../../../../img/global/svg-icons/share-icon.svg';
 import { openSnackbar } from '../SnackNotifier';
-import ChooseOrOppose from './ChooseOrOppose';
+
+const ChooseOrOppose = React.lazy(() => import('./ChooseOrOppose'));
+const OverlayTrigger = React.lazy(() => import('react-bootstrap/OverlayTrigger'));
+const PositionPublicToggle = React.lazy(() => import('../PositionPublicToggle'));
+const ShareButtonDropDown = React.lazy(() => import('../ShareButtonDropdown'));
+const Tooltip = React.lazy(() => import('react-bootstrap/Tooltip'));
+const shareIconSvg = '../../../../img/global/svg-icons/share-icon.svg';
 
 
 class ItemActionBar extends PureComponent {

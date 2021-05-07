@@ -1,21 +1,22 @@
+import { Button, FormControl, TextField } from '@material-ui/core';
+import { withStyles } from '@material-ui/core/styles';
+import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import Helmet from 'react-helmet';
-import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { withStyles } from '@material-ui/core/styles';
-import { Button, FormControl, TextField } from '@material-ui/core';
 import AppActions from '../../actions/AppActions';
-import CreateConfiguredVersion from './CreateConfiguredVersion';
-import LoadingWheel from '../LoadingWheel';
 import OrganizationActions from '../../actions/OrganizationActions';
 import OrganizationStore from '../../stores/OrganizationStore';
-import { renderLog } from '../../utils/logging';
-import SeeTheseSettingsInAction from './SeeTheseSettingsInAction';
-import SettingsAccount from './SettingsAccount';
-import SettingsAccountLevelChip from './SettingsAccountLevelChip';
-import { voterFeaturePackageExceedsOrEqualsRequired } from '../../utils/pricingFunctions';
 import VoterStore from '../../stores/VoterStore';
-import DelayedLoad from '../Widgets/DelayedLoad';
+import { renderLog } from '../../utils/logging';
+import { voterFeaturePackageExceedsOrEqualsRequired } from '../../utils/pricingFunctions';
+import LoadingWheel from '../LoadingWheel';
+
+const CreateConfiguredVersion = React.lazy(() => import('./CreateConfiguredVersion'));
+const DelayedLoad = React.lazy(() => import('../Widgets/DelayedLoad'));
+const SeeTheseSettingsInAction = React.lazy(() => import('./SeeTheseSettingsInAction'));
+const SettingsAccount = React.lazy(() => import('./SettingsAccount'));
+const SettingsAccountLevelChip = React.lazy(() => import('./SettingsAccountLevelChip'));
 
 class SettingsAnalytics extends Component {
   constructor (props) {

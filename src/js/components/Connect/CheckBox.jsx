@@ -1,9 +1,10 @@
-import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import React, { Component } from 'react';
 import { cordovaDot } from '../../utils/cordovaUtils';
-import ImageHandler from '../ImageHandler';
 import { renderLog } from '../../utils/logging';
-import checkMarkIcon from '../../../img/global/svg-icons/check-mark-v2-40x43.svg';
+import ImageHandler from '../ImageHandler';
+
+const checkMarkIcon = '../../../img/global/svg-icons/check-mark-v2-40x43.svg';
 
 export default class CheckBox extends Component {
   constructor (props) {

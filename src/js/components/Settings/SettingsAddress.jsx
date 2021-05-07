@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
 import Helmet from 'react-helmet';
-import AddressBox from '../AddressBox';
 import AnalyticsActions from '../../actions/AnalyticsActions';
-import BrowserPushMessage from '../Widgets/BrowserPushMessage';
+import VoterStore from '../../stores/VoterStore';
 import { isWebApp } from '../../utils/cordovaUtils';
 import { renderLog } from '../../utils/logging';
-import VoterStore from '../../stores/VoterStore';
+
+const AddressBox = React.lazy(() => import('../AddressBox'));
+const BrowserPushMessage = React.lazy(() => import('../Widgets/BrowserPushMessage'));
 
 export default class SettingsAddress extends Component {
   constructor (props) {

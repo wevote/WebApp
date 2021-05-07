@@ -6,14 +6,15 @@ import { Link } from 'react-router-dom';
 import OrganizationActions from '../actions/OrganizationActions';
 import TwitterActions from '../actions/TwitterActions';
 import LoadingWheel from '../components/LoadingWheel';
-import DelayedLoad from '../components/Widgets/DelayedLoad';
 import TwitterStore from '../stores/TwitterStore';
 import VoterStore from '../stores/VoterStore';
 import { renderLog } from '../utils/logging';
-import Candidate from './Ballot/Candidate';
-import OrganizationVoterGuide from './VoterGuide/OrganizationVoterGuide';
-import PositionListForFriends from './VoterGuide/PositionListForFriends';
-import UnknownTwitterAccount from './VoterGuide/UnknownTwitterAccount';
+
+const DelayedLoad = React.lazy(() => import('../components/Widgets/DelayedLoad'));
+const Candidate = React.lazy(() => import('./Ballot/Candidate'));
+const OrganizationVoterGuide = React.lazy(() => import('./VoterGuide/OrganizationVoterGuide'));
+const PositionListForFriends = React.lazy(() => import('./VoterGuide/PositionListForFriends'));
+const UnknownTwitterAccount = React.lazy(() => import('./VoterGuide/UnknownTwitterAccount'));
 
 // The component that gets called for paths like https://localhost:3000/sierraclub
 // A Twitter handle is the username that appears at the end of your unique Twitter URL

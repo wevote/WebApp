@@ -1,24 +1,25 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import styled from 'styled-components';
-import { Box, Button, Tabs, Tab } from '@material-ui/core';
+import { Box, Button, Tab, Tabs } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
-import cookies from '../../utils/cookies';
-import { renderLog } from '../../utils/logging';
+import PropTypes from 'prop-types';
+import React, { Component } from 'react';
+import styled from 'styled-components';
 import AnalyticsActions from '../../actions/AnalyticsActions';
 import CandidateActions from '../../actions/CandidateActions';
-import CandidateItemEndorsement from '../../components/Ballot/CandidateItemEndorsement';
-import CandidateItem from '../../components/Ballot/CandidateItem';
-import CandidateStore from '../../stores/CandidateStore';
 import IssueActions from '../../actions/IssueActions';
-import IssueStore from '../../stores/IssueStore';
-import OpenExternalWebSite from '../../components/Widgets/OpenExternalWebSite';
 import OrganizationActions from '../../actions/OrganizationActions';
-import OrganizationStore from '../../stores/OrganizationStore';
 import VoterGuidePossibilityActions from '../../actions/VoterGuidePossibilityActions';
+import CandidateStore from '../../stores/CandidateStore';
+import IssueStore from '../../stores/IssueStore';
+import OrganizationStore from '../../stores/OrganizationStore';
 import VoterGuidePossibilityStore from '../../stores/VoterGuidePossibilityStore';
 import VoterGuideStore from '../../stores/VoterGuideStore';
 import VoterStore from '../../stores/VoterStore';
+import cookies from '../../utils/cookies';
+import { renderLog } from '../../utils/logging';
+
+const CandidateItemEndorsement = React.lazy(() => import('../../components/Ballot/CandidateItemEndorsement'));
+const CandidateItem = React.lazy(() => import('../../components/Ballot/CandidateItem'));
+const OpenExternalWebSite = React.lazy(() => import('../../components/Widgets/OpenExternalWebSite'));
 
 // https://localhost:3000/candidate-for-extension?candidate_name=Phil%20Ting&candidate_we_vote_id=wv02cand40131&endorsement_page_url=https%3A%2F%2Fwww.sierraclub.org%2Fcalifornia%2F2020-endorsements&candidate_specific_endorsement_url=https%3A%2F%2Fwww.philting.com%2F
 class CandidateForExtension extends Component {
@@ -76,10 +77,8 @@ class CandidateForExtension extends Component {
         }
       });
     }
-    if (!IssueStore.issueDescriptionsRetrieveCalled()) {
-      IssueActions.issueDescriptionsRetrieve();
-    }
-    IssueActions.issuesFollowedRetrieve();
+    IssueActions.issueDescriptionsRetrieve(VoterStore.getVoterWeVoteId());
+    IssueActions.issuesFollowedRetrieve(VoterStore.getVoterWeVoteId());
     if (VoterStore.electionId() && !IssueStore.issuesUnderBallotItemsRetrieveCalled(VoterStore.electionId())) {
       IssueActions.issuesUnderBallotItemsRetrieve(VoterStore.electionId());
     }

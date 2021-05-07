@@ -1,14 +1,15 @@
-import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import React, { Component } from 'react';
 import Helmet from 'react-helmet';
-import OrganizationVoterGuideCandidateList from '../../components/VoterGuide/OrganizationVoterGuideCandidateList';
-import { capitalizeString } from '../../utils/textFormat';
 import AnalyticsActions from '../../actions/AnalyticsActions';
-import LoadingWheel from '../../components/LoadingWheel';
-import { renderLog } from '../../utils/logging';
 import OfficeActions from '../../actions/OfficeActions';
+import LoadingWheel from '../../components/LoadingWheel';
 import OfficeStore from '../../stores/OfficeStore';
 import VoterStore from '../../stores/VoterStore';
+import { renderLog } from '../../utils/logging';
+import { capitalizeString } from '../../utils/textFormat';
+
+const OrganizationVoterGuideCandidateList = React.lazy(() => import('../../components/VoterGuide/OrganizationVoterGuideCandidateList'));
 
 // This is based on routes/Ballot/Office
 export default class OrganizationVoterGuideOffice extends Component {

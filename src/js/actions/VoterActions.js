@@ -116,6 +116,13 @@ export default {
     Dispatcher.loadEndpoint('voterAddressRetrieve', { voter_device_id: id });
   },
 
+  voterAddressOnlyRetrieve (id) {
+    // console.log("VoterActions, voterAddressOnlyRetrieve");
+    // Note:  This calls the voterAddressRetrieve API without the cascading requests that have been added to the root voterAddressRetrieve endpoint.
+    // See Dispatcher.js at endpointAdjusted
+    Dispatcher.loadEndpoint('voterAddressOnlyRetrieve', { voter_device_id: id });
+  },
+
   voterAddressSave (text, simple_save = false, google_civic_election_id = 0) {
     Dispatcher.loadEndpoint('voterAddressSave', { text_for_map_search: text, simple_save, google_civic_election_id });
   },

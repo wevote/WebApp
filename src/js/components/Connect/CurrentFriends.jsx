@@ -1,12 +1,12 @@
-import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
-import Popover from 'react-bootstrap/Popover';
-
-import CurrentFriendTinyDisplay from './CurrentFriendTinyDisplay';
-import FriendDisplayForList from '../Friends/FriendDisplayForList';
 import { renderLog } from '../../utils/logging';
+
+const CurrentFriendTinyDisplay = React.lazy(() => import('./CurrentFriendTinyDisplay'));
+const FriendDisplayForList = React.lazy(() => import('../Friends/FriendDisplayForList'));
+const OverlayTrigger = React.lazy(() => import('react-bootstrap/OverlayTrigger'));
+const Popover = React.lazy(() => import('react-bootstrap/Popover'));
 
 export default class CurrentFriends extends Component {
   constructor (props) {

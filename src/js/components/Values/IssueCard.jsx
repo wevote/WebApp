@@ -1,16 +1,18 @@
 /* eslint-disable quotes */
+import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
-import PropTypes from 'prop-types';
-import IssueFollowToggleButton from './IssueFollowToggleButton';
-import IssueImageDisplay from './IssueImageDisplay';
-import LoadingWheel from '../LoadingWheel';
+import VoterGuideStore from '../../stores/VoterGuideStore';
 import { isCordova } from '../../utils/cordovaUtils';
 import { renderLog } from '../../utils/logging';
-import ReadMore from '../Widgets/ReadMore';
 import { convertNameToSlug } from '../../utils/textFormat';
-import VoterGuideStore from '../../stores/VoterGuideStore';
+import LoadingWheel from '../LoadingWheel';
+
+const IssueFollowToggleButton = React.lazy(() => import('./IssueFollowToggleButton'));
+const IssueImageDisplay = React.lazy(() => import('./IssueImageDisplay'));
+const ReadMore = React.lazy(() => import('../Widgets/ReadMore'));
+
 
 class IssueCard extends Component {
   constructor (props) {

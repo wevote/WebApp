@@ -1,22 +1,24 @@
-import React, { Component } from 'react';
-import Helmet from 'react-helmet';
-import PropTypes from 'prop-types';
-import styled from 'styled-components';
 import { Button } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
-import AnnotatedSlideshow from '../components/Widgets/AnnotatedSlideshow';
+import PropTypes from 'prop-types';
+import React, { Component } from 'react';
+import Helmet from 'react-helmet';
+import styled from 'styled-components';
 import AppActions from '../actions/AppActions';
-import cordovaScrollablePaneTopPadding from '../utils/cordovaScrollablePaneTopPadding';
-import { historyPush, isCordova } from '../utils/cordovaUtils';
-import WelcomeFooter from '../components/Welcome/WelcomeFooter';
-import Header, { Container, Title } from '../components/Welcome/HowItWorksHeader';
-import HeaderSwitch from '../components/Widgets/HeaderSwitch';
-import { renderLog } from '../utils/logging';
-import StepsChips from '../components/Widgets/StepsChips';
 import VoterActions from '../actions/VoterActions';
+import { Container, Title } from '../components/Welcome/howItWorksHeaderStyles';
 import VoterConstants from '../constants/VoterConstants';
 import VoterStore from '../stores/VoterStore';
-import WelcomeAppbar from '../components/Navigation/WelcomeAppbar';
+import cordovaScrollablePaneTopPadding from '../utils/cordovaScrollablePaneTopPadding';
+import { historyPush, isCordova } from '../utils/cordovaUtils';
+import { renderLog } from '../utils/logging';
+
+const AnnotatedSlideshow = React.lazy(() => import('../components/Widgets/AnnotatedSlideshow'));
+const Header = React.lazy(() => import('../components/Welcome/howItWorksHeaderStyles'));
+const HeaderSwitch = React.lazy(() => import('../components/Widgets/HeaderSwitch'));
+const StepsChips = React.lazy(() => import('../components/Widgets/StepsChips'));
+const WelcomeAppbar = React.lazy(() => import('../components/Navigation/WelcomeAppbar'));
+const WelcomeFooter = React.lazy(() => import('../components/Welcome/WelcomeFooter'));
 
 class HowItWorks extends Component {
   constructor (props) {

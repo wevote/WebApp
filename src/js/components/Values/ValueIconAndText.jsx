@@ -1,18 +1,19 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import { withStyles, withTheme } from '@material-ui/core/styles';
-import styled from 'styled-components';
-import { ReactSVG } from 'react-svg';
 import { Chip } from '@material-ui/core';
+import { withStyles, withTheme } from '@material-ui/core/styles';
+import PropTypes from 'prop-types';
+import React, { Component } from 'react';
+import { ReactSVG } from 'react-svg';
+import styled from 'styled-components';
 import CandidateStore from '../../stores/CandidateStore';
-import { cordovaDot } from '../../utils/cordovaUtils';
-import IssueFollowToggleButton from './IssueFollowToggleButton';
 import IssueStore from '../../stores/IssueStore';
-import { getPositionSummaryListForBallotItem } from '../../utils/positionFunctions';
-import PositionSummaryListForPopover from '../Widgets/PositionSummaryListForPopover';
-import ReadMore from '../Widgets/ReadMore';
-import StickyPopover from '../Ballot/StickyPopover';
+import { cordovaDot } from '../../utils/cordovaUtils';
 import { renderLog } from '../../utils/logging';
+import { getPositionSummaryListForBallotItem } from '../../utils/positionFunctions';
+
+const IssueFollowToggleButton = React.lazy(() => import('./IssueFollowToggleButton'));
+const PositionSummaryListForPopover = React.lazy(() => import('../Widgets/PositionSummaryListForPopover'));
+const ReadMore = React.lazy(() => import('../Widgets/ReadMore'));
+const StickyPopover = React.lazy(() => import('../Ballot/StickyPopover'));
 
 class ValueIconAndText extends Component {
   constructor (props) {

@@ -1,5 +1,5 @@
-// import moment from 'moment';
 import VoterStore from '../stores/VoterStore';
+// const moment = React.lazy(() => import('moment'));
 
 // eslint-disable-next-line import/prefer-default-export
 export function mostLikelyOfficeDictFromList (contestOfficeList) {

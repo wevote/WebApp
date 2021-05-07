@@ -1,16 +1,17 @@
-import React, { Component } from 'react';
+import { withStyles, withTheme } from '@material-ui/core/styles';
+import { CheckCircle, ThumbDown, ThumbUp } from '@material-ui/icons';
 import PropTypes from 'prop-types';
+import React, { Component } from 'react';
 import { ReactSVG } from 'react-svg';
 import styled from 'styled-components';
-import { withStyles, withTheme } from '@material-ui/core/styles';
-import { CheckCircle, ThumbUp, ThumbDown } from '@material-ui/icons';
 import { cordovaDot } from '../../utils/cordovaUtils';
-import FollowToggle from './FollowToggle';
-import FriendsIcon from './FriendsIcon';
-import MaterialUIPopover from './MaterialUIPopover';
-import PositionItemScorePopoverTextOnly from './PositionItemScorePopoverTextOnly';
-import ShowMoreFooter from '../Navigation/ShowMoreFooter';
 import { cleanArray } from '../../utils/textFormat';
+
+const FollowToggle = React.lazy(() => import('./FollowToggle'));
+const FriendsIcon = React.lazy(() => import('./FriendsIcon'));
+const MaterialUIPopover = React.lazy(() => import('./MaterialUIPopover'));
+const PositionItemScorePopoverTextOnly = React.lazy(() => import('./PositionItemScorePopoverTextOnly'));
+const ShowMoreFooter = React.lazy(() => import('../Navigation/ShowMoreFooter'));
 
 class PositionSummaryListForPopover extends Component {
   constructor (props) {

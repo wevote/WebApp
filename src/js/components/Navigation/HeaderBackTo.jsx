@@ -1,27 +1,28 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import styled from 'styled-components';
-import { AccountCircle } from '@material-ui/icons';
-import { AppBar, IconButton, Toolbar, Button } from '@material-ui/core';
+import { AppBar, Button, IconButton, Toolbar } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
-import anonymous from '../../../img/global/icons/avatar-generic.png';
-import AppStore from '../../stores/AppStore';
+import { AccountCircle } from '@material-ui/icons';
+import PropTypes from 'prop-types';
+import React, { Component } from 'react';
+import styled from 'styled-components';
 import AppActions from '../../actions/AppActions';
-import { dumpCssFromId } from '../../utils/appleSiliconUtils';
-import { hasIPhoneNotch, historyPush, isIOSAppOnMac, isCordova, isWebApp, isIPad } from '../../utils/cordovaUtils';
-import LazyImage from '../../utils/LazyImage';
-import HeaderBackToButton from './HeaderBackToButton';
-import HeaderBarProfilePopUp from './HeaderBarProfilePopUp';
-import HeaderNotificationMenu from './HeaderNotificationMenu';
 import OrganizationActions from '../../actions/OrganizationActions';
-import { renderLog } from '../../utils/logging';
-import SignInModal from '../Widgets/SignInModal';
-import { shortenText, stringContains } from '../../utils/textFormat';
 import VoterGuideActions from '../../actions/VoterGuideActions';
-import { voterPhoto } from '../../utils/voterPhoto';
 import VoterSessionActions from '../../actions/VoterSessionActions';
+import AppStore from '../../stores/AppStore';
 import VoterStore from '../../stores/VoterStore';
+import { dumpCssFromId } from '../../utils/appleSiliconUtils';
+import { hasIPhoneNotch, historyPush, isCordova, isIOSAppOnMac, isIPad, isWebApp } from '../../utils/cordovaUtils';
+import LazyImage from '../../utils/LazyImage';
+import { renderLog } from '../../utils/logging';
+import { shortenText, stringContains } from '../../utils/textFormat';
+import { voterPhoto } from '../../utils/voterPhoto';
 
+const HeaderBackToButton = React.lazy(() => import('./HeaderBackToButton'));
+const HeaderBarProfilePopUp = React.lazy(() => import('./HeaderBarProfilePopUp'));
+const HeaderNotificationMenu = React.lazy(() => import('./HeaderNotificationMenu'));
+const SignInModal = React.lazy(() => import('../Widgets/SignInModal'));
+
+const anonymous = '../../../img/global/icons/avatar-generic.png';
 const appleSiliconDebug = false;
 
 

@@ -1,8 +1,9 @@
-import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import React, { Component } from 'react';
 import { renderLog } from '../../utils/logging';
-import MeasureItemCompressed from './MeasureItemCompressed';
-import CandidateItemCompressed from './CandidateItemCompressed';
+
+const MeasureItemCompressed = React.lazy(() => import('./MeasureItemCompressed'));
+const CandidateItemCompressed = React.lazy(() => import('./CandidateItemCompressed'));
 
 const TYPES = require('keymirror')({
   OFFICE: null,

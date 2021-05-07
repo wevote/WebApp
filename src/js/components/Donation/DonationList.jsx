@@ -1,14 +1,13 @@
+import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import * as PropTypes from 'prop-types';
-import Table from 'react-bootstrap/Table';
-import Card from 'react-bootstrap/Card';
-
-import moment from 'moment';
-import { renderLog } from '../../utils/logging';
-import DonateStore from '../../stores/DonateStore';
-import DonationCancelOrRefund from './DonationCancelOrRefund';
-import LoadingWheel from '../LoadingWheel';
 import DonateActions from '../../actions/DonateActions';
+import DonateStore from '../../stores/DonateStore';
+import { renderLog } from '../../utils/logging';
+import LoadingWheel from '../LoadingWheel';
+
+const Table = React.lazy(() => import('react-bootstrap/Table'));
+const Card = React.lazy(() => import('react-bootstrap/Card'));
+const DonationCancelOrRefund = React.lazy(() => import('./DonationCancelOrRefund'));
 
 /* global $ */
 
@@ -96,12 +95,14 @@ export default class DonationList extends Component {
                     if ((recordEnum === 'PAYMENT_FROM_UI' || recordEnum === 'PAYMENT_AUTO_SUBSCRIPTION') &&
                         ((!showOrganizationPlan && !isOrgPlan) || (showOrganizationPlan && isOrgPlan))) {
                       const refundDays = parseInt(refundDaysLimit, 10);
+                      // TODO: wrap with initializeMoment
                       const active =
-                        moment.utc(created).local().isAfter(moment(new Date()).subtract(refundDays, 'days')) &&
+                        window.moment && window.moment.utc(created).local().isAfter(window.moment(new Date()).subtract(refundDays, 'days')) &&
                         !stripeStatus.includes('refund');
                       return (
                         <tr key={`${chargeId}-${subscriptionId}-donations`}>
-                          <td>{moment.utc(created).format('MMM D, YYYY')}</td>
+                          {/* TODO: wrap with initializeMoment */}
+                          <td>{window.moment ? window.moment.utc(created).format('MMM D, YYYY') : ''}</td>
                           <td>{amount}</td>
                           <td hidden={isMobile}>
                             {recordEnum === 'PAYMENT_FROM_UI' ? 'One time' :
@@ -155,16 +156,19 @@ export default class DonationList extends Component {
                     if (recordEnum === 'SUBSCRIPTION_SETUP_AND_INITIAL' &&
                       ((!showOrganizationPlan && !isOrgPlan) || (showOrganizationPlan && isOrgPlan))) {
                       const active = subscriptionCanceledAt === 'None' && subscriptionEndedAt === 'None';
-                      const cancel = subscriptionCanceledAt !== 'None' ?
-                        moment.utc(subscriptionCanceledAt).format('MMM D, YYYY') : '';
-                      const lastcharged = lastCharged === 'None' ? '' :
-                        moment.utc(lastCharged).format('MMM D, YYYY');
+                      // TODO: wrap with initializeMoment
+                      const cancel = subscriptionCanceledAt !== 'None' && window.moment ?
+                        window.moment.utc(subscriptionCanceledAt).format('MMM D, YYYY') : '';
+                      // TODO: wrap with initializeMoment
+                      const lastcharged = lastCharged === 'None' && window.moment ? '' :
+                        window.moment.utc(lastCharged).format('MMM D, YYYY');
                       const waiting = amount === '0.00';
 
                       return (
                         <tr key={`${chargeId}-${subscriptionId}-donationJournalList`}>
                           <td hidden={isMobile}>{active ? 'Active' : '----'}</td>
-                          <td>{moment.utc(created).format('MMM D, YYYY')}</td>
+                          {/* TODO: wrap with initializeMoment */}
+                          <td>{window.moment ? window.moment.utc(created).format('MMM D, YYYY') : ''}</td>
                           <td>{!waiting ? amount : 'waiting'}</td>
                           <td hidden={isMobile}>{!waiting ? lastcharged : 'waiting'}</td>
                           <td hidden={isMobile}>{!waiting ? brand : 'waiting'}</td>

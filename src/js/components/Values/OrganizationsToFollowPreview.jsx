@@ -1,10 +1,12 @@
 import React, { Component, Suspense } from 'react';
 import styled from 'styled-components';
-import GuideList from '../VoterGuide/GuideList';
-import { historyPush } from '../../utils/cordovaUtils';
-import { renderLog } from '../../utils/logging';
-import ShowMoreFooter from '../Navigation/ShowMoreFooter';
 import VoterGuideStore from '../../stores/VoterGuideStore';
+import { historyPush } from '../../utils/cordovaUtils';
+import LoadingWheel from '../LoadingWheel';
+import { renderLog } from '../../utils/logging';
+
+const GuideList = React.lazy(() => import('../VoterGuide/GuideList'));
+const ShowMoreFooter = React.lazy(() => import('../Navigation/ShowMoreFooter'));
 
 
 export default class OrganizationsToFollowPreview extends Component {
@@ -55,7 +57,7 @@ export default class OrganizationsToFollowPreview extends Component {
             <SectionDescription>
               Follow an organization to add their opinions to your personalized score.
             </SectionDescription>
-            <Suspense fallback={<span>Loading...</span>}>
+            <Suspense fallback={LoadingWheel}>
               <GuideList
                 hideShowMoreItems
                 incomingVoterGuideList={voterGuidesToFollow}

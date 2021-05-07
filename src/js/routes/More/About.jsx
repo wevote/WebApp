@@ -1,27 +1,25 @@
+import { withStyles } from '@material-ui/core/styles';
 import React, { Component } from 'react';
 import Helmet from 'react-helmet';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
-import { withStyles } from '@material-ui/core/styles';
+import AnalyticsActions from '../../actions/AnalyticsActions';
+import { weVoteBoard, weVoteFounders, weVoteStaff } from '../../components/More/people';
+import ShowMoreButtons from '../../components/Ready/ShowMoreButtons';
+import { Title } from '../../components/Welcome/headerWelcomeStyles';
+import { Bold, DescriptionContainer, MemberListContainer, SectionTitle } from '../../components/Welcome/sectionStyles';
+import VoterStore from '../../stores/VoterStore';
 import cordovaScrollablePaneTopPadding from '../../utils/cordovaScrollablePaneTopPadding';
 import { cordovaDot } from '../../utils/cordovaUtils';
-import AnalyticsActions from '../../actions/AnalyticsActions';
 import { renderLog } from '../../utils/logging';
-import WelcomeFooter from '../../components/Welcome/WelcomeFooter';
-import OpenExternalWebSite from '../../components/Widgets/OpenExternalWebSite';
-import Section, {
-  Bold,
-  DescriptionContainer,
-  SectionTitle,
-  MemberListContainer,
-} from '../../components/Welcome/Section';
-import TeamMemberDisplayForList from '../../components/More/TeamMemberDisplayForList';
-import ToolBar from './ToolBar';
-import VoterStore from '../../stores/VoterStore';
-import { weVoteBoard, weVoteFounders, weVoteStaff } from '../../components/More/people';
-import WelcomeAppbar from '../../components/Navigation/WelcomeAppbar';
-import { Title } from '../../components/Welcome/HeaderWelcome';
-import ShowMoreButtons from '../../components/ReadyNoApi/ShowMoreButtons';
+
+const WelcomeFooter = React.lazy(() => import('../../components/Welcome/WelcomeFooter'));
+const OpenExternalWebSite = React.lazy(() => import('../../components/Widgets/OpenExternalWebSite'));
+const Section = React.lazy(() => import('../../components/Welcome/sectionStyles'));
+const TeamMemberDisplayForList = React.lazy(() => import('../../components/More/TeamMemberDisplayForList'));
+const ToolBar = React.lazy(() => import('./ToolBar'));
+// TODO April 2021: Commented out, too many issue for a rarely used page.  Revisit and fix.
+// const WelcomeAppbar = React.lazy(() => import('../../components/Navigation/WelcomeAppbar'));
 
 class About extends Component {
   static getProps () {
@@ -69,7 +67,6 @@ class About extends Component {
   }
 
 
-
   render () {
     renderLog('About');  // Set LOG_RENDER_EVENTS to log all renders
     const {
@@ -82,10 +79,11 @@ class About extends Component {
     if (weVoteStaff.length <= 3) { showShowMoreButtonStaff = false; }
     let weVoteBoardCount = 0;
     let weVoteStaffCount = 0;
+
     return (
       <Wrapper padTop={cordovaScrollablePaneTopPadding()}>
         <Helmet title="About We Vote" />
-        <WelcomeAppbar pathname="/more/about" />
+        {/* TODO: Temporary removal 4/27/21 <WelcomeAppbar pathname="/more/about" /> */}
         <HeaderForAbout>
           <Title>About We Vote</Title>
           <ToolBar />
@@ -274,7 +272,7 @@ class About extends Component {
           <AboutDescriptionContainer>
             We are thankful for
             {' '}
-            <Link to="/more/credits" onlyActiveOnIndex>
+            <Link to="/more/credits">
               our volunteers, our board of directors, our funders, and the organizations
               &nbsp;
               <i className="fas fa-external-link-alt" />
@@ -379,11 +377,11 @@ const DescriptionImageColumn = styled.div`
 `;
 
 const Image = styled.img`
-  width: 100%:
+  width: 100%;
 `;
 
 const AboutFigCaption = styled.figcaption`
-  color: #555 !default;
+  color: #555;
   font-size: .8rem;
   text-align: center;
 `;

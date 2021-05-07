@@ -1,12 +1,13 @@
-import React, { Component } from 'react';
+import { withStyles, withTheme } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
+import React, { Component } from 'react';
 import styled from 'styled-components';
-import { withTheme, withStyles } from '@material-ui/core/styles';
-import { historyPush } from '../../utils/cordovaUtils';
-import { arrayContains, toTitleCase } from '../../utils/textFormat';
-import CandidateItemForOpinions from './CandidateItemForOpinions';
 import CandidateStore from '../../stores/CandidateStore';
+import { historyPush } from '../../utils/cordovaUtils';
 import { renderLog } from '../../utils/logging';
+import { arrayContains, toTitleCase } from '../../utils/textFormat';
+
+const CandidateItemForOpinions = React.lazy(() => import('./CandidateItemForOpinions'));
 
 class OfficeItemForOpinions extends Component {
   constructor (props) {

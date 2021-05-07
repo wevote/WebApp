@@ -1,18 +1,19 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import styled from 'styled-components';
 import { Button } from '@material-ui/core';
+import PropTypes from 'prop-types';
+import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
+import styled from 'styled-components';
 import { historyPush } from '../../utils/cordovaUtils';
-import IssuesByOrganizationDisplayList from '../Values/IssuesByOrganizationDisplayList';
-import { isSpeakerTypePrivateCitizen } from '../../utils/organization-functions';
-import LoadingWheel from '../LoadingWheel';
 import { renderLog } from '../../utils/logging';
-import FollowToggle from '../Widgets/FollowToggle';
-import FriendToggle from '../Friends/FriendToggle';
-import OpenExternalWebSite from '../Widgets/OpenExternalWebSite';
-import ParsedTwitterDescription from '../Twitter/ParsedTwitterDescription';
+import { isSpeakerTypePrivateCitizen } from '../../utils/organization-functions';
 import { numberWithCommas, removeTwitterNameFromDescription } from '../../utils/textFormat';
+import LoadingWheel from '../LoadingWheel';
+
+const FollowToggle = React.lazy(() => import('../Widgets/FollowToggle'));
+const FriendToggle = React.lazy(() => import('../Friends/FriendToggle'));
+const IssuesByOrganizationDisplayList = React.lazy(() => import('../Values/IssuesByOrganizationDisplayList'));
+const OpenExternalWebSite = React.lazy(() => import('../Widgets/OpenExternalWebSite'));
+const ParsedTwitterDescription = React.lazy(() => import('../Twitter/ParsedTwitterDescription'));
 
 // This Component is used to display the Organization by TwitterHandle
 // Please see VoterGuide/Organization for the Component used by GuideList for Candidate and Opinions (you can follow)

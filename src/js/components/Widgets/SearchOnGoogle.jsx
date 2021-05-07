@@ -1,10 +1,11 @@
-import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import React, { Component } from 'react';
 import styled from 'styled-components';
-import OpenExternalWebSite from './OpenExternalWebSite';
 import { cordovaDot } from '../../utils/cordovaUtils';
-import googleIcon from '../../../img/global/logos/google-icon.svg';
-import SplitIconButton from './SplitIconButton';
+
+const OpenExternalWebSite = React.lazy(() => import('./OpenExternalWebSite'));
+const googleIcon = '../../../img/global/logos/google-icon.svg';
+const SplitIconButton = React.lazy(() => import('./SplitIconButton'));
 
 
 class SearchOnGoogle extends Component {

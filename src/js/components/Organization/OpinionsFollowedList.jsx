@@ -1,9 +1,10 @@
-import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import FollowToggle from '../Widgets/FollowToggle';
+import React, { Component } from 'react';
 import OrganizationActions from '../../actions/OrganizationActions';
-import OrganizationDisplayForList from './OrganizationDisplayForList';
 import { renderLog } from '../../utils/logging';
+
+const FollowToggle = React.lazy(() => import('../Widgets/FollowToggle'));
+const OrganizationDisplayForList = React.lazy(() => import('./OrganizationDisplayForList'));
 
 export default class OpinionsFollowedList extends Component {
   constructor (props) {

@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
 import Helmet from 'react-helmet';
 import AnalyticsActions from '../../actions/AnalyticsActions';
-import BrowserPushMessage from '../Widgets/BrowserPushMessage';
-import BallotElectionList from '../Ballot/BallotElectionList';
 import ElectionActions from '../../actions/ElectionActions';
 import ElectionStore from '../../stores/ElectionStore';
-import { renderLog } from '../../utils/logging';
 import VoterStore from '../../stores/VoterStore';
+import { renderLog } from '../../utils/logging';
+
+const BrowserPushMessage = React.lazy(() => import('../Widgets/BrowserPushMessage'));
+const BallotElectionList = React.lazy(() => import('../Ballot/BallotElectionList'));
 
 export default class SettingsElection extends Component {
   constructor (props) {

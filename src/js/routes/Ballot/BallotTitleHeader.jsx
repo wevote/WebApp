@@ -1,20 +1,30 @@
-import React, { Component } from 'react';
-import styled from 'styled-components';
-import PropTypes from 'prop-types';
 import { Tooltip } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 import { Settings } from '@material-ui/icons';
+import PropTypes from 'prop-types';
+import React, { Component } from 'react';
+import styled from 'styled-components';
 import { isAndroid, isAndroidSizeFold, isIOSAppOnMac, isIPad, isIPhone3p5in, isIPhone4in, isWebApp } from '../../utils/cordovaUtils';
-import ShareButtonDesktopTablet from '../../components/Share/ShareButtonDesktopTablet';
-import DelayedLoad from '../../components/Widgets/DelayedLoad';
 import { renderLog } from '../../utils/logging';
 import { shortenText } from '../../utils/textFormat';
+
+const ShareButtonDesktopTablet = React.lazy(() => import('../../components/Share/ShareButtonDesktopTablet'));
+const DelayedLoad = React.lazy(() => import('../../components/Widgets/DelayedLoad'));
 // import webAppConfig from '../../config';
 
 /* eslint-disable no-nested-ternary */
 
 
 class BallotTitleHeader extends Component {
+  shouldComponentUpdate (nextProps) {
+    // This lifecycle method tells the component to NOT render if componentWillReceiveProps didn't see any changes
+    if (this.props.electionName !== nextProps.electionName) {
+      // console.log('this.props.electionName:', this.props.electionName, ', nextProps.electionName:', nextProps.electionName);
+      return true;
+    }
+    return false;
+  }
+
   shortenElectionNameCordova () {
     if (isIPhone3p5in() || isIPhone4in()) {
       return 26;  // iphone5-or-smaller

@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
-import { renderLog } from '../../utils/logging';
-import OrganizationStore from '../../stores/OrganizationStore';
 import OrganizationActions from '../../actions/OrganizationActions';
+import OrganizationStore from '../../stores/OrganizationStore';
+import { renderLog } from '../../utils/logging';
 // import OpenExternalWebSite from '../../utils/OpenExternalWebSite';
-import OpinionsFollowedListCompressed from '../Organization/OpinionsFollowedListCompressed';
-import EndorsementCard from '../Widgets/EndorsementCard';
+
+const OpinionsFollowedListCompressed = React.lazy(() => import('../Organization/OpinionsFollowedListCompressed'));
+const EndorsementCard = React.lazy(() => import('../Widgets/EndorsementCard'));
 
 export default class PublicFiguresFollowedPreview extends Component {
   constructor (props) {

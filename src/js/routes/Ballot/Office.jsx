@@ -1,26 +1,28 @@
-import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import React, { Component } from 'react';
 import Helmet from 'react-helmet';
 import styled from 'styled-components';
 import ActivityActions from '../../actions/ActivityActions';
-import CandidateList from '../../components/Ballot/CandidateList';
-import { capitalizeString } from '../../utils/textFormat';
 import AnalyticsActions from '../../actions/AnalyticsActions';
 import AppActions from '../../actions/AppActions';
-import BallotStore from '../../stores/BallotStore';
 import CandidateActions from '../../actions/CandidateActions';
-import CandidateStore from '../../stores/CandidateStore';
 import IssueActions from '../../actions/IssueActions';
-import IssueStore from '../../stores/IssueStore';
-import LoadingWheel from '../../components/LoadingWheel';
-import { renderLog } from '../../utils/logging';
 import OfficeActions from '../../actions/OfficeActions';
-import OfficeStore from '../../stores/OfficeStore';
-import { sortCandidateList } from '../../utils/positionFunctions';
+import LoadingWheel from '../../components/LoadingWheel';
 import Testimonial from '../../components/Widgets/Testimonial';
+import BallotStore from '../../stores/BallotStore';
+import CandidateStore from '../../stores/CandidateStore';
+import IssueStore from '../../stores/IssueStore';
+import OfficeStore from '../../stores/OfficeStore';
 import VoterStore from '../../stores/VoterStore';
 import { cordovaDot } from '../../utils/cordovaUtils';
-import daleMcGrewJpm from '../../../img/global/photos/Dale_McGrew-200x200.jpg';
+import { renderLog } from '../../utils/logging';
+import { sortCandidateList } from '../../utils/positionFunctions';
+import { capitalizeString } from '../../utils/textFormat';
+
+const CandidateList = React.lazy(() => import('../../components/Ballot/CandidateList'));
+const daleMcGrewJpm = '../../../img/global/photos/Dale_McGrew-200x200.jpg';
+
 
 
 // This is related to routes/VoterGuide/OrganizationVoterGuideOffice
@@ -92,11 +94,8 @@ class Office extends Component {
       });
     }
 
-    if (!IssueStore.issueDescriptionsRetrieveCalled()) {
-      IssueActions.issueDescriptionsRetrieve();
-      // IssueActions.issueDescriptionsRetrieveCalled(); // TODO: Move this to AppActions? Currently throws error: "Cannot dispatch in the middle of a dispatch"
-    }
-    IssueActions.issuesFollowedRetrieve();
+    IssueActions.issueDescriptionsRetrieve(VoterStore.getVoterWeVoteId());
+    IssueActions.issuesFollowedRetrieve(VoterStore.getVoterWeVoteId());
     if (VoterStore.electionId() && !IssueStore.issuesUnderBallotItemsRetrieveCalled(VoterStore.electionId())) {
       IssueActions.issuesUnderBallotItemsRetrieve(VoterStore.electionId());
     }

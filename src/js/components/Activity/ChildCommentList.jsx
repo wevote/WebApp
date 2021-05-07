@@ -1,17 +1,18 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import styled from 'styled-components';
-import { withStyles, withTheme } from '@material-ui/core/styles';
 import { IconButton } from '@material-ui/core';
+import { withStyles, withTheme } from '@material-ui/core/styles';
 import { AccountCircle, MoreHoriz } from '@material-ui/icons';
-import ActivityCommentAdd from './ActivityCommentAdd';
-import ActivityStore from '../../stores/ActivityStore';
+import PropTypes from 'prop-types';
+import React, { Component } from 'react';
+import styled from 'styled-components';
 import AppActions from '../../actions/AppActions';
-import ReactionStore from '../../stores/ReactionStore';
 import ReactionActions from '../../actions/ReactionActions';
-import { renderLog } from '../../utils/logging';
-import { timeFromDate } from '../../utils/dateFormat';
+import ActivityStore from '../../stores/ActivityStore';
+import ReactionStore from '../../stores/ReactionStore';
 import VoterStore from '../../stores/VoterStore';
+import { timeFromDate } from '../../utils/dateFormat';
+import { renderLog } from '../../utils/logging';
+
+const ActivityCommentAdd = React.lazy(() => import('./ActivityCommentAdd'));
 
 
 const STARTING_NUMBER_OF_PARENT_COMMENTS_TO_DISPLAY = 1;

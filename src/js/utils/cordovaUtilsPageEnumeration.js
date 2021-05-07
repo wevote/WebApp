@@ -1,6 +1,8 @@
+import React from 'react';
 import CordovaPageConstants from '../constants/CordovaPageConstants';
-import showBallotDecisionsTabs from '../utilsApi/showBallotDecisionsTabs'; // eslint-disable-line import/no-cycle
 import { stringContains } from './textFormat';
+
+const showBallotDecisionsTabs = React.lazy(() => import('../utilsApi/showBallotDecisionsTabs')); // eslint-disable-line import/no-cycle
 
 
 // eslint-disable-next-line import/prefer-default-export

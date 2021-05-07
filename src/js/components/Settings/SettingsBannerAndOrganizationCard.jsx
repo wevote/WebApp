@@ -1,8 +1,9 @@
-import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import React, { Component } from 'react';
 import { renderLog } from '../../utils/logging';
-import OrganizationCard from '../VoterGuide/OrganizationCard';
 import { startsWith } from '../../utils/textFormat';
+
+const OrganizationCard = React.lazy(() => import('../VoterGuide/OrganizationCard'));
 
 export default class SettingsBannerAndOrganizationCard extends Component {
   constructor (props) {

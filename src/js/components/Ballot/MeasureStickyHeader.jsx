@@ -1,12 +1,13 @@
-import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import React, { Component } from 'react';
 import styled, { keyframes } from 'styled-components';
-import { isIOSAppOnMac, isIPad } from '../../utils/cordovaUtils';
-import BallotItemSupportOpposeComment from '../Widgets/BallotItemSupportOpposeComment';
-import BallotItemSupportOpposeCountDisplay from '../Widgets/BallotItemSupportOpposeCountDisplay';
-import { cordovaStickyHeaderPaddingTop } from '../../utils/cordovaOffsets';
 import MeasureStore from '../../stores/MeasureStore';
-import ReadMore from '../Widgets/ReadMore';
+import { cordovaStickyHeaderPaddingTop } from '../../utils/cordovaOffsets';
+import { isIOSAppOnMac, isIPad } from '../../utils/cordovaUtils';
+
+const BallotItemSupportOpposeComment = React.lazy(() => import('../Widgets/BallotItemSupportOpposeComment'));
+const BallotItemSupportOpposeCountDisplay = React.lazy(() => import('../Widgets/BallotItemSupportOpposeCountDisplay'));
+const ReadMore = React.lazy(() => import('../Widgets/ReadMore'));
 
 class MeasureStickyHeader extends Component {
   constructor (props) {

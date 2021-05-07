@@ -1,8 +1,8 @@
-import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import ImageHandler from '../ImageHandler';
 import { renderLog } from '../../utils/logging';
+import ImageHandler from '../ImageHandler';
 
 // OrganizationDisplayForListCompressed is used by OpinionsFollowedListCompressed for viewing organizations
 export default class OrganizationDisplayForListCompressed extends Component {

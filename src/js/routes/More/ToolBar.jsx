@@ -1,10 +1,11 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
 import { IconButton, Tooltip } from '@material-ui/core';
-import styled from 'styled-components';
 import { withStyles } from '@material-ui/core/styles';
+import PropTypes from 'prop-types';
+import React, { Component } from 'react';
+import styled from 'styled-components';
 import { renderLog } from '../../utils/logging';
-import OpenExternalWebSite from '../../components/Widgets/OpenExternalWebSite';
+
+const OpenExternalWebSite = React.lazy(() => import('../../components/Widgets/OpenExternalWebSite'));
 
 class ToolBar extends Component {
   render () {

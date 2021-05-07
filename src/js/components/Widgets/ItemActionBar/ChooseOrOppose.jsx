@@ -1,13 +1,14 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import styled from 'styled-components';
-import { DialogTitle, IconButton, DialogContent } from '@material-ui/core';
-import { Close } from '@material-ui/icons';
+import { DialogContent, DialogTitle, IconButton } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
-import PositionPublicToggle from '../PositionPublicToggle';
-import Slides from './Slides';
-import SettingsAccount from '../../Settings/SettingsAccount';
+import { Close } from '@material-ui/icons';
+import PropTypes from 'prop-types';
+import React, { Component } from 'react';
+import styled from 'styled-components';
 import VoterStore from '../../../stores/VoterStore';
+
+const PositionPublicToggle = React.lazy(() => import('../PositionPublicToggle'));
+const Slides = React.lazy(() => import('./Slides'));
+const SettingsAccount = React.lazy(() => import('../../Settings/SettingsAccount'));
 
 class ChooseOrOppose extends Component {
   constructor (props) {

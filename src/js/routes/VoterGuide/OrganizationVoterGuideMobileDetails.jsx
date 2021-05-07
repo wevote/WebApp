@@ -1,14 +1,15 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import styled from 'styled-components';
 import { Card } from '@material-ui/core';
-import { renderLog } from '../../utils/logging';
-import DelayedLoad from '../../components/Widgets/DelayedLoad';
-import LoadingWheel from '../../components/LoadingWheel';
+import PropTypes from 'prop-types';
+import React, { Component } from 'react';
+import styled from 'styled-components';
 import TwitterActions from '../../actions/TwitterActions';
+import LoadingWheel from '../../components/LoadingWheel';
 import TwitterStore from '../../stores/TwitterStore';
-import VoterGuideFollowing from '../../components/VoterGuide/VoterGuideFollowing';
-import VoterGuideFollowers from '../../components/VoterGuide/VoterGuideFollowers';
+import { renderLog } from '../../utils/logging';
+
+const DelayedLoad = React.lazy(() => import('../../components/Widgets/DelayedLoad'));
+const VoterGuideFollowing = React.lazy(() => import('../../components/VoterGuide/VoterGuideFollowing'));
+const VoterGuideFollowers = React.lazy(() => import('../../components/VoterGuide/VoterGuideFollowers'));
 
 class OrganizationVoterGuideMobileDetails extends Component {
   constructor (props) {

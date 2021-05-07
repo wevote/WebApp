@@ -1,13 +1,14 @@
-import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import BrowserPushMessage from '../Widgets/BrowserPushMessage';
+import React, { Component } from 'react';
 import FacebookActions from '../../actions/FacebookActions';
 import FacebookStore from '../../stores/FacebookStore';
-import FacebookSignIn from '../Facebook/FacebookSignIn';
-import LoadingWheel from '../LoadingWheel';
-import { renderLog } from '../../utils/logging';
 import VoterStore from '../../stores/VoterStore';
-import FacebookFriendsDisplay from './FacebookFriendsDisplay';
+import { renderLog } from '../../utils/logging';
+import LoadingWheel from '../LoadingWheel';
+
+const FacebookSignIn = React.lazy(() => import('../Facebook/FacebookSignIn'));
+const BrowserPushMessage = React.lazy(() => import('../Widgets/BrowserPushMessage'));
+const FacebookFriendsDisplay = React.lazy(() => import('./FacebookFriendsDisplay'));
 
 export default class AddFacebookFriends extends Component {
   constructor (props) {

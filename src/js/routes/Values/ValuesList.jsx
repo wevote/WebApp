@@ -1,15 +1,17 @@
-import React, { Component } from 'react';
-import filter from 'lodash-es/filter';
-import styled from 'styled-components';
-import Helmet from 'react-helmet';
+import { filter } from 'lodash-es';
 import PropTypes from 'prop-types';
-import DelayedLoad from '../../components/Widgets/DelayedLoad';
+import React, { Component } from 'react';
+import Helmet from 'react-helmet';
+import styled from 'styled-components';
 import IssueActions from '../../actions/IssueActions';
-import IssueCard from '../../components/Values/IssueCard';
 import IssueStore from '../../stores/IssueStore';
-import ReadMore from '../../components/Widgets/ReadMore';
+import VoterStore from '../../stores/VoterStore';
 import { renderLog } from '../../utils/logging';
-import SearchBar from '../../components/Search/SearchBar';
+
+const DelayedLoad = React.lazy(() => import('../../components/Widgets/DelayedLoad'));
+const IssueCard = React.lazy(() => import('../../components/Values/IssueCard'));
+const ReadMore = React.lazy(() => import('../../components/Widgets/ReadMore'));
+const SearchBar = React.lazy(() => import('../../components/Search/SearchBar'));
 
 
 export default class ValuesList extends Component {
@@ -27,11 +29,8 @@ export default class ValuesList extends Component {
 
   componentDidMount () {
     this.issueStoreListener = IssueStore.addListener(this.onIssueStoreChange.bind(this));
-    if (!IssueStore.issueDescriptionsRetrieveCalled()) {
-      IssueActions.issueDescriptionsRetrieve();
-      // IssueActions.issueDescriptionsRetrieveCalled(); // TODO: Move this to AppActions? Currently throws error: "Cannot dispatch in the middle of a dispatch"
-    }
-    IssueActions.issuesFollowedRetrieve();
+    IssueActions.issueDescriptionsRetrieve(VoterStore.getVoterWeVoteId());
+    IssueActions.issuesFollowedRetrieve(VoterStore.getVoterWeVoteId());
     const { currentIssue } = this.props;
     const allIssues = IssueStore.getAllIssues();
     this.setState({

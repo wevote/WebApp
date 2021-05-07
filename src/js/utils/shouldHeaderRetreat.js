@@ -1,5 +1,8 @@
-import displayFriendsTabs from './displayFriendsTabs';
+import React from 'react';
 import { startsWith } from './textFormat';
+
+const displayFriendsTabs = React.lazy(() => import('./displayFriendsTabs'));
+
 
 export default function shouldHeaderRetreat (pathname) {
   const shouldRetreat = (

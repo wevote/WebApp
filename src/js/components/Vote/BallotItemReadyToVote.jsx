@@ -1,9 +1,10 @@
-import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import React, { Component } from 'react';
 import { withTheme } from 'styled-components';
 import { renderLog } from '../../utils/logging';
-import MeasureItemReadyToVote from './MeasureItemReadyToVote';
-import OfficeItemReadyToVote from './OfficeItemReadyToVote';
+
+const MeasureItemReadyToVote = React.lazy(() => import('./MeasureItemReadyToVote'));
+const OfficeItemReadyToVote = React.lazy(() => import('./OfficeItemReadyToVote'));
 
 const TYPES = require('keymirror')({
   OFFICE: null,

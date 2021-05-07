@@ -1,14 +1,15 @@
-import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import AppStore from '../../stores/AppStore';
-import DelayedLoad from '../../components/Widgets/DelayedLoad';
+import React, { Component } from 'react';
 import FriendActions from '../../actions/FriendActions';
+import VoterActions from '../../actions/VoterActions';
+import LoadingWheel from '../../components/LoadingWheel';
+import AppStore from '../../stores/AppStore';
 import FriendStore from '../../stores/FriendStore';
 import { historyPush } from '../../utils/cordovaUtils';
-import LoadingWheel from '../../components/LoadingWheel';
 import { renderLog } from '../../utils/logging';
-import VoterActions from '../../actions/VoterActions';
-// import WouldYouLikeToMergeAccounts from '../../components/WouldYouLikeToMergeAccounts';
+
+const DelayedLoad = React.lazy(() => import('../../components/Widgets/DelayedLoad'));
+
 
 export default class FriendInvitationByEmailVerifyProcess extends Component {
   constructor (props) {

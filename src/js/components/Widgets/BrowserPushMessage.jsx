@@ -1,10 +1,10 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import { Snackbar, IconButton } from '@material-ui/core';
+import { IconButton, Snackbar } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 import { Close } from '@material-ui/icons';
-import { renderLog } from '../../utils/logging';
+import PropTypes from 'prop-types';
+import React, { Component } from 'react';
 import { isWebApp, snackOffset } from '../../utils/cordovaUtils';
+import { renderLog } from '../../utils/logging';
 
 
 class BrowserPushMessage extends Component {

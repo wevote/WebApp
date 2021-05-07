@@ -1,49 +1,38 @@
+import { Button, Link } from '@material-ui/core';
+import { withStyles } from '@material-ui/core/styles';
+import { Email, LocationOn, Person } from '@material-ui/icons';
+import PropTypes from 'prop-types';
 import React, { PureComponent } from 'react';
 import Helmet from 'react-helmet';
-import { Link } from 'react-router-dom';
-import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { Button } from '@material-ui/core';
-import { withStyles } from '@material-ui/core/styles';
-import { LocationOn, Email, Person } from '@material-ui/icons';
-import ffwdLogo from '../../img/global/logos/ffwd-logo.png';
-import googleLogo from '../../img/global/logos/google-logo.svg';
-import voteDotOrgLogo from '../../img/global/logos/vote_dot_org_logo-530x200.png';
-import vipLogo from '../../img/global/logos/vip-logo-1000x208.png';
-import { Title, BlueTitle, SubTitle, Video, PlayerContainer } from '../components/Welcome/HeaderWelcome';
-import AddressBoxWelcome from '../components/Welcome/AddressBoxWelcome';
 import AnalyticsActions from '../actions/AnalyticsActions';
-import cordovaScrollablePaneTopPadding from '../utils/cordovaScrollablePaneTopPadding';
-import { historyPush, cordovaDot } from '../utils/cordovaUtils';
-import WelcomeFooter from '../components/Welcome/WelcomeFooter';
-import { renderLog } from '../utils/logging';
-import SettingsVerifySecretCode from '../components/Settings/SettingsVerifySecretCode';
-import TextBox from '../components/Welcome/TextBox';
-import Testimonial from '../components/Widgets/Testimonial';
-import { validateEmail } from '../utils/regex-checks';
 import VoterActions from '../actions/VoterActions';
+import { BlueTitle, PlayerContainer, SubTitle, Title, Video } from '../components/Welcome/headerWelcomeStyles';
+import { Section, Bold, Description, DescriptionContainer, DescriptionImageColumn, DescriptionLeftColumn,
+  GetStarted, Image, NetworkContainer, NetworkImage, SectionTitle, SectionTitleBold, SignUpContainer,
+  SignUpMessage, Step, StepLabel, StepNumber } from '../components/Welcome/sectionStyles';
 import VoterConstants from '../constants/VoterConstants';
 import VoterStore from '../stores/VoterStore';
-import Section, {
-  SectionTitle,
-  SectionTitleBold,
-  Step,
-  StepNumber,
-  StepLabel,
-  GetStarted,
-  DescriptionContainer,
-  DescriptionLeftColumn,
-  DescriptionImageColumn,
-  Description,
-  Image,
-  Bold,
-  NetworkContainer,
-  NetworkImage,
-  SignUpContainer,
-  SignUpMessage,
-} from '../components/Welcome/Section';
-import WelcomeAppbar from '../components/Navigation/WelcomeAppbar';
-import welcomeForVotersImage from '../../img/welcome/WelcomeForVoters-Ballot-20190507.png';
+import cordovaScrollablePaneTopPadding from '../utils/cordovaScrollablePaneTopPadding';
+import { cordovaDot, historyPush } from '../utils/cordovaUtils';
+import { renderLog } from '../utils/logging';
+import { validateEmail } from '../utils/regex-checks';
+
+const AddressBoxWelcome = React.lazy(() => import('../components/Welcome/AddressBoxWelcome'));
+const WelcomeFooter = React.lazy(() => import('../components/Welcome/WelcomeFooter'));
+const SettingsVerifySecretCode = React.lazy(() => import('../components/Settings/SettingsVerifySecretCode'));
+const TextBox = React.lazy(() => import('../components/Welcome/TextBox'));
+const WelcomeAppbar = React.lazy(() => import('../components/Navigation/WelcomeAppbar'));
+const Testimonial = React.lazy(() => import('../components/Widgets/Testimonial'));
+
+// import SettingsVerifySecretCode from '../components/Settings/SettingsVerifySecretCode';
+
+const ffwdLogo = '../../img/global/logos/ffwd-logo.png';
+const googleLogo = '../../img/global/logos/google-logo.svg';
+const vipLogo = '../../img/global/logos/vip-logo-1000x208.png';
+const voteDotOrgLogo = '../../img/global/logos/vote_dot_org_logo-530x200.png';
+const welcomeForVotersImage = '../../img/welcome/WelcomeForVoters-Ballot-20190507.png';
+
 
 class WelcomeForVoters extends PureComponent {
   constructor (props) {

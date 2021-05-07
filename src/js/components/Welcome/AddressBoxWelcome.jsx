@@ -1,10 +1,11 @@
-import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import TextBox from './TextBox';
+import React, { PureComponent } from 'react';
 import VoterActions from '../../actions/VoterActions';
 import VoterStore from '../../stores/VoterStore';
 import { isWebApp, restoreStylesAfterCordovaKeyboard } from '../../utils/cordovaUtils';
 import { renderLog } from '../../utils/logging';
+
+const TextBox = React.lazy(() => import('./TextBox'));
 
 class AddressBoxWelcome extends PureComponent {
   constructor (props) {

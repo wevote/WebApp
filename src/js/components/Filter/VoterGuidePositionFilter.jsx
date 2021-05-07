@@ -1,15 +1,15 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import styled from 'styled-components';
-import uniqBy from 'lodash-es/uniqBy';
-import { FormControlLabel, Checkbox } from '@material-ui/core';
+import { Checkbox, FormControlLabel } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
-import getGroupedFilterSecondClass from './utils/grouped-filter-second-class';
+import { uniqBy } from 'lodash-es';
+import PropTypes from 'prop-types';
+import React, { Component } from 'react';
+import styled from 'styled-components';
 import IssueStore from '../../stores/IssueStore';
 import OrganizationStore from '../../stores/OrganizationStore';
-import { renderLog } from '../../utils/logging';
 import { convertStateCodeFilterToStateCode } from '../../utils/addressFunctions';
+import { renderLog } from '../../utils/logging';
 import { convertToInteger } from '../../utils/textFormat';
+import getGroupedFilterSecondClass from './utils/grouped-filter-second-class';
 
 
 class VoterGuidePositionFilter extends Component {

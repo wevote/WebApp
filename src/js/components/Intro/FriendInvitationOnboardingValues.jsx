@@ -1,13 +1,14 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import styled from 'styled-components';
 import { withStyles, withTheme } from '@material-ui/core/styles';
+import PropTypes from 'prop-types';
+import React, { Component } from 'react';
+import styled from 'styled-components';
 import { cordovaDot } from '../../utils/cordovaUtils';
-import FriendInvitationOnboardingFriendValuesList from '../Values/FriendInvitationOnboardingFriendValuesList';
-import FriendInvitationOnboardingValuesList from '../Values/FriendInvitationOnboardingValuesList';
-import ImageHandler from '../ImageHandler';
-import logoDark from '../../../img/global/svg-icons/we-vote-logo-horizontal-color-dark-141x46.svg';
 import { renderLog } from '../../utils/logging';
+import ImageHandler from '../ImageHandler';
+
+const FriendInvitationOnboardingFriendValuesList = React.lazy(() => import('../Values/FriendInvitationOnboardingFriendValuesList'));
+const FriendInvitationOnboardingValuesList = React.lazy(() => import('../Values/FriendInvitationOnboardingValuesList'));
+const logoDark = '../../../img/global/svg-icons/we-vote-logo-horizontal-color-dark-141x46.svg';
 
 
 class FriendInvitationOnboardingValues extends Component {

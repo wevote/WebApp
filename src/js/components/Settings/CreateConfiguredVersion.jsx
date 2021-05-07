@@ -1,8 +1,9 @@
+import { withStyles } from '@material-ui/core/styles';
 import React, { Component } from 'react';
 import styled from 'styled-components';
-import { withStyles } from '@material-ui/core/styles';
-import OpenExternalWebSite from '../Widgets/OpenExternalWebSite';
 import { renderLog } from '../../utils/logging';
+
+const OpenExternalWebSite = React.lazy(() => import('../Widgets/OpenExternalWebSite'));
 
 class CreateConfiguredVersion extends Component {
   constructor (props) {

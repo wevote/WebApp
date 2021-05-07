@@ -1,25 +1,26 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import Helmet from 'react-helmet';
-import styled from 'styled-components';
 import { Button } from '@material-ui/core';
 import { withStyles, withTheme } from '@material-ui/core/styles';
-import closeIcon from '../../../img/global/icons/x-close.png';
+import PropTypes from 'prop-types';
+import React, { Component } from 'react';
+import Helmet from 'react-helmet';
+import styled from 'styled-components';
+import FriendActions from '../../actions/FriendActions';
+import IssueActions from '../../actions/IssueActions';
+import VoterActions from '../../actions/VoterActions';
+import VoterConstants from '../../constants/VoterConstants';
+import FriendStore from '../../stores/FriendStore';
+import VoterStore from '../../stores/VoterStore';
 import { hideZenDeskHelpVisibility, showZenDeskHelpVisibility } from '../../utils/applicationUtils';
 import { cordovaFooterHeight, cordovaNetworkNextButtonTop } from '../../utils/cordovaOffsets';
 import { cordovaDot, getAndroidSize, historyPush, isAndroid, isWebApp } from '../../utils/cordovaUtils';
-import FriendActions from '../../actions/FriendActions';
-import FriendStore from '../../stores/FriendStore';
-import FriendInvitationOnboardingIntro from '../../components/Intro/FriendInvitationOnboardingIntro';
-import FriendInvitationOnboardingValues from '../../components/Intro/FriendInvitationOnboardingValues';
-import IssueActions from '../../actions/IssueActions';
-import logoDark from '../../../img/global/svg-icons/we-vote-logo-horizontal-color-dark-141x46.svg';
-import PersonalizedScoreIntroBody from '../../components/CompleteYourProfile/PersonalizedScoreIntroBody';
 import { renderLog } from '../../utils/logging';
-import StepsChips from '../../components/Widgets/StepsChips';
-import VoterActions from '../../actions/VoterActions';
-import VoterConstants from '../../constants/VoterConstants';
-import VoterStore from '../../stores/VoterStore';
+
+const closeIcon = React.lazy(() => import('../../../img/global/icons/x-close.png'));
+const FriendInvitationOnboardingIntro = React.lazy(() => import('../../components/Intro/FriendInvitationOnboardingIntro'));
+const FriendInvitationOnboardingValues = React.lazy(() => import('../../components/Intro/FriendInvitationOnboardingValues'));
+const logoDark = '../../../img/global/svg-icons/we-vote-logo-horizontal-color-dark-141x46.svg';
+const PersonalizedScoreIntroBody = React.lazy(() => import('../../components/CompleteYourProfile/PersonalizedScoreIntroBody'));
+const StepsChips = React.lazy(() => import('../../components/Widgets/StepsChips'));
 
 class FriendInvitationOnboarding extends Component {
   constructor (props) {
@@ -50,8 +51,8 @@ class FriendInvitationOnboarding extends Component {
       this.friendInvitationInformation(invitationSecretKey);
     }
     // Pre-load this so it is ready for slide 2
-    IssueActions.issueDescriptionsRetrieve();
-    IssueActions.issuesFollowedRetrieve();
+    IssueActions.issueDescriptionsRetrieve(VoterStore.getVoterWeVoteId());
+    IssueActions.issuesFollowedRetrieve(VoterStore.getVoterWeVoteId());
     this.onVoterStoreChange();
     const personalizedScoreIntroCompleted = VoterStore.getInterfaceFlagState(VoterConstants.PERSONALIZED_SCORE_INTRO_COMPLETED);
     this.setState({

@@ -1,14 +1,15 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import styled from 'styled-components';
+import { Button, Dialog, OutlinedInput } from '@material-ui/core';
 import { withStyles, withTheme } from '@material-ui/core/styles';
 import { ArrowBack, ArrowBackIos } from '@material-ui/icons';
-import { Button, Dialog, OutlinedInput } from '@material-ui/core';
 import clsx from 'clsx';
-import { renderLog } from '../../utils/logging';
-import { hasIPhoneNotch, isIPhone4in, isIOS, isCordova, isWebApp } from '../../utils/cordovaUtils';
+import PropTypes from 'prop-types';
+import React, { Component } from 'react';
+import styled from 'styled-components';
 import VoterActions from '../../actions/VoterActions';
 import VoterStore from '../../stores/VoterStore';
+import { hasIPhoneNotch, isCordova, isIOS, isIPhone4in, isWebApp } from '../../utils/cordovaUtils';
+import { renderLog } from '../../utils/logging';
+
 /* global $ */
 
 class SettingsVerifySecretCode extends Component {

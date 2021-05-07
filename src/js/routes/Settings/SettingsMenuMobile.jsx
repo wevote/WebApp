@@ -1,14 +1,15 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import { renderLog } from '../../utils/logging';
 import OrganizationActions from '../../actions/OrganizationActions';
-import OrganizationStore from '../../stores/OrganizationStore';
-import SelectVoterGuidesSideBar from '../../components/Navigation/SelectVoterGuidesSideBar';
-import SettingsBannerAndOrganizationCard from '../../components/Settings/SettingsBannerAndOrganizationCard';
-import SettingsPersonalSideBar from '../../components/Navigation/SettingsPersonalSideBar';
 import VoterGuideActions from '../../actions/VoterGuideActions';
+import OrganizationStore from '../../stores/OrganizationStore';
 import VoterGuideStore from '../../stores/VoterGuideStore';
 import VoterStore from '../../stores/VoterStore';
+import { renderLog } from '../../utils/logging';
+
+const SelectVoterGuidesSideBar = React.lazy(() => import('../../components/Navigation/SelectVoterGuidesSideBar'));
+const SettingsBannerAndOrganizationCard = React.lazy(() => import('../../components/Settings/SettingsBannerAndOrganizationCard'));
+const SettingsPersonalSideBar = React.lazy(() => import('../../components/Navigation/SettingsPersonalSideBar'));
 
 export default class SettingsMenuMobile extends Component {
   constructor (props) {

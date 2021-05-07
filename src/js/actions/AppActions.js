@@ -1,4 +1,4 @@
-import Dispatcher from '../dispatcher/AppDispatcher';
+import Dispatcher from '../dispatcher/Dispatcher';
 
 export default {
   setActivityTidbitWeVoteIdForDrawer (activityTidbitWeVoteId) {

@@ -1,12 +1,13 @@
-import React, { Component } from 'react';
-import CopyToClipboard from 'react-copy-to-clipboard';
-import PropTypes from 'prop-types';
-import styled from 'styled-components';
 import { withStyles, withTheme } from '@material-ui/core/styles';
+import PropTypes from 'prop-types';
+import React, { Component } from 'react';
+import styled from 'styled-components';
 import AppStore from '../../stores/AppStore';
-import { openSnackbar } from '../Widgets/SnackNotifier';
-import OpenExternalWebSite from '../Widgets/OpenExternalWebSite';
 import { renderLog } from '../../utils/logging';
+import { openSnackbar } from '../Widgets/SnackNotifier';
+
+const CopyToClipboard = React.lazy(() => import('react-copy-to-clipboard'));
+const OpenExternalWebSite = React.lazy(() => import('../Widgets/OpenExternalWebSite'));
 
 class ShareModalOption extends Component {
   constructor (props) {

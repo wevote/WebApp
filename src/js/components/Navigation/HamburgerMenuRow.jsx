@@ -1,10 +1,11 @@
-import React, { Component } from 'react';
+import { withStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
+import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
-import { withStyles } from '@material-ui/core/styles';
 import { renderLog } from '../../utils/logging';
-import SettingsAccountLevelChip from '../Settings/SettingsAccountLevelChip';
+
+const SettingsAccountLevelChip = React.lazy(() => import('../Settings/SettingsAccountLevelChip'));
 
 class HamburgerMenuRow extends Component {
   constructor (props) {

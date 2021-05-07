@@ -1,10 +1,11 @@
-import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
-import FriendToggle from './FriendToggle';
-import ImageHandler from '../ImageHandler';
 import { renderLog } from '../../utils/logging';
+import ImageHandler from '../ImageHandler';
+
+const FriendToggle = React.lazy(() => import('./FriendToggle'));
 
 class FriendDisplayForList extends Component {
   render () {

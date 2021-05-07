@@ -1,12 +1,12 @@
-import { Component } from 'react';
 import PropTypes from 'prop-types';
+import { Component } from 'react';
 import AppActions from '../../actions/AppActions';
+import VoterActions from '../../actions/VoterActions';
+import LoadingWheel from '../../components/LoadingWheel';
+import VoterStore from '../../stores/VoterStore';
 import cookies from '../../utils/cookies';
 import { historyPush } from '../../utils/cordovaUtils';
-import LoadingWheel from '../../components/LoadingWheel';
 import { renderLog } from '../../utils/logging';
-import VoterActions from '../../actions/VoterActions';
-import VoterStore from '../../stores/VoterStore';
 
 export default class VerifyEmailProcess extends Component {
   constructor (props) {

@@ -1,12 +1,13 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import { Settings } from '@material-ui/icons';
 import { withStyles } from '@material-ui/core/styles';
+import { Settings } from '@material-ui/icons';
+import PropTypes from 'prop-types';
+import React, { Component } from 'react';
 import styled from 'styled-components';
-import AddressBox from '../AddressBox';
-import { calculateBallotBaseUrl, shortenText } from '../../utils/textFormat';
-import ReadMore from './ReadMore';
 import { renderLog } from '../../utils/logging';
+import { calculateBallotBaseUrl, shortenText } from '../../utils/textFormat';
+
+const AddressBox = React.lazy(() => import('../AddressBox'));
+const ReadMore = React.lazy(() => import('./ReadMore'));
 
 class EditAddressInPlace extends Component {
   constructor (props, context) {

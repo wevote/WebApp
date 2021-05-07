@@ -18,6 +18,7 @@ const ReadyCard = styled.div`
   padding: 16px;
   padding-left: 82px;
   position: relative;
+  min-height: 314px;
   ::after {
     content: "";
     display: block;

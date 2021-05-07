@@ -1,17 +1,17 @@
-import React, { Component } from 'react';
-import moment from 'moment';
-import PropTypes from 'prop-types';
-import styled from 'styled-components';
 import { withStyles, withTheme } from '@material-ui/core/styles';
+import PropTypes from 'prop-types';
+import React, { Component } from 'react';
+import styled from 'styled-components';
 import BallotActions from '../../actions/BallotActions';
 import BallotStore from '../../stores/BallotStore';
 import { cordovaDot } from '../../utils/cordovaUtils';
-import ImageHandler from '../ImageHandler';
-import logoDark from '../../../img/global/svg-icons/we-vote-logo-horizontal-color-dark-141x46.svg';
-import ReadMore from '../Widgets/ReadMore';
-import { renderLog } from '../../utils/logging';
 import { formatDateToMonthDayYear } from '../../utils/dateFormat';
+import { renderLog } from '../../utils/logging';
 import { convertToInteger } from '../../utils/textFormat';
+import ImageHandler from '../ImageHandler';
+
+const logoDark = '../../../img/global/svg-icons/we-vote-logo-horizontal-color-dark-141x46.svg';
+const ReadMore = React.lazy(() => import('../Widgets/ReadMore'));
 
 class FriendInvitationOnboardingIntro extends Component {
   constructor (props) {
@@ -40,8 +40,7 @@ class FriendInvitationOnboardingIntro extends Component {
     const electionDayText = BallotStore.currentBallotElectionDate;
     // console.log('electionDayText:', electionDayText);
     if (electionDayText) {
-      // const electionDayTextFormatted = electionDayText ? moment(electionDayText).format('MMM Do, YYYY') : '';
-      const electionDayTextDateFormatted = electionDayText ? moment(electionDayText).format('MM/DD/YYYY') : '';
+      const electionDayTextDateFormatted = electionDayText && window.moment ? window.moment(electionDayText).format('MM/DD/YYYY') : '';
       // console.log('electionDayTextFormatted: ', electionDayTextFormatted, ', electionDayTextDateFormatted:', electionDayTextDateFormatted);
       const electionDate = new Date(electionDayTextDateFormatted);
       if (electionDate) {

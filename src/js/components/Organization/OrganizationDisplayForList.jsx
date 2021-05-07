@@ -1,14 +1,15 @@
-import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import ImageHandler from '../ImageHandler';
-import { removeTwitterNameFromDescription, numberWithCommas } from '../../utils/textFormat';
-import PositionRatingSnippet from '../Widgets/PositionRatingSnippet';
-import PositionInformationOnlySnippet from '../Widgets/PositionInformationOnlySnippet';
-import PositionSupportOpposeSnippet from '../Widgets/PositionSupportOpposeSnippet';
-import ReadMore from '../Widgets/ReadMore';
-import { renderLog } from '../../utils/logging';
 import OrganizationStore from '../../stores/OrganizationStore';
+import { renderLog } from '../../utils/logging';
+import { numberWithCommas, removeTwitterNameFromDescription } from '../../utils/textFormat';
+import ImageHandler from '../ImageHandler';
+
+const PositionRatingSnippet = React.lazy(() => import('../Widgets/PositionRatingSnippet'));
+const PositionInformationOnlySnippet = React.lazy(() => import('../Widgets/PositionInformationOnlySnippet'));
+const PositionSupportOpposeSnippet = React.lazy(() => import('../Widgets/PositionSupportOpposeSnippet'));
+const ReadMore = React.lazy(() => import('../Widgets/ReadMore'));
 
 // OrganizationDisplayForList is used to display Organizations (as opposed to Voter Guides)
 export default class OrganizationDisplayForList extends Component {

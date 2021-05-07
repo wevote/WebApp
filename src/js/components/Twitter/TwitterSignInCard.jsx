@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import TwitterSignIn from './TwitterSignIn';
 import { renderLog } from '../../utils/logging';
 
+const TwitterSignIn = React.lazy(() => import('./TwitterSignIn'));
 const twitterText = 'Signing into Twitter is the fastest way to find voter guides related to your values. We Vote will find the voter guides of everyone you are following on Twitter.';
 
 const twitterInfoText = (

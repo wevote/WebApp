@@ -1,10 +1,11 @@
-import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import ParsedTwitterDescription from './ParsedTwitterDescription';
-import ImageHandler from '../ImageHandler';
+import React, { Component } from 'react';
 import { renderLog } from '../../utils/logging';
-import OpenExternalWebSite from '../Widgets/OpenExternalWebSite';
 import { abbreviateNumber, numberWithCommas, removeTwitterNameFromDescription } from '../../utils/textFormat';
+import ImageHandler from '../ImageHandler';
+
+const ParsedTwitterDescription = React.lazy(() => import('./ParsedTwitterDescription'));
+const OpenExternalWebSite = React.lazy(() => import('../Widgets/OpenExternalWebSite'));
 
 export default class TwitterAccountCard extends Component {
   render () {

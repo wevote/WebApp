@@ -1,4 +1,5 @@
-import { Component } from 'react';
+import { Component }  from 'react';
+
 import PropTypes from 'prop-types';
 import { historyPush } from '../../utils/cordovaUtils';
 import LoadingWheel from '../../components/LoadingWheel';
@@ -6,7 +7,7 @@ import { renderLog } from '../../utils/logging';
 import VoterActions from '../../actions/VoterActions';
 import VoterStore from '../../stores/VoterStore';
 // This will be needed in the future
-// import WouldYouLikeToMergeAccounts from "../../components/WouldYouLikeToMergeAccounts";
+// const WouldYouLikeToMergeAccounts = React.lazy(() => import("../../components/WouldYouLikeToMergeAccounts"));
 
 // This component allows us to jump from the native apps to WebApp, and preserve the sign in state
 export default class SignInJumpProcess extends Component {

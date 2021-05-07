@@ -1,26 +1,24 @@
-import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
-import FollowToggle from '../Widgets/FollowToggle';
-import ImageHandler from '../ImageHandler';
-import LoadingWheel from '../LoadingWheel';
-import { renderLog } from '../../utils/logging';
-import IssuesByOrganizationDisplayList from '../Values/IssuesByOrganizationDisplayList';
-import ParsedTwitterDescription from '../Twitter/ParsedTwitterDescription';
-import PositionRatingSnippet from '../Widgets/PositionRatingSnippet';
-import PositionInformationOnlySnippet from '../Widgets/PositionInformationOnlySnippet';
-import PositionSupportOpposeSnippet from '../Widgets/PositionSupportOpposeSnippet';
-import RatingPopover from '../Widgets/RatingPopover';
-import OpenExternalWebSite from '../Widgets/OpenExternalWebSite';
 import OrganizationActions from '../../actions/OrganizationActions';
 import OrganizationStore from '../../stores/OrganizationStore';
-import ReadMore from '../Widgets/ReadMore';
-import {
-  numberWithCommas,
-  removeTwitterNameFromDescription,
-  stringContains,
-} from '../../utils/textFormat';
+import { renderLog } from '../../utils/logging';
+import { numberWithCommas, removeTwitterNameFromDescription, stringContains } from '../../utils/textFormat';
+import ImageHandler from '../ImageHandler';
+import LoadingWheel from '../LoadingWheel';
+
+const FollowToggle = React.lazy(() => import('../Widgets/FollowToggle'));
+const IssuesByOrganizationDisplayList = React.lazy(() => import('../Values/IssuesByOrganizationDisplayList'));
+const OpenExternalWebSite = React.lazy(() => import('../Widgets/OpenExternalWebSite'));
+const ParsedTwitterDescription = React.lazy(() => import('../Twitter/ParsedTwitterDescription'));
+const PositionInformationOnlySnippet = React.lazy(() => import('../Widgets/PositionInformationOnlySnippet'));
+const PositionRatingSnippet = React.lazy(() => import('../Widgets/PositionRatingSnippet'));
+const PositionSupportOpposeSnippet = React.lazy(() => import('../Widgets/PositionSupportOpposeSnippet'));
+const RatingPopover = React.lazy(() => import('../Widgets/RatingPopover'));
+const ReadMore = React.lazy(() => import('../Widgets/ReadMore'));
+
 
 // This Component is used to display the Organization by TwitterHandle
 // Please see VoterGuide/Organization for the Component used by GuideList for Candidate and Opinions (you can follow)

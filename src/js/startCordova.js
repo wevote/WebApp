@@ -1,7 +1,8 @@
-import TwitterSignIn from './components/Twitter/TwitterSignIn';
-import { getProcessorArchitecture, isIOSAppOnMac, isCordova, isIOS,
-  prepareForCordovaKeyboard, restoreStylesAfterCordovaKeyboard } from './utils/cordovaUtils';
+import React from 'react';
 import VoterActions from './actions/VoterActions';
+import { getProcessorArchitecture, isCordova, isIOS, isIOSAppOnMac, prepareForCordovaKeyboard, restoreStylesAfterCordovaKeyboard } from './utils/cordovaUtils';
+
+const TwitterSignIn = React.lazy(() => import('./components/Twitter/TwitterSignIn'));
 
 function localPrepareForCordovaKeyboard () {
   prepareForCordovaKeyboard('ballot');

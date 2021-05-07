@@ -1,32 +1,29 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import TextTruncate from 'react-text-truncate';
-import styled from 'styled-components';
 import { withStyles, withTheme } from '@material-ui/core/styles';
 import { Info } from '@material-ui/icons';
+import PropTypes from 'prop-types';
+import React, { Component } from 'react';
+import styled from 'styled-components';
 import AppActions from '../../actions/AppActions';
-import BallotItemSupportOpposeComment from '../Widgets/BallotItemSupportOpposeComment';
-import BallotItemSupportOpposeCountDisplay from '../Widgets/BallotItemSupportOpposeCountDisplay';
 import CandidateStore from '../../stores/CandidateStore';
-import { historyPush } from '../../utils/cordovaUtils';
-import ImageHandler from '../ImageHandler';
-import isMobileAndTabletScreenSize from '../../utils/isMobileAndTabletScreenSize';
-import IssuesByBallotItemDisplayList from '../Values/IssuesByBallotItemDisplayList';
 import IssueStore from '../../stores/IssueStore';
-import ItemActionBar from '../Widgets/ItemActionBar/ItemActionBar';
-import { renderLog } from '../../utils/logging';
-import OfficeNameText from '../Widgets/OfficeNameText';
-import OpenExternalWebSite from '../Widgets/OpenExternalWebSite';
-import ReadMore from '../Widgets/ReadMore';
-import ShowMoreFooter from '../Navigation/ShowMoreFooter';
 import SupportStore from '../../stores/SupportStore';
-import TopCommentByBallotItem from '../Widgets/TopCommentByBallotItem';
 import VoterGuideStore from '../../stores/VoterGuideStore';
-import {
-  abbreviateNumber,
-  numberWithCommas,
-  stripHtmlFromString,
-} from '../../utils/textFormat';
+import { historyPush } from '../../utils/cordovaUtils';
+import isMobileAndTabletScreenSize from '../../utils/isMobileAndTabletScreenSize';
+import { renderLog } from '../../utils/logging';
+import { abbreviateNumber, numberWithCommas, stripHtmlFromString } from '../../utils/textFormat';
+import ImageHandler from '../ImageHandler';
+
+const TextTruncate = React.lazy(() => import('react-text-truncate'));
+const BallotItemSupportOpposeComment = React.lazy(() => import('../Widgets/BallotItemSupportOpposeComment'));
+const BallotItemSupportOpposeCountDisplay = React.lazy(() => import('../Widgets/BallotItemSupportOpposeCountDisplay'));
+const IssuesByBallotItemDisplayList = React.lazy(() => import('../Values/IssuesByBallotItemDisplayList'));
+const ItemActionBar = React.lazy(() => import('../Widgets/ItemActionBar/ItemActionBar'));
+const OfficeNameText = React.lazy(() => import('../Widgets/OfficeNameText'));
+const OpenExternalWebSite = React.lazy(() => import('../Widgets/OpenExternalWebSite'));
+const ReadMore = React.lazy(() => import('../Widgets/ReadMore'));
+const ShowMoreFooter = React.lazy(() => import('../Navigation/ShowMoreFooter'));
+const TopCommentByBallotItem = React.lazy(() => import('../Widgets/TopCommentByBallotItem'));
 
 // This is related to /js/components/VoterGuide/OrganizationVoterGuideCandidateItem.jsx
 class CandidateItem extends Component {

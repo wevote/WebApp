@@ -1,6 +1,6 @@
 import { ReduceStore } from 'flux/utils';
-import Dispatcher from '../dispatcher/Dispatcher';
 import ReactionActions from '../actions/ReactionActions';
+import Dispatcher from '../dispatcher/Dispatcher';
 import { arrayContains, removeValueFromArray } from '../utils/textFormat';
 import VoterStore from './VoterStore';
 

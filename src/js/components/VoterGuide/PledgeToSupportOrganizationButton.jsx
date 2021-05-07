@@ -1,10 +1,11 @@
-import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import Button from 'react-bootstrap/Button';
-import { shortenText } from '../../utils/textFormat';
-import { renderLog } from '../../utils/logging';
+import React, { Component } from 'react';
 import VoterGuideStore from '../../stores/VoterGuideStore';
 import VoterStore from '../../stores/VoterStore';
+import { renderLog } from '../../utils/logging';
+import { shortenText } from '../../utils/textFormat';
+
+const Button = React.lazy(() => import('react-bootstrap/Button'));
 
 export default class PledgeToSupportOrganizationButton extends Component {
   constructor (props) {

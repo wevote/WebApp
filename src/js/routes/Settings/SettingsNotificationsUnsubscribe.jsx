@@ -1,19 +1,20 @@
+import { Button, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@material-ui/core';
+import { withStyles } from '@material-ui/core/styles';
+import { MailOutline, PhoneAndroid, Settings } from '@material-ui/icons';
+import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import Helmet from 'react-helmet';
-import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { withStyles } from '@material-ui/core/styles';
-import { Button, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@material-ui/core';
-import { MailOutline, PhoneAndroid, Settings } from '@material-ui/icons';
 import AnalyticsActions from '../../actions/AnalyticsActions';
-import BrowserPushMessage from '../../components/Widgets/BrowserPushMessage';
-import { historyPush } from '../../utils/cordovaUtils';
-import LoadingWheel from '../../components/LoadingWheel';
-import { renderLog } from '../../utils/logging';
 import VoterActions from '../../actions/VoterActions';
+import LoadingWheel from '../../components/LoadingWheel';
+import webAppConfig from '../../config';
 import VoterConstants from '../../constants/VoterConstants';
 import VoterStore from '../../stores/VoterStore';
-import webAppConfig from '../../config';
+import { historyPush } from '../../utils/cordovaUtils';
+import { renderLog } from '../../utils/logging';
+
+const BrowserPushMessage = React.lazy(() => import('../../components/Widgets/BrowserPushMessage'));
 
 const nextReleaseFeaturesEnabled = webAppConfig.ENABLE_NEXT_RELEASE_FEATURES === undefined ? false : webAppConfig.ENABLE_NEXT_RELEASE_FEATURES;
 

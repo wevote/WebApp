@@ -1,18 +1,23 @@
-import React from 'react';
-import moment from 'moment';
-import styled from 'styled-components';
+import { Button } from '@material-ui/core';
 import PropTypes from 'prop-types';
+import React from 'react';
+import styled from 'styled-components';
+import BallotActions from '../../actions/BallotActions';
 import BallotStore from '../../stores/BallotStore';
-import { renderLog } from '../../utils/logging';
+import { historyPush } from '../../utils/cordovaUtils';
 import { formatDateToMonthDayYear } from '../../utils/dateFormat';
+import initializeMoment from '../../utils/initializeMoment';
+import { renderLog } from '../../utils/logging';
 
 class ElectionCountdown extends React.Component {
   constructor (props) {
     super(props);
     this.state = {
-      electionDate: null,
+      electionDateMDY: '',
       electionIsToday: false,
       electionInPast: false,
+      t0: performance.now(),
+      showButton: false,
     };
     this.setNewTime = this.setNewTime.bind(this);
   }
@@ -20,6 +25,16 @@ class ElectionCountdown extends React.Component {
   componentDidMount () {
     this.onBallotStoreChange();
     this.ballotStoreListener = BallotStore.addListener(this.onBallotStoreChange.bind(this));
+    this.addressSuggestiontimer = setTimeout(() => {
+      const { electionDateMDY } = this.state;
+      const { location: { pathname } } = window;
+      if (electionDateMDY.length === 0) {
+        console.log('history push or button appears');
+        if (pathname === '' || pathname === '/' || pathname === '/ready-light') {
+          this.setState({ showButton: true });
+        }
+      }
+    }, 5000);
   }
 
   componentWillUnmount () {
@@ -33,26 +48,41 @@ class ElectionCountdown extends React.Component {
   onBallotStoreChange () {
     const { daysOnlyMode } = this.props;
     const electionDayText = BallotStore.currentBallotElectionDate;
-    // console.log('electionDayText:', electionDayText);
-    if (electionDayText) {
-      // const electionDayTextFormatted = electionDayText ? moment(electionDayText).format('MMM Do, YYYY') : '';
-      const electionDayTextDateFormatted = electionDayText ? moment(electionDayText).format('MM/DD/YYYY') : '';
-      // console.log('electionDayTextFormatted: ', electionDayTextFormatted, ', electionDayTextDateFormatted:', electionDayTextDateFormatted);
-      const electionDate = new Date(electionDayTextDateFormatted);
-      this.setState({
-        electionDate,
-      });
-      let refreshIntervalInMilliseconds = 1000; // One second
-      if (daysOnlyMode) {
-        this.setNewTime(electionDate);
-        refreshIntervalInMilliseconds = 3600000; // One hours worth of milliseconds
+    if (electionDayText === undefined) {
+      const { t0 } = this.state;
+      let { initialDelay } = this.props;
+      initialDelay = initialDelay || 0;
+      if (initialDelay === 0) {
+        BallotActions.voterBallotItemsRetrieve();
+      } else {
+        const delay = initialDelay - performance.now() - t0;
+        this.loadDelay = setTimeout(() => {
+          BallotActions.voterBallotItemsRetrieve();
+        }, delay);
       }
-      if (this.timeInterval) {
-        clearInterval(this.timeInterval);
-        this.timeInterval = null;
-      }
-      this.timeInterval = setInterval(() => this.setNewTime(electionDate), refreshIntervalInMilliseconds);
     }
+    // console.log('electionDayText:', electionDayText);
+    initializeMoment(() => {
+      if (electionDayText) {
+        const { moment } = window;
+        const electionDayMDYSlash = moment(electionDayText).format('MM/DD/YYYY');
+        const electionDate = new Date(electionDayMDYSlash);
+        const electionDateMDY = formatDateToMonthDayYear(electionDate);
+        this.setState({
+          electionDateMDY,
+        });
+        let refreshIntervalInMilliseconds = 1000; // One second
+        if (daysOnlyMode) {
+          this.setNewTime(electionDate);
+          refreshIntervalInMilliseconds = 3600000; // One hours worth of milliseconds
+        }
+        if (this.timeInterval) {
+          clearInterval(this.timeInterval);
+          this.timeInterval = null;
+        }
+        this.timeInterval = setInterval(() => this.setNewTime(electionDate), refreshIntervalInMilliseconds);
+      }
+    });
   }
 
   setNewTime (electionDate) {
@@ -117,7 +147,7 @@ class ElectionCountdown extends React.Component {
   render () {
     renderLog('ElectionCountdown');  // Set LOG_RENDER_EVENTS to log all renders
     const { daysOnlyMode } = this.props;
-    const { days, daysMobile, electionIsToday, electionInPast, hours, minutes, seconds, electionDate } = this.state;
+    const { days, daysMobile, electionIsToday, electionInPast, hours, minutes, seconds, electionDateMDY, showButton } = this.state;
     const timeStillLoading = !(days || hours || minutes || seconds);
     const electionIsUpcomingHtml = (
       <Card className="card">
@@ -132,26 +162,35 @@ class ElectionCountdown extends React.Component {
                     {daysMobile === '1' ? 'day' : 'days'}
                   </>
                 ) : (
-                  <DaysLargeText>
-                    &mdash; days
-                  </DaysLargeText>
+                  <div style={{ margin: 26 }}>
+                    { showButton ? (
+                      <Button
+                        variant="outlined"
+                        color="primary"
+                        id="goToHeavyButton"
+                        onClick={() => historyPush('/ballot')}
+                      >
+                        Choose Election
+                      </Button>
+                    ) : (
+                      <DaysFindingText>
+                        Finding the election...
+                      </DaysFindingText>
+                    )}
+                  </div>
                 )}
               </CardTitleUpcoming>
             </div>
             <div>
               <CardSubTitle center>
-                {(electionDate) ? (
+                {(electionDateMDY) ? (
                   <>
                     until your next election on
                     {' '}
-                    {formatDateToMonthDayYear(electionDate)}
+                    {electionDateMDY}
                     .
                   </>
-                ) : (
-                  <>
-                    until your next election on...
-                  </>
-                )}
+                ) : (<></>)}
               </CardSubTitle>
             </div>
           </div>
@@ -192,11 +231,11 @@ class ElectionCountdown extends React.Component {
               </div>
               <div>
                 <CardSubTitle center desktopMode>
-                  {(electionDate) ? (
+                  {(electionDateMDY) ? (
                     <>
                       until your next election on
                       {' '}
-                      {formatDateToMonthDayYear(electionDate)}
+                      {electionDateMDY}
                       .
                     </>
                   ) : (
@@ -222,11 +261,11 @@ class ElectionCountdown extends React.Component {
             </div>
             <div>
               <CardSubTitle center>
-                {(electionDate) ? (
+                {(electionDateMDY) ? (
                   <>
                     Your election is today
                     {' '}
-                    {formatDateToMonthDayYear(electionDate)}
+                    {electionDateMDY}
                     .
                   </>
                 ) : (
@@ -250,11 +289,11 @@ class ElectionCountdown extends React.Component {
               </div>
               <div>
                 <CardSubTitle center desktopMode>
-                  {(electionDate) ? (
+                  {(electionDateMDY) ? (
                     <>
                       Your election is today
                       {' '}
-                      {formatDateToMonthDayYear(electionDate)}
+                      {electionDateMDY}
                       .
                     </>
                   ) : (
@@ -280,12 +319,11 @@ class ElectionCountdown extends React.Component {
             </div>
             <div>
               <CardSubTitle center>
-                {(electionDate) ? (
+                {(electionDateMDY) ? (
                   <>
-                    This election was on
+                    This election was held on
                     {' '}
-                    {formatDateToMonthDayYear(electionDate)}
-                    .
+                    {electionDateMDY}
                   </>
                 ) : (
                   <>
@@ -309,11 +347,11 @@ class ElectionCountdown extends React.Component {
               </div>
               <div>
                 <CardSubTitle center desktopMode>
-                  {(electionDate) ? (
+                  {(electionDateMDY) ? (
                     <>
                       This election was on
                       {' '}
-                      {formatDateToMonthDayYear(electionDate)}
+                      {electionDateMDY}
                       .
                     </>
                   ) : (
@@ -340,11 +378,13 @@ class ElectionCountdown extends React.Component {
 }
 ElectionCountdown.propTypes = {
   daysOnlyMode: PropTypes.bool,
+  initialDelay: PropTypes.number,
 };
 
 const Card = styled.div`
   padding-top: 4px;
   padding-bottom: 8px;
+  min-height: 190px;
 `;
 
 const CardTitleUpcoming = styled.h1`
@@ -390,7 +430,7 @@ const CardSubTitle = styled.h3`
   font-size: ${(props) => (props.desktopMode ? '18px' : '22px')};
   font-weight: 700;
   color: #2E3C5D !important;
-  width: fit-content;
+  // width: fit-content;
   margin-bottom: 0 !important;
   margin-top: ${(props) => (props.desktopMode ? '24px' : null)};
   width: 100%;
@@ -404,8 +444,10 @@ const CardSubTitle = styled.h3`
   }
 `;
 
-const DaysLargeText = styled.div`
+const DaysFindingText = styled.div`
   color: #ccc;
+  font-size: 20px;
+  margin-top: 20px;
 `;
 
 const TimeFlex = styled.div`
@@ -416,7 +458,7 @@ const TimeFlex = styled.div`
 `;
 
 const TimeSection = styled.div`
-  padding: 0px 8px;
+  padding: 0 8px;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;

@@ -1,10 +1,10 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
 import { Button } from '@material-ui/core';
-import ImageHandler from '../ImageHandler';
-import { renderLog } from '../../utils/logging';
+import PropTypes from 'prop-types';
+import React, { Component } from 'react';
 import OrganizationActions from '../../actions/OrganizationActions';
 import OrganizationStore from '../../stores/OrganizationStore';
+import { renderLog } from '../../utils/logging';
+import ImageHandler from '../ImageHandler';
 import { openSnackbar } from './SnackNotifier';
 
 export default class CodeCopier extends Component {

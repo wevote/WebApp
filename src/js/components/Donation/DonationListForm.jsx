@@ -1,11 +1,12 @@
+import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import * as PropTypes from 'prop-types';
-import Tab from 'react-bootstrap/Tab';
-import Tabs from 'react-bootstrap/Tabs';
 import DonateActions from '../../actions/DonateActions';
-import DonationList from './DonationList';
 import DonateStore from '../../stores/DonateStore';
 import { renderLog } from '../../utils/logging';
+
+const Tab = React.lazy(() => import('react-bootstrap/Tab'));
+const Tabs = React.lazy(() => import('react-bootstrap/Tabs'));
+const DonationList = React.lazy(() => import('./DonationList'));
 
 
 export default class DonationListForm extends Component {

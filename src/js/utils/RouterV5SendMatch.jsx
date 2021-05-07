@@ -1,10 +1,11 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import PageNotFound from '../routes/PageNotFound';
-import Ready from '../routes/Ready';
-import SettingsDashboard from '../routes/Settings/SettingsDashboard';
-import OrganizationVoterGuideEdit from '../routes/VoterGuide/OrganizationVoterGuideEdit';
 import { renderLog } from './logging';
+
+const OrganizationVoterGuideEdit = React.lazy(() => import('../routes/VoterGuide/OrganizationVoterGuideEdit'));
+const PageNotFound = React.lazy(() => import('../routes/PageNotFound'));
+const Ready = React.lazy(() => import('../routes/Ready'));
+const SettingsDashboard = React.lazy(() => import('../routes/Settings/SettingsDashboard'));
 
 // A function component, for cases where react-router V5 does not properly send parameters to React.Components
 // This is more of a workaround, than a thoroughly understood solution.

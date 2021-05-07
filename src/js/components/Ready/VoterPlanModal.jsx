@@ -1,20 +1,21 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import styled from 'styled-components';
-import { Close, EditLocation } from '@material-ui/icons';
+import { Button, Checkbox, Dialog, DialogContent, FormControlLabel, IconButton, InputBase, Paper, Select } from '@material-ui/core';
 import { withStyles, withTheme } from '@material-ui/core/styles';
-import { Button, Dialog, DialogContent, IconButton, Checkbox, FormControlLabel, InputBase, Select, Paper } from '@material-ui/core';
+import { Close, EditLocation } from '@material-ui/icons';
+import PropTypes from 'prop-types';
+import React, { Component } from 'react';
+import styled from 'styled-components';
 import AnalyticsActions from '../../actions/AnalyticsActions';
-import BallotStore from '../../stores/BallotStore';
-import { hasIPhoneNotch } from '../../utils/cordovaUtils';
-import OpenExternalWebSite from '../Widgets/OpenExternalWebSite';
 import ReadyActions from '../../actions/ReadyActions';
+import webAppConfig from '../../config';
+import BallotStore from '../../stores/BallotStore';
 import ReadyStore from '../../stores/ReadyStore';
-import { renderLog } from '../../utils/logging';
-import { formatDateToMonthDayYear } from '../../utils/dateFormat';
 import VoterStore from '../../stores/VoterStore';
 import { hideZenDeskHelpVisibility, setZenDeskHelpVisibility } from '../../utils/applicationUtils';
-import webAppConfig from '../../config';
+import { hasIPhoneNotch } from '../../utils/cordovaUtils';
+import { formatDateToMonthDayYear } from '../../utils/dateFormat';
+import { renderLog } from '../../utils/logging';
+
+const OpenExternalWebSite = React.lazy(() => import('../Widgets/OpenExternalWebSite'));
 
 const nextReleaseFeaturesEnabled = webAppConfig.ENABLE_NEXT_RELEASE_FEATURES === undefined ? false : webAppConfig.ENABLE_NEXT_RELEASE_FEATURES;
 

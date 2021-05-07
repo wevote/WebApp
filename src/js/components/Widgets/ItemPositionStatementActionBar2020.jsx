@@ -1,13 +1,14 @@
-import React, { Component } from 'react';
-import styled from 'styled-components';
+import { Button, InputBase, Paper } from '@material-ui/core';
 import { withStyles, withTheme } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
-import { Paper, InputBase, Button } from '@material-ui/core';
-import { renderLog } from '../../utils/logging';
+import React, { Component } from 'react';
+import styled from 'styled-components';
 import SupportActions from '../../actions/SupportActions';
 import SupportStore from '../../stores/SupportStore';
-import PositionStatementModal from './PositionStatementModal';
 import VoterStore from '../../stores/VoterStore';
+import { renderLog } from '../../utils/logging';
+
+const PositionStatementModal = React.lazy(() => import('./PositionStatementModal'));
 
 class ItemPositionStatementActionBar2020 extends Component {
   constructor (props) {
@@ -89,6 +90,10 @@ class ItemPositionStatementActionBar2020 extends Component {
     return { hasError: true };
   }
 
+  handleFocus (e) {
+    e.target.blur();
+  }
+
   onSupportStoreChange () {
     const { ballotItemWeVoteId } = this.props;
     const { showEditPositionStatementInput } = this.state;
@@ -121,10 +126,6 @@ class ItemPositionStatementActionBar2020 extends Component {
         // voterPositionIsPublic,
       });
     }
-  }
-
-  handleFocus (e) {
-    e.target.blur();
   }
 
   onVoterStoreChange () {

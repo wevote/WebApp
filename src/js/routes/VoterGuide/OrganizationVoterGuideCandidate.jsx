@@ -1,25 +1,26 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import Helmet from 'react-helmet';
-import styled from 'styled-components';
 import { withStyles } from '@material-ui/core/styles';
 import { Info } from '@material-ui/icons';
+import PropTypes from 'prop-types';
+import React, { Component } from 'react';
+import Helmet from 'react-helmet';
+import styled from 'styled-components';
 import AnalyticsActions from '../../actions/AnalyticsActions';
 import CandidateActions from '../../actions/CandidateActions';
-import CandidateStore from '../../stores/CandidateStore';
-import { capitalizeString } from '../../utils/textFormat';
-import EndorsementCard from '../../components/Widgets/EndorsementCard';
-import LoadingWheel from '../../components/LoadingWheel';
-import OpenExternalWebSite from '../../components/Widgets/OpenExternalWebSite';
 import OrganizationActions from '../../actions/OrganizationActions';
-import OrganizationVoterGuideCandidateItem from '../../components/VoterGuide/OrganizationVoterGuideCandidateItem';
-import PositionList from '../../components/Ballot/PositionList';
-import ThisIsMeAction from '../../components/Widgets/ThisIsMeAction';
 import VoterGuideActions from '../../actions/VoterGuideActions';
+import LoadingWheel from '../../components/LoadingWheel';
+import webAppConfig from '../../config';
+import CandidateStore from '../../stores/CandidateStore';
 import VoterGuideStore from '../../stores/VoterGuideStore';
 import VoterStore from '../../stores/VoterStore';
-import webAppConfig from '../../config';
 import { renderLog } from '../../utils/logging';
+import { capitalizeString } from '../../utils/textFormat';
+
+const EndorsementCard = React.lazy(() => import('../../components/Widgets/EndorsementCard'));
+const OpenExternalWebSite = React.lazy(() => import('../../components/Widgets/OpenExternalWebSite'));
+const OrganizationVoterGuideCandidateItem = React.lazy(() => import('../../components/VoterGuide/OrganizationVoterGuideCandidateItem'));
+const PositionList = React.lazy(() => import('../../components/Ballot/PositionList'));
+const ThisIsMeAction = React.lazy(() => import('../../components/Widgets/ThisIsMeAction'));
 
 // This is based on routes/Ballot/Candidate - TO BE DEPRECATED?
 // TODO: Not called anywhere Dec 2020, delete when Dale agrees

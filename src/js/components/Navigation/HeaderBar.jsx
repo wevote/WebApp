@@ -1,40 +1,43 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import styled from 'styled-components';
-import { Button, AppBar, Toolbar, Tabs, IconButton, Tooltip } from '@material-ui/core';
-import { Place, AccountCircle } from '@material-ui/icons';
+import { AppBar, Button, IconButton, Tabs, Toolbar, Tooltip } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
+import { AccountCircle, Place } from '@material-ui/icons';
+import PropTypes from 'prop-types';
+import React, { Component } from 'react';
+import styled from 'styled-components';
 import anonymous from '../../../img/global/icons/avatar-generic.png';
-import { hasIPhoneNotch, historyPush, isIOSAppOnMac, isCordova, isWebApp } from '../../utils/cordovaUtils';
-import LazyImage from '../../utils/LazyImage';
-import AdviserIntroModal from '../CompleteYourProfile/AdviserIntroModal';
 import AppActions from '../../actions/AppActions';
-import AppStore from '../../stores/AppStore';
 import BallotActions from '../../actions/BallotActions';
-import FirstPositionIntroModal from '../CompleteYourProfile/FirstPositionIntroModal';
-import FriendStore from '../../stores/FriendStore';
-import HeaderBarProfilePopUp from './HeaderBarProfilePopUp';
-import HeaderBarLogo from './HeaderBarLogo';
-import HeaderNotificationMenu from './HeaderNotificationMenu';
-import { renderLog } from '../../utils/logging';
 import OrganizationActions from '../../actions/OrganizationActions';
-import PaidAccountUpgradeModal from '../Settings/PaidAccountUpgradeModal';
-import PersonalizedScoreIntroModal from '../CompleteYourProfile/PersonalizedScoreIntroModal';
-import SelectBallotModal from '../Ballot/SelectBallotModal';
-import SignInModal from '../Widgets/SignInModal';
-import ValuesIntroModal from '../CompleteYourProfile/ValuesIntroModal';
 import VoterGuideActions from '../../actions/VoterGuideActions';
 import VoterSessionActions from '../../actions/VoterSessionActions';
+import AppStore from '../../stores/AppStore';
+import FriendStore from '../../stores/FriendStore';
 import VoterStore from '../../stores/VoterStore';
-import { getBooleanValue, shortenText, startsWith, stringContains } from '../../utils/textFormat';
-import shouldHeaderRetreat from '../../utils/shouldHeaderRetreat';
-import displayFriendsTabs from '../../utils/displayFriendsTabs';
-import ShareModal from '../Share/ShareModal';
-import signInModalGlobalState from '../Widgets/signInModalGlobalState';
-import { voterPhoto } from '../../utils/voterPhoto';
 import { weVoteBrandingOff } from '../../utils/applicationUtils';
-import ImageUploadModal from '../Settings/ImageUploadModal';
-import TabWithPushHistory from './TabWithPushHistory';
+import { hasIPhoneNotch, historyPush, isCordova, isIOSAppOnMac, isWebApp } from '../../utils/cordovaUtils';
+import displayFriendsTabs from '../../utils/displayFriendsTabs';
+import LazyImage from '../../utils/LazyImage';
+import { renderLog } from '../../utils/logging';
+import shouldHeaderRetreat from '../../utils/shouldHeaderRetreat';
+import { getBooleanValue, shortenText, startsWith, stringContains } from '../../utils/textFormat';
+import { voterPhoto } from '../../utils/voterPhoto';
+import signInModalGlobalState from '../Widgets/signInModalGlobalState';
+
+const AdviserIntroModal = React.lazy(() => import('../CompleteYourProfile/AdviserIntroModal'));
+const FirstPositionIntroModal = React.lazy(() => import('../CompleteYourProfile/FirstPositionIntroModal'));
+const HeaderBarLogo = React.lazy(() => import('./HeaderBarLogo'));
+const HeaderBarProfilePopUp = React.lazy(() => import('./HeaderBarProfilePopUp'));
+const HeaderNotificationMenu = React.lazy(() => import('./HeaderNotificationMenu'));
+const ImageUploadModal = React.lazy(() => import('../Settings/ImageUploadModal'));
+// TODO: Backport "@stripe/react-stripe-js" use from Campaigns
+// const PaidAccountUpgradeModal = React.lazy(() => import('../Settings/PaidAccountUpgradeModal'));
+const PersonalizedScoreIntroModal = React.lazy(() => import('../CompleteYourProfile/PersonalizedScoreIntroModal'));
+const SelectBallotModal = React.lazy(() => import('../Ballot/SelectBallotModal'));
+const ShareModal = React.lazy(() => import('../Share/ShareModal'));
+const SignInModal = React.lazy(() => import('../Widgets/SignInModal'));
+const TabWithPushHistory = React.lazy(() => import('./TabWithPushHistory'));
+const ValuesIntroModal = React.lazy(() => import('../CompleteYourProfile/ValuesIntroModal'));
+
 
 class HeaderBar extends Component {
   // static goToGetStarted () {
@@ -357,16 +360,17 @@ class HeaderBar extends Component {
   }
 
   // December 2020: destinationUrlForHistoryPush is not defined in this class, so we never make the HistoryPush
+  // eslint-disable-next-line no-unused-vars
   toggleSelectBallotModal (showSelectBallotModalHideAddress = false, showSelectBallotModalHideElections = false) {
     const { showSelectBallotModal } = this.state;
-    // if (showSelectBallotModal && destinationUrlForHistoryPush && destinationUrlForHistoryPush !== '') {
-    //   historyPush(destinationUrlForHistoryPush);
-    // } else
     if (!showSelectBallotModal) {
       // console.log('Ballot toggleSelectBallotModal, BallotActions.voterBallotListRetrieve()');
       BallotActions.voterBallotListRetrieve(); // Retrieve a list of ballots for the voter from other elections
     }
-    AppActions.setShowSelectBallotModal(!showSelectBallotModal, showSelectBallotModalHideAddress, showSelectBallotModalHideElections);
+    // May 5, 2021:  We were running into "invariant.js:40 Uncaught Invariant Violation: Dispatch.dispatch(...): Cannot dispatch in the middle of a dispatch."
+    // In both the major "speed" refactored branch, and on the older wevote.us when trying to close the  BallotElectionListWithFilters.  So this workaround updates the store without a dispatch.
+    // So just close the dialog, to avoid this API call: AppActions.setShowSelectBallotModal(!showSelectBallotModal, showSelectBallotModalHideAddress, showSelectBallotModalHideElections);
+    this.setState({ showSelectBallotModal: false });
   }
 
   // closeNewVoterGuideModal () {
@@ -424,7 +428,7 @@ class HeaderBar extends Component {
     const { location: { pathname } } = window;
 
     const {
-      chosenSiteLogoUrl, hideWeVoteLogo, paidAccountUpgradeMode, scrolledDown, shareModalStep,
+      chosenSiteLogoUrl, hideWeVoteLogo, /* paidAccountUpgradeMode, */ scrolledDown, shareModalStep,
       showAdviserIntroModal, showEditAddressButton, showFirstPositionIntroModal,
       showPaidAccountUpgradeModal, showPersonalizedScoreIntroModal,
       showSelectBallotModal, showSelectBallotModalHideAddress, showSelectBallotModalHideElections,
@@ -447,7 +451,7 @@ class HeaderBar extends Component {
             <IconButton
               classes={{ root: classes.iconButtonRoot }}
               id="changeAddressOrElectionHeaderBarElection"
-              onClick={() => this.toggleSelectBallotModal('', false, false)}
+              onClick={() => this.toggleSelectBallotModal(false, false)}
             >
               <Place />
             </IconButton>
@@ -455,7 +459,7 @@ class HeaderBar extends Component {
               color="primary"
               classes={{ root: classes.addressButtonRoot }}
               id="changeAddressOrElectionHeaderBarText"
-              onClick={() => this.toggleSelectBallotModal('', false, false)}
+              onClick={() => this.toggleSelectBallotModal(false, false)}
             >
               Address & Elections
             </Button>
@@ -466,7 +470,7 @@ class HeaderBar extends Component {
             <IconButton
               classes={{ root: classes.iconButtonRoot }}
               id="changeAddressOnlyHeaderBar"
-              onClick={() => this.toggleSelectBallotModal('', false, true)}
+              onClick={() => this.toggleSelectBallotModal(false, true)}
             >
               <Place />
             </IconButton>
@@ -474,7 +478,7 @@ class HeaderBar extends Component {
               color="primary"
               classes={{ root: classes.addressButtonRoot }}
               id="changeAddressOnlyHeaderBarText"
-              onClick={() => this.toggleSelectBallotModal('', false, true)}
+              onClick={() => this.toggleSelectBallotModal(false, true)}
             >
               Address
             </Button>
@@ -485,7 +489,7 @@ class HeaderBar extends Component {
             <IconButton
               classes={{ root: classes.iconButtonRoot }}
               id="changeAddressOnlyHeaderBar"
-              onClick={() => this.toggleSelectBallotModal('', false, true)}
+              onClick={() => this.toggleSelectBallotModal(false, true)}
             >
               <Place />
             </IconButton>
@@ -527,12 +531,10 @@ class HeaderBar extends Component {
                 classes={{ indicator: classes.indicator }}
               >
                 {showFullNavigation && (
-                  <TabWithPushHistory classes={{ root: classes.tabRootReady }} id="readyTabHeaderBar" label="Ready?" to="/ready" />
-                  // <Tab classes={{ root: classes.tabRootReady }} id="readyTabHeaderBar" label="Ready?" onClick={() => this.handleNavigation('/ready')} />
+                  <TabWithPushHistory classes={{ root: classes.tabRootReady }} id="readyTabHeaderBar" label="Ready?" to="/ready-heavy" />
                 )}
                 {showFullNavigation && (
                   <TabWithPushHistory classes={{ root: classes.tabRootBallot }} id="ballotTabHeaderBar" label="Ballot" to="/ballot" />
-                  // <Tab classes={{ root: classes.tabRootBallot }} id="ballotTabHeaderBar" label="Ballot" onClick={() => this.handleNavigation('/ballot')} />
                 )}
                 <TabWithPushHistory classes={{ root: classes.tabRootValues }} id="valuesTabHeaderBar" label="Opinions" to="/values" />
                 {(showFullNavigation) && (
@@ -646,11 +648,14 @@ class HeaderBar extends Component {
           />
         )}
         {showPaidAccountUpgradeModal && (
+          {/*
+          // TODO: Backport "@stripe/react-stripe-js" use from Campaigns
           <PaidAccountUpgradeModal
             initialPricingPlan={paidAccountUpgradeMode}
             show={showPaidAccountUpgradeModal}
             toggleFunction={this.closePaidAccountUpgradeModal}
           />
+          */}
         )}
         {showShareModal && (
           <ShareModal

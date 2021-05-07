@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { cordovaDot } from '../../utils/cordovaUtils';
-import groupIcon from '../../../img/global/svg-icons/group-icon.svg';
+
+const groupIcon = '../../../img/global/svg-icons/group-icon.svg';
 
 export default class FriendsIcon extends Component {
   constructor (props) {

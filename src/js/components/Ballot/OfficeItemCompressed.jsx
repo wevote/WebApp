@@ -1,25 +1,26 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
-import styled from 'styled-components';
+import { Button } from '@material-ui/core';
 import { withStyles, withTheme } from '@material-ui/core/styles';
 import { ArrowForward } from '@material-ui/icons';
-import { Button } from '@material-ui/core';
-import BallotItemSupportOpposeCountDisplay from '../Widgets/BallotItemSupportOpposeCountDisplay';
+import PropTypes from 'prop-types';
+import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
+import styled from 'styled-components';
+import OfficeActions from '../../actions/OfficeActions';
 import BallotStore from '../../stores/BallotStore';
 import CandidateStore from '../../stores/CandidateStore';
-import DelayedLoad from '../Widgets/DelayedLoad';
-import ImageHandler from '../ImageHandler';
-import IssuesByBallotItemDisplayList from '../Values/IssuesByBallotItemDisplayList';
-import OfficeActions from '../../actions/OfficeActions';
-import ShowMoreFooter from '../Navigation/ShowMoreFooter';
 import SupportStore from '../../stores/SupportStore';
-import TopCommentByBallotItem from '../Widgets/TopCommentByBallotItem';
 import { historyPush, isCordova } from '../../utils/cordovaUtils';
 import { renderLog } from '../../utils/logging';
 import { sortCandidateList } from '../../utils/positionFunctions';
 import { arrayContains, toTitleCase } from '../../utils/textFormat';
+import ImageHandler from '../ImageHandler';
 import signInModalGlobalState from '../Widgets/signInModalGlobalState';
+
+const BallotItemSupportOpposeCountDisplay = React.lazy(() => import('../Widgets/BallotItemSupportOpposeCountDisplay'));
+const DelayedLoad = React.lazy(() => import('../Widgets/DelayedLoad'));
+const IssuesByBallotItemDisplayList = React.lazy(() => import('../Values/IssuesByBallotItemDisplayList'));
+const ShowMoreFooter = React.lazy(() => import('../Navigation/ShowMoreFooter'));
+const TopCommentByBallotItem = React.lazy(() => import('../Widgets/TopCommentByBallotItem'));
 
 const NUMBER_OF_CANDIDATES_TO_DISPLAY = 4;
 
@@ -277,7 +278,7 @@ class OfficeItemCompressed extends Component {
                         </h4>
                       </div>
                     </Candidate>
-                    {/* Show check mark or score */}
+                    {/*  /!* Show check mark or score *!/ */}
                     <BallotItemSupportOpposeCountDisplayWrapper>
                       <BallotItemSupportOpposeCountDisplay
                         ballotItemWeVoteId={oneCandidate.we_vote_id}

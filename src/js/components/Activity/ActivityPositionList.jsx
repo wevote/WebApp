@@ -1,11 +1,12 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import styled from 'styled-components';
-import { withStyles } from '@material-ui/core/styles';
 import { CircularProgress } from '@material-ui/core';
+import { withStyles } from '@material-ui/core/styles';
+import PropTypes from 'prop-types';
+import React, { Component } from 'react';
+import styled from 'styled-components';
 import { renderLog } from '../../utils/logging';
-import VoterGuidePositionItem from '../VoterGuide/VoterGuidePositionItem';
-import ShowMoreItems from '../Widgets/ShowMoreItems';
+
+const VoterGuidePositionItem = React.lazy(() => import('../VoterGuide/VoterGuidePositionItem'));
+const ShowMoreItems = React.lazy(() => import('../Widgets/ShowMoreItems'));
 
 
 const STARTING_NUMBER_OF_POSITIONS_TO_DISPLAY = 6;

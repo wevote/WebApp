@@ -1,5 +1,4 @@
 import React from 'react';
-
 import FacebookActions from '../../actions/FacebookActions';
 import { renderLog } from '../../utils/logging';
 

@@ -1,15 +1,16 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import { ReactSVG } from 'react-svg';
-import { CheckCircle } from '@material-ui/icons';
 import { withStyles, withTheme } from '@material-ui/core/styles';
+import { CheckCircle } from '@material-ui/icons';
+import PropTypes from 'prop-types';
+import React, { Component } from 'react';
+import { ReactSVG } from 'react-svg';
 import styled from 'styled-components';
-import FriendsIcon from './FriendsIcon';
 import FriendStore from '../../stores/FriendStore';
 import IssueStore from '../../stores/IssueStore';
 import OrganizationStore from '../../stores/OrganizationStore';
 import { cordovaDot } from '../../utils/cordovaUtils';
 import { isOrganizationInVotersNetwork } from '../../utils/positionFunctions';
+
+const FriendsIcon = React.lazy(() => import('./FriendsIcon'));
 
 class PositionItemScorePopoverTextOnly extends Component {
   constructor (props) {

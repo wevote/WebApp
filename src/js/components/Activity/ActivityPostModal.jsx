@@ -1,27 +1,17 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import styled from 'styled-components';
-import { Close } from '@material-ui/icons';
+import { Button, Dialog, DialogContent, DialogTitle, IconButton, InputBase } from '@material-ui/core';
 import { withStyles, withTheme } from '@material-ui/core/styles';
-import {
-  Button,
-  Dialog,
-  DialogTitle,
-  IconButton,
-  DialogContent,
-  InputBase,
-} from '@material-ui/core';
+import { Close } from '@material-ui/icons';
+import PropTypes from 'prop-types';
+import React, { Component } from 'react';
+import styled from 'styled-components';
 import ActivityActions from '../../actions/ActivityActions';
 import ActivityStore from '../../stores/ActivityStore';
-import ActivityPostPublicToggle from './ActivityPostPublicToggle';
-import { renderLog } from '../../utils/logging';
-import {
-  cordovaDot,
-  hasIPhoneNotch, prepareForCordovaKeyboard,
-  restoreStylesAfterCordovaKeyboard,
-} from '../../utils/cordovaUtils';
-import stockAvatar from '../../../img/global/icons/avatar-generic.png';
 import VoterStore from '../../stores/VoterStore';
+import { cordovaDot, hasIPhoneNotch, prepareForCordovaKeyboard, restoreStylesAfterCordovaKeyboard } from '../../utils/cordovaUtils';
+import { renderLog } from '../../utils/logging';
+
+const ActivityPostPublicToggle = React.lazy(() => import('./ActivityPostPublicToggle'));
+const stockAvatar = React.lazy(() => import('../../../img/global/icons/avatar-generic.png'));
 
 class ActivityPostModal extends Component {
   constructor (props) {

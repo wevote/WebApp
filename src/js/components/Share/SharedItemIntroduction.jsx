@@ -1,6 +1,6 @@
+import { withStyles, withTheme } from '@material-ui/core/styles';
 import React, { Component } from 'react';
 import styled from 'styled-components';
-import { withStyles, withTheme } from '@material-ui/core/styles';
 import { renderLog } from '../../utils/logging';
 
 class SharedItemIntroduction extends Component {

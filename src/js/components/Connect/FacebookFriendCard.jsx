@@ -1,7 +1,7 @@
-import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import ImageHandler from '../ImageHandler';
+import React, { Component } from 'react';
 import { renderLog } from '../../utils/logging';
+import ImageHandler from '../ImageHandler';
 
 export default class FacebookFriendCard extends Component {
   constructor (props) {

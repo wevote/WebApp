@@ -1,15 +1,16 @@
-import React, { Component } from 'react';
+import { Button } from '@material-ui/core';
 import PropTypes from 'prop-types';
+import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
-import { Button } from '@material-ui/core';
-import ImageHandler from '../ImageHandler';
-import isMobileScreenSize from '../../utils/isMobileScreenSize';
 import FriendActions from '../../actions/FriendActions';
-import FriendInvitationToggle from './FriendInvitationToggle';
 import FriendStore from '../../stores/FriendStore';
-import { removeTwitterNameFromDescription } from '../../utils/textFormat';
+import isMobileScreenSize from '../../utils/isMobileScreenSize';
 import { renderLog } from '../../utils/logging';
+import { removeTwitterNameFromDescription } from '../../utils/textFormat';
+import ImageHandler from '../ImageHandler';
+
+const FriendInvitationToggle = React.lazy(() => import('./FriendInvitationToggle'));
 
 class FriendInvitationVoterLinkDisplayForList extends Component {
   constructor (props) {

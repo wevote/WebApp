@@ -1,16 +1,17 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import styled from 'styled-components';
 import { withStyles, withTheme } from '@material-ui/core/styles';
 import { Info } from '@material-ui/icons';
+import PropTypes from 'prop-types';
+import React, { Component } from 'react';
+import styled from 'styled-components';
+import AppStore from '../../stores/AppStore';
+import MeasureStore from '../../stores/MeasureStore';
 import { historyPush } from '../../utils/cordovaUtils';
 import { renderLog } from '../../utils/logging';
-import MeasureStore from '../../stores/MeasureStore';
-import AppStore from '../../stores/AppStore';
-import ReadMore from '../Widgets/ReadMore';
 import { capitalizeString } from '../../utils/textFormat';
-import BallotItemSupportOpposeCountDisplay from '../Widgets/BallotItemSupportOpposeCountDisplay';
-import BallotItemSupportOpposeComment from '../Widgets/BallotItemSupportOpposeComment';
+
+const ReadMore = React.lazy(() => import('../Widgets/ReadMore'));
+const BallotItemSupportOpposeCountDisplay = React.lazy(() => import('../Widgets/BallotItemSupportOpposeCountDisplay'));
+const BallotItemSupportOpposeComment = React.lazy(() => import('../Widgets/BallotItemSupportOpposeComment'));
 
 class MeasureItem extends Component {
   constructor (props) {

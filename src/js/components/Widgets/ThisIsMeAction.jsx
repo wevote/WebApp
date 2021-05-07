@@ -1,10 +1,11 @@
-import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
-import { renderLog } from '../../utils/logging';
 import VoterStore from '../../stores/VoterStore';
-import SplitIconButton from './SplitIconButton';
+import { renderLog } from '../../utils/logging';
+
+const SplitIconButton = React.lazy(() => import('./SplitIconButton'));
 
 class ThisIsMeAction extends Component {
   constructor (props) {

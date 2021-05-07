@@ -1,11 +1,13 @@
+import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import styled from 'styled-components';
-import PropTypes from 'prop-types';
 import IssueActions from '../../actions/IssueActions';
 import IssueStore from '../../stores/IssueStore';
-import IssueCard from './IssueCard';
+import VoterStore from '../../stores/VoterStore';
 import { renderLog } from '../../utils/logging';
 import { arrayContains } from '../../utils/textFormat';
+
+const IssueCard = React.lazy(() => import('./IssueCard'));
 
 
 export default class FriendInvitationOnboardingFriendValuesList extends Component {
@@ -18,10 +20,8 @@ export default class FriendInvitationOnboardingFriendValuesList extends Componen
 
   componentDidMount () {
     this.issueStoreListener = IssueStore.addListener(this.onIssueStoreChange.bind(this));
-    if (!IssueStore.issueDescriptionsRetrieveCalled()) {
-      IssueActions.issueDescriptionsRetrieve();
-    }
-    IssueActions.issuesFollowedRetrieve();
+    IssueActions.issueDescriptionsRetrieve(VoterStore.getVoterWeVoteId());
+    IssueActions.issuesFollowedRetrieve(VoterStore.getVoterWeVoteId());
     this.onIssueStoreChange();
   }
 

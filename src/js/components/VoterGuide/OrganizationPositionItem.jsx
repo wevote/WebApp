@@ -1,19 +1,20 @@
-import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import ImageHandler from '../ImageHandler';
-import ItemActionBar from '../Widgets/ItemActionBar/ItemActionBar';
-import ItemPositionStatementActionBar from '../Widgets/ItemPositionStatementActionBar';
-import FriendsOnlyIndicator from '../Widgets/FriendsOnlyIndicator';
-import { renderLog } from '../../utils/logging';
-import OfficeNameText from '../Widgets/OfficeNameText';
 import OrganizationStore from '../../stores/OrganizationStore';
-import PositionInformationOnlySnippet from '../Widgets/PositionInformationOnlySnippet';
-import PositionRatingSnippet from '../Widgets/PositionRatingSnippet';
-import PositionSupportOpposeSnippet from '../Widgets/PositionSupportOpposeSnippet';
-import { capitalizeString } from '../../utils/textFormat';
 import SupportStore from '../../stores/SupportStore';
 import VoterStore from '../../stores/VoterStore';
+import { renderLog } from '../../utils/logging';
+import { capitalizeString } from '../../utils/textFormat';
+import ImageHandler from '../ImageHandler';
+
+const FriendsOnlyIndicator = React.lazy(() => import('../Widgets/FriendsOnlyIndicator'));
+const ItemActionBar = React.lazy(() => import('../Widgets/ItemActionBar/ItemActionBar'));
+const ItemPositionStatementActionBar = React.lazy(() => import('../Widgets/ItemPositionStatementActionBar'));
+const OfficeNameText = React.lazy(() => import('../Widgets/OfficeNameText'));
+const PositionInformationOnlySnippet = React.lazy(() => import('../Widgets/PositionInformationOnlySnippet'));
+const PositionRatingSnippet = React.lazy(() => import('../Widgets/PositionRatingSnippet'));
+const PositionSupportOpposeSnippet = React.lazy(() => import('../Widgets/PositionSupportOpposeSnippet'));
 
 export default class OrganizationPositionItem extends Component {
   constructor (props) {

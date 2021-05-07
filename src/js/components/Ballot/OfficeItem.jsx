@@ -1,11 +1,11 @@
-import React, { Component } from 'react';
+import { withStyles, withTheme } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
+import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
-import { withStyles, withTheme } from '@material-ui/core/styles';
-import { capitalizeString } from '../../utils/textFormat';
 import { hasIPhoneNotch, historyPush, isCordova } from '../../utils/cordovaUtils';
 import { renderLog } from '../../utils/logging';
+import { capitalizeString } from '../../utils/textFormat';
 
 class OfficeItem extends Component {
   render () {

@@ -1,21 +1,22 @@
+import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@material-ui/core';
+import { withStyles } from '@material-ui/core/styles';
+import { MailOutline, Notifications, Settings } from '@material-ui/icons';
+import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import Helmet from 'react-helmet';
-import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { withStyles } from '@material-ui/core/styles';
-import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@material-ui/core';
-import { MailOutline, Notifications, Settings } from '@material-ui/icons';
 import AnalyticsActions from '../../actions/AnalyticsActions';
-import BrowserPushMessage from '../Widgets/BrowserPushMessage';
-import LoadingWheel from '../LoadingWheel';
-import { renderLog } from '../../utils/logging';
-import { openSnackbar } from '../Widgets/SnackNotifier';
 import VoterActions from '../../actions/VoterActions';
-import VoterConstants from '../../constants/VoterConstants';
-import VoterEmailAddressEntry from './VoterEmailAddressEntry';
-import VoterStore from '../../stores/VoterStore';
-// import { PhoneAndroid } from '@material-ui/icons';
 import webAppConfig from '../../config';
+import VoterConstants from '../../constants/VoterConstants';
+import VoterStore from '../../stores/VoterStore';
+import { renderLog } from '../../utils/logging';
+import LoadingWheel from '../LoadingWheel';
+import { openSnackbar } from '../Widgets/SnackNotifier';
+
+// import { PhoneAndroid } from '@material-ui/icons';
+const BrowserPushMessage = React.lazy(() => import('../Widgets/BrowserPushMessage'));
+const VoterEmailAddressEntry = React.lazy(() => import('./VoterEmailAddressEntry'));
 
 const nextReleaseFeaturesEnabled = webAppConfig.ENABLE_NEXT_RELEASE_FEATURES === undefined ? false : webAppConfig.ENABLE_NEXT_RELEASE_FEATURES;
 

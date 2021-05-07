@@ -145,7 +145,7 @@ const Description = styled.span`
 `;
 
 const Image = styled.img`
-  width: 100%:
+  width: 100%;
   max-width: 60vw;
 `;
 
@@ -195,6 +195,7 @@ const SignUpMessage = styled.div`
 `;
 
 export {
+  Section,
   SectionTitle,
   SectionTitleBold,
   Step,
@@ -214,5 +215,3 @@ export {
   SignUpMessage,
   MemberListContainer,
 };
-
-export default Section;

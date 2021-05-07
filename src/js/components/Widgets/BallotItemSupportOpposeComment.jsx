@@ -1,13 +1,14 @@
-import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
+import React, { PureComponent } from 'react';
 import styled from 'styled-components';
 import CandidateStore from '../../stores/CandidateStore';
-import ItemActionBar from './ItemActionBar/ItemActionBar';
-import ItemPositionStatementActionBar from './ItemPositionStatementActionBar2020';
-import { renderLog } from '../../utils/logging';
 import MeasureStore from '../../stores/MeasureStore';
-import { stringContains } from '../../utils/textFormat';
 import { isCordova } from '../../utils/cordovaUtils';
+import { renderLog } from '../../utils/logging';
+import { stringContains } from '../../utils/textFormat';
+
+const ItemActionBar = React.lazy(() => import('./ItemActionBar/ItemActionBar'));
+const ItemPositionStatementActionBar = React.lazy(() => import('./ItemPositionStatementActionBar2020'));
 
 class BallotItemSupportOpposeComment extends PureComponent {
   constructor (props) {
