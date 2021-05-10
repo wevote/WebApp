@@ -46,6 +46,11 @@ export default {
     Dispatcher.dispatch({ type: 'showFirstPositionIntroModal', payload: show });
   },
 
+  setEvaluateHeaderDisplay () {
+    // Force the Header to evaluate whether it should display
+    Dispatcher.dispatch({ type: 'showHeader', payload: Date.now() });
+  },
+
   setShowHowItWorksModal (show) {
     // The chosenPaidAccount values are: free, professional, enterprise
     Dispatcher.dispatch({ type: 'showHowItWorksModal', payload: show });

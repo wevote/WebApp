@@ -5,6 +5,7 @@ import Helmet from 'react-helmet';
 import styled from 'styled-components';
 import ActivityActions from '../actions/ActivityActions';
 import AnalyticsActions from '../actions/AnalyticsActions';
+import AppActions from '../actions/AppActions';
 import ReadyActions from '../actions/ReadyActions';
 import webAppConfig from '../config';
 import AppStore from '../stores/AppStore';
@@ -55,6 +56,7 @@ class ReadyLight extends Component {
       ReadyActions.voterPlansForVoterRetrieve();
       ActivityActions.activityNoticeListRetrieve();
       // }, 2500);
+      AppActions.setEvaluateHeaderDisplay();
 
 
       // let modalToShow = '';
