@@ -115,6 +115,7 @@ class App extends Component {
     //   console.log('lazy loader for bootstrap-social-css returned: ', result);
     // });
     initializejQuery(() => {
+      console.log('jquery initialized in App');
       this.setState({ jQueryInitialized: true });
     });
     this.localIsCordova();

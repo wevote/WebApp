@@ -13,7 +13,6 @@ const SplitIconButton = React.lazy(() => import('../Widgets/SplitIconButton'));
 const returnURL = `${webAppConfig.WE_VOTE_URL_PROTOCOL + webAppConfig.WE_VOTE_HOSTNAME}/twitter_sign_in`;
 
 class TwitterSignIn extends Component {
-  // TODO: April 17, 2018, this is used by Twitter and SignIn by Email, and should be refactored out of here.  It is really the handleOpenURL function.
   static handleTwitterOpenURL (url) {
     oAuthLog(`---------------xxxxxx-------- Application handleTwitterOpenUrl: ${url}`);
     if (startsWith('wevotetwitterscheme://', url)) {

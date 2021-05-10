@@ -3,7 +3,6 @@ import url from 'url';
 import cookies from './cookies';
 import webAppConfig from '../config';
 import { httpLog } from './logging';
-
 // December 2018:  We want to work toward being airbnb style compliant, but for now these are disabled in this file to minimize massive changes
 /* eslint no-param-reassign: 0 */
 
@@ -86,7 +85,6 @@ export default function $ajax (options) {
     httpLog('AJAX voter_device_id: ', cookies.getItem('voter_device_id'));
   }
 
-  /* global $ */
   /* eslint no-undef: ["error", { "typeof": true }] */
   // Attempts to wait until jQuery has loaded
   // window.onload = function() {
@@ -107,5 +105,8 @@ export default function $ajax (options) {
   //     return $.ajax(options);
   //   }, 50);
   // };
+
+
+  const { $ } = window;
   return $.ajax(options);
 }
