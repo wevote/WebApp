@@ -3,7 +3,6 @@ import url from 'url';
 import cookies from './cookies';
 import webAppConfig from '../config';
 import { httpLog } from './logging';
-
 // December 2018:  We want to work toward being airbnb style compliant, but for now these are disabled in this file to minimize massive changes
 /* eslint no-param-reassign: 0 */
 
@@ -27,9 +26,10 @@ const defaults = {
 };
 
 /*
- * 2018: This function uses jQuery, to do deferred fetches from endpoints
+ * 2021: This function uses jQuery, to do deferred fetches from endpoints, and is already loaded with React
+ * i.e. making sure jQuery is loaded right away becomes less important
  * React fetch is a more up to date way of doing this:
- *    https://facebook.github.io/react-native/docs/network.html
+ *    https://reactjs.org/docs/faq-ajax.html
  *
  * 2016: The idea of this APIS.js file is to abstract away the details
  * of many repetitive service calls that we will be using.
@@ -86,26 +86,6 @@ export default function $ajax (options) {
     httpLog('AJAX voter_device_id: ', cookies.getItem('voter_device_id'));
   }
 
-  /* global $ */
-  /* eslint no-undef: ["error", { "typeof": true }] */
-  // Attempts to wait until jQuery has loaded
-  // window.onload = function() {
-  //   if (window.jQuery) {
-  //     return $.ajax(options);
-  //   }
-  //   console.log('Could not call options.endpoint:', options.endpoint);
-  //   return null;
-  // };
-  // window.onload = function() {
-  //   let a = setInterval( function() {
-  //     if ( typeof window.jQuery === 'undefined' ) {
-  //       return;
-  //     }
-  //     clearInterval(a);
-  //
-  //     console.log('jQuery is loaded'); // call your function with jQuery instead of this
-  //     return $.ajax(options);
-  //   }, 50);
-  // };
+  const { $ } = window;
   return $.ajax(options);
 }

@@ -6,6 +6,7 @@ import React, { PureComponent } from 'react';
 import Helmet from 'react-helmet';
 import styled from 'styled-components';
 import AnalyticsActions from '../actions/AnalyticsActions';
+import AppActions from '../actions/AppActions';
 import VoterActions from '../actions/VoterActions';
 import { BlueTitle, PlayerContainer, SubTitle, Title, Video } from '../components/Welcome/headerWelcomeStyles';
 import { Section, Bold, Description, DescriptionContainer, DescriptionImageColumn, DescriptionLeftColumn,
@@ -51,6 +52,7 @@ class WelcomeForVoters extends PureComponent {
     this.onVoterStoreChange();
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
     AnalyticsActions.saveActionWelcomeVisit(VoterStore.electionId());
+    AppActions.setEvaluateHeaderDisplay();
   }
 
   componentWillUnmount () {

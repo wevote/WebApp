@@ -123,9 +123,9 @@ class FacebookSignIn extends Component {
   closeSignInModalLocal = () => {
     if (this.props.closeSignInModal) {
       console.log('FacebookSignIn closeSignInModalLocal closing dialog ---------------');
+      this.props.closeSignInModal();
       signInModalGlobalState.set('startFacebookSignInSequence', false);
       signInModalGlobalState.set('waitingForFacebookApiCompletion', false);
-      this.props.closeSignInModal();
     }
   };
 

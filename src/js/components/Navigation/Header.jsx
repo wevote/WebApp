@@ -152,8 +152,23 @@ export default class Header extends Component {
     }
   }
 
+  hideHeader () {
+    const { location: { pathname } } = window;
+    const path = pathname.toLowerCase();
+    return path.startsWith('/welcome') ||
+      path.startsWith('/for-campaigns') ||
+      path.startsWith('/how/for-campaigns') ||
+      path.startsWith('/twitter_sign_in');
+  }
+
+
   render () {
     renderLog('Header');  // Set LOG_RENDER_EVENTS to log all renders
+
+    if (this.hideHeader()) {
+      renderLog('Header hidden');
+      return null;
+    }
 
     const { params } = this.props;
     // console.log('Header global.weVoteGlobalHistory', global.weVoteGlobalHistory);

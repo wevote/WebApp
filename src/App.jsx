@@ -63,7 +63,6 @@ const Pricing = React.lazy(() => import('./js/routes/More/Pricing'));
 const Privacy = React.lazy(() => import('./js/routes/More/Privacy'));
 const ProcessingDonation = React.lazy(() => import('./js/routes/More/ProcessingDonation'));
 const Ready = React.lazy(() => import('./js/routes/Ready'));
-const ReadyHeavy = React.lazy(() => import('./js/routes/ReadyHeavy'));
 const ReadyLight = React.lazy(() => import('./js/routes/ReadyLight'));
 const ReadyRedirect = React.lazy(() => import('./js/routes/ReadyRedirect'));
 const Register = React.lazy(() => import('./js/routes/Register'));
@@ -116,6 +115,7 @@ class App extends Component {
     //   console.log('lazy loader for bootstrap-social-css returned: ', result);
     // });
     initializejQuery(() => {
+      console.log('jquery initialized in App');
       this.setState({ jQueryInitialized: true });
     });
     this.localIsCordova();
@@ -224,12 +224,12 @@ class App extends Component {
                         if (showReadyLight) {
                           return <ReadyLight showReadyHeavy={this.setShowReadyHeavy} />;
                         } else {
-                          return <ReadyHeavy />;
+                          return <Redirect to="/ready" />;
                         }
                       }}
                     </Route>
-                    {/* <Route exact path="/ready"><Ready /></Route> */}
-                    <Route exact path="/ready"><Redirect to="/" /></Route>
+                    <Route exact path="/ready"><Ready /></Route>
+                    {/* <Route exact path="/ready"><Redirect to="/" /></Route> */}
                     <Route exact path="/settings" component={SettingsDashboard} />
                     <Route exact path="/settings/claim" component={ClaimYourPage} />
                     <Route exact path="/settings/hamburger" component={HamburgerMenu} />
@@ -237,7 +237,7 @@ class App extends Component {
                     <Route exact path="/settings/menu" component={SettingsMenuMobile} />
                     <Route exact path="/settings/voterguidelist" component={VoterGuideListDashboard} />
                     <Route exact path="/settings/voterguidesmenu" component={VoterGuidesMenuMobile} />
-                    <Route exact path="/twitter_sign_in"><TwitterSignInProcess setShowHeaderFooter={this.setShowHeaderFooter} /></Route>
+                    <Route exact path="/twitter_sign_in"><TwitterSignInProcess /></Route>
                     <Route path="/-/:custom_link_string" component={SharedItemLanding} />
                     <Route path="/-:shared_item_code" component={SharedItemLanding} />
                     <Route path="/:twitter_handle/btcand/:back_to_cand_we_vote_id/b/:back_to_variable($)?" component={TwitterHandleLanding} />
@@ -333,7 +333,7 @@ class App extends Component {
                     <Route path="/opinions_followed" component={OpinionsFollowed} />
                     <Route path="/opinions_ignored" component={OpinionsIgnored} />
                     {/* <Route exact path="/ready"><Redirect to="/" /></Route> */}
-                    <Route exact path="/ready-heavy"><ReadyHeavy /></Route>
+                    <Route exact path="/ready"><Ready /></Route>
                     <Route path="/ready/election/:google_civic_election_id" component={Ready} />
                     <Route path="/ready/modal/:modal_to_show" render={(props) => (<RouterV5SendMatch componentName="Ready" {...props} />)} />
                     <Route path="/ready/modal/:modal_to_show/:shared_item_code" render={(props) => (<RouterV5SendMatch componentName="Ready" {...props} />)} />

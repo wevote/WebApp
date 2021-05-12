@@ -6,6 +6,7 @@ import cookies from '../../utils/cookies';
 import cordovaScrollablePaneTopPadding from '../../utils/cordovaScrollablePaneTopPadding';
 import { historyPush, isWebApp } from '../../utils/cordovaUtils';
 import LoadingWheel from '../../components/LoadingWheel';
+import initializejQuery from '../../utils/initializejQuery';
 import { oAuthLog, renderLog } from '../../utils/logging';
 import { stringContains } from '../../utils/textFormat';
 import TwitterActions from '../../actions/TwitterActions';
@@ -22,17 +23,20 @@ export default class TwitterSignInProcess extends Component {
       redirectInProgress: false,
       twitterAuthResponse: {},
       yesPleaseMergeAccounts: false,
+      jQueryInitialized: false,
     };
   }
 
   componentDidMount () {
-    this.appStoreListener = AppStore.addListener(this.onAppStoreChange.bind(this));
-    this.twitterStoreListener = TwitterStore.addListener(this.onTwitterStoreChange.bind(this));
-    this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
-    this.twitterSignInRetrieve();
-    const hostname = AppStore.getHostname();
-    this.setState({
-      hostname,
+    initializejQuery(() => {
+      console.log('jquery initialized in TwitterSignInProcess');
+      this.appStoreListener = AppStore.addListener(this.onAppStoreChange.bind(this));
+      this.twitterStoreListener = TwitterStore.addListener(this.onTwitterStoreChange.bind(this));
+      this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
+      this.twitterSignInRetrieve();
+      this.setState({
+        jQueryInitialized: true,
+      });
     });
   }
 
@@ -177,6 +181,22 @@ export default class TwitterSignInProcess extends Component {
     if (redirectInProgress) {
       return null;
     }
+    const { jQueryInitialized } = this.state;
+    if (!jQueryInitialized) {
+      return (
+        <div className="twitter_sign_in_root">
+          <div className="page-content-container" style={{ paddingTop: `${cordovaScrollablePaneTopPadding()}` }}>
+            <LoadingDiv>
+              <span>
+                Loading libraries...
+              </span>
+              {LoadingWheel}
+            </LoadingDiv>
+          </div>
+        </div>
+      );
+    }
+
 
     oAuthLog('TwitterSignInProcess render');
     if (!twitterAuthResponse ||

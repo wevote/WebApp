@@ -306,6 +306,8 @@ class Ballot extends Component {
           AppActions.setShowSharedItemModal(sharedItemCode);
         }, 1000);
       }
+    } else {
+      AppActions.setEvaluateHeaderDisplay();
     }
     ActivityActions.activityNoticeListRetrieve();
     window.addEventListener('scroll', this.onScroll);

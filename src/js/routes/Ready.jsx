@@ -10,6 +10,7 @@ import BallotActions from '../actions/BallotActions';
 import FriendActions from '../actions/FriendActions';
 import IssueActions from '../actions/IssueActions';
 import ReadyActions from '../actions/ReadyActions';
+import SnackNotifier from '../components/Widgets/SnackNotifier';
 import webAppConfig from '../config';
 import AppStore from '../stores/AppStore';
 import BallotStore from '../stores/BallotStore';
@@ -97,6 +98,8 @@ class Ready extends Component {
             AppActions.setShowSharedItemModal(sharedItemCode);
           }, 1000);
         }
+      } else {
+        AppActions.setEvaluateHeaderDisplay();
       }
 
       this.analyticsTimer = setTimeout(() => {
@@ -204,6 +207,7 @@ class Ready extends Component {
     return (
       <Wrapper className="page-content-container">
         <PageContainer className="container-fluid" style={this.getTopPadding()}>
+          <SnackNotifier />
           <Helmet title="Ready to Vote? - We Vote" />
           <BrowserPushMessage incomingProps={this.props} />
           <div className="row">
