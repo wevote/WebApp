@@ -69,7 +69,7 @@ export default class Header extends Component {
       dumpCssFromId('header-container');
     }
     initializejQuery(() => {
-      console.log('initialized jQuery in Header');
+      // console.log('initialized jQuery in Header');
       if (VoterStore.getVoterWeVoteId() === '') {
         VoterActions.voterRetrieve();
       }

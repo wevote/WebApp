@@ -136,6 +136,8 @@ class App extends Component {
   componentDidMount () {
     // initializeOnce();
     // this.InitializeOnce();
+    console.log('href in App.js componentDidMount: ', window.location.href);
+
   }
 
   componentDidCatch (error, info) {
@@ -199,7 +201,7 @@ class App extends Component {
     const isNotWeVoteMarketingSite = !isWeVoteMarketingSite;
     const firstVisit = !cookies.getItem('voter_device_id');
 
-    console.log(window.location.href);
+    // console.log('href in App.js render: ', window.location.href);
 
     return (
       <ErrorBoundary>
