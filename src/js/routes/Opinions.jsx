@@ -1,11 +1,10 @@
 import React, { Component, Suspense } from 'react';
 import Helmet from 'react-helmet';
 import { Link } from 'react-router-dom';
+import SearchGuidesToFollowBox from '../components/Search/SearchGuidesToFollowBox';
+import GuideList from '../components/VoterGuide/GuideList';
 import VoterGuideStore from '../stores/VoterGuideStore';
 import { renderLog } from '../utils/logging';
-
-const GuideList = React.lazy(() => import('../components/VoterGuide/GuideList'));
-const SearchGuidesToFollowBox = React.lazy(() => import('../components/Search/SearchGuidesToFollowBox'));
 
 
 // 2020: We are deprecating this Component in favor of Opinions2020

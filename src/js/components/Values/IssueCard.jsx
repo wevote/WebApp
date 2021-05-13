@@ -8,10 +8,10 @@ import { isCordova } from '../../utils/cordovaUtils';
 import { renderLog } from '../../utils/logging';
 import { convertNameToSlug } from '../../utils/textFormat';
 import LoadingWheel from '../LoadingWheel';
+import IssueFollowToggleButton from './IssueFollowToggleButton';
+import IssueImageDisplay from './IssueImageDisplay';
 
-const IssueFollowToggleButton = React.lazy(() => import('./IssueFollowToggleButton'));
-const IssueImageDisplay = React.lazy(() => import('./IssueImageDisplay'));
-const ReadMore = React.lazy(() => import('../Widgets/ReadMore'));
+const ReadMore = React.lazy(() => import(/* webpackChunkName: 'ReadMore' */ '../Widgets/ReadMore'));
 
 
 class IssueCard extends Component {

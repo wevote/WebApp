@@ -9,13 +9,12 @@ import AnalyticsActions from '../../actions/AnalyticsActions';
 import VoterStore from '../../stores/VoterStore';
 import { renderLog } from '../../utils/logging';
 import LoadingWheel from '../LoadingWheel';
-
-const BrowserPushMessage = React.lazy(() => import('../Widgets/BrowserPushMessage'));
-const SettingsProfilePicture = React.lazy(() => import('./SettingsProfilePicture'));
-const SettingsWidgetAccountType = React.lazy(() => import('./SettingsWidgetAccountType'));
-const SettingsWidgetFirstLastName = React.lazy(() => import('./SettingsWidgetFirstLastName'));
-const SettingsWidgetOrganizationDescription = React.lazy(() => import('./SettingsWidgetOrganizationDescription'));
-const SettingsWidgetOrganizationWebsite = React.lazy(() => import('./SettingsWidgetOrganizationWebsite'));
+import BrowserPushMessage from '../Widgets/BrowserPushMessage';
+import SettingsProfilePicture from './SettingsProfilePicture';
+import SettingsWidgetAccountType from './SettingsWidgetAccountType';
+import SettingsWidgetFirstLastName from './SettingsWidgetFirstLastName';
+import SettingsWidgetOrganizationDescription from './SettingsWidgetOrganizationDescription';
+import SettingsWidgetOrganizationWebsite from './SettingsWidgetOrganizationWebsite';
 
 
 class SettingsProfile extends Component {

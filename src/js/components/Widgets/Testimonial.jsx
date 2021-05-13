@@ -3,7 +3,8 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import styled from 'styled-components';
 import { renderLog } from '../../utils/logging';
-import ImageHandler from '../ImageHandler';
+
+const ImageHandler = React.lazy(() => import(/* webpackChunkName: 'ImageHandler' */ '../ImageHandler'));
 
 
 class Testimonial extends React.Component {

@@ -6,15 +6,16 @@ import SupportStore from '../../stores/SupportStore';
 import VoterStore from '../../stores/VoterStore';
 import { renderLog } from '../../utils/logging';
 import { capitalizeString } from '../../utils/textFormat';
-import ImageHandler from '../ImageHandler';
+import FriendsOnlyIndicator from '../Widgets/FriendsOnlyIndicator';
+import ItemPositionStatementActionBar from '../Widgets/ItemPositionStatementActionBar';
+import PositionInformationOnlySnippet from '../Widgets/PositionInformationOnlySnippet';
+import PositionRatingSnippet from '../Widgets/PositionRatingSnippet';
+import PositionSupportOpposeSnippet from '../Widgets/PositionSupportOpposeSnippet';
 
-const FriendsOnlyIndicator = React.lazy(() => import('../Widgets/FriendsOnlyIndicator'));
-const ItemActionBar = React.lazy(() => import('../Widgets/ItemActionBar/ItemActionBar'));
-const ItemPositionStatementActionBar = React.lazy(() => import('../Widgets/ItemPositionStatementActionBar'));
-const OfficeNameText = React.lazy(() => import('../Widgets/OfficeNameText'));
-const PositionInformationOnlySnippet = React.lazy(() => import('../Widgets/PositionInformationOnlySnippet'));
-const PositionRatingSnippet = React.lazy(() => import('../Widgets/PositionRatingSnippet'));
-const PositionSupportOpposeSnippet = React.lazy(() => import('../Widgets/PositionSupportOpposeSnippet'));
+const ImageHandler = React.lazy(() => import(/* webpackChunkName: 'ImageHandler' */ '../ImageHandler'));
+const ItemActionBar = React.lazy(() => import(/* webpackChunkName: 'ItemActionBar' */ '../Widgets/ItemActionBar/ItemActionBar'));
+const OfficeNameText = React.lazy(() => import(/* webpackChunkName: 'OfficeNameText' */ '../Widgets/OfficeNameText'));
+
 
 export default class OrganizationPositionItem extends Component {
   constructor (props) {

@@ -5,7 +5,7 @@ const initializejQuery = (afterFunction) => {
       afterFunction();
     }
   } else {
-    import('jquery').then(({ default: jquery }) => {
+    import(/* webpackChunkName: 'jquery' */ 'jquery').then(({ default: jquery }) => {
       window.jQuery = jquery;
       window.$ = jquery;
       // console.log('jquery loaded');

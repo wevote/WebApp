@@ -6,9 +6,9 @@ import IssueStore from '../../stores/IssueStore';
 import VoterStore from '../../stores/VoterStore';
 import { historyPush } from '../../utils/cordovaUtils';
 import { renderLog } from '../../utils/logging';
+import IssueCardCompressed from './IssueCardCompressed';
 
-const IssueCardCompressed = React.lazy(() => import('./IssueCardCompressed'));
-const ShowMoreFooter = React.lazy(() => import('../Navigation/ShowMoreFooter'));
+const ShowMoreFooter = React.lazy(() => import(/* webpackChunkName: 'ShowMoreFooter' */ '../Navigation/ShowMoreFooter'));
 
 class ValuesFollowedPreview extends Component {
   constructor (props) {

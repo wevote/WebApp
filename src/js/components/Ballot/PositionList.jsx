@@ -9,13 +9,13 @@ import OrganizationActions from '../../actions/OrganizationActions';
 import FriendStore from '../../stores/FriendStore';
 import OrganizationStore from '../../stores/OrganizationStore';
 import { renderLog } from '../../utils/logging';
+import FilterBase from '../Filter/FilterBase';
+import VoterGuideOrganizationFilter from '../Filter/VoterGuideOrganizationFilter';
 import LoadingWheel from '../LoadingWheel';
+import NumberOfItemsFound from '../Widgets/NumberOfItemsFound';
+import PositionItem from './PositionItem';
 
-const FilterBase = React.lazy(() => import('../Filter/FilterBase'));
-const NumberOfItemsFound = React.lazy(() => import('../Widgets/NumberOfItemsFound'));
-const PositionItem = React.lazy(() => import('./PositionItem'));
-const ShowMoreItems = React.lazy(() => import('../Widgets/ShowMoreItems'));
-const VoterGuideOrganizationFilter = React.lazy(() => import('../Filter/VoterGuideOrganizationFilter'));
+const ShowMoreItems = React.lazy(() => import(/* webpackChunkName: 'ShowMoreItems' */ '../Widgets/ShowMoreItems'));
 
 
 const groupedFilters = [

@@ -2,8 +2,7 @@ import React, { Component } from 'react';
 import VoterGuideActions from '../../actions/VoterGuideActions';
 import VoterStore from '../../stores/VoterStore';
 import { renderLog } from '../../utils/logging';
-
-const SearchBar = React.lazy(() => import('./SearchBar'));
+import SearchBar from './SearchBar';
 
 export default class SearchGuidesToFollowBox extends Component {
   constructor (props) {

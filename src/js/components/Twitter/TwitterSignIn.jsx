@@ -8,7 +8,7 @@ import { oAuthLog, renderLog } from '../../utils/logging';
 import $ajax from '../../utils/service';
 import { shortenText, startsWith } from '../../utils/textFormat';
 
-const SplitIconButton = React.lazy(() => import('../Widgets/SplitIconButton'));
+import SplitIconButton from '../Widgets/SplitIconButton';
 
 const returnURL = `${webAppConfig.WE_VOTE_URL_PROTOCOL + webAppConfig.WE_VOTE_HOSTNAME}/twitter_sign_in`;
 

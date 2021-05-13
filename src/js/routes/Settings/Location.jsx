@@ -3,13 +3,12 @@ import React, { Component } from 'react';
 import Helmet from 'react-helmet';
 import AnalyticsActions from '../../actions/AnalyticsActions';
 import ElectionActions from '../../actions/ElectionActions';
+import AddressBox from '../../components/AddressBox';
+import BallotElectionList from '../../components/Ballot/BallotElectionList';
+import BrowserPushMessage from '../../components/Widgets/BrowserPushMessage';
 import ElectionStore from '../../stores/ElectionStore';
 import VoterStore from '../../stores/VoterStore';
 import { renderLog } from '../../utils/logging';
-
-const AddressBox = React.lazy(() => import('../../components/AddressBox'));
-const BrowserPushMessage = React.lazy(() => import('../../components/Widgets/BrowserPushMessage'));
-const BallotElectionList = React.lazy(() => import('../../components/Ballot/BallotElectionList'));
 
 export default class Location extends Component {
   constructor (props) {

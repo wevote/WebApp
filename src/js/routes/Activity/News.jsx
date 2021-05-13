@@ -11,8 +11,15 @@ import BallotActions from '../../actions/BallotActions';
 import FriendActions from '../../actions/FriendActions';
 import OrganizationActions from '../../actions/OrganizationActions';
 import ReactionActions from '../../actions/ReactionActions';
+import ActivityCommentAdd from '../../components/Activity/ActivityCommentAdd';
+import ActivityPostAdd from '../../components/Activity/ActivityPostAdd';
+import FacebookSignInCard from '../../components/Facebook/FacebookSignInCard';
+import AddFriendsByEmail from '../../components/Friends/AddFriendsByEmail';
+import SuggestedFriendsPreview from '../../components/Friends/SuggestedFriendsPreview';
 import LoadingWheel from '../../components/LoadingWheel';
 import { PreviewImage } from '../../components/Settings/SettingsStyled';
+import TwitterSignInCard from '../../components/Twitter/TwitterSignInCard';
+import BrowserPushMessage from '../../components/Widgets/BrowserPushMessage';
 import Testimonial from '../../components/Widgets/Testimonial';
 import ActivityStore from '../../stores/ActivityStore';
 import BallotStore from '../../stores/BallotStore';
@@ -24,22 +31,14 @@ import { formatDateToMonthDayYear, timeFromDate } from '../../utils/dateFormat';
 import { renderLog } from '../../utils/logging';
 import { startsWith } from '../../utils/textFormat';
 
-const ActivityCommentAdd = React.lazy(() => import('../../components/Activity/ActivityCommentAdd'));
-const ActivityPostAdd = React.lazy(() => import('../../components/Activity/ActivityPostAdd'));
-const ActivityTidbitAddReaction = React.lazy(() => import('../../components/Activity/ActivityTidbitAddReaction'));
-const ActivityTidbitComments = React.lazy(() => import('../../components/Activity/ActivityTidbitComments'));
-const ActivityTidbitItem = React.lazy(() => import('../../components/Activity/ActivityTidbitItem'));
-const ActivityTidbitReactionsSummary = React.lazy(() => import('../../components/Activity/ActivityTidbitReactionsSummary'));
-const AddFriendsByEmail = React.lazy(() => import('../../components/Friends/AddFriendsByEmail'));
-const BrowserPushMessage = React.lazy(() => import('../../components/Widgets/BrowserPushMessage'));
-const DelayedLoad = React.lazy(() => import('../../components/Widgets/DelayedLoad'));
-const FacebookSignInCard = React.lazy(() => import('../../components/Facebook/FacebookSignInCard'));
-const FirstAndLastNameRequiredAlert = React.lazy(() => import('../../components/Widgets/FirstAndLastNameRequiredAlert'));
-const SettingsAccount = React.lazy(() => import('../../components/Settings/SettingsAccount'));
-const ShowMoreItems = React.lazy(() => import('../../components/Widgets/ShowMoreItems'));
-const SuggestedFriendsPreview = React.lazy(() => import('../../components/Friends/SuggestedFriendsPreview'));
-const TwitterSignInCard = React.lazy(() => import('../../components/Twitter/TwitterSignInCard'));
-
+const ActivityTidbitAddReaction = React.lazy(() => import(/* webpackChunkName: 'ActivityTidbitAddReaction' */ '../../components/Activity/ActivityTidbitAddReaction'));
+const ActivityTidbitComments = React.lazy(() => import(/* webpackChunkName: 'ActivityTidbitComments' */ '../../components/Activity/ActivityTidbitComments'));
+const ActivityTidbitItem = React.lazy(() => import(/* webpackChunkName: 'ActivityTidbitItem' */ '../../components/Activity/ActivityTidbitItem'));
+const ActivityTidbitReactionsSummary = React.lazy(() => import(/* webpackChunkName: 'ActivityTidbitReactionsSummary' */ '../../components/Activity/ActivityTidbitReactionsSummary'));
+const DelayedLoad = React.lazy(() => import(/* webpackChunkName: 'DelayedLoad' */ '../../components/Widgets/DelayedLoad'));
+const FirstAndLastNameRequiredAlert = React.lazy(() => import(/* webpackChunkName: 'FirstAndLastNameRequiredAlert' */ '../../components/Widgets/FirstAndLastNameRequiredAlert'));
+const SettingsAccount = React.lazy(() => import(/* webpackChunkName: 'SettingsAccount' */ '../../components/Settings/SettingsAccount'));
+const ShowMoreItems = React.lazy(() => import(/* webpackChunkName: 'ShowMoreItems' */ '../../components/Widgets/ShowMoreItems'));
 
 const STARTING_NUMBER_OF_ACTIVITY_TIDBITS_TO_DISPLAY = 10;
 

@@ -2,10 +2,9 @@ import React, { Component } from 'react';
 import Helmet from 'react-helmet';
 import { Link } from 'react-router-dom';
 import VoterGuideActions from '../actions/VoterGuideActions';
+import OpinionsIgnoredList from '../components/Organization/OpinionsIgnoredList';
 import VoterGuideStore from '../stores/VoterGuideStore';
 import { renderLog } from '../utils/logging';
-
-const OpinionsIgnoredList = React.lazy(() => import('../components/Organization/OpinionsIgnoredList'));
 
 // NOTE FROM DALE: This should be refactored to pull in Organizations instead of Voter Guides
 export default class OpinionsIgnored extends Component {

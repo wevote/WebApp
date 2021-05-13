@@ -1,11 +1,11 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import styled from 'styled-components';
 import { Button } from '@material-ui/core';
-import { historyPush } from '../../utils/cordovaUtils';
-import { capitalizeString, sentenceCaseString } from '../../utils/textFormat';
-import { renderLog } from '../../utils/logging';
+import PropTypes from 'prop-types';
+import React, { Component } from 'react';
+import styled from 'styled-components';
 import VoterStore from '../../stores/VoterStore';
+import { historyPush } from '../../utils/cordovaUtils';
+import { renderLog } from '../../utils/logging';
+import { capitalizeString, sentenceCaseString } from '../../utils/textFormat';
 
 
 export default class SelectVoterGuidesSideBarLink extends Component {

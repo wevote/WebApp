@@ -10,7 +10,8 @@ import { isCordova, isWebApp } from '../../utils/cordovaUtils';
 import { renderLog } from '../../utils/logging';
 import { openSnackbar } from '../Widgets/SnackNotifier';
 
-const SettingsAccount = React.lazy(() => import('../Settings/SettingsAccount'));
+const SettingsAccount = React.lazy(() => import(/* webpackChunkName: 'SettingsAccount' */ '../Settings/SettingsAccount'));
+
 
 class ActivityPostPublicToggle extends Component {
   constructor (props) {

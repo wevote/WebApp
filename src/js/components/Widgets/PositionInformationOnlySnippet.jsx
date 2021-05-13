@@ -1,15 +1,17 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
+import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
+import Tooltip from 'react-bootstrap/Tooltip';
 import { cordovaDot } from '../../utils/cordovaUtils';
 import { renderLog } from '../../utils/logging';
 import { startsWith, vimeoRegX, youTubeRegX } from '../../utils/textFormat';
 
-const ReactPlayer = React.lazy(() => import('react-player'));
-const Tooltip = React.lazy(() => import('react-bootstrap/Tooltip'));
-const OverlayTrigger = React.lazy(() => import('react-bootstrap/OverlayTrigger'));
+const OpenExternalWebSite = React.lazy(() => import(/* webpackChunkName: 'OpenExternalWebSite' */ './OpenExternalWebSite'));
+const ReactPlayer = React.lazy(() => import(/* webpackChunkName: 'ReactPlayer' */ 'react-player'));
+const ReadMore = React.lazy(() => import(/* webpackChunkName: 'ReadMore' */ './ReadMore'));
+
 const noPositionIcon = '../../../img/global/svg-icons/no-position-icon.svg';
-const OpenExternalWebSite = React.lazy(() => import('./OpenExternalWebSite'));
-const ReadMore = React.lazy(() => import('./ReadMore'));
+
 
 export default class PositionInformationOnlySnippet extends Component {
   render () {

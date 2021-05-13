@@ -11,7 +11,13 @@ import CandidateActions from '../../actions/CandidateActions';
 import IssueActions from '../../actions/IssueActions';
 import OrganizationActions from '../../actions/OrganizationActions';
 import VoterGuideActions from '../../actions/VoterGuideActions';
+import CandidateStickyHeader from '../../components/Ballot/CandidateStickyHeader';
 import LoadingWheel from '../../components/LoadingWheel';
+import ShareButtonDesktopTablet from '../../components/Share/ShareButtonDesktopTablet';
+import EndorsementCard from '../../components/Widgets/EndorsementCard';
+import SearchOnGoogle from '../../components/Widgets/SearchOnGoogle';
+import ThisIsMeAction from '../../components/Widgets/ThisIsMeAction';
+import ViewOnBallotpedia from '../../components/Widgets/ViewOnBallotpedia';
 import webAppConfig from '../../config';
 import AppStore from '../../stores/AppStore';
 import BallotStore from '../../stores/BallotStore';
@@ -23,17 +29,10 @@ import { isWebApp } from '../../utils/cordovaUtils';
 import { renderLog } from '../../utils/logging';
 import { capitalizeString, convertToInteger } from '../../utils/textFormat';
 
-const CandidateItem = React.lazy(() => import('../../components/Ballot/CandidateItem'));
-const CandidateStickyHeader = React.lazy(() => import('../../components/Ballot/CandidateStickyHeader'));
-const DelayedLoad = React.lazy(() => import('../../components/Widgets/DelayedLoad'));
-const EndorsementCard = React.lazy(() => import('../../components/Widgets/EndorsementCard'));
-const OpenExternalWebSite = React.lazy(() => import('../../components/Widgets/OpenExternalWebSite'));
-const PositionList = React.lazy(() => import('../../components/Ballot/PositionList'));
-const SearchOnGoogle = React.lazy(() => import('../../components/Widgets/SearchOnGoogle'));
-const ShareButtonDesktopTablet = React.lazy(() => import('../../components/Share/ShareButtonDesktopTablet'));
-const ThisIsMeAction = React.lazy(() => import('../../components/Widgets/ThisIsMeAction'));
-const ViewOnBallotpedia = React.lazy(() => import('../../components/Widgets/ViewOnBallotpedia'));
-
+const CandidateItem = React.lazy(() => import(/* webpackChunkName: 'CandidateItem' */ '../../components/Ballot/CandidateItem'));
+const DelayedLoad = React.lazy(() => import(/* webpackChunkName: 'DelayedLoad' */ '../../components/Widgets/DelayedLoad'));
+const OpenExternalWebSite = React.lazy(() => import(/* webpackChunkName: 'OpenExternalWebSite' */ '../../components/Widgets/OpenExternalWebSite'));
+const PositionList = React.lazy(() => import(/* webpackChunkName: 'PositionList' */ '../../components/Ballot/PositionList'));
 
 // const nextReleaseFeaturesEnabled = webAppConfig.ENABLE_NEXT_RELEASE_FEATURES === undefined ? false : webAppConfig.ENABLE_NEXT_RELEASE_FEATURES;
 

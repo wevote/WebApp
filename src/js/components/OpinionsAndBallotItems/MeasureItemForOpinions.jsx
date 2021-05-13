@@ -7,9 +7,9 @@ import SupportStore from '../../stores/SupportStore';
 import { historyPush } from '../../utils/cordovaUtils';
 import { renderLog } from '../../utils/logging';
 import { capitalizeString, shortenText } from '../../utils/textFormat';
+import ItemPositionStatementActionBar from '../Widgets/ItemPositionStatementActionBar';
 
-const ItemActionBar = React.lazy(() => import('../Widgets/ItemActionBar/ItemActionBar'));
-const ItemPositionStatementActionBar = React.lazy(() => import('../Widgets/ItemPositionStatementActionBar'));
+const ItemActionBar = React.lazy(() => import(/* webpackChunkName: 'ItemActionBar' */ '../Widgets/ItemActionBar/ItemActionBar'));
 
 
 class MeasureItemForOpinions extends Component {

@@ -3,13 +3,12 @@ import React, { Component } from 'react';
 import Helmet from 'react-helmet';
 import styled from 'styled-components';
 import FriendActions from '../../actions/FriendActions';
+import FriendList from '../../components/Friends/FriendList';
+import SearchBar from '../../components/Search/SearchBar';
+import MessageCard from '../../components/Widgets/MessageCard';
 import FriendStore from '../../stores/FriendStore';
 import sortFriendListByMutualFriends from '../../utils/friendFunctions';
 import { renderLog } from '../../utils/logging';
-
-const FriendList = React.lazy(() => import('../../components/Friends/FriendList'));
-const MessageCard = React.lazy(() => import('../../components/Widgets/MessageCard'));
-const SearchBar = React.lazy(() => import('../../components/Search/SearchBar'));
 
 export default class FriendsCurrent extends Component {
   constructor (props) {

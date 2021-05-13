@@ -6,8 +6,7 @@ import IssueStore from '../../stores/IssueStore';
 import VoterGuideStore from '../../stores/VoterGuideStore';
 import { renderLog } from '../../utils/logging';
 import signInModalGlobalState from '../Widgets/signInModalGlobalState';
-
-const ValueIconAndText = React.lazy(() => import('./ValueIconAndText'));
+import ValueIconAndText from './ValueIconAndText';
 
 // Show a voter a horizontal list of all of the issues they are following that relate to this ballot item
 class IssuesByBallotItemDisplayList extends Component {

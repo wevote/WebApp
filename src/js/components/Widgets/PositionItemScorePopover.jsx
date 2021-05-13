@@ -9,9 +9,9 @@ import IssueStore from '../../stores/IssueStore';
 import OrganizationStore from '../../stores/OrganizationStore';
 import { cordovaDot } from '../../utils/cordovaUtils';
 import { isOrganizationInVotersNetwork } from '../../utils/positionFunctions';
+import FriendsIcon from './FriendsIcon';
 
-const FollowToggle = React.lazy(() => import('./FollowToggle'));
-const FriendsIcon = React.lazy(() => import('./FriendsIcon'));
+const FollowToggle = React.lazy(() => import(/* webpackChunkName: 'FollowToggle' */ './FollowToggle'));
 
 class PositionItemScorePopover extends Component {
   constructor (props) {

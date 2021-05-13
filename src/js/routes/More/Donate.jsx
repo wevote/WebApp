@@ -1,25 +1,26 @@
 import { Button } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 import React, { Component } from 'react';
+import Form from 'react-bootstrap/Form';
+import FormControl from 'react-bootstrap/FormControl';
+import InputGroup from 'react-bootstrap/InputGroup';
 import Helmet from 'react-helmet';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import AnalyticsActions from '../../actions/AnalyticsActions';
 import DonateActions from '../../actions/DonateActions';
+import DonationError from '../../components/Donation/DonationError';
+import DonationForm from '../../components/Donation/DonationForm';
+import DonationListForm from '../../components/Donation/DonationListForm';
+import { Section } from '../../components/Welcome/sectionStyles';
+import OpenExternalWebSite from '../../components/Widgets/OpenExternalWebSite';
 import DonateStore from '../../stores/DonateStore';
 import VoterStore from '../../stores/VoterStore';
 import { renderLog } from '../../utils/logging';
 
-const DonationError = React.lazy(() => import('../../components/Donation/DonationError'));
-const DonationForm = React.lazy(() => import('../../components/Donation/DonationForm'));
-const DonationListForm = React.lazy(() => import('../../components/Donation/DonationListForm'));
-const Form = React.lazy(() => import('react-bootstrap/Form'));
-const FormControl = React.lazy(() => import('react-bootstrap/FormControl'));
-const InputGroup = React.lazy(() => import('react-bootstrap/InputGroup'));
-const OpenExternalWebSite = React.lazy(() => import('../../components/Widgets/OpenExternalWebSite'));
-const Section = React.lazy(() => import('../../components/Welcome/sectionStyles'));
-const WelcomeAppbar = React.lazy(() => import('../../components/Navigation/WelcomeAppbar'));
-const WelcomeFooter = React.lazy(() => import('../../components/Welcome/WelcomeFooter'));
+const WelcomeFooter = React.lazy(() => import(/* webpackChunkName: 'WelcomeFooter' */ '../../components/Welcome/WelcomeFooter'));
+const WelcomeAppbar = React.lazy(() => import(/* webpackChunkName: 'WelcomeAppbar' */ '../../components/Navigation/WelcomeAppbar'));
+
 
 class Donate extends Component {
   static getProps () {

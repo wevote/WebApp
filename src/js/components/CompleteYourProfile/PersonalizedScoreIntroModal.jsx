@@ -10,7 +10,7 @@ import { hideZenDeskHelpVisibility, setZenDeskHelpVisibility } from '../../utils
 import { hasIPhoneNotch } from '../../utils/cordovaUtils';
 import { renderLog } from '../../utils/logging';
 
-const PersonalizedScoreIntroBody = React.lazy(() => import('./PersonalizedScoreIntroBody'));
+const PersonalizedScoreIntroBody = React.lazy(() => import(/* webpackChunkName: 'PersonalizedScoreIntroBody' */ './PersonalizedScoreIntroBody'));
 
 class PersonalizedScoreIntroModal extends Component {
   constructor (props) {

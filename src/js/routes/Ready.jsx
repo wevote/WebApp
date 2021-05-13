@@ -10,6 +10,18 @@ import BallotActions from '../actions/BallotActions';
 import FriendActions from '../actions/FriendActions';
 import IssueActions from '../actions/IssueActions';
 import ReadyActions from '../actions/ReadyActions';
+import EditAddressOneHorizontalRow from '../components/Ready/EditAddressOneHorizontalRow';
+import ElectionCountdown from '../components/Ready/ElectionCountdown';
+import FindOpinionsForm from '../components/Ready/FindOpinionsForm';
+import ReadyInformationDisclaimer from '../components/Ready/ReadyInformationDisclaimer';
+import ReadyIntroduction from '../components/Ready/ReadyIntroduction';
+import ReadyTaskBallot from '../components/Ready/ReadyTaskBallot';
+import ReadyTaskFriends from '../components/Ready/ReadyTaskFriends';
+import ReadyTaskPlan from '../components/Ready/ReadyTaskPlan';
+import ReadyTaskRegister from '../components/Ready/ReadyTaskRegister';
+import ShareButtonDesktopTablet from '../components/Share/ShareButtonDesktopTablet';
+import ValuesToFollowPreview from '../components/Values/ValuesToFollowPreview';
+import BrowserPushMessage from '../components/Widgets/BrowserPushMessage';
 import SnackNotifier from '../components/Widgets/SnackNotifier';
 import webAppConfig from '../config';
 import AppStore from '../stores/AppStore';
@@ -19,24 +31,15 @@ import VoterStore from '../stores/VoterStore';
 import cookies from '../utils/cookies';
 import { historyPush, isAndroid, isIOS, isWebApp } from '../utils/cordovaUtils';
 import initializejQuery from '../utils/initializejQuery';
+import lazyWithPreload from '../utils/lazyWithPreload';
 import { renderLog } from '../utils/logging';
 
-const BrowserPushMessage = React.lazy(() => import('../components/Widgets/BrowserPushMessage'));
-const EditAddressOneHorizontalRow = React.lazy(() => import('../components/Ready/EditAddressOneHorizontalRow'));
-const ElectionCountdown = React.lazy(() => import('../components/Ready/ElectionCountdown'));
-const FindOpinionsForm = React.lazy(() => import('../components/Ready/FindOpinionsForm'));
-const ReadMore = React.lazy(() => import('../components/Widgets/ReadMore'));
-const FirstAndLastNameRequiredAlert = React.lazy(() => import('../components/Widgets/FirstAndLastNameRequiredAlert'));
-const ReadyIntroduction = React.lazy(() => import('../components/Ready/ReadyIntroduction'));
-const ReadyInformationDisclaimer = React.lazy(() => import('../components/Ready/ReadyInformationDisclaimer'));
-const ReadyTaskBallot = React.lazy(() => import('../components/Ready/ReadyTaskBallot'));
-const ReadyTaskFriends = React.lazy(() => import('../components/Ready/ReadyTaskFriends'));
-const ReadyTaskPlan = React.lazy(() => import('../components/Ready/ReadyTaskPlan'));
-const ReadyTaskRegister = React.lazy(() => import('../components/Ready/ReadyTaskRegister'));
-const ShareButtonDesktopTablet = React.lazy(() => import('../components/Share/ShareButtonDesktopTablet'));
-const ValuesToFollowPreview = React.lazy(() => import('../components/Values/ValuesToFollowPreview'));
-// const PledgeToVote = React.lazy(() => import('../components/Ready/PledgeToVote'));
+const ReadMore = React.lazy(() => import(/* webpackChunkName: 'ReadMore' */ '../components/Widgets/ReadMore'));
+const FirstAndLastNameRequiredAlert = React.lazy(() => import(/* webpackChunkName: 'FirstAndLastNameRequiredAlert' */ '../components/Widgets/FirstAndLastNameRequiredAlert'));
+// import PledgeToVote from '../components/Ready/PledgeToVote';
 
+// Preloads to avoid Suspense/fallback
+const Ballot = lazyWithPreload(() => import(/* webpackChunkName: 'ballot' */ '../routes/Ballot/Ballot'));
 
 const nextReleaseFeaturesEnabled = webAppConfig.ENABLE_NEXT_RELEASE_FEATURES === undefined ? false : webAppConfig.ENABLE_NEXT_RELEASE_FEATURES;
 
@@ -111,6 +114,9 @@ class Ready extends Component {
         textForMapSearch: VoterStore.getTextForMapSearch(),
       });
     });
+    this.preloadTimer = setTimeout(() => {
+      Ballot.preload();
+    }, 2000);
   }
 
   componentDidCatch (error, info) {
@@ -128,6 +134,10 @@ class Ready extends Component {
     if (this.positionItemTimer) {
       clearTimeout(this.positionItemTimer);
       this.positionItemTimer = null;
+    }
+    if (this.preloadTimer) {
+      clearTimeout(this.preloadTimer);
+      this.preloadTimer = null;
     }
   }
 

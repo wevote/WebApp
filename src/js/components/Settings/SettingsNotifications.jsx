@@ -12,11 +12,10 @@ import VoterConstants from '../../constants/VoterConstants';
 import VoterStore from '../../stores/VoterStore';
 import { renderLog } from '../../utils/logging';
 import LoadingWheel from '../LoadingWheel';
-import { openSnackbar } from '../Widgets/SnackNotifier';
-
 // import { PhoneAndroid } from '@material-ui/icons';
-const BrowserPushMessage = React.lazy(() => import('../Widgets/BrowserPushMessage'));
-const VoterEmailAddressEntry = React.lazy(() => import('./VoterEmailAddressEntry'));
+import BrowserPushMessage from '../Widgets/BrowserPushMessage';
+import { openSnackbar } from '../Widgets/SnackNotifier';
+import VoterEmailAddressEntry from './VoterEmailAddressEntry';
 
 const nextReleaseFeaturesEnabled = webAppConfig.ENABLE_NEXT_RELEASE_FEATURES === undefined ? false : webAppConfig.ENABLE_NEXT_RELEASE_FEATURES;
 

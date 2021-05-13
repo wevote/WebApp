@@ -10,10 +10,10 @@ import VoterGuidePossibilityStore from '../../stores/VoterGuidePossibilityStore'
 import { historyPush } from '../../utils/cordovaUtils';
 import { renderLog } from '../../utils/logging';
 import { abbreviateNumber, numberWithCommas } from '../../utils/textFormat';
-import ImageHandler from '../ImageHandler';
 
-const OfficeNameText = React.lazy(() => import('../Widgets/OfficeNameText'));
-const OpenExternalWebSite = React.lazy(() => import('../Widgets/OpenExternalWebSite'));
+const ImageHandler = React.lazy(() => import(/* webpackChunkName: 'ImageHandler' */ '../ImageHandler'));
+const OfficeNameText = React.lazy(() => import(/* webpackChunkName: 'OfficeNameText' */ '../Widgets/OfficeNameText'));
+const OpenExternalWebSite = React.lazy(() => import(/* webpackChunkName: 'OpenExternalWebSite' */ '../Widgets/OpenExternalWebSite'));
 
 /* global $ */
 

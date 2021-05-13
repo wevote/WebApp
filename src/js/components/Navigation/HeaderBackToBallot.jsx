@@ -20,16 +20,16 @@ import LazyImage from '../../utils/LazyImage';
 import { renderLog } from '../../utils/logging';
 import { shortenText, stringContains } from '../../utils/textFormat';
 import { voterPhoto } from '../../utils/voterPhoto';
+import OfficeItem from '../Ballot/OfficeItem';
+import ShareButtonDesktopTablet from '../Share/ShareButtonDesktopTablet';
+import HeaderBackToButton from './HeaderBackToButton';
+
+const HeaderNotificationMenu = React.lazy(() => import(/* webpackChunkName: 'HeaderNotificationMenu' */ './HeaderNotificationMenu'));
+const HeaderBarProfilePopUp = React.lazy(() => import(/* webpackChunkName: 'HeaderBarProfilePopUp' */ './HeaderBarProfilePopUp'));
+const ShareModal = React.lazy(() => import(/* webpackChunkName: 'ShareModal' */ '../Share/ShareModal'));
+const SignInModal = React.lazy(() => import(/* webpackChunkName: 'SignInModal' */ '../Widgets/SignInModal'));
 
 const anonymous = '../../../img/global/icons/avatar-generic.png';
-const HeaderBackToButton = React.lazy(() => import('./HeaderBackToButton'));
-const HeaderBarProfilePopUp = React.lazy(() => import('./HeaderBarProfilePopUp'));
-const HeaderNotificationMenu = React.lazy(() => import('./HeaderNotificationMenu'));
-const OfficeItem = React.lazy(() => import('../Ballot/OfficeItem'));
-const ShareModal = React.lazy(() => import('../Share/ShareModal'));
-const ShareButtonDesktopTablet = React.lazy(() => import('../Share/ShareButtonDesktopTablet'));
-const SignInModal = React.lazy(() => import('../Widgets/SignInModal'));
-
 const appleSiliconDebug = false;
 
 

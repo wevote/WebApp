@@ -10,12 +10,12 @@ import VoterStore from '../../stores/VoterStore';
 import { renderLog } from '../../utils/logging';
 import { abbreviateNumber, arrayContains } from '../../utils/textFormat';
 import LoadingWheel from '../LoadingWheel';
+import VoterGuideChooseElectionWithPositionsModal from './VoterGuideChooseElectionWithPositionsModal';
+import VoterGuideEndorsements from './VoterGuideEndorsements';
+import VoterGuideFollowers from './VoterGuideFollowers';
+import VoterGuideFollowing from './VoterGuideFollowing';
 
-const SettingsAccount = React.lazy(() => import('../Settings/SettingsAccount'));
-const VoterGuideChooseElectionWithPositionsModal = React.lazy(() => import('./VoterGuideChooseElectionWithPositionsModal'));
-const VoterGuideEndorsements = React.lazy(() => import('./VoterGuideEndorsements'));
-const VoterGuideFollowers = React.lazy(() => import('./VoterGuideFollowers'));
-const VoterGuideFollowing = React.lazy(() => import('./VoterGuideFollowing'));
+const SettingsAccount = React.lazy(() => import(/* webpackChunkName: 'SettingsAccount' */ '../Settings/SettingsAccount'));
 
 export default class OrganizationVoterGuideTabs extends Component {
   // static getDerivedStateFromProps (props, state) {

@@ -7,26 +7,29 @@ import ActivityActions from '../actions/ActivityActions';
 import AnalyticsActions from '../actions/AnalyticsActions';
 import AppActions from '../actions/AppActions';
 import ReadyActions from '../actions/ReadyActions';
+import ElectionCountdown from '../components/Ready/ElectionCountdown';
+import ReadyInformationDisclaimer from '../components/Ready/ReadyInformationDisclaimer';
+import ReadyIntroduction from '../components/Ready/ReadyIntroduction';
+import ReadyTaskBallot from '../components/Ready/ReadyTaskBallot';
+import ReadyTaskFriends from '../components/Ready/ReadyTaskFriends';
+import ReadyTaskPlan from '../components/Ready/ReadyTaskPlan';
+import ReadyTaskRegister from '../components/Ready/ReadyTaskRegister';
+import BrowserPushMessage from '../components/Widgets/BrowserPushMessage';
 import webAppConfig from '../config';
 import AppStore from '../stores/AppStore';
 import VoterStore from '../stores/VoterStore';
 import cookies from '../utils/cookies';
 import { historyPush, isAndroid, isIOS, isWebApp } from '../utils/cordovaUtils';
 import initializejQuery from '../utils/initializejQuery';
+import lazyWithPreload from '../utils/lazyWithPreload';
 import { renderLog } from '../utils/logging';
 
-const BrowserPushMessage = React.lazy(() => import('../components/Widgets/BrowserPushMessage'));
-const ElectionCountdown = React.lazy(() => import('../components/Ready/ElectionCountdown'));
-const ReadMore = React.lazy(() => import('../components/Widgets/ReadMore'));
-const FirstAndLastNameRequiredAlert = React.lazy(() => import('../components/Widgets/FirstAndLastNameRequiredAlert'));
-const ReadyIntroduction = React.lazy(() => import('../components/Ready/ReadyIntroduction'));
-const ReadyInformationDisclaimer = React.lazy(() => import('../components/Ready/ReadyInformationDisclaimer'));
-const ReadyTaskBallot = React.lazy(() => import('../components/Ready/ReadyTaskBallot'));
-const ReadyTaskFriends = React.lazy(() => import('../components/Ready/ReadyTaskFriends'));
-const ReadyTaskPlan = React.lazy(() => import('../components/Ready/ReadyTaskPlan'));
-const ReadyTaskRegister = React.lazy(() => import('../components/Ready/ReadyTaskRegister'));
-// const PledgeToVote = React.lazy(() => import('../components/Ready/PledgeToVote'));
+const ReadMore = React.lazy(() => import(/* webpackChunkName: 'ReadMore' */ '../components/Widgets/ReadMore'));
+const FirstAndLastNameRequiredAlert = React.lazy(() => import(/* webpackChunkName: 'FirstAndLastNameRequiredAlert' */ '../components/Widgets/FirstAndLastNameRequiredAlert'));
+// import PledgeToVote from '../components/Ready/PledgeToVote';
 
+// Preloads to avoid Suspense/fallback
+const Ballot = lazyWithPreload(() => import(/* webpackChunkName: 'ballot' */ '../routes/Ballot/Ballot'));
 
 const nextReleaseFeaturesEnabled = webAppConfig.ENABLE_NEXT_RELEASE_FEATURES === undefined ? false : webAppConfig.ENABLE_NEXT_RELEASE_FEATURES;
 
@@ -76,6 +79,9 @@ class ReadyLight extends Component {
         textForMapSearch: VoterStore.getTextForMapSearch(),
       });
     });
+    this.preloadTimer = setTimeout(() => {
+      Ballot.preload();
+    }, 3000);
   }
 
   componentDidCatch (error, info) {
@@ -87,12 +93,16 @@ class ReadyLight extends Component {
       clearTimeout(this.modalOpenTimer);
       this.modalOpenTimer = null;
     }
-    if (this.positionItemTimer) {
-      clearTimeout(this.positionItemTimer);
-      this.positionItemTimer = null;
+    if (this.preloadTimer) {
+      clearTimeout(this.preloadTimer);
+      this.preloadTimer = null;
     }
     const { showReadyHeavy } = this.props;
     showReadyHeavy();
+    if (this.timer) {
+      clearTimeout(this.timer);
+      this.timer = null;
+    }
   }
 
   static getDerivedStateFromError (error) {       // eslint-disable-line no-unused-vars

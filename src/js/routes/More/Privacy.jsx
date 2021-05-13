@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import cordovaScrollablePaneTopPadding from '../../utils/cordovaScrollablePaneTopPadding';
 import { renderLog } from '../../utils/logging';
 
-const OpenExternalWebSite = React.lazy(() => import('../../components/Widgets/OpenExternalWebSite'));
+const OpenExternalWebSite = React.lazy(() => import(/* webpackChunkName: 'OpenExternalWebSite' */ '../../components/Widgets/OpenExternalWebSite'));
 
 export default class Privacy extends React.Component {
   static getProps () {

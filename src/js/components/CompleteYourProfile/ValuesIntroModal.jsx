@@ -12,7 +12,7 @@ import VoterStore from '../../stores/VoterStore';
 import { hasIPhoneNotch } from '../../utils/cordovaUtils';
 import { renderLog } from '../../utils/logging';
 
-const FriendInvitationOnboardingValuesList = React.lazy(() => import('../Values/FriendInvitationOnboardingValuesList'));
+const FriendInvitationOnboardingValuesList = React.lazy(() => import(/* webpackChunkName: 'FriendInvitationOnboardingValuesList' */ '../Values/FriendInvitationOnboardingValuesList'));
 
 class ValuesIntroModal extends Component {
   constructor (props) {

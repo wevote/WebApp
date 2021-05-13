@@ -5,8 +5,8 @@
 // import { isWebApp, polyfillFixes } from './utils/cordovaUtils';
 // import RouterV5SendMatch from './utils/RouterV5SendMatch';
 //
-// const Application = React.lazy(() => import('./Application'));
-// const News = React.lazy(() => import('./routes/Activity/News'));
+// import Application from './Application';
+// import News from './routes/Activity/News';
 // const AddCandidateForExtension = React.lazy(() => import('./routes/Ballot/AddCandidateForExtension'));
 // const Ballot = React.lazy(() => import('./routes/Ballot/Ballot'));
 // // const BallotIndex = React.lazy(() => import('./routes/Ballot/BallotIndex'));

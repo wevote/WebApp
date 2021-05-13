@@ -11,8 +11,8 @@ import SupportStore from '../../stores/SupportStore';
 import VoterStore from '../../stores/VoterStore';
 import { cordovaDot, historyPush } from '../../utils/cordovaUtils';
 import { renderLog } from '../../utils/logging';
+import { StyledButton, ButtonLeft, ButtonText, Icon, PercentComplete, ReadyCard, StyledCheckbox, StyledCheckboxCompleted, SubTitle, TitleRowWrapper } from './ReadyTaskStyles';
 import ShowMoreButtons from './ShowMoreButtons';
-import { ButtonLeft, ButtonText, Icon, PercentComplete, ReadyCard, StyledButton, StyledCheckbox, StyledCheckboxCompleted, SubTitle, TitleRowWrapper } from './ReadyTaskStyles';
 
 const ballot0Percent = '../../../img/global/svg-icons/ready/ballot-0-percent.svg';
 const ballot50Percent = '../../../img/global/svg-icons/ready/ballot-50-percent.svg';
@@ -382,6 +382,7 @@ class ReadyTaskBallot extends React.Component {
       showMoreShowButton, showMoreButtonWasClicked,
       stateButtonNeeded, stateAllCompleted, stateNumberCompleted, stateShowButton, stateTotalNumber,
     } = this.state;
+
 
     let ballotImage;
     let altValue;

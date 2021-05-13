@@ -4,9 +4,8 @@ import AnalyticsActions from '../../actions/AnalyticsActions';
 import VoterStore from '../../stores/VoterStore';
 import { isWebApp } from '../../utils/cordovaUtils';
 import { renderLog } from '../../utils/logging';
-
-const AddressBox = React.lazy(() => import('../AddressBox'));
-const BrowserPushMessage = React.lazy(() => import('../Widgets/BrowserPushMessage'));
+import AddressBox from '../AddressBox';
+import BrowserPushMessage from '../Widgets/BrowserPushMessage';
 
 export default class SettingsAddress extends Component {
   constructor (props) {

@@ -6,11 +6,12 @@ import IssueActions from '../../actions/IssueActions';
 import IssueStore from '../../stores/IssueStore';
 import VoterStore from '../../stores/VoterStore';
 import { renderLog } from '../../utils/logging';
+import IssueLinkToggle from '../Values/IssueLinkToggle';
+import BrowserPushMessage from '../Widgets/BrowserPushMessage';
 
-const BrowserPushMessage = React.lazy(() => import('../Widgets/BrowserPushMessage'));
-const IssueLinkToggle = React.lazy(() => import('../Values/IssueLinkToggle'));
-const SettingsAccount = React.lazy(() => import('./SettingsAccount'));
-const DelayedLoad = React.lazy(() => import('../Widgets/DelayedLoad'));
+const DelayedLoad = React.lazy(() => import(/* webpackChunkName: 'DelayedLoad' */ '../Widgets/DelayedLoad'));
+const SettingsAccount = React.lazy(() => import(/* webpackChunkName: 'SettingsAccount' */ './SettingsAccount'));
+
 
 const PROCHOICE = 'wv02issue63';
 const PROLIFE = 'wv02issue64';

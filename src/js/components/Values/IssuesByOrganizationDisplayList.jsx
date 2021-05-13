@@ -8,10 +8,10 @@ import IssueStore from '../../stores/IssueStore';
 import VoterGuideStore from '../../stores/VoterGuideStore';
 import { cordovaDot } from '../../utils/cordovaUtils';
 import { renderLog } from '../../utils/logging';
+import StickyPopover from '../Ballot/StickyPopover';
+import IssueFollowToggleButton from './IssueFollowToggleButton';
 
-const IssueFollowToggleButton = React.lazy(() => import('./IssueFollowToggleButton'));
-const ReadMore = React.lazy(() => import('../Widgets/ReadMore'));
-const StickyPopover = React.lazy(() => import('../Ballot/StickyPopover'));
+const ReadMore = React.lazy(() => import(/* webpackChunkName: 'ReadMore' */ '../Widgets/ReadMore'));
 
 // Show a voter a horizontal list of all of the issues they are following that relate to this ballot item
 class IssuesByOrganizationDisplayList extends Component {

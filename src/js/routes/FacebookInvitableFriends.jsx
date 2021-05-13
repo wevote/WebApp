@@ -1,20 +1,19 @@
 import { filter } from 'lodash-es';
 import React, { Component } from 'react';
+import Button from 'react-bootstrap/Button';
 import Helmet from 'react-helmet';
 import AnalyticsActions from '../actions/AnalyticsActions';
 import FacebookActions from '../actions/FacebookActions';
 import FriendActions from '../actions/FriendActions';
 import VoterActions from '../actions/VoterActions';
+import CheckBox from '../components/Connect/CheckBox';
 import LoadingWheel from '../components/LoadingWheel';
+import WouldYouLikeToMergeAccounts from '../components/WouldYouLikeToMergeAccounts';
 import webAppConfig from '../config';
 import FacebookStore from '../stores/FacebookStore';
 import VoterStore from '../stores/VoterStore';
 import { historyPush, isWebApp } from '../utils/cordovaUtils';
 import { oAuthLog, renderLog } from '../utils/logging';
-
-const Button = React.lazy(() => import('react-bootstrap/Button'));
-const CheckBox = React.lazy(() => import('../components/Connect/CheckBox'));
-const WouldYouLikeToMergeAccounts = React.lazy(() => import('../components/WouldYouLikeToMergeAccounts'));
 
 
 // December 2018:  We want to work toward being airbnb style compliant, but for now these are disabled in this file to minimize massive changes

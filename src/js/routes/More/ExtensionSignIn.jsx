@@ -6,9 +6,8 @@ import LoadingWheel from '../../components/LoadingWheel';
 import VoterStore from '../../stores/VoterStore';
 import { renderLog } from '../../utils/logging';
 
-const DelayedLoad = React.lazy(() => import('../../components/Widgets/DelayedLoad'));
-const SettingsAccount = React.lazy(() => import('../../components/Settings/SettingsAccount'));
-
+const DelayedLoad = React.lazy(() => import(/* webpackChunkName: 'DelayedLoad' */ '../../components/Widgets/DelayedLoad'));
+const SettingsAccount = React.lazy(() => import(/* webpackChunkName: 'SettingsAccount' */ '../../components/Settings/SettingsAccount'));
 
 
 class ExtensionSignIn extends Component {

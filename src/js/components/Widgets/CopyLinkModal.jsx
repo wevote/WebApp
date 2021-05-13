@@ -1,9 +1,8 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
+import Modal from 'react-bootstrap/Modal';
+import CopyToClipboard from 'react-copy-to-clipboard';
 import { renderLog } from '../../utils/logging';
-
-const Modal = React.lazy(() => import('react-bootstrap/Modal'));
-const CopyToClipboard = React.lazy(() => import('react-copy-to-clipboard'));
 
 export default class CopyLinkModal extends Component {
   constructor (props) {

@@ -5,9 +5,10 @@ import MeasureStore from '../../stores/MeasureStore';
 import { cordovaStickyHeaderPaddingTop } from '../../utils/cordovaOffsets';
 import { isIOSAppOnMac, isIPad } from '../../utils/cordovaUtils';
 
-const BallotItemSupportOpposeComment = React.lazy(() => import('../Widgets/BallotItemSupportOpposeComment'));
-const BallotItemSupportOpposeCountDisplay = React.lazy(() => import('../Widgets/BallotItemSupportOpposeCountDisplay'));
-const ReadMore = React.lazy(() => import('../Widgets/ReadMore'));
+const ReadMore = React.lazy(() => import(/* webpackChunkName: 'ReadMore' */ '../Widgets/ReadMore'));
+const BallotItemSupportOpposeComment = React.lazy(() => import(/* webpackChunkName: 'BallotItemSupportOpposeComment' */ '../Widgets/BallotItemSupportOpposeComment'));
+const BallotItemSupportOpposeCountDisplay = React.lazy(() => import(/* webpackChunkName: 'BallotItemSupportOpposeCountDisplay' */ '../Widgets/BallotItemSupportOpposeCountDisplay'));
+
 
 class MeasureStickyHeader extends Component {
   constructor (props) {

@@ -1,13 +1,13 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
+import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 import { Link } from 'react-router-dom';
 import { renderLog } from '../../utils/logging';
+import OrganizationCard from '../VoterGuide/OrganizationCard';
+import OrganizationTinyDisplay from '../VoterGuide/OrganizationTinyDisplay';
 
-const FollowToggle = React.lazy(() => import('../Widgets/FollowToggle'));
-const OrganizationCard = React.lazy(() => import('../VoterGuide/OrganizationCard'));
-const OrganizationTinyDisplay = React.lazy(() => import('../VoterGuide/OrganizationTinyDisplay'));
-const OverlayTrigger = React.lazy(() => import('react-bootstrap/OverlayTrigger'));
-const Popover = React.lazy(() => import('react-bootstrap/Popover'));
+const Popover = React.lazy(() => import(/* webpackChunkName: 'BootstrapPopover' */ 'react-bootstrap/Popover'));
+const FollowToggle = React.lazy(() => import(/* webpackChunkName: 'FollowToggle' */ '../Widgets/FollowToggle'));
 
 export default class OrganizationsFollowedOnTwitter extends Component {
   constructor (props) {

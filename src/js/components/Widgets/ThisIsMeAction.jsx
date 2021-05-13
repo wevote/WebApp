@@ -4,8 +4,7 @@ import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import VoterStore from '../../stores/VoterStore';
 import { renderLog } from '../../utils/logging';
-
-const SplitIconButton = React.lazy(() => import('./SplitIconButton'));
+import SplitIconButton from './SplitIconButton';
 
 class ThisIsMeAction extends Component {
   constructor (props) {

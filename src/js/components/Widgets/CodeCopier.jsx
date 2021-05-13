@@ -4,8 +4,10 @@ import React, { Component } from 'react';
 import OrganizationActions from '../../actions/OrganizationActions';
 import OrganizationStore from '../../stores/OrganizationStore';
 import { renderLog } from '../../utils/logging';
-import ImageHandler from '../ImageHandler';
 import { openSnackbar } from './SnackNotifier';
+
+const ImageHandler = React.lazy(() => import(/* webpackChunkName: 'ImageHandler' */ '../ImageHandler'));
+
 
 export default class CodeCopier extends Component {
   constructor (props) {

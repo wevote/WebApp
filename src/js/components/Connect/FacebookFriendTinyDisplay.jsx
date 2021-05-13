@@ -1,7 +1,9 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { renderLog } from '../../utils/logging';
-import ImageHandler from '../ImageHandler';
+
+const ImageHandler = React.lazy(() => import(/* webpackChunkName: 'ImageHandler' */ '../ImageHandler'));
+
 
 export default class FacebookFriendTinyDisplay extends Component {
   render () {

@@ -3,14 +3,15 @@ import React, { Component } from 'react';
 import Helmet from 'react-helmet';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
+import { organizationalDonors, teamOfVolunteers } from '../../components/More/people';
+import { Section } from '../../components/Welcome/sectionStyles';
 import { isWebApp } from '../../utils/cordovaUtils';
 import { renderLog } from '../../utils/logging';
 
-const OpenExternalWebSite = React.lazy(() => import('../../components/Widgets/OpenExternalWebSite'));
-const Section = React.lazy(() => import('../../components/Welcome/sectionStyles'));
-const WelcomeAppbar = React.lazy(() => import('../../components/Navigation/WelcomeAppbar'));
-const WelcomeFooter = React.lazy(() => import('../../components/Welcome/WelcomeFooter'));
-const { organizationalDonors, teamOfVolunteers } = React.lazy(() => import('../../components/More/people'));
+const WelcomeFooter = React.lazy(() => import(/* webpackChunkName: 'WelcomeFooter' */ '../../components/Welcome/WelcomeFooter'));
+const OpenExternalWebSite = React.lazy(() => import(/* webpackChunkName: 'OpenExternalWebSite' */ '../../components/Widgets/OpenExternalWebSite'));
+const WelcomeAppbar = React.lazy(() => import(/* webpackChunkName: 'WelcomeAppbar' */ '../../components/Navigation/WelcomeAppbar'));
+
 
 class Credits extends Component {
   static getProps () {

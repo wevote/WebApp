@@ -8,7 +8,7 @@ import FriendStore from '../../stores/FriendStore';
 import { historyPush } from '../../utils/cordovaUtils';
 import { renderLog } from '../../utils/logging';
 
-const DelayedLoad = React.lazy(() => import('../../components/Widgets/DelayedLoad'));
+const DelayedLoad = React.lazy(() => import(/* webpackChunkName: 'DelayedLoad' */ '../../components/Widgets/DelayedLoad'));
 
 
 export default class FriendInvitationByEmailVerifyProcess extends Component {

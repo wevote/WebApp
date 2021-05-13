@@ -13,13 +13,14 @@ import OrganizationStore from '../../stores/OrganizationStore';
 import { cordovaDot } from '../../utils/cordovaUtils';
 import { renderLog } from '../../utils/logging';
 import { capitalizeString, numberWithCommas, startsWith, stringContains } from '../../utils/textFormat';
-import ImageHandler from '../ImageHandler';
+import BallotItemVoterGuideSupportOpposeDisplay from '../Widgets/BallotItemVoterGuideSupportOpposeDisplay';
 
-const BallotItemVoterGuideSupportOpposeDisplay = React.lazy(() => import('../Widgets/BallotItemVoterGuideSupportOpposeDisplay'));
-const BallotItemSupportOpposeCountDisplay = React.lazy(() => import('../Widgets/BallotItemSupportOpposeCountDisplay'));
-const OfficeNameText = React.lazy(() => import('../Widgets/OfficeNameText'));
-const OpenExternalWebSite = React.lazy(() => import('../Widgets/OpenExternalWebSite'));
-const ReadMore = React.lazy(() => import('../Widgets/ReadMore'));
+const BallotItemSupportOpposeCountDisplay = React.lazy(() => import(/* webpackChunkName: 'BallotItemSupportOpposeCountDisplay' */ '../Widgets/BallotItemSupportOpposeCountDisplay'));
+const ImageHandler = React.lazy(() => import(/* webpackChunkName: 'ImageHandler' */ '../ImageHandler'));
+const OfficeNameText = React.lazy(() => import(/* webpackChunkName: 'OfficeNameText' */ '../Widgets/OfficeNameText'));
+const OpenExternalWebSite = React.lazy(() => import(/* webpackChunkName: 'OpenExternalWebSite' */ '../Widgets/OpenExternalWebSite'));
+const ReadMore = React.lazy(() => import(/* webpackChunkName: 'ReadMore' */ '../Widgets/ReadMore'));
+
 
 class VoterGuidePositionItem extends Component {
   constructor (props) {

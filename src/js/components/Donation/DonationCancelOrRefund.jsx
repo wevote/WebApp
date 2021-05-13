@@ -1,11 +1,10 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
+import Button from 'react-bootstrap/Button';
+import Modal from 'react-bootstrap/Modal';
+import Table from 'react-bootstrap/Table';
 import DonateActions from '../../actions/DonateActions';
 import { renderLog } from '../../utils/logging';
-
-const Button = React.lazy(() => import('react-bootstrap/Button'));
-const Table = React.lazy(() => import('react-bootstrap/Table'));
-const Modal = React.lazy(() => import('react-bootstrap/Modal'));
 
 export default class DonationCancelOrRefund extends Component {
   constructor (props) {

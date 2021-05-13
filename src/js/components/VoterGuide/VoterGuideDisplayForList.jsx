@@ -5,14 +5,14 @@ import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { renderLog } from '../../utils/logging';
 import { removeTwitterNameFromDescription } from '../../utils/textFormat';
-import ImageHandler from '../ImageHandler';
+import StickyPopover from '../Ballot/StickyPopover';
+import OrganizationPopoverCard from '../Organization/OrganizationPopoverCard';
+import PositionInformationOnlySnippet from '../Widgets/PositionInformationOnlySnippet';
+import PositionRatingSnippet from '../Widgets/PositionRatingSnippet';
+import PositionSupportOpposeSnippet from '../Widgets/PositionSupportOpposeSnippet';
 
-const PositionRatingSnippet = React.lazy(() => import('../Widgets/PositionRatingSnippet'));
-const PositionInformationOnlySnippet = React.lazy(() => import('../Widgets/PositionInformationOnlySnippet'));
-const PositionSupportOpposeSnippet = React.lazy(() => import('../Widgets/PositionSupportOpposeSnippet'));
-const ReadMore = React.lazy(() => import('../Widgets/ReadMore'));
-const StickyPopover = React.lazy(() => import('../Ballot/StickyPopover'));
-const OrganizationPopoverCard = React.lazy(() => import('../Organization/OrganizationPopoverCard'));
+const ImageHandler = React.lazy(() => import(/* webpackChunkName: 'ImageHandler' */ '../ImageHandler'));
+const ReadMore = React.lazy(() => import(/* webpackChunkName: 'ReadMore' */ '../Widgets/ReadMore'));
 
 
 // VoterGuideDisplayForList is used by GuideList for viewing voter guides you can follow on the Candidate

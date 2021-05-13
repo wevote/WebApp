@@ -4,8 +4,7 @@ import VoterActions from '../../actions/VoterActions';
 import VoterStore from '../../stores/VoterStore';
 import { isWebApp, restoreStylesAfterCordovaKeyboard } from '../../utils/cordovaUtils';
 import { renderLog } from '../../utils/logging';
-
-const TextBox = React.lazy(() => import('./TextBox'));
+import TextBox from './TextBox';
 
 class AddressBoxWelcome extends PureComponent {
   constructor (props) {

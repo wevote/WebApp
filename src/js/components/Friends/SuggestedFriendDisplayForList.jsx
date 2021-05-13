@@ -7,9 +7,9 @@ import styled from 'styled-components';
 import FriendActions from '../../actions/FriendActions';
 import { renderLog } from '../../utils/logging';
 import { removeTwitterNameFromDescription } from '../../utils/textFormat';
-import ImageHandler from '../ImageHandler';
+import SuggestedFriendToggle from './SuggestedFriendToggle';
 
-const SuggestedFriendToggle = React.lazy(() => import('./SuggestedFriendToggle'));
+const ImageHandler = React.lazy(() => import(/* webpackChunkName: 'ImageHandler' */ '../ImageHandler'));
 
 class SuggestedFriendDisplayForList extends Component {
   constructor (props) {

@@ -3,7 +3,8 @@ import React, { Component } from 'react';
 import IssueStore from '../../stores/IssueStore';
 import { cordovaDot } from '../../utils/cordovaUtils';
 import { renderLog } from '../../utils/logging';
-import ImageHandler from '../ImageHandler';
+
+const ImageHandler = React.lazy(() => import(/* webpackChunkName: 'ImageHandler' */ '../ImageHandler'));
 
 
 export default class IssueImageDisplay extends Component {

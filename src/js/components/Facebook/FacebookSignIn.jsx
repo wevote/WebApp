@@ -9,7 +9,7 @@ import VoterStore from '../../stores/VoterStore';
 import { oAuthLog, renderLog } from '../../utils/logging';
 import signInModalGlobalState from '../Widgets/signInModalGlobalState';
 
-const SplitIconButton = React.lazy(() => import('../Widgets/SplitIconButton'));
+import SplitIconButton from '../Widgets/SplitIconButton';
 
 
 class FacebookSignIn extends Component {

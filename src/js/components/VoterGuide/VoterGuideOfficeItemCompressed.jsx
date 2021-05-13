@@ -8,7 +8,7 @@ import VoterGuideStore from '../../stores/VoterGuideStore';
 import { renderLog } from '../../utils/logging';
 import { toTitleCase } from '../../utils/textFormat';
 
-const VoterGuidePositionItem = React.lazy(() => import('./VoterGuidePositionItem'));
+const VoterGuidePositionItem = React.lazy(() => import(/* webpackChunkName: 'VoterGuidePositionItem' */ './VoterGuidePositionItem'));
 
 
 // This is based on components/Ballot/OfficeItemCompressed

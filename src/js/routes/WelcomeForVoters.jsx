@@ -8,10 +8,12 @@ import styled from 'styled-components';
 import AnalyticsActions from '../actions/AnalyticsActions';
 import AppActions from '../actions/AppActions';
 import VoterActions from '../actions/VoterActions';
+import SettingsVerifySecretCode from '../components/Settings/SettingsVerifySecretCode';
+import AddressBoxWelcome from '../components/Welcome/AddressBoxWelcome';
 import { BlueTitle, PlayerContainer, SubTitle, Title, Video } from '../components/Welcome/headerWelcomeStyles';
-import { Section, Bold, Description, DescriptionContainer, DescriptionImageColumn, DescriptionLeftColumn,
-  GetStarted, Image, NetworkContainer, NetworkImage, SectionTitle, SectionTitleBold, SignUpContainer,
-  SignUpMessage, Step, StepLabel, StepNumber } from '../components/Welcome/sectionStyles';
+import { Bold, Description, DescriptionContainer, DescriptionImageColumn, DescriptionLeftColumn, GetStarted, Image, NetworkContainer, NetworkImage, Section, SectionTitle, SectionTitleBold, SignUpContainer, SignUpMessage, Step, StepLabel, StepNumber } from '../components/Welcome/sectionStyles';
+import TextBox from '../components/Welcome/TextBox';
+import Testimonial from '../components/Widgets/Testimonial';
 import VoterConstants from '../constants/VoterConstants';
 import VoterStore from '../stores/VoterStore';
 import cordovaScrollablePaneTopPadding from '../utils/cordovaScrollablePaneTopPadding';
@@ -19,13 +21,8 @@ import { cordovaDot, historyPush } from '../utils/cordovaUtils';
 import { renderLog } from '../utils/logging';
 import { validateEmail } from '../utils/regex-checks';
 
-const AddressBoxWelcome = React.lazy(() => import('../components/Welcome/AddressBoxWelcome'));
-const WelcomeFooter = React.lazy(() => import('../components/Welcome/WelcomeFooter'));
-const SettingsVerifySecretCode = React.lazy(() => import('../components/Settings/SettingsVerifySecretCode'));
-const TextBox = React.lazy(() => import('../components/Welcome/TextBox'));
-const WelcomeAppbar = React.lazy(() => import('../components/Navigation/WelcomeAppbar'));
-const Testimonial = React.lazy(() => import('../components/Widgets/Testimonial'));
-
+const WelcomeFooter = React.lazy(() => import(/* webpackChunkName: 'WelcomeFooter' */ '../components/Welcome/WelcomeFooter'));
+const WelcomeAppbar = React.lazy(() => import(/* webpackChunkName: 'WelcomeAppbar' */ '../components/Navigation/WelcomeAppbar'));
 // import SettingsVerifySecretCode from '../components/Settings/SettingsVerifySecretCode';
 
 const ffwdLogo = '../../img/global/logos/ffwd-logo.png';

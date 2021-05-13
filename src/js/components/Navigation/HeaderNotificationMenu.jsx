@@ -12,7 +12,8 @@ import { timeFromDate } from '../../utils/dateFormat';
 import initializejQuery from '../../utils/initializejQuery';
 import { renderLog } from '../../utils/logging';
 import { returnFirstXWords, startsWith } from '../../utils/textFormat';
-import ImageHandler from '../ImageHandler';
+
+const ImageHandler = React.lazy(() => import(/* webpackChunkName: 'ImageHandler' */ '../ImageHandler'));
 
 
 class HeaderNotificationMenu extends Component {

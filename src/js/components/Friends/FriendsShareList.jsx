@@ -3,8 +3,7 @@ import { withStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { renderLog } from '../../utils/logging';
-
-const FriendsShareListItem = React.lazy(() => import('./FriendsShareListItem'));
+import FriendsShareListItem from './FriendsShareListItem';
 
 class FriendShareList extends Component {
   constructor (props) {

@@ -2,6 +2,7 @@ import { Button } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
+// TODO 5/11/21: Use Campaigns payment code:  import { CardElement, injectStripe } from 'react-stripe-elements';
 import styled from 'styled-components';
 import DonateActions from '../../actions/DonateActions';
 import DonateStore from '../../stores/DonateStore';
@@ -9,8 +10,6 @@ import VoterStore from '../../stores/VoterStore';
 import { renderLog } from '../../utils/logging';
 import { numberWithCommas } from '../../utils/textFormat';
 import LoadingWheel from '../LoadingWheel';
-
-const { CardElement, injectStripe } = React.lazy(() => import('react-stripe-elements'));
 
 
 class SettingsStripePayment extends Component {
@@ -242,7 +241,7 @@ class SettingsStripePayment extends Component {
         {billingOptionChosen && (
           <span>
             <StripeElementContainer>
-              <CardElement />
+              {/* <CardElement /> */}
             </StripeElementContainer>
             <Button
               disabled={donationWithStripeSubmitted}
@@ -321,4 +320,4 @@ const StripeElementContainer = styled.div`
   margin: 32px 0 32px 0;
 `;
 
-export default withStyles(styles)(injectStripe(SettingsStripePayment));
+export default withStyles(styles); // TODO: (injectStripe(SettingsStripePayment));

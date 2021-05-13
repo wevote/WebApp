@@ -2,11 +2,10 @@ import React, { Component } from 'react';
 import Helmet from 'react-helmet';
 import AnalyticsActions from '../../actions/AnalyticsActions';
 import ElectionActions from '../../actions/ElectionActions';
+import BallotElectionList from '../../components/Ballot/BallotElectionList';
 import ElectionStore from '../../stores/ElectionStore';
 import VoterStore from '../../stores/VoterStore';
 import { renderLog } from '../../utils/logging';
-
-const BallotElectionList = React.lazy(() => import('../../components/Ballot/BallotElectionList'));
 
 export default class Elections extends Component {
   constructor (props) {

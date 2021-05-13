@@ -6,10 +6,9 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { isCordova, isIPhone3p5in, isIPhone4in, isIPhone4p7in, restoreStylesAfterCordovaKeyboard } from '../../utils/cordovaUtils';
 import { renderLog } from '../../utils/logging';
-
-const SplitIconButton = React.lazy(() => import('../Widgets/SplitIconButton'));
-const VoterEmailAddressEntry = React.lazy(() => import('./VoterEmailAddressEntry'));
-const VoterPhoneVerificationEntry = React.lazy(() => import('./VoterPhoneVerificationEntry'));
+import SplitIconButton from '../Widgets/SplitIconButton';
+import VoterEmailAddressEntry from './VoterEmailAddressEntry';
+import VoterPhoneVerificationEntry from './VoterPhoneVerificationEntry';
 
 
 // Work around for dialog placement in Cordova when virtual keyboard appears

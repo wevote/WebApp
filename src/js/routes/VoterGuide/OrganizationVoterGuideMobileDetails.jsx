@@ -4,12 +4,12 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 import TwitterActions from '../../actions/TwitterActions';
 import LoadingWheel from '../../components/LoadingWheel';
+import VoterGuideFollowers from '../../components/VoterGuide/VoterGuideFollowers';
+import VoterGuideFollowing from '../../components/VoterGuide/VoterGuideFollowing';
 import TwitterStore from '../../stores/TwitterStore';
 import { renderLog } from '../../utils/logging';
 
-const DelayedLoad = React.lazy(() => import('../../components/Widgets/DelayedLoad'));
-const VoterGuideFollowing = React.lazy(() => import('../../components/VoterGuide/VoterGuideFollowing'));
-const VoterGuideFollowers = React.lazy(() => import('../../components/VoterGuide/VoterGuideFollowers'));
+const DelayedLoad = React.lazy(() => import(/* webpackChunkName: 'DelayedLoad' */ '../../components/Widgets/DelayedLoad'));
 
 class OrganizationVoterGuideMobileDetails extends Component {
   constructor (props) {

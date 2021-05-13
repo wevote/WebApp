@@ -1,13 +1,13 @@
-import React, { Component } from 'react';
-
-import PropTypes from 'prop-types';
 import { Button } from '@material-ui/core';
+import PropTypes from 'prop-types';
+import React, { Component } from 'react';
 import styled from 'styled-components';
 import AppActions from '../../actions/AppActions';
 import FriendActions from '../../actions/FriendActions';
 import FriendStore from '../../stores/FriendStore';
 import VoterStore from '../../stores/VoterStore';
 import { renderLog } from '../../utils/logging';
+
 
 export default class SuggestedFriendToggle extends Component {
   constructor (props) {

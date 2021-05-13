@@ -3,7 +3,8 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 import { renderLog } from '../../utils/logging';
 
-const OpenExternalWebSite = React.lazy(() => import('../Widgets/OpenExternalWebSite'));
+const OpenExternalWebSite = React.lazy(() => import(/* webpackChunkName: 'OpenExternalWebSite' */ '../Widgets/OpenExternalWebSite'));
+
 
 class CreateConfiguredVersion extends Component {
   constructor (props) {

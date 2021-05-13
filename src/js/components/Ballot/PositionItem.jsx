@@ -18,15 +18,16 @@ import { renderLog } from '../../utils/logging';
 import { isSpeakerTypeIndividual, isSpeakerTypeOrganization } from '../../utils/organization-functions';
 import { isOrganizationInVotersNetwork } from '../../utils/positionFunctions';
 import { numberWithCommas, startsWith } from '../../utils/textFormat';
-import ImageHandler from '../ImageHandler';
+import OrganizationPopoverCard from '../Organization/OrganizationPopoverCard';
+import IssuesByOrganizationDisplayList from '../Values/IssuesByOrganizationDisplayList';
+import PositionItemScorePopover from '../Widgets/PositionItemScorePopover';
 
-const FollowToggle = React.lazy(() => import('../Widgets/FollowToggle'));
-const IssuesByOrganizationDisplayList = React.lazy(() => import('../Values/IssuesByOrganizationDisplayList'));
-const OpenExternalWebSite = React.lazy(() => import('../Widgets/OpenExternalWebSite'));
-const OrganizationPopoverCard = React.lazy(() => import('../Organization/OrganizationPopoverCard'));
-const PositionItemScorePopover = React.lazy(() => import('../Widgets/PositionItemScorePopover'));
-const ReadMore = React.lazy(() => import('../Widgets/ReadMore'));
-const StickyPopover = React.lazy(() => import('./StickyPopover'));
+const FollowToggle = React.lazy(() => import(/* webpackChunkName: 'FollowToggle' */ '../Widgets/FollowToggle'));
+const ImageHandler = React.lazy(() => import(/* webpackChunkName: 'ImageHandler' */ '../ImageHandler'));
+const OpenExternalWebSite = React.lazy(() => import(/* webpackChunkName: 'OpenExternalWebSite' */ '../Widgets/OpenExternalWebSite'));
+const ReadMore = React.lazy(() => import(/* webpackChunkName: 'ReadMore' */ '../Widgets/ReadMore'));
+const StickyPopover = React.lazy(() => import(/* webpackChunkName: 'StickyPopover' */ './StickyPopover'));
+
 
 class PositionItem extends Component {
   constructor (props) {

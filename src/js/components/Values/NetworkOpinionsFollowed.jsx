@@ -4,9 +4,8 @@ import styled from 'styled-components';
 import OrganizationActions from '../../actions/OrganizationActions';
 import OrganizationStore from '../../stores/OrganizationStore';
 import { renderLog } from '../../utils/logging';
-
-const OpinionsFollowedListCompressed = React.lazy(() => import('../Organization/OpinionsFollowedListCompressed'));
-const EndorsementCard = React.lazy(() => import('../Widgets/EndorsementCard'));
+import OpinionsFollowedListCompressed from '../Organization/OpinionsFollowedListCompressed';
+import EndorsementCard from '../Widgets/EndorsementCard';
 
 export default class NetworkOpinionsFollowed extends Component {
   constructor (props) {

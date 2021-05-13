@@ -3,12 +3,11 @@ import React, { Component } from 'react';
 import AppActions from '../../actions/AppActions';
 import VoterActions from '../../actions/VoterActions';
 import LoadingWheel from '../../components/LoadingWheel';
+import WouldYouLikeToMergeAccountsOld from '../../components/WouldYouLikeToMergeAccountsOld';
 import VoterStore from '../../stores/VoterStore';
 import cookies from '../../utils/cookies';
 import { historyPush } from '../../utils/cordovaUtils';
 import { oAuthLog, renderLog } from '../../utils/logging';
-
-const WouldYouLikeToMergeAccountsOld = React.lazy(() => import('../../components/WouldYouLikeToMergeAccountsOld'));
 
 export default class SignInEmailProcess extends Component {
   constructor (props) {

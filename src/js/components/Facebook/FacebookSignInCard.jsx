@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { renderLog } from '../../utils/logging';
-
-const FacebookSignIn = React.lazy(() => import('./FacebookSignIn'));
+import FacebookSignIn from './FacebookSignIn';
 
 const facebookText = 'By adding Facebook to your We Vote profile, it is easier to invite friends.';
 

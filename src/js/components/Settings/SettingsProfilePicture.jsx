@@ -1,10 +1,10 @@
-import React, { Component } from 'react';
-
 import { Button, FormControlLabel, Radio, RadioGroup } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
+import React, { Component } from 'react';
 // import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import AppActions from '../../actions/AppActions';
+
 
 class SettingsProfilePicture extends Component {
   constructor (props) {

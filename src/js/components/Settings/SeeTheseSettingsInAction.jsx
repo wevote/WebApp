@@ -6,8 +6,9 @@ import OrganizationStore from '../../stores/OrganizationStore';
 import VoterStore from '../../stores/VoterStore';
 import { renderLog } from '../../utils/logging';
 
-const OpenExternalWebSite = React.lazy(() => import('../Widgets/OpenExternalWebSite'));
-const SettingsAccount = React.lazy(() => import('./SettingsAccount'));
+const OpenExternalWebSite = React.lazy(() => import(/* webpackChunkName: 'OpenExternalWebSite' */ '../Widgets/OpenExternalWebSite'));
+const SettingsAccount = React.lazy(() => import(/* webpackChunkName: 'SettingsAccount' */ './SettingsAccount'));
+
 
 class SeeTheseSettingsInAction extends Component {
   constructor (props) {

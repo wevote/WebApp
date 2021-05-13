@@ -4,6 +4,7 @@ import { Close } from '@material-ui/icons';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import styled from 'styled-components';
+import stockAvatar from '../../../img/global/icons/avatar-generic.png';
 import SupportActions from '../../actions/SupportActions';
 import CandidateStore from '../../stores/CandidateStore';
 import MeasureStore from '../../stores/MeasureStore';
@@ -13,9 +14,9 @@ import { cordovaDot, hasIPhoneNotch, prepareForCordovaKeyboard, restoreStylesAft
 import { renderLog } from '../../utils/logging';
 import { stringContains } from '../../utils/textFormat';
 
-const FirstAndLastNameRequiredAlert = React.lazy(() => import('./FirstAndLastNameRequiredAlert'));
-const ItemActionBar = React.lazy(() => import('./ItemActionBar/ItemActionBar'));
-const stockAvatar = React.lazy(() => import('../../../img/global/icons/avatar-generic.png'));
+const FirstAndLastNameRequiredAlert = React.lazy(() => import(/* webpackChunkName: 'FirstAndLastNameRequiredAlert' */ './FirstAndLastNameRequiredAlert'));
+const ItemActionBar = React.lazy(() => import(/* webpackChunkName: 'ItemActionBar' */ './ItemActionBar/ItemActionBar'));
+
 // const anonymous = '../../../img/global/icons/avatar-generic.png';
 
 

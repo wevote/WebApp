@@ -5,10 +5,10 @@ import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { renderLog } from '../../utils/logging';
 import { convertNameToSlug } from '../../utils/textFormat';
+import IssueFollowToggleButton from './IssueFollowToggleButton';
+import IssueImageDisplay from './IssueImageDisplay';
 
-const IssueFollowToggleButton = React.lazy(() => import('./IssueFollowToggleButton'));
-const IssueImageDisplay = React.lazy(() => import('./IssueImageDisplay'));
-const ReadMore = React.lazy(() => import('../Widgets/ReadMore'));
+const ReadMore = React.lazy(() => import(/* webpackChunkName: 'ReadMore' */ '../Widgets/ReadMore'));
 
 class IssueCardCompressed extends Component {
   constructor (props) {

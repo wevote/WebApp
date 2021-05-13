@@ -5,7 +5,7 @@ const initializeMoment = (afterFunction) => {
       afterFunction();
     }
   } else {
-    import('moment').then(({ default: moment }) => {
+    import(/* webpackChunkName: 'moment' */ 'moment').then(({ default: moment }) => {
       window.moment = moment;
       // console.log('moment.js loaded');
       if (afterFunction) {

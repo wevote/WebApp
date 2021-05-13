@@ -5,9 +5,8 @@ import OrganizationActions from '../../actions/OrganizationActions';
 import OrganizationStore from '../../stores/OrganizationStore';
 import { renderLog } from '../../utils/logging';
 // import OpenExternalWebSite from '../../utils/OpenExternalWebSite';
-
-const OpinionsFollowedListCompressed = React.lazy(() => import('../Organization/OpinionsFollowedListCompressed'));
-const EndorsementCard = React.lazy(() => import('../Widgets/EndorsementCard'));
+import OpinionsFollowedListCompressed from '../Organization/OpinionsFollowedListCompressed';
+import EndorsementCard from '../Widgets/EndorsementCard';
 
 export default class PublicFiguresFollowedPreview extends Component {
   constructor (props) {

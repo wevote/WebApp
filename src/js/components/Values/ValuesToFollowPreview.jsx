@@ -10,10 +10,10 @@ import VoterStore from '../../stores/VoterStore';
 import { historyPush } from '../../utils/cordovaUtils';
 import { renderLog } from '../../utils/logging';
 import { arrayContains } from '../../utils/textFormat';
-import ImageHandler from '../ImageHandler';
 
-const FriendInvitationOnboardingValuesList = React.lazy(() => import('./FriendInvitationOnboardingValuesList'));
-const ShowMoreFooter = React.lazy(() => import('../Navigation/ShowMoreFooter'));
+const FriendInvitationOnboardingValuesList = React.lazy(() => import(/* webpackChunkName: 'ImageHandler' */ './FriendInvitationOnboardingValuesList'));
+const ImageHandler = React.lazy(() => import(/* webpackChunkName: 'ImageHandler' */ '../ImageHandler'));
+const ShowMoreFooter = React.lazy(() => import(/* webpackChunkName: 'ShowMoreFooter' */ '../Navigation/ShowMoreFooter'));
 
 class ValuesToFollowPreview extends Component {
   constructor (props) {

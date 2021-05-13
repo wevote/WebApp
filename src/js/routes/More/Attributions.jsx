@@ -1,10 +1,9 @@
 import React from 'react';
 import Helmet from 'react-helmet';
 import { Link } from 'react-router-dom';
+import attributions from '../../attributions';
+import compileDate from '../../compileDate';
 import { renderLog } from '../../utils/logging';
-
-const attributions = React.lazy(() => import('../../attributions'));
-const compileDate = React.lazy(() => import('../../compileDate'));
 
 export default class Attributions extends React.Component {
   static getProps () {

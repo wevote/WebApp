@@ -2,7 +2,8 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import styled, { keyframes } from 'styled-components';
 import { renderLog } from '../../utils/logging';
-import ImageHandler from '../ImageHandler';
+
+const ImageHandler = React.lazy(() => import(/* webpackChunkName: 'ImageHandler' */ '../ImageHandler'));
 
 class TeamMemberDisplayForList extends Component {
   constructor (props) {

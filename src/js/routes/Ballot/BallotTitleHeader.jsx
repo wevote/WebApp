@@ -8,8 +8,9 @@ import { isAndroid, isAndroidSizeFold, isIOSAppOnMac, isIPad, isIPhone3p5in, isI
 import { renderLog } from '../../utils/logging';
 import { shortenText } from '../../utils/textFormat';
 
-const ShareButtonDesktopTablet = React.lazy(() => import('../../components/Share/ShareButtonDesktopTablet'));
-const DelayedLoad = React.lazy(() => import('../../components/Widgets/DelayedLoad'));
+const DelayedLoad = React.lazy(() => import(/* webpackChunkName: 'DelayedLoad' */ '../../components/Widgets/DelayedLoad'));
+const ShareButtonDesktopTablet = React.lazy(() => import(/* webpackChunkName: 'ShareButtonDesktopTablet' */ '../../components/Share/ShareButtonDesktopTablet'));
+
 // import webAppConfig from '../../config';
 
 /* eslint-disable no-nested-ternary */

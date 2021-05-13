@@ -13,7 +13,7 @@ const Section = styled.div`
   width: 100%;
   background: ${({ variant }) => (variant === 'dark' ? 'rgb(235, 236, 240)' : 'white')};
   ${({ rounded }) => (rounded ? // eslint-disable-next-line
-      'border-radius: 50% 50%;\nwidth: 200%;\npadding: 3em 2em;' : '')}
+      'border-radius: 50% 50%;\nwidth: 200%;\npadding: 3em 2em;' : '')};
   @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
     padding-top: ${({ noTopMargin }) => (noTopMargin ? '0' : '2em')};
     padding-bottom: ${({ noTopMargin }) => (noTopMargin ? '0' : '1em')};
@@ -195,23 +195,24 @@ const SignUpMessage = styled.div`
 `;
 
 export {
+  Bold,
+  ButtonContainer,
+  Description,
+  DescriptionContainer,
+  DescriptionImageColumn,
+  DescriptionLeftColumn,
+  GetStarted,
+  Image,
+  MemberListContainer,
+  NetworkContainer,
+  NetworkImage,
   Section,
   SectionTitle,
   SectionTitleBold,
-  Step,
-  StepNumber,
-  StepLabel,
-  GetStarted,
-  ButtonContainer,
-  DescriptionContainer,
-  DescriptionLeftColumn,
-  DescriptionImageColumn,
-  Description,
-  Image,
-  Bold,
-  NetworkContainer,
-  NetworkImage,
   SignUpContainer,
   SignUpMessage,
-  MemberListContainer,
+  Step,
+  StepLabel,
+  StepNumber,
 };
+

@@ -3,9 +3,9 @@ import React from 'react';
 import Helmet from 'react-helmet';
 import styled from 'styled-components';
 import cordovaScrollablePaneTopPadding from '../../utils/cordovaScrollablePaneTopPadding';
+import CodeCopier from '../Widgets/CodeCopier';
 
-const CodeCopier = React.lazy(() => import('../Widgets/CodeCopier'));
-const OpenExternalWebSite = React.lazy(() => import('../Widgets/OpenExternalWebSite'));
+const OpenExternalWebSite = React.lazy(() => import(/* webpackChunkName: 'OpenExternalWebSite' */ '../Widgets/OpenExternalWebSite'));
 
 
 export default function ToolsToShareOnOtherWebsites (props) {

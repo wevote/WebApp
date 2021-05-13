@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
+import Button from 'react-bootstrap/Button';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import OrganizationActions from '../../actions/OrganizationActions';
@@ -9,11 +10,10 @@ import { historyPush } from '../../utils/cordovaUtils';
 import { renderLog } from '../../utils/logging';
 import { numberWithCommas, removeTwitterNameFromDescription } from '../../utils/textFormat';
 import LoadingWheel from '../LoadingWheel';
+import ParsedTwitterDescription from '../Twitter/ParsedTwitterDescription';
 
-const Button = React.lazy(() => import('react-bootstrap/Button'));
-const FollowToggle = React.lazy(() => import('../Widgets/FollowToggle'));
-const OpenExternalWebSite = React.lazy(() => import('../Widgets/OpenExternalWebSite'));
-const ParsedTwitterDescription = React.lazy(() => import('../Twitter/ParsedTwitterDescription'));
+const FollowToggle = React.lazy(() => import(/* webpackChunkName: 'FollowToggle' */ '../Widgets/FollowToggle'));
+const OpenExternalWebSite = React.lazy(() => import(/* webpackChunkName: 'OpenExternalWebSite' */ '../Widgets/OpenExternalWebSite'));
 
 class OrganizationPopoverCard extends Component {
   constructor (props) {

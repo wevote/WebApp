@@ -3,6 +3,7 @@ import { withStyles } from '@material-ui/core/styles';
 import { ArrowBackIos, Comment, FileCopyOutlined, Info, Reply } from '@material-ui/icons';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
+import { EmailIcon, EmailShareButton, FacebookIcon, FacebookShareButton, TwitterIcon, TwitterShareButton } from 'react-share';
 import styled from 'styled-components';
 import AnalyticsActions from '../../actions/AnalyticsActions';
 import AppActions from '../../actions/AppActions';
@@ -18,13 +19,11 @@ import { renderLog } from '../../utils/logging';
 import { startsWith, stringContains } from '../../utils/textFormat';
 import LoadingWheel from '../LoadingWheel';
 import { openSnackbar } from '../Widgets/SnackNotifier';
+import { androidFacebookClickHandler, androidTwitterClickHandler, cordovaSocialSharingByEmail } from './shareButtonCommon';
+import ShareModalOption from './ShareModalOption';
 
-const OpenExternalWebSite = React.lazy(() => import('../Widgets/OpenExternalWebSite'));
-const ReadMore = React.lazy(() => import('../Widgets/ReadMore'));
-const ShareModalOption = React.lazy(() => import('./ShareModalOption'));
-const { EmailIcon, EmailShareButton, FacebookIcon, FacebookShareButton, TwitterIcon, TwitterShareButton } = React.lazy(() => import('react-share'));
-const { androidFacebookClickHandler, androidTwitterClickHandler, cordovaSocialSharingByEmail } = React.lazy(() => import('./shareButtonCommon'));
-
+const ReadMore = React.lazy(() => import(/* webpackChunkName: 'ReadMore' */ '../Widgets/ReadMore'));
+const OpenExternalWebSite = React.lazy(() => import(/* webpackChunkName: 'OpenExternalWebSite' */ '../Widgets/OpenExternalWebSite'));
 
 class ShareButtonFooter extends Component {
   constructor (props) {

@@ -3,6 +3,7 @@ import { withStyles, withTheme } from '@material-ui/core/styles';
 import { ArrowBackIos, Close, FileCopyOutlined, People } from '@material-ui/icons';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
+import { EmailIcon, EmailShareButton, FacebookIcon, FacebookShareButton, TwitterIcon, TwitterShareButton } from 'react-share';
 import styled from 'styled-components';
 import AnalyticsActions from '../../actions/AnalyticsActions';
 import AppActions from '../../actions/AppActions';
@@ -16,13 +17,13 @@ import { cordovaDot, hasIPhoneNotch, isAndroid, isCordova, isWebApp } from '../.
 import sortFriendListByMutualFriends from '../../utils/friendFunctions';
 import { renderLog } from '../../utils/logging';
 import { stringContains } from '../../utils/textFormat';
+import FriendsShareList from '../Friends/FriendsShareList';
+import MessageCard from '../Widgets/MessageCard';
+import { androidFacebookClickHandler, androidTwitterClickHandler, cordovaSocialSharingByEmail } from './shareButtonCommon';
+import ShareModalOption from './ShareModalOption';
 
-const { EmailIcon, EmailShareButton, FacebookIcon, FacebookShareButton, TwitterIcon, TwitterShareButton } = React.lazy(() => import('react-share'));
-const FriendsShareList = React.lazy(() => import('../Friends/FriendsShareList'));
-const MessageCard = React.lazy(() => import('../Widgets/MessageCard'));
-const OpenExternalWebSite = React.lazy(() => import('../Widgets/OpenExternalWebSite'));
-const ShareModalOption = React.lazy(() => import('./ShareModalOption'));
-const { androidFacebookClickHandler, androidTwitterClickHandler, cordovaSocialSharingByEmail } = React.lazy(() => import('./shareButtonCommon'));
+const OpenExternalWebSite = React.lazy(() => import(/* webpackChunkName: 'OpenExternalWebSite' */ '../Widgets/OpenExternalWebSite'));
+
 
 class ShareModal extends Component {
   constructor (props) {

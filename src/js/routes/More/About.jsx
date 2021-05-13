@@ -5,21 +5,20 @@ import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import AnalyticsActions from '../../actions/AnalyticsActions';
 import { weVoteBoard, weVoteFounders, weVoteStaff } from '../../components/More/people';
+import TeamMemberDisplayForList from '../../components/More/TeamMemberDisplayForList';
 import ShowMoreButtons from '../../components/Ready/ShowMoreButtons';
 import { Title } from '../../components/Welcome/headerWelcomeStyles';
-import { Bold, DescriptionContainer, MemberListContainer, SectionTitle } from '../../components/Welcome/sectionStyles';
+import { Section, Bold, DescriptionContainer, MemberListContainer, SectionTitle } from '../../components/Welcome/sectionStyles';
 import VoterStore from '../../stores/VoterStore';
 import cordovaScrollablePaneTopPadding from '../../utils/cordovaScrollablePaneTopPadding';
 import { cordovaDot } from '../../utils/cordovaUtils';
 import { renderLog } from '../../utils/logging';
+import ToolBar from './ToolBar';
 
-const WelcomeFooter = React.lazy(() => import('../../components/Welcome/WelcomeFooter'));
-const OpenExternalWebSite = React.lazy(() => import('../../components/Widgets/OpenExternalWebSite'));
-const Section = React.lazy(() => import('../../components/Welcome/sectionStyles'));
-const TeamMemberDisplayForList = React.lazy(() => import('../../components/More/TeamMemberDisplayForList'));
-const ToolBar = React.lazy(() => import('./ToolBar'));
+const WelcomeFooter = React.lazy(() => import(/* webpackChunkName: 'WelcomeFooter' */ '../../components/Welcome/WelcomeFooter'));
+const OpenExternalWebSite = React.lazy(() => import(/* webpackChunkName: 'OpenExternalWebSite' */ '../../components/Widgets/OpenExternalWebSite'));
 // TODO April 2021: Commented out, too many issue for a rarely used page.  Revisit and fix.
-// const WelcomeAppbar = React.lazy(() => import('../../components/Navigation/WelcomeAppbar'));
+// import WelcomeAppbar from '../../components/Navigation/WelcomeAppbar';
 
 class About extends Component {
   static getProps () {

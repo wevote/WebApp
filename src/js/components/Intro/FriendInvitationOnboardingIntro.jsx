@@ -8,10 +8,11 @@ import { cordovaDot } from '../../utils/cordovaUtils';
 import { formatDateToMonthDayYear } from '../../utils/dateFormat';
 import { renderLog } from '../../utils/logging';
 import { convertToInteger } from '../../utils/textFormat';
-import ImageHandler from '../ImageHandler';
+
+const ImageHandler = React.lazy(() => import(/* webpackChunkName: 'ImageHandler' */ '../ImageHandler'));
+const ReadMore = React.lazy(() => import(/* webpackChunkName: 'ReadMore' */ '../Widgets/ReadMore'));
 
 const logoDark = '../../../img/global/svg-icons/we-vote-logo-horizontal-color-dark-141x46.svg';
-const ReadMore = React.lazy(() => import('../Widgets/ReadMore'));
 
 class FriendInvitationOnboardingIntro extends Component {
   constructor (props) {

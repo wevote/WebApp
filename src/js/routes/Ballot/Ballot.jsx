@@ -13,6 +13,18 @@ import IssueActions from '../../actions/IssueActions';
 import OrganizationActions from '../../actions/OrganizationActions';
 import SupportActions from '../../actions/SupportActions';
 import VoterActions from '../../actions/VoterActions';
+import AddressBox from '../../components/AddressBox';
+import BallotItemCompressed from '../../components/Ballot/BallotItemCompressed';
+import BallotStatusMessage from '../../components/Ballot/BallotStatusMessage';
+import CompleteYourProfile from '../../components/CompleteYourProfile/CompleteYourProfile';
+import AddFriendsByEmail from '../../components/Friends/AddFriendsByEmail';
+import SuggestedFriendsPreview from '../../components/Friends/SuggestedFriendsPreview';
+import BallotDecisionsTabs from '../../components/Navigation/BallotDecisionsTabs';
+import BallotShowAllItemsFooter from '../../components/Navigation/BallotShowAllItemsFooter';
+import BallotSideBar from '../../components/Navigation/BallotSideBar';
+import EditAddressOneHorizontalRow from '../../components/Ready/EditAddressOneHorizontalRow';
+import ValuesToFollowPreview from '../../components/Values/ValuesToFollowPreview';
+import BrowserPushMessage from '../../components/Widgets/BrowserPushMessage';
 import webAppConfig from '../../config';
 import AppStore from '../../stores/AppStore';
 import BallotStore from '../../stores/BallotStore';
@@ -28,29 +40,23 @@ import cordovaScrollablePaneTopPadding from '../../utils/cordovaScrollablePaneTo
 import { chipLabelText, getAndroidSize, historyPush, isAndroid, isCordova, isIOSAppOnMac, isIPadGiantSize, isWebApp } from '../../utils/cordovaUtils';
 import isMobile from '../../utils/isMobile';
 import isMobileScreenSize from '../../utils/isMobileScreenSize';
+import lazyWithPreload from '../../utils/lazyWithPreload';
 import { renderLog } from '../../utils/logging';
 import mapCategoryFilterType from '../../utils/map-category-filter-type';
 import { getBooleanValue, startsWith } from '../../utils/textFormat';
-import { checkShouldUpdate, formatVoterBallotList } from './utils/ballotUtils';
 import showBallotDecisionsTabs from '../../utilsApi/showBallotDecisionsTabs';
+import BallotTitleHeader from './BallotTitleHeader';
+import { checkShouldUpdate, formatVoterBallotList } from './utils/ballotUtils';
 
-const AddFriendsByEmail = React.lazy(() => import('../../components/Friends/AddFriendsByEmail'));
-const AddressBox = React.lazy(() => import('../../components/AddressBox'));
-const BallotDecisionsTabs = React.lazy(() => import('../../components/Navigation/BallotDecisionsTabs'));
-const BallotItemCompressed = React.lazy(() => import('../../components/Ballot/BallotItemCompressed'));
-const BallotShowAllItemsFooter = React.lazy(() => import('../../components/Navigation/BallotShowAllItemsFooter'));
-const BallotSideBar = React.lazy(() => import('../../components/Navigation/BallotSideBar'));
-const BallotStatusMessage = React.lazy(() => import('../../components/Ballot/BallotStatusMessage'));
-const BallotTitleHeader = React.lazy(() => import('./BallotTitleHeader'));
-const BrowserPushMessage = React.lazy(() => import('../../components/Widgets/BrowserPushMessage'));
-const CompleteYourProfile = React.lazy(() => import('../../components/CompleteYourProfile/CompleteYourProfile'));
-const DelayedLoad = React.lazy(() => import('../../components/Widgets/DelayedLoad'));
-const EditAddressOneHorizontalRow = React.lazy(() => import('../../components/Ready/EditAddressOneHorizontalRow'));
-const FilterBaseSearch = React.lazy(() => import('../../components/Filter/FilterBaseSearch'));
-const OpenExternalWebSite = React.lazy(() => import('../../components/Widgets/OpenExternalWebSite'));
-const ShowMoreItems = React.lazy(() => import('../../components/Widgets/ShowMoreItems'));
-const SuggestedFriendsPreview = React.lazy(() => import('../../components/Friends/SuggestedFriendsPreview'));
-const ValuesToFollowPreview = React.lazy(() => import('../../components/Values/ValuesToFollowPreview'));
+const DelayedLoad = React.lazy(() => import(/* webpackChunkName: 'DelayedLoad' */ '../../components/Widgets/DelayedLoad'));
+const FilterBaseSearch = React.lazy(() => import(/* webpackChunkName: 'FilterBaseSearch' */ '../../components/Filter/FilterBaseSearch'));
+const OpenExternalWebSite = React.lazy(() => import(/* webpackChunkName: 'OpenExternalWebSite' */ '../../components/Widgets/OpenExternalWebSite'));
+const ShowMoreItems = React.lazy(() => import(/* webpackChunkName: 'ShowMoreItems' */ '../../components/Widgets/ShowMoreItems'));
+
+// Preloads to avoid Suspense/fallback
+const Ready = lazyWithPreload(() => import(/* webpackChunkName: 'Ready' */ '../../routes/Ready'));
+const News = lazyWithPreload(() => import(/* webpackChunkName: 'News' */ '../../routes/Activity/News'));
+const Values = lazyWithPreload(() => import(/* webpackChunkName: 'Values' */ '../../routes/Values'));
 
 
 const TYPES = require('keymirror')({
@@ -316,7 +322,12 @@ class Ballot extends Component {
       dumpCssFromId('ballotWrapper');
       dumpCssFromId('rightColumnSidebar');
     }
-  }
+    this.preloadTimer = setTimeout(() => {
+      Ready.preload();
+      News.preload();
+      Values.preload();
+    }, 2000);
+  }  // end of componentDidMount
 
   // eslint-disable-next-line camelcase,react/sort-comp
   UNSAFE_componentWillReceiveProps (nextProps) {

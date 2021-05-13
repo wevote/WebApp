@@ -12,9 +12,9 @@ import VoterStore from '../../stores/VoterStore';
 import { renderLog } from '../../utils/logging';
 import { capitalizeString } from '../../utils/textFormat';
 
-const MeasureItem = React.lazy(() => import('../../components/Ballot/MeasureItem'));
-const OpenExternalWebSite = React.lazy(() => import('../../components/Widgets/OpenExternalWebSite'));
-const PositionList = React.lazy(() => import('../../components/Ballot/PositionList'));
+const MeasureItem = React.lazy(() => import(/* webpackChunkName: 'MeasureItem' */ '../../components/Ballot/MeasureItem'));
+const OpenExternalWebSite = React.lazy(() => import(/* webpackChunkName: 'OpenExternalWebSite' */ '../../components/Widgets/OpenExternalWebSite'));
+const PositionList = React.lazy(() => import(/* webpackChunkName: 'PositionList' */ '../../components/Ballot/PositionList'));
 
 // This is based on routes/Ballot/Measure - TO BE DEPRECATED?
 export default class OrganizationVoterGuideMeasure extends Component {

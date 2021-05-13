@@ -6,8 +6,7 @@ import FriendStore from '../../stores/FriendStore';
 import { historyPush } from '../../utils/cordovaUtils';
 import sortFriendListByMutualFriends from '../../utils/friendFunctions';
 import { renderLog } from '../../utils/logging';
-
-const FriendList = React.lazy(() => import('./FriendList'));
+import FriendList from './FriendList';
 
 export default class FriendsCurrentPreview extends Component {
   constructor (props) {

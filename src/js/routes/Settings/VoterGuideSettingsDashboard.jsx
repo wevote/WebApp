@@ -5,6 +5,7 @@ import styled from 'styled-components';
 import BallotActions from '../../actions/BallotActions';
 import OrganizationActions from '../../actions/OrganizationActions';
 import VoterGuideActions from '../../actions/VoterGuideActions';
+import VoterGuideSettingsAddPositions from '../../components/Settings/VoterGuideSettingsAddPositions';
 import AppStore from '../../stores/AppStore';
 import BallotStore from '../../stores/BallotStore';
 import OrganizationStore from '../../stores/OrganizationStore';
@@ -12,8 +13,6 @@ import VoterGuideStore from '../../stores/VoterGuideStore';
 import VoterStore from '../../stores/VoterStore';
 import { renderLog } from '../../utils/logging';
 import { isProperlyFormattedVoterGuideWeVoteId } from '../../utils/textFormat';
-
-const VoterGuideSettingsAddPositions = React.lazy(() => import('../../components/Settings/VoterGuideSettingsAddPositions'));
 
 class VoterGuideSettingsDashboard extends Component {
   constructor (props) {

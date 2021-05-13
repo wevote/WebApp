@@ -7,8 +7,8 @@ import SupportActions from '../../actions/SupportActions';
 import SupportStore from '../../stores/SupportStore';
 import VoterStore from '../../stores/VoterStore';
 import { renderLog } from '../../utils/logging';
+import PositionStatementModal from './PositionStatementModal';
 
-const PositionStatementModal = React.lazy(() => import('./PositionStatementModal'));
 
 class ItemPositionStatementActionBar2020 extends Component {
   constructor (props) {

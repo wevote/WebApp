@@ -11,8 +11,7 @@ import ReactionStore from '../../stores/ReactionStore';
 import VoterStore from '../../stores/VoterStore';
 import { timeFromDate } from '../../utils/dateFormat';
 import { renderLog } from '../../utils/logging';
-
-const ActivityCommentAdd = React.lazy(() => import('./ActivityCommentAdd'));
+import ActivityCommentAdd from './ActivityCommentAdd';
 
 
 const STARTING_NUMBER_OF_PARENT_COMMENTS_TO_DISPLAY = 1;

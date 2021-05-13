@@ -3,21 +3,23 @@ import { withStyles, withTheme } from '@material-ui/core/styles';
 import { ArrowBack, ArrowBackIos, Close } from '@material-ui/icons';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
+// TODO 5/11/21: import { Elements, StripeProvider } from 'react-stripe-elements';
 import styled from 'styled-components';
 import DonateActions from '../../actions/DonateActions';
-import webAppConfig from '../../config';
+// TODO 5/11/21: import webAppConfig from '../../config';
 import DonateStore from '../../stores/DonateStore';
 import { hasIPhoneNotch, isIOS } from '../../utils/cordovaUtils';
 import extractNumber from '../../utils/extractNumber';
 import { renderLog } from '../../utils/logging';
 import { numberWithCommas, stringContains } from '../../utils/textFormat';
+// TODO 5/11/21: import SettingsStripePayment from './SettingsStripePayment';
+
+
+const OpenExternalWebSite = React.lazy(() => import(/* webpackChunkName: 'OpenExternalWebSite' */ '../Widgets/OpenExternalWebSite'));
+const Pricing = React.lazy(() => import('../../routes/More/Pricing'));  // eslint-disable-line import/no-cycle
 
 // April 2021:  Need to convert over to the up-to-date (allowed by stripe) "@stripe/react-stripe-js"
 // TODO: Backport "@stripe/react-stripe-js" use from Campaigns
-const { Elements, StripeProvider } = React.lazy(() => import('react-stripe-elements'));
-const OpenExternalWebSite = React.lazy(() => import('../Widgets/OpenExternalWebSite'));
-const Pricing = React.lazy(() => import('../../routes/More/Pricing'));  // eslint-disable-line import/no-cycle
-const SettingsStripePayment = React.lazy(() => import('./SettingsStripePayment'));
 
 /* global $ */
 
@@ -553,8 +555,8 @@ class PaidAccountUpgradeModal extends Component {
     const { classes } = this.props;
     const {
       activePaidPlanChosen, activePaidPlanChosenDisplay, amountPaidViaStripe, numberOfMonthsService,
-      payByMonthCostPerMonth,
-      payByYearCostPerYear,
+      // TODO 5/11/21: payByMonthCostPerMonth,
+      // TODO 5/11/21: payByYearCostPerYear,
       contactSalesRequired, radioGroupValue, couponCodeInputValue, couponDiscountValue,
       isCouponCodeApplied, paidAccountProcessStep, pricingPlanChosen, couponCodeError, planPriceForDisplayBilledMonthly,
       planPriceForDisplayBilledYearly,
@@ -744,17 +746,17 @@ class PaidAccountUpgradeModal extends Component {
         modalTitle = 'Credit Card';
         modalHtmlContents = (
           <MobileWrapper>
-            <StripeProvider apiKey={webAppConfig.STRIPE_API_KEY}>
-              <Elements>
-                <SettingsStripePayment
-                  numberOfMonthsService={numberOfMonthsService}
-                  payByMonthCostPerMonth={payByMonthCostPerMonth}
-                  payByYearCostPerYear={payByYearCostPerYear}
-                  paymentProcessedFunction={this.paymentProcessedFunction}
-                  pricingPlanChosen={pricingPlanChosen}
-                />
-              </Elements>
-            </StripeProvider>
+            {/* TODO 5/11/21: <StripeProvider apiKey={webAppConfig.STRIPE_API_KEY}> */}
+            {/*  <Elements> */}
+            {/*    <SettingsStripePayment */}
+            {/*      numberOfMonthsService={numberOfMonthsService} */}
+            {/*      payByMonthCostPerMonth={payByMonthCostPerMonth} */}
+            {/*      payByYearCostPerYear={payByYearCostPerYear} */}
+            {/*      paymentProcessedFunction={this.paymentProcessedFunction} */}
+            {/*      pricingPlanChosen={pricingPlanChosen} */}
+            {/*    /> */}
+            {/*  </Elements> */}
+            {/* </StripeProvider> */}
           </MobileWrapper>
         );
         break;
@@ -912,17 +914,17 @@ class PaidAccountUpgradeModal extends Component {
               <WrapperRight>
                 <div className="u-tc">
                   <SectionTitle>Credit Card</SectionTitle>
-                  <StripeProvider apiKey={webAppConfig.STRIPE_API_KEY}>
-                    <Elements>
-                      <SettingsStripePayment
-                        numberOfMonthsService={numberOfMonthsService}
-                        payByMonthCostPerMonth={payByMonthCostPerMonth}
-                        payByYearCostPerYear={payByYearCostPerYear}
-                        paymentProcessedFunction={this.paymentProcessedFunction}
-                        pricingPlanChosen={pricingPlanChosen}
-                      />
-                    </Elements>
-                  </StripeProvider>
+                  {/* TODO 5/12/21 reimplement this: <StripeProvider apiKey={webAppConfig.STRIPE_API_KEY}> */}
+                  {/*  <Elements> */}
+                  {/*    <SettingsStripePayment */}
+                  {/*      numberOfMonthsService={numberOfMonthsService} */}
+                  {/*      payByMonthCostPerMonth={payByMonthCostPerMonth} */}
+                  {/*      payByYearCostPerYear={payByYearCostPerYear} */}
+                  {/*      paymentProcessedFunction={this.paymentProcessedFunction} */}
+                  {/*      pricingPlanChosen={pricingPlanChosen} */}
+                  {/*    /> */}
+                  {/*  </Elements> */}
+                  {/* </StripeProvider> */}
                 </div>
               </WrapperRight>
             </div>

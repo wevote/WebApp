@@ -8,7 +8,7 @@ import VoterConstants from '../../constants/VoterConstants';
 import { hideZenDeskHelpVisibility, setZenDeskHelpVisibility } from '../../utils/applicationUtils';
 import { renderLog } from '../../utils/logging';
 
-const CandidateItem = React.lazy(() => import('../Ballot/CandidateItem'));
+const CandidateItem = React.lazy(() => import(/* webpackChunkName: 'CandidateItem' */ '../../components/Ballot/CandidateItem'));
 
 class PersonalizedScoreIntroBody extends Component {
   constructor (props) {

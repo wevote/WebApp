@@ -16,13 +16,13 @@ import VoterStore from '../../stores/VoterStore';
 import { historyPush } from '../../utils/cordovaUtils';
 import { renderLog } from '../../utils/logging';
 import { calculateBallotBaseUrl, capitalizeString } from '../../utils/textFormat';
+import BallotSearchResults from '../Ballot/BallotSearchResults';
+import FooterDoneBar from '../Navigation/FooterDoneBar';
+import EndorsementCard from '../Widgets/EndorsementCard';
+import ThisIsMeAction from '../Widgets/ThisIsMeAction';
+import VoterGuidePositionList from './VoterGuidePositionList';
 
-const BallotSearchResults = React.lazy(() => import('../Ballot/BallotSearchResults'));
-const DelayedLoad = React.lazy(() => import('../Widgets/DelayedLoad'));
-const EndorsementCard = React.lazy(() => import('../Widgets/EndorsementCard'));
-const FooterDoneBar = React.lazy(() => import('../Navigation/FooterDoneBar'));
-const ThisIsMeAction = React.lazy(() => import('../Widgets/ThisIsMeAction'));
-const VoterGuidePositionList = React.lazy(() => import('./VoterGuidePositionList'));
+const DelayedLoad = React.lazy(() => import(/* webpackChunkName: 'DelayedLoad' */ '../Widgets/DelayedLoad'));
 
 class VoterGuideEndorsements extends Component {
   constructor (props) {

@@ -3,16 +3,16 @@ import Helmet from 'react-helmet';
 import styled from 'styled-components';
 import OrganizationActions from '../../actions/OrganizationActions';
 import VoterGuideActions from '../../actions/VoterGuideActions';
+import SelectVoterGuidesSideBar from '../../components/Navigation/SelectVoterGuidesSideBar';
+import VoterGuideListSearchResults from '../../components/Settings/VoterGuideListSearchResults';
 import OrganizationStore from '../../stores/OrganizationStore';
 import VoterGuideStore from '../../stores/VoterGuideStore';
 import VoterStore from '../../stores/VoterStore';
 import { cordovaDot } from '../../utils/cordovaUtils';
 import { renderLog } from '../../utils/logging';
 
-const DelayedLoad = React.lazy(() => import('../../components/Widgets/DelayedLoad'));
-const SelectVoterGuidesSideBar = React.lazy(() => import('../../components/Navigation/SelectVoterGuidesSideBar'));
-const SettingsAccount = React.lazy(() => import('../../components/Settings/SettingsAccount'));
-const VoterGuideListSearchResults = React.lazy(() => import('../../components/Settings/VoterGuideListSearchResults'));
+const DelayedLoad = React.lazy(() => import(/* webpackChunkName: 'DelayedLoad' */ '../../components/Widgets/DelayedLoad'));
+const SettingsAccount = React.lazy(() => import(/* webpackChunkName: 'SettingsAccount' */ '../../components/Settings/SettingsAccount'));
 
 
 class VoterGuideListDashboard extends Component {

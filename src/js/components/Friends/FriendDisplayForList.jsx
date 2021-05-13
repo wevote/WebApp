@@ -3,9 +3,10 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { renderLog } from '../../utils/logging';
-import ImageHandler from '../ImageHandler';
+import FriendToggle from './FriendToggle';
 
-const FriendToggle = React.lazy(() => import('./FriendToggle'));
+const ImageHandler = React.lazy(() => import(/* webpackChunkName: 'ImageHandler' */ '../ImageHandler'));
+
 
 class FriendDisplayForList extends Component {
   render () {

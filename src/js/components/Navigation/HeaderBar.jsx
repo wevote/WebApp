@@ -22,21 +22,22 @@ import shouldHeaderRetreat from '../../utils/shouldHeaderRetreat';
 import { getBooleanValue, shortenText, startsWith, stringContains } from '../../utils/textFormat';
 import { voterPhoto } from '../../utils/voterPhoto';
 import signInModalGlobalState from '../Widgets/signInModalGlobalState';
+import HeaderBarLogo from './HeaderBarLogo';
+import TabWithPushHistory from './TabWithPushHistory';
 
-const AdviserIntroModal = React.lazy(() => import('../CompleteYourProfile/AdviserIntroModal'));
-const FirstPositionIntroModal = React.lazy(() => import('../CompleteYourProfile/FirstPositionIntroModal'));
-const HeaderBarLogo = React.lazy(() => import('./HeaderBarLogo'));
-const HeaderBarProfilePopUp = React.lazy(() => import('./HeaderBarProfilePopUp'));
-const HeaderNotificationMenu = React.lazy(() => import('./HeaderNotificationMenu'));
-const ImageUploadModal = React.lazy(() => import('../Settings/ImageUploadModal'));
+const AdviserIntroModal = React.lazy(() => import(/* webpackChunkName: 'AdviserIntroModal' */ '../CompleteYourProfile/AdviserIntroModal'));
+const FirstPositionIntroModal = React.lazy(() => import(/* webpackChunkName: 'FirstPositionIntroModal' */ '../CompleteYourProfile/FirstPositionIntroModal'));
+const HeaderBarProfilePopUp = React.lazy(() => import(/* webpackChunkName: 'HeaderBarProfilePopUp' */ './HeaderBarProfilePopUp'));
+const HeaderNotificationMenu = React.lazy(() => import(/* webpackChunkName: 'HeaderNotificationMenu' */ './HeaderNotificationMenu'));
+const ImageUploadModal = React.lazy(() => import(/* webpackChunkName: 'ImageUploadModal' */ '../Settings/ImageUploadModal'));
+const PersonalizedScoreIntroModal = React.lazy(() => import(/* webpackChunkName: 'PersonalizedScoreIntroModal' */ '../CompleteYourProfile/PersonalizedScoreIntroModal'));
+const SelectBallotModal = React.lazy(() => import(/* webpackChunkName: 'SelectBallotModal' */ '../Ballot/SelectBallotModal'));
+const ShareModal = React.lazy(() => import(/* webpackChunkName: 'ShareModal' */ '../Share/ShareModal'));
+const SignInModal = React.lazy(() => import(/* webpackChunkName: 'SignInModal' */ '../Widgets/SignInModal'));
+const ValuesIntroModal = React.lazy(() => import(/* webpackChunkName: 'ValuesIntroModal' */ '../CompleteYourProfile/ValuesIntroModal'));
+
 // TODO: Backport "@stripe/react-stripe-js" use from Campaigns
-// const PaidAccountUpgradeModal = React.lazy(() => import('../Settings/PaidAccountUpgradeModal'));
-const PersonalizedScoreIntroModal = React.lazy(() => import('../CompleteYourProfile/PersonalizedScoreIntroModal'));
-const SelectBallotModal = React.lazy(() => import('../Ballot/SelectBallotModal'));
-const ShareModal = React.lazy(() => import('../Share/ShareModal'));
-const SignInModal = React.lazy(() => import('../Widgets/SignInModal'));
-const TabWithPushHistory = React.lazy(() => import('./TabWithPushHistory'));
-const ValuesIntroModal = React.lazy(() => import('../CompleteYourProfile/ValuesIntroModal'));
+// import PaidAccountUpgradeModal from '../Settings/PaidAccountUpgradeModal';
 
 
 class HeaderBar extends Component {

@@ -13,12 +13,13 @@ import SupportStore from '../../stores/SupportStore';
 import { renderLog } from '../../utils/logging';
 import { getPositionListSummaryIncomingDataStats, getPositionSummaryListForBallotItem } from '../../utils/positionFunctions';
 import { stringContains } from '../../utils/textFormat';
+import StickyPopover from '../Ballot/StickyPopover';
 import { openSnackbar } from './SnackNotifier';
 
-const ItemActionBar = React.lazy(() => import('./ItemActionBar/ItemActionBar'));
-const ShowMoreFooter = React.lazy(() => import('../Navigation/ShowMoreFooter'));
-const StickyPopover = React.lazy(() => import('../Ballot/StickyPopover'));
-const PositionSummaryListForPopover = React.lazy(() => import('./PositionSummaryListForPopover'));
+const ItemActionBar = React.lazy(() => import(/* webpackChunkName: 'ItemActionBar' */ '../Widgets/ItemActionBar/ItemActionBar'));
+const PositionSummaryListForPopover = React.lazy(() => import(/* webpackChunkName: 'PositionSummaryListForPopover' */ './PositionSummaryListForPopover'));
+const ShowMoreFooter = React.lazy(() => import(/* webpackChunkName: 'ShowMoreFooter' */ '../Navigation/ShowMoreFooter'));
+
 
 class BallotItemSupportOpposeCountDisplay extends Component {
   static closePositionsPopover () {

@@ -8,8 +8,7 @@ import AppActions from '../../actions/AppActions';
 import ActivityStore from '../../stores/ActivityStore';
 import ReactionStore from '../../stores/ReactionStore';
 import { renderLog } from '../../utils/logging';
-
-const StickyPopover = React.lazy(() => import('../Ballot/StickyPopover'));
+import StickyPopover from '../Ballot/StickyPopover';
 
 
 class ActivityTidbitReactionsSummary extends Component {

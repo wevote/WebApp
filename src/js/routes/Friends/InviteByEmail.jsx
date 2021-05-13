@@ -2,10 +2,9 @@ import React, { Component } from 'react';
 import Helmet from 'react-helmet';
 import styled from 'styled-components';
 import AnalyticsActions from '../../actions/AnalyticsActions';
+import AddFriendsByEmail from '../../components/Friends/AddFriendsByEmail';
 import VoterStore from '../../stores/VoterStore';
 import { renderLog } from '../../utils/logging';
-
-const AddFriendsByEmail = React.lazy(() => import('../../components/Friends/AddFriendsByEmail'));
 
 export default class InviteByEmail extends Component {
   constructor (props) {

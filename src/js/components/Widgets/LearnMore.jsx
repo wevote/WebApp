@@ -2,10 +2,11 @@ import { Button } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
+import TextTruncate from 'react-text-truncate';
 import { renderLog } from '../../utils/logging';
 
-const TextTruncate = React.lazy(() => import('react-text-truncate'));
-const OpenExternalWebSite = React.lazy(() => import('./OpenExternalWebSite'));
+const OpenExternalWebSite = React.lazy(() => import(/* webpackChunkName: 'OpenExternalWebSite' */ './OpenExternalWebSite'));
+
 
 class LearnMore extends Component {
   constructor (props) {

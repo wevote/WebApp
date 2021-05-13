@@ -9,9 +9,10 @@ import { historyPush } from '../../utils/cordovaUtils';
 import { renderLog } from '../../utils/logging';
 import { capitalizeString } from '../../utils/textFormat';
 
-const ReadMore = React.lazy(() => import('../Widgets/ReadMore'));
-const BallotItemSupportOpposeCountDisplay = React.lazy(() => import('../Widgets/BallotItemSupportOpposeCountDisplay'));
-const BallotItemSupportOpposeComment = React.lazy(() => import('../Widgets/BallotItemSupportOpposeComment'));
+const ReadMore = React.lazy(() => import(/* webpackChunkName: 'ReadMore' */ '../Widgets/ReadMore'));
+const BallotItemSupportOpposeComment = React.lazy(() => import(/* webpackChunkName: 'BallotItemSupportOpposeComment' */ '../Widgets/BallotItemSupportOpposeComment'));
+const BallotItemSupportOpposeCountDisplay = React.lazy(() => import(/* webpackChunkName: 'BallotItemSupportOpposeCountDisplay' */ '../Widgets/BallotItemSupportOpposeCountDisplay'));
+
 
 class MeasureItem extends Component {
   constructor (props) {

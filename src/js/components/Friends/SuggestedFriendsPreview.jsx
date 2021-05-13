@@ -7,8 +7,7 @@ import FriendStore from '../../stores/FriendStore';
 import { historyPush } from '../../utils/cordovaUtils';
 import sortFriendListByMutualFriends from '../../utils/friendFunctions';
 import { renderLog } from '../../utils/logging';
-
-const SuggestedFriendList = React.lazy(() => import('./SuggestedFriendList'));
+import SuggestedFriendList from './SuggestedFriendList';
 
 export default class SuggestedFriendsPreview extends Component {
   constructor (props) {

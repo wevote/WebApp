@@ -10,7 +10,7 @@ import { hideZenDeskHelpVisibility, setZenDeskHelpVisibility } from '../../utils
 import { hasIPhoneNotch } from '../../utils/cordovaUtils';
 import { renderLog } from '../../utils/logging';
 
-const HowItWorks = React.lazy(() => import('../../routes/HowItWorks'));
+const HowItWorks = React.lazy(() => import(/* webpackChunkName: 'HowItWorks' */ '../../routes/HowItWorks'));
 
 class HowItWorksModal extends Component {
   constructor (props) {

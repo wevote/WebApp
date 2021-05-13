@@ -9,6 +9,9 @@ import CandidateActions from '../../actions/CandidateActions';
 import OrganizationActions from '../../actions/OrganizationActions';
 import VoterGuideActions from '../../actions/VoterGuideActions';
 import LoadingWheel from '../../components/LoadingWheel';
+import OrganizationVoterGuideCandidateItem from '../../components/VoterGuide/OrganizationVoterGuideCandidateItem';
+import EndorsementCard from '../../components/Widgets/EndorsementCard';
+import ThisIsMeAction from '../../components/Widgets/ThisIsMeAction';
 import webAppConfig from '../../config';
 import CandidateStore from '../../stores/CandidateStore';
 import VoterGuideStore from '../../stores/VoterGuideStore';
@@ -16,11 +19,9 @@ import VoterStore from '../../stores/VoterStore';
 import { renderLog } from '../../utils/logging';
 import { capitalizeString } from '../../utils/textFormat';
 
-const EndorsementCard = React.lazy(() => import('../../components/Widgets/EndorsementCard'));
-const OpenExternalWebSite = React.lazy(() => import('../../components/Widgets/OpenExternalWebSite'));
-const OrganizationVoterGuideCandidateItem = React.lazy(() => import('../../components/VoterGuide/OrganizationVoterGuideCandidateItem'));
-const PositionList = React.lazy(() => import('../../components/Ballot/PositionList'));
-const ThisIsMeAction = React.lazy(() => import('../../components/Widgets/ThisIsMeAction'));
+const OpenExternalWebSite = React.lazy(() => import(/* webpackChunkName: 'OpenExternalWebSite' */ '../../components/Widgets/OpenExternalWebSite'));
+const PositionList = React.lazy(() => import(/* webpackChunkName: 'PositionList' */ '../../components/Ballot/PositionList'));
+
 
 // This is based on routes/Ballot/Candidate - TO BE DEPRECATED?
 // TODO: Not called anywhere Dec 2020, delete when Dale agrees

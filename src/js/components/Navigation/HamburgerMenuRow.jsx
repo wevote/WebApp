@@ -5,7 +5,8 @@ import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { renderLog } from '../../utils/logging';
 
-const SettingsAccountLevelChip = React.lazy(() => import('../Settings/SettingsAccountLevelChip'));
+const SettingsAccountLevelChip = React.lazy(() => import(/* webpackChunkName: 'SettingsAccountLeveLChip' */ '../Settings/SettingsAccountLevelChip'));
+
 
 class HamburgerMenuRow extends Component {
   constructor (props) {

@@ -2,6 +2,7 @@ import { withStyles, withTheme } from '@material-ui/core/styles';
 import { MoreHoriz } from '@material-ui/icons';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
+import Alert from 'react-bootstrap/Alert';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import AppActions from '../../actions/AppActions';
@@ -9,12 +10,11 @@ import ActivityStore from '../../stores/ActivityStore';
 import OrganizationStore from '../../stores/OrganizationStore';
 import VoterStore from '../../stores/VoterStore';
 import { renderLog } from '../../utils/logging';
+import ActivityPositionList from './ActivityPositionList';
+import ActivitySpeakerCard from './ActivitySpeakerCard';
 
-const Alert = React.lazy(() => import('react-bootstrap/Alert'));
-const ActivityPositionList = React.lazy(() => import('./ActivityPositionList'));
-const ActivityPostModal = React.lazy(() => import('./ActivityPostModal'));
-const ActivitySpeakerCard = React.lazy(() => import('./ActivitySpeakerCard'));
-const DelayedLoad = React.lazy(() => import('../Widgets/DelayedLoad'));
+const ActivityPostModal = React.lazy(() => import(/* webpackChunkName: 'ActivityPostModal' */ './ActivityPostModal'));
+const DelayedLoad = React.lazy(() => import(/* webpackChunkName: 'DelayedLoad' */ '../Widgets/DelayedLoad'));
 
 
 class ActivityTidbitItem extends Component {
