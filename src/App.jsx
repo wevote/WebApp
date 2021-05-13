@@ -209,8 +209,6 @@ class App extends Component {
               <WeVoteRouter>
                 <WeVoteBody>
                   <Header params={{ }} pathname={window.location.href} />
-                  {/* <SnackNotifier /> */}
-                  {/* <MainHeaderBar displayHeader={doShowHeader} /> */}
                   <Switch>
                     <Route exact path="/about"><About /></Route>
                     <Route exact path="/ballot" component={Ballot} />
