@@ -2,10 +2,10 @@ import { Button } from '@material-ui/core';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { OverlayTrigger } from 'react-bootstrap'; // TODO APRIL 2021:  Replace with MUI
+import Popover from 'react-bootstrap/Popover';
 import { isAndroid, isIOS, isWebApp } from '../../utils/cordovaUtils';
 import { renderLog } from '../../utils/logging';
 
-const Popover = React.lazy(() => import(/* webpackChunkName: 'BootstrapPopover' */ 'react-bootstrap/Popover')); // TODO APRIL 2021:  Replace with MUI
 
 class ReadyInformationDisclaimer extends React.Component {
   render () {

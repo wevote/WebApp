@@ -3,6 +3,7 @@ import React, { Component, Suspense } from 'react';
 import { Redirect, Route, Switch } from 'react-router-dom';
 import styled, { ThemeProvider } from 'styled-components';
 import Header from './js/components/Navigation/Header';
+import HeaderBarSuspense from './js/components/Navigation/HeaderBarSuspense';
 import ErrorBoundary from './js/components/Widgets/ErrorBoundary';
 import WeVoteRouter from './js/components/Widgets/WeVoteRouter';
 import muiTheme from './js/mui-theme';
@@ -205,7 +206,7 @@ class App extends Component {
 
     return (
       <ErrorBoundary>
-        <Suspense fallback={<span>&nbsp;</span>}>
+        <Suspense fallback={<HeaderBarSuspense />}>
           <MuiThemeProvider theme={muiTheme}>
             <ThemeProvider theme={styledTheme}>
               <WeVoteRouter>
