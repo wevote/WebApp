@@ -12,7 +12,8 @@ import { renderLog } from '../../utils/logging';
 import { stringContains } from '../../utils/textFormat';
 import signInModalGlobalState from './signInModalGlobalState';
 
-const SettingsAccount = React.lazy(() => import('../Settings/SettingsAccount'));
+const SettingsAccount = React.lazy(() => import(/* webpackChunkName: 'SettingsAccount' */ '../Settings/SettingsAccount'));
+
 
 /* global $ */
 

@@ -3,6 +3,8 @@ import { withStyles } from '@material-ui/core/styles';
 import { Comment, Done, NotInterested, ThumbDown, ThumbUp } from '@material-ui/icons';
 import PropTypes from 'prop-types';
 import React, { PureComponent } from 'react';
+import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
+import Tooltip from 'react-bootstrap/Tooltip';
 import styled from 'styled-components';
 import SupportActions from '../../../actions/SupportActions';
 import VoterActions from '../../../actions/VoterActions';
@@ -13,13 +15,11 @@ import VoterStore from '../../../stores/VoterStore';
 import { cordovaDot } from '../../../utils/cordovaUtils';
 import { renderLog } from '../../../utils/logging';
 import { stringContains } from '../../../utils/textFormat';
+import PositionPublicToggle from '../PositionPublicToggle';
+import ShareButtonDropDown from '../ShareButtonDropdown';
 import { openSnackbar } from '../SnackNotifier';
+import ChooseOrOppose from './ChooseOrOppose';
 
-const ChooseOrOppose = React.lazy(() => import('./ChooseOrOppose'));
-const OverlayTrigger = React.lazy(() => import('react-bootstrap/OverlayTrigger'));
-const PositionPublicToggle = React.lazy(() => import('../PositionPublicToggle'));
-const ShareButtonDropDown = React.lazy(() => import('../ShareButtonDropdown'));
-const Tooltip = React.lazy(() => import('react-bootstrap/Tooltip'));
 const shareIconSvg = '../../../../img/global/svg-icons/share-icon.svg';
 
 

@@ -1,7 +1,8 @@
-import { Button } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 import React, { PureComponent } from 'react';
+
+import { Button } from '@material-ui/core';
 
 class PremiumableButton extends PureComponent {
   render () {

@@ -6,7 +6,7 @@ import SupportStore from '../../stores/SupportStore';
 import VoterGuideStore from '../../stores/VoterGuideStore';
 import { renderLog } from '../../utils/logging';
 
-const BallotItemSupportOpposeCountDisplay = React.lazy(() => import('../Widgets/BallotItemSupportOpposeCountDisplay'));
+const BallotItemSupportOpposeCountDisplay = React.lazy(() => import(/* webpackChunkName: 'BallotItemSupportOpposeCountDisplay' */ '../Widgets/BallotItemSupportOpposeCountDisplay'));
 
 
 class MeasureItemReadyToVote extends Component {

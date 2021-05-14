@@ -8,9 +8,9 @@ import FriendStore from '../../stores/FriendStore';
 import isMobileScreenSize from '../../utils/isMobileScreenSize';
 import { renderLog } from '../../utils/logging';
 import { removeTwitterNameFromDescription } from '../../utils/textFormat';
-import ImageHandler from '../ImageHandler';
+import FriendInvitationToggle from './FriendInvitationToggle';
 
-const FriendInvitationToggle = React.lazy(() => import('./FriendInvitationToggle'));
+const ImageHandler = React.lazy(() => import(/* webpackChunkName: 'ImageHandler' */ '../ImageHandler'));
 
 class FriendInvitationVoterLinkDisplayForList extends Component {
   constructor (props) {

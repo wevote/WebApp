@@ -5,8 +5,8 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 import { renderLog } from '../../utils/logging';
 
-const VoterGuidePositionItem = React.lazy(() => import('../VoterGuide/VoterGuidePositionItem'));
-const ShowMoreItems = React.lazy(() => import('../Widgets/ShowMoreItems'));
+const VoterGuidePositionItem = React.lazy(() => import(/* webpackChunkName: 'VoterGuidePositionItem' */ '../VoterGuide/VoterGuidePositionItem'));
+const ShowMoreItems = React.lazy(() => import(/* webpackChunkName: 'ShowMoreItems' */ '../Widgets/ShowMoreItems'));
 
 
 const STARTING_NUMBER_OF_POSITIONS_TO_DISPLAY = 6;

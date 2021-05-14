@@ -2,9 +2,8 @@ import React from 'react';
 import FacebookStore from '../../stores/FacebookStore';
 import VoterStore from '../../stores/VoterStore';
 import { renderLog } from '../../utils/logging';
-
-const FacebookDownloadPicture = React.lazy(() => import('./FacebookDownloadPicture'));
-const FacebookPicture = React.lazy(() => import('./FacebookPicture'));
+import FacebookDownloadPicture from './FacebookDownloadPicture';
+import FacebookPicture from './FacebookPicture';
 
 class Main extends React.Component {
   constructor (props) {

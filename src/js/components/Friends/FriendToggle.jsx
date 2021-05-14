@@ -6,9 +6,9 @@ import FriendActions from '../../actions/FriendActions';
 import FriendStore from '../../stores/FriendStore';
 import VoterStore from '../../stores/VoterStore';
 import { renderLog } from '../../utils/logging';
+import FriendsIcon from '../Widgets/FriendsIcon';
+import SuggestedFriendToggle from './SuggestedFriendToggle';
 
-const FriendsIcon = React.lazy(() => import('../Widgets/FriendsIcon'));
-const SuggestedFriendToggle = React.lazy(() => import('./SuggestedFriendToggle'));
 
 export default class FriendToggle extends Component {
   constructor (props) {

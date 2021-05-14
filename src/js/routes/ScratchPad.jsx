@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
+import SearchBar from '../components/Search/SearchBar';
 import { renderLog } from '../utils/logging';
-
-const SearchBar = React.lazy(() => import('../components/Search/SearchBar'));
 
 const updateInputValue = (event) => {
   this.setState({ query: event.target.value });

@@ -1,9 +1,8 @@
 import PropTypes from 'prop-types';
 import React, { PureComponent } from 'react';
 import { renderLog } from '../../utils/logging';
-
-const MeasureItemCompressed = React.lazy(() => import('./MeasureItemCompressed'));
-const OfficeItemCompressed = React.lazy(() => import('./OfficeItemCompressed'));
+import MeasureItemCompressed from './MeasureItemCompressed';
+import OfficeItemCompressed from './OfficeItemCompressed';
 
 export default class BallotItemCompressed extends PureComponent {
   render () {

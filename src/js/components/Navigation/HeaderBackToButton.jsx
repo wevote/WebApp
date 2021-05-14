@@ -1,12 +1,12 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
 import { Button } from '@material-ui/core';
-import { ArrowBack, ArrowBackIos } from '@material-ui/icons';
 import { withStyles } from '@material-ui/core/styles';
+import { ArrowBack, ArrowBackIos } from '@material-ui/icons';
+import PropTypes from 'prop-types';
+import React, { Component } from 'react';
 import { historyPush, isIOS } from '../../utils/cordovaUtils';
-
-import { shortenText } from '../../utils/textFormat';
 import { renderLog } from '../../utils/logging';
+import { shortenText } from '../../utils/textFormat';
+
 
 const styles = {
   root: {

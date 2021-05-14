@@ -4,12 +4,11 @@ import Helmet from 'react-helmet';
 import AnalyticsActions from '../../actions/AnalyticsActions';
 import OfficeActions from '../../actions/OfficeActions';
 import LoadingWheel from '../../components/LoadingWheel';
+import OrganizationVoterGuideCandidateList from '../../components/VoterGuide/OrganizationVoterGuideCandidateList';
 import OfficeStore from '../../stores/OfficeStore';
 import VoterStore from '../../stores/VoterStore';
 import { renderLog } from '../../utils/logging';
 import { capitalizeString } from '../../utils/textFormat';
-
-const OrganizationVoterGuideCandidateList = React.lazy(() => import('../../components/VoterGuide/OrganizationVoterGuideCandidateList'));
 
 // This is based on routes/Ballot/Office
 export default class OrganizationVoterGuideOffice extends Component {

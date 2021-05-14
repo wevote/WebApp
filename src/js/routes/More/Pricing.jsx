@@ -5,16 +5,15 @@ import Helmet from 'react-helmet';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import AppActions from '../../actions/AppActions';
+import PricingCard from '../../components/More/PricingCard';
+import { Section } from '../../components/Welcome/sectionStyles';
+import PricingSwitch from '../../components/Widgets/PricingSwitch';
 import VoterStore from '../../stores/VoterStore';
 import cordovaScrollablePaneTopPadding from '../../utils/cordovaScrollablePaneTopPadding';
 import { renderLog } from '../../utils/logging';
 
-// eslint-disable-next-line import/no-cycle
-const PricingCard = React.lazy(() => import('../../components/More/PricingCard'));
-const PricingSwitch = React.lazy(() => import('../../components/Widgets/PricingSwitch'));
-const Section = React.lazy(() => import('../../components/Welcome/sectionStyles'));
-const WelcomeAppbar = React.lazy(() => import('../../components/Navigation/WelcomeAppbar'));
-const WelcomeFooter = React.lazy(() => import('../../components/Welcome/WelcomeFooter'));
+const WelcomeFooter = React.lazy(() => import(/* webpackChunkName: 'WelcomeFooter' */ '../../components/Welcome/WelcomeFooter'));
+const WelcomeAppbar = React.lazy(() => import(/* webpackChunkName: 'WelcomeAppbar' */ '../../components/Navigation/WelcomeAppbar'));
 
 
 class Pricing extends Component {

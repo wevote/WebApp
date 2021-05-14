@@ -17,7 +17,7 @@ class SnackNotifier extends Component {
   }
 
   componentDidMount () {
-    console.log('SnackNotifier componentDidMount');
+    // console.log('SnackNotifier componentDidMount');
     openSnackbarFn = this.openSnackbar;
   }
 
@@ -76,7 +76,7 @@ export function openSnackbar ({ message, duration }) {
   if (isFunction(openSnackbarFn)) {
     openSnackbarFn({ message, duration });
   } else {
-    console.log('*** SnackNotifier openSnackbarFn not a Function');
+    console.error('*** SnackNotifier was not initialized before first use in the parent class ***');
   }
 }
 

@@ -3,6 +3,7 @@ import { withStyles } from '@material-ui/core/styles';
 import { Close } from '@material-ui/icons';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
+import Alert from 'react-bootstrap/Alert';
 import styled from 'styled-components';
 import FriendActions from '../../actions/FriendActions';
 import FriendStore from '../../stores/FriendStore';
@@ -13,9 +14,8 @@ import { renderLog } from '../../utils/logging';
 import { validatePhoneOrEmail } from '../../utils/regex-checks';
 import LoadingWheel from '../LoadingWheel';
 
-const DelayedLoad = React.lazy(() => import('../Widgets/DelayedLoad'));
-const SettingsAccount = React.lazy(() => import('../Settings/SettingsAccount'));
-const Alert = React.lazy(() => import('react-bootstrap/Alert'));
+const DelayedLoad = React.lazy(() => import(/* webpackChunkName: 'DelayedLoad' */ '../Widgets/DelayedLoad'));
+const SettingsAccount = React.lazy(() => import(/* webpackChunkName: 'SettingsAccount' */ '../Settings/SettingsAccount'));
 
 
 class AddFriendsByEmail extends Component {

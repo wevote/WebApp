@@ -1,11 +1,10 @@
 import React, { Component } from 'react';
+import Button from 'react-bootstrap/Button';
 import VoterStore from '../../stores/VoterStore';
 import { historyPush } from '../../utils/cordovaUtils';
 import { renderLog } from '../../utils/logging';
 import { extractTwitterHandleFromTextString } from '../../utils/textFormat';
 import LoadingWheel from '../LoadingWheel';
-
-const Button = React.lazy(() => import('react-bootstrap/Button'));
 
 
 export default class TwitterHandleBox extends Component {

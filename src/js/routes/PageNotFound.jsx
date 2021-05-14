@@ -1,12 +1,13 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import Helmet from 'react-helmet';
-import styled from 'styled-components';
-import { Ballot } from '@material-ui/icons';
 import { Button, Card } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
-import { renderLog } from '../utils/logging';
+import { Ballot } from '@material-ui/icons';
+import PropTypes from 'prop-types';
+import React, { Component } from 'react';
+import Helmet from 'react-helmet';
+import styled from 'styled-components';
 import { historyPush, isCordova } from '../utils/cordovaUtils';
+import { renderLog } from '../utils/logging';
+
 
 class PageNotFound extends Component {
   static getProps () {

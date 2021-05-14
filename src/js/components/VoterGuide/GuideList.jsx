@@ -5,12 +5,13 @@ import CandidateStore from '../../stores/CandidateStore';
 import MeasureStore from '../../stores/MeasureStore';
 import { renderLog } from '../../utils/logging';
 import { stringContains } from '../../utils/textFormat';
+import EndorsementCard from '../Widgets/EndorsementCard';
 import { openSnackbar } from '../Widgets/SnackNotifier';
+import VoterGuideDisplayForList from './VoterGuideDisplayForList';
 
-const FollowToggle = React.lazy(() => import('../Widgets/FollowToggle'));
-const VoterGuideDisplayForList = React.lazy(() => import('./VoterGuideDisplayForList'));
-const EndorsementCard = React.lazy(() => import('../Widgets/EndorsementCard'));
-const ShowMoreItems = React.lazy(() => import('../Widgets/ShowMoreItems'));
+const FollowToggle = React.lazy(() => import(/* webpackChunkName: 'FollowToggle' */ '../Widgets/FollowToggle'));
+const ShowMoreItems = React.lazy(() => import(/* webpackChunkName: 'ShowMoreItems' */ '../Widgets/ShowMoreItems'));
+
 
 class GuideList extends Component {
   constructor (props) {

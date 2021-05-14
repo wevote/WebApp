@@ -6,16 +6,17 @@ import React, { Component, Suspense } from 'react';
 import Helmet from 'react-helmet';
 import styled from 'styled-components';
 import IssueActions from '../../actions/IssueActions';
+import GuideList from '../../components/VoterGuide/GuideList';
 import IssueStore from '../../stores/IssueStore';
 import VoterGuideStore from '../../stores/VoterGuideStore';
 import VoterStore from '../../stores/VoterStore';
 import { historyPush } from '../../utils/cordovaUtils';
 import { renderLog } from '../../utils/logging';
+import ValuesList from './ValuesList';
 
-const DelayedLoad = React.lazy(() => import('../../components/Widgets/DelayedLoad'));
-const GuideList = React.lazy(() => import('../../components/VoterGuide/GuideList'));
-const IssueCard = React.lazy(() => import('../../components/Values/IssueCard'));
-const ValuesList = React.lazy(() => import('./ValuesList'));
+const DelayedLoad = React.lazy(() => import(/* webpackChunkName: 'DelayedLoad' */ '../../components/Widgets/DelayedLoad'));
+const IssueCard = React.lazy(() => import(/* webpackChunkName: 'IssueCard' */ '../../components/Values/IssueCard'));
+
 
 class VoterGuidesUnderOneValue extends Component {
   constructor (props) {

@@ -1,5 +1,6 @@
 import { Chip, FormControlLabel, Input, MenuItem, Radio, Select } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
+import isEqual from 'lodash-es/isEqual';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import styled from 'styled-components';
@@ -8,8 +9,6 @@ import BallotStore from '../../stores/BallotStore';
 import { convertStateCodeToStateText, convertStateTextToStateCode, stateCodeMap } from '../../utils/addressFunctions';
 import { renderLog } from '../../utils/logging';
 import { arrayContains, removeValueFromArray } from '../../utils/textFormat';
-
-const isEqual = React.lazy(() => import('lodash-es/isEqual'));
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;

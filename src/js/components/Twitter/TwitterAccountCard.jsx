@@ -2,10 +2,10 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { renderLog } from '../../utils/logging';
 import { abbreviateNumber, numberWithCommas, removeTwitterNameFromDescription } from '../../utils/textFormat';
-import ImageHandler from '../ImageHandler';
+import ParsedTwitterDescription from './ParsedTwitterDescription';
 
-const ParsedTwitterDescription = React.lazy(() => import('./ParsedTwitterDescription'));
-const OpenExternalWebSite = React.lazy(() => import('../Widgets/OpenExternalWebSite'));
+const ImageHandler = React.lazy(() => import(/* webpackChunkName: 'ImageHandler' */ '../ImageHandler'));
+const OpenExternalWebSite = React.lazy(() => import(/* webpackChunkName: 'OpenExternalWebSite' */ '../Widgets/OpenExternalWebSite'));
 
 export default class TwitterAccountCard extends Component {
   render () {

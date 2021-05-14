@@ -13,14 +13,14 @@ import { historyPush, isCordova } from '../../utils/cordovaUtils';
 import { renderLog } from '../../utils/logging';
 import { sortCandidateList } from '../../utils/positionFunctions';
 import { arrayContains, toTitleCase } from '../../utils/textFormat';
-import ImageHandler from '../ImageHandler';
 import signInModalGlobalState from '../Widgets/signInModalGlobalState';
 
-const BallotItemSupportOpposeCountDisplay = React.lazy(() => import('../Widgets/BallotItemSupportOpposeCountDisplay'));
-const DelayedLoad = React.lazy(() => import('../Widgets/DelayedLoad'));
-const IssuesByBallotItemDisplayList = React.lazy(() => import('../Values/IssuesByBallotItemDisplayList'));
-const ShowMoreFooter = React.lazy(() => import('../Navigation/ShowMoreFooter'));
-const TopCommentByBallotItem = React.lazy(() => import('../Widgets/TopCommentByBallotItem'));
+const BallotItemSupportOpposeCountDisplay = React.lazy(() => import(/* webpackChunkName: 'BallotItemSupportOpposeCountDisplay' */ '../Widgets/BallotItemSupportOpposeCountDisplay'));
+const DelayedLoad = React.lazy(() => import(/* webpackChunkName: 'DelayedLoad' */ '../Widgets/DelayedLoad'));
+const ImageHandler = React.lazy(() => import(/* webpackChunkName: 'ImageHandler' */ '../ImageHandler'));
+const IssuesByBallotItemDisplayList = React.lazy(() => import(/* webpackChunkName: 'IssuesByBallotItemDisplayList' */ '../Values/IssuesByBallotItemDisplayList'));
+const ShowMoreFooter = React.lazy(() => import(/* webpackChunkName: 'ShowMoreFooter' */ '../Navigation/ShowMoreFooter'));
+const TopCommentByBallotItem = React.lazy(() => import(/* webpackChunkName: 'TopCommentByBallotItem' */ '../Widgets/TopCommentByBallotItem'));
 
 const NUMBER_OF_CANDIDATES_TO_DISPLAY = 4;
 

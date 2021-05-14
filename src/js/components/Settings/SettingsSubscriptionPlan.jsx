@@ -18,10 +18,11 @@ import { formatDateToYearMonthDay } from '../../utils/dateFormat';
 import { renderLog } from '../../utils/logging';
 import { stringContains } from '../../utils/textFormat';
 import LoadingWheel from '../LoadingWheel';
+import CreateConfiguredVersion from './CreateConfiguredVersion';
 
-const CreateConfiguredVersion = React.lazy(() => import('./CreateConfiguredVersion'));
-const DelayedLoad = React.lazy(() => import('../Widgets/DelayedLoad'));
-const SettingsAccount = React.lazy(() => import('./SettingsAccount'));
+const DelayedLoad = React.lazy(() => import(/* webpackChunkName: 'DelayedLoad' */ '../Widgets/DelayedLoad'));
+const SettingsAccount = React.lazy(() => import(/* webpackChunkName: 'SettingsAccount' */ './SettingsAccount'));
+
 
 class SettingsSubscriptionPlan extends Component {
   constructor (props) {

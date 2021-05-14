@@ -3,13 +3,14 @@ import { withStyles, withTheme } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import styled from 'styled-components';
+import stockAvatar from '../../../img/global/icons/avatar-generic.png';
 import VoterStore from '../../stores/VoterStore';
 import { cordovaNewsPaddingTop } from '../../utils/cordovaOffsets';
 import { cordovaDot, isCordova } from '../../utils/cordovaUtils';
 import { renderLog } from '../../utils/logging';
 
-const ActivityPostModal = React.lazy(() => import('./ActivityPostModal'));
-const stockAvatar = React.lazy(() => import('../../../img/global/icons/avatar-generic.png'));
+const ActivityPostModal = React.lazy(() => import(/* webpackChunkName: 'ActivityPostModal' */ './ActivityPostModal'));
+
 
 
 class ActivityPostAdd extends Component {

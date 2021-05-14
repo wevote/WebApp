@@ -2,11 +2,11 @@ import React, { Component, Suspense } from 'react';
 import styled from 'styled-components';
 import VoterGuideStore from '../../stores/VoterGuideStore';
 import { historyPush } from '../../utils/cordovaUtils';
-import LoadingWheel from '../LoadingWheel';
 import { renderLog } from '../../utils/logging';
+import LoadingWheel from '../LoadingWheel';
+import GuideList from '../VoterGuide/GuideList';
 
-const GuideList = React.lazy(() => import('../VoterGuide/GuideList'));
-const ShowMoreFooter = React.lazy(() => import('../Navigation/ShowMoreFooter'));
+const ShowMoreFooter = React.lazy(() => import(/* webpackChunkName: 'ShowMoreFooter' */ '../Navigation/ShowMoreFooter'));
 
 
 export default class OrganizationsToFollowPreview extends Component {

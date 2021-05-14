@@ -6,11 +6,11 @@ import styled from 'styled-components';
 import OrganizationStore from '../../stores/OrganizationStore';
 import { isCordova } from '../../utils/cordovaUtils';
 import { renderLog } from '../../utils/logging';
-import ImageHandler from '../ImageHandler';
+import StickyPopover from '../Ballot/StickyPopover';
+import FriendsOnlyIndicator from './FriendsOnlyIndicator';
+import PositionItemScorePopover from './PositionItemScorePopover';
 
-const FriendsOnlyIndicator = React.lazy(() => import('./FriendsOnlyIndicator'));
-const PositionItemScorePopover = React.lazy(() => import('./PositionItemScorePopover'));
-const StickyPopover = React.lazy(() => import('../Ballot/StickyPopover'));
+const ImageHandler = React.lazy(() => import(/* webpackChunkName: 'ImageHandler' */ '../ImageHandler'));
 
 class BallotItemVoterGuideSupportOpposeDisplay extends Component {
   static closePositionsPopover () {

@@ -13,11 +13,10 @@ import extractNumber from '../../utils/extractNumber';
 import { renderLog } from '../../utils/logging';
 import { capitalizeString, shortenText, stripHtmlFromString } from '../../utils/textFormat';
 
-const BallotItemSupportOpposeCountDisplay = React.lazy(() => import('../Widgets/BallotItemSupportOpposeCountDisplay'));
-const DelayedLoad = React.lazy(() => import('../Widgets/DelayedLoad'));
-const ShowMoreFooter = React.lazy(() => import('../Navigation/ShowMoreFooter'));
-const TopCommentByBallotItem = React.lazy(() => import('../Widgets/TopCommentByBallotItem'));
-
+const BallotItemSupportOpposeCountDisplay = React.lazy(() => import(/* webpackChunkName: 'BallotItemSupportOpposeCountDisplay' */ '../Widgets/BallotItemSupportOpposeCountDisplay'));
+const DelayedLoad = React.lazy(() => import(/* webpackChunkName: 'DelayedLoad' */ '../Widgets/DelayedLoad'));
+const ShowMoreFooter = React.lazy(() => import(/* webpackChunkName: 'ShowMoreFooter' */ '../Navigation/ShowMoreFooter'));
+const TopCommentByBallotItem = React.lazy(() => import(/* webpackChunkName: 'TopCommentByBallotItem' */ '../Widgets/TopCommentByBallotItem'));
 
 class MeasureItemCompressed extends Component {
   constructor (props) {

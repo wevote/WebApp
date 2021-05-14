@@ -6,8 +6,7 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 import { hasIPhoneNotch } from '../../utils/cordovaUtils';
 import { renderLog } from '../../utils/logging';
-
-const DragAndDrop = React.lazy(() => import('./DragAndDrop'));
+import DragAndDrop from './DragAndDrop';
 
 class ImageUploadModal extends Component {
   constructor (props) {

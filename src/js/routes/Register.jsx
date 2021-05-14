@@ -5,20 +5,19 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import Helmet from 'react-helmet';
 import styled from 'styled-components';
+import turboVote from '../../img/global/logos/turbovote-logo.png';
+import voteDotOrg from '../../img/global/logos/vote_dot_org_logo-530x200.png';
 import AnalyticsActions from '../actions/AnalyticsActions';
 import BallotActions from '../actions/BallotActions';
 import ReadyActions from '../actions/ReadyActions';
 import LoadingWheel from '../components/LoadingWheel';
+import BrowserPushMessage from '../components/Widgets/BrowserPushMessage';
 import AppStore from '../stores/AppStore';
 import BallotStore from '../stores/BallotStore';
 import VoterStore from '../stores/VoterStore';
 import { formatDateToMonthDayYear } from '../utils/dateFormat';
 import { formatStateName } from '../utils/formatStateName';
 import { renderLog } from '../utils/logging';
-
-const BrowserPushMessage = React.lazy(() => import('../components/Widgets/BrowserPushMessage'));
-const voteDotOrg = React.lazy(() => import('../../img/global/logos/vote_dot_org_logo-530x200.png'));
-const turboVote = React.lazy(() => import('../../img/global/logos/turbovote-logo.png'));
 
 /* Styled Input confuses lint in this case, so we disable */
 /* eslint-disable jsx-a11y/label-has-associated-control */

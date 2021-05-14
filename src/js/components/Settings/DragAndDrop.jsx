@@ -2,14 +2,14 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 
 class DragAndDrop extends Component {
+  dropRef = React.createRef();
+
   constructor (props) {
     super(props);
     this.state = {
       drag: false,
     };
   }
-
-  dropRef = React.createRef()
 
   handleDrag = (e) => {
     e.preventDefault();

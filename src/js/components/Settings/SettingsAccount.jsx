@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
+import Button from 'react-bootstrap/Button';
 import Helmet from 'react-helmet';
 import styled from 'styled-components';
 import AnalyticsActions from '../../actions/AnalyticsActions';
@@ -16,19 +17,17 @@ import { historyPush, isCordova, isIPhone4in, isIPhone4p7in, restoreStylesAfterC
 import initializeAppleSDK from '../../utils/initializeAppleSDK';
 import { oAuthLog, renderLog } from '../../utils/logging';
 import { stringContains } from '../../utils/textFormat';
+import AppleSignIn from '../Apple/AppleSignIn';
+import FacebookSignIn from '../Facebook/FacebookSignIn';
 import LoadingWheel from '../LoadingWheel';
+import TwitterSignIn from '../Twitter/TwitterSignIn';
+import BrowserPushMessage from '../Widgets/BrowserPushMessage';
 import signInModalGlobalState from '../Widgets/signInModalGlobalState';
-
+import VoterEmailAddressEntry from './VoterEmailAddressEntry';
+import VoterPhoneEmailCordovaEntryModal from './VoterPhoneEmailCordovaEntryModal';
+import VoterPhoneVerificationEntry from './VoterPhoneVerificationEntry';
 
 // import initializeAppleSDK from '../../utils/initializeAppleSDK';
-const AppleSignIn = React.lazy(() => import('../Apple/AppleSignIn'));
-const BrowserPushMessage = React.lazy(() => import('../Widgets/BrowserPushMessage'));
-const Button = React.lazy(() => import('react-bootstrap/Button'));
-const FacebookSignIn = React.lazy(() => import('../Facebook/FacebookSignIn'));
-const TwitterSignIn = React.lazy(() => import('../Twitter/TwitterSignIn'));
-const VoterEmailAddressEntry = React.lazy(() => import('./VoterEmailAddressEntry'));
-const VoterPhoneEmailCordovaEntryModal = React.lazy(() => import('./VoterPhoneEmailCordovaEntryModal'));
-const VoterPhoneVerificationEntry = React.lazy(() => import('./VoterPhoneVerificationEntry'));
 
 /* global $ */
 

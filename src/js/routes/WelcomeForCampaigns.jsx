@@ -4,11 +4,14 @@ import PropTypes from 'prop-types';
 import React, { PureComponent } from 'react';
 import Helmet from 'react-helmet';
 import styled from 'styled-components';
+import ffwdLogo from '../../img/global/logos/ffwd-logo.png';
+import vipLogo from '../../img/global/logos/vip-logo-1000x208.png';
+import voteDotOrgLogo from '../../img/global/logos/vote_dot_org_logo-530x200.png';
 import AnalyticsActions from '../actions/AnalyticsActions';
 import AppActions from '../actions/AppActions';
 import VoterActions from '../actions/VoterActions';
 import { BlueTitle, SubTitle, Title } from '../components/Welcome/headerWelcomeStyles';
-import { Section, Description, DescriptionContainer, DescriptionImageColumn, DescriptionLeftColumn, Image, NetworkContainer, NetworkImage, SectionTitle, SectionTitleBold } from '../components/Welcome/sectionStyles';
+import { Description, DescriptionContainer, DescriptionImageColumn, DescriptionLeftColumn, Image, NetworkContainer, NetworkImage, Section, SectionTitle, SectionTitleBold } from '../components/Welcome/sectionStyles';
 import Testimonial from '../components/Widgets/Testimonial';
 import VoterConstants from '../constants/VoterConstants';
 import VoterStore from '../stores/VoterStore';
@@ -17,12 +20,11 @@ import { cordovaDot, historyPush } from '../utils/cordovaUtils';
 import { renderLog } from '../utils/logging';
 import { validateEmail } from '../utils/regex-checks';
 
-const ffwdLogo = React.lazy(() => import('../../img/global/logos/ffwd-logo.png'));
+const WelcomeFooter = React.lazy(() => import(/* webpackChunkName: 'WelcomeFooter' */ '../components/Welcome/WelcomeFooter'));
+const WelcomeAppbar = React.lazy(() => import(/* webpackChunkName: 'WelcomeAppbar' */ '../components/Navigation/WelcomeAppbar'));
+
+
 const googleLogo = '../../img/global/logos/google-logo.svg';
-const voteDotOrgLogo = React.lazy(() => import('../../img/global/logos/vote_dot_org_logo-530x200.png'));
-const vipLogo = React.lazy(() => import('../../img/global/logos/vip-logo-1000x208.png'));
-const WelcomeFooter = React.lazy(() => import('../components/Welcome/WelcomeFooter'));
-const WelcomeAppbar = React.lazy(() => import('../components/Navigation/WelcomeAppbar'));
 
 class WelcomeForCampaigns extends PureComponent {
   constructor (props) {

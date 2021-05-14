@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import Helmet from 'react-helmet';
+import TwitterHandleBox from '../../components/Twitter/TwitterHandleBox';
 import { renderLog } from '../../utils/logging';
-
-const TwitterHandleBox = React.lazy(() => import('../../components/Twitter/TwitterHandleBox'));
 
 export default class ClaimYourPage extends Component {
   render () {

@@ -12,89 +12,86 @@ import initializejQuery from './js/utils/initializejQuery';
 // import initializeOnce from './js/utils/initializeOnce';
 import { renderLog } from './js/utils/logging';
 import RouterV5SendMatch from './js/utils/RouterV5SendMatch';
-import SnackNotifier from './js/components/Widgets/SnackNotifier';
-
-// const MainFooter  = React.lazy(() => import('./js/components/Navigation/MainFooter'));
+// import SnackNotifier from './js/components/Widgets/SnackNotifier';
 
 // Root URL pages
 
-// const Application = React.lazy(() => import('./Application'));
-const About = React.lazy(() => import('./js/routes/More/About'));
-const AbsenteeBallot = React.lazy(() => import('./js/routes/More/AbsenteeBallot'));
-const AddCandidateForExtension = React.lazy(() => import('./js/routes/Ballot/AddCandidateForExtension'));
-const AppleSignInProcess = React.lazy(() => import('./js/routes/Process/AppleSignInProcess'));
-const Attributions = React.lazy(() => import('./js/routes/More/Attributions'));
-const Ballot = React.lazy(() => import('./js/routes/Ballot/Ballot'));
-const Candidate = React.lazy(() => import('./js/routes/Ballot/Candidate'));
-const CandidateForExtension = React.lazy(() => import('./js/routes/Ballot/CandidateForExtension'));
-const ClaimYourPage = React.lazy(() => import('./js/routes/Settings/ClaimYourPage'));
-const Credits = React.lazy(() => import('./js/routes/More/Credits'));
-const Donate = React.lazy(() => import('./js/routes/More/Donate'));
-const DonateThankYou = React.lazy(() => import('./js/routes/More/DonateThankYou'));
-const ElectionReminder = React.lazy(() => import('./js/routes/More/ElectionReminder'));
-const Elections = React.lazy(() => import('./js/routes/More/Elections'));
-const ExtensionSignIn = React.lazy(() => import('./js/routes/More/ExtensionSignIn'));
-const FAQ = React.lazy(() => import('./js/routes/More/FAQ'));
-const FacebookInvitableFriends = React.lazy(() => import('./js/routes/FacebookInvitableFriends'));
-const FacebookLandingProcess = React.lazy(() => import('./js/routes/Process/FacebookLandingProcess'));
-const FacebookRedirectToWeVote = React.lazy(() => import('./js/routes/More/FacebookRedirectToWeVote'));
-const FriendInvitationByEmailVerifyProcess = React.lazy(() => import('./js/routes/Process/FriendInvitationByEmailVerifyProcess'));
-const FriendInvitationOnboarding = React.lazy(() => import('./js/routes/Intro/FriendInvitationOnboarding'));
-const Friends = React.lazy(() => import('./js/routes/Friends/Friends'));
-const GetStarted = React.lazy(() => import('./js/routes/Intro/GetStarted'));
-const HamburgerMenu = React.lazy(() => import('./js/routes/Settings/HamburgerMenu'));
-const HowItWorks = React.lazy(() => import('./js/routes/HowItWorks'));
-const Intro = React.lazy(() => import('./js/routes/Intro/Intro'));
-const IntroNetwork = React.lazy(() => import('./js/routes/Intro/IntroNetwork'));
-const Location = React.lazy(() => import('./js/routes/Settings/Location'));
-const Measure = React.lazy(() => import('./js/routes/Ballot/Measure'));
-const News = React.lazy(() => import('./js/routes/Activity/News'));
-const Office = React.lazy(() => import('./js/routes/Ballot/Office'));
-const Opinions2020 = React.lazy(() => import('./js/routes/Opinions2020'));
-const OpinionsFollowed = React.lazy(() => import('./js/routes/OpinionsFollowed'));
-const OpinionsIgnored = React.lazy(() => import('./js/routes/OpinionsIgnored'));
-const OrganizationVoterGuide = React.lazy(() => import('./js/routes/VoterGuide/OrganizationVoterGuide'));
-const OrganizationVoterGuideCandidate = React.lazy(() => import('./js/routes/VoterGuide/OrganizationVoterGuideCandidate'));
-const OrganizationVoterGuideMeasure = React.lazy(() => import('./js/routes/VoterGuide/OrganizationVoterGuideMeasure'));
-const OrganizationVoterGuideMobileDetails = React.lazy(() => import('./js/routes/VoterGuide/OrganizationVoterGuideMobileDetails'));
-const OrganizationVoterGuideOffice = React.lazy(() => import('./js/routes/VoterGuide/OrganizationVoterGuideOffice'));
-const PageNotFound = React.lazy(() => import('./js/routes/PageNotFound'));
-const Pricing = React.lazy(() => import('./js/routes/More/Pricing'));
-const Privacy = React.lazy(() => import('./js/routes/More/Privacy'));
-const ProcessingDonation = React.lazy(() => import('./js/routes/More/ProcessingDonation'));
-const Ready = React.lazy(() => import('./js/routes/Ready'));
-const ReadyLight = React.lazy(() => import('./js/routes/ReadyLight'));
-const ReadyRedirect = React.lazy(() => import('./js/routes/ReadyRedirect'));
-const Register = React.lazy(() => import('./js/routes/Register'));
-const RegisterToVote = React.lazy(() => import('./js/routes/More/RegisterToVote'));
-const SampleBallot = React.lazy(() => import('./js/routes/Intro/SampleBallot'));
-const SearchPage = React.lazy(() => import('./js/routes/More/SearchPage'));
-const SettingsDashboard = React.lazy(() => import('./js/routes/Settings/SettingsDashboard'));
-const SettingsMenuMobile = React.lazy(() => import('./js/routes/Settings/SettingsMenuMobile'));
-const SharedItemLanding = React.lazy(() => import('./js/routes/SharedItemLanding'));
-const SignInEmailProcess = React.lazy(() => import('./js/routes/Process/SignInEmailProcess'));
-const SignInJumpProcess = React.lazy(() => import('./js/routes/Process/SignInJumpProcess'));
-const TermsOfService = React.lazy(() => import('./js/routes/More/TermsOfService'));
-const TwitterHandleLanding = React.lazy(() => import('./js/routes/TwitterHandleLanding'));
-const TwitterSignInProcess = React.lazy(() => import('./js/routes/Process/TwitterSignInProcess'));
-const Values = React.lazy(() => import('./js/routes/Values'));
-const ValuesList = React.lazy(() => import('./js/routes/Values/ValuesList'));
-const VerifyEmailProcess = React.lazy(() => import('./js/routes/Process/VerifyEmailProcess'));
-const VerifyRegistration = React.lazy(() => import('./js/routes/More/VerifyRegistration'));
-const VerifyThisIsMe = React.lazy(() => import('./js/routes/VoterGuide/VerifyThisIsMe'));
-const Vote = React.lazy(() => import('./js/routes/Vote'));
-const VoterGuideListDashboard = React.lazy(() => import('./js/routes/Settings/VoterGuideListDashboard'));
-const VoterGuideSettingsDashboard = React.lazy(() => import('./js/routes/Settings/VoterGuideSettingsDashboard'));
-const VoterGuideSettingsMenuMobile = React.lazy(() => import('./js/routes/Settings/VoterGuideSettingsMenuMobile'));
-const VoterGuidesMenuMobile = React.lazy(() => import('./js/routes/Settings/VoterGuidesMenuMobile'));
-const VoterGuidesUnderOneValue = React.lazy(() => import('./js/routes/Values/VoterGuidesUnderOneValue'));
-const WeVoteBallotEmbed = React.lazy(() => import('./js/routes/More/WeVoteBallotEmbed'));
-const WelcomeForCampaigns = React.lazy(() => import('./js/routes/WelcomeForCampaigns'));
-const WelcomeForOrganizations = React.lazy(() => import('./js/routes/WelcomeForOrganizations'));
-const WelcomeForVoters = React.lazy(() => import('./js/routes/WelcomeForVoters'));
-const YourPage = React.lazy(() => import('./js/routes/YourPage'));
+const About = React.lazy(() => import(/* webpackChunkName: 'About' */ './js/routes/More/About'));
+const AbsenteeBallot = React.lazy(() => import(/* webpackChunkName: 'AbsenteeBallot' */ './js/routes/More/AbsenteeBallot'));
+const AddCandidateForExtension = React.lazy(() => import(/* webpackChunkName: 'AddCandidateForExtension' */ './js/routes/Ballot/AddCandidateForExtension'));
+const AppleSignInProcess = React.lazy(() => import(/* webpackChunkName: 'AppleSignInProcess' */ './js/routes/Process/AppleSignInProcess'));
+const Attributions = React.lazy(() => import(/* webpackChunkName: 'Attributions' */ './js/routes/More/Attributions'));
+const Ballot = React.lazy(() => import(/* webpackChunkName: 'Ballot' */ './js/routes/Ballot/Ballot'));
+const Candidate = React.lazy(() => import(/* webpackChunkName: 'Candidate' */ './js/routes/Ballot/Candidate'));
+const CandidateForExtension = React.lazy(() => import(/* webpackChunkName: 'CandidateForExtension' */ './js/routes/Ballot/CandidateForExtension'));
+const ClaimYourPage = React.lazy(() => import(/* webpackChunkName: 'ClaimYourPage' */ './js/routes/Settings/ClaimYourPage'));
+const Credits = React.lazy(() => import(/* webpackChunkName: 'Credits' */ './js/routes/More/Credits'));
+const Donate = React.lazy(() => import(/* webpackChunkName: 'Donate' */ './js/routes/More/Donate'));
+const DonateThankYou = React.lazy(() => import(/* webpackChunkName: 'DonateThankYou' */ './js/routes/More/DonateThankYou'));
+const ElectionReminder = React.lazy(() => import(/* webpackChunkName: 'ElectionReminder' */ './js/routes/More/ElectionReminder'));
+const Elections = React.lazy(() => import(/* webpackChunkName: 'Elections' */ './js/routes/More/Elections'));
+const ExtensionSignIn = React.lazy(() => import(/* webpackChunkName: 'ExtensionSignIn' */ './js/routes/More/ExtensionSignIn'));
+const FAQ = React.lazy(() => import(/* webpackChunkName: 'FAQ' */ './js/routes/More/FAQ'));
+const FacebookInvitableFriends = React.lazy(() => import(/* webpackChunkName: 'FacebookInvitableFriends' */ './js/routes/FacebookInvitableFriends'));
+const FacebookLandingProcess = React.lazy(() => import(/* webpackChunkName: 'FacebookLandingProcess' */ './js/routes/Process/FacebookLandingProcess'));
+const FacebookRedirectToWeVote = React.lazy(() => import(/* webpackChunkName: 'FacebookRedirectToWeVote' */ './js/routes/More/FacebookRedirectToWeVote'));
+const FriendInvitationByEmailVerifyProcess = React.lazy(() => import(/* webpackChunkName: 'FriendInvitationByEmailVerifyProcess' */ './js/routes/Process/FriendInvitationByEmailVerifyProcess'));
+const FriendInvitationOnboarding = React.lazy(() => import(/* webpackChunkName: 'FriendInvitationOnboarding' */ './js/routes/Intro/FriendInvitationOnboarding'));
+const Friends = React.lazy(() => import(/* webpackChunkName: 'Friends' */ './js/routes/Friends/Friends'));
+const GetStarted = React.lazy(() => import(/* webpackChunkName: 'GetStarted' */ './js/routes/Intro/GetStarted'));
+const HamburgerMenu = React.lazy(() => import(/* webpackChunkName: 'HamburgerMenu' */ './js/routes/Settings/HamburgerMenu'));
+const HowItWorks = React.lazy(() => import(/* webpackChunkName: 'HowItWorks' */ './js/routes/HowItWorks'));
+const Intro = React.lazy(() => import(/* webpackChunkName: 'Intro' */ './js/routes/Intro/Intro'));
+const IntroNetwork = React.lazy(() => import(/* webpackChunkName: 'IntroNetwork' */ './js/routes/Intro/IntroNetwork'));
+const Location = React.lazy(() => import(/* webpackChunkName: 'Location' */ './js/routes/Settings/Location'));
+const Measure = React.lazy(() => import(/* webpackChunkName: 'Measure' */ './js/routes/Ballot/Measure'));
+const News = React.lazy(() => import(/* webpackChunkName: 'News' */ './js/routes/Activity/News'));
+const Office = React.lazy(() => import(/* webpackChunkName: 'Office' */ './js/routes/Ballot/Office'));
+const Opinions2020 = React.lazy(() => import(/* webpackChunkName: 'Opinions2020' */ './js/routes/Opinions2020'));
+const OpinionsFollowed = React.lazy(() => import(/* webpackChunkName: 'OpinionsFollowed' */ './js/routes/OpinionsFollowed'));
+const OpinionsIgnored = React.lazy(() => import(/* webpackChunkName: 'OpinionsIgnored' */ './js/routes/OpinionsIgnored'));
+const OrganizationVoterGuide = React.lazy(() => import(/* webpackChunkName: 'OrganizationVoterGuide' */ './js/routes/VoterGuide/OrganizationVoterGuide'));
+const OrganizationVoterGuideCandidate = React.lazy(() => import(/* webpackChunkName: 'OrganizationVoterGuideCandidate' */ './js/routes/VoterGuide/OrganizationVoterGuideCandidate'));
+const OrganizationVoterGuideMeasure = React.lazy(() => import(/* webpackChunkName: 'OrganizationVoterGuideMeasure' */ './js/routes/VoterGuide/OrganizationVoterGuideMeasure'));
+const OrganizationVoterGuideMobileDetails = React.lazy(() => import(/* webpackChunkName: 'OrganizationVoterGuideMobileDetails' */ './js/routes/VoterGuide/OrganizationVoterGuideMobileDetails'));
+const OrganizationVoterGuideOffice = React.lazy(() => import(/* webpackChunkName: 'OrganizationVoterGuideOffice' */ './js/routes/VoterGuide/OrganizationVoterGuideOffice'));
+const PageNotFound = React.lazy(() => import(/* webpackChunkName: 'PageNotFound' */ './js/routes/PageNotFound'));
+const Pricing = React.lazy(() => import(/* webpackChunkName: 'Pricing' */ './js/routes/More/Pricing'));
+const Privacy = React.lazy(() => import(/* webpackChunkName: 'Privacy' */ './js/routes/More/Privacy'));
+const ProcessingDonation = React.lazy(() => import(/* webpackChunkName: 'ProcessingDonation' */ './js/routes/More/ProcessingDonation'));
+const Ready = React.lazy(() => import(/* webpackChunkName: 'Ready' */ './js/routes/Ready'));
+const ReadyLight = React.lazy(() => import(/* webpackChunkName: 'ReadyLight' */ './js/routes/ReadyLight'));
+const ReadyRedirect = React.lazy(() => import(/* webpackChunkName: 'ReadyRedirect' */ './js/routes/ReadyRedirect'));
+const Register = React.lazy(() => import(/* webpackChunkName: 'Register' */ './js/routes/Register'));
+const RegisterToVote = React.lazy(() => import(/* webpackChunkName: 'RegisterToVote' */ './js/routes/More/RegisterToVote'));
+const SampleBallot = React.lazy(() => import(/* webpackChunkName: 'SampleBallot' */ './js/routes/Intro/SampleBallot'));
+const SearchPage = React.lazy(() => import(/* webpackChunkName: 'SearchPage' */ './js/routes/More/SearchPage'));
+const SettingsDashboard = React.lazy(() => import(/* webpackChunkName: 'SettingsDashboard' */ './js/routes/Settings/SettingsDashboard'));
+const SettingsMenuMobile = React.lazy(() => import(/* webpackChunkName: 'SettingsMenuMobile' */ './js/routes/Settings/SettingsMenuMobile'));
+const SharedItemLanding = React.lazy(() => import(/* webpackChunkName: 'SharedItemLanding' */ './js/routes/SharedItemLanding'));
+const SignInEmailProcess = React.lazy(() => import(/* webpackChunkName: 'SignInEmailProcess' */ './js/routes/Process/SignInEmailProcess'));
+const SignInJumpProcess = React.lazy(() => import(/* webpackChunkName: 'SignInJumpProcess' */ './js/routes/Process/SignInJumpProcess'));
+const TermsOfService = React.lazy(() => import(/* webpackChunkName: 'TermsOfService' */ './js/routes/More/TermsOfService'));
+const TwitterHandleLanding = React.lazy(() => import(/* webpackChunkName: 'TwitterHandleLanding' */ './js/routes/TwitterHandleLanding'));
+const TwitterSignInProcess = React.lazy(() => import(/* webpackChunkName: 'TwitterSignInProcess' */ './js/routes/Process/TwitterSignInProcess'));
+const Values = React.lazy(() => import(/* webpackChunkName: 'Values' */ './js/routes/Values'));
+const ValuesList = React.lazy(() => import(/* webpackChunkName: 'ValuesList' */ './js/routes/Values/ValuesList'));
+const VerifyEmailProcess = React.lazy(() => import(/* webpackChunkName: 'VerifyEmailProcess' */ './js/routes/Process/VerifyEmailProcess'));
+const VerifyRegistration = React.lazy(() => import(/* webpackChunkName: 'VerifyRegistration' */ './js/routes/More/VerifyRegistration'));
+const VerifyThisIsMe = React.lazy(() => import(/* webpackChunkName: 'VerifyThisIsMe' */ './js/routes/VoterGuide/VerifyThisIsMe'));
+const Vote = React.lazy(() => import(/* webpackChunkName: 'Vote' */ './js/routes/Vote'));
+const VoterGuideListDashboard = React.lazy(() => import(/* webpackChunkName: 'VoterGuideListDashboard' */ './js/routes/Settings/VoterGuideListDashboard'));
+const VoterGuideSettingsDashboard = React.lazy(() => import(/* webpackChunkName: 'VoterGuideSettingsDashboard' */ './js/routes/Settings/VoterGuideSettingsDashboard'));
+const VoterGuideSettingsMenuMobile = React.lazy(() => import(/* webpackChunkName: 'VoterGuideSettingsMenuMobile' */ './js/routes/Settings/VoterGuideSettingsMenuMobile'));
+const VoterGuidesMenuMobile = React.lazy(() => import(/* webpackChunkName: 'VoterGuidesMenuMobile' */ './js/routes/Settings/VoterGuidesMenuMobile'));
+const VoterGuidesUnderOneValue = React.lazy(() => import(/* webpackChunkName: 'VoterGuidesUnderOneValue' */ './js/routes/Values/VoterGuidesUnderOneValue'));
+const WeVoteBallotEmbed = React.lazy(() => import(/* webpackChunkName: 'WeVoteBallotEmbed' */ './js/routes/More/WeVoteBallotEmbed'));
+const WelcomeForCampaigns = React.lazy(() => import(/* webpackChunkName: 'WelcomeForCampaigns' */ './js/routes/WelcomeForCampaigns'));
+const WelcomeForOrganizations = React.lazy(() => import(/* webpackChunkName: 'WelcomeForOrganizations' */ './js/routes/WelcomeForOrganizations'));
+const WelcomeForVoters = React.lazy(() => import(/* webpackChunkName: 'WelcomeForVoters' */ './js/routes/WelcomeForVoters'));
+const YourPage = React.lazy(() => import(/* webpackChunkName: 'YourPage' */ './js/routes/YourPage'));
 
-// There are just too many props spreading, if someone can figure out an alternative...
+// There are just too many "prop spreadings", if someone can figure out an alternative...
 /* eslint-disable react/jsx-props-no-spreading */
 
 class App extends Component {
@@ -139,6 +136,8 @@ class App extends Component {
   componentDidMount () {
     // initializeOnce();
     // this.InitializeOnce();
+    console.log('href in App.js componentDidMount: ', window.location.href);
+
   }
 
   componentDidCatch (error, info) {
@@ -202,7 +201,7 @@ class App extends Component {
     const isNotWeVoteMarketingSite = !isWeVoteMarketingSite;
     const firstVisit = !cookies.getItem('voter_device_id');
 
-    console.log(window.location.href);
+    // console.log('href in App.js render: ', window.location.href);
 
     return (
       <ErrorBoundary>
@@ -212,8 +211,6 @@ class App extends Component {
               <WeVoteRouter>
                 <WeVoteBody>
                   <Header params={{ }} pathname={window.location.href} />
-                  <SnackNotifier />
-                  {/* <MainHeaderBar displayHeader={doShowHeader} /> */}
                   <Switch>
                     <Route exact path="/about"><About /></Route>
                     <Route exact path="/ballot" component={Ballot} />

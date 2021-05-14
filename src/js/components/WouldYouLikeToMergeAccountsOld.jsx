@@ -1,5 +1,7 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
+import Alert from 'react-bootstrap/Alert';
+import Button from 'react-bootstrap/Button';
 import FacebookActions from '../actions/FacebookActions';
 import VoterActions from '../actions/VoterActions';
 import FacebookStore from '../stores/FacebookStore';
@@ -7,9 +9,6 @@ import VoterStore from '../stores/VoterStore';
 import { historyPush } from '../utils/cordovaUtils';
 import { renderLog } from '../utils/logging';
 import LoadingWheel from './LoadingWheel';
-
-const Alert = React.lazy(() => import('react-bootstrap/Alert'));
-const Button = React.lazy(() => import('react-bootstrap/Button'));
 
 export default class WouldYouLikeToMergeAccountsOld extends Component {
   constructor (props) {

@@ -10,10 +10,10 @@ import VoterGuideStore from '../../stores/VoterGuideStore';
 import VoterStore from '../../stores/VoterStore';
 import { renderLog } from '../../utils/logging';
 import LoadingWheel from '../LoadingWheel';
+import SearchBar from '../Search/SearchBar';
+import GuideList from './GuideList';
 
-const DelayedLoad = React.lazy(() => import('../Widgets/DelayedLoad'));
-const GuideList = React.lazy(() => import('./GuideList'));
-const SearchBar = React.lazy(() => import('../Search/SearchBar'));
+const DelayedLoad = React.lazy(() => import(/* webpackChunkName: 'DelayedLoad' */ '../Widgets/DelayedLoad'));
 
 
 class VoterGuideFollowers extends Component {

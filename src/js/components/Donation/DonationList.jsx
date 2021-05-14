@@ -1,13 +1,12 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
+import Card from 'react-bootstrap/Card';
+import Table from 'react-bootstrap/Table';
 import DonateActions from '../../actions/DonateActions';
 import DonateStore from '../../stores/DonateStore';
 import { renderLog } from '../../utils/logging';
 import LoadingWheel from '../LoadingWheel';
-
-const Table = React.lazy(() => import('react-bootstrap/Table'));
-const Card = React.lazy(() => import('react-bootstrap/Card'));
-const DonationCancelOrRefund = React.lazy(() => import('./DonationCancelOrRefund'));
+import DonationCancelOrRefund from './DonationCancelOrRefund';
 
 /* global $ */
 

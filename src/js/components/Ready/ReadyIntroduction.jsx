@@ -1,10 +1,11 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import styled from 'styled-components';
 import { withStyles, withTheme } from '@material-ui/core/styles';
+import PropTypes from 'prop-types';
+import React, { Component } from 'react';
+import styled from 'styled-components';
 import { renderLog } from '../../utils/logging';
-import ReadMore from '../Widgets/ReadMore';
 import ShowMoreButtons from './ShowMoreButtons';
+
+const ReadMore = React.lazy(() => import(/* webpackChunkName: 'ReadMore' */ '../Widgets/ReadMore'));
 
 class ReadyIntroduction extends Component {
   constructor (props) {

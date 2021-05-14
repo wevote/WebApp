@@ -2,12 +2,16 @@ import { Button } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
+import Alert from 'react-bootstrap/Alert';
 import Helmet from 'react-helmet';
 import styled from 'styled-components';
 import AppActions from '../../actions/AppActions';
 import TwitterActions from '../../actions/TwitterActions';
 import VoterSessionActions from '../../actions/VoterSessionActions';
 import LoadingWheel from '../../components/LoadingWheel';
+import TwitterAccountCard from '../../components/Twitter/TwitterAccountCard';
+import TwitterSignIn from '../../components/Twitter/TwitterSignIn';
+import OrganizationCard from '../../components/VoterGuide/OrganizationCard';
 import CandidateStore from '../../stores/CandidateStore';
 import OrganizationStore from '../../stores/OrganizationStore';
 import TwitterStore from '../../stores/TwitterStore';
@@ -15,12 +19,8 @@ import VoterStore from '../../stores/VoterStore';
 import { historyPush } from '../../utils/cordovaUtils';
 import { renderLog } from '../../utils/logging';
 
-const Alert = React.lazy(() => import('react-bootstrap/Alert'));
-const CandidateItem = React.lazy(() => import('../../components/Ballot/CandidateItem'));
-const FollowToggle = React.lazy(() => import('../../components/Widgets/FollowToggle'));
-const OrganizationCard = React.lazy(() => import('../../components/VoterGuide/OrganizationCard'));
-const TwitterAccountCard = React.lazy(() => import('../../components/Twitter/TwitterAccountCard'));
-const TwitterSignIn = React.lazy(() => import('../../components/Twitter/TwitterSignIn'));
+const CandidateItem = React.lazy(() => import(/* webpackChunkName: 'CandidateItem' */ '../../components/Ballot/CandidateItem'));
+const FollowToggle = React.lazy(() => import(/* webpackChunkName: 'FollowToggle' */ '../../components/Widgets/FollowToggle'));
 
 class VerifyThisIsMe extends Component {
   constructor (props) {

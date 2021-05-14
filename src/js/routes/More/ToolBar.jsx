@@ -5,7 +5,8 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 import { renderLog } from '../../utils/logging';
 
-const OpenExternalWebSite = React.lazy(() => import('../../components/Widgets/OpenExternalWebSite'));
+const OpenExternalWebSite = React.lazy(() => import(/* webpackChunkName: 'OpenExternalWebSite' */ '../../components/Widgets/OpenExternalWebSite'));
+
 
 class ToolBar extends Component {
   render () {

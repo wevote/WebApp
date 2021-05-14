@@ -7,7 +7,8 @@ import FriendActions from '../../actions/FriendActions';
 import VoterStore from '../../stores/VoterStore';
 import { isWebApp } from '../../utils/cordovaUtils';
 import { renderLog } from '../../utils/logging';
-import ImageHandler from '../ImageHandler';
+
+const ImageHandler = React.lazy(() => import(/* webpackChunkName: 'ImageHandler' */ '../ImageHandler'));
 
 class FriendInvitationEmailLinkDisplayForList extends Component {
   constructor (props) {

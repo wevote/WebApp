@@ -19,12 +19,13 @@ import LazyImage from '../../utils/LazyImage';
 import { renderLog } from '../../utils/logging';
 import { isProperlyFormattedVoterGuideWeVoteId, shortenText, stringContains } from '../../utils/textFormat';
 import { voterPhoto } from '../../utils/voterPhoto';
+import VoterGuideChooseElectionModal from '../VoterGuide/VoterGuideChooseElectionModal';
+import EndorsementModeTabs from './EndorsementModeTabs';
+import HeaderBackToButton from './HeaderBackToButton';
 
-const EndorsementModeTabs = React.lazy(() => import('./EndorsementModeTabs'));
-const HeaderBackToButton = React.lazy(() => import('./HeaderBackToButton'));
-const HeaderBarProfilePopUp = React.lazy(() => import('./HeaderBarProfilePopUp'));
-const SignInModal = React.lazy(() => import('../Widgets/SignInModal'));
-const VoterGuideChooseElectionModal = React.lazy(() => import('../VoterGuide/VoterGuideChooseElectionModal'));
+const HeaderBarProfilePopUp = React.lazy(() => import(/* webpackChunkName: 'HeaderBarProfilePopUp' */ './HeaderBarProfilePopUp'));
+const SignInModal = React.lazy(() => import(/* webpackChunkName: 'SignInModal' */ '../Widgets/SignInModal'));
+
 const anonymous = '../../../img/global/icons/avatar-generic.png';
 
 

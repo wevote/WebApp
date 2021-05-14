@@ -1,4 +1,4 @@
-import { Tab, Tabs } from '@material-ui/core';
+import { Tabs, Tab } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
@@ -17,26 +17,25 @@ import displayFriendsTabs from '../../utils/displayFriendsTabs';
 import sortFriendListByMutualFriends from '../../utils/friendFunctions';
 import isMobileScreenSize from '../../utils/isMobileScreenSize';
 import { renderLog } from '../../utils/logging';
+import AddFriendsByEmail from '../../components/Friends/AddFriendsByEmail';
+import BrowserPushMessage from '../../components/Widgets/BrowserPushMessage';
+import FacebookSignInCard from '../../components/Facebook/FacebookSignInCard';
+import FriendInvitationsSentByMe from './FriendInvitationsSentByMe';
+import FriendInvitationsSentByMePreview from '../../components/Friends/FriendInvitationsSentByMePreview';
+import FriendInvitationsSentToMe from './FriendInvitationsSentToMe';
+import FriendInvitationsSentToMePreview from '../../components/Friends/FriendInvitationsSentToMePreview';
+import FriendsCurrent from './FriendsCurrent';
+import FriendsCurrentPreview from '../../components/Friends/FriendsCurrentPreview';
+import FriendsPromoBox from '../../components/Friends/FriendsPromoBox';
+import InviteByEmail from './InviteByEmail';
+import MessageCard from '../../components/Widgets/MessageCard';
+import SuggestedFriends from './SuggestedFriends';
+import SuggestedFriendsPreview from '../../components/Friends/SuggestedFriendsPreview';
+import TwitterSignInCard from '../../components/Twitter/TwitterSignInCard';
+import TooltipIcon from '../../components/Widgets/TooltipIcon';
+import testimonialImage from '../../../img/global/photos/Dale_McGrew-200x200.jpg';
 
-const AddFriendsByEmail = React.lazy(() => import('../../components/Friends/AddFriendsByEmail'));
-const BrowserPushMessage = React.lazy(() => import('../../components/Widgets/BrowserPushMessage'));
-const FacebookSignInCard = React.lazy(() => import('../../components/Facebook/FacebookSignInCard'));
-const FirstAndLastNameRequiredAlert = React.lazy(() => import('../../components/Widgets/FirstAndLastNameRequiredAlert'));
-const FriendInvitationsSentByMe = React.lazy(() => import('./FriendInvitationsSentByMe'));
-const FriendInvitationsSentByMePreview = React.lazy(() => import('../../components/Friends/FriendInvitationsSentByMePreview'));
-const FriendInvitationsSentToMe = React.lazy(() => import('./FriendInvitationsSentToMe'));
-const FriendInvitationsSentToMePreview = React.lazy(() => import('../../components/Friends/FriendInvitationsSentToMePreview'));
-const FriendsCurrent = React.lazy(() => import('./FriendsCurrent'));
-const FriendsCurrentPreview = React.lazy(() => import('../../components/Friends/FriendsCurrentPreview'));
-const FriendsPromoBox = React.lazy(() => import('../../components/Friends/FriendsPromoBox'));
-const InviteByEmail = React.lazy(() => import('./InviteByEmail'));
-const MessageCard = React.lazy(() => import('../../components/Widgets/MessageCard'));
-const SuggestedFriends = React.lazy(() => import('./SuggestedFriends'));
-const SuggestedFriendsPreview = React.lazy(() => import('../../components/Friends/SuggestedFriendsPreview'));
-const TwitterSignInCard = React.lazy(() => import('../../components/Twitter/TwitterSignInCard'));
-const WeVoteTooltip = React.lazy(() => import('../../components/Widgets/Tooltip'));
-const testimonialImage = React.lazy(() => import('../../../img/global/photos/Dale_McGrew-200x200.jpg'));
-
+const FirstAndLastNameRequiredAlert = React.lazy(() => import(/* webpackChunkName: 'FirstAndLastNameRequiredAlert' */ '../../components/Widgets/FirstAndLastNameRequiredAlert'));
 
 const testimonialAuthor = 'Dale M., Oakland, California';
 const imageUrl = cordovaDot(testimonialImage);
@@ -473,7 +472,7 @@ class Friends extends Component {
                       <SectionTitle>
                         Invite Friends
                       </SectionTitle>
-                      <WeVoteTooltip title="These friends will see what you support and oppose." />
+                      <TooltipIcon title="These friends will see what you support and oppose." />
                       <AddFriendsByEmail inSideColumn />
                     </div>
                   </section>

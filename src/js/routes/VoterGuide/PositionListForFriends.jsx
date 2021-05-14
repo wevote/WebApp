@@ -2,13 +2,13 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import OrganizationActions from '../../actions/OrganizationActions';
 import LoadingWheel from '../../components/LoadingWheel';
+import OrganizationCard from '../../components/VoterGuide/OrganizationCard';
+import OrganizationPositionItem from '../../components/VoterGuide/OrganizationPositionItem';
+import ThisIsMeAction from '../../components/Widgets/ThisIsMeAction';
 import OrganizationStore from '../../stores/OrganizationStore';
 import { renderLog } from '../../utils/logging';
 
-const FollowToggle = React.lazy(() => import('../../components/Widgets/FollowToggle'));
-const OrganizationCard = React.lazy(() => import('../../components/VoterGuide/OrganizationCard'));
-const OrganizationPositionItem = React.lazy(() => import('../../components/VoterGuide/OrganizationPositionItem'));
-const ThisIsMeAction = React.lazy(() => import('../../components/Widgets/ThisIsMeAction'));
+const FollowToggle = React.lazy(() => import(/* webpackChunkName: 'FollowToggle' */ '../../components/Widgets/FollowToggle'));
 
 export default class PositionListForFriends extends Component {
   constructor (props) {

@@ -8,7 +8,7 @@ import OrganizationStore from '../../stores/OrganizationStore';
 import SupportStore from '../../stores/SupportStore';
 import { renderLog } from '../../utils/logging';
 
-const VoterGuidePositionItem = React.lazy(() => import('./VoterGuidePositionItem'));
+const VoterGuidePositionItem = React.lazy(() => import(/* webpackChunkName: 'VoterGuidePositionItem' */ './VoterGuidePositionItem'));
 
 
 class VoterGuideMeasureItemCompressed extends Component {

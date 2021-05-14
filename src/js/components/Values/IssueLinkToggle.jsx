@@ -1,12 +1,12 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
+import Button from 'react-bootstrap/Button';
+import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 import IssueActions from '../../actions/IssueActions';
 import { renderLog } from '../../utils/logging';
+import IssueImageDisplay from './IssueImageDisplay';
 
-const Button = React.lazy(() => import('react-bootstrap/Button'));
-const OverlayTrigger = React.lazy(() => import('react-bootstrap/OverlayTrigger'));
-const Popover = React.lazy(() => import('react-bootstrap/Popover'));
-const IssueImageDisplay = React.lazy(() => import('./IssueImageDisplay'));
+const Popover = React.lazy(() => import(/* webpackChunkName: 'BootstrapPopover' */ 'react-bootstrap/Popover'));
 
 export default class IssueLinkToggle extends Component {
   constructor (props) {

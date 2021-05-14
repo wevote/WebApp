@@ -6,19 +6,19 @@ import Helmet from 'react-helmet';
 import styled from 'styled-components';
 import AppActions from '../actions/AppActions';
 import VoterActions from '../actions/VoterActions';
-import { Container, Title } from '../components/Welcome/howItWorksHeaderStyles';
+import Header, { Container, Title } from '../components/Welcome/howItWorksHeaderStyles';
+import AnnotatedSlideshow from '../components/Widgets/AnnotatedSlideshow';
+import HeaderSwitch from '../components/Widgets/HeaderSwitch';
+import StepsChips from '../components/Widgets/StepsChips';
 import VoterConstants from '../constants/VoterConstants';
 import VoterStore from '../stores/VoterStore';
 import cordovaScrollablePaneTopPadding from '../utils/cordovaScrollablePaneTopPadding';
 import { historyPush, isCordova } from '../utils/cordovaUtils';
 import { renderLog } from '../utils/logging';
 
-const AnnotatedSlideshow = React.lazy(() => import('../components/Widgets/AnnotatedSlideshow'));
-const Header = React.lazy(() => import('../components/Welcome/howItWorksHeaderStyles'));
-const HeaderSwitch = React.lazy(() => import('../components/Widgets/HeaderSwitch'));
-const StepsChips = React.lazy(() => import('../components/Widgets/StepsChips'));
-const WelcomeAppbar = React.lazy(() => import('../components/Navigation/WelcomeAppbar'));
-const WelcomeFooter = React.lazy(() => import('../components/Welcome/WelcomeFooter'));
+const WelcomeFooter = React.lazy(() => import(/* webpackChunkName: 'WelcomeFooter' */ '../components/Welcome/WelcomeFooter'));
+const WelcomeAppbar = React.lazy(() => import(/* webpackChunkName: 'WelcomeAppbar' */ '../components/Navigation/WelcomeAppbar'));
+
 
 class HowItWorks extends Component {
   constructor (props) {

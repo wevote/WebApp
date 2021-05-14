@@ -4,8 +4,7 @@ import styled from 'styled-components';
 import FriendActions from '../../actions/FriendActions';
 import FriendStore from '../../stores/FriendStore';
 import { renderLog } from '../../utils/logging';
-
-const FriendInvitationList = React.lazy(() => import('./FriendInvitationList'));
+import FriendInvitationList from './FriendInvitationList';
 
 export default class FriendInvitationsSentToMePreview extends Component {
   constructor (props) {

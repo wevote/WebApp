@@ -7,9 +7,9 @@ import ElectionStore from '../../stores/ElectionStore';
 import VoterGuideStore from '../../stores/VoterGuideStore';
 import VoterStore from '../../stores/VoterStore';
 import { renderLog } from '../../utils/logging';
+import VoterGuideChooseElectionModal from '../VoterGuide/VoterGuideChooseElectionModal';
+import SelectVoterGuidesSideBarLink from './SelectVoterGuidesSideBarLink';
 
-const SelectVoterGuidesSideBarLink = React.lazy(() => import('./SelectVoterGuidesSideBarLink'));
-const VoterGuideChooseElectionModal = React.lazy(() => import('../VoterGuide/VoterGuideChooseElectionModal'));
 
 export default class SelectVoterGuidesSideBar extends Component {
   constructor (props) {

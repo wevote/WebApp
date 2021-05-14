@@ -3,7 +3,7 @@ import { withStyles } from '@material-ui/core/styles';
 import { Delete, Phone } from '@material-ui/icons';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import { isValidPhoneNumber } from 'react-phone-number-input';
+import Alert from 'react-bootstrap/Alert';
 import styled from 'styled-components';
 import VoterActions from '../../actions/VoterActions';
 import VoterStore from '../../stores/VoterStore';
@@ -12,10 +12,10 @@ import isMobileScreenSize from '../../utils/isMobileScreenSize';
 import { renderLog } from '../../utils/logging';
 import LoadingWheel from '../LoadingWheel';
 import signInModalGlobalState from '../Widgets/signInModalGlobalState';
+import SettingsVerifySecretCode from './SettingsVerifySecretCode';
 
-const Alert = React.lazy(() => import('react-bootstrap/Alert'));
-const OpenExternalWebSite = React.lazy(() => import('../Widgets/OpenExternalWebSite'));
-const SettingsVerifySecretCode = React.lazy(() => import('./SettingsVerifySecretCode'));
+const { isValidPhoneNumber } = React.lazy(() => import(/* webpackChunkName: 'react-phone-number-input' */ 'react-phone-number-input'));
+const OpenExternalWebSite = React.lazy(() => import(/* webpackChunkName: 'OpenExternalWebSite' */ '../Widgets/OpenExternalWebSite'));
 
 
 /* global $ */

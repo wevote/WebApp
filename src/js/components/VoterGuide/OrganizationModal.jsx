@@ -22,10 +22,11 @@ import { hasIPhoneNotch } from '../../utils/cordovaUtils';
 import { renderLog } from '../../utils/logging';
 import { convertToInteger, stringContains } from '../../utils/textFormat';
 
-const CandidateItem = React.lazy(() => import('../Ballot/CandidateItem'));
-const DelayedLoad = React.lazy(() => import('../Widgets/DelayedLoad'));
-const MeasureItem = React.lazy(() => import('../Ballot/MeasureItem'));
-const PositionList = React.lazy(() => import('../Ballot/PositionList'));
+const CandidateItem = React.lazy(() => import(/* webpackChunkName: 'CandidateItem' */ '../../components/Ballot/CandidateItem'));
+const DelayedLoad = React.lazy(() => import(/* webpackChunkName: 'DelayedLoad' */ '../Widgets/DelayedLoad'));
+const MeasureItem = React.lazy(() => import(/* webpackChunkName: 'MeasureItem' */ '../Ballot/MeasureItem'));
+const PositionList = React.lazy(() => import(/* webpackChunkName: 'PositionList' */ '../Ballot/PositionList'));
+
 
 class OrganizationModal extends Component {
   constructor (props) {

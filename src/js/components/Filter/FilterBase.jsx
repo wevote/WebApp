@@ -7,9 +7,10 @@ import styled from 'styled-components';
 import { getAllStateCodeFilters } from '../../utils/addressFunctions';
 import { renderLog } from '../../utils/logging';
 import getGroupedFilterSecondClass from './utils/grouped-filter-second-class';
+import StateDropDown from './StateDropDown';
 
-const FilterBaseSearch = React.lazy(() => import('./FilterBaseSearch'));
-const StateDropDown = React.lazy(() => import('./StateDropDown'));
+const FilterBaseSearch = React.lazy(() => import(/* webpackChunkName: 'FilterBaseSearch' */ './FilterBaseSearch'));
+
 
 const defaultSortFilters = ['sortByMagic', 'sortByNetwork', 'sortByReach'];
 

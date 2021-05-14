@@ -6,8 +6,7 @@ import CandidateStore from '../../stores/CandidateStore';
 import { historyPush } from '../../utils/cordovaUtils';
 import { renderLog } from '../../utils/logging';
 import { arrayContains, toTitleCase } from '../../utils/textFormat';
-
-const CandidateItemForOpinions = React.lazy(() => import('./CandidateItemForOpinions'));
+import CandidateItemForOpinions from './CandidateItemForOpinions';
 
 class OfficeItemForOpinions extends Component {
   constructor (props) {

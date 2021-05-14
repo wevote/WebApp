@@ -3,8 +3,9 @@ import React, { Component } from 'react';
 import { historyPush } from '../../utils/cordovaUtils';
 import { renderLog } from '../../utils/logging';
 
-const CandidateItem = React.lazy(() => import('./CandidateItem'));
-const DelayedLoad = React.lazy(() => import('../Widgets/DelayedLoad'));
+const CandidateItem = React.lazy(() => import(/* webpackChunkName: 'CandidateItem' */ './CandidateItem'));
+const DelayedLoad = React.lazy(() => import(/* webpackChunkName: 'DelayedLoad' */ '../Widgets/DelayedLoad'));
+
 
 // This is related to components/VoterGuide/OrganizationVoterGuideCandidateList.jsx
 export default class CandidateList extends Component {

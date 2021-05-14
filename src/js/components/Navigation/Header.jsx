@@ -13,18 +13,18 @@ import displayFriendsTabs from '../../utils/displayFriendsTabs';
 import initializejQuery from '../../utils/initializejQuery';
 import { renderLog } from '../../utils/logging';
 import { startsWith, stringContains } from '../../utils/textFormat';
+import HeaderBar from './HeaderBar';
 
-const ActivityTidbitDrawer = React.lazy(() => import('../Activity/ActivityTidbitDrawer'));
-const HeaderBackTo = React.lazy(() => import('./HeaderBackTo'));
-const HeaderBackToBallot = React.lazy(() => import('./HeaderBackToBallot'));
-const HeaderBackToVoterGuides = React.lazy(() => import('./HeaderBackToVoterGuides'));
-const HeaderBar = React.lazy(() => import('./HeaderBar'));
-const HowItWorksModal = React.lazy(() => import('../CompleteYourProfile/HowItWorksModal'));
-const OrganizationModal = React.lazy(() => import('../VoterGuide/OrganizationModal'));
-const SharedItemModal = React.lazy(() => import('../Share/SharedItemModal'));
-const VoterPlanModal = React.lazy(() => import('../Ready/VoterPlanModal'));
-
+const ActivityTidbitDrawer = React.lazy(() => import(/* webpackChunkName: 'ActivityTidbitDrawer' */ '../Activity/ActivityTidbitDrawer'));
+const HeaderBackTo = React.lazy(() => import(/* webpackChunkName: 'HeaderBackTo' */ './HeaderBackTo'));
+const HeaderBackToBallot = React.lazy(() => import(/* webpackChunkName: 'HeaderBackToBallot' */ './HeaderBackToBallot'));
+const HeaderBackToVoterGuides = React.lazy(() => import(/* webpackChunkName: 'HeaderBackToVoterGuides' */ './HeaderBackToVoterGuides'));
+const HowItWorksModal = React.lazy(() => import(/* webpackChunkName: 'HowItWorksModal' */ '../CompleteYourProfile/HowItWorksModal'));
+const OrganizationModal = React.lazy(() => import(/* webpackChunkName: 'OrganizationModal' */ '../VoterGuide/OrganizationModal'));
+const SharedItemModal = React.lazy(() => import(/* webpackChunkName: 'SharedItemModal' */ '../Share/SharedItemModal'));
+const VoterPlanModal = React.lazy(() => import(/* webpackChunkName: 'VoterPlanModal' */ '../Ready/VoterPlanModal'));
 const appleSiliconDebug = false;
+
 
 export default class Header extends Component {
   constructor (props) {
@@ -39,7 +39,7 @@ export default class Header extends Component {
       priorPath: '',
     };
 
-    console.log('-----------HEADER constructor');
+    // console.log('-----------HEADER constructor');
     this.closeHowItWorksModal = this.closeHowItWorksModal.bind(this);
     this.closeVoterPlanModal = this.closeVoterPlanModal.bind(this);
     this.closeOrganizationModal = this.closeOrganizationModal.bind(this);
@@ -61,7 +61,7 @@ export default class Header extends Component {
   }
 
   componentDidMount () {
-    console.log('-----------HEADER componentDidMount');
+    // console.log('-----------HEADER componentDidMount');
     this.appStoreListener = AppStore.addListener(this.onAppStoreChange.bind(this));
     this.setState({ windowWidth: window.innerWidth });
     window.addEventListener('resize', this.handleResize);
@@ -69,7 +69,7 @@ export default class Header extends Component {
       dumpCssFromId('header-container');
     }
     initializejQuery(() => {
-      console.log('initialized jQuery in Header');
+      // console.log('initialized jQuery in Header');
       if (VoterStore.getVoterWeVoteId() === '') {
         VoterActions.voterRetrieve();
       }
@@ -77,7 +77,7 @@ export default class Header extends Component {
   }
 
   shouldComponentUpdate (nextProps, nextState) {
-    console.log('-----------HEADER shouldComponentUpdate');
+    // console.log('-----------HEADER shouldComponentUpdate');
     const { location: { pathname } } = window;
     if (this.state.activityTidbitWeVoteIdForDrawer !== nextState.activityTidbitWeVoteIdForDrawer) return true;
     if (this.state.organizationModalBallotItemWeVoteId !== nextState.organizationModalBallotItemWeVoteId) return true;
@@ -98,23 +98,23 @@ export default class Header extends Component {
   }
 
   componentWillUnmount () {
-    console.log('-----------HEADER componentWillUnmount');
+    // console.log('-----------HEADER componentWillUnmount');
     this.appStoreListener.remove();
     window.removeEventListener('resize', this.handleResize);
   }
 
   handleResize (event) {
-    console.log('-----------HEADER handleResize entry');
+    // console.log('-----------HEADER handleResize entry');
     const { currentTarget, target } = event;
     if (currentTarget.innerWidth !== target.innerWidth) {
-      console.log('-----------HEADER handleResize RESIZE');
-      console.log('handleResize in Header detected resizing');
+      // console.log('-----------HEADER handleResize RESIZE');
+      // console.log('handleResize in Header detected resizing');
       this.setState({ windowWidth: window.innerWidth });
     }
   }
 
   onAppStoreChange () {
-    console.log('-----------Header, onAppStoreChange');
+    // console.log('-----------Header, onAppStoreChange');
     this.setState({
       activityTidbitWeVoteIdForDrawer: AppStore.activityTidbitWeVoteIdForDrawer(),
       organizationModalBallotItemWeVoteId: AppStore.organizationModalBallotItemWeVoteId(),

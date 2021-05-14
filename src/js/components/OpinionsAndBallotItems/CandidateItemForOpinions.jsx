@@ -8,11 +8,10 @@ import SupportStore from '../../stores/SupportStore';
 import { historyPush, isCordova } from '../../utils/cordovaUtils';
 import { renderLog } from '../../utils/logging';
 import { abbreviateNumber, numberWithCommas } from '../../utils/textFormat';
-import ImageHandler from '../ImageHandler';
+import ItemPositionStatementActionBar from '../Widgets/ItemPositionStatementActionBar';
 
-const ItemActionBar = React.lazy(() => import('../Widgets/ItemActionBar/ItemActionBar'));
-const ItemPositionStatementActionBar = React.lazy(() => import('../Widgets/ItemPositionStatementActionBar'));
-
+const ImageHandler = React.lazy(() => import(/* webpackChunkName: 'ImageHandler' */ '../ImageHandler'));
+const ItemActionBar = React.lazy(() => import(/* webpackChunkName: 'ItemActionBar' */ '../Widgets/ItemActionBar/ItemActionBar'));
 
 class CandidateItemForOpinions extends Component {
   constructor (props) {

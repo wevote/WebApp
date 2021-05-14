@@ -16,7 +16,7 @@ import { renderLog } from '../../utils/logging';
 import { cleanArray } from '../../utils/textFormat';
 import LoadingWheel from '../LoadingWheel';
 
-const DelayedLoad = React.lazy(() => import('../Widgets/DelayedLoad'));
+const DelayedLoad = React.lazy(() => import(/* webpackChunkName: 'DelayedLoad' */ '../Widgets/DelayedLoad'));
 
 
 export default class BallotElectionListWithFilters extends Component {

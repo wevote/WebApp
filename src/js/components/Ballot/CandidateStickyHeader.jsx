@@ -5,8 +5,9 @@ import { cordovaStickyHeaderPaddingTop } from '../../utils/cordovaOffsets';
 import { isIOSAppOnMac, isIPad } from '../../utils/cordovaUtils';
 import { renderLog } from '../../utils/logging';
 
-const BallotItemSupportOpposeComment = React.lazy(() => import('../Widgets/BallotItemSupportOpposeComment'));
-const BallotItemSupportOpposeCountDisplay = React.lazy(() => import('../Widgets/BallotItemSupportOpposeCountDisplay'));
+const BallotItemSupportOpposeComment = React.lazy(() => import(/* webpackChunkName: 'BallotItemSupportOpposeComment' */ '../Widgets/BallotItemSupportOpposeComment'));
+const BallotItemSupportOpposeCountDisplay = React.lazy(() => import(/* webpackChunkName: 'BallotItemSupportOpposeCountDisplay' */ '../Widgets/BallotItemSupportOpposeCountDisplay'));
+
 
 class CandidateStickyHeader extends Component {
   render () {

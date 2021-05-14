@@ -8,13 +8,13 @@ import { cordovaDot } from '../../utils/cordovaUtils';
 import { timeFromDate } from '../../utils/dateFormat';
 import { renderLog } from '../../utils/logging';
 import { numberWithCommas } from '../../utils/textFormat';
+import StickyPopover from '../Ballot/StickyPopover';
 import LoadingWheel from '../LoadingWheel';
+import OrganizationPopoverCard from '../Organization/OrganizationPopoverCard';
+import FriendsOnlyIndicator from '../Widgets/FriendsOnlyIndicator';
 
-const FriendsOnlyIndicator = React.lazy(() => import('../Widgets/FriendsOnlyIndicator'));
-const OpenExternalWebSite = React.lazy(() => import('../Widgets/OpenExternalWebSite'));
-const OrganizationPopoverCard = React.lazy(() => import('../Organization/OrganizationPopoverCard'));
-const ReadMore = React.lazy(() => import('../Widgets/ReadMore'));
-const StickyPopover = React.lazy(() => import('../Ballot/StickyPopover'));
+const ReadMore = React.lazy(() => import(/* webpackChunkName: 'ReadMore' */ '../Widgets/ReadMore'));
+const OpenExternalWebSite = React.lazy(() => import(/* webpackChunkName: 'OpenExternalWebSite' */ '../Widgets/OpenExternalWebSite'));
 const avatarGenericIcon = '../../../img/global/svg-icons/avatar-generic.svg';
 
 class ActivitySpeakerCard extends Component {

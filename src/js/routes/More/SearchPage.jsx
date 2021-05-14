@@ -7,7 +7,7 @@ import { isCordova } from '../../utils/cordovaUtils';
 import { renderLog } from '../../utils/logging';
 import { makeSearchLink } from '../../utils/searchFunctions';
 
-const SearchResultsDisplay = React.lazy(() => import('../../components/Search/SearchResultsDisplay'));
+import SearchResultsDisplay from '../../components/Search/SearchResultsDisplay';
 
 export default class SearchPage extends Component {
   constructor (props) {

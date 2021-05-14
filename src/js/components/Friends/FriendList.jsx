@@ -1,8 +1,7 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { renderLog } from '../../utils/logging';
-
-const FriendDisplayForList = React.lazy(() => import('./FriendDisplayForList'));
+import FriendDisplayForList from './FriendDisplayForList';
 
 export default class FriendList extends Component {
   constructor (props) {

@@ -7,8 +7,8 @@ import VoterStore from '../../stores/VoterStore';
 import { renderLog } from '../../utils/logging';
 import LoadingWheel from '../LoadingWheel';
 
-const SettingsAccount = React.lazy(() => import('./SettingsAccount'));
-const DelayedLoad = React.lazy(() => import('../Widgets/DelayedLoad'));
+const DelayedLoad = React.lazy(() => import(/* webpackChunkName: 'DelayedLoad' */ '../Widgets/DelayedLoad'));
+const SettingsAccount = React.lazy(() => import(/* webpackChunkName: 'SettingsAccount' */ './SettingsAccount'));
 
 export default class SettingsPromotedOrganizations extends Component {
   constructor (props) {

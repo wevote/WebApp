@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import AppStore from '../../stores/AppStore';
 import { renderLog } from '../../utils/logging';
 
-const SettingsAccountLevelChip = React.lazy(() => import('../Settings/SettingsAccountLevelChip'));
+const SettingsAccountLevelChip = React.lazy(() => import(/* webpackChunkName: 'SettingsAccountLeveLChip' */ '../Settings/SettingsAccountLevelChip'));
 
 // https://stackoverflow.com/questions/32647215/declaring-static-constants-in-es6-classes
 const CORPORATION = 'C';

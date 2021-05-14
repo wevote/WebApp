@@ -4,8 +4,7 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 import { historyPush } from '../../utils/cordovaUtils';
 import { renderLog } from '../../utils/logging';
-
-const CandidateItemForOpinions = React.lazy(() => import('./CandidateItemForOpinions'));
+import CandidateItemForOpinions from './CandidateItemForOpinions';
 
 class CandidateSearchItemForOpinions extends Component {
   constructor (props) {

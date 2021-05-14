@@ -11,13 +11,13 @@ export default class LazyImage extends React.Component {
 
   componentDidMount () {
     const { src } = this.props;
-    console.log('LazyImage componentDidMount props:', this.props);
+    // console.log('LazyImage componentDidMount props:', this.props);
 
     const imageLoader = new Image();
     imageLoader.src = src;
 
     imageLoader.onload = () => {
-      console.log('LazyImage loaded src:', src);
+      // console.log('LazyImage loaded src:', src);
       this.setState({ src });
     };
   }

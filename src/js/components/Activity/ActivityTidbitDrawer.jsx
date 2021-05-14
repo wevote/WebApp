@@ -10,12 +10,12 @@ import { historyPush, isCordova } from '../../utils/cordovaUtils';
 import { renderLog } from '../../utils/logging';
 import { startsWith } from '../../utils/textFormat';
 
-const ActivityCommentAdd = React.lazy(() => import('./ActivityCommentAdd'));
-const ActivityTidbitAddReaction = React.lazy(() => import('./ActivityTidbitAddReaction'));
-const ActivityTidbitComments = React.lazy(() => import('./ActivityTidbitComments'));
-const ActivityTidbitItem = React.lazy(() => import('./ActivityTidbitItem'));
-const ActivityTidbitReactionsSummary = React.lazy(() => import('./ActivityTidbitReactionsSummary'));
-const DelayedLoad = React.lazy(() => import('../Widgets/DelayedLoad'));
+const ActivityCommentAdd = React.lazy(() => import(/* webpackChunkName: 'ActivityCommentAdd' */ './ActivityCommentAdd'));
+const ActivityTidbitAddReaction = React.lazy(() => import(/* webpackChunkName: 'ActivityTidbitAddReaction' */ './ActivityTidbitAddReaction'));
+const ActivityTidbitComments = React.lazy(() => import(/* webpackChunkName: 'ActivityTidbitComments' */ './ActivityTidbitComments'));
+const ActivityTidbitItem = React.lazy(() => import(/* webpackChunkName: 'ActivityTidbitItem' */ './ActivityTidbitItem'));
+const ActivityTidbitReactionsSummary = React.lazy(() => import(/* webpackChunkName: 'ActivityTidbitReactionsSummary' */ './ActivityTidbitReactionsSummary'));
+const DelayedLoad = React.lazy(() => import(/* webpackChunkName: 'DelayedLoad' */ '../Widgets/DelayedLoad'));
 
 
 class ActivityTidbitDrawer extends Component {

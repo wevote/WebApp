@@ -21,14 +21,14 @@ import { formatDateToMonthDayYear } from '../../utils/dateFormat';
 import { renderLog } from '../../utils/logging';
 import { isSpeakerTypeOrganization, isSpeakerTypePublicFigure } from '../../utils/organization-functions';
 import { convertToInteger, startsWith } from '../../utils/textFormat';
-import ImageHandler from '../ImageHandler';
+import PersonalizedScoreIntroBody from '../CompleteYourProfile/PersonalizedScoreIntroBody';
+import FriendToggle from '../Friends/FriendToggle';
+import StepsChips from '../Widgets/StepsChips';
+import SharedItemIntroduction from './SharedItemIntroduction';
 
-const FollowToggle = React.lazy(() => import('../Widgets/FollowToggle'));
-const FriendToggle = React.lazy(() => import('../Friends/FriendToggle'));
-const PersonalizedScoreIntroBody = React.lazy(() => import('../CompleteYourProfile/PersonalizedScoreIntroBody'));
-const SettingsAccount = React.lazy(() => import('../Settings/SettingsAccount'));
-const SharedItemIntroduction = React.lazy(() => import('./SharedItemIntroduction'));
-const StepsChips = React.lazy(() => import('../Widgets/StepsChips'));
+const FollowToggle = React.lazy(() => import(/* webpackChunkName: 'FollowToggle' */ '../Widgets/FollowToggle'));
+const ImageHandler = React.lazy(() => import(/* webpackChunkName: 'ImageHandler' */ '../ImageHandler'));
+const SettingsAccount = React.lazy(() => import(/* webpackChunkName: 'SettingsAccount' */ '../Settings/SettingsAccount'));
 
 class SharedItemModal extends Component {
   constructor (props) {

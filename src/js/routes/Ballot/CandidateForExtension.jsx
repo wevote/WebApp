@@ -8,6 +8,7 @@ import CandidateActions from '../../actions/CandidateActions';
 import IssueActions from '../../actions/IssueActions';
 import OrganizationActions from '../../actions/OrganizationActions';
 import VoterGuidePossibilityActions from '../../actions/VoterGuidePossibilityActions';
+import CandidateItemEndorsement from '../../components/Ballot/CandidateItemEndorsement';
 import CandidateStore from '../../stores/CandidateStore';
 import IssueStore from '../../stores/IssueStore';
 import OrganizationStore from '../../stores/OrganizationStore';
@@ -17,9 +18,9 @@ import VoterStore from '../../stores/VoterStore';
 import cookies from '../../utils/cookies';
 import { renderLog } from '../../utils/logging';
 
-const CandidateItemEndorsement = React.lazy(() => import('../../components/Ballot/CandidateItemEndorsement'));
-const CandidateItem = React.lazy(() => import('../../components/Ballot/CandidateItem'));
-const OpenExternalWebSite = React.lazy(() => import('../../components/Widgets/OpenExternalWebSite'));
+const CandidateItem = React.lazy(() => import(/* webpackChunkName: 'CandidateItem' */ '../../components/Ballot/CandidateItem'));
+const OpenExternalWebSite = React.lazy(() => import(/* webpackChunkName: 'OpenExternalWebSite' */ '../../components/Widgets/OpenExternalWebSite'));
+
 
 // https://localhost:3000/candidate-for-extension?candidate_name=Phil%20Ting&candidate_we_vote_id=wv02cand40131&endorsement_page_url=https%3A%2F%2Fwww.sierraclub.org%2Fcalifornia%2F2020-endorsements&candidate_specific_endorsement_url=https%3A%2F%2Fwww.philting.com%2F
 class CandidateForExtension extends Component {

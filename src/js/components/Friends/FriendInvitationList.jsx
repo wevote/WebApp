@@ -1,9 +1,8 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { renderLog } from '../../utils/logging';
-
-const FriendInvitationVoterLinkDisplayForList = React.lazy(() => import('./FriendInvitationVoterLinkDisplayForList'));
-const FriendInvitationEmailLinkDisplayForList = React.lazy(() => import('./FriendInvitationEmailLinkDisplayForList'));
+import FriendInvitationEmailLinkDisplayForList from './FriendInvitationEmailLinkDisplayForList';
+import FriendInvitationVoterLinkDisplayForList from './FriendInvitationVoterLinkDisplayForList';
 
 export default class FriendInvitationList extends Component {
   render () {

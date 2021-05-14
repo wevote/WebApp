@@ -12,7 +12,8 @@ import isMobileScreenSize from '../../utils/isMobileScreenSize';
 import { renderLog } from '../../utils/logging';
 import { openSnackbar } from './SnackNotifier';
 
-const SettingsAccount = React.lazy(() => import('../Settings/SettingsAccount'));
+const SettingsAccount = React.lazy(() => import(/* webpackChunkName: 'SettingsAccount' */ '../Settings/SettingsAccount'));
+
 // import VoterActions from '../../actions/VoterActions';
 // import VoterConstants from '../../constants/VoterConstants';
 

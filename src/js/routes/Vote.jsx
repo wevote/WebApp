@@ -11,6 +11,10 @@ import IssueActions from '../actions/IssueActions';
 import OrganizationActions from '../actions/OrganizationActions';
 import SupportActions from '../actions/SupportActions';
 import VoterActions from '../actions/VoterActions';
+import BallotItemReadyToVote from '../components/Vote/BallotItemReadyToVote';
+import FindPollingLocation from '../components/Vote/FindPollingLocation';
+import ReturnOfficialBallot from '../components/Vote/ReturnOfficialBallot';
+import BrowserPushMessage from '../components/Widgets/BrowserPushMessage';
 import AppStore from '../stores/AppStore';
 import BallotStore from '../stores/BallotStore';
 import IssueStore from '../stores/IssueStore';
@@ -22,14 +26,9 @@ import { cordovaVoteMiniHeader } from '../utils/cordovaOffsets';
 import cordovaScrollablePaneTopPadding from '../utils/cordovaScrollablePaneTopPadding';
 import { historyPush, isCordova, isWebApp } from '../utils/cordovaUtils';
 import { renderLog } from '../utils/logging';
+import BallotTitleHeader from './Ballot/BallotTitleHeader';
 
-const BallotItemReadyToVote = React.lazy(() => import('../components/Vote/BallotItemReadyToVote'));
-const FilterBaseSearch = React.lazy(() => import('../components/Filter/FilterBaseSearch'));
-const BallotTitleHeader = React.lazy(() => import('./Ballot/BallotTitleHeader'));
-const BrowserPushMessage = React.lazy(() => import('../components/Widgets/BrowserPushMessage'));
-const FindPollingLocation = React.lazy(() => import('../components/Vote/FindPollingLocation'));
-const ReturnOfficialBallot = React.lazy(() => import('../components/Vote/ReturnOfficialBallot'));
-
+const FilterBaseSearch = React.lazy(() => import(/* webpackChunkName: 'FilterBaseSearch' */ '../components/Filter/FilterBaseSearch'));
 
 class Vote extends Component {
   constructor (props) {

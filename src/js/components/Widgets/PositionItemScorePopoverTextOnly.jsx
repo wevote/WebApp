@@ -9,8 +9,7 @@ import IssueStore from '../../stores/IssueStore';
 import OrganizationStore from '../../stores/OrganizationStore';
 import { cordovaDot } from '../../utils/cordovaUtils';
 import { isOrganizationInVotersNetwork } from '../../utils/positionFunctions';
-
-const FriendsIcon = React.lazy(() => import('./FriendsIcon'));
+import FriendsIcon from './FriendsIcon';
 
 class PositionItemScorePopoverTextOnly extends Component {
   constructor (props) {

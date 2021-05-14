@@ -1,8 +1,7 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { renderLog } from '../../utils/logging';
-
-const BallotSummaryAccordionSection = React.lazy(() => import('./BallotSummaryAccordionSection'));
+import BallotSummaryAccordionSection from './BallotSummaryAccordionSection';
 
 class BallotSummaryAccordion extends Component {
   constructor (props) {

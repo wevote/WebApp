@@ -1,9 +1,9 @@
-import React, { Component } from 'react';
+import { Button } from '@material-ui/core';
+import { withStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
+import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
-import { withStyles } from '@material-ui/core/styles';
-import { Button } from '@material-ui/core';
 import { isCordova, isWebApp, restoreStylesAfterCordovaKeyboard } from '../../utils/cordovaUtils';
 import { renderLog } from '../../utils/logging';
 
@@ -224,7 +224,7 @@ const styles = {
 };
 
 const ListItemWrapper = styled.div`
-  padding: 5px 0 5px 0px;
+  padding: 5px 0 5px 0;
 `;
 
 export default withStyles(styles)(HeaderBarProfilePopUp);

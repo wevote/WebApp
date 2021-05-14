@@ -19,17 +19,16 @@ import VoterStore from '../../stores/VoterStore';
 import { isWebApp } from '../../utils/cordovaUtils';
 import { renderLog } from '../../utils/logging';
 import { capitalizeString } from '../../utils/textFormat';
+import EndorsementCard from '../../components/Widgets/EndorsementCard';
+import MeasureStickyHeader from '../../components/Ballot/MeasureStickyHeader';
+import SearchOnGoogle from '../../components/Widgets/SearchOnGoogle';
+import ViewOnBallotpedia from '../../components/Widgets/ViewOnBallotpedia';
 
-const DelayedLoad = React.lazy(() => import('../../components/Widgets/DelayedLoad'));
-const EndorsementCard = React.lazy(() => import('../../components/Widgets/EndorsementCard'));
-const MeasureItem = React.lazy(() => import('../../components/Ballot/MeasureItem'));
-const MeasureStickyHeader = React.lazy(() => import('../../components/Ballot/MeasureStickyHeader'));
-const OpenExternalWebSite = React.lazy(() => import('../../components/Widgets/OpenExternalWebSite'));
-const PositionList = React.lazy(() => import('../../components/Ballot/PositionList'));
-const SearchOnGoogle = React.lazy(() => import('../../components/Widgets/SearchOnGoogle'));
-const ShareButtonDesktopTablet = React.lazy(() => import('../../components/Share/ShareButtonDesktopTablet'));
-const ViewOnBallotpedia = React.lazy(() => import('../../components/Widgets/ViewOnBallotpedia'));
-
+const DelayedLoad = React.lazy(() => import(/* webpackChunkName: 'DelayedLoad' */ '../../components/Widgets/DelayedLoad'));
+const MeasureItem = React.lazy(() => import(/* webpackChunkName: 'MeasureItem' */ '../../components/Ballot/MeasureItem'));
+const OpenExternalWebSite = React.lazy(() => import(/* webpackChunkName: 'OpenExternalWebSite' */ '../../components/Widgets/OpenExternalWebSite'));
+const PositionList = React.lazy(() => import(/* webpackChunkName: 'PositionList' */ '../../components/Ballot/PositionList'));
+const ShareButtonDesktopTablet = React.lazy(() => import(/* webpackChunkName: 'ShareButtonDesktopTablet' */ '../../components/Share/ShareButtonDesktopTablet'));
 
 // The component /routes/VoterGuide/OrganizationVoterGuideMeasure is based on this component
 class Measure extends Component {

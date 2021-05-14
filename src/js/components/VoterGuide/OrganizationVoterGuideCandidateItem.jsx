@@ -6,11 +6,12 @@ import VoterGuideStore from '../../stores/VoterGuideStore';
 import { historyPush } from '../../utils/cordovaUtils';
 import { renderLog } from '../../utils/logging';
 import { abbreviateNumber, numberWithCommas } from '../../utils/textFormat';
-import ImageHandler from '../ImageHandler';
+import ParsedTwitterDescription from '../Twitter/ParsedTwitterDescription';
 
-const BallotItemSupportOpposeComment = React.lazy(() => import('../Widgets/BallotItemSupportOpposeComment'));
-const OfficeNameText = React.lazy(() => import('../Widgets/OfficeNameText'));
-const ParsedTwitterDescription = React.lazy(() => import('../Twitter/ParsedTwitterDescription'));
+const BallotItemSupportOpposeComment = React.lazy(() => import(/* webpackChunkName: 'BallotItemSupportOpposeComment' */ '../Widgets/BallotItemSupportOpposeComment'));
+const ImageHandler = React.lazy(() => import(/* webpackChunkName: 'ImageHandler' */ '../ImageHandler'));
+const OfficeNameText = React.lazy(() => import(/* webpackChunkName: 'OfficeNameText' */ '../Widgets/OfficeNameText'));
+
 
 // This is related to /js/components/Ballot/CandidateItem.jsx
 export default class OrganizationVoterGuideCandidateItem extends Component {

@@ -5,9 +5,9 @@ import OrganizationActions from '../../actions/OrganizationActions';
 import BallotStore from '../../stores/BallotStore';
 import { cordovaDot } from '../../utils/cordovaUtils';
 import { renderLog } from '../../utils/logging';
+import SearchBar from '../Search/SearchBar';
+import BallotItemSearchResult from './BallotItemSearchResult';
 
-const BallotItemSearchResult = React.lazy(() => import('./BallotItemSearchResult'));
-const SearchBar = React.lazy(() => import('../Search/SearchBar'));
 const thumbUpIcon = '../../../img/global/svg-icons/thumbs-up-icon.svg';
 const thumbDownIcon = '../../../img/global/svg-icons/thumbs-down-icon.svg';
 

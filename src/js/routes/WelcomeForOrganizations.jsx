@@ -4,6 +4,8 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import Helmet from 'react-helmet';
 import styled from 'styled-components';
+import ffwdLogo from '../../img/global/logos/ffwd-logo.png';
+import vipLogo from '../../img/global/logos/vip-logo-1000x208.png';
 import AnalyticsActions from '../actions/AnalyticsActions';
 import AppActions from '../actions/AppActions';
 import { BlueTitle, PlayerContainer, SubTitle, Title, Video } from '../components/Welcome/headerWelcomeStyles';
@@ -14,12 +16,10 @@ import cordovaScrollablePaneTopPadding from '../utils/cordovaScrollablePaneTopPa
 import { cordovaDot, historyPush } from '../utils/cordovaUtils';
 import { renderLog } from '../utils/logging';
 
-const ffwdLogo = React.lazy(() => import('../../img/global/logos/ffwd-logo.png'));
-const googleLogo = '../../img/global/logos/google-logo.svg';
-const vipLogo = React.lazy(() => import('../../img/global/logos/vip-logo-1000x208.png'));
-const WelcomeFooter = React.lazy(() => import('../components/Welcome/WelcomeFooter'));
-const WelcomeAppbar = React.lazy(() => import('../components/Navigation/WelcomeAppbar'));
+const WelcomeFooter = React.lazy(() => import(/* webpackChunkName: 'WelcomeFooter' */ '../components/Welcome/WelcomeFooter'));
+const WelcomeAppbar = React.lazy(() => import(/* webpackChunkName: 'WelcomeAppbar' */ '../components/Navigation/WelcomeAppbar'));
 
+const googleLogo = '../../img/global/logos/google-logo.svg';
 const voteDotOrgLogo = '../../img/global/logos/vote_dot_org_logo-530x200.png';
 
 

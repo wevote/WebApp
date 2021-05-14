@@ -1,8 +1,7 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
+import TextTruncate from 'react-text-truncate'; // TODO APRIL 2021:  This doesn't support the latest React libs, can't we do the same with css?
 import { renderLog } from '../../utils/logging';
-
-const TextTruncate = React.lazy(() => import('react-text-truncate'));  // TODO APRIL 2021:  This doesn't support the latest React libs, can't we do the same with css?
 
 export default class ReadMore extends Component {
   constructor (...args) {

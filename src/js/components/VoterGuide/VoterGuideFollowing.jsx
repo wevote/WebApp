@@ -1,6 +1,7 @@
 import { filter } from 'lodash-es';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
+import Button from 'react-bootstrap/Button';
 import Helmet from 'react-helmet';
 import styled from 'styled-components';
 import OrganizationActions from '../../actions/OrganizationActions';
@@ -10,11 +11,10 @@ import VoterGuideStore from '../../stores/VoterGuideStore';
 import VoterStore from '../../stores/VoterStore';
 import { renderLog } from '../../utils/logging';
 import LoadingWheel from '../LoadingWheel';
+import SearchBar from '../Search/SearchBar';
+import GuideList from './GuideList';
 
-const Button = React.lazy(() => import('react-bootstrap/Button'));
-const DelayedLoad = React.lazy(() => import('../Widgets/DelayedLoad'));
-const GuideList = React.lazy(() => import('./GuideList'));
-const SearchBar = React.lazy(() => import('../Search/SearchBar'));
+const DelayedLoad = React.lazy(() => import(/* webpackChunkName: 'DelayedLoad' */ '../Widgets/DelayedLoad'));
 
 
 class VoterGuideFollowing extends Component {

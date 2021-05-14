@@ -1,10 +1,10 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import styled from 'styled-components';
 import { Button, Checkbox, FormControlLabel, TextField } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
-import { renderLog } from '../../utils/logging';
+import PropTypes from 'prop-types';
+import React from 'react';
+import styled from 'styled-components';
 import { formatDateToYearMonthDay } from '../../utils/dateFormat';
+import { renderLog } from '../../utils/logging';
 
 class PledgeToVote extends React.Component {
   constructor (props) {

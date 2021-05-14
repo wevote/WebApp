@@ -4,9 +4,14 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import Helmet from 'react-helmet';
 import styled from 'styled-components';
+import closeIcon from '../../../img/global/icons/x-close.png';
 import FriendActions from '../../actions/FriendActions';
 import IssueActions from '../../actions/IssueActions';
 import VoterActions from '../../actions/VoterActions';
+import PersonalizedScoreIntroBody from '../../components/CompleteYourProfile/PersonalizedScoreIntroBody';
+import FriendInvitationOnboardingIntro from '../../components/Intro/FriendInvitationOnboardingIntro';
+import FriendInvitationOnboardingValues from '../../components/Intro/FriendInvitationOnboardingValues';
+import StepsChips from '../../components/Widgets/StepsChips';
 import VoterConstants from '../../constants/VoterConstants';
 import FriendStore from '../../stores/FriendStore';
 import VoterStore from '../../stores/VoterStore';
@@ -15,12 +20,7 @@ import { cordovaFooterHeight, cordovaNetworkNextButtonTop } from '../../utils/co
 import { cordovaDot, getAndroidSize, historyPush, isAndroid, isWebApp } from '../../utils/cordovaUtils';
 import { renderLog } from '../../utils/logging';
 
-const closeIcon = React.lazy(() => import('../../../img/global/icons/x-close.png'));
-const FriendInvitationOnboardingIntro = React.lazy(() => import('../../components/Intro/FriendInvitationOnboardingIntro'));
-const FriendInvitationOnboardingValues = React.lazy(() => import('../../components/Intro/FriendInvitationOnboardingValues'));
 const logoDark = '../../../img/global/svg-icons/we-vote-logo-horizontal-color-dark-141x46.svg';
-const PersonalizedScoreIntroBody = React.lazy(() => import('../../components/CompleteYourProfile/PersonalizedScoreIntroBody'));
-const StepsChips = React.lazy(() => import('../../components/Widgets/StepsChips'));
 
 class FriendInvitationOnboarding extends Component {
   constructor (props) {

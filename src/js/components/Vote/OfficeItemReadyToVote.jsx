@@ -8,9 +8,9 @@ import VoterGuideStore from '../../stores/VoterGuideStore';
 import { isCordova } from '../../utils/cordovaUtils';
 import { renderLog } from '../../utils/logging';
 import { toTitleCase } from '../../utils/textFormat';
-import ImageHandler from '../ImageHandler';
 
-const BallotItemSupportOpposeCountDisplay = React.lazy(() => import('../Widgets/BallotItemSupportOpposeCountDisplay'));
+const ImageHandler = React.lazy(() => import(/* webpackChunkName: 'ImageHandler' */ '../ImageHandler'));
+const BallotItemSupportOpposeCountDisplay = React.lazy(() => import(/* webpackChunkName: 'BallotItemSupportOpposeCountDisplay' */ '../Widgets/BallotItemSupportOpposeCountDisplay'));
 
 
 class OfficeItemReadyToVote extends Component {

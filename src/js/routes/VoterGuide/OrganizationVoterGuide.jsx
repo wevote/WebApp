@@ -7,7 +7,12 @@ import AnalyticsActions from '../../actions/AnalyticsActions';
 import AppActions from '../../actions/AppActions';
 import FriendActions from '../../actions/FriendActions';
 import OrganizationActions from '../../actions/OrganizationActions';
+import FriendToggle from '../../components/Friends/FriendToggle';
 import LoadingWheel from '../../components/LoadingWheel';
+import ShareButtonDesktopTablet from '../../components/Share/ShareButtonDesktopTablet';
+import OrganizationCard from '../../components/VoterGuide/OrganizationCard';
+import OrganizationVoterGuideCard from '../../components/VoterGuide/OrganizationVoterGuideCard';
+import OrganizationVoterGuideTabs from '../../components/VoterGuide/OrganizationVoterGuideTabs';
 import OrganizationStore from '../../stores/OrganizationStore';
 import VoterGuideStore from '../../stores/VoterGuideStore';
 import VoterStore from '../../stores/VoterStore';
@@ -15,13 +20,8 @@ import { historyPush, isIPad, isWebApp } from '../../utils/cordovaUtils';
 import { renderLog } from '../../utils/logging';
 import { isSpeakerTypePrivateCitizen } from '../../utils/organization-functions';
 
-const DelayedLoad = React.lazy(() => import('../../components/Widgets/DelayedLoad'));
-const FollowToggle = React.lazy(() => import('../../components/Widgets/FollowToggle'));
-const FriendToggle = React.lazy(() => import('../../components/Friends/FriendToggle'));
-const OrganizationCard = React.lazy(() => import('../../components/VoterGuide/OrganizationCard'));
-const OrganizationVoterGuideCard = React.lazy(() => import('../../components/VoterGuide/OrganizationVoterGuideCard'));
-const OrganizationVoterGuideTabs = React.lazy(() => import('../../components/VoterGuide/OrganizationVoterGuideTabs'));
-const ShareButtonDesktopTablet = React.lazy(() => import('../../components/Share/ShareButtonDesktopTablet'));
+const DelayedLoad = React.lazy(() => import(/* webpackChunkName: 'DelayedLoad' */ '../../components/Widgets/DelayedLoad'));
+const FollowToggle = React.lazy(() => import(/* webpackChunkName: 'FollowToggle' */ '../../components/Widgets/FollowToggle'));
 
 const AUTO_FOLLOW = 'af';
 

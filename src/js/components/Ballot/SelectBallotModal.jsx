@@ -9,10 +9,10 @@ import VoterStore from '../../stores/VoterStore';
 import { hasIPhoneNotch } from '../../utils/cordovaUtils';
 import { renderLog } from '../../utils/logging';
 import { calculateBallotBaseUrl } from '../../utils/textFormat';
+import EditAddressInPlace from '../Widgets/EditAddressInPlace';
 
-const BallotElectionListWithFilters = React.lazy(() => import('./BallotElectionListWithFilters'));
-const EditAddressInPlace = React.lazy(() => import('../Widgets/EditAddressInPlace'));
-const MapChart = React.lazy(() => import('../Widgets/MapChart/MapChart'));
+const MapChart = React.lazy(() => import(/* webpackChunkName: 'MapChart' */ '../Widgets/MapChart/MapChart'));
+const BallotElectionListWithFilters = React.lazy(() => import(/* webpackChunkName: 'BallotElectionListWithFilters' */ './BallotElectionListWithFilters'));
 
 
 class SelectBallotModal extends Component {

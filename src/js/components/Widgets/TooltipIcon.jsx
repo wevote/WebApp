@@ -1,10 +1,11 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import styled from 'styled-components';
-import { Info } from '@material-ui/icons';
 import { Tooltip } from '@material-ui/core';
+import { Info } from '@material-ui/icons';
+import PropTypes from 'prop-types';
+import React, { Component } from 'react';
+import styled from 'styled-components';
 
-class WeVoteTooltip extends Component {
+
+class TooltipIcon extends Component {
   render () {
     return (
       <Icon>
@@ -17,7 +18,7 @@ class WeVoteTooltip extends Component {
     );
   }
 }
-WeVoteTooltip.propTypes = {
+TooltipIcon.propTypes = {
   title: PropTypes.string,
 };
 
@@ -30,4 +31,4 @@ const Icon = styled.span`
   }
 `;
 
-export default WeVoteTooltip;
+export default TooltipIcon;

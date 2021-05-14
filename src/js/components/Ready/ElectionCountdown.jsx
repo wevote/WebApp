@@ -9,6 +9,7 @@ import { formatDateToMonthDayYear } from '../../utils/dateFormat';
 import initializeMoment from '../../utils/initializeMoment';
 import { renderLog } from '../../utils/logging';
 
+
 class ElectionCountdown extends React.Component {
   constructor (props) {
     super(props);

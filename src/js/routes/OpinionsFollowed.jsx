@@ -6,8 +6,8 @@ import OrganizationActions from '../actions/OrganizationActions';
 import OrganizationStore from '../stores/OrganizationStore';
 import { renderLog } from '../utils/logging';
 
-const OpinionsFollowedList = React.lazy(() => import('../components/Organization/OpinionsFollowedList'));
-const SearchBar = React.lazy(() => import('../components/Search/SearchBar'));
+import OpinionsFollowedList from '../components/Organization/OpinionsFollowedList';
+import SearchBar from '../components/Search/SearchBar';
 
 export default class OpinionsFollowed extends Component {
   constructor (props) {

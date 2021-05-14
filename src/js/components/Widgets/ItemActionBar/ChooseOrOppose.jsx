@@ -5,10 +5,11 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import styled from 'styled-components';
 import VoterStore from '../../../stores/VoterStore';
+import PositionPublicToggle from '../PositionPublicToggle';
+import Slides from './Slides';
 
-const PositionPublicToggle = React.lazy(() => import('../PositionPublicToggle'));
-const Slides = React.lazy(() => import('./Slides'));
-const SettingsAccount = React.lazy(() => import('../../Settings/SettingsAccount'));
+const SettingsAccount = React.lazy(() => import(/* webpackChunkName: 'SettingsAccount' */ '../../Settings/SettingsAccount'));
+
 
 class ChooseOrOppose extends Component {
   constructor (props) {

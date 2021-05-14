@@ -12,12 +12,12 @@ import { cordovaOpenSafariView, isWebApp } from '../../utils/cordovaUtils';
 import { renderLog } from '../../utils/logging';
 import { voterFeaturePackageExceedsOrEqualsRequired } from '../../utils/pricingFunctions';
 import LoadingWheel from '../LoadingWheel';
+import PremiumableButton from '../Widgets/PremiumableButton';
 
-const DelayedLoad = React.lazy(() => import('../Widgets/DelayedLoad'));
-const OpenExternalWebSite = React.lazy(() => import('../Widgets/OpenExternalWebSite'));
-const PremiumableButton = React.lazy(() => import('../Widgets/PremiumableButton'));
-const SettingsAccount = React.lazy(() => import('./SettingsAccount'));
-const SettingsAccountLevelChip = React.lazy(() => import('./SettingsAccountLevelChip'));
+const DelayedLoad = React.lazy(() => import(/* webpackChunkName: 'DelayedLoad' */ '../Widgets/DelayedLoad'));
+const OpenExternalWebSite = React.lazy(() => import(/* webpackChunkName: 'OpenExternalWebSite' */ '../Widgets/OpenExternalWebSite'));
+const SettingsAccount = React.lazy(() => import(/* webpackChunkName: 'SettingsAccount' */ './SettingsAccount'));
+const SettingsAccountLevelChip = React.lazy(() => import(/* webpackChunkName: 'SettingsAccountLeveLChip' */ './SettingsAccountLevelChip'));
 
 
 class SettingsDomain extends Component {

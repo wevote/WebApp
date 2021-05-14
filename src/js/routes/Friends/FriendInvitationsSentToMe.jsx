@@ -5,11 +5,10 @@ import React, { Component } from 'react';
 import Helmet from 'react-helmet';
 import styled from 'styled-components';
 import FriendActions from '../../actions/FriendActions';
+import FriendInvitationList from '../../components/Friends/FriendInvitationList';
+import MessageCard from '../../components/Widgets/MessageCard';
 import FriendStore from '../../stores/FriendStore';
 import { renderLog } from '../../utils/logging';
-
-const FriendInvitationList = React.lazy(() => import('../../components/Friends/FriendInvitationList'));
-const MessageCard = React.lazy(() => import('../../components/Widgets/MessageCard'));
 
 class FriendInvitationsSentToMe extends Component {
   constructor (props) {

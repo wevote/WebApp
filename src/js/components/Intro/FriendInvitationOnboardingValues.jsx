@@ -4,10 +4,11 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 import { cordovaDot } from '../../utils/cordovaUtils';
 import { renderLog } from '../../utils/logging';
-import ImageHandler from '../ImageHandler';
+import FriendInvitationOnboardingFriendValuesList from '../Values/FriendInvitationOnboardingFriendValuesList';
 
-const FriendInvitationOnboardingFriendValuesList = React.lazy(() => import('../Values/FriendInvitationOnboardingFriendValuesList'));
-const FriendInvitationOnboardingValuesList = React.lazy(() => import('../Values/FriendInvitationOnboardingValuesList'));
+const FriendInvitationOnboardingValuesList = React.lazy(() => import(/* webpackChunkName: 'ImageHandler' */ '../Values/FriendInvitationOnboardingValuesList'));
+const ImageHandler = React.lazy(() => import(/* webpackChunkName: 'ImageHandler' */ '../ImageHandler'));
+
 const logoDark = '../../../img/global/svg-icons/we-vote-logo-horizontal-color-dark-141x46.svg';
 
 

@@ -6,9 +6,8 @@ import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import BallotStore from '../../stores/BallotStore';
 import { renderLog } from '../../utils/logging';
-
-const BallotSideBarLink = React.lazy(() => import('./BallotSideBarLink'));
-const BallotSummaryAccordion = React.lazy(() => import('./BallotSummaryAccordion'));
+import BallotSideBarLink from './BallotSideBarLink';
+import BallotSummaryAccordion from './BallotSummaryAccordion';
 
 // December 2018:  We want to work toward being airbnb style compliant, but for now these are disabled in this file to minimize massive changes
 /* eslint no-restricted-syntax: 1 */

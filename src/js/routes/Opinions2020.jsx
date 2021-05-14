@@ -10,7 +10,13 @@ import ActivityActions from '../actions/ActivityActions';
 import AnalyticsActions from '../actions/AnalyticsActions';
 import BallotActions from '../actions/BallotActions';
 import OrganizationActions from '../actions/OrganizationActions';
+import FilterBase from '../components/Filter/FilterBase';
+import OpinionsAndBallotItemsFilter from '../components/Filter/OpinionsAndBallotItemsFilter';
 import LoadingWheel from '../components/LoadingWheel';
+import BallotItemForOpinions from '../components/OpinionsAndBallotItems/BallotItemForOpinions';
+import CandidateSearchItemForOpinions from '../components/OpinionsAndBallotItems/CandidateSearchItemForOpinions';
+import VoterGuideDisplayForListForOpinions from '../components/OpinionsAndBallotItems/VoterGuideDisplayForListForOpinions';
+import NumberOfItemsFound from '../components/Widgets/NumberOfItemsFound';
 import BallotStore from '../stores/BallotStore';
 import OrganizationStore from '../stores/OrganizationStore';
 import VoterGuideStore from '../stores/VoterGuideStore';
@@ -19,16 +25,10 @@ import { cordovaDot } from '../utils/cordovaUtils';
 import { renderLog } from '../utils/logging';
 import { arrayContains, stringContains } from '../utils/textFormat';
 
-const BallotItemForOpinions = React.lazy(() => import('../components/OpinionsAndBallotItems/BallotItemForOpinions'));
-const CandidateSearchItemForOpinions = React.lazy(() => import('../components/OpinionsAndBallotItems/CandidateSearchItemForOpinions'));
-const FilterBase = React.lazy(() => import('../components/Filter/FilterBase'));
-const NumberOfItemsFound = React.lazy(() => import('../components/Widgets/NumberOfItemsFound'));
-const OpinionsAndBallotItemsFilter = React.lazy(() => import('../components/Filter/OpinionsAndBallotItemsFilter'));
-const ShowMoreItems = React.lazy(() => import('../components/Widgets/ShowMoreItems'));
-const VoterGuideDisplayForListForOpinions = React.lazy(() => import('../components/OpinionsAndBallotItems/VoterGuideDisplayForListForOpinions'));
+const ShowMoreItems = React.lazy(() => import(/* webpackChunkName: 'ShowMoreItems' */ '../components/Widgets/ShowMoreItems'));
+
 const groupIcon = '../../img/global/svg-icons/group-icon.svg';
 const organizationIcon = '../../img/global/svg-icons/organization-icon.svg';
-
 
 const groupedFilters = [
   // {

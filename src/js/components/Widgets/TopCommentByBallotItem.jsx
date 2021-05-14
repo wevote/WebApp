@@ -1,15 +1,15 @@
-import React, { Component } from 'react';
+import { Button } from '@material-ui/core';
+import { withStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
+import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
-import { withStyles } from '@material-ui/core/styles';
-import { Button } from '@material-ui/core';
 import CandidateStore from '../../stores/CandidateStore';
 import MeasureStore from '../../stores/MeasureStore';
 import VoterGuideStore from '../../stores/VoterGuideStore';
+import { renderLog } from '../../utils/logging';
 import { extractFirstEndorsementFromPositionList } from '../../utils/positionFunctions';
 import { shortenText, stringContains } from '../../utils/textFormat';
-import { renderLog } from '../../utils/logging';
 
 class TopCommentByBallotItem extends Component {
   constructor (props) {

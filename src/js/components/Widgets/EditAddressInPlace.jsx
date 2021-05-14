@@ -5,9 +5,9 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 import { renderLog } from '../../utils/logging';
 import { calculateBallotBaseUrl, shortenText } from '../../utils/textFormat';
+import AddressBox from '../AddressBox';
 
-const AddressBox = React.lazy(() => import('../AddressBox'));
-const ReadMore = React.lazy(() => import('./ReadMore'));
+const ReadMore = React.lazy(() => import(/* webpackChunkName: 'ReadMore' */ './ReadMore'));
 
 class EditAddressInPlace extends Component {
   constructor (props, context) {

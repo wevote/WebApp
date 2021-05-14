@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { renderLog } from '../../utils/logging';
 
-const BallotElectionListWithFilters = React.lazy(() => import('../Ballot/BallotElectionListWithFilters'));
+const BallotElectionListWithFilters = React.lazy(() => import(/* webpackChunkName: 'BallotElectionListWithFilters' */ '../Ballot/BallotElectionListWithFilters'));
 
 class VoterGuideChooseElectionModal extends Component {
   constructor (props) {

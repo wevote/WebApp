@@ -4,14 +4,14 @@ import React, { Component } from 'react';
 import Helmet from 'react-helmet';
 import styled from 'styled-components';
 import IssueActions from '../../actions/IssueActions';
+import SearchBar from '../../components/Search/SearchBar';
 import IssueStore from '../../stores/IssueStore';
 import VoterStore from '../../stores/VoterStore';
 import { renderLog } from '../../utils/logging';
 
-const DelayedLoad = React.lazy(() => import('../../components/Widgets/DelayedLoad'));
-const IssueCard = React.lazy(() => import('../../components/Values/IssueCard'));
-const ReadMore = React.lazy(() => import('../../components/Widgets/ReadMore'));
-const SearchBar = React.lazy(() => import('../../components/Search/SearchBar'));
+const ReadMore = React.lazy(() => import(/* webpackChunkName: 'ReadMore' */ '../../components/Widgets/ReadMore'));
+const DelayedLoad = React.lazy(() => import(/* webpackChunkName: 'DelayedLoad' */ '../../components/Widgets/DelayedLoad'));
+const IssueCard = React.lazy(() => import(/* webpackChunkName: 'IssueCard' */ '../../components/Values/IssueCard'));
 
 
 export default class ValuesList extends Component {

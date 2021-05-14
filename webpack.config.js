@@ -4,6 +4,7 @@ const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 const ESLintPlugin = require('eslint-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MomentLocalesPlugin = require('moment-locales-webpack-plugin');
+const TerserPlugin = require('terser-webpack-plugin');
 const UnusedWebpackPlugin = require('unused-webpack-plugin');
 const WebpackShellPluginNext = require('webpack-shell-plugin-next');
 const fs = require('fs');
@@ -12,10 +13,12 @@ const webpack = require('webpack');
 const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 
-
 const port = process.env.PORT || 3000;
 const isHTTPS = process.env.PROTOCOL && process.env.PROTOCOL === 'HTTPS';
 const bundleAnalysis = process.env.ANALYSIS || false;  // enable the interactive bundle analyser and the Unused component analyzer
+const minimized = process.env.MINIMIZED || false;  // enable the Terser plugin that strips comments and shrinks long variable names
+// console.log('>>>> process.env: ', process.env);
+// console.log('>>>> bundleAnalysis: ', bundleAnalysis);
 
 module.exports = (env, argv) => ({
   entry: path.resolve(__dirname, './src/index.jsx'),
@@ -42,6 +45,17 @@ module.exports = (env, argv) => ({
   },
   optimization: {
     minimizer: [
+      ...(minimized ? [
+        new TerserPlugin({
+          parallel: true,
+          terserOptions: {
+            // https://github.com/webpack-contrib/terser-webpack-plugin#terseroptions
+            format: {
+              comments: false,
+            },
+          },
+        }),
+      ] : []),
       new CssMinimizerPlugin(),
     ],
   },

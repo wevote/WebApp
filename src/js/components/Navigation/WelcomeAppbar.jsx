@@ -18,13 +18,14 @@ import { renderLog } from '../../utils/logging';
 import { shortenText } from '../../utils/textFormat';
 import { voterPhoto } from '../../utils/voterPhoto';
 import { Divider, LogoContainer, MobileNavDivider, MobileNavigationMenu, Navigation, NavLink, NavRow } from '../Welcome/navigationStyles';
+import HeaderBarLogo from './HeaderBarLogo';
 
-const HeaderBarLogo = React.lazy(() => import('./HeaderBarLogo'));
-const HeaderBarProfilePopUp = React.lazy(() => import('./HeaderBarProfilePopUp'));
+const HeaderBarProfilePopUp = React.lazy(() => import(/* webpackChunkName: 'HeaderBarProfilePopUp' */ './HeaderBarProfilePopUp'));
+const SignInModal = React.lazy(() => import(/* webpackChunkName: 'SignInModal' */ '../Widgets/SignInModal'));
+
+const anonymous = '../../../img/global/icons/avatar-generic.png';
 // TODO: Backport "@stripe/react-stripe-js" use from Campaigns
 // const PaidAccountUpgradeModal = React.lazy(() => import('../Settings/PaidAccountUpgradeModal'));
-const SignInModal = React.lazy(() => import('../Widgets/SignInModal'));
-const anonymous = '../../../img/global/icons/avatar-generic.png';
 
 
 class WelcomeAppbar extends Component {

@@ -8,7 +8,7 @@ import VoterStore from '../../stores/VoterStore';
 import { renderLog } from '../../utils/logging';
 import { arrayContains } from '../../utils/textFormat';
 
-const IssueCard = React.lazy(() => import('./IssueCard'));
+const IssueCard = React.lazy(() => import(/* webpackChunkName: 'IssueCard' */ './IssueCard'));
 
 
 export default class FriendInvitationOnboardingValuesList extends Component {

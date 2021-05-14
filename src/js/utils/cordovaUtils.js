@@ -2,9 +2,8 @@ import React from 'react';
 // const { createBrowserHistory, createHashHistory } = React.lazy(() => import('history'));
 // const { useHistory } = React.lazy(() => import("react-router-dom"));
 import webAppConfig from '../config';
+import { dumpObjProps } from './appleSiliconUtils';
 import { cordovaOffsetLog, oAuthLog } from './logging';
-
-const { dumpObjProps } = React.lazy(() => import('./appleSiliconUtils'));
 
 /* global $  */
 

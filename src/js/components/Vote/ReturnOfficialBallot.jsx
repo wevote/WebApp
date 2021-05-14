@@ -1,10 +1,10 @@
+import { withStyles } from '@material-ui/core/styles/index';
 import React, { Component } from 'react';
 import styled from 'styled-components';
 import cookies from '../../utils/cookies';
 import { renderLog } from '../../utils/logging';
 
-const { withStyles } = React.lazy(() => import('@material-ui/core/styles/index'));
-const OpenExternalWebSite = React.lazy(() => import('../Widgets/OpenExternalWebSite'));
+const OpenExternalWebSite = React.lazy(() => import(/* webpackChunkName: 'OpenExternalWebSite' */ '../Widgets/OpenExternalWebSite'));
 
 class ReturnOfficialBallot extends Component {
   constructor (props) {

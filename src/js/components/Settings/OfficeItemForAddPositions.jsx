@@ -7,8 +7,7 @@ import CandidateStore from '../../stores/CandidateStore';
 import { historyPush } from '../../utils/cordovaUtils';
 import { renderLog } from '../../utils/logging';
 import { arrayContains, toTitleCase } from '../../utils/textFormat';
-
-const CandidateItemForAddPositions = React.lazy(() => import('./CandidateItemForAddPositions'));
+import CandidateItemForAddPositions from './CandidateItemForAddPositions';
 
 class OfficeItemForAddPositions extends Component {
   constructor (props) {

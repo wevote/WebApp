@@ -8,6 +8,7 @@ import AppActions from '../../actions/AppActions';
 import CandidateActions from '../../actions/CandidateActions';
 import IssueActions from '../../actions/IssueActions';
 import OfficeActions from '../../actions/OfficeActions';
+import CandidateList from '../../components/Ballot/CandidateList';
 import LoadingWheel from '../../components/LoadingWheel';
 import Testimonial from '../../components/Widgets/Testimonial';
 import BallotStore from '../../stores/BallotStore';
@@ -20,9 +21,7 @@ import { renderLog } from '../../utils/logging';
 import { sortCandidateList } from '../../utils/positionFunctions';
 import { capitalizeString } from '../../utils/textFormat';
 
-const CandidateList = React.lazy(() => import('../../components/Ballot/CandidateList'));
 const daleMcGrewJpm = '../../../img/global/photos/Dale_McGrew-200x200.jpg';
-
 
 
 // This is related to routes/VoterGuide/OrganizationVoterGuideOffice

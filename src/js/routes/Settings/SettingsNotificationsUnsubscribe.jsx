@@ -8,13 +8,12 @@ import styled from 'styled-components';
 import AnalyticsActions from '../../actions/AnalyticsActions';
 import VoterActions from '../../actions/VoterActions';
 import LoadingWheel from '../../components/LoadingWheel';
+import BrowserPushMessage from '../../components/Widgets/BrowserPushMessage';
 import webAppConfig from '../../config';
 import VoterConstants from '../../constants/VoterConstants';
 import VoterStore from '../../stores/VoterStore';
 import { historyPush } from '../../utils/cordovaUtils';
 import { renderLog } from '../../utils/logging';
-
-const BrowserPushMessage = React.lazy(() => import('../../components/Widgets/BrowserPushMessage'));
 
 const nextReleaseFeaturesEnabled = webAppConfig.ENABLE_NEXT_RELEASE_FEATURES === undefined ? false : webAppConfig.ENABLE_NEXT_RELEASE_FEATURES;
 

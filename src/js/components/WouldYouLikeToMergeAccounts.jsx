@@ -1,9 +1,8 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
+import Alert from 'react-bootstrap/Alert';
+import Button from 'react-bootstrap/Button';
 import { renderLog } from '../utils/logging';
-
-const Alert = React.lazy(() => import('react-bootstrap/Alert'));
-const Button = React.lazy(() => import('react-bootstrap/Button'));
 
 export default class WouldYouLikeToMergeAccounts extends Component {
   render () {

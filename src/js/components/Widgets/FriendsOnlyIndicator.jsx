@@ -1,11 +1,11 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
+import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
+import Tooltip from 'react-bootstrap/Tooltip';
 import { ReactSVG } from 'react-svg';
 import { cordovaDot } from '../../utils/cordovaUtils';
 import { renderLog } from '../../utils/logging';
 
-const Tooltip = React.lazy(() => import('react-bootstrap/Tooltip'));
-const OverlayTrigger = React.lazy(() => import('react-bootstrap/OverlayTrigger'));
 const groupIcon = '../../../img/global/svg-icons/group-icon.svg';
 const publicIcon = '../../../img/global/svg-icons/public-icon.svg';
 

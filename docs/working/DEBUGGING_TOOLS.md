@@ -82,9 +82,9 @@ import { Button } from '@material-ui/core';   /DO NOT DO THIS!!!!!
 
  instead, cherry pick the component, and only that component will be added to the bundle.  
 
- ```
-const { Button } = React.lazy(() => import('@material-ui/core'));
- ```
+```
+import Button from '@material-ui/core/Button';
+```
 
 Making these changes for material-ui saved about 300 MB in bundle size!
 

@@ -6,12 +6,12 @@ import { ReactSVG } from 'react-svg';
 import styled from 'styled-components';
 import { cordovaDot } from '../../utils/cordovaUtils';
 import { cleanArray } from '../../utils/textFormat';
+import FriendsIcon from './FriendsIcon';
+import PositionItemScorePopoverTextOnly from './PositionItemScorePopoverTextOnly';
 
-const FollowToggle = React.lazy(() => import('./FollowToggle'));
-const FriendsIcon = React.lazy(() => import('./FriendsIcon'));
-const MaterialUIPopover = React.lazy(() => import('./MaterialUIPopover'));
-const PositionItemScorePopoverTextOnly = React.lazy(() => import('./PositionItemScorePopoverTextOnly'));
-const ShowMoreFooter = React.lazy(() => import('../Navigation/ShowMoreFooter'));
+const FollowToggle = React.lazy(() => import(/* webpackChunkName: 'FollowToggle' */ './FollowToggle'));
+const MaterialUIPopover = React.lazy(() => import(/* webpackChunkName: 'MaterialUIPopover' */ './MaterialUIPopover'));
+const ShowMoreFooter = React.lazy(() => import(/* webpackChunkName: 'ShowMoreFooter' */ '../Navigation/ShowMoreFooter'));
 
 class PositionSummaryListForPopover extends Component {
   constructor (props) {

@@ -1,10 +1,10 @@
+import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { capitalizeString } from '../../utils/textFormat';
-import ImageHandler from '../ImageHandler';
 
-const classNames = React.lazy(() => import('classnames'));
+const ImageHandler = React.lazy(() => import(/* webpackChunkName: 'ImageHandler' */ '../ImageHandler'));
 
 export default class SearchResultsDisplay extends Component {
   searchHasContent () {

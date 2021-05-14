@@ -12,12 +12,12 @@ import OrganizationStore from '../../stores/OrganizationStore';
 import { getStateCodesFoundInObjectList } from '../../utils/addressFunctions';
 import { renderLog } from '../../utils/logging';
 import { arrayContains } from '../../utils/textFormat';
+import FilterBase from '../Filter/FilterBase';
+import VoterGuidePositionFilter from '../Filter/VoterGuidePositionFilter';
+import NumberOfItemsFound from '../Widgets/NumberOfItemsFound';
 
-const FilterBase = React.lazy(() => import('../Filter/FilterBase'));
-const NumberOfItemsFound = React.lazy(() => import('../Widgets/NumberOfItemsFound'));
-const ShowMoreItems = React.lazy(() => import('../Widgets/ShowMoreItems'));
-const VoterGuidePositionFilter = React.lazy(() => import('../Filter/VoterGuidePositionFilter'));
-const VoterGuidePositionItem = React.lazy(() => import('./VoterGuidePositionItem'));
+const ShowMoreItems = React.lazy(() => import(/* webpackChunkName: 'ShowMoreItems' */ '../Widgets/ShowMoreItems'));
+const VoterGuidePositionItem = React.lazy(() => import(/* webpackChunkName: 'VoterGuidePositionItem' */ './VoterGuidePositionItem'));
 
 
 // Thumbs up/down needs to be fixed

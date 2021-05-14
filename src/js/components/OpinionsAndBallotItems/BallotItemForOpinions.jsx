@@ -4,8 +4,8 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 import { renderLog } from '../../utils/logging';
 
-const MeasureItemForOpinions = React.lazy(() => import('./MeasureItemForOpinions'));
-const OfficeItemForOpinions = React.lazy(() => import('./OfficeItemForOpinions'));
+import MeasureItemForOpinions from './MeasureItemForOpinions';
+import OfficeItemForOpinions from './OfficeItemForOpinions';
 
 
 class BallotItemForOpinions extends Component {

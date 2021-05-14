@@ -7,8 +7,10 @@ import { isCordova } from '../../utils/cordovaUtils';
 import { renderLog } from '../../utils/logging';
 import { stringContains } from '../../utils/textFormat';
 
-const ItemActionBar = React.lazy(() => import('./ItemActionBar/ItemActionBar'));
-const ItemPositionStatementActionBar = React.lazy(() => import('./ItemPositionStatementActionBar2020'));
+import ItemPositionStatementActionBar from './ItemPositionStatementActionBar2020';
+
+const ItemActionBar = React.lazy(() => import(/* webpackChunkName: 'ItemActionBar' */ './ItemActionBar/ItemActionBar'));
+
 
 class BallotItemSupportOpposeComment extends PureComponent {
   constructor (props) {

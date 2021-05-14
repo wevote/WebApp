@@ -9,11 +9,12 @@ import IssueStore from '../../stores/IssueStore';
 import { cordovaDot } from '../../utils/cordovaUtils';
 import { renderLog } from '../../utils/logging';
 import { getPositionSummaryListForBallotItem } from '../../utils/positionFunctions';
+import StickyPopover from '../Ballot/StickyPopover';
+import IssueFollowToggleButton from './IssueFollowToggleButton';
 
-const IssueFollowToggleButton = React.lazy(() => import('./IssueFollowToggleButton'));
-const PositionSummaryListForPopover = React.lazy(() => import('../Widgets/PositionSummaryListForPopover'));
-const ReadMore = React.lazy(() => import('../Widgets/ReadMore'));
-const StickyPopover = React.lazy(() => import('../Ballot/StickyPopover'));
+const ReadMore = React.lazy(() => import(/* webpackChunkName: 'ReadMore' */ '../Widgets/ReadMore'));
+const PositionSummaryListForPopover = React.lazy(() => import(/* webpackChunkName: 'PositionSummaryListForPopover' */ '../Widgets/PositionSummaryListForPopover'));
+
 
 class ValueIconAndText extends Component {
   constructor (props) {

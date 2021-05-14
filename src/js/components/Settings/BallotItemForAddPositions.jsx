@@ -3,9 +3,8 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import styled from 'styled-components';
 import { renderLog } from '../../utils/logging';
-
-const MeasureItemForAddPositions = React.lazy(() => import('./MeasureItemForAddPositions'));
-const OfficeItemForAddPositions = React.lazy(() => import('./OfficeItemForAddPositions'));
+import MeasureItemForAddPositions from './MeasureItemForAddPositions';
+import OfficeItemForAddPositions from './OfficeItemForAddPositions';
 
 
 class BallotItemForAddPositions extends Component {

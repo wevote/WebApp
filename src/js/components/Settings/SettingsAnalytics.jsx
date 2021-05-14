@@ -11,12 +11,13 @@ import VoterStore from '../../stores/VoterStore';
 import { renderLog } from '../../utils/logging';
 import { voterFeaturePackageExceedsOrEqualsRequired } from '../../utils/pricingFunctions';
 import LoadingWheel from '../LoadingWheel';
+import CreateConfiguredVersion from './CreateConfiguredVersion';
+import SeeTheseSettingsInAction from './SeeTheseSettingsInAction';
 
-const CreateConfiguredVersion = React.lazy(() => import('./CreateConfiguredVersion'));
-const DelayedLoad = React.lazy(() => import('../Widgets/DelayedLoad'));
-const SeeTheseSettingsInAction = React.lazy(() => import('./SeeTheseSettingsInAction'));
-const SettingsAccount = React.lazy(() => import('./SettingsAccount'));
-const SettingsAccountLevelChip = React.lazy(() => import('./SettingsAccountLevelChip'));
+const DelayedLoad = React.lazy(() => import(/* webpackChunkName: 'DelayedLoad' */ '../Widgets/DelayedLoad'));
+const SettingsAccount = React.lazy(() => import(/* webpackChunkName: 'SettingsAccount' */ './SettingsAccount'));
+const SettingsAccountLevelChip = React.lazy(() => import(/* webpackChunkName: 'SettingsAccountLeveLChip' */ './SettingsAccountLevelChip'));
+
 
 class SettingsAnalytics extends Component {
   constructor (props) {

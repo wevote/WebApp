@@ -5,9 +5,8 @@ import ElectionActions from '../../actions/ElectionActions';
 import ElectionStore from '../../stores/ElectionStore';
 import VoterStore from '../../stores/VoterStore';
 import { renderLog } from '../../utils/logging';
-
-const BrowserPushMessage = React.lazy(() => import('../Widgets/BrowserPushMessage'));
-const BallotElectionList = React.lazy(() => import('../Ballot/BallotElectionList'));
+import BallotElectionList from '../Ballot/BallotElectionList';
+import BrowserPushMessage from '../Widgets/BrowserPushMessage';
 
 export default class SettingsElection extends Component {
   constructor (props) {

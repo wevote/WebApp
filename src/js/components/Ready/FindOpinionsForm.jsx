@@ -8,7 +8,8 @@ import styled from 'styled-components';
 import VoterGuideStore from '../../stores/VoterGuideStore';
 import { blurTextFieldAndroid, focusTextFieldAndroid, historyPush, isAndroid, isCordova, isIOS } from '../../utils/cordovaUtils';
 import { renderLog } from '../../utils/logging';
-import ImageHandler from '../ImageHandler';
+
+const ImageHandler = React.lazy(() => import(/* webpackChunkName: 'ImageHandler' */ '../ImageHandler'));
 
 class FindOpinionsForm extends Component {
   constructor (props) {

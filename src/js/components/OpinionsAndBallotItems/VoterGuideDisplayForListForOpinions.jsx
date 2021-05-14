@@ -13,13 +13,13 @@ import { cordovaDot } from '../../utils/cordovaUtils';
 import { renderLog } from '../../utils/logging';
 import { isSpeakerTypeIndividual, isSpeakerTypeOrganization } from '../../utils/organization-functions';
 import { numberWithCommas } from '../../utils/textFormat';
-import ImageHandler from '../ImageHandler';
+import StickyPopover from '../Ballot/StickyPopover';
+import OrganizationPopoverCard from '../Organization/OrganizationPopoverCard';
+import IssuesByOrganizationDisplayList from '../Values/IssuesByOrganizationDisplayList';
 
-const FollowToggle = React.lazy(() => import('../Widgets/FollowToggle'));
-const IssuesByOrganizationDisplayList = React.lazy(() => import('../Values/IssuesByOrganizationDisplayList'));
-const OrganizationPopoverCard = React.lazy(() => import('../Organization/OrganizationPopoverCard'));
-const ReadMore = React.lazy(() => import('../Widgets/ReadMore'));
-const StickyPopover = React.lazy(() => import('../Ballot/StickyPopover'));
+const FollowToggle = React.lazy(() => import(/* webpackChunkName: 'FollowToggle' */ '../Widgets/FollowToggle'));
+const ImageHandler = React.lazy(() => import(/* webpackChunkName: 'ImageHandler' */ '../ImageHandler'));
+const ReadMore = React.lazy(() => import(/* webpackChunkName: 'ReadMore' */ '../Widgets/ReadMore'));
 
 class voterGuideDisplayForListForOpinions extends Component {
   constructor (props) {

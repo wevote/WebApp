@@ -14,15 +14,14 @@ import VoterStore from '../../stores/VoterStore';
 import { historyPush } from '../../utils/cordovaUtils';
 import { renderLog } from '../../utils/logging';
 import { isProperlyFormattedVoterGuideWeVoteId } from '../../utils/textFormat';
+import FilterBase from '../Filter/FilterBase';
+import SettingsAddBallotItemsFilter from '../Filter/SettingsAddBallotItemsFilter';
+import SettingsSeePositionsFilter from '../Filter/SettingsSeePositionsFilter';
 import LoadingWheel from '../LoadingWheel';
+import NumberOfItemsFound from '../Widgets/NumberOfItemsFound';
+import BallotItemForAddPositions from './BallotItemForAddPositions';
 
-const BallotItemForAddPositions = React.lazy(() => import('./BallotItemForAddPositions'));
-const FilterBase = React.lazy(() => import('../Filter/FilterBase'));
-const NumberOfItemsFound = React.lazy(() => import('../Widgets/NumberOfItemsFound'));
-const SettingsAddBallotItemsFilter = React.lazy(() => import('../Filter/SettingsAddBallotItemsFilter'));
-const SettingsSeePositionsFilter = React.lazy(() => import('../Filter/SettingsSeePositionsFilter'));
-const ShowMoreItems = React.lazy(() => import('../Widgets/ShowMoreItems'));
-
+const ShowMoreItems = React.lazy(() => import(/* webpackChunkName: 'ShowMoreItems' */ '../Widgets/ShowMoreItems'));
 
 
 const groupedFilters = [
