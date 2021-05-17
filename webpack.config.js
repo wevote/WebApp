@@ -56,7 +56,9 @@ module.exports = (env, argv) => ({
           },
         }),
       ] : []),
-      new CssMinimizerPlugin(),
+      new CssMinimizerPlugin({
+        test: /\.css$/i,
+      }),
     ],
   },
   resolve: {
