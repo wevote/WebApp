@@ -9,6 +9,7 @@ import convertVoterGuideToElection from '../utils/voterGuideFunctions';
 import OrganizationStore from './OrganizationStore'; // eslint-disable-line import/no-cycle
 import VoterStore from './VoterStore'; // eslint-disable-line import/no-cycle
 
+
 class VoterGuideStore extends ReduceStore {
   // The store keeps nested attributes of voter guides in allCachedVoterGuides, whereas the followed, ignoring, to_follow are just lists of ids.
   getInitialState () {
@@ -38,7 +39,7 @@ class VoterGuideStore extends ReduceStore {
     // console.log("VoterGuideStore, returnVoterGuidesFromListOfIds listOfOrganizationWeVoteIds: ", listOfOrganizationWeVoteIds);
     // console.log("VoterGuideStore, returnVoterGuidesFromListOfIds state.allCachedVoterGuides: ", state.allCachedVoterGuides);
     const filteredVoterGuides = [];
-    if (listOfOrganizationWeVoteIds) {
+    if (listOfOrganizationWeVoteIds && listOfOrganizationWeVoteIds.length) {
       // voterGuidesFollowedRetrieve API returns more than one voter guide per organization some times.
       const uniqueOrganizationWeVoteIdArray = listOfOrganizationWeVoteIds.filter((value, index, self) => self.indexOf(value) === index);
       uniqueOrganizationWeVoteIdArray.forEach((organizationWeVoteId) => {
@@ -236,6 +237,10 @@ class VoterGuideStore extends ReduceStore {
   voterGuidesToFollowRetrieveStopped () {
     // While this is set to true, don't allow any more calls to this API
     return this.getState().voterGuidesToFollowRetrieveStopped;
+  }
+
+  getOrganizationWeVoteIdsByIssueWeVoteIdDict () {
+    return this.getState().organizationWeVoteIdsByIssueWeVoteId;
   }
 
   voterGuidesUpcomingFromFriendsStopped (googleCivicElectionId) {

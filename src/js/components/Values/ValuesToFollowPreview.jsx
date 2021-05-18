@@ -3,7 +3,10 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
+import BallotActions from '../../actions/BallotActions';
 import IssueActions from '../../actions/IssueActions';
+import VoterGuideActions from '../../actions/VoterGuideActions';
+import BallotStore from '../../stores/BallotStore';
 import IssueStore from '../../stores/IssueStore';
 import VoterGuideStore from '../../stores/VoterGuideStore';
 import VoterStore from '../../stores/VoterStore';
@@ -15,6 +18,9 @@ const FriendInvitationOnboardingValuesList = React.lazy(() => import(/* webpackC
 const ImageHandler = React.lazy(() => import(/* webpackChunkName: 'ImageHandler' */ '../ImageHandler'));
 const ShowMoreFooter = React.lazy(() => import(/* webpackChunkName: 'ShowMoreFooter' */ '../Navigation/ShowMoreFooter'));
 
+/* global $ */
+
+
 class ValuesToFollowPreview extends Component {
   constructor (props) {
     super(props);
@@ -25,17 +31,41 @@ class ValuesToFollowPreview extends Component {
   }
 
   componentDidMount () {
+    this.ballotStoreListener = BallotStore.addListener(this.onBallotStoreChange.bind(this));
     this.issueStoreListener = IssueStore.addListener(this.onIssueStoreChange.bind(this));
     this.voterGuideStoreListener = VoterGuideStore.addListener(this.onVoterGuideStoreChange.bind(this));
     this.onIssueStoreChange();
     this.onVoterGuideStoreChange();
     IssueActions.issueDescriptionsRetrieve(VoterStore.getVoterWeVoteId());
     IssueActions.issuesFollowedRetrieve(VoterStore.getVoterWeVoteId());
+    const voterGuidesFromFriendsUpcomingRetrieve = VoterGuideStore.getOrganizationWeVoteIdsByIssueWeVoteIdDict();
+    const hasNoFriends = $.isEmptyObject(voterGuidesFromFriendsUpcomingRetrieve);
+    // console.log('voterGuidesFromFriendsUpcomingRetrieveLength: ', hasNoFriends);
+    const googleCivicId = VoterStore.electionId();
+    if (hasNoFriends) {
+      // May 2021
+      if (googleCivicId) {
+        VoterGuideActions.voterGuidesFromFriendsUpcomingRetrieve(googleCivicId);
+      } else {
+        BallotActions.voterBallotItemsRetrieve(0, '', '');  // Will need to
+      }
+    }
   }
 
   componentWillUnmount () {
+    this.ballotStoreListener.remove();
     this.issueStoreListener.remove();
     this.voterGuideStoreListener.remove();
+  }
+
+  onBallotStoreChange () {
+    const voterGuidesFromFriendsUpcomingRetrieve = VoterGuideStore.getOrganizationWeVoteIdsByIssueWeVoteIdDict();
+    const hasNoFriends = $.isEmptyObject(voterGuidesFromFriendsUpcomingRetrieve);
+    const googleCivicId = VoterStore.electionId();
+    // May 2021
+    if (hasNoFriends) {
+      VoterGuideActions.voterGuidesFromFriendsUpcomingRetrieve(googleCivicId);
+    }
   }
 
   onIssueStoreChange () {

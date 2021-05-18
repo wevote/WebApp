@@ -169,9 +169,6 @@ module.exports = [
   // Jan 2019, https://github.com/styled-components/styled-components/blob/master/LICENSE
   'styled-components/styled-components is licensed under the MIT License (MIT)\n' +
   'Copyright (c) 2016-present Glen Maddern and Maximilian Stoiber\n',
-  // Jan 2019, https://github.com/visionmedia/superagent/blob/master/LICENSE
-  'visionmedia/superagent is licensed under the MIT License (MIT)\n' +
-  'Copyright (c) 2014-2016 TJ Holowaychuk <tj@vision-media.ca>\n',
   // Jan 2021,
   'topojson/topojson-client is licensed under the ISC License\n' +
   'Copyright 2012-2019 Michael Bostock\n',

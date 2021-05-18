@@ -493,6 +493,8 @@ const styles = (theme) => ({
   toolbar: {
     width: 960,
     maxWidth: '95%',
+    marginLeft: 'auto',
+    marginRight: 'auto',
     justifyContent: 'space-between',
     borderBottom: '2px solid rgba(255, 255, 255, 0.1)',
   },
@@ -538,6 +540,7 @@ const styles = (theme) => ({
 
 const DesktopView = styled.div`
   display: inherit;
+  max-width: unset;
   @media (max-width: ${({ theme }) => theme.breakpoints.lg}) {
     display: none;
   }

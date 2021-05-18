@@ -3,6 +3,7 @@ import React, { Component, Suspense } from 'react';
 import { Redirect, Route, Switch } from 'react-router-dom';
 import styled, { ThemeProvider } from 'styled-components';
 import Header from './js/components/Navigation/Header';
+import HeaderBarSuspense from './js/components/Navigation/HeaderBarSuspense';
 import ErrorBoundary from './js/components/Widgets/ErrorBoundary';
 import WeVoteRouter from './js/components/Widgets/WeVoteRouter';
 import muiTheme from './js/mui-theme';
@@ -205,7 +206,7 @@ class App extends Component {
 
     return (
       <ErrorBoundary>
-        <Suspense fallback={<span>&nbsp;</span>}>
+        <Suspense fallback={<HeaderBarSuspense />}>
           <MuiThemeProvider theme={muiTheme}>
             <ThemeProvider theme={styledTheme}>
               <WeVoteRouter>
@@ -480,10 +481,13 @@ class App extends Component {
 const WeVoteBody = styled.div`
   background-color: rgb(235, 236, 238);
   color: #333;
+  display: block;
   font-family: "Nunito Sans", "Helvetica Neue Light", "Helvetica Neue", "Helvetica", "Arial", sans-serif;
   line-height: 1.4;
-  margin: 0;
-  display: block;
+  margin: 0 auto;
+  max-width: 960px;
+  position: relative;
+  z-index: 0;
 `;
 
 export default App;

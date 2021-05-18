@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
+import Popover from 'react-bootstrap/Popover';
 import { Link } from 'react-router-dom';
 import FacebookActions from '../../actions/FacebookActions';
 import FacebookStore from '../../stores/FacebookStore';
@@ -8,7 +9,6 @@ import { renderLog } from '../../utils/logging';
 import FacebookFriendCard from './FacebookFriendCard';
 import FacebookFriendTinyDisplay from './FacebookFriendTinyDisplay';
 
-const Popover = React.lazy(() => import(/* webpackChunkName: 'BootstrapPopover' */ 'react-bootstrap/Popover'));
 
 export default class FacebookFriendsDisplay extends Component {
   constructor (props) {

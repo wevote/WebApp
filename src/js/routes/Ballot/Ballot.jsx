@@ -327,6 +327,11 @@ class Ballot extends Component {
       News.preload();
       Values.preload();
     }, 2000);
+
+    if (window.serviceWorkerLoaded === undefined) {
+      navigator.serviceWorker.register('/sw.js');
+      window.serviceWorkerLoaded = true;
+    }
   }  // end of componentDidMount
 
   // eslint-disable-next-line camelcase,react/sort-comp
