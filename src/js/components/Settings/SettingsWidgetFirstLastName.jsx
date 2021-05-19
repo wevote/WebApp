@@ -8,6 +8,7 @@ import OrganizationActions from '../../actions/OrganizationActions';
 import VoterActions from '../../actions/VoterActions';
 import OrganizationStore from '../../stores/OrganizationStore';
 import VoterStore from '../../stores/VoterStore';
+import apiCalming from '../../utils/apiCalming';
 import { isCordova, isWebApp, prepareForCordovaKeyboard, restoreStylesAfterCordovaKeyboard } from '../../utils/cordovaUtils';
 import { renderLog } from '../../utils/logging';
 import { isSpeakerTypeOrganization } from '../../utils/organization-functions';
@@ -73,7 +74,10 @@ class SettingsWidgetFirstLastName extends Component {
         this.voterNameTimer = null;
       }
     }
-    FriendActions.friendInvitationsWaitingForVerification();
+    if (apiCalming('friendInvitationsWaitingForVerification')) {
+      console.log('----------------- SettingsWidgetFirstAndLastName friendInvitationsWaitingForVerification');
+      FriendActions.friendInvitationsWaitingForVerification();
+    }
   }
 
   onOrganizationStoreChange () {

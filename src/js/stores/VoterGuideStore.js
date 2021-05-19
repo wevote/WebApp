@@ -3,6 +3,7 @@ import OrganizationActions from '../actions/OrganizationActions';
 import SupportActions from '../actions/SupportActions';
 import VoterGuideActions from '../actions/VoterGuideActions';
 import Dispatcher from '../dispatcher/Dispatcher';
+import apiCalming from '../utils/apiCalming';
 import { isSpeakerTypeOrganization, isSpeakerTypePublicFigure } from '../utils/organization-functions';
 import { arrayContains, convertToInteger } from '../utils/textFormat';
 import convertVoterGuideToElection from '../utils/voterGuideFunctions';
@@ -388,7 +389,9 @@ class VoterGuideStore extends ReduceStore {
         revisedState = state;
         if (googleCivicElectionId !== 0) {
           if (!this.voterGuidesUpcomingFromFriendsStopped(googleCivicElectionId)) {
-            VoterGuideActions.voterGuidesFromFriendsUpcomingRetrieve(googleCivicElectionId);
+            if (apiCalming('voterGuidesFromFriendsUpcomingRetrieve', 500)) {
+              VoterGuideActions.voterGuidesFromFriendsUpcomingRetrieve(googleCivicElectionId);
+            }
             voterGuidesUpcomingFromFriendsStoppedByGoogleCivicElectionId = state.voterGuidesUpcomingFromFriendsStoppedByGoogleCivicElectionId || [];
             voterGuidesUpcomingFromFriendsStoppedByGoogleCivicElectionId.push(googleCivicElectionId);
             revisedState = { ...revisedState, voterGuidesUpcomingFromFriendsStoppedByGoogleCivicElectionId };

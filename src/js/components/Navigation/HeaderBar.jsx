@@ -4,7 +4,6 @@ import { AccountCircle, Place } from '@material-ui/icons';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import styled from 'styled-components';
-import anonymous from '../../../img/global/icons/avatar-generic.png';
 import AppActions from '../../actions/AppActions';
 import BallotActions from '../../actions/BallotActions';
 import OrganizationActions from '../../actions/OrganizationActions';
@@ -36,6 +35,7 @@ const ShareModal = React.lazy(() => import(/* webpackChunkName: 'ShareModal' */ 
 const SignInModal = React.lazy(() => import(/* webpackChunkName: 'SignInModal' */ '../Widgets/SignInModal'));
 const ValuesIntroModal = React.lazy(() => import(/* webpackChunkName: 'ValuesIntroModal' */ '../CompleteYourProfile/ValuesIntroModal'));
 
+const anonymous = '../../../img/global/icons/avatar-generic.png';
 // TODO: Backport "@stripe/react-stripe-js" use from Campaigns
 // import PaidAccountUpgradeModal from '../Settings/PaidAccountUpgradeModal';
 

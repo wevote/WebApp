@@ -261,6 +261,7 @@ export default {
   },
 
   voterRetrieve () {
+    // console.log('VoterActions, voterRetrieve');
     Dispatcher.loadEndpoint('voterRetrieve');
   },
 

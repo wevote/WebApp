@@ -4,12 +4,12 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
-import googlePlayIcon from '../../../img/global/logos/google-play-badge-cropped.png';
 import { cordovaDot, historyPush, isWebApp } from '../../utils/cordovaUtils';
 
 const OpenExternalWebSite = React.lazy(() => import(/* webpackChunkName: 'OpenExternalWebSite' */ '../Widgets/OpenExternalWebSite'));
 
 const appStoreIcon = '../../../img/global/logos/download_on_the_app_store_badge_us-uk_blk.svg';
+const googlePlayIcon = '../../../img/global/logos/google-play-badge-cropped.png';
 
 
 class WelcomeFooter extends Component {

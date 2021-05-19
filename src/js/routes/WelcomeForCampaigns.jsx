@@ -4,9 +4,6 @@ import PropTypes from 'prop-types';
 import React, { PureComponent } from 'react';
 import Helmet from 'react-helmet';
 import styled from 'styled-components';
-import ffwdLogo from '../../img/global/logos/ffwd-logo.png';
-import vipLogo from '../../img/global/logos/vip-logo-1000x208.png';
-import voteDotOrgLogo from '../../img/global/logos/vote_dot_org_logo-530x200.png';
 import AnalyticsActions from '../actions/AnalyticsActions';
 import AppActions from '../actions/AppActions';
 import VoterActions from '../actions/VoterActions';
@@ -23,8 +20,10 @@ import { validateEmail } from '../utils/regex-checks';
 const WelcomeFooter = React.lazy(() => import(/* webpackChunkName: 'WelcomeFooter' */ '../components/Welcome/WelcomeFooter'));
 const WelcomeAppbar = React.lazy(() => import(/* webpackChunkName: 'WelcomeAppbar' */ '../components/Navigation/WelcomeAppbar'));
 
-
+const ffwdLogo = '../../img/global/logos/ffwd-logo.png';
 const googleLogo = '../../img/global/logos/google-logo.svg';
+const vipLogo = '../../img/global/logos/vip-logo-1000x208.png';
+const voteDotOrgLogo = '../../img/global/logos/vote_dot_org_logo-530x200.png';
 
 class WelcomeForCampaigns extends PureComponent {
   constructor (props) {

@@ -7,6 +7,7 @@ import styled from 'styled-components';
 import ActivityActions from '../../actions/ActivityActions';
 import ActivityStore from '../../stores/ActivityStore';
 import { createDescriptionOfFriendPosts } from '../../utils/activityUtils';
+import apiCalming from '../../utils/apiCalming';
 import { historyPush, isIOSAppOnMac, setIconBadgeMessageCount } from '../../utils/cordovaUtils';
 import { timeFromDate } from '../../utils/dateFormat';
 import initializejQuery from '../../utils/initializejQuery';
@@ -32,7 +33,9 @@ class HeaderNotificationMenu extends Component {
     initializejQuery(() => {
       this.timer = setTimeout(() => {
         this.activityStoreListener = ActivityStore.addListener(this.onActivityStoreChange.bind(this));
-        ActivityActions.activityNoticeListRetrieve();
+        if (apiCalming('activityNoticeListRetrieve', 500)) {
+          ActivityActions.activityNoticeListRetrieve();
+        }
         ActivityActions.activityListRetrieve();
         if (!isIOSAppOnMac()) setIconBadgeMessageCount(0);
       }, 3000);

@@ -5,6 +5,7 @@ import VoterActions from '../../actions/VoterActions';
 import webAppConfig from '../../config';
 import AppStore from '../../stores/AppStore';
 import VoterStore from '../../stores/VoterStore';
+import apiCalming from '../../utils/apiCalming';
 import { dumpCssFromId } from '../../utils/appleSiliconUtils';
 import { getApplicationViewBooleans, weVoteBrandingOff } from '../../utils/applicationUtils';
 import { cordovaTopHeaderTopMargin } from '../../utils/cordovaOffsets';
@@ -70,7 +71,7 @@ export default class Header extends Component {
     }
     initializejQuery(() => {
       // console.log('initialized jQuery in Header');
-      if (VoterStore.getVoterWeVoteId() === '') {
+      if (VoterStore.getVoterWeVoteId() === '' && apiCalming('voterRetrieve', 500)) {
         VoterActions.voterRetrieve();
       }
     });
