@@ -33,6 +33,7 @@ import IssueStore from '../../stores/IssueStore';
 import SupportStore from '../../stores/SupportStore';
 import VoterGuideStore from '../../stores/VoterGuideStore';
 import VoterStore from '../../stores/VoterStore';
+import apiCalming from '../../utils/apiCalming';
 import { dumpCssFromId } from '../../utils/appleSiliconUtils';
 import cookies from '../../utils/cookies';
 import { cordovaBallotFilterTopMargin } from '../../utils/cordovaOffsets';
@@ -274,7 +275,9 @@ class Ballot extends Component {
 
     ElectionActions.electionsRetrieve();
     OrganizationActions.organizationsFollowedRetrieve();
-    VoterActions.voterRetrieve(); // This is needed to update the interface status settings
+    if (apiCalming('voterRetrieve', 500)) {  // May 2021: This is not needed if Header.jsx is firing the same api almost simultaneously on first page load
+      VoterActions.voterRetrieve();  // This is needed to update the interface status settings
+    }
 
     if (googleCivicElectionId && googleCivicElectionId !== 0) {
       AnalyticsActions.saveActionBallotVisit(googleCivicElectionId);
@@ -315,7 +318,9 @@ class Ballot extends Component {
     } else {
       AppActions.setEvaluateHeaderDisplay();
     }
-    ActivityActions.activityNoticeListRetrieve();
+    if (apiCalming('activityNoticeListRetrieve', 3500)) {
+      ActivityActions.activityNoticeListRetrieve();
+    }
     window.addEventListener('scroll', this.onScroll);
 
     if (isIOSAppOnMac() && appleSiliconDebug) {
@@ -327,8 +332,8 @@ class Ballot extends Component {
       News.preload();
       Values.preload();
     }, 2000);
-
-    if (window.serviceWorkerLoaded === undefined) {
+    if (webAppConfig.ENABLE_WORKBOX_SERVICE_WORKER &&
+        window.serviceWorkerLoaded === undefined) {
       navigator.serviceWorker.register('/sw.js');
       window.serviceWorkerLoaded = true;
     }

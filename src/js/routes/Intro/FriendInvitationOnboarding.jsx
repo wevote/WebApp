@@ -4,7 +4,6 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import Helmet from 'react-helmet';
 import styled from 'styled-components';
-import closeIcon from '../../../img/global/icons/x-close.png';
 import FriendActions from '../../actions/FriendActions';
 import IssueActions from '../../actions/IssueActions';
 import VoterActions from '../../actions/VoterActions';
@@ -20,6 +19,7 @@ import { cordovaFooterHeight, cordovaNetworkNextButtonTop } from '../../utils/co
 import { cordovaDot, getAndroidSize, historyPush, isAndroid, isWebApp } from '../../utils/cordovaUtils';
 import { renderLog } from '../../utils/logging';
 
+const closeIcon = '../../../img/global/icons/x-close.png';
 const logoDark = '../../../img/global/svg-icons/we-vote-logo-horizontal-color-dark-141x46.svg';
 
 class FriendInvitationOnboarding extends Component {

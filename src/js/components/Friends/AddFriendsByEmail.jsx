@@ -8,6 +8,7 @@ import styled from 'styled-components';
 import FriendActions from '../../actions/FriendActions';
 import FriendStore from '../../stores/FriendStore';
 import VoterStore from '../../stores/VoterStore';
+import apiCalming from '../../utils/apiCalming';
 import { blurTextFieldAndroid, focusTextFieldAndroid } from '../../utils/cordovaUtils';
 import isMobileScreenSize from '../../utils/isMobileScreenSize';
 import { renderLog } from '../../utils/logging';
@@ -51,7 +52,10 @@ class AddFriendsByEmail extends Component {
     });
     this.friendStoreListener = FriendStore.addListener(this.onFriendStoreChange.bind(this));
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
-    FriendActions.friendInvitationsWaitingForVerification();
+    if (apiCalming('friendInvitationsWaitingForVerification')) {
+      // console.log('AddFriendsByEmail friendInvitationsWaitingForVerification');
+      FriendActions.friendInvitationsWaitingForVerification();
+    }
   }
 
   componentWillUnmount () {

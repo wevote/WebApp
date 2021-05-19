@@ -10,6 +10,7 @@ import BallotStore from '../../stores/BallotStore';
 import IssueStore from '../../stores/IssueStore';
 import VoterGuideStore from '../../stores/VoterGuideStore';
 import VoterStore from '../../stores/VoterStore';
+import apiCalming from '../../utils/apiCalming';
 import { historyPush } from '../../utils/cordovaUtils';
 import { renderLog } from '../../utils/logging';
 import { arrayContains } from '../../utils/textFormat';
@@ -45,7 +46,9 @@ class ValuesToFollowPreview extends Component {
     if (hasNoFriends) {
       // May 2021
       if (googleCivicId) {
-        VoterGuideActions.voterGuidesFromFriendsUpcomingRetrieve(googleCivicId);
+        if (apiCalming('voterGuidesFromFriendsUpcomingRetrieve', 500)) {
+          VoterGuideActions.voterGuidesFromFriendsUpcomingRetrieve(googleCivicId);
+        }
       } else {
         BallotActions.voterBallotItemsRetrieve(0, '', '');  // Will need to
       }

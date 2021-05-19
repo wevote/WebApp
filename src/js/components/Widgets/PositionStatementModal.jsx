@@ -4,7 +4,6 @@ import { Close } from '@material-ui/icons';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import styled from 'styled-components';
-import stockAvatar from '../../../img/global/icons/avatar-generic.png';
 import SupportActions from '../../actions/SupportActions';
 import CandidateStore from '../../stores/CandidateStore';
 import MeasureStore from '../../stores/MeasureStore';
@@ -17,6 +16,7 @@ import { stringContains } from '../../utils/textFormat';
 const FirstAndLastNameRequiredAlert = React.lazy(() => import(/* webpackChunkName: 'FirstAndLastNameRequiredAlert' */ './FirstAndLastNameRequiredAlert'));
 const ItemActionBar = React.lazy(() => import(/* webpackChunkName: 'ItemActionBar' */ './ItemActionBar/ItemActionBar'));
 
+const stockAvatar = '../../../img/global/icons/avatar-generic.png';
 // const anonymous = '../../../img/global/icons/avatar-generic.png';
 
 

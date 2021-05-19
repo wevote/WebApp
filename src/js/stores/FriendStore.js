@@ -346,7 +346,9 @@ class FriendStore extends ReduceStore {
       case 'voterFacebookSignInRetrieve':
       case 'voterMergeTwoAccounts':
       case 'voterVerifySecretCode':
-        // console.log('resetting FriendStore from sign in process');
+        // May 2021: This is a heavy handed response to a sign in state change, and firing actions from stores should be avoided
+        // These are expensive and slow api calls
+        // console.log('resetting FriendStore from sign in process, action.type: ', action.type);
         FriendActions.currentFriends();
         FriendActions.friendInvitationsSentByMe();
         FriendActions.friendInvitationsSentToMe();

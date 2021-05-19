@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import Helmet from 'react-helmet';
-import closeIcon from '../../../img/global/icons/x-close.png';
 import FacebookSignIn from '../../components/Facebook/FacebookSignIn';
 import LoadingWheel from '../../components/LoadingWheel';
 import TwitterSignIn from '../../components/Twitter/TwitterSignIn';
@@ -8,6 +7,8 @@ import FacebookStore from '../../stores/FacebookStore';
 import VoterStore from '../../stores/VoterStore';
 import { cordovaDot, historyPush } from '../../utils/cordovaUtils';
 import { renderLog } from '../../utils/logging';
+
+const closeIcon = '../../../img/global/icons/x-close.png';
 
 
 export default class GetStarted extends Component {
