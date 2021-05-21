@@ -3,7 +3,7 @@ import { Button } from '@material-ui/core';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import { CheckCircle, NotInterested } from '@material-ui/icons';
-import { styled } from '@material-ui/styles';
+import { styled as muiStyled } from '@material-ui/styles';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import OrganizationActions from '../../actions/OrganizationActions';
@@ -21,7 +21,7 @@ function FollowToggleButton (params) {
   const { showFollowingText, isFollowing, isFriend, isIgnoring } = params.params;
 
   return (
-    <ButtonWe
+    <ButtonStyled
       aria-controls="simple-menu"
       aria-haspopup="true"
       onClick={(event) => handleClick(event)}
@@ -30,24 +30,24 @@ function FollowToggleButton (params) {
         <span>
           { (isFollowing || isFriend) && (
             <span>
-              <CheckCircleWe className="following-icon" />
+              <CheckCircleStyled className="following-icon" />
               <span>Following</span>
             </span>
           )}
           { isIgnoring && (
             <span>
-              <NotInterestedWe className="ignoring-icon" />
+              <NotInterestedStyled className="ignoring-icon" />
               <span className="pl-2">Ignoring</span>
             </span>
           )}
         </span>
       ) : (
         <span>
-          { (isFollowing || isFriend) && <CheckCircleWe className="following-icon" /> }
-          { isIgnoring && <NotInterestedWe className="ignoring-icon" /> }
+          { (isFollowing || isFriend) && <CheckCircleStyled className="following-icon" /> }
+          { isIgnoring && <NotInterestedStyled className="ignoring-icon" /> }
         </span>
       )}
-    </ButtonWe>
+    </ButtonStyled>
   );
 }
 
@@ -479,11 +479,14 @@ export default class FollowToggle extends Component {
             <Menu
               id="simple-menu"
               anchorEl={this.state.anchorEl}
+              getContentAnchorEl={null}
+              anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+              transformOrigin={{ vertical: 'top', horizontal: 'left' }}
               keepMounted
               open={Boolean(this.state.anchorEl)}
               onClose={this.handleClose}
             >
-              <MenuItem onClick={this.handleClose}>
+              <MenuItemStyled onClick={this.handleClose}>
                 {isFollowingFriendOrIgnoring ? (
                   <UnfollowFollowLine
                     followFunction={followFunction}
@@ -499,8 +502,8 @@ export default class FollowToggle extends Component {
                     params={lineParams}
                   />
                 )}
-              </MenuItem>
-              <MenuItem onClick={this.handleClose}>
+              </MenuItemStyled>
+              <MenuItemStyled onClick={this.handleClose}>
                 {isFollowingFriendOrIgnoring ? (
                   <IgnoreLine
                     ignoreFunction={ignoreFunction}
@@ -518,7 +521,7 @@ export default class FollowToggle extends Component {
                     params={lineParams}
                   />
                 )}
-              </MenuItem>
+              </MenuItemStyled>
             </Menu>
           </>
         ) : (
@@ -547,20 +550,24 @@ FollowToggle.propTypes = {
   platformType: PropTypes.string,
 };
 
-const CheckCircleWe = styled(CheckCircle)({
+const CheckCircleStyled = muiStyled(CheckCircle)({
   fill: 'rgb(13, 84, 111)',
   height: 18,
   width: 18,
 });
 
-const ButtonWe = styled(Button)({
+const ButtonStyled = muiStyled(Button)({
   border: '1px solid rgb(204, 204, 204)',
   // height: 32,
 });
 
-const NotInterestedWe = styled(NotInterested)({
+const NotInterestedStyled = muiStyled(NotInterested)({
   fill: 'rgb(13, 84, 111)',
   height: 18,
   width: 18,
+});
+
+const MenuItemStyled = muiStyled(MenuItem)({
+  height: 28,
 });
 
