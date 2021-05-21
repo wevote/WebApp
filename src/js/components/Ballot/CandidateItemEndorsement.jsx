@@ -1,6 +1,7 @@
 // import { createMuiTheme, MuiThemeProvider } from '@material-ui/core';
 import { Button, TextField } from '@material-ui/core';
 import { createMuiTheme, MuiThemeProvider, withStyles } from '@material-ui/core/styles';
+import { Twitter } from '@material-ui/icons';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import styled from 'styled-components';
@@ -382,7 +383,7 @@ class CandidateItemEndorsement extends Component {
                 <span
                   className="twitter-followers__badge"
                 >
-                  <span className="fab fa-twitter fa-sm" />
+                  <Twitter />
                   <span title={numberWithCommas(twitterFollowersCount)}>{abbreviateNumber(twitterFollowersCount)}</span>
                 </span>
               )}

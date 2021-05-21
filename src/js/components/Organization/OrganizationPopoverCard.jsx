@@ -1,3 +1,4 @@
+import { Twitter } from '@material-ui/icons';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import Button from 'react-bootstrap/Button';
@@ -167,7 +168,8 @@ class OrganizationPopoverCard extends Component {
                 &nbsp;&nbsp;
                 {!!(twitterFollowersCount) && (
                   <span>
-                    <span className="fab fa-twitter twitter-followers__icon" />
+                    {/* <span className="fab fa-twitter twitter-followers__icon" /> */}
+                    <Twitter />
                     {numberWithCommas(twitterFollowersCount)}
                   </span>
                 )}

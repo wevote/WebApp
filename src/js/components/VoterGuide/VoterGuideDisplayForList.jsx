@@ -96,12 +96,6 @@ class VoterGuideDisplayForList extends PureComponent {
           <div className="card-child__additional">
             <div className="card-child__follow-buttons">
               {this.props.children}
-              {/* twitter_followers_count ?
-                <span className="twitter-followers__badge">
-                  <span className="fab fa-twitter twitter-followers__icon" />
-                  {numberWithCommas(twitter_followers_count)}
-                </span> :
-                null */}
             </div>
           </div>
         </div>

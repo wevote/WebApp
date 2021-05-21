@@ -1,3 +1,4 @@
+import { Twitter } from '@material-ui/icons';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { renderLog } from '../../utils/logging';
@@ -46,7 +47,7 @@ export default class TwitterAccountCard extends Component {
                 <span />}
               {twitterFollowersCount ? (
                 <span className="twitter-followers__badge">
-                  <span className="fab fa-twitter" />
+                  <Twitter />
                   <span title={numberWithCommas(twitterFollowersCount)}>{abbreviateNumber(twitterFollowersCount)}</span>
                 </span>
               ) : null}

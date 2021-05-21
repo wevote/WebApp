@@ -1,4 +1,5 @@
 import { withStyles } from '@material-ui/core/styles';
+import { Twitter } from '@material-ui/icons';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { ReactSVG } from 'react-svg';
@@ -285,7 +286,7 @@ class VoterGuidePositionItem extends Component {
                     <DesktopItemTwitterContainer>
                       { !!(twitterFollowersCount && String(twitterFollowersCount) !== '0') && (
                         <DesktopItemTwitter>
-                          <TwitterIcon className="fab fa-twitter" />
+                          <Twitter />
                           {numberWithCommas(twitterFollowersCount)}
                         </DesktopItemTwitter>
                       )}

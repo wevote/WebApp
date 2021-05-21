@@ -25,6 +25,7 @@ import BallotSideBar from '../../components/Navigation/BallotSideBar';
 import EditAddressOneHorizontalRow from '../../components/Ready/EditAddressOneHorizontalRow';
 import ValuesToFollowPreview from '../../components/Values/ValuesToFollowPreview';
 import BrowserPushMessage from '../../components/Widgets/BrowserPushMessage';
+import SnackNotifier from '../../components/Widgets/SnackNotifier';
 import webAppConfig from '../../config';
 import AppStore from '../../stores/AppStore';
 import BallotStore from '../../stores/BallotStore';
@@ -1218,6 +1219,7 @@ class Ballot extends Component {
     let searchTextString = '';
     return (
       <div className="ballot_root">
+        <SnackNotifier />
         <div className={`ballot__heading ${ballotHeaderUnpinned && isWebApp() ? 'ballot__heading__unpinned' : ''}`}
              style={isAndroid() && getAndroidSize() === '--xl' ? { paddingTop: '99px' } : {}}
         >

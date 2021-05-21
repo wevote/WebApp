@@ -1,3 +1,4 @@
+import { Twitter } from '@material-ui/icons';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import TwitterActions from '../../actions/TwitterActions';
@@ -187,7 +188,7 @@ class TwitterSignIn extends Component {
         buttonText={twitterSignInStartSubmitted ? shortenText(buttonSubmittedText, 32) : shortenText(buttonText, 32)}
         disabled={disabled}
         externalUniqueId="twitterSignIn"
-        icon={<i className="fab fa-twitter" />}
+        icon={<Twitter />}
         id="twitterSignIn"
         onClick={isWebApp() ? this.twitterSignInWebApp : this.twitterSignInWebAppCordova}
         separatorColor="rgba(250, 250, 250, .6)"

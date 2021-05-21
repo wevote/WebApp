@@ -1,3 +1,4 @@
+import { Twitter } from '@material-ui/icons';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
@@ -218,7 +219,8 @@ export default class OrganizationCard extends Component {
                       </TwitterHandleWrapper>
                       {(twitterFollowersCount && String(twitterFollowersCount) !== '0' && numberWithCommas(twitterFollowersCount) !== '0') && (
                         <span className="twitter-followers__badge">
-                          <TwitterFollowersIcon className="fab fa-twitter" />
+                          {/* <TwitterFollowersIcon className="fab fa-twitter" /> */}
+                          <Twitter />
                           {numberWithCommas(twitterFollowersCount)}
                         </span>
                       )}

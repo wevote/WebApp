@@ -1,3 +1,4 @@
+import { Twitter } from '@material-ui/icons';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
@@ -59,11 +60,11 @@ class ThisIsMeAction extends Component {
     }
     let backgroundColor = '';
     let fontColor = '';
-    let icon = <i className="fab fa-twitter-square" />;
+    let icon = <Twitter />;
     if (whiteOnBlue) {
       backgroundColor = '#fff';
       fontColor = '#2e3c5d';
-      icon = <i className="fab fa-twitter-square" />;
+      icon = <Twitter />;
     }
 
     return (

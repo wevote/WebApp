@@ -86,6 +86,16 @@ export function lazyLoader (library) {
         window.lazyLoaderWe.push(library);
         resolve(scriptElement1);
       });
+    case 'popper':
+      return new Promise((resolve) => {
+        const firstExistingScript = document.getElementsByTagName('script')[0];
+        const scriptElement1 = document.createElement('script');
+        scriptElement1.src = 'https://apis.google.com/js/api.js';
+        scriptElement1.type = 'text/javascript';
+        firstExistingScript.parentNode.insertBefore(scriptElement1, firstExistingScript);
+        window.lazyLoaderWe.push(library);
+        resolve(scriptElement1);
+      });
     default:
       return new Promise((resolve) => {
         console.error(`${library} has not been configured, and did not load`);

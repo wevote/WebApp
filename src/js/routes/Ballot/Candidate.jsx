@@ -16,6 +16,7 @@ import LoadingWheel from '../../components/LoadingWheel';
 import ShareButtonDesktopTablet from '../../components/Share/ShareButtonDesktopTablet';
 import EndorsementCard from '../../components/Widgets/EndorsementCard';
 import SearchOnGoogle from '../../components/Widgets/SearchOnGoogle';
+import SnackNotifier from '../../components/Widgets/SnackNotifier';
 import ThisIsMeAction from '../../components/Widgets/ThisIsMeAction';
 import ViewOnBallotpedia from '../../components/Widgets/ViewOnBallotpedia';
 import webAppConfig from '../../config';
@@ -294,6 +295,7 @@ class Candidate extends Component {
     //   This started happening when we implemented the flex-based "TwoColumns"
     return (
       <span>
+        <SnackNotifier />
         <Helmet
           title={titleText}
           meta={[{ name: 'description', content: descriptionText }]}
