@@ -294,7 +294,7 @@ class Candidate extends Component {
     // TODO When we remove expandIssuesByDefault from CandidateItem, the page is pushed very wide. This needs to be fixed.
     //   This started happening when we implemented the flex-based "TwoColumns"
     return (
-      <span>
+      <div className="page-content-container">
         <SnackNotifier />
         <Helmet
           title={titleText}
@@ -382,7 +382,7 @@ class Candidate extends Component {
             />
           </span>
         )}
-      </span>
+      </div>
     );
   }
 }

@@ -46,16 +46,16 @@ export default class SearchBar extends Component {
     }
   }
 
-  clearQuery () {
-    this.props.clearFunction();
-    this.setState({ searchString: '' });
-  }
-
   handleKeyPress () {
     clearTimeout(this.timer);
     this.timer = setTimeout(() => {
       this.props.searchFunction(this.state.searchString);
     }, this.props.searchUpdateDelayTime);
+  }
+
+  clearQuery () {
+    this.props.clearFunction();
+    this.setState({ searchString: '' });
   }
 
   updateResults (event) {

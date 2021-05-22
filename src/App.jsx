@@ -468,7 +468,8 @@ const WeVoteBody = styled.div`
   font-family: "Nunito Sans", "Helvetica Neue Light", "Helvetica Neue", "Helvetica", "Arial", sans-serif;
   line-height: 1.4;
   margin: 0 auto;
-  max-width: 960px;
+  // max-width: 960px;
+  height: 100vw;
   position: relative;
   z-index: 0;
 `;

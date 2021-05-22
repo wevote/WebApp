@@ -106,6 +106,18 @@ class SettingsSubscriptionPlan extends Component {
     window.removeEventListener('resize', this.handleResize);
   }
 
+  handleResize () {
+    this.setState({
+      windowWidth: window.innerWidth,
+    });
+
+    if (window.innerWidth < 569) {
+      this.setState({ mobileMode: true });
+    } else if (window.innerWidth >= 569) {
+      this.setState({ mobileMode: false });
+    }
+  }
+
   onDonateStoreChange = () => {
     const activePaidPlan = DonateStore.getActivePaidPlan();
     let activePaidPlanChosen = '';
@@ -210,18 +222,6 @@ class SettingsSubscriptionPlan extends Component {
     // console.log('onCancelPlan');
     DonateActions.donationCancelSubscriptionAction(subscriptionId, activePaidPlan.plan_type_enum);
   };
-
-  handleResize () {
-    this.setState({
-      windowWidth: window.innerWidth,
-    });
-
-    if (window.innerWidth < 569) {
-      this.setState({ mobileMode: true });
-    } else if (window.innerWidth >= 569) {
-      this.setState({ mobileMode: false });
-    }
-  }
 
   render () {
     renderLog('SettingsSubscriptionPlan');  // Set LOG_RENDER_EVENTS to log all renders

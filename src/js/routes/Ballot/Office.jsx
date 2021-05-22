@@ -307,7 +307,7 @@ class Office extends Component {
 
 
     return (
-      <OfficeWrapper>
+      <OfficeWrapper className="page-content-container">
         <Helmet
           title={titleText}
           meta={[{ name: 'description', content: descriptionText }]}

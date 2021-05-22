@@ -44,7 +44,6 @@ class ReadyLight extends Component {
   }
 
   componentDidMount () {
-    this.onAppStoreChange();
     initializejQuery(() => {
       // TODO: May4, 2021 10am, removing this has no effect if signed in -- voterBallotItemsRetrieve still gets called
       // this.positionItemTimer = setTimeout(() => {
@@ -73,15 +72,15 @@ class ReadyLight extends Component {
       this.analyticsTimer = setTimeout(() => {
         AnalyticsActions.saveActionReadyVisit(VoterStore.electionId());
       }, 8000);
-
-      this.setState({
-        locationGuessClosed: cookies.getItem('location_guess_closed'),
-        textForMapSearch: VoterStore.getTextForMapSearch(),
-      });
     });
     this.preloadTimer = setTimeout(() => {
       Ballot.preload();
     }, 3000);
+
+    this.setState({
+      chosenReadyIntroductionText: AppStore.getChosenReadyIntroductionText(),
+      chosenReadyIntroductionTitle: AppStore.getChosenReadyIntroductionTitle(),
+    });
   }
 
   componentDidCatch (error, info) {
@@ -108,13 +107,6 @@ class ReadyLight extends Component {
   static getDerivedStateFromError (error) {       // eslint-disable-line no-unused-vars
     console.log('Error in ReadyLight: ', error);
     return { hasError: true };
-  }
-
-  onAppStoreChange () {
-    this.setState({
-      chosenReadyIntroductionText: AppStore.getChosenReadyIntroductionText(),
-      chosenReadyIntroductionTitle: AppStore.getChosenReadyIntroductionTitle(),
-    });
   }
 
   goToBallot = () => {

@@ -1068,11 +1068,11 @@ const ToScoreLabel = styled.div`
   ${({ advisorImageExists }) => (advisorImageExists ? 'margin-top: -23px;' : 'margin-top: -20px;')}
 `;
 
-const TwitterIcon = styled.span`
-  font-size: 16px;
-  color: #ccc;
-  margin-right: 2px;
-  vertical-align: bottom;
-`;
+// const TwitterIcon = styled.span`
+//   font-size: 16px;
+//   color: #ccc;
+//   margin-right: 2px;
+//   vertical-align: bottom;
+// `;
 
 export default withTheme(withStyles(styles)(PositionItem));

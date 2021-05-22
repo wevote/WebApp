@@ -278,12 +278,12 @@ OrganizationCard.propTypes = {
 const OrganizationCardWrapper = styled.div`
 `;
 
-const TwitterFollowersIcon = styled.span`
-  font-size: 1.25rem;
-  color: #ccc;
-  margin-right: 2px;
-  vertical-align: bottom;
-`;
+// const TwitterFollowersIcon = styled.span`
+//   font-size: 1.25rem;
+//   color: #ccc;
+//   margin-right: 2px;
+//   vertical-align: bottom;
+// `;
 
 const TwitterHandleWrapper = styled.span`
   margin-right: 10px;

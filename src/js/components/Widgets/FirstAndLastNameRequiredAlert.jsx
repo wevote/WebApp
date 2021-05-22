@@ -34,7 +34,7 @@ class FirstAndLastNameRequiredAlert extends Component {
     this.organizationStoreListener = OrganizationStore.addListener(this.onOrganizationStoreChange.bind(this));
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
     if (apiCalming('friendInvitationsWaitingForVerification')) {
-      console.log('----------------- FirstAndLastNameRequiredAlert friendInvitationsWaitingForVerification');
+      // console.log('FirstAndLastNameRequiredAlert friendInvitationsWaitingForVerification');
       FriendActions.friendInvitationsWaitingForVerification();
     }
   }
