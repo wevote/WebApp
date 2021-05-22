@@ -18,7 +18,6 @@ import BrowserPushMessage from '../components/Widgets/BrowserPushMessage';
 import webAppConfig from '../config';
 import AppStore from '../stores/AppStore';
 import VoterStore from '../stores/VoterStore';
-import cookies from '../utils/cookies';
 import { historyPush, isAndroid, isIOS, isWebApp } from '../utils/cordovaUtils';
 import initializejQuery from '../utils/initializejQuery';
 import lazyWithPreload from '../utils/lazyWithPreload';
