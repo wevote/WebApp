@@ -1,4 +1,5 @@
 import React from 'react';
+import styled from 'styled-components';
 import { renderLog } from '../../utils/logging';
 
 function SmallCloud (params) {
@@ -33,7 +34,22 @@ function SmallCloud (params) {
 
 export default function HeaderBarSuspense () {
   renderLog('"Render" of HeaderBarSuspense');
+  console.log('--- HeaderBarSuspense ---');
   const left = (window.innerWidth - 964) / 2;  // about 358 on a high res screen
+
+  const { headerObjects: temp } = window;
+  if (!temp) {
+    window.headerObjects = {
+      logo: null,
+      ready: null,
+      ballot: null,
+      opinions: null,
+      discuss: null,
+      bell: null,
+      photo: null,
+    };
+  }
+  const { headerObjects } = window;
 
   return (
     <div style={{
@@ -41,20 +57,57 @@ export default function HeaderBarSuspense () {
       position: 'relative',
       color: 'rgb(51, 51, 51)',
       backgroundColor: 'white',
-      // display: 'block',
       fontFamily: '"Nunito Sans", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, sans-serif',
-      fontSize: 16,
-      fontWeight: 400,
       height: '48px',
       boxShadow: 'rgba(0, 0, 0, 0.2) 0px 2px 4px -1px, rgba(0, 0, 0, 0.14) 0px 4px 5px 0px, rgba(0, 0, 0, 0.12) 0px 1px 10px 0px',
     }}
     >
-      <SmallCloud left={`${left}px`} wide />
-      <SmallCloud left={`${left + 166}px`} />
-      <SmallCloud left={`${left + 256}px`} />
-      <SmallCloud left={`${left + 341}px`} />
-      <SmallCloud left={`${left + 441}px`} />
-      <SmallCloud left={`${left + 926}px`} />
+      {headerObjects.logo ?
+        <MenuLogo style={{ position: 'absolute', top: '8%', left: `${left + 2}px` }} dangerouslySetInnerHTML={{ __html: window.headerObjects.logo }} /> :
+        <SmallCloud left={`${left}px`} wide /> }
+      {headerObjects.ready ?
+        <MenuText style={{ left: `${left + 167}px` }} dangerouslySetInnerHTML={{ __html: window.headerObjects.ready }} /> :
+        <SmallCloud left={`${left + 167}px`} /> }
+      {headerObjects.ballot ?
+        <MenuText style={{ left: `${left + 258}px` }} dangerouslySetInnerHTML={{ __html: window.headerObjects.ballot }} /> :
+        <SmallCloud left={`${left + 258}px`} /> }
+      {headerObjects.opinions ?
+        <MenuText style={{ left: `${left + 344}px` }} dangerouslySetInnerHTML={{ __html: window.headerObjects.opinions }} /> :
+        <SmallCloud left={`${left + 344}px`} /> }
+      {headerObjects.discuss ?
+        <MenuText style={{ left: `${left + 439}px` }} dangerouslySetInnerHTML={{ __html: window.headerObjects.discuss }} /> :
+        <SmallCloud left={`${left + 441}px`} /> }
+      {headerObjects.bell ?
+        <MenuBell style={{ left: `${left + 868}px` }} dangerouslySetInnerHTML={{ __html: window.headerObjects.bell }} /> :
+        <SmallCloud left={`${left + 926}px`} /> }
+      {headerObjects.photo ?
+        <MenuBell style={{ left: `${left + 928}px` }} dangerouslySetInnerHTML={{ __html: window.headerObjects.photo }} /> : null }
     </div>
   );
 }
+
+const MenuText = styled.div`
+  text-transform: uppercase;
+  line-height: 24.5px;
+  white-space: normal;
+  letter-spacing: 0.4px;
+  //text-size-adjust: 100%;
+  font-weight: 400;
+  font-size: 14px;
+  opacity: 0.7;
+  position: absolute;
+  top: 22.5%;
+`;
+
+const MenuLogo = styled.div`
+  font-size: 10px;
+  font-weight: 400;
+  opacity: 1;
+  position: absolute;
+  top: 6px;
+`;
+
+const MenuBell = styled.div`
+  opacity: 1;
+  position: absolute;
+`;

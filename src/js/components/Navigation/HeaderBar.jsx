@@ -118,6 +118,28 @@ class HeaderBar extends Component {
       voterFirstName,
       voterIsSignedIn: voter && voter.is_signed_in,
     });
+    setTimeout(() => {
+      const { headerObjects } = window;
+      headerObjects.logo = document.querySelectorAll('[class^=HeaderBarLogo__HeaderBarWrapper]')[0].innerHTML;
+      if (document.getElementById('readyTabHeaderBar')) {
+        headerObjects.ready = document.getElementById('readyTabHeaderBar').innerHTML;
+      }
+      if (document.getElementById('ballotTabHeaderBar')) {
+        headerObjects.ballot = document.getElementById('ballotTabHeaderBar').innerHTML;
+      }
+      if (document.getElementById('valuesTabHeaderBar')) {
+        headerObjects.opinions = document.getElementById('valuesTabHeaderBar').innerHTML;
+      }
+      if (document.getElementById('discussTabHeaderBar')) {
+        headerObjects.discuss = document.getElementById('discussTabHeaderBar').innerHTML;
+      }
+      if (document.querySelectorAll('[class^=HeaderNotificationMenu__HeaderNotificationMenuWrapper]')) {
+        headerObjects.bell = document.querySelectorAll('[class^=HeaderNotificationMenu__HeaderNotificationMenuWrapper]')[0].innerHTML;
+      }
+      if (document.getElementById('profileAvatarHeaderBar')) {
+        headerObjects.photo = document.getElementById('profileAvatarHeaderBar').innerHTML;
+      }
+    }, 1000);
   }
 
   shouldComponentUpdate (nextProps, nextState) {
@@ -539,7 +561,7 @@ class HeaderBar extends Component {
                 )}
                 <TabWithPushHistory classes={{ root: classes.tabRootValues }} id="valuesTabHeaderBar" label="Opinions" to="/values" />
                 {(showFullNavigation) && (
-                  <TabWithPushHistory classes={{ root: classes.tabRootNews }} id="activityTabHeaderBar" label="Discuss" to="/news" />
+                  <TabWithPushHistory classes={{ root: classes.tabRootNews }} id="discussTabHeaderBar" label="Discuss" to="/news" />
                 )}
               </Tabs>
             </div>

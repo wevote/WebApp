@@ -46,19 +46,6 @@ export default class Header extends Component {
     this.closeOrganizationModal = this.closeOrganizationModal.bind(this);
     this.closeSharedItemModal = this.closeSharedItemModal.bind(this);
     this.handleResize = this.handleResize.bind(this);
-    // 2021-1-3: This is a workaround for the difficulty of nesting components in react-router V5, it should not be necessary
-    global.weVoteGlobalHistory.listen((location, action) => {
-      // TODO: Experimentally commented out 2021-5-3
-      // if (location.pathname !== this.state.priorPath) {
-      //   // Re-render the Header if the path changed (Needed for React-router V5)
-      //   console.log('-----------HEADER Re-render the Header if the path changed');
-      //   this.setState({ priorPath: window.locationPathname });
-      // }
-      if (webAppConfig.LOG_ROUTING) {
-        console.log(`Header: The current URL is ${location.pathname}${location.search}${location.hash}`);
-        console.log(`Header: The last navigation action was ${action}`, JSON.stringify(global.weVoteGlobalHistory, null, 2));
-      }
-    });
   }
 
   componentDidMount () {

@@ -224,7 +224,7 @@ describe('Cross browser automated testing', async () => {
 
   it('should go to the news tab', async() => {
     if (isDesktopScreenSize) {
-      await simpleClick('activityTabHeaderBar');
+      await simpleClick('discussTabHeaderBar');
       await simpleTextInput('EmailAddress-sidebar', 'automated_voter1@WeVote.info');
       await simpleTextInput('friendFirstName-sidebar', xssTest);
       await simpleTextInput('friendLastName-sidebar', sqlTest);
