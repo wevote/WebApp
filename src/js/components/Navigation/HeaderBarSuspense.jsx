@@ -34,7 +34,6 @@ function SmallCloud (params) {
 
 export default function HeaderBarSuspense () {
   renderLog('"Render" of HeaderBarSuspense');
-  console.log('--- HeaderBarSuspense ---');
   const left = (window.innerWidth - 964) / 2;  // about 358 on a high res screen
 
   const { headerObjects: temp } = window;

@@ -41,15 +41,6 @@ const anonymous = '../../../img/global/icons/avatar-generic.png';
 
 
 class HeaderBar extends Component {
-  // static goToGetStarted () {
-  //   const { location: { host } } = window;
-  //   const getStartedNow = '/ready';
-  //   const newHref = host + getStartedNow;
-  //   // const history = useHistory();
-  //   // history.push(getStartedNow);
-  //   window.location.href = newHref;
-  // }
-
   constructor (props) {
     super(props);
     this.state = {
@@ -120,7 +111,9 @@ class HeaderBar extends Component {
     });
     setTimeout(() => {
       const { headerObjects } = window;
-      headerObjects.logo = document.querySelectorAll('[class^=HeaderBarLogo__HeaderBarWrapper]')[0].innerHTML;
+      if (document.querySelectorAll('[class^=HeaderBarLogo__HeaderBarWrapper]')[0]) {
+        headerObjects.logo = document.querySelectorAll('[class^=HeaderBarLogo__HeaderBarWrapper]')[0].innerHTML;
+      }
       if (document.getElementById('readyTabHeaderBar')) {
         headerObjects.ready = document.getElementById('readyTabHeaderBar').innerHTML;
       }
