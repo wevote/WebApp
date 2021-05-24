@@ -2,7 +2,6 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import AppActions from '../../actions/AppActions';
 import VoterActions from '../../actions/VoterActions';
-import webAppConfig from '../../config';
 import AppStore from '../../stores/AppStore';
 import VoterStore from '../../stores/VoterStore';
 import apiCalming from '../../utils/apiCalming';

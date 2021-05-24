@@ -91,7 +91,6 @@ const MenuText = styled.div`
   line-height: 24.5px;
   white-space: normal;
   letter-spacing: 0.4px;
-  //text-size-adjust: 100%;
   font-weight: 400;
   font-size: 14px;
   opacity: 0.7;
@@ -111,3 +110,4 @@ const MenuBell = styled.div`
   opacity: 1;
   position: absolute;
 `;
+
