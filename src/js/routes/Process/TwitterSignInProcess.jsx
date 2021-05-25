@@ -6,7 +6,6 @@ import cookies from '../../utils/cookies';
 import cordovaScrollablePaneTopPadding from '../../utils/cordovaScrollablePaneTopPadding';
 import { historyPush, isWebApp } from '../../utils/cordovaUtils';
 import LoadingWheel from '../../components/LoadingWheel';
-import initializejQuery from '../../utils/initializejQuery';
 import { oAuthLog, renderLog } from '../../utils/logging';
 import { stringContains } from '../../utils/textFormat';
 import TwitterActions from '../../actions/TwitterActions';
@@ -28,16 +27,10 @@ export default class TwitterSignInProcess extends Component {
   }
 
   componentDidMount () {
-    initializejQuery(() => {
-      console.log('jquery initialized in TwitterSignInProcess');
-      this.appStoreListener = AppStore.addListener(this.onAppStoreChange.bind(this));
-      this.twitterStoreListener = TwitterStore.addListener(this.onTwitterStoreChange.bind(this));
-      this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
-      this.twitterSignInRetrieve();
-      this.setState({
-        jQueryInitialized: true,
-      });
-    });
+    this.appStoreListener = AppStore.addListener(this.onAppStoreChange.bind(this));
+    this.twitterStoreListener = TwitterStore.addListener(this.onTwitterStoreChange.bind(this));
+    this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
+    this.twitterSignInRetrieve();
   }
 
   componentWillUnmount () {

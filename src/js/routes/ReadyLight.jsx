@@ -19,7 +19,6 @@ import webAppConfig from '../config';
 import AppStore from '../stores/AppStore';
 import VoterStore from '../stores/VoterStore';
 import { historyPush, isAndroid, isIOS, isWebApp } from '../utils/cordovaUtils';
-import initializejQuery from '../utils/initializejQuery';
 import lazyWithPreload from '../utils/lazyWithPreload';
 import { renderLog } from '../utils/logging';
 
@@ -43,35 +42,13 @@ class ReadyLight extends Component {
   }
 
   componentDidMount () {
-    initializejQuery(() => {
-      // TODO: May4, 2021 10am, removing this has no effect if signed in -- voterBallotItemsRetrieve still gets called
-      // this.positionItemTimer = setTimeout(() => {
-      //   // This is a performance killer, so let's delay it for a few seconds
-      //   if (!BallotStore.ballotFound) {
-      //     // console.log('WebApp doesn't know the election or have ballot data, so ask the API server to return best guess');
-      //     BallotActions.voterBallotItemsRetrieve(0, '', '');
-      //   }
-      // }, 5000);  // April 19, 2021: Tuned to keep performance above 83.  LCP at 597ms
+    ReadyActions.voterPlansForVoterRetrieve();
+    ActivityActions.activityNoticeListRetrieve();
+    AppActions.setEvaluateHeaderDisplay();
 
-      // this.positionItemTimer2 = setTimeout(() => {
-      ReadyActions.voterPlansForVoterRetrieve();
-      ActivityActions.activityNoticeListRetrieve();
-      // }, 2500);
-      AppActions.setEvaluateHeaderDisplay();
-
-
-      // let modalToShow = '';
-      // if (this.props.match) {
-      //   const { match: { params: { modal_to_show: mts } } } = this.props;
-      //   modalToShow = mts;
-      // }
-      // modalToShow = modalToShow || '';
-      // console.log('componentDidMount modalToOpen:', modalToOpen);
-
-      this.analyticsTimer = setTimeout(() => {
-        AnalyticsActions.saveActionReadyVisit(VoterStore.electionId());
-      }, 8000);
-    });
+    this.analyticsTimer = setTimeout(() => {
+      AnalyticsActions.saveActionReadyVisit(VoterStore.electionId());
+    }, 8000);
     this.preloadTimer = setTimeout(() => {
       Ballot.preload();
     }, 3000);

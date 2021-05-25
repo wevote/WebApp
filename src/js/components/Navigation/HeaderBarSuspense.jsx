@@ -49,6 +49,11 @@ export default function HeaderBarSuspense () {
     };
   }
   const { headerObjects } = window;
+  let logoModified = window.headerObjects.logo;
+  if (logoModified && logoModified.includes('>beta<')) {
+    const parts = logoModified.split('>beta<');
+    logoModified = `${parts[0]} style="top: 14px">beta<${parts[1]}`;
+  }
 
   return (
     <div style={{
@@ -62,7 +67,7 @@ export default function HeaderBarSuspense () {
     }}
     >
       {headerObjects.logo ?
-        <MenuLogo style={{ position: 'absolute', top: '8%', left: `${left + 2}px` }} dangerouslySetInnerHTML={{ __html: window.headerObjects.logo }} /> :
+        <MenuLogo style={{ position: 'absolute', top: '8%', left: `${left + 2}px` }} dangerouslySetInnerHTML={{ __html: logoModified }} /> :
         <SmallCloud left={`${left}px`} wide /> }
       {headerObjects.ready ?
         <MenuText style={{ left: `${left + 167}px` }} dangerouslySetInnerHTML={{ __html: window.headerObjects.ready }} /> :

@@ -9,8 +9,6 @@ import WeVoteRouter from './js/components/Widgets/WeVoteRouter';
 import muiTheme from './js/mui-theme';
 import styledTheme from './js/styled-theme';
 import cookies from './js/utils/cookies';
-import initializejQuery from './js/utils/initializejQuery';
-// import initializeOnce from './js/utils/initializeOnce';
 import { renderLog } from './js/utils/logging';
 import RouterV5SendMatch from './js/utils/RouterV5SendMatch';
 // import SnackNotifier from './js/components/Widgets/SnackNotifier';
@@ -109,14 +107,6 @@ class App extends Component {
     this.setShowFooter = this.setShowFooter.bind(this);
     this.setShowHeaderFooter = this.setShowHeaderFooter.bind(this);
     this.setShowReadyHeavy = this.setShowReadyHeavy.bind(this);
-
-    // lazyLoader('bootstrap-social-css').then((result) => {
-    //   console.log('lazy loader for bootstrap-social-css returned: ', result);
-    // });
-    initializejQuery(() => {
-      console.log('jquery initialized in App');
-      this.setState({ jQueryInitialized: true });
-    });
     this.localIsCordova();
   }
 
@@ -184,7 +174,7 @@ class App extends Component {
     const isNotWeVoteMarketingSite = !isWeVoteMarketingSite;
     const firstVisit = !cookies.getItem('voter_device_id');
 
-    // console.log('href in App.js render: ', window.location.href);
+    console.log('href in App.js render: ', window.location.href);
 
     return (
       <ErrorBoundary>

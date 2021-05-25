@@ -10,7 +10,6 @@ import { getApplicationViewBooleans, weVoteBrandingOff } from '../../utils/appli
 import { cordovaTopHeaderTopMargin } from '../../utils/cordovaOffsets';
 import { hasIPhoneNotch, historyPush, isCordova, isIOS, isIOSAppOnMac, isIPad, isWebApp } from '../../utils/cordovaUtils';
 import displayFriendsTabs from '../../utils/displayFriendsTabs';
-import initializejQuery from '../../utils/initializejQuery';
 import { renderLog } from '../../utils/logging';
 import { startsWith, stringContains } from '../../utils/textFormat';
 import HeaderBar from './HeaderBar';
@@ -55,12 +54,9 @@ export default class Header extends Component {
     if (isIOSAppOnMac() && appleSiliconDebug) {
       dumpCssFromId('header-container');
     }
-    initializejQuery(() => {
-      // console.log('initialized jQuery in Header');
-      if (VoterStore.getVoterWeVoteId() === '' && apiCalming('voterRetrieve', 500)) {
-        VoterActions.voterRetrieve();
-      }
-    });
+    if (VoterStore.getVoterWeVoteId() === '' && apiCalming('voterRetrieve', 500)) {
+      VoterActions.voterRetrieve();
+    }
   }
 
   shouldComponentUpdate (nextProps, nextState) {

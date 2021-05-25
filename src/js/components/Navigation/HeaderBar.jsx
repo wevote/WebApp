@@ -85,7 +85,6 @@ class HeaderBar extends Component {
     this.appStoreListener = AppStore.addListener(this.onAppStoreChange.bind(this));
     this.friendStoreListener = FriendStore.addListener(this.onFriendStoreChange.bind(this));
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
-    // this.onBallotStoreChange();
 
     const voter = VoterStore.getVoter();
     const voterFirstName = VoterStore.getFirstName();
@@ -111,8 +110,9 @@ class HeaderBar extends Component {
     });
     setTimeout(() => {
       const { headerObjects } = window;
-      if (document.querySelectorAll('[class^=HeaderBarLogo__HeaderBarWrapper]')[0]) {
-        headerObjects.logo = document.querySelectorAll('[class^=HeaderBarLogo__HeaderBarWrapper]')[0].innerHTML;
+      const logoWrapper = document.querySelectorAll('[class^=HeaderBarLogo__HeaderBarWrapper]');
+      if (logoWrapper && logoWrapper[0] && logoWrapper[0].innerHTML.length) {
+        headerObjects.logo = logoWrapper[0].innerHTML;
       }
       if (document.getElementById('readyTabHeaderBar')) {
         headerObjects.ready = document.getElementById('readyTabHeaderBar').innerHTML;
