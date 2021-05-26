@@ -12,6 +12,7 @@ import FriendToggle from '../Friends/FriendToggle';
 import LoadingWheel from '../LoadingWheel';
 import ParsedTwitterDescription from '../Twitter/ParsedTwitterDescription';
 import IssuesByOrganizationDisplayList from '../Values/IssuesByOrganizationDisplayList';
+import ExternalLinkIcon from '../Widgets/ExternalLinkIcon';
 
 const FollowToggle = React.lazy(() => import(/* webpackChunkName: 'FollowToggle' */ '../Widgets/FollowToggle'));
 const OpenExternalWebSite = React.lazy(() => import(/* webpackChunkName: 'OpenExternalWebSite' */ '../Widgets/OpenExternalWebSite'));
@@ -83,7 +84,6 @@ class OrganizationVoterGuideCard extends Component {
                 </TwitterHandleWrapper>
                 { !!(twitterFollowersCount && String(twitterFollowersCount) !== '0') && (
                   <span className="twitter-followers__badge">
-                    {/* <span className="fab fa-twitter twitter-followers__icon" /> */}
                     <Twitter />
                     {numberWithCommas(twitterFollowersCount)}
                   </span>
@@ -103,7 +103,7 @@ class OrganizationVoterGuideCard extends Component {
                   <span>
                     {organizationWebsite}
                     {' '}
-                    <i className="fas fa-external-link-alt" />
+                    <ExternalLinkIcon />
                   </span>
                 )}
               />

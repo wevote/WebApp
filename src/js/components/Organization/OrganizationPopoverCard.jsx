@@ -12,6 +12,7 @@ import { renderLog } from '../../utils/logging';
 import { numberWithCommas, removeTwitterNameFromDescription } from '../../utils/textFormat';
 import LoadingWheel from '../LoadingWheel';
 import ParsedTwitterDescription from '../Twitter/ParsedTwitterDescription';
+import ExternalLinkIcon from '../Widgets/ExternalLinkIcon';
 
 const FollowToggle = React.lazy(() => import(/* webpackChunkName: 'FollowToggle' */ '../Widgets/FollowToggle'));
 const OpenExternalWebSite = React.lazy(() => import(/* webpackChunkName: 'OpenExternalWebSite' */ '../Widgets/OpenExternalWebSite'));
@@ -168,7 +169,6 @@ class OrganizationPopoverCard extends Component {
                 &nbsp;&nbsp;
                 {!!(twitterFollowersCount) && (
                   <span>
-                    {/* <span className="fab fa-twitter twitter-followers__icon" /> */}
                     <Twitter />
                     {numberWithCommas(twitterFollowersCount)}
                   </span>
@@ -192,7 +192,7 @@ class OrganizationPopoverCard extends Component {
                     <span>
                       {organizationWebsite}
                       {' '}
-                      <i className="fas fa-external-link-alt" />
+                      <ExternalLinkIcon />
                     </span>
                   )}
                 />

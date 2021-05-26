@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import { cordovaDot } from '../../utils/cordovaUtils';
 import { renderLog } from '../../utils/logging';
 import { startsWith, vimeoRegX, youTubeRegX } from '../../utils/textFormat';
+import ExternalLinkIcon from './ExternalLinkIcon';
 
 const ReadMore = React.lazy(() => import(/* webpackChunkName: 'ReadMore' */ './ReadMore'));
 const ReactPlayer = React.lazy(() => import(/* webpackChunkName: 'ReactPlayer' */ 'react-player'));
@@ -130,7 +131,7 @@ export default class PositionSupportOpposeSnippet extends Component {
                           <span>
                             view source
                             {' '}
-                            <i className="fas fa-external-link-alt" aria-hidden="true" />
+                            <ExternalLinkIcon />
                           </span>
                         )}
                       />

@@ -9,6 +9,7 @@ import TeamMemberDisplayForList from '../../components/More/TeamMemberDisplayFor
 import ShowMoreButtons from '../../components/Ready/ShowMoreButtons';
 import { Title } from '../../components/Welcome/headerWelcomeStyles';
 import { Section, Bold, DescriptionContainer, MemberListContainer, SectionTitle } from '../../components/Welcome/sectionStyles';
+import ExternalLinkIcon from '../../components/Widgets/ExternalLinkIcon';
 import VoterStore from '../../stores/VoterStore';
 import cordovaScrollablePaneTopPadding from '../../utils/cordovaScrollablePaneTopPadding';
 import { cordovaDot } from '../../utils/cordovaUtils';
@@ -162,7 +163,7 @@ class About extends Component {
               body={(
                 <span>
                   Code for America&nbsp;
-                  <i className="fas fa-external-link-alt" />
+                  <ExternalLinkIcon />
                 </span>
               )}
             />
@@ -175,7 +176,7 @@ class About extends Component {
               body={(
                 <span>
                   Mozilla Foundation&nbsp;
-                  <i className="fas fa-external-link-alt" />
+                  <ExternalLinkIcon />
                 </span>
               )}
             />
@@ -274,7 +275,7 @@ class About extends Component {
             <Link to="/more/credits">
               our volunteers, our board of directors, our funders, and the organizations
               &nbsp;
-              <i className="fas fa-external-link-alt" />
+              <ExternalLinkIcon />
             </Link>
             {' '}
             that are critical to our work.

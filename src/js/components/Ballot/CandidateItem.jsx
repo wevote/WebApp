@@ -13,6 +13,7 @@ import { historyPush } from '../../utils/cordovaUtils';
 import isMobileAndTabletScreenSize from '../../utils/isMobileAndTabletScreenSize';
 import { renderLog } from '../../utils/logging';
 import { abbreviateNumber, numberWithCommas, stripHtmlFromString } from '../../utils/textFormat';
+import ExternalLinkIcon from '../Widgets/ExternalLinkIcon';
 
 const BallotItemSupportOpposeComment = React.lazy(() => import(/* webpackChunkName: 'BallotItemSupportOpposeComment' */ '../Widgets/BallotItemSupportOpposeComment'));
 const BallotItemSupportOpposeCountDisplay = React.lazy(() => import(/* webpackChunkName: 'BallotItemSupportOpposeCountDisplay' */ '../Widgets/BallotItemSupportOpposeCountDisplay'));
@@ -350,7 +351,7 @@ class CandidateItem extends Component {
                       <span>
                         candidate website
                         {' '}
-                        <i className="fas fa-external-link-alt" aria-hidden="true" />
+                        <ExternalLinkIcon />
                       </span>
                     )}
                   />

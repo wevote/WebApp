@@ -9,6 +9,7 @@ import IssueActions from '../../actions/IssueActions';
 import OrganizationActions from '../../actions/OrganizationActions';
 import VoterGuidePossibilityActions from '../../actions/VoterGuidePossibilityActions';
 import CandidateItemEndorsement from '../../components/Ballot/CandidateItemEndorsement';
+import ExternalLinkIcon from '../../components/Widgets/ExternalLinkIcon';
 import CandidateStore from '../../stores/CandidateStore';
 import IssueStore from '../../stores/IssueStore';
 import OrganizationStore from '../../stores/OrganizationStore';
@@ -194,7 +195,7 @@ class CandidateForExtension extends Component {
                       <OriginalLinkStyle>
                         {candidateSpecificEndorsementUrl}
                         {' '}
-                        <i className="fas fa-external-link-alt" aria-hidden="true" />
+                        <ExternalLinkIcon />
                       </OriginalLinkStyle>
                     )}
                     target="_blank"

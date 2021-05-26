@@ -10,6 +10,7 @@ import { numberWithCommas, removeTwitterNameFromDescription, stringContains } fr
 import LoadingWheel from '../LoadingWheel';
 import ParsedTwitterDescription from '../Twitter/ParsedTwitterDescription';
 import IssuesByOrganizationDisplayList from '../Values/IssuesByOrganizationDisplayList';
+import ExternalLinkIcon from '../Widgets/ExternalLinkIcon';
 import PositionInformationOnlySnippet from '../Widgets/PositionInformationOnlySnippet';
 import PositionRatingSnippet from '../Widgets/PositionRatingSnippet';
 import PositionSupportOpposeSnippet from '../Widgets/PositionSupportOpposeSnippet';
@@ -238,7 +239,7 @@ export default class OrganizationCard extends Component {
                       <span className="u-no-break">
                         Website
                         {' '}
-                        <i className="fas fa-external-link-alt" />
+                        <ExternalLinkIcon />
                       </span>
                     )}
                   />

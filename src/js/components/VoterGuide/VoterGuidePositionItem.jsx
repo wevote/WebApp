@@ -15,6 +15,7 @@ import { cordovaDot } from '../../utils/cordovaUtils';
 import { renderLog } from '../../utils/logging';
 import { capitalizeString, numberWithCommas, startsWith, stringContains } from '../../utils/textFormat';
 import BallotItemVoterGuideSupportOpposeDisplay from '../Widgets/BallotItemVoterGuideSupportOpposeDisplay';
+import ExternalLinkIcon from '../Widgets/ExternalLinkIcon';
 
 const BallotItemSupportOpposeCountDisplay = React.lazy(() => import(/* webpackChunkName: 'BallotItemSupportOpposeCountDisplay' */ '../Widgets/BallotItemSupportOpposeCountDisplay'));
 const ImageHandler = React.lazy(() => import(/* webpackChunkName: 'ImageHandler' */ '../ImageHandler'));
@@ -346,7 +347,7 @@ class VoterGuidePositionItem extends Component {
                           <span>
                             view source
                             {' '}
-                            <i className="fas fa-external-link-alt" aria-hidden="true" />
+                            <ExternalLinkIcon />
                           </span>
                         )}
                         className="u-gray-mid"
@@ -469,7 +470,7 @@ class VoterGuidePositionItem extends Component {
                         <span>
                           source
                           {' '}
-                          <i className="fas fa-external-link-alt" aria-hidden="true" />
+                          <ExternalLinkIcon />
                         </span>
                       )}
                       className="u-gray-mid"

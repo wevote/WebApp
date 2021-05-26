@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import TextTruncate from 'react-text-truncate';
 import { renderLog } from '../../utils/logging';
+import ExternalLinkIcon from './ExternalLinkIcon';
 
 const OpenExternalWebSite = React.lazy(() => import(/* webpackChunkName: 'OpenExternalWebSite' */ './OpenExternalWebSite'));
 
@@ -117,7 +118,7 @@ class LearnMore extends Component {
           <span>
             {learnMoreText}
             &nbsp;
-            <i className="fas fa-external-link-alt" />
+            <ExternalLinkIcon />
           </span>
         )}
       />

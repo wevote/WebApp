@@ -11,6 +11,7 @@ import VoterGuidePossibilityStore from '../../stores/VoterGuidePossibilityStore'
 import { historyPush } from '../../utils/cordovaUtils';
 import { renderLog } from '../../utils/logging';
 import { abbreviateNumber, numberWithCommas } from '../../utils/textFormat';
+import ExternalLinkIcon from '../Widgets/ExternalLinkIcon';
 
 const ImageHandler = React.lazy(() => import(/* webpackChunkName: 'ImageHandler' */ '../ImageHandler'));
 const OfficeNameText = React.lazy(() => import(/* webpackChunkName: 'OfficeNameText' */ '../Widgets/OfficeNameText'));
@@ -398,7 +399,7 @@ class CandidateItemEndorsement extends Component {
                       <span>
                         candidate website
                         {' '}
-                        <i className="fas fa-external-link-alt" aria-hidden="true" />
+                        <ExternalLinkIcon />
                       </span>
                     )}
                   />

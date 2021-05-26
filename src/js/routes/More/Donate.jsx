@@ -13,6 +13,7 @@ import DonationError from '../../components/Donation/DonationError';
 import DonationForm from '../../components/Donation/DonationForm';
 import DonationListForm from '../../components/Donation/DonationListForm';
 import { Section } from '../../components/Welcome/sectionStyles';
+import ExternalLinkIcon from '../../components/Widgets/ExternalLinkIcon';
 import OpenExternalWebSite from '../../components/Widgets/OpenExternalWebSite';
 import DonateStore from '../../stores/DonateStore';
 import VoterStore from '../../stores/VoterStore';
@@ -124,7 +125,7 @@ class Donate extends Component {
               body={(
                 <span>
                   Our annual budgets are very small&nbsp;
-                  <i className="fas fa-external-link-alt" />
+                  <ExternalLinkIcon />
                 </span>
               )}
             />
@@ -238,7 +239,7 @@ class Donate extends Component {
             >
               tax deductible donations
               {' '}
-              <i className="fas fa-external-link-alt" />
+              <ExternalLinkIcon />
               .
             </a>
           </DonateDescriptionContainer>

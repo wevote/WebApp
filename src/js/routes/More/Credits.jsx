@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { organizationalDonors, teamOfVolunteers } from '../../components/More/people';
 import { Section } from '../../components/Welcome/sectionStyles';
+import ExternalLinkIcon from '../../components/Widgets/ExternalLinkIcon';
 import { isWebApp } from '../../utils/cordovaUtils';
 import { renderLog } from '../../utils/logging';
 
@@ -84,7 +85,7 @@ class Credits extends Component {
               body={(
                 <span>
                   finding a role that excites you on our page at Idealist.org&nbsp;
-                  <i className="fas fa-external-link-alt" />
+                  <ExternalLinkIcon />
                 </span>
               )}
             />
