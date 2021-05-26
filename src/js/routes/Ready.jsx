@@ -30,7 +30,6 @@ import IssueStore from '../stores/IssueStore';
 import VoterStore from '../stores/VoterStore';
 import cookies from '../utils/cookies';
 import { historyPush, isAndroid, isIOS, isWebApp } from '../utils/cordovaUtils';
-import initializejQuery from '../utils/initializejQuery';
 import lazyWithPreload from '../utils/lazyWithPreload';
 import { renderLog } from '../utils/logging';
 
@@ -64,55 +63,50 @@ class Ready extends Component {
     this.onAppStoreChange();
     this.onIssueStoreChange();
     this.onVoterStoreChange();
-    initializejQuery(() => {
-      this.positionItemTimer = setTimeout(() => {
-        // This is a performance killer, so let's delay it for a few seconds
-        if (!BallotStore.ballotFound) {
-          // console.log('WebApp doesn't know the election or have ballot data, so ask the API server to return best guess');
-          BallotActions.voterBallotItemsRetrieve(0, '', '');
-        }
-      }, 5000);  // April 19, 2021: Tuned to keep performance above 83.  LCP at 597ms
-
-      // this.positionItemTimer2 = setTimeout(() => {
-      ReadyActions.voterPlansForVoterRetrieve();
-      ActivityActions.activityNoticeListRetrieve();
-      FriendActions.suggestedFriendList();
-      // }, 2500);
-
-
-      let modalToShow = '';
-      let sharedItemCode = '';
-      if (this.props.match) {
-        const { match: { params: { modal_to_show: mts, shared_item_code: sic } } } = this.props;
-        modalToShow = mts;
-        sharedItemCode = sic;
+    this.positionItemTimer = setTimeout(() => {
+      // This is a performance killer, so let's delay it for a few seconds
+      if (!BallotStore.ballotFound) {
+        // console.log('WebApp doesn't know the election or have ballot data, so ask the API server to return best guess');
+        BallotActions.voterBallotItemsRetrieve(0, '', '');
       }
-      modalToShow = modalToShow || '';
-      // console.log('componentDidMount modalToOpen:', modalToOpen);
-      if (modalToShow === 'share') {
+    }, 5000);  // April 19, 2021: Tuned to keep performance above 83.  LCP at 597ms
+
+    ReadyActions.voterPlansForVoterRetrieve();
+    ActivityActions.activityNoticeListRetrieve();
+    FriendActions.suggestedFriendList();
+
+    let modalToShow = '';
+    let sharedItemCode = '';
+    if (this.props.match) {
+      const { match: { params: { modal_to_show: mts, shared_item_code: sic } } } = this.props;
+      modalToShow = mts;
+      sharedItemCode = sic;
+    }
+    modalToShow = modalToShow || '';
+    // console.log('componentDidMount modalToOpen:', modalToOpen);
+    if (modalToShow === 'share') {
+      this.modalOpenTimer = setTimeout(() => {
+        AppActions.setShowShareModal(true);
+      }, 1000);
+    } else if (modalToShow === 'sic') { // sic = Shared Item Code
+      sharedItemCode = sharedItemCode || '';
+      // console.log('componentDidMount sharedItemCode:', sharedItemCode);
+      if (sharedItemCode) {
         this.modalOpenTimer = setTimeout(() => {
-          AppActions.setShowShareModal(true);
+          AppActions.setShowSharedItemModal(sharedItemCode);
         }, 1000);
-      } else if (modalToShow === 'sic') { // sic = Shared Item Code
-        sharedItemCode = sharedItemCode || '';
-        // console.log('componentDidMount sharedItemCode:', sharedItemCode);
-        if (sharedItemCode) {
-          this.modalOpenTimer = setTimeout(() => {
-            AppActions.setShowSharedItemModal(sharedItemCode);
-          }, 1000);
-        }
-      } else {
-        AppActions.setEvaluateHeaderDisplay();
       }
+    } else {
+      AppActions.setEvaluateHeaderDisplay();
+    }
 
-      this.analyticsTimer = setTimeout(() => {
-        AnalyticsActions.saveActionReadyVisit(VoterStore.electionId());
-      }, 8000);
+    this.analyticsTimer = setTimeout(() => {
+      AnalyticsActions.saveActionReadyVisit(VoterStore.electionId());
+    }, 8000);
 
-      this.setState({
-        locationGuessClosed: cookies.getItem('location_guess_closed'),
-        textForMapSearch: VoterStore.getTextForMapSearch(),
-      });
+    this.setState({
+      locationGuessClosed: cookies.getItem('location_guess_closed'),
+      textForMapSearch: VoterStore.getTextForMapSearch(),
     });
     this.preloadTimer = setTimeout(() => {
       Ballot.preload();

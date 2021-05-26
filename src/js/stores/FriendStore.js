@@ -354,6 +354,7 @@ class FriendStore extends ReduceStore {
         return this.resetState();
 
       case 'voterSignOut':
+        // Firing all of these "just in case" api queries is slow, and firing queries from Stores should bed avoidd
         // console.log('resetting FriendStore from voterSignOut');
         FriendActions.currentFriends();
         FriendActions.friendInvitationsSentByMe();

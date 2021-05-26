@@ -1,5 +1,6 @@
 import { Button, Card } from '@material-ui/core';
 import { withStyles, withTheme } from '@material-ui/core/styles';
+import { Twitter } from '@material-ui/icons';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
@@ -189,7 +190,8 @@ class voterGuideDisplayForListForOpinions extends Component {
                     <DesktopItemTwitterContainer>
                       { !!(twitterFollowersCount && String(twitterFollowersCount) !== '0') && (
                         <DesktopItemTwitter>
-                          <TwitterIcon className="fab fa-twitter" />
+                          {/* <TwitterIcon className="fab fa-twitter" /> */}
+                          <Twitter />
                           {numberWithCommas(twitterFollowersCount)}
                         </DesktopItemTwitter>
                       )}
@@ -551,11 +553,11 @@ const SourceLink = styled.div`
   margin-bottom: -4px;
 `;
 
-const TwitterIcon = styled.span`
-  font-size: 16px;
-  color: #ccc;
-  margin-right: 2px;
-  vertical-align: bottom;
-`;
+// const TwitterIcon = styled.span`
+//   font-size: 16px;
+//   color: #ccc;
+//   margin-right: 2px;
+//   vertical-align: bottom;
+// `;
 
 export default withTheme(withStyles(styles)(voterGuideDisplayForListForOpinions));

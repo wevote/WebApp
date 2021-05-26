@@ -1,5 +1,9 @@
+/* eslint-disable object-property-newline */
 import { Button } from '@material-ui/core';
+import Menu from '@material-ui/core/Menu';
+import MenuItem from '@material-ui/core/MenuItem';
 import { CheckCircle, NotInterested } from '@material-ui/icons';
+import { styled as muiStyled } from '@material-ui/styles';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import OrganizationActions from '../../actions/OrganizationActions';
@@ -11,11 +15,170 @@ import { historyPush } from '../../utils/cordovaUtils';
 import { renderLog } from '../../utils/logging';
 import { openSnackbar } from './SnackNotifier';
 
+
+function FollowToggleButton (params) {
+  const { handleClick } = params;
+  const { showFollowingText, isFollowing, isFriend, isIgnoring } = params.params;
+
+  return (
+    <ButtonStyled
+      aria-controls="simple-menu"
+      aria-haspopup="true"
+      onClick={(event) => handleClick(event)}
+    >
+      {showFollowingText ? (
+        <span>
+          { (isFollowing || isFriend) && (
+            <span>
+              <CheckCircleStyled className="following-icon" />
+              <span>Following</span>
+            </span>
+          )}
+          { isIgnoring && (
+            <span>
+              <NotInterestedStyled className="ignoring-icon" />
+              <span className="pl-2">Ignoring</span>
+            </span>
+          )}
+        </span>
+      ) : (
+        <span>
+          { (isFollowing || isFriend) && <CheckCircleStyled className="following-icon" /> }
+          { isIgnoring && <NotInterestedStyled className="ignoring-icon" /> }
+        </span>
+      )}
+    </ButtonStyled>
+  );
+}
+
+function UnfollowFollowLine (params) {
+  const { followInstantly, followFunction, stopFollowingInstantly, stopFollowingFunc } = params;
+  const { platformType, organizationWeVoteId, currentBallotIdInUrl, urlWithoutHash, ballotItemWeVoteId, hideStopFollowingButton, isFollowing } = params.params;
+  return (
+    <>
+      { isFollowing ? (
+        <span className="d-print-none">
+          { hideStopFollowingButton ?
+            null : (
+              <Button
+                id={`positionItemFollowToggleUnfollow-${platformType}-${organizationWeVoteId} organizationOrPublicFigureUnfollow`}
+                type="button"
+                className="dropdown-item issues-follow-btn issues-follow-btn__menu-item"
+                onClick={() => stopFollowingInstantly(stopFollowingFunc, currentBallotIdInUrl, urlWithoutHash, ballotItemWeVoteId)}
+              >
+                Unfollow
+              </Button>
+            )}
+        </span>
+      ) : (
+        <Button
+          id={`positionItemFollowToggleFollowDropDown-${platformType}-${organizationWeVoteId} organizationOrPublicFigureDropDown`}
+          className="dropdown-item issues-follow-btn issues-follow-btn__menu-item"
+          onClick={() => followInstantly(followFunction, currentBallotIdInUrl, urlWithoutHash, ballotItemWeVoteId)}
+          type="button"
+        >
+          Follow
+        </Button>
+      )}
+    </>
+  );
+}
+
+function IgnoreLine (params) {
+  const { stopIgnoringInstantly, stopIgnoringFunc, ignoreInstantly, ignoreFunction  } = params;
+  const { isIgnoring, hideStopIgnoringButton, platformType, organizationWeVoteId, currentBallotIdInUrl, urlWithoutHash, ballotItemWeVoteId } = params.params;
+  return (
+    <>
+      {isIgnoring ? (
+        <span className="d-print-none">
+          { hideStopIgnoringButton ?
+            null : (
+              <Button
+                id={`positionItemFollowToggleStopIgnoring-${platformType}-${organizationWeVoteId} organizationOrPublicFigureUnignore`}
+                type="button"
+                className="dropdown-item issues-follow-btn issues-follow-btn__menu-item"
+                onClick={() => stopIgnoringInstantly(stopIgnoringFunc, currentBallotIdInUrl, urlWithoutHash, ballotItemWeVoteId)}
+              >
+                Stop Ignoring
+              </Button>
+            )}
+        </span>
+      ) : (
+        <Button
+          id={`positionItemFollowToggleIgnore-${platformType}-${organizationWeVoteId} organizationOrPublicFigureIgnore`}
+          type="button"
+          className="dropdown-item issues-follow-btn issues-follow-btn__menu-item"
+          onClick={() => ignoreInstantly(ignoreFunction, currentBallotIdInUrl, urlWithoutHash, ballotItemWeVoteId)}
+        >
+          Ignore
+        </Button>
+      )}
+    </>
+  );
+}
+
+function NotFollowingFriendOrIgnoringFollowLine (params) {
+  const { followInstantly, followFunction } = params;
+  const { lightModeOn, platformType, organizationWeVoteId, currentBallotIdInUrl, urlWithoutHash, ballotItemWeVoteId,
+    hideDropdownButtonUntilFollowing,
+  } = params.params;
+  return (
+    <Button
+      id={`positionItemFollowToggleFollow-${platformType}-${organizationWeVoteId} organizationOrPublicFigureFollowDropDown`}
+      type="button"
+      className={`issues-follow-btn issues-follow-btn__main ${hideDropdownButtonUntilFollowing ? ' dropdown-toggle dropdown-toggle-split issues-follow-btn__main--radius' : ''} ${lightModeOn ? ' issues-follow-btn--white' : ' issues-follow-btn--blue'}`}
+      onClick={() => followInstantly(followFunction, currentBallotIdInUrl, urlWithoutHash, ballotItemWeVoteId)}
+    >
+      Follow
+    </Button>
+  );
+}
+
+function NotFollowingFriendOrIgnoringIgnoreStopIgnoreLine (params) {
+  const { ignoreInstantly, ignoreFunction,  stopIgnoringInstantly, stopIgnoringFunc } = params;
+  const { isIgnoring, hideStopIgnoringButton, hideDropdownButtonUntilFollowing, platformType, organizationWeVoteId, currentBallotIdInUrl, urlWithoutHash, ballotItemWeVoteId,
+  } = params.params;
+
+  if (hideDropdownButtonUntilFollowing) {
+    return null;
+  }
+
+  return (
+    <>
+      {isIgnoring ? (
+        <span className="d-print-none">
+          { !hideStopIgnoringButton && (
+            <Button
+              id={`positionItemFollowToggleStopIgnoring-${platformType}-${organizationWeVoteId} organizationOrPublicFigureUnignore`}
+              type="button"
+              className="dropdown-item issues-follow-btn issues-follow-btn__menu-item"
+              onClick={() => stopIgnoringInstantly(stopIgnoringFunc, currentBallotIdInUrl, urlWithoutHash, ballotItemWeVoteId)}
+            >
+              Stop Ignoring
+            </Button>
+          )}
+        </span>
+      ) : (
+        <Button
+          id={`positionItemFollowToggleIgnore-${platformType}-${organizationWeVoteId} organizationOrPublicFigureIgnore`}
+          type="button"
+          className="dropdown-item issues-follow-btn issues-follow-btn__menu-item"
+          onClick={() => ignoreInstantly(ignoreFunction, currentBallotIdInUrl, urlWithoutHash, ballotItemWeVoteId)}
+        >
+          Ignore
+        </Button>
+      )}
+    </>
+  );
+}
+
+// -----------------------------------------------------------------------------
+
 export default class FollowToggle extends Component {
   constructor (props) {
     super(props);
     this.state = {
-      componentDidMountFinished: false,
+      // componentDidMountFinished: false,
       isFollowing: false,
       isIgnoring: false,
       otherVoterWeVoteId: '',
@@ -23,13 +186,16 @@ export default class FollowToggle extends Component {
 
     this.followInstantly = this.followInstantly.bind(this);
     this.handleIgnoreLocal = this.handleIgnoreLocal.bind(this);
+    this.ignoreInstantly = this.ignoreInstantly.bind(this);
     this.stopFollowingInstantly = this.stopFollowingInstantly.bind(this);
     this.stopIgnoringInstantly = this.stopIgnoringInstantly.bind(this);
+    // this.handleClick = this.handleClick.bind(this);
   }
 
   componentDidMount () {
     // console.log('componentDidMount, this.props: ', this.props);
     const { organizationWeVoteId } = this.props;
+
     if (organizationWeVoteId) {
       const organization = OrganizationStore.getOrganizationByWeVoteId(organizationWeVoteId);
       let organizationName = '';
@@ -41,7 +207,7 @@ export default class FollowToggle extends Component {
         } = organization);
       }
       this.setState({
-        componentDidMountFinished: true,
+        // componentDidMountFinished: true,
         isFollowing: OrganizationStore.isVoterFollowingThisOrganization(organizationWeVoteId),
         isIgnoring: OrganizationStore.isVoterIgnoringThisOrganization(organizationWeVoteId),
         organizationName,
@@ -62,38 +228,38 @@ export default class FollowToggle extends Component {
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
   }
 
-  shouldComponentUpdate (nextProps, nextState) {
-    // This lifecycle method tells the component to NOT render if componentWillReceiveProps didn't see any changes
-    if (this.state.componentDidMountFinished === false) {
-      // console.log('shouldComponentUpdate: componentDidMountFinished === false');
-      return true;
-    }
-
-    if (this.props.organizationWeVoteId !== nextProps.organizationWeVoteId) {
-      // console.log('shouldComponentUpdate: this.props.organizationWeVoteId', this.props.organizationWeVoteId, ', nextProps.organizationWeVoteId', nextProps.organizationWeVoteId);
-      return true;
-    }
-
-    if (this.state.isFollowing !== nextState.isFollowing) {
-      // console.log('shouldComponentUpdate: this.state.isFollowing', this.state.isFollowing, ', nextState.isFollowing', nextState.isFollowing);
-      return true;
-    }
-
-    if (this.state.isFriend !== nextState.isFriend) {
-      // console.log('shouldComponentUpdate: this.state.isFriend', this.state.isFriend, ', nextState.isFriend', nextState.isFriend);
-      return true;
-    }
-
-    if (this.state.isIgnoring !== nextState.isIgnoring) {
-      // console.log('shouldComponentUpdate: this.state.isIgnoring', this.state.isIgnoring, ', nextState.isIgnoring', nextState.isIgnoring);
-      return true;
-    }
-
-    if (this.state.otherVoterWeVoteId !== nextState.otherVoterWeVoteId) {
-      return true;
-    }
-    return false;
-  }
+  // shouldComponentUpdate (nextProps, nextState) {
+  //   // This lifecycle method tells the component to NOT render if componentWillReceiveProps didn't see any changes
+  //   if (this.state.componentDidMountFinished === false) {
+  //     // console.log('shouldComponentUpdate: componentDidMountFinished === false');
+  //     return true;
+  //   }
+  //
+  //   if (this.props.organizationWeVoteId !== nextProps.organizationWeVoteId) {
+  //     // console.log('shouldComponentUpdate: this.props.organizationWeVoteId', this.props.organizationWeVoteId, ', nextProps.organizationWeVoteId', nextProps.organizationWeVoteId);
+  //     return true;
+  //   }
+  //
+  //   if (this.state.isFollowing !== nextState.isFollowing) {
+  //     // console.log('shouldComponentUpdate: this.state.isFollowing', this.state.isFollowing, ', nextState.isFollowing', nextState.isFollowing);
+  //     return true;
+  //   }
+  //
+  //   if (this.state.isFriend !== nextState.isFriend) {
+  //     // console.log('shouldComponentUpdate: this.state.isFriend', this.state.isFriend, ', nextState.isFriend', nextState.isFriend);
+  //     return true;
+  //   }
+  //
+  //   if (this.state.isIgnoring !== nextState.isIgnoring) {
+  //     // console.log('shouldComponentUpdate: this.state.isIgnoring', this.state.isIgnoring, ', nextState.isIgnoring', nextState.isIgnoring);
+  //     return true;
+  //   }
+  //
+  //   if (this.state.otherVoterWeVoteId !== nextState.otherVoterWeVoteId) {
+  //     return true;
+  //   }
+  //   return false;
+  // }
 
   componentWillUnmount () {
     // console.log('componentWillUnmount, this.props.organizationWeVoteId: ', this.props.organizationWeVoteId);
@@ -101,6 +267,21 @@ export default class FollowToggle extends Component {
     this.organizationStoreListener.remove();
     this.voterGuideStoreListener.remove();
     this.voterStoreListener.remove();
+  }
+
+  handleClose = () => {
+    this.setState({ anchorEl: null });
+  };
+
+  handleClick = (event) => {
+    this.setState({ anchorEl: event.currentTarget });
+  };
+
+  handleIgnoreLocal () {
+    // Some parent components need to react with this organization is ignored
+    if (this.props.handleIgnore) {
+      this.props.handleIgnore();
+    }
   }
 
   onFriendStoreChange () {
@@ -163,13 +344,6 @@ export default class FollowToggle extends Component {
         isIgnoring: OrganizationStore.isVoterIgnoringThisOrganization(organizationWeVoteId),
         organizationName,
       });
-    }
-  }
-
-  handleIgnoreLocal () {
-    // Some parent components need to react with this organization is ignored
-    if (this.props.handleIgnore) {
-      this.props.handleIgnore();
     }
   }
 
@@ -276,188 +450,86 @@ export default class FollowToggle extends Component {
 
   render () {
     renderLog('FollowToggle');  // Set LOG_RENDER_EVENTS to log all renders
-    const {
-      anchorLeft, ballotItemWeVoteId, currentBallotIdInUrl,
-      hideDropdownButtonUntilFollowing, hideStopFollowingButton, hideStopIgnoringButton,
-      lightModeOn, organizationWeVoteId, showFollowingText, urlWithoutHash, platformType,
+    const { anchorLeft, ballotItemWeVoteId, currentBallotIdInUrl, hideDropdownButtonUntilFollowing,
+      hideStopFollowingButton, hideStopIgnoringButton, lightModeOn, organizationWeVoteId,
+      showFollowingText, urlWithoutHash, platformType,
     } = this.props;
     if (!organizationWeVoteId) { return <div />; }
 
-    const { isFollowing, isFriend, isIgnoring, voterLinkedOrganizationWeVoteId } = this.state;
+    const { isFollowing, isFriend, isIgnoring, voterLinkedOrganizationWeVoteId, organizationName } = this.state;
     const isLookingAtSelf = voterLinkedOrganizationWeVoteId === organizationWeVoteId;
     // You should not be able to follow yourself
     if (isLookingAtSelf) { return <div />; }
 
-    const followFunction = OrganizationActions.organizationFollow.bind(this, organizationWeVoteId);
-    const ignoreFunction = OrganizationActions.organizationFollowIgnore.bind(this, organizationWeVoteId);
-    const stopFollowingFunc = OrganizationActions.organizationStopFollowing.bind(this, organizationWeVoteId);
-    const stopIgnoringFunc = OrganizationActions.organizationStopIgnoring.bind(this, organizationWeVoteId);
+    const followFunction = () => OrganizationActions.organizationFollow(organizationWeVoteId);
+    const ignoreFunction = () => OrganizationActions.organizationFollowIgnore(organizationWeVoteId);
+    const stopFollowingFunc = () => OrganizationActions.organizationStopFollowing(organizationWeVoteId);
+    const stopIgnoringFunc = () => OrganizationActions.organizationStopIgnoring(organizationWeVoteId);
+    const isFollowingFriendOrIgnoring = isFollowing || isFriend || isIgnoring;
+    const lineParams = { ballotItemWeVoteId, currentBallotIdInUrl, hideDropdownButtonUntilFollowing, hideStopFollowingButton,
+      isFollowing, isFriend, isIgnoring, organizationWeVoteId, platformType, showFollowingText, urlWithoutHash, organizationName,
+      lightModeOn, anchorLeft, hideStopIgnoringButton,
+    };
 
     return (
       <div className="issues-follow-container">
-        {isFollowing || isFriend || isIgnoring ? (
+        {isFollowingFriendOrIgnoring ? (
           <>
-            <Button
-              type="button"
-              className={`issues-follow-btn issues-follow-btn__main issues-follow-btn__icon issues-follow-btn--white issues-followed-btn--disabled ${isFriend ? ' dropdown-toggle dropdown-toggle-split issues-follow-btn__main--radius' : ''}`}
-              disabled
+            <FollowToggleButton handleClick={this.handleClick} params={lineParams} />
+            <Menu
+              id="simple-menu"
+              anchorEl={this.state.anchorEl}
+              getContentAnchorEl={null}
+              anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+              transformOrigin={{ vertical: 'top', horizontal: 'left' }}
+              keepMounted
+              open={Boolean(this.state.anchorEl)}
+              onClose={this.handleClose}
             >
-              {showFollowingText ? (
-                <span>
-                  { (isFollowing || isFriend) && (
-                    <span>
-                      <CheckCircle className="following-icon" />
-                      <span className="pl-2">Following</span>
-                    </span>
-                  )}
-                  { isIgnoring && (
-                    <span>
-                      <NotInterested className="ignoring-icon" />
-                      <span className="pl-2">Ignoring</span>
-                    </span>
-                  )}
-                </span>
-              ) : (
-                <span>
-                  { (isFollowing || isFriend) &&
-                    <CheckCircle className="following-icon" /> }
-                  { isIgnoring &&
-                    <NotInterested className="ignoring-icon" /> }
-                </span>
-              )}
-            </Button>
-            {!isFriend && (
-              <>
-                <div className="issues-follow-btn__separator" />
-                <Button
-                  id={`positionItemFollowToggleDropdown-${platformType}-${organizationWeVoteId} organizationOrPublicFigureDropDown`}
-                  type="button"
-                  className="dropdown-toggle dropdown-toggle-split issues-follow-btn issues-follow-btn__dropdown issues-follow-btn--white"
-                  data-toggle="dropdown"
-                  aria-haspopup="true"
-                  aria-expanded="false"
-                >
-                  <span className="sr-only">Toggle Dropdown</span>
-                </Button>
-                <div className={anchorLeft ? (
-                  'dropdown-menu dropdown-menu-left issues-follow-btn__menu'
+              <MenuItemStyled onClick={this.handleClose}>
+                {isFollowingFriendOrIgnoring ? (
+                  <UnfollowFollowLine
+                    followFunction={followFunction}
+                    followInstantly={this.followInstantly}
+                    stopFollowingFunc={stopFollowingFunc}
+                    stopFollowingInstantly={this.stopFollowingInstantly}
+                    params={lineParams}
+                  />
                 ) : (
-                  'dropdown-menu dropdown-menu-right issues-follow-btn__menu'
+                  <NotFollowingFriendOrIgnoringFollowLine
+                    followFunction={followFunction}
+                    followInstantly={this.followInstantly}
+                    params={lineParams}
+                  />
                 )}
-                >
-                  {isFollowing ? (
-                    <span className="d-print-none">
-                      { hideStopFollowingButton ?
-                        null : (
-                          <Button
-                            id={`positionItemFollowToggleUnfollow-${platformType}-${organizationWeVoteId} organizationOrPublicFigureUnfollow`}
-                            type="button"
-                            className="dropdown-item issues-follow-btn issues-follow-btn__menu-item"
-                            onClick={() => this.stopFollowingInstantly(stopFollowingFunc, currentBallotIdInUrl, urlWithoutHash, ballotItemWeVoteId)}
-                          >
-                            Unfollow
-                          </Button>
-                        )}
-                    </span>
-                  ) : (
-                    <Button
-                      id={`positionItemFollowToggleFollowDropDown-${platformType}-${organizationWeVoteId} organizationOrPublicFigureDropDown`}
-                      className="dropdown-item issues-follow-btn issues-follow-btn__menu-item"
-                      onClick={() => this.followInstantly(followFunction, currentBallotIdInUrl, urlWithoutHash, ballotItemWeVoteId)}
-                      type="button"
-                    >
-                      Follow
-                    </Button>
-                  )}
-                  <div className="dropdown-divider" />
-                  {isIgnoring ? (
-                    <span className="d-print-none">
-                      { hideStopIgnoringButton ?
-                        null : (
-                          <Button
-                            id={`positionItemFollowToggleStopIgnoring-${platformType}-${organizationWeVoteId} organizationOrPublicFigureUnignore`}
-                            type="button"
-                            className="dropdown-item issues-follow-btn issues-follow-btn__menu-item"
-                            onClick={() => this.stopIgnoringInstantly(stopIgnoringFunc, currentBallotIdInUrl, urlWithoutHash, ballotItemWeVoteId)}
-                          >
-                            Stop Ignoring
-                          </Button>
-                        )}
-                    </span>
-                  ) : (
-                    <Button
-                      id={`positionItemFollowToggleIgnore-${platformType}-${organizationWeVoteId} organizationOrPublicFigureIgnore`}
-                      type="button"
-                      className="dropdown-item issues-follow-btn issues-follow-btn__menu-item"
-                      onClick={() => this.ignoreInstantly(ignoreFunction, currentBallotIdInUrl, urlWithoutHash, ballotItemWeVoteId)}
-                    >
-                      Ignore
-                    </Button>
-                  )}
-                </div>
-              </>
-            )}
+              </MenuItemStyled>
+              <MenuItemStyled onClick={this.handleClose}>
+                {isFollowingFriendOrIgnoring ? (
+                  <IgnoreLine
+                    ignoreFunction={ignoreFunction}
+                    ignoreInstantly={this.ignoreInstantly}
+                    stopIgnoringFunc={stopIgnoringFunc}
+                    stopIgnoringInstantly={this.stopIgnoringInstantly}
+                    params={lineParams}
+                  />
+                ) : (
+                  <NotFollowingFriendOrIgnoringIgnoreStopIgnoreLine
+                    ignoreFunction={ignoreFunction}
+                    ignoreInstantly={this.ignoreInstantly}
+                    stopIgnoringFunc={stopIgnoringFunc}
+                    stopIgnoringInstantly={this.stopIgnoringInstantly}
+                    params={lineParams}
+                  />
+                )}
+              </MenuItemStyled>
+            </Menu>
           </>
         ) : (
-          <>
-            <Button
-              id={`positionItemFollowToggleFollow-${platformType}-${organizationWeVoteId} organizationOrPublicFigureFollowDropDown`}
-              type="button"
-              className={`issues-follow-btn issues-follow-btn__main ${hideDropdownButtonUntilFollowing ? ' dropdown-toggle dropdown-toggle-split issues-follow-btn__main--radius' : ''} ${lightModeOn ? ' issues-follow-btn--white' : ' issues-follow-btn--blue'}`}
-              onClick={() => this.followInstantly(followFunction, currentBallotIdInUrl, urlWithoutHash, ballotItemWeVoteId)}
-            >
-              Follow
-            </Button>
-            {!hideDropdownButtonUntilFollowing && (
-              <>
-                <div className="issues-follow-btn__separator" />
-                <Button
-                  id={`positionItemFollowToggleDropdown-${platformType}-${organizationWeVoteId} organizationOrPublicFigureDropDown`}
-                  type="button"
-                  className={`dropdown-toggle dropdown-toggle-split issues-follow-btn issues-follow-btn__dropdown ${lightModeOn ? ' issues-follow-btn--white' : ' issues-follow-btn--blue'}`}
-                  data-toggle="dropdown"
-                  aria-haspopup="true"
-                  aria-expanded="false"
-                >
-                  <span className="sr-only">Toggle Dropdown</span>
-                </Button>
-                <div className={`dropdown-menu issues-follow-btn__menu ${anchorLeft ? ' dropdown-menu-left' : ' dropdown-menu-right'}`}>
-                  <Button
-                    id={`positionItemFollowToggleFollow-${platformType}-${organizationWeVoteId} organizationOrPublicFigureFollowDropDown`}
-                    type="button"
-                    className="dropdown-item issues-follow-btn issues-follow-btn__menu-item"
-                    onClick={() => this.followInstantly(followFunction, currentBallotIdInUrl, urlWithoutHash, ballotItemWeVoteId)}
-                  >
-                    Follow
-                  </Button>
-                  <div className="dropdown-divider" />
-                  {isIgnoring ? (
-                    <span className="d-print-none">
-                      { !hideStopIgnoringButton && (
-                        <Button
-                          id={`positionItemFollowToggleStopIgnoring-${platformType}-${organizationWeVoteId} organizationOrPublicFigureUnignore`}
-                          type="button"
-                          className="dropdown-item issues-follow-btn issues-follow-btn__menu-item"
-                          onClick={() => this.stopIgnoringInstantly(stopIgnoringFunc, currentBallotIdInUrl, urlWithoutHash, ballotItemWeVoteId)}
-                        >
-                          Stop Ignoring
-                        </Button>
-                      )}
-                    </span>
-                  ) : (
-                    <Button
-                      id={`positionItemFollowToggleIgnore-${platformType}-${organizationWeVoteId} organizationOrPublicFigureIgnore`}
-                      type="button"
-                      className="dropdown-item issues-follow-btn issues-follow-btn__menu-item"
-                      onClick={() => this.ignoreInstantly(ignoreFunction, currentBallotIdInUrl, urlWithoutHash, ballotItemWeVoteId)}
-                    >
-                      Ignore
-                    </Button>
-                  )}
-                </div>
-              </>
-            )}
-          </>
+          <NotFollowingFriendOrIgnoringFollowLine
+            followFunction={followFunction}
+            followInstantly={this.followInstantly}
+            params={lineParams}
+          />
         )}
       </div>
     );
@@ -477,3 +549,25 @@ FollowToggle.propTypes = {
   anchorLeft: PropTypes.bool,
   platformType: PropTypes.string,
 };
+
+const CheckCircleStyled = muiStyled(CheckCircle)({
+  fill: 'rgb(13, 84, 111)',
+  height: 18,
+  width: 18,
+});
+
+const ButtonStyled = muiStyled(Button)({
+  border: '1px solid rgb(204, 204, 204)',
+  // height: 32,
+});
+
+const NotInterestedStyled = muiStyled(NotInterested)({
+  fill: 'rgb(13, 84, 111)',
+  height: 18,
+  width: 18,
+});
+
+const MenuItemStyled = muiStyled(MenuItem)({
+  height: 28,
+});
+

@@ -1,5 +1,5 @@
 import { withStyles, withTheme } from '@material-ui/core/styles';
-import { Info } from '@material-ui/icons';
+import { Info, Twitter } from '@material-ui/icons';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import TextTruncate from 'react-text-truncate';
@@ -335,7 +335,7 @@ class CandidateItem extends Component {
                   className={`u-show-desktop twitter-followers__badge ${linkToBallotItemPage ? 'u-cursor--pointer' : ''}`}
                   onClick={linkToBallotItemPage ? this.goToCandidateLink : null}
                 >
-                  <span className="fab fa-twitter fa-sm" />
+                  <Twitter />
                   <span title={numberWithCommas(twitterFollowersCount)}>{abbreviateNumber(twitterFollowersCount)}</span>
                 </span>
               )}

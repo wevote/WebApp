@@ -1,3 +1,4 @@
+import { Twitter } from '@material-ui/icons';
 import PropTypes from 'prop-types';
 import React, { PureComponent } from 'react';
 import { ReactSVG } from 'react-svg';
@@ -55,13 +56,14 @@ class EndorsementCard extends PureComponent {
     if (whiteOnBlue) {
       backgroundColor = '#fff';
       fontColor = '#2e3c5d';
-      icon = (
-        <ReactSVG
-          src={cordovaDot(positionIcon)}
-          beforeInjection={(svg) => svg.setAttribute('style', 'backgroundColor: #2e3c5d, borderRadius: 3px, fill: #fff, padding: 2px, width: 24px, height: 24px')}
-          alt=""
-        />
-      );
+      icon = <Twitter />;
+      // icon = (
+      //   <ReactSVG
+      //     src={cordovaDot(positionIcon)}
+      //     beforeInjection={(svg) => svg.setAttribute('style', 'backgroundColor: #2e3c5d, borderRadius: 3px, fill: #fff, padding: 2px, width: 24px, height: 24px')}
+      //     alt=""
+      //   />
+      // );
     }
     return (
       <div>

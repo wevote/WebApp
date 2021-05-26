@@ -146,6 +146,35 @@ class PaidAccountUpgradeModal extends Component {
     }
   }
 
+  handleResize () {
+    this.setState({
+      windowWidth: window.innerWidth,
+    });
+
+    if (window.innerWidth < 769) {
+      switch (this.state.paidAccountProcessStep) {
+        case 'payForPlanDesktop':
+          this.setState({ paidAccountProcessStep: 'selectPlanDetailsMobile' });
+          break;
+        case 'selectPlanDetailsMobile':
+          break;
+        default:
+          break;
+      }
+    } else if (window.innerWidth >= 769) {
+      switch (this.state.paidAccountProcessStep) {
+        default:
+          break;
+        case 'selectPlanDetailsMobile':
+          this.setState({ paidAccountProcessStep: 'payForPlanDesktop' });
+          break;
+        case 'payForPlanMobile':
+          this.setState({ paidAccountProcessStep: 'payForPlanDesktop' });
+          break;
+      }
+    }
+  }
+
   onCouponInputChange (e) {
     this.setState({ couponCodeInputValue: e.target.value });
   }
@@ -439,35 +468,6 @@ class PaidAccountUpgradeModal extends Component {
     this.setState({
       paidAccountProcessStep: 'paymentProcessed',
     });
-  }
-
-  handleResize () {
-    this.setState({
-      windowWidth: window.innerWidth,
-    });
-
-    if (window.innerWidth < 769) {
-      switch (this.state.paidAccountProcessStep) {
-        case 'payForPlanDesktop':
-          this.setState({ paidAccountProcessStep: 'selectPlanDetailsMobile' });
-          break;
-        case 'selectPlanDetailsMobile':
-          break;
-        default:
-          break;
-      }
-    } else if (window.innerWidth >= 769) {
-      switch (this.state.paidAccountProcessStep) {
-        default:
-          break;
-        case 'selectPlanDetailsMobile':
-          this.setState({ paidAccountProcessStep: 'payForPlanDesktop' });
-          break;
-        case 'payForPlanMobile':
-          this.setState({ paidAccountProcessStep: 'payForPlanDesktop' });
-          break;
-      }
-    }
   }
 
   backToChoosePlan () {

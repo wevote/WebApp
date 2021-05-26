@@ -1,4 +1,5 @@
 import { withStyles, withTheme } from '@material-ui/core/styles';
+import { Twitter } from '@material-ui/icons';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
@@ -229,7 +230,7 @@ class CandidateItemForOpinions extends Component {
                 className="u-show-desktop twitter-followers__badge u-cursor--pointer"
                 onClick={() => this.goToCandidateLink}
               >
-                <span className="fab fa-twitter fa-sm" />
+                <Twitter />
                 <span title={numberWithCommas(oneCandidate.twitter_followers_count)}>{abbreviateNumber(oneCandidate.twitter_followers_count)}</span>
               </TwitterWrapper>
             )}

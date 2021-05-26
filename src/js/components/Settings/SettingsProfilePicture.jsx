@@ -1,7 +1,7 @@
 import { Button, FormControlLabel, Radio, RadioGroup } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
+import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-// import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import AppActions from '../../actions/AppActions';
 
@@ -11,7 +11,6 @@ class SettingsProfilePicture extends Component {
     super(props);
     this.state = {
       value: 'custom',
-      files: [],
     };
     this.handleChange = this.handleChange.bind(this);
   }
@@ -83,9 +82,9 @@ class SettingsProfilePicture extends Component {
     );
   }
 }
-// SettingsProfilePicture.propTypes = {
-//   classes: PropTypes.object,
-// };
+SettingsProfilePicture.propTypes = {
+  classes: PropTypes.object,
+};
 
 const styles = () => ({
   button: {
@@ -114,8 +113,7 @@ const CustomColumns = styled.div`
 const ProfilePictureOption = styled.div`
   border: 2px solid #e8e8e8;
   border-radius: 3px;
-  padding: 12px;
-  padding-top: 4px;
+  padding: 4px 12px 12px 12px;
   display: flex !important;
   flex-direction: column;
   align-items: flex-start;

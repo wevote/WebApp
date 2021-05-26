@@ -6,6 +6,7 @@ import FriendActions from '../../actions/FriendActions';
 import FriendStore from '../../stores/FriendStore';
 import OrganizationStore from '../../stores/OrganizationStore';
 import VoterStore from '../../stores/VoterStore';
+import apiCalming from '../../utils/apiCalming';
 import { renderLog } from '../../utils/logging';
 import { isSpeakerTypeOrganization } from '../../utils/organization-functions';
 import { stringContains } from '../../utils/textFormat';
@@ -32,7 +33,10 @@ class FirstAndLastNameRequiredAlert extends Component {
     this.friendStoreListener = FriendStore.addListener(this.onFriendStoreChange.bind(this));
     this.organizationStoreListener = OrganizationStore.addListener(this.onOrganizationStoreChange.bind(this));
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
-    FriendActions.friendInvitationsWaitingForVerification();
+    if (apiCalming('friendInvitationsWaitingForVerification')) {
+      // console.log('FirstAndLastNameRequiredAlert friendInvitationsWaitingForVerification');
+      FriendActions.friendInvitationsWaitingForVerification();
+    }
   }
 
   componentWillUnmount () {

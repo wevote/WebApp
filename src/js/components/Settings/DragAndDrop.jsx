@@ -1,5 +1,7 @@
+import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import styled from 'styled-components';
+
 
 class DragAndDrop extends Component {
   dropRef = React.createRef();
@@ -9,6 +11,22 @@ class DragAndDrop extends Component {
     this.state = {
       drag: false,
     };
+  }
+
+  componentDidMount () {
+    const div = this.dropRef.current;
+    div.addEventListener('dragenter', this.handleDragIn);
+    div.addEventListener('dragleave', this.handleDragOut);
+    div.addEventListener('dragover', this.handleDrag);
+    div.addEventListener('drop', this.handleDropLocal);
+  }
+
+  componentWillUnmount () {
+    const div = this.dropRef.current;
+    div.removeEventListener('dragenter', this.handleDragIn);
+    div.removeEventListener('dragleave', this.handleDragOut);
+    div.removeEventListener('dragover', this.handleDrag);
+    div.removeEventListener('drop', this.handleDropLocal);
   }
 
   handleDrag = (e) => {
@@ -34,7 +52,7 @@ class DragAndDrop extends Component {
     }
   }
 
-  handleDrop = (e) => {
+  handleDropLocal = (e) => {
     e.preventDefault();
     e.stopPropagation();
     this.setState({ drag: false });
@@ -44,22 +62,6 @@ class DragAndDrop extends Component {
       e.dataTransfer.clearData();
       this.dragCounter = 0;
     }
-  }
-
-  componentDidMount () {
-    const div = this.dropRef.current;
-    div.addEventListener('dragenter', this.handleDragIn);
-    div.addEventListener('dragleave', this.handleDragOut);
-    div.addEventListener('dragover', this.handleDrag);
-    div.addEventListener('drop', this.handleDrop);
-  }
-
-  componentWillUnmount () {
-    const div = this.dropRef.current;
-    div.removeEventListener('dragenter', this.handleDragIn);
-    div.removeEventListener('dragleave', this.handleDragOut);
-    div.removeEventListener('dragover', this.handleDrag);
-    div.removeEventListener('drop', this.handleDrop);
   }
 
   render () {
@@ -73,6 +75,11 @@ class DragAndDrop extends Component {
     );
   }
 }
+DragAndDrop.propTypes = {
+  handleDrop: PropTypes.func.isRequired,
+  active: PropTypes.bool,
+};
+
 
 const Wrapper = styled.div`
   background: ${(props) => (props.active ? '#e8e8e8' : '#f7f7f7')};

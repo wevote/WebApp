@@ -9,8 +9,6 @@ import WeVoteRouter from './js/components/Widgets/WeVoteRouter';
 import muiTheme from './js/mui-theme';
 import styledTheme from './js/styled-theme';
 import cookies from './js/utils/cookies';
-import initializejQuery from './js/utils/initializejQuery';
-// import initializeOnce from './js/utils/initializeOnce';
 import { renderLog } from './js/utils/logging';
 import RouterV5SendMatch from './js/utils/RouterV5SendMatch';
 // import SnackNotifier from './js/components/Widgets/SnackNotifier';
@@ -108,14 +106,6 @@ class App extends Component {
     this.setShowFooter = this.setShowFooter.bind(this);
     this.setShowHeaderFooter = this.setShowHeaderFooter.bind(this);
     this.setShowReadyHeavy = this.setShowReadyHeavy.bind(this);
-
-    // lazyLoader('bootstrap-social-css').then((result) => {
-    //   console.log('lazy loader for bootstrap-social-css returned: ', result);
-    // });
-    initializejQuery(() => {
-      console.log('jquery initialized in App');
-      this.setState({ jQueryInitialized: true });
-    });
     this.localIsCordova();
   }
 
@@ -138,7 +128,6 @@ class App extends Component {
     // initializeOnce();
     // this.InitializeOnce();
     console.log('href in App.js componentDidMount: ', window.location.href);
-
   }
 
   componentDidCatch (error, info) {
@@ -165,28 +154,6 @@ class App extends Component {
     });
   }
 
-  // InitializeOnce () {
-  //   const { isInitialized } = this.state;
-  //   if (isInitialized) {
-  //     return;
-  //   }
-  //
-  //   this.positionItemTimer = setTimeout(() => {
-  //     // April 2021: This takes a half second to complete, and does tons more than
-  //     // you would think server side.  But it should not be necessary on every voterRetrieve,
-  //     // but if there are some odd cases where it has to be called agian, deal with them as
-  //     // special cases.
-  //     // voter_device_id won't be set for first time visitors, until the first API call completes!
-  //     const voterDeviceId = VoterStore.voterDeviceId();
-  //     if (voterDeviceId) {
-  //       VoterActions.voterAddressRetrieve(voterDeviceId);
-  //       this.setState({ isInitialized: true });
-  //     } else {
-  //       console.error('Attempted to send voterAddressRetrieve before we have a voterDeviceId!');
-  //     }
-  //   }, 5000);  // April 30, 2021: Tuned to keep performance up
-  // }
-
   setShowReadyHeavy () {
     this.setState({ showReadyLight: false });
   }
@@ -202,7 +169,7 @@ class App extends Component {
     const isNotWeVoteMarketingSite = !isWeVoteMarketingSite;
     const firstVisit = !cookies.getItem('voter_device_id');
 
-    // console.log('href in App.js render: ', window.location.href);
+    console.log('href in App.js render: ', window.location.href);
 
     return (
       <ErrorBoundary>
@@ -211,6 +178,7 @@ class App extends Component {
             <ThemeProvider theme={styledTheme}>
               <WeVoteRouter>
                 <WeVoteBody>
+                  {/* DO NOT put SnackNotifier or anything else that is non-essential here (to keep it out of the main chuck. */}
                   <Header params={{ }} pathname={window.location.href} />
                   <Switch>
                     <Route exact path="/about"><About /></Route>
@@ -485,7 +453,8 @@ const WeVoteBody = styled.div`
   font-family: "Nunito Sans", "Helvetica Neue Light", "Helvetica Neue", "Helvetica", "Arial", sans-serif;
   line-height: 1.4;
   margin: 0 auto;
-  max-width: 960px;
+  // max-width: 960px;
+  height: 100vw;
   position: relative;
   z-index: 0;
 `;

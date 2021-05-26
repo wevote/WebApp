@@ -1,7 +1,8 @@
 import assign from 'object-assign';
 import url from 'url';
-import cookies from './cookies';
 import webAppConfig from '../config';
+import cookies from './cookies';
+import initializejQuery from './initializejQuery';
 import { httpLog } from './logging';
 // December 2018:  We want to work toward being airbnb style compliant, but for now these are disabled in this file to minimize massive changes
 /* eslint no-param-reassign: 0 */
@@ -37,28 +38,30 @@ const defaults = {
  */
 
 export default function $ajax (options) {
-  if (!options.endpoint) throw new Error('$ajax missing endpoint option');
-  if (!defaults.baseCdnUrl) throw new Error('$ajax missing base CDN url option');
-  if (!defaults.baseUrl) throw new Error('$ajax missing base url option');
+  initializejQuery(() => {
+    const { $ } = window;
+    if (!options.endpoint) throw new Error('$ajax missing endpoint option');
+    if (!defaults.baseCdnUrl) throw new Error('$ajax missing base CDN url option');
+    if (!defaults.baseUrl) throw new Error('$ajax missing base url option');
 
-  options.crossDomain = true;
-  options.success = options.success || defaults.success;
-  options.error = options.error || defaults.error;
-  // console.log('service.js, options.endpoint: ', options.endpoint);
-  if (options.endpoint === 'organizationPhotosSave') {
-    options.method = 'POST';
-    // const csrftoken = cookies.getItem('csrftoken');
-    // const headers = new Headers();
-    // headers.append('X-CSRFToken', csrftoken);
-    // headers.append('Access-Control-Allow-Headers', 'Access-Control-Allow-Headers, Origin,Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers');
-    // headers.append('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,PATCH,OPTIONS');
-    // headers.append('Access-Control-Allow-Origin', '*');
-    // options.headers = headers;
-  } else {
-    options.method = 'GET';
-  }
-  // Switch between master API server and CDN
-  if (options.endpoint === 'allBallotItemsRetrieve' ||
+    options.crossDomain = true;
+    options.success = options.success || defaults.success;
+    options.error = options.error || defaults.error;
+    // console.log('service.js, options.endpoint: ', options.endpoint);
+    if (options.endpoint === 'organizationPhotosSave') {
+      options.method = 'POST';
+      // const csrftoken = cookies.getItem('csrftoken');
+      // const headers = new Headers();
+      // headers.append('X-CSRFToken', csrftoken);
+      // headers.append('Access-Control-Allow-Headers', 'Access-Control-Allow-Headers, Origin,Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers');
+      // headers.append('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,PATCH,OPTIONS');
+      // headers.append('Access-Control-Allow-Origin', '*');
+      // options.headers = headers;
+    } else {
+      options.method = 'GET';
+    }
+    // Switch between master API server and CDN
+    if (options.endpoint === 'allBallotItemsRetrieve' ||
       options.endpoint === 'candidateRetrieve' ||
       options.endpoint === 'candidatesRetrieve' ||
       options.endpoint === 'defaultPricing' ||
@@ -71,21 +74,21 @@ export default function $ajax (options) {
       options.endpoint === 'positionListForBallotItem' ||
       options.endpoint === 'voterGuidesUpcomingRetrieve' ||
       options.endpoint === 'voterGuidesRetrieve'
-  ) {
-    // Retrieve API data from CDN
-    options.data = assign({}, options.data || {}); // Do not pass voter_device_id
-    options.url = `${url.resolve(defaults.baseCdnUrl, options.endpoint)}/`;
-  } else {
-    // Retrieve API from API Server Pool
-    options.data = assign({}, options.data || {}, defaults.data());
-    options.url = `${url.resolve(defaults.baseUrl, options.endpoint)}/`;
-  }
+    ) {
+      // Retrieve API data from CDN
+      options.data = assign({}, options.data || {}); // Do not pass voter_device_id
+      options.url = `${url.resolve(defaults.baseCdnUrl, options.endpoint)}/`;
+    } else {
+      // Retrieve API from API Server Pool
+      options.data = assign({}, options.data || {}, defaults.data());
+      options.url = `${url.resolve(defaults.baseUrl, options.endpoint)}/`;
+    }
 
-  httpLog(`AJAX URL: ${options.url}`);
-  if (options.endpoint === 'voterRetrieve') {
-    httpLog('AJAX voter_device_id: ', cookies.getItem('voter_device_id'));
-  }
+    httpLog(`AJAX URL: ${options.url}`);
+    if (options.endpoint === 'voterRetrieve') {
+      httpLog('AJAX voter_device_id: ', cookies.getItem('voter_device_id'));
+    }
 
-  const { $ } = window;
-  return $.ajax(options);
+    return $.ajax(options);
+  });
 }

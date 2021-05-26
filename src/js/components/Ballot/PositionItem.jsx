@@ -1,6 +1,6 @@
 import { Button } from '@material-ui/core';
 import { withStyles, withTheme } from '@material-ui/core/styles';
-import { Info, ThumbDown, ThumbUp } from '@material-ui/icons';
+import { Info, ThumbDown, ThumbUp, Twitter } from '@material-ui/icons';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
@@ -498,7 +498,8 @@ class PositionItem extends Component {
                       <DesktopItemTwitterContainer>
                         { !!(position.twitter_followers_count && String(position.twitter_followers_count) !== '0') && (
                           <DesktopItemTwitter>
-                            <TwitterIcon className="fab fa-twitter" />
+                            {/* <TwitterIcon className="fab fa-twitter" /> */}
+                            <Twitter />
                             {numberWithCommas(position.twitter_followers_count)}
                           </DesktopItemTwitter>
                         )}
@@ -1067,11 +1068,11 @@ const ToScoreLabel = styled.div`
   ${({ advisorImageExists }) => (advisorImageExists ? 'margin-top: -23px;' : 'margin-top: -20px;')}
 `;
 
-const TwitterIcon = styled.span`
-  font-size: 16px;
-  color: #ccc;
-  margin-right: 2px;
-  vertical-align: bottom;
-`;
+// const TwitterIcon = styled.span`
+//   font-size: 16px;
+//   color: #ccc;
+//   margin-right: 2px;
+//   vertical-align: bottom;
+// `;
 
 export default withTheme(withStyles(styles)(PositionItem));

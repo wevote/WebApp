@@ -1,12 +1,14 @@
 import React, { Component } from 'react';
 import Helmet from 'react-helmet';
 import Slider from 'react-slick';
-import closeIcon from '../../../img/global/icons/x-close.png';
 import IntroNetworkBallotIsNext from '../../components/Intro/IntroNetworkBallotIsNext';
 import IntroNetworkDefinition from '../../components/Intro/IntroNetworkDefinition';
 import IntroNetworkSafety from '../../components/Intro/IntroNetworkSafety';
 import { cordovaDot, getAndroidSize, historyPush, isAndroid, isWebApp } from '../../utils/cordovaUtils';
 import { renderLog } from '../../utils/logging';
+
+const closeIcon = '../../../img/global/icons/x-close.png';
+
 
 export default class IntroNetwork extends Component {
   static goToReadyLink () {

@@ -17,6 +17,7 @@ import BallotItemForOpinions from '../components/OpinionsAndBallotItems/BallotIt
 import CandidateSearchItemForOpinions from '../components/OpinionsAndBallotItems/CandidateSearchItemForOpinions';
 import VoterGuideDisplayForListForOpinions from '../components/OpinionsAndBallotItems/VoterGuideDisplayForListForOpinions';
 import NumberOfItemsFound from '../components/Widgets/NumberOfItemsFound';
+import SnackNotifier from '../components/Widgets/SnackNotifier';
 import BallotStore from '../stores/BallotStore';
 import OrganizationStore from '../stores/OrganizationStore';
 import VoterGuideStore from '../stores/VoterGuideStore';
@@ -43,7 +44,7 @@ const islandFilters = [
     filterName: 'showOrganizationsFilter',
     icon: <ReactSVG
       src={cordovaDot(organizationIcon)}
-      beforeInjection={(svg) => svg.setAttribute('style', { backgroundColor: '#fff', borderRadius: '3px', fill: '#555', width: '16px', height: '16px' })}
+      beforeInjection={(svg) => svg.setAttribute('style', 'margin-top: 4px; background-color: #fff; width: 16px; height: 16px; border-radius: 3px; fill: #555;')}
       alt="Visible to Public"
     />,
     filterDisplayName: 'Organizations',
@@ -53,7 +54,7 @@ const islandFilters = [
     filterName: 'showPublicFiguresFilter',
     icon: <ReactSVG
       src={cordovaDot(groupIcon)}
-      beforeInjection={(svg) => svg.setAttribute('style', { backgroundColor: '#fff', borderRadius: '3px', fill: '#555', width: '16px', height: '16px' })}
+      beforeInjection={(svg) => svg.setAttribute('style', 'background-color: #fff; border-radius: 3px; fill: #555; width: 16px; height: 16px')}
       alt="Visible to Public"
     />,
     filterDisplayName: 'Public Figures',
@@ -608,6 +609,7 @@ class Opinions2020 extends Component {
     // console.log('atLeastOneFoundWithTheseFilters: ', atLeastOneFoundWithTheseFilters);
     return (
       <div className="container">
+        <SnackNotifier />
         <Card className="card">
           <div className="card-main">
             <FilterBaseWrapper>

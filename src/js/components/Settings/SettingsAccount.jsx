@@ -1,3 +1,4 @@
+import { Twitter } from '@material-ui/icons';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import Button from 'react-bootstrap/Button';
@@ -438,7 +439,7 @@ export default class SettingsAccount extends Component {
                   {!hideTwitterSignInButton && voterIsSignedInTwitter && (
                     <div>
                       <TwitterContainer className="btn btn-social btn-md btn-twitter" href="#">
-                        <i className="fab fa-twitter" />
+                        <Twitter />
                         @
                         {twitterScreenName}
                       </TwitterContainer>

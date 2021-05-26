@@ -7,9 +7,9 @@ import styled from 'styled-components';
 import ActivityActions from '../../actions/ActivityActions';
 import ActivityStore from '../../stores/ActivityStore';
 import { createDescriptionOfFriendPosts } from '../../utils/activityUtils';
+import apiCalming from '../../utils/apiCalming';
 import { historyPush, isIOSAppOnMac, setIconBadgeMessageCount } from '../../utils/cordovaUtils';
 import { timeFromDate } from '../../utils/dateFormat';
-import initializejQuery from '../../utils/initializejQuery';
 import { renderLog } from '../../utils/logging';
 import { returnFirstXWords, startsWith } from '../../utils/textFormat';
 
@@ -29,14 +29,14 @@ class HeaderNotificationMenu extends Component {
 
   componentDidMount () {
     // console.log('HeaderNotificationMenu componentDidMount, this.props: ', this.props);
-    initializejQuery(() => {
-      this.timer = setTimeout(() => {
-        this.activityStoreListener = ActivityStore.addListener(this.onActivityStoreChange.bind(this));
+    this.timer = setTimeout(() => {
+      this.activityStoreListener = ActivityStore.addListener(this.onActivityStoreChange.bind(this));
+      if (apiCalming('activityNoticeListRetrieve', 500)) {
         ActivityActions.activityNoticeListRetrieve();
-        ActivityActions.activityListRetrieve();
-        if (!isIOSAppOnMac()) setIconBadgeMessageCount(0);
-      }, 3000);
-    });
+      }
+      ActivityActions.activityListRetrieve();
+      if (!isIOSAppOnMac()) setIconBadgeMessageCount(0);
+    }, 3000);
   }
 
   componentDidCatch (error, info) {

@@ -25,7 +25,14 @@ export function makeSearchLink (twitterHandle, weVoteId, kindOfOwner, linkIntern
   return searchLink;
 }
 
-export function numberOfNeedlesFoundInString (needle) {
-  const regExp = new RegExp(needle, 'gi');
-  return (this.match(regExp) || []).length;
+// May 2021:  This was causing hard to debug problems... clever but brittle -- mostly replaced with newer built in String.includes()
+// Aug 2019: Adding functions to the String prototype will make stuff like `for (char in str)` break, because it will loop over the substringOccurences property.
+// As long as we use `forEach()` or `for (char of str)` then that side effect will be mitigated.
+// export function numberOfNeedlesFoundInString (needle) {
+//   const regExp = new RegExp(needle, 'gi');
+//   return (this.match(regExp) || []).length;
+// }
+
+export function countMatches (text, str) {
+  return str.split(text).length - 1;
 }

@@ -29,7 +29,9 @@ export default class IssueImageDisplay extends Component {
       issueIconLocalPath = oneIssue.issue_icon_local_path;
     }
 
-    const issueIconImageUrl = cordovaDot(`/img/global/svg-icons/issues/${issueIconLocalPath}.svg`);
+    const issueIconImageUrl = (!issueIconLocalPath || issueIconLocalPath.length === 0) ?
+      cordovaDot('/img/global/svg-icons/issues/thumbs-up-icon.svg') :
+      cordovaDot(`/img/global/svg-icons/issues/${issueIconLocalPath}.svg`);
 
     let supportOrOpposeClass = '';
     if (this.props.showSupport) {

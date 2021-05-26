@@ -1,5 +1,6 @@
 import { IconButton, Tooltip } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
+import { Twitter } from '@material-ui/icons';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import styled from 'styled-components';
@@ -25,7 +26,7 @@ class ToolBar extends Component {
             body={(
               <Tooltip title="Twitter">
                 <IconButton>
-                  <Icon className="fab fa-twitter" />
+                  <Twitter />
                 </IconButton>
               </Tooltip>
             )}

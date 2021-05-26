@@ -2,15 +2,14 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import AppActions from '../../actions/AppActions';
 import VoterActions from '../../actions/VoterActions';
-import webAppConfig from '../../config';
 import AppStore from '../../stores/AppStore';
 import VoterStore from '../../stores/VoterStore';
+import apiCalming from '../../utils/apiCalming';
 import { dumpCssFromId } from '../../utils/appleSiliconUtils';
 import { getApplicationViewBooleans, weVoteBrandingOff } from '../../utils/applicationUtils';
 import { cordovaTopHeaderTopMargin } from '../../utils/cordovaOffsets';
 import { hasIPhoneNotch, historyPush, isCordova, isIOS, isIOSAppOnMac, isIPad, isWebApp } from '../../utils/cordovaUtils';
 import displayFriendsTabs from '../../utils/displayFriendsTabs';
-import initializejQuery from '../../utils/initializejQuery';
 import { renderLog } from '../../utils/logging';
 import { startsWith, stringContains } from '../../utils/textFormat';
 import HeaderBar from './HeaderBar';
@@ -45,19 +44,6 @@ export default class Header extends Component {
     this.closeOrganizationModal = this.closeOrganizationModal.bind(this);
     this.closeSharedItemModal = this.closeSharedItemModal.bind(this);
     this.handleResize = this.handleResize.bind(this);
-    // 2021-1-3: This is a workaround for the difficulty of nesting components in react-router V5, it should not be necessary
-    global.weVoteGlobalHistory.listen((location, action) => {
-      // TODO: Experimentally commented out 2021-5-3
-      // if (location.pathname !== this.state.priorPath) {
-      //   // Re-render the Header if the path changed (Needed for React-router V5)
-      //   console.log('-----------HEADER Re-render the Header if the path changed');
-      //   this.setState({ priorPath: window.locationPathname });
-      // }
-      if (webAppConfig.LOG_ROUTING) {
-        console.log(`Header: The current URL is ${location.pathname}${location.search}${location.hash}`);
-        console.log(`Header: The last navigation action was ${action}`, JSON.stringify(global.weVoteGlobalHistory, null, 2));
-      }
-    });
   }
 
   componentDidMount () {
@@ -68,12 +54,9 @@ export default class Header extends Component {
     if (isIOSAppOnMac() && appleSiliconDebug) {
       dumpCssFromId('header-container');
     }
-    initializejQuery(() => {
-      // console.log('initialized jQuery in Header');
-      if (VoterStore.getVoterWeVoteId() === '') {
-        VoterActions.voterRetrieve();
-      }
-    });
+    if (VoterStore.getVoterWeVoteId() === '' && apiCalming('voterRetrieve', 500)) {
+      VoterActions.voterRetrieve();
+    }
   }
 
   shouldComponentUpdate (nextProps, nextState) {

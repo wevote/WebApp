@@ -1,4 +1,5 @@
 import { Button } from '@material-ui/core';
+import { Twitter } from '@material-ui/icons';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
@@ -82,7 +83,8 @@ class OrganizationVoterGuideCard extends Component {
                 </TwitterHandleWrapper>
                 { !!(twitterFollowersCount && String(twitterFollowersCount) !== '0') && (
                   <span className="twitter-followers__badge">
-                    <span className="fab fa-twitter twitter-followers__icon" />
+                    {/* <span className="fab fa-twitter twitter-followers__icon" /> */}
+                    <Twitter />
                     {numberWithCommas(twitterFollowersCount)}
                   </span>
                 )}

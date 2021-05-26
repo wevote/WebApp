@@ -64,11 +64,9 @@ class SelectBallotModal extends Component {
   //   return false;
   // }
 
-  toggleEditingAddress = () => {
-    const { editingAddress } = this.state;
-    this.setState({
-      editingAddress: !editingAddress,
-    });
+  handleChooseStateChange (e) {
+    this.setState({ selectedState: e.target.value });
+    // console.log(e.target.value);
   }
 
   mapHandler = (stateAbbrFromMap) => {
@@ -76,9 +74,11 @@ class SelectBallotModal extends Component {
     this.setState({ selectedState: stateAbbrFromMap });
   };
 
-  handleChooseStateChange (e) {
-    this.setState({ selectedState: e.target.value });
-    // console.log(e.target.value);
+  toggleEditingAddress = () => {
+    const { editingAddress } = this.state;
+    this.setState({
+      editingAddress: !editingAddress,
+    });
   }
 
   render () {

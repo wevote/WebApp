@@ -16,6 +16,7 @@ import LoadingWheel from '../../components/LoadingWheel';
 import ShareButtonDesktopTablet from '../../components/Share/ShareButtonDesktopTablet';
 import EndorsementCard from '../../components/Widgets/EndorsementCard';
 import SearchOnGoogle from '../../components/Widgets/SearchOnGoogle';
+import SnackNotifier from '../../components/Widgets/SnackNotifier';
 import ThisIsMeAction from '../../components/Widgets/ThisIsMeAction';
 import ViewOnBallotpedia from '../../components/Widgets/ViewOnBallotpedia';
 import webAppConfig from '../../config';
@@ -293,7 +294,8 @@ class Candidate extends Component {
     // TODO When we remove expandIssuesByDefault from CandidateItem, the page is pushed very wide. This needs to be fixed.
     //   This started happening when we implemented the flex-based "TwoColumns"
     return (
-      <span>
+      <div className="page-content-container">
+        <SnackNotifier />
         <Helmet
           title={titleText}
           meta={[{ name: 'description', content: descriptionText }]}
@@ -380,7 +382,7 @@ class Candidate extends Component {
             />
           </span>
         )}
-      </span>
+      </div>
     );
   }
 }

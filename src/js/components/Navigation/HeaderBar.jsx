@@ -4,7 +4,6 @@ import { AccountCircle, Place } from '@material-ui/icons';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import styled from 'styled-components';
-import anonymous from '../../../img/global/icons/avatar-generic.png';
 import AppActions from '../../actions/AppActions';
 import BallotActions from '../../actions/BallotActions';
 import OrganizationActions from '../../actions/OrganizationActions';
@@ -36,20 +35,12 @@ const ShareModal = React.lazy(() => import(/* webpackChunkName: 'ShareModal' */ 
 const SignInModal = React.lazy(() => import(/* webpackChunkName: 'SignInModal' */ '../Widgets/SignInModal'));
 const ValuesIntroModal = React.lazy(() => import(/* webpackChunkName: 'ValuesIntroModal' */ '../CompleteYourProfile/ValuesIntroModal'));
 
+const anonymous = '../../../img/global/icons/avatar-generic.png';
 // TODO: Backport "@stripe/react-stripe-js" use from Campaigns
 // import PaidAccountUpgradeModal from '../Settings/PaidAccountUpgradeModal';
 
 
 class HeaderBar extends Component {
-  // static goToGetStarted () {
-  //   const { location: { host } } = window;
-  //   const getStartedNow = '/ready';
-  //   const newHref = host + getStartedNow;
-  //   // const history = useHistory();
-  //   // history.push(getStartedNow);
-  //   window.location.href = newHref;
-  // }
-
   constructor (props) {
     super(props);
     this.state = {
@@ -94,7 +85,6 @@ class HeaderBar extends Component {
     this.appStoreListener = AppStore.addListener(this.onAppStoreChange.bind(this));
     this.friendStoreListener = FriendStore.addListener(this.onFriendStoreChange.bind(this));
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
-    // this.onBallotStoreChange();
 
     const voter = VoterStore.getVoter();
     const voterFirstName = VoterStore.getFirstName();
@@ -118,6 +108,31 @@ class HeaderBar extends Component {
       voterFirstName,
       voterIsSignedIn: voter && voter.is_signed_in,
     });
+    setTimeout(() => {
+      const { headerObjects } = window;
+      const logoWrapper = document.querySelectorAll('[class^=HeaderBarLogo__HeaderBarWrapper]');
+      if (logoWrapper && logoWrapper[0] && logoWrapper[0].innerHTML.length) {
+        headerObjects.logo = logoWrapper[0].innerHTML;
+      }
+      if (document.getElementById('readyTabHeaderBar')) {
+        headerObjects.ready = document.getElementById('readyTabHeaderBar').innerHTML;
+      }
+      if (document.getElementById('ballotTabHeaderBar')) {
+        headerObjects.ballot = document.getElementById('ballotTabHeaderBar').innerHTML;
+      }
+      if (document.getElementById('valuesTabHeaderBar')) {
+        headerObjects.opinions = document.getElementById('valuesTabHeaderBar').innerHTML;
+      }
+      if (document.getElementById('discussTabHeaderBar')) {
+        headerObjects.discuss = document.getElementById('discussTabHeaderBar').innerHTML;
+      }
+      if (document.querySelectorAll('[class^=HeaderNotificationMenu__HeaderNotificationMenuWrapper]')) {
+        headerObjects.bell = document.querySelectorAll('[class^=HeaderNotificationMenu__HeaderNotificationMenuWrapper]')[0].innerHTML;
+      }
+      if (document.getElementById('profileAvatarHeaderBar')) {
+        headerObjects.photo = document.getElementById('profileAvatarHeaderBar').innerHTML;
+      }
+    }, 1000);
   }
 
   shouldComponentUpdate (nextProps, nextState) {
@@ -539,7 +554,7 @@ class HeaderBar extends Component {
                 )}
                 <TabWithPushHistory classes={{ root: classes.tabRootValues }} id="valuesTabHeaderBar" label="Opinions" to="/values" />
                 {(showFullNavigation) && (
-                  <TabWithPushHistory classes={{ root: classes.tabRootNews }} id="activityTabHeaderBar" label="Discuss" to="/news" />
+                  <TabWithPushHistory classes={{ root: classes.tabRootNews }} id="discussTabHeaderBar" label="Discuss" to="/news" />
                 )}
               </Tabs>
             </div>

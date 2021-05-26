@@ -1,11 +1,12 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import styled from 'styled-components';
-import ballotpediaIcon from '../../../img/global/logos/ballotpedia-initials-57x33.png';
 import { cordovaDot } from '../../utils/cordovaUtils';
 import SplitIconButton from './SplitIconButton';
 
 const OpenExternalWebSite = React.lazy(() => import(/* webpackChunkName: 'OpenExternalWebSite' */ './OpenExternalWebSite'));
+
+const ballotpediaIcon = '../../../img/global/logos/ballotpedia-initials-57x33.png';
 
 
 class ViewOnBallotpedia extends Component {

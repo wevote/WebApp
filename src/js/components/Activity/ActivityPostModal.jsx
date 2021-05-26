@@ -4,7 +4,6 @@ import { Close } from '@material-ui/icons';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import styled from 'styled-components';
-import stockAvatar from '../../../img/global/icons/avatar-generic.png';
 import ActivityActions from '../../actions/ActivityActions';
 import ActivityStore from '../../stores/ActivityStore';
 import VoterStore from '../../stores/VoterStore';
@@ -12,6 +11,7 @@ import { cordovaDot, hasIPhoneNotch, prepareForCordovaKeyboard, restoreStylesAft
 import { renderLog } from '../../utils/logging';
 import ActivityPostPublicToggle from './ActivityPostPublicToggle';
 
+const stockAvatar = '../../../img/global/icons/avatar-generic.png';
 
 class ActivityPostModal extends Component {
   constructor (props) {

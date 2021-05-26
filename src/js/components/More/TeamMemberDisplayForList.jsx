@@ -26,20 +26,20 @@ class TeamMemberDisplayForList extends Component {
     }
   }
 
-  setDescriptionTrue () {
-    this.setState({ hasDescription: true });
-  }
-
-  setDescriptionFalse () {
-    this.setState({ hasDescription: false });
-  }
-
   handleEnterCard () {
     this.setState({ hover: true });
   }
 
   handleLeaveCard () {
     this.setState({ hover: false });
+  }
+
+  setDescriptionTrue () {
+    this.setState({ hasDescription: true });
+  }
+
+  setDescriptionFalse () {
+    this.setState({ hasDescription: false });
   }
 
   render () {

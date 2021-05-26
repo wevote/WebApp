@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import FriendActions from '../../actions/FriendActions';
 import FriendStore from '../../stores/FriendStore';
+import apiCalming from '../../utils/apiCalming';
 import { historyPush } from '../../utils/cordovaUtils';
 import sortFriendListByMutualFriends from '../../utils/friendFunctions';
 import { renderLog } from '../../utils/logging';
@@ -22,7 +23,9 @@ export default class SuggestedFriendsPreview extends Component {
     const { friendsToShowMaxIncoming } = this.props;
     this.friendStoreListener = FriendStore.addListener(this.onFriendStoreChange.bind(this));
     this.onFriendStoreChange();
-    FriendActions.suggestedFriendList();
+    if (apiCalming('suggestedFriendList')) {
+      FriendActions.suggestedFriendList();
+    }
     const FRIENDS_TO_SHOW_MAX_DEFAULT = 3;
     const friendsToShowMax = friendsToShowMaxIncoming || FRIENDS_TO_SHOW_MAX_DEFAULT;
     this.setState({

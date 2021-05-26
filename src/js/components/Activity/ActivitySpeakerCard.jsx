@@ -1,3 +1,4 @@
+import { Twitter } from '@material-ui/icons';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import styled from 'styled-components';
@@ -165,7 +166,7 @@ class ActivitySpeakerCard extends Component {
                     </TwitterHandleWrapper>
                     { !!(speakerTwitterFollowersCount && String(speakerTwitterFollowersCount) !== '0') && (
                       <span className="twitter-followers__badge">
-                        <span className="fab fa-twitter twitter-followers__icon" />
+                        <Twitter />
                         {numberWithCommas(speakerTwitterFollowersCount)}
                       </span>
                     )}
