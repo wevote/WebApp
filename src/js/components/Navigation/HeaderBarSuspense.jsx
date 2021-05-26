@@ -35,6 +35,7 @@ function SmallCloud (params) {
 export default function HeaderBarSuspense () {
   renderLog('"Render" of HeaderBarSuspense');
   const left = (window.innerWidth - 964) / 2;  // about 358 on a high res screen
+  const leftForBeta = (left + 80).toString();
 
   const { headerObjects: temp } = window;
   if (!temp) {
@@ -52,7 +53,7 @@ export default function HeaderBarSuspense () {
   let logoModified = window.headerObjects.logo;
   if (logoModified && logoModified.includes('>beta<')) {
     const parts = logoModified.split('>beta<');
-    logoModified = `${parts[0]} style="top: 14px">beta<${parts[1]}`;
+    logoModified = `${parts[0]} style="top: 14px; left: ${leftForBeta}">beta<${parts[1]}`;
   }
 
   return (

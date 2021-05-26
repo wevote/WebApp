@@ -1,4 +1,5 @@
 import React from 'react';
+import { countMatches } from './searchFunctions';
 import { arrayContains } from './textFormat';
 
 export default function positionSearchPriority (originalString, item) {
@@ -20,18 +21,18 @@ export default function positionSearchPriority (originalString, item) {
   for (let i = 0; i < wordsArray.length; i++) {
     searchNeedleString = wordsArray[i].toString();
     oneWordScore = 0;
-    if ((item.speaker_display_name && item.speaker_display_name.numberOfNeedlesFoundInString(searchNeedleString))) {
-      oneWordScore += item.speaker_display_name.numberOfNeedlesFoundInString(searchNeedleString) * 10;
+    if ((item.speaker_display_name && item.speaker_display_name.includes(searchNeedleString))) {
+      oneWordScore += countMatches(searchNeedleString, item.speaker_display_name) * 10;
       foundInThisPosition = true;
       if (!arrayContains('Name', positionDetailsArray)) positionDetailsArray.push('Name');
     }
-    if (item.speaker_twitter_handle && item.speaker_twitter_handle.numberOfNeedlesFoundInString(searchNeedleString)) {
-      oneWordScore += item.speaker_twitter_handle.numberOfNeedlesFoundInString(searchNeedleString) * 5;
+    if (item.speaker_twitter_handle && item.speaker_twitter_handle.includes(searchNeedleString)) {
+      oneWordScore += countMatches(searchNeedleString, item.speaker_twitter_handle) * 5;
       foundInThisPosition = true;
       if (!arrayContains('Twitter handle', positionDetailsArray)) positionDetailsArray.push('Twitter handle');
     }
-    if (item.statement_text && item.statement_text.numberOfNeedlesFoundInString(searchNeedleString)) {
-      oneWordScore += item.statement_text.numberOfNeedlesFoundInString(searchNeedleString) * 1;
+    if (item.statement_text && item.statement_text.includes(searchNeedleString)) {
+      oneWordScore += countMatches(searchNeedleString, item.statement_text) * 1;
       foundInThisPosition = true;
       if (!arrayContains('Twitter description', positionDetailsArray)) positionDetailsArray.push('Twitter description');
     }

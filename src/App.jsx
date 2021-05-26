@@ -12,7 +12,6 @@ import cookies from './js/utils/cookies';
 import { renderLog } from './js/utils/logging';
 import RouterV5SendMatch from './js/utils/RouterV5SendMatch';
 // import SnackNotifier from './js/components/Widgets/SnackNotifier';
-import { numberOfNeedlesFoundInString } from './js/utils/searchFunctions';
 
 // Root URL pages
 
@@ -129,10 +128,6 @@ class App extends Component {
     // initializeOnce();
     // this.InitializeOnce();
     console.log('href in App.js componentDidMount: ', window.location.href);
-
-    // Aug 2019: Adding functions to the String prototype will make stuff like `for (char in str)` break, because it will loop over the substringOccurences property.
-    // As long as we use `forEach()` or `for (char of str)` then that side effect will be mitigated.
-    String.prototype.numberOfNeedlesFoundInString = numberOfNeedlesFoundInString; // eslint-disable-line
   }
 
   componentDidCatch (error, info) {

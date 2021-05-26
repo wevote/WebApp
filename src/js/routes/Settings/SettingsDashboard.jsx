@@ -36,7 +36,7 @@ export default class SettingsDashboard extends Component {
       editMode: '',
       linkedOrganizationWeVoteId: '',
       voter: {},
-      organizationType: '',
+      organizationType: 'none',
       voterGuideWeVoteId: '',
     };
   }
@@ -241,67 +241,68 @@ export default class SettingsDashboard extends Component {
     }
 
     return (
-      <div className={isWebApp() ? 'settings-dashboard u-stack--xl' : 'settings-dashboard SettingsCardBottomCordova'}>
-        {/* Desktop left navigation + Settings content.
-          WebApp only, since the dashboard doesn't go well with the HamburgerMenu on iPad */}
-        { isWebApp() && (
-        <div className="d-none d-md-block">
-          <div className="container-fluid">
-            <div className="row">
-              {/* Desktop mode left navigation */}
-              <div className="col-md-4 sidebar-menu">
-                <SettingsPersonalSideBar
-                  editMode={this.state.editMode}
-                  isSignedIn={this.state.voter.is_signed_in}
-                  organizationType={this.state.organizationType}
-                />
+      <div className="page-content-container">
+        <div className={isWebApp() ? 'settings-dashboard u-stack--xl' : 'settings-dashboard SettingsCardBottomCordova'}>
+          {/* Desktop left navigation + Settings content.
+            WebApp only, since the dashboard doesn't go well with the HamburgerMenu on iPad */}
+          { isWebApp() && (
+          <div className="d-none d-md-block">
+            <div className="container-fluid">
+              <div className="row">
+                {/* Desktop mode left navigation */}
+                <div className="col-md-4 sidebar-menu">
+                  <SettingsPersonalSideBar
+                    editMode={this.state.editMode}
+                    isSignedIn={this.state.voter.is_signed_in}
+                    organizationType={this.state.organizationType}
+                  />
+                  <SelectVoterGuidesSideBar
+                    voterGuideWeVoteIdSelected={this.state.voterGuideWeVoteId}
+                  />
 
-                <SelectVoterGuidesSideBar
-                  voterGuideWeVoteIdSelected={this.state.voterGuideWeVoteId}
-                />
-
-                <div className="h4 text-left" />
-                <div className="u-padding-top--md">
-                  <span className="terms-and-privacy">
-                    <Link to="/more/terms">
-                      <span className="u-no-break">Terms of Service</span>
-                    </Link>
-                    <span style={{ paddingLeft: 20 }} />
-                    <Link to="/more/privacy">
-                      <span className="u-no-break">Privacy Policy</span>
-                    </Link>
-                  </span>
+                  <div className="h4 text-left" />
+                  <div className="u-padding-top--md">
+                    <span className="terms-and-privacy">
+                      <Link to="/more/terms">
+                        <span className="u-no-break">Terms of Service</span>
+                      </Link>
+                      <span style={{ paddingLeft: 20 }} />
+                      <Link to="/more/privacy">
+                        <span className="u-no-break">Privacy Policy</span>
+                      </Link>
+                    </span>
+                  </div>
+                  <div>
+                    <span className="terms-and-privacy">
+                      <Link to="/more/faq">Questions?</Link>
+                      <span style={{ paddingLeft: 20 }} />
+                      <Link to="/more/attributions">Attributions</Link>
+                    </span>
+                  </div>
                 </div>
-                <div>
-                  <span className="terms-and-privacy">
-                    <Link to="/more/faq">Questions?</Link>
-                    <span style={{ paddingLeft: 20 }} />
-                    <Link to="/more/attributions">Attributions</Link>
-                  </span>
+                {/* Desktop mode content */}
+                <div className="col-md-8">
+                  {settingsComponentToDisplayDesktop}
                 </div>
-              </div>
-              {/* Desktop mode content */}
-              <div className="col-md-8">
-                {settingsComponentToDisplayDesktop}
               </div>
             </div>
           </div>
-        </div>
-        )}
+          )}
 
-        {/* Mobile Settings content */}
-        { isWebApp() ? (
-          <div className="d-block d-md-none">
-            {/* Mobile mode content */}
+          {/* Mobile Settings content */}
+          { isWebApp() ? (
+            <div className="d-block d-md-none">
+              {/* Mobile mode content */}
+              <div className="col-12">
+                {settingsComponentToDisplayMobile}
+              </div>
+            </div>
+          ) : (
             <div className="col-12">
               {settingsComponentToDisplayMobile}
             </div>
-          </div>
-        ) : (
-          <div className="col-12">
-            {settingsComponentToDisplayMobile}
-          </div>
-        )}
+          )}
+        </div>
       </div>
     );
   }

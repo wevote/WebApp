@@ -1,4 +1,5 @@
 import React from 'react';
+import { countMatches } from './searchFunctions';
 import { arrayContains } from './textFormat';
 
 export default function voterGuidePositionSearchPriority (originalString, item) {
@@ -20,38 +21,38 @@ export default function voterGuidePositionSearchPriority (originalString, item) 
   for (let i = 0; i < wordsArray.length; i++) {
     searchNeedleString = wordsArray[i].toString();
     oneWordScore = 0;
-    if ((item.ballot_item_display_name && item.ballot_item_display_name.numberOfNeedlesFoundInString(searchNeedleString))) {
-      oneWordScore += item.ballot_item_display_name.numberOfNeedlesFoundInString(searchNeedleString) * 10;
+    if ((item.ballot_item_display_name && item.ballot_item_display_name.includes(searchNeedleString))) {
+      oneWordScore += countMatches(searchNeedleString, item.ballot_item_display_name) * 10;
       foundInThisPosition = true;
       if (!arrayContains('Name', positionDetailsArray)) positionDetailsArray.push('Name');
     }
-    if ((item.state_code && item.state_code.numberOfNeedlesFoundInString(searchNeedleString))) {
-      oneWordScore += item.state_code.numberOfNeedlesFoundInString(searchNeedleString) * 10;
+    if ((item.state_code && item.state_code.includes(searchNeedleString))) {
+      oneWordScore += countMatches(searchNeedleString, item.state_code) * 10;
       foundInThisPosition = true;
       if (!arrayContains('State', positionDetailsArray)) positionDetailsArray.push('State');
     }
-    if (item.ballot_item_twitter_handle && item.ballot_item_twitter_handle.numberOfNeedlesFoundInString(searchNeedleString)) {
-      oneWordScore += item.ballot_item_twitter_handle.numberOfNeedlesFoundInString(searchNeedleString) * 5;
+    if (item.ballot_item_twitter_handle && item.ballot_item_twitter_handle.includes(searchNeedleString)) {
+      oneWordScore += countMatches(searchNeedleString, item.ballot_item_twitter_handle) * 5;
       foundInThisPosition = true;
       if (!arrayContains('Twitter handle', positionDetailsArray)) positionDetailsArray.push('Twitter handle');
     }
-    if (item.more_info_url && item.more_info_url.numberOfNeedlesFoundInString(searchNeedleString)) {
-      oneWordScore += item.more_info_url.numberOfNeedlesFoundInString(searchNeedleString) * 5;
+    if (item.more_info_url && item.more_info_url.includes(searchNeedleString)) {
+      oneWordScore += countMatches(searchNeedleString, item.more_info_url) * 5;
       foundInThisPosition = true;
       if (!arrayContains('Website', positionDetailsArray)) positionDetailsArray.push('Website');
     }
-    if (item.contest_office_name && item.contest_office_name.numberOfNeedlesFoundInString(searchNeedleString)) {
-      oneWordScore += item.contest_office_name.numberOfNeedlesFoundInString(searchNeedleString) * 3;
+    if (item.contest_office_name && item.contest_office_name.includes(searchNeedleString)) {
+      oneWordScore += countMatches(searchNeedleString, item.contest_office_name) * 3;
       foundInThisPosition = true;
       if (!arrayContains('Office name', positionDetailsArray)) positionDetailsArray.push('Office name');
     }
-    if (item.kind_of_ballot_item && item.kind_of_ballot_item.numberOfNeedlesFoundInString(searchNeedleString)) {
-      oneWordScore += item.kind_of_ballot_item.numberOfNeedlesFoundInString(searchNeedleString) * 3;
+    if (item.kind_of_ballot_item && item.kind_of_ballot_item.includes(searchNeedleString)) {
+      oneWordScore += countMatches(searchNeedleString, item.kind_of_ballot_item) * 3;
       foundInThisPosition = true;
       if (!arrayContains('Kind of ballot item', positionDetailsArray)) positionDetailsArray.push('Kind of ballot item');
     }
-    if (item.statement_text && item.statement_text.numberOfNeedlesFoundInString(searchNeedleString)) {
-      oneWordScore += item.statement_text.numberOfNeedlesFoundInString(searchNeedleString) * 1;
+    if (item.statement_text && item.statement_text.includes(searchNeedleString)) {
+      oneWordScore += countMatches(searchNeedleString, item.statement_text) * 1;
       foundInThisPosition = true;
       if (!arrayContains('Endorsement text', positionDetailsArray)) positionDetailsArray.push('Endorsement text');
     }
