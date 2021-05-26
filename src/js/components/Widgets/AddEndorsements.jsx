@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { cordovaDot } from '../../utils/cordovaUtils';
+import InfoCircleIcon from './InfoCircleIcon';
 import SplitIconButton from './SplitIconButton';
 
 const OpenExternalWebSite = React.lazy(() => import(/* webpackChunkName: 'OpenExternalWebSite' */ '../Widgets/OpenExternalWebSite'));
@@ -9,7 +10,7 @@ const text = 'Don\'t see your favorite organization or endorsement? We Vote is n
 
 const endorsementText = (
   <span className="social-btn-description">
-    <i className="fas fa-info-circle" />
+    <InfoCircleIcon />
     {text}
   </span>
 );

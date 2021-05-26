@@ -14,6 +14,7 @@ import apiCalming from '../../utils/apiCalming';
 import { historyPush } from '../../utils/cordovaUtils';
 import { renderLog } from '../../utils/logging';
 import { arrayContains } from '../../utils/textFormat';
+import InfoCircleIcon from '../Widgets/InfoCircleIcon';
 
 const FriendInvitationOnboardingValuesList = React.lazy(() => import(/* webpackChunkName: 'ImageHandler' */ './FriendInvitationOnboardingValuesList'));
 const ImageHandler = React.lazy(() => import(/* webpackChunkName: 'ImageHandler' */ '../ImageHandler'));
@@ -157,7 +158,7 @@ class ValuesToFollowPreview extends Component {
               )}
             </SectionTitle>
             <SectionInformation>
-              <i className="fas fa-info-circle" />
+              <InfoCircleIcon />
               Follow values/issues to see opinions from people who share your values.
             </SectionInformation>
             <Row className="row">

@@ -235,18 +235,6 @@ class ShareButtonDesktopTablet extends Component {
               <MenuText>
                 {shareMenuTextDefault}
               </MenuText>
-              {/* <MenuInfo> - TURNED OFF BECAUSE OF TOOLTIP Z-INDEX PROBLEM */}
-              {/*  <Tooltip */}
-              {/*    arrow */}
-              {/*    // classes={{ root: classes.toolTip }} */}
-              {/*    // className="u-z-index-5030" */}
-              {/*    enterDelay={300} */}
-              {/*    // style={{ zIndex: '20000 !important' }} */}
-              {/*    title="Share a link to this election so that your friends can get ready to vote. Your opinions are not included." */}
-              {/*  > */}
-              {/*    <i className="fas fa-info-circle" /> */}
-              {/*  </Tooltip> */}
-              {/* </MenuInfo> */}
             </MenuFlex>
           </MenuItem>
           <MenuSeparator />
@@ -259,11 +247,6 @@ class ShareButtonDesktopTablet extends Component {
                 <MenuText>
                   {shareMenuTextAllOpinions}
                 </MenuText>
-                {/* <MenuInfo> - TURNED OFF BECAUSE OF TOOLTIP Z-INDEX PROBLEM */}
-                {/*  <Tooltip title="Share a link to the choices you've made for this election so that your friends can get ready to vote. This includes your public and friend's-only opinions." arrow enterDelay={300}> */}
-                {/*    <i className="fas fa-info-circle" /> */}
-                {/*  </Tooltip> */}
-                {/* </MenuInfo> */}
               </MenuFlex>
             </MenuItem>
           )}

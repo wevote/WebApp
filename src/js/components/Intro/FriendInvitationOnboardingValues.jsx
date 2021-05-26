@@ -5,6 +5,7 @@ import styled from 'styled-components';
 import { cordovaDot } from '../../utils/cordovaUtils';
 import { renderLog } from '../../utils/logging';
 import FriendInvitationOnboardingFriendValuesList from '../Values/FriendInvitationOnboardingFriendValuesList';
+import InfoCircleIcon from '../Widgets/InfoCircleIcon';
 
 const FriendInvitationOnboardingValuesList = React.lazy(() => import(/* webpackChunkName: 'ImageHandler' */ '../Values/FriendInvitationOnboardingValuesList'));
 const ImageHandler = React.lazy(() => import(/* webpackChunkName: 'ImageHandler' */ '../ImageHandler'));
@@ -44,7 +45,7 @@ class FriendInvitationOnboardingValues extends Component {
           </div>
           {showAllTopHeaderExplanation ? (
             <div className="FriendInvitationTopHeaderExplanation" onClick={this.onClickToggleAllTopHeaderExplanation}>
-              <i className="fas fa-info-circle" />
+              <InfoCircleIcon />
               Opinions will be highlighted on your ballot based on what you follow. Follow as many values/issues as you would like.
               {' '}
               We promise to never sell your email address.
@@ -59,7 +60,7 @@ class FriendInvitationOnboardingValues extends Component {
             </div>
           ) : (
             <div className="FriendInvitationTopHeaderExplanation" onClick={this.onClickToggleAllTopHeaderExplanation}>
-              <i className="fas fa-info-circle" />
+              <InfoCircleIcon />
               Opinions will be highlighted on your ballot based on what you follow. Follow as many values/issues...
               {' '}
               (

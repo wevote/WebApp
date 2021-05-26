@@ -4,6 +4,7 @@ import { Place } from '@material-ui/icons';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import styled from 'styled-components';
+import InfoCircleIcon from '../Widgets/InfoCircleIcon';
 
 const OpenExternalWebSite = React.lazy(() => import(/* webpackChunkName: 'OpenExternalWebSite' */ '../Widgets/OpenExternalWebSite'));
 
@@ -36,7 +37,7 @@ class FindPollingLocation extends Component {
           )}
         />
         <InformationTextWrapper className="social-btn-description u-show-desktop">
-          <i className="fas fa-info-circle" />
+          <InfoCircleIcon />
           Find the location where you can hand deliver your official ballot before the end of election day.
         </InformationTextWrapper>
       </Wrapper>

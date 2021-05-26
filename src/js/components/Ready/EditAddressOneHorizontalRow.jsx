@@ -12,6 +12,7 @@ import cookies from '../../utils/cookies';
 import { historyPush, isWebApp, restoreStylesAfterCordovaKeyboard } from '../../utils/cordovaUtils';
 import isMobile from '../../utils/isMobile';
 import { renderLog } from '../../utils/logging';
+import InfoCircleIcon from '../Widgets/InfoCircleIcon';
 
 class EditAddressOneHorizontalRow extends Component {
   constructor (props, context) {
@@ -255,7 +256,7 @@ class EditAddressOneHorizontalRow extends Component {
         <InnerWrapper>
           {showAddressExplanation ? (
             <AddressExplanation onClick={this.onClickToggleAddressExplanation}>
-              <i className="fas fa-info-circle" />
+              <InfoCircleIcon />
               To find your correct ballot, we need your full address, including house number.
               {' '}
               We are a nonprofit, and will never reveal your address.
@@ -270,7 +271,7 @@ class EditAddressOneHorizontalRow extends Component {
             </AddressExplanation>
           ) : (
             <AddressExplanation onClick={this.onClickToggleAddressExplanation}>
-              <i className="fas fa-info-circle" />
+              <InfoCircleIcon />
               Why house number?
               {' '}
               (
