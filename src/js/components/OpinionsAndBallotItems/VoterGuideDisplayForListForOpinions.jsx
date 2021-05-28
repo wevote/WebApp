@@ -190,7 +190,6 @@ class voterGuideDisplayForListForOpinions extends Component {
                     <DesktopItemTwitterContainer>
                       { !!(twitterFollowersCount && String(twitterFollowersCount) !== '0') && (
                         <DesktopItemTwitter>
-                          {/* <TwitterIcon className="fab fa-twitter" /> */}
                           <Twitter />
                           {numberWithCommas(twitterFollowersCount)}
                         </DesktopItemTwitter>

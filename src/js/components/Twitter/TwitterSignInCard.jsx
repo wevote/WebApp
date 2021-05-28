@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
 import { renderLog } from '../../utils/logging';
+import InfoCircleIcon from '../Widgets/InfoCircleIcon';
 import TwitterSignIn from './TwitterSignIn';
 
 const twitterText = 'Signing into Twitter is the fastest way to find voter guides related to your values. We Vote will find the voter guides of everyone you are following on Twitter.';
 
 const twitterInfoText = (
   <span className="social-btn-description">
-    <i className="fas fa-info-circle" />
+    <InfoCircleIcon />
     {twitterText}
   </span>
 );

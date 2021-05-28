@@ -325,7 +325,7 @@ export default class OrganizationVoterGuide extends Component {
     }
 
     return (
-      <Wrapper>
+      <Wrapper className="page-content-container">
         {/* Header Banner Spacing for Desktop */}
         <BannerOverlayDesktopOuterWrapper>
           <BannerOverlayDesktopInnerWrapper>

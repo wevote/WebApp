@@ -18,6 +18,7 @@ import sortFriendListByMutualFriends from '../../utils/friendFunctions';
 import { renderLog } from '../../utils/logging';
 import { stringContains } from '../../utils/textFormat';
 import FriendsShareList from '../Friends/FriendsShareList';
+import InfoCircleIcon from '../Widgets/InfoCircleIcon';
 import MessageCard from '../Widgets/MessageCard';
 import { androidFacebookClickHandler, androidTwitterClickHandler, cordovaSocialSharingByEmail } from './shareButtonCommon';
 import ShareModalOption from './ShareModalOption';
@@ -563,7 +564,7 @@ class ShareModal extends Component {
                   <strong>Share Ballot With Friends</strong>
                   {' '}
                   <Tooltip title="Send friends to their ballot so they can get ready to vote. Your opinions are NOT included." arrow enterDelay={300}>
-                    <i className="fas fa-info-circle" />
+                    <InfoCircleIcon />
                   </Tooltip>
                 </Title>
                 <SubTitle larger left>

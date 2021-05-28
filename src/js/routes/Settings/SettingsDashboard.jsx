@@ -69,7 +69,7 @@ export default class SettingsDashboard extends Component {
       const organization = OrganizationStore.getOrganizationByWeVoteId(linkedOrganizationWeVoteId);
       if (organization && organization.organization_we_vote_id) {
         this.setState({
-          organizationType: organization.organization_type,
+          organizationType: organization.organization_type || 'none',
         });
       } else {
         OrganizationActions.organizationRetrieve(linkedOrganizationWeVoteId);

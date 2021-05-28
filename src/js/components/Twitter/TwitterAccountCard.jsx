@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { renderLog } from '../../utils/logging';
 import { abbreviateNumber, numberWithCommas, removeTwitterNameFromDescription } from '../../utils/textFormat';
+import ExternalLinkIcon from '../Widgets/ExternalLinkIcon';
 import ParsedTwitterDescription from './ParsedTwitterDescription';
 
 const ImageHandler = React.lazy(() => import(/* webpackChunkName: 'ImageHandler' */ '../ImageHandler'));
@@ -61,7 +62,7 @@ export default class TwitterAccountCard extends Component {
                     body={(
                       <span>
                         Website
-                        <i className="fas fa-external-link-alt" />
+                        <ExternalLinkIcon />
                       </span>
                     )}
                   />

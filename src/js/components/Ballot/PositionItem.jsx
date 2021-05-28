@@ -20,6 +20,7 @@ import { isOrganizationInVotersNetwork } from '../../utils/positionFunctions';
 import { numberWithCommas, startsWith } from '../../utils/textFormat';
 import OrganizationPopoverCard from '../Organization/OrganizationPopoverCard';
 import IssuesByOrganizationDisplayList from '../Values/IssuesByOrganizationDisplayList';
+import ExternalLinkIcon from '../Widgets/ExternalLinkIcon';
 import PositionItemScorePopover from '../Widgets/PositionItemScorePopover';
 
 const FollowToggle = React.lazy(() => import(/* webpackChunkName: 'FollowToggle' */ '../Widgets/FollowToggle'));
@@ -498,7 +499,6 @@ class PositionItem extends Component {
                       <DesktopItemTwitterContainer>
                         { !!(position.twitter_followers_count && String(position.twitter_followers_count) !== '0') && (
                           <DesktopItemTwitter>
-                            {/* <TwitterIcon className="fab fa-twitter" /> */}
                             <Twitter />
                             {numberWithCommas(position.twitter_followers_count)}
                           </DesktopItemTwitter>
@@ -544,7 +544,7 @@ class PositionItem extends Component {
                             <span>
                               view source
                               {' '}
-                              <i className="fas fa-external-link-alt" aria-hidden="true" />
+                              <ExternalLinkIcon />
                             </span>
                           )}
                           className="u-gray-mid"
@@ -665,7 +665,7 @@ class PositionItem extends Component {
                           <span>
                             source
                             {' '}
-                            <i className="fas fa-external-link-alt" aria-hidden="true" />
+                            <ExternalLinkIcon />
                           </span>
                         )}
                         className="u-gray-mid"

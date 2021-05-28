@@ -178,14 +178,10 @@ module.exports = [
   // July 2019, https://developer.zendesk.com/embeddables/docs/widget/legal
   'The Zendesk embeddable contains third-party, open source software and/or libraries. \n' +
   'To view them and their license terms, go to http://goto.zendesk.com/embeddable-legal-notices',
-
-  // Commented out in code
-  /*
-  // Jan 2019, https://github.com/taion/react-router-scroll/blob/master/LICENSE
-  'taion/react-router-scroll is licensed under the MIT License (MIT)\n' +
-  'Copyright (c) 2016 Jimmy Jia\n',
-  // Jan 2019, https://github.com/andreypopp/react-textarea-autosize/blob/master/LICENSE
-  'andreypopp/react-textarea-autosize is licensed under the  MIT License (MIT)\n' +
-  'Copyright (c) 2013 Andrey Popp\n',
-  */
+  // MAY 2021, wordpress-logo.svg
+  'wordpress-logo.svg \n' +
+  '™/®WordPress, GPL <http://www.gnu.org/licenses/gpl.html>, via Wikimedia Commons',
+  // May 2021
+  'External_link_font_awesome.svg \n' +
+  'Font Awesome by Dave Gandy - https://fortawesome.github.com/Font-Awesome, CC BY-SA 3.0 <https://creativecommons.org/licenses/by-sa/3.0>, via Wikimedia Commons',
 ];

@@ -126,8 +126,9 @@ class HeaderBar extends Component {
       if (document.getElementById('discussTabHeaderBar')) {
         headerObjects.discuss = document.getElementById('discussTabHeaderBar').innerHTML;
       }
-      if (document.querySelectorAll('[class^=HeaderNotificationMenu__HeaderNotificationMenuWrapper]')) {
-        headerObjects.bell = document.querySelectorAll('[class^=HeaderNotificationMenu__HeaderNotificationMenuWrapper]')[0].innerHTML;
+      const notificationMenuWrapper = document.querySelectorAll('[class^=HeaderNotificationMenu__HeaderNotificationMenuWrapper]');
+      if (notificationMenuWrapper && notificationMenuWrapper[0] && notificationMenuWrapper[0].innerHTML.length) {
+        headerObjects.bell = notificationMenuWrapper[0].innerHTML;
       }
       if (document.getElementById('profileAvatarHeaderBar')) {
         headerObjects.photo = document.getElementById('profileAvatarHeaderBar').innerHTML;

@@ -1,121 +1,116 @@
 import { IconButton, Tooltip } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
-import { Twitter } from '@material-ui/icons';
-import PropTypes from 'prop-types';
-import React, { Component } from 'react';
+import { Facebook, GitHub, Instagram, Mail, Twitter } from '@material-ui/icons';
+import { styled as muiStyled } from '@material-ui/styles';
+import React from 'react';
 import styled from 'styled-components';
+import { cordovaDot } from '../../utils/cordovaUtils';
 import { renderLog } from '../../utils/logging';
 
 const OpenExternalWebSite = React.lazy(() => import(/* webpackChunkName: 'OpenExternalWebSite' */ '../../components/Widgets/OpenExternalWebSite'));
 
 
-class ToolBar extends Component {
-  render () {
-    renderLog('ToolBar');  // Set LOG_RENDER_EVENTS to log all renders
-    // const { classes } = this.props;
-    const hideGitHub = this.props.hideGitHub ? this.props.hideGitHub : false;
+function ToolBar (params) {
+  renderLog('ToolBar');  // Set LOG_RENDER_EVENTS to log all renders
+  // const { classes } = this.params;
+  const hideGitHub = params.hideGitHub ? params.hideGitHub : false;
 
-    return (
-      <div>
-        <ToolBarContainer className="btn-toolbar">
-          <OpenExternalWebSite
-            linkIdAttribute="wevoteTwitter"
-            className="u-no-underline"
-            url="https://twitter.com/WeVote"
-            target="_blank"
-            body={(
-              <Tooltip title="Twitter">
-                <IconButton>
-                  <Twitter />
-                </IconButton>
-              </Tooltip>
-            )}
-          />
-
-          <OpenExternalWebSite
-            linkIdAttribute="wevoteFacebook"
-            className="u-no-underline"
-            url="https://www.facebook.com/WeVoteUSA"
-            target="_blank"
-            body={(
-              <Tooltip title="Facebook">
-                <IconButton>
-                  <Icon className="fab fa-facebook-square" />
-                </IconButton>
-              </Tooltip>
-            )}
-          />
-
-          <OpenExternalWebSite
-            linkIdAttribute="wevoteInstagram"
-            className="u-no-underline"
-            url="https://www.instagram.com/WeVote"
-            target="_blank"
-            body={(
-              <Tooltip title="Instagram">
-                <IconButton>
-                  <Icon className="fab fa-instagram" />
-                </IconButton>
-              </Tooltip>
-            )}
-          />
-
-          <OpenExternalWebSite
-            linkIdAttribute="eepurl"
-            className="u-no-underline"
-            url="http://eepurl.com/cx_frP"
-            target="_blank"
-            body={(
-              <Tooltip title="Newsletter">
-                <IconButton>
-                  <Icon className="fas fa-envelope" />
-                </IconButton>
-              </Tooltip>
-            )}
-          />
-
-          {!hideGitHub && (
-            <OpenExternalWebSite
-              linkIdAttribute="wevoteGithub"
-              className="u-no-underline"
-              url="https://github.com/WeVote"
-              target="_blank"
-              body={(
-                <Tooltip title="Github">
-                  <IconButton>
-                    <Icon className="fab fa-github" />
-                  </IconButton>
-                </Tooltip>
-              )}
-            />
+  return (
+    <div>
+      <ToolBarContainer className="btn-toolbar">
+        <OpenExternalWebSite
+          linkIdAttribute="wevoteTwitter"
+          className="u-no-underline"
+          url="https://twitter.com/WeVote"
+          target="_blank"
+          body={(
+            <Tooltip title="Twitter">
+              <IconButton>
+                <TwitterStyled />
+              </IconButton>
+            </Tooltip>
           )}
+        />
+
+        <OpenExternalWebSite
+          linkIdAttribute="wevoteFacebook"
+          className="u-no-underline"
+          url="https://www.facebook.com/WeVoteUSA"
+          target="_blank"
+          body={(
+            <Tooltip title="Facebook">
+              <IconButton>
+                <FacebookStyled />
+              </IconButton>
+            </Tooltip>
+          )}
+        />
+
+        <OpenExternalWebSite
+          linkIdAttribute="wevoteInstagram"
+          className="u-no-underline"
+          url="https://www.instagram.com/WeVote"
+          target="_blank"
+          body={(
+            <Tooltip title="Instagram">
+              <IconButton>
+                <InstagramStyled />
+              </IconButton>
+            </Tooltip>
+          )}
+        />
+
+        <OpenExternalWebSite
+          linkIdAttribute="eepurl"
+          className="u-no-underline"
+          url="http://eepurl.com/cx_frP"
+          target="_blank"
+          body={(
+            <Tooltip title="Newsletter">
+              <IconButton>
+                <MailStyled />
+              </IconButton>
+            </Tooltip>
+          )}
+        />
+
+        {!hideGitHub && (
           <OpenExternalWebSite
-            linkIdAttribute="wevoteBlog"
+            linkIdAttribute="wevoteGithub"
             className="u-no-underline"
-            url="https://blog.wevote.us/"
+            url="https://github.com/WeVote"
             target="_blank"
             body={(
-              <Tooltip title="Blog">
+              <Tooltip title="Github">
                 <IconButton>
-                  <Icon className="fab fa-wordpress" />
+                  <GitHubStyled />
                 </IconButton>
               </Tooltip>
             )}
           />
-        </ToolBarContainer>
-      </div>
-    );
-  }
+        )}
+        <OpenExternalWebSite
+          linkIdAttribute="wevoteBlog"
+          className="u-no-underline"
+          url="https://blog.wevote.us/"
+          target="_blank"
+          body={(
+            <Tooltip title="Blog">
+              <IconButton>
+                <img src={cordovaDot('/img/global/svg-icons/wordpress-logo.svg')}
+                     width={24}
+                     height={24}
+                     color="white"
+                     alt="Wordpress"
+                />
+              </IconButton>
+            </Tooltip>
+          )}
+        />
+      </ToolBarContainer>
+    </div>
+  );
 }
-ToolBar.propTypes = {
-  // classes: PropTypes.object,
-  hideGitHub: PropTypes.bool,
-};
-
-const Icon = styled.i`
-  color: white;
-  text-decoration: none;
-`;
 
 const ToolBarContainer = styled.div`
   text-align: center;
@@ -138,5 +133,12 @@ const styles = (theme) => ({
     },
   },
 });
+
+const TwitterStyled = muiStyled(Twitter)({ color: 'white' });
+const GitHubStyled = muiStyled(GitHub)({ color: 'white' });
+const FacebookStyled = muiStyled(Facebook)({ color: 'white' });
+const InstagramStyled = muiStyled(Instagram)({ color: 'white' });
+const MailStyled = muiStyled(Mail)({ color: 'white' });
+
 
 export default withStyles(styles)(ToolBar);

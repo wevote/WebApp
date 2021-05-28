@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
 import { renderLog } from '../../utils/logging';
+import InfoCircleIcon from '../Widgets/InfoCircleIcon';
 import FacebookSignIn from './FacebookSignIn';
 
 const facebookText = 'By adding Facebook to your We Vote profile, it is easier to invite friends.';
 
 const facebookInfoText = (
   <span className="social-btn-description">
-    <i className="fas fa-info-circle" />
+    <InfoCircleIcon />
     {facebookText}
   </span>
 );
