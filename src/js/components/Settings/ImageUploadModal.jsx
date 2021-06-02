@@ -18,7 +18,7 @@ class ImageUploadModal extends Component {
   }
 
   handleDrop (droppedFiles) {
-    const { files: { fileList = [] } } = this.state;
+    const { files: { fileList = []} } = this.state;
     for (let i = 0; i < droppedFiles.length; i++) {
       if (!droppedFiles[i].name) return;
       fileList.push(droppedFiles[i].name);
