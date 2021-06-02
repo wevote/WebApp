@@ -38,13 +38,6 @@ class ShareButtonDesktopTablet extends Component {
     this.appStoreListener.remove();
   }
 
-  onAppStoreChange () {
-    const chosenPreventSharingOpinions = AppStore.getChosenPreventSharingOpinions();
-    this.setState({
-      chosenPreventSharingOpinions,
-    });
-  }
-
   handleShareButtonClick (event) {
     const { candidateShare, measureShare, officeShare, organizationShare, organizationWeVoteId, readyShare } = this.props;
     const { href: destinationFullUrl } = window.location;
@@ -68,6 +61,13 @@ class ShareButtonDesktopTablet extends Component {
 
   handleCloseMenu () {
     this.setState({ anchorEl: null, openShareMenu: false });
+  }
+
+  onAppStoreChange () {
+    const chosenPreventSharingOpinions = AppStore.getChosenPreventSharingOpinions();
+    this.setState({
+      chosenPreventSharingOpinions,
+    });
   }
 
   openShareModal (withOpinions = false) {

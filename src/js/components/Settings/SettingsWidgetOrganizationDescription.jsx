@@ -54,6 +54,17 @@ class SettingsWidgetOrganizationDescription extends Component {
     restoreStylesAfterCordovaKeyboard('SettingsWidgetOrganizationDescription');
   }
 
+  handleKeyPress () {
+    clearTimeout(this.timer);
+    if (this.props.voterHasMadeChangesFunction) {
+      this.props.voterHasMadeChangesFunction();
+    }
+    this.timer = setTimeout(() => {
+      OrganizationActions.organizationDescriptionSave(this.state.linkedOrganizationWeVoteId, this.state.organizationDescription);
+      this.setState({ organizationDescriptionSavedStatus: 'Saved' });
+    }, delayBeforeApiUpdateCall);
+  }
+
   onOrganizationStoreChange () {
     const organization = OrganizationStore.getOrganizationByWeVoteId(this.state.linkedOrganizationWeVoteId);
     if (organization && organization.organization_we_vote_id) {
@@ -85,17 +96,6 @@ class SettingsWidgetOrganizationDescription extends Component {
         }
       }
     }
-  }
-
-  handleKeyPress () {
-    clearTimeout(this.timer);
-    if (this.props.voterHasMadeChangesFunction) {
-      this.props.voterHasMadeChangesFunction();
-    }
-    this.timer = setTimeout(() => {
-      OrganizationActions.organizationDescriptionSave(this.state.linkedOrganizationWeVoteId, this.state.organizationDescription);
-      this.setState({ organizationDescriptionSavedStatus: 'Saved' });
-    }, delayBeforeApiUpdateCall);
   }
 
   updateOrganizationDescription (event) {

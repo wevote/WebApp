@@ -17,7 +17,6 @@ export default class TwitterSignInProcess extends Component {
   constructor (props) {
     super(props);
     this.state = {
-      hostname: '',
       mergingTwoAccounts: false,
       redirectInProgress: false,
       twitterAuthResponse: {},
@@ -40,10 +39,7 @@ export default class TwitterSignInProcess extends Component {
   }
 
   onAppStoreChange () {
-    const hostname = AppStore.getHostname();
-    this.setState({
-      hostname,
-    });
+    this.setState({});
   }
 
   onTwitterStoreChange () {

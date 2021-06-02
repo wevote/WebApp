@@ -77,7 +77,7 @@ class DragAndDrop extends Component {
 }
 DragAndDrop.propTypes = {
   handleDrop: PropTypes.func.isRequired,
-  active: PropTypes.bool,
+  // active: PropTypes.bool,
 };
 
 

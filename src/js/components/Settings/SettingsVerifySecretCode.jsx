@@ -104,6 +104,57 @@ class SettingsVerifySecretCode extends Component {
     window.removeEventListener('paste', this.onPaste);
   }
 
+  handleKeyDown2 (e) {
+    if (e.keyCode === 8 && this.state.digit2 === '') {
+      e.target.parentElement.previousElementSibling.firstElementChild.value = '';
+      e.target.parentElement.previousElementSibling.firstElementChild.focus();
+      this.setState({ digit1: '' });
+    }
+  }
+
+  handleKeyDown3 (e) {
+    if (e.keyCode === 8 && this.state.digit3 === '') {
+      e.target.parentElement.previousElementSibling.firstElementChild.value = '';
+      e.target.parentElement.previousElementSibling.firstElementChild.focus();
+      this.setState({ digit2: '' });
+    }
+  }
+
+  handleKeyDown4 (e) {
+    if (e.keyCode === 8 && this.state.digit4 === '') {
+      e.target.parentElement.previousElementSibling.firstElementChild.value = '';
+      e.target.parentElement.previousElementSibling.firstElementChild.focus();
+      this.setState({ digit3: '' });
+    }
+  }
+
+  handleKeyDown5 (e) {
+    if (e.keyCode === 8 && this.state.digit5 === '') {
+      e.target.parentElement.previousElementSibling.firstElementChild.value = '';
+      e.target.parentElement.previousElementSibling.firstElementChild.focus();
+      this.setState({ digit4: '' });
+    }
+  }
+
+  handleKeyDown6 (e) {
+    if (e.keyCode === 8 && this.state.digit6 === '') {
+      e.target.parentElement.previousElementSibling.firstElementChild.value = '';
+      e.target.parentElement.previousElementSibling.firstElementChild.focus();
+      this.setState({ digit5: '' });
+    }
+  }
+
+  handleBlur () {
+    this.setState({ condensed: false });
+  }
+
+  handleFocus (e) {
+    e.target.select();
+    if (isCordova()) {
+      this.setState({ condensed: true });
+    }
+  }
+
   onVoterStoreChange () {
     const secretCodeVerificationStatus = VoterStore.getSecretCodeVerificationStatus();
     const { incorrectSecretCodeEntered, numberOfTriesRemaining, secretCodeVerified, voterMustRequestNewCode, voterSecretCodeRequestsLocked } = secretCodeVerificationStatus;
@@ -392,56 +443,6 @@ class SettingsVerifySecretCode extends Component {
     }
   };
 
-  handleKeyDown2 (e) {
-    if (e.keyCode === 8 && this.state.digit2 === '') {
-      e.target.parentElement.previousElementSibling.firstElementChild.value = '';
-      e.target.parentElement.previousElementSibling.firstElementChild.focus();
-      this.setState({ digit1: '' });
-    }
-  }
-
-  handleKeyDown3 (e) {
-    if (e.keyCode === 8 && this.state.digit3 === '') {
-      e.target.parentElement.previousElementSibling.firstElementChild.value = '';
-      e.target.parentElement.previousElementSibling.firstElementChild.focus();
-      this.setState({ digit2: '' });
-    }
-  }
-
-  handleKeyDown4 (e) {
-    if (e.keyCode === 8 && this.state.digit4 === '') {
-      e.target.parentElement.previousElementSibling.firstElementChild.value = '';
-      e.target.parentElement.previousElementSibling.firstElementChild.focus();
-      this.setState({ digit3: '' });
-    }
-  }
-
-  handleKeyDown5 (e) {
-    if (e.keyCode === 8 && this.state.digit5 === '') {
-      e.target.parentElement.previousElementSibling.firstElementChild.value = '';
-      e.target.parentElement.previousElementSibling.firstElementChild.focus();
-      this.setState({ digit4: '' });
-    }
-  }
-
-  handleKeyDown6 (e) {
-    if (e.keyCode === 8 && this.state.digit6 === '') {
-      e.target.parentElement.previousElementSibling.firstElementChild.value = '';
-      e.target.parentElement.previousElementSibling.firstElementChild.focus();
-      this.setState({ digit5: '' });
-    }
-  }
-
-  handleBlur () {
-    this.setState({ condensed: false });
-  }
-
-  handleFocus (e) {
-    e.target.select();
-    if (isCordova()) {
-      this.setState({ condensed: true });
-    }
-  }
 
   render () {
     renderLog('SettingsVerifySecretCode');  // Set LOG_RENDER_EVENTS to log all renders
@@ -703,11 +704,10 @@ const ModalContent = styled.div`
   display: flex;
   flex-direction: column;
   align-items: ${(props) => (props.condensed ? 'flex-start' : 'space-evenly')};
-  height: isWebApp() ? 100% : 'unset';
+  height: ${() => (isWebApp() ?  '100%' : 'unset')};
   width: 80%;
   max-width: 400px;
   margin: 0 auto;
-  padding: 86px 0 72px 0;
   padding: ${(props) => (props.condensed ? '66px 0 0 0' : '86px 0 72px 0')};
 `;
 
@@ -725,7 +725,7 @@ const Title = styled.h3`
   margin-bottom: ${(props) => (props.condensed ? '16px' : '36px')};
   color: black;
   text-align: center;
-  media(min-width: 569px) {
+  @media(min-width: 569px) {
     font-size: 36px;
   }
 `;

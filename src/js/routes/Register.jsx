@@ -697,7 +697,7 @@ const Row = styled.div`
 const Column = styled.div`
   padding: 12px;
   @media(min-width: 769px) {
-    width: 50%:
+    width: 50%;
   }
   width: 100%;
   display: flex;
