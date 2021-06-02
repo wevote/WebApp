@@ -124,7 +124,6 @@ class StickyPopover extends Component {
             )}
           </Popover>
         </Overlay>
-
       </>
     );
   }

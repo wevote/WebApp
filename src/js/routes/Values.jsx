@@ -22,6 +22,7 @@ import Testimonial from '../components/Widgets/Testimonial';
 import IssueStore from '../stores/IssueStore';
 import VoterStore from '../stores/VoterStore';
 import { cordovaDot } from '../utils/cordovaUtils';
+import lazyPreloadPages from '../utils/lazyPreloadPages';
 import { renderLog } from '../utils/logging';
 
 const FirstAndLastNameRequiredAlert = React.lazy(() => import(/* webpackChunkName: 'FirstAndLastNameRequiredAlert' */ '../components/Widgets/FirstAndLastNameRequiredAlert'));
@@ -49,6 +50,7 @@ export default class Values extends Component {
     IssueActions.issueDescriptionsRetrieve(VoterStore.getVoterWeVoteId());
     IssueActions.issuesFollowedRetrieve(VoterStore.getVoterWeVoteId());
     AnalyticsActions.saveActionNetwork(VoterStore.electionId());
+    this.preloadTimer = setTimeout(() => lazyPreloadPages(), 2000);
   }
 
   componentDidCatch (error, info) {

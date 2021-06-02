@@ -41,7 +41,8 @@ class ValuesToFollowPreview extends Component {
     IssueActions.issueDescriptionsRetrieve(VoterStore.getVoterWeVoteId());
     IssueActions.issuesFollowedRetrieve(VoterStore.getVoterWeVoteId());
     const voterGuidesFromFriendsUpcomingRetrieve = VoterGuideStore.getOrganizationWeVoteIdsByIssueWeVoteIdDict();
-    const hasNoFriends = $.isEmptyObject(voterGuidesFromFriendsUpcomingRetrieve);
+    // $.isEmptyObject equivalent before jQuery is guaranteed to be loaded:
+    const hasNoFriends = voterGuidesFromFriendsUpcomingRetrieve && Object.keys(voterGuidesFromFriendsUpcomingRetrieve).length === 0 && voterGuidesFromFriendsUpcomingRetrieve.constructor === Object;
     // console.log('voterGuidesFromFriendsUpcomingRetrieveLength: ', hasNoFriends);
     const googleCivicId = VoterStore.electionId();
     if (hasNoFriends) {

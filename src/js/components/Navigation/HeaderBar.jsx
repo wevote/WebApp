@@ -49,7 +49,8 @@ class HeaderBar extends Component {
       componentDidMountFinished: false,
       friendInvitationsSentToMe: 0,
       hideWeVoteLogo: false,
-      paidAccountUpgradeMode: '',
+      // paidAccountUpgradeMode: '',
+      priorPath: '',
       profilePopUpOpen: false,
       scrolledDown: false,
       showAdviserIntroModal: false,
@@ -79,6 +80,7 @@ class HeaderBar extends Component {
     this.closePaidAccountUpgradeModal = this.closePaidAccountUpgradeModal.bind(this);
     this.closeShareModal = this.closeShareModal.bind(this);
     this.closeOrganizationModal = this.closeOrganizationModal.bind(this);
+    this.debugLogging = this.debugLogging.bind(this);
   }
 
   componentDidMount () {
@@ -97,6 +99,7 @@ class HeaderBar extends Component {
       showAdviserIntroModal: AppStore.showAdviserIntroModal(),
       showEditAddressButton: AppStore.showEditAddressButton(),
       showFirstPositionIntroModal: AppStore.showFirstPositionIntroModal(),
+      showPaidAccountUpgradeModal: false, // June 2021 , TODO: Add back in paid upgrade modal
       showPersonalizedScoreIntroModal: AppStore.showPersonalizedScoreIntroModal(),
       showSelectBallotModal: AppStore.showSelectBallotModal(),
       showSelectBallotModalHideAddress: getBooleanValue(AppStore.showSelectBallotModalHideAddress()),
@@ -272,7 +275,7 @@ class HeaderBar extends Component {
       chosenSiteLogoUrl: AppStore.getChosenSiteLogoUrl(),
       hideWeVoteLogo: AppStore.getHideWeVoteLogo(),
       organizationModalBallotItemWeVoteId: AppStore.organizationModalBallotItemWeVoteId(),
-      paidAccountUpgradeMode,
+      // paidAccountUpgradeMode,
       scrolledDown: AppStore.getScrolledDown(),
       shareModalStep: AppStore.shareModalStep(),
       showAdviserIntroModal: AppStore.showAdviserIntroModal(),
@@ -433,6 +436,13 @@ class HeaderBar extends Component {
     VoterGuideActions.voterGuideFollowersRetrieve(this.state.voter.linked_organization_we_vote_id);
     VoterGuideActions.voterGuidesFollowedByOrganizationRetrieve(this.state.voter.linked_organization_we_vote_id);
     this.setState({ profilePopUpOpen: false });
+  }
+
+  debugLogging (text) {
+    const isDebugLogging = false;
+    if (isDebugLogging) {
+      console.log(`HeaderBar shouldComponentUpdate: ${text}`);
+    }
   }
 
   render () {

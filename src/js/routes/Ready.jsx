@@ -30,17 +30,15 @@ import IssueStore from '../stores/IssueStore';
 import VoterStore from '../stores/VoterStore';
 import cookies from '../utils/cookies';
 import { historyPush, isAndroid, isIOS, isWebApp } from '../utils/cordovaUtils';
-import lazyWithPreload from '../utils/lazyWithPreload';
+import lazyPreloadPages from '../utils/lazyPreloadPages';
 import { renderLog } from '../utils/logging';
 
 const ReadMore = React.lazy(() => import(/* webpackChunkName: 'ReadMore' */ '../components/Widgets/ReadMore'));
 const FirstAndLastNameRequiredAlert = React.lazy(() => import(/* webpackChunkName: 'FirstAndLastNameRequiredAlert' */ '../components/Widgets/FirstAndLastNameRequiredAlert'));
 // import PledgeToVote from '../components/Ready/PledgeToVote';
 
-// Preloads to avoid Suspense/fallback
-const Ballot = lazyWithPreload(() => import(/* webpackChunkName: 'ballot' */ '../routes/Ballot/Ballot'));
-
 const nextReleaseFeaturesEnabled = webAppConfig.ENABLE_NEXT_RELEASE_FEATURES === undefined ? false : webAppConfig.ENABLE_NEXT_RELEASE_FEATURES;
+
 
 class Ready extends Component {
   constructor (props) {
@@ -108,9 +106,8 @@ class Ready extends Component {
       locationGuessClosed: cookies.getItem('location_guess_closed'),
       textForMapSearch: VoterStore.getTextForMapSearch(),
     });
-    this.preloadTimer = setTimeout(() => {
-      Ballot.preload();
-    }, 2000);
+
+    this.preloadTimer = setTimeout(() => lazyPreloadPages(), 2000);
   }
 
   componentDidCatch (error, info) {
