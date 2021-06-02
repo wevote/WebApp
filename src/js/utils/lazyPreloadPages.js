@@ -47,6 +47,16 @@ export default function lazyPreloadPages () {
     lazyWithPreload(() => import(/* webpackChunkName: 'News' */ '../routes/Activity/News'));
   }
 
+  if (pathname.startsWith('/ready') || pathname === '/') {
+    loaded.ready = true;
+  } else if (pathname.startsWith('/ballot')) {
+    loaded.ballot = true;
+  } else if (pathname.startsWith('/values')) {
+    loaded.values = true;
+  } else if (pathname.startsWith('/news')) {
+    loaded.news = true;
+  }
+
   if ((webAppConfig.LOG_RENDER_EVENTS || webAppConfig.LOG_ONLY_FIRST_RENDER_EVENTS) && loadedOne) {
     console.log(`preload xxxx ${pathname} already preloaded xxxx`);
   }
