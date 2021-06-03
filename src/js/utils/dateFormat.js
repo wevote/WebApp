@@ -23,7 +23,7 @@ export function formatDateToYearMonthDay (dateString) {
 }
 
 export function timeFromDate (dateString) {
-  if (!window.moment) {
+  if (window.moment === undefined) {
     initializeMoment(() => {
       if (!dateString || dateString === '') {
         return '';
@@ -31,7 +31,7 @@ export function timeFromDate (dateString) {
       return window.moment.utc(dateString).fromNow();
     });
   }
-  if (!dateString || dateString === '') {
+  if (!dateString || dateString === '' || window.moment === undefined) {
     return '';
   }
   return window.moment.utc(dateString).fromNow();
