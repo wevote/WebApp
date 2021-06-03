@@ -28,6 +28,7 @@ import VoterStore from '../../stores/VoterStore';
 import { cordovaBallotFilterTopMargin } from '../../utils/cordovaOffsets';
 import { cordovaDot, historyPush, isCordova, isIPad } from '../../utils/cordovaUtils';
 import { formatDateToMonthDayYear, timeFromDate } from '../../utils/dateFormat';
+import lazyPreloadPages from '../../utils/lazyPreloadPages';
 import { renderLog } from '../../utils/logging';
 import { startsWith } from '../../utils/textFormat';
 
@@ -102,6 +103,7 @@ class News extends Component {
       }, () => this.openActivityTidbitDrawer(activityTidbitWeVoteIdForDrawer));
       AnalyticsActions.saveActionNews(VoterStore.electionId());
     }
+    this.preloadTimer = setTimeout(() => lazyPreloadPages(), 2000);
   }
 
   componentDidCatch (error, info) {

@@ -55,6 +55,21 @@ class IssueFollowToggleButton extends Component {
     this.issueStoreListener.remove();
   }
 
+  // See https://reactjs.org/docs/error-boundaries.html
+  static getDerivedStateFromError (error) { // eslint-disable-line no-unused-vars
+    // Update state so the next render will show the fallback UI, We should have a 'Oh snap' page
+    // console.log('getDerivedStateFromError IssueFollowToggleButton, error:', error);
+    return { hasError: true };
+  }
+
+  handleClick (event) {
+    this.setState({ anchorEl: event.currentTarget, open: true });
+  }
+
+  handleClose () {
+    this.setState({ anchorEl: null, open: false });
+  }
+
   onIssueStoreChange () {
     const { isFollowingLocalValue } = this.state;
     const isFollowingApiValue = IssueStore.isVoterFollowingThisIssue(this.props.issueWeVoteId);
@@ -106,20 +121,6 @@ class IssueFollowToggleButton extends Component {
     });
   }
 
-  // See https://reactjs.org/docs/error-boundaries.html
-  static getDerivedStateFromError (error) { // eslint-disable-line no-unused-vars
-    // Update state so the next render will show the fallback UI, We should have a 'Oh snap' page
-    // console.log('getDerivedStateFromError IssueFollowToggleButton, error:', error);
-    return { hasError: true };
-  }
-
-  handleClick (event) {
-    this.setState({ anchorEl: event.currentTarget, open: true });
-  }
-
-  handleClose () {
-    this.setState({ anchorEl: null, open: false });
-  }
 
   render () {
     renderLog('IssueFollowToggleButton');  // Set LOG_RENDER_EVENTS to log all renders

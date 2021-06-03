@@ -19,17 +19,15 @@ import webAppConfig from '../config';
 import AppStore from '../stores/AppStore';
 import VoterStore from '../stores/VoterStore';
 import { historyPush, isAndroid, isIOS, isWebApp } from '../utils/cordovaUtils';
-import lazyWithPreload from '../utils/lazyWithPreload';
+import lazyPreloadPages from '../utils/lazyPreloadPages';
 import { renderLog } from '../utils/logging';
 
 const ReadMore = React.lazy(() => import(/* webpackChunkName: 'ReadMore' */ '../components/Widgets/ReadMore'));
 const FirstAndLastNameRequiredAlert = React.lazy(() => import(/* webpackChunkName: 'FirstAndLastNameRequiredAlert' */ '../components/Widgets/FirstAndLastNameRequiredAlert'));
 // import PledgeToVote from '../components/Ready/PledgeToVote';
 
-// Preloads to avoid Suspense/fallback
-const Ballot = lazyWithPreload(() => import(/* webpackChunkName: 'ballot' */ '../routes/Ballot/Ballot'));
-
 const nextReleaseFeaturesEnabled = webAppConfig.ENABLE_NEXT_RELEASE_FEATURES === undefined ? false : webAppConfig.ENABLE_NEXT_RELEASE_FEATURES;
+
 
 class ReadyLight extends Component {
   constructor (props) {
@@ -49,9 +47,8 @@ class ReadyLight extends Component {
     this.analyticsTimer = setTimeout(() => {
       AnalyticsActions.saveActionReadyVisit(VoterStore.electionId());
     }, 8000);
-    this.preloadTimer = setTimeout(() => {
-      Ballot.preload();
-    }, 3000);
+
+    this.preloadTimer = setTimeout(() => lazyPreloadPages(), 3000);
 
     this.setState({
       chosenReadyIntroductionText: AppStore.getChosenReadyIntroductionText(),

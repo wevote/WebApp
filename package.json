@@ -85,7 +85,7 @@
     "gapi-script": "^1.1.0",
     "glob": "^7.1.6",
     "iframe-resizer-react": "^1.1.0",
-    "jquery": "~3.5.1",
+    "jquery": "^3.6.0",
     "keymirror": "~0.1.1",
     "lodash-es": "^4.17.21",
     "material-ui-dropzone": "~3.5.0",

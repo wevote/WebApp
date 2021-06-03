@@ -80,6 +80,40 @@ class SettingsWidgetFirstLastName extends Component {
     }
   }
 
+  handleKeyPressOrganizationName () {
+    if (isWebApp()) {
+      clearTimeout(this.organizationNameTimer);
+    }
+    if (this.props.voterHasMadeChangesFunction) {
+      this.props.voterHasMadeChangesFunction();
+    }
+    if (isWebApp()) {
+      this.organizationNameTimer = setTimeout(() => {
+        OrganizationActions.organizationNameSave(
+          this.state.linkedOrganizationWeVoteId,
+          this.state.organizationName,
+        );
+        this.setState({ organizationNameSavedStatus: 'Saved' });
+      }, delayBeforeApiUpdateCall);
+    }
+  }
+
+  handleKeyPressVoterName () {
+    if (isWebApp()) {
+      clearTimeout(this.voterNameTimer);
+    }
+    if (this.props.voterHasMadeChangesFunction) {
+      this.props.voterHasMadeChangesFunction();
+    }
+
+    if (isWebApp()) {
+      this.voterNameTimer = setTimeout(() => {
+        VoterActions.voterNameSave(this.state.firstName, this.state.lastName);
+        this.setState({ voterNameSavedStatus: 'Saved' });
+      }, delayBeforeApiUpdateCall);
+    }
+  }
+
   onOrganizationStoreChange () {
     const organization = OrganizationStore.getOrganizationByWeVoteId(
       this.state.linkedOrganizationWeVoteId,
@@ -148,40 +182,6 @@ class SettingsWidgetFirstLastName extends Component {
           }
         }
       }
-    }
-  }
-
-  handleKeyPressOrganizationName () {
-    if (isWebApp()) {
-      clearTimeout(this.organizationNameTimer);
-    }
-    if (this.props.voterHasMadeChangesFunction) {
-      this.props.voterHasMadeChangesFunction();
-    }
-    if (isWebApp()) {
-      this.organizationNameTimer = setTimeout(() => {
-        OrganizationActions.organizationNameSave(
-          this.state.linkedOrganizationWeVoteId,
-          this.state.organizationName,
-        );
-        this.setState({ organizationNameSavedStatus: 'Saved' });
-      }, delayBeforeApiUpdateCall);
-    }
-  }
-
-  handleKeyPressVoterName () {
-    if (isWebApp()) {
-      clearTimeout(this.voterNameTimer);
-    }
-    if (this.props.voterHasMadeChangesFunction) {
-      this.props.voterHasMadeChangesFunction();
-    }
-
-    if (isWebApp()) {
-      this.voterNameTimer = setTimeout(() => {
-        VoterActions.voterNameSave(this.state.firstName, this.state.lastName);
-        this.setState({ voterNameSavedStatus: 'Saved' });
-      }, delayBeforeApiUpdateCall);
     }
   }
 

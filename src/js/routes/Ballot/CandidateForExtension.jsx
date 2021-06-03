@@ -99,6 +99,12 @@ class CandidateForExtension extends Component {
     this.voterGuidePossibilityStoreListener.remove();
   }
 
+  handleChange (event, newActiveTabIndex) {
+    this.setState({
+      activeTabIndex: newActiveTabIndex,
+    });
+  }
+
   onCandidateStoreChange () {
     // We just want to trigger a re-render
     this.setState();
@@ -116,12 +122,6 @@ class CandidateForExtension extends Component {
       ballotItemName,
       possibleOrganizationName,
       voterGuidePossibilityId,
-    });
-  }
-
-  handleChange (event, newActiveTabIndex) {
-    this.setState({
-      activeTabIndex: newActiveTabIndex,
     });
   }
 

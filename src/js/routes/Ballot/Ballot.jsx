@@ -42,7 +42,7 @@ import cordovaScrollablePaneTopPadding from '../../utils/cordovaScrollablePaneTo
 import { chipLabelText, getAndroidSize, historyPush, isAndroid, isCordova, isIOSAppOnMac, isIPadGiantSize, isWebApp } from '../../utils/cordovaUtils';
 import isMobile from '../../utils/isMobile';
 import isMobileScreenSize from '../../utils/isMobileScreenSize';
-import lazyWithPreload from '../../utils/lazyWithPreload';
+import lazyPreloadPages from '../../utils/lazyPreloadPages';
 import { renderLog } from '../../utils/logging';
 import mapCategoryFilterType from '../../utils/map-category-filter-type';
 import { getBooleanValue, startsWith } from '../../utils/textFormat';
@@ -54,12 +54,6 @@ const DelayedLoad = React.lazy(() => import(/* webpackChunkName: 'DelayedLoad' *
 const FilterBaseSearch = React.lazy(() => import(/* webpackChunkName: 'FilterBaseSearch' */ '../../components/Filter/FilterBaseSearch'));
 const OpenExternalWebSite = React.lazy(() => import(/* webpackChunkName: 'OpenExternalWebSite' */ '../../components/Widgets/OpenExternalWebSite'));
 const ShowMoreItems = React.lazy(() => import(/* webpackChunkName: 'ShowMoreItems' */ '../../components/Widgets/ShowMoreItems'));
-
-// Preloads to avoid Suspense/fallback
-const Ready = lazyWithPreload(() => import(/* webpackChunkName: 'Ready' */ '../../routes/Ready'));
-const News = lazyWithPreload(() => import(/* webpackChunkName: 'News' */ '../../routes/Activity/News'));
-const Values = lazyWithPreload(() => import(/* webpackChunkName: 'Values' */ '../../routes/Values'));
-
 
 const TYPES = require('keymirror')({
   OFFICE: null,
@@ -328,11 +322,9 @@ class Ballot extends Component {
       dumpCssFromId('ballotWrapper');
       dumpCssFromId('rightColumnSidebar');
     }
-    this.preloadTimer = setTimeout(() => {
-      Ready.preload();
-      News.preload();
-      Values.preload();
-    }, 2000);
+
+    this.preloadTimer = setTimeout(() => lazyPreloadPages(), 2000);
+
     if (webAppConfig.ENABLE_WORKBOX_SERVICE_WORKER &&
         window.serviceWorkerLoaded === undefined) {
       navigator.serviceWorker.register('/sw.js');

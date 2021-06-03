@@ -83,6 +83,7 @@ class HeaderNotificationMenu extends Component {
   }
 
   onSettingsClick = () => {
+    this.handleClose();
     historyPush('/settings/notifications');
   }
 
