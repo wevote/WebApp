@@ -8,11 +8,9 @@ import ErrorBoundary from './js/components/Widgets/ErrorBoundary';
 import WeVoteRouter from './js/components/Widgets/WeVoteRouter';
 import muiTheme from './js/mui-theme';
 import styledTheme from './js/styled-theme';
-import cookies from './js/utils/cookies';
 import initializejQuery from './js/utils/initializejQuery';
 import { renderLog } from './js/utils/logging';
 import RouterV5SendMatch from './js/utils/RouterV5SendMatch';
-// import SnackNotifier from './js/components/Widgets/SnackNotifier';
 
 // Root URL pages
 
@@ -91,32 +89,24 @@ const WelcomeForOrganizations = React.lazy(() => import(/* webpackChunkName: 'We
 const WelcomeForVoters = React.lazy(() => import(/* webpackChunkName: 'WelcomeForVoters' */ './js/routes/WelcomeForVoters'));
 const YourPage = React.lazy(() => import(/* webpackChunkName: 'YourPage' */ './js/routes/YourPage'));
 
-// There are just too many "prop spreadings", if someone can figure out an alternative...
+// There are just too many "prop spreadings" in the use of Route, if someone can figure out an alternative...
 /* eslint-disable react/jsx-props-no-spreading */
 
 class App extends Component {
   constructor (props) {
     super(props);
     this.state = {
-      doShowHeader: true,
-      doShowFooter: true,
-      isInitialized: false,
+      // doShowHeader: true,
+      // doShowFooter: true,
+      // isInitialized: false,
       showReadyLight: true,
     };
-    this.setShowHeader = this.setShowHeader.bind(this);
-    this.setShowFooter = this.setShowFooter.bind(this);
-    this.setShowHeaderFooter = this.setShowHeaderFooter.bind(this);
+    // this.setShowHeader = this.setShowHeader.bind(this);
+    // this.setShowFooter = this.setShowFooter.bind(this);
+    // this.setShowHeaderFooter = this.setShowHeaderFooter.bind(this);
     this.setShowReadyHeavy = this.setShowReadyHeavy.bind(this);
     this.localIsCordova();
   }
-
-  // From index.js (4/20/21)
-  localIsCordova () {
-    const { cordova } = window;
-    window.isCordovaGlobal = cordova !== undefined;    // So now we set a global
-    return cordova !== undefined;
-  }
-
 
   // See https://reactjs.org/docs/error-boundaries.html
   static getDerivedStateFromError (error) { // eslint-disable-line no-unused-vars
@@ -137,41 +127,53 @@ class App extends Component {
     console.error('App caught error: ', `${error} with info: `, info);
   }
 
-  setShowHeader (doShowHeader) {
-    console.log('-----------HEADER setShowHeader');
-    this.setState({ doShowHeader });
-  }
+  // setShowHeader (doShowHeader) {
+  //   console.log('-----------HEADER setShowHeader');
+  //   this.setState({ doShowHeader });
+  // }
 
-  setShowFooter (doShowFooter) {
-    console.log('-----------HEADER setShowFooter');
-    this.setState({ doShowFooter });
-  }
+  // setShowFooter (doShowFooter) {
+  //   console.log('-----------HEADER setShowFooter');
+  //   this.setState({ doShowFooter });
+  // }
 
-  setShowHeaderFooter (doShow) {
-    console.log('-----------HEADER setShowHeaderFooter', doShow);
-    // console.log('setShowHeaderFooter -------------- doShow:', doShow);
-    this.setState({
-      doShowHeader: doShow,
-      doShowFooter: doShow,
-    });
-  }
+  // setShowHeaderFooter (doShow) {
+  //   console.log('-----------HEADER setShowHeaderFooter', doShow);
+  //   // console.log('setShowHeaderFooter -------------- doShow:', doShow);
+  //   this.setState({
+  //     doShowHeader: doShow,
+  //     doShowFooter: doShow,
+  //   });
+  // }
 
   setShowReadyHeavy () {
     this.setState({ showReadyLight: false });
   }
 
+  // From index.js (4/20/21)
+  localIsCordova () {
+    const { cordova } = window;
+    window.isCordovaGlobal = cordova !== undefined;    // So now we set a global
+    return cordova !== undefined;
+  }
+
   render () {
     renderLog('App');
-    const { doShowHeader, doShowFooter, jQueryInitialized, showReadyLight } = this.state;
+    const { /* doShowHeader, doShowFooter, */ showReadyLight } = this.state;
     // console.log(`App doShowHeader: ${doShowHeader}, doShowFooter:${doShowFooter}`);
     let { hostname } = window.location;
     hostname = hostname || '';
     const weVoteSites = ['wevote.us', 'quality.wevote.us', 'localhost', 'silicon', ''];   // localhost on Cordova is a ''
     const isWeVoteMarketingSite = weVoteSites.includes(String(hostname));
     const isNotWeVoteMarketingSite = !isWeVoteMarketingSite;
-    const firstVisit = !cookies.getItem('voter_device_id');
+    // const firstVisit = !cookies.getItem('voter_device_id');
 
     console.log('href in App.js render: ', window.location.href);
+
+    /*
+    Note: To debug routing, set a breakpoint in the class that routing takes you to -- then look at the received props.
+    The props.match.path shows exactly which route string from this file, was selected by the <Switch>
+    */
 
     return (
       <ErrorBoundary>
@@ -381,54 +383,55 @@ class App extends Component {
                     <Route path="/wevoteintro/network" component={IntroNetwork} />
                     <Route path="/wevoteintro/newfriend/:invitationSecretKey" component={FriendInvitationOnboarding} />
                     <Route path="/yourpage" component={YourPage} />
-                    <Route path=":twitter_handle($)?" component={TwitterHandleLanding} />
-                    <Route path=":twitter_handle/:action_variable" component={TwitterHandleLanding} />
-                    <Route path=":twitter_handle/ballot/:ballot_location_shortcut" component={TwitterHandleLanding} />
-                    <Route path=":twitter_handle/ballot/election/:google_civic_election_id" component={TwitterHandleLanding} />
-                    <Route path=":twitter_handle/ballot/election/:google_civic_election_id/:view_mode" component={TwitterHandleLanding} />
-                    <Route path=":twitter_handle/ballot/empty" component={TwitterHandleLanding} />
-                    <Route path=":twitter_handle/ballot/id/:ballot_returned_we_vote_id" component={TwitterHandleLanding} />
-                    <Route path=":twitter_handle/ballot/id/:ballot_returned_we_vote_id/:view_mode" component={TwitterHandleLanding} />
-                    <Route path=":twitter_handle/btcand/:back_to_cand_we_vote_id/b/:back_to_variable/:action_variable" component={TwitterHandleLanding} />
-                    <Route path=":twitter_handle/btcand/:back_to_cand_we_vote_id/b/:back_to_variable/:action_variable/m/followers" component={(props) => <OrganizationVoterGuideMobileDetails {...props} activeRoute="followers" />} />
-                    <Route path=":twitter_handle/btcand/:back_to_cand_we_vote_id/b/:back_to_variable/:action_variable/m/following" component={(props) => <OrganizationVoterGuideMobileDetails {...props} activeRoute="following" />} />
-                    <Route path=":twitter_handle/btcand/:back_to_cand_we_vote_id/b/:back_to_variable/:action_variable/m/friends" component={(props) => <OrganizationVoterGuideMobileDetails {...props} activeRoute="friends" />} />
-                    <Route path=":twitter_handle/btcand/:back_to_cand_we_vote_id/b/:back_to_variable/followers" component={(props) => <TwitterHandleLanding {...props} activeRoute="followers" />} />
-                    <Route path=":twitter_handle/btcand/:back_to_cand_we_vote_id/b/:back_to_variable/following" component={(props) => <TwitterHandleLanding {...props} activeRoute="following" />} />
-                    <Route path=":twitter_handle/btcand/:back_to_cand_we_vote_id/b/:back_to_variable/m/followers" component={(props) => <OrganizationVoterGuideMobileDetails {...props} activeRoute="followers" />} />
-                    <Route path=":twitter_handle/btcand/:back_to_cand_we_vote_id/b/:back_to_variable/m/following" component={(props) => <OrganizationVoterGuideMobileDetails {...props} activeRoute="following" />} />
-                    <Route path=":twitter_handle/btcand/:back_to_cand_we_vote_id/b/:back_to_variable/m/friends" component={(props) => <OrganizationVoterGuideMobileDetails {...props} activeRoute="friends" />} />
-                    <Route path=":twitter_handle/btcand/:back_to_cand_we_vote_id/b/:back_to_variable/modal/:modal_to_show" component={TwitterHandleLanding} />
-                    <Route path=":twitter_handle/btcand/:back_to_cand_we_vote_id/b/:back_to_variable/modal/:modal_to_show/:shared_item_code" component={TwitterHandleLanding} />
-                    <Route path=":twitter_handle/btcand/:back_to_cand_we_vote_id/b/:back_to_variable/modal/:modal_to_show/:shared_item_code" component={TwitterHandleLanding} />
-                    <Route path=":twitter_handle/btcand/:back_to_cand_we_vote_id/b/:back_to_variable/positions" component={(props) => <TwitterHandleLanding {...props} activeRoute="positions" />} />
-                    <Route path=":twitter_handle/btcand/:back_to_cand_we_vote_id/b/:back_to_variable/positions/modal/:modal_to_show" component={(props) => <TwitterHandleLanding {...props} activeRoute="positions" />} />
-                    <Route path=":twitter_handle/btcand/:back_to_cand_we_vote_id/b/:back_to_variable/positions/modal/:modal_to_show/:shared_item_code" component={(props) => <TwitterHandleLanding {...props} activeRoute="positions" />} />
-                    <Route path=":twitter_handle/btmeas/:back_to_meas_we_vote_id/b/:back_to_variable" component={TwitterHandleLanding} />
-                    <Route path=":twitter_handle/btmeas/:back_to_meas_we_vote_id/b/:back_to_variable/:action_variable" component={TwitterHandleLanding} />
-                    <Route path=":twitter_handle/btmeas/:back_to_meas_we_vote_id/b/:back_to_variable/:action_variable/m/followers" component={(props) => <OrganizationVoterGuideMobileDetails {...props} activeRoute="followers" />} />
-                    <Route path=":twitter_handle/btmeas/:back_to_meas_we_vote_id/b/:back_to_variable/:action_variable/m/following" component={(props) => <OrganizationVoterGuideMobileDetails {...props} activeRoute="following" />} />
-                    <Route path=":twitter_handle/btmeas/:back_to_meas_we_vote_id/b/:back_to_variable/:action_variable/m/friends" component={(props) => <OrganizationVoterGuideMobileDetails {...props} activeRoute="friends" />} />
-                    <Route path=":twitter_handle/btmeas/:back_to_meas_we_vote_id/b/:back_to_variable/followers" component={(props) => <TwitterHandleLanding {...props} activeRoute="followers" />} />
-                    <Route path=":twitter_handle/btmeas/:back_to_meas_we_vote_id/b/:back_to_variable/following" component={(props) => <TwitterHandleLanding {...props} activeRoute="following" />} />
-                    <Route path=":twitter_handle/btmeas/:back_to_meas_we_vote_id/b/:back_to_variable/m/followers" component={(props) => <OrganizationVoterGuideMobileDetails {...props} activeRoute="followers" />} />
-                    <Route path=":twitter_handle/btmeas/:back_to_meas_we_vote_id/b/:back_to_variable/m/following" component={(props) => <OrganizationVoterGuideMobileDetails {...props} activeRoute="following" />} />
-                    <Route path=":twitter_handle/btmeas/:back_to_meas_we_vote_id/b/:back_to_variable/m/friends" component={(props) => <OrganizationVoterGuideMobileDetails {...props} activeRoute="friends" />} />
-                    <Route path=":twitter_handle/btmeas/:back_to_meas_we_vote_id/b/:back_to_variable/modal/:modal_to_show" component={TwitterHandleLanding} />
-                    <Route path=":twitter_handle/btmeas/:back_to_meas_we_vote_id/b/:back_to_variable/modal/:modal_to_show/:shared_item_code" component={TwitterHandleLanding} />
-                    <Route path=":twitter_handle/btmeas/:back_to_meas_we_vote_id/b/:back_to_variable/positions" component={(props) => <TwitterHandleLanding {...props} activeRoute="positions" />} />
-                    <Route path=":twitter_handle/btmeas/:back_to_meas_we_vote_id/b/:back_to_variable/positions/modal/:modal_to_show" component={(props) => <TwitterHandleLanding {...props} activeRoute="positions" />} />
-                    <Route path=":twitter_handle/btmeas/:back_to_meas_we_vote_id/b/:back_to_variable/positions/modal/:modal_to_show/:shared_item_code" component={(props) => <TwitterHandleLanding {...props} activeRoute="positions" />} />
-                    <Route path=":twitter_handle/followers" component={(props) => <TwitterHandleLanding {...props} activeRoute="followers" />} />
-                    <Route path=":twitter_handle/following" component={(props) => <TwitterHandleLanding {...props} activeRoute="following" />} />
-                    <Route path=":twitter_handle/m/followers" component={(props) => <OrganizationVoterGuideMobileDetails {...props} activeRoute="followers" />} />
-                    <Route path=":twitter_handle/m/following" component={(props) => <OrganizationVoterGuideMobileDetails {...props} activeRoute="following" />} />
-                    <Route path=":twitter_handle/m/friends" component={(props) => <OrganizationVoterGuideMobileDetails {...props} activeRoute="friends" />}  />
-                    <Route path=":twitter_handle/modal/:modal_to_show" component={TwitterHandleLanding} />
-                    <Route path=":twitter_handle/modal/:modal_to_show/:shared_item_code" component={TwitterHandleLanding} />
-                    <Route path=":twitter_handle/positions" component={(props) => <TwitterHandleLanding {...props} activeRoute="positions" />} />
-                    <Route path=":twitter_handle/positions/modal/:modal_to_show" component={(props) => <TwitterHandleLanding {...props} activeRoute="positions" />} />
-                    <Route path=":twitter_handle/positions/modal/:modal_to_show/:shared_item_code" component={(props) => <TwitterHandleLanding {...props} activeRoute="positions" />} />
+                    <Route path="/:twitter_handle/:action_variable" component={TwitterHandleLanding} />
+                    <Route path="/:twitter_handle/ballot/:ballot_location_shortcut" component={TwitterHandleLanding} />
+                    <Route path="/:twitter_handle/ballot/election/:google_civic_election_id" component={TwitterHandleLanding} />
+                    <Route path="/:twitter_handle/ballot/election/:google_civic_election_id/:view_mode" component={TwitterHandleLanding} />
+                    <Route path="/:twitter_handle/ballot/empty" component={TwitterHandleLanding} />
+                    <Route path="/:twitter_handle/ballot/id/:ballot_returned_we_vote_id" component={TwitterHandleLanding} />
+                    <Route path="/:twitter_handle/ballot/id/:ballot_returned_we_vote_id/:view_mode" component={TwitterHandleLanding} />
+                    <Route path="/:twitter_handle/btcand/:back_to_cand_we_vote_id" component={TwitterHandleLanding} />
+                    <Route path="/:twitter_handle/btcand/:back_to_cand_we_vote_id/b/:back_to_variable/:action_variable" component={TwitterHandleLanding} />
+                    <Route path="/:twitter_handle/btcand/:back_to_cand_we_vote_id/b/:back_to_variable/:action_variable/m/followers" component={(props) => <OrganizationVoterGuideMobileDetails {...props} activeRoute="followers" />} />
+                    <Route path="/:twitter_handle/btcand/:back_to_cand_we_vote_id/b/:back_to_variable/:action_variable/m/following" component={(props) => <OrganizationVoterGuideMobileDetails {...props} activeRoute="following" />} />
+                    <Route path="/:twitter_handle/btcand/:back_to_cand_we_vote_id/b/:back_to_variable/:action_variable/m/friends" component={(props) => <OrganizationVoterGuideMobileDetails {...props} activeRoute="friends" />} />
+                    <Route path="/:twitter_handle/btcand/:back_to_cand_we_vote_id/b/:back_to_variable/followers" component={(props) => <TwitterHandleLanding {...props} activeRoute="followers" />} />
+                    <Route path="/:twitter_handle/btcand/:back_to_cand_we_vote_id/b/:back_to_variable/following" component={(props) => <TwitterHandleLanding {...props} activeRoute="following" />} />
+                    <Route path="/:twitter_handle/btcand/:back_to_cand_we_vote_id/b/:back_to_variable/m/followers" component={(props) => <OrganizationVoterGuideMobileDetails {...props} activeRoute="followers" />} />
+                    <Route path="/:twitter_handle/btcand/:back_to_cand_we_vote_id/b/:back_to_variable/m/following" component={(props) => <OrganizationVoterGuideMobileDetails {...props} activeRoute="following" />} />
+                    <Route path="/:twitter_handle/btcand/:back_to_cand_we_vote_id/b/:back_to_variable/m/friends" component={(props) => <OrganizationVoterGuideMobileDetails {...props} activeRoute="friends" />} />
+                    <Route path="/:twitter_handle/btcand/:back_to_cand_we_vote_id/b/:back_to_variable/modal/:modal_to_show" component={TwitterHandleLanding} />
+                    <Route path="/:twitter_handle/btcand/:back_to_cand_we_vote_id/b/:back_to_variable/modal/:modal_to_show/:shared_item_code" component={TwitterHandleLanding} />
+                    <Route path="/:twitter_handle/btcand/:back_to_cand_we_vote_id/b/:back_to_variable/modal/:modal_to_show/:shared_item_code" component={TwitterHandleLanding} />
+                    <Route path="/:twitter_handle/btcand/:back_to_cand_we_vote_id/b/:back_to_variable/positions" component={(props) => <TwitterHandleLanding {...props} activeRoute="positions" />} />
+                    <Route path="/:twitter_handle/btcand/:back_to_cand_we_vote_id/b/:back_to_variable/positions/modal/:modal_to_show" component={(props) => <TwitterHandleLanding {...props} activeRoute="positions" />} />
+                    <Route path="/:twitter_handle/btcand/:back_to_cand_we_vote_id/b/:back_to_variable/positions/modal/:modal_to_show/:shared_item_code" component={(props) => <TwitterHandleLanding {...props} activeRoute="positions" />} />
+                    <Route path="/:twitter_handle/btmeas/:back_to_meas_we_vote_id/b/:back_to_variable" component={TwitterHandleLanding} />
+                    <Route path="/:twitter_handle/btmeas/:back_to_meas_we_vote_id/b/:back_to_variable/:action_variable" component={TwitterHandleLanding} />
+                    <Route path="/:twitter_handle/btmeas/:back_to_meas_we_vote_id/b/:back_to_variable/:action_variable/m/followers" component={(props) => <OrganizationVoterGuideMobileDetails {...props} activeRoute="followers" />} />
+                    <Route path="/:twitter_handle/btmeas/:back_to_meas_we_vote_id/b/:back_to_variable/:action_variable/m/following" component={(props) => <OrganizationVoterGuideMobileDetails {...props} activeRoute="following" />} />
+                    <Route path="/:twitter_handle/btmeas/:back_to_meas_we_vote_id/b/:back_to_variable/:action_variable/m/friends" component={(props) => <OrganizationVoterGuideMobileDetails {...props} activeRoute="friends" />} />
+                    <Route path="/:twitter_handle/btmeas/:back_to_meas_we_vote_id/b/:back_to_variable/followers" component={(props) => <TwitterHandleLanding {...props} activeRoute="followers" />} />
+                    <Route path="/:twitter_handle/btmeas/:back_to_meas_we_vote_id/b/:back_to_variable/following" component={(props) => <TwitterHandleLanding {...props} activeRoute="following" />} />
+                    <Route path="/:twitter_handle/btmeas/:back_to_meas_we_vote_id/b/:back_to_variable/m/followers" component={(props) => <OrganizationVoterGuideMobileDetails {...props} activeRoute="followers" />} />
+                    <Route path="/:twitter_handle/btmeas/:back_to_meas_we_vote_id/b/:back_to_variable/m/following" component={(props) => <OrganizationVoterGuideMobileDetails {...props} activeRoute="following" />} />
+                    <Route path="/:twitter_handle/btmeas/:back_to_meas_we_vote_id/b/:back_to_variable/m/friends" component={(props) => <OrganizationVoterGuideMobileDetails {...props} activeRoute="friends" />} />
+                    <Route path="/:twitter_handle/btmeas/:back_to_meas_we_vote_id/b/:back_to_variable/modal/:modal_to_show" component={TwitterHandleLanding} />
+                    <Route path="/:twitter_handle/btmeas/:back_to_meas_we_vote_id/b/:back_to_variable/modal/:modal_to_show/:shared_item_code" component={TwitterHandleLanding} />
+                    <Route path="/:twitter_handle/btmeas/:back_to_meas_we_vote_id/b/:back_to_variable/positions" component={(props) => <TwitterHandleLanding {...props} activeRoute="positions" />} />
+                    <Route path="/:twitter_handle/btmeas/:back_to_meas_we_vote_id/b/:back_to_variable/positions/modal/:modal_to_show" component={(props) => <TwitterHandleLanding {...props} activeRoute="positions" />} />
+                    <Route path="/:twitter_handle/btmeas/:back_to_meas_we_vote_id/b/:back_to_variable/positions/modal/:modal_to_show/:shared_item_code" component={(props) => <TwitterHandleLanding {...props} activeRoute="positions" />} />
+                    <Route path="/:twitter_handle/followers" component={(props) => <TwitterHandleLanding {...props} activeRoute="followers" />} />
+                    <Route path="/:twitter_handle/following" component={(props) => <TwitterHandleLanding {...props} activeRoute="following" />} />
+                    <Route path="/:twitter_handle/m/followers" component={(props) => <OrganizationVoterGuideMobileDetails {...props} activeRoute="followers" />} />
+                    <Route path="/:twitter_handle/m/following" component={(props) => <OrganizationVoterGuideMobileDetails {...props} activeRoute="following" />} />
+                    <Route path="/:twitter_handle/m/friends" component={(props) => <OrganizationVoterGuideMobileDetails {...props} activeRoute="friends" />}  />
+                    <Route path="/:twitter_handle/modal/:modal_to_show" component={TwitterHandleLanding} />
+                    <Route path="/:twitter_handle/modal/:modal_to_show/:shared_item_code" component={TwitterHandleLanding} />
+                    <Route path="/:twitter_handle/positions" component={(props) => <TwitterHandleLanding {...props} activeRoute="positions" />} />
+                    <Route path="/:twitter_handle/positions/modal/:modal_to_show" component={(props) => <TwitterHandleLanding {...props} activeRoute="positions" />} />
+                    <Route path="/:twitter_handle/positions/modal/:modal_to_show/:shared_item_code" component={(props) => <TwitterHandleLanding {...props} activeRoute="positions" />} />
+                    <Route path="/:twitter_handle($)?" component={TwitterHandleLanding} />
                     <Route path="*" component={PageNotFound} />
                   </Switch>
                   {/*
