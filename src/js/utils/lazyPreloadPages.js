@@ -11,7 +11,8 @@ const loaded = {
 
 function lazyWithPreload (factory) {
   if (webAppConfig.LOG_RENDER_EVENTS || webAppConfig.LOG_ONLY_FIRST_RENDER_EVENTS) {
-    console.log(`preload ==== ${factory} ====`);
+    const result = factory.toString().match(/.*?\| (.*?) \*\//);
+    console.log(`preload ==== ${result.length > 1 ? result[1] : factory} ====`);
   }
 
   const Component = React.lazy(factory);

@@ -21,7 +21,6 @@ export default class TwitterSignInProcess extends Component {
       redirectInProgress: false,
       twitterAuthResponse: {},
       yesPleaseMergeAccounts: false,
-      jQueryInitialized: false,
     };
   }
 
@@ -170,8 +169,7 @@ export default class TwitterSignInProcess extends Component {
     if (redirectInProgress) {
       return null;
     }
-    const { jQueryInitialized } = this.state;
-    if (!jQueryInitialized) {
+    if (window.$ === undefined) {
       return (
         <div className="twitter_sign_in_root">
           <div className="page-content-container" style={{ paddingTop: `${cordovaScrollablePaneTopPadding()}` }}>
@@ -185,7 +183,6 @@ export default class TwitterSignInProcess extends Component {
         </div>
       );
     }
-
 
     oAuthLog('TwitterSignInProcess render');
     if (!twitterAuthResponse ||
