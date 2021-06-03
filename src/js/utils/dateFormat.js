@@ -23,12 +23,18 @@ export function formatDateToYearMonthDay (dateString) {
 }
 
 export function timeFromDate (dateString) {
-  initializeMoment(() => {
-    if (!dateString || dateString === '') {
-      return '';
-    }
-    return window.moment.utc(dateString).fromNow();
-  });
+  if (!window.moment) {
+    initializeMoment(() => {
+      if (!dateString || dateString === '') {
+        return '';
+      }
+      return window.moment.utc(dateString).fromNow();
+    });
+  }
+  if (!dateString || dateString === '') {
+    return '';
+  }
+  return window.moment.utc(dateString).fromNow();
 }
 
 export function electionDateTomorrowFormatted (dayText) {
