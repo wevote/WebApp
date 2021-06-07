@@ -40,11 +40,11 @@ Install [Homebrew](https://brew.sh/), and then install Python:
 
 Next use Python to install pip:
 
-    $ curl https://bootstrap.pypa.io/get-pip.py | sudo python
+    $ curl https://bootstrap.pypa.io/get-pip.py
 
 Now install nodeenv with pip. Install nodeenv globally. (For instructions installing it locally, see: https://github.com/ekalinin/nodeenv):
 
-    $ sudo -H pip install nodeenv
+    $ sudo -H pip3 install nodeenv
     
 If you are already using Node and npm, confirm that your installation is at least at these minimum
 versions:
