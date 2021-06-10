@@ -137,10 +137,17 @@ class SettingsVerifySecretCode extends Component {
   }
 
   handleKeyDown6 (e) {
-    if (e.keyCode === 8 && this.state.digit6 === '') {
+    const ENTER_KEY_CODE = 13;
+    const BACKSPACE_KEY_CODE = 8;
+    if (e.keyCode === BACKSPACE_KEY_CODE && this.state.digit6 === '') {
       e.target.parentElement.previousElementSibling.firstElementChild.value = '';
       e.target.parentElement.previousElementSibling.firstElementChild.focus();
       this.setState({ digit5: '' });
+    }
+    const keyCodesForSubmit = [ENTER_KEY_CODE];
+    if (keyCodesForSubmit.includes(e.keyCode)) {
+      e.preventDefault();
+      this.voterVerifySecretCode(e);
     }
   }
 
@@ -496,7 +503,7 @@ class SettingsVerifySecretCode extends Component {
                 onPaste={this.onPaste}
                 type="tel"
                 value={this.state.digit1}
-                autoFocus={isCordova()}
+                autoFocus
               />
               <OutlinedInput
                 classes={{ root: classes.inputBase, input: classes.input }}

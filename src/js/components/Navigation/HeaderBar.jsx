@@ -9,6 +9,7 @@ import BallotActions from '../../actions/BallotActions';
 import OrganizationActions from '../../actions/OrganizationActions';
 import VoterGuideActions from '../../actions/VoterGuideActions';
 import VoterSessionActions from '../../actions/VoterSessionActions';
+import VoterActions from '../../actions/VoterActions';
 import AppStore from '../../stores/AppStore';
 import FriendStore from '../../stores/FriendStore';
 import VoterStore from '../../stores/VoterStore';
@@ -71,16 +72,17 @@ class HeaderBar extends Component {
       voter: {},
       voterFirstName: '',
     };
+    this.closeOrganizationModal = this.closeOrganizationModal.bind(this);
+    this.closePaidAccountUpgradeModal = this.closePaidAccountUpgradeModal.bind(this);
+    this.closeShareModal = this.closeShareModal.bind(this);
+    this.closeSignInModal = this.closeSignInModal.bind(this);
+    this.debugLogging = this.debugLogging.bind(this);
     this.hideProfilePopUp = this.hideProfilePopUp.bind(this);
     this.signOutAndHideProfilePopUp = this.signOutAndHideProfilePopUp.bind(this);
     this.toggleProfilePopUp = this.toggleProfilePopUp.bind(this);
-    this.transitionToYourVoterGuide = this.transitionToYourVoterGuide.bind(this);
-    this.toggleSignInModal = this.toggleSignInModal.bind(this);
     this.toggleSelectBallotModal = this.toggleSelectBallotModal.bind(this);
-    this.closePaidAccountUpgradeModal = this.closePaidAccountUpgradeModal.bind(this);
-    this.closeShareModal = this.closeShareModal.bind(this);
-    this.closeOrganizationModal = this.closeOrganizationModal.bind(this);
-    this.debugLogging = this.debugLogging.bind(this);
+    this.toggleSignInModal = this.toggleSignInModal.bind(this);
+    this.transitionToYourVoterGuide = this.transitionToYourVoterGuide.bind(this);
   }
 
   componentDidMount () {
@@ -104,7 +106,7 @@ class HeaderBar extends Component {
       showSelectBallotModal: AppStore.showSelectBallotModal(),
       showSelectBallotModalHideAddress: getBooleanValue(AppStore.showSelectBallotModalHideAddress()),
       showSelectBallotModalHideElections: getBooleanValue(AppStore.showSelectBallotModalHideElections()),
-      showSignInModal: AppStore.showSignInModal(),
+      // showSignInModal: AppStore.showSignInModal(),
       showValuesIntroModal: AppStore.showValuesIntroModal(),
       showImageUploadModal: AppStore.showImageUploadModal(),
       voter,
@@ -287,7 +289,7 @@ class HeaderBar extends Component {
       showSelectBallotModal: AppStore.showSelectBallotModal(),
       showSelectBallotModalHideAddress: AppStore.showSelectBallotModalHideAddress(),
       showSelectBallotModalHideElections: AppStore.showSelectBallotModalHideElections(),
-      showSignInModal: AppStore.showSignInModal(),
+      // showSignInModal: AppStore.showSignInModal(),
       showValuesIntroModal: AppStore.showValuesIntroModal(),
       showImageUploadModal: AppStore.showImageUploadModal(),
     });
@@ -315,7 +317,7 @@ class HeaderBar extends Component {
         voter,
         voterFirstName,
         voterIsSignedIn,
-        showSignInModal: AppStore.showSignInModal(),
+        // showSignInModal: AppStore.showSignInModal(),
         showShareModal: AppStore.showShareModal(),
         showOrganizationModal: AppStore.showOrganizationModal(),
         showPersonalizedScoreIntroModal: AppStore.showPersonalizedScoreIntroModal(),
@@ -401,8 +403,12 @@ class HeaderBar extends Component {
   // }
 
   closeSignInModal () {
-    // console.log('HeaderBar closeSignInModal');
-    AppActions.setShowSignInModal(false);
+    console.log('HeaderBar closeSignInModal');
+    this.setState({ showSignInModal: false });
+    VoterActions.voterRetrieve();
+    VoterActions.voterEmailAddressRetrieve();
+    // AppActions.setShowSignInModal(false);  6/10/21: Sends you in an endless loop
+
     // signInModalGlobalState.set('isShowingSignInModal', false);
     // When this is uncommented, closing the sign in box from pages like "Values" will redirect you to the ballot
     // HeaderBar.goToGetStarted();
@@ -412,6 +418,7 @@ class HeaderBar extends Component {
     // console.log('HeaderBar toggleSignInModal');
     const { showSignInModal } = this.state;
     AppActions.setShowSignInModal(!showSignInModal);
+    this.setState({showSignInModal: !showSignInModal });
   }
 
   hideProfilePopUp () {

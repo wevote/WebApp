@@ -1,16 +1,18 @@
 import React from 'react';
+// import { ReactSVG } from 'react-svg';
 import { cordovaDot } from '../../utils/cordovaUtils';
 
-const icon = '../../../img/global/svg-icons/external_link_font_awesome.svg';
 
-export default function ExternalLinkIcon () {
+export default function ExternalLinkIcon (largeBlue = false) {
+  const icon = largeBlue ?
+    '../../../img/global/svg-icons/external_link_font_awesome_blue.svg' :
+    '../../../img/global/svg-icons/external_link_font_awesome.svg';
   return (
     <img src={cordovaDot(icon)}
-         width={14}
-         height={14}
-         color="darkgrey"
+         width={largeBlue ? 18 : 14}
+         height={largeBlue ? 18 : 14}
          alt="External Link"
-         style={{ weight: 500, marginBottom: '3px' }}
+         style={{ marginBottom: '3px' }}
     />
   );
 }

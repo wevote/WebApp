@@ -1,26 +1,29 @@
-import { Button } from '@material-ui/core';
+import { Button, FormControl, FormControlLabel, FormLabel, InputAdornment, TextField, Radio, RadioGroup } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
+import { Elements } from '@stripe/react-stripe-js';
+import { loadStripe } from '@stripe/stripe-js';
+import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import Form from 'react-bootstrap/Form';
-import FormControl from 'react-bootstrap/FormControl';
-import InputGroup from 'react-bootstrap/InputGroup';
 import Helmet from 'react-helmet';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import AnalyticsActions from '../../actions/AnalyticsActions';
 import DonateActions from '../../actions/DonateActions';
 import DonationError from '../../components/Donation/DonationError';
-import DonationForm from '../../components/Donation/DonationForm';
 import DonationListForm from '../../components/Donation/DonationListForm';
+import InjectedCheckoutForm from '../../components/Donation/InjectedCheckoutForm';
 import { Section } from '../../components/Welcome/sectionStyles';
 import ExternalLinkIcon from '../../components/Widgets/ExternalLinkIcon';
 import OpenExternalWebSite from '../../components/Widgets/OpenExternalWebSite';
+import webAppConfig from '../../config';
 import DonateStore from '../../stores/DonateStore';
 import VoterStore from '../../stores/VoterStore';
 import { renderLog } from '../../utils/logging';
 
 const WelcomeFooter = React.lazy(() => import(/* webpackChunkName: 'WelcomeFooter' */ '../../components/Welcome/WelcomeFooter'));
 const WelcomeAppbar = React.lazy(() => import(/* webpackChunkName: 'WelcomeAppbar' */ '../../components/Navigation/WelcomeAppbar'));
+
+const stripePromise = loadStripe(webAppConfig.STRIPE_API_KEY);
 
 
 class Donate extends Component {
@@ -32,18 +35,20 @@ class Donate extends Component {
     super(props);
 
     this.state = {
-      showCustomInput: false,
-      custom_amount: '',
-      donateMonthly: true,
       donationErrorMessage: '',
-      radioSelected: 'monthly',
+      joining: true,
+      showWaiting: false,
+      value: '10.00',
+      member: false,
+      oneTime: true,
+      preDonation: true,
     };
 
-    this.toggleCustomAmount = this.toggleCustomAmount.bind(this);
+    this.handleChange = this.handleChange.bind(this);
     this.handleKeyPress = this.handleKeyPress.bind(this);
-    this.updateCustomAmount = this.updateCustomAmount.bind(this);
-    this.toggleDonateMonthly = this.toggleDonateMonthly.bind(this);
+    this.onAmountFieldChange = this.onAmountFieldChange.bind(this);
     this.onDonateStoreChange = this.onDonateStoreChange.bind(this);
+    this.onDonation = this.onDonation.bind(this);
   }
 
   componentDidMount () {
@@ -74,184 +79,218 @@ class Donate extends Component {
     }
   };
 
-  toggleDonateMonthly (event) {
-    if (event.target.value === 'once') {
-      this.setState({
-        donateMonthly: false, radioSelected: 'once',
-      });
-    } else {
-      this.setState({
-        donateMonthly: true, radioSelected: 'monthly',
-      });
-    }
-  }
+  handleChange = (event) => {
+    const { name } = event.currentTarget;
+    const isOneTime = name === 'oneTime';
+    this.setState({ oneTime: isOneTime, member: !isOneTime  });
+  };
 
-  toggleCustomAmount () {
-    const { showCustomInput } = this.state;
+  onDonation () {
+    console.log('onDonation in Donate ------------------------------');
+    console.log('Donation store changed in Donate, Checkout form removed');
     this.setState({
-      showCustomInput: !showCustomInput,
+      // joining: false,
+      // waitingForDonationWithStripe: true,
+      showWaiting: true,
+      // subscriptionCount: DonateStore.getVoterSubscriptionHistory().length,
+      preDonation: false,
     });
   }
 
-  updateCustomAmount (event) {
-    this.setState({ custom_amount: event.target.value });
+  onAmountFieldChange (event) {
+    console.log(event.target.value);
+    this.setState({
+      value: event.target.value,
+    });
+  }
+
+  postDonationDescription  = () => (
+    <DonateCaveat>
+      New subscriptions may take a few minutes to appear in this list.  The first payment for new subscriptions may also be delayed.
+    </DonateCaveat>
+  );
+
+  preDonateDescription = () => (
+    <Section noTopMargin>
+      <DonateDescriptionContainer>
+        We Vote is a nonprofit technology startup,
+        {' '}
+        <Link to="/more/about" style={{ color: '#4371cc' }}>
+          built by volunteers
+        </Link>
+        {' '}
+        to strengthen American democracy.
+        {' '}
+        <OpenExternalWebSite
+          linkIdAttribute="annualBudget"
+          url="https://projects.propublica.org/nonprofits/organizations/811052585"
+          target="_blank"
+          body={(
+            <span>
+              Our annual budgets are very small&nbsp;
+              <ExternalLinkIcon largeBlue />
+            </span>
+          )}
+        />
+        , so every donation helps us pay for critical services. Over 50 awesome people like yourself have donated to make We Vote possible.
+        {' '}
+        {this.state.donationErrorMessage.length > 0 ?
+          <DonationError errorMessage={this.state.donationErrorMessage} /> :
+          <span>Please give what you can to help us reach more voters.</span>}
+      </DonateDescriptionContainer>
+      <DonateDescriptionContainer style={{ paddingBottom: 12 }}>
+        Contributions or gifts made on this page are not tax deductible, and fund We Vote USA, a 501(c)(4) nonprofit.
+        We Vote also has a 501(c)(3) nonprofit that welcomes
+        {' '}
+        {/* This is a mailto! Shouldn't be visible in iPhone or Android apps. */}
+        <a href={"mailto:donate@WeVoteEducation.org?subject=Donate to We Vote's 501(c)(3)&body=I am interested in making at tax deductible donating to We Vote's 501(c)(3)."}
+           title="I would like to donate to We Vote's 501(c)(3)"
+           rel="noopener noreferrer"
+           target="_blank"
+           style={{ color: '#4371cc' }}
+        >
+          tax deductible donations
+          {' '}
+          <ExternalLinkIcon largeBlue />
+          .
+        </a>
+      </DonateDescriptionContainer>
+    </Section>
+  );
+
+  changeValue (newValue) {
+    const { joining } = this.state;
+    if (!joining) {
+      const { showFooter } = this.props;
+      showFooter(false);
+    }
+    this.setState({
+      value: newValue,
+      joining: true,
+    });
   }
 
   render () {
     renderLog('Donate');  // Set LOG_RENDER_EVENTS to log all renders
-    const donateMailtoUrl = "mailto:donate@WeVoteEducation.org?subject=Donate to We Vote's 501(c)(3)&body=I am interested in making at tax deductible donating to We Vote's 501(c)(3).";
+    const { classes } = this.props;
+    const { joining, showWaiting, value, member, oneTime, preDonation } = this.state;
 
     return (
       <Wrapper>
         <Helmet title="Donate - We Vote" />
         <WelcomeAppbar pathname="/more/pricing" />
         <HeaderForDonate>
-          <DonateTitle>Donate</DonateTitle>
+          <DonateTitle>{preDonation ? 'Donate' : 'Thank you for your donation!'}</DonateTitle>
         </HeaderForDonate>
-        <Section noTopMargin>
-          <DonateDescriptionContainer>
-            We Vote is a nonprofit technology startup,
-            {' '}
-            <Link to="/more/about" style={{ color: '#4371cc' }} onlyActiveOnIndex>
-              built by volunteers
-            </Link>
-            {' '}
-            to strengthen American democracy.
-            {' '}
-            <OpenExternalWebSite
-              linkIdAttribute="annualBudget"
-              url="https://projects.propublica.org/nonprofits/organizations/811052585"
-              target="_blank"
-              body={(
-                <span>
-                  Our annual budgets are very small&nbsp;
-                  <ExternalLinkIcon />
-                </span>
-              )}
-            />
-            , so every donation helps us pay for critical services. Over 50 awesome people like yourself have donated to make We Vote possible.
-            {' '}
-            {this.state.donationErrorMessage.length > 0 ?
-              <DonationError errorMessage={this.state.donationErrorMessage} /> :
-              <span>Please give what you can to help us reach more voters.</span>}
-          </DonateDescriptionContainer>
-          <DonateDescriptionContainer>
-            <Form className="donate-frequency">
-              <div className="donate-frequency__radio-button-div">
-                <Form.Check
-                  type="radio"
-                  label="Monthly"
-                  bsPrefix="radio"
-                  value="monthly"
-                  // classes={{ root: classes.radioButtonMargins }}
-                  onChange={this.toggleDonateMonthly}
-                  checked={this.state.radioSelected === 'monthly'}
-                />
-              </div>
-              <div className="donate-frequency__radio-button-div">
-                <Form.Check
-                  type="radio"
-                  label="One-Time"
-                  name="radioGroup"
-                  bsPrefix="radio"
-                  value="once"
-                  // classes={{ root: classes.radioButtonMargins }}
-                  onChange={this.toggleDonateMonthly}
-                  checked={this.state.radioSelected === 'once'}
-                />
-              </div>
-            </Form>
-            <DonationForm
-              donationAmount={500}
-              donateButtonText="$5"
-              donateMonthly={this.state.donateMonthly}
-            />
-            <DonationForm
-              donationAmount={1500}
-              donateButtonText="$15"
-              donateMonthly={this.state.donateMonthly}
-            />
-            <DonationForm
-              donationAmount={2700}
-              donateButtonText="$27"
-              donateMonthly={this.state.donateMonthly}
-            />
-            <DonationForm
-              donationAmount={5000}
-              donateButtonText="$50"
-              donateMonthly={this.state.donateMonthly}
-            />
-            <DonationForm
-              donationAmount={10000}
-              donateButtonText="$100"
-              donateMonthly={this.state.donateMonthly}
-            />
-            <Button
-              color="primary"
-              onClick={this.toggleCustomAmount}
-              style={{ margin: 5 }}
-              variant="contained"
-            >
-              <span className="u-no-break">Other Amount</span>
-            </Button>
-            {this.state.showCustomInput ? (
-              <span style={{ display: 'flex', marginTop: 10, marginLeft: 20 }}>
-                <InputGroup className="mb-3" style={{ width: '30%', marginTop: 4 }}>
-                  <InputGroup.Prepend>
-                    <InputGroup.Text>$</InputGroup.Text>
-                  </InputGroup.Prepend>
-                  {/* <FormControl aria-label="Amount" /> */}
-                  <FormControl
-                    type="text"
-                    onKeyPress={this.handleKeyPress}
-                    onChange={this.updateCustomAmount}
-                    value={this.state.custom_amount}
-                    placeholder="250.00"
-                    style={{ left: 34, top: -38 }}
-                  />
-                </InputGroup>
-                <span style={{ paddingLeft: 40 }}>
-                  <DonationForm
-                    donationAmount={parseInt(parseFloat(this.state.custom_amount.replace(/[^0-9.]+/g, '')) * 100)}
-                    donateMonthly={this.state.donateMonthly}
-                    donateButtonText="Go"
-                    donateOther
-                  />
-                </span>
-              </span>
-            ) : null}
-            {Number.isNaN(this.state.custom_amount) || this.state.custom_amount === '0' ? (
-              <span>
-                <p>Please enter a valid number</p>
-              </span>
-            ) : null}
-          </DonateDescriptionContainer>
-          <DonateDescriptionContainer>
-            Contributions or gifts made on this page are not tax deductible, and fund We Vote USA, a 501(c)(4) nonprofit.
-            We Vote also has a 501(c)(3) nonprofit that welcomes
-            {' '}
-            {/* This is a mailto! Shouldn't be visible in iPhone or Android apps. */}
-            <a href={donateMailtoUrl}
-               title="I would like to donate to We Vote's 501(c)(3)"
-               rel="noopener noreferrer"
-               target="_blank"
-               style={{ color: '#4371cc' }}
-            >
-              tax deductible donations
-              {' '}
-              <ExternalLinkIcon />
-              .
-            </a>
-          </DonateDescriptionContainer>
-          <DonateDescriptionContainer>
-            <DonationListForm waitForWebhook={false} />
-          </DonateDescriptionContainer>
-        </Section>
+        <InnerWrapper>
+          {preDonation ? this.preDonateDescription() : this.postDonationDescription()}
+          {preDonation ? (
+            <>
+              <ContributeGridWrapper>
+                <ContributeMonthlyText>
+                  <FormControl component="fieldset"
+                               className={classes.formControl}
+                  >
+                    <FormLabel component="legend">
+                      Make a donation by credit card
+                    </FormLabel>
+                    <RadioGroup row>
+                      <FormControlLabel
+                        control={<Radio checked={oneTime} onChange={this.handleChange} name="oneTime" style={{ color: 'black' }} />}
+                        label="One time Donation"
+                      />
+                      <FormControlLabel
+                        control={<Radio checked={member} onChange={this.handleChange} name="member" style={{ color: 'black' }} />}
+                        label="Donate monthly"
+                      />
+                    </RadioGroup>
+                  </FormControl>
+                </ContributeMonthlyText>
+                <ContributeGridSection>
+                  {['5', '10', '20', '50'].map((price) => (
+                    <ContributeGridItem>
+                      <Button
+                        classes={{ root: classes.buttonRoot }}
+                        variant="contained"
+                        onClick={() => this.changeValue(`${price}.00`)}
+                      >
+                        {`$${price}`}
+                      </Button>
+                    </ContributeGridItem>
+                  ))}
+                  <ContributeGridItemJoin joining={joining}>
+                    {!joining ? (
+                      <Button
+                        classes={{ root: classes.buttonRoot }}
+                        color="primary"
+                        variant="contained"
+                        style={{
+                          width: '100%',
+                          backgroundColor: 'darkblue',
+                          color: 'white',
+                        }}
+                        onClick={() => this.changeValue('5.00')}
+                      >
+                        Join
+                      </Button>
+                    ) : (
+                      <TextField
+                        id="currency-input"
+                        label="Amount"
+                        variant="outlined"
+                        value={value}
+                        onChange={this.onAmountFieldChange}
+                        InputLabelProps={{
+                          classes: {
+                            root: classes.textFieldInputRoot,
+                            focused: classes.textFieldInputRoot,
+                          },
+                          shrink: true,
+                        }}
+                        InputProps={{
+                          classes: {
+                            root: classes.textFieldInputRoot,
+                            focused: classes.textFieldInputRoot,
+                          },
+                          startAdornment: <InputAdornment position="start">$</InputAdornment>,
+                        }}
+                        style={{
+                          marginTop: 6,
+                          textAlign: 'center',
+                          width: 100,
+                        }}
+                      />
+                    )}
+                  </ContributeGridItemJoin>
+                </ContributeGridSection>
+              </ContributeGridWrapper>
+              <PaymentWrapper joining={joining}>
+                <PaymentCenteredWrapper>
+                  <Elements stripe={stripePromise}>
+                    <InjectedCheckoutForm
+                    value={value}
+                    classes={{}}
+                    stopShowWaiting={this.stopShowWaiting}
+                    onDonation={this.onDonation}
+                    isOneTime={oneTime}
+                    showWaiting={showWaiting}
+                    />
+                  </Elements>
+                </PaymentCenteredWrapper>
+              </PaymentWrapper>
+            </>
+          ) : null}
+          <DonationListForm waitForWebhook />
+        </InnerWrapper>
         <WelcomeFooter />
       </Wrapper>
     );
   }
 }
+Donate.propTypes = {
+  classes: PropTypes.object,
+  showFooter: PropTypes.bool,
+};
 
 const styles = (theme) => ({
   buttonContained: {
@@ -259,6 +298,44 @@ const styles = (theme) => ({
     height: 50,
     [theme.breakpoints.down('md')]: {
       height: 36,
+    },
+  },
+  buttonRoot: {
+    fontSize: 18,
+    textTransform: 'none',
+    width: '100%',
+    color: 'black',
+    backgroundColor: 'white',
+  },
+  textFieldRoot: {
+    fontSize: 18,
+    color: 'black',
+    backgroundColor: 'white',
+    boxShadow: '0 3px 1px -2px rgb(0 0 0 / 20%), 0 2px 2px 0px rgb(0 0 0 / 14%), 0 1px 5px 0 rgb(0 0 0 / 12%)',
+  },
+  textFieldInputRoot: {
+    fontSize: 18,
+    color: 'black',
+    backgroundColor: 'white',
+  },
+  stripeAlertError: {
+    background: 'rgb(255, 177, 160)',
+    color: 'rgb(163, 40, 38)',
+    boxShadow: 'none',
+    pointerEvents: 'none',
+    fontWeight: 'bold',
+    marginBottom: 8,
+    // height: 40,
+    fontSize: 14,
+    width: '100%',
+    padding: '8px 16px',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: '4px',
+    '@media (max-width: 569px)': {
+      // height: 35,
+      fontSize: 14,
     },
   },
 });
@@ -269,6 +346,10 @@ const Wrapper = styled.div`
   align-items: center;
   background: white;
   overflow-x: hidden;
+`;
+
+const InnerWrapper = styled.div`
+  margin-bottom: 16px;
 `;
 
 const HeaderForDonate = styled.div`
@@ -307,7 +388,6 @@ const DonateTitle = styled.h1`
   }
 `;
 
-// }
 const DonateDescriptionContainer = styled.div`
   margin: 1em auto;
   margin-bottom: 0;
@@ -325,5 +405,79 @@ const DonateDescriptionContainer = styled.div`
     margin: 0 auto;
   }
 `;
+
+const PaymentWrapper  = styled.div`
+  display: ${({ joining }) => ((joining) ? '' : 'none')};
+  text-align: center;
+`;
+
+const DonateCaveat = styled.p`
+  font-size: 17px;
+  text-align: center;
+  margin-top: 1em;
+  font-style: italic;
+`;
+
+const PaymentCenteredWrapper  = styled.div`
+  width: 500px;
+  @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
+    width: 300px;
+  }
+  display: inline-block;
+  background-color: rgb(246, 244,246);
+  box-shadow: 0 3px 1px -2px rgb(0 0 0 / 20%), 0 2px 2px 0px rgb(0 0 0 / 14%), 0 1px 5px 0 rgb(0 0 0 / 12%);
+  border: 2px solid darkgrey;
+  border-radius: 3px;
+  padding: 8px;
+`;
+
+
+const ContributeGridWrapper = styled.div`
+  background-color: #ebebeb;
+  padding: 10px;
+  border: 1px solid darkgrey;
+  margin: auto auto 20px auto;
+  width: 500px;
+  @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
+    width: 300px;
+`;
+
+const ContributeGridSection = styled.div`
+  display: grid;
+  grid-template-columns: auto auto;
+  background-color: #ebebeb;
+  padding: 10px 10px 2px 10px;
+`;
+
+const ContributeMonthlyText = styled.div`
+  font-weight: 600;
+  padding: 0 0 2px 18px;
+`;
+
+const ContributeGridItem = styled.div`
+  background-color: #ebebeb;
+  padding: 5px 10px;
+  font-size: 30px;
+  text-align: center;
+`;
+
+const ContributeGridItemJoin = styled.div`
+  ${({ joining }) => ((joining) ?
+    'padding: 5px 10px;' :
+    'padding: 5px 10px;'
+  )};
+  background-color: #ebebeb;
+  font-size: 30px;
+  text-align: center;
+  grid-column: auto / span 2;
+`;
+
+
+// const OuterWrapper = styled.div`
+//   display: flex;
+//   justify-content: center;
+//   margin: 0 0 5px 0;
+// `;
+
 
 export default withStyles(styles)(Donate);

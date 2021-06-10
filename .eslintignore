@@ -1,3 +1,4 @@
 src/js/vendor/*.js
 src/js/mock-data/
 src/js/dispatcher/Dispatcher.js
+srcDeprecated

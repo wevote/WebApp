@@ -42,7 +42,7 @@ class WelcomeFooter extends Component {
             </Column>
             <Column>
               <ColumnTitle>About We Vote</ColumnTitle>
-              <Link id="footerLinkAbout" className={classes.link} to="/more/about">About &amp; Team</Link>
+              <Link id="footerLinkAbout" className={classes.link} to="/about">About &amp; Team</Link>
               <Link id="footerLinkCredits" className={classes.link} to="/more/credits">Credits &amp; Thanks</Link>
               {isWebApp() && (
                 <Link id="footerLinkDonate" className={classes.link} to="/more/donate">Donate</Link>
