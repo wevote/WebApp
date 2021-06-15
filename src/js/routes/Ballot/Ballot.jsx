@@ -1361,21 +1361,14 @@ class Ballot extends Component {
                       &quot;
                     </SearchTitle>
                   )}
-                  {!isSearching && (
-                    <DelayedLoad waitBeforeShow={2000}>
-                      <>
-                        {(showAddressVerificationForm) ? (
-                          <EditAddressWrapper>
-                            <EditAddressOneHorizontalRow saveUrl="/ballot" />
-                          </EditAddressWrapper>
-                        ) : (
-                          <span className="u-show-desktop-tablet">
-                            <CompleteYourProfile />
-                          </span>
-                        )}
-                      </>
-                    </DelayedLoad>
-                  )}
+                  {(showAddressVerificationForm) ? (
+                    <EditAddressWrapper>
+                      <EditAddressOneHorizontalRow saveUrl="/ballot" />
+                    </EditAddressWrapper>
+                  ) : null }
+                  {/* <span className="u-show-desktop-tablet"> */}
+                  {/*  <CompleteYourProfile /> */}
+                  {/* </span> */}
                   <BallotListWrapper>
                     {/* The rest of the ballot items */}
                     <div className="BallotList">

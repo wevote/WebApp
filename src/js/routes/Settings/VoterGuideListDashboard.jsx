@@ -149,17 +149,17 @@ class VoterGuideListDashboard extends Component {
         <div className="container-fluid">
           <div className="row">
             {/* Mobile and Desktop mode */}
-            <div className="col-12 col-md-4 sidebar-menu">
-              <div className="u-show-mobile">
-                <VoterGuideListSearchResults
-                      clearSearchTextNow={clearSearchTextNow}
-                      googleCivicElectionId={currentGoogleCivicElectionId}
-                      organizationWeVoteId={linkedOrganizationWeVoteId}
-                      searchUnderwayFunction={this.searchUnderway}
-                />
-              </div>
-              <SelectVoterGuidesSideBar />
-            </div>
+            {/*<div className="col-12 col-md-4 sidebar-menu">*/}
+            {/*  <div className="u-show-mobile">*/}
+            {/*    <VoterGuideListSearchResults*/}
+            {/*          clearSearchTextNow={clearSearchTextNow}*/}
+            {/*          googleCivicElectionId={currentGoogleCivicElectionId}*/}
+            {/*          organizationWeVoteId={linkedOrganizationWeVoteId}*/}
+            {/*          searchUnderwayFunction={this.searchUnderway}*/}
+            {/*    />*/}
+            {/*  </div>*/}
+            {/*  <SelectVoterGuidesSideBar />*/}
+            {/*</div>*/}
             <div className="d-none d-sm-block col-md-8">
               <VoterGuideListSearchResults
                     clearSearchTextNow={clearSearchTextNow}
