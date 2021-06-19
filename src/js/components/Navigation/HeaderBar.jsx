@@ -143,6 +143,7 @@ class HeaderBar extends Component {
 
   shouldComponentUpdate (nextProps, nextState) {
     const { location: { pathname } } = window;
+    // console.log('HeaderBar shouldComponentUpdate: pathname === ', pathname);
     if (pathname !== this.state.priorPath) {
       // Re-render the HeaderBar if the path has changed
       // console.log('HeaderBar shouldComponentUpdate: this.state.priorPath === ', this.state.priorPath);
@@ -252,6 +253,17 @@ class HeaderBar extends Component {
         return true;
       }
     }
+    // We need to update if the SelectBallotModal is displayed or the BallotList is empty
+    const element = document.getElementById('BallotListId');
+    if (element) {
+      const textForMapSearch = VoterStore.getTextForMapSearch();
+      const titleElement = document.getElementById('SelectBallotModalTitleId');
+      const isTitleElementDisplayed = (titleElement && !(titleElement.offsetParent === null)) || false;
+      if (isTitleElementDisplayed || (element.innerHTML.trim().length < 1  && textForMapSearch)) {
+        return true;
+      }
+    }
+
     // console.log('HeaderBar shouldComponentUpdate false');
     return false;
   }
@@ -542,6 +554,17 @@ class HeaderBar extends Component {
       appBarCname += ' page-header__cordova';
     }
 
+    // We want the SelectBallotModal to appear on the ballot page (without a keystroke) if the page is empty and we have a textForMapSearch
+    let setBallotModalOverride = false;
+    const element = document.getElementById('BallotListId');
+    if (element) {
+      const textForMapSearch = VoterStore.getTextForMapSearch();
+      if (element.innerHTML.trim().length < 1  && textForMapSearch) {
+        // console.log('Putting up SelectBallotModal since BallotList is empty and textForMapSearch exists.');
+        setBallotModalOverride = true;
+      }
+    }
+
     return (
       <Wrapper hasNotch={hasIPhoneNotch()} scrolledDown={scrolledDown && isWebApp() && shouldHeaderRetreat(pathname)}>
         <AppBar position="relative"
@@ -672,12 +695,12 @@ class HeaderBar extends Component {
             closeFunction={this.closeSignInModal}
           />
         )}
-        {showSelectBallotModal && (
+        {(showSelectBallotModal || setBallotModalOverride) && (
           <SelectBallotModal
             ballotBaseUrl={ballotBaseUrl}
             hideAddressEdit={showSelectBallotModalHideAddress}
             hideElections={showSelectBallotModalHideElections}
-            show={showSelectBallotModal}
+            show={showSelectBallotModal || setBallotModalOverride}
             toggleFunction={this.toggleSelectBallotModal}
           />
         )}

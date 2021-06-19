@@ -16,7 +16,7 @@ import VoterActions from '../../actions/VoterActions';
 import AddressBox from '../../components/AddressBox';
 import BallotItemCompressed from '../../components/Ballot/BallotItemCompressed';
 import BallotStatusMessage from '../../components/Ballot/BallotStatusMessage';
-import CompleteYourProfile from '../../components/CompleteYourProfile/CompleteYourProfile';
+// import CompleteYourProfile from '../../components/CompleteYourProfile/CompleteYourProfile';
 import AddFriendsByEmail from '../../components/Friends/AddFriendsByEmail';
 import SuggestedFriendsPreview from '../../components/Friends/SuggestedFriendsPreview';
 import BallotDecisionsTabs from '../../components/Navigation/BallotDecisionsTabs';
@@ -1371,7 +1371,7 @@ class Ballot extends Component {
                   {/* </span> */}
                   <BallotListWrapper>
                     {/* The rest of the ballot items */}
-                    <div className="BallotList">
+                    <div className="BallotList" id="BallotListId">
                       {(isSearching && ballotSearchResults && ballotSearchResults.length === 0) && (
                         <SearchResultsEmpty>
                           Please enter new search terms to find results.

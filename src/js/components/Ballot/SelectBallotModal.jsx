@@ -102,7 +102,7 @@ class SelectBallotModal extends Component {
         onClose={() => { this.props.toggleFunction(pathname); }}
       >
         <DialogTitle>
-          <Title>
+          <Title id="SelectBallotModalTitleId">
             {dialogTitleText}
           </Title>
           <IconButton
