@@ -206,7 +206,6 @@ export default class TwitterSignInProcess extends Component {
 
     if (twitterAuthResponse.twitter_sign_in_failed) {
       oAuthLog('Twitter sign in failed - push to /settings/account');
-      this.setState({ redirectInProcess: true });
       historyPush({
         pathname: '/settings/account',
         state: {
@@ -227,7 +226,6 @@ export default class TwitterSignInProcess extends Component {
     // This process starts when we return from attempting voterTwitterSignInRetrieve
     // If twitter_sign_in_found NOT True, go back to the sign in page to try again
     if (!twitterAuthResponse.twitter_sign_in_found) {
-      this.setState({ redirectInProcess: true });
       oAuthLog('twitterAuthResponse.twitter_sign_in_found', twitterAuthResponse.twitter_sign_in_found);
       historyPush({
         pathname: '/settings/account',
