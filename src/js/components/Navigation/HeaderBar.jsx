@@ -340,7 +340,7 @@ class HeaderBar extends Component {
   getSelectedTab = () => {
     const { location: { pathname } } = window;
     if (typeof pathname !== 'undefined' && pathname) {
-      if (startsWith('/ready', pathname.toLowerCase())) return 0;
+      if (startsWith('/ready', pathname.toLowerCase()) || pathname === '/') return 0;
       if (startsWith('/ballot', pathname.toLowerCase())) return 1;
       if (stringContains('/value', pathname.toLowerCase()) || stringContains('/opinions', pathname.toLowerCase())) return 2; // '/values'
       if (startsWith('/news', pathname.toLowerCase())) return 3;
