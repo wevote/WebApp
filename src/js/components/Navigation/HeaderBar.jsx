@@ -144,113 +144,90 @@ class HeaderBar extends Component {
   shouldComponentUpdate (nextProps, nextState) {
     const { location: { pathname } } = window;
     // console.log('HeaderBar shouldComponentUpdate: pathname === ', pathname);
+    let update = false;
     if (pathname !== this.state.priorPath) {
       // Re-render the HeaderBar if the path has changed
       // console.log('HeaderBar shouldComponentUpdate: this.state.priorPath === ', this.state.priorPath);
       this.setState({ priorPath: pathname });
-      return true;
-    }
-    if (this.state.componentDidMountFinished === false) {
+      update = true;
+    } else if (this.state.componentDidMountFinished === false) {
       // console.log('shouldComponentUpdate: componentDidMountFinished === false');
-      return true;
-    }
-    if (this.state.profilePopUpOpen !== nextState.profilePopUpOpen) {
+      update = true;
+    } else if (this.state.profilePopUpOpen !== nextState.profilePopUpOpen) {
       // console.log('shouldComponentUpdate: this.state.profilePopUpOpen', this.state.profilePopUpOpen, ', nextState.profilePopUpOpen', nextState.profilePopUpOpen);
-      return true;
-    }
-    if (this.state.aboutMenuOpen !== nextState.aboutMenuOpen) {
+      update = true;
+    } else if (this.state.aboutMenuOpen !== nextState.aboutMenuOpen) {
       // console.log('shouldComponentUpdate: this.state.aboutMenuOpen", this.state.aboutMenuOpen, ', nextState.aboutMenuOpen', nextState.aboutMenuOpen);
-      return true;
-    }
-    if (this.state.chosenSiteLogoUrl !== nextState.chosenSiteLogoUrl) {
+      update = true;
+    } else if (this.state.chosenSiteLogoUrl !== nextState.chosenSiteLogoUrl) {
       // console.log('shouldComponentUpdate: this.state.chosenSiteLogoUrl', this.state.chosenSiteLogoUrl, ', nextState.chosenSiteLogoUrl', nextState.chosenSiteLogoUrl);
-      return true;
-    }
-    if (this.state.hideWeVoteLogo !== nextState.hideWeVoteLogo) {
+      update = true;
+    } else if (this.state.hideWeVoteLogo !== nextState.hideWeVoteLogo) {
       // console.log('shouldComponentUpdate: this.state.hideWeVoteLogo', this.state.hideWeVoteLogo, ', nextState.hideWeVoteLogo', nextState.hideWeVoteLogo);
-      return true;
-    }
-    if (this.state.friendInvitationsSentToMe !== nextState.friendInvitationsSentToMe) {
+      update = true;
+    } else if (this.state.friendInvitationsSentToMe !== nextState.friendInvitationsSentToMe) {
       // console.log('shouldComponentUpdate: this.state.friendInvitationsSentToMe', this.state.friendInvitationsSentToMe, ', nextState.friendInvitationsSentToMe', nextState.friendInvitationsSentToMe);
-      return true;
-    }
-    if (this.state.scrolledDown !== nextState.scrolledDown) {
-      return true;
-    }
-    if (this.state.shareModalStep !== nextState.shareModalStep) {
-      return true;
-    }
-    if (this.state.organizationModalBallotItemWeVoteId !== nextState.organizationModalBallotItemWeVoteId) {
-      return true;
-    }
-    if (this.state.showAdviserIntroModal !== nextState.showAdviserIntroModal) {
-      return true;
-    }
-    if (this.state.showEditAddressButton !== nextState.showEditAddressButton) {
-      return true;
-    }
-    if (this.state.showFirstPositionIntroModal !== nextState.showFirstPositionIntroModal) {
-      return true;
-    }
-    if (this.state.showPaidAccountUpgradeModal !== nextState.showPaidAccountUpgradeModal) {
-      return true;
-    }
-    if (this.state.showPersonalizedScoreIntroModal !== nextState.showPersonalizedScoreIntroModal) {
-      return true;
-    }
-    if (this.state.showShareModal !== nextState.showShareModal) {
-      return true;
-    }
-    if (this.state.showOrganizationModal !== nextState.showOrganizationModal) {
-      return true;
-    }
-    if (this.state.showSignInModal !== nextState.showSignInModal) {
-      return true;
-    }
-    if (this.state.showValuesIntroModal !== nextState.showValuesIntroModal) {
-      return true;
-    }
-    if (this.state.showImageUploadModal !== nextState.showImageUploadModal) {
-      return true;
-    }
-    if (this.state.voterFirstName !== nextState.voterFirstName) {
+      update = true;
+    } else if (this.state.scrolledDown !== nextState.scrolledDown) {
+      update = true;
+    } else if (this.state.shareModalStep !== nextState.shareModalStep) {
+      update = true;
+    } else if (this.state.organizationModalBallotItemWeVoteId !== nextState.organizationModalBallotItemWeVoteId) {
+      update = true;
+    } else if (this.state.showAdviserIntroModal !== nextState.showAdviserIntroModal) {
+      update = true;
+    } if (this.state.showEditAddressButton !== nextState.showEditAddressButton) {
+      update = true;
+    } else if (this.state.showFirstPositionIntroModal !== nextState.showFirstPositionIntroModal) {
+      update = true;
+    } else if (this.state.showPaidAccountUpgradeModal !== nextState.showPaidAccountUpgradeModal) {
+      update = true;
+    } else if (this.state.showPersonalizedScoreIntroModal !== nextState.showPersonalizedScoreIntroModal) {
+      update = true;
+    } else if (this.state.showShareModal !== nextState.showShareModal) {
+      update = true;
+    } else if (this.state.showOrganizationModal !== nextState.showOrganizationModal) {
+      update = true;
+    } else if (this.state.showSignInModal !== nextState.showSignInModal) {
+      update = true;
+    } else if (this.state.showValuesIntroModal !== nextState.showValuesIntroModal) {
+      update = true;
+    } else if (this.state.showImageUploadModal !== nextState.showImageUploadModal) {
+      update = true;
+    } else if (this.state.voterFirstName !== nextState.voterFirstName) {
       // console.log('this.state.voterFirstName: ', this.state.voterFirstName, ', nextState.voterFirstName', nextState.voterFirstName);
-      return true;
-    }
-    if (this.state.voterIsSignedIn !== nextState.voterIsSignedIn) {
+      update = true;
+    } else if (this.state.voterIsSignedIn !== nextState.voterIsSignedIn) {
       // console.log('HeaderBar voter.isSignedIn shouldComponentUpdate true');
-      return true;
-    }
-    if (this.state.showSelectBallotModal !== nextState.showSelectBallotModal) {
-      return true;
-    }
-    if (this.state.showSelectBallotModalHideAddress !== nextState.showSelectBallotModalHideAddress) {
-      return true;
-    }
-    if (this.state.showSelectBallotModalHideElections !== nextState.showSelectBallotModalHideElections) {
-      return true;
+      update = true;
+    } else if (this.state.showSelectBallotModal !== nextState.showSelectBallotModal) {
+      update = true;
+    } else if (this.state.showSelectBallotModalHideAddress !== nextState.showSelectBallotModalHideAddress) {
+      update = true;
+    } else if (this.state.showSelectBallotModalHideElections !== nextState.showSelectBallotModalHideElections) {
+      update = true;
     }
     const thisVoterExists = this.state.voter !== undefined;
     const nextVoterExists = nextState.voter !== undefined;
     if (nextVoterExists && !thisVoterExists) {
       // console.log('HeaderBar shouldComponentUpdate: thisVoterExists", thisVoterExists, ", nextVoterExists", nextVoterExists);
-      return true;
+      update = true;
     }
     if (thisVoterExists && nextVoterExists) {
       if (this.state.voter.voter_photo_url_medium !== nextState.voter.voter_photo_url_medium) {
         // console.log('HeaderBar shouldComponentUpdate: this.state.voter.voter_photo_url_medium', this.state.voter.voter_photo_url_medium, ', nextState.voter.voter_photo_url_medium', nextState.voter.voter_photo_url_medium);
-        return true;
+        update = true;
       }
       if (this.state.voter.signed_in_twitter !== nextState.voter.signed_in_twitter) {
         // console.log('HeaderBar shouldComponentUpdate: this.state.voter.signed_in_twitter", this.state.voter.signed_in_twitter, ", nextState.voter.signed_in_twitter", nextState.voter.signed_in_twitter);
-        return true;
+        update = true;
       }
       if (this.state.voter.signed_in_facebook !== nextState.voter.signed_in_facebook) {
         // console.log('HeaderBar shouldComponentUpdate: this.state.voter.signed_in_facebook', this.state.voter.signed_in_facebook, ', nextState.voter.signed_in_facebook', nextState.voter.signed_in_facebook);
-        return true;
+        update = true;
       }
       if (this.state.voter.signed_in_with_email !== nextState.voter.signed_in_with_email) {
-        return true;
+        update = true;
       }
     }
     // We need to update if the SelectBallotModal is displayed or the BallotList is empty
@@ -259,13 +236,15 @@ class HeaderBar extends Component {
       const textForMapSearch = VoterStore.getTextForMapSearch();
       const titleElement = document.getElementById('SelectBallotModalTitleId');
       const isTitleElementDisplayed = (titleElement && !(titleElement.offsetParent === null)) || false;
-      if (isTitleElementDisplayed || (element.innerHTML.trim().length < 1  && textForMapSearch)) {
-        return true;
+      if (isTitleElementDisplayed || (element.innerHTML.trim().length < 1 && textForMapSearch)) {
+        update = true;
       }
     }
 
-    // console.log('HeaderBar shouldComponentUpdate false');
-    return false;
+    // console.log(`HeaderBar shouldComponentUpdate:  ${false}`);
+    if (update)  this.getSelectedTab(true);
+
+    return update;
   }
 
   componentDidCatch (error, info) {
@@ -337,13 +316,37 @@ class HeaderBar extends Component {
     }
   }
 
-  getSelectedTab = () => {
+  getSelectedTab = (setInitial = false) => {
     const { location: { pathname } } = window;
+
+    // console.log('HeaderBar ------------------ getSelectedTab ', pathname);
     if (typeof pathname !== 'undefined' && pathname) {
-      if (startsWith('/ready', pathname.toLowerCase()) || pathname === '/') return 0;
-      if (startsWith('/ballot', pathname.toLowerCase())) return 1;
-      if (stringContains('/value', pathname.toLowerCase()) || stringContains('/opinions', pathname.toLowerCase())) return 2; // '/values'
-      if (startsWith('/news', pathname.toLowerCase())) return 3;
+      if (startsWith('/ready', pathname.toLowerCase()) || pathname === '/') {
+        if (setInitial) {
+          this.changeOverrideUnderline('readyTabHeaderBar,ballotTabHeaderBar,valuesTabHeaderBar,discussTabHeaderBar');
+        }
+        return 0;
+      }
+      if (startsWith('/ballot', pathname.toLowerCase()))  {
+        if (setInitial) {
+          this.changeOverrideUnderline('ballotTabHeaderBar,readyTabHeaderBar,valuesTabHeaderBar,discussTabHeaderBar');
+        }
+        return 1;
+      }
+      if (stringContains('/value', pathname.toLowerCase()) ||
+          stringContains('/opinions', pathname.toLowerCase())) {    // '/values'
+        if (setInitial) {
+          this.changeOverrideUnderline('valuesTabHeaderBar,readyTabHeaderBar,ballotTabHeaderBar,discussTabHeaderBar');
+        }
+        // if (setInitial) $('valuesTabHeaderBar').css(underline);
+        return 2;
+      }
+      if (startsWith('/news', pathname.toLowerCase())) {
+        if (setInitial) {
+          this.changeOverrideUnderline('discussTabHeaderBar,readyTabHeaderBar,ballotTabHeaderBar,valuesTabHeaderBar');
+        }
+        return 3;
+      }
     }
     return false;
   };
@@ -430,7 +433,7 @@ class HeaderBar extends Component {
     // console.log('HeaderBar toggleSignInModal');
     const { showSignInModal } = this.state;
     AppActions.setShowSignInModal(!showSignInModal);
-    this.setState({showSignInModal: !showSignInModal });
+    this.setState({ showSignInModal: !showSignInModal });
   }
 
   hideProfilePopUp () {
@@ -440,6 +443,32 @@ class HeaderBar extends Component {
   signOutAndHideProfilePopUp () {
     VoterSessionActions.voterSignOut();
     this.setState({ profilePopUpOpen: false });
+  }
+
+  // June 2021:  This is a hack, not an elegant solution.  The Tabs object seems to get confused
+  // when it is inside the render of a of HeaderBarSuspense, and in addition, we are not using the Tabs
+  // object to load a pane, we are using it to HistoryPush to a different page.
+  // The first id in the tabNamesString gets the underline, the others, in whatever order they
+  // arrive get the underline removed.  Once the voter navigates to a tab in a session, this hack becomes
+  // unnecessary for that tab, but there doesn't seem to be a downside of calling it all the time
+  changeOverrideUnderline (tabNamesString) {
+    const tabNames = tabNamesString.split(',');
+    for (let i = 0; i < tabNames.length; i++) {
+      const element = document.getElementById(tabNames[i]);
+      if (element) {
+        if (i === 0) {
+          element.style.borderBottom = 'black';
+          element.style.borderBottomStyle = 'solid';
+          element.style.borderBottomWidth = '4px';
+          element.style.paddingBottom = '2px';
+        } else {
+          element.style.borderBottomStyle = 'none';
+          element.style.borderBottomStyle = 'none';
+          element.style.borderBottomWidth = '0px';
+          element.style.paddingBottom = '6px';
+        }
+      }
+    }
   }
 
   transitionToYourVoterGuide () {
