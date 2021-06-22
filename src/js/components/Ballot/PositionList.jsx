@@ -399,11 +399,11 @@ class PositionList extends Component {
             numberOfItemsTotal={isSearching ? totalNumberOfPositionSearchResults : filteredPositionListLength}
           />
         </ShowMoreItemsWrapper>
-        <LoadingItemsWheel>
-          {loadingMoreItems && (
+        {loadingMoreItems && (
+          <LoadingItemsWheel>
             <CircularProgress />
-          )}
-        </LoadingItemsWheel>
+          </LoadingItemsWheel>
+        )}
       </div>
     );
   }
@@ -430,6 +430,7 @@ const LoadingItemsWheel = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+  min-height: 70px;
 `;
 
 const SearchResultsFoundInExplanation = styled.div`

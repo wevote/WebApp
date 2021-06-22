@@ -39,7 +39,7 @@ class BallotStatusMessage extends Component {
     };
 
     this.handleMessageClose = this.handleMessageClose.bind(this);
-    initializeMoment(() => {});
+    initializeMoment();
   }
 
   componentDidMount () {

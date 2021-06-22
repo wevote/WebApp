@@ -125,7 +125,12 @@ class HowItWorks extends Component {
   }
 
   componentDidMount () {
-    const { match: { params } } = this.props;
+    console.log('how it works');
+    let params = {};
+    if (this.props.match) {
+      const { match: { params: passedParams } } = this.props;
+      params = passedParams || params;
+    }
     this.onVoterStoreChange();
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
     if (!this.props.inModal) {

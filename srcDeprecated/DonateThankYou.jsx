@@ -2,12 +2,12 @@ import { withStyles } from '@material-ui/core/styles';
 import React, { Component } from 'react';
 import Helmet from 'react-helmet';
 import styled from 'styled-components';
-import DonationListForm from '../../components/Donation/DonationListForm';
-import { Section } from '../../components/Welcome/sectionStyles';
-import { renderLog } from '../../utils/logging';
+import DonationListForm from '../src/js/components/Donation/DonationListForm';
+import { Section } from '../src/js/components/Welcome/sectionStyles';
+import { renderLog } from '../src/js/utils/logging';
 
-const WelcomeAppbar = React.lazy(() => import(/* webpackChunkName: 'WelcomeAppbar' */ '../../components/Navigation/WelcomeAppbar'));
-const WelcomeFooter = React.lazy(() => import(/* webpackChunkName: 'WelcomeFooter' */ '../../components/Welcome/WelcomeFooter'));
+const WelcomeAppbar = React.lazy(() => import(/* webpackChunkName: 'WelcomeAppbar' */ '../src/js/components/Navigation/WelcomeAppbar'));
+const WelcomeFooter = React.lazy(() => import(/* webpackChunkName: 'WelcomeFooter' */ '../src/js/components/Welcome/WelcomeFooter'));
 
 
 class DonateThankYou extends Component {

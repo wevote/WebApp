@@ -17,7 +17,6 @@ import { cordovaOpenSafariView, isWebApp } from '../../utils/cordovaUtils';
 import { formatDateToYearMonthDay } from '../../utils/dateFormat';
 import { renderLog } from '../../utils/logging';
 import { stringContains } from '../../utils/textFormat';
-import LoadingWheel from '../LoadingWheel';
 import CreateConfiguredVersion from './CreateConfiguredVersion';
 
 const DelayedLoad = React.lazy(() => import(/* webpackChunkName: 'DelayedLoad' */ '../Widgets/DelayedLoad'));
@@ -44,12 +43,12 @@ class SettingsSubscriptionPlan extends Component {
 
   componentDidMount () {
     // console.log("SettingsSubscriptionPlan componentDidMount");
-    this.onVoterStoreChange();
-    this.onDonateStoreChange();
-    this.donateStoreListener = DonateStore.addListener(this.onDonateStoreChange.bind(this));
-    this.organizationStoreListener = OrganizationStore.addListener(this.onOrganizationStoreChange.bind(this));
-    this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
-    DonateActions.donationRefreshDonationList();
+    // disabled 6/10/21, needs to be revived: this.onVoterStoreChange();
+    // disabled 6/10/21, needs to be revived: this.onDonateStoreChange();
+    // disabled 6/10/21, needs to be revived: this.donateStoreListener = DonateStore.addListener(this.onDonateStoreChange.bind(this));
+    // disabled 6/10/21, needs to be revived: this.organizationStoreListener = OrganizationStore.addListener(this.onOrganizationStoreChange.bind(this));
+    // disabled 6/10/21, needs to be revived: this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
+    // disabled 6/10/21, needs to be revived: DonateActions.donationRefreshDonationList();
 
     this.handleResize();
     window.addEventListener('resize', this.handleResize);
@@ -100,9 +99,9 @@ class SettingsSubscriptionPlan extends Component {
   }
 
   componentWillUnmount () {
-    this.donateStoreListener.remove();
-    this.organizationStoreListener.remove();
-    this.voterStoreListener.remove();
+    // disabled 6/10/21, needs to be revived: this.donateStoreListener.remove();
+    // disabled 6/10/21, needs to be revived: this.organizationStoreListener.remove();
+    // disabled 6/10/21, needs to be revived: this.voterStoreListener.remove();
     window.removeEventListener('resize', this.handleResize);
   }
 
@@ -232,8 +231,19 @@ class SettingsSubscriptionPlan extends Component {
     } = this.state;
     const { classes, externalUniqueId } = this.props;
     if (!voter || !organizationWeVoteId) {
-      return LoadingWheel;
-    } else if (!voterIsSignedIn) {
+      // disabled 6/10/21, needs to be revived: return LoadingWheel;
+      return (
+        <h1 style={{
+          margin: '50px 0 0 100px',
+          fontSize: '18pt',
+        }}
+        >
+          Coming soon
+        </h1>
+      );
+    }
+
+    if (!voterIsSignedIn) {
       // console.log('voterIsSignedIn is false');
       return (
         <DelayedLoad waitBeforeShow={1000}>

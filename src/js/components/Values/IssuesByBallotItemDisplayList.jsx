@@ -108,6 +108,9 @@ class IssuesByBallotItemDisplayList extends Component {
   }
 
   componentWillUnmount () {
+    if (this.timer) {
+      clearTimeout(this.timer);
+    }
     this.issueStoreListener.remove();
     this.voterGuideStoreListener.remove();
   }
@@ -127,7 +130,7 @@ class IssuesByBallotItemDisplayList extends Component {
         issuesToRender,
       });
       if (issuesToRender.length > 0 && issueRenderCount === 0) {
-        setTimeout(this.handleDelayedIssueRender, 50);
+        this.timer = setTimeout(this.handleDelayedIssueRender, 50);
       }
     }
   }

@@ -7,7 +7,7 @@ const simState = {
 
   // Since SignInModal physically covers the UI where all the store listeners are still running,
   // we need to block those stores from setting state, and thereby closing the sign in model, because if that happens,
-  // any code that is necessary to run on propper close of the SignInModal won't execute.
+  // any code that is necessary to run on proper close of the SignInModal won't execute.
   //  As a result you end up with "ghost" dialogs still on the screen, or the dialog background still covering the
   //  otherwise working ballot page, or close of dialog components attempting to change state which results in "dispatch within dispatch"
   //  errors from React.

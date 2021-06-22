@@ -860,9 +860,6 @@ class VoterStore extends ReduceStore {
         secretCodeVerified = (action.res.secret_code_verified && action.res.secret_code_verified === true);
         voterMustRequestNewCode = (action.res.voter_must_request_new_code && action.res.voter_must_request_new_code === true);
         voterSecretCodeRequestsLocked = (action.res.secret_code_system_locked_for_this_voter_device_id && action.res.secret_code_system_locked_for_this_voter_device_id === true);
-        VoterActions.voterRetrieve();
-        VoterActions.voterEmailAddressRetrieve();
-        VoterActions.voterSMSPhoneNumberRetrieve();
         return {
           ...state,
           secretCodeVerificationStatus: {

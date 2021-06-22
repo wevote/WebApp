@@ -26,7 +26,7 @@ module.exports = (env, argv) => ({
     rules: [
       {
         test: /\.(js|jsx)$/,
-        exclude: /node_modules/,
+        exclude: /node_modules|srcDoNotMaintain/,
         use: ['babel-loader'],
       },
       {
@@ -36,6 +36,7 @@ module.exports = (env, argv) => ({
             loader: 'file-loader',
             options: {
               publicPath: '/',
+              exclude: /srcDeprecated/,
               name: '[path][name].[ext]',
             },
           },
@@ -87,6 +88,7 @@ module.exports = (env, argv) => ({
           '/**/config*.*',
           '/sass/',
           '/robots.txt',
+          'srcDeprecated',
         ],
         root: __dirname,
       }),

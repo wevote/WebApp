@@ -4,6 +4,7 @@ import { Delete, Phone } from '@material-ui/icons';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import Alert from 'react-bootstrap/Alert';
+import { isValidPhoneNumber } from 'react-phone-number-input';
 import styled from 'styled-components';
 import VoterActions from '../../actions/VoterActions';
 import VoterStore from '../../stores/VoterStore';
@@ -14,7 +15,6 @@ import LoadingWheel from '../LoadingWheel';
 import signInModalGlobalState from '../Widgets/signInModalGlobalState';
 import SettingsVerifySecretCode from './SettingsVerifySecretCode';
 
-const { isValidPhoneNumber } = React.lazy(() => import(/* webpackChunkName: 'react-phone-number-input' */ 'react-phone-number-input'));
 const OpenExternalWebSite = React.lazy(() => import(/* webpackChunkName: 'OpenExternalWebSite' */ '../Widgets/OpenExternalWebSite'));
 
 

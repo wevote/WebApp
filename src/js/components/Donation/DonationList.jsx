@@ -1,203 +1,303 @@
-import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import Card from 'react-bootstrap/Card';
-import Table from 'react-bootstrap/Table';
+import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Tooltip } from '@material-ui/core';
+import Paper from '@material-ui/core/Paper';
+import moment from 'moment';
+import * as PropTypes from 'prop-types';
+import styled from 'styled-components';
 import DonateActions from '../../actions/DonateActions';
 import DonateStore from '../../stores/DonateStore';
+import VoterStore from '../../stores/VoterStore';
 import { renderLog } from '../../utils/logging';
-import LoadingWheel from '../LoadingWheel';
 import DonationCancelOrRefund from './DonationCancelOrRefund';
 
 /* global $ */
 
-const styles = {
-  table: {
-    //  verticalAlign: "middle",
-    // textAlign: "center",
-  },
-  td: {
-    // verticalAlign: "middle",
-    // textAlign: "center",
-  },
-  th: {
-    // textAlign: "center",
-  },
-  Card: {
-    borderTopColor: 'transparent',
-    minHeight: '135px',
-    overflowY: 'auto',
-  },
-};
-
-export default class DonationList extends Component {
+class DonationList extends Component {
   constructor (props) {
     super(props);
     this.state = {
-      donationJournalList: null,
+      enablePolling: false,
     };
     this.isMobile = this.isMobile.bind(this);
+    this.refreshRequired = this.refreshRequired.bind(this);
   }
 
   componentDidMount () {
     this.onDonateStoreChange();
     this.donateStoreListener = DonateStore.addListener(this.onDonateStoreChange.bind(this));
-    this.setState({ donationJournalList: DonateStore.getVoterDonationHistory() });
-    if (this.props.showOrganizationPlan) {
-      DonateActions.donationRefreshDonationList();
-    }
+    this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
+    this.setState({
+      refreshCount: 0,
+      activeSubscriptionCount: DonateStore.getNumberOfActiveSubscriptions(),
+    });
+    DonateActions.donationRefreshDonationList();
   }
 
   componentWillUnmount () {
     this.donateStoreListener.remove();
+    if (this.timer) {
+      clearTimeout(this.timer);
+      this.timer = null;
+    }
   }
 
   onDonateStoreChange = () => {
-    this.setState({ donationJournalList: DonateStore.getVoterDonationHistory() });
+    const { refreshCount, activeSubscriptionCount, enablePolling } = this.state;
+    const stripeSuccess = DonateStore.donationError().length === 0;
+    if (enablePolling && stripeSuccess &&
+        activeSubscriptionCount === DonateStore.getNumberOfActiveSubscriptions()) {
+      this.pollForWebhookCompletionAtList(60);
+    }
+    this.setState({
+      refreshCount: refreshCount + 1,
+    });
   };
+
+  onVoterStoreChange = () => {
+    // In case you sign-in while viewing the Membership page
+    DonateActions.donationRefreshDonationList();
+  };
+
+  refreshRequired = () => {
+    DonateActions.donationRefreshDonationList();
+    this.setState({ enablePolling: true });
+  }
 
   isMobile = () => $(window).width() < 1280;
 
+  paymentRows = () => {
+    const donationPaymentHistory = DonateStore.getVoterPaymentHistory();
+    const rows = [];
+    let id = 0;
+    donationPaymentHistory.forEach((item) => {
+      // console.log('paymentRows item:', item);
+      const { refund_days_limit: refundDaysLimit,
+        created, amount, brand, last4, funding, last_charged: lastCharged,
+        exp_month: expMonth, exp_year: expYear, stripe_status: stripeStatus,
+        stripe_subscription_id: subscriptionId } = item;
+      const refundDays = parseInt(refundDaysLimit, 10);
+      const isActive = moment.utc(created).local().isAfter(moment(new Date()).subtract(refundDays, 'days')) &&
+          !stripeStatus.includes('refund');
+      const active = isActive ? 'Active' : 'No';
+      const waiting = amount === '0.00';
+      const cancelText = '';
+      const stripeStatusCap = stripeStatus.charAt(0).toUpperCase() + stripeStatus.slice(1);
+      const status = stripeStatusCap === 'Succeeded' ? 'Paid' : stripeStatusCap;
+      const isChip = subscriptionId.length === 0;  // is "Chip in" for Campaigns which means one time donation for WebApp
+      rows.push({
+        id: id++,
+        date: moment.utc(created).format('MMM D, YYYY'),
+        amount,
+        monthly: !waiting ? amount : 'waiting',
+        isChip,
+        payment: isChip ? 'One time' : 'Subscription',
+        card: brand,
+        ends: last4,
+        expires: `${expMonth}/${expYear}`,
+        status,
+        funding,
+        lastCharged,
+        active,
+        isActive,
+        cancelText,
+        subscriptionId,
+      });
+    });
+    return rows;
+  }
+
+  subscriptionRows = () => {
+    const { membershipTabShown, showOrganizationPlan } = this.props;
+    const subscriptions = DonateStore.getVoterSubscriptionHistory();
+    const rows = [];
+    let id = 0;
+    subscriptions.forEach((item) => {
+      // console.log('donationPaymentHistory item:', item);
+      const { record_enum: recordEnum,
+        subscription_canceled_at: subscriptionCanceledAt, subscription_ended_at: subscriptionEndedAt,
+        subscription_created_at: created, amount, brand, last4, last_charged: lastCharged,
+        exp_month: expMonth, exp_year: expYear, stripe_status: stripeStatus,
+        stripe_subscription_id: subscriptionId } = item;
+      // const refundDays = parseInt(refundDaysLimit, 10); No refunds in campaigns
+      const isActive = subscriptionCanceledAt === 'None' && subscriptionEndedAt === 'None';
+      const active = isActive ? 'Active' : 'No';
+      const waiting = amount === '0.00';
+      const cancelText = '';
+      const stripeStatusCap = stripeStatus.charAt(0).toUpperCase() + stripeStatus.slice(1);
+      const status = stripeStatusCap === 'Succeeded' ? 'Paid' : stripeStatusCap;
+      rows.push({
+        id: id++,
+        date: created.length > 5 ? moment.utc(created).format('MMM D, YYYY') : 'waiting',
+        amount,
+        monthly: !waiting ? amount : 'waiting',
+        isChip: false,
+        payment: recordEnum === 'PAYMENT_FROM_UI' ? 'One time' : 'Subscription',
+        brand: brand.length ? brand : 'waiting',
+        last4: last4.length ? last4 : 'waiting',
+        expires: expMonth > 0 ? `${expMonth}/${expYear}` : '/',
+        status,
+        lastCharged: lastCharged.length ? moment.utc(lastCharged).format('MMM D, YYYY') : 'waiting',
+        membershipTabShown,
+        active,
+        isActive,
+        cancelText,
+        showOrganizationPlan,
+        subscriptionId,
+      });
+    });
+    return rows;
+  }
+
+  pollForWebhookCompletionAtList (pollCount) {
+    const { enablePolling } = this.state;
+    const { activeSubscriptionCount } = this.state;
+    const latestCount = DonateStore.getNumberOfActiveSubscriptions();
+    console.log(`pollForWebhookCompletionAtList polling -- start: ${activeSubscriptionCount} ? ${latestCount}`);
+    this.timer = setTimeout(() => {
+      if (pollCount === 0 || (activeSubscriptionCount > latestCount)) {
+        // console.log(`pollForWebhookCompletionAtList polling -- pollCount: ${pollCount}`);
+        clearTimeout(this.timer);
+        this.setState({ activeSubscriptionCount, enablePolling: false });
+        return;
+      }
+      // console.log(`pollForWebhookCompletion polling ----- ${pollCount}`);
+      DonateActions.donationRefreshDonationList();
+
+      if (enablePolling) {
+        this.pollForWebhookCompletionAtList(pollCount - 1);  // recursive call
+      }
+    }, 500);
+  }
+
+
   render () {
     renderLog('DonationList');  // Set LOG_RENDER_EVENTS to log all renders
-    if (!this.state.donationJournalList) {
-      console.log('donationJournalList not yet received in DonationList render');
-      return LoadingWheel;
-    }
+    const { membershipTabShown, showOrganizationPlan } = this.props;
+    const isDeskTop = !this.isMobile();
 
-    if (this.state.donationJournalList && this.state.donationJournalList.length > 0) {
-      const { displayDonations, showOrganizationPlan } = this.props;
-      const isMobile = this.isMobile();
-
-      if (displayDonations) {
-        return (
-          <Card style={styles.Card}>
-            <Card.Body>
-              <Table striped hover size="sm">
-                { /* Donations */ }
-                <thead>
-                  <tr>
-                    <th>Date</th>
-                    <th>Amount</th>
-                    <th hidden={isMobile}>Payment</th>
-                    <th hidden={isMobile}>Card</th>
-                    <th hidden={isMobile}>Ends with</th>
-                    <th hidden={isMobile}>Expires</th>
-                    <th hidden={isMobile}>Status</th>
-                    <th>Info</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {this.state.donationJournalList.map((item) => {
-                    const { record_enum: recordEnum, refund_days_limit: refundDaysLimit, charge_id: chargeId,
-                      subscription_id: subscriptionId, created, amount, brand, last4,
-                      exp_month: expMonth, exp_year: expYear, stripe_status: stripeStatus, is_organization_plan: isOrgPlan } = item;
-                    if ((recordEnum === 'PAYMENT_FROM_UI' || recordEnum === 'PAYMENT_AUTO_SUBSCRIPTION') &&
-                        ((!showOrganizationPlan && !isOrgPlan) || (showOrganizationPlan && isOrgPlan))) {
-                      const refundDays = parseInt(refundDaysLimit, 10);
-                      // TODO: wrap with initializeMoment
-                      const active =
-                        window.moment && window.moment.utc(created).local().isAfter(window.moment(new Date()).subtract(refundDays, 'days')) &&
-                        !stripeStatus.includes('refund');
-                      return (
-                        <tr key={`${chargeId}-${subscriptionId}-donations`}>
-                          {/* TODO: wrap with initializeMoment */}
-                          <td>{window.moment ? window.moment.utc(created).format('MMM D, YYYY') : ''}</td>
-                          <td>{amount}</td>
-                          <td hidden={isMobile}>
-                            {recordEnum === 'PAYMENT_FROM_UI' ? 'One time' :
-                              'Subscription'}
-                          </td>
-                          <td hidden={isMobile}>{brand}</td>
-                          <td hidden={isMobile}>{`... ${last4}`}</td>
-                          <td hidden={isMobile}>{`${expMonth}/${expYear}`}</td>
-                          <td hidden={isMobile}>
-                            {stripeStatus === 'succeeded' ? 'Paid' : stripeStatus}
-                          </td>
-                          <td>
-                            <DonationCancelOrRefund item={item} refundDonation={displayDonations} active={active} cancelText="" showOrganizationPlan={showOrganizationPlan} />
-                          </td>
-                        </tr>
-                      );
-                    } else {
-                      console.log("no records of the type 'PAYMENT_FROM_UI' or 'PAYMENT_AUTO_SUBSCRIPTION' were found.");
-                      return null;
-                    }
-                  })}
-                </tbody>
-              </Table>
-            </Card.Body>
-          </Card>
-        );
-      } else {
-        return (
-          <Card style={styles.Card}>
-            <Card.Body>
-              <Table striped hover size="sm">
-                { /* Subscriptions */ }
-                <thead>
-                  <tr>
-                    <th hidden={isMobile}>Active</th>
-                    <th>Started</th>
-                    <th>Monthly</th>
-                    <th hidden={isMobile}>Last Charged</th>
-                    <th hidden={isMobile}>Card</th>
-                    <th hidden={isMobile}>Ends with</th>
-                    <th hidden={isMobile}>Expires</th>
-                    <th hidden={isMobile}>Canceled</th>
-                    <th>Info</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {this.state.donationJournalList.map((item) => {
-                    const { record_enum: recordEnum, subscription_canceled_at: subscriptionCanceledAt,
-                      charge_id: chargeId, subscription_id: subscriptionId, last_charged: lastCharged, created, amount, brand, last4,
-                      exp_month: expMonth, exp_year: expYear, subscription_ended_at: subscriptionEndedAt, is_organization_plan: isOrgPlan } = item;
-                    if (recordEnum === 'SUBSCRIPTION_SETUP_AND_INITIAL' &&
-                      ((!showOrganizationPlan && !isOrgPlan) || (showOrganizationPlan && isOrgPlan))) {
-                      const active = subscriptionCanceledAt === 'None' && subscriptionEndedAt === 'None';
-                      // TODO: wrap with initializeMoment
-                      const cancel = subscriptionCanceledAt !== 'None' && window.moment ?
-                        window.moment.utc(subscriptionCanceledAt).format('MMM D, YYYY') : '';
-                      // TODO: wrap with initializeMoment
-                      const lastcharged = lastCharged === 'None' && window.moment ? '' :
-                        window.moment.utc(lastCharged).format('MMM D, YYYY');
-                      const waiting = amount === '0.00';
-
-                      return (
-                        <tr key={`${chargeId}-${subscriptionId}-donationJournalList`}>
-                          <td hidden={isMobile}>{active ? 'Active' : '----'}</td>
-                          {/* TODO: wrap with initializeMoment */}
-                          <td>{window.moment ? window.moment.utc(created).format('MMM D, YYYY') : ''}</td>
-                          <td>{!waiting ? amount : 'waiting'}</td>
-                          <td hidden={isMobile}>{!waiting ? lastcharged : 'waiting'}</td>
-                          <td hidden={isMobile}>{!waiting ? brand : 'waiting'}</td>
-                          <td hidden={isMobile}>{!waiting ? `... ${last4}` : 'waiting'}</td>
-                          <td>
-                            {!waiting > 0 ? `${expMonth}/${expYear}` : 'waiting'}
-                          </td>
-                          <td hidden={isMobile}>{cancel}</td>
-                          <td>
-                            <DonationCancelOrRefund item={item} refundDonation={displayDonations} active={active} cancelText={cancel} showOrganizationPlan={showOrganizationPlan} />
-                          </td>
-                        </tr>
-                      );
-                    } else {
-                      console.log("no records of the type 'SUBSCRIPTION_SETUP_AND_INITIAL' found.");
-                      return null;
-                    }
-                  })}
-                </tbody>
-              </Table>
-            </Card.Body>
-          </Card>
-        );
-      }
+    if (membershipTabShown) {
+      const subscriptionRows = this.subscriptionRows();
+      return (
+        <TableContainer component={Paper}>
+          <Table aria-label="Subscription table">
+            <TableHead>
+              <TableRow>
+                {isDeskTop && <StyledTableHeaderCell align="center">Active</StyledTableHeaderCell>}
+                <StyledTableHeaderCell align="center">Started</StyledTableHeaderCell>
+                <StyledTableHeaderCell align="right">Monthly</StyledTableHeaderCell>
+                <StyledTableHeaderCell align="center">Last Charged</StyledTableHeaderCell>
+                {isDeskTop && (
+                  <>
+                    <StyledTableHeaderCell align="center">Card</StyledTableHeaderCell>
+                    <StyledTableHeaderCell align="center">Ends With</StyledTableHeaderCell>
+                    <StyledTableHeaderCell align="center">Expires</StyledTableHeaderCell>
+                  </>
+                )}
+                <StyledTableHeaderCell align="center">Info</StyledTableHeaderCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {subscriptionRows.map((row) => (
+                <TableRow key={row.id}>
+                  {isDeskTop && (
+                    <StyledTableCell align="center">{row.active}</StyledTableCell>
+                  )}
+                  <StyledTableCell align="center">{row.date}</StyledTableCell>
+                  <StyledTableCell align="right">{`$${row.amount}`}</StyledTableCell>
+                  <StyledTableCell align="center">{row.lastCharged}</StyledTableCell>
+                  {isDeskTop && (
+                    <>
+                      <StyledTableCell align="center">
+                        <Tooltip title={row.subscriptionId || 'Toolman Taylor'} placement="right"><span>{row.brand}</span></Tooltip>
+                      </StyledTableCell>
+                      <StyledTableCell align="center">{row.last4}</StyledTableCell>
+                      <StyledTableCell align="center">{row.expires}</StyledTableCell>
+                    </>
+                  )}
+                  <StyledTableCell align="center">
+                    <DonationCancelOrRefund item={row}
+                                            refundDonation={!membershipTabShown}
+                                            active={row.isActive}
+                                            cancelText=""
+                                            showOrganizationPlan={showOrganizationPlan}
+                                            refreshRequired={this.refreshRequired}
+                    />
+                  </StyledTableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
+      );
     } else {
-      return null;
+      const paymentRows = this.paymentRows();
+      return (
+        <TableContainer component={Paper}>
+          <Table aria-label="Donation table">
+            <TableHead>
+              <TableRow>
+                <StyledTableHeaderCell align="left">Date Paid</StyledTableHeaderCell>
+                <StyledTableHeaderCell align="center">Donation Type</StyledTableHeaderCell>
+                <StyledTableHeaderCell align="right">Amount</StyledTableHeaderCell>
+                {isDeskTop && (
+                  <>
+                    <StyledTableHeaderCell align="center">Payment</StyledTableHeaderCell>
+                    <StyledTableHeaderCell align="center">Card</StyledTableHeaderCell>
+                    <StyledTableHeaderCell align="center">Ends</StyledTableHeaderCell>
+                    <StyledTableHeaderCell align="center">Exp</StyledTableHeaderCell>
+                    <StyledTableHeaderCell align="center">Status</StyledTableHeaderCell>
+                    <StyledTableHeaderCell align="center">Funding</StyledTableHeaderCell>
+                  </>
+                )}
+                {/* <StyledTableHeaderCell align="center">Info</StyledTableHeaderCell> */}
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {paymentRows.map((row) => (
+                <TableRow key={row.id}>
+                  <StyledTableCell align="left">{row.date}</StyledTableCell>
+                  <StyledTableCell align="center">{row.isChip ? 'Chip In' : 'Membership Payment'}</StyledTableCell>
+                  <StyledTableCell align="right">{`$${row.amount}`}</StyledTableCell>
+                  {isDeskTop && (
+                    <>
+                      <StyledTableCell align="center">
+                        <Tooltip title={row.subscriptionId || 'Toolman Taylor'} placement="right"><span>{row.payment}</span></Tooltip>
+                      </StyledTableCell>
+                      <StyledTableCell align="center">{row.card}</StyledTableCell>
+                      <StyledTableCell align="center">{row.ends}</StyledTableCell>
+                      <StyledTableCell align="center">{row.expires}</StyledTableCell>
+                      <StyledTableCell align="center">{row.status}</StyledTableCell>
+                      <StyledTableCell align="center">{row.funding}</StyledTableCell>
+                    </>
+                  )}
+                  {/* <StyledTableCell align="center"> */}
+                  {/*  <DonationCancelOrRefund item={row} */}
+                  {/*                          refundDonation={membershipTabShown} */}
+                  {/*                          active={row.isActive} */}
+                  {/*                          cancelText="" */}
+                  {/*                          showOrganizationPlan={showOrganizationPlan} */}
+                  {/*  /> */}
+                  {/* </StyledTableCell> */}
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
+      );
     }
   }
 }
 DonationList.propTypes = {
-  displayDonations: PropTypes.bool,
+  membershipTabShown: PropTypes.bool,
   showOrganizationPlan: PropTypes.bool,
 };
+
+const StyledTableCell = styled(TableCell)`
+  padding: 8px;
+`;
+const StyledTableHeaderCell = styled(TableCell)`
+  padding: 8px;
+  color: black;
+`;
+
+export default DonationList;

@@ -25,7 +25,6 @@ const CandidateForExtension = React.lazy(() => import(/* webpackChunkName: 'Cand
 const ClaimYourPage = React.lazy(() => import(/* webpackChunkName: 'ClaimYourPage' */ './js/routes/Settings/ClaimYourPage'));
 const Credits = React.lazy(() => import(/* webpackChunkName: 'Credits' */ './js/routes/More/Credits'));
 const Donate = React.lazy(() => import(/* webpackChunkName: 'Donate' */ './js/routes/More/Donate'));
-const DonateThankYou = React.lazy(() => import(/* webpackChunkName: 'DonateThankYou' */ './js/routes/More/DonateThankYou'));
 const ElectionReminder = React.lazy(() => import(/* webpackChunkName: 'ElectionReminder' */ './js/routes/More/ElectionReminder'));
 const Elections = React.lazy(() => import(/* webpackChunkName: 'Elections' */ './js/routes/More/Elections'));
 const ExtensionSignIn = React.lazy(() => import(/* webpackChunkName: 'ExtensionSignIn' */ './js/routes/More/ExtensionSignIn'));
@@ -98,7 +97,6 @@ class App extends Component {
     this.state = {
       // doShowHeader: true,
       // doShowFooter: true,
-      // isInitialized: false,
       showReadyLight: true,
     };
     // this.setShowHeader = this.setShowHeader.bind(this);
@@ -261,8 +259,6 @@ class App extends Component {
                     <Route path="/more/credits" component={Credits} />
                     <Route path="/more/donate" component={isNotWeVoteMarketingSite ? ReadyRedirect : Donate} />
                     <Route path="/more/donate" component={isNotWeVoteMarketingSite ? ReadyRedirect : Donate} />
-                    <Route path="/more/donate_thank_you" component={isNotWeVoteMarketingSite ? ReadyRedirect : DonateThankYou} />
-                    <Route path="/more/donate_thank_you" component={isNotWeVoteMarketingSite ? ReadyRedirect : DonateThankYou} />
                     <Route path="/more/elections" component={Elections} />
                     <Route path="/more/elections" component={Elections} />
                     <Route path="/more/extensionsignin" component={ExtensionSignIn} />

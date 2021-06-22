@@ -36,67 +36,75 @@ const defaults = {
  * @author Nick Fiorini <nf071590@gmail.com>
  */
 
-export default function $ajax (options) {
-  let loop = 0;
-  // eslint-disable-next-line consistent-return
-  const waitForJQuery = setInterval(() => {
-    if (typeof window.$ !== 'undefined') {
-      const { $ } = window;
-      if (!options.endpoint) throw new Error('$ajax missing endpoint option');
-      if (!defaults.baseCdnUrl) throw new Error('$ajax missing base CDN url option');
-      if (!defaults.baseUrl) throw new Error('$ajax missing base url option');
 
-      options.crossDomain = true;
-      options.success = options.success || defaults.success;
-      options.error = options.error || defaults.error;
-      // console.log('service.js, options.endpoint: ', options.endpoint);
-      if (options.endpoint === 'organizationPhotosSave') {
-        options.method = 'POST';
-        // const csrftoken = cookies.getItem('csrftoken');
-        // const headers = new Headers();
-        // headers.append('X-CSRFToken', csrftoken);
-        // headers.append('Access-Control-Allow-Headers', 'Access-Control-Allow-Headers, Origin,Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers');
-        // headers.append('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,PATCH,OPTIONS');
-        // headers.append('Access-Control-Allow-Origin', '*');
-        // options.headers = headers;
-      } else {
-        options.method = 'GET';
-      }
-      // Switch between master API server and CDN
-      if (options.endpoint === 'allBallotItemsRetrieve' ||
-        options.endpoint === 'candidateRetrieve' ||
-        options.endpoint === 'candidatesRetrieve' ||
-        options.endpoint === 'defaultPricing' ||
-        options.endpoint === 'electionsRetrieve' ||
-        options.endpoint === 'issueDescriptionsRetrieve' ||
-        options.endpoint === 'issuesUnderBallotItemsRetrieve' ||
-        options.endpoint === 'measureRetrieve' ||
-        options.endpoint === 'officeRetrieve' ||
-        // options.endpoint === 'organizationRetrieve' || // Includes data a client can update, and needs to be fresh
-        options.endpoint === 'positionListForBallotItem' ||
-        options.endpoint === 'voterGuidesUpcomingRetrieve' ||
-        options.endpoint === 'voterGuidesRetrieve'
-      ) {
-        // Retrieve API data from CDN
-        options.data = assign({}, options.data || {}); // Do not pass voter_device_id
-        options.url = `${url.resolve(defaults.baseCdnUrl, options.endpoint)}/`;
-      } else {
-        // Retrieve API from API Server Pool
-        options.data = assign({}, options.data || {}, defaults.data());
-        options.url = `${url.resolve(defaults.baseUrl, options.endpoint)}/`;
-      }
+function innerAjax (options) {
+  const { $ } = window;
+  if (!options.endpoint) throw new Error('$ajax missing endpoint option');
+  if (!defaults.baseCdnUrl) throw new Error('$ajax missing base CDN url option');
+  if (!defaults.baseUrl) throw new Error('$ajax missing base url option');
 
-      httpLog(`AJAX URL: ${options.url}`);
-      if (options.endpoint === 'voterRetrieve') {
-        httpLog('AJAX voter_device_id: ', cookies.getItem('voter_device_id'));
-      }
-      clearInterval(waitForJQuery);
-      return $.ajax(options);
-    }
-    if (loop++ > 200) {
-      throw new Error('$ajax could not load jQuery within 10 seconds');
-    }
-    // console.log('--- waiting 50 ms for jQuery to load ---');
-  }, 10);
+  options.crossDomain = true;
+  options.success = options.success || defaults.success;
+  options.error = options.error || defaults.error;
+  // console.log('service.js, options.endpoint: ', options.endpoint);
+  if (options.endpoint === 'organizationPhotosSave') {
+    options.method = 'POST';
+    // const csrftoken = cookies.getItem('csrftoken');
+    // const headers = new Headers();
+    // headers.append('X-CSRFToken', csrftoken);
+    // headers.append('Access-Control-Allow-Headers', 'Access-Control-Allow-Headers, Origin,Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers');
+    // headers.append('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,PATCH,OPTIONS');
+    // headers.append('Access-Control-Allow-Origin', '*');
+    // options.headers = headers;
+  } else {
+    options.method = 'GET';
+  }
+  // Switch between master API server and CDN
+  if (options.endpoint === 'allBallotItemsRetrieve' ||
+    options.endpoint === 'candidateRetrieve' ||
+    options.endpoint === 'candidatesRetrieve' ||
+    options.endpoint === 'defaultPricing' ||
+    options.endpoint === 'electionsRetrieve' ||
+    options.endpoint === 'issueDescriptionsRetrieve' ||
+    options.endpoint === 'issuesUnderBallotItemsRetrieve' ||
+    options.endpoint === 'measureRetrieve' ||
+    options.endpoint === 'officeRetrieve' ||
+    // options.endpoint === 'organizationRetrieve' || // Includes data a client can update, and needs to be fresh
+    options.endpoint === 'positionListForBallotItem' ||
+    options.endpoint === 'voterGuidesUpcomingRetrieve' ||
+    options.endpoint === 'voterGuidesRetrieve'
+  ) {
+    // Retrieve API data from CDN
+    options.data = assign({}, options.data || {}); // Do not pass voter_device_id
+    options.url = `${url.resolve(defaults.baseCdnUrl, options.endpoint)}/`;
+  } else {
+    // Retrieve API from API Server Pool
+    options.data = assign({}, options.data || {}, defaults.data());
+    options.url = `${url.resolve(defaults.baseUrl, options.endpoint)}/`;
+  }
+
+  httpLog(`AJAX URL: ${options.url}`);
+  if (options.endpoint === 'voterRetrieve') {
+    httpLog('AJAX voter_device_id: ', cookies.getItem('voter_device_id'));
+  }
+  return $.ajax(options);
 }
 
+export default function $ajax (options) {
+  if (typeof window.$ !== 'undefined') {
+    innerAjax(options);
+  } else {
+    let loop = 0;
+    // eslint-disable-next-line consistent-return
+    const waitForJQuery = setInterval(() => {
+      if (typeof window.$ !== 'undefined') {
+        clearInterval(waitForJQuery);
+        innerAjax(options);
+      }
+      if (loop++ > 200) {
+        throw new Error('$ajax could not load jQuery within 10 seconds');
+      }
+      // console.log('--- waiting 50 ms for jQuery to load ---');
+    }, 10);
+  }
+}
