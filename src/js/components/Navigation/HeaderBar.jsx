@@ -391,6 +391,10 @@ class HeaderBar extends Component {
     AppActions.setShowOrganizationModal(false);
   }
 
+  closeImageUploadModal () {
+    AppActions.setShowImageUploadModal(false);
+  }
+
   toggleProfilePopUp () {
     const { profilePopUpOpen } = this.state;
     this.setState({ profilePopUpOpen: !profilePopUpOpen });
