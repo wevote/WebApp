@@ -45,13 +45,8 @@ class HeaderNotificationMenu extends Component {
   }
 
   componentWillUnmount () {
-    if (this.activityStoreListener) {
-      this.activityStoreListener.remove();
-    }
-    if (this.timer) {
-      clearTimeout(this.timer);
-      this.timer = null;
-    }
+    if (this.activityStoreListener) this.activityStoreListener.remove();
+    clearTimeout(this.timer);
   }
 
   onActivityStoreChange () {

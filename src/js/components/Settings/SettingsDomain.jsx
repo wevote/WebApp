@@ -4,8 +4,8 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import Helmet from 'react-helmet';
 import styled from 'styled-components';
-import AppActions from '../../actions/AppActions';
 import OrganizationActions from '../../actions/OrganizationActions';
+import AppObservableStore from '../../stores/AppObservableStore';
 import OrganizationStore from '../../stores/OrganizationStore';
 import VoterStore from '../../stores/VoterStore';
 import { cordovaOpenSafariView, isWebApp } from '../../utils/cordovaUtils';
@@ -333,7 +333,7 @@ class SettingsDomain extends Component {
   openPaidAccountUpgradeModal (paidAccountUpgradeMode) {
     // console.log('SettingsDomain openPaidAccountUpgradeModal');
     if (isWebApp()) {
-      AppActions.setShowPaidAccountUpgradeModal(paidAccountUpgradeMode);
+      AppObservableStore.setShowPaidAccountUpgradeModal(paidAccountUpgradeMode);
     } else {
       cordovaOpenSafariView('https://wevote.us/more/pricing', null, 50);
     }

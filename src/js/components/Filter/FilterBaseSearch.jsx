@@ -62,10 +62,7 @@ class FilterBaseSearch extends Component {
   }
 
   componentWillUnmount () {
-    if (this.timer) {
-      clearTimeout(this.timer);
-      this.timer = null;
-    }
+    clearTimeout(this.timer);
     this.ballotStoreListener.remove();
     this.organizationStoreListener.remove();
   }
@@ -76,6 +73,7 @@ class FilterBaseSearch extends Component {
       this.toggleSearch();
     }
     clearTimeout(this.timer);
+    this.timer = null;
 
     const { searchText: priorSearchText } = this.state;
     let { value: searchText } = event.target;

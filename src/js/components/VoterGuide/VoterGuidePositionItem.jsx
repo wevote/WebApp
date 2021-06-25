@@ -4,9 +4,9 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { ReactSVG } from 'react-svg';
 import styled from 'styled-components';
-import AppActions from '../../actions/AppActions';
 import CandidateActions from '../../actions/CandidateActions';
 import MeasureActions from '../../actions/MeasureActions';
+import AppObservableStore from '../../stores/AppObservableStore';
 import BallotStore from '../../stores/BallotStore';
 import CandidateStore from '../../stores/CandidateStore';
 import MeasureStore from '../../stores/MeasureStore';
@@ -184,8 +184,8 @@ class VoterGuidePositionItem extends Component {
 
   onClickShowOrganizationModal () {
     const { ballotItemWeVoteId } = this.props;
-    AppActions.setOrganizationModalBallotItemWeVoteId(ballotItemWeVoteId);
-    AppActions.setShowOrganizationModal(true);
+    AppObservableStore.setOrganizationModalBallotItemWeVoteId(ballotItemWeVoteId);
+    AppObservableStore.setShowOrganizationModal(true);
   }
 
   togglePositionStatement () {

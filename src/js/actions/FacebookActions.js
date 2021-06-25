@@ -6,7 +6,7 @@ import { isWebApp } from '../utils/cordovaUtils'; // eslint-disable-line import/
 import { oAuthLog } from '../utils/logging';
 import FriendActions from './FriendActions'; // eslint-disable-line import/no-cycle
 import VoterActions from './VoterActions'; // eslint-disable-line import/no-cycle
-import VoterSessionActions from './VoterSessionActions';
+import VoterSessionActions from './VoterSessionActions'; // eslint-disable-line import/no-cycle
 
 // Including FacebookStore causes problems in the WebApp, and again in the Native App
 

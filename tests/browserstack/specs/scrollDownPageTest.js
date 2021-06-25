@@ -10,7 +10,7 @@ const PAUSE_DURATION_REVIEW_RESULTS = 3000;
 describe('Basic cross-platform We Vote test',  () => {
   it('should load the app so we can run various tests', async () => {
     const { twitterUserName, twitterPassword } = driver.config;
-    const { device, isAndroid, isCordovaFromAppStore, isMobileScreenSize, isIOS } = driver.config.capabilities;
+    const { device, isAndroid, isCordovaFromAppObservableStore, isMobileScreenSize, isIOS } = driver.config.capabilities;
     const isDesktopScreenSize = !isMobileScreenSize;
     const platformPrefixID = (isDesktopScreenSize) ? 'desktop' : 'mobile';
     const changeAddressHeaderBarID = (isDesktopScreenSize) ? 'changeAddressOrElectionHeaderBarElection' : 'changeAddressOnlyHeaderBar';
@@ -22,7 +22,7 @@ describe('Basic cross-platform We Vote test',  () => {
     const candidateToTestOnBallotID = 'wv02cand40208';
     const organizationToFollowOnCandidateBallotID = 'wv02org11971';
 
-    if (isCordovaFromAppStore) {
+    if (isCordovaFromAppObservableStore) {
       // ///////////////////////////////
       // For the apps downloadable from either the Apple App Store or Android Play Store,
       // click through the onboarding screens

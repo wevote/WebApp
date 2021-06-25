@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import CopyToClipboard from 'react-copy-to-clipboard';
 import styled from 'styled-components';
-import AppStore from '../../stores/AppStore';
+import AppObservableStore, { messageService } from '../../stores/AppObservableStore';
 import { renderLog } from '../../utils/logging';
 import { openSnackbar } from '../Widgets/SnackNotifier';
 
@@ -23,18 +23,18 @@ class ShareModalOption extends Component {
 
   componentDidMount () {
     // console.log('Candidate componentDidMount');
-    this.appStoreListener = AppStore.addListener(this.onAppStoreChange.bind(this));
-    this.onAppStoreChange();
+    this.appStateSubscription = messageService.getMessage().subscribe(() => this.onAppObservableStoreChange());
+    this.onAppObservableStoreChange();
   }
 
   componentWillUnmount () {
     // console.log('componentWillUnmount');
-    this.appStoreListener.remove();
+    this.appStateSubscription.unsubscribe();
   }
 
-  onAppStoreChange () {
+  onAppObservableStoreChange () {
     const { shareModalStep } = this.state;
-    const newShareModalStep = AppStore.shareModalStep();
+    const newShareModalStep = AppObservableStore.shareModalStep();
     if (newShareModalStep !== shareModalStep) {
       // If we change modes, reset the copy link state
       this.setState({

@@ -43,10 +43,7 @@ class FirstAndLastNameRequiredAlert extends Component {
     if (this.timer > 0) {
       FriendActions.friendInvitationByEmailSend();
     }
-    if (this.timer) {
-      clearTimeout(this.timer);
-      this.timer = null;
-    }
+    clearTimeout(this.timer);
     this.friendStoreListener.remove();
     this.organizationStoreListener.remove();
     this.voterStoreListener.remove();

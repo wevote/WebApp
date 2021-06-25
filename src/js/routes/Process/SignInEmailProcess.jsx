@@ -1,9 +1,9 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import AppActions from '../../actions/AppActions';
 import VoterActions from '../../actions/VoterActions';
 import LoadingWheel from '../../components/LoadingWheel';
 import WouldYouLikeToMergeAccountsOld from '../../components/WouldYouLikeToMergeAccountsOld';
+import AppObservableStore from '../../stores/AppObservableStore';
 import VoterStore from '../../stores/VoterStore';
 import cookies from '../../utils/cookies';
 import { historyPush } from '../../utils/cordovaUtils';
@@ -69,7 +69,7 @@ export default class SignInEmailProcess extends Component {
     if (this.state.emailSignInStatus.voter_merge_two_accounts_attempted) {
       oAuthLog('voterMergeTwoAccountsByEmailKey attempted - push to /settings/account');
       if (signInStartFullUrl) {
-        AppActions.unsetStoreSignInStartFullUrl();
+        AppObservableStore.unsetStoreSignInStartFullUrl();
         cookies.removeItem('sign_in_start_full_url', '/');
         cookies.removeItem('sign_in_start_full_url', '/', 'wevote.us');
         redirectFullUrl = signInStartFullUrl;
@@ -100,7 +100,7 @@ export default class SignInEmailProcess extends Component {
         // Key isn't found in database, but they are already signed in and are
         //  probably following a link in their email that has already been used
         if (signInStartFullUrl) {
-          AppActions.unsetStoreSignInStartFullUrl();
+          AppObservableStore.unsetStoreSignInStartFullUrl();
           cookies.removeItem('sign_in_start_full_url', '/');
           cookies.removeItem('sign_in_start_full_url', '/', 'wevote.us');
           redirectFullUrl = signInStartFullUrl;
@@ -122,7 +122,7 @@ export default class SignInEmailProcess extends Component {
           });
         }
       } else {
-        AppActions.unsetStoreSignInStartFullUrl();
+        AppObservableStore.unsetStoreSignInStartFullUrl();
         cookies.removeItem('sign_in_start_full_url', '/');
         cookies.removeItem('sign_in_start_full_url', '/', 'wevote.us');
         historyPush({
@@ -142,7 +142,7 @@ export default class SignInEmailProcess extends Component {
         // We don't need to do anything more except redirect to the email management page
         oAuthLog('secret key owned by this voter - push to /settings/account');
         if (signInStartFullUrl) {
-          AppActions.unsetStoreSignInStartFullUrl();
+          AppObservableStore.unsetStoreSignInStartFullUrl();
           cookies.removeItem('sign_in_start_full_url', '/');
           cookies.removeItem('sign_in_start_full_url', '/', 'wevote.us');
           redirectFullUrl = signInStartFullUrl;

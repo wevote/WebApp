@@ -1,5 +1,5 @@
 import Dispatcher from '../dispatcher/Dispatcher';
-import AppStore  from '../stores/AppStore'; // eslint-disable-line import/no-cycle
+import AppObservableStore  from '../stores/AppObservableStore';
 
 // Dec 2018: Keep this comment as a cheat-sheet for the enumerated values sent by the API
 // ACTION_VOTER_GUIDE_VISIT = 1;
@@ -140,7 +140,7 @@ export default {
 
   saveActionBallotVisit (googleCivicElectionId) {
     const actionConstant = 6; // ACTION_BALLOT_VISIT
-    const siteOwnerOrganizationWeVoteId = AppStore.getSiteOwnerOrganizationWeVoteId();
+    const siteOwnerOrganizationWeVoteId = AppObservableStore.getSiteOwnerOrganizationWeVoteId();
     if (siteOwnerOrganizationWeVoteId) {
       this.saveActionWrapperWithOrganization(actionConstant, googleCivicElectionId, siteOwnerOrganizationWeVoteId);
     } else {

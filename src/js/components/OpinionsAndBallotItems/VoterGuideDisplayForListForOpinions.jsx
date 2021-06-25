@@ -6,7 +6,7 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { ReactSVG } from 'react-svg';
 import styled from 'styled-components';
-import AppActions from '../../actions/AppActions';
+import AppObservableStore from '../../stores/AppObservableStore';
 import FriendStore from '../../stores/FriendStore';
 import IssueStore from '../../stores/IssueStore';
 import OrganizationStore from '../../stores/OrganizationStore';
@@ -72,7 +72,7 @@ class voterGuideDisplayForListForOpinions extends Component {
   }
 
   closeOrganizationModal () {
-    AppActions.setShowOrganizationModal(false);
+    AppObservableStore.setShowOrganizationModal(false);
   }
 
   render () {

@@ -1,8 +1,7 @@
 import { Button } from '@material-ui/core';
 import React, { Component } from 'react';
 import styled from 'styled-components';
-import AppActions from '../../actions/AppActions';
-import AppStore from '../../stores/AppStore';
+import AppObservableStore, { messageService } from '../../stores/AppObservableStore';
 import ElectionStore from '../../stores/ElectionStore';
 import VoterGuideStore from '../../stores/VoterGuideStore';
 import VoterStore from '../../stores/VoterStore';
@@ -21,23 +20,23 @@ export default class SelectVoterGuidesSideBar extends Component {
   }
 
   componentDidMount () {
-    this.appStoreListener = AppStore.addListener(this.onAppStoreChange.bind(this));
+    this.appStateSubscription = messageService.getMessage().subscribe(() => this.onAppObservableStoreChange());
     this.voterGuideStoreListener = VoterGuideStore.addListener(this.onVoterGuideStoreChange.bind(this));
     const voterGuidesOwnedByVoter = VoterGuideStore.getAllVoterGuidesOwnedByVoter();
     this.setState({
-      showNewVoterGuideModal: AppStore.showNewVoterGuideModal(),
+      showNewVoterGuideModal: AppObservableStore.showNewVoterGuideModal(),
       voterGuidesOwnedByVoter,
     });
   }
 
   componentWillUnmount () {
-    this.appStoreListener.remove();
+    this.appStateSubscription.unsubscribe();
     this.voterGuideStoreListener.remove();
   }
 
-  onAppStoreChange () {
+  onAppObservableStoreChange () {
     this.setState({
-      showNewVoterGuideModal: AppStore.showNewVoterGuideModal(),
+      showNewVoterGuideModal: AppObservableStore.showNewVoterGuideModal(),
     });
   }
 
@@ -55,12 +54,12 @@ export default class SelectVoterGuidesSideBar extends Component {
 
   closeNewVoterGuideModal () {
     // console.log('HeaderBar closeNewVoterGuideModal');
-    AppActions.setShowNewVoterGuideModal(false);
+    AppObservableStore.setShowNewVoterGuideModal(false);
   }
 
   openNewVoterGuideModal () {
     // console.log('SettingsDomain openNewVoterGuideModal');
-    AppActions.setShowNewVoterGuideModal(true);
+    AppObservableStore.setShowNewVoterGuideModal(true);
   }
 
   render () {

@@ -4,8 +4,8 @@ import { Message, ThumbUp } from '@material-ui/icons'; // Reply,
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import styled from 'styled-components';
-import AppActions from '../../actions/AppActions';
 import ReactionActions from '../../actions/ReactionActions';
+import AppObservableStore from '../../stores/AppObservableStore';
 import ReactionStore from '../../stores/ReactionStore';
 import { renderLog } from '../../utils/logging';
 
@@ -55,8 +55,8 @@ class ActivityTidbitAddReaction extends Component {
   onClickShowActivityTidbitDrawer = () => {
     const { activityTidbitWeVoteId } = this.props;
     // console.log('onClickShowActivityTidbitDrawer activityTidbitWeVoteId:', activityTidbitWeVoteId);
-    AppActions.setActivityTidbitWeVoteIdForDrawer(activityTidbitWeVoteId);
-    AppActions.setShowActivityTidbitDrawer(true);
+    AppObservableStore.setActivityTidbitWeVoteIdForDrawer(activityTidbitWeVoteId);
+    AppObservableStore.setShowActivityTidbitDrawer(true);
   }
 
   render () {
@@ -223,7 +223,7 @@ const Wrapper = styled.div`
   display: flex;
   font-size: 14px;
   justify-content: space-between;
-  padding: 0px !important;
+  padding: 0 !important;
 `;
 
 export default withTheme(withStyles(styles)(ActivityTidbitAddReaction));

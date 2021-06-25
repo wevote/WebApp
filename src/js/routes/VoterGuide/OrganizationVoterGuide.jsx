@@ -4,7 +4,6 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import AnalyticsActions from '../../actions/AnalyticsActions';
-import AppActions from '../../actions/AppActions';
 import FriendActions from '../../actions/FriendActions';
 import OrganizationActions from '../../actions/OrganizationActions';
 import FriendToggle from '../../components/Friends/FriendToggle';
@@ -13,6 +12,7 @@ import ShareButtonDesktopTablet from '../../components/Share/ShareButtonDesktopT
 import OrganizationCard from '../../components/VoterGuide/OrganizationCard';
 import OrganizationVoterGuideCard from '../../components/VoterGuide/OrganizationVoterGuideCard';
 import OrganizationVoterGuideTabs from '../../components/VoterGuide/OrganizationVoterGuideTabs';
+import AppObservableStore from '../../stores/AppObservableStore';
 import OrganizationStore from '../../stores/OrganizationStore';
 import VoterGuideStore from '../../stores/VoterGuideStore';
 import VoterStore from '../../stores/VoterStore';
@@ -78,18 +78,18 @@ export default class OrganizationVoterGuide extends Component {
     // console.log('componentDidMount modalToOpen:', modalToOpen);
     if (modalToOpen === 'share') {
       this.modalOpenTimer = setTimeout(() => {
-        AppActions.setShowShareModal(true);
+        AppObservableStore.setShowShareModal(true);
       }, 1000);
     } else if (modalToOpen === 'sic') { // sic = Shared Item Code
       // console.log('componentDidMount sharedItemCode:', sharedItemCode);
       if (sharedItemCode) {
         this.modalOpenTimer = setTimeout(() => {
-          AppActions.setShowSharedItemModal(sharedItemCode);
+          AppObservableStore.setShowSharedItemModal(sharedItemCode);
         }, 1000);
       }
     } else {
       this.viewingVoterGuideTimer = setTimeout(() => {
-        AppActions.setViewingOrganizationVoterGuide(true);
+        AppObservableStore.setViewingOrganizationVoterGuide(true);
       }, 750);
     }
 
@@ -179,15 +179,9 @@ export default class OrganizationVoterGuide extends Component {
     this.organizationStoreListener.remove();
     this.voterGuideStoreListener.remove();
     this.voterStoreListener.remove();
-    if (this.modalOpenTimer) {
-      clearTimeout(this.modalOpenTimer);
-      this.modalOpenTimer = null;
-    }
-    if (this.viewingVoterGuideTimer) {
-      clearTimeout(this.viewingVoterGuideTimer);
-      this.viewingVoterGuideTimer = null;
-    }
-    AppActions.setViewingOrganizationVoterGuide(false);
+    clearTimeout(this.modalOpenTimer);
+    clearTimeout(this.viewingVoterGuideTimer);
+    AppObservableStore.setViewingOrganizationVoterGuide(false);
   }
 
   onEdit () {

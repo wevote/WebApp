@@ -4,7 +4,7 @@ import { Ballot } from '@material-ui/icons';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import styled from 'styled-components';
-import AppActions from '../../actions/AppActions';
+import AppObservableStore from '../../stores/AppObservableStore';
 import BallotActions from '../../actions/BallotActions';
 import OrganizationActions from '../../actions/OrganizationActions';
 import BallotStore from '../../stores/BallotStore';
@@ -207,14 +207,8 @@ class VoterGuideSettingsAddPositions extends Component {
     this.organizationStoreListener.remove();
     this.voterGuideStoreListener.remove();
     this.voterStoreListener.remove();
-    if (this.ballotItemTimer) {
-      clearTimeout(this.ballotItemTimer);
-      this.ballotItemTimer = null;
-    }
-    if (this.positionItemTimer) {
-      clearTimeout(this.positionItemTimer);
-      this.positionItemTimer = null;
-    }
+    clearTimeout(this.ballotItemTimer);
+    clearTimeout(this.positionItemTimer);
     window.removeEventListener('scroll', this.onScroll);
   }
 
@@ -469,6 +463,7 @@ class VoterGuideSettingsAddPositions extends Component {
     numberOfBallotItemsToDisplay += 5;
     // console.log('Number of ballot items after increment: ', numberOfBallotItemsToDisplay);
 
+    clearTimeout(this.ballotItemTimer);
     this.ballotItemTimer = setTimeout(() => {
       this.setState({
         numberOfBallotItemsToDisplay,
@@ -483,6 +478,7 @@ class VoterGuideSettingsAddPositions extends Component {
     numberOfPositionItemsToDisplay += 5;
     // console.log('Number of position items after increment: ', numberOfPositionItemsToDisplay);
 
+    clearTimeout(this.positionItemTimer);
     this.positionItemTimer = setTimeout(() => {
       this.setState({
         numberOfPositionItemsToDisplay,
@@ -491,7 +487,7 @@ class VoterGuideSettingsAddPositions extends Component {
   }
 
   goToDifferentVoterGuideSettingsDashboardTab (dashboardEditMode = '') {
-    AppActions.setVoterGuideSettingsDashboardEditMode(dashboardEditMode);
+    AppObservableStore.setVoterGuideSettingsDashboardEditMode(dashboardEditMode);
   }
 
   render () {

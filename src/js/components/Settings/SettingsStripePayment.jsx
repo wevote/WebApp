@@ -69,14 +69,8 @@ class SettingsStripePayment extends Component {
   componentWillUnmount () {
     this.donateStoreListener.remove();
     this.voterStoreListener.remove();
-    if (this.stripeErrorTimer) {
-      clearTimeout(this.stripeErrorTimer);
-      this.stripeErrorTimer = null;
-    }
-    if (this.stripeSubmitTimer) {
-      clearTimeout(this.stripeSubmitTimer);
-      this.stripeSubmitTimer = null;
-    }
+    clearTimeout(this.stripeErrorTimer);
+    clearTimeout(this.stripeSubmitTimer);
   }
 
   onVoterStoreChange () {
@@ -98,6 +92,7 @@ class SettingsStripePayment extends Component {
           paymentError: true,
           stripeErrorMessageForVoter,
         });
+        clearTimeout(this.stripeErrorTimer);
         this.stripeErrorTimer = setTimeout(() => {
           this.setState({
             paymentError: false,
@@ -177,6 +172,7 @@ class SettingsStripePayment extends Component {
       this.setState({
         paymentError: true,
       });
+      clearTimeout(this.stripeSubmitTimer);
       this.stripeSubmitTimer = setTimeout(() => {
         this.setState({ paymentError: false });
       }, 3000);

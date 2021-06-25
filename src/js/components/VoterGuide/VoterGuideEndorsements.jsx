@@ -173,10 +173,7 @@ class VoterGuideEndorsements extends Component {
     this.organizationStoreListener.remove();
     this.supportStoreListener.remove();
     this.voterStoreListener.remove();
-    if (this.positionItemTimer) {
-      clearTimeout(this.positionItemTimer);
-      this.positionItemTimer = null;
-    }
+    clearTimeout(this.positionItemTimer);
   }
 
   onBallotStoreChange () {

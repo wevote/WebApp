@@ -216,10 +216,7 @@ class Opinions2020 extends Component {
     this.organizationStoreListener.remove();
     this.voterGuideStoreListener.remove();
     this.voterStoreListener.remove();
-    if (this.ballotItemTimer) {
-      clearTimeout(this.ballotItemTimer);
-      this.ballotItemTimer = null;
-    }
+    clearTimeout(this.ballotItemTimer);
     window.removeEventListener('scroll', this.onScroll);
   }
 

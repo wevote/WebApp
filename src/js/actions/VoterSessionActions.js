@@ -1,12 +1,13 @@
 import Dispatcher from '../dispatcher/Dispatcher';
 import cookies from '../utils/cookies';
 import { stringContains } from '../utils/textFormat';
-import AppActions from './AppActions';
+// eslint-disable-next-line import/no-cycle
+import AppObservableStore from '../stores/AppObservableStore';
 
 export default {
   voterSignOut () {
-    AppActions.setShowSignInModal(false);
-    AppActions.unsetStoreSignInStartFullUrl();
+    AppObservableStore.setShowSignInModal(false);
+    AppObservableStore.unsetStoreSignInStartFullUrl();
     Dispatcher.loadEndpoint('voterSignOut', { sign_out_all_devices: false });
     cookies.removeItem('voter_device_id');
     cookies.removeItem('voter_device_id', '/');

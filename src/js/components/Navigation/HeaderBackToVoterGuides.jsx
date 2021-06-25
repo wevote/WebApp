@@ -4,11 +4,10 @@ import { AccountCircle, Place } from '@material-ui/icons';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import styled from 'styled-components';
-import AppActions from '../../actions/AppActions';
 import OrganizationActions from '../../actions/OrganizationActions';
 import VoterGuideActions from '../../actions/VoterGuideActions';
 import VoterSessionActions from '../../actions/VoterSessionActions';
-import AppStore from '../../stores/AppStore';
+import AppObservableStore, { messageService } from '../../stores/AppObservableStore';
 import BallotStore from '../../stores/BallotStore';
 import OrganizationStore from '../../stores/OrganizationStore';
 import VoterGuideStore from '../../stores/VoterGuideStore';
@@ -72,7 +71,7 @@ class HeaderBackToVoterGuides extends Component {
     this.onVoterStoreChange();
     this.onOrganizationStoreChange();
     this.onBallotStoreChange();
-    this.appStoreListener = AppStore.addListener(this.onAppStoreChange.bind(this));
+    this.appStateSubscription = messageService.getMessage().subscribe(() => this.onAppObservableStoreChange());
     this.ballotStoreListener = BallotStore.addListener(this.onBallotStoreChange.bind(this));
     this.organizationStoreListener = OrganizationStore.addListener(this.onOrganizationStoreChange.bind(this));
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
@@ -95,8 +94,8 @@ class HeaderBackToVoterGuides extends Component {
     const voterFirstName = VoterStore.getFirstName();
     const voterIsSignedIn = voter.is_signed_in;
     this.setState({
-      showNewVoterGuideModal: AppStore.showNewVoterGuideModal(),
-      showSignInModal: AppStore.showSignInModal(),
+      showNewVoterGuideModal: AppObservableStore.showNewVoterGuideModal(),
+      showSignInModal: AppObservableStore.showSignInModal(),
       voter,
       voterFirstName,
       voterIsSignedIn,
@@ -144,17 +143,17 @@ class HeaderBackToVoterGuides extends Component {
   }
 
   componentWillUnmount () {
-    this.appStoreListener.remove();
+    this.appStateSubscription.unsubscribe();
     this.ballotStoreListener.remove();
     this.organizationStoreListener.remove();
     this.voterStoreListener.remove();
     this.voterGuideStoreListener.remove();
   }
 
-  onAppStoreChange () {
+  onAppObservableStoreChange () {
     this.setState({
-      showNewVoterGuideModal: AppStore.showNewVoterGuideModal(),
-      showSignInModal: AppStore.showSignInModal(),
+      showNewVoterGuideModal: AppObservableStore.showNewVoterGuideModal(),
+      showSignInModal: AppObservableStore.showSignInModal(),
     });
   }
 
@@ -224,13 +223,13 @@ class HeaderBackToVoterGuides extends Component {
   }
 
   closeSignInModal () {
-    AppActions.setShowSignInModal(false);
+    AppObservableStore.setShowSignInModal(false);
   }
 
   toggleSignInModal () {
     const { showSignInModal } = this.state;
     this.setState({ profilePopUpOpen: false });
-    AppActions.setShowSignInModal(!showSignInModal);
+    AppObservableStore.setShowSignInModal(!showSignInModal);
   }
 
   hideProfilePopUp () {
@@ -245,7 +244,7 @@ class HeaderBackToVoterGuides extends Component {
   toggleVoterGuideModal () {
     // console.log('toggleVoterGuideModal');
     const { showNewVoterGuideModal } = this.state;
-    AppActions.setShowNewVoterGuideModal(!showNewVoterGuideModal);
+    AppObservableStore.setShowNewVoterGuideModal(!showNewVoterGuideModal);
   }
 
   render () {

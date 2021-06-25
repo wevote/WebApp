@@ -4,13 +4,12 @@ import { AccountCircle, Place } from '@material-ui/icons';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import styled from 'styled-components';
-import AppActions from '../../actions/AppActions';
 import BallotActions from '../../actions/BallotActions';
 import OrganizationActions from '../../actions/OrganizationActions';
+import VoterActions from '../../actions/VoterActions';
 import VoterGuideActions from '../../actions/VoterGuideActions';
 import VoterSessionActions from '../../actions/VoterSessionActions';
-import VoterActions from '../../actions/VoterActions';
-import AppStore from '../../stores/AppStore';
+import AppObservableStore, { messageService } from '../../stores/AppObservableStore';
 import FriendStore from '../../stores/FriendStore';
 import VoterStore from '../../stores/VoterStore';
 import { weVoteBrandingOff } from '../../utils/applicationUtils';
@@ -71,6 +70,7 @@ class HeaderBar extends Component {
       organizationModalBallotItemWeVoteId: '',
       voter: {},
       voterFirstName: '',
+      // firstVisitToBallot: true,
     };
     this.closeOrganizationModal = this.closeOrganizationModal.bind(this);
     this.closePaidAccountUpgradeModal = this.closePaidAccountUpgradeModal.bind(this);
@@ -86,7 +86,7 @@ class HeaderBar extends Component {
   }
 
   componentDidMount () {
-    this.appStoreListener = AppStore.addListener(this.onAppStoreChange.bind(this));
+    this.appStateSubscription = messageService.getMessage().subscribe((msg) => this.onAppObservableStoreChange(msg));
     this.friendStoreListener = FriendStore.addListener(this.onFriendStoreChange.bind(this));
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
 
@@ -94,26 +94,26 @@ class HeaderBar extends Component {
     const voterFirstName = VoterStore.getFirstName();
     this.setState({
       componentDidMountFinished: true,
-      chosenSiteLogoUrl: AppStore.getChosenSiteLogoUrl(),
+      chosenSiteLogoUrl: AppObservableStore.getChosenSiteLogoUrl(),
       friendInvitationsSentToMe: FriendStore.friendInvitationsSentToMe(),
-      hideWeVoteLogo: AppStore.getHideWeVoteLogo(),
-      scrolledDown: AppStore.getScrolledDown(),
-      showAdviserIntroModal: AppStore.showAdviserIntroModal(),
-      showEditAddressButton: AppStore.showEditAddressButton(),
-      showFirstPositionIntroModal: AppStore.showFirstPositionIntroModal(),
+      hideWeVoteLogo: AppObservableStore.getHideWeVoteLogo(),
+      scrolledDown: AppObservableStore.getScrolledDown(),
+      showAdviserIntroModal: AppObservableStore.showAdviserIntroModal(),
+      showEditAddressButton: AppObservableStore.showEditAddressButton(),
+      showFirstPositionIntroModal: AppObservableStore.showFirstPositionIntroModal(),
       showPaidAccountUpgradeModal: false, // June 2021 , TODO: Add back in paid upgrade modal
-      showPersonalizedScoreIntroModal: AppStore.showPersonalizedScoreIntroModal(),
-      showSelectBallotModal: AppStore.showSelectBallotModal(),
-      showSelectBallotModalHideAddress: getBooleanValue(AppStore.showSelectBallotModalHideAddress()),
-      showSelectBallotModalHideElections: getBooleanValue(AppStore.showSelectBallotModalHideElections()),
-      // showSignInModal: AppStore.showSignInModal(),
-      showValuesIntroModal: AppStore.showValuesIntroModal(),
-      showImageUploadModal: AppStore.showImageUploadModal(),
+      showPersonalizedScoreIntroModal: AppObservableStore.showPersonalizedScoreIntroModal(),
+      showSelectBallotModal: AppObservableStore.showSelectBallotModal(),
+      showSelectBallotModalHideAddress: getBooleanValue(AppObservableStore.showSelectBallotModalHideAddress()),
+      showSelectBallotModalHideElections: getBooleanValue(AppObservableStore.showSelectBallotModalHideElections()),
+      // showSignInModal: AppObservableStore.showSignInModal(),
+      showValuesIntroModal: AppObservableStore.showValuesIntroModal(),
+      showImageUploadModal: AppObservableStore.showImageUploadModal(),
       voter,
       voterFirstName,
       voterIsSignedIn: voter && voter.is_signed_in,
     });
-    setTimeout(() => {
+    this.setStyleTimeout = setTimeout(() => {
       const { headerObjects } = window;
       const logoWrapper = document.querySelectorAll('[class^=HeaderBarLogo__HeaderBarWrapper]');
       if (logoWrapper && logoWrapper[0] && logoWrapper[0].innerHTML.length) {
@@ -139,11 +139,25 @@ class HeaderBar extends Component {
         headerObjects.photo = document.getElementById('profileAvatarHeaderBar').innerHTML;
       }
     }, 1000);
+
+    this.showBallotModalTimeout = setTimeout(() => {
+      // We want the SelectBallotModal to appear on the ballot page (without a keystroke)
+      // if the page is empty and we have a textForMapSearch and we dont have the EditAddressOneHorizontalRow displayed
+      const elList = document.getElementById('BallotListId');
+      const elEditAddress = document.getElementById('EditAddressOneHorizontalRow');
+      if (elList && !!elEditAddress) {
+        const textForMapSearch = VoterStore.getTextForMapSearch();
+        if (elList.innerHTML.trim().length < 1 && textForMapSearch) {
+          console.log('Putting up SelectBallotModal since BallotList is empty and textForMapSearch exists.');
+          this.setState({ showSelectBallotModal: true });
+        }
+      }
+    }, 1500);
   }
 
   shouldComponentUpdate (nextProps, nextState) {
     const { location: { pathname } } = window;
-    // console.log('HeaderBar shouldComponentUpdate: pathname === ', pathname);
+    console.log('HeaderBar shouldComponentUpdate: pathname === ', pathname);
     let update = false;
     if (pathname !== this.state.priorPath) {
       // Re-render the HeaderBar if the path has changed
@@ -244,6 +258,10 @@ class HeaderBar extends Component {
     // console.log(`HeaderBar shouldComponentUpdate:  ${false}`);
     if (update)  this.getSelectedTab(true);
 
+    // console.log('HeaderBar shouldComponentUpdate: update === ', update);
+
+
+
     return update;
   }
 
@@ -253,36 +271,39 @@ class HeaderBar extends Component {
   }
 
   componentWillUnmount () {
-    this.appStoreListener.remove();
+    this.appStateSubscription.unsubscribe();
     this.friendStoreListener.remove();
     this.voterStoreListener.remove();
+    clearTimeout(this.setStyleTimeout);
+    clearTimeout(this.showBallotModalTimeout);
   }
 
-  onAppStoreChange () {
-    // console.log('HeaderBar, onAppStoreChange');
-    const paidAccountUpgradeMode = AppStore.showPaidAccountUpgradeModal() || '';
+  // eslint-disable-next-line no-unused-vars
+  onAppObservableStoreChange (msg) {
+    // console.log('------ HeaderBar, onAppObservableStoreChange received: ', msg);
+    const paidAccountUpgradeMode = AppObservableStore.showPaidAccountUpgradeModal() || '';
     // console.log('HeaderBar paidAccountUpgradeMode:', paidAccountUpgradeMode);
     const showPaidAccountUpgradeModal = paidAccountUpgradeMode && paidAccountUpgradeMode !== '';
-    // console.log('HeaderBar onAppStoreChange showPaidAccountUpgradeModal:', showPaidAccountUpgradeModal);
+    // console.log('HeaderBar onAppObservableStoreChange showPaidAccountUpgradeModal:', showPaidAccountUpgradeModal);
     this.setState({
-      chosenSiteLogoUrl: AppStore.getChosenSiteLogoUrl(),
-      hideWeVoteLogo: AppStore.getHideWeVoteLogo(),
-      organizationModalBallotItemWeVoteId: AppStore.organizationModalBallotItemWeVoteId(),
+      chosenSiteLogoUrl: AppObservableStore.getChosenSiteLogoUrl(),
+      hideWeVoteLogo: AppObservableStore.getHideWeVoteLogo(),
+      organizationModalBallotItemWeVoteId: AppObservableStore.organizationModalBallotItemWeVoteId(),
       // paidAccountUpgradeMode,
-      scrolledDown: AppStore.getScrolledDown(),
-      shareModalStep: AppStore.shareModalStep(),
-      showAdviserIntroModal: AppStore.showAdviserIntroModal(),
-      showEditAddressButton: AppStore.showEditAddressButton(),
-      showFirstPositionIntroModal: AppStore.showFirstPositionIntroModal(),
+      scrolledDown: AppObservableStore.getScrolledDown(),
+      shareModalStep: AppObservableStore.shareModalStep(),
+      showAdviserIntroModal: AppObservableStore.showAdviserIntroModal(),
+      showEditAddressButton: AppObservableStore.showEditAddressButton(),
+      showFirstPositionIntroModal: AppObservableStore.showFirstPositionIntroModal(),
       showPaidAccountUpgradeModal,
-      showShareModal: AppStore.showShareModal(),
-      showPersonalizedScoreIntroModal: AppStore.showPersonalizedScoreIntroModal(),
-      showSelectBallotModal: AppStore.showSelectBallotModal(),
-      showSelectBallotModalHideAddress: AppStore.showSelectBallotModalHideAddress(),
-      showSelectBallotModalHideElections: AppStore.showSelectBallotModalHideElections(),
-      // showSignInModal: AppStore.showSignInModal(),
-      showValuesIntroModal: AppStore.showValuesIntroModal(),
-      showImageUploadModal: AppStore.showImageUploadModal(),
+      showShareModal: AppObservableStore.showShareModal(),
+      showPersonalizedScoreIntroModal: AppObservableStore.showPersonalizedScoreIntroModal(),
+      showSelectBallotModal: AppObservableStore.showSelectBallotModal(),
+      showSelectBallotModalHideAddress: AppObservableStore.showSelectBallotModalHideAddress(),
+      showSelectBallotModalHideElections: AppObservableStore.showSelectBallotModalHideElections(),
+      // showSignInModal: AppObservableStore.showSignInModal(),
+      showValuesIntroModal: AppObservableStore.showValuesIntroModal(),
+      showImageUploadModal: AppObservableStore.showImageUploadModal(),
     });
   }
 
@@ -308,10 +329,10 @@ class HeaderBar extends Component {
         voter,
         voterFirstName,
         voterIsSignedIn,
-        // showSignInModal: AppStore.showSignInModal(),
-        showShareModal: AppStore.showShareModal(),
-        showOrganizationModal: AppStore.showOrganizationModal(),
-        showPersonalizedScoreIntroModal: AppStore.showPersonalizedScoreIntroModal(),
+        // showSignInModal: AppObservableStore.showSignInModal(),
+        showShareModal: AppObservableStore.showShareModal(),
+        showOrganizationModal: AppObservableStore.showOrganizationModal(),
+        showPersonalizedScoreIntroModal: AppObservableStore.showPersonalizedScoreIntroModal(),
       });
     }
   }
@@ -357,28 +378,28 @@ class HeaderBar extends Component {
   // }
 
   closeAdviserIntroModal = () => {
-    AppActions.setShowAdviserIntroModal(false);
+    AppObservableStore.setShowAdviserIntroModal(false);
   }
 
   closeFirstPositionIntroModal = () => {
-    AppActions.setShowFirstPositionIntroModal(false);
+    AppObservableStore.setShowFirstPositionIntroModal(false);
   }
 
   closeValuesIntroModal = () => {
-    AppActions.setShowValuesIntroModal(false);
+    AppObservableStore.setShowValuesIntroModal(false);
   }
 
   closePersonalizedScoreIntroModal = () => {
-    AppActions.setShowPersonalizedScoreIntroModal(false);
+    AppObservableStore.setShowPersonalizedScoreIntroModal(false);
   }
 
   closePaidAccountUpgradeModal () {
-    AppActions.setShowPaidAccountUpgradeModal(false);
+    AppObservableStore.setShowPaidAccountUpgradeModal(false);
   }
 
   closeShareModal () {
-    AppActions.setShowShareModal(false);
-    AppActions.setShareModalStep('');
+    AppObservableStore.setShowShareModal(false);
+    AppObservableStore.setShareModalStep('');
     const { location: { href } } = window;
     if (stringContains('/modal/share', href) && isWebApp()) {
       const pathnameWithoutModalShare = href.replace('/modal/share', '');  // Cordova
@@ -388,7 +409,7 @@ class HeaderBar extends Component {
   }
 
   closeOrganizationModal () {
-    AppActions.setShowOrganizationModal(false);
+    AppObservableStore.setShowOrganizationModal(false);
   }
 
   toggleProfilePopUp () {
@@ -406,13 +427,16 @@ class HeaderBar extends Component {
     }
     // May 5, 2021:  We were running into "invariant.js:40 Uncaught Invariant Violation: Dispatch.dispatch(...): Cannot dispatch in the middle of a dispatch."
     // In both the major "speed" refactored branch, and on the older wevote.us when trying to close the  BallotElectionListWithFilters.  So this workaround updates the store without a dispatch.
-    // So just close the dialog, to avoid this API call: AppActions.setShowSelectBallotModal(!showSelectBallotModal, showSelectBallotModalHideAddress, showSelectBallotModalHideElections);
-    this.setState({ showSelectBallotModal: false });
+    // So just close the dialog, to avoid this API call: AppObservableStore.setShowSelectBallotModal(!showSelectBallotModal, showSelectBallotModalHideAddress, showSelectBallotModalHideElections);
+    this.setState({
+      showSelectBallotModal: false,
+      // firstVisitToBallot: false,
+    });
   }
 
   // closeNewVoterGuideModal () {
   //   // console.log('HeaderBar closeNewVoterGuideModal');
-  //   AppActions.setShowNewVoterGuideModal(false);
+  //   AppObservableStore.setShowNewVoterGuideModal(false);
   //   // signInModalGlobalState.set('isShowingSignInModal', false);
   //   HeaderBar.goToGetStarted();
   // }
@@ -422,7 +446,7 @@ class HeaderBar extends Component {
     this.setState({ showSignInModal: false });
     VoterActions.voterRetrieve();
     VoterActions.voterEmailAddressRetrieve();
-    // AppActions.setShowSignInModal(false);  6/10/21: Sends you in an endless loop
+    // AppObservableStore.setShowSignInModal(false);  6/10/21: Sends you in an endless loop
 
     // signInModalGlobalState.set('isShowingSignInModal', false);
     // When this is uncommented, closing the sign in box from pages like "Values" will redirect you to the ballot
@@ -432,8 +456,10 @@ class HeaderBar extends Component {
   toggleSignInModal () {
     // console.log('HeaderBar toggleSignInModal');
     const { showSignInModal } = this.state;
-    AppActions.setShowSignInModal(!showSignInModal);
-    this.setState({ showSignInModal: !showSignInModal });
+    AppObservableStore.setShowSignInModal(!showSignInModal);
+    this.setState({
+      showSignInModal: !showSignInModal,
+    });
   }
 
   hideProfilePopUp () {
@@ -583,16 +609,6 @@ class HeaderBar extends Component {
       appBarCname += ' page-header__cordova';
     }
 
-    // We want the SelectBallotModal to appear on the ballot page (without a keystroke) if the page is empty and we have a textForMapSearch
-    let setBallotModalOverride = false;
-    const element = document.getElementById('BallotListId');
-    if (element) {
-      const textForMapSearch = VoterStore.getTextForMapSearch();
-      if (element.innerHTML.trim().length < 1  && textForMapSearch) {
-        // console.log('Putting up SelectBallotModal since BallotList is empty and textForMapSearch exists.');
-        setBallotModalOverride = true;
-      }
-    }
 
     return (
       <Wrapper hasNotch={hasIPhoneNotch()} scrolledDown={scrolledDown && isWebApp() && shouldHeaderRetreat(pathname)}>
@@ -724,12 +740,12 @@ class HeaderBar extends Component {
             closeFunction={this.closeSignInModal}
           />
         )}
-        {(showSelectBallotModal || setBallotModalOverride) && (
+        {(showSelectBallotModal) && (
           <SelectBallotModal
             ballotBaseUrl={ballotBaseUrl}
             hideAddressEdit={showSelectBallotModalHideAddress}
             hideElections={showSelectBallotModalHideElections}
-            show={showSelectBallotModal || setBallotModalOverride}
+            show={showSelectBallotModal}
             toggleFunction={this.toggleSelectBallotModal}
           />
         )}

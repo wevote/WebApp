@@ -1,12 +1,12 @@
 import Dispatcher from '../dispatcher/Dispatcher';
-import AppStore from '../stores/AppStore'; // eslint-disable-line import/no-cycle
+import AppObservableStore from '../stores/AppObservableStore'; // eslint-disable-line import/no-cycle
 
 export default {
   acceptFriendInvite (otherVoterWeVoteId) {
     Dispatcher.loadEndpoint('friendInviteResponse', {
       voter_we_vote_id: otherVoterWeVoteId,
       kind_of_invite_response: 'ACCEPT_INVITATION',
-      hostname: AppStore.getHostname(),
+      hostname: AppObservableStore.getHostname(),
     });
   },
 
@@ -25,7 +25,7 @@ export default {
     Dispatcher.loadEndpoint('friendInviteResponse', {
       voter_we_vote_id: otherVoterWeVoteId,
       kind_of_invite_response: 'DELETE_INVITATION_VOTER_SENT_BY_ME',
-      hostname: AppStore.getHostname(),
+      hostname: AppObservableStore.getHostname(),
     });
   },
 
@@ -33,7 +33,7 @@ export default {
     Dispatcher.loadEndpoint('friendInviteResponse', {
       recipient_voter_email: otherVoterEmailAddress,
       kind_of_invite_response: 'DELETE_INVITATION_EMAIL_SENT_BY_ME',
-      hostname: AppStore.getHostname(),
+      hostname: AppObservableStore.getHostname(),
     });
   },
 
@@ -50,7 +50,7 @@ export default {
         sender_email_address: senderEmailAddress,
         verification_email_sent: verificationEmailSent,
         device_type: deviceType,
-        hostname: AppStore.getHostname(),
+        hostname: AppObservableStore.getHostname(),
       });
   },
 
@@ -64,7 +64,7 @@ export default {
         email_addresses_raw: emailAddresses,
         invitation_message: invitationMessage,
         sender_email_address: senderEmailAddress,
-        hostname: AppStore.getHostname(),
+        hostname: AppObservableStore.getHostname(),
       });
   },
 
@@ -81,7 +81,7 @@ export default {
     Dispatcher.loadEndpoint('friendInvitationByWeVoteIdSend',
       {
         other_voter_we_vote_id: otherVoterWeVoteId,
-        hostname: AppStore.getHostname(),
+        hostname: AppObservableStore.getHostname(),
       });
   },
 
@@ -131,7 +131,7 @@ export default {
   friendInvitationByEmailVerify (invitationSecretKey) {
     Dispatcher.loadEndpoint('friendInvitationByEmailVerify', {
       invitation_secret_key: invitationSecretKey,
-      hostname: AppStore.getHostname(),
+      hostname: AppObservableStore.getHostname(),
     });
   },
 
@@ -148,7 +148,7 @@ export default {
     Dispatcher.loadEndpoint('friendInviteResponse', {
       voter_we_vote_id: otherVoterWeVoteId,
       kind_of_invite_response: 'IGNORE_INVITATION',
-      hostname: AppStore.getHostname(),
+      hostname: AppObservableStore.getHostname(),
     });
   },
 
@@ -156,7 +156,7 @@ export default {
     Dispatcher.loadEndpoint('friendInviteResponse', {
       voter_we_vote_id: otherVoterWeVoteId,
       kind_of_invite_response: 'IGNORE_SUGGESTION',
-      hostname: AppStore.getHostname(),
+      hostname: AppObservableStore.getHostname(),
     });
   },
 
@@ -171,7 +171,7 @@ export default {
     Dispatcher.loadEndpoint('friendInviteResponse', {
       voter_we_vote_id: otherVoterWeVoteId,
       kind_of_invite_response: 'UNFRIEND_CURRENT_FRIEND',
-      hostname: AppStore.getHostname(),
+      hostname: AppObservableStore.getHostname(),
     });
   },
 };

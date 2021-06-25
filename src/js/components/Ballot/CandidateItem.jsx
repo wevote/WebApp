@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import TextTruncate from 'react-text-truncate';
 import styled from 'styled-components';
-import AppActions from '../../actions/AppActions';
+import AppObservableStore from '../../stores/AppObservableStore';
 import CandidateStore from '../../stores/CandidateStore';
 import IssueStore from '../../stores/IssueStore';
 import SupportStore from '../../stores/SupportStore';
@@ -532,13 +532,13 @@ class CandidateItem extends Component {
 
   goToCandidateLink () {
     // In case we were in the OrganizationModal, close it
-    AppActions.setShowOrganizationModal(false);
+    AppObservableStore.setShowOrganizationModal(false);
     historyPush(this.getCandidateLink());
   }
 
   goToOfficeLink () {
     // In case we were in the OrganizationModal, close it
-    AppActions.setShowOrganizationModal(false);
+    AppObservableStore.setShowOrganizationModal(false);
     historyPush(this.getOfficeLink());
   }
 

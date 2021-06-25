@@ -4,13 +4,13 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import Helmet from 'react-helmet';
 import styled from 'styled-components';
-import AppActions from '../actions/AppActions';
 import VoterActions from '../actions/VoterActions';
 import Header, { Container, Title } from '../components/Welcome/howItWorksHeaderStyles';
 import AnnotatedSlideshow from '../components/Widgets/AnnotatedSlideshow';
 import HeaderSwitch from '../components/Widgets/HeaderSwitch';
 import StepsChips from '../components/Widgets/StepsChips';
 import VoterConstants from '../constants/VoterConstants';
+import AppObservableStore from '../stores/AppObservableStore';
 import VoterStore from '../stores/VoterStore';
 import cordovaScrollablePaneTopPadding from '../utils/cordovaScrollablePaneTopPadding';
 import { historyPush, isCordova } from '../utils/cordovaUtils';
@@ -267,11 +267,11 @@ class HowItWorks extends Component {
     }
     if (isSignedIn) {
       historyPush(getStartedUrl);
-      AppActions.setShowHowItWorksModal(false);
+      AppObservableStore.setShowHowItWorksModal(false);
     } else {
-      AppActions.setGetStartedMode(getStartedMode);
-      AppActions.setShowHowItWorksModal(false);
-      AppActions.setShowSignInModal(true);
+      AppObservableStore.setGetStartedMode(getStartedMode);
+      AppObservableStore.setShowHowItWorksModal(false);
+      AppObservableStore.setShowSignInModal(true);
     }
   }
 

@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import styled from 'styled-components';
 import ActivityActions from '../../actions/ActivityActions';
-import AppActions from '../../actions/AppActions';
+import AppObservableStore from '../../stores/AppObservableStore';
 import ActivityStore from '../../stores/ActivityStore';
 import VoterStore from '../../stores/VoterStore';
 import { renderLog } from '../../utils/logging';
@@ -86,8 +86,8 @@ class ActivityCommentAdd extends Component {
   onClickShowActivityTidbitDrawer = () => {
     const { activityTidbitWeVoteId } = this.props;
     // console.log('onClickShowActivityTidbitDrawer activityTidbitWeVoteId:', activityTidbitWeVoteId);
-    AppActions.setActivityTidbitWeVoteIdForDrawer(activityTidbitWeVoteId);
-    AppActions.setShowActivityTidbitDrawer(true);
+    AppObservableStore.setActivityTidbitWeVoteIdForDrawer(activityTidbitWeVoteId);
+    AppObservableStore.setShowActivityTidbitDrawer(true);
   }
 
   render () {

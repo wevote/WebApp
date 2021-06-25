@@ -97,10 +97,7 @@ class SettingsVerifySecretCode extends Component {
       $('#textOrEmailEntryDialog').css('display', 'unset');  // Reveal the entry dialog
     }
     this.voterStoreListener.remove();
-    if (this.timer) {
-      clearTimeout(this.timer);
-      this.timer = null;
-    }
+    clearTimeout(this.timer);
     window.removeEventListener('paste', this.onPaste);
   }
 

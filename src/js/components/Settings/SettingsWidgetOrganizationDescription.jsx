@@ -43,22 +43,16 @@ class SettingsWidgetOrganizationDescription extends Component {
   componentWillUnmount () {
     this.organizationStoreListener.remove();
     this.voterStoreListener.remove();
-    if (this.clearStatusTimer) {
-      clearTimeout(this.clearStatusTimer);
-      this.clearStatusTimer = null;
-    }
-    if (this.timer) {
-      clearTimeout(this.timer);
-      this.timer = null;
-    }
+    clearTimeout(this.clearStatusTimer);
+    clearTimeout(this.timer);
     restoreStylesAfterCordovaKeyboard('SettingsWidgetOrganizationDescription');
   }
 
   handleKeyPress () {
-    clearTimeout(this.timer);
     if (this.props.voterHasMadeChangesFunction) {
       this.props.voterHasMadeChangesFunction();
     }
+    clearTimeout(this.timer);
     this.timer = setTimeout(() => {
       OrganizationActions.organizationDescriptionSave(this.state.linkedOrganizationWeVoteId, this.state.organizationDescription);
       this.setState({ organizationDescriptionSavedStatus: 'Saved' });

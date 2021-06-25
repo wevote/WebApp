@@ -6,10 +6,9 @@ import React, { Component } from 'react';
 import { EmailIcon, EmailShareButton, FacebookIcon, FacebookShareButton, TwitterIcon, TwitterShareButton } from 'react-share';
 import styled from 'styled-components';
 import AnalyticsActions from '../../actions/AnalyticsActions';
-import AppActions from '../../actions/AppActions';
 import FriendActions from '../../actions/FriendActions';
 import ShareActions from '../../actions/ShareActions';
-import AppStore from '../../stores/AppStore';
+import AppObservableStore, { messageService } from '../../stores/AppObservableStore';
 import FriendStore from '../../stores/FriendStore';
 import ShareStore from '../../stores/ShareStore';
 import VoterStore from '../../stores/VoterStore';
@@ -50,12 +49,12 @@ class ShareModal extends Component {
     const { shareModalStep, voterIsSignedIn } = this.props;
     // console.log('shareModalStep componentDidMount this.props:', shareModalStep);
 
-    this.appStoreListener = AppStore.addListener(this.onAppStoreChange.bind(this));
+    this.appStateSubscription = messageService.getMessage().subscribe(() => this.onAppObservableStoreChange());
     this.friendStoreListener = FriendStore.addListener(this.onFriendStoreChange.bind(this));
     FriendActions.currentFriends();
     this.shareStoreListener = ShareStore.addListener(this.onShareStoreChange.bind(this));
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
-    const chosenPreventSharingOpinions = AppStore.getChosenPreventSharingOpinions();
+    const chosenPreventSharingOpinions = AppObservableStore.getChosenPreventSharingOpinions();
     const currentFullUrl = window.location.href || '';
     const currentFullUrlToShare = currentFullUrl.replace('/modal/share', '').toLowerCase();
     const urlWithSharedItemCode = ShareStore.getUrlWithSharedItemCodeByFullUrl(currentFullUrlToShare);
@@ -80,14 +79,14 @@ class ShareModal extends Component {
   }
 
   componentWillUnmount () {
-    this.appStoreListener.remove();
+    this.appStateSubscription.unsubscribe();
     this.friendStoreListener.remove();
     this.shareStoreListener.remove();
     this.voterStoreListener.remove();
   }
 
-  onAppStoreChange () {
-    const chosenPreventSharingOpinions = AppStore.getChosenPreventSharingOpinions();
+  onAppObservableStoreChange () {
+    const chosenPreventSharingOpinions = AppObservableStore.getChosenPreventSharingOpinions();
     this.setState({
       chosenPreventSharingOpinions,
     });
@@ -140,14 +139,14 @@ class ShareModal extends Component {
       voterIsSignedIn = voterIsSignedInIncoming;
     }
     this.setState({ shareModalStep });
-    AppActions.setShareModalStep(shareModalStep);
+    AppObservableStore.setShareModalStep(shareModalStep);
     this.openSignInModalIfWeShould(shareModalStep, voterIsSignedIn);
   }
 
   openSignInModalIfWeShould = (shareModalStep, voterIsSignedIn) => {
     if (stringContains('AllOpinions', shareModalStep)) {
       if (!voterIsSignedIn) {
-        AppActions.setShowSignInModal(true);
+        AppObservableStore.setShowSignInModal(true);
       }
     }
   }
@@ -167,7 +166,7 @@ class ShareModal extends Component {
   saveActionShareButtonFriends = () => {
     const { voterIsSignedIn } = this.state;
     if (!voterIsSignedIn) {
-      AppActions.setShowSignInModal(true);
+      AppObservableStore.setShowSignInModal(true);
       this.setStep('friends');
     } else {
       this.setStep('friends');
@@ -193,7 +192,7 @@ class ShareModal extends Component {
         const newShareModalStep = `${shareModalStep}AllOpinions`;
         this.setStep(newShareModalStep);
       } else {
-        AppActions.setShowSignInModal(true);
+        AppObservableStore.setShowSignInModal(true);
       }
     }
   }
@@ -510,7 +509,7 @@ class ShareModal extends Component {
       );
     } else if (shareModalStep === 'friends' && !voterIsSignedIn) {
       // historyPush('/ballot/modal/share');
-      // AppActions.setShowSignInModal(true);
+      // AppObservableStore.setShowSignInModal(true);
 
 
       // cookies.setItem('sign_in_start_full_url', signInStartFullUrl, 86400, '/', 'wevote.us');

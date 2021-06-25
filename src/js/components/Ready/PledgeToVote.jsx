@@ -87,18 +87,11 @@ class PledgeToVote extends React.Component {
       comments[1] ? comments[1] : null,
     ]});
 
-    if (this.timeInterval) {
-      clearInterval(this.timeInterval);
-      this.timeInterval = null;
-    }
     this.timeInterval = setInterval(() => this.setCommentsToDisplay(), 3000);
   }
 
   componentWillUnmount () {
-    if (this.timeInterval) {
-      clearInterval(this.timeInterval);
-      this.timeInterval = null;
-    }
+    clearInterval(this.timeInterval);
   }
 
   handleChange () {

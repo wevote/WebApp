@@ -5,7 +5,6 @@ import Helmet from 'react-helmet';
 import styled from 'styled-components';
 import ActivityActions from '../actions/ActivityActions';
 import AnalyticsActions from '../actions/AnalyticsActions';
-import AppActions from '../actions/AppActions';
 import ReadyActions from '../actions/ReadyActions';
 import ElectionCountdown from '../components/Ready/ElectionCountdown';
 import ReadyInformationDisclaimer from '../components/Ready/ReadyInformationDisclaimer';
@@ -16,7 +15,7 @@ import ReadyTaskPlan from '../components/Ready/ReadyTaskPlan';
 import ReadyTaskRegister from '../components/Ready/ReadyTaskRegister';
 import BrowserPushMessage from '../components/Widgets/BrowserPushMessage';
 import webAppConfig from '../config';
-import AppStore from '../stores/AppStore';
+import AppObservableStore from '../stores/AppObservableStore';
 import VoterStore from '../stores/VoterStore';
 import { historyPush, isAndroid, isIOS, isWebApp } from '../utils/cordovaUtils';
 import lazyPreloadPages from '../utils/lazyPreloadPages';
@@ -42,7 +41,7 @@ class ReadyLight extends Component {
   componentDidMount () {
     ReadyActions.voterPlansForVoterRetrieve();
     ActivityActions.activityNoticeListRetrieve();
-    AppActions.setEvaluateHeaderDisplay();
+    AppObservableStore.setEvaluateHeaderDisplay();
 
     this.analyticsTimer = setTimeout(() => {
       AnalyticsActions.saveActionReadyVisit(VoterStore.electionId());
@@ -51,8 +50,8 @@ class ReadyLight extends Component {
     this.preloadTimer = setTimeout(() => lazyPreloadPages(), 3000);
 
     this.setState({
-      chosenReadyIntroductionText: AppStore.getChosenReadyIntroductionText(),
-      chosenReadyIntroductionTitle: AppStore.getChosenReadyIntroductionTitle(),
+      chosenReadyIntroductionText: AppObservableStore.getChosenReadyIntroductionText(),
+      chosenReadyIntroductionTitle: AppObservableStore.getChosenReadyIntroductionTitle(),
     });
   }
 
@@ -61,20 +60,11 @@ class ReadyLight extends Component {
   }
 
   componentWillUnmount () {
-    if (this.modalOpenTimer) {
-      clearTimeout(this.modalOpenTimer);
-      this.modalOpenTimer = null;
-    }
-    if (this.preloadTimer) {
-      clearTimeout(this.preloadTimer);
-      this.preloadTimer = null;
-    }
+    clearTimeout(this.preloadTimer);
+    clearTimeout(this.analyticsTimer);
+
     const { showReadyHeavy } = this.props;
     showReadyHeavy();
-    if (this.timer) {
-      clearTimeout(this.timer);
-      this.timer = null;
-    }
   }
 
   static getDerivedStateFromError (error) {       // eslint-disable-line no-unused-vars

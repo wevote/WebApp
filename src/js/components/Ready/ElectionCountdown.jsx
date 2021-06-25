@@ -40,10 +40,9 @@ class ElectionCountdown extends React.Component {
 
   componentWillUnmount () {
     this.ballotStoreListener.remove();
-    if (this.timeInterval) {
-      clearInterval(this.timeInterval);
-      this.timeInterval = null;
-    }
+    clearTimeout(this.addressSuggestiontimer);
+    clearInterval(this.timeInterval);
+    clearTimeout(this.loadDelay);
   }
 
   onBallotStoreChange () {
@@ -77,10 +76,7 @@ class ElectionCountdown extends React.Component {
           this.setNewTime(electionDate);
           refreshIntervalInMilliseconds = 3600000; // One hours worth of milliseconds
         }
-        if (this.timeInterval) {
-          clearInterval(this.timeInterval);
-          this.timeInterval = null;
-        }
+        clearInterval(this.timeInterval);
         this.timeInterval = setInterval(() => this.setNewTime(electionDate), refreshIntervalInMilliseconds);
       }
     });

@@ -5,7 +5,7 @@ const ANDROID_CONTEXT = 'WEBVIEW_org.wevote.cordova';
 const IOS_CONTEXT = 'WEBVIEW_1';
 const PAUSE_DURATION_MICROSECONDS = 250;
 const PAUSE_DURATION_BALLOT_LOAD = 6000;
-const { device, isAndroid, isCordovaFromAppStore, isMobileScreenSize, isIOS } = driver.config.capabilities;
+const { device, isAndroid, isCordovaFromAppObservableStore, isMobileScreenSize, isIOS } = driver.config.capabilities;
 const xssTest = '<script>alert(1)</script>';
 const publicFigureOrOrganizationFollowSelector = '[id^=positionItemFollowToggleFollow-undefined-wv02org]';
 const publicFigureOrOrganizationDropDownSelector = '[id^=positionItemFollowToggleDropdown-undefined-wv02org]';
@@ -16,7 +16,7 @@ const organizationSection = '#mainContainer:nth-child(3)';
 
 describe('Basic cross-platform We Vote test', async () => {
   it('should load the app so we can run tests', async () => {
-    if (isCordovaFromAppStore) {
+    if (isCordovaFromAppObservableStore) {
     // ///////////////////////////////
     // For the apps downloadable from either the Apple App Store or Android Play Store,
     // click through the onboarding screens
@@ -43,7 +43,7 @@ describe('Basic cross-platform We Vote test', async () => {
 
   it('should input our address', async () =>  {
     await browser.pause(PAUSE_DURATION_BALLOT_LOAD);
-    if (!(isCordovaFromAppStore && isIOS)) {
+    if (!(isCordovaFromAppObservableStore && isIOS)) {
       await simpleTextInput('editAddressOneHorizontalRowTextForMapSearch', ''); // Clear Location Input
       await simpleTextInput('editAddressOneHorizontalRowTextForMapSearch', 'Oakland, CA 94501'); // Enter address
       await simpleClick('editAddressOneHorizontalRowSaveButton'); // Click save

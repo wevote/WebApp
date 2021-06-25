@@ -32,10 +32,7 @@ export default class CodeCopier extends Component {
 
   componentWillUnmount () {
     this.organizationStoreListener.remove();
-    if (this.timer) {
-      clearTimeout(this.timer);
-      this.timer = null;
-    }
+    clearTimeout(this.timer);
   }
 
   onOrganizationStoreChange () {
@@ -93,6 +90,7 @@ export default class CodeCopier extends Component {
 
   validateTwitterHandle (event) {
     clearTimeout(this.timer);
+    this.timer = null;
     if (event.target.value.length) {
       this.validateTwitterHandleAction(event.target.value);
       this.setState({

@@ -42,16 +42,14 @@ export default class OrganizationsFollowedOnTwitter extends Component {
   }
 
   componentWillUnmount () {
-    if (this.timer) {
-      clearTimeout(this.timer);
-      this.timer = null;
-    }
+    clearTimeout(this.timer);
   }
 
   onTriggerEnter (organizationWeVoteId) {
     this.refs[`overlay-${organizationWeVoteId}`].show(); // eslint-disable-line react/no-string-refs
     this.show_popover = true;
     clearTimeout(this.timer);
+    this.timer = null;
   }
 
   onTriggerLeave (organizationWeVoteId) {

@@ -54,10 +54,7 @@ export default class SettingsWidgetAccountType extends Component {
   componentWillUnmount () {
     this.organizationStoreListener.remove();
     this.voterStoreListener.remove();
-    if (this.timer) {
-      clearTimeout(this.timer);
-      this.timer = null;
-    }
+    clearTimeout(this.timer);
     restoreStylesAfterCordovaKeyboard('SettingsWidgetAccountType');
   }
 

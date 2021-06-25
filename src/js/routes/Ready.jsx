@@ -5,7 +5,6 @@ import Helmet from 'react-helmet';
 import styled from 'styled-components';
 import ActivityActions from '../actions/ActivityActions';
 import AnalyticsActions from '../actions/AnalyticsActions';
-import AppActions from '../actions/AppActions';
 import BallotActions from '../actions/BallotActions';
 import FriendActions from '../actions/FriendActions';
 import IssueActions from '../actions/IssueActions';
@@ -24,7 +23,7 @@ import ValuesToFollowPreview from '../components/Values/ValuesToFollowPreview';
 import BrowserPushMessage from '../components/Widgets/BrowserPushMessage';
 import SnackNotifier from '../components/Widgets/SnackNotifier';
 import webAppConfig from '../config';
-import AppStore from '../stores/AppStore';
+import AppObservableStore, { messageService } from '../stores/AppObservableStore';
 import BallotStore from '../stores/BallotStore';
 import IssueStore from '../stores/IssueStore';
 import VoterStore from '../stores/VoterStore';
@@ -55,10 +54,10 @@ class Ready extends Component {
   }
 
   componentDidMount () {
-    this.appStoreListener = AppStore.addListener(this.onAppStoreChange.bind(this));
+    this.appStateSubscription = messageService.getMessage().subscribe((msg) => this.onAppObservableStoreChange(msg));
     this.issueStoreListener = IssueStore.addListener(this.onIssueStoreChange.bind(this));
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
-    this.onAppStoreChange();
+    this.onAppObservableStoreChange();
     this.onIssueStoreChange();
     this.onVoterStoreChange();
     this.positionItemTimer = setTimeout(() => {
@@ -84,18 +83,18 @@ class Ready extends Component {
     // console.log('componentDidMount modalToOpen:', modalToOpen);
     if (modalToShow === 'share') {
       this.modalOpenTimer = setTimeout(() => {
-        AppActions.setShowShareModal(true);
+        AppObservableStore.setShowShareModal(true);
       }, 1000);
     } else if (modalToShow === 'sic') { // sic = Shared Item Code
       sharedItemCode = sharedItemCode || '';
       // console.log('componentDidMount sharedItemCode:', sharedItemCode);
       if (sharedItemCode) {
         this.modalOpenTimer = setTimeout(() => {
-          AppActions.setShowSharedItemModal(sharedItemCode);
+          AppObservableStore.setShowSharedItemModal(sharedItemCode);
         }, 1000);
       }
     } else {
-      AppActions.setEvaluateHeaderDisplay();
+      AppObservableStore.setEvaluateHeaderDisplay();
     }
 
     this.analyticsTimer = setTimeout(() => {
@@ -115,7 +114,7 @@ class Ready extends Component {
   }
 
   componentWillUnmount () {
-    this.appStoreListener.remove();
+    this.appStateSubscription.unsubscribe();
     this.issueStoreListener.remove();
     this.voterStoreListener.remove();
     if (this.modalOpenTimer) {
@@ -137,10 +136,10 @@ class Ready extends Component {
     return { hasError: true };
   }
 
-  onAppStoreChange () {
+  onAppObservableStoreChange () {
     this.setState({
-      chosenReadyIntroductionText: AppStore.getChosenReadyIntroductionText(),
-      chosenReadyIntroductionTitle: AppStore.getChosenReadyIntroductionTitle(),
+      chosenReadyIntroductionText: AppObservableStore.getChosenReadyIntroductionText(),
+      chosenReadyIntroductionTitle: AppObservableStore.getChosenReadyIntroductionTitle(),
     });
   }
 

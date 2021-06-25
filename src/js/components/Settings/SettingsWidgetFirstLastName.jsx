@@ -61,18 +61,9 @@ class SettingsWidgetFirstLastName extends Component {
     this.organizationStoreListener.remove();
     this.voterStoreListener.remove();
     if (isWebApp()) {
-      if (this.clearStatusTimer) {
-        clearTimeout(this.clearStatusTimer);
-        this.clearStatusTimer = null;
-      }
-      if (this.organizationNameTimer) {
-        clearTimeout(this.organizationNameTimer);
-        this.organizationNameTimer = null;
-      }
-      if (this.voterNameTimer) {
-        clearTimeout(this.voterNameTimer);
-        this.voterNameTimer = null;
-      }
+      clearTimeout(this.clearStatusTimer);
+      clearTimeout(this.organizationNameTimer);
+      clearTimeout(this.voterNameTimer);
     }
     if (apiCalming('friendInvitationsWaitingForVerification')) {
       // console.log('SettingsWidgetFirstAndLastName friendInvitationsWaitingForVerification');
@@ -81,13 +72,11 @@ class SettingsWidgetFirstLastName extends Component {
   }
 
   handleKeyPressOrganizationName () {
-    if (isWebApp()) {
-      clearTimeout(this.organizationNameTimer);
-    }
     if (this.props.voterHasMadeChangesFunction) {
       this.props.voterHasMadeChangesFunction();
     }
     if (isWebApp()) {
+      clearTimeout(this.organizationNameTimer);
       this.organizationNameTimer = setTimeout(() => {
         OrganizationActions.organizationNameSave(
           this.state.linkedOrganizationWeVoteId,
@@ -107,6 +96,7 @@ class SettingsWidgetFirstLastName extends Component {
     }
 
     if (isWebApp()) {
+      clearTimeout(this.voterNameTimer);
       this.voterNameTimer = setTimeout(() => {
         VoterActions.voterNameSave(this.state.firstName, this.state.lastName);
         this.setState({ voterNameSavedStatus: 'Saved' });

@@ -42,10 +42,7 @@ export default class FacebookFriendsDisplay extends Component {
 
   componentWillUnmount () {
     this.facebookStoreListener.remove();
-    if (this.timer) {
-      clearTimeout(this.timer);
-      this.timer = null;
-    }
+    clearTimeout(this.timer);
   }
 
   onFacebookStoreChange () {
@@ -58,6 +55,7 @@ export default class FacebookFriendsDisplay extends Component {
     this.refs[`overlay-${friendWeVoteId}`].show(); // eslint-disable-line react/no-string-refs
     this.show_popover = true;
     clearTimeout(this.timer);
+    this.timer = null;
   }
 
   onTriggerLeave (friendWeVoteId) {

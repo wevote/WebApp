@@ -5,7 +5,7 @@ import React, { Component } from 'react';
 import Alert from 'react-bootstrap/Alert';
 import Helmet from 'react-helmet';
 import styled from 'styled-components';
-import AppActions from '../../actions/AppActions';
+import AppObservableStore from '../../stores/AppObservableStore';
 import TwitterActions from '../../actions/TwitterActions';
 import VoterSessionActions from '../../actions/VoterSessionActions';
 import LoadingWheel from '../../components/LoadingWheel';
@@ -44,7 +44,7 @@ class VerifyThisIsMe extends Component {
   componentDidMount () {
     const { match: { params } } = this.props;
     // console.log("VerifyThisIsMe, Entering componentDidMount");
-    AppActions.storeSignInStartFullUrl(); // Store cookie so we return to this page after sign in
+    AppObservableStore.storeSignInStartFullUrl(); // Store cookie so we return to this page after sign in
     this.onVoterStoreChange();
     // console.log(`VerifyThisIsMe, componentDidMount: ${params.twitter_handle}`);
     TwitterActions.twitterIdentityRetrieve(params.twitter_handle);

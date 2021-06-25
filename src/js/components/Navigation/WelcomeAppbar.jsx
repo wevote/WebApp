@@ -4,11 +4,10 @@ import { AccountCircle, Close, Menu } from '@material-ui/icons';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import styled from 'styled-components';
-import AppActions from '../../actions/AppActions';
 import OrganizationActions from '../../actions/OrganizationActions';
 import VoterGuideActions from '../../actions/VoterGuideActions';
 import VoterSessionActions from '../../actions/VoterSessionActions';
-import AppStore from '../../stores/AppStore';
+import AppObservableStore, { messageService } from '../../stores/AppObservableStore';
 import VoterStore from '../../stores/VoterStore';
 import cookies from '../../utils/cookies';
 import { cordovaWelcomeAppToolbarTop } from '../../utils/cordovaOffsets';
@@ -36,7 +35,7 @@ class WelcomeAppbar extends Component {
       profilePopUpOpen: false,
       showMobileNavigationMenu: false,
       showPaidAccountUpgradeModal: false,
-      showSignInModal: AppStore.showSignInModal(),
+      showSignInModal: AppObservableStore.showSignInModal(),
       voterFirstName: '',
     };
     this.closePaidAccountUpgradeModal = this.closePaidAccountUpgradeModal.bind(this);
@@ -44,7 +43,7 @@ class WelcomeAppbar extends Component {
 
   componentDidMount () {
     this.onVoterStoreChange();
-    this.appStoreListener = AppStore.addListener(this.onAppStoreChange.bind(this));
+    this.appStateSubscription = messageService.getMessage().subscribe(() => this.onAppObservableStoreChange());
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
   }
 
@@ -93,7 +92,7 @@ class WelcomeAppbar extends Component {
   }
 
   componentWillUnmount () {
-    this.appStoreListener.remove();
+    this.appStateSubscription.unsubscribe();
     this.voterStoreListener.remove();
   }
 
@@ -103,14 +102,14 @@ class WelcomeAppbar extends Component {
     return { hasError: true };
   }
 
-  onAppStoreChange () {
-    const paidAccountUpgradeMode = AppStore.showPaidAccountUpgradeModal() || '';
+  onAppObservableStoreChange () {
+    const paidAccountUpgradeMode = AppObservableStore.showPaidAccountUpgradeModal() || '';
     // console.log('HeaderBar paidAccountUpgradeMode:', paidAccountUpgradeMode);
     const showPaidAccountUpgradeModal = paidAccountUpgradeMode && paidAccountUpgradeMode !== '';
     this.setState({
       paidAccountUpgradeMode,
       showPaidAccountUpgradeModal,
-      showSignInModal: AppStore.showSignInModal(),
+      showSignInModal: AppObservableStore.showSignInModal(),
     });
   }
 
@@ -132,7 +131,7 @@ class WelcomeAppbar extends Component {
       // If the voter opens the mobile drop-down, set the sign_in_start_full_url
       cookies.removeItem('sign_in_start_full_url', '/');
       cookies.removeItem('sign_in_start_full_url', '/', 'wevote.us');
-      AppActions.storeSignInStartFullUrl();
+      AppObservableStore.storeSignInStartFullUrl();
     }
     this.setState({ showMobileNavigationMenu: show });
     if (show) {
@@ -169,7 +168,7 @@ class WelcomeAppbar extends Component {
 
   toggleSignInModal = () => {
     const { showSignInModal } = this.state;
-    AppActions.setShowSignInModal(!showSignInModal);
+    AppObservableStore.setShowSignInModal(!showSignInModal);
   }
 
   transitionToYourVoterGuide = () => {
@@ -186,11 +185,11 @@ class WelcomeAppbar extends Component {
   };
 
   closePaidAccountUpgradeModal () {
-    AppActions.setShowPaidAccountUpgradeModal(false);
+    AppObservableStore.setShowPaidAccountUpgradeModal(false);
   }
 
   closeSignInModal () {
-    AppActions.setShowSignInModal(false);
+    AppObservableStore.setShowSignInModal(false);
   }
 
   render () {

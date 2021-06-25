@@ -11,10 +11,6 @@ class AnnotatedSlideshow extends PureComponent {
   }
 
   componentWillUnmount () {
-    if (this.timer) {
-      clearTimeout(this.timer);
-      this.timer = null;
-    }
   }
 
   handleChangeSlide = (advanceIfTrue) => {

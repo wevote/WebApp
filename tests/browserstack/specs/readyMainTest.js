@@ -4,13 +4,13 @@ const PAUSE_DURATION_MICROSECONDS = 1250;
 const WEBVIEW = 'WEBVIEW_';
 const xssTest = '<img src=javascript:alert("1")>';
 const enter = '\uE007';
-const { isAndroid, isIOS, isCordovaFromAppStore } = driver.config.capabilities;
+const { isAndroid, isIOS, isCordovaFromAppObservableStore } = driver.config.capabilities;
 let webview_context;
 
 describe('Cross browser automated testing', async () => {
   // Run before any test
   before(async () => {
-    if (isCordovaFromAppStore) {
+    if (isCordovaFromAppObservableStore) {
       // For the apps downloadable from either the Apple App Store or Android Play Store,
       // click through the onboarding screens
       const contexts = await driver.getContexts();
@@ -41,7 +41,7 @@ describe('Cross browser automated testing', async () => {
   });
 
   it('should search for candidates and opinions', async () => {
-    if (isCordovaFromAppStore && isIOS) {
+    if (isCordovaFromAppObservableStore && isIOS) {
       await hiddenSelectTextInput('[class^="MuiInputBase-input FindOpinionsForm-inputDefaultLarge-"]', 'President');
       await hiddenSelectClick('[class^="MuiButtonBase-root MuiIconButton-root FindOpinionsForm-iconButtonRoot-"]');
     } else {
@@ -66,7 +66,7 @@ describe('Cross browser automated testing', async () => {
     await simpleClick('decideOnCandidatesButton'); // Click "Decide on candidates" Button
     await browser.back(); // Go back
     await browser.pause(PAUSE_DURATION_MICROSECONDS);
-    if (isCordovaFromAppStore && isIOS) {
+    if (isCordovaFromAppObservableStore && isIOS) {
       await selectClick('[class^="MuiButtonBase-root MuiButton-root MuiButton-outlined"]'); // Click "Decide on measures" Button
     } else {
       await simpleClick('decideOnMeasuresButton'); // Click "Decide on measures" Button
@@ -81,7 +81,7 @@ describe('Cross browser automated testing', async () => {
     await simpleClick('annotatedSlideShowStep4Next'); // Click next
     await simpleClick('howItWorksGetStartedDesktopButton'); // Click "Get Started"
     await simpleClick('profileCloseSignInModal'); // Click "X"
-    if (isCordovaFromAppStore) {
+    if (isCordovaFromAppObservableStore) {
       await simpleClick('readyTabFooterBar');
       await scrollIntoViewSimple('showMoreReadyIntroductionCompressed');
     }
@@ -118,7 +118,7 @@ describe('Cross browser automated testing', async () => {
   it('should test "When and Where Will You Vote?" Section', async () => {
     await simpleClick('makeYourPlanNowButton'); // Click "Make Your Plan Now" Button
     await simpleClick('selectVotingRoughDate'); // Choose voting date
-    if (isCordovaFromAppStore && isIOS) {
+    if (isCordovaFromAppObservableStore && isIOS) {
       await driver.switchContext('NATIVE_APP');
       await browser.pause(PAUSE_DURATION_MICROSECONDS);
       let options = await $('//XCUIElementTypePickerWheel');
@@ -154,7 +154,7 @@ describe('Cross browser automated testing', async () => {
       await options.addValue('voting center');
       await browser.pause(PAUSE_DURATION_MICROSECONDS);
       await driver.switchContext(webview_context);
-    } else if (isAndroid && isCordovaFromAppStore) {
+    } else if (isAndroid && isCordovaFromAppObservableStore) {
       await driver.switchContext('NATIVE_APP');
       await browser.pause(PAUSE_DURATION_MICROSECONDS);
 
@@ -219,12 +219,12 @@ describe('Cross browser automated testing', async () => {
     }
     await simpleTextInput('enterVotingLocationAddress', xssTest); // Enter in address
     await simpleClick('findPollingLocationButton'); // Click "Find Voting Center"
-    if (isCordovaFromAppStore && isIOS) {
+    if (isCordovaFromAppObservableStore && isIOS) {
       await driver.switchContext('NATIVE_APP');
       const done = await $('//XCUIElementTypeButton[@name="Done"]'); // Click done
       await done.click(); // Click done
       await driver.switchContext(webview_context);
-    } else if (isCordovaFromAppStore && isAndroid) {
+    } else if (isCordovaFromAppObservableStore && isAndroid) {
       await driver.switchContext('NATIVE_APP');
       await browser.pause(PAUSE_DURATION_MICROSECONDS);
       const close = await $('//android.widget.ImageButton[@resource-id="com.android.chrome:id/close_button"]');
@@ -248,7 +248,7 @@ describe('Cross browser automated testing', async () => {
   });
 
 //   it('Are Your Friends Ready to Vote?', async () => {
-//     await simpleClick(''); // Click 
+//     await simpleClick(''); // Click
 //   });
 
 });

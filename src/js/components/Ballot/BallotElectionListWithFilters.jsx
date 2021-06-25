@@ -244,7 +244,7 @@ export default class BallotElectionListWithFilters extends Component {
   goToBallotForDifferentElection (originalTextForMapSearch, googleCivicElectionId, ballotLocationShortcut = '', ballotReturnedWeVoteId = '') {
     // console.log('BallotElectionListWithFilters, goToBallotForDifferentElection');
     const ballotBaseUrlClean = this.props.ballotBaseUrl || '/ballot';
-    const { organizationWeVoteId } = this.props;
+    const { organizationWeVoteId, toggleFunction } = this.props;
     let destinationUrlForHistoryPush = '';
     if (ballotLocationShortcut && ballotLocationShortcut !== '' && ballotLocationShortcut !== 'none') {
       // console.log('goToBallotForDifferentElection, ballotLocationShortcut: ', ballotLocationShortcut);
@@ -273,7 +273,7 @@ export default class BallotElectionListWithFilters extends Component {
       // }
     }
 
-    if (this.props.toggleFunction) {
+    if (toggleFunction) {
       // console.log('goToBallotForDifferentElection, loadingNewBallotItems: ', this.state.loadingNewBallotItems);
       // console.log('goToBallotForDifferentElection, priorElectionId: ', this.state.priorElectionId, ', updatedElectionId: ', this.state.updatedElectionId, ', destinationUrlForHistoryPush: ', destinationUrlForHistoryPush, ', BallotStore.ballotProperties.google_civic_election_id: ', BallotStore.ballotProperties.google_civic_election_id, ', VoterStore.electionId():', VoterStore.electionId());
       let ballotPropertiesGoogleCivicElectionId = 0;
@@ -284,8 +284,9 @@ export default class BallotElectionListWithFilters extends Component {
         destinationUrlForHistoryPush,
         loadingNewBallotItems: true,
         priorElectionId: ballotPropertiesGoogleCivicElectionId || VoterStore.electionId() || 0,
-        updatedElectionId: 0,
+        updatedElectionId: googleCivicElectionId,  // TODO EXPERIMENT JUNE 22 2021
       });
+      toggleFunction();
     } else {
       // console.log('destinationUrlForHistoryPush: ', destinationUrlForHistoryPush);
       historyPush(destinationUrlForHistoryPush);
@@ -295,7 +296,7 @@ export default class BallotElectionListWithFilters extends Component {
   executeDifferentElection (election) {
     if (election) {
       const { ballotBaseUrl, displayElectionsForOrganizationVoterGuidesMode } = this.props;
-      // console.log('executeDifferentElection ballotBaseUrl:', ballotBaseUrl, ', displayElectionsForOrganizationVoterGuidesMode:', displayElectionsForOrganizationVoterGuidesMode);
+      console.log('executeDifferentElection ballotBaseUrl:', ballotBaseUrl, ', displayElectionsForOrganizationVoterGuidesMode:', displayElectionsForOrganizationVoterGuidesMode);
       if (displayElectionsForOrganizationVoterGuidesMode) {
         this.switchElectionBehindTheScenes(election.google_civic_election_id);
       } else if (ballotBaseUrl) {

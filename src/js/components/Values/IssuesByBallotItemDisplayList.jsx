@@ -108,9 +108,9 @@ class IssuesByBallotItemDisplayList extends Component {
   }
 
   componentWillUnmount () {
-    if (this.timer) {
-      clearTimeout(this.timer);
-    }
+    clearTimeout(this.timer);
+    clearTimeout(this.timer2);
+    clearTimeout(this.handleDelayedIssueRender);
     this.issueStoreListener.remove();
     this.voterGuideStoreListener.remove();
   }
@@ -130,6 +130,7 @@ class IssuesByBallotItemDisplayList extends Component {
         issuesToRender,
       });
       if (issuesToRender.length > 0 && issueRenderCount === 0) {
+        clearTimeout(this.timer);
         this.timer = setTimeout(this.handleDelayedIssueRender, 50);
       }
     }
@@ -196,7 +197,8 @@ class IssuesByBallotItemDisplayList extends Component {
     if (shouldDoAnotherRender) {
       this.setState({ issueRenderCount: newIssueRenderCount });
       if (change > 0) {
-        setTimeout(this.handleDelayedIssueRender, 5);
+        clearTimeout(this.timer2);
+        this.timer2 = setTimeout(this.handleDelayedIssueRender, 5);
       }
     }
   }
@@ -287,7 +289,7 @@ IssuesByBallotItemDisplayList.propTypes = {
 };
 
 const Wrapper = styled.div`
-  overflow: show;
+  overflow: unset;
   display: flex;
   flex-flow: row;
   align-items: center;
@@ -297,7 +299,7 @@ const Wrapper = styled.div`
 
 const Issues = styled.div`
   width: 100%;
-  margin-left: 0px;
+  margin-left: 0;
 `;
 
 const IssueList = styled.ul`
@@ -312,7 +314,6 @@ const MoreWrapper = styled.p`
   align-items: center;
   background-image: linear-gradient(to right, rgba(255,255,255,0), rgba(255,255,255,1));
   cursor: pointer;
-  display: flex;
   display: inline;
   flex-flow: row;
   height: 30px;

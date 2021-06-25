@@ -4,10 +4,10 @@ import React, { Component } from 'react';
 import Helmet from 'react-helmet';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
-import AppActions from '../../actions/AppActions';
 import PricingCard from '../../components/More/PricingCard';
 import { Section } from '../../components/Welcome/sectionStyles';
 import PricingSwitch from '../../components/Widgets/PricingSwitch';
+import AppObservableStore from '../../stores/AppObservableStore';
 import VoterStore from '../../stores/VoterStore';
 import cordovaScrollablePaneTopPadding from '../../utils/cordovaScrollablePaneTopPadding';
 import { renderLog } from '../../utils/logging';
@@ -444,11 +444,11 @@ class Pricing extends Component {
       if (modalDisplayMode) {
         this.pricingPlanChosenFunctionLocal(pricingPlanChosen);
       } else {
-        AppActions.setShowPaidAccountUpgradeModal(pricingPlanChosen);
+        AppObservableStore.setShowPaidAccountUpgradeModal(pricingPlanChosen);
       }
     } else {
-      AppActions.setGetStartedMode('getStartedForOrganizations');
-      AppActions.setShowSignInModal(true);
+      AppObservableStore.setGetStartedMode('getStartedForOrganizations');
+      AppObservableStore.setShowSignInModal(true);
     }
   }
 

@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import Helmet from 'react-helmet';
 import styled from 'styled-components';
-import AppActions from '../../actions/AppActions';
+import AppObservableStore from '../../stores/AppObservableStore';
 import OrganizationActions from '../../actions/OrganizationActions';
 import OrganizationStore from '../../stores/OrganizationStore';
 import VoterStore from '../../stores/VoterStore';
@@ -241,7 +241,7 @@ class SettingsSharing extends Component {
     //
     // console.log('SettingsDomain openPaidAccountUpgradeModal');
     if (isWebApp()) {
-      AppActions.setShowPaidAccountUpgradeModal(paidAccountUpgradeMode);
+      AppObservableStore.setShowPaidAccountUpgradeModal(paidAccountUpgradeMode);
     } else {
       cordovaOpenSafariView('https://wevote.us/more/pricing', null, 50);
     }
