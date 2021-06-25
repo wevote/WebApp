@@ -62,8 +62,8 @@ export default {
     messageService.sendMessage('state updated activityTidbitWeVoteIdForDrawer');
   },
 
-  setActivityTidbitWeVoteIdForDrawerAndOpen (activityTidbitWeVoteId) {
-    nonFluxState.activityTidbitWeVoteIdForDrawerAndOpen = activityTidbitWeVoteId;
+  setActivityTidbitWeVoteIdForDrawerAndOpen (setActivityTidbitWeVoteIdForDrawerAndOpen) {
+    nonFluxState.activityTidbitWeVoteIdForDrawerAndOpen = setActivityTidbitWeVoteIdForDrawerAndOpen;
     messageService.sendMessage('state updated activityTidbitWeVoteIdForDrawerAndOpen');
   },
 
@@ -156,7 +156,7 @@ export default {
     nonFluxState.showSelectBallotModal = showSelectBallotModal;
     nonFluxState.showSelectBallotModalHideAddress = showSelectBallotModalHideAddress;
     nonFluxState.showSelectBallotModalHideElections = showSelectBallotModalHideElections;
-    messageService.sendMessage('state updated showSelectBallotModal etc.');
+    messageService.sendMessage('state updated showSelectBallotModal, showSelectBallotModalHideAddress, & showSelectBallotModalHideElections');
   },
 
   setShowShareModal (show) {
