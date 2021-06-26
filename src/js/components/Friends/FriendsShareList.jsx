@@ -48,7 +48,17 @@ class FriendShareList extends Component {
               <FormControlLabel
                 control={<Checkbox color="primary" checked={this.state[index]} onChange={handleChange(index, item)} value={index} />}
                 classes={{ label: classes.label, root: classes.label }}
-                label={<FriendsShareListItem {...item} />}
+                label={(
+                  <FriendsShareListItem
+                    linkedOrganizationWeVoteId={item.linkedOrganizationWeVoteId}
+                              mutualFriends={item.mutualFriends}
+                              positionsTaken={item.positionsTaken}
+                              voterPhotoUrlLarge={item.voterPhotoUrlLarge}
+                              voterEmailAddress={item.voterEmailAddress}
+                              voterDisplayName={item.voterDisplayName}
+                              voterTwitterHandle={item.voterTwitterHandle}
+                  />
+                )}
               />
             );
           })}

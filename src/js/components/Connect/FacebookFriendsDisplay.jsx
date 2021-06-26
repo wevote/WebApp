@@ -117,7 +117,10 @@ export default class FacebookFriendsDisplay extends Component {
           >
             <div className="card">
               <div className="card-main">
-                <FacebookFriendCard {...oneFriend} />
+                <FacebookFriendCard
+                  picture={oneFriend.picture}
+                  name={oneFriend.name}
+                />
               </div>
             </div>
           </Popover>
@@ -138,7 +141,10 @@ export default class FacebookFriendsDisplay extends Component {
           >
             <span className="position-rating__source with-popover">
               <Link to="/facebook_invitable_friends">
-                <FacebookFriendTinyDisplay {...oneFriend} />
+                <FacebookFriendTinyDisplay
+                  picture={oneFriend.picture}
+                  name={oneFriend.name}
+                />
               </Link>
             </span>
           </OverlayTrigger>
