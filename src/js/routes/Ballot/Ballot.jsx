@@ -95,7 +95,6 @@ class Ballot extends Component {
       mounted: false,
       numberOfBallotItemsToDisplay: 5,
       numberOfVoterRetrieveAttempts: 0,
-      showSelectBallotModal: false,
       totalNumberOfBallotItems: 0,
       voterBallotList: [],
       showFilterTabs: false,
@@ -125,7 +124,7 @@ class Ballot extends Component {
     this.supportStoreListener = SupportStore.addListener(this.onBallotStoreChange.bind(this));
     this.voterGuideStoreListener = VoterGuideStore.addListener(this.onVoterGuideStoreChange.bind(this));
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
-
+    AppObservableStore.setShowSelectBallotModal(false, false, false);
     this.setState({
       componentDidMountFinished: true,
       locationGuessClosed: cookies.getItem('location_guess_closed'),
@@ -529,7 +528,6 @@ class Ballot extends Component {
   onAppObservableStoreChange () {
     this.setState({
       ballotHeaderUnpinned: AppObservableStore.getScrolledDown(),
-      showSelectBallotModal: AppObservableStore.showSelectBallotModal(),
     });
     const { googleCivicElectionId } = this.state;
     const membershipOrganizationWeVoteId = AppObservableStore.getSiteOwnerOrganizationWeVoteId();
@@ -998,7 +996,7 @@ class Ballot extends Component {
   }
 
   toggleSelectBallotModal (destinationUrlForHistoryPush = '', hideAddressEdit = false, hideElections = false) {
-    const { showSelectBallotModal } = this.state;
+    const showSelectBallotModal = AppObservableStore.showSelectBallotModal();
     // console.log('Ballot toggleSelectBallotModal, destinationUrlForHistoryPush:', destinationUrlForHistoryPush, ', showSelectBallotModal:', showSelectBallotModal);
     if (showSelectBallotModal && destinationUrlForHistoryPush && destinationUrlForHistoryPush !== '') {
       // console.log('toggleSelectBallotModal destinationUrlForHistoryPush:', destinationUrlForHistoryPush);

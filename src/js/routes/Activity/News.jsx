@@ -116,7 +116,6 @@ class News extends Component {
       this.activityStoreListener.remove();
       this.voterStoreListener.remove();
       window.removeEventListener('scroll', this.onScroll);
-      if (this.this.preloadTimer) clearTimeout(this.this.preloadTimer);
       if (this.positionItemTimer) clearTimeout(this.positionItemTimer);
       if (this.activityTidbitDrawerTimer) clearTimeout(this.activityTidbitDrawerTimer);
     }
