@@ -60,8 +60,8 @@ class ReadyLight extends Component {
   }
 
   componentWillUnmount () {
-    clearTimeout(this.preloadTimer);
     clearTimeout(this.analyticsTimer);
+    clearTimeout(this.preloadTimer);
 
     const { showReadyHeavy } = this.props;
     showReadyHeavy();

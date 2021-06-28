@@ -511,9 +511,10 @@ class Ballot extends Component {
     this.supportStoreListener.remove();
     this.voterGuideStoreListener.remove();
     this.voterStoreListener.remove();
-    clearTimeout(this.timer);
+    clearTimeout(this.timerToRetrieve);
+    clearTimeout(this.preloadTimer);     // In componentDidMount
     clearTimeout(this.ballotItemTimer);
-    clearTimeout(this.modalOpenTimer);
+    clearTimeout(this.modalOpenTimer);   // In componentDidMount
     clearTimeout(this.hashLinkTimer);
     window.removeEventListener('scroll', this.onScroll);
   }
@@ -972,8 +973,8 @@ class Ballot extends Component {
   startTimerToRetrieveVoter = () => {
     let { numberOfVoterRetrieveAttempts } = this.state;
     // console.log('startTimerToRetrieveVoter, numberOfVoterRetrieveAttempts:', numberOfVoterRetrieveAttempts);
-    clearTimeout(this.timer);
-    this.timer = setTimeout(() => {
+    clearTimeout(this.timerToRetrieve);
+    this.timerToRetrieve = setTimeout(() => {
       VoterActions.voterRetrieve();
       numberOfVoterRetrieveAttempts += 1;
       this.setState({
@@ -988,6 +989,7 @@ class Ballot extends Component {
     numberOfBallotItemsToDisplay += 5;
     // console.log('Number of ballot items after increment: ', numberOfBallotItemsToDisplay);
 
+    clearTimeout(this.ballotItemTimer);
     this.ballotItemTimer = setTimeout(() => {
       this.setState({
         numberOfBallotItemsToDisplay,

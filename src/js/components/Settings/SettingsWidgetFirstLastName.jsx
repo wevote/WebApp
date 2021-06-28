@@ -72,11 +72,13 @@ class SettingsWidgetFirstLastName extends Component {
   }
 
   handleKeyPressOrganizationName () {
+    if (isWebApp()) {
+      clearTimeout(this.organizationNameTimer);
+    }
     if (this.props.voterHasMadeChangesFunction) {
       this.props.voterHasMadeChangesFunction();
     }
     if (isWebApp()) {
-      clearTimeout(this.organizationNameTimer);
       this.organizationNameTimer = setTimeout(() => {
         OrganizationActions.organizationNameSave(
           this.state.linkedOrganizationWeVoteId,

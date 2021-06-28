@@ -135,7 +135,6 @@ class Candidate extends Component {
       }, 1000);
     } else if (modalToOpen === 'sic') { // sic = Shared Item Code
       if (sharedItemCode || '') {
-        clearTimeout(this.showShareItemModalTimer);
         this.showShareItemModalTimer = setTimeout(() => {
           AppObservableStore.setShowSharedItemModal(sharedItemCode);
         }, 1000);

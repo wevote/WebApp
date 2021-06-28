@@ -49,10 +49,10 @@ class SettingsWidgetOrganizationDescription extends Component {
   }
 
   handleKeyPress () {
+    clearTimeout(this.timer);
     if (this.props.voterHasMadeChangesFunction) {
       this.props.voterHasMadeChangesFunction();
     }
-    clearTimeout(this.timer);
     this.timer = setTimeout(() => {
       OrganizationActions.organizationDescriptionSave(this.state.linkedOrganizationWeVoteId, this.state.organizationDescription);
       this.setState({ organizationDescriptionSavedStatus: 'Saved' });

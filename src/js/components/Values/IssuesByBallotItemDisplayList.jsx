@@ -110,7 +110,6 @@ class IssuesByBallotItemDisplayList extends Component {
   componentWillUnmount () {
     clearTimeout(this.timer);
     clearTimeout(this.timer2);
-    clearTimeout(this.handleDelayedIssueRender);
     this.issueStoreListener.remove();
     this.voterGuideStoreListener.remove();
   }

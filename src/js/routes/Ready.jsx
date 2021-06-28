@@ -117,18 +117,10 @@ class Ready extends Component {
     this.appStateSubscription.unsubscribe();
     this.issueStoreListener.remove();
     this.voterStoreListener.remove();
-    if (this.modalOpenTimer) {
-      clearTimeout(this.modalOpenTimer);
-      this.modalOpenTimer = null;
-    }
-    if (this.positionItemTimer) {
-      clearTimeout(this.positionItemTimer);
-      this.positionItemTimer = null;
-    }
-    if (this.preloadTimer) {
-      clearTimeout(this.preloadTimer);
-      this.preloadTimer = null;
-    }
+    clearTimeout(this.analyticsTimer);
+    clearTimeout(this.modalOpenTimer);
+    clearTimeout(this.positionItemTimer);
+    clearTimeout(this.preloadTimer);
   }
 
   static getDerivedStateFromError (error) {       // eslint-disable-line no-unused-vars
