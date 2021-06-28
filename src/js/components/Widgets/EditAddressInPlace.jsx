@@ -114,7 +114,7 @@ EditAddressInPlace.propTypes = {
   defaultIsEditingAddress: PropTypes.bool,
   noAddressMessage: PropTypes.string,
   toggleEditingAddress: PropTypes.func,
-  toggleFunction: PropTypes.func.isRequired,
+  toggleFunction: PropTypes.func,
 };
 
 const styles = {

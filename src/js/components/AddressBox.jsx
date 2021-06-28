@@ -195,13 +195,16 @@ class AddressBox extends Component {
       loading: true,
       voterSavedAddress: true,
     });
+    // New June 2021, once they save we want to go back to the original view with the map
+    const { toggleEditingAddress } = this.props;
+    toggleEditingAddress();
   }
 
   render () {
     renderLog('AddressBox');  // Set LOG_RENDER_EVENTS to log all renders
     // console.log('AddressBox render');
     let { waitingMessage } = this.props;
-    const { classes, disableAutoFocus, externalUniqueId, showCancelEditAddressButton } = this.props;
+    const { classes, disableAutoFocus, externalUniqueId, showCancelEditAddressButton, toggleEditingAddress } = this.props;
     const { ballotCaveat, loading, textForMapSearch } = this.state;
     if (loading) {
       if (!waitingMessage) waitingMessage = 'Please wait a moment while we find your ballot...';
@@ -239,7 +242,7 @@ class AddressBox extends Component {
             <Button
               color="primary"
               id={externalUniqueId ? `addressBoxModalCancelButton-${externalUniqueId}` : 'addressBoxModalCancelButton'}
-              onClick={this.props.toggleEditingAddress}
+              onClick={toggleEditingAddress}
               classes={{ root: classes.cancelButton }}
             >
               Cancel

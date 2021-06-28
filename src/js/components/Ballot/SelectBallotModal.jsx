@@ -124,7 +124,7 @@ class SelectBallotModal extends Component {
                     address={voterAddressObject}
                     ballotBaseUrl={ballotBaseUrl}
                     defaultIsEditingAddress={editingAddress}
-                    toggleFunction={this.props.toggleFunction}
+                    // toggleFunction={this.props.toggleFunction}
                     toggleEditingAddress={this.toggleEditingAddress}
                   />
                 </EditAddressInPlaceWrapperMobile>
@@ -147,7 +147,7 @@ class SelectBallotModal extends Component {
                     address={voterAddressObject}
                     ballotBaseUrl={ballotBaseUrl}
                     defaultIsEditingAddress={editingAddress}
-                    toggleFunction={this.props.toggleFunction}
+                    // toggleFunction={this.props.toggleFunction}
                     toggleEditingAddress={this.toggleEditingAddress}
                   />
                 )}
