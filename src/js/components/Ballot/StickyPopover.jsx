@@ -64,7 +64,7 @@ class StickyPopover extends Component {
     if (openPopoverByProp) {
       // When manually opening Popover, turn off the mouse hover features
     } else if (delay) {
-      clearTimeout(this.leaveTimeoutId);
+      clearTimeout(this.enterTimeoutId);
       this.leaveTimeoutId = setTimeout(() => this.setState({ showPopover: false }), delay.hide);
     }
   }
