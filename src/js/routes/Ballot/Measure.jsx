@@ -201,7 +201,7 @@ class Measure extends Component {
     this.appStateSubscription.unsubscribe();
     this.measureStoreListener.remove();
     this.voterGuideStoreListener.remove();
-    clearTimeout(this.modalOpenTimer);
+    if (this.modalOpenTimer) clearTimeout(this.modalOpenTimer);
   }
 
   onAppObservableStoreChange () {

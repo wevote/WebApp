@@ -42,7 +42,7 @@ class ChildCommentList extends Component {
     this.activityStoreListener.remove();
     this.reactionStoreListener.remove();
     this.voterStoreListener.remove();
-    clearTimeout(this.positionItemTimer);
+    if (this.positionItemTimer) clearTimeout(this.positionItemTimer);
   }
 
   onActivityStoreChange () {
@@ -140,7 +140,7 @@ class ChildCommentList extends Component {
     // console.log('increaseNumberOfActivityTidbitsToDisplay');
     let { numberOfChildCommentsToDisplay } = this.state;
     numberOfChildCommentsToDisplay += 2;
-    clearTimeout(this.positionItemTimer);
+    if (this.positionItemTimer) clearTimeout(this.positionItemTimer);
     this.positionItemTimer = setTimeout(() => {
       this.setState({
         numberOfChildCommentsToDisplay,

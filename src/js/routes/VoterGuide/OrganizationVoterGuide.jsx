@@ -179,8 +179,8 @@ export default class OrganizationVoterGuide extends Component {
     this.organizationStoreListener.remove();
     this.voterGuideStoreListener.remove();
     this.voterStoreListener.remove();
-    clearTimeout(this.modalOpenTimer);
-    clearTimeout(this.viewingVoterGuideTimer);
+    if (this.modalOpenTimer) clearTimeout(this.modalOpenTimer);
+    if (this.viewingVoterGuideTimer) clearTimeout(this.viewingVoterGuideTimer);
     AppObservableStore.setViewingOrganizationVoterGuide(false);
   }
 

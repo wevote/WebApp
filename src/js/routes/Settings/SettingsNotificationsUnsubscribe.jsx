@@ -69,7 +69,7 @@ class SettingsNotificationsUnsubscribe extends Component {
   componentWillUnmount () {
     this.voterStoreListener.remove();
     if (this.timer) {
-      clearTimeout(this.timer);
+      if (this.timer) clearTimeout(this.timer);
       this.timer = null;
     }
   }
@@ -153,7 +153,7 @@ class SettingsNotificationsUnsubscribe extends Component {
     if (notificationsSavedStatusDisplay) {
       this.setState({ notificationsSavedStatus: 'Saved' });
 
-      clearTimeout(this.timer);
+      if (this.timer) clearTimeout(this.timer);
       const delayBeforeClear = 2000;
       this.timer = setTimeout(() => {
         this.setState({ notificationsSavedStatus: '' });

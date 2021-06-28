@@ -61,9 +61,9 @@ class SettingsWidgetFirstLastName extends Component {
     this.organizationStoreListener.remove();
     this.voterStoreListener.remove();
     if (isWebApp()) {
-      clearTimeout(this.clearStatusTimer);
-      clearTimeout(this.organizationNameTimer);
-      clearTimeout(this.voterNameTimer);
+      if (this.clearStatusTimer) clearTimeout(this.clearStatusTimer);
+      if (this.organizationNameTimer) clearTimeout(this.organizationNameTimer);
+      if (this.voterNameTimer) clearTimeout(this.voterNameTimer);
     }
     if (apiCalming('friendInvitationsWaitingForVerification')) {
       // console.log('SettingsWidgetFirstAndLastName friendInvitationsWaitingForVerification');
@@ -73,7 +73,7 @@ class SettingsWidgetFirstLastName extends Component {
 
   handleKeyPressOrganizationName () {
     if (isWebApp()) {
-      clearTimeout(this.organizationNameTimer);
+      if (this.organizationNameTimer) clearTimeout(this.organizationNameTimer);
     }
     if (this.props.voterHasMadeChangesFunction) {
       this.props.voterHasMadeChangesFunction();
@@ -91,14 +91,14 @@ class SettingsWidgetFirstLastName extends Component {
 
   handleKeyPressVoterName () {
     if (isWebApp()) {
-      clearTimeout(this.voterNameTimer);
+      if (this.voterNameTimer) clearTimeout(this.voterNameTimer);
     }
     if (this.props.voterHasMadeChangesFunction) {
       this.props.voterHasMadeChangesFunction();
     }
 
     if (isWebApp()) {
-      clearTimeout(this.voterNameTimer);
+      if (this.voterNameTimer) clearTimeout(this.voterNameTimer);
       this.voterNameTimer = setTimeout(() => {
         VoterActions.voterNameSave(this.state.firstName, this.state.lastName);
         this.setState({ voterNameSavedStatus: 'Saved' });
@@ -188,7 +188,7 @@ class SettingsWidgetFirstLastName extends Component {
     }
     if (isWebApp()) {
       // After some time, clear saved message
-      clearTimeout(this.clearStatusTimer);
+      if (this.clearStatusTimer) clearTimeout(this.clearStatusTimer);
       this.clearStatusTimer = setTimeout(() => {
         this.setState({ organizationNameSavedStatus: '' });
       }, delayBeforeRemovingSavedStatus);
@@ -227,7 +227,7 @@ class SettingsWidgetFirstLastName extends Component {
     }
     if (isWebApp()) {
       // After some time, clear saved message
-      clearTimeout(this.clearStatusTimer);
+      if (this.clearStatusTimer) clearTimeout(this.clearStatusTimer);
       this.clearStatusTimer = setTimeout(() => {
         this.setState({ voterNameSavedStatus: '' });
       }, delayBeforeRemovingSavedStatus);

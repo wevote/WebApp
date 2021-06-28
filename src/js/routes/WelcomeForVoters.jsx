@@ -54,7 +54,7 @@ class WelcomeForVoters extends PureComponent {
 
   componentWillUnmount () {
     this.voterStoreListener.remove();
-    clearTimeout(this.closeVerifyModalTimer);
+    if (this.closeVerifyModalTimer) clearTimeout(this.closeVerifyModalTimer);
   }
 
   onVoterStoreChange () {
@@ -72,7 +72,7 @@ class WelcomeForVoters extends PureComponent {
 
   closeVerifyModalStep2 = () => {
     // console.log('WelcomeForVoters closeVerifyModalStep2');
-    clearTimeout(this.closeVerifyModalTimer);
+    if (this.closeVerifyModalTimer) clearTimeout(this.closeVerifyModalTimer);
     this.closeVerifyModalTimer = setTimeout(() => {
       VoterActions.clearEmailAddressStatus();
       VoterActions.clearSecretCodeVerificationStatus();

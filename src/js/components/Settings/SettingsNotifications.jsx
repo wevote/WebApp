@@ -49,7 +49,7 @@ class SettingsNotifications extends Component {
 
   componentWillUnmount () {
     this.voterStoreListener.remove();
-    clearTimeout(this.timer);
+    if (this.timer) clearTimeout(this.timer);
   }
 
   onVoterStoreChange () {
@@ -130,7 +130,7 @@ class SettingsNotifications extends Component {
       this.setState({ notificationsSavedStatus: 'Saved' });
 
       const delayBeforeClear = 2000;
-      clearTimeout(this.timer);
+      if (this.timer) clearTimeout(this.timer);
       this.timer = setTimeout(() => {
         this.setState({ notificationsSavedStatus: '' });
       }, delayBeforeClear);

@@ -72,7 +72,7 @@ class CandidateItemEndorsement extends Component {
   componentWillUnmount () {
     this.candidateStoreListener.remove();
     this.voterGuidePossibilityStoreListener.remove();
-    clearTimeout(this.doneTimer);
+    if (this.doneTimer) clearTimeout(this.doneTimer);
   }
 
   onCandidateStoreChange () {
@@ -305,7 +305,7 @@ class CandidateItemEndorsement extends Component {
   };
 
   doneDisplay = (msg, delay) => {
-    clearTimeout(this.doneTimer);
+    if (this.doneTimer) clearTimeout(this.doneTimer);
     this.doneTimer = setTimeout(() => {}, delay);  // Don't immediately dismiss the dialog
     // I spent many hours trying to send a message to the parent, asking it to close the iFrame, but was not successful
     // TODO: fix mismatched position ... hidden

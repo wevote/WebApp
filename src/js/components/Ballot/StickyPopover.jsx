@@ -35,8 +35,8 @@ class StickyPopover extends Component {
   }
 
   componentWillUnmount () {
-    clearTimeout(this.enterTimeoutId);
-    clearTimeout(this.leaveTimeoutId);
+    if (this.enterTimeoutId) clearTimeout(this.enterTimeoutId);
+    if (this.leaveTimeoutId) clearTimeout(this.leaveTimeoutId);
   }
 
   onMouseEnterTarget () {
@@ -44,7 +44,7 @@ class StickyPopover extends Component {
     if (openPopoverByProp) {
       // When manually opening Popover, turn off the mouse hover features
     } else if (delay) {
-      clearTimeout(this.enterTimeoutId);
+      if (this.enterTimeoutId) clearTimeout(this.enterTimeoutId);
       this.enterTimeoutId = setTimeout(() => this.setState({ showPopover: true }), delay.show);
     }
   }
@@ -55,7 +55,7 @@ class StickyPopover extends Component {
   }
 
   onMouseEnterPopover () {
-    clearTimeout(this.leaveTimeoutId);
+    if (this.leaveTimeoutId) clearTimeout(this.leaveTimeoutId);
     this.setState({ showPopover: true });
   }
 
@@ -64,7 +64,7 @@ class StickyPopover extends Component {
     if (openPopoverByProp) {
       // When manually opening Popover, turn off the mouse hover features
     } else if (delay) {
-      clearTimeout(this.enterTimeoutId);
+      if (this.enterTimeoutId) clearTimeout(this.enterTimeoutId);
       this.leaveTimeoutId = setTimeout(() => this.setState({ showPopover: false }), delay.hide);
     }
   }

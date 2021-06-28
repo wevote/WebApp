@@ -108,8 +108,8 @@ class IssuesByBallotItemDisplayList extends Component {
   }
 
   componentWillUnmount () {
-    clearTimeout(this.timer);
-    clearTimeout(this.timer2);
+    if (this.timer) clearTimeout(this.timer);
+    if (this.timer2) clearTimeout(this.timer2);
     this.issueStoreListener.remove();
     this.voterGuideStoreListener.remove();
   }
@@ -129,7 +129,7 @@ class IssuesByBallotItemDisplayList extends Component {
         issuesToRender,
       });
       if (issuesToRender.length > 0 && issueRenderCount === 0) {
-        clearTimeout(this.timer);
+        if (this.timer) clearTimeout(this.timer);
         this.timer = setTimeout(this.handleDelayedIssueRender, 50);
       }
     }
@@ -196,7 +196,7 @@ class IssuesByBallotItemDisplayList extends Component {
     if (shouldDoAnotherRender) {
       this.setState({ issueRenderCount: newIssueRenderCount });
       if (change > 0) {
-        clearTimeout(this.timer2);
+        if (this.timer2) clearTimeout(this.timer2);
         this.timer2 = setTimeout(this.handleDelayedIssueRender, 5);
       }
     }

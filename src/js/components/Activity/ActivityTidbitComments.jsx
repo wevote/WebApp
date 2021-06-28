@@ -45,7 +45,7 @@ class ActivityTidbitComments extends Component {
     this.activityStoreListener.remove();
     this.reactionStoreListener.remove();
     this.voterStoreListener.remove();
-    clearTimeout(this.positionItemTimer);
+    if (this.positionItemTimer) clearTimeout(this.positionItemTimer);
   }
 
   onActivityStoreChange () {
@@ -165,7 +165,7 @@ class ActivityTidbitComments extends Component {
     // console.log('increaseNumberOfActivityTidbitsToDisplay');
     let { numberOfParentCommentsToDisplay } = this.state;
     numberOfParentCommentsToDisplay += 2;
-    clearTimeout(this.positionItemTimer);
+    if (this.positionItemTimer) clearTimeout(this.positionItemTimer);
     this.positionItemTimer = setTimeout(() => {
       this.setState({
         numberOfParentCommentsToDisplay,

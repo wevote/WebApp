@@ -216,7 +216,7 @@ class Opinions2020 extends Component {
     this.organizationStoreListener.remove();
     this.voterGuideStoreListener.remove();
     this.voterStoreListener.remove();
-    clearTimeout(this.ballotItemTimer);
+    if (this.ballotItemTimer) clearTimeout(this.ballotItemTimer);
     window.removeEventListener('scroll', this.onScroll);
   }
 
@@ -568,7 +568,7 @@ class Opinions2020 extends Component {
     numberOfBallotItemsToDisplay += 5;
     // console.log('Number of ballot items after increment: ', numberOfBallotItemsToDisplay);
 
-    clearTimeout(this.ballotItemTimer);
+    if (this.ballotItemTimer) clearTimeout(this.ballotItemTimer);
     this.ballotItemTimer = setTimeout(() => {
       this.setState({
         numberOfBallotItemsToDisplay,

@@ -15,7 +15,7 @@ class DelayedLoad extends Component {
   }
 
   componentWillUnmount () {
-    clearTimeout(this.timer);
+    if (this.timer) clearTimeout(this.timer);
   }
 
   render () {

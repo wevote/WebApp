@@ -42,7 +42,7 @@ class SettingsWidgetOrganizationWebsite extends Component {
   componentWillUnmount () {
     this.organizationStoreListener.remove();
     this.voterStoreListener.remove();
-    clearTimeout(this.clearStatusTimer);
+    if (this.clearStatusTimer) clearTimeout(this.clearStatusTimer);
     clearTimeout(this.timer);
     restoreStylesAfterCordovaKeyboard('SettingsWidgetOrganizationWebsite');
   }

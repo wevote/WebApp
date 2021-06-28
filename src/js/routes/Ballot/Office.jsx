@@ -137,7 +137,7 @@ class Office extends Component {
   componentWillUnmount () {
     this.candidateStoreListener.remove();
     this.officeStoreListener.remove();
-    clearTimeout(this.modalOpenTimer);
+    if (this.modalOpenTimer) clearTimeout(this.modalOpenTimer);
   }
 
   onCandidateStoreChange () {

@@ -33,7 +33,7 @@ class ActivityTidbitDrawer extends Component {
   }
 
   componentWillUnmount () {
-    clearTimeout(this.closeTimeout);
+    if (this.closeTimeout) clearTimeout(this.closeTimeout);
     this.activityStoreListener.remove();
     showZenDeskHelpVisibility();
   }

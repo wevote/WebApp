@@ -41,13 +41,13 @@ export default class SearchBar extends Component {
 
   componentWillUnmount () {
     if (this.timer) {
-      clearTimeout(this.timer);
+      if (this.timer) clearTimeout(this.timer);
       this.timer = null;
     }
   }
 
   handleKeyPress () {
-    clearTimeout(this.timer);
+    if (this.timer) clearTimeout(this.timer);
     this.timer = setTimeout(() => {
       this.props.searchFunction(this.state.searchString);
     }, this.props.searchUpdateDelayTime);

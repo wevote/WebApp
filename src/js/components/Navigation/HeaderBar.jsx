@@ -274,8 +274,8 @@ class HeaderBar extends Component {
     this.appStateSubscription.unsubscribe();
     this.friendStoreListener.remove();
     this.voterStoreListener.remove();
-    clearTimeout(this.setStyleTimeout);
-    clearTimeout(this.showBallotModalTimeout);
+    if (this.setStyleTimeout) clearTimeout(this.setStyleTimeout);
+    if (this.showBallotModalTimeout) clearTimeout(this.showBallotModalTimeout);
   }
 
   // eslint-disable-next-line no-unused-vars

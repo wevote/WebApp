@@ -116,9 +116,9 @@ class News extends Component {
       this.activityStoreListener.remove();
       this.voterStoreListener.remove();
       window.removeEventListener('scroll', this.onScroll);
-      clearTimeout(this.this.preloadTimer);
-      clearTimeout(this.positionItemTimer);
-      clearTimeout(this.activityTidbitDrawerTimer);
+      if (this.this.preloadTimer) clearTimeout(this.this.preloadTimer);
+      if (this.positionItemTimer) clearTimeout(this.positionItemTimer);
+      if (this.activityTidbitDrawerTimer) clearTimeout(this.activityTidbitDrawerTimer);
     }
   }
 
@@ -196,7 +196,7 @@ class News extends Component {
     numberOfActivityTidbitsToDisplay += 5;
     // console.log('Number of position items after increment: ', numberOfActivityTidbitsToDisplay);
 
-    clearTimeout(this.positionItemTimer);
+    if (this.positionItemTimer) clearTimeout(this.positionItemTimer);
     this.positionItemTimer = setTimeout(() => {
       this.setState({
         numberOfActivityTidbitsToDisplay,
@@ -206,7 +206,7 @@ class News extends Component {
 
   openActivityTidbitDrawer (activityTidbitWeVoteIdForDrawer) {
     if (activityTidbitWeVoteIdForDrawer) {
-      clearTimeout(this.activityTidbitDrawerTimer);
+      if (this.activityTidbitDrawerTimer) clearTimeout(this.activityTidbitDrawerTimer);
       this.activityTidbitDrawerTimer = setTimeout(() => {
         AppObservableStore.setActivityTidbitWeVoteIdForDrawerAndOpen(activityTidbitWeVoteIdForDrawer);
       }, 500);

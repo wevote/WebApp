@@ -188,7 +188,7 @@ export default class SettingsAccount extends Component {
     this.appStateSubscription.unsubscribe();
     this.facebookStoreListener.remove();
     this.voterStoreListener.remove();
-    clearTimeout(this.timer);
+    if (this.timer) clearTimeout(this.timer);
     restoreStylesAfterCordovaKeyboard('SettingsAccount');
   }
 

@@ -140,7 +140,7 @@ class PaidAccountUpgradeModal extends Component {
   componentWillUnmount () {
     this.donateStoreListener.remove();
     window.removeEventListener('resize', this.handleResize);
-    clearTimeout(this.timer);
+    if (this.timer) clearTimeout(this.timer);
   }
 
   handleResize () {
@@ -275,14 +275,14 @@ class PaidAccountUpgradeModal extends Component {
       console.log('couponViewed:', couponViewed);
       if (couponMatchFound === false) {
         this.setState({ couponCodeError: true, couponCodeInputValue: '' });
-        clearTimeout(this.timer);
+        if (this.timer) clearTimeout(this.timer);
         this.timer = setTimeout(() => {
           DonateActions.setLatestCouponViewed(true);
           this.setState({ couponCodeError: false });
         }, 3000);
       } else if (couponStillValid === false) {
         this.setState({ couponCodeError: true, couponCodeInputValue: '' });
-        clearTimeout(this.timer);
+        if (this.timer) clearTimeout(this.timer);
         this.timer = setTimeout(() => {
           DonateActions.setLatestCouponViewed(true);
           this.setState({ couponCodeError: false });

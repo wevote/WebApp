@@ -43,11 +43,11 @@ class CheckoutForm extends React.Component {
   componentWillUnmount () {
     this.donateStoreListener.remove();
     if (this.stripeErrorTimer) {
-      clearTimeout(this.stripeErrorTimer);
+      if (this.stripeErrorTimer) clearTimeout(this.stripeErrorTimer);
       this.stripeErrorTimer = null;
     }
     if (this.stripeSubmitTimer) {
-      clearTimeout(this.stripeSubmitTimer);
+      if (this.stripeSubmitTimer) clearTimeout(this.stripeSubmitTimer);
       this.stripeSubmitTimer = null;
     }
   }
