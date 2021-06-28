@@ -1,8 +1,7 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import AppActions from '../../actions/AppActions';
 import VoterActions from '../../actions/VoterActions';
-import AppStore from '../../stores/AppStore';
+import AppObservableStore, { messageService } from '../../stores/AppObservableStore';
 import VoterStore from '../../stores/VoterStore';
 import apiCalming from '../../utils/apiCalming';
 import { dumpCssFromId } from '../../utils/appleSiliconUtils';
@@ -44,11 +43,12 @@ export default class Header extends Component {
     this.closeOrganizationModal = this.closeOrganizationModal.bind(this);
     this.closeSharedItemModal = this.closeSharedItemModal.bind(this);
     this.handleResize = this.handleResize.bind(this);
+    this.storeSub = null;
   }
 
   componentDidMount () {
     // console.log('-----------HEADER componentDidMount');
-    this.appStoreListener = AppStore.addListener(this.onAppStoreChange.bind(this));
+    this.appStateSubscription = messageService.getMessage().subscribe((msg) => this.onAppObservableStoreChange(msg));
     this.setState({ windowWidth: window.innerWidth });
     window.addEventListener('resize', this.handleResize);
     if (isIOSAppOnMac() && appleSiliconDebug) {
@@ -82,7 +82,7 @@ export default class Header extends Component {
 
   componentWillUnmount () {
     // console.log('-----------HEADER componentWillUnmount');
-    this.appStoreListener.remove();
+    this.appStateSubscription.unsubscribe();
     window.removeEventListener('resize', this.handleResize);
   }
 
@@ -96,38 +96,39 @@ export default class Header extends Component {
     }
   }
 
-  onAppStoreChange () {
-    // console.log('-----------Header, onAppStoreChange');
+  // eslint-disable-next-line no-unused-vars
+  onAppObservableStoreChange (msg) {
+    // console.log('------ Header, onAppObservableStoreChange received: ', msg);
     this.setState({
-      activityTidbitWeVoteIdForDrawer: AppStore.activityTidbitWeVoteIdForDrawer(),
-      organizationModalBallotItemWeVoteId: AppStore.organizationModalBallotItemWeVoteId(),
-      sharedItemCode: AppStore.getSharedItemCode(),
-      showActivityTidbitDrawer: AppStore.showActivityTidbitDrawer(),
-      showHowItWorksModal: AppStore.showHowItWorksModal(),
-      showVoterPlanModal: AppStore.showVoterPlanModal(),
-      showOrganizationModal: AppStore.showOrganizationModal(),
-      showSharedItemModal: AppStore.showSharedItemModal(),
+      activityTidbitWeVoteIdForDrawer: AppObservableStore.activityTidbitWeVoteIdForDrawer(),
+      organizationModalBallotItemWeVoteId: AppObservableStore.organizationModalBallotItemWeVoteId(),
+      sharedItemCode: AppObservableStore.getSharedItemCode(),
+      showActivityTidbitDrawer: AppObservableStore.showActivityTidbitDrawer(),
+      showHowItWorksModal: AppObservableStore.showHowItWorksModal(),
+      showVoterPlanModal: AppObservableStore.showVoterPlanModal(),
+      showOrganizationModal: AppObservableStore.showOrganizationModal(),
+      showSharedItemModal: AppObservableStore.showSharedItemModal(),
     });
   }
 
   closeActivityTidbitDrawer () {
-    AppActions.setShowActivityTidbitDrawer(false);
+    AppObservableStore.setShowActivityTidbitDrawer(false);
   }
 
   closeHowItWorksModal () {
-    AppActions.setShowHowItWorksModal(false);
+    AppObservableStore.setShowHowItWorksModal(false);
   }
 
   closeVoterPlanModal () {
-    AppActions.setShowVoterPlanModal(false);
+    AppObservableStore.setShowVoterPlanModal(false);
   }
 
   closeOrganizationModal () {
-    AppActions.setShowOrganizationModal(false);
+    AppObservableStore.setShowOrganizationModal(false);
   }
 
   closeSharedItemModal () {
-    AppActions.setShowSharedItemModal('');
+    AppObservableStore.setShowSharedItemModal('');
     const { location: { pathname } } = window;
     if (stringContains('/modal/sic/', pathname)) {
       const pathnameWithoutModalSharedItem = pathname.substring(0, pathname.indexOf('/modal/sic/'));

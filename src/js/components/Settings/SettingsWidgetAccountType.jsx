@@ -54,10 +54,7 @@ export default class SettingsWidgetAccountType extends Component {
   componentWillUnmount () {
     this.organizationStoreListener.remove();
     this.voterStoreListener.remove();
-    if (this.timer) {
-      clearTimeout(this.timer);
-      this.timer = null;
-    }
+    if (this.timer) clearTimeout(this.timer);
     restoreStylesAfterCordovaKeyboard('SettingsWidgetAccountType');
   }
 
@@ -156,7 +153,7 @@ export default class SettingsWidgetAccountType extends Component {
         AnalyticsActions.saveActionAccountPage(VoterStore.electionId());
       }
       // After some time, clear saved message
-      clearTimeout(this.timer);
+      if (this.timer) clearTimeout(this.timer);
       this.timer = setTimeout(() => {
         this.setState({ organizationTypeSavedStatus: '' });
       }, delayBeforeRemovingSavedStatus);

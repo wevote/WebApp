@@ -100,6 +100,7 @@ class SelectBallotModal extends Component {
         classes={{ paper: classes.dialogPaper }}
         open={this.props.show}
         onClose={() => { this.props.toggleFunction(pathname); }}
+        id="SelectBallotModalId"
       >
         <DialogTitle>
           <Title id="SelectBallotModalTitleId">

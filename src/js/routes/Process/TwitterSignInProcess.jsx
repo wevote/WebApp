@@ -1,17 +1,16 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
-import AppActions from '../../actions/AppActions';
-import AppStore from '../../stores/AppStore';
+import TwitterActions from '../../actions/TwitterActions';
+import VoterActions from '../../actions/VoterActions';
+import LoadingWheel from '../../components/LoadingWheel';
+import AppObservableStore, { messageService } from '../../stores/AppObservableStore';
+import TwitterStore from '../../stores/TwitterStore';
+import VoterStore from '../../stores/VoterStore';
 import cookies from '../../utils/cookies';
 import cordovaScrollablePaneTopPadding from '../../utils/cordovaScrollablePaneTopPadding';
 import { historyPush, isWebApp } from '../../utils/cordovaUtils';
-import LoadingWheel from '../../components/LoadingWheel';
 import { oAuthLog, renderLog } from '../../utils/logging';
 import { stringContains } from '../../utils/textFormat';
-import TwitterActions from '../../actions/TwitterActions';
-import TwitterStore from '../../stores/TwitterStore';
-import VoterStore from '../../stores/VoterStore';
-import VoterActions from '../../actions/VoterActions';
 
 export default class TwitterSignInProcess extends Component {
   constructor (props) {
@@ -25,19 +24,19 @@ export default class TwitterSignInProcess extends Component {
   }
 
   componentDidMount () {
-    this.appStoreListener = AppStore.addListener(this.onAppStoreChange.bind(this));
+    this.appStateSubscription = messageService.getMessage().subscribe(() => this.onAppObservableStoreChange());
     this.twitterStoreListener = TwitterStore.addListener(this.onTwitterStoreChange.bind(this));
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
     this.twitterSignInRetrieve();
   }
 
   componentWillUnmount () {
-    this.appStoreListener.remove();
+    this.appStateSubscription.unsubscribe();
     this.twitterStoreListener.remove();
     this.voterStoreListener.remove();
   }
 
-  onAppStoreChange () {
+  onAppObservableStoreChange () {
     this.setState({});
   }
 
@@ -67,7 +66,7 @@ export default class TwitterSignInProcess extends Component {
         }
         if (signInStartFullUrl) {
           // console.log('TwitterSignInProcess Executing Redirect');
-          AppActions.unsetStoreSignInStartFullUrl();
+          AppObservableStore.unsetStoreSignInStartFullUrl();
           cookies.removeItem('sign_in_start_full_url', '/');
           cookies.removeItem('sign_in_start_full_url', '/', 'wevote.us');
           redirectFullUrl = signInStartFullUrl;
@@ -136,7 +135,7 @@ export default class TwitterSignInProcess extends Component {
     VoterActions.voterTwitterSaveToCurrentAccount();
     // const signInStartFullUrl = cookies.getItem('sign_in_start_full_url');
     // if (signInStartFullUrl) {
-    //   AppActions.unsetStoreSignInStartFullUrl();
+    //   AppObservableStore.unsetStoreSignInStartFullUrl();
     //   cookies.removeItem('sign_in_start_full_url', '/');
     //   cookies.removeItem('sign_in_start_full_url', '/', 'wevote.us');
     //   window.location.assign(signInStartFullUrl);

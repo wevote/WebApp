@@ -1,12 +1,11 @@
 import React, { Component } from 'react';
-import AppActions from '../../actions/AppActions';
-import AppStore from '../../stores/AppStore';
+import AppObservableStore, { messageService } from '../../stores/AppObservableStore';
+import VoterStore from '../../stores/VoterStore';
 import cookies from '../../utils/cookies';
 import cordovaScrollablePaneTopPadding from '../../utils/cordovaScrollablePaneTopPadding';
 import { historyPush, isWebApp } from '../../utils/cordovaUtils';
 import { oAuthLog, renderLog } from '../../utils/logging';
 import { stringContains } from '../../utils/textFormat';
-import VoterStore from '../../stores/VoterStore';
 
 export default class AppleSignInProcess extends Component {
   constructor (props) {
@@ -19,9 +18,9 @@ export default class AppleSignInProcess extends Component {
   }
 
   componentDidMount () {
-    this.appStoreListener = AppStore.addListener(this.onAppStoreChange.bind(this));
+    this.appStateSubscription = messageService.getMessage().subscribe(() => this.onAppObservableStoreChange());
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
-    const hostname = AppStore.getHostname();
+    const hostname = AppObservableStore.getHostname();
     const voter = VoterStore.getVoter();
     const { we_vote_id: voterWeVoteId } = voter;
     this.setState({
@@ -31,12 +30,12 @@ export default class AppleSignInProcess extends Component {
   }
 
   componentWillUnmount () {
-    this.appStoreListener.remove();
+    this.appStateSubscription.unsubscribe();
     this.voterStoreListener.remove();
   }
 
-  onAppStoreChange () {
-    const hostname = AppStore.getHostname();
+  onAppObservableStoreChange () {
+    const hostname = AppObservableStore.getHostname();
     this.setState({
       hostname,
     });
@@ -69,7 +68,7 @@ export default class AppleSignInProcess extends Component {
         }
         if (signInStartFullUrl) {
           // console.log('AppleSignInProcess Executing Redirect');
-          AppActions.unsetStoreSignInStartFullUrl();
+          AppObservableStore.unsetStoreSignInStartFullUrl();
           cookies.removeItem('sign_in_start_full_url', '/');
           cookies.removeItem('sign_in_start_full_url', '/', 'wevote.us');
           redirectFullUrl = signInStartFullUrl;

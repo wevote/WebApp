@@ -5,7 +5,7 @@ import React, { Component } from 'react';
 import Alert from 'react-bootstrap/Alert';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
-import AppActions from '../../actions/AppActions';
+import AppObservableStore from '../../stores/AppObservableStore';
 import ActivityStore from '../../stores/ActivityStore';
 import OrganizationStore from '../../stores/OrganizationStore';
 import VoterStore from '../../stores/VoterStore';
@@ -85,8 +85,8 @@ class ActivityTidbitItem extends Component {
   onClickShowActivityTidbitDrawer = () => {
     const { activityTidbitWeVoteId } = this.props;
     // console.log('onClickShowActivityTidbitDrawer activityTidbitWeVoteId:', activityTidbitWeVoteId);
-    AppActions.setActivityTidbitWeVoteIdForDrawer(activityTidbitWeVoteId);
-    AppActions.setShowActivityTidbitDrawer(true);
+    AppObservableStore.setActivityTidbitWeVoteIdForDrawer(activityTidbitWeVoteId);
+    AppObservableStore.setShowActivityTidbitDrawer(true);
   }
 
   updatePositionsEnteredState = (positionWeVoteIdList) => {

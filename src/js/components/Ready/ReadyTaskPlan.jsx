@@ -3,7 +3,7 @@ import { ArrowForward } from '@material-ui/icons';
 import PropTypes from 'prop-types';
 import React from 'react';
 import styled from 'styled-components';
-import AppActions from '../../actions/AppActions';
+import AppObservableStore from '../../stores/AppObservableStore';
 import ReadyStore from '../../stores/ReadyStore';
 import VoterStore from '../../stores/VoterStore';
 import { cordovaDot } from '../../utils/cordovaUtils';
@@ -53,7 +53,7 @@ class ReadyTaskPlan extends React.Component {
   }
 
   showVoterPlanModal = () => {
-    AppActions.setShowVoterPlanModal(true);
+    AppObservableStore.setShowVoterPlanModal(true);
   }
 
   render () {

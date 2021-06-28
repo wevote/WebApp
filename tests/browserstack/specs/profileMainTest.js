@@ -3,7 +3,7 @@ const { clearTextInputValue, scrollIntoViewSimple, scrollIntoViewSelect, simpleC
 const PAUSE_DURATION_MICROSECONDS = 1250;
 const WEBVIEW = 'WEBVIEW_';
 const { voterDeviceId, twitterUserName, twitterPassword } = driver.config;
-const { os_version, isAndroid, isCordovaFromAppStore, isIOS } = driver.config.capabilities;
+const { os_version, isAndroid, isCordovaFromAppObservableStore, isIOS } = driver.config.capabilities;
 const sqlTest = "' or 1=1 -- -";
 const xssTest = '>script>alert("1")>/script>';
 const xssTest2 = "@>script>alert('1')>/script>";
@@ -16,7 +16,7 @@ const isCatalina = os_version.includes('Catalina');
 describe('Cross browser automated testing', async () => {
     // Run before any test
     before(async () => {
-        if (isCordovaFromAppStore) {
+        if (isCordovaFromAppObservableStore) {
         // For the apps downloadable from either the Apple App Store or Android Play Store,
         // click through the onboarding screens
         const contexts = await driver.getContexts();
@@ -41,7 +41,7 @@ describe('Cross browser automated testing', async () => {
 
     it('should sign in with email', async () =>  {
         await simpleClick('signInHeaderBar'); // Clicks on Sign in
-        if (isCordovaFromAppStore) {
+        if (isCordovaFromAppObservableStore) {
         await simpleClick('emailSignIn-splitIconButton');
         }
         await simpleTextInput('enterVoterEmailAddress', 'automated_voter1@WeVote.info'); // Type input
@@ -65,7 +65,7 @@ describe('Cross browser automated testing', async () => {
 
     it('should sign in with phone', async () => {
         await simpleClick('signInHeaderBar'); // Clicks on Sign in
-        if (isCordovaFromAppStore) {
+        if (isCordovaFromAppObservableStore) {
         await simpleClick('smsSignIn-splitIconButton');
         }
         await simpleTextInput('enterVoterPhone', '15005550006'); // Inputs voter phone number
@@ -111,7 +111,7 @@ describe('Cross browser automated testing', async () => {
   });
 //  it('should set the cookie', async () =>  {
 //    await browser.pause(PAUSE_DURATION_MICROSECONDS);
-//    if (isCordovaFromAppStore && isIOS) {
+//    if (isCordovaFromAppObservableStore && isIOS) {
 //      await browser.setCookies({ name: 'voter_device_id', value: voterDeviceId, domain: '.^filecookies^' });
 //      await simpleClick('readyTabFooterBar');
 //    } else {
@@ -125,7 +125,7 @@ describe('Cross browser automated testing', async () => {
 //  it('should sign in with twitter', async () =>  {
 //    if (twitterUserName && twitterPassword) {
 //      await simpleClick('signInHeaderBar'); // Clicks on Sign in
-//      if (isCordovaFromAppStore && isIOS) {
+//      if (isCordovaFromAppObservableStore && isIOS) {
 //        // Bug
 //        const twitterSignIn = await $('#twitterSignIn-splitIconButton');
 //        const twitterX = await twitterSignIn.getLocation('x');
@@ -134,7 +134,7 @@ describe('Cross browser automated testing', async () => {
 //      } else {
 //        await simpleClick('twitterSignIn-splitIconButton'); // Clicks on Twitter Sign in Button
 //      }
-//      if (isCordovaFromAppStore && isAndroid) {
+//      if (isCordovaFromAppObservableStore && isAndroid) {
 //        await driver.switchContext('NATIVE_APP');
 //        const username_or_email = await $('//android.widget.EditText[@resource-id="username_or_email"]');
 //        await username_or_email.setValue(twitterUserName);
@@ -161,7 +161,7 @@ describe('Cross browser automated testing', async () => {
 //  });
 
   it('should test settings page', async () => {
-    if (isCordovaFromAppStore) {
+    if (isCordovaFromAppObservableStore) {
       await browser.deleteSession();
     }
 //    await browser.pause(PAUSE_DURATION_MICROSECONDS * 10);

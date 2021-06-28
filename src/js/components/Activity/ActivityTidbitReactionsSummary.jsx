@@ -4,8 +4,8 @@ import { ThumbUp } from '@material-ui/icons';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import styled from 'styled-components';
-import AppActions from '../../actions/AppActions';
 import ActivityStore from '../../stores/ActivityStore';
+import AppObservableStore from '../../stores/AppObservableStore';
 import ReactionStore from '../../stores/ReactionStore';
 import { renderLog } from '../../utils/logging';
 import StickyPopover from '../Ballot/StickyPopover';
@@ -56,8 +56,8 @@ class ActivityTidbitReactionsSummary extends Component {
   onClickShowActivityTidbitDrawer = () => {
     const { activityTidbitWeVoteId } = this.props;
     // console.log('onClickShowActivityTidbitDrawer activityTidbitWeVoteId:', activityTidbitWeVoteId);
-    AppActions.setActivityTidbitWeVoteIdForDrawer(activityTidbitWeVoteId);
-    AppActions.setShowActivityTidbitDrawer(true);
+    AppObservableStore.setActivityTidbitWeVoteIdForDrawer(activityTidbitWeVoteId);
+    AppObservableStore.setShowActivityTidbitDrawer(true);
   }
 
   render () {

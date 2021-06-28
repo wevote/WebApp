@@ -174,6 +174,8 @@ class EditAddressOneHorizontalRow extends Component {
     this.setState({
       voterSavedAddress: true,
     });
+    const { onSave } = this.props;
+    if (onSave) onSave();
   }
 
   render () {
@@ -188,7 +190,7 @@ class EditAddressOneHorizontalRow extends Component {
     }
 
     return (
-      <OuterWrapper>
+      <OuterWrapper id="EditAddressOneHorizontalRow">
         <InnerWrapper className="u-show-mobile">
           <AddressLabelMobile>
             <span className="u-show-mobile-iphone5-or-smaller">
@@ -289,6 +291,7 @@ class EditAddressOneHorizontalRow extends Component {
 EditAddressOneHorizontalRow.propTypes = {
   saveUrl: PropTypes.string,
   classes: PropTypes.object,
+  onSave: PropTypes.func,
 };
 
 const AddressExplanation = styled.div`

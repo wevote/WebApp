@@ -2,8 +2,8 @@ import { Button } from '@material-ui/core';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import styled from 'styled-components';
-import AppActions from '../../actions/AppActions';
 import FriendActions from '../../actions/FriendActions';
+import AppObservableStore from '../../stores/AppObservableStore';
 import FriendStore from '../../stores/FriendStore';
 import VoterStore from '../../stores/VoterStore';
 import { renderLog } from '../../utils/logging';
@@ -57,7 +57,7 @@ export default class SuggestedFriendToggle extends Component {
         addSuggestedFriendSent: true,
       });
     } else {
-      AppActions.setShowSignInModal(true);
+      AppObservableStore.setShowSignInModal(true);
     }
   }
 

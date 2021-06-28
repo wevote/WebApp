@@ -1,14 +1,26 @@
-import { Tabs, Tab } from '@material-ui/core';
+import { Tab, Tabs } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import Helmet from 'react-helmet';
 import styled from 'styled-components';
+import testimonialImage from '../../../img/global/photos/Dale_McGrew-200x200.jpg';
 import ActivityActions from '../../actions/ActivityActions';
 import AnalyticsActions from '../../actions/AnalyticsActions';
 import FriendActions from '../../actions/FriendActions';
+import FacebookSignInCard from '../../components/Facebook/FacebookSignInCard';
+import AddFriendsByEmail from '../../components/Friends/AddFriendsByEmail';
+import FriendInvitationsSentByMePreview from '../../components/Friends/FriendInvitationsSentByMePreview';
+import FriendInvitationsSentToMePreview from '../../components/Friends/FriendInvitationsSentToMePreview';
+import FriendsCurrentPreview from '../../components/Friends/FriendsCurrentPreview';
+import FriendsPromoBox from '../../components/Friends/FriendsPromoBox';
+import SuggestedFriendsPreview from '../../components/Friends/SuggestedFriendsPreview';
 import LoadingWheel from '../../components/LoadingWheel';
-import AppStore from '../../stores/AppStore';
+import TwitterSignInCard from '../../components/Twitter/TwitterSignInCard';
+import BrowserPushMessage from '../../components/Widgets/BrowserPushMessage';
+import MessageCard from '../../components/Widgets/MessageCard';
+import TooltipIcon from '../../components/Widgets/TooltipIcon';
+import AppObservableStore, { messageService } from '../../stores/AppObservableStore';
 import FriendStore from '../../stores/FriendStore';
 import VoterStore from '../../stores/VoterStore';
 import { cordovaBallotFilterTopMargin, cordovaFriendsWrapper } from '../../utils/cordovaOffsets';
@@ -17,23 +29,11 @@ import displayFriendsTabs from '../../utils/displayFriendsTabs';
 import sortFriendListByMutualFriends from '../../utils/friendFunctions';
 import isMobileScreenSize from '../../utils/isMobileScreenSize';
 import { renderLog } from '../../utils/logging';
-import AddFriendsByEmail from '../../components/Friends/AddFriendsByEmail';
-import BrowserPushMessage from '../../components/Widgets/BrowserPushMessage';
-import FacebookSignInCard from '../../components/Facebook/FacebookSignInCard';
 import FriendInvitationsSentByMe from './FriendInvitationsSentByMe';
-import FriendInvitationsSentByMePreview from '../../components/Friends/FriendInvitationsSentByMePreview';
 import FriendInvitationsSentToMe from './FriendInvitationsSentToMe';
-import FriendInvitationsSentToMePreview from '../../components/Friends/FriendInvitationsSentToMePreview';
 import FriendsCurrent from './FriendsCurrent';
-import FriendsCurrentPreview from '../../components/Friends/FriendsCurrentPreview';
-import FriendsPromoBox from '../../components/Friends/FriendsPromoBox';
 import InviteByEmail from './InviteByEmail';
-import MessageCard from '../../components/Widgets/MessageCard';
 import SuggestedFriends from './SuggestedFriends';
-import SuggestedFriendsPreview from '../../components/Friends/SuggestedFriendsPreview';
-import TwitterSignInCard from '../../components/Twitter/TwitterSignInCard';
-import TooltipIcon from '../../components/Widgets/TooltipIcon';
-import testimonialImage from '../../../img/global/photos/Dale_McGrew-200x200.jpg';
 
 const FirstAndLastNameRequiredAlert = React.lazy(() => import(/* webpackChunkName: 'FirstAndLastNameRequiredAlert' */ '../../components/Widgets/FirstAndLastNameRequiredAlert'));
 
@@ -70,7 +70,7 @@ class Friends extends Component {
 
   componentDidMount () {
     // console.log('Friends componentDidMount');
-    this.appStoreListener = AppStore.addListener(this.onAppStoreChange.bind(this));
+    this.appStateSubscription = messageService.getMessage().subscribe(() => this.onAppObservableStoreChange());
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
     this.friendStoreListener = FriendStore.addListener(this.onFriendStoreChange.bind(this));
     FriendActions.currentFriends();
@@ -105,7 +105,7 @@ class Friends extends Component {
   componentWillUnmount () {
     this.voterStoreListener.remove();
     this.friendStoreListener.remove();
-    this.appStoreListener.remove();
+    this.appStateSubscription.unsubscribe();
   }
 
   onVoterStoreChange () {
@@ -162,9 +162,9 @@ class Friends extends Component {
     }
   }
 
-  onAppStoreChange () {
+  onAppObservableStoreChange () {
     this.setState({
-      friendsHeaderUnpinned: AppStore.getScrolledDown(),
+      friendsHeaderUnpinned: AppObservableStore.getScrolledDown(),
     });
   }
 

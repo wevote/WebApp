@@ -5,7 +5,7 @@ import React, { Component } from 'react';
 import Helmet from 'react-helmet';
 import styled from 'styled-components';
 import AnalyticsActions from '../actions/AnalyticsActions';
-import AppActions from '../actions/AppActions';
+import AppObservableStore from '../stores/AppObservableStore';
 import { BlueTitle, PlayerContainer, SubTitle, Title, Video } from '../components/Welcome/headerWelcomeStyles';
 import { Bold, Description, DescriptionContainer, DescriptionImageColumn, DescriptionLeftColumn, Image, NetworkContainer, NetworkImage, Section, SectionTitle, SectionTitleBold } from '../components/Welcome/sectionStyles';
 import Testimonial from '../components/Widgets/Testimonial';
@@ -43,10 +43,7 @@ class WelcomeForOrganizations extends Component {
 
   componentWillUnmount () {
     this.voterStoreListener.remove();
-    if (this.timer) {
-      clearTimeout(this.timer);
-      this.timer = null;
-    }
+    if (this.timer) clearTimeout(this.timer);
   }
 
   onVoterStoreChange () {
@@ -64,8 +61,8 @@ class WelcomeForOrganizations extends Component {
     if (isSignedIn) {
       historyPush('/settings/profile');
     } else {
-      AppActions.setGetStartedMode('getStartedForOrganizations');
-      AppActions.setShowSignInModal(true);
+      AppObservableStore.setGetStartedMode('getStartedForOrganizations');
+      AppObservableStore.setShowSignInModal(true);
     }
   }
 
@@ -73,9 +70,9 @@ class WelcomeForOrganizations extends Component {
     const currentStateAnimateTextIndex = this.state.currentAnimateTextIndex;
     const showMemberTextForThisLong = 2000;
     if (this.state.currentAnimateTextIndex < this.state.animateTextArray.length - 1) {
+      if (this.timer) clearTimeout(this.timer);
       this.timer = setTimeout(() => {
         this.setState({ currentAnimateTextIndex: currentStateAnimateTextIndex + 1 });
-
         this.autoAnimateText();
       }, showMemberTextForThisLong);
     }

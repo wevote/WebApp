@@ -35,10 +35,7 @@ class DonationList extends Component {
 
   componentWillUnmount () {
     this.donateStoreListener.remove();
-    if (this.timer) {
-      clearTimeout(this.timer);
-      this.timer = null;
-    }
+    if (this.timer) clearTimeout(this.timer);
   }
 
   onDonateStoreChange = () => {
@@ -153,10 +150,11 @@ class DonationList extends Component {
     const { activeSubscriptionCount } = this.state;
     const latestCount = DonateStore.getNumberOfActiveSubscriptions();
     console.log(`pollForWebhookCompletionAtList polling -- start: ${activeSubscriptionCount} ? ${latestCount}`);
+    if (this.timer) clearTimeout(this.timer);
     this.timer = setTimeout(() => {
       if (pollCount === 0 || (activeSubscriptionCount > latestCount)) {
         // console.log(`pollForWebhookCompletionAtList polling -- pollCount: ${pollCount}`);
-        clearTimeout(this.timer);
+        if (this.timer) clearTimeout(this.timer);
         this.setState({ activeSubscriptionCount, enablePolling: false });
         return;
       }

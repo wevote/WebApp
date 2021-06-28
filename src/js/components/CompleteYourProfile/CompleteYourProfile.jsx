@@ -3,7 +3,7 @@ import { withStyles, withTheme } from '@material-ui/core/styles';
 import { CheckCircle, EditLocation, PlayCircleFilled } from '@material-ui/icons';
 import React, { Component } from 'react';
 import styled from 'styled-components';
-import AppActions from '../../actions/AppActions';
+import AppObservableStore from '../../stores/AppObservableStore';
 import VoterConstants from '../../constants/VoterConstants';
 import BallotStore from '../../stores/BallotStore';
 import SupportStore from '../../stores/SupportStore';
@@ -222,12 +222,12 @@ class CompleteYourProfile extends Component {
 
   openHowItWorksModal = () => {
     // console.log('Opening modal');
-    AppActions.setShowHowItWorksModal(true);
+    AppObservableStore.setShowHowItWorksModal(true);
   }
 
   openValuesIntroModal = () => {
     // console.log('Opening modal');
-    AppActions.setShowValuesIntroModal(true);
+    AppObservableStore.setShowValuesIntroModal(true);
   }
 
   openAddressIntroModal = () => {
@@ -236,24 +236,24 @@ class CompleteYourProfile extends Component {
     this.setState({
       addressIntroCompleted: true,
     });
-    AppActions.setShowSelectBallotModal(true);
+    AppObservableStore.setShowSelectBallotModal(true);
     const addressIntroCompletedId = 3;
     this.setItemComplete(addressIntroCompletedId);
   }
 
   // openAdviserIntroModal = () => {
   //   // console.log('Opening modal');
-  //   AppActions.setShowAdviserIntroModal(true);
+  //   AppObservableStore.setShowAdviserIntroModal(true);
   // }
 
   openPersonalizedScoreIntroModal = () => {
     // console.log('Opening modal');
-    AppActions.setShowPersonalizedScoreIntroModal(true);
+    AppObservableStore.setShowPersonalizedScoreIntroModal(true);
   }
 
   // openFirstPositionIntroModal = () => {
   //   // console.log('Opening modal');
-  //   AppActions.setShowFirstPositionIntroModal(true);
+  //   AppObservableStore.setShowFirstPositionIntroModal(true);
   // }
 
   goToNextIncompleteStep = () => {

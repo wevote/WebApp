@@ -1,9 +1,8 @@
-import { Tabs, Tab, Badge } from '@material-ui/core';
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
+import { Badge, Tab, Tabs } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
-import AppActions from '../../actions/AppActions';
-import AppStore from '../../stores/AppStore';
+import PropTypes from 'prop-types';
+import React, { Component } from 'react';
+import AppObservableStore, { messageService } from '../../stores/AppObservableStore';
 import { renderLog } from '../../utils/logging';
 
 
@@ -17,8 +16,8 @@ class EndorsementModeTabs extends Component {
 
   componentDidMount () {
     // console.log('EndorsementModeTabs componentDidMount, this.props: ', this.props);
-    this.onAppStoreChange();
-    this.appStoreListener = AppStore.addListener(this.onAppStoreChange.bind(this));
+    this.onAppObservableStoreChange();
+    this.appStateSubscription = messageService.getMessage().subscribe(() => this.onAppObservableStoreChange());
   }
 
   // This needs to be tested before being turned back on
@@ -33,12 +32,12 @@ class EndorsementModeTabs extends Component {
   // }
 
   componentWillUnmount () {
-    this.appStoreListener.remove();
+    this.appStateSubscription.unsubscribe();
   }
 
-  onAppStoreChange () {
+  onAppObservableStoreChange () {
     this.setState({
-      getVoterGuideSettingsDashboardEditMode: AppStore.getVoterGuideSettingsDashboardEditMode(),
+      getVoterGuideSettingsDashboardEditMode: AppObservableStore.getVoterGuideSettingsDashboardEditMode(),
     });
   }
 
@@ -54,7 +53,7 @@ class EndorsementModeTabs extends Component {
   }
 
   goToDifferentVoterGuideSettingsDashboardTab (dashboardEditMode = '') {
-    AppActions.setVoterGuideSettingsDashboardEditMode(dashboardEditMode);
+    AppObservableStore.setVoterGuideSettingsDashboardEditMode(dashboardEditMode);
   }
 
   render () {

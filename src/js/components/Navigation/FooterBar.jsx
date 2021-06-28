@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { withStyles } from '@material-ui/core/styles';
 import { BottomNavigation, BottomNavigationAction } from '@material-ui/core';
 import { QuestionAnswer, HelpOutline, Ballot, HowToVote, People } from '@material-ui/icons';
-import AppStore from '../../stores/AppStore';
+import AppObservableStore, { messageService } from '../../stores/AppObservableStore';
 import { cordovaFooterHeight } from '../../utils/cordovaOffsets';
 import { historyPush, isCordova, cordovaOpenSafariView } from '../../utils/cordovaUtils';
 import { stringContains } from '../../utils/textFormat';
@@ -31,14 +31,14 @@ class FooterBar extends React.Component {
 
   componentDidMount () {
     this.onVoterStoreChange();
-    this.appStoreListener = AppStore.addListener(this.onAppStoreChange.bind(this));
+    this.appStateSubscription = messageService.getMessage().subscribe(() => this.onAppObservableStoreChange());
     this.friendStoreListener = FriendStore.addListener(this.onFriendStoreChange.bind(this));
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
-    const showingOneCompleteYourProfileModal = AppStore.showingOneCompleteYourProfileModal();
-    const showShareModal = AppStore.showShareModal();
-    const showSharedItemModal = AppStore.showSharedItemModal();
-    const showSignInModal = AppStore.showSignInModal();
-    const showVoterPlanModal = AppStore.showVoterPlanModal();
+    const showingOneCompleteYourProfileModal = AppObservableStore.showingOneCompleteYourProfileModal();
+    const showShareModal = AppObservableStore.showShareModal();
+    const showSharedItemModal = AppObservableStore.showSharedItemModal();
+    const showSignInModal = AppObservableStore.showSignInModal();
+    const showVoterPlanModal = AppObservableStore.showVoterPlanModal();
     this.setState({
       friendInvitationsSentToMe: FriendStore.friendInvitationsSentToMe(), // eslint-disable-line react/no-unused-state
       showingOneCompleteYourProfileModal,
@@ -50,18 +50,18 @@ class FooterBar extends React.Component {
   }
 
   componentWillUnmount () {
-    this.appStoreListener.remove();
+    this.appStateSubscription.unsubscribe();
     this.friendStoreListener.remove();
     this.voterStoreListener.remove();
   }
 
-  onAppStoreChange () {
-    const showActivityTidbitDrawer = AppStore.showActivityTidbitDrawer();
-    const showingOneCompleteYourProfileModal = AppStore.showingOneCompleteYourProfileModal();
-    const showShareModal = AppStore.showShareModal();
-    const showSharedItemModal = AppStore.showSharedItemModal();
-    const showSignInModal = AppStore.showSignInModal();
-    const showVoterPlanModal = AppStore.showVoterPlanModal();
+  onAppObservableStoreChange () {
+    const showActivityTidbitDrawer = AppObservableStore.showActivityTidbitDrawer();
+    const showingOneCompleteYourProfileModal = AppObservableStore.showingOneCompleteYourProfileModal();
+    const showShareModal = AppObservableStore.showShareModal();
+    const showSharedItemModal = AppObservableStore.showSharedItemModal();
+    const showSignInModal = AppObservableStore.showSignInModal();
+    const showVoterPlanModal = AppObservableStore.showVoterPlanModal();
     this.setState({
       showActivityTidbitDrawer,
       showingOneCompleteYourProfileModal,

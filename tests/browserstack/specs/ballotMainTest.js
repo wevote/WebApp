@@ -3,7 +3,7 @@ const { scrollIntoViewSimple, simpleClick, selectClick, simpleTextInput, hiddenC
 const WEBVIEW = 'WEBVIEW_';
 const PAUSE_DURATION_MICROSECONDS = 3000;
 const PAUSE_DURATION_BALLOT_LOAD = 6000;
-const { device, isAndroid, isCordovaFromAppStore, isMobileScreenSize, isIOS } = driver.config.capabilities;
+const { device, isAndroid, isCordovaFromAppObservableStore, isMobileScreenSize, isIOS } = driver.config.capabilities;
 const enter = '\uE007';
 // Remember that tablets should be considered desktop screen size
 const isDesktopScreenSize = !isMobileScreenSize;
@@ -30,7 +30,7 @@ const sqlTest = '\' or 1=1 -- -';
 describe('Cross browser automated testing', async () => {
   // Run before any test
   before(async () => {
-    if (isCordovaFromAppStore) {
+    if (isCordovaFromAppObservableStore) {
       // For the apps downloadable from either the Apple App Store or Android Play Store,
       // click through the onboarding screens
       const contexts = await driver.getContexts();
@@ -78,7 +78,7 @@ describe('Cross browser automated testing', async () => {
   });
 
   it('should click through how it works', async () =>  {
-    if (!(isAndroid && isCordovaFromAppStore) || isTab) { // Not on Android or iPhone Mobile App
+    if (!(isAndroid && isCordovaFromAppObservableStore) || isTab) { // Not on Android or iPhone Mobile App
       if (isDesktopScreenSize || isIOS || isTab) {
         await hiddenClick('completeYourProfileDesktopButton'); // Click 'How it works'
         await simpleClick('annotatedSlideShowStep1Next'); // Click Next
@@ -100,7 +100,7 @@ describe('Cross browser automated testing', async () => {
   });
 
   it('should test "Address and Elections"', async () => {
-    if (isCordovaFromAppStore) {
+    if (isCordovaFromAppObservableStore) {
       await hiddenClick('changeAddressOnlyHeaderBar');
     } else {
       await simpleClick('ballotTitleHeaderSelectBallotModal');
@@ -111,7 +111,7 @@ describe('Cross browser automated testing', async () => {
   });
 
   it('should click through choose interests', async () =>  {
-    if (!(isAndroid && isCordovaFromAppStore) || isTab) { // Not on Android or iPhone Mobile App
+    if (!(isAndroid && isCordovaFromAppObservableStore) || isTab) { // Not on Android or iPhone Mobile App
       if (isDesktopScreenSize || isIOS || isTab) {
         await hiddenClick('completeYourProfileDesktopButton'); // Clicks on Choose Interests
         await selectClick('#valuesIntroModalValueList [id^=issueFollowButton]'); // select an interest

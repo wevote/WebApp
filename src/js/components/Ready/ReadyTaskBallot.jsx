@@ -3,15 +3,15 @@ import { ArrowForward, CheckCircle } from '@material-ui/icons';
 import PropTypes from 'prop-types';
 import React from 'react';
 import styled from 'styled-components';
-import AppActions from '../../actions/AppActions';
 import BallotActions from '../../actions/BallotActions';
 import VoterConstants from '../../constants/VoterConstants';
+import AppObservableStore from '../../stores/AppObservableStore';
 import BallotStore from '../../stores/BallotStore';
 import SupportStore from '../../stores/SupportStore';
 import VoterStore from '../../stores/VoterStore';
 import { cordovaDot, historyPush } from '../../utils/cordovaUtils';
 import { renderLog } from '../../utils/logging';
-import { StyledButton, ButtonLeft, ButtonText, Icon, PercentComplete, ReadyCard, StyledCheckbox, StyledCheckboxCompleted, SubTitle, TitleRowWrapper } from './ReadyTaskStyles';
+import { ButtonLeft, ButtonText, Icon, PercentComplete, ReadyCard, StyledButton, StyledCheckbox, StyledCheckboxCompleted, SubTitle, TitleRowWrapper } from './ReadyTaskStyles';
 import ShowMoreButtons from './ShowMoreButtons';
 
 const ballot0Percent = '../../../img/global/svg-icons/ready/ballot-0-percent.svg';
@@ -147,12 +147,12 @@ class ReadyTaskBallot extends React.Component {
 
   openHowItWorksModal = () => {
     // console.log('Opening modal');
-    AppActions.setShowHowItWorksModal(true);
+    AppObservableStore.setShowHowItWorksModal(true);
   }
 
   openPersonalizedScoreIntroModal = () => {
     // console.log('Opening modal');
-    AppActions.setShowPersonalizedScoreIntroModal(true);
+    AppObservableStore.setShowPersonalizedScoreIntroModal(true);
   }
 
   calculateScore = (ballotItemsStatusCounts) => {

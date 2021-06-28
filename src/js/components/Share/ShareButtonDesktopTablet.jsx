@@ -5,9 +5,8 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import styled from 'styled-components';
 import AnalyticsActions from '../../actions/AnalyticsActions';
-import AppActions from '../../actions/AppActions';
 import ShareActions from '../../actions/ShareActions';
-import AppStore from '../../stores/AppStore';
+import AppObservableStore, { messageService } from '../../stores/AppObservableStore';
 import VoterStore from '../../stores/VoterStore';
 import { historyPush, isCordova, isWebApp } from '../../utils/cordovaUtils';
 import { renderLog } from '../../utils/logging';
@@ -26,8 +25,8 @@ class ShareButtonDesktopTablet extends Component {
   }
 
   componentDidMount () {
-    this.appStoreListener = AppStore.addListener(this.onAppStoreChange.bind(this));
-    const chosenPreventSharingOpinions = AppStore.getChosenPreventSharingOpinions();
+    this.appStateSubscription = messageService.getMessage().subscribe(() => this.onAppObservableStoreChange());
+    const chosenPreventSharingOpinions = AppObservableStore.getChosenPreventSharingOpinions();
     this.setState({
       chosenPreventSharingOpinions,
     });
@@ -35,7 +34,7 @@ class ShareButtonDesktopTablet extends Component {
   }
 
   componentWillUnmount () {
-    this.appStoreListener.remove();
+    this.appStateSubscription.unsubscribe();
   }
 
   handleShareButtonClick (event) {
@@ -63,8 +62,8 @@ class ShareButtonDesktopTablet extends Component {
     this.setState({ anchorEl: null, openShareMenu: false });
   }
 
-  onAppStoreChange () {
-    const chosenPreventSharingOpinions = AppStore.getChosenPreventSharingOpinions();
+  onAppObservableStoreChange () {
+    const chosenPreventSharingOpinions = AppObservableStore.getChosenPreventSharingOpinions();
     this.setState({
       chosenPreventSharingOpinions,
     });
@@ -122,8 +121,8 @@ class ShareButtonDesktopTablet extends Component {
       AnalyticsActions.saveActionShareBallot(VoterStore.electionId());
     }
 
-    AppActions.setShowShareModal(true);
-    AppActions.setShareModalStep(shareModalStep);
+    AppObservableStore.setShowShareModal(true);
+    AppObservableStore.setShareModalStep(shareModalStep);
     const { pathname } = window.location;
     if (!stringContains('/modal/share', pathname) && isWebApp()) {
       const pathnameWithModalShare = `${pathname}${pathname.endsWith('/') ? '' : '/'}modal/share`;

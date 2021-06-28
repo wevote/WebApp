@@ -4,8 +4,8 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import Helmet from 'react-helmet';
 import styled from 'styled-components';
-import AppActions from '../../actions/AppActions';
 import OrganizationActions from '../../actions/OrganizationActions';
+import AppObservableStore from '../../stores/AppObservableStore';
 import OrganizationStore from '../../stores/OrganizationStore';
 import VoterStore from '../../stores/VoterStore';
 import { renderLog } from '../../utils/logging';
@@ -265,7 +265,7 @@ class SettingsAnalytics extends Component {
 
   openPaidAccountUpgradeModal (paidAccountUpgradeMode) {
     // console.log('SettingsDomain openPaidAccountUpgradeModal');
-    AppActions.setShowPaidAccountUpgradeModal(paidAccountUpgradeMode);
+    AppObservableStore.setShowPaidAccountUpgradeModal(paidAccountUpgradeMode);
   }
 
   render () {

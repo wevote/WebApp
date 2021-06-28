@@ -1,9 +1,9 @@
 import { ReduceStore } from 'flux/utils';
-import AppActions from '../actions/AppActions';
 import OrganizationActions from '../actions/OrganizationActions';
 import VoterGuideActions from '../actions/VoterGuideActions';
 import VoterConstants from '../constants/VoterConstants';
 import Dispatcher from '../dispatcher/Dispatcher';
+import AppObservableStore from './AppObservableStore';
 import { arrayContains } from '../utils/textFormat';
 import VoterStore from './VoterStore'; // eslint-disable-line import/no-cycle
 
@@ -505,7 +505,7 @@ class OrganizationStore extends ReduceStore {
           ({ hostname } = window.location);
           hostname = hostname || '';
           // console.log('OrganizationStore organizationPhotosSave hostname:', hostname, ', organizationWeVoteId:', organizationWeVoteId);
-          AppActions.siteConfigurationRetrieve(hostname);
+          AppObservableStore.siteConfigurationRetrieve(hostname);
           return {
             ...state,
             allCachedOrganizationsDict,
@@ -560,7 +560,7 @@ class OrganizationStore extends ReduceStore {
         ({ organization_we_vote_id: organizationWeVoteId } = action.res);
         ({ hostname } = window.location);
         // console.log('OrganizationStore organizationPhotosSave hostname:', hostname, ', organizationWeVoteId:', organizationWeVoteId);
-        AppActions.siteConfigurationRetrieve(hostname);
+        AppObservableStore.siteConfigurationRetrieve(hostname);
         if (organizationWeVoteId) {
           OrganizationActions.organizationRetrieve(organizationWeVoteId);
         }

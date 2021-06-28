@@ -43,10 +43,7 @@ class FirstAndLastNameRequiredAlert extends Component {
     if (this.timer > 0) {
       FriendActions.friendInvitationByEmailSend();
     }
-    if (this.timer) {
-      clearTimeout(this.timer);
-      this.timer = null;
-    }
+    if (this.timer) clearTimeout(this.timer);
     this.friendStoreListener.remove();
     this.organizationStoreListener.remove();
     this.voterStoreListener.remove();
@@ -130,7 +127,7 @@ class FirstAndLastNameRequiredAlert extends Component {
 
   sendInvitationsWaitingForVerification () {
     const delayBeforeApiCall = 10000;
-    clearTimeout(this.timer);
+    if (this.timer) clearTimeout(this.timer);
     this.timer = setTimeout(() => {
       FriendActions.friendInvitationByEmailSend();
     }, delayBeforeApiCall);

@@ -5,12 +5,12 @@ import React, { PureComponent } from 'react';
 import Helmet from 'react-helmet';
 import styled from 'styled-components';
 import AnalyticsActions from '../actions/AnalyticsActions';
-import AppActions from '../actions/AppActions';
 import VoterActions from '../actions/VoterActions';
 import { BlueTitle, SubTitle, Title } from '../components/Welcome/headerWelcomeStyles';
 import { Description, DescriptionContainer, DescriptionImageColumn, DescriptionLeftColumn, Image, NetworkContainer, NetworkImage, Section, SectionTitle, SectionTitleBold } from '../components/Welcome/sectionStyles';
 import Testimonial from '../components/Widgets/Testimonial';
 import VoterConstants from '../constants/VoterConstants';
+import AppObservableStore from '../stores/AppObservableStore';
 import VoterStore from '../stores/VoterStore';
 import cordovaScrollablePaneTopPadding from '../utils/cordovaScrollablePaneTopPadding';
 import { cordovaDot, historyPush } from '../utils/cordovaUtils';
@@ -62,8 +62,8 @@ class WelcomeForCampaigns extends PureComponent {
     if (isSignedIn) {
       historyPush('/settings/profile');
     } else {
-      AppActions.setGetStartedMode('getStartedForCampaigns');
-      AppActions.setShowSignInModal(true);
+      AppObservableStore.setGetStartedMode('getStartedForCampaigns');
+      AppObservableStore.setShowSignInModal(true);
     }
   };
 

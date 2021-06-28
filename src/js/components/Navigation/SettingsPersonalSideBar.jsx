@@ -1,7 +1,8 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import AppStore from '../../stores/AppStore';
+import AppObservableStore from '../../stores/AppObservableStore';
+import VoterStore from '../../stores/VoterStore';
 import { renderLog } from '../../utils/logging';
 
 const SettingsAccountLevelChip = React.lazy(() => import(/* webpackChunkName: 'SettingsAccountLeveLChip' */ '../Settings/SettingsAccountLevelChip'));
@@ -33,8 +34,8 @@ export default class SettingsPersonalSideBar extends Component {
     }
     const { isSignedIn } = this.props;
     this.setState({
-      isOnPartnerUrl: AppStore.isOnPartnerUrl(),
-      voterIsAdminForThisUrl: AppStore.voterIsAdminForThisUrl(),
+      isOnPartnerUrl: AppObservableStore.isOnPartnerUrl(),
+      voterIsAdminForThisUrl: AppObservableStore.voterIsAdminForThisUrl(VoterStore.getLinkedOrganizationWeVoteId()),
       isSignedIn,
     });
   }
@@ -43,8 +44,8 @@ export default class SettingsPersonalSideBar extends Component {
   UNSAFE_componentWillReceiveProps (nextProps) {
     const { isSignedIn } = nextProps;
     this.setState({
-      isOnPartnerUrl: AppStore.isOnPartnerUrl(),
-      voterIsAdminForThisUrl: AppStore.voterIsAdminForThisUrl(),
+      isOnPartnerUrl: AppObservableStore.isOnPartnerUrl(),
+      voterIsAdminForThisUrl: AppObservableStore.voterIsAdminForThisUrl(VoterStore.getLinkedOrganizationWeVoteId()),
       isSignedIn,
     });
   }

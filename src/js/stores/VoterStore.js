@@ -9,7 +9,7 @@ import signInModalGlobalState from '../components/Widgets/signInModalGlobalState
 import Dispatcher from '../dispatcher/Dispatcher';
 import cookies from '../utils/cookies';
 import { stringContains } from '../utils/textFormat';
-import AppStore from './AppStore'; // eslint-disable-line import/no-cycle
+import AppObservableStore from './AppObservableStore'; // eslint-disable-line import/no-cycle
 
 class VoterStore extends ReduceStore {
   getInitialState () {
@@ -442,7 +442,7 @@ class VoterStore extends ReduceStore {
 
       case 'setExternalVoterId':
         externalVoterId = action.payload;
-        membershipOrganizationWeVoteId = AppStore.getSiteOwnerOrganizationWeVoteId();
+        membershipOrganizationWeVoteId = AppObservableStore.getSiteOwnerOrganizationWeVoteId();
         ({ voterExternalIdHasBeenSavedOnce } = state);
         // console.log('VoterStore externalVoterId:', externalVoterId, ', membershipOrganizationWeVoteId:', membershipOrganizationWeVoteId);
         if (externalVoterId && membershipOrganizationWeVoteId) {

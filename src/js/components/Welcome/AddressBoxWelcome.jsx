@@ -46,10 +46,7 @@ class AddressBoxWelcome extends PureComponent {
       this.googleAutocompleteListener.remove();
     }
     restoreStylesAfterCordovaKeyboard('AddressBoxWelcome');  // Set LOG_RENDER_EVENTS to log all renders
-    if (this.timer) {
-      clearTimeout(this.timer);
-      this.timer = null;
-    }
+    if (this.keyPressTimer) clearTimeout(this.keyPressTimer);
   }
 
   onVoterStoreChange = () => {
@@ -82,7 +79,8 @@ class AddressBoxWelcome extends PureComponent {
     if (event.keyCode === ENTER_KEY_CODE) {
       event.preventDefault();
       const { textForMapSearch } = this.state;
-      this.timer = setTimeout(() => {
+      if (this.keyPressTimer) clearTimeout(this.keyPressTimer);
+      this.keyPressTimer = setTimeout(() => {
         VoterActions.voterAddressSave(textForMapSearch);
       }, 500);
     }

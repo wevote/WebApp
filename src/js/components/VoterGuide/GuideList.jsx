@@ -94,10 +94,7 @@ class GuideList extends Component {
   // }
 
   componentWillUnmount () {
-    if (this.ballotItemTimer) {
-      clearTimeout(this.ballotItemTimer);
-      this.ballotItemTimer = null;
-    }
+    if (this.ballotItemTimer) clearTimeout(this.ballotItemTimer);
     window.removeEventListener('scroll', this.onScroll);
   }
 
@@ -160,6 +157,7 @@ class GuideList extends Component {
     numberOfItemsToDisplay += 5;
     // console.log('Number of ballot items after increment: ', numberOfItemsToDisplay);
 
+    if (this.ballotItemTimer) clearTimeout(this.ballotItemTimer);
     this.ballotItemTimer = setTimeout(() => {
       this.setState({
         numberOfItemsToDisplay,

@@ -6,7 +6,6 @@ import Helmet from 'react-helmet';
 import styled from 'styled-components';
 import ActivityActions from '../../actions/ActivityActions';
 import AnalyticsActions from '../../actions/AnalyticsActions';
-import AppActions from '../../actions/AppActions';
 import BallotActions from '../../actions/BallotActions';
 import FriendActions from '../../actions/FriendActions';
 import OrganizationActions from '../../actions/OrganizationActions';
@@ -22,6 +21,7 @@ import TwitterSignInCard from '../../components/Twitter/TwitterSignInCard';
 import BrowserPushMessage from '../../components/Widgets/BrowserPushMessage';
 import Testimonial from '../../components/Widgets/Testimonial';
 import ActivityStore from '../../stores/ActivityStore';
+import AppObservableStore from '../../stores/AppObservableStore';
 import BallotStore from '../../stores/BallotStore';
 import OrganizationStore from '../../stores/OrganizationStore';
 import VoterStore from '../../stores/VoterStore';
@@ -116,14 +116,8 @@ class News extends Component {
       this.activityStoreListener.remove();
       this.voterStoreListener.remove();
       window.removeEventListener('scroll', this.onScroll);
-      if (this.positionItemTimer) {
-        clearTimeout(this.positionItemTimer);
-        this.positionItemTimer = null;
-      }
-      if (this.activityTidbitDrawerTimer) {
-        clearTimeout(this.activityTidbitDrawerTimer);
-        this.activityTidbitDrawerTimer = null;
-      }
+      if (this.positionItemTimer) clearTimeout(this.positionItemTimer);
+      if (this.activityTidbitDrawerTimer) clearTimeout(this.activityTidbitDrawerTimer);
     }
   }
 
@@ -201,6 +195,7 @@ class News extends Component {
     numberOfActivityTidbitsToDisplay += 5;
     // console.log('Number of position items after increment: ', numberOfActivityTidbitsToDisplay);
 
+    if (this.positionItemTimer) clearTimeout(this.positionItemTimer);
     this.positionItemTimer = setTimeout(() => {
       this.setState({
         numberOfActivityTidbitsToDisplay,
@@ -210,8 +205,9 @@ class News extends Component {
 
   openActivityTidbitDrawer (activityTidbitWeVoteIdForDrawer) {
     if (activityTidbitWeVoteIdForDrawer) {
+      if (this.activityTidbitDrawerTimer) clearTimeout(this.activityTidbitDrawerTimer);
       this.activityTidbitDrawerTimer = setTimeout(() => {
-        AppActions.setActivityTidbitWeVoteIdForDrawerAndOpen(activityTidbitWeVoteIdForDrawer);
+        AppObservableStore.setActivityTidbitWeVoteIdForDrawerAndOpen(activityTidbitWeVoteIdForDrawer);
       }, 500);
     }
   }

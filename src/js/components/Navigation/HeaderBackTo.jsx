@@ -4,11 +4,10 @@ import { AccountCircle } from '@material-ui/icons';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import styled from 'styled-components';
-import AppActions from '../../actions/AppActions';
 import OrganizationActions from '../../actions/OrganizationActions';
 import VoterGuideActions from '../../actions/VoterGuideActions';
 import VoterSessionActions from '../../actions/VoterSessionActions';
-import AppStore from '../../stores/AppStore';
+import AppObservableStore, { messageService } from '../../stores/AppObservableStore';
 import VoterStore from '../../stores/VoterStore';
 import { dumpCssFromId } from '../../utils/appleSiliconUtils';
 import { hasIPhoneNotch, historyPush, isCordova, isIOSAppOnMac, isIPad, isWebApp } from '../../utils/cordovaUtils';
@@ -33,7 +32,7 @@ class HeaderBackTo extends Component {
       backToLink: '',
       backToLinkText: '',
       profilePopUpOpen: false,
-      showSignInModal: AppStore.showSignInModal(),
+      showSignInModal: AppObservableStore.showSignInModal(),
       voter: {},
       voterFirstName: '',
       voterWeVoteId: '',
@@ -49,7 +48,7 @@ class HeaderBackTo extends Component {
 
   componentDidMount () {
     // console.log('HeaderBackTo componentDidMount, this.props: ', this.props);
-    this.appStoreListener = AppStore.addListener(this.onAppStoreChange.bind(this));
+    this.appStateSubscription = messageService.getMessage().subscribe(() => this.onAppObservableStoreChange());
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
 
     const voter = VoterStore.getVoter();
@@ -140,13 +139,13 @@ class HeaderBackTo extends Component {
   }
 
   componentWillUnmount () {
-    this.appStoreListener.remove();
+    this.appStateSubscription.unsubscribe();
     this.voterStoreListener.remove();
   }
 
-  onAppStoreChange () {
+  onAppObservableStoreChange () {
     this.setState({
-      showSignInModal: AppStore.showSignInModal(),
+      showSignInModal: AppObservableStore.showSignInModal(),
     });
   }
 
@@ -192,13 +191,13 @@ class HeaderBackTo extends Component {
   }
 
   closeSignInModal () {
-    AppActions.setShowSignInModal(false);
+    AppObservableStore.setShowSignInModal(false);
   }
 
   toggleSignInModal () {
     const { showSignInModal } = this.state;
     this.setState({ profilePopUpOpen: false });
-    AppActions.setShowSignInModal(!showSignInModal);
+    AppObservableStore.setShowSignInModal(!showSignInModal);
   }
 
   hideProfilePopUp () {

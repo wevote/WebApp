@@ -8,8 +8,8 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import Helmet from 'react-helmet';
 import styled from 'styled-components';
-import AppActions from '../../actions/AppActions';
 import DonateActions from '../../actions/DonateActions';
+import AppObservableStore from '../../stores/AppObservableStore';
 import DonateStore from '../../stores/DonateStore';
 import OrganizationStore from '../../stores/OrganizationStore';
 import VoterStore from '../../stores/VoterStore';
@@ -189,7 +189,7 @@ class SettingsSubscriptionPlan extends Component {
   };
 
   openPaidAccountUpgradeModal = (paidAccountUpgradeMode) => {
-    AppActions.setShowPaidAccountUpgradeModal(paidAccountUpgradeMode);
+    AppObservableStore.setShowPaidAccountUpgradeModal(paidAccountUpgradeMode);
   };
 
   onChangePlan = () => {

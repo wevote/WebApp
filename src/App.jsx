@@ -7,6 +7,7 @@ import HeaderBarSuspense from './js/components/Navigation/HeaderBarSuspense';
 import ErrorBoundary from './js/components/Widgets/ErrorBoundary';
 import WeVoteRouter from './js/components/Widgets/WeVoteRouter';
 import muiTheme from './js/mui-theme';
+import AppObservableStore from './js/stores/AppObservableStore';
 import styledTheme from './js/styled-theme';
 import initializejQuery from './js/utils/initializejQuery';
 import { renderLog } from './js/utils/logging';
@@ -116,7 +117,11 @@ class App extends Component {
   componentDidMount () {
     // initializeOnce();
     // this.InitializeOnce();
-    initializejQuery();
+    initializejQuery(() => {
+      let { hostname } = window.location;
+      hostname = hostname || '';
+      AppObservableStore.siteConfigurationRetrieve(hostname);
+    });
     console.log('href in App.js componentDidMount: ', window.location.href);
   }
 

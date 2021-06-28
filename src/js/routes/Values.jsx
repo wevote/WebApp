@@ -60,6 +60,7 @@ export default class Values extends Component {
   componentWillUnmount () {
     this.issueStoreListener.remove();
     this.voterStoreListener.remove();
+    clearTimeout(this.preloadTimer);
   }
 
   onIssueStoreChange () {

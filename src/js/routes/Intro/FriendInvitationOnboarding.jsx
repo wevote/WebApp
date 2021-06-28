@@ -42,7 +42,7 @@ class FriendInvitationOnboarding extends Component {
   }
 
   componentDidMount () {
-    // this.appStoreListener = AppStore.addListener(this.onAppStoreChange.bind(this));
+    // this.appStateSubscription = messageService.getMessage().subscribe(() => this.onAppObservableStoreChange());
     this.friendStoreListener = FriendStore.addListener(this.onFriendStoreChange.bind(this));
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
     const { match: { params: { invitationSecretKey }  } } = this.props;

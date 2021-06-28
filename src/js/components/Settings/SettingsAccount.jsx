@@ -5,12 +5,11 @@ import Button from 'react-bootstrap/Button';
 import Helmet from 'react-helmet';
 import styled from 'styled-components';
 import AnalyticsActions from '../../actions/AnalyticsActions';
-import AppActions from '../../actions/AppActions';
 import FacebookActions from '../../actions/FacebookActions';
 import TwitterActions from '../../actions/TwitterActions';
 import VoterActions from '../../actions/VoterActions';
 import VoterSessionActions from '../../actions/VoterSessionActions';
-import AppStore from '../../stores/AppStore';
+import AppObservableStore, { messageService } from '../../stores/AppObservableStore';
 import FacebookStore from '../../stores/FacebookStore';
 import VoterStore from '../../stores/VoterStore';
 import cookies from '../../utils/cookies';
@@ -72,7 +71,7 @@ export default class SettingsAccount extends Component {
     // console.log("SettingsAccount componentDidMount");
     initializeAppleSDK(null);
     this.onVoterStoreChange();
-    this.appStoreListener = AppStore.addListener(this.onAppStoreChange.bind(this));
+    this.appStateSubscription = messageService.getMessage().subscribe(() => this.onAppObservableStoreChange());
     this.facebookStoreListener = FacebookStore.addListener(this.onFacebookChange.bind(this));
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
     let signInStartFullUrl = cookies.getItem('sign_in_start_full_url');
@@ -85,7 +84,7 @@ export default class SettingsAccount extends Component {
     const { hostname } = window.location;
     const isOnFacebookSupportedDomainUrl = hostname === 'wevote.us' || hostname === 'quality.wevote.us' || hostname === 'localhost' || isCordova() || window.location.href.includes('ngrok');
 
-    const getStartedMode = AppStore.getStartedMode();
+    const getStartedMode = AppObservableStore.getStartedMode();
     AnalyticsActions.saveActionAccountPage(VoterStore.electionId());
     const { origin } = window.location;
 
@@ -126,9 +125,9 @@ export default class SettingsAccount extends Component {
         pleaseSignInSubTitle: 'Don\'t worry, we won\'t post anything automatically.',
       });
     } else {
-      const isOnWeVoteRootUrl = AppStore.isOnWeVoteRootUrl();
-      const isOnWeVoteSubdomainUrl = AppStore.isOnWeVoteSubdomainUrl();
-      // No need to query an api to get this answer.  Creates an unneeded dependency:  const isOnFacebookSupportedDomainUrl = AppStore.isOnFacebookSupportedDomainUrl() || window.location.href.includes('ngrok');
+      const isOnWeVoteRootUrl = AppObservableStore.isOnWeVoteRootUrl();
+      const isOnWeVoteSubdomainUrl = AppObservableStore.isOnWeVoteSubdomainUrl();
+      // No need to query an api to get this answer.  Creates an unneeded dependency:  const isOnFacebookSupportedDomainUrl = AppObservableStore.isOnFacebookSupportedDomainUrl() || window.location.href.includes('ngrok');
       let pleaseSignInSubTitle = '';
       if (isOnWeVoteRootUrl || isOnWeVoteSubdomainUrl || isOnFacebookSupportedDomainUrl) {
         pleaseSignInSubTitle = 'Don\'t worry, we won\'t post anything automatically.';
@@ -139,8 +138,8 @@ export default class SettingsAccount extends Component {
       }, () => this.localStoreSignInStartFullUrl());
     }
     this.setState({
-      isOnWeVoteRootUrl: AppStore.isOnWeVoteRootUrl(),
-      isOnWeVoteSubdomainUrl: AppStore.isOnWeVoteSubdomainUrl(),
+      isOnWeVoteRootUrl: AppObservableStore.isOnWeVoteRootUrl(),
+      isOnWeVoteSubdomainUrl: AppObservableStore.isOnWeVoteSubdomainUrl(),
       isOnFacebookSupportedDomainUrl,
     });
 
@@ -186,22 +185,19 @@ export default class SettingsAccount extends Component {
   componentWillUnmount () {
     // console.log("SettingsAccount componentWillUnmount");
     signInModalGlobalState.set('textOrEmailSignInInProcess', false);
-    this.appStoreListener.remove();
+    this.appStateSubscription.unsubscribe();
     this.facebookStoreListener.remove();
     this.voterStoreListener.remove();
-    if (this.timer) {
-      clearTimeout(this.timer);
-      this.timer = null;
-    }
+    if (this.timer) clearTimeout(this.timer);
     restoreStylesAfterCordovaKeyboard('SettingsAccount');
   }
 
-  onAppStoreChange () {
+  onAppObservableStoreChange () {
     const { isOnFacebookSupportedDomainUrl } = this.state;
     this.setState({
-      isOnWeVoteRootUrl: AppStore.isOnWeVoteRootUrl(),
-      isOnWeVoteSubdomainUrl: AppStore.isOnWeVoteSubdomainUrl(),
-      isOnFacebookSupportedDomainUrl: AppStore.isOnFacebookSupportedDomainUrl() || isOnFacebookSupportedDomainUrl,
+      isOnWeVoteRootUrl: AppObservableStore.isOnWeVoteRootUrl(),
+      isOnWeVoteSubdomainUrl: AppObservableStore.isOnWeVoteSubdomainUrl(),
+      isOnFacebookSupportedDomainUrl: AppObservableStore.isOnFacebookSupportedDomainUrl() || isOnFacebookSupportedDomainUrl,
     });
   }
 
@@ -282,7 +278,7 @@ export default class SettingsAccount extends Component {
     const { pathname } = window.location;
     // console.log('localStoreSignInStartFullUrl, pathname:', pathname);
     if (pathname !== '/settings/account') {
-      AppActions.storeSignInStartFullUrl();
+      AppObservableStore.storeSignInStartFullUrl();
     }
   }
 

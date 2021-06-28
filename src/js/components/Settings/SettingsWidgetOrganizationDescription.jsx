@@ -43,19 +43,13 @@ class SettingsWidgetOrganizationDescription extends Component {
   componentWillUnmount () {
     this.organizationStoreListener.remove();
     this.voterStoreListener.remove();
-    if (this.clearStatusTimer) {
-      clearTimeout(this.clearStatusTimer);
-      this.clearStatusTimer = null;
-    }
-    if (this.timer) {
-      clearTimeout(this.timer);
-      this.timer = null;
-    }
+    if (this.clearStatusTimer) clearTimeout(this.clearStatusTimer);
+    if (this.timer) clearTimeout(this.timer);
     restoreStylesAfterCordovaKeyboard('SettingsWidgetOrganizationDescription');
   }
 
   handleKeyPress () {
-    clearTimeout(this.timer);
+    if (this.timer) clearTimeout(this.timer);
     if (this.props.voterHasMadeChangesFunction) {
       this.props.voterHasMadeChangesFunction();
     }
@@ -106,7 +100,7 @@ class SettingsWidgetOrganizationDescription extends Component {
       });
     }
     // After some time, clear saved message
-    clearTimeout(this.clearStatusTimer);
+    if (this.clearStatusTimer) clearTimeout(this.clearStatusTimer);
     this.clearStatusTimer = setTimeout(() => {
       this.setState({ organizationDescriptionSavedStatus: '' });
     }, delayBeforeRemovingSavedStatus);

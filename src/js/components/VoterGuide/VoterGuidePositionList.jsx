@@ -223,10 +223,7 @@ class VoterGuidePositionList extends Component {
     this.friendStoreListener.remove();
     this.organizationStoreListener.remove();
     window.removeEventListener('scroll', this.onScroll);
-    if (this.positionItemTimer) {
-      clearTimeout(this.positionItemTimer);
-      this.positionItemTimer = null;
-    }
+    if (this.positionItemTimer) clearTimeout(this.positionItemTimer);
   }
 
   onFriendStoreChange () {
@@ -356,6 +353,7 @@ class VoterGuidePositionList extends Component {
     numberOfPositionItemsToDisplay += 5;
     // console.log('Number of position items after increment: ', numberOfPositionItemsToDisplay);
 
+    if (this.positionItemTimer) clearTimeout(this.positionItemTimer);
     this.positionItemTimer = setTimeout(() => {
       this.setState({
         numberOfPositionItemsToDisplay,

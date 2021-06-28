@@ -4,13 +4,13 @@ import Helmet from 'react-helmet';
 import styled from 'styled-components';
 import ActivityActions from '../../actions/ActivityActions';
 import AnalyticsActions from '../../actions/AnalyticsActions';
-import AppActions from '../../actions/AppActions';
 import CandidateActions from '../../actions/CandidateActions';
 import IssueActions from '../../actions/IssueActions';
 import OfficeActions from '../../actions/OfficeActions';
 import CandidateList from '../../components/Ballot/CandidateList';
 import LoadingWheel from '../../components/LoadingWheel';
 import Testimonial from '../../components/Widgets/Testimonial';
+import AppObservableStore from '../../stores/AppObservableStore';
 import BallotStore from '../../stores/BallotStore';
 import CandidateStore from '../../stores/CandidateStore';
 import IssueStore from '../../stores/IssueStore';
@@ -101,13 +101,13 @@ class Office extends Component {
     const modalToOpen = params.modal_to_show || '';
     if (modalToOpen === 'share') {
       this.modalOpenTimer = setTimeout(() => {
-        AppActions.setShowShareModal(true);
+        AppObservableStore.setShowShareModal(true);
       }, 1000);
     } else if (modalToOpen === 'sic') { // sic = Shared Item Code
       const sharedItemCode = params.shared_item_code || '';
       if (sharedItemCode) {
         this.modalOpenTimer = setTimeout(() => {
-          AppActions.setShowSharedItemModal(sharedItemCode);
+          AppObservableStore.setShowSharedItemModal(sharedItemCode);
         }, 1000);
       }
     }
@@ -122,13 +122,13 @@ class Office extends Component {
     const modalToOpen = nextParams.modal_to_show || '';
     if (modalToOpen === 'share') {
       this.modalOpenTimer = setTimeout(() => {
-        AppActions.setShowShareModal(true);
+        AppObservableStore.setShowShareModal(true);
       }, 1000);
     } else if (modalToOpen === 'sic') { // sic = Shared Item Code
       const sharedItemCode = nextParams.shared_item_code || '';
       if (sharedItemCode) {
         this.modalOpenTimer = setTimeout(() => {
-          AppActions.setShowSharedItemModal(sharedItemCode);
+          AppObservableStore.setShowSharedItemModal(sharedItemCode);
         }, 1000);
       }
     }
@@ -137,10 +137,7 @@ class Office extends Component {
   componentWillUnmount () {
     this.candidateStoreListener.remove();
     this.officeStoreListener.remove();
-    if (this.modalOpenTimer) {
-      clearTimeout(this.modalOpenTimer);
-      this.modalOpenTimer = null;
-    }
+    if (this.modalOpenTimer) clearTimeout(this.modalOpenTimer);
   }
 
   onCandidateStoreChange () {

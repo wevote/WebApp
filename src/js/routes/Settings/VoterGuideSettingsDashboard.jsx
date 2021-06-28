@@ -6,7 +6,7 @@ import BallotActions from '../../actions/BallotActions';
 import OrganizationActions from '../../actions/OrganizationActions';
 import VoterGuideActions from '../../actions/VoterGuideActions';
 import VoterGuideSettingsAddPositions from '../../components/Settings/VoterGuideSettingsAddPositions';
-import AppStore from '../../stores/AppStore';
+import AppObservableStore, { messageService } from '../../stores/AppObservableStore';
 import BallotStore from '../../stores/BallotStore';
 import OrganizationStore from '../../stores/OrganizationStore';
 import VoterGuideStore from '../../stores/VoterGuideStore';
@@ -32,7 +32,7 @@ class VoterGuideSettingsDashboard extends Component {
     // console.log('VoterGuideSettingsDashboard componentDidMount');
     const { match: { params } } = this.props;
     // if (params.edit_mode) {  // We are going to ignore the incoming edit_mode
-    this.onAppStoreChange();
+    this.onAppObservableStoreChange();
     // Get Voter Guide information
     // const { match: { params } } = this.props;
     // console.log('params.voter_guide_we_vote_id:', params.voter_guide_we_vote_id);
@@ -61,7 +61,7 @@ class VoterGuideSettingsDashboard extends Component {
     this.onBallotStoreChange();
     this.onVoterStoreChange();
     this.onOrganizationStoreChange();
-    this.appStoreListener = AppStore.addListener(this.onAppStoreChange.bind(this));
+    this.appStateSubscription = messageService.getMessage().subscribe(() => this.onAppObservableStoreChange());
     this.ballotStoreListener = BallotStore.addListener(this.onBallotStoreChange.bind(this));
     this.organizationStoreListener = OrganizationStore.addListener(this.onOrganizationStoreChange.bind(this));
     this.voterGuideStoreListener = VoterGuideStore.addListener(this.onVoterGuideStoreChange.bind(this));
@@ -72,7 +72,7 @@ class VoterGuideSettingsDashboard extends Component {
   UNSAFE_componentWillReceiveProps (nextProps) {
     // console.log('VoterGuideSettingsDashboard componentDidMount');
     const { match: { params: nextParams } } = nextProps;
-    this.onAppStoreChange();
+    this.onAppObservableStoreChange();
     // console.log('nextParams.voter_guide_we_vote_id:', nextParams.voter_guide_we_vote_id);
     if (nextParams.voter_guide_we_vote_id && isProperlyFormattedVoterGuideWeVoteId(nextParams.voter_guide_we_vote_id)) {
       const voterGuide = VoterGuideStore.getVoterGuideByVoterGuideId(nextParams.voter_guide_we_vote_id);
@@ -105,16 +105,16 @@ class VoterGuideSettingsDashboard extends Component {
   }
 
   componentWillUnmount () {
-    this.appStoreListener.remove();
+    this.appStateSubscription.unsubscribe();
     this.ballotStoreListener.remove();
     this.organizationStoreListener.remove();
     this.voterGuideStoreListener.remove();
     this.voterStoreListener.remove();
   }
 
-  onAppStoreChange () {
+  onAppObservableStoreChange () {
     this.setState({
-      getVoterGuideSettingsDashboardEditMode: AppStore.getVoterGuideSettingsDashboardEditMode(),
+      getVoterGuideSettingsDashboardEditMode: AppObservableStore.getVoterGuideSettingsDashboardEditMode(),
     });
   }
 

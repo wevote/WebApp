@@ -6,12 +6,15 @@ import Helmet from 'react-helmet';
 import styled from 'styled-components';
 import ActivityActions from '../../actions/ActivityActions';
 import AnalyticsActions from '../../actions/AnalyticsActions';
-import AppActions from '../../actions/AppActions';
 import MeasureActions from '../../actions/MeasureActions';
 import OrganizationActions from '../../actions/OrganizationActions';
+import MeasureStickyHeader from '../../components/Ballot/MeasureStickyHeader';
 import LoadingWheel from '../../components/LoadingWheel';
+import EndorsementCard from '../../components/Widgets/EndorsementCard';
+import SearchOnGoogle from '../../components/Widgets/SearchOnGoogle';
+import ViewOnBallotpedia from '../../components/Widgets/ViewOnBallotpedia';
 import webAppConfig from '../../config';
-import AppStore from '../../stores/AppStore';
+import AppObservableStore, { messageService } from '../../stores/AppObservableStore';
 import BallotStore from '../../stores/BallotStore';
 import MeasureStore from '../../stores/MeasureStore';
 import VoterGuideStore from '../../stores/VoterGuideStore';
@@ -19,10 +22,6 @@ import VoterStore from '../../stores/VoterStore';
 import { isWebApp } from '../../utils/cordovaUtils';
 import { renderLog } from '../../utils/logging';
 import { capitalizeString } from '../../utils/textFormat';
-import EndorsementCard from '../../components/Widgets/EndorsementCard';
-import MeasureStickyHeader from '../../components/Ballot/MeasureStickyHeader';
-import SearchOnGoogle from '../../components/Widgets/SearchOnGoogle';
-import ViewOnBallotpedia from '../../components/Widgets/ViewOnBallotpedia';
 
 const DelayedLoad = React.lazy(() => import(/* webpackChunkName: 'DelayedLoad' */ '../../components/Widgets/DelayedLoad'));
 const MeasureItem = React.lazy(() => import(/* webpackChunkName: 'MeasureItem' */ '../../components/Ballot/MeasureItem'));
@@ -42,14 +41,14 @@ class Measure extends Component {
       measureWeVoteId: '',
       positionListFromFriendsHasBeenRetrievedOnce: {},
       positionListHasBeenRetrievedOnce: {},
-      scrolledDown: AppStore.getScrolledDown(),
+      scrolledDown: AppObservableStore.getScrolledDown(),
     };
   }
 
   componentDidMount () {
     // console.log('Measure componentDidMount');
     const { match: { params } } = this.props;
-    this.appStoreListener = AppStore.addListener(this.onAppStoreChange.bind(this));
+    this.appStateSubscription = messageService.getMessage().subscribe(() => this.onAppObservableStoreChange());
     this.measureStoreListener = MeasureStore.addListener(this.onMeasureStoreChange.bind(this));
     this.voterGuideStoreListener = VoterGuideStore.addListener(this.onVoterGuideStoreChange.bind(this));
     const { measure_we_vote_id: measureWeVoteId } = params;
@@ -101,13 +100,13 @@ class Measure extends Component {
     const modalToOpen = params.modal_to_show || '';
     if (modalToOpen === 'share') {
       this.modalOpenTimer = setTimeout(() => {
-        AppActions.setShowShareModal(true);
+        AppObservableStore.setShowShareModal(true);
       }, 1000);
     } else if (modalToOpen === 'sic') { // sic = Shared Item Code
       const sharedItemCode = params.shared_item_code || '';
       if (sharedItemCode) {
         this.modalOpenTimer = setTimeout(() => {
-          AppActions.setShowSharedItemModal(sharedItemCode);
+          AppObservableStore.setShowSharedItemModal(sharedItemCode);
         }, 1000);
       }
     }
@@ -121,13 +120,13 @@ class Measure extends Component {
     const modalToOpen = nextParams.modal_to_show || '';
     if (modalToOpen === 'share') {
       this.modalOpenTimer = setTimeout(() => {
-        AppActions.setShowShareModal(true);
+        AppObservableStore.setShowShareModal(true);
       }, 1000);
     } else if (modalToOpen === 'sic') { // sic = Shared Item Code
       const sharedItemCode = nextParams.shared_item_code || '';
       if (sharedItemCode) {
         this.modalOpenTimer = setTimeout(() => {
-          AppActions.setShowSharedItemModal(sharedItemCode);
+          AppObservableStore.setShowSharedItemModal(sharedItemCode);
         }, 1000);
       }
     }
@@ -199,18 +198,15 @@ class Measure extends Component {
   }
 
   componentWillUnmount () {
-    this.appStoreListener.remove();
+    this.appStateSubscription.unsubscribe();
     this.measureStoreListener.remove();
     this.voterGuideStoreListener.remove();
-    if (this.modalOpenTimer) {
-      clearTimeout(this.modalOpenTimer);
-      this.modalOpenTimer = null;
-    }
+    if (this.modalOpenTimer) clearTimeout(this.modalOpenTimer);
   }
 
-  onAppStoreChange () {
+  onAppObservableStoreChange () {
     this.setState({
-      scrolledDown: AppStore.getScrolledDown(),
+      scrolledDown: AppObservableStore.getScrolledDown(),
     });
   }
 

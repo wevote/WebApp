@@ -6,7 +6,6 @@ import React, { PureComponent } from 'react';
 import Helmet from 'react-helmet';
 import styled from 'styled-components';
 import AnalyticsActions from '../actions/AnalyticsActions';
-import AppActions from '../actions/AppActions';
 import VoterActions from '../actions/VoterActions';
 import SettingsVerifySecretCode from '../components/Settings/SettingsVerifySecretCode';
 import AddressBoxWelcome from '../components/Welcome/AddressBoxWelcome';
@@ -15,6 +14,7 @@ import { Bold, Description, DescriptionContainer, DescriptionImageColumn, Descri
 import TextBox from '../components/Welcome/TextBox';
 import Testimonial from '../components/Widgets/Testimonial';
 import VoterConstants from '../constants/VoterConstants';
+import AppObservableStore from '../stores/AppObservableStore';
 import VoterStore from '../stores/VoterStore';
 import cordovaScrollablePaneTopPadding from '../utils/cordovaScrollablePaneTopPadding';
 import { cordovaDot, historyPush } from '../utils/cordovaUtils';
@@ -49,15 +49,12 @@ class WelcomeForVoters extends PureComponent {
     this.onVoterStoreChange();
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
     AnalyticsActions.saveActionWelcomeVisit(VoterStore.electionId());
-    AppActions.setEvaluateHeaderDisplay();
+    AppObservableStore.setEvaluateHeaderDisplay();
   }
 
   componentWillUnmount () {
     this.voterStoreListener.remove();
-    if (this.closeVerifyModalTimer) {
-      clearTimeout(this.closeVerifyModalTimer);
-      this.closeVerifyModalTimer = null;
-    }
+    if (this.closeVerifyModalTimer) clearTimeout(this.closeVerifyModalTimer);
   }
 
   onVoterStoreChange () {
@@ -75,6 +72,7 @@ class WelcomeForVoters extends PureComponent {
 
   closeVerifyModalStep2 = () => {
     // console.log('WelcomeForVoters closeVerifyModalStep2');
+    if (this.closeVerifyModalTimer) clearTimeout(this.closeVerifyModalTimer);
     this.closeVerifyModalTimer = setTimeout(() => {
       VoterActions.clearEmailAddressStatus();
       VoterActions.clearSecretCodeVerificationStatus();

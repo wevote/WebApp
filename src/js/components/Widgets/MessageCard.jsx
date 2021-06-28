@@ -2,7 +2,7 @@ import { Button } from '@material-ui/core';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import styled from 'styled-components';
-import AppActions from '../../actions/AppActions';
+import AppObservableStore from '../../stores/AppObservableStore';
 import { historyPush } from '../../utils/cordovaUtils';
 import { renderLog } from '../../utils/logging';
 
@@ -16,7 +16,7 @@ export default class MessageCard extends Component {
 
   onClick () {
     if (this.props.inShareModal) {
-      AppActions.setShowShareModal(false);
+      AppObservableStore.setShowShareModal(false);
     }
 
     // console.log('MessageCard historyPush(this.props.buttonURL) #####################', this.props.buttonURL);

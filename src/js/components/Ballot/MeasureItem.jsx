@@ -3,7 +3,7 @@ import { Info } from '@material-ui/icons';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import styled from 'styled-components';
-import AppStore from '../../stores/AppStore';
+import { messageService } from '../../stores/AppObservableStore';
 import MeasureStore from '../../stores/MeasureStore';
 import { historyPush } from '../../utils/cordovaUtils';
 import { renderLog } from '../../utils/logging';
@@ -27,7 +27,7 @@ class MeasureItem extends Component {
       stateCode: '',
       stateDisplayName: '',
       showPositionStatementActionBar: true,
-      // scrolledDown: AppStore.getScrolledDown(),
+      // scrolledDown: AppObservableStore.getScrolledDown(),
     };
     this.getMeasureLink = this.getMeasureLink.bind(this);
     this.goToMeasureLink = this.goToMeasureLink.bind(this);
@@ -36,12 +36,12 @@ class MeasureItem extends Component {
   componentDidMount () {
     this.onMeasureStoreChange();
     this.measureStoreListener = MeasureStore.addListener(this.onMeasureStoreChange.bind(this));
-    this.appStoreListener = AppStore.addListener(this.onAppStoreChange.bind(this));
+    this.appStateSubscription = messageService.getMessage().subscribe(() => this.onAppObservableStoreChange());
   }
 
   componentWillUnmount () {
     this.measureStoreListener.remove();
-    this.appStoreListener.remove();
+    this.appStateSubscription.unsubscribe();
   }
 
   onMeasureStoreChange () {
@@ -58,9 +58,9 @@ class MeasureItem extends Component {
     });
   }
 
-  onAppStoreChange () {
+  onAppObservableStoreChange () {
     this.setState({
-      // scrolledDown: AppStore.getScrolledDown(),
+      // scrolledDown: AppObservableStore.getScrolledDown(),
     });
   }
 

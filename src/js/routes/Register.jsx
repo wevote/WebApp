@@ -10,7 +10,7 @@ import BallotActions from '../actions/BallotActions';
 import ReadyActions from '../actions/ReadyActions';
 import LoadingWheel from '../components/LoadingWheel';
 import BrowserPushMessage from '../components/Widgets/BrowserPushMessage';
-import AppStore from '../stores/AppStore';
+import { messageService } from '../stores/AppObservableStore';
 import BallotStore from '../stores/BallotStore';
 import VoterStore from '../stores/VoterStore';
 import { formatDateToMonthDayYear } from '../utils/dateFormat';
@@ -35,9 +35,9 @@ class Register extends Component {
   }
 
   componentDidMount () {
-    this.onAppStoreChange();
+    this.onAppObservableStoreChange();
     this.onVoterStoreChange();
-    this.appStoreListener = AppStore.addListener(this.onAppStoreChange.bind(this));
+    this.appStateSubscription = messageService.getMessage().subscribe(() => this.onAppObservableStoreChange());
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
     if (!BallotStore.ballotFound) {
       // console.log('WebApp doesn't know the election or have ballot data, so ask the API server to return best guess');
@@ -56,7 +56,7 @@ class Register extends Component {
   }
 
   componentWillUnmount () {
-    this.appStoreListener.remove();
+    this.appStateSubscription.unsubscribe();
     this.voterStoreListener.remove();
   }
 
@@ -73,10 +73,10 @@ class Register extends Component {
     // console.log(e.target.value);
   }
 
-  onAppStoreChange () {
+  onAppObservableStoreChange () {
     // this.setState({
-    //   chosenReadyIntroductionText: AppStore.getChosenReadyIntroductionText(),
-    //   chosenReadyIntroductionTitle: AppStore.getChosenReadyIntroductionTitle(),
+    //   chosenReadyIntroductionText: AppObservableStore.getChosenReadyIntroductionText(),
+    //   chosenReadyIntroductionTitle: AppObservableStore.getChosenReadyIntroductionTitle(),
     // });
   }
 

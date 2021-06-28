@@ -4,9 +4,9 @@ import { AccountCircle, MoreHoriz } from '@material-ui/icons';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import styled from 'styled-components';
-import AppActions from '../../actions/AppActions';
 import ReactionActions from '../../actions/ReactionActions';
 import ActivityStore from '../../stores/ActivityStore';
+import AppObservableStore from '../../stores/AppObservableStore';
 import ReactionStore from '../../stores/ReactionStore';
 import VoterStore from '../../stores/VoterStore';
 import { timeFromDate } from '../../utils/dateFormat';
@@ -42,6 +42,7 @@ class ChildCommentList extends Component {
     this.activityStoreListener.remove();
     this.reactionStoreListener.remove();
     this.voterStoreListener.remove();
+    if (this.positionItemTimer) clearTimeout(this.positionItemTimer);
   }
 
   onActivityStoreChange () {
@@ -123,8 +124,8 @@ class ChildCommentList extends Component {
   onClickShowActivityTidbitDrawer = () => {
     const { activityTidbitWeVoteId } = this.props;
     // console.log('onClickShowActivityTidbitDrawer activityTidbitWeVoteId:', activityTidbitWeVoteId);
-    AppActions.setActivityTidbitWeVoteIdForDrawer(activityTidbitWeVoteId);
-    AppActions.setShowActivityTidbitDrawer(true);
+    AppObservableStore.setActivityTidbitWeVoteIdForDrawer(activityTidbitWeVoteId);
+    AppObservableStore.setShowActivityTidbitDrawer(true);
   }
 
   onClickToggleReplyToCommentLocal = () => {
@@ -139,6 +140,7 @@ class ChildCommentList extends Component {
     // console.log('increaseNumberOfActivityTidbitsToDisplay');
     let { numberOfChildCommentsToDisplay } = this.state;
     numberOfChildCommentsToDisplay += 2;
+    if (this.positionItemTimer) clearTimeout(this.positionItemTimer);
     this.positionItemTimer = setTimeout(() => {
       this.setState({
         numberOfChildCommentsToDisplay,
@@ -398,7 +400,7 @@ const ChildCommentText = styled.div`
   font-size: 14px;
   font-weight: 500;
   padding: 2px 12px;
-  margin-top: 0px;
+  margin-top: 0;
 `;
 
 const ChildCommentPhotoDiv = styled.div`
@@ -463,7 +465,7 @@ const SpeakerAvatar = styled.div`
 
 const Wrapper = styled.div`
   margin-bottom: 6px !important;
-  padding: 0px !important;
+  padding: 0 !important;
 `;
 
 export default withTheme(withStyles(styles)(ChildCommentList));

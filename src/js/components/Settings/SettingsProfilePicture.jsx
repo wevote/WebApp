@@ -3,7 +3,7 @@ import { withStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import styled from 'styled-components';
-import AppActions from '../../actions/AppActions';
+import AppObservableStore from '../../stores/AppObservableStore';
 
 
 class SettingsProfilePicture extends Component {
@@ -39,7 +39,7 @@ class SettingsProfilePicture extends Component {
               {value === 'custom' && (
                 <>
                   <Button
-                    onClick={() => AppActions.setShowImageUploadModal(true)}
+                    onClick={() => AppObservableStore.setShowImageUploadModal(true)}
                     classes={{ root: classes.button }}
                     color="primary"
                     variant="contained"

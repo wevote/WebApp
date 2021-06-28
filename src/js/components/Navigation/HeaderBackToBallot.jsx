@@ -4,11 +4,10 @@ import { AccountCircle } from '@material-ui/icons';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import styled from 'styled-components';
-import AppActions from '../../actions/AppActions';
 import OrganizationActions from '../../actions/OrganizationActions';
 import VoterGuideActions from '../../actions/VoterGuideActions';
 import VoterSessionActions from '../../actions/VoterSessionActions';
-import AppStore from '../../stores/AppStore';
+import AppObservableStore, { messageService } from '../../stores/AppObservableStore';
 import CandidateStore from '../../stores/CandidateStore';
 import MeasureStore from '../../stores/MeasureStore';
 import OfficeStore from '../../stores/OfficeStore';
@@ -69,7 +68,7 @@ class HeaderBackToBallot extends Component {
   componentDidMount () {
     // console.log('HeaderBackToBallot componentDidMount, this.props: ', this.props);
     const { params } = this.props;
-    this.appStoreListener = AppStore.addListener(this.onAppStoreChange.bind(this));
+    this.appStateSubscription = messageService.getMessage().subscribe(() => this.onAppObservableStoreChange());
     this.candidateStoreListener = CandidateStore.addListener(this.onCandidateStoreChange.bind(this));
     this.measureStoreListener = MeasureStore.addListener(this.onMeasureStoreChange.bind(this));
     this.organizationStoreListener = OrganizationStore.addListener(this.onOrganizationStoreChange.bind(this));
@@ -174,10 +173,10 @@ class HeaderBackToBallot extends Component {
     const voterIsSignedIn = voter.is_signed_in;
     const voterPhotoUrlMedium = voter.voter_photo_url_medium;
     this.setState({
-      scrolledDown: AppStore.getScrolledDown(),
-      shareModalStep: AppStore.shareModalStep(),
-      showShareModal: AppStore.showShareModal(),
-      showSignInModal: AppStore.showSignInModal(),
+      scrolledDown: AppObservableStore.getScrolledDown(),
+      shareModalStep: AppObservableStore.shareModalStep(),
+      showShareModal: AppObservableStore.showShareModal(),
+      showSignInModal: AppObservableStore.showSignInModal(),
       voter,
       voterFirstName,
       voterIsSignedIn,
@@ -294,8 +293,8 @@ class HeaderBackToBallot extends Component {
     const voterIsSignedIn = voter.is_signed_in;
     const voterPhotoUrlMedium = voter.voter_photo_url_medium;
     this.setState({
-      shareModalStep: AppStore.shareModalStep(),
-      showShareModal: AppStore.showShareModal(),
+      shareModalStep: AppObservableStore.shareModalStep(),
+      showShareModal: AppObservableStore.showShareModal(),
       voter,
       voterFirstName,
       voterIsSignedIn,
@@ -386,7 +385,7 @@ class HeaderBackToBallot extends Component {
 
   componentWillUnmount () {
     // this.ballotStoreListener.remove();
-    this.appStoreListener.remove();
+    this.appStateSubscription.unsubscribe();
     this.candidateStoreListener.remove();
     this.measureStoreListener.remove();
     this.organizationStoreListener.remove();
@@ -394,12 +393,12 @@ class HeaderBackToBallot extends Component {
     this.voterStoreListener.remove();
   }
 
-  onAppStoreChange () {
+  onAppObservableStoreChange () {
     this.setState({
-      scrolledDown: AppStore.getScrolledDown(),
-      shareModalStep: AppStore.shareModalStep(),
-      showShareModal: AppStore.showShareModal(),
-      showSignInModal: AppStore.showSignInModal(),
+      scrolledDown: AppObservableStore.getScrolledDown(),
+      shareModalStep: AppObservableStore.shareModalStep(),
+      showShareModal: AppObservableStore.showShareModal(),
+      showSignInModal: AppObservableStore.showSignInModal(),
     });
   }
 
@@ -563,8 +562,8 @@ class HeaderBackToBallot extends Component {
   }
 
   closeShareModal = () => {
-    AppActions.setShowShareModal(false);
-    AppActions.setShareModalStep('');
+    AppObservableStore.setShowShareModal(false);
+    AppObservableStore.setShareModalStep('');
     const { location: { pathname } } = window;
 
     if (stringContains('/modal/share', pathname) && isWebApp()) {
@@ -575,7 +574,7 @@ class HeaderBackToBallot extends Component {
   }
 
   closeSignInModal () {
-    AppActions.setShowSignInModal(false);
+    AppObservableStore.setShowSignInModal(false);
   }
 
   transitionToYourVoterGuide () {
@@ -608,7 +607,7 @@ class HeaderBackToBallot extends Component {
   toggleSignInModal () {
     const { showSignInModal } = this.state;
     this.setState({ profilePopUpOpen: false });
-    AppActions.setShowSignInModal(!showSignInModal);
+    AppObservableStore.setShowSignInModal(!showSignInModal);
   }
 
   hideProfilePopUp () {

@@ -1,8 +1,8 @@
 import PropTypes from 'prop-types';
 import { Component } from 'react';
-import AppActions from '../../actions/AppActions';
 import VoterActions from '../../actions/VoterActions';
 import LoadingWheel from '../../components/LoadingWheel';
+import AppObservableStore from '../../stores/AppObservableStore';
 import VoterStore from '../../stores/VoterStore';
 import cookies from '../../utils/cookies';
 import { historyPush } from '../../utils/cordovaUtils';
@@ -54,7 +54,7 @@ export default class VerifyEmailProcess extends Component {
     let redirectPathname = '';
     const signInStartFullUrl = cookies.getItem('sign_in_start_full_url');
     if (signInStartFullUrl) {
-      AppActions.unsetStoreSignInStartFullUrl();
+      AppObservableStore.unsetStoreSignInStartFullUrl();
       cookies.removeItem('sign_in_start_full_url', '/');
       cookies.removeItem('sign_in_start_full_url', '/', 'wevote.us');
       redirectFullUrl = signInStartFullUrl;
@@ -142,7 +142,7 @@ export default class VerifyEmailProcess extends Component {
       let redirectPathname = '';
       const signInStartFullUrl = cookies.getItem('sign_in_start_full_url');
       if (signInStartFullUrl) {
-        AppActions.unsetStoreSignInStartFullUrl();
+        AppObservableStore.unsetStoreSignInStartFullUrl();
         cookies.removeItem('sign_in_start_full_url', '/');
         cookies.removeItem('sign_in_start_full_url', '/', 'wevote.us');
         redirectFullUrl = signInStartFullUrl;

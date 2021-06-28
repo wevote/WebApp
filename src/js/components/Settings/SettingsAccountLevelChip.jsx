@@ -1,10 +1,10 @@
-import React, { Component } from 'react';
 import { Chip } from '@material-ui/core';
-import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
+import PropTypes from 'prop-types';
+import React, { Component } from 'react';
+import AppObservableStore from '../../stores/AppObservableStore';
 import { renderLog } from '../../utils/logging';
 import { voterFeaturePackageExceedsOrEqualsRequired } from '../../utils/pricingFunctions';
-import AppActions from '../../actions/AppActions';
 
 class SettingsAccountLevelChip extends Component {
   constructor (props) {
@@ -19,7 +19,7 @@ class SettingsAccountLevelChip extends Component {
   };
 
   openPaidAccountUpgradeModal = (paidAccountUpgradeMode) => {
-    AppActions.setShowPaidAccountUpgradeModal(paidAccountUpgradeMode);
+    AppObservableStore.setShowPaidAccountUpgradeModal(paidAccountUpgradeMode);
   };
 
   preventFocus = (e) => {

@@ -6,7 +6,6 @@ import Helmet from 'react-helmet';
 import styled from 'styled-components';
 import ActivityActions from '../../actions/ActivityActions';
 import AnalyticsActions from '../../actions/AnalyticsActions';
-import AppActions from '../../actions/AppActions';
 import BallotActions from '../../actions/BallotActions';
 import ElectionActions from '../../actions/ElectionActions';
 import IssueActions from '../../actions/IssueActions';
@@ -22,12 +21,11 @@ import SuggestedFriendsPreview from '../../components/Friends/SuggestedFriendsPr
 import BallotDecisionsTabs from '../../components/Navigation/BallotDecisionsTabs';
 import BallotShowAllItemsFooter from '../../components/Navigation/BallotShowAllItemsFooter';
 import BallotSideBar from '../../components/Navigation/BallotSideBar';
-import EditAddressOneHorizontalRow from '../../components/Ready/EditAddressOneHorizontalRow';
 import ValuesToFollowPreview from '../../components/Values/ValuesToFollowPreview';
 import BrowserPushMessage from '../../components/Widgets/BrowserPushMessage';
 import SnackNotifier from '../../components/Widgets/SnackNotifier';
 import webAppConfig from '../../config';
-import AppStore from '../../stores/AppStore';
+import AppObservableStore, { messageService } from '../../stores/AppObservableStore';
 import BallotStore from '../../stores/BallotStore';
 import ElectionStore from '../../stores/ElectionStore';
 import IssueStore from '../../stores/IssueStore';
@@ -97,7 +95,6 @@ class Ballot extends Component {
       mounted: false,
       numberOfBallotItemsToDisplay: 5,
       numberOfVoterRetrieveAttempts: 0,
-      showSelectBallotModal: false,
       totalNumberOfBallotItems: 0,
       voterBallotList: [],
       showFilterTabs: false,
@@ -111,6 +108,7 @@ class Ballot extends Component {
     this.ballotItemLinkHasBeenClicked = this.ballotItemLinkHasBeenClicked.bind(this);
     this.toggleSelectBallotModal = this.toggleSelectBallotModal.bind(this);
     this.updateOfficeDisplayUnfurledTracker = this.updateOfficeDisplayUnfurledTracker.bind(this);
+    this.onVoterAddressSave = this.onVoterAddressSave.bind(this);
     this.onScroll = this.onScroll.bind(this);
   }
 
@@ -118,7 +116,7 @@ class Ballot extends Component {
     const { location: { pathname: currentPathname } } = window;
     // console.log('componentDidMount, Current pathname:', currentPathname);
     const ballotBaseUrl = '/ballot';
-    this.appStoreListener = AppStore.addListener(this.onAppStoreChange.bind(this));
+    this.appStateSubscription = messageService.getMessage().subscribe(() => this.onAppObservableStoreChange());
     // We need a ballotStoreListener here because we want the ballot to display before positions are received
     this.ballotStoreListener = BallotStore.addListener(this.onBallotStoreChange.bind(this));
     this.electionStoreListener = ElectionStore.addListener(this.onElectionStoreChange.bind(this));
@@ -126,7 +124,7 @@ class Ballot extends Component {
     this.supportStoreListener = SupportStore.addListener(this.onBallotStoreChange.bind(this));
     this.voterGuideStoreListener = VoterGuideStore.addListener(this.onVoterGuideStoreChange.bind(this));
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
-
+    AppObservableStore.setShowSelectBallotModal(false, false, false);
     this.setState({
       componentDidMountFinished: true,
       locationGuessClosed: cookies.getItem('location_guess_closed'),
@@ -249,7 +247,7 @@ class Ballot extends Component {
       }
       if (callIssuesUnderBallotItemRetrieve) {
         IssueActions.issuesUnderBallotItemsRetrieve(googleCivicElectionId, ballotLocationShortcut, ballotReturnedWeVoteId);
-        // IssueActions.issuesUnderBallotItemsRetrieveCalled(googleCivicElectionId); // TODO: Move this to AppActions? Currently throws error: 'Cannot dispatch in the middle of a dispatch'
+        // IssueActions.issuesUnderBallotItemsRetrieveCalled(googleCivicElectionId); // TODO: Move this to AppObservableStore? Currently throws error: 'Cannot dispatch in the middle of a dispatch'
       }
 
       this.setState({
@@ -301,17 +299,17 @@ class Ballot extends Component {
     // console.log('componentDidMount modalToOpen:', modalToOpen);
     if (modalToOpen === 'share') {
       this.modalOpenTimer = setTimeout(() => {
-        AppActions.setShowShareModal(true);
+        AppObservableStore.setShowShareModal(true);
       }, 1000);
     } else if (modalToOpen === 'sic') { // sic = Shared Item Code
       const sharedItemCode = params.shared_item_code || '';
       if (sharedItemCode) {
         this.modalOpenTimer = setTimeout(() => {
-          AppActions.setShowSharedItemModal(sharedItemCode);
+          AppObservableStore.setShowSharedItemModal(sharedItemCode);
         }, 1000);
       }
     } else {
-      AppActions.setEvaluateHeaderDisplay();
+      AppObservableStore.setEvaluateHeaderDisplay();
     }
     if (apiCalming('activityNoticeListRetrieve', 3500)) {
       ActivityActions.activityNoticeListRetrieve();
@@ -377,12 +375,12 @@ class Ballot extends Component {
     const modalToOpen = nextParams.modal_to_show || '';
     // console.log('UNSAFE_componentWillReceiveProps modalToOpen:', modalToOpen);
     if (modalToOpen === 'share') {
-      AppActions.setShowShareModal(true);
+      AppObservableStore.setShowShareModal(true);
     } else if (modalToOpen === 'sic') { // sic = Shared Item Code
       const sharedItemCode = nextParams.shared_item_code || '';
       // console.log('UNSAFE_componentWillReceiveProps sharedItemCode:', sharedItemCode);
       if (sharedItemCode) {
-        AppActions.setShowSharedItemModal(sharedItemCode);
+        AppObservableStore.setShowSharedItemModal(sharedItemCode);
       }
     }
 
@@ -505,25 +503,18 @@ class Ballot extends Component {
       mounted: false,
     });
 
-    this.appStoreListener.remove();
+    this.appStateSubscription.unsubscribe();
     this.ballotStoreListener.remove();
     this.electionStoreListener.remove();
     this.issueStoreListener.remove();
     this.supportStoreListener.remove();
     this.voterGuideStoreListener.remove();
     this.voterStoreListener.remove();
-    if (this.timer) {
-      clearTimeout(this.timer);
-      this.timer = null;
-    }
-    if (this.ballotItemTimer) {
-      clearTimeout(this.ballotItemTimer);
-      this.ballotItemTimer = null;
-    }
-    if (this.modalOpenTimer) {
-      clearTimeout(this.modalOpenTimer);
-      this.modalOpenTimer = null;
-    }
+    clearTimeout(this.timerToRetrieve);
+    clearTimeout(this.preloadTimer);     // In componentDidMount
+    clearTimeout(this.ballotItemTimer);
+    clearTimeout(this.modalOpenTimer);   // In componentDidMount
+    clearTimeout(this.hashLinkTimer);
     window.removeEventListener('scroll', this.onScroll);
   }
 
@@ -534,24 +525,23 @@ class Ballot extends Component {
     return { hasError: true };
   }
 
-  onAppStoreChange () {
+  onAppObservableStoreChange () {
     this.setState({
-      ballotHeaderUnpinned: AppStore.getScrolledDown(),
-      showSelectBallotModal: AppStore.showSelectBallotModal(),
+      ballotHeaderUnpinned: AppObservableStore.getScrolledDown(),
     });
     const { googleCivicElectionId } = this.state;
-    const membershipOrganizationWeVoteId = AppStore.getSiteOwnerOrganizationWeVoteId();
-    // console.log('onAppStoreChange membershipOrganizationWeVoteId: ', membershipOrganizationWeVoteId);
+    const membershipOrganizationWeVoteId = AppObservableStore.getSiteOwnerOrganizationWeVoteId();
+    // console.log('onAppObservableStoreChange membershipOrganizationWeVoteId: ', membershipOrganizationWeVoteId);
     if (membershipOrganizationWeVoteId) {
       const googleCivicElectionIdViewed = googleCivicElectionId || VoterStore.electionId();
       if (!this.memberViewedBallotHasBeenSavedOnce(membershipOrganizationWeVoteId, googleCivicElectionIdViewed)) {
-        // console.log('onAppStoreChange getting ready to save: ', googleCivicElectionIdViewed);
+        // console.log('onAppObservableStoreChange getting ready to save: ', googleCivicElectionIdViewed);
         if (googleCivicElectionIdViewed && googleCivicElectionIdViewed !== 0) {
           AnalyticsActions.saveActionBallotVisit(googleCivicElectionIdViewed);
           this.memberViewedBallot(membershipOrganizationWeVoteId, googleCivicElectionIdViewed);
         }
       } else {
-        // console.log('onAppStoreChange already saved: ', googleCivicElectionIdViewed);
+        // console.log('onAppObservableStoreChange already saved: ', googleCivicElectionIdViewed);
       }
     }
   }
@@ -587,14 +577,22 @@ class Ballot extends Component {
         }
       } else {
         // console.log('Ballot.jsx onVoterStoreChange VoterStore.getVoter: ', VoterStore.getVoter());
+        const locationGuessClosed = cookies.getItem('location_guess_closed');
+        const textForMapSearch = VoterStore.getTextForMapSearch();
+        const showAddressVerificationForm = !locationGuessClosed || !textForMapSearch;
+        if (showAddressVerificationForm) {
+          // June 2021: Instead of showing the EditAddressOneHorizontal row on an otherwise blank ballot page, open th BallotSelectModal
+          AppObservableStore.setShowSelectBallotModal(true, false, false);
+        }
+
         this.setState({
           googleCivicElectionId: parseInt(VoterStore.electionId(), 10),
-          locationGuessClosed: cookies.getItem('location_guess_closed'),
-          textForMapSearch: VoterStore.getTextForMapSearch(),
+          locationGuessClosed,
+          textForMapSearch,
           voter: VoterStore.getVoter(),
         });
       }
-      const membershipOrganizationWeVoteId = AppStore.getSiteOwnerOrganizationWeVoteId();
+      const membershipOrganizationWeVoteId = AppObservableStore.getSiteOwnerOrganizationWeVoteId();
       // console.log('onVoterStoreChange membershipOrganizationWeVoteId: ', membershipOrganizationWeVoteId);
       if (membershipOrganizationWeVoteId) {
         const googleCivicElectionIdViewed = googleCivicElectionId || VoterStore.electionId();
@@ -786,6 +784,10 @@ class Ballot extends Component {
     }
   }
 
+  onVoterAddressSave () {
+    console.log('---------------------- onVoterAddressSave');
+  }
+
   setBallotItemFilterTypeToAll = () => {
     const { ballotWithItemsFromCompletionFilterType } = this.state;
     const ballotWithItemsFromCompletionFilterTypeLength = (ballotWithItemsFromCompletionFilterType) ? ballotWithItemsFromCompletionFilterType.length : 0;
@@ -969,8 +971,8 @@ class Ballot extends Component {
   startTimerToRetrieveVoter = () => {
     let { numberOfVoterRetrieveAttempts } = this.state;
     // console.log('startTimerToRetrieveVoter, numberOfVoterRetrieveAttempts:', numberOfVoterRetrieveAttempts);
-    clearTimeout(this.timer);
-    this.timer = setTimeout(() => {
+    clearTimeout(this.timerToRetrieve);
+    this.timerToRetrieve = setTimeout(() => {
       VoterActions.voterRetrieve();
       numberOfVoterRetrieveAttempts += 1;
       this.setState({
@@ -985,6 +987,7 @@ class Ballot extends Component {
     numberOfBallotItemsToDisplay += 5;
     // console.log('Number of ballot items after increment: ', numberOfBallotItemsToDisplay);
 
+    clearTimeout(this.ballotItemTimer);
     this.ballotItemTimer = setTimeout(() => {
       this.setState({
         numberOfBallotItemsToDisplay,
@@ -993,7 +996,7 @@ class Ballot extends Component {
   }
 
   toggleSelectBallotModal (destinationUrlForHistoryPush = '', hideAddressEdit = false, hideElections = false) {
-    const { showSelectBallotModal } = this.state;
+    const showSelectBallotModal = AppObservableStore.showSelectBallotModal();
     // console.log('Ballot toggleSelectBallotModal, destinationUrlForHistoryPush:', destinationUrlForHistoryPush, ', showSelectBallotModal:', showSelectBallotModal);
     if (showSelectBallotModal && destinationUrlForHistoryPush && destinationUrlForHistoryPush !== '') {
       // console.log('toggleSelectBallotModal destinationUrlForHistoryPush:', destinationUrlForHistoryPush);
@@ -1003,7 +1006,7 @@ class Ballot extends Component {
       BallotActions.voterBallotListRetrieve(); // Retrieve a list of ballots for the voter from other elections
     }
 
-    AppActions.setShowSelectBallotModal(!showSelectBallotModal, getBooleanValue(hideAddressEdit), getBooleanValue(hideElections));
+    AppObservableStore.setShowSelectBallotModal(!showSelectBallotModal, getBooleanValue(hideAddressEdit), getBooleanValue(hideElections));
   }
 
   // Needed to scroll to anchor tags based on hash in url (as done for bookmarks)
@@ -1013,7 +1016,8 @@ class Ballot extends Component {
       // Push onto callback queue so it runs after the DOM is updated,
       // this is required when navigating from a different page so that
       // the element is rendered on the page before trying to getElementById.
-      setTimeout(() => {
+      clearTimeout(this.hashLinkTimer);
+      this.hashLinkTimer = setTimeout(() => {
         const id = hash.replace('#', '');
         const element = document.getElementById(id);
 
@@ -1082,7 +1086,7 @@ class Ballot extends Component {
     const {
       ballotHeaderUnpinned, ballotSearchResults, ballotWithAllItems, ballotWithItemsFromCompletionFilterType,
       completionLevelFilterType, doubleFilteredBallotItemsLength, isSearching, issuesFollowedCount,
-      loadingMoreItems, locationGuessClosed, numberOfBallotItemsToDisplay,
+      loadingMoreItems, numberOfBallotItemsToDisplay,
       raceLevelFilterItemsInThisBallot, searchText, showFilterTabs, totalNumberOfBallotItems,
     } = this.state;
     let { raceLevelFilterType } = this.state;
@@ -1204,7 +1208,7 @@ class Ballot extends Component {
       // console.log('inRemainingDecisionsMode historyPush');
       historyPush(pathname);
     }
-    const showAddressVerificationForm = !locationGuessClosed || !textForMapSearch;
+    // const showAddressVerificationForm = !locationGuessClosed || !textForMapSearch;
 
     let numberOfBallotItemsDisplayed = 0;
     let showLoadingText = true;
@@ -1361,11 +1365,11 @@ class Ballot extends Component {
                       &quot;
                     </SearchTitle>
                   )}
-                  {(showAddressVerificationForm) ? (
-                    <EditAddressWrapper>
-                      <EditAddressOneHorizontalRow saveUrl="/ballot" />
-                    </EditAddressWrapper>
-                  ) : null }
+                  {/* {(showAddressVerificationForm) ? ( */}
+                  {/*  <EditAddressWrapper id="EditAddressWrapper"> */}
+                  {/*    <EditAddressOneHorizontalRow saveUrl="/ballot" onSave={this.onVoterAddressSave} /> */}
+                  {/*  </EditAddressWrapper> */}
+                  {/* ) : null } */}
                   {/* <span className="u-show-desktop-tablet"> */}
                   {/*  <CompleteYourProfile /> */}
                   {/* </span> */}
@@ -1549,12 +1553,12 @@ const BallotFilterRow = styled.div`
   display: flex;
 `;
 
-const EditAddressWrapper = styled.div`
-  margin-bottom: 0 !important;
-  margin-left: 0 !important;
-  padding-left: 0 !important;
-  padding-right: 0 !important;
-`;
+// const EditAddressWrapper = styled.div`
+//   margin-bottom: 0 !important;
+//   margin-left: 0 !important;
+//   padding-left: 0 !important;
+//   padding-right: 0 !important;
+// `;
 
 const SearchResultsFoundInExplanation = styled.div`
   background-color: #C2DCE8;

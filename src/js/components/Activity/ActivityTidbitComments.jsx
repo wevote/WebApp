@@ -4,7 +4,7 @@ import { AccountCircle, MoreHoriz } from '@material-ui/icons';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import styled from 'styled-components';
-import AppActions from '../../actions/AppActions';
+import AppObservableStore from '../../stores/AppObservableStore';
 import ReactionActions from '../../actions/ReactionActions';
 import ActivityStore from '../../stores/ActivityStore';
 import ReactionStore from '../../stores/ReactionStore';
@@ -45,6 +45,7 @@ class ActivityTidbitComments extends Component {
     this.activityStoreListener.remove();
     this.reactionStoreListener.remove();
     this.voterStoreListener.remove();
+    if (this.positionItemTimer) clearTimeout(this.positionItemTimer);
   }
 
   onActivityStoreChange () {
@@ -156,14 +157,15 @@ class ActivityTidbitComments extends Component {
   onClickShowActivityTidbitDrawer = () => {
     const { activityTidbitWeVoteId } = this.props;
     // console.log('onClickShowActivityTidbitDrawer activityTidbitWeVoteId:', activityTidbitWeVoteId);
-    AppActions.setActivityTidbitWeVoteIdForDrawer(activityTidbitWeVoteId);
-    AppActions.setShowActivityTidbitDrawer(true);
+    AppObservableStore.setActivityTidbitWeVoteIdForDrawer(activityTidbitWeVoteId);
+    AppObservableStore.setShowActivityTidbitDrawer(true);
   }
 
   increaseNumberOfActivityTidbitsToDisplay = () => {
     // console.log('increaseNumberOfActivityTidbitsToDisplay');
     let { numberOfParentCommentsToDisplay } = this.state;
     numberOfParentCommentsToDisplay += 2;
+    if (this.positionItemTimer) clearTimeout(this.positionItemTimer);
     this.positionItemTimer = setTimeout(() => {
       this.setState({
         numberOfParentCommentsToDisplay,
@@ -469,7 +471,7 @@ const ParentCommentStatementTextOutsideWrapper = styled.div`
   font-size: 16px;
   font-weight: 500;
   padding: 4px 12px;
-  margin-top: 0px;
+  margin-top: 0;
 `;
 
 const ParentCommentWrapper = styled.div`
@@ -513,7 +515,7 @@ const SpeakerAvatar = styled.div`
 
 const Wrapper = styled.div`
   margin-bottom: 6px !important;
-  padding: 0px !important;
+  padding: 0 !important;
 `;
 
 export default withTheme(withStyles(styles)(ActivityTidbitComments));

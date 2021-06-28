@@ -6,7 +6,6 @@ import Helmet from 'react-helmet';
 import styled from 'styled-components';
 import ActivityActions from '../../actions/ActivityActions';
 import AnalyticsActions from '../../actions/AnalyticsActions';
-import AppActions from '../../actions/AppActions';
 import CandidateActions from '../../actions/CandidateActions';
 import IssueActions from '../../actions/IssueActions';
 import OrganizationActions from '../../actions/OrganizationActions';
@@ -20,7 +19,7 @@ import SnackNotifier from '../../components/Widgets/SnackNotifier';
 import ThisIsMeAction from '../../components/Widgets/ThisIsMeAction';
 import ViewOnBallotpedia from '../../components/Widgets/ViewOnBallotpedia';
 import webAppConfig from '../../config';
-import AppStore from '../../stores/AppStore';
+import AppObservableStore, { messageService } from '../../stores/AppObservableStore';
 import BallotStore from '../../stores/BallotStore';
 import CandidateStore from '../../stores/CandidateStore';
 import IssueStore from '../../stores/IssueStore';
@@ -62,7 +61,7 @@ class Candidate extends Component {
       modal_to_show: modalToShow,
       shared_item_code: sharedItemCode,
     } } } = this.props;
-    this.appStoreListener = AppStore.addListener(this.onAppStoreChange.bind(this));
+    this.appStateSubscription = messageService.getMessage().subscribe(() => this.onAppObservableStoreChange());
     this.candidateStoreListener = CandidateStore.addListener(this.onCandidateStoreChange.bind(this));
     this.voterGuideStoreListener = VoterGuideStore.addListener(this.onVoterGuideStoreChange.bind(this));
     // console.log('candidateWeVoteId:', candidateWeVoteId);
@@ -119,24 +118,25 @@ class Candidate extends Component {
     IssueActions.issuesFollowedRetrieve(VoterStore.getVoterWeVoteId());
     if (VoterStore.electionId() && !IssueStore.issuesUnderBallotItemsRetrieveCalled(VoterStore.electionId())) {
       IssueActions.issuesUnderBallotItemsRetrieve(VoterStore.electionId());
-      // IssueActions.issuesUnderBallotItemsRetrieveCalled(VoterStore.electionId()); // TODO: Move this to AppActions? Currently throws error: 'Cannot dispatch in the middle of a dispatch'
+      // IssueActions.issuesUnderBallotItemsRetrieveCalled(VoterStore.electionId()); // TODO: Move this to AppObservableStore? Currently throws error: 'Cannot dispatch in the middle of a dispatch'
     }
 
     this.setState({
       allCachedPositionsForThisCandidate,
       candidateWeVoteId,
       organizationWeVoteId,
-      scrolledDown: AppStore.getScrolledDown(),
+      scrolledDown: AppObservableStore.getScrolledDown(),
     });
     const modalToOpen = modalToShow || '';
     if (modalToOpen === 'share') {
-      this.modalOpenTimer = setTimeout(() => {
-        AppActions.setShowShareModal(true);
+      clearTimeout(this.showShareModalTimer);
+      this.showShareModalTimer = setTimeout(() => {
+        AppObservableStore.setShowShareModal(true);
       }, 1000);
     } else if (modalToOpen === 'sic') { // sic = Shared Item Code
       if (sharedItemCode || '') {
-        this.modalOpenTimer = setTimeout(() => {
-          AppActions.setShowSharedItemModal(sharedItemCode);
+        this.showShareItemModalTimer = setTimeout(() => {
+          AppObservableStore.setShowSharedItemModal(sharedItemCode);
         }, 1000);
       }
     }
@@ -150,14 +150,16 @@ class Candidate extends Component {
     const { match: { params: nextParams } } = nextProps;
     const modalToOpen = nextParams.modal_to_show || '';
     if (modalToOpen === 'share') {
-      this.modalOpenTimer = setTimeout(() => {
-        AppActions.setShowShareModal(true);
+      clearTimeout(this.showShareModalTimer);
+      this.showShareModalTimer = setTimeout(() => {
+        AppObservableStore.setShowShareModal(true);
       }, 1000);
     } else if (modalToOpen === 'sic') { // sic = Shared Item Code
       const sharedItemCode = nextParams.shared_item_code || '';
       if (sharedItemCode) {
-        this.modalOpenTimer = setTimeout(() => {
-          AppActions.setShowSharedItemModal(sharedItemCode);
+        clearTimeout(this.showShareModalItemTimer);
+        this.this.showShareItemModalTimer = setTimeout(() => {
+          AppObservableStore.setShowSharedItemModal(sharedItemCode);
         }, 1000);
       }
     }
@@ -191,18 +193,16 @@ class Candidate extends Component {
 
   componentWillUnmount () {
     // console.log('Candidate componentWillUnmount');
-    this.appStoreListener.remove();
+    this.appStateSubscription.unsubscribe();
     this.candidateStoreListener.remove();
     this.voterGuideStoreListener.remove();
-    if (this.modalOpenTimer) {
-      clearTimeout(this.modalOpenTimer);
-      this.modalOpenTimer = null;
-    }
+    clearTimeout(this.showShareModalTimer);
+    clearTimeout(this.showShareItemModalTimer);
   }
 
-  onAppStoreChange () {
+  onAppObservableStoreChange () {
     this.setState({
-      scrolledDown: AppStore.getScrolledDown(),
+      scrolledDown: AppObservableStore.getScrolledDown(),
     });
   }
 

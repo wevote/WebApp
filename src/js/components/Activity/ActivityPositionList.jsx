@@ -30,10 +30,7 @@ class ActivityPositionList extends Component {
   }
 
   componentWillUnmount () {
-    if (this.positionItemTimer) {
-      clearTimeout(this.positionItemTimer);
-      this.positionItemTimer = null;
-    }
+    if (this.positionItemTimer) clearTimeout(this.positionItemTimer);
   }
 
   increaseNumberOfPositionItemsToDisplay = () => {
@@ -43,6 +40,7 @@ class ActivityPositionList extends Component {
     numberOfPositionItemsToDisplay += 2;
     // console.log('Number of position items after increment: ', numberOfPositionItemsToDisplay);
 
+    if (this.positionItemTimer) clearTimeout(this.positionItemTimer);
     this.positionItemTimer = setTimeout(() => {
       this.setState({
         numberOfPositionItemsToDisplay,

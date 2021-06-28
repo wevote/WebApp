@@ -1,9 +1,8 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import AppActions from '../../actions/AppActions';
 import OrganizationActions from '../../actions/OrganizationActions';
 import VoterGuideActions from '../../actions/VoterGuideActions';
-import AppStore from '../../stores/AppStore';
+import AppObservableStore, { messageService } from '../../stores/AppObservableStore';
 import OrganizationStore from '../../stores/OrganizationStore';
 import VoterGuideStore from '../../stores/VoterGuideStore';
 import VoterStore from '../../stores/VoterStore';
@@ -50,7 +49,7 @@ export default class OrganizationVoterGuideTabs extends Component {
   componentDidMount () {
     const { activeRoute, organizationWeVoteId } = this.props;
     // console.log('OrganizationVoterGuideTabs, componentDidMount, organizationWeVoteId: ', this.props.organizationWeVoteId);
-    this.appStoreListener = AppStore.addListener(this.onAppStoreChange.bind(this));
+    this.appStateSubscription = messageService.getMessage().subscribe(() => this.onAppObservableStoreChange());
     this.organizationStoreListener = OrganizationStore.addListener(this.onOrganizationStoreChange.bind(this));
     this.voterGuideStoreListener = VoterGuideStore.addListener(this.onVoterGuideStoreChange.bind(this));
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
@@ -76,7 +75,7 @@ export default class OrganizationVoterGuideTabs extends Component {
       organizationWeVoteId,
       organization: OrganizationStore.getOrganizationByWeVoteId(organizationWeVoteId),
       pathname: window.location.pathname,
-      showElectionsWithOrganizationVoterGuidesModal: AppStore.showElectionsWithOrganizationVoterGuidesModal(),
+      showElectionsWithOrganizationVoterGuidesModal: AppObservableStore.showElectionsWithOrganizationVoterGuidesModal(),
       voter: VoterStore.getVoter(),
     });
 
@@ -143,7 +142,7 @@ export default class OrganizationVoterGuideTabs extends Component {
   // }
 
   componentWillUnmount () {
-    this.appStoreListener.remove();
+    this.appStateSubscription.unsubscribe();
     this.organizationStoreListener.remove();
     this.voterGuideStoreListener.remove();
     this.voterStoreListener.remove();
@@ -181,9 +180,9 @@ export default class OrganizationVoterGuideTabs extends Component {
     });
   }
 
-  onAppStoreChange () {
+  onAppObservableStoreChange () {
     this.setState({
-      showElectionsWithOrganizationVoterGuidesModal: AppStore.showElectionsWithOrganizationVoterGuidesModal(),
+      showElectionsWithOrganizationVoterGuidesModal: AppObservableStore.showElectionsWithOrganizationVoterGuidesModal(),
     });
   }
 
@@ -221,7 +220,7 @@ export default class OrganizationVoterGuideTabs extends Component {
 
   closeShowElectionsWithOrganizationVoterGuidesModal () {
     // console.log('VoterGuideListDashboard closeShowElectionsWithOrganizationVoterGuidesModal');
-    AppActions.setShowElectionsWithOrganizationVoterGuidesModal(false);
+    AppObservableStore.setShowElectionsWithOrganizationVoterGuidesModal(false);
   }
 
   render () {

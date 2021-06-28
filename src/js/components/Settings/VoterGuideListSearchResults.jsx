@@ -52,10 +52,7 @@ class VoterGuideListSearchResults extends Component {
     this.ballotStoreListener.remove();
     // this.voterGuideStoreListener.remove();
     // Cannot call in componentWillUnmount: BallotActions.ballotItemOptionsClear();
-    if (this.ballotItemTimer) {
-      clearTimeout(this.ballotItemTimer);
-      this.ballotItemTimer = null;
-    }
+    clearTimeout(this.ballotItemTimer);
     window.removeEventListener('scroll', this.onScroll);
   }
 
@@ -101,6 +98,7 @@ class VoterGuideListSearchResults extends Component {
     numberOfItemsToDisplay += 5;
     // console.log('Number of ballot items after increment: ', numberOfItemsToDisplay);
 
+    clearTimeout(this.ballotItemTimer);
     this.ballotItemTimer = setTimeout(() => {
       this.setState({
         numberOfItemsToDisplay,

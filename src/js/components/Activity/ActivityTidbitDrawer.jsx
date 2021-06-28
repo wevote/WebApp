@@ -33,6 +33,7 @@ class ActivityTidbitDrawer extends Component {
   }
 
   componentWillUnmount () {
+    if (this.closeTimeout) clearTimeout(this.closeTimeout);
     this.activityStoreListener.remove();
     showZenDeskHelpVisibility();
   }
@@ -52,7 +53,7 @@ class ActivityTidbitDrawer extends Component {
   closeActivityTidbitDrawer = () => {
     const { activityTidbitWeVoteId } = this.props;
     this.setState({ modalOpen: false });
-    setTimeout(() => {
+    this.closeTimeout = setTimeout(() => {
       this.props.toggleFunction();
     }, 500);
     const { pathname: pathnameRaw, href: hrefRaw } = window.location;

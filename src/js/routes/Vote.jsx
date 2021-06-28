@@ -15,7 +15,7 @@ import BallotItemReadyToVote from '../components/Vote/BallotItemReadyToVote';
 import FindPollingLocation from '../components/Vote/FindPollingLocation';
 import ReturnOfficialBallot from '../components/Vote/ReturnOfficialBallot';
 import BrowserPushMessage from '../components/Widgets/BrowserPushMessage';
-import AppStore from '../stores/AppStore';
+import AppObservableStore, { messageService } from '../stores/AppObservableStore';
 import BallotStore from '../stores/BallotStore';
 import IssueStore from '../stores/IssueStore';
 import SupportStore from '../stores/SupportStore';
@@ -59,7 +59,7 @@ class Vote extends Component {
   componentDidMount () {
     const { match: { params } } = this.props;
     const ballotBaseUrl = '/ballot';
-    this.appStoreListener = AppStore.addListener(this.onAppStoreChange.bind(this));
+    this.appStateSubscription = messageService.getMessage().subscribe(() => this.onAppObservableStoreChange());
 
     this.setState({
       mounted: true,
@@ -219,11 +219,11 @@ class Vote extends Component {
       mounted: false,
     });
 
+    this.appStateSubscription.unsubscribe();
     this.ballotStoreListener.remove();
     this.supportStoreListener.remove();
     this.voterGuideStoreListener.remove();
     this.voterStoreListener.remove();
-    this.appStoreListener.remove();
   }
 
   // See https://reactjs.org/docs/error-boundaries.html
@@ -232,9 +232,9 @@ class Vote extends Component {
     return { hasError: true };
   }
 
-  onAppStoreChange () {
+  onAppObservableStoreChange () {
     this.setState({
-      ballotHeaderUnpinned: AppStore.getScrolledDown(),
+      ballotHeaderUnpinned: AppObservableStore.getScrolledDown(),
     });
   }
 

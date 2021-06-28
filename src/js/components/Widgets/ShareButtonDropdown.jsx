@@ -15,14 +15,12 @@ export default class ShareButtonDropDown extends Component {
   }
 
   componentWillUnmount () {
-    if (this.timer) {
-      clearTimeout(this.timer);
-      this.timer = null;
-    }
+    if (this.timer) clearTimeout(this.timer);
   }
 
   onButtonBlur () {
     // Delay closing the drop down so that onClick has time to work
+    if (this.timer) clearTimeout(this.timer);
     this.timer = setTimeout(() => {
       this.closeDropDown();
     }, 250);

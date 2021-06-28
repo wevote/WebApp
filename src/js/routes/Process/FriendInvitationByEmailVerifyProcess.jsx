@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import FriendActions from '../../actions/FriendActions';
 import VoterActions from '../../actions/VoterActions';
 import LoadingWheel from '../../components/LoadingWheel';
-import AppStore from '../../stores/AppStore';
+import AppObservableStore, { messageService } from '../../stores/AppObservableStore';
 import FriendStore from '../../stores/FriendStore';
 import { historyPush } from '../../utils/cordovaUtils';
 import { renderLog } from '../../utils/logging';
@@ -26,11 +26,11 @@ export default class FriendInvitationByEmailVerifyProcess extends Component {
   }
 
   componentDidMount () {
-    this.appStoreListener = AppStore.addListener(this.onAppStoreChange.bind(this));
+    this.appStateSubscription = messageService.getMessage().subscribe(() => this.onAppObservableStoreChange());
     this.friendStoreListener = FriendStore.addListener(this.onFriendStoreChange.bind(this));
     const { match: { params: { invitation_secret_key: invitationSecretKey } } } = this.props;
     // console.log('FriendInvitationByEmailVerifyProcess, componentDidMount, params.invitation_secret_key: ', invitationSecretKey);
-    const hostname = AppStore.getHostname();
+    const hostname = AppObservableStore.getHostname();
     if (invitationSecretKey && hostname && hostname !== '') {
       this.friendInvitationByEmailVerify(invitationSecretKey);
       this.setState({
@@ -41,16 +41,16 @@ export default class FriendInvitationByEmailVerifyProcess extends Component {
   }
 
   componentWillUnmount () {
-    this.appStoreListener.remove();
+    this.appStateSubscription.unsubscribe();
     this.friendStoreListener.remove();
   }
 
-  onAppStoreChange () {
+  onAppObservableStoreChange () {
     const { match: { params: { invitation_secret_key: invitationSecretKey } } } = this.props;
     const { friendInvitationByEmailVerifyCalled, friendInvitationInformationCalled } = this.state;
-    const hostname = AppStore.getHostname();
+    const hostname = AppObservableStore.getHostname();
     if (!friendInvitationByEmailVerifyCalled && invitationSecretKey && hostname && hostname !== '') {
-      // console.log('onAppStoreChange, calling friendInvitationByEmailVerify');
+      // console.log('onAppObservableStoreChange, calling friendInvitationByEmailVerify');
       this.friendInvitationByEmailVerify(invitationSecretKey);
       this.setState({
         friendInvitationByEmailVerifyCalled: true,
@@ -59,7 +59,7 @@ export default class FriendInvitationByEmailVerifyProcess extends Component {
     }
     // If we know the verification API call has been called...
     if (friendInvitationByEmailVerifyCalled && !friendInvitationInformationCalled && invitationSecretKey && hostname && hostname !== '') {
-      // console.log('onAppStoreChange, calling friendInvitationInformation');
+      // console.log('onAppObservableStoreChange, calling friendInvitationInformation');
       FriendActions.friendInvitationInformation(invitationSecretKey);
       this.setState({
         friendInvitationInformationCalled: true,
@@ -71,7 +71,7 @@ export default class FriendInvitationByEmailVerifyProcess extends Component {
   onFriendStoreChange () {
     const { match: { params: { invitation_secret_key: invitationSecretKey } } } = this.props;
     const { friendInvitationByEmailVerifyCalled, friendInvitationInformationCalled } = this.state;
-    const hostname = AppStore.getHostname();
+    const hostname = AppObservableStore.getHostname();
     if (friendInvitationByEmailVerifyCalled && !friendInvitationInformationCalled && invitationSecretKey && hostname && hostname !== '') {
       // console.log('onFriendStoreChange, calling friendInvitationInformation');
       FriendActions.friendInvitationInformation(invitationSecretKey);
