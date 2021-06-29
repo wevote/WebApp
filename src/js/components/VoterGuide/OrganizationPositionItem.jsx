@@ -269,7 +269,7 @@ export default class OrganizationPositionItem extends Component {
   render () {
     renderLog('OrganizationPositionItem');  // Set LOG_RENDER_EVENTS to log all renders
     // console.log('OrganizationPositionItem');
-    const { comment_text_off: commentTextOff, position, stance_display_off: stanceDisplayOff } = this.props;
+    const { commentTextOff, position, stanceDisplayOff } = this.props;
     const {
       voterOpposesBallotItem,
       voterPositionIsPublic,
@@ -280,32 +280,45 @@ export default class OrganizationPositionItem extends Component {
       voterTextStatement,
     } = this.state;
 
-    if (!position.ballot_item_we_vote_id) {
-      // console.log('OrganizationPositionItem cannot render yet -- missing position.ballot_item_we_vote_id');
+    const {
+      ballot_item_we_vote_id: ballotItemWeVoteId,
+      kind_of_ballot_item: kindOfBallotItem,
+      ballot_item_display_name: ballotItemDisplayName,
+      vote_smart_rating: voteSmartRating,
+      vote_smart_time_span: voteSmartTimeSpan,
+      show_rating_description: showRatingDescription,
+      is_looking_at_self: isLookingAtSelf,
+      more_info_url: moreInfoUrl,
+      speaker_display_name: speakerDisplayName,
+      statement_text: statementText,
+    } = position;
+
+    if (!ballotItemWeVoteId) {
+      // console.log('OrganizationPositionItem cannot render yet -- missing ballotItemWeVoteId');
       return null;
     }
 
     let { ballotItemLink } = this.props;
     if (!ballotItemLink) {
       // TwitterHandle-based link
-      const ballotItemUrl = position.kind_of_ballot_item === 'MEASURE' ? '/measure/' : '/candidate/';
+      const ballotItemUrl = kindOfBallotItem === 'MEASURE' ? '/measure/' : '/candidate/';
       // We are turning off links to twitter pages until we get politician pages working
-      // let ballotItemLink = position.ballot_item_twitter_handle ? '/' + position.ballot_item_twitter_handle : ballotItemUrl + position.ballot_item_we_vote_id;
-      ballotItemLink = ballotItemUrl + position.ballot_item_we_vote_id;
+      // let ballotItemLink = position.ballot_item_twitter_handle ? '/' + position.ballot_item_twitter_handle : ballotItemUrl + ballotItemWeVoteId;
+      ballotItemLink = ballotItemUrl + ballotItemWeVoteId;
     }
     let positionDescription;
-    const isCandidate = position.kind_of_ballot_item === 'CANDIDATE';
-    let ballotItemDisplayName = '';
-    if (position.ballot_item_display_name) {
-      ballotItemDisplayName = capitalizeString(position.ballot_item_display_name);
-    }
+    const isCandidate = kindOfBallotItem === 'CANDIDATE';
+    const ballotItemDisplayNameCaps = ballotItemDisplayName ? capitalizeString(ballotItemDisplayName) : '';
 
     const isOnBallotItemPage = false;
-    if (position.vote_smart_rating) {
+    if (voteSmartRating) {
       // console.log('OrganizationPositionItem PositionRatingSnippet');
       positionDescription = (
         <PositionRatingSnippet
-          {...position}
+          ballotItemDisplayName={ballotItemDisplayNameCaps}
+          voteSmartRating={voteSmartRating}
+          voteSmartTimeSpan={voteSmartTimeSpan}
+          showRatingDescription={showRatingDescription}
         />
       );
     } else if (voterSupportsBallotItem || voterOpposesBallotItem) {
@@ -313,23 +326,29 @@ export default class OrganizationPositionItem extends Component {
       // We overwrite the 'voterTextStatement' passed in with position
       positionDescription = (
         <PositionSupportOpposeSnippet
-          {...position}
-          statement_text={voterTextStatement}
-          is_support={voterSupportsBallotItem}
-          is_oppose={voterOpposesBallotItem}
-          is_on_ballot_item_page={isOnBallotItemPage}
-          stance_display_off={stanceDisplayOff}
-          comment_text_off={commentTextOff}
+          commentTextOff={commentTextOff}
+          isLookingAtSelf={isLookingAtSelf}
+          isOnBallotItemPage={isOnBallotItemPage}
+          isOppose={voterOpposesBallotItem}
+          isSupport={voterSupportsBallotItem}
+          moreInfoUrl={moreInfoUrl}
+          speakerDisplayName={speakerDisplayName}
+          stanceDisplayOff={stanceDisplayOff}
+          statementText={voterTextStatement}
         />
       );
     } else {
       // console.log('OrganizationPositionItem PositionInformationOnlySnippet');
       positionDescription = (
         <PositionInformationOnlySnippet
-          {...position}
-          is_on_ballot_item_page={isOnBallotItemPage}
-          stance_display_off={stanceDisplayOff}
-          comment_text_off={commentTextOff}
+          ballotItemDisplayName={ballotItemDisplayName}
+          commentTextOff={commentTextOff}
+          isLookingAtSelf={isLookingAtSelf}
+          isOnBallotItemPage={isOnBallotItemPage}
+          moreInfoUrl={moreInfoUrl}
+          speakerDisplayName={speakerDisplayName}
+          stanceDisplayOff={stanceDisplayOff}
+          statementText={statementText}
         />
       );
     }
@@ -337,7 +356,7 @@ export default class OrganizationPositionItem extends Component {
     // const onEditPositionClick = this.state.showEditPositionModal ? this.closeEditPositionModal.bind(this) : this.openEditPositionModal.bind(this);
     let contestOfficeName;
     let politicalParty;
-    if (position.kind_of_ballot_item === 'CANDIDATE') {
+    if (kindOfBallotItem === 'CANDIDATE') {
       contestOfficeName = position.contest_office_name;
       politicalParty = position.ballot_item_political_party;
     }
@@ -355,7 +374,7 @@ export default class OrganizationPositionItem extends Component {
                 sizeClassName="icon-lg "
                 imageUrl={position.ballot_item_image_url_https_large}
                 alt="candidate-photo"
-                kind_of_ballot_item={position.kind_of_ballot_item}
+                kind_of_ballot_item={kindOfBallotItem}
               />
             </Link>
           </div>
@@ -369,7 +388,7 @@ export default class OrganizationPositionItem extends Component {
                   // onlyActiveOnIndex={false}
                   className="position-rating__candidate-name u-flex-auto"
                 >
-                  {ballotItemDisplayName}
+                  {ballotItemDisplayNameCaps}
                 </Link>
                 { (signedInWithThisTwitterAccount ||
                   signedInWithThisOrganization ||
@@ -377,7 +396,7 @@ export default class OrganizationPositionItem extends Component {
                   <FriendsOnlyIndicator isFriendsOnly={!voterPositionIsPublic} />}
               </div>
             ) : null}
-            { position.kind_of_ballot_item === 'CANDIDATE' && contestOfficeName !== undefined ? (
+            { kindOfBallotItem === 'CANDIDATE' && contestOfficeName !== undefined ? (
               <OfficeNameText
                 politicalParty={politicalParty}
                 contestOfficeName={contestOfficeName}
@@ -389,10 +408,10 @@ export default class OrganizationPositionItem extends Component {
               <div>
                 <ItemActionBar
                   inModal={this.props.inModal}
-                  ballotItemWeVoteId={position.ballot_item_we_vote_id}
-                  ballotItemDisplayName={ballotItemDisplayName}
+                  ballotItemWeVoteId={ballotItemWeVoteId}
+                  ballotItemDisplayName={ballotItemDisplayNameCaps}
                   commentButtonHide
-                  externalUniqueId={`organizationPositionItem-${position.ballot_item_we_vote_id}`}
+                  externalUniqueId={`organizationPositionItem-${ballotItemWeVoteId}`}
                   shareButtonHide
                   transitioning={this.state.transitioning}
                   togglePositionStatementFunction={this.togglePositionStatement}
@@ -400,12 +419,12 @@ export default class OrganizationPositionItem extends Component {
                 { this.state.hidePositionStatement ?
                   null : (
                     <ItemPositionStatementActionBar
-                      ballotItemWeVoteId={position.ballot_item_we_vote_id}
-                      ballotItemDisplayName={position.ballot_item_display_name}
+                      ballotItemWeVoteId={ballotItemWeVoteId}
+                      ballotItemDisplayName={ballotItemDisplayNameCaps}
                       commentEditModeOn
                       externalUniqueId="organizationPositionItem"
                       transitioning={this.state.transitioning}
-                      ballotItemType={position.kind_of_ballot_item}
+                      ballotItemType={kindOfBallotItem}
                     />
                   )}
               </div>
@@ -418,13 +437,11 @@ export default class OrganizationPositionItem extends Component {
 }
 OrganizationPositionItem.propTypes = {
   ballotItemLink: PropTypes.string,
-  comment_text_off: PropTypes.bool,
+  commentTextOff: PropTypes.bool,
   editMode: PropTypes.bool,
   organizationWeVoteId: PropTypes.string.isRequired,
-  placement: PropTypes.string,
   position: PropTypes.object.isRequired,
-  popover_off: PropTypes.bool,
-  stance_display_off: PropTypes.bool,
+  stanceDisplayOff: PropTypes.bool,
   turnOffLogo: PropTypes.bool,
   turnOffName: PropTypes.bool,
   inModal: PropTypes.bool,
