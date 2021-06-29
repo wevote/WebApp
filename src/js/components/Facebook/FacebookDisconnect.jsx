@@ -1,3 +1,4 @@
+import { Facebook } from '@material-ui/icons';
 import React from 'react';
 import FacebookActions from '../../actions/FacebookActions';
 import { renderLog } from '../../utils/logging';
@@ -16,7 +17,7 @@ class FacebookDisconnect extends React.Component {
           className="btn btn-social btn-lg btn-facebook"
           onClick={this.didClickDisconnectFromFacebookButton}
         >
-          <i className="fab fa-facebook" />
+          <Facebook />
           Disconnect from Facebook
         </a>
       </span>

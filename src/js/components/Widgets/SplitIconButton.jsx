@@ -133,7 +133,7 @@ const SplitButtonIcon = styled.span`
   display: flex;
   align-items: center;
   height: 100%;
-  padding: 0 13.3px;
+  padding: 0 11px;
   ${({ adjustedIconWidth }) => (adjustedIconWidth ? `width: ${adjustedIconWidth}px;` : 'width: 44px;')}
   * {
     width: 100%;

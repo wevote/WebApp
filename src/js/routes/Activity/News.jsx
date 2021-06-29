@@ -103,6 +103,7 @@ class News extends Component {
       }, () => this.openActivityTidbitDrawer(activityTidbitWeVoteIdForDrawer));
       AnalyticsActions.saveActionNews(VoterStore.electionId());
     }
+    AppObservableStore.setShowSelectBallotModal(false, false, false);
     this.preloadTimer = setTimeout(() => lazyPreloadPages(), 2000);
   }
 

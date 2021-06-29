@@ -23,6 +23,7 @@ const nonFluxState = {
   getStartedMode: '',
   hideWeVoteLogo: false,
   hostname: '',
+  observableUpdateCounter: 0,
   organizationModalBallotItemWeVoteId: '',
   scrolledDown: false,
   sharedItemCode: '',
@@ -56,6 +57,11 @@ export default {
   // getNonFluxState () {
   //   return nonFluxState;
   // },
+
+  incrementObservableUpdateCounter () {
+    nonFluxState.observableUpdateCounter += 1;
+    messageService.sendMessage('state incremented ObservableUpdateCounter');
+  },
 
   setActivityTidbitWeVoteIdForDrawer (activityTidbitWeVoteId) {
     nonFluxState.activityTidbitWeVoteIdForDrawer = activityTidbitWeVoteId;

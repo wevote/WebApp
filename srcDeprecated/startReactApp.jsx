@@ -5,7 +5,7 @@ import { isCordova } from './utils/cordovaUtils';
 import { renderLog } from './utils/logging';
 // const { useScroll } = React.lazy(() => import('react-router-scroll'));
 
-const WeVoteRouter = React.lazy(() => import('./WeVoteRouter'));
+const WeVoteRouter = React.lazy(() => import('./js/components/Widgets/WeVoteRouter'));
 const muiTheme = React.lazy(() => import('./mui-theme'));
 const routes = React.lazy(() => import('./Root'));
 const styledTheme = React.lazy(() => import('./styled-theme'));

@@ -579,7 +579,8 @@ class Ballot extends Component {
         // console.log('Ballot.jsx onVoterStoreChange VoterStore.getVoter: ', VoterStore.getVoter());
         const locationGuessClosed = cookies.getItem('location_guess_closed');
         const textForMapSearch = VoterStore.getTextForMapSearch();
-        const showAddressVerificationForm = !locationGuessClosed || !textForMapSearch;
+        const showAddressVerificationForm =
+          (!locationGuessClosed && locationGuessClosed !== null) || !textForMapSearch;
         if (showAddressVerificationForm) {
           // June 2021: Instead of showing the EditAddressOneHorizontal row on an otherwise blank ballot page, open th BallotSelectModal
           AppObservableStore.setShowSelectBallotModal(true, false, false);
