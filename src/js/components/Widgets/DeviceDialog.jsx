@@ -102,17 +102,17 @@ class DeviceDialog extends Component {
               <div style={{ marginTop: 20 }}>
                 <div style={{ marginTop: 5 }}>
                   <span className="card-main__candidate-name-link">
-                    <Link to="/wevoteintro/network" onlyActiveOnIndex>Navigate to Welcome</Link>
+                    <Link to="/wevoteintro/network">Navigate to Welcome</Link>
                   </span>
                 </div>
                 <div style={{ marginTop: 5 }}>
                   <span className="card-main__candidate-name-link">
-                    <Link onClick={DeviceDialog.clearLocationGuessClosedCookie} to="/" onlyActiveOnIndex>Clear Location Guess Cookie</Link>
+                    <Link onClick={DeviceDialog.clearLocationGuessClosedCookie} to="/">Clear Location Guess Cookie</Link>
                   </span>
                 </div>
                 <div style={{ marginTop: 5 }}>
                   <span className="card-main__candidate-name-link">
-                    <Link onClick={DeviceDialog.clearAllCookies} to="/" onlyActiveOnIndex>Clear Cookies</Link>
+                    <Link onClick={DeviceDialog.clearAllCookies} to="/">Clear Cookies</Link>
                   </span>
                 </div>
               </div>
