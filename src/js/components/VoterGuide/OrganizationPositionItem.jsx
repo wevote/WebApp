@@ -54,7 +54,7 @@ export default class OrganizationPositionItem extends Component {
     if (signedInFacebook) {
       signedInWithThisFacebookAccount = voter.facebook_id === organizationFacebookIdBeingViewed;
     }
-    let voterTextStatement = '';
+    let voterTextStatement;
     let voterPositionIsPublic;
     let voterSupportsBallotItem;
     let voterOpposesBallotItem;
@@ -293,7 +293,7 @@ export default class OrganizationPositionItem extends Component {
       // let ballotItemLink = position.ballot_item_twitter_handle ? '/' + position.ballot_item_twitter_handle : ballotItemUrl + position.ballot_item_we_vote_id;
       ballotItemLink = ballotItemUrl + position.ballot_item_we_vote_id;
     }
-    let positionDescription = '';
+    let positionDescription;
     const isCandidate = position.kind_of_ballot_item === 'CANDIDATE';
     let ballotItemDisplayName = '';
     if (position.ballot_item_display_name) {
@@ -348,7 +348,7 @@ export default class OrganizationPositionItem extends Component {
             <Link
               to={ballotItemLink}
               className="u-no-underline"
-              onlyActiveOnIndex={false}
+              // onlyActiveOnIndex={false}
             >
               <ImageHandler
                 className="card-child__avatar--round"
@@ -366,7 +366,7 @@ export default class OrganizationPositionItem extends Component {
               <div className="u-flex items-center">
                 <Link
                   to={ballotItemLink}
-                  onlyActiveOnIndex={false}
+                  // onlyActiveOnIndex={false}
                   className="position-rating__candidate-name u-flex-auto"
                 >
                   {ballotItemDisplayName}
