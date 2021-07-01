@@ -494,7 +494,6 @@ const styles = (theme) => ({
     height: 4,
   },
   stackedReturnAndShare: {
-    display: 'flex',
     flexDirection: 'column',
     alignItems: 'flex-start',
   },

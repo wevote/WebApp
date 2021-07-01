@@ -146,54 +146,56 @@ class VoterGuideListDashboard extends Component {
     return (
       <div className="settings-dashboard">
         <Helmet title="Your Endorsements - We Vote" />
-        <div className="container-fluid">
-          <div className="row">
-            {/* Mobile and Desktop mode */}
-            <div className="col-12 col-md-4 sidebar-menu">
-              <div className="u-show-mobile">
+        <div className="page-content-container">
+          <div className="container-fluid">
+            <div className="row">
+              {/* Mobile and Desktop mode */}
+              <div className="col-12 col-md-4 sidebar-menu">
+                <div className="u-show-mobile">
+                  <VoterGuideListSearchResults
+                        clearSearchTextNow={clearSearchTextNow}
+                        googleCivicElectionId={currentGoogleCivicElectionId}
+                        organizationWeVoteId={linkedOrganizationWeVoteId}
+                        searchUnderwayFunction={this.searchUnderway}
+                  />
+                </div>
+                <SelectVoterGuidesSideBar />
+              </div>
+              <div className="d-none d-sm-block col-md-8">
                 <VoterGuideListSearchResults
                       clearSearchTextNow={clearSearchTextNow}
                       googleCivicElectionId={currentGoogleCivicElectionId}
                       organizationWeVoteId={linkedOrganizationWeVoteId}
                       searchUnderwayFunction={this.searchUnderway}
                 />
-              </div>
-              <SelectVoterGuidesSideBar />
-            </div>
-            <div className="d-none d-sm-block col-md-8">
-              <VoterGuideListSearchResults
-                    clearSearchTextNow={clearSearchTextNow}
-                    googleCivicElectionId={currentGoogleCivicElectionId}
-                    organizationWeVoteId={linkedOrganizationWeVoteId}
-                    searchUnderwayFunction={this.searchUnderway}
-              />
-              { !voterIsSignedIn && (
-                <DelayedLoad waitBeforeShow={1000}>
-                  <SettingsAccount />
-                </DelayedLoad>
-              )}
-              {!(searchIsUnderway) && (
-                <div className="card">
-                  <div className="card-main">
-                    <Faq>Frequently Asked Questions</Faq>
-                    <br />
-                    <Questions>Why enter endorsements?</Questions>
-                    <Description>
-                      Enter your own endorsements so your friends and community can learn from you.
-                      {' '}
-                      Help the people who share your values decide how to vote, so they aren&apos;t making hard choices alone.
-                    </Description>
-                    <Questions>How do I start entering my opinions?</Questions>
-                    <Description>
-                      Choose the election you have opinions about by clicking the &quot;Choose New Election&quot; button.
-                      {' '}
-                      If you have already chosen or opposed any candidates (or measures), you can click &quot;Edit&quot; under the election in the left column.
-                    </Description>
-                    <Questions>What does an endorsement look like as I am entering it?</Questions>
-                    <img src={cordovaDot('../../../img/global/screens/endorsement-1422x354.png')} alt="" />
+                { !voterIsSignedIn && (
+                  <DelayedLoad waitBeforeShow={1000}>
+                    <SettingsAccount />
+                  </DelayedLoad>
+                )}
+                {!(searchIsUnderway) && (
+                  <div className="card">
+                    <div className="card-main">
+                      <Faq>Frequently Asked Questions</Faq>
+                      <br />
+                      <Questions>Why enter endorsements?</Questions>
+                      <Description>
+                        Enter your own endorsements so your friends and community can learn from you.
+                        {' '}
+                        Help the people who share your values decide how to vote, so they aren&apos;t making hard choices alone.
+                      </Description>
+                      <Questions>How do I start entering my opinions?</Questions>
+                      <Description>
+                        Choose the election you have opinions about by clicking the &quot;Choose New Election&quot; button.
+                        {' '}
+                        If you have already chosen or opposed any candidates (or measures), you can click &quot;Edit&quot; under the election in the left column.
+                      </Description>
+                      <Questions>What does an endorsement look like as I am entering it?</Questions>
+                      <img src={cordovaDot('../../../img/global/screens/endorsement-1422x354.png')} alt="" />
+                    </div>
                   </div>
-                </div>
-              )}
+                )}
+              </div>
             </div>
           </div>
         </div>

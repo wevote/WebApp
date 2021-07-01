@@ -236,7 +236,7 @@ class HeaderBackTo extends Component {
     // dumpObjProps('cordovaOverrides', cordovaOverrides);
 
     return (
-      <AppBar id="headerBackToAppBar" className={headerClassName} color="default" style={cordovaOverrides}>
+      <AppBar id="headerBackToAppBar" className={headerClassName} color="default" style={cordovaOverrides} classes={{ root: classes.stackedReturnAndShare }}>
         <Toolbar className="header-toolbar header-backto-toolbar" disableGutters>
           <HeaderBackToButton
             backToLink={backToLink}
@@ -347,6 +347,10 @@ const styles = (theme) => ({
     '&:hover': {
       backgroundColor: 'transparent',
     },
+  },
+  stackedReturnAndShare: {
+    flexDirection: 'column',
+    alignItems: 'flex-start',
   },
 });
 
