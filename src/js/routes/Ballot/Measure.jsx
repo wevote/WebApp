@@ -83,9 +83,10 @@ class Measure extends Component {
     OrganizationActions.organizationsFollowedRetrieve();
 
     const measure = MeasureStore.getMeasure(measureWeVoteId);
+    const { ballot_item_display_name: ballotItemDisplayName } = measure;
     let measureBallotItemDisplayName = '';
-    if (measure && measure.ballot_item_display_name) {
-      measureBallotItemDisplayName = measure.ballot_item_display_name;
+    if (measure && ballotItemDisplayName) {
+      measureBallotItemDisplayName = ballotItemDisplayName;
     }
     const allCachedPositionsForThisMeasure = MeasureStore.getAllCachedPositionsByMeasureWeVoteId(measureWeVoteId);
     let allCachedPositionsForThisMeasureLength = 0;
@@ -160,8 +161,9 @@ class Measure extends Component {
       // VoterGuideActions.voterGuidesToFollowRetrieveByBallotItem(nextParams.measure_we_vote_id, 'MEASURE');
       const measure = MeasureStore.getMeasure(measureWeVoteId);
       let measureBallotItemDisplayName = '';
-      if (measure && measure.ballot_item_display_name) {
-        measureBallotItemDisplayName = measure.ballot_item_display_name;
+      const { ballot_item_display_name: ballotItemDisplayName } = measure;
+      if (measure && ballotItemDisplayName) {
+        measureBallotItemDisplayName = ballotItemDisplayName;
       }
       const allCachedPositionsForThisMeasure = MeasureStore.getAllCachedPositionsByMeasureWeVoteId(measureWeVoteId);
       let allCachedPositionsForThisMeasureLength = 0;
@@ -217,8 +219,12 @@ class Measure extends Component {
     // console.log('Measure, onMeasureStoreChange');
     const measure = MeasureStore.getMeasure(measureWeVoteId);
     let measureBallotItemDisplayName = '';
-    if (measure && measure.ballot_item_display_name) {
-      measureBallotItemDisplayName = measure.ballot_item_display_name;
+
+    if (measure) {
+      const { ballot_item_display_name: ballotItemDisplayName } = measure;
+      if (ballotItemDisplayName) {
+        measureBallotItemDisplayName = ballotItemDisplayName;
+      }
     }
     const allCachedPositionsForThisMeasure = MeasureStore.getAllCachedPositionsByMeasureWeVoteId(measureWeVoteId);
     let allCachedPositionsForThisMeasureLength = 0;
@@ -259,8 +265,10 @@ class Measure extends Component {
     renderLog('Measure');  // Set LOG_RENDER_EVENTS to log all renders
     const { classes, match: { params } } = this.props;
     const { allCachedPositionsForThisMeasure, measure, scrolledDown } = this.state;
+    const { ballot_item_display_name: ballotItemDisplayName, id: measureId, we_vote_id: measureWeVoteId,
+      measure_url: measureURL } = measure;
 
-    if (!measure || !measure.ballot_item_display_name) {
+    if (!measure || !ballotItemDisplayName) {
       return (
         <div className="container-fluid well u-stack--md u-inset--md">
           <div><LoadingWheelComp /></div>
@@ -269,11 +277,12 @@ class Measure extends Component {
       );
     }
 
-    const measureName = capitalizeString(measure.ballot_item_display_name);
+    const measureName = capitalizeString(ballotItemDisplayName);
     const titleText = `${measureName} - We Vote`;
     const descriptionText = `Information about ${measureName}`;
     const voter = VoterStore.getVoter();
-    const measureAdminEditUrl = `${webAppConfig.WE_VOTE_SERVER_ROOT_URL}m/${measure.id}/edit/?google_civic_election_id=${VoterStore.electionId()}&state_code=`;
+    const { is_admin: isAdmin, is_verified_volunteer: isVerifiedVolunteer } = voter;
+    const measureAdminEditUrl = `${webAppConfig.WE_VOTE_SERVER_ROOT_URL}m/${measureId}/edit/?google_civic_election_id=${VoterStore.electionId()}&state_code=`;
 
     return (
       <>
@@ -283,7 +292,7 @@ class Measure extends Component {
         />
         {
           scrolledDown && (
-            <MeasureStickyHeader measureWeVoteId={measure.we_vote_id} />
+            <MeasureStickyHeader measureWeVoteId={measureWeVoteId} />
           )
         }
         <Suspense fallback={<LoadingWheelComp />}>
@@ -293,14 +302,14 @@ class Measure extends Component {
             <div className="card" style={isWebApp() ? {} : { marginRight: 0, marginLeft: 0 }}>
               <TwoColumns>
                 <LeftColumnWrapper>
-                  <MeasureItem measureWeVoteId={measure.we_vote_id} />
+                  <MeasureItem measureWeVoteId={measureWeVoteId} />
                 </LeftColumnWrapper>
                 <RightColumnWrapper className="u-show-desktop-tablet">
                   <MeasureShareWrapper>
                     <ShareButtonDesktopTablet measureShare />
                   </MeasureShareWrapper>
-                  {measure.measure_url && (
-                    <ViewOnBallotpedia externalLinkUrl={measure.measure_url} />
+                  {measureURL && (
+                    <ViewOnBallotpedia externalLinkUrl={measureURL} />
                   )}
                   {measureName && (
                     <SearchOnGoogle googleQuery={`${measureName}`} />
@@ -313,7 +322,7 @@ class Measure extends Component {
                 <DelayedLoad showLoadingText waitBeforeShow={500}>
                   <PositionList
                     incomingPositionList={allCachedPositionsForThisMeasure}
-                    ballotItemDisplayName={measure.ballot_item_display_name}
+                    ballotItemDisplayName={ballotItemDisplayName}
                     params={params}
                     positionListExistsTitle={(
                       <PositionListIntroductionText>
@@ -334,7 +343,7 @@ class Measure extends Component {
             />
             <br />
             {/* Show links to this candidate in the admin tools */}
-            { (voter.is_admin || voter.is_verified_volunteer) && (
+            { (isAdmin || isVerifiedVolunteer) && (
               <span className="u-wrap-links d-print-none">
                 Admin only:
                 <OpenExternalWebSite
