@@ -111,54 +111,56 @@ class VoterGuidesUnderOneValue extends Component {
     }
 
     return (
-      <div className="opinion-view">
-        <Helmet title={`${pageTitle} - We Vote`} />
-        <IssueCard
-          followToggleOn
-          issue={issue}
-          issueImageSize="MEDIUM"
-          key={`issue-list-key-${issue.issue_we_vote_id}`}
-        />
-        {/* This is not currently working and probably doesn't make sense to allow search on a single value page.
-        <SearchGuidesToFollowBox /> */}
-        { !voterGuidesForValueLength ? (
-          <DelayedLoad showLoadingText waitBeforeShow={500}>
+      <div className="page-content-container">
+        <div className="opinion-view">
+          <Helmet title={`${pageTitle} - We Vote`} />
+          <IssueCard
+            followToggleOn
+            issue={issue}
+            issueImageSize="MEDIUM"
+            key={`issue-list-key-${issue.issue_we_vote_id}`}
+          />
+          {/* This is not currently working and probably doesn't make sense to allow search on a single value page.
+          <SearchGuidesToFollowBox /> */}
+          { !voterGuidesForValueLength ? (
+            <DelayedLoad showLoadingText waitBeforeShow={500}>
+              <>
+                <br />
+                <Card>
+                  <EmptyValueMessageContainer id="noEndorsements">
+                    <Ballot classes={{ root: classes.ballotIconRoot }} location={window.location} />
+                    <EmptyValueText>There are no endorsements for this issue yet. Click &quot;Add Endorsements&quot; to help people who trust you make better voting decisions.</EmptyValueText>
+                    <Button
+                      id="addEndorsements"
+                      classes={{ root: classes.ballotButtonRoot }}
+                      color="primary"
+                      onClick={() => historyPush('/settings/voterguidelist')}
+                      variant="contained"
+                    >
+                      <Ballot classes={{ root: classes.ballotButtonIconRoot }} location={window.location} />
+                      Add Endorsements
+                    </Button>
+                  </EmptyValueMessageContainer>
+                </Card>
+              </>
+            </DelayedLoad>
+          ) : (
             <>
-              <br />
-              <Card>
-                <EmptyValueMessageContainer id="noEndorsements">
-                  <Ballot classes={{ root: classes.ballotIconRoot }} location={window.location} />
-                  <EmptyValueText>There are no endorsements for this issue yet. Click &quot;Add Endorsements&quot; to help people who trust you make better voting decisions.</EmptyValueText>
-                  <Button
-                    id="addEndorsements"
-                    classes={{ root: classes.ballotButtonRoot }}
-                    color="primary"
-                    onClick={() => historyPush('/settings/voterguidelist')}
-                    variant="contained"
-                  >
-                    <Ballot classes={{ root: classes.ballotButtonIconRoot }} location={window.location} />
-                    Add Endorsements
-                  </Button>
-                </EmptyValueMessageContainer>
-              </Card>
+              <div className="card">
+                <Suspense fallback={<span>Loading...</span>}>
+                  <GuideList incomingVoterGuideList={voterGuidesForValue} />
+                </Suspense>
+              </div>
+            </>
+          )}
+          <DelayedLoad waitBeforeShow={2000}>
+            <>
+              <Title id="valuesListTitle">Explore More Values</Title>
+              <ValuesList displayOnlyIssuesNotFollowedByVoter currentIssue={issue} />
             </>
           </DelayedLoad>
-        ) : (
-          <>
-            <div className="card">
-              <Suspense fallback={<span>Loading...</span>}>
-                <GuideList incomingVoterGuideList={voterGuidesForValue} />
-              </Suspense>
-            </div>
-          </>
-        )}
-        <DelayedLoad waitBeforeShow={2000}>
-          <>
-            <Title id="valuesListTitle">Explore More Values</Title>
-            <ValuesList displayOnlyIssuesNotFollowedByVoter currentIssue={issue} />
-          </>
-        </DelayedLoad>
-        <br />
+          <br />
+        </div>
       </div>
     );
   }

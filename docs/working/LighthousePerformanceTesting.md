@@ -8,9 +8,15 @@ the CDN, and http responses will be compressed.
 
 This is a risky one -- it relies on you manually navigating the app through every page,
 and every popup.  It has a built in coverage analyzer that shows each chunk
-and what percentage of its contents are unused.  It also shows for main.css which lines are not used (as of July 1, 2021 about 80% of the css is not used, and all the loading and processing of main.css occurs before anything renders at app startup.)
+and what percentage of its contents are unused.  It also shows for main.css which lines are not used (as of July 1, 2021 about 97% of the css is not used, and all the loading and processing of main.css occurs before anything renders at app startup.)
+
+Some of the css only gets used if in mobile mode, so that has to be a part of a coverage run.
 
 https://web.dev/unused-css-rules/?utm_source=lighthouse&utm_medium=devtools
+
+![ScreenPrint](../images/CssCoverageAnalysis.png)
+
+
 
 ### General 
 
