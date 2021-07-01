@@ -117,7 +117,7 @@ class ActivityCommentAdd extends Component {
               InputProps={{
                 classes: { root: classes.textFieldClasses },
                 startAdornment: hidePhotoFromTextField ? null : (
-                  <InputAdornment position="start">
+                  <InputAdornment position="start" style={{ height: 19 }}>
                     {(voterPhotoUrlTiny) ? (
                       <SpeakerAvatar>
                         <ActivityImage src={voterPhotoUrlTiny} alt={`${voterFullName}`} />
