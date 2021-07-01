@@ -21,7 +21,7 @@ export default {
       });
   },
 
-  // July 2021: These 6 api queries were being fired simultaneously, without apiCalming it was much worse.
+  // July 2021: These 6 api queries were being fired simultaneously, and prior to this, without apiCalming it was much worse.
   // They tied up all 6 http channels in the browser for 1.26 seconds -- this new API combines them all into one call.
   // 'CURRENT_FRIENDS' 'FRIEND_INVITATIONS_PROCESSED' 'FRIEND_INVITATIONS_WAITING_FOR_VERIFICATION'
   // 'FRIEND_INVITATIONS_SENT_BY_ME' 'FRIEND_INVITATIONS_SENT_TO_ME' 'SUGGESTED_FRIEND_LIST'
