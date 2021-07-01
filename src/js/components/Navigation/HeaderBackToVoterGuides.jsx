@@ -314,7 +314,7 @@ class HeaderBackToVoterGuides extends Component {
     }
 
     return (
-      <AppBar className={appBarCname} color="default">
+      <AppBar className={appBarCname} color="default" classes={{ root: classes.stackedReturnAndShare }}>
         <Toolbar className="header-toolbar header-backto-toolbar" disableGutters>
           <HeaderBackToButton
             backToLink={backToLink}
@@ -493,6 +493,11 @@ const styles = (theme) => ({
   indicator: {
     height: 4,
   },
+  stackedReturnAndShare: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'flex-start',
+  },
 });
 
 const FirstNameWrapper = styled.div`
@@ -505,8 +510,7 @@ const PreviewButtonWrapper = styled.div`
 `;
 
 const VoterGuideTitle = styled.div`
-  align-items: left;  // TODO: This is nonsense css, and this div is incorrectly styled
-  margin-left: 30px;
+  margin-left: calc((100vw - 960px)/2);
   width: 100%;
 `;
 
@@ -514,7 +518,7 @@ const EndorsementModeSwitch = styled.div`
   display: flex;
   align-items: flex-end;
   justify-content: space-between;
-  margin-left: 30px;
+  margin-left: calc((100vw - 960px)/2);
   width: 100%;
 `;
 
