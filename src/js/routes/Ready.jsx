@@ -198,7 +198,10 @@ class Ready extends Component {
       locationGuessClosed, textForMapSearch, voterIsSignedIn,
     } = this.state;
 
-    const showAddressVerificationForm = !locationGuessClosed || !textForMapSearch;
+    // const showAddressVerificationForm = !locationGuessClosed || !textForMapSearch;
+    const showAddressVerificationForm =
+      (!locationGuessClosed && locationGuessClosed !== null) || !textForMapSearch;
+
     // console.log('locationGuessClosed:', locationGuessClosed, ', textForMapSearch:', textForMapSearch, ', showAddressVerificationForm:', showAddressVerificationForm);
     return (
       <Wrapper className="page-content-container">
