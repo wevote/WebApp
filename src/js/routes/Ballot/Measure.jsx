@@ -1,7 +1,7 @@
 import { withStyles } from '@material-ui/core/styles';
 import { Info } from '@material-ui/icons';
 import PropTypes from 'prop-types';
-import React, { Component } from 'react';
+import React, { Component, Suspense } from 'react';
 import Helmet from 'react-helmet';
 import styled from 'styled-components';
 import ActivityActions from '../../actions/ActivityActions';
@@ -10,8 +10,10 @@ import MeasureActions from '../../actions/MeasureActions';
 import OrganizationActions from '../../actions/OrganizationActions';
 import MeasureStickyHeader from '../../components/Ballot/MeasureStickyHeader';
 import LoadingWheel from '../../components/LoadingWheel';
+import LoadingWheelComp from '../../components/LoadingWheelComp';
 import EndorsementCard from '../../components/Widgets/EndorsementCard';
 import SearchOnGoogle from '../../components/Widgets/SearchOnGoogle';
+import SnackNotifier from '../../components/Widgets/SnackNotifier';
 import ViewOnBallotpedia from '../../components/Widgets/ViewOnBallotpedia';
 import webAppConfig from '../../config';
 import AppObservableStore, { messageService } from '../../stores/AppObservableStore';
@@ -19,6 +21,7 @@ import BallotStore from '../../stores/BallotStore';
 import MeasureStore from '../../stores/MeasureStore';
 import VoterGuideStore from '../../stores/VoterGuideStore';
 import VoterStore from '../../stores/VoterStore';
+import { cordovaBallotFilterTopMargin } from '../../utils/cordovaOffsets';
 import { isWebApp } from '../../utils/cordovaUtils';
 import { renderLog } from '../../utils/logging';
 import { capitalizeString } from '../../utils/textFormat';
@@ -274,7 +277,7 @@ class Measure extends Component {
     const measureAdminEditUrl = `${webAppConfig.WE_VOTE_SERVER_ROOT_URL}m/${measure.id}/edit/?google_civic_election_id=${VoterStore.electionId()}&state_code=`;
 
     return (
-      <span>
+      <>
         <Helmet
           title={titleText}
           meta={[{ name: 'description', content: descriptionText }]}
@@ -284,70 +287,75 @@ class Measure extends Component {
             <MeasureStickyHeader measureWeVoteId={measure.we_vote_id} />
           )
         }
-        {/* The following style adjustment prevents horizontal scrolling from the .card style */}
-        <div className="card" style={isWebApp() ? {} : { marginRight: 0, marginLeft: 0 }}>
-          <TwoColumns>
-            <LeftColumnWrapper>
-              <MeasureItem measureWeVoteId={measure.we_vote_id} />
-            </LeftColumnWrapper>
-            <RightColumnWrapper className="u-show-desktop-tablet">
-              <MeasureShareWrapper>
-                <ShareButtonDesktopTablet measureShare />
-              </MeasureShareWrapper>
-              {measure.measure_url && (
-                <ViewOnBallotpedia externalLinkUrl={measure.measure_url} />
-              )}
-              {measureName && (
-                <SearchOnGoogle googleQuery={`${measureName}`} />
-              )}
-            </RightColumnWrapper>
-          </TwoColumns>
-        </div>
-        { !!(allCachedPositionsForThisMeasure.length) && (
-          <section className="card">
-            <DelayedLoad showLoadingText waitBeforeShow={500}>
-              <PositionList
-                incomingPositionList={allCachedPositionsForThisMeasure}
-                ballotItemDisplayName={measure.ballot_item_display_name}
-                params={params}
-                positionListExistsTitle={(
-                  <PositionListIntroductionText>
-                    <Info classes={{ root: classes.informationIcon }} />
-                    Opinions about this ballot item are below. Use these filters to sort:
-                  </PositionListIntroductionText>
-                )}
-              />
-            </DelayedLoad>
-          </section>
-        )}
-        <EndorsementCard
-          bsPrefix="u-margin-top--sm u-stack--xs"
-          variant="primary"
-          buttonText="ENDORSEMENTS MISSING?"
-          text={`Are there endorsements for ${measureName} that you expected to see?`}
-          whiteOnBlue
-        />
-        <br />
-        {/* Show links to this candidate in the admin tools */}
-        { (voter.is_admin || voter.is_verified_volunteer) && (
-          <span className="u-wrap-links d-print-none">
-            Admin only:
-            <OpenExternalWebSite
-              linkIdAttribute="measureAdminEdit"
-              url={measureAdminEditUrl}
-              target="_blank"
-              className="open-web-site open-web-site__no-right-padding"
-              body={(
-                <span>
-                  edit
-                  {' '}
-                  {measureName}
-                </span>
-              )}
+        <Suspense fallback={<LoadingWheelComp />}>
+          <SnackNotifier />
+          <div className="page-content-container" style={{ marginTop: `${cordovaBallotFilterTopMargin()}` }}>
+            {/* The following style adjustment prevents horizontal scrolling from the .card style */}
+            <div className="card" style={isWebApp() ? {} : { marginRight: 0, marginLeft: 0 }}>
+              <TwoColumns>
+                <LeftColumnWrapper>
+                  <MeasureItem measureWeVoteId={measure.we_vote_id} />
+                </LeftColumnWrapper>
+                <RightColumnWrapper className="u-show-desktop-tablet">
+                  <MeasureShareWrapper>
+                    <ShareButtonDesktopTablet measureShare />
+                  </MeasureShareWrapper>
+                  {measure.measure_url && (
+                    <ViewOnBallotpedia externalLinkUrl={measure.measure_url} />
+                  )}
+                  {measureName && (
+                    <SearchOnGoogle googleQuery={`${measureName}`} />
+                  )}
+                </RightColumnWrapper>
+              </TwoColumns>
+            </div>
+            { !!(allCachedPositionsForThisMeasure.length) && (
+              <section className="card">
+                <DelayedLoad showLoadingText waitBeforeShow={500}>
+                  <PositionList
+                    incomingPositionList={allCachedPositionsForThisMeasure}
+                    ballotItemDisplayName={measure.ballot_item_display_name}
+                    params={params}
+                    positionListExistsTitle={(
+                      <PositionListIntroductionText>
+                        <Info classes={{ root: classes.informationIcon }} />
+                        Opinions about this ballot item are below. Use these filters to sort:
+                      </PositionListIntroductionText>
+                    )}
+                  />
+                </DelayedLoad>
+              </section>
+            )}
+            <EndorsementCard
+              bsPrefix="u-margin-top--sm u-stack--xs"
+              variant="primary"
+              buttonText="ENDORSEMENTS MISSING?"
+              text={`Are there endorsements for ${measureName} that you expected to see?`}
+              whiteOnBlue
             />
-          </span>
-        )}
-      </span>
+            <br />
+            {/* Show links to this candidate in the admin tools */}
+            { (voter.is_admin || voter.is_verified_volunteer) && (
+              <span className="u-wrap-links d-print-none">
+                Admin only:
+                <OpenExternalWebSite
+                  linkIdAttribute="measureAdminEdit"
+                  url={measureAdminEditUrl}
+                  target="_blank"
+                  className="open-web-site open-web-site__no-right-padding"
+                  body={(
+                    <span>
+                      edit
+                      {' '}
+                      {measureName}
+                    </span>
+                  )}
+                />
+              </span>
+            )}
+          </div>
+        </Suspense>
+      </>
     );
   }
 }
