@@ -157,7 +157,7 @@ class HeaderBar extends Component {
 
   shouldComponentUpdate (nextProps, nextState) {
     const { location: { pathname } } = window;
-    console.log('HeaderBar shouldComponentUpdate: pathname === ', pathname);
+    // console.log('HeaderBar shouldComponentUpdate: pathname === ', pathname);
     let update = false;
     if (pathname !== this.state.priorPath) {
       // Re-render the HeaderBar if the path has changed

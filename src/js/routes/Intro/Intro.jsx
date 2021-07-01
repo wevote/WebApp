@@ -7,8 +7,6 @@ import webAppConfig from '../../config';
 import { renderLog } from '../../utils/logging';
 import { numberWithCommas } from '../../utils/textFormat';
 
-const { $ } = window;
-
 export default class Intro extends Component {
   constructor (props) {
     super(props);
@@ -28,25 +26,44 @@ export default class Intro extends Component {
   }
 
   getVoterCount () {
-    $.ajax({
-      url: `${webAppConfig.WE_VOTE_SERVER_API_ROOT_URL}voterCount/`,
-      context: document.body,
-    }).done((resp) => {
-      this.setState({
-        voterCount: resp.voter_count,
-      });
-    });
+    this.voterCountInterval = setInterval(() => {
+      if (window.$ && window.$.ajax) {
+        const { $ } = window;
+        $.ajax({
+          url: `${webAppConfig.WE_VOTE_SERVER_API_ROOT_URL}voterCount/`,
+          context: document.body,
+        }).done((resp) => {
+          this.setState({
+            voterCount: resp.voter_count,
+          });
+        });
+        clearInterval(this.voterCountInterval);
+        this.voterCountInterval = null;
+      }
+    }, 250);
+  }
+
+  componentWillUnmount () {
+    if (this.voterCountInterval) clearInterval(this.voterCountInterval);
+    if (this.voterOrgCountInterval) clearInterval(this.voterOrgCountInterval);
   }
 
   getOrgCount () {
-    $.ajax({
-      url: `${webAppConfig.WE_VOTE_SERVER_API_ROOT_URL}organizationCount/`,
-      context: document.body,
-    }).done((resp) => {
-      this.setState({
-        orgCount: resp.organization_count,
-      });
-    });
+    this.voterOrgCountInterval = setInterval(() => {
+      if (window.$ && window.$.ajax) {
+        const { $ } = window;
+        $.ajax({
+          url: `${webAppConfig.WE_VOTE_SERVER_API_ROOT_URL}organizationCount/`,
+          context: document.body,
+        }).done((resp) => {
+          this.setState({
+            orgCount: resp.organization_count,
+          });
+        });
+        clearInterval(this.voterOrgCountInterval);
+        this.voterOrgCountInterval = null;
+      }
+    }, 250);
   }
 
   render () {
