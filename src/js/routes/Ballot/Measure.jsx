@@ -9,7 +9,6 @@ import AnalyticsActions from '../../actions/AnalyticsActions';
 import MeasureActions from '../../actions/MeasureActions';
 import OrganizationActions from '../../actions/OrganizationActions';
 import MeasureStickyHeader from '../../components/Ballot/MeasureStickyHeader';
-import LoadingWheel from '../../components/LoadingWheel';
 import LoadingWheelComp from '../../components/LoadingWheelComp';
 import EndorsementCard from '../../components/Widgets/EndorsementCard';
 import SearchOnGoogle from '../../components/Widgets/SearchOnGoogle';
@@ -264,7 +263,7 @@ class Measure extends Component {
     if (!measure || !measure.ballot_item_display_name) {
       return (
         <div className="container-fluid well u-stack--md u-inset--md">
-          <div>{LoadingWheel}</div>
+          <div><LoadingWheelComp /></div>
           <br />
         </div>
       );
