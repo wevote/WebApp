@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, Suspense } from 'react';
 import Helmet from 'react-helmet';
 import styled from 'styled-components';
 import TestimonialPhoto from '../../img/global/photos/Dale_McGrew-200x200.jpg';
@@ -6,7 +6,7 @@ import AnalyticsActions from '../actions/AnalyticsActions';
 import IssueActions from '../actions/IssueActions';
 import AddFriendsByEmail from '../components/Friends/AddFriendsByEmail';
 import SuggestedFriendsPreview from '../components/Friends/SuggestedFriendsPreview';
-import LoadingWheel from '../components/LoadingWheel';
+import LoadingWheelComp from '../components/LoadingWheelComp';
 import FindOpinionsForm from '../components/Ready/FindOpinionsForm';
 import TwitterSignInCard from '../components/Twitter/TwitterSignInCard';
 import NetworkOpinionsFollowed from '../components/Values/NetworkOpinionsFollowed';
@@ -94,7 +94,7 @@ export default class Values extends Component {
   render () {
     renderLog('Values');  // Set LOG_RENDER_EVENTS to log all renders
     if (!this.state.voter) {
-      return LoadingWheel;
+      return <LoadingWheelComp />;
     }
     const { issuesFollowedCount, issuesToFollowShouldBeDisplayed, voterIsSignedIn } = this.state;
 
@@ -118,86 +118,88 @@ export default class Values extends Component {
 
     return (
       <div className="page-content-container">
-        <div className="container-fluid">
-          <SnackNotifier />
-          <Helmet title="Endorsements - We Vote" />
-          <BrowserPushMessage incomingProps={this.props} />
-          <div className="row">
-            <div id="mainContentColumn" className="col-sm-12 col-md-8">
-              <div className="card u-show-mobile-tablet">
-                <div className="card-main">
-                  <FindOpinionsForm
-                    headerText="Find Opinions or Endorsements"
-                    searchTextLarge
-                    uniqueExternalId="showMobileTablet"
-                  />
-                </div>
-              </div>
-              {publicFiguresBlockToDisplay}
-              {organizationsBlockToDisplay}
-              {!!(issuesToFollowShouldBeDisplayed) && (
-                <div className="u-show-mobile">
-                  <div className="card">
-                    <div className="card-main">
-                      <Testimonial
-                        imageUrl={imageUrl}
-                        testimonialAuthor={testimonialAuthor}
-                        testimonial={testimonial}
-                      />
-                    </div>
+        <Suspense fallback={<LoadingWheelComp />}>
+          <div className="container-fluid">
+            <SnackNotifier />
+            <Helmet title="Endorsements - We Vote" />
+            <BrowserPushMessage incomingProps={this.props} />
+            <div className="row">
+              <div id="mainContentColumn" className="col-sm-12 col-md-8">
+                <div className="card u-show-mobile-tablet">
+                  <div className="card-main">
+                    <FindOpinionsForm
+                      headerText="Find Opinions or Endorsements"
+                      searchTextLarge
+                      uniqueExternalId="showMobileTablet"
+                    />
                   </div>
-                  <ValuesToFollowPreview
-                    includeLinkToIssue
-                  />
                 </div>
-              )}
-              {!!(issuesFollowedCount) && <ValuesFollowedPreview /> }
-              {voterIsSignedIn && (
-                <FirstAndLastNameRequiredAlert />
-              )}
-              <SuggestedFriendsPreview />
-              <div className="card">
-                <div className="card-main">
-                  <SectionTitle>
-                    Voting Is Better with Friends
-                  </SectionTitle>
-                  <SectionDescription>
-                    Add friends you feel comfortable talking politics with.
-                  </SectionDescription>
-                  <AddFriendsByEmail uniqueExternalId="ValuesPage" />
-                </div>
-              </div>
-            </div>
-            <div className="col-md-4 d-none d-md-block">
-              <div className="card u-show-desktop">
-                <div className="card-main">
-                  <FindOpinionsForm
-                    headerText="Find Opinions / Endorsements"
-                    searchTextLarge
-                    uniqueExternalId="showDesktop"
-                  />
-                </div>
-              </div>
-              {this.state.voter.signed_in_twitter ? null : (
-                <TwitterSignInCard />
-              )}
-              <div className="card">
-                <div className="card-main">
-                  <Testimonial
-                    imageUrl={imageUrl}
-                    testimonialAuthor={testimonialAuthor}
-                    testimonial={testimonial}
-                  />
+                {publicFiguresBlockToDisplay}
+                {organizationsBlockToDisplay}
+                {!!(issuesToFollowShouldBeDisplayed) && (
+                  <div className="u-show-mobile">
+                    <div className="card">
+                      <div className="card-main">
+                        <Testimonial
+                          imageUrl={imageUrl}
+                          testimonialAuthor={testimonialAuthor}
+                          testimonial={testimonial}
+                        />
+                      </div>
+                    </div>
+                    <ValuesToFollowPreview
+                      includeLinkToIssue
+                    />
+                  </div>
+                )}
+                {!!(issuesFollowedCount) && <ValuesFollowedPreview /> }
+                {voterIsSignedIn && (
+                  <FirstAndLastNameRequiredAlert />
+                )}
+                <SuggestedFriendsPreview />
+                <div className="card">
+                  <div className="card-main">
+                    <SectionTitle>
+                      Voting Is Better with Friends
+                    </SectionTitle>
+                    <SectionDescription>
+                      Add friends you feel comfortable talking politics with.
+                    </SectionDescription>
+                    <AddFriendsByEmail uniqueExternalId="ValuesPage" />
+                  </div>
                 </div>
               </div>
-              <ValuesToFollowPreview
-                followToggleOnItsOwnLine
-                includeLinkToIssue
-              />
-              <AddEndorsements />
+              <div className="col-md-4 d-none d-md-block">
+                <div className="card u-show-desktop">
+                  <div className="card-main">
+                    <FindOpinionsForm
+                      headerText="Find Opinions / Endorsements"
+                      searchTextLarge
+                      uniqueExternalId="showDesktop"
+                    />
+                  </div>
+                </div>
+                {this.state.voter.signed_in_twitter ? null : (
+                  <TwitterSignInCard />
+                )}
+                <div className="card">
+                  <div className="card-main">
+                    <Testimonial
+                      imageUrl={imageUrl}
+                      testimonialAuthor={testimonialAuthor}
+                      testimonial={testimonial}
+                    />
+                  </div>
+                </div>
+                <ValuesToFollowPreview
+                  followToggleOnItsOwnLine
+                  includeLinkToIssue
+                />
+                <AddEndorsements />
+              </div>
             </div>
           </div>
-        </div>
+        </Suspense>
       </div>
     );
   }

@@ -304,7 +304,6 @@ export default class OrganizationVoterGuide extends Component {
             <Link
               id="OrganizationVoterGuideGoToBallot"
               to="/ballot"
-              // onlyActiveOnIndex
             >
               <Button
                 color="primary"

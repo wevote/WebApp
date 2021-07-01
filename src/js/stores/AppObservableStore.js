@@ -396,7 +396,7 @@ export default {
       endpoint: 'siteConfigurationRetrieve',
       data: { hostname, refresh_string },
       success: (res) => {
-        console.log('AppObservableStore siteConfigurationRetrieve success, res:', res);
+        // console.log('AppObservableStore siteConfigurationRetrieve success, res:', res);
         const {
           status: apiStatus,
           success: apiSuccess,
@@ -467,7 +467,7 @@ export default {
       },
 
       error: (res) => {
-        console.log('AppObservableStore error: ', res);
+        console.error('AppObservableStore error: ', res);
       },
     });
   },

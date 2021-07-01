@@ -367,7 +367,6 @@ export default class OrganizationPositionItem extends Component {
             <Link
               to={ballotItemLink}
               className="u-no-underline"
-              // onlyActiveOnIndex={false}
             >
               <ImageHandler
                 className="card-child__avatar--round"
@@ -385,7 +384,6 @@ export default class OrganizationPositionItem extends Component {
               <div className="u-flex items-center">
                 <Link
                   to={ballotItemLink}
-                  // onlyActiveOnIndex={false}
                   className="position-rating__candidate-name u-flex-auto"
                 >
                   {ballotItemDisplayNameCaps}

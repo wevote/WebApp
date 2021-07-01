@@ -2,6 +2,7 @@ import { ReduceStore } from 'flux/utils';
 import FriendActions from '../actions/FriendActions'; // eslint-disable-line import/no-cycle
 import VoterActions from '../actions/VoterActions'; // eslint-disable-line import/no-cycle
 import Dispatcher from '../dispatcher/Dispatcher';
+import apiCalming from '../utils/apiCalming';
 import { arrayContains } from '../utils/textFormat';
 
 class FriendStore extends ReduceStore {
@@ -264,6 +265,29 @@ class FriendStore extends ReduceStore {
           },
         };
 
+      case 'friendListsAll':
+        currentFriendsOrganizationWeVoteIds = [];
+        if (action.res.current_friends) {
+          // Reset currentFriendsByVoterWeVoteIdDict so we don't leave in place old friends
+          currentFriendsByVoterWeVoteIdDict = {};
+          for (count = 0; count < action.res.current_friends.length; count++) {
+            // console.log('action.res.current_friends[count]:', action.res.current_friends[count]);
+            currentFriendsByVoterWeVoteIdDict[action.res.current_friends[count].voter_we_vote_id] = action.res.current_friends[count];
+            currentFriendsOrganizationWeVoteIds.push(action.res.current_friends[count].linked_organization_we_vote_id);
+          }
+        }
+
+        return {
+          ...state,
+          currentFriendList: action.res.current_friends,
+          currentFriendsByVoterWeVoteIdDict,
+          currentFriendsOrganizationWeVoteIds,
+          friendInvitationsSentByMe: action.res.invitations_sent_by_me,
+          friendInvitationsSentToMe: action.res.invitations_sent_to_me,
+          friendInvitationsProcessed: action.res.invitations_processed,
+          friendInvitationsWaitingForVerification: action.res.invitations_waiting_for_verify,
+        };
+
       case 'friendList':
         switch (action.res.kind_of_list) {
           case 'CURRENT_FRIENDS':
@@ -347,10 +371,14 @@ class FriendStore extends ReduceStore {
       case 'voterMergeTwoAccounts':
       case 'voterVerifySecretCode':
         // console.log('resetting FriendStore from sign in process');
-        FriendActions.currentFriends();
-        FriendActions.friendInvitationsSentByMe();
-        FriendActions.friendInvitationsSentToMe();
-        FriendActions.friendInvitationsProcessed();
+        // July 2021: This also trips on first load of the news page if you are signed in
+        if (apiCalming('friendListsAll', 1500)) {
+          FriendActions.getAllFriendLists();
+          // FriendActions.currentFriends();
+          // FriendActions.friendInvitationsSentByMe();
+          // FriendActions.friendInvitationsSentToMe();
+          // FriendActions.friendInvitationsProcessed();
+        }
         return this.resetState();
 
       case 'voterSignOut':

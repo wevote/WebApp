@@ -34,7 +34,9 @@ class HeaderNotificationMenu extends Component {
       if (apiCalming('activityNoticeListRetrieve', 500)) {
         ActivityActions.activityNoticeListRetrieve();
       }
-      ActivityActions.activityListRetrieve();
+      if (apiCalming('activityNoticeListRetrieve', 500)) {
+        ActivityActions.activityListRetrieve();
+      }
       if (!isIOSAppOnMac()) setIconBadgeMessageCount(0);
     }, 3000);
   }

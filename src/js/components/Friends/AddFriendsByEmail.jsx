@@ -52,9 +52,9 @@ class AddFriendsByEmail extends Component {
     });
     this.friendStoreListener = FriendStore.addListener(this.onFriendStoreChange.bind(this));
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
-    if (apiCalming('friendInvitationsWaitingForVerification')) {
-      // console.log('AddFriendsByEmail friendInvitationsWaitingForVerification');
-      FriendActions.friendInvitationsWaitingForVerification();
+    if (apiCalming('friendListsAll', 1500)) {
+      FriendActions.getAllFriendLists();
+      // FriendActions.friendInvitationsWaitingForVerification();
     }
   }
 

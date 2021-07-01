@@ -9,6 +9,7 @@ import BallotActions from '../actions/BallotActions';
 import FriendActions from '../actions/FriendActions';
 import IssueActions from '../actions/IssueActions';
 import ReadyActions from '../actions/ReadyActions';
+import LoadingWheelComp from '../components/LoadingWheelComp';
 import EditAddressOneHorizontalRow from '../components/Ready/EditAddressOneHorizontalRow';
 import ElectionCountdown from '../components/Ready/ElectionCountdown';
 import FindOpinionsForm from '../components/Ready/FindOpinionsForm';
@@ -27,6 +28,7 @@ import AppObservableStore, { messageService } from '../stores/AppObservableStore
 import BallotStore from '../stores/BallotStore';
 import IssueStore from '../stores/IssueStore';
 import VoterStore from '../stores/VoterStore';
+import apiCalming from '../utils/apiCalming';
 import cookies from '../utils/cookies';
 import { historyPush, isAndroid, isIOS, isWebApp } from '../utils/cordovaUtils';
 import lazyPreloadPages from '../utils/lazyPreloadPages';
@@ -70,8 +72,10 @@ class Ready extends Component {
 
     ReadyActions.voterPlansForVoterRetrieve();
     ActivityActions.activityNoticeListRetrieve();
-    FriendActions.suggestedFriendList();
-
+    if (apiCalming('friendListsAll', 1500)) {
+      FriendActions.getAllFriendLists();
+      // FriendActions.suggestedFriendList();
+    }
     let modalToShow = '';
     let sharedItemCode = '';
     if (this.props.match) {
@@ -198,104 +202,157 @@ class Ready extends Component {
     // console.log('locationGuessClosed:', locationGuessClosed, ', textForMapSearch:', textForMapSearch, ', showAddressVerificationForm:', showAddressVerificationForm);
     return (
       <Wrapper className="page-content-container">
-        <PageContainer className="container-fluid" style={this.getTopPadding()}>
-          <SnackNotifier />
-          <Helmet title="Ready to Vote? - We Vote" />
-          <BrowserPushMessage incomingProps={this.props} />
-          <div className="row">
-            {(showAddressVerificationForm) && (
-              <EditAddressWrapper className="col-12">
-                <EditAddressOneHorizontalRow saveUrl="/ready" />
-              </EditAddressWrapper>
-            )}
-            <div className="col-sm-12 col-lg-8">
-              <MobileTabletCountdownWrapper className="u-show-mobile-tablet">
-                <ShareButtonTabletWrapper>
-                  <ShareButtonInnerWrapper className="u-show-tablet">
-                    <ShareButtonDesktopTablet readyShare shareButtonText="Share" />
-                  </ShareButtonInnerWrapper>
-                </ShareButtonTabletWrapper>
-                <ElectionCountdownMobileTabletWrapper
-                  className="u-cursor--pointer u-show-mobile-tablet"
-                  onClick={this.goToBallot}
-                >
-                  <ElectionCountdown daysOnlyMode initialDelay={4000} />
-                </ElectionCountdownMobileTabletWrapper>
-              </MobileTabletCountdownWrapper>
-              {(chosenReadyIntroductionTitle || chosenReadyIntroductionText) && (
-                <Card className="card u-show-mobile-tablet">
+        <Suspense fallback={<LoadingWheelComp />}>
+          <PageContainer className="container-fluid" style={this.getTopPadding()}>
+            <SnackNotifier />
+            <Helmet title="Ready to Vote? - We Vote" />
+            <BrowserPushMessage incomingProps={this.props} />
+            <div className="row">
+              {(showAddressVerificationForm) && (
+                <EditAddressWrapper className="col-12">
+                  <EditAddressOneHorizontalRow saveUrl="/ready" />
+                </EditAddressWrapper>
+              )}
+              <div className="col-sm-12 col-lg-8">
+                <MobileTabletCountdownWrapper className="u-show-mobile-tablet">
+                  <ShareButtonTabletWrapper>
+                    <ShareButtonInnerWrapper className="u-show-tablet">
+                      <ShareButtonDesktopTablet readyShare shareButtonText="Share" />
+                    </ShareButtonInnerWrapper>
+                  </ShareButtonTabletWrapper>
+                  <ElectionCountdownMobileTabletWrapper
+                    className="u-cursor--pointer u-show-mobile-tablet"
+                    onClick={this.goToBallot}
+                  >
+                    <ElectionCountdown daysOnlyMode initialDelay={4000} />
+                  </ElectionCountdownMobileTabletWrapper>
+                </MobileTabletCountdownWrapper>
+                {(chosenReadyIntroductionTitle || chosenReadyIntroductionText) && (
+                  <Card className="card u-show-mobile-tablet">
+                    <div className="card-main">
+                      <Title>
+                        {chosenReadyIntroductionTitle}
+                      </Title>
+                      <Paragraph>
+                        <ReadMore
+                          textToDisplay={chosenReadyIntroductionText}
+                          numberOfLines={3}
+                        />
+                      </Paragraph>
+                    </div>
+                  </Card>
+                )}
+                <ReadyInformationDisclaimer top />
+                <ReadyTaskBallot
+                  arrowsOn
+                />
+                <Card className="card u-show-mobile">
                   <div className="card-main">
-                    <Title>
-                      {chosenReadyIntroductionTitle}
-                    </Title>
-                    <Paragraph>
-                      <ReadMore
-                        textToDisplay={chosenReadyIntroductionText}
-                        numberOfLines={3}
-                      />
-                    </Paragraph>
+                    <FindOpinionsForm
+                      introHeaderLink="/values"
+                      searchTextLarge
+                      showVoterGuidePhotos
+                      uniqueExternalId="showMobile"
+                    />
                   </div>
                 </Card>
-              )}
-              <ReadyInformationDisclaimer top />
-              <ReadyTaskBallot
-                arrowsOn
-              />
-              <Card className="card u-show-mobile">
-                <div className="card-main">
-                  <FindOpinionsForm
-                    introHeaderLink="/values"
-                    searchTextLarge
-                    showVoterGuidePhotos
-                    uniqueExternalId="showMobile"
+                <Card className="card u-show-mobile">
+                  <div className="card-main">
+                    <ReadyIntroduction />
+                  </div>
+                </Card>
+                <IntroAndFindTabletWrapper className="u-show-tablet">
+                  <IntroductionWrapper>
+                    <Card className="card">
+                      <div className="card-main">
+                        <ReadyIntroduction />
+                      </div>
+                    </Card>
+                  </IntroductionWrapper>
+                  <IntroAndFindTabletSpacer />
+                  <FindWrapper>
+                    <Card className="card">
+                      <div className="card-main">
+                        <FindOpinionsForm
+                          introHeaderLink="/values"
+                          searchTextLarge
+                          showVoterGuidePhotos
+                          uniqueExternalId="showTablet"
+                        />
+                      </div>
+                    </Card>
+                  </FindWrapper>
+                </IntroAndFindTabletWrapper>
+                {nextReleaseFeaturesEnabled && (
+                  <ReadyTaskRegister
+                    arrowsOn
                   />
-                </div>
-              </Card>
-              <Card className="card u-show-mobile">
-                <div className="card-main">
-                  <ReadyIntroduction />
-                </div>
-              </Card>
-              <IntroAndFindTabletWrapper className="u-show-tablet">
-                <IntroductionWrapper>
-                  <Card className="card">
-                    <div className="card-main">
-                      <ReadyIntroduction />
-                    </div>
-                  </Card>
-                </IntroductionWrapper>
-                <IntroAndFindTabletSpacer />
-                <FindWrapper>
-                  <Card className="card">
-                    <div className="card-main">
-                      <FindOpinionsForm
-                        introHeaderLink="/values"
-                        searchTextLarge
-                        showVoterGuidePhotos
-                        uniqueExternalId="showTablet"
+                )}
+                <ReadyTaskPlan
+                  arrowsOn
+                />
+                <ReadyInformationDisclaimer bottom />
+                {voterIsSignedIn && (
+                  <FirstAndLastNameRequiredAlert />
+                )}
+                {nextReleaseFeaturesEnabled && (
+                  <ReadyTaskFriends
+                    arrowsOn
+                  />
+                )}
+                <div className="u-show-mobile-tablet">
+                  {(issuesShouldBeDisplayed) && (
+                    <ValuesListWrapper>
+                      <ValuesToFollowPreview
+                        followToggleOnItsOwnLine
+                        includeLinkToIssue
                       />
+                    </ValuesListWrapper>
+                  )}
+                </div>
+              </div>
+              <div className="col-lg-4 d-none d-lg-block">
+                <Card className="card">
+                  <div className="card-main">
+                    <ShareButtonDesktopWrapper>
+                      <ShareButtonDesktopTablet readyShare shareButtonText="Share Page" />
+                    </ShareButtonDesktopWrapper>
+                  </div>
+                </Card>
+                <div className="u-cursor--pointer" onClick={this.goToBallot}>
+                  <Suspense fallback={<SuspenseCard>&nbsp;</SuspenseCard>}>
+                    <ElectionCountdown daysOnlyMode initialDelay={4000} />
+                  </Suspense>
+                </div>
+                {(chosenReadyIntroductionTitle || chosenReadyIntroductionText) && (
+                  <Card className="card">
+                    <div className="card-main">
+                      <Title>
+                        {chosenReadyIntroductionTitle}
+                      </Title>
+                      <Paragraph>
+                        {chosenReadyIntroductionText}
+                      </Paragraph>
                     </div>
                   </Card>
-                </FindWrapper>
-              </IntroAndFindTabletWrapper>
-              {nextReleaseFeaturesEnabled && (
-                <ReadyTaskRegister
-                  arrowsOn
-                />
-              )}
-              <ReadyTaskPlan
-                arrowsOn
-              />
-              <ReadyInformationDisclaimer bottom />
-              {voterIsSignedIn && (
-                <FirstAndLastNameRequiredAlert />
-              )}
-              {nextReleaseFeaturesEnabled && (
-                <ReadyTaskFriends
-                  arrowsOn
-                />
-              )}
-              <div className="u-show-mobile-tablet">
+                )}
+                <Card className="card">
+                  <div className="card-main">
+                    <FindOpinionsForm
+                      introHeaderLink="/values"
+                      searchTextLarge
+                      showVoterGuidePhotos
+                      uniqueExternalId="showDesktopRightColumn"
+                    />
+                  </div>
+                </Card>
+                <Card className="card">
+                  <div className="card-main">
+                    <ReadyIntroduction
+                      showStep3WhenCompressed
+                    />
+                  </div>
+                </Card>
                 {(issuesShouldBeDisplayed) && (
                   <ValuesListWrapper>
                     <ValuesToFollowPreview
@@ -304,62 +361,11 @@ class Ready extends Component {
                     />
                   </ValuesListWrapper>
                 )}
+                {/* nextReleaseFeaturesEnabled && <PledgeToVote /> */}
               </div>
             </div>
-            <div className="col-lg-4 d-none d-lg-block">
-              <Card className="card">
-                <div className="card-main">
-                  <ShareButtonDesktopWrapper>
-                    <ShareButtonDesktopTablet readyShare shareButtonText="Share Page" />
-                  </ShareButtonDesktopWrapper>
-                </div>
-              </Card>
-              <div className="u-cursor--pointer" onClick={this.goToBallot}>
-                <Suspense fallback={<SuspenseCard>&nbsp;</SuspenseCard>}>
-                  <ElectionCountdown daysOnlyMode initialDelay={4000} />
-                </Suspense>
-              </div>
-              {(chosenReadyIntroductionTitle || chosenReadyIntroductionText) && (
-                <Card className="card">
-                  <div className="card-main">
-                    <Title>
-                      {chosenReadyIntroductionTitle}
-                    </Title>
-                    <Paragraph>
-                      {chosenReadyIntroductionText}
-                    </Paragraph>
-                  </div>
-                </Card>
-              )}
-              <Card className="card">
-                <div className="card-main">
-                  <FindOpinionsForm
-                    introHeaderLink="/values"
-                    searchTextLarge
-                    showVoterGuidePhotos
-                    uniqueExternalId="showDesktopRightColumn"
-                  />
-                </div>
-              </Card>
-              <Card className="card">
-                <div className="card-main">
-                  <ReadyIntroduction
-                    showStep3WhenCompressed
-                  />
-                </div>
-              </Card>
-              {(issuesShouldBeDisplayed) && (
-                <ValuesListWrapper>
-                  <ValuesToFollowPreview
-                    followToggleOnItsOwnLine
-                    includeLinkToIssue
-                  />
-                </ValuesListWrapper>
-              )}
-              {/* nextReleaseFeaturesEnabled && <PledgeToVote /> */}
-            </div>
-          </div>
-        </PageContainer>
+          </PageContainer>
+        </Suspense>
       </Wrapper>
     );
   }
