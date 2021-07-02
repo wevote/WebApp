@@ -1,7 +1,7 @@
 import { withStyles } from '@material-ui/core/styles';
 import { Info } from '@material-ui/icons';
 import PropTypes from 'prop-types';
-import React, { Component } from 'react';
+import React, { Component, Suspense } from 'react';
 import Helmet from 'react-helmet';
 import styled from 'styled-components';
 import ActivityActions from '../../actions/ActivityActions';
@@ -9,9 +9,10 @@ import AnalyticsActions from '../../actions/AnalyticsActions';
 import MeasureActions from '../../actions/MeasureActions';
 import OrganizationActions from '../../actions/OrganizationActions';
 import MeasureStickyHeader from '../../components/Ballot/MeasureStickyHeader';
-import LoadingWheel from '../../components/LoadingWheel';
+import LoadingWheelComp from '../../components/LoadingWheelComp';
 import EndorsementCard from '../../components/Widgets/EndorsementCard';
 import SearchOnGoogle from '../../components/Widgets/SearchOnGoogle';
+import SnackNotifier from '../../components/Widgets/SnackNotifier';
 import ViewOnBallotpedia from '../../components/Widgets/ViewOnBallotpedia';
 import webAppConfig from '../../config';
 import AppObservableStore, { messageService } from '../../stores/AppObservableStore';
@@ -19,6 +20,7 @@ import BallotStore from '../../stores/BallotStore';
 import MeasureStore from '../../stores/MeasureStore';
 import VoterGuideStore from '../../stores/VoterGuideStore';
 import VoterStore from '../../stores/VoterStore';
+import { cordovaBallotFilterTopMargin } from '../../utils/cordovaOffsets';
 import { isWebApp } from '../../utils/cordovaUtils';
 import { renderLog } from '../../utils/logging';
 import { capitalizeString } from '../../utils/textFormat';
@@ -81,9 +83,10 @@ class Measure extends Component {
     OrganizationActions.organizationsFollowedRetrieve();
 
     const measure = MeasureStore.getMeasure(measureWeVoteId);
+    const { ballot_item_display_name: ballotItemDisplayName } = measure;
     let measureBallotItemDisplayName = '';
-    if (measure && measure.ballot_item_display_name) {
-      measureBallotItemDisplayName = measure.ballot_item_display_name;
+    if (measure && ballotItemDisplayName) {
+      measureBallotItemDisplayName = ballotItemDisplayName;
     }
     const allCachedPositionsForThisMeasure = MeasureStore.getAllCachedPositionsByMeasureWeVoteId(measureWeVoteId);
     let allCachedPositionsForThisMeasureLength = 0;
@@ -158,8 +161,9 @@ class Measure extends Component {
       // VoterGuideActions.voterGuidesToFollowRetrieveByBallotItem(nextParams.measure_we_vote_id, 'MEASURE');
       const measure = MeasureStore.getMeasure(measureWeVoteId);
       let measureBallotItemDisplayName = '';
-      if (measure && measure.ballot_item_display_name) {
-        measureBallotItemDisplayName = measure.ballot_item_display_name;
+      const { ballot_item_display_name: ballotItemDisplayName } = measure;
+      if (measure && ballotItemDisplayName) {
+        measureBallotItemDisplayName = ballotItemDisplayName;
       }
       const allCachedPositionsForThisMeasure = MeasureStore.getAllCachedPositionsByMeasureWeVoteId(measureWeVoteId);
       let allCachedPositionsForThisMeasureLength = 0;
@@ -215,8 +219,12 @@ class Measure extends Component {
     // console.log('Measure, onMeasureStoreChange');
     const measure = MeasureStore.getMeasure(measureWeVoteId);
     let measureBallotItemDisplayName = '';
-    if (measure && measure.ballot_item_display_name) {
-      measureBallotItemDisplayName = measure.ballot_item_display_name;
+
+    if (measure) {
+      const { ballot_item_display_name: ballotItemDisplayName } = measure;
+      if (ballotItemDisplayName) {
+        measureBallotItemDisplayName = ballotItemDisplayName;
+      }
     }
     const allCachedPositionsForThisMeasure = MeasureStore.getAllCachedPositionsByMeasureWeVoteId(measureWeVoteId);
     let allCachedPositionsForThisMeasureLength = 0;
@@ -257,97 +265,105 @@ class Measure extends Component {
     renderLog('Measure');  // Set LOG_RENDER_EVENTS to log all renders
     const { classes, match: { params } } = this.props;
     const { allCachedPositionsForThisMeasure, measure, scrolledDown } = this.state;
+    const { ballot_item_display_name: ballotItemDisplayName, id: measureId, we_vote_id: measureWeVoteId,
+      measure_url: measureURL } = measure;
 
-    if (!measure || !measure.ballot_item_display_name) {
+    if (!measure || !ballotItemDisplayName) {
       return (
         <div className="container-fluid well u-stack--md u-inset--md">
-          <div>{LoadingWheel}</div>
+          <div><LoadingWheelComp /></div>
           <br />
         </div>
       );
     }
 
-    const measureName = capitalizeString(measure.ballot_item_display_name);
+    const measureName = capitalizeString(ballotItemDisplayName);
     const titleText = `${measureName} - We Vote`;
     const descriptionText = `Information about ${measureName}`;
     const voter = VoterStore.getVoter();
-    const measureAdminEditUrl = `${webAppConfig.WE_VOTE_SERVER_ROOT_URL}m/${measure.id}/edit/?google_civic_election_id=${VoterStore.electionId()}&state_code=`;
+    const { is_admin: isAdmin, is_verified_volunteer: isVerifiedVolunteer } = voter;
+    const measureAdminEditUrl = `${webAppConfig.WE_VOTE_SERVER_ROOT_URL}m/${measureId}/edit/?google_civic_election_id=${VoterStore.electionId()}&state_code=`;
 
     return (
-      <span>
+      <>
         <Helmet
           title={titleText}
           meta={[{ name: 'description', content: descriptionText }]}
         />
         {
           scrolledDown && (
-            <MeasureStickyHeader measureWeVoteId={measure.we_vote_id} />
+            <MeasureStickyHeader measureWeVoteId={measureWeVoteId} />
           )
         }
-        {/* The following style adjustment prevents horizontal scrolling from the .card style */}
-        <div className="card" style={isWebApp() ? {} : { marginRight: 0, marginLeft: 0 }}>
-          <TwoColumns>
-            <LeftColumnWrapper>
-              <MeasureItem measureWeVoteId={measure.we_vote_id} />
-            </LeftColumnWrapper>
-            <RightColumnWrapper className="u-show-desktop-tablet">
-              <MeasureShareWrapper>
-                <ShareButtonDesktopTablet measureShare />
-              </MeasureShareWrapper>
-              {measure.measure_url && (
-                <ViewOnBallotpedia externalLinkUrl={measure.measure_url} />
-              )}
-              {measureName && (
-                <SearchOnGoogle googleQuery={`${measureName}`} />
-              )}
-            </RightColumnWrapper>
-          </TwoColumns>
-        </div>
-        { !!(allCachedPositionsForThisMeasure.length) && (
-          <section className="card">
-            <DelayedLoad showLoadingText waitBeforeShow={500}>
-              <PositionList
-                incomingPositionList={allCachedPositionsForThisMeasure}
-                ballotItemDisplayName={measure.ballot_item_display_name}
-                params={params}
-                positionListExistsTitle={(
-                  <PositionListIntroductionText>
-                    <Info classes={{ root: classes.informationIcon }} />
-                    Opinions about this ballot item are below. Use these filters to sort:
-                  </PositionListIntroductionText>
-                )}
-              />
-            </DelayedLoad>
-          </section>
-        )}
-        <EndorsementCard
-          bsPrefix="u-margin-top--sm u-stack--xs"
-          variant="primary"
-          buttonText="ENDORSEMENTS MISSING?"
-          text={`Are there endorsements for ${measureName} that you expected to see?`}
-          whiteOnBlue
-        />
-        <br />
-        {/* Show links to this candidate in the admin tools */}
-        { (voter.is_admin || voter.is_verified_volunteer) && (
-          <span className="u-wrap-links d-print-none">
-            Admin only:
-            <OpenExternalWebSite
-              linkIdAttribute="measureAdminEdit"
-              url={measureAdminEditUrl}
-              target="_blank"
-              className="open-web-site open-web-site__no-right-padding"
-              body={(
-                <span>
-                  edit
-                  {' '}
-                  {measureName}
-                </span>
-              )}
+        <Suspense fallback={<LoadingWheelComp />}>
+          <SnackNotifier />
+          <div className="page-content-container" style={{ marginTop: `${cordovaBallotFilterTopMargin()}` }}>
+            {/* The following style adjustment prevents horizontal scrolling from the .card style */}
+            <div className="card" style={isWebApp() ? {} : { marginRight: 0, marginLeft: 0 }}>
+              <TwoColumns>
+                <LeftColumnWrapper>
+                  <MeasureItem measureWeVoteId={measureWeVoteId} />
+                </LeftColumnWrapper>
+                <RightColumnWrapper className="u-show-desktop-tablet">
+                  <MeasureShareWrapper>
+                    <ShareButtonDesktopTablet measureShare />
+                  </MeasureShareWrapper>
+                  {measureURL && (
+                    <ViewOnBallotpedia externalLinkUrl={measureURL} />
+                  )}
+                  {measureName && (
+                    <SearchOnGoogle googleQuery={`${measureName}`} />
+                  )}
+                </RightColumnWrapper>
+              </TwoColumns>
+            </div>
+            { !!(allCachedPositionsForThisMeasure.length) && (
+              <section className="card">
+                <DelayedLoad showLoadingText waitBeforeShow={500}>
+                  <PositionList
+                    incomingPositionList={allCachedPositionsForThisMeasure}
+                    ballotItemDisplayName={ballotItemDisplayName}
+                    params={params}
+                    positionListExistsTitle={(
+                      <PositionListIntroductionText>
+                        <Info classes={{ root: classes.informationIcon }} />
+                        Opinions about this ballot item are below. Use these filters to sort:
+                      </PositionListIntroductionText>
+                    )}
+                  />
+                </DelayedLoad>
+              </section>
+            )}
+            <EndorsementCard
+              bsPrefix="u-margin-top--sm u-stack--xs"
+              variant="primary"
+              buttonText="ENDORSEMENTS MISSING?"
+              text={`Are there endorsements for ${measureName} that you expected to see?`}
+              whiteOnBlue
             />
-          </span>
-        )}
-      </span>
+            <br />
+            {/* Show links to this candidate in the admin tools */}
+            { (isAdmin || isVerifiedVolunteer) && (
+              <span className="u-wrap-links d-print-none">
+                Admin only:
+                <OpenExternalWebSite
+                  linkIdAttribute="measureAdminEdit"
+                  url={measureAdminEditUrl}
+                  target="_blank"
+                  className="open-web-site open-web-site__no-right-padding"
+                  body={(
+                    <span>
+                      edit
+                      {' '}
+                      {measureName}
+                    </span>
+                  )}
+                />
+              </span>
+            )}
+          </div>
+        </Suspense>
+      </>
     );
   }
 }

@@ -683,9 +683,10 @@ class HeaderBackToBallot extends Component {
       backToLinkText = 'Ballot'; // Back to
     }
 
+    const onOfficeRoute = stringContains('/office', pathname.toLowerCase());
     const headerClassName = (function header () {
       let cname = 'page-header';
-      if (stringContains('/office', pathname.toLowerCase())) {
+      if (onOfficeRoute) {
         if (isWebApp()) {
           cname = 'page-header page-header__back-to-ballot';
         } else if (hasIPhoneNotch()) {
@@ -701,6 +702,8 @@ class HeaderBackToBallot extends Component {
     const onCandidateOrMeasureRoute = stringContains('/candidate/', pathname.toLowerCase()) || stringContains('/measure/', pathname.toLowerCase());
     if (scrolledDown && onCandidateOrMeasureRoute) {
       appBarClasses = { root: classes.noBoxShadow };
+    } else if (onOfficeRoute) {
+      appBarClasses = { root: classes.stackedReturnAndShare };
     }
 
     const shareButtonInHeader = stringContains('/office', pathname.toLowerCase());
@@ -845,6 +848,10 @@ const styles = (theme) => ({
       backgroundColor: 'transparent',
     },
   },
+  stackedReturnAndShare: {
+    flexDirection: 'column',
+    alignItems: 'flex-start',
+  },
 });
 
 const FirstNameWrapper = styled.div`
@@ -859,7 +866,7 @@ const NotificationsAndProfileWrapper = styled.div`
 
 const OfficeNameWrapper = styled.div`
   display: flex;
-  margin-left: 30px;
+  margin-left: calc((100vw - 960px)/2);
 `;
 
 const OfficeShareWrapper = styled.div`

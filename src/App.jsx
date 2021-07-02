@@ -2,6 +2,7 @@ import { MuiThemeProvider } from '@material-ui/core/styles';
 import React, { Component, Suspense } from 'react';
 import { Redirect, Route, Switch } from 'react-router-dom';
 import styled, { ThemeProvider } from 'styled-components';
+import LoadingWheelComp from './js/components/LoadingWheelComp';
 import Header from './js/components/Navigation/Header';
 import HeaderBarSuspense from './js/components/Navigation/HeaderBarSuspense';
 import ErrorBoundary from './js/components/Widgets/ErrorBoundary';
@@ -180,13 +181,15 @@ class App extends Component {
 
     return (
       <ErrorBoundary>
-        <Suspense fallback={<HeaderBarSuspense />}>
-          <MuiThemeProvider theme={muiTheme}>
-            <ThemeProvider theme={styledTheme}>
-              <WeVoteRouter>
-                <WeVoteBody>
-                  {/* DO NOT put SnackNotifier or anything else that is non-essential here (to keep it out of the main chuck. */}
+        <MuiThemeProvider theme={muiTheme}>
+          <ThemeProvider theme={styledTheme}>
+            <WeVoteRouter>
+              <WeVoteBody>
+                {/* DO NOT put SnackNotifier or anything else that is non-essential here (to keep it out of the main chuck. */}
+                <Suspense fallback={<HeaderBarSuspense />}>
                   <Header params={{ }} pathname={window.location.href} />
+                </Suspense>
+                <Suspense fallback={<LoadingWheelComp />}>
                   <Switch>
                     <Route exact path="/about"><About /></Route>
                     <Route exact path="/ballot" component={Ballot} />
@@ -435,18 +438,18 @@ class App extends Component {
                     <Route path="/:twitter_handle($)?" component={TwitterHandleLanding} />
                     <Route path="*" component={PageNotFound} />
                   </Switch>
-                  {/*
-                  <DelayedLoad waitBeforeShow={500}>
-                    <Suspense fallback={<span>&nbsp;</span>}>
-                      <MainFooter displayFooter={doShowFooter} />
-                    </Suspense>
-                  </DelayedLoad>
-                  */}
-                </WeVoteBody>
-              </WeVoteRouter>
-            </ThemeProvider>
-          </MuiThemeProvider>
-        </Suspense>
+                </Suspense>
+                {/*
+                <DelayedLoad waitBeforeShow={500}>
+                  <Suspense fallback={<span>&nbsp;</span>}>
+                    <MainFooter displayFooter={doShowFooter} />
+                  </Suspense>
+                </DelayedLoad>
+                */}
+              </WeVoteBody>
+            </WeVoteRouter>
+          </ThemeProvider>
+        </MuiThemeProvider>
       </ErrorBoundary>
     );
   }

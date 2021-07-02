@@ -1,4 +1,4 @@
-import { Twitter } from '@material-ui/icons';
+import { Facebook, Twitter } from '@material-ui/icons';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import Button from 'react-bootstrap/Button';
@@ -482,7 +482,7 @@ export default class SettingsAccount extends Component {
                     {!hideFacebookSignInButton && voterIsSignedInFacebook && (
                     <span>
                       <FacebookContainer className="btn btn-social-icon btn-lg btn-facebook">
-                        <span className="fab fa-facebook" />
+                        <Facebook />
                       </FacebookContainer>
                       <span className="u-margin-left--sm" />
                     </span>

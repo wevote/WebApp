@@ -1,7 +1,7 @@
 import { Card, CircularProgress } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
-import React, { Component } from 'react';
+import React, { Component, Suspense } from 'react';
 import Helmet from 'react-helmet';
 import styled from 'styled-components';
 import ActivityActions from '../../actions/ActivityActions';
@@ -16,6 +16,7 @@ import FacebookSignInCard from '../../components/Facebook/FacebookSignInCard';
 import AddFriendsByEmail from '../../components/Friends/AddFriendsByEmail';
 import SuggestedFriendsPreview from '../../components/Friends/SuggestedFriendsPreview';
 import LoadingWheel from '../../components/LoadingWheel';
+import LoadingWheelComp from '../../components/LoadingWheelComp';
 import { PreviewImage } from '../../components/Settings/SettingsStyled';
 import TwitterSignInCard from '../../components/Twitter/TwitterSignInCard';
 import BrowserPushMessage from '../../components/Widgets/BrowserPushMessage';
@@ -25,6 +26,7 @@ import AppObservableStore from '../../stores/AppObservableStore';
 import BallotStore from '../../stores/BallotStore';
 import OrganizationStore from '../../stores/OrganizationStore';
 import VoterStore from '../../stores/VoterStore';
+import apiCalming from '../../utils/apiCalming';
 import { cordovaBallotFilterTopMargin } from '../../utils/cordovaOffsets';
 import { cordovaDot, historyPush, isCordova, isIPad } from '../../utils/cordovaUtils';
 import { formatDateToMonthDayYear, timeFromDate } from '../../utils/dateFormat';
@@ -36,7 +38,7 @@ const ActivityTidbitAddReaction = React.lazy(() => import(/* webpackChunkName: '
 const ActivityTidbitComments = React.lazy(() => import(/* webpackChunkName: 'ActivityTidbitComments' */ '../../components/Activity/ActivityTidbitComments'));
 const ActivityTidbitItem = React.lazy(() => import(/* webpackChunkName: 'ActivityTidbitItem' */ '../../components/Activity/ActivityTidbitItem'));
 const ActivityTidbitReactionsSummary = React.lazy(() => import(/* webpackChunkName: 'ActivityTidbitReactionsSummary' */ '../../components/Activity/ActivityTidbitReactionsSummary'));
-const DelayedLoad = React.lazy(() => import(/* webpackChunkName: 'DelayedLoad' */ '../../components/Widgets/DelayedLoad'));
+// const DelayedLoad = React.lazy(() => import(/* webpackChunkName: 'DelayedLoad' */ '../../components/Widgets/DelayedLoad'));
 const FirstAndLastNameRequiredAlert = React.lazy(() => import(/* webpackChunkName: 'FirstAndLastNameRequiredAlert' */ '../../components/Widgets/FirstAndLastNameRequiredAlert'));
 const SettingsAccount = React.lazy(() => import(/* webpackChunkName: 'SettingsAccount' */ '../../components/Settings/SettingsAccount'));
 const ShowMoreItems = React.lazy(() => import(/* webpackChunkName: 'ShowMoreItems' */ '../../components/Widgets/ShowMoreItems'));
@@ -88,12 +90,16 @@ class News extends Component {
       this.activityStoreListener = ActivityStore.addListener(this.onActivityStoreChange.bind(this));
       window.addEventListener('scroll', this.onScroll);
       const activityTidbitWeVoteIdList = [activityTidbitWeVoteIdForDrawer];
-      if (activityTidbitWeVoteIdList && activityTidbitWeVoteIdList.length > 0) {
+      if (activityTidbitWeVoteIdList && activityTidbitWeVoteIdList.length > 0 && activityTidbitWeVoteIdForDrawer.length > 0) {
         // Retrieve just the one activity being shown in the drawer
         ActivityActions.activityListRetrieve(activityTidbitWeVoteIdList);
+      } else if (apiCalming('activityNoticeListRetrieve', 500)) {
+        ActivityActions.activityListRetrieve();
       }
-      ActivityActions.activityListRetrieve();
-      FriendActions.currentFriends();  // We need this so we can identify if the voter is friends with this organization/person
+      if (apiCalming('friendListsAll', 1500)) {
+        FriendActions.getAllFriendLists();
+        // FriendActions.currentFriends();  // We need this so we can identify if the voter is friends with this organization/person
+      }
       if (!BallotStore.allBallotItemsRetrieveCalled()) {
         BallotActions.voterBallotItemsRetrieve(0, '', '');
       }
@@ -103,6 +109,7 @@ class News extends Component {
       }, () => this.openActivityTidbitDrawer(activityTidbitWeVoteIdForDrawer));
       AnalyticsActions.saveActionNews(VoterStore.electionId());
     }
+    AppObservableStore.setShowSelectBallotModal(false, false, false);
     this.preloadTimer = setTimeout(() => lazyPreloadPages(), 2000);
   }
 
@@ -296,68 +303,69 @@ class News extends Component {
     }
 
     return (
-      <div className="page-content-container" style={{ marginTop: `${cordovaBallotFilterTopMargin()}` }}>
-        <div className="container-fluid">
-          <Helmet title="Discuss - We Vote" />
-          <BrowserPushMessage incomingProps={this.props} />
-          <div className="row" style={unsetSomeRowStylesIfCordova}>
-            <div className="col-sm-12 col-md-8" style={unsetSomeRowStylesIfCordova}>
-              <>
-                <ActivityPostAddWrapper style={reduceConstraintsIfCordova}>
-                  <ActivityPostAdd />
-                </ActivityPostAddWrapper>
-                {voterIsSignedIn && (
-                  <FirstAndLastNameRequiredAlert />
-                )}
-                {activityTidbitsList.map((oneActivityTidbit) => {
-                  // console.log('oneActivityTidbit:', oneActivityTidbit);
-                  // console.log('numberOfActivityTidbitsDisplayed:', numberOfActivityTidbitsDisplayed);
-                  const speakerNameNotValid = !oneActivityTidbit.speaker_name || (oneActivityTidbit.speaker_name && startsWith('Voter-', oneActivityTidbit.speaker_name));
-                  const isVotersPost = voterWeVoteId === oneActivityTidbit.speaker_voter_we_vote_id;
-                  if (!oneActivityTidbit || (speakerNameNotValid && !isVotersPost) || !oneActivityTidbit.we_vote_id) {
-                    // console.log('Missing oneActivityTidbit.we_vote_id:', oneActivityTidbit);
-                    return null;
-                  }
-                  if (numberOfActivityTidbitsDisplayed >= numberOfActivityTidbitsToDisplay) {
-                    return null;
-                  }
-                  numberOfActivityTidbitsDisplayed += 1;
-                  // console.log('numberOfActivityTidbitsDisplayed: ', numberOfActivityTidbitsDisplayed);
-                  activityTidbitWeVoteId = oneActivityTidbit.we_vote_id;
-                  return (
-                    <ActivityTidbitWrapper key={activityTidbitWeVoteId}>
-                      <a // eslint-disable-line jsx-a11y/anchor-has-content, jsx-a11y/control-has-associated-label
-                        href={`#${activityTidbitWeVoteId}`}
-                        name={activityTidbitWeVoteId}
-                      />
-                      <Card className="card" style={unsetSideMarginsIfCordova}>
-                        <CardNewsWrapper className="card-main" id="steveCardNewsWrapper-main" style={unsetMarginsIfCordova}>
-                          <ActivityTidbitItemWrapper>
-                            <ActivityTidbitItem
+      <Suspense fallback={<LoadingWheelComp />}>
+        <div className="page-content-container" style={{ marginTop: `${cordovaBallotFilterTopMargin()}` }}>
+          <div className="container-fluid">
+            <Helmet title="Discuss - We Vote" />
+            <BrowserPushMessage incomingProps={this.props} />
+            <div className="row" style={unsetSomeRowStylesIfCordova}>
+              <div className="col-sm-12 col-md-8" style={unsetSomeRowStylesIfCordova}>
+                <>
+                  <ActivityPostAddWrapper style={reduceConstraintsIfCordova}>
+                    <ActivityPostAdd />
+                  </ActivityPostAddWrapper>
+                  {voterIsSignedIn && (
+                    <FirstAndLastNameRequiredAlert />
+                  )}
+                  {activityTidbitsList.map((oneActivityTidbit) => {
+                    // console.log('oneActivityTidbit:', oneActivityTidbit);
+                    // console.log('numberOfActivityTidbitsDisplayed:', numberOfActivityTidbitsDisplayed);
+                    const speakerNameNotValid = !oneActivityTidbit.speaker_name || (oneActivityTidbit.speaker_name && startsWith('Voter-', oneActivityTidbit.speaker_name));
+                    const isVotersPost = voterWeVoteId === oneActivityTidbit.speaker_voter_we_vote_id;
+                    if (!oneActivityTidbit || (speakerNameNotValid && !isVotersPost) || !oneActivityTidbit.we_vote_id) {
+                      // console.log('Missing oneActivityTidbit.we_vote_id:', oneActivityTidbit);
+                      return null;
+                    }
+                    if (numberOfActivityTidbitsDisplayed >= numberOfActivityTidbitsToDisplay) {
+                      return null;
+                    }
+                    numberOfActivityTidbitsDisplayed += 1;
+                    // console.log('numberOfActivityTidbitsDisplayed: ', numberOfActivityTidbitsDisplayed);
+                    activityTidbitWeVoteId = oneActivityTidbit.we_vote_id;
+                    return (
+                      <ActivityTidbitWrapper key={activityTidbitWeVoteId}>
+                        <a // eslint-disable-line jsx-a11y/anchor-has-content, jsx-a11y/control-has-associated-label
+                          href={`#${activityTidbitWeVoteId}`}
+                          name={activityTidbitWeVoteId}
+                        />
+                        <Card className="card" style={unsetSideMarginsIfCordova}>
+                          <CardNewsWrapper className="card-main" id="steveCardNewsWrapper-main" style={unsetMarginsIfCordova}>
+                            <ActivityTidbitItemWrapper>
+                              <ActivityTidbitItem
+                                activityTidbitWeVoteId={activityTidbitWeVoteId}
+                              />
+                            </ActivityTidbitItemWrapper>
+                            <ActivityTidbitReactionsSummary
                               activityTidbitWeVoteId={activityTidbitWeVoteId}
                             />
-                          </ActivityTidbitItemWrapper>
-                          <ActivityTidbitReactionsSummary
-                            activityTidbitWeVoteId={activityTidbitWeVoteId}
-                          />
-                          <ActivityTidbitAddReaction
-                            activityTidbitWeVoteId={activityTidbitWeVoteId}
-                          />
-                          <ActivityTidbitComments
-                            activityTidbitWeVoteId={activityTidbitWeVoteId}
-                            editingTurnedOff
-                          />
-                          <ActivityCommentAdd
-                            activityTidbitWeVoteId={activityTidbitWeVoteId}
-                          />
-                        </CardNewsWrapper>
-                      </Card>
-                    </ActivityTidbitWrapper>
-                  );
-                })}
-              </>
-              {(voterIsSignedIn && dateVoterJoined) && (
-                <DelayedLoad waitBeforeShow={1000}>
+                            <ActivityTidbitAddReaction
+                              activityTidbitWeVoteId={activityTidbitWeVoteId}
+                            />
+                            <ActivityTidbitComments
+                              activityTidbitWeVoteId={activityTidbitWeVoteId}
+                              editingTurnedOff
+                            />
+                            <ActivityCommentAdd
+                              activityTidbitWeVoteId={activityTidbitWeVoteId}
+                            />
+                          </CardNewsWrapper>
+                        </Card>
+                      </ActivityTidbitWrapper>
+                    );
+                  })}
+                </>
+                {(voterIsSignedIn && dateVoterJoined) && (
+                  // <DelayedLoad waitBeforeShow={1000}>
                   <Card className="card" style={unsetMarginsIfCordova}>
                     <div className="card-main" style={unsetMarginsIfCordova}>
                       <DateVoterJoinedWrapper>
@@ -380,87 +388,88 @@ class News extends Component {
                       </DateVoterJoinedWrapper>
                     </div>
                   </Card>
-                </DelayedLoad>
-              )}
-              <AddFriendsMobileWrapper className="u-show-mobile" style={unsetSideMarginsIfCordova}>
-                <SuggestedFriendsPreview inSideColumn />
-              </AddFriendsMobileWrapper>
-              <div className="card u-show-mobile" style={unsetSideMarginsIfCordova}>
-                <AddFriendsMobileWrapper className="card-main" style={unsetMarginsIfCordova}>
-                  <SectionTitle>
-                    Voting Is Better with Friends
-                  </SectionTitle>
-                  <SectionDescription>
-                    Add friends you feel comfortable talking politics with. Hear about upcoming elections and what you can do to get ready to vote.
-                  </SectionDescription>
-                  <AddFriendsByEmail inSideColumn uniqueExternalId="mobile" />
+                  // </DelayedLoad>
+                )}
+                <AddFriendsMobileWrapper className="u-show-mobile" style={unsetSideMarginsIfCordova}>
+                  <SuggestedFriendsPreview inSideColumn />
                 </AddFriendsMobileWrapper>
-              </div>
-              {!voterIsSignedIn && (
-                <DelayedLoad waitBeforeShow={1000}>
+                <div className="card u-show-mobile" style={unsetSideMarginsIfCordova}>
+                  <AddFriendsMobileWrapper className="card-main" style={unsetMarginsIfCordova}>
+                    <SectionTitle>
+                      Voting Is Better with Friends
+                    </SectionTitle>
+                    <SectionDescription>
+                      Add friends you feel comfortable talking politics with. Hear about upcoming elections and what you can do to get ready to vote.
+                    </SectionDescription>
+                    <AddFriendsByEmail inSideColumn uniqueExternalId="mobile" />
+                  </AddFriendsMobileWrapper>
+                </div>
+                {!voterIsSignedIn && (
+                  // <DelayedLoad waitBeforeShow={1000}>
                   <SettingsAccountWrapper style={expandSideMarginsIfCordova}>
                     <SettingsAccount
                       pleaseSignInTitle="Sign in to Join the Discussion"
                       pleaseSignInSubTitle="We Vote is a community of friends who care about voting and democracy."
                     />
                   </SettingsAccountWrapper>
-                </DelayedLoad>
+                  // </DelayedLoad>
+                )}
+              </div>
+              <div className="col-md-4 d-none d-md-block" style={unsetSomeRowStylesIfCordovaMdBlock}>
+                <SuggestedFriendsPreview inSideColumn />
+                <div className="card">
+                  <div className="card-main" style={unsetMarginsIfCordova}>
+                    <SectionTitle>
+                      Voting Is Better with Friends
+                    </SectionTitle>
+                    <SectionDescription>
+                      Hear about upcoming elections and what you can do to get ready to vote. Add friends you feel comfortable talking politics with.
+                    </SectionDescription>
+                    <AddFriendsByEmail inSideColumn uniqueExternalId="sidebar" />
+                  </div>
+                </div>
+                <div className="card">
+                  <div className="card-main" style={unsetMarginsIfCordova}>
+                    <Testimonial
+                      imageUrl={imageUrl}
+                      testimonialAuthor={testimonialAuthor}
+                      testimonial={testimonial}
+                    />
+                  </div>
+                </div>
+                <SignInOptionsWrapper className="u-show-desktop">
+                  {!voterSignedInTwitter && (
+                    <TwitterSignInWrapper>
+                      <TwitterSignInCard />
+                    </TwitterSignInWrapper>
+                  )}
+                  {!voterSignedInFacebook && (
+                    <FacebookSignInWrapper>
+                      <FacebookSignInCard />
+                    </FacebookSignInWrapper>
+                  )}
+                </SignInOptionsWrapper>
+              </div>
+            </div>
+            <ShowMoreItemsWrapper
+              id="showMoreItemsId"
+              onClick={this.increaseNumberOfActivityTidbitsToDisplay}
+            >
+              <ShowMoreItems
+                loadingMoreItemsNow={loadingMoreItems}
+                numberOfItemsDisplayed={numberOfActivityTidbitsDisplayed}
+                numberOfItemsTotal={activityTidbitsListLength}
+              />
+            </ShowMoreItemsWrapper>
+            {/* August 2020:  This height adjustment for Cordova stops the footer-container from bouncing up about 60px on first render of the page */}
+            <LoadingItemsWheel style={isCordova() ? { height: 150 } : {}}>
+              {loadingMoreItems && (
+                <CircularProgress />
               )}
-            </div>
-            <div className="col-md-4 d-none d-md-block" style={unsetSomeRowStylesIfCordovaMdBlock}>
-              <SuggestedFriendsPreview inSideColumn />
-              <div className="card">
-                <div className="card-main" style={unsetMarginsIfCordova}>
-                  <SectionTitle>
-                    Voting Is Better with Friends
-                  </SectionTitle>
-                  <SectionDescription>
-                    Hear about upcoming elections and what you can do to get ready to vote. Add friends you feel comfortable talking politics with.
-                  </SectionDescription>
-                  <AddFriendsByEmail inSideColumn uniqueExternalId="sidebar" />
-                </div>
-              </div>
-              <div className="card">
-                <div className="card-main" style={unsetMarginsIfCordova}>
-                  <Testimonial
-                    imageUrl={imageUrl}
-                    testimonialAuthor={testimonialAuthor}
-                    testimonial={testimonial}
-                  />
-                </div>
-              </div>
-              <SignInOptionsWrapper className="u-show-desktop">
-                {!voterSignedInTwitter && (
-                  <TwitterSignInWrapper>
-                    <TwitterSignInCard />
-                  </TwitterSignInWrapper>
-                )}
-                {!voterSignedInFacebook && (
-                  <FacebookSignInWrapper>
-                    <FacebookSignInCard />
-                  </FacebookSignInWrapper>
-                )}
-              </SignInOptionsWrapper>
-            </div>
+            </LoadingItemsWheel>
           </div>
-          <ShowMoreItemsWrapper
-            id="showMoreItemsId"
-            onClick={this.increaseNumberOfActivityTidbitsToDisplay}
-          >
-            <ShowMoreItems
-              loadingMoreItemsNow={loadingMoreItems}
-              numberOfItemsDisplayed={numberOfActivityTidbitsDisplayed}
-              numberOfItemsTotal={activityTidbitsListLength}
-            />
-          </ShowMoreItemsWrapper>
-          {/* August 2020:  This height adjustment for Cordova stops the footer-container from bouncing up about 60px on first render of the page */}
-          <LoadingItemsWheel style={isCordova() ? { height: 150 } : {}}>
-            {loadingMoreItems && (
-              <CircularProgress />
-            )}
-          </LoadingItemsWheel>
         </div>
-      </div>
+      </Suspense>
     );
   }
 }

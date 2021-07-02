@@ -101,10 +101,9 @@ export default function $ajax (options) {
         clearInterval(waitForJQuery);
         innerAjax(options);
       }
-      if (loop++ > 200) {
-        throw new Error('$ajax could not load jQuery within 10 seconds');
+      if (loop++ > 400) {
+        throw new Error('$ajax could not load jQuery within 20 seconds');
       }
-      // console.log('--- waiting 50 ms for jQuery to load ---');
     }, 10);
   }
 }

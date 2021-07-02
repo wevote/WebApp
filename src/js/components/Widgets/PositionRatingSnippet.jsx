@@ -10,10 +10,10 @@ const mixedRatingIcon = '../../../img/global/icons/mixed-rating-icon.svg';
 export default class PositionRatingSnippet extends Component {
   render () {
     renderLog('PositionRatingSnippet');  // Set LOG_RENDER_EVENTS to log all renders
-    const displayName = this.props.ballot_item_display_name;
-    const rating = this.props.vote_smart_rating;
-    const ratingTimeSpan = this.props.vote_smart_time_span;
-    const showRatingDescriptionFunction = this.props.show_rating_description;
+    const displayName = this.props.ballotItemDisplayName;
+    const rating = this.props.voteSmartRating;
+    const ratingTimeSpan = this.props.voteSmartTimeSpan;
+    const showRatingDescriptionFunction = this.props.showRatingDescription;
     let src;
     let className;
     let alt;
@@ -65,8 +65,8 @@ export default class PositionRatingSnippet extends Component {
   }
 }
 PositionRatingSnippet.propTypes = {
-  ballot_item_display_name: PropTypes.string,
-  vote_smart_rating: PropTypes.string.isRequired,
-  vote_smart_time_span: PropTypes.string.isRequired,
-  show_rating_description: PropTypes.func,
+  ballotItemDisplayName: PropTypes.string,
+  showRatingDescription: PropTypes.func,
+  voteSmartRating: PropTypes.string.isRequired,
+  voteSmartTimeSpan: PropTypes.string.isRequired,
 };

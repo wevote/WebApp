@@ -19,13 +19,13 @@ export default class PositionSupportOpposeSnippet extends Component {
     let alt;
     let actorSupportsBallotItemLabel;
     let ballotItemIsSupportedByActorLabel;
-    const { is_looking_at_self: isLookingAtSelf } = this.props;
-    let { more_info_url: moreInfoUrl } = this.props;
-    const statementText = this.props.statement_text || '';
+    const { isLookingAtSelf, statementText, isSupport, isOppose, isOnBallotItemPage,
+      ballotItemDisplayName, speakerDisplayName } = this.props;
+    let { moreInfoUrl } = this.props;
     let statementTextHtml = (
       <ReadMore
         numberOfLines={5}
-        textToDisplay={statementText}
+        textToDisplay={statementText || ''}
       />
     );
 
@@ -51,13 +51,13 @@ export default class PositionSupportOpposeSnippet extends Component {
       statementTextHtml = <ReadMore textToDisplay={statementTextNoUrl} />;
     }
 
-    if (this.props.is_support) {
+    if (isSupport) {
       stanceIconSrc = cordovaDot(thumbsUpColorIcon);
       className = 'explicit-position__icon';
       alt = 'Supports';
       actorSupportsBallotItemLabel = isLookingAtSelf ? 'You Support' : 'Supports'; // Actor supports Ballot item (Active voice)
       ballotItemIsSupportedByActorLabel = isLookingAtSelf ? 'is Supported by You' : 'is Supported by'; // Ballot item is supported by Actor (Passive voice)
-    } else if (this.props.is_oppose) {
+    } else if (isOppose) {
       stanceIconSrc = cordovaDot(thumbsDownColorIcon);
       className = 'explicit-position__icon';
       alt = 'Opposes';
@@ -69,13 +69,13 @@ export default class PositionSupportOpposeSnippet extends Component {
     }
 
     let stanceDisplayOff = false;
-    if (this.props.stance_display_off !== undefined) {
-      stanceDisplayOff = !!this.props.stance_display_off;
+    if (this.props.stanceDisplayOff !== undefined) {
+      stanceDisplayOff = !!this.props.stanceDisplayOff;
     }
 
     let commentTextOff = false;
-    if (this.props.comment_text_off !== undefined) {
-      commentTextOff = !!this.props.comment_text_off;
+    if (this.props.commentTextOff !== undefined) {
+      commentTextOff = !!this.props.commentTextOff;
     }
 
     if (moreInfoUrl) {
@@ -91,12 +91,12 @@ export default class PositionSupportOpposeSnippet extends Component {
             <div className="explicit-position__text">
               <span className="explicit-position__voter-guide-increase">
                 <img src={stanceIconSrc} width="24" height="24" className={className} alt={alt} />
-                {this.props.is_on_ballot_item_page ? (
+                {isOnBallotItemPage ? (
                   <span>
                     <span className="explicit-position__position-label">{actorSupportsBallotItemLabel}</span>
                     <span>
                       {' '}
-                      {this.props.ballot_item_display_name}
+                      {ballotItemDisplayName}
                       {' '}
                     </span>
                   </span>
@@ -105,7 +105,7 @@ export default class PositionSupportOpposeSnippet extends Component {
                     <span className="explicit-position__position-label">{ballotItemIsSupportedByActorLabel}</span>
                     <span>
                       {' '}
-                      {this.props.speaker_display_name}
+                      {speakerDisplayName}
                       {' '}
                     </span>
                   </span>
@@ -146,14 +146,14 @@ export default class PositionSupportOpposeSnippet extends Component {
   }
 }
 PositionSupportOpposeSnippet.propTypes = {
-  ballot_item_display_name: PropTypes.string,
-  is_on_ballot_item_page: PropTypes.bool,
-  is_looking_at_self: PropTypes.bool,
-  is_support: PropTypes.bool.isRequired,
-  is_oppose: PropTypes.bool.isRequired,
-  more_info_url: PropTypes.string,
-  speaker_display_name: PropTypes.string,
-  statement_text: PropTypes.string,
-  stance_display_off: PropTypes.bool,
-  comment_text_off: PropTypes.bool,
+  ballotItemDisplayName: PropTypes.string,
+  commentTextOff: PropTypes.bool,
+  isLookingAtSelf: PropTypes.bool,
+  isOnBallotItemPage: PropTypes.bool,
+  isOppose: PropTypes.bool.isRequired,
+  isSupport: PropTypes.bool.isRequired,
+  moreInfoUrl: PropTypes.string,
+  speakerDisplayName: PropTypes.string,
+  stanceDisplayOff: PropTypes.bool,
+  statementText: PropTypes.string,
 };

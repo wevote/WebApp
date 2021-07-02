@@ -23,6 +23,7 @@ const nonFluxState = {
   getStartedMode: '',
   hideWeVoteLogo: false,
   hostname: '',
+  observableUpdateCounter: 0,
   organizationModalBallotItemWeVoteId: '',
   scrolledDown: false,
   sharedItemCode: '',
@@ -56,6 +57,11 @@ export default {
   // getNonFluxState () {
   //   return nonFluxState;
   // },
+
+  incrementObservableUpdateCounter () {
+    nonFluxState.observableUpdateCounter += 1;
+    messageService.sendMessage('state incremented ObservableUpdateCounter');
+  },
 
   setActivityTidbitWeVoteIdForDrawer (activityTidbitWeVoteId) {
     nonFluxState.activityTidbitWeVoteIdForDrawer = activityTidbitWeVoteId;
@@ -390,7 +396,7 @@ export default {
       endpoint: 'siteConfigurationRetrieve',
       data: { hostname, refresh_string },
       success: (res) => {
-        console.log('AppObservableStore siteConfigurationRetrieve success, res:', res);
+        // console.log('AppObservableStore siteConfigurationRetrieve success, res:', res);
         const {
           status: apiStatus,
           success: apiSuccess,
@@ -461,7 +467,7 @@ export default {
       },
 
       error: (res) => {
-        console.log('AppObservableStore error: ', res);
+        console.error('AppObservableStore error: ', res);
       },
     });
   },

@@ -1,3 +1,4 @@
+import { Facebook } from '@material-ui/icons';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import styled from 'styled-components';
@@ -197,7 +198,7 @@ class FacebookSignIn extends Component {
           backgroundColor="#3b5998"
           disabled={facebookSignInSequenceStarted}
           externalUniqueId="facebookSignIn"
-          icon={<span className="fab fa-facebook-square" />}
+          icon={<Facebook />}
           id="facebookSignIn"
           onClick={this.didClickFacebookSignInButton}
           onKeyDown={this.onKeyDown}

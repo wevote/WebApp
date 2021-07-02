@@ -56,31 +56,33 @@ export default class Opinions extends Component {
     };
 
     return (
-      <div className="opinion-view">
-        <SnackNotifier />
-        <Helmet title="Build Your Network - We Vote" />
-        <h1 className="h1">Build Your Network</h1>
-        <div>
-          <p>
-            Find opinions about your ballot (ordered by Twitter followers).
-            Follow those you trust. Stop Following at any time.
-            Following won&apos;t add you to mailing lists.
-            <span style={floatRight} className="d-print-none">
-              <Link to="/opinions_followed" className="u-margin-left--md u-no-break">See organizations you follow</Link>
-            </span>
-          </p>
-          <SearchGuidesToFollowBox />
-          { ballotHasGuides ?
-            <p /> :
-            <p>There are no organizations with opinions on your ballot. Here are some popular organizations:</p>}
-          <div className="card">
-            <Suspense fallback={<span>Loading...</span>}>
-              <GuideList incomingVoterGuideList={voterGuidesToFollowAll} />
-            </Suspense>
+      <div className="page-content-container">
+        <div className="opinion-view">
+          <SnackNotifier />
+          <Helmet title="Build Your Network - We Vote" />
+          <h1 className="h1">Build Your Network</h1>
+          <div>
+            <p>
+              Find opinions about your ballot (ordered by Twitter followers).
+              Follow those you trust. Stop Following at any time.
+              Following won&apos;t add you to mailing lists.
+              <span style={floatRight} className="d-print-none">
+                <Link to="/opinions_followed" className="u-margin-left--md u-no-break">See organizations you follow</Link>
+              </span>
+            </p>
+            <SearchGuidesToFollowBox />
+            { ballotHasGuides ?
+              <p /> :
+              <p>There are no organizations with opinions on your ballot. Here are some popular organizations:</p>}
+            <div className="card">
+              <Suspense fallback={<span>Loading...</span>}>
+                <GuideList incomingVoterGuideList={voterGuidesToFollowAll} />
+              </Suspense>
+            </div>
           </div>
+          <Link className="pull-right" to="/opinions_ignored">Organizations you are ignoring</Link>
+          <br />
         </div>
-        <Link className="pull-right" to="/opinions_ignored">Organizations you are ignoring</Link>
-        <br />
       </div>
     );
   }

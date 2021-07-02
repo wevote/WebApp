@@ -279,7 +279,7 @@ class OrganizationModal extends Component {
             <DelayedLoad showLoadingText waitBeforeShow={500}>
               <>
                 <PositionList
-                  ballotItemDisplayName={ballotItemDisplayName}
+                  ballotItemDisplayName={ballotItemDisplayName || ''}
                   incomingPositionList={allCachedPositionsForThisBallotItem}
                   params={params}
                   positionListExistsTitle={(

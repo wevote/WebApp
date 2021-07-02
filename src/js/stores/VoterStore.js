@@ -65,7 +65,13 @@ class VoterStore extends ReduceStore {
   }
 
   getTextForMapSearch () {
-    return this.getState().address.text_for_map_search || '';
+    let textForMapSearch = this.getState().address.text_for_map_search;
+    if (textForMapSearch === undefined) {
+      textForMapSearch = this.getState().voter.text_for_map_search;
+      if (textForMapSearch === undefined) return '';
+    }
+    if (Array.isArray(textForMapSearch)) return textForMapSearch[0] || '';
+    return textForMapSearch;
   }
 
   getVoterSavedAddress () {
@@ -99,7 +105,7 @@ class VoterStore extends ReduceStore {
     // console.log("getBallotLocationForVoter this.getState().address:", this.getState().address);
     if (this.getState().address) {
       return {
-        text_for_map_search: this.getState().address.text_for_map_search,
+        text_for_map_search: this.getTextForMapSearch(),
         ballot_returned_we_vote_id: this.getState().address.ballot_returned_we_vote_id,
         polling_location_we_vote_id: '',
         ballot_location_order: 0,
@@ -721,10 +727,6 @@ class VoterStore extends ReduceStore {
               // console.log("Setting new voter_device_id");
               this.setVoterDeviceIdCookie(voterDeviceId);
             }
-
-            // Actions should not be called from stores!   Moved to App.jsx
-            // VoterActions.voterAddressRetrieve(voterDeviceId);
-
             // FriendsInvitationList.jsx is choking on this because calling this
             // results in an infinite loop cycling between voterRetrieve and getFaceProfilePicture which
             // resolves to FACEBOOK_RECEIVED_PICTURE which then attempts to save using voterFacebookSignInPhoto
@@ -740,7 +742,7 @@ class VoterStore extends ReduceStore {
             // console.log("voter_device_id not returned by voterRetrieve");
           }
         }
-        // April 29, 2021 TODO: If this is such an important set of data, we should make a combined Voter and Organiztion retrieve
+        // April 29, 2021 TODO: We should make a combined Voter and Organization retrieve
         // because this fires on the initial page load and takes almost a full second to return, blocking one of six available http channels
         // Firing actions from stores should be avoided
         // The following (new) condition blocks a organizationRetrieve on the first voterRetrieve

@@ -62,17 +62,31 @@ export default class Header extends Component {
   shouldComponentUpdate (nextProps, nextState) {
     // console.log('-----------HEADER shouldComponentUpdate');
     const { location: { pathname } } = window;
-    if (this.state.activityTidbitWeVoteIdForDrawer !== nextState.activityTidbitWeVoteIdForDrawer) return true;
-    if (this.state.organizationModalBallotItemWeVoteId !== nextState.organizationModalBallotItemWeVoteId) return true;
-    if (pathname !== nextProps.pathname) return true;
-    if (this.state.priorPath === undefined) return true;
-    if (this.state.sharedItemCode !== nextState.sharedItemCode) return true;
-    if (this.state.showActivityTidbitDrawer !== nextState.showActivityTidbitDrawer) return true;
-    if (this.state.showHowItWorksModal !== nextState.showHowItWorksModal) return true;
-    if (this.state.showVoterPlanModal !== nextState.showVoterPlanModal) return true;
-    if (this.state.showOrganizationModal !== nextState.showOrganizationModal) return true;
-    if (this.state.showSharedItemModal !== nextState.showSharedItemModal) return true;
-    return this.state.windowWidth !== nextState.windowWidth;
+    let update = false;
+    if (this.state.activityTidbitWeVoteIdForDrawer !== nextState.activityTidbitWeVoteIdForDrawer) {
+      update = true;
+    } if (this.state.organizationModalBallotItemWeVoteId !== nextState.organizationModalBallotItemWeVoteId) {
+      update = true;
+    } if (pathname !== nextProps.pathname) {
+      update = true;
+    } if (this.state.priorPath === undefined) {
+      update = true;
+    } if (this.state.sharedItemCode !== nextState.sharedItemCode) {
+      update = true;
+    } if (this.state.showActivityTidbitDrawer !== nextState.showActivityTidbitDrawer) {
+      update = true;
+    } if (this.state.showHowItWorksModal !== nextState.showHowItWorksModal) {
+      update = true;
+    } if (this.state.showVoterPlanModal !== nextState.showVoterPlanModal) {
+      update = true;
+    } if (this.state.showOrganizationModal !== nextState.showOrganizationModal) {
+      update = true;
+    } if (this.state.showSharedItemModal !== nextState.showSharedItemModal) {
+      update = true;
+    } if (this.state.windowWidth !== nextState.windowWidth) {
+      update = true;
+    }
+    return update;
   }
 
   componentDidCatch (error, info) {

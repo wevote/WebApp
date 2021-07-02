@@ -157,7 +157,7 @@ class HeaderBar extends Component {
 
   shouldComponentUpdate (nextProps, nextState) {
     const { location: { pathname } } = window;
-    console.log('HeaderBar shouldComponentUpdate: pathname === ', pathname);
+    // console.log('HeaderBar shouldComponentUpdate: pathname === ', pathname);
     let update = false;
     if (pathname !== this.state.priorPath) {
       // Re-render the HeaderBar if the path has changed
@@ -256,7 +256,7 @@ class HeaderBar extends Component {
     }
 
     // console.log(`HeaderBar shouldComponentUpdate:  ${false}`);
-    if (update)  this.getSelectedTab(true);
+    if (update)  this.manuallyUnderlineTab(true);
 
     // console.log('HeaderBar shouldComponentUpdate: update === ', update);
 
@@ -337,10 +337,10 @@ class HeaderBar extends Component {
     }
   }
 
-  getSelectedTab = (setInitial = false) => {
+  manuallyUnderlineTab = (setInitial = false) => {
     const { location: { pathname } } = window;
 
-    // console.log('HeaderBar ------------------ getSelectedTab ', pathname);
+    // console.log('HeaderBar ------------------ manuallyUnderlineTab ', pathname);
     if (typeof pathname !== 'undefined' && pathname) {
       if (startsWith('/ready', pathname.toLowerCase()) || pathname === '/') {
         if (setInitial) {
@@ -628,7 +628,7 @@ class HeaderBar extends Component {
             <div className="header-nav">
               <Tabs
                 className={isIOSAppOnMac() ? '' : 'u-show-desktop'}
-                value={this.getSelectedTab()}
+                value={this.manuallyUnderlineTab()}
                 indicatorColor="primary"
                 classes={{ indicator: classes.indicator }}
               >
