@@ -18,6 +18,7 @@ import webAppConfig from '../config';
 import AppObservableStore from '../stores/AppObservableStore';
 import VoterStore from '../stores/VoterStore';
 import { historyPush, isAndroid, isIOS, isWebApp } from '../utils/cordovaUtils';
+import isMobileScreenSize from '../utils/isMobileScreenSize';
 import lazyPreloadPages from '../utils/lazyPreloadPages';
 import { renderLog } from '../utils/logging';
 
@@ -79,14 +80,17 @@ class ReadyLight extends Component {
 
   getTopPadding = () => {
     if (isWebApp()) {
-      return { paddingTop: '0 !important' };
+      if (isMobileScreenSize()) {
+        return '36px !important';
+      } else {
+        return '0 !important';
+      }
     } else if (isIOS()) {
-      // TODO: This is a bad place to set a top padding: Move it to Application__Wrapper on the next iOS pass
-      return { paddingTop: '56px !important' };  // SE2: 56px, 11 Pro Max: 56px
+      return '56px !important';  // SE2: 56px, 11 Pro Max: 56px
     } else if (isAndroid()) {
-      return { paddingTop: 'unset' };
+      return 'unset';
     }
-    return {};
+    return '';
   }
 
   render () {
@@ -97,7 +101,7 @@ class ReadyLight extends Component {
 
     return (
       <Wrapper className="page-content-container">
-        <PageContainer className="container-fluid" style={this.getTopPadding()}>
+        <PageContainer topPadding={this.getTopPadding()}>
           <Helmet title="Ready to Vote? - We Vote" />
           <BrowserPushMessage incomingProps={this.props} />
           <div className="row">
@@ -251,7 +255,13 @@ const MobileTabletCountdownWrapper = styled.div`
 `;
 
 const PageContainer = styled.div`
-// This is a bad place to set a top padding for the scrollable pane, it should be in Application__Wrapper
+  // Was className="container-fluid"
+  width: 100%;
+  padding-right: 15px;
+  padding-left: 15px;
+  margin-right: auto;
+  margin-left: auto;
+  padding-top: ${({ topPadding }) => topPadding};
 `;
 
 const Paragraph = styled.div`

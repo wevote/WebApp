@@ -15,6 +15,7 @@ import BallotItemReadyToVote from '../components/Vote/BallotItemReadyToVote';
 import FindPollingLocation from '../components/Vote/FindPollingLocation';
 import ReturnOfficialBallot from '../components/Vote/ReturnOfficialBallot';
 import BrowserPushMessage from '../components/Widgets/BrowserPushMessage';
+import { PageContentContainer } from '../components/Widgets/ReusableStyles';
 import AppObservableStore, { messageService } from '../stores/AppObservableStore';
 import BallotStore from '../stores/BallotStore';
 import IssueStore from '../stores/IssueStore';
@@ -414,7 +415,7 @@ class Vote extends Component {
     return (
       <VoteContainer padTop={cordovaScrollablePaneTopPadding()}>
         <div className={`ballot__heading-vote-section ${ballotHeaderUnpinned && isWebApp() ? 'ballot__heading__unpinned' : ''}`} style={cordovaVoteMiniHeader()}>
-          <div className="page-content-container">
+          <PageContentContainer>
             <div className="container-fluid">
               <div className="row">
                 <div className="col-md-12">
@@ -445,10 +446,10 @@ class Vote extends Component {
                 </div>
               </div>
             </div>
-          </div>
+          </PageContentContainer>
         </div>
 
-        <div className="page-content-container">
+        <PageContentContainer>
           <div className="container-fluid">
             <Wrapper cordova={isCordova()}>
               <div className={votePaddingClass}>
@@ -509,7 +510,7 @@ class Vote extends Component {
               </div>
             </Wrapper>
           </div>
-        </div>
+        </PageContentContainer>
       </VoteContainer>
     );
   }

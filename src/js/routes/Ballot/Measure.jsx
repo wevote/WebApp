@@ -11,6 +11,7 @@ import OrganizationActions from '../../actions/OrganizationActions';
 import MeasureStickyHeader from '../../components/Ballot/MeasureStickyHeader';
 import LoadingWheelComp from '../../components/LoadingWheelComp';
 import EndorsementCard from '../../components/Widgets/EndorsementCard';
+import { PageContentContainer } from '../../components/Widgets/ReusableStyles';
 import SearchOnGoogle from '../../components/Widgets/SearchOnGoogle';
 import SnackNotifier from '../../components/Widgets/SnackNotifier';
 import ViewOnBallotpedia from '../../components/Widgets/ViewOnBallotpedia';
@@ -297,7 +298,7 @@ class Measure extends Component {
         }
         <Suspense fallback={<LoadingWheelComp />}>
           <SnackNotifier />
-          <div className="page-content-container" style={{ marginTop: `${cordovaBallotFilterTopMargin()}` }}>
+          <PageContentContainer style={{ marginTop: `${cordovaBallotFilterTopMargin()}` }}>
             {/* The following style adjustment prevents horizontal scrolling from the .card style */}
             <div className="card" style={isWebApp() ? {} : { marginRight: 0, marginLeft: 0 }}>
               <TwoColumns>
@@ -361,7 +362,7 @@ class Measure extends Component {
                 />
               </span>
             )}
-          </div>
+          </PageContentContainer>
         </Suspense>
       </>
     );

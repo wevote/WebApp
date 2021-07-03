@@ -56,7 +56,7 @@ export default class Opinions extends Component {
     };
 
     return (
-      <div className="page-content-container">
+      <PageContentContainer>
         <div className="opinion-view">
           <SnackNotifier />
           <Helmet title="Build Your Network - We Vote" />

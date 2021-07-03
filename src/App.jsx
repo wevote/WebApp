@@ -10,6 +10,8 @@ import WeVoteRouter from './js/components/Widgets/WeVoteRouter';
 import muiTheme from './js/mui-theme';
 import AppObservableStore from './js/stores/AppObservableStore';
 import styledTheme from './js/styled-theme';
+import { getApplicationViewBooleans } from './js/utils/applicationUtils';
+import { isWebApp } from './js/utils/cordovaUtils';
 import initializejQuery from './js/utils/initializejQuery';
 import { renderLog } from './js/utils/logging';
 import RouterV5SendMatch from './js/utils/RouterV5SendMatch';
@@ -34,6 +36,7 @@ const FAQ = React.lazy(() => import(/* webpackChunkName: 'FAQ' */ './js/routes/M
 const FacebookInvitableFriends = React.lazy(() => import(/* webpackChunkName: 'FacebookInvitableFriends' */ './js/routes/FacebookInvitableFriends'));
 const FacebookLandingProcess = React.lazy(() => import(/* webpackChunkName: 'FacebookLandingProcess' */ './js/routes/Process/FacebookLandingProcess'));
 const FacebookRedirectToWeVote = React.lazy(() => import(/* webpackChunkName: 'FacebookRedirectToWeVote' */ './js/routes/More/FacebookRedirectToWeVote'));
+const FooterBar = React.lazy(() => import(/* webpackChunkName: 'FooterBar' */ './js/components/Navigation/FooterBar.jsx'));
 const FriendInvitationByEmailVerifyProcess = React.lazy(() => import(/* webpackChunkName: 'FriendInvitationByEmailVerifyProcess' */ './js/routes/Process/FriendInvitationByEmailVerifyProcess'));
 const FriendInvitationOnboarding = React.lazy(() => import(/* webpackChunkName: 'FriendInvitationOnboarding' */ './js/routes/Intro/FriendInvitationOnboarding'));
 const Friends = React.lazy(() => import(/* webpackChunkName: 'Friends' */ './js/routes/Friends/Friends'));
@@ -170,6 +173,8 @@ class App extends Component {
     const weVoteSites = ['wevote.us', 'quality.wevote.us', 'localhost', 'silicon', ''];   // localhost on Cordova is a ''
     const isWeVoteMarketingSite = weVoteSites.includes(String(hostname));
     const isNotWeVoteMarketingSite = !isWeVoteMarketingSite;
+    const siteVars = getApplicationViewBooleans(hostname);
+    const { showFooterBar } = siteVars;
     // const firstVisit = !cookies.getItem('voter_device_id');
 
     console.log('href in App.js render: ', window.location.href);
@@ -439,13 +444,13 @@ class App extends Component {
                     <Route path="*" component={PageNotFound} />
                   </Switch>
                 </Suspense>
-                {/*
-                <DelayedLoad waitBeforeShow={500}>
-                  <Suspense fallback={<span>&nbsp;</span>}>
-                    <MainFooter displayFooter={doShowFooter} />
-                  </Suspense>
-                </DelayedLoad>
-                */}
+                {showFooterBar && (
+                  <div className={isWebApp() ? 'footroom-wrapper' : 'footroom-wrapper-cordova'}>
+                    <Suspense fallback={<></>}>
+                      <FooterBar />
+                    </Suspense>
+                  </div>
+                )}
               </WeVoteBody>
             </WeVoteRouter>
           </ThemeProvider>

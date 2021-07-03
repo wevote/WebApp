@@ -12,6 +12,7 @@ import OrganizationActions from '../../actions/OrganizationActions';
 import ReactionActions from '../../actions/ReactionActions';
 import ActivityCommentAdd from '../../components/Activity/ActivityCommentAdd';
 import ActivityPostAdd from '../../components/Activity/ActivityPostAdd';
+import { PageContentContainer } from '../../components/Widgets/ReusableStyles';
 import FacebookSignInCard from '../../components/Facebook/FacebookSignInCard';
 import AddFriendsByEmail from '../../components/Friends/AddFriendsByEmail';
 import SuggestedFriendsPreview from '../../components/Friends/SuggestedFriendsPreview';
@@ -304,7 +305,7 @@ class News extends Component {
 
     return (
       <Suspense fallback={<LoadingWheelComp />}>
-        <div className="page-content-container" style={{ marginTop: `${cordovaBallotFilterTopMargin()}` }}>
+        <PageContentContainer style={{ marginTop: `${cordovaBallotFilterTopMargin()}` }}>
           <div className="container-fluid">
             <Helmet title="Discuss - We Vote" />
             <BrowserPushMessage incomingProps={this.props} />
@@ -468,7 +469,7 @@ class News extends Component {
               )}
             </LoadingItemsWheel>
           </div>
-        </div>
+        </PageContentContainer>
       </Suspense>
     );
   }

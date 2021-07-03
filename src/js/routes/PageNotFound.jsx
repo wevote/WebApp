@@ -7,6 +7,8 @@ import Helmet from 'react-helmet';
 import styled from 'styled-components';
 import { historyPush, isCordova } from '../utils/cordovaUtils';
 import { renderLog } from '../utils/logging';
+import { PageContentContainer } from '../components/Widgets/ReusableStyles';
+
 
 
 class PageNotFound extends Component {
@@ -21,7 +23,7 @@ class PageNotFound extends Component {
     }
     const { classes } = this.props;
     return (
-      <div className="page-content-container">
+      <PageContentContainer>
         <div className="container-fluid">
           <Helmet title="Page Not Found - We Vote" />
           <Wrapper cordova={isCordova()}>
@@ -41,7 +43,7 @@ class PageNotFound extends Component {
             </Card>
           </Wrapper>
         </div>
-      </div>
+      </PageContentContainer>
     );
   }
 }

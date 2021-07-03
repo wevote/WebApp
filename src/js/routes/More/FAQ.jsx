@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
 import Helmet from 'react-helmet';
 import { Link } from 'react-router-dom';
+import { PageContentContainer } from '../../components/Widgets/ReusableStyles';
 import { renderLog } from '../../utils/logging';
 import ToolBar from './ToolBar';
+
 
 const OpenExternalWebSite = React.lazy(() => import(/* webpackChunkName: 'OpenExternalWebSite' */ '../../components/Widgets/OpenExternalWebSite'));
 
@@ -16,7 +18,7 @@ export default class FAQ extends Component {
     return (
       <div>
         <Helmet title="FAQ - We Vote" />
-        <div className="page-content-container">
+        <PageContentContainer>
           <div className="container-fluid card">
             <div className="card-main">
               <h1 className="h1">Frequently Asked Questions</h1>
@@ -227,7 +229,7 @@ export default class FAQ extends Component {
               <br />
             </div>
           </div>
-        </div>
+        </PageContentContainer>
       </div>
     );
   }

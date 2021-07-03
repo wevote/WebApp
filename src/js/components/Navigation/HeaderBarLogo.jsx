@@ -60,7 +60,7 @@ const HeaderBarWrapper = styled.div`
 const WeVoteLogoWrapper = styled.div`
   margin-left: -12px;
   @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
-    margin-left: -10px;
+    margin-left: 278px;
   }
 `;
 

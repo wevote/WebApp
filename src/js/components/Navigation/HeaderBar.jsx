@@ -15,6 +15,7 @@ import VoterStore from '../../stores/VoterStore';
 import { weVoteBrandingOff } from '../../utils/applicationUtils';
 import { hasIPhoneNotch, historyPush, isCordova, isIOSAppOnMac, isWebApp } from '../../utils/cordovaUtils';
 import displayFriendsTabs from '../../utils/displayFriendsTabs';
+import isMobileScreenSize from '../../utils/isMobileScreenSize';
 import LazyImage from '../../utils/LazyImage';
 import { renderLog } from '../../utils/logging';
 import shouldHeaderRetreat from '../../utils/shouldHeaderRetreat';
@@ -86,6 +87,9 @@ class HeaderBar extends Component {
   }
 
   componentDidMount () {
+    if (isMobileScreenSize()) {
+      AppObservableStore.setShowEditAddressButton(true);
+    }
     this.appStateSubscription = messageService.getMessage().subscribe((msg) => this.onAppObservableStoreChange(msg));
     this.friendStoreListener = FriendStore.addListener(this.onFriendStoreChange.bind(this));
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
@@ -259,9 +263,6 @@ class HeaderBar extends Component {
     if (update)  this.manuallyUnderlineTab(true);
 
     // console.log('HeaderBar shouldComponentUpdate: update === ', update);
-
-
-
     return update;
   }
 
@@ -625,7 +626,7 @@ class HeaderBar extends Component {
                 isBeta={showWeVoteLogo && !chosenSiteLogoUrl}
               />
             )}
-            <div className="header-nav">
+            <div className="header-nav" style={isMobileScreenSize() ? {paddingLeft: 'calc(100% - 348px)' } : {}}>
               <Tabs
                 className={isIOSAppOnMac() ? '' : 'u-show-desktop'}
                 value={this.manuallyUnderlineTab()}

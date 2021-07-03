@@ -4,7 +4,7 @@ import { pageEnumeration } from './cordovaUtilsPageEnumeration';
 import { cordovaOffsetLog } from './logging';
 
 
-// <div className="page-content-container" style={{ marginTop: `${cordovaBallotFilterTopMargin()}` }}>
+// <PageContentContainer style={{ marginTop: `${cordovaBallotFilterTopMargin()}` }}>
 // This determines where the top of the "All", "Choices" and "Decided" tabs should start.
 export function cordovaBallotFilterTopMargin () {
   if (isWebApp()) {

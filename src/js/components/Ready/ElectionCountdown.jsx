@@ -148,7 +148,7 @@ class ElectionCountdown extends React.Component {
     const { days, daysMobile, electionIsToday, electionInPast, hours, minutes, seconds, electionDateMDY, showButton } = this.state;
     const timeStillLoading = !(days || hours || minutes || seconds);
     const electionIsUpcomingHtml = (
-      <Card className="card">
+      <CardCountdown className="card">
         <div className="">
           <div className={daysOnlyMode ? '' : 'u-show-mobile'}>
             <div>
@@ -246,10 +246,10 @@ class ElectionCountdown extends React.Component {
             </div>
           )}
         </div>
-      </Card>
+      </CardCountdown>
     );
     const electionIsTodayHtml = (
-      <Card className="card">
+      <CardCountdown className="card">
         <div className="">
           <div className={daysOnlyMode ? '' : 'u-show-mobile'}>
             <div>
@@ -304,10 +304,10 @@ class ElectionCountdown extends React.Component {
             </div>
           )}
         </div>
-      </Card>
+      </CardCountdown>
     );
     const electionInPastHtml = (
-      <Card className="card">
+      <CardCountdown className="card">
         <div className="">
           <div className={daysOnlyMode ? '' : 'u-show-mobile'}>
             <div>
@@ -362,7 +362,7 @@ class ElectionCountdown extends React.Component {
             </div>
           )}
         </div>
-      </Card>
+      </CardCountdown>
     );
 
     if (electionIsToday) {
@@ -379,10 +379,13 @@ ElectionCountdown.propTypes = {
   initialDelay: PropTypes.number,
 };
 
-const Card = styled.div`
+const CardCountdown = styled.div`
   padding-top: 4px;
   padding-bottom: 8px;
   min-height: 190px;
+  @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
+    min-height: 10px;
+  }
 `;
 
 const CardTitleUpcoming = styled.h1`

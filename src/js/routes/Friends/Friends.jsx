@@ -19,6 +19,7 @@ import LoadingWheel from '../../components/LoadingWheel';
 import TwitterSignInCard from '../../components/Twitter/TwitterSignInCard';
 import BrowserPushMessage from '../../components/Widgets/BrowserPushMessage';
 import MessageCard from '../../components/Widgets/MessageCard';
+import { PageContentContainer } from '../../components/Widgets/ReusableStyles';
 import TooltipIcon from '../../components/Widgets/TooltipIcon';
 import AppObservableStore, { messageService } from '../../stores/AppObservableStore';
 import FriendStore from '../../stores/FriendStore';
@@ -566,7 +567,7 @@ class Friends extends Component {
         {displayFriendsTabs() ? (
           <>
             <div className={`friends__heading ${isCordova() && 'friends__heading__cordova'} ${friendsHeaderUnpinned && isWebApp() ? 'friends__heading__unpinned' : ''}`}>
-              <div className="page-content-container" style={{ marginTop: `${cordovaBallotFilterTopMargin()}` }}>
+              <PageContentContainer style={{ marginTop: `${cordovaBallotFilterTopMargin()}` }}>
                 <div className="container-fluid">
                   <div className="row">
                     <div className="col-md-12">
@@ -575,24 +576,24 @@ class Friends extends Component {
                     </div>
                   </div>
                 </div>
-              </div>
+              </PageContentContainer>
             </div>
-            <div className="page-content-container" style={{ marginTop: `${cordovaBallotFilterTopMargin()}` }}>
+            <PageContentContainer style={{ marginTop: `${cordovaBallotFilterTopMargin()}` }}>
               <div className="container-fluid">
                 <div className="Friends__Wrapper" style={cordovaFriendsWrapper()}>
                   {mobileContentToDisplay}
                 </div>
               </div>
-            </div>
+            </PageContentContainer>
           </>
         ) : (
-          <div className="page-content-container" style={{ marginTop: `${cordovaBallotFilterTopMargin()}` }}>
+          <PageContentContainer style={{ marginTop: `${cordovaBallotFilterTopMargin()}` }}>
             <div className="container-fluid">
               <div className="container-main">
                 {desktopContentToDisplay}
               </div>
             </div>
-          </div>
+          </PageContentContainer>
         )}
       </span>
     );

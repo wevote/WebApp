@@ -24,6 +24,7 @@ import BallotShowAllItemsFooter from '../../components/Navigation/BallotShowAllI
 import BallotSideBar from '../../components/Navigation/BallotSideBar';
 import ValuesToFollowPreview from '../../components/Values/ValuesToFollowPreview';
 import BrowserPushMessage from '../../components/Widgets/BrowserPushMessage';
+import { PageContentContainer } from '../../components/Widgets/ReusableStyles';
 import SnackNotifier from '../../components/Widgets/SnackNotifier';
 import webAppConfig from '../../config';
 import AppObservableStore, { messageService } from '../../stores/AppObservableStore';
@@ -1222,7 +1223,7 @@ class Ballot extends Component {
           <div className={`ballot__heading ${ballotHeaderUnpinned && isWebApp() ? 'ballot__heading__unpinned' : ''}`}
                style={isAndroid() && getAndroidSize() === '--xl' ? { paddingTop: '99px' } : {}}
           >
-            <div className="page-content-container" style={{ marginTop: `${cordovaBallotFilterTopMargin()}` }}>
+            <PageContentContainer style={{ marginTop: `${cordovaBallotFilterTopMargin()}` }}>
               <div className="container-fluid">
                 <div className="row">
                   <div className="col-md-12">
@@ -1344,10 +1345,10 @@ class Ballot extends Component {
                   </div>
                 </div>
               </div>
-            </div>
+            </PageContentContainer>
           </div>
 
-          <div className="page-content-container">
+          <PageContentContainer>
             <div className="container-fluid">
               <Wrapper padTop={cordovaScrollablePaneTopPadding()} padBottom={padBallotWindowBottomForCordova} id="ballotWrapper">
                 {emptyBallot}
@@ -1530,7 +1531,7 @@ class Ballot extends Component {
                 </div>
               </Wrapper>
             </div>
-          </div>
+          </PageContentContainer>
         </Suspense>
       </div>
     );

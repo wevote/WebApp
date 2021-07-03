@@ -6,6 +6,7 @@ import TwitterActions from '../../actions/TwitterActions';
 import LoadingWheel from '../../components/LoadingWheel';
 import VoterGuideFollowers from '../../components/VoterGuide/VoterGuideFollowers';
 import VoterGuideFollowing from '../../components/VoterGuide/VoterGuideFollowing';
+import { PageContentContainer } from '../../components/Widgets/ReusableStyles';
 import TwitterStore from '../../stores/TwitterStore';
 import { renderLog } from '../../utils/logging';
 
@@ -68,7 +69,7 @@ class OrganizationVoterGuideMobileDetails extends Component {
       default:
       case 'friends':
         DisplayContent = (
-          <div className="page-content-container">
+          <PageContentContainer>
             <div className="container-fluid">
               <Card>
                 <EmptyContainer>
@@ -76,7 +77,7 @@ class OrganizationVoterGuideMobileDetails extends Component {
                 </EmptyContainer>
               </Card>
             </div>
-          </div>
+          </PageContentContainer>
         );
         break;
       case 'following':

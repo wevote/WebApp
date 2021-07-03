@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import TwitterActions from '../../actions/TwitterActions';
 import VoterActions from '../../actions/VoterActions';
 import LoadingWheel from '../../components/LoadingWheel';
+import { PageContentContainer } from '../../components/Widgets/ReusableStyles';
 import AppObservableStore, { messageService } from '../../stores/AppObservableStore';
 import TwitterStore from '../../stores/TwitterStore';
 import VoterStore from '../../stores/VoterStore';
@@ -171,14 +172,14 @@ export default class TwitterSignInProcess extends Component {
     if (window.$ === undefined) {
       return (
         <div className="twitter_sign_in_root">
-          <div className="page-content-container" style={{ paddingTop: `${cordovaScrollablePaneTopPadding()}` }}>
+          <PageContentContainer style={{ paddingTop: `${cordovaScrollablePaneTopPadding()}` }}>
             <LoadingDiv>
               <span>
                 Loading libraries...
               </span>
               {LoadingWheel}
             </LoadingDiv>
-          </div>
+          </PageContentContainer>
         </div>
       );
     }
@@ -189,14 +190,14 @@ export default class TwitterSignInProcess extends Component {
       oAuthLog('STOPPED, missing twitter_retrieve_attempted: twitterAuthResponse:', twitterAuthResponse);
       return (
         <div className="twitter_sign_in_root">
-          <div className="page-content-container" style={{ paddingTop: `${cordovaScrollablePaneTopPadding()}` }}>
+          <PageContentContainer style={{ paddingTop: `${cordovaScrollablePaneTopPadding()}` }}>
             <LoadingDiv>
               <span>
                 Waiting for a response from Twitter...
               </span>
               {LoadingWheel}
             </LoadingDiv>
-          </div>
+          </PageContentContainer>
         </div>
       );
     }
@@ -247,14 +248,14 @@ export default class TwitterSignInProcess extends Component {
       }
       return (
         <div className="twitter_sign_in_root">
-          <div className="page-content-container" style={{ paddingTop: `${cordovaScrollablePaneTopPadding()}` }}>
+          <PageContentContainer style={{ paddingTop: `${cordovaScrollablePaneTopPadding()}` }}>
             <LoadingDiv>
               <span>
                 Loading your account...
               </span>
               {LoadingWheel}
             </LoadingDiv>
-          </div>
+          </PageContentContainer>
         </div>
       );
     } else {

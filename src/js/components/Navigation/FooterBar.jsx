@@ -162,22 +162,22 @@ class FooterBar extends React.Component {
             />
             */}
             <BottomNavigationAction className="no-outline" id="newsTabFooterBar" label="Discuss" showLabel icon={<People />} />
-            {isCordova() ? (
-              <BottomNavigationAction
-                className="no-outline"
-                id="helpTabFooterBar"
-                label="Help"
-                showLabel
-                icon={<HelpOutline style={{ color: 'rgba(0, 0, 0, 0.541176)' }} />}
-                onClick={() => cordovaOpenSafariView('https://help.wevote.us', null, 50)}
-              />
-            ) : (
-              <BottomNavigationAction
-                className="no-outline"
-                id="helpTabFooterBar"
-                icon={<HelpOutline style={{ color: 'rgba(0, 0, 0, 0.541176)' }} />}
-              />
-            )}
+            {/* {isCordova() ? ( */}
+            {/*  <BottomNavigationAction */}
+            {/*    className="no-outline" */}
+            {/*    id="helpTabFooterBar" */}
+            {/*    label="Help" */}
+            {/*    showLabel */}
+            {/*    icon={<HelpOutline style={{ color: 'rgba(0, 0, 0, 0.541176)' }} />} */}
+            {/*    onClick={() => cordovaOpenSafariView('https://help.wevote.us', null, 50)} */}
+            {/*  /> */}
+            {/* ) : ( */}
+            {/*  <BottomNavigationAction */}
+            {/*    className="no-outline" */}
+            {/*    id="helpTabFooterBar" */}
+            {/*    icon={<HelpOutline style={{ color: 'rgba(0, 0, 0, 0.541176)' }} />} */}
+            {/*  /> */}
+            {/* )} */}
           </BottomNavigation>
         </div>
       </FooterBarWrapper>
