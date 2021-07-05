@@ -47,7 +47,7 @@ export default class DonationListForm extends Component {
           <h4>Existing memberships and prior payments:</h4>
           <input type="hidden" value={this.state.activeKey} />
           <ThemeProvider theme={campaignTheme(false, 40)}>
-            <AppBar position="relative" color="default">
+            <AppBar position="relative" color="default" elevation={0}>
               <Tabs
                 value={this.state.value}
                 onChange={this.handleChange}

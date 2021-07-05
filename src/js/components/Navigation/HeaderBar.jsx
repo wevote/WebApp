@@ -617,8 +617,9 @@ class HeaderBar extends Component {
                 color="default"
                 className={`${appBarCname} ${showingBallot || showingFriendsTabs ? ' page-header__ballot' : ''}`}
                 style={cordovaOverrides}
+                elevation={0}
         >
-          <Toolbar className="header-toolbar" disableGutters>
+          <Toolbar className="header-toolbar" disableGutters elevation={0}>
             {(showWeVoteLogo || chosenSiteLogoUrl) && (
               <HeaderBarLogo
                 chosenSiteLogoUrl={chosenSiteLogoUrl}
@@ -626,7 +627,7 @@ class HeaderBar extends Component {
                 isBeta={showWeVoteLogo && !chosenSiteLogoUrl}
               />
             )}
-            <div className="header-nav" style={isMobileScreenSize() ? {paddingLeft: 'calc(100% - 348px)' } : {}}>
+            <div className="header-nav" style={isMobileScreenSize() ? { paddingLeft: 'calc(100% - 348px)' } : {}}>
               <Tabs
                 className={isIOSAppOnMac() ? '' : 'u-show-desktop'}
                 value={this.manuallyUnderlineTab()}

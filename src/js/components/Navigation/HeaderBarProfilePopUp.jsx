@@ -55,7 +55,7 @@ class HeaderBarProfilePopUp extends Component {
     return (
       <div className={popUpOpen}>
         <div className="page-overlay" onClick={this.hideProfilePopUp} />
-        <div className={isWebApp() ? `${isWelcomeMobilePage ? 'profile-menu-welcome-mobile-page' : 'profile-menu'}` : 'profile-pop-up-menu-cordova'}>
+        <ProfileMenu className={isWebApp() ? `${isWelcomeMobilePage ? 'profile-menu-welcome-mobile-page' : 'profile-menu'}` : 'profile-pop-up-menu-cordova'}>
           <span className="we-vote-promise">Our Promise: We&apos;ll never sell your email.</span>
           <ul className="nav flex-column">
             {/* Desktop only */}
@@ -193,7 +193,7 @@ class HeaderBarProfilePopUp extends Component {
               </Link>
             </span>
           </div>
-        </div>
+        </ProfileMenu>
       </div>
     );
   }
@@ -209,6 +209,13 @@ HeaderBarProfilePopUp.propTypes = {
   transitionToYourVoterGuide: PropTypes.func.isRequired,
   voter: PropTypes.object,
 };
+
+const ProfileMenu = styled.div`
+  @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
+
+    position: fixed;
+  }
+`;
 
 const styles = {
   signOutButton: {

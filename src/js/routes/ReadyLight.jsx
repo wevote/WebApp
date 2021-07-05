@@ -14,6 +14,7 @@ import ReadyTaskFriends from '../components/Ready/ReadyTaskFriends';
 import ReadyTaskPlan from '../components/Ready/ReadyTaskPlan';
 import ReadyTaskRegister from '../components/Ready/ReadyTaskRegister';
 import BrowserPushMessage from '../components/Widgets/BrowserPushMessage';
+import { PageContentContainer } from '../components/Widgets/ReusableStyles';
 import webAppConfig from '../config';
 import AppObservableStore from '../stores/AppObservableStore';
 import VoterStore from '../stores/VoterStore';
@@ -100,7 +101,7 @@ class ReadyLight extends Component {
     } = this.state;
 
     return (
-      <Wrapper className="page-content-container">
+      <PageContentContainer>
         <PageContainer topPadding={this.getTopPadding()}>
           <Helmet title="Ready to Vote? - We Vote" />
           <BrowserPushMessage incomingProps={this.props} />
@@ -194,7 +195,7 @@ class ReadyLight extends Component {
             </div>
           </div>
         </PageContainer>
-      </Wrapper>
+      </PageContentContainer>
     );
   }
 }
@@ -275,9 +276,6 @@ const Title = styled.h2`
     font-size: 14px;
     margin: 0 0 4px;
   }
-`;
-
-const Wrapper = styled.div`
 `;
 
 export default withStyles(styles)(ReadyLight);

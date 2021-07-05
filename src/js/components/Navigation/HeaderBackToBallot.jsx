@@ -717,7 +717,14 @@ class HeaderBackToBallot extends Component {
 
 
     return (
-      <AppBar id="backToBallotAppBar" className={headerClassName} color="default" classes={appBarClasses} style={cordovaOverrides}>
+      <AppBar
+        id="backToBallotAppBar"
+        className={headerClassName}
+        color="default"
+        classes={appBarClasses}
+        style={cordovaOverrides}
+        elevation={0}
+      >
         <Toolbar className="header-toolbar header-backto-toolbar" disableGutters>
           <HeaderBackToButton
             backToLink={backToLink}
@@ -862,11 +869,14 @@ const FirstNameWrapper = styled.div`
 const NotificationsAndProfileWrapper = styled.div`
   display: flex;
   z-index: 3; //to float above the account/ProfilePopUp menu option grey div
+  @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
+    padding-left: calc(100% - 147px);
+  }
 `;
 
 const OfficeNameWrapper = styled.div`
   display: flex;
-  margin-left: calc((100vw - 960px)/2);
+  // margin-left: calc((100vw - 960px)/2);
 `;
 
 const OfficeShareWrapper = styled.div`

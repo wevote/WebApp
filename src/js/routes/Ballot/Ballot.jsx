@@ -24,7 +24,7 @@ import BallotShowAllItemsFooter from '../../components/Navigation/BallotShowAllI
 import BallotSideBar from '../../components/Navigation/BallotSideBar';
 import ValuesToFollowPreview from '../../components/Values/ValuesToFollowPreview';
 import BrowserPushMessage from '../../components/Widgets/BrowserPushMessage';
-import { PageContentContainer } from '../../components/Widgets/ReusableStyles';
+import { HeaderContentContainer, PageContentContainer } from '../../components/Widgets/ReusableStyles';
 import SnackNotifier from '../../components/Widgets/SnackNotifier';
 import webAppConfig from '../../config';
 import AppObservableStore, { messageService } from '../../stores/AppObservableStore';
@@ -1223,7 +1223,7 @@ class Ballot extends Component {
           <div className={`ballot__heading ${ballotHeaderUnpinned && isWebApp() ? 'ballot__heading__unpinned' : ''}`}
                style={isAndroid() && getAndroidSize() === '--xl' ? { paddingTop: '99px' } : {}}
           >
-            <PageContentContainer style={{ marginTop: `${cordovaBallotFilterTopMargin()}` }}>
+            <HeaderContentContainer style={{ marginTop: `${cordovaBallotFilterTopMargin()}` }}>
               <div className="container-fluid">
                 <div className="row">
                   <div className="col-md-12">
@@ -1345,7 +1345,7 @@ class Ballot extends Component {
                   </div>
                 </div>
               </div>
-            </PageContentContainer>
+            </HeaderContentContainer>
           </div>
 
           <PageContentContainer>

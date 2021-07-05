@@ -236,7 +236,14 @@ class HeaderBackTo extends Component {
     // dumpObjProps('cordovaOverrides', cordovaOverrides);
 
     return (
-      <AppBar id="headerBackToAppBar" className={headerClassName} color="default" style={cordovaOverrides} classes={{ root: classes.stackedReturnAndShare }}>
+      <AppBar
+        id="headerBackToAppBar"
+        className={headerClassName}
+        color="default"
+        style={cordovaOverrides}
+        classes={{ root: classes.stackedReturnAndShare }}
+        elevation={0}
+      >
         <Toolbar className="header-toolbar header-backto-toolbar" disableGutters>
           <HeaderBackToButton
             backToLink={backToLink}
@@ -362,6 +369,9 @@ const FirstNameWrapper = styled.div`
 const NotificationsAndProfileWrapper = styled.div`
   display: flex;
   z-index: 3; //to float above the account/ProfilePopUp menu option grey div
+  @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
+    padding-left: calc(100% - 154px);
+  }
 `;
 
 export default withStyles(styles)(HeaderBackTo);

@@ -314,7 +314,12 @@ class HeaderBackToVoterGuides extends Component {
     }
 
     return (
-      <AppBar className={appBarCname} color="default" classes={{ root: classes.stackedReturnAndShare }}>
+      <AppBar
+        className={appBarCname}
+        color="default"
+        classes={{ root: classes.stackedReturnAndShare }}
+        elevation={0}
+      >
         <Toolbar className="header-toolbar header-backto-toolbar" disableGutters>
           <HeaderBackToButton
             backToLink={backToLink}

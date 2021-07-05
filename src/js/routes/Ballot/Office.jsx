@@ -1,7 +1,6 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import Helmet from 'react-helmet';
-import styled from 'styled-components';
 import ActivityActions from '../../actions/ActivityActions';
 import AnalyticsActions from '../../actions/AnalyticsActions';
 import CandidateActions from '../../actions/CandidateActions';
@@ -9,6 +8,7 @@ import IssueActions from '../../actions/IssueActions';
 import OfficeActions from '../../actions/OfficeActions';
 import CandidateList from '../../components/Ballot/CandidateList';
 import LoadingWheel from '../../components/LoadingWheel';
+import { PageContentContainer } from '../../components/Widgets/ReusableStyles';
 import Testimonial from '../../components/Widgets/Testimonial';
 import AppObservableStore from '../../stores/AppObservableStore';
 import BallotStore from '../../stores/BallotStore';
@@ -304,7 +304,7 @@ class Office extends Component {
 
 
     return (
-      <OfficeWrapper className="page-content-container">
+      <PageContentContainer>
         <Helmet
           title={titleText}
           meta={[{ name: 'description', content: descriptionText }]}
@@ -334,17 +334,13 @@ class Office extends Component {
           </div>
 
         </div>
-      </OfficeWrapper>
+      </PageContentContainer>
     );
   }
 }
 Office.propTypes = {
   match: PropTypes.object.isRequired,
 };
-
-const OfficeWrapper = styled.div`
-  display: flex;
-`;
 
 export default Office;
 
