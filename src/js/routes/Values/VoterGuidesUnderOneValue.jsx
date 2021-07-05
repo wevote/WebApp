@@ -6,6 +6,7 @@ import React, { Component, Suspense } from 'react';
 import Helmet from 'react-helmet';
 import styled from 'styled-components';
 import IssueActions from '../../actions/IssueActions';
+import { PageContentContainer } from '../../components/Widgets/ReusableStyles';
 import GuideList from '../../components/VoterGuide/GuideList';
 import IssueStore from '../../stores/IssueStore';
 import VoterGuideStore from '../../stores/VoterGuideStore';
@@ -111,7 +112,7 @@ class VoterGuidesUnderOneValue extends Component {
     }
 
     return (
-      <div className="page-content-container">
+      <PageContentContainer>
         <div className="opinion-view">
           <Helmet title={`${pageTitle} - We Vote`} />
           <IssueCard
@@ -161,7 +162,7 @@ class VoterGuidesUnderOneValue extends Component {
           </DelayedLoad>
           <br />
         </div>
-      </div>
+      </PageContentContainer>
     );
   }
 }

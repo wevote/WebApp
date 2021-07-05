@@ -25,6 +25,11 @@ export default class Intro extends Component {
     this.getOrgCount();
   }
 
+  componentWillUnmount () {
+    if (this.voterCountInterval) clearInterval(this.voterCountInterval);
+    if (this.voterOrgCountInterval) clearInterval(this.voterOrgCountInterval);
+  }
+
   getVoterCount () {
     this.voterCountInterval = setInterval(() => {
       if (window.$ && window.$.ajax) {
@@ -33,19 +38,15 @@ export default class Intro extends Component {
           url: `${webAppConfig.WE_VOTE_SERVER_API_ROOT_URL}voterCount/`,
           context: document.body,
         }).done((resp) => {
+          const { voter_count: voterCount } = resp;
           this.setState({
-            voterCount: resp.voter_count,
+            voterCount,
           });
         });
         clearInterval(this.voterCountInterval);
         this.voterCountInterval = null;
       }
     }, 250);
-  }
-
-  componentWillUnmount () {
-    if (this.voterCountInterval) clearInterval(this.voterCountInterval);
-    if (this.voterOrgCountInterval) clearInterval(this.voterOrgCountInterval);
   }
 
   getOrgCount () {
@@ -56,8 +57,9 @@ export default class Intro extends Component {
           url: `${webAppConfig.WE_VOTE_SERVER_API_ROOT_URL}organizationCount/`,
           context: document.body,
         }).done((resp) => {
+          const { organization_count: orgCount } = resp;
           this.setState({
-            orgCount: resp.organization_count,
+            orgCount,
           });
         });
         clearInterval(this.voterOrgCountInterval);

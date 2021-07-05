@@ -19,6 +19,7 @@ import { calculateBallotBaseUrl, capitalizeString } from '../../utils/textFormat
 import BallotSearchResults from '../Ballot/BallotSearchResults';
 import FooterDoneBar from '../Navigation/FooterDoneBar';
 import EndorsementCard from '../Widgets/EndorsementCard';
+import { PageContentContainer } from '../Widgets/ReusableStyles';
 import ThisIsMeAction from '../Widgets/ThisIsMeAction';
 import VoterGuidePositionList from './VoterGuidePositionList';
 
@@ -278,7 +279,7 @@ class VoterGuideEndorsements extends Component {
           title={titleText}
           meta={[{ name: 'description', content: descriptionText }]}
         />
-        <div className="page-content-container">
+        <PageContentContainer>
           <div className="container-fluid">
             <VoterGuideEndorsementsWrapper>
               { lookingAtSelf && (
@@ -350,7 +351,7 @@ class VoterGuideEndorsements extends Component {
               )}
             </ExtraActionsWrapper>
           </div>
-        </div>
+        </PageContentContainer>
       </VoterGuideEndorsementsOuterWrapper>
     );
   }

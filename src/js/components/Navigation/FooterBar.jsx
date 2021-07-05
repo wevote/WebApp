@@ -2,10 +2,10 @@ import React from 'react';
 import styled from 'styled-components';
 import { withStyles } from '@material-ui/core/styles';
 import { BottomNavigation, BottomNavigationAction } from '@material-ui/core';
-import { QuestionAnswer, HelpOutline, Ballot, HowToVote, People } from '@material-ui/icons';
+import { QuestionAnswer, Ballot, HowToVote, People } from '@material-ui/icons';
 import AppObservableStore, { messageService } from '../../stores/AppObservableStore';
 import { cordovaFooterHeight } from '../../utils/cordovaOffsets';
-import { historyPush, isCordova, cordovaOpenSafariView } from '../../utils/cordovaUtils';
+import { historyPush, isCordova } from '../../utils/cordovaUtils';
 import { stringContains } from '../../utils/textFormat';
 import FriendStore from '../../stores/FriendStore';
 import { renderLog } from '../../utils/logging';
@@ -162,22 +162,22 @@ class FooterBar extends React.Component {
             />
             */}
             <BottomNavigationAction className="no-outline" id="newsTabFooterBar" label="Discuss" showLabel icon={<People />} />
-            {isCordova() ? (
-              <BottomNavigationAction
-                className="no-outline"
-                id="helpTabFooterBar"
-                label="Help"
-                showLabel
-                icon={<HelpOutline style={{ color: 'rgba(0, 0, 0, 0.541176)' }} />}
-                onClick={() => cordovaOpenSafariView('https://help.wevote.us', null, 50)}
-              />
-            ) : (
-              <BottomNavigationAction
-                className="no-outline"
-                id="helpTabFooterBar"
-                icon={<HelpOutline style={{ color: 'rgba(0, 0, 0, 0.541176)' }} />}
-              />
-            )}
+            {/* {isCordova() ? ( */}
+            {/*  <BottomNavigationAction */}
+            {/*    className="no-outline" */}
+            {/*    id="helpTabFooterBar" */}
+            {/*    label="Help" */}
+            {/*    showLabel */}
+            {/*    icon={<HelpOutline style={{ color: 'rgba(0, 0, 0, 0.541176)' }} />} */}
+            {/*    onClick={() => cordovaOpenSafariView('https://help.wevote.us', null, 50)} */}
+            {/*  /> */}
+            {/* ) : ( */}
+            {/*  <BottomNavigationAction */}
+            {/*    className="no-outline" */}
+            {/*    id="helpTabFooterBar" */}
+            {/*    icon={<HelpOutline style={{ color: 'rgba(0, 0, 0, 0.541176)' }} />} */}
+            {/*  /> */}
+            {/* )} */}
           </BottomNavigation>
         </div>
       </FooterBarWrapper>

@@ -5,6 +5,7 @@ import OrganizationActions from '../../actions/OrganizationActions';
 import VoterGuideActions from '../../actions/VoterGuideActions';
 import SelectVoterGuidesSideBar from '../../components/Navigation/SelectVoterGuidesSideBar';
 import VoterGuideListSearchResults from '../../components/Settings/VoterGuideListSearchResults';
+import { PageContentContainer } from '../../components/Widgets/ReusableStyles';
 import OrganizationStore from '../../stores/OrganizationStore';
 import VoterGuideStore from '../../stores/VoterGuideStore';
 import VoterStore from '../../stores/VoterStore';
@@ -146,7 +147,7 @@ class VoterGuideListDashboard extends Component {
     return (
       <div className="settings-dashboard">
         <Helmet title="Your Endorsements - We Vote" />
-        <div className="page-content-container">
+        <PageContentContainer>
           <div className="container-fluid">
             <div className="row">
               {/* Mobile and Desktop mode */}
@@ -198,7 +199,7 @@ class VoterGuideListDashboard extends Component {
               </div>
             </div>
           </div>
-        </div>
+        </PageContentContainer>
       </div>
     );
   }

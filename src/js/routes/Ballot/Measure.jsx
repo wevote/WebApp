@@ -11,6 +11,7 @@ import OrganizationActions from '../../actions/OrganizationActions';
 import MeasureStickyHeader from '../../components/Ballot/MeasureStickyHeader';
 import LoadingWheelComp from '../../components/LoadingWheelComp';
 import EndorsementCard from '../../components/Widgets/EndorsementCard';
+import { PageContentContainer } from '../../components/Widgets/ReusableStyles';
 import SearchOnGoogle from '../../components/Widgets/SearchOnGoogle';
 import SnackNotifier from '../../components/Widgets/SnackNotifier';
 import ViewOnBallotpedia from '../../components/Widgets/ViewOnBallotpedia';
@@ -21,7 +22,6 @@ import MeasureStore from '../../stores/MeasureStore';
 import VoterGuideStore from '../../stores/VoterGuideStore';
 import VoterStore from '../../stores/VoterStore';
 import { cordovaBallotFilterTopMargin } from '../../utils/cordovaOffsets';
-import { isWebApp } from '../../utils/cordovaUtils';
 import { renderLog } from '../../utils/logging';
 import { capitalizeString } from '../../utils/textFormat';
 
@@ -297,9 +297,9 @@ class Measure extends Component {
         }
         <Suspense fallback={<LoadingWheelComp />}>
           <SnackNotifier />
-          <div className="page-content-container" style={{ marginTop: `${cordovaBallotFilterTopMargin()}` }}>
+          <PageContentContainer style={{ marginTop: `${cordovaBallotFilterTopMargin()}` }}>
             {/* The following style adjustment prevents horizontal scrolling from the .card style */}
-            <div className="card" style={isWebApp() ? {} : { marginRight: 0, marginLeft: 0 }}>
+            <div className="card" style={{ marginRight: 0, marginLeft: 0 }}>
               <TwoColumns>
                 <LeftColumnWrapper>
                   <MeasureItem measureWeVoteId={measureWeVoteId} />
@@ -318,7 +318,7 @@ class Measure extends Component {
               </TwoColumns>
             </div>
             { !!(allCachedPositionsForThisMeasure.length) && (
-              <section className="card">
+              <section className="card" style={{ marginRight: 0, marginLeft: 0 }}>
                 <DelayedLoad showLoadingText waitBeforeShow={500}>
                   <PositionList
                     incomingPositionList={allCachedPositionsForThisMeasure}
@@ -361,7 +361,7 @@ class Measure extends Component {
                 />
               </span>
             )}
-          </div>
+          </PageContentContainer>
         </Suspense>
       </>
     );

@@ -1,4 +1,4 @@
-import { withStyles } from '@material-ui/core/styles';
+import { withStyles, withTheme } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
 import Helmet from 'react-helmet';
@@ -22,6 +22,7 @@ import ReadyTaskRegister from '../components/Ready/ReadyTaskRegister';
 import ShareButtonDesktopTablet from '../components/Share/ShareButtonDesktopTablet';
 import ValuesToFollowPreview from '../components/Values/ValuesToFollowPreview';
 import BrowserPushMessage from '../components/Widgets/BrowserPushMessage';
+import { PageContentContainer } from '../components/Widgets/ReusableStyles';
 import SnackNotifier from '../components/Widgets/SnackNotifier';
 import webAppConfig from '../config';
 import AppObservableStore, { messageService } from '../stores/AppObservableStore';
@@ -204,7 +205,7 @@ class Ready extends Component {
 
     // console.log('locationGuessClosed:', locationGuessClosed, ', textForMapSearch:', textForMapSearch, ', showAddressVerificationForm:', showAddressVerificationForm);
     return (
-      <Wrapper className="page-content-container">
+      <PageContentContainer>
         <Suspense fallback={<LoadingWheelComp />}>
           <PageContainer className="container-fluid" style={this.getTopPadding()}>
             <SnackNotifier />
@@ -369,7 +370,7 @@ class Ready extends Component {
             </div>
           </PageContainer>
         </Suspense>
-      </Wrapper>
+      </PageContentContainer>
     );
   }
 }
@@ -479,7 +480,5 @@ const ValuesListWrapper = styled.div`
   margin-bottom: 12px;
 `;
 
-const Wrapper = styled.div`
-`;
+export default withTheme(withStyles(styles)(Ready));
 
-export default withStyles(styles)(Ready);

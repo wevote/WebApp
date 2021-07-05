@@ -18,6 +18,7 @@ import SettingsSharing from '../../components/Settings/SettingsSharing';
 import SettingsSiteText from '../../components/Settings/SettingsSiteText';
 import SettingsSubscriptionPlan from '../../components/Settings/SettingsSubscriptionPlan';
 import ToolsToShareOnOtherWebsites from '../../components/Settings/ToolsToShareOnOtherWebsites';
+import { PageContentContainer } from '../../components/Widgets/ReusableStyles';
 import BallotStore from '../../stores/BallotStore';
 import OrganizationStore from '../../stores/OrganizationStore';
 import VoterGuideStore from '../../stores/VoterGuideStore';
@@ -241,7 +242,7 @@ export default class SettingsDashboard extends Component {
     }
 
     return (
-      <div className="page-content-container">
+      <PageContentContainer>
         <div className={isWebApp() ? 'settings-dashboard u-stack--xl' : 'settings-dashboard SettingsCardBottomCordova'}>
           {/* Desktop left navigation + Settings content.
             WebApp only, since the dashboard doesn't go well with the HamburgerMenu on iPad */}
@@ -303,7 +304,7 @@ export default class SettingsDashboard extends Component {
             </div>
           )}
         </div>
-      </div>
+      </PageContentContainer>
     );
   }
 }

@@ -12,10 +12,12 @@ import ShareButtonDesktopTablet from '../../components/Share/ShareButtonDesktopT
 import OrganizationCard from '../../components/VoterGuide/OrganizationCard';
 import OrganizationVoterGuideCard from '../../components/VoterGuide/OrganizationVoterGuideCard';
 import OrganizationVoterGuideTabs from '../../components/VoterGuide/OrganizationVoterGuideTabs';
+import { PageContentContainer } from '../../components/Widgets/ReusableStyles';
 import AppObservableStore from '../../stores/AppObservableStore';
 import OrganizationStore from '../../stores/OrganizationStore';
 import VoterGuideStore from '../../stores/VoterGuideStore';
 import VoterStore from '../../stores/VoterStore';
+import cordovaScrollablePaneTopPadding from '../../utils/cordovaScrollablePaneTopPadding';
 import { historyPush, isIPad, isWebApp } from '../../utils/cordovaUtils';
 import { renderLog } from '../../utils/logging';
 import { isSpeakerTypePrivateCitizen } from '../../utils/organization-functions';
@@ -318,145 +320,145 @@ export default class OrganizationVoterGuide extends Component {
     }
 
     return (
-      <Wrapper className="page-content-container">
-        {/* Header Banner Spacing for Desktop */}
-        <BannerOverlayDesktopOuterWrapper>
-          <BannerOverlayDesktopInnerWrapper>
-            <BannerOverlayDesktopShareButtonWrapper ipad={isIPad()}>
-              <BannerOverlayDesktopShareButtonInnerWrapper>
-                <ShareButtonDesktopTablet
-                  organizationShare
-                  organizationWeVoteId={organizationWeVoteId}
-                />
-              </BannerOverlayDesktopShareButtonInnerWrapper>
-            </BannerOverlayDesktopShareButtonWrapper>
-            <BannerContainerDesktop ipad={isIPad()}>
-              { organizationBannerUrl !== '' ? (
-                <div className="organization-banner-image-div d-print-none">
-                  <img alt="Organization Banner Image" className="organization-banner-image-img" src={organizationBannerUrl} aria-hidden="true" />
-                </div>
-              ) :
-                <OrganizationEmptyBannerImage />}
-            </BannerContainerDesktop>
-          </BannerOverlayDesktopInnerWrapper>
-        </BannerOverlayDesktopOuterWrapper>
-        {/* Header Banner Spacing for Mobile */}
-        <div className="d-block d-sm-none d-print-none">
-          { organizationBannerUrl !== '' ? (
-            <div className="organization-banner-image-div d-print-none">
-              <img alt="Organization Banner Image" className="organization-banner-image-img" src={organizationBannerUrl} aria-hidden="true" />
-            </div>
-          ) :
-            <div className="organization-banner-image-non-twitter-users" />}
-        </div>
-
-        <div className="u-show-mobile">
-          <div className="col-12">
-            <div className="card">
-              <div className="card-main">
-                <OrganizationCard
-                  organization={this.state.organization}
-                  useReadMoreForTwitterDescription
-                />
-                { isVoterOwner && (
-                  <EditYourEndorsementsWrapper>
-                    <Button
-                      id="organizationVoterGuideEdit"
-                      onClick={this.onEdit}
-                      size="small"
-                      variant="outlined"
-                    >
-                      <span>Edit Your Endorsements</span>
-                    </Button>
-                  </EditYourEndorsementsWrapper>
-                )}
-                { !isVoterOwner && (
-                  <>
-                    <FollowToggleMobileWrapper>
-                      <FollowToggle
-                        platformType="mobile"
-                        organizationWeVoteId={organizationWeVoteId}
-                        // otherVoterWeVoteId={organizationLinkedVoterWeVoteId}
-                        showFollowingText
-                      />
-                    </FollowToggleMobileWrapper>
-                    { (isSpeakerTypePrivateCitizen(organizationType) && organizationLinkedVoterWeVoteId) && (
-                      <FriendToggleMobileWrapper>
-                        <FriendToggle
-                          displayFullWidth
-                          otherVoterWeVoteId={organizationLinkedVoterWeVoteId}
-                          showFriendsText
+      <PageContentContainer style={{ paddingTop: `${cordovaScrollablePaneTopPadding()}` }}>
+        <WrapperFlex>
+          {/* Header Banner Spacing for Desktop */}
+          <BannerOverlayDesktopOuterWrapper>
+            <BannerOverlayDesktopInnerWrapper>
+              <BannerOverlayDesktopShareButtonWrapper ipad={isIPad()}>
+                <BannerOverlayDesktopShareButtonInnerWrapper>
+                  <ShareButtonDesktopTablet
+                    organizationShare
+                    organizationWeVoteId={organizationWeVoteId}
+                  />
+                </BannerOverlayDesktopShareButtonInnerWrapper>
+              </BannerOverlayDesktopShareButtonWrapper>
+              <BannerContainerDesktop ipad={isIPad()}>
+                { organizationBannerUrl !== '' ? (
+                  <div className="organization-banner-image-div d-print-none">
+                    <img alt="Organization Banner Image" className="organization-banner-image-img" src={organizationBannerUrl} aria-hidden="true" />
+                  </div>
+                ) :
+                  <OrganizationEmptyBannerImage />}
+              </BannerContainerDesktop>
+            </BannerOverlayDesktopInnerWrapper>
+          </BannerOverlayDesktopOuterWrapper>
+          {/* Header Banner Spacing for Mobile */}
+          <div className="d-block d-sm-none d-print-none">
+            { organizationBannerUrl !== '' ? (
+              <div className="organization-banner-image-div d-print-none">
+                <img alt="Organization Banner Image" className="organization-banner-image-img" src={organizationBannerUrl} aria-hidden="true" />
+              </div>
+            ) :
+              <div className="organization-banner-image-non-twitter-users" />}
+          </div>
+          <div className="u-show-mobile">
+            <div className="col-12">
+              <div className="card">
+                <div className="card-main">
+                  <OrganizationCard
+                    organization={this.state.organization}
+                    useReadMoreForTwitterDescription
+                  />
+                  { isVoterOwner && (
+                    <EditYourEndorsementsWrapper>
+                      <Button
+                        id="organizationVoterGuideEdit"
+                        onClick={this.onEdit}
+                        size="small"
+                        variant="outlined"
+                      >
+                        <span>Edit Your Endorsements</span>
+                      </Button>
+                    </EditYourEndorsementsWrapper>
+                  )}
+                  { !isVoterOwner && (
+                    <>
+                      <FollowToggleMobileWrapper>
+                        <FollowToggle
+                          platformType="mobile"
+                          organizationWeVoteId={organizationWeVoteId}
+                          // otherVoterWeVoteId={organizationLinkedVoterWeVoteId}
+                          showFollowingText
                         />
-                      </FriendToggleMobileWrapper>
-                    )}
-                  </>
-                )}
-                <FriendsFollowingFollowersMobileWrapper className="d-print-none">
-                  <ul className="nav">
-                    {developmentFeatureTurnedOn && (
+                      </FollowToggleMobileWrapper>
+                      { (isSpeakerTypePrivateCitizen(organizationType) && organizationLinkedVoterWeVoteId) && (
+                        <FriendToggleMobileWrapper>
+                          <FriendToggle
+                            displayFullWidth
+                            otherVoterWeVoteId={organizationLinkedVoterWeVoteId}
+                            showFriendsText
+                          />
+                        </FriendToggleMobileWrapper>
+                      )}
+                    </>
+                  )}
+                  <FriendsFollowingFollowersMobileWrapper className="d-print-none">
+                    <ul className="nav">
+                      {developmentFeatureTurnedOn && (
+                        <li>
+                          {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
+                          <a
+                            style={{ padding: '5px 5px' }}
+                            onClick={() => this.goToVoterGuideDetailsPage('friends')}
+                          >
+                            <TabNumber>{friendsList.length}</TabNumber>
+                            <TabText>{' Friends'}</TabText>
+                          </a>
+                        </li>
+                      )}
                       <li>
                         {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
                         <a
                           style={{ padding: '5px 5px' }}
-                          onClick={() => this.goToVoterGuideDetailsPage('friends')}
+                          onClick={() => this.goToVoterGuideDetailsPage('following')}
                         >
-                          <TabNumber>{friendsList.length}</TabNumber>
-                          <TabText>{' Friends'}</TabText>
+                          <TabNumber>{this.state.voterGuideFollowedList.length}</TabNumber>
+                          <TabText>{' Following'}</TabText>
                         </a>
                       </li>
-                    )}
-                    <li>
-                      {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
-                      <a
-                        style={{ padding: '5px 5px' }}
-                        onClick={() => this.goToVoterGuideDetailsPage('following')}
-                      >
-                        <TabNumber>{this.state.voterGuideFollowedList.length}</TabNumber>
-                        <TabText>{' Following'}</TabText>
-                      </a>
-                    </li>
-                    <li>
-                      <a // eslint-disable-line
-                        style={{ padding: '5px 5px' }}
-                        onClick={() => this.goToVoterGuideDetailsPage('followers')}
-                      >
-                        <TabNumber>{voterGuideFollowersList.length}</TabNumber>
-                        <TabText>{' Followers'}</TabText>
-                      </a>
-                    </li>
-                  </ul>
-                </FriendsFollowingFollowersMobileWrapper>
+                      <li>
+                        <a // eslint-disable-line
+                          style={{ padding: '5px 5px' }}
+                          onClick={() => this.goToVoterGuideDetailsPage('followers')}
+                        >
+                          <TabNumber>{voterGuideFollowersList.length}</TabNumber>
+                          <TabText>{' Followers'}</TabText>
+                        </a>
+                      </li>
+                    </ul>
+                  </FriendsFollowingFollowersMobileWrapper>
+                </div>
               </div>
             </div>
           </div>
-        </div>
-
-        <div className="container-fluid">
-          <div className="row">
-            <div className="u-show-desktop-tablet col-4">
-              <CardContainer bannerUrl={organizationBannerUrl}>
-                <div className="card">
-                  <div className="card-main">
-                    <OrganizationVoterGuideCard organization={this.state.organization} isVoterOwner={isVoterOwner} />
+          <div className="container-fluid">
+            <div className="row">
+              <div className="u-show-desktop-tablet col-4">
+                <CardContainer bannerUrl={organizationBannerUrl}>
+                  <div className="card">
+                    <div className="card-main">
+                      <OrganizationVoterGuideCard organization={this.state.organization} isVoterOwner={isVoterOwner} />
+                    </div>
+                    <br />
                   </div>
-                  <br />
-                </div>
-              </CardContainer>
-            </div>
+                </CardContainer>
+              </div>
 
-            <div className="col-12 col-sm-8">
-              <OrganizationVoterGuideTabs
-                activeRoute={activeRoute}
-                activeRouteChanged={this.changeActiveRoute}
-                location={location}
-                organizationWeVoteId={organizationWeVoteId}
-                params={params}
-                ref={(ref) => { this.organizationVoterGuideTabsReference = ref; }}
-              />
+              <div className="col-12 col-sm-8">
+                <OrganizationVoterGuideTabs
+                  activeRoute={activeRoute}
+                  activeRouteChanged={this.changeActiveRoute}
+                  location={location}
+                  organizationWeVoteId={organizationWeVoteId}
+                  params={params}
+                  ref={(ref) => { this.organizationVoterGuideTabsReference = ref; }}
+                />
+              </div>
             </div>
           </div>
-        </div>
-      </Wrapper>
+        </WrapperFlex>
+      </PageContentContainer>
     );
   }
 }
@@ -465,7 +467,7 @@ OrganizationVoterGuide.propTypes = {
   match: PropTypes.object.isRequired,
 };
 
-const Wrapper = styled.div`
+const WrapperFlex = styled.div`
   display: flex;
   flex-flow: column;
 `;

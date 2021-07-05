@@ -19,6 +19,9 @@ const ReadyCard = styled.div`
   padding-left: 82px;
   position: relative;
   min-height: 314px;
+  @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
+    min-height: 10px;
+  }
   ::after {
     content: "";
     display: block;
@@ -46,8 +49,6 @@ const Icon = styled.div`
   left: 16px;
   top: 16px;
   z-index: 999;
-  height 100%;
-  width: fit-content;
   width: 50px;
   height: 50px;
   justify-content: center;

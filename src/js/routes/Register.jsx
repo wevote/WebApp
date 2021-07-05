@@ -10,6 +10,7 @@ import BallotActions from '../actions/BallotActions';
 import ReadyActions from '../actions/ReadyActions';
 import LoadingWheel from '../components/LoadingWheel';
 import BrowserPushMessage from '../components/Widgets/BrowserPushMessage';
+import { PageContentContainer } from '../components/Widgets/ReusableStyles';
 import { messageService } from '../stores/AppObservableStore';
 import BallotStore from '../stores/BallotStore';
 import VoterStore from '../stores/VoterStore';
@@ -553,7 +554,7 @@ class Register extends Component {
     };
 
     return (
-      <div className="page-content-container">
+      <PageContentContainer>
         <PageContainer className="container-fluid">
           <Helmet title="Register to Vote - We Vote" />
           <BrowserPushMessage incomingProps={this.props} />
@@ -593,7 +594,7 @@ class Register extends Component {
             </div>
           </div>
         </PageContainer>
-      </div>
+      </PageContentContainer>
     );
   }
 }

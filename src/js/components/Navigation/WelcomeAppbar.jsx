@@ -256,7 +256,7 @@ class WelcomeAppbar extends Component {
       showHowItWorksForVoters = true;
     }
     return (
-      <AppBar position="relative" classes={{ root: classes.appBarRoot }}>
+      <AppBar position="relative" classes={{ root: classes.appBarRoot }} elevation={0}>
         <Toolbar classes={{ root: classes.toolbar }} disableGutters style={{ top: cordovaWelcomeAppToolbarTop() }}>
           <LogoContainer>
             <HeaderBarLogo light />

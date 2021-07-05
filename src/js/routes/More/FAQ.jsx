@@ -1,8 +1,11 @@
 import React, { Component } from 'react';
 import Helmet from 'react-helmet';
 import { Link } from 'react-router-dom';
+import styled from 'styled-components';
+import { PageContentContainer } from '../../components/Widgets/ReusableStyles';
 import { renderLog } from '../../utils/logging';
 import ToolBar from './ToolBar';
+
 
 const OpenExternalWebSite = React.lazy(() => import(/* webpackChunkName: 'OpenExternalWebSite' */ '../../components/Widgets/OpenExternalWebSite'));
 
@@ -16,8 +19,8 @@ export default class FAQ extends Component {
     return (
       <div>
         <Helmet title="FAQ - We Vote" />
-        <div className="page-content-container">
-          <div className="container-fluid card">
+        <PageContentContainer>
+          <ContainerFluidWrapper className="container-fluid card">
             <div className="card-main">
               <h1 className="h1">Frequently Asked Questions</h1>
               <div
@@ -226,9 +229,16 @@ export default class FAQ extends Component {
               <br />
               <br />
             </div>
-          </div>
-        </div>
+          </ContainerFluidWrapper>
+        </PageContentContainer>
       </div>
     );
   }
 }
+
+const ContainerFluidWrapper = styled.div`
+  @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
+    margin: 0 0 8px 0;
+  }
+`;
+

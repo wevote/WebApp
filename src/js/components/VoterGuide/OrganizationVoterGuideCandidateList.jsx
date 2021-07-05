@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
+import isMobileScreenSize from '../../utils/isMobileScreenSize';
 import { renderLog } from '../../utils/logging';
 import OrganizationVoterGuideCandidateItem from './OrganizationVoterGuideCandidateItem';
 
@@ -7,8 +8,9 @@ import OrganizationVoterGuideCandidateItem from './OrganizationVoterGuideCandida
 export default class OrganizationVoterGuideCandidateList extends Component {
   render () {
     renderLog('OrganizationVoterGuideCandidateList');  // Set LOG_RENDER_EVENTS to log all renders
+    const top = isMobileScreenSize() ? '10px' : '0';
     return (
-      <article className="card-main__list-group">
+      <article className="card-main__list-group" style={{ paddingTop: { top } }}>
         { this.props.children.map((child) => (
           <div key={child.we_vote_id} className="card">
             <OrganizationVoterGuideCandidateItem

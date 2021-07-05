@@ -3,6 +3,7 @@ import Helmet from 'react-helmet';
 import { Link } from 'react-router-dom';
 import SearchGuidesToFollowBox from '../components/Search/SearchGuidesToFollowBox';
 import GuideList from '../components/VoterGuide/GuideList';
+import { PageContentContainer } from '../components/Widgets/ReusableStyles';
 import SnackNotifier from '../components/Widgets/SnackNotifier';
 import VoterGuideStore from '../stores/VoterGuideStore';
 import { renderLog } from '../utils/logging';
@@ -56,7 +57,7 @@ export default class Opinions extends Component {
     };
 
     return (
-      <div className="page-content-container">
+      <PageContentContainer>
         <div className="opinion-view">
           <SnackNotifier />
           <Helmet title="Build Your Network - We Vote" />
@@ -83,7 +84,7 @@ export default class Opinions extends Component {
           <Link className="pull-right" to="/opinions_ignored">Organizations you are ignoring</Link>
           <br />
         </div>
-      </div>
+      </PageContentContainer>
     );
   }
 }

@@ -3,10 +3,43 @@ import { withStyles } from '@material-ui/core/styles';
 import { ArrowBack, ArrowBackIos } from '@material-ui/icons';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
+import styled from 'styled-components';
 import { historyPush, isIOS } from '../../utils/cordovaUtils';
 import { renderLog } from '../../utils/logging';
 import { shortenText } from '../../utils/textFormat';
 
+class HeaderBackToButton extends Component {
+  render () {
+    renderLog('HeaderBackToButton');  // Set LOG_RENDER_EVENTS to log all renders
+    const { classes, className, backToLink, backToLinkText } = this.props;
+
+    return (
+      <StyledButton
+        variant="text"
+        color="primary"
+        classes={{ root: classes.root }}
+        className={`${className}`}
+        id="backToLinkTabHeader"
+        onClick={() => historyPush(backToLink)}
+      >
+        {isIOS() ? (
+          <ArrowBackIos className="button-icon" />
+        ) : (
+          <ArrowBack className="button-icon" />
+        )}
+        <span className="u-show-desktop-tablet u-no-break">{shortenText(backToLinkText, 60)}</span>
+        <span className="u-show-mobile-bigger-than-iphone5 u-no-break">{shortenText(backToLinkText, 23)}</span>
+        <span className="u-show-mobile-iphone5-or-smaller u-no-break">{shortenText(backToLinkText, 18)}</span>
+      </StyledButton>
+    );
+  }
+}
+HeaderBackToButton.propTypes = {
+  backToLink: PropTypes.string.isRequired,
+  backToLinkText: PropTypes.string,
+  className: PropTypes.string,
+  classes: PropTypes.object,
+};
 
 const styles = {
   root: {
@@ -19,37 +52,11 @@ const styles = {
   },
 };
 
-class HeaderBackToButton extends Component {
-  render () {
-    renderLog('HeaderBackToButton');  // Set LOG_RENDER_EVENTS to log all renders
-    const { classes, className, backToLink, backToLinkText } = this.props;
-
-    return (
-      <Button
-        variant="text"
-        color="primary"
-        classes={{ root: classes.root }}
-        className={`page-header__backToButton ${className}`}
-        id="backToLinkTabHeader"
-        onClick={() => historyPush(backToLink)}
-      >
-        {isIOS() ? (
-          <ArrowBackIos className="button-icon" />
-        ) : (
-          <ArrowBack className="button-icon" />
-        )}
-        <span className="u-show-desktop-tablet u-no-break">{shortenText(backToLinkText, 60)}</span>
-        <span className="u-show-mobile-bigger-than-iphone5 u-no-break">{shortenText(backToLinkText, 23)}</span>
-        <span className="u-show-mobile-iphone5-or-smaller u-no-break">{shortenText(backToLinkText, 18)}</span>
-      </Button>
-    );
+// July 2021: A working example of styled mui-core components -- enabled by the newly added StylesProvider in App.js
+const StyledButton = styled(Button)`
+  @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
+    padding-left: 53px;
   }
-}
-HeaderBackToButton.propTypes = {
-  backToLink: PropTypes.string.isRequired,
-  backToLinkText: PropTypes.string,
-  className: PropTypes.string,
-  classes: PropTypes.object,
-};
+`;
 
 export default withStyles(styles)(HeaderBackToButton);
