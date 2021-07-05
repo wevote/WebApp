@@ -10,7 +10,7 @@ export default class OrganizationVoterGuideCandidateList extends Component {
     renderLog('OrganizationVoterGuideCandidateList');  // Set LOG_RENDER_EVENTS to log all renders
     const top = isMobileScreenSize() ? '10px' : '0';
     return (
-      <article className="card-main__list-group" style={{ paddingTop: {top}}}>
+      <article className="card-main__list-group" style={{ paddingTop: { top } }}>
         { this.props.children.map((child) => (
           <div key={child.we_vote_id} className="card">
             <OrganizationVoterGuideCandidateItem
