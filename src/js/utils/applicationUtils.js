@@ -115,11 +115,6 @@ export function getApplicationViewBooleans (pathname) {
     stringContains('/btvg/', pathnameLowerCase) ||
     stringContains('/btcand/', pathnameLowerCase) ||  // back to candidate
     stringContains('/btmeas/', pathnameLowerCase)) {  // back to measure
-    // If here, we want the top header to be "Back To..."
-    // "/btdb/" stands for "Back To Default Ballot Page" back-to-default-ballot
-    // "/btdo/" stands for "Back To Default Office Page" back-to-default-office
-    // "/btvg/" stands for "Back To Voter Guide Page"
-    // "/bto/" stands for "Back To Voter Guide Office Page"
     showBackToBallotHeader = true;
   } else if (stringContains('/settings/voter_guide', pathnameLowerCase) ||
     pathnameLowerCase === '/settings/voterguidesmenu' ||
