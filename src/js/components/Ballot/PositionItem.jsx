@@ -287,7 +287,7 @@ class PositionItem extends Component {
       const organizationPopoverCard = (<OrganizationPopoverCard organizationWeVoteId={organizationWeVoteId} />);
       let moreInfoUrl = position.more_info_url;
       if (moreInfoUrl) {
-        if (!moreInfoUrl.toLowerCase().startsWith('http') ) {
+        if (!moreInfoUrl.toLowerCase().startsWith('http')) {
           moreInfoUrl = `http://${moreInfoUrl}`;
         }
       }
@@ -736,18 +736,17 @@ const DesktopItemFooter = styled.div`
 
 const DesktopItemHeader = styled.div`
   display: flex;
-  align-items: top;
+  // align-items: top;   // nonsense property value, commented out July 7, 2021
   justify-content: flex-start;
 `;
 
 const DesktopItemImage = styled.div`
   width: 57.76px;
-  margin: 0 auto;
+  margin: 0 auto 8px auto;
   height: 57.76px;
   display: flex;
   align-items: flex-start;
   justify-content: center;
-  margin-bottom: 8px;
   * {
     border-radius: 6px;
     width: 57.76px !important;
