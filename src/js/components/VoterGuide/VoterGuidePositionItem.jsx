@@ -13,7 +13,7 @@ import MeasureStore from '../../stores/MeasureStore';
 import OrganizationStore from '../../stores/OrganizationStore';
 import { cordovaDot } from '../../utils/cordovaUtils';
 import { renderLog } from '../../utils/logging';
-import { capitalizeString, numberWithCommas, startsWith, stringContains } from '../../utils/textFormat';
+import { capitalizeString, numberWithCommas, stringContains } from '../../utils/textFormat';
 import BallotItemVoterGuideSupportOpposeDisplay from '../Widgets/BallotItemVoterGuideSupportOpposeDisplay';
 import ExternalLinkIcon from '../Widgets/ExternalLinkIcon';
 
@@ -242,7 +242,7 @@ class VoterGuidePositionItem extends Component {
 
     // const onEditPositionClick = this.state.showEditPositionModal ? this.closeEditPositionModal.bind(this) : this.openEditPositionModal.bind(this);
     if (moreInfoUrl) {
-      if (!startsWith('http', moreInfoUrl.toLowerCase())) {
+      if (!moreInfoUrl.toLowerCase().startsWith('http')) {
         moreInfoUrl = `http://${moreInfoUrl}`;
       }
     }

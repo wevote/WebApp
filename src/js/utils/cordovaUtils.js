@@ -590,6 +590,8 @@ export function chipLabelText (fullLabel) {
   } else if (isWebApp() && window.innerWidth < 400) { // iPhone 6/7/8 in Web Browser
     if (fullLabel === 'Federal') {
       return 'Fed';
+    } else if (fullLabel === 'Measure') {
+      return 'Meas.';
     }
   } else if (isCordova() && window.innerWidth < 400) { // iPhone SE/SE2/5 in Cordova
     if (fullLabel === 'Federal') {

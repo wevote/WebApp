@@ -278,7 +278,7 @@ export default class SettingsAccount extends Component {
     const { pathname } = window.location;
     // console.log('localStoreSignInStartFullUrl, pathname:', pathname);
     if (pathname !== '/settings/account') {
-      AppObservableStore.storeSignInStartFullUrl();
+      AppObservableStore.setSignInStartFullUrl();
     }
   }
 

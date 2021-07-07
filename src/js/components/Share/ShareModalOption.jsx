@@ -34,7 +34,7 @@ class ShareModalOption extends Component {
 
   onAppObservableStoreChange () {
     const { shareModalStep } = this.state;
-    const newShareModalStep = AppObservableStore.shareModalStep();
+    const newShareModalStep = AppObservableStore.getShareModalStep();
     if (newShareModalStep !== shareModalStep) {
       // If we change modes, reset the copy link state
       this.setState({

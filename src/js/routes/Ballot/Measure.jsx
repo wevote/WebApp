@@ -22,6 +22,7 @@ import MeasureStore from '../../stores/MeasureStore';
 import VoterGuideStore from '../../stores/VoterGuideStore';
 import VoterStore from '../../stores/VoterStore';
 import { cordovaBallotFilterTopMargin } from '../../utils/cordovaOffsets';
+import isMobileScreenSize from '../../utils/isMobileScreenSize';
 import { renderLog } from '../../utils/logging';
 import { capitalizeString } from '../../utils/textFormat';
 
@@ -297,7 +298,13 @@ class Measure extends Component {
         }
         <Suspense fallback={<LoadingWheelComp />}>
           <SnackNotifier />
-          <PageContentContainer style={{ marginTop: `${cordovaBallotFilterTopMargin()}` }}>
+          <PageContentContainer
+            style={{
+              marginTop: `${cordovaBallotFilterTopMargin()}`,
+              marginRight: isMobileScreenSize() ? '0' : '',
+              marginLeft: isMobileScreenSize() ? '0' : '',
+            }}
+          >
             {/* The following style adjustment prevents horizontal scrolling from the .card style */}
             <div className="card" style={{ marginRight: 0, marginLeft: 0 }}>
               <TwoColumns>
@@ -403,6 +410,9 @@ const RightColumnWrapper = styled.div`
 const TwoColumns = styled.div`
   display: flex;
   margin: 0 -8px 0 -8px;
+  @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
+    margin: 0 3px;
+  }
 `;
 
 export default withStyles(styles)(Measure);

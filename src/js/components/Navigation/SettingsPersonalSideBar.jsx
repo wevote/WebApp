@@ -35,7 +35,7 @@ export default class SettingsPersonalSideBar extends Component {
     const { isSignedIn } = this.props;
     this.setState({
       isOnPartnerUrl: AppObservableStore.isOnPartnerUrl(),
-      voterIsAdminForThisUrl: AppObservableStore.voterIsAdminForThisUrl(VoterStore.getLinkedOrganizationWeVoteId()),
+      voterIsAdminForThisUrl: AppObservableStore.isVoterAdminForThisUrl(VoterStore.getLinkedOrganizationWeVoteId()),
       isSignedIn,
     });
   }
@@ -45,7 +45,7 @@ export default class SettingsPersonalSideBar extends Component {
     const { isSignedIn } = nextProps;
     this.setState({
       isOnPartnerUrl: AppObservableStore.isOnPartnerUrl(),
-      voterIsAdminForThisUrl: AppObservableStore.voterIsAdminForThisUrl(VoterStore.getLinkedOrganizationWeVoteId()),
+      voterIsAdminForThisUrl: AppObservableStore.isVoterAdminForThisUrl(VoterStore.getLinkedOrganizationWeVoteId()),
       isSignedIn,
     });
   }

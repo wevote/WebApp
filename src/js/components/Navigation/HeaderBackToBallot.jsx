@@ -15,6 +15,7 @@ import OrganizationStore from '../../stores/OrganizationStore';
 import VoterStore from '../../stores/VoterStore';
 import { dumpCssFromId } from '../../utils/appleSiliconUtils';
 import { hasIPhoneNotch, historyPush, isAndroid, isCordova, isIOSAppOnMac, isIPad, isWebApp } from '../../utils/cordovaUtils';
+import isMobileScreenSize from '../../utils/isMobileScreenSize';
 import LazyImage from '../../utils/LazyImage';
 import { renderLog } from '../../utils/logging';
 import { shortenText, stringContains } from '../../utils/textFormat';
@@ -174,7 +175,7 @@ class HeaderBackToBallot extends Component {
     const voterPhotoUrlMedium = voter.voter_photo_url_medium;
     this.setState({
       scrolledDown: AppObservableStore.getScrolledDown(),
-      shareModalStep: AppObservableStore.shareModalStep(),
+      shareModalStep: AppObservableStore.getShareModalStep(),
       showShareModal: AppObservableStore.showShareModal(),
       showSignInModal: AppObservableStore.showSignInModal(),
       voter,
@@ -293,7 +294,7 @@ class HeaderBackToBallot extends Component {
     const voterIsSignedIn = voter.is_signed_in;
     const voterPhotoUrlMedium = voter.voter_photo_url_medium;
     this.setState({
-      shareModalStep: AppObservableStore.shareModalStep(),
+      shareModalStep: AppObservableStore.getShareModalStep(),
       showShareModal: AppObservableStore.showShareModal(),
       voter,
       voterFirstName,
@@ -396,7 +397,7 @@ class HeaderBackToBallot extends Component {
   onAppObservableStoreChange () {
     this.setState({
       scrolledDown: AppObservableStore.getScrolledDown(),
-      shareModalStep: AppObservableStore.shareModalStep(),
+      shareModalStep: AppObservableStore.getShareModalStep(),
       showShareModal: AppObservableStore.showShareModal(),
       showSignInModal: AppObservableStore.showSignInModal(),
     });
@@ -688,7 +689,7 @@ class HeaderBackToBallot extends Component {
       let cname = 'page-header';
       if (onOfficeRoute) {
         if (isWebApp()) {
-          cname = 'page-header page-header__back-to-ballot';
+          cname = `page-header ${!isMobileScreenSize() ? 'page-header__back-to-ballot' : ''}`;
         } else if (hasIPhoneNotch()) {
           cname = 'page-header page-header__back-to-ballot-cordova  page-header__cordova-iphonex';
         } else {
@@ -702,7 +703,7 @@ class HeaderBackToBallot extends Component {
     const onCandidateOrMeasureRoute = stringContains('/candidate/', pathname.toLowerCase()) || stringContains('/measure/', pathname.toLowerCase());
     if (scrolledDown && onCandidateOrMeasureRoute) {
       appBarClasses = { root: classes.noBoxShadow };
-    } else if (onOfficeRoute) {
+    } else if (onOfficeRoute && !isMobileScreenSize()) {
       appBarClasses = { root: classes.stackedReturnAndShare };
     }
 
@@ -717,7 +718,7 @@ class HeaderBackToBallot extends Component {
 
 
     return (
-      <AppBar
+      <StyledAppBar
         id="backToBallotAppBar"
         className={headerClassName}
         color="default"
@@ -821,7 +822,7 @@ class HeaderBackToBallot extends Component {
             closeShareModal={this.closeShareModal}
           />
         )}
-      </AppBar>
+      </StyledAppBar>
     );
   }
 }
@@ -860,6 +861,12 @@ const styles = (theme) => ({
     alignItems: 'flex-start',
   },
 });
+
+const StyledAppBar = styled(AppBar)`
+  @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
+    display: inherit;
+  }
+`;
 
 const FirstNameWrapper = styled.div`
   font-size: 14px;

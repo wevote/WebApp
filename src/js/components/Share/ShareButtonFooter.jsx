@@ -15,7 +15,7 @@ import { shareBottomOffset } from '../../utils/cordovaOffsets';
 import { historyPush, isAndroid, isCordova, isWebApp } from '../../utils/cordovaUtils';
 import isMobile from '../../utils/isMobile';
 import { renderLog } from '../../utils/logging';
-import { startsWith, stringContains } from '../../utils/textFormat';
+import { stringContains } from '../../utils/textFormat';
 import LoadingWheel from '../LoadingWheel';
 import { openSnackbar } from '../Widgets/SnackNotifier';
 import { androidFacebookClickHandler, androidTwitterClickHandler, cordovaSocialSharingByEmail } from './shareButtonCommon';
@@ -60,11 +60,11 @@ class ShareButtonFooter extends Component {
     const currentFullUrlAdjusted = this.getCurrentFullUrl();
     const currentFullUrlToShare = currentFullUrlAdjusted.replace('/modal/share', '');
 
-    const ballotShare = typeof pathname !== 'undefined' && pathname && startsWith('/ballot', pathname);
-    const candidateShare = typeof pathname !== 'undefined' && pathname && startsWith('/candidate', pathname);
-    const measureShare = typeof pathname !== 'undefined' && pathname && startsWith('/measure', pathname);
-    const officeShare = typeof pathname !== 'undefined' && pathname && startsWith('/office', pathname);
-    const readyShare = typeof pathname !== 'undefined' && pathname && startsWith('/ready', pathname);
+    const ballotShare = typeof pathname !== 'undefined' && pathname && pathname.startsWith('/ballot');
+    const candidateShare = typeof pathname !== 'undefined' && pathname && pathname.startsWith('/candidate');
+    const measureShare = typeof pathname !== 'undefined' && pathname && pathname.startsWith('/measure');
+    const officeShare = typeof pathname !== 'undefined' && pathname && pathname.startsWith('/office');
+    const readyShare = typeof pathname !== 'undefined' && pathname && pathname.startsWith('/ready');
     const organizationShare = !ballotShare && !candidateShare && !measureShare && !officeShare && !readyShare;
 
     const urlWithSharedItemCode = ShareStore.getUrlWithSharedItemCodeByFullUrl(currentFullUrlToShare);
@@ -178,10 +178,10 @@ class ShareButtonFooter extends Component {
     const { location: { href } } = window;
     let currentFullUrl = href || '';
     // Handles localhost and Cordova, always builds url to wevote.us
-    if (startsWith('https://localhost', currentFullUrl)) {
+    if (currentFullUrl.startsWith('https://localhost')) {
       currentFullUrl = currentFullUrl.replace(/https:\/\/localhost.*?\//, 'https://wevote.us/');
       // console.log(`currentFullUrl adjusted for localhost: ${currentFullUrl}`);
-    } else if (startsWith('file://', currentFullUrl)) {
+    } else if (currentFullUrl.startsWith('file://')) {
       currentFullUrl = currentFullUrl.replace(/file:\/\/.*?Vote.app\/www\/index.html#\//, 'https://wevote.us/');
       // console.log(`currentFullUrl adjusted for Cordova: ${currentFullUrl}`);
     }
@@ -204,11 +204,11 @@ class ShareButtonFooter extends Component {
     const { currentFullUrlAdjusted } = this.state;
     const currentFullUrlToShare = currentFullUrlAdjusted.replace('/modal/share', '');
 
-    const ballotShare = typeof pathname !== 'undefined' && pathname && startsWith('/ballot', pathname);
-    const candidateShare = typeof pathname !== 'undefined' && pathname && startsWith('/candidate', pathname);
-    const measureShare = typeof pathname !== 'undefined' && pathname && startsWith('/measure', pathname);
-    const officeShare = typeof pathname !== 'undefined' && pathname && startsWith('/office', pathname);
-    const readyShare = typeof pathname !== 'undefined' && pathname && startsWith('/ready', pathname);
+    const ballotShare = typeof pathname !== 'undefined' && pathname && pathname.startsWith('/ballot');
+    const candidateShare = typeof pathname !== 'undefined' && pathname && pathname.startsWith('/candidate');
+    const measureShare = typeof pathname !== 'undefined' && pathname && pathname.startsWith('/measure');
+    const officeShare = typeof pathname !== 'undefined' && pathname && pathname.startsWith('/office');
+    const readyShare = typeof pathname !== 'undefined' && pathname && pathname.startsWith('/ready');
     const organizationShare = !ballotShare && !candidateShare && !measureShare && !officeShare && !readyShare;
 
     let kindOfShare;

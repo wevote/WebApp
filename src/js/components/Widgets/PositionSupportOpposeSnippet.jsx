@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { cordovaDot } from '../../utils/cordovaUtils';
 import { renderLog } from '../../utils/logging';
-import { startsWith, vimeoRegX, youTubeRegX } from '../../utils/textFormat';
+import { vimeoRegX, youTubeRegX } from '../../utils/textFormat';
 import ExternalLinkIcon from './ExternalLinkIcon';
 
 const ReadMore = React.lazy(() => import(/* webpackChunkName: 'ReadMore' */ './ReadMore'));
@@ -79,7 +79,7 @@ export default class PositionSupportOpposeSnippet extends Component {
     }
 
     if (moreInfoUrl) {
-      if (!startsWith('http', moreInfoUrl.toLowerCase())) {
+      if (!moreInfoUrl.toLowerCase().startsWith('http')) {
         moreInfoUrl = `http://${moreInfoUrl}`;
       }
     }

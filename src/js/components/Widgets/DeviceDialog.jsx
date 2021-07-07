@@ -6,7 +6,6 @@ import { Link } from 'react-router-dom';
 import VoterStore from '../../stores/VoterStore';
 import { hasIPhoneNotch } from '../../utils/cordovaUtils';
 import { renderLog } from '../../utils/logging';
-import { startsWith } from '../../utils/textFormat';
 
 const webAppConfig = require('../../config');
 
@@ -97,7 +96,7 @@ class DeviceDialog extends Component {
             </TableBody>
           </Table>
           {/* Show the developer options if on the simulator in iOS, or the SHOW_TEST_OPTIONS is on, or Cordova offset logging is turned on -- should not show in release builds */}
-          {(startsWith('file:///Users', window.location.href) || webAppConfig.SHOW_TEST_OPTIONS || webAppConfig.LOG_CORDOVA_OFFSETS) &&
+          {(window.location.href.startsWith('file:///Users') || webAppConfig.SHOW_TEST_OPTIONS || webAppConfig.LOG_CORDOVA_OFFSETS) &&
             (
               <div style={{ marginTop: 20 }}>
                 <div style={{ marginTop: 5 }}>

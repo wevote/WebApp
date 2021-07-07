@@ -10,7 +10,7 @@ const logoLight = '../../../img/global/svg-icons/we-vote-logo-horizontal-color-2
 const logoDark = '../../../img/global/svg-icons/we-vote-logo-horizontal-color-dark-141x46.svg';
 
 const HeaderBarLogo = ({ chosenSiteLogoUrl, isBeta, light }) => (
-  <HeaderBarWrapper>
+  <HeaderBarLogoWrapper>
     {chosenSiteLogoUrl ? (
       <img
         className="header-logo-img"
@@ -35,7 +35,7 @@ const HeaderBarLogo = ({ chosenSiteLogoUrl, isBeta, light }) => (
         </Link>
       </WeVoteLogoWrapper>
     )}
-  </HeaderBarWrapper>
+  </HeaderBarLogoWrapper>
 );
 
 HeaderBarLogo.propTypes = {
@@ -52,7 +52,7 @@ const BetaMarkerInner = styled.span`
   color: ${({ light }) => (light ? 'white' : '#2e3c5d')};
 `;
 
-const HeaderBarWrapper = styled.div`
+const HeaderBarLogoWrapper = styled.div`
   @media print{
   }
 `;

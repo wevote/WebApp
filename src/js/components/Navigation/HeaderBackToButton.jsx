@@ -55,7 +55,7 @@ const styles = {
 // July 2021: A working example of styled mui-core components -- enabled by the newly added StylesProvider in App.js
 const StyledButton = styled(Button)`
   @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
-    padding-left: 53px;
+    padding-left: 40px;
   }
 `;
 

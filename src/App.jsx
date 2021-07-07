@@ -119,8 +119,6 @@ class App extends Component {
   }
 
   componentDidMount () {
-    // initializeOnce();
-    // this.InitializeOnce();
     initializejQuery(() => {
       let { hostname } = window.location;
       hostname = hostname || '';

@@ -11,7 +11,7 @@ import apiCalming from '../../utils/apiCalming';
 import { historyPush, isIOSAppOnMac, setIconBadgeMessageCount } from '../../utils/cordovaUtils';
 import { timeFromDate } from '../../utils/dateFormat';
 import { renderLog } from '../../utils/logging';
-import { returnFirstXWords, startsWith } from '../../utils/textFormat';
+import { returnFirstXWords } from '../../utils/textFormat';
 
 const ImageHandler = React.lazy(() => import(/* webpackChunkName: 'ImageHandler' */ '../ImageHandler'));
 

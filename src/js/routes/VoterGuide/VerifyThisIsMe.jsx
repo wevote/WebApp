@@ -44,7 +44,7 @@ class VerifyThisIsMe extends Component {
   componentDidMount () {
     const { match: { params } } = this.props;
     // console.log("VerifyThisIsMe, Entering componentDidMount");
-    AppObservableStore.storeSignInStartFullUrl(); // Store cookie so we return to this page after sign in
+    AppObservableStore.setSignInStartFullUrl(); // Store cookie so we return to this page after sign in
     this.onVoterStoreChange();
     // console.log(`VerifyThisIsMe, componentDidMount: ${params.twitter_handle}`);
     TwitterActions.twitterIdentityRetrieve(params.twitter_handle);

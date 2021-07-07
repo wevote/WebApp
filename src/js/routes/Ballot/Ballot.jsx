@@ -45,7 +45,7 @@ import isMobileScreenSize from '../../utils/isMobileScreenSize';
 import lazyPreloadPages from '../../utils/lazyPreloadPages';
 import { renderLog } from '../../utils/logging';
 import mapCategoryFilterType from '../../utils/map-category-filter-type';
-import { getBooleanValue, startsWith } from '../../utils/textFormat';
+import { getBooleanValue } from '../../utils/textFormat';
 import showBallotDecisionsTabs from '../../utilsApi/showBallotDecisionsTabs';
 import BallotTitleHeader from './BallotTitleHeader';
 import { checkShouldUpdate, formatVoterBallotList } from './utils/ballotUtils';
@@ -204,7 +204,7 @@ class Ballot extends Component {
           const ballotElectionUrl = `${ballotBaseUrl}/election/${googleCivicElectionIdFromUrl}`;
           // console.log('ballotElectionUrl: ', ballotElectionUrl);
           // If the current pathname we are on starts with ballotElectionUrl, do not historyPush
-          const currentPathnameStartsWithNewUrl = currentPathname && startsWith(ballotElectionUrl, currentPathname);
+          const currentPathnameStartsWithNewUrl = currentPathname && currentPathname.startsWith(ballotElectionUrl);
           if (!currentPathnameStartsWithNewUrl) {
             // As long as the current pathname starts with the new URL, do NOT redirect
             // console.log('REDIRECTING TO ballotElectionUrl');
@@ -220,7 +220,7 @@ class Ballot extends Component {
         // Change the URL to match the current googleCivicElectionId
         const ballotElectionUrl2 = `${ballotBaseUrl}/election/${googleCivicElectionId}`;
         // console.log('ballotElectionUrl2: ', ballotElectionUrl2);
-        const currentPathnameStartsWithNewUrl2 = currentPathname && startsWith(ballotElectionUrl2, currentPathname);
+        const currentPathnameStartsWithNewUrl2 = currentPathname && currentPathname.startsWith(ballotElectionUrl2);
         if (!currentPathnameStartsWithNewUrl2) {
           historyPush(ballotElectionUrl2);
         }

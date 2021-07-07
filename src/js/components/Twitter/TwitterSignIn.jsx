@@ -7,7 +7,7 @@ import cookies from '../../utils/cookies';
 import { cordovaOpenSafariView, historyPush, isAndroid, isIOS, isWebApp } from '../../utils/cordovaUtils';
 import { oAuthLog, renderLog } from '../../utils/logging';
 import $ajax from '../../utils/service';
-import { shortenText, startsWith } from '../../utils/textFormat';
+import { shortenText } from '../../utils/textFormat';
 
 import SplitIconButton from '../Widgets/SplitIconButton';
 
@@ -16,7 +16,7 @@ const returnURL = `${webAppConfig.WE_VOTE_URL_PROTOCOL + webAppConfig.WE_VOTE_HO
 class TwitterSignIn extends Component {
   static handleTwitterOpenURL (url) {
     oAuthLog(`---------------xxxxxx-------- Application handleTwitterOpenUrl: ${url}`);
-    if (startsWith('wevotetwitterscheme://', url)) {
+    if (url.startsWith('wevotetwitterscheme://')) {
       oAuthLog(`handleTwitterOpenURL received wevotetwitterscheme: ${url}`);
       const search = url.replace(new RegExp('&amp;', 'g'), '&');
       const urlParams = new URLSearchParams(search);
@@ -60,7 +60,7 @@ class TwitterSignIn extends Component {
         }
 
         historyPush('/twitter_sign_in');
-      } else if (startsWith('wevotetwitterscheme://sign_in_email', url)) {
+      } else if (url.startsWith('wevotetwitterscheme://sign_in_email')) {
         oAuthLog(`twitterSignIn by email cordova, (not really twitter) -- received url = ${url}`);
 
         // Example url: wevotetwitterscheme://sign_in_email/1278821

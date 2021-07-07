@@ -5,7 +5,6 @@ import LoadingWheel from '../components/LoadingWheel';
 import { renderLog } from '../utils/logging';
 import ShareActions from '../actions/ShareActions';
 import ShareStore from '../stores/ShareStore';
-import { startsWith } from '../utils/textFormat';
 
 export default class SharedItemLanding extends Component {
   constructor (props) {
@@ -81,7 +80,7 @@ export default class SharedItemLanding extends Component {
       const { hostname } = window.location;
       // console.log('hostname:', hostname, ', destinationFullUrl:', destinationFullUrl);
       const hrefHostname = `https://${hostname}`;
-      if (destinationFullUrl && startsWith(hrefHostname, destinationFullUrl)) {
+      if (destinationFullUrl && destinationFullUrl.startsWith(hrefHostname)) {
         let destinationLocalUrl = destinationFullUrl.replace(hrefHostname, '');
         destinationLocalUrl = destinationLocalUrl.replace(':3000', ''); // For local development machines
         const destinationLocalUrlWithModal = `${destinationLocalUrl}/modal/sic/${sharedItemCode}`;
