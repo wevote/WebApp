@@ -272,6 +272,7 @@ const StyledTableCellDesktop = styled(TableCell)`
 const StyledTableHeaderCellAll = styled(TableCell)`
   padding: 8px;
   color: black;
+  min-width: 80px;
 `;
 
 const StyledTableHeaderCellTablet = styled(TableCell)`
