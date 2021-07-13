@@ -71,7 +71,7 @@ An interactive UI, as shown below, will start up in a server and will be display
 
   ![ScreenPrint](../images/WebpackBundleAnalyzer.png)
   
-### Do Cherypick from Libraries!
+### Do Cherry pick from Libraries!
 
 importing Button with decompostion from  '@material-ui/core' adds the entire '@material-ui/core' library to the bundle, which 
 bloats the size of the bundle and makes startup over slow internet connections very slow.
@@ -93,6 +93,9 @@ Note that you can't load third level components this way, so you need to decompo
 import { withStyles } from '@material-ui/core/styles';
 ```
 
+### Test Stripe, by setting up ngrok to send stripe webhooks to your local python server
+
+See https://github.com/wevote/WeVoteServer/blob/develop/docs/README_DONATION_SETUP.md
 
 ### Code Splitting
 
@@ -101,7 +104,6 @@ TBD
 https://webpack.js.org/guides/code-splitting/
 
 Also built in support for code splitting "Suspense" in coming in React 16.6
-
 
 
 ---

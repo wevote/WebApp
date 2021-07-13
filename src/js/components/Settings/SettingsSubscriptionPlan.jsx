@@ -124,10 +124,10 @@ class SettingsSubscriptionPlan extends Component {
     // let activePaidPlanBillingFrequency = '';
     let activePaidPlanBillingFrequencyDisplay = '';
     // Kind of plan
-    if (stringContains('PROFESSIONAL', activePaidPlan.plan_type_enum)) {
+    if (stringContains('PROFESSIONAL', activePaidPlan.premium_plan_type_enum)) {
       activePaidPlanChosen = 'professional';
       activePaidPlanChosenDisplay = 'Professional Plan';
-    } else if (stringContains('ENTERPRISE', activePaidPlan.plan_type_enum)) {
+    } else if (stringContains('ENTERPRISE', activePaidPlan.premium_plan_type_enum)) {
       activePaidPlanChosen = 'enterprise';
       activePaidPlanChosenDisplay = 'Enterprise Plan';
     } else {
@@ -135,13 +135,13 @@ class SettingsSubscriptionPlan extends Component {
       activePaidPlanChosenDisplay = 'Free Plan';
     }
     // Billing frequency
-    if (stringContains('MONTHLY', activePaidPlan.plan_type_enum)) {
+    if (stringContains('MONTHLY', activePaidPlan.premium_plan_type_enum)) {
       // activePaidPlanBillingFrequency = 'monthly';
       activePaidPlanBillingFrequencyDisplay = 'Billed Monthly';
-    } else if (stringContains('YEARLY', activePaidPlan.plan_type_enum)) {
+    } else if (stringContains('YEARLY', activePaidPlan.premium_plan_type_enum)) {
       // activePaidPlanBillingFrequency = 'yearly';
       activePaidPlanBillingFrequencyDisplay = 'Billed Yearly';
-    } else if (stringContains('ONCE', activePaidPlan.plan_type_enum)) {
+    } else if (stringContains('ONCE', activePaidPlan.premium_plan_type_enum)) {
       // activePaidPlanBillingFrequency = 'once';
       activePaidPlanBillingFrequencyDisplay = 'One Time Payment';
     } else {
@@ -219,7 +219,7 @@ class SettingsSubscriptionPlan extends Component {
     const activePaidPlan = DonateStore.getActivePaidPlan();
     const subscriptionId = '';
     // console.log('onCancelPlan');
-    DonateActions.donationCancelSubscriptionAction(subscriptionId, activePaidPlan.plan_type_enum);
+    DonateActions.donationCancelSubscriptionAction(subscriptionId, activePaidPlan.premium_plan_type_enum);
   };
 
   render () {

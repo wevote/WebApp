@@ -17,7 +17,7 @@ class DonateStore extends ReduceStore {
           credit_card_expiration: '',
           billing_contact: '',
         },
-        plan_type_enum: '',
+        premium_plan_type_enum: '',
         subscription_active: '',
         donation_plan_id: '',
       },
@@ -139,8 +139,8 @@ class DonateStore extends ReduceStore {
     return {};
   }
 
-  // getPlanTypeEnum () {
-  //   return this.getState().planTypeEnum || '';
+  // getPremiumPlanTypeEnum () {
+  //   return this.getState().premiumPlanTypeEnum || '';
   // }
   //
   // getCouponMessageTest () {
@@ -181,7 +181,7 @@ class DonateStore extends ReduceStore {
     const {
       // charge_id: charge,
       donation_amount: donationAmount,
-      monthly_donation: monthlyDonation,
+      is_monthly_donation: isMonthlyDonation,
       // org_subs_already_exists: orgSubsAlreadyExists,
       // org_has_active_paid_plan: doesOrgHavePaidPlan,
       saved_stripe_donation: savedStripeDonation,
@@ -208,7 +208,7 @@ class DonateStore extends ReduceStore {
     // let enterprisePlanFullPricePerMonthPayMonthly = '';
     // let enterprisePlanFullPricePerMonthPayYearly = '';
     // let organizationSaved = false;
-    // let planTypeEnum = '';
+    // let premiumPlanTypeEnum = '';
     // let proPlanCouponPricePerMonthPayMonthly = '';
     // let proPlanCouponPricePerMonthPayYearly = '';
     // let proPlanFullPricePerMonthPayMonthly = '';
@@ -225,13 +225,13 @@ class DonateStore extends ReduceStore {
           // donation_list: completeDonationJournalList,
           error_message_for_voter: stripeErrorMessageForVoter,
           // organization_saved: organizationSaved,
-          // plan_type_enum: planTypeEnum,
+          // premium_plan_type_enum: premiumPlanTypeEnum,
           status: apiStatus,
           success: apiSuccess,
           stripe_failure_code: stripeFailureCode,
         } = action.res);
-        // donationJournalList = completeDonationJournalList.filter((item) => (item.is_organization_plan === false));
-        // subscriptionJournalHistory = completeDonationJournalList.filter((item) => (item.is_organization_plan === true));
+        // donationJournalList = completeDonationJournalList.filter((item) => (item.is_premium_plan === false));
+        // subscriptionJournalHistory = completeDonationJournalList.filter((item) => (item.is_premium_plan === true));
         if (success === false) {
           console.log(`donation with stripe failed:  ${stripeErrorMessageForVoter}  ---  ${apiStatus}`);
         }
@@ -250,8 +250,8 @@ class DonateStore extends ReduceStore {
           // donationJournalList,
           stripeErrorMessageForVoter,
           stripeFailureCode,
-          monthlyDonation,
-          // planTypeEnum,
+          isMonthlyDonation,
+          // premiumPlanTypeEnum,
           savedStripeDonation,
           // subscriptionJournalHistory,
           success,
@@ -266,13 +266,13 @@ class DonateStore extends ReduceStore {
         //     // donation_list: completeDonationJournalList,
         //     error_message_for_voter: stripeErrorMessageForVoter,
         //     // organization_saved: organizationSaved,
-        //     // plan_type_enum: planTypeEnum,
+        //     // premium_plan_type_enum: premiumPlanTypeEnum,
         //     status: apiStatus,
         //     // eslint-disable-next-line no-unused-vars
         //     success: apiSuccess,
         //   } = action.res);
-        //   // donationJournalList = completeDonationJournalList.filter((item) => (item.is_organization_plan === false));
-        //   // subscriptionJournalHistory = completeDonationJournalList.filter((item) => (item.is_organization_plan === true));
+        //   // donationJournalList = completeDonationJournalList.filter((item) => (item.is_premium_plan === false));
+        //   // subscriptionJournalHistory = completeDonationJournalList.filter((item) => (item.is_premium_plan === true));
         //   if (success === false) {
         //     console.log(`donation with stripe failed:  ${stripeErrorMessageForVoter}  ---  ${apiStatus}`);
         //   }
@@ -284,8 +284,8 @@ class DonateStore extends ReduceStore {
         //     donationAmount: donationAmountSafe,
         //     // donationJournalList,
         //     stripeErrorMessageForVoter,
-        //     monthlyDonation,
-        //     // planTypeEnum,
+        //     isMonthlyDonation,
+        //     // premiumPlanTypeEnum,
         //     savedStripeDonation,
         //     // subscriptionJournalHistory,
         //     success,
@@ -304,8 +304,8 @@ class DonateStore extends ReduceStore {
         //     donation_list: completeDonationJournalList,
         //     organization_saved: organizationSaved,
         //   } = action.res);
-        //   donationJournalList = completeDonationJournalList.filter((item) => (item.is_organization_plan === false));
-        //   subscriptionJournalHistory = completeDonationJournalList.filter((item) => (item.is_organization_plan === true));
+        //   donationJournalList = completeDonationJournalList.filter((item) => (item.is_premium_plan === false));
+        //   subscriptionJournalHistory = completeDonationJournalList.filter((item) => (item.is_premium_plan === true));
         //   if (organizationSaved) {
         //     OrganizationActions.organizationRetrieve(VoterStore.getLinkedOrganizationWeVoteId());
         //   }
@@ -327,8 +327,8 @@ class DonateStore extends ReduceStore {
         } = action.res);
 
         // if (completeDonationJournalList) {
-        //   donationJournalList = completeDonationJournalList.filter((item) => (item.is_organization_plan === false));
-        //   subscriptionJournalHistory = completeDonationJournalList.filter((item) => (item.is_organization_plan === true));
+        //   donationJournalList = completeDonationJournalList.filter((item) => (item.is_premium_plan === false));
+        //   subscriptionJournalHistory = completeDonationJournalList.filter((item) => (item.is_premium_plan === true));
         // } else {
         //   console.error('undefined completeDonationJournalList in DonateStore donationHistory');
         // }
@@ -345,8 +345,8 @@ class DonateStore extends ReduceStore {
         //      // active_paid_plan: activePaidPlan,
         //      donation_list: completeDonationJournalList,
         //    } = action.res);
-        //    donationJournalList = completeDonationJournalList.filter((item) => (item.is_organization_plan === false));
-        //    subscriptionJournalHistory = completeDonationJournalList.filter((item) => (item.is_organization_plan === true));
+        //    donationJournalList = completeDonationJournalList.filter((item) => (item.is_premium_plan === false));
+        //    subscriptionJournalHistory = completeDonationJournalList.filter((item) => (item.is_premium_plan === true));
         //    return {
         //      ...state,
         //      // activePaidPlan,
@@ -359,8 +359,8 @@ class DonateStore extends ReduceStore {
         //   ({
         //     donation_list: completeDonationJournalList,
         //   } = action.res);
-        //   donationJournalList = completeDonationJournalList.filter((item) => (item.is_organization_plan === false));
-        //   subscriptionJournalHistory = completeDonationJournalList.filter((item) => (item.is_organization_plan === true));
+        //   donationJournalList = completeDonationJournalList.filter((item) => (item.is_premium_plan === false));
+        //   subscriptionJournalHistory = completeDonationJournalList.filter((item) => (item.is_premium_plan === true));
         //   return {
         //     ...state,
         //     charge,

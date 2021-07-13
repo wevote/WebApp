@@ -6,6 +6,10 @@ import styled from 'styled-components';
 import DonateActions from '../../actions/DonateActions';
 import { renderLog } from '../../utils/logging';
 
+/*
+July 2021 TODO: Same named file in the WebApp and Campaigns -- PLEASE KEEP THEM IDENTICAL -- make symmetrical changes and test on both sides
+*/
+
 export default class DonationCancelOrRefund extends Component {
   constructor (props) {
     super(props);
@@ -40,10 +44,10 @@ export default class DonationCancelOrRefund extends Component {
   render () {
     renderLog('DonationCancelOrRefund');
 
-    const { item, refundDonation, active, cancelText, showOrganizationPlan } = this.props;
+    const { item, refundDonation, active, cancelText, showPremiumPlan } = this.props;
     const { amount, funding, brand, last4, expires } = item;
     let label = refundDonation ? 'Refund Donation' : 'Cancel Membership';
-    if (showOrganizationPlan) {
+    if (showPremiumPlan) {
       label = refundDonation ? 'Refund Plan Payment' : 'Cancel Paid Plan';
     }
 
@@ -142,7 +146,7 @@ DonationCancelOrRefund.propTypes = {
   refundDonation: PropTypes.bool, // true to enable refunding of donations, false to enable cancellation of subscriptions
   active: PropTypes.bool,
   cancelText: PropTypes.string,
-  showOrganizationPlan: PropTypes.bool,
+  showPremiumPlan: PropTypes.bool,
 };
 
 const StyledModalFrame = styled.div`
