@@ -31,7 +31,7 @@ class ElectionCountdown extends React.Component {
       const { location: { pathname } } = window;
       if (electionDateMDY.length === 0) {
         console.log('history push or button appears');
-        if (pathname === '' || pathname === '/' || pathname === '/ready-light') {
+        if (pathname === '' || pathname === '/' || pathname === '/ready') {
           this.setState({ showButton: true });
         }
       }

@@ -1,6 +1,6 @@
 import cookies from './cookies';
 import { isIOSAppOnMac, isCordova, isWebApp } from './cordovaUtils';
-import { startsWith, stringContains } from './textFormat';
+import { stringContains } from './textFormat';
 
 
 // We have to do all this, because we allow urls where the path starts with a twitter username (handle)
@@ -27,46 +27,46 @@ export function getApplicationViewBooleans (pathname) {
     pathnameLowerCase === '/intro/sample_ballot' ||
     pathnameLowerCase === '/intro/get_started' ||
     pathnameLowerCase === '/more/myballot' ||
-    startsWith('/voterguidepositions', pathnameLowerCase) ||
-    startsWith('/wevoteintro', pathnameLowerCase)) {
+    pathnameLowerCase.startsWith('/voterguidepositions') ||
+    pathnameLowerCase.startsWith('/wevoteintro')) {
     inTheaterMode = true;
-  } else if (startsWith('/candidate/', pathnameLowerCase) ||
+  } else if (pathnameLowerCase.startsWith('/candidate/') ||
     pathnameLowerCase === '/for-campaigns' ||
     pathnameLowerCase === '/for-organizations' ||
-    startsWith('/how', pathnameLowerCase) ||
+    pathnameLowerCase.startsWith('/how') ||
     pathnameLowerCase === '/intro' ||
-    startsWith('/measure/', pathnameLowerCase) ||
+    pathnameLowerCase.startsWith('/measure/') ||
     pathnameLowerCase === '/more/about' ||
     pathnameLowerCase === '/more/absentee' ||
     pathnameLowerCase === '/more/alerts' ||
     pathnameLowerCase === '/more/credits' ||
-    startsWith('/more/donate', pathnameLowerCase) ||
+    pathnameLowerCase.startsWith('/more/donate') ||
     pathnameLowerCase === '/more/elections' ||
-    startsWith('/office/', pathnameLowerCase) ||
+    pathnameLowerCase.startsWith('/office/') ||
     pathnameLowerCase === '/more/network' ||
     pathnameLowerCase === '/more/network/friends' ||
     pathnameLowerCase === '/more/network/issues' ||
     pathnameLowerCase === '/more/network/organizations' ||
-    startsWith('/more/pricing', pathnameLowerCase) ||
+    pathnameLowerCase.startsWith('/more/pricing') ||
     pathnameLowerCase === '/more/privacy' ||
     pathnameLowerCase === '/more/register' ||
     pathnameLowerCase === '/more/sign_in' ||
     pathnameLowerCase === '/more/terms' ||
     pathnameLowerCase === '/more/verify' ||
-    startsWith('/verifythisisme/', pathnameLowerCase) ||
+    pathnameLowerCase.startsWith('/verifythisisme/') ||
     pathnameLowerCase === '/welcome') {
     contentFullWidthMode = true;
-  } else if (startsWith('/ballot/vote', pathnameLowerCase)) {
+  } else if (pathnameLowerCase.startsWith('/ballot/vote')) {
     contentFullWidthMode = false; // I set this to false to fix the header padding issues in /ballot/vote
     voteMode = true;
-  } else if (startsWith('/ballot', pathnameLowerCase)) {
+  } else if (pathnameLowerCase.startsWith('/ballot')) {
     contentFullWidthMode = false;
-  } else if (startsWith('/news', pathnameLowerCase)) {
+  } else if (pathnameLowerCase.startsWith('/news')) {
     contentFullWidthMode = false;
   } else if (stringContains('/settings/positions', pathnameLowerCase)) {
     // contentFullWidthMode = true;
     voterGuideCreatorMode = true;
-  } else if (startsWith('/ready', pathnameLowerCase)) {
+  } else if (pathnameLowerCase.startsWith('/ready')) {
     contentFullWidthMode = true;
     readyMode = true;
   } else if (stringContains('/settings', pathnameLowerCase) ||
@@ -74,19 +74,19 @@ export function getApplicationViewBooleans (pathname) {
     pathnameLowerCase === '/settings/voterguidelist') {
     contentFullWidthMode = true;
     settingsMode = true;
-  } else if (startsWith('/value', pathnameLowerCase) || // '/values'
-    startsWith('/opinions', pathnameLowerCase)) {
+  } else if (pathnameLowerCase.startsWith('/value') || // '/values'
+    pathnameLowerCase.startsWith('/opinions')) {
     contentFullWidthMode = true;
     valuesMode = true;
-  } else if (startsWith('/candidate-for-extension', pathnameLowerCase) ||
-    startsWith('/add-candidate-for-extension', pathnameLowerCase) ||
-    startsWith('/more/extensionsignin', pathnameLowerCase)) {
+  } else if (pathnameLowerCase.startsWith('/candidate-for-extension') ||
+    pathnameLowerCase.startsWith('/add-candidate-for-extension') ||
+    pathnameLowerCase.startsWith('/more/extensionsignin')) {
     extensionPageMode = true;
-  } else if (startsWith('/-', pathnameLowerCase)) {
+  } else if (pathnameLowerCase.startsWith('/-')) {
     sharedItemLandingPage = true;
-  } else if (startsWith('/twitter_sign_in', pathnameLowerCase)) {
+  } else if (pathnameLowerCase.startsWith('/twitter_sign_in')) {
     twitterSignInMode = true;
-  } else if (startsWith('/friends', pathnameLowerCase) ||
+  } else if (pathnameLowerCase.startsWith('/friends') ||
     pathnameLowerCase === '/facebook_invitable_friends') {
     contentFullWidthMode = true;
     friendsMode = true;
@@ -135,7 +135,7 @@ export function getApplicationViewBooleans (pathname) {
     pathnameLowerCase === '/settings/text' ||
     pathnameLowerCase === '/settings/tools') {
     showBackToSettingsMobile = true;
-  } else if (startsWith('/value/', pathnameLowerCase) ||
+  } else if (pathnameLowerCase.startsWith('/value/') ||
     pathnameLowerCase === '/values/list' ||
     // pathnameLowerCase === '/opinions' ||
     pathnameLowerCase === '/opinions_followed' ||
@@ -153,7 +153,7 @@ export function getApplicationViewBooleans (pathname) {
     showBackToVoterGuides = true; // DALE 2019-02-19 Soon we should be able to delete the interim voter guides page
   }
 
-  if (startsWith('/measure', pathnameLowerCase) && isCordova()) {
+  if (pathnameLowerCase.startsWith('/measure') && isCordova()) {
     showBackToBallotHeader = true;
   }
 
@@ -167,42 +167,41 @@ export function getApplicationViewBooleans (pathname) {
       stringContains('/btcand/', pathnameLowerCase) ||
       (pathnameLowerCase === '/for-campaigns') ||
       (pathnameLowerCase === '/for-organizations') ||
-      startsWith('/how', pathnameLowerCase) ||
+      pathnameLowerCase.startsWith('/how') ||
       (pathnameLowerCase === '/more/about') ||
       (pathnameLowerCase === '/more/credits') ||
-      startsWith('/more/donate', pathnameLowerCase) ||
+      pathnameLowerCase.startsWith('/more/donate') ||
       (pathnameLowerCase === '/more/myballot') ||
-      startsWith('/more/pricing', pathnameLowerCase) ||
+      pathnameLowerCase.startsWith('/more/pricing') ||
       (pathnameLowerCase === '/welcome') ||
-      startsWith('/value/', pathnameLowerCase) ||
-      startsWith('/values/', pathnameLowerCase) ||
+      pathnameLowerCase.startsWith('/value/') ||
+      pathnameLowerCase.startsWith('/values/') ||
       stringContains('/settings/positions', pathnameLowerCase) ||
-      startsWith('/settings/voterguidelist', pathnameLowerCase) ||
-      startsWith('/settings/voterguidesmenu', pathnameLowerCase) ||
-      startsWith('/register', pathnameLowerCase)
-  ) {
+      pathnameLowerCase.startsWith('/settings/voterguidelist') ||
+      pathnameLowerCase.startsWith('/settings/voterguidesmenu') ||
+      pathnameLowerCase.startsWith('/register')) {
     // We want to HIDE the footer bar on the above path patterns
     showFooterBar = false;
     // ///////// SHOW: The following are URLS where we want the footer to show
-  } else if (startsWith('/ballot', pathnameLowerCase) ||
-      startsWith('/candidate', pathnameLowerCase) || // Show Footer if back to not specified above
-      startsWith('/friends', pathnameLowerCase) ||
-      startsWith('/measure', pathnameLowerCase) || // Show Footer if back to not specified above
+  } else if (pathnameLowerCase.startsWith('/ballot') ||
+      pathnameLowerCase.startsWith('/candidate') || // Show Footer if back to not specified above
+      pathnameLowerCase.startsWith('/friends') ||
+      pathnameLowerCase.startsWith('/measure') || // Show Footer if back to not specified above
       (pathnameLowerCase === '/more/attributions') ||
       (pathnameLowerCase === '/more/privacy') ||
       (pathnameLowerCase === '/more/terms') ||
-      startsWith('/news', pathnameLowerCase) ||
-      startsWith('/office', pathnameLowerCase) || // Show Footer if back to not specified above
-      startsWith('/values', pathnameLowerCase) ||
-      startsWith('/settings/account', pathnameLowerCase) ||
-      startsWith('/settings/domain', pathnameLowerCase) ||
-      startsWith('/settings/notifications', pathnameLowerCase) ||
-      startsWith('/settings/profile', pathnameLowerCase) ||
-      startsWith('/settings/sharing', pathnameLowerCase) ||
-      startsWith('/settings/subscription', pathnameLowerCase) ||
-      startsWith('/settings/text', pathnameLowerCase) ||
-      startsWith('/settings/tools', pathnameLowerCase) ||
-      startsWith('/settings', pathnameLowerCase)) {
+      pathnameLowerCase.startsWith('/news') ||
+      pathnameLowerCase.startsWith('/office') || // Show Footer if back to not specified above
+      pathnameLowerCase.startsWith('/values') ||
+      pathnameLowerCase.startsWith('/settings/account') ||
+      pathnameLowerCase.startsWith('/settings/domain') ||
+      pathnameLowerCase.startsWith('/settings/notifications') ||
+      pathnameLowerCase.startsWith('/settings/profile') ||
+      pathnameLowerCase.startsWith('/settings/sharing') ||
+      pathnameLowerCase.startsWith('/settings/subscription') ||
+      pathnameLowerCase.startsWith('/settings/text') ||
+      pathnameLowerCase.startsWith('/settings/tools') ||
+      pathnameLowerCase.startsWith('/settings')) {
     // We want to SHOW the footer bar on the above path patterns
     showFooterBar = !isIOSAppOnMac() && isSmallScreen;
   } else {
@@ -213,15 +212,14 @@ export function getApplicationViewBooleans (pathname) {
 
   let showShareButtonFooter = false;
   const onFollowSubPage = stringContains('/m/followers', pathnameLowerCase) || stringContains('/m/following', pathnameLowerCase);
-  if (startsWith('/ballot', pathnameLowerCase) ||
-    startsWith('/candidate', pathnameLowerCase) ||
-    startsWith('/measure', pathnameLowerCase) ||
-    startsWith('/office', pathnameLowerCase) ||
-    startsWith('/ready', pathnameLowerCase) ||
+  if (pathnameLowerCase.startsWith('/ballot') ||
+    pathnameLowerCase.startsWith('/candidate') ||
+    pathnameLowerCase.startsWith('/measure') ||
+    pathnameLowerCase.startsWith('/office') ||
+    pathnameLowerCase.startsWith('/ready') ||
     (voterGuideMode && !onFollowSubPage)) {
     showShareButtonFooter = !isIOSAppOnMac() && isSmallScreen;
   }
-
   // console.log('getApplicationViewBooleans, showBackToBallotHeader: ', showBackToBallotHeader, ' showFooterBar: ', showFooterBar, ', pathnameLowerCase:', pathnameLowerCase, ', showBackToSettingsMobile:', showBackToSettingsMobile);
 
   return {
@@ -286,10 +284,10 @@ export function setZenDeskHelpVisibility (pathname) {
     // console.log('setZenDeskHelpVisibility true, pathname:', pathname, ', showFooterBar:', showFooterBar);
     if ((showFooterBar ||
       ['/ballot', '/ballot/vote', '/friends', '/more/network', '/office', '/opinions', '/settings', '/value'].some(
-        (match) => startsWith(match, pathname.toLowerCase()),
+        (match) => pathname.toLowerCase().startsWith(match),
       )) &&
       !['/wevoteintro', '/how', '/candidate-for-extension'].some(
-        (match) => startsWith(match, pathname.toLowerCase()),
+        (match) => pathname.toLowerCase().startsWith(match),
       )
     ) {
       showZenDeskHelpVisibility();
@@ -318,4 +316,8 @@ export function weVoteBrandingOff () {
 
   weVoteBrandingOffGlobal = weVoteBrandingOffFromUrl || weVoteBrandingOffFromCookie;
   return weVoteBrandingOffGlobal;
+}
+
+export function headerHasSubmenu (pathname) {
+  return pathname.toLowerCase().startsWith('/ballot');
 }

@@ -17,7 +17,7 @@ import { cordovaDot } from '../../utils/cordovaUtils';
 import { renderLog } from '../../utils/logging';
 import { isSpeakerTypeIndividual, isSpeakerTypeOrganization } from '../../utils/organization-functions';
 import { isOrganizationInVotersNetwork } from '../../utils/positionFunctions';
-import { numberWithCommas, startsWith } from '../../utils/textFormat';
+import { numberWithCommas } from '../../utils/textFormat';
 import OrganizationPopoverCard from '../Organization/OrganizationPopoverCard';
 import IssuesByOrganizationDisplayList from '../Values/IssuesByOrganizationDisplayList';
 import ExternalLinkIcon from '../Widgets/ExternalLinkIcon';
@@ -236,7 +236,7 @@ class PositionItem extends Component {
     // console.log('position:', position, ', VoterStore.getLinkedOrganizationWeVoteId():', VoterStore.getLinkedOrganizationWeVoteId());
     if (VoterStore.getLinkedOrganizationWeVoteId() === position.speaker_we_vote_id) {
       // Voter looking at own position
-      if (position.speaker_display_name && startsWith('Voter-', position.speaker_display_name)) {
+      if (position.speaker_display_name && position.speaker_display_name.startsWith('Voter-')) {
         positionSpeakerDisplayName = 'You';
       }
     }
@@ -287,7 +287,7 @@ class PositionItem extends Component {
       const organizationPopoverCard = (<OrganizationPopoverCard organizationWeVoteId={organizationWeVoteId} />);
       let moreInfoUrl = position.more_info_url;
       if (moreInfoUrl) {
-        if (!startsWith('http', moreInfoUrl.toLowerCase())) {
+        if (!moreInfoUrl.toLowerCase().startsWith('http')) {
           moreInfoUrl = `http://${moreInfoUrl}`;
         }
       }
@@ -736,18 +736,17 @@ const DesktopItemFooter = styled.div`
 
 const DesktopItemHeader = styled.div`
   display: flex;
-  align-items: top;
+  // align-items: top;   // nonsense property value, commented out July 7, 2021
   justify-content: flex-start;
 `;
 
 const DesktopItemImage = styled.div`
   width: 57.76px;
-  margin: 0 auto;
+  margin: 0 auto 8px auto;
   height: 57.76px;
   display: flex;
   align-items: flex-start;
   justify-content: center;
-  margin-bottom: 8px;
   * {
     border-radius: 6px;
     width: 57.76px !important;

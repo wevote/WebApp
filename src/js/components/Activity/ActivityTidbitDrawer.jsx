@@ -8,7 +8,6 @@ import { hideZenDeskHelpVisibility, showZenDeskHelpVisibility } from '../../util
 import { cordovaDrawerTopMargin } from '../../utils/cordovaOffsets';
 import { historyPush, isCordova } from '../../utils/cordovaUtils';
 import { renderLog } from '../../utils/logging';
-import { startsWith } from '../../utils/textFormat';
 
 const ActivityCommentAdd = React.lazy(() => import(/* webpackChunkName: 'ActivityCommentAdd' */ './ActivityCommentAdd'));
 const ActivityTidbitAddReaction = React.lazy(() => import(/* webpackChunkName: 'ActivityTidbitAddReaction' */ './ActivityTidbitAddReaction'));
@@ -61,7 +60,7 @@ class ActivityTidbitDrawer extends Component {
     if (isCordova()) {
       pathname = hrefRaw.replace(/file:\/\/.*?Vote.app\/www\/index.html#\//, '');
     }
-    if (typeof pathname !== 'undefined' && pathname && startsWith('/news/a/', pathname)) {
+    if (typeof pathname !== 'undefined' && pathname && pathname.startsWith('/news/a/')) {
       historyPush(`/news#${activityTidbitWeVoteId}`);
     }
   }

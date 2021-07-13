@@ -33,7 +33,6 @@ import { cordovaDot, historyPush, isCordova, isIPad } from '../../utils/cordovaU
 import { formatDateToMonthDayYear, timeFromDate } from '../../utils/dateFormat';
 import lazyPreloadPages from '../../utils/lazyPreloadPages';
 import { renderLog } from '../../utils/logging';
-import { startsWith } from '../../utils/textFormat';
 
 const ActivityTidbitAddReaction = React.lazy(() => import(/* webpackChunkName: 'ActivityTidbitAddReaction' */ '../../components/Activity/ActivityTidbitAddReaction'));
 const ActivityTidbitComments = React.lazy(() => import(/* webpackChunkName: 'ActivityTidbitComments' */ '../../components/Activity/ActivityTidbitComments'));
@@ -321,7 +320,8 @@ class News extends Component {
                   {activityTidbitsList.map((oneActivityTidbit) => {
                     // console.log('oneActivityTidbit:', oneActivityTidbit);
                     // console.log('numberOfActivityTidbitsDisplayed:', numberOfActivityTidbitsDisplayed);
-                    const speakerNameNotValid = !oneActivityTidbit.speaker_name || (oneActivityTidbit.speaker_name && startsWith('Voter-', oneActivityTidbit.speaker_name));
+                    const speakerNameNotValid = !oneActivityTidbit.speaker_name ||
+                      (oneActivityTidbit.speaker_name && oneActivityTidbit.speaker_name.startsWith('Voter-'));
                     const isVotersPost = voterWeVoteId === oneActivityTidbit.speaker_voter_we_vote_id;
                     if (!oneActivityTidbit || (speakerNameNotValid && !isVotersPost) || !oneActivityTidbit.we_vote_id) {
                       // console.log('Missing oneActivityTidbit.we_vote_id:', oneActivityTidbit);

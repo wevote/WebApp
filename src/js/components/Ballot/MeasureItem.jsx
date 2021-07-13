@@ -212,6 +212,10 @@ const MeasureInfoWrapper = styled.div`
 `;
 
 const MeasureItemWrapper = styled.div`
+  @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
+    padding: 16px 0 8px 0;
+  }
+
 `;
 
 const MeasureTextWrapper = styled.div`

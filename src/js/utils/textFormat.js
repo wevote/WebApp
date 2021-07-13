@@ -245,42 +245,25 @@ export function numberWithCommas (rawNumber) {
   }
 }
 
-/**
- * DEPRECATED -- DO NOT USE ANYMORE
- * We now have a String.startsWith polyfill for IE 10
- * @param needle
- * @param incomingString
- * @returns {boolean}
- */
-export function startsWith (needle, incomingString) {
-  // IE 10 does not support the "string.startsWith" function.  DO NOT USE THIS FUNCTION
-  // console.log("startsWith, needle:", needle, ", haystack: ", incomingString);
-  if (incomingString) {
-    return incomingString.indexOf(needle) === 0;
-  } else {
-    return false;
-  }
-}
-
 // If Display name is repeated in beginning of the description, remove the name from the description (along with trailing 'is') and capitalize next word to begin description.
 export function removeTwitterNameFromDescription (displayName, twitterDescription) {
   const displayNameNotNull = displayName || '';
   const twitterDescriptionNotNull = twitterDescription || '';
   let twitterDescriptionMinusName;
 
-  if (startsWith(displayNameNotNull, twitterDescriptionNotNull)) {
+  if (twitterDescriptionNotNull.startsWith(displayNameNotNull)) {
     twitterDescriptionMinusName = twitterDescriptionNotNull.substr(displayNameNotNull.length);
-  } else if (startsWith(`The ${displayNameNotNull}`, twitterDescriptionNotNull)) {
+  } else if (twitterDescriptionNotNull.startsWith(`The ${displayNameNotNull}`)) {
     twitterDescriptionMinusName = twitterDescriptionNotNull.substr(displayNameNotNull.length + 4);
   } else if (twitterDescriptionNotNull.length) {
     twitterDescriptionMinusName = twitterDescriptionNotNull;
   } else {
     twitterDescriptionMinusName = '';
   }
-  if (startsWith(', ', twitterDescriptionMinusName)) {
+  if (twitterDescriptionMinusName.startsWith(', ')) {
     twitterDescriptionMinusName = twitterDescriptionMinusName.substr(2);
   }
-  if (startsWith(': ', twitterDescriptionMinusName)) {
+  if (twitterDescriptionMinusName.startsWith(': ')) {
     twitterDescriptionMinusName = twitterDescriptionMinusName.substr(2);
   }
   return twitterDescriptionMinusName;

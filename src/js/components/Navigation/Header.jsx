@@ -5,12 +5,13 @@ import AppObservableStore, { messageService } from '../../stores/AppObservableSt
 import VoterStore from '../../stores/VoterStore';
 import apiCalming from '../../utils/apiCalming';
 import { dumpCssFromId } from '../../utils/appleSiliconUtils';
-import { getApplicationViewBooleans, weVoteBrandingOff } from '../../utils/applicationUtils';
+import { getApplicationViewBooleans, headerHasSubmenu, weVoteBrandingOff } from '../../utils/applicationUtils';
 import { cordovaTopHeaderTopMargin } from '../../utils/cordovaOffsets';
 import { hasIPhoneNotch, historyPush, isCordova, isIOS, isIOSAppOnMac, isIPad, isWebApp } from '../../utils/cordovaUtils';
 import displayFriendsTabs from '../../utils/displayFriendsTabs';
+import isMobileScreenSize from '../../utils/isMobileScreenSize';
 import { renderLog } from '../../utils/logging';
-import { startsWith, stringContains } from '../../utils/textFormat';
+import { stringContains } from '../../utils/textFormat';
 import HeaderBar from './HeaderBar';
 
 const ActivityTidbitDrawer = React.lazy(() => import(/* webpackChunkName: 'ActivityTidbitDrawer' */ '../Activity/ActivityTidbitDrawer'));
@@ -114,8 +115,8 @@ export default class Header extends Component {
   onAppObservableStoreChange (msg) {
     // console.log('------ Header, onAppObservableStoreChange received: ', msg);
     this.setState({
-      activityTidbitWeVoteIdForDrawer: AppObservableStore.activityTidbitWeVoteIdForDrawer(),
-      organizationModalBallotItemWeVoteId: AppObservableStore.organizationModalBallotItemWeVoteId(),
+      activityTidbitWeVoteIdForDrawer: AppObservableStore.getActivityTidbitWeVoteIdForDrawer(),
+      organizationModalBallotItemWeVoteId: AppObservableStore.getOrganizationModalBallotItemWeVoteId(),
       sharedItemCode: AppObservableStore.getSharedItemCode(),
       showActivityTidbitDrawer: AppObservableStore.showActivityTidbitDrawer(),
       showHowItWorksModal: AppObservableStore.showHowItWorksModal(),
@@ -193,6 +194,8 @@ export default class Header extends Component {
     let pageHeaderClasses = weVoteBrandingOff() ? 'page-header__container_branding_off headroom' : 'page-header__container headroom';
     if (isIPad() && !isIOSAppOnMac()) {
       pageHeaderClasses = pageHeaderClasses.replace('page-header__container', 'page-header__container_ipad');
+    } if (!headerHasSubmenu(pathname)) {
+      pageHeaderClasses += ' header-shadow';
     }
     // console.log(`Header href: ${window.location.href}  cordovaStyle: `, cordovaTopHeaderTopMargin());
 
@@ -433,11 +436,11 @@ export default class Header extends Component {
       typeof pathname !== 'undefined' && pathname &&
       (pathname === '/for-campaigns' ||
       pathname === '/for-organizations' ||
-      startsWith('/how', pathname) ||
+      pathname.startsWith('/how') ||
       pathname === '/more/about' ||
       pathname === '/more/credits' ||
-      startsWith('/more/donate', pathname) ||
-      startsWith('/more/pricing', pathname) ||
+      pathname.startsWith('/more/donate') ||
+      pathname.startsWith('/more/pricing') ||
       pathname === '/welcome')) {
       return null;
     } else {
@@ -447,7 +450,11 @@ export default class Header extends Component {
         if (stringContains('/ballot', pathname.toLowerCase())) {
           classNameHeadroom = 'headroom-wrapper-webapp__ballot';
         } else if (stringContains('/office', pathname.toLowerCase())) {
-          classNameHeadroom = 'headroom-wrapper-webapp__office';
+          if (isMobileScreenSize()) {
+            classNameHeadroom = 'headroom-wrapper-webapp__default';
+          } else {
+            classNameHeadroom = 'headroom-wrapper-webapp__office';
+          }
         } else if (displayFriendsTabs()) {
           classNameHeadroom = 'headroom-wrapper-webapp__ballot';
         } else {

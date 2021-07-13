@@ -4,7 +4,7 @@ import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 import Tooltip from 'react-bootstrap/Tooltip';
 import { cordovaDot } from '../../utils/cordovaUtils';
 import { renderLog } from '../../utils/logging';
-import { startsWith, vimeoRegX, youTubeRegX } from '../../utils/textFormat';
+import { vimeoRegX, youTubeRegX } from '../../utils/textFormat';
 import ExternalLinkIcon from './ExternalLinkIcon';
 
 const OpenExternalWebSite = React.lazy(() => import(/* webpackChunkName: 'OpenExternalWebSite' */ './OpenExternalWebSite'));
@@ -61,7 +61,7 @@ export default class PositionInformationOnlySnippet extends Component {
     }
     let moreInfoUrlFull = moreInfoUrl;
     if (moreInfoUrlFull) {
-      if (!startsWith('http', moreInfoUrlFull.toLowerCase())) {
+      if (!moreInfoUrlFull.toLowerCase().startsWith('http')) {
         moreInfoUrlFull = `http://${moreInfoUrlFull}`;
       }
     }

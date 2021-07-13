@@ -12,14 +12,14 @@ import VoterSessionActions from '../../actions/VoterSessionActions';
 import AppObservableStore, { messageService } from '../../stores/AppObservableStore';
 import FriendStore from '../../stores/FriendStore';
 import VoterStore from '../../stores/VoterStore';
-import { weVoteBrandingOff } from '../../utils/applicationUtils';
+import { headerHasSubmenu, weVoteBrandingOff } from '../../utils/applicationUtils';
 import { hasIPhoneNotch, historyPush, isCordova, isIOSAppOnMac, isWebApp } from '../../utils/cordovaUtils';
 import displayFriendsTabs from '../../utils/displayFriendsTabs';
 import isMobileScreenSize from '../../utils/isMobileScreenSize';
 import LazyImage from '../../utils/LazyImage';
 import { renderLog } from '../../utils/logging';
 import shouldHeaderRetreat from '../../utils/shouldHeaderRetreat';
-import { getBooleanValue, shortenText, startsWith, stringContains } from '../../utils/textFormat';
+import { getBooleanValue, shortenText, stringContains } from '../../utils/textFormat';
 import { voterPhoto } from '../../utils/voterPhoto';
 import signInModalGlobalState from '../Widgets/signInModalGlobalState';
 import HeaderBarLogo from './HeaderBarLogo';
@@ -87,9 +87,6 @@ class HeaderBar extends Component {
   }
 
   componentDidMount () {
-    if (isMobileScreenSize()) {
-      AppObservableStore.setShowEditAddressButton(true);
-    }
     this.appStateSubscription = messageService.getMessage().subscribe((msg) => this.onAppObservableStoreChange(msg));
     this.friendStoreListener = FriendStore.addListener(this.onFriendStoreChange.bind(this));
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
@@ -289,10 +286,10 @@ class HeaderBar extends Component {
     this.setState({
       chosenSiteLogoUrl: AppObservableStore.getChosenSiteLogoUrl(),
       hideWeVoteLogo: AppObservableStore.getHideWeVoteLogo(),
-      organizationModalBallotItemWeVoteId: AppObservableStore.organizationModalBallotItemWeVoteId(),
+      organizationModalBallotItemWeVoteId: AppObservableStore.getOrganizationModalBallotItemWeVoteId(),
       // paidAccountUpgradeMode,
       scrolledDown: AppObservableStore.getScrolledDown(),
-      shareModalStep: AppObservableStore.shareModalStep(),
+      shareModalStep: AppObservableStore.getShareModalStep(),
       showAdviserIntroModal: AppObservableStore.showAdviserIntroModal(),
       showEditAddressButton: AppObservableStore.showEditAddressButton(),
       showFirstPositionIntroModal: AppObservableStore.showFirstPositionIntroModal(),
@@ -338,21 +335,31 @@ class HeaderBar extends Component {
     }
   }
 
+  setShowAddressButtonIfMobile (newState) {
+    if (isMobileScreenSize()) {
+      if (AppObservableStore.showEditAddressButton() !== newState) {
+        AppObservableStore.setShowEditAddressButton(newState);
+      }
+    }
+  }
+
   manuallyUnderlineTab = (setInitial = false) => {
     const { location: { pathname } } = window;
 
     // console.log('HeaderBar ------------------ manuallyUnderlineTab ', pathname);
     if (typeof pathname !== 'undefined' && pathname) {
-      if (startsWith('/ready', pathname.toLowerCase()) || pathname === '/') {
+      if (pathname.toLowerCase().startsWith('/ready')  || pathname === '/') {
         if (setInitial) {
           this.changeOverrideUnderline('readyTabHeaderBar,ballotTabHeaderBar,valuesTabHeaderBar,discussTabHeaderBar');
         }
+        this.setShowAddressButtonIfMobile(true);
         return 0;
       }
-      if (startsWith('/ballot', pathname.toLowerCase()))  {
+      if (pathname.toLowerCase().startsWith('/ballot'))  {
         if (setInitial) {
           this.changeOverrideUnderline('ballotTabHeaderBar,readyTabHeaderBar,valuesTabHeaderBar,discussTabHeaderBar');
         }
+        this.setShowAddressButtonIfMobile(true);
         return 1;
       }
       if (stringContains('/value', pathname.toLowerCase()) ||
@@ -360,16 +367,18 @@ class HeaderBar extends Component {
         if (setInitial) {
           this.changeOverrideUnderline('valuesTabHeaderBar,readyTabHeaderBar,ballotTabHeaderBar,discussTabHeaderBar');
         }
-        // if (setInitial) $('valuesTabHeaderBar').css(underline);
+        this.setShowAddressButtonIfMobile(false);
         return 2;
       }
-      if (startsWith('/news', pathname.toLowerCase())) {
+      if (pathname.toLowerCase().startsWith('/news')) {
         if (setInitial) {
           this.changeOverrideUnderline('discussTabHeaderBar,readyTabHeaderBar,ballotTabHeaderBar,valuesTabHeaderBar');
         }
+        this.setShowAddressButtonIfMobile(false);
         return 3;
       }
     }
+    this.setShowAddressButtonIfMobile(false);
     return false;
   };
 
@@ -423,14 +432,12 @@ class HeaderBar extends Component {
   toggleSelectBallotModal (showSelectBallotModalHideAddress = false, showSelectBallotModalHideElections = false) {
     const { showSelectBallotModal } = this.state;
     if (!showSelectBallotModal) {
-      // console.log('Ballot toggleSelectBallotModal, BallotActions.voterBallotListRetrieve()');
       BallotActions.voterBallotListRetrieve(); // Retrieve a list of ballots for the voter from other elections
     }
-    // May 5, 2021:  We were running into "invariant.js:40 Uncaught Invariant Violation: Dispatch.dispatch(...): Cannot dispatch in the middle of a dispatch."
-    // In both the major "speed" refactored branch, and on the older wevote.us when trying to close the  BallotElectionListWithFilters.  So this workaround updates the store without a dispatch.
-    // So just close the dialog, to avoid this API call: AppObservableStore.setShowSelectBallotModal(!showSelectBallotModal, showSelectBallotModalHideAddress, showSelectBallotModalHideElections);
+    AppObservableStore.setShowSelectBallotModal(!showSelectBallotModal, showSelectBallotModalHideAddress, showSelectBallotModalHideElections);
+
     this.setState({
-      showSelectBallotModal: false,
+      showSelectBallotModal: !showSelectBallotModal,
       // firstVisitToBallot: false,
     });
   }
@@ -610,9 +617,12 @@ class HeaderBar extends Component {
       appBarCname += ' page-header__cordova';
     }
 
-
     return (
-      <Wrapper hasNotch={hasIPhoneNotch()} scrolledDown={scrolledDown && isWebApp() && shouldHeaderRetreat(pathname)}>
+      <HeaderBarWrapper
+        hasNotch={hasIPhoneNotch()}
+        scrolledDown={scrolledDown && isWebApp() && shouldHeaderRetreat(pathname)}
+        hasSubMenu={headerHasSubmenu(pathname)}
+      >
         <AppBar position="relative"
                 color="default"
                 className={`${appBarCname} ${showingBallot || showingFriendsTabs ? ' page-header__ballot' : ''}`}
@@ -799,7 +809,7 @@ class HeaderBar extends Component {
             toggleFunction={this.closeImageUploadModal}
           />
         )}
-      </Wrapper>
+      </HeaderBarWrapper>
     );
   }
 }
@@ -915,10 +925,11 @@ const NotificationsAndProfileWrapper = styled.div`
   z-index: 3; //to float above the account/ProfilePopUp menu option grey div
 `;
 
-const Wrapper = styled.div`
+const HeaderBarWrapper = styled.div`
   margin-top: ${({ hasNotch }) => (hasNotch ? '1.5rem' : '0')};
   transition: all 50ms ease-in;
   ${({ scrolledDown }) => (scrolledDown ? 'transform: translateY(-100%);' : '')}
+  ${({ hasSubMenu }) => (hasSubMenu ? '' : 'box-shadow: 0 2px 4px -1px rgba(0, 0, 0, 0.2), 0 4px 5px 0 rgba(0, 0, 0, 0.14), 0 1px 10px 0 rgba(0, 0, 0, 0.12);')}
 `;
 
 export default withStyles(styles)(HeaderBar);

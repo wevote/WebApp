@@ -73,6 +73,12 @@ export default {
     messageService.sendMessage('state updated activityTidbitWeVoteIdForDrawerAndOpen');
   },
 
+  setEvaluateHeaderDisplay () {
+    // Force the Header to evaluate whether it should display
+    nonFluxState.showHeader = Date.now();
+    messageService.sendMessage('state updated showHeader');
+  },
+
   setGetStartedMode (getStartedMode) {
     nonFluxState.getStartedMode = getStartedMode;
     messageService.sendMessage('state updated getStartedMode');
@@ -81,11 +87,6 @@ export default {
   setOrganizationModalBallotItemWeVoteId (ballotItemWeVoteId) {
     nonFluxState.organizationModalBallotItemWeVoteId = ballotItemWeVoteId;
     messageService.sendMessage('state updated organizationModalBallotItemWeVoteId');
-  },
-
-  setVoterGuideSettingsDashboardEditMode (getVoterGuideSettingsDashboardEditMode) {
-    nonFluxState.getVoterGuideSettingsDashboardEditMode = getVoterGuideSettingsDashboardEditMode;
-    messageService.sendMessage('state updated getVoterGuideSettingsDashboardEditMode');
   },
 
   setScrolled (scrolledDown) {
@@ -114,15 +115,14 @@ export default {
     messageService.sendMessage('state updated showEditAddressButton');
   },
 
+  setShowElectionsWithOrganizationVoterGuidesModal (show) {
+    nonFluxState.showElectionsWithOrganizationVoterGuidesModal = show;
+    messageService.sendMessage('state updated showElectionsWithOrganizationVoterGuidesModal');
+  },
+
   setShowFirstPositionIntroModal (show) {
     nonFluxState.showFirstPositionIntroModal = show;
     messageService.sendMessage('state updated showFirstPositionIntroModal');
-  },
-
-  setEvaluateHeaderDisplay () {
-    // Force the Header to evaluate whether it should display
-    nonFluxState.showHeader = Date.now();
-    messageService.sendMessage('state updated showHeader');
   },
 
   setShowHowItWorksModal (show) {
@@ -131,10 +131,10 @@ export default {
     messageService.sendMessage('state updated showHowItWorksModal');
   },
 
-  setShowVoterPlanModal (show) {
-    // The chosenPaidAccount values are: free, professional, enterprise
-    nonFluxState.showVoterPlanModal = show;
-    messageService.sendMessage('state updated showVoterPlanModal');
+  setShowImageUploadModal (show) {
+    // console.log('Setting image upload modal to open!');
+    nonFluxState.showImageUploadModal = show;
+    messageService.sendMessage('state updated showImageUploadModal');
   },
 
   setShowNewVoterGuideModal (show) {
@@ -142,9 +142,10 @@ export default {
     messageService.sendMessage('state updated showNewVoterGuideModal');
   },
 
-  setShowElectionsWithOrganizationVoterGuidesModal (show) {
-    nonFluxState.showElectionsWithOrganizationVoterGuidesModal = show;
-    messageService.sendMessage('state updated showElectionsWithOrganizationVoterGuidesModal');
+  setShowOrganizationModal (show) {
+    // console.log("Setting organizationModal to ", show);
+    nonFluxState.showOrganizationModal = show;
+    messageService.sendMessage('state updated showOrganizationModal');
   },
 
   setShowPaidAccountUpgradeModal (chosenPaidAccount) {
@@ -165,6 +166,11 @@ export default {
     messageService.sendMessage('state updated showSelectBallotModal, showSelectBallotModalHideAddress, & showSelectBallotModalHideElections');
   },
 
+  setShowSelectBallotModalOnly (showSelectBallotModal) {
+    nonFluxState.showSelectBallotModal = showSelectBallotModal;
+    messageService.sendMessage('state updated showSelectBallotModalOnly');
+  },
+
   setShowShareModal (show) {
     // The chosenPaidAccount values are: free, professional, enterprise
     nonFluxState.showShareModal = show;
@@ -181,10 +187,10 @@ export default {
     messageService.sendMessage('state updated showSignInModal');
   },
 
-  setShowOrganizationModal (show) {
-    // console.log("Setting organizationModal to ", show);
-    nonFluxState.showOrganizationModal = show;
-    messageService.sendMessage('state updated showOrganizationModal');
+  setShowVoterPlanModal (show) {
+    // The chosenPaidAccount values are: free, professional, enterprise
+    nonFluxState.showVoterPlanModal = show;
+    messageService.sendMessage('state updated showVoterPlanModal');
   },
 
   setShowValuesIntroModal (show) {
@@ -192,18 +198,17 @@ export default {
     messageService.sendMessage('state updated showValuesIntroModal');
   },
 
-  setShowImageUploadModal (show) {
-    // console.log('Setting image upload modal to open!');
-    nonFluxState.showImageUploadModal = show;
-    messageService.sendMessage('state updated showImageUploadModal');
-  },
-
   setViewingOrganizationVoterGuide (isViewing) {
     nonFluxState.viewingOrganizationVoterGuide = isViewing;
     messageService.sendMessage('state updated viewingOrganizationVoterGuide');
   },
 
-  storeSignInStartFullUrl () {
+  setVoterGuideSettingsDashboardEditMode (getVoterGuideSettingsDashboardEditMode) {
+    nonFluxState.getVoterGuideSettingsDashboardEditMode = getVoterGuideSettingsDashboardEditMode;
+    messageService.sendMessage('state updated getVoterGuideSettingsDashboardEditMode');
+  },
+
+  setSignInStartFullUrl () {
     nonFluxState.storeSignInStartFullUrl = true;
     messageService.sendMessage('state updated storeSignInStartFullUrl');
   },
@@ -213,7 +218,7 @@ export default {
     messageService.sendMessage('state updated unsetStoreSignInStartFullUrl');
   },
 
-  activityTidbitWeVoteIdForDrawer () {
+  getActivityTidbitWeVoteIdForDrawer () {
     return nonFluxState.activityTidbitWeVoteIdForDrawer;
   },
 
@@ -241,12 +246,21 @@ export default {
     return nonFluxState.hostname || '';
   },
 
+  getOrganizationModalBallotItemWeVoteId () {
+    return nonFluxState.organizationModalBallotItemWeVoteId;
+  },
+
   getScrolledDown () {
     return nonFluxState.scrolledDown;
   },
 
   getSharedItemCode () {
     return nonFluxState.sharedItemCode;
+  },
+
+  getShareModalStep () {
+    // console.log('AppObservableStore shareModalStep:', nonFluxState.shareModalStep);
+    return nonFluxState.shareModalStep;
   },
 
   getSiteOwnerOrganizationWeVoteId () {
@@ -278,7 +292,7 @@ export default {
     return nonFluxState.onWeVoteSubdomainUrl || nonFluxState.onChosenFullDomainUrl;
   },
 
-  voterIsAdminForThisUrl (linkedOrganizationWeVoteId) {
+  isVoterAdminForThisUrl (linkedOrganizationWeVoteId) {
     // const linkedOrganizationWeVoteId = VoterStore.getLinkedOrganizationWeVoteId();
     return nonFluxState.siteOwnerOrganizationWeVoteId === linkedOrganizationWeVoteId;
   },
@@ -350,11 +364,6 @@ export default {
     return nonFluxState.showSharedItemModal;
   },
 
-  shareModalStep () {
-    // console.log('AppObservableStore shareModalStep:', nonFluxState.shareModalStep);
-    return nonFluxState.shareModalStep;
-  },
-
   showSelectBallotModal () {
     return nonFluxState.showSelectBallotModal;
   },
@@ -369,10 +378,6 @@ export default {
 
   showSignInModal () {
     return nonFluxState.showSignInModal;
-  },
-
-  organizationModalBallotItemWeVoteId () {
-    return nonFluxState.organizationModalBallotItemWeVoteId;
   },
 
   showOrganizationModal () {
