@@ -3,15 +3,19 @@ import React from 'react';
 import { renderLog } from '../../utils/logging';
 import CheckoutForm from './CheckoutForm';
 
+/*
+July 2021 TODO: Same named file in the WebApp and Campaigns -- PLEASE KEEP THEM IDENTICAL -- make symmetrical changes and test on both sides
+*/
+
 const InjectedCheckoutForm = (params) => {
   renderLog('InjectedCheckoutForm');
   const {
     value,
     classes,
-    onDonation,
     showWaiting,
-    stopShowWaiting,
-    isOneTime,
+    isChipIn,
+    isMonthly,
+    campaignXWeVoteId,
   } = params;
   console.log('InjectedCheckoutForm --------- showWaiting', showWaiting);
   if (value && classes) {
@@ -27,10 +31,10 @@ const InjectedCheckoutForm = (params) => {
             elements={elements}
             value={value}
             classes={classes}
-            onDonation={onDonation}
             showWaiting={showWaiting}
-            stopShowWaiting={stopShowWaiting}
-            isOneTime={isOneTime}
+            isMonthly={isMonthly}
+            isChipIn={isChipIn}
+            campaignXWeVoteId={campaignXWeVoteId}
           />
         )}
       </ElementsConsumer>

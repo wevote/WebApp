@@ -36,11 +36,14 @@ export default class DonationForm extends Component {
         locale: 'auto',
         token (token) {
           console.log(`token generated ${token.id} token.email ${token.email}`);
-          const isOrganizationPlan = false;
+          const isPremiumPlan = false;
+          const isChipIn = false;
           const couponCode = '';
-          const planType = '';
-          DonateActions.donationWithStripe(token.id, token.email, self.props.donationAmount, self.props.donateMonthly,
-            isOrganizationPlan, planType, couponCode);
+          const premiumPlanType = '';
+          const campaignXWeVoteId = '';
+          const paymentMethodId = '';
+          DonateActions.donationWithStripe(token.id, token.email, self.props.donationAmount, isChipIn, self.props.donateMonthly, isPremiumPlan, token.client_ip, campaignXWeVoteId, paymentMethodId, couponCode, premiumPlanType);
+
           historyPush('/more/processing_donation');
         },
       });

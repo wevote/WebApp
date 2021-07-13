@@ -60,7 +60,7 @@ class SettingsVerifySecretCode extends Component {
       voterPhoneNumber,
     });
     const delayBeforeClearingVerificationStatus = 200;
-    this.timer = setTimeout(() => {
+    this.clearSecretCodeVerificationStatusTimer = setTimeout(() => {
       VoterActions.clearSecretCodeVerificationStatus();
     }, delayBeforeClearingVerificationStatus);
 
@@ -97,9 +97,25 @@ class SettingsVerifySecretCode extends Component {
       $('#textOrEmailEntryDialog').css('display', 'unset');  // Reveal the entry dialog
     }
     this.voterStoreListener.remove();
-    if (this.timer) clearTimeout(this.timer);
+    if (this.closeVerifyModalLocalTimer) {
+      clearTimeout(this.closeVerifyModalLocalTimer);
+    }
+    if (this.clearSecretCodeVerificationStatusTimer) {
+      clearTimeout(this.clearSecretCodeVerificationStatusTimer);
+    }
     window.removeEventListener('paste', this.onPaste);
   }
+
+  handleDigit6Blur = () => {
+    const { digit1, digit2, digit3, digit4, digit5, digit6, voterPhoneNumber } = this.state;
+    this.setState({ condensed: false });
+    if (digit6 && isCordova()) {
+      // Jan 2020 this comment looks wrong, but might still contain a clue:  When there is a voterEmailAddress value and the keyboard closes, submit
+      const secretCode = `${digit1}${digit2}${digit3}${digit4}${digit5}${digit6}`;
+      const codeSentToSMSPhoneNumber = !!voterPhoneNumber;
+      VoterActions.voterVerifySecretCode(secretCode, codeSentToSMSPhoneNumber);
+    }
+  };
 
   handleKeyDown2 (e) {
     if (e.keyCode === 8 && this.state.digit2 === '') {
