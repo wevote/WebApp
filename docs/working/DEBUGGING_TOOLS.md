@@ -71,7 +71,7 @@ An interactive UI, as shown below, will start up in a server and will be display
 
   ![ScreenPrint](../images/WebpackBundleAnalyzer.png)
   
-### Do Chery pick from Libraries!
+### Do Cherry pick from Libraries!
 
 importing Button with decompostion from  '@material-ui/core' adds the entire '@material-ui/core' library to the bundle, which 
 bloats the size of the bundle and makes startup over slow internet connections very slow.
