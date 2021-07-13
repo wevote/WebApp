@@ -5,6 +5,7 @@ import React, { Component } from 'react';
 import DonateActions from '../../actions/DonateActions';
 import DonateStore from '../../stores/DonateStore';
 import { renderLog } from '../../utils/logging';
+import { stringContains } from '../../utils/textFormat';
 import { campaignTheme } from '../Style/campaignTheme';
 import TabPanel from '../Widgets/TabPanel';
 import DonationList from './DonationList';
@@ -42,10 +43,13 @@ class DonationListForm extends Component {
 
   render () {
     renderLog('DonationListForm');  // Set LOG_RENDER_EVENTS to log all renders
-    const { isCampaign, leftTabIsMembership } = this.props;
+    const { leftTabIsMembership } = this.props;
     const { value } = this.state;
     // console.log('this.value =========', value);
-
+    const { pathname } = window.location;
+    const isMembership = pathname.startsWith('/membership');
+    const isPayToPromote = (stringContains('/pay-to-promote', pathname));
+    const isCampaign = isMembership || isPayToPromote;
     const donationSubscriptionHistory = DonateStore.getVoterSubscriptionHistory();
     const donationPaymentHistory = DonateStore.getVoterPaymentHistory();
     if ((donationSubscriptionHistory === undefined || donationSubscriptionHistory.length === 0) &&
@@ -54,9 +58,15 @@ class DonationListForm extends Component {
       return null;
     }
 
-    const h4Txt = isCampaign ?
-      'Prior "Chip In" payments, and any existing memberships' :
-      'Existing memberships and prior payments:';
+    let h4Txt = 'Existing memberships and prior payments:';
+    if (isMembership) {
+      h4Txt = 'Existing memberships and prior "Chip In" payments:';
+    } else if (isPayToPromote) {
+      h4Txt = 'Prior "Chip In" payments, and any existing memberships';
+    } else {
+      h4Txt = 'Existing memberships and prior payments:';
+    }
+
     const firstTabLabel = leftTabIsMembership ? 'Memberships' :  'Payment history';
     const secondTabLabel = leftTabIsMembership ? 'Payment history' : 'Memberships';
     if (donationPaymentHistory && donationPaymentHistory.length > 0) {
@@ -98,7 +108,6 @@ class DonationListForm extends Component {
   }
 }
 DonationListForm.propTypes = {
-  isCampaign: PropTypes.bool.isRequired,
   leftTabIsMembership: PropTypes.bool,
 };
 export default DonationListForm;

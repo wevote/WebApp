@@ -246,8 +246,8 @@ class DonationList extends Component {
   }
 }
 DonationList.propTypes = {
-  displayMembershipTab: PropTypes.bool,
   isCampaign: PropTypes.bool,
+  displayMembershipTab: PropTypes.bool,
   showPremiumPlan: PropTypes.bool,
 };
 

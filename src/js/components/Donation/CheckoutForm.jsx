@@ -40,6 +40,7 @@ class CheckoutForm extends React.Component {
     this.emailChange = this.emailChange.bind(this);
     this.onDonateStoreChange = this.onDonateStoreChange.bind(this);
     this.pollForWebhookCompletionAtList = this.pollForWebhookCompletionAtList.bind(this);
+    this.submitStripePayment = this.submitStripePayment.bind(this);
     this.preDonationCounts = {
       subscriptions: -1,
       payments: -1,
