@@ -36,19 +36,18 @@ class Donate extends Component {
 
     this.state = {
       donationErrorMessage: '',
+      isMonthly: false,
       joining: true,
+      preDonation: true,
       showWaiting: false,
       value: '10.00',
-      member: false,
-      oneTime: true,
-      preDonation: true,
     };
 
     this.handleChange = this.handleChange.bind(this);
     this.handleKeyPress = this.handleKeyPress.bind(this);
     this.onAmountFieldChange = this.onAmountFieldChange.bind(this);
     this.onDonateStoreChange = this.onDonateStoreChange.bind(this);
-    this.onDonation = this.onDonation.bind(this);
+    this.onSuccessfulDonation = this.onSuccessfulDonation.bind(this);
   }
 
   componentDidMount () {
@@ -63,7 +62,9 @@ class Donate extends Component {
   }
 
   onDonateStoreChange () {
-    if (!DonateStore.donationSuccess()) {
+    if (DonateStore.donationSuccess()) {
+      this.onSuccessfulDonation();
+    } else {
       this.setState({ donationErrorMessage: DonateStore.donationError() });
     }
   }
@@ -81,18 +82,15 @@ class Donate extends Component {
 
   handleChange = (event) => {
     const { name } = event.currentTarget;
-    const isOneTime = name === 'oneTime';
-    this.setState({ oneTime: isOneTime, member: !isOneTime  });
+    const isMonthly = name === 'isMonthly';
+    this.setState({ isMonthly });
   };
 
-  onDonation () {
-    console.log('onDonation in Donate ------------------------------');
+  onSuccessfulDonation () {
+    console.log('onSuccessfulDonation in Donate ------------------------------');
     console.log('Donation store changed in Donate, Checkout form removed');
     this.setState({
-      // joining: false,
-      // waitingForDonationWithStripe: true,
       showWaiting: true,
-      // subscriptionCount: DonateStore.getVoterSubscriptionHistory().length,
       preDonation: false,
     });
   }
@@ -173,7 +171,7 @@ class Donate extends Component {
   render () {
     renderLog('Donate');  // Set LOG_RENDER_EVENTS to log all renders
     const { classes } = this.props;
-    const { joining, showWaiting, value, member, oneTime, preDonation } = this.state;
+    const { joining, showWaiting, value, isMonthly, preDonation } = this.state;
 
     return (
       <Wrapper>
@@ -196,11 +194,11 @@ class Donate extends Component {
                     </FormLabel>
                     <RadioGroup row>
                       <FormControlLabel
-                        control={<Radio checked={oneTime} onChange={this.handleChange} name="oneTime" style={{ color: 'black' }} />}
+                        control={<Radio checked={!isMonthly} onChange={this.handleChange} name="oneTime" style={{ color: 'black' }} />}
                         label="One time Donation"
                       />
                       <FormControlLabel
-                        control={<Radio checked={member} onChange={this.handleChange} name="member" style={{ color: 'black' }} />}
+                        control={<Radio checked={isMonthly} onChange={this.handleChange} name="isMonthly" style={{ color: 'black' }} />}
                         label="Donate monthly"
                       />
                     </RadioGroup>
@@ -208,7 +206,7 @@ class Donate extends Component {
                 </ContributeMonthlyText>
                 <ContributeGridSection>
                   {['5', '10', '20', '50'].map((price) => (
-                    <ContributeGridItem>
+                    <ContributeGridItem key={`gridItem-${price}`}>
                       <Button
                         classes={{ root: classes.buttonRoot }}
                         variant="contained"
@@ -268,19 +266,20 @@ class Donate extends Component {
                 <PaymentCenteredWrapper>
                   <Elements stripe={stripePromise}>
                     <InjectedCheckoutForm
-                    value={value}
-                    classes={{}}
-                    stopShowWaiting={this.stopShowWaiting}
-                    onDonation={this.onDonation}
-                    isOneTime={oneTime}
-                    showWaiting={showWaiting}
+                      value={value}
+                      classes={{}}
+                      isMonthly={isMonthly}
+                      showWaiting={showWaiting}
                     />
                   </Elements>
                 </PaymentCenteredWrapper>
               </PaymentWrapper>
             </>
           ) : null}
-          <DonationListForm waitForWebhook />
+          <DonationListForm
+            isCampaign={false}
+            leftTabIsMembership={false}
+          />
         </InnerWrapper>
         <WelcomeFooter />
       </Wrapper>
