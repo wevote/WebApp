@@ -171,13 +171,13 @@ class CheckoutForm extends React.Component {
 
     if (this.continuePolling()) {
       this.setState({ isPolling: true });
-      this.setPollInterval = setTimeout(() => {
+      this.setPollInterval = setInterval(() => {
         pollCount--;
         if (pollCount > 0 && this.continuePolling()) {
           console.log(`pollForWebhookCompletion polling ----- ${pollCount}`);
           DonateActions.donationRefreshDonationList();
         } else {
-          clearTimeout(this.setPollInterval);
+          clearInterval(this.setPollInterval);
           this.setPollInterval = null;
           this.clearPreDonationCounts();
         }
