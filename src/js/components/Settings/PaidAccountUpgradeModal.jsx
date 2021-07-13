@@ -181,10 +181,10 @@ class PaidAccountUpgradeModal extends Component {
     if (activePaidPlan && activePaidPlan.subscription_active) {
       let activePaidPlanChosen = '';
       let activePaidPlanChosenDisplay = '';
-      if (stringContains('PROFESSIONAL', activePaidPlan.plan_type_enum)) {
+      if (stringContains('PROFESSIONAL', activePaidPlan.premium_plan_type_enum)) {
         activePaidPlanChosen = 'professional';
         activePaidPlanChosenDisplay = 'Professional';
-      } else if (stringContains('ENTERPRISE', activePaidPlan.plan_type_enum)) {
+      } else if (stringContains('ENTERPRISE', activePaidPlan.premium_plan_type_enum)) {
         activePaidPlanChosen = 'enterprise';
         activePaidPlanChosenDisplay = 'Enterprise';
       } else {

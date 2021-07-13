@@ -12,10 +12,10 @@ export default {
   //   Dispatcher.loadEndpoint('defaultPricing', {});
   // },
 
-  donationCancelSubscriptionAction (subscriptionId, planTypeEnum = '') {
+  donationCancelSubscriptionAction (subscriptionId, premiumPlanTypeEnum = '') {
     Dispatcher.loadEndpoint('donationCancelSubscription',
       {
-        plan_type_enum: planTypeEnum,
+        premium_plan_type_enum: premiumPlanTypeEnum,
         stripe_subscription_id: subscriptionId,
       });
   },
@@ -28,17 +28,19 @@ export default {
     Dispatcher.loadEndpoint('donationHistory');
   },
 
-  donationWithStripe (token,  clientIP, paymentMethodId, email, donationAmount, monthlyDonation, isOrganizationPlan, planType, couponCode) {
+  donationWithStripe (token, email, donationAmount, isChipIn, isMonthlyDonation, isPremiumPlan, clientIP, campaignXWeVoteId, paymentMethodId, couponCode, premiumPlanType) {
     Dispatcher.loadEndpoint('donationWithStripe', {
       token,
-      client_ip: clientIP,
-      payment_method_id: paymentMethodId,
       email,
       donation_amount: donationAmount,
-      monthly_donation: monthlyDonation,
-      is_organization_plan: isOrganizationPlan,
-      plan_type_enum: planType,
+      is_chip_in: isChipIn,
+      is_monthly_donation: isMonthlyDonation,
+      is_premium_plan: isPremiumPlan,
+      client_ip: clientIP,
+      campaignx_we_vote_id: campaignXWeVoteId,
+      payment_method_id: paymentMethodId,
       coupon_code: couponCode,
+      premium_plan_type_enum: premiumPlanType,
     });
   },
 
@@ -51,9 +53,9 @@ export default {
   //   Dispatcher.loadEndpoint('doesOrgHavePaidPlan', {});
   // },
   //
-  // validateCoupon (planType, couponCode) {
+  // validateCoupon (premiumPlanType, couponCode) {
   //   Dispatcher.loadEndpoint('validateCoupon', {
-  //     plan_type_enum: planType,
+  //     premium_plan_type_enum: premiumPlanType,
   //     coupon_code: couponCode,
   //   });
   // },

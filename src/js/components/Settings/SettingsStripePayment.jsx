@@ -11,6 +11,9 @@ import { renderLog } from '../../utils/logging';
 import { numberWithCommas } from '../../utils/textFormat';
 import LoadingWheel from '../LoadingWheel';
 
+/*
+July 2021 TODO: Same named file in the WebApp and Campaigns -- PLEASE KEEP THEM IDENTICAL -- make symmetrical changes and test on both sides
+*/
 
 class SettingsStripePayment extends Component {
   constructor (props) {
@@ -118,53 +121,57 @@ class SettingsStripePayment extends Component {
     const { stripe } = this.props;
     const { payByMonthCostPerMonth, payByYearCostPerYear, pricingPlanChosen } = this.state;
     let { couponCode } = this.state;
-    let donateMonthly = false;
-    let planType = '';
+    let isMonthlyDonation = false;
+    let premiumPlanType = '';
 
     // If we pass in a couponCode (ex/ VOTE9X3), we then need to match that with
     if (String(pricingPlanChosen) === 'professional') {
       if (payByMonthCostPerMonth) {
-        donateMonthly = true;
-        planType = 'PROFESSIONAL_MONTHLY';
+        isMonthlyDonation = true;
+        premiumPlanType = 'PROFESSIONAL_MONTHLY';
       } else if (payByYearCostPerYear) {
-        donateMonthly = false;
-        planType = 'PROFESSIONAL_YEARLY';
+        isMonthlyDonation = false;
+        premiumPlanType = 'PROFESSIONAL_YEARLY';
       } else {
         // Default
-        donateMonthly = true;
-        planType = 'PROFESSIONAL_MONTHLY';
+        isMonthlyDonation = true;
+        premiumPlanType = 'PROFESSIONAL_MONTHLY';
       }
     } else if (String(pricingPlanChosen) === 'enterprise') {
       if (payByMonthCostPerMonth) {
-        donateMonthly = true;
-        planType = 'ENTERPRISE_MONTHLY';
+        isMonthlyDonation = true;
+        premiumPlanType = 'ENTERPRISE_MONTHLY';
       } else if (payByYearCostPerYear) {
-        donateMonthly = false;
-        planType = 'ENTERPRISE_YEARLY';
+        isMonthlyDonation = false;
+        premiumPlanType = 'ENTERPRISE_YEARLY';
       } else {
         // Default
-        donateMonthly = true;
-        planType = 'ENTERPRISE_MONTHLY';
+        isMonthlyDonation = true;
+        premiumPlanType = 'ENTERPRISE_MONTHLY';
       }
     } else {
       // Default
-      donateMonthly = true;
-      planType = 'PROFESSIONAL_MONTHLY';
+      isMonthlyDonation = true;
+      premiumPlanType = 'PROFESSIONAL_MONTHLY';
     }
 
     if (!couponCode || couponCode.length === 0) {
-      couponCode = `DEFAULT-${planType}`;
+      couponCode = `DEFAULT-${premiumPlanType}`;
     }
-    // console.log('couponCode:', couponCode, ', planType:', planType, ', donateMonthly:', donateMonthly);
+    // console.log('couponCode:', couponCode, ', premiumPlanType:', premiumPlanType, ', isMonthlyDonation:', isMonthlyDonation);
     // console.log("stripe token object from component/dialog: " + token);
 
-    const isOrganizationPlan = true;
+    const isPremiumPlan = true;
     const email  = '';
+    const donationAmount = 0;    // donationAmount is 0 because the actual amount should come from API server
+    const isChipIn = false;
+    const clientIP = '';
+    const campaignXWeVoteId = '';
+    const paymentMethodId = '';
     // TODO: Figure out what is needed for Name
     const { token } = await stripe.createToken({ name: 'Name' });
     if (token) {
-      DonateActions.donationWithStripe(token.id, email, 0, donateMonthly,  // donationAmount is 0 because the actual amount should come from API server
-        isOrganizationPlan, planType, couponCode);
+      DonateActions.donationWithStripe(token.id, email, donationAmount, isChipIn, isMonthlyDonation, isPremiumPlan, clientIP, campaignXWeVoteId, paymentMethodId, couponCode, premiumPlanType);
       this.setState({
         donationWithStripeSubmitted: true,
       });
