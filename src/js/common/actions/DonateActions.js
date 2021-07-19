@@ -1,5 +1,8 @@
-import Dispatcher from '../dispatcher/Dispatcher';
+import Dispatcher from '../../dispatcher/Dispatcher';
 
+/*
+July 2021 TODO: Same named file in the WebApp and Campaigns -- PLEASE KEEP THEM IDENTICAL -- make symmetrical changes and test on both sides
+*/
 
 export default {
   // couponSummaryRetrieve (couponCode) {
@@ -43,6 +46,11 @@ export default {
       premium_plan_type_enum: premiumPlanType,
     });
   },
+
+  clearStripeErrorState (clearStripeErrorState) {
+    Dispatcher.dispatch({ type: 'clearStripeErrorState', payload: clearStripeErrorState });
+  },
+
 
   // setLatestCouponViewed (latestCouponViewed) {
   //   Dispatcher.dispatch({ type: 'latestCouponViewed', payload: latestCouponViewed });

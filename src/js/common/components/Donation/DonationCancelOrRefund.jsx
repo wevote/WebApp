@@ -4,7 +4,7 @@ import moment from 'moment';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import DonateActions from '../../actions/DonateActions';
-import { renderLog } from '../../utils/logging';
+import { renderLog } from '../../../utils/logging';
 
 /*
 July 2021 TODO: Same named file in the WebApp and Campaigns -- PLEASE KEEP THEM IDENTICAL -- make symmetrical changes and test on both sides

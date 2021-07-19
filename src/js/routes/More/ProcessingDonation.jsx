@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { historyPush } from '../../utils/cordovaUtils';
-import DonateStore from '../../stores/DonateStore';
+import DonateStore from '../../common/stores/DonateStore';
 import { renderLog } from '../../utils/logging';
 
 const loadingScreenStyles = {

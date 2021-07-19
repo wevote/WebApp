@@ -1,6 +1,6 @@
 import { ElementsConsumer } from '@stripe/react-stripe-js';
 import React from 'react';
-import { renderLog } from '../../utils/logging';
+import { renderLog } from '../../../utils/logging';
 import CheckoutForm from './CheckoutForm';
 
 /*
@@ -12,12 +12,11 @@ const InjectedCheckoutForm = (params) => {
   const {
     value,
     classes,
-    showWaiting,
     isChipIn,
     isMonthly,
     campaignXWeVoteId,
   } = params;
-  console.log('InjectedCheckoutForm --------- showWaiting', showWaiting);
+  console.log('InjectedCheckoutForm --------- ');
   if (value && classes) {
     return (
       <ElementsConsumer>
@@ -31,7 +30,6 @@ const InjectedCheckoutForm = (params) => {
             elements={elements}
             value={value}
             classes={classes}
-            showWaiting={showWaiting}
             isMonthly={isMonthly}
             isChipIn={isChipIn}
             campaignXWeVoteId={campaignXWeVoteId}
