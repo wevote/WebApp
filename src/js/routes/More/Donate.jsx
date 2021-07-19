@@ -8,15 +8,14 @@ import Helmet from 'react-helmet';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import AnalyticsActions from '../../actions/AnalyticsActions';
-import DonateActions from '../../actions/DonateActions';
-import DonationError from '../../components/Donation/DonationError';
-import DonationListForm from '../../components/Donation/DonationListForm';
-import InjectedCheckoutForm from '../../components/Donation/InjectedCheckoutForm';
+import DonateActions from '../../common/actions/DonateActions';
+import DonationListForm from '../../common/components/Donation/DonationListForm';
+import InjectedCheckoutForm from '../../common/components/Donation/InjectedCheckoutForm';
 import { Section } from '../../components/Welcome/sectionStyles';
 import ExternalLinkIcon from '../../components/Widgets/ExternalLinkIcon';
 import OpenExternalWebSite from '../../components/Widgets/OpenExternalWebSite';
 import webAppConfig from '../../config';
-import DonateStore from '../../stores/DonateStore';
+import DonateStore from '../../common/stores/DonateStore';
 import VoterStore from '../../stores/VoterStore';
 import { renderLog } from '../../utils/logging';
 
@@ -132,9 +131,6 @@ class Donate extends Component {
         />
         , so every donation helps us pay for critical services. Over 50 awesome people like yourself have donated to make We Vote possible.
         {' '}
-        {this.state.donationErrorMessage.length > 0 ?
-          <DonationError errorMessage={this.state.donationErrorMessage} /> :
-          <span>Please give what you can to help us reach more voters.</span>}
       </DonateDescriptionContainer>
       <DonateDescriptionContainer style={{ paddingBottom: 12 }}>
         Contributions or gifts made on this page are not tax deductible, and fund We Vote USA, a 501(c)(4) nonprofit.

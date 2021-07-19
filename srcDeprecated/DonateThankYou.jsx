@@ -2,7 +2,7 @@ import { withStyles } from '@material-ui/core/styles';
 import React, { Component } from 'react';
 import Helmet from 'react-helmet';
 import styled from 'styled-components';
-import DonationListForm from '../src/js/components/Donation/DonationListForm';
+import DonationListForm from '../src/js/common/components/Donation/DonationListForm';
 import { Section } from '../src/js/components/Welcome/sectionStyles';
 import { renderLog } from '../src/js/utils/logging';
 
