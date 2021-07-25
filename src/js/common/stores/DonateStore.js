@@ -1,6 +1,9 @@
 import { ReduceStore } from 'flux/utils';
-import Dispatcher from '../dispatcher/Dispatcher';
+import Dispatcher from '../../dispatcher/Dispatcher';
 
+/*
+July 2021 TODO: Same named file in the WebApp and Campaigns -- PLEASE KEEP THEM IDENTICAL -- make symmetrical changes and test on both sides
+*/
 
 class DonateStore extends ReduceStore {
   getInitialState () {  // This is a mandatory override, so it can't be static.
@@ -175,29 +178,29 @@ class DonateStore extends ReduceStore {
     return this.getState();
   }
 
+  noDispatchClearStripeErrorState () {
+    this._state.apiStatus = true;
+    this._state.stripeErrorMessageForVoter = '';
+    this._state.stripeFailureCode = '';
+    this._state.success = true;
+  }
+
   reduce (state, action) {
     if (!action.res) return state;
-    // DALE 2019-09-19 Migrate away from orgSubsAlreadyExists and doesOrgHavePaidPlan -- donationHistory/activePaidPlan provides what we need
-    const {
-      // charge_id: charge,
-      donation_amount: donationAmount,
-      is_monthly_donation: isMonthlyDonation,
-      // org_subs_already_exists: orgSubsAlreadyExists,
-      // org_has_active_paid_plan: doesOrgHavePaidPlan,
-      saved_stripe_donation: savedStripeDonation,
-      // subscription_id: subscriptionId,
-      success,
-    } = action.res;
-    const donationAmountSafe = donationAmount || '';
+    // // DALE 2019-09-19 Migrate away from orgSubsAlreadyExists and doesOrgHavePaidPlan -- donationHistory/activePaidPlan provides what we need
+    // const {
+    //   // charge_id: charge,
+    //   // subscription_id: subscriptionId,
+    //   // org_subs_already_exists: orgSubsAlreadyExists,
+    //   // org_has_active_paid_plan: doesOrgHavePaidPlan,
+    //   donation_amount: donationAmount,
+    //   is_monthly_donation: isMonthlyDonation,
+    //   saved_stripe_donation: savedStripeDonation,
+    //   success,
+    // } = action.res;
     // const { defaultPricing, lastCouponResponseReceived } = state;
     // let activePaidPlan = {};
-    let amountPaidViaStripe = 0;
-    let apiStatus = '';
-    let apiSuccess = false;
     // let completeDonationJournalList = [];
-    let donationPaymentsList = [];
-    let donationSubscriptionList = [];
-    let stripeFailureCode = '';
     // let couponAppliedMessage = '';
     // let couponCodeString = '';
     // let couponMatchFound = '';
@@ -213,22 +216,32 @@ class DonateStore extends ReduceStore {
     // let proPlanCouponPricePerMonthPayYearly = '';
     // let proPlanFullPricePerMonthPayMonthly = '';
     // let proPlanFullPricePerMonthPayYearly = '';
-    let stripeErrorMessageForVoter = '';
     // let subscriptionJournalHistory = [];
     // let validForProfessionalPlan = '';
     // let validForEnterprisePlan = '';
+    const donationAmountSafe = action.res.donationAmount || '';
+    let amountPaidViaStripe = 0;
+    let apiStatus = '';
+    let donationPaymentsList = [];
+    let donationSubscriptionList = [];
+    let isMonthlyDonation = false;
+    let savedStripeDonation = false;
+    let stripeErrorMessageForVoter = '';
+    let stripeFailureCode = '';
+    let success = false;
     switch (action.type) {
       case 'donationWithStripe':
         ({
           // active_paid_plan: activePaidPlan,
-          amount_paid: amountPaidViaStripe,
-          // donation_list: completeDonationJournalList,
-          error_message_for_voter: stripeErrorMessageForVoter,
           // organization_saved: organizationSaved,
           // premium_plan_type_enum: premiumPlanTypeEnum,
+          amount_paid: amountPaidViaStripe,
+          error_message_for_voter: stripeErrorMessageForVoter,
+          is_monthly_donation: isMonthlyDonation,
+          saved_stripe_donation: savedStripeDonation,
           status: apiStatus,
-          success: apiSuccess,
           stripe_failure_code: stripeFailureCode,
+          success,
         } = action.res);
         // donationJournalList = completeDonationJournalList.filter((item) => (item.is_premium_plan === false));
         // subscriptionJournalHistory = completeDonationJournalList.filter((item) => (item.is_premium_plan === true));
@@ -243,55 +256,20 @@ class DonateStore extends ReduceStore {
         return {
           ...state,
           // activePaidPlan,
+          // donationJournalList,
+          // orgSubsAlreadyExists,
+          // premiumPlanTypeEnum,
+          // subscriptionJournalHistory,
           amountPaidViaStripe,
           apiStatus,
-          apiSuccess,
           donationAmount: donationAmountSafe,
-          // donationJournalList,
+          donationResponseReceived: true,
+          isMonthlyDonation,
+          savedStripeDonation,
           stripeErrorMessageForVoter,
           stripeFailureCode,
-          isMonthlyDonation,
-          // premiumPlanTypeEnum,
-          savedStripeDonation,
-          // subscriptionJournalHistory,
           success,
-          // orgSubsAlreadyExists,
-          donationResponseReceived: true,
         };
-
-        // case 'donationWithStripe':
-        //   ({
-        //     // active_paid_plan: activePaidPlan,
-        //     amount_paid: amountPaidViaStripe,
-        //     // donation_list: completeDonationJournalList,
-        //     error_message_for_voter: stripeErrorMessageForVoter,
-        //     // organization_saved: organizationSaved,
-        //     // premium_plan_type_enum: premiumPlanTypeEnum,
-        //     status: apiStatus,
-        //     // eslint-disable-next-line no-unused-vars
-        //     success: apiSuccess,
-        //   } = action.res);
-        //   // donationJournalList = completeDonationJournalList.filter((item) => (item.is_premium_plan === false));
-        //   // subscriptionJournalHistory = completeDonationJournalList.filter((item) => (item.is_premium_plan === true));
-        //   if (success === false) {
-        //     console.log(`donation with stripe failed:  ${stripeErrorMessageForVoter}  ---  ${apiStatus}`);
-        //   }
-        //   return {
-        //     ...state,
-        //     // activePaidPlan,
-        //     amountPaidViaStripe,
-        //     apiStatus,
-        //     donationAmount: donationAmountSafe,
-        //     // donationJournalList,
-        //     stripeErrorMessageForVoter,
-        //     isMonthlyDonation,
-        //     // premiumPlanTypeEnum,
-        //     savedStripeDonation,
-        //     // subscriptionJournalHistory,
-        //     success,
-        //     // orgSubsAlreadyExists,
-        //     donationResponseReceived: true,
-        //   };
 
       case 'error-donateRetrieve':
         console.log(`error-donateRetrieve${action}`);
@@ -479,6 +457,16 @@ class DonateStore extends ReduceStore {
         //     listPriceMonthlyCredit,
         //     status,
         //   };
+
+      case 'clearStripeErrorState':
+        return {
+          ...state,
+          apiStatus: true,
+          stripeErrorMessageForVoter: '',
+          stripeFailureCode: '',
+          success: true,
+        };
+
 
       default:
         return state;
