@@ -61,7 +61,7 @@ class Donate extends Component {
   }
 
   onDonateStoreChange () {
-    if (DonateStore.donationSuccess()) {
+    if (DonateStore.donationSuccess() && DonateStore.donationResponseReceived()) {
       this.onSuccessfulDonation();
     } else {
       this.setState({ donationErrorMessage: DonateStore.donationError() });
