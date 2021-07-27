@@ -183,6 +183,7 @@ class DonateStore extends ReduceStore {
     this._state.stripeErrorMessageForVoter = '';
     this._state.stripeFailureCode = '';
     this._state.success = true;
+    this._state.donationResponseReceived = false;
   }
 
   reduce (state, action) {
