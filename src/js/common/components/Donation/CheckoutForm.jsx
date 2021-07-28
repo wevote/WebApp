@@ -39,6 +39,7 @@ class CheckoutForm extends React.Component {
     this.continuePolling = this.continuePolling.bind(this);
     this.emailChange = this.emailChange.bind(this);
     this.onDonateStoreChange = this.onDonateStoreChange.bind(this);
+    this.onVoterStoreChange = this.onVoterStoreChange.bind(this);
     this.pollForWebhookCompletionAtList = this.pollForWebhookCompletionAtList.bind(this);
     this.submitStripePayment = this.submitStripePayment.bind(this);
     this.preDonationCounts = {
@@ -49,14 +50,17 @@ class CheckoutForm extends React.Component {
 
   componentDidMount () {
     this.donateStoreListener = DonateStore.addListener(this.onDonateStoreChange);
+    this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange);
     DonateStore.noDispatchClearStripeErrorState();
     DonateActions.donationRefreshDonationList();
   }
 
   componentWillUnmount () {
     this.donateStoreListener.remove();
+    this.voterStoreListener.remove();
     if (this.stripeErrorTimer) clearTimeout(this.stripeErrorTimer);
     if (this.setPollInterval) clearInterval(this.setPollInterval);
+    if (this.emailErrorTimer) clearInterval(this.emailErrorTimer);
   }
 
   onDonateStoreChange = () => {
@@ -115,6 +119,10 @@ class CheckoutForm extends React.Component {
     }
   };
 
+  onVoterStoreChange () {
+    this.forceUpdate();
+  }
+
   // See https://www.npmjs.com/package/@stripe/react-stripe-js#using-class-components
   setPreDonationCounts () {
     this.preDonationCounts = {
@@ -123,9 +131,9 @@ class CheckoutForm extends React.Component {
     };
   }
 
-  submitStripePayment = async (emailFromVoter) => {
+  submitStripePayment = async (emailForStripe) => {
     const { stripe, value, elements, isMonthly, isChipIn, campaignXWeVoteId } = this.props;
-    const { emailFieldError, emailFieldText } = this.state;
+    const { emailFieldError } = this.state;
     console.log('submitStripePayment was called ==================');
 
     if (emailFieldError) {
@@ -134,7 +142,7 @@ class CheckoutForm extends React.Component {
         emailFieldError: false,
       });
     } else {
-      const email = (emailFromVoter && emailFromVoter.length > 0) ? emailFromVoter : emailFieldText;
+      const email = emailForStripe;
 
       let paymentMethodId;
       let createPaymentError;
@@ -162,7 +170,9 @@ class CheckoutForm extends React.Component {
 
         this.setPreDonationCounts();
         DonateActions.clearStripeErrorState();
-        DonateActions.donationWithStripe(token.id, email, donationPennies, isChipIn, isMonthlyDonation, isPremiumPlan, token.client_ip, campaignXWeVoteId, paymentMethodId, couponCode, premiumPlanType);
+        DonateActions.donationWithStripe(token.id, email, donationPennies,
+          isChipIn, isMonthlyDonation, isPremiumPlan, token.client_ip, campaignXWeVoteId,
+          paymentMethodId, couponCode, premiumPlanType);
 
         this.pollForWebhookCompletionAtList(20);
 
@@ -215,11 +225,23 @@ class CheckoutForm extends React.Component {
     const validEmailPattern = /^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/;
     const valid = currentEntry.match(validEmailPattern) != null;
     console.log('valid? : ', currentEntry, ' valid: ', valid);
-    this.setState({
-      emailFieldError: !valid,
-      emailFieldText: currentEntry,
-      emailValidationErrorText: 'Our payment processor requires a valid email address',
-    });
+    if (this.emailErrorTimer) clearInterval(this.emailErrorTimer);
+    if (!valid) {
+      this.emailErrorTimer = setTimeout(() => {
+        this.setState({
+          emailFieldError: true,
+          emailFieldText: currentEntry,
+          emailValidationErrorText: 'Our payment processor requires a valid email address',
+        });
+        this.emailErrorTimer = null;
+      }, 1500);
+    } else {
+      this.setState({
+        emailFieldError: false,
+        emailFieldText: currentEntry,
+        emailValidationErrorText: '',
+      });
+    }
   }
 
   clearPreDonationCounts () {
@@ -241,11 +263,12 @@ class CheckoutForm extends React.Component {
   render () {
     renderLog('CheckoutForm');  // Set LOG_RENDER_EVENTS to log all renders
     const { campaignXWeVoteId, classes, isMonthly } = this.props;
-    const { donationWithStripeSubmitted, emailValidationErrorText, emailFieldError,
+    const { donationWithStripeSubmitted, emailValidationErrorText, emailFieldError, emailFieldText,
       stripePaymentError, stripeErrorMessageForVoter } = this.state;
     const voter = VoterStore.getVoter();
-    const emailFromVoter = (voter && voter.email) || '';
-    console.log('render emailFieldError:', emailFieldError);
+    const haveEmailFromVoter = (voter.email && voter.email.length > 0) || false;
+    const emailForStripe = haveEmailFromVoter ? voter.email : emailFieldText;
+    // console.log('render haveEmailFromVoter:', haveEmailFromVoter, ',  emailFieldText:', emailFieldText);
     const paymentErrorText = stripeErrorMessageForVoter  || 'Please verify your information.';
     const error = emailFieldError || stripePaymentError;
     const errorText = emailFieldError ? emailValidationErrorText : paymentErrorText;
@@ -261,7 +284,7 @@ class CheckoutForm extends React.Component {
         ) : (
           <div style={{ height: 41 }} />
         )}
-        {emailFromVoter.length === 0 ? (
+        {!haveEmailFromVoter ? (
           <TextFieldContainer>
             <TextField
               id="outlined-basic-email"
@@ -308,7 +331,7 @@ class CheckoutForm extends React.Component {
               externalUniqueId="becomeAMember"
               icon={donationWithStripeSubmitted ? <ProgressStyled /> : <LockStyled />}
               id="stripeCheckOutForm"
-              onClick={() => this.submitStripePayment(emailFromVoter)}
+              onClick={() => this.submitStripePayment(emailForStripe)}
             />
           </ButtonContainer>
           <StripeTagLine>
