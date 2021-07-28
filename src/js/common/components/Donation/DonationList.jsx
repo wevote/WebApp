@@ -30,6 +30,7 @@ class DonationList extends Component {
 
   componentWillUnmount () {
     if (this.cancelMembershipTimer) clearTimeout(this.cancelMembershipTimer);
+    this.voterStoreListener.remove();
   }
 
   onVoterStoreChange = () => {
