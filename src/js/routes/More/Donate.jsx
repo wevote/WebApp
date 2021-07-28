@@ -34,7 +34,6 @@ class Donate extends Component {
     super(props);
 
     this.state = {
-      donationErrorMessage: '',
       isMonthly: false,
       joining: true,
       preDonation: true,
@@ -64,7 +63,7 @@ class Donate extends Component {
     if (DonateStore.donationSuccess() && DonateStore.donationResponseReceived()) {
       this.onSuccessfulDonation();
     } else {
-      this.setState({ donationErrorMessage: DonateStore.donationError() });
+      this.forceUpdate();
     }
   }
 

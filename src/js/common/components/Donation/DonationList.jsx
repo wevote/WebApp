@@ -73,7 +73,7 @@ class DonationList extends Component {
       // "Membership" is a monthly payment of a donation subscription to WeVote from either the Campaigns or WebApp apps
       // "Premium Plan" is our premium plan that provides customization for Organizations.
 
-      const payment = (subscriptionId.length || campaignxWeVoteId.length) ? 'Subscription' : 'One time';
+      const payment = (subscriptionId && subscriptionId.length) || (campaignxWeVoteId && campaignxWeVoteId.length) ? 'Subscription' : 'One time';
       let type = 'Donation';
       if (isMonthlyDonation && !isPremiumPlan) {
         type = 'Membership';
