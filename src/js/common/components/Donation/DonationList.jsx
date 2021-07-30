@@ -58,7 +58,7 @@ class DonationList extends Component {
         stripe_subscription_id: subscriptionId, is_chip_in: isChipIn,
         is_monthly_donation: isMonthlyDonation, is_premium_plan: isPremiumPlan,
         campaign_title: campaignTitle,
-        campaignx_wevote_id: campaignxWeVoteId,
+        campaignx_we_vote_id: campaignxWeVoteId,
       } = item;
       const refundDays = parseInt(refundDaysLimit, 10);
       const isActive = moment.utc(created).local().isAfter(moment(new Date()).subtract(refundDays, 'days')) &&
@@ -73,7 +73,7 @@ class DonationList extends Component {
       // "Membership" is a monthly payment of a donation subscription to WeVote from either the Campaigns or WebApp apps
       // "Premium Plan" is our premium plan that provides customization for Organizations.
 
-      const payment = (subscriptionId.length || campaignxWeVoteId.length) ? 'Subscription' : 'One time';
+      const payment = (subscriptionId && subscriptionId.length) || (campaignxWeVoteId && campaignxWeVoteId.length) ? 'Subscription' : 'One time';
       let type = 'Donation';
       if (isMonthlyDonation && !isPremiumPlan) {
         type = 'Membership';
@@ -137,7 +137,7 @@ class DonationList extends Component {
         last4: last4.length ? last4 : 'waiting',
         expires: expMonth > 0 ? `${expMonth}/${expYear}` : '/',
         status,
-        lastCharged: lastCharged.length ? moment.utc(lastCharged).format('MMM D, YYYY') : 'waiting',
+        lastCharged: lastCharged.length  > 5 ? moment.utc(lastCharged).format('MMM D, YYYY') : 'waiting',
         displayMembershipTab,
         active,
         isActive,
@@ -156,8 +156,8 @@ class DonationList extends Component {
     if (displayMembershipTab) {
       const subscriptionRows = this.subscriptionRows();
       return (
-        <TableContainer component={Paper}>
-          <Table aria-label="Subscription table">
+        <StyledTableContainer component={Paper}>
+          <Table stickyHeader aria-label="Subscription table">
             <TableHead>
               <TableRow>
                 <StyledTableHeaderCellTablet align="center">Active</StyledTableHeaderCellTablet>
@@ -195,13 +195,13 @@ class DonationList extends Component {
               ))}
             </TableBody>
           </Table>
-        </TableContainer>
+        </StyledTableContainer>
       );
     } else {
       const paymentRows = this.paymentRows();
       return (
-        <TableContainer component={Paper}>
-          <Table aria-label="Donation table">
+        <StyledTableContainer component={Paper}>
+          <Table stickyHeader aria-label="Donation table">
             <TableHead>
               <TableRow>
                 <StyledTableHeaderCellAll align="left">Date Paid</StyledTableHeaderCellAll>
@@ -241,7 +241,7 @@ class DonationList extends Component {
               ))}
             </TableBody>
           </Table>
-        </TableContainer>
+        </StyledTableContainer>
       );
     }
   }
@@ -251,6 +251,11 @@ DonationList.propTypes = {
   displayMembershipTab: PropTypes.bool,
   showPremiumPlan: PropTypes.bool,
 };
+
+const StyledTableContainer = styled(TableContainer)`
+  overflow-y: auto;
+  height: 300px;
+`;
 
 const StyledTableCellAll = styled(TableCell)`
   padding: 8px;
