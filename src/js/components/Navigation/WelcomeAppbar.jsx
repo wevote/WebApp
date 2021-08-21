@@ -12,7 +12,7 @@ import VoterStore from '../../stores/VoterStore';
 import cookies from '../../utils/cookies';
 import { cordovaWelcomeAppToolbarTop } from '../../utils/cordovaOffsets';
 import { historyPush } from '../../utils/cordovaUtils';
-import LazyImage from '../../utils/LazyImage';
+import LazyImage from '../../common/components/LazyImage';
 import { renderLog } from '../../utils/logging';
 import { shortenText } from '../../utils/textFormat';
 import { voterPhoto } from '../../utils/voterPhoto';
