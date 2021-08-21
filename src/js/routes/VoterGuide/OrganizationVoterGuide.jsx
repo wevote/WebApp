@@ -473,7 +473,7 @@ const WrapperFlex = styled.div`
 `;
 
 const BannerContainerDesktop = styled.div`
-  margin-top: ${({ ipad }) => (ipad ? '-11px' : '-37px')} // -29px (BannerOverlayDesktopShareButtonWrapper height) - 8px from BannerOverlayDesktopShareButtonInnerWrapper
+  margin-top: ${({ ipad }) => (ipad ? '-11px' : '-37px')}; // -29px (BannerOverlayDesktopShareButtonWrapper height) - 8px from BannerOverlayDesktopShareButtonInnerWrapper
 `;
 
 const BannerOverlayDesktopShareButtonWrapper = styled.div`

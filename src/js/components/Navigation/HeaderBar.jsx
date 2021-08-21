@@ -16,7 +16,7 @@ import { headerHasSubmenu, weVoteBrandingOff } from '../../utils/applicationUtil
 import { hasIPhoneNotch, historyPush, isCordova, isIOSAppOnMac, isWebApp } from '../../utils/cordovaUtils';
 import displayFriendsTabs from '../../utils/displayFriendsTabs';
 import isMobileScreenSize from '../../utils/isMobileScreenSize';
-import LazyImage from '../../utils/LazyImage';
+import LazyImage from '../../common/components/LazyImage';
 import { renderLog } from '../../utils/logging';
 import shouldHeaderRetreat from '../../utils/shouldHeaderRetreat';
 import { getBooleanValue, shortenText, stringContains } from '../../utils/textFormat';

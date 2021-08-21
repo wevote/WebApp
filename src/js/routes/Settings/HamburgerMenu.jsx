@@ -7,7 +7,7 @@ import HamburgerMenuRow from '../../components/Navigation/HamburgerMenuRow';
 import DeviceDialog from '../../components/Widgets/DeviceDialog';
 import VoterStore from '../../stores/VoterStore';
 import { cordovaDot, isCordova, isWebApp } from '../../utils/cordovaUtils';
-import LazyImage from '../../utils/LazyImage';
+import LazyImage from '../../common/components/LazyImage';
 import { renderLog } from '../../utils/logging';
 import { voterPhoto } from '../../utils/voterPhoto';
 
