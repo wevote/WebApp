@@ -28,7 +28,7 @@ const HeaderBarLogo = ({ chosenSiteLogoUrl, isBeta, light }) => (
           {(isBeta && !isCordova()) && (
             <span className="beta-marker">
               <DelayedLoad waitBeforeShow={200}>
-                <BetaMarkerInner light={light}>beta</BetaMarkerInner>
+                <BetaMarkerInner light={light}>ballot</BetaMarkerInner>
               </DelayedLoad>
             </span>
           )}

@@ -11,7 +11,8 @@ import apiCalming from '../../utils/apiCalming';
 import { historyPush, isIOSAppOnMac, setIconBadgeMessageCount } from '../../utils/cordovaUtils';
 import { timeFromDate } from '../../utils/dateFormat';
 import { renderLog } from '../../utils/logging';
-import { returnFirstXWords } from '../../utils/textFormat';
+import returnFirstXWords from '../../common/utils/returnFirstXWords';
+import VoterStore from '../../stores/VoterStore';
 
 const ImageHandler = React.lazy(() => import(/* webpackChunkName: 'ImageHandler' */ '../ImageHandler'));
 
@@ -72,7 +73,9 @@ class HeaderNotificationMenu extends Component {
       ActivityActions.activityNoticeListRetrieve([activityNotice.activity_notice_id]);
     }
     this.handleClose();
-    if (activityNotice && activityNotice.activity_tidbit_we_vote_id) {
+    if (activityNotice && activityNotice.campaignx_we_vote_id) {
+      window.open(`https://campaigns.wevote.us/id/${activityNotice.campaignx_we_vote_id}`, '_blank');
+    } else if (activityNotice && activityNotice.activity_tidbit_we_vote_id) {
       historyPush(`/news/a/${activityNotice.activity_tidbit_we_vote_id}`);
     } else {
       historyPush('/news');
@@ -86,6 +89,7 @@ class HeaderNotificationMenu extends Component {
 
   generateMenuItemList = (allActivityNotices) => {
     const { classes } = this.props;
+    const voterWeVoteId = VoterStore.getVoterWeVoteId();
     const menuItemList = [];
     menuItemList.push(
       <MenuItem
@@ -135,6 +139,10 @@ class HeaderNotificationMenu extends Component {
       if (activityNoticeCount <= maxNumberToShow) {
         activityDescription = '';
         switch (activityNotice.kind_of_notice) {
+          case 'NOTICE_CAMPAIGNX_SUPPORTER_INITIAL_RESPONSE':
+            activityDescription += ' supported the campaign ';
+            activityDescription += returnFirstXWords(activityNotice.statement_text_preview, maxNumberOfActivityPostWordsToShow);
+            break;
           default:
           case 'NOTICE_FRIEND_ENDORSEMENTS':
             activityDescription += ' ';
@@ -181,7 +189,7 @@ class HeaderNotificationMenu extends Component {
               <MenuItemText>
                 <div>
                   <strong>
-                    {activityNotice.speaker_name}
+                    {activityNotice.speaker_voter_we_vote_id === voterWeVoteId ? 'You' : activityNotice.speaker_name}
                   </strong>
                   {' '}
                   {activityDescription}
