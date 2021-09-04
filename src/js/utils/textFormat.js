@@ -279,23 +279,6 @@ export function removeValueFromArray (valueToRemove, listArray) {
   return listArray;
 }
 
-export function returnFirstXWords (originalString, numberOfWordsToReturn) {
-  if (!originalString) return '';
-
-  const wordsArray = originalString.split(' ');
-  let xWords = '';
-  for (let i = 0; i < wordsArray.length; i++) {
-    if (i >= numberOfWordsToReturn) {
-      break;
-    }
-    xWords += `${wordsArray[i]} `;
-  }
-  // Finally remove leading or trailing spaces
-  xWords = xWords.trim();
-
-  return xWords;
-}
-
 export function sentenceCaseString (incomingString) {
   if (!incomingString || incomingString === '') {
     return '';

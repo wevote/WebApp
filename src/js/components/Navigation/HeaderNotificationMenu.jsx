@@ -11,7 +11,8 @@ import apiCalming from '../../utils/apiCalming';
 import { historyPush, isIOSAppOnMac, setIconBadgeMessageCount } from '../../utils/cordovaUtils';
 import { timeFromDate } from '../../utils/dateFormat';
 import { renderLog } from '../../utils/logging';
-import { returnFirstXWords } from '../../utils/textFormat';
+import returnFirstXWords from '../../common/utils/returnFirstXWords';
+import VoterStore from '../../stores/VoterStore';
 
 const ImageHandler = React.lazy(() => import(/* webpackChunkName: 'ImageHandler' */ '../ImageHandler'));
 
@@ -72,7 +73,13 @@ class HeaderNotificationMenu extends Component {
       ActivityActions.activityNoticeListRetrieve([activityNotice.activity_notice_id]);
     }
     this.handleClose();
-    if (activityNotice && activityNotice.activity_tidbit_we_vote_id) {
+    if (activityNotice && activityNotice.campaignx_we_vote_id) {
+      if (activityNotice.campaignx_news_item_we_vote_id) {
+        window.open(`https://campaigns.wevote.us/id/${activityNotice.campaignx_we_vote_id}/u/${activityNotice.campaignx_news_item_we_vote_id}`, '_blank');
+      } else {
+        window.open(`https://campaigns.wevote.us/id/${activityNotice.campaignx_we_vote_id}`, '_blank');
+      }
+    } else if (activityNotice && activityNotice.activity_tidbit_we_vote_id) {
       historyPush(`/news/a/${activityNotice.activity_tidbit_we_vote_id}`);
     } else {
       historyPush('/news');
@@ -86,6 +93,7 @@ class HeaderNotificationMenu extends Component {
 
   generateMenuItemList = (allActivityNotices) => {
     const { classes } = this.props;
+    const voterWeVoteId = VoterStore.getVoterWeVoteId();
     const menuItemList = [];
     menuItemList.push(
       <MenuItem
@@ -135,13 +143,36 @@ class HeaderNotificationMenu extends Component {
       if (activityNoticeCount <= maxNumberToShow) {
         activityDescription = '';
         switch (activityNotice.kind_of_notice) {
+          case 'NOTICE_CAMPAIGNX_FRIEND_HAS_SUPPORTED':
+            activityDescription += ' supported "';
+            activityDescription += returnFirstXWords(activityNotice.statement_text_preview, 8);
+            activityDescription += '"';
+            break;
+          case 'NOTICE_CAMPAIGNX_NEWS_ITEM':
+            activityDescription += ' sent update "';
+            activityDescription += returnFirstXWords(activityNotice.statement_subject, 8);
+            activityDescription += '"';
+            break;
+          case 'NOTICE_CAMPAIGNX_NEWS_ITEM_AUTHORED':
+            if (activityNotice.statement_subject) {
+              activityDescription += ' created update for the supporters of campaign "';
+              activityDescription += returnFirstXWords(activityNotice.statement_subject, 8);
+              activityDescription += '"';
+            } else {
+              activityDescription += ' updated supporters of campaign';
+            }
+            break;
+          case 'NOTICE_CAMPAIGNX_SUPPORTER_INITIAL_RESPONSE':
+            activityDescription += ' supported the campaign "';
+            activityDescription += returnFirstXWords(activityNotice.statement_text_preview, 8);
+            activityDescription += '"';
+            break;
           default:
           case 'NOTICE_FRIEND_ENDORSEMENTS':
             activityDescription += ' ';
             activityDescription += createDescriptionOfFriendPosts(activityNotice.position_name_list);
             activityDescription += '.';
             break;
-
           case 'NOTICE_FRIEND_ACTIVITY_POSTS':
             if (activityNotice.statement_text_preview) {
               activityDescription += ' posted "';
@@ -174,14 +205,14 @@ class HeaderNotificationMenu extends Component {
               <MenuItemPhoto>
                 <ImageHandler
                   alt="Inviting"
-                  imageUrl={activityNotice.speaker_profile_image_url_medium}
+                  imageUrl={activityNotice.speaker_profile_image_url_medium || activityNotice.speaker_profile_image_url_tiny}
                   kind_of_image="CANDIDATE"
                 />
               </MenuItemPhoto>
               <MenuItemText>
                 <div>
                   <strong>
-                    {activityNotice.speaker_name}
+                    {activityNotice.speaker_voter_we_vote_id === voterWeVoteId ? 'You' : activityNotice.speaker_name}
                   </strong>
                   {' '}
                   {activityDescription}
