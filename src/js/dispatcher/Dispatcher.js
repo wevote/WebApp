@@ -1,12 +1,12 @@
 import { httpLog } from '../utils/logging';
 import $ajax from '../utils/service';
 
-const { Dispatcher } = require('flux');
+const Dispatcher = require('flux').Dispatcher;
 
 Dispatcher.prototype.$ajax = $ajax;
 
-Dispatcher.prototype.loadEndpoint = (endpoint, data = {}) => {
-  if (!(this.$ajax instanceof Function)) throw new Error('$ajax handler not initialized');
+Dispatcher.prototype.loadEndpoint = function (endpoint, data = {}) {
+  if (!(this.$ajax instanceof Function)) throw new Error("$ajax handler not initialized");
 
   // Making single pure actions, to work around existing actions where multiple requests are fired
   // often from Actions fired from within stores (we really need to avoid that)
