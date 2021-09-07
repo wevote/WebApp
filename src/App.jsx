@@ -36,7 +36,7 @@ const FAQ = React.lazy(() => import(/* webpackChunkName: 'FAQ' */ './js/routes/M
 const FacebookInvitableFriends = React.lazy(() => import(/* webpackChunkName: 'FacebookInvitableFriends' */ './js/routes/FacebookInvitableFriends'));
 const FacebookLandingProcess = React.lazy(() => import(/* webpackChunkName: 'FacebookLandingProcess' */ './js/routes/Process/FacebookLandingProcess'));
 const FacebookRedirectToWeVote = React.lazy(() => import(/* webpackChunkName: 'FacebookRedirectToWeVote' */ './js/routes/More/FacebookRedirectToWeVote'));
-const FooterBar = React.lazy(() => import(/* webpackChunkName: 'FooterBar' */ './js/components/Navigation/FooterBar.jsx'));
+const FooterBar = React.lazy(() => import(/* webpackChunkName: 'FooterBar' */ './js/components/Navigation/FooterBar'));
 const FriendInvitationByEmailVerifyProcess = React.lazy(() => import(/* webpackChunkName: 'FriendInvitationByEmailVerifyProcess' */ './js/routes/Process/FriendInvitationByEmailVerifyProcess'));
 const FriendInvitationOnboarding = React.lazy(() => import(/* webpackChunkName: 'FriendInvitationOnboarding' */ './js/routes/Intro/FriendInvitationOnboarding'));
 const Friends = React.lazy(() => import(/* webpackChunkName: 'Friends' */ './js/routes/Friends/Friends'));
