@@ -158,6 +158,8 @@ staticfiles
 /geo/data/
 /**/migrations/*.py
 !/**/migrations/__init__.py
+srcCordova
+src/js/compileDate.js
 src/js/config.js
 src/js/config-qa.js
 src/js/config-www.js

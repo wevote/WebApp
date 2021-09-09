@@ -7,7 +7,7 @@ import VoterStore from '../../stores/VoterStore';
 import { cordovaDot } from '../../utils/cordovaUtils';
 import SplitIconButton from './SplitIconButton';
 
-const OpenExternalWebSite = React.lazy(() => import(/* webpackChunkName: 'OpenExternalWebSite' */ '../Widgets/OpenExternalWebSite'));
+const OpenExternalWebSite = React.lazy(() => import(/* webpackChunkName: 'OpenExternalWebSite' */ './OpenExternalWebSite'));
 
 const positionIcon = '../../../img/global/svg-icons/positions-icon-24-x-24.svg';
 

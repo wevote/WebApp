@@ -6,13 +6,13 @@ const Dispatcher = require('flux').Dispatcher;
 Dispatcher.prototype.$ajax = $ajax;
 
 Dispatcher.prototype.loadEndpoint = function (endpoint, data = {}) {
-  if (this.$ajax instanceof Function !== true) throw new Error("$ajax handler not initialized");
+  if (!(this.$ajax instanceof Function)) throw new Error('$ajax handler not initialized');
 
   // Making single pure actions, to work around existing actions where multiple requests are fired
   // often from Actions fired from within stores (we really need to avoid that)
   let endpointAdjusted = endpoint;
   if (endpoint === 'voterAddressOnlyRetrieve') {
-    endpointAdjusted = 'voterAddressRetrieve'
+    endpointAdjusted = 'voterAddressRetrieve';
   }
 
   // console.log("Ajax request in Dispatcher: " + endpoint);
