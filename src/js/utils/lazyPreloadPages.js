@@ -1,4 +1,5 @@
 import React from 'react';
+import { isCordova } from './cordovaUtils';
 
 const webAppConfig = require('../config');
 
@@ -21,6 +22,10 @@ function lazyWithPreload (factory) {
 }
 
 export default function lazyPreloadPages () {
+  if (isCordova()) {
+    return;
+  }
+
   const { location: { pathname } } = window;
   let loadedOne = false;
 

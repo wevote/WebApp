@@ -160,7 +160,7 @@ export function getApplicationViewBooleans (pathname) {
   let showFooterBar;
   // console.log('stringContains(\'/settings/positions\', pathnameLowerCase):', stringContains('/settings/positions', pathnameLowerCase), pathnameLowerCase);
   if (!pathnameLowerCase) {
-    showFooterBar = false;
+    showFooterBar = isCordova();
   // ///////// EXCLUDE: The following are URLS we want to specifically exclude (because otherwise they will be picked up in a broader pattern in the next branch
   } else if (stringContains('/b/btdb', pathnameLowerCase) ||
       stringContains('/b/btdo', pathnameLowerCase) ||

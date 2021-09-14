@@ -62,11 +62,12 @@ class ReadyInformationDisclaimer extends React.Component {
           <div style={{ justifyContent: 'center', paddingTop: '10px' }}>
             <div style={{ width: '50%', margin: '0 auto' }}>
               <Button
-                variant="primary"
+                color="primary"
                 fullwidth="false"
                 size="small"
                 style={{
                   backgroundColor: 'rgb(46, 60, 93)',
+                  color: 'white',
                   fontSize: '.75rem',
                   lineHeight: 1,
                 }}

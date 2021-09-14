@@ -15,18 +15,23 @@ const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 
 const port = process.env.PORT || 3000;
 const isHTTPS = process.env.PROTOCOL && process.env.PROTOCOL === 'HTTPS';
+const isWebApp = !process.env.npm_lifecycle_script.includes('CORDOVA=1');
+const source = isWebApp ? 'src' : 'srcCordova';
 const bundleAnalysis = process.env.ANALYSIS || false;  // enable the interactive bundle analyser and the Unused component analyzer
 const minimized = process.env.MINIMIZED || false;  // enable the Terser plugin that strips comments and shrinks long variable names
 // console.log('>>>> process.env: ', process.env);
+// console.log('>>>> process.env.MINIMIZED: ', process.env.MINIMIZED);
+// console.log('>>>> minimized: ', minimized);
 // console.log('>>>> bundleAnalysis: ', bundleAnalysis);
+// console.log('>>>> copy css path: ', `${source}/css/`);
 
 module.exports = (env, argv) => ({
-  entry: path.resolve(__dirname, './src/index.jsx'),
+  entry: path.resolve(__dirname, `./${source}/index.jsx`),
   module: {
     rules: [
       {
         test: /\.(js|jsx)$/,
-        exclude: /node_modules|srcDoNotMaintain/,
+        exclude: /node_modules|srcDeprecated/,
         use: ['babel-loader'],
       },
       {
@@ -45,6 +50,7 @@ module.exports = (env, argv) => ({
     ],
   },
   optimization: {
+    minimize: minimized,
     minimizer: [
       ...(minimized ? [
         new TerserPlugin({
@@ -63,12 +69,13 @@ module.exports = (env, argv) => ({
     ],
   },
   resolve: {
+    modules: [path.resolve(__dirname, source), 'node_modules'],
     extensions: ['*', '.js', '.jsx'],
   },
   output: {
     path: path.resolve(__dirname, './build'),
-    filename: '[name].[contenthash].js',
-    publicPath: '/',
+    filename: isWebApp ? '[name].[contenthash].js' : 'bundle.js',
+    publicPath: isWebApp ? '/' : undefined,
   },
   plugins: [
     new CleanWebpackPlugin(),
@@ -76,11 +83,11 @@ module.exports = (env, argv) => ({
     new webpack.HotModuleReplacementPlugin(),
     new HtmlWebpackPlugin({
       title: 'We Vote Web App',
-      template: path.resolve(__dirname, './src/index.html'),
+      template: path.resolve(__dirname, `./${source}/index.html`),
     }),
     ...(bundleAnalysis ? [
       new UnusedWebpackPlugin({  // Set ANALYSIS to true to list (likely) unused files
-        directories: [path.join(__dirname, 'src')],
+        directories: [path.join(__dirname, source)],
         exclude: [
           '/**/cert/',
           '/**/global/svg-icons/',
@@ -96,17 +103,14 @@ module.exports = (env, argv) => ({
     ] : []),
     new CopyPlugin({
       patterns: [
-        { from: 'src/robots.txt', to: '.' },
-        { from: 'src/css/', to: 'css/' },
+        { from: `${source}/robots.txt`,  to: '.' },
+        { from: `${source}/css/`,        to: 'css/' },
         {
-          from: 'src/img',
+          from: `${source}/img`,
           to: 'img/',
-          globOptions: { ignore: ['DO-NOT-BUNDLE/**/*']},
+          globOptions: { ignore: ['DO-NOT-BUNDLE/**/*'] },
         },
-        {
-          from: 'src/javascript/',
-          to: 'javascript/',
-        },
+        { from: `${source}/javascript/`, to: 'javascript/' },
       ],
     }),
     new MomentLocalesPlugin(),
@@ -129,8 +133,8 @@ module.exports = (env, argv) => ({
   devServer: (isHTTPS ? {
     contentBase: path.resolve(__dirname, './build'),
     https: {
-      key: fs.readFileSync('./src/cert/server.key'),
-      cert: fs.readFileSync('./src/cert/server.crt'),
+      key: fs.readFileSync(`./${source}/cert/server.key`),
+      cert: fs.readFileSync(`./${source}/cert/server.crt`),
     },
     host: 'localhost',
     port,

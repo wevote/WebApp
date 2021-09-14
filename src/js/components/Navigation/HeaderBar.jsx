@@ -9,6 +9,7 @@ import OrganizationActions from '../../actions/OrganizationActions';
 import VoterActions from '../../actions/VoterActions';
 import VoterGuideActions from '../../actions/VoterGuideActions';
 import VoterSessionActions from '../../actions/VoterSessionActions';
+import LazyImage from '../../common/components/LazyImage';
 import AppObservableStore, { messageService } from '../../stores/AppObservableStore';
 import FriendStore from '../../stores/FriendStore';
 import VoterStore from '../../stores/VoterStore';
@@ -16,7 +17,6 @@ import { headerHasSubmenu, weVoteBrandingOff } from '../../utils/applicationUtil
 import { hasIPhoneNotch, historyPush, isCordova, isIOSAppOnMac, isWebApp } from '../../utils/cordovaUtils';
 import displayFriendsTabs from '../../utils/displayFriendsTabs';
 import isMobileScreenSize from '../../utils/isMobileScreenSize';
-import LazyImage from '../../common/components/LazyImage';
 import { renderLog } from '../../utils/logging';
 import shouldHeaderRetreat from '../../utils/shouldHeaderRetreat';
 import { getBooleanValue, shortenText, stringContains } from '../../utils/textFormat';
@@ -114,33 +114,35 @@ class HeaderBar extends Component {
       voterFirstName,
       voterIsSignedIn: voter && voter.is_signed_in,
     });
-    this.setStyleTimeout = setTimeout(() => {
-      const { headerObjects } = window;
-      const logoWrapper = document.querySelectorAll('[class^=HeaderBarLogo__HeaderBarWrapper]');
-      if (logoWrapper && logoWrapper[0] && logoWrapper[0].innerHTML.length) {
-        headerObjects.logo = logoWrapper[0].innerHTML;
-      }
-      if (document.getElementById('readyTabHeaderBar')) {
-        headerObjects.ready = document.getElementById('readyTabHeaderBar').innerHTML;
-      }
-      if (document.getElementById('ballotTabHeaderBar')) {
-        headerObjects.ballot = document.getElementById('ballotTabHeaderBar').innerHTML;
-      }
-      if (document.getElementById('valuesTabHeaderBar')) {
-        headerObjects.opinions = document.getElementById('valuesTabHeaderBar').innerHTML;
-      }
-      if (document.getElementById('discussTabHeaderBar')) {
-        headerObjects.discuss = document.getElementById('discussTabHeaderBar').innerHTML;
-      }
-      const notificationMenuWrapper = document.querySelectorAll('[class^=HeaderNotificationMenu__HeaderNotificationMenuWrapper]');
-      if (notificationMenuWrapper && notificationMenuWrapper[0] && notificationMenuWrapper[0].innerHTML.length) {
-        headerObjects.bell = notificationMenuWrapper[0].innerHTML;
-      }
-      if (document.getElementById('profileAvatarHeaderBar')) {
-        headerObjects.photo = document.getElementById('profileAvatarHeaderBar').innerHTML;
-      }
-    }, 1000);
-
+    if (isWebApp()) {
+      this.setStyleTimeout = setTimeout(() => {
+        const { headerObjects } = window;
+        const logoWrapper = document.querySelectorAll('[class^=HeaderBarLogo__HeaderBarWrapper]');
+        if (logoWrapper && logoWrapper[0] && logoWrapper[0].innerHTML.length) {
+          headerObjects.logo = logoWrapper[0].innerHTML;
+        }
+        if (document.getElementById('readyTabHeaderBar')) {
+          headerObjects.ready = document.getElementById('readyTabHeaderBar').innerHTML;
+        }
+        if (document.getElementById('ballotTabHeaderBar')) {
+          headerObjects.ballot = document.getElementById('ballotTabHeaderBar').innerHTML;
+        }
+        if (document.getElementById('valuesTabHeaderBar')) {
+          headerObjects.opinions = document.getElementById('valuesTabHeaderBar').innerHTML;
+        }
+        if (document.getElementById('discussTabHeaderBar')) {
+          headerObjects.discuss = document.getElementById('discussTabHeaderBar').innerHTML;
+        }
+        const notificationMenuWrapper = document.querySelectorAll('[class^=HeaderNotificationMenu__HeaderNotificationMenuWrapper]');
+        if (notificationMenuWrapper && notificationMenuWrapper[0] && notificationMenuWrapper[0].innerHTML.length) {
+          headerObjects.bell = notificationMenuWrapper[0].innerHTML;
+        }
+        if (document.getElementById('profileAvatarHeaderBar')) {
+          headerObjects.photo = document.getElementById('profileAvatarHeaderBar').innerHTML;
+        }
+      }, 1000);
+    }
+    console.log('STEVE STEVE ------------------------ HeaderBar l146.');
     this.showBallotModalTimeout = setTimeout(() => {
       // We want the SelectBallotModal to appear on the ballot page (without a keystroke)
       // if the page is empty and we have a textForMapSearch and we dont have the EditAddressOneHorizontalRow displayed

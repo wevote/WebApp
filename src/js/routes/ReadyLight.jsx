@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
 import Helmet from 'react-helmet';
 import styled from 'styled-components';
+import cordovaScrollablePaneTopPadding from '../../../srcCordova/js/utils/cordovaScrollablePaneTopPadding';
 import ActivityActions from '../actions/ActivityActions';
 import AnalyticsActions from '../actions/AnalyticsActions';
 import ReadyActions from '../actions/ReadyActions';
@@ -18,7 +19,7 @@ import { PageContentContainer } from '../components/Widgets/ReusableStyles';
 import webAppConfig from '../config';
 import AppObservableStore from '../stores/AppObservableStore';
 import VoterStore from '../stores/VoterStore';
-import { historyPush, isAndroid, isIOS, isWebApp } from '../utils/cordovaUtils';
+import { historyPush, isAndroid, isCordova, isIOS, isWebApp } from '../utils/cordovaUtils';
 import isMobileScreenSize from '../utils/isMobileScreenSize';
 import lazyPreloadPages from '../utils/lazyPreloadPages';
 import { renderLog } from '../utils/logging';
@@ -44,6 +45,12 @@ class ReadyLight extends Component {
     ReadyActions.voterPlansForVoterRetrieve();
     ActivityActions.activityNoticeListRetrieve();
     AppObservableStore.setEvaluateHeaderDisplay();
+
+    if (isCordova()) {
+      if (window.location.hash === '#/') {
+        historyPush('/ready');
+      }
+    }
 
     this.analyticsTimer = setTimeout(() => {
       AnalyticsActions.saveActionReadyVisit(VoterStore.electionId());
@@ -101,8 +108,8 @@ class ReadyLight extends Component {
     } = this.state;
 
     return (
-      <PageContentContainer>
-        <PageContainer topPadding={this.getTopPadding()}>
+      <PageContentContainer style={{ paddingTop: `${cordovaScrollablePaneTopPadding()}` }}>
+        <PageContainer>
           <Helmet title="Ready to Vote? - We Vote" />
           <BrowserPushMessage incomingProps={this.props} />
           <div className="row">
@@ -168,11 +175,13 @@ class ReadyLight extends Component {
               )}
             </div>
             <div className="col-lg-4 d-none d-lg-block">
-              <div className="u-cursor--pointer">
-                <Suspense fallback={<SuspenseCard>&nbsp;</SuspenseCard>}>
-                  <ElectionCountdown daysOnlyMode initialDelay={0} />
-                </Suspense>
-              </div>
+              { isWebApp() && (
+                <div className="u-cursor--pointer">
+                  <Suspense fallback={<SuspenseCard>&nbsp;</SuspenseCard>}>
+                    <ElectionCountdown daysOnlyMode initialDelay={0} />
+                  </Suspense>
+                </div>
+              )}
               {(chosenReadyIntroductionTitle || chosenReadyIntroductionText) && (
                 <Card className="card">
                   <div className="card-main">

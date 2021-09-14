@@ -36,7 +36,7 @@ const FAQ = React.lazy(() => import(/* webpackChunkName: 'FAQ' */ './js/routes/M
 const FacebookInvitableFriends = React.lazy(() => import(/* webpackChunkName: 'FacebookInvitableFriends' */ './js/routes/FacebookInvitableFriends'));
 const FacebookLandingProcess = React.lazy(() => import(/* webpackChunkName: 'FacebookLandingProcess' */ './js/routes/Process/FacebookLandingProcess'));
 const FacebookRedirectToWeVote = React.lazy(() => import(/* webpackChunkName: 'FacebookRedirectToWeVote' */ './js/routes/More/FacebookRedirectToWeVote'));
-const FooterBar = React.lazy(() => import(/* webpackChunkName: 'FooterBar' */ './js/components/Navigation/FooterBar.jsx'));
+const FooterBar = React.lazy(() => import(/* webpackChunkName: 'FooterBar' */ './js/components/Navigation/FooterBar'));
 const FriendInvitationByEmailVerifyProcess = React.lazy(() => import(/* webpackChunkName: 'FriendInvitationByEmailVerifyProcess' */ './js/routes/Process/FriendInvitationByEmailVerifyProcess'));
 const FriendInvitationOnboarding = React.lazy(() => import(/* webpackChunkName: 'FriendInvitationOnboarding' */ './js/routes/Intro/FriendInvitationOnboarding'));
 const Friends = React.lazy(() => import(/* webpackChunkName: 'Friends' */ './js/routes/Friends/Friends'));
@@ -175,7 +175,11 @@ class App extends Component {
     const { showFooterBar } = siteVars;
     // const firstVisit = !cookies.getItem('voter_device_id');
 
-    console.log('href in App.js render: ', window.location.href);
+    if (isWebApp()) {
+      console.log('href in App.js render: ', window.location.href);
+    } else {
+      console.log('href hash in App.js render: ', window.location.hash);
+    }
 
     /*
     Note: To debug routing, set a breakpoint in the class that routing takes you to -- then look at the received props.
@@ -264,16 +268,10 @@ class App extends Component {
                       <Route path="/measure/:measure_we_vote_id/modal/:modal_to_show/:shared_item_code" component={Measure} />
                       <Route path="/more/absentee" component={AbsenteeBallot} />
                       <Route path="/more/alerts" component={ElectionReminder} />
-                      <Route path="/more/alerts" component={ElectionReminder} />
-                      <Route path="/more/attributions" component={Attributions} />
                       <Route path="/more/attributions" component={Attributions} />
                       <Route path="/more/credits" component={Credits} />
-                      <Route path="/more/credits" component={Credits} />
-                      <Route path="/more/donate" component={isNotWeVoteMarketingSite ? ReadyRedirect : Donate} />
                       <Route path="/more/donate" component={isNotWeVoteMarketingSite ? ReadyRedirect : Donate} />
                       <Route path="/more/elections" component={Elections} />
-                      <Route path="/more/elections" component={Elections} />
-                      <Route path="/more/extensionsignin" component={ExtensionSignIn} />
                       <Route path="/more/extensionsignin" component={ExtensionSignIn} />
                       <Route path="/more/facebooklandingprocess" component={FacebookLandingProcess} />
                       <Route path="/more/facebookredirecttowevote" component={FacebookRedirectToWeVote} />

@@ -5,7 +5,7 @@ import { stringContains } from './textFormat';
 
 // eslint-disable-next-line import/prefer-default-export
 export function pageEnumeration () {
-  const { href } = window.location;
+  const { href, hash } = window.location;
   // const showBallotDecisionTabs = (BallotStore.ballotLength !== BallotStore.ballotRemainingChoicesLength) && (BallotStore.ballotRemainingChoicesLength > 0);
 
   // second level paths must be tried first
@@ -28,7 +28,7 @@ export function pageEnumeration () {
     return CordovaPageConstants.settingsSubscription;
   } else if (href.indexOf('/index.html#/settings/voterguidelist') > 0) {
     return CordovaPageConstants.settingsVoterGuideLst;
-  } else if (href.indexOf('/index.html#/ready') > 0) {
+  } else if (href.indexOf('/index.html#/ready') > 0 || hash === '#/') {
     return CordovaPageConstants.ready;
   } else if (href.indexOf('/index.html#/values/list') > 0) {
     return CordovaPageConstants.valuesList;

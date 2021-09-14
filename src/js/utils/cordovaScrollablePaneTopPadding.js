@@ -142,7 +142,7 @@ export default function cordovaScrollablePaneTopPadding () {
         case CordovaPageConstants.moreTerms:             return '0px';
         case CordovaPageConstants.moreTools:             return '44px';
         case CordovaPageConstants.officeWild:            return '76px';
-        case CordovaPageConstants.ready:                 return '57px';
+        case CordovaPageConstants.ready:                 return '93px';   // 73 -> 93 for 12 max pro, fine on 11 Pro Max
         case CordovaPageConstants.settingsAccount:       return '84px';
         case CordovaPageConstants.settingsHamburger:     return '81px';
         case CordovaPageConstants.settingsNotifications: return '79px';

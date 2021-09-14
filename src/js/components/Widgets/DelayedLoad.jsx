@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
+import { renderLog } from '../../utils/logging';
 
 class DelayedLoad extends Component {
   constructor (props) {
@@ -19,6 +20,7 @@ class DelayedLoad extends Component {
   }
 
   render () {
+    renderLog('DelayedLoad');  // Set LOG_RENDER_EVENTS to log all renders
     const { showLoadingText } = this.props;
     const { hidden } = this.state;
     return hidden ? (
