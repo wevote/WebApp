@@ -1,4 +1,4 @@
-import Dispatcher from '../dispatcher/Dispatcher';
+import Dispatcher from '../../dispatcher/Dispatcher';
 
 export default {
   sharedItemListRetrieve (year = 0, month = 0, googleCivicElectionId = 0, stateCode = '') {

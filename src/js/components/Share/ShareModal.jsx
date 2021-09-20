@@ -7,10 +7,10 @@ import { EmailIcon, EmailShareButton, FacebookIcon, FacebookShareButton, Twitter
 import styled from 'styled-components';
 import AnalyticsActions from '../../actions/AnalyticsActions';
 import FriendActions from '../../actions/FriendActions';
-import ShareActions from '../../actions/ShareActions';
+import ShareActions from '../../common/actions/ShareActions';
 import AppObservableStore, { messageService } from '../../stores/AppObservableStore';
 import FriendStore from '../../stores/FriendStore';
-import ShareStore from '../../stores/ShareStore';
+import ShareStore from '../../common/stores/ShareStore';
 import VoterStore from '../../stores/VoterStore';
 import { cordovaDot, hasIPhoneNotch, isAndroid, isCordova, isWebApp } from '../../utils/cordovaUtils';
 import sortFriendListByMutualFriends from '../../utils/friendFunctions';
