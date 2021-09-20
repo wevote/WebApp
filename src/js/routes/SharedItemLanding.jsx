@@ -3,8 +3,8 @@ import PropTypes from 'prop-types';
 import { historyPush } from '../utils/cordovaUtils';
 import LoadingWheel from '../components/LoadingWheel';
 import { renderLog } from '../utils/logging';
-import ShareActions from '../actions/ShareActions';
-import ShareStore from '../stores/ShareStore';
+import ShareActions from '../common/actions/ShareActions';
+import ShareStore from '../common/stores/ShareStore';
 
 export default class SharedItemLanding extends Component {
   constructor (props) {

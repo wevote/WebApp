@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import styled from 'styled-components';
 import AnalyticsActions from '../../actions/AnalyticsActions';
-import ShareActions from '../../actions/ShareActions';
+import ShareActions from '../../common/actions/ShareActions';
 import AppObservableStore, { messageService } from '../../stores/AppObservableStore';
 import VoterStore from '../../stores/VoterStore';
 import { historyPush, isCordova, isWebApp } from '../../utils/cordovaUtils';
