@@ -21,6 +21,7 @@ export function abbreviateNumber (num) {
   return num;
 }
 
+// DALE TODO: Switch references to the file src/js/common/utils/arrayContains.js
 export function arrayContains (needle, arrayHaystack) {
   // console.log("arrayContains, needle:", needle, ", haystack: ", arrayHaystack);
   if (arrayHaystack) {
