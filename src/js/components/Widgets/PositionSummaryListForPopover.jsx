@@ -2,12 +2,11 @@ import { withStyles, withTheme } from '@material-ui/core/styles';
 import { CheckCircle, ThumbDown, ThumbUp } from '@material-ui/icons';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import { ReactSVG } from 'react-svg';
 import styled from 'styled-components';
-import { cordovaDot } from '../../utils/cordovaUtils';
 import { cleanArray } from '../../utils/textFormat';
 import FriendsIcon from './FriendsIcon';
 import PositionItemScorePopoverTextOnly from './PositionItemScorePopoverTextOnly';
+import SvgImage from './SvgImage';
 
 const FollowToggle = React.lazy(() => import(/* webpackChunkName: 'FollowToggle' */ './FollowToggle'));
 const MaterialUIPopover = React.lazy(() => import(/* webpackChunkName: 'MaterialUIPopover' */ './MaterialUIPopover'));
@@ -155,10 +154,7 @@ class PositionSummaryListForPopover extends Component {
                   <VoterAndOrganizationShareTheseIssuesWrapper>
                     {issuesInCommonForIconDisplayArray.map((issue) => (
                       <IssueIcon key={`issueInScore-${issue.issue_we_vote_id}`}>
-                        <ReactSVG
-                          src={cordovaDot(`/img/global/svg-icons/issues/${issue.issue_icon_local_path}.svg`)}
-                          beforeInjection={(svg) => svg.setAttribute('style', { fill: '#555', padding: '1px 1px 1px 0px' })}
-                        />
+                        <SvgImage imageName={issue.issue_icon_local_path} />
                       </IssueIcon>
                     ))}
                   </VoterAndOrganizationShareTheseIssuesWrapper>

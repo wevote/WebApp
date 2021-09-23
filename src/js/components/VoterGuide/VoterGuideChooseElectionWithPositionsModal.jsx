@@ -3,6 +3,7 @@ import { withStyles, withTheme } from '@material-ui/core/styles';
 import { Close } from '@material-ui/icons';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
+import { normalizedHref } from '../../utils/applicationUtils';
 import { renderLog } from '../../utils/logging';
 import { calculateBallotBaseUrlForVoterGuide } from '../../utils/textFormat';
 
@@ -27,7 +28,7 @@ class VoterGuideChooseElectionWithPositionsModal extends Component {
   }
 
   shouldComponentUpdate (nextProps) {
-    const { location: { pathname } } = window;
+    const pathname = normalizedHref();
 
     // This lifecycle method tells the component to NOT render if componentWillReceiveProps didn't see any changes
     if (pathname !== nextProps.pathname) {
@@ -45,7 +46,7 @@ class VoterGuideChooseElectionWithPositionsModal extends Component {
   render () {
     renderLog('VoterGuideChooseElectionWithPositionsModal');  // Set LOG_RENDER_EVENTS to log all renders
     const { classes, organizationWeVoteId, show } = this.props;
-    const { location: { pathname } } = window;
+    const pathname = normalizedHref();
     const ballotBaseUrl = calculateBallotBaseUrlForVoterGuide(this.props.ballotBaseUrl, pathname);
 
     return (

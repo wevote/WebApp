@@ -8,6 +8,7 @@ import AnalyticsActions from '../../actions/AnalyticsActions';
 import ShareActions from '../../actions/ShareActions';
 import AppObservableStore, { messageService } from '../../stores/AppObservableStore';
 import VoterStore from '../../stores/VoterStore';
+import { normalizedHref } from '../../utils/applicationUtils';
 import { historyPush, isCordova, isWebApp } from '../../utils/cordovaUtils';
 import { renderLog } from '../../utils/logging';
 import { stringContains } from '../../utils/textFormat';
@@ -123,7 +124,7 @@ class ShareButtonDesktopTablet extends Component {
 
     AppObservableStore.setShowShareModal(true);
     AppObservableStore.setShareModalStep(shareModalStep);
-    const { pathname } = window.location;
+    const pathname = normalizedHref();
     if (!stringContains('/modal/share', pathname) && isWebApp()) {
       const pathnameWithModalShare = `${pathname}${pathname.endsWith('/') ? '' : '/'}modal/share`;
       // console.log('Navigation ShareButtonDesktopTablet openShareModal ', pathnameWithModalShare)

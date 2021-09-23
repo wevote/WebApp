@@ -86,10 +86,15 @@ export function historyPush (route) {
 // images that are not yet on the production servers
 export function cordovaDot (path) {
   if (isCordova()) {
-    const { WE_VOTE_IMAGE_PATH_FOR_CORDOVA: imgPath } = webAppConfig;
-    const adjustedPath = path.replace(/.*?(\/img\/.*?)/gi, '/img/');
-    // console.log(`cordovaDot return: ${imgPath}${adjustedPath}`);
-    return `${imgPath}${adjustedPath}`;
+    // In cordova the root for all relative file paths is the www directory which contains a symlink
+    // to the image files in the WebApp source.
+    // So for ios it would be /Users/sp/WebstormProjects/WeVoteCordova/platforms/ios/www
+    // For example cordovaDot needs to transform '../../img/global/svg-icons/avatar-generic.svg' to
+    // './img/global/svg-icons/avatar-generic.svg'
+    // console.log(`cordovaDot incoming: ${path}`);
+    const adjustedPath = path.replace(/.*?(\/img\/.*?)/gi, '.$1'); // HACK
+    // console.log(`cordovaDot return: ${adjustedPath}`);
+    return adjustedPath;
   } else {
     return path;
   }
@@ -626,7 +631,7 @@ export function snackOffset () {
 
 export function setIconBadgeMessageCount (count) {
   // Count can be a string or an integer
-  if (isCordova()) {
+  if (isCordova() && !isSimulator()) {
     const { cordova: { plugins: { firebase: { messaging: { setBadge } } } } } = window;
     // Not sure if this would do anything in Android
     setBadge(count);
@@ -634,7 +639,7 @@ export function setIconBadgeMessageCount (count) {
 }
 
 export function getIconBadgeMessageCount () {
-  if (isCordova()) {
+  if (isCordova() && !isSimulator()) {
     const { cordova: { plugins: { firebase: { messaging: { getBadge } } } } } = window;
     return getBadge();
   }

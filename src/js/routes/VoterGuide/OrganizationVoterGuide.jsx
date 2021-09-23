@@ -13,6 +13,7 @@ import OrganizationCard from '../../components/VoterGuide/OrganizationCard';
 import OrganizationVoterGuideCard from '../../components/VoterGuide/OrganizationVoterGuideCard';
 import OrganizationVoterGuideTabs from '../../components/VoterGuide/OrganizationVoterGuideTabs';
 import { PageContentContainer } from '../../components/Widgets/ReusableStyles';
+import CordovaPageConstants from '../../constants/CordovaPageConstants';
 import AppObservableStore from '../../stores/AppObservableStore';
 import OrganizationStore from '../../stores/OrganizationStore';
 import VoterGuideStore from '../../stores/VoterGuideStore';
@@ -319,8 +320,12 @@ export default class OrganizationVoterGuide extends Component {
       );
     }
 
+    const { isFromTwitterHandleLanding } = params;
+    const paramOut = isFromTwitterHandleLanding ? CordovaPageConstants.twitterHandleLanding : false;
+    const paddingTop = cordovaScrollablePaneTopPadding(paramOut);
+
     return (
-      <PageContentContainer style={{ paddingTop: `${cordovaScrollablePaneTopPadding()}` }}>
+      <PageContentContainer style={{ paddingTop }}>
         <WrapperFlex>
           {/* Header Banner Spacing for Desktop */}
           <BannerOverlayDesktopOuterWrapper>
@@ -470,6 +475,7 @@ OrganizationVoterGuide.propTypes = {
 const WrapperFlex = styled.div`
   display: flex;
   flex-flow: column;
+  // padding-bottom: 625px;  // This is a lame way of pinning the bottom menu to the bottom on iOS
 `;
 
 const BannerContainerDesktop = styled.div`

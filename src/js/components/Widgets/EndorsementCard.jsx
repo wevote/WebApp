@@ -1,15 +1,13 @@
 import { Twitter } from '@material-ui/icons';
 import PropTypes from 'prop-types';
 import React, { PureComponent } from 'react';
-import { ReactSVG } from 'react-svg';
 import styled from 'styled-components';
 import VoterStore from '../../stores/VoterStore';
-import { cordovaDot } from '../../utils/cordovaUtils';
 import SplitIconButton from './SplitIconButton';
+import SvgImage from './SvgImage';
 
 const OpenExternalWebSite = React.lazy(() => import(/* webpackChunkName: 'OpenExternalWebSite' */ '../Widgets/OpenExternalWebSite'));
 
-const positionIcon = '../../../img/global/svg-icons/positions-icon-24-x-24.svg';
 
 class EndorsementCard extends PureComponent {
   constructor (props) {
@@ -47,23 +45,12 @@ class EndorsementCard extends PureComponent {
     let backgroundColor = '';
     let fontColor = '';
     let icon = (
-      <ReactSVG
-        src={cordovaDot(positionIcon)}
-        alt=""
-        beforeInjection={(svg) => svg.setAttribute('style', 'width: 20px')}
-      />
+      <SvgImage imageName="positions-icon-24-x-24" width="20px" />
     );
     if (whiteOnBlue) {
       backgroundColor = '#fff';
       fontColor = '#2e3c5d';
       icon = <Twitter />;
-      // icon = (
-      //   <ReactSVG
-      //     src={cordovaDot(positionIcon)}
-      //     beforeInjection={(svg) => svg.setAttribute('style', 'backgroundColor: #2e3c5d, borderRadius: 3px, fill: #fff, padding: 2px, width: 24px, height: 24px')}
-      //     alt=""
-      //   />
-      // );
     }
     return (
       <div>

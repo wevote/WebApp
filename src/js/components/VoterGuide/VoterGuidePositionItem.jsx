@@ -2,7 +2,6 @@ import { withStyles } from '@material-ui/core/styles';
 import { Twitter } from '@material-ui/icons';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import { ReactSVG } from 'react-svg';
 import styled from 'styled-components';
 import CandidateActions from '../../actions/CandidateActions';
 import MeasureActions from '../../actions/MeasureActions';
@@ -16,6 +15,7 @@ import { renderLog } from '../../utils/logging';
 import { capitalizeString, numberWithCommas, stringContains } from '../../utils/textFormat';
 import BallotItemVoterGuideSupportOpposeDisplay from '../Widgets/BallotItemVoterGuideSupportOpposeDisplay';
 import ExternalLinkIcon from '../Widgets/ExternalLinkIcon';
+import SvgImage from '../Widgets/SvgImage';
 
 const BallotItemSupportOpposeCountDisplay = React.lazy(() => import(/* webpackChunkName: 'BallotItemSupportOpposeCountDisplay' */ '../Widgets/BallotItemSupportOpposeCountDisplay'));
 const ImageHandler = React.lazy(() => import(/* webpackChunkName: 'ImageHandler' */ '../ImageHandler'));
@@ -246,11 +246,8 @@ class VoterGuidePositionItem extends Component {
         moreInfoUrl = `http://${moreInfoUrl}`;
       }
     }
-    const imagePlaceholder = (
-      <ReactSVG
-        src={cordovaDot('/img/global/svg-icons/avatar-generic.svg')}
-      />
-    );
+    const avatar = cordovaDot('../../../img/global/svg-icons/avatar-generic.svg');
+    const imagePlaceholder = <SvgImage imageName={avatar} />;
 
     return (
       <>
@@ -578,7 +575,7 @@ const DesktopItemNameContainer = styled.div`
 `;
 
 const DesktopItemNameAndOfficeContainer = styled.div`
-  padding: 0px;
+  padding: 0;
 `;
 
 const DesktopItemOffice = styled.div`

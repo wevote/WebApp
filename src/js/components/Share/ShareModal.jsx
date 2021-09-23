@@ -12,6 +12,7 @@ import AppObservableStore, { messageService } from '../../stores/AppObservableSt
 import FriendStore from '../../stores/FriendStore';
 import ShareStore from '../../stores/ShareStore';
 import VoterStore from '../../stores/VoterStore';
+import { normalizedHref } from '../../utils/applicationUtils';
 import { cordovaDot, hasIPhoneNotch, isAndroid, isCordova, isWebApp } from '../../utils/cordovaUtils';
 import sortFriendListByMutualFriends from '../../utils/friendFunctions';
 import { renderLog } from '../../utils/logging';
@@ -198,14 +199,13 @@ class ShareModal extends Component {
   }
 
   closeShareModal () {
-    const { location: { pathname } } = window;
-    this.props.closeShareModal(pathname);
+    this.props.closeShareModal(normalizedHref());
   }
 
   render () {
     renderLog('ShareModal');  // Set LOG_RENDER_EVENTS to log all renders
     // console.log('ShareModal render');
-    const { location: { pathname } } = window;
+    const pathname = normalizedHref();
     const { classes } = this.props;
     const {
       chosenPreventSharingOpinions, currentFullUrlToShare, shareModalStep,

@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import styled from 'styled-components';
 import AppObservableStore from '../../stores/AppObservableStore';
+import { cordovaDot } from '../../utils/cordovaUtils';
 
 
 class SettingsProfilePicture extends Component {
@@ -35,7 +36,7 @@ class SettingsProfilePicture extends Component {
                                 label="Custom picture"
               />
               <Seperator />
-              <ProfilePicture src="../../../img/global/photos/Aaron_Travis-200x200.jpg" />
+              <ProfilePicture src={cordovaDot('../../../img/global/photos/Aaron_Travis-200x200.jpg')} />
               {value === 'custom' && (
                 <>
                   <Button
@@ -64,7 +65,7 @@ class SettingsProfilePicture extends Component {
                                 label="Facebook picture"
               />
               <Seperator />
-              <ProfilePicture src="../../../img/global/photos/Aaron_Travis-200x200.jpg" />
+              <ProfilePicture src={cordovaDot('../../../img/global/photos/Aaron_Travis-200x200.jpg')} />
             </ProfilePictureOption>
           </CustomColumns>
           <CustomColumns className="col">
@@ -74,7 +75,7 @@ class SettingsProfilePicture extends Component {
                                 label="Twitter picture"
               />
               <Seperator />
-              <ProfilePicture src="../../../img/global/photos/Aaron_Travis-200x200.jpg" />
+              <ProfilePicture src={cordovaDot('../../../img/global/photos/Aaron_Travis-200x200.jpg')} />
             </ProfilePictureOption>
           </CustomColumns>
         </div>

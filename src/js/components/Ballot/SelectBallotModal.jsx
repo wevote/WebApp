@@ -6,6 +6,7 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 import AnalyticsActions from '../../actions/AnalyticsActions';
 import VoterStore from '../../stores/VoterStore';
+import { normalizedHref } from '../../utils/applicationUtils';
 import { hasIPhoneNotch } from '../../utils/cordovaUtils';
 import { renderLog } from '../../utils/logging';
 import { calculateBallotBaseUrl } from '../../utils/textFormat';
@@ -84,7 +85,7 @@ class SelectBallotModal extends Component {
   render () {
     renderLog('SelectBallotModal');  // Set LOG_RENDER_EVENTS to log all renders
     const { classes, hideAddressEdit, hideElections } = this.props;
-    const { location: { pathname } } = window;
+    const pathname = normalizedHref();
     const { editingAddress } = this.state;
     const ballotBaseUrl = calculateBallotBaseUrl(this.props.ballotBaseUrl, pathname);
 

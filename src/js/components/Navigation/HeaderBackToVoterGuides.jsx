@@ -12,6 +12,7 @@ import BallotStore from '../../stores/BallotStore';
 import OrganizationStore from '../../stores/OrganizationStore';
 import VoterGuideStore from '../../stores/VoterGuideStore';
 import VoterStore from '../../stores/VoterStore';
+import { normalizedHref } from '../../utils/applicationUtils';
 import { hasIPhoneNotch, historyPush, isCordova, isWebApp } from '../../utils/cordovaUtils';
 import isMobile from '../../utils/isMobile';
 import LazyImage from '../../common/components/LazyImage';
@@ -19,6 +20,7 @@ import { renderLog } from '../../utils/logging';
 import { isProperlyFormattedVoterGuideWeVoteId, shortenText, stringContains } from '../../utils/textFormat';
 import { voterPhoto } from '../../utils/voterPhoto';
 import VoterGuideChooseElectionModal from '../VoterGuide/VoterGuideChooseElectionModal';
+import SignInButton from '../Widgets/SignInButton';
 import EndorsementModeTabs from './EndorsementModeTabs';
 import HeaderBackToButton from './HeaderBackToButton';
 
@@ -254,28 +256,27 @@ class HeaderBackToVoterGuides extends Component {
       voter, voterFirstName, voterIsSignedIn,
     } = this.state;
     const { classes } = this.props;
-    const { location: { pathname } } = window;
+    const pathname = normalizedHref();
     const voterPhotoUrlMedium = voterPhoto(voter);
 
     let backToLink = '/settings/voterguidelist'; // default
     let backToOrganizationLinkText = 'Voter Guides'; // Back to
-    const pathnameLowerCase = pathname.toLowerCase() || '';
 
-    if (stringContains('/settings/menu', pathnameLowerCase)) {
+    if (stringContains('/settings/menu', pathname)) {
       backToOrganizationLinkText = ''; // Back to 'Your Endorsements'
       if (isWebApp()) {
         backToLink = isMobile() ? '/settings/voterguidesmenu' : '/settings/voterguidelist';
       } else {
         backToLink = '/settings/voterguidesmenu';
       }
-    } else if (stringContains('/settings/general', pathnameLowerCase)) {
+    } else if (stringContains('/settings/general', pathname)) {
       // const voterGuideWeVoteId = params.voter_guide_we_vote_id;
       backToOrganizationLinkText = ''; // Back to 'Your Endorsements'
       backToLink = '/settings/voterguidelist';
-    } else if (stringContains('/settings/positions', pathnameLowerCase)) {
+    } else if (stringContains('/settings/positions', pathname)) {
       backToOrganizationLinkText = 'Your Endorsements';
       backToLink = '/settings/voterguidelist';
-    } else if (stringContains('/vg/', pathnameLowerCase) && stringContains('/settings', pathnameLowerCase)) {
+    } else if (stringContains('/vg/', pathname) && stringContains('/settings', pathname)) {
       backToOrganizationLinkText = ''; // Back to 'Your Endorsements'
       backToLink = '/settings/voterguidelist';
     }
@@ -378,16 +379,7 @@ class HeaderBackToVoterGuides extends Component {
                 )}
               </span>
             ) : (
-              <Button
-                className="header-sign-in"
-                classes={{ root: classes.headerButtonRoot }}
-                color="primary"
-                id="signInHeaderBar"
-                onClick={this.toggleSignInModal}
-                variant="text"
-              >
-                <span className="u-no-break">Sign In</span>
-              </Button>
+              <SignInButton toggleSignInModal={this.toggleSignInModal} />
             )}
           </div>
         </Toolbar>

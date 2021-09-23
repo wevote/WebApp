@@ -9,6 +9,7 @@ import VoterActions from '../../actions/VoterActions';
 import VoterConstants from '../../constants/VoterConstants';
 import IssueStore from '../../stores/IssueStore';
 import VoterStore from '../../stores/VoterStore';
+import { normalizedHref } from '../../utils/applicationUtils';
 import { hasIPhoneNotch } from '../../utils/cordovaUtils';
 import { renderLog } from '../../utils/logging';
 
@@ -42,28 +43,25 @@ class ValuesIntroModal extends Component {
   }
 
   closeThisModal = () => {
-    const { location: { pathname } } = window;
-    this.props.toggleFunction(pathname);
+    this.props.toggleFunction(normalizedHref());
   }
 
   valuesIntroCompleted = () => {
     // Mark this so we know to show 'How it Works' as completed
-    const { location: { pathname } } = window;
     VoterActions.voterUpdateInterfaceStatusFlags(VoterConstants.VALUES_INTRO_COMPLETED);
-    this.props.toggleFunction(pathname);
+    this.props.toggleFunction(normalizedHref());
   }
 
   render () {
     renderLog('ValuesIntroModal');  // Set LOG_RENDER_EVENTS to log all renders
     const { classes } = this.props;
     const { atLeastOneValueChosen } = this.state;
-    const { location: { pathname } } = window;
 
     return (
       <Dialog
         classes={{ paper: classes.dialogPaper }}
         open={this.props.show}
-        onClose={() => { this.props.toggleFunction(pathname); }}
+        onClose={() => { this.props.toggleFunction(normalizedHref()); }}
       >
         <ModalTitleArea>
           <div>

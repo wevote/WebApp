@@ -1,5 +1,4 @@
 import React from 'react';
-// import { ReactSVG } from 'react-svg';
 import { cordovaDot } from '../../utils/cordovaUtils';
 
 

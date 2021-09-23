@@ -28,7 +28,7 @@ import BallotStore from '../../stores/BallotStore';
 import OrganizationStore from '../../stores/OrganizationStore';
 import VoterStore from '../../stores/VoterStore';
 import apiCalming from '../../utils/apiCalming';
-import { cordovaBallotFilterTopMargin } from '../../utils/cordovaOffsets';
+import { normalizedHref } from '../../utils/applicationUtils';
 import { cordovaDot, historyPush, isCordova, isIPad } from '../../utils/cordovaUtils';
 import { formatDateToMonthDayYear, timeFromDate } from '../../utils/dateFormat';
 import lazyPreloadPages from '../../utils/lazyPreloadPages';
@@ -72,11 +72,7 @@ class News extends Component {
     let redirectInProgress = false;
     if (activityTidbitWeVoteIdForDrawer) {
       const destinationLocalUrlWithModal = `/news/a/${activityTidbitWeVoteIdForDrawer}`;
-      const { pathname: pathnameRaw, href: hrefRaw } = window.location;
-      let pathname = pathnameRaw;
-      if (isCordova()) {
-        pathname = hrefRaw.replace(/file:\/\/.*?Vote.app\/www\/index.html#\//, '');
-      }
+      const pathname = normalizedHref();
       // console.log('pathname:', pathname, ', destinationLocalUrlWithModal:', destinationLocalUrlWithModal, ', activityTidbitWeVoteIdForDrawer:', activityTidbitWeVoteIdForDrawer);
       if (pathname && pathname !== destinationLocalUrlWithModal) {
         historyPush(destinationLocalUrlWithModal);
@@ -265,7 +261,7 @@ class News extends Component {
     let numberOfActivityTidbitsDisplayed = 0;
 
     const testimonialAuthor = 'Alissa B., Oakland, California';
-    const imageUrl = cordovaDot('/img/global/photos/Alissa_B-128x128.jpg');
+    const imageUrl = cordovaDot('../../../img/global/photos/Alissa_B-128x128.jpg');
     const testimonial = 'Great way to sort through my ballot! My husband and I used We Vote during the last election to learn more about our ballots and make some tough choices. Between following various organizations, and friending a couple of trusted friends, we felt like we had an excellent pool of information to draw from.';
 
     // August 23, 2020: These resolve a problem that exists in the WebApp, but looks much worse in
@@ -301,11 +297,12 @@ class News extends Component {
       unsetSomeRowStylesIfCordovaMdBlock.marginLeft = isIPad() ? 15 : 0;
       unsetSomeRowStylesIfCordovaMdBlock.flex = isIPad() ? '0 0 31%' : '';
     }
+    const square = cordovaDot('../../../img/global/svg-icons/we-vote-icon-square-color-dark.svg');
 
     return (
       <>
         <Suspense fallback={<LoadingWheelComp />}>
-          <PageContentContainer style={{ marginTop: `${cordovaBallotFilterTopMargin()}` }}>
+          <PageContentContainer>
             <div className="container-fluid">
               <Helmet title="Discuss - We Vote" />
               <BrowserPushMessage incomingProps={this.props} />
@@ -375,7 +372,7 @@ class News extends Component {
                             <PreviewImage
                               alt="we vote logo"
                               width="96px"
-                              src={cordovaDot('/img/global/svg-icons/we-vote-icon-square-color-dark.svg')}
+                              src={square}
                             />
                           </VoterAndWeVoteLogos>
                           <DateVoterJoined>

@@ -12,6 +12,7 @@ import VoterSessionActions from '../../actions/VoterSessionActions';
 import AppObservableStore, { messageService } from '../../stores/AppObservableStore';
 import FacebookStore from '../../stores/FacebookStore';
 import VoterStore from '../../stores/VoterStore';
+import { normalizedHref } from '../../utils/applicationUtils';
 import cookies from '../../utils/cookies';
 import { historyPush, isCordova, isIPhone4in, isIPhone4p7in, restoreStylesAfterCordovaKeyboard } from '../../utils/cordovaUtils';
 import initializeAppleSDK from '../../utils/initializeAppleSDK';
@@ -287,9 +288,8 @@ export default class SettingsAccount extends Component {
   }
 
   localStoreSignInStartFullUrl () {
-    const { pathname } = window.location;
     // console.log('localStoreSignInStartFullUrl, pathname:', pathname);
-    if (pathname !== '/settings/account') {
+    if (normalizedHref() !== '/settings/account') {
       AppObservableStore.setSignInStartFullUrl();
     }
   }

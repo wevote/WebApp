@@ -2,14 +2,13 @@ import { withStyles, withTheme } from '@material-ui/core/styles';
 import { CheckCircle } from '@material-ui/icons';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import { ReactSVG } from 'react-svg';
 import styled from 'styled-components';
 import FriendStore from '../../stores/FriendStore';
 import IssueStore from '../../stores/IssueStore';
 import OrganizationStore from '../../stores/OrganizationStore';
-import { cordovaDot } from '../../utils/cordovaUtils';
 import { isOrganizationInVotersNetwork } from '../../utils/positionFunctions';
 import FriendsIcon from './FriendsIcon';
+import SvgImage from './SvgImage';
 
 class PositionItemScorePopoverTextOnly extends Component {
   constructor (props) {
@@ -222,10 +221,7 @@ class PositionItemScorePopoverTextOnly extends Component {
             {issuesInCommonBetweenOrganizationAndVoter.map((issue) => (
               <ScoreExplanationWrapper key={`issueInScore-${issue.issue_we_vote_id}`}>
                 <PopoverTitleIcon>
-                  <ReactSVG
-                    src={cordovaDot(`/img/global/svg-icons/issues/${issue.issue_icon_local_path}.svg`)}
-                    beforeInjection={(svg) => svg.setAttribute('style', { fill: '#555', padding: '1px 1px 1px 0px' })}
-                  />
+                  <SvgImage imageName={issue.issue_icon_local_path} />
                 </PopoverTitleIcon>
                 <ScoreExplanationText>
                   You both care about

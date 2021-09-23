@@ -4,6 +4,7 @@ import { Close } from '@material-ui/icons';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import styled from 'styled-components';
+import { normalizedHref } from '../../utils/applicationUtils';
 import { hasIPhoneNotch } from '../../utils/cordovaUtils';
 import { renderLog } from '../../utils/logging';
 import DragAndDrop from './DragAndDrop';
@@ -27,21 +28,18 @@ class ImageUploadModal extends Component {
   }
 
   closeThisModal = () => {
-    const { location: { pathname } } = window;
-    this.props.toggleFunction(pathname);
+    this.props.toggleFunction(normalizedHref());
   }
 
   render () {
     renderLog('ImageUploadModal');  // Set LOG_RENDER_EVENTS to log all renders
     const { classes } = this.props;
-    const { location: { pathname } } = window;
-
 
     return (
       <Dialog
         classes={{ paper: classes.dialogPaper }}
         open={this.props.show}
-        onClose={() => { this.props.toggleFunction(pathname); }}
+        onClose={() => { this.props.toggleFunction(normalizedHref()); }}
       >
         <ModalTitleArea>
           <div>

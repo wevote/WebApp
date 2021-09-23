@@ -6,7 +6,7 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 import FriendActions from '../../actions/FriendActions';
 import FriendStore from '../../stores/FriendStore';
-import { hideZenDeskHelpVisibility, setZenDeskHelpVisibility } from '../../utils/applicationUtils';
+import { hideZenDeskHelpVisibility, normalizedHref, setZenDeskHelpVisibility } from '../../utils/applicationUtils';
 import { hasIPhoneNotch } from '../../utils/cordovaUtils';
 import { renderLog } from '../../utils/logging';
 
@@ -31,15 +31,13 @@ class HowItWorksModal extends Component {
     if (this.props.show) {
       hideZenDeskHelpVisibility();
     } else {
-      const { location: { pathname } } = window;
-      setZenDeskHelpVisibility(pathname);
+      setZenDeskHelpVisibility(normalizedHref());
     }
   }
 
   componentWillUnmount () {
-    const { location: { pathname } } = window;
     this.friendStoreListener.remove();
-    setZenDeskHelpVisibility(pathname);
+    setZenDeskHelpVisibility(normalizedHref());
   }
 
   onFriendStoreChange () {
@@ -50,20 +48,18 @@ class HowItWorksModal extends Component {
   }
 
   closeHowItWorksModal () {
-    const { location: { pathname } } = window;
-    this.props.toggleFunction(pathname);
+    this.props.toggleFunction(normalizedHref());
   }
 
   render () {
     renderLog('HowItWorksModal');  // Set LOG_RENDER_EVENTS to log all renders
     const { classes } = this.props;
-    const { location: { pathname } } = window;
 
     return (
       <Dialog
         classes={{ paper: classes.dialogPaper }}
         open={this.props.show}
-        onClose={() => { this.props.toggleFunction(pathname); }}
+        onClose={() => { this.props.toggleFunction(normalizedHref()); }}
       >
         <ModalTitleArea>
           <div>

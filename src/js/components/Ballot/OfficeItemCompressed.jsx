@@ -359,12 +359,13 @@ class OfficeItemCompressed extends Component {
 
     return (
       <OfficeItemCompressedWrapper>
-        <a // eslint-disable-line
-          className="anchor-under-header"
-          name={officeWeVoteId}
-        />
-        {/* Desktop */}
-        <Link id={`officeItemCompressedTopNameLink-${officeWeVoteId}`} to={this.getOfficeLink()}>
+        <Link
+          id={`officeItemCompressedTopNameLink-${officeWeVoteId}`}
+          to={{
+            pathname: this.getOfficeLink(),
+            state: { from: window.location.hash },
+          }}
+        >
           <Title>
             {ballotItemDisplayName}
             <ArrowForward

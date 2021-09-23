@@ -8,6 +8,7 @@ import BallotActions from '../../actions/BallotActions';
 import VoterActions from '../../actions/VoterActions';
 import BallotStore from '../../stores/BallotStore';
 import VoterStore from '../../stores/VoterStore';
+import { normalizedHref } from '../../utils/applicationUtils';
 import cookies from '../../utils/cookies';
 import { historyPush, isWebApp, restoreStylesAfterCordovaKeyboard } from '../../utils/cordovaUtils';
 import isMobile from '../../utils/isMobile';
@@ -94,8 +95,7 @@ class EditAddressOneHorizontalRow extends Component {
     const { saveUrl } = this.props;
     const { textForMapSearch, voterSavedAddress } = this.state;
     // console.log('onBallotStoreChange, state.voterSavedAddress:', voterSavedAddress, ', VoterStore.getTextForMapSearch():', VoterStore.getTextForMapSearch())
-    const { pathname } = window.location;
-    if (saveUrl && saveUrl !== '' && pathname !== saveUrl && textForMapSearch && voterSavedAddress) {
+    if (saveUrl && saveUrl !== '' && normalizedHref() !== saveUrl && textForMapSearch && voterSavedAddress) {
       historyPush(saveUrl);
     } else {
       this.setState({

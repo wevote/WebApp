@@ -1,4 +1,4 @@
-import { AppBar, Button, IconButton, Toolbar } from '@material-ui/core';
+import { AppBar, IconButton, Toolbar } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 import { AccountCircle } from '@material-ui/icons';
 import PropTypes from 'prop-types';
@@ -7,6 +7,7 @@ import styled from 'styled-components';
 import OrganizationActions from '../../actions/OrganizationActions';
 import VoterGuideActions from '../../actions/VoterGuideActions';
 import VoterSessionActions from '../../actions/VoterSessionActions';
+import LazyImage from '../../common/components/LazyImage';
 import AppObservableStore, { messageService } from '../../stores/AppObservableStore';
 import CandidateStore from '../../stores/CandidateStore';
 import MeasureStore from '../../stores/MeasureStore';
@@ -14,14 +15,17 @@ import OfficeStore from '../../stores/OfficeStore';
 import OrganizationStore from '../../stores/OrganizationStore';
 import VoterStore from '../../stores/VoterStore';
 import { dumpCssFromId } from '../../utils/appleSiliconUtils';
-import { hasIPhoneNotch, historyPush, isAndroid, isCordova, isIOSAppOnMac, isIPad, isWebApp } from '../../utils/cordovaUtils';
+import { normalizedHref } from '../../utils/applicationUtils';
+import { historyPush, isCordova, isIOSAppOnMac, isIPad, isWebApp } from '../../utils/cordovaUtils';
+import { headerStyles, headerToolbarStyles } from '../../utils/headerStyles';
 import isMobileScreenSize from '../../utils/isMobileScreenSize';
-import LazyImage from '../../common/components/LazyImage';
 import { renderLog } from '../../utils/logging';
 import { shortenText, stringContains } from '../../utils/textFormat';
 import { voterPhoto } from '../../utils/voterPhoto';
 import OfficeItem from '../Ballot/OfficeItem';
 import ShareButtonDesktopTablet from '../Share/ShareButtonDesktopTablet';
+import { RightSideTopLineContainer } from '../Widgets/ReusableStyles';
+import SignInButton from '../Widgets/SignInButton';
 import HeaderBackToButton from './HeaderBackToButton';
 
 const HeaderNotificationMenu = React.lazy(() => import(/* webpackChunkName: 'HeaderNotificationMenu' */ './HeaderNotificationMenu'));
@@ -83,7 +87,9 @@ class HeaderBackToBallot extends Component {
     let officeName;
     let organization = {};
     let organizationWeVoteId;
-    if (params) {
+
+    // Steve: 9/21/21, this HeaderBackToBallot component does not receive any props called params
+    if (Object.keys(params).length) {
       candidateWeVoteId = params.candidate_we_vote_id || '';
       measureWeVoteId = params.measure_we_vote_id || '';
       officeWeVoteId = params.office_we_vote_id || '';
@@ -139,8 +145,10 @@ class HeaderBackToBallot extends Component {
       const backToMeasureWeVoteId = params.back_to_meas_we_vote_id || '';
       if (backToMeasureWeVoteId) {
         const backToMeasure = MeasureStore.getMeasure(backToMeasureWeVoteId);
+        const { ballot_item_display_name: name } = backToMeasure;
         this.setState({
           backToMeasure,
+          measureName: name,
         });
       }
       const backToVariable = params.back_to_variable || '';
@@ -165,6 +173,10 @@ class HeaderBackToBallot extends Component {
         organizationWeVoteId,
       });
     }
+    // Steve: 9/21/21, end of: this HeaderBackToBallot component does not receive any props called params
+
+
+    this.updatePageBasedState();  // Workaround, but maybe permanent, for https://github.com/wevote/WebApp/issues/3305
 
     // console.log('candidateWeVoteId: ', candidateWeVoteId);
     // console.log('organizationWeVoteId: ', organizationWeVoteId);
@@ -384,6 +396,13 @@ class HeaderBackToBallot extends Component {
     return false;
   }
 
+  componentDidUpdate (prevState) {
+    const [, page] = normalizedHref().split('/');
+    if (page !== prevState.page) {
+      this.updatePageBasedState();
+    }
+  }
+
   componentWillUnmount () {
     // this.ballotStoreListener.remove();
     this.appStateSubscription.unsubscribe();
@@ -565,7 +584,7 @@ class HeaderBackToBallot extends Component {
   closeShareModal = () => {
     AppObservableStore.setShowShareModal(false);
     AppObservableStore.setShareModalStep('');
-    const { location: { pathname } } = window;
+    const pathname = normalizedHref();
 
     if (stringContains('/modal/share', pathname) && isWebApp()) {
       const pathnameWithoutModalShare = pathname.replace('/modal/share', '');
@@ -628,17 +647,57 @@ class HeaderBackToBallot extends Component {
     return false;
   }
 
+  updatePageBasedState () {
+    const [, page, id, , backToVariable] = normalizedHref().split('/');
+
+    if (page === 'office') {
+      const office = OfficeStore.getOffice(id);  //  "office/wv02off35729/b/btdb"
+      if (office) {
+        const { ballot_item_display_name: name } = office;
+        console.log(office);
+        this.setState({
+          backToVariable,
+          officeName: name,
+          officeWeVoteId: id,
+          page,
+        });
+      }
+    } else if (page === 'measure') {
+      const measure = MeasureStore.getMeasure(id);
+      if (measure) {
+        const { ballot_item_display_name: name } = measure;
+        console.log(measure);
+        this.setState({
+          backToVariable,
+          measureName: name,
+          measureWeVoteId: id,
+          page,
+        });
+      }
+    } else if (page === 'candidate') {
+      console.log('found candidate');
+      this.setState({
+        backToVariable,
+        measureName: '',
+        officeName: '',
+        measureWeVoteId: '',
+        officeWeVoteId: '',
+        page,
+      });
+    }
+  }
+
+
   render () {
     renderLog('HeaderBackToBallot');  // Set LOG_RENDER_EVENTS to log all renders
     const {
       backToCandidateWeVoteId, backToMeasure, backToMeasureWeVoteId, backToVariable,
-      candidate, googleCivicElectionId, measureWeVoteId, officeName, officeWeVoteId,
-      organization, organizationWeVoteId, profilePopUpOpen, scrolledDown, showSignInModal,
+      candidate, googleCivicElectionId, measureName, measureWeVoteId, officeName, officeWeVoteId,
+      organization, organizationWeVoteId, page, profilePopUpOpen, scrolledDown, showSignInModal,
       shareModalStep, showShareModal, voter, voterFirstName, voterIsSignedIn,
     } = this.state;
     const voterPhotoUrlMedium = voterPhoto(voter);
     const { classes } = this.props;
-    const { location: { pathname } } = window;
 
     // console.log('HeaderBackToBallot googleCivicElectionId:', googleCivicElectionId);
 
@@ -648,7 +707,7 @@ class HeaderBackToBallot extends Component {
       backToLink = `/candidate/${backToCandidateWeVoteId}/b/${backToVariable}`;
     } else if (backToMeasureWeVoteId) {
       backToLink = `/measure/${backToMeasureWeVoteId}/b/${backToVariable}`;
-    } else if ((backToVariable === 'bto' || backToVariable === 'btdo') && !backToCandidateWeVoteId) { // back-to-default-office
+    } else if ((['bto', 'btdo'].includes(backToVariable)) && !['candidate'].includes(page)) { // back-to-default-office
       backToLink = this.getOfficeLink();
     } else if (organizationWeVoteId && candidate && candidate.google_civic_election_id) {
       backToLink = this.getVoterGuideLink(); // Default to this when there is an organizationWeVoteId
@@ -666,13 +725,14 @@ class HeaderBackToBallot extends Component {
       } else {
         backToLinkText = 'Back to Candidate';
       }
-    } else if (backToMeasureWeVoteId) {
+    } else if (backToMeasureWeVoteId) {  // 9/21/21 Purposefully not set if doing the workaround
       if (backToMeasure && backToMeasure.ballot_item_display_name) {
-        backToLinkText = backToMeasure.ballot_item_display_name;
+        // backToLinkText = backToMeasure.ballot_item_display_name;
+        backToLinkText = measureName;
       } else {
         backToLinkText = 'Back to Measure';
       }
-    } else if (backToVariable === 'bto' || backToVariable === 'btdo') { // back-to-default-office
+    } else if (['bto', 'btdo'].includes(backToVariable)) { // back-to-default-office
       if (officeName) {
         backToLinkText = `${officeName}`; // Back to
       } else {
@@ -684,57 +744,48 @@ class HeaderBackToBallot extends Component {
       backToLinkText = 'Ballot'; // Back to
     }
 
-    const onOfficeRoute = stringContains('/office', pathname.toLowerCase());
-    const headerClassName = (function header () {
-      let cname = 'page-header';
-      if (onOfficeRoute) {
-        if (isWebApp()) {
-          cname = `page-header ${!isMobileScreenSize() ? 'page-header__back-to-ballot' : ''}`;
-        } else if (hasIPhoneNotch()) {
-          cname = 'page-header page-header__back-to-ballot-cordova  page-header__cordova-iphonex';
-        } else {
-          cname = 'page-header page-header__back-to-ballot-cordova  page-header__cordova';
-        }
-      }
-      return cname;
-    }());
+    // const headerClassName = (function header () {
+    //   let cname = 'page-header';
+    //   if (['candidate', 'office', 'measure'].includes(page)) {
+    //     if (isWebApp()) {
+    //       cname = `page-header ${!isMobileScreenSize() ? 'page-header__back-to-ballot' : ''}`;
+    //     } else if (hasIPhoneNotch()) {
+    //       cname = 'page-header page-header__back-to-ballot-cordova  page-header__cordova-iphonex';
+    //     } else {
+    //       cname = 'page-header page-header__back-to-ballot-cordova  page-header__cordova';
+    //     }
+    //   }
+    //   return cname;
+    // }());
 
     let appBarClasses = {};
-    const onCandidateOrMeasureRoute = stringContains('/candidate/', pathname.toLowerCase()) || stringContains('/measure/', pathname.toLowerCase());
-    if (scrolledDown && onCandidateOrMeasureRoute) {
+    if (scrolledDown && ['candiate', 'measure'].includes(page)) {
       appBarClasses = { root: classes.noBoxShadow };
-    } else if (onOfficeRoute && !isMobileScreenSize()) {
+    } else if (['office'].includes(page) && !isMobileScreenSize()) {
       appBarClasses = { root: classes.stackedReturnAndShare };
     }
 
-    const shareButtonInHeader = stringContains('/office', pathname.toLowerCase());
-    const cordovaOverrides = isWebApp() ? {} : { marginLeft: 0, padding: '4px 0 0 8px', right: 'unset' };
-    if (isIOSAppOnMac() || isIPad()) {
-      cordovaOverrides.height = shareButtonInHeader ? '87px' : '50px';
-      // dumpObjProps('cordovaOverrides: ', cordovaOverrides);
-    } else if (isAndroid()) {
-      cordovaOverrides.height = shareButtonInHeader ? '87px' : '50px';
-    }
-
+    const shareButtonInHeader = ['office'].includes(page);
 
     return (
       <StyledAppBar
         id="backToBallotAppBar"
-        className={headerClassName}
+        // className={headerClassName}
         color="default"
         classes={appBarClasses}
-        style={cordovaOverrides}
+        style={headerStyles()}
         elevation={0}
       >
-        <Toolbar className="header-toolbar header-backto-toolbar" disableGutters>
+        <Toolbar style={headerToolbarStyles()} disableGutters>
           <HeaderBackToButton
             backToLink={backToLink}
             backToLinkText={backToLinkText}
             className="HeaderBackToBallot"
             id="backToLinkTabHeader"
+            style={{ paddingLeft: `${isCordova() ? '0 !important' : ''}` }}
           />
 
-          <NotificationsAndProfileWrapper className="u-cursor--pointer">
+          <RightSideTopLineContainer className="u-cursor--pointer" cordova={isCordova()}>
             <HeaderNotificationMenu />
             {voterIsSignedIn ? (
               <span onClick={this.toggleAccountMenu}>
@@ -784,30 +835,21 @@ class HeaderBackToBallot extends Component {
                 )}
               </span>
             ) : (
-              <Button
-                className="header-sign-in"
-                classes={{ root: classes.headerButtonRoot }}
-                color="primary"
-                id="signInHeaderBar"
-                onClick={this.toggleSignInModal}
-                variant="text"
-              >
-                <span className="u-no-break">Sign In</span>
-              </Button>
+              <SignInButton toggleSignInModal={this.toggleSignInModal} />
             )}
-          </NotificationsAndProfileWrapper>
+          </RightSideTopLineContainer>
         </Toolbar>
-        {shareButtonInHeader && (
-          <OfficeNameWrapper className="header-toolbar">
-            <OfficeItem
-              weVoteId={officeWeVoteId}
-              ballotItemDisplayName={officeName}
-            />
+        <OfficeNameWrapper className="header-toolbar">
+          <OfficeItem
+            weVoteId={officeWeVoteId || measureWeVoteId}
+            ballotItemDisplayName={officeName || measureName || ''}
+          />
+          {shareButtonInHeader && (
             <OfficeShareWrapper className="u-show-desktop-tablet" ipad={isIPad() || isIOSAppOnMac()}>
               <ShareButtonDesktopTablet officeShare />
             </OfficeShareWrapper>
-          </OfficeNameWrapper>
-        )}
+          )}
+        </OfficeNameWrapper>
         {showSignInModal && (
           <SignInModal
             show={showSignInModal}
@@ -871,14 +913,6 @@ const StyledAppBar = styled(AppBar)`
 const FirstNameWrapper = styled.div`
   font-size: 14px;
   padding-right: 4px;
-`;
-
-const NotificationsAndProfileWrapper = styled.div`
-  display: flex;
-  z-index: 3; //to float above the account/ProfilePopUp menu option grey div
-  @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
-    padding-left: calc(100% - 147px);
-  }
 `;
 
 const OfficeNameWrapper = styled.div`

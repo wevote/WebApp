@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import Helmet from 'react-helmet';
 import styled from 'styled-components';
+import { PageContentContainer } from '../Widgets/ReusableStyles';
 import AnalyticsActions from '../../actions/AnalyticsActions';
 import VoterActions from '../../actions/VoterActions';
 import webAppConfig from '../../config';
@@ -165,7 +166,7 @@ class SettingsNotifications extends Component {
     }
 
     return (
-      <div className="">
+      <PageContentContainer>
         <Helmet title="Notifications - We Vote" />
         <BrowserPushMessage incomingProps={this.props} />
         <div className="card">
@@ -501,7 +502,7 @@ class SettingsNotifications extends Component {
             )}
           </div>
         </div>
-      </div>
+      </PageContentContainer>
     );
   }
 }

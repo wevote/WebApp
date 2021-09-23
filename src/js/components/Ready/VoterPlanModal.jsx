@@ -10,7 +10,7 @@ import webAppConfig from '../../config';
 import BallotStore from '../../stores/BallotStore';
 import ReadyStore from '../../stores/ReadyStore';
 import VoterStore from '../../stores/VoterStore';
-import { hideZenDeskHelpVisibility, setZenDeskHelpVisibility } from '../../utils/applicationUtils';
+import { hideZenDeskHelpVisibility, normalizedHref, setZenDeskHelpVisibility } from '../../utils/applicationUtils';
 import { hasIPhoneNotch } from '../../utils/cordovaUtils';
 import { formatDateToMonthDayYear } from '../../utils/dateFormat';
 import { renderLog } from '../../utils/logging';
@@ -77,8 +77,7 @@ class VoterPlanModal extends Component {
     if (this.props.show) {
       hideZenDeskHelpVisibility();
     } else {
-      const { location: { pathname } } = window;
-      setZenDeskHelpVisibility(pathname);
+      setZenDeskHelpVisibility(normalizedHref());
     }
     AnalyticsActions.saveActionModalVoterPlan(VoterStore.electionId());
   }
@@ -133,10 +132,9 @@ class VoterPlanModal extends Component {
   }
 
   componentWillUnmount () {
-    const { location: { pathname } } = window;
     this.ballotStoreListener.remove();
     this.readyStoreListener.remove();
-    setZenDeskHelpVisibility(pathname);
+    setZenDeskHelpVisibility(normalizedHref());
   }
 
 
@@ -209,7 +207,6 @@ class VoterPlanModal extends Component {
 
   onSaveVoterPlanButton = (event) => {
     // console.log('onSaveVoterPlanButton');
-    const { location: { pathname } } = window;
     const { showToPublic, stateCode, voterPlanDataSerialized, voterPlanText } = this.state;
     const googleCivicElectionId = VoterStore.electionId();
     ReadyActions.voterPlanSave(googleCivicElectionId, showToPublic, stateCode, voterPlanDataSerialized, voterPlanText);
@@ -217,7 +214,7 @@ class VoterPlanModal extends Component {
       voterPlanChangedLocally: false,
     });
     event.preventDefault();
-    this.props.toggleFunction(pathname);
+    this.props.toggleFunction(normalizedHref());
   }
 
   setVoterPlanSavedStates = (voterPlan, firstTime = false) => {
@@ -269,14 +266,12 @@ class VoterPlanModal extends Component {
   }
 
   closeVoterPlanModal () {
-    const { location: { pathname } } = window;
-    this.props.toggleFunction(pathname);
+    this.props.toggleFunction(normalizedHref());
   }
 
   render () {
     renderLog('VoterPlanModal');  // Set LOG_RENDER_EVENTS to log all renders
     const { classes } = this.props;
-    const { location: { pathname } } = window;
     const {
       approximateTime, electionDateMonthYear, locationToDeliverBallot, modeOfTransport,
       savedVoterPlanFound, voterPlanChangedLocally, votingLocationAddress, votingRoughDate,
@@ -288,7 +283,7 @@ class VoterPlanModal extends Component {
       <Dialog
         classes={{ paper: classes.dialogPaper }}
         open={this.props.show}
-        onClose={() => { this.props.toggleFunction(pathname); }}
+        onClose={() => { this.props.toggleFunction(normalizedHref()); }}
       >
         <ModalTitleArea>
           <div>

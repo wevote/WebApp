@@ -1,6 +1,6 @@
 import VoterActions from './actions/VoterActions';
 import TwitterSignIn from './components/Twitter/TwitterSignIn';
-import { getProcessorArchitecture, isCordova, isIOS, isIOSAppOnMac, prepareForCordovaKeyboard, restoreStylesAfterCordovaKeyboard } from './utils/cordovaUtils';
+import { getProcessorArchitecture, isCordova, isIOS, isIOSAppOnMac, isSimulator, prepareForCordovaKeyboard, restoreStylesAfterCordovaKeyboard } from './utils/cordovaUtils';
 
 function localPrepareForCordovaKeyboard () {
   prepareForCordovaKeyboard('ballot');
@@ -12,7 +12,7 @@ function localRestoreStylesAfterCordovaKeyboard () {
 
 // for wevotetwitterscheme
 export function initializationForCordova () { // eslint-disable-line
-  console.log('Application initializationForCordova ------------');
+  console.log('App.jsx startCordova.jsx initializationForCordova ------------');
 
   // Initialize incoming URL handler for oAuth
   window.handleOpenURL = (url) => {
@@ -48,7 +48,7 @@ export function initializationForCordova () { // eslint-disable-line
     window.addEventListener('keyboardDidHide', localRestoreStylesAfterCordovaKeyboard);
   }
 
-  if (isCordova() && !isIOSAppOnMac()) {
+  if (isCordova() && !isIOSAppOnMac() && !isSimulator()) {
     const { cordova: { plugins: { firebase: { messaging } } } } = window;
     // https://github.com/chemerisuk/cordova-plugin-firebase-messaging
     // For iOS, this can't be tested in a simulator.  Works fine in simulator on Android.

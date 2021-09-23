@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
 import Helmet from 'react-helmet';
 import styled from 'styled-components';
-import cordovaScrollablePaneTopPadding from '../../../srcCordova/js/utils/cordovaScrollablePaneTopPadding';
 import ActivityActions from '../actions/ActivityActions';
 import AnalyticsActions from '../actions/AnalyticsActions';
 import ReadyActions from '../actions/ReadyActions';
@@ -108,7 +107,7 @@ class ReadyLight extends Component {
     } = this.state;
 
     return (
-      <PageContentContainer style={{ paddingTop: `${cordovaScrollablePaneTopPadding()}` }}>
+      <PageContentContainer>
         <PageContainer>
           <Helmet title="Ready to Vote? - We Vote" />
           <BrowserPushMessage incomingProps={this.props} />

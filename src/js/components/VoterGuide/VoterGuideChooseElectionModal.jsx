@@ -3,6 +3,7 @@ import { withStyles, withTheme } from '@material-ui/core/styles';
 import { Close } from '@material-ui/icons';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
+import { normalizedHref } from '../../utils/applicationUtils';
 import { renderLog } from '../../utils/logging';
 
 const BallotElectionListWithFilters = React.lazy(() => import(/* webpackChunkName: 'BallotElectionListWithFilters' */ '../Ballot/BallotElectionListWithFilters'));
@@ -27,7 +28,7 @@ class VoterGuideChooseElectionModal extends Component {
 
   shouldComponentUpdate (nextProps) {
     // This lifecycle method tells the component to NOT render if componentWillReceiveProps didn't see any changes
-    const { pathname } = window;
+    const pathname = normalizedHref();
     const { pathname: nextPathname } = nextProps;
     if (pathname !== nextPathname) {
       // console.log('pathname:', pathname, ', nextProps.pathname:', nextPathname);

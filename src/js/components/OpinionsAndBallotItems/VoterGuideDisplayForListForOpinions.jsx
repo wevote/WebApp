@@ -4,19 +4,18 @@ import { Twitter } from '@material-ui/icons';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import { ReactSVG } from 'react-svg';
 import styled from 'styled-components';
 import AppObservableStore from '../../stores/AppObservableStore';
 import FriendStore from '../../stores/FriendStore';
 import IssueStore from '../../stores/IssueStore';
 import OrganizationStore from '../../stores/OrganizationStore';
-import { cordovaDot } from '../../utils/cordovaUtils';
 import { renderLog } from '../../utils/logging';
 import { isSpeakerTypeIndividual, isSpeakerTypeOrganization } from '../../utils/organization-functions';
 import { numberWithCommas } from '../../utils/textFormat';
 import StickyPopover from '../Ballot/StickyPopover';
 import OrganizationPopoverCard from '../Organization/OrganizationPopoverCard';
 import IssuesByOrganizationDisplayList from '../Values/IssuesByOrganizationDisplayList';
+import SvgImage from '../Widgets/SvgImage';
 
 const FollowToggle = React.lazy(() => import(/* webpackChunkName: 'FollowToggle' */ '../Widgets/FollowToggle'));
 const ImageHandler = React.lazy(() => import(/* webpackChunkName: 'ImageHandler' */ '../ImageHandler'));
@@ -96,17 +95,9 @@ class voterGuideDisplayForListForOpinions extends Component {
 
     let imagePlaceholder = '';
     if (isSpeakerTypeOrganization(voterGuideOwnerType)) {
-      imagePlaceholder = (
-        <ReactSVG
-          src={cordovaDot('/img/global/svg-icons/organization-icon.svg')}
-        />
-      );
+      imagePlaceholder = <SvgImage imageName="organization-icon" />;
     } else if (isSpeakerTypeIndividual(voterGuideOwnerType)) {
-      imagePlaceholder = (
-        <ReactSVG
-          src={cordovaDot('/img/global/svg-icons/avatar-generic.svg')}
-        />
-      );
+      imagePlaceholder = <SvgImage imageName="avatar-generic" />;
     }
 
     const voterGuideDescription = twitterDescription && (

@@ -5,6 +5,7 @@ import AppObservableStore, { messageService } from '../../stores/AppObservableSt
 import ElectionStore from '../../stores/ElectionStore';
 import VoterGuideStore from '../../stores/VoterGuideStore';
 import VoterStore from '../../stores/VoterStore';
+import { normalizedHref } from '../../utils/applicationUtils';
 import { renderLog } from '../../utils/logging';
 import VoterGuideChooseElectionModal from '../VoterGuide/VoterGuideChooseElectionModal';
 import SelectVoterGuidesSideBarLink from './SelectVoterGuidesSideBarLink';
@@ -65,7 +66,7 @@ export default class SelectVoterGuidesSideBar extends Component {
   render () {
     renderLog('SelectVoterGuidesSideBar');  // Set LOG_RENDER_EVENTS to log all renders
     const { showNewVoterGuideModal, voterGuidesOwnedByVoter } = this.state;
-    const { location: { pathname } } = window;
+    const pathname = normalizedHref();
     let voterGuideLinksHtml = <span />;
     if (voterGuidesOwnedByVoter) {
       voterGuideLinksHtml = voterGuidesOwnedByVoter.map((voterGuide) => {

@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
 import Helmet from 'react-helmet';
 import styled from 'styled-components';
-import cordovaScrollablePaneTopPadding from '../../../srcCordova/js/utils/cordovaScrollablePaneTopPadding';
 import ActivityActions from '../actions/ActivityActions';
 import AnalyticsActions from '../actions/AnalyticsActions';
 import BallotActions from '../actions/BallotActions';
@@ -206,7 +205,7 @@ class Ready extends Component {
 
     // console.log('locationGuessClosed:', locationGuessClosed, ', textForMapSearch:', textForMapSearch, ', showAddressVerificationForm:', showAddressVerificationForm);
     return (
-      <PageContentContainer style={{ paddingTop: `${cordovaScrollablePaneTopPadding()}` }}>
+      <PageContentContainer>
         <Suspense fallback={<LoadingWheelComp />}>
           <PageContainer className="container-fluid">
             <SnackNotifier />

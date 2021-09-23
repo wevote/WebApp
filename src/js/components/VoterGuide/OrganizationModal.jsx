@@ -17,6 +17,7 @@ import MeasureStore from '../../stores/MeasureStore';
 import OrganizationStore from '../../stores/OrganizationStore';
 import VoterGuideStore from '../../stores/VoterGuideStore';
 import VoterStore from '../../stores/VoterStore';
+import { normalizedHref } from '../../utils/applicationUtils';
 import { cordovaDrawerTopMargin } from '../../utils/cordovaOffsets';
 import { hasIPhoneNotch } from '../../utils/cordovaUtils';
 import { renderLog } from '../../utils/logging';
@@ -226,10 +227,9 @@ class OrganizationModal extends Component {
   }
 
   closeOrganizationModal () {
-    const { location: { pathname } } = window;
     this.setState({ modalOpen: false });
     setTimeout(() => {
-      this.props.toggleFunction(pathname);
+      this.props.toggleFunction(normalizedHref());
     }, 500);
   }
 

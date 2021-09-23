@@ -3,6 +3,7 @@ import { Settings } from '@material-ui/icons';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import styled from 'styled-components';
+import { normalizedHref } from '../../utils/applicationUtils';
 import { renderLog } from '../../utils/logging';
 import { calculateBallotBaseUrl, shortenText } from '../../utils/textFormat';
 import AddressBox from '../AddressBox';
@@ -54,7 +55,7 @@ class EditAddressInPlace extends Component {
   render () {
     renderLog('EditAddressInPlace');  // Set LOG_RENDER_EVENTS to log all renders
     const { classes } = this.props;
-    const { location: { pathname } } = window;
+    const pathname = normalizedHref();
     const { editingAddress, textForMapSearch } = this.state;
     const noAddressMessage = this.props.noAddressMessage ? this.props.noAddressMessage : '- no address entered -';
     const maximumAddressDisplayLength = 60;

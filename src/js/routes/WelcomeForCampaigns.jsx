@@ -12,6 +12,7 @@ import Testimonial from '../components/Widgets/Testimonial';
 import VoterConstants from '../constants/VoterConstants';
 import AppObservableStore from '../stores/AppObservableStore';
 import VoterStore from '../stores/VoterStore';
+import { normalizedHref } from '../utils/applicationUtils';
 import cordovaScrollablePaneTopPadding from '../utils/cordovaScrollablePaneTopPadding';
 import { cordovaDot, historyPush } from '../utils/cordovaUtils';
 import { renderLog } from '../utils/logging';
@@ -105,7 +106,7 @@ class WelcomeForCampaigns extends PureComponent {
   render () {
     renderLog('WelcomeForCampaigns');  // Set LOG_RENDER_EVENTS to log all renders
     const { classes } = this.props;
-    const { location: { pathname } } = window;
+    const pathname = normalizedHref();
     // console.log('WelcomeForCampaigns, pathname: ', pathname);
     const { voter } = this.state;
     const voterIsSignedIn = voter.is_signed_in;

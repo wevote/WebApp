@@ -8,6 +8,7 @@ import styled from 'styled-components';
 import DonateActions from '../../common/actions/DonateActions';
 // TODO 5/11/21: import webAppConfig from '../../config';
 import DonateStore from '../../common/stores/DonateStore';
+import { normalizedHref } from '../../utils/applicationUtils';
 import { hasIPhoneNotch, isIOS } from '../../utils/cordovaUtils';
 import extractNumber from '../../utils/extractNumber';
 import { renderLog } from '../../utils/logging';
@@ -308,7 +309,7 @@ class PaidAccountUpgradeModal extends Component {
   }
 
   pricingPlanChosenFunction = (pricingPlanChosen) => {
-    const { location: { pathname } } = window;
+    const pathname = normalizedHref();
     // console.log('pricingPlanChosenFunction pricingPlanChosen:', pricingPlanChosen);
     const pricingPlanChosenCleaned = pricingPlanChosen || '';
     const { activePaidPlanChosen, radioGroupValue, defaultPricing, lastCouponResponseReceivedFromAPI } = this.state;
@@ -522,8 +523,7 @@ class PaidAccountUpgradeModal extends Component {
   }
 
   closePaidAccountUpgradeModal () {
-    const { location: { pathname } } = window;
-    this.props.toggleFunction(pathname);
+    this.props.toggleFunction(normalizedHref());
   }
 
   convertPriceFromPenniesToDollars (priceInPennies) {
@@ -550,7 +550,7 @@ class PaidAccountUpgradeModal extends Component {
 
   render () {
     renderLog('PaidAccountUpgradeModal');  // Set LOG_RENDER_EVENTS to log all renders
-    const { location: { pathname } } = window;
+    const pathname = normalizedHref();
     const { classes } = this.props;
     const {
       activePaidPlanChosen, activePaidPlanChosenDisplay, amountPaidViaStripe, numberOfMonthsService,

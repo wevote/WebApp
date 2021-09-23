@@ -4,10 +4,9 @@ import { Info, ThumbDown, ThumbUp, Twitter } from '@material-ui/icons';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import { ReactSVG } from 'react-svg';
 import styled from 'styled-components';
-import AppObservableStore from '../../stores/AppObservableStore';
 import OrganizationActions from '../../actions/OrganizationActions';
+import AppObservableStore from '../../stores/AppObservableStore';
 import FriendStore from '../../stores/FriendStore';
 import IssueStore from '../../stores/IssueStore';
 import OrganizationStore from '../../stores/OrganizationStore';
@@ -22,6 +21,7 @@ import OrganizationPopoverCard from '../Organization/OrganizationPopoverCard';
 import IssuesByOrganizationDisplayList from '../Values/IssuesByOrganizationDisplayList';
 import ExternalLinkIcon from '../Widgets/ExternalLinkIcon';
 import PositionItemScorePopover from '../Widgets/PositionItemScorePopover';
+import SvgImage from '../Widgets/SvgImage';
 
 const FollowToggle = React.lazy(() => import(/* webpackChunkName: 'FollowToggle' */ '../Widgets/FollowToggle'));
 const ImageHandler = React.lazy(() => import(/* webpackChunkName: 'ImageHandler' */ '../ImageHandler'));
@@ -244,15 +244,12 @@ class PositionItem extends Component {
     let imagePlaceholder = '';
     if (isSpeakerTypeOrganization(position.speaker_type)) {
       imagePlaceholder = (
-        <ReactSVG
-          src={cordovaDot('/img/global/svg-icons/organization-icon.svg')}
-        />
+        <SvgImage imageName="organization-icon" />
       );
     } else if (isSpeakerTypeIndividual(position.speaker_type)) {
+      const avatar = cordovaDot('../../img/global/svg-icons/avatar-generic.svg');
       imagePlaceholder = (
-        <ReactSVG
-          src={cordovaDot('/img/global/svg-icons/avatar-generic.svg')}
-        />
+        <SvgImage imageName={avatar} />
       );
     }
 

@@ -5,7 +5,7 @@ import AppObservableStore, { messageService } from '../../stores/AppObservableSt
 import VoterStore from '../../stores/VoterStore';
 import apiCalming from '../../utils/apiCalming';
 import { dumpCssFromId } from '../../utils/appleSiliconUtils';
-import { getApplicationViewBooleans, headerHasSubmenu, weVoteBrandingOff } from '../../utils/applicationUtils';
+import { getApplicationViewBooleans, headerHasSubmenu, normalizedHref, weVoteBrandingOff } from '../../utils/applicationUtils';
 import { cordovaTopHeaderTopMargin } from '../../utils/cordovaOffsets';
 import { hasIPhoneNotch, historyPush, isCordova, isIOS, isIOSAppOnMac, isIPad, isWebApp } from '../../utils/cordovaUtils';
 import displayFriendsTabs from '../../utils/displayFriendsTabs';
@@ -62,13 +62,12 @@ export default class Header extends Component {
 
   shouldComponentUpdate (nextProps, nextState) {
     // console.log('-----------HEADER shouldComponentUpdate');
-    const { location: { pathname } } = window;
     let update = false;
     if (this.state.activityTidbitWeVoteIdForDrawer !== nextState.activityTidbitWeVoteIdForDrawer) {
       update = true;
     } if (this.state.organizationModalBallotItemWeVoteId !== nextState.organizationModalBallotItemWeVoteId) {
       update = true;
-    } if (pathname !== nextProps.pathname) {
+    } if (normalizedHref() !== nextProps.pathname) {
       update = true;
     } if (this.state.priorPath === undefined) {
       update = true;
@@ -144,7 +143,7 @@ export default class Header extends Component {
 
   closeSharedItemModal () {
     AppObservableStore.setShowSharedItemModal('');
-    const { location: { pathname } } = window;
+    const pathname = normalizedHref();
     if (stringContains('/modal/sic/', pathname)) {
       const pathnameWithoutModalSharedItem = pathname.substring(0, pathname.indexOf('/modal/sic/'));
       historyPush(pathnameWithoutModalSharedItem);
@@ -152,8 +151,7 @@ export default class Header extends Component {
   }
 
   hideHeader () {
-    const { location: { pathname } } = window;
-    const path = pathname.toLowerCase();
+    const path = normalizedHref();
     return path.startsWith('/welcome') ||
       path.startsWith('/for-campaigns') ||
       path.startsWith('/how/for-campaigns') ||
@@ -171,7 +169,7 @@ export default class Header extends Component {
 
     const { params } = this.props;
     // console.log('Header global.weVoteGlobalHistory', global.weVoteGlobalHistory);
-    const { location: { pathname } } = window;
+    const pathname = normalizedHref();
     const {
       activityTidbitWeVoteIdForDrawer, sharedItemCode, showActivityTidbitDrawer,
       showHowItWorksModal, showVoterPlanModal, showOrganizationModal, showSharedItemModal,

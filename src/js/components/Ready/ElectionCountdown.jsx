@@ -4,6 +4,7 @@ import React from 'react';
 import styled from 'styled-components';
 import BallotActions from '../../actions/BallotActions';
 import BallotStore from '../../stores/BallotStore';
+import { normalizedHref } from '../../utils/applicationUtils';
 import { historyPush } from '../../utils/cordovaUtils';
 import { formatDateToMonthDayYear } from '../../utils/dateFormat';
 import initializeMoment from '../../utils/initializeMoment';
@@ -28,7 +29,7 @@ class ElectionCountdown extends React.Component {
     this.ballotStoreListener = BallotStore.addListener(this.onBallotStoreChange.bind(this));
     this.addressSuggestiontimer = setTimeout(() => {
       const { electionDateMDY } = this.state;
-      const { location: { pathname } } = window;
+      const pathname = normalizedHref();
       if (electionDateMDY.length === 0) {
         console.log('history push or button appears');
         if (pathname === '' || pathname === '/' || pathname === '/ready') {

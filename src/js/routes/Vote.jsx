@@ -22,6 +22,7 @@ import IssueStore from '../stores/IssueStore';
 import SupportStore from '../stores/SupportStore';
 import VoterGuideStore from '../stores/VoterGuideStore';
 import VoterStore from '../stores/VoterStore';
+import { normalizedHref } from '../utils/applicationUtils';
 import cookies from '../utils/cookies';
 import { cordovaVoteMiniHeader } from '../utils/cordovaOffsets';
 import cordovaScrollablePaneTopPadding from '../utils/cordovaScrollablePaneTopPadding';
@@ -241,7 +242,7 @@ class Vote extends Component {
 
   onVoterStoreChange () {
     // console.log('Ballot.jsx onVoterStoreChange, voter: ', VoterStore.getVoter());
-    const { location: { pathname } } = window;
+    const pathname = normalizedHref();
 
     if (this.state.mounted) {
       let considerOpeningBallotIntroModal = true;

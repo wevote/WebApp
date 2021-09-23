@@ -38,7 +38,6 @@ import apiCalming from '../../utils/apiCalming';
 import { dumpCssFromId } from '../../utils/appleSiliconUtils';
 import cookies from '../../utils/cookies';
 import { cordovaBallotFilterTopMargin } from '../../utils/cordovaOffsets';
-import cordovaScrollablePaneTopPadding from '../../utils/cordovaScrollablePaneTopPadding';
 import { chipLabelText, getAndroidSize, historyPush, isAndroid, isCordova, isIOSAppOnMac, isIPadGiantSize, isWebApp } from '../../utils/cordovaUtils';
 import isMobile from '../../utils/isMobile';
 import isMobileScreenSize from '../../utils/isMobileScreenSize';
@@ -1350,7 +1349,7 @@ class Ballot extends Component {
 
           <PageContentContainer>
             <div className="container-fluid">
-              <Wrapper padTop={cordovaScrollablePaneTopPadding()} padBottom={padBallotWindowBottomForCordova} id="ballotWrapper">
+              <Wrapper padBottom={padBallotWindowBottomForCordova} id="ballotWrapper">
                 {emptyBallot}
                 {/* eslint-disable-next-line no-nested-ternary */}
                 <div className={showBallotDecisionsTabs() ? 'row ballot__body' : isWebApp() || twoColumnDisplay ? 'row ballot__body__no-decision-tabs' : undefined}>

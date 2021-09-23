@@ -18,10 +18,13 @@ function fileRewriterForCordova (path) {
       '$1{/* $2   // Rewritten from Suspense */}');
     // Replace "initializeMoment" everywhere
     newValue = newValue.replace(/initializeMoment/gim, 'initializeMomentCordova');
-    // newValue = newValue.replace(/^import initializeMoment (from .*?)$/gim,
-    //   'import initializeMomentCordova $1\n');
-    // newValue = newValue.replace(/initializeMoment\(\(\) /gim,
-    //   'initializeMomentCordova(() ');
+    // Inject cordova startup in App.jsx, replace "importStartCordovaToken" etc
+    newValue = newValue.replace(/^.*?importStartCordovaToken.*?$/gim,
+      'import { initializationForCordova, removeCordovaSpecificListeners } from \'./js/startCordova\';');
+    newValue = newValue.replace(/^.*?initializeCordovaToken.*?$/gim,
+      '    initializationForCordova();');
+    newValue = newValue.replace(/^.*?removeCordovaListenersToken.*?$/gim,
+      '    removeCordovaSpecificListeners();');
     // Switch over to HashRouter for Cordova
     newValue = newValue.replace(/BrowserRouter/g, 'HashRouter');
     // Remove Donate from Cordova -- Stripe causes problems and is not allowed in the app store

@@ -5,7 +5,7 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 import VoterActions from '../../actions/VoterActions';
 import VoterConstants from '../../constants/VoterConstants';
-import { hideZenDeskHelpVisibility, setZenDeskHelpVisibility } from '../../utils/applicationUtils';
+import { hideZenDeskHelpVisibility, normalizedHref, setZenDeskHelpVisibility } from '../../utils/applicationUtils';
 import { renderLog } from '../../utils/logging';
 
 const CandidateItem = React.lazy(() => import(/* webpackChunkName: 'CandidateItem' */ '../../components/Ballot/CandidateItem'));
@@ -242,23 +242,19 @@ class PersonalizedScoreIntroBody extends Component {
     this.setState(personalizedScoreSteps[1]);
     this.setState({
     });
-    const { location: { pathname } } = window;
     if (this.props.show) {
       hideZenDeskHelpVisibility();
     } else {
-      setZenDeskHelpVisibility(pathname);
+      setZenDeskHelpVisibility(normalizedHref());
     }
   }
 
   componentWillUnmount () {
-    const { location: { pathname } } = window;
-
-    setZenDeskHelpVisibility(pathname);
+    setZenDeskHelpVisibility(normalizedHref());
   }
 
   closeThisModal = () => {
-    const { location: { pathname } } = window;
-    setZenDeskHelpVisibility(pathname);
+    setZenDeskHelpVisibility(normalizedHref());
     const { currentStep } = this.state;
     const currentStepCompletedThreshold = 7;
     if (currentStep >= currentStepCompletedThreshold) {
@@ -266,7 +262,7 @@ class PersonalizedScoreIntroBody extends Component {
       VoterActions.voterUpdateInterfaceStatusFlags(VoterConstants.PERSONALIZED_SCORE_INTRO_COMPLETED);
     }
     if (this.props.toggleFunction) {
-      this.props.toggleFunction(pathname);
+      this.props.toggleFunction(normalizedHref());
     }
   };
 

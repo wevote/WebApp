@@ -8,6 +8,7 @@ import TwitterActions from '../actions/TwitterActions';
 import LoadingWheel from '../components/LoadingWheel';
 import TwitterStore from '../stores/TwitterStore';
 import VoterStore from '../stores/VoterStore';
+import { isWebApp } from '../utils/cordovaUtils';
 import { renderLog } from '../utils/logging';
 import Candidate from './Ballot/Candidate';
 import OrganizationVoterGuide from './VoterGuide/OrganizationVoterGuide';
@@ -33,7 +34,7 @@ export default class TwitterHandleLanding extends Component {
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
 
     const { activeRoute, match: { params: { twitter_handle: twitterHandle } } } = this.props;
-    const twitterHandle2 = twitterHandle || window.location.pathname.substring(1);
+    const twitterHandle2 = twitterHandle || (isWebApp() ? window.location.pathname.substring(1) : window.location.hash.substring(2));
     // console.log(`TwitterHandleLanding componentDidMount, twitterHandle: ${twitterHandle}`);
     this.setState({
       activeRoute,
@@ -132,6 +133,7 @@ export default class TwitterHandleLanding extends Component {
       activeRoute, voter, kindOfOwner, ownerWeVoteId, twitterHandle: twitterHandleBeingViewed,
     } = this.state;
     const { match: { params } } = this.props;
+    params.isFromTwitterHandleLanding = true;
     const signedInTwitter = voter === undefined ? false : voter.signed_in_twitter;
     let signedInWithThisTwitterAccount = false;
     let lookingAtPositionsForFriendsOnly = false;

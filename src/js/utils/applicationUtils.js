@@ -319,5 +319,11 @@ export function weVoteBrandingOff () {
 }
 
 export function headerHasSubmenu (pathname) {
-  return pathname.toLowerCase().startsWith('/ballot');
+  return pathname.toLowerCase().startsWith('/ballot') ||
+         pathname.toLowerCase().startsWith('/friends');
+}
+
+export function normalizedHref () {
+  const { location: { href, hash } } = window;
+  return isWebApp() ? href.toLowerCase() : hash.substring(1).toLowerCase();  // HACK  HACK HACK to 1 from 2, sept 20, 2021  2:44pm
 }

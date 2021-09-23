@@ -3,7 +3,6 @@ import { PageContentContainer } from '../../components/Widgets/ReusableStyles';
 import AppObservableStore, { messageService } from '../../stores/AppObservableStore';
 import VoterStore from '../../stores/VoterStore';
 import cookies from '../../utils/cookies';
-import cordovaScrollablePaneTopPadding from '../../utils/cordovaScrollablePaneTopPadding';
 import { historyPush, isWebApp } from '../../utils/cordovaUtils';
 import { oAuthLog, renderLog } from '../../utils/logging';
 import { stringContains } from '../../utils/textFormat';
@@ -130,7 +129,7 @@ export default class AppleSignInProcess extends Component {
       oAuthLog('STOPPED, voterIsSignedInWithApple is FALSE');
       return (
         <div className="apple_sign_in_root">
-          <PageContentContainer style={{ paddingTop: `${cordovaScrollablePaneTopPadding()}` }}>
+          <PageContentContainer>
             <div style={{ textAlign: 'center' }}>
               Apple Sign in did not work for some reason.
               <br />
@@ -144,7 +143,7 @@ export default class AppleSignInProcess extends Component {
 
     return (
       <div className="apple_sign_in_waiting_root">
-        <PageContentContainer style={{ paddingTop: `${cordovaScrollablePaneTopPadding()}` }}>
+        <PageContentContainer>
           <div className="u-loading-spinner__wrapper">
             <div className="u-loading-spinner">Please wait...</div>
           </div>

@@ -4,6 +4,7 @@ import { withStyles } from '@material-ui/core/styles';
 import { BottomNavigation, BottomNavigationAction } from '@material-ui/core';
 import { QuestionAnswer, Ballot, HowToVote, People } from '@material-ui/icons';
 import AppObservableStore, { messageService } from '../../stores/AppObservableStore';
+import { normalizedHref } from '../../utils/applicationUtils';
 import { cordovaFooterHeight } from '../../utils/cordovaOffsets';
 import { historyPush, isCordova } from '../../utils/cordovaUtils';
 import { stringContains } from '../../utils/textFormat';
@@ -14,8 +15,7 @@ import VoterStore from '../../stores/VoterStore';
 
 
 function isFriendsTabSelected () {
-  const { location: { pathname } } = window;
-  return (stringContains('/friends', pathname.toLowerCase()));
+  return (stringContains('/friends', normalizedHref()));
 }
 
 class FooterBar extends React.Component {
@@ -111,7 +111,7 @@ class FooterBar extends React.Component {
   };
 
   getSelectedTab = () => {
-    const { location: { pathname } } = window;
+    const pathname = normalizedHref();
     if (stringContains('/ready', pathname.toLowerCase())) return 0;
     if (stringContains('/ballot', pathname.toLowerCase())) return 1;
     if (stringContains('/value', pathname.toLowerCase()) || stringContains('/opinions', pathname.toLowerCase())) return 2; // '/values'

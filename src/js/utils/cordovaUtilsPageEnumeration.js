@@ -16,6 +16,8 @@ export function pageEnumeration () {
   } else if (href.indexOf('/index.html#/more/privacy') > 0 ||
              href.indexOf('/index.html#/more/terms') > 0) {
     return CordovaPageConstants.moreTerms;
+  } else if (href.indexOf('/index.html#/more/faq') > 0) {
+    return CordovaPageConstants.moreFaq;
   } else if (href.indexOf('/index.html#/settings/account') > 0) {
     return CordovaPageConstants.settingsAccount;
   } else if (href.indexOf('/index.html#/settings/hamburger') > 0) {
@@ -67,6 +69,10 @@ export function pageEnumeration () {
   // then specific first level paths
   } if (href.indexOf('/index.html#/candidate') > 0) {
     return CordovaPageConstants.candidate;
+  } else if (href.indexOf('/index.html#/friends/current') > 0) {
+    return CordovaPageConstants.friendsCurrent;
+  } else if (href.indexOf('/index.html#/friends/sent-requests') > 0) {
+    return CordovaPageConstants.friendsSentRequests;
   } else if (href.indexOf('/index.html#/friends') > 0) {
     return CordovaPageConstants.friends;
   } else if (href.indexOf('/index.html#/opinions') > 0) {

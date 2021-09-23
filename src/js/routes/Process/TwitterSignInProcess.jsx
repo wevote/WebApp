@@ -8,7 +8,6 @@ import AppObservableStore, { messageService } from '../../stores/AppObservableSt
 import TwitterStore from '../../stores/TwitterStore';
 import VoterStore from '../../stores/VoterStore';
 import cookies from '../../utils/cookies';
-import cordovaScrollablePaneTopPadding from '../../utils/cordovaScrollablePaneTopPadding';
 import { historyPush, isWebApp } from '../../utils/cordovaUtils';
 import { oAuthLog, renderLog } from '../../utils/logging';
 import { stringContains } from '../../utils/textFormat';
@@ -172,7 +171,7 @@ export default class TwitterSignInProcess extends Component {
     if (window.$ === undefined) {
       return (
         <div className="twitter_sign_in_root">
-          <PageContentContainer style={{ paddingTop: `${cordovaScrollablePaneTopPadding()}` }}>
+          <PageContentContainer>
             <LoadingDiv>
               <span>
                 Loading libraries...
@@ -190,7 +189,7 @@ export default class TwitterSignInProcess extends Component {
       oAuthLog('STOPPED, missing twitter_retrieve_attempted: twitterAuthResponse:', twitterAuthResponse);
       return (
         <div className="twitter_sign_in_root">
-          <PageContentContainer style={{ paddingTop: `${cordovaScrollablePaneTopPadding()}` }}>
+          <PageContentContainer>
             <LoadingDiv>
               <span>
                 Waiting for a response from Twitter...
@@ -248,7 +247,7 @@ export default class TwitterSignInProcess extends Component {
       }
       return (
         <div className="twitter_sign_in_root">
-          <PageContentContainer style={{ paddingTop: `${cordovaScrollablePaneTopPadding()}` }}>
+          <PageContentContainer>
             <LoadingDiv>
               <span>
                 Loading your account...
