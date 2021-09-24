@@ -252,7 +252,7 @@ class HeaderBackTo extends Component {
             backToLink={backToLink}
             backToLinkText={backToLinkText}
             className="HeaderBackTo"
-            id="backToLinkTabHeader"
+            id="backToLinkTabHeaderBackTo"
           />
 
           {isWebApp() && (

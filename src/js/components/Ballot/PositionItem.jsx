@@ -65,6 +65,7 @@ class PositionItem extends Component {
     }
   }
 
+  // Jan 23, 2021: This was blocking updates that we needed, commented out for now
   // shouldComponentUpdate (nextProps, nextState) {
   //   if (this.props.ballotItemDisplayName !== nextProps.ballotItemDisplayName) {
   //     // console.log('this.props.ballotItemDisplayName: ', this.props.ballotItemDisplayName, ', nextProps.ballotItemDisplayName', nextProps.ballotItemDisplayName);
@@ -213,24 +214,26 @@ class PositionItem extends Component {
 
     // TwitterHandle-based link
     const voterGuideWeVoteIdLink = `/voterguide/${organizationWeVoteId}`;
-    let speakerLink = position.speaker_twitter_handle ? `/${position.speaker_twitter_handle}` : voterGuideWeVoteIdLink;
-    let backToCandidateFound = false;
-    let backToMeasureFound = false;
-    const { params } = this.props;
-    if (params) {
-      if (params.candidate_we_vote_id) {
-        speakerLink += `/btcand/${params.candidate_we_vote_id}`;
-        backToCandidateFound = true;
-      } else if (params.measure_we_vote_id) {
-        speakerLink += `/btmeas/${params.measure_we_vote_id}`;
-        backToMeasureFound = true;
-      }
-      if (backToCandidateFound || backToMeasureFound) {
-        if (params.back_to_variable) {
-          speakerLink += `/b/${params.back_to_variable}`;
-        }
-      }
-    }
+    const speakerLink = position.speaker_twitter_handle ? `/${position.speaker_twitter_handle}` : voterGuideWeVoteIdLink;
+    // Steve: 9/21/21, save until we revive stepping back to the previous page.  We currently always go back to ballot
+    // let speakerLink = position.speaker_twitter_handle ? `/${position.speaker_twitter_handle}` : voterGuideWeVoteIdLink;
+    // let backToCandidateFound = false;
+    // let backToMeasureFound = false;
+    // const { params } = this.props;
+    // if (params) {
+    //   if (params.candidate_we_vote_id) {
+    //     speakerLink += `/btcand/${params.candidate_we_vote_id}`;
+    //     backToCandidateFound = true;
+    //   } else if (params.measure_we_vote_id) {
+    //     speakerLink += `/btmeas/${params.measure_we_vote_id}`;
+    //     backToMeasureFound = true;
+    //   }
+    //   if (backToCandidateFound || backToMeasureFound) {
+    //     if (params.back_to_variable) {
+    //       speakerLink += `/b/${params.back_to_variable}`;
+    //     }
+    //   }
+    // }
 
     let positionSpeakerDisplayName = position.speaker_display_name;
     // console.log('position:', position, ', VoterStore.getLinkedOrganizationWeVoteId():', VoterStore.getLinkedOrganizationWeVoteId());

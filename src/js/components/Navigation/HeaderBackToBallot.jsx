@@ -15,14 +15,13 @@ import OfficeStore from '../../stores/OfficeStore';
 import OrganizationStore from '../../stores/OrganizationStore';
 import VoterStore from '../../stores/VoterStore';
 import { dumpCssFromId } from '../../utils/appleSiliconUtils';
-import { normalizedHref } from '../../utils/applicationUtils';
+import { normalizedHref, normalizedHrefPage } from '../../utils/applicationUtils';
 import { historyPush, isCordova, isIOSAppOnMac, isIPad, isWebApp } from '../../utils/cordovaUtils';
 import { headerStyles, headerToolbarStyles } from '../../utils/headerStyles';
 import isMobileScreenSize from '../../utils/isMobileScreenSize';
 import { renderLog } from '../../utils/logging';
 import { shortenText, stringContains } from '../../utils/textFormat';
 import { voterPhoto } from '../../utils/voterPhoto';
-import OfficeItem from '../Ballot/OfficeItem';
 import ShareButtonDesktopTablet from '../Share/ShareButtonDesktopTablet';
 import { RightSideTopLineContainer } from '../Widgets/ReusableStyles';
 import SignInButton from '../Widgets/SignInButton';
@@ -397,7 +396,7 @@ class HeaderBackToBallot extends Component {
   }
 
   componentDidUpdate (prevState) {
-    const [, page] = normalizedHref().split('/');
+    const page = normalizedHrefPage();
     if (page !== prevState.page) {
       this.updatePageBasedState();
     }
@@ -654,7 +653,7 @@ class HeaderBackToBallot extends Component {
       const office = OfficeStore.getOffice(id);  //  "office/wv02off35729/b/btdb"
       if (office) {
         const { ballot_item_display_name: name } = office;
-        console.log(office);
+        // console.log(office);
         this.setState({
           backToVariable,
           officeName: name,
@@ -666,7 +665,7 @@ class HeaderBackToBallot extends Component {
       const measure = MeasureStore.getMeasure(id);
       if (measure) {
         const { ballot_item_display_name: name } = measure;
-        console.log(measure);
+        // console.log(measure);
         this.setState({
           backToVariable,
           measureName: name,
@@ -675,7 +674,7 @@ class HeaderBackToBallot extends Component {
         });
       }
     } else if (page === 'candidate') {
-      console.log('found candidate');
+      // console.log('found candidate');
       this.setState({
         backToVariable,
         measureName: '',
@@ -692,8 +691,8 @@ class HeaderBackToBallot extends Component {
     renderLog('HeaderBackToBallot');  // Set LOG_RENDER_EVENTS to log all renders
     const {
       backToCandidateWeVoteId, backToMeasure, backToMeasureWeVoteId, backToVariable,
-      candidate, googleCivicElectionId, measureName, measureWeVoteId, officeName, officeWeVoteId,
-      organization, organizationWeVoteId, page, profilePopUpOpen, scrolledDown, showSignInModal,
+      candidate, measureName, officeName,
+      organization, page, profilePopUpOpen, scrolledDown, showSignInModal,
       shareModalStep, showShareModal, voter, voterFirstName, voterIsSignedIn,
     } = this.state;
     const voterPhotoUrlMedium = voterPhoto(voter);
@@ -703,21 +702,23 @@ class HeaderBackToBallot extends Component {
 
     let backToLink;
     let backToLinkText;
-    if (backToCandidateWeVoteId) {
-      backToLink = `/candidate/${backToCandidateWeVoteId}/b/${backToVariable}`;
-    } else if (backToMeasureWeVoteId) {
-      backToLink = `/measure/${backToMeasureWeVoteId}/b/${backToVariable}`;
-    } else if ((['bto', 'btdo'].includes(backToVariable)) && !['candidate'].includes(page)) { // back-to-default-office
-      backToLink = this.getOfficeLink();
-    } else if (organizationWeVoteId && candidate && candidate.google_civic_election_id) {
-      backToLink = this.getVoterGuideLink(); // Default to this when there is an organizationWeVoteId
-    } else if (googleCivicElectionId) {
-      backToLink = `/ballot/election/${googleCivicElectionId}`;
-    } else if (measureWeVoteId) {
-      backToLink = `/ballot#${measureWeVoteId}`;
-    } else {
-      backToLink = '/ballot'; // Default to this
-    }
+    // Workaround 9/23/21
+    // if (backToCandidateWeVoteId) {
+    //   backToLink = `/candidate/${backToCandidateWeVoteId}/b/${backToVariable}`;
+    // } else if (backToMeasureWeVoteId) {
+    //   backToLink = `/measure/${backToMeasureWeVoteId}/b/${backToVariable}`;
+    // } else if ((['bto', 'btdo'].includes(backToVariable)) && !['candidate'].includes(page)) { // back-to-default-office
+    //   backToLink = this.getOfficeLink();
+    // } else if (organizationWeVoteId && candidate && candidate.google_civic_election_id) {
+    //   backToLink = this.getVoterGuideLink(); // Default to this when there is an organizationWeVoteId
+    // } else if (googleCivicElectionId) {
+    //   backToLink = `/ballot/election/${googleCivicElectionId}`;
+    // } else if (measureWeVoteId) {
+    //   backToLink = `/ballot#${measureWeVoteId}`;
+    // } else {
+    // eslint-disable-next-line prefer-const
+    backToLink = '/ballot'; // Default to this
+    // }
 
     if (backToCandidateWeVoteId) {
       if (candidate && candidate.ballot_item_display_name) {
@@ -759,7 +760,7 @@ class HeaderBackToBallot extends Component {
     // }());
 
     let appBarClasses = {};
-    if (scrolledDown && ['candiate', 'measure'].includes(page)) {
+    if (scrolledDown && ['candidate', 'measure'].includes(page)) {
       appBarClasses = { root: classes.noBoxShadow };
     } else if (['office'].includes(page) && !isMobileScreenSize()) {
       appBarClasses = { root: classes.stackedReturnAndShare };
@@ -780,9 +781,7 @@ class HeaderBackToBallot extends Component {
           <HeaderBackToButton
             backToLink={backToLink}
             backToLinkText={backToLinkText}
-            className="HeaderBackToBallot"
-            id="backToLinkTabHeader"
-            style={{ paddingLeft: `${isCordova() ? '0 !important' : ''}` }}
+            id="backToLinkTabHeaderBackToBallot"
           />
 
           <RightSideTopLineContainer className="u-cursor--pointer" cordova={isCordova()}>
@@ -839,17 +838,21 @@ class HeaderBackToBallot extends Component {
             )}
           </RightSideTopLineContainer>
         </Toolbar>
-        <OfficeNameWrapper className="header-toolbar">
-          <OfficeItem
-            weVoteId={officeWeVoteId || measureWeVoteId}
-            ballotItemDisplayName={officeName || measureName || ''}
-          />
-          {shareButtonInHeader && (
-            <OfficeShareWrapper className="u-show-desktop-tablet" ipad={isIPad() || isIOSAppOnMac()}>
-              <ShareButtonDesktopTablet officeShare />
-            </OfficeShareWrapper>
-          )}
-        </OfficeNameWrapper>
+        { (officeName || measureName) && (
+          <OfficeNameWrapper className="header-toolbar">
+            <OfficeOrMeasureTitle>{officeName || measureName}</OfficeOrMeasureTitle>
+            {/* 9/22/21 simpler way to display a title above, saving this in case it did something usefull elsewere ... */}
+            {/* <OfficeItem */}
+            {/*  weVoteId={officeWeVoteId || measureWeVoteId} */}
+            {/*  ballotItemDisplayName={officeName || measureName || ''} */}
+            {/* /> */}
+            {shareButtonInHeader && (
+              <OfficeShareWrapper className="u-show-desktop-tablet" ipad={isIPad() || isIOSAppOnMac()}>
+                <ShareButtonDesktopTablet officeShare />
+              </OfficeShareWrapper>
+            )}
+          </OfficeNameWrapper>
+        )}
         {showSignInModal && (
           <SignInModal
             show={showSignInModal}
@@ -910,6 +913,12 @@ const StyledAppBar = styled(AppBar)`
   }
 `;
 
+const OfficeOrMeasureTitle = styled.div`
+  font-size: 16px;
+  font-weight: 500;
+  height: 19px;
+`;
+
 const FirstNameWrapper = styled.div`
   font-size: 14px;
   padding-right: 4px;
@@ -917,7 +926,11 @@ const FirstNameWrapper = styled.div`
 
 const OfficeNameWrapper = styled.div`
   display: flex;
-  // margin-left: calc((100vw - 960px)/2);
+  justify-content: space-between;
+  transform: ${() => {
+    if (normalizedHrefPage() !== 'measure') return null;
+    return isMobileScreenSize() ? 'translate(2%, -2%)' : 'translate(-57%, 87%)';
+  }};
 `;
 
 const OfficeShareWrapper = styled.div`

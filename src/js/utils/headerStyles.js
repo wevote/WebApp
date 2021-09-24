@@ -1,4 +1,4 @@
-import { normalizedHref } from './applicationUtils';
+import { normalizedHrefPage } from './applicationUtils';
 import { hasIPhoneNotch, isAndroid, isCordova, isIOSAppOnMac, isIPad, isWebApp } from './cordovaUtils';
 import isMobileScreenSize from './isMobileScreenSize';
 
@@ -15,16 +15,30 @@ export function headerStyles () {
     height: '48px',
   };
 
-  const [, page] = normalizedHref().split('/');
+  const page = normalizedHrefPage();
 
-  if (['ballot', 'friends'].includes(page)) {
+  if (['candidate', 'friends', 'office', 'measure'].includes(page)) {
+    styles.borderBottom = '1px solid #aaa';
     styles.boxShadow = '0 2px 4px -1px rgba(0, 0, 0, 0.2), 0 4px 5px 0 rgba(0, 0, 0, 0.14), 0 1px 10px 0 rgba(0, 0, 0, 0.12)';
   }
 
   if (['candidate', 'office', 'measure'].includes(page)) {
-    if (isWebApp() && !isMobileScreenSize()) {
-      styles.height = '96px';
-      styles.display = 'contents';
+    if (isWebApp()) {
+      if (isMobileScreenSize()) {
+        styles.height  = ['measure'].includes(page) ? '96px' : 'fit-content';
+      } else {
+        styles.padding = 0;
+        styles.height  = ['office', 'measure'].includes(page) ? '96px' : '41px';
+        if (['candidate'].includes(page)) {
+          // styles.width = '960px';
+          styles.flexDirection = 'column';
+        }
+        if (['measure'].includes(page)) {
+          styles.height  = '67px';
+        }
+      }
+      // styles.height = isMobileScreenSize() ? 'fit-content' : '96px';
+      // styles.display = 'contents';
     }
     if (isCordova()) {            // from main.css .page-header__cordova
       switch (page) {
@@ -43,14 +57,24 @@ export function headerStyles () {
       styles.height = ['office'].includes(page) ? '87px' : '50px';
     }
   }
+
+  // console.log('headerStyles: ', styles);
   return styles;
 }
 
 export function headerToolbarStyles () {
-  return {                // from main.css .header-toolbar
+  const styles = {                // from main.css .header-toolbar
     width: '100%',
     maxWidth: '960px',
     justifyContent: 'space-between',  // .header-backto-toolbar
   };
+
+  if (isWebApp() && !isMobileScreenSize()) {
+    styles.width = '-webkit-fill-available';
+    console.log('header styles ------------- ', normalizedHrefPage());
+    styles.transform = normalizedHrefPage() === 'measure' ? 'translate(43%, -21%)' : null;
+  }
+
+  return styles;
 }
 

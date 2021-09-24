@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import styled from 'styled-components';
 import { historyPush, isCordova, isIOS } from '../../utils/cordovaUtils';
+import isMobileScreenSize from '../../utils/isMobileScreenSize';
 import { renderLog } from '../../utils/logging';
 import { shortenText } from '../../utils/textFormat';
 
@@ -19,8 +20,9 @@ class HeaderBackToButton extends Component {
         color="primary"
         classes={{ root: classes.root }}
         className={`${className}`}
-        id="backToLinkTabHeader"
+        id="backToLinkTabHeaderBackToButton"
         onClick={() => historyPush(backToLink)}
+        style={{ paddingLeft: `${isMobileScreenSize() ? '0' : ''}` }}
       >
         {isIOS() ? (
           <ArrowBackIos className="button-icon" />

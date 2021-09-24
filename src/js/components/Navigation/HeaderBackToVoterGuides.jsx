@@ -316,6 +316,7 @@ class HeaderBackToVoterGuides extends Component {
 
     return (
       <AppBar
+        id="headerBackToVoterGuidesAppBar"
         className={appBarCname}
         color="default"
         classes={{ root: classes.stackedReturnAndShare }}
@@ -326,7 +327,7 @@ class HeaderBackToVoterGuides extends Component {
             backToLink={backToLink}
             backToLinkText={backToOrganizationLinkText}
             className="HeaderBackToVoterGuides"
-            id="backToLinkTabHeader"
+            id="backToLinkTabHeaderBackToVoterGuides"
           />
 
           <div className="header-nav__avatar-wrapper u-cursor--pointer u-flex">

@@ -24,8 +24,6 @@ export default function SvgImage (props) {
     stylesList = otherStyles;
   }
 
-  console.log(`ChipImage ------------------------------ for ${imageSrc}`);
-
   renderLog(`ChipImage for ${imageSrc}`);
   if (!imageName) {
     return <span />;

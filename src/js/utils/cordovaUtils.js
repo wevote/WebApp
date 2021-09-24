@@ -220,7 +220,7 @@ export function getIOSSizeString () {
   } else if ((size.height === '1792' && size.width === '828') ||  // iPhone XR, 11 (11 as described on apple.com)
     (size.height === '1624' && size.width === '750')) {   // iPhone 11 in Simulator
     return 'isIPhone6p1in';
-  } else if (size.height === '2688' && size.width === '1242') {  // iPhone XS Max, 11 Pro Max
+  } else if (size.height === '2688' && size.width === '1242') {  // iPhone XS Max, 11/12 Pro Max
     return 'isIPhone6p5in';
   }
   return '';
@@ -296,7 +296,7 @@ export function isIPhone6p1in () {
 export function isIPhone6p5in () {
   if (isIOS()) {
     if (getIOSSizeString() === 'isIPhone6p5in') {
-      logMatch('isIPhone6p5in: iPhone XsMax or 11 Pro Max (6.5")', true);
+      logMatch('isIPhone6p5in: iPhone XsMax or 11/12 Pro Max (6.5")', true);
       return true;
     }
   }

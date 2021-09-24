@@ -1,7 +1,6 @@
 import cookies from './cookies';
-import { isIOSAppOnMac, isCordova, isWebApp } from './cordovaUtils';
+import { isCordova, isIOSAppOnMac, isWebApp } from './cordovaUtils';
 import { stringContains } from './textFormat';
-
 
 // We have to do all this, because we allow urls where the path starts with a twitter username (handle)
 // as a result every path has to be evaluated for an exact routable match, and what is left is a twitter handle path.
@@ -318,12 +317,18 @@ export function weVoteBrandingOff () {
   return weVoteBrandingOffGlobal;
 }
 
-export function headerHasSubmenu (pathname) {
-  return pathname.toLowerCase().startsWith('/ballot') ||
-         pathname.toLowerCase().startsWith('/friends');
+export function normalizedHref () {
+  const { location: { hash, pathname } } = window;
+  return isWebApp() ? pathname.toLowerCase() : hash.substring(1).toLowerCase();
 }
 
-export function normalizedHref () {
-  const { location: { href, hash } } = window;
-  return isWebApp() ? href.toLowerCase() : hash.substring(1).toLowerCase();  // HACK  HACK HACK to 1 from 2, sept 20, 2021  2:44pm
+export function normalizedHrefPage () {
+  const [, page] = normalizedHref().split('/');
+  return page;
+}
+
+export function headerHasSubmenu (pathname) {  //
+  const [, page] = normalizedHref().split('/');
+  console.log(page, pathname);
+  return ['ballot', 'friends'].includes(page);
 }

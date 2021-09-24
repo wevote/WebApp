@@ -627,6 +627,7 @@ class HeaderBar extends Component {
         hasSubMenu={headerHasSubmenu(pathname)}
       >
         <AppBar position="relative"
+                id="headerBarAppBar"
                 color="default"
                 className={`${appBarCname} ${showingBallot || showingFriendsTabs ? ' page-header__ballot' : ''}`}
                 style={headerStyles()}
