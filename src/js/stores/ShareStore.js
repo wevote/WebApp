@@ -1,6 +1,6 @@
 import { ReduceStore } from 'flux/utils';
-import Dispatcher from '../../dispatcher/Dispatcher';
-import arrayContains from '../utils/arrayContains';
+import Dispatcher from '../dispatcher/Dispatcher';
+import { arrayContains } from '../utils/textFormat';
 
 
 class ShareStore extends ReduceStore {
@@ -11,13 +11,7 @@ class ShareStore extends ReduceStore {
       allCachedSharedItemsBySharedItemCode: {}, // This is a dictionary with sharedItemCode as key and the sharedItem as the value
       allCachedSharedItemsBySharedItemId: {}, // This is a dictionary with sharedItemId as key and the sharedItem as the value
       allCachedSharedItemsByYear: {}, // This is a dictionary with year as key and the list of shared items as the value
-      allCachedSuperShareItemDraftIdsByWeVoteId: {}, // key: WeVoteId of the item being shared, value: superShareItemId of the draft SuperShareItem
-      allCachedSuperShareItems: {}, // key: super_share_item_id, value: superShareItem
       currentSharedItemOrganizationWeVoteIds: [],
-      personalizedMessageQueuedToSaveDict: {}, // key: superShareItemId, value: personalizedMessage
-      personalizedMessageQueuedToSaveSetDict: {}, // key: superShareItemId, value: whether personalizedMessage has been set
-      personalizedSubjectQueuedToSaveDict: {}, // key: superShareItemId, value: personalizedSubject
-      personalizedSubjectQueuedToSaveSetDict: {}, // key: superShareItemId, value: whether personalizedSubject has been set
     };
   }
 
@@ -35,22 +29,6 @@ class ShareStore extends ReduceStore {
     return 0;
   }
 
-  getPersonalizedMessageQueuedToSave (superShareItemId) {
-    return this.getState().personalizedMessageQueuedToSaveDict[superShareItemId] || '';
-  }
-
-  getPersonalizedMessageQueuedToSaveSet (superShareItemId) {
-    return this.getState().personalizedMessageQueuedToSaveSetDict[superShareItemId] || false;
-  }
-
-  getPersonalizedSubjectQueuedToSave (superShareItemId) {
-    return this.getState().personalizedSubjectQueuedToSaveDict[superShareItemId] || '';
-  }
-
-  getPersonalizedSubjectQueuedToSaveSet (superShareItemId) {
-    return this.getState().personalizedSubjectQueuedToSaveSetDict[superShareItemId] || false;
-  }
-
   getSharedItemByCode (sharedItemCode) {
     return this.getState().allCachedSharedItemsBySharedItemCode[sharedItemCode] || {};
   }
@@ -58,14 +36,6 @@ class ShareStore extends ReduceStore {
   getSharedItemByFullUrl (destinationFullUrl) {
     const destinationFullUrlLowerCase = destinationFullUrl.toLowerCase();
     return this.getState().allCachedSharedItemsByFullUrl[destinationFullUrlLowerCase] || {};
-  }
-
-  getSuperSharedItemDraftIdByWeVoteId (subjectWeVoteId) {
-    return this.getState().allCachedSuperShareItemDraftIdsByWeVoteId[subjectWeVoteId] || 0;
-  }
-
-  getSuperShareItemById (superShareItemId) {
-    return this.getState().allCachedSuperShareItems[superShareItemId] || {};
   }
 
   getUrlWithSharedItemCodeByFullUrl (destinationFullUrl, withOpinions = false) {
@@ -93,53 +63,14 @@ class ShareStore extends ReduceStore {
   }
 
   reduce (state, action) {
-    const {
-      allCachedSharedItemsByFullUrl, allCachedSharedItemsBySharedItemCode,
-      allCachedSuperShareItemDraftIdsByWeVoteId, allCachedSuperShareItems,
-      personalizedMessageQueuedToSaveDict, personalizedMessageQueuedToSaveSetDict,
-      personalizedSubjectQueuedToSaveDict, personalizedSubjectQueuedToSaveSetDict,
-    } = state;
-    let campaignXWeVoteId = '';
+    const { allCachedSharedItemsByFullUrl, allCachedSharedItemsBySharedItemCode } = state;
     let count = 0;
     let currentSharedItemOrganizationWeVoteIds = [];
     let sharedItem = {};
     let sharedItemDestinationFullUrl = '';
     let sharedItemDestinationFullUrlLowerCase = '';
-    let superShareItemId;
 
     switch (action.type) {
-      case 'personalizedMessageQueuedToSave':
-        // console.log('ShareStore personalizedMessageQueuedToSave: ', action);
-        superShareItemId = action.superShareItemId || 0;
-        if (action.personalizedMessage === undefined) {
-          personalizedMessageQueuedToSaveDict[superShareItemId] = undefined;
-          personalizedMessageQueuedToSaveSetDict[superShareItemId] = false;
-        } else {
-          personalizedMessageQueuedToSaveDict[superShareItemId] = action.personalizedMessage || '';
-          personalizedMessageQueuedToSaveSetDict[superShareItemId] = true;
-        }
-        return {
-          ...state,
-          personalizedMessageQueuedToSaveDict,
-          personalizedMessageQueuedToSaveSetDict,
-        };
-
-      case 'personalizedSubjectQueuedToSave':
-        // console.log('ShareStore personalizedSubjectQueuedToSave: ', action);
-        superShareItemId = action.superShareItemId || 0;
-        if (action.personalizedSubject === undefined) {
-          personalizedSubjectQueuedToSaveDict[superShareItemId] = undefined;
-          personalizedSubjectQueuedToSaveSetDict[superShareItemId] = false;
-        } else {
-          personalizedSubjectQueuedToSaveDict[superShareItemId] = action.personalizedSubject || '';
-          personalizedSubjectQueuedToSaveSetDict[superShareItemId] = true;
-        }
-        return {
-          ...state,
-          personalizedSubjectQueuedToSaveDict,
-          personalizedSubjectQueuedToSaveSetDict,
-        };
-
       case 'sharedItemRetrieve':
         // console.log('ShareStore sharedItemRetrieve, action.res:', action.res);
         sharedItem = action.res || {};
@@ -167,21 +98,6 @@ class ShareStore extends ReduceStore {
         return {
           ...state,
           allCachedSharedItemsByFullUrl,
-        };
-
-      case 'superShareItemSave':
-        // console.log('ShareStore superShareItemSave, action.res:', action.res);
-        sharedItem = action.res || {};
-        superShareItemId = action.res.super_share_item_id || 0;
-        allCachedSuperShareItems[superShareItemId] = sharedItem;
-        campaignXWeVoteId = action.res.campaignx_we_vote_id || '';
-        if (campaignXWeVoteId) {
-          allCachedSuperShareItemDraftIdsByWeVoteId[campaignXWeVoteId] = superShareItemId;
-        }
-        return {
-          ...state,
-          allCachedSuperShareItemDraftIdsByWeVoteId,
-          allCachedSuperShareItems,
         };
 
       case 'voterGuidesFromFriendsUpcomingRetrieve':

@@ -6,7 +6,7 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 import FriendStore from '../../stores/FriendStore';
 import IssueStore from '../../stores/IssueStore';
-import ShareStore from '../../common/stores/ShareStore';
+import ShareStore from '../../stores/ShareStore';
 import VoterStore from '../../stores/VoterStore';
 import { renderLog } from '../../utils/logging';
 import getGroupedFilterSecondClass from './utils/grouped-filter-second-class';

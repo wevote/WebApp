@@ -4,10 +4,9 @@ import { Info, ThumbDown, ThumbUp, Twitter } from '@material-ui/icons';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import { ReactSVG } from 'react-svg';
 import styled from 'styled-components';
-import AppObservableStore from '../../stores/AppObservableStore';
 import OrganizationActions from '../../actions/OrganizationActions';
+import AppObservableStore from '../../stores/AppObservableStore';
 import FriendStore from '../../stores/FriendStore';
 import IssueStore from '../../stores/IssueStore';
 import OrganizationStore from '../../stores/OrganizationStore';
@@ -22,6 +21,7 @@ import OrganizationPopoverCard from '../Organization/OrganizationPopoverCard';
 import IssuesByOrganizationDisplayList from '../Values/IssuesByOrganizationDisplayList';
 import ExternalLinkIcon from '../Widgets/ExternalLinkIcon';
 import PositionItemScorePopover from '../Widgets/PositionItemScorePopover';
+import SvgImage from '../Widgets/SvgImage';
 
 const FollowToggle = React.lazy(() => import(/* webpackChunkName: 'FollowToggle' */ '../Widgets/FollowToggle'));
 const ImageHandler = React.lazy(() => import(/* webpackChunkName: 'ImageHandler' */ '../ImageHandler'));
@@ -65,6 +65,7 @@ class PositionItem extends Component {
     }
   }
 
+  // Jan 23, 2021: This was blocking updates that we needed, commented out for now
   // shouldComponentUpdate (nextProps, nextState) {
   //   if (this.props.ballotItemDisplayName !== nextProps.ballotItemDisplayName) {
   //     // console.log('this.props.ballotItemDisplayName: ', this.props.ballotItemDisplayName, ', nextProps.ballotItemDisplayName', nextProps.ballotItemDisplayName);
@@ -213,24 +214,26 @@ class PositionItem extends Component {
 
     // TwitterHandle-based link
     const voterGuideWeVoteIdLink = `/voterguide/${organizationWeVoteId}`;
-    let speakerLink = position.speaker_twitter_handle ? `/${position.speaker_twitter_handle}` : voterGuideWeVoteIdLink;
-    let backToCandidateFound = false;
-    let backToMeasureFound = false;
-    const { params } = this.props;
-    if (params) {
-      if (params.candidate_we_vote_id) {
-        speakerLink += `/btcand/${params.candidate_we_vote_id}`;
-        backToCandidateFound = true;
-      } else if (params.measure_we_vote_id) {
-        speakerLink += `/btmeas/${params.measure_we_vote_id}`;
-        backToMeasureFound = true;
-      }
-      if (backToCandidateFound || backToMeasureFound) {
-        if (params.back_to_variable) {
-          speakerLink += `/b/${params.back_to_variable}`;
-        }
-      }
-    }
+    const speakerLink = position.speaker_twitter_handle ? `/${position.speaker_twitter_handle}` : voterGuideWeVoteIdLink;
+    // Steve: 9/21/21, save until we revive stepping back to the previous page.  We currently always go back to ballot
+    // let speakerLink = position.speaker_twitter_handle ? `/${position.speaker_twitter_handle}` : voterGuideWeVoteIdLink;
+    // let backToCandidateFound = false;
+    // let backToMeasureFound = false;
+    // const { params } = this.props;
+    // if (params) {
+    //   if (params.candidate_we_vote_id) {
+    //     speakerLink += `/btcand/${params.candidate_we_vote_id}`;
+    //     backToCandidateFound = true;
+    //   } else if (params.measure_we_vote_id) {
+    //     speakerLink += `/btmeas/${params.measure_we_vote_id}`;
+    //     backToMeasureFound = true;
+    //   }
+    //   if (backToCandidateFound || backToMeasureFound) {
+    //     if (params.back_to_variable) {
+    //       speakerLink += `/b/${params.back_to_variable}`;
+    //     }
+    //   }
+    // }
 
     let positionSpeakerDisplayName = position.speaker_display_name;
     // console.log('position:', position, ', VoterStore.getLinkedOrganizationWeVoteId():', VoterStore.getLinkedOrganizationWeVoteId());
@@ -244,15 +247,12 @@ class PositionItem extends Component {
     let imagePlaceholder = '';
     if (isSpeakerTypeOrganization(position.speaker_type)) {
       imagePlaceholder = (
-        <ReactSVG
-          src={cordovaDot('/img/global/svg-icons/organization-icon.svg')}
-        />
+        <SvgImage imageName="organization-icon" />
       );
     } else if (isSpeakerTypeIndividual(position.speaker_type)) {
+      const avatar = cordovaDot('../../img/global/svg-icons/avatar-generic.svg');
       imagePlaceholder = (
-        <ReactSVG
-          src={cordovaDot('/img/global/svg-icons/avatar-generic.svg')}
-        />
+        <SvgImage imageName={avatar} />
       );
     }
 

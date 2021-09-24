@@ -59,6 +59,7 @@ class ActivityTidbitDrawer extends Component {
     let pathname = pathnameRaw;
     if (isCordova()) {
       pathname = hrefRaw.replace(/file:\/\/.*?Vote.app\/www\/index.html#\//, '');
+      // console.log('ATD -----------------------', pathname)
     }
     if (typeof pathname !== 'undefined' && pathname && pathname.startsWith('/news/a/')) {
       historyPush(`/news#${activityTidbitWeVoteId}`);

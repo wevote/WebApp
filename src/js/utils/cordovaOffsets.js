@@ -4,7 +4,7 @@ import { pageEnumeration } from './cordovaUtilsPageEnumeration';
 import { cordovaOffsetLog } from './logging';
 
 
-// <PageContentContainer style={{ marginTop: `${cordovaBallotFilterTopMargin()}` }}>
+//  <PageContentContainer>
 // This determines where the top of the "All", "Choices" and "Decided" tabs should start.
 export function cordovaBallotFilterTopMargin () {
   if (isWebApp()) {
@@ -298,26 +298,26 @@ export function cordovaTopHeaderTopMargin () {
         }
       } else if (hasIPhoneNotch()) {
         switch (page) {
-          case CordovaPageConstants.officeWild:      style.marginTop = '36px'; break;
-          case CordovaPageConstants.measureWild:     style.marginTop = '34px'; break;
-          case CordovaPageConstants.candidate:       style.marginTop = '35px'; break;
-          case CordovaPageConstants.candidateWild:   style.marginTop = '33px'; break;
-          case CordovaPageConstants.valuesList:      style.marginTop = '38px'; break;
-          case CordovaPageConstants.values:          style.marginTop = '16px'; break;
-          case CordovaPageConstants.valueWild:       style.marginTop = '32px'; break;
-          case CordovaPageConstants.opinions:        style.marginTop = '17px'; break;
-          case CordovaPageConstants.friends:         style.marginTop = '16px'; break;
-          case CordovaPageConstants.ballotSmHdrWild: style.marginTop = '16px'; break;
-          case CordovaPageConstants.ballotLgHdrWild: style.marginTop = '16px'; break;
-          case CordovaPageConstants.ballotVote:      style.marginTop = '16px'; break;
+          case CordovaPageConstants.ballotLgHdrWild:       style.marginTop = '16px'; break;
+          case CordovaPageConstants.ballotSmHdrWild:       style.marginTop = '16px'; break;
+          case CordovaPageConstants.ballotVote:            style.marginTop = '16px'; break;
+          case CordovaPageConstants.candidate:             style.marginTop = '35px'; break;
+          case CordovaPageConstants.candidateWild:         style.marginTop = '33px'; break;
+          case CordovaPageConstants.friends:               style.marginTop = '16px'; break;
+          case CordovaPageConstants.measureWild:           style.marginTop = '34px'; break;
+          case CordovaPageConstants.officeWild:            style.marginTop = '35px'; break;
+          case CordovaPageConstants.opinions:              style.marginTop = '17px'; break;
           case CordovaPageConstants.settingsAccount:       style.marginTop = '31px'; break;
+          case CordovaPageConstants.settingsNotifications: style.marginTop = '14px'; break;         // from 36 to 14  for the 12 max pro
           case CordovaPageConstants.settingsSubscription:  style.marginTop = '34px'; break;
-          case CordovaPageConstants.settingsNotifications: style.marginTop = '36px'; break;
-          case CordovaPageConstants.settingsWild:          style.marginTop = '38px'; break;
-          case CordovaPageConstants.voterGuideCreatorWild: style.marginTop = '38px'; break; // $headroom-wrapper-webapp__voter-guide-creator
-          case CordovaPageConstants.voterGuideWild:        style.marginTop = '38px'; break; // Any voter page with btcand or btmeas
+          case CordovaPageConstants.settingsWild:          style.marginTop = '16px'; break;
           case CordovaPageConstants.twitterIdMFollowers:   style.marginTop = '37px'; break; // /*/m/friends, /*/m/following, /*/m/followers
           case CordovaPageConstants.twitterInfoPage:       style.marginTop = '32px'; break; // A twitter page guess, that ends with 'btcand' 'btmeas' or'btdb'
+          case CordovaPageConstants.valueWild:             style.marginTop = '32px'; break;
+          case CordovaPageConstants.values:                style.marginTop = '16px'; break;
+          case CordovaPageConstants.valuesList:            style.marginTop = '15px'; break;
+          case CordovaPageConstants.voterGuideCreatorWild: style.marginTop = '38px'; break; // $headroom-wrapper-webapp__voter-guide-creator
+          case CordovaPageConstants.voterGuideWild:        style.marginTop = '38px'; break; // Any voter page with btcand or btmeas
           default:                                         style.marginTop = '16px'; break;
         }
       } else if (isIOSAppOnMac()) {
@@ -430,8 +430,8 @@ export function cordovaFriendsWrapper () {
     if (isIPhone6p5in()) {
       if (window.location.href.indexOf('/index.html#/friends/invite') > 0) {
         return {
-          paddingTop: '20%',
-          paddingBottom: '0px',
+          // paddingTop: '20%',
+          paddingBottom: '625px',
         };
       }
       return {

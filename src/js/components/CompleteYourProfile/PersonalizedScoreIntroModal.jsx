@@ -6,7 +6,7 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 import VoterActions from '../../actions/VoterActions';
 import VoterConstants from '../../constants/VoterConstants';
-import { hideZenDeskHelpVisibility, setZenDeskHelpVisibility } from '../../utils/applicationUtils';
+import { hideZenDeskHelpVisibility, normalizedHref, setZenDeskHelpVisibility } from '../../utils/applicationUtils';
 import { hasIPhoneNotch } from '../../utils/cordovaUtils';
 import { renderLog } from '../../utils/logging';
 
@@ -22,33 +22,29 @@ class PersonalizedScoreIntroModal extends Component {
     if (this.props.show) {
       hideZenDeskHelpVisibility();
     } else {
-      const { location: { pathname } } = window;
-      setZenDeskHelpVisibility(pathname);
+      setZenDeskHelpVisibility(normalizedHref());
     }
   }
 
   componentWillUnmount () {
-    const { location: { pathname } } = window;
-    setZenDeskHelpVisibility(pathname);
+    setZenDeskHelpVisibility(normalizedHref());
   }
 
   closeThisModal = () => {
-    const { location: { pathname } } = window;
-    setZenDeskHelpVisibility(pathname);
+    setZenDeskHelpVisibility(normalizedHref());
     const { currentStep } = this.state;
     const currentStepCompletedThreshold = 7;
     if (currentStep >= currentStepCompletedThreshold) {
       // console.log('currentStepCompletedThreshold passed');
       VoterActions.voterUpdateInterfaceStatusFlags(VoterConstants.PERSONALIZED_SCORE_INTRO_COMPLETED);
     }
-    this.props.toggleFunction(pathname);
+    this.props.toggleFunction(normalizedHref());
   };
 
   personalizedScoreIntroCompleted = () => {
-    const { location: { pathname } } = window;
     // Mark this so we know to show 'How it Works' as completed
     VoterActions.voterUpdateInterfaceStatusFlags(VoterConstants.PERSONALIZED_SCORE_INTRO_COMPLETED);
-    this.props.toggleFunction(pathname);
+    this.props.toggleFunction(normalizedHref());
   };
 
   render () {

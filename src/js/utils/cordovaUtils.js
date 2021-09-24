@@ -1,6 +1,5 @@
 import React from 'react';
 // const { createBrowserHistory, createHashHistory } = React.lazy(() => import('history'));
-// const { useHistory } = React.lazy(() => import("react-router-dom"));
 import webAppConfig from '../config';
 import { dumpObjProps } from './appleSiliconUtils';
 import { cordovaOffsetLog, oAuthLog } from './logging';
@@ -27,14 +26,26 @@ export function isIOS () {
   if (isWebApp()) return false;
   // console.log("<><><><> uuid:  " + window.device.uuid);
   const { platform } = window.device || '';
+  if (window.cordova && window.isCordovaGlobal === undefined) {
+    webAppConfig.IS_CORDOVA = true;
+    window.isCordovaGlobal = true;
+  }
+
   return isCordova() && platform === 'iOS';  // Ignore the "Condition is always false" warning.  This line works correctly.
 }
 
 export function isIOSAppOnMac () {
   if (isWebApp()) return false;
-  const { isiOSAppOnMac } = window.device;
-  // Our fork of cordova-plugin-device exposes the underlying native code variable isiOSAppOnMac
-  return isiOSAppOnMac;
+  if (window.device) {
+    const { device } = window;
+    // eslint-disable-next-line no-prototype-builtins
+    if (Object.prototype.hasOwnProperty(device, 'isiOSAppOnMac')) {
+      // Our fork of cordova-plugin-device exposes the underlying native code variable isiOSAppOnMac
+      const { isiOSAppOnMac } = window.device;
+      return isiOSAppOnMac;
+    }
+  }
+  return false;
 }
 
 export function getProcessorArchitecture () {
@@ -75,9 +86,15 @@ export function historyPush (route) {
 // images that are not yet on the production servers
 export function cordovaDot (path) {
   if (isCordova()) {
-    const { WE_VOTE_IMAGE_PATH_FOR_CORDOVA: imgPath } = webAppConfig;
-    const adjustedPath = path.replace(/(?:.*?\.us)(.*?)(?:\/img.*?$)/gi, '');
-    return `${imgPath}${adjustedPath}`;
+    // In cordova the root for all relative file paths is the www directory which contains a symlink
+    // to the image files in the WebApp source.
+    // So for ios it would be /Users/sp/WebstormProjects/WeVoteCordova/platforms/ios/www
+    // For example cordovaDot needs to transform '../../img/global/svg-icons/avatar-generic.svg' to
+    // './img/global/svg-icons/avatar-generic.svg'
+    // console.log(`cordovaDot incoming: ${path}`);
+    const adjustedPath = path.replace(/.*?(\/img\/.*?)/gi, '.$1'); // HACK
+    // console.log(`cordovaDot return: ${adjustedPath}`);
+    return adjustedPath;
   } else {
     return path;
   }
@@ -162,14 +179,14 @@ export function getIOSSizeString () {
   const iPhone4inPhones = ['iPhone5,1', 'iPhone5,2', 'iPhone5,3', 'iPhone5,4', 'iPhone6,1', 'iPhone6,2', 'iPhone8,4'];
   //    iPhone:               6            6S           7            7            8             8             SE 2nd Gen
   const iPhone4p7inPhones = ['iPhone7,2', 'iPhone8,1', 'iPhone9,1', 'iPhone9,3', 'iPhone10,1', 'iPhone10,4', 'iPhone12,8'];
-  //    iPhone:                 6 Plus       6S Plus      7 Plus       7Plus        8 Plus        8 Plus
-  const isIPhone5p5inPhones = ['iPhone7,1', 'iPhone8,2', 'iPhone9,2', 'iPhone9,4', 'iPhone10,2', 'iPhone10,5'];
+  //    iPhone:                 6 Plus       6S Plus      7 Plus       7Plus        8 Plus        8 Plus        12 Mini
+  const isIPhone5p5inPhones = ['iPhone7,1', 'iPhone8,2', 'iPhone9,2', 'iPhone9,4', 'iPhone10,2', 'iPhone10,5', 'iPhone13,1'];
   //    iPhone:               X             X             XS            11 Pro
   const iPhone5p8inPhones = ['iPhone10,3', 'iPhone10,6', 'iPhone11,2', 'iPhone12,3'];
-  //    iPhone:               XR            11
-  const iPhone6p1inPhones = ['iPhone11,8', 'iPhone12,1'];
-  //    iPhone:               XS Max        XS Max        11 Pro Max
-  const iPhone6p5inPhones = ['iPhone11,4', 'iPhone11,6', 'iPhone12,5'];
+  //    iPhone:               XR            11            12 Pro         12
+  const iPhone6p1inPhones = ['iPhone11,8', 'iPhone12,1', 'iPhone13,3', 'iPhone13,2'];
+  //    iPhone:               XS Max        XS Max        11 Pro Max    12 Pro Max(6.7)
+  const iPhone6p5inPhones = ['iPhone11,4', 'iPhone11,6', 'iPhone12,5', 'iPhone13,4'];
   if (iPhone3p5inPhones.includes(window.device.model)) {
     return 'isIPhone3p5in';
   } else if (iPhone4inPhones.includes(window.device.model)) {
@@ -196,14 +213,14 @@ export function getIOSSizeString () {
   } else if (size.height === '1334' && size.width === '750') {  // iPhone 6, 6s, 7, 8, SE (2nd Gen)
     return 'isIPhone4p7in';
   } else if ((size.height === '1920' && size.width === '1080') ||  // iPhone 6 Plus, 6s Plus, 7 Plus, 8 Plus
-            (size.height === '2208' && size.width === '1242')) {   // iPhone 8 Plus in simulator
+             (size.height === '2208' && size.width === '1242')) {   // iPhone 8 Plus in simulator
     return 'isIPhone5p5in';
   } else if (size.height === '2436' && size.width === '1125') {  // iPhone X, XS, 11 Pro
     return 'isIPhone5p8in';
   } else if ((size.height === '1792' && size.width === '828') ||  // iPhone XR, 11 (11 as described on apple.com)
     (size.height === '1624' && size.width === '750')) {   // iPhone 11 in Simulator
     return 'isIPhone6p1in';
-  } else if (size.height === '2688' && size.width === '1242') {  // iPhone XS Max, 11 Pro Max
+  } else if (size.height === '2688' && size.width === '1242') {  // iPhone XS Max, 11/12 Pro Max
     return 'isIPhone6p5in';
   }
   return '';
@@ -279,7 +296,7 @@ export function isIPhone6p1in () {
 export function isIPhone6p5in () {
   if (isIOS()) {
     if (getIOSSizeString() === 'isIPhone6p5in') {
-      logMatch('isIPhone6p5in: iPhone XsMax or 11 Pro Max (6.5")', true);
+      logMatch('isIPhone6p5in: iPhone XsMax or 11/12 Pro Max (6.5")', true);
       return true;
     }
   }
@@ -614,7 +631,7 @@ export function snackOffset () {
 
 export function setIconBadgeMessageCount (count) {
   // Count can be a string or an integer
-  if (isCordova()) {
+  if (isCordova() && !isSimulator()) {
     const { cordova: { plugins: { firebase: { messaging: { setBadge } } } } } = window;
     // Not sure if this would do anything in Android
     setBadge(count);
@@ -622,7 +639,7 @@ export function setIconBadgeMessageCount (count) {
 }
 
 export function getIconBadgeMessageCount () {
-  if (isCordova()) {
+  if (isCordova() && !isSimulator()) {
     const { cordova: { plugins: { firebase: { messaging: { getBadge } } } } } = window;
     return getBadge();
   }

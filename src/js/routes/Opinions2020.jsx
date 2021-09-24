@@ -4,8 +4,9 @@ import { Ballot, Info } from '@material-ui/icons';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import { ReactSVG } from 'react-svg';
 import styled from 'styled-components';
+import { cordovaDot } from '../utils/cordovaUtils';
+import cordovaScrollablePaneTopPadding from '../utils/cordovaScrollablePaneTopPadding';
 import ActivityActions from '../actions/ActivityActions';
 import AnalyticsActions from '../actions/AnalyticsActions';
 import BallotActions from '../actions/BallotActions';
@@ -18,18 +19,16 @@ import CandidateSearchItemForOpinions from '../components/OpinionsAndBallotItems
 import VoterGuideDisplayForListForOpinions from '../components/OpinionsAndBallotItems/VoterGuideDisplayForListForOpinions';
 import NumberOfItemsFound from '../components/Widgets/NumberOfItemsFound';
 import SnackNotifier from '../components/Widgets/SnackNotifier';
+import SvgImage from '../components/Widgets/SvgImage';
 import BallotStore from '../stores/BallotStore';
 import OrganizationStore from '../stores/OrganizationStore';
 import VoterGuideStore from '../stores/VoterGuideStore';
 import VoterStore from '../stores/VoterStore';
-import { cordovaDot } from '../utils/cordovaUtils';
 import { renderLog } from '../utils/logging';
 import { arrayContains, stringContains } from '../utils/textFormat';
 
 const ShowMoreItems = React.lazy(() => import(/* webpackChunkName: 'ShowMoreItems' */ '../components/Widgets/ShowMoreItems'));
 
-const groupIcon = '../../img/global/svg-icons/group-icon.svg';
-const organizationIcon = '../../img/global/svg-icons/organization-icon.svg';
 
 const groupedFilters = [
   // {
@@ -38,25 +37,19 @@ const groupedFilters = [
   //   filterId: 'federalRaceFilter',  // thumbUpFilter
   // },
 ];
+const group = cordovaDot('../../img/global/svg-icons/group-icon.svg');
+const organizatonIcon = cordovaDot('../../img/global/svg-icons/organization-icon.svg');
 
 const islandFilters = [
   {
     filterName: 'showOrganizationsFilter',
-    icon: <ReactSVG
-      src={cordovaDot(organizationIcon)}
-      beforeInjection={(svg) => svg.setAttribute('style', 'margin-top: 4px; background-color: #fff; width: 16px; height: 16px; border-radius: 3px; fill: #555;')}
-      alt="Visible to Public"
-    />,
+    icon: <SvgImage imageName={organizatonIcon} />,
     filterDisplayName: 'Organizations',
     filterId: 'islandFilterOrganizations',
   },
   {
     filterName: 'showPublicFiguresFilter',
-    icon: <ReactSVG
-      src={cordovaDot(groupIcon)}
-      beforeInjection={(svg) => svg.setAttribute('style', 'background-color: #fff; border-radius: 3px; fill: #555; width: 16px; height: 16px')}
-      alt="Visible to Public"
-    />,
+    icon: <SvgImage imageName={group} />,
     filterDisplayName: 'Public Figures',
     filterId: 'islandFilterOrganizations',
   },
@@ -253,7 +246,7 @@ class Opinions2020 extends Component {
       // Figure out the organizations we already have voterGuides for so we don't duplicate
       if (newBallotItemSearchResults.length) {
         let newBallotItem;
-        const newBallotItems = [];
+        // const newBallotItems = [];
         for (let count = 0; count < newBallotItemSearchResults.length; count++) {
           ballotItemWeVoteIdsAlreadyFoundList.push(newBallotItemSearchResults[count].we_vote_id);
           ballotItemWeVoteIdsAlreadyFoundChanged = true;
@@ -298,7 +291,7 @@ class Opinions2020 extends Component {
               we_vote_id: newBallotItemSearchResults[count].we_vote_id,
             };
           }
-          newBallotItems.push(newBallotItem);
+          // newBallotItems.push(newBallotItem);
           allBallotItemSearchResults.push(newBallotItem);
         }
         this.setState({
@@ -605,7 +598,7 @@ class Opinions2020 extends Component {
     // console.log('filteredOpinionsAndBallotItems: ', filteredOpinionsAndBallotItems);
     // console.log('atLeastOneFoundWithTheseFilters: ', atLeastOneFoundWithTheseFilters);
     return (
-      <div className="container">
+      <div className="container" style={{ paddingTop: `${cordovaScrollablePaneTopPadding()}` }}>
         <SnackNotifier />
         <Card className="card">
           <div className="card-main">

@@ -5,7 +5,7 @@ import AppObservableStore, { messageService } from '../../stores/AppObservableSt
 import VoterStore from '../../stores/VoterStore';
 import apiCalming from '../../utils/apiCalming';
 import { dumpCssFromId } from '../../utils/appleSiliconUtils';
-import { getApplicationViewBooleans, headerHasSubmenu, weVoteBrandingOff } from '../../utils/applicationUtils';
+import { getApplicationViewBooleans, normalizedHref, weVoteBrandingOff } from '../../utils/applicationUtils';
 import { cordovaTopHeaderTopMargin } from '../../utils/cordovaOffsets';
 import { hasIPhoneNotch, historyPush, isCordova, isIOS, isIOSAppOnMac, isIPad, isWebApp } from '../../utils/cordovaUtils';
 import displayFriendsTabs from '../../utils/displayFriendsTabs';
@@ -35,7 +35,6 @@ export default class Header extends Component {
       showVoterPlanModal: false,
       showOrganizationModal: false,
       showSharedItemModal: false,
-      priorPath: '',
     };
 
     // console.log('-----------HEADER constructor');
@@ -60,35 +59,36 @@ export default class Header extends Component {
     }
   }
 
-  shouldComponentUpdate (nextProps, nextState) {
-    // console.log('-----------HEADER shouldComponentUpdate');
-    const { location: { pathname } } = window;
-    let update = false;
-    if (this.state.activityTidbitWeVoteIdForDrawer !== nextState.activityTidbitWeVoteIdForDrawer) {
-      update = true;
-    } if (this.state.organizationModalBallotItemWeVoteId !== nextState.organizationModalBallotItemWeVoteId) {
-      update = true;
-    } if (pathname !== nextProps.pathname) {
-      update = true;
-    } if (this.state.priorPath === undefined) {
-      update = true;
-    } if (this.state.sharedItemCode !== nextState.sharedItemCode) {
-      update = true;
-    } if (this.state.showActivityTidbitDrawer !== nextState.showActivityTidbitDrawer) {
-      update = true;
-    } if (this.state.showHowItWorksModal !== nextState.showHowItWorksModal) {
-      update = true;
-    } if (this.state.showVoterPlanModal !== nextState.showVoterPlanModal) {
-      update = true;
-    } if (this.state.showOrganizationModal !== nextState.showOrganizationModal) {
-      update = true;
-    } if (this.state.showSharedItemModal !== nextState.showSharedItemModal) {
-      update = true;
-    } if (this.state.windowWidth !== nextState.windowWidth) {
-      update = true;
-    }
-    return update;
-  }
+  // Jan 23, 2021: This was blocking updates that we needed, commented out for now
+  // shouldComponentUpdate (nextProps, nextState) {
+  //   // console.log('-----------HEADER shouldComponentUpdate');
+  //   const href = normalizedHref();
+  //   let update = false;
+  //   if (this.state.activityTidbitWeVoteIdForDrawer !== nextState.activityTidbitWeVoteIdForDrawer) {
+  //     update = true;
+  //   } if (this.state.organizationModalBallotItemWeVoteId !== nextState.organizationModalBallotItemWeVoteId) {
+  //     update = true;
+  //   } if (href !== nextProps.pathname) {
+  //     update = true;
+  //   } if (this.state.priorPath === undefined) {
+  //     update = true;
+  //   } if (this.state.sharedItemCode !== nextState.sharedItemCode) {
+  //     update = true;
+  //   } if (this.state.showActivityTidbitDrawer !== nextState.showActivityTidbitDrawer) {
+  //     update = true;
+  //   } if (this.state.showHowItWorksModal !== nextState.showHowItWorksModal) {
+  //     update = true;
+  //   } if (this.state.showVoterPlanModal !== nextState.showVoterPlanModal) {
+  //     update = true;
+  //   } if (this.state.showOrganizationModal !== nextState.showOrganizationModal) {
+  //     update = true;
+  //   } if (this.state.showSharedItemModal !== nextState.showSharedItemModal) {
+  //     update = true;
+  //   } if (this.state.windowWidth !== nextState.windowWidth) {
+  //     update = true;
+  //   }
+  //   return update;
+  // }
 
   componentDidCatch (error, info) {
     // We should get this information to Splunk!
@@ -144,7 +144,7 @@ export default class Header extends Component {
 
   closeSharedItemModal () {
     AppObservableStore.setShowSharedItemModal('');
-    const { location: { pathname } } = window;
+    const pathname = normalizedHref();
     if (stringContains('/modal/sic/', pathname)) {
       const pathnameWithoutModalSharedItem = pathname.substring(0, pathname.indexOf('/modal/sic/'));
       historyPush(pathnameWithoutModalSharedItem);
@@ -152,8 +152,7 @@ export default class Header extends Component {
   }
 
   hideHeader () {
-    const { location: { pathname } } = window;
-    const path = pathname.toLowerCase();
+    const path = normalizedHref();
     return path.startsWith('/welcome') ||
       path.startsWith('/for-campaigns') ||
       path.startsWith('/how/for-campaigns') ||
@@ -171,7 +170,7 @@ export default class Header extends Component {
 
     const { params } = this.props;
     // console.log('Header global.weVoteGlobalHistory', global.weVoteGlobalHistory);
-    const { location: { pathname } } = window;
+    const pathname = normalizedHref();
     const {
       activityTidbitWeVoteIdForDrawer, sharedItemCode, showActivityTidbitDrawer,
       showHowItWorksModal, showVoterPlanModal, showOrganizationModal, showSharedItemModal,
@@ -194,9 +193,11 @@ export default class Header extends Component {
     let pageHeaderClasses = weVoteBrandingOff() ? 'page-header__container_branding_off headroom' : 'page-header__container headroom';
     if (isIPad() && !isIOSAppOnMac()) {
       pageHeaderClasses = pageHeaderClasses.replace('page-header__container', 'page-header__container_ipad');
-    } if (!headerHasSubmenu(pathname)) {
-      pageHeaderClasses += ' header-shadow';
     }
+
+    // if (!headerHasSubmenu(pathname)) {
+    //   pageHeaderClasses += ' header-shadow';
+    // }
     // console.log(`Header href: ${window.location.href}  cordovaStyle: `, cordovaTopHeaderTopMargin());
 
 
@@ -518,5 +519,5 @@ export default class Header extends Component {
 }
 Header.propTypes = {
   params: PropTypes.object,
-  pathname: PropTypes.string,
+  // pathname: PropTypes.string,
 };

@@ -1,4 +1,6 @@
 import React from 'react';
+import { normalizedHref } from './applicationUtils';
+import { isCordova } from './cordovaUtils';
 
 const webAppConfig = require('../config');
 
@@ -21,7 +23,11 @@ function lazyWithPreload (factory) {
 }
 
 export default function lazyPreloadPages () {
-  const { location: { pathname } } = window;
+  if (isCordova()) {
+    return;
+  }
+
+  const pathname = normalizedHref();
   let loadedOne = false;
 
   if (!pathname.startsWith('/ready') && !loaded.ready) {

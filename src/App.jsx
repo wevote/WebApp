@@ -10,11 +10,12 @@ import WeVoteRouter from './js/components/Widgets/WeVoteRouter';
 import muiTheme from './js/mui-theme';
 import AppObservableStore from './js/stores/AppObservableStore';
 import styledTheme from './js/styled-theme';
-import { getApplicationViewBooleans } from './js/utils/applicationUtils';
+import { getApplicationViewBooleans, normalizedHref } from './js/utils/applicationUtils';
 import { isWebApp } from './js/utils/cordovaUtils';
 import initializejQuery from './js/utils/initializejQuery';
 import { renderLog } from './js/utils/logging';
 import RouterV5SendMatch from './js/utils/RouterV5SendMatch';
+// importStartCordovaToken -- Do not remove this line!
 
 // Root URL pages
 
@@ -119,6 +120,7 @@ class App extends Component {
   }
 
   componentDidMount () {
+    // initializeCordovaToken -- Do not remove this line!
     initializejQuery(() => {
       let { hostname } = window.location;
       hostname = hostname || '';
@@ -130,6 +132,10 @@ class App extends Component {
   componentDidCatch (error, info) {
     // We should get this information to Splunk!
     console.error('App caught error: ', `${error} with info: `, info);
+  }
+
+  componentWillUnmount () {
+    // removeCordovaListenersToken -- Do not remove this line!
   }
 
   // setShowHeader (doShowHeader) {
@@ -175,7 +181,11 @@ class App extends Component {
     const { showFooterBar } = siteVars;
     // const firstVisit = !cookies.getItem('voter_device_id');
 
-    console.log('href in App.js render: ', window.location.href);
+    if (isWebApp()) {
+      console.log('href in App.js render: ', window.location.href);
+    } else {
+      console.log('href hash in App.js render: ', window.location.hash);
+    }
 
     /*
     Note: To debug routing, set a breakpoint in the class that routing takes you to -- then look at the received props.
@@ -191,7 +201,7 @@ class App extends Component {
                 <WeVoteBody>
                   {/* DO NOT put SnackNotifier or anything else that is non-essential here (to keep it out of the main chuck. */}
                   <Suspense fallback={<HeaderBarSuspense />}>
-                    <Header params={{ }} pathname={window.location.href} />
+                    <Header params={{ }} pathname={normalizedHref()} />
                   </Suspense>
                   <Suspense fallback={<LoadingWheelComp />}>
                     <Switch>
@@ -262,18 +272,13 @@ class App extends Component {
                       <Route path="/measure/:measure_we_vote_id/b/:back_to_variable/modal/:modal_to_show/:shared_item_code" component={Measure} />
                       <Route path="/measure/:measure_we_vote_id/modal/:modal_to_show" component={Measure} />
                       <Route path="/measure/:measure_we_vote_id/modal/:modal_to_show/:shared_item_code" component={Measure} />
+                      <Route path="/more/about" component={About} />
                       <Route path="/more/absentee" component={AbsenteeBallot} />
                       <Route path="/more/alerts" component={ElectionReminder} />
-                      <Route path="/more/alerts" component={ElectionReminder} />
-                      <Route path="/more/attributions" component={Attributions} />
                       <Route path="/more/attributions" component={Attributions} />
                       <Route path="/more/credits" component={Credits} />
-                      <Route path="/more/credits" component={Credits} />
-                      <Route path="/more/donate" component={isNotWeVoteMarketingSite ? ReadyRedirect : Donate} />
                       <Route path="/more/donate" component={isNotWeVoteMarketingSite ? ReadyRedirect : Donate} />
                       <Route path="/more/elections" component={Elections} />
-                      <Route path="/more/elections" component={Elections} />
-                      <Route path="/more/extensionsignin" component={ExtensionSignIn} />
                       <Route path="/more/extensionsignin" component={ExtensionSignIn} />
                       <Route path="/more/facebooklandingprocess" component={FacebookLandingProcess} />
                       <Route path="/more/facebookredirecttowevote" component={FacebookRedirectToWeVote} />

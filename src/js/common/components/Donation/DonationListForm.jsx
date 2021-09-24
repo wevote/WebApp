@@ -2,6 +2,7 @@ import { AppBar, Tab, Tabs } from '@material-ui/core';
 import { ThemeProvider } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
+import { normalizedHref } from '../../../utils/applicationUtils';
 import DonateActions from '../../actions/DonateActions';
 import DonateStore from '../../stores/DonateStore';
 import { renderLog } from '../../../utils/logging';
@@ -46,7 +47,7 @@ class DonationListForm extends Component {
     const { leftTabIsMembership } = this.props;
     const { value } = this.state;
     // console.log('this.value =========', value);
-    const { pathname } = window.location;
+    const pathname = normalizedHref();
     const isMembership = pathname.startsWith('/membership');
     const isPayToPromote = (stringContains('/pay-to-promote', pathname));
     const isCampaign = isMembership || isPayToPromote;

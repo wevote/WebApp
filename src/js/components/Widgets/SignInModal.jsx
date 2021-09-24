@@ -163,6 +163,7 @@ class SignInModal extends Component {
         }}
         open={this.props.show}
         onClose={() => { this.closeFunction(); }}
+        style={{ paddingTop: `${isCordova() ? '75px' : 'undefined'}` }}
       >
         <DialogTitle>
           <Typography className="text-center">

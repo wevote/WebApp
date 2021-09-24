@@ -1,7 +1,6 @@
 import cookies from './cookies';
-import { isIOSAppOnMac, isCordova, isWebApp } from './cordovaUtils';
+import { isCordova, isIOSAppOnMac, isWebApp } from './cordovaUtils';
 import { stringContains } from './textFormat';
-
 
 // We have to do all this, because we allow urls where the path starts with a twitter username (handle)
 // as a result every path has to be evaluated for an exact routable match, and what is left is a twitter handle path.
@@ -160,7 +159,7 @@ export function getApplicationViewBooleans (pathname) {
   let showFooterBar;
   // console.log('stringContains(\'/settings/positions\', pathnameLowerCase):', stringContains('/settings/positions', pathnameLowerCase), pathnameLowerCase);
   if (!pathnameLowerCase) {
-    showFooterBar = false;
+    showFooterBar = isCordova();
   // ///////// EXCLUDE: The following are URLS we want to specifically exclude (because otherwise they will be picked up in a broader pattern in the next branch
   } else if (stringContains('/b/btdb', pathnameLowerCase) ||
       stringContains('/b/btdo', pathnameLowerCase) ||
@@ -318,6 +317,18 @@ export function weVoteBrandingOff () {
   return weVoteBrandingOffGlobal;
 }
 
-export function headerHasSubmenu (pathname) {
-  return pathname.toLowerCase().startsWith('/ballot');
+export function normalizedHref () {
+  const { location: { hash, pathname } } = window;
+  return isWebApp() ? pathname.toLowerCase() : hash.substring(1).toLowerCase();
+}
+
+export function normalizedHrefPage () {
+  const [, page] = normalizedHref().split('/');
+  return page;
+}
+
+export function headerHasSubmenu (pathname) {  //
+  const [, page] = normalizedHref().split('/');
+  console.log(page, pathname);
+  return ['ballot', 'friends'].includes(page);
 }
