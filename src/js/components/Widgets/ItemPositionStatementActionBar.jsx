@@ -154,7 +154,7 @@ class ItemPositionStatementActionBar extends Component {
   };
 
   onBlurInput = () => {
-    // if (e.target && e.target.className && !e.target.className.contains('postsave-button')) {
+    // if (e.target && e.target.className && !e.target.className.includes('postsave-button')) {
     this.setState({ commentActive: false });
     // }
     // console.log('ItemPositionStatementActionBar, onBlurInput:', e.target);
@@ -164,7 +164,7 @@ class ItemPositionStatementActionBar extends Component {
 
   onFocusInput = () => {
     // console.log('Setting commentActive to true');
-    // if (e.target && e.target.className && !e.target.className.contains('postsave-button')) {
+    // if (e.target && e.target.className && !e.target.className.includes('postsave-button')) {
     this.setState({ commentActive: true });
     // }
 

@@ -6,7 +6,7 @@ import OrganizationActions from '../actions/OrganizationActions';
 import VoterActions from '../actions/VoterActions'; // eslint-disable-line import/no-cycle
 import VoterGuideActions from '../actions/VoterGuideActions';
 import signInModalGlobalState from '../components/Widgets/signInModalGlobalState';
-import Dispatcher from '../dispatcher/Dispatcher';
+import Dispatcher from '../common/dispatcher/Dispatcher';
 import cookies from '../utils/cookies';
 import { stringContains } from '../utils/textFormat';
 import AppObservableStore from './AppObservableStore'; // eslint-disable-line import/no-cycle

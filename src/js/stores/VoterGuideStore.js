@@ -2,10 +2,10 @@ import { ReduceStore } from 'flux/utils';
 import OrganizationActions from '../actions/OrganizationActions';
 import SupportActions from '../actions/SupportActions';
 import VoterGuideActions from '../actions/VoterGuideActions';
-import Dispatcher from '../dispatcher/Dispatcher';
+import Dispatcher from '../common/dispatcher/Dispatcher';
 import apiCalming from '../utils/apiCalming';
 import { isSpeakerTypeOrganization, isSpeakerTypePublicFigure } from '../utils/organization-functions';
-import { arrayContains, convertToInteger } from '../utils/textFormat';
+import { convertToInteger } from '../utils/textFormat';
 import convertVoterGuideToElection from '../utils/voterGuideFunctions';
 import OrganizationStore from './OrganizationStore'; // eslint-disable-line import/no-cycle
 import VoterStore from './VoterStore'; // eslint-disable-line import/no-cycle
@@ -183,7 +183,7 @@ class VoterGuideStore extends ReduceStore {
     const voterGuidesToFollowSupport = [];
     voterGuidesToFollow.forEach((voterGuide) => {
       // console.log("voter_guide:", voter_guide);
-      if (arrayContains(ballotItemWeVoteId, voterGuide.ballot_item_we_vote_ids_this_org_supports)) {
+      if (voterGuide.ballot_item_we_vote_ids_this_org_supports.includes(ballotItemWeVoteId)) {
         voterGuidesToFollowSupport.push(voterGuide);
       }
     });
@@ -195,7 +195,7 @@ class VoterGuideStore extends ReduceStore {
     const voterGuidesToFollowOppose = [];
     voterGuidesToFollow.forEach((voterGuide) => {
       // console.log("voter_guide:", voter_guide);
-      if (arrayContains(ballotItemWeVoteId, voterGuide.ballot_item_we_vote_ids_this_org_opposes)) {
+      if (voterGuide.ballot_item_we_vote_ids_this_org_opposes.includes(ballotItemWeVoteId)) {
         voterGuidesToFollowOppose.push(voterGuide);
       }
     });
@@ -248,8 +248,8 @@ class VoterGuideStore extends ReduceStore {
     // While this is set to true, don't allow any more calls to this API
     const googleCivicElectionIdInteger = convertToInteger(googleCivicElectionId);
     // console.log('voterGuidesUpcomingFromFriendsStoppedByGoogleCivicElectionId:', this.getState().voterGuidesUpcomingFromFriendsStoppedByGoogleCivicElectionId);
-    // console.log('voterGuidesUpcomingFromFriendsStoppedByGoogleCivicElectionId, googleCivicElectionId:', googleCivicElectionIdInteger, arrayContains(googleCivicElectionIdInteger, this.getState().voterGuidesUpcomingFromFriendsStoppedByGoogleCivicElectionId));
-    return arrayContains(googleCivicElectionIdInteger, this.getState().voterGuidesUpcomingFromFriendsStoppedByGoogleCivicElectionId);
+    // console.log('voterGuidesUpcomingFromFriendsStoppedByGoogleCivicElectionId, googleCivicElectionId:', googleCivicElectionIdInteger, this.getState(.includes(googleCivicElectionIdInteger).voterGuidesUpcomingFromFriendsStoppedByGoogleCivicElectionId));
+    return this.getState().voterGuidesUpcomingFromFriendsStoppedByGoogleCivicElectionId.includes(googleCivicElectionIdInteger);
   }
 
   voterGuidesUpcomingStopped (googleCivicElectionId) {
@@ -587,7 +587,7 @@ class VoterGuideStore extends ReduceStore {
             allCachedVoterGuidesByElection[oneVoterGuide.organization_we_vote_id] = [];
           }
           allCachedVoterGuidesByElection[oneVoterGuide.organization_we_vote_id][convertToInteger(oneVoterGuide.google_civic_election_id)] = oneVoterGuide;
-          if (!arrayContains(oneVoterGuide.organization_we_vote_id, organizationWeVoteIdListFromVoterGuidesReturned)) {
+          if (!organizationWeVoteIdListFromVoterGuidesReturned.includes(oneVoterGuide.organization_we_vote_id)) {
             // console.log('Adding to organizationWeVoteIdsToFollowAll');
             organizationWeVoteIdListFromVoterGuidesReturned.push(oneVoterGuide.organization_we_vote_id);
           }
@@ -652,11 +652,11 @@ class VoterGuideStore extends ReduceStore {
           }
           if (oneVoterGuide.google_civic_election_id) {
             if (action.type === 'voterGuidesUpcomingRetrieve') {
-              if (!arrayContains(convertToInteger(oneVoterGuide.google_civic_election_id), voterGuidesUpcomingStoppedByGoogleCivicElectionId)) {
+              if (!voterGuidesUpcomingStoppedByGoogleCivicElectionId.includes(convertToInteger(oneVoterGuide.google_civic_election_id))) {
                 voterGuidesUpcomingStoppedByGoogleCivicElectionId.push(convertToInteger(oneVoterGuide.google_civic_election_id));
               }
             } else if (action.type === 'voterGuidesFromFriendsUpcomingRetrieve') {
-              if (!arrayContains(convertToInteger(oneVoterGuide.google_civic_election_id), voterGuidesUpcomingFromFriendsStoppedByGoogleCivicElectionId)) {
+              if (!voterGuidesUpcomingFromFriendsStoppedByGoogleCivicElectionId.includes(convertToInteger(oneVoterGuide.google_civic_election_id))) {
                 voterGuidesUpcomingFromFriendsStoppedByGoogleCivicElectionId.push(convertToInteger(oneVoterGuide.google_civic_election_id));
               }
             }

@@ -7,10 +7,10 @@ import { EmailIcon, EmailShareButton, FacebookIcon, FacebookShareButton, Twitter
 import styled from 'styled-components';
 import AnalyticsActions from '../../actions/AnalyticsActions';
 import ShareActions from '../../common/actions/ShareActions';
-import AppObservableStore, { messageService } from '../../stores/AppObservableStore';
 import ShareStore from '../../common/stores/ShareStore';
+import AppObservableStore, { messageService } from '../../stores/AppObservableStore';
 import VoterStore from '../../stores/VoterStore';
-import { getApplicationViewBooleans, hideZenDeskHelpVisibility, showZenDeskHelpVisibility } from '../../utils/applicationUtils';
+import { getApplicationViewBooleans, hideZenDeskHelpVisibility, normalizedHref, showZenDeskHelpVisibility } from '../../utils/applicationUtils';
 import { shareBottomOffset } from '../../utils/cordovaOffsets';
 import { historyPush, isAndroid, isCordova, isWebApp } from '../../utils/cordovaUtils';
 import isMobile from '../../utils/isMobile';
@@ -48,7 +48,7 @@ class ShareButtonFooter extends Component {
   }
 
   componentDidMount () {
-    const { pathname } = window.location;
+    const pathname = normalizedHref();
     this.appStateSubscription = messageService.getMessage().subscribe(() => this.onAppObservableStoreChange());
     this.shareStoreListener = ShareStore.addListener(this.onShareStoreChange.bind(this));
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
@@ -200,7 +200,7 @@ class ShareButtonFooter extends Component {
   }
 
   handleShareButtonClick = () => {
-    const { location: { pathname } } = window;
+    const pathname = normalizedHref();
     const { currentFullUrlAdjusted } = this.state;
     const currentFullUrlToShare = currentFullUrlAdjusted.replace('/modal/share', '');
 

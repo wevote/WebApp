@@ -3,7 +3,7 @@ import CandidateActions from '../actions/CandidateActions';
 import OrganizationActions from '../actions/OrganizationActions';
 import TwitterActions from '../actions/TwitterActions';
 import VoterActions from '../actions/VoterActions';
-import Dispatcher from '../dispatcher/Dispatcher';
+import Dispatcher from '../common/dispatcher/Dispatcher';
 
 class TwitterStore extends ReduceStore {
   getInitialState () {

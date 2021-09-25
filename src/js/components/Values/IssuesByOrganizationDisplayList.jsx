@@ -2,13 +2,12 @@ import { Chip } from '@material-ui/core';
 import { withStyles, withTheme } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import { ReactSVG } from 'react-svg';
 import styled from 'styled-components';
 import IssueStore from '../../stores/IssueStore';
 import VoterGuideStore from '../../stores/VoterGuideStore';
-import { cordovaDot } from '../../utils/cordovaUtils';
 import { renderLog } from '../../utils/logging';
 import StickyPopover from '../Ballot/StickyPopover';
+import SvgImage from '../Widgets/SvgImage';
 import IssueFollowToggleButton from './IssueFollowToggleButton';
 
 const ReadMore = React.lazy(() => import(/* webpackChunkName: 'ReadMore' */ '../Widgets/ReadMore'));
@@ -116,10 +115,7 @@ class IssuesByOrganizationDisplayList extends Component {
       <PopoverWrapper>
         <PopoverHeader>
           <PopoverTitleIcon>
-            <ReactSVG
-              src={cordovaDot(`/img/global/svg-icons/issues/${oneIssue.issue_icon_local_path}.svg`)}
-              beforeInjection={(svg) => svg.setAttribute('style', { fill: '#2e3c5d', padding: '1px 1px 1px 0px' })}
-            />
+            <SvgImage imageName={oneIssue.issue_icon_local_path} />
           </PopoverTitleIcon>
           <PopoverTitleText>
             {oneIssue.issue_name}
@@ -170,6 +166,7 @@ class IssuesByOrganizationDisplayList extends Component {
 
     // Tried to make the issues icons accessible via tabbing, caused too many side affects
     const svgFill = issueFollowedByVoter ? '#555' : '#999';
+    console.log('-----------------', oneIssue.issue_icon_local_path);
     const valueIconAndText = (
       <ValueIconAndTextOrganization
         id={`valueIconAndTextOrganization-${oneIssue.issue_we_vote_id}`}
@@ -177,12 +174,7 @@ class IssuesByOrganizationDisplayList extends Component {
         issueFollowedByVoter={issueFollowedByVoter}
       >
         <Chip
-          avatar={oneIssue.issue_icon_local_path ? (
-            <ReactSVG
-              src={cordovaDot(`/img/global/svg-icons/issues/${oneIssue.issue_icon_local_path}.svg`)}
-              beforeInjection={(svg) => svg.setAttribute('style', { fill: svgFill, padding: '1px 1px 1px 0px' })}
-            />
-          ) : <span />}
+          avatar={<SvgImage imageName={oneIssue.issue_icon_local_path} otherStyles={{ fill: svgFill }} />}
           classes={{ root: classes.chipStyle }}
           label={oneIssue.issue_name}
           ref={this.valueSpan}

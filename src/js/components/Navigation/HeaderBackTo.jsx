@@ -1,4 +1,4 @@
-import { AppBar, Button, IconButton, Toolbar } from '@material-ui/core';
+import { AppBar, IconButton, Toolbar } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 import { AccountCircle } from '@material-ui/icons';
 import PropTypes from 'prop-types';
@@ -7,14 +7,17 @@ import styled from 'styled-components';
 import OrganizationActions from '../../actions/OrganizationActions';
 import VoterGuideActions from '../../actions/VoterGuideActions';
 import VoterSessionActions from '../../actions/VoterSessionActions';
+import LazyImage from '../../common/components/LazyImage';
 import AppObservableStore, { messageService } from '../../stores/AppObservableStore';
 import VoterStore from '../../stores/VoterStore';
 import { dumpCssFromId } from '../../utils/appleSiliconUtils';
+import { normalizedHref } from '../../utils/applicationUtils';
 import { hasIPhoneNotch, historyPush, isCordova, isIOSAppOnMac, isIPad, isWebApp } from '../../utils/cordovaUtils';
-import LazyImage from '../../common/components/LazyImage';
 import { renderLog } from '../../utils/logging';
 import { shortenText, stringContains } from '../../utils/textFormat';
 import { voterPhoto } from '../../utils/voterPhoto';
+import { RightSideTopLineContainer } from '../Widgets/ReusableStyles';
+import SignInButton from '../Widgets/SignInButton';
 import HeaderBackToButton from './HeaderBackToButton';
 
 const HeaderBarProfilePopUp = React.lazy(() => import(/* webpackChunkName: 'HeaderBarProfilePopUp' */ './HeaderBarProfilePopUp'));
@@ -227,7 +230,7 @@ class HeaderBackTo extends Component {
       }
     }());
 
-    const { location: { pathname } } = window;
+    const pathname = normalizedHref();
     const shareButtonInHeader = pathname && stringContains('/office', pathname.toLowerCase());
     const cordovaOverrides = isWebApp() ? {} : { marginLeft: 0, padding: '4px 0 0 9px', right: 'unset' };
     if (isIOSAppOnMac() || isIPad()) {
@@ -249,11 +252,14 @@ class HeaderBackTo extends Component {
             backToLink={backToLink}
             backToLinkText={backToLinkText}
             className="HeaderBackTo"
-            id="backToLinkTabHeader"
+            id="backToLinkTabHeaderBackTo"
           />
 
           {isWebApp() && (
-          <NotificationsAndProfileWrapper className="u-cursor--pointer">
+          <RightSideTopLineContainer
+            className="u-cursor--pointer"
+            style={{ paddingLeft: `${isCordova() ? '0 !important' : ''}` }}
+          >
             <HeaderNotificationMenu />
             {voterIsSignedIn ? (
               <span>
@@ -302,18 +308,9 @@ class HeaderBackTo extends Component {
                 )}
               </span>
             ) : (
-              <Button
-                className="header-sign-in"
-                classes={{ root: classes.headerButtonRoot }}
-                color="primary"
-                id="signInHeaderBar"
-                onClick={this.toggleSignInModal}
-                variant="text"
-              >
-                <span className="u-no-break">Sign In</span>
-              </Button>
+              <SignInButton toggleSignInModal={this.toggleSignInModal} />
             )}
-          </NotificationsAndProfileWrapper>
+          </RightSideTopLineContainer>
           )}
         </Toolbar>
         {showSignInModal && (
@@ -366,13 +363,13 @@ const FirstNameWrapper = styled.div`
   padding-right: 4px;
 `;
 
-const NotificationsAndProfileWrapper = styled.div`
-  display: flex;
-  z-index: 3; //to float above the account/ProfilePopUp menu option grey div
-  @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
-    padding-left: calc(100% - 154px);
-  }
-`;
+// const NotificationsAndProfileWrapper = styled.div`
+//   display: flex;
+//   z-index: 3; //to float above the account/ProfilePopUp menu option grey div
+//   @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
+//     padding-left: calc(100% - 154px);
+//   }
+// `;
 
 export default withStyles(styles)(HeaderBackTo);
 

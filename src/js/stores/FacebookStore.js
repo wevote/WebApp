@@ -4,7 +4,7 @@ import FriendActions from '../actions/FriendActions';
 import VoterActions from '../actions/VoterActions';
 import signInModalGlobalState from '../components/Widgets/signInModalGlobalState';
 import FacebookConstants from '../constants/FacebookConstants';
-import Dispatcher from '../dispatcher/Dispatcher';
+import Dispatcher from '../common/dispatcher/Dispatcher';
 
 class FacebookStore extends ReduceStore {
   getInitialState () {

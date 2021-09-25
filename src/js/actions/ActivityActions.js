@@ -1,4 +1,4 @@
-import Dispatcher from '../dispatcher/Dispatcher';
+import Dispatcher from '../common/dispatcher/Dispatcher';
 
 // Keep this comment as a cheat-sheet for the constants used API server
 // Kind of Seeds

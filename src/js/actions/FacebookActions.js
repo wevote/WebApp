@@ -1,7 +1,7 @@
 import signInModalGlobalState from '../components/Widgets/signInModalGlobalState';
 import webAppConfig from '../config';
 import FacebookConstants from '../constants/FacebookConstants';
-import Dispatcher from '../dispatcher/Dispatcher';
+import Dispatcher from '../common/dispatcher/Dispatcher';
 import { isWebApp } from '../utils/cordovaUtils'; // eslint-disable-line import/no-cycle
 import { oAuthLog } from '../utils/logging';
 import FriendActions from './FriendActions'; // eslint-disable-line import/no-cycle
@@ -18,9 +18,7 @@ this is the "Jeduan" fork from https://github.com/jeduan/cordova-plugin-facebook
 The "Jeduan" fork is forked from the VERY OUT OF DATE https://github.com/Wizcorp/phonegap-facebook-plugin
 As of May 2018, the "Wizcorp" fork has not been maintained for 3 years, even though it
 displays the (WRONG) note "This is the official plugin for Facebook in Apache Cordova/PhoneGap!"
-Note: Sept 2021:  The Jeduan fork (This plugin is not actively maintained anymore since March 2019) has
-been abandoned in favor of cordova-plugin-facebook-connect/cordova-plugin-facebook-connect
-*/
+ */
 
 export default {
   facebookApi () {

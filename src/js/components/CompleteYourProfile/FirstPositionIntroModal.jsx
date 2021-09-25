@@ -6,10 +6,11 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 import VoterActions from '../../actions/VoterActions';
 import VoterConstants from '../../constants/VoterConstants';
+import { normalizedHref } from '../../utils/applicationUtils';
 import { hasIPhoneNotch } from '../../utils/cordovaUtils';
 import { renderLog } from '../../utils/logging';
 
-const CandidateItem = React.lazy(() => import(/* webpackChunkName: 'CandidateItem' */ '../Ballot/CandidateItem'));
+const CandidateItem = React.lazy(() => import(/* webpackChunkName: 'CandidateItem' */ '../../components/Ballot/CandidateItem'));
 
 class FirstPositionIntroModal extends Component {
   constructor (props) {
@@ -36,15 +37,13 @@ class FirstPositionIntroModal extends Component {
   // }
 
   closeThisModal = () => {
-    const { location: { pathname } } = window;
-    this.props.toggleFunction(pathname);
+    this.props.toggleFunction(normalizedHref());
   };
 
   personalizedScoreIntroCompleted = () => {
     // Mark this so we know to show 'How it Works' as completed
-    const { location: { pathname } } = window;
     VoterActions.voterUpdateInterfaceStatusFlags(VoterConstants.PERSONALIZED_SCORE_INTRO_COMPLETED);
-    this.props.toggleFunction(pathname);
+    this.props.toggleFunction(normalizedHref());
   };
 
   // clickNextStepButton = () => {
@@ -93,14 +92,13 @@ class FirstPositionIntroModal extends Component {
   render () {
     renderLog('FirstPositionIntroModal');  // Set LOG_RENDER_EVENTS to log all renders
     const { classes } = this.props;
-    const { location: { pathname } } = window;
     const { /* actionButtonText */ explanationText, hideNextStepButton, showPersonalizedScoreArrow } = this.state;
 
     return (
       <Dialog
         classes={{ paper: classes.dialogPaper }}
         open={this.props.show}
-        onClose={() => { this.props.toggleFunction(pathname); }}
+        onClose={() => { this.props.toggleFunction(normalizedHref()); }}
       >
         <ModalTitleArea>
           <div>

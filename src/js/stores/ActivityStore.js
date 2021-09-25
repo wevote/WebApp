@@ -1,6 +1,6 @@
 import { ReduceStore } from 'flux/utils';
-import Dispatcher from '../dispatcher/Dispatcher';
-import { arrayContains, arrayReplaceObjectMatchingPropertyValue } from '../utils/textFormat';
+import Dispatcher from '../common/dispatcher/Dispatcher';
+import { arrayReplaceObjectMatchingPropertyValue } from '../utils/textFormat';
 
 class ActivityStore extends ReduceStore {
   getInitialState () {
@@ -198,7 +198,7 @@ class ActivityStore extends ReduceStore {
             // console.log('AFTER activityCommentList: ', activityCommentList);
             activityCommentList.forEach((oneActivityComment) => {
               allCachedActivityCommentsByCommentWeVoteId[oneActivityComment.we_vote_id] = oneActivityComment;
-              if (!arrayContains(oneActivityComment.we_vote_id, allCachedActivityCommentWeVoteIdsByTidbitWeVoteId[activityTidbitWeVoteId])) {
+              if (!allCachedActivityCommentWeVoteIdsByTidbitWeVoteId[activityTidbitWeVoteId].includes(oneActivityComment.we_vote_id)) {
                 allCachedActivityCommentWeVoteIdsByTidbitWeVoteId[activityTidbitWeVoteId].push(oneActivityComment.we_vote_id);
               }
               parentComments.push(oneActivityComment);

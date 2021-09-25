@@ -2,8 +2,8 @@ import { ReduceStore } from 'flux/utils';
 import IssueActions from '../actions/IssueActions';
 import VoterActions from '../actions/VoterActions'; // eslint-disable-line import/no-cycle
 import VoterConstants from '../constants/VoterConstants';
-import Dispatcher from '../dispatcher/Dispatcher';
-import { arrayContains, convertNameToSlug, removeValueFromArray } from '../utils/textFormat';
+import Dispatcher from '../common/dispatcher/Dispatcher';
+import { convertNameToSlug, removeValueFromArray } from '../utils/textFormat';
 import BallotStore from './BallotStore'; // eslint-disable-line import/no-cycle
 import OrganizationStore from './OrganizationStore'; // eslint-disable-line import/no-cycle
 import VoterGuideStore from './VoterGuideStore'; // eslint-disable-line import/no-cycle
@@ -105,7 +105,7 @@ class IssueStore extends ReduceStore {
     if (!issueWeVoteId) {
       return false;
     }
-    return arrayContains(issueWeVoteId, this.getState().issueWeVoteIdsVoterIsFollowing);
+    return this.getState().issueWeVoteIdsVoterIsFollowing.includes(issueWeVoteId);
   }
 
   isOrganizationLinkedToIssueVoterIsFollowing (organizationWeVoteId) {
@@ -310,7 +310,7 @@ class IssueStore extends ReduceStore {
       const issuesForThisBallotItem = this.getState().issueWeVoteIdsUnderEachBallotItem[ballotItemWeVoteId] || [];
       // Remove issues the voter is not following
       issuesForThisBallotItem.forEach((issueWeVoteId) => {
-        if (arrayContains(issueWeVoteId, this.getState().issueWeVoteIdsVoterIsFollowing)) {
+        if (this.getState().issueWeVoteIdsVoterIsFollowing.includes(issueWeVoteId)) {
           issuesUnderThisBallotItemVoterIsFollowing.push(issueWeVoteId);
         }
       });
@@ -332,7 +332,7 @@ class IssueStore extends ReduceStore {
       // console.log('BEFORE getIssuesUnderThisBallotItemVoterNotFollowing, issuesForThisBallotItem:', issuesForThisBallotItem);
       // Remove issues the voter is already following
       issuesForThisBallotItem.forEach((issueWeVoteId) => {
-        if (!arrayContains(issueWeVoteId, this.getState().issueWeVoteIdsVoterIsFollowing)) {
+        if (!this.getState().issueWeVoteIdsVoterIsFollowing.includes(issueWeVoteId)) {
           issuesUnderThisBallotItemVoterNotFollowing.push(issueWeVoteId);
         }
       });
@@ -401,7 +401,7 @@ class IssueStore extends ReduceStore {
         if (action.res.issue_we_vote_id) {
           if (action.res.follow_value === true) {
             issueWeVoteIdsVoterCanFollow = removeValueFromArray(action.res.issue_we_vote_id, issueWeVoteIdsVoterCanFollow);
-            if (!arrayContains(action.res.issue_we_vote_id, issueWeVoteIdsVoterIsFollowing)) {
+            if (!issueWeVoteIdsVoterIsFollowing.includes(action.res.issue_we_vote_id)) {
               issueWeVoteIdsVoterIsFollowing.push(action.res.issue_we_vote_id);
             }
             // console.log('VALUES_INTRO_COMPLETED: ', VoterStore.getInterfaceFlagState(VoterConstants.VALUES_INTRO_COMPLETED));
@@ -412,7 +412,7 @@ class IssueStore extends ReduceStore {
           } else if (action.res.follow_value === false) {
             if (action.res.ignore_value === false) {
               // As long as the value is not ignored, it can be followed
-              if (!arrayContains(action.res.issue_we_vote_id, issueWeVoteIdsVoterCanFollow)) {
+              if (!issueWeVoteIdsVoterCanFollow.includes(action.res.issue_we_vote_id)) {
                 issueWeVoteIdsVoterCanFollow.push(action.res.issue_we_vote_id);
               }
             }
@@ -435,7 +435,7 @@ class IssueStore extends ReduceStore {
           allCachedIssues[issue.issue_we_vote_id] = issue;
           issueSlug = convertNameToSlug(issue.issue_name);
           issueWeVoteIdsBySlug[issueSlug] = issue.issue_we_vote_id;
-          if (!arrayContains(issue.issue_we_vote_id, issueWeVoteIdsVoterIsFollowing) && !arrayContains(issue.issue_we_vote_id, issueWeVoteIdsVoterCanFollow)) {
+          if (!issueWeVoteIdsVoterIsFollowing.includes(issue.issue_we_vote_id) && !issueWeVoteIdsVoterCanFollow.includes(issue.issue_we_vote_id)) {
             issueWeVoteIdsVoterCanFollow.push(issue.issue_we_vote_id);
           }
         });
@@ -459,13 +459,13 @@ class IssueStore extends ReduceStore {
             issueWeVoteIdsVoterCanFollow = removeValueFromArray(issue.issue_we_vote_id, issueWeVoteIdsVoterCanFollow);
             issueWeVoteIdsVoterIsFollowing = removeValueFromArray(issue.issue_we_vote_id, issueWeVoteIdsVoterIsFollowing);
           } else if (issue.is_issue_followed === true) {
-            if (!arrayContains(issue.issue_we_vote_id, issueWeVoteIdsVoterIsFollowing)) {
+            if (!issueWeVoteIdsVoterIsFollowing.includes(issue.issue_we_vote_id)) {
               issueWeVoteIdsVoterIsFollowing.push(issue.issue_we_vote_id);
             }
             issueWeVoteIdsVoterCanFollow = removeValueFromArray(issue.issue_we_vote_id, issueWeVoteIdsVoterCanFollow);
           } else {
             issueWeVoteIdsVoterIsFollowing = removeValueFromArray(issue.issue_we_vote_id, issueWeVoteIdsVoterIsFollowing);
-            if (!arrayContains(issue.issue_we_vote_id, issueWeVoteIdsVoterCanFollow) && issue.is_issue_ignored === false) {
+            if (!issueWeVoteIdsVoterCanFollow.includes(issue.issue_we_vote_id) && issue.is_issue_ignored === false) {
               issueWeVoteIdsVoterCanFollow.push(issue.issue_we_vote_id);
             }
           }
@@ -597,7 +597,7 @@ class IssueStore extends ReduceStore {
                 // console.log('listOfIssuesForThisOrg:', listOfIssuesForThisOrg);
                 if (listOfIssuesForThisOrg) {
                   listOfIssuesForThisOrg.forEach((oneIssue) => {
-                    if (!arrayContains(oneIssue, issueWeVoteIdsUnderEachBallotItem[ballotItemWeVoteId])) {
+                    if (!issueWeVoteIdsUnderEachBallotItem[ballotItemWeVoteId].includes(oneIssue)) {
                       issueWeVoteIdsUnderEachBallotItem[ballotItemWeVoteId].push(oneIssue);
                     }
                   });
@@ -666,7 +666,7 @@ class IssueStore extends ReduceStore {
                 organizationWeVoteIdsForIssue = organizationWeVoteIdsLinkedToIssueDict[issueWeVoteId] || [];
                 organizationWeVoteIdsForIssue.push(voterGuide.organization_we_vote_id);
                 organizationWeVoteIdsLinkedToIssueDict[issueWeVoteId] = organizationWeVoteIdsForIssue;
-                if (!arrayContains(issueWeVoteId, linkedIssueListForOneOrganization)) {
+                if (!linkedIssueListForOneOrganization.includes(issueWeVoteId)) {
                   linkedIssueListForOneOrganization.push(issueWeVoteId);
                 }
               });
@@ -704,7 +704,7 @@ class IssueStore extends ReduceStore {
                   // console.log('listOfIssuesForThisOrg:', listOfIssuesForThisOrg);
                   if (listOfIssuesForThisOrg) {
                     listOfIssuesForThisOrg.forEach((oneIssue) => {
-                      if (!arrayContains(oneIssue, issueWeVoteIdsUnderEachBallotItem[ballotItemWeVoteId])) {
+                      if (!issueWeVoteIdsUnderEachBallotItem[ballotItemWeVoteId].includes(oneIssue)) {
                         issueWeVoteIdsUnderEachBallotItem[ballotItemWeVoteId].push(oneIssue);
                       }
                     });
@@ -740,7 +740,7 @@ class IssueStore extends ReduceStore {
                             if (!issueWeVoteIdsUnderEachBallotItem[ballotItemWeVoteIdFromList]) {
                               issueWeVoteIdsUnderEachBallotItem[ballotItemWeVoteIdFromList] = [];
                             }
-                            if (!arrayContains(oneIssue, issueWeVoteIdsUnderEachBallotItem[ballotItemWeVoteIdFromList])) {
+                            if (!issueWeVoteIdsUnderEachBallotItem[ballotItemWeVoteIdFromList].includes(oneIssue)) {
                               issueWeVoteIdsUnderEachBallotItem[ballotItemWeVoteIdFromList].push(oneIssue);
                             }
                           });
@@ -787,7 +787,7 @@ class IssueStore extends ReduceStore {
                 organizationWeVoteIdsForIssue = organizationWeVoteIdsLinkedToIssueDict[issueWeVoteId] || [];
                 organizationWeVoteIdsForIssue.push(voterGuide.organization_we_vote_id);
                 organizationWeVoteIdsLinkedToIssueDict[issueWeVoteId] = organizationWeVoteIdsForIssue;
-                if (!arrayContains(issueWeVoteId, linkedIssueListForOneOrganization)) {
+                if (!linkedIssueListForOneOrganization.includes(issueWeVoteId)) {
                   linkedIssueListForOneOrganization.push(issueWeVoteId);
                 }
               });
@@ -832,7 +832,7 @@ class IssueStore extends ReduceStore {
                             if (!issueWeVoteIdsUnderEachBallotItem[ballotItemWeVoteIdFromList]) {
                               issueWeVoteIdsUnderEachBallotItem[ballotItemWeVoteIdFromList] = [];
                             }
-                            if (!arrayContains(oneIssue, issueWeVoteIdsUnderEachBallotItem[ballotItemWeVoteIdFromList])) {
+                            if (!issueWeVoteIdsUnderEachBallotItem[ballotItemWeVoteIdFromList].includes(oneIssue)) {
                               issueWeVoteIdsUnderEachBallotItem[ballotItemWeVoteIdFromList].push(oneIssue);
                             }
                           });

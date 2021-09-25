@@ -10639,7 +10639,7 @@ body {
     transition: all 100ms ease-in-out 0s; }
   .friends__heading__cordova {
     transform: translate3d(0, -68px, 0);
-    padding-top: 0; }
+    padding-top: 157px; }
 
 .invite-inputs {
   position: relative;
@@ -12650,7 +12650,11 @@ a {
     display: none; }
 
 .footroom-wrapper-cordova {
-  padding-bottom: 54px; }
+  padding-bottom: env(safe-area-inset-bottom);
+  width: 100%;
+  bottom: 0;
+  position: fixed;
+}
 
 .headroom-secondary-nav__margin {
   margin-top: 104px; }

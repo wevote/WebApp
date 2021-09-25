@@ -9,7 +9,7 @@ import CandidateStore from '../../stores/CandidateStore';
 import MeasureStore from '../../stores/MeasureStore';
 import SupportStore from '../../stores/SupportStore';
 import VoterStore from '../../stores/VoterStore';
-import { cordovaDot, hasIPhoneNotch, prepareForCordovaKeyboard, restoreStylesAfterCordovaKeyboard } from '../../utils/cordovaUtils';
+import { cordovaDot, hasIPhoneNotch, isCordova, prepareForCordovaKeyboard, restoreStylesAfterCordovaKeyboard } from '../../utils/cordovaUtils';
 import { renderLog } from '../../utils/logging';
 import { stringContains } from '../../utils/textFormat';
 
@@ -153,7 +153,7 @@ class PositionStatementModal extends Component {
   }
 
   onBlurInput = () => {
-    restoreStylesAfterCordovaKeyboard(PositionStatementModal);
+    restoreStylesAfterCordovaKeyboard('PositionStatementModal');
   };
 
   onFocusInput = () => {
@@ -229,6 +229,7 @@ class PositionStatementModal extends Component {
         classes={{ paper: classes.dialogPaper }}
         open={this.props.show}
         onClose={() => { this.props.togglePositionStatementModal(); }}
+        style={{ paddingTop: `${isCordova() ? '75px' : 'undefined'}` }}
       >
         <DialogTitle classes={{ root: classes.dialogTitle }}>
           <Title>
@@ -333,7 +334,7 @@ PositionStatementModal.propTypes = {
 
 const styles = (theme) => ({
   dialogTitle: {
-    padding: 16,
+    paddingTop: 16,
   },
   dialogPaper: {
     marginTop: hasIPhoneNotch() ? 68 : 48,

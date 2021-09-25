@@ -3,7 +3,7 @@ import assign from 'object-assign';
 import BallotActions from '../actions/BallotActions';
 import CandidateActions from '../actions/CandidateActions';
 import MeasureActions from '../actions/MeasureActions'; // eslint-disable-line import/no-cycle
-import Dispatcher from '../dispatcher/Dispatcher';
+import Dispatcher from '../common/dispatcher/Dispatcher';
 import { stringContains } from '../utils/textFormat';
 import convertVoterGuideToElection from '../utils/voterGuideFunctions';
 import SupportStore from './SupportStore'; // eslint-disable-line import/no-cycle

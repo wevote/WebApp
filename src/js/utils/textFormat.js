@@ -21,16 +21,6 @@ export function abbreviateNumber (num) {
   return num;
 }
 
-// DALE TODO: Switch references to the file src/js/common/utils/arrayContains.js
-export function arrayContains (needle, arrayHaystack) {
-  // console.log("arrayContains, needle:", needle, ", haystack: ", arrayHaystack);
-  if (arrayHaystack) {
-    return arrayHaystack.indexOf(needle) > -1;
-  } else {
-    return false;
-  }
-}
-
 // We assume that arrayHaystack contains objects with one property with the name in needleProperty
 // When we find the first object in the arrayHaystack, replace it with the newObject
 export function arrayReplaceObjectMatchingPropertyValue (needleValue, needleProperty, arrayHaystack, newObject) {

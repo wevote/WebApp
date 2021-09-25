@@ -1,4 +1,4 @@
-import Dispatcher from '../dispatcher/Dispatcher';
+import Dispatcher from '../common/dispatcher/Dispatcher';
 import AppObservableStore  from '../stores/AppObservableStore';
 
 // Dec 2018: Keep this comment as a cheat-sheet for the enumerated values sent by the API

@@ -1,5 +1,5 @@
 import { ReduceStore } from 'flux/utils';
-import Dispatcher from '../dispatcher/Dispatcher';
+import Dispatcher from '../common/dispatcher/Dispatcher';
 import { extractNumberOfPositionsFromPositionList } from '../utils/positionFunctions'; // eslint-disable-line import/no-cycle
 import { stringContains, stripHtmlFromString } from '../utils/textFormat';
 

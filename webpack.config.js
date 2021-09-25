@@ -20,7 +20,10 @@ const source = isWebApp ? 'src' : 'srcCordova';
 const bundleAnalysis = process.env.ANALYSIS || false;  // enable the interactive bundle analyser and the Unused component analyzer
 const minimized = process.env.MINIMIZED || false;  // enable the Terser plugin that strips comments and shrinks long variable names
 // console.log('>>>> process.env: ', process.env);
+// console.log('>>>> process.env.MINIMIZED: ', process.env.MINIMIZED);
+// console.log('>>>> minimized: ', minimized);
 // console.log('>>>> bundleAnalysis: ', bundleAnalysis);
+// console.log('>>>> copy css path: ', `${source}/css/`);
 
 module.exports = (env, argv) => ({
   entry: path.resolve(__dirname, `./${source}/index.jsx`),
@@ -47,6 +50,7 @@ module.exports = (env, argv) => ({
     ],
   },
   optimization: {
+    minimize: minimized,
     minimizer: [
       ...(minimized ? [
         new TerserPlugin({

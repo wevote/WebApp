@@ -4,7 +4,8 @@ import { ArrowBack, ArrowBackIos } from '@material-ui/icons';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import styled from 'styled-components';
-import { historyPush, isIOS } from '../../utils/cordovaUtils';
+import { historyPush, isCordova, isIOS } from '../../utils/cordovaUtils';
+import isMobileScreenSize from '../../utils/isMobileScreenSize';
 import { renderLog } from '../../utils/logging';
 import { shortenText } from '../../utils/textFormat';
 
@@ -19,8 +20,9 @@ class HeaderBackToButton extends Component {
         color="primary"
         classes={{ root: classes.root }}
         className={`${className}`}
-        id="backToLinkTabHeader"
+        id="backToLinkTabHeaderBackToButton"
         onClick={() => historyPush(backToLink)}
+        style={{ paddingLeft: `${isMobileScreenSize() ? '0' : ''}` }}
       >
         {isIOS() ? (
           <ArrowBackIos className="button-icon" />
@@ -55,7 +57,7 @@ const styles = {
 // July 2021: A working example of styled mui-core components -- enabled by the newly added StylesProvider in App.js
 const StyledButton = styled(Button)`
   @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
-    padding-left: 40px;
+    padding-left: ${() => (isCordova() ? '0 !important' : '40px')};
   }
 `;
 

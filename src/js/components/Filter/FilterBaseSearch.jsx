@@ -13,7 +13,6 @@ import ballotSearchPriority from '../../utils/ballotSearchPriority';
 import { blurTextFieldAndroid, focusTextFieldAndroid, isAndroidSizeFold, isCordova } from '../../utils/cordovaUtils';
 import opinionsAndBallotItemsSearchPriority from '../../utils/opinionsAndBallotItemsSearchPriority';
 import positionSearchPriority from '../../utils/positionSearchPriority';
-import { arrayContains } from '../../utils/textFormat';
 import voterGuidePositionSearchPriority from '../../utils/voterGuidePositionSearchPriority';
 
 const delayBeforeSearchExecution = 600;
@@ -186,7 +185,7 @@ class FilterBaseSearch extends Component {
     // console.log('searchNewItems searchText:', searchText, ', searchTextAlreadyRetrieved:', searchTextAlreadyRetrieved);
     if (opinionsAndBallotItemsSearchMode) {
       // Reach out to API server to get more Organizations or Ballot items.
-      if (!arrayContains(searchText, searchTextAlreadyRetrieved)) {
+      if (!searchTextAlreadyRetrieved.includes(searchText)) {
         OrganizationActions.organizationSearch(searchText);
         BallotActions.ballotItemOptionsRetrieve('', searchText);
         searchTextAlreadyRetrieved.push(searchText);

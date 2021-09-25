@@ -1,6 +1,5 @@
 import { ReduceStore } from 'flux/utils';
-import Dispatcher from '../../dispatcher/Dispatcher';
-import arrayContains from '../utils/arrayContains';
+import Dispatcher from '../dispatcher/Dispatcher';
 
 
 class ShareStore extends ReduceStore {
@@ -83,7 +82,7 @@ class ShareStore extends ReduceStore {
     const { currentSharedItemOrganizationWeVoteIds } = this.getState();
     // console.log('ShareStore, voterHasAccessToSharedItemFromThisOrganization, currentSharedItemOrganizationWeVoteIds: ', currentSharedItemOrganizationWeVoteIds);
     if (currentSharedItemOrganizationWeVoteIds.length) {
-      const hasAccessToSharedItem = arrayContains(organizationWeVoteId, currentSharedItemOrganizationWeVoteIds);
+      const hasAccessToSharedItem = currentSharedItemOrganizationWeVoteIds.includes(organizationWeVoteId);
       // console.log('ShareStore, hasAccessToSharedItem:', hasAccessToSharedItem, ', organizationWeVoteId:', organizationWeVoteId);
       return hasAccessToSharedItem;
     } else {
@@ -189,7 +188,7 @@ class ShareStore extends ReduceStore {
         ({ currentSharedItemOrganizationWeVoteIds } = state);
         if (action.res.voter_guides) {
           for (count = 0; count < action.res.voter_guides.length; count++) {
-            if (action.res.voter_guides[count].from_shared_item && !arrayContains(action.res.voter_guides[count].organization_we_vote_id, currentSharedItemOrganizationWeVoteIds)) {
+            if (action.res.voter_guides[count].from_shared_item && !currentSharedItemOrganizationWeVoteIds.includes(action.res.voter_guides[count].organization_we_vote_id)) {
               currentSharedItemOrganizationWeVoteIds.push(action.res.voter_guides[count].organization_we_vote_id);
             }
           }

@@ -11,7 +11,6 @@ import FriendStore from '../../stores/FriendStore';
 import OrganizationStore from '../../stores/OrganizationStore';
 import { getStateCodesFoundInObjectList } from '../../utils/addressFunctions';
 import { renderLog } from '../../utils/logging';
-import { arrayContains } from '../../utils/textFormat';
 import FilterBase from '../Filter/FilterBase';
 import VoterGuidePositionFilter from '../Filter/VoterGuidePositionFilter';
 import NumberOfItemsFound from '../Widgets/NumberOfItemsFound';
@@ -92,7 +91,7 @@ class VoterGuidePositionList extends Component {
         // console.log('MISSING position.position_we_vote_id');
         return null;
       }
-      if (candidateAlreadySeenThisYear[position.ballot_item_we_vote_id] && arrayContains(position.position_year, candidateAlreadySeenThisYear[position.ballot_item_we_vote_id])) {
+      if (candidateAlreadySeenThisYear[position.ballot_item_we_vote_id] && candidateAlreadySeenThisYear[position.ballot_item_we_vote_id].includes(position.position_year)) {
         // console.log('componentDidMount already seen');
         return null;
       } else if (candidateAlreadySeenThisYear[position.ballot_item_we_vote_id]) {
@@ -152,7 +151,7 @@ class VoterGuidePositionList extends Component {
   //     if (!position) {
   //       return null;
   //     }
-  //     if (candidateAlreadySeenThisYear[position.ballot_item_we_vote_id] && arrayContains(position.position_year, candidateAlreadySeenThisYear[position.ballot_item_we_vote_id])) {
+  //     if (candidateAlreadySeenThisYear[position.ballot_item_we_vote_id] && candidateAlreadySeenThisYear[position.ballot_item_we_vote_id].includes(position.position_year)) {
   //       // console.log('componentWillReceiveProps already seen');
   //       return null;
   //     } else if (candidateAlreadySeenThisYear[position.ballot_item_we_vote_id]) {

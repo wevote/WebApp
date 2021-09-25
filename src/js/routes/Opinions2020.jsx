@@ -4,8 +4,9 @@ import { Ballot, Info } from '@material-ui/icons';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import { ReactSVG } from 'react-svg';
 import styled from 'styled-components';
+import { cordovaDot } from '../utils/cordovaUtils';
+import cordovaScrollablePaneTopPadding from '../utils/cordovaScrollablePaneTopPadding';
 import ActivityActions from '../actions/ActivityActions';
 import AnalyticsActions from '../actions/AnalyticsActions';
 import BallotActions from '../actions/BallotActions';
@@ -18,18 +19,16 @@ import CandidateSearchItemForOpinions from '../components/OpinionsAndBallotItems
 import VoterGuideDisplayForListForOpinions from '../components/OpinionsAndBallotItems/VoterGuideDisplayForListForOpinions';
 import NumberOfItemsFound from '../components/Widgets/NumberOfItemsFound';
 import SnackNotifier from '../components/Widgets/SnackNotifier';
+import SvgImage from '../components/Widgets/SvgImage';
 import BallotStore from '../stores/BallotStore';
 import OrganizationStore from '../stores/OrganizationStore';
 import VoterGuideStore from '../stores/VoterGuideStore';
 import VoterStore from '../stores/VoterStore';
-import { cordovaDot } from '../utils/cordovaUtils';
 import { renderLog } from '../utils/logging';
-import { arrayContains, stringContains } from '../utils/textFormat';
+import { stringContains } from '../utils/textFormat';
 
 const ShowMoreItems = React.lazy(() => import(/* webpackChunkName: 'ShowMoreItems' */ '../components/Widgets/ShowMoreItems'));
 
-const groupIcon = '../../img/global/svg-icons/group-icon.svg';
-const organizationIcon = '../../img/global/svg-icons/organization-icon.svg';
 
 const groupedFilters = [
   // {
@@ -38,25 +37,19 @@ const groupedFilters = [
   //   filterId: 'federalRaceFilter',  // thumbUpFilter
   // },
 ];
+const group = cordovaDot('../../img/global/svg-icons/group-icon.svg');
+const organizatonIcon = cordovaDot('../../img/global/svg-icons/organization-icon.svg');
 
 const islandFilters = [
   {
     filterName: 'showOrganizationsFilter',
-    icon: <ReactSVG
-      src={cordovaDot(organizationIcon)}
-      beforeInjection={(svg) => svg.setAttribute('style', 'margin-top: 4px; background-color: #fff; width: 16px; height: 16px; border-radius: 3px; fill: #555;')}
-      alt="Visible to Public"
-    />,
+    icon: <SvgImage imageName={organizatonIcon} />,
     filterDisplayName: 'Organizations',
     filterId: 'islandFilterOrganizations',
   },
   {
     filterName: 'showPublicFiguresFilter',
-    icon: <ReactSVG
-      src={cordovaDot(groupIcon)}
-      beforeInjection={(svg) => svg.setAttribute('style', 'background-color: #fff; border-radius: 3px; fill: #555; width: 16px; height: 16px')}
-      alt="Visible to Public"
-    />,
+    icon: <SvgImage imageName={group} />,
     filterDisplayName: 'Public Figures',
     filterId: 'islandFilterOrganizations',
   },
@@ -140,7 +133,7 @@ class Opinions2020 extends Component {
     const voterGuidesMinusOrganizationsInSearchResults = [];
     const organizationWeVoteIdsFoundInVoterGuides = [];
     allVoterGuidesBeforeFilter.forEach((oneOrganization) => {
-      if (!arrayContains(oneOrganization.organization_we_vote_id, organizationWeVoteIdsFoundInVoterGuides)) {
+      if (!organizationWeVoteIdsFoundInVoterGuides.includes(oneOrganization.organization_we_vote_id)) {
         organizationWeVoteIdsFoundInVoterGuides.push(oneOrganization.organization_we_vote_id);
         voterGuidesMinusOrganizationsInSearchResults.push(oneOrganization);
       }
@@ -228,13 +221,13 @@ class Opinions2020 extends Component {
     let ballotItemWeVoteIdsAlreadyFoundChanged = false;
     // console.log('Opinions2020, onBallotStoreChange allBallotItemsFlattened:', allBallotItemsFlattened);
     for (let count = 0; count < allBallotItemsFlattened.length; count++) {
-      if (!arrayContains(allBallotItemsFlattened[count].we_vote_id, ballotItemWeVoteIdsAlreadyFoundList)) {
+      if (!ballotItemWeVoteIdsAlreadyFoundList.includes(allBallotItemsFlattened[count].we_vote_id)) {
         ballotItemWeVoteIdsAlreadyFoundList.push(allBallotItemsFlattened[count].we_vote_id);
         ballotItemWeVoteIdsAlreadyFoundChanged = true;
       }
       if (allBallotItemsFlattened[count].candidate_list) {
         for (let count2 = 0; count2 < allBallotItemsFlattened[count].candidate_list.length; count2++) {
-          if (!arrayContains(allBallotItemsFlattened[count].candidate_list[count2].we_vote_id, ballotItemWeVoteIdsAlreadyFoundList)) {
+          if (!ballotItemWeVoteIdsAlreadyFoundList.includes(allBallotItemsFlattened[count].candidate_list[count2].we_vote_id)) {
             ballotItemWeVoteIdsAlreadyFoundList.push(allBallotItemsFlattened[count].candidate_list[count2].we_vote_id);
             ballotItemWeVoteIdsAlreadyFoundChanged = true;
           }
@@ -247,17 +240,17 @@ class Opinions2020 extends Component {
     // console.log('ballotItemSearchResultsList:', ballotItemSearchResultsList);
     if (ballotItemSearchResultsList && ballotItemSearchResultsList.length) {
       // Figure out which of these organizations has already been retrieved so we are only adding new
-      const newBallotItemSearchResults = ballotItemSearchResultsList.filter((ballotItem) => !arrayContains(ballotItem.we_vote_id, ballotItemWeVoteIdsAlreadyFoundList));
+      const newBallotItemSearchResults = ballotItemSearchResultsList.filter((ballotItem) => !ballotItemWeVoteIdsAlreadyFoundList.includes(ballotItem.we_vote_id));
       // console.log('newBallotItemSearchResults:', newBallotItemSearchResults);
 
       // Figure out the organizations we already have voterGuides for so we don't duplicate
       if (newBallotItemSearchResults.length) {
         let newBallotItem;
-        const newBallotItems = [];
+        // const newBallotItems = [];
         for (let count = 0; count < newBallotItemSearchResults.length; count++) {
           ballotItemWeVoteIdsAlreadyFoundList.push(newBallotItemSearchResults[count].we_vote_id);
           ballotItemWeVoteIdsAlreadyFoundChanged = true;
-          if (arrayContains('cand', newBallotItemSearchResults[count].we_vote_id)) {
+          if (newBallotItemSearchResults[count].we_vote_id.includes('cand')) {
             newBallotItem = {
               ballot_item_display_name: newBallotItemSearchResults[count].ballot_item_display_name,
               candidate_photo_url_medium: newBallotItemSearchResults[count].candidate_photo_url_medium,
@@ -268,7 +261,7 @@ class Opinions2020 extends Component {
               state_code: newBallotItemSearchResults[count].state_code,
               we_vote_id: newBallotItemSearchResults[count].we_vote_id,
             };
-          } else if (arrayContains('meas', newBallotItemSearchResults[count].we_vote_id) || arrayContains('meas', newBallotItemSearchResults[count].measure_we_vote_id)) {
+          } else if (newBallotItemSearchResults[count].we_vote_id.includes('meas') || newBallotItemSearchResults[count].measure_we_vote_id.includes('meas')) {
             newBallotItem = {
               ballot_item_display_name: newBallotItemSearchResults[count].ballot_item_display_name,
               google_civic_election_id: newBallotItemSearchResults[count].google_civic_election_id,
@@ -298,7 +291,7 @@ class Opinions2020 extends Component {
               we_vote_id: newBallotItemSearchResults[count].we_vote_id,
             };
           }
-          newBallotItems.push(newBallotItem);
+          // newBallotItems.push(newBallotItem);
           allBallotItemSearchResults.push(newBallotItem);
         }
         this.setState({
@@ -396,7 +389,7 @@ class Opinions2020 extends Component {
     const organizationSearchResultsListDeDuplicated = [];
     const organizationWeVoteIdsFoundInOrganizationSearchResults = [];
     organizationSearchResultsList.forEach((oneOrganization) => {
-      if (!arrayContains(oneOrganization.organization_we_vote_id, organizationWeVoteIdsFoundInOrganizationSearchResults)) {
+      if (!organizationWeVoteIdsFoundInOrganizationSearchResults.includes(oneOrganization.organization_we_vote_id)) {
         organizationWeVoteIdsFoundInOrganizationSearchResults.push(oneOrganization.organization_we_vote_id);
         organizationSearchResultsListDeDuplicated.push(oneOrganization);
       }
@@ -408,7 +401,7 @@ class Opinions2020 extends Component {
     const voterGuidesMinusOrganizationsInSearchResultsCopy = voterGuidesMinusOrganizationsInSearchResults;
     voterGuidesMinusOrganizationsInSearchResults = [];
     voterGuidesMinusOrganizationsInSearchResultsCopy.forEach((oneOrganization) => {
-      if (!arrayContains(oneOrganization.organization_we_vote_id, organizationWeVoteIdsFoundInOrganizationSearchResults)) {
+      if (!organizationWeVoteIdsFoundInOrganizationSearchResults.includes(oneOrganization.organization_we_vote_id)) {
         voterGuidesMinusOrganizationsInSearchResults.push(oneOrganization);
       }
     });
@@ -452,7 +445,7 @@ class Opinions2020 extends Component {
     const allVoterGuidesDeDuplicated = [];
     const organizationWeVoteIdsFoundInVoterGuides = [];
     allVoterGuidesConcatenated.forEach((oneOrganization) => {
-      if (!arrayContains(oneOrganization.organization_we_vote_id, organizationWeVoteIdsFoundInVoterGuides)) {
+      if (!organizationWeVoteIdsFoundInVoterGuides.includes(oneOrganization.organization_we_vote_id)) {
         organizationWeVoteIdsFoundInVoterGuides.push(oneOrganization.organization_we_vote_id);
         allVoterGuidesDeDuplicated.push(oneOrganization);
       }
@@ -466,7 +459,7 @@ class Opinions2020 extends Component {
     });
     const voterGuidesMinusOrganizationsInSearchResults = [];
     allVoterGuidesDeDuplicated.forEach((oneOrganization) => {
-      if (oneOrganization && oneOrganization.organization_we_vote_id && arrayContains(oneOrganization.organization_we_vote_id, organizationWeVoteIdsFoundInOrganizationSearchResults)) {
+      if (oneOrganization && oneOrganization.organization_we_vote_id && organizationWeVoteIdsFoundInOrganizationSearchResults.includes(oneOrganization.organization_we_vote_id)) {
         // Skip this entry
       } else {
         voterGuidesMinusOrganizationsInSearchResults.push(oneOrganization);
@@ -605,7 +598,7 @@ class Opinions2020 extends Component {
     // console.log('filteredOpinionsAndBallotItems: ', filteredOpinionsAndBallotItems);
     // console.log('atLeastOneFoundWithTheseFilters: ', atLeastOneFoundWithTheseFilters);
     return (
-      <div className="container">
+      <div className="container" style={{ paddingTop: `${cordovaScrollablePaneTopPadding()}` }}>
         <SnackNotifier />
         <Card className="card">
           <div className="card-main">
