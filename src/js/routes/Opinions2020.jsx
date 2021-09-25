@@ -25,7 +25,7 @@ import OrganizationStore from '../stores/OrganizationStore';
 import VoterGuideStore from '../stores/VoterGuideStore';
 import VoterStore from '../stores/VoterStore';
 import { renderLog } from '../utils/logging';
-import { arrayContains, stringContains } from '../utils/textFormat';
+import { stringContains } from '../utils/textFormat';
 
 const ShowMoreItems = React.lazy(() => import(/* webpackChunkName: 'ShowMoreItems' */ '../components/Widgets/ShowMoreItems'));
 
@@ -133,7 +133,7 @@ class Opinions2020 extends Component {
     const voterGuidesMinusOrganizationsInSearchResults = [];
     const organizationWeVoteIdsFoundInVoterGuides = [];
     allVoterGuidesBeforeFilter.forEach((oneOrganization) => {
-      if (!arrayContains(oneOrganization.organization_we_vote_id, organizationWeVoteIdsFoundInVoterGuides)) {
+      if (!organizationWeVoteIdsFoundInVoterGuides.includes(oneOrganization.organization_we_vote_id)) {
         organizationWeVoteIdsFoundInVoterGuides.push(oneOrganization.organization_we_vote_id);
         voterGuidesMinusOrganizationsInSearchResults.push(oneOrganization);
       }
@@ -221,13 +221,13 @@ class Opinions2020 extends Component {
     let ballotItemWeVoteIdsAlreadyFoundChanged = false;
     // console.log('Opinions2020, onBallotStoreChange allBallotItemsFlattened:', allBallotItemsFlattened);
     for (let count = 0; count < allBallotItemsFlattened.length; count++) {
-      if (!arrayContains(allBallotItemsFlattened[count].we_vote_id, ballotItemWeVoteIdsAlreadyFoundList)) {
+      if (!ballotItemWeVoteIdsAlreadyFoundList.includes(allBallotItemsFlattened[count].we_vote_id)) {
         ballotItemWeVoteIdsAlreadyFoundList.push(allBallotItemsFlattened[count].we_vote_id);
         ballotItemWeVoteIdsAlreadyFoundChanged = true;
       }
       if (allBallotItemsFlattened[count].candidate_list) {
         for (let count2 = 0; count2 < allBallotItemsFlattened[count].candidate_list.length; count2++) {
-          if (!arrayContains(allBallotItemsFlattened[count].candidate_list[count2].we_vote_id, ballotItemWeVoteIdsAlreadyFoundList)) {
+          if (!ballotItemWeVoteIdsAlreadyFoundList.includes(allBallotItemsFlattened[count].candidate_list[count2].we_vote_id)) {
             ballotItemWeVoteIdsAlreadyFoundList.push(allBallotItemsFlattened[count].candidate_list[count2].we_vote_id);
             ballotItemWeVoteIdsAlreadyFoundChanged = true;
           }
@@ -240,7 +240,7 @@ class Opinions2020 extends Component {
     // console.log('ballotItemSearchResultsList:', ballotItemSearchResultsList);
     if (ballotItemSearchResultsList && ballotItemSearchResultsList.length) {
       // Figure out which of these organizations has already been retrieved so we are only adding new
-      const newBallotItemSearchResults = ballotItemSearchResultsList.filter((ballotItem) => !arrayContains(ballotItem.we_vote_id, ballotItemWeVoteIdsAlreadyFoundList));
+      const newBallotItemSearchResults = ballotItemSearchResultsList.filter((ballotItem) => !ballotItemWeVoteIdsAlreadyFoundList.includes(ballotItem.we_vote_id));
       // console.log('newBallotItemSearchResults:', newBallotItemSearchResults);
 
       // Figure out the organizations we already have voterGuides for so we don't duplicate
@@ -250,7 +250,7 @@ class Opinions2020 extends Component {
         for (let count = 0; count < newBallotItemSearchResults.length; count++) {
           ballotItemWeVoteIdsAlreadyFoundList.push(newBallotItemSearchResults[count].we_vote_id);
           ballotItemWeVoteIdsAlreadyFoundChanged = true;
-          if (arrayContains('cand', newBallotItemSearchResults[count].we_vote_id)) {
+          if (newBallotItemSearchResults[count].we_vote_id.includes('cand')) {
             newBallotItem = {
               ballot_item_display_name: newBallotItemSearchResults[count].ballot_item_display_name,
               candidate_photo_url_medium: newBallotItemSearchResults[count].candidate_photo_url_medium,
@@ -261,7 +261,7 @@ class Opinions2020 extends Component {
               state_code: newBallotItemSearchResults[count].state_code,
               we_vote_id: newBallotItemSearchResults[count].we_vote_id,
             };
-          } else if (arrayContains('meas', newBallotItemSearchResults[count].we_vote_id) || arrayContains('meas', newBallotItemSearchResults[count].measure_we_vote_id)) {
+          } else if (newBallotItemSearchResults[count].we_vote_id.includes('meas') || newBallotItemSearchResults[count].measure_we_vote_id.includes('meas')) {
             newBallotItem = {
               ballot_item_display_name: newBallotItemSearchResults[count].ballot_item_display_name,
               google_civic_election_id: newBallotItemSearchResults[count].google_civic_election_id,
@@ -389,7 +389,7 @@ class Opinions2020 extends Component {
     const organizationSearchResultsListDeDuplicated = [];
     const organizationWeVoteIdsFoundInOrganizationSearchResults = [];
     organizationSearchResultsList.forEach((oneOrganization) => {
-      if (!arrayContains(oneOrganization.organization_we_vote_id, organizationWeVoteIdsFoundInOrganizationSearchResults)) {
+      if (!organizationWeVoteIdsFoundInOrganizationSearchResults.includes(oneOrganization.organization_we_vote_id)) {
         organizationWeVoteIdsFoundInOrganizationSearchResults.push(oneOrganization.organization_we_vote_id);
         organizationSearchResultsListDeDuplicated.push(oneOrganization);
       }
@@ -401,7 +401,7 @@ class Opinions2020 extends Component {
     const voterGuidesMinusOrganizationsInSearchResultsCopy = voterGuidesMinusOrganizationsInSearchResults;
     voterGuidesMinusOrganizationsInSearchResults = [];
     voterGuidesMinusOrganizationsInSearchResultsCopy.forEach((oneOrganization) => {
-      if (!arrayContains(oneOrganization.organization_we_vote_id, organizationWeVoteIdsFoundInOrganizationSearchResults)) {
+      if (!organizationWeVoteIdsFoundInOrganizationSearchResults.includes(oneOrganization.organization_we_vote_id)) {
         voterGuidesMinusOrganizationsInSearchResults.push(oneOrganization);
       }
     });
@@ -445,7 +445,7 @@ class Opinions2020 extends Component {
     const allVoterGuidesDeDuplicated = [];
     const organizationWeVoteIdsFoundInVoterGuides = [];
     allVoterGuidesConcatenated.forEach((oneOrganization) => {
-      if (!arrayContains(oneOrganization.organization_we_vote_id, organizationWeVoteIdsFoundInVoterGuides)) {
+      if (!organizationWeVoteIdsFoundInVoterGuides.includes(oneOrganization.organization_we_vote_id)) {
         organizationWeVoteIdsFoundInVoterGuides.push(oneOrganization.organization_we_vote_id);
         allVoterGuidesDeDuplicated.push(oneOrganization);
       }
@@ -459,7 +459,7 @@ class Opinions2020 extends Component {
     });
     const voterGuidesMinusOrganizationsInSearchResults = [];
     allVoterGuidesDeDuplicated.forEach((oneOrganization) => {
-      if (oneOrganization && oneOrganization.organization_we_vote_id && arrayContains(oneOrganization.organization_we_vote_id, organizationWeVoteIdsFoundInOrganizationSearchResults)) {
+      if (oneOrganization && oneOrganization.organization_we_vote_id && organizationWeVoteIdsFoundInOrganizationSearchResults.includes(oneOrganization.organization_we_vote_id)) {
         // Skip this entry
       } else {
         voterGuidesMinusOrganizationsInSearchResults.push(oneOrganization);

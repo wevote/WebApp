@@ -6,7 +6,7 @@ import styled from 'styled-components';
 import CandidateStore from '../../stores/CandidateStore';
 import { historyPush } from '../../utils/cordovaUtils';
 import { renderLog } from '../../utils/logging';
-import { arrayContains, toTitleCase } from '../../utils/textFormat';
+import { toTitleCase } from '../../utils/textFormat';
 import CandidateItemForAddPositions from './CandidateItemForAddPositions';
 
 class OfficeItemForAddPositions extends Component {
@@ -220,7 +220,7 @@ class OfficeItemForAddPositions extends Component {
           {showCandidates && (
             <Container candidateLength={candidateList.length}>
               { candidateList.map((oneCandidate) => {
-                if (!oneCandidate || !oneCandidate.we_vote_id || (candidatesToShowForSearchResults && candidatesToShowForSearchResults.length && !arrayContains(oneCandidate.we_vote_id, candidatesToShowForSearchResults))) {
+                if (!oneCandidate || !oneCandidate.we_vote_id || (candidatesToShowForSearchResults && candidatesToShowForSearchResults.length && !candidatesToShowForSearchResults.includes(oneCandidate.we_vote_id))) {
                   return null;
                 }
                 return (

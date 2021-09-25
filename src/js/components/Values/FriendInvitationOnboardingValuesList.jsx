@@ -6,7 +6,6 @@ import IssueStore from '../../stores/IssueStore';
 import VoterGuideStore from '../../stores/VoterGuideStore';
 import VoterStore from '../../stores/VoterStore';
 import { renderLog } from '../../utils/logging';
-import { arrayContains } from '../../utils/textFormat';
 
 const IssueCard = React.lazy(() => import(/* webpackChunkName: 'IssueCard' */ './IssueCard'));
 
@@ -49,7 +48,7 @@ export default class FriendInvitationOnboardingValuesList extends Component {
     }
     // Remove issues shown under friend who invited voter
     if (friendIssueWeVoteIdList && friendIssueWeVoteIdList.length) {
-      allIssuesForDisplay = allIssuesForDisplay.filter((issue) => !arrayContains(issue.issue_we_vote_id, friendIssueWeVoteIdList));
+      allIssuesForDisplay = allIssuesForDisplay.filter((issue) => !friendIssueWeVoteIdList.includes(issue.issue_we_vote_id));
     }
     let oneIssue;
     const allIssuesNoLean = [];

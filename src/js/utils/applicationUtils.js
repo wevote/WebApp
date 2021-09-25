@@ -327,8 +327,7 @@ export function normalizedHrefPage () {
   return page;
 }
 
-export function headerHasSubmenu (pathname) {  //
+export function headerHasSubmenu () {  //
   const [, page] = normalizedHref().split('/');
-  console.log(page, pathname);
   return ['ballot', 'friends'].includes(page);
 }

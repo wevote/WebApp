@@ -624,7 +624,7 @@ class HeaderBar extends Component {
       <HeaderBarWrapper
         hasNotch={hasIPhoneNotch()}
         scrolledDown={scrolledDown && isWebApp() && shouldHeaderRetreat(pathname)}
-        hasSubMenu={headerHasSubmenu(pathname)}
+        hasSubMenu={headerHasSubmenu()}
       >
         <AppBar position="relative"
                 id="headerBarAppBar"

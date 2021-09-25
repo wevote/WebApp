@@ -1,4 +1,4 @@
-import Dispatcher from '../dispatcher/Dispatcher';
+import Dispatcher from '../common/dispatcher/Dispatcher';
 import { isCordova } from '../utils/cordovaUtils'; // eslint-disable-line import/no-cycle
 import AppObservableStore from '../stores/AppObservableStore'; // eslint-disable-line import/no-cycle
 

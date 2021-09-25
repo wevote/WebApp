@@ -5,7 +5,6 @@ import IssueActions from '../../actions/IssueActions';
 import IssueStore from '../../stores/IssueStore';
 import VoterStore from '../../stores/VoterStore';
 import { renderLog } from '../../utils/logging';
-import { arrayContains } from '../../utils/textFormat';
 
 const IssueCard = React.lazy(() => import(/* webpackChunkName: 'IssueCard' */ './IssueCard'));
 
@@ -38,7 +37,7 @@ export default class FriendInvitationOnboardingFriendValuesList extends Componen
     let oneIssue;
     for (let i = 0; i < allIssuesRaw.length; i++) {
       oneIssue = allIssuesRaw[i];
-      if (arrayContains(oneIssue.issue_we_vote_id, friendIssueWeVoteIdList)) {
+      if (friendIssueWeVoteIdList.includes(oneIssue.issue_we_vote_id)) {
         allIssuesForDisplay.push(oneIssue);
       }
     }

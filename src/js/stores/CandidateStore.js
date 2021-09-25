@@ -1,6 +1,6 @@
 import { ReduceStore } from 'flux/utils';
 import OfficeActions from '../actions/OfficeActions';
-import Dispatcher from '../dispatcher/Dispatcher';
+import Dispatcher from '../common/dispatcher/Dispatcher';
 
 import { mostLikelyOfficeDictFromList } from '../utils/candidateFunctions';
 import { cordovaDot } from '../utils/cordovaUtils'; // eslint-disable-line import/no-cycle

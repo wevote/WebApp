@@ -1,7 +1,7 @@
 import { ReduceStore } from 'flux/utils';
 import ReactionActions from '../actions/ReactionActions';
-import Dispatcher from '../dispatcher/Dispatcher';
-import { arrayContains, removeValueFromArray } from '../utils/textFormat';
+import Dispatcher from '../common/dispatcher/Dispatcher';
+import { removeValueFromArray } from '../utils/textFormat';
 import VoterStore from './VoterStore';
 
 class ReactionStore extends ReduceStore {
@@ -41,7 +41,7 @@ class ReactionStore extends ReduceStore {
   voterLikesThisItem (likedItemWeVoteId) {
     const allItemWeVoteIdsVoterLikes = this.getState().allItemWeVoteIdsVoterLikes || [];
     // console.log('voterLikesThisItem allItemWeVoteIdsVoterLikes:', allItemWeVoteIdsVoterLikes);
-    return arrayContains(likedItemWeVoteId, allItemWeVoteIdsVoterLikes);
+    return allItemWeVoteIdsVoterLikes.includes(likedItemWeVoteId);
   }
 
   reduce (state, action) {
@@ -72,7 +72,7 @@ class ReactionStore extends ReduceStore {
         incomingReactionLikeList.forEach((reactionLike) => {
           // Capture all likes under each liked_item
           allCachedReactionLikesByLikedItemWeVoteId[reactionLike.liked_item_we_vote_id].push(reactionLike);
-          if (!arrayContains(reactionLike.liked_item_we_vote_id, likedItemWeVoteIdReturnedList)) {
+          if (!likedItemWeVoteIdReturnedList.includes(reactionLike.liked_item_we_vote_id)) {
             likedItemWeVoteIdReturnedList.push(reactionLike.liked_item_we_vote_id);
           }
           // Capture all likes under the parent activity_tidbit
@@ -88,17 +88,17 @@ class ReactionStore extends ReduceStore {
           if (!voterWeVoteIdListForEachItemLiked[reactionLike.liked_item_we_vote_id]) {
             voterWeVoteIdListForEachItemLiked[reactionLike.liked_item_we_vote_id] = [];
           }
-          if (!arrayContains(reactionLike.voter_we_vote_id, voterWeVoteIdListForEachItemLiked[reactionLike.liked_item_we_vote_id])) {
+          if (!voterWeVoteIdListForEachItemLiked[reactionLike.liked_item_we_vote_id].includes(reactionLike.voter_we_vote_id)) {
             voterWeVoteIdListForEachItemLiked[reactionLike.liked_item_we_vote_id].push(reactionLike.voter_we_vote_id);
           }
           if (reactionLike.voter_we_vote_id === voterWeVoteId) {
-            if (!arrayContains(reactionLike.liked_item_we_vote_id, allItemWeVoteIdsVoterLikes)) {
+            if (!allItemWeVoteIdsVoterLikes.includes(reactionLike.liked_item_we_vote_id)) {
               allItemWeVoteIdsVoterLikes.push(reactionLike.liked_item_we_vote_id);
             }
           }
         });
         likedItemWeVoteIdList.forEach((oneLikedItemWeVoteId) => {
-          if (!arrayContains(oneLikedItemWeVoteId, likedItemWeVoteIdReturnedList)) {
+          if (!likedItemWeVoteIdReturnedList.includes(oneLikedItemWeVoteId)) {
             voterWeVoteIdListForEachItemLiked[oneLikedItemWeVoteId] = [];
           }
         });
@@ -124,7 +124,7 @@ class ReactionStore extends ReduceStore {
       case 'voterReactionLikeOnSave':
         if (!action.res || !action.res.success) return state;
         likedItemWeVoteId = action.res.liked_item_we_vote_id || '';
-        if (!arrayContains(likedItemWeVoteId, allItemWeVoteIdsVoterLikes)) {
+        if (!allItemWeVoteIdsVoterLikes.includes(likedItemWeVoteId)) {
           allItemWeVoteIdsVoterLikes.push(likedItemWeVoteId);
         }
         likedItemWeVoteIdList = [likedItemWeVoteId];

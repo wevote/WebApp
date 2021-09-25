@@ -8,7 +8,7 @@ import BallotStore from '../../stores/BallotStore';
 import { convertStateCodeToStateText, convertStateTextToStateCode, stateCodeMap } from '../../utils/addressFunctions';
 import { renderLog } from '../../utils/logging';
 import { isSpeakerTypeIndividual, isSpeakerTypeOrganization, isSpeakerTypePublicFigure } from '../../utils/organization-functions';
-import { arrayContains, removeValueFromArray } from '../../utils/textFormat';
+import { removeValueFromArray } from '../../utils/textFormat';
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -42,7 +42,7 @@ class OpinionsAndBallotItemsFilter extends Component {
     // console.log('componentDidMount stateCodeList:', stateCodeList);
     selectedFilters.forEach((filter) => {
       // console.log('componentDidMount filter:', filter);
-      if (arrayContains(filter, stateCodeList)) {
+      if (stateCodeList.includes(filter)) {
         selectedStates.push(filter);
         selectedStateFound = true;
       }
@@ -63,10 +63,10 @@ class OpinionsAndBallotItemsFilter extends Component {
     // console.log('componentWillReceiveProps selectedFilters at start:', selectedFilters);
     let newFilterPassedIn = false;
     filtersPassedInOnce.forEach((incomingFilter) => {
-      if (!arrayContains(incomingFilter, filtersAlreadyPassedInOnce)) {
+      if (!filtersAlreadyPassedInOnce.includes(incomingFilter)) {
         newFilterPassedIn = true;
         filtersAlreadyPassedInOnce.push(incomingFilter);
-        if (!arrayContains(incomingFilter, selectedFilters)) {
+        if (!selectedFilters.includes(incomingFilter)) {
           selectedFilters.push(incomingFilter);
         }
       }
@@ -82,7 +82,7 @@ class OpinionsAndBallotItemsFilter extends Component {
       // console.log('componentDidMount stateCodeList:', stateCodeList);
       selectedFilters.forEach((filter) => {
         // console.log('componentDidMount filter:', filter);
-        if (arrayContains(filter, stateCodeList) && !arrayContains(filter, selectedStates)) {
+        if (stateCodeList.includes(filter) && !selectedStates.includes(filter)) {
           selectedStates.push(filter);
           selectedStateFound = true;
         }
@@ -123,7 +123,7 @@ class OpinionsAndBallotItemsFilter extends Component {
       // Find new states just added
       this.state.selectedStates.forEach((stateCodeToRetrieve) => {
         // Is there a state in this list that is NOT in the previous list?
-        if (!arrayContains(stateCodeToRetrieve, prevState.selectedStates)) {
+        if (!prevState.selectedStates.includes(stateCodeToRetrieve)) {
           // console.log('New stateCode found:', stateCodeToRetrieve);
           if (!localAllBallotItemsHaveBeenRetrieved[googleCivicElectionId]) {
             localAllBallotItemsHaveBeenRetrieved[googleCivicElectionId] = {};
@@ -145,7 +145,7 @@ class OpinionsAndBallotItemsFilter extends Component {
       let stateCodeRemoved = false;
       prevState.selectedStates.forEach((stateCode) => {
         // Is there a state in the previous selectedStates that is not in the current list? If so, trigger re-render
-        if (!arrayContains(stateCode, newSelectedStates)) {
+        if (!newSelectedStates.includes(stateCode)) {
           // console.log('stateCodeRemoved: ', stateCodeRemoved, ', stateCode:', stateCode);
           selectedFilters = removeValueFromArray(stateCode, selectedFilters);
           // console.log('Updated selectedFilters:', selectedFilters);
@@ -221,7 +221,7 @@ class OpinionsAndBallotItemsFilter extends Component {
     // const stateCodeList = Object.keys(stateCodeMap);
     // const stateCodesSelected = ['na', ''];
     // selectedFilters.forEach((filter) => {
-    //   if (arrayContains(filter, stateCodeList)) {
+    //   if (stateCodeList.includes(filter)) {
     //     stateCodesSelected.push(filter.toLowerCase());
     //   }
     // });
@@ -231,7 +231,7 @@ class OpinionsAndBallotItemsFilter extends Component {
     // if (stateCodesSelected.length) {
     //   filterItemsSnapshot = filteredItems;
     //   filteredItems = [];
-    //   filteredItems = [...filteredItems, ...filterItemsSnapshot.filter(item => arrayContains(item.state_code, stateCodesSelected))];
+    //   filteredItems = [...filteredItems, ...filterItemsSnapshot.filter(item => stateCodesSelected.includes(item.state_code))];
     // }
 
     let containsOrgPublicFigureOrCandidateFilter = false;
@@ -335,7 +335,7 @@ class OpinionsAndBallotItemsFilter extends Component {
     // console.log('onSelectedStatesChange newValue:', newValue);
     if (newValue) {
       let newSelectedFilters = [];
-      if (arrayContains(newValue, priorValues)) {
+      if (priorValues.includes(newValue)) {
         // Remove newValue
         const newValues = removeValueFromArray(newValue, priorValues);
         this.setState({
@@ -404,7 +404,7 @@ class OpinionsAndBallotItemsFilter extends Component {
                 >
                   {stateNameList.map((stateName) => {
                     tempStateCode = convertStateTextToStateCode(stateName);
-                    stateAlreadySelected = arrayContains(tempStateCode, selectedStates);
+                    stateAlreadySelected = selectedStates.includes(tempStateCode);
                     // console.log('tempStateCode:', tempStateCode, ', stateAlreadySelected:', stateAlreadySelected);
                     return (
                       <MenuItem key={tempStateCode} value={tempStateCode}>

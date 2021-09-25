@@ -1,7 +1,7 @@
 /* eslint-disable prefer-destructuring */
 /* eslint-disable func-names */
-import { httpLog } from '../utils/logging';
-import $ajax from '../utils/service';
+import { httpLog } from '../../utils/logging';
+import $ajax from '../../utils/service';
 
 const Dispatcher = require('flux').Dispatcher;
 

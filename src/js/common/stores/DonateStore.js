@@ -1,5 +1,5 @@
 import { ReduceStore } from 'flux/utils';
-import Dispatcher from '../../dispatcher/Dispatcher';
+import Dispatcher from '../dispatcher/Dispatcher';
 
 /*
 July 2021 TODO: Same named file in the WebApp and Campaigns -- PLEASE KEEP THEM IDENTICAL -- make symmetrical changes and test on both sides

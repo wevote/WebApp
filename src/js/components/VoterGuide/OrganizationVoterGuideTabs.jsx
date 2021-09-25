@@ -7,7 +7,7 @@ import OrganizationStore from '../../stores/OrganizationStore';
 import VoterGuideStore from '../../stores/VoterGuideStore';
 import VoterStore from '../../stores/VoterStore';
 import { renderLog } from '../../utils/logging';
-import { abbreviateNumber, arrayContains } from '../../utils/textFormat';
+import { abbreviateNumber } from '../../utils/textFormat';
 import LoadingWheel from '../LoadingWheel';
 import VoterGuideChooseElectionWithPositionsModal from './VoterGuideChooseElectionWithPositionsModal';
 import VoterGuideEndorsements from './VoterGuideEndorsements';
@@ -189,7 +189,7 @@ export default class OrganizationVoterGuideTabs extends Component {
   switchTab (destinationTab) {
     // console.log('OrganizationVoterGuideTabs switchTab, destinationTab:', destinationTab);
     const availableTabsArray = ['following', 'followers', 'positions']; // 'ballot' removed
-    if (arrayContains(destinationTab, availableTabsArray)) {
+    if (availableTabsArray.includes(destinationTab)) {
       this.setState({
         activeRoute: destinationTab,
       });

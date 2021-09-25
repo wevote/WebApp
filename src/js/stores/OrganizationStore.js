@@ -2,9 +2,8 @@ import { ReduceStore } from 'flux/utils';
 import OrganizationActions from '../actions/OrganizationActions';
 import VoterGuideActions from '../actions/VoterGuideActions';
 import VoterConstants from '../constants/VoterConstants';
-import Dispatcher from '../dispatcher/Dispatcher';
+import Dispatcher from '../common/dispatcher/Dispatcher';
 import AppObservableStore from './AppObservableStore';
-import { arrayContains } from '../utils/textFormat';
 import VoterStore from './VoterStore'; // eslint-disable-line import/no-cycle
 
 /* eslint no-param-reassign: 0 */
@@ -231,7 +230,7 @@ class OrganizationStore extends ReduceStore {
     const { organizationWeVoteIdsVoterIsFollowing } = this.getState();
     // console.log('OrganizationStore, isVoterFollowingThisOrganization, organizationWeVoteIdsVoterIsFollowing: ', organizationWeVoteIdsVoterIsFollowing);
     if (organizationWeVoteIdsVoterIsFollowing.length) {
-      const isFollowing = arrayContains(organizationWeVoteId, organizationWeVoteIdsVoterIsFollowing);
+      const isFollowing = organizationWeVoteIdsVoterIsFollowing.includes(organizationWeVoteId);
       // console.log('OrganizationStore, isVoterFollowingThisOrganization:', isFollowing, ', organizationWeVoteId:', organizationWeVoteId);
       return isFollowing;
     } else {
@@ -244,7 +243,7 @@ class OrganizationStore extends ReduceStore {
     const { organizationWeVoteIdsVoterIsIgnoring } = this.getState();
     // console.log('OrganizationStore, isVoterIgnoringThisOrganization, organizationWeVoteIdsVoterIsIgnoring: ', organizationWeVoteIdsVoterIsIgnoring);
     if (organizationWeVoteIdsVoterIsIgnoring.length) {
-      const isIgnoring = arrayContains(organizationWeVoteId, organizationWeVoteIdsVoterIsIgnoring);
+      const isIgnoring = organizationWeVoteIdsVoterIsIgnoring.includes(organizationWeVoteId);
       // console.log('OrganizationStore, isVoterIgnoringThisOrganization:', isIgnoring, ', organizationWeVoteId:', organizationWeVoteId);
       return isIgnoring;
     } else {
@@ -391,7 +390,7 @@ class OrganizationStore extends ReduceStore {
         // VoterGuideActions.voterGuideFollowersRetrieve(organizationWeVoteId);
         // Retrieve the organizations followed by voter
         OrganizationActions.organizationsFollowedRetrieve();
-        if (!arrayContains(organizationWeVoteId, organizationWeVoteIdsVoterIsFollowing)) {
+        if (!organizationWeVoteIdsVoterIsFollowing.includes(organizationWeVoteId)) {
           organizationWeVoteIdsVoterIsFollowing.push(organizationWeVoteId);
         }
         return {
@@ -475,7 +474,7 @@ class OrganizationStore extends ReduceStore {
         // CandidateActions.positionListForBallotItemPublic(candidateWeVoteId);
         // Retrieve the organizations followed by voter
         OrganizationActions.organizationsFollowedRetrieve();
-        if (!arrayContains(organizationWeVoteId, organizationWeVoteIdsVoterIsIgnoring)) {
+        if (!organizationWeVoteIdsVoterIsIgnoring.includes(organizationWeVoteId)) {
           organizationWeVoteIdsVoterIsIgnoring.push(organizationWeVoteId);
         }
         return {
@@ -542,7 +541,7 @@ class OrganizationStore extends ReduceStore {
               } else {
                 allCachedOrganizationsDict[organizationWeVoteId] = oneOrganization;
               }
-              if (!arrayContains(organizationWeVoteId, organizationWeVoteIdsVoterIsFollowing)) {
+              if (!organizationWeVoteIdsVoterIsFollowing.includes(organizationWeVoteId)) {
                 organizationWeVoteIdsVoterIsFollowing.push(organizationWeVoteId);
               }
             });
@@ -911,7 +910,7 @@ class OrganizationStore extends ReduceStore {
         voterGuides = action.res.voter_guides;
         organizationWeVoteIdsVoterIsIgnoring = [];
         voterGuides.forEach((oneVoterGuide) => {
-          if (!arrayContains(oneVoterGuide.organization_we_vote_id, organizationWeVoteIdsVoterIsIgnoring)) {
+          if (!organizationWeVoteIdsVoterIsIgnoring.includes(oneVoterGuide.organization_we_vote_id)) {
             organizationWeVoteIdsVoterIsIgnoring.push(oneVoterGuide.organization_we_vote_id);
           }
         });

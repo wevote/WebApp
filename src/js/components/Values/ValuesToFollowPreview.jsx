@@ -13,7 +13,6 @@ import VoterStore from '../../stores/VoterStore';
 import apiCalming from '../../utils/apiCalming';
 import { historyPush } from '../../utils/cordovaUtils';
 import { renderLog } from '../../utils/logging';
-import { arrayContains } from '../../utils/textFormat';
 import InfoCircleIcon from '../Widgets/InfoCircleIcon';
 
 const FriendInvitationOnboardingValuesList = React.lazy(() => import(/* webpackChunkName: 'ImageHandler' */ './FriendInvitationOnboardingValuesList'));
@@ -89,7 +88,7 @@ class ValuesToFollowPreview extends Component {
       voterGuidesForValue = VoterGuideStore.getVoterGuidesForValue(issueWeVoteIdsVoterIsFollowing[count]);
       for (let count2 = 0; count2 < voterGuidesForValue.length; count2++) {
         if (voterGuidesForValue[count2] && voterGuidesForValue[count2].organization_we_vote_id) {
-          if (!arrayContains(voterGuidesForValue[count2].organization_we_vote_id, organizationWeVoteIdsAlreadyCaptured)) {
+          if (!organizationWeVoteIdsAlreadyCaptured.includes(voterGuidesForValue[count2].organization_we_vote_id)) {
             organizationWeVoteIdsAlreadyCaptured.push(voterGuidesForValue[count2].organization_we_vote_id);
             voterGuidesThatShareYourValues.push(voterGuidesForValue[count2]);
           }

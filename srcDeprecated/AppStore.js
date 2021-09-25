@@ -1,7 +1,7 @@
 import { ReduceStore } from 'flux/utils';
 import VoterActions from '../actions/VoterActions'; // eslint-disable-line import/no-cycle
 import webAppConfig from '../config';
-import Dispatcher from '../dispatcher/Dispatcher';
+import Dispatcher from '../common/dispatcher/Dispatcher';
 import { isCordova } from '../utils/cordovaUtils'; // eslint-disable-line import/no-cycle
 import { stringContains } from '../utils/textFormat';
 import VoterStore from './VoterStore'; // eslint-disable-line import/no-cycle

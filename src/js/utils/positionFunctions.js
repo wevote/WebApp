@@ -5,7 +5,7 @@ import FriendStore from '../stores/FriendStore';  // eslint-disable-line import/
 import MeasureStore from '../stores/MeasureStore';  // eslint-disable-line import/no-cycle
 import OrganizationStore from '../stores/OrganizationStore';  // eslint-disable-line import/no-cycle
 import SupportStore from '../stores/SupportStore';  // eslint-disable-line import/no-cycle
-import { arrayContains, stringContains } from './textFormat';
+import { stringContains } from './textFormat';
 
 export function isOrganizationInVotersNetwork (organizationWeVoteId) {
   return OrganizationStore.isVoterFollowingThisOrganization(organizationWeVoteId) ||
@@ -172,7 +172,7 @@ export function getPositionSummaryListForBallotItem (ballotItemWeVoteId, limitTo
     // if (showPositionsInVotersNetwork) {
     //   console.log('organizationWeVoteId:', organizationWeVoteId);
     // }
-    if (limitToThisIssue && !arrayContains(organizationWeVoteId, organizationWeVoteIdsLinkedToThisIssue)) {
+    if (limitToThisIssue && !organizationWeVoteIdsLinkedToThisIssue.includes(organizationWeVoteId)) {
       // We want to limit to one issue, and this organization is not linked to this issue, so skip
       // console.log('getPositionSummaryListForBallotItem skipThisOrganization limitToThisIssue:', limitToThisIssue);
       skipThisOrganization = true;

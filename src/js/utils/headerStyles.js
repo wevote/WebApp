@@ -71,7 +71,7 @@ export function headerToolbarStyles () {
 
   if (isWebApp() && !isMobileScreenSize()) {
     styles.width = '-webkit-fill-available';
-    console.log('header styles ------------- ', normalizedHrefPage());
+    // console.log('header styles ------------- ', normalizedHrefPage());
     styles.transform = normalizedHrefPage() === 'measure' ? 'translate(43%, -21%)' : null;
   }
 

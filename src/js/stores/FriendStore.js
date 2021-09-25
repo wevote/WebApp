@@ -1,9 +1,8 @@
 import { ReduceStore } from 'flux/utils';
 import FriendActions from '../actions/FriendActions'; // eslint-disable-line import/no-cycle
 import VoterActions from '../actions/VoterActions'; // eslint-disable-line import/no-cycle
-import Dispatcher from '../dispatcher/Dispatcher';
+import Dispatcher from '../common/dispatcher/Dispatcher';
 import apiCalming from '../utils/apiCalming';
-import { arrayContains } from '../utils/textFormat';
 
 class FriendStore extends ReduceStore {
   getInitialState () {
@@ -89,7 +88,7 @@ class FriendStore extends ReduceStore {
     const { currentFriendsOrganizationWeVoteIds } = this.getState();
     // console.log('FriendStore, isVoterFriendsWithThisOrganization, currentFriendsOrganizationWeVoteIds: ', currentFriendsOrganizationWeVoteIds);
     if (currentFriendsOrganizationWeVoteIds.length) {
-      const isFriend = arrayContains(organizationWeVoteId, currentFriendsOrganizationWeVoteIds);
+      const isFriend = currentFriendsOrganizationWeVoteIds.includes(organizationWeVoteId);
       // console.log('FriendStore, isVoterFriendsWithThisOrganization:', isFriend, ', organizationWeVoteId:', organizationWeVoteId);
       return isFriend;
     } else {
@@ -351,8 +350,8 @@ class FriendStore extends ReduceStore {
           for (count = 0; count < action.res.voter_guides.length; count++) {
             if (action.res.voter_guides[count].from_shared_item) {
               // Do not store in currentFriendsOrganizationWeVoteIds
-            } else if (!arrayContains(action.res.voter_guides[count].organization_we_vote_id, currentFriendsOrganizationWeVoteIds)) {
-              // console.log('NOT arrayContains');
+            } else if (!currentFriendsOrganizationWeVoteIds.includes(action.res.voter_guides[count].organization_we_vote_id)) {
+              // console.log('NOT array.contains');
               currentFriendsOrganizationWeVoteIds.push(action.res.voter_guides[count].organization_we_vote_id);
             }
           }

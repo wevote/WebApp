@@ -460,7 +460,7 @@ const ShowMoreItemsWrapper = styled.div`
 `;
 
 const UnorderedListWrapper = styled.ul`
-  padding-inline-start: 0px !important;
+  padding-inline-start: 0 !important;
 `;
 
 export default withStyles(styles)(PositionList);
