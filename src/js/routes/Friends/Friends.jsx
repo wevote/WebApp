@@ -63,7 +63,7 @@ class Friends extends Component {
       friendActivityExists: false,
       friendInvitationsSentByMe: [],
       friendInvitationsSentToMe: [],
-      friendsHeaderUnpinned: false,
+      // friendsHeaderUnpinned: false,
       suggestedFriendList: [],
       voterIsSignedIn: false,
     };
@@ -170,11 +170,11 @@ class Friends extends Component {
     }
   }
 
-  onAppObservableStoreChange () {
-    this.setState({
-      friendsHeaderUnpinned: AppObservableStore.getScrolledDown(),
-    });
-  }
+  // onAppObservableStoreChange () {
+  //   this.setState({
+  //     friendsHeaderUnpinned: AppObservableStore.getScrolledDown(),
+  //   });
+  // }
 
   getSelectedTab () {
     const { match: { params: { tabItem } } } = this.props;
