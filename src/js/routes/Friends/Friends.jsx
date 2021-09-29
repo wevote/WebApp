@@ -72,7 +72,7 @@ class Friends extends Component {
   componentDidMount () {
     // console.log('Friends componentDidMount');
 
-    this.appStateSubscription = messageService.getMessage().subscribe(() => this.onAppObservableStoreChange());
+    // this.appStateSubscription = messageService.getMessage().subscribe(() => this.onAppObservableStoreChange());
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
     this.friendStoreListener = FriendStore.addListener(this.onFriendStoreChange.bind(this));
     FriendActions.currentFriends();
@@ -113,7 +113,7 @@ class Friends extends Component {
   componentWillUnmount () {
     this.voterStoreListener.remove();
     this.friendStoreListener.remove();
-    this.appStateSubscription.unsubscribe();
+    // this.appStateSubscription.unsubscribe();
   }
 
   onVoterStoreChange () {
