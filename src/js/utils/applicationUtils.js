@@ -327,7 +327,6 @@ export function normalizedHrefPage () {
   return page;
 }
 
-export function headerHasSubmenu () {  //
-  const [, page] = normalizedHref().split('/');
-  return ['ballot', 'friends'].includes(page);
+export function displayTopMenuShadow () {  //
+  return ['friends'].includes(normalizedHrefPage());
 }

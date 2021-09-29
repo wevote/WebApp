@@ -53,6 +53,10 @@ const BetaMarkerInner = styled.span`
 `;
 
 const HeaderBarLogoWrapper = styled.div`
+  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+    padding-top: 5px;
+  }
+
   @media print{
   }
 `;

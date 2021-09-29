@@ -211,9 +211,9 @@ HeaderBarProfilePopUp.propTypes = {
 };
 
 const ProfileMenu = styled.div`
-  @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
-
-    position: fixed;
+  right: calc((100% - 965px)/2);
+  @media (max-width: 965px) {
+    right: 15px;
   }
 `;
 

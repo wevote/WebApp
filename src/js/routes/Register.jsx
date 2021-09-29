@@ -10,13 +10,13 @@ import BallotActions from '../actions/BallotActions';
 import ReadyActions from '../actions/ReadyActions';
 import LoadingWheel from '../components/LoadingWheel';
 import BrowserPushMessage from '../components/Widgets/BrowserPushMessage';
-import { PageContentContainer } from '../components/Widgets/ReusableStyles';
 import { messageService } from '../stores/AppObservableStore';
 import BallotStore from '../stores/BallotStore';
 import VoterStore from '../stores/VoterStore';
 import { formatDateToMonthDayYear } from '../utils/dateFormat';
 import { formatStateName } from '../utils/formatStateName';
 import { renderLog } from '../utils/logging';
+import { PageContentContainer } from '../utils/pageLayoutStyles';
 
 const voteDotOrg = '../../img/global/logos/vote_dot_org_logo-530x200.png';
 const turboVote = '../../img/global/logos/turbovote-logo.png';

@@ -16,7 +16,7 @@ import ShareStore from '../../common/stores/ShareStore';
 import VoterStore from '../../stores/VoterStore';
 import { hideZenDeskHelpVisibility, showZenDeskHelpVisibility } from '../../utils/applicationUtils';
 import { cordovaFooterHeight, cordovaNetworkNextButtonTop } from '../../utils/cordovaOffsets';
-import { hasIPhoneNotch, isCordova, isWebApp } from '../../utils/cordovaUtils';
+import { cordovaDot, hasIPhoneNotch, isCordova, isWebApp } from '../../utils/cordovaUtils';
 import { formatDateToMonthDayYear } from '../../utils/dateFormat';
 import { renderLog } from '../../utils/logging';
 import { isSpeakerTypeOrganization, isSpeakerTypePublicFigure } from '../../utils/organization-functions';
@@ -402,6 +402,8 @@ class SharedItemModal extends Component {
     const nameForNextToInfoIcon = organizationName || 'This person';
     const nameForNextToInfoIconMidSentence = organizationName || 'this person';
     const avatarCompressed = `card-main__avatar-compressed${isCordova() ? '-cordova' : ''}`;
+    const avatarBackgroundImage = cordovaDot('../img/global/svg-icons/avatar-generic.svg');
+
     if (isFriend) {
       textNextToInfoIcon = `${nameForNextToInfoIcon}'s opinions will be added to your personalized scores. `;
     } else if (isFollowing) {
@@ -464,6 +466,7 @@ class SharedItemModal extends Component {
                           imageUrl={organizationPhotoUrlMedium}
                           alt={`${organizationName}`}
                           kind_of_ballot_item="CANDIDATE"
+                          style={{ backgroundImage: { avatarBackgroundImage } }}
                         />
                       </OrganizationImageWrapper>
                       {/* SharedByOrganization Name */}

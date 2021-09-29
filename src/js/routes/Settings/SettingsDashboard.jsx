@@ -18,7 +18,7 @@ import SettingsSharing from '../../components/Settings/SettingsSharing';
 import SettingsSiteText from '../../components/Settings/SettingsSiteText';
 import SettingsSubscriptionPlan from '../../components/Settings/SettingsSubscriptionPlan';
 import ToolsToShareOnOtherWebsites from '../../components/Settings/ToolsToShareOnOtherWebsites';
-import { PageContentContainer } from '../../components/Widgets/ReusableStyles';
+import { PageContentContainer } from '../../utils/pageLayoutStyles';
 import BallotStore from '../../stores/BallotStore';
 import OrganizationStore from '../../stores/OrganizationStore';
 import VoterGuideStore from '../../stores/VoterGuideStore';

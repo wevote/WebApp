@@ -9,7 +9,7 @@ import OfficeActions from '../../actions/OfficeActions';
 import BallotStore from '../../stores/BallotStore';
 import CandidateStore from '../../stores/CandidateStore';
 import SupportStore from '../../stores/SupportStore';
-import { historyPush, isCordova } from '../../utils/cordovaUtils';
+import { cordovaDot, historyPush, isCordova } from '../../utils/cordovaUtils';
 import { renderLog } from '../../utils/logging';
 import { sortCandidateList } from '../../utils/positionFunctions';
 import { toTitleCase } from '../../utils/textFormat';
@@ -245,6 +245,8 @@ class OfficeItemCompressed extends Component {
             voterSupportsBallotItem = SupportStore.voterSupportsList[oneCandidate.we_vote_id] || false;
             voterOpposesBallotItem = SupportStore.voterOpposesList[oneCandidate.we_vote_id] || false;
             const avatarCompressed = `card-main__avatar-compressed${isCordova() ? '-cordova' : ''}`;
+            const avatarBackgroundImage = cordovaDot('../img/global/svg-icons/avatar-generic.svg');
+
 
             return (
               <Column
@@ -268,6 +270,7 @@ class OfficeItemCompressed extends Component {
                         imageUrl={oneCandidate.candidate_photo_url_medium}
                         alt="candidate-photo"
                         kind_of_ballot_item="CANDIDATE"
+                        style={{ backgroundImage: { avatarBackgroundImage } }}
                       />
                       {/* Candidate Name */}
                       <div>

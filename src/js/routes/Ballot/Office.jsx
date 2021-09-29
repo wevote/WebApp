@@ -8,7 +8,7 @@ import IssueActions from '../../actions/IssueActions';
 import OfficeActions from '../../actions/OfficeActions';
 import CandidateList from '../../components/Ballot/CandidateList';
 import LoadingWheel from '../../components/LoadingWheel';
-import { PageContentContainer } from '../../components/Widgets/ReusableStyles';
+import { PageContentContainer } from '../../utils/pageLayoutStyles';
 import Testimonial from '../../components/Widgets/Testimonial';
 import AppObservableStore from '../../stores/AppObservableStore';
 import BallotStore from '../../stores/BallotStore';

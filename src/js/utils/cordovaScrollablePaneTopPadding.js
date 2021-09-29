@@ -132,17 +132,17 @@ export default function cordovaScrollablePaneTopPadding (pageEnumerationOverride
         case CordovaPageConstants.ballotSmHdrWild:       return '161px';
         case CordovaPageConstants.ballotVote:            return isSignedIn ? '165px' : '173px';
         case CordovaPageConstants.candidate:             return '56px';
-        case CordovaPageConstants.candidateWild:         return '96px';    // 53 t 96 for 12 max pro
-        case CordovaPageConstants.friends:               return '157px';
-        case CordovaPageConstants.friendsCurrent:        return '157px';
-        case CordovaPageConstants.friendsSentRequest:    return '69px';
+        case CordovaPageConstants.candidateWild:         return '96px';    // 53 to 96 for 12 max pro
+        case CordovaPageConstants.friends:               return '83px';    // 157 to 83
+        case CordovaPageConstants.friendsCurrent:        return '0';       // 157 to 0
+        case CordovaPageConstants.friendsSentRequest:    return '0';       // 69 to 0
         case CordovaPageConstants.measureWild:           return '56px';
         case CordovaPageConstants.moreAbout:             return '22px';
         case CordovaPageConstants.moreFaq:               return '74px';
         case CordovaPageConstants.moreTerms:             return '91px';
         case CordovaPageConstants.moreTools:             return '44px';
-        case CordovaPageConstants.news:                  return '91px';
-        case CordovaPageConstants.officeWild:            return '120px';    // 76 to 120 for 12 max pro
+        case CordovaPageConstants.news:                  return '0';       // 91 to 0 9/28/21
+        case CordovaPageConstants.officeWild:            return '120px';   // 76 to 120 for 12 max pro
         case CordovaPageConstants.opinionsPubFigs:       return '92px';
         case CordovaPageConstants.ready:                 return '93px';   // 73 -> 93 for 12 max pro, fine on 11 Pro Max
         case CordovaPageConstants.settingsAccount:       return '84px';

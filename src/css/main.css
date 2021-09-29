@@ -9689,7 +9689,6 @@ body {
       border-width: 1px;
       border-color: #ddd; }
     .card-main__avatar-compressed {
-      background-image: url("../img/global/svg-icons/avatar-generic.svg");
       border-radius: 2px;
       width: 40px;
       height: 40px; }
@@ -9702,7 +9701,6 @@ body {
         .card-main__avatar-compressed {
           width: 40px; } }
     .card-main__avatar-compressed-cordova {
-      background-image: url("https://wevote.us/img/global/svg-icons/avatar-generic.svg");
       border-radius: 2px;
       width: 40px;
       height: 40px; }
@@ -12680,7 +12678,7 @@ a {
 
 .header-nav {
   display: flex;
-  width: 920px;
+  /*width: 920px;*/
   margin-left: 32px; }
   @media all and (max-width: 374px) {
     .header-nav {

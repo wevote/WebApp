@@ -17,7 +17,6 @@ import ValuesFollowedPreview from '../components/Values/ValuesFollowedPreview';
 import ValuesToFollowPreview from '../components/Values/ValuesToFollowPreview';
 import AddEndorsements from '../components/Widgets/AddEndorsements';
 import BrowserPushMessage from '../components/Widgets/BrowserPushMessage';
-import { PageContentContainer } from '../components/Widgets/ReusableStyles';
 import SnackNotifier from '../components/Widgets/SnackNotifier';
 import Testimonial from '../components/Widgets/Testimonial';
 import IssueStore from '../stores/IssueStore';
@@ -25,6 +24,7 @@ import VoterStore from '../stores/VoterStore';
 import { cordovaDot } from '../utils/cordovaUtils';
 import lazyPreloadPages from '../utils/lazyPreloadPages';
 import { renderLog } from '../utils/logging';
+import { PageContentContainer } from '../utils/pageLayoutStyles';
 
 const FirstAndLastNameRequiredAlert = React.lazy(() => import(/* webpackChunkName: 'FirstAndLastNameRequiredAlert' */ '../components/Widgets/FirstAndLastNameRequiredAlert'));
 

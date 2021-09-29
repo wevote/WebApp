@@ -12,7 +12,6 @@ import ShareButtonDesktopTablet from '../../components/Share/ShareButtonDesktopT
 import OrganizationCard from '../../components/VoterGuide/OrganizationCard';
 import OrganizationVoterGuideCard from '../../components/VoterGuide/OrganizationVoterGuideCard';
 import OrganizationVoterGuideTabs from '../../components/VoterGuide/OrganizationVoterGuideTabs';
-import { PageContentContainer } from '../../components/Widgets/ReusableStyles';
 import CordovaPageConstants from '../../constants/CordovaPageConstants';
 import AppObservableStore from '../../stores/AppObservableStore';
 import OrganizationStore from '../../stores/OrganizationStore';
@@ -22,6 +21,7 @@ import cordovaScrollablePaneTopPadding from '../../utils/cordovaScrollablePaneTo
 import { historyPush, isIPad, isWebApp } from '../../utils/cordovaUtils';
 import { renderLog } from '../../utils/logging';
 import { isSpeakerTypePrivateCitizen } from '../../utils/organization-functions';
+import { PageContentContainer } from '../../utils/pageLayoutStyles';
 
 const DelayedLoad = React.lazy(() => import(/* webpackChunkName: 'DelayedLoad' */ '../../components/Widgets/DelayedLoad'));
 const FollowToggle = React.lazy(() => import(/* webpackChunkName: 'FollowToggle' */ '../../components/Widgets/FollowToggle'));

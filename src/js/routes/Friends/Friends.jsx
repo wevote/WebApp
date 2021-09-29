@@ -19,17 +19,17 @@ import LoadingWheel from '../../components/LoadingWheel';
 import TwitterSignInCard from '../../components/Twitter/TwitterSignInCard';
 import BrowserPushMessage from '../../components/Widgets/BrowserPushMessage';
 import MessageCard from '../../components/Widgets/MessageCard';
-import { PageContentContainer } from '../../components/Widgets/ReusableStyles';
 import TooltipIcon from '../../components/Widgets/TooltipIcon';
 import AppObservableStore, { messageService } from '../../stores/AppObservableStore';
 import FriendStore from '../../stores/FriendStore';
 import VoterStore from '../../stores/VoterStore';
 import { cordovaBallotFilterTopMargin, cordovaFriendsWrapper } from '../../utils/cordovaOffsets';
-import { cordovaDot, historyPush, isCordova, isWebApp } from '../../utils/cordovaUtils';
+import { cordovaDot, historyPush } from '../../utils/cordovaUtils';
 import displayFriendsTabs from '../../utils/displayFriendsTabs';
 import sortFriendListByMutualFriends from '../../utils/friendFunctions';
 import isMobileScreenSize from '../../utils/isMobileScreenSize';
 import { renderLog } from '../../utils/logging';
+import { PageContentContainer } from '../../utils/pageLayoutStyles';
 import FriendInvitationsSentByMe from './FriendInvitationsSentByMe';
 import FriendInvitationsSentToMe from './FriendInvitationsSentToMe';
 import FriendsCurrent from './FriendsCurrent';
@@ -71,6 +71,7 @@ class Friends extends Component {
 
   componentDidMount () {
     // console.log('Friends componentDidMount');
+
     this.appStateSubscription = messageService.getMessage().subscribe(() => this.onAppObservableStoreChange());
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
     this.friendStoreListener = FriendStore.addListener(this.onFriendStoreChange.bind(this));
@@ -101,6 +102,12 @@ class Friends extends Component {
     this.resetDefaultTabForMobile(friendInvitationsSentToMe, suggestedFriendList, friendInvitationsSentByMe);
     ActivityActions.activityNoticeListRetrieve();
     AnalyticsActions.saveActionNetwork(VoterStore.electionId());
+  }
+
+  componentDidUpdate () {
+    // Sept 2021: Rather that rewriting this entire page, dynamically move the friends menu into the header RowTwo
+    const { $ } = window;
+    $('#friendsHorizontalMenu').appendTo('[class^="pageLayoutStyles__TopRowTwoLeftContainer"]');
   }
 
   componentWillUnmount () {
@@ -566,17 +573,18 @@ class Friends extends Component {
       <span>
         {displayFriendsTabs() ? (
           <>
-            <div className={`friends__heading ${isCordova() && 'friends__heading__cordova'} ${friendsHeaderUnpinned && isWebApp() ? 'friends__heading__unpinned' : ''}`}>
-              <PageContentContainer style={{ marginTop: `${cordovaBallotFilterTopMargin()}` }}>
+            <div>
+              {/* <div className={`friends__heading ${isCordova() && 'friends__heading__cordova'} ${friendsHeaderUnpinned && isWebApp() ? 'friends__heading__unpinned' : ''}`}> */}
+              <div style={{ marginTop: `${cordovaBallotFilterTopMargin()}` }}>
                 <div className="container-fluid">
-                  <div className="row">
+                  <div className="row" id="friendsHorizontalMenu">
                     <div className="col-md-12">
                       <Helmet title="Friends - We Vote" />
                       {tabsHTML}
                     </div>
                   </div>
                 </div>
-              </PageContentContainer>
+              </div>
             </div>
             <PageContentContainer style={{ marginTop: `${cordovaBallotFilterTopMargin()}` }}>
               <div className="container-fluid">

@@ -7,8 +7,7 @@ import Helmet from 'react-helmet';
 import styled from 'styled-components';
 import { historyPush, isCordova } from '../utils/cordovaUtils';
 import { renderLog } from '../utils/logging';
-import { PageContentContainer } from '../components/Widgets/ReusableStyles';
-
+import { PageContentContainer } from '../utils/pageLayoutStyles';
 
 
 class PageNotFound extends Component {

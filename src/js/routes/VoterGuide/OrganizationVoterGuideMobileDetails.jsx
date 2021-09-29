@@ -6,9 +6,9 @@ import TwitterActions from '../../actions/TwitterActions';
 import LoadingWheel from '../../components/LoadingWheel';
 import VoterGuideFollowers from '../../components/VoterGuide/VoterGuideFollowers';
 import VoterGuideFollowing from '../../components/VoterGuide/VoterGuideFollowing';
-import { PageContentContainer } from '../../components/Widgets/ReusableStyles';
 import TwitterStore from '../../stores/TwitterStore';
 import { renderLog } from '../../utils/logging';
+import { PageContentContainer } from '../../utils/pageLayoutStyles';
 
 const DelayedLoad = React.lazy(() => import(/* webpackChunkName: 'DelayedLoad' */ '../../components/Widgets/DelayedLoad'));
 

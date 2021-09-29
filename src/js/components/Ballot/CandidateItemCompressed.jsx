@@ -6,7 +6,7 @@ import CandidateStore from '../../stores/CandidateStore';
 import OrganizationStore from '../../stores/OrganizationStore';
 import SupportStore from '../../stores/SupportStore';
 import VoterGuideStore from '../../stores/VoterGuideStore';
-import { historyPush, isCordova } from '../../utils/cordovaUtils';
+import { cordovaDot, historyPush, isCordova } from '../../utils/cordovaUtils';
 import { renderLog } from '../../utils/logging';
 
 const ImageHandler = React.lazy(() => import(/* webpackChunkName: 'ImageHandler' */ '../ImageHandler'));
@@ -112,6 +112,7 @@ export default class CandidateItemCompressed extends Component {
     const candidateDescriptionText = this.state.oneCandidate.twitter_description && this.state.oneCandidate.twitter_description.length ? this.state.oneCandidate.twitter_description : '';
     const candidateText = candidatePartyText + candidateDescriptionText;
     const avatarCompressed = `card-main__avatar-compressed${isCordova() ? '-cordova' : ''} o-media-object__anchor u-cursor--pointer u-self-start u-push--sm`;
+    const avatarBackgroundImage = cordovaDot('../img/global/svg-icons/avatar-generic.svg');
 
     return (
       <div key={oneCandidateWeVoteId} className="u-stack--md">
@@ -127,6 +128,7 @@ export default class CandidateItemCompressed extends Component {
               imageUrl={this.state.oneCandidate.candidate_photo_url_medium}
               alt="candidate-photo"
               kind_of_ballot_item="CANDIDATE"
+              style={{ backgroundImage: { avatarBackgroundImage } }}
             />
           </Link>
           <div className="o-media-object__body u-flex u-flex-column u-flex-auto u-justify-between">

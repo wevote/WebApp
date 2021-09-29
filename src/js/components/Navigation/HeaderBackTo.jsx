@@ -16,7 +16,7 @@ import { hasIPhoneNotch, historyPush, isCordova, isIOSAppOnMac, isIPad, isWebApp
 import { renderLog } from '../../utils/logging';
 import { shortenText, stringContains } from '../../utils/textFormat';
 import { voterPhoto } from '../../utils/voterPhoto';
-import { RightSideTopLineContainer } from '../Widgets/ReusableStyles';
+import { TopOfPageHeader, TopRowOneLeftContainer, TopRowOneMiddleContainer, TopRowOneRightContainer, TopRow2LeftContainer } from '../../utils/pageLayoutStyles';
 import SignInButton from '../Widgets/SignInButton';
 import HeaderBackToButton from './HeaderBackToButton';
 
@@ -256,7 +256,7 @@ class HeaderBackTo extends Component {
           />
 
           {isWebApp() && (
-          <RightSideTopLineContainer
+          <TopRowOneRightContainer
             className="u-cursor--pointer"
             style={{ paddingLeft: `${isCordova() ? '0 !important' : ''}` }}
           >
@@ -310,7 +310,7 @@ class HeaderBackTo extends Component {
             ) : (
               <SignInButton toggleSignInModal={this.toggleSignInModal} />
             )}
-          </RightSideTopLineContainer>
+          </TopRowOneRightContainer>
           )}
         </Toolbar>
         {showSignInModal && (

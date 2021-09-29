@@ -22,7 +22,7 @@ function fileRewriterForCordova (path) {
     newValue = newValue.replace(/^.*?importStartCordovaToken.*?$/gim,
       'import { initializationForCordova, removeCordovaSpecificListeners } from \'./js/startCordova\';');
     newValue = newValue.replace(/^.*?initializeCordovaToken.*?$/gim,
-      '    initializationForCordova();');
+      '    initializationForCordova(() => this.setState({cordovaInitialized: true}));');
     newValue = newValue.replace(/^.*?removeCordovaListenersToken.*?$/gim,
       '    removeCordovaSpecificListeners();');
     // Switch over to HashRouter for Cordova
@@ -31,6 +31,11 @@ function fileRewriterForCordova (path) {
     if (path.includes('App.js')) {
       newValue = newValue.replace(/^.*?Donate.*?\n/gim, '');
     }
+    // Set is Cordova true in index.jsx
+    if (path.endsWith('index.jsx')) {
+      newValue = newValue.replace(/isIndexCordova = false;/g, 'isIndexCordova = true;');
+    }
+
     // append an eslint suppression at the top of each file
     newValue = `/* eslint-disable no-unused-vars */\n/* eslint-disable import/newline-after-import */\n/* eslint-disable import/order */\n/* eslint-disable react/jsx-indent */\n${newValue}`;
     /* eslint-disable react/jsx-props-no-spreading */
@@ -60,6 +65,7 @@ fs.remove('./build').then(() => {
           }
           const listOfFiles = stdout.split('\n');
           listOfFiles.push('./srcCordova/js/components/Widgets/WeVoteRouter.jsx');
+          listOfFiles.push('./srcCordova/index.jsx');
           for (let i = 0; i < listOfFiles.length; i++) {
             const path = listOfFiles[i];
             // console.log("path: " + path);
@@ -92,7 +98,7 @@ Debugging command line node, See https://nodejs.org/en/docs/inspector
  1) In Chrome, chrome://inspect/#devices
  2) Click on "Open dedicated DevTools for Node"
  3) in the terminal:
-      stevepodell@Steves-MacBook-Pro-32GB-Oct-2109 src %  node debug buildAppCordova.js
+      stevepodell@Steves-MacBook-Pro-32GB-Oct-2109 src % node --inspect-brk ./buildSrcCordova.js
  4) and it opens in the chrome debugger
 
  To lint the srcCordova dir

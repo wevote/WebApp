@@ -15,7 +15,6 @@ import BallotItemReadyToVote from '../components/Vote/BallotItemReadyToVote';
 import FindPollingLocation from '../components/Vote/FindPollingLocation';
 import ReturnOfficialBallot from '../components/Vote/ReturnOfficialBallot';
 import BrowserPushMessage from '../components/Widgets/BrowserPushMessage';
-import { PageContentContainer } from '../components/Widgets/ReusableStyles';
 import AppObservableStore, { messageService } from '../stores/AppObservableStore';
 import BallotStore from '../stores/BallotStore';
 import IssueStore from '../stores/IssueStore';
@@ -27,6 +26,7 @@ import { cordovaVoteMiniHeader } from '../utils/cordovaOffsets';
 import cordovaScrollablePaneTopPadding from '../utils/cordovaScrollablePaneTopPadding';
 import { historyPush, isCordova, isWebApp } from '../utils/cordovaUtils';
 import { renderLog } from '../utils/logging';
+import { PageContentContainer } from '../utils/pageLayoutStyles';
 import BallotTitleHeader from './Ballot/BallotTitleHeader';
 
 const FilterBaseSearch = React.lazy(() => import(/* webpackChunkName: 'FilterBaseSearch' */ '../components/Filter/FilterBaseSearch'));
