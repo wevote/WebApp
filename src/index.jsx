@@ -14,6 +14,8 @@ function startReact () {
   module.hot.accept();
 }
 
+// Begin inline code
+
 if (isIndexCordova) {
   document.addEventListener('deviceready', (id) => {
     window.isDeviceReady = true;
