@@ -230,7 +230,7 @@ class Friends extends Component {
   render () {
     renderLog('Friends');  // Set LOG_RENDER_EVENTS to log all renders
     const {
-      currentFriendList, friendActivityExists, friendsHeaderUnpinned, friendInvitationsSentByMe,
+      currentFriendList, friendActivityExists, friendInvitationsSentByMe,
       friendInvitationsSentToMe, suggestedFriendList, voter, voterIsSignedIn,
     } = this.state;
     const { classes, match: { params: { tabItem } } } = this.props;

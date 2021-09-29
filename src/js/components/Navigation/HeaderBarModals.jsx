@@ -111,7 +111,7 @@ HeaderBarModals.propTypes = {
   shows: PropTypes.object,
   closeSignInModal: PropTypes.func,
   toggleSelectBallotModal: PropTypes.func,
-  closePaidAccountUpgradeModal: PropTypes.func,
+  // closePaidAccountUpgradeModal: PropTypes.func,
   closeShareModal: PropTypes.func,
   closeAdviserIntroModal: PropTypes.func,
   closeFirstPositionIntroModal: PropTypes.func,

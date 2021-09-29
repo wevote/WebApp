@@ -16,7 +16,7 @@ import { hasIPhoneNotch, historyPush, isCordova, isIOSAppOnMac, isIPad, isWebApp
 import { renderLog } from '../../utils/logging';
 import { shortenText, stringContains } from '../../utils/textFormat';
 import { voterPhoto } from '../../utils/voterPhoto';
-import { TopOfPageHeader, TopRowOneLeftContainer, TopRowOneMiddleContainer, TopRowOneRightContainer, TopRow2LeftContainer } from '../../utils/pageLayoutStyles';
+import { TopRowOneRightContainer } from '../../utils/pageLayoutStyles';
 import SignInButton from '../Widgets/SignInButton';
 import HeaderBackToButton from './HeaderBackToButton';
 
