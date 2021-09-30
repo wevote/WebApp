@@ -122,7 +122,7 @@ class HeaderBarProfilePopUp extends Component {
             {/* Desktop or Mobile */}
             <li>
               <ListItemWrapper>
-                <Link id="profilePopUpYourValues" onClick={this.hideProfilePopUp} to="/values/list">
+                <Link id="profilePopUpYourValues" onClick={this.hideProfilePopUp} to="/values">
                   <Button
                     variant="text"
                     color="primary"
@@ -211,9 +211,9 @@ HeaderBarProfilePopUp.propTypes = {
 };
 
 const ProfileMenu = styled.div`
-  @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
-
-    position: fixed;
+  right: calc((100% - 965px)/2);
+  @media (max-width: 965px) {
+    right: 15px;
   }
 `;
 

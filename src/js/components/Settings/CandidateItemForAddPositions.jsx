@@ -4,7 +4,7 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 import CandidateStore from '../../stores/CandidateStore';
 import SupportStore from '../../stores/SupportStore';
-import { isCordova } from '../../utils/cordovaUtils';
+import { cordovaDot, isCordova } from '../../utils/cordovaUtils';
 import { renderLog } from '../../utils/logging';
 import ItemPositionStatementActionBar from '../Widgets/ItemPositionStatementActionBar';
 
@@ -177,6 +177,7 @@ class CandidateItemForAddPositions extends Component {
       null;
 
     const avatarCompressed = `card-main__avatar-compressed${isCordova() ? '-cordova' : ''}`;
+    const avatarBackgroundImage = cordovaDot('../img/global/svg-icons/avatar-generic.svg');
     const candidatePartyText = oneCandidate.party && oneCandidate.party.length ? `${oneCandidate.party}` : '';
     return (
       <Wrapper>
@@ -189,6 +190,7 @@ class CandidateItemForAddPositions extends Component {
               imageUrl={oneCandidate.candidate_photo_url_medium}
               alt="candidate-photo"
               kind_of_ballot_item="CANDIDATE"
+              style={{ backgroundImage: { avatarBackgroundImage } }}
             />
             {/* Candidate Name */}
             <div>

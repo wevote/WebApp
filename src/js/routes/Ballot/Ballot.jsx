@@ -24,7 +24,6 @@ import BallotShowAllItemsFooter from '../../components/Navigation/BallotShowAllI
 import BallotSideBar from '../../components/Navigation/BallotSideBar';
 import ValuesToFollowPreview from '../../components/Values/ValuesToFollowPreview';
 import BrowserPushMessage from '../../components/Widgets/BrowserPushMessage';
-import { HeaderContentContainer, PageContentContainer } from '../../components/Widgets/ReusableStyles';
 import SnackNotifier from '../../components/Widgets/SnackNotifier';
 import webAppConfig from '../../config';
 import AppObservableStore, { messageService } from '../../stores/AppObservableStore';
@@ -44,6 +43,7 @@ import isMobileScreenSize from '../../utils/isMobileScreenSize';
 import lazyPreloadPages from '../../utils/lazyPreloadPages';
 import { renderLog } from '../../utils/logging';
 import mapCategoryFilterType from '../../utils/map-category-filter-type';
+import { HeaderContentContainer, PageContentContainer } from '../../utils/pageLayoutStyles';
 import { getBooleanValue } from '../../utils/textFormat';
 import showBallotDecisionsTabs from '../../utilsApi/showBallotDecisionsTabs';
 import BallotTitleHeader from './BallotTitleHeader';

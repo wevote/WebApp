@@ -13,7 +13,7 @@
   "commentMay2021": "'production' forces minified libraries (especially react), and 'MINIFIED' passes all our code through the Terser minifier/mangler/compressor tool.",
   "scripts": {
     "build": "node buildDateFile.js && webpack --mode production",
-    "buildCordova": "node buildDateFile.js && node buildSrcCordova && CORDOVA=1 && webpack --mode development",
+    "buildCordova": "node buildDateFile.js && node buildSrcCordova && CORDOVA=1 && webpack --mode development && node -e \"const d = new Date().toLocaleString('en-US', {timeZone: 'America/Los_Angeles'}); console.log('Compiled:', d)\"",
     "lint": "eslint --format stylish --ext .jsx --ext .js src/js",
     "lintCordova": "eslint --format stylish --ext .jsx --ext .js srcCordova/js",
     "prod": "node buildDateFile.js && MINIMIZED=1 webpack --mode production",

@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import Helmet from 'react-helmet';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
-import { PageContentContainer } from '../../components/Widgets/ReusableStyles';
 import { renderLog } from '../../utils/logging';
+import { PageContentContainer } from '../../utils/pageLayoutStyles';
 import ToolBar from './ToolBar';
 
 

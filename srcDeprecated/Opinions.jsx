@@ -3,7 +3,7 @@ import Helmet from 'react-helmet';
 import { Link } from 'react-router-dom';
 import SearchGuidesToFollowBox from '../components/Search/SearchGuidesToFollowBox';
 import GuideList from '../components/VoterGuide/GuideList';
-import { PageContentContainer } from '../components/Widgets/ReusableStyles';
+import { PageContentContainer } from '../../utils/pageLayoutStyles';
 import SnackNotifier from '../components/Widgets/SnackNotifier';
 import VoterGuideStore from '../stores/VoterGuideStore';
 import { renderLog } from '../utils/logging';

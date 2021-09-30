@@ -689,7 +689,6 @@ PositionItem.propTypes = {
   classes: PropTypes.object,
   position: PropTypes.object.isRequired,
   searchResultsNode: PropTypes.object,
-  params: PropTypes.object,
 };
 
 const styles = (theme) => ({

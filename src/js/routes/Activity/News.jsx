@@ -12,7 +12,6 @@ import OrganizationActions from '../../actions/OrganizationActions';
 import ReactionActions from '../../actions/ReactionActions';
 import ActivityCommentAdd from '../../components/Activity/ActivityCommentAdd';
 import ActivityPostAdd from '../../components/Activity/ActivityPostAdd';
-import { PageContentContainer } from '../../components/Widgets/ReusableStyles';
 import FacebookSignInCard from '../../components/Facebook/FacebookSignInCard';
 import AddFriendsByEmail from '../../components/Friends/AddFriendsByEmail';
 import SuggestedFriendsPreview from '../../components/Friends/SuggestedFriendsPreview';
@@ -33,6 +32,7 @@ import { cordovaDot, historyPush, isCordova, isIPad } from '../../utils/cordovaU
 import { formatDateToMonthDayYear, timeFromDate } from '../../utils/dateFormat';
 import lazyPreloadPages from '../../utils/lazyPreloadPages';
 import { renderLog } from '../../utils/logging';
+import { PageContentContainer } from '../../utils/pageLayoutStyles';
 
 const ActivityTidbitAddReaction = React.lazy(() => import(/* webpackChunkName: 'ActivityTidbitAddReaction' */ '../../components/Activity/ActivityTidbitAddReaction'));
 const ActivityTidbitComments = React.lazy(() => import(/* webpackChunkName: 'ActivityTidbitComments' */ '../../components/Activity/ActivityTidbitComments'));

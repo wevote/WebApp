@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
-import { PageContentContainer } from '../../components/Widgets/ReusableStyles';
 import AppObservableStore, { messageService } from '../../stores/AppObservableStore';
 import VoterStore from '../../stores/VoterStore';
 import cookies from '../../utils/cookies';
 import cordovaScrollablePaneTopPadding from '../../utils/cordovaScrollablePaneTopPadding';
 import { historyPush, isWebApp } from '../../utils/cordovaUtils';
 import { oAuthLog, renderLog } from '../../utils/logging';
+import { PageContentContainer } from '../../utils/pageLayoutStyles';
 import { stringContains } from '../../utils/textFormat';
 
 

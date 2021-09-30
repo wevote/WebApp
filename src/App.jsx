@@ -127,6 +127,7 @@ class App extends Component {
       AppObservableStore.siteConfigurationRetrieve(hostname);
     });
     console.log('href in App.js componentDidMount: ', window.location.href);
+    console.log('normalizedHrefPage in App.js componentDidMount: ', normalizedHref());
   }
 
   componentDidCatch (error, info) {
@@ -177,14 +178,19 @@ class App extends Component {
     const weVoteSites = ['wevote.us', 'quality.wevote.us', 'localhost', 'silicon', ''];   // localhost on Cordova is a ''
     const isWeVoteMarketingSite = weVoteSites.includes(String(hostname));
     const isNotWeVoteMarketingSite = !isWeVoteMarketingSite;
-    const siteVars = getApplicationViewBooleans(hostname);
+    const siteVars = getApplicationViewBooleans(normalizedHref());
     const { showFooterBar } = siteVars;
     // const firstVisit = !cookies.getItem('voter_device_id');
 
     if (isWebApp()) {
-      console.log('href in App.js render: ', window.location.href);
+      console.log('WebApp: href in App.js render: ', window.location.href);
     } else {
-      console.log('href hash in App.js render: ', window.location.hash);
+      console.log('Cordova: href hash in App.js render: ', window.location.hash);
+      const { cordovaInitialized } = this.state;
+      if (!cordovaInitialized) {
+        console.log('Cordova: Waiting for cordovaInitialized state to render App in Cordova');
+        return null;
+      }
     }
 
     /*

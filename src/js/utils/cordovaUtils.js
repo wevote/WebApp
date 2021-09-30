@@ -12,8 +12,8 @@ let polyfillsLoaded;
 
 
 export function isCordova () {
-  const { isCordovaGlobal } = window;
-  return isCordovaGlobal === true;
+  const { cordova } = window;
+  return cordova !== undefined;
 }
 
 export function isWebApp () {

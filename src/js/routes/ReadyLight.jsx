@@ -14,7 +14,6 @@ import ReadyTaskFriends from '../components/Ready/ReadyTaskFriends';
 import ReadyTaskPlan from '../components/Ready/ReadyTaskPlan';
 import ReadyTaskRegister from '../components/Ready/ReadyTaskRegister';
 import BrowserPushMessage from '../components/Widgets/BrowserPushMessage';
-import { PageContentContainer } from '../components/Widgets/ReusableStyles';
 import webAppConfig from '../config';
 import AppObservableStore from '../stores/AppObservableStore';
 import VoterStore from '../stores/VoterStore';
@@ -22,6 +21,7 @@ import { historyPush, isAndroid, isIOS, isWebApp } from '../utils/cordovaUtils';
 import isMobileScreenSize from '../utils/isMobileScreenSize';
 import lazyPreloadPages from '../utils/lazyPreloadPages';
 import { renderLog } from '../utils/logging';
+import { PageContentContainer } from '../utils/pageLayoutStyles';
 
 const ReadMore = React.lazy(() => import(/* webpackChunkName: 'ReadMore' */ '../components/Widgets/ReadMore'));
 const FirstAndLastNameRequiredAlert = React.lazy(() => import(/* webpackChunkName: 'FirstAndLastNameRequiredAlert' */ '../components/Widgets/FirstAndLastNameRequiredAlert'));

@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import CandidateStore from '../../stores/CandidateStore';
 import SupportStore from '../../stores/SupportStore';
-import { historyPush, isCordova } from '../../utils/cordovaUtils';
+import { cordovaDot, historyPush, isCordova } from '../../utils/cordovaUtils';
 import { renderLog } from '../../utils/logging';
 import { abbreviateNumber, numberWithCommas } from '../../utils/textFormat';
 import ItemPositionStatementActionBar from '../Widgets/ItemPositionStatementActionBar';
@@ -199,6 +199,8 @@ class CandidateItemForOpinions extends Component {
 
     const candidatePartyText = oneCandidate.party && oneCandidate.party.length ? `${oneCandidate.party}` : '';
     const avatarCompressed = `card-main__avatar-compressed${isCordova() ? '-cordova' : ''}`;
+    const avatarBackgroundImage = cordovaDot('../img/global/svg-icons/avatar-generic.svg');
+
     return (
       <Wrapper>
         <CandidateTopRow>
@@ -211,6 +213,7 @@ class CandidateItemForOpinions extends Component {
                 imageUrl={oneCandidate.candidate_photo_url_medium}
                 alt="candidate-photo"
                 kind_of_ballot_item="CANDIDATE"
+                style={{ backgroundImage: { avatarBackgroundImage } }}
               />
             </Link>
             {/* Candidate Name */}

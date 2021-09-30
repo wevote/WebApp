@@ -15,11 +15,11 @@ import SupportStore from '../../stores/SupportStore';
 import VoterStore from '../../stores/VoterStore';
 import { historyPush } from '../../utils/cordovaUtils';
 import { renderLog } from '../../utils/logging';
+import { PageContentContainer } from '../../utils/pageLayoutStyles';
 import { calculateBallotBaseUrl, capitalizeString } from '../../utils/textFormat';
 import BallotSearchResults from '../Ballot/BallotSearchResults';
 import FooterDoneBar from '../Navigation/FooterDoneBar';
 import EndorsementCard from '../Widgets/EndorsementCard';
-import { PageContentContainer } from '../Widgets/ReusableStyles';
 import ThisIsMeAction from '../Widgets/ThisIsMeAction';
 import VoterGuidePositionList from './VoterGuidePositionList';
 

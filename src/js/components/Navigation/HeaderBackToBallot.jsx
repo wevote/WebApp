@@ -1,4 +1,4 @@
-import { AppBar, IconButton, Toolbar } from '@material-ui/core';
+import { AppBar, IconButton } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 import { AccountCircle } from '@material-ui/icons';
 import PropTypes from 'prop-types';
@@ -17,15 +17,15 @@ import VoterStore from '../../stores/VoterStore';
 import { dumpCssFromId } from '../../utils/appleSiliconUtils';
 import { normalizedHref, normalizedHrefPage } from '../../utils/applicationUtils';
 import { historyPush, isCordova, isIOSAppOnMac, isIPad, isWebApp } from '../../utils/cordovaUtils';
-import { headerStyles, headerToolbarStyles } from '../../utils/headerStyles';
 import isMobileScreenSize from '../../utils/isMobileScreenSize';
 import { renderLog } from '../../utils/logging';
 import { shortenText, stringContains } from '../../utils/textFormat';
 import { voterPhoto } from '../../utils/voterPhoto';
 import ShareButtonDesktopTablet from '../Share/ShareButtonDesktopTablet';
-import { RightSideTopLineContainer } from '../Widgets/ReusableStyles';
 import SignInButton from '../Widgets/SignInButton';
 import HeaderBackToButton from './HeaderBackToButton';
+import { TopOfPageHeader, TopRowOneLeftContainer, TopRowOneMiddleContainer, TopRowOneRightContainer,
+  TopRowTwoLeftContainer, TopRowTwoRightContainer, OfficeShareWrapper  } from '../../utils/pageLayoutStyles';
 
 const HeaderNotificationMenu = React.lazy(() => import(/* webpackChunkName: 'HeaderNotificationMenu' */ './HeaderNotificationMenu'));
 const HeaderBarProfilePopUp = React.lazy(() => import(/* webpackChunkName: 'HeaderBarProfilePopUp' */ './HeaderBarProfilePopUp'));
@@ -774,17 +774,29 @@ class HeaderBackToBallot extends Component {
         // className={headerClassName}
         color="default"
         classes={appBarClasses}
-        style={headerStyles()}
+        // style={headerStyles()}
+        style={{
+          borderTop: 'none',
+          borderRight: 'none',
+          borderBottom: '1px solid rgb(170, 170, 170)',
+          borderLeft: 'none',
+          borderImage: 'initial',
+          display: 'flex',
+          justifyContent: 'center',
+          boxShadow: 'rgb(0 0 0 / 20%) 0px 2px 4px -1px, rgb(0 0 0 / 14%) 0px 4px 5px 0px, rgb(0 0 0 / 12%) 0px 1px 10px 0px',
+        }}
         elevation={0}
       >
-        <Toolbar style={headerToolbarStyles()} disableGutters>
-          <HeaderBackToButton
-            backToLink={backToLink}
-            backToLinkText={backToLinkText}
-            id="backToLinkTabHeaderBackToBallot"
-          />
-
-          <RightSideTopLineContainer className="u-cursor--pointer" cordova={isCordova()}>
+        <TopOfPageHeader>
+          <TopRowOneLeftContainer>
+            <HeaderBackToButton
+              backToLink={backToLink}
+              backToLinkText={backToLinkText}
+              id="backToLinkTabHeaderBackToBallot"
+            />
+          </TopRowOneLeftContainer>
+          <TopRowOneMiddleContainer />
+          <TopRowOneRightContainer className="u-cursor--pointer" cordova={isCordova()}>
             <HeaderNotificationMenu />
             {voterIsSignedIn ? (
               <span onClick={this.toggleAccountMenu}>
@@ -836,37 +848,34 @@ class HeaderBackToBallot extends Component {
             ) : (
               <SignInButton toggleSignInModal={this.toggleSignInModal} />
             )}
-          </RightSideTopLineContainer>
-        </Toolbar>
-        { (officeName || measureName) && (
-          <OfficeNameWrapper className="header-toolbar">
+          </TopRowOneRightContainer>
+          {(officeName || measureName) && (
+          <TopRowTwoLeftContainer>
             <OfficeOrMeasureTitle>{officeName || measureName}</OfficeOrMeasureTitle>
-            {/* 9/22/21 simpler way to display a title above, saving this in case it did something usefull elsewere ... */}
-            {/* <OfficeItem */}
-            {/*  weVoteId={officeWeVoteId || measureWeVoteId} */}
-            {/*  ballotItemDisplayName={officeName || measureName || ''} */}
-            {/* /> */}
-            {shareButtonInHeader && (
-              <OfficeShareWrapper className="u-show-desktop-tablet" ipad={isIPad() || isIOSAppOnMac()}>
-                <ShareButtonDesktopTablet officeShare />
-              </OfficeShareWrapper>
-            )}
-          </OfficeNameWrapper>
-        )}
-        {showSignInModal && (
+          </TopRowTwoLeftContainer>
+          )}
+          {shareButtonInHeader && (
+          <TopRowTwoRightContainer>
+            <OfficeShareWrapper className="u-show-desktop-tablet" ipad={isIPad() || isIOSAppOnMac()}>
+              <ShareButtonDesktopTablet officeShare />
+            </OfficeShareWrapper>
+          </TopRowTwoRightContainer>
+          )}
+          {showSignInModal && (
           <SignInModal
             show={showSignInModal}
             closeFunction={this.closeSignInModal}
           />
-        )}
-        {showShareModal && (
+          )}
+          {showShareModal && (
           <ShareModal
             voterIsSignedIn={voterIsSignedIn}
             show={showShareModal}
             shareModalStep={shareModalStep}
             closeShareModal={this.closeShareModal}
           />
-        )}
+          )}
+        </TopOfPageHeader>
       </StyledAppBar>
     );
   }
@@ -924,18 +933,14 @@ const FirstNameWrapper = styled.div`
   padding-right: 4px;
 `;
 
-const OfficeNameWrapper = styled.div`
-  display: flex;
-  justify-content: space-between;
-  transform: ${() => {
-    if (normalizedHrefPage() !== 'measure') return null;
-    return isMobileScreenSize() ? 'translate(2%, -2%)' : 'translate(-57%, 87%)';
-  }};
-`;
+// const OfficeNameWrapper = styled.div`
+//   display: flex;
+//   justify-content: space-between;
+//   transform: ${() => {
+//     if (normalizedHrefPage() !== 'measure') return null;
+//     return isMobileScreenSize() ? 'translate(2%, -2%)' : 'translate(-57%, 87%)';
+//   }};
+// `;
 
-const OfficeShareWrapper = styled.div`
-  margin-bottom: 12px;
-  margin-right: ${({ ipad }) => (ipad ? '19px' : '')};
-`;
 
 export default withStyles(styles)(HeaderBackToBallot);

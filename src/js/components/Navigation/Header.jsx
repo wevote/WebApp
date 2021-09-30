@@ -195,7 +195,7 @@ export default class Header extends Component {
       pageHeaderClasses = pageHeaderClasses.replace('page-header__container', 'page-header__container_ipad');
     }
 
-    // if (!headerHasSubmenu()) {
+    // if (!displayTopMenuShadow()) {
     //   pageHeaderClasses += ' header-shadow';
     // }
     // console.log(`Header href: ${window.location.href}  cordovaStyle: `, cordovaTopHeaderTopMargin());

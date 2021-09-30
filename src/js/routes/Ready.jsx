@@ -22,7 +22,6 @@ import ReadyTaskRegister from '../components/Ready/ReadyTaskRegister';
 import ShareButtonDesktopTablet from '../components/Share/ShareButtonDesktopTablet';
 import ValuesToFollowPreview from '../components/Values/ValuesToFollowPreview';
 import BrowserPushMessage from '../components/Widgets/BrowserPushMessage';
-import { PageContentContainer } from '../components/Widgets/ReusableStyles';
 import SnackNotifier from '../components/Widgets/SnackNotifier';
 import webAppConfig from '../config';
 import AppObservableStore, { messageService } from '../stores/AppObservableStore';
@@ -34,6 +33,7 @@ import cookies from '../utils/cookies';
 import { historyPush, isAndroid, isIOS, isWebApp } from '../utils/cordovaUtils';
 import lazyPreloadPages from '../utils/lazyPreloadPages';
 import { renderLog } from '../utils/logging';
+import { PageContentContainer } from '../utils/pageLayoutStyles';
 
 const ReadMore = React.lazy(() => import(/* webpackChunkName: 'ReadMore' */ '../components/Widgets/ReadMore'));
 const FirstAndLastNameRequiredAlert = React.lazy(() => import(/* webpackChunkName: 'FirstAndLastNameRequiredAlert' */ '../components/Widgets/FirstAndLastNameRequiredAlert'));
