@@ -1,4 +1,5 @@
 import CordovaPageConstants from '../constants/CordovaPageConstants';
+import AppObservableStore from '../stores/AppObservableStore';
 import showBallotDecisionsTabs from '../utilsApi/showBallotDecisionsTabs';
 import { normalizedHref } from './applicationUtils';
 import { stringContains } from './textFormat';
@@ -28,6 +29,10 @@ export function pageEnumeration () {
     return CordovaPageConstants.moreTools;
   } else if (path.startsWith('/settings/notifications') > 0) {
     return CordovaPageConstants.settingsNotifications;
+  } else if (path.startsWith('/settings/profile') > 0) {
+    return CordovaPageConstants.settingsProfile;
+  } else if (path.startsWith('/settings/share') > 0) {
+    return CordovaPageConstants.settingsShare;
   } else if (path.startsWith('/settings/subscription') > 0) {
     return CordovaPageConstants.settingsSubscription;
   } else if (path.startsWith('/settings/voterguidelist') > 0) {
@@ -95,6 +100,8 @@ export function pageEnumeration () {
   } else if (path.includes('/') && (
     path.includes('btcand') || path.includes('btmeas') || path.includes('/btdb'))) {
     return CordovaPageConstants.twitterInfoPage;
+  } else if (AppObservableStore.getShowTwitterLandingPage()) {
+    return CordovaPageConstants.twitterHandleLanding;
   }
   return CordovaPageConstants.defaultVal;
 }

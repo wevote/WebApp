@@ -2,13 +2,15 @@ import React, { Component } from 'react';
 import Table from 'react-bootstrap/Table';
 import Helmet from 'react-helmet';
 import { Link } from 'react-router-dom';
+import LazyImage from '../../common/components/LazyImage';
 import LoadingWheel from '../../components/LoadingWheel';
 import HamburgerMenuRow from '../../components/Navigation/HamburgerMenuRow';
 import DeviceDialog from '../../components/Widgets/DeviceDialog';
 import VoterStore from '../../stores/VoterStore';
+import { cordovaBallotFilterTopMargin } from '../../utils/cordovaOffsets';
 import { cordovaDot, isCordova, isWebApp } from '../../utils/cordovaUtils';
-import LazyImage from '../../common/components/LazyImage';
 import { renderLog } from '../../utils/logging';
+import { HeaderContentContainer } from '../../utils/pageLayoutStyles';
 import { voterPhoto } from '../../utils/voterPhoto';
 
 const avatarGeneric = '../../../img/global/svg-icons/avatar-generic.svg';
@@ -112,7 +114,7 @@ export default class HamburgerMenu extends Component {
     // console.log("Hamburger menu this.state.showDeviceDialog " + this.state.showDeviceDialog);
 
     return (
-      <div>
+      <HeaderContentContainer style={{ marginTop: `${cordovaBallotFilterTopMargin()}` }}>
         <Helmet title="Settings Menu" />
         <Table responsive className="hamburger-menu__table">
           <tbody>
@@ -313,7 +315,7 @@ export default class HamburgerMenu extends Component {
             )}
           </tbody>
         </Table>
-      </div>
+      </HeaderContentContainer>
     );
   }
 }

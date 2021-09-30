@@ -328,5 +328,5 @@ export function normalizedHrefPage () {
 }
 
 export function displayTopMenuShadow () {  //
-  return ['friends'].includes(normalizedHrefPage());
+  return !['ballot'].includes(normalizedHrefPage());
 }

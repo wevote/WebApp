@@ -6,8 +6,11 @@ import { Link } from 'react-router-dom';
 import OrganizationActions from '../actions/OrganizationActions';
 import TwitterActions from '../actions/TwitterActions';
 import LoadingWheel from '../components/LoadingWheel';
+import AppObservableStore from '../stores/AppObservableStore';
 import TwitterStore from '../stores/TwitterStore';
 import VoterStore from '../stores/VoterStore';
+import { normalizedHrefPage } from '../utils/applicationUtils';
+import { isCordova } from '../utils/cordovaUtils';
 import { renderLog } from '../utils/logging';
 import Candidate from './Ballot/Candidate';
 import OrganizationVoterGuide from './VoterGuide/OrganizationVoterGuide';
@@ -33,7 +36,12 @@ export default class TwitterHandleLanding extends Component {
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
 
     const { activeRoute, match: { params: { twitter_handle: twitterHandle } } } = this.props;
-    const twitterHandle2 = twitterHandle || window.location.pathname.substring(1);
+    let twitterHandle2 = twitterHandle || window.location.pathname.substring(1);
+    if (isCordova()) {
+      twitterHandle2 = twitterHandle || `/${normalizedHrefPage()}`;
+    }
+    AppObservableStore.setShowTwitterLandingPage(true);  // This is so we can detect and style pages with only twitter handles in th URL
+
     // console.log(`TwitterHandleLanding componentDidMount, twitterHandle: ${twitterHandle}`);
     this.setState({
       activeRoute,
@@ -78,6 +86,7 @@ export default class TwitterHandleLanding extends Component {
   componentWillUnmount () {
     this.twitterStoreListener.remove();
     this.voterStoreListener.remove();
+    AppObservableStore.setShowTwitterLandingPage(false);
     // console.log('TwitterHandleLanding componentWillUnmount, TwitterActions.resetTwitterHandleLanding()');
     // Dec 2020: caused "invariant.js:42 Uncaught Invariant Violation: Dispatch.dispatch(...): Cannot dispatch in the middle of a dispatch."
     // so hopefully this is not needed:
@@ -131,6 +140,11 @@ export default class TwitterHandleLanding extends Component {
     const {
       activeRoute, voter, kindOfOwner, ownerWeVoteId, twitterHandle: twitterHandleBeingViewed,
     } = this.state;
+    let displayableTwitterHandleBeingViewed = twitterHandleBeingViewed;
+    if (isCordova() && activeRoute && activeRoute.length > 2) {
+      displayableTwitterHandleBeingViewed =   activeRoute.slice(1);
+    }
+
     const { match: { params } } = this.props;
     const signedInTwitter = voter === undefined ? false : voter.signed_in_twitter;
     let signedInWithThisTwitterAccount = false;
@@ -182,16 +196,24 @@ export default class TwitterHandleLanding extends Component {
       // console.log('render in TwitterHandleLanding  else, kindOfOwner');
       return (
         <DelayedLoad showLoadingText waitBeforeShow={2000}>
-          <div className="container-fluid well u-stack--md u-inset--md">
+          <div
+            className="container-fluid well u-stack--md u-inset--md"
+            style={
+              isCordova() ? {
+                marginTop: '100px',
+                paddingBottom: '625px',
+              } : {}
+            }
+          >
             <Helmet title="Not Found - We Vote" />
             <h3 className="h3">Claim Your Page</h3>
             <div className="medium">
-              We were not able to find an account for this Twitter Handle
+              We were not able to find an account for the Twitter Handle
               { twitterHandleBeingViewed ? (
                 <span>
                   {' '}
                   &quot;
-                  {twitterHandleBeingViewed}
+                  {displayableTwitterHandleBeingViewed}
                   &quot;
                 </span>
               ) :
