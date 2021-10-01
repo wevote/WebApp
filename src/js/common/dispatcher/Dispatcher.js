@@ -17,7 +17,7 @@ Dispatcher.prototype.loadEndpoint = function (endpoint, data = {}) {
     endpointAdjusted = 'voterAddressRetrieve';
   }
 
-  // console.log("Ajax request in Dispatcher: " + endpoint);
+  // console.log(`Ajax request in Dispatcher: ${endpoint}`);
   return this.$ajax({
     endpoint: endpointAdjusted,
     data,
