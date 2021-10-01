@@ -19,7 +19,7 @@ function startReact () {
 if (isIndexCordova) {
   document.addEventListener('deviceready', (id) => {
     window.isDeviceReady = true;
-    console.log('Cordova: Received Cordova Event: ', id.type);
+    console.log('Cordova:  Received Cordova Event: ', id.type);
     console.log(`Cordova:  Running cordova-${window.cordova.platformId}@${window.cordova.version}`);
     const { splashscreen } = navigator;
     splashscreen.hide();

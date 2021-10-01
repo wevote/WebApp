@@ -14,7 +14,7 @@ function localRestoreStylesAfterCordovaKeyboard () {
 
 // for wevotetwitterscheme
 export function initCordovaAfterPluginsAreAvailable () { // eslint-disable-line
-  console.log('Cordova: App.jsx startCordova.jsx initializationForCordova');
+  console.log('Cordova:  App.jsx startCordova.jsx initializationForCordova');
 
   // Initialize incoming URL handler for oAuth
   window.handleOpenURL = (url) => {
@@ -112,9 +112,9 @@ export function initializationForCordova (setInitialized) {
       // eslint-disable-next-line no-param-reassign
       setInitialized();
       navigator.splashscreen.hide();
-      console.log('Cordova: Found window.cordova.plugins', window.cordova.plugins);
+      console.log('Cordova:  Found window.cordova.plugins', window.cordova.plugins);
     } else {
-      console.log('Cordova: waiting another 10 ms');
+      console.log('Cordova:  waiting another 10 ms');
     }
   }, 10);
 }

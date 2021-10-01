@@ -185,7 +185,7 @@ class App extends Component {
     if (isWebApp()) {
       console.log('WebApp: href in App.js render: ', window.location.href);
     } else {
-      console.log('Cordova: href hash in App.js render: ', window.location.hash);
+      console.log('Cordova:  href hash in App.js render: ', window.location.hash);
       const { cordovaInitialized } = this.state;
       if (!cordovaInitialized) {
         console.log('Cordova: Waiting for cordovaInitialized state to render App in Cordova');

@@ -22,6 +22,7 @@ const CordovaPageConstants = {
   settingsAccount: null,
   settingsHamburger: null,
   settingsNotifications: null,
+  settingsProfile: null,
   settingsSubscription: null,
   settingsVoterGuideLst: null,
   settingsWild: null,

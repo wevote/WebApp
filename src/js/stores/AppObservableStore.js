@@ -1,6 +1,7 @@
 import { Subject } from 'rxjs';
 import VoterActions from '../actions/VoterActions';   // eslint-disable-line import/no-cycle
 import webAppConfig from '../config';
+import { dumpObjProps } from '../utils/appleSiliconUtils';
 import { isCordova } from '../utils/cordovaUtils';
 import $ajax from '../utils/service';
 import { stringContains } from '../utils/textFormat';
@@ -19,15 +20,15 @@ const nonFluxState = {
   chosenReadyIntroductionText: '',
   chosenReadyIntroductionTitle: '',
   chosenSiteLogoUrl: '',
-  getVoterGuideSettingsDashboardEditMode: '',
   getStartedMode: '',
+  getVoterGuideSettingsDashboardEditMode: '',
   hideWeVoteLogo: false,
   hostname: '',
   observableUpdateCounter: 0,
   organizationModalBallotItemWeVoteId: '',
   scrolledDown: false,
-  sharedItemCode: '',
   shareModalStep: '',
+  sharedItemCode: '',
   showActivityTidbitDrawer: false,
   showAdviserIntroModal: false,
   showEditAddressButton: false,
@@ -44,6 +45,7 @@ const nonFluxState = {
   showShareModal: false,
   showSharedItemModal: false,
   showSignInModal: false,
+  showTwitterLandingPage: false,
   showVoterPlanModal: false,
   siteConfigurationHasBeenRetrieved: false,
   siteOwnerOrganizationWeVoteId: '',
@@ -187,6 +189,11 @@ export default {
     messageService.sendMessage('state updated showSignInModal');
   },
 
+  setShowTwitterLandingPage (show) {
+    nonFluxState.showTwitterLandingPage = show;
+    messageService.sendMessage('state updated showTwitterLandingPage');
+  },
+
   setShowVoterPlanModal (show) {
     // The chosenPaidAccount values are: free, professional, enterprise
     nonFluxState.showVoterPlanModal = show;
@@ -261,6 +268,11 @@ export default {
   getShareModalStep () {
     // console.log('AppObservableStore shareModalStep:', nonFluxState.shareModalStep);
     return nonFluxState.shareModalStep;
+  },
+
+  getShowTwitterLandingPage () {
+    // console.log('AppObservableStore getShowTwitterLandingPage:', nonFluxState.showTwitterLandingPage);
+    return nonFluxState.showTwitterLandingPage;
   },
 
   getSiteOwnerOrganizationWeVoteId () {
@@ -473,6 +485,7 @@ export default {
 
       error: (res) => {
         console.error('AppObservableStore error: ', res);
+        dumpObjProps('AppObservableStore error', res);
       },
     });
   },

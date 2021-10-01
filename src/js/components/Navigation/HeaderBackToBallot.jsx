@@ -1,4 +1,4 @@
-import { AppBar, IconButton } from '@material-ui/core';
+import { IconButton } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 import { AccountCircle } from '@material-ui/icons';
 import PropTypes from 'prop-types';
@@ -24,7 +24,7 @@ import { voterPhoto } from '../../utils/voterPhoto';
 import ShareButtonDesktopTablet from '../Share/ShareButtonDesktopTablet';
 import SignInButton from '../Widgets/SignInButton';
 import HeaderBackToButton from './HeaderBackToButton';
-import { TopOfPageHeader, TopRowOneLeftContainer, TopRowOneMiddleContainer, TopRowOneRightContainer,
+import { AppBarForBackTo, TopOfPageHeader, TopRowOneLeftContainer, TopRowOneMiddleContainer, TopRowOneRightContainer,
   TopRowTwoLeftContainer, TopRowTwoRightContainer, OfficeShareWrapper  } from '../../utils/pageLayoutStyles';
 
 const HeaderNotificationMenu = React.lazy(() => import(/* webpackChunkName: 'HeaderNotificationMenu' */ './HeaderNotificationMenu'));
@@ -769,22 +769,11 @@ class HeaderBackToBallot extends Component {
     const shareButtonInHeader = ['office'].includes(page);
 
     return (
-      <StyledAppBar
+      <AppBarForBackTo
         id="backToBallotAppBar"
         // className={headerClassName}
         color="default"
         classes={appBarClasses}
-        // style={headerStyles()}
-        style={{
-          borderTop: 'none',
-          borderRight: 'none',
-          borderBottom: '1px solid rgb(170, 170, 170)',
-          borderLeft: 'none',
-          borderImage: 'initial',
-          display: 'flex',
-          justifyContent: 'center',
-          boxShadow: 'rgb(0 0 0 / 20%) 0px 2px 4px -1px, rgb(0 0 0 / 14%) 0px 4px 5px 0px, rgb(0 0 0 / 12%) 0px 1px 10px 0px',
-        }}
         elevation={0}
       >
         <TopOfPageHeader>
@@ -876,7 +865,7 @@ class HeaderBackToBallot extends Component {
           />
           )}
         </TopOfPageHeader>
-      </StyledAppBar>
+      </AppBarForBackTo>
     );
   }
 }
@@ -916,11 +905,6 @@ const styles = (theme) => ({
   },
 });
 
-const StyledAppBar = styled(AppBar)`
-  @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
-    display: inherit;
-  }
-`;
 
 const OfficeOrMeasureTitle = styled.div`
   font-size: 16px;

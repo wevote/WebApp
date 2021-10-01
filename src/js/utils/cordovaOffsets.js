@@ -308,9 +308,10 @@ export function cordovaTopHeaderTopMargin () {
           case CordovaPageConstants.officeWild:            style.marginTop = '35px'; break;
           case CordovaPageConstants.opinions:              style.marginTop = '17px'; break;
           case CordovaPageConstants.settingsAccount:       style.marginTop = '31px'; break;
-          case CordovaPageConstants.settingsNotifications: style.marginTop = '14px'; break;         // from 36 to 14  for the 12 max pro
+          case CordovaPageConstants.settingsNotifications: style.marginTop = '29px'; break;         // from 36 to 29  for the 12 max pro
+          case CordovaPageConstants.settingsProfile:       style.marginTop = '32px'; break;         // from 36 to 29  for the 12 max pro
           case CordovaPageConstants.settingsSubscription:  style.marginTop = '34px'; break;
-          case CordovaPageConstants.settingsWild:          style.marginTop = '16px'; break;
+          case CordovaPageConstants.settingsWild:          style.marginTop = '31px'; break;
           case CordovaPageConstants.twitterIdMFollowers:   style.marginTop = '37px'; break; // /*/m/friends, /*/m/following, /*/m/followers
           case CordovaPageConstants.twitterInfoPage:       style.marginTop = '32px'; break; // A twitter page guess, that ends with 'btcand' 'btmeas' or'btdb'
           case CordovaPageConstants.valueWild:             style.marginTop = '32px'; break;

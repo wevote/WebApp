@@ -74,14 +74,15 @@ fs.remove('./build').then(() => {
             }
           }
           console.log('> Cordova: Files rewritten without React.lazy: ', listOfFiles.length);
-          exec('grep -r "React.lazy" ./srcCordova | grep -v "//" | grep -v "(factory)"', (error, stdout, stderr) => {
-            const out = stdout.split('\n');
-            if (!(out.length === 1 && out[1] === undefined)) {
-              console.log('> Cordova: Files that (incorrectly) still contain React.lazy: ');
-              console.log(out);
-              console.log('> Cordova: The files listed above, need to be fixed before proceeding!');  // Or the regex needs adjustment
-            }
-          });
+          exec('grep -r "React.lazy" ./srcCordova | grep -v "//" | grep -v "(factory)"',
+            (error2, stdout2) => {
+              const out = stdout2.split('\n');
+              if (!(out.length === 1 && out[1] === undefined)) {
+                console.log('> Cordova: Files that (incorrectly) still contain React.lazy: ');
+                console.log(out);
+                console.log('> Cordova: The files listed above, need to be fixed before proceeding!');  // Or the regex needs adjustment
+              }
+            });
         });
       });
     } catch (err) {

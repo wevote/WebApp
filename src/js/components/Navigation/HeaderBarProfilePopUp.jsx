@@ -94,7 +94,7 @@ class HeaderBarProfilePopUp extends Component {
             {/* Desktop or Mobile */}
             <li>
               <ListItemWrapper>
-                <Link id="profilePopUpYourEndorsements" onClick={this.hideProfilePopUp} to={yourVoterGuideLink}>
+                <Link id="profilePopUpYourEndorsements" onClick={this.hideProfilePopUp} to={yourVoterGuideLink.replace('#', '')}>
                   <Button
                     variant="text"
                     color="primary"

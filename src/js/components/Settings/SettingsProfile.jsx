@@ -7,7 +7,9 @@ import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import AnalyticsActions from '../../actions/AnalyticsActions';
 import VoterStore from '../../stores/VoterStore';
+import { cordovaBallotFilterTopMargin } from '../../utils/cordovaOffsets';
 import { renderLog } from '../../utils/logging';
+import { HeaderContentContainer } from '../../utils/pageLayoutStyles';
 import LoadingWheel from '../LoadingWheel';
 import BrowserPushMessage from '../Widgets/BrowserPushMessage';
 import SettingsProfilePicture from './SettingsProfilePicture';
@@ -50,7 +52,7 @@ class SettingsProfile extends Component {
     }
 
     return (
-      <div className="">
+      <HeaderContentContainer style={{ marginTop: `${cordovaBallotFilterTopMargin()}` }}>
         <Helmet title="General Settings - We Vote" />
         <BrowserPushMessage incomingProps={this.props} />
         <div className="card u-padding-bottom--lg">
@@ -78,7 +80,7 @@ class SettingsProfile extends Component {
             </div>
           </div>
         </div>
-      </div>
+      </HeaderContentContainer>
     );
   }
 }

@@ -1,4 +1,4 @@
-import { AppBar, IconButton, Toolbar } from '@material-ui/core';
+import { IconButton, Toolbar } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 import { AccountCircle } from '@material-ui/icons';
 import PropTypes from 'prop-types';
@@ -12,11 +12,11 @@ import AppObservableStore, { messageService } from '../../stores/AppObservableSt
 import VoterStore from '../../stores/VoterStore';
 import { dumpCssFromId } from '../../utils/appleSiliconUtils';
 import { normalizedHref } from '../../utils/applicationUtils';
-import { hasIPhoneNotch, historyPush, isCordova, isIOSAppOnMac, isIPad, isWebApp } from '../../utils/cordovaUtils';
+import { historyPush, isCordova, isIOSAppOnMac, isIPad, isWebApp } from '../../utils/cordovaUtils';
 import { renderLog } from '../../utils/logging';
 import { shortenText, stringContains } from '../../utils/textFormat';
 import { voterPhoto } from '../../utils/voterPhoto';
-import { TopRowOneRightContainer } from '../../utils/pageLayoutStyles';
+import { AppBarForBackTo, TopRowOneRightContainer } from '../../utils/pageLayoutStyles';
 import SignInButton from '../Widgets/SignInButton';
 import HeaderBackToButton from './HeaderBackToButton';
 
@@ -222,13 +222,13 @@ class HeaderBackTo extends Component {
     } = this.state;
     const voterPhotoUrlMedium = voterPhoto(voter);
 
-    const headerClassName = (function header () {
-      if (isWebApp()) {
-        return 'page-header';
-      } else {
-        return hasIPhoneNotch() ? 'page-header page-header__cordova-iphonex' : 'page-header page-header__cordova';
-      }
-    }());
+    // const headerClassName = (function header () {
+    //   if (isWebApp()) {
+    //     return 'page-header';
+    //   } else {
+    //     return hasIPhoneNotch() ? 'page-header page-header__cordova-iphonex' : 'page-header page-header__cordova';
+    //   }
+    // }());
 
     const pathname = normalizedHref();
     const shareButtonInHeader = pathname && stringContains('/office', pathname.toLowerCase());
@@ -239,12 +239,12 @@ class HeaderBackTo extends Component {
     // dumpObjProps('cordovaOverrides', cordovaOverrides);
 
     return (
-      <AppBar
+      <AppBarForBackTo
         id="headerBackToAppBar"
-        className={headerClassName}
+        // className={headerClassName}
         color="default"
         style={cordovaOverrides}
-        classes={{ root: classes.stackedReturnAndShare }}
+        // classes={{ root: classes.stackedReturnAndShare }}
         elevation={0}
       >
         <Toolbar className="header-toolbar header-backto-toolbar" disableGutters>
@@ -319,7 +319,7 @@ class HeaderBackTo extends Component {
             closeFunction={this.closeSignInModal}
           />
         )}
-      </AppBar>
+      </AppBarForBackTo>
     );
   }
 }

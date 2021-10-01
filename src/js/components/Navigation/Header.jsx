@@ -194,6 +194,8 @@ export default class Header extends Component {
     if (isIPad() && !isIOSAppOnMac()) {
       pageHeaderClasses = pageHeaderClasses.replace('page-header__container', 'page-header__container_ipad');
     }
+    // Non-functional class, to provide a reminder about how to debug top margins
+    pageHeaderClasses += ' cordovaTopHeaderTopMargin';
 
     // if (!displayTopMenuShadow()) {
     //   pageHeaderClasses += ' header-shadow';
