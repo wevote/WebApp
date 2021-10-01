@@ -260,6 +260,7 @@ export function removeTwitterNameFromDescription (displayName, twitterDescriptio
   return twitterDescriptionMinusName;
 }
 
+// TODO: Switch all uses of this function over to /src/js/common/utils/removeValueFromArray
 export function removeValueFromArray (valueToRemove, listArray) {
   if (listArray && listArray.constructor === Array) {
     const index = listArray.indexOf(valueToRemove);
