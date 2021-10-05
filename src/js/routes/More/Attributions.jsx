@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import attributions from '../../attributions';
 import compileDate from '../../compileDate';
 import { renderLog } from '../../utils/logging';
+import { PageContentContainer } from '../../utils/pageLayoutStyles';
 
 export default class Attributions extends React.Component {
   static getProps () {
@@ -36,7 +37,8 @@ export default class Attributions extends React.Component {
     renderLog('Attributions');  // Set LOG_RENDER_EVENTS to log all renders
 
     return (
-      <div style={{ marginBottom: 30 }}>
+      <PageContentContainer>
+        {/* <div style={{ marginBottom: 30 }}> */}
         <Helmet title="Attributions - We Vote" />
         <div className="container-fluid well">
           <br />
@@ -57,7 +59,7 @@ export default class Attributions extends React.Component {
           Compile date:&nbsp;&nbsp;
           { compileDate }
         </div>
-      </div>
+      </PageContentContainer>
     );
   }
 }

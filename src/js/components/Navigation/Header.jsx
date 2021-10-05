@@ -6,11 +6,10 @@ import VoterStore from '../../stores/VoterStore';
 import apiCalming from '../../utils/apiCalming';
 import { dumpCssFromId } from '../../utils/appleSiliconUtils';
 import { getApplicationViewBooleans, normalizedHref, weVoteBrandingOff } from '../../utils/applicationUtils';
-import { cordovaTopHeaderTopMargin } from '../../utils/cordovaOffsets';
+import cordovaTopHeaderTopMargin from '../../utils/cordovaTopHeaderTopMargin';
 import { hasIPhoneNotch, historyPush, isCordova, isIOS, isIOSAppOnMac, isIPad, isWebApp } from '../../utils/cordovaUtils';
-import displayFriendsTabs from '../../utils/displayFriendsTabs';
-import isMobileScreenSize from '../../utils/isMobileScreenSize';
 import { renderLog } from '../../utils/logging';
+import { HeadroomWrapper, IOSNoNotchSpacer, IOSNotchedSpacer } from '../../utils/pageLayoutStyles';
 import { stringContains } from '../../utils/textFormat';
 import HeaderBar from './HeaderBar';
 
@@ -183,9 +182,9 @@ export default class Header extends Component {
     const voter = VoterStore.getVoter();
     let iPhoneSpacer = '';
     if (isCordova() && isIOS() && hasIPhoneNotch()) {
-      iPhoneSpacer = <div className="ios-notched-spacer" />;
+      iPhoneSpacer = <IOSNotchedSpacer />;
     } else if (isCordova() && isIOS() && !hasIPhoneNotch() && !isIOSAppOnMac()) {
-      iPhoneSpacer = <div className="ios-no-notch-spacer" style={{ height: `${isIPad() ? '26px' : 'undefined'}` }} />;
+      iPhoneSpacer = <IOSNoNotchSpacer />;
     }
 
     // console.log('organizationModalBallotItemWeVoteId: ', this.state.organizationModalBallotItemWeVoteId);
@@ -193,6 +192,9 @@ export default class Header extends Component {
     let pageHeaderClasses = weVoteBrandingOff() ? 'page-header__container_branding_off headroom' : 'page-header__container headroom';
     if (isIPad() && !isIOSAppOnMac()) {
       pageHeaderClasses = pageHeaderClasses.replace('page-header__container', 'page-header__container_ipad');
+    }
+    if (isCordova()) {
+      pageHeaderClasses = '';   // Abandoning the main.css styles if cordova 10/2/2021
     }
     // Non-functional class, to provide a reminder about how to debug top margins
     pageHeaderClasses += ' cordovaTopHeaderTopMargin';
@@ -205,14 +207,14 @@ export default class Header extends Component {
 
     if (voterGuideMode || voterGuideCreatorMode) {
       // console.log('Header in voterGuideMode, showBackToVoterGuide:', showBackToVoterGuide);
-      let headroomWrapper = '';
-      if (isWebApp) {
-        if (voterGuideCreatorMode) {
-          headroomWrapper = 'headroom-wrapper-webapp__voter-guide-creator';
-        } else {
-          headroomWrapper = 'headroom-wrapper-webapp__voter-guide';
-        }
-      }
+      // let headroomWrapper = '';
+      // if (isWebApp) {
+      //   if (voterGuideCreatorMode) {
+      //     headroomWrapper = 'headroom-wrapper-webapp__voter-guide-creator';
+      //   } else {
+      //     headroomWrapper = 'headroom-wrapper-webapp__voter-guide';
+      //   }
+      // }
       let headerBarObject;
       if (showBackToVoterGuide) {
         const backToVoterGuideLinkDesktop = pathname.substring(0, pathname.indexOf('/m/')); // Remove the "/m/followers", "/m/following", or "/m/friends" from the end of the string
@@ -228,11 +230,11 @@ export default class Header extends Component {
       return (
         <div id="app-header">
           {iPhoneSpacer}
-          <div className={headroomWrapper}>
+          <HeadroomWrapper>
             <div className={pageHeaderClasses} style={cordovaTopHeaderTopMargin()} id="header-container">
               {headerBarObject}
             </div>
-          </div>
+          </HeadroomWrapper>
           {showHowItWorksModal && (
             <HowItWorksModal
               show={showHowItWorksModal}
@@ -269,12 +271,11 @@ export default class Header extends Component {
       const backToSettingsLinkDesktop = '/settings/profile';
       const backToSettingsLinkMobile = '/settings/hamburger';
       const backToSettingsLinkText = 'Settings';
-      const classNameHeadroom = showBackToVoterGuides ? 'headroom-wrapper-webapp__voter-guide' : 'headroom-wrapper-webapp__default';
 
       return (
         <div id="app-header">
           { iPhoneSpacer }
-          <div className={isWebApp() ? classNameHeadroom : ''} id="headroom-wrapper">
+          <HeadroomWrapper>
             <div className={pageHeaderClasses} style={cordovaTopHeaderTopMargin()} id="header-container">
               { showBackToSettingsDesktop && (
                 <span>
@@ -308,7 +309,7 @@ export default class Header extends Component {
               { !showBackToVoterGuides && !showBackToSettingsDesktop && !showBackToSettingsMobile &&
                 <HeaderBar />}
             </div>
-          </div>
+          </HeadroomWrapper>
           {showHowItWorksModal && (
             <HowItWorksModal
               show={showHowItWorksModal}
@@ -352,13 +353,14 @@ export default class Header extends Component {
       return (
         <div id="app-header">
           { iPhoneSpacer }
-          <div className={isWebApp ? 'headroom-wrapper-webapp__default' : ''} id="headroom-wrapper">
+          <HeadroomWrapper>
+            {/* <div className={isWebApp ? 'headroom-wrapper-webapp__default' : ''} id="headroom-wrapper"> */}
             <div className={pageHeaderClasses} style={cordovaTopHeaderTopMargin()} id="header-container">
               { showBackToValues ?
                 <HeaderBackTo backToLink={backToValuesLink} backToLinkText={backToValuesLinkText} /> :
                 <HeaderBar />}
             </div>
-          </div>
+          </HeadroomWrapper>
           {showHowItWorksModal && (
             <HowItWorksModal
               show={showHowItWorksModal}
@@ -397,13 +399,14 @@ export default class Header extends Component {
       return (
         <div id="app-header">
           { iPhoneSpacer }
-          <div className={isWebApp ? 'headroom-wrapper-webapp__default' : ''} id="headroom-wrapper">
+          <HeadroomWrapper>
+            {/* <div className={isWebApp ? 'headroom-wrapper-webapp__default' : ''} id="headroom-wrapper"> */}
             <div className={pageHeaderClasses} style={cordovaTopHeaderTopMargin()} id="header-container">
               { showBackToFriends ?
                 <HeaderBackTo backToLink={backToFriendsLink} backToLinkText={backToFriendsLinkText} /> :
                 <HeaderBar />}
             </div>
-          </div>
+          </HeadroomWrapper>
           {showHowItWorksModal && (
             <HowItWorksModal
               show={showHowItWorksModal}
@@ -448,35 +451,17 @@ export default class Header extends Component {
       return null;
     } else {
       // console.log('Header not in any mode');
-      let classNameHeadroom = '';  // Value for isCordova is ''
-      if (isWebApp()) {
-        if (stringContains('/ballot', pathname.toLowerCase())) {
-          classNameHeadroom = 'headroom-wrapper-webapp__ballot';
-        } else if (stringContains('/office', pathname.toLowerCase())) {
-          if (isMobileScreenSize()) {
-            classNameHeadroom = 'headroom-wrapper-webapp__default';
-          } else {
-            classNameHeadroom = 'headroom-wrapper-webapp__office';
-          }
-        } else if (displayFriendsTabs()) {
-          classNameHeadroom = 'headroom-wrapper-webapp__ballot';
-        } else {
-          classNameHeadroom = 'headroom-wrapper-webapp__default';
-        }
-      }
       // This handles other pages, like the Ballot display
       return (
         <div id="app-header">
           { iPhoneSpacer }
-          <div className={classNameHeadroom}
-            id="headroom-wrapper"
-          >
+          <HeadroomWrapper>
             <div className={pageHeaderClasses} style={cordovaTopHeaderTopMargin()} id="header-container">
               { showBackToBallotHeader ?
                 <HeaderBackToBallot params={params} /> :
                 <HeaderBar />}
             </div>
-          </div>
+          </HeadroomWrapper>
           {showActivityTidbitDrawer && (
             <ActivityTidbitDrawer
               activityTidbitWeVoteId={activityTidbitWeVoteIdForDrawer}

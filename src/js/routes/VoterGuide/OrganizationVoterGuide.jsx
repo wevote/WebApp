@@ -12,12 +12,10 @@ import ShareButtonDesktopTablet from '../../components/Share/ShareButtonDesktopT
 import OrganizationCard from '../../components/VoterGuide/OrganizationCard';
 import OrganizationVoterGuideCard from '../../components/VoterGuide/OrganizationVoterGuideCard';
 import OrganizationVoterGuideTabs from '../../components/VoterGuide/OrganizationVoterGuideTabs';
-import CordovaPageConstants from '../../constants/CordovaPageConstants';
 import AppObservableStore from '../../stores/AppObservableStore';
 import OrganizationStore from '../../stores/OrganizationStore';
 import VoterGuideStore from '../../stores/VoterGuideStore';
 import VoterStore from '../../stores/VoterStore';
-import cordovaScrollablePaneTopPadding from '../../utils/cordovaScrollablePaneTopPadding';
 import { historyPush, isIPad, isWebApp } from '../../utils/cordovaUtils';
 import { renderLog } from '../../utils/logging';
 import { isSpeakerTypePrivateCitizen } from '../../utils/organization-functions';
@@ -320,12 +318,8 @@ export default class OrganizationVoterGuide extends Component {
       );
     }
 
-    const { isFromTwitterHandleLanding } = params;
-    const paramOut = isFromTwitterHandleLanding ? CordovaPageConstants.twitterHandleLanding : false;
-    const paddingTop = cordovaScrollablePaneTopPadding(paramOut);
-
     return (
-      <PageContentContainer style={{ paddingTop }}>
+      <PageContentContainer>
         <WrapperFlex>
           {/* Header Banner Spacing for Desktop */}
           <BannerOverlayDesktopOuterWrapper>

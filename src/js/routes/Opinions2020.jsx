@@ -5,8 +5,6 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
-import { cordovaDot } from '../utils/cordovaUtils';
-import cordovaScrollablePaneTopPadding from '../utils/cordovaScrollablePaneTopPadding';
 import ActivityActions from '../actions/ActivityActions';
 import AnalyticsActions from '../actions/AnalyticsActions';
 import BallotActions from '../actions/BallotActions';
@@ -24,7 +22,9 @@ import BallotStore from '../stores/BallotStore';
 import OrganizationStore from '../stores/OrganizationStore';
 import VoterGuideStore from '../stores/VoterGuideStore';
 import VoterStore from '../stores/VoterStore';
+import { cordovaDot } from '../utils/cordovaUtils';
 import { renderLog } from '../utils/logging';
+import { PageContentContainer } from '../utils/pageLayoutStyles';
 import { stringContains } from '../utils/textFormat';
 
 const ShowMoreItems = React.lazy(() => import(/* webpackChunkName: 'ShowMoreItems' */ '../components/Widgets/ShowMoreItems'));
@@ -598,7 +598,7 @@ class Opinions2020 extends Component {
     // console.log('filteredOpinionsAndBallotItems: ', filteredOpinionsAndBallotItems);
     // console.log('atLeastOneFoundWithTheseFilters: ', atLeastOneFoundWithTheseFilters);
     return (
-      <div className="container" style={{ paddingTop: `${cordovaScrollablePaneTopPadding()}` }}>
+      <PageContentContainer>
         <SnackNotifier />
         <Card className="card">
           <div className="card-main">
@@ -790,7 +790,7 @@ class Opinions2020 extends Component {
           <br />
           <Link to="/opinions_ignored" className="u-no-break">Organizations you are ignoring</Link>
         </span>
-      </div>
+      </PageContentContainer>
     );
   }
 }

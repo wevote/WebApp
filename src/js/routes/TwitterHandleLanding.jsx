@@ -5,7 +5,7 @@ import Helmet from 'react-helmet';
 import { Link } from 'react-router-dom';
 import OrganizationActions from '../actions/OrganizationActions';
 import TwitterActions from '../actions/TwitterActions';
-import LoadingWheel from '../components/LoadingWheel';
+import LoadingWheelComp from '../components/LoadingWheelComp';
 import AppObservableStore from '../stores/AppObservableStore';
 import TwitterStore from '../stores/TwitterStore';
 import VoterStore from '../stores/VoterStore';
@@ -134,7 +134,7 @@ export default class TwitterHandleLanding extends Component {
     if (this.state.status === undefined) {
       // console.log('TwitterHandleLanding this.state.status undefined');
       // Show a loading wheel while this component's data is loading
-      return LoadingWheel;
+      return <LoadingWheelComp padBottom />;
     }
 
     const {

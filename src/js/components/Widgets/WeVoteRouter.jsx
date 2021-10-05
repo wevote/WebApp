@@ -32,12 +32,14 @@ export default class WeVoteRouter extends BrowserRouter {
     super(props);
     global.weVoteGlobalHistory = this.history;
     if (webAppConfig.LOG_ROUTING) {
-      console.log('Router: initial history is: ', JSON.stringify(this.history, null, 2));
+      console.log('Router:  initial history is: ', JSON.stringify(this.history, null, 2));
     }
     this.history.listen((location, action) => {
       AppObservableStore.incrementObservableUpdateCounter();   // Encourage an update of Header.jsx on each push
-      console.log(`Router: The current URL is ${location.pathname}${location.search}${location.hash}`);
-      console.log(`Router: The last navigation action was ${action}`, JSON.stringify(this.history, null, 2));
+      if (webAppConfig.LOG_ROUTING) {
+        console.log(` Router: The current URL is ${location.pathname}${location.search}${location.hash}`);
+        console.log(` Router: The last navigation action was ${action}`, JSON.stringify(this.history, null, 2));
+      }
     });
   }
 }

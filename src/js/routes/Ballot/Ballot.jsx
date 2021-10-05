@@ -36,14 +36,13 @@ import VoterStore from '../../stores/VoterStore';
 import apiCalming from '../../utils/apiCalming';
 import { dumpCssFromId } from '../../utils/appleSiliconUtils';
 import cookies from '../../utils/cookies';
-import { cordovaBallotFilterTopMargin } from '../../utils/cordovaOffsets';
-import { chipLabelText, getAndroidSize, historyPush, isAndroid, isCordova, isIOSAppOnMac, isIPadGiantSize, isWebApp } from '../../utils/cordovaUtils';
+import { chipLabelText, historyPush, isCordova, isIOSAppOnMac, isIPadGiantSize, isWebApp } from '../../utils/cordovaUtils';
 import isMobile from '../../utils/isMobile';
 import isMobileScreenSize from '../../utils/isMobileScreenSize';
 import lazyPreloadPages from '../../utils/lazyPreloadPages';
 import { renderLog } from '../../utils/logging';
 import mapCategoryFilterType from '../../utils/map-category-filter-type';
-import { HeaderContentContainer, PageContentContainer } from '../../utils/pageLayoutStyles';
+import { DualHeaderContainer, HeaderContentContainer, PageContentContainer } from '../../utils/pageLayoutStyles';
 import { getBooleanValue } from '../../utils/textFormat';
 import showBallotDecisionsTabs from '../../utilsApi/showBallotDecisionsTabs';
 import BallotTitleHeader from './BallotTitleHeader';
@@ -1086,7 +1085,7 @@ class Ballot extends Component {
     const { location: { pathname, search } } = window;
 
     const {
-      ballotHeaderUnpinned, ballotSearchResults, ballotWithAllItems, ballotWithItemsFromCompletionFilterType,
+      ballotSearchResults, ballotWithAllItems, ballotWithItemsFromCompletionFilterType,
       completionLevelFilterType, doubleFilteredBallotItemsLength, isSearching, issuesFollowedCount,
       loadingMoreItems, numberOfBallotItemsToDisplay,
       raceLevelFilterItemsInThisBallot, searchText, showFilterTabs, totalNumberOfBallotItems,
@@ -1219,10 +1218,8 @@ class Ballot extends Component {
       <div className="ballot_root">
         <Suspense fallback={<LoadingWheelComp />}>
           <SnackNotifier />
-          <div className={`ballot__heading ${ballotHeaderUnpinned && isWebApp() ? 'ballot__heading__unpinned' : ''}`}
-               style={isAndroid() && getAndroidSize() === '--xl' ? { paddingTop: '99px' } : {}}
-          >
-            <HeaderContentContainer style={{ marginTop: `${cordovaBallotFilterTopMargin()}` }}>
+          <DualHeaderContainer>
+            <HeaderContentContainer>
               <div className="container-fluid">
                 <div className="row">
                   <div className="col-md-12">
@@ -1345,7 +1342,7 @@ class Ballot extends Component {
                 </div>
               </div>
             </HeaderContentContainer>
-          </div>
+          </DualHeaderContainer>
 
           <PageContentContainer>
             <div className="container-fluid">
@@ -1554,7 +1551,8 @@ const BallotLoadingWrapper = styled.div`
 
 // If we want to turn off filter tabs navigation bar:  ${({ showFilterTabs }) => !showFilterTabs && 'height: 0;'}
 const BallotFilterRow = styled.div`
-  display: flex;
+  // TODO: 10/4/21 Steve, this is temporary and needs to be more responsive
+  margin-left: ${() => (isWebApp() && !isMobileScreenSize() ? 'calc((100vw - 975px)/2)' : '')};
 `;
 
 // const EditAddressWrapper = styled.div`

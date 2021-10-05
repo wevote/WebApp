@@ -1,7 +1,6 @@
 import React from 'react';
 import Helmet from 'react-helmet';
 import { Link } from 'react-router-dom';
-import cordovaScrollablePaneTopPadding from '../../utils/cordovaScrollablePaneTopPadding';
 import { renderLog } from '../../utils/logging';
 import { PageContentContainer } from '../../utils/pageLayoutStyles';
 
@@ -13,7 +12,7 @@ export default class TermsOfService extends React.Component {
   render () {
     renderLog('TermsOfService');  // Set LOG_RENDER_EVENTS to log all renders
     return (
-      <PageContentContainer style={{ paddingTop: `${cordovaScrollablePaneTopPadding()}` }}>
+      <PageContentContainer>
         <Helmet title="Terms of Service - We Vote" />
         <div className="container-fluid well">
           <h1 className="text-center">WeVote.US Terms of Service</h1>

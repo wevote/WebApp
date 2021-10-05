@@ -5,7 +5,7 @@ import clsx from 'clsx';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import VoterStore from '../../stores/VoterStore';
-import { historyPush, isAndroid, isCordova, isIOS, isIPhone3p5in, isIPhone4in, isIPhone4p7in, isIPhone5p5in, isIPhone5p8in, isIPhone6p1in, isIPhone6p5in, isWebApp, isWebAppHeight0to568, isWebAppHeight569to667, isWebAppHeight668to736, isWebAppHeight737to896, restoreStylesAfterCordovaKeyboard } from '../../utils/cordovaUtils';
+import { historyPush, isAndroid, isCordova, isIOS, isIPhone3p5in, isIPhone4in, isIPhone4p7in, isIPhone5p5inEarly, isIPhone5p5inMini, isIPhone5p8in, isIPhone6p1in, isIPhone6p5in, isWebApp, isWebAppHeight0to568, isWebAppHeight569to667, isWebAppHeight668to736, isWebAppHeight737to896, restoreStylesAfterCordovaKeyboard } from '../../utils/cordovaUtils';
 import initializeAppleSDK from '../../utils/initializeAppleSDK';
 import initializeFacebookSDK from '../../utils/initializeFacebookSDK';
 import { renderLog } from '../../utils/logging';
@@ -156,7 +156,7 @@ class SignInModal extends Component {
             // iPhoneX/iPhone11 Pro Max
             [classes.emailInputWebApp737to896]: isWebAppHeight737to896() && focusedOnSingleInputToggle && focusedInputName === 'email',
             [classes.phoneInputWebApp737to896]: isWebAppHeight737to896() && focusedOnSingleInputToggle && focusedInputName === 'phone',
-            [classes.signInModalDialogLarger]: (isIPhone5p5in() || isIPhone5p8in() || isIPhone6p1in() || isIPhone6p5in()) && isCordova(),
+            [classes.signInModalDialogLarger]: (isIPhone5p5inEarly() || isIPhone5p5inMini() || isIPhone5p8in() || isIPhone6p1in() || isIPhone6p5in()) && isCordova(),
             [classes.signInModalDialogAndroid]: isAndroid(),
           }),
           root: classes.dialogRoot,

@@ -5,6 +5,7 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 import IssueStore from '../../stores/IssueStore';
 import VoterGuideStore from '../../stores/VoterGuideStore';
+import { cordovaDot } from '../../utils/cordovaUtils';
 import { renderLog } from '../../utils/logging';
 import StickyPopover from '../Ballot/StickyPopover';
 import SvgImage from '../Widgets/SvgImage';
@@ -166,7 +167,8 @@ class IssuesByOrganizationDisplayList extends Component {
 
     // Tried to make the issues icons accessible via tabbing, caused too many side affects
     const svgFill = issueFollowedByVoter ? '#555' : '#999';
-    console.log('-----------------', oneIssue.issue_icon_local_path);
+    const svg = oneIssue.issue_icon_local_path ? oneIssue.issue_icon_local_path : cordovaDot('../.../../img/global/svg-icons/issues/two-leaves.svg');
+    // console.log('-----------------', oneIssue.issue_icon_local_path);
     const valueIconAndText = (
       <ValueIconAndTextOrganization
         id={`valueIconAndTextOrganization-${oneIssue.issue_we_vote_id}`}
@@ -174,7 +176,7 @@ class IssuesByOrganizationDisplayList extends Component {
         issueFollowedByVoter={issueFollowedByVoter}
       >
         <Chip
-          avatar={<SvgImage imageName={oneIssue.issue_icon_local_path} otherStyles={{ fill: svgFill }} />}
+          avatar={<SvgImage imageName={svg} otherStyles={{ fill: svgFill }} />}
           classes={{ root: classes.chipStyle }}
           label={oneIssue.issue_name}
           ref={this.valueSpan}

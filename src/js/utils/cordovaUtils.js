@@ -51,7 +51,7 @@ export function isIOSAppOnMac () {
 export function getProcessorArchitecture () {
   const { diagnostic: { getArchitecture } } = window.cordova.plugins;
   getArchitecture((arch) => {
-    console.log(`Processor Architecture: ${arch}`);
+    console.log(`Cordova:  Processor Architecture: ${arch}`);
     return arch;
   }, (error) => {
     console.error('cordova.plugins.diagnostic.getArchitecture threw: ', error);
@@ -179,22 +179,26 @@ export function getIOSSizeString () {
   const iPhone4inPhones = ['iPhone5,1', 'iPhone5,2', 'iPhone5,3', 'iPhone5,4', 'iPhone6,1', 'iPhone6,2', 'iPhone8,4'];
   //    iPhone:               6            6S           7            7            8             8             SE 2nd Gen
   const iPhone4p7inPhones = ['iPhone7,2', 'iPhone8,1', 'iPhone9,1', 'iPhone9,3', 'iPhone10,1', 'iPhone10,4', 'iPhone12,8'];
-  //    iPhone:                 6 Plus       6S Plus      7 Plus       7Plus        8 Plus        8 Plus        12 Mini
-  const isIPhone5p5inPhones = ['iPhone7,1', 'iPhone8,2', 'iPhone9,2', 'iPhone9,4', 'iPhone10,2', 'iPhone10,5', 'iPhone13,1'];
+  //    iPhone:                 6 Plus       6S Plus      7 Plus       7Plus        8 Plus        8 Plus
+  const isIPhone5p5inEarlyPhones = ['iPhone7,1', 'iPhone8,2', 'iPhone9,2', 'iPhone9,4', 'iPhone10,2', 'iPhone10,5'];
+  //    iPhone:                      12 Mini       13 mini
+  const isIPhone5p5inMiniPhones = ['iPhone13,1', 'iPhone14,4'];
   //    iPhone:               X             X             XS            11 Pro
   const iPhone5p8inPhones = ['iPhone10,3', 'iPhone10,6', 'iPhone11,2', 'iPhone12,3'];
-  //    iPhone:               XR            11            12 Pro         12
-  const iPhone6p1inPhones = ['iPhone11,8', 'iPhone12,1', 'iPhone13,3', 'iPhone13,2'];
-  //    iPhone:               XS Max        XS Max        11 Pro Max    12 Pro Max(6.7)
-  const iPhone6p5inPhones = ['iPhone11,4', 'iPhone11,6', 'iPhone12,5', 'iPhone13,4'];
+  //    iPhone:               XR            11            12 Pro         12             13 Pro           13
+  const iPhone6p1inPhones = ['iPhone11,8', 'iPhone12,1', 'iPhone13,3', 'iPhone13,2', 'iPhone14,2', 'iPhone14,5'];
+  //    iPhone:               XS Max        XS Max        11 Pro Max   12ProMax(6.7) 13ProMax(6.7)
+  const iPhone6p5inPhones = ['iPhone11,4', 'iPhone11,6', 'iPhone12,5', 'iPhone13,4', 'iPhone14,3'];
   if (iPhone3p5inPhones.includes(window.device.model)) {
     return 'isIPhone3p5in';
   } else if (iPhone4inPhones.includes(window.device.model)) {
     return 'isIPhone4in';
   } else if (iPhone4p7inPhones.includes(window.device.model)) {
     return 'isIPhone4p7in';
-  } else if (isIPhone5p5inPhones.includes(window.device.model)) {
-    return 'isIPhone5p5in';
+  } else if (isIPhone5p5inEarlyPhones.includes(window.device.model)) {
+    return 'isIPhone5p5inEarly';
+  } else if (isIPhone5p5inMiniPhones.includes(window.device.model)) {
+    return 'isIPhone5p5inMini';
   } else if (iPhone5p8inPhones.includes(window.device.model)) {
     return 'isIPhone5p8in';
   } else if (iPhone6p1inPhones.includes(window.device.model)) {
@@ -214,7 +218,7 @@ export function getIOSSizeString () {
     return 'isIPhone4p7in';
   } else if ((size.height === '1920' && size.width === '1080') ||  // iPhone 6 Plus, 6s Plus, 7 Plus, 8 Plus
              (size.height === '2208' && size.width === '1242')) {   // iPhone 8 Plus in simulator
-    return 'isIPhone5p5in';
+    return 'isIPhone5p5inEarly';
   } else if (size.height === '2436' && size.width === '1125') {  // iPhone X, XS, 11 Pro
     return 'isIPhone5p8in';
   } else if ((size.height === '1792' && size.width === '828') ||  // iPhone XR, 11 (11 as described on apple.com)
@@ -260,10 +264,21 @@ export function isIPhone4p7in () {
 }
 
 // 5.5" screen iPhones, 401 ppi pixel density
-export function isIPhone5p5in () {
+export function isIPhone5p5inEarly () {
   if (isIOS()) {
-    if (getIOSSizeString() === 'isIPhone5p5in') {
-      logMatch('isIPhone5p5in: iPhone 678 Plus (5.5")', true);
+    if (getIOSSizeString() === 'isIPhone5p5inEarly') {
+      logMatch('isIPhone5p5inEarly: iPhone 678 Plus (5.5")', true);
+      return true;
+    }
+  }
+  return false;
+}
+
+// iPhone 12+ Mini 5.5" screen iPhones, 401 ppi pixel density
+export function isIPhone5p5inMini () {
+  if (isIOS()) {
+    if (getIOSSizeString() === 'isIPhone5p5inMini') {
+      logMatch('isIPhone5p5inMini: iPhone 12,13 Mini (5.5")', true);
       return true;
     }
   }
@@ -285,7 +300,7 @@ export function isIPhone5p8in () {
 export function isIPhone6p1in () {
   if (isIOS()) {
     if (getIOSSizeString() === 'isIPhone6p1in') {
-      logMatch('isIPhone6p1in: iPhone XR or 11 (6.1")', true);
+      logMatch('isIPhone6p1in: XR, 11, 12 Pro, 12, 13 Pro, or 13 (6.1")', true);
       return true;
     }
   }
@@ -346,7 +361,7 @@ export function isIPadGiantSize () {
 
 
 export function hasIPhoneNotch () {
-  return isIPhone5p8in() || isIPhone6p1in() || isIPhone6p5in();
+  return isIPhone5p5inMini() || isIPhone5p8in() || isIPhone6p1in() || isIPhone6p5in();
 }
 
 export function isIOsSmallerThanPlus () {
@@ -604,15 +619,11 @@ export function chipLabelText (fullLabel) {
     } else if (fullLabel === 'Local') {
       return 'Loc';
     }
-  } else if (isWebApp() && window.innerWidth < 400) { // iPhone 6/7/8 in Web Browser
+  } else if (window.innerWidth < 400) { // iPhone 6/7/8 in Web Browser AND  iPhone SE/SE2/5 and 12/13 mini in Cordova
     if (fullLabel === 'Federal') {
       return 'Fed';
     } else if (fullLabel === 'Measure') {
       return 'Meas.';
-    }
-  } else if (isCordova() && window.innerWidth < 400) { // iPhone SE/SE2/5 in Cordova
-    if (fullLabel === 'Federal') {
-      return 'Fed';
     }
   }
   return fullLabel;

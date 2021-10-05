@@ -10340,26 +10340,26 @@ body {
   .ballot__filter__container {
     overflow: hidden; }
 
-.ballot__heading {
-  width: 100%;
-  background-color: #fff;
-  border-bottom: 1px solid #aaa;
-  overflow: hidden;
-  position: fixed;
-  z-index: 1;
-  left: 0;
-  padding-top: 58px;
-  transform: translate3d(0, -53px, 0);
-  transition: all 100ms ease-in-out 0s;
-  box-shadow: 0 2px 4px -1px rgba(0, 0, 0, 0.2), 0 4px 5px 0 rgba(0, 0, 0, 0.14), 0 1px 10px 0 rgba(0, 0, 0, 0.12); }
-  .ballot__heading__unpinned {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    z-index: 9000 !important;
-    transform: translate3d(0, -58px, 0);
-    transition: all 100ms ease-in-out 0s; }
+/*.ballot__heading {*/
+/*  width: 100%;*/
+/*  background-color: #fff;*/
+/*  border-bottom: 1px solid #aaa;*/
+/*  overflow: hidden;*/
+/*  position: fixed;*/
+/*  z-index: 1;*/
+/*  left: 0;*/
+/*  padding-top: 58px;*/
+/*  transform: translate3d(0, -53px, 0);*/
+/*  transition: all 100ms ease-in-out 0s;*/
+/*  box-shadow: 0 2px 4px -1px rgba(0, 0, 0, 0.2), 0 4px 5px 0 rgba(0, 0, 0, 0.14), 0 1px 10px 0 rgba(0, 0, 0, 0.12); }*/
+/*  .ballot__heading__unpinned {*/
+/*    position: fixed;*/
+/*    top: 0;*/
+/*    left: 0;*/
+/*    right: 0;*/
+/*    z-index: 9000 !important;*/
+/*    transform: translate3d(0, -58px, 0);*/
+/*    transition: all 100ms ease-in-out 0s; }*/
 
 .ballot__heading-vote-section {
   width: 100%;
@@ -11281,9 +11281,9 @@ a {
     border-bottom: 1px solid rgba(0, 0, 0, 0.1); }
   .page-header__container {
     background-color: #2e3c5d; }
-  .page-header__container_ipad {
-    background-color: #2e3c5d;
-    margin-top: 26px !important; }
+  /*.page-header__container_ipad {*/
+  /*  background-color: #2e3c5d;*/
+  /*  margin-top: 26px !important; }*/
   .page-header__container_branding_off {
     background-color: #333;
     padding: 8px 0; }
@@ -11358,23 +11358,23 @@ a {
   width: 100%;
   padding-top: 35px; }
 
-.ios-no-notch-spacer {
-  top: 0;
-  position: fixed;
-  height: 22px;
-  background: #2e3c5d;
-  width: 100%;
-  opacity: 1;
-  z-index: 3; }
+/*.ios-no-notch-spacer {*/
+/*  top: 0;*/
+/*  position: fixed;*/
+/*  height: 22px;*/
+/*  background: #2e3c5d;*/
+/*  width: 100%;*/
+/*  opacity: 1;*/
+/*  z-index: 3; }*/
 
-.ios-notched-spacer {
-  top: 0;
-  position: fixed;
-  height: 40px;
-  background: #2e3c5d;
-  width: 100%;
-  opacity: 1;
-  z-index: 3; }
+/*.ios-notched-spacer {*/
+/*  top: 0;*/
+/*  position: fixed;*/
+/*  height: 36px;*/
+/*  background: #2e3c5d;*/
+/*  width: 100%;*/
+/*  opacity: 1;*/
+/*  z-index: 1300; }*/
 
 .page-secondary-nav-header {
   border: none;
@@ -11500,11 +11500,13 @@ a {
   background: white;
   z-index: 2;
   transform: translateY(0);
-  transition: all .2s ease-in-out; }
-  .headroom--slide-up {
-    transform: translateY(-100%); }
-  .headroom--slide-down {
-    transform: translateY(0); }
+  /* Removed 10/1/2021 for the iPhone 12 Mini, we may need to figure this out later if we revive slide-up headers */
+  /*transition: all .2s ease-in-out; }*/
+  /*.headroom--slide-up {*/
+  /*  transform: translateY(-100%); }*/
+  /*.headroom--slide-down {*/
+  /*  transform: translateY(0);*/
+}
 
 .headroom--unpinned {
   transform: translateY(-120%) !important; }
@@ -12630,8 +12632,8 @@ a {
 .headroom-wrapper-webapp__office {
   margin-top: 102px; }
 
-.headroom-wrapper-webapp__default {
-  margin-top: 54px; }
+/*.headroom-wrapper-webapp__default {*/
+/*  margin-top: 54px; }*/
 
 .headroom-wrapper-webapp__voter-guide {
   margin-top: 56px; }
@@ -12754,7 +12756,8 @@ a {
     background: #fff;
     display: inline;
     overflow: hidden;
-    margin-right: 16px; }
+    /* 10/1/21 commented out margin-right: 16px; */
+  }
   .header-nav__avatar-iphone-xr {
     overflow: unset; }
   .header-nav__avatar-wrapper {
