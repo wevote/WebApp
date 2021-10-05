@@ -23,7 +23,7 @@ import TooltipIcon from '../../components/Widgets/TooltipIcon';
 // import AppObservableStore, { messageService } from '../../stores/AppObservableStore';
 import FriendStore from '../../stores/FriendStore';
 import VoterStore from '../../stores/VoterStore';
-import { cordovaBallotFilterTopMargin, cordovaFriendsWrapper } from '../../utils/cordovaOffsets';
+import { cordovaFriendsWrapper } from '../../utils/cordovaOffsets';
 import { cordovaDot, historyPush } from '../../utils/cordovaUtils';
 import displayFriendsTabs from '../../utils/displayFriendsTabs';
 import sortFriendListByMutualFriends from '../../utils/friendFunctions';
@@ -570,40 +570,31 @@ class Friends extends Component {
     );
 
     return (
-      <span>
+      <PageContentContainer>
         {displayFriendsTabs() ? (
           <>
-            <div>
-              {/* <div className={`friends__heading ${isCordova() && 'friends__heading__cordova'} ${friendsHeaderUnpinned && isWebApp() ? 'friends__heading__unpinned' : ''}`}> */}
-              <div style={{ marginTop: `${cordovaBallotFilterTopMargin()}` }}>
-                <div className="container-fluid">
-                  <div className="row" id="friendsHorizontalMenu">
-                    <div className="col-md-12">
-                      <Helmet title="Friends - We Vote" />
-                      {tabsHTML}
-                    </div>
-                  </div>
+            <div className="container-fluid">
+              <div className="row" id="friendsHorizontalMenu">
+                <div className="col-md-12">
+                  <Helmet title="Friends - We Vote" />
+                  {tabsHTML}
                 </div>
               </div>
             </div>
-            <PageContentContainer style={{ marginTop: `${cordovaBallotFilterTopMargin()}` }}>
-              <div className="container-fluid">
-                <div className="Friends__Wrapper" style={cordovaFriendsWrapper()}>
-                  {mobileContentToDisplay}
-                </div>
+            <div className="container-fluid">
+              <div className="Friends__Wrapper" style={cordovaFriendsWrapper()}>
+                {mobileContentToDisplay}
               </div>
-            </PageContentContainer>
+            </div>
           </>
         ) : (
-          <PageContentContainer style={{ marginTop: `${cordovaBallotFilterTopMargin()}` }}>
-            <div className="container-fluid">
-              <div className="container-main">
-                {desktopContentToDisplay}
-              </div>
+          <div className="container-fluid">
+            <div className="container-main">
+              {desktopContentToDisplay}
             </div>
-          </PageContentContainer>
+          </div>
         )}
-      </span>
+      </PageContentContainer>
     );
   }
 }

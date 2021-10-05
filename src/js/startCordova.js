@@ -103,8 +103,8 @@ export function initCordovaAfterPluginsAreAvailable () { // eslint-disable-line
 }
 
 export function initializationForCordova (setInitialized) {
-  console.log('Cordova: startCordova.jsx  initializationForCordova');
-  console.log('Cordova: Waiting for window.cordova.plugins', window.cordova.plugins);
+  console.log('Cordova:  startCordova.jsx  initializationForCordova');
+  console.log('Cordova:  Waiting for window.cordova.plugins', window.cordova.plugins);
   const waitForPlugins = setInterval(() => {
     if (window.cordova.plugins) {
       initCordovaAfterPluginsAreAvailable();

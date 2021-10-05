@@ -17,7 +17,7 @@ const CordovaPageConstants = {
   news: null,
   officeWild: null,
   opinions: null,
-  opinionsPubFigs: null,
+  opinionsFiltered: null,
   ready: null,
   settingsAccount: null,
   settingsHamburger: null,

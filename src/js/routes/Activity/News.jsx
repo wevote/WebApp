@@ -27,7 +27,6 @@ import BallotStore from '../../stores/BallotStore';
 import OrganizationStore from '../../stores/OrganizationStore';
 import VoterStore from '../../stores/VoterStore';
 import apiCalming from '../../utils/apiCalming';
-import { cordovaBallotFilterTopMargin } from '../../utils/cordovaOffsets';
 import { cordovaDot, historyPush, isCordova, isIPad } from '../../utils/cordovaUtils';
 import { formatDateToMonthDayYear, timeFromDate } from '../../utils/dateFormat';
 import lazyPreloadPages from '../../utils/lazyPreloadPages';
@@ -306,7 +305,7 @@ class News extends Component {
     return (
       <>
         <Suspense fallback={<LoadingWheelComp />}>
-          <PageContentContainer style={{ marginTop: `${cordovaBallotFilterTopMargin()}` }}>
+          <PageContentContainer>
             <div className="container-fluid">
               <Helmet title="Discuss - We Vote" />
               <BrowserPushMessage incomingProps={this.props} />

@@ -2,14 +2,13 @@ import { Chip } from '@material-ui/core';
 import { withStyles, withTheme } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import { ReactSVG } from 'react-svg';
 import styled from 'styled-components';
 import CandidateStore from '../../stores/CandidateStore';
 import IssueStore from '../../stores/IssueStore';
-import { cordovaDot } from '../../utils/cordovaUtils';
 import { renderLog } from '../../utils/logging';
 import { getPositionSummaryListForBallotItem } from '../../utils/positionFunctions';
 import StickyPopover from '../Ballot/StickyPopover';
+import SvgImage from '../Widgets/SvgImage';
 import IssueFollowToggleButton from './IssueFollowToggleButton';
 
 const ReadMore = React.lazy(() => import(/* webpackChunkName: 'ReadMore' */ '../Widgets/ReadMore'));
@@ -96,10 +95,11 @@ class ValueIconAndText extends Component {
       <PopoverWrapper>
         <PopoverHeader>
           <PopoverTitleIcon>
-            <ReactSVG
-              src={cordovaDot(`/img/global/svg-icons/issues/${oneIssue.issue_icon_local_path}.svg`)}
-              beforeInjection={(svg) => svg.setAttribute('style', { fill: '#fff', padding: '1px 1px 1px 0px' })}
-            />
+            <SvgImage imageName={oneIssue.issue_icon_local_path} otherStyles={{ fill: '#fff', padding: '1px 1px 1px 0px' }} />
+            {/* <ReactSVG */}
+            {/*  src={cordovaDot(`/img/global/svg-icons/issues/${oneIssue.issue_icon_local_path}.svg`)} */}
+            {/*  beforeInjection={(svg) => svg.setAttribute('style', { fill: '#fff', padding: '1px 1px 1px 0px' })} */}
+            {/* /> */}
           </PopoverTitleIcon>
           <PopoverTitleText>
             {oneIssue.issue_name}
@@ -184,10 +184,11 @@ class ValueIconAndText extends Component {
         >
           <Chip
             avatar={oneIssue.issue_icon_local_path ? (
-              <ReactSVG
-                src={cordovaDot(`/img/global/svg-icons/issues/${oneIssue.issue_icon_local_path}.svg`)}
-                beforeInjection={(svg) => svg.setAttribute('style', { fill: svgFill, padding: '1px 1px 1px 0px' })}
-              />
+              <SvgImage imageName={oneIssue.issue_icon_local_path} otherStyles={{ fill: { svgFill }, padding: '1px 1px 1px 0px' }} />
+              // <ReactSVG
+              //   src={cordovaDot(`/img/global/svg-icons/issues/${oneIssue.issue_icon_local_path}.svg`)}
+              //   beforeInjection={(svg) => svg.setAttribute('style', { fill: svgFill, padding: '1px 1px 1px 0px' })}
+              // />
             ) : <span />}
             classes={{ root: classes.chipStyle }}
             label={oneIssue.issue_name}

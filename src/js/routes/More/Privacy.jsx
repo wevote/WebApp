@@ -1,6 +1,5 @@
 import React from 'react';
 import Helmet from 'react-helmet';
-import cordovaScrollablePaneTopPadding from '../../utils/cordovaScrollablePaneTopPadding';
 import { renderLog } from '../../utils/logging';
 import { PageContentContainer } from '../../utils/pageLayoutStyles';
 
@@ -14,7 +13,7 @@ export default class Privacy extends React.Component {
   render () {
     renderLog('Privacy');  // Set LOG_RENDER_EVENTS to log all renders
     return (
-      <PageContentContainer style={{ paddingTop: `${cordovaScrollablePaneTopPadding()}` }}>
+      <PageContentContainer>
         <Helmet title="Privacy Policy - We Vote" />
         <div className="container-fluid well">
           <h1 className="text-center">WeVote.US Privacy Policy</h1>

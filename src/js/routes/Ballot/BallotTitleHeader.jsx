@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import styled from 'styled-components';
 import { isAndroid, isAndroidSizeFold, isIOSAppOnMac, isIPad, isIPhone3p5in, isIPhone4in, isWebApp } from '../../utils/cordovaUtils';
+import isMobileScreenSize from '../../utils/isMobileScreenSize';
 import { renderLog } from '../../utils/logging';
 import { shortenText } from '../../utils/textFormat';
 
@@ -142,6 +143,20 @@ const Wrapper = styled.div`
   align-items: center;
   justify-content: flex-start;
   margin-top: ${(props) => (props.marginTop)};
+  ${() => {
+    if (isWebApp() && !isMobileScreenSize()) {
+      // TODO: Steve 10/4/21, this is temporary and needs to be more responsive
+      return {
+        paddingTop: '58px',
+        paddingBottom: '12px',
+        height: '25px',
+        marginLeft: 'calc((100vw - 975px)/2)',
+        width: '949px',
+      };
+    } else {
+      return {};
+    }
+  }};
 `;
 
 const Title = styled.h1`

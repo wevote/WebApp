@@ -1,19 +1,45 @@
 import { AppBar } from '@material-ui/core';
 import styled from 'styled-components';
+import CordovaPageConstants from '../constants/CordovaPageConstants';
 import { normalizedHrefPage } from './applicationUtils';
+import { cordovaBallotFilterTopMargin, cordovaDualHeaderContainerPadding } from './cordovaOffsets';
+
 import cordovaScrollablePaneTopPadding from './cordovaScrollablePaneTopPadding';
-import { isCordova } from './cordovaUtils';
+import { isCordova, isIPad, isIPhone5p5inMini, isWebApp } from './cordovaUtils';
+import { pageEnumeration } from './cordovaUtilsPageEnumeration';
 import isMobileScreenSize from './isMobileScreenSize';
 
 
+export const IOSNotchedSpacer = styled.div`
+  height: ${() => ((isIPhone5p5inMini()) ? '40px' : '36px')};
+  top: 0;
+  position: fixed;
+  background: #2e3c5d;
+  width: 100%;
+  opacity: 1;
+  z-index: 1300;
+`;
+
+export const IOSNoNotchSpacer = styled.div`
+  //             // iPhoneSpacer = <div className="ios-no-notch-spacer" style={{ height: \`${isIPad() ? '26px' : 'undefined'}\` }} />;
+  height: ${() => ((isIPad()) ? '26px' : '22')};
+  top: 0;
+  position: fixed;
+  height: ${() => ((isIPhone5p5inMini()) ? '41px' : '36px')};
+  background: #2e3c5d;
+  width: 100%;
+  opacity: 1;
+  z-index: 3;
+`;
+
 export const PageContentContainer = styled.div`
+  padding-top: ${() => cordovaScrollablePaneTopPadding()};
+  padding-bottom ${() => ((isCordova()) ? '625px' : null)};
   position: relative;
   max-width: 960px;
   z-index: 0;
   min-height: 190px;
   margin: 0 auto;
-  padding-top: ${() => cordovaScrollablePaneTopPadding()};
-  padding-bottom ${() => ((isCordova()) ? '625px' : null)};
   @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
     min-height: 10px;
     margin: 0 10px;
@@ -23,16 +49,70 @@ export const PageContentContainer = styled.div`
 
 
 export const HeaderContentContainer = styled.div`
+  margin: ${() => cordovaBallotFilterTopMargin()} auto 0 auto;
   position: relative;
   max-width: 960px;
   z-index: 0;
-  margin: 0 auto;
   @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
     min-height: 10px;
-    margin: 0 10px;
+    //margin: 0 10px;
   }
 `;
 
+
+export const DualHeaderContainer = styled.div`   // was ballot__heading
+  padding-top: ${() => cordovaDualHeaderContainerPadding()};
+  width: 100%;
+  background-color: #fff;
+  border-bottom: 1px solid #aaa;
+  overflow: hidden;
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  //transform: translate3d(0, -53px, 0);
+  //transition: all 100ms ease-in-out 0s;
+  box-shadow: 0 2px 4px -1px rgba(0, 0, 0, 0.2), 0 4px 5px 0 rgba(0, 0, 0, 0.14), 0 1px 10px 0 rgba(0, 0, 0, 0.12); }
+  //.ballot__heading__unpinned {
+  //  position: fixed;
+  //  top: 0;
+  //  left: 0;
+  //  right: 0;
+  //  z-index: 9000 !important;
+  //  transform: translate3d(0, -58px, 0);
+  //  transition: all 100ms ease-in-out 0s; }
+`;
+
+// let classNameHeadroom = '';  // Value for isCordova is ''
+// if (isWebApp()) {
+//   if (stringContains('/ballot', pathname.toLowerCase())) {
+//     classNameHeadroom = 'headroom-wrapper-webapp__ballot';
+//   } else if (stringContains('/office', pathname.toLowerCase())) {
+//     if (isMobileScreenSize()) {
+//       classNameHeadroom = 'headroom-wrapper-webapp__default';
+//     } else {
+//       classNameHeadroom = 'headroom-wrapper-webapp__office';
+//     }
+//   } else if (displayFriendsTabs()) {
+//     classNameHeadroom = 'headroom-wrapper-webapp__ballot';
+//   } else {
+//     classNameHeadroom = 'headroom-wrapper-webapp__default';
+//   }
+// }
+// let classNameHeadroom = '';
+// if (isWebApp()) {
+//   classNameHeadroom = showBackToVoterGuides ? 'headroom-wrapper-webapp__voter-guide' : 'headroom-wrapper-webapp__default';
+// }
+// was <div className={isWebApp() ? classNameHeadroom : ''} id="headroom-wrapper">
+export const HeadroomWrapper = styled.div`
+  // margin-top: ${() => ((isWebApp()) ? '48px' : '')};  // headroom-wrapper-webapp   // headroom-wrapper-webapp__default was 54px
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  background: white;
+  z-index: 2;
+  transform: translateY(0);
+`;
 
 export const TopOfPageHeader = styled.div`
   width: 100%;
@@ -62,10 +142,10 @@ export const TopRowOneMiddleContainer = styled.div`
 `;
 
 export const TopRowOneRightContainer = styled.div`
+  padding-right: ${() => ((isMobileScreenSize() && !isIPhone5p5inMini()) ? '15px' : '')};
   display: flex;
   justify-content: space-between;
   cursor: pointer;
-  padding-right: ${() => ((isMobileScreenSize()) ? '15px' : '')};
 
   // z-index: 3; //to float above the account/ProfilePopUp menu option grey div
   // @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
@@ -76,15 +156,22 @@ export const TopRowOneRightContainer = styled.div`
 export const TopRowTwoLeftContainer = styled.div`
   grid-row-start: 2;
   grid-row-end: 3;
-  grid-column: ${() => (['measure', 'friends'].includes(normalizedHrefPage()) ? '1 / 4' : '1 / 3')};
-  padding-bottom: ${() => (normalizedHrefPage() === 'measure' ? '28px' : '15px')};
+  grid-column: ${() => (['measure', 'friends', 'office'].includes(normalizedHrefPage()) ? '1 / 4' : '1 / 3')};
+  padding-bottom: ${() => {
+    if (normalizedHrefPage() === 'measure') {
+      return '28px';
+    }
+    return '7px';
+  }};
+  overflow: hidden;
+  text-overflow: ellipsis;
 `;
 
 export const TopRowTwoRightContainer = styled.div`
   display: flex;
   justify-content: space-between;
   cursor: pointer;
-  padding-right: ${() => ((isMobileScreenSize()) ? '15px' : '')};;  //grid-row-start: 2;
+  padding-right: ${() => ((isMobileScreenSize()) ? '15px' : '')};  //grid-row-start: 2;
   //grid-row-end: 3;
   //grid-column: 2 / 3;
 `;
@@ -97,7 +184,19 @@ export const AppBarForBackTo = styled(AppBar)`
   border-image: initial;
   display: flex;
   justify-content: center;
-  box-shadow: rgb(0 0 0 / 20%) 0px 2px 4px -1px, rgb(0 0 0 / 14%) 0px 4px 5px 0px, rgb(0 0 0 / 12%) 0px 1px 10px 0px;
+  padding-top: ${() => {
+    if (isIPhone5p5inMini() &&
+      [CordovaPageConstants.candidateWild,
+        CordovaPageConstants.officeWild,
+        CordovaPageConstants.measureWild].includes(pageEnumeration())) {
+      // IMPORTANT: This is a last chance way to adjust the height, to be used only if cordovaScrollablePaneTopPadding can't do it!
+      return '39px';
+    } else {
+      return '';
+      // return '34px';  (WebApp to 0 on 10/4/21)
+    }
+  }};
+  box-shadow: rgb(0 0 0 / 20%) 0 2px 4px -1px, rgb(0 0 0 / 14%) 0px 4px 5px 0px, rgb(0 0 0 / 12%) 0px 1px 10px 0px;
   @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
     display: inherit;
   }

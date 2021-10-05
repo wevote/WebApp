@@ -1,5 +1,5 @@
 import CordovaPageConstants from '../constants/CordovaPageConstants';
-import { getAndroidSize, hasIPhoneNotch, isAndroid, isAndroidSimulator, isCordova, isIOS, isIOSAppOnMac, isIPad, isIPhone4in, isIPhone4p7in, isIPhone5p5in, isIPhone5p8in, isIPhone6p1in, isIPhone6p5in, isSimulator, isWebApp } from './cordovaUtils';
+import { getAndroidSize, hasIPhoneNotch, isAndroid, isIOS, isIOSAppOnMac, isIPad, isIPhone4in, isIPhone4p7in, isIPhone5p5inEarly, isIPhone5p5inMini, isIPhone5p8in, isIPhone6p1in, isIPhone6p5in, isSimulator, isWebApp } from './cordovaUtils';
 import { pageEnumeration } from './cordovaUtilsPageEnumeration';
 import { cordovaOffsetLog } from './logging';
 
@@ -15,7 +15,12 @@ export function cordovaBallotFilterTopMargin () {
   if (isIOS()) {
     if (isIPhone4p7in()) {
       return '65px';
-    } else if (isIPhone5p5in()) {
+    } else if (isIPhone5p5inEarly()) {
+      if (window.location.href.indexOf('/index.html#/ballot/vote') > 0) {
+        return '55px';
+      }
+      return '69px';
+    } else if (isIPhone5p5inMini()) {
       if (window.location.href.indexOf('/index.html#/ballot/vote') > 0) {
         return '55px';
       }
@@ -97,7 +102,9 @@ export function cordovaBallotFilterTopMargin () {
 
 export function cordovaNetworkNextButtonTop () {
   if (isIOS()) {
-    if (isIPhone5p5in()) {
+    if (isIPhone5p5inEarly()) {
+      return '89vh';
+    } else if (isIPhone5p5inMini()) {
       return '89vh';
     } else if (isIPhone4p7in()) {
       return '89vh';
@@ -162,7 +169,9 @@ export function cordovaFooterHeight () {
 export function cordovaVoterGuideTopPadding () {
   if (isIOS()) {
     const page = pageEnumeration();
-    if (isIPhone5p5in()) {
+    if (isIPhone5p5inEarly()) {
+      return '11px';
+    } else if (isIPhone5p5inMini()) {
       return '11px';
     } else if (isIPhone4p7in()) {
       return '0px';
@@ -184,7 +193,9 @@ export function cordovaVoterGuideTopPadding () {
 // <Toolbar classes={{ root: classes.toolbar }} disableGutters style={{ top: cordovaWelcomeAppToolbarTop() }}>
 export function cordovaWelcomeAppToolbarTop () {
   if (isIOS()) {
-    if (isIPhone5p5in()) {
+    if (isIPhone5p5inEarly()) {
+      return '10px';
+    } else if (isIPhone5p5inMini()) {
       return '10px';
     } else if (isIPhone4p7in()) {
       return '10px';
@@ -212,7 +223,12 @@ export function cordovaVoteMiniHeader () {
         top: '66px',
         height: '124px',
       };
-    } else if (isIPhone5p5in()) {
+    } else if (isIPhone5p5inEarly()) {
+      return {
+        top: '69px',
+        height: '127px',
+      };
+    } else if (isIPhone5p5inMini()) {
       return {
         top: '69px',
         height: '127px',
@@ -259,92 +275,14 @@ export function cordovaVoteMiniHeader () {
   return undefined;
 }
 
-// <div className={pageHeaderStyle} style={cordovaTopHeaderTopMargin()} id="header-container">
-// This is the margin above the "Back to" bars across the very top of the screen
-export function cordovaTopHeaderTopMargin () {
-  const style = {
-    marginRight: 'auto',
-    marginLeft: 'auto',
-    marginBottom: '0',
-  };
-  const page = pageEnumeration();
-
-  if (isCordova()) {
-    if (isSimulator()) {
-      if (isAndroidSimulator()) {
-        cordovaOffsetLog(`cordovaTopHeaderTopMargin android: ${window.location.href}, page: ${page}`);
-      } else {
-        cordovaOffsetLog(`cordovaTopHeaderTopMargin iOS page: ${page}`);
-        cordovaOffsetLog(`cordovaTopHeaderTopMargin iOS (first 60): ${window.location.href.slice(0, 60)}`);
-        cordovaOffsetLog(`cordovaTopHeaderTopMargin iOS (last 60): ${window.location.href.slice(window.location.href.length - 60)}`);
-      }
-    }
-
-    if (isIOS()) {
-      if (isIPhone5p5in() || isIPhone4p7in()) {
-        switch (page) {
-          case CordovaPageConstants.officeWild:      style.marginTop = '16px'; break;
-          case CordovaPageConstants.measureWild:     style.marginTop = '22px'; break;
-          case CordovaPageConstants.values:          style.marginTop = '19px'; break;
-          case CordovaPageConstants.valueWild:       style.marginTop = '22px'; break;
-          case CordovaPageConstants.friends:         style.marginTop = '16px'; break;
-          case CordovaPageConstants.ballotSmHdrWild: style.marginTop = '19px'; break;
-          case CordovaPageConstants.ballotLgHdrWild: style.marginTop = '19px'; break;
-          case CordovaPageConstants.ballotVote:      style.marginTop = '19px'; break;
-          case CordovaPageConstants.settingsWild:    style.marginTop = '22px'; break;
-          case CordovaPageConstants.voterGuideCreatorWild: style.marginTop = '38px'; break; // $headroom-wrapper-webapp__voter-guide-creator
-          case CordovaPageConstants.twitterIdMFollowers:   style.marginTop = '37px'; break; // /*/m/friends, /*/m/following, /*/m/followers
-          default:                          style.marginTop = '19px'; break;
-        }
-      } else if (hasIPhoneNotch()) {
-        switch (page) {
-          case CordovaPageConstants.ballotLgHdrWild:       style.marginTop = '16px'; break;
-          case CordovaPageConstants.ballotSmHdrWild:       style.marginTop = '16px'; break;
-          case CordovaPageConstants.ballotVote:            style.marginTop = '16px'; break;
-          case CordovaPageConstants.candidate:             style.marginTop = '35px'; break;
-          case CordovaPageConstants.candidateWild:         style.marginTop = '33px'; break;
-          case CordovaPageConstants.friends:               style.marginTop = '16px'; break;
-          case CordovaPageConstants.measureWild:           style.marginTop = '34px'; break;
-          case CordovaPageConstants.officeWild:            style.marginTop = '35px'; break;
-          case CordovaPageConstants.opinions:              style.marginTop = '17px'; break;
-          case CordovaPageConstants.settingsAccount:       style.marginTop = '31px'; break;
-          case CordovaPageConstants.settingsNotifications: style.marginTop = '29px'; break;         // from 36 to 29  for the 12 max pro
-          case CordovaPageConstants.settingsProfile:       style.marginTop = '32px'; break;         // from 36 to 29  for the 12 max pro
-          case CordovaPageConstants.settingsSubscription:  style.marginTop = '34px'; break;
-          case CordovaPageConstants.settingsWild:          style.marginTop = '31px'; break;
-          case CordovaPageConstants.twitterIdMFollowers:   style.marginTop = '37px'; break; // /*/m/friends, /*/m/following, /*/m/followers
-          case CordovaPageConstants.twitterInfoPage:       style.marginTop = '32px'; break; // A twitter page guess, that ends with 'btcand' 'btmeas' or'btdb'
-          case CordovaPageConstants.valueWild:             style.marginTop = '32px'; break;
-          case CordovaPageConstants.values:                style.marginTop = '16px'; break;
-          case CordovaPageConstants.valuesList:            style.marginTop = '15px'; break;
-          case CordovaPageConstants.voterGuideCreatorWild: style.marginTop = '38px'; break; // $headroom-wrapper-webapp__voter-guide-creator
-          case CordovaPageConstants.voterGuideWild:        style.marginTop = '38px'; break; // Any voter page with btcand or btmeas
-          default:                                         style.marginTop = '16px'; break;
-        }
-      } else if (isIOSAppOnMac()) {
-        style.marginTop = '0px';
-      } else if (isIPad()) {
-        switch (page) {
-          case CordovaPageConstants.defaultVal:            style.marginTop = '26px'; break;
-          default:                                         style.marginTop = '0px'; break;
-        }
-      } else {
-        style.marginTop = '20px';
-      }
-    } else {  // Android
-      style.marginTop = '-2px';
-    }
-    return style;
-  }
-
-  return undefined;
-}
 
 // <Wrapper cordovaPaddingTop={cordovaStickyHeaderPaddingTop()}>
 export function cordovaStickyHeaderPaddingTop () {
   if (isIOS()) {
-    if (isIPhone5p5in()) {
+    if (isIPhone5p5inEarly()) {
       return '71px';
+    } else if (isIPhone5p5inMini()) {
+      return '69px';
     } else if (isIPhone4p7in()) {
       return '69px';
     } else if (isIPhone5p8in()) {
@@ -384,7 +322,9 @@ export function cordovaSignInModalTopPosition (collapsed) {
       return collapsed ? '01%' : '-25%';
     } else if (isIPhone5p8in()) {             //  X and 11 Pro
       return collapsed ? '300px' : '-206px';
-    } else if (isIPhone5p5in()) {             //  6 Plus, 7 Plus and 8 Plus
+    } else if (isIPhone5p5inEarly()) {        //  6 Plus, 7 Plus and 8 Plus
+      return collapsed ? '-3%' : '-170px';
+    } else if (isIPhone5p5inMini()) {        //  12 Mini, 13 Mini
       return collapsed ? '-3%' : '-170px';
     } else if (isIPhone4p7in()) {             // 6, 7, 8
       return collapsed ? 'unset' : '-24%';
@@ -457,7 +397,7 @@ export function cordovaNewsPaddingTop () {
   //     return '85px';
   //   } else if (isIPhone5p8in()) {             //  X and 11 Pro
   //     return '85px';
-  //   } else if (isIPhone5p5in()) {             //  6 Plus, 7 Plus and 8 Plus
+  //   } else if (isIPhone5p5inEarly()) {             //  6 Plus, 7 Plus and 8 Plus
   //     return '68px';
   //   } else if (isIPhone4p7in()) {             // 6, 7, 8, SE (2nd Gen)
   //     return '65px';
@@ -476,7 +416,7 @@ export function cordovaNewsPaddingTop () {
 
 export function cordovaDrawerTopMargin () {
   if (isIOS()) {
-    if (isIPhone4in() || isIPhone4p7in() || isIPhone5p5in()) {
+    if (isIPhone4in() || isIPhone4p7in() || isIPhone5p5inEarly()) {
       return '22px';
     } else if (hasIPhoneNotch()) {
       return '40px';
@@ -487,4 +427,11 @@ export function cordovaDrawerTopMargin () {
     return '0px';
   }
   return '0px';
+}
+
+
+export function cordovaDualHeaderContainerPadding () {
+  if (isIPhone5p5inMini()) return '18px';
+  if (hasIPhoneNotch()) return '0px';
+  return '8px';
 }

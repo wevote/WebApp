@@ -26,7 +26,7 @@ import { cordovaVoteMiniHeader } from '../utils/cordovaOffsets';
 import cordovaScrollablePaneTopPadding from '../utils/cordovaScrollablePaneTopPadding';
 import { historyPush, isCordova, isWebApp } from '../utils/cordovaUtils';
 import { renderLog } from '../utils/logging';
-import { PageContentContainer } from '../utils/pageLayoutStyles';
+import { DualHeaderContainer, PageContentContainer } from '../utils/pageLayoutStyles';
 import BallotTitleHeader from './Ballot/BallotTitleHeader';
 
 const FilterBaseSearch = React.lazy(() => import(/* webpackChunkName: 'FilterBaseSearch' */ '../components/Filter/FilterBaseSearch'));
@@ -414,7 +414,7 @@ class Vote extends Component {
 
     return (
       <VoteContainer padTop={cordovaScrollablePaneTopPadding()}>
-        <div className={`ballot__heading-vote-section ${ballotHeaderUnpinned && isWebApp() ? 'ballot__heading__unpinned' : ''}`} style={cordovaVoteMiniHeader()}>
+        <DualHeaderContainer className={`ballot__heading-vote-section ${ballotHeaderUnpinned && isWebApp() ? 'ballot__heading__unpinned' : ''}`} style={cordovaVoteMiniHeader()}>
           <PageContentContainer>
             <div className="container-fluid">
               <div className="row">
@@ -447,7 +447,7 @@ class Vote extends Component {
               </div>
             </div>
           </PageContentContainer>
-        </div>
+        </DualHeaderContainer>
 
         <PageContentContainer>
           <div className="container-fluid">

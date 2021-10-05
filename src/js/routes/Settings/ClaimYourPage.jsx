@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import Helmet from 'react-helmet';
 import TwitterHandleBox from '../../components/Twitter/TwitterHandleBox';
-import { cordovaBallotFilterTopMargin } from '../../utils/cordovaOffsets';
 import { renderLog } from '../../utils/logging';
 import { PageContentContainer } from '../../utils/pageLayoutStyles';
 
@@ -9,7 +8,7 @@ export default class ClaimYourPage extends Component {
   render () {
     renderLog('ClaimYourPage');  // Set LOG_RENDER_EVENTS to log all renders
     return (
-      <PageContentContainer style={{ marginTop: `${cordovaBallotFilterTopMargin()}` }}>
+      <PageContentContainer>
         <Helmet title="Claim Your Page - We Vote" />
         <div className="container-fluid well u-stack--md u-inset--md">
           <h3 className="text-center">
