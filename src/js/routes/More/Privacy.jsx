@@ -10,16 +10,20 @@ export default class Privacy extends React.Component {
     return {};
   }
 
+  componentDidMount () {
+    window.scrollTo(0, 0);
+  }
+
   render () {
     renderLog('Privacy');  // Set LOG_RENDER_EVENTS to log all renders
     return (
       <PageContentContainer>
         <Helmet title="Privacy Policy - We Vote" />
         <div className="container-fluid well">
-          <h1 className="text-center">WeVote.US Privacy Policy</h1>
-          <p><strong>Last updated: August 13, 2020</strong></p>
+          <h1 className="text-center">Privacy Policy</h1>
+          <p><strong>Last updated: October 2, 2021</strong></p>
           <p>
-            <span>We Vote USA has created this privacy policy to explain how We Vote (or “we”) uses information that we collect from you while you visit the We Vote websites, currently located at</span>
+            <span>We Vote USA has created this privacy policy to explain how We Vote (or “we”) uses information that we collect from you while you visit We Vote, currently located at </span>
             <span>
               <OpenExternalWebSite
                 linkIdAttribute="wevote"
@@ -28,11 +32,13 @@ export default class Privacy extends React.Component {
                 body={<span>WeVote.US</span>}
               />
               {' '}
-              (the “Site”), or while you use a portion of We Vote that is embedded on another website (the “Services”).  We Vote may modify this policy from time to time, so we encourage you to check this page when revisiting the Site.  The date of the most recent revision is listed above.
+              and provided in mobile apps (the “Site”),
+              or while you use a portion of We Vote that is embedded on another website (the “Services”).  We Vote may modify this policy from time to time, so we encourage you to check this page when revisiting the Site.  The date of the most recent revision is listed above.
             </span>
           </p>
           <p>
             You can find additional explanations of our Privacy Policy in our
+            {' '}
             <OpenExternalWebSite
               linkIdAttribute="wevotePrivacy"
               url="https://help.wevote.us/hc/en-us/sections/115000140987-Security-Technology"
@@ -41,13 +47,29 @@ export default class Privacy extends React.Component {
             />
             .
           </p>
+          <h2><b>Why we use your information</b></h2>
+          <p>
+            <span>
+              We use the information we collect about you to help you be better informed about candidates and measures as you fill out your United States ballot, while preparing to cast your vote.
+            </span>
+          </p>
+          <h2><b>What information about you we collect</b></h2>
+          <p>
+            <span>
+              When you request what candidates and measures are on your United States ballot, send messages to friends, donate, join our newsletter, or take any other action on this Site,
+              we may ask you to give us your contact information, including your name, address, email address and telephone number.
+              We automatically collect the IP address of the device you are using to connect to this Site.
+              We may ask you to choose to upload the contact information of your friends, including their names, addresses, email addresses and telephone numbers.
+              We may also obtain information about you from outside sources and combine it with the information we collect through this Site.
+            </span>
+          </p>
           <h2><b>How we use your information</b></h2>
           <p>
             <span>
-              When you request your ballot, send messages to friends, donate, join our newsletter, or take any other action on this Site,
-              we may ask you to give us contact information, including your name, address, email address and telephone number.
-              We may also obtain information about you from outside sources and combine it with the information we collect through this Site.
-              We use this information to operate this Site, to sends you news and information about We Vote, to measure the effectiveness of our
+              We use the information we collect about you to operate this Site,
+              which includes finding and showing you what candidates and measures are on your United States ballot,
+              showing you possible friends you might want to connect with,
+              to send you news and information about We Vote, to measure the effectiveness of our
               programs, and to send you timely election reminders.
               You may opt-out of receiving messages from We Vote by sending any email to
               {' '}
@@ -59,6 +81,96 @@ export default class Privacy extends React.Component {
           </p>
           <p>
             <span>Some information on our mailing lists, such as names, email addresses, and addresses, may be exchanged with named partners and other organizations with principles and/or missions that overlap with those of We Vote. Subscribers may opt out of such mailing list exchanges at any time. Our purpose is to protect your information while making sure you have what you need to make an informed decision on Election Day.</span>
+          </p>
+          <p className="u-show-desktop-tablet">These are some ways your information is used or shown:</p>
+          <table className="u-show-desktop-tablet" style={{ height: 166, width: 631 }} border="1">
+            <tbody>
+              <tr>
+                <td style={{ padding: 4, width: 170 }}><strong>Your Personal Information</strong></td>
+                <td style={{ padding: 4, width: 349 }}><strong>How We Vote Uses or Displays</strong></td>
+                <td style={{ padding: 4, width: 106 }}><strong>Public?</strong></td>
+                <td style={{ padding: 4, width: 106 }}><strong>Can Be Hidden?</strong></td>
+              </tr>
+              <tr>
+                <td style={{ padding: 4, width: 170 }}>Your Name</td>
+                <td style={{ padding: 4, width: 349 }}>Displayed on your profile</td>
+                <td style={{ padding: 4, width: 106 }}>Yes</td>
+                <td style={{ padding: 4, width: 106 }}>No</td>
+              </tr>
+              <tr>
+                <td style={{ padding: 4, width: 170 }}>Your Email Address</td>
+                <td style={{ padding: 4, width: 349 }}>Used to contact you for sign in, or notifications which you control. We will never sell your email address.</td>
+                <td style={{ padding: 4, width: 106 }}>No</td>
+                <td style={{ padding: 4, width: 106 }}>Is Hidden</td>
+              </tr>
+              <tr>
+                <td style={{ padding: 4, width: 170 }}>Values You Follow</td>
+                <td style={{ padding: 4, width: 349 }}>Displayed on your profile</td>
+                <td style={{ padding: 4, width: 106 }}>Yes</td>
+                <td style={{ padding: 4, width: 106 }}>No</td>
+              </tr>
+              <tr>
+                <td style={{ padding: 4, width: 170 }}>Your Profile Photos</td>
+                <td style={{ padding: 4, width: 349 }}>Displayed on your profile</td>
+                <td style={{ padding: 4, width: 106 }}>Yes</td>
+                <td style={{ padding: 4, width: 106 }}>No</td>
+              </tr>
+              <tr>
+                <td style={{ padding: 4, width: 170 }}>Address</td>
+                <td style={{ padding: 4, width: 349 }}>Used to identify correct ballot for you</td>
+                <td style={{ padding: 4, width: 106 }}>No</td>
+                <td style={{ padding: 4, width: 106 }}>Is Hidden</td>
+              </tr>
+              <tr>
+                <td style={{ padding: 4, width: 170 }}>Candidates you Support or Oppose</td>
+                <td style={{ padding: 4, width: 349 }}>If marked &apos;Public&apos; by you, your endorsement is displayed on your profile, or under candidate. Otherwise, your endorsement is only visible to friends you add to We Vote.</td>
+                <td style={{ padding: 4, width: 106 }}>No by Default</td>
+                <td style={{ padding: 4, width: 106 }}>Yes</td>
+              </tr>
+              <tr>
+                <td style={{ padding: 4, width: 170 }}>Measures you Support or Oppose</td>
+                <td style={{ padding: 4, width: 349 }}>If marked &apos;Public&apos; by you, your endorsement is displayed on your profile, or under measure.&nbsp;Otherwise, your endorsement is only visible to friends you add to We Vote.</td>
+                <td style={{ padding: 4, width: 106 }}>&nbsp;No by Default</td>
+                <td style={{ padding: 4, width: 106 }}>Yes&nbsp;</td>
+              </tr>
+              <tr>
+                <td style={{ padding: 4, width: 170 }}>Organizations, Public Figures, and Private Individuals you Follow on We Vote</td>
+                <td style={{ padding: 4, width: 349 }}>Displayed on your profile</td>
+                <td style={{ padding: 4, width: 106 }}>Yes</td>
+                <td style={{ padding: 4, width: 106 }}>No</td>
+              </tr>
+              <tr>
+                <td style={{ padding: 4, width: 170 }}>Who you Follow on Twitter</td>
+                <td style={{ padding: 4, width: 349 }}>When you sign in with Twitter, all of the Twitter accounts you follow on Twitter which have endorsements stored in We Vote, are displayed on your profile</td>
+                <td style={{ padding: 4, width: 106 }}>Yes</td>
+                <td style={{ padding: 4, width: 106 }}>No</td>
+              </tr>
+              <tr>
+                <td style={{ padding: 4, width: 170 }}>Friends you invite to We Vote</td>
+                <td style={{ padding: 4, width: 349 }}>Not displayed</td>
+                <td style={{ padding: 4, width: 106 }}>No</td>
+                <td style={{ padding: 4, width: 106 }}>Is Hidden</td>
+              </tr>
+              <tr>
+                <td style={{ padding: 4, width: 170 }}>The fact that you have an account</td>
+                <td style={{ padding: 4, width: 349 }}>Any We Vote voters who look at the Friends section can see you as a &apos;Suggested Friend&apos; if they are connected to one of your current friends</td>
+                <td style={{ padding: 4, width: 106 }}>Only to friends of friends</td>
+                <td style={{ padding: 4, width: 106 }}>Yes, if you don&apos;t add any of your friends</td>
+              </tr>
+            </tbody>
+          </table>
+          <p className="u-show-desktop-tablet">&nbsp;</p>
+          <h2><b>How to request the deletion of your data</b></h2>
+          <p>
+            <span>
+              You may request the deletion of all of the data we have about you by
+              <OpenExternalWebSite
+                linkIdAttribute="weVoteContactUsPage"
+                url="https://help.wevote.us/hc/en-us/requests/new"
+                target="_blank"
+                body=" submitting a request here."
+              />
+            </span>
           </p>
           <h2><b>Donations and credit card information</b></h2>
           <p>

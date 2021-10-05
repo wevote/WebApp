@@ -260,7 +260,7 @@ export default class Header extends Component {
           {showSharedItemModal && (
             <SharedItemModal
               sharedItemCode={sharedItemCode}
-              show={showSharedItemModal}
+              show
               closeSharedItemModal={this.closeSharedItemModal}
             />
           )}
@@ -335,7 +335,7 @@ export default class Header extends Component {
           {showSharedItemModal && (
             <SharedItemModal
               sharedItemCode={sharedItemCode}
-              show={showSharedItemModal}
+              show
               closeSharedItemModal={this.closeSharedItemModal}
             />
           )}
@@ -386,7 +386,7 @@ export default class Header extends Component {
           {showSharedItemModal && (
             <SharedItemModal
               sharedItemCode={sharedItemCode}
-              show={showSharedItemModal}
+              show
               closeSharedItemModal={this.closeSharedItemModal}
             />
           )}
@@ -432,7 +432,7 @@ export default class Header extends Component {
           {showSharedItemModal && (
             <SharedItemModal
               sharedItemCode={sharedItemCode}
-              show={showSharedItemModal}
+              show
               closeSharedItemModal={this.closeSharedItemModal}
             />
           )}
@@ -495,7 +495,7 @@ export default class Header extends Component {
           {showSharedItemModal && (
             <SharedItemModal
               sharedItemCode={sharedItemCode}
-              show={showSharedItemModal}
+              show
               closeSharedItemModal={this.closeSharedItemModal}
             />
           )}

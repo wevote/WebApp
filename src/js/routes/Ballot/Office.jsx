@@ -314,7 +314,7 @@ class Office extends Component {
             <div>
               <CandidateList
                 contest_office_name={office.ballot_item_display_name}
-                forMoreInformationSeeBallotpediaOff
+                forMoreInformationTextOff
               >
                 {candidateList}
               </CandidateList>

@@ -17,7 +17,14 @@ export const weVoteFounders = [{
     'Prior to running We Vote, Dale successfully co-founded, built and sold two high tech startups (Gravity.com and GoLightly.com). Dale has managed large software projects for companies like Disney, IBM and Crayola and over 60 nonprofits.',
   ],
 },
-];
+{
+  name: 'Jenifer Fernandez Ancona',
+  image: `${photoPath}Jenifer_Fernandez_Ancona-256x256.jpg`,
+  title: [
+    'Co-Founder & c4 Board Chair',
+    'Jenifer helps to run Way to Win, a national community of progressive women donors.',
+  ],
+}];
 
 export const weVoteBoard = [{
   name: 'Debra Cleaver',

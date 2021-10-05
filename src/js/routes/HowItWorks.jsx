@@ -156,6 +156,7 @@ class HowItWorks extends Component {
           selectedStepIndex: 0,
         });
       }
+      window.scrollTo(0, 0);
     } else {
       this.setState({
         getStartedMode: 'getStartedForVoters',
@@ -196,6 +197,7 @@ class HowItWorks extends Component {
           selectedStepIndex: 0,
         });
       }
+      window.scrollTo(0, 0);
     } else {
       this.setState({
         getStartedMode: 'getStartedForVoters',

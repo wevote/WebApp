@@ -40,6 +40,7 @@ class WelcomeForCampaigns extends PureComponent {
     this.onVoterStoreChange();
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
     AnalyticsActions.saveActionWelcomeVisit(VoterStore.electionId());
+    window.scrollTo(0, 0);
   }
 
   componentWillUnmount () {

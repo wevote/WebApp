@@ -261,7 +261,7 @@ class OrganizationModal extends Component {
             <CandidateItem
               candidateWeVoteId={ballotItemWeVoteId}
               expandIssuesByDefault
-              forMoreInformationSeeBallotpediaOff
+              forMoreInformationTextOff
               hideShowMoreFooter
               inModal
               linkToBallotItemPage
@@ -273,7 +273,7 @@ class OrganizationModal extends Component {
             />
           )}
           {isMeasure && (
-            <MeasureItem forMoreInformationSeeBallotpediaOff measureWeVoteId={ballotItemWeVoteId} />
+            <MeasureItem forMoreInformationTextOff measureWeVoteId={ballotItemWeVoteId} />
           )}
           { !!(allCachedPositionsForThisBallotItem.length) && (
             <DelayedLoad showLoadingText waitBeforeShow={500}>

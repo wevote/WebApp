@@ -15,6 +15,7 @@ import { electionDateTomorrowFormatted, formatDateMMMDoYYYY } from '../../utils/
 import { renderLog } from '../../utils/logging';
 import { cleanArray } from '../../utils/textFormat';
 import LoadingWheel from '../LoadingWheel';
+import initializeMoment from '../../utils/initializeMoment';
 
 const DelayedLoad = React.lazy(() => import(/* webpackChunkName: 'DelayedLoad' */ '../Widgets/DelayedLoad'));
 
@@ -39,6 +40,11 @@ export default class BallotElectionListWithFilters extends Component {
     this.ballotStoreListener = BallotStore.addListener(this.onBallotStoreChange.bind(this));
     this.voterGuideStoreListener = VoterGuideStore.addListener(this.onVoterGuideStoreChange.bind(this));
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
+    if (window.moment === undefined) {
+      initializeMoment(() => {
+        //
+      });
+    }
     let priorElectionId = '';
     if (BallotStore.ballotProperties) {
       priorElectionId = BallotStore.ballotProperties.google_civic_election_id;
@@ -365,7 +371,8 @@ export default class BallotElectionListWithFilters extends Component {
     if (!list || !Array.isArray(list)) {
       return null;
     }
-    const renderedList = list.filter((filterItem) => filterItem.state_code_list && filterItem.state_code_list.includes(this.props.stateToShow)).map((election) => {
+    const { stateToShow } = this.props;
+    const renderedList = list.filter((filterItem) => filterItem.state_code_list && filterItem.state_code_list.includes(stateToShow)).map((election) => {
       // console.log('election.election_description_text: ', election.election_description_text, 'election.election_day_text: ', election.election_day_text);
       if (!election.election_description_text || election.election_description_text === '') return null;
       const electionDateTomorrow = electionDateTomorrowFormatted(election.election_day_text);
@@ -473,7 +480,8 @@ export default class BallotElectionListWithFilters extends Component {
     if (!list || !Array.isArray(list)) {
       return null;
     }
-    const renderedList = list.filter((filterItem) => filterItem.state_code_list && filterItem.state_code_list.includes(this.props.stateToShow)).map((election) => {
+    const { stateToShow } = this.props;
+    const renderedList = list.filter((filterItem) => filterItem.state_code_list && filterItem.state_code_list.includes(stateToShow)).map((election) => {
       const electionDateTomorrow = electionDateTomorrowFormatted(election.election_day_text);
       let electionStateCodeList = [];
       if (election && election.state_code_list) {
@@ -535,7 +543,7 @@ export default class BallotElectionListWithFilters extends Component {
       );
     }
     const currentDate = window.moment ? window.moment().format('YYYY-MM-DD') : '';
-    const { hideUpcomingElectionTitle } = this.props;
+    const { hideUpcomingElectionTitle, stateToShow } = this.props;
     let { showPriorElectionsList, hideUpcomingElectionsList } = this.props;
     // console.log('this.state.ballotElectionList:', this.state.ballotElectionList);
 
@@ -600,14 +608,14 @@ export default class BallotElectionListWithFilters extends Component {
             { upcomingElectionList && upcomingElectionList.length ?
               (
                 <>
-                  {this.props.stateToShow === 'all' ? upcomingElectionList :
+                  {stateToShow === 'all' ? upcomingElectionList :
                     upcomingElectionListByState.length > 0 ? upcomingElectionListByState :
                       'There are no upcoming elections for this state.'}
                 </>
               ) : (
                 <DelayedLoad showLoadingText waitBeforeShow={2000}>
                   <div>
-                    {this.props.stateToShow !== 'all' ? 'There are no upcoming elections at this time for this state.' : 'There are no upcoming elections at this time.'}
+                    {stateToShow !== 'all' ? 'There are no upcoming elections at this time for this state.' : 'There are no upcoming elections at this time.'}
                   </div>
                 </DelayedLoad>
               )}
@@ -624,14 +632,14 @@ export default class BallotElectionListWithFilters extends Component {
               (
                 <PriorOrUpcomingElectionsWrapper>
                   <strong><h4 className="h4">Prior Elections</h4></strong>
-                  {this.props.stateToShow === 'all' ? priorElectionList :
+                  {stateToShow === 'all' ? priorElectionList :
                     priorElectionListByState.length > 0 ? priorElectionListByState :
                       'There are no prior elections for this state.'}
                 </PriorOrUpcomingElectionsWrapper>
               ) : (
                 <DelayedLoad showLoadingText waitBeforeShow={2000}>
                   <div>
-                    {this.props.stateToShow !== 'all' ? 'There are no prior elections at this time for this state.' : 'There are no prior elections at this time.'}
+                    {stateToShow !== 'all' ? 'There are no prior elections at this time for this state.' : 'There are no prior elections at this time.'}
                   </div>
                 </DelayedLoad>
               )}

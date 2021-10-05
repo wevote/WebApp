@@ -20,6 +20,7 @@ const nonFluxState = {
   chosenReadyIntroductionText: '',
   chosenReadyIntroductionTitle: '',
   chosenSiteLogoUrl: '',
+  currentPathname: '',
   getStartedMode: '',
   getVoterGuideSettingsDashboardEditMode: '',
   hideWeVoteLogo: false,
@@ -73,6 +74,10 @@ export default {
   setActivityTidbitWeVoteIdForDrawerAndOpen (setActivityTidbitWeVoteIdForDrawerAndOpen) {
     nonFluxState.activityTidbitWeVoteIdForDrawerAndOpen = setActivityTidbitWeVoteIdForDrawerAndOpen;
     messageService.sendMessage('state updated activityTidbitWeVoteIdForDrawerAndOpen');
+  },
+
+  setCurrentPathname (currentPathname) {
+    nonFluxState.currentPathname = currentPathname;
   },
 
   setEvaluateHeaderDisplay () {
@@ -180,7 +185,8 @@ export default {
   },
 
   setShowSharedItemModal (sharedItemCode) {
-    nonFluxState.showSharedItemModal = sharedItemCode;
+    nonFluxState.sharedItemCode = sharedItemCode;
+    nonFluxState.showSharedItemModal = Boolean(sharedItemCode);
     messageService.sendMessage('state updated showSharedItemModal');
   },
 
@@ -229,6 +235,10 @@ export default {
     return nonFluxState.activityTidbitWeVoteIdForDrawer;
   },
 
+  getChosenAboutOrganizationExternalUrl () {
+    return nonFluxState.chosenAboutOrganizationExternalUrl;
+  },
+
   getChosenPreventSharingOpinions () {
     return nonFluxState.chosenPreventSharingOpinions;
   },
@@ -243,6 +253,10 @@ export default {
 
   getChosenSiteLogoUrl () {
     return nonFluxState.chosenSiteLogoUrl;
+  },
+
+  getCurrentPathname () {
+    return nonFluxState.currentPathname;
   },
 
   getHideWeVoteLogo () {
@@ -419,6 +433,7 @@ export default {
           success: apiSuccess,
           hostname: hostFromApi,
           organization_we_vote_id: siteOwnerOrganizationWeVoteId,
+          chosen_about_organization_external_url: chosenAboutOrganizationExternalUrl,
           chosen_hide_we_vote_logo: hideWeVoteLogo,
           chosen_logo_url_https: chosenSiteLogoUrl,
           chosen_prevent_sharing_opinions: chosenPreventSharingOpinions,
@@ -467,6 +482,7 @@ export default {
           }
           nonFluxState.apiStatus = apiStatus;
           nonFluxState.apiSuccess = apiSuccess;
+          nonFluxState.chosenAboutOrganizationExternalUrl = chosenAboutOrganizationExternalUrl;
           nonFluxState.chosenPreventSharingOpinions = chosenPreventSharingOpinions;
           nonFluxState.chosenReadyIntroductionText = chosenReadyIntroductionText;
           nonFluxState.chosenReadyIntroductionTitle = chosenReadyIntroductionTitle;

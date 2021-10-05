@@ -28,6 +28,7 @@ export default class IssueImageDisplay extends Component {
     if (oneIssue.issue_icon_local_path) {
       issueIconLocalPath = oneIssue.issue_icon_local_path;
     }
+    // console.log('IssueImageDisplay issueIconLocalPath:', issueIconLocalPath);
 
     const issueIconImageUrl = (!issueIconLocalPath || issueIconLocalPath.length === 0) ?
       cordovaDot('/img/global/svg-icons/issues/thumbs-up-icon.svg') :

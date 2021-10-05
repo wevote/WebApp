@@ -18,7 +18,7 @@ const ReadyCard = styled.div`
   padding: 16px;
   padding-left: 82px;
   position: relative;
-  min-height: 314px;
+  min-height: 205px;
   @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
     min-height: 10px;
   }
@@ -78,12 +78,16 @@ const TitleRowWrapper = styled.div`
 
 const Title = styled.h3`
   margin: 0;
-  font-size: 22px;
+  font-size: 30px;
   font-weight: 600;
   margin-bottom: 6px;
   margin-top: 12px;
   @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
-    font-size: 18px;
+    font-size: 24px;
+    margin-top: 0;
+  }
+  @media (max-width: ${({ theme }) => theme.breakpoints.xs}) {
+    font-size: 20px;
     margin-top: 0;
   }
 `;

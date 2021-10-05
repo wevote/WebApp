@@ -33,6 +33,10 @@ export default class Attributions extends React.Component {
     return result;
   }
 
+  componentDidMount () {
+    window.scrollTo(0, 0);
+  }
+
   render () {
     renderLog('Attributions');  // Set LOG_RENDER_EVENTS to log all renders
 
@@ -46,7 +50,7 @@ export default class Attributions extends React.Component {
           <div>
             Please also see
             {' '}
-            <Link to="/more/credits">
+            <Link to="/more/credits" className="u-link-color">
               Credits & Thanks
             </Link>
             .

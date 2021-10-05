@@ -10,7 +10,7 @@ import ShareActions from '../../common/actions/ShareActions';
 import ShareStore from '../../common/stores/ShareStore';
 import AppObservableStore, { messageService } from '../../stores/AppObservableStore';
 import VoterStore from '../../stores/VoterStore';
-import { getApplicationViewBooleans, hideZenDeskHelpVisibility, normalizedHref, showZenDeskHelpVisibility } from '../../utils/applicationUtils';
+import { getApplicationViewBooleans, normalizedHref } from '../../utils/applicationUtils';
 import { shareBottomOffset } from '../../utils/cordovaOffsets';
 import { historyPush, isAndroid, isCordova, isWebApp } from '../../utils/cordovaUtils';
 import isMobile from '../../utils/isMobile';
@@ -49,6 +49,7 @@ class ShareButtonFooter extends Component {
 
   componentDidMount () {
     const pathname = normalizedHref();
+    // console.log('ShareButtonFooter componentDidMount');
     this.appStateSubscription = messageService.getMessage().subscribe(() => this.onAppObservableStoreChange());
     this.shareStoreListener = ShareStore.addListener(this.onShareStoreChange.bind(this));
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
@@ -195,7 +196,6 @@ class ShareButtonFooter extends Component {
       shareFooterStep,
       showSignInModal,
     });
-    hideZenDeskHelpVisibility();
     this.openSignInModalIfWeShould(shareFooterStep);
   }
 
@@ -226,7 +226,6 @@ class ShareButtonFooter extends Component {
       kindOfShare = 'BALLOT';
     }
     ShareActions.sharedItemSave(currentFullUrlAdjusted, kindOfShare);
-    hideZenDeskHelpVisibility();
     this.setState({
       candidateShare,
       currentFullUrlAdjusted,
@@ -242,7 +241,6 @@ class ShareButtonFooter extends Component {
   }
 
   handleCloseShareButtonDrawer = () => {
-    showZenDeskHelpVisibility();
     this.setState({
       openShareButtonDrawer: false,
       shareFooterStep: '',
@@ -415,11 +413,12 @@ class ShareButtonFooter extends Component {
     const { showFooterBar } = getApplicationViewBooleans(pathname);
 
     // Hide if scrolled down the page
-    if (hideShareButtonFooter || !showFooterBar) {
+    // console.log('ShareButtonFooter hideShareButtonFooter:', hideShareButtonFooter, ', showFooterBar:', showFooterBar);
+    if (hideShareButtonFooter) {
       return null;
     }
 
-    if (!VoterStore.getVoter().voter_we_vote_id) {
+    if (!VoterStore.getVoterWeVoteId()) {
       // console.log('ShareButtonFooter, waiting for voterRetrieve to complete');
       return LoadingWheel;
     }
@@ -497,7 +496,7 @@ class ShareButtonFooter extends Component {
       shareMenuTextAllOpinions = 'Ballot + Your Opinions';
     }
     linkToBeShared = linkToBeShared.replace('https://file:/', 'https://wevote.us/');  // Cordova
-    // console.log('ShareButtonFooter linkToBeShared:', linkToBeShared);
+    // console.log('ShareButtonFooter showShareButton: ', showShareButton, ', linkToBeShared:', linkToBeShared);
 
     const hideFooterBehindModal = showingOneCompleteYourProfileModal || showShareModal || showSignInModal || showVoterPlanModal;
     const developmentFeatureTurnedOn = false;

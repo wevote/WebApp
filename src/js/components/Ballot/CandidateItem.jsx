@@ -34,7 +34,7 @@ class CandidateItem extends Component {
     this.state = {
       allCachedPositionsForThisCandidateLength: 0,
       ballotItemDisplayName: '',
-      // ballotpediaCandidateUrl: '',
+      ballotpediaCandidateUrl: '',
       candidatePhotoUrl: '',
       candidateUrl: '',
       contestOfficeName: '',
@@ -90,7 +90,7 @@ class CandidateItem extends Component {
       const voterTextStatement = SupportStore.getVoterTextStatementByBallotItemWeVoteId(candidateWeVoteId);
       this.setState({
         ballotItemDisplayName: candidate.ballot_item_display_name,
-        // ballotpediaCandidateUrl: candidate.ballotpedia_candidate_url,
+        ballotpediaCandidateUrl: candidate.ballotpedia_candidate_url,
         candidatePhotoUrl,
         candidateText,
         candidateUrl,
@@ -204,13 +204,14 @@ class CandidateItem extends Component {
       const ballotpediaCandidateSummary = candidate.ballotpedia_candidate_summary;
       let ballotpediaCandidateSummaryText = ballotpediaCandidateSummary && ballotpediaCandidateSummary.length ? ballotpediaCandidateSummary : '';
       ballotpediaCandidateSummaryText = stripHtmlFromString(ballotpediaCandidateSummaryText);
+      const ballotpediaCandidateUrl = candidate.ballotpedia_candidate_url || '';
       const candidateText = twitterDescriptionText + ballotpediaCandidateSummaryText;
       const allCachedPositionsForThisCandidate = CandidateStore.getAllCachedPositionsByCandidateWeVoteId(candidateWeVoteId);
       const allCachedPositionsForThisCandidateLength = allCachedPositionsForThisCandidate.length || 0;
       this.setState({
         allCachedPositionsForThisCandidateLength,
         ballotItemDisplayName: candidate.ballot_item_display_name,
-        // ballotpediaCandidateUrl: candidate.ballotpedia_candidate_url,
+        ballotpediaCandidateUrl,
         candidatePhotoUrl,
         candidateText,
         candidateUrl,
@@ -545,11 +546,11 @@ class CandidateItem extends Component {
   render () {
     renderLog('CandidateItem');  // Set LOG_RENDER_EVENTS to log all renders
     const {
-      classes, forMoreInformationSeeBallotpediaOff,
+      classes, forMoreInformationTextOff,
       linkToBallotItemPage, openSupportOpposeCountDisplayModal, showHover,
     } = this.props;
     const {
-      candidateText, candidateWeVoteId,
+      ballotpediaCandidateUrl, candidateText, candidateWeVoteId,
       largeAreaHoverColorOnNow, largeAreaHoverLinkOnNow,
     } = this.state;
     if (!candidateWeVoteId) {
@@ -576,11 +577,15 @@ class CandidateItem extends Component {
               {this.candidateRenderBlock(candidateWeVoteId, linkToBallotItemPage, forDesktop, openSupportOpposeCountDisplayModalAtDesktopScreenSize)}
             </div>
           )}
-          {!forMoreInformationSeeBallotpediaOff && (
-            <ForMoreInformationSeeBallotpedia className="u-show-desktop-tablet">
+          {!forMoreInformationTextOff && (
+            <ForMoreInformationInfoText className="u-show-desktop-tablet">
               <Info classes={{ root: classes.informationIcon }} />
-              If you want to learn more, click the Ballotpedia and Google Search buttons to the right.
-            </ForMoreInformationSeeBallotpedia>
+              {ballotpediaCandidateUrl ? (
+                <span>If you want to learn more, click the Ballotpedia or Google Search buttons to the right.</span>
+              ) : (
+                <span>If you want to learn more, click the Google Search button to the right.</span>
+              )}
+            </ForMoreInformationInfoText>
           )}
           <div>
             {this.candidateIssuesAndCommentBlock(candidateText, 'desktopIssuesComment')}
@@ -605,7 +610,7 @@ CandidateItem.propTypes = {
   controlAdviserMaterialUIPopoverFromProp: PropTypes.bool,
   goToBallotItem: PropTypes.func, // We don't require this because sometimes we don't want the link to do anything
   expandIssuesByDefault: PropTypes.bool,
-  forMoreInformationSeeBallotpediaOff: PropTypes.bool,
+  forMoreInformationTextOff: PropTypes.bool,
   hideBallotItemSupportOpposeComment: PropTypes.bool,
   hideCandidateText: PropTypes.bool,
   hideCandidateUrl: PropTypes.bool,
@@ -680,8 +685,9 @@ const ExternalWebSiteWrapper = styled.span`
   white-space: nowrap;
 `;
 
-const ForMoreInformationSeeBallotpedia = styled.div`
+const ForMoreInformationInfoText = styled.div`
   color: #999;
+  margin-bottom: 4px;
 `;
 
 const MobileTabletWrapper = styled.div`

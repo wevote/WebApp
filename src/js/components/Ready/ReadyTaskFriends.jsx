@@ -74,7 +74,7 @@ class ReadyTaskFriends extends React.Component {
                     Are Your Friends Ready?
                   </span>
                   <span className="u-show-desktop">
-                    Are Your Friends Ready to Vote?
+                    Are Your Friends Ready?
                   </span>
                 </>
               ) : (
@@ -83,7 +83,7 @@ class ReadyTaskFriends extends React.Component {
                     Are Your Friends Ready?
                   </span>
                   <span className="u-show-desktop-tablet">
-                    Are Your Friends Ready to Vote?
+                    Are Your Friends Ready?
                   </span>
                 </>
               )}

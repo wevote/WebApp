@@ -90,6 +90,7 @@ export default class SettingsDashboard extends Component {
         }
       }
     }
+    window.scrollTo(0, 0);
   }
 
   // eslint-disable-next-line camelcase,react/sort-comp
@@ -119,6 +120,7 @@ export default class SettingsDashboard extends Component {
 
     if (nextParams.edit_mode) {
       this.setState({ editMode: nextParams.edit_mode });
+      window.scrollTo(0, 0);
     }
     if (nextParams.voter_guide_we_vote_id && isProperlyFormattedVoterGuideWeVoteId(nextParams.voter_guide_we_vote_id)) {
       this.setState({
@@ -179,7 +181,8 @@ export default class SettingsDashboard extends Component {
     renderLog('SettingsDashboard');  // Set LOG_RENDER_EVENTS to log all renders
     let settingsComponentToDisplayDesktop = null;
     let settingsComponentToDisplayMobile = null;
-    switch (this.state.editMode) {
+    const { editMode } = this.state;
+    switch (editMode) {
       case 'account':
         settingsComponentToDisplayDesktop = <SettingsAccount externalUniqueId="domainDesktop" />;
         settingsComponentToDisplayMobile = <SettingsAccount externalUniqueId="domainMobile" />;
@@ -202,8 +205,8 @@ export default class SettingsDashboard extends Component {
         break;
       case 'issues_linked':
       case 'issues_to_link':
-        settingsComponentToDisplayDesktop = <SettingsIssueLinks externalUniqueId="domainDesktop" organizationWeVoteId={this.state.voter.we_vote_id} params={{ active_tab: this.state.editMode }} />;
-        settingsComponentToDisplayMobile = <SettingsIssueLinks externalUniqueId="domainMobile" organizationWeVoteId={this.state.voter.we_vote_id} params={{ active_tab: this.state.editMode }} />;
+        settingsComponentToDisplayDesktop = <SettingsIssueLinks externalUniqueId="domainDesktop" organizationWeVoteId={this.state.voter.we_vote_id} params={{ active_tab: editMode }} />;
+        settingsComponentToDisplayMobile = <SettingsIssueLinks externalUniqueId="domainMobile" organizationWeVoteId={this.state.voter.we_vote_id} params={{ active_tab: editMode }} />;
         break;
       case 'issues':
         settingsComponentToDisplayDesktop = <SettingsIssueLinks externalUniqueId="domainDesktop" organizationWeVoteId={this.state.voter.we_vote_id} params={{ active_tab: '' }} />;
@@ -253,7 +256,7 @@ export default class SettingsDashboard extends Component {
                 {/* Desktop mode left navigation */}
                 <div className="col-md-4 sidebar-menu">
                   <SettingsPersonalSideBar
-                    editMode={this.state.editMode}
+                    editMode={editMode}
                     isSignedIn={this.state.voter.is_signed_in}
                     organizationType={this.state.organizationType}
                   />
