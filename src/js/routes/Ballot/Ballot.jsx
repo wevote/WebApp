@@ -1199,8 +1199,8 @@ class Ballot extends Component {
     ) : null;
 
     const electionDayTextFormatted = electionDayText && window.moment ? window.moment(electionDayText).format('MMM Do, YYYY') : '';
-    const electionDayTextObject = <span>{electionDayTextFormatted}</span>;
-    // console.log('electionName: ', electionName, ', electionDayTextFormatted: ', electionDayTextFormatted);
+    const electionDayTextObject = electionDayText && window.moment ? <span>{electionDayTextFormatted}</span> : null;
+    // console.log('electionDayText: ', electionDayText, ', electionDayTextFormatted: ', electionDayTextFormatted, ', electionDayTextObject:', electionDayTextObject);
 
     const inRemainingDecisionsMode = completionLevelFilterType === 'filterRemaining';
     // console.log('inRemainingDecisionsMode: ', inRemainingDecisionsMode);
@@ -1493,15 +1493,17 @@ class Ballot extends Component {
                   { ballotWithItemsFromCompletionFilterType.length === 0 ?
                     null : (
                       <div className={twoColumnDisplay ? '' : 'col-lg-3 d-none d-lg-block sidebar-menu'} style={rightTwoColumnDisplay} id="rightColumnSidebar">
-                        <BallotSideBar
-                          activeRaceItem={raceLevelFilterType}
-                          displayTitle
-                          displaySubtitles
-                          rawUrlVariablesString={search}
-                          ballotWithAllItemsByFilterType={this.state.ballotWithItemsFromCompletionFilterType}
-                          ballotItemLinkHasBeenClicked={this.ballotItemLinkHasBeenClicked}
-                          raceLevelFilterItemsInThisBallot={raceLevelFilterItemsInThisBallot}
-                        />
+                        { ballotWithItemsFromCompletionFilterType.length > 5 && (
+                          <BallotSideBar
+                            activeRaceItem={raceLevelFilterType}
+                            displayTitle
+                            displaySubtitles
+                            rawUrlVariablesString={search}
+                            ballotWithAllItemsByFilterType={ballotWithItemsFromCompletionFilterType}
+                            ballotItemLinkHasBeenClicked={this.ballotItemLinkHasBeenClicked}
+                            raceLevelFilterItemsInThisBallot={raceLevelFilterItemsInThisBallot}
+                          />
+                        )}
                         {(issuesFollowedCount < 3) && (
                           <ValuesListWrapper>
                             <ValuesToFollowPreview
@@ -1604,7 +1606,6 @@ const SectionTitle = styled.h2`
 `;
 
 const ValuesListWrapper = styled.div`
-  margin-top: 12px;
   margin-bottom: 12px;
 `;
 

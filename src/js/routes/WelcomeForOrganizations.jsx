@@ -34,11 +34,13 @@ class WelcomeForOrganizations extends Component {
   }
 
   componentDidMount () {
+    // console.log('WelcomeForOrganizations componentDidMount');
     this.onVoterStoreChange();
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
     AnalyticsActions.saveActionWelcomeVisit(VoterStore.electionId());
 
     this.autoAnimateText();
+    window.scrollTo(0, 0);
   }
 
   componentWillUnmount () {

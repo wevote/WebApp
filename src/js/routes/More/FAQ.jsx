@@ -14,6 +14,10 @@ export default class FAQ extends Component {
     return {};
   }
 
+  componentDidMount () {
+    window.scrollTo(0, 0);
+  }
+
   render () {
     renderLog('FAQ');  // Set LOG_RENDER_EVENTS to log all renders
     return (

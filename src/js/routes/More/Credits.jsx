@@ -19,6 +19,10 @@ class Credits extends Component {
     return {};
   }
 
+  componentDidMount () {
+    window.scrollTo(0, 0);
+  }
+
   render () {
     renderLog('Credits');  // Set LOG_RENDER_EVENTS to log all renders
     return (

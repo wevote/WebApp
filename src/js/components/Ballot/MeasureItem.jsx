@@ -19,6 +19,7 @@ class MeasureItem extends Component {
     super(props);
     this.state = {
       ballotItemDisplayName: '',
+      ballotpediaMeasureUrl: '',
       // measureSubtitle: '',
       measureText: '',
       measureWeVoteId: '',
@@ -48,6 +49,7 @@ class MeasureItem extends Component {
     const measure = MeasureStore.getMeasure(this.props.measureWeVoteId);
     this.setState({
       ballotItemDisplayName: measure.ballot_item_display_name,
+      ballotpediaMeasureUrl: measure.ballotpedia_measure_url,
       // measureSubtitle: measure.measure_subtitle,
       measureText: measure.measure_text,
       measureWeVoteId: measure.we_vote_id,
@@ -82,12 +84,12 @@ class MeasureItem extends Component {
   render () {
     renderLog('MeasureItem');  // Set LOG_RENDER_EVENTS to log all renders
     // const { supportProps, transitioning } = this.state;
-    const { classes, forMoreInformationSeeBallotpediaOff } = this.props;
+    const { classes, forMoreInformationTextOff } = this.props;
     let {
       ballotItemDisplayName, stateDisplayName,
     } = this.state;
     const {
-      measureText, measureWeVoteId, electionDisplayName, regionalDisplayName, stateCode,
+      ballotpediaMeasureUrl, measureText, measureWeVoteId, electionDisplayName, regionalDisplayName, stateCode,
     } = this.state;
     if (stateDisplayName === undefined && stateCode) {
       stateDisplayName = stateCode.toUpperCase();
@@ -131,11 +133,15 @@ class MeasureItem extends Component {
             />
           </MeasureTextWrapper>
         )}
-        {!forMoreInformationSeeBallotpediaOff && (
-          <ForMoreInformationSeeBallotpedia className="u-show-desktop-tablet">
+        {!forMoreInformationTextOff && (
+          <ForMoreInformationInfoText className="u-show-desktop-tablet">
             <Info classes={{ root: classes.informationIcon }} />
-            If you want to learn more, click the Ballotpedia and Google Search buttons to the right.
-          </ForMoreInformationSeeBallotpedia>
+              {ballotpediaMeasureUrl ? (
+                <span>If you want to learn more, click the Ballotpedia or Google Search buttons to the right.</span>
+              ) : (
+                <span>If you want to learn more, click the Google Search button to the right.</span>
+              )}
+          </ForMoreInformationInfoText>
         )}
         <BallotItemSupportOpposeComment
           ballotItemWeVoteId={measureWeVoteId}
@@ -148,7 +154,7 @@ class MeasureItem extends Component {
 }
 MeasureItem.propTypes = {
   classes: PropTypes.object,
-  forMoreInformationSeeBallotpediaOff: PropTypes.bool,
+  forMoreInformationTextOff: PropTypes.bool,
   measureWeVoteId: PropTypes.string.isRequired,
   // theme: PropTypes.object,
 };
@@ -186,8 +192,9 @@ const BallotItemSupportOpposeCountDisplayWrapper = styled.div`
   float: right;
 `;
 
-const ForMoreInformationSeeBallotpedia = styled.div`
+const ForMoreInformationInfoText = styled.div`
   color: #999;
+  margin-bottom: 4px;
 `;
 
 const InfoRow = styled.div`

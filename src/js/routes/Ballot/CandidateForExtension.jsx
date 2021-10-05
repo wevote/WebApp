@@ -156,7 +156,7 @@ class CandidateForExtension extends Component {
                 candidateWeVoteId={candidateWeVoteId}
                 organizationWeVoteId={organizationWeVoteId}
                 expandIssuesByDefault
-                forMoreInformationSeeBallotpediaOff
+                forMoreInformationTextOff
                 hideCandidateUrl
                 hideShowMoreFooter
                 showLargeImage

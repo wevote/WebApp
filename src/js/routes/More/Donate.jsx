@@ -53,6 +53,7 @@ class Donate extends Component {
     this.donateStoreListener = DonateStore.addListener(this.onDonateStoreChange);
     AnalyticsActions.saveActionDonateVisit(VoterStore.electionId());
     DonateActions.donationRefreshDonationList();
+    window.scrollTo(0, 0);
   }
 
   componentWillUnmount () {

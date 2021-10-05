@@ -380,6 +380,7 @@ class Pricing extends Component {
       currentPricingChoice,
       selectedPricingPlanIndex,
     });
+    window.scrollTo(0, 0);
   }
 
   // eslint-disable-next-line camelcase,react/sort-comp

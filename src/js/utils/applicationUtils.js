@@ -157,6 +157,7 @@ export function getApplicationViewBooleans (pathname) {
   }
 
   let showFooterBar;
+  let showFooterMain;
   // console.log('stringContains(\'/settings/positions\', pathnameLowerCase):', stringContains('/settings/positions', pathnameLowerCase), pathnameLowerCase);
   if (!pathnameLowerCase) {
     showFooterBar = isCordova();
@@ -174,13 +175,14 @@ export function getApplicationViewBooleans (pathname) {
       pathnameLowerCase.startsWith('/more/pricing') ||
       (pathnameLowerCase === '/welcome') ||
       pathnameLowerCase.startsWith('/value/') ||
-      pathnameLowerCase.startsWith('/values/') ||
+      (pathnameLowerCase === '/values/list') ||
       stringContains('/settings/positions', pathnameLowerCase) ||
       pathnameLowerCase.startsWith('/settings/voterguidelist') ||
       pathnameLowerCase.startsWith('/settings/voterguidesmenu') ||
       pathnameLowerCase.startsWith('/register')) {
     // We want to HIDE the footer bar on the above path patterns
     showFooterBar = false;
+    showFooterMain = false;
     // ///////// SHOW: The following are URLS where we want the footer to show
   } else if (pathnameLowerCase.startsWith('/ballot') ||
       pathnameLowerCase.startsWith('/candidate') || // Show Footer if back to not specified above
@@ -203,10 +205,12 @@ export function getApplicationViewBooleans (pathname) {
       pathnameLowerCase.startsWith('/settings')) {
     // We want to SHOW the footer bar on the above path patterns
     showFooterBar = !isIOSAppOnMac() && isSmallScreen;
+    showFooterMain = isWebApp();
   } else {
     // URLs like: https://WeVote.US/orlandosentinel  (The URL pathname consists of a Twitter Handle only)
-    showFooterBar = !isIOSAppOnMac() && isSmallScreen;
     contentFullWidthMode = true;
+    showFooterBar = !isIOSAppOnMac() && isSmallScreen;
+    showFooterMain = isWebApp();
   }
 
   let showShareButtonFooter = false;
@@ -237,6 +241,7 @@ export function getApplicationViewBooleans (pathname) {
     showBackToVoterGuide,
     showBackToVoterGuides,
     showFooterBar,
+    showFooterMain,
     showShareButtonFooter,
     twitterSignInMode,
     voteMode,

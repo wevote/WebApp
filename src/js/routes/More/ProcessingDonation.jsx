@@ -27,6 +27,7 @@ export default class ProcessingDonation extends Component {
 
   componentDidMount () {
     this.donateStoreListener = DonateStore.addListener(this.onDonateStoreChange);
+    window.scrollTo(0, 0);
   }
 
   componentWillUnmount () {

@@ -40,7 +40,7 @@ const FirstAndLastNameRequiredAlert = React.lazy(() => import(/* webpackChunkNam
 // import PledgeToVote from '../components/Ready/PledgeToVote';
 
 const nextReleaseFeaturesEnabled = webAppConfig.ENABLE_NEXT_RELEASE_FEATURES === undefined ? false : webAppConfig.ENABLE_NEXT_RELEASE_FEATURES;
-
+const futureFeaturesDisabled = true;
 
 class Ready extends Component {
   constructor (props) {
@@ -112,6 +112,7 @@ class Ready extends Component {
     });
 
     this.preloadTimer = setTimeout(() => lazyPreloadPages(), 2000);
+    window.scrollTo(0, 0);
   }
 
   componentDidCatch (error, info) {
@@ -287,14 +288,11 @@ class Ready extends Component {
                     </Card>
                   </FindWrapper>
                 </IntroAndFindTabletWrapper>
-                {nextReleaseFeaturesEnabled && (
+                {(nextReleaseFeaturesEnabled && !futureFeaturesDisabled) && (
                   <ReadyTaskRegister
                     arrowsOn
                   />
                 )}
-                <ReadyTaskPlan
-                  arrowsOn
-                />
                 <ReadyInformationDisclaimer bottom />
                 {voterIsSignedIn && (
                   <FirstAndLastNameRequiredAlert />
@@ -304,6 +302,9 @@ class Ready extends Component {
                     arrowsOn
                   />
                 )}
+                <ReadyTaskPlan
+                  arrowsOn
+                />
                 <div className="u-show-mobile-tablet">
                   {(issuesShouldBeDisplayed) && (
                     <ValuesListWrapper>

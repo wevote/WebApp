@@ -18,8 +18,7 @@ import ToolBar from './ToolBar';
 
 const WelcomeFooter = React.lazy(() => import(/* webpackChunkName: 'WelcomeFooter' */ '../../components/Welcome/WelcomeFooter'));
 const OpenExternalWebSite = React.lazy(() => import(/* webpackChunkName: 'OpenExternalWebSite' */ '../../components/Widgets/OpenExternalWebSite'));
-// TODO April 2021: Commented out, too many issue for a rarely used page.  Revisit and fix.
-// import WelcomeAppbar from '../../components/Navigation/WelcomeAppbar';
+const WelcomeAppbar = React.lazy(() => import(/* webpackChunkName: 'WelcomeAppbar' */ '../../components/Navigation/WelcomeAppbar'));
 
 class About extends Component {
   static getProps () {
@@ -40,6 +39,7 @@ class About extends Component {
 
   componentDidMount () {
     AnalyticsActions.saveActionAboutMobile(VoterStore.electionId());
+    window.scrollTo(0, 0);
   }
 
   showMoreButtonsLinkFounders = () => {
@@ -83,7 +83,7 @@ class About extends Component {
     return (
       <Wrapper padTop={cordovaScrollablePaneTopPadding()}>
         <Helmet title="About We Vote" />
-        {/* TODO: Temporary removal 4/27/21 <WelcomeAppbar pathname="/more/about" /> */}
+        <WelcomeAppbar pathname="/more/about" />
         <HeaderForAbout>
           <Title>About We Vote</Title>
           <ToolBar />
@@ -156,6 +156,7 @@ class About extends Component {
           </SectionTitle>
           <AboutDescriptionContainer>
             We Vote is made of two fully nonpartisan nonprofit organizations (501(c)(3) and 501(c)(4)) based in Oakland, California. Our software is open source, and our work is driven by over 100 volunteers who have contributed so far. Inspired by groups like
+            {' '}
             <OpenExternalWebSite
               linkIdAttribute="codeForSF"
               url="http://codeforsanfrancisco.org/"
@@ -168,6 +169,7 @@ class About extends Component {
               )}
             />
             and the
+            {' '}
             <OpenExternalWebSite
               linkIdAttribute="mozilla"
               url="https://www.mozilla.org/en-US/foundation/"

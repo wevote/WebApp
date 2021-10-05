@@ -36,6 +36,7 @@ export default class SearchPage extends Component {
     }
 
     this.searchAllStoreListener = SearchAllStore.addListener(this.onSearchAllStoreChange.bind(this));
+    window.scrollTo(0, 0);
   }
 
   // eslint-disable-next-line camelcase,react/sort-comp

@@ -9,14 +9,18 @@ export default class TermsOfService extends React.Component {
     return {};
   }
 
+  componentDidMount () {
+    window.scrollTo(0, 0);
+  }
+
   render () {
     renderLog('TermsOfService');  // Set LOG_RENDER_EVENTS to log all renders
     return (
       <PageContentContainer>
         <Helmet title="Terms of Service - We Vote" />
         <div className="container-fluid well">
-          <h1 className="text-center">WeVote.US Terms of Service</h1>
-          <p><strong>Last updated: August 13, 2020</strong></p>
+          <h1 className="text-center">Terms of Service</h1>
+          <p><strong>Last updated: October 2nd, 2021</strong></p>
 
           <h2>Overview</h2>
           <p>This website (also packaged in mobile apps) is operated by We Vote USA. Throughout the site, the terms “We Vote”, “we”, “us” and “our” refer to We Vote USA. We Vote USA offers this website, including all information, tools and services available from this site to you, the user, conditioned upon your acceptance of all terms, conditions, policies and notices stated here.</p>
@@ -51,7 +55,7 @@ export default class TermsOfService extends React.Component {
           <p>
             Your submission of personal information is governed by our
             {' '}
-            <Link to="/more/privacy" id="privacyPolicy">Privacy Policy</Link>
+            <Link className="u-link-color" to="/more/privacy" id="privacyPolicy">Privacy Policy</Link>
             .
           </p>
           <h2>Errors, Inaccuracies and Omissions</h2>
@@ -89,7 +93,7 @@ export default class TermsOfService extends React.Component {
             <span>
               If you have any questions about the Terms of Service, you may contact us by sending an e-mail to
               {' '}
-              <a href="mailto:info@WeVote.US" target="_blank" rel="noopener noreferrer">info@WeVote.US</a>
+              <a href="mailto:info@WeVote.US" className="u-link-color" target="_blank" rel="noopener noreferrer">info@WeVote.US</a>
               {' '}
 
             </span>

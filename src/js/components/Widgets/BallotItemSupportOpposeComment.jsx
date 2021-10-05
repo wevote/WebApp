@@ -245,7 +245,7 @@ BallotItemSupportOpposeComment.propTypes = {
 const Wrapper = styled.div`
   width: 100%;
   background-color: ${({ showPositionStatementActionBar, inModal }) => (showPositionStatementActionBar || inModal ? '#eee' : 'white')} !important;
-  padding: ${(props) => (props.showPositionStatementActionBar || props.inModal ? '12px 12px 0 12px' : '0')} !important;
+  padding: ${(props) => (props.showPositionStatementActionBar || props.inModal ? '8px 12px 8px 12px' : '0')} !important;
   border-radius: 4px;
   @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
     background-color: white;

@@ -142,6 +142,7 @@ class WelcomeAppbar extends Component {
   }
 
   handleToPageFromMobileNav = (destination) => {
+    // console.log('handleToPageFromMobileNav destination:', destination);
     this.handleShowMobileNavigation(false);
     historyPush(destination);
   }
@@ -406,19 +407,19 @@ class WelcomeAppbar extends Component {
                     </NavRow>
                     <MobileNavDivider />
                     <NavRow>
-                      <NavLink id="welcomeForVotersMobile" onClick={() => this.handleToPageFromMobileNav('/welcome')} to="">For Voters</NavLink>
+                      <NavLink id="welcomeForVotersMobile" onClick={() => this.handleShowMobileNavigation(false)} to="/welcome">For Voters</NavLink>
                     </NavRow>
                     <MobileNavDivider />
                     <NavRow>
-                      <NavLink id="welcomeForOrganizationsMobile" onClick={() => this.handleToPageFromMobileNav('/for-organizations')} to="">For Organizations</NavLink>
+                      <NavLink id="welcomeForOrganizationsMobile" onClick={() => this.handleShowMobileNavigation(false)} to="/for-organizations">For Organizations</NavLink>
                     </NavRow>
                     <MobileNavDivider />
                     <NavRow>
-                      <NavLink id="welcomeForCampaignsMobile" onClick={() => this.handleToPageFromMobileNav('/for-campaigns')} to="">For Campaigns</NavLink>
+                      <NavLink id="welcomeForCampaignsMobile" onClick={() => this.handleShowMobileNavigation(false)} to="/for-campaigns">For Campaigns</NavLink>
                     </NavRow>
                     <MobileNavDivider />
                     <NavRow>
-                      <NavLink id="welcomeHowItWorksMobile" onClick={() => this.handleToPageFromMobileNav('/how')} to="">How It Works</NavLink>
+                      <NavLink id="welcomeHowItWorksMobile" onClick={() => this.handleShowMobileNavigation(false)} to="/how">How It Works</NavLink>
                     </NavRow>
                     <MobileNavDivider />
                     <NavRow>

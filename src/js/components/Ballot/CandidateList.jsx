@@ -31,7 +31,7 @@ export default class CandidateList extends Component {
 
   render () {
     renderLog('CandidateList');  // Set LOG_RENDER_EVENTS to log all renders
-    const { forMoreInformationSeeBallotpediaOff } = this.props;
+    const { forMoreInformationTextOff } = this.props;
     // console.log('CandidateList render');
     let candidateNumber = 0;
     let candidatesDelayed = 0;
@@ -45,7 +45,7 @@ export default class CandidateList extends Component {
               <div key={child.we_vote_id} className="card">
                 <CandidateItem
                   candidateWeVoteId={child.we_vote_id}
-                  forMoreInformationSeeBallotpediaOff={forMoreInformationSeeBallotpediaOff}
+                  forMoreInformationTextOff={forMoreInformationTextOff}
                   goToBallotItem={this.goToCandidateLink}
                   hideBallotItemSupportOpposeComment
                   key={child.we_vote_id}
@@ -84,5 +84,5 @@ export default class CandidateList extends Component {
 }
 CandidateList.propTypes = {
   children: PropTypes.array.isRequired,
-  forMoreInformationSeeBallotpediaOff: PropTypes.bool,
+  forMoreInformationTextOff: PropTypes.bool,
 };
