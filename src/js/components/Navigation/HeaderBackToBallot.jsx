@@ -759,12 +759,12 @@ class HeaderBackToBallot extends Component {
     //   return cname;
     // }());
 
-    let appBarClasses = {};
-    if (scrolledDown && ['candidate', 'measure'].includes(page)) {
-      appBarClasses = { root: classes.noBoxShadow };
-    } else if (['office'].includes(page) && !isMobileScreenSize()) {
-      appBarClasses = { root: classes.stackedReturnAndShare };
-    }
+    // let appBarClasses = {};
+    // if (scrolledDown && ['candidate', 'measure'].includes(page)) {
+    //   appBarClasses = { root: classes.noBoxShadow };
+    // } else if (['office'].includes(page) && !isMobileScreenSize()) {
+    //   appBarClasses = { root: classes.stackedReturnAndShare };
+    // }
 
     const shareButtonInHeader = ['office'].includes(page);
 
@@ -773,7 +773,7 @@ class HeaderBackToBallot extends Component {
         id="backToBallotAppBar"
         // className={headerClassName}
         color="default"
-        classes={appBarClasses}
+        // classes={appBarClasses}
         elevation={0}
       >
         <TopOfPageHeader>

@@ -1,6 +1,7 @@
 import { AppBar } from '@material-ui/core';
 import styled from 'styled-components';
 import CordovaPageConstants from '../constants/CordovaPageConstants';
+import AppObservableStore from '../stores/AppObservableStore';
 import { normalizedHrefPage } from './applicationUtils';
 import { cordovaBallotFilterTopMargin, cordovaDualHeaderContainerPadding } from './cordovaOffsets';
 
@@ -45,7 +46,7 @@ export const PageContentContainer = styled.div`
     margin: 0 10px;
   }
   // for debugging... ${({ theme }) => ((theme) ? console.log(theme) : console.log(theme))}
- `;
+`;
 
 
 export const HeaderContentContainer = styled.div`
@@ -179,7 +180,6 @@ export const TopRowTwoRightContainer = styled.div`
 export const AppBarForBackTo = styled(AppBar)`
   border-top: none;
   border-right: none;
-  border-bottom: 1px solid rgb(170, 170, 170);
   border-left: none;
   border-image: initial;
   display: flex;
@@ -196,10 +196,18 @@ export const AppBarForBackTo = styled(AppBar)`
       // return '34px';  (WebApp to 0 on 10/4/21)
     }
   }};
-  box-shadow: rgb(0 0 0 / 20%) 0 2px 4px -1px, rgb(0 0 0 / 14%) 0px 4px 5px 0px, rgb(0 0 0 / 12%) 0px 1px 10px 0px;
-  @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
-    display: inherit;
-  }
+  ${() => {
+    if (AppObservableStore.getScrolledDown()) {
+      return {};
+    }
+    return {
+      borderBottom: '1px solid rgb(170, 170, 170)',
+      boxShadow: 'rgb(0 0 0 / 20%) 0 2px 4px -1px, rgb(0 0 0 / 14%) 0px 4px 5px 0px, rgb(0 0 0 / 12%) 0px 1px 10px 0px',
+    };
+  }};
+@media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
+  display: inherit;
+}
 `;
 
 export const OfficeShareWrapper = styled.div`

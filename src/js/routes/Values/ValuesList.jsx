@@ -8,6 +8,7 @@ import SearchBar from '../../components/Search/SearchBar';
 import IssueStore from '../../stores/IssueStore';
 import VoterStore from '../../stores/VoterStore';
 import { renderLog } from '../../utils/logging';
+import { PageContentContainer } from '../../utils/pageLayoutStyles';
 
 const ReadMore = React.lazy(() => import(/* webpackChunkName: 'ReadMore' */ '../../components/Widgets/ReadMore'));
 const DelayedLoad = React.lazy(() => import(/* webpackChunkName: 'DelayedLoad' */ '../../components/Widgets/DelayedLoad'));
@@ -127,7 +128,7 @@ export default class ValuesList extends Component {
     });
 
     return (
-      <>
+      <PageContentContainer>
         {this.props.displayOnlyIssuesNotFollowedByVoter ? (
           <Row className="row">
             {issuesListForDisplay}
@@ -175,8 +176,7 @@ export default class ValuesList extends Component {
             </section>
           </div>
         )}
-      </>
-
+      </PageContentContainer>
     );
   }
 }
