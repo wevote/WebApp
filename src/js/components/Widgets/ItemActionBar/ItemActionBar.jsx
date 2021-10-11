@@ -391,7 +391,7 @@ class ItemActionBar extends PureComponent {
       <Button
         id={`itemActionBarCommentButton-${externalUniqueId}-${localUniqueId}`}
         variant="contained"
-        className={`${commentButtonHideInMobile ? 'd-none d-sm-block ' : null}item-actionbar__btn item-actionbar__btn--comment btn btn-default`}
+        className={`${commentButtonHideInMobile ? 'd-none d-sm-block ' : null}item-actionbar__btn item-actionbar__btn--comment btn-default`}
         onClick={this.togglePositionStatementFunction}
         classes={{ root: classes.buttonRoot, outlinedPrimary: classes.buttonOutlinedPrimary }}
       >
@@ -412,7 +412,7 @@ class ItemActionBar extends PureComponent {
         <Button
           id={`itemActionBarCommentButtonNoText-${externalUniqueId}-${localUniqueId}`}
           variant="contained"
-          className={`${commentButtonHideInMobile ? 'd-none d-sm-block ' : null}item-actionbar__btn item-actionbar__btn--comment btn btn-default`}
+          className={`${commentButtonHideInMobile ? 'd-none d-sm-block ' : null} item-actionbar__btn item-actionbar__btn--comment btn-default`}
           onClick={this.togglePositionStatementFunction}
           classes={{ root: classes.buttonNoTextRoot, outlinedPrimary: classes.buttonOutlinedPrimary }}
         >
