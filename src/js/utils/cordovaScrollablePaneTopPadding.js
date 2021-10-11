@@ -438,5 +438,9 @@ export default function cordovaScrollablePaneTopPadding (pageEnumerationOverride
       default:                                            return '0px';
     }
   }
+  cordovaOffsetLog(`cordovaScrollablePaneTopPadding: WebApp desktop or mobile, page: ${page}`);
+  if (page === CordovaPageConstants.welcomeWild) {
+    return 0;
+  }
   return '60px';   // WebApp desktop mode
 }
