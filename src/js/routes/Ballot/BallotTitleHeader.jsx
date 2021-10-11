@@ -53,7 +53,7 @@ class BallotTitleHeader extends Component {
 
     if (electionName) {
       return (
-        <Wrapper marginTop={this.marginTopOffset()}>
+        <Wrapper/* marginTop={this.marginTopOffset()} */>
           <Tooltip title="Change my election" aria-label="Change Election" classes={{ tooltipPlacementBottom: classes.tooltipPlacementBottom }}>
             <Title onClick={this.props.toggleSelectBallotModal} id="ballotTitleHeaderSelectBallotModal">
               <ElectionName scrolled={scrolled}>
@@ -134,7 +134,7 @@ const Wrapper = styled.div`
   display: flex;
   align-items: center;
   justify-content: flex-start;
-  margin-top: ${(props) => (props.marginTop)};
+  // margin-top: ${(props) => (props.marginTop)};
   ${() => {
     if (isWebApp() && !isMobileScreenSize()) {
       // TODO: Steve 10/4/21, this is temporary and needs to be more responsive

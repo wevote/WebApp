@@ -90,20 +90,20 @@ const slideDown = keyframes`
 const Wrapper = styled.div`
   max-width: 100%;
   position: fixed;
-  padding-top: ${({ cordovaPaddingTop }) => (cordovaPaddingTop || '48px')};
+  //padding-top: ${({ cordovaPaddingTop }) => (cordovaPaddingTop || '48px')};
   padding-right: 16px;
   padding-bottom: 8px;
   padding-left: 16px;
-  top: 0;
+  top: 48px;
   left: 0;
   background: white;
   z-index: 2;
   width: 100vw;
   box-shadow: 0px 2px 4px -1px rgba(0,0,0,0.2), 0px 4px 5px 0px rgba(0,0,0,0.14), 0px 1px 10px 0px rgba(0,0,0,0.12);
   animation: ${slideDown} 150ms ease-in;
-  @media (min-width: ${({ theme }) => theme.breakpoints.sm}) {
-    padding-top: ${({ ipad }) => (ipad ? '' : '48px')};
-  }
+  // @media (min-width: ${({ theme }) => theme.breakpoints.sm}) {
+  //   padding-top: ${({ ipad }) => (ipad ? '' : '48px')};
+  // }
 `;
 
 const Container = styled.div`

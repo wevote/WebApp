@@ -50,6 +50,8 @@ class Measure extends Component {
 
   componentDidMount () {
     // console.log('Measure componentDidMount');
+    window.scrollTo(0, 0);
+
     const { match: { params } } = this.props;
     this.appStateSubscription = messageService.getMessage().subscribe(() => this.onAppObservableStoreChange());
     this.measureStoreListener = MeasureStore.addListener(this.onMeasureStoreChange.bind(this));

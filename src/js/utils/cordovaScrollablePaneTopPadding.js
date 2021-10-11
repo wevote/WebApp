@@ -406,6 +406,7 @@ export default function cordovaScrollablePaneTopPadding (pageEnumerationOverride
       }
     }
   } else if (isMobileScreenSize()) {
+    cordovaOffsetLog(`cordovaScrollablePaneTopPadding: WebApp mobile screen size, page: ${page}`);
     switch (page) {
       // case CordovaPageConstants.ballotLgHdrWild:
       //   return showBallotDecisionsTabs() ? '58px' : '42px';
@@ -417,7 +418,7 @@ export default function cordovaScrollablePaneTopPadding (pageEnumerationOverride
       //   return '24px';
       // case CordovaPageConstants.candidateWild:
       //   return '36px';
-      case CordovaPageConstants.measureWild:              return '54px';
+      case CordovaPageConstants.measureWild:              return '100px';
       // case CordovaPageConstants.moreTerms:
       //   return '32px';
       case CordovaPageConstants.officeWild:               return '29px';
@@ -438,9 +439,12 @@ export default function cordovaScrollablePaneTopPadding (pageEnumerationOverride
       default:                                            return '0px';
     }
   }
-  cordovaOffsetLog(`cordovaScrollablePaneTopPadding: WebApp desktop or mobile, page: ${page}`);
-  if (page === CordovaPageConstants.welcomeWild) {
-    return 0;
+
+  // WebApp desktop mode
+  cordovaOffsetLog(`cordovaScrollablePaneTopPadding: WebApp desktop, page: ${page}`);
+  switch (page) {
+    case CordovaPageConstants.measureWild:           return '105px';
+    case CordovaPageConstants.welcomeWild:           return 0;
+    default:                                         return '60px';
   }
-  return '60px';   // WebApp desktop mode
 }
