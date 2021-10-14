@@ -5,7 +5,6 @@ import Helmet from 'react-helmet';
 import ActivityActions from '../../actions/ActivityActions';
 import AnalyticsActions from '../../actions/AnalyticsActions';
 import FriendActions from '../../actions/FriendActions';
-// import AppObservableStore, { messageService } from '../../stores/AppObservableStore';
 import FriendStore from '../../stores/FriendStore';
 import VoterStore from '../../stores/VoterStore';
 import { normalizedHref } from '../../utils/applicationUtils';
@@ -30,9 +29,6 @@ class FriendsTabs extends Component {
 
   componentDidMount () {
     // console.log('FriendsTabs componentDidMount');
-
-    // this.appStateSubscription = messageService.getMessage().subscribe(() => this.onAppObservableStoreChange());
-    // this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
     this.friendStoreListener = FriendStore.addListener(this.onFriendStoreChange.bind(this));
     FriendActions.currentFriends();
     FriendActions.friendInvitationsSentToMe();
@@ -42,11 +38,6 @@ class FriendsTabs extends Component {
     const friendInvitationsSentToMe = FriendStore.friendInvitationsSentToMe();
     const suggestedFriendListUnsorted = FriendStore.suggestedFriendList();
     const suggestedFriendList = sortFriendListByMutualFriends(suggestedFriendListUnsorted);
-    // const voter = VoterStore.getVoter();
-    // let voterIsSignedIn = false;
-    // if (voter && voter.is_signed_in) {
-    //   voterIsSignedIn = voter.is_signed_in;
-    // }
 
     const currentFriendListUnsorted = FriendStore.currentFriends();
     const currentFriendList = sortFriendListByMutualFriends(currentFriendListUnsorted);
@@ -55,7 +46,6 @@ class FriendsTabs extends Component {
       friendInvitationsSentToMe,
       friendInvitationsSentByMe,
       suggestedFriendList,
-      // voter,
     });
     this.resetDefaultTabForMobile(friendInvitationsSentToMe, suggestedFriendList, friendInvitationsSentByMe);
     ActivityActions.activityNoticeListRetrieve();
@@ -63,21 +53,8 @@ class FriendsTabs extends Component {
   }
 
   componentWillUnmount () {
-    // this.voterStoreListener.remove();
     this.friendStoreListener.remove();
-    // this.appStateSubscription.unsubscribe();
   }
-
-  // onVoterStoreChange () {
-  //   // const voter = VoterStore.getVoter();
-  //   // let voterIsSignedIn = false;
-  //   // if (voter && voter.is_signed_in) {
-  //   //   voterIsSignedIn = voter.is_signed_in;
-  //   // }
-  //   this.setState({
-  //     // voter,
-  //   });
-  // }
 
   onFriendStoreChange () {
     let {
@@ -113,24 +90,10 @@ class FriendsTabs extends Component {
     if (resetDefaultTab) {
       this.resetDefaultTabForMobile(FriendStore.friendInvitationsSentToMe(), FriendStore.suggestedFriendList(), FriendStore.friendInvitationsSentByMe());
     }
-    // const friendActivityExists = Boolean((currentFriendList && currentFriendList.length) || (friendInvitationsSentByMe && friendInvitationsSentByMe.length) || (friendInvitationsSentToMe && friendInvitationsSentToMe.length) || (suggestedFriendList && suggestedFriendList.length));
-    // // console.log('friendActivityExists:', friendActivityExists);
-    // if (friendActivityExists) {
-    //   // Only set to true -- never false in order to avoid a weird loop
-    //   this.setState({ friendActivityExists });
-    // }
   }
-
-  // onAppObservableStoreChange () {
-  //   this.setState({
-  //     friendsHeaderUnpinned: AppObservableStore.getScrolledDown(),
-  //   });
-  // }
 
   getSelectedTab () {
     const tabItem = this.getPageFromUrl();
-
-    // const { match: { params: { tabItem } } } = this.props;
     const { currentFriendList, defaultTabItem, friendInvitationsSentByMe, friendInvitationsSentToMe, suggestedFriendList } = this.state;
     // console.log('getSelectedTab tabItem:', tabItem, ', defaultTabItem:', defaultTabItem);
     let selectedTab = tabItem || defaultTabItem;
@@ -159,15 +122,12 @@ class FriendsTabs extends Component {
 
   getPageFromUrl () {
     const href = normalizedHref();
-    console.log('------------ in FriendsTabs getPageFromUrl', href);
-    // /friends/invite
+    // console.log('------------ in FriendsTabs getPageFromUrl', href);
     if (href === '/friends') {
-      console.log('------------ in FriendsTabs tabItem: invite');
+      // console.log('------------ in FriendsTabs tabItem: invite');
       return 'invite';
     }
-    const tabItem = href.replace('/friends/', '');
-    console.log('------------ in FriendsTabs tabItem: ', tabItem);
-    return tabItem;
+    return href.replace('/friends/', '');
   }
 
   resetDefaultTabForMobile (friendInvitationsSentToMe, suggestedFriendList, friendInvitationsSentByMe) {
@@ -200,14 +160,6 @@ class FriendsTabs extends Component {
       currentFriendList, friendInvitationsSentByMe,
       friendInvitationsSentToMe, suggestedFriendList, /* voter, */
     } = this.state;
-    // const { classes, match: { params: { tabItem } } } = this.props;
-
-    // console.log('friendsHeaderUnpinned', friendsHeaderUnpinned);
-
-    // if (!voter) {
-    //   console.log('Waiting for voter in FriendsTabs.jsx');
-    //   return '';
-    // }
 
     return (
       <div className="row" id="friendsHorizontalMenu">
@@ -271,22 +223,6 @@ class FriendsTabs extends Component {
     );
   }
 }
-// FriendsTabs.propTypes = {
-//   // classes: PropTypes.object,
-//   match: PropTypes.object,
-// };
-
-// const styles = () => ({
-//   tooltip: {
-//     display: 'inline !important',
-//   },
-//   // navigationTab: {
-//   //   minWidth: '0px !important',
-//   //   width: 'fit-content !important',
-//   //   height: '40px !important',
-//   //   maxHeight: '40px !important',
-//   // },
-// });
 
 // Styled Mui Component, Tab example:
 const FriendsNavTab = muiStyled(Tab)({
@@ -295,7 +231,5 @@ const FriendsNavTab = muiStyled(Tab)({
   height: '40px !important',
   maxHeight: '40px !important',
 });
-
-
 
 export default FriendsTabs;
