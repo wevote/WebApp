@@ -111,6 +111,7 @@ export default function cordovaScrollablePaneTopPadding (pageEnumerationOverride
         case CordovaPageConstants.friendsSentRequest:    return '88px';
         case CordovaPageConstants.measureWild:           return '58px';
         case CordovaPageConstants.moreAbout:             return '22px';
+        case CordovaPageConstants.moreElections:         return '32px';
         case CordovaPageConstants.moreFaq:               return '61px';
         case CordovaPageConstants.moreTerms:             return '86px';
         case CordovaPageConstants.moreTools:             return '44px';
@@ -127,6 +128,7 @@ export default function cordovaScrollablePaneTopPadding (pageEnumerationOverride
         case CordovaPageConstants.twitterHandleLanding:  return '87px';
         case CordovaPageConstants.twitterSignIn:         return '20px';
         case CordovaPageConstants.values:                return '78px';
+        case CordovaPageConstants.valuesList:            return '60px';
         case CordovaPageConstants.voterGuideCreatorWild: return '10px'; // $headroom-wrapper-webapp__voter-guide
         case CordovaPageConstants.voterGuideWild:        return '51px';
         case CordovaPageConstants.welcomeWild:           return '22px';
@@ -141,11 +143,12 @@ export default function cordovaScrollablePaneTopPadding (pageEnumerationOverride
         case CordovaPageConstants.ballotVote:            return isSignedIn ? '163px' : '165px';
         case CordovaPageConstants.candidate:             return '56px';
         case CordovaPageConstants.candidateWild:         return '86px';
-        case CordovaPageConstants.friends:               return '76px';
-        case CordovaPageConstants.friendsCurrent:        return '76px';
-        case CordovaPageConstants.friendsSentRequest:    return '76px';
+        case CordovaPageConstants.friends:               return '62px';
+        case CordovaPageConstants.friendsCurrent:        return '62px';
+        case CordovaPageConstants.friendsSentRequest:    return '62px';
         case CordovaPageConstants.measureWild:           return '48px';
         case CordovaPageConstants.moreAbout:             return '22px';
+        case CordovaPageConstants.moreElections:         return '68px';
         case CordovaPageConstants.moreFaq:               return '74px';
         case CordovaPageConstants.moreTerms:             return '85px';
         case CordovaPageConstants.moreTools:             return '44px';

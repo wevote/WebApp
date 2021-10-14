@@ -7,10 +7,11 @@ import apiCalming from '../../utils/apiCalming';
 import { dumpCssFromId } from '../../utils/appleSiliconUtils';
 import { getApplicationViewBooleans, normalizedHref, weVoteBrandingOff } from '../../utils/applicationUtils';
 import cordovaTopHeaderTopMargin from '../../utils/cordovaTopHeaderTopMargin';
-import { hasIPhoneNotch, historyPush, isCordova, isIOS, isIOSAppOnMac, isIPad, isWebApp } from '../../utils/cordovaUtils';
+import { historyPush, isCordova, isIOSAppOnMac, isIPad, isWebApp } from '../../utils/cordovaUtils';
 import { renderLog } from '../../utils/logging';
-import { HeadroomWrapper, IOSNoNotchSpacer, IOSNotchedSpacer } from '../../utils/pageLayoutStyles';
+import { HeadroomWrapper } from '../../utils/pageLayoutStyles';
 import { stringContains } from '../../utils/textFormat';
+import IPhoneSpacer from '../Widgets/IPhoneSpacer';
 import HeaderBar from './HeaderBar';
 
 const ActivityTidbitDrawer = React.lazy(() => import(/* webpackChunkName: 'ActivityTidbitDrawer' */ '../Activity/ActivityTidbitDrawer'));
@@ -152,10 +153,13 @@ export default class Header extends Component {
 
   hideHeader () {
     const path = normalizedHref();
-    return path.startsWith('/welcome') ||
+    return (
+      path.startsWith('/about') ||
       path.startsWith('/for-campaigns') ||
       path.startsWith('/how/for-campaigns') ||
-      path.startsWith('/twitter_sign_in');
+      path.startsWith('/twitter_sign_in') ||
+      path.startsWith('/wevoteintro') ||
+      path.startsWith('/welcome'));
   }
 
 
@@ -180,12 +184,6 @@ export default class Header extends Component {
       showBackToSettingsMobile, showBackToValues, showBackToVoterGuide, showBackToVoterGuides,
     } = getApplicationViewBooleans(pathname);
     const voter = VoterStore.getVoter();
-    let iPhoneSpacer = '';
-    if (isCordova() && isIOS() && hasIPhoneNotch()) {
-      iPhoneSpacer = <IOSNotchedSpacer />;
-    } else if (isCordova() && isIOS() && !hasIPhoneNotch() && !isIOSAppOnMac()) {
-      iPhoneSpacer = <IOSNoNotchSpacer />;
-    }
 
     // console.log('organizationModalBallotItemWeVoteId: ', this.state.organizationModalBallotItemWeVoteId);
 
@@ -229,7 +227,7 @@ export default class Header extends Component {
       }
       return (
         <div id="app-header">
-          {iPhoneSpacer}
+          <IPhoneSpacer />
           <HeadroomWrapper>
             <div className={pageHeaderClasses} style={cordovaTopHeaderTopMargin()} id="header-container">
               {headerBarObject}
@@ -274,7 +272,7 @@ export default class Header extends Component {
 
       return (
         <div id="app-header">
-          { iPhoneSpacer }
+          <IPhoneSpacer />
           <HeadroomWrapper>
             <div className={pageHeaderClasses} style={cordovaTopHeaderTopMargin()} id="header-container">
               { showBackToSettingsDesktop && (
@@ -352,7 +350,7 @@ export default class Header extends Component {
 
       return (
         <div id="app-header">
-          { iPhoneSpacer }
+          <IPhoneSpacer />
           <HeadroomWrapper>
             {/* <div className={isWebApp ? 'headroom-wrapper-webapp__default' : ''} id="headroom-wrapper"> */}
             <div className={pageHeaderClasses} style={cordovaTopHeaderTopMargin()} id="header-container">
@@ -398,7 +396,7 @@ export default class Header extends Component {
 
       return (
         <div id="app-header">
-          { iPhoneSpacer }
+          <IPhoneSpacer />
           <HeadroomWrapper>
             {/* <div className={isWebApp ? 'headroom-wrapper-webapp__default' : ''} id="headroom-wrapper"> */}
             <div className={pageHeaderClasses} style={cordovaTopHeaderTopMargin()} id="header-container">
@@ -454,7 +452,7 @@ export default class Header extends Component {
       // This handles other pages, like the Ballot display
       return (
         <div id="app-header">
-          { iPhoneSpacer }
+          <IPhoneSpacer />
           <HeadroomWrapper>
             <div className={pageHeaderClasses} style={cordovaTopHeaderTopMargin()} id="header-container">
               { showBackToBallotHeader ?

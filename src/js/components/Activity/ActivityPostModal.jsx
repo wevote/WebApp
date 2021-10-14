@@ -7,11 +7,11 @@ import styled from 'styled-components';
 import ActivityActions from '../../actions/ActivityActions';
 import ActivityStore from '../../stores/ActivityStore';
 import VoterStore from '../../stores/VoterStore';
-import { cordovaDot, hasIPhoneNotch, prepareForCordovaKeyboard, restoreStylesAfterCordovaKeyboard } from '../../utils/cordovaUtils';
+import { avatarGeneric } from '../../utils/applicationUtils';
+import { hasIPhoneNotch, prepareForCordovaKeyboard, restoreStylesAfterCordovaKeyboard } from '../../utils/cordovaUtils';
 import { renderLog } from '../../utils/logging';
 import ActivityPostPublicToggle from './ActivityPostPublicToggle';
 
-const stockAvatar = '../../../img/global/icons/avatar-generic.png';
 
 class ActivityPostModal extends Component {
   constructor (props) {
@@ -167,7 +167,7 @@ class ActivityPostModal extends Component {
               >
                 <img
                   alt=""
-                  src={voterPhotoUrlMedium || cordovaDot(stockAvatar)}
+                  src={voterPhotoUrlMedium || avatarGeneric()}
                   style={{ borderRadius: 6, display: 'block', marginRight: 12, width: 50 }}
                 />
                 <InputBase

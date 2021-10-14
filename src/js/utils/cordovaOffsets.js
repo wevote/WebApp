@@ -1,4 +1,5 @@
 import CordovaPageConstants from '../constants/CordovaPageConstants';
+import { getApplicationViewBooleans, normalizedHref } from './applicationUtils';
 import { getAndroidSize, hasIPhoneNotch, isAndroid, isIOS, isIOSAppOnMac, isIPad, isIPhone4in, isIPhone4p7in, isIPhone5p5inEarly, isIPhone5p5inMini, isIPhone5p8in, isIPhone6p1in, isIPhone6p5in, isSimulator, isWebApp } from './cordovaUtils';
 import { pageEnumeration } from './cordovaUtilsPageEnumeration';
 import { cordovaOffsetLog } from './logging';
@@ -105,7 +106,7 @@ export function cordovaNetworkNextButtonTop () {
     if (isIPhone5p5inEarly()) {
       return '89vh';
     } else if (isIPhone5p5inMini()) {
-      return '89vh';
+      return '85vh';
     } else if (isIPhone4p7in()) {
       return '89vh';
     } else if (hasIPhoneNotch()) {
@@ -282,7 +283,7 @@ export function cordovaStickyHeaderPaddingTop () {
     if (isIPhone5p5inEarly()) {
       return '71px';
     } else if (isIPhone5p5inMini()) {
-      return '69px';
+      return '83px';
     } else if (isIPhone4p7in()) {
       return '69px';
     } else if (isIPhone5p8in()) {
@@ -342,16 +343,20 @@ export function cordovaSignInModalTopPosition (collapsed) {
 }
 
 export function shareBottomOffset (pinToBottom) {
+  if (pinToBottom) return 'opx';
+
+  const { showFooterBar } = getApplicationViewBooleans(normalizedHref());
+
   if (isIOS()) {
     if (hasIPhoneNotch()) {
-      return pinToBottom ? '0' : '66px';
+      return showFooterBar ? '66px' : '18px';
     }
   } else if (isAndroid()) {
-    return pinToBottom ? '0px' : '57px';
+    return showFooterBar ? '57px' : '18px';
   }
 
   // Default for all other devices, including desktop and mobile browsers
-  return pinToBottom ? '0' : '57px';
+  return '57px';
 }
 
 export function cordovaFriendsWrapper () {
@@ -364,8 +369,8 @@ export function cordovaFriendsWrapper () {
     }
     if (isIPhone6p1in()) {
       return {
-        paddingTop: '69px',
-        paddingBottom: '0',
+        // paddingTop: '69px',
+        // paddingBottom: '0',
       };
     }
     if (isIPhone6p5in()) {
@@ -434,4 +439,16 @@ export function cordovaDualHeaderContainerPadding () {
   if (isIPhone5p5inMini()) return '18px';
   if (hasIPhoneNotch()) return '0px';
   return '8px';
+}
+
+export function welcomeAppBarPaddingTop () {
+  if (isIPhone5p5inMini()) {
+    const page = pageEnumeration();
+    switch (page) {
+      case CordovaPageConstants.about:                 return '19px';
+      case CordovaPageConstants.moreCredits:           return '19px';
+      default:                                         return '0px';
+    }
+  }
+  return '';
 }

@@ -9,15 +9,13 @@ import CandidateStore from '../../stores/CandidateStore';
 import MeasureStore from '../../stores/MeasureStore';
 import SupportStore from '../../stores/SupportStore';
 import VoterStore from '../../stores/VoterStore';
-import { cordovaDot, hasIPhoneNotch, isCordova, prepareForCordovaKeyboard, restoreStylesAfterCordovaKeyboard } from '../../utils/cordovaUtils';
+import { avatarGeneric } from '../../utils/applicationUtils';
+import { hasIPhoneNotch, isCordova, prepareForCordovaKeyboard, restoreStylesAfterCordovaKeyboard } from '../../utils/cordovaUtils';
 import { renderLog } from '../../utils/logging';
 import { stringContains } from '../../utils/textFormat';
 
 const FirstAndLastNameRequiredAlert = React.lazy(() => import(/* webpackChunkName: 'FirstAndLastNameRequiredAlert' */ './FirstAndLastNameRequiredAlert'));
 const ItemActionBar = React.lazy(() => import(/* webpackChunkName: 'ItemActionBar' */ './ItemActionBar/ItemActionBar'));
-
-const stockAvatar = '../../../img/global/icons/avatar-generic.png';
-// const anonymous = '../../../img/global/icons/avatar-generic.png';
 
 
 class PositionStatementModal extends Component {
@@ -273,7 +271,7 @@ class PositionStatementModal extends Component {
               >
                 <img
                   alt=""
-                  src={voterPhotoUrlMedium || cordovaDot(stockAvatar)}
+                  src={voterPhotoUrlMedium || avatarGeneric()}
                   style={{ borderRadius: 6, display: 'block', marginRight: 12, width: 50 }}
                 />
                 <InputBase onChange={this.updateStatementTextToBeSaved}

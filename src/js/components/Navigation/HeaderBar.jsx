@@ -10,10 +10,11 @@ import VoterActions from '../../actions/VoterActions';
 import VoterGuideActions from '../../actions/VoterGuideActions';
 import VoterSessionActions from '../../actions/VoterSessionActions';
 import LazyImage from '../../common/components/LazyImage';
+import FriendsTabs from './FriendsTabs';
 import AppObservableStore, { messageService } from '../../stores/AppObservableStore';
 import FriendStore from '../../stores/FriendStore';
 import VoterStore from '../../stores/VoterStore';
-import { displayTopMenuShadow, normalizedHref, normalizedHrefPage, weVoteBrandingOff } from '../../utils/applicationUtils';
+import { avatarGeneric, displayTopMenuShadow, normalizedHref, normalizedHrefPage, weVoteBrandingOff } from '../../utils/applicationUtils';
 import { hasIPhoneNotch, historyPush, isCordova, isIOSAppOnMac, isWebApp } from '../../utils/cordovaUtils';
 import isMobileScreenSize from '../../utils/isMobileScreenSize';
 import { renderLog } from '../../utils/logging';
@@ -31,7 +32,6 @@ import TabWithPushHistory from './TabWithPushHistory';
 const HeaderBarProfilePopUp = React.lazy(() => import(/* webpackChunkName: 'HeaderBarProfilePopUp' */ './HeaderBarProfilePopUp'));
 const HeaderNotificationMenu = React.lazy(() => import(/* webpackChunkName: 'HeaderNotificationMenu' */ './HeaderNotificationMenu'));
 
-const anonymous = '../../../img/global/icons/avatar-generic.png';
 // TODO: Backport "@stripe/react-stripe-js" use from Campaigns
 // import PaidAccountUpgradeModal from '../Settings/PaidAccountUpgradeModal';
 
@@ -682,7 +682,7 @@ class HeaderBar extends Component {
                   <LazyImage
                     className="header-nav__avatar"
                     src={voterPhotoUrlMedium}
-                    placeholder={anonymous}
+                    placeholder={avatarGeneric()}
                     style={{
                       marginLeft: 16,
                     }}
@@ -744,8 +744,11 @@ class HeaderBar extends Component {
               </>
             )}
           </TopRowOneRightContainer>
-          <TopRowTwoLeftContainer style={{ display: `${isFriends ? 'inherit' : 'none'}` }} />
-          {/* </AppBar> */}
+          <TopRowTwoLeftContainer style={{ display: `${isFriends ? 'inherit' : 'none'}` }}>
+            {(isFriends) && (
+              <FriendsTabs />
+            )}
+          </TopRowTwoLeftContainer>
         </TopOfPageHeader>
         <HeaderBarModals
           shows={shows}

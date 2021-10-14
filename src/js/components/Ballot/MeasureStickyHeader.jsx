@@ -39,7 +39,7 @@ class MeasureStickyHeader extends Component {
     const { ballotItemDisplayName } = this.state;
     const ballotItemDisplay = ballotItemDisplayName ? ballotItemDisplayName.split(':') : [];
     return (
-      <Wrapper cordovaPaddingTop={cordovaStickyHeaderPaddingTop()} ipad={isIPad() || isIOSAppOnMac()}>
+      <Wrapper ipad={isIPad() || isIOSAppOnMac()}>
         <Container>
           <Flex>
             <ColumnOne>
@@ -90,11 +90,10 @@ const slideDown = keyframes`
 const Wrapper = styled.div`
   max-width: 100%;
   position: fixed;
-  //padding-top: ${({ cordovaPaddingTop }) => (cordovaPaddingTop || '48px')};
   padding-right: 16px;
   padding-bottom: 8px;
   padding-left: 16px;
-  top: 48px;
+  top: ${() => cordovaStickyHeaderPaddingTop()};
   left: 0;
   background: white;
   z-index: 2;

@@ -188,7 +188,13 @@ export const AppBarForBackTo = styled(AppBar)`
     if (isIPhone5p5inMini() &&
       [CordovaPageConstants.candidateWild,
         CordovaPageConstants.officeWild,
-        CordovaPageConstants.measureWild].includes(pageEnumeration())) {
+        CordovaPageConstants.settingsProfile,
+        CordovaPageConstants.settingsAccount,
+        CordovaPageConstants.settingsNotifications,
+        CordovaPageConstants.settingsSubscription,
+        CordovaPageConstants.settingsWild,
+        CordovaPageConstants.measureWild,
+        CordovaPageConstants.valuesList].includes(pageEnumeration())) {
       // IMPORTANT: This is a last chance way to adjust the height, to be used only if cordovaScrollablePaneTopPadding can't do it!
       return '39px';
     } else {
@@ -197,7 +203,10 @@ export const AppBarForBackTo = styled(AppBar)`
     }
   }};
   ${() => {
-    if (AppObservableStore.getScrolledDown()) {
+    if (AppObservableStore.getScrolledDown() && ![CordovaPageConstants.candidateWild,
+      CordovaPageConstants.officeWild,
+      CordovaPageConstants.measureWild,
+      CordovaPageConstants.valuesList].includes(pageEnumeration())) {
       return {};
     }
     return {

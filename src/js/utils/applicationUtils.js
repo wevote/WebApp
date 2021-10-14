@@ -1,5 +1,5 @@
 import cookies from './cookies';
-import { isCordova, isIOSAppOnMac, isWebApp } from './cordovaUtils';
+import { cordovaDot, isCordova, isIOSAppOnMac, isWebApp } from './cordovaUtils';
 import { stringContains } from './textFormat';
 
 // We have to do all this, because we allow urls where the path starts with a twitter username (handle)
@@ -334,4 +334,8 @@ export function normalizedHrefPage () {
 
 export function displayTopMenuShadow () {  //
   return !['ballot'].includes(normalizedHrefPage());
+}
+
+export function avatarGeneric () {
+  return cordovaDot('../../img/global/icons/avatar-generic.png');
 }

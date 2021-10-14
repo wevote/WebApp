@@ -7,12 +7,13 @@ import styled from 'styled-components';
 import OrganizationActions from '../../actions/OrganizationActions';
 import VoterGuideActions from '../../actions/VoterGuideActions';
 import VoterSessionActions from '../../actions/VoterSessionActions';
+import LazyImage from '../../common/components/LazyImage';
 import AppObservableStore, { messageService } from '../../stores/AppObservableStore';
 import VoterStore from '../../stores/VoterStore';
+import { avatarGeneric } from '../../utils/applicationUtils';
 import cookies from '../../utils/cookies';
-import { cordovaWelcomeAppToolbarTop } from '../../utils/cordovaOffsets';
+import { cordovaWelcomeAppToolbarTop, welcomeAppBarPaddingTop } from '../../utils/cordovaOffsets';
 import { historyPush } from '../../utils/cordovaUtils';
-import LazyImage from '../../common/components/LazyImage';
 import { renderLog } from '../../utils/logging';
 import { shortenText } from '../../utils/textFormat';
 import { voterPhoto } from '../../utils/voterPhoto';
@@ -22,7 +23,6 @@ import HeaderBarLogo from './HeaderBarLogo';
 const HeaderBarProfilePopUp = React.lazy(() => import(/* webpackChunkName: 'HeaderBarProfilePopUp' */ './HeaderBarProfilePopUp'));
 const SignInModal = React.lazy(() => import(/* webpackChunkName: 'SignInModal' */ '../Widgets/SignInModal'));
 
-const anonymous = '../../../img/global/icons/avatar-generic.png';
 // TODO: Backport "@stripe/react-stripe-js" use from Campaigns
 // const PaidAccountUpgradeModal = React.lazy(() => import('../Settings/PaidAccountUpgradeModal'));
 
@@ -193,6 +193,7 @@ class WelcomeAppbar extends Component {
     AppObservableStore.setShowSignInModal(false);
   }
 
+
   render () {
     renderLog('WelcomeAppbar');  // Set LOG_RENDER_EVENTS to log all renders
     const { classes, pathname } = this.props;
@@ -257,7 +258,7 @@ class WelcomeAppbar extends Component {
       showHowItWorksForVoters = true;
     }
     return (
-      <AppBar id="welcomeAppBar" position="relative" classes={{ root: classes.appBarRoot }} elevation={0}>
+      <AppBar id="welcomeAppBar" position="relative" classes={{ root: classes.appBarRoot }} elevation={0} style={{ paddingTop: `${welcomeAppBarPaddingTop()}` }}>
         <Toolbar classes={{ root: classes.toolbar }} disableGutters style={{ top: cordovaWelcomeAppToolbarTop() }}>
           <LogoContainer>
             <HeaderBarLogo light />
@@ -310,7 +311,7 @@ class WelcomeAppbar extends Component {
                       <LazyImage
                         className="header-nav__avatar"
                         src={voterPhotoUrlMedium}
-                        placeholder={anonymous}
+                        placeholder={avatarGeneric()}
                         height={34}
                         width={34}
                         alt="generic avatar"
@@ -357,7 +358,7 @@ class WelcomeAppbar extends Component {
                       <LazyImage
                         className="header-nav__avatar"
                         src={voterPhotoUrlMedium}
-                        placeholder={anonymous}
+                        placeholder={avatarGeneric()}
                         height={24}
                         width={24}
                         alt="generic avatar"

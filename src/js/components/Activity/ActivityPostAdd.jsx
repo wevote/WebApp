@@ -4,14 +4,12 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import styled from 'styled-components';
 import VoterStore from '../../stores/VoterStore';
+import { avatarGeneric } from '../../utils/applicationUtils';
 import { cordovaNewsPaddingTop } from '../../utils/cordovaOffsets';
-import { cordovaDot, isCordova } from '../../utils/cordovaUtils';
+import { isCordova } from '../../utils/cordovaUtils';
 import { renderLog } from '../../utils/logging';
 
 const ActivityPostModal = React.lazy(() => import(/* webpackChunkName: 'ActivityPostModal' */ './ActivityPostModal'));
-
-const stockAvatar = '../../../img/global/icons/avatar-generic.png';
-
 
 class ActivityPostAdd extends Component {
   constructor (props) {
@@ -128,7 +126,7 @@ class ActivityPostAdd extends Component {
           <InnerFlexWrapper>
             <img
               alt=""
-              src={voterPhotoUrlMedium || cordovaDot(stockAvatar)}
+              src={voterPhotoUrlMedium || avatarGeneric()}
               style={{ borderRadius: 6, display: 'block', marginRight: 12, width: 50 }}
             />
             <InputBase

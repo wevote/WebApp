@@ -178,7 +178,7 @@ class SettingsVerifySecretCode extends Component {
   onVoterStoreChange () {
     const secretCodeVerificationStatus = VoterStore.getSecretCodeVerificationStatus();
     const { incorrectSecretCodeEntered, numberOfTriesRemaining, secretCodeVerified, voterMustRequestNewCode, voterSecretCodeRequestsLocked } = secretCodeVerificationStatus;
-    // console.log('onVoterStoreChange secretCodeVerified: ' + secretCodeVerified);
+    // console.log(`onVoterStoreChange secretCodeVerified: ${secretCodeVerified}`);
     if (secretCodeVerified) {
       // console.log('onVoterStoreChange secretCodeVerified: yes');
       this.closeVerifyModalLocal();

@@ -15,24 +15,21 @@ import OfficeStore from '../../stores/OfficeStore';
 import OrganizationStore from '../../stores/OrganizationStore';
 import VoterStore from '../../stores/VoterStore';
 import { dumpCssFromId } from '../../utils/appleSiliconUtils';
-import { normalizedHref, normalizedHrefPage } from '../../utils/applicationUtils';
+import { avatarGeneric, normalizedHref, normalizedHrefPage } from '../../utils/applicationUtils';
 import { historyPush, isCordova, isIOSAppOnMac, isIPad, isWebApp } from '../../utils/cordovaUtils';
-import isMobileScreenSize from '../../utils/isMobileScreenSize';
 import { renderLog } from '../../utils/logging';
+import { AppBarForBackTo, OfficeShareWrapper, TopOfPageHeader, TopRowOneLeftContainer, TopRowOneMiddleContainer, TopRowOneRightContainer, TopRowTwoLeftContainer, TopRowTwoRightContainer } from '../../utils/pageLayoutStyles';
 import { shortenText, stringContains } from '../../utils/textFormat';
 import { voterPhoto } from '../../utils/voterPhoto';
 import ShareButtonDesktopTablet from '../Share/ShareButtonDesktopTablet';
 import SignInButton from '../Widgets/SignInButton';
 import HeaderBackToButton from './HeaderBackToButton';
-import { AppBarForBackTo, TopOfPageHeader, TopRowOneLeftContainer, TopRowOneMiddleContainer, TopRowOneRightContainer,
-  TopRowTwoLeftContainer, TopRowTwoRightContainer, OfficeShareWrapper  } from '../../utils/pageLayoutStyles';
 
 const HeaderNotificationMenu = React.lazy(() => import(/* webpackChunkName: 'HeaderNotificationMenu' */ './HeaderNotificationMenu'));
 const HeaderBarProfilePopUp = React.lazy(() => import(/* webpackChunkName: 'HeaderBarProfilePopUp' */ './HeaderBarProfilePopUp'));
 const ShareModal = React.lazy(() => import(/* webpackChunkName: 'ShareModal' */ '../Share/ShareModal'));
 const SignInModal = React.lazy(() => import(/* webpackChunkName: 'SignInModal' */ '../Widgets/SignInModal'));
 
-const anonymous = '../../../img/global/icons/avatar-generic.png';
 const appleSiliconDebug = false;
 
 
@@ -692,7 +689,7 @@ class HeaderBackToBallot extends Component {
     const {
       backToCandidateWeVoteId, backToMeasure, backToMeasureWeVoteId, backToVariable,
       candidate, measureName, officeName,
-      organization, page, profilePopUpOpen, scrolledDown, showSignInModal,
+      organization, page, profilePopUpOpen, showSignInModal,
       shareModalStep, showShareModal, voter, voterFirstName, voterIsSignedIn,
     } = this.state;
     const voterPhotoUrlMedium = voterPhoto(voter);
@@ -798,7 +795,7 @@ class HeaderBackToBallot extends Component {
                     <LazyImage
                       className="header-nav__avatar"
                       src={voterPhotoUrlMedium}
-                      placeholder={anonymous}
+                      placeholder={avatarGeneric()}
                       style={{
                         marginLeft: 16,
                       }}

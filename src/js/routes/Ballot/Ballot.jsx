@@ -1228,7 +1228,7 @@ class Ballot extends Component {
                       <BallotTitleHeader
                         electionName={electionName}
                         electionDayTextObject={electionDayTextObject}
-                        toggleSelectBallotModal={() => this.toggleSelectBallotModal('', false, false)}
+                        toggleSelectBallotModal={this.toggleSelectBallotModal}
                         scrolled={this.state.ballotHeaderUnpinned}
                       />
                     </header>

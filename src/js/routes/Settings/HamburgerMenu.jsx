@@ -7,13 +7,12 @@ import LoadingWheel from '../../components/LoadingWheel';
 import HamburgerMenuRow from '../../components/Navigation/HamburgerMenuRow';
 import DeviceDialog from '../../components/Widgets/DeviceDialog';
 import VoterStore from '../../stores/VoterStore';
-import { cordovaDot, isCordova, isWebApp } from '../../utils/cordovaUtils';
+import { avatarGeneric } from '../../utils/applicationUtils';
+import { isCordova, isWebApp } from '../../utils/cordovaUtils';
 import { renderLog } from '../../utils/logging';
 import { PageContentContainer } from '../../utils/pageLayoutStyles';
 import { voterPhoto } from '../../utils/voterPhoto';
 
-const avatarGeneric = '../../../img/global/svg-icons/avatar-generic.svg';
-const anonymous = '../../../img/global/icons/avatar-generic.png';
 const webAppConfig = require('../../config');
 
 
@@ -71,7 +70,7 @@ export default class HamburgerMenu extends Component {
             <LazyImage
               alt="Signed in voter"
               src={voterPhotoUrlMedium}
-              placeholder={anonymous}
+              placeholder={avatarGeneric()}
               height={34}
               width={34}
               style={{ maxWidth: 'unset' }}
@@ -79,7 +78,7 @@ export default class HamburgerMenu extends Component {
           </div>
         ) : (
           <div id="anonIcon" className={isWebApp() ? 'header-nav__avatar' : 'header-nav__avatar-cordova header-nav__cordova'}>
-            <img src={cordovaDot(avatarGeneric)} width="34" height="34" color="#c0c0c0" alt="generic voter" />
+            <img src={avatarGeneric()} width="34" height="34" color="#c0c0c0" alt="generic voter" />
           </div>
         )}
       </span>

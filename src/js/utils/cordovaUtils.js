@@ -368,6 +368,10 @@ export function isIOsSmallerThanPlus () {
   return isIPhone3p5in() || isIPhone4in() || isIPhone4p7in();
 }
 
+export function isIPhoneMiniOrSmaller () {
+  return isIPhone3p5in() || isIPhone4in() || isIPhone4p7in() || isIPhone5p5inMini() || isIPhone5p5inEarly();
+}
+
 export function getAndroidSize () {
   if (androidSizeString !== undefined) {
     return androidSizeString;

@@ -15,7 +15,6 @@ import SupportStore from '../../stores/SupportStore';
 import VoterStore from '../../stores/VoterStore';
 import { historyPush } from '../../utils/cordovaUtils';
 import { renderLog } from '../../utils/logging';
-import { PageContentContainer } from '../../utils/pageLayoutStyles';
 import { calculateBallotBaseUrl, capitalizeString } from '../../utils/textFormat';
 import BallotSearchResults from '../Ballot/BallotSearchResults';
 import FooterDoneBar from '../Navigation/FooterDoneBar';
@@ -279,79 +278,77 @@ class VoterGuideEndorsements extends Component {
           title={titleText}
           meta={[{ name: 'description', content: descriptionText }]}
         />
-        <PageContentContainer>
-          <div className="container-fluid">
-            <VoterGuideEndorsementsWrapper>
-              { lookingAtSelf && (
-                <div className="u-margin-left--md u-push--md">
-                  <BallotSearchResults
-                    clearSearchTextNow={clearSearchTextNow}
-                    googleCivicElectionId={currentGoogleCivicElectionId}
-                    organizationWeVoteId={this.state.voter.linked_organization_we_vote_id}
-                    searchUnderwayFunction={this.searchUnderway}
-                  />
-                </div>
-              )}
-              { (allOrganizationPositionsLength) ? (
-                <section className="card">
-                  <DelayedLoad showLoadingText waitBeforeShow={500}>
-                    <VoterGuidePositionList
-                      incomingPositionList={allOrganizationPositions}
-                      organizationWeVoteId={organizationWeVoteId}
-                      params={params}
-                      positionListExistsTitle={(
-                        <PositionListIntroductionText>
-                          <Info classes={{ root: classes.informationIcon }} />
-                          {organizationName}
-                          &apos;s opinions are below. Use these filters to sort:
-                        </PositionListIntroductionText>
-                      )}
-                    />
-                  </DelayedLoad>
-                </section>
-              ) : (
-                <Card>
-                  <DelayedLoad showLoadingText waitBeforeShow={2000}>
-                    <EmptyBallotMessageContainer>
-                      <Ballot classes={{ root: classes.ballotIconRoot }} location={window.location} />
-                      <EmptyBallotText>
-                        No endorsements have been found for
-                        {' '}
-                        {organization.organization_name}
-                        .
-                      </EmptyBallotText>
-                    </EmptyBallotMessageContainer>
-                  </DelayedLoad>
-                </Card>
-              )}
-            </VoterGuideEndorsementsWrapper>
-            {searchIsUnderway ? (
-              <span className="d-block d-sm-none">
-                <FooterDoneBar
-                  doneFunction={this.clearSearch}
-                  doneButtonText="Clear Search"
+        <div className="container-fluid">
+          <VoterGuideEndorsementsWrapper>
+            { lookingAtSelf && (
+              <div className="u-margin-left--md u-push--md">
+                <BallotSearchResults
+                  clearSearchTextNow={clearSearchTextNow}
+                  googleCivicElectionId={currentGoogleCivicElectionId}
+                  organizationWeVoteId={this.state.voter.linked_organization_we_vote_id}
+                  searchUnderwayFunction={this.searchUnderway}
                 />
-              </span>
-            ) : null}
-            <ExtraActionsWrapper>
-              <EndorsementCard
-                buttonText="ENDORSEMENTS MISSING?"
-                organizationWeVoteId={organizationWeVoteId}
-                text={`Are there endorsements from ${organizationName} that you expected to see?`}
-                title="Endorsements Missing?"
+              </div>
+            )}
+            { (allOrganizationPositionsLength) ? (
+              <section className="card">
+                <DelayedLoad showLoadingText waitBeforeShow={500}>
+                  <VoterGuidePositionList
+                    incomingPositionList={allOrganizationPositions}
+                    organizationWeVoteId={organizationWeVoteId}
+                    params={params}
+                    positionListExistsTitle={(
+                      <PositionListIntroductionText>
+                        <Info classes={{ root: classes.informationIcon }} />
+                        {organizationName}
+                        &apos;s opinions are below. Use these filters to sort:
+                      </PositionListIntroductionText>
+                    )}
+                  />
+                </DelayedLoad>
+              </section>
+            ) : (
+              <Card>
+                <DelayedLoad showLoadingText waitBeforeShow={2000}>
+                  <EmptyBallotMessageContainer>
+                    <Ballot classes={{ root: classes.ballotIconRoot }} location={window.location} />
+                    <EmptyBallotText>
+                      No endorsements have been found for
+                      {' '}
+                      {organization.organization_name}
+                      .
+                    </EmptyBallotText>
+                  </EmptyBallotMessageContainer>
+                </DelayedLoad>
+              </Card>
+            )}
+          </VoterGuideEndorsementsWrapper>
+          {searchIsUnderway ? (
+            <span className="d-block d-sm-none">
+              <FooterDoneBar
+                doneFunction={this.clearSearch}
+                doneButtonText="Clear Search"
+              />
+            </span>
+          ) : null}
+          <ExtraActionsWrapper>
+            <EndorsementCard
+              buttonText="ENDORSEMENTS MISSING?"
+              organizationWeVoteId={organizationWeVoteId}
+              text={`Are there endorsements from ${organizationName} that you expected to see?`}
+              title="Endorsements Missing?"
+              whiteOnBlue
+            />
+            {organization.organization_twitter_handle && (
+              <ThisIsMeAction
+                kindOfOwner="ORGANIZATION"
+                nameBeingViewed={organization.organization_name}
+                twitterHandleBeingViewed={organization.organization_twitter_handle}
                 whiteOnBlue
               />
-              {organization.organization_twitter_handle && (
-                <ThisIsMeAction
-                  kindOfOwner="ORGANIZATION"
-                  nameBeingViewed={organization.organization_name}
-                  twitterHandleBeingViewed={organization.organization_twitter_handle}
-                  whiteOnBlue
-                />
-              )}
-            </ExtraActionsWrapper>
-          </div>
-        </PageContentContainer>
+            )}
+          </ExtraActionsWrapper>
+        </div>
       </VoterGuideEndorsementsOuterWrapper>
     );
   }
