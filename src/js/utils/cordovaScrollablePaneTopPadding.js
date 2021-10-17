@@ -138,6 +138,7 @@ export default function cordovaScrollablePaneTopPadding (pageEnumerationOverride
     } else if (isIPhone6p1in()) {  // XR, iPhone 11, iPhone 13 and 13 Pro
       cordovaOffsetLog(`cordovaScrollablePaneTopPadding: isIPhone6p1in, page: ${page}`);
       switch (page) {
+        case CordovaPageConstants.about:                 return '12px';
         case CordovaPageConstants.ballotLgHdrWild:       return showBallotDecisionsTabs() ? '58px' : '41px';
         case CordovaPageConstants.ballotSmHdrWild:       return '148px';
         case CordovaPageConstants.ballotVote:            return isSignedIn ? '163px' : '165px';
@@ -148,6 +149,7 @@ export default function cordovaScrollablePaneTopPadding (pageEnumerationOverride
         case CordovaPageConstants.friendsSentRequest:    return '62px';
         case CordovaPageConstants.measureWild:           return '48px';
         case CordovaPageConstants.moreAbout:             return '22px';
+        case CordovaPageConstants.moreCredits:           return '22px';
         case CordovaPageConstants.moreElections:         return '68px';
         case CordovaPageConstants.moreFaq:               return '74px';
         case CordovaPageConstants.moreTerms:             return '85px';
@@ -446,8 +448,12 @@ export default function cordovaScrollablePaneTopPadding (pageEnumerationOverride
   // WebApp desktop mode
   cordovaOffsetLog(`cordovaScrollablePaneTopPadding: WebApp desktop, page: ${page}`);
   switch (page) {
-    case CordovaPageConstants.measureWild:           return '105px';
+    case CordovaPageConstants.ballotSmHdrWild:       return '30px';
+    case CordovaPageConstants.friends:               return '102px';
+    case CordovaPageConstants.measureWild:           return '102px';
+    case CordovaPageConstants.officeWild:            return '102px';
     case CordovaPageConstants.welcomeWild:           return 0;
+    case CordovaPageConstants.twitterHandleLanding:  return '102px';
     default:                                         return '60px';
   }
 }

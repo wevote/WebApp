@@ -4,9 +4,8 @@ import CordovaPageConstants from '../constants/CordovaPageConstants';
 import AppObservableStore from '../stores/AppObservableStore';
 import { normalizedHrefPage } from './applicationUtils';
 import { cordovaBallotFilterTopMargin, cordovaDualHeaderContainerPadding } from './cordovaOffsets';
-
 import cordovaScrollablePaneTopPadding from './cordovaScrollablePaneTopPadding';
-import { isCordova, isIPad, isIPhone5p5inMini, isWebApp } from './cordovaUtils';
+import { isIPad, isIPhone5p5inMini, isIPhone6p1in, isWebApp } from './cordovaUtils';
 import { pageEnumeration } from './cordovaUtilsPageEnumeration';
 import isMobileScreenSize from './isMobileScreenSize';
 
@@ -35,7 +34,10 @@ export const IOSNoNotchSpacer = styled.div`
 
 export const PageContentContainer = styled.div`
   padding-top: ${() => cordovaScrollablePaneTopPadding()};
-  padding-bottom ${() => ((isCordova()) ? '625px' : null)};
+  padding-bottom ${() => {
+    if (isWebApp()) return null;
+    return isIPhone6p1in() ? '800px' : '625px';
+  }};
   position: relative;
   max-width: 960px;
   z-index: 0;
@@ -173,8 +175,15 @@ export const TopRowTwoRightContainer = styled.div`
   justify-content: space-between;
   cursor: pointer;
   padding-right: ${() => ((isMobileScreenSize()) ? '15px' : '')};  //grid-row-start: 2;
-  //grid-row-end: 3;
-  //grid-column: 2 / 3;
+  ${() => {
+    if (isWebApp() && !isMobileScreenSize()) {
+      return {
+        gridRow: '2 / 2',
+        gridColumn: '3 /3',
+      };
+    }
+    return {};
+  }};
 `;
 
 export const AppBarForBackTo = styled(AppBar)`
@@ -185,22 +194,20 @@ export const AppBarForBackTo = styled(AppBar)`
   display: flex;
   justify-content: center;
   padding-top: ${() => {
-    if (isIPhone5p5inMini() &&
-      [CordovaPageConstants.candidateWild,
-        CordovaPageConstants.officeWild,
-        CordovaPageConstants.settingsProfile,
-        CordovaPageConstants.settingsAccount,
-        CordovaPageConstants.settingsNotifications,
-        CordovaPageConstants.settingsSubscription,
-        CordovaPageConstants.settingsWild,
-        CordovaPageConstants.measureWild,
-        CordovaPageConstants.valuesList].includes(pageEnumeration())) {
-      // IMPORTANT: This is a last chance way to adjust the height, to be used only if cordovaScrollablePaneTopPadding can't do it!
-      return '39px';
-    } else {
-      return '';
-      // return '34px';  (WebApp to 0 on 10/4/21)
+    // IMPORTANT: This is a last chance way to adjust the height, to be used only if cordovaScrollablePaneTopPadding can't do it!
+    if ([CordovaPageConstants.candidateWild,
+      CordovaPageConstants.officeWild,
+      CordovaPageConstants.settingsProfile,
+      CordovaPageConstants.settingsAccount,
+      CordovaPageConstants.settingsNotifications,
+      CordovaPageConstants.settingsSubscription,
+      CordovaPageConstants.settingsWild,
+      CordovaPageConstants.measureWild,
+      CordovaPageConstants.valuesList].includes(pageEnumeration())) {
+      if (isIPhone5p5inMini()) return '39px';
+      if (isIPhone6p1in()) return '32px';
     }
+    return '';
   }};
   ${() => {
     if (AppObservableStore.getScrolledDown() && ![CordovaPageConstants.candidateWild,

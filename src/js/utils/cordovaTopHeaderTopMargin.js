@@ -88,6 +88,7 @@ export default function cordovaTopHeaderTopMargin () {
           case CordovaPageConstants.friendsCurrent:        style.marginTop = '34px'; break;
           case CordovaPageConstants.friendsSentRequest:    style.marginTop = '34px'; break;
           case CordovaPageConstants.measureWild:           style.marginTop = '40px'; break;
+          case CordovaPageConstants.moreElections:         style.marginTop = '34px'; break;
           case CordovaPageConstants.moreFaq:               style.marginTop = '35px'; break;
           case CordovaPageConstants.moreTerms:             style.marginTop = '34px'; break;
           case CordovaPageConstants.news:                  style.marginTop = '34px'; break;
