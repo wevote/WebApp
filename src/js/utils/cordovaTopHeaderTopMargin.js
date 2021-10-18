@@ -28,6 +28,23 @@ export default function cordovaTopHeaderTopMargin () {
     if (isIOS()) {
       if (isIPhone5p5inEarly() || isIPhone4p7in()) {
         switch (page) {
+          case CordovaPageConstants.ballotLgHdrWild:       style.marginTop = '19px'; break;
+          case CordovaPageConstants.ballotSmHdrWild:       style.marginTop = '19px'; break;
+          case CordovaPageConstants.ballotVote:            style.marginTop = '19px'; break;
+          case CordovaPageConstants.friends:               style.marginTop = '20px'; break;
+          case CordovaPageConstants.friendsCurrent:        style.marginTop = '20px'; break;
+          case CordovaPageConstants.friendsSentRequest:    style.marginTop = '20px'; break;
+          case CordovaPageConstants.measureWild:           style.marginTop = '22px'; break;
+          case CordovaPageConstants.officeWild:            style.marginTop = '16px'; break;
+          case CordovaPageConstants.settingsWild:          style.marginTop = '22px'; break;
+          case CordovaPageConstants.twitterIdMFollowers:   style.marginTop = '37px'; break; // /*/m/friends, /*/m/following, /*/m/followers
+          case CordovaPageConstants.valueWild:             style.marginTop = '22px'; break;
+          case CordovaPageConstants.values:                style.marginTop = '19px'; break;
+          case CordovaPageConstants.voterGuideCreatorWild: style.marginTop = '38px'; break; // $headroom-wrapper-webapp__voter-guide-creator
+          default:                                         style.marginTop = '19px'; break;
+        }
+      } else if (isIPhone5p5inEarly()) {
+        switch (page) {
           case CordovaPageConstants.officeWild:      style.marginTop = '16px'; break;
           case CordovaPageConstants.measureWild:     style.marginTop = '22px'; break;
           case CordovaPageConstants.values:          style.marginTop = '19px'; break;

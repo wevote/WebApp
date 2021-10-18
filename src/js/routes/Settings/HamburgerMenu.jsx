@@ -47,6 +47,7 @@ export default class HamburgerMenu extends Component {
     // console.log("SignIn componentDidMount");
     this.onVoterStoreChange();
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
+    window.scrollTo(0, 0);
   }
 
   componentWillUnmount () {

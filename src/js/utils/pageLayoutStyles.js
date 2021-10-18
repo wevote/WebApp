@@ -5,7 +5,7 @@ import AppObservableStore from '../stores/AppObservableStore';
 import { normalizedHrefPage } from './applicationUtils';
 import { cordovaBallotFilterTopMargin, cordovaDualHeaderContainerPadding } from './cordovaOffsets';
 import cordovaScrollablePaneTopPadding from './cordovaScrollablePaneTopPadding';
-import { isIPad, isIPhone5p5inMini, isIPhone6p1in, isWebApp } from './cordovaUtils';
+import { isIPad, isIPhone4p7in, isIPhone5p5inEarly, isIPhone5p5inMini, isIPhone6p1in, isIPhone6p5in, isWebApp } from './cordovaUtils';
 import { pageEnumeration } from './cordovaUtilsPageEnumeration';
 import isMobileScreenSize from './isMobileScreenSize';
 
@@ -21,11 +21,13 @@ export const IOSNotchedSpacer = styled.div`
 `;
 
 export const IOSNoNotchSpacer = styled.div`
-  //             // iPhoneSpacer = <div className="ios-no-notch-spacer" style={{ height: \`${isIPad() ? '26px' : 'undefined'}\` }} />;
-  height: ${() => ((isIPad()) ? '26px' : '22')};
+  height: ${() => {
+    if (isIPad())                                   return '26px';
+    if (isIPhone4p7in() || isIPhone5p5inEarly())    return '22px';
+    return                                                 '36px';
+  }};
   top: 0;
   position: fixed;
-  height: ${() => ((isIPhone5p5inMini()) ? '41px' : '36px')};
   background: #2e3c5d;
   width: 100%;
   opacity: 1;
@@ -36,7 +38,7 @@ export const PageContentContainer = styled.div`
   padding-top: ${() => cordovaScrollablePaneTopPadding()};
   padding-bottom ${() => {
     if (isWebApp()) return null;
-    return isIPhone6p1in() ? '800px' : '625px';
+    return isIPhone6p1in() || isIPhone4p7in() || isIPhone5p5inEarly() ? '800px' : '625px';
   }};
   position: relative;
   max-width: 960px;
@@ -204,13 +206,16 @@ export const AppBarForBackTo = styled(AppBar)`
       CordovaPageConstants.settingsWild,
       CordovaPageConstants.measureWild,
       CordovaPageConstants.valuesList].includes(pageEnumeration())) {
-      if (isIPhone5p5inMini()) return '39px';
-      if (isIPhone6p1in()) return '32px';
+      if (isIPhone4p7in())      return '20px';
+      if (isIPhone5p5inEarly()) return '20px';
+      if (isIPhone5p5inMini())  return '39px';
+      if (isIPhone6p1in())      return '32px';
+      if (isIPhone6p5in())      return '34px';
     }
-    return '';
+    return '0px';
   }};
   ${() => {
-    if (AppObservableStore.getScrolledDown() && ![CordovaPageConstants.candidateWild,
+    if (AppObservableStore.getScrolledDown() && ![
       CordovaPageConstants.officeWild,
       CordovaPageConstants.measureWild,
       CordovaPageConstants.valuesList].includes(pageEnumeration())) {

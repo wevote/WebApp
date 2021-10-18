@@ -574,7 +574,11 @@ export function getCordovaScreenHeight () {
 
 export function prepareForCordovaKeyboard (callerString) {
   if (callerString && isCordova() && !isIOSAppOnMac()) {
-    const fileName = callerString.substr(callerString.lastIndexOf('/') + 1);
+    let fileName = '';
+    try {
+      fileName = callerString.substr(callerString.lastIndexOf('/') + 1);
+      // eslint-disable-next-line no-empty
+    } catch (e) {}
     console.log(`prepareForCordovaKeyboard ^^^^^^^^^^ ${fileName}`);
     cordovaOffsetLog(`prepareForCordovaKeyboard ^^^^^^^^^^ ${fileName}`);
     $('#app').removeClass('app-wrapper').addClass('app-wrapper__cordova');

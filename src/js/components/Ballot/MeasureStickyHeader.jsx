@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import styled, { keyframes } from 'styled-components';
 import MeasureStore from '../../stores/MeasureStore';
 import { cordovaStickyHeaderPaddingTop } from '../../utils/cordovaOffsets';
-import { isIOSAppOnMac, isIPad } from '../../utils/cordovaUtils';
+import { isCordova, isIOSAppOnMac, isIPad } from '../../utils/cordovaUtils';
 
 const ReadMore = React.lazy(() => import(/* webpackChunkName: 'ReadMore' */ '../Widgets/ReadMore'));
 const BallotItemSupportOpposeComment = React.lazy(() => import(/* webpackChunkName: 'BallotItemSupportOpposeComment' */ '../Widgets/BallotItemSupportOpposeComment'));
@@ -126,13 +126,13 @@ const ColumnTwo = styled.div`
 `;
 
 const Title = styled.h1`
-  font-size: 18px;
+  font-size: ${() => (isCordova() ? '16px' : '18px')};
   margin-bottom: 2px;
   margin-top: 8px;
-  font-weight: bold;
+  font-weight: ${() => (isCordova() ? '500' : 'bold')};
   @media (min-width: ${({ theme }) => theme.breakpoints.md}) {
     margin-top: 0;
-    font-size: 22px;
+    font-size: ${() => (isCordova() ? '16px' : '22px')};
   }
 `;
 

@@ -69,6 +69,7 @@ class ReadyInformationDisclaimer extends React.Component {
                   backgroundColor: 'rgb(46, 60, 93)',
                   fontSize: '.75rem',
                   lineHeight: 1,
+                  color: 'white',
                 }}
               >
                 Where We Vote gets its data

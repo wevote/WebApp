@@ -281,7 +281,7 @@ export function cordovaVoteMiniHeader () {
 export function cordovaStickyHeaderPaddingTop () {
   if (isIOS()) {
     if (isIPhone5p5inEarly()) {
-      return '71px';
+      return '68px';
     } else if (isIPhone5p5inMini()) {
       return '83px';
     } else if (isIPhone4p7in()) {
@@ -343,13 +343,15 @@ export function cordovaSignInModalTopPosition (collapsed) {
 }
 
 export function shareBottomOffset (pinToBottom) {
-  if (pinToBottom) return 'opx';
+  if (pinToBottom) return '0px';
 
   const { showFooterBar } = getApplicationViewBooleans(normalizedHref());
 
   if (isIOS()) {
     if (hasIPhoneNotch()) {
       return showFooterBar ? '66px' : '18px';
+    } else if (isIPhone4p7in() || isIPhone5p5inEarly()) {
+      return showFooterBar ? '56px' : '0px';
     }
   } else if (isAndroid()) {
     return showFooterBar ? '57px' : '18px';
@@ -442,13 +444,16 @@ export function cordovaDualHeaderContainerPadding () {
 }
 
 export function welcomeAppBarPaddingTop () {
-  if (isIPhone5p5inMini()) {
-    const page = pageEnumeration();
-    switch (page) {
-      case CordovaPageConstants.about:                 return '19px';
-      case CordovaPageConstants.moreCredits:           return '19px';
-      default:                                         return '0px';
-    }
+  const page = pageEnumeration();
+  switch (page) {
+    case CordovaPageConstants.about:
+      if (isIPhone5p5inMini())  return '19px';
+      if (isIPhone6p5in())      return '12px';
+      return '0';
+    case CordovaPageConstants.moreCredits:
+      if (isIPhone5p5inMini())  return '19px';
+      if (isIPhone6p5in())      return '12px';
+      return '0';
+    default:                    return '0';
   }
-  return '';
 }

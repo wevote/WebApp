@@ -158,19 +158,16 @@ const Avatar = styled.img`
 
 const Flex = styled.div`
   display: flex;
-  jusitify-content: space-evenly;
+  justify-content: space-evenly;
   position: relative;
-  top: 0px;
+  top: 0;
 `;
 
-// margin-top: 8px;
-// padding-top: 8px;
 const BallotCommentContainer = styled.div`
-  margin-top: 0px;
-  margin-bottom: 0px;
-  padding-top: 0px;
-  padding-bottom: 0px;
-  width: fit-content;
+  margin-top: 0;
+  margin-bottom: 0;
+  padding-top: 0;
+  padding-bottom: 0;
   width: 100%;
   @media (max-width : ${({ theme }) => theme.breakpoints.sm}) {
   }
