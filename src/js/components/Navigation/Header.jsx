@@ -49,7 +49,6 @@ export default class Header extends Component {
   componentDidMount () {
     // console.log('-----------HEADER componentDidMount');
     this.appStateSubscription = messageService.getMessage().subscribe((msg) => this.onAppObservableStoreChange(msg));
-    this.setState({ windowWidth: window.innerWidth });
     window.addEventListener('resize', this.handleResize);
     if (isIOSAppOnMac() && appleSiliconDebug) {
       dumpCssFromId('header-container');
@@ -107,7 +106,6 @@ export default class Header extends Component {
     if (currentTarget.innerWidth !== target.innerWidth) {
       // console.log('-----------HEADER handleResize RESIZE');
       // console.log('handleResize in Header detected resizing');
-      this.setState({ windowWidth: window.innerWidth });
     }
   }
 
@@ -179,8 +177,8 @@ export default class Header extends Component {
       showHowItWorksModal, showVoterPlanModal, showOrganizationModal, showSharedItemModal,
     } = this.state;
     const {
-      friendsMode, settingsMode, valuesMode, voterGuideCreatorMode, voterGuideMode,
-      showBackToFriends, showBackToBallotHeader, showBackToSettingsDesktop,
+      settingsMode, valuesMode, voterGuideCreatorMode, voterGuideMode,
+      showBackToBallotHeader, showBackToSettingsDesktop,
       showBackToSettingsMobile, showBackToValues, showBackToVoterGuide, showBackToVoterGuides,
     } = getApplicationViewBooleans(pathname);
     const voter = VoterStore.getVoter();
@@ -390,8 +388,7 @@ export default class Header extends Component {
           )}
         </div>
       );
-    } else if (
-      typeof pathname !== 'undefined' && pathname &&
+    } else if (typeof pathname !== 'undefined' && pathname &&
       (pathname === '/for-campaigns' ||
       pathname === '/for-organizations' ||
       pathname.startsWith('/how') ||
