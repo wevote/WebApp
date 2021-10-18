@@ -390,52 +390,6 @@ export default class Header extends Component {
           )}
         </div>
       );
-    } else if (friendsMode && this.state.windowWidth >= 769) {
-      const backToFriendsLink = '/friends';
-      const backToFriendsLinkText = 'Back';
-
-      return (
-        <div id="app-header">
-          <IPhoneSpacer />
-          <HeadroomWrapper>
-            {/* <div className={isWebApp ? 'headroom-wrapper-webapp__default' : ''} id="headroom-wrapper"> */}
-            <div className={pageHeaderClasses} style={cordovaTopHeaderTopMargin()} id="header-container">
-              { showBackToFriends ?
-                <HeaderBackTo backToLink={backToFriendsLink} backToLinkText={backToFriendsLinkText} /> :
-                <HeaderBar />}
-            </div>
-          </HeadroomWrapper>
-          {showHowItWorksModal && (
-            <HowItWorksModal
-              show={showHowItWorksModal}
-              toggleFunction={this.closeHowItWorksModal}
-            />
-          )}
-          {showVoterPlanModal && (
-            <VoterPlanModal
-              show={showVoterPlanModal}
-              toggleFunction={this.closeVoterPlanModal}
-            />
-          )}
-          {showOrganizationModal && (
-            <OrganizationModal
-              isSignedIn={voter.is_signed_in}
-              show={showOrganizationModal}
-              ballotItemWeVoteId={this.state.organizationModalBallotItemWeVoteId}
-              modalOpen={showOrganizationModal}
-              toggleFunction={this.closeOrganizationModal}
-              params={params}
-            />
-          )}
-          {showSharedItemModal && (
-            <SharedItemModal
-              sharedItemCode={sharedItemCode}
-              show
-              closeSharedItemModal={this.closeSharedItemModal}
-            />
-          )}
-        </div>
-      );
     } else if (
       typeof pathname !== 'undefined' && pathname &&
       (pathname === '/for-campaigns' ||

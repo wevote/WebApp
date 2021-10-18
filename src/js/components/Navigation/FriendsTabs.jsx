@@ -97,6 +97,9 @@ class FriendsTabs extends Component {
     const { currentFriendList, defaultTabItem, friendInvitationsSentByMe, friendInvitationsSentToMe, suggestedFriendList } = this.state;
     // console.log('getSelectedTab tabItem:', tabItem, ', defaultTabItem:', defaultTabItem);
     let selectedTab = tabItem || defaultTabItem;
+
+    if (selectedTab === 'request') selectedTab = 'sent-requests';   /// Hack Oct 17, 2021
+
     // Don't return a selected tab if the tab isn't available
     if (String(selectedTab) === 'requests') {
       if (friendInvitationsSentToMe.length < 1) {

@@ -620,7 +620,7 @@ class HeaderBar extends Component {
     //   appBarCname += ' page-header__cordova';
     // }
 
-    const isFriends = normalizedHrefPage() === 'friends';
+    const isFriends = normalizedHrefPage() === 'friends';  // The URL '/friends/request' yields 'friends'
 
     return (
       <HeaderBarWrapper
