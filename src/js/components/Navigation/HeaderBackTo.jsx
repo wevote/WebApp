@@ -11,12 +11,12 @@ import LazyImage from '../../common/components/LazyImage';
 import AppObservableStore, { messageService } from '../../stores/AppObservableStore';
 import VoterStore from '../../stores/VoterStore';
 import { dumpCssFromId } from '../../utils/appleSiliconUtils';
-import { normalizedHref } from '../../utils/applicationUtils';
+import { avatarGeneric, normalizedHref } from '../../utils/applicationUtils';
 import { historyPush, isCordova, isIOSAppOnMac, isIPad, isWebApp } from '../../utils/cordovaUtils';
 import { renderLog } from '../../utils/logging';
+import { AppBarForBackTo, TopRowOneRightContainer } from '../../utils/pageLayoutStyles';
 import { shortenText, stringContains } from '../../utils/textFormat';
 import { voterPhoto } from '../../utils/voterPhoto';
-import { AppBarForBackTo, TopRowOneRightContainer } from '../../utils/pageLayoutStyles';
 import SignInButton from '../Widgets/SignInButton';
 import HeaderBackToButton from './HeaderBackToButton';
 
@@ -24,7 +24,6 @@ const HeaderBarProfilePopUp = React.lazy(() => import(/* webpackChunkName: 'Head
 const HeaderNotificationMenu = React.lazy(() => import(/* webpackChunkName: 'HeaderNotificationMenu' */ './HeaderNotificationMenu'));
 const SignInModal = React.lazy(() => import(/* webpackChunkName: 'SignInModal' */ '../Widgets/SignInModal'));
 
-const anonymous = '../../../img/global/icons/avatar-generic.png';
 const appleSiliconDebug = false;
 
 
@@ -241,10 +240,8 @@ class HeaderBackTo extends Component {
     return (
       <AppBarForBackTo
         id="headerBackToAppBar"
-        // className={headerClassName}
         color="default"
         style={cordovaOverrides}
-        // classes={{ root: classes.stackedReturnAndShare }}
         elevation={0}
       >
         <Toolbar className="header-toolbar header-backto-toolbar" disableGutters>
@@ -273,7 +270,7 @@ class HeaderBackTo extends Component {
                       <LazyImage
                         className="header-nav__avatar"
                         src={voterPhotoUrlMedium}
-                        placeholder={anonymous}
+                        placeholder={avatarGeneric()}
                         height={34}
                         width={34}
                         alt="Your Settings"

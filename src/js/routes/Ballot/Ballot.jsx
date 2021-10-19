@@ -15,7 +15,6 @@ import VoterActions from '../../actions/VoterActions';
 import AddressBox from '../../components/AddressBox';
 import BallotItemCompressed from '../../components/Ballot/BallotItemCompressed';
 import BallotStatusMessage from '../../components/Ballot/BallotStatusMessage';
-// import CompleteYourProfile from '../../components/CompleteYourProfile/CompleteYourProfile';
 import AddFriendsByEmail from '../../components/Friends/AddFriendsByEmail';
 import SuggestedFriendsPreview from '../../components/Friends/SuggestedFriendsPreview';
 import LoadingWheelComp from '../../components/LoadingWheelComp';
@@ -36,7 +35,7 @@ import VoterStore from '../../stores/VoterStore';
 import apiCalming from '../../utils/apiCalming';
 import { dumpCssFromId } from '../../utils/appleSiliconUtils';
 import cookies from '../../utils/cookies';
-import { chipLabelText, historyPush, isCordova, isIOSAppOnMac, isIPadGiantSize, isWebApp } from '../../utils/cordovaUtils';
+import { chipLabelText, historyPush, isCordova, isIOSAppOnMac, isIPadGiantSize, isIPhone6p1in, isWebApp } from '../../utils/cordovaUtils';
 import isMobile from '../../utils/isMobile';
 import isMobileScreenSize from '../../utils/isMobileScreenSize';
 import lazyPreloadPages from '../../utils/lazyPreloadPages';
@@ -1228,7 +1227,7 @@ class Ballot extends Component {
                       <BallotTitleHeader
                         electionName={electionName}
                         electionDayTextObject={electionDayTextObject}
-                        toggleSelectBallotModal={() => this.toggleSelectBallotModal('', false, false)}
+                        toggleSelectBallotModal={this.toggleSelectBallotModal}
                         scrolled={this.state.ballotHeaderUnpinned}
                       />
                     </header>
@@ -1549,6 +1548,7 @@ const BallotLoadingWrapper = styled.div`
   font-size: 20px;
   padding-top: 20px;
   text-align: center;
+  margin-bottom: ${() => (isIPhone6p1in() ? '800px' : '625px')};
 `;
 
 // If we want to turn off filter tabs navigation bar:  ${({ showFilterTabs }) => !showFilterTabs && 'height: 0;'}

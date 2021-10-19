@@ -368,6 +368,10 @@ export function isIOsSmallerThanPlus () {
   return isIPhone3p5in() || isIPhone4in() || isIPhone4p7in();
 }
 
+export function isIPhoneMiniOrSmaller () {
+  return isIPhone3p5in() || isIPhone4in() || isIPhone4p7in() || isIPhone5p5inMini() || isIPhone5p5inEarly();
+}
+
 export function getAndroidSize () {
   if (androidSizeString !== undefined) {
     return androidSizeString;
@@ -570,7 +574,11 @@ export function getCordovaScreenHeight () {
 
 export function prepareForCordovaKeyboard (callerString) {
   if (callerString && isCordova() && !isIOSAppOnMac()) {
-    const fileName = callerString.substr(callerString.lastIndexOf('/') + 1);
+    let fileName = '';
+    try {
+      fileName = callerString.substr(callerString.lastIndexOf('/') + 1);
+      // eslint-disable-next-line no-empty
+    } catch (e) {}
     console.log(`prepareForCordovaKeyboard ^^^^^^^^^^ ${fileName}`);
     cordovaOffsetLog(`prepareForCordovaKeyboard ^^^^^^^^^^ ${fileName}`);
     $('#app').removeClass('app-wrapper').addClass('app-wrapper__cordova');

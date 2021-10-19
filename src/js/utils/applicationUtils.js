@@ -1,5 +1,5 @@
 import cookies from './cookies';
-import { isCordova, isIOSAppOnMac, isWebApp } from './cordovaUtils';
+import { cordovaDot, isCordova, isIOSAppOnMac, isWebApp } from './cordovaUtils';
 import { stringContains } from './textFormat';
 
 // We have to do all this, because we allow urls where the path starts with a twitter username (handle)
@@ -163,23 +163,26 @@ export function getApplicationViewBooleans (pathname) {
     showFooterBar = isCordova();
   // ///////// EXCLUDE: The following are URLS we want to specifically exclude (because otherwise they will be picked up in a broader pattern in the next branch
   } else if (stringContains('/b/btdb', pathnameLowerCase) ||
-      stringContains('/b/btdo', pathnameLowerCase) ||
-      stringContains('/btcand/', pathnameLowerCase) ||
+      (pathnameLowerCase === '/about') ||
       (pathnameLowerCase === '/for-campaigns') ||
       (pathnameLowerCase === '/for-organizations') ||
-      pathnameLowerCase.startsWith('/how') ||
       (pathnameLowerCase === '/more/about') ||
       (pathnameLowerCase === '/more/credits') ||
-      pathnameLowerCase.startsWith('/more/donate') ||
       (pathnameLowerCase === '/more/myballot') ||
-      pathnameLowerCase.startsWith('/more/pricing') ||
-      (pathnameLowerCase === '/welcome') ||
-      pathnameLowerCase.startsWith('/value/') ||
       (pathnameLowerCase === '/values/list') ||
-      stringContains('/settings/positions', pathnameLowerCase) ||
+      (pathnameLowerCase === '/welcome') ||
+      pathnameLowerCase.startsWith('/how') ||
+      pathnameLowerCase.startsWith('/more/donate') ||
+      pathnameLowerCase.startsWith('/more/pricing') ||
+      pathnameLowerCase.startsWith('/register') ||
       pathnameLowerCase.startsWith('/settings/voterguidelist') ||
       pathnameLowerCase.startsWith('/settings/voterguidesmenu') ||
-      pathnameLowerCase.startsWith('/register')) {
+      pathnameLowerCase.startsWith('/twitter_sign_in') ||
+      pathnameLowerCase.startsWith('/wevoteintro/') ||
+      pathnameLowerCase.startsWith('/value/') ||
+      stringContains('/b/btdo', pathnameLowerCase) ||
+      stringContains('/btcand/', pathnameLowerCase) ||
+      stringContains('/settings/positions', pathnameLowerCase)) {
     // We want to HIDE the footer bar on the above path patterns
     showFooterBar = false;
     showFooterMain = false;
@@ -334,4 +337,8 @@ export function normalizedHrefPage () {
 
 export function displayTopMenuShadow () {  //
   return !['ballot'].includes(normalizedHrefPage());
+}
+
+export function avatarGeneric () {
+  return cordovaDot('../../img/global/icons/avatar-generic.png');
 }

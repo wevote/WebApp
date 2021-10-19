@@ -101,16 +101,20 @@ class Footer extends Component {
     return (
       <Wrapper>
         {(showFooterMain) && (
-          <Suspense fallback={<span>&nbsp;</span>}>
-            <DelayedLoad waitBeforeShow={4000}>
-              <FooterMain />
-            </DelayedLoad>
-          </Suspense>
+          <>
+            <Suspense fallback={<span>&nbsp;</span>}>
+              <DelayedLoad waitBeforeShow={4000}>
+                <FooterMain />
+              </DelayedLoad>
+            </Suspense>
+          </>
         )}
         {showShareButtonFooter && (
-          <Suspense fallback={<span>&nbsp;</span>}>
-            <ShareButtonFooter />
-          </Suspense>
+          <>
+            <Suspense fallback={<span>&nbsp;</span>}>
+              <ShareButtonFooter />
+            </Suspense>
+          </>
         )}
         {showFooterBar && (
           <div className={isWebApp() ? 'footroom-wrapper' : 'footroom-wrapper-cordova'}>

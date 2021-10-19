@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import TwitterActions from '../../actions/TwitterActions';
 import VoterActions from '../../actions/VoterActions';
 import LoadingWheel from '../../components/LoadingWheel';
+import IPhoneSpacer from '../../components/Widgets/IPhoneSpacer';
 import AppObservableStore, { messageService } from '../../stores/AppObservableStore';
 import TwitterStore from '../../stores/TwitterStore';
 import VoterStore from '../../stores/VoterStore';
@@ -171,6 +172,7 @@ export default class TwitterSignInProcess extends Component {
     if (window.$ === undefined) {
       return (
         <div className="twitter_sign_in_root">
+          <IPhoneSpacer />
           <PageContentContainer>
             <LoadingDiv>
               <span>
@@ -189,6 +191,7 @@ export default class TwitterSignInProcess extends Component {
       oAuthLog('STOPPED, missing twitter_retrieve_attempted: twitterAuthResponse:', twitterAuthResponse);
       return (
         <div className="twitter_sign_in_root">
+          <IPhoneSpacer />
           <PageContentContainer>
             <LoadingDiv>
               <span>
@@ -247,6 +250,7 @@ export default class TwitterSignInProcess extends Component {
       }
       return (
         <div className="twitter_sign_in_root">
+          <IPhoneSpacer />
           <PageContentContainer>
             <LoadingDiv>
               <span>
@@ -267,6 +271,10 @@ export default class TwitterSignInProcess extends Component {
 
 const LoadingDiv = styled.div`
   font-size: 18px;
-  padding-top: 50px;
+  margin-top: 50px;
   text-align: center;
+  padding: 10px;
+  background-color: white;
+  border: 1px solid #333;
+  box-shadow: 0 2px 4px -1px rgba(0,0,0,0.2), 0px 4px 5px 0px rgba(0,0,0,0.14), 0px 1px 10px 0px rgba(0,0,0,0.12);
 `;

@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import styled, { keyframes } from 'styled-components';
 import MeasureStore from '../../stores/MeasureStore';
 import { cordovaStickyHeaderPaddingTop } from '../../utils/cordovaOffsets';
-import { isIOSAppOnMac, isIPad } from '../../utils/cordovaUtils';
+import { isCordova, isIOSAppOnMac, isIPad } from '../../utils/cordovaUtils';
 
 const ReadMore = React.lazy(() => import(/* webpackChunkName: 'ReadMore' */ '../Widgets/ReadMore'));
 const BallotItemSupportOpposeComment = React.lazy(() => import(/* webpackChunkName: 'BallotItemSupportOpposeComment' */ '../Widgets/BallotItemSupportOpposeComment'));
@@ -39,7 +39,7 @@ class MeasureStickyHeader extends Component {
     const { ballotItemDisplayName } = this.state;
     const ballotItemDisplay = ballotItemDisplayName ? ballotItemDisplayName.split(':') : [];
     return (
-      <Wrapper cordovaPaddingTop={cordovaStickyHeaderPaddingTop()} ipad={isIPad() || isIOSAppOnMac()}>
+      <Wrapper ipad={isIPad() || isIOSAppOnMac()}>
         <Container>
           <Flex>
             <ColumnOne>
@@ -90,11 +90,10 @@ const slideDown = keyframes`
 const Wrapper = styled.div`
   max-width: 100%;
   position: fixed;
-  //padding-top: ${({ cordovaPaddingTop }) => (cordovaPaddingTop || '48px')};
   padding-right: 16px;
   padding-bottom: 8px;
   padding-left: 16px;
-  top: 48px;
+  top: ${() => cordovaStickyHeaderPaddingTop()};
   left: 0;
   background: white;
   z-index: 2;
@@ -127,13 +126,13 @@ const ColumnTwo = styled.div`
 `;
 
 const Title = styled.h1`
-  font-size: 18px;
+  font-size: ${() => (isCordova() ? '16px' : '18px')};
   margin-bottom: 2px;
   margin-top: 8px;
-  font-weight: bold;
+  font-weight: ${() => (isCordova() ? '500' : 'bold')};
   @media (min-width: ${({ theme }) => theme.breakpoints.md}) {
     margin-top: 0;
-    font-size: 22px;
+    font-size: ${() => (isCordova() ? '16px' : '22px')};
   }
 `;
 

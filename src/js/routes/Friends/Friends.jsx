@@ -1,4 +1,3 @@
-import { Tab, Tabs } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
@@ -27,7 +26,6 @@ import { cordovaFriendsWrapper } from '../../utils/cordovaOffsets';
 import { cordovaDot, historyPush } from '../../utils/cordovaUtils';
 import displayFriendsTabs from '../../utils/displayFriendsTabs';
 import sortFriendListByMutualFriends from '../../utils/friendFunctions';
-import isMobileScreenSize from '../../utils/isMobileScreenSize';
 import { renderLog } from '../../utils/logging';
 import { PageContentContainer } from '../../utils/pageLayoutStyles';
 import FriendInvitationsSentByMe from './FriendInvitationsSentByMe';
@@ -102,12 +100,6 @@ class Friends extends Component {
     this.resetDefaultTabForMobile(friendInvitationsSentToMe, suggestedFriendList, friendInvitationsSentByMe);
     ActivityActions.activityNoticeListRetrieve();
     AnalyticsActions.saveActionNetwork(VoterStore.electionId());
-  }
-
-  componentDidUpdate () {
-    // Sept 2021: Rather that rewriting this entire page, dynamically move the friends menu into the header RowTwo
-    const { $ } = window;
-    $('#friendsHorizontalMenu').appendTo('[class^="pageLayoutStyles__TopRowTwoLeftContainer"]');
   }
 
   componentWillUnmount () {
@@ -233,7 +225,7 @@ class Friends extends Component {
       currentFriendList, friendActivityExists, friendInvitationsSentByMe,
       friendInvitationsSentToMe, suggestedFriendList, voter, voterIsSignedIn,
     } = this.state;
-    const { classes, match: { params: { tabItem } } } = this.props;
+    const { /* classes, */ match: { params: { tabItem } } } = this.props;
 
     // console.log('friendsHeaderUnpinned', friendsHeaderUnpinned);
 
@@ -508,85 +500,17 @@ class Friends extends Component {
         );
     }
 
-    const tabsHTML = (
-      <Tabs
-        value={this.getSelectedTab()}
-        // onChange={handleChange}
-        indicatorColor="primary"
-        textColor="primary"
-        variant="scrollable"
-        scrollButtons="auto"
-        aria-label="scrollable auto tabs example"
-      >
-        {friendInvitationsSentToMe.length > 0 && (
-          <Tab
-            classes={{ root: classes.navigationTab }}
-            value="requests"
-            label="Requests"
-            onClick={() => {
-              this.handleNavigation('/friends/requests');
-            }}
-          />
-        )}
-        {suggestedFriendList.length > 0 && (
-          <Tab
-            classes={{ root: classes.navigationTab }}
-            value="suggested"
-            label="Suggested"
-            onClick={() => {
-              this.handleNavigation('/friends/suggested');
-            }}
-          />
-        )}
-        <Tab
-          classes={{ root: classes.navigationTab }}
-          value="invite"
-          label={isMobileScreenSize() ? 'Invite' : 'Invite Friends'}
-          onClick={() => {
-            this.handleNavigation('/friends/invite');
-          }}
-        />
-        {currentFriendList.length > 0 && (
-          <Tab
-            classes={{ root: classes.navigationTab }}
-            value="current"
-            label="Friends"
-            onClick={() => {
-              this.handleNavigation('/friends/current');
-            }}
-          />
-        )}
-        {friendInvitationsSentByMe.length > 0 && (
-          <Tab
-            classes={{ root: classes.navigationTab }}
-            value="sent-requests"
-            label="Requests Sent"
-            onClick={() => {
-              this.handleNavigation('/friends/sent-requests');
-            }}
-          />
-        )}
-      </Tabs>
-    );
 
     return (
       <PageContentContainer>
         {displayFriendsTabs() ? (
-          <>
-            <div className="container-fluid">
-              <div className="row" id="friendsHorizontalMenu">
-                <div className="col-md-12">
-                  <Helmet title="Friends - We Vote" />
-                  {tabsHTML}
-                </div>
-              </div>
-            </div>
-            <div className="container-fluid">
+          <div className="friends__heading friends__heading__cordova">
+            <div className="container-fluid debugStyleBottom">
               <div className="Friends__Wrapper" style={cordovaFriendsWrapper()}>
                 {mobileContentToDisplay}
               </div>
             </div>
-          </>
+          </div>
         ) : (
           <div className="container-fluid">
             <div className="container-main">
@@ -599,19 +523,13 @@ class Friends extends Component {
   }
 }
 Friends.propTypes = {
-  classes: PropTypes.object,
+  // classes: PropTypes.object,
   match: PropTypes.object,
 };
 
 const styles = () => ({
   tooltip: {
     display: 'inline !important',
-  },
-  navigationTab: {
-    minWidth: '0px !important',
-    width: 'fit-content !important',
-    height: '40px !important',
-    maxHeight: '40px !important',
   },
 });
 

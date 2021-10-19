@@ -1,6 +1,7 @@
 import keyMirror from 'keymirror';
 
 const CordovaPageConstants = {
+  about: null,
   ballotLgHdrWild: null,
   ballotSmHdrWild: null,
   ballotVote: null,
@@ -11,6 +12,8 @@ const CordovaPageConstants = {
   friendsSentRequest: null,
   measureWild: null,
   moreAbout: null,
+  moreCredits: null,
+  moreElections: null,
   moreFaq: null,
   moreTerms: null,
   moreTools: null,

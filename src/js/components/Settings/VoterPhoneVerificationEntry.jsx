@@ -69,10 +69,10 @@ class VoterPhoneVerificationEntry extends Component {
     const { secretCodeVerified } = secretCodeVerificationStatus;
     // console.log('onVoterStoreChange smsPhoneNumberStatus:', smsPhoneNumberStatus);
     const voter = VoterStore.getVoter();
-    const {
-      // is_signed_in: isSignedIn,
-      signed_in_with_sms_phone_number: signedInWithSmsPhoneNumber,
-    } = voter;
+    const { is_signed_in: isSignedIn, signed_in_with_sms_phone_number: signedInWithSmsPhoneNumber } = voter;
+    if (secretCodeVerified && !isSignedIn) {
+      VoterActions.voterRetrieve();
+    }
     // console.log(`VoterEmailAddressEntry onVoterStoreChange isSignedIn: ${isSignedIn}, signedInWithSmsPhoneNumber: ${signedInWithSmsPhoneNumber}`);
     if (secretCodeVerified) {
       this.setState({
