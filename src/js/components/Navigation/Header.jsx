@@ -7,10 +7,11 @@ import apiCalming from '../../utils/apiCalming';
 import { dumpCssFromId } from '../../utils/appleSiliconUtils';
 import { getApplicationViewBooleans, normalizedHref, weVoteBrandingOff } from '../../utils/applicationUtils';
 import cordovaTopHeaderTopMargin from '../../utils/cordovaTopHeaderTopMargin';
-import { hasIPhoneNotch, historyPush, isCordova, isIOS, isIOSAppOnMac, isIPad, isWebApp } from '../../utils/cordovaUtils';
+import { historyPush, isCordova, isIOSAppOnMac, isIPad, isWebApp } from '../../utils/cordovaUtils';
 import { renderLog } from '../../utils/logging';
-import { HeadroomWrapper, IOSNoNotchSpacer, IOSNotchedSpacer } from '../../utils/pageLayoutStyles';
+import { HeadroomWrapper } from '../../utils/pageLayoutStyles';
 import { stringContains } from '../../utils/textFormat';
+import IPhoneSpacer from '../Widgets/IPhoneSpacer';
 import HeaderBar from './HeaderBar';
 
 const ActivityTidbitDrawer = React.lazy(() => import(/* webpackChunkName: 'ActivityTidbitDrawer' */ '../Activity/ActivityTidbitDrawer'));
@@ -48,7 +49,6 @@ export default class Header extends Component {
   componentDidMount () {
     // console.log('-----------HEADER componentDidMount');
     this.appStateSubscription = messageService.getMessage().subscribe((msg) => this.onAppObservableStoreChange(msg));
-    this.setState({ windowWidth: window.innerWidth });
     window.addEventListener('resize', this.handleResize);
     if (isIOSAppOnMac() && appleSiliconDebug) {
       dumpCssFromId('header-container');
@@ -106,7 +106,6 @@ export default class Header extends Component {
     if (currentTarget.innerWidth !== target.innerWidth) {
       // console.log('-----------HEADER handleResize RESIZE');
       // console.log('handleResize in Header detected resizing');
-      this.setState({ windowWidth: window.innerWidth });
     }
   }
 
@@ -152,10 +151,13 @@ export default class Header extends Component {
 
   hideHeader () {
     const path = normalizedHref();
-    return path.startsWith('/welcome') ||
+    return (
+      path.startsWith('/about') ||
       path.startsWith('/for-campaigns') ||
       path.startsWith('/how/for-campaigns') ||
-      path.startsWith('/twitter_sign_in');
+      path.startsWith('/twitter_sign_in') ||
+      path.startsWith('/wevoteintro') ||
+      path.startsWith('/welcome'));
   }
 
 
@@ -175,17 +177,11 @@ export default class Header extends Component {
       showHowItWorksModal, showVoterPlanModal, showOrganizationModal, showSharedItemModal,
     } = this.state;
     const {
-      friendsMode, settingsMode, valuesMode, voterGuideCreatorMode, voterGuideMode,
-      showBackToFriends, showBackToBallotHeader, showBackToSettingsDesktop,
+      settingsMode, valuesMode, voterGuideCreatorMode, voterGuideMode,
+      showBackToBallotHeader, showBackToSettingsDesktop,
       showBackToSettingsMobile, showBackToValues, showBackToVoterGuide, showBackToVoterGuides,
     } = getApplicationViewBooleans(pathname);
     const voter = VoterStore.getVoter();
-    let iPhoneSpacer = '';
-    if (isCordova() && isIOS() && hasIPhoneNotch()) {
-      iPhoneSpacer = <IOSNotchedSpacer />;
-    } else if (isCordova() && isIOS() && !hasIPhoneNotch() && !isIOSAppOnMac()) {
-      iPhoneSpacer = <IOSNoNotchSpacer />;
-    }
 
     // console.log('organizationModalBallotItemWeVoteId: ', this.state.organizationModalBallotItemWeVoteId);
 
@@ -229,7 +225,7 @@ export default class Header extends Component {
       }
       return (
         <div id="app-header">
-          {iPhoneSpacer}
+          <IPhoneSpacer />
           <HeadroomWrapper>
             <div className={pageHeaderClasses} style={cordovaTopHeaderTopMargin()} id="header-container">
               {headerBarObject}
@@ -274,7 +270,7 @@ export default class Header extends Component {
 
       return (
         <div id="app-header">
-          { iPhoneSpacer }
+          <IPhoneSpacer />
           <HeadroomWrapper>
             <div className={pageHeaderClasses} style={cordovaTopHeaderTopMargin()} id="header-container">
               { showBackToSettingsDesktop && (
@@ -352,7 +348,7 @@ export default class Header extends Component {
 
       return (
         <div id="app-header">
-          { iPhoneSpacer }
+          <IPhoneSpacer />
           <HeadroomWrapper>
             {/* <div className={isWebApp ? 'headroom-wrapper-webapp__default' : ''} id="headroom-wrapper"> */}
             <div className={pageHeaderClasses} style={cordovaTopHeaderTopMargin()} id="header-container">
@@ -392,54 +388,7 @@ export default class Header extends Component {
           )}
         </div>
       );
-    } else if (friendsMode && this.state.windowWidth >= 769) {
-      const backToFriendsLink = '/friends';
-      const backToFriendsLinkText = 'Back';
-
-      return (
-        <div id="app-header">
-          { iPhoneSpacer }
-          <HeadroomWrapper>
-            {/* <div className={isWebApp ? 'headroom-wrapper-webapp__default' : ''} id="headroom-wrapper"> */}
-            <div className={pageHeaderClasses} style={cordovaTopHeaderTopMargin()} id="header-container">
-              { showBackToFriends ?
-                <HeaderBackTo backToLink={backToFriendsLink} backToLinkText={backToFriendsLinkText} /> :
-                <HeaderBar />}
-            </div>
-          </HeadroomWrapper>
-          {showHowItWorksModal && (
-            <HowItWorksModal
-              show={showHowItWorksModal}
-              toggleFunction={this.closeHowItWorksModal}
-            />
-          )}
-          {showVoterPlanModal && (
-            <VoterPlanModal
-              show={showVoterPlanModal}
-              toggleFunction={this.closeVoterPlanModal}
-            />
-          )}
-          {showOrganizationModal && (
-            <OrganizationModal
-              isSignedIn={voter.is_signed_in}
-              show={showOrganizationModal}
-              ballotItemWeVoteId={this.state.organizationModalBallotItemWeVoteId}
-              modalOpen={showOrganizationModal}
-              toggleFunction={this.closeOrganizationModal}
-              params={params}
-            />
-          )}
-          {showSharedItemModal && (
-            <SharedItemModal
-              sharedItemCode={sharedItemCode}
-              show
-              closeSharedItemModal={this.closeSharedItemModal}
-            />
-          )}
-        </div>
-      );
-    } else if (
-      typeof pathname !== 'undefined' && pathname &&
+    } else if (typeof pathname !== 'undefined' && pathname &&
       (pathname === '/for-campaigns' ||
       pathname === '/for-organizations' ||
       pathname.startsWith('/how') ||
@@ -454,7 +403,7 @@ export default class Header extends Component {
       // This handles other pages, like the Ballot display
       return (
         <div id="app-header">
-          { iPhoneSpacer }
+          <IPhoneSpacer />
           <HeadroomWrapper>
             <div className={pageHeaderClasses} style={cordovaTopHeaderTopMargin()} id="header-container">
               { showBackToBallotHeader ?

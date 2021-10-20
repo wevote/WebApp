@@ -9,7 +9,7 @@ import VoterActions from '../../actions/VoterActions';
 import BallotStore from '../../stores/BallotStore';
 import VoterStore from '../../stores/VoterStore';
 import cookies from '../../utils/cookies';
-import { historyPush, isWebApp, restoreStylesAfterCordovaKeyboard } from '../../utils/cordovaUtils';
+import { historyPush, isIPhoneMiniOrSmaller, isWebApp, restoreStylesAfterCordovaKeyboard } from '../../utils/cordovaUtils';
 import isMobile from '../../utils/isMobile';
 import { renderLog } from '../../utils/logging';
 import InfoCircleIcon from '../Widgets/InfoCircleIcon';
@@ -183,7 +183,6 @@ class EditAddressOneHorizontalRow extends Component {
     // console.log('EditAddressOneHorizontalrow render');
     const { classes } = this.props;
     const { showAddressExplanation, textForMapSearch, voterSavedAddress } = this.state;
-    const notMobile = !isMobile();
 
     if (voterSavedAddress) {
       return <span />;
@@ -212,7 +211,7 @@ class EditAddressOneHorizontalRow extends Component {
             </span>
             &nbsp;
           </AddressLabel>
-          <form onSubmit={this.voterAddressSaveSubmit} style={notMobile ? {} : { width: '100%' }}>
+          <SubmitFormWrapper onSubmit={this.voterAddressSaveSubmit}>
             <InternalFormWrapper>
               <Paper className={classes.paperInputForm} elevation={2} style={{ minWidth: 250 }}>
                 <EditLocation className="ion-input-icon" />
@@ -235,7 +234,7 @@ class EditAddressOneHorizontalRow extends Component {
                 <Button
                   classes={{ root: classes.saveButton }}
                   color="primary"
-                  fullWidth={notMobile}
+                  fullWidth={!isMobile()}
                   id="editAddressOneHorizontalRowSaveButton"
                   onClick={this.voterAddressSaveSubmit}
                   variant="contained"
@@ -253,7 +252,7 @@ class EditAddressOneHorizontalRow extends Component {
                 </Button>
               </ButtonWrapper>
             </InternalFormWrapper>
-          </form>
+          </SubmitFormWrapper>
         </InnerWrapper>
         <InnerWrapper>
           {showAddressExplanation ? (
@@ -308,12 +307,19 @@ const AddressExplanation = styled.div`
 const AddressLabel = styled.div`
   font-weight: 600;
   margin-right: 12px;
+  ${() => (isIPhoneMiniOrSmaller() ? { display: 'flex' } : {})}
 `;
 
 const AddressLabelMobile = styled.div`
   font-weight: 600;
   margin-bottom: 4px;
   text-align: center;
+  ${() => (isIPhoneMiniOrSmaller() ? { display: 'flex' } : {})}
+`;
+
+const SubmitFormWrapper = styled.div`
+  ${() => (isIPhoneMiniOrSmaller() ? { display: 'flex' } : {})}
+  ${() => (isMobile() ? { width: '100%' } : {})}
 `;
 
 const InternalFormWrapper = styled.div`

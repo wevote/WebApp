@@ -6,6 +6,7 @@ import styled from 'styled-components';
 import { organizationalDonors, teamOfVolunteers } from '../../components/More/people';
 import { Section } from '../../components/Welcome/sectionStyles';
 import ExternalLinkIcon from '../../components/Widgets/ExternalLinkIcon';
+import cordovaScrollablePaneTopPadding from '../../utils/cordovaScrollablePaneTopPadding';
 import { isWebApp } from '../../utils/cordovaUtils';
 import { renderLog } from '../../utils/logging';
 
@@ -151,6 +152,7 @@ const Wrapper = styled.div`
   align-items: center;
   background: white;
   overflow-x: hidden;
+  padding-top: ${() => cordovaScrollablePaneTopPadding()}
 `;
 
 const HeaderForCredits = styled.div`

@@ -4,9 +4,8 @@ import CordovaPageConstants from '../constants/CordovaPageConstants';
 import AppObservableStore from '../stores/AppObservableStore';
 import { normalizedHrefPage } from './applicationUtils';
 import { cordovaBallotFilterTopMargin, cordovaDualHeaderContainerPadding } from './cordovaOffsets';
-
 import cordovaScrollablePaneTopPadding from './cordovaScrollablePaneTopPadding';
-import { isCordova, isIPad, isIPhone5p5inMini, isWebApp } from './cordovaUtils';
+import { isIPad, isIPhone4p7in, isIPhone5p5inEarly, isIPhone5p5inMini, isIPhone6p1in, isIPhone6p5in, isWebApp } from './cordovaUtils';
 import { pageEnumeration } from './cordovaUtilsPageEnumeration';
 import isMobileScreenSize from './isMobileScreenSize';
 
@@ -22,11 +21,13 @@ export const IOSNotchedSpacer = styled.div`
 `;
 
 export const IOSNoNotchSpacer = styled.div`
-  //             // iPhoneSpacer = <div className="ios-no-notch-spacer" style={{ height: \`${isIPad() ? '26px' : 'undefined'}\` }} />;
-  height: ${() => ((isIPad()) ? '26px' : '22')};
+  height: ${() => {
+    if (isIPad())                                   return '26px';
+    if (isIPhone4p7in() || isIPhone5p5inEarly())    return '22px';
+    return                                                 '36px';
+  }};
   top: 0;
   position: fixed;
-  height: ${() => ((isIPhone5p5inMini()) ? '41px' : '36px')};
   background: #2e3c5d;
   width: 100%;
   opacity: 1;
@@ -35,7 +36,10 @@ export const IOSNoNotchSpacer = styled.div`
 
 export const PageContentContainer = styled.div`
   padding-top: ${() => cordovaScrollablePaneTopPadding()};
-  padding-bottom ${() => ((isCordova()) ? '625px' : null)};
+  padding-bottom ${() => {
+    if (isWebApp()) return null;
+    return isIPhone6p1in() || isIPhone4p7in() || isIPhone5p5inEarly() ? '800px' : '625px';
+  }};
   position: relative;
   max-width: 960px;
   z-index: 0;
@@ -173,8 +177,15 @@ export const TopRowTwoRightContainer = styled.div`
   justify-content: space-between;
   cursor: pointer;
   padding-right: ${() => ((isMobileScreenSize()) ? '15px' : '')};  //grid-row-start: 2;
-  //grid-row-end: 3;
-  //grid-column: 2 / 3;
+  ${() => {
+    if (isWebApp() && !isMobileScreenSize()) {
+      return {
+        gridRow: '2 / 2',
+        gridColumn: '3 /3',
+      };
+    }
+    return {};
+  }};
 `;
 
 export const AppBarForBackTo = styled(AppBar)`
@@ -185,19 +196,29 @@ export const AppBarForBackTo = styled(AppBar)`
   display: flex;
   justify-content: center;
   padding-top: ${() => {
-    if (isIPhone5p5inMini() &&
-      [CordovaPageConstants.candidateWild,
-        CordovaPageConstants.officeWild,
-        CordovaPageConstants.measureWild].includes(pageEnumeration())) {
-      // IMPORTANT: This is a last chance way to adjust the height, to be used only if cordovaScrollablePaneTopPadding can't do it!
-      return '39px';
-    } else {
-      return '';
-      // return '34px';  (WebApp to 0 on 10/4/21)
+    // IMPORTANT: This is a last chance way to adjust the height, to be used only if cordovaScrollablePaneTopPadding can't do it!
+    if ([CordovaPageConstants.candidateWild,
+      CordovaPageConstants.officeWild,
+      CordovaPageConstants.settingsProfile,
+      CordovaPageConstants.settingsAccount,
+      CordovaPageConstants.settingsNotifications,
+      CordovaPageConstants.settingsSubscription,
+      CordovaPageConstants.settingsWild,
+      CordovaPageConstants.measureWild,
+      CordovaPageConstants.valuesList].includes(pageEnumeration())) {
+      if (isIPhone4p7in())      return '20px';
+      if (isIPhone5p5inEarly()) return '20px';
+      if (isIPhone5p5inMini())  return '39px';
+      if (isIPhone6p1in())      return '32px';
+      if (isIPhone6p5in())      return '34px';
     }
+    return '0px';
   }};
   ${() => {
-    if (AppObservableStore.getScrolledDown()) {
+    if (AppObservableStore.getScrolledDown() && ![
+      CordovaPageConstants.officeWild,
+      CordovaPageConstants.measureWild,
+      CordovaPageConstants.valuesList].includes(pageEnumeration())) {
       return {};
     }
     return {

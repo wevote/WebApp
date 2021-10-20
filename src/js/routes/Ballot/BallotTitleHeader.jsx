@@ -55,7 +55,7 @@ class BallotTitleHeader extends Component {
       return (
         <Wrapper/* marginTop={this.marginTopOffset()} */>
           <Tooltip title="Change my election" aria-label="Change Election" classes={{ tooltipPlacementBottom: classes.tooltipPlacementBottom }}>
-            <Title onClick={this.props.toggleSelectBallotModal} id="ballotTitleHeaderSelectBallotModal">
+            <Title onClick={() => this.props.toggleSelectBallotModal('', false, false)} id="ballotTitleHeaderSelectBallotModal">
               <ElectionName scrolled={scrolled}>
                 {isWebApp() ? (
                   <>

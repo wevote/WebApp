@@ -7,6 +7,10 @@ import OpenExternalWebSite from '../Widgets/OpenExternalWebSite';
 
 
 class FooterMainWeVote extends Component {
+  componentDidMount () {
+    window.scrollTo(0, 0);
+  }
+
   render () {
     const { classes } = this.props;
 

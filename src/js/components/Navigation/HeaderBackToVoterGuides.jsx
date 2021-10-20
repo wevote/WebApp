@@ -7,15 +7,15 @@ import styled from 'styled-components';
 import OrganizationActions from '../../actions/OrganizationActions';
 import VoterGuideActions from '../../actions/VoterGuideActions';
 import VoterSessionActions from '../../actions/VoterSessionActions';
+import LazyImage from '../../common/components/LazyImage';
 import AppObservableStore, { messageService } from '../../stores/AppObservableStore';
 import BallotStore from '../../stores/BallotStore';
 import OrganizationStore from '../../stores/OrganizationStore';
 import VoterGuideStore from '../../stores/VoterGuideStore';
 import VoterStore from '../../stores/VoterStore';
-import { normalizedHref } from '../../utils/applicationUtils';
+import { avatarGeneric, normalizedHref } from '../../utils/applicationUtils';
 import { hasIPhoneNotch, historyPush, isCordova, isWebApp } from '../../utils/cordovaUtils';
 import isMobile from '../../utils/isMobile';
-import LazyImage from '../../common/components/LazyImage';
 import { renderLog } from '../../utils/logging';
 import { isProperlyFormattedVoterGuideWeVoteId, shortenText, stringContains } from '../../utils/textFormat';
 import { voterPhoto } from '../../utils/voterPhoto';
@@ -26,8 +26,6 @@ import HeaderBackToButton from './HeaderBackToButton';
 
 const HeaderBarProfilePopUp = React.lazy(() => import(/* webpackChunkName: 'HeaderBarProfilePopUp' */ './HeaderBarProfilePopUp'));
 const SignInModal = React.lazy(() => import(/* webpackChunkName: 'SignInModal' */ '../Widgets/SignInModal'));
-
-const anonymous = '../../../img/global/icons/avatar-generic.png';
 
 
 class HeaderBackToVoterGuides extends Component {
@@ -343,7 +341,7 @@ class HeaderBackToVoterGuides extends Component {
                     <LazyImage
                       className="header-nav__avatar"
                       src={voterPhotoUrlMedium}
-                      placeholder={anonymous}
+                      placeholder={avatarGeneric()}
                       style={{
                         marginLeft: 16,
                       }}
