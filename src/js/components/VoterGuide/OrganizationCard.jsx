@@ -137,16 +137,46 @@ export default class OrganizationCard extends Component {
       if (this.state.organizationPosition.vote_smart_rating) {
         positionDescription = (
           <PositionRatingSnippet
-            {...this.state.organizationPosition}
+            ballotItemDisplayName={this.state.organizationPosition.ballot_item_display_name}
+            showRatingDescription={this.state.organizationPosition.show_rating_description}
+            voteSmartRating={this.state.organizationPosition.vote_smart_rating}
+            voteSmartTimeSpan={this.state.organizationPosition.vote_smart_time_span}
+            // {...this.state.organizationPosition}
             show_rating_description={this.toggleRatingDescription}
           />
         );
       } else if (this.state.organizationPosition.is_support || this.state.organizationPosition.is_oppose) {
-        positionDescription =
-          <PositionSupportOpposeSnippet {...this.state.organizationPosition} is_on_ballot_item_page={isOnBallotItemPage} />;
+        positionDescription = (
+          <PositionSupportOpposeSnippet
+            ballotItemDisplayName={this.state.organizationPosition.ballot_item_display_name}
+            commentTextOff={this.state.organizationPosition.comment_text_off}
+            isLookingAtSelf={this.state.organizationPosition.is_looking_at_self}
+            isOnBallotItemPage={this.state.organizationPosition.is_on_ballot_item_page}
+            isOppose={this.state.organizationPosition.is_oppose}
+            isSupport={this.state.organizationPosition.is_support}
+            moreInfoUrl={this.state.organizationPosition.more_info_url}
+            speakerDisplayName={this.state.organizationPosition.speaker_display_name}
+            stanceDisplayOff={this.state.organizationPosition.stance_display_off}
+            statementText={this.state.organizationPosition.statement_text}
+            // {...this.state.organizationPosition}
+            is_on_ballot_item_page={isOnBallotItemPage}
+          />
+        );
       } else if (this.state.organizationPosition.is_information_only) {
-        positionDescription =
-          <PositionInformationOnlySnippet {...this.state.organizationPosition} is_on_ballot_item_page={isOnBallotItemPage} />;
+        positionDescription = (
+          <PositionInformationOnlySnippet
+            ballotItemDisplayName={this.state.organizationPosition.ballot_item_display_name}
+            commentTextOff={this.state.organizationPosition.comment_text_off}
+            isLookingAtSelf={this.state.organizationPosition.is_looking_at_self}
+            isOnBallotItemPage={this.state.organizationPosition.is_on_ballot_item_page}
+            moreInfoUrl={this.state.organizationPosition.more_info_url}
+            speakerDisplayName={this.state.organizationPosition.speaker_display_name}
+            stanceDisplayOff={this.state.organizationPosition.stance_display_off}
+            statementText={this.state.organizationPosition.statement_text}
+            // {...this.state.organizationPosition}
+            is_on_ballot_item_page={isOnBallotItemPage}
+          />
+        );
       }
     }
 
