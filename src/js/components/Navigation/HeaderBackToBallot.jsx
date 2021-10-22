@@ -16,7 +16,7 @@ import OrganizationStore from '../../stores/OrganizationStore';
 import VoterStore from '../../stores/VoterStore';
 import { dumpCssFromId } from '../../utils/appleSiliconUtils';
 import { avatarGeneric, normalizedHref, normalizedHrefPage } from '../../utils/applicationUtils';
-import { historyPush, isCordova, isIOSAppOnMac, isIPad, isWebApp } from '../../utils/cordovaUtils';
+import { historyPush, isCordova, isIOSAppOnMac, isIPad, isIPadGiantSize, isWebApp } from '../../utils/cordovaUtils';
 import { renderLog } from '../../utils/logging';
 import { AppBarForBackTo, OfficeShareWrapper, TopOfPageHeader, TopRowOneLeftContainer, TopRowOneMiddleContainer, TopRowOneRightContainer, TopRowTwoLeftContainer, TopRowTwoRightContainer } from '../../utils/pageLayoutStyles';
 import { shortenText, stringContains } from '../../utils/textFormat';
@@ -907,6 +907,7 @@ const OfficeOrMeasureTitle = styled.div`
   font-size: 16px;
   font-weight: 500;
   height: 19px;
+  margin-left: ${() => (isIPadGiantSize() ? '42px' : '')};
 `;
 
 const FirstNameWrapper = styled.div`

@@ -54,7 +54,9 @@ export default class Header extends Component {
       dumpCssFromId('header-container');
     }
     if (VoterStore.getVoterWeVoteId() === '' && apiCalming('voterRetrieve', 500)) {
-      VoterActions.voterRetrieve();
+      setTimeout(() => {
+        VoterActions.voterRetrieve();
+      }, 1000);
     }
   }
 

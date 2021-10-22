@@ -1,5 +1,4 @@
 import React from 'react';
-// const { createBrowserHistory, createHashHistory } = React.lazy(() => import('history'));
 import webAppConfig from '../config';
 import { dumpObjProps } from './appleSiliconUtils';
 import { cordovaOffsetLog, oAuthLog } from './logging';
@@ -171,6 +170,7 @@ export function logMatch (device, byModel) {
 // https://www.theiphonewiki.com/wiki/Models
 // https://gist.github.com/adamawolf/3048717
 // http://socialcompare.com/en/comparison/apple-iphone-product-line-comparison
+// https://www.ios-resolution.com/
 
 export function getIOSSizeString () {
   //    iPhone:               iPhone       3G           3GS          4            4            4            4S
@@ -229,6 +229,39 @@ export function getIOSSizeString () {
   }
   return '';
 }
+
+function detectIsZoomed (properWidth) {
+  const isZoomed = window.innerWidth !== properWidth;
+  cordovaOffsetLog(`isDevice zoomed == ${isZoomed}, for ${window.device.model}, innerWidth ${window.innerWidth}`);
+  return isZoomed;
+}
+
+export function isDeviceZoomed () {
+  //    iPhone       3G           3GS          4            4            4            4S
+  if (['iPhone1,1', 'iPhone1,2', 'iPhone2,1', 'iPhone3,1', 'iPhone3,2', 'iPhone3,3', 'iPhone4,1'].includes(window.device.model)) return detectIsZoomed(320);
+  //        5            5            5C           5C           5S           5S           SE
+  if (['iPhone5,1', 'iPhone5,2', 'iPhone5,3', 'iPhone5,4', 'iPhone6,1', 'iPhone6,2', 'iPhone8,4'].includes(window.device.model)) return detectIsZoomed(320);
+  //        6            6S           7            7            8             8          SE 2nd Gen
+  if (['iPhone7,2', 'iPhone8,1', 'iPhone9,1', 'iPhone9,3', 'iPhone10,1', 'iPhone10,4', 'iPhone12,8'].includes(window.device.model)) return detectIsZoomed(375);
+  //      6 Plus       6S Plus      7 Plus       7Plus
+  if (['iPhone7,1', 'iPhone8,2', 'iPhone9,2', 'iPhone9,4'].includes(window.device.model)) return detectIsZoomed(476);
+  //      8 Plus        8 Plus
+  if (['iPhone10,2', 'iPhone10,5'].includes(window.device.model)) return detectIsZoomed(414);
+  //      12 Mini       13 mini
+  if (['iPhone13,1', 'iPhone14,4'].includes(window.device.model)) return detectIsZoomed(375);
+  //      X             X             XS            11 Pro
+  if (['iPhone10,3', 'iPhone10,6', 'iPhone11,2', 'iPhone12,3'].includes(window.device.model)) return detectIsZoomed(375);
+  //      XR            11
+  if (['iPhone11,8', 'iPhone12,1'].includes(window.device.model)) return detectIsZoomed(414);
+  //      12 Pro         12             13 Pro           13
+  if (['iPhone13,3', 'iPhone13,2', 'iPhone14,2', 'iPhone14,5'].includes(window.device.model)) return detectIsZoomed(390);
+  //    XS Max        XS Max        11 Pro Max
+  if (['iPhone11,4', 'iPhone11,6', 'iPhone12,5'].includes(window.device.model)) return detectIsZoomed(414);
+  //    12ProMax(6.7) 13ProMax(6.7)
+  if (['iPhone13,4', 'iPhone14,3'].includes(window.device.model)) return detectIsZoomed(428);
+  return false;
+}
+
 
 // 3.5" screen iPhones
 export function isIPhone3p5in () {
@@ -342,6 +375,26 @@ export function isIPad () {
   }
   return false;
 }
+
+export function isIPad11in () {
+  if (isIOS() && !isIOSAppOnMac() &&
+    ['iPad8,1',    // iPad Pro 11 inch 3rd Gen (WiFi)
+      'iPad8,2',   // iPad Pro 11 inch 3rd Gen (1TB, WiFi)
+      'iPad8,3',   // iPad Pro 11 inch 3rd Gen (WiFi+Cellular)
+      'iPad8,4',   // iPad Pro 11 inch 3rd Gen (1TB, WiFi+Cellular)
+      'iPad8,9',   // iPad Pro 11 inch 4th Gen (WiFi)
+      'iPad8,10',  // iPad Pro 11 inch 4th Gen (WiFi+Cellular)
+      'iPad13,4',  // iPad Pro 11 inch 5th Gen
+      'iPad13,5',  // iPad Pro 11 inch 5th Gen
+      'iPad13,6',  // iPad Pro 11 inch 5th Gen
+      'iPad13,7',  // iPad Pro 11 inch 5th Gen
+    ].includes(window.device.model)) {
+    logMatch('iPad11in', true);
+    return true;
+  }
+  return false;
+}
+
 
 export function isIPadGiantSize () {
   if (!isIPad()) {
