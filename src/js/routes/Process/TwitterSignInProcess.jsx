@@ -8,7 +8,7 @@ import AppObservableStore, { messageService } from '../../stores/AppObservableSt
 import TwitterStore from '../../stores/TwitterStore';
 import VoterStore from '../../stores/VoterStore';
 import cookies from '../../utils/cookies';
-import { historyPush, isWebApp } from '../../utils/cordovaUtils';
+import { historyPush, isIPad, isWebApp } from '../../utils/cordovaUtils';
 import { oAuthLog, renderLog } from '../../utils/logging';
 import { PageContentContainer } from '../../utils/pageLayoutStyles';
 import { stringContains } from '../../utils/textFormat';
@@ -272,6 +272,10 @@ export default class TwitterSignInProcess extends Component {
 const LoadingDiv = styled.div`
   font-size: 18px;
   margin-top: 50px;
+  ${() => (isIPad() ? {
+    marginLeft: '80px',
+    marginRight: '80px',
+  } : {})};
   text-align: center;
   padding: 10px;
   background-color: white;

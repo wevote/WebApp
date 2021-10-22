@@ -5,7 +5,7 @@ import AppObservableStore from '../stores/AppObservableStore';
 import { normalizedHrefPage } from './applicationUtils';
 import { cordovaBallotFilterTopMargin, cordovaDualHeaderContainerPadding } from './cordovaOffsets';
 import cordovaScrollablePaneTopPadding from './cordovaScrollablePaneTopPadding';
-import { isIPad, isIPhone4p7in, isIPhone5p5inEarly, isIPhone5p5inMini, isIPhone6p1in, isIPhone6p5in, isWebApp } from './cordovaUtils';
+import { hasIPhoneNotch, isIPad, isIPad11in, isIPadGiantSize, isIPhone4p7in, isIPhone5p5inEarly, isIPhone5p5inMini, isIPhone5p8in, isIPhone6p1in, isIPhone6p5in, isWebApp } from './cordovaUtils';
 import { pageEnumeration } from './cordovaUtilsPageEnumeration';
 import isMobileScreenSize from './isMobileScreenSize';
 
@@ -38,7 +38,9 @@ export const PageContentContainer = styled.div`
   padding-top: ${() => cordovaScrollablePaneTopPadding()};
   padding-bottom ${() => {
     if (isWebApp()) return null;
-    return isIPhone6p1in() || isIPhone4p7in() || isIPhone5p5inEarly() ? '800px' : '625px';
+    if (isIPhone6p1in() || isIPhone4p7in() || isIPhone5p5inEarly()) return '800px';
+    if (isIPhone5p5inMini() || isIPhone5p8in()) return '825px';
+    return '625px';
   }};
   position: relative;
   max-width: 960px;
@@ -113,10 +115,9 @@ export const HeadroomWrapper = styled.div`
   position: fixed;
   top: 0;
   left: 0;
-  right: 0;
+  width: 100%;
   background: white;
   z-index: 2;
-  transform: translateY(0);
 `;
 
 export const TopOfPageHeader = styled.div`
@@ -131,6 +132,11 @@ export const TopOfPageHeader = styled.div`
     padding-left: 15px;
     padding-right: 15px;
   }
+  ${() => (isIPad11in() ? {
+    paddingLeft: '15px',
+    paddingRight: '15px',
+  } : {}
+  )}
 `;
 
 export const TopRowOneLeftContainer = styled.div`
@@ -147,7 +153,7 @@ export const TopRowOneMiddleContainer = styled.div`
 `;
 
 export const TopRowOneRightContainer = styled.div`
-  padding-right: ${() => ((isMobileScreenSize() && !isIPhone5p5inMini()) ? '15px' : '')};
+  padding-right: ${() => (((isMobileScreenSize() && !isIPhone5p5inMini()) || isIPadGiantSize()) ? '15px' : '0px')};
   display: flex;
   justify-content: space-between;
   cursor: pointer;
@@ -176,7 +182,7 @@ export const TopRowTwoRightContainer = styled.div`
   display: flex;
   justify-content: space-between;
   cursor: pointer;
-  padding-right: ${() => ((isMobileScreenSize()) ? '15px' : '')};  //grid-row-start: 2;
+  padding-right: ${() => ((isMobileScreenSize()) ? '15px' : '0px')};  //grid-row-start: 2;
   ${() => {
     if (isWebApp() && !isMobileScreenSize()) {
       return {
@@ -211,6 +217,8 @@ export const AppBarForBackTo = styled(AppBar)`
       if (isIPhone5p5inMini())  return '39px';
       if (isIPhone6p1in())      return '32px';
       if (isIPhone6p5in())      return '34px';
+      if (hasIPhoneNotch())     return '34px';
+      if (isIPad())             return '24px';
     }
     return '0px';
   }};

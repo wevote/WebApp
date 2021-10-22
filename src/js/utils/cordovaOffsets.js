@@ -1,6 +1,6 @@
 import CordovaPageConstants from '../constants/CordovaPageConstants';
 import { getApplicationViewBooleans, normalizedHref } from './applicationUtils';
-import { getAndroidSize, hasIPhoneNotch, isAndroid, isIOS, isIOSAppOnMac, isIPad, isIPhone4in, isIPhone4p7in, isIPhone5p5inEarly, isIPhone5p5inMini, isIPhone5p8in, isIPhone6p1in, isIPhone6p5in, isSimulator, isWebApp } from './cordovaUtils';
+import { getAndroidSize, hasIPhoneNotch, isAndroid, isIOS, isIOSAppOnMac, isIPad, isIPadGiantSize, isIPhone4in, isIPhone4p7in, isIPhone5p5inEarly, isIPhone5p5inMini, isIPhone5p8in, isIPhone6p1in, isIPhone6p5in, isSimulator, isWebApp } from './cordovaUtils';
 import { pageEnumeration } from './cordovaUtilsPageEnumeration';
 import { cordovaOffsetLog } from './logging';
 
@@ -287,7 +287,7 @@ export function cordovaStickyHeaderPaddingTop () {
     } else if (isIPhone4p7in()) {
       return '69px';
     } else if (isIPhone5p8in()) {
-      return '83px';
+      return '81px';
     } else if (isIPhone6p1in()) {
       return '81px';
     } else if (isIPhone6p5in()) {
@@ -295,7 +295,7 @@ export function cordovaStickyHeaderPaddingTop () {
     } else if (hasIPhoneNotch()) {
       return '76px';
     } else if (isIPad() || isIOSAppOnMac()) {
-      return '77px';
+      return '72px';
     }
   } else if (isAndroid()) {
     const sizeString = getAndroidSize();
@@ -448,11 +448,15 @@ export function welcomeAppBarPaddingTop () {
   switch (page) {
     case CordovaPageConstants.about:
       if (isIPhone5p5inMini())  return '19px';
+      if (isIPhone5p8in())      return '9px';
       if (isIPhone6p5in())      return '12px';
+      if (isIPadGiantSize())    return '15px';
       return '0';
     case CordovaPageConstants.moreCredits:
       if (isIPhone5p5inMini())  return '19px';
+      if (isIPhone5p8in())      return '9px';
       if (isIPhone6p5in())      return '12px';
+      if (isIPadGiantSize())    return '15px';
       return '0';
     default:                    return '0';
   }

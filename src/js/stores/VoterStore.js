@@ -5,8 +5,9 @@ import FriendActions from '../actions/FriendActions'; // eslint-disable-line imp
 import OrganizationActions from '../actions/OrganizationActions';
 import VoterActions from '../actions/VoterActions'; // eslint-disable-line import/no-cycle
 import VoterGuideActions from '../actions/VoterGuideActions';
-import signInModalGlobalState from '../components/Widgets/signInModalGlobalState';
 import Dispatcher from '../common/dispatcher/Dispatcher';
+import signInModalGlobalState from '../components/Widgets/signInModalGlobalState';
+import { dumpObjProps } from '../utils/appleSiliconUtils';
 import cookies from '../utils/cookies';
 import { stringContains } from '../utils/textFormat';
 import AppObservableStore from './AppObservableStore'; // eslint-disable-line import/no-cycle
@@ -900,7 +901,8 @@ class VoterStore extends ReduceStore {
           // console.log('Received success from deviceStoreFirebaseCloudMessagingToken API call');
           return state;
         } else {
-          console.log('Received a bad response from deviceStoreFirebaseCloudMessagingToken API call');
+          console.log('Received a bad response from deviceStoreFirebaseCloudMessagingToken API call, object properties follow:');
+          dumpObjProps('action.res', action.res);
           return state;
         }
 

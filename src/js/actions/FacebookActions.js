@@ -1,7 +1,7 @@
+import Dispatcher from '../common/dispatcher/Dispatcher';
 import signInModalGlobalState from '../components/Widgets/signInModalGlobalState';
 import webAppConfig from '../config';
 import FacebookConstants from '../constants/FacebookConstants';
-import Dispatcher from '../common/dispatcher/Dispatcher';
 import { isWebApp } from '../utils/cordovaUtils'; // eslint-disable-line import/no-cycle
 import { oAuthLog } from '../utils/logging';
 import FriendActions from './FriendActions'; // eslint-disable-line import/no-cycle

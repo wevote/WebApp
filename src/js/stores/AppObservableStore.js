@@ -2,12 +2,16 @@ import { Subject } from 'rxjs';
 import VoterActions from '../actions/VoterActions';   // eslint-disable-line import/no-cycle
 import webAppConfig from '../config';
 import { dumpObjProps } from '../utils/appleSiliconUtils';
-import { isCordova } from '../utils/cordovaUtils';
 import $ajax from '../utils/service';
 import { stringContains } from '../utils/textFormat';
-import VoterStore from './VoterStore';                // eslint-disable-line import/no-cycle
 
 const subject = new Subject();
+
+function isCordovaLocal () {
+  const { cordova } = window;
+  return cordova !== undefined;
+}
+
 export const messageService = {
   sendMessage: (message) => subject.next({ text: message }),
   clearMessages: () => subject.next(),
@@ -307,7 +311,7 @@ export default {
 
   isOnWeVoteRootUrl () {
     const weVoteURL = nonFluxState.onWeVoteRootUrl || false;
-    return weVoteURL || isCordova() || stringContains('localhost:', window.location.href);
+    return weVoteURL || isCordovaLocal() || stringContains('localhost:', window.location.href);
   },
 
   isOnWeVoteSubdomainUrl () {
@@ -422,7 +426,7 @@ export default {
     return nonFluxState.siteConfigurationHasBeenRetrieved;
   },
 
-  siteConfigurationRetrieve (hostname, refresh_string = '') {
+  siteConfigurationRetrieve (hostname, externalVoterId = '', refresh_string = '') {
     $ajax({
       endpoint: 'siteConfigurationRetrieve',
       data: { hostname, refresh_string },
@@ -447,7 +451,7 @@ export default {
           let onFacebookSupportedDomainUrl = false;
           let onChosenFullDomainUrl = false;
 
-          if (isCordova()) {
+          if (isCordovaLocal()) {
             newHostname = webAppConfig.WE_VOTE_HOSTNAME;
           }
 
@@ -460,11 +464,10 @@ export default {
             onChosenFullDomainUrl = true;
           }
           // May 2021: This code doesn't need an API call to generate an answer, abandoning querying the store to get the answer
-          if (newHostname === 'wevote.us' || newHostname === 'quality.wevote.us' || newHostname === 'localhost' || isCordova()) {
+          if (newHostname === 'wevote.us' || newHostname === 'quality.wevote.us' || newHostname === 'localhost' || isCordovaLocal()) {
             // We should move this to the server if we can't change the Facebook sign in root url
             onFacebookSupportedDomainUrl = true;
           }
-          const externalVoterId = VoterStore.getExternalVoterId();
           // console.log('AppObservableStore externalVoterId:', externalVoterId, ', siteOwnerOrganizationWeVoteId:', siteOwnerOrganizationWeVoteId);
           const { voterExternalIdHasBeenSavedOnce } = nonFluxState;
           if (externalVoterId && siteOwnerOrganizationWeVoteId) {
