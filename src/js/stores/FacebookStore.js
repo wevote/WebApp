@@ -143,7 +143,6 @@ class FacebookStore extends ReduceStore {
         } else {
           facebookFriendsNotExist = true;
         }
-
         // console.log("FACEBOOK_RECEIVED_INVITABLE_FRIENDS: ", facebook_invitable_friends_list);
         return {
           ...state,

@@ -7,7 +7,7 @@ export default function LoadingWheelComp (message = null, padBottom = false) {
 
   return (
     <Box style={{ display: 'flex', justifyContent: 'center', flexDirection: 'column', alignItems: 'center' }}>
-      <div style={{ padding: '30px', paddingBottom: `${padBottom ? '625px' : null}` }}>
+      <div style={{ padding: '30px', paddingBottom: `${padBottom ? '0px' : null}` }}>
         <CircularProgress />
       </div>
       <div>{msg}</div>

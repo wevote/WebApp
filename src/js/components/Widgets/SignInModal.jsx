@@ -5,7 +5,7 @@ import clsx from 'clsx';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import VoterStore from '../../stores/VoterStore';
-import { historyPush, isAndroid, isCordova, isIOS, isIPhone3p5in, isIPhone4in, isIPhone4p7in, isIPhone5p5inEarly, isIPhone5p5inMini, isIPhone5p8in, isIPhone6p1in, isIPhone6p5in, isWebApp, isWebAppHeight0to568, isWebAppHeight569to667, isWebAppHeight668to736, isWebAppHeight737to896, restoreStylesAfterCordovaKeyboard } from '../../utils/cordovaUtils';
+import { historyPush, isAndroid, isCordova, isIOS, isIPhone5p5inEarly, isIPhone5p5inMini, isIPhone5p8in, isIPhone6p1in, isIPhone6p5in, isWebApp, isWebAppHeight0to568, isWebAppHeight569to667, isWebAppHeight668to736, isWebAppHeight737to896, restoreStylesAfterCordovaKeyboard } from '../../utils/cordovaUtils';
 import initializeAppleSDK from '../../utils/initializeAppleSDK';
 import initializeFacebookSDK from '../../utils/initializeFacebookSDK';
 import { renderLog } from '../../utils/logging';
@@ -227,7 +227,7 @@ const styles = (theme) => ({
   } : {
     height: '100%',
     position: 'absolute !important',
-    top: '-15%',
+    top: '6% !important',
     left: '0% !important',
     right: 'unset !important',
     bottom: 'unset !important',
@@ -246,15 +246,16 @@ const styles = (theme) => ({
   } : {
     margin: '0 !important',
     width: '95%',
+    maxWidth: '95%',
     height: 'unset',
     maxHeight: '90%',
     offsetHeight: 'unset !important',
-    top: '50%',
-    left: '50%',
-    right: 'unset !important',
+    top: () => {
+      if (isCordova()) return '7%';
+      return '50%';
+    },
     bottom: 'unset !important',
     position: 'absolute',
-    transform: (isIPhone3p5in() || isIPhone4in() || isIPhone4p7in()) ? 'translate(-50%, -59%)' : 'translate(-50%, -25%)',
   },
   focusedOnSingleInput: isWebApp() ? {
     [theme.breakpoints.down('sm')]: {
@@ -298,7 +299,7 @@ const styles = (theme) => ({
   },
   signInModalDialogLarger: {
     bottom: 'unset',
-    top: '180px',
+    top: isCordova() ? '6%' : '180px',
   },
   dialogContent: {
     [theme.breakpoints.down('md')]: {

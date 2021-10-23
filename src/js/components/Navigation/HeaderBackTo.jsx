@@ -233,7 +233,7 @@ class HeaderBackTo extends Component {
     const shareButtonInHeader = pathname && stringContains('/office', pathname.toLowerCase());
     const cordovaOverrides = isWebApp() ? {} : { marginLeft: 0, paddingLeft: '15px', right: 'unset' };
     if (isIOSAppOnMac() || isIPad()) {
-      cordovaOverrides.height = shareButtonInHeader ? '87px !important' : '50px';
+      cordovaOverrides.height = shareButtonInHeader ? '87px !important' : '68px';
     }
     // dumpObjProps('cordovaOverrides', cordovaOverrides);
 

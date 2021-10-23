@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import styled, { keyframes } from 'styled-components';
 import MeasureStore from '../../stores/MeasureStore';
 import { cordovaStickyHeaderPaddingTop } from '../../utils/cordovaOffsets';
-import { isCordova, isIOSAppOnMac, isIPad } from '../../utils/cordovaUtils';
+import { isCordova, isIOSAppOnMac, isIPad, isWebApp } from '../../utils/cordovaUtils';
 
 const ReadMore = React.lazy(() => import(/* webpackChunkName: 'ReadMore' */ '../Widgets/ReadMore'));
 const BallotItemSupportOpposeComment = React.lazy(() => import(/* webpackChunkName: 'BallotItemSupportOpposeComment' */ '../Widgets/BallotItemSupportOpposeComment'));
@@ -62,13 +62,13 @@ class MeasureStickyHeader extends Component {
               <BallotItemSupportOpposeCountDisplay ballotItemWeVoteId={measureWeVoteId} />
             </ColumnTwo>
           </Flex>
-          <BallotCommentContainer>
+          <MeasureCommentContainer>
             <BallotItemSupportOpposeComment
               ballotItemWeVoteId={measureWeVoteId}
               externalUniqueId="measureStickyHeader"
               showPositionStatementActionBar={false}
             />
-          </BallotCommentContainer>
+          </MeasureCommentContainer>
         </Container>
       </Wrapper>
     );
@@ -165,11 +165,11 @@ const Flex = styled.div`
   top: 8px;
 `;
 
-const BallotCommentContainer = styled.div`
+const MeasureCommentContainer = styled.div`
   width: fit-content;
-  margin-top: 8px;
+  margin-top: ${() => (isWebApp() ? '8px' : '')};;
   @media (max-width : ${({ theme }) => theme.breakpoints.sm}) {
-    padding-top: 8px;
+    padding-top: ${() => (isWebApp() ? '8px' : '')};
   }
   > * {
     padding: 0;

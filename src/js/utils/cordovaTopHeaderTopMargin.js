@@ -65,9 +65,9 @@ export default function cordovaTopHeaderTopMargin () {
           case CordovaPageConstants.ballotVote:            style.marginTop = '16px'; break;
           case CordovaPageConstants.candidate:             style.marginTop = '35px'; break;
           case CordovaPageConstants.candidateWild:         style.marginTop = '0px'; break;
-          case CordovaPageConstants.friends:               style.marginTop = '34px'; break;
-          case CordovaPageConstants.friendsCurrent:        style.marginTop = '34px'; break;
-          case CordovaPageConstants.friendsSentRequest:    style.marginTop = '34px'; break;
+          case CordovaPageConstants.friends:               style.marginTop = '39px'; break;
+          case CordovaPageConstants.friendsCurrent:        style.marginTop = '39px'; break;
+          case CordovaPageConstants.friendsSentRequest:    style.marginTop = '39px'; break;
           case CordovaPageConstants.measureWild:           style.marginTop = '39px'; break;
           case CordovaPageConstants.moreAbout:             style.marginTop = '39px'; break;
           case CordovaPageConstants.moreElections:         style.marginTop = '39px'; break;
@@ -133,8 +133,7 @@ export default function cordovaTopHeaderTopMargin () {
         style.marginTop = '0px';
       } else if (isIPad()) {
         switch (page) {
-          case CordovaPageConstants.defaultVal:            style.marginTop = '26px'; break;
-          default:                                         style.marginTop = '0px'; break;
+          default:                                         style.marginTop = '24px'; break;  // ballotSmHdrWild, settingsHamburger
         }
       } else {
         style.marginTop = '20px';

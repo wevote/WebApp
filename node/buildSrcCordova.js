@@ -73,7 +73,7 @@ fs.remove('./build').then(() => {
               fileRewriterForCordova(path);
             }
           }
-          console.log('> Cordova: Files rewritten without React.lazy: ', listOfFiles.length);
+          console.log('> Cordova: Files in ./srcCordova, rewritten without React.lazy: ', listOfFiles.length);
           exec('grep -r "React.lazy" ./srcCordova | grep -v "//" | grep -v "(factory)"',
             (error2, stdout2) => {
               const out = stdout2.split('\n');

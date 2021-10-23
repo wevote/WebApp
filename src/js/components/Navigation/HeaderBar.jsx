@@ -10,12 +10,14 @@ import VoterActions from '../../actions/VoterActions';
 import VoterGuideActions from '../../actions/VoterGuideActions';
 import VoterSessionActions from '../../actions/VoterSessionActions';
 import LazyImage from '../../common/components/LazyImage';
-import FriendsTabs from './FriendsTabs';
+import AnalyticsStore from '../../stores/AnalyticsStore';
 import AppObservableStore, { messageService } from '../../stores/AppObservableStore';
+import FacebookStore from '../../stores/FacebookStore';
 import FriendStore from '../../stores/FriendStore';
 import VoterStore from '../../stores/VoterStore';
+import apiCalming from '../../utils/apiCalming';
 import { avatarGeneric, displayTopMenuShadow, normalizedHref, normalizedHrefPage, weVoteBrandingOff } from '../../utils/applicationUtils';
-import { hasIPhoneNotch, historyPush, isCordova, isIOSAppOnMac, isWebApp } from '../../utils/cordovaUtils';
+import { hasIPhoneNotch, historyPush, isCordova, isDeviceZoomed, isIOS, isIOSAppOnMac, isWebApp } from '../../utils/cordovaUtils';
 import isMobileScreenSize from '../../utils/isMobileScreenSize';
 import { renderLog } from '../../utils/logging';
 import { TopOfPageHeader, TopRowOneLeftContainer, TopRowOneMiddleContainer, TopRowOneRightContainer, TopRowTwoLeftContainer } from '../../utils/pageLayoutStyles';
@@ -24,6 +26,7 @@ import { getBooleanValue, shortenText, stringContains } from '../../utils/textFo
 import { voterPhoto } from '../../utils/voterPhoto';
 import SignInButton from '../Widgets/SignInButton';
 import signInModalGlobalState from '../Widgets/signInModalGlobalState';
+import FriendsTabs from './FriendsTabs';
 import HeaderBarLogo from './HeaderBarLogo';
 import HeaderBarModals from './HeaderBarModals';
 import TabWithPushHistory from './TabWithPushHistory';
@@ -86,6 +89,7 @@ class HeaderBar extends Component {
     this.appStateSubscription = messageService.getMessage().subscribe((msg) => this.onAppObservableStoreChange(msg));
     this.friendStoreListener = FriendStore.addListener(this.onFriendStoreChange.bind(this));
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
+    this.analyticsStoreListener = AnalyticsStore.addListener(this.onAnalyticsStoreChange.bind(this));
 
     const voter = VoterStore.getVoter();
     const voterFirstName = VoterStore.getFirstName();
@@ -273,6 +277,7 @@ class HeaderBar extends Component {
     this.appStateSubscription.unsubscribe();
     this.friendStoreListener.remove();
     this.voterStoreListener.remove();
+    this.analyticsStoreListener.remove();
     if (this.setStyleTimeout) clearTimeout(this.setStyleTimeout);
     if (this.showBallotModalTimeout) clearTimeout(this.showBallotModalTimeout);
   }
@@ -319,6 +324,17 @@ class HeaderBar extends Component {
   onVoterStoreChange () {
     // console.log('HeaderBar, onVoterStoreChange textOrEmailSignInInProcess: ' + signInModalGlobalState.get('textOrEmailSignInInProcess'));
     // console.log('HeaderBar, onVoterStoreChange voter: ', VoterStore.getVoter());
+
+    if (isIOS()) {
+      if (isDeviceZoomed()) {
+        // October 20, 2021: in iOS, at the Facebook site, within the facebook sign-in dialog, when you tab between the username and the password, our
+        // HeaderBar and FooterBar expand off of the screen -- i.e. the screen zooms in.
+        // Rotating (forcing a redraw) fixes it, so for new we just detect the condition in isDeviceZoomed and force a full DOM reload to clear the zoom.
+        window.localStorage.setItem('window.location.reloaded', 'true');
+        window.location.reload(true);
+      }
+    }
+
     if (!signInModalGlobalState.get('textOrEmailSignInInProcess')) {
       // console.log('HeaderBar, onVoterStoreChange'};
       const voter = VoterStore.getVoter();
@@ -336,12 +352,24 @@ class HeaderBar extends Component {
     }
   }
 
-  setShowAddressButtonIfMobile (newState) {
-    if (isMobileScreenSize()) {
-      if (AppObservableStore.showEditAddressButton() !== newState) {
-        AppObservableStore.setShowEditAddressButton(newState);
+  onAnalyticsStoreChange () {
+    // A reload after facebook login forces the need for a voterRetrieve, after redrawing the page
+    // Without making changes to the API server, the first response that indicates 'is signed in' is an Analytics call response
+    if (VoterStore.getVoterIsSignedIn() !== true && (AnalyticsStore.getIsSignedIn() || FacebookStore.loggedIn)) {
+      if (apiCalming('voterRetrieve', 500)) {
+        console.log('HeaderBar onAnalyticsStoreChange, firing voterRetrieve --------------');  // Do not comment out or delete
+        VoterActions.voterRetrieve();
       }
     }
+  }
+
+  setShowAddressButtonIfMobile (newState) {
+    // Oct 21, 2021: I think we want this component if not mobile
+    // if (isMobileScreenSize() || isIPad()) {
+    if (AppObservableStore.showEditAddressButton() !== newState) {
+      AppObservableStore.setShowEditAddressButton(newState);
+    }
+    // }
   }
 
   manuallyUnderlineTab = (setInitial = false) => {

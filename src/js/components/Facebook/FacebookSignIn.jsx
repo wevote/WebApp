@@ -8,6 +8,7 @@ import { messageService } from '../../stores/AppObservableStore';
 import FacebookStore from '../../stores/FacebookStore';
 import VoterStore from '../../stores/VoterStore';
 import { oAuthLog, renderLog } from '../../utils/logging';
+import LoadingWheelComp from '../LoadingWheelComp';
 import signInModalGlobalState from '../Widgets/signInModalGlobalState';
 
 import SplitIconButton from '../Widgets/SplitIconButton';
@@ -182,7 +183,7 @@ class FacebookSignIn extends Component {
         oAuthLog('FacebookSignIn merging two accounts by facebook key');
         statusMessage = 'Loading your account...';
       } else {
-        oAuthLog('FacebookSignIn internal error ---------------');
+        oAuthLog('FacebookSignIn merge internal error ---------------');
         statusMessage = 'Internal error...';
       }
     } else {
@@ -210,9 +211,7 @@ class FacebookSignIn extends Component {
               {statusMessage}
             </div>
             { showWheel ? (
-              <div className="u-loading-spinner__wrapper">
-                <div className="u-loading-spinner">Please wait...</div>
-              </div>
+              <LoadingWheelComp />
             ) : null}
           </FacebookErrorContainer>
         ) : null}

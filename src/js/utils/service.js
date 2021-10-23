@@ -15,6 +15,8 @@ const defaults = {
   query: {},
   method: 'GET',
   data () {
+    // console.log('----------- cookies.getItem(\'voter_device_id\')', cookies.getItem('voter_device_id'));
+    // console.log('----------- document.cookie', document.cookie);
     return cookies.getItem('voter_device_id') ? {
       // csrfmiddlewaretoken: cookies.getItem('csrftoken'),
       voter_device_id: cookies.getItem('voter_device_id'),
