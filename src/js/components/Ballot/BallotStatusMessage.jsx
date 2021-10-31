@@ -187,22 +187,27 @@ class BallotStatusMessage extends Component {
   render () {
     renderLog('BallotStatusMessage');  // Set LOG_RENDER_EVENTS to log all renders
     const { classes } = this.props;
+    const { electionDayText, electionIsUpcoming } = this.state;
+    let dateText = electionDayText;
     let messageString = '';
-
-    if (!window.moment) {
-      return LoadingWheel;
+    let isVotingDay = false;
+    if (typeof window.moment === 'undefined') {
+      initializeMoment(() => {
+        const today = window.moment(new Date());
+        dateText = formatDateMMMDoYYYY(electionDayText);
+        isVotingDay = today.isSame(electionDayText, 'day');
+      });
     }
-
-    const today = window.moment(new Date());
-    const isVotingDay = today.isSame(this.state.electionDayText, 'day');
+    // if (!window.moment) {
+    //   return LoadingWheel;
+    // }
 
     if (isVotingDay) {
-      const dateText = formatDateMMMDoYYYY(this.state.electionDayText);
       messageString = `It is Voting Day,  ${dateText}.  If you haven't already voted, please go vote!`;
       // I don't think this is necessary on election day.
       // messageString += !this.state.voterSpecificBallotFromGoogleCivic && this.state.ballotLocationChosen && this.state.ballotLocationDisplayName ?
       //   "  Some items shown below may not have been on your official ballot." : "  Some items below may not have been on your official ballot.";
-    } else if (this.state.electionIsUpcoming) {
+    } else if (electionIsUpcoming) {
       if (this.state.voterSpecificBallotFromGoogleCivic) {
         // We do not have an equivalent flag when we retrieve a ballot from Ballotpedia
         messageString += ''; // No additional text
@@ -216,9 +221,7 @@ class BallotStatusMessage extends Component {
       }
     } else {
       let messageInPastString;
-      if (this.state.electionDayText) {
-        const dateText = formatDateMMMDoYYYY(this.state.electionDayText);
-
+      if (electionDayText) {
         messageInPastString = `This election was held on ${dateText}.`;
       } else {
         messageInPastString = ''; // Was "This election has passed." but it showed up inaccurately.

@@ -59,11 +59,19 @@ export const HeaderContentContainer = styled.div`
   margin: ${() => cordovaBallotFilterTopMargin()} auto 0 auto;
   position: relative;
   max-width: 960px;
+  width: 100%;
   z-index: 0;
   @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
     min-height: 10px;
     //margin: 0 10px;
   }
+`;
+
+
+export const HeaderContentOuterContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  width: 100%;
 `;
 
 

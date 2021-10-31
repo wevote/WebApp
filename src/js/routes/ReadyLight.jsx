@@ -29,7 +29,6 @@ const FirstAndLastNameRequiredAlert = React.lazy(() => import(/* webpackChunkNam
 
 const nextReleaseFeaturesEnabled = webAppConfig.ENABLE_NEXT_RELEASE_FEATURES === undefined ? false : webAppConfig.ENABLE_NEXT_RELEASE_FEATURES;
 
-
 class ReadyLight extends Component {
   constructor (props) {
     super(props);
@@ -81,17 +80,14 @@ class ReadyLight extends Component {
 
   getTopPadding = () => {
     if (isWebApp()) {
-      if (isMobileScreenSize()) {
-        return '36px !important';
-      } else {
-        return '0 !important';
-      }
+      return { paddingTop: '0 !important' };
     } else if (isIOS()) {
-      return '56px !important';  // SE2: 56px, 11 Pro Max: 56px
+      // TODO: This is a bad place to set a top padding: Move it to Application__Wrapper on the next iOS pass
+      return { paddingTop: '56px !important' };  // SE2: 56px, 11 Pro Max: 56px
     } else if (isAndroid()) {
-      return 'unset';
+      return { paddingTop: 'unset' };
     }
-    return '';
+    return {};
   }
 
   render () {
@@ -102,12 +98,13 @@ class ReadyLight extends Component {
 
     return (
       <PageContentContainer>
-        <PageContainer topPadding={this.getTopPadding()}>
+        <PageContainer className="container-fluid" style={this.getTopPadding()}>
           <Helmet title="Ready to Vote? - We Vote" />
           <BrowserPushMessage incomingProps={this.props} />
           <div className="row">
             <div className="col-sm-12 col-lg-8">
               <MobileTabletCountdownWrapper className="u-show-mobile-tablet">
+                <ShareButtonTabletWrapper />
                 <ElectionCountdownMobileTabletWrapper
                   className="u-cursor--pointer u-show-mobile-tablet"
                   // onClick={this.goToBallot}
@@ -256,16 +253,19 @@ const MobileTabletCountdownWrapper = styled.div`
 `;
 
 const PageContainer = styled.div`
-  // Was className="container-fluid"
-  width: 100%;
-  padding-right: 15px;
-  padding-left: 15px;
-  margin-right: auto;
-  margin-left: auto;
-  padding-top: ${({ topPadding }) => topPadding};
+// This is a bad place to set a top padding for the scrollable pane, it should be in Application__Wrapper
 `;
 
 const Paragraph = styled.div`
+`;
+
+const ShareButtonTabletWrapper = styled.div`
+  display: flex;
+  height: 29px;
+  justify-content: flex-end;
+  margin-top: 8px;
+  margin-right: 8px;
+  z-index: 2;
 `;
 
 const Title = styled.h2`

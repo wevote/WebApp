@@ -22,7 +22,7 @@ class Footer extends Component {
   }
 
   componentDidMount () {
-    console.log('Footer componentDidMount');
+    // console.log('Footer componentDidMount');
     this.onAppObservableStoreChange();
     this.appStateSubscription = messageService.getMessage().subscribe((msg) => this.onAppObservableStoreChange(msg));
     window.addEventListener('scroll', this.handleWindowScroll);
@@ -97,6 +97,7 @@ class Footer extends Component {
 
   render () {
     const { /* doShowHeader, doShowFooter, */ showFooterBar, showFooterMain, showShareButtonFooter } = this.state;
+    // console.log('Footer render, showFooterBar:', showFooterBar, ', showFooterMain:', showFooterMain);
 
     return (
       <Wrapper>

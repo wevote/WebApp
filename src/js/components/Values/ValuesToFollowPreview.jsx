@@ -161,7 +161,7 @@ class ValuesToFollowPreview extends Component {
               <InfoCircleIcon />
               Follow values/issues to see opinions from people who share your values.
             </SectionInformation>
-            <Row className="row">
+            <Row>
               <FriendInvitationOnboardingValuesList
                 displayOnlyIssuesNotFollowedByVoter
                 followToggleOnItsOwnLine={followToggleOnItsOwnLine}
