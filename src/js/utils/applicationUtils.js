@@ -207,12 +207,12 @@ export function getApplicationViewBooleans (pathname) {
       pathnameLowerCase.startsWith('/settings/tools') ||
       pathnameLowerCase.startsWith('/settings')) {
     // We want to SHOW the footer bar on the above path patterns
-    showFooterBar = !isIOSAppOnMac() && isSmallScreen;
+    showFooterBar = isWebApp() || (!isIOSAppOnMac() && isSmallScreen);
     showFooterMain = isWebApp();
   } else {
     // URLs like: https://WeVote.US/orlandosentinel  (The URL pathname consists of a Twitter Handle only)
     contentFullWidthMode = true;
-    showFooterBar = !isIOSAppOnMac() && isSmallScreen;
+    showFooterBar = isWebApp() || (!isIOSAppOnMac() && isSmallScreen);
     showFooterMain = isWebApp();
   }
 
@@ -224,7 +224,7 @@ export function getApplicationViewBooleans (pathname) {
     pathnameLowerCase.startsWith('/office') ||
     pathnameLowerCase.startsWith('/ready') ||
     (voterGuideMode && !onFollowSubPage)) {
-    showShareButtonFooter = !isIOSAppOnMac() && isSmallScreen;
+    showShareButtonFooter = isWebApp() || (!isIOSAppOnMac() && isSmallScreen);
   }
   // console.log('getApplicationViewBooleans, showBackToBallotHeader: ', showBackToBallotHeader, ' showFooterBar: ', showFooterBar, ', pathnameLowerCase:', pathnameLowerCase, ', showBackToSettingsMobile:', showBackToSettingsMobile);
 

@@ -9,7 +9,6 @@ import isMobileScreenSize from '../../utils/isMobileScreenSize';
 import { renderLog } from '../../utils/logging';
 import { shortenText } from '../../utils/textFormat';
 
-const DelayedLoad = React.lazy(() => import(/* webpackChunkName: 'DelayedLoad' */ '../../components/Widgets/DelayedLoad'));
 const ShareButtonDesktopTablet = React.lazy(() => import(/* webpackChunkName: 'ShareButtonDesktopTablet' */ '../../components/Share/ShareButtonDesktopTablet'));
 
 
@@ -81,9 +80,7 @@ class BallotTitleHeader extends Component {
               {electionDayTextObject && (
                 <>
                   {' '}
-                  <DelayedLoad waitBeforeShow={1000}>
-                    <span className="d-none d-sm-inline">&mdash;</span>
-                  </DelayedLoad>
+                  <span className="d-none d-sm-inline">&mdash;</span>
                   {' '}
                   <ElectionDate>{electionDayTextObject}</ElectionDate>
                 </>
@@ -133,7 +130,7 @@ const styles = {
 const Wrapper = styled.div`
   display: flex;
   align-items: center;
-  justify-content: flex-start;
+  justify-content: space-between;
   // margin-top: ${(props) => (props.marginTop)};
   ${() => {
     if (isWebApp() && !isMobileScreenSize()) {
@@ -142,8 +139,6 @@ const Wrapper = styled.div`
         paddingTop: '58px',
         paddingBottom: '12px',
         height: '25px',
-        marginLeft: 'calc((100vw - 975px)/2)',
-        width: '949px',
       };
     } else {
       return {};
@@ -155,7 +150,6 @@ const Title = styled.h1`
   cursor: pointer;
   margin: 0;
   @media (min-width: 576px) {
-
   }
 `;
 

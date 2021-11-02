@@ -26,7 +26,8 @@ export function pageEnumeration () {
              path.startsWith('/more/attributions') ||
              path.startsWith('/more/terms')) {
     return CordovaPageConstants.moreTerms;
-  } else if (path.startsWith('/more/faq')) {
+  } else if (path.startsWith('/more/faq') ||
+             path.startsWith('/more/howwevotehelps')) {
     return CordovaPageConstants.moreFaq;
   // } else if (path.startsWith('/voterguide/')) {
   //   return CordovaPageConstants.voterGuideCreatorWild;

@@ -12,9 +12,7 @@ import ReadyActions from '../actions/ReadyActions';
 import LoadingWheelComp from '../components/LoadingWheelComp';
 import EditAddressOneHorizontalRow from '../components/Ready/EditAddressOneHorizontalRow';
 import ElectionCountdown from '../components/Ready/ElectionCountdown';
-import FindOpinionsForm from '../components/Ready/FindOpinionsForm';
 import ReadyInformationDisclaimer from '../components/Ready/ReadyInformationDisclaimer';
-import ReadyIntroduction from '../components/Ready/ReadyIntroduction';
 import ReadyTaskBallot from '../components/Ready/ReadyTaskBallot';
 import ReadyTaskFriends from '../components/Ready/ReadyTaskFriends';
 import ReadyTaskPlan from '../components/Ready/ReadyTaskPlan';
@@ -251,43 +249,6 @@ class Ready extends Component {
                 <ReadyTaskBallot
                   arrowsOn
                 />
-                <Card className="card u-show-mobile">
-                  <div className="card-main">
-                    <FindOpinionsForm
-                      introHeaderLink="/values"
-                      searchTextLarge
-                      showVoterGuidePhotos
-                      uniqueExternalId="showMobile"
-                    />
-                  </div>
-                </Card>
-                <Card className="card u-show-mobile">
-                  <div className="card-main">
-                    <ReadyIntroduction />
-                  </div>
-                </Card>
-                <IntroAndFindTabletWrapper className="u-show-tablet">
-                  <IntroductionWrapper>
-                    <Card className="card">
-                      <div className="card-main">
-                        <ReadyIntroduction />
-                      </div>
-                    </Card>
-                  </IntroductionWrapper>
-                  <IntroAndFindTabletSpacer />
-                  <FindWrapper>
-                    <Card className="card">
-                      <div className="card-main">
-                        <FindOpinionsForm
-                          introHeaderLink="/values"
-                          searchTextLarge
-                          showVoterGuidePhotos
-                          uniqueExternalId="showTablet"
-                        />
-                      </div>
-                    </Card>
-                  </FindWrapper>
-                </IntroAndFindTabletWrapper>
                 {(nextReleaseFeaturesEnabled && !futureFeaturesDisabled) && (
                   <ReadyTaskRegister
                     arrowsOn
@@ -341,23 +302,6 @@ class Ready extends Component {
                     </div>
                   </Card>
                 )}
-                <Card className="card">
-                  <div className="card-main">
-                    <FindOpinionsForm
-                      introHeaderLink="/values"
-                      searchTextLarge
-                      showVoterGuidePhotos
-                      uniqueExternalId="showDesktopRightColumn"
-                    />
-                  </div>
-                </Card>
-                <Card className="card">
-                  <div className="card-main">
-                    <ReadyIntroduction
-                      showStep3WhenCompressed
-                    />
-                  </div>
-                </Card>
                 {(issuesShouldBeDisplayed) && (
                   <ValuesListWrapper>
                     <ValuesToFollowPreview
@@ -417,23 +361,6 @@ const SuspenseCard = styled.div`
   flex-direction: column;
   width: 290px;
   height: 138px;
-`;
-
-const FindWrapper = styled.div`
-  width: 40%;
-`;
-
-const IntroductionWrapper = styled.div`
-  width: 60%;
-`;
-
-const IntroAndFindTabletWrapper = styled.div`
-  display: flex;
-  justify-content: center;
-`;
-
-const IntroAndFindTabletSpacer = styled.div`
-  width: 20px;
 `;
 
 const MobileTabletCountdownWrapper = styled.div`

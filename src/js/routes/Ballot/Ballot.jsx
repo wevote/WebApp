@@ -41,7 +41,7 @@ import isMobileScreenSize from '../../utils/isMobileScreenSize';
 import lazyPreloadPages from '../../utils/lazyPreloadPages';
 import { renderLog } from '../../utils/logging';
 import mapCategoryFilterType from '../../utils/map-category-filter-type';
-import { DualHeaderContainer, HeaderContentContainer, PageContentContainer } from '../../utils/pageLayoutStyles';
+import { DualHeaderContainer, HeaderContentContainer, HeaderContentOuterContainer, PageContentContainer } from '../../utils/pageLayoutStyles';
 import { getBooleanValue } from '../../utils/textFormat';
 import showBallotDecisionsTabs from '../../utilsApi/showBallotDecisionsTabs';
 import BallotTitleHeader from './BallotTitleHeader';
@@ -1218,129 +1218,133 @@ class Ballot extends Component {
         <Suspense fallback={<LoadingWheelComp />}>
           <SnackNotifier />
           <DualHeaderContainer>
-            <HeaderContentContainer>
-              <div className="container-fluid">
-                <div className="row">
-                  <div className="col-md-12">
-                    <Helmet title="Ballot - We Vote" />
-                    <header className="ballot__header__group">
-                      <BallotTitleHeader
-                        electionName={electionName}
-                        electionDayTextObject={electionDayTextObject}
-                        toggleSelectBallotModal={this.toggleSelectBallotModal}
-                        scrolled={this.state.ballotHeaderUnpinned}
-                      />
-                    </header>
-                    { textForMapSearch || ballotWithItemsFromCompletionFilterType.length > 0 ? (
-                      <div className="ballot__filter__container">
-                        { showBallotDecisionsTabs() && (
-                          <>
-                            <div className="ballot__filter d-print-none">
-                              <BallotDecisionsTabs
-                                completionLevelFilterType={BallotStore.cleanCompletionLevelFilterType(completionLevelFilterType)}
-                                ballotLength={BallotStore.ballotLength}
-                                ballotLengthRemaining={BallotStore.ballotRemainingChoicesLength}
-                                setBallotItemFilterTypeToAll={this.setBallotItemFilterTypeToAll}
-                              />
-                            </div>
-                            <hr className="ballot-header-divider" />
-                          </>
-                        )}
-                        <BallotFilterRow showFilterTabs={showFilterTabs}>
-                          <div className="ballot__item-filter-tabs" ref={(chips) => { this.chipContainer = chips; }}>
-                            { ballotWithItemsFromCompletionFilterType.length ? (
+            <HeaderContentOuterContainer>
+              <HeaderContentContainer>
+                <div className="container-fluid">
+                  <div className="row">
+                    <div className="col-md-12">
+                      <Helmet title="Ballot - We Vote" />
+                      <header className="ballot__header__group">
+                        <BallotTitleHeader
+                          electionName={electionName}
+                          electionDayTextObject={electionDayTextObject}
+                          toggleSelectBallotModal={this.toggleSelectBallotModal}
+                          scrolled={this.state.ballotHeaderUnpinned}
+                        />
+                      </header>
+                      <BallotBottomWrapper>
+                        { textForMapSearch || ballotWithItemsFromCompletionFilterType.length > 0 ? (
+                          <div className="ballot__filter__container">
+                            { showBallotDecisionsTabs() && (
                               <>
-                                <FilterBaseSearch
-                                  alwaysOpen={!showFilterTabs}
-                                  isSearching={isSearching}
-                                  allItems={ballotWithAllItems}
-                                  onFilterBaseSearch={this.onFilterBaseSearch}
-                                  onToggleSearch={this.handleToggleSearchBallot}
-                                />
-                                { showFilterTabs && (
-                                  <div
-                                    className="ballot_filter_btns"
-                                    id="ballotBadgeMobileAndDesktop-All"
-                                    key="filterTypeAll"
-                                    onClick={() => this.setBallotItemFilterType('All', ballotWithItemsFromCompletionFilterType.length)}
-                                  >
-                                    <Chip variant="outlined"
-                                      color={(raceLevelFilterType === 'All' && !isSearching) ? 'primary' : 'default'}
-                                      className="btn_ballot_filter"
-                                      classes={{ root: classes.chipRootAll, label: classes.chipLabel, outlinedPrimary: (raceLevelFilterType === 'All' && !isSearching) ? classes.chipOutlined : null }}
-                                      label="All"
-                                      style={isSearching && isCordova() ? { width: 'unset' } : {}}
+                                <div className="ballot__filter d-print-none">
+                                  <BallotDecisionsTabs
+                                    completionLevelFilterType={BallotStore.cleanCompletionLevelFilterType(completionLevelFilterType)}
+                                    ballotLength={BallotStore.ballotLength}
+                                    ballotLengthRemaining={BallotStore.ballotRemainingChoicesLength}
+                                    setBallotItemFilterTypeToAll={this.setBallotItemFilterTypeToAll}
+                                  />
+                                </div>
+                                <hr className="ballot-header-divider" />
+                              </>
+                            )}
+                            <BallotFilterRow showFilterTabs={showFilterTabs}>
+                              <div className="ballot__item-filter-tabs" ref={(chips) => { this.chipContainer = chips; }}>
+                                { ballotWithItemsFromCompletionFilterType.length ? (
+                                  <>
+                                    <FilterBaseSearch
+                                      alwaysOpen={!showFilterTabs}
+                                      isSearching={isSearching}
+                                      allItems={ballotWithAllItems}
+                                      onFilterBaseSearch={this.onFilterBaseSearch}
+                                      onToggleSearch={this.handleToggleSearchBallot}
                                     />
-                                  </div>
-                                )}
-                                { showFilterTabs && (
-                                  BALLOT_ITEM_FILTER_TYPES.map((oneTypeOfBallotItem) => {
-                                    const allBallotItemsByFilterType = this.state.ballotWithAllItems.filter((item) => {
-                                      if (oneTypeOfBallotItem === 'Measure') {
-                                        return item.kind_of_ballot_item === 'MEASURE';
-                                      } else {
-                                        return oneTypeOfBallotItem === item.race_office_level;
-                                      }
-                                    });
-                                    if (allBallotItemsByFilterType.length) {
-                                      const ballotItemsByFilterType = ballotWithItemsFromCompletionFilterType.filter((item) => {
-                                        if (oneTypeOfBallotItem === 'Measure') {
-                                          return item.kind_of_ballot_item === 'MEASURE';
-                                        } else {
-                                          return oneTypeOfBallotItem === item.race_office_level;
-                                        }
-                                      });
-                                      const ballotChip = (
+                                    { showFilterTabs && (
+                                      <div
+                                        className="ballot_filter_btns"
+                                        id="ballotBadgeMobileAndDesktop-All"
+                                        key="filterTypeAll"
+                                        onClick={() => this.setBallotItemFilterType('All', ballotWithItemsFromCompletionFilterType.length)}
+                                      >
                                         <Chip variant="outlined"
-                                          color={(oneTypeOfBallotItem === raceLevelFilterType && !isSearching) ? 'primary' : 'default'}
+                                          color={(raceLevelFilterType === 'All' && !isSearching) ? 'primary' : 'default'}
                                           className="btn_ballot_filter"
-                                          classes={{ root: classes.chipRoot, label: classes.chipLabel, outlinedPrimary: (oneTypeOfBallotItem === raceLevelFilterType && !isSearching) ? classes.chipOutlined : null }}
-                                          label={chipLabelText(oneTypeOfBallotItem)}
+                                          classes={{ root: classes.chipRootAll, label: classes.chipLabel, outlinedPrimary: (raceLevelFilterType === 'All' && !isSearching) ? classes.chipOutlined : null }}
+                                          label="All"
                                           style={isSearching && isCordova() ? { width: 'unset' } : {}}
                                         />
-                                      );
-                                      return (
-                                        <div key={oneTypeOfBallotItem}>
-                                          <div className="u-show-mobile">
-                                            <div
-                                              className="ballot_filter_btns"
-                                              id={`ballotBadgeMobile-${oneTypeOfBallotItem}`}
-                                              onClick={() => this.setBallotItemFilterType(oneTypeOfBallotItem, ballotItemsByFilterType.length)}
-                                            >
-                                              {ballotChip}
+                                      </div>
+                                    )}
+                                    { showFilterTabs && (
+                                      BALLOT_ITEM_FILTER_TYPES.map((oneTypeOfBallotItem) => {
+                                        const allBallotItemsByFilterType = this.state.ballotWithAllItems.filter((item) => {
+                                          if (oneTypeOfBallotItem === 'Measure') {
+                                            return item.kind_of_ballot_item === 'MEASURE';
+                                          } else {
+                                            return oneTypeOfBallotItem === item.race_office_level;
+                                          }
+                                        });
+                                        if (allBallotItemsByFilterType.length) {
+                                          const ballotItemsByFilterType = ballotWithItemsFromCompletionFilterType.filter((item) => {
+                                            if (oneTypeOfBallotItem === 'Measure') {
+                                              return item.kind_of_ballot_item === 'MEASURE';
+                                            } else {
+                                              return oneTypeOfBallotItem === item.race_office_level;
+                                            }
+                                          });
+                                          const ballotChip = (
+                                            <Chip variant="outlined"
+                                              color={(oneTypeOfBallotItem === raceLevelFilterType && !isSearching) ? 'primary' : 'default'}
+                                              className="btn_ballot_filter"
+                                              classes={{ root: classes.chipRoot, label: classes.chipLabel, outlinedPrimary: (oneTypeOfBallotItem === raceLevelFilterType && !isSearching) ? classes.chipOutlined : null }}
+                                              label={chipLabelText(oneTypeOfBallotItem)}
+                                              style={isSearching && isCordova() ? { width: 'unset' } : {}}
+                                            />
+                                          );
+                                          return (
+                                            <div key={oneTypeOfBallotItem}>
+                                              <div className="u-show-mobile">
+                                                <div
+                                                  className="ballot_filter_btns"
+                                                  id={`ballotBadgeMobile-${oneTypeOfBallotItem}`}
+                                                  onClick={() => this.setBallotItemFilterType(oneTypeOfBallotItem, ballotItemsByFilterType.length)}
+                                                >
+                                                  {ballotChip}
+                                                </div>
+                                              </div>
+                                              <div className="u-show-desktop-tablet">
+                                                <div className="ballot_filter_btns">
+                                                  <Badge
+                                                    badgeContent={ballotItemsByFilterType.length}
+                                                    classes={{ badge: classes.badge, colorPrimary: classes.badgeColorPrimary }}
+                                                    color={(oneTypeOfBallotItem === raceLevelFilterType && !isSearching) ? 'primary' : 'default'}
+                                                    id={`ballotBadgeDesktop-${oneTypeOfBallotItem}`}
+                                                    invisible={ballotItemsByFilterType.length === 0}
+                                                    onClick={() => this.setBallotItemFilterType(oneTypeOfBallotItem, ballotItemsByFilterType.length)}
+                                                  >
+                                                    {ballotChip}
+                                                  </Badge>
+                                                </div>
+                                              </div>
                                             </div>
-                                          </div>
-                                          <div className="u-show-desktop-tablet">
-                                            <div className="ballot_filter_btns">
-                                              <Badge
-                                                badgeContent={ballotItemsByFilterType.length}
-                                                classes={{ badge: classes.badge, colorPrimary: classes.badgeColorPrimary }}
-                                                color={(oneTypeOfBallotItem === raceLevelFilterType && !isSearching) ? 'primary' : 'default'}
-                                                id={`ballotBadgeDesktop-${oneTypeOfBallotItem}`}
-                                                invisible={ballotItemsByFilterType.length === 0}
-                                                onClick={() => this.setBallotItemFilterType(oneTypeOfBallotItem, ballotItemsByFilterType.length)}
-                                              >
-                                                {ballotChip}
-                                              </Badge>
-                                            </div>
-                                          </div>
-                                        </div>
-                                      );
-                                    } else {
-                                      return null;
-                                    }
-                                  })
-                                )}
-                              </>
-                            ) : null}
+                                          );
+                                        } else {
+                                          return null;
+                                        }
+                                      })
+                                    )}
+                                  </>
+                                ) : null}
+                              </div>
+                            </BallotFilterRow>
                           </div>
-                        </BallotFilterRow>
-                      </div>
-                    ) : null}
+                        ) : null}
+                      </BallotBottomWrapper>
+                    </div>
                   </div>
                 </div>
-              </div>
-            </HeaderContentContainer>
+              </HeaderContentContainer>
+            </HeaderContentOuterContainer>
           </DualHeaderContainer>
 
           <PageContentContainer>
@@ -1540,6 +1544,10 @@ Ballot.propTypes = {
   match: PropTypes.object,
 };
 
+const BallotBottomWrapper = styled.div`
+  width: 100%;
+`;
+
 const BallotListWrapper = styled.div`
   padding-bottom: 40px;
 `;
@@ -1554,7 +1562,7 @@ const BallotLoadingWrapper = styled.div`
 // If we want to turn off filter tabs navigation bar:  ${({ showFilterTabs }) => !showFilterTabs && 'height: 0;'}
 const BallotFilterRow = styled.div`
   // TODO: 10/4/21 Steve, this is temporary and needs to be more responsive
-  margin-left: ${() => (isWebApp() && !isMobileScreenSize() ? 'calc((100vw - 975px)/2)' : '')};
+  // margin-left: ${() => (isWebApp() && !isMobileScreenSize() ? 'calc((100vw - 975px)/2)' : '')};
 `;
 
 // const EditAddressWrapper = styled.div`
