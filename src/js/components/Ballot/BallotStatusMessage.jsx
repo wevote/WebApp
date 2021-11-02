@@ -9,7 +9,6 @@ import cookies from '../../utils/cookies';
 import { formatDateMMMDoYYYY } from '../../utils/dateFormat';
 import initializeMoment from '../../utils/initializeMoment';
 import { renderLog } from '../../utils/logging';
-import LoadingWheel from '../LoadingWheel';
 
 const styles = (theme) => ({
   anchorOriginBottomCenter: {
