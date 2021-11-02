@@ -44,6 +44,7 @@ const Friends = React.lazy(() => import(/* webpackChunkName: 'Friends' */ './js/
 const GetStarted = React.lazy(() => import(/* webpackChunkName: 'GetStarted' */ './js/routes/Intro/GetStarted'));
 const HamburgerMenu = React.lazy(() => import(/* webpackChunkName: 'HamburgerMenu' */ './js/routes/Settings/HamburgerMenu'));
 const HowItWorks = React.lazy(() => import(/* webpackChunkName: 'HowItWorks' */ './js/routes/HowItWorks'));
+const HowWeVoteHelps = React.lazy(() => import(/* webpackChunkName: 'HowWeVoteHelps' */ './js/routes/more/HowWeVoteHelps'));
 const Intro = React.lazy(() => import(/* webpackChunkName: 'Intro' */ './js/routes/Intro/Intro'));
 const IntroNetwork = React.lazy(() => import(/* webpackChunkName: 'IntroNetwork' */ './js/routes/Intro/IntroNetwork'));
 const Location = React.lazy(() => import(/* webpackChunkName: 'Location' */ './js/routes/Settings/Location'));
@@ -289,6 +290,7 @@ class App extends Component {
                       <Route path="/more/facebooklandingprocess" component={FacebookLandingProcess} />
                       <Route path="/more/facebookredirecttowevote" component={FacebookRedirectToWeVote} />
                       <Route path="/more/faq" component={FAQ} />
+                      <Route path="/more/howwevotehelps" component={HowWeVoteHelps} />
                       <Route path="/more/jump" component={SignInJumpProcess} />
                       <Route path="/more/myballot" component={WeVoteBallotEmbed} />
                       <Route path="/more/network/friends" component={Friends} />

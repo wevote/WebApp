@@ -1,6 +1,6 @@
 import { Card } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
-import { Ballot, Info } from '@material-ui/icons';
+import { Ballot, Business, Info } from '@material-ui/icons';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
@@ -38,12 +38,11 @@ const groupedFilters = [
   // },
 ];
 const group = cordovaDot('../../img/global/svg-icons/group-icon.svg');
-const organizatonIcon = cordovaDot('../../img/global/svg-icons/organization-icon.svg');
 
 const islandFilters = [
   {
     filterName: 'showOrganizationsFilter',
-    icon: <SvgImage imageName={organizatonIcon} />,
+    icon: <Business />,
     filterDisplayName: 'Organizations',
     filterId: 'islandFilterOrganizations',
   },

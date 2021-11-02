@@ -1,6 +1,6 @@
 import { Button, IconButton, Tabs, Tooltip } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
-import { AccountCircle, Place } from '@material-ui/icons';
+import { AccountCircle, Place, Search } from '@material-ui/icons';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import styled from 'styled-components';
@@ -416,6 +416,10 @@ class HeaderBar extends Component {
   //   history.push(to);
   // }
 
+  goToSearch = () => {
+    historyPush('/opinions');
+  }
+
   closeAdviserIntroModal = () => {
     AppObservableStore.setShowAdviserIntroModal(false);
   }
@@ -590,7 +594,7 @@ class HeaderBar extends Component {
         <>
           <AddressWrapperDesktop className="u-show-desktop-tablet">
             <IconButton
-              classes={{ root: classes.iconButtonRoot }}
+              classes={{ root: classes.addressIconButtonRoot }}
               id="changeAddressOrElectionHeaderBarElection"
               onClick={() => this.toggleSelectBallotModal(false, false)}
             >
@@ -605,36 +609,41 @@ class HeaderBar extends Component {
               Address & Elections
             </Button>
           </AddressWrapperDesktop>
-          <AddressWrapperMobile className="u-show-mobile-bigger-than-iphone5"
+          <AddressWrapperMobile className="u-show-mobile"
                                 style={hideAddressWrapper ? { display: 'none' } : {}}
           >
             <IconButton
-              classes={{ root: classes.iconButtonRoot }}
+              classes={{ root: classes.addressIconButtonRoot }}
               id="changeAddressOnlyHeaderBar"
               onClick={() => this.toggleSelectBallotModal(false, true)}
             >
               <Place />
             </IconButton>
-            <Button
-              color="primary"
-              classes={{ root: classes.addressButtonRoot }}
-              id="changeAddressOnlyHeaderBarText"
-              onClick={() => this.toggleSelectBallotModal(false, true)}
-            >
-              Address
-            </Button>
           </AddressWrapperMobile>
-          <AddressWrapperMobileTiny className="u-show-mobile-iphone5-or-smaller"
-                                    style={hideAddressWrapper ? { display: 'none' } : {}}
-          >
+        </>
+      </Tooltip>
+    );
+    const searchButtonHtml = (
+      <Tooltip title="Search" aria-label="Search" classes={{ tooltipPlacementBottom: classes.tooltipPlacementBottom }}>
+        <>
+          <SearchWrapper className="u-show-desktop-tablet">
             <IconButton
-              classes={{ root: classes.iconButtonRoot }}
-              id="changeAddressOnlyHeaderBar"
-              onClick={() => this.toggleSelectBallotModal(false, true)}
+              classes={{ root: classes.searchButtonRoot }}
+              id="searchHeaderBarDesktop"
+              onClick={this.goToSearch}
             >
-              <Place />
+              <Search />
             </IconButton>
-          </AddressWrapperMobileTiny>
+          </SearchWrapper>
+          <SearchWrapper className="u-show-mobile-bigger-than-iphone5">
+            <IconButton
+              classes={{ root: classes.searchButtonRoot }}
+              id="searchHeaderBarMobile"
+              onClick={this.goToSearch}
+            >
+              <Search />
+            </IconButton>
+          </SearchWrapper>
         </>
       </Tooltip>
     );
@@ -701,6 +710,9 @@ class HeaderBar extends Component {
                 <div>
                   {showEditAddressButton && editAddressButtonHtml}
                 </div>
+                <div>
+                  {searchButtonHtml}
+                </div>
                 <HeaderNotificationMenu />
                 <div id="profileAvatarHeaderBar"
                   className={`header-nav__avatar-container ${isCordova() ? 'header-nav__avatar-cordova' : undefined}`}
@@ -737,6 +749,9 @@ class HeaderBar extends Component {
                 <div>
                   {showEditAddressButton && editAddressButtonHtml}
                 </div>
+                <div>
+                  {searchButtonHtml}
+                </div>
                 <HeaderNotificationMenu />
                 <IconButton
                   classes={{ root: classes.iconButtonRoot }}
@@ -766,6 +781,9 @@ class HeaderBar extends Component {
               <>
                 <div>
                   {showEditAddressButton && editAddressButtonHtml}
+                </div>
+                <div>
+                  {searchButtonHtml}
                 </div>
                 <HeaderNotificationMenu />
                 <SignInButton toggleSignInModal={this.toggleSignInModal} />
@@ -813,10 +831,27 @@ const styles = (theme) => ({
     color: 'rgba(17, 17, 17, .5)',
     outline: 'none !important',
     paddingRight: 6,
+    [theme.breakpoints.up('sm')]: {
+      paddingLeft: 0,
+    },
     [theme.breakpoints.down('sm')]: {
       paddingTop: 6,
       marginLeft: 2,
       paddingLeft: 0,
+    },
+  },
+  addressIconButtonRoot: {
+    paddingTop: 1,
+    paddingRight: 6,
+    paddingBottom: 3,
+    paddingLeft: 0,
+    color: 'rgba(17, 17, 17, .4)',
+    outline: 'none !important',
+    '&:hover': {
+      backgroundColor: 'transparent',
+    },
+    [theme.breakpoints.up('sm')]: {
+      paddingRight: 2,
     },
   },
   headerButtonRoot: {
@@ -842,6 +877,22 @@ const styles = (theme) => ({
     outline: 'none !important',
     '&:hover': {
       backgroundColor: 'transparent',
+    },
+  },
+  searchButtonRoot: {
+    '&:hover': {
+      backgroundColor: 'transparent',
+    },
+    color: 'rgba(17, 17, 17, .5)',
+    outline: 'none !important',
+    paddingTop: 0,
+    paddingRight: 0,
+    [theme.breakpoints.up('sm')]: {
+      paddingLeft: 0,
+    },
+    [theme.breakpoints.down('sm')]: {
+      marginLeft: 2,
+      paddingLeft: 0,
     },
   },
   tooltipPlacementBottom: {
@@ -879,16 +930,11 @@ const styles = (theme) => ({
 
 const AddressWrapperDesktop = styled.div`
   margin-top: 5px;
-  width: 220px;
+  width: 212px;
 `;
 
 const AddressWrapperMobile = styled.div`
-  margin-top: 5px;
-  width: 104px;
-`;
-
-const AddressWrapperMobileTiny = styled.div`
-  margin-top: 8px;
+  margin-top: 9px;
 `;
 
 const FirstNameWrapper = styled.div`
@@ -908,6 +954,10 @@ const HeaderBarWrapper = styled.div`
   ${({ hasSubMenu }) => (!hasSubMenu ? '' :
     'box-shadow: 0 2px 4px -1px rgba(0, 0, 0, 0.2), 0 4px 5px 0 rgba(0, 0, 0, 0.14), 0 1px 10px 0 rgba(0, 0, 0, 0.12);' +
     'border-bottom = 1px solid #aaa;')}
+`;
+
+const SearchWrapper = styled.div`
+  margin-top: 10px;
 `;
 
 export default withStyles(styles)(HeaderBar);

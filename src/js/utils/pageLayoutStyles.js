@@ -161,9 +161,9 @@ export const TopRowOneMiddleContainer = styled.div`
 `;
 
 export const TopRowOneRightContainer = styled.div`
-  padding-right: ${() => (((isMobileScreenSize() && !isIPhone5p5inMini()) || isIPadGiantSize()) ? '15px' : '0px')};
+  padding-right: 0px; // ${() => (((isMobileScreenSize() && !isIPhone5p5inMini()) || isIPadGiantSize()) ? '15px' : '0px')}; // Can this always be 0px?
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-end;
   cursor: pointer;
 
   // z-index: 3; //to float above the account/ProfilePopUp menu option grey div

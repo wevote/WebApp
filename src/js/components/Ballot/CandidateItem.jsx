@@ -428,7 +428,7 @@ class CandidateItem extends Component {
       ballotItemDisplayName, largeAreaHoverColorOnNow,
       largeAreaHoverLinkOnNow, voterOpposesBallotItem, voterSupportsBallotItem, voterTextStatement,
     } = this.state;
-    // console.log('inModal: ', inModal);
+    // console.log('hideIssuesRelatedToCandidate: ', hideIssuesRelatedToCandidate);
     // console.log('showPositionStatementActionBar: ', showPositionStatementActionBar);
 
     return (

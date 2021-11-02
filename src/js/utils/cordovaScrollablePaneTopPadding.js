@@ -33,6 +33,7 @@ export default function cordovaScrollablePaneTopPadding (pageEnumerationOverride
         case CordovaPageConstants.candidateWild:         return '42px';
         case CordovaPageConstants.measureWild:           return '42px';
         case CordovaPageConstants.moreAbout:             return '22px';
+        case CordovaPageConstants.moreFaq:               return '40px';
         case CordovaPageConstants.moreTerms:             return '40px';
         case CordovaPageConstants.moreTools:             return '44px';
         case CordovaPageConstants.officeWild:            return '84px';
@@ -282,6 +283,7 @@ export default function cordovaScrollablePaneTopPadding (pageEnumerationOverride
         case CordovaPageConstants.candidateWild:         return '49px';  // tested 10/2/20
         case CordovaPageConstants.measureWild:           return '67px';
         case CordovaPageConstants.moreAbout:             return '22px';  // tested 10/1/20
+        case CordovaPageConstants.moreFaq:               return '44px';
         case CordovaPageConstants.moreTerms:             return '44px';
         case CordovaPageConstants.moreTools:             return '44px';
         case CordovaPageConstants.news:                  return '9px';   // tested 9/30/20
@@ -354,6 +356,7 @@ export default function cordovaScrollablePaneTopPadding (pageEnumerationOverride
         case CordovaPageConstants.candidate:              return '64px';
         case CordovaPageConstants.candidateWild:          return '53px';
         case CordovaPageConstants.measureWild:            return '57px';
+        case CordovaPageConstants.moreFaq:                return '32px';
         case CordovaPageConstants.moreTerms:              return '32px';
         case CordovaPageConstants.officeWild:             return '91px';
         case CordovaPageConstants.ready:                  return '52px';
@@ -376,6 +379,7 @@ export default function cordovaScrollablePaneTopPadding (pageEnumerationOverride
         case CordovaPageConstants.candidate:              return '64px';
         case CordovaPageConstants.candidateWild:          return '53px';
         case CordovaPageConstants.measureWild:            return '57px';
+        case CordovaPageConstants.moreFaq:                return '32px';
         case CordovaPageConstants.moreTerms:              return '32px';
         case CordovaPageConstants.officeWild:             return '94px';
         case CordovaPageConstants.ready:                  return '56px';
@@ -396,6 +400,7 @@ export default function cordovaScrollablePaneTopPadding (pageEnumerationOverride
         case CordovaPageConstants.candidate:             return '55px';
         case CordovaPageConstants.candidateWild:         return '53px';
         case CordovaPageConstants.measureWild:           return '40px';
+        case CordovaPageConstants.moreFaq:               return '32px';
         case CordovaPageConstants.moreTerms:             return '32px';
         case CordovaPageConstants.officeWild:            return '78px';
         case CordovaPageConstants.ready:                 return '47px';
@@ -416,6 +421,7 @@ export default function cordovaScrollablePaneTopPadding (pageEnumerationOverride
         case CordovaPageConstants.candidate:             return '53px';
         case CordovaPageConstants.candidateWild:         return '51px';
         case CordovaPageConstants.measureWild:           return '53px';
+        case CordovaPageConstants.moreFaq:               return '32px';
         case CordovaPageConstants.moreTerms:             return '32px';
         case CordovaPageConstants.officeWild:            return '84px';
         case CordovaPageConstants.ready:                 return '50px';
@@ -436,6 +442,7 @@ export default function cordovaScrollablePaneTopPadding (pageEnumerationOverride
         case CordovaPageConstants.candidate:             return '24px';
         case CordovaPageConstants.candidateWild:         return '36px';
         case CordovaPageConstants.measureWild:           return '42px';
+        case CordovaPageConstants.moreFaq:               return '32px';
         case CordovaPageConstants.moreTerms:             return '32px';
         case CordovaPageConstants.officeWild:            return '61px';
         case CordovaPageConstants.ready:                 return '30px';
@@ -451,20 +458,16 @@ export default function cordovaScrollablePaneTopPadding (pageEnumerationOverride
   } else if (isMobileScreenSize()) {
     cordovaOffsetLog(`cordovaScrollablePaneTopPadding: WebApp mobile screen size, page: ${page}`);
     switch (page) {
-      // case CordovaPageConstants.ballotLgHdrWild:
-      //   return showBallotDecisionsTabs() ? '58px' : '42px';
-      // case CordovaPageConstants.ballotSmHdrWild:
-      //   return '114px';
+      case CordovaPageConstants.ballotLgHdrWild:          return showBallotDecisionsTabs() ? '0px' : '0px';
+      case CordovaPageConstants.ballotSmHdrWild:          return '0px';
       // case CordovaPageConstants.ballotVote:
       //   return isSignedIn ? '131px' : '128px';
-      // case CordovaPageConstants.candidate:
-      //   return '24px';
-      // case CordovaPageConstants.candidateWild:
-      //   return '36px';
+      // case CordovaPageConstants.candidate:                return '48px';
+      case CordovaPageConstants.candidateWild:            return '48px';
       case CordovaPageConstants.measureWild:              return '100px';
-      // case CordovaPageConstants.moreTerms:
-      //   return '32px';
-      case CordovaPageConstants.officeWild:               return '29px';
+      // case CordovaPageConstants.moreFaq:                  return '58px';
+      // case CordovaPageConstants.moreTerms:                return '58px';
+      case CordovaPageConstants.officeWild:               return '78px';
       // case CordovaPageConstants.ready:
       //   return '30px';
       // case CordovaPageConstants.settingsAccount:
@@ -475,11 +478,10 @@ export default function cordovaScrollablePaneTopPadding (pageEnumerationOverride
       //   return '39px';
       // case CordovaPageConstants.settingsWild:
       //   return '55px';
-      // case CordovaPageConstants.values:
-      //   return '0';
+      // case CordovaPageConstants.values:                   return '58px';
       // case CordovaPageConstants.voterGuideCreatorWild:
       //   return '10px'; // $headroom-wrapper-webapp__voter-guide
-      default:                                            return '0px';
+      default:                                            return '58px';
     }
   }
 
@@ -487,6 +489,7 @@ export default function cordovaScrollablePaneTopPadding (pageEnumerationOverride
   cordovaOffsetLog(`cordovaScrollablePaneTopPadding: WebApp desktop, page: ${page}`);
   switch (page) {
     case CordovaPageConstants.ballotSmHdrWild:       return '30px';
+    case CordovaPageConstants.candidateWild:         return '48px';
     case CordovaPageConstants.friends:               return '102px';
     case CordovaPageConstants.measureWild:           return '102px';
     case CordovaPageConstants.officeWild:            return '102px';

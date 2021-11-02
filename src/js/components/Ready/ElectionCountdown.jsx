@@ -149,7 +149,7 @@ class ElectionCountdown extends React.Component {
     const timeStillLoading = !(days || hours || minutes || seconds);
     const electionIsUpcomingHtml = (
       <CardCountdown className="card">
-        <div className="">
+        <CardCountdownInternalWrapper>
           <div className={daysOnlyMode ? '' : 'u-show-mobile'}>
             <div>
               <CardTitleUpcoming>
@@ -245,12 +245,12 @@ class ElectionCountdown extends React.Component {
               </div>
             </div>
           )}
-        </div>
+        </CardCountdownInternalWrapper>
       </CardCountdown>
     );
     const electionIsTodayHtml = (
       <CardCountdown className="card">
-        <div className="">
+        <CardCountdownInternalWrapper>
           <div className={daysOnlyMode ? '' : 'u-show-mobile'}>
             <div>
               <CardTitleToday>
@@ -303,12 +303,12 @@ class ElectionCountdown extends React.Component {
               </div>
             </div>
           )}
-        </div>
+        </CardCountdownInternalWrapper>
       </CardCountdown>
     );
     const electionInPastHtml = (
       <CardCountdown className="card">
-        <div className="">
+        <CardCountdownInternalWrapper>
           <div className={daysOnlyMode ? '' : 'u-show-mobile'}>
             <div>
               <CardTitlePast>
@@ -361,7 +361,7 @@ class ElectionCountdown extends React.Component {
               </div>
             </div>
           )}
-        </div>
+        </CardCountdownInternalWrapper>
       </CardCountdown>
     );
 
@@ -380,12 +380,18 @@ ElectionCountdown.propTypes = {
 };
 
 const CardCountdown = styled.div`
+  align-items: center;
+  flex-direction: row;
+  justify-content: center;
+  min-height: 190px;
   padding-top: 4px;
   padding-bottom: 8px;
-  min-height: 190px;
   @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
     min-height: 10px;
   }
+`;
+
+const CardCountdownInternalWrapper = styled.div`
 `;
 
 const CardTitleUpcoming = styled.h1`
@@ -402,7 +408,7 @@ const CardTitleUpcoming = styled.h1`
 
 const CardTitleToday = styled.h1`
   color: #2E3C5D !important;
-  font-size: 64px;
+  font-size: 60px;
   font-weight: 900;
   margin-bottom: 8px;
   margin-top: 0;

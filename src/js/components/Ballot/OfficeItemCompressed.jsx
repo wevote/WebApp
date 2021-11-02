@@ -254,7 +254,6 @@ class OfficeItemCompressed extends Component {
                 key={`candidate_preview-${oneCandidate.we_vote_id}`}
               >
                 <CandidateInfo
-                  className="card-child"
                   brandBlue={theme.palette.primary.main}
                   numberOfCandidatesInList={candidatesToRender.length}
                 >
@@ -274,11 +273,12 @@ class OfficeItemCompressed extends Component {
                       />
                       {/* Candidate Name */}
                       <div>
-                        <h4 className="card-main__candidate-name card-main__candidate-name-link u-f5">
+                        <CandidateName>
                           {oneCandidate.ballot_item_display_name}
-                          <br />
-                          <span className="card-main__candidate-party-description">{candidatePartyText}</span>
-                        </h4>
+                        </CandidateName>
+                        <CandidateParty>
+                          {candidatePartyText}
+                        </CandidateParty>
                       </div>
                     </Candidate>
                     {/*  /!* Show check mark or score *!/ */}
@@ -448,13 +448,13 @@ const Column = styled.div`
 `;
 
 const CandidateInfo = styled.div`
+  background-color: #f8f8f8;
   border: 1px solid ${({ theme }) => theme.colors.grayBorder};
-  // display: block !important;  Dec2020: As found had two display lines, second overwrote the first
   display: flex;
   flex-flow: column;
   height: 100%;
   margin: 0 !important;
-  padding: 12px !important;
+  padding: 8px !important;
   transition: all 200ms ease-in;
   width: 100% !important;
   &:hover {
@@ -476,6 +476,18 @@ const CandidateInfo = styled.div`
 const Candidate = styled.div`
   display: flex;
   flex-grow: 8;
+`;
+
+const CandidateName = styled.h4`
+  color: #4371cc;
+  font-weight: 400;
+  font-size: 1.1rem;
+  margin-bottom: 0 !important;
+`;
+
+const CandidateParty = styled.div`
+  color: #555;
+  font-size: .7rem;
 `;
 
 const CandidateTopRow = styled.div`

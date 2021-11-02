@@ -37,6 +37,8 @@ class IssuesByBallotItemDisplayList extends Component {
     const issuesUnderThisBallotItemVoterIsFollowing = IssueStore.getIssuesUnderThisBallotItemVoterIsFollowing(this.props.ballotItemWeVoteId) || [];
     const issuesUnderThisBallotItemVoterIsNotFollowing = IssueStore.getIssuesUnderThisBallotItemVoterNotFollowing(this.props.ballotItemWeVoteId) || [];
     const issuesToRender = issuesUnderThisBallotItemVoterIsFollowing.concat(issuesUnderThisBallotItemVoterIsNotFollowing);
+    const issuesUnderThisBallotItemVoterIsFollowingLength = issuesUnderThisBallotItemVoterIsFollowing.length;
+    const issuesUnderThisBallotItemVoterIsNotFollowingLength = issuesUnderThisBallotItemVoterIsNotFollowing.length;
     const issuesToRenderLength = issuesToRender.length;
     const { ballotItemDisplayName, ballotItemWeVoteId, expandIssuesByDefault } = this.props;
     this.setState({
@@ -45,6 +47,8 @@ class IssuesByBallotItemDisplayList extends Component {
       expandIssues: expandIssuesByDefault || false,
       issuesToRender,
       issuesToRenderLength,
+      issuesUnderThisBallotItemVoterIsFollowingLength,
+      issuesUnderThisBallotItemVoterIsNotFollowingLength,
     });
   }
 
@@ -54,6 +58,8 @@ class IssuesByBallotItemDisplayList extends Component {
     const issuesUnderThisBallotItemVoterIsFollowing = IssueStore.getIssuesUnderThisBallotItemVoterIsFollowing(nextProps.ballotItemWeVoteId) || [];
     const issuesUnderThisBallotItemVoterIsNotFollowing = IssueStore.getIssuesUnderThisBallotItemVoterNotFollowing(nextProps.ballotItemWeVoteId) || [];
     const issuesToRender = issuesUnderThisBallotItemVoterIsFollowing.concat(issuesUnderThisBallotItemVoterIsNotFollowing);
+    const issuesUnderThisBallotItemVoterIsFollowingLength = issuesUnderThisBallotItemVoterIsFollowing.length;
+    const issuesUnderThisBallotItemVoterIsNotFollowingLength = issuesUnderThisBallotItemVoterIsNotFollowing.length;
     const issuesToRenderLength = issuesToRender.length;
     const { ballotItemDisplayName, ballotItemWeVoteId } = nextProps;
     this.setState({
@@ -61,6 +67,8 @@ class IssuesByBallotItemDisplayList extends Component {
       ballotItemWeVoteId,
       issuesToRender,
       issuesToRenderLength,
+      issuesUnderThisBallotItemVoterIsFollowingLength,
+      issuesUnderThisBallotItemVoterIsNotFollowingLength,
     });
   }
 
@@ -115,18 +123,21 @@ class IssuesByBallotItemDisplayList extends Component {
   }
 
   onIssueStoreChange () {
+    // console.log('IssuesByBallotItemDisplayList onIssueStoreChange, signInModalGlobalState:', signInModalGlobalState);
     if (!signInModalGlobalState.get('textOrEmailSignInInProcess')) {
       // console.log('IssuesByBallotItemDisplayList, onIssueStoreChange');
       const { ballotItemWeVoteId, issueRenderCount } = this.state;
       const issuesUnderThisBallotItemVoterIsFollowing = IssueStore.getIssuesUnderThisBallotItemVoterIsFollowing(ballotItemWeVoteId) || [];
       const issuesUnderThisBallotItemVoterIsNotFollowing = IssueStore.getIssuesUnderThisBallotItemVoterNotFollowing(ballotItemWeVoteId) || [];
+      const issuesToRender = issuesUnderThisBallotItemVoterIsFollowing.concat(issuesUnderThisBallotItemVoterIsNotFollowing);
       const issuesUnderThisBallotItemVoterIsFollowingLength = issuesUnderThisBallotItemVoterIsFollowing.length;
       const issuesUnderThisBallotItemVoterIsNotFollowingLength = issuesUnderThisBallotItemVoterIsNotFollowing.length;
-      const issuesToRender = issuesUnderThisBallotItemVoterIsFollowing.concat(issuesUnderThisBallotItemVoterIsNotFollowing);
+      const issuesToRenderLength = issuesToRender.length;
       this.setState({
         issuesUnderThisBallotItemVoterIsFollowingLength,
         issuesUnderThisBallotItemVoterIsNotFollowingLength,
         issuesToRender,
+        issuesToRenderLength,
       });
       if (issuesToRender.length > 0 && issueRenderCount === 0) {
         if (this.timer) clearTimeout(this.timer);
@@ -209,20 +220,21 @@ class IssuesByBallotItemDisplayList extends Component {
     const {
       ballotItemDisplayName, ballotItemWeVoteId, expandIssues,
       maximumNumberOfIssuesToDisplay,
-      totalRemainingWidth, issuesToRender, issuesToRenderLength, issueRenderCount,
+      totalRemainingWidth, issuesToRender, // issuesToRenderLength, issueRenderCount,
     } = this.state;
 
-    // console.log('this.state.ballotItemWeVoteId: ', this.state.ballotItemWeVoteId);
-    // console.log('issuesUnderThisBallotItemVoterIsFollowing: ', issuesUnderThisBallotItemVoterIsFollowing);
-    // console.log('issuesUnderThisBallotItemVoterIsNotFollowing: ', issuesUnderThisBallotItemVoterIsNotFollowing);
-    if (!issuesToRenderLength) {
+    // console.log('this.state.ballotItemWeVoteId: ', ballotItemWeVoteId);
+    // console.log('issuesToRender: ', issuesToRender);
+    if (!issuesToRender || !issuesToRender.length) {
       // If we don't have any endorsement text, show the alternate component passed in
+      // console.log('no issues to render');
       return this.props.children || null;
     }
 
+    const issueRenderCountTemp = issuesToRender.length;
     let issueFollowedByVoter = false;
     let localCounter = 0;
-    const issuesChips = issuesToRender.slice(0, issueRenderCount).map(
+    const issuesChips = issuesToRender.slice(0, issueRenderCountTemp).map(
       (oneIssue) => {
         if (!oneIssue) {
           return null;

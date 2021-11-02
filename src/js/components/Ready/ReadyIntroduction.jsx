@@ -15,6 +15,13 @@ class ReadyIntroduction extends Component {
     };
   }
 
+  componentDidMount() {
+    const { contentUnfurledOnLoad } = this.props;
+    this.setState({
+      contentUnfurled: contentUnfurledOnLoad,
+    });
+  }
+
   contentUnfurledLink = () => {
     const { contentUnfurled } = this.state;
     this.setState({
@@ -25,7 +32,7 @@ class ReadyIntroduction extends Component {
   render () {
     renderLog('ReadyIntroduction');  // Set LOG_RENDER_EVENTS to log all renders
     const { contentUnfurled } = this.state;
-    const { showStep3WhenCompressed } = this.props;
+    const { contentUnfurledOnLoad, showStep3WhenCompressed } = this.props;
     // const numberOfCandidates = '12,600';
     // const numberOfOffices = '6,500';
     return (
@@ -48,7 +55,7 @@ class ReadyIntroduction extends Component {
               {contentUnfurled && (
                 <ListRow>
                   <Dot><StepNumberPlaceholder>&nbsp;</StepNumberPlaceholder></Dot>
-                  <StepText>Make a plan for casting your vote. See your entire ballot. Find your polling location.</StepText>
+                  <StepText>When is the next election? What is on your ballot? Make a plan for casting your vote.</StepText>
                 </ListRow>
               )}
 
@@ -62,7 +69,7 @@ class ReadyIntroduction extends Component {
                   <StepText>
                     <ReadMore
                       textToDisplay="Who's running for office? We show you what will be on your actual ballot, based on your full address. What do your trusted friends think about what is on the ballot? We Vote helps you make sense of your options."
-                      numberOfLines={3}
+                      numberOfLines={contentUnfurledOnLoad ? 7 : 3}
                     />
                   </StepText>
                 </ListRow>
@@ -80,16 +87,18 @@ class ReadyIntroduction extends Component {
                   <StepText>
                     <ReadMore
                       textToDisplay="Show your friends how to make sense of their decisions, so they can vote their values. The more of your friends who vote, the more impact you will have on the outcome of the election."
-                      numberOfLines={3}
+                      numberOfLines={contentUnfurledOnLoad ? 7 : 3}
                     />
                   </StepText>
                 </ListRow>
               )}
-              <ShowMoreButtons
-                showMoreId="showMoreReadyIntroductionCompressed"
-                showMoreButtonWasClicked={contentUnfurled}
-                showMoreButtonsLink={this.contentUnfurledLink}
-              />
+              {!contentUnfurledOnLoad && (
+                <ShowMoreButtons
+                  showMoreId="showMoreReadyIntroductionCompressed"
+                  showMoreButtonWasClicked={contentUnfurled}
+                  showMoreButtonsLink={this.contentUnfurledLink}
+                />
+              )}
             </ListMaxWidth>
           </ListWrapper>
         </InnerWrapper>
@@ -98,6 +107,7 @@ class ReadyIntroduction extends Component {
   }
 }
 ReadyIntroduction.propTypes = {
+  contentUnfurledOnLoad: PropTypes.bool,
   showStep3WhenCompressed: PropTypes.bool,
 };
 

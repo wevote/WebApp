@@ -193,6 +193,7 @@ class ReadyTaskBallot extends React.Component {
     } = ballotItemsStatusCounts;
     const howItWorksCompleted = VoterStore.getInterfaceFlagState(VoterConstants.HOW_IT_WORKS_WATCHED);
     const personalizedScoreIntroCompleted = VoterStore.getInterfaceFlagState(VoterConstants.PERSONALIZED_SCORE_INTRO_COMPLETED);
+    let allCandidatesButtonNeeded = false;
     let allCandidatesShowButton = false;
     let allDecisionsMadeCount = 0;
     let allDecisionsNeededCount = 0;
@@ -230,10 +231,11 @@ class ReadyTaskBallot extends React.Component {
       candidateRaceTypesCompletelyDecided += federalAllCompleted ? 1 : 0;
       candidateRaceTypesCompletelyDecided += localAllCompleted ? 1 : 0;
       candidateRaceTypesCompletelyDecided += stateAllCompleted ? 1 : 0;
-      // If not candidate decisions have been made
+      // If no candidate decisions have been made
       if ((candidateRaceTypesWithAtLeastOneDecision === 0) ||
           (candidateRaceTypesThatNeedDecisions === candidateRaceTypesCompletelyDecided)) {
         // Show "allCandidates" instead of each of the candidate race types
+        allCandidatesButtonNeeded = true;
         allCandidatesShowButton = true;
       }
     }
@@ -332,6 +334,7 @@ class ReadyTaskBallot extends React.Component {
     // console.log('showMoreButtonWasClicked: ', showMoreButtonWasClicked);
 
     this.setState({
+      allCandidatesButtonNeeded,
       allCandidatesShowButton,
       federalButtonNeeded,
       federalShowButton,
@@ -464,7 +467,7 @@ class ReadyTaskBallot extends React.Component {
               className="u-cursor--pointer"
               color="primary"
               completed={allCandidatesAllCompleted ? 'true' : undefined}
-              onClick={this.goToCandidateTypeAfterCalculation}
+              onClick={this.goToBallot} // onClick={this.goToCandidateTypeAfterCalculation}
               variant="outlined"
             >
               <ButtonLeft>

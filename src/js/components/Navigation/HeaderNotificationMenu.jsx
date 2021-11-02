@@ -329,8 +329,9 @@ const styles = (theme) => ({
     outline: 'none !important',
     height: '48px',
     paddingTop: '4px !important',
-    paddingBottom: '9px !important',
     paddingRight: 0,
+    paddingBottom: '9px !important',
+    paddingLeft: 6,
     '&:hover': {
       backgroundColor: 'transparent',
     },
@@ -340,8 +341,9 @@ const styles = (theme) => ({
     outline: 'none !important',
     height: '48px',
     paddingTop: '4px !important',
-    paddingBottom: '9px !important',
     paddingRight: 0,
+    paddingBottom: '9px !important',
+    paddingLeft: 6,
     '&:hover': {
       backgroundColor: 'transparent',
     },

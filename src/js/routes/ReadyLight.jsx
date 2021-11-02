@@ -8,7 +8,6 @@ import AnalyticsActions from '../actions/AnalyticsActions';
 import ReadyActions from '../actions/ReadyActions';
 import ElectionCountdown from '../components/Ready/ElectionCountdown';
 import ReadyInformationDisclaimer from '../components/Ready/ReadyInformationDisclaimer';
-import ReadyIntroduction from '../components/Ready/ReadyIntroduction';
 import ReadyTaskBallot from '../components/Ready/ReadyTaskBallot';
 import ReadyTaskFriends from '../components/Ready/ReadyTaskFriends';
 import ReadyTaskPlan from '../components/Ready/ReadyTaskPlan';
@@ -18,7 +17,6 @@ import webAppConfig from '../config';
 import AppObservableStore from '../stores/AppObservableStore';
 import VoterStore from '../stores/VoterStore';
 import { historyPush, isAndroid, isIOS, isWebApp } from '../utils/cordovaUtils';
-import isMobileScreenSize from '../utils/isMobileScreenSize';
 import lazyPreloadPages from '../utils/lazyPreloadPages';
 import { renderLog } from '../utils/logging';
 import { PageContentContainer } from '../utils/pageLayoutStyles';
@@ -131,19 +129,7 @@ class ReadyLight extends Component {
               <ReadyTaskBallot
                 arrowsOn
               />
-              <Card className="card u-show-mobile">
-                <div className="card-main">
-                  <ReadyIntroduction />
-                </div>
-              </Card>
               <IntroAndFindTabletWrapper className="u-show-tablet">
-                <IntroductionWrapper>
-                  <Card className="card">
-                    <div className="card-main">
-                      <ReadyIntroduction />
-                    </div>
-                  </Card>
-                </IntroductionWrapper>
                 <IntroAndFindTabletSpacer />
               </IntroAndFindTabletWrapper>
               {nextReleaseFeaturesEnabled && (
@@ -182,13 +168,6 @@ class ReadyLight extends Component {
                   </div>
                 </Card>
               )}
-              <Card className="card">
-                <div className="card-main">
-                  <ReadyIntroduction
-                    showStep3WhenCompressed
-                  />
-                </div>
-              </Card>
             </div>
           </div>
         </PageContainer>
@@ -232,10 +211,6 @@ const SuspenseCard = styled.div`
   flex-direction: column;
   width: 290px;
   height: 138px;
-`;
-
-const IntroductionWrapper = styled.div`
-  width: 60%;
 `;
 
 const IntroAndFindTabletWrapper = styled.div`
