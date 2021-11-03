@@ -1,4 +1,3 @@
-import { Button } from '@material-ui/core';
 import { withStyles, withTheme } from '@material-ui/core/styles';
 import { ArrowForward } from '@material-ui/icons';
 import PropTypes from 'prop-types';
@@ -19,6 +18,7 @@ const BallotItemSupportOpposeCountDisplay = React.lazy(() => import(/* webpackCh
 const DelayedLoad = React.lazy(() => import(/* webpackChunkName: 'DelayedLoad' */ '../Widgets/DelayedLoad'));
 const ImageHandler = React.lazy(() => import(/* webpackChunkName: 'ImageHandler' */ '../ImageHandler'));
 const IssuesByBallotItemDisplayList = React.lazy(() => import(/* webpackChunkName: 'IssuesByBallotItemDisplayList' */ '../Values/IssuesByBallotItemDisplayList'));
+const ItemActionBar = React.lazy(() => import(/* webpackChunkName: 'ItemActionBar' */ '../Widgets/ItemActionBar/ItemActionBar'));
 const ShowMoreFooter = React.lazy(() => import(/* webpackChunkName: 'ShowMoreFooter' */ '../Navigation/ShowMoreFooter'));
 const TopCommentByBallotItem = React.lazy(() => import(/* webpackChunkName: 'TopCommentByBallotItem' */ '../Widgets/TopCommentByBallotItem'));
 
@@ -222,7 +222,7 @@ class OfficeItemCompressed extends Component {
   }
 
   generateCandidates () {
-    const { classes, externalUniqueId, theme } = this.props;
+    const { externalUniqueId, theme } = this.props;
     let { candidatesToShowForSearchResults } = this.props;
     candidatesToShowForSearchResults = candidatesToShowForSearchResults || [];
     const { candidateList } = this.state;
@@ -231,8 +231,6 @@ class OfficeItemCompressed extends Component {
     const supportedCandidatesList = candidateList.filter((candidate) => candidatesToShowForSearchResults.includes(candidate.we_vote_id) || (SupportStore.getVoterSupportsByBallotItemWeVoteId(candidate.we_vote_id) && !candidate.withdrawn_from_election));
     const candidatesToRender = supportedCandidatesList.length ? supportedCandidatesList : candidateList;
     const hideCandidateDetails = supportedCandidatesList.length;
-    let voterOpposesBallotItem;
-    let voterSupportsBallotItem;
     return (
       <Container candidateLength={candidatesToRender.length}>
         { candidatesToRender.slice(0, candidatePreviewLimit)
@@ -241,17 +239,13 @@ class OfficeItemCompressed extends Component {
               return null;
             }
             const candidatePartyText = oneCandidate.party && oneCandidate.party.length ? `${oneCandidate.party}` : '';
-            const localUniqueId = oneCandidate.we_vote_id;
-            voterSupportsBallotItem = SupportStore.voterSupportsList[oneCandidate.we_vote_id] || false;
-            voterOpposesBallotItem = SupportStore.voterOpposesList[oneCandidate.we_vote_id] || false;
             const avatarCompressed = `card-main__avatar-compressed${isCordova() ? '-cordova' : ''}`;
             const avatarBackgroundImage = cordovaDot('../img/global/svg-icons/avatar-generic.svg');
-
 
             return (
               <Column
                 candidateLength={candidatesToRender.length}
-                key={`candidate_preview-${oneCandidate.we_vote_id}`}
+                key={`candidate_preview-${oneCandidate.we_vote_id}-${externalUniqueId}`}
               >
                 <CandidateInfo
                   brandBlue={theme.palette.primary.main}
@@ -259,7 +253,7 @@ class OfficeItemCompressed extends Component {
                 >
                   <CandidateTopRow>
                     <Candidate
-                      id={`officeItemCompressedCandidateImageAndName-${oneCandidate.we_vote_id}`}
+                      id={`officeItemCompressedCandidateImageAndName-${oneCandidate.we_vote_id}-${externalUniqueId}`}
                       onClick={() => this.goToCandidateLink(oneCandidate.we_vote_id)}
                     >
                       {/* Candidate Image */}
@@ -303,29 +297,21 @@ class OfficeItemCompressed extends Component {
                               ballotItemDisplayName={oneCandidate.ballot_item_display_name}
                               ballotItemWeVoteId={oneCandidate.we_vote_id}
                               disableMoreWrapper
-                              externalUniqueId={`officeItemCompressed-${oneCandidate.we_vote_id}`}
+                              externalUniqueId={`officeItemCompressed-${oneCandidate.we_vote_id}-${externalUniqueId}`}
                             />
-                            <MoreButtonWrapper onClick={() => this.goToCandidateLink(oneCandidate.we_vote_id)}>
-                              <Button
-                                id={`topCommentButtonOffice-${externalUniqueId}-${localUniqueId}`}
-                                variant="outlined"
-                                color="primary"
-                                classes={{ root: classes.buttonRoot, outlinedPrimary: classes.buttonOutlinedPrimary }}
-                              >
-                                {voterOpposesBallotItem || voterSupportsBallotItem ? (
-                                  <>
-                                    View
-                                  </>
-                                ) : (
-                                  <>
-                                    Choose or Oppose
-                                  </>
-                                )}
-                              </Button>
-                            </MoreButtonWrapper>
                           </span>
                         </TopCommentByBallotItem>
                       </DelayedLoad>
+                      <ItemActionBarWrapper>
+                        <ItemActionBar
+                          ballotItemWeVoteId={oneCandidate.we_vote_id}
+                          commentButtonHide
+                          externalUniqueId={`OfficeItemCompressed-ItemActionBar-${oneCandidate.we_vote_id}-${externalUniqueId}`}
+                          hidePositionPublicToggle
+                          positionPublicToggleWrapAllowed
+                          shareButtonHide
+                        />
+                      </ItemActionBarWrapper>
                     </CandidateBottomRow>
                   )}
                 </CandidateInfo>
@@ -359,7 +345,10 @@ class OfficeItemCompressed extends Component {
     const { officeWeVoteId, classes } = this.props;
     ballotItemDisplayName = toTitleCase(ballotItemDisplayName);
     const totalNumberOfCandidatesToDisplay = this.state.candidateList.length;
-
+    // If voter has chosen 1+ candidates, hide the "Show more" link
+    const { candidateList } = this.state;
+    const supportedCandidatesList = candidateList.filter((candidate) => (SupportStore.getVoterSupportsByBallotItemWeVoteId(candidate.we_vote_id) && !candidate.withdrawn_from_election));
+    const turnOffShowMoreFooter = (supportedCandidatesList && supportedCandidatesList.length > 0);
     return (
       <OfficeItemCompressedWrapper>
         <a // eslint-disable-line
@@ -380,9 +369,13 @@ class OfficeItemCompressed extends Component {
           ************************* */}
         {this.generateCandidates()}
 
-        { totalNumberOfCandidatesToDisplay > this.state.maximumNumberOrganizationsToDisplay ?
-          <ShowMoreFooter showMoreId={`officeItemCompressedShowMoreFooter-${officeWeVoteId}`} showMoreLink={() => this.goToOfficeLink()} showMoreText={`Show all ${totalNumberOfCandidatesToDisplay} candidates`} /> :
-          <ShowMoreFooter showMoreId={`officeItemCompressedShowMoreFooter-${officeWeVoteId}`} showMoreLink={() => this.goToOfficeLink()} />}
+        {!turnOffShowMoreFooter && (
+          <>
+            { totalNumberOfCandidatesToDisplay > this.state.maximumNumberOrganizationsToDisplay ?
+              <ShowMoreFooter showMoreId={`officeItemCompressedShowMoreFooter-${officeWeVoteId}`} showMoreLink={() => this.goToOfficeLink()} showMoreText={`Show all ${totalNumberOfCandidatesToDisplay} candidates`} /> :
+              <ShowMoreFooter showMoreId={`officeItemCompressedShowMoreFooter-${officeWeVoteId}`} showMoreLink={() => this.goToOfficeLink()} showMoreText="Learn more" />}
+          </>
+        )}
       </OfficeItemCompressedWrapper>
     );
   }
@@ -498,7 +491,11 @@ const CandidateTopRow = styled.div`
 `;
 
 const CandidateBottomRow = styled.div`
-  // padding-bottom: 10px;
+  display: flex;
+  flex-flow: column;
+  height: 100%;
+  justify-content: space-between;
+  margin-top: 4px;
 `;
 
 const Container = styled.div`
@@ -511,11 +508,12 @@ const Container = styled.div`
   margin: 0px -10px;
 `;
 
-const MoreButtonWrapper = styled.div`
+const ItemActionBarWrapper = styled.div`
   display: flex;
   cursor: pointer;
   flex-direction: row;
   justify-content: flex-end;
+  margin-top: 4px;
   width: 100%;
 `;
 

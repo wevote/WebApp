@@ -517,10 +517,10 @@ class BallotItemSupportOpposeCountDisplay extends Component {
                 <YourOpinion>
                   <DecidedIconWrapper>
                     <NetworkScoreSmall
-                      className={classes.voterSupports}
                       onClick={this.stopSupportingItem}
                       voterPersonalNetworkScoreIsNegative={voterPersonalNetworkScoreIsNegative}
                       voterPersonalNetworkScoreIsPositive={voterPersonalNetworkScoreIsPositive}
+                      voterSupportsBallotItem={voterSupportsBallotItem}
                     >
                       <Done classes={{ root: classes.decidedIconSmall }} />
                     </NetworkScoreSmall>
@@ -539,10 +539,10 @@ class BallotItemSupportOpposeCountDisplay extends Component {
                 <YourOpinion>
                   <DecidedIconWrapper>
                     <NetworkScoreSmall
-                      className={classes.voterOpposes}
                       onClick={this.stopOpposingItem}
                       voterPersonalNetworkScoreIsNegative={voterPersonalNetworkScoreIsNegative}
                       voterPersonalNetworkScoreIsPositive={voterPersonalNetworkScoreIsPositive}
+                      voterOpposesBallotItem={voterOpposesBallotItem}
                     >
                       <NotInterested classes={{ root: classes.decidedIconSmall }} />
                     </NetworkScoreSmall>
@@ -734,8 +734,8 @@ class BallotItemSupportOpposeCountDisplay extends Component {
               <YourOpinion>
                 <DecidedIconWrapper>
                   <NetworkScoreSmall
-                    className={classes.voterSupports}
                     onClick={this.stopSupportingItem}
+                    voterSupportsBallotItem={voterSupportsBallotItem}
                     voterPersonalNetworkScoreIsNegative={voterPersonalNetworkScoreIsNegative}
                     voterPersonalNetworkScoreIsPositive={voterPersonalNetworkScoreIsPositive}
                   >
@@ -757,8 +757,8 @@ class BallotItemSupportOpposeCountDisplay extends Component {
               <YourOpinion>
                 <DecidedIconWrapper>
                   <NetworkScoreSmall
-                    className={classes.voterOpposes}
                     onClick={this.stopOpposingItem}
+                    voterOpposesBallotItem={voterOpposesBallotItem}
                     voterPersonalNetworkScoreIsNegative={voterPersonalNetworkScoreIsNegative}
                     voterPersonalNetworkScoreIsPositive={voterPersonalNetworkScoreIsPositive}
                   >
@@ -983,7 +983,12 @@ class BallotItemSupportOpposeCountDisplay extends Component {
             closePopoverByProp={closeSupportOpposeCountDisplayModal}
             showCloseIcon
           >
-            <NetworkScore className={classes.voterSupports} voterPersonalNetworkScoreIsNegative={voterPersonalNetworkScoreIsNegative} voterPersonalNetworkScoreIsPositive={voterPersonalNetworkScoreIsPositive}>
+            <NetworkScore
+              voterOpposesBallotItem={voterOpposesBallotItem}
+              voterPersonalNetworkScoreIsNegative={voterPersonalNetworkScoreIsNegative}
+              voterPersonalNetworkScoreIsPositive={voterPersonalNetworkScoreIsPositive}
+              voterSupportsBallotItem={voterSupportsBallotItem}
+            >
               <VoterChoiceWrapper>
                 <Done classes={{ root: classes.decidedIcon }} />
               </VoterChoiceWrapper>
@@ -1022,7 +1027,11 @@ class BallotItemSupportOpposeCountDisplay extends Component {
             closePopoverByProp={closeSupportOpposeCountDisplayModal}
             showCloseIcon
           >
-            <NetworkScore className={classes.voterOpposes} voterPersonalNetworkScoreIsNegative={voterPersonalNetworkScoreIsNegative} voterPersonalNetworkScoreIsPositive={voterPersonalNetworkScoreIsPositive}>
+            <NetworkScore
+              voterOpposesBallotItem={voterOpposesBallotItem}
+              voterPersonalNetworkScoreIsNegative={voterPersonalNetworkScoreIsNegative}
+              voterPersonalNetworkScoreIsPositive={voterPersonalNetworkScoreIsPositive}
+            >
               <VoterChoiceWrapper>
                 <NotInterested classes={{ root: classes.decidedIcon }} />
               </VoterChoiceWrapper>
@@ -1073,7 +1082,12 @@ class BallotItemSupportOpposeCountDisplay extends Component {
               </NetworkScore>
             ) : (
               <NetworkScoreWrapper>
-                <NetworkScore voterPersonalNetworkScoreIsNegative={voterPersonalNetworkScoreIsNegative} voterPersonalNetworkScoreIsPositive={voterPersonalNetworkScoreIsPositive}>
+                <NetworkScore
+                  voterOpposesBallotItem={voterOpposesBallotItem}
+                  voterPersonalNetworkScoreIsNegative={voterPersonalNetworkScoreIsNegative}
+                  voterPersonalNetworkScoreIsPositive={voterPersonalNetworkScoreIsPositive}
+                  voterSupportsBallotItem={voterSupportsBallotItem}
+                >
                   <ScoreLabel>
                     score
                   </ScoreLabel>
@@ -1190,12 +1204,6 @@ const styles = (theme) => ({
     fontSize: 14,
     margin: '0 0 .1rem .4rem',
   },
-  voterOpposes: {
-    background: 'rgb(255, 73, 34)', // colors.opposeRedRg
-  },
-  voterSupports: {
-    background: 'rgb(31, 192, 111)', // colors.supportGreenRgb
-  },
 });
 
 const Wrapper = styled.div`
@@ -1269,7 +1277,7 @@ const NetworkScoreWrapper = styled.div`
 `;
 
 const NetworkScore = styled.div`
-  background: ${({ hideNumbersOfAllPositions, voterPersonalNetworkScoreIsNegative, voterPersonalNetworkScoreIsPositive }) => ((voterPersonalNetworkScoreIsNegative && 'rgb(255, 73, 34)') || (voterPersonalNetworkScoreIsPositive && 'rgb(31, 192, 111)') || (hideNumbersOfAllPositions && 'rgb(211, 211, 211)') || '#888')};
+  background: ${({ hideNumbersOfAllPositions, voterOpposesBallotItem, voterPersonalNetworkScoreIsNegative, voterPersonalNetworkScoreIsPositive, voterSupportsBallotItem }) => ((voterSupportsBallotItem && 'rgb(31, 192, 111)') || (voterOpposesBallotItem && 'rgb(255, 73, 34)') || (voterPersonalNetworkScoreIsPositive && 'rgb(31, 192, 111)') || (voterPersonalNetworkScoreIsNegative && 'rgb(255, 73, 34)') || (hideNumbersOfAllPositions && 'rgb(211, 211, 211)') || '#888')};
   color: white;
   box-shadow: 0 1px 3px 0 rgba(0,0,0,.2), 0 1px 1px 0 rgba(0,0,0,.14), 0 2px 1px -1px rgba(0,0,0,.12);
   cursor: pointer;
@@ -1285,12 +1293,12 @@ const NetworkScore = styled.div`
   @media print{
     border-width: 1 px;
     border-style: solid;
-    border-color: ${({ hideNumbersOfAllPositions, voterPersonalNetworkScoreIsNegative, voterPersonalNetworkScoreIsPositive }) => ((voterPersonalNetworkScoreIsNegative && 'rgb(255, 73, 34)') || (voterPersonalNetworkScoreIsPositive && 'rgb(31, 192, 111)') || (hideNumbersOfAllPositions && 'rgb(240, 240, 240)') || '#888')};
+    border-color: ${({ hideNumbersOfAllPositions, voterOpposesBallotItem, voterPersonalNetworkScoreIsNegative, voterPersonalNetworkScoreIsPositive, voterSupportsBallotItem }) => ((voterSupportsBallotItem && 'rgb(31, 192, 111)') || (voterOpposesBallotItem && 'rgb(255, 73, 34)') || (voterPersonalNetworkScoreIsPositive && 'rgb(31, 192, 111)') || (voterPersonalNetworkScoreIsNegative && 'rgb(255, 73, 34)') || (hideNumbersOfAllPositions && 'rgb(211, 211, 211)') || '#888')};
   }
 `;
 
 const NetworkScoreSmall = styled.div`
-  background: ${({ voterPersonalNetworkScoreIsNegative, voterPersonalNetworkScoreIsPositive }) => ((voterPersonalNetworkScoreIsNegative && 'rgb(255, 73, 34)') || (voterPersonalNetworkScoreIsPositive && 'rgb(31, 192, 111)') || '#888')};
+  background: ${({ hideNumbersOfAllPositions, voterOpposesBallotItem, voterPersonalNetworkScoreIsNegative, voterPersonalNetworkScoreIsPositive, voterSupportsBallotItem }) => ((voterSupportsBallotItem && 'rgb(31, 192, 111)') || (voterOpposesBallotItem && 'rgb(255, 73, 34)') || (voterPersonalNetworkScoreIsPositive && 'rgb(31, 192, 111)') || (voterPersonalNetworkScoreIsNegative && 'rgb(255, 73, 34)') || (hideNumbersOfAllPositions && 'rgb(211, 211, 211)') || '#888')};
   color: white;
   box-shadow: 0 1px 3px 0 rgba(0,0,0,.2), 0 1px 1px 0 rgba(0,0,0,.14), 0 2px 1px -1px rgba(0,0,0,.12);
   display: flex;
@@ -1305,7 +1313,7 @@ const NetworkScoreSmall = styled.div`
   @media print{
     border-width: 1 px;
     border-style: solid;
-    border-color: ${({ voterPersonalNetworkScoreIsNegative, voterPersonalNetworkScoreIsPositive }) => ((voterPersonalNetworkScoreIsNegative && 'rgb(255, 73, 34)') || (voterPersonalNetworkScoreIsPositive && 'rgb(31, 192, 111)') || '#888')};
+    border-color: ${({ hideNumbersOfAllPositions, voterOpposesBallotItem, voterPersonalNetworkScoreIsNegative, voterPersonalNetworkScoreIsPositive, voterSupportsBallotItem }) => ((voterSupportsBallotItem && 'rgb(31, 192, 111)') || (voterOpposesBallotItem && 'rgb(255, 73, 34)') || (voterPersonalNetworkScoreIsPositive && 'rgb(31, 192, 111)') || (voterPersonalNetworkScoreIsNegative && 'rgb(255, 73, 34)') || (hideNumbersOfAllPositions && 'rgb(211, 211, 211)') || '#888')};
   }
 `;
 

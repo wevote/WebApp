@@ -177,7 +177,7 @@ class ShareButtonFooter extends Component {
 
   getCurrentFullUrl () {
     const { location: { href } } = window;
-    let currentFullUrl = href || '';
+    let currentFullUrl = href || ''; // We intentionally don't use normalizedHref() here
     // Handles localhost and Cordova, always builds url to wevote.us
     if (currentFullUrl.startsWith('https://localhost')) {
       currentFullUrl = currentFullUrl.replace(/https:\/\/localhost.*?\//, 'https://wevote.us/');

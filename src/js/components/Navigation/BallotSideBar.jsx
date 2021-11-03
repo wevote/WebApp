@@ -2,7 +2,6 @@ import { List, Typography } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import BallotStore from '../../stores/BallotStore';
 import { renderLog } from '../../utils/logging';
@@ -210,32 +209,6 @@ class BallotSideBar extends Component {
             </BallotSummaryAccordion>
           </List>
           <div className="h4 text-left" />
-          <SidebarFooter>
-            <span className="terms-and-privacy">
-              <Link id="ballotSideBarFAQ" to="/more/faq">
-                <span className="u-no-break">Questions?</span>
-              </Link>
-            </span>
-          </SidebarFooter>
-          <SidebarFooter>
-            <span className="terms-and-privacy">
-              <Link id="ballotSideBarTermsOfService" to="/more/terms">
-                <span className="u-no-break">Terms of Service</span>
-              </Link>
-            </span>
-          </SidebarFooter>
-          <SidebarFooter>
-            <span className="terms-and-privacy">
-              <Link id="ballotSideBarPrivacyPolicy" to="/more/privacy">
-                <span className="u-no-break">Privacy Policy</span>
-              </Link>
-            </span>
-          </SidebarFooter>
-          <SidebarFooter>
-            <span className="terms-and-privacy">
-              <Link id="ballotSideBarAttributions" to="/more/attributions">Attributions</Link>
-            </span>
-          </SidebarFooter>
         </div>
       );
     } else {
@@ -265,11 +238,6 @@ const styles = (theme) => ({
     },
   },
 });
-
-const SidebarFooter = styled.div`
-  margin-bottom: 10px;
-  text-align: center;
-`;
 
 const Separator = styled.div`
   height: 2px;

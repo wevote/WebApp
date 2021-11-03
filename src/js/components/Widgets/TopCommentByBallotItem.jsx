@@ -183,19 +183,17 @@ class TopCommentByBallotItem extends Component {
 
   render () {
     renderLog('TopCommentByBallotItem');  // Set LOG_RENDER_EVENTS to log all renders
-    const { ballotItemWeVoteId, classes, hideMoreButton } = this.props;
+    const { classes, hideMoreButton } = this.props;
     const { endorsementOrganization, endorsementText, externalUniqueId, localUniqueId } = this.state;
     if (!endorsementText) {
       // console.log('TopCommentByBallotItem no endorsementText');
       // If we don't have any endorsement text, show the alternate component passed in
       return this.props.children || null;
     }
-    const isForCandidate = stringContains('cand', ballotItemWeVoteId);
 
     const croppedEndorsementTextDesktopTablet = shortenText(endorsementText, 100);
     const croppedEndorsementTextMobile = shortenText(endorsementText, 75);
-    const learnMoreTextDefault = isForCandidate ? 'Choose or Oppose' : 'Choose Yes or No';
-    const learnMoreText = this.state.learnMoreText ? this.state.learnMoreText : learnMoreTextDefault;
+    const learnMoreText = this.state.learnMoreText ? this.state.learnMoreText : '';
 
     // console.log('GuideList organizationsToFollow: ', this.state.organizationsToFollow);
     //       on_click={this.goToCandidateLink(this.state.oneCandidate.we_vote_id)}
@@ -217,7 +215,7 @@ class TopCommentByBallotItem extends Component {
           {croppedEndorsementTextMobile}
           &quot;
         </BallotItemEndorsementTextMobile>
-        { hideMoreButton ? null : (
+        { hideMoreButton || !learnMoreText ? null : (
           <LearnMoreWrapper isButton={!this.state.learnMoreUrl}>
             { this.state.learnMoreUrl ? (
               <span>

@@ -33,6 +33,9 @@ export function makeSearchLink (twitterHandle, weVoteId, kindOfOwner, linkIntern
 //   return (this.match(regExp) || []).length;
 // }
 
-export function countMatches (text, str) {
-  return str.split(text).length - 1;
+export function countMatches (needle, haystack) {
+  if (!needle || !haystack) return 0;
+  const haystackLowerCase = haystack.toLowerCase();
+  const needleLowerCase = needle.toLowerCase();
+  return haystackLowerCase.split(needleLowerCase).length - 1;
 }
