@@ -20,7 +20,7 @@ class MeasureItem extends Component {
     this.state = {
       ballotItemDisplayName: '',
       ballotpediaMeasureUrl: '',
-      // measureSubtitle: '',
+      measureSubtitle: '',
       measureText: '',
       measureWeVoteId: '',
       electionDisplayName: '',
@@ -50,7 +50,7 @@ class MeasureItem extends Component {
     this.setState({
       ballotItemDisplayName: measure.ballot_item_display_name,
       ballotpediaMeasureUrl: measure.ballotpedia_measure_url,
-      // measureSubtitle: measure.measure_subtitle,
+      measureSubtitle: measure.measure_subtitle,
       measureText: measure.measure_text,
       measureWeVoteId: measure.we_vote_id,
       electionDisplayName: measure.election_display_name,
@@ -83,8 +83,8 @@ class MeasureItem extends Component {
 
   render () {
     renderLog('MeasureItem');  // Set LOG_RENDER_EVENTS to log all renders
-    // const { supportProps, transitioning } = this.state;
     const { classes, forMoreInformationTextOff } = this.props;
+    const { measureSubtitle } = this.state;
     let {
       ballotItemDisplayName, stateDisplayName,
     } = this.state;
@@ -96,7 +96,7 @@ class MeasureItem extends Component {
     }
 
     const numberOfLines = 2;
-    // measureSubtitle = capitalizeString(measureSubtitle);
+    const measureSubtitleCapitalized = capitalizeString(measureSubtitle);
     ballotItemDisplayName = capitalizeString(ballotItemDisplayName);
 
     return (
@@ -123,7 +123,7 @@ class MeasureItem extends Component {
               </SubTitle>
             ) :
             null}
-          {/* <SubTitle>{measureSubtitle}</SubTitle> */}
+          <SubTitle>{measureSubtitleCapitalized}</SubTitle>
         </InfoDetailsRow>
         { measureText && (
           <MeasureTextWrapper>

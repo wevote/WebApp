@@ -118,12 +118,13 @@ class FilterBaseSearch extends Component {
   }
 
   filterItems = (search) => this.props.allItems.map((item) => {
-    // console.log('FilterBaseSearch filterItems');
+    // console.log('FilterBaseSearch filterItems allItems:', this.props.allItems);
     const { opinionsAndBallotItemsSearchMode, positionSearchMode, voterGuidePositionSearchMode } = this.props;
     let candidatesToShowForSearchResults = [];
     let foundInArray;
     let searchPriority;
     if (opinionsAndBallotItemsSearchMode) {
+      // console.log('FilterBaseSearch filterItems opinionsAndBallotItemsSearchMode');
       const opinionsAndBallotItemsResults = opinionsAndBallotItemsSearchPriority(search, item);
       ({ searchPriority } = opinionsAndBallotItemsResults);
       ({ foundInArray } = opinionsAndBallotItemsResults);
@@ -140,6 +141,7 @@ class FilterBaseSearch extends Component {
       ({ foundInArray } = voterGuidePositionResults);
       return { ...item, searchPriority, foundInArray, candidatesToShowForSearchResults };
     } else {
+      // console.log('FilterBaseSearch ballotSearchPriority');
       const ignoreDescriptionFields = (this.props.addVoterGuideMode);
       const results = ballotSearchPriority(search, item, ignoreDescriptionFields);
       ({ searchPriority } = results);

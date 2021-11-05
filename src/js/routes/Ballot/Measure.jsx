@@ -268,8 +268,13 @@ class Measure extends Component {
     renderLog('Measure');  // Set LOG_RENDER_EVENTS to log all renders
     const { classes, match: { params } } = this.props;
     const { allCachedPositionsForThisMeasure, measure, scrolledDown } = this.state;
-    const { ballot_item_display_name: ballotItemDisplayName, id: measureId, we_vote_id: measureWeVoteId,
-      measure_url: measureURL } = measure;
+    const {
+      ballot_item_display_name: ballotItemDisplayName,
+      ballotpedia_measure_url: ballotpediaMeasureURL,
+      id: measureId,
+      we_vote_id: measureWeVoteId,
+      measure_url: measureURL,
+    } = measure;
 
     if (!measure || !ballotItemDisplayName) {
       return (
@@ -317,8 +322,8 @@ class Measure extends Component {
                   <MeasureShareWrapper>
                     <ShareButtonDesktopTablet measureShare />
                   </MeasureShareWrapper>
-                  {measureURL && (
-                    <ViewOnBallotpedia externalLinkUrl={measureURL} />
+                  {ballotpediaMeasureURL && (
+                    <ViewOnBallotpedia externalLinkUrl={ballotpediaMeasureURL} />
                   )}
                   {measureName && (
                     <SearchOnGoogle googleQuery={`${measureName}`} />

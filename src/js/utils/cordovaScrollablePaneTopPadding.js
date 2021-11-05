@@ -488,6 +488,7 @@ export default function cordovaScrollablePaneTopPadding (pageEnumerationOverride
   // WebApp desktop mode
   cordovaOffsetLog(`cordovaScrollablePaneTopPadding: WebApp desktop, page: ${page}`);
   switch (page) {
+    case CordovaPageConstants.ballotLgHdrWild:       return showBallotDecisionsTabs() ? '32px' : '0px';
     case CordovaPageConstants.ballotSmHdrWild:       return '30px';
     case CordovaPageConstants.candidateWild:         return '48px';
     case CordovaPageConstants.friends:               return '102px';

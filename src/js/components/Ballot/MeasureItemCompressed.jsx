@@ -1,4 +1,4 @@
-import { Button, Card } from '@material-ui/core';
+import { Card } from '@material-ui/core';
 import { withStyles, withTheme } from '@material-ui/core/styles';
 import { ArrowForward } from '@material-ui/icons';
 import PropTypes from 'prop-types';
@@ -15,6 +15,7 @@ import { capitalizeString, shortenText, stripHtmlFromString } from '../../utils/
 
 const BallotItemSupportOpposeCountDisplay = React.lazy(() => import(/* webpackChunkName: 'BallotItemSupportOpposeCountDisplay' */ '../Widgets/BallotItemSupportOpposeCountDisplay'));
 const DelayedLoad = React.lazy(() => import(/* webpackChunkName: 'DelayedLoad' */ '../Widgets/DelayedLoad'));
+const ItemActionBar = React.lazy(() => import(/* webpackChunkName: 'ItemActionBar' */ '../Widgets/ItemActionBar/ItemActionBar'));
 const ShowMoreFooter = React.lazy(() => import(/* webpackChunkName: 'ShowMoreFooter' */ '../Navigation/ShowMoreFooter'));
 const TopCommentByBallotItem = React.lazy(() => import(/* webpackChunkName: 'TopCommentByBallotItem' */ '../Widgets/TopCommentByBallotItem'));
 
@@ -24,6 +25,7 @@ class MeasureItemCompressed extends Component {
     this.state = {
       // componentDidMountFinished: false,
       externalUniqueId: '',
+      measureSubtitle: '',
       measureText: '',
       measureWeVoteId: '',
       noVoteDescription: '',
@@ -81,7 +83,7 @@ class MeasureItemCompressed extends Component {
       externalUniqueId,
       localUniqueId: measureWeVoteId,
       // measure,
-      // measureSubtitle: measure.measure_subtitle,
+      measureSubtitle: measure.measure_subtitle,
       measureText: stripHtmlFromString(measure.measure_text),
       measureWeVoteId,
       noVoteDescription: stripHtmlFromString(measure.no_vote_description),
@@ -187,7 +189,7 @@ class MeasureItemCompressed extends Component {
     this.setState({
       ballotItemDisplayName: measure.ballot_item_display_name,
       // measure,
-      // measureSubtitle: measure.measure_subtitle,
+      measureSubtitle: measure.measure_subtitle,
       measureText: stripHtmlFromString(measure.measure_text),
       noVoteDescription: stripHtmlFromString(measure.no_vote_description),
       yesVoteDescription: stripHtmlFromString(measure.yes_vote_description),
@@ -253,9 +255,12 @@ class MeasureItemCompressed extends Component {
 
   render () {
     renderLog('MeasureItemCompressed');  // Set LOG_RENDER_EVENTS to log all renders
-    const { externalUniqueId, localUniqueId, noVoteDescription, yesVoteDescription } = this.state;
+    const {
+      externalUniqueId, localUniqueId, measureSubtitle, measureText,
+      measureWeVoteId, noVoteDescription, voterOpposesBallotItem,
+      voterSupportsBallotItem, yesVoteDescription,
+    } = this.state;
     let { ballotItemDisplayName } = this.state;
-    const { measureText, measureWeVoteId, voterOpposesBallotItem, voterSupportsBallotItem } = this.state;
     if (!measureWeVoteId) {
       return null;
     }
@@ -264,7 +269,7 @@ class MeasureItemCompressed extends Component {
     if (ballotItemDisplayName) {
       ballotDisplay = ballotItemDisplayName.split(':');
     }
-    // measureSubtitle = capitalizeString(measureSubtitle);
+    const measureSubtitleCapitalized = capitalizeString(measureSubtitle);
     ballotItemDisplayName = capitalizeString(ballotItemDisplayName);
 
     return (
@@ -286,20 +291,20 @@ class MeasureItemCompressed extends Component {
             />
           </BallotItemSupportOpposeCountDisplayWrapper>
         </InfoRow>
-        <InfoDetailsRow>
-          <SubTitle>{ballotDisplay[1]}</SubTitle>
-          {(!voterOpposesBallotItem && !voterSupportsBallotItem) && (
-            <MeasureText>{shortenText(measureText, 200)}</MeasureText>
-          )}
+        <InfoDetailsRow onClick={() => { this.goToMeasureLink(measureWeVoteId); }}>
+          <SubTitle>{measureSubtitleCapitalized}</SubTitle>
+          <MeasureText>{shortenText(measureText, 200)}</MeasureText>
         </InfoDetailsRow>
         {(!voterOpposesBallotItem && !voterSupportsBallotItem) && (
           <ChoicesRow>
             <Choice
               id={`measureItemCompressedChoiceYes-${measureWeVoteId}`}
               brandBlue={theme.palette.primary.main}
-              onClick={() => { this.goToMeasureLink(measureWeVoteId); }}
             >
-              <ChoiceTitle brandBlue={theme.palette.primary.main}>
+              <ChoiceTitle
+                brandBlue={theme.palette.primary.main}
+                onClick={() => { this.goToMeasureLink(measureWeVoteId); }}
+              >
                 {`Yes On ${extractNumber(ballotItemDisplayName)}`}
               </ChoiceTitle>
               <ChoiceInfo>
@@ -313,15 +318,16 @@ class MeasureItemCompressed extends Component {
                   >
                     <span>
                       {shortenText(yesVoteDescription, 200)}
-                      <Button
-                        id={`measureLearnMoreYesButton-${externalUniqueId}-${localUniqueId}`}
-                        variant="outlined"
-                        color="primary"
-                        className="u-float-right"
-                        classes={{ root: classes.buttonRoot, outlinedPrimary: classes.buttonOutlinedPrimary }}
-                      >
-                        Choose Yes or No
-                      </Button>
+                      <ItemActionBar
+                        ballotItemDisplayName={ballotItemDisplayName}
+                        ballotItemWeVoteId={measureWeVoteId}
+                        commentButtonHide
+                        commentButtonHideInMobile
+                        externalUniqueId={`${externalUniqueId}-${localUniqueId}-MeasureItemCompressedVoteYes-${measureWeVoteId}`}
+                        hideOpposeNo
+                        shareButtonHide
+                        hidePositionPublicToggle
+                      />
                     </span>
                   </TopCommentByBallotItem>
                 </DelayedLoad>
@@ -330,9 +336,11 @@ class MeasureItemCompressed extends Component {
             <Choice
               id={`measureItemCompressedChoiceNo-${measureWeVoteId}`}
               brandBlue={theme.palette.primary.main}
-              onClick={() => { this.goToMeasureLink(measureWeVoteId); }}
             >
-              <ChoiceTitle brandBlue={theme.palette.primary.main}>
+              <ChoiceTitle
+                brandBlue={theme.palette.primary.main}
+                onClick={() => { this.goToMeasureLink(measureWeVoteId); }}
+              >
                 {`No On ${extractNumber(ballotItemDisplayName)}`}
               </ChoiceTitle>
               <ChoiceInfo>
@@ -346,15 +354,16 @@ class MeasureItemCompressed extends Component {
                   >
                     <span>
                       {shortenText(noVoteDescription, 200)}
-                      <Button
-                        id={`measureLearnMoreNoButton-${externalUniqueId}-${localUniqueId}`}
-                        variant="outlined"
-                        color="primary"
-                        className="u-float-right"
-                        classes={{ root: classes.buttonRoot, outlinedPrimary: classes.buttonOutlinedPrimary }}
-                      >
-                        Choose Yes or No
-                      </Button>
+                      <ItemActionBar
+                        ballotItemDisplayName={ballotItemDisplayName}
+                        ballotItemWeVoteId={measureWeVoteId}
+                        commentButtonHide
+                        commentButtonHideInMobile
+                        externalUniqueId={`${externalUniqueId}-${localUniqueId}-MeasureItemCompressedVoteNo-${measureWeVoteId}`}
+                        hideSupportYes
+                        shareButtonHide
+                        hidePositionPublicToggle
+                      />
                     </span>
                   </TopCommentByBallotItem>
                 </DelayedLoad>
@@ -362,7 +371,9 @@ class MeasureItemCompressed extends Component {
             </Choice>
           </ChoicesRow>
         )}
-        <ShowMoreFooter showMoreId="measureItemCompressedShowMoreFooter" showMoreLink={() => this.goToMeasureLink(measureWeVoteId)} />
+        {(!voterOpposesBallotItem && !voterSupportsBallotItem) && (
+          <ShowMoreFooter showMoreId="measureItemCompressedShowMoreFooter" showMoreLink={() => this.goToMeasureLink(measureWeVoteId)} showMoreText="Learn more" />
+        )}
       </Card>
     );
   }
@@ -424,12 +435,14 @@ const BallotItemSupportOpposeCountDisplayWrapper = styled.div`
 `;
 
 const InfoRow = styled.div`
+  cursor: pointer;
   display: flex;
   flex-flow: row nowrap;
   justify-content: space-between;
 `;
 
 const InfoDetailsRow = styled.div`
+  cursor: pointer;
 `;
 
 const ChoicesRow = styled.div`

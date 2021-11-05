@@ -20,17 +20,17 @@ export default function positionSearchPriority (originalString, item) {
   for (let i = 0; i < wordsArray.length; i++) {
     searchNeedleString = wordsArray[i].toString();
     oneWordScore = 0;
-    if ((item.speaker_display_name && item.speaker_display_name.includes(searchNeedleString))) {
+    if (countMatches(searchNeedleString, item.speaker_display_name)) {
       oneWordScore += countMatches(searchNeedleString, item.speaker_display_name) * 10;
       foundInThisPosition = true;
       if (!positionDetailsArray.includes('Name')) positionDetailsArray.push('Name');
     }
-    if (item.speaker_twitter_handle && item.speaker_twitter_handle.includes(searchNeedleString)) {
+    if (countMatches(searchNeedleString, item.speaker_twitter_handle)) {
       oneWordScore += countMatches(searchNeedleString, item.speaker_twitter_handle) * 5;
       foundInThisPosition = true;
       if (!positionDetailsArray.includes('Twitter handle')) positionDetailsArray.push('Twitter handle');
     }
-    if (item.statement_text && item.statement_text.includes(searchNeedleString)) {
+    if (countMatches(searchNeedleString, item.statement_text)) {
       oneWordScore += countMatches(searchNeedleString, item.statement_text) * 1;
       foundInThisPosition = true;
       if (!positionDetailsArray.includes('Twitter description')) positionDetailsArray.push('Twitter description');

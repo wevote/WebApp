@@ -20,37 +20,37 @@ export default function voterGuidePositionSearchPriority (originalString, item) 
   for (let i = 0; i < wordsArray.length; i++) {
     searchNeedleString = wordsArray[i].toString();
     oneWordScore = 0;
-    if ((item.ballot_item_display_name && item.ballot_item_display_name.includes(searchNeedleString))) {
+    if (countMatches(searchNeedleString, item.ballot_item_display_name)) {
       oneWordScore += countMatches(searchNeedleString, item.ballot_item_display_name) * 10;
       foundInThisPosition = true;
       if (!positionDetailsArray.includes('Name')) positionDetailsArray.push('Name');
     }
-    if ((item.state_code && item.state_code.includes(searchNeedleString))) {
+    if (countMatches(searchNeedleString, item.state_code)) {
       oneWordScore += countMatches(searchNeedleString, item.state_code) * 10;
       foundInThisPosition = true;
       if (!positionDetailsArray.includes('State')) positionDetailsArray.push('State');
     }
-    if (item.ballot_item_twitter_handle && item.ballot_item_twitter_handle.includes(searchNeedleString)) {
+    if (countMatches(searchNeedleString, item.ballot_item_twitter_handle)) {
       oneWordScore += countMatches(searchNeedleString, item.ballot_item_twitter_handle) * 5;
       foundInThisPosition = true;
       if (!positionDetailsArray.includes('Twitter handle')) positionDetailsArray.push('Twitter handle');
     }
-    if (item.more_info_url && item.more_info_url.includes(searchNeedleString)) {
+    if (countMatches(searchNeedleString, item.more_info_url)) {
       oneWordScore += countMatches(searchNeedleString, item.more_info_url) * 5;
       foundInThisPosition = true;
       if (!positionDetailsArray.includes('Website')) positionDetailsArray.push('Website');
     }
-    if (item.contest_office_name && item.contest_office_name.includes(searchNeedleString)) {
+    if (countMatches(searchNeedleString, item.contest_office_name)) {
       oneWordScore += countMatches(searchNeedleString, item.contest_office_name) * 3;
       foundInThisPosition = true;
       if (!positionDetailsArray.includes('Office name')) positionDetailsArray.push('Office name');
     }
-    if (item.kind_of_ballot_item && item.kind_of_ballot_item.includes(searchNeedleString)) {
+    if (countMatches(searchNeedleString, item.kind_of_ballot_item)) {
       oneWordScore += countMatches(searchNeedleString, item.kind_of_ballot_item) * 3;
       foundInThisPosition = true;
       if (!positionDetailsArray.includes('Kind of ballot item')) positionDetailsArray.push('Kind of ballot item');
     }
-    if (item.statement_text && item.statement_text.includes(searchNeedleString)) {
+    if (countMatches(searchNeedleString, item.statement_text)) {
       oneWordScore += countMatches(searchNeedleString, item.statement_text) * 1;
       foundInThisPosition = true;
       if (!positionDetailsArray.includes('Endorsement text')) positionDetailsArray.push('Endorsement text');

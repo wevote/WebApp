@@ -22,15 +22,15 @@ export default function voterGuideSearchPriority (originalString, item, ignoreDe
   for (let i = 0; i < wordsArray.length; i++) {
     searchNeedleString = wordsArray[i].toString();
     oneWordScore = 0;
-    if ((item.ballot_item_display_name && item.ballot_item_display_name.includes(searchNeedleString))) {
+    if (countMatches(searchNeedleString, item.ballot_item_display_name)) {
       oneWordScore += countMatches(searchNeedleString, item.ballot_item_display_name) * 10;
       foundInThisOfficeOrMeasure = true;
     }
-    if (!ignoreDescriptionFields && item.yes_vote_description && item.yes_vote_description.includes(searchNeedleString)) {
+    if (!ignoreDescriptionFields && countMatches(searchNeedleString, item.yes_vote_description)) {
       oneWordScore += countMatches(searchNeedleString, item.yes_vote_description) * 3;
       foundInThisOfficeOrMeasure = true;
     }
-    if (!ignoreDescriptionFields && item.no_vote_description && item.no_vote_description.includes(searchNeedleString)) {
+    if (!ignoreDescriptionFields && countMatches(searchNeedleString, item.no_vote_description)) {
       oneWordScore += countMatches(searchNeedleString, item.no_vote_description) * 3;
       foundInThisOfficeOrMeasure = true;
     }
@@ -51,32 +51,32 @@ export default function voterGuideSearchPriority (originalString, item, ignoreDe
   // candidateDetailsArray = [];
   for (let i = 0; i < wordsArray.length; i++) {
     searchNeedleString = wordsArray[i].toString();
-    if (!ignoreDescriptionFields && item.ballotpedia_candidate_summary && item.ballotpedia_candidate_summary.includes(searchNeedleString)) {
+    if (!ignoreDescriptionFields && countMatches(searchNeedleString, item.ballotpedia_candidate_summary)) {
       oneWordScore += countMatches(searchNeedleString, item.ballotpedia_candidate_summary);
       foundInThisCandidate = true;
       if (!candidateDetailsArray.includes('candidate summary')) candidateDetailsArray.push('candidate summary');
     }
-    if (item.ballot_item_display_name && item.ballot_item_display_name.includes(searchNeedleString)) {
+    if (countMatches(searchNeedleString, item.ballot_item_display_name)) {
       oneWordScore += countMatches(searchNeedleString, item.ballot_item_display_name) * 5;
       foundInThisCandidate = true;
       if (!candidateDetailsArray.includes('name')) candidateDetailsArray.push('name');
     }
-    if (!ignoreDescriptionFields && item.twitter_description && item.twitter_description.includes(searchNeedleString)) {
+    if (!ignoreDescriptionFields && countMatches(searchNeedleString, item.twitter_description)) {
       oneWordScore += countMatches(searchNeedleString, item.twitter_description);
       foundInThisCandidate = true;
       if (!candidateDetailsArray.includes('Twitter description')) candidateDetailsArray.push('Twitter description');
     }
-    if (item.twitter_handle && item.twitter_handle.includes(searchNeedleString)) {
+    if (countMatches(searchNeedleString, item.twitter_handle)) {
       oneWordScore += countMatches(searchNeedleString, item.twitter_handle) * 2;
       foundInThisCandidate = true;
       if (!candidateDetailsArray.includes('Twitter handle')) candidateDetailsArray.push('Twitter handle');
     }
-    if (item.contest_office_name && item.contest_office_name.includes(searchNeedleString)) {
+    if (countMatches(searchNeedleString, item.contest_office_name)) {
       oneWordScore += countMatches(searchNeedleString, item.contest_office_name) * 2;
       foundInThisCandidate = true;
       if (!candidateDetailsArray.includes('Contest Office')) candidateDetailsArray.push('Contest Office');
     }
-    if (item.party && item.party.includes(searchNeedleString)) {
+    if (countMatches(searchNeedleString, item.party)) {
       oneWordScore += countMatches(searchNeedleString, item.party) * 2;
       foundInThisCandidate = true;
       if (!candidateDetailsArray.includes('political party')) candidateDetailsArray.push('political party');

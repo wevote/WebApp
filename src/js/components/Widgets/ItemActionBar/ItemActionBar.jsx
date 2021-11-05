@@ -566,7 +566,7 @@ class ItemActionBar extends PureComponent {
   render () {
     renderLog('ItemActionBar ItemActionBar.jsx');  // Set LOG_RENDER_EVENTS to log all renders
     // console.log('ItemActionBar render');
-    const { buttonsOnly, commentButtonHide, commentButtonHideInMobile, classes } = this.props;
+    const { buttonsOnly, commentButtonHide, commentButtonHideInMobile, classes, hideSupportYes, hideOpposeNo } = this.props;
     const {
       ballotItemType, ballotItemWeVoteId, isOpposeAPIState, isSupportAPIState,
       numberOfOpposePositionsForScore, numberOfSupportPositionsForScore,
@@ -704,53 +704,61 @@ class ItemActionBar extends PureComponent {
             positionPublicToggleWrapAllowed={this.props.positionPublicToggleWrapAllowed}
           >
             {/* Start of Support Button */}
-            {/* Visible on desktop screens */}
-            {buttonsOnly ? (
-              <StackedButton className="d-none d-lg-block" onlyTwoButtons={commentButtonHide}>
-                {/* <OverlayTrigger placement="top" overlay={supportButtonPopoverTooltip}>
-                </OverlayTrigger> */}
-                {ballotItemType === 'CANDIDATE' ? this.supportButtonNoText(`desktopVersion-${ballotItemWeVoteId}`) : this.measureYesButtonNoText(`desktopVersion-${ballotItemWeVoteId}`)}
-              </StackedButton>
-            ) : (
-              <ButtonWrapper className="u-push--xs d-none d-lg-block" onlyTwoButtons={commentButtonHide}>
-                <OverlayTrigger placement="top" overlay={supportButtonPopoverTooltip}>
-                  {ballotItemType === 'CANDIDATE' ? this.supportButton(`desktopVersion-${ballotItemWeVoteId}`) : this.measureYesButton(`desktopVersion-${ballotItemWeVoteId}`)}
-                </OverlayTrigger>
-              </ButtonWrapper>
-            )}
-            {/* Visible on mobile devices and tablets */}
-            {buttonsOnly ? (
-              <StackedButton className="d-lg-none d-xl-none" onlyTwoButtons={commentButtonHideInMobile}>
-                {ballotItemType === 'CANDIDATE' ? this.supportButtonNoText(`mobileVersion-${ballotItemWeVoteId}`) : this.measureYesButtonNoText(`mobileVersion-${ballotItemWeVoteId}`)}
-              </StackedButton>
-            ) : (
-              <ButtonWrapper className="u-push--xs u-push--xs d-lg-none" onlyTwoButtons={commentButtonHide}>
-                {ballotItemType === 'CANDIDATE' ? this.supportButton(`mobileVersion-${ballotItemWeVoteId}`) : this.measureYesButton(`mobileVersion-${ballotItemWeVoteId}`)}
-              </ButtonWrapper>
+            {!hideSupportYes && (
+              <>
+                {/* Visible on desktop screens */}
+                {buttonsOnly ? (
+                  <StackedButton className="d-none d-lg-block" onlyTwoButtons={commentButtonHide}>
+                    {/* <OverlayTrigger placement="top" overlay={supportButtonPopoverTooltip}>
+                    </OverlayTrigger> */}
+                    {ballotItemType === 'CANDIDATE' ? this.supportButtonNoText(`desktopVersion-${ballotItemWeVoteId}`) : this.measureYesButtonNoText(`desktopVersion-${ballotItemWeVoteId}`)}
+                  </StackedButton>
+                ) : (
+                  <ButtonWrapper className="u-push--xs d-none d-lg-block" onlyTwoButtons={commentButtonHide}>
+                    <OverlayTrigger placement="top" overlay={supportButtonPopoverTooltip}>
+                      {ballotItemType === 'CANDIDATE' ? this.supportButton(`desktopVersion-${ballotItemWeVoteId}`) : this.measureYesButton(`desktopVersion-${ballotItemWeVoteId}`)}
+                    </OverlayTrigger>
+                  </ButtonWrapper>
+                )}
+                {/* Visible on mobile devices and tablets */}
+                {buttonsOnly ? (
+                  <StackedButton className="d-lg-none d-xl-none" onlyTwoButtons={commentButtonHideInMobile}>
+                    {ballotItemType === 'CANDIDATE' ? this.supportButtonNoText(`mobileVersion-${ballotItemWeVoteId}`) : this.measureYesButtonNoText(`mobileVersion-${ballotItemWeVoteId}`)}
+                  </StackedButton>
+                ) : (
+                  <ButtonWrapper className="u-push--xs u-push--xs d-lg-none" onlyTwoButtons={commentButtonHide}>
+                    {ballotItemType === 'CANDIDATE' ? this.supportButton(`mobileVersion-${ballotItemWeVoteId}`) : this.measureYesButton(`mobileVersion-${ballotItemWeVoteId}`)}
+                  </ButtonWrapper>
+                )}
+              </>
             )}
 
             {/* Start of Oppose Button */}
-            {/* Visible on desktop screens */}
-            {buttonsOnly ? (
-              <StackedButton className="d-none d-lg-block" onlyTwoButtons={commentButtonHide}>
-                {ballotItemType === 'CANDIDATE' ? this.opposeButtonNoText(`desktopVersion-${ballotItemWeVoteId}`) : this.measureNoButtonNoText(`desktopVersion-${ballotItemWeVoteId}`)}
-              </StackedButton>
-            ) : (
-              <ButtonWrapper className="u-push--xs d-none d-lg-block" onlyTwoButtons={commentButtonHide}>
-                <OverlayTrigger placement="top" overlay={opposeButtonPopoverTooltip}>
-                  {ballotItemType === 'CANDIDATE' ? this.opposeButton(`desktopVersion-${ballotItemWeVoteId}`) : this.measureNoButton(`desktopVersion-${ballotItemWeVoteId}`)}
-                </OverlayTrigger>
-              </ButtonWrapper>
-            )}
-            {/* Visible on mobile devices and tablets */}
-            {buttonsOnly ? (
-              <StackedButton className="d-lg-none d-xl-none" onlyTwoButtons={commentButtonHideInMobile}>
-                {ballotItemType === 'CANDIDATE' ? this.opposeButtonNoText(`mobileVersion-${ballotItemWeVoteId}`) : this.measureNoButtonNoText(`mobileVersion-${ballotItemWeVoteId}`)}
-              </StackedButton>
-            ) : (
-              <ButtonWrapper className="u-push--xs d-lg-none" onlyTwoButtons={commentButtonHide}>
-                {ballotItemType === 'CANDIDATE' ? this.opposeButton(`mobileVersion-${ballotItemWeVoteId}`) : this.measureNoButton(`mobileVersion-${ballotItemWeVoteId}`)}
-              </ButtonWrapper>
+            {!hideOpposeNo && (
+              <>
+                {/* Visible on desktop screens */}
+                {buttonsOnly ? (
+                  <StackedButton className="d-none d-lg-block" onlyTwoButtons={commentButtonHide}>
+                    {ballotItemType === 'CANDIDATE' ? this.opposeButtonNoText(`desktopVersion-${ballotItemWeVoteId}`) : this.measureNoButtonNoText(`desktopVersion-${ballotItemWeVoteId}`)}
+                  </StackedButton>
+                ) : (
+                  <ButtonWrapperRight className="d-none d-lg-block" onlyTwoButtons={commentButtonHide}>
+                    <OverlayTrigger placement="top" overlay={opposeButtonPopoverTooltip}>
+                      {ballotItemType === 'CANDIDATE' ? this.opposeButton(`desktopVersion-${ballotItemWeVoteId}`) : this.measureNoButton(`desktopVersion-${ballotItemWeVoteId}`)}
+                    </OverlayTrigger>
+                  </ButtonWrapperRight>
+                )}
+                {/* Visible on mobile devices and tablets */}
+                {buttonsOnly ? (
+                  <StackedButton className="d-lg-none d-xl-none" onlyTwoButtons={commentButtonHideInMobile}>
+                    {ballotItemType === 'CANDIDATE' ? this.opposeButtonNoText(`mobileVersion-${ballotItemWeVoteId}`) : this.measureNoButtonNoText(`mobileVersion-${ballotItemWeVoteId}`)}
+                  </StackedButton>
+                ) : (
+                  <ButtonWrapperRight className="d-lg-none" onlyTwoButtons={commentButtonHide}>
+                    {ballotItemType === 'CANDIDATE' ? this.opposeButton(`mobileVersion-${ballotItemWeVoteId}`) : this.measureNoButton(`mobileVersion-${ballotItemWeVoteId}`)}
+                  </ButtonWrapperRight>
+                )}
+              </>
             )}
             { this.props.commentButtonHide || this.props.inModal ?
               null : (
@@ -789,6 +797,8 @@ ItemActionBar.propTypes = {
   handleDisableLink: PropTypes.func,
   handleEnableLink: PropTypes.func,
   hidePositionPublicToggle: PropTypes.bool,
+  hideOpposeNo: PropTypes.bool,
+  hideSupportYes: PropTypes.bool,
   opposeHideInMobile: PropTypes.bool,
   positionPublicToggleWrapAllowed: PropTypes.bool,
   shareButtonHide: PropTypes.bool,
@@ -901,6 +911,13 @@ const ButtonWrapper = styled.div`
     margin-right: 0;
   }
   margin-right: 8px;
+  display: flex;
+  align-items: center;
+  // ${({ onlyTwoButtons }) => (onlyTwoButtons ? 'width: 50% !important;' : '')}
+`;
+
+const ButtonWrapperRight = styled.div`
+  margin-right: 0;
   display: flex;
   align-items: center;
   // ${({ onlyTwoButtons }) => (onlyTwoButtons ? 'width: 50% !important;' : '')}

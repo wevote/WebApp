@@ -443,10 +443,11 @@ class HeaderBar extends Component {
   closeShareModal () {
     AppObservableStore.setShowShareModal(false);
     AppObservableStore.setShareModalStep('');
-    const { location: { href } } = window;
-    if (stringContains('/modal/share', href) && isWebApp()) {
-      const pathnameWithoutModalShare = href.replace('/modal/share', '');  // Cordova
-      // console.log('Navigation closeShareModal ', pathnameWithoutModalShare)
+    const pathname = normalizedHref();
+    // console.log('HeaderBar closeShareModal pathname:', pathname);
+    if (stringContains('/modal/share', pathname) && isWebApp()) {
+      const pathnameWithoutModalShare = pathname.replace('/modal/share', '');  // Cordova
+      // console.log('Navigation closeShareModal pathnameWithoutModalShare:', pathnameWithoutModalShare);
       historyPush(pathnameWithoutModalShare);
     }
   }
