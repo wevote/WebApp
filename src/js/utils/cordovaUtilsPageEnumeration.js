@@ -60,7 +60,7 @@ export function pageEnumeration () {
   } else if (path.startsWith('/settings/') || path.includes('facebook_sign_in')) {
     return CordovaPageConstants.settingsWild;
   } else if (path.startsWith('/value/')) {
-    return CordovaPageConstants.valueWild;
+    return CordovaPageConstants.valuesWild;
   } else if (path.startsWith('/vg/')) {
     return CordovaPageConstants.voterGuideCreatorWild;
   } else if (stringContains('/voterguide/') && (

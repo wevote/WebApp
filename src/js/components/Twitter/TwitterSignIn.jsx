@@ -3,12 +3,11 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import TwitterActions from '../../actions/TwitterActions';
 import webAppConfig from '../../config';
-import cookies from '../../utils/cookies';
+import Cookies from '../../utils/js-cookie/Cookies';
 import { cordovaOpenSafariView, historyPush, isAndroid, isIOS, isWebApp } from '../../utils/cordovaUtils';
 import { oAuthLog, renderLog } from '../../utils/logging';
 import $ajax from '../../utils/service';
 import { shortenText } from '../../utils/textFormat';
-
 import SplitIconButton from '../Widgets/SplitIconButton';
 
 const returnURL = `${webAppConfig.WE_VOTE_URL_PROTOCOL + webAppConfig.WE_VOTE_HOSTNAME}/twitter_sign_in`;
@@ -91,7 +90,7 @@ class TwitterSignIn extends Component {
 
   twitterSignInWebAppCordova = () => {
     const requestURL = `${webAppConfig.WE_VOTE_SERVER_API_ROOT_URL}twitterSignInStart` +
-      `?cordova=true&voter_device_id=${cookies.getItem('voter_device_id')}&return_url=http://nonsense.com`;
+      `?cordova=true&voter_device_id=${Cookies.get('voter_device_id')}&return_url=http://nonsense.com`;
     oAuthLog(`twitterSignInWebAppCordova requestURL: ${requestURL}`);
     const { inModal } = this.props;
     this.setState({
@@ -129,7 +128,7 @@ class TwitterSignIn extends Component {
   };
 
   twitterSignInWebApp = () => {
-    const brandingOff = cookies.getItem('we_vote_branding_off') || 0;
+    const brandingOff = Cookies.get('we_vote_branding_off') || 0;
     oAuthLog(`twitterSignInWebApp isWebApp(): ${isWebApp()},  returnURL: ${returnURL}`);
     this.setState({
       twitterSignInStartSubmitted: true,

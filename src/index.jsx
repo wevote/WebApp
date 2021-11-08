@@ -1,8 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { getCordovaScreenHeight, isIPad } from './js/utils/cordovaUtils';
 import App from './App';
+// importStartCordovaToken -- Do not remove this line!
 
+// The following line is rewritten to true by the buildSrcCordova.js node script
 const isIndexCordova = false;
 
 function startReact () {
@@ -17,26 +18,7 @@ function startReact () {
 // Begin inline code
 
 if (isIndexCordova) {
-  document.addEventListener('deviceready', (id) => {
-    window.isDeviceReady = true;
-    console.log('Cordova:  Received Cordova Event: ', id.type);
-    console.log(`Cordova:  Running cordova-${window.cordova.platformId}@${window.cordova.version}`);
-    const { splashscreen } = navigator;
-    splashscreen.hide();
-    const { plugins: { screensize } } = window;
-    screensize.get((result) => {
-      console.log('screensize.get: ', result);
-      // dumpObjProps('window.device', window.device);
-      window.pbakondyScreenSize = result;
-      if (isIPad()) {
-        document.querySelector('body').style.height = getCordovaScreenHeight();
-        console.log('Cordova: Initial "body" height for iPad = ', result.height / result.scale);
-      }
-      startReact();
-    }, (result) => {
-      console.log('Cordova: pbakondy/cordova-plugin-screensize FAILURE result: ', result);
-    });
-  }, false);
+  // initializeCordovaToken -- Do not remove this line!
 } else {
   startReact();
 }

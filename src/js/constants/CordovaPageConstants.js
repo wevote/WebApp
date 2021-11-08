@@ -33,7 +33,7 @@ const CordovaPageConstants = {
   twitterIdMFollowers: null,
   twitterInfoPage: null,
   twitterSignIn: null,
-  valueWild: null,
+  valuesWild: null,
   values: null,
   valuesList: null,
   voterGuideCreatorWild: null,

@@ -45,6 +45,8 @@ class FacebookSignIn extends Component {
       signInModalGlobalState.set('waitingForFacebookApiCompletion', true);
       this.voterFacebookSignInRetrieve();
     }
+
+    if (this.failedSignInTimer) clearTimeout(this.failedSignInTimer);
   }
 
   componentWillUnmount () {
@@ -73,13 +75,15 @@ class FacebookSignIn extends Component {
       saving: false,
     });
 
+    // NOTE: November 2021,  facebookSignInFailed is confusingly named, it is ONLY false if a query has been made to facebook, and it returns unsuccessfully.
+    // If we pull facebook credentials from our db without attempting a new authentication with Facebook it will return true.
     const { facebookIsLoggedIn, facebook_sign_in_failed: facebookSignInFailed,
       facebook_sign_in_found: facebookSignInFound, facebook_sign_in_verified: facebookSignInVerified,
       facebook_secret_key: facebookSecretKey } = this.state.facebookAuthResponse;
 
     if (facebookIsLoggedIn && !facebookSignInFailed && facebookSignInFound && facebookSignInVerified) {
       this.setState({ redirectInProcess: false });
-      // console.log('FacebookSignIn calling voterMergeTwoAccountsByFacebookKey, since the voter is authenticated with facebook');
+      oAuthLog('FacebookSignIn calling voterMergeTwoAccountsByFacebookKey, since the voter is authenticated with facebook');
       VoterActions.voterMergeTwoAccountsByFacebookKey(facebookSecretKey);
       this.setState({ waitingForMergeTwoAccounts: true });
     }

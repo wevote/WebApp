@@ -8,9 +8,9 @@ import BallotActions from '../../actions/BallotActions';
 import VoterActions from '../../actions/VoterActions';
 import BallotStore from '../../stores/BallotStore';
 import VoterStore from '../../stores/VoterStore';
-import cookies from '../../utils/cookies';
 import { historyPush, isIPhoneMiniOrSmaller, isWebApp, restoreStylesAfterCordovaKeyboard } from '../../utils/cordovaUtils';
 import isMobile from '../../utils/isMobile';
+import Cookies from '../../utils/js-cookie/Cookies';
 import { renderLog } from '../../utils/logging';
 import InfoCircleIcon from '../Widgets/InfoCircleIcon';
 
@@ -157,8 +157,7 @@ class EditAddressOneHorizontalRow extends Component {
     // console.log('CALLING-VoterActions.voterAddressSave, event.target.value:', event.target.value);
     event.preventDefault();
     VoterActions.voterAddressSave(event.target.value);
-    const oneMonthExpires = 86400 * 31;
-    cookies.setItem('location_guess_closed', '1', oneMonthExpires, '/');
+    Cookies.set('location_guess_closed', '1', { expires: 31, path: '/' });
     this.setState({
       textForMapSearch: event.target.value,
       voterSavedAddress: true,
@@ -169,8 +168,7 @@ class EditAddressOneHorizontalRow extends Component {
     const { textForMapSearch } = this.state;
     VoterActions.voterAddressSave(textForMapSearch);
     BallotActions.completionLevelFilterTypeSave('filterAllBallotItems');
-    const oneMonthExpires = 86400 * 31;
-    cookies.setItem('location_guess_closed', '1', oneMonthExpires, '/');
+    Cookies.set('location_guess_closed', '1', { expires: 31, path: '/' });
     this.setState({
       voterSavedAddress: true,
     });

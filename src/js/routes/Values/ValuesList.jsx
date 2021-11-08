@@ -7,6 +7,7 @@ import IssueActions from '../../actions/IssueActions';
 import SearchBar from '../../components/Search/SearchBar';
 import IssueStore from '../../stores/IssueStore';
 import VoterStore from '../../stores/VoterStore';
+import { isCordova } from '../../utils/cordovaUtils';
 import { renderLog } from '../../utils/logging';
 import { PageContentContainer } from '../../utils/pageLayoutStyles';
 
@@ -137,7 +138,7 @@ export default class ValuesList extends Component {
           <div className="opinions-followed__container">
             <Helmet title="Values - We Vote" />
             <section className="card">
-              <div className="card-main">
+              <div className="card-main" style={{ paddingTop: `${isCordova() ? '0px' : '16px'}` }}>
                 <h1 className="h1">
                   Values
                   {(allIssues && allIssues.length > 0) && (

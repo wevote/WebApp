@@ -15,7 +15,7 @@ import { isWebApp } from './js/utils/cordovaUtils';
 import initializejQuery from './js/utils/initializejQuery';
 import { renderLog } from './js/utils/logging';
 import RouterV5SendMatch from './js/utils/RouterV5SendMatch';
-// importStartCordovaToken -- Do not remove this line!
+// importRemoveCordovaListenersToken  -- Do not remove this line!
 
 // Root URL pages
 
@@ -44,7 +44,7 @@ const Friends = React.lazy(() => import(/* webpackChunkName: 'Friends' */ './js/
 const GetStarted = React.lazy(() => import(/* webpackChunkName: 'GetStarted' */ './js/routes/Intro/GetStarted'));
 const HamburgerMenu = React.lazy(() => import(/* webpackChunkName: 'HamburgerMenu' */ './js/routes/Settings/HamburgerMenu'));
 const HowItWorks = React.lazy(() => import(/* webpackChunkName: 'HowItWorks' */ './js/routes/HowItWorks'));
-const HowWeVoteHelps = React.lazy(() => import(/* webpackChunkName: 'HowWeVoteHelps' */ './js/routes/more/HowWeVoteHelps'));
+const HowWeVoteHelps = React.lazy(() => import(/* webpackChunkName: 'HowWeVoteHelps' */ './js/routes/More/HowWeVoteHelps'));
 const Intro = React.lazy(() => import(/* webpackChunkName: 'Intro' */ './js/routes/Intro/Intro'));
 const IntroNetwork = React.lazy(() => import(/* webpackChunkName: 'IntroNetwork' */ './js/routes/Intro/IntroNetwork'));
 const Location = React.lazy(() => import(/* webpackChunkName: 'Location' */ './js/routes/Settings/Location'));
@@ -121,7 +121,6 @@ class App extends Component {
   }
 
   componentDidMount () {
-    // initializeCordovaToken -- Do not remove this line!
     initializejQuery(() => {
       let { hostname } = window.location;
       hostname = hostname || '';
@@ -185,11 +184,6 @@ class App extends Component {
       console.log('WebApp: href in App.js render: ', window.location.href);
     } else {
       console.log('Cordova:  href hash in App.js render: ', window.location.hash);
-      const { cordovaInitialized } = this.state;
-      if (!cordovaInitialized) {
-        console.log('Cordova: Waiting for cordovaInitialized state to render App in Cordova');
-        return null;
-      }
     }
 
     /*

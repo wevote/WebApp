@@ -1,5 +1,5 @@
-import cookies from './cookies';
 import { cordovaDot, isCordova, isIOSAppOnMac, isWebApp } from './cordovaUtils';
+import Cookies from './js-cookie/Cookies';
 import { stringContains } from './textFormat';
 
 // We have to do all this, because we allow urls where the path starts with a twitter username (handle)
@@ -311,14 +311,13 @@ export function weVoteBrandingOff () {
   }
   const { location: { query } } = window;
   const weVoteBrandingOffFromUrl = query ? query.we_vote_branding_off : false;
-  const weVoteBrandingOffFromCookie = cookies.getItem('we_vote_branding_off');
-  const oneDayExpires = 86400;
+  const weVoteBrandingOffFromCookie = Cookies.get('we_vote_branding_off');
   if (weVoteBrandingOffFromUrl && !weVoteBrandingOffFromCookie) {
-    cookies.setItem('we_vote_branding_off', weVoteBrandingOffFromUrl, oneDayExpires, '/');
+    Cookies.set('we_vote_branding_off', weVoteBrandingOffFromUrl, 1, { path: '/' });
   }
 
   if (weVoteBrandingOffFromUrl || weVoteBrandingOffFromCookie) {
-    cookies.setItem('show_full_navigation', '1', Infinity, '/');
+    Cookies.set('show_full_navigation', '1', { path: '/' });
   }
 
   weVoteBrandingOffGlobal = weVoteBrandingOffFromUrl || weVoteBrandingOffFromCookie;
@@ -341,4 +340,12 @@ export function displayTopMenuShadow () {  //
 
 export function avatarGeneric () {
   return cordovaDot('../../img/global/icons/avatar-generic.png');
+}
+
+export function dumpCookies () {
+  console.log('dumpCookies: ', document.cookie);
+  // console.log('cookies dump keys,length:', this.keys().length, this.keys());
+  // return this.keys().forEach((key) => {
+  //   console.log(`cookies dump for ${key} - ${this.getItem(key)}`);
+  // });
 }

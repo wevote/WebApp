@@ -1311,7 +1311,7 @@ const NetworkScoreSmall = styled.div`
   font-size: 10px;
   font-weight: bold;
   @media print{
-    border-width: 1 px;
+    border-width: 1px;
     border-style: solid;
     border-color: ${({ hideNumbersOfAllPositions, voterOpposesBallotItem, voterPersonalNetworkScoreIsNegative, voterPersonalNetworkScoreIsPositive, voterSupportsBallotItem }) => ((voterSupportsBallotItem && 'rgb(31, 192, 111)') || (voterOpposesBallotItem && 'rgb(255, 73, 34)') || (voterPersonalNetworkScoreIsPositive && 'rgb(31, 192, 111)') || (voterPersonalNetworkScoreIsNegative && 'rgb(255, 73, 34)') || (hideNumbersOfAllPositions && 'rgb(211, 211, 211)') || '#888')};
   }

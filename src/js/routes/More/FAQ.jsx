@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import Helmet from 'react-helmet';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
+import { isCordova } from '../../utils/cordovaUtils';
 import { renderLog } from '../../utils/logging';
 import { PageContentContainer } from '../../utils/pageLayoutStyles';
 import ToolBar from './ToolBar';
@@ -25,7 +26,7 @@ export default class FAQ extends Component {
         <Helmet title="FAQ - We Vote" />
         <PageContentContainer>
           <ContainerFluidWrapper className="container-fluid card">
-            <div className="card-main">
+            <div className="card-main" style={{ paddingTop: `${isCordova() ? '0px' : '16px'}` }}>
               <h1 className="h1">Frequently Asked Questions</h1>
               <div
                 style={{

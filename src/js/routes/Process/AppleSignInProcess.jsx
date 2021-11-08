@@ -1,12 +1,11 @@
 import React, { Component } from 'react';
 import AppObservableStore, { messageService } from '../../stores/AppObservableStore';
 import VoterStore from '../../stores/VoterStore';
-import cookies from '../../utils/cookies';
 import { historyPush, isWebApp } from '../../utils/cordovaUtils';
+import Cookies from '../../utils/js-cookie/Cookies';
 import { oAuthLog, renderLog } from '../../utils/logging';
 import { PageContentContainer } from '../../utils/pageLayoutStyles';
 import { stringContains } from '../../utils/textFormat';
-
 
 export default class AppleSignInProcess extends Component {
   constructor (props) {
@@ -61,7 +60,7 @@ export default class AppleSignInProcess extends Component {
       if (voterIsSignedInWithApple) {
         // Once the voter data returns successfully, redirect to starting page
         let redirectFullUrl = '';
-        let signInStartFullUrl = cookies.getItem('sign_in_start_full_url');
+        let signInStartFullUrl = Cookies.get('sign_in_start_full_url');
         // console.log('AppleSignInProcess signInStartFullUrl:', signInStartFullUrl);
         if (signInStartFullUrl && stringContains('applesigninprocess', signInStartFullUrl)) {
           // Do not support a redirect to applesigninprocess
@@ -70,8 +69,8 @@ export default class AppleSignInProcess extends Component {
         if (signInStartFullUrl) {
           // console.log('AppleSignInProcess Executing Redirect');
           AppObservableStore.unsetStoreSignInStartFullUrl();
-          cookies.removeItem('sign_in_start_full_url', '/');
-          cookies.removeItem('sign_in_start_full_url', '/', 'wevote.us');
+          Cookies.remove('sign_in_start_full_url', { path: '/' });
+          Cookies.remove('sign_in_start_full_url', { path: '/', domain: 'wevote.us' });
           redirectFullUrl = signInStartFullUrl;
           let useWindowLocationAssign = true;
           if (window && window.location && window.location.origin) {

@@ -27,8 +27,8 @@ import BallotStore from '../stores/BallotStore';
 import IssueStore from '../stores/IssueStore';
 import VoterStore from '../stores/VoterStore';
 import apiCalming from '../utils/apiCalming';
-import cookies from '../utils/cookies';
 import { historyPush, isAndroid, isIOS, isWebApp } from '../utils/cordovaUtils';
+import Cookies from '../utils/js-cookie/Cookies';
 import lazyPreloadPages from '../utils/lazyPreloadPages';
 import { renderLog } from '../utils/logging';
 import { PageContentContainer } from '../utils/pageLayoutStyles';
@@ -105,7 +105,7 @@ class Ready extends Component {
     }, 8000);
 
     this.setState({
-      locationGuessClosed: cookies.getItem('location_guess_closed'),
+      locationGuessClosed: Cookies.get('location_guess_closed'),
       textForMapSearch: VoterStore.getTextForMapSearch(),
     });
 

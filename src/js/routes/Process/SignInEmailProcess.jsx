@@ -5,8 +5,8 @@ import LoadingWheel from '../../components/LoadingWheel';
 import WouldYouLikeToMergeAccountsOld from '../../components/WouldYouLikeToMergeAccountsOld';
 import AppObservableStore from '../../stores/AppObservableStore';
 import VoterStore from '../../stores/VoterStore';
-import cookies from '../../utils/cookies';
 import { historyPush } from '../../utils/cordovaUtils';
+import Cookies from '../../utils/js-cookie/Cookies';
 import { oAuthLog, renderLog } from '../../utils/logging';
 
 export default class SignInEmailProcess extends Component {
@@ -63,15 +63,15 @@ export default class SignInEmailProcess extends Component {
 
     let redirectFullUrl = '';
     let redirectPathname = '';
-    const signInStartFullUrl = cookies.getItem('sign_in_start_full_url');
+    const signInStartFullUrl = Cookies.get('sign_in_start_full_url');
 
     // We redirect after voterMergeTwoAccountsByEmailKey comes back
     if (this.state.emailSignInStatus.voter_merge_two_accounts_attempted) {
       oAuthLog('voterMergeTwoAccountsByEmailKey attempted - push to /settings/account');
       if (signInStartFullUrl) {
         AppObservableStore.unsetStoreSignInStartFullUrl();
-        cookies.removeItem('sign_in_start_full_url', '/');
-        cookies.removeItem('sign_in_start_full_url', '/', 'wevote.us');
+        Cookies.remove('sign_in_start_full_url', { path: '/' });
+        Cookies.remove('sign_in_start_full_url', { path: '/', domain: 'wevote.us' });
         redirectFullUrl = signInStartFullUrl;
         // The Email sign in delay isn't as great as Twitter, so this isn't needed.
         // if (!voterHasDataToPreserve) {
@@ -101,8 +101,8 @@ export default class SignInEmailProcess extends Component {
         //  probably following a link in their email that has already been used
         if (signInStartFullUrl) {
           AppObservableStore.unsetStoreSignInStartFullUrl();
-          cookies.removeItem('sign_in_start_full_url', '/');
-          cookies.removeItem('sign_in_start_full_url', '/', 'wevote.us');
+          Cookies.remove('sign_in_start_full_url', { path: '/' });
+          Cookies.remove('sign_in_start_full_url', { path: '/', domain: 'wevote.us' });
           redirectFullUrl = signInStartFullUrl;
           // The Email sign in delay isn't as great as Twitter, so this isn't needed.
           // if (!voterHasDataToPreserve) {
@@ -123,8 +123,8 @@ export default class SignInEmailProcess extends Component {
         }
       } else {
         AppObservableStore.unsetStoreSignInStartFullUrl();
-        cookies.removeItem('sign_in_start_full_url', '/');
-        cookies.removeItem('sign_in_start_full_url', '/', 'wevote.us');
+        Cookies.remove('sign_in_start_full_url', { path: '/' });
+        Cookies.remove('sign_in_start_full_url', { path: '/', domain: 'wevote.us' });
         historyPush({
           pathname: '/settings/account',
           state: {
@@ -143,8 +143,8 @@ export default class SignInEmailProcess extends Component {
         oAuthLog('secret key owned by this voter - push to /settings/account');
         if (signInStartFullUrl) {
           AppObservableStore.unsetStoreSignInStartFullUrl();
-          cookies.removeItem('sign_in_start_full_url', '/');
-          cookies.removeItem('sign_in_start_full_url', '/', 'wevote.us');
+          Cookies.remove('sign_in_start_full_url', { path: '/' });
+          Cookies.remove('sign_in_start_full_url', { path: '/', domain: 'wevote.us' });
           redirectFullUrl = signInStartFullUrl;
           // The Email sign in delay isn't as great as Twitter, so this isn't needed.
           // if (!voterHasDataToPreserve) {

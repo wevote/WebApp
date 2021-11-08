@@ -5,7 +5,7 @@ import clsx from 'clsx';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import VoterStore from '../../stores/VoterStore';
-import { historyPush, isAndroid, isCordova, isIOS, isIPhone5p5inEarly, isIPhone5p5inMini, isIPhone5p8in, isIPhone6p1in, isIPhone6p5in, isWebApp, isWebAppHeight0to568, isWebAppHeight569to667, isWebAppHeight668to736, isWebAppHeight737to896, restoreStylesAfterCordovaKeyboard } from '../../utils/cordovaUtils';
+import { historyPush, isAndroid, isCordova, isIOS, isIOsSmallerThanPlus, isIPhone5p5inEarly, isIPhone5p5inMini, isIPhone5p8in, isIPhone6p1in, isIPhone6p5in, isWebApp, isWebAppHeight0to568, isWebAppHeight569to667, isWebAppHeight668to736, isWebAppHeight737to896, restoreStylesAfterCordovaKeyboard } from '../../utils/cordovaUtils';
 import initializeAppleSDK from '../../utils/initializeAppleSDK';
 import initializeFacebookSDK from '../../utils/initializeFacebookSDK';
 import { renderLog } from '../../utils/logging';
@@ -227,7 +227,7 @@ const styles = (theme) => ({
   } : {
     height: '100%',
     position: 'absolute !important',
-    top: '6% !important',
+    top: isIOsSmallerThanPlus() ? '16% !important' : '6% !important',
     left: '0% !important',
     right: 'unset !important',
     bottom: 'unset !important',

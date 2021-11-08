@@ -1,7 +1,7 @@
 import { withStyles } from '@material-ui/core/styles/index';
 import React, { Component } from 'react';
 import styled from 'styled-components';
-import cookies from '../../utils/cookies';
+import Cookies from '../../utils/js-cookie/Cookies';
 import { renderLog } from '../../utils/logging';
 
 const OpenExternalWebSite = React.lazy(() => import(/* webpackChunkName: 'OpenExternalWebSite' */ '../Widgets/OpenExternalWebSite'));
@@ -16,7 +16,7 @@ class ReturnOfficialBallot extends Component {
 
   componentDidMount () {
     this.setState({
-      returnOfficialBallotClosed: cookies.getItem('return_official_ballot_closed'),
+      returnOfficialBallotClosed: Cookies.get('return_official_ballot_closed'),
     });
   }
 
@@ -29,8 +29,7 @@ class ReturnOfficialBallot extends Component {
   }
 
   closeReturnOfficialBallot = () => {
-    const oneMonthExpires = 86400 * 31;
-    cookies.setItem('return_official_ballot_closed', '1', oneMonthExpires, '/');
+    Cookies.set('return_official_ballot_closed', '1', { expires: 31, path: '/' });
     this.setState({
       returnOfficialBallotClosed: true,
     });

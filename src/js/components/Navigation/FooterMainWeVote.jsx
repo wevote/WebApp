@@ -1,8 +1,9 @@
-import React, { Component } from 'react';
+import { withStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
+import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
-import { withStyles } from '@material-ui/core/styles';
+import isMobileScreenSize from '../../utils/isMobileScreenSize';
 import OpenExternalWebSite from '../Widgets/OpenExternalWebSite';
 
 
@@ -34,7 +35,7 @@ class FooterMainWeVote extends Component {
                 className={classes.link}
               />
             </Column>
-            <Column>
+            <Column style={{ display: `${isMobileScreenSize() ? 'none' : ''}` }}>
               <ColumnTitle>Community</ColumnTitle>
               <OpenExternalWebSite
                 linkIdAttribute="footerLinkBlog"
@@ -71,7 +72,7 @@ class FooterMainWeVote extends Component {
               <Link id="footerLinkPrivacy" className={classes.link} to="/more/privacy">Privacy Policy</Link>
               <Link id="footerLinkTermsOfUse" className={classes.link} to="/more/terms">Terms of Service</Link>
             </Column>
-            <Column>
+            <Column style={{ display: `${isMobileScreenSize() ? 'none' : ''}` }}>
               <ColumnTitle>Connect</ColumnTitle>
               <OpenExternalWebSite
                 linkIdAttribute="footerLinkJoinOurNewsletter"

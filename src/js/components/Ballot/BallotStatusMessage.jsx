@@ -5,9 +5,9 @@ import React, { Component } from 'react';
 import BallotStore from '../../stores/BallotStore';
 import ElectionStore from '../../stores/ElectionStore';
 import VoterStore from '../../stores/VoterStore';
-import cookies from '../../utils/cookies';
 import { formatDateMMMDoYYYY } from '../../utils/dateFormat';
 import initializeMoment from '../../utils/initializeMoment';
+import Cookies from '../../utils/js-cookie/Cookies';
 import { renderLog } from '../../utils/logging';
 
 const styles = (theme) => ({
@@ -43,7 +43,7 @@ class BallotStatusMessage extends Component {
 
   componentDidMount () {
     // console.log("In BallotStatusMessage componentDidMount");
-    const electionsWithBallotStatusMessageClosedValueFromCookie = cookies.getItem('elections_with_ballot_status_message_closed');
+    const electionsWithBallotStatusMessageClosedValueFromCookie = Cookies.get('elections_with_ballot_status_message_closed');
     let electionsWithBallotStatusMessageClosed = [];
     if (electionsWithBallotStatusMessageClosedValueFromCookie) {
       electionsWithBallotStatusMessageClosed = JSON.parse(electionsWithBallotStatusMessageClosedValueFromCookie) || [];
@@ -125,7 +125,7 @@ class BallotStatusMessage extends Component {
       const { electionsWithBallotStatusMessageClosed } = this.state;
       const electionsWithBallotStatusMessageClosedUpdated = [...electionsWithBallotStatusMessageClosed, this.props.googleCivicElectionId];
       const electionsWithBallotStatusMessageClosedForCookie = JSON.stringify(electionsWithBallotStatusMessageClosedUpdated);
-      cookies.setItem('elections_with_ballot_status_message_closed', electionsWithBallotStatusMessageClosedForCookie, Infinity, '/');
+      Cookies.set('elections_with_ballot_status_message_closed', electionsWithBallotStatusMessageClosedForCookie, { expires: 10000, path: '/' });
       this.setState({
         electionsWithBallotStatusMessageClosed: electionsWithBallotStatusMessageClosedUpdated,
         open: false,

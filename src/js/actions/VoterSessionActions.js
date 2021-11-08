@@ -1,26 +1,26 @@
 import Dispatcher from '../common/dispatcher/Dispatcher';
-import cookies from '../utils/cookies';
-import { stringContains } from '../utils/textFormat';
 // eslint-disable-next-line import/no-cycle
 import AppObservableStore from '../stores/AppObservableStore';
+import Cookies from '../utils/js-cookie/Cookies';
+import { stringContains } from '../utils/textFormat';
 
 export default {
   voterSignOut () {
     AppObservableStore.setShowSignInModal(false);
     AppObservableStore.unsetStoreSignInStartFullUrl();
     Dispatcher.loadEndpoint('voterSignOut', { sign_out_all_devices: false });
-    cookies.removeItem('voter_device_id');
-    cookies.removeItem('voter_device_id', '/');
-    cookies.removeItem('voter_device_id', '/', 'wevote.us');
-    cookies.removeItem('ballot_has_been_visited');
-    cookies.removeItem('ballot_has_been_visited', '/');
-    cookies.removeItem('location_guess_closed');
-    cookies.removeItem('location_guess_closed', '/');
-    cookies.removeItem('location_guess_closed', '/', 'wevote.us');
-    cookies.removeItem('show_full_navigation');
-    cookies.removeItem('show_full_navigation', '/');
-    cookies.removeItem('sign_in_start_full_url', '/');
-    cookies.removeItem('sign_in_start_full_url', '/', 'wevote.us');
+    Cookies.remove('voter_device_id');
+    Cookies.remove('voter_device_id', { path: '/' });
+    Cookies.remove('voter_device_id', { path: '/', domain: 'wevote.us' });
+    Cookies.remove('ballot_has_been_visited');
+    Cookies.remove('ballot_has_been_visited', { path: '/' });
+    Cookies.remove('location_guess_closed');
+    Cookies.remove('location_guess_closed', { path: '/' });
+    Cookies.remove('location_guess_closed', { path: '/', domain: 'wevote.us' });
+    Cookies.remove('show_full_navigation');
+    Cookies.remove('show_full_navigation', { path: '/' });
+    Cookies.remove('sign_in_start_full_url', { path: '/' });
+    Cookies.remove('sign_in_start_full_url', { path: '/', domain: 'wevote.us' });
   },
 
   setVoterDeviceIdCookie (id) {
@@ -29,9 +29,9 @@ export default {
     console.log('VoterSessionActions setVoterDeviceIdCookie hostname:', hostname);
     if (hostname && stringContains('wevote.us', hostname)) {
       // If hanging off We Vote subdomain, store the cookie with top level domain
-      cookies.setItem('voter_device_id', id, Infinity, '/', 'wevote.us');
+      Cookies.set('voter_device_id', id, { expires: 10000, path: '/', domain: 'wevote.us' });
     } else {
-      cookies.setItem('voter_device_id', id, Infinity, '/');
+      Cookies.set('voter_device_id', { expires: 10000, path: '/' });
     }
   },
 };

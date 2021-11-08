@@ -21,10 +21,10 @@ import IssueStore from '../stores/IssueStore';
 import SupportStore from '../stores/SupportStore';
 import VoterGuideStore from '../stores/VoterGuideStore';
 import VoterStore from '../stores/VoterStore';
-import cookies from '../utils/cookies';
 import { cordovaVoteMiniHeader } from '../utils/cordovaOffsets';
 import cordovaScrollablePaneTopPadding from '../utils/cordovaScrollablePaneTopPadding';
 import { historyPush, isCordova, isWebApp } from '../utils/cordovaUtils';
+import Cookies from '../utils/js-cookie/Cookies';
 import { renderLog } from '../utils/logging';
 import { DualHeaderContainer, PageContentContainer } from '../utils/pageLayoutStyles';
 import BallotTitleHeader from './Ballot/BallotTitleHeader';
@@ -150,7 +150,7 @@ class Vote extends Component {
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
 
     // Once a voter hits the ballot, they have gone through orientation
-    cookies.setItem('ballot_has_been_visited', '1', Infinity, '/');
+    Cookies.set('ballot_has_been_visited', '1', { expires: 10000, path: '/' });
 
     IssueActions.issueDescriptionsRetrieve(VoterStore.getVoterWeVoteId());
     IssueActions.issuesFollowedRetrieve(VoterStore.getVoterWeVoteId());

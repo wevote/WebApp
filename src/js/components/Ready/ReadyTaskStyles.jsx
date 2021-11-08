@@ -1,5 +1,6 @@
-import styled from 'styled-components';
 import { Button } from '@material-ui/core';
+import styled from 'styled-components';
+import { isCordova } from '../../utils/cordovaUtils';
 
 const ButtonLeft = styled.div`
   display: flex !important;
@@ -19,6 +20,7 @@ const ReadyCard = styled.div`
   padding-left: 82px;
   position: relative;
   min-height: 205px;
+  ${() => (isCordova() ? { marginTop: '8px' } : {})};  // Might be needed for WebApp too...
   @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
     min-height: 10px;
   }

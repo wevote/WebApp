@@ -1,9 +1,8 @@
 import assign from 'object-assign';
 import url from 'url';
 import webAppConfig from '../config';
-import cookies from './cookies';
+import Cookies from './js-cookie/Cookies';
 import { httpLog } from './logging';
-// December 2018:  We want to work toward being airbnb style compliant, but for now these are disabled in this file to minimize massive changes
 /* eslint no-param-reassign: 0 */
 
 
@@ -15,11 +14,10 @@ const defaults = {
   query: {},
   method: 'GET',
   data () {
-    // console.log('----------- cookies.getItem(\'voter_device_id\')', cookies.getItem('voter_device_id'));
-    // console.log('----------- document.cookie', document.cookie);
-    return cookies.getItem('voter_device_id') ? {
+    // console.log('----------- voter_device_id sent with request in service.js/data: ', Cookies.get('voter_device_id'));
+    return Cookies.get('voter_device_id') ? {
       // csrfmiddlewaretoken: cookies.getItem('csrftoken'),
-      voter_device_id: cookies.getItem('voter_device_id'),
+      voter_device_id: Cookies.get('voter_device_id'),
     } : {};
   },
 
@@ -86,8 +84,9 @@ function innerAjax (options) {
   }
 
   httpLog(`AJAX URL: ${options.url}`);
-  if (options.endpoint === 'voterRetrieve') {
-    httpLog('AJAX voter_device_id: ', cookies.getItem('voter_device_id'));
+  httpLog('----------- AJAX voter_device_id: ', Cookies.get('voter_device_id'));
+  if (['voterRetrieve', 'deviceStoreFirebaseCloudMessagingToken', 'siteConfigurationRetrieve'].includes(options.endpoint)) {
+    httpLog('AJAX voter_device_id: ', Cookies.get('voter_device_id'));
   }
   return $.ajax(options);
 }
