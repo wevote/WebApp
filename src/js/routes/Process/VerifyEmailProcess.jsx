@@ -4,8 +4,8 @@ import VoterActions from '../../actions/VoterActions';
 import LoadingWheel from '../../components/LoadingWheel';
 import AppObservableStore from '../../stores/AppObservableStore';
 import VoterStore from '../../stores/VoterStore';
-import cookies from '../../utils/cookies';
 import { historyPush } from '../../utils/cordovaUtils';
+import Cookies from '../../utils/js-cookie/Cookies';
 import { renderLog } from '../../utils/logging';
 
 export default class VerifyEmailProcess extends Component {
@@ -52,11 +52,11 @@ export default class VerifyEmailProcess extends Component {
     VoterActions.voterMergeTwoAccountsByEmailKey(emailSecretKey);
     let redirectFullUrl = '';
     let redirectPathname = '';
-    const signInStartFullUrl = cookies.getItem('sign_in_start_full_url');
+    const signInStartFullUrl = Cookies.get('sign_in_start_full_url');
     if (signInStartFullUrl) {
       AppObservableStore.unsetStoreSignInStartFullUrl();
-      cookies.removeItem('sign_in_start_full_url', '/');
-      cookies.removeItem('sign_in_start_full_url', '/', 'wevote.us');
+      Cookies.remove('sign_in_start_full_url', { path: '/' });
+      Cookies.remove('sign_in_start_full_url', { path: '/', domain: 'wevote.us' });
       redirectFullUrl = signInStartFullUrl;
       // The Email sign in delay isn't as great as Twitter, so this isn't needed.
       // if (!voterHasDataToPreserve) {
@@ -140,11 +140,11 @@ export default class VerifyEmailProcess extends Component {
       // console.log('secret key owned by this voter - push to /ballot');
       let redirectFullUrl = '';
       let redirectPathname = '';
-      const signInStartFullUrl = cookies.getItem('sign_in_start_full_url');
+      const signInStartFullUrl = Cookies.get('sign_in_start_full_url');
       if (signInStartFullUrl) {
         AppObservableStore.unsetStoreSignInStartFullUrl();
-        cookies.removeItem('sign_in_start_full_url', '/');
-        cookies.removeItem('sign_in_start_full_url', '/', 'wevote.us');
+        Cookies.remove('sign_in_start_full_url', { path: '/' });
+        Cookies.remove('sign_in_start_full_url', { path: '/', domain: 'wevote.us' });
         redirectFullUrl = signInStartFullUrl;
         // The Email sign in delay isn't as great as Twitter, so this isn't needed.
         // if (!voterHasDataToPreserve) {

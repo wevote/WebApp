@@ -34,10 +34,10 @@ import VoterGuideStore from '../../stores/VoterGuideStore';
 import VoterStore from '../../stores/VoterStore';
 import apiCalming from '../../utils/apiCalming';
 import { dumpCssFromId } from '../../utils/appleSiliconUtils';
-import cookies from '../../utils/cookies';
 import { chipLabelText, historyPush, isCordova, isIOSAppOnMac, isIPadGiantSize, isIPhone6p1in, isWebApp } from '../../utils/cordovaUtils';
 import isMobile from '../../utils/isMobile';
 import isMobileScreenSize from '../../utils/isMobileScreenSize';
+import Cookies from '../../utils/js-cookie/Cookies';
 import lazyPreloadPages from '../../utils/lazyPreloadPages';
 import { renderLog } from '../../utils/logging';
 import mapCategoryFilterType from '../../utils/map-category-filter-type';
@@ -126,7 +126,7 @@ class Ballot extends Component {
     AppObservableStore.setShowSelectBallotModal(false, false, false);
     this.setState({
       componentDidMountFinished: true,
-      locationGuessClosed: cookies.getItem('location_guess_closed'),
+      locationGuessClosed: Cookies.get('location_guess_closed'),
       mounted: true,
     });
 
@@ -263,7 +263,7 @@ class Ballot extends Component {
     this.onVoterStoreChange();
 
     // Once a voter hits the ballot, they have gone through orientation
-    cookies.setItem('ballot_has_been_visited', '1', Infinity, '/');
+    Cookies.set('ballot_has_been_visited', '1', { expires: 10000, path: '/' });
 
     ElectionActions.electionsRetrieve();
     OrganizationActions.organizationsFollowedRetrieve();
@@ -576,7 +576,7 @@ class Ballot extends Component {
         }
       } else {
         // console.log('Ballot.jsx onVoterStoreChange VoterStore.getVoter: ', VoterStore.getVoter());
-        const locationGuessClosed = cookies.getItem('location_guess_closed');
+        const locationGuessClosed = Cookies.get('location_guess_closed');
         const textForMapSearch = VoterStore.getTextForMapSearch();
         const showAddressVerificationForm =
           (!locationGuessClosed && locationGuessClosed !== null) || !textForMapSearch;
@@ -703,7 +703,7 @@ class Ballot extends Component {
     this.setState({
       ballotElectionList: BallotStore.ballotElectionList(),
       completionLevelFilterType,
-      locationGuessClosed: cookies.getItem('location_guess_closed'),
+      locationGuessClosed: Cookies.get('location_guess_closed'),
     });
 
     if (this.state.ballotLength !== BallotStore.ballotLength) {
@@ -731,7 +731,7 @@ class Ballot extends Component {
   onElectionStoreChange () {
     // console.log('Elections, onElectionStoreChange');
     this.setState({
-      locationGuessClosed: cookies.getItem('location_guess_closed'),
+      locationGuessClosed: Cookies.get('location_guess_closed'),
       voterBallotList: formatVoterBallotList(ElectionStore.getElectionList()),
     });
   }
@@ -1135,7 +1135,7 @@ class Ballot extends Component {
     if (!ballotWithItemsFromCompletionFilterType) {
       return (
         <DelayedLoad showLoadingText waitBeforeShow={2000}>
-          <div className="ballot container-fluid well u-stack--md u-inset--md">
+          <div className="ballot container-fluid well u-stack--md u-inset--md" style={{ marginBottom: `${isIPhone6p1in() ? '800px' : '625px'}` }}>
             <div className="ballot__header" style={{ marginTop: `${isCordova() ? '100px' : 'undefined'}` }}>
               <BallotLoadingWrapper>
                 If your ballot does not appear momentarily,

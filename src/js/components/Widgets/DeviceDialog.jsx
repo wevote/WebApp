@@ -12,18 +12,19 @@ const webAppConfig = require('../../config');
 class DeviceDialog extends Component {
   // This can only be called by a developer running Cordova in an Simulator.  Voters will never see it.
   static clearAllCookies () {
-    const cookies = document.cookie.split(';');
-    const d = new Date();
-    d.setDate(d.getDate() - 1);
-
-    for (let i = 0; i < cookies.length; i++) {
-      const spcook =  cookies[i].split('=');
-
-      console.log('DEBUG CORDOVA delete one Cookie: ', spcook[0]);
-      document.cookie = `${spcook[0]}=; expires=${d}; path=/;`;
-    }
-
-    window.location = ''; // TO REFRESH THE "PAGE"
+    // 11/6/21  need to reimplement for new Cookies... if it is even needed
+    // const cookies = document.cookie.split(';');
+    // const d = new Date();
+    // d.setDate(d.getDate() - 1);
+    //
+    // for (let i = 0; i < cookies.length; i++) {
+    //   const spcook =  cookies[i].split('=');
+    //
+    //   console.log('DEBUG CORDOVA delete one Cookie: ', spcook[0]);
+    //   document.cookie = `${spcook[0]}=; expires=${d}; path=/;`;
+    // }
+    //
+    // window.location = ''; // TO REFRESH THE "PAGE"
   }
 
   static clearLocationGuessClosedCookie () {

@@ -7,8 +7,8 @@ import BallotActions from '../actions/BallotActions';
 import VoterActions from '../actions/VoterActions';
 import BallotStore from '../stores/BallotStore';
 import VoterStore from '../stores/VoterStore';
-import cookies from '../utils/cookies';
 import { historyPush, isCordova, isWebApp, prepareForCordovaKeyboard, restoreStylesAfterCordovaKeyboard } from '../utils/cordovaUtils';
+import Cookies from '../utils/js-cookie/Cookies';
 import { renderLog } from '../utils/logging';
 import LoadingWheel from './LoadingWheel';
 
@@ -176,8 +176,7 @@ class AddressBox extends Component {
     event.preventDefault();
     VoterActions.voterAddressSave(event.target.value);
     BallotActions.completionLevelFilterTypeSave('filterAllBallotItems');
-    const oneMonthExpires = 86400 * 31;
-    cookies.setItem('location_guess_closed', '1', oneMonthExpires, '/');
+    Cookies.set('location_guess_closed', '1', { expires: 31, path: '/' });
     this.setState({
       loading: true,
       textForMapSearch: event.target.value,
@@ -189,8 +188,7 @@ class AddressBox extends Component {
     const { textForMapSearch } = this.state;
     VoterActions.voterAddressSave(textForMapSearch);
     BallotActions.completionLevelFilterTypeSave('filterAllBallotItems');
-    const oneMonthExpires = 86400 * 31;
-    cookies.setItem('location_guess_closed', '1', oneMonthExpires, '/');
+    Cookies.set('location_guess_closed', '1', { expires: 31, path: '/' });
     this.setState({
       loading: true,
       voterSavedAddress: true,

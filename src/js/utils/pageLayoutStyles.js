@@ -219,7 +219,8 @@ export const AppBarForBackTo = styled(AppBar)`
       CordovaPageConstants.settingsSubscription,
       CordovaPageConstants.settingsWild,
       CordovaPageConstants.measureWild,
-      CordovaPageConstants.valuesList].includes(pageEnumeration())) {
+      CordovaPageConstants.valuesList,
+      CordovaPageConstants.valuesWild].includes(pageEnumeration())) {
       if (isIPhone4p7in())      return '20px';
       if (isIPhone5p5inEarly()) return '20px';
       if (isIPhone5p5inMini())  return '39px';
@@ -234,7 +235,8 @@ export const AppBarForBackTo = styled(AppBar)`
     if (AppObservableStore.getScrolledDown() && ![
       CordovaPageConstants.officeWild,
       CordovaPageConstants.measureWild,
-      CordovaPageConstants.valuesList].includes(pageEnumeration())) {
+      CordovaPageConstants.valuesList,
+      CordovaPageConstants.valuesWild].includes(pageEnumeration())) {
       return {};
     }
     return {

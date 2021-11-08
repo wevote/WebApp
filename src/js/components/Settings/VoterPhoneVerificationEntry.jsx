@@ -72,6 +72,9 @@ class VoterPhoneVerificationEntry extends Component {
     const { is_signed_in: isSignedIn, signed_in_with_sms_phone_number: signedInWithSmsPhoneNumber } = voter;
     if (secretCodeVerified && !isSignedIn) {
       VoterActions.voterRetrieve();
+      // New Nov 5, 2021: this should be the end of the line for this dialog, we have fired off a voterRetrieve that should
+      // return is_signed_in true and signed_in_with_sms_phone_number true
+      this.closeSignInModal();
     }
     // console.log(`VoterEmailAddressEntry onVoterStoreChange isSignedIn: ${isSignedIn}, signedInWithSmsPhoneNumber: ${signedInWithSmsPhoneNumber}`);
     if (secretCodeVerified) {

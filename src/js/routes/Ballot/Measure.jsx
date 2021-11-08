@@ -273,7 +273,7 @@ class Measure extends Component {
       ballotpedia_measure_url: ballotpediaMeasureURL,
       id: measureId,
       we_vote_id: measureWeVoteId,
-      measure_url: measureURL,
+      // measure_url: measureURL,
     } = measure;
 
     if (!measure || !ballotItemDisplayName) {

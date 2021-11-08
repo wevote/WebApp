@@ -354,10 +354,11 @@ class HeaderBar extends Component {
 
   onAnalyticsStoreChange () {
     // A reload after facebook login forces the need for a voterRetrieve, after redrawing the page
-    // Without making changes to the API server, the first response that indicates 'is signed in' is an Analytics call response
-    if (VoterStore.getVoterIsSignedIn() !== true && (AnalyticsStore.getIsSignedIn() || FacebookStore.loggedIn)) {
+    // (and without requiring changes to the API server), the first response that indicates 'is signed in' is an Analytics call response
+    // console.log('onAnalyticsStoreChange VoterStore.getVoterIsSignedIn(): ', VoterStore.getVoterIsSignedIn(), ' AnalyticsStore.getIsSignedIn(): ', AnalyticsStore.getIsSignedIn(), 'FacebookStore.loggedIn: ', FacebookStore.loggedIn, 'VoterStore.voterDeviceId(): ', VoterStore.voterDeviceId());
+    if (isCordova() && VoterStore.getVoterIsSignedIn() === false && (AnalyticsStore.getIsSignedIn() || FacebookStore.loggedIn)) {
       if (apiCalming('voterRetrieve', 500)) {
-        console.log('HeaderBar onAnalyticsStoreChange, firing voterRetrieve --------------');  // Do not comment out or delete
+        // console.log('Cordova:  HeaderBar onAnalyticsStoreChange, firing voterRetrieve --------------');  // Do not comment out or delete
         VoterActions.voterRetrieve();
       }
     }
@@ -443,11 +444,10 @@ class HeaderBar extends Component {
   closeShareModal () {
     AppObservableStore.setShowShareModal(false);
     AppObservableStore.setShareModalStep('');
-    const pathname = normalizedHref();
-    // console.log('HeaderBar closeShareModal pathname:', pathname);
-    if (stringContains('/modal/share', pathname) && isWebApp()) {
-      const pathnameWithoutModalShare = pathname.replace('/modal/share', '');  // Cordova
-      // console.log('Navigation closeShareModal pathnameWithoutModalShare:', pathnameWithoutModalShare);
+    const { location: { href } } = window;
+    if (stringContains('/modal/share', href) && isWebApp()) {
+      const pathnameWithoutModalShare = href.replace('/modal/share', '');  // Cordova
+      // console.log('Navigation closeShareModal ', pathnameWithoutModalShare)
       historyPush(pathnameWithoutModalShare);
     }
   }

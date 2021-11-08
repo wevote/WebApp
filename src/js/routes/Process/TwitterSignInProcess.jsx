@@ -7,8 +7,8 @@ import IPhoneSpacer from '../../components/Widgets/IPhoneSpacer';
 import AppObservableStore, { messageService } from '../../stores/AppObservableStore';
 import TwitterStore from '../../stores/TwitterStore';
 import VoterStore from '../../stores/VoterStore';
-import cookies from '../../utils/cookies';
 import { historyPush, isIPad, isWebApp } from '../../utils/cordovaUtils';
+import Cookies from '../../utils/js-cookie/Cookies';
 import { oAuthLog, renderLog } from '../../utils/logging';
 import { PageContentContainer } from '../../utils/pageLayoutStyles';
 import { stringContains } from '../../utils/textFormat';
@@ -58,7 +58,7 @@ export default class TwitterSignInProcess extends Component {
       if (voterIsSignedInTwitter || (twitterSignInStatus && twitterSignInStatus.voter_merge_two_accounts_attempted)) {
         // Once the Twitter merge returns successfully, redirect to starting page
         let redirectFullUrl = '';
-        let signInStartFullUrl = cookies.getItem('sign_in_start_full_url');
+        let signInStartFullUrl = Cookies.get('sign_in_start_full_url');
         // console.log('TwitterSignInProcess signInStartFullUrl:', signInStartFullUrl);
         if (signInStartFullUrl && stringContains('twitter_sign_in', signInStartFullUrl)) {
           // Do not support a redirect to facebook_sign_in
@@ -68,8 +68,8 @@ export default class TwitterSignInProcess extends Component {
         if (signInStartFullUrl) {
           // console.log('TwitterSignInProcess Executing Redirect');
           AppObservableStore.unsetStoreSignInStartFullUrl();
-          cookies.removeItem('sign_in_start_full_url', '/');
-          cookies.removeItem('sign_in_start_full_url', '/', 'wevote.us');
+          Cookies.remove('sign_in_start_full_url', { path: '/' });
+          Cookies.remove('sign_in_start_full_url', { path: '/', domain: 'wevote.us' });
           redirectFullUrl = signInStartFullUrl;
           // if (!voterHasDataToPreserve) {
           //   redirectFullUrl += '?voter_refresh_timer_on=1';

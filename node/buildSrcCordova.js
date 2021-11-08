@@ -18,11 +18,13 @@ function fileRewriterForCordova (path) {
       '$1{/* $2   // Rewritten from Suspense */}');
     // Replace "initializeMoment" everywhere
     newValue = newValue.replace(/initializeMoment/gim, 'initializeMomentCordova');
-    // Inject cordova startup in App.jsx, replace "importStartCordovaToken" etc
+    // Inject cordova startup in index.jsx, replace "importStartCordovaToken" etc
     newValue = newValue.replace(/^.*?importStartCordovaToken.*?$/gim,
-      'import { initializationForCordova, removeCordovaSpecificListeners } from \'./js/startCordova\';');
+      'import { initializationForCordova } from \'./js/startCordova\';');
+    newValue = newValue.replace(/^.*?importRemoveCordovaListenersToken.*?$/gim,
+      'import { removeCordovaSpecificListeners } from \'./js/startCordova\';');
     newValue = newValue.replace(/^.*?initializeCordovaToken.*?$/gim,
-      '    initializationForCordova(() => this.setState({cordovaInitialized: true}));');
+      '  initializationForCordova(() => startReact());');
     newValue = newValue.replace(/^.*?removeCordovaListenersToken.*?$/gim,
       '    removeCordovaSpecificListeners();');
     // Switch over to HashRouter for Cordova

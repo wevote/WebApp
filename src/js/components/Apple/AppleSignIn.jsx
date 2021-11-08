@@ -3,8 +3,8 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 import VoterActions from '../../actions/VoterActions';
 import webAppConfig from '../../config';
-import cookies from '../../utils/cookies';
 import { isAndroid, isIOS, isWebApp } from '../../utils/cordovaUtils';
+import Cookies from '../../utils/js-cookie/Cookies';
 import { oAuthLog, renderLog } from '../../utils/logging';
 import { openSnackbar } from '../Widgets/SnackNotifier';
 
@@ -22,11 +22,11 @@ class AppleSignIn extends Component {
     if (isWebApp()) {
       const { AppleID } = window;
       const state = JSON.stringify({
-        voter_device_id: cookies.getItem('voter_device_id'),
+        voter_device_id: Cookies.get('voter_device_id'),
         return_url: window.location.href,
       });
       if (AppleID) {
-        console.log('voter_device_id from cookie', cookies.getItem('voter_device_id'));
+        console.log('voter_device_id from cookie', Cookies.get('voter_device_id'));
         AppleID.auth.init({
           clientId: 'us.wevote.webapp',
           scope: 'name email',

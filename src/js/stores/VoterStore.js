@@ -8,9 +8,9 @@ import VoterGuideActions from '../actions/VoterGuideActions';
 import Dispatcher from '../common/dispatcher/Dispatcher';
 import signInModalGlobalState from '../components/Widgets/signInModalGlobalState';
 import { dumpObjProps } from '../utils/appleSiliconUtils';
-import cookies from '../utils/cookies';
+import Cookies from '../utils/js-cookie/Cookies';
 import { stringContains } from '../utils/textFormat';
-import AppObservableStore from './AppObservableStore'; // eslint-disable-line import/no-cycle
+import AppObservableStore from './AppObservableStore';
 
 class VoterStore extends ReduceStore {
   getInitialState () {
@@ -269,19 +269,19 @@ class VoterStore extends ReduceStore {
   }
 
   voterDeviceId () {
-    return this.getState().voter.voter_device_id || cookies.getItem('voter_device_id');
+    return this.getState().voter.voter_device_id || Cookies.get('voter_device_id');
   }
 
   setVoterDeviceIdCookie (id) { // eslint-disable-line
-    cookies.removeItem('voter_device_id');
-    cookies.removeItem('voter_device_id', '/');
+    Cookies.remove('voter_device_id');
+    Cookies.remove('voter_device_id', { path: '/' });
     let { hostname } = window.location;
     hostname = hostname || '';
-    // console.log('setVoterDeviceIdCookie hostname:', hostname);
+    // console.log('setVoterDeviceIdCookie hostname:', hostname, 'cookie id:', id);
     if (hostname && stringContains('wevote.us', hostname)) {
-      cookies.setItem('voter_device_id', id, Infinity, '/', 'wevote.us');
+      Cookies.set('voter_device_id', id, { expires: 10000, path: '/', domain: 'wevote.us' });
     } else {
-      cookies.setItem('voter_device_id', id, Infinity, '/');
+      Cookies.set('voter_device_id', id, { expires: 10000, path: '/' });
     }
   }
 
@@ -704,18 +704,18 @@ class VoterStore extends ReduceStore {
         incomingVoter = action.res;
         ({ facebookPhotoRetrieveLoopCount } = state);
 
-        currentVoterDeviceId = cookies.getItem('voter_device_id');
+        currentVoterDeviceId = Cookies.get('voter_device_id');
+        console.log('VoterStore, voterRetrieve stored Cookie value for voter_device_id value on entry: ', currentVoterDeviceId);
         if (!action.res.voter_found) {
-          console.log(`This voter_device_id is not in the db and is invalid, so delete it: ${
-            cookies.getItem('voter_device_id')}`);
+          console.log(`This voter_device_id is not in the db and is invalid, so delete it: ${currentVoterDeviceId}`);
 
-          // Attempt to delete in a variety of ways
-          cookies.removeItem('voter_device_id');
-          cookies.removeItem('voter_device_id', '/');
-          cookies.removeItem('voter_device_id', '/', 'wevote.us');
+          // Attempt to delete the voter_device_id cookie in a variety of ways
+          Cookies.remove('voter_device_id');
+          Cookies.remove('voter_device_id', { path: '/' });
+          Cookies.remove('voter_device_id', { path: '/', domain: 'wevote.us' });
 
           // ...and then ask for a new voter. When it returns a voter with a new voter_device_id, we will set new cookie
-          if (!cookies.getItem('voter_device_id')) {
+          if (!Cookies.get('voter_device_id')) {
             // console.log("voter_device_id gone -- calling voterRetrieve");
             VoterActions.voterRetrieve();
           } else {
@@ -725,7 +725,7 @@ class VoterStore extends ReduceStore {
           voterDeviceId = action.res.voter_device_id;
           if (voterDeviceId) {
             if (currentVoterDeviceId !== voterDeviceId) {
-              // console.log("Setting new voter_device_id");
+              console.log('Setting new voter_device_id');
               this.setVoterDeviceIdCookie(voterDeviceId);
             }
             // FriendsInvitationList.jsx is choking on this because calling this

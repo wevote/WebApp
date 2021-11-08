@@ -1,9 +1,8 @@
 import Dispatcher from '../common/dispatcher/Dispatcher';
-import cookies from '../utils/cookies';
+import Cookies from '../utils/js-cookie/Cookies';
 
 let uniqueKeyIssuesDescriptionRetrieve = '';
 let uniqueKeyIssuesFollowedRetrieve = '';
-
 
 export default {
   issueDescriptionsRetrieve (voterWeVoteId) {
@@ -16,7 +15,7 @@ export default {
     ignore the call if that ID has not changed.  If we really want to call this more than once for the same
     login, just pass in a unique string, like a timestamp, and the api will fire.
     */
-    const uniqueKey = voterWeVoteId && voterWeVoteId.length ? voterWeVoteId : cookies.getItem('voter_device_id');
+    const uniqueKey = voterWeVoteId && voterWeVoteId.length ? voterWeVoteId : Cookies.get('voter_device_id');
     if (uniqueKey !== uniqueKeyIssuesDescriptionRetrieve) {
       uniqueKeyIssuesDescriptionRetrieve = uniqueKey;
       Dispatcher.loadEndpoint('issueDescriptionsRetrieve', {});
@@ -44,7 +43,7 @@ export default {
     ignore the call if that ID has not changed.  If we really want to call this more than once for the same
     login, just pass in a unique string, like a timestamp, and the api will fire.
     */
-    const uniqueKey = voterWeVoteId.length ? voterWeVoteId : cookies.getItem('voter_device_id');
+    const uniqueKey = voterWeVoteId.length ? voterWeVoteId : Cookies.get('voter_device_id');
     if (uniqueKey !== uniqueKeyIssuesFollowedRetrieve) {
       uniqueKeyIssuesFollowedRetrieve = uniqueKey;
       Dispatcher.loadEndpoint('issuesFollowedRetrieve', {});

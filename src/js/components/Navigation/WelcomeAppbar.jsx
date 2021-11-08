@@ -11,9 +11,9 @@ import LazyImage from '../../common/components/LazyImage';
 import AppObservableStore, { messageService } from '../../stores/AppObservableStore';
 import VoterStore from '../../stores/VoterStore';
 import { avatarGeneric } from '../../utils/applicationUtils';
-import cookies from '../../utils/cookies';
 import { cordovaWelcomeAppToolbarTop, welcomeAppBarPaddingTop } from '../../utils/cordovaOffsets';
 import { historyPush } from '../../utils/cordovaUtils';
+import Cookies from '../../utils/js-cookie/Cookies';
 import { renderLog } from '../../utils/logging';
 import { shortenText } from '../../utils/textFormat';
 import { voterPhoto } from '../../utils/voterPhoto';
@@ -129,8 +129,8 @@ class WelcomeAppbar extends Component {
   handleShowMobileNavigation = (show) => {
     if (show) {
       // If the voter opens the mobile drop-down, set the sign_in_start_full_url
-      cookies.removeItem('sign_in_start_full_url', '/');
-      cookies.removeItem('sign_in_start_full_url', '/', 'wevote.us');
+      Cookies.remove('sign_in_start_full_url', { path: '/' });
+      Cookies.remove('sign_in_start_full_url', { path: '/', domain: 'wevote.us' });
       AppObservableStore.setSignInStartFullUrl();
     }
     this.setState({ showMobileNavigationMenu: show });

@@ -1,7 +1,7 @@
 import { withStyles, withTheme } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 import React from 'react';
-import cookies from '../../utils/cookies';
+import Cookies from '../../utils/js-cookie/Cookies';
 import { renderLog } from '../../utils/logging';
 import Testimonial from '../Widgets/Testimonial';
 
@@ -14,13 +14,12 @@ class FriendsPromoBox extends React.Component {
 
   componentDidMount () {
     this.setState({
-      friendSectionBoxClosed: !!cookies.getItem('friend_section_box_closed') || false,
+      friendSectionBoxClosed: !!Cookies.get('friend_section_box_closed') || false,
     });
   }
 
   setFriendSectionBoxClosed () {
-    const oneMonthExpires = 86400 * 31;
-    cookies.setItem('friend_section_box_closed', '1', oneMonthExpires, '/');
+    Cookies.set('friend_section_box_closed', '1', { expires: 31, path: '/' });
     this.setState({
       friendSectionBoxClosed: true,
     });

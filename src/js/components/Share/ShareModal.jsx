@@ -252,7 +252,7 @@ class ShareModal extends Component {
       }
       linkToBeShared = linkToBeShared.replace('https://file:/', 'https://wevote.us/');  // Cordova
       linkToBeSharedUrlEncoded = encodeURI(linkToBeShared);
-      // console.log('ShareModal linkToBeShared:', linkToBeShared);
+      console.log('ShareModal linkToBeShared:', linkToBeShared);
 
       // const twitterTextEncoded = encodeURI('Check out this cool ballot tool!');
       // if (shareModalStep === 'ballotShareOptions') {

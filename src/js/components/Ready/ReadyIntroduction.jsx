@@ -15,7 +15,7 @@ class ReadyIntroduction extends Component {
     };
   }
 
-  componentDidMount() {
+  componentDidMount () {
     const { contentUnfurledOnLoad } = this.props;
     this.setState({
       contentUnfurled: contentUnfurledOnLoad,

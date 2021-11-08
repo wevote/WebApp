@@ -3,13 +3,13 @@ import { withStyles, withTheme } from '@material-ui/core/styles';
 import { CheckCircle, EditLocation, PlayCircleFilled } from '@material-ui/icons';
 import React, { Component } from 'react';
 import styled from 'styled-components';
-import AppObservableStore from '../../stores/AppObservableStore';
 import VoterConstants from '../../constants/VoterConstants';
+import AppObservableStore from '../../stores/AppObservableStore';
 import BallotStore from '../../stores/BallotStore';
 import SupportStore from '../../stores/SupportStore';
 import VoterStore from '../../stores/VoterStore';
-import cookies from '../../utils/cookies';
 import { cordovaDot } from '../../utils/cordovaUtils';
+import Cookies from '../../utils/js-cookie/Cookies';
 import { renderLog } from '../../utils/logging';
 // import { Ballot } from '@material-ui/icons';
 // import { ThumbUp } from '@material-ui/icons';
@@ -154,7 +154,7 @@ class CompleteYourProfile extends Component {
     // } else {
     //   this.setItemNotComplete(adviserIntroCompletedId);
     // }
-    const addressIntroCompletedByCookie = cookies.getItem('location_guess_closed');
+    const addressIntroCompletedByCookie = Cookies.get('location_guess_closed');
     const { addressIntroCompleted } = this.state;
     const addressIntroCompletedId = 3;
     if (addressIntroCompleted || addressIntroCompletedByCookie) {
@@ -231,8 +231,7 @@ class CompleteYourProfile extends Component {
   }
 
   openAddressIntroModal = () => {
-    const oneMonthExpires = 86400 * 31;
-    cookies.setItem('location_guess_closed', '1', oneMonthExpires, '/');
+    Cookies.set('location_guess_closed', '1', { expires: 31, path: '/' });
     this.setState({
       addressIntroCompleted: true,
     });
@@ -334,7 +333,7 @@ class CompleteYourProfile extends Component {
       howItWorksWatched, personalizedScoreIntroCompleted, steps,
       textForMapSearch, valuesIntroCompleted,
     } = this.state;
-    const addressIntroCompletedByCookie = cookies.getItem('location_guess_closed');
+    const addressIntroCompletedByCookie = Cookies.get('location_guess_closed');
     // console.log('activeStep: ', activeStep);
     // console.log('steps: ', steps);
 

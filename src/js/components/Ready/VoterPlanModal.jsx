@@ -572,9 +572,9 @@ const styles = (theme) => ({
     minWidth: '100%',
     maxWidth: '100%',
     width: '100%',
-    minHeight: '90%',
-    maxHeight: '90%',
-    height: '90%',
+    minHeight: hasIPhoneNotch() ? '84%' : '90%',
+    maxHeight: hasIPhoneNotch() ? '84%' : '90%',
+    height: hasIPhoneNotch() ? '84%' : '90%',
     margin: '0 auto',
   },
   dialogContent: {

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import Helmet from 'react-helmet';
-import cookies from '../../utils/cookies';
+import Cookies from '../../utils/js-cookie/Cookies';
 import { historyPush } from '../../utils/cordovaUtils';
 import { renderLog } from '../../utils/logging';
 
@@ -14,7 +14,7 @@ export default class SampleBallot extends Component {
   UNSAFE_componentWillMount () {
     document.body.style.backgroundColor = '#A3A3A3';
     document.body.className = 'story-view';
-    cookies.setItem('show_full_navigation', '1', Infinity, '/');
+    Cookies.set('show_full_navigation', '1', { expires: 10000, path: '/' });
   }
 
   componentWillUnmount () {

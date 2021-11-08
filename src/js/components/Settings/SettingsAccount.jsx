@@ -13,9 +13,9 @@ import AppObservableStore, { messageService } from '../../stores/AppObservableSt
 import FacebookStore from '../../stores/FacebookStore';
 import VoterStore from '../../stores/VoterStore';
 import { normalizedHref } from '../../utils/applicationUtils';
-import cookies from '../../utils/cookies';
 import { historyPush, isCordova, isIPhone4in, isIPhone4p7in, restoreStylesAfterCordovaKeyboard } from '../../utils/cordovaUtils';
 import initializeAppleSDK from '../../utils/initializeAppleSDK';
+import Cookies from '../../utils/js-cookie/Cookies';
 import { oAuthLog, renderLog } from '../../utils/logging';
 import { stringContains } from '../../utils/textFormat';
 import AppleSignIn from '../Apple/AppleSignIn';
@@ -28,7 +28,6 @@ import VoterEmailAddressEntry from './VoterEmailAddressEntry';
 import VoterPhoneEmailCordovaEntryModal from './VoterPhoneEmailCordovaEntryModal';
 import VoterPhoneVerificationEntry from './VoterPhoneVerificationEntry';
 
-// import initializeAppleSDK from '../../utils/initializeAppleSDK';
 
 /* global $ */
 
@@ -75,12 +74,11 @@ export default class SettingsAccount extends Component {
     this.appStateSubscription = messageService.getMessage().subscribe(() => this.onAppObservableStoreChange());
     this.facebookStoreListener = FacebookStore.addListener(this.onFacebookChange.bind(this));
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
-    let signInStartFullUrl = cookies.getItem('sign_in_start_full_url');
+    let signInStartFullUrl =  Cookies.get('sign_in_start_full_url');
     if (stringContains('/settings/account', signInStartFullUrl)) {
-      cookies.removeItem('sign_in_start_full_url', '/');
-      cookies.removeItem('sign_in_start_full_url', '/', 'wevote.us');
+      Cookies.remove('sign_in_start_full_url', { path: '/' });
+      Cookies.remove('sign_in_start_full_url', { path: '/', domain: 'wevote.us' });
     }
-    const oneDayExpires = 86400;
     let pathname = '';
     const { hostname } = window.location;
     const isOnFacebookSupportedDomainUrl = hostname === 'wevote.us' || hostname === 'quality.wevote.us' || hostname === 'localhost' || isCordova() || window.location.href.includes('ngrok');
@@ -103,9 +101,9 @@ export default class SettingsAccount extends Component {
       signInStartFullUrl = `${origin}${pathname}`;
       // console.log('SettingsAccount getStartedForCampaigns, new origin: ', origin, ', pathname: ', pathname, ', signInStartFullUrl: ', signInStartFullUrl);
       if (origin && stringContains('wevote.us', origin)) {
-        cookies.setItem('sign_in_start_full_url', signInStartFullUrl, oneDayExpires, '/', 'wevote.us');
+        Cookies.set('sign_in_start_full_url', signInStartFullUrl, { expires: 31, path: '/', domain: 'wevote.us' });
       } else {
-        cookies.setItem('sign_in_start_full_url', signInStartFullUrl, oneDayExpires, '/');
+        Cookies.set('sign_in_start_full_url', signInStartFullUrl, { expires: 31, path: '/' });
       }
       this.setState({
         pleaseSignInTitle: 'Please sign in to get started.',
@@ -116,9 +114,9 @@ export default class SettingsAccount extends Component {
       signInStartFullUrl = `${origin}${pathname}`;
       // console.log('SettingsAccount getStartedForCampaigns, new origin: ', origin, ', pathname: ', pathname, ', signInStartFullUrl: ', signInStartFullUrl);
       if (origin && stringContains('wevote.us', origin)) {
-        cookies.setItem('sign_in_start_full_url', signInStartFullUrl, oneDayExpires, '/', 'wevote.us');
+        Cookies.set('sign_in_start_full_url', signInStartFullUrl, { expires: 1, path: '/', domain: 'wevote.us' });
       } else {
-        cookies.setItem('sign_in_start_full_url', signInStartFullUrl, oneDayExpires, '/');
+        Cookies.set('sign_in_start_full_url', signInStartFullUrl, { expires: 1, path: '/' });
       }
       this.setState({
         pleaseSignInTitle: 'Please sign in to get started.',
@@ -129,9 +127,9 @@ export default class SettingsAccount extends Component {
       signInStartFullUrl = `${origin}${pathname}`;
       // console.log('SettingsAccount getStartedForCampaigns, new origin: ', origin, ', pathname: ', pathname, ', signInStartFullUrl: ', signInStartFullUrl);
       if (origin && stringContains('wevote.us', origin)) {
-        cookies.setItem('sign_in_start_full_url', signInStartFullUrl, oneDayExpires, '/', 'wevote.us');
+        Cookies.set('sign_in_start_full_url', signInStartFullUrl, { expires: 1, path: '/', domain: 'wevote.us' });
       } else {
-        cookies.setItem('sign_in_start_full_url', signInStartFullUrl, oneDayExpires, '/');
+        Cookies.set('sign_in_start_full_url', signInStartFullUrl, { expires: 1, path: '/' });
       }
       this.setState({
         pleaseSignInTitle: 'Please sign in to get started.',

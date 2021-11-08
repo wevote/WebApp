@@ -16,7 +16,7 @@ import OrganizationStore from '../../stores/OrganizationStore';
 import VoterGuidePossibilityStore from '../../stores/VoterGuidePossibilityStore';
 import VoterGuideStore from '../../stores/VoterGuideStore';
 import VoterStore from '../../stores/VoterStore';
-import cookies from '../../utils/cookies';
+import Cookies from '../../utils/js-cookie/Cookies';
 import { renderLog } from '../../utils/logging';
 
 const CandidateItem = React.lazy(() => import(/* webpackChunkName: 'CandidateItem' */ '../../components/Ballot/CandidateItem'));
@@ -49,12 +49,12 @@ class CandidateForExtension extends Component {
     // console.log('candidateWeVoteId:', candidateWeVoteId);
 
     if (candidateWeVoteId) {
-      const expires = 300;  // seconds
-      cookies.setItem('candidateWeVoteId', candidateWeVoteId, expires, '/');
-      cookies.setItem('endorsementPageUrl', endorsementPageUrl, expires, '/');
+      const expires = new Date(new Date().getTime() + 300 * 1000);// 300 seconds
+      Cookies.set('candidateWeVoteId', candidateWeVoteId, { expires, path: '/' });
+      Cookies.set('candidateWeVoteId', candidateWeVoteId, { expires, path: '/' });
     } else {
-      candidateWeVoteId = cookies.getItem('candidateWeVoteId');
-      endorsementPageUrl = cookies.getItem('endorsementPageUrl');
+      candidateWeVoteId = Cookies.get('candidateWeVoteId');
+      endorsementPageUrl = Cookies.get('endorsementPageUrl');
     }
 
     VoterGuidePossibilityActions.voterGuidePossibilityRetrieve(endorsementPageUrl);
