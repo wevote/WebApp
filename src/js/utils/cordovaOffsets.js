@@ -280,12 +280,12 @@ export function cordovaVoteMiniHeader () {
 // <Wrapper cordovaPaddingTop={cordovaStickyHeaderPaddingTop()}>
 export function cordovaStickyHeaderPaddingTop () {
   if (isIOS()) {
-    if (isIPhone5p5inEarly()) {
+    if (isIPhone4p7in()) {
+      return '68px';
+    } else if (isIPhone5p5inEarly()) {
       return '68px';
     } else if (isIPhone5p5inMini()) {
       return '83px';
-    } else if (isIPhone4p7in()) {
-      return '69px';
     } else if (isIPhone5p8in()) {
       return '81px';
     } else if (isIPhone6p1in()) {

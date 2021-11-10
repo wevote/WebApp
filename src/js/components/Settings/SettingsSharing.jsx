@@ -8,7 +8,7 @@ import AppObservableStore from '../../stores/AppObservableStore';
 import OrganizationActions from '../../actions/OrganizationActions';
 import OrganizationStore from '../../stores/OrganizationStore';
 import VoterStore from '../../stores/VoterStore';
-import { cordovaDot, cordovaOpenSafariView, isWebApp } from '../../utils/cordovaUtils';
+import { cordovaDot, cordovaOpenSafariView, isCordova, isWebApp } from '../../utils/cordovaUtils';
 import { renderLog } from '../../utils/logging';
 import { voterFeaturePackageExceedsOrEqualsRequired } from '../../utils/pricingFunctions';
 import LoadingWheel from '../LoadingWheel';
@@ -319,7 +319,7 @@ class SettingsSharing extends Component {
                 />
               </SharingColumn>
             </SharingRow>
-            <SharingRow>
+            <SharingRow style={isCordova() ? {  display: 'none' } : {}}>
               <SharingColumn>
                 <InputBoxLabel>Upload Your Own Logo</InputBoxLabel>
                 <ImageDescription>

@@ -495,8 +495,9 @@ class ShareButtonFooter extends Component {
       shareMenuTextDefault = 'Ballot';
       shareMenuTextAllOpinions = 'Ballot + Your Opinions';
     }
-    linkToBeShared = linkToBeShared.replace('https://file:/', 'https://wevote.us/');  // Cordova
-    linkToBeShared = linkToBeShared.replace('https://app:/', 'https://wevote.us/');  // Cordova iOS Nov 2021
+    linkToBeShared = linkToBeShared.replace('https://file:/', 'https://wevote.us/');    // Cordova
+    linkToBeShared = linkToBeShared.replace('https://app:/', 'https://wevote.us/');     // Cordova iOS Nov 2021
+    linkToBeShared = linkToBeShared.replace('app://localhost/index.html#/', 'https://wevote.us/');  // Cordova iOS Nov 2021
     // console.log('ShareButtonFooter showShareButton: ', showShareButton, ', linkToBeShared:', linkToBeShared);
 
     const hideFooterBehindModal = showingOneCompleteYourProfileModal || showShareModal || showSignInModal || showVoterPlanModal;

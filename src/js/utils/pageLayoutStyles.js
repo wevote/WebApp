@@ -26,7 +26,7 @@ export const IOSNoNotchSpacer = styled.div`
     if (isIPhone4p7in() || isIPhone5p5inEarly())    return '22px';
     return                                                 '36px';
   }};
-  top: 0;
+  top: ${() => ((isIPhone4p7in() ? '-1px' : '0px'))};
   position: fixed;
   background: #2e3c5d;
   width: 100%;
@@ -224,7 +224,7 @@ export const AppBarForBackTo = styled(AppBar)`
       if (isIPhone4p7in())      return '20px';
       if (isIPhone5p5inEarly()) return '20px';
       if (isIPhone5p5inMini())  return '39px';
-      if (isIPhone6p1in())      return '32px';
+      if (isIPhone6p1in())      return '34px';
       if (isIPhone6p5in())      return '34px';
       if (hasIPhoneNotch())     return '34px';
       if (isIPad())             return '24px';

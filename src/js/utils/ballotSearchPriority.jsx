@@ -22,15 +22,15 @@ export default function ballotSearchPriority (originalString, item, ignoreDescri
   for (let i = 0; i < wordsArray.length; i++) {
     searchNeedleString = wordsArray[i].toString();
     oneWordScore = 0;
-    if ((item.ballot_item_display_name && item.ballot_item_display_name.includes(searchNeedleString))) {
+    if (countMatches(searchNeedleString, item.ballot_item_display_name)) {
       oneWordScore += countMatches(searchNeedleString, item.ballot_item_display_name) * 10;
       foundInThisOfficeOrMeasure = true;
     }
-    if (!ignoreDescriptionFields && item.yes_vote_description && item.yes_vote_description.includes(searchNeedleString)) {
+    if (!ignoreDescriptionFields && countMatches(searchNeedleString, item.yes_vote_description)) {
       oneWordScore += countMatches(searchNeedleString, item.yes_vote_description) * 3;
       foundInThisOfficeOrMeasure = true;
     }
-    if (!ignoreDescriptionFields && item.no_vote_description && item.no_vote_description.includes(searchNeedleString)) {
+    if (!ignoreDescriptionFields && countMatches(searchNeedleString, item.no_vote_description)) {
       oneWordScore += countMatches(searchNeedleString, item.no_vote_description) * 3;
       foundInThisOfficeOrMeasure = true;
     }

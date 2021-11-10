@@ -7,7 +7,7 @@ import styled from 'styled-components';
 import VoterActions from '../../actions/VoterActions';
 import VoterConstants from '../../constants/VoterConstants';
 import { hideZenDeskHelpVisibility, normalizedHref, setZenDeskHelpVisibility } from '../../utils/applicationUtils';
-import { hasIPhoneNotch } from '../../utils/cordovaUtils';
+import { hasIPhoneNotch, isCordova } from '../../utils/cordovaUtils';
 import { renderLog } from '../../utils/logging';
 
 const PersonalizedScoreIntroBody = React.lazy(() => import(/* webpackChunkName: 'PersonalizedScoreIntroBody' */ './PersonalizedScoreIntroBody'));
@@ -95,24 +95,20 @@ PersonalizedScoreIntroModal.propTypes = {
 
 const styles = () => ({
   dialogPaper: {
-    marginTop: hasIPhoneNotch() ? 68 : 48,
-    '@media (min-width: 576px)': {
-      maxWidth: '600px',
-      width: '90%',
-      height: '600px',
-      margin: '0 auto',
-      minWidth: 0,
-      minHeight: 0,
-      transitionDuration: '.25s',
-    },
-    minWidth: '100%',
-    maxWidth: '100%',
     width: '100%',
-    minHeight: '90%',
-    maxHeight: '90%',
-    height: '90%',
+    height: isCordova() ? '83%' : '90%',
     margin: '0 auto',
     padding: '0 !important',
+    marginTop: hasIPhoneNotch() ? 68 : 48,
+    transitionDuration: '.25s',
+    '@media (min-width: 400px)': {   // Doesn't work in cordova
+      width: '90%',
+      height: '83%',
+    },
+    '@media (min-width: 576px)': {
+      width: '90%',
+      height: '600px',
+    },
   },
   dialogContent: {
     background: 'white',
