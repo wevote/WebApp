@@ -5,9 +5,10 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import styled from 'styled-components';
 import { getAllStateCodeFilters } from '../../utils/addressFunctions';
+import { isWebApp } from '../../utils/cordovaUtils';
 import { renderLog } from '../../utils/logging';
-import getGroupedFilterSecondClass from './utils/grouped-filter-second-class';
 import StateDropDown from './StateDropDown';
+import getGroupedFilterSecondClass from './utils/grouped-filter-second-class';
 
 const FilterBaseSearch = React.lazy(() => import(/* webpackChunkName: 'FilterBaseSearch' */ './FilterBaseSearch'));
 
@@ -283,7 +284,7 @@ class FilterBase extends React.Component {
               stateCodesToDisplay={stateCodesToDisplay}
             />
           )}
-          {!isSearching && (
+          {!isSearching && isWebApp() && (     // TODO: November 9, 2021: This feature needs work, and is temporarily out of Cordova
             <Badge
               classes={{ badge: classes.badge }}
               badgeContent={numberOfFiltersSelected}

@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import styled from 'styled-components';
 import AppObservableStore from '../../stores/AppObservableStore';
+import { isCordova } from '../../utils/cordovaUtils';
 
 
 class SettingsProfilePicture extends Component {
@@ -28,7 +29,7 @@ class SettingsProfilePicture extends Component {
     return (
       <Wrapper value={value} onChange={this.handleChange} name="profile-option">
         <div className="row">
-          <CustomColumns className="col">
+          <CustomColumns className="col" style={isCordova() ? {  display: 'none' } : {}}>
             <ProfilePictureOption>
               <FormControlLabel value="custom"
                                 control={<Radio color="primary" />}

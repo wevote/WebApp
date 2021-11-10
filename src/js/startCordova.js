@@ -88,6 +88,7 @@ export function initializationForCordova (startReact) {
       $.ajax({
         url: initialAjaxUrl,
         context: document.body,
+        timeout: 5000,
       }).done((resp) => {
         const { voter_device_id: voterDeviceId } = resp;
         if (voterDeviceId) {
