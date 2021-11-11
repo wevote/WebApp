@@ -7,6 +7,7 @@ import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import AnalyticsActions from '../../actions/AnalyticsActions';
 import VoterStore from '../../stores/VoterStore';
+import { isWebApp } from '../../utils/cordovaUtils';
 import { renderLog } from '../../utils/logging';
 import { HeaderContentContainer } from '../../utils/pageLayoutStyles';
 import LoadingWheel from '../LoadingWheel';
@@ -74,8 +75,12 @@ class SettingsProfile extends Component {
                 closeEditFormOnChoice
                 showEditToggleOption
               />
-              <SectionTitle>Profile Picture</SectionTitle>
-              <SettingsProfilePicture />
+              {isWebApp() && (
+                <>
+                  <SectionTitle>Profile Picture</SectionTitle>
+                  <SettingsProfilePicture />
+                </>
+              )}
             </div>
           </div>
         </div>
