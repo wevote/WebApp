@@ -15,7 +15,7 @@ import { isWebApp } from './js/utils/cordovaUtils';
 import initializejQuery from './js/utils/initializejQuery';
 import { renderLog } from './js/utils/logging';
 import RouterV5SendMatch from './js/utils/RouterV5SendMatch';
-// importRemoveCordovaListenersToken  -- Do not remove this line!
+// importRemoveCordovaListenersToken1  -- Do not remove this line!
 
 // Root URL pages
 
