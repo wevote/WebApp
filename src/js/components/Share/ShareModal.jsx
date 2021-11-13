@@ -12,7 +12,7 @@ import AppObservableStore, { messageService } from '../../stores/AppObservableSt
 import FriendStore from '../../stores/FriendStore';
 import ShareStore from '../../common/stores/ShareStore';
 import VoterStore from '../../stores/VoterStore';
-import { cordovaDot, hasIPhoneNotch, isAndroid, isCordova, isWebApp } from '../../utils/cordovaUtils';
+import { cordovaDot, cordovaLinkToBeSharedFixes, hasIPhoneNotch, isAndroid, isCordova, isWebApp } from '../../utils/cordovaUtils';
 import sortFriendListByMutualFriends from '../../utils/friendFunctions';
 import { renderLog } from '../../utils/logging';
 import { stringContains } from '../../utils/textFormat';
@@ -250,7 +250,7 @@ class ShareModal extends Component {
       } else {
         linkToBeShared = currentFullUrlToShare;
       }
-      linkToBeShared = linkToBeShared.replace('https://file:/', 'https://wevote.us/');  // Cordova
+      linkToBeShared = cordovaLinkToBeSharedFixes(linkToBeShared);
       linkToBeSharedUrlEncoded = encodeURI(linkToBeShared);
       console.log('ShareModal linkToBeShared:', linkToBeShared);
 

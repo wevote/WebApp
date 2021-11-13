@@ -12,7 +12,7 @@ import AppObservableStore, { messageService } from '../../stores/AppObservableSt
 import VoterStore from '../../stores/VoterStore';
 import { getApplicationViewBooleans, normalizedHref } from '../../utils/applicationUtils';
 import { shareBottomOffset } from '../../utils/cordovaOffsets';
-import { historyPush, isAndroid, isCordova, isWebApp } from '../../utils/cordovaUtils';
+import { cordovaLinkToBeSharedFixes, historyPush, isAndroid, isCordova, isWebApp } from '../../utils/cordovaUtils';
 import isMobile from '../../utils/isMobile';
 import { renderLog } from '../../utils/logging';
 import { stringContains } from '../../utils/textFormat';
@@ -495,9 +495,7 @@ class ShareButtonFooter extends Component {
       shareMenuTextDefault = 'Ballot';
       shareMenuTextAllOpinions = 'Ballot + Your Opinions';
     }
-    linkToBeShared = linkToBeShared.replace('https://file:/', 'https://wevote.us/');    // Cordova
-    linkToBeShared = linkToBeShared.replace('https://app:/', 'https://wevote.us/');     // Cordova iOS Nov 2021
-    linkToBeShared = linkToBeShared.replace('app://localhost/index.html#/', 'https://wevote.us/');  // Cordova iOS Nov 2021
+    linkToBeShared = cordovaLinkToBeSharedFixes(linkToBeShared);
     // console.log('ShareButtonFooter showShareButton: ', showShareButton, ', linkToBeShared:', linkToBeShared);
 
     const hideFooterBehindModal = showingOneCompleteYourProfileModal || showShareModal || showSignInModal || showVoterPlanModal;

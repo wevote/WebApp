@@ -6,7 +6,7 @@ import VoterStore from '../../stores/VoterStore';
 import SplitIconButton from './SplitIconButton';
 import SvgImage from './SvgImage';
 
-const OpenExternalWebSite = React.lazy(() => import(/* webpackChunkName: 'OpenExternalWebSite' */ '../Widgets/OpenExternalWebSite'));
+const OpenExternalWebSite = React.lazy(() => import(/* webpackChunkName: 'OpenExternalWebSite' */ './OpenExternalWebSite'));
 
 
 class EndorsementCard extends PureComponent {

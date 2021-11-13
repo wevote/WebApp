@@ -4,6 +4,7 @@ import { withStyles } from '@material-ui/core/styles';
 import AppObservableStore, { messageService } from '../../stores/AppObservableStore';
 import { getApplicationViewBooleans, normalizedHref } from '../../utils/applicationUtils';
 import { isWebApp } from '../../utils/cordovaUtils';
+// importRemoveCordovaListenersToken2  -- Do not remove this line!
 
 
 const DelayedLoad = React.lazy(() => import(/* webpackChunkName: 'DelayedLoad' */ '../Widgets/DelayedLoad'));

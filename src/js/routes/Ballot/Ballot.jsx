@@ -322,7 +322,7 @@ class Ballot extends Component {
 
     this.preloadTimer = setTimeout(() => lazyPreloadPages(), 2000);
 
-    if (webAppConfig.ENABLE_WORKBOX_SERVICE_WORKER &&
+    if (isWebApp() && webAppConfig.ENABLE_WORKBOX_SERVICE_WORKER &&
         window.serviceWorkerLoaded === undefined) {
       navigator.serviceWorker.register('/sw.js');
       window.serviceWorkerLoaded = true;

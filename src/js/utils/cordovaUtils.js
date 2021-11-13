@@ -774,5 +774,14 @@ export function polyfillFixes (file) {
   }
 }
 
+export function cordovaLinkToBeSharedFixes (link) {
+  let linkToBeShared = link;
+  linkToBeShared = linkToBeShared.replace('https://file:/', 'https://wevote.us/');  // Cordova
+  linkToBeShared = linkToBeShared.replace('https://file:/', 'https://wevote.us/');    // Cordova
+  linkToBeShared = linkToBeShared.replace('https://app:/', 'https://wevote.us/');     // Cordova iOS Nov 2021
+  linkToBeShared = linkToBeShared.replace('app://localhost/index.html#/', 'https://wevote.us/');  // Cordova iOS Nov 2021
+  return linkToBeShared;
+}
+
 // In-line
 polyfillFixes('cordovaUtils.js'); // Possibly redundant, but its need was confirmed in the debugger.  This has to run, before any polyfill is needed.

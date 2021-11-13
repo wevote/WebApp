@@ -21,8 +21,10 @@ function fileRewriterForCordova (path) {
     // Inject cordova startup in index.jsx, replace "importStartCordovaToken" etc
     newValue = newValue.replace(/^.*?importStartCordovaToken.*?$/gim,
       'import { initializationForCordova } from \'./js/startCordova\';');
-    newValue = newValue.replace(/^.*?importRemoveCordovaListenersToken.*?$/gim,
+    newValue = newValue.replace(/^.*?importRemoveCordovaListenersToken1.*?$/gim,
       'import { removeCordovaSpecificListeners } from \'./js/startCordova\';');
+    newValue = newValue.replace(/^.*?importRemoveCordovaListenersToken2.*?$/gim,
+      'import { removeCordovaSpecificListeners } from \'../../startCordova\';');
     newValue = newValue.replace(/^.*?initializeCordovaToken.*?$/gim,
       '  initializationForCordova(() => startReact());');
     newValue = newValue.replace(/^.*?removeCordovaListenersToken.*?$/gim,

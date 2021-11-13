@@ -4,6 +4,7 @@ import { Close } from '@material-ui/icons';
 import clsx from 'clsx';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 import VoterStore from '../../stores/VoterStore';
 import { historyPush, isAndroid, isCordova, isIOS, isIOsSmallerThanPlus, isIPhone5p5inEarly, isIPhone5p5inMini, isIPhone5p8in, isIPhone6p1in, isIPhone6p5in, isWebApp, isWebAppHeight0to568, isWebAppHeight569to667, isWebAppHeight668to736, isWebAppHeight737to896, restoreStylesAfterCordovaKeyboard } from '../../utils/cordovaUtils';
 import initializeAppleSDK from '../../utils/initializeAppleSDK';
@@ -196,6 +197,19 @@ class SignInModal extends Component {
               )}
             </div>
           </section>
+          {isCordova && (
+            <div className="text-center">
+              <span id="termsAndPrivacySignInModal" className="terms-and-privacy">
+                <Link to="/more/privacy" onClick={this.closeFunction}>
+                  <span className="u-no-break" style={{ color: 'black', textDecoration: 'underline' }}>Privacy Policy</span>
+                </Link>
+                <span style={{ paddingLeft: 20 }} />
+                <Link to="/more/terms" onClick={this.closeFunction}>
+                  <span className="u-no-break" style={{ color: 'black', textDecoration: 'underline' }}>Terms of Service</span>
+                </Link>
+              </span>
+            </div>
+          )}
         </DialogContent>
       </Dialog>
     );
