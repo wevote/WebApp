@@ -43,21 +43,21 @@ export default function cordovaTopHeaderTopMargin () {
           case CordovaPageConstants.voterGuideCreatorWild: style.marginTop = '38px'; break; // $headroom-wrapper-webapp__voter-guide-creator
           default:                                         style.marginTop = '19px'; break;
         }
-      } else if (isIPhone5p5inEarly()) {
-        switch (page) {
-          case CordovaPageConstants.officeWild:      style.marginTop = '16px'; break;
-          case CordovaPageConstants.measureWild:     style.marginTop = '22px'; break;
-          case CordovaPageConstants.values:          style.marginTop = '19px'; break;
-          case CordovaPageConstants.valuesWild:       style.marginTop = '22px'; break;
-          case CordovaPageConstants.friends:         style.marginTop = '16px'; break;
-          case CordovaPageConstants.ballotSmHdrWild: style.marginTop = '19px'; break;
-          case CordovaPageConstants.ballotLgHdrWild: style.marginTop = '19px'; break;
-          case CordovaPageConstants.ballotVote:      style.marginTop = '19px'; break;
-          case CordovaPageConstants.settingsWild:    style.marginTop = '22px'; break;
-          case CordovaPageConstants.voterGuideCreatorWild: style.marginTop = '38px'; break; // $headroom-wrapper-webapp__voter-guide-creator
-          case CordovaPageConstants.twitterIdMFollowers:   style.marginTop = '37px'; break; // /*/m/friends, /*/m/following, /*/m/followers
-          default:                                   style.marginTop = '19px'; break;
-        }
+      // } else if (isIPhone5p5inEarly()) {
+      //   switch (page) {
+      //     case CordovaPageConstants.officeWild:      style.marginTop = '16px'; break;
+      //     case CordovaPageConstants.measureWild:     style.marginTop = '22px'; break;
+      //     case CordovaPageConstants.values:          style.marginTop = '19px'; break;
+      //     case CordovaPageConstants.valuesWild:       style.marginTop = '22px'; break;
+      //     case CordovaPageConstants.friends:         style.marginTop = '16px'; break;
+      //     case CordovaPageConstants.ballotSmHdrWild: style.marginTop = '19px'; break;
+      //     case CordovaPageConstants.ballotLgHdrWild: style.marginTop = '19px'; break;
+      //     case CordovaPageConstants.ballotVote:      style.marginTop = '19px'; break;
+      //     case CordovaPageConstants.settingsWild:    style.marginTop = '22px'; break;
+      //     case CordovaPageConstants.voterGuideCreatorWild: style.marginTop = '38px'; break; // $headroom-wrapper-webapp__voter-guide-creator
+      //     case CordovaPageConstants.twitterIdMFollowers:   style.marginTop = '37px'; break; // /*/m/friends, /*/m/following, /*/m/followers
+      //     default:                                   style.marginTop = '19px'; break;
+      //   }
       } else if (isIPhone5p5inMini()) {
         switch (page) {
           case CordovaPageConstants.ballotLgHdrWild:       style.marginTop = '16px'; break;
@@ -75,7 +75,7 @@ export default function cordovaTopHeaderTopMargin () {
           case CordovaPageConstants.moreTerms:             style.marginTop = '39px'; break;
           case CordovaPageConstants.news:                  style.marginTop = '39px'; break;
           case CordovaPageConstants.officeWild:            style.marginTop = '0px'; break;
-          case CordovaPageConstants.opinions:              style.marginTop = '17px'; break;
+          case CordovaPageConstants.opinions:              style.marginTop = '38px'; break;
           case CordovaPageConstants.opinionsFiltered:      style.marginTop = '39px'; break;
           case CordovaPageConstants.ready:                 style.marginTop = '39px'; break;
           case CordovaPageConstants.settingsAccount:       style.marginTop = '31px'; break;
