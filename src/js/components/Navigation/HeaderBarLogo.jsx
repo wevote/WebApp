@@ -10,7 +10,7 @@ const logoLight = '../../../img/global/svg-icons/we-vote-logo-horizontal-color-2
 const logoDark = '../../../img/global/svg-icons/we-vote-logo-horizontal-color-dark-141x46.svg';
 
 const HeaderBarLogo = ({ chosenSiteLogoUrl, isBeta, light }) => (
-  <HeaderBarLogoWrapper>
+  <HeaderBarLogoWrapper id="HeaderBarLogoWrapper">
     {chosenSiteLogoUrl ? (
       <img
         className="header-logo-img"

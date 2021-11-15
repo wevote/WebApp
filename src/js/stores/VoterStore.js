@@ -46,6 +46,9 @@ class VoterStore extends ReduceStore {
         normalizedSmsPhoneNumber: '',
         notificationSettingsFlags: false,
       },
+      voterPhotoQueuedToSave: '',
+      voterPhotoQueuedToSaveSet: false,
+      voterPhotoTooBig: false,
     };
   }
 
@@ -249,6 +252,18 @@ class VoterStore extends ReduceStore {
     return this.getState().voterNotificationSettingsUpdateStatus || {};
   }
 
+  getVoterPhotoQueuedToSave () {
+    return this.getState().voterPhotoQueuedToSave;
+  }
+
+  getVoterPhotoQueuedToSaveSet () {
+    return this.getState().voterPhotoQueuedToSaveSet;
+  }
+
+  getVoterPhotoTooBig () {
+    return this.getState().voterPhotoTooBig || false;
+  }
+
   // Could be either Facebook photo or Twitter photo
   getVoterPhotoUrlLarge () {
     return this.getState().voter.voter_photo_url_large || '';
@@ -262,6 +277,10 @@ class VoterStore extends ReduceStore {
   // Could be either Facebook photo or Twitter photo
   getVoterPhotoUrlTiny () {
     return this.getState().voter.voter_photo_url_tiny || '';
+  }
+
+  getVoterProfileUploadedImageUrlLarge () {
+    return this.getState().voter.we_vote_hosted_profile_uploaded_image_url_large || '';
   }
 
   getSecretCodeVerificationStatus () {
@@ -689,11 +708,34 @@ class VoterStore extends ReduceStore {
           },
         };
 
+      case 'voterPhotoQueuedToSave':
+        // console.log('VoterStore voterPhotoQueuedToSave: ', action.payload);
+        if (action.payload === undefined) {
+          return {
+            ...state,
+            voterPhotoQueuedToSave: '',
+            voterPhotoQueuedToSaveSet: false,
+          };
+        } else {
+          return {
+            ...state,
+            voterPhotoQueuedToSave: action.payload,
+            voterPhotoQueuedToSaveSet: true,
+          };
+        }
+
       case 'voterPhotoSave':
         // console.log('VoterStore, voterPhotoSave');
         return {
           ...state,
           voter: { ...state.voter, facebook_profile_image_url_https: action.res.facebook_profile_image_url_https },
+        };
+
+      case 'voterPhotoTooBigReset':
+        // console.log('VoterStore, voterPhotoTooBigReset');
+        return {
+          ...state,
+          voterPhotoTooBig: false,
         };
 
       case 'voterRetrieve':
@@ -705,7 +747,7 @@ class VoterStore extends ReduceStore {
         ({ facebookPhotoRetrieveLoopCount } = state);
 
         currentVoterDeviceId = Cookies.get('voter_device_id');
-        console.log('VoterStore, voterRetrieve stored Cookie value for voter_device_id value on entry: ', currentVoterDeviceId);
+        // console.log('VoterStore, voterRetrieve stored Cookie value for voter_device_id value on entry: ', currentVoterDeviceId);
         if (!action.res.voter_found) {
           console.log(`This voter_device_id is not in the db and is invalid, so delete it: ${currentVoterDeviceId}`);
 
@@ -842,17 +884,26 @@ class VoterStore extends ReduceStore {
             voter: {
               ...state.voter,
               // With this we are only updating the values we change with a voterUpdate call.
-              first_name: action.res.first_name,
-              last_name: action.res.last_name,
               facebook_email: action.res.email || state.voter.email,
+              first_name: action.res.first_name,
               interface_status_flags: interfaceStatusFlags,
+              last_name: action.res.last_name,
               notification_settings_flags: notificationSettingsFlags,
+              profile_image_type_currently_active: action.res.profile_image_type_currently_active || '',
               voter_donation_history_list: action.res.voter_donation_history_list || state.voter.voter_donation_history_list,
+              voter_photo_url_large: action.res.we_vote_hosted_profile_image_url_large || '',
+              voter_photo_url_medium: action.res.we_vote_hosted_profile_image_url_medium || '',
+              voter_photo_url_tiny: action.res.we_vote_hosted_profile_image_url_tiny || '',
+              we_vote_hosted_profile_facebook_image_url_large: action.res.we_vote_hosted_profile_facebook_image_url_large || '',
+              we_vote_hosted_profile_twitter_image_url_large: action.res.we_vote_hosted_profile_twitter_image_url_large || '',
+              we_vote_hosted_profile_uploaded_image_url_large: action.res.we_vote_hosted_profile_uploaded_image_url_large || '',
             },
+            voterPhotoTooBig: action.res.voter_photo_too_big || false,
           };
         } else {
           return {
             ...state,
+            voterPhotoTooBig: action.res.voter_photo_too_big || false,
           };
         }
 

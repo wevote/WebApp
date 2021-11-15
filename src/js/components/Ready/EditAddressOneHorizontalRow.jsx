@@ -66,7 +66,7 @@ class EditAddressOneHorizontalRow extends Component {
     if (this.googleAutocompleteListener !== undefined) { // Temporary fix until google maps key is fixed for Cordova
       this.googleAutocompleteListener.remove();
     } else if (isWebApp()) {
-      console.log('ERROR: Google Maps API IS NOT LOADED');
+      // console.log('EditAddressOneHorizontalRow ERROR: Google Maps API IS NOT LOADED');
     }
     restoreStylesAfterCordovaKeyboard('EditAddressOneHorizontalRow');
   }
@@ -180,32 +180,37 @@ class EditAddressOneHorizontalRow extends Component {
     renderLog('EditAddressOneHorizontalRow');  // Set LOG_RENDER_EVENTS to log all renders
     // console.log('EditAddressOneHorizontalrow render');
     const { classes } = this.props;
-    const { showAddressExplanation, textForMapSearch, voterSavedAddress } = this.state;
+    const { showAddressExplanation, textForMapSearch } = this.state; // voterSavedAddress
 
-    if (voterSavedAddress) {
-      return <span />;
-    }
+    // if (voterSavedAddress) {
+    //   return <span />;
+    // }
 
     return (
       <OuterWrapper id="EditAddressOneHorizontalRow">
         <InnerWrapper className="u-show-mobile">
           <AddressLabelMobile>
             <span className="u-show-mobile-iphone5-or-smaller">
-              Enter street address + house number
+              Your street address w/ number
             </span>
             <span className="u-show-mobile-bigger-than-iphone5">
-              Enter street address with house number
+              Your street address with house number
+            </span>
+            &nbsp;
+          </AddressLabelMobile>
+        </InnerWrapper>
+        <InnerWrapper className="u-show-tablet">
+          <AddressLabelMobile>
+            <span>
+              Your street address with house number
             </span>
             &nbsp;
           </AddressLabelMobile>
         </InnerWrapper>
         <InnerWrapper>
-          <AddressLabel>
-            <span className="u-show-tablet">
-              Enter street address with house number
-            </span>
-            <span className="u-show-desktop">
-              Enter full street address with house number
+          <AddressLabel className="u-show-desktop">
+            <span>
+              Your full street address with house number
             </span>
             &nbsp;
           </AddressLabel>
@@ -322,7 +327,12 @@ const SubmitFormWrapper = styled.div`
 
 const InternalFormWrapper = styled.div`
   display: flex;
+  @media (max-width: 490px) {
+    flex-wrap: wrap;
+  }
+  ${() => (isMobile() ? { flexWrap: 'wrap' } : {})}
   justify-content: center;
+  width: 100%;
 `;
 
 const OuterWrapper = styled.div`
@@ -332,6 +342,9 @@ const OuterWrapper = styled.div`
 
 const ButtonWrapper = styled.div`
   min-width: 208px;
+  @media (max-width: 490px) {
+    width: 100%;
+  }
 `;
 
 const InnerWrapper = styled.div`
@@ -349,8 +362,13 @@ const styles = (theme) => ({
   },
   saveButton: {
     height: 'fit-content',
-    marginLeft: 8,
-    // width: 120,
+    width: '100%',
+    [theme.breakpoints.down('sm')]: {
+      marginTop: 3,
+    },
+    [theme.breakpoints.up('sm')]: {
+      marginLeft: 8,
+    },
   },
   inputBase: {
     flex: 1,

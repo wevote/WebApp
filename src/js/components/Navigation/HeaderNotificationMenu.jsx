@@ -257,7 +257,7 @@ class HeaderNotificationMenu extends Component {
     const { allActivityNoticesNotSeenCount, anchorEl, menuItemList, menuOpen } = this.state;
 
     return (
-      <HeaderNotificationMenuWrapper>
+      <HeaderNotificationMenuWrapper id="HeaderNotificationMenuWrapper">
         <IconButton
           aria-controls="headerNotificationsMenu"
           aria-haspopup="true"

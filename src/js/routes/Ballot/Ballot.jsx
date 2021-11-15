@@ -46,6 +46,7 @@ import { getBooleanValue } from '../../utils/textFormat';
 import showBallotDecisionsTabs from '../../utilsApi/showBallotDecisionsTabs';
 import BallotTitleHeader from './BallotTitleHeader';
 import { checkShouldUpdate, formatVoterBallotList } from './utils/ballotUtils';
+import EditAddressOneHorizontalRow from '../../components/Ready/EditAddressOneHorizontalRow';
 
 const DelayedLoad = React.lazy(() => import(/* webpackChunkName: 'DelayedLoad' */ '../../components/Widgets/DelayedLoad'));
 const FilterBaseSearch = React.lazy(() => import(/* webpackChunkName: 'FilterBaseSearch' */ '../../components/Filter/FilterBaseSearch'));
@@ -70,20 +71,22 @@ class Ballot extends Component {
     super(props);
     this.state = {
       ballotElectionList: [],
+      ballotHeaderUnpinned: false,
       ballotItemUnfurledTracker: {},
       ballotLength: 0,
+      ballotLocationShortcut: '',
       ballotRemainingChoicesLength: 0,
+      ballotReturnedWeVoteId: '',
+      ballotSearchResults: [],
       ballotWithAllItems: [],
       ballotWithItemsFromCompletionFilterType: [],
-      foundFirstRaceLevel: false,
-      raceLevelFilterType: '',
-      ballotReturnedWeVoteId: '',
-      ballotLocationShortcut: '',
       candidateForModal: {
         voter_guides_to_follow_for_latest_ballot_item: [],
         position_list: [],
       },
       componentDidMountFinished: false,
+      foundFirstRaceLevel: false,
+      isSearching: false,
       lastHashUsedInLinkScroll: '',
       loadingMoreItems: false,
       measureForModal: {
@@ -94,13 +97,13 @@ class Ballot extends Component {
       mounted: false,
       numberOfBallotItemsToDisplay: 5,
       numberOfVoterRetrieveAttempts: 0,
-      totalNumberOfBallotItems: 0,
-      voterBallotList: [],
-      showFilterTabs: false,
-      ballotHeaderUnpinned: false,
-      isSearching: false,
-      ballotSearchResults: [],
       raceLevelFilterItemsInThisBallot: undefined,
+      raceLevelFilterType: '',
+      showAddressVerificationForm: false,
+      showFilterTabs: false,
+      totalNumberOfBallotItems: 0,
+      voterBallotItemsRetrieveHasReturned: false,
+      voterBallotList: [],
     };
 
     this.ballotItems = {};
@@ -287,6 +290,7 @@ class Ballot extends Component {
       googleCivicElectionId: parseInt(googleCivicElectionId, 10),
       issuesFollowedCount: IssueStore.getIssuesVoterIsFollowingLength(),
       raceLevelFilterType: BallotStore.getRaceLevelFilterTypeSaved() || 'All',
+      voterBallotItemsRetrieveHasReturned: BallotStore.voterBallotItemsRetrieveHasReturned(),
     });
 
     if (hash) {
@@ -580,14 +584,17 @@ class Ballot extends Component {
         const textForMapSearch = VoterStore.getTextForMapSearch();
         const showAddressVerificationForm =
           (!locationGuessClosed && locationGuessClosed !== null) || !textForMapSearch;
-        if (showAddressVerificationForm) {
-          // June 2021: Instead of showing the EditAddressOneHorizontal row on an otherwise blank ballot page, open th BallotSelectModal
-          AppObservableStore.setShowSelectBallotModal(true, false, false);
-        }
+        // 2021-11 From Dale: Automatically opening modals on first page load doesn't test well with voters
+        //  I made changes to EditAddressOneHorizontal to improve the interface.
+        // if (showAddressVerificationForm) {
+        //   // June 2021: Instead of showing the EditAddressOneHorizontal row on an otherwise blank ballot page, open the BallotSelectModal
+        //   AppObservableStore.setShowSelectBallotModal(true, false, false);
+        // }
 
         this.setState({
           googleCivicElectionId: parseInt(VoterStore.electionId(), 10),
           locationGuessClosed,
+          showAddressVerificationForm,
           textForMapSearch,
           voter: VoterStore.getVoter(),
         });
@@ -702,6 +709,7 @@ class Ballot extends Component {
     }
     this.setState({
       ballotElectionList: BallotStore.ballotElectionList(),
+      voterBallotItemsRetrieveHasReturned: BallotStore.voterBallotItemsRetrieveHasReturned(),
       completionLevelFilterType,
       locationGuessClosed: Cookies.get('location_guess_closed'),
     });
@@ -996,6 +1004,7 @@ class Ballot extends Component {
   }
 
   toggleSelectBallotModal (destinationUrlForHistoryPush = '', hideAddressEdit = false, hideElections = false) {
+    console.log('Ballot toggleSelectBallotModal');
     const showSelectBallotModal = AppObservableStore.showSelectBallotModal();
     // console.log('Ballot toggleSelectBallotModal, destinationUrlForHistoryPush:', destinationUrlForHistoryPush, ', showSelectBallotModal:', showSelectBallotModal);
     if (showSelectBallotModal && destinationUrlForHistoryPush && destinationUrlForHistoryPush !== '') {
@@ -1086,8 +1095,9 @@ class Ballot extends Component {
     const {
       ballotSearchResults, ballotWithAllItems, ballotWithItemsFromCompletionFilterType,
       completionLevelFilterType, doubleFilteredBallotItemsLength, isSearching, issuesFollowedCount,
-      loadingMoreItems, numberOfBallotItemsToDisplay,
+      loadingMoreItems, locationGuessClosed, numberOfBallotItemsToDisplay,
       raceLevelFilterItemsInThisBallot, searchText, showFilterTabs, totalNumberOfBallotItems,
+      voterBallotItemsRetrieveHasReturned,
     } = this.state;
     let { raceLevelFilterType } = this.state;
     if (!raceLevelFilterType) {
@@ -1134,28 +1144,30 @@ class Ballot extends Component {
 
     if (!ballotWithItemsFromCompletionFilterType) {
       return (
-        <DelayedLoad showLoadingText waitBeforeShow={2000}>
-          <div className="ballot container-fluid well u-stack--md u-inset--md" style={{ marginBottom: `${isIPhone6p1in() ? '800px' : '625px'}` }}>
-            <div className="ballot__header" style={{ marginTop: `${isCordova() ? '100px' : 'undefined'}` }}>
-              <BallotLoadingWrapper>
-                If your ballot does not appear momentarily,
-                {' '}
-                {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
-                <Link
-                  // since we use a button as the component, we can disable that es-lint rule
-                  component="button"
-                  id="ballotIfBallotDoesNotAppear"
-                  onClick={() => this.toggleSelectBallotModal('', false, true)}
-                  style={{ color: 'rgb(6, 95, 212)' }}
-                >
-                  please click here to enter an address
-                </Link>
-                {' '}
-                in the United States of America where you are registered to vote.
-              </BallotLoadingWrapper>
+        <Suspense fallback={<></>}>
+          <DelayedLoad showLoadingText waitBeforeShow={2000}>
+            <div className="ballot container-fluid well u-stack--md u-inset--md" style={{ marginBottom: `${isIPhone6p1in() ? '800px' : '625px'}` }}>
+              <div className="ballot__header" style={{ marginTop: `${isCordova() ? '100px' : 'undefined'}` }}>
+                <BallotLoadingWrapper>
+                  If your ballot does not appear momentarily,
+                  {' '}
+                  {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
+                  <Link
+                    // since we use a button as the component, we can disable that es-lint rule
+                    component="button"
+                    id="ballotIfBallotDoesNotAppear"
+                    onClick={() => this.toggleSelectBallotModal('', false, true)}
+                    style={{ color: 'rgb(6, 95, 212)' }}
+                  >
+                    please click here to enter an address
+                  </Link>
+                  {' '}
+                  in the United States of America where you are registered to vote.
+                </BallotLoadingWrapper>
+              </div>
             </div>
-          </div>
-        </DelayedLoad>
+          </DelayedLoad>
+        </Suspense>
       );
     }
 
@@ -1189,12 +1201,14 @@ class Ballot extends Component {
     // console.log('ballotWithItemsFromCompletionFilterType: ', ballotWithItemsFromCompletionFilterType);
     // Was: ballotWithItemsFromCompletionFilterType
     const emptyBallot = ballotWithAllItems.length === 0 ? (
-      <DelayedLoad waitBeforeShow={3000}>
-        <div>
-          <h3 className="text-center">{this.getEmptyMessageByFilterType(completionLevelFilterType)}</h3>
-          {emptyBallotButton}
-        </div>
-      </DelayedLoad>
+      <Suspense fallback={<></>}>
+        <DelayedLoad waitBeforeShow={3000}>
+          <div>
+            <h3 className="text-center">{this.getEmptyMessageByFilterType(completionLevelFilterType)}</h3>
+            {emptyBallotButton}
+          </div>
+        </DelayedLoad>
+      </Suspense>
     ) : null;
 
     const electionDayTextFormatted = electionDayText && window.moment ? window.moment(electionDayText).format('MMM Do, YYYY') : '';
@@ -1208,7 +1222,7 @@ class Ballot extends Component {
       // console.log('inRemainingDecisionsMode historyPush');
       historyPush(pathname);
     }
-    // const showAddressVerificationForm = !locationGuessClosed || !textForMapSearch;
+    const showAddressVerificationForm = !locationGuessClosed || !textForMapSearch;
 
     let numberOfBallotItemsDisplayed = 0;
     let showLoadingText = true;
@@ -1252,13 +1266,15 @@ class Ballot extends Component {
                               <div className="ballot__item-filter-tabs" ref={(chips) => { this.chipContainer = chips; }}>
                                 { ballotWithItemsFromCompletionFilterType.length ? (
                                   <>
-                                    <FilterBaseSearch
-                                      alwaysOpen={!showFilterTabs}
-                                      isSearching={isSearching}
-                                      allItems={ballotWithAllItems}
-                                      onFilterBaseSearch={this.onFilterBaseSearch}
-                                      onToggleSearch={this.handleToggleSearchBallot}
-                                    />
+                                    <Suspense fallback={<></>}>
+                                      <FilterBaseSearch
+                                        alwaysOpen={!showFilterTabs}
+                                        isSearching={isSearching}
+                                        allItems={ballotWithAllItems}
+                                        onFilterBaseSearch={this.onFilterBaseSearch}
+                                        onToggleSearch={this.handleToggleSearchBallot}
+                                      />
+                                    </Suspense>
                                     { showFilterTabs && (
                                       <div
                                         className="ballot_filter_btns"
@@ -1368,11 +1384,13 @@ class Ballot extends Component {
                         &quot;
                       </SearchTitle>
                     )}
-                    {/* {(showAddressVerificationForm) ? ( */}
-                    {/*  <EditAddressWrapper id="EditAddressWrapper"> */}
-                    {/*    <EditAddressOneHorizontalRow saveUrl="/ballot" onSave={this.onVoterAddressSave} /> */}
-                    {/*  </EditAddressWrapper> */}
-                    {/* ) : null } */}
+                    {(showAddressVerificationForm && voterBallotItemsRetrieveHasReturned) && (
+                      <EditAddressWrapper>
+                        <EditAddressCard className="card">
+                          <EditAddressOneHorizontalRow saveUrl="/ballot" onSave={this.onVoterAddressSave} />
+                        </EditAddressCard>
+                      </EditAddressWrapper>
+                    )}
                     {/* <span className="u-show-desktop-tablet"> */}
                     {/*  <CompleteYourProfile /> */}
                     {/* </span> */}
@@ -1412,39 +1430,40 @@ class Ballot extends Component {
                               });
                             }
                             return (
-                              <DelayedLoad
-                                key={key}
-                                showLoadingText={showLoadingText}
-                                waitBeforeShow={500}
-                              >
-                                <>
-                                  {!!(isSearching && searchTextString && item.foundInArray && item.foundInArray.length) && (
-                                    <SearchResultsFoundInExplanation>
-                                      {searchTextString}
-                                      {' '}
-                                      found in
-                                      {' '}
-                                      {item.foundInArray.map((oneItem) => {
-                                        const foundInStringItem = (
-                                          <span key={foundInItemsAlreadyShown}>
-                                            {foundInItemsAlreadyShown ? ', ' : ''}
-                                            {oneItem}
-                                          </span>
-                                        );
-                                        foundInItemsAlreadyShown += 1;
-                                        return foundInStringItem;
-                                      })}
-                                    </SearchResultsFoundInExplanation>
-                                  )}
-                                  <BallotItemCompressed
-                                    isMeasure={item.kind_of_ballot_item === TYPES.MEASURE}
-                                    ballotItemDisplayName={item.ballot_item_display_name}
-                                    candidateList={item.candidate_list}
-                                    candidatesToShowForSearchResults={item.candidatesToShowForSearchResults}
-                                    weVoteId={item.we_vote_id}
-                                  />
-                                </>
-                              </DelayedLoad>
+                              <Suspense fallback={<></>} key={key}>
+                                <DelayedLoad
+                                  showLoadingText={showLoadingText}
+                                  waitBeforeShow={500}
+                                >
+                                  <>
+                                    {!!(isSearching && searchTextString && item.foundInArray && item.foundInArray.length) && (
+                                      <SearchResultsFoundInExplanation>
+                                        {searchTextString}
+                                        {' '}
+                                        found in
+                                        {' '}
+                                        {item.foundInArray.map((oneItem) => {
+                                          const foundInStringItem = (
+                                            <span key={foundInItemsAlreadyShown}>
+                                              {foundInItemsAlreadyShown ? ', ' : ''}
+                                              {oneItem}
+                                            </span>
+                                          );
+                                          foundInItemsAlreadyShown += 1;
+                                          return foundInStringItem;
+                                        })}
+                                      </SearchResultsFoundInExplanation>
+                                    )}
+                                    <BallotItemCompressed
+                                      isMeasure={item.kind_of_ballot_item === TYPES.MEASURE}
+                                      ballotItemDisplayName={item.ballot_item_display_name}
+                                      candidateList={item.candidate_list}
+                                      candidatesToShowForSearchResults={item.candidatesToShowForSearchResults}
+                                      weVoteId={item.we_vote_id}
+                                    />
+                                  </>
+                                </DelayedLoad>
+                              </Suspense>
                             );
                           } else {
                             return null;
@@ -1454,11 +1473,13 @@ class Ballot extends Component {
                           this.showUserEmptyOptions()}
                         {!!(totalNumberOfBallotItems) && (
                           <ShowMoreItemsWrapper id="showMoreItemsId" onClick={() => this.increaseNumberOfBallotItemsToDisplay()}>
-                            <ShowMoreItems
-                              loadingMoreItemsNow={loadingMoreItems}
-                              numberOfItemsDisplayed={numberOfBallotItemsDisplayed}
-                              numberOfItemsTotal={totalNumberOfBallotItems}
-                            />
+                            <Suspense fallback={<></>}>
+                              <ShowMoreItems
+                                loadingMoreItemsNow={loadingMoreItems}
+                                numberOfItemsDisplayed={numberOfBallotItemsDisplayed}
+                                numberOfItemsTotal={totalNumberOfBallotItems}
+                              />
+                            </Suspense>
                           </ShowMoreItemsWrapper>
                         )}
                         {!!(loadingMoreItems && totalNumberOfBallotItems && (numberOfBallotItemsToDisplay < totalNumberOfBallotItems)) && (
@@ -1477,18 +1498,20 @@ class Ballot extends Component {
                     { (!twoColumnDisplay) && (this.state.voter && sourcePollingLocationWeVoteId) && (this.state.voter.is_admin || this.state.voter.is_verified_volunteer) ? (
                       <span className="u-wrap-links d-print-none">
                         <span>Admin:</span>
-                        <OpenExternalWebSite
-                          linkIdAttribute="ballotReturnedAdminEdit"
-                          url={ballotReturnedAdminEditUrl}
-                          target="_blank"
-                          body={(
-                            <span>
-                              Ballot copied from polling location &quot;
-                              {sourcePollingLocationWeVoteId}
-                              &quot;
-                            </span>
-                          )}
-                        />
+                        <Suspense fallback={<></>}>
+                          <OpenExternalWebSite
+                            linkIdAttribute="ballotReturnedAdminEdit"
+                            url={ballotReturnedAdminEditUrl}
+                            target="_blank"
+                            body={(
+                              <span>
+                                Ballot copied from polling location &quot;
+                                {sourcePollingLocationWeVoteId}
+                                &quot;
+                              </span>
+                            )}
+                          />
+                        </Suspense>
                       </span>
                     ) : null}
                   </div>
@@ -1565,12 +1588,16 @@ const BallotFilterRow = styled.div`
   // margin-left: ${() => (isWebApp() && !isMobileScreenSize() ? 'calc((100vw - 975px)/2)' : '')};
 `;
 
-// const EditAddressWrapper = styled.div`
-//   margin-bottom: 0 !important;
-//   margin-left: 0 !important;
-//   padding-left: 0 !important;
-//   padding-right: 0 !important;
-// `;
+const EditAddressCard = styled.div`
+  padding: 12px 15px 0 15px;
+`;
+
+const EditAddressWrapper = styled.div`
+  @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+  }
+`;
 
 const SearchResultsFoundInExplanation = styled.div`
   background-color: #C2DCE8;

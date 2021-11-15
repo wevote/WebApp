@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <!--
-    index.html for the We Vote Campaigns
+    index.html for We Vote Ballot
 -->
 <html lang='en'>
   <head>
@@ -31,5 +31,74 @@
     <div>
       <div id="app"></div>
     </div>
+    <script type="text/javascript">
+      let firstExistingScript = document.getElementsByTagName('script')[0];
+      const productionSpeed = true;    // SET false WHEN SPEED TESTING
+      if (productionSpeed) {
+        setTimeout(() => {
+          if (!window.leanLoadForChromeExtension) {
+            let scriptElementForGoogleAnalytics = document.createElement('script');
+            scriptElementForGoogleAnalytics.src = '/javascript/google-analytics.js';
+            firstExistingScript = document.getElementsByTagName('script')[0];
+            firstExistingScript.parentNode.insertBefore(scriptElementForGoogleAnalytics, firstExistingScript);
+
+            let scriptElementForGoogleTagManager = document.createElement('script');
+            scriptElementForGoogleTagManager.src = '/javascript/google-tag-manager.js';
+            firstExistingScript = document.getElementsByTagName('script')[0];
+            firstExistingScript.parentNode.insertBefore(scriptElementForGoogleTagManager, firstExistingScript);
+          }
+        }, 3000);
+
+        setTimeout(() => {
+          // We don't want Fontawesome blocking DOMContentLoad
+          if (!window.leanLoadForChromeExtension) {
+            let linkElementForFontAwesome = document.createElement('link');
+            linkElementForFontAwesome.rel = 'stylesheet';
+            linkElementForFontAwesome.href = 'https://use.fontawesome.com/releases/v5.8.2/css/all.css';
+            linkElementForFontAwesome.as = 'style';
+            linkElementForFontAwesome.crossOrigin = 'anonymous';
+            linkElementForFontAwesome.integrity = 'sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay';
+            let firstExistingLink = document.getElementsByTagName('link')[0];
+            firstExistingLink.parentNode.insertBefore(linkElementForFontAwesome, firstExistingLink);
+
+            let scriptElementForTwitterWidgets = document.createElement('script');
+            scriptElementForTwitterWidgets.src = 'https://platform.twitter.com/widgets.js';
+            scriptElementForTwitterWidgets.type = 'text/javascript';
+            let firstExistingScript = document.getElementsByTagName('script')[0];
+            firstExistingScript.parentNode.insertBefore(scriptElementForTwitterWidgets, firstExistingScript);
+          }
+        }, 4000);
+
+        setTimeout(() => {
+          // Delay Stripe load so it doesn't block main thread
+          if (!window.leanLoadForChromeExtension) {
+            let firstExistingScript = document.getElementsByTagName('script')[0];
+            let scriptElement1 = document.createElement('script');
+            scriptElement1.src = 'https://checkout.stripe.com/checkout.js';
+            scriptElement1.type = 'text/javascript';
+            firstExistingScript.parentNode.insertBefore(scriptElement1, firstExistingScript);
+
+            let scriptElement2 = document.createElement('script');
+            scriptElement2.src = 'https://js.stripe.com/v3/';
+            scriptElement2.type = 'text/javascript';
+            firstExistingScript.parentNode.insertBefore(scriptElement2, firstExistingScript);
+          }
+        }, 16000);
+
+        setTimeout(() => {
+          // Maps load so it doesn't block main thread
+          if (!window.leanLoadForChromeExtension) {
+            let scriptElementForMaps = document.createElement('script');
+            scriptElementForMaps.src = 'https://maps.googleapis.com/maps/api/js?key=AIzaSyCM0vM1mzh56OuA5IfgW_U6Qd9jD99WH6M&callback=initMap&libraries=places';
+            let firstExistingScript = document.getElementsByTagName('script')[0];
+            firstExistingScript.parentNode.insertBefore(scriptElementForMaps, firstExistingScript);
+          }
+        }, 20000);
+      }
+
+      function initMap () {
+        //
+      }
+    </script>
   </body>
 </html>

@@ -83,7 +83,7 @@ class SelectBallotModal extends Component {
 
   render () {
     renderLog('SelectBallotModal');  // Set LOG_RENDER_EVENTS to log all renders
-    const { classes, hideAddressEdit, hideElections } = this.props;
+    const { classes, hideAddressEdit, hideElections, show } = this.props;
     const { location: { pathname } } = window;
     const { editingAddress } = this.state;
     const ballotBaseUrl = calculateBallotBaseUrl(this.props.ballotBaseUrl, pathname);
@@ -98,7 +98,7 @@ class SelectBallotModal extends Component {
     return (
       <Dialog
         classes={{ paper: classes.dialogPaper }}
-        open={this.props.show}
+        open={show}
         onClose={() => { this.props.toggleFunction(pathname); }}
         id="SelectBallotModalId"
       >

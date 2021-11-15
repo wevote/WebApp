@@ -1,6 +1,6 @@
 import { withTheme } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
-import React, { Component } from 'react';
+import React, { Component, Suspense } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import BallotActions from '../../actions/BallotActions';
@@ -56,10 +56,19 @@ class ValuesToFollowPreview extends Component {
     }
   }
 
+  componentDidCatch (error, info) {
+    console.log('!!!ValuesToFollowPreview.jsx caught: ', error, info.componentStack);
+  }
+
   componentWillUnmount () {
     this.ballotStoreListener.remove();
     this.issueStoreListener.remove();
     this.voterGuideStoreListener.remove();
+  }
+
+  static getDerivedStateFromError (error) {       // eslint-disable-line no-unused-vars
+    console.log('!!!Error in ValuesToFollowPreview: ', error);
+    return { hasError: true };
   }
 
   onBallotStoreChange () {
@@ -106,9 +115,11 @@ class ValuesToFollowPreview extends Component {
             }
             return (
               <OneVoterGuideWrapper key={`findOpinionsFormPreviewImage-${voterGuide.organization_we_vote_id}`}>
-                <Link to={voterGuideLink} className="u-no-underline">
-                  <ImageHandler className="card-child__avatar" sizeClassName="image-sm " imageUrl={voterGuide.voter_guide_image_url_tiny} />
-                </Link>
+                <Suspense fallback={<></>}>
+                  <Link to={voterGuideLink} className="u-no-underline">
+                    <ImageHandler className="card-child__avatar" sizeClassName="image-sm " imageUrl={voterGuide.voter_guide_image_url_tiny} />
+                  </Link>
+                </Suspense>
               </OneVoterGuideWrapper>
             );
           })}
@@ -162,18 +173,22 @@ class ValuesToFollowPreview extends Component {
               Follow values/issues to see opinions from people who share your values.
             </SectionInformation>
             <Row>
-              <FriendInvitationOnboardingValuesList
-                displayOnlyIssuesNotFollowedByVoter
-                followToggleOnItsOwnLine={followToggleOnItsOwnLine}
-                includeLinkToIssue={includeLinkToIssue}
-                oneColumn
-              />
+              <Suspense fallback={<></>}>
+                <FriendInvitationOnboardingValuesList
+                  displayOnlyIssuesNotFollowedByVoter
+                  followToggleOnItsOwnLine={followToggleOnItsOwnLine}
+                  includeLinkToIssue={includeLinkToIssue}
+                  oneColumn
+                />
+              </Suspense>
             </Row>
-            <ShowMoreFooter
-              showMoreId="valuesToFollowPreviewShowMoreId"
-              showMoreLink={() => this.goToValuesLink()}
-              showMoreText="Explore all values"
-            />
+            <Suspense fallback={<></>}>
+              <ShowMoreFooter
+                showMoreId="valuesToFollowPreviewShowMoreId"
+                showMoreLink={() => this.goToValuesLink()}
+                showMoreText="Explore all values"
+              />
+            </Suspense>
           </div>
         </section>
       </div>

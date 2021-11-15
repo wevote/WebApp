@@ -16,7 +16,6 @@ import { cordovaLinkToBeSharedFixes, historyPush, isAndroid, isCordova, isWebApp
 import isMobile from '../../utils/isMobile';
 import { renderLog } from '../../utils/logging';
 import { stringContains } from '../../utils/textFormat';
-import LoadingWheel from '../LoadingWheel';
 import { openSnackbar } from '../Widgets/SnackNotifier';
 import { androidFacebookClickHandler, androidTwitterClickHandler, cordovaSocialSharingByEmail } from './shareButtonCommon';
 import ShareModalOption from './ShareModalOption';
@@ -156,6 +155,7 @@ class ShareButtonFooter extends Component {
 
   onVoterStoreChange () {
     const voter = VoterStore.getVoter();
+    // console.log('ShareButtonFooter, onVoterStoreChange voter: ', VoterStore.getVoter());
     const voterIsSignedIn = voter.is_signed_in;
     const currentFullUrlAdjusted = this.getCurrentFullUrl();
     const currentFullUrlToShare = currentFullUrlAdjusted.replace('/modal/share', '').toLowerCase();
@@ -420,7 +420,7 @@ class ShareButtonFooter extends Component {
 
     if (!VoterStore.getVoterWeVoteId()) {
       // console.log('ShareButtonFooter, waiting for voterRetrieve to complete');
-      return LoadingWheel;
+      return null;
     }
 
     const titleText = 'This is a website I am using to get ready to vote.';

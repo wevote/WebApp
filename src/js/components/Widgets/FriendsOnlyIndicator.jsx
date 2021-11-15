@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
+import styled from 'styled-components';
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 import Tooltip from 'react-bootstrap/Tooltip';
 import { ReactSVG } from 'react-svg';
@@ -29,17 +30,31 @@ export default class FriendsOnlyIndicator extends Component {
       visibilityIcon = (
         <ReactSVG
           src={cordovaDot(groupIcon)}
-          beforeInjection={(svg) => svg.setAttribute('style', { backgroundColor: '#fff', borderRadius: '3px', fill: '#555', width: '16px', height: '16px', display: 'flex', verticalAlign: 'unset' })}
+          // beforeInjection={(svg) => svg.setAttribute('style',
+          //   { backgroundColor: '#fff', borderRadius: '3px', fill: '#555', width: '16px', height: '16px', display: 'flex', verticalAlign: 'unset' })}
+          beforeInjection={(svg) => {
+            // Background color not working and needs to be fixed
+            // svg.setAttribute('backgroundColor', '#fff');
+            // svg.setAttribute('borderRadius', '3px');
+            svg.setAttribute('fill', '#555');
+          }}
           alt="Visible to Friends Only"
         />
       );
     } else {
       labelText = 'This is visible to the public.';
       visibilityIcon = (
-        <ReactSVG src={cordovaDot(publicIcon)}
-                  beforeInjection={(svg) => svg.setAttribute('style',
-                    { backgroundColor: '#fff', borderRadius: '3px', fill: '#555', width: '16px', height: '16px', display: 'flex', verticalAlign: 'unset' })}
-                  alt="Visible to Public"
+        <ReactSVG
+          src={cordovaDot(publicIcon)}
+          // beforeInjection={(svg) => svg.setAttribute('style',
+          //   { backgroundColor: '#fff', borderRadius: '3px', fill: '#555', width: '16px', height: '16px', display: 'flex', verticalAlign: 'unset' })}
+          beforeInjection={(svg) => {
+            // Background color not working and needs to be fixed
+            // svg.setAttribute('backgroundColor', '#fff');
+            // svg.setAttribute('borderRadius', '3px');
+            svg.setAttribute('fill', '#555');
+          }}
+          alt="Visible to Public"
         />
       );
     }
@@ -48,7 +63,7 @@ export default class FriendsOnlyIndicator extends Component {
 
     return (
       <OverlayTrigger placement="top" overlay={tooltip}>
-        <span className="public-friends-indicator">{visibilityIcon}</span>
+        <PublicFriendsIndicator>{visibilityIcon}</PublicFriendsIndicator>
       </OverlayTrigger>
     );
   }
@@ -56,3 +71,10 @@ export default class FriendsOnlyIndicator extends Component {
 FriendsOnlyIndicator.propTypes = {
   isFriendsOnly: PropTypes.bool,
 };
+
+const PublicFriendsIndicator = styled.span`
+  color: #999;
+  display: inline-block;
+  margin-top: -5px;
+  height: 18px;
+`;

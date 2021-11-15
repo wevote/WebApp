@@ -54,27 +54,27 @@ export default function ballotSearchPriority (originalString, item, ignoreDescri
       candidateDetailsString = '';
       for (let i = 0; i < wordsArray.length; i++) {
         searchNeedleString = wordsArray[i].toString();
-        if (!ignoreDescriptionFields && candidate.ballotpedia_candidate_summary && candidate.ballotpedia_candidate_summary.includes(searchNeedleString)) {
+        if (!ignoreDescriptionFields && countMatches(searchNeedleString, candidate.ballotpedia_candidate_summary)) {
           oneWordScore += countMatches(searchNeedleString, candidate.ballotpedia_candidate_summary);
           foundInThisCandidate = true;
           if (!candidateDetailsArray.includes('candidate summary')) candidateDetailsArray.push('candidate summary');
         }
-        if (candidate.ballot_item_display_name && candidate.ballot_item_display_name.includes(searchNeedleString)) {
+        if (countMatches(searchNeedleString, candidate.ballot_item_display_name)) {
           oneWordScore += countMatches(searchNeedleString, candidate.ballot_item_display_name) * 5;
           foundInThisCandidate = true;
           if (!candidateDetailsArray.includes('name')) candidateDetailsArray.push('name');
         }
-        if (!ignoreDescriptionFields && candidate.twitter_description && candidate.twitter_description.includes(searchNeedleString)) {
+        if (!ignoreDescriptionFields && countMatches(searchNeedleString, candidate.twitter_description)) {
           oneWordScore += countMatches(searchNeedleString, candidate.twitter_description);
           foundInThisCandidate = true;
           if (!candidateDetailsArray.includes('Twitter description')) candidateDetailsArray.push('Twitter description');
         }
-        if (candidate.twitter_handle && candidate.twitter_handle.includes(searchNeedleString)) {
+        if (countMatches(searchNeedleString, candidate.twitter_handle)) {
           oneWordScore += countMatches(searchNeedleString, candidate.twitter_handle) * 2;
           foundInThisCandidate = true;
           if (!candidateDetailsArray.includes('Twitter handle')) candidateDetailsArray.push('Twitter handle');
         }
-        if (candidate.party && candidate.party.includes(searchNeedleString)) {
+        if (countMatches(searchNeedleString, candidate.party)) {
           oneWordScore += countMatches(searchNeedleString, candidate.party) * 2;
           foundInThisCandidate = true;
           if (!candidateDetailsArray.includes('political party')) candidateDetailsArray.push('political party');

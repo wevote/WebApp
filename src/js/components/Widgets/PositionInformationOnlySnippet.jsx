@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
-import React, { Component } from 'react';
+import React, { Component, Suspense } from 'react';
+import styled from 'styled-components';
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 import Tooltip from 'react-bootstrap/Tooltip';
 import { cordovaDot } from '../../utils/cordovaUtils';
@@ -75,7 +76,7 @@ export default class PositionInformationOnlySnippet extends Component {
             null : (
               <span>
                 <OverlayTrigger placement="top" overlay={tooltip}>
-                  <div className="public-friends-indicator">
+                  <PublicFriendsIndicator>
                     <img src={cordovaDot(noPositionIcon)}
                          className={className}
                          width={24}
@@ -83,7 +84,7 @@ export default class PositionInformationOnlySnippet extends Component {
                          color=""
                          alt={alt}
                     />
-                  </div>
+                  </PublicFriendsIndicator>
                 </OverlayTrigger>
                 {isOnBallotItemPage ? (
                   <span>
@@ -109,27 +110,35 @@ export default class PositionInformationOnlySnippet extends Component {
             )}
           { commentTextOff ? null : (
             <span>
-              <span>{statementTextHtml}</span>
+              <Suspense fallback={<></>}>
+                <span>
+                  {statementTextHtml}
+                </span>
+              </Suspense>
               {/* if there's an external source for the explicit position/endorsement, show it */}
-              { videoUrl ?
-                <ReactPlayer className="explicit-position__media-player" url={`${videoUrl}`} width="100%" height="100%" /> :
-                null }
+              {(videoUrl) && (
+                <Suspense fallback={<></>}>
+                  <ReactPlayer className="explicit-position__media-player" url={`${videoUrl}`} width="100%" height="100%" />
+                </Suspense>
+              )}
               {moreInfoUrlFull ? (
                 <div className="d-none d-sm-block">
                   {/* default: open in new tab */}
-                  <OpenExternalWebSite
-                    linkIdAttribute="moreInfo"
-                    url={moreInfoUrlFull}
-                    target="_blank"
-                    className="u-gray-mid"
-                    body={(
-                      <span>
-                        view source
-                        {' '}
-                        <ExternalLinkIcon />
-                      </span>
-                    )}
-                  />
+                  <Suspense fallback={<></>}>
+                    <OpenExternalWebSite
+                      linkIdAttribute="moreInfo"
+                      url={moreInfoUrlFull}
+                      target="_blank"
+                      className="u-gray-mid"
+                      body={(
+                        <span>
+                          view source
+                          {' '}
+                          <ExternalLinkIcon />
+                        </span>
+                      )}
+                    />
+                  </Suspense>
                 </div>
               ) : null}
             </span>
@@ -149,3 +158,10 @@ PositionInformationOnlySnippet.propTypes = {
   stanceDisplayOff: PropTypes.bool,
   statementText: PropTypes.string,
 };
+
+const PublicFriendsIndicator = styled.div`
+  color: #999;
+  display: inline-block;
+  top: 16px;
+  height: 18px;
+`;

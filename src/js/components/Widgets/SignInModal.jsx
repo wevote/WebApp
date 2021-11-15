@@ -80,7 +80,7 @@ class SignInModal extends Component {
       if (isWebApp()) {
         // In Cordova something else has already closed the dialog, so this has to be suppressed to avoid an error -- Jan 27, 2020 is this still needed?
         this.props.closeFunction();
-        this.voterStoreListener.remove();
+        // this.voterStoreListener.remove();
       }
     } else {
       const voter = VoterStore.getVoter();

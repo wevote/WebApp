@@ -26,7 +26,6 @@ export default function HeaderBarModals (props) {
     showSelectBallotModal, showSelectBallotModalHideAddress, showSelectBallotModalHideElections,
     showShareModal, showSignInModal, showValuesIntroModal, showImageUploadModal,
   } = shows;
-
   const ballotBaseUrl = ['ready'].includes(normalizedHrefPage()) ? '/ready' : '/ballot';
   const voter = VoterStore.getVoter();
   const voterIsSignedIn = voter && voter.is_signed_in;
@@ -48,7 +47,7 @@ export default function HeaderBarModals (props) {
         ballotBaseUrl={ballotBaseUrl}
         hideAddressEdit={showSelectBallotModalHideAddress}
         hideElections={showSelectBallotModalHideElections}
-        show={showSelectBallotModal}
+        show
         toggleFunction={toggleSelectBallotModal}
       />
     );

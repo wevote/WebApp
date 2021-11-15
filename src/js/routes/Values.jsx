@@ -55,13 +55,18 @@ export default class Values extends Component {
   }
 
   componentDidCatch (error, info) {
-    console.log('Values.jsx caught: ', error, info.componentStack);
+    console.log('!!!Values.jsx caught: ', error, info.componentStack);
   }
 
   componentWillUnmount () {
     this.issueStoreListener.remove();
     this.voterStoreListener.remove();
     clearTimeout(this.preloadTimer);
+  }
+
+  static getDerivedStateFromError (error) {       // eslint-disable-line no-unused-vars
+    console.log('!!!Error in Values: ', error);
+    return { hasError: true };
   }
 
   onIssueStoreChange () {
@@ -155,7 +160,9 @@ export default class Values extends Component {
                 )}
                 {!!(issuesFollowedCount) && <ValuesFollowedPreview /> }
                 {voterIsSignedIn && (
-                  <FirstAndLastNameRequiredAlert />
+                  <Suspense fallback={<></>}>
+                    <FirstAndLastNameRequiredAlert />
+                  </Suspense>
                 )}
                 <SuggestedFriendsPreview />
                 <div className="card">

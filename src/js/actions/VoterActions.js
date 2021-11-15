@@ -1,6 +1,7 @@
 import Dispatcher from '../common/dispatcher/Dispatcher';
 import { isCordova } from '../utils/cordovaUtils'; // eslint-disable-line import/no-cycle
 import AppObservableStore from '../stores/AppObservableStore'; // eslint-disable-line import/no-cycle
+import arrayContains from '../common/utils/arrayContains';
 
 export default {
   clearEmailAddressStatus () {
@@ -258,6 +259,34 @@ export default {
         first_name: firstName,
         last_name: lastName,
       });
+  },
+
+  voterPhotoDelete () {
+    Dispatcher.loadEndpoint('voterUpdate',
+      {
+        voter_photo_from_file_reader: '',
+        voter_photo_changed: true,
+      });
+  },
+
+  voterPhotoQueuedToSave (voterPhotoFromFileReader) {
+    Dispatcher.dispatch({ type: 'voterPhotoQueuedToSave', payload: voterPhotoFromFileReader });
+  },
+
+  voterPhotoSave (voterPhotoQueuedToSave = '', voterPhotoQueuedToSaveSet = false, profileImageTypeCurrentlyActive = '') {
+    // console.log('VoterActions voterPhotoSave');
+    const profileImageTypeCurrentlyActiveSet = arrayContains(profileImageTypeCurrentlyActive, ['FACEBOOK', 'TWITTER', 'UPLOADED']);
+    Dispatcher.loadEndpoint('voterUpdate',
+      {
+        profile_image_type_currently_active: profileImageTypeCurrentlyActive,
+        profile_image_type_currently_active_changed: profileImageTypeCurrentlyActiveSet,
+        voter_photo_from_file_reader: voterPhotoQueuedToSave,
+        voter_photo_changed: voterPhotoQueuedToSaveSet,
+      });
+  },
+
+  voterPhotoTooBigReset () {
+    Dispatcher.dispatch({ type: 'voterPhotoTooBigReset', payload: true });
   },
 
   voterRetrieve () {

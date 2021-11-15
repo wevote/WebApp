@@ -121,9 +121,8 @@ class HeaderBar extends Component {
     if (isWebApp()) {
       this.setStyleTimeout = setTimeout(() => {
         const { headerObjects } = window;
-        const logoWrapper = document.querySelectorAll('[class^=HeaderBarLogo__HeaderBarWrapper]');
-        if (logoWrapper && logoWrapper[0] && logoWrapper[0].innerHTML.length) {
-          headerObjects.logo = logoWrapper[0].innerHTML;
+        if (document.getElementById('HeaderBarLogoWrapper')) {
+          headerObjects.logo = document.getElementById('HeaderBarLogoWrapper').innerHTML;
         }
         if (document.getElementById('readyTabHeaderBar')) {
           headerObjects.ready = document.getElementById('readyTabHeaderBar').innerHTML;
@@ -137,28 +136,28 @@ class HeaderBar extends Component {
         if (document.getElementById('discussTabHeaderBar')) {
           headerObjects.discuss = document.getElementById('discussTabHeaderBar').innerHTML;
         }
-        const notificationMenuWrapper = document.querySelectorAll('[class^=HeaderNotificationMenu__HeaderNotificationMenuWrapper]');
-        if (notificationMenuWrapper && notificationMenuWrapper[0] && notificationMenuWrapper[0].innerHTML.length) {
-          headerObjects.bell = notificationMenuWrapper[0].innerHTML;
+        if (document.getElementById('HeaderNotificationMenuWrapper')) {
+          headerObjects.bell = document.getElementById('HeaderNotificationMenuWrapper').innerHTML;
         }
         if (document.getElementById('profileAvatarHeaderBar')) {
           headerObjects.photo = document.getElementById('profileAvatarHeaderBar').innerHTML;
         }
       }, 1000);
     }
-    this.showBallotModalTimeout = setTimeout(() => {
-      // We want the SelectBallotModal to appear on the ballot page (without a keystroke)
-      // if the page is empty and we have a textForMapSearch and we dont have the EditAddressOneHorizontalRow displayed
-      const elList = document.getElementById('BallotListId');
-      const elEditAddress = document.getElementById('EditAddressOneHorizontalRow');
-      if (elList && !!elEditAddress) {
-        const textForMapSearch = VoterStore.getTextForMapSearch();
-        if (elList.innerHTML.trim().length < 1 && textForMapSearch) {
-          console.log('Putting up SelectBallotModal since BallotList is empty and textForMapSearch exists.');
-          this.setState({ showSelectBallotModal: true });
-        }
-      }
-    }, 1500);
+    // 2021-11 From Dale: Automatically opening modals on first page load doesn't test well with voters
+    // this.showBallotModalTimeout = setTimeout(() => {
+    //   // We want the SelectBallotModal to appear on the ballot page (without a keystroke)
+    //   // if the page is empty and we have a textForMapSearch and we dont have the EditAddressOneHorizontalRow displayed
+    //   const elList = document.getElementById('BallotListId');
+    //   const elEditAddress = document.getElementById('EditAddressOneHorizontalRow');
+    //   if (elList && !!elEditAddress) {
+    //     const textForMapSearch = VoterStore.getTextForMapSearch();
+    //     if (elList.innerHTML.trim().length < 1 && textForMapSearch) {
+    //       console.log('Putting up SelectBallotModal since BallotList is empty and textForMapSearch exists.');
+    //       this.setState({ showSelectBallotModal: true });
+    //     }
+    //   }
+    // }, 1500);
   }
 
   shouldComponentUpdate (nextProps, nextState) {
@@ -485,7 +484,7 @@ class HeaderBar extends Component {
   // }
 
   closeSignInModal () {
-    console.log('HeaderBar closeSignInModal');
+    // console.log('HeaderBar closeSignInModal');
     this.setState({ showSignInModal: false });
     VoterActions.voterRetrieve();
     VoterActions.voterEmailAddressRetrieve();
@@ -684,8 +683,6 @@ class HeaderBar extends Component {
                 isBeta={showWeVoteLogo && !chosenSiteLogoUrl}
               />
             )}
-          </TopRowOneLeftContainer>
-          <TopRowOneMiddleContainer>
             <div className="header-nav" style={isMobileScreenSize() ? { display: 'none' } : {}}>
               <Tabs
                 className={isIOSAppOnMac() ? '' : 'u-show-desktop'}
@@ -705,7 +702,8 @@ class HeaderBar extends Component {
                 )}
               </Tabs>
             </div>
-          </TopRowOneMiddleContainer>
+          </TopRowOneLeftContainer>
+          <TopRowOneMiddleContainer />
           <TopRowOneRightContainer className="u-cursor--pointer">
             {voterIsSignedIn && voterPhotoUrlMedium ? (
               <>

@@ -2,7 +2,7 @@ import { Button, Dialog, DialogContent, DialogTitle, IconButton, InputBase } fro
 import { withStyles, withTheme } from '@material-ui/core/styles';
 import { Close } from '@material-ui/icons';
 import PropTypes from 'prop-types';
-import React, { Component } from 'react';
+import React, { Component, Suspense } from 'react';
 import styled from 'styled-components';
 import SupportActions from '../../actions/SupportActions';
 import CandidateStore from '../../stores/CandidateStore';
@@ -245,7 +245,9 @@ class PositionStatementModal extends Component {
         <DialogContent classes={{ root: classes.dialogContent }}>
           <TextFieldWrapper>
             {voterIsSignedIn && (
-              <FirstAndLastNameRequiredAlert />
+              <Suspense fallback={<></>}>
+                <FirstAndLastNameRequiredAlert />
+              </Suspense>
             )}
             <form
               className={classes.formStyles}
@@ -285,23 +287,25 @@ class PositionStatementModal extends Component {
                   rows={rowsToShow}
                 />
               </div>
-              <ItemActionBar
-                showPositionPublicToggle
-                inModal
-                // showPositionStatementActionBar={showPositionStatementActionBar}
-                ballotItemDisplayName={ballotItemDisplayName}
-                ballotItemWeVoteId={ballotItemWeVoteId}
-                commentButtonHide
-                commentButtonHideInMobile
-                // currentBallotIdInUrl={currentBallotIdInUrl}
-                externalUniqueId={`${externalUniqueId}-ballotItemSupportOpposeComment-${ballotItemWeVoteId}`}
-                shareButtonHide
-                // hidePositionPublicToggle={hidePositionPublicToggle}
-                // supportOrOpposeHasBeenClicked={this.passDataBetweenItemActionToItemPosition}
-                // togglePositionStatementFunction={this.togglePositionStatement}
-                // transitioning={transitioning}
-                // urlWithoutHash={urlWithoutHash}
-              />
+              <Suspense fallback={<></>}>
+                <ItemActionBar
+                  showPositionPublicToggle
+                  inModal
+                  // showPositionStatementActionBar={showPositionStatementActionBar}
+                  ballotItemDisplayName={ballotItemDisplayName}
+                  ballotItemWeVoteId={ballotItemWeVoteId}
+                  commentButtonHide
+                  commentButtonHideInMobile
+                  // currentBallotIdInUrl={currentBallotIdInUrl}
+                  externalUniqueId={`${externalUniqueId}-ballotItemSupportOpposeComment-${ballotItemWeVoteId}`}
+                  shareButtonHide
+                  // hidePositionPublicToggle={hidePositionPublicToggle}
+                  // supportOrOpposeHasBeenClicked={this.passDataBetweenItemActionToItemPosition}
+                  // togglePositionStatementFunction={this.togglePositionStatement}
+                  // transitioning={transitioning}
+                  // urlWithoutHash={urlWithoutHash}
+                />
+              </Suspense>
               <PostSaveButton className="postsave-button">
                 <Button
                   id={`itemPositionStatementActionBarSave-${ballotItemWeVoteId}-${externalUniqueId}`}
