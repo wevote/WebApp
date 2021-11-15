@@ -148,9 +148,11 @@ export const TopOfPageHeader = styled.div`
 `;
 
 export const TopRowOneLeftContainer = styled.div`
-  grid-row-start: 1;
-  grid-row-end: 1;
-  grid-column: 1 / 2;
+  // grid-row-start: 1;
+  // grid-row-end: 1;
+  // grid-column: 1 / 2;
+  display: flex;
+  justify-content: flex-start;
 `;
 
 export const TopRowOneMiddleContainer = styled.div`

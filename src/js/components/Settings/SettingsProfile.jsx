@@ -7,7 +7,6 @@ import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import AnalyticsActions from '../../actions/AnalyticsActions';
 import VoterStore from '../../stores/VoterStore';
-import { isWebApp } from '../../utils/cordovaUtils';
 import { renderLog } from '../../utils/logging';
 import { HeaderContentContainer } from '../../utils/pageLayoutStyles';
 import LoadingWheel from '../LoadingWheel';
@@ -67,6 +66,7 @@ class SettingsProfile extends Component {
               </Link>
             </IntroductionWrapper>
             <div>
+              <SettingsProfilePicture />
               <SettingsWidgetFirstLastName externalUniqueId={externalUniqueId} />
               <SettingsWidgetOrganizationWebsite externalUniqueId={externalUniqueId} />
               <SettingsWidgetOrganizationDescription externalUniqueId={externalUniqueId} />
@@ -75,12 +75,6 @@ class SettingsProfile extends Component {
                 closeEditFormOnChoice
                 showEditToggleOption
               />
-              {isWebApp() && (
-                <>
-                  <SectionTitle>Profile Picture</SectionTitle>
-                  <SettingsProfilePicture />
-                </>
-              )}
             </div>
           </div>
         </div>
@@ -104,14 +98,7 @@ const styles = () => ({
 });
 
 const IntroductionWrapper = styled.div`
-`;
-
-const SectionTitle = styled.h2`
-  width: fit-content;
-  font-weight: bold;
-  font-size: 22px;
-  margin-bottom: 16px;
-  margin-top: 32px;
+  margin-bottom: 12px;
 `;
 
 export default withStyles(styles)(SettingsProfile);

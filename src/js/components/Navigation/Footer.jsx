@@ -98,34 +98,33 @@ class Footer extends Component {
 
   render () {
     const { /* doShowHeader, doShowFooter, */ showFooterBar, showFooterMain, showShareButtonFooter } = this.state;
-    // console.log('Footer render, showFooterBar:', showFooterBar, ', showFooterMain:', showFooterMain);
 
     return (
-      <Wrapper>
+      <FooterWrapper>
         {(showFooterMain) && (
-          <>
+          <FooterMainWrapper>
             <Suspense fallback={<span>&nbsp;</span>}>
               <DelayedLoad waitBeforeShow={4000}>
                 <FooterMain />
               </DelayedLoad>
             </Suspense>
-          </>
+          </FooterMainWrapper>
         )}
         {showShareButtonFooter && (
-          <>
+          <ShareButtonFooterWrapper>
             <Suspense fallback={<span>&nbsp;</span>}>
               <ShareButtonFooter />
             </Suspense>
-          </>
+          </ShareButtonFooterWrapper>
         )}
         {showFooterBar && (
-          <div className={isWebApp() ? 'footroom-wrapper' : 'footroom-wrapper-cordova'}>
-            <Suspense fallback={<></>}>
+          <FooterBarWrapper className={isWebApp() ? 'footroom-wrapper' : 'footroom-wrapper-cordova'}>
+            <Suspense fallback={<span>&nbsp;</span>}>
               <FooterBar />
             </Suspense>
-          </div>
+          </FooterBarWrapper>
         )}
-      </Wrapper>
+      </FooterWrapper>
     );
   }
 }
@@ -133,7 +132,16 @@ class Footer extends Component {
 const styles = () => ({
 });
 
-const Wrapper = styled.div`
+const FooterBarWrapper = styled.div`
+`;
+
+const FooterMainWrapper = styled.div`
+`;
+
+const FooterWrapper = styled.div`
+`;
+
+const ShareButtonFooterWrapper = styled.div`
 `;
 
 export default withStyles(styles)(Footer);

@@ -20,6 +20,7 @@ class BallotStore extends ReduceStore {
       allBallotItemsFlattened: [],
       allBallotItemsFlattenedDict: {},
       allBallotItemsHaveBeenRetrievedForElection: {},
+      allBallotItemsRetrieveCalled: false,
       ballots: {},
       ballotItemSearchResultsList: [],
       ballotItemUnfurledTracker: {},
@@ -27,6 +28,7 @@ class BallotStore extends ReduceStore {
       positionListHasBeenRetrievedOnceByBallotItem: {}, // Dictionary with ballot_item_we_vote_id as key and true/false as value
       positionListFromFriendsHasBeenRetrievedOnceByBallotItem: {}, // Dictionary with ballot_item_we_vote_id as key and true/false as value
       voterGuideElectionListByElectionId: {}, // Dictionary with google_civic_election_id as key and list of voter guides for this voter for this election as value
+      voterBallotItemsRetrieveHasReturned: false,
     };
   }
 
@@ -385,6 +387,10 @@ class BallotStore extends ReduceStore {
     return this.getState().positionListFromFriendsHasBeenRetrievedOnceByBallotItem[ballotItemWeVoteId] || false;
   }
 
+  voterBallotItemsRetrieveHasReturned () {
+    return this.getState().voterBallotItemsRetrieveHasReturned;
+  }
+
   reduce (state, action) {
     let allBallotItemsByOfficeOrMeasureDict = {}; // Key is office or measure weVoteId
     let allBallotItemsFlattenedDict = {}; // Key is office, candidate or measure weVoteId
@@ -402,6 +408,7 @@ class BallotStore extends ReduceStore {
     let revisedState;
     let tempBallotItemList = [];
     let textForMapSearch = '';
+    let voterBallotItemsRetrieveHasReturned = false;
     let voterBallotList = [];
     let voterGuides;
     let voterGuideElectionListByElectionId;
@@ -570,6 +577,9 @@ class BallotStore extends ReduceStore {
           this.timer = setTimeout(() => {
             BallotActions.voterBallotItemsRetrieve(action.res.google_civic_election_id);
           }, 2000);
+          voterBallotItemsRetrieveHasReturned = false;
+        } else {
+          voterBallotItemsRetrieveHasReturned = true;
         }
 
         if (!action.res || !action.res.success) return state;
@@ -585,6 +595,7 @@ class BallotStore extends ReduceStore {
         revisedState = state;
         textForMapSearch = action.res.text_for_map_search;
         revisedState = { ...revisedState, textForMapSearch };
+        revisedState = { ...revisedState, voterBallotItemsRetrieveHasReturned };
         if (googleCivicElectionId !== 0) {
           newBallots[googleCivicElectionId] = action.res;
 

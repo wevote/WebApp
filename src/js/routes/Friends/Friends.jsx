@@ -1,6 +1,6 @@
 import { withStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
-import React, { Component } from 'react';
+import React, { Component, Suspense } from 'react';
 import Helmet from 'react-helmet';
 import styled from 'styled-components';
 import testimonialImage from '../../../img/global/photos/Dale_McGrew-200x200.jpg';
@@ -270,7 +270,9 @@ class Friends extends Component {
             {suggestedFriendList.length > 0 ? (
               <>
                 {voterIsSignedIn && (
-                  <FirstAndLastNameRequiredAlert />
+                  <Suspense fallback={<></>}>
+                    <FirstAndLastNameRequiredAlert />
+                  </Suspense>
                 )}
                 <SuggestedFriends />
               </>
@@ -298,7 +300,9 @@ class Friends extends Component {
         mobileContentToDisplay = (
           <>
             {voterIsSignedIn && (
-              <FirstAndLastNameRequiredAlert />
+              <Suspense fallback={<></>}>
+                <FirstAndLastNameRequiredAlert />
+              </Suspense>
             )}
             <InviteByEmail />
             <SignInOptionsWrapper>
@@ -406,7 +410,9 @@ class Friends extends Component {
             <div className="col-sm-12 col-lg-8">
               <>
                 {voterIsSignedIn && (
-                <FirstAndLastNameRequiredAlert />
+                  <Suspense fallback={<></>}>
+                    <FirstAndLastNameRequiredAlert />
+                  </Suspense>
                 )}
                 <InviteByEmail />
               </>
@@ -452,7 +458,9 @@ class Friends extends Component {
               <div className="col-sm-12 col-lg-8">
                 <>
                   {voterIsSignedIn && (
-                    <FirstAndLastNameRequiredAlert />
+                    <Suspense fallback={<></>}>
+                      <FirstAndLastNameRequiredAlert />
+                    </Suspense>
                   )}
                   {!!(!voterIsSignedIn || !friendActivityExists) && (
                     <InviteByEmail />

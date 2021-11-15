@@ -2,7 +2,7 @@ import { Tooltip } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 import { Settings } from '@material-ui/icons';
 import PropTypes from 'prop-types';
-import React, { Component } from 'react';
+import React, { Component, Suspense } from 'react';
 import styled from 'styled-components';
 import { isAndroid, isAndroidSizeFold, isIOSAppOnMac, isIPad, isIPhone3p5in, isIPhone4in, isWebApp } from '../../utils/cordovaUtils';
 import isMobileScreenSize from '../../utils/isMobileScreenSize';
@@ -89,7 +89,9 @@ class BallotTitleHeader extends Component {
           </Tooltip>
           {electionDayTextObject && (
             <ShareButtonWrapper>
-              <ShareButtonDesktopTablet />
+              <Suspense fallback={<></>}>
+                <ShareButtonDesktopTablet />
+              </Suspense>
             </ShareButtonWrapper>
           )}
         </Wrapper>

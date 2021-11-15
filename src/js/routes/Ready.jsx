@@ -114,7 +114,7 @@ class Ready extends Component {
   }
 
   componentDidCatch (error, info) {
-    console.log('Ready.jsx caught: ', error, info.componentStack);
+    console.log('!!!Ready.jsx caught: ', error, info.componentStack);
   }
 
   componentWillUnmount () {
@@ -128,7 +128,7 @@ class Ready extends Component {
   }
 
   static getDerivedStateFromError (error) {       // eslint-disable-line no-unused-vars
-    console.log('Error in Ready: ', error);
+    console.log('!!!Error in Ready: ', error);
     return { hasError: true };
   }
 
@@ -158,6 +158,7 @@ class Ready extends Component {
   }
 
   onVoterStoreChange () {
+    // console.log('Ready, onVoterStoreChange voter: ', VoterStore.getVoter());
     const textForMapSearch = VoterStore.getTextForMapSearch();
     const { issuesQueriesMade } = this.state;
     if (!issuesQueriesMade) {
@@ -211,11 +212,13 @@ class Ready extends Component {
             <Helmet title="Ready to Vote? - We Vote" />
             <BrowserPushMessage incomingProps={this.props} />
             <div className="row">
-              {(showAddressVerificationForm) && (
-                <EditAddressWrapper className="col-12">
+              {(showAddressVerificationForm) && <span />}
+              <EditAddressWrapper className="col-12">
+                <EditAddressCard className="card">
                   <EditAddressOneHorizontalRow saveUrl="/ready" />
-                </EditAddressWrapper>
-              )}
+                </EditAddressCard>
+              </EditAddressWrapper>
+
               <div className="col-sm-12 col-lg-8">
                 <MobileTabletCountdownWrapper className="u-show-mobile-tablet">
                   <ShareButtonTabletWrapper>
@@ -237,10 +240,12 @@ class Ready extends Component {
                         {chosenReadyIntroductionTitle}
                       </Title>
                       <Paragraph>
-                        <ReadMore
-                          textToDisplay={chosenReadyIntroductionText}
-                          numberOfLines={3}
-                        />
+                        <Suspense fallback={<></>}>
+                          <ReadMore
+                            textToDisplay={chosenReadyIntroductionText}
+                            numberOfLines={3}
+                          />
+                        </Suspense>
                       </Paragraph>
                     </div>
                   </Card>
@@ -256,7 +261,9 @@ class Ready extends Component {
                 )}
                 <ReadyInformationDisclaimer bottom />
                 {voterIsSignedIn && (
-                  <FirstAndLastNameRequiredAlert />
+                  <Suspense fallback={<></>}>
+                    <FirstAndLastNameRequiredAlert />
+                  </Suspense>
                 )}
                 {nextReleaseFeaturesEnabled && (
                   <ReadyTaskFriends
@@ -344,11 +351,15 @@ const Card = styled.div`
   padding-bottom: 4px;
 `;
 
+const EditAddressCard = styled.div`
+  padding: 12px 15px 0 15px;
+`;
+
 const EditAddressWrapper = styled.div`
-  margin-bottom: 8px !important;
-  margin-left: 0 !important;
-  padding-left: 0 !important;
-  padding-right: 0 !important;
+  @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+  }
 `;
 
 const ElectionCountdownMobileTabletWrapper = styled.div`

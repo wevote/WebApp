@@ -48,7 +48,7 @@ class AddressBox extends Component {
       addressAutocomplete.setComponentRestrictions({ country: 'us' });
       this.googleAutocompleteListener = addressAutocomplete.addListener('place_changed', this._placeChanged.bind(this, addressAutocomplete));
     } else if (isWebApp()) {
-      console.log('ERROR: Google Maps API IS NOT LOADED');
+      console.log('AddressBox ERROR: Google Maps API IS NOT LOADED');
     }
   }
 
@@ -92,7 +92,7 @@ class AddressBox extends Component {
 
   componentDidCatch (error, info) {
     // We should get this information to Splunk!
-    console.error('AddressBox caught error: ', `${error} with info: `, info);
+    console.error('!!!AddressBox caught error: ', `${error} with info: `, info);
   }
 
   componentWillUnmount () {
@@ -107,7 +107,7 @@ class AddressBox extends Component {
   // See https://reactjs.org/docs/error-boundaries.html
   static getDerivedStateFromError (error) { // eslint-disable-line no-unused-vars
     // Update state so the next render will show the fallback UI, We should have a "Oh snap" page
-    console.log('AddressBox error', error);
+    console.log('!!!AddressBox error', error);
     return { hasError: true };
   }
 

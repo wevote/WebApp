@@ -3,82 +3,129 @@ import { withStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import styled from 'styled-components';
-import AppObservableStore from '../../stores/AppObservableStore';
 import { isCordova } from '../../utils/cordovaUtils';
+import VoterActions from '../../actions/VoterActions';
+import VoterPhotoUpload from '../../common/components/Settings/VoterPhotoUpload';
+import VoterStore from '../../stores/VoterStore';
 
 
 class SettingsProfilePicture extends Component {
   constructor (props) {
     super(props);
     this.state = {
-      value: 'custom',
+      profileImageTypeCurrentlyActive: 'UPLOADED',
     };
-    this.handleChange = this.handleChange.bind(this);
+    this.changeProfileImageTypeCurrentlyActive = this.changeProfileImageTypeCurrentlyActive.bind(this);
   }
 
-  handleChange (e) {
-    console.log(e.target.value);
+  componentDidMount () {
+    this.onVoterStoreChange();
+    this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
+  }
 
-    this.setState({ value: e.target.value });
+  componentWillUnmount () {
+    this.voterStoreListener.remove();
+  }
+
+  onVoterStoreChange = () => {
+    const voter = VoterStore.getVoter();
+    this.setState({
+      profileImageTypeCurrentlyActive: voter.profile_image_type_currently_active,
+      voterFacebookImageUrlLarge: voter.we_vote_hosted_profile_facebook_image_url_large,
+      voterPhotoQueuedToSaveSet: VoterStore.getVoterPhotoQueuedToSaveSet(),
+      voterTwitterImageUrlLarge: voter.we_vote_hosted_profile_twitter_image_url_large,
+    });
+  };
+
+  submitVoterPhotoSave = () => {
+    const { profileImageTypeCurrentlyActive } = this.state;
+    const voterPhotoQueuedToSave = VoterStore.getVoterPhotoQueuedToSave();
+    const voterPhotoQueuedToSaveSet = VoterStore.getVoterPhotoQueuedToSaveSet();
+    if (voterPhotoQueuedToSaveSet || profileImageTypeCurrentlyActive) {
+      VoterActions.voterPhotoSave(voterPhotoQueuedToSave, voterPhotoQueuedToSaveSet, profileImageTypeCurrentlyActive);
+      VoterActions.voterPhotoQueuedToSave(undefined);
+    }
+    this.setState({
+      voterPhotoQueuedToSaveSet: false,
+      profileImageTypeCurrentlyActiveSet: false,
+    });
+  }
+
+  changeProfileImageTypeCurrentlyActive (e) {
+    // console.log(e.target.value);
+    this.setState({
+      profileImageTypeCurrentlyActive: e.target.value,
+      profileImageTypeCurrentlyActiveSet: true,
+    });
   }
 
   render () {
-    const { value } = this.state;
+    const {
+      profileImageTypeCurrentlyActive, profileImageTypeCurrentlyActiveSet,
+      voterFacebookImageUrlLarge, voterPhotoQueuedToSaveSet, voterTwitterImageUrlLarge,
+    } = this.state;
     const { classes } = this.props;
+    const onlyOneOption = !(voterFacebookImageUrlLarge || voterTwitterImageUrlLarge);
 
     return (
-      <Wrapper value={value} onChange={this.handleChange} name="profile-option">
-        <div className="row">
-          <CustomColumns className="col" style={isCordova() ? {  display: 'none' } : {}}>
+      <Wrapper value={profileImageTypeCurrentlyActive} onChange={this.changeProfileImageTypeCurrentlyActive} name="profile-option">
+        <ColumnWrapper>
+          <CustomColumns onlyOneOption={onlyOneOption} style={isCordova() ? {  display: 'none' } : {}}>
             <ProfilePictureOption>
-              <FormControlLabel value="custom"
-                                control={<Radio color="primary" />}
-                                label="Custom picture"
+              <FormControlLabel
+                value="UPLOADED"
+                control={<Radio color="primary" />}
+                label="Custom photo"
               />
-              <Seperator />
-              <ProfilePicture src="../../../img/global/photos/Aaron_Travis-200x200.jpg" />
-              {value === 'custom' && (
-                <>
-                  <Button
-                    onClick={() => AppObservableStore.setShowImageUploadModal(true)}
-                    classes={{ root: classes.button }}
-                    color="primary"
-                    variant="contained"
-                    fullWidth
-                  >
-                    Upload
-                  </Button>
-                  <Button color="primary"
-                          variant="outlined"
-                          fullWidth
-                  >
-                    Remove
-                  </Button>
-                </>
-              )}
+              <Separator />
+              <VoterPhotoUpload maxWidth={100} />
             </ProfilePictureOption>
           </CustomColumns>
-          <CustomColumns className="col">
-            <ProfilePictureOption>
-              <FormControlLabel value="facebook"
-                                control={<Radio color="primary" />}
-                                label="Facebook picture"
-              />
-              <Seperator />
-              <ProfilePicture src="../../../img/global/photos/Aaron_Travis-200x200.jpg" />
-            </ProfilePictureOption>
-          </CustomColumns>
-          <CustomColumns className="col">
-            <ProfilePictureOption>
-              <FormControlLabel value="twitter"
-                                control={<Radio color="primary" />}
-                                label="Twitter picture"
-              />
-              <Seperator />
-              <ProfilePicture src="../../../img/global/photos/Aaron_Travis-200x200.jpg" />
-            </ProfilePictureOption>
-          </CustomColumns>
-        </div>
+          {voterFacebookImageUrlLarge && (
+            <CustomColumns>
+              <ProfilePictureOption>
+                <FormControlLabel
+                  value="FACEBOOK"
+                  control={<Radio color="primary" />}
+                  label="Facebook photo"
+                />
+                <Separator />
+                <ProfilePictureWrapper>
+                  <ProfilePicture src={voterFacebookImageUrlLarge} />
+                </ProfilePictureWrapper>
+              </ProfilePictureOption>
+            </CustomColumns>
+          )}
+          {voterTwitterImageUrlLarge && (
+            <CustomColumns>
+              <ProfilePictureOption>
+                <FormControlLabel
+                  value="TWITTER"
+                  control={<Radio color="primary" />}
+                  label="Twitter photo"
+                />
+                <Separator />
+                <ProfilePictureWrapper>
+                  <ProfilePicture src={voterTwitterImageUrlLarge} />
+                </ProfilePictureWrapper>
+              </ProfilePictureOption>
+            </CustomColumns>
+          )}
+        </ColumnWrapper>
+        <SaveOuterWrapper>
+          <SaveInnerWrapper>
+            <Button
+              classes={{ root: classes.buttonSave }}
+              color="primary"
+              disabled={!voterPhotoQueuedToSaveSet && !profileImageTypeCurrentlyActiveSet}
+              id="saveEditYourPhotoBottom"
+              onClick={this.submitVoterPhotoSave}
+              variant="contained"
+            >
+              {(!voterPhotoQueuedToSaveSet && !profileImageTypeCurrentlyActiveSet) ? 'Photo saved' : 'Save photo'}
+            </Button>
+          </SaveInnerWrapper>
+        </SaveOuterWrapper>
       </Wrapper>
     );
   }
@@ -92,23 +139,29 @@ const styles = () => ({
     marginTop: 12,
     marginBottom: 8,
   },
+  buttonSave: {
+    boxShadow: 'none !important',
+    // fontSize: '18px',
+    // height: '45px !important',
+    marginLeft: 10,
+    padding: '0 30px',
+    textTransform: 'none',
+    // width: 150,
+  },
 });
 
 const Wrapper = styled(RadioGroup)`
+`;
 
+const ColumnWrapper = styled.div`
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-between;
 `;
 
 const CustomColumns = styled.div`
-  width: 100% !important;
-  @media(min-width: 576px) {
-    width: 50% !important;
-  }
-  @media(min-width: 740px) {
-    width: 33% !important;
-  }
-  @media(min-width: 767px) {
-    width: 50% !important;
-  }
+  ${(props) => ((props.onlyOneOption) ? 'width: 100% !important;' : 'width: 49% !important;')}
 `;
 
 const ProfilePictureOption = styled.div`
@@ -119,29 +172,39 @@ const ProfilePictureOption = styled.div`
   flex-direction: column;
   align-items: flex-start;
   width: 100%;
-  margin-bottom: 30px;
+  margin-bottom: 3px;
 `;
 
-const Seperator = styled.div`
+const ProfilePicture = styled.img`
+  border-radius: 50px;
+  margin: 0 auto;
+  max-width: 100px;
+`;
+
+const ProfilePictureWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  margin-top: 9px;
+  margin-bottom: 26px;
+  width: 100%;
+`;
+
+const SaveInnerWrapper = styled.div`
+  display: flex;
+`;
+
+const SaveOuterWrapper = styled.div`
+  align-items: center;
+  display: flex;
+  justify-content: flex-end;
+  padding: 0 0 8px 0;
+`;
+
+const Separator = styled.div`
   width: 100%;
   margin: 12px 0;
   background: #e8e8e8;
   height: 1px;
 `;
-
-const ProfilePicture = styled.img`
-  width: 80px;
-  height: 80px;
-  border-radius: 2px;
-  margin: 0 auto;
-`;
-
-// const SectionTitle = styled.h2`
-//   width: fit-content;
-//   font-weight: bold;
-//   font-size: 22px;
-//   margin-bottom: 16px;
-//   margin-top: 32px;
-// `;
 
 export default withStyles(styles)(SettingsProfilePicture);

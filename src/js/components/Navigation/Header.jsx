@@ -93,13 +93,18 @@ export default class Header extends Component {
 
   componentDidCatch (error, info) {
     // We should get this information to Splunk!
-    console.error('Header caught error: ', `${error} with info: `, info);
+    console.error('!!!Header caught error: ', `${error} with info: `, info);
   }
 
   componentWillUnmount () {
     // console.log('-----------HEADER componentWillUnmount');
     this.appStateSubscription.unsubscribe();
     window.removeEventListener('resize', this.handleResize);
+  }
+
+  static getDerivedStateFromError (error) {       // eslint-disable-line no-unused-vars
+    console.log('!!!Error in Header: ', error);
+    return { hasError: true };
   }
 
   handleResize (event) {
@@ -202,7 +207,7 @@ export default class Header extends Component {
     // }
     // console.log(`Header href: ${window.location.href}  cordovaStyle: `, cordovaTopHeaderTopMargin());
 
-
+    // console.log('voterGuideMode:', voterGuideMode, ', showBackToVoterGuide:', showBackToVoterGuide, ', showBackToVoterGuides:', showBackToVoterGuides, ', showBackToBallotHeader:', showBackToBallotHeader, ', settingsMode:', settingsMode);
     if (voterGuideMode || voterGuideCreatorMode) {
       // console.log('Header in voterGuideMode, showBackToVoterGuide:', showBackToVoterGuide);
       // let headroomWrapper = '';

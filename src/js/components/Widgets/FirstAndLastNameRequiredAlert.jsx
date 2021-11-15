@@ -16,6 +16,7 @@ class FirstAndLastNameRequiredAlert extends Component {
   constructor (props) {
     super(props);
     this.state = {
+      componentHasMounted: false,
       displayThisComponent: false,
       friendInvitationsWaitingForVerification: [],
       // friendInvitationsWaitingForVerificationCount: 0,
@@ -37,6 +38,13 @@ class FirstAndLastNameRequiredAlert extends Component {
       FriendActions.getAllFriendLists();
       // FriendActions.friendInvitationsWaitingForVerification();
     }
+    this.setState({
+      componentHasMounted: true,
+    });
+  }
+
+  componentDidCatch (error, info) {
+    console.log('!!!FirstAndLastNameRequiredAlert.jsx caught: ', error, info.componentStack);
   }
 
   componentWillUnmount () {
@@ -47,6 +55,11 @@ class FirstAndLastNameRequiredAlert extends Component {
     this.friendStoreListener.remove();
     this.organizationStoreListener.remove();
     this.voterStoreListener.remove();
+  }
+
+  static getDerivedStateFromError (error) {       // eslint-disable-line no-unused-vars
+    console.log('!!!Error in FirstAndLastNameRequiredAlert: ', error);
+    return { hasError: true };
   }
 
   onFriendStoreChange () {
@@ -63,11 +76,13 @@ class FirstAndLastNameRequiredAlert extends Component {
     let isOrganization = false;
     let organizationName = '';
     let organizationNameExists = false;
-    const organization = OrganizationStore.getOrganizationByWeVoteId(linkedOrganizationWeVoteId);
-    if (organization && organization.organization_type) {
-      organizationName = organization.organization_name;
-      isOrganization = isSpeakerTypeOrganization(organization.organization_type);
-      organizationNameExists = organizationName && !stringContains('Voter-', organizationName);
+    if (linkedOrganizationWeVoteId) {
+      const organization = OrganizationStore.getOrganizationByWeVoteId(linkedOrganizationWeVoteId);
+      if (organization && organization.organization_type) {
+        organizationName = organization.organization_name;
+        isOrganization = isSpeakerTypeOrganization(organization.organization_type);
+        organizationNameExists = organizationName && !stringContains('Voter-', organizationName);
+      }
     }
     // onOrganizationStoreChange will only make component appear -- never disappear
     if (isOrganization) {
@@ -95,10 +110,12 @@ class FirstAndLastNameRequiredAlert extends Component {
     // console.log('FirstAndLastNameRequiredAlert.jsx onVoterStoreChange, voter: ', VoterStore.getVoter());
     const voter = VoterStore.getVoter();
     const linkedOrganizationWeVoteId = voter.linked_organization_we_vote_id;
-    const organization = OrganizationStore.getOrganizationByWeVoteId(linkedOrganizationWeVoteId);
     let isSimpleVoter = false;
-    if (organization && organization.organization_type) {
-      isSimpleVoter = !isSpeakerTypeOrganization(organization.organization_type);
+    if (linkedOrganizationWeVoteId) {
+      const organization = OrganizationStore.getOrganizationByWeVoteId(linkedOrganizationWeVoteId);
+      if (organization && organization.organization_type) {
+        isSimpleVoter = !isSpeakerTypeOrganization(organization.organization_type);
+      }
     }
     const voterDisplayName = VoterStore.getFirstPlusLastName();
     const voterDisplayNameExists = voterDisplayName && !stringContains('Voter-', voterDisplayName);
@@ -137,10 +154,12 @@ class FirstAndLastNameRequiredAlert extends Component {
   render () {
     renderLog('EnterFirstAndLastName');  // Set LOG_RENDER_EVENTS to log all renders
     const {
+      componentHasMounted,
       displayThisComponent, friendInvitationsWaitingForVerification, isOrganization,
       organizationName,
       organizationNameRelevantAndMissing, voterDisplayName, voterNameRelevantAndMissing,
     } = this.state;
+    if (!componentHasMounted) return null;
     if (displayThisComponent) {
       return (
         <PrintWrapper id="firstAndLastNameRequiredAlert">

@@ -95,6 +95,7 @@ class ReadyTaskBallot extends React.Component {
   }
 
   onVoterStoreChange () {
+    // console.log('ReadyTaskBallot, onVoterStoreChange voter: ', VoterStore.getVoter());
     const { showMoreButtonWasClicked } = this.state;
     this.setCompletedStatus();
     const ballotItemsStatusCounts = BallotStore.getBallotItemsStatusCounts();

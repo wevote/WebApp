@@ -25,7 +25,7 @@ class AddressBoxWelcome extends PureComponent {
       addressAutocomplete.setComponentRestrictions({ country: 'us' });
       this.googleAutocompleteListener = addressAutocomplete.addListener('place_changed', this._placeChanged.bind(this, addressAutocomplete));
     } else if (isWebApp()) {
-      console.log('ERROR: Google Maps API IS NOT LOADED');
+      console.log('AddressBoxWelcome ERROR: Google Maps API IS NOT LOADED');
     }
   }
 
@@ -50,6 +50,7 @@ class AddressBoxWelcome extends PureComponent {
   }
 
   onVoterStoreChange = () => {
+    // console.log('AddressBoxWelcome, onVoterStoreChange voter: ', VoterStore.getVoter());
     this.setState({
       textForMapSearch: VoterStore.getTextForMapSearch(),
     });

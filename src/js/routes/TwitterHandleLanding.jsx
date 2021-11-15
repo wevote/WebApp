@@ -1,6 +1,6 @@
 import { Button } from '@material-ui/core';
 import PropTypes from 'prop-types';
-import React, { Component } from 'react';
+import React, { Component, Suspense } from 'react';
 import Helmet from 'react-helmet';
 import { Link } from 'react-router-dom';
 import OrganizationActions from '../actions/OrganizationActions';
@@ -120,7 +120,7 @@ export default class TwitterHandleLanding extends Component {
   }
 
   onVoterStoreChange () {
-    // console.log('TwitterHandleLanding onTwitterStoreChange');
+    // console.log('TwitterHandleLanding, onVoterStoreChange voter: ', VoterStore.getVoter());
     this.setState({ voter: VoterStore.getVoter() });
   }
 
@@ -195,48 +195,50 @@ export default class TwitterHandleLanding extends Component {
     } else {
       // console.log('render in TwitterHandleLanding  else, kindOfOwner');
       return (
-        <DelayedLoad showLoadingText waitBeforeShow={2000}>
-          <div
-            className="container-fluid well u-stack--md u-inset--md"
-            style={
-              isCordova() ? {
-                marginTop: '100px',
-                paddingBottom: '625px',
-              } : {}
-            }
-          >
-            <Helmet title="Not Found - We Vote" />
-            <h3 className="h3">Claim Your Page</h3>
-            <div className="medium">
-              We were not able to find an account for the Twitter Handle
-              { twitterHandleBeingViewed ? (
-                <span>
-                  {' '}
-                  &quot;
-                  {displayableTwitterHandleBeingViewed}
-                  &quot;
-                </span>
-              ) :
-                <span />}
-              .
-            </div>
-            <br />
-            <Link
-              id="TwitterHandleLandingSignIntoTwitterToCreateVoterGuideButton"
-              to="/twittersigninprocess/signinswitchstart"
+        <Suspense fallback={<></>}>
+          <DelayedLoad showLoadingText waitBeforeShow={2000}>
+            <div
+              className="container-fluid well u-stack--md u-inset--md"
+              style={
+                isCordova() ? {
+                  marginTop: '100px',
+                  paddingBottom: '625px',
+                } : {}
+              }
             >
-              <Button
-                color="primary"
-                variant="contained"
+              <Helmet title="Not Found - We Vote" />
+              <h3 className="h3">Claim Your Page</h3>
+              <div className="medium">
+                We were not able to find an account for the Twitter Handle
+                { twitterHandleBeingViewed ? (
+                  <span>
+                    {' '}
+                    &quot;
+                    {displayableTwitterHandleBeingViewed}
+                    &quot;
+                  </span>
+                ) :
+                  <span />}
+                .
+              </div>
+              <br />
+              <Link
+                id="TwitterHandleLandingSignIntoTwitterToCreateVoterGuideButton"
+                to="/twittersigninprocess/signinswitchstart"
               >
-                Sign Into Twitter to Create Voter Guide
-              </Button>
-            </Link>
-            <br />
-            <br />
-            <br />
-          </div>
-        </DelayedLoad>
+                <Button
+                  color="primary"
+                  variant="contained"
+                >
+                  Sign Into Twitter to Create Voter Guide
+                </Button>
+              </Link>
+              <br />
+              <br />
+              <br />
+            </div>
+          </DelayedLoad>
+        </Suspense>
       );
     }
   }

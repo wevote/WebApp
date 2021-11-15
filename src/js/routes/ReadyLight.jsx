@@ -117,10 +117,12 @@ class ReadyLight extends Component {
                       {chosenReadyIntroductionTitle}
                     </Title>
                     <Paragraph>
-                      <ReadMore
-                        textToDisplay={chosenReadyIntroductionText}
-                        numberOfLines={3}
-                      />
+                      <Suspense fallback={<></>}>
+                        <ReadMore
+                          textToDisplay={chosenReadyIntroductionText}
+                          numberOfLines={3}
+                        />
+                      </Suspense>
                     </Paragraph>
                   </div>
                 </Card>
@@ -142,7 +144,9 @@ class ReadyLight extends Component {
               />
               <ReadyInformationDisclaimer bottom />
               {voterIsSignedIn && (
-                <FirstAndLastNameRequiredAlert />
+                <Suspense fallback={<></>}>
+                  <FirstAndLastNameRequiredAlert />
+                </Suspense>
               )}
               {nextReleaseFeaturesEnabled && (
                 <ReadyTaskFriends

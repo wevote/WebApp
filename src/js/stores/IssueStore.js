@@ -83,7 +83,7 @@ class IssueStore extends ReduceStore {
   getIssuesVoterIsFollowingLength () {
     // console.log('IssueStore.getIssuesVoterIsFollowingLength, issueWeVoteIdsVoterIsFollowing: ', this.getState().issueWeVoteIdsVoterIsFollowing);
     if (this.getState().issueWeVoteIdsVoterIsFollowing) {
-      return this.getState().issueWeVoteIdsVoterIsFollowing.length;
+      return this.getState().issueWeVoteIdsVoterIsFollowing.length || 0;
     }
     return 0;
   }

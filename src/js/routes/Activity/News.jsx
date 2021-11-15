@@ -316,7 +316,9 @@ class News extends Component {
                       <ActivityPostAdd />
                     </ActivityPostAddWrapper>
                     {voterIsSignedIn && (
-                      <FirstAndLastNameRequiredAlert />
+                      <Suspense fallback={<></>}>
+                        <FirstAndLastNameRequiredAlert />
+                      </Suspense>
                     )}
                     {activityTidbitsList.map((oneActivityTidbit) => {
                       // console.log('oneActivityTidbit:', oneActivityTidbit);
@@ -343,23 +345,33 @@ class News extends Component {
                           <Card className="card" style={unsetSideMarginsIfCordova}>
                             <CardNewsWrapper className="card-main" id="steveCardNewsWrapper-main" style={unsetMarginsIfCordova}>
                               <ActivityTidbitItemWrapper>
-                                <ActivityTidbitItem
+                                <Suspense fallback={<></>}>
+                                  <ActivityTidbitItem
+                                    activityTidbitWeVoteId={activityTidbitWeVoteId}
+                                  />
+                                </Suspense>
+                              </ActivityTidbitItemWrapper>
+                              <Suspense fallback={<></>}>
+                                <ActivityTidbitReactionsSummary
                                   activityTidbitWeVoteId={activityTidbitWeVoteId}
                                 />
-                              </ActivityTidbitItemWrapper>
-                              <ActivityTidbitReactionsSummary
-                                activityTidbitWeVoteId={activityTidbitWeVoteId}
-                              />
-                              <ActivityTidbitAddReaction
-                                activityTidbitWeVoteId={activityTidbitWeVoteId}
-                              />
-                              <ActivityTidbitComments
-                                activityTidbitWeVoteId={activityTidbitWeVoteId}
-                                editingTurnedOff
-                              />
-                              <ActivityCommentAdd
-                                activityTidbitWeVoteId={activityTidbitWeVoteId}
-                              />
+                              </Suspense>
+                              <Suspense fallback={<></>}>
+                                <ActivityTidbitAddReaction
+                                  activityTidbitWeVoteId={activityTidbitWeVoteId}
+                                />
+                              </Suspense>
+                              <Suspense fallback={<></>}>
+                                <ActivityTidbitComments
+                                  activityTidbitWeVoteId={activityTidbitWeVoteId}
+                                  editingTurnedOff
+                                />
+                              </Suspense>
+                              <Suspense fallback={<></>}>
+                                <ActivityCommentAdd
+                                  activityTidbitWeVoteId={activityTidbitWeVoteId}
+                                />
+                              </Suspense>
                             </CardNewsWrapper>
                           </Card>
                         </ActivityTidbitWrapper>
@@ -408,12 +420,14 @@ class News extends Component {
                   </div>
                   {!voterIsSignedIn && (
                     // <DelayedLoad waitBeforeShow={1000}>
-                    <SettingsAccountWrapper style={expandSideMarginsIfCordova}>
-                      <SettingsAccount
-                        pleaseSignInTitle="Sign in to Join the Discussion"
-                        pleaseSignInSubTitle="We Vote is a community of friends who care about voting and democracy."
-                      />
-                    </SettingsAccountWrapper>
+                    <Suspense fallback={<></>}>
+                      <SettingsAccountWrapper style={expandSideMarginsIfCordova}>
+                        <SettingsAccount
+                          pleaseSignInTitle="Sign in to Join the Discussion"
+                          pleaseSignInSubTitle="We Vote is a community of friends who care about voting and democracy."
+                        />
+                      </SettingsAccountWrapper>
+                    </Suspense>
                     // </DelayedLoad>
                   )}
                 </div>
@@ -457,11 +471,13 @@ class News extends Component {
                 id="showMoreItemsId"
                 onClick={this.increaseNumberOfActivityTidbitsToDisplay}
               >
-                <ShowMoreItems
-                  loadingMoreItemsNow={loadingMoreItems}
-                  numberOfItemsDisplayed={numberOfActivityTidbitsDisplayed}
-                  numberOfItemsTotal={activityTidbitsListLength}
-                />
+                <Suspense fallback={<></>}>
+                  <ShowMoreItems
+                    loadingMoreItemsNow={loadingMoreItems}
+                    numberOfItemsDisplayed={numberOfActivityTidbitsDisplayed}
+                    numberOfItemsTotal={activityTidbitsListLength}
+                  />
+                </Suspense>
               </ShowMoreItemsWrapper>
               {/* August 2020:  This height adjustment for Cordova stops the footer-container from bouncing up about 60px on first render of the page */}
               <LoadingItemsWheel style={isCordova() ? { height: 150 } : {}}>
