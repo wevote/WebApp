@@ -19,6 +19,7 @@ export default class OpinionsIgnored extends Component {
     this.setState({ voter_guide_ignored_list: VoterGuideStore.getVoterGuidesVoterIsIgnoring() });
     this.voterGuideStoreListener = VoterGuideStore.addListener(this.onVoterGuideStoreChange.bind(this));
     VoterGuideActions.voterGuidesIgnoredRetrieve();
+    window.scrollTo(0, 0);
   }
 
   componentWillUnmount () {

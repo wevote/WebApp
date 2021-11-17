@@ -257,7 +257,9 @@ class HeaderBackTo extends Component {
             className="u-cursor--pointer"
             style={{ paddingLeft: `${isCordova() ? '0 !important' : ''}` }}
           >
-            <HeaderNotificationMenu />
+            {voterIsSignedIn && (
+              <HeaderNotificationMenu />
+            )}
             {voterIsSignedIn ? (
               <span>
                 {voterPhotoUrlMedium ? (

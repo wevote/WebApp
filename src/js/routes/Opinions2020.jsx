@@ -155,6 +155,7 @@ class Opinions2020 extends Component {
     OrganizationActions.organizationsFollowedRetrieve();
     ActivityActions.activityNoticeListRetrieve();
 
+    window.scrollTo(0, 0);
     window.addEventListener('scroll', this.onScroll);
   }
 

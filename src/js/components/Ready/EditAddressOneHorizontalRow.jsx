@@ -244,7 +244,7 @@ class EditAddressOneHorizontalRow extends Component {
                 >
                   {(textForMapSearch) ? (
                     <>
-                      <span className="u-show-desktop-tablet u-no-break">Refresh Ballot</span>
+                      <span className="u-show-desktop-tablet u-no-break">Retrieve Ballot</span>
                       <span className="u-show-mobile">Confirm</span>
                     </>
                   ) : (

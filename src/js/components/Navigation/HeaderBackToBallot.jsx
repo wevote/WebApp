@@ -783,7 +783,9 @@ class HeaderBackToBallot extends Component {
           </TopRowOneLeftContainer>
           <TopRowOneMiddleContainer />
           <TopRowOneRightContainer className="u-cursor--pointer" cordova={isCordova()}>
-            <HeaderNotificationMenu />
+            {voterIsSignedIn && (
+              <HeaderNotificationMenu />
+            )}
             {voterIsSignedIn ? (
               <span onClick={this.toggleAccountMenu}>
                 {voterPhotoUrlMedium ? (

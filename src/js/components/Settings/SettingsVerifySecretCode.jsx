@@ -107,13 +107,16 @@ class SettingsVerifySecretCode extends Component {
   }
 
   handleDigit6Blur = () => {
-    const { digit1, digit2, digit3, digit4, digit5, digit6, voterPhoneNumber } = this.state;
+    const { digit1, digit2, digit3, digit4, digit5, digit6, voterPhoneNumber, voterVerifySecretCodeSubmitted } = this.state;
     this.setState({ condensed: false });
     if (digit6 && isCordova()) {
       // Jan 2020 this comment looks wrong, but might still contain a clue:  When there is a voterEmailAddress value and the keyboard closes, submit
       const secretCode = `${digit1}${digit2}${digit3}${digit4}${digit5}${digit6}`;
       const codeSentToSMSPhoneNumber = !!voterPhoneNumber;
-      VoterActions.voterVerifySecretCode(secretCode, codeSentToSMSPhoneNumber);
+      if (!voterVerifySecretCodeSubmitted) {
+        VoterActions.voterVerifySecretCode(secretCode, codeSentToSMSPhoneNumber);
+        this.setState({voterVerifySecretCodeSubmitted: true});
+      }
     }
   };
 
@@ -336,7 +339,6 @@ class SettingsVerifySecretCode extends Component {
     }
   }
 
-
   onDigit5Change (e) {
     const regex = /^[0-9]$/;
     const regex2 = /^[0-9]{7}$/;
@@ -437,12 +439,14 @@ class SettingsVerifySecretCode extends Component {
   }
 
   voterVerifySecretCode = () => {
-    const { digit1, digit2, digit3, digit4, digit5, digit6, voterPhoneNumber } = this.state;
+    const { digit1, digit2, digit3, digit4, digit5, digit6, voterPhoneNumber, voterVerifySecretCodeSubmitted } = this.state;
     // console.log('voterVerifySecretCode local function, voterPhoneNumber:', voterPhoneNumber);
     const secretCode = `${digit1}${digit2}${digit3}${digit4}${digit5}${digit6}`;
     const codeSentToSMSPhoneNumber = !!voterPhoneNumber;
-    VoterActions.voterVerifySecretCode(secretCode, codeSentToSMSPhoneNumber);
-    this.setState({ voterVerifySecretCodeSubmitted: true });
+    if (!voterVerifySecretCodeSubmitted) {
+      VoterActions.voterVerifySecretCode(secretCode, codeSentToSMSPhoneNumber);
+      this.setState({voterVerifySecretCodeSubmitted: true});
+    }
   };
 
   closeVerifyModalLocal = () => {
@@ -451,18 +455,6 @@ class SettingsVerifySecretCode extends Component {
       this.props.closeVerifyModal();
     }
   };
-
-  handleDigit6Blur = () => {
-    const { digit1, digit2, digit3, digit4, digit5, digit6, voterPhoneNumber } = this.state;
-    this.setState({ condensed: false });
-    if (digit6 && isCordova()) {
-      // Jan 2020 this comment looks wrong, but might still contain a clue:  When there is a voterEmailAddress value and the keyboard closes, submit
-      const secretCode = `${digit1}${digit2}${digit3}${digit4}${digit5}${digit6}`;
-      const codeSentToSMSPhoneNumber = !!voterPhoneNumber;
-      VoterActions.voterVerifySecretCode(secretCode, codeSentToSMSPhoneNumber);
-    }
-  };
-
 
   render () {
     renderLog('SettingsVerifySecretCode');  // Set LOG_RENDER_EVENTS to log all renders
