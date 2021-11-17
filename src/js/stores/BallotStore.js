@@ -1,5 +1,6 @@
 import { ReduceStore } from 'flux/utils';
 import assign from 'object-assign';
+import AppObservableStore from './AppObservableStore'; // eslint-disable-line import/no-cycle
 import BallotActions from '../actions/BallotActions';
 import CandidateActions from '../actions/CandidateActions';
 import MeasureActions from '../actions/MeasureActions'; // eslint-disable-line import/no-cycle
@@ -7,7 +8,7 @@ import Dispatcher from '../common/dispatcher/Dispatcher';
 import { stringContains } from '../utils/textFormat';
 import convertVoterGuideToElection from '../utils/voterGuideFunctions';
 import SupportStore from './SupportStore'; // eslint-disable-line import/no-cycle
-import VoterStore from './VoterStore'; // eslint-disable-line import/no-cycle
+import VoterStore from './VoterStore';
 
 // December 2018:  We want to work toward being airbnb style compliant, but for now these are disabled in this file to minimize massive changes
 /* eslint no-param-reassign: 0 */
@@ -569,6 +570,7 @@ class BallotStore extends ReduceStore {
       case 'voterBallotItemsRetrieve':
         // console.log('BallotStore, voterBallotItemsRetrieve response received, action.res:', action.res);
         // Exit if we don't have a successful response
+        AppObservableStore.voterBallotItemsRetrieveHasBeenCalled(false);
         if (action.res && action.res.success === false && stringContains('VALID_VOTER_DEVICE_ID_MISSING', action.res.status)) {
           // On the first call, we didn't have a valid voter_device_id yet. Call again.
           // console.log('BallotStore, voterBallotItemsRetrieve response received, action.res:', action.res);

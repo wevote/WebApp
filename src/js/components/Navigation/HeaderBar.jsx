@@ -785,7 +785,6 @@ class HeaderBar extends Component {
                 <div>
                   {searchButtonHtml}
                 </div>
-                <HeaderNotificationMenu />
                 <SignInButton toggleSignInModal={this.toggleSignInModal} />
               </>
             )}

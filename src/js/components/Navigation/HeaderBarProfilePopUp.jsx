@@ -139,7 +139,7 @@ class HeaderBarProfilePopUp extends Component {
                 <li>
                   <ListItemWrapper>
                     <Link // eslint-disable-line
-                      to=""
+                      to="/ready"
                     >
                       <Button
                         variant="text"
@@ -159,7 +159,7 @@ class HeaderBarProfilePopUp extends Component {
               <li>
                 <ListItemWrapper>
                   <Link // eslint-disable-line
-                    to=""
+                    to="/ready"
                   >
                     <Button
                       variant="text"

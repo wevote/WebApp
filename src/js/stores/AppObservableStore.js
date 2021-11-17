@@ -225,6 +225,11 @@ export default {
     messageService.sendMessage('state updated getVoterGuideSettingsDashboardEditMode');
   },
 
+  setVoterBallotItemsRetrieveHasBeenCalled (voterBallotItemsRetrieveHasBeenCalled) {
+    nonFluxState.voterBallotItemsRetrieveHasBeenCalled = voterBallotItemsRetrieveHasBeenCalled;
+    messageService.sendMessage('state updated voterBallotItemsRetrieveHasBeenCalled');
+  },
+
   setSignInStartFullUrl () {
     nonFluxState.storeSignInStartFullUrl = true;
     messageService.sendMessage('state updated storeSignInStartFullUrl');
@@ -509,4 +514,7 @@ export default {
     });
   },
 
+  voterBallotItemsRetrieveHasBeenCalled () {
+    return nonFluxState.voterBallotItemsRetrieveHasBeenCalled;
+  },
 };

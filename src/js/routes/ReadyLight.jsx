@@ -26,6 +26,7 @@ const FirstAndLastNameRequiredAlert = React.lazy(() => import(/* webpackChunkNam
 // import PledgeToVote from '../components/Ready/PledgeToVote';
 
 const nextReleaseFeaturesEnabled = webAppConfig.ENABLE_NEXT_RELEASE_FEATURES === undefined ? false : webAppConfig.ENABLE_NEXT_RELEASE_FEATURES;
+const futureFeaturesDisabled = true;
 
 class ReadyLight extends Component {
   constructor (props) {
@@ -134,14 +135,11 @@ class ReadyLight extends Component {
               <IntroAndFindTabletWrapper className="u-show-tablet">
                 <IntroAndFindTabletSpacer />
               </IntroAndFindTabletWrapper>
-              {nextReleaseFeaturesEnabled && (
+              {(nextReleaseFeaturesEnabled && !futureFeaturesDisabled) && (
                 <ReadyTaskRegister
                   arrowsOn
                 />
               )}
-              <ReadyTaskPlan
-                arrowsOn
-              />
               <ReadyInformationDisclaimer bottom />
               {voterIsSignedIn && (
                 <Suspense fallback={<></>}>
@@ -153,6 +151,9 @@ class ReadyLight extends Component {
                   arrowsOn
                 />
               )}
+              <ReadyTaskPlan
+                arrowsOn
+              />
             </div>
             <div className="col-lg-4 d-none d-lg-block">
               <div className="u-cursor--pointer">

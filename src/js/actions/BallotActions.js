@@ -1,3 +1,4 @@
+import AppObservableStore from '../stores/AppObservableStore';
 import Dispatcher from '../common/dispatcher/Dispatcher';
 
 let voterBallotItemRetrievedWithZeroCivicId = false;
@@ -58,6 +59,7 @@ export default {
     } else {
       // console.log('BallotActions voterBallotItemsRetrieve with googleCivicElectionId: ', googleCivicElectionId);
       if (googleCivicElectionId === 0) voterBallotItemRetrievedWithZeroCivicId = true;
+      AppObservableStore.voterBallotItemsRetrieveHasBeenCalled(true);
       Dispatcher.loadEndpoint('voterBallotItemsRetrieve', {
         use_test_election: false,
         google_civic_election_id: googleCivicElectionId,

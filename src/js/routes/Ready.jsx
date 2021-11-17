@@ -56,9 +56,11 @@ class Ready extends Component {
 
   componentDidMount () {
     this.appStateSubscription = messageService.getMessage().subscribe((msg) => this.onAppObservableStoreChange(msg));
+    this.ballotStoreListener = BallotStore.addListener(this.onBallotStoreChange.bind(this));
     this.issueStoreListener = IssueStore.addListener(this.onIssueStoreChange.bind(this));
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
     this.onAppObservableStoreChange();
+    this.onBallotStoreChange();
     this.onIssueStoreChange();
     this.onVoterStoreChange();
     this.positionItemTimer = setTimeout(() => {
@@ -119,6 +121,7 @@ class Ready extends Component {
 
   componentWillUnmount () {
     this.appStateSubscription.unsubscribe();
+    this.ballotStoreListener.remove();
     this.issueStoreListener.remove();
     this.voterStoreListener.remove();
     clearTimeout(this.analyticsTimer);
@@ -136,6 +139,14 @@ class Ready extends Component {
     this.setState({
       chosenReadyIntroductionText: AppObservableStore.getChosenReadyIntroductionText(),
       chosenReadyIntroductionTitle: AppObservableStore.getChosenReadyIntroductionTitle(),
+      voterBallotItemsRetrieveHasBeenCalled: AppObservableStore.voterBallotItemsRetrieveHasBeenCalled(),
+    });
+  }
+
+  onBallotStoreChange () {
+    // console.log('Ready.jsx onBallotStoreChange');
+    this.setState({
+      voterBallotItemsRetrieveHasReturned: BallotStore.voterBallotItemsRetrieveHasReturned(),
     });
   }
 
@@ -196,7 +207,7 @@ class Ready extends Component {
     renderLog('Ready');  // Set LOG_RENDER_EVENTS to log all renders
     const {
       chosenReadyIntroductionText, chosenReadyIntroductionTitle, issuesShouldBeDisplayed,
-      locationGuessClosed, textForMapSearch, voterIsSignedIn,
+      locationGuessClosed, textForMapSearch, voterBallotItemsRetrieveHasBeenCalled, voterBallotItemsRetrieveHasReturned, voterIsSignedIn,
     } = this.state;
 
     // const showAddressVerificationForm = !locationGuessClosed || !textForMapSearch;
@@ -212,12 +223,13 @@ class Ready extends Component {
             <Helmet title="Ready to Vote? - We Vote" />
             <BrowserPushMessage incomingProps={this.props} />
             <div className="row">
-              {(showAddressVerificationForm) && <span />}
-              <EditAddressWrapper className="col-12">
-                <EditAddressCard className="card">
-                  <EditAddressOneHorizontalRow saveUrl="/ready" />
-                </EditAddressCard>
-              </EditAddressWrapper>
+              {(showAddressVerificationForm && (voterBallotItemsRetrieveHasReturned || !voterBallotItemsRetrieveHasBeenCalled)) && (
+                <EditAddressWrapper className="col-12">
+                  <EditAddressCard className="card">
+                    <EditAddressOneHorizontalRow saveUrl="/ready" />
+                  </EditAddressCard>
+                </EditAddressWrapper>
+              )}
 
               <div className="col-sm-12 col-lg-8">
                 <MobileTabletCountdownWrapper className="u-show-mobile-tablet">

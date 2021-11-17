@@ -125,7 +125,7 @@ class HowItWorks extends Component {
   }
 
   componentDidMount () {
-    console.log('how it works');
+    // console.log('how it works');
     let params = {};
     if (this.props.match) {
       const { match: { params: passedParams } } = this.props;

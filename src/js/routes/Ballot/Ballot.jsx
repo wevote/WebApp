@@ -531,6 +531,7 @@ class Ballot extends Component {
   onAppObservableStoreChange () {
     this.setState({
       ballotHeaderUnpinned: AppObservableStore.getScrolledDown(),
+      voterBallotItemsRetrieveHasBeenCalled: AppObservableStore.voterBallotItemsRetrieveHasBeenCalled(),
     });
     const { googleCivicElectionId } = this.state;
     const membershipOrganizationWeVoteId = AppObservableStore.getSiteOwnerOrganizationWeVoteId();
@@ -1097,7 +1098,7 @@ class Ballot extends Component {
       completionLevelFilterType, doubleFilteredBallotItemsLength, isSearching, issuesFollowedCount,
       loadingMoreItems, locationGuessClosed, numberOfBallotItemsToDisplay,
       raceLevelFilterItemsInThisBallot, searchText, showFilterTabs, totalNumberOfBallotItems,
-      voterBallotItemsRetrieveHasReturned,
+      voterBallotItemsRetrieveHasBeenCalled, voterBallotItemsRetrieveHasReturned,
     } = this.state;
     let { raceLevelFilterType } = this.state;
     if (!raceLevelFilterType) {
@@ -1179,13 +1180,14 @@ class Ballot extends Component {
     const sourcePollingLocationWeVoteId = BallotStore.currentBallotPollingLocationSource;
     const ballotReturnedAdminEditUrl = `${webAppConfig.WE_VOTE_SERVER_ROOT_URL}b/${sourcePollingLocationWeVoteId}/list_edit_by_polling_location/?google_civic_election_id=${VoterStore.electionId()}&state_code=`;
     // console.log('electionName: ', electionName, ', electionDayText: ', electionDayText);
+    const showAddressVerificationForm = !locationGuessClosed || !textForMapSearch;
 
     const emptyBallotButton = completionLevelFilterType !== 'none' && !voterAddressMissing ? (
-      <span>
-        {/* <Link to={ballotBaseUrl}>
-          <Button variant="primary">View Full Ballot</Button>
-        </Link> */}
-      </span>
+      <EmptyBallotNotice>
+        <EditAddressCard className="card">
+          No ballot items found. Please try again later.
+        </EditAddressCard>
+      </EmptyBallotNotice>
     ) : (
       <div className="container-fluid well u-stack--md u-inset--md">
         <Helmet title="Enter Your Address - We Vote" />
@@ -1222,7 +1224,6 @@ class Ballot extends Component {
       // console.log('inRemainingDecisionsMode historyPush');
       historyPush(pathname);
     }
-    const showAddressVerificationForm = !locationGuessClosed || !textForMapSearch;
 
     let numberOfBallotItemsDisplayed = 0;
     let showLoadingText = true;
@@ -1384,7 +1385,7 @@ class Ballot extends Component {
                         &quot;
                       </SearchTitle>
                     )}
-                    {(showAddressVerificationForm && voterBallotItemsRetrieveHasReturned) && (
+                    {(showAddressVerificationForm && (voterBallotItemsRetrieveHasReturned || !voterBallotItemsRetrieveHasBeenCalled)) && (
                       <EditAddressWrapper>
                         <EditAddressCard className="card">
                           <EditAddressOneHorizontalRow saveUrl="/ballot" onSave={this.onVoterAddressSave} />
@@ -1516,42 +1517,39 @@ class Ballot extends Component {
                     ) : null}
                   </div>
 
-                  { ballotWithItemsFromCompletionFilterType.length === 0 ?
-                    null : (
-                      <div className={twoColumnDisplay ? '' : 'col-lg-3 d-none d-lg-block sidebar-menu'} style={rightTwoColumnDisplay} id="rightColumnSidebar">
-                        { ballotWithItemsFromCompletionFilterType.length > 5 && (
-                          <BallotSideBar
-                            activeRaceItem={raceLevelFilterType}
-                            displayTitle
-                            displaySubtitles
-                            rawUrlVariablesString={search}
-                            ballotWithAllItemsByFilterType={ballotWithItemsFromCompletionFilterType}
-                            ballotItemLinkHasBeenClicked={this.ballotItemLinkHasBeenClicked}
-                            raceLevelFilterItemsInThisBallot={raceLevelFilterItemsInThisBallot}
-                          />
-                        )}
-                        {(issuesFollowedCount < 3) && (
-                          <ValuesListWrapper>
-                            <ValuesToFollowPreview
-                              followToggleOnItsOwnLine
-                              includeLinkToIssue
-                            />
-                          </ValuesListWrapper>
-                        )}
-                        <SuggestedFriendsPreview friendsToShowMaxIncoming={7} inSideColumn />
-                        <div className="card">
-                          <div className="card-main">
-                            <SectionTitle>
-                              Voting Is Better with Friends
-                            </SectionTitle>
-                            <SectionDescription>
-                              Hear about upcoming elections and what you can do to get ready to vote. Add friends you feel comfortable talking politics with.
-                            </SectionDescription>
-                            <AddFriendsByEmail addAnotherButtonOff inSideColumn uniqueExternalId="sidebar" />
-                          </div>
-                        </div>
-                      </div>
+                  <div className={twoColumnDisplay ? '' : 'col-lg-3 d-none d-lg-block sidebar-menu'} style={rightTwoColumnDisplay} id="rightColumnSidebar">
+                    { ballotWithItemsFromCompletionFilterType.length > 5 && (
+                      <BallotSideBar
+                        activeRaceItem={raceLevelFilterType}
+                        displayTitle
+                        displaySubtitles
+                        rawUrlVariablesString={search}
+                        ballotWithAllItemsByFilterType={ballotWithItemsFromCompletionFilterType}
+                        ballotItemLinkHasBeenClicked={this.ballotItemLinkHasBeenClicked}
+                        raceLevelFilterItemsInThisBallot={raceLevelFilterItemsInThisBallot}
+                      />
                     )}
+                    {(issuesFollowedCount < 3) && (
+                      <ValuesListWrapper>
+                        <ValuesToFollowPreview
+                          followToggleOnItsOwnLine
+                          includeLinkToIssue
+                        />
+                      </ValuesListWrapper>
+                    )}
+                    <SuggestedFriendsPreview friendsToShowMaxIncoming={7} inSideColumn />
+                    <div className="card">
+                      <div className="card-main">
+                        <SectionTitle>
+                          Voting Is Better with Friends
+                        </SectionTitle>
+                        <SectionDescription>
+                          Hear about upcoming elections and what you can do to get ready to vote. Add friends you feel comfortable talking politics with.
+                        </SectionDescription>
+                        <AddFriendsByEmail addAnotherButtonOff inSideColumn uniqueExternalId="sidebar" />
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </Wrapper>
             </div>
@@ -1597,6 +1595,10 @@ const EditAddressWrapper = styled.div`
     padding-left: 0 !important;
     padding-right: 0 !important;
   }
+`;
+
+const EmptyBallotNotice = styled.div`
+  margin-top: 40px;
 `;
 
 const SearchResultsFoundInExplanation = styled.div`

@@ -26,6 +26,7 @@ export default class OpinionsFollowed extends Component {
     this.setState({
       organizationsFollowedList: OrganizationStore.getOrganizationsVoterIsFollowing(),
     });
+    window.scrollTo(0, 0);
   }
 
   componentWillUnmount () {
