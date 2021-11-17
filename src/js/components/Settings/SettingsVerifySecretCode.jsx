@@ -115,7 +115,7 @@ class SettingsVerifySecretCode extends Component {
       const codeSentToSMSPhoneNumber = !!voterPhoneNumber;
       if (!voterVerifySecretCodeSubmitted) {
         VoterActions.voterVerifySecretCode(secretCode, codeSentToSMSPhoneNumber);
-        this.setState({voterVerifySecretCodeSubmitted: true});
+        this.setState({ voterVerifySecretCodeSubmitted: true });
       }
     }
   };
@@ -445,7 +445,7 @@ class SettingsVerifySecretCode extends Component {
     const codeSentToSMSPhoneNumber = !!voterPhoneNumber;
     if (!voterVerifySecretCodeSubmitted) {
       VoterActions.voterVerifySecretCode(secretCode, codeSentToSMSPhoneNumber);
-      this.setState({voterVerifySecretCodeSubmitted: true});
+      this.setState({ voterVerifySecretCodeSubmitted: true });
     }
   };
 
