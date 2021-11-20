@@ -6,7 +6,6 @@ import React, { Component, Suspense } from 'react';
 import styled from 'styled-components';
 import FriendActions from '../../actions/FriendActions';
 import FriendStore from '../../stores/FriendStore';
-import { hideZenDeskHelpVisibility, setZenDeskHelpVisibility } from '../../utils/applicationUtils';
 import { hasIPhoneNotch } from '../../utils/cordovaUtils';
 import { renderLog } from '../../utils/logging';
 
@@ -28,18 +27,10 @@ class HowItWorksModal extends Component {
     this.setState({
       currentFriendsList: FriendStore.currentFriends(),
     });
-    if (this.props.show) {
-      hideZenDeskHelpVisibility();
-    } else {
-      const { location: { pathname } } = window;
-      setZenDeskHelpVisibility(pathname);
-    }
   }
 
   componentWillUnmount () {
-    const { location: { pathname } } = window;
     this.friendStoreListener.remove();
-    setZenDeskHelpVisibility(pathname);
   }
 
   onFriendStoreChange () {

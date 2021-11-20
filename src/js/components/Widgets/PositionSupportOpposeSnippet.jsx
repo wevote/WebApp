@@ -122,7 +122,7 @@ export default class PositionSupportOpposeSnippet extends Component {
                   {/* if there's an external source for the explicit position/endorsement, show it */}
                   { videoUrl ? (
                     <Suspense fallback={<></>}>
-                      <ReactPlayer className="explicit-position__media-player" url={`${videoUrl}`} width="100%" height="100%" /> :
+                      <ReactPlayer className="explicit-position__media-player" url={`${videoUrl}`} width="100%" height="100%" />
                     </Suspense>
                   ) : null }
                   {moreInfoUrl ? (

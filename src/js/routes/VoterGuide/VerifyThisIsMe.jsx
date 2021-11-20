@@ -17,6 +17,7 @@ import OrganizationStore from '../../stores/OrganizationStore';
 import TwitterStore from '../../stores/TwitterStore';
 import VoterStore from '../../stores/VoterStore';
 import { historyPush } from '../../utils/cordovaUtils';
+import { PageContentContainer } from '../../utils/pageLayoutStyles';
 import { renderLog } from '../../utils/logging';
 
 const CandidateItem = React.lazy(() => import(/* webpackChunkName: 'CandidateItem' */ '../../components/Ballot/CandidateItem'));
@@ -157,7 +158,7 @@ class VerifyThisIsMe extends Component {
       // console.log("VerifyThisIsMe this.state.kindOfOwner === POLITICIAN");
       params.we_vote_id = this.state.ownerWeVoteId;
       return (
-        <span>
+        <PageContentContainer>
           <Helmet title="Claim This Page - We Vote" />
           <div className="card">
             <div className="card-main">
@@ -199,7 +200,7 @@ class VerifyThisIsMe extends Component {
               />
             </Suspense>
           </section>
-        </span>
+        </PageContentContainer>
       );
     } else if (this.state.kindOfOwner === 'ORGANIZATION') {
       // console.log("VerifyThisIsMe this.state.kindOfOwner === ORGANIZATION");
@@ -211,7 +212,7 @@ class VerifyThisIsMe extends Component {
       }
 
       return (
-        <span>
+        <PageContentContainer>
           <Helmet title={`Claim @${twitterHandle} - We Vote`} />
           <div className="card">
             <div className="card-main">
@@ -278,12 +279,12 @@ class VerifyThisIsMe extends Component {
               </div>
             </div>
           )}
-        </span>
+        </PageContentContainer>
       );
     } else if (this.state.kindOfOwner === 'TWITTER_HANDLE_NOT_FOUND_IN_WE_VOTE') {
       // console.log("VerifyThisIsMe this.state.kindOfOwner === TWITTER_HANDLE_NOT_FOUND_IN_WE_VOTE");
       return (
-        <div>
+        <PageContentContainer>
           <Helmet title={`Claim @${twitterHandle} - We Vote`} />
           <TwitterAccountCard {...this.state} />
           <div>
@@ -317,11 +318,11 @@ class VerifyThisIsMe extends Component {
               id="signInToVerifyAccess"
             />
           )}
-        </div>
+        </PageContentContainer>
       );
     } else {
       return (
-        <div className="container-fluid well u-stack--md u-inset--md">
+        <PageContentContainer>
           <Helmet title={`Claim @${twitterHandle} - We Vote`} />
           <h3 className="h3">Could Not Confirm</h3>
           <div className="small">
@@ -338,7 +339,7 @@ class VerifyThisIsMe extends Component {
             .
           </div>
           <br />
-        </div>
+        </PageContentContainer>
       );
     }
   }

@@ -254,56 +254,6 @@ export function getApplicationViewBooleans (pathname) {
   };
 }
 
-export function hideZenDeskHelpVisibility () {
-  // console.log('hideZenDeskHelpVisibility');
-  if (isWebApp()) {
-    try {
-      const { zE } = global;
-      if (zE) {     // This library is delayed load, and may not have loaded yet
-        zE('webWidget', 'show');
-      }
-    } catch (err) {
-      console.log('hideZenDeskHelpVisibility global.zE failure hide, ', err);
-    }
-  }
-}
-
-export function showZenDeskHelpVisibility () {
-  // console.log('showZenDeskHelpVisibility');
-  if (isWebApp()) {
-    try {
-      const { zE } = global;
-      if (zE) {
-        zE('webWidget', 'show');
-      }
-    } catch (err) {
-      console.log('hideZenDeskHelpVisibility global.zE failure show, ', err);
-    }
-  }
-}
-
-// Choose to show/hide zendesk help widget based on route
-export function setZenDeskHelpVisibility (pathname) {
-  // console.log('setZenDeskHelpVisibility true, pathname:', pathname);
-  const { zE } = global;   // takes 16 seconds after load to be initialized, see index.html
-  if (isWebApp() && zE) {
-    const { showFooterBar } = getApplicationViewBooleans(pathname);
-    // console.log('setZenDeskHelpVisibility true, pathname:', pathname, ', showFooterBar:', showFooterBar);
-    if ((showFooterBar ||
-      ['/ballot', '/ballot/vote', '/friends', '/more/network', '/office', '/opinions', '/settings', '/value'].some(
-        (match) => pathname.toLowerCase().startsWith(match),
-      )) &&
-      !['/wevoteintro', '/how', '/candidate-for-extension'].some(
-        (match) => pathname.toLowerCase().startsWith(match),
-      )
-    ) {
-      showZenDeskHelpVisibility();
-    } else {
-      hideZenDeskHelpVisibility();
-    }
-  }
-}
-
 let weVoteBrandingOffGlobal;
 export function weVoteBrandingOff () {
   if (weVoteBrandingOffGlobal !== undefined) {
