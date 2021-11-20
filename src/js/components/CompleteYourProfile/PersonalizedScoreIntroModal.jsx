@@ -2,7 +2,7 @@ import { Dialog, DialogContent, IconButton } from '@material-ui/core';
 import { withStyles, withTheme } from '@material-ui/core/styles';
 import { Close } from '@material-ui/icons';
 import PropTypes from 'prop-types';
-import React, { Component } from 'react';
+import React, { Component, Suspense } from 'react';
 import styled from 'styled-components';
 import VoterActions from '../../actions/VoterActions';
 import VoterConstants from '../../constants/VoterConstants';
@@ -76,12 +76,14 @@ class PersonalizedScoreIntroModal extends Component {
           </IconButtonWrapper>
         </ModalTitleArea>
         <DialogContent classes={{ root: classes.dialogContent }}>
-          <PersonalizedScoreIntroBody
-            inModal
-            // markPersonalizedScoreIntroCompleted={this.markPersonalizedScoreIntroCompleted} // Not needed here
-            show={show}
-            toggleFunction={this.props.toggleFunction}
-          />
+          <Suspense fallback={<></>}>
+            <PersonalizedScoreIntroBody
+              inModal
+              // markPersonalizedScoreIntroCompleted={this.markPersonalizedScoreIntroCompleted} // Not needed here
+              show={show}
+              toggleFunction={this.props.toggleFunction}
+            />
+          </Suspense>
         </DialogContent>
       </Dialog>
     );

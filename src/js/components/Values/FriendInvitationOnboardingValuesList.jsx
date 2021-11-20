@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import React, { Component } from 'react';
+import React, { Component, Suspense } from 'react';
 import styled from 'styled-components';
 import IssueActions from '../../actions/IssueActions';
 import IssueStore from '../../stores/IssueStore';
@@ -93,16 +93,18 @@ export default class FriendInvitationOnboardingValuesList extends Component {
           className={`col col-12 ${oneColumn ? '' : ' u-stack--lg col-md-6'}`}
           key={`column-issue-list-key-${issue.issue_we_vote_id}`}
         >
-          <IssueCard
-            condensed
-            followToggleOn
-            followToggleOnItsOwnLine={followToggleOnItsOwnLine}
-            hideAdvocatesCount
-            includeLinkToIssue={includeLinkToIssue}
-            issue={issue}
-            issueImageSize="SMALL"
-            key={`issue-list-key-${issue.issue_we_vote_id}`}
-          />
+          <Suspense fallback={<></>}>
+            <IssueCard
+              condensed
+              followToggleOn
+              followToggleOnItsOwnLine={followToggleOnItsOwnLine}
+              hideAdvocatesCount
+              includeLinkToIssue={includeLinkToIssue}
+              issue={issue}
+              issueImageSize="SMALL"
+              key={`issue-list-key-${issue.issue_we_vote_id}`}
+            />
+          </Suspense>
         </Column>
       );
       if (issuesRenderedCount > issuesToShowPerClassification) {
@@ -120,16 +122,18 @@ export default class FriendInvitationOnboardingValuesList extends Component {
           className={`col col-12 ${oneColumn ? '' : 'u-stack--lg col-md-6'}`}
           key={`column-issue-list-key-${issue.issue_we_vote_id}`}
         >
-          <IssueCard
-            condensed
-            followToggleOn
-            followToggleOnItsOwnLine={followToggleOnItsOwnLine}
-            hideAdvocatesCount
-            includeLinkToIssue={includeLinkToIssue}
-            issue={issue}
-            issueImageSize="SMALL"
-            key={`issue-list-key-${issue.issue_we_vote_id}`}
-          />
+          <Suspense fallback={<></>}>
+            <IssueCard
+              condensed
+              followToggleOn
+              followToggleOnItsOwnLine={followToggleOnItsOwnLine}
+              hideAdvocatesCount
+              includeLinkToIssue={includeLinkToIssue}
+              issue={issue}
+              issueImageSize="SMALL"
+              key={`issue-list-key-${issue.issue_we_vote_id}`}
+            />
+          </Suspense>
         </Column>
       );
       if (issuesRenderedCount > issuesToShowPerClassification) {
@@ -147,16 +151,18 @@ export default class FriendInvitationOnboardingValuesList extends Component {
           className={`col col-12 ${oneColumn ? '' : ' u-stack--lg col-md-6'}`}
           key={`column-issue-list-key-${issue.issue_we_vote_id}`}
         >
-          <IssueCard
-            condensed
-            followToggleOn
-            followToggleOnItsOwnLine={followToggleOnItsOwnLine}
-            hideAdvocatesCount
-            includeLinkToIssue={includeLinkToIssue}
-            issue={issue}
-            issueImageSize="SMALL"
-            key={`issue-list-key-${issue.issue_we_vote_id}`}
-          />
+          <Suspense fallback={<></>}>
+            <IssueCard
+              condensed
+              followToggleOn
+              followToggleOnItsOwnLine={followToggleOnItsOwnLine}
+              hideAdvocatesCount
+              includeLinkToIssue={includeLinkToIssue}
+              issue={issue}
+              issueImageSize="SMALL"
+              key={`issue-list-key-${issue.issue_we_vote_id}`}
+            />
+          </Suspense>
         </Column>
       );
       if (issuesRenderedCount > issuesToShowPerClassification) {

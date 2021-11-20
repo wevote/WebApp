@@ -1,6 +1,6 @@
 import { withStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
-import React, { Component } from 'react';
+import React, { Component, Suspense } from 'react';
 import Helmet from 'react-helmet';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
@@ -12,8 +12,8 @@ import VoterStore from '../../stores/VoterStore';
 import cordovaScrollablePaneTopPadding from '../../utils/cordovaScrollablePaneTopPadding';
 import { renderLog } from '../../utils/logging';
 
-const WelcomeFooter = React.lazy(() => import(/* webpackChunkName: 'WelcomeFooter' */ '../../components/Welcome/WelcomeFooter'));
 const WelcomeAppbar = React.lazy(() => import(/* webpackChunkName: 'WelcomeAppbar' */ '../../components/Navigation/WelcomeAppbar'));
+const WelcomeFooter = React.lazy(() => import(/* webpackChunkName: 'WelcomeFooter' */ '../../components/Welcome/WelcomeFooter'));
 
 
 class Pricing extends Component {
@@ -513,7 +513,7 @@ class Pricing extends Component {
     return (
       <Wrapper padTop={cordovaScrollablePaneTopPadding()}>
         <Helmet title="Pricing - We Vote" />
-        {this.props.modalDisplayMode ? null : <WelcomeAppbar pathname="/more/pricing" />}
+        {this.props.modalDisplayMode ? null : <Suspense fallback={<></>}><WelcomeAppbar pathname="/more/pricing" /></Suspense>}
         {this.props.modalDisplayMode ? htmlForModalHeader : htmlForStandaloneHeader}
         <Section
           noSideMargins={this.props.modalDisplayMode}
@@ -624,7 +624,9 @@ class Pricing extends Component {
           </Section>
         )}
         {this.props.modalDisplayMode ? null : (
-          <WelcomeFooter />
+          <Suspense fallback={<></>}>
+            <WelcomeFooter />
+          </Suspense>
         )}
       </Wrapper>
     );

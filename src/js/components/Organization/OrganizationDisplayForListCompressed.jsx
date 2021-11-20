@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import React, { Component } from 'react';
+import React, { Component, Suspense } from 'react';
 import { Link } from 'react-router-dom';
 import { renderLog } from '../../utils/logging';
 
@@ -29,7 +29,9 @@ export default class OrganizationDisplayForListCompressed extends Component {
       <div id="organizationDisplayForListCompressed" className="card-child card-child--not-followed">
         <div className="card-child__media-object-anchor">
           <Link to={voterGuideLink} className="u-no-underline">
-            <ImageHandler className="card-child__avatar" sizeClassName="image-lg " imageUrl={organizationPhotoUrlMedium} />
+            <Suspense fallback={<></>}>
+              <ImageHandler className="card-child__avatar" sizeClassName="image-lg " imageUrl={organizationPhotoUrlMedium} />
+            </Suspense>
           </Link>
         </div>
         <div className="card-child__media-object-content">

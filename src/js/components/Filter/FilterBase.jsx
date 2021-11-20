@@ -2,7 +2,7 @@ import { Badge } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 import { FilterList } from '@material-ui/icons';
 import PropTypes from 'prop-types';
-import React from 'react';
+import React, { Suspense } from 'react';
 import styled from 'styled-components';
 import { getAllStateCodeFilters } from '../../utils/addressFunctions';
 import { isWebApp } from '../../utils/cordovaUtils';
@@ -256,19 +256,21 @@ class FilterBase extends React.Component {
     const selectedFiltersWithoutSorts = selectedFilters.filter((item) => !sortFilters.includes(item));
     const numberOfFiltersSelected = selectedFiltersWithoutSorts.length;
     const filterBaseSearch = (
-      <FilterBaseSearch
-        addVoterGuideMode
-        allItems={allItems}
-        alwaysOpen={voterGuidePositionSearchMode}
-        isSearching={isSearching}
-        onFilterBaseSearch={this.onSearch}
-        onToggleSearch={this.handleToggleSearchBallot}
-        opinionsAndBallotItemsSearchMode={opinionsAndBallotItemsSearchMode}
-        positionSearchMode={positionSearchMode}
-        searchTextDefault={searchTextDefault}
-        searchTextLarge={searchTextLarge}
-        voterGuidePositionSearchMode={voterGuidePositionSearchMode}
-      />
+      <Suspense fallback={<></>}>
+        <FilterBaseSearch
+          addVoterGuideMode
+          allItems={allItems}
+          alwaysOpen={voterGuidePositionSearchMode}
+          isSearching={isSearching}
+          onFilterBaseSearch={this.onSearch}
+          onToggleSearch={this.handleToggleSearchBallot}
+          opinionsAndBallotItemsSearchMode={opinionsAndBallotItemsSearchMode}
+          positionSearchMode={positionSearchMode}
+          searchTextDefault={searchTextDefault}
+          searchTextLarge={searchTextLarge}
+          voterGuidePositionSearchMode={voterGuidePositionSearchMode}
+        />
+      </Suspense>
     );
 
     return (

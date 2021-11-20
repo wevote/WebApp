@@ -1,5 +1,5 @@
 import { withStyles } from '@material-ui/core/styles';
-import React, { Component } from 'react';
+import React, { Component, Suspense } from 'react';
 import styled from 'styled-components';
 import { renderLog } from '../../utils/logging';
 
@@ -20,12 +20,14 @@ class CreateConfiguredVersion extends Component {
         <Introduction>
           Want to create a configured version of We Vote you can send out to your followers or friends?
           {' '}
-          <OpenExternalWebSite
-            linkIdAttribute="learnMoreCreateConfiguredVersion"
-            url="https://help.wevote.us/hc/en-us/articles/360037725754-Customizing-Your-Voter-Guide"
-            target="_blank"
-            body={(<span>Learn more here.</span>)}
-          />
+          <Suspense fallback={<></>}>
+            <OpenExternalWebSite
+              linkIdAttribute="learnMoreCreateConfiguredVersion"
+              url="https://help.wevote.us/hc/en-us/articles/360037725754-Customizing-Your-Voter-Guide"
+              target="_blank"
+              body={(<span>Learn more here.</span>)}
+            />
+          </Suspense>
         </Introduction>
       </div>
     );

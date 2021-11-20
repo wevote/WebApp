@@ -1,5 +1,5 @@
 import { withTheme } from '@material-ui/core/styles';
-import React, { Component } from 'react';
+import React, { Component, Suspense } from 'react';
 import styled from 'styled-components';
 import IssueActions from '../../actions/IssueActions';
 import IssueStore from '../../stores/IssueStore';
@@ -91,11 +91,13 @@ class ValuesFollowedPreview extends Component {
               { issueListForDisplay }
             </Row>
             {!!(issueList && issueList.length) && (
-              <ShowMoreFooter
-                showMoreId="valuesFollowedPreviewShowMoreId"
-                showMoreLink={() => this.goToValuesLink()}
-                showMoreText="Explore all values"
-              />
+              <Suspense fallback={<></>}>
+                <ShowMoreFooter
+                  showMoreId="valuesFollowedPreviewShowMoreId"
+                  showMoreLink={() => this.goToValuesLink()}
+                  showMoreText="Explore all values"
+                />
+              </Suspense>
             )}
           </div>
         </section>

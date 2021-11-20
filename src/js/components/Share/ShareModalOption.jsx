@@ -1,6 +1,6 @@
 import { withStyles, withTheme } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
-import React, { Component } from 'react';
+import React, { Component, Suspense } from 'react';
 import CopyToClipboard from 'react-copy-to-clipboard';
 import styled from 'styled-components';
 import AppObservableStore, { messageService } from '../../stores/AppObservableStore';
@@ -105,22 +105,24 @@ class ShareModalOption extends Component {
                 </Text>
               </div>
             ) : (
-              <OpenExternalWebSite
-                linkIdAttribute="linkToShare"
-                className="no-decoration"
-                url={linkToBeShared}
-                target="_blank"
-                body={(
-                  <div id={`shareModalOption-${uniqueExternalId}`} onClick={() => this.onClick}>
-                    <Icon background={backgroundColor}>
-                      {icon}
-                    </Icon>
-                    <Text>
-                      {title}
-                    </Text>
-                  </div>
-                )}
-              />
+              <Suspense fallback={<></>}>
+                <OpenExternalWebSite
+                  linkIdAttribute="linkToShare"
+                  className="no-decoration"
+                  url={linkToBeShared}
+                  target="_blank"
+                  body={(
+                    <div id={`shareModalOption-${uniqueExternalId}`} onClick={() => this.onClick}>
+                      <Icon background={backgroundColor}>
+                        {icon}
+                      </Icon>
+                      <Text>
+                        {title}
+                      </Text>
+                    </div>
+                  )}
+                />
+              </Suspense>
             )}
           </div>
         )}

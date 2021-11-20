@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import React, { Component } from 'react';
+import React, { Component, Suspense } from 'react';
 import styled, { keyframes } from 'styled-components';
 import { cordovaStickyHeaderPaddingTop } from '../../utils/cordovaOffsets';
 import { isIOSAppOnMac, isIPad } from '../../utils/cordovaUtils';
@@ -47,15 +47,19 @@ class CandidateStickyHeader extends Component {
               </Profile>
             </ColumnOne>
             <ColumnTwo>
-              <BallotItemSupportOpposeCountDisplay ballotItemWeVoteId={candidateWeVoteId} />
+              <Suspense fallback={<></>}>
+                <BallotItemSupportOpposeCountDisplay ballotItemWeVoteId={candidateWeVoteId} />
+              </Suspense>
             </ColumnTwo>
           </Flex>
           <BallotCommentContainer>
-            <BallotItemSupportOpposeComment
-              ballotItemWeVoteId={candidateWeVoteId}
-              externalUniqueId="candidateStickyHeader"
-              showPositionStatementActionBar={false}
-            />
+            <Suspense fallback={<></>}>
+              <BallotItemSupportOpposeComment
+                ballotItemWeVoteId={candidateWeVoteId}
+                externalUniqueId="candidateStickyHeader"
+                showPositionStatementActionBar={false}
+              />
+            </Suspense>
           </BallotCommentContainer>
         </Container>
       </Wrapper>

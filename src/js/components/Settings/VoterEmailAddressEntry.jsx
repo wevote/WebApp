@@ -2,7 +2,7 @@ import { Button, InputBase, Paper } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 import { Delete, Mail } from '@material-ui/icons';
 import PropTypes from 'prop-types';
-import React, { Component } from 'react';
+import React, { Component, Suspense } from 'react';
 import Alert from 'react-bootstrap/Alert';
 import styled from 'styled-components';
 import VoterActions from '../../actions/VoterActions';
@@ -343,12 +343,14 @@ class VoterEmailAddressEntry extends Component {
             { secretCodeSystemLocked && (
               <div>
                 Your account is locked. Please
-                <OpenExternalWebSite
-                  linkIdAttribute="weVoteSupportVoterEmailAddressEntry"
-                  url="https://help.wevote.us/hc/en-us/requests/new"
-                  target="_blank"
-                  body={<span>contact We Vote support for help.</span>}
-                />
+                <Suspense fallback={<></>}>
+                  <OpenExternalWebSite
+                    linkIdAttribute="weVoteSupportVoterEmailAddressEntry"
+                    url="https://help.wevote.us/hc/en-us/requests/new"
+                    target="_blank"
+                    body={<span>contact We Vote support for help.</span>}
+                  />
+                </Suspense>
               </div>
             )}
           </Alert>

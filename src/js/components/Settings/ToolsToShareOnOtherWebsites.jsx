@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import React from 'react';
+import React, { Suspense } from 'react';
 import Helmet from 'react-helmet';
 import styled from 'styled-components';
 import cordovaScrollablePaneTopPadding from '../../utils/cordovaScrollablePaneTopPadding';
@@ -100,12 +100,14 @@ export default function ToolsToShareOnOtherWebsites (props) {
           <ul>
             <li>
               If you need access to the data gathered via your instance of the Vote.org toolset,
-              <OpenExternalWebSite
-                linkIdAttribute="voteOrg"
-                url="https://vip.vote.org"
-                target="_blank"
-                body="check out the Vote.org premium tools."
-              />
+              <Suspense fallback={<></>}>
+                <OpenExternalWebSite
+                  linkIdAttribute="voteOrg"
+                  url="https://vip.vote.org"
+                  target="_blank"
+                  body="check out the Vote.org premium tools."
+                />
+              </Suspense>
             </li>
           </ul>
           <p>&nbsp;</p>

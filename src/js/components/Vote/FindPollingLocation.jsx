@@ -2,7 +2,7 @@ import { Button } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 import { Place } from '@material-ui/icons';
 import PropTypes from 'prop-types';
-import React, { Component } from 'react';
+import React, { Component, Suspense } from 'react';
 import styled from 'styled-components';
 import InfoCircleIcon from '../Widgets/InfoCircleIcon';
 
@@ -20,22 +20,24 @@ class FindPollingLocation extends Component {
     const getPollingLocationUrl = 'https://gttp.votinginfoproject.org/';
     return (
       <Wrapper>
-        <OpenExternalWebSite
-          linkIdAttribute="getPollingLocation"
-          url={getPollingLocationUrl}
-          target="_blank"
-          className="u-gray-mid"
-          body={(
-            <Button
-              classes={{ root: classes.ballotButtonRoot }}
-              color="primary"
-              variant="contained"
-            >
-              <Place classes={{ root: classes.ballotButtonIconRoot }} />
-              Your Polling Location
-            </Button>
-          )}
-        />
+        <Suspense fallback={<></>}>
+          <OpenExternalWebSite
+            linkIdAttribute="getPollingLocation"
+            url={getPollingLocationUrl}
+            target="_blank"
+            className="u-gray-mid"
+            body={(
+              <Button
+                classes={{ root: classes.ballotButtonRoot }}
+                color="primary"
+                variant="contained"
+              >
+                <Place classes={{ root: classes.ballotButtonIconRoot }} />
+                Your Polling Location
+              </Button>
+            )}
+          />
+        </Suspense>
         <InformationTextWrapper className="social-btn-description u-show-desktop">
           <InfoCircleIcon />
           Find the location where you can hand deliver your official ballot before the end of election day.

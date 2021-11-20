@@ -1,6 +1,6 @@
 import { Twitter } from '@material-ui/icons';
 import PropTypes from 'prop-types';
-import React, { Component } from 'react';
+import React, { Component, Suspense } from 'react';
 import { renderLog } from '../../utils/logging';
 import { abbreviateNumber, numberWithCommas, removeTwitterNameFromDescription } from '../../utils/textFormat';
 import ExternalLinkIcon from '../Widgets/ExternalLinkIcon';
@@ -28,7 +28,9 @@ export default class TwitterAccountCard extends Component {
         <div className="card-main">
           <div className="card-main__media-object">
             <div className="card-main__media-object-anchor">
-              <ImageHandler imageUrl={twitterPhotoUrl} className="card-main__avatar" sizeClassName="icon-lg " />
+              <Suspense fallback={<></>}>
+                <ImageHandler imageUrl={twitterPhotoUrl} className="card-main__avatar" sizeClassName="icon-lg " />
+              </Suspense>
             </div>
             <div className="card-main__media-object-content">
               <div className="card-main__display-name">{nameDisplay}</div>
@@ -55,17 +57,19 @@ export default class TwitterAccountCard extends Component {
               {twitterUserWebsite ? (
                 <span>
                   &nbsp;&nbsp;
-                  <OpenExternalWebSite
-                    linkIdAttribute="twitterUserWebsite"
-                    url={twitterUserWebsite}
-                    target="_blank"
-                    body={(
-                      <span>
-                        Website
-                        <ExternalLinkIcon />
-                      </span>
-                    )}
-                  />
+                  <Suspense fallback={<></>}>
+                    <OpenExternalWebSite
+                      linkIdAttribute="twitterUserWebsite"
+                      url={twitterUserWebsite}
+                      target="_blank"
+                      body={(
+                        <span>
+                          Website
+                          <ExternalLinkIcon />
+                        </span>
+                      )}
+                    />
+                  </Suspense>
                   <br />
                 </span>
               ) : null}

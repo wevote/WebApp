@@ -2,7 +2,7 @@ import { IconButton } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 import { AccountCircle } from '@material-ui/icons';
 import PropTypes from 'prop-types';
-import React, { Component } from 'react';
+import React, { Component, Suspense } from 'react';
 import styled from 'styled-components';
 import OrganizationActions from '../../actions/OrganizationActions';
 import VoterGuideActions from '../../actions/VoterGuideActions';
@@ -572,10 +572,10 @@ class HeaderBackToBallot extends Component {
     }
   }
 
-  getVoterGuideLink () {
-    const { googleCivicElectionId, organizationWeVoteId } = this.state;
-    return `/voterguide/${organizationWeVoteId}/ballot/election/${googleCivicElectionId}`;
-  }
+  // getVoterGuideLink () {
+  //   const { googleCivicElectionId, organizationWeVoteId } = this.state;
+  //   return `/voterguide/${organizationWeVoteId}/ballot/election/${googleCivicElectionId}`;
+  // }
 
   closeShareModal = () => {
     AppObservableStore.setShowShareModal(false);
@@ -784,7 +784,9 @@ class HeaderBackToBallot extends Component {
           <TopRowOneMiddleContainer />
           <TopRowOneRightContainer className="u-cursor--pointer" cordova={isCordova()}>
             {voterIsSignedIn && (
-              <HeaderNotificationMenu />
+              <Suspense fallback={<></>}>
+                <HeaderNotificationMenu />
+              </Suspense>
             )}
             {voterIsSignedIn ? (
               <span onClick={this.toggleAccountMenu}>
@@ -821,16 +823,18 @@ class HeaderBackToBallot extends Component {
                   </span>
                 )}
                 {profilePopUpOpen && (
-                  <HeaderBarProfilePopUp
-                    hideProfilePopUp={this.hideProfilePopUp}
-                    onClick={this.toggleProfilePopUp}
-                    profilePopUpOpen={profilePopUpOpen}
-                    signOutAndHideProfilePopUp={this.signOutAndHideProfilePopUp}
-                    toggleProfilePopUp={this.toggleProfilePopUp}
-                    toggleSignInModal={this.toggleSignInModal}
-                    transitionToYourVoterGuide={this.transitionToYourVoterGuide}
-                    voter={voter}
-                  />
+                  <Suspense fallback={<></>}>
+                    <HeaderBarProfilePopUp
+                      hideProfilePopUp={this.hideProfilePopUp}
+                      onClick={this.toggleProfilePopUp}
+                      profilePopUpOpen={profilePopUpOpen}
+                      signOutAndHideProfilePopUp={this.signOutAndHideProfilePopUp}
+                      toggleProfilePopUp={this.toggleProfilePopUp}
+                      toggleSignInModal={this.toggleSignInModal}
+                      transitionToYourVoterGuide={this.transitionToYourVoterGuide}
+                      voter={voter}
+                    />
+                  </Suspense>
                 )}
               </span>
             ) : (
@@ -850,18 +854,22 @@ class HeaderBackToBallot extends Component {
           </TopRowTwoRightContainer>
           )}
           {showSignInModal && (
-          <SignInModal
-            show={showSignInModal}
-            closeFunction={this.closeSignInModal}
-          />
+            <Suspense fallback={<></>}>
+              <SignInModal
+                show={showSignInModal}
+                closeFunction={this.closeSignInModal}
+              />
+            </Suspense>
           )}
           {showShareModal && (
-          <ShareModal
-            voterIsSignedIn={voterIsSignedIn}
-            show={showShareModal}
-            shareModalStep={shareModalStep}
-            closeShareModal={this.closeShareModal}
-          />
+            <Suspense fallback={<></>}>
+              <ShareModal
+                voterIsSignedIn={voterIsSignedIn}
+                show={showShareModal}
+                shareModalStep={shareModalStep}
+                closeShareModal={this.closeShareModal}
+              />
+            </Suspense>
           )}
         </TopOfPageHeader>
       </AppBarForBackTo>

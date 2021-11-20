@@ -1,7 +1,7 @@
 import { withStyles, withTheme } from '@material-ui/core/styles';
 import { Info, ThumbDown, ThumbUp } from '@material-ui/icons';
 import PropTypes from 'prop-types';
-import React, { Component } from 'react';
+import React, { Component, Suspense } from 'react';
 import styled from 'styled-components';
 import OrganizationStore from '../../stores/OrganizationStore';
 import { isCordova } from '../../utils/cordovaUtils';
@@ -121,12 +121,14 @@ class BallotItemVoterGuideSupportOpposeDisplay extends Component {
               <OverlayImage className="image-border-support " style={isCordova() ? { width: 20 } : {}}>
                 <OrganizationIconWrapper>
                   {organizationImageUrlHttpsTiny ? (
-                    <ImageHandler
-                      alt="organization-photo-16x16"
-                      imageUrl={organizationImageUrlHttpsTiny}
-                      kind_of_ballot_item="ORGANIZATION"
-                      sizeClassName="image-16x16 "
-                    />
+                    <Suspense fallback={<></>}>
+                      <ImageHandler
+                        alt="organization-photo-16x16"
+                        imageUrl={organizationImageUrlHttpsTiny}
+                        kind_of_ballot_item="ORGANIZATION"
+                        sizeClassName="image-16x16 "
+                      />
+                    </Suspense>
                   ) : <TinyImageSpacer />}
                 </OrganizationIconWrapper>
                 <FriendsOnlyIndicatorWrapper>
@@ -155,12 +157,14 @@ class BallotItemVoterGuideSupportOpposeDisplay extends Component {
               <OverlayImage className="image-border-oppose ">
                 <OrganizationIconWrapper>
                   {organizationImageUrlHttpsTiny ? (
-                    <ImageHandler
-                      alt="organization-photo-16x16"
-                      imageUrl={organizationImageUrlHttpsTiny}
-                      kind_of_ballot_item="ORGANIZATION"
-                      sizeClassName="image-16x16 "
-                    />
+                    <Suspense fallback={<></>}>
+                      <ImageHandler
+                        alt="organization-photo-16x16"
+                        imageUrl={organizationImageUrlHttpsTiny}
+                        kind_of_ballot_item="ORGANIZATION"
+                        sizeClassName="image-16x16 "
+                      />
+                    </Suspense>
                   ) : <TinyImageSpacer />}
                 </OrganizationIconWrapper>
                 <FriendsOnlyIndicatorWrapper>
@@ -189,12 +193,14 @@ class BallotItemVoterGuideSupportOpposeDisplay extends Component {
               <OverlayImage className="image-border-gray-border ">
                 <OrganizationIconWrapper>
                   {organizationImageUrlHttpsTiny ? (
-                    <ImageHandler
-                      alt="organization-photo-16x16"
-                      imageUrl={organizationImageUrlHttpsTiny}
-                      kind_of_ballot_item="ORGANIZATION"
-                      sizeClassName="image-16x16 "
-                    />
+                    <Suspense fallback={<></>}>
+                      <ImageHandler
+                        alt="organization-photo-16x16"
+                        imageUrl={organizationImageUrlHttpsTiny}
+                        kind_of_ballot_item="ORGANIZATION"
+                        sizeClassName="image-16x16 "
+                      />
+                    </Suspense>
                   ) : <TinyImageSpacer />}
                 </OrganizationIconWrapper>
                 <FriendsOnlyIndicatorWrapper>

@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import React, { Component } from 'react';
+import React, { Component, Suspense } from 'react';
 import { Link } from 'react-router-dom';
 import AppObservableStore from '../../stores/AppObservableStore';
 import VoterStore from '../../stores/VoterStore';
@@ -144,7 +144,9 @@ export default class SettingsPersonalSideBar extends Component {
                   >
                     Domain
                   </span>
-                  <SettingsAccountLevelChip ignoreIfUpgraded onClickDisabled requiredFeaturePackage="PROFESSIONAL" />
+                  <Suspense fallback={<></>}>
+                    <SettingsAccountLevelChip ignoreIfUpgraded onClickDisabled requiredFeaturePackage="PROFESSIONAL" />
+                  </Suspense>
                 </Link>
               </div>
             </div>
@@ -181,7 +183,9 @@ export default class SettingsPersonalSideBar extends Component {
                   >
                     Logo & Sharing
                   </span>
-                  <SettingsAccountLevelChip ignoreIfUpgraded onClickDisabled requiredFeaturePackage="PROFESSIONAL" />
+                  <Suspense fallback={<></>}>
+                    <SettingsAccountLevelChip ignoreIfUpgraded onClickDisabled requiredFeaturePackage="PROFESSIONAL" />
+                  </Suspense>
                 </Link>
               </div>
             </div>
@@ -200,7 +204,9 @@ export default class SettingsPersonalSideBar extends Component {
                   >
                     Subscription Plan
                   </span>
-                  <SettingsAccountLevelChip ignoreIfUpgraded onClickDisabled requiredFeaturePackage="PROFESSIONAL" />
+                  <Suspense fallback={<></>}>
+                    <SettingsAccountLevelChip ignoreIfUpgraded onClickDisabled requiredFeaturePackage="PROFESSIONAL" />
+                  </Suspense>
                 </Link>
               </div>
             </div>
@@ -219,7 +225,9 @@ export default class SettingsPersonalSideBar extends Component {
                   >
                     Analytics
                   </span>
-                  <SettingsAccountLevelChip ignoreIfUpgraded onClickDisabled requiredFeaturePackage="PROFESSIONAL" />
+                  <Suspense fallback={<></>}>
+                    <SettingsAccountLevelChip ignoreIfUpgraded onClickDisabled requiredFeaturePackage="PROFESSIONAL" />
+                  </Suspense>
                 </Link>
               </div>
             </div>
@@ -238,7 +246,9 @@ export default class SettingsPersonalSideBar extends Component {
                   >
                     Organizational Values
                   </span>
-                  <SettingsAccountLevelChip ignoreIfUpgraded onClickDisabled requiredFeaturePackage="PROFESSIONAL" />
+                  <Suspense fallback={<></>}>
+                    <SettingsAccountLevelChip ignoreIfUpgraded onClickDisabled requiredFeaturePackage="PROFESSIONAL" />
+                  </Suspense>
                 </Link>
               </div>
             </div>
@@ -257,7 +267,9 @@ export default class SettingsPersonalSideBar extends Component {
                   >
                     Promoted Organizations
                   </span>
-                  <SettingsAccountLevelChip ignoreIfUpgraded onClickDisabled requiredFeaturePackage="PROFESSIONAL" />
+                  <Suspense fallback={<></>}>
+                    <SettingsAccountLevelChip ignoreIfUpgraded onClickDisabled requiredFeaturePackage="PROFESSIONAL" />
+                  </Suspense>
                 </Link>
               </div>
             </div>
@@ -276,7 +288,9 @@ export default class SettingsPersonalSideBar extends Component {
                   >
                     Tools for Your Website
                   </span>
-                  <SettingsAccountLevelChip ignoreIfUpgraded onClickDisabled requiredFeaturePackage="PROFESSIONAL" />
+                  <Suspense fallback={<></>}>
+                    <SettingsAccountLevelChip ignoreIfUpgraded onClickDisabled requiredFeaturePackage="PROFESSIONAL" />
+                  </Suspense>
                 </Link>
               </div>
             </div>

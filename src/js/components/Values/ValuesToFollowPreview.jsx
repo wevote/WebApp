@@ -105,19 +105,25 @@ class ValuesToFollowPreview extends Component {
       }
     }
     let thoseWhoShareYourValuesHtml  = null;
+    const maxNumberOfVoterGuidesToShow = 9;
+    let numberOfVoterGuidesShown = 0;
     if (voterGuidesThatShareYourValues && voterGuidesThatShareYourValues.length > 0) {
       thoseWhoShareYourValuesHtml = (
         <PublicFiguresAndOrganizationsList>
           {voterGuidesThatShareYourValues.map((voterGuide) => {
             const voterGuideLink = voterGuide.twitter_handle ? `/${voterGuide.twitter_handle}` : `/voterguide/${voterGuide.organization_we_vote_id}`;
-            if (!voterGuide.voter_guide_image_url_tiny) {
+            if (!voterGuide.voter_guide_image_url_medium) {
               return null;
             }
+            if (numberOfVoterGuidesShown >= maxNumberOfVoterGuidesToShow) {
+              return null;
+            }
+            numberOfVoterGuidesShown += 1;
             return (
               <OneVoterGuideWrapper key={`findOpinionsFormPreviewImage-${voterGuide.organization_we_vote_id}`}>
                 <Suspense fallback={<></>}>
                   <Link to={voterGuideLink} className="u-no-underline">
-                    <ImageHandler className="card-child__avatar" sizeClassName="image-sm " imageUrl={voterGuide.voter_guide_image_url_tiny} />
+                    <ImageHandler className="" sizeClassName="" imageUrl={voterGuide.voter_guide_image_url_medium} />
                   </Link>
                 </Suspense>
               </OneVoterGuideWrapper>

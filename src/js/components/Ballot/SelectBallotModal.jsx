@@ -2,7 +2,7 @@ import { Button, Dialog, DialogContent, DialogTitle, FormControl, IconButton, In
 import { withStyles, withTheme } from '@material-ui/core/styles';
 import { Close } from '@material-ui/icons';
 import PropTypes from 'prop-types';
-import React, { Component } from 'react';
+import React, { Component, Suspense } from 'react';
 import styled from 'styled-components';
 import AnalyticsActions from '../../actions/AnalyticsActions';
 import VoterStore from '../../stores/VoterStore';
@@ -131,13 +131,17 @@ class SelectBallotModal extends Component {
               )}
               {!editingAddress && (
                 <MapChartWrapper>
-                  <MapChart onClickFunction={this.mapHandler} />
+                  <Suspense fallback={<></>}>
+                    <MapChart onClickFunction={this.mapHandler} />
+                  </Suspense>
                 </MapChartWrapper>
               )}
             </div>
             {!editingAddress && (
               <MapChartWrapperDesktop className="u-show-desktop">
-                <MapChart onClickFunction={this.mapHandler} />
+                <Suspense fallback={<></>}>
+                  <MapChart onClickFunction={this.mapHandler} />
+                </Suspense>
               </MapChartWrapperDesktop>
             )}
             <SidebarWrapper>
@@ -226,15 +230,17 @@ class SelectBallotModal extends Component {
                     </Select>
                   </FormControl>
                   <BallotElectionListWrapper addTopMargin={!hideAddressEdit}>
-                    <BallotElectionListWithFilters
-                        ballotBaseUrl={ballotBaseUrl}
-                        organizationWeVoteId={this.props.organization_we_vote_id}
-                        showPriorElectionsList={this.state.prior}
-                        hideUpcomingElectionsList={this.state.prior}
-                        stateToShow={this.state.selectedState}
-                        toggleFunction={this.props.toggleFunction}
-                        mode={this.state.upcoming ? 'upcoming' : 'prior'}
-                    />
+                    <Suspense fallback={<></>}>
+                      <BallotElectionListWithFilters
+                          ballotBaseUrl={ballotBaseUrl}
+                          organizationWeVoteId={this.props.organization_we_vote_id}
+                          showPriorElectionsList={this.state.prior}
+                          hideUpcomingElectionsList={this.state.prior}
+                          stateToShow={this.state.selectedState}
+                          toggleFunction={this.props.toggleFunction}
+                          mode={this.state.upcoming ? 'upcoming' : 'prior'}
+                      />
+                    </Suspense>
                   </BallotElectionListWrapper>
                 </ElectionChoiceWrapper>
               )}

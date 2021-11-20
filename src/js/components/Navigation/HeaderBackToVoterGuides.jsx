@@ -2,7 +2,7 @@ import { AppBar, Button, IconButton, Toolbar, Tooltip } from '@material-ui/core'
 import { withStyles } from '@material-ui/core/styles';
 import { AccountCircle, Place } from '@material-ui/icons';
 import PropTypes from 'prop-types';
-import React, { Component } from 'react';
+import React, { Component, Suspense } from 'react';
 import styled from 'styled-components';
 import OrganizationActions from '../../actions/OrganizationActions';
 import VoterGuideActions from '../../actions/VoterGuideActions';
@@ -365,16 +365,18 @@ class HeaderBackToVoterGuides extends Component {
                   </div>
                 )}
                 {profilePopUpOpen && (
-                <HeaderBarProfilePopUp
-                  hideProfilePopUp={this.hideProfilePopUp}
-                  onClick={this.toggleProfilePopUp}
-                  profilePopUpOpen={profilePopUpOpen}
-                  signOutAndHideProfilePopUp={this.signOutAndHideProfilePopUp}
-                  toggleProfilePopUp={this.toggleProfilePopUp}
-                  toggleSignInModal={this.toggleSignInModal}
-                  transitionToYourVoterGuide={this.transitionToYourVoterGuide}
-                  voter={voter}
-                />
+                  <Suspense fallback={<></>}>
+                    <HeaderBarProfilePopUp
+                      hideProfilePopUp={this.hideProfilePopUp}
+                      onClick={this.toggleProfilePopUp}
+                      profilePopUpOpen={profilePopUpOpen}
+                      signOutAndHideProfilePopUp={this.signOutAndHideProfilePopUp}
+                      toggleProfilePopUp={this.toggleProfilePopUp}
+                      toggleSignInModal={this.toggleSignInModal}
+                      transitionToYourVoterGuide={this.transitionToYourVoterGuide}
+                      voter={voter}
+                    />
+                  </Suspense>
                 )}
               </span>
             ) : (
@@ -400,10 +402,12 @@ class HeaderBackToVoterGuides extends Component {
           </PreviewButtonWrapper>
         </EndorsementModeSwitch>
         {showSignInModal && (
-          <SignInModal
-            show={showSignInModal}
-            closeFunction={this.closeSignInModal}
-          />
+          <Suspense fallback={<></>}>
+            <SignInModal
+              show={showSignInModal}
+              closeFunction={this.closeSignInModal}
+            />
+          </Suspense>
         )}
         {showNewVoterGuideModal && (
           <VoterGuideChooseElectionModal

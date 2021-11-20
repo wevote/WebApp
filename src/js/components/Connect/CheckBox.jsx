@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import React, { Component } from 'react';
+import React, { Component, Suspense } from 'react';
 import { cordovaDot } from '../../utils/cordovaUtils';
 import { renderLog } from '../../utils/logging';
 
@@ -30,18 +30,22 @@ export default class CheckBox extends Component {
     const { isChecked } = this.state;
     return (
       <div className={`${this.props.grid} friends-list__square u-cursor--pointer`} onClick={this.toggleCheckboxChange}>
-        <ImageHandler
-          sizeClassName={isChecked ? 'friends-list__square-image friends-list__square-following' : 'friends-list__square-image'}
-          imageUrl={this.props.friendImage}
-          alt={this.props.friendName}
-        />
-        { isChecked && (
-        <ImageHandler
-          className="friends-list__square-check-mark"
-          imageUrl={cordovaDot(checkMarkIcon)}
-          alt="Inviting"
-        />
-        ) }
+        <Suspense fallback={<></>}>
+          <ImageHandler
+            sizeClassName={isChecked ? 'friends-list__square-image friends-list__square-following' : 'friends-list__square-image'}
+            imageUrl={this.props.friendImage}
+            alt={this.props.friendName}
+          />
+        </Suspense>
+        <Suspense fallback={<></>}>
+          { isChecked && (
+            <ImageHandler
+              className="friends-list__square-check-mark"
+              imageUrl={cordovaDot(checkMarkIcon)}
+              alt="Inviting"
+            />
+          )}
+        </Suspense>
         <h4 className="intro-modal__white-space friends-list__square-name">{this.props.friendName}</h4>
       </div>
     );

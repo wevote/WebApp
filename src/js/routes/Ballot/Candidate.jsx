@@ -1,7 +1,7 @@
 import { withStyles } from '@material-ui/core/styles';
 import { Info } from '@material-ui/icons';
 import PropTypes from 'prop-types';
-import React, { Component } from 'react';
+import React, { Component, Suspense } from 'react';
 import Helmet from 'react-helmet';
 import styled from 'styled-components';
 import ActivityActions from '../../actions/ActivityActions';
@@ -310,16 +310,18 @@ class Candidate extends Component {
         <div className="card" style={isWebApp() ? {} : { marginRight: 0, marginLeft: 0 }}>
           <TwoColumns>
             <LeftColumnWrapper>
-              <CandidateItem
-                candidateWeVoteId={candidate.we_vote_id}
-                expandIssuesByDefault
-                hideShowMoreFooter
-                organizationWeVoteId={organizationWeVoteId}
-                linkToOfficePage
-                showLargeImage
-                showOfficeName
-                showPositionStatementActionBar
-              />
+              <Suspense fallback={<></>}>
+                <CandidateItem
+                  candidateWeVoteId={candidate.we_vote_id}
+                  expandIssuesByDefault
+                  hideShowMoreFooter
+                  organizationWeVoteId={organizationWeVoteId}
+                  linkToOfficePage
+                  showLargeImage
+                  showOfficeName
+                  showPositionStatementActionBar
+                />
+              </Suspense>
             </LeftColumnWrapper>
             <RightColumnWrapper className="u-show-desktop-tablet">
               <CandidateShareWrapper>
@@ -336,19 +338,21 @@ class Candidate extends Component {
         </div>
         { !!(allCachedPositionsForThisCandidate.length) && (
           <section className="card">
-            <DelayedLoad showLoadingText waitBeforeShow={500}>
-              <PositionList
-                incomingPositionList={allCachedPositionsForThisCandidate}
-                ballotItemDisplayName={candidate.ballot_item_display_name}
-                params={params}
-                positionListExistsTitle={(
-                  <PositionListIntroductionText>
-                    <Info classes={{ root: classes.informationIcon }} />
-                    Opinions about this candidate are below. Use these filters to sort:
-                  </PositionListIntroductionText>
-                )}
-              />
-            </DelayedLoad>
+            <Suspense fallback={<></>}>
+              <DelayedLoad showLoadingText waitBeforeShow={500}>
+                <PositionList
+                  incomingPositionList={allCachedPositionsForThisCandidate}
+                  ballotItemDisplayName={candidate.ballot_item_display_name}
+                  params={params}
+                  positionListExistsTitle={(
+                    <PositionListIntroductionText>
+                      <Info classes={{ root: classes.informationIcon }} />
+                      Opinions about this candidate are below. Use these filters to sort:
+                    </PositionListIntroductionText>
+                  )}
+                />
+              </DelayedLoad>
+            </Suspense>
           </section>
         )}
         <EndorsementCard
@@ -369,19 +373,21 @@ class Candidate extends Component {
         { (voter.is_admin || voter.is_verified_volunteer) && (
           <span className="u-wrap-links d-print-none">
             Admin only:
-            <OpenExternalWebSite
-              linkIdAttribute="candidateAdminEdit"
-              url={candidateAdminEditUrl}
-              target="_blank"
-              className="open-web-site open-web-site__no-right-padding"
-              body={(
-                <span>
-                  edit
-                  {' '}
-                  {candidateName}
-                </span>
-              )}
-            />
+            <Suspense fallback={<></>}>
+              <OpenExternalWebSite
+                linkIdAttribute="candidateAdminEdit"
+                url={candidateAdminEditUrl}
+                target="_blank"
+                className="open-web-site open-web-site__no-right-padding"
+                body={(
+                  <span>
+                    edit
+                    {' '}
+                    {candidateName}
+                  </span>
+                )}
+              />
+            </Suspense>
           </span>
         )}
       </PageContentContainer>

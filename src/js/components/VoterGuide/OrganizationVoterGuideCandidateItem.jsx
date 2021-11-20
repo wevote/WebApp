@@ -1,6 +1,6 @@
 import { Twitter } from '@material-ui/icons';
 import PropTypes from 'prop-types';
-import React, { Component } from 'react';
+import React, { Component, Suspense } from 'react';
 import { Link } from 'react-router-dom';
 import CandidateStore from '../../stores/CandidateStore';
 import VoterGuideStore from '../../stores/VoterGuideStore';
@@ -107,13 +107,15 @@ export default class OrganizationVoterGuideCandidateItem extends Component {
     let candidatePhotoUrlHtml;
     if (candidatePhotoUrl) {
       candidatePhotoUrlHtml = (
-        <ImageHandler
-          className="card-main__avatar"
-          sizeClassName="icon-office-child "
-          imageUrl={candidatePhotoUrl}
-          alt="candidate-photo"
-          kind_of_ballot_item="CANDIDATE"
-        />
+        <Suspense fallback={<></>}>
+          <ImageHandler
+            className="card-main__avatar"
+            sizeClassName="icon-office-child "
+            imageUrl={candidatePhotoUrl}
+            alt="candidate-photo"
+            kind_of_ballot_item="CANDIDATE"
+          />
+        </Suspense>
       );
     } else {
       candidatePhotoUrlHtml = <i className="card-main__avatar icon-office-child icon-main icon-icon-person-placeholder-6-1" />;
@@ -152,11 +154,13 @@ export default class OrganizationVoterGuideCandidateItem extends Component {
                   'u-gray-darker'}
               >
                 { contestOfficeName ? (
-                  <OfficeNameText
-                    politicalParty={party}
-                    contestOfficeName={contestOfficeName}
-                    officeLink={this.props.linkToOfficePage ? this.getOfficeLink() : ''}
-                  />
+                  <Suspense fallback={<></>}>
+                    <OfficeNameText
+                      politicalParty={party}
+                      contestOfficeName={contestOfficeName}
+                      officeLink={this.props.linkToOfficePage ? this.getOfficeLink() : ''}
+                    />
+                  </Suspense>
                 ) : null}
               </p>
             </span>
@@ -184,11 +188,13 @@ export default class OrganizationVoterGuideCandidateItem extends Component {
         <div className="card-main__actions">
           <div>
             <div className="u-flex u-flex-auto u-flex-row u-justify-between u-items-center u-min-50 u-float-right">
-              <BallotItemSupportOpposeComment
-                ballotItemWeVoteId={candidateWeVoteId}
-                externalUniqueId="organizationVoterGuideCandidateItem"
-                showPositionStatementActionBar={this.state.showPositionStatementActionBar}
-              />
+              <Suspense fallback={<></>}>
+                <BallotItemSupportOpposeComment
+                  ballotItemWeVoteId={candidateWeVoteId}
+                  externalUniqueId="organizationVoterGuideCandidateItem"
+                  showPositionStatementActionBar={this.state.showPositionStatementActionBar}
+                />
+              </Suspense>
             </div>
           </div>
         </div>

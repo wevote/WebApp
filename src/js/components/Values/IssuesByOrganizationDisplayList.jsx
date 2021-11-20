@@ -1,7 +1,7 @@
 import { Chip } from '@material-ui/core';
 import { withStyles, withTheme } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
-import React, { Component } from 'react';
+import React, { Component, Suspense } from 'react';
 import styled from 'styled-components';
 import IssueStore from '../../stores/IssueStore';
 import VoterGuideStore from '../../stores/VoterGuideStore';
@@ -139,10 +139,12 @@ class IssuesByOrganizationDisplayList extends Component {
               </OrganizationAdvocatesText>
             </>
           )}
-          <ReadMore
-            textToDisplay={`"${oneIssue.issue_description}"`}
-            numberOfLines={4}
-          />
+          <Suspense fallback={<></>}>
+            <ReadMore
+              textToDisplay={`"${oneIssue.issue_description}"`}
+              numberOfLines={4}
+            />
+          </Suspense>
           {oneIssue.issue_we_vote_id && (
             <FollowIssueToggleContainer>
               <IssueFollowToggleButton

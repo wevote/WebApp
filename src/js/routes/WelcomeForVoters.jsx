@@ -2,7 +2,7 @@ import { Button, Link } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 import { Email, LocationOn, Person } from '@material-ui/icons';
 import PropTypes from 'prop-types';
-import React, { PureComponent } from 'react';
+import React, { PureComponent, Suspense } from 'react';
 import Helmet from 'react-helmet';
 import styled from 'styled-components';
 import AnalyticsActions from '../actions/AnalyticsActions';
@@ -136,7 +136,9 @@ class WelcomeForVoters extends PureComponent {
     return (
       <Wrapper padTop={cordovaScrollablePaneTopPadding()}>
         <Helmet title="Welcome Voters - We Vote" />
-        <WelcomeAppbar pathname={pathname} />
+        <Suspense fallback={<></>}>
+          <WelcomeAppbar pathname={pathname} />
+        </Suspense>
         <HeaderForVoters>
           <Title>
             Plan Your Entire Ballot
@@ -307,7 +309,9 @@ class WelcomeForVoters extends PureComponent {
             voterEmailAddress={voterEmailAddress}
           />
         )}
-        <WelcomeFooter />
+        <Suspense fallback={<></>}>
+          <WelcomeFooter />
+        </Suspense>
       </Wrapper>
     );
   }

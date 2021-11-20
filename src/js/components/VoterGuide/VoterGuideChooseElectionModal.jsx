@@ -2,7 +2,7 @@ import { Dialog, DialogContent, DialogTitle, IconButton, Typography } from '@mat
 import { withStyles, withTheme } from '@material-ui/core/styles';
 import { Close } from '@material-ui/icons';
 import PropTypes from 'prop-types';
-import React, { Component } from 'react';
+import React, { Component, Suspense } from 'react';
 import { renderLog } from '../../utils/logging';
 
 const BallotElectionListWithFilters = React.lazy(() => import(/* webpackChunkName: 'BallotElectionListWithFilters' */ '../Ballot/BallotElectionListWithFilters'));
@@ -65,12 +65,14 @@ class VoterGuideChooseElectionModal extends Component {
           </IconButton>
         </DialogTitle>
         <DialogContent classes={{ root: classes.dialogContent }}>
-          <BallotElectionListWithFilters
-            hideUpcomingElectionTitle
-            organizationWeVoteId={this.props.organization_we_vote_id}
-            stateToShow="all"
-            toggleFunction={this.props.toggleFunction}
-          />
+          <Suspense fallback={<></>}>
+            <BallotElectionListWithFilters
+              hideUpcomingElectionTitle
+              organizationWeVoteId={this.props.organization_we_vote_id}
+              stateToShow="all"
+              toggleFunction={this.props.toggleFunction}
+            />
+          </Suspense>
         </DialogContent>
       </Dialog>
     );

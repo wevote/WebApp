@@ -1,6 +1,6 @@
 import { Button } from '@material-ui/core';
 import PropTypes from 'prop-types';
-import React, { Component } from 'react';
+import React, { Component, Suspense } from 'react';
 import styled from 'styled-components';
 import LoadingWheel from '../../components/LoadingWheel';
 import VoterStore from '../../stores/VoterStore';
@@ -57,16 +57,18 @@ class ExtensionSignIn extends Component {
     if (!voterIsSignedIn) {
       // console.log('voterIsSignedIn is false');
       return (
-        <DelayedLoad showLoadingText waitBeforeShow={2000}>
-          <SignInOuterWrapper>
-            <SignInInnerWrapper>
-              <SignInIntro>
-                Please sign in here:
-              </SignInIntro>
-              <SettingsAccount />
-            </SignInInnerWrapper>
-          </SignInOuterWrapper>
-        </DelayedLoad>
+        <Suspense fallback={<></>}>
+          <DelayedLoad showLoadingText waitBeforeShow={2000}>
+            <SignInOuterWrapper>
+              <SignInInnerWrapper>
+                <SignInIntro>
+                  Please sign in here:
+                </SignInIntro>
+                <SettingsAccount />
+              </SignInInnerWrapper>
+            </SignInOuterWrapper>
+          </DelayedLoad>
+        </Suspense>
       );
     } else {
       return (

@@ -2,7 +2,7 @@ import { Button } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 import { Check, Close } from '@material-ui/icons';
 import PropTypes from 'prop-types';
-import React, { Component } from 'react';
+import React, { Component, Suspense } from 'react';
 import styled from 'styled-components';
 import OrganizationStore from '../../stores/OrganizationStore';
 import { renderLog } from '../../utils/logging';
@@ -92,12 +92,14 @@ class PricingCard extends Component {
                     fontSize: '20px',
                   }}
                   >
-                    <OpenExternalWebSite
-                      linkIdAttribute="weVoteSupportPricingCard"
-                      url="https://help.wevote.us/hc/en-us/requests/new"
-                      target="_blank"
-                      body={<span>Contact</span>}
-                    />
+                    <Suspense fallback={<></>}>
+                      <OpenExternalWebSite
+                        linkIdAttribute="weVoteSupportPricingCard"
+                        url="https://help.wevote.us/hc/en-us/requests/new"
+                        target="_blank"
+                        body={<span>Contact</span>}
+                      />
+                    </Suspense>
                   </h6>
                   <p style={{
                     fontSize: '10px',

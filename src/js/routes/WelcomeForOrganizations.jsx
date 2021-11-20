@@ -1,7 +1,7 @@
 import { Button } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
-import React, { Component } from 'react';
+import React, { Component, Suspense } from 'react';
 import Helmet from 'react-helmet';
 import styled from 'styled-components';
 import AnalyticsActions from '../actions/AnalyticsActions';
@@ -14,8 +14,8 @@ import cordovaScrollablePaneTopPadding from '../utils/cordovaScrollablePaneTopPa
 import { cordovaDot, historyPush } from '../utils/cordovaUtils';
 import { renderLog } from '../utils/logging';
 
-const WelcomeFooter = React.lazy(() => import(/* webpackChunkName: 'WelcomeFooter' */ '../components/Welcome/WelcomeFooter'));
 const WelcomeAppbar = React.lazy(() => import(/* webpackChunkName: 'WelcomeAppbar' */ '../components/Navigation/WelcomeAppbar'));
+const WelcomeFooter = React.lazy(() => import(/* webpackChunkName: 'WelcomeFooter' */ '../components/Welcome/WelcomeFooter'));
 
 const ffwdLogo = '../../img/global/logos/ffwd-logo.png';
 const googleLogo = '../../img/global/logos/google-logo.svg';
@@ -96,7 +96,9 @@ class WelcomeForOrganizations extends Component {
     return (
       <Wrapper padTop={cordovaScrollablePaneTopPadding()}>
         <Helmet title="Welcome Organizations - We Vote" />
-        <WelcomeAppbar pathname={pathname} />
+        <Suspense fallback={<></>}>
+          <WelcomeAppbar pathname={pathname} />
+        </Suspense>
         <HeaderForOrganizations>
           <Title>
             Supercharge Your
@@ -271,7 +273,9 @@ class WelcomeForOrganizations extends Component {
             <NetworkImage src={cordovaDot(vipLogo)} alt="Voting Information Project" />
           </NetworkContainer>
         </Section>
-        <WelcomeFooter />
+        <Suspense fallback={<></>}>
+          <WelcomeFooter />
+        </Suspense>
       </Wrapper>
     );
   }

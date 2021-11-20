@@ -3,7 +3,7 @@ import { withStyles, withTheme } from '@material-ui/core/styles';
 import { Close } from '@material-ui/icons';
 import clsx from 'clsx';
 import PropTypes from 'prop-types';
-import React, { Component } from 'react';
+import React, { Component, Suspense } from 'react';
 import { Link } from 'react-router-dom';
 import VoterStore from '../../stores/VoterStore';
 import { historyPush, isAndroid, isCordova, isIOS, isIOsSmallerThanPlus, isIPhone5p5inEarly, isIPhone5p5inMini, isIPhone5p8in, isIPhone6p1in, isIPhone6p5in, isWebApp, isWebAppHeight0to568, isWebAppHeight569to667, isWebAppHeight668to736, isWebAppHeight737to896, restoreStylesAfterCordovaKeyboard } from '../../utils/cordovaUtils';
@@ -188,11 +188,13 @@ class SignInModal extends Component {
                 </div>
               ) : (
                 <div>
-                  <SettingsAccount
-                    closeSignInModal={this.closeFunction}
-                    focusedOnSingleInputToggle={this.focusedOnSingleInputToggle}
-                    inModal
-                  />
+                  <Suspense fallback={<></>}>
+                    <SettingsAccount
+                      closeSignInModal={this.closeFunction}
+                      focusedOnSingleInputToggle={this.focusedOnSingleInputToggle}
+                      inModal
+                    />
+                  </Suspense>
                 </div>
               )}
             </div>

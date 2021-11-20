@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import React from 'react';
+import React, { Suspense } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { cordovaDot, isCordova } from '../../utils/cordovaUtils';
@@ -27,9 +27,11 @@ const HeaderBarLogo = ({ chosenSiteLogoUrl, isBeta, light }) => (
           />
           {(isBeta && !isCordova()) && (
             <span className="beta-marker">
-              <DelayedLoad waitBeforeShow={200}>
-                <BetaMarkerInner light={light}>ballot</BetaMarkerInner>
-              </DelayedLoad>
+              <Suspense fallback={<></>}>
+                <DelayedLoad waitBeforeShow={200}>
+                  <BetaMarkerInner light={light}>ballot</BetaMarkerInner>
+                </DelayedLoad>
+              </Suspense>
             </span>
           )}
         </Link>

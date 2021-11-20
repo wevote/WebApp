@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import React from 'react';
+import React, { Suspense } from 'react';
 import { renderLog } from './logging';
 
 const OrganizationVoterGuideEdit = React.lazy(() => import(/* webpackChunkName: 'OrganizationVoterGuideEdit' */ '../routes/VoterGuide/OrganizationVoterGuideEdit'));
@@ -18,20 +18,28 @@ export default function RouterV5SendMatch (props) {
   switch (componentName) {
     case 'OrganizationVoterGuideEdit':
       return (
-        <OrganizationVoterGuideEdit match={match} />
+        <Suspense fallback={<></>}>
+          <OrganizationVoterGuideEdit match={match} />
+        </Suspense>
       );
     case 'Ready':
       return (
-        <Ready match={match} />
+        <Suspense fallback={<></>}>
+          <Ready match={match} />
+        </Suspense>
       );
     case 'SettingsDashboard':
       return (
-        <SettingsDashboard match={match} />
+        <Suspense fallback={<></>}>
+          <SettingsDashboard match={match} />
+        </Suspense>
       );
     default:
       console.error('RouterV5SendMatch unprepared for component: ', componentName);
       return (
-        <PageNotFound />
+        <Suspense fallback={<></>}>
+          <PageNotFound />
+        </Suspense>
       );
   }
 }

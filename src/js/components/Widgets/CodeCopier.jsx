@@ -1,6 +1,6 @@
 import { Button } from '@material-ui/core';
 import PropTypes from 'prop-types';
-import React, { Component } from 'react';
+import React, { Component, Suspense } from 'react';
 import OrganizationActions from '../../actions/OrganizationActions';
 import OrganizationStore from '../../stores/OrganizationStore';
 import { renderLog } from '../../utils/logging';
@@ -149,12 +149,14 @@ export default class CodeCopier extends Component {
               ) : (
                 <div>
                   <a href={this.props.imageUrl} target="_blank" rel="noopener noreferrer">
-                    <ImageHandler
-                      className="code-copier__image u-stack--sm"
-                      hidePlaceholder
-                      imageUrl={this.props.imageUrl}
-                      alt={this.props.title}
-                    />
+                    <Suspense fallback={<></>}>
+                      <ImageHandler
+                        className="code-copier__image u-stack--sm"
+                        hidePlaceholder
+                        imageUrl={this.props.imageUrl}
+                        alt={this.props.title}
+                      />
+                    </Suspense>
                   </a>
                   <br />
                   <a className="code-copier__link" href={this.props.exampleUrl} target="_blank" rel="noopener noreferrer">
@@ -223,12 +225,14 @@ export default class CodeCopier extends Component {
               ) : (
                 <div>
                   <a href={this.props.exampleUrl} target="_blank" rel="noopener noreferrer">
-                    <ImageHandler
-                      className="code-copier__image u-stack--sm"
-                      hidePlaceholder
-                      imageUrl={this.props.imageUrl}
-                      alt={this.props.title}
-                    />
+                    <Suspense fallback={<></>}>
+                      <ImageHandler
+                        className="code-copier__image u-stack--sm"
+                        hidePlaceholder
+                        imageUrl={this.props.imageUrl}
+                        alt={this.props.title}
+                      />
+                    </Suspense>
                   </a>
                   <br />
                   <a className="code-copier__link" href={this.props.exampleUrl} target="_blank" rel="noopener noreferrer">
@@ -275,12 +279,14 @@ export default class CodeCopier extends Component {
               ) : (
                 <div>
                   <a href={this.props.exampleUrl} target="_blank" rel="noopener noreferrer">
-                    <ImageHandler
-                      className="code-copier__image u-stack--sm"
-                      hidePlaceholder
-                      imageUrl={this.props.imageUrl}
-                      alt={this.props.title}
-                    />
+                    <Suspense fallback={<></>}>
+                      <ImageHandler
+                        className="code-copier__image u-stack--sm"
+                        hidePlaceholder
+                        imageUrl={this.props.imageUrl}
+                        alt={this.props.title}
+                      />
+                    </Suspense>
                   </a>
                   <br />
                   <a className="code-copier__link" href={this.props.exampleUrl} target="_blank" rel="noopener noreferrer">

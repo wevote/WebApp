@@ -1,6 +1,6 @@
 import { withStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
-import React, { PureComponent } from 'react';
+import React, { PureComponent, Suspense } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { renderLog } from '../../utils/logging';
@@ -67,7 +67,9 @@ class VoterGuideDisplayForList extends PureComponent {
             id="organization-sticky-popover"
           >
             <Link to={voterGuideLink} className="u-no-underline">
-              <ImageHandler className="card-child__avatar" sizeClassName="image-lg " imageUrl={voterGuideImageUrlLarge} />
+              <Suspense fallback={<></>}>
+                <ImageHandler className="card-child__avatar" sizeClassName="image-lg " imageUrl={voterGuideImageUrlLarge} />
+              </Suspense>
             </Link>
           </StickyPopover>
         </div>
@@ -85,11 +87,13 @@ class VoterGuideDisplayForList extends PureComponent {
             </StickyPopover>
 
             { twitterDescriptionMinusName ? (
-              <ReadMore
-                className="card-child__organization-description"
-                textToDisplay={twitterDescriptionMinusName}
-                numberOfLines={numOfLines}
-              />
+              <Suspense fallback={<></>}>
+                <ReadMore
+                  className="card-child__organization-description"
+                  textToDisplay={twitterDescriptionMinusName}
+                  numberOfLines={numOfLines}
+                />
+              </Suspense>
             ) : null}
             { positionDescription }
           </div>

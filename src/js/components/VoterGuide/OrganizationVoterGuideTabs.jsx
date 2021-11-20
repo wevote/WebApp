@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import React, { Component } from 'react';
+import React, { Component, Suspense } from 'react';
 import OrganizationActions from '../../actions/OrganizationActions';
 import VoterGuideActions from '../../actions/VoterGuideActions';
 import AppObservableStore, { messageService } from '../../stores/AppObservableStore';
@@ -288,7 +288,7 @@ export default class OrganizationVoterGuideTabs extends Component {
         voterGuideComponentToDisplay = (
           <>
             { lookingAtSelf && !this.state.voter.is_signed_in ?
-              <SettingsAccount /> :
+              <Suspense fallback={<></>}><SettingsAccount /></Suspense> :
               null }
             <VoterGuideEndorsements
               activeRoute={activeRoute}

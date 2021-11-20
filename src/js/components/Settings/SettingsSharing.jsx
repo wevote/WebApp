@@ -1,7 +1,7 @@
 import { Button, Switch } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
-import React, { Component } from 'react';
+import React, { Component, Suspense } from 'react';
 import Helmet from 'react-helmet';
 import styled from 'styled-components';
 import AppObservableStore from '../../stores/AppObservableStore';
@@ -275,9 +275,11 @@ class SettingsSharing extends Component {
     } else if (!voterIsSignedIn) {
       // console.log('voterIsSignedIn is false');
       return (
-        <DelayedLoad waitBeforeShow={1000}>
-          <SettingsAccount />
-        </DelayedLoad>
+        <Suspense fallback={<></>}>
+          <DelayedLoad waitBeforeShow={1000}>
+            <SettingsAccount />
+          </DelayedLoad>
+        </Suspense>
       );
     }
     // console.log('organization: ', organization);
@@ -377,7 +379,9 @@ class SettingsSharing extends Component {
               <SharingColumn>
                 <InputBoxLabel>
                   Upload Favicon
-                  <SettingsAccountLevelChip chosenFeaturePackage={chosenFeaturePackage} requiredFeaturePackage="ENTERPRISE" />
+                  <Suspense fallback={<></>}>
+                    <SettingsAccountLevelChip chosenFeaturePackage={chosenFeaturePackage} requiredFeaturePackage="ENTERPRISE" />
+                  </Suspense>
                 </InputBoxLabel>
                 <ImageDescription>
                   <PreviewImage
@@ -427,7 +431,9 @@ class SettingsSharing extends Component {
               <SharingColumn>
                 <InputBoxLabel>
                   Social Share Image
-                  <SettingsAccountLevelChip chosenFeaturePackage={chosenFeaturePackage} requiredFeaturePackage="ENTERPRISE" />
+                  <Suspense fallback={<></>}>
+                    <SettingsAccountLevelChip chosenFeaturePackage={chosenFeaturePackage} requiredFeaturePackage="ENTERPRISE" />
+                  </Suspense>
                 </InputBoxLabel>
                 <ImageDescription>
                   <PreviewImage
@@ -477,7 +483,9 @@ class SettingsSharing extends Component {
               <SharingColumn>
                 <InputBoxLabel>
                   Social Share Site Description
-                  <SettingsAccountLevelChip chosenFeaturePackage={chosenFeaturePackage} requiredFeaturePackage="ENTERPRISE" />
+                  <Suspense fallback={<></>}>
+                    <SettingsAccountLevelChip chosenFeaturePackage={chosenFeaturePackage} requiredFeaturePackage="ENTERPRISE" />
+                  </Suspense>
                 </InputBoxLabel>
                 <DescriptionText>A few sentences describing your site. The text used on search engines, or when your page is shared on social media.</DescriptionText>
                 <GiantTextInput

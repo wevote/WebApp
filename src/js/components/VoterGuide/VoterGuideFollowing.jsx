@@ -1,6 +1,6 @@
 import { filter } from 'lodash-es';
 import PropTypes from 'prop-types';
-import React, { Component } from 'react';
+import React, { Component, Suspense } from 'react';
 import Button from 'react-bootstrap/Button';
 import Helmet from 'react-helmet';
 import styled from 'styled-components';
@@ -212,21 +212,23 @@ class VoterGuideFollowing extends Component {
                   </TitleWrapper>
                 </span>
               ) : (
-                <DelayedLoad showLoadingText waitBeforeShow={2000}>
-                  <TitleWrapper>
-                    {lookingAtSelf ? (
-                      <>
-                        You&apos;re not following anyone.
-                      </>
-                    ) : (
-                      <>
-                        {organizationName}
-                        {' '}
-                        is not following anyone.
-                      </>
-                    )}
-                  </TitleWrapper>
-                </DelayedLoad>
+                <Suspense fallback={<></>}>
+                  <DelayedLoad showLoadingText waitBeforeShow={2000}>
+                    <TitleWrapper>
+                      {lookingAtSelf ? (
+                        <>
+                          You&apos;re not following anyone.
+                        </>
+                      ) : (
+                        <>
+                          {organizationName}
+                          {' '}
+                          is not following anyone.
+                        </>
+                      )}
+                    </TitleWrapper>
+                  </DelayedLoad>
+                </Suspense>
               )}
             {/* ********** */}
             {/* Search Box */}

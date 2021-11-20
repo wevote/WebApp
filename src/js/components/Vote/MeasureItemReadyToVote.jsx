@@ -1,6 +1,6 @@
 import { withStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
-import React, { Component } from 'react';
+import React, { Component, Suspense } from 'react';
 import styled from 'styled-components';
 import SupportStore from '../../stores/SupportStore';
 import VoterGuideStore from '../../stores/VoterGuideStore';
@@ -72,7 +72,9 @@ class MeasureItemReadyToVote extends Component {
                 </BioInformation>
               </BioColumn>
               <OfficeColumn>
-                <BallotItemSupportOpposeCountDisplay ballotItemWeVoteId={measureWeVoteId} />
+                <Suspense fallback={<></>}>
+                  <BallotItemSupportOpposeCountDisplay ballotItemWeVoteId={measureWeVoteId} />
+                </Suspense>
               </OfficeColumn>
             </InnerWrapper>
           )}

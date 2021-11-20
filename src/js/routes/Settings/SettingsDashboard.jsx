@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import React, { Component } from 'react';
+import React, { Component, Suspense } from 'react';
 import { Link } from 'react-router-dom';
 import BallotActions from '../../actions/BallotActions';
 import OrganizationActions from '../../actions/OrganizationActions';
@@ -286,7 +286,9 @@ export default class SettingsDashboard extends Component {
                 </div>
                 {/* Desktop mode content */}
                 <div className="col-md-8">
-                  {settingsComponentToDisplayDesktop}
+                  <Suspense fallback={<></>}>
+                    {settingsComponentToDisplayDesktop}
+                  </Suspense>
                 </div>
               </div>
             </div>
@@ -298,12 +300,16 @@ export default class SettingsDashboard extends Component {
             <div className="d-block d-md-none">
               {/* Mobile mode content */}
               <div className="col-12">
-                {settingsComponentToDisplayMobile}
+                <Suspense fallback={<></>}>
+                  {settingsComponentToDisplayMobile}
+                </Suspense>
               </div>
             </div>
           ) : (
             <div className="col-12">
-              {settingsComponentToDisplayMobile}
+              <Suspense fallback={<></>}>
+                {settingsComponentToDisplayMobile}
+              </Suspense>
             </div>
           )}
         </div>

@@ -1,6 +1,6 @@
 import { Card } from '@material-ui/core';
 import PropTypes from 'prop-types';
-import React, { Component } from 'react';
+import React, { Component, Suspense } from 'react';
 import styled from 'styled-components';
 import TwitterActions from '../../actions/TwitterActions';
 import LoadingWheel from '../../components/LoadingWheel';
@@ -89,9 +89,11 @@ class OrganizationVoterGuideMobileDetails extends Component {
     }
     return (
       <div>
-        <DelayedLoad showLoadingText waitBeforeShow={500}>
-          {DisplayContent}
-        </DelayedLoad>
+        <Suspense fallback={<></>}>
+          <DelayedLoad showLoadingText waitBeforeShow={500}>
+            {DisplayContent}
+          </DelayedLoad>
+        </Suspense>
       </div>
     );
   }

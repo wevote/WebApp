@@ -2,7 +2,7 @@ import { Button, Card, CircularProgress } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 import { Ballot } from '@material-ui/icons';
 import PropTypes from 'prop-types';
-import React, { Component } from 'react';
+import React, { Component, Suspense } from 'react';
 import styled from 'styled-components';
 import AppObservableStore from '../../stores/AppObservableStore';
 import BallotActions from '../../actions/BallotActions';
@@ -620,11 +620,13 @@ class VoterGuideSettingsAddPositions extends Component {
                 })}
               </CardChildListGroup>
               <ShowMoreItemsWrapper id="showMoreItemsId" onClick={this.increaseNumberOfPositionItemsToDisplay}>
-                <ShowMoreItems
-                  loadingMoreItemsNow={loadingMorePositionItems}
-                  numberOfItemsDisplayed={numberOfPositionItemsDisplayed}
-                  numberOfItemsTotal={isSearching ? totalNumberOfPositionSearchResults : totalNumberOfPositionItems}
-                />
+                <Suspense fallback={<></>}>
+                  <ShowMoreItems
+                    loadingMoreItemsNow={loadingMorePositionItems}
+                    numberOfItemsDisplayed={numberOfPositionItemsDisplayed}
+                    numberOfItemsTotal={isSearching ? totalNumberOfPositionSearchResults : totalNumberOfPositionItems}
+                  />
+                </Suspense>
               </ShowMoreItemsWrapper>
               <LoadingItemsWheel>
                 {loadingMorePositionItems ? (
@@ -785,11 +787,13 @@ class VoterGuideSettingsAddPositions extends Component {
                 })}
               </CardChildListGroup>
               <ShowMoreItemsWrapper id="showMoreItemsId" onClick={this.increaseNumberOfBallotItemsToDisplay}>
-                <ShowMoreItems
-                  loadingMoreItemsNow={loadingMoreBallotItems}
-                  numberOfItemsDisplayed={numberOfBallotItemsDisplayed}
-                  numberOfItemsTotal={isSearching ? totalNumberOfBallotSearchResults : totalNumberOfBallotItems}
-                />
+                <Suspense fallback={<></>}>
+                  <ShowMoreItems
+                    loadingMoreItemsNow={loadingMoreBallotItems}
+                    numberOfItemsDisplayed={numberOfBallotItemsDisplayed}
+                    numberOfItemsTotal={isSearching ? totalNumberOfBallotSearchResults : totalNumberOfBallotItems}
+                  />
+                </Suspense>
               </ShowMoreItemsWrapper>
               {/* <LoadingItemsWheel> */}
               {/*  {loadingMoreBallotItems ? ( */}

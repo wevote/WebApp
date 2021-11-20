@@ -1,5 +1,5 @@
 import { withStyles } from '@material-ui/core/styles';
-import React, { Component } from 'react';
+import React, { Component, Suspense } from 'react';
 import Helmet from 'react-helmet';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
@@ -16,9 +16,9 @@ import { cordovaDot } from '../../utils/cordovaUtils';
 import { renderLog } from '../../utils/logging';
 import ToolBar from './ToolBar';
 
-const WelcomeFooter = React.lazy(() => import(/* webpackChunkName: 'WelcomeFooter' */ '../../components/Welcome/WelcomeFooter'));
 const OpenExternalWebSite = React.lazy(() => import(/* webpackChunkName: 'OpenExternalWebSite' */ '../../components/Widgets/OpenExternalWebSite'));
 const WelcomeAppbar = React.lazy(() => import(/* webpackChunkName: 'WelcomeAppbar' */ '../../components/Navigation/WelcomeAppbar'));
+const WelcomeFooter = React.lazy(() => import(/* webpackChunkName: 'WelcomeFooter' */ '../../components/Welcome/WelcomeFooter'));
 
 class About extends Component {
   static getProps () {
@@ -83,7 +83,9 @@ class About extends Component {
     return (
       <Wrapper padTop={cordovaScrollablePaneTopPadding()}>
         <Helmet title="About We Vote" />
-        <WelcomeAppbar pathname="/more/about" />
+        <Suspense fallback={<></>}>
+          <WelcomeAppbar pathname="/more/about" />
+        </Suspense>
         <HeaderForAbout>
           <Title>About We Vote</Title>
           <ToolBar />
@@ -157,31 +159,35 @@ class About extends Component {
           <AboutDescriptionContainer>
             We Vote is made of two fully nonpartisan nonprofit organizations (501(c)(3) and 501(c)(4)) based in Oakland, California. Our software is open source, and our work is driven by over 100 volunteers who have contributed so far. Inspired by groups like
             {' '}
-            <OpenExternalWebSite
-              linkIdAttribute="codeForSF"
-              url="http://codeforsanfrancisco.org/"
-              target="_blank"
-              body={(
-                <span>
-                  Code for America&nbsp;
-                  <ExternalLinkIcon />
-                </span>
-              )}
-            />
+            <Suspense fallback={<></>}>
+              <OpenExternalWebSite
+                linkIdAttribute="codeForSF"
+                url="http://codeforsanfrancisco.org/"
+                target="_blank"
+                body={(
+                  <span>
+                    Code for America&nbsp;
+                    <ExternalLinkIcon />
+                  </span>
+                )}
+              />
+            </Suspense>
             and the
             {' '}
-            <OpenExternalWebSite
-              linkIdAttribute="mozilla"
-              url="https://www.mozilla.org/en-US/foundation/"
-              target="_blank"
-              className="open-web-site open-web-site__no-right-padding"
-              body={(
-                <span>
-                  Mozilla Foundation&nbsp;
-                  <ExternalLinkIcon />
-                </span>
-              )}
-            />
+            <Suspense fallback={<></>}>
+              <OpenExternalWebSite
+                linkIdAttribute="mozilla"
+                url="https://www.mozilla.org/en-US/foundation/"
+                target="_blank"
+                className="open-web-site open-web-site__no-right-padding"
+                body={(
+                  <span>
+                    Mozilla Foundation&nbsp;
+                    <ExternalLinkIcon />
+                  </span>
+                )}
+              />
+            </Suspense>
             , we use technology to make democracy stronger by increasing voter turnout. Our incredible teams of volunteers help us to compile and verify endorsement data from every election.
           </AboutDescriptionContainer>
           <AboutDescriptionContainer>
@@ -296,7 +302,9 @@ class About extends Component {
         <Section>
           &nbsp;
         </Section>
-        <WelcomeFooter />
+        <Suspense fallback={<></>}>
+          <WelcomeFooter />
+        </Suspense>
       </Wrapper>
     );
   }

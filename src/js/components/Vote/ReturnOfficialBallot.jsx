@@ -1,5 +1,5 @@
 import { withStyles } from '@material-ui/core/styles/index';
-import React, { Component } from 'react';
+import React, { Component, Suspense } from 'react';
 import styled from 'styled-components';
 import Cookies from '../../utils/js-cookie/Cookies';
 import { renderLog } from '../../utils/logging';
@@ -57,12 +57,14 @@ class ReturnOfficialBallot extends Component {
             Make sure to return your official ballot!
             {' '}
             <HidePopupWrapper>
-              <OpenExternalWebSite
-                linkIdAttribute="weVoteCastVote"
-                url="https://help.wevote.us/hc/en-us/articles/115002401353-Can-I-cast-my-vote-with-We-Vote-"
-                target="_blank"
-                body="See more information about casting your official vote."
-              />
+              <Suspense fallback={<></>}>
+                <OpenExternalWebSite
+                  linkIdAttribute="weVoteCastVote"
+                  url="https://help.wevote.us/hc/en-us/articles/115002401353-Can-I-cast-my-vote-with-We-Vote-"
+                  target="_blank"
+                  body="See more information about casting your official vote."
+                />
+              </Suspense>
             </HidePopupWrapper>
           </ParagraphStyled>
           <CloseComponent id="closeReturnOfficialBallot" onClick={this.closeReturnOfficialBallot}>

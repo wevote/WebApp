@@ -3,7 +3,7 @@ import { withStyles, withTheme } from '@material-ui/core/styles';
 import { Close, Info } from '@material-ui/icons';
 import clsx from 'clsx';
 import PropTypes from 'prop-types';
-import React, { Component } from 'react';
+import React, { Component, Suspense } from 'react';
 import styled from 'styled-components';
 import BallotActions from '../../actions/BallotActions';
 import OrganizationActions from '../../actions/OrganizationActions';
@@ -254,10 +254,12 @@ class SharedItemModal extends Component {
               (Optional)
             </IntroHeaderOptional>
           </IntroHeader>
-          <SettingsAccount
-            pleaseSignInTextOff
-            inModal
-          />
+          <Suspense fallback={<></>}>
+            <SettingsAccount
+              pleaseSignInTextOff
+              inModal
+            />
+          </Suspense>
         </SignInWrapper>
       );
     }
@@ -460,14 +462,16 @@ class SharedItemModal extends Component {
                     >
                       {/* SharedByOrganization Image */}
                       <OrganizationImageWrapper>
-                        <ImageHandler
-                          className={avatarCompressed}
-                          sizeClassName="icon-candidate-small u-push--sm "
-                          imageUrl={organizationPhotoUrlMedium}
-                          alt={`${organizationName}`}
-                          kind_of_ballot_item="CANDIDATE"
-                          style={{ backgroundImage: { avatarBackgroundImage } }}
-                        />
+                        <Suspense fallback={<></>}>
+                          <ImageHandler
+                            className={avatarCompressed}
+                            sizeClassName="icon-candidate-small u-push--sm "
+                            imageUrl={organizationPhotoUrlMedium}
+                            alt={`${organizationName}`}
+                            kind_of_ballot_item="CANDIDATE"
+                            style={{ backgroundImage: { avatarBackgroundImage } }}
+                          />
+                        </Suspense>
                       </OrganizationImageWrapper>
                       {/* SharedByOrganization Name */}
                       <OrganizationNameColumn>
@@ -498,12 +502,14 @@ class SharedItemModal extends Component {
                         </FriendToggleWrapper>
                       )}
                       <FollowToggleWrapper>
-                        <FollowToggle
-                          lightModeOn
-                          organizationWeVoteId={sharedByOrganizationWeVoteId}
-                          platformType="allPlatforms"
-                          showFollowingText
-                        />
+                        <Suspense fallback={<></>}>
+                          <FollowToggle
+                            lightModeOn
+                            organizationWeVoteId={sharedByOrganizationWeVoteId}
+                            platformType="allPlatforms"
+                            showFollowingText
+                          />
+                        </Suspense>
                       </FollowToggleWrapper>
                     </ActionButtonsRow>
                   </SharedByOrganizationBottomRow>

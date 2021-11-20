@@ -1,7 +1,7 @@
 import { Button } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
-import React, { Component } from 'react';
+import React, { Component, Suspense } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { cordovaDot, historyPush, isWebApp } from '../../utils/cordovaUtils';
@@ -30,13 +30,21 @@ class WelcomeFooter extends Component {
               <ColumnTitle>Elections</ColumnTitle>
               <Link id="footerLinkSupportedElections" className={classes.link} to="/more/elections">Supported Elections</Link>
               {isWebApp() ?
-                <Link id="footerLinkRegisterToVote" className={classes.link} to="/more/register">Register to Vote</Link> :
-                <OpenExternalWebSite linkIdAttribute="registerToVoter" className={classes.link} url="https://register.vote.org/?partner=111111&campaign=free-tools" target="_blank" body={(<span>Register to Vote</span>)} />}
+                <Link id="footerLinkRegisterToVote" className={classes.link} to="/more/register">Register to Vote</Link> : (
+                  <Suspense fallback={<></>}>
+                    <OpenExternalWebSite linkIdAttribute="registerToVoter" className={classes.link} url="https://register.vote.org/?partner=111111&campaign=free-tools" target="_blank" body={(<span>Register to Vote</span>)} />
+                  </Suspense>
+                )}
               {isWebApp() ?
-                <Link id="footerLinkGetYourAbsenteeBallot" className={classes.link} to="/more/absentee">Get Your Absentee Ballot</Link> :
-                <OpenExternalWebSite linkIdAttribute="getYourAbsenteeBallot" className={classes.link} url="https://absentee.vote.org/?partner=111111&campaign=free-tools" target="_blank" body={(<span>Get Your Absentee Ballot</span>)} />}
+                <Link id="footerLinkGetYourAbsenteeBallot" className={classes.link} to="/more/absentee">Get Your Absentee Ballot</Link> : (
+                  <Suspense fallback={<></>}>
+                    <OpenExternalWebSite linkIdAttribute="getYourAbsenteeBallot" className={classes.link} url="https://absentee.vote.org/?partner=111111&campaign=free-tools" target="_blank" body={(<span>Get Your Absentee Ballot</span>)} />
+                  </Suspense>
+                )}
               <Link id="footerLinkSeeYourBallot" className={classes.link} to="/ballot">See Your Ballot</Link>
-              <OpenExternalWebSite linkIdAttribute="pollingPlaceLocator" className={classes.link} url="https://gttp.votinginfoproject.org/" target="_blank" body={(<span>Polling Place Locator</span>)} />
+              <Suspense fallback={<></>}>
+                <OpenExternalWebSite linkIdAttribute="pollingPlaceLocator" className={classes.link} url="https://gttp.votinginfoproject.org/" target="_blank" body={(<span>Polling Place Locator</span>)} />
+              </Suspense>
               <Link id="footerLinkFreeOnlineTools" className={classes.link} to="/settings/tools">Free Online Tools</Link>
               <Link id="footerLinkPremiumOnlineTools" className={classes.link} to="/settings/tools">Premium Online Tools</Link>
             </Column>
@@ -47,81 +55,97 @@ class WelcomeFooter extends Component {
               {isWebApp() && (
                 <Link id="footerLinkDonate" className={classes.link} to="/more/donate">Donate</Link>
               )}
-              <OpenExternalWebSite
-                linkIdAttribute="footerLinkBlog"
-                url="https://blog.wevote.us/"
-                target="_blank"
-                body={(
-                  <span>Blog</span>
-                )}
-                className={classes.link}
-              />
-              <OpenExternalWebSite
-                linkIdAttribute="footerLinkMediaInquiries"
-                url="https://help.wevote.us/hc/en-us/requests/new"
-                target="_blank"
-                body={(
-                  <span>Media Inquiries</span>
-                )}
-                className={classes.link}
-              />
-              <OpenExternalWebSite
-                linkIdAttribute="footerLinkCareers"
-                url="https://www.idealist.org/en/nonprofit/f917ce3db61a46cb8ad2b0d4e335f0af-we-vote-oakland#volops"
-                target="_blank"
-                body={(
-                  <span>Careers</span>
-                )}
-                className={classes.link}
-              />
-              <OpenExternalWebSite
-                linkIdAttribute="footerLinkJoinOurNewsletter"
-                url="http://eepurl.com/cx_frP"
-                target="_blank"
-                body={(
-                  <span>Join Our Newsletter</span>
-                )}
-                className={classes.link}
-              />
-              <OpenExternalWebSite
-                linkIdAttribute="footerLinkFacebook"
-                url="https://www.facebook.com/WeVoteUSA/"
-                target="_blank"
-                body={(
-                  <span>Facebook - WeVoteUSA</span>
-                )}
-                className={classes.link}
-              />
-              <OpenExternalWebSite
-                linkIdAttribute="footerLinkTwitter"
-                url="https://twitter.com/WeVote"
-                target="_blank"
-                body={(
-                  <span>Twitter - @WeVote</span>
-                )}
-                className={classes.link}
-              />
-              <OpenExternalWebSite
-                linkIdAttribute="footerLinkInstagram"
-                url="https://instagram.com/WeVote"
-                target="_blank"
-                body={(
-                  <span>Instagram - @WeVote</span>
-                )}
-                className={classes.link}
-              />
+              <Suspense fallback={<></>}>
+                <OpenExternalWebSite
+                  linkIdAttribute="footerLinkBlog"
+                  url="https://blog.wevote.us/"
+                  target="_blank"
+                  body={(
+                    <span>Blog</span>
+                  )}
+                  className={classes.link}
+                />
+              </Suspense>
+              <Suspense fallback={<></>}>
+                <OpenExternalWebSite
+                  linkIdAttribute="footerLinkMediaInquiries"
+                  url="https://help.wevote.us/hc/en-us/requests/new"
+                  target="_blank"
+                  body={(
+                    <span>Media Inquiries</span>
+                  )}
+                  className={classes.link}
+                />
+              </Suspense>
+              <Suspense fallback={<></>}>
+                <OpenExternalWebSite
+                  linkIdAttribute="footerLinkCareers"
+                  url="https://www.idealist.org/en/nonprofit/f917ce3db61a46cb8ad2b0d4e335f0af-we-vote-oakland#volops"
+                  target="_blank"
+                  body={(
+                    <span>Careers</span>
+                  )}
+                  className={classes.link}
+                />
+              </Suspense>
+              <Suspense fallback={<></>}>
+                <OpenExternalWebSite
+                  linkIdAttribute="footerLinkJoinOurNewsletter"
+                  url="http://eepurl.com/cx_frP"
+                  target="_blank"
+                  body={(
+                    <span>Join Our Newsletter</span>
+                  )}
+                  className={classes.link}
+                />
+              </Suspense>
+              <Suspense fallback={<></>}>
+                <OpenExternalWebSite
+                  linkIdAttribute="footerLinkFacebook"
+                  url="https://www.facebook.com/WeVoteUSA/"
+                  target="_blank"
+                  body={(
+                    <span>Facebook - WeVoteUSA</span>
+                  )}
+                  className={classes.link}
+                />
+              </Suspense>
+              <Suspense fallback={<></>}>
+                <OpenExternalWebSite
+                  linkIdAttribute="footerLinkTwitter"
+                  url="https://twitter.com/WeVote"
+                  target="_blank"
+                  body={(
+                    <span>Twitter - @WeVote</span>
+                  )}
+                  className={classes.link}
+                />
+              </Suspense>
+              <Suspense fallback={<></>}>
+                <OpenExternalWebSite
+                  linkIdAttribute="footerLinkInstagram"
+                  url="https://instagram.com/WeVote"
+                  target="_blank"
+                  body={(
+                    <span>Instagram - @WeVote</span>
+                  )}
+                  className={classes.link}
+                />
+              </Suspense>
             </Column>
             <Column>
               <ColumnTitle>Support</ColumnTitle>
-              <OpenExternalWebSite
-                linkIdAttribute="footerLinkWeVoteHelp"
-                url="https://help.wevote.us/hc/en-us"
-                target="_blank"
-                body={(
-                  <span>We Vote Help</span>
-                )}
-                className={classes.link}
-              />
+              <Suspense fallback={<></>}>
+                <OpenExternalWebSite
+                  linkIdAttribute="footerLinkWeVoteHelp"
+                  url="https://help.wevote.us/hc/en-us"
+                  target="_blank"
+                  body={(
+                    <span>We Vote Help</span>
+                  )}
+                  className={classes.link}
+                />
+              </Suspense>
               <Link id="footerLinkPrivacy" className={classes.link} to="/more/privacy">Privacy Policy</Link>
               <Link id="footerLinkTermsOfUse" className={classes.link} to="/more/terms">Terms of Service</Link>
               <Link id="footerLinkAttributions" className={classes.link} to="/more/attributions">Attributions</Link>
@@ -152,51 +176,57 @@ class WelcomeFooter extends Component {
           <Text>
             The software that powers We Vote is
             {' '}
-            <OpenExternalWebSite
-              linkIdAttribute="footerLinkOpenSource"
-              url="https://github.com/WeVote"
-              target="_blank"
-              body={(
-                <span>open source</span>
-              )}
-              className={classes.bottomLink}
-            />
+            <Suspense fallback={<></>}>
+              <OpenExternalWebSite
+                linkIdAttribute="footerLinkOpenSource"
+                url="https://github.com/WeVote"
+                target="_blank"
+                body={(
+                  <span>open source</span>
+                )}
+                className={classes.bottomLink}
+              />
+            </Suspense>
             .
           </Text>
           <BadgeContainer>
             <span
               role="presentation"
             >
-              <OpenExternalWebSite
-                linkIdAttribute="googleBadge"
-                className={classes.link}
-                url="https://play.google.com/store/apps/details?id=org.wevote.cordova&hl=en_US"
-                target="_blank"
-                body={(
-                  <img
-                    alt="Google Play Store badge"
-                    src={cordovaDot(googlePlayIcon)}
-                    className={classes.badgeIcon}
-                  />
-                )}
-              />
+              <Suspense fallback={<></>}>
+                <OpenExternalWebSite
+                  linkIdAttribute="googleBadge"
+                  className={classes.link}
+                  url="https://play.google.com/store/apps/details?id=org.wevote.cordova&hl=en_US"
+                  target="_blank"
+                  body={(
+                    <img
+                      alt="Google Play Store badge"
+                      src={cordovaDot(googlePlayIcon)}
+                      className={classes.badgeIcon}
+                    />
+                  )}
+                />
+              </Suspense>
             </span>
             <span
               role="presentation"
             >
-              <OpenExternalWebSite
-                linkIdAttribute="appleBadge"
-                className={classes.link}
-                url="https://apps.apple.com/us/app/we-vote-voter-guide/id1347335726"
-                target="_blank"
-                body={(
-                  <img
-                    alt="Apple App Store badge"
-                    src={cordovaDot(appStoreIcon)}
-                    className={classes.appleBadgeIcon}
-                  />
-                )}
-              />
+              <Suspense fallback={<></>}>
+                <OpenExternalWebSite
+                  linkIdAttribute="appleBadge"
+                  className={classes.link}
+                  url="https://apps.apple.com/us/app/we-vote-voter-guide/id1347335726"
+                  target="_blank"
+                  body={(
+                    <img
+                      alt="Apple App Store badge"
+                      src={cordovaDot(appStoreIcon)}
+                      className={classes.appleBadgeIcon}
+                    />
+                  )}
+                />
+              </Suspense>
             </span>
           </BadgeContainer>
         </Bottom>

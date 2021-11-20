@@ -1,6 +1,6 @@
 import { withStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
-import React, { Component } from 'react';
+import React, { Component, Suspense } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { renderLog } from '../../utils/logging';
@@ -37,7 +37,11 @@ class HamburgerMenuRow extends Component {
             <Link onClick={this.onClickAction} to={this.props.to}>
               <LinkTextWrapper>
                 {this.props.linkText}
-                {showProChip ? <SettingsAccountLevelChip onClickDisabled requiredFeaturePackage="PROFESSIONAL" /> : null}
+                {showProChip ? (
+                  <Suspense fallback={<></>}>
+                    <SettingsAccountLevelChip onClickDisabled requiredFeaturePackage="PROFESSIONAL" />
+                  </Suspense>
+                ) : null}
               </LinkTextWrapper>
             </Link>
           </td>

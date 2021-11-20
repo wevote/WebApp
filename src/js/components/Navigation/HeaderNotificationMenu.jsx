@@ -2,7 +2,7 @@ import { Badge, IconButton, Menu, MenuItem } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 import { Notifications } from '@material-ui/icons';
 import PropTypes from 'prop-types';
-import React, { Component } from 'react';
+import React, { Component, Suspense } from 'react';
 import styled from 'styled-components';
 import ActivityActions from '../../actions/ActivityActions';
 import ActivityStore from '../../stores/ActivityStore';
@@ -203,11 +203,13 @@ class HeaderNotificationMenu extends Component {
           >
             <MenuItemInternalWrapper>
               <MenuItemPhoto>
-                <ImageHandler
-                  alt="Inviting"
-                  imageUrl={activityNotice.speaker_profile_image_url_medium || activityNotice.speaker_profile_image_url_tiny}
-                  kind_of_image="CANDIDATE"
-                />
+                <Suspense fallback={<></>}>
+                  <ImageHandler
+                    alt="Inviting"
+                    imageUrl={activityNotice.speaker_profile_image_url_medium || activityNotice.speaker_profile_image_url_tiny}
+                    kind_of_image="CANDIDATE"
+                  />
+                </Suspense>
               </MenuItemPhoto>
               <MenuItemText>
                 <div>

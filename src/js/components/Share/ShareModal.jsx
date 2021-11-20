@@ -2,7 +2,7 @@ import { Button, Dialog, DialogContent, IconButton, Tooltip } from '@material-ui
 import { withStyles, withTheme } from '@material-ui/core/styles';
 import { ArrowBackIos, Close, FileCopyOutlined, People } from '@material-ui/icons';
 import PropTypes from 'prop-types';
-import React, { Component } from 'react';
+import React, { Component, Suspense } from 'react';
 import { EmailIcon, EmailShareButton, FacebookIcon, FacebookShareButton, TwitterIcon, TwitterShareButton } from 'react-share';
 import styled from 'styled-components';
 import AnalyticsActions from '../../actions/AnalyticsActions';
@@ -490,18 +490,20 @@ class ShareModal extends Component {
                 />
               </Flex>
               {isWebApp() && (  // This has many problems in Cordova
-                <OpenExternalWebSite
-                  linkIdAttribute="allOpinions"
-                  url={linkToBeShared}
-                  target="_blank"
-                  // title={this.props.title}
-                  className="u-no-underline"
-                  body={(
-                    <Button className={classes.previewButton} variant="outlined" fullWidth color="primary">
-                      Preview Link in New Window
-                    </Button>
-                  )}
-                />
+                <Suspense fallback={<></>}>
+                  <OpenExternalWebSite
+                    linkIdAttribute="allOpinions"
+                    url={linkToBeShared}
+                    target="_blank"
+                    // title={this.props.title}
+                    className="u-no-underline"
+                    body={(
+                      <Button className={classes.previewButton} variant="outlined" fullWidth color="primary">
+                        Preview Link in New Window
+                      </Button>
+                    )}
+                  />
+                </Suspense>
               )}
             </div>
           </DialogContent>

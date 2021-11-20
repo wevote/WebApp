@@ -441,7 +441,7 @@ class VoterGuidePositionList extends Component {
             <>
               {(filteredPositionList && !filteredPositionListLength) && (
                 <NoResultsText>
-                  Please change the filters to see endorsements.
+                  Please change the filters to see past or other endorsements.
                 </NoResultsText>
               )}
             </>

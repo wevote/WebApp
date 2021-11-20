@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Suspense } from 'react';
 import Helmet from 'react-helmet';
 import { renderLog } from '../../utils/logging';
 import { PageContentContainer } from '../../utils/pageLayoutStyles';
@@ -25,12 +25,14 @@ export default class Privacy extends React.Component {
           <p>
             <span>We Vote USA has created this privacy policy to explain how We Vote (or “we”) uses information that we collect from you while you visit We Vote, currently located at </span>
             <span>
-              <OpenExternalWebSite
-                linkIdAttribute="wevote"
-                url="https://WeVote.US/"
-                target="_blank"
-                body={<span>WeVote.US</span>}
-              />
+              <Suspense fallback={<></>}>
+                <OpenExternalWebSite
+                  linkIdAttribute="wevote"
+                  url="https://WeVote.US/"
+                  target="_blank"
+                  body={<span>WeVote.US</span>}
+                />
+              </Suspense>
               {' '}
               and provided in mobile apps (the “Site”),
               or while you use a portion of We Vote that is embedded on another website (the “Services”).  We Vote may modify this policy from time to time, so we encourage you to check this page when revisiting the Site.  The date of the most recent revision is listed above.
@@ -39,12 +41,14 @@ export default class Privacy extends React.Component {
           <p>
             You can find additional explanations of our Privacy Policy in our
             {' '}
-            <OpenExternalWebSite
-              linkIdAttribute="wevotePrivacy"
-              url="https://help.wevote.us/hc/en-us/sections/115000140987-Security-Technology"
-              target="_blank"
-              body={<span>Help Center</span>}
-            />
+            <Suspense fallback={<></>}>
+              <OpenExternalWebSite
+                linkIdAttribute="wevotePrivacy"
+                url="https://help.wevote.us/hc/en-us/sections/115000140987-Security-Technology"
+                target="_blank"
+                body={<span>Help Center</span>}
+              />
+            </Suspense>
             .
           </p>
           <h2><b>Why we use your information</b></h2>
@@ -164,12 +168,14 @@ export default class Privacy extends React.Component {
           <p>
             <span>
               You may request the deletion of all of the data we have about you by
-              <OpenExternalWebSite
-                linkIdAttribute="weVoteContactUsPage"
-                url="https://help.wevote.us/hc/en-us/requests/new"
-                target="_blank"
-                body=" submitting a request here."
-              />
+              <Suspense fallback={<></>}>
+                <OpenExternalWebSite
+                  linkIdAttribute="weVoteContactUsPage"
+                  url="https://help.wevote.us/hc/en-us/requests/new"
+                  target="_blank"
+                  body=" submitting a request here."
+                />
+              </Suspense>
             </span>
           </p>
           <h2><b>Donations and credit card information</b></h2>
@@ -193,22 +199,26 @@ export default class Privacy extends React.Component {
           <p>
             <span>We also use third-party services such as Google Analytics </span>
             <span>
-              <OpenExternalWebSite
-                linkIdAttribute="googleAnalytics"
-                url="https://policies.google.com/privacy"
-                target="_blank"
-                body={<span>https://policies.google.com/privacy</span>}
-              />
+              <Suspense fallback={<></>}>
+                <OpenExternalWebSite
+                  linkIdAttribute="googleAnalytics"
+                  url="https://policies.google.com/privacy"
+                  target="_blank"
+                  body={<span>https://policies.google.com/privacy</span>}
+                />
+              </Suspense>
             </span>
             <span>
               {' '}
               and Full Story (
-              <OpenExternalWebSite
-                linkIdAttribute="fullStoryPrivacy"
-                url="https://www.fullstory.com/legal/privacy/"
-                target="_blank"
-                body={<span>https://www.fullstory.com/legal/privacy/</span>}
-              />
+              <Suspense fallback={<></>}>
+                <OpenExternalWebSite
+                  linkIdAttribute="fullStoryPrivacy"
+                  url="https://www.fullstory.com/legal/privacy/"
+                  target="_blank"
+                  body={<span>https://www.fullstory.com/legal/privacy/</span>}
+                />
+              </Suspense>
               ).
             </span>
             <span> They help us understand traffic patterns and know if there are problems with our Site. We may also use embedded images in emails to track open rates for our mailings, so that we can tell which mailings appeal most to We Vote subscribers.</span>

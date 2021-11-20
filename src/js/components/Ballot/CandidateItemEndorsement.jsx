@@ -3,7 +3,7 @@ import { Button, TextField } from '@material-ui/core';
 import { createMuiTheme, MuiThemeProvider, withStyles } from '@material-ui/core/styles';
 import { Twitter } from '@material-ui/icons';
 import PropTypes from 'prop-types';
-import React, { Component } from 'react';
+import React, { Component, Suspense } from 'react';
 import styled from 'styled-components';
 import VoterGuidePossibilityActions from '../../actions/VoterGuidePossibilityActions';
 import CandidateStore from '../../stores/CandidateStore';
@@ -370,13 +370,15 @@ class CandidateItemEndorsement extends Component {
         <CandidateWrapper className="card-main__media-object">
           <CandidateInfo>
             <div className="card-main__media-object-anchor">
-              <ImageHandler
-                className="card-main__avatar"
-                sizeClassName="icon-office-child "
-                imageUrl={candidatePhotoUrl}
-                alt="candidate-photo"
-                kind_of_ballot_item="CANDIDATE"
-              />
+              <Suspense fallback={<></>}>
+                <ImageHandler
+                  className="card-main__avatar"
+                  sizeClassName="icon-office-child "
+                  imageUrl={candidatePhotoUrl}
+                  alt="candidate-photo"
+                  kind_of_ballot_item="CANDIDATE"
+                />
+              </Suspense>
             </div>
             <Candidate>
               <h2 className="card-main__display-name">
@@ -392,28 +394,32 @@ class CandidateItemEndorsement extends Component {
               )}
               {(!hideCandidateUrl && candidateUrl) && (
                 <ExternalWebSiteWrapper className="u-show-desktop">
-                  <OpenExternalWebSite
-                    linkIdAttribute="candidateMobile"
-                    url={candidateUrl}
-                    target="_blank"
-                    className="u-gray-mid"
-                    body={(
-                      <span>
-                        candidate website
-                        {' '}
-                        <ExternalLinkIcon />
-                      </span>
-                    )}
-                  />
+                  <Suspense fallback={<></>}>
+                    <OpenExternalWebSite
+                      linkIdAttribute="candidateMobile"
+                      url={candidateUrl}
+                      target="_blank"
+                      className="u-gray-mid"
+                      body={(
+                        <span>
+                          candidate website
+                          {' '}
+                          <ExternalLinkIcon />
+                        </span>
+                      )}
+                    />
+                  </Suspense>
                 </ExternalWebSiteWrapper>
               )}
               { contestOfficeName && (
                 <div>
-                  <OfficeNameText
-                    contestOfficeName={contestOfficeName}
-                    politicalParty={politicalParty}
-                    showOfficeName={showOfficeName}
-                  />
+                  <Suspense fallback={<></>}>
+                    <OfficeNameText
+                      contestOfficeName={contestOfficeName}
+                      politicalParty={politicalParty}
+                      showOfficeName={showOfficeName}
+                    />
+                  </Suspense>
                 </div>
               )}
             </Candidate>

@@ -1,6 +1,6 @@
 /* eslint-disable quotes */
 import PropTypes from 'prop-types';
-import React, { Component } from 'react';
+import React, { Component, Suspense } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import VoterGuideStore from '../../stores/VoterGuideStore';
@@ -202,10 +202,12 @@ class IssueCard extends Component {
         </Flex>
         { !turnOffDescription && (
           <Description>
-            <ReadMore
-              textToDisplay={issueDescription}
-              numberOfLines={numberOfLines}
-            />
+            <Suspense fallback={<></>}>
+              <ReadMore
+                textToDisplay={issueDescription}
+                numberOfLines={numberOfLines}
+              />
+            </Suspense>
           </Description>
         )}
       </Wrapper>

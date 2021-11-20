@@ -1,6 +1,6 @@
 import { withTheme } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
-import React, { Component } from 'react';
+import React, { Component, Suspense } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { renderLog } from '../../utils/logging';
@@ -158,10 +158,12 @@ class IssueCardCompressed extends Component {
                 <Link to={this.getIssueLink}
                       className="u-no-underline"
                 >
-                  <ReadMore
-                    textToDisplay={issueDescription}
-                    numberOfLines={numberOfLines}
-                  />
+                  <Suspense fallback={<></>}>
+                    <ReadMore
+                      textToDisplay={issueDescription}
+                      numberOfLines={numberOfLines}
+                    />
+                  </Suspense>
                 </Link>
               </Description>
             )}

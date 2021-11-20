@@ -1,5 +1,5 @@
 import { withStyles } from '@material-ui/core/styles';
-import React, { Component } from 'react';
+import React, { Component, Suspense } from 'react';
 import Helmet from 'react-helmet';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
@@ -10,9 +10,9 @@ import cordovaScrollablePaneTopPadding from '../../utils/cordovaScrollablePaneTo
 import { isWebApp } from '../../utils/cordovaUtils';
 import { renderLog } from '../../utils/logging';
 
-const WelcomeFooter = React.lazy(() => import(/* webpackChunkName: 'WelcomeFooter' */ '../../components/Welcome/WelcomeFooter'));
 const OpenExternalWebSite = React.lazy(() => import(/* webpackChunkName: 'OpenExternalWebSite' */ '../../components/Widgets/OpenExternalWebSite'));
 const WelcomeAppbar = React.lazy(() => import(/* webpackChunkName: 'WelcomeAppbar' */ '../../components/Navigation/WelcomeAppbar'));
+const WelcomeFooter = React.lazy(() => import(/* webpackChunkName: 'WelcomeFooter' */ '../../components/Welcome/WelcomeFooter'));
 
 
 class Credits extends Component {
@@ -29,7 +29,9 @@ class Credits extends Component {
     return (
       <Wrapper>
         <Helmet title="Credits - We Vote" />
-        <WelcomeAppbar pathname="/more/pricing" />
+        <Suspense fallback={<></>}>
+          <WelcomeAppbar pathname="/more/pricing" />
+        </Suspense>
         <HeaderForCredits>
           <CreditsTitle>Credits &amp; Thanks</CreditsTitle>
         </HeaderForCredits>
@@ -82,18 +84,20 @@ class Credits extends Component {
             We couldn&apos;t do what we do without your help.
             {' '}
             Please join us by
-            <OpenExternalWebSite
-              linkIdAttribute="wevoteJoinUs"
-              url="https://www.idealist.org/en/nonprofit/f917ce3db61a46cb8ad2b0d4e335f0af-we-vote-oakland#volops"
-              target="_blank"
-              className="open-web-site open-web-site__no-right-padding"
-              body={(
-                <span>
-                  finding a role that excites you on our page at Idealist.org&nbsp;
-                  <ExternalLinkIcon />
-                </span>
-              )}
-            />
+            <Suspense fallback={<></>}>
+              <OpenExternalWebSite
+                linkIdAttribute="wevoteJoinUs"
+                url="https://www.idealist.org/en/nonprofit/f917ce3db61a46cb8ad2b0d4e335f0af-we-vote-oakland#volops"
+                target="_blank"
+                className="open-web-site open-web-site__no-right-padding"
+                body={(
+                  <span>
+                    finding a role that excites you on our page at Idealist.org&nbsp;
+                    <ExternalLinkIcon />
+                  </span>
+                )}
+              />
+            </Suspense>
             {isWebApp() && (
               <span>
                 , or
@@ -130,7 +134,9 @@ class Credits extends Component {
             (Our apologies if you should be on this list and are missing. Please contact Dale McGrew with corrections.)
           </CreditsDescriptionContainer>
         </Section>
-        <WelcomeFooter />
+        <Suspense fallback={<></>}>
+          <WelcomeFooter />
+        </Suspense>
       </Wrapper>
     );
   }

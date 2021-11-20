@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, Suspense } from 'react';
 import Helmet from 'react-helmet';
 import styled from 'styled-components';
 import OrganizationActions from '../../actions/OrganizationActions';
@@ -170,9 +170,11 @@ class VoterGuideListDashboard extends Component {
                       searchUnderwayFunction={this.searchUnderway}
                 />
                 { !voterIsSignedIn && (
-                  <DelayedLoad waitBeforeShow={1000}>
-                    <SettingsAccount />
-                  </DelayedLoad>
+                  <Suspense fallback={<></>}>
+                    <DelayedLoad waitBeforeShow={1000}>
+                      <SettingsAccount />
+                    </DelayedLoad>
+                  </Suspense>
                 )}
                 {!(searchIsUnderway) && (
                   <div className="card">

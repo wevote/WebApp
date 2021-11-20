@@ -2,7 +2,7 @@ import { IconButton, Tooltip } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 import { Facebook, GitHub, Instagram, Mail, Twitter } from '@material-ui/icons';
 import { styled as muiStyled } from '@material-ui/styles';
-import React from 'react';
+import React, { Suspense } from 'react';
 import styled from 'styled-components';
 import { cordovaDot } from '../../utils/cordovaUtils';
 import { renderLog } from '../../utils/logging';
@@ -18,95 +18,107 @@ function ToolBar (params) {
   return (
     <div>
       <ToolBarContainer className="btn-toolbar">
-        <OpenExternalWebSite
-          linkIdAttribute="wevoteTwitter"
-          className="u-no-underline"
-          url="https://twitter.com/WeVote"
-          target="_blank"
-          body={(
-            <Tooltip title="Twitter">
-              <IconButton>
-                <TwitterStyled />
-              </IconButton>
-            </Tooltip>
-          )}
-        />
-
-        <OpenExternalWebSite
-          linkIdAttribute="wevoteFacebook"
-          className="u-no-underline"
-          url="https://www.facebook.com/WeVoteUSA"
-          target="_blank"
-          body={(
-            <Tooltip title="Facebook">
-              <IconButton>
-                <FacebookStyled />
-              </IconButton>
-            </Tooltip>
-          )}
-        />
-
-        <OpenExternalWebSite
-          linkIdAttribute="wevoteInstagram"
-          className="u-no-underline"
-          url="https://www.instagram.com/WeVote"
-          target="_blank"
-          body={(
-            <Tooltip title="Instagram">
-              <IconButton>
-                <InstagramStyled />
-              </IconButton>
-            </Tooltip>
-          )}
-        />
-
-        <OpenExternalWebSite
-          linkIdAttribute="eepurl"
-          className="u-no-underline"
-          url="http://eepurl.com/cx_frP"
-          target="_blank"
-          body={(
-            <Tooltip title="Newsletter">
-              <IconButton>
-                <MailStyled />
-              </IconButton>
-            </Tooltip>
-          )}
-        />
-
-        {!hideGitHub && (
+        <Suspense fallback={<></>}>
           <OpenExternalWebSite
-            linkIdAttribute="wevoteGithub"
+            linkIdAttribute="wevoteTwitter"
             className="u-no-underline"
-            url="https://github.com/WeVote"
+            url="https://twitter.com/WeVote"
             target="_blank"
             body={(
-              <Tooltip title="Github">
+              <Tooltip title="Twitter">
                 <IconButton>
-                  <GitHubStyled />
+                  <TwitterStyled />
                 </IconButton>
               </Tooltip>
             )}
           />
+        </Suspense>
+
+        <Suspense fallback={<></>}>
+          <OpenExternalWebSite
+            linkIdAttribute="wevoteFacebook"
+            className="u-no-underline"
+            url="https://www.facebook.com/WeVoteUSA"
+            target="_blank"
+            body={(
+              <Tooltip title="Facebook">
+                <IconButton>
+                  <FacebookStyled />
+                </IconButton>
+              </Tooltip>
+            )}
+          />
+        </Suspense>
+
+        <Suspense fallback={<></>}>
+          <OpenExternalWebSite
+            linkIdAttribute="wevoteInstagram"
+            className="u-no-underline"
+            url="https://www.instagram.com/WeVote"
+            target="_blank"
+            body={(
+              <Tooltip title="Instagram">
+                <IconButton>
+                  <InstagramStyled />
+                </IconButton>
+              </Tooltip>
+            )}
+          />
+        </Suspense>
+
+        <Suspense fallback={<></>}>
+          <OpenExternalWebSite
+            linkIdAttribute="eepurl"
+            className="u-no-underline"
+            url="http://eepurl.com/cx_frP"
+            target="_blank"
+            body={(
+              <Tooltip title="Newsletter">
+                <IconButton>
+                  <MailStyled />
+                </IconButton>
+              </Tooltip>
+            )}
+          />
+        </Suspense>
+
+        {!hideGitHub && (
+          <Suspense fallback={<></>}>
+            <OpenExternalWebSite
+              linkIdAttribute="wevoteGithub"
+              className="u-no-underline"
+              url="https://github.com/WeVote"
+              target="_blank"
+              body={(
+                <Tooltip title="Github">
+                  <IconButton>
+                    <GitHubStyled />
+                  </IconButton>
+                </Tooltip>
+              )}
+            />
+          </Suspense>
         )}
-        <OpenExternalWebSite
-          linkIdAttribute="wevoteBlog"
-          className="u-no-underline"
-          url="https://blog.wevote.us/"
-          target="_blank"
-          body={(
-            <Tooltip title="Blog">
-              <IconButton>
-                <img src={cordovaDot('/img/global/svg-icons/wordpress-logo.svg')}
-                     width={24}
-                     height={24}
-                     color="white"
-                     alt="Wordpress"
-                />
-              </IconButton>
-            </Tooltip>
-          )}
-        />
+        <Suspense fallback={<></>}>
+          <OpenExternalWebSite
+            linkIdAttribute="wevoteBlog"
+            className="u-no-underline"
+            url="https://blog.wevote.us/"
+            target="_blank"
+            body={(
+              <Tooltip title="Blog">
+                <IconButton>
+                  <img src={cordovaDot('/img/global/svg-icons/wordpress-logo.svg')}
+                       width={24}
+                       height={24}
+                       color="white"
+                       alt="Wordpress"
+                  />
+                </IconButton>
+              </Tooltip>
+            )}
+          />
+        </Suspense>
       </ToolBarContainer>
     </div>
   );

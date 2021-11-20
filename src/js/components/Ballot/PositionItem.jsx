@@ -2,7 +2,7 @@ import { Button } from '@material-ui/core';
 import { withStyles, withTheme } from '@material-ui/core/styles';
 import { Info, ThumbDown, ThumbUp, Twitter } from '@material-ui/icons';
 import PropTypes from 'prop-types';
-import React, { Component } from 'react';
+import React, { Component, Suspense } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import OrganizationActions from '../../actions/OrganizationActions';
@@ -274,10 +274,12 @@ class PositionItem extends Component {
 
     // console.log('PositionItem supportOpposeInfo: ', supportOpposeInfo);
     const positionDescription = position.statement_text && (
-      <ReadMore
-        numberOfLines={3}
-        textToDisplay={position.statement_text}
-      />
+      <Suspense fallback={<></>}>
+        <ReadMore
+          numberOfLines={3}
+          textToDisplay={position.statement_text}
+        />
+      </Suspense>
     );
 
     const showPosition = true;
@@ -312,13 +314,15 @@ class PositionItem extends Component {
               </SupportAndPartOfScore>
               {position.speaker_image_url_https_medium && (
                 <OverlayImage>
-                  <ImageHandler
-                    alt="organization-photo-16x16"
-                    className="image-border-support "
-                    imageUrl={position.speaker_image_url_https_medium}
-                    kind_of_ballot_item="ORGANIZATION"
-                    sizeClassName="image-16x16 "
-                  />
+                  <Suspense fallback={<></>}>
+                    <ImageHandler
+                      alt="organization-photo-16x16"
+                      className="image-border-support "
+                      imageUrl={position.speaker_image_url_https_medium}
+                      kind_of_ballot_item="ORGANIZATION"
+                      sizeClassName="image-16x16 "
+                    />
+                  </Suspense>
                 </OverlayImage>
               )}
             </OrganizationSupportWrapper>
@@ -342,13 +346,15 @@ class PositionItem extends Component {
                   </OpposeAndPartOfScore>
                   {position.speaker_image_url_https_medium && (
                     <OverlayImage>
-                      <ImageHandler
-                        alt="organization-photo-16x16"
-                        className="image-border-oppose "
-                        imageUrl={position.speaker_image_url_https_medium}
-                        kind_of_ballot_item="ORGANIZATION"
-                        sizeClassName="image-16x16 "
-                      />
+                      <Suspense fallback={<></>}>
+                        <ImageHandler
+                          alt="organization-photo-16x16"
+                          className="image-border-oppose "
+                          imageUrl={position.speaker_image_url_https_medium}
+                          kind_of_ballot_item="ORGANIZATION"
+                          sizeClassName="image-16x16 "
+                        />
+                      </Suspense>
                     </OverlayImage>
                   )}
                 </OrganizationOpposeWrapper>
@@ -363,13 +369,15 @@ class PositionItem extends Component {
                       </OrganizationSupportSquare>
                       {position.speaker_image_url_https_medium && (
                         <OverlayImage>
-                          <ImageHandler
-                            alt="organization-photo-16x16"
-                            className="image-border-support "
-                            imageUrl={position.speaker_image_url_https_medium}
-                            kind_of_ballot_item="ORGANIZATION"
-                            sizeClassName="image-16x16 "
-                          />
+                          <Suspense fallback={<></>}>
+                            <ImageHandler
+                              alt="organization-photo-16x16"
+                              className="image-border-support "
+                              imageUrl={position.speaker_image_url_https_medium}
+                              kind_of_ballot_item="ORGANIZATION"
+                              sizeClassName="image-16x16 "
+                            />
+                          </Suspense>
                         </OverlayImage>
                       )}
                     </OrganizationSupportWrapper>
@@ -384,13 +392,15 @@ class PositionItem extends Component {
                           </OrganizationOpposeSquare>
                           {position.speaker_image_url_https_medium && (
                             <OverlayImage>
-                              <ImageHandler
-                                alt="organization-photo-16x16"
-                                className="image-border-oppose "
-                                imageUrl={position.speaker_image_url_https_medium}
-                                kind_of_ballot_item="ORGANIZATION"
-                                sizeClassName="image-16x16 "
-                              />
+                              <Suspense fallback={<></>}>
+                                <ImageHandler
+                                  alt="organization-photo-16x16"
+                                  className="image-border-oppose "
+                                  imageUrl={position.speaker_image_url_https_medium}
+                                  kind_of_ballot_item="ORGANIZATION"
+                                  sizeClassName="image-16x16 "
+                                />
+                              </Suspense>
                             </OverlayImage>
                           )}
                         </OrganizationOpposeWrapper>
@@ -405,13 +415,15 @@ class PositionItem extends Component {
                               </OrganizationInformationOnlySquare>
                               {position.speaker_image_url_https_medium && (
                                 <OverlayImage>
-                                  <ImageHandler
-                                    alt="organization-photo-16x16"
-                                    className="image-border-gray-border "
-                                    imageUrl={position.speaker_image_url_https_medium}
-                                    kind_of_ballot_item="ORGANIZATION"
-                                    sizeClassName="image-16x16 "
-                                  />
+                                  <Suspense fallback={<></>}>
+                                    <ImageHandler
+                                      alt="organization-photo-16x16"
+                                      className="image-border-gray-border "
+                                      imageUrl={position.speaker_image_url_https_medium}
+                                      kind_of_ballot_item="ORGANIZATION"
+                                      sizeClassName="image-16x16 "
+                                    />
+                                  </Suspense>
                                 </OverlayImage>
                               )}
                             </OrganizationInformationOnlyWrapper>
@@ -434,28 +446,32 @@ class PositionItem extends Component {
             <DesktopContainer>
               <DesktopItemLeft>
                 <DesktopItemImage>
-                  <StickyPopover
-                    delay={{ show: 700, hide: 100 }}
-                    popoverComponent={organizationPopoverCard}
-                    placement="auto"
-                    id="positions-organization-popover-trigger-click-root-close"
-                  >
-                    <div>
-                      <Link
-                        to={speakerLink}
-                        className="u-no-underline"
-                      >
-                        { position.speaker_image_url_https_medium ? (
-                          <ImageHandler
-                            className="card-child__avatar"
-                            sizeClassName="icon-lg"
-                            imageUrl={position.speaker_image_url_https_medium}
-                          />
-                        ) :
-                          imagePlaceholder }
-                      </Link>
-                    </div>
-                  </StickyPopover>
+                  <Suspense fallback={<></>}>
+                    <StickyPopover
+                      delay={{ show: 700, hide: 100 }}
+                      popoverComponent={organizationPopoverCard}
+                      placement="auto"
+                      id="positions-organization-popover-trigger-click-root-close"
+                    >
+                      <div>
+                        <Link
+                          to={speakerLink}
+                          className="u-no-underline"
+                        >
+                          { position.speaker_image_url_https_medium ? (
+                            <Suspense fallback={<></>}>
+                              <ImageHandler
+                                className="card-child__avatar"
+                                sizeClassName="icon-lg"
+                                imageUrl={position.speaker_image_url_https_medium}
+                              />
+                            </Suspense>
+                          ) :
+                            imagePlaceholder }
+                        </Link>
+                      </div>
+                    </StickyPopover>
+                  </Suspense>
                 </DesktopItemImage>
                 {voterIsFriendsWithThisOrganization  ? (
                   <>
@@ -471,7 +487,9 @@ class PositionItem extends Component {
                     voterWeVoteIdForThisOrganization && <FriendToggle otherVoterWeVoteId={voterWeVoteIdForThisOrganization} /> */}
                   </>
                 ) : (
-                  <FollowToggle organizationWeVoteId={organizationWeVoteId} lightModeOn hideDropdownButtonUntilFollowing anchorLeft platformType="desktop" />
+                  <Suspense fallback={<></>}>
+                    <FollowToggle organizationWeVoteId={organizationWeVoteId} lightModeOn hideDropdownButtonUntilFollowing anchorLeft platformType="desktop" />
+                  </Suspense>
                 )}
               </DesktopItemLeft>
               <PositionItemDesktop isSupport={organizationSupportsBallotItem} isOppose={organizationOpposesBallotItem}>
@@ -479,22 +497,24 @@ class PositionItem extends Component {
                   <DesktopItemNameIssueContainer>
                     <DesktopItemNameContainer>
                       <DesktopItemName>
-                        <StickyPopover
-                          delay={{ show: 700, hide: 100 }}
-                          popoverComponent={organizationPopoverCard}
-                          placement="auto"
-                          id="positions-popover-trigger-click-root-close"
-                        >
-                          <div>
-                            <Link
-                              id={`desktop-LinkToEndorsingOrganization-${organizationWeVoteId}`}
-                              onClick={this.closeOrganizationModal}
-                              to={speakerLink}
-                            >
-                              { positionSpeakerDisplayName }
-                            </Link>
-                          </div>
-                        </StickyPopover>
+                        <Suspense fallback={<></>}>
+                          <StickyPopover
+                            delay={{ show: 700, hide: 100 }}
+                            popoverComponent={organizationPopoverCard}
+                            placement="auto"
+                            id="positions-popover-trigger-click-root-close"
+                          >
+                            <div>
+                              <Link
+                                id={`desktop-LinkToEndorsingOrganization-${organizationWeVoteId}`}
+                                onClick={this.closeOrganizationModal}
+                                to={speakerLink}
+                              >
+                                { positionSpeakerDisplayName }
+                              </Link>
+                            </div>
+                          </StickyPopover>
+                        </Suspense>
                       </DesktopItemName>
                       <DesktopItemTwitterContainer>
                         { !!(position.twitter_followers_count && String(position.twitter_followers_count) !== '0') && (
@@ -513,17 +533,19 @@ class PositionItem extends Component {
                     </DesktopItemIssues>
                   </DesktopItemNameIssueContainer>
                   <DesktopItemEndorsementDisplay>
-                    <StickyPopover
-                      delay={{ show: 700, hide: 100 }}
-                      popoverComponent={positionsPopover}
-                      placement="auto"
-                      id="position-item-score-desktop-popover-trigger-click-root-close"
-                      key={`positionItemScoreDesktopPopover-${organizationWeVoteId}`}
-                      openOnClick
-                      showCloseIcon
-                    >
-                      {positionItemSupportSquare}
-                    </StickyPopover>
+                    <Suspense fallback={<></>}>
+                      <StickyPopover
+                        delay={{ show: 700, hide: 100 }}
+                        popoverComponent={positionsPopover}
+                        placement="auto"
+                        id="position-item-score-desktop-popover-trigger-click-root-close"
+                        key={`positionItemScoreDesktopPopover-${organizationWeVoteId}`}
+                        openOnClick
+                        showCloseIcon
+                      >
+                        {positionItemSupportSquare}
+                      </StickyPopover>
+                    </Suspense>
                   </DesktopItemEndorsementDisplay>
                 </DesktopItemHeader>
                 <DesktopItemBody>
@@ -538,19 +560,21 @@ class PositionItem extends Component {
                     </div> */}
                     {moreInfoUrl ? (
                       <SourceLink>
-                        <OpenExternalWebSite
-                          linkIdAttribute="moreInfoDesktop"
-                          body={(
-                            <span>
-                              view source
-                              {' '}
-                              <ExternalLinkIcon />
-                            </span>
-                          )}
-                          className="u-gray-mid"
-                          target="_blank"
-                          url={moreInfoUrl}
-                        />
+                        <Suspense fallback={<></>}>
+                          <OpenExternalWebSite
+                            linkIdAttribute="moreInfoDesktop"
+                            body={(
+                              <span>
+                                view source
+                                {' '}
+                                <ExternalLinkIcon />
+                              </span>
+                            )}
+                            className="u-gray-mid"
+                            target="_blank"
+                            url={moreInfoUrl}
+                          />
+                        </Suspense>
                       </SourceLink>
                     ) : null}
                   </DesktopItemFooter>
@@ -565,11 +589,13 @@ class PositionItem extends Component {
                 <MobileItemImage>
                   <Link to={speakerLink} className="u-no-underline">
                     { position.speaker_image_url_https_medium ? (
-                      <ImageHandler
-                        className="card-child__avatar"
-                        sizeClassName="icon-lg"
-                        imageUrl={position.speaker_image_url_https_medium}
-                      />
+                      <Suspense fallback={<></>}>
+                        <ImageHandler
+                          className="card-child__avatar"
+                          sizeClassName="icon-lg"
+                          imageUrl={position.speaker_image_url_https_medium}
+                        />
+                      </Suspense>
                     ) :
                       imagePlaceholder }
                   </Link>
@@ -604,17 +630,19 @@ class PositionItem extends Component {
                 </MobileSmallItemNameContainer>
                 <MobileItemEndorsementContainer>
                   <MobileItemEndorsementDisplay>
-                    <StickyPopover
-                      delay={{ show: 1000000, hide: 100 }}
-                      popoverComponent={positionsPopover}
-                      placement="auto"
-                      id="position-item-score-mobile-popover-trigger-click-root-close"
-                      key={`positionItemScoreMobilePopover-${organizationWeVoteId}`}
-                      openOnClick
-                      showCloseIcon
-                    >
-                      {positionItemSupportSquare}
-                    </StickyPopover>
+                    <Suspense fallback={<></>}>
+                      <StickyPopover
+                        delay={{ show: 1000000, hide: 100 }}
+                        popoverComponent={positionsPopover}
+                        placement="auto"
+                        id="position-item-score-mobile-popover-trigger-click-root-close"
+                        key={`positionItemScoreMobilePopover-${organizationWeVoteId}`}
+                        openOnClick
+                        showCloseIcon
+                      >
+                        {positionItemSupportSquare}
+                      </StickyPopover>
+                    </Suspense>
                   </MobileItemEndorsementDisplay>
                 </MobileItemEndorsementContainer>
               </MobileItemHeader>
@@ -647,7 +675,9 @@ class PositionItem extends Component {
                         voterWeVoteIdForThisOrganization && <FriendToggle otherVoterWeVoteId={voterWeVoteIdForThisOrganization} /> */}
                       </>
                     ) : (
-                      <FollowToggle organizationWeVoteId={organizationWeVoteId} lightModeOn hideDropdownButtonUntilFollowing platformType="mobile" />
+                      <Suspense fallback={<></>}>
+                        <FollowToggle organizationWeVoteId={organizationWeVoteId} lightModeOn hideDropdownButtonUntilFollowing platformType="mobile" />
+                      </Suspense>
                     )}
                   </MobileItemFollowToggleDisplay>
                 </MobileItemDescriptionFollowToggleContainer>
@@ -659,19 +689,21 @@ class PositionItem extends Component {
                   </div> */}
                   {moreInfoUrl ? (
                     <SourceLink>
-                      <OpenExternalWebSite
-                        linkIdAttribute="moreInfoMobile"
-                        body={(
-                          <span>
-                            source
-                            {' '}
-                            <ExternalLinkIcon />
-                          </span>
-                        )}
-                        className="u-gray-mid"
-                        target="_blank"
-                        url={moreInfoUrl}
-                      />
+                      <Suspense fallback={<></>}>
+                        <OpenExternalWebSite
+                          linkIdAttribute="moreInfoMobile"
+                          body={(
+                            <span>
+                              source
+                              {' '}
+                              <ExternalLinkIcon />
+                            </span>
+                          )}
+                          className="u-gray-mid"
+                          target="_blank"
+                          url={moreInfoUrl}
+                        />
+                      </Suspense>
                     </SourceLink>
                   ) : null}
                 </MobileItemFooter>

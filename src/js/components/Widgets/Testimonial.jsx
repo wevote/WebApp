@@ -1,6 +1,6 @@
 import { FormatQuote } from '@material-ui/icons';
 import PropTypes from 'prop-types';
-import React from 'react';
+import React, { Suspense } from 'react';
 import styled from 'styled-components';
 import { renderLog } from '../../utils/logging';
 
@@ -27,12 +27,14 @@ class Testimonial extends React.Component {
     const { testimonialAuthor, imageUrl, testimonial, textStyle } = this.props;
     return (
       <TestimonialContainer>
-        <ImageHandler
-          className="card-main__avatar__testimonial"
-          imageUrl={imageUrl}
-          alt="candidate-photo"
-          kind_of_ballot_item="CANDIDATE"
-        />
+        <Suspense fallback={<></>}>
+          <ImageHandler
+            className="card-main__avatar__testimonial"
+            imageUrl={imageUrl}
+            alt="candidate-photo"
+            kind_of_ballot_item="CANDIDATE"
+          />
+        </Suspense>
         <TestimonialAuthor>
           {testimonialAuthor}
         </TestimonialAuthor>

@@ -1,6 +1,6 @@
 import { withStyles, withTheme } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
-import React, { Component } from 'react';
+import React, { Component, Suspense } from 'react';
 import styled from 'styled-components';
 import { renderLog } from '../../utils/logging';
 
@@ -75,26 +75,30 @@ class BallotItemForOpinions extends Component {
     return (
       <BallotItemCard className="BallotItem card" key={`ballotItemForAddPositions-${ballotItemWeVoteId}-${externalUniqueId}`}>
         { this.isMeasure() ? (
-          <MeasureItemForOpinions
-            ballotItemDisplayName={ballotItemDisplayName}
-            ballotItemWeVoteId={ballotItemWeVoteId}
-            measureText={measureText}
-            key={`measureItem-${externalUniqueId}`}
-            organization={organization}
-            externalUniqueId={`measureItem-${externalUniqueId}`}
-          />
+          <Suspense fallback={<></>}>
+            <MeasureItemForOpinions
+              ballotItemDisplayName={ballotItemDisplayName}
+              ballotItemWeVoteId={ballotItemWeVoteId}
+              measureText={measureText}
+              key={`measureItem-${externalUniqueId}`}
+              organization={organization}
+              externalUniqueId={`measureItem-${externalUniqueId}`}
+            />
+          </Suspense>
         ) : (
-          <OfficeItemForOpinions
-            ballotItemWeVoteId={ballotItemWeVoteId}
-            ballotItemDisplayName={ballotItemDisplayName}
-            candidateList={candidateList}
-            candidatesToShowForSearchResults={this.props.candidatesToShowForSearchResults}
-            key={`officeItem-${externalUniqueId}`}
-            organization={organization}
-            organizationWeVoteId={organizationWeVoteId}
-            ref={(ref) => { this.ballotItem = ref; }}
-            externalUniqueId={`officeItem-${externalUniqueId}`}
-          />
+          <Suspense fallback={<></>}>
+            <OfficeItemForOpinions
+              ballotItemWeVoteId={ballotItemWeVoteId}
+              ballotItemDisplayName={ballotItemDisplayName}
+              candidateList={candidateList}
+              candidatesToShowForSearchResults={this.props.candidatesToShowForSearchResults}
+              key={`officeItem-${externalUniqueId}`}
+              organization={organization}
+              organizationWeVoteId={organizationWeVoteId}
+              ref={(ref) => { this.ballotItem = ref; }}
+              externalUniqueId={`officeItem-${externalUniqueId}`}
+            />
+          </Suspense>
         )}
       </BallotItemCard>
     );

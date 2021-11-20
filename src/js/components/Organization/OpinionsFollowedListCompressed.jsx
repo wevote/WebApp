@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import React, { Component } from 'react';
+import React, { Component, Suspense } from 'react';
 import OrganizationActions from '../../actions/OrganizationActions';
 import { renderLog } from '../../utils/logging';
 import OrganizationDisplayForListCompressed from './OrganizationDisplayForListCompressed';
@@ -49,7 +49,9 @@ export default class OpinionsFollowedListCompressed extends Component {
       if (this.props.editMode) {
         return (
           <OrganizationDisplayForListCompressed key={oneOrganization.organization_we_vote_id} {...oneOrganization}>
-            <FollowToggle organizationWeVoteId={oneOrganization.organization_we_vote_id} />
+            <Suspense fallback={<></>}>
+              <FollowToggle organizationWeVoteId={oneOrganization.organization_we_vote_id} />
+            </Suspense>
             <span />
           </OrganizationDisplayForListCompressed>
         );

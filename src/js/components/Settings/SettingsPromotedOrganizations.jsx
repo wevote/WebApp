@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import React, { Component } from 'react';
+import React, { Component, Suspense } from 'react';
 import Helmet from 'react-helmet';
 import styled from 'styled-components';
 import OrganizationStore from '../../stores/OrganizationStore';
@@ -84,9 +84,11 @@ export default class SettingsPromotedOrganizations extends Component {
     } else if (!voterIsSignedIn) {
       // console.log('voterIsSignedIn is false');
       return (
-        <DelayedLoad waitBeforeShow={1000}>
-          <SettingsAccount />
-        </DelayedLoad>
+        <Suspense fallback={<></>}>
+          <DelayedLoad waitBeforeShow={1000}>
+            <SettingsAccount />
+          </DelayedLoad>
+        </Suspense>
       );
     }
 

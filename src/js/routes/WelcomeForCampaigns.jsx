@@ -1,7 +1,7 @@
 import { Button } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
-import React, { PureComponent } from 'react';
+import React, { PureComponent, Suspense } from 'react';
 import Helmet from 'react-helmet';
 import styled from 'styled-components';
 import AnalyticsActions from '../actions/AnalyticsActions';
@@ -17,8 +17,8 @@ import { cordovaDot, historyPush } from '../utils/cordovaUtils';
 import { renderLog } from '../utils/logging';
 import { validateEmail } from '../utils/regex-checks';
 
-const WelcomeFooter = React.lazy(() => import(/* webpackChunkName: 'WelcomeFooter' */ '../components/Welcome/WelcomeFooter'));
 const WelcomeAppbar = React.lazy(() => import(/* webpackChunkName: 'WelcomeAppbar' */ '../components/Navigation/WelcomeAppbar'));
+const WelcomeFooter = React.lazy(() => import(/* webpackChunkName: 'WelcomeFooter' */ '../components/Welcome/WelcomeFooter'));
 
 const ffwdLogo = '../../img/global/logos/ffwd-logo.png';
 const googleLogo = '../../img/global/logos/google-logo.svg';
@@ -117,7 +117,9 @@ class WelcomeForCampaigns extends PureComponent {
     return (
       <Wrapper padTop={cordovaScrollablePaneTopPadding()}>
         <Helmet title="Welcome Campaigns - We Vote" />
-        <WelcomeAppbar pathname={pathname} />
+        <Suspense fallback={<></>}>
+          <WelcomeAppbar pathname={pathname} />
+        </Suspense>
         <HeaderForCampaigns>
           <Title>
             <BlueTitle>Supercharge </BlueTitle>
@@ -272,7 +274,9 @@ class WelcomeForCampaigns extends PureComponent {
             <NetworkImage src={cordovaDot(vipLogo)} alt="Voting Information Project" />
           </NetworkContainer>
         </Section>
-        <WelcomeFooter />
+        <Suspense fallback={<></>}>
+          <WelcomeFooter />
+        </Suspense>
       </Wrapper>
     );
   }

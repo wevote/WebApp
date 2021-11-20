@@ -1,7 +1,7 @@
 import { withStyles, withTheme } from '@material-ui/core/styles';
 import { CheckCircle, ThumbDown, ThumbUp } from '@material-ui/icons';
 import PropTypes from 'prop-types';
-import React, { Component } from 'react';
+import React, { Component, Suspense } from 'react';
 import { ReactSVG } from 'react-svg';
 import styled from 'styled-components';
 import { cordovaDot } from '../../utils/cordovaUtils';
@@ -80,17 +80,19 @@ class PositionSummaryListForPopover extends Component {
           )}
           {positionSummary.organizationSupports && positionSummary.organizationInVotersNetwork && (
             <SupportAndPartOfScore>
-              <MaterialUIPopover
-                popoverDisplayObject={(
-                  <PositionItemScorePopoverTextOnly
-                    positionItem={positionSummary.positionObject}
-                  />
-                )}
-              >
-                <span>
-                  +1
-                </span>
-              </MaterialUIPopover>
+              <Suspense fallback={<></>}>
+                <MaterialUIPopover
+                  popoverDisplayObject={(
+                    <PositionItemScorePopoverTextOnly
+                      positionItem={positionSummary.positionObject}
+                    />
+                  )}
+                >
+                  <span>
+                    +1
+                  </span>
+                </MaterialUIPopover>
+              </Suspense>
             </SupportAndPartOfScore>
           )}
           {positionSummary.organizationOpposes && !positionSummary.organizationInVotersNetwork && (
@@ -100,35 +102,39 @@ class PositionSummaryListForPopover extends Component {
           )}
           {positionSummary.organizationOpposes && positionSummary.organizationInVotersNetwork && (
             <OpposeAndPartOfScore>
-              <MaterialUIPopover
-                popoverDisplayObject={(
-                  <PositionItemScorePopoverTextOnly
-                    positionItem={positionSummary.positionObject}
-                  />
-                )}
-              >
-                <span>
-                  -1
-                </span>
-              </MaterialUIPopover>
+              <Suspense fallback={<></>}>
+                <MaterialUIPopover
+                  popoverDisplayObject={(
+                    <PositionItemScorePopoverTextOnly
+                      positionItem={positionSummary.positionObject}
+                    />
+                  )}
+                >
+                  <span>
+                    -1
+                  </span>
+                </MaterialUIPopover>
+              </Suspense>
             </OpposeAndPartOfScore>
           )}
           {positionSummary.organizationInVotersNetwork ? (
             <OrganizationNameWrapperWithPopover>
-              <MaterialUIPopover
-                controlAdviserMaterialUIPopoverFromProp={controlAdviserMaterialUIPopoverFromPropNow}
-                externalUniqueId={positionSummary.organizationWeVoteId}
-                openAdviserMaterialUIPopover={openAdviserMaterialUIPopoverNow}
-                popoverDisplayObject={(
-                  <PositionItemScorePopoverTextOnly
-                    positionItem={positionSummary.positionObject}
-                  />
-                )}
-              >
-                <div>
-                  {positionSummary.organizationName}
-                </div>
-              </MaterialUIPopover>
+              <Suspense fallback={<></>}>
+                <MaterialUIPopover
+                  controlAdviserMaterialUIPopoverFromProp={controlAdviserMaterialUIPopoverFromPropNow}
+                  externalUniqueId={positionSummary.organizationWeVoteId}
+                  openAdviserMaterialUIPopover={openAdviserMaterialUIPopoverNow}
+                  popoverDisplayObject={(
+                    <PositionItemScorePopoverTextOnly
+                      positionItem={positionSummary.positionObject}
+                    />
+                  )}
+                >
+                  <div>
+                    {positionSummary.organizationName}
+                  </div>
+                </MaterialUIPopover>
+              </Suspense>
             </OrganizationNameWrapperWithPopover>
           ) : (
             <OrganizationNameWrapper>
@@ -137,49 +143,53 @@ class PositionSummaryListForPopover extends Component {
           )}
           {(positionSummary.voterCanFollowOrganization && !positionSummary.organizationInVotersNetwork) && (
             <FollowToggleWrapper>
-              <FollowToggle organizationWeVoteId={positionSummary.organizationWeVoteId} lightModeOn hideDropdownButtonUntilFollowing />
+              <Suspense fallback={<></>}>
+                <FollowToggle organizationWeVoteId={positionSummary.organizationWeVoteId} lightModeOn hideDropdownButtonUntilFollowing />
+              </Suspense>
             </FollowToggleWrapper>
           )}
           {!!(positionSummary.organizationInVotersNetwork) && (
-            <MaterialUIPopover
-              popoverDisplayObject={(
-                <PositionItemScorePopoverTextOnly
-                  positionItem={positionSummary.positionObject}
-                />
-              )}
-            >
-              <OrganizationPopoverWrapper>
-                {!!(positionSummary.issuesInCommonBetweenOrganizationAndVoter && positionSummary.issuesInCommonBetweenOrganizationAndVoter.length) && (
-                  // Limits the number of displayed Issue icons
-                  // The popover isn't big enough to accommodate more than 4 icons without making them too small!
-                  <VoterAndOrganizationShareTheseIssuesWrapper>
-                    {issuesInCommonForIconDisplayArray.map((issue) => (
-                      <IssueIcon key={`issueInScore-${issue.issue_we_vote_id}`}>
-                        <ReactSVG
-                          src={cordovaDot(`/img/global/svg-icons/issues/${issue.issue_icon_local_path}.svg`)}
-                          beforeInjection={(svg) => svg.setAttribute('style', { fill: '#555', padding: '1px 1px 1px 0px' })}
-                        />
-                      </IssueIcon>
-                    ))}
-                  </VoterAndOrganizationShareTheseIssuesWrapper>
+            <Suspense fallback={<></>}>
+              <MaterialUIPopover
+                popoverDisplayObject={(
+                  <PositionItemScorePopoverTextOnly
+                    positionItem={positionSummary.positionObject}
+                  />
                 )}
-                {(positionSummary.issuesInCommonBetweenOrganizationAndVoter.length > 4) ? ('...') : null}
-                {positionSummary.voterIsFriendsWithThisOrganization ? (
-                  <FollowingWrapper>
-                    {/* <CheckCircle className="friends-icon" /> */}
-                    <FriendsIcon />
-                  </FollowingWrapper>
-                ) : (
-                  <>
-                    {positionSummary.voterIsFollowingOrganization && (
-                      <FollowingWrapper>
-                        <CheckCircle className="following-icon" />
-                      </FollowingWrapper>
-                    )}
-                  </>
-                )}
-              </OrganizationPopoverWrapper>
-            </MaterialUIPopover>
+              >
+                <OrganizationPopoverWrapper>
+                  {!!(positionSummary.issuesInCommonBetweenOrganizationAndVoter && positionSummary.issuesInCommonBetweenOrganizationAndVoter.length) && (
+                    // Limits the number of displayed Issue icons
+                    // The popover isn't big enough to accommodate more than 4 icons without making them too small!
+                    <VoterAndOrganizationShareTheseIssuesWrapper>
+                      {issuesInCommonForIconDisplayArray.map((issue) => (
+                        <IssueIcon key={`issueInScore-${issue.issue_we_vote_id}`}>
+                          <ReactSVG
+                            src={cordovaDot(`/img/global/svg-icons/issues/${issue.issue_icon_local_path}.svg`)}
+                            beforeInjection={(svg) => svg.setAttribute('style', { fill: '#555', padding: '1px 1px 1px 0px' })}
+                          />
+                        </IssueIcon>
+                      ))}
+                    </VoterAndOrganizationShareTheseIssuesWrapper>
+                  )}
+                  {(positionSummary.issuesInCommonBetweenOrganizationAndVoter.length > 4) ? ('...') : null}
+                  {positionSummary.voterIsFriendsWithThisOrganization ? (
+                    <FollowingWrapper>
+                      {/* <CheckCircle className="friends-icon" /> */}
+                      <FriendsIcon />
+                    </FollowingWrapper>
+                  ) : (
+                    <>
+                      {positionSummary.voterIsFollowingOrganization && (
+                        <FollowingWrapper>
+                          <CheckCircle className="following-icon" />
+                        </FollowingWrapper>
+                      )}
+                    </>
+                  )}
+                </OrganizationPopoverWrapper>
+              </MaterialUIPopover>
+            </Suspense>
           )}
         </PositionSummaryWrapper>
       );
@@ -224,11 +234,13 @@ class PositionSummaryListForPopover extends Component {
     if (this.props.showAllPositions) {
       renderedList.push(
         <ShowMoreFooterWrapper key={`onePositionForPopoverShowAllPositions-${ballotItemWeVoteId}`}>
-          <ShowMoreFooter
-            showMoreId={`onePositionForPopoverShowAllPositions-${ballotItemWeVoteId}`}
-            showMoreLink={() => this.showAllPositions()}
-            showMoreText="Show All Positions"
-          />
+          <Suspense fallback={<></>}>
+            <ShowMoreFooter
+              showMoreId={`onePositionForPopoverShowAllPositions-${ballotItemWeVoteId}`}
+              showMoreLink={() => this.showAllPositions()}
+              showMoreText="Show All Positions"
+            />
+          </Suspense>
         </ShowMoreFooterWrapper>,
       );
     }

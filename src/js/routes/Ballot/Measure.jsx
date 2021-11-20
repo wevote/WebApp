@@ -316,11 +316,15 @@ class Measure extends Component {
             <div className="card" style={{ marginRight: 0, marginLeft: 0 }}>
               <TwoColumns>
                 <LeftColumnWrapper>
-                  <MeasureItem measureWeVoteId={measureWeVoteId} />
+                  <Suspense fallback={<></>}>
+                    <MeasureItem measureWeVoteId={measureWeVoteId} />
+                  </Suspense>
                 </LeftColumnWrapper>
                 <RightColumnWrapper className="u-show-desktop-tablet">
                   <MeasureShareWrapper>
-                    <ShareButtonDesktopTablet measureShare />
+                    <Suspense fallback={<></>}>
+                      <ShareButtonDesktopTablet measureShare />
+                    </Suspense>
                   </MeasureShareWrapper>
                   {ballotpediaMeasureURL && (
                     <ViewOnBallotpedia externalLinkUrl={ballotpediaMeasureURL} />
@@ -333,19 +337,21 @@ class Measure extends Component {
             </div>
             { !!(allCachedPositionsForThisMeasure.length) && (
               <section className="card" style={{ marginRight: 0, marginLeft: 0 }}>
-                <DelayedLoad showLoadingText waitBeforeShow={500}>
-                  <PositionList
-                    incomingPositionList={allCachedPositionsForThisMeasure}
-                    ballotItemDisplayName={ballotItemDisplayName}
-                    params={params}
-                    positionListExistsTitle={(
-                      <PositionListIntroductionText>
-                        <Info classes={{ root: classes.informationIcon }} />
-                        Opinions about this ballot item are below. Use these filters to sort:
-                      </PositionListIntroductionText>
-                    )}
-                  />
-                </DelayedLoad>
+                <Suspense fallback={<></>}>
+                  <DelayedLoad showLoadingText waitBeforeShow={500}>
+                    <PositionList
+                      incomingPositionList={allCachedPositionsForThisMeasure}
+                      ballotItemDisplayName={ballotItemDisplayName}
+                      params={params}
+                      positionListExistsTitle={(
+                        <PositionListIntroductionText>
+                          <Info classes={{ root: classes.informationIcon }} />
+                          Opinions about this ballot item are below. Use these filters to sort:
+                        </PositionListIntroductionText>
+                      )}
+                    />
+                  </DelayedLoad>
+                </Suspense>
               </section>
             )}
             <EndorsementCard
@@ -360,19 +366,21 @@ class Measure extends Component {
             { (isAdmin || isVerifiedVolunteer) && (
               <span className="u-wrap-links d-print-none">
                 Admin only:
-                <OpenExternalWebSite
-                  linkIdAttribute="measureAdminEdit"
-                  url={measureAdminEditUrl}
-                  target="_blank"
-                  className="open-web-site open-web-site__no-right-padding"
-                  body={(
-                    <span>
-                      edit
-                      {' '}
-                      {measureName}
-                    </span>
-                  )}
-                />
+                <Suspense fallback={<></>}>
+                  <OpenExternalWebSite
+                    linkIdAttribute="measureAdminEdit"
+                    url={measureAdminEditUrl}
+                    target="_blank"
+                    className="open-web-site open-web-site__no-right-padding"
+                    body={(
+                      <span>
+                        edit
+                        {' '}
+                        {measureName}
+                      </span>
+                    )}
+                  />
+                </Suspense>
               </span>
             )}
           </PageContentContainer>

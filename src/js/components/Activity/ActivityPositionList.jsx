@@ -1,7 +1,7 @@
 import { CircularProgress } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
-import React, { Component } from 'react';
+import React, { Component, Suspense } from 'react';
 import styled from 'styled-components';
 import { renderLog } from '../../utils/logging';
 
@@ -80,23 +80,27 @@ class ActivityPositionList extends Component {
             // console.log('numberOfBallotItemsDisplayed: ', numberOfBallotItemsDisplayed);
             return (
               <div key={`${onePosition.position_we_vote_id}-${onePosition.voter_guide_we_vote_id}-${onePosition.speaker_display_name}`}>
-                <VoterGuidePositionItem
-                  // ballotItemDisplayName={onePosition.ballot_item_display_name}
-                  ballotItemWeVoteId={onePosition.ballot_item_we_vote_id}
-                  organizationWeVoteId={organizationWeVoteId}
-                  positionWeVoteId={onePosition.position_we_vote_id}
-                />
+                <Suspense fallback={<></>}>
+                  <VoterGuidePositionItem
+                    // ballotItemDisplayName={onePosition.ballot_item_display_name}
+                    ballotItemWeVoteId={onePosition.ballot_item_we_vote_id}
+                    organizationWeVoteId={organizationWeVoteId}
+                    positionWeVoteId={onePosition.position_we_vote_id}
+                  />
+                </Suspense>
               </div>
             );
           })}
         </ul>
         <ShowMoreItemsWrapper onClick={this.increaseNumberOfPositionItemsToDisplay}>
           {!!(incomingPositionList && incomingPositionList.length > 1) && (
-            <ShowMoreItems
-              loadingMoreItemsNow={loadingMoreItems}
-              numberOfItemsDisplayed={numberOfPositionItemsDisplayed}
-              numberOfItemsTotal={incomingPositionList.length}
-            />
+            <Suspense fallback={<></>}>
+              <ShowMoreItems
+                loadingMoreItemsNow={loadingMoreItems}
+                numberOfItemsDisplayed={numberOfPositionItemsDisplayed}
+                numberOfItemsTotal={incomingPositionList.length}
+              />
+            </Suspense>
           )}
         </ShowMoreItemsWrapper>
         <LoadingItemsWheel>

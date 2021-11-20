@@ -1,6 +1,6 @@
 import { Twitter } from '@material-ui/icons';
 import PropTypes from 'prop-types';
-import React, { Component } from 'react';
+import React, { Component, Suspense } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import OrganizationActions from '../../actions/OrganizationActions';
@@ -156,22 +156,26 @@ export default class OrganizationCard extends Component {
           {turnOffLogo ?
             null : (
               <Link to={voterGuideLink} className="u-no-underline">
-                <ImageHandler
-                  imageUrl={organizationPhotoUrlLarge}
-                  className="card-main__org-avatar"
-                  hidePlaceholder
-                  sizeClassName="icon-lg "
-                />
+                <Suspense fallback={<></>}>
+                  <ImageHandler
+                    imageUrl={organizationPhotoUrlLarge}
+                    className="card-main__org-avatar"
+                    hidePlaceholder
+                    sizeClassName="icon-lg "
+                  />
+                </Suspense>
               </Link>
             )}
           {followToggleOn ? (
             <div className="u-margin-top--md">
-              <FollowToggle
-                currentBallotIdInUrl={currentBallotIdInUrl}
-                ballotItemWeVoteId={this.props.we_vote_id}
-                urlWithoutHash={urlWithoutHash}
-                organizationWeVoteId={this.state.organizationWeVoteId}
-              />
+              <Suspense fallback={<></>}>
+                <FollowToggle
+                  currentBallotIdInUrl={currentBallotIdInUrl}
+                  ballotItemWeVoteId={this.props.we_vote_id}
+                  urlWithoutHash={urlWithoutHash}
+                  organizationWeVoteId={this.state.organizationWeVoteId}
+                />
+              </Suspense>
             </div>
           ) : null}
         </div>
@@ -191,10 +195,12 @@ export default class OrganizationCard extends Component {
               ) : (
                 <>
                   {useReadMoreForTwitterDescription ? (
-                    <ReadMore
-                      textToDisplay={twitterDescriptionMinusName}
-                      numberOfLines={3}
-                    />
+                    <Suspense fallback={<></>}>
+                      <ReadMore
+                        textToDisplay={twitterDescriptionMinusName}
+                        numberOfLines={3}
+                      />
+                    </Suspense>
                   ) : (
                     <>
                       {twitterDescriptionMinusName}
@@ -206,7 +212,7 @@ export default class OrganizationCard extends Component {
           ) :
             <p className="card-main__description" />}
           { !turnOffDescription ? (
-            <div>
+            <Suspense fallback={<></>}>
               { organizationTwitterHandle && !turnOffTwitterHandle && (
                 <OpenExternalWebSite
                   linkIdAttribute="organizationTwitterHandle"
@@ -250,7 +256,7 @@ export default class OrganizationCard extends Component {
                 placement="bottom"
               />
               {/* 5 of your friends follow Organization Name<br /> */}
-            </div>
+            </Suspense>
           ) : null}
           { this.state.organizationPosition.vote_smart_rating ? (
             <RatingPopover

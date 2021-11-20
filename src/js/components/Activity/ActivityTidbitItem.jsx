@@ -1,7 +1,7 @@
 import { withStyles, withTheme } from '@material-ui/core/styles';
 import { MoreHoriz } from '@material-ui/icons';
 import PropTypes from 'prop-types';
-import React, { Component } from 'react';
+import React, { Component, Suspense } from 'react';
 import Alert from 'react-bootstrap/Alert';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
@@ -157,15 +157,17 @@ class ActivityTidbitItem extends Component {
         )}
 
         {(newPositionsEntered && newPositionsEntered.length) ? (
-          <DelayedLoad showLoadingText waitBeforeShow={500}>
-            <ActivityPositionListWrapper>
-              <ActivityPositionList
-                incomingPositionList={newPositionsEntered}
-                organizationWeVoteId={speakerOrganizationWeVoteId}
-                startingNumberOfPositionsToDisplay={startingNumberOfPositionsToDisplayLocal}
-              />
-            </ActivityPositionListWrapper>
-          </DelayedLoad>
+          <Suspense fallback={<></>}>
+            <DelayedLoad showLoadingText waitBeforeShow={500}>
+              <ActivityPositionListWrapper>
+                <ActivityPositionList
+                  incomingPositionList={newPositionsEntered}
+                  organizationWeVoteId={speakerOrganizationWeVoteId}
+                  startingNumberOfPositionsToDisplay={startingNumberOfPositionsToDisplayLocal}
+                />
+              </ActivityPositionListWrapper>
+            </DelayedLoad>
+          </Suspense>
         ) : (
           <ActivityPositionListMissingWrapper />
         )}
@@ -176,12 +178,14 @@ class ActivityTidbitItem extends Component {
           </ActivityPostWrapper>
         )}
         {showActivityPostModal && (
-          <ActivityPostModal
-            activityTidbitWeVoteId={activityTidbitWeVoteId}
-            externalUniqueId={externalUniqueId}
-            show={showActivityPostModal}
-            toggleActivityPostModal={this.toggleActivityPostModal}
-          />
+          <Suspense fallback={<></>}>
+            <ActivityPostModal
+              activityTidbitWeVoteId={activityTidbitWeVoteId}
+              externalUniqueId={externalUniqueId}
+              show={showActivityPostModal}
+              toggleActivityPostModal={this.toggleActivityPostModal}
+            />
+          </Suspense>
         )}
       </Wrapper>
     );

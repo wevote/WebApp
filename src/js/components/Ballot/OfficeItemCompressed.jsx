@@ -1,7 +1,7 @@
 import { withStyles, withTheme } from '@material-ui/core/styles';
 import { ArrowForward } from '@material-ui/icons';
 import PropTypes from 'prop-types';
-import React, { Component } from 'react';
+import React, { Component, Suspense } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import OfficeActions from '../../actions/OfficeActions';
@@ -257,14 +257,16 @@ class OfficeItemCompressed extends Component {
                       onClick={() => this.goToCandidateLink(oneCandidate.we_vote_id)}
                     >
                       {/* Candidate Image */}
-                      <ImageHandler
-                        className={avatarCompressed}
-                        sizeClassName="icon-candidate-small u-push--sm "
-                        imageUrl={oneCandidate.candidate_photo_url_medium}
-                        alt="candidate-photo"
-                        kind_of_ballot_item="CANDIDATE"
-                        style={{ backgroundImage: { avatarBackgroundImage } }}
-                      />
+                      <Suspense fallback={<></>}>
+                        <ImageHandler
+                          className={avatarCompressed}
+                          sizeClassName="icon-candidate-small u-push--sm "
+                          imageUrl={oneCandidate.candidate_photo_url_medium}
+                          alt="candidate-photo"
+                          kind_of_ballot_item="CANDIDATE"
+                          style={{ backgroundImage: { avatarBackgroundImage } }}
+                        />
+                      </Suspense>
                       {/* Candidate Name */}
                       <div>
                         <CandidateName>
@@ -277,40 +279,48 @@ class OfficeItemCompressed extends Component {
                     </Candidate>
                     {/*  /!* Show check mark or score *!/ */}
                     <BallotItemSupportOpposeCountDisplayWrapper>
-                      <BallotItemSupportOpposeCountDisplay
-                        ballotItemWeVoteId={oneCandidate.we_vote_id}
-                        goToBallotItem={this.goToCandidateLink}
-                      />
+                      <Suspense fallback={<></>}>
+                        <BallotItemSupportOpposeCountDisplay
+                          ballotItemWeVoteId={oneCandidate.we_vote_id}
+                          goToBallotItem={this.goToCandidateLink}
+                        />
+                      </Suspense>
                     </BallotItemSupportOpposeCountDisplayWrapper>
                   </CandidateTopRow>
                   {!hideCandidateDetails && (
                     <CandidateBottomRow>
                       {/* If there is a quote about the candidate, show that. If not, show issues related to candidate */}
-                      <DelayedLoad showLoadingText waitBeforeShow={500}>
-                        <TopCommentByBallotItem
-                          ballotItemWeVoteId={oneCandidate.we_vote_id}
-                          // learnMoreUrl={this.getCandidateLink(oneCandidate.we_vote_id)}
-                          onClickFunction={this.goToCandidateLink}
-                        >
-                          <span>
-                            <IssuesByBallotItemDisplayList
-                              ballotItemDisplayName={oneCandidate.ballot_item_display_name}
-                              ballotItemWeVoteId={oneCandidate.we_vote_id}
-                              disableMoreWrapper
-                              externalUniqueId={`officeItemCompressed-${oneCandidate.we_vote_id}-${externalUniqueId}`}
-                            />
-                          </span>
-                        </TopCommentByBallotItem>
-                      </DelayedLoad>
+                      <Suspense fallback={<></>}>
+                        <DelayedLoad showLoadingText waitBeforeShow={500}>
+                          <TopCommentByBallotItem
+                            ballotItemWeVoteId={oneCandidate.we_vote_id}
+                            // learnMoreUrl={this.getCandidateLink(oneCandidate.we_vote_id)}
+                            onClickFunction={this.goToCandidateLink}
+                          >
+                            <span>
+                              <Suspense fallback={<></>}>
+                                <IssuesByBallotItemDisplayList
+                                  ballotItemDisplayName={oneCandidate.ballot_item_display_name}
+                                  ballotItemWeVoteId={oneCandidate.we_vote_id}
+                                  disableMoreWrapper
+                                  externalUniqueId={`officeItemCompressed-${oneCandidate.we_vote_id}-${externalUniqueId}`}
+                                />
+                              </Suspense>
+                            </span>
+                          </TopCommentByBallotItem>
+                        </DelayedLoad>
+                      </Suspense>
                       <ItemActionBarWrapper>
-                        <ItemActionBar
-                          ballotItemWeVoteId={oneCandidate.we_vote_id}
-                          commentButtonHide
-                          externalUniqueId={`OfficeItemCompressed-ItemActionBar-${oneCandidate.we_vote_id}-${externalUniqueId}`}
-                          hidePositionPublicToggle
-                          positionPublicToggleWrapAllowed
-                          shareButtonHide
-                        />
+                        <Suspense fallback={<></>}>
+                          <ItemActionBar
+                            ballotItemWeVoteId={oneCandidate.we_vote_id}
+                            commentButtonHide
+                            externalUniqueId={`OfficeItemCompressed-ItemActionBar-${oneCandidate.we_vote_id}-${externalUniqueId}`}
+                            hidePositionPublicToggle
+                            positionPublicToggleWrapAllowed
+                            shareButtonHide
+                          />
+                        </Suspense>
                       </ItemActionBarWrapper>
                     </CandidateBottomRow>
                   )}
@@ -370,11 +380,11 @@ class OfficeItemCompressed extends Component {
         {this.generateCandidates()}
 
         {!turnOffShowMoreFooter && (
-          <>
+          <Suspense fallback={<></>}>
             { totalNumberOfCandidatesToDisplay > this.state.maximumNumberOrganizationsToDisplay ?
               <ShowMoreFooter showMoreId={`officeItemCompressedShowMoreFooter-${officeWeVoteId}`} showMoreLink={() => this.goToOfficeLink()} showMoreText={`Show all ${totalNumberOfCandidatesToDisplay} candidates`} /> :
               <ShowMoreFooter showMoreId={`officeItemCompressedShowMoreFooter-${officeWeVoteId}`} showMoreLink={() => this.goToOfficeLink()} showMoreText="Learn more" />}
-          </>
+          </Suspense>
         )}
       </OfficeItemCompressedWrapper>
     );

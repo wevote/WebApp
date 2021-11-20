@@ -2,7 +2,7 @@ import { CircularProgress } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 import { Comment, Info, ThumbDown, ThumbUp } from '@material-ui/icons';
 import PropTypes from 'prop-types';
-import React, { Component } from 'react';
+import React, { Component, Suspense } from 'react';
 import styled from 'styled-components';
 import FriendActions from '../../actions/FriendActions';
 import OrganizationActions from '../../actions/OrganizationActions';
@@ -391,11 +391,13 @@ class PositionList extends Component {
           })}
         </UnorderedListWrapper>
         <ShowMoreItemsWrapper id="showMoreItemsId" onClick={this.increaseNumberOfPositionItemsToDisplay}>
-          <ShowMoreItems
-            loadingMoreItemsNow={loadingMoreItems}
-            numberOfItemsDisplayed={numberOfPositionItemsDisplayed}
-            numberOfItemsTotal={isSearching ? totalNumberOfPositionSearchResults : filteredPositionListLength}
-          />
+          <Suspense fallback={<></>}>
+            <ShowMoreItems
+              loadingMoreItemsNow={loadingMoreItems}
+              numberOfItemsDisplayed={numberOfPositionItemsDisplayed}
+              numberOfItemsTotal={isSearching ? totalNumberOfPositionSearchResults : filteredPositionListLength}
+            />
+          </Suspense>
         </ShowMoreItemsWrapper>
         {loadingMoreItems && (
           <LoadingItemsWheel>

@@ -2,7 +2,7 @@ import { Button, Checkbox, Dialog, DialogContent, FormControlLabel, IconButton, 
 import { withStyles, withTheme } from '@material-ui/core/styles';
 import { Close, EditLocation } from '@material-ui/icons';
 import PropTypes from 'prop-types';
-import React, { Component } from 'react';
+import React, { Component, Suspense } from 'react';
 import styled from 'styled-components';
 import AnalyticsActions from '../../actions/AnalyticsActions';
 import ReadyActions from '../../actions/ReadyActions';
@@ -426,29 +426,31 @@ class VoterPlanModal extends Component {
                           placeholder={(locationToDeliverBallot === 'voting center') ? 'Address of Voting Center' : 'Address of Polling Location'}
                           value={votingLocationAddress}
                         />
-                        <OpenExternalWebSite
-                          linkIdAttribute="getPollingLocationVoterPlanModal"
-                          url={getPollingLocationUrl}
-                          target="_blank"
-                          className="u-gray-mid"
-                          body={(
-                            <Button
-                              id="findPollingLocationButton"
-                              classes={{ root: classes.saveButton }}
-                              color="primary"
-                              fullWidth
-                              variant="contained"
-                            >
-                              <div className="u-show-mobile">
-                                Find
-                              </div>
-                              <div className="u-show-desktop-tablet">
-                                {(locationToDeliverBallot === 'polling place') && 'Find Polling Location'}
-                                {(locationToDeliverBallot === 'voting center') && 'Find Voting Center'}
-                              </div>
-                            </Button>
-                          )}
-                        />
+                        <Suspense fallback={<></>}>
+                          <OpenExternalWebSite
+                            linkIdAttribute="getPollingLocationVoterPlanModal"
+                            url={getPollingLocationUrl}
+                            target="_blank"
+                            className="u-gray-mid"
+                            body={(
+                              <Button
+                                id="findPollingLocationButton"
+                                classes={{ root: classes.saveButton }}
+                                color="primary"
+                                fullWidth
+                                variant="contained"
+                              >
+                                <div className="u-show-mobile">
+                                  Find
+                                </div>
+                                <div className="u-show-desktop-tablet">
+                                  {(locationToDeliverBallot === 'polling place') && 'Find Polling Location'}
+                                  {(locationToDeliverBallot === 'voting center') && 'Find Voting Center'}
+                                </div>
+                              </Button>
+                            )}
+                          />
+                        </Suspense>
                       </Paper>
                     </InternalFormWrapper>
                   </div>

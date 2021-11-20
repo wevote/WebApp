@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import React, { Component } from 'react';
+import React, { Component, Suspense } from 'react';
 import styled from 'styled-components';
 import IssueActions from '../../actions/IssueActions';
 import IssueStore from '../../stores/IssueStore';
@@ -7,7 +7,6 @@ import VoterStore from '../../stores/VoterStore';
 import { renderLog } from '../../utils/logging';
 
 const IssueCard = React.lazy(() => import(/* webpackChunkName: 'IssueCard' */ './IssueCard'));
-
 
 
 export default class FriendInvitationOnboardingFriendValuesList extends Component {
@@ -60,13 +59,15 @@ export default class FriendInvitationOnboardingFriendValuesList extends Componen
           className="col col-12 col-md-6 u-stack--lg"
           key={`friend-column-issue-list-key-${issue.issue_we_vote_id}`}
         >
-          <IssueCard
-            followToggleOn
-            hideAdvocatesCount
-            issue={issue}
-            issueImageSize="SMALL"
-            key={`issue-list-key-${issue.issue_we_vote_id}`}
-          />
+          <Suspense fallback={<></>}>
+            <IssueCard
+              followToggleOn
+              hideAdvocatesCount
+              issue={issue}
+              issueImageSize="SMALL"
+              key={`issue-list-key-${issue.issue_we_vote_id}`}
+            />
+          </Suspense>
         </Column>
       );
       return issueCardHtml;

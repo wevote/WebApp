@@ -1,5 +1,5 @@
 import { withStyles } from '@material-ui/core/styles';
-import React, { Component } from 'react';
+import React, { Component, Suspense } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import OrganizationStore from '../../stores/OrganizationStore';
@@ -74,7 +74,11 @@ class SeeTheseSettingsInAction extends Component {
     } = this.state;
     if (!voterIsSignedIn) {
       // console.log('voterIsSignedIn is false');
-      return <SettingsAccount />;
+      return (
+        <Suspense fallback={<></>}>
+          <SettingsAccount />
+        </Suspense>
+      );
     } else if (!voter || !organizationWeVoteId) {
       return null;
     }
@@ -86,21 +90,25 @@ class SeeTheseSettingsInAction extends Component {
             To see the changes you make on this page, please visit:
             {' '}
             {organizationChosenSubdomain && (
-              <OpenExternalWebSite
-                linkIdAttribute="organizationChosenSubdomainSeeTheseSettingsInAction"
-                url={`https://${organizationChosenSubdomain}.WeVote.US`}
-                target="_blank"
-                body={(<span>{`https://${organizationChosenSubdomain}.WeVote.US`}</span>)}
-              />
+              <Suspense fallback={<></>}>
+                <OpenExternalWebSite
+                  linkIdAttribute="organizationChosenSubdomainSeeTheseSettingsInAction"
+                  url={`https://${organizationChosenSubdomain}.WeVote.US`}
+                  target="_blank"
+                  body={(<span>{`https://${organizationChosenSubdomain}.WeVote.US`}</span>)}
+                />
+              </Suspense>
             )}
             {' '}
             {organizationChosenDomainName && (
-              <OpenExternalWebSite
-                linkIdAttribute="organizationChosenDomainNameSeeTheseSettingsInAction"
-                url={`https://${organizationChosenDomainName}`}
-                target="_blank"
-                body={(<span>{`https://${organizationChosenDomainName}`}</span>)}
-              />
+              <Suspense fallback={<></>}>
+                <OpenExternalWebSite
+                  linkIdAttribute="organizationChosenDomainNameSeeTheseSettingsInAction"
+                  url={`https://${organizationChosenDomainName}`}
+                  target="_blank"
+                  body={(<span>{`https://${organizationChosenDomainName}`}</span>)}
+                />
+              </Suspense>
             )}
           </LinkToDomainRow>
         ) : (

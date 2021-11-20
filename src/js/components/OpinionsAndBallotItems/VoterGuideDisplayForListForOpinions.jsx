@@ -2,7 +2,7 @@ import { Button, Card } from '@material-ui/core';
 import { withStyles, withTheme } from '@material-ui/core/styles';
 import { Twitter } from '@material-ui/icons';
 import PropTypes from 'prop-types';
-import React, { Component } from 'react';
+import React, { Component, Suspense } from 'react';
 import { Link } from 'react-router-dom';
 import { ReactSVG } from 'react-svg';
 import styled from 'styled-components';
@@ -110,10 +110,12 @@ class voterGuideDisplayForListForOpinions extends Component {
     }
 
     const voterGuideDescription = twitterDescription && (
-      <ReadMore
-        numberOfLines={3}
-        textToDisplay={twitterDescription}
-      />
+      <Suspense fallback={<></>}>
+        <ReadMore
+          numberOfLines={3}
+          textToDisplay={twitterDescription}
+        />
+      </Suspense>
     );
 
     const organizationPopoverCard = organizationWeVoteId ? <OrganizationPopoverCard organizationWeVoteId={organizationWeVoteId} /> : <span />;
@@ -137,11 +139,13 @@ class voterGuideDisplayForListForOpinions extends Component {
                       className="u-no-underline"
                     >
                       { voterGuideImageUrlMedium ? (
-                        <ImageHandler
-                          className="card-child__avatar"
-                          sizeClassName="icon-lg"
-                          imageUrl={voterGuideImageUrlMedium}
-                        />
+                        <Suspense fallback={<></>}>
+                          <ImageHandler
+                            className="card-child__avatar"
+                            sizeClassName="icon-lg"
+                            imageUrl={voterGuideImageUrlMedium}
+                          />
+                        </Suspense>
                       ) :
                         imagePlaceholder }
                     </Link>
@@ -162,7 +166,9 @@ class voterGuideDisplayForListForOpinions extends Component {
                   voterWeVoteIdForThisOrganization && <FriendToggle otherVoterWeVoteId={voterWeVoteIdForThisOrganization} /> */}
                 </>
               ) : (
-                <FollowToggle organizationWeVoteId={organizationWeVoteId} lightModeOn hideDropdownButtonUntilFollowing anchorLeft platformType="desktop" />
+                <Suspense fallback={<></>}>
+                  <FollowToggle organizationWeVoteId={organizationWeVoteId} lightModeOn hideDropdownButtonUntilFollowing anchorLeft platformType="desktop" />
+                </Suspense>
               )}
             </DesktopItemLeft>
             <VoterGuideDesktop>
@@ -233,11 +239,13 @@ class voterGuideDisplayForListForOpinions extends Component {
               <MobileItemImage>
                 <Link to={speakerLink} className="u-no-underline">
                   { voterGuideImageUrlMedium ? (
-                    <ImageHandler
-                      className="card-child__avatar"
-                      sizeClassName="icon-lg"
-                      imageUrl={voterGuideImageUrlMedium}
-                    />
+                    <Suspense fallback={<></>}>
+                      <ImageHandler
+                        className="card-child__avatar"
+                        sizeClassName="icon-lg"
+                        imageUrl={voterGuideImageUrlMedium}
+                      />
+                    </Suspense>
                   ) :
                     imagePlaceholder }
                 </Link>
@@ -300,7 +308,9 @@ class voterGuideDisplayForListForOpinions extends Component {
                       voterWeVoteIdForThisOrganization && <FriendToggle otherVoterWeVoteId={voterWeVoteIdForThisOrganization} /> */}
                     </>
                   ) : (
-                    <FollowToggle organizationWeVoteId={organizationWeVoteId} lightModeOn hideDropdownButtonUntilFollowing platformType="mobile" />
+                    <Suspense fallback={<></>}>
+                      <FollowToggle organizationWeVoteId={organizationWeVoteId} lightModeOn hideDropdownButtonUntilFollowing platformType="mobile" />
+                    </Suspense>
                   )}
                 </MobileItemFollowToggleDisplay>
               </MobileItemDescriptionFollowToggleContainer>

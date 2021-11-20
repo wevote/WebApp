@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import React, { Component } from 'react';
+import React, { Component, Suspense } from 'react';
 import Helmet from 'react-helmet';
 import MeasureActions from '../../actions/MeasureActions';
 import OrganizationActions from '../../actions/OrganizationActions';
@@ -125,15 +125,19 @@ export default class OrganizationVoterGuideMeasure extends Component {
           title={titleText}
           meta={[{ name: 'description', content: descriptionText }]}
         />
-        <MeasureItem measureWeVoteId={this.state.measure.we_vote_id} />
+        <Suspense fallback={<></>}>
+          <MeasureItem measureWeVoteId={this.state.measure.we_vote_id} />
+        </Suspense>
         <div className="card__additional">
           { this.state.allCachedPositionsByMeasureWeVoteId ? (
             <div>
-              <PositionList
-                incomingPositionList={this.state.allCachedPositionsByMeasureWeVoteId}
-                ballotItemDisplayName={this.state.measure.ballot_item_display_name}
-                params={params}
-              />
+              <Suspense fallback={<></>}>
+                <PositionList
+                  incomingPositionList={this.state.allCachedPositionsByMeasureWeVoteId}
+                  ballotItemDisplayName={this.state.measure.ballot_item_display_name}
+                  params={params}
+                />
+              </Suspense>
             </div>
           ) : null}
           {this.state.voterGuidesToFollowForLatestBallotItem.length === 0 ?
@@ -152,18 +156,20 @@ export default class OrganizationVoterGuideMeasure extends Component {
         { voter.is_admin || voter.is_verified_volunteer ? (
           <span className="u-wrap-links d-print-none">
             Admin:
-            <OpenExternalWebSite
-              linkIdAttribute="measureAdminEdit"
-              url={measureAdminEditUrl}
-              target="_blank"
-              className="open-web-site open-web-site__no-right-padding"
-              body={(
-                <span>
-                  edit
-                  {measureName}
-                </span>
-              )}
-            />
+            <Suspense fallback={<></>}>
+              <OpenExternalWebSite
+                linkIdAttribute="measureAdminEdit"
+                url={measureAdminEditUrl}
+                target="_blank"
+                className="open-web-site open-web-site__no-right-padding"
+                body={(
+                  <span>
+                    edit
+                    {measureName}
+                  </span>
+                )}
+              />
+            </Suspense>
           </span>
         ) : null}
       </section>

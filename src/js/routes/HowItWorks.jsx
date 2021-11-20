@@ -1,7 +1,7 @@
 import { Button } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
-import React, { Component } from 'react';
+import React, { Component, Suspense } from 'react';
 import Helmet from 'react-helmet';
 import styled from 'styled-components';
 import VoterActions from '../actions/VoterActions';
@@ -16,8 +16,8 @@ import cordovaScrollablePaneTopPadding from '../utils/cordovaScrollablePaneTopPa
 import { historyPush, isCordova } from '../utils/cordovaUtils';
 import { renderLog } from '../utils/logging';
 
-const WelcomeFooter = React.lazy(() => import(/* webpackChunkName: 'WelcomeFooter' */ '../components/Welcome/WelcomeFooter'));
 const WelcomeAppbar = React.lazy(() => import(/* webpackChunkName: 'WelcomeAppbar' */ '../components/Navigation/WelcomeAppbar'));
+const WelcomeFooter = React.lazy(() => import(/* webpackChunkName: 'WelcomeFooter' */ '../components/Welcome/WelcomeFooter'));
 
 
 class HowItWorks extends Component {
@@ -348,7 +348,9 @@ class HowItWorks extends Component {
     ) : (
       <Wrapper padTop={cordovaScrollablePaneTopPadding()}>
         <Helmet title={helmetTitle} />
-        <WelcomeAppbar pathname={simulatedPathname} />
+        <Suspense fallback={<></>}>
+          <WelcomeAppbar pathname={simulatedPathname} />
+        </Suspense>
         <Header>
           <Container>
             <Title>How it Works</Title>
@@ -404,7 +406,9 @@ class HowItWorks extends Component {
             )
           }
         </Section>
-        <WelcomeFooter />
+        <Suspense fallback={<></>}>
+          <WelcomeFooter />
+        </Suspense>
       </Wrapper>
     );
   }

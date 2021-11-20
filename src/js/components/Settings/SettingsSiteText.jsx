@@ -1,7 +1,7 @@
 import { Button, FormControl, TextField } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
-import React, { Component } from 'react';
+import React, { Component, Suspense } from 'react';
 import Helmet from 'react-helmet';
 import styled from 'styled-components';
 import OrganizationActions from '../../actions/OrganizationActions';
@@ -180,9 +180,11 @@ class SettingsSiteText extends Component {
     } else if (!voterIsSignedIn) {
       // console.log('voterIsSignedIn is false');
       return (
-        <DelayedLoad waitBeforeShow={1000}>
-          <SettingsAccount />
-        </DelayedLoad>
+        <Suspense fallback={<></>}>
+          <DelayedLoad waitBeforeShow={1000}>
+            <SettingsAccount />
+          </DelayedLoad>
+        </Suspense>
       );
     }
 
