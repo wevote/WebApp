@@ -5,7 +5,7 @@ import React, { Component, Suspense } from 'react';
 import styled from 'styled-components';
 import VoterActions from '../../actions/VoterActions';
 import VoterConstants from '../../constants/VoterConstants';
-import { hideZenDeskHelpVisibility, normalizedHref, setZenDeskHelpVisibility } from '../../utils/applicationUtils';
+import { normalizedHref } from '../../utils/applicationUtils';
 import { renderLog } from '../../utils/logging';
 
 const CandidateItem = React.lazy(() => import(/* webpackChunkName: 'CandidateItem' */ '../Ballot/CandidateItem'));
@@ -242,19 +242,9 @@ class PersonalizedScoreIntroBody extends Component {
     this.setState(personalizedScoreSteps[1]);
     this.setState({
     });
-    if (this.props.show) {
-      hideZenDeskHelpVisibility();
-    } else {
-      setZenDeskHelpVisibility(normalizedHref());
-    }
-  }
-
-  componentWillUnmount () {
-    setZenDeskHelpVisibility(normalizedHref());
   }
 
   closeThisModal = () => {
-    setZenDeskHelpVisibility(normalizedHref());
     const { currentStep } = this.state;
     const currentStepCompletedThreshold = 7;
     if (currentStep >= currentStepCompletedThreshold) {

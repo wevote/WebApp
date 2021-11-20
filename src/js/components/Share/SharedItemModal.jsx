@@ -14,7 +14,6 @@ import BallotStore from '../../stores/BallotStore';
 import OrganizationStore from '../../stores/OrganizationStore';
 import ShareStore from '../../common/stores/ShareStore';
 import VoterStore from '../../stores/VoterStore';
-import { hideZenDeskHelpVisibility, showZenDeskHelpVisibility } from '../../utils/applicationUtils';
 import { cordovaFooterHeight, cordovaNetworkNextButtonTop } from '../../utils/cordovaOffsets';
 import { cordovaDot, hasIPhoneNotch, isCordova, isWebApp } from '../../utils/cordovaUtils';
 import { formatDateToMonthDayYear } from '../../utils/dateFormat';
@@ -203,12 +202,11 @@ class SharedItemModal extends Component {
   }
 
   closeSharedItemModalLocal = () => {
-    // console.log('SharedItemModal this.props.closeSharedItemModal:', this.props.closeSharedItemModal);
+    // console.log('SharedItemModal closeSharedItemModalLocal');
     const { personalizedScoreIntroWatchedThisSession } = this.state;
     if (personalizedScoreIntroWatchedThisSession) {
       VoterActions.voterUpdateInterfaceStatusFlags(VoterConstants.PERSONALIZED_SCORE_INTRO_COMPLETED);
     }
-    showZenDeskHelpVisibility();
     if (this.props.closeSharedItemModal) {
       this.props.closeSharedItemModal();
     }
@@ -332,7 +330,6 @@ class SharedItemModal extends Component {
     const { maxSlideIndex } = this.state;
     // console.log('goToSpecificSlide index:', index);
     const minSlideIndex = 0;
-    hideZenDeskHelpVisibility();
     if (index <= maxSlideIndex && index >= minSlideIndex) {
       const hideSharedByIntro = index !== 0;
       this.setState({
@@ -343,7 +340,6 @@ class SharedItemModal extends Component {
   }
 
   nextSlide () {
-    hideZenDeskHelpVisibility();
     const { currentSlideIndex, maxSlideIndex } = this.state;
     // console.log('nextSlide currentSlideIndex:', currentSlideIndex);
     if (currentSlideIndex < maxSlideIndex) {
@@ -358,7 +354,6 @@ class SharedItemModal extends Component {
 
   previousSlide () {
     // console.log('previousSlide, currentSlideIndex:', currentSlideIndex);
-    hideZenDeskHelpVisibility();
     const { currentSlideIndex } = this.state;
     const minSlideIndex = 0;
     if (currentSlideIndex > minSlideIndex) {

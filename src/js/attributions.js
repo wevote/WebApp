@@ -175,9 +175,6 @@ module.exports = [
   // Jan 2019, https://dev.maxmind.com/geoip/geoip2/geolite2/ (In Python server, but requests attribution in app)
   'This product includes GeoLite2 data created by MaxMind\n' +
   'Available from https://www.maxmind.com',
-  // July 2019, https://developer.zendesk.com/embeddables/docs/widget/legal
-  'The Zendesk embeddable contains third-party, open source software and/or libraries. \n' +
-  'To view them and their license terms, go to http://goto.zendesk.com/embeddable-legal-notices',
   // MAY 2021, wordpress-logo.svg
   'wordpress-logo.svg \n' +
   '™/®WordPress, GPL <http://www.gnu.org/licenses/gpl.html>, via Wikimedia Commons',

@@ -53,7 +53,7 @@ export function pageEnumeration () {
     return CordovaPageConstants.valuesList;
 
   // then wildcarded second level paths
-  } else if (path.startsWith('/candidate/')) {
+  } else if (path.startsWith('/candidate/') || path.startsWith('/verifythisisme/')) {
     return CordovaPageConstants.candidateWild;
   } else if (path.startsWith('/office/')) {
     return CordovaPageConstants.officeWild;
