@@ -1,6 +1,6 @@
 import { Button } from '@material-ui/core';
 import PropTypes from 'prop-types';
-import React, { Component } from 'react';
+import React, { Component, Suspense } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import AnalyticsActions from '../../actions/AnalyticsActions';
@@ -300,21 +300,23 @@ export default class OrganizationVoterGuide extends Component {
 
     if (!organizationId) {
       return (
-        <DelayedLoad showLoadingText waitBeforeShow={2000}>
-          <div style={{ margin: 'auto', width: '50%' }}>
-            <Link
-              id="OrganizationVoterGuideGoToBallot"
-              to="/ballot"
-            >
-              <Button
-                color="primary"
-                variant="outlined"
+        <Suspense fallback={<></>}>
+          <DelayedLoad showLoadingText waitBeforeShow={2000}>
+            <div style={{ margin: 'auto', width: '50%' }}>
+              <Link
+                id="OrganizationVoterGuideGoToBallot"
+                to="/ballot"
               >
-                Go to Ballot
-              </Button>
-            </Link>
-          </div>
-        </DelayedLoad>
+                <Button
+                  color="primary"
+                  variant="outlined"
+                >
+                  Go to Ballot
+                </Button>
+              </Link>
+            </div>
+          </DelayedLoad>
+        </Suspense>
       );
     }
 
@@ -372,7 +374,7 @@ export default class OrganizationVoterGuide extends Component {
                     </EditYourEndorsementsWrapper>
                   )}
                   { !isVoterOwner && (
-                    <>
+                    <Suspense fallback={<></>}>
                       <FollowToggleMobileWrapper>
                         <FollowToggle
                           platformType="mobile"
@@ -390,7 +392,7 @@ export default class OrganizationVoterGuide extends Component {
                           />
                         </FriendToggleMobileWrapper>
                       )}
-                    </>
+                    </Suspense>
                   )}
                   <FriendsFollowingFollowersMobileWrapper className="d-print-none">
                     <ul className="nav">

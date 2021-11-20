@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
 import Helmet from 'react-helmet';
 import styled from 'styled-components';
-import testimonialImage from '../../../img/global/photos/Dale_McGrew-200x200.jpg';
 import ActivityActions from '../../actions/ActivityActions';
 import AnalyticsActions from '../../actions/AnalyticsActions';
 import FriendActions from '../../actions/FriendActions';
@@ -36,8 +35,10 @@ import SuggestedFriends from './SuggestedFriends';
 
 const FirstAndLastNameRequiredAlert = React.lazy(() => import(/* webpackChunkName: 'FirstAndLastNameRequiredAlert' */ '../../components/Widgets/FirstAndLastNameRequiredAlert'));
 
+const testimonialPhoto = '../../../img/global/photos/Dale_McGrew-48x48.jpg';
+
 const testimonialAuthor = 'Dale M., Oakland, California';
-const imageUrl = cordovaDot(testimonialImage);
+const imageUrl = cordovaDot(testimonialPhoto);
 const testimonial = 'Instead of searching through emails and social media for recommendations, I can see how my friends are voting on We Vote.';
 
 class Friends extends Component {

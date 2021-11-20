@@ -5,7 +5,7 @@ import { Button, Table, TableBody, TableCell, TableHead, TableRow } from '@mater
 import { withStyles } from '@material-ui/core/styles';
 import { CheckCircle } from '@material-ui/icons';
 import PropTypes from 'prop-types';
-import React, { Component } from 'react';
+import React, { Component, Suspense } from 'react';
 import Helmet from 'react-helmet';
 import styled from 'styled-components';
 import DonateActions from '../../common/actions/DonateActions';
@@ -246,9 +246,11 @@ class SettingsSubscriptionPlan extends Component {
     if (!voterIsSignedIn) {
       // console.log('voterIsSignedIn is false');
       return (
-        <DelayedLoad waitBeforeShow={1000}>
-          <SettingsAccount />
-        </DelayedLoad>
+        <Suspense fallback={<></>}>
+          <DelayedLoad waitBeforeShow={1000}>
+            <SettingsAccount />
+          </DelayedLoad>
+        </Suspense>
       );
     }
 

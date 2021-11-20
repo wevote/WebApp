@@ -1184,9 +1184,9 @@ class Ballot extends Component {
 
     const emptyBallotButton = completionLevelFilterType !== 'none' && !voterAddressMissing ? (
       <EmptyBallotNotice>
-        <EditAddressCard className="card">
+        <EmptyBallotCard className="card">
           No ballot items found. Please try again later.
-        </EditAddressCard>
+        </EmptyBallotCard>
       </EmptyBallotNotice>
     ) : (
       <div className="container-fluid well u-stack--md u-inset--md">
@@ -1595,6 +1595,10 @@ const EditAddressWrapper = styled.div`
     padding-left: 0 !important;
     padding-right: 0 !important;
   }
+`;
+
+const EmptyBallotCard = styled.div`
+  padding: 12px 15px;
 `;
 
 const EmptyBallotNotice = styled.div`

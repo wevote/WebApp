@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
-import React, { Component } from 'react';
+import React, { Component, Suspense } from 'react';
 import { Link } from 'react-router-dom';
-import TextTruncate from 'react-text-truncate';
+import TextTruncate from 'react-text-truncate'; // Replace with: import TruncateMarkup from 'react-truncate-markup';
 import CandidateStore from '../../stores/CandidateStore';
 import OrganizationStore from '../../stores/OrganizationStore';
 import SupportStore from '../../stores/SupportStore';
@@ -117,19 +117,23 @@ export default class CandidateItemCompressed extends Component {
     return (
       <div key={oneCandidateWeVoteId} className="u-stack--md">
         <div className="u-float-right">
-          <BallotItemSupportOpposeCountDisplay ballotItemWeVoteId={oneCandidateWeVoteId} />
+          <Suspense fallback={<></>}>
+            <BallotItemSupportOpposeCountDisplay ballotItemWeVoteId={oneCandidateWeVoteId} />
+          </Suspense>
         </div>
         <div className="o-media-object u-flex-auto u-min-50 u-push--sm u-stack--sm">
           {/* Candidate Photo, only shown in Desktop */}
           <Link to={this.getCandidateLink(this.state.oneCandidate.we_vote_id)}>
-            <ImageHandler
-              className={avatarCompressed}
-              sizeClassName="icon-candidate-small u-push--sm "
-              imageUrl={this.state.oneCandidate.candidate_photo_url_medium}
-              alt="candidate-photo"
-              kind_of_ballot_item="CANDIDATE"
-              style={{ backgroundImage: { avatarBackgroundImage } }}
-            />
+            <Suspense fallback={<></>}>
+              <ImageHandler
+                className={avatarCompressed}
+                sizeClassName="icon-candidate-small u-push--sm "
+                imageUrl={this.state.oneCandidate.candidate_photo_url_medium}
+                alt="candidate-photo"
+                kind_of_ballot_item="CANDIDATE"
+                style={{ backgroundImage: { avatarBackgroundImage } }}
+              />
+            </Suspense>
           </Link>
           <div className="o-media-object__body u-flex u-flex-column u-flex-auto u-justify-between">
             {/* Candidate Name */}
@@ -144,11 +148,13 @@ export default class CandidateItemCompressed extends Component {
               </Link>
             </h4>
             {/* Description under candidate name */}
-            <LearnMore
-              text_to_display={candidateText}
-              on_click={this.goToCandidateLink(this.state.oneCandidate.we_vote_id)}
-              num_of_lines={3}
-            />
+            <Suspense fallback={<></>}>
+              <LearnMore
+                text_to_display={candidateText}
+                on_click={this.goToCandidateLink(this.state.oneCandidate.we_vote_id)}
+                num_of_lines={3}
+              />
+            </Suspense>
           </div>
         </div>
       </div>

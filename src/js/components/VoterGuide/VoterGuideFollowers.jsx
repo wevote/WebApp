@@ -1,6 +1,6 @@
 import { filter } from 'lodash-es';
 import PropTypes from 'prop-types';
-import React, { Component } from 'react';
+import React, { Component, Suspense } from 'react';
 import Helmet from 'react-helmet';
 import styled from 'styled-components';
 import OrganizationActions from '../../actions/OrganizationActions';
@@ -177,23 +177,25 @@ class VoterGuideFollowers extends Component {
                   )}
                 </TitleWrapper>
               ) : (
-                <DelayedLoad showLoadingText waitBeforeShow={2000}>
-                  <TitleWrapper>
-                    {lookingAtSelf ? (
-                      <>
-                        No followers can be found.
-                      </>
-                    ) : (
-                      <>
-                        No followers of
-                        {' '}
-                        {organizationName}
-                        {' '}
-                        can be found.
-                      </>
-                    )}
-                  </TitleWrapper>
-                </DelayedLoad>
+                <Suspense fallback={<></>}>
+                  <DelayedLoad showLoadingText waitBeforeShow={2000}>
+                    <TitleWrapper>
+                      {lookingAtSelf ? (
+                        <>
+                          No followers can be found.
+                        </>
+                      ) : (
+                        <>
+                          No followers of
+                          {' '}
+                          {organizationName}
+                          {' '}
+                          can be found.
+                        </>
+                      )}
+                    </TitleWrapper>
+                  </DelayedLoad>
+                </Suspense>
               )}
             {/* ********** */}
             {/* Search Box */}

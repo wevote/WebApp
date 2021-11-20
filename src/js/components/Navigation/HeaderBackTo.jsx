@@ -2,7 +2,7 @@ import { IconButton, Toolbar } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 import { AccountCircle } from '@material-ui/icons';
 import PropTypes from 'prop-types';
-import React, { Component } from 'react';
+import React, { Component, Suspense } from 'react';
 import styled from 'styled-components';
 import OrganizationActions from '../../actions/OrganizationActions';
 import VoterGuideActions from '../../actions/VoterGuideActions';
@@ -258,7 +258,9 @@ class HeaderBackTo extends Component {
             style={{ paddingLeft: `${isCordova() ? '0 !important' : ''}` }}
           >
             {voterIsSignedIn && (
-              <HeaderNotificationMenu />
+              <Suspense fallback={<></>}>
+                <HeaderNotificationMenu />
+              </Suspense>
             )}
             {voterIsSignedIn ? (
               <span>
@@ -294,16 +296,18 @@ class HeaderBackTo extends Component {
                   </span>
                 )}
                 {profilePopUpOpen && (
-                <HeaderBarProfilePopUp
-                  hideProfilePopUp={this.hideProfilePopUp}
-                  onClick={this.toggleProfilePopUp}
-                  profilePopUpOpen={profilePopUpOpen}
-                  signOutAndHideProfilePopUp={this.signOutAndHideProfilePopUp}
-                  toggleProfilePopUp={this.toggleProfilePopUp}
-                  toggleSignInModal={this.toggleSignInModal}
-                  transitionToYourVoterGuide={this.transitionToYourVoterGuide}
-                  voter={voter}
-                />
+                  <Suspense fallback={<></>}>
+                    <HeaderBarProfilePopUp
+                      hideProfilePopUp={this.hideProfilePopUp}
+                      onClick={this.toggleProfilePopUp}
+                      profilePopUpOpen={profilePopUpOpen}
+                      signOutAndHideProfilePopUp={this.signOutAndHideProfilePopUp}
+                      toggleProfilePopUp={this.toggleProfilePopUp}
+                      toggleSignInModal={this.toggleSignInModal}
+                      transitionToYourVoterGuide={this.transitionToYourVoterGuide}
+                      voter={voter}
+                    />
+                  </Suspense>
                 )}
               </span>
             ) : (
@@ -313,10 +317,12 @@ class HeaderBackTo extends Component {
           )}
         </Toolbar>
         {showSignInModal && (
-          <SignInModal
-            show={showSignInModal}
-            closeFunction={this.closeSignInModal}
-          />
+          <Suspense fallback={<></>}>
+            <SignInModal
+              show={showSignInModal}
+              closeFunction={this.closeSignInModal}
+            />
+          </Suspense>
         )}
       </AppBarForBackTo>
     );

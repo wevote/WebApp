@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import React, { Component } from 'react';
+import React, { Component, Suspense } from 'react';
 import CandidateStore from '../../stores/CandidateStore';
 import IssueStore from '../../stores/IssueStore';
 import OrganizationStore from '../../stores/OrganizationStore';
@@ -179,11 +179,13 @@ export default class VoterGuideOfficeItemCompressed extends Component {
 
                   return (
                     <div key={candidateWeVoteId}>
-                      <VoterGuidePositionItem
-                        ballotItemWeVoteId={candidateWeVoteId}
-                        organizationWeVoteId={organizationWeVoteId}
-                        positionWeVoteId={orgPositionForCandidate.position_we_vote_id}
-                      />
+                      <Suspense fallback={<></>}>
+                        <VoterGuidePositionItem
+                          ballotItemWeVoteId={candidateWeVoteId}
+                          organizationWeVoteId={organizationWeVoteId}
+                          positionWeVoteId={orgPositionForCandidate.position_we_vote_id}
+                        />
+                      </Suspense>
                     </div>
                   );
                 }

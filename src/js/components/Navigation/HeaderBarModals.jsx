@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import React from 'react';
+import React, { Suspense } from 'react';
 import AppObservableStore from '../../stores/AppObservableStore';
 import VoterStore from '../../stores/VoterStore';
 import { normalizedHrefPage } from '../../utils/applicationUtils';
@@ -36,72 +36,90 @@ export default function HeaderBarModals (props) {
 
   if (showSignInModal) {
     return (
-      <SignInModal
-        show={showSignInModal}
-        closeFunction={closeSignInModal}
-      />
+      <Suspense fallback={<></>}>
+        <SignInModal
+          show={showSignInModal}
+          closeFunction={closeSignInModal}
+        />
+      </Suspense>
     );
   } else if (showSelectBallotModal) {
     return (
-      <SelectBallotModal
-        ballotBaseUrl={ballotBaseUrl}
-        hideAddressEdit={showSelectBallotModalHideAddress}
-        hideElections={showSelectBallotModalHideElections}
-        show
-        toggleFunction={toggleSelectBallotModal}
-      />
+      <Suspense fallback={<></>}>
+        <SelectBallotModal
+          ballotBaseUrl={ballotBaseUrl}
+          hideAddressEdit={showSelectBallotModalHideAddress}
+          hideElections={showSelectBallotModalHideElections}
+          show
+          toggleFunction={toggleSelectBallotModal}
+        />
+      </Suspense>
     );
   } else if (showPaidAccountUpgradeModal) {
     return null;
     // TODO: Backport "@stripe/react-stripe-js" use from Campaigns
-    //   <PaidAccountUpgradeModal
-    //     initialPricingPlan={paidAccountUpgradeMode}
-    //     show={showPaidAccountUpgradeModal}
-    //     toggleFunction={this.closePaidAccountUpgradeModal}
-    //   />
+    //   <Suspense fallback={<></>}>
+    //     <PaidAccountUpgradeModal
+    //       initialPricingPlan={paidAccountUpgradeMode}
+    //       show={showPaidAccountUpgradeModal}
+    //       toggleFunction={this.closePaidAccountUpgradeModal}
+    //     />
+    //   </Suspense>
   } else if (showShareModal) {
     return (
-      <ShareModal
-        voterIsSignedIn={voterIsSignedIn}
-        show={showShareModal}
-        shareModalStep={shareModalStep}
-        closeShareModal={closeShareModal}
-      />
+      <Suspense fallback={<></>}>
+        <ShareModal
+          voterIsSignedIn={voterIsSignedIn}
+          show={showShareModal}
+          shareModalStep={shareModalStep}
+          closeShareModal={closeShareModal}
+        />
+      </Suspense>
     );
   } else if (showAdviserIntroModal) {
     return (
-      <AdviserIntroModal
-        show={showAdviserIntroModal}
-        toggleFunction={closeAdviserIntroModal}
-      />
+      <Suspense fallback={<></>}>
+        <AdviserIntroModal
+          show={showAdviserIntroModal}
+          toggleFunction={closeAdviserIntroModal}
+        />
+      </Suspense>
     );
   } else if (showFirstPositionIntroModal) {
     return (
-      <FirstPositionIntroModal
-        show={showFirstPositionIntroModal}
-        toggleFunction={closeFirstPositionIntroModal}
-      />
+      <Suspense fallback={<></>}>
+        <FirstPositionIntroModal
+          show={showFirstPositionIntroModal}
+          toggleFunction={closeFirstPositionIntroModal}
+        />
+      </Suspense>
     );
   } else if (showPersonalizedScoreIntroModal) {
     return (
-      <PersonalizedScoreIntroModal
-        show={showPersonalizedScoreIntroModal}
-        toggleFunction={closePersonalizedScoreIntroModal}
-      />
+      <Suspense fallback={<></>}>
+        <PersonalizedScoreIntroModal
+          show={showPersonalizedScoreIntroModal}
+          toggleFunction={closePersonalizedScoreIntroModal}
+        />
+      </Suspense>
     );
   } else if (showValuesIntroModal) {
     return (
-      <ValuesIntroModal
-        show={showValuesIntroModal}
-        toggleFunction={closeValuesIntroModal}
-      />
+      <Suspense fallback={<></>}>
+        <ValuesIntroModal
+          show={showValuesIntroModal}
+          toggleFunction={closeValuesIntroModal}
+        />
+      </Suspense>
     );
   } else if (showImageUploadModal) {
     return (
-      <ImageUploadModal
-        show={showImageUploadModal}
-        toggleFunction={closeImageUploadModal}
-      />
+      <Suspense fallback={<></>}>
+        <ImageUploadModal
+          show={showImageUploadModal}
+          toggleFunction={closeImageUploadModal}
+        />
+      </Suspense>
     );
   }
   return null;

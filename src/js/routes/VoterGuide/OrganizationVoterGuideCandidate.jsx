@@ -1,7 +1,7 @@
 import { withStyles } from '@material-ui/core/styles';
 import { Info } from '@material-ui/icons';
 import PropTypes from 'prop-types';
-import React, { Component } from 'react';
+import React, { Component, Suspense } from 'react';
 import Helmet from 'react-helmet';
 import styled from 'styled-components';
 import AnalyticsActions from '../../actions/AnalyticsActions';
@@ -154,17 +154,19 @@ class OrganizationVoterGuideCandidate extends Component {
           <div className="card__additional">
             { allCachedPositionsForThisCandidate ? (
               <div>
-                <PositionList
-                  incomingPositionList={allCachedPositionsForThisCandidate}
-                  ballotItemDisplayName={candidate.ballot_item_display_name}
-                  params={params}
-                  positionListExistsTitle={(
-                    <PositionListIntroductionText>
-                      <Info classes={{ root: classes.informationIcon }} />
-                      Opinions about this candidate are below. Use these filters to sort:
-                    </PositionListIntroductionText>
-                  )}
-                />
+                <Suspense fallback={<></>}>
+                  <PositionList
+                    incomingPositionList={allCachedPositionsForThisCandidate}
+                    ballotItemDisplayName={candidate.ballot_item_display_name}
+                    params={params}
+                    positionListExistsTitle={(
+                      <PositionListIntroductionText>
+                        <Info classes={{ root: classes.informationIcon }} />
+                        Opinions about this candidate are below. Use these filters to sort:
+                      </PositionListIntroductionText>
+                    )}
+                  />
+                </Suspense>
               </div>
             ) : null}
             {this.state.voterGuidesToFollowForLatestBallotItem.length === 0 ?
@@ -200,18 +202,20 @@ class OrganizationVoterGuideCandidate extends Component {
         { voter.is_admin || voter.is_verified_volunteer ? (
           <span className="u-wrap-links d-print-none">
             Admin:
-            <OpenExternalWebSite
-              linkIdAttribute="candidateAdminEdit"
-              url={candidateAdminEditUrl}
-              target="_blank"
-              className="open-web-site open-web-site__no-right-padding"
-              body={(
-                <span>
-                  edit
-                  {candidateName}
-                </span>
-              )}
-            />
+            <Suspense fallback={<></>}>
+              <OpenExternalWebSite
+                linkIdAttribute="candidateAdminEdit"
+                url={candidateAdminEditUrl}
+                target="_blank"
+                className="open-web-site open-web-site__no-right-padding"
+                body={(
+                  <span>
+                    edit
+                    {candidateName}
+                  </span>
+                )}
+              />
+            </Suspense>
           </span>
         ) : null}
       </span>

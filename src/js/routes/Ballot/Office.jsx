@@ -21,7 +21,7 @@ import { renderLog } from '../../utils/logging';
 import { sortCandidateList } from '../../utils/positionFunctions';
 import { capitalizeString } from '../../utils/textFormat';
 
-const daleMcGrewJpm = '../../../img/global/photos/Dale_McGrew-200x200.jpg';
+const testimonialPhoto = '../../../img/global/photos/Dale_McGrew-48x48.jpg';
 
 
 // This is related to routes/VoterGuide/OrganizationVoterGuideOffice
@@ -297,7 +297,7 @@ class Office extends Component {
     // =========== Testimonial variables ============================
 
     const testimonialAuthor = 'Dale M., Oakland, California';
-    const imageUrl = cordovaDot(daleMcGrewJpm);
+    const imageUrl = cordovaDot(testimonialPhoto);
     const testimonial = 'I like seeing the opinions of people who share my values.';
 
     // ==============================================================

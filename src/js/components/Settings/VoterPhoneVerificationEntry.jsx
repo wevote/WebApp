@@ -2,7 +2,7 @@ import { Button, InputBase, Paper } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 import { Delete, Phone } from '@material-ui/icons';
 import PropTypes from 'prop-types';
-import React, { Component } from 'react';
+import React, { Component, Suspense } from 'react';
 import Alert from 'react-bootstrap/Alert';
 import { isValidPhoneNumber } from 'react-phone-number-input';
 import styled from 'styled-components';
@@ -366,12 +366,14 @@ class VoterPhoneVerificationEntry extends Component {
               { secretCodeSystemLocked && (
                 <span>
                   Your account is locked. Please
-                  <OpenExternalWebSite
-                    linkIdAttribute="weVoteSupportVoterPhoneVerificationEntry"
-                    url="https://help.wevote.us/hc/en-us/requests/new"
-                    target="_blank"
-                    body={<span>contact We Vote support for help.</span>}
-                  />
+                  <Suspense fallback={<></>}>
+                    <OpenExternalWebSite
+                      linkIdAttribute="weVoteSupportVoterPhoneVerificationEntry"
+                      url="https://help.wevote.us/hc/en-us/requests/new"
+                      target="_blank"
+                      body={<span>contact We Vote support for help.</span>}
+                    />
+                  </Suspense>
                 </span>
               )}
             </Alert>

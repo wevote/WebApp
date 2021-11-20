@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, Suspense } from 'react';
 import { cordovaDot } from '../../utils/cordovaUtils';
 import InfoCircleIcon from './InfoCircleIcon';
 import SplitIconButton from './SplitIconButton';
@@ -26,22 +26,24 @@ class AddEndorsements extends Component {
       <div className="card">
         <div className="card-main">
           <div className="network-btn">
-            <OpenExternalWebSite
-              linkIdAttribute="addEndorsements"
-              url="https://api.wevoteusa.org/vg/create/"
-              className="u-no-underline"
-              target="_blank"
-              title="ENDORSEMENTS MISSING?"
-              body={(
-                <SplitIconButton
-                  buttonText="Add endorsements"
-                  externalUniqueId="myValuesAddEndorsementsToWeVote"
-                  icon={<img src={cordovaDot(positionIcon)} alt="" />}
-                  id="myValuesAddEndorsementsToWeVote"
-                  title="Endorsements missing?"
-                />
-              )}
-            />
+            <Suspense fallback={<></>}>
+              <OpenExternalWebSite
+                linkIdAttribute="addEndorsements"
+                url="https://api.wevoteusa.org/vg/create/"
+                className="u-no-underline"
+                target="_blank"
+                title="ENDORSEMENTS MISSING?"
+                body={(
+                  <SplitIconButton
+                    buttonText="Add endorsements"
+                    externalUniqueId="myValuesAddEndorsementsToWeVote"
+                    icon={<img src={cordovaDot(positionIcon)} alt="" />}
+                    id="myValuesAddEndorsementsToWeVote"
+                    title="Endorsements missing?"
+                  />
+                )}
+              />
+            </Suspense>
             {endorsementText}
           </div>
         </div>

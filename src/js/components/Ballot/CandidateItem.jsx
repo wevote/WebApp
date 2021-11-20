@@ -1,8 +1,8 @@
 import { withStyles, withTheme } from '@material-ui/core/styles';
 import { Info, Twitter } from '@material-ui/icons';
 import PropTypes from 'prop-types';
-import React, { Component } from 'react';
-import TextTruncate from 'react-text-truncate';
+import React, { Component, Suspense } from 'react';
+import TextTruncate from 'react-text-truncate'; // Replace with: import TruncateMarkup from 'react-truncate-markup';
 import styled from 'styled-components';
 import AppObservableStore from '../../stores/AppObservableStore';
 import CandidateStore from '../../stores/CandidateStore';
@@ -343,19 +343,21 @@ class CandidateItem extends Component {
               )}
               {(!hideCandidateUrl && candidateUrl && forDesktop) && (
                 <ExternalWebSiteWrapper className="u-show-desktop">
-                  <OpenExternalWebSite
-                    linkIdAttribute="candidateDesktop"
-                    url={candidateUrl}
-                    target="_blank"
-                    className="u-gray-mid"
-                    body={(
-                      <span>
-                        candidate website
-                        {' '}
-                        <ExternalLinkIcon />
-                      </span>
-                    )}
-                  />
+                  <Suspense fallback={<></>}>
+                    <OpenExternalWebSite
+                      linkIdAttribute="candidateDesktop"
+                      url={candidateUrl}
+                      target="_blank"
+                      className="u-gray-mid"
+                      body={(
+                        <span>
+                          candidate website
+                          {' '}
+                          <ExternalLinkIcon />
+                        </span>
+                      )}
+                    />
+                  </Suspense>
                 </ExternalWebSiteWrapper>
               )}
               { contestOfficeName && (
@@ -371,23 +373,25 @@ class CandidateItem extends Component {
             </Candidate>
           </CandidateInfo>
           <BallotItemSupportOpposeCountDisplayWrapper>
-            <BallotItemSupportOpposeCountDisplay
-              ballotItemWeVoteId={candidateWeVoteId}
-              closeSupportOpposeCountDisplayModal={closeSupportOpposeCountDisplayModal}
-              controlAdviserMaterialUIPopoverFromProp={controlAdviserMaterialUIPopoverFromProp}
-              goToBallotItem={this.props.goToBallotItem}
-              handleLeaveCandidateCard={forDesktop ? this.handleLeave : null}
-              handleEnterCandidateCard={forDesktop ? this.handleEnter : null}
-              hideEndorsementsOverview={this.props.hideEndorsementsOverview}
-              hideShowMoreLink={!linkToBallotItemPage}
-              openAdviserMaterialUIPopover={openAdviserMaterialUIPopover}
-              openSupportOpposeCountDisplayModal={openSupportOpposeCountDisplayModal}
-              supportOpposeCountDisplayModalTutorialOn={supportOpposeCountDisplayModalTutorialOn}
-              supportOpposeCountDisplayModalTutorialText={supportOpposeCountDisplayModalTutorialText}
-              uniqueExternalId={forDesktop ? 'CandidateItem-Desktop' : 'CandidateItem-MobileTablet'}
-              showDownArrow={showDownArrow}
-              showUpArrow={showUpArrow}
-            />
+            <Suspense fallback={<></>}>
+              <BallotItemSupportOpposeCountDisplay
+                ballotItemWeVoteId={candidateWeVoteId}
+                closeSupportOpposeCountDisplayModal={closeSupportOpposeCountDisplayModal}
+                controlAdviserMaterialUIPopoverFromProp={controlAdviserMaterialUIPopoverFromProp}
+                goToBallotItem={this.props.goToBallotItem}
+                handleLeaveCandidateCard={forDesktop ? this.handleLeave : null}
+                handleEnterCandidateCard={forDesktop ? this.handleEnter : null}
+                hideEndorsementsOverview={this.props.hideEndorsementsOverview}
+                hideShowMoreLink={!linkToBallotItemPage}
+                openAdviserMaterialUIPopover={openAdviserMaterialUIPopover}
+                openSupportOpposeCountDisplayModal={openSupportOpposeCountDisplayModal}
+                supportOpposeCountDisplayModalTutorialOn={supportOpposeCountDisplayModalTutorialOn}
+                supportOpposeCountDisplayModalTutorialText={supportOpposeCountDisplayModalTutorialText}
+                uniqueExternalId={forDesktop ? 'CandidateItem-Desktop' : 'CandidateItem-MobileTablet'}
+                showDownArrow={showDownArrow}
+                showUpArrow={showUpArrow}
+              />
+            </Suspense>
           </BallotItemSupportOpposeCountDisplayWrapper>
         </CandidateWrapper>
       </div>
@@ -505,10 +509,12 @@ class CandidateItem extends Component {
                 <CandidateTextWrapper
                   className={`${linkToBallotItemPage ? 'card-main__description-container--truncated' : 'card-main__description-container'}`}
                 >
-                  <ReadMore
-                    textToDisplay={candidateText}
-                    numberOfLines={2}
-                  />
+                  <Suspense fallback={<></>}>
+                    <ReadMore
+                      textToDisplay={candidateText}
+                      numberOfLines={2}
+                    />
+                  </Suspense>
                 </CandidateTextWrapper>
               )}
             </>
@@ -569,13 +575,15 @@ class CandidateItem extends Component {
           onMouseLeave={this.handleLeave}
         >
           {linkToBallotItemPage && largeAreaHoverLinkOnNow && showHover ? (
-            <div className="card-main__no-underline">
-              {this.candidateRenderBlock(candidateWeVoteId, linkToBallotItemPage, forDesktop, openSupportOpposeCountDisplayModalAtDesktopScreenSize)}
-            </div>
+            <Suspense fallback={<></>}>
+              <div className="card-main__no-underline">
+                {this.candidateRenderBlock(candidateWeVoteId, linkToBallotItemPage, forDesktop, openSupportOpposeCountDisplayModalAtDesktopScreenSize)}
+              </div>
+            </Suspense>
           ) : (
-            <div>
+            <Suspense fallback={<></>}>
               {this.candidateRenderBlock(candidateWeVoteId, linkToBallotItemPage, forDesktop, openSupportOpposeCountDisplayModalAtDesktopScreenSize)}
-            </div>
+            </Suspense>
           )}
           {!forMoreInformationTextOff && (
             <ForMoreInformationInfoText className="u-show-desktop-tablet">
@@ -587,17 +595,19 @@ class CandidateItem extends Component {
               )}
             </ForMoreInformationInfoText>
           )}
-          <div>
+          <Suspense fallback={<></>}>
             {this.candidateIssuesAndCommentBlock(candidateText, 'desktopIssuesComment')}
-          </div>
+          </Suspense>
         </DesktopWrapper>
         <MobileTabletWrapper className="u-show-mobile-tablet card-main candidate-card u-no-scroll">
-          <div className="card-main__no-underline">
-            {this.candidateRenderBlock(candidateWeVoteId, linkToBallotItemPage, !forDesktop, openSupportOpposeCountDisplayModalAtMobileAndTabletScreenSize)}
-          </div>
-          <div>
+          <Suspense fallback={<></>}>
+            <div className="card-main__no-underline">
+              {this.candidateRenderBlock(candidateWeVoteId, linkToBallotItemPage, !forDesktop, openSupportOpposeCountDisplayModalAtMobileAndTabletScreenSize)}
+            </div>
+          </Suspense>
+          <Suspense fallback={<></>}>
             {this.candidateIssuesAndCommentBlock(candidateText, 'mobileIssuesComment')}
-          </div>
+          </Suspense>
         </MobileTabletWrapper>
       </CandidateItemWrapper>
     );

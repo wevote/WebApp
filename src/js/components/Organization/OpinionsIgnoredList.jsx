@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import React, { Component } from 'react';
+import React, { Component, Suspense } from 'react';
 import { renderLog } from '../../utils/logging';
 import VoterGuideDisplayForList from '../VoterGuide/VoterGuideDisplayForList';
 
@@ -40,7 +40,9 @@ export default class OpinionsIgnoredList extends Component {
       <div className="guidelist card-child__list-group">
         {this.state.organizationsIgnored.map((oneOrganization) => (
           <VoterGuideDisplayForList key={oneOrganization.organization_we_vote_id} {...oneOrganization}>
-            <FollowToggle organizationWeVoteId={oneOrganization.organization_we_vote_id} />
+            <Suspense fallback={<></>}>
+              <FollowToggle organizationWeVoteId={oneOrganization.organization_we_vote_id} />
+            </Suspense>
           </VoterGuideDisplayForList>
         ))}
       </div>

@@ -1,6 +1,6 @@
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
-import React, { Component } from 'react';
+import React, { Component, Suspense } from 'react';
 import { Link } from 'react-router-dom';
 import { capitalizeString } from '../../utils/textFormat';
 
@@ -81,12 +81,14 @@ export default class SearchResultsDisplay extends Component {
             >
               <div className={searchResultClasses}>
                 <span>
-                  <ImageHandler
-                    imageUrl={oneResult.result_image}
-                    kind_of_ballot_item={oneResult.kind_of_owner}
-                    sizeClassName="search-image "
-                    className={oneResult.kind_of_owner}
-                  />
+                  <Suspense fallback={<></>}>
+                    <ImageHandler
+                      imageUrl={oneResult.result_image}
+                      kind_of_ballot_item={oneResult.kind_of_owner}
+                      sizeClassName="search-image "
+                      className={oneResult.kind_of_owner}
+                    />
+                  </Suspense>
                 </span>
                 {capitalizedTitle}
               </div>

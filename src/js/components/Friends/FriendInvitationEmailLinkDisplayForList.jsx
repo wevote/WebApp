@@ -1,6 +1,6 @@
 import { Button } from '@material-ui/core';
 import PropTypes from 'prop-types';
-import React, { Component } from 'react';
+import React, { Component, Suspense } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import FriendActions from '../../actions/FriendActions';
@@ -95,10 +95,17 @@ class FriendInvitationEmailLinkDisplayForList extends Component {
           <Avatar>
             { voterGuideLink ? (
               <Link to={voterGuideLink} className="u-no-underline">
-                {voterImage}
+                <Suspense fallback={<></>}>
+                  {voterImage}
+                </Suspense>
               </Link>
-            ) :
-              <>{voterImage}</> }
+            ) : (
+              <>
+                <Suspense fallback={<></>}>
+                  {voterImage}
+                </Suspense>
+              </>
+            )}
           </Avatar>
           { voterGuideLink ? (
             <Link to={voterGuideLink} className="u-no-underline">

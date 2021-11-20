@@ -1,7 +1,7 @@
 import { Button, FormControl, FormControlLabel, InputBase, Radio, RadioGroup } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
-import React, { Component } from 'react';
+import React, { Component, Suspense } from 'react';
 import Helmet from 'react-helmet';
 import styled from 'styled-components';
 import OrganizationActions from '../../actions/OrganizationActions';
@@ -357,9 +357,11 @@ class SettingsDomain extends Component {
     } else if (!voterIsSignedIn) {
       // console.log('voterIsSignedIn is false');
       return (
-        <DelayedLoad waitBeforeShow={1000}>
-          <SettingsAccount />
-        </DelayedLoad>
+        <Suspense fallback={<></>}>
+          <DelayedLoad waitBeforeShow={1000}>
+            <SettingsAccount />
+          </DelayedLoad>
+        </Suspense>
       );
     }
 
@@ -382,12 +384,14 @@ class SettingsDomain extends Component {
                       {' '}
                     </>
                   )}
-                  <OpenExternalWebSite
-                    linkIdAttribute="learnMoreSettingsDomain"
-                    url="https://help.wevote.us/hc/en-us/articles/360037725754-Customizing-Your-Voter-Guide"
-                    target="_blank"
-                    body={(<span>Learn more here.</span>)}
-                  />
+                  <Suspense fallback={<></>}>
+                    <OpenExternalWebSite
+                      linkIdAttribute="learnMoreSettingsDomain"
+                      url="https://help.wevote.us/hc/en-us/articles/360037725754-Customizing-Your-Voter-Guide"
+                      target="_blank"
+                      body={(<span>Learn more here.</span>)}
+                    />
+                  </Suspense>
                 </>
               )}
             </Introduction>
@@ -397,21 +401,25 @@ class SettingsDomain extends Component {
                 To see the changes you make on this page, please visit:
                 {' '}
                 {organizationChosenSubdomainSavedValue && (
-                  <OpenExternalWebSite
-                    linkIdAttribute="organizationChosenSubdomainSavedValue"
-                    url={`https://${organizationChosenSubdomainSavedValue}.WeVote.US`}
-                    target="_blank"
-                    body={(<span>{`https://${organizationChosenSubdomainSavedValue}.WeVote.US`}</span>)}
-                  />
+                  <Suspense fallback={<></>}>
+                    <OpenExternalWebSite
+                      linkIdAttribute="organizationChosenSubdomainSavedValue"
+                      url={`https://${organizationChosenSubdomainSavedValue}.WeVote.US`}
+                      target="_blank"
+                      body={(<span>{`https://${organizationChosenSubdomainSavedValue}.WeVote.US`}</span>)}
+                    />
+                  </Suspense>
                 )}
                 {' '}
                 {organizationChosenDomainNameSavedValue && (
-                  <OpenExternalWebSite
-                    linkIdAttribute="organizationChosenDomainNameSavedValue"
-                    url={`https://${organizationChosenDomainNameSavedValue}`}
-                    target="_blank"
-                    body={(<span>{`https://${organizationChosenDomainNameSavedValue}`}</span>)}
-                  />
+                  <Suspense fallback={<></>}>
+                    <OpenExternalWebSite
+                      linkIdAttribute="organizationChosenDomainNameSavedValue"
+                      url={`https://${organizationChosenDomainNameSavedValue}`}
+                      target="_blank"
+                      body={(<span>{`https://${organizationChosenDomainNameSavedValue}`}</span>)}
+                    />
+                  </Suspense>
                 )}
                 <Separator />
               </LinkToDomainRow>
@@ -473,12 +481,14 @@ class SettingsDomain extends Component {
                       <InputBoxDescriptionUnder>
                         After saving a new subdomain, please allow 10 minutes for your domain to be ready
                         {organizationChosenSubdomain ? (
-                          <OpenExternalWebSite
-                            linkIdAttribute="organizationChosenSubdomain"
-                            url={`https://${organizationChosenSubdomain}.WeVote.US`}
-                            target="_blank"
-                            body={(<span>{`: https://${organizationChosenSubdomain}.WeVote.US`}</span>)}
-                          />
+                          <Suspense fallback={<></>}>
+                            <OpenExternalWebSite
+                              linkIdAttribute="organizationChosenSubdomain"
+                              url={`https://${organizationChosenSubdomain}.WeVote.US`}
+                              target="_blank"
+                              body={(<span>{`: https://${organizationChosenSubdomain}.WeVote.US`}</span>)}
+                            />
+                          </Suspense>
                         ) : '.'}
                       </InputBoxDescriptionUnder>
                     )}
@@ -516,7 +526,9 @@ class SettingsDomain extends Component {
               >
                 <InputBoxLabel error={organizationChosenDomainNameAlreadyTaken}>
                   <span>Custom Domain</span>
-                  <SettingsAccountLevelChip chosenFeaturePackage={chosenFeaturePackage} requiredFeaturePackage="PROFESSIONAL" />
+                  <Suspense fallback={<></>}>
+                    <SettingsAccountLevelChip chosenFeaturePackage={chosenFeaturePackage} requiredFeaturePackage="PROFESSIONAL" />
+                  </Suspense>
                 </InputBoxLabel>
                 <InputBoxHelperLabel>
                   If you already own a domain that you want to use, enter it here. You will need to direct this domain name to the We Vote hosted server network, using a CNAME record.
@@ -568,12 +580,14 @@ class SettingsDomain extends Component {
                     {!organizationChosenSubdomainAlreadyTaken && (
                       <InputBoxDescriptionUnder>
                         After saving a new domain, please
-                        <OpenExternalWebSite
-                          linkIdAttribute="weVoteSupportSettingsDomain"
-                          url="https://help.wevote.us/hc/en-us/requests/new"
-                          target="_blank"
-                          body={<span>contact support to complete the installation</span>}
-                        />
+                        <Suspense fallback={<></>}>
+                          <OpenExternalWebSite
+                            linkIdAttribute="weVoteSupportSettingsDomain"
+                            url="https://help.wevote.us/hc/en-us/requests/new"
+                            target="_blank"
+                            body={<span>contact support to complete the installation</span>}
+                          />
+                        </Suspense>
                         .
                       </InputBoxDescriptionUnder>
                     )}

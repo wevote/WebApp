@@ -1,6 +1,6 @@
 import { filter } from 'lodash-es';
 import PropTypes from 'prop-types';
-import React, { Component } from 'react';
+import React, { Component, Suspense } from 'react';
 import Helmet from 'react-helmet';
 import styled from 'styled-components';
 import IssueActions from '../../actions/IssueActions';
@@ -103,13 +103,15 @@ export default class ValuesList extends Component {
           className="col col-12 col-md-6 u-stack--lg"
           key={`column-issue-list-key-${issue.issue_we_vote_id}`}
         >
-          <IssueCard
-            followToggleOn
-            includeLinkToIssue
-            issue={issue}
-            issueImageSize="SMALL"
-            key={`issue-list-key-${issue.issue_we_vote_id}`}
-          />
+          <Suspense fallback={<></>}>
+            <IssueCard
+              followToggleOn
+              includeLinkToIssue
+              issue={issue}
+              issueImageSize="SMALL"
+              key={`issue-list-key-${issue.issue_we_vote_id}`}
+            />
+          </Suspense>
         </Column>
       );
       if (issuesRenderedCount <= issuesToShowBeforeDelayedLoad) {
@@ -117,13 +119,15 @@ export default class ValuesList extends Component {
       } else {
         // We create a delay after the first 6 issues are rendered, so the initial page load is a little faster
         return (
-          <DelayedLoad
-            key={`delayed-issue-list-key-${issue.issue_we_vote_id}`}
-            showLoadingText={issuesRenderedCount === (issuesToShowBeforeDelayedLoad + 1)}
-            waitBeforeShow={500}
-          >
-            {issueCardHtml}
-          </DelayedLoad>
+          <Suspense fallback={<></>}>
+            <DelayedLoad
+              key={`delayed-issue-list-key-${issue.issue_we_vote_id}`}
+              showLoadingText={issuesRenderedCount === (issuesToShowBeforeDelayedLoad + 1)}
+              waitBeforeShow={500}
+            >
+              {issueCardHtml}
+            </DelayedLoad>
+          </Suspense>
         );
       }
     });
@@ -151,10 +155,12 @@ export default class ValuesList extends Component {
                   )}
                 </h1>
                 <p>
-                  <ReadMore
-                    textToDisplay="Follow the values and issues you care about, so we can highlight the advocates (organizations and public figures) that care about the same issues you do. All of the advocates under values or issues you follow will be added to your Personalized Score."
-                    numberOfLines={3}
-                  />
+                  <Suspense fallback={<></>}>
+                    <ReadMore
+                      textToDisplay="Follow the values and issues you care about, so we can highlight the advocates (organizations and public figures) that care about the same issues you do. All of the advocates under values or issues you follow will be added to your Personalized Score."
+                      numberOfLines={3}
+                    />
+                  </Suspense>
                 </p>
                 <SearchBar
                   clearButton

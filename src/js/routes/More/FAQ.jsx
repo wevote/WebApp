@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, Suspense } from 'react';
 import Helmet from 'react-helmet';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
@@ -55,19 +55,23 @@ export default class FAQ extends Component {
               <strong>Who&apos;s behind We Vote?</strong>
               <br />
               We Vote is a collaboration between two nonprofits (
-              <OpenExternalWebSite
-                linkIdAttribute="weVoteEducationWebsite"
-                url="http://WeVoteEducation.org"
-                target="_blank"
-                body="www.WeVoteEducation.org"
-              />
+              <Suspense fallback={<></>}>
+                <OpenExternalWebSite
+                  linkIdAttribute="weVoteEducationWebsite"
+                  url="http://WeVoteEducation.org"
+                  target="_blank"
+                  body="www.WeVoteEducation.org"
+                />
+              </Suspense>
               - 501(c)(3) and
-              <OpenExternalWebSite
-                linkIdAttribute="weVoteUSAWebsite"
-                url="http://WeVoteUSA.org"
-                target="_blank"
-                body="www.WeVoteUSA.org"
-              />
+              <Suspense fallback={<></>}>
+                <OpenExternalWebSite
+                  linkIdAttribute="weVoteUSAWebsite"
+                  url="http://WeVoteUSA.org"
+                  target="_blank"
+                  body="www.WeVoteUSA.org"
+                />
+              </Suspense>
               - 501(c)(4))
               based in Oakland, CA. We do not support or oppose any political candidate or party.
               We are not affiliated with WeVoteProject.org or WeVoteUSA.com.
@@ -80,27 +84,33 @@ export default class FAQ extends Component {
               rely on volunteers across the country who use
               their engineering, design, and other skills to build
               We Vote. We are over 100 people who have donated 9,000+ volunteer hours, including
-              <OpenExternalWebSite
-                linkIdAttribute="wevoteGithubContributors"
-                url="https://github.com/WeVote"
-                target="_blank"
-                body="90+ contributors on GitHub."
-              />
+              <Suspense fallback={<></>}>
+                <OpenExternalWebSite
+                  linkIdAttribute="wevoteGithubContributors"
+                  url="https://github.com/WeVote"
+                  target="_blank"
+                  body="90+ contributors on GitHub."
+                />
+              </Suspense>
               We also have a
-              <OpenExternalWebSite
-                linkIdAttribute="weVoteAboutUsPage"
-                url="https://WeVote.US/more/about"
-                target="_blank"
-                body="small team of core staff"
-              />
+              <Suspense fallback={<></>}>
+                <OpenExternalWebSite
+                  linkIdAttribute="weVoteAboutUsPage"
+                  url="https://WeVote.US/more/about"
+                  target="_blank"
+                  body="small team of core staff"
+                />
+              </Suspense>
               and volunteer board members.
               Please feel free to reach out to us with questions via our
-              <OpenExternalWebSite
-                linkIdAttribute="weVoteContactUsPage"
-                url="https://help.wevote.us/hc/en-us/requests/new"
-                target="_blank"
-                body="Contact Us form."
-              />
+              <Suspense fallback={<></>}>
+                <OpenExternalWebSite
+                  linkIdAttribute="weVoteContactUsPage"
+                  url="https://help.wevote.us/hc/en-us/requests/new"
+                  target="_blank"
+                  body="Contact Us form."
+                />
+              </Suspense>
               Our mailing address is:
               <br />
               We Vote
@@ -122,27 +132,33 @@ export default class FAQ extends Component {
               <strong>Is this an app or a website?</strong>
               <br />
               We have a mobile-ready website, as well as
-              <OpenExternalWebSite
-                linkIdAttribute="weVoteIPhone"
-                url="https://apps.apple.com/us/app/we-vote-voter-guide/id1347335726"
-                target="_blank"
-                body="iPhone"
-              />
+              <Suspense fallback={<></>}>
+                <OpenExternalWebSite
+                  linkIdAttribute="weVoteIPhone"
+                  url="https://apps.apple.com/us/app/we-vote-voter-guide/id1347335726"
+                  target="_blank"
+                  body="iPhone"
+                />
+              </Suspense>
               and
-              <OpenExternalWebSite
-                linkIdAttribute="weVoteAndroid"
-                url="https://play.google.com/store/apps/details?id=org.wevote.cordova&hl=en_US"
-                target="_blank"
-                body="Android"
-              />
+              <Suspense fallback={<></>}>
+                <OpenExternalWebSite
+                  linkIdAttribute="weVoteAndroid"
+                  url="https://play.google.com/store/apps/details?id=org.wevote.cordova&hl=en_US"
+                  target="_blank"
+                  body="Android"
+                />
+              </Suspense>
               apps.
               We are free and open source:
-              <OpenExternalWebSite
-                linkIdAttribute="wevoteGithub"
-                url="https://github.com/WeVote"
-                target="_blank"
-                body="https://github.com/WeVote"
-              />
+              <Suspense fallback={<></>}>
+                <OpenExternalWebSite
+                  linkIdAttribute="wevoteGithub"
+                  url="https://github.com/WeVote"
+                  target="_blank"
+                  body="https://github.com/WeVote"
+                />
+              </Suspense>
               <br />
               <br />
 
@@ -220,13 +236,15 @@ export default class FAQ extends Component {
               <br />
               We couldn&apos;t do what we do without volunteers and donors. Please
               {' '}
-              <OpenExternalWebSite
-                linkIdAttribute="idealistOpenPositions"
-                url="https://www.idealist.org/en/nonprofit/f917ce3db61a46cb8ad2b0d4e335f0af-we-vote-oakland"
-                target="_blank"
-                className="open-web-site open-web-site__no-right-padding"
-                body="sign up to volunteer on Idealist."
-              />
+              <Suspense fallback={<></>}>
+                <OpenExternalWebSite
+                  linkIdAttribute="idealistOpenPositions"
+                  url="https://www.idealist.org/en/nonprofit/f917ce3db61a46cb8ad2b0d4e335f0af-we-vote-oakland"
+                  target="_blank"
+                  className="open-web-site open-web-site__no-right-padding"
+                  body="sign up to volunteer on Idealist."
+                />
+              </Suspense>
               <br />
               <br />
               <Link to="/ballot" className="u-cursor--pointer u-link-color">Let&apos;s get started!</Link>

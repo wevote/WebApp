@@ -1,6 +1,6 @@
 import { withStyles, withTheme } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
-import React, { Component } from 'react';
+import React, { Component, Suspense } from 'react';
 import styled from 'styled-components';
 import CandidateStore from '../../stores/CandidateStore';
 import SupportStore from '../../stores/SupportStore';
@@ -184,14 +184,16 @@ class CandidateItemForAddPositions extends Component {
         <CandidateTopRow>
           <Candidate>
             {/* Candidate Image */}
-            <ImageHandler
-              className={avatarCompressed}
-              sizeClassName="icon-candidate-small u-push--sm "
-              imageUrl={oneCandidate.candidate_photo_url_medium}
-              alt="candidate-photo"
-              kind_of_ballot_item="CANDIDATE"
-              style={{ backgroundImage: { avatarBackgroundImage } }}
-            />
+            <Suspense fallback={<></>}>
+              <ImageHandler
+                className={avatarCompressed}
+                sizeClassName="icon-candidate-small u-push--sm "
+                imageUrl={oneCandidate.candidate_photo_url_medium}
+                alt="candidate-photo"
+                kind_of_ballot_item="CANDIDATE"
+                style={{ backgroundImage: { avatarBackgroundImage } }}
+              />
+            </Suspense>
             {/* Candidate Name */}
             <div>
               <h4 className="card-main__candidate-name card-main__candidate-name-link u-f5">
@@ -202,16 +204,18 @@ class CandidateItemForAddPositions extends Component {
             </div>
           </Candidate>
           {/* Action Buttons: Support/Oppose/Comment */}
-          <ItemActionBar
-            inModal={this.props.inModal}
-            ballotItemDisplayName={oneCandidate.ballot_item_display_name}
-            ballotItemWeVoteId={oneCandidate.we_vote_id}
-            buttonsOnly
-            externalUniqueId={`candidateItemForAddPositions-${oneCandidate.we_vote_id}`}
-            positionPublicToggleWrapAllowed={this.props.numberOfCandidatesInList > 1}
-            shareButtonHide
-            togglePositionStatementFunction={this.togglePositionStatement}
-          />
+          <Suspense fallback={<></>}>
+            <ItemActionBar
+              inModal={this.props.inModal}
+              ballotItemDisplayName={oneCandidate.ballot_item_display_name}
+              ballotItemWeVoteId={oneCandidate.we_vote_id}
+              buttonsOnly
+              externalUniqueId={`candidateItemForAddPositions-${oneCandidate.we_vote_id}`}
+              positionPublicToggleWrapAllowed={this.props.numberOfCandidatesInList > 1}
+              shareButtonHide
+              togglePositionStatementFunction={this.togglePositionStatement}
+            />
+          </Suspense>
         </CandidateTopRow>
         {commentDisplayDesktop}
         {commentDisplayMobile}

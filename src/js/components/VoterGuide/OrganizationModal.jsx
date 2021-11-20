@@ -2,7 +2,7 @@ import { Drawer, IconButton } from '@material-ui/core';
 import { withStyles, withTheme } from '@material-ui/core/styles';
 import { Info } from '@material-ui/icons';
 import PropTypes from 'prop-types';
-import React, { Component } from 'react';
+import React, { Component, Suspense } from 'react';
 import styled from 'styled-components';
 import AnalyticsActions from '../../actions/AnalyticsActions';
 import CandidateActions from '../../actions/CandidateActions';
@@ -258,42 +258,50 @@ class OrganizationModal extends Component {
             <span className="fas fa-times u-cursor--pointer" />
           </IconButton>
           {isCandidate && (
-            <CandidateItem
-              candidateWeVoteId={ballotItemWeVoteId}
-              expandIssuesByDefault
-              forMoreInformationTextOff
-              hideShowMoreFooter
-              inModal
-              linkToBallotItemPage
-              organizationWeVoteId={organizationWeVoteId}
-              showLargeImage
-              showTopCommentByBallotItem
-              showOfficeName
-              showPositionStatementActionBar
-            />
+            <Suspense fallback={<></>}>
+              <CandidateItem
+                candidateWeVoteId={ballotItemWeVoteId}
+                expandIssuesByDefault
+                forMoreInformationTextOff
+                hideShowMoreFooter
+                inModal
+                linkToBallotItemPage
+                organizationWeVoteId={organizationWeVoteId}
+                showLargeImage
+                showTopCommentByBallotItem
+                showOfficeName
+                showPositionStatementActionBar
+              />
+            </Suspense>
           )}
           {isMeasure && (
-            <MeasureItem forMoreInformationTextOff measureWeVoteId={ballotItemWeVoteId} />
+            <Suspense fallback={<></>}>
+              <MeasureItem forMoreInformationTextOff measureWeVoteId={ballotItemWeVoteId} />
+            </Suspense>
           )}
           { !!(allCachedPositionsForThisBallotItem.length) && (
-            <DelayedLoad showLoadingText waitBeforeShow={500}>
-              <>
-                <PositionList
-                  ballotItemDisplayName={ballotItemDisplayName || ''}
-                  incomingPositionList={allCachedPositionsForThisBallotItem}
-                  params={params}
-                  positionListExistsTitle={(
-                    <PositionListIntroductionText>
-                      <Info classes={{ root: classes.informationIcon }} />
-                      Opinions about this ballot item are below. Use these filters to sort:
-                    </PositionListIntroductionText>
-                  )}
-                />
-                <br />
-                <br />
-                <br />
-              </>
-            </DelayedLoad>
+            <Suspense fallback={<></>}>
+              <DelayedLoad showLoadingText waitBeforeShow={500}>
+                <>
+                  <Suspense fallback={<></>}>
+                    <PositionList
+                      ballotItemDisplayName={ballotItemDisplayName || ''}
+                      incomingPositionList={allCachedPositionsForThisBallotItem}
+                      params={params}
+                      positionListExistsTitle={(
+                        <PositionListIntroductionText>
+                          <Info classes={{ root: classes.informationIcon }} />
+                          Opinions about this ballot item are below. Use these filters to sort:
+                        </PositionListIntroductionText>
+                      )}
+                    />
+                  </Suspense>
+                  <br />
+                  <br />
+                  <br />
+                </>
+              </DelayedLoad>
+            </Suspense>
           )}
         </Drawer>
       </>

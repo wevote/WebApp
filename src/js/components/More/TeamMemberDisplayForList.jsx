@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import React, { Component } from 'react';
+import React, { Component, Suspense } from 'react';
 import styled, { keyframes } from 'styled-components';
 import { renderLog } from '../../utils/logging';
 
@@ -56,11 +56,13 @@ class TeamMemberDisplayForList extends Component {
           {this.state.hover && this.state.hasDescription ? (
             <CardHover>
               <ImageHover>
-                <ImageHandler
-                  className="img-responsive team-member__photo"
-                  imageUrl={teamMemberImage}
-                  alt={teamMemberName}
-                />
+                <Suspense fallback={<></>}>
+                  <ImageHandler
+                    className="img-responsive team-member__photo"
+                    imageUrl={teamMemberImage}
+                    alt={teamMemberName}
+                  />
+                </Suspense>
               </ImageHover>
               <TextWrapper>
                 <NameHover>{teamMemberName}</NameHover>
@@ -72,10 +74,12 @@ class TeamMemberDisplayForList extends Component {
           ) : (
             <CardDefault>
               <Image>
-                <ImageHandler
-                  imageUrl={teamMemberImage}
-                  alt={teamMemberName}
-                />
+                <Suspense fallback={<></>}>
+                  <ImageHandler
+                    imageUrl={teamMemberImage}
+                    alt={teamMemberName}
+                  />
+                </Suspense>
               </Image>
               <div>
                 <NameDefault>{teamMemberName}</NameDefault>

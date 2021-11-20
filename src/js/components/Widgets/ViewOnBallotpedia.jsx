@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import React, { Component } from 'react';
+import React, { Component, Suspense } from 'react';
 import styled from 'styled-components';
 import { cordovaDot } from '../../utils/cordovaUtils';
 import SplitIconButton from './SplitIconButton';
@@ -18,24 +18,26 @@ class ViewOnBallotpedia extends Component {
   render () {
     return (
       <Wrapper>
-        <OpenExternalWebSite
-          linkIdAttribute="ballotpedia"
-          url={this.props.externalLinkUrl}
-          target="_blank"
-          title="BALLOTPEDIA"
-          body={(
-            <SplitIconButton
-              adjustedIconWidth={50}
-              buttonText="Ballotpedia"
-              backgroundColor="#fff"
-              compressedSize
-              externalUniqueId="viewOnBallotpedia"
-              fontColor="#000"
-              icon={<img src={cordovaDot(ballotpediaIcon)} alt="" />}
-              title="View on Ballotpedia"
-            />
-          )}
-        />
+        <Suspense fallback={<></>}>
+          <OpenExternalWebSite
+            linkIdAttribute="ballotpedia"
+            url={this.props.externalLinkUrl}
+            target="_blank"
+            title="BALLOTPEDIA"
+            body={(
+              <SplitIconButton
+                adjustedIconWidth={50}
+                buttonText="Ballotpedia"
+                backgroundColor="#fff"
+                compressedSize
+                externalUniqueId="viewOnBallotpedia"
+                fontColor="#000"
+                icon={<img src={cordovaDot(ballotpediaIcon)} alt="" />}
+                title="View on Ballotpedia"
+              />
+            )}
+          />
+        </Suspense>
       </Wrapper>
     );
   }

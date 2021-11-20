@@ -128,8 +128,12 @@ export default class SignInJumpProcess extends Component {
     //   const cancel_merge_function = this.cancelMergeFunction.bind(this);
     //   const please_merge_accounts_function = this.yesPleaseMergeAccounts.bind(this);
     //   // Display the question of whether to merge accounts or not
-    //   return <WouldYouLikeToMergeAccounts cancelMergeFunction={cancel_merge_function}
-    //                                       pleaseMergeAccountsFunction={please_merge_accounts_function} />;
+    //   return (
+    //     <Suspense fallback={<></>}>
+    //       <WouldYouLikeToMergeAccounts cancelMergeFunction={cancel_merge_function}
+    //                                    pleaseMergeAccountsFunction={please_merge_accounts_function} />
+    //     </Suspense>
+    //   );
     //   //return <span>WouldYouLikeToMergeAccounts</span>;
     } else {
       // Go ahead and merge the accounts, which means deleting the current voter id and switching to the email owner

@@ -4,8 +4,8 @@ import VoterGuideStore from '../../stores/VoterGuideStore';
 import { historyPush } from '../../utils/cordovaUtils';
 import { renderLog } from '../../utils/logging';
 import LoadingWheel from '../LoadingWheel';
-import GuideList from '../VoterGuide/GuideList';
 
+const GuideList = React.lazy(() => import(/* webpackChunkName: 'GuideList' */ '../VoterGuide/GuideList'));
 const ShowMoreFooter = React.lazy(() => import(/* webpackChunkName: 'ShowMoreFooter' */ '../Navigation/ShowMoreFooter'));
 
 
@@ -64,11 +64,13 @@ export default class OrganizationsToFollowPreview extends Component {
                 instantRefreshOn
               />
             </Suspense>
-            <ShowMoreFooter
-              showMoreId="organizationsToFollowPreviewShowMoreId"
-              showMoreLink={() => this.goToOrganizations()}
-              showMoreText="Find more organizations"
-            />
+            <Suspense fallback={<></>}>
+              <ShowMoreFooter
+                showMoreId="organizationsToFollowPreviewShowMoreId"
+                showMoreLink={() => this.goToOrganizations()}
+                showMoreText="Find more organizations"
+              />
+            </Suspense>
           </div>
         </section>
       </div>

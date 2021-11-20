@@ -1,7 +1,7 @@
 import { Card } from '@material-ui/core';
 import { withStyles, withTheme } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
-import React, { Component } from 'react';
+import React, { Component, Suspense } from 'react';
 import styled from 'styled-components';
 import SupportStore from '../../stores/SupportStore';
 import { historyPush } from '../../utils/cordovaUtils';
@@ -210,16 +210,18 @@ class MeasureItemForOpinions extends Component {
             <MeasureText>{shortenText(measureText, 200)}</MeasureText>
           </MeasureInfoWrapper>
           {/* Action Buttons: Support/Oppose/Comment */}
-          <ItemActionBar
-            inModal={this.props.inModal}
-            ballotItemDisplayName={ballotItemDisplayName}
-            ballotItemWeVoteId={ballotItemWeVoteId}
-            buttonsOnly
-            externalUniqueId={`measureItemForAddPositions-${ballotItemWeVoteId}`}
-            shareButtonHide
-            togglePositionStatementFunction={this.togglePositionStatement}
-            // transitioning={this.state.transitioning}
-          />
+          <Suspense fallback={<></>}>
+            <ItemActionBar
+              inModal={this.props.inModal}
+              ballotItemDisplayName={ballotItemDisplayName}
+              ballotItemWeVoteId={ballotItemWeVoteId}
+              buttonsOnly
+              externalUniqueId={`measureItemForAddPositions-${ballotItemWeVoteId}`}
+              shareButtonHide
+              togglePositionStatementFunction={this.togglePositionStatement}
+              // transitioning={this.state.transitioning}
+            />
+          </Suspense>
         </InfoRow>
         {commentDisplayDesktop}
         {commentDisplayMobile}

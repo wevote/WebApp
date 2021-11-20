@@ -2,7 +2,7 @@ import { Button, IconButton, Tabs, Tooltip } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 import { AccountCircle, Place, Search } from '@material-ui/icons';
 import PropTypes from 'prop-types';
-import React, { Component } from 'react';
+import React, { Component, Suspense } from 'react';
 import styled from 'styled-components';
 import BallotActions from '../../actions/BallotActions';
 import OrganizationActions from '../../actions/OrganizationActions';
@@ -713,7 +713,9 @@ class HeaderBar extends Component {
                 <div>
                   {searchButtonHtml}
                 </div>
-                <HeaderNotificationMenu />
+                <Suspense fallback={<></>}>
+                  <HeaderNotificationMenu />
+                </Suspense>
                 <div id="profileAvatarHeaderBar"
                   className={`header-nav__avatar-container ${isCordova() ? 'header-nav__avatar-cordova' : undefined}`}
                   style={isCordova() ? { marginBottom: 2 } : {}}
@@ -732,16 +734,18 @@ class HeaderBar extends Component {
                   />
                 </div>
                 {this.state.profilePopUpOpen && voterIsSignedIn && (
-                  <HeaderBarProfilePopUp
-                    hideProfilePopUp={this.hideProfilePopUp}
-                    onClick={this.toggleProfilePopUp}
-                    profilePopUpOpen={this.state.profilePopUpOpen}
-                    signOutAndHideProfilePopUp={this.signOutAndHideProfilePopUp}
-                    toggleProfilePopUp={this.toggleProfilePopUp}
-                    toggleSignInModal={this.toggleSignInModal}
-                    transitionToYourVoterGuide={this.transitionToYourVoterGuide}
-                    voter={voter}
-                  />
+                  <Suspense fallback={<></>}>
+                    <HeaderBarProfilePopUp
+                      hideProfilePopUp={this.hideProfilePopUp}
+                      onClick={this.toggleProfilePopUp}
+                      profilePopUpOpen={this.state.profilePopUpOpen}
+                      signOutAndHideProfilePopUp={this.signOutAndHideProfilePopUp}
+                      toggleProfilePopUp={this.toggleProfilePopUp}
+                      toggleSignInModal={this.toggleSignInModal}
+                      transitionToYourVoterGuide={this.transitionToYourVoterGuide}
+                      voter={voter}
+                    />
+                  </Suspense>
                 )}
               </>
             ) : (voterIsSignedIn && (
@@ -752,7 +756,9 @@ class HeaderBar extends Component {
                 <div>
                   {searchButtonHtml}
                 </div>
-                <HeaderNotificationMenu />
+                <Suspense fallback={<></>}>
+                  <HeaderNotificationMenu />
+                </Suspense>
                 <IconButton
                   classes={{ root: classes.iconButtonRoot }}
                   id="profileAvatarHeaderBar"
@@ -764,16 +770,18 @@ class HeaderBar extends Component {
                   <AccountCircle />
                 </IconButton>
                 {this.state.profilePopUpOpen && voterIsSignedIn && (
-                  <HeaderBarProfilePopUp
-                    hideProfilePopUp={this.hideProfilePopUp}
-                    onClick={this.toggleProfilePopUp}
-                    profilePopUpOpen={this.state.profilePopUpOpen}
-                    signOutAndHideProfilePopUp={this.signOutAndHideProfilePopUp}
-                    toggleProfilePopUp={this.toggleProfilePopUp}
-                    toggleSignInModal={this.toggleSignInModal}
-                    transitionToYourVoterGuide={this.transitionToYourVoterGuide}
-                    voter={voter}
-                  />
+                  <Suspense fallback={<></>}>
+                    <HeaderBarProfilePopUp
+                      hideProfilePopUp={this.hideProfilePopUp}
+                      onClick={this.toggleProfilePopUp}
+                      profilePopUpOpen={this.state.profilePopUpOpen}
+                      signOutAndHideProfilePopUp={this.signOutAndHideProfilePopUp}
+                      toggleProfilePopUp={this.toggleProfilePopUp}
+                      toggleSignInModal={this.toggleSignInModal}
+                      transitionToYourVoterGuide={this.transitionToYourVoterGuide}
+                      voter={voter}
+                    />
+                  </Suspense>
                 )}
               </>
             ))}

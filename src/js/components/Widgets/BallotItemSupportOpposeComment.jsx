@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import React, { PureComponent } from 'react';
+import React, { PureComponent, Suspense } from 'react';
 import styled from 'styled-components';
 import CandidateStore from '../../stores/CandidateStore';
 import MeasureStore from '../../stores/MeasureStore';
@@ -7,9 +7,8 @@ import { isCordova } from '../../utils/cordovaUtils';
 import { renderLog } from '../../utils/logging';
 import { stringContains } from '../../utils/textFormat';
 
-import ItemPositionStatementActionBar from './ItemPositionStatementActionBar2020';
-
 const ItemActionBar = React.lazy(() => import(/* webpackChunkName: 'ItemActionBar' */ './ItemActionBar/ItemActionBar'));
+const ItemPositionStatementActionBar = React.lazy(() => import(/* webpackChunkName: 'ItemPositionStatementActionBar' */ './ItemPositionStatementActionBar2020'));
 
 
 class BallotItemSupportOpposeComment extends PureComponent {
@@ -177,39 +176,43 @@ class BallotItemSupportOpposeComment extends PureComponent {
 
     const commentDisplayDesktop = showPositionStatementActionBar || voterSupportsBallotItem || voterOpposesBallotItem || voterTextStatement || showPositionStatement ? (
       <div className="d-none d-sm-block">
-        <ItemPositionStatementActionBar
-          showPositionPublicToggle={showPositionPublicToggle}
-          inModal={inModal2}
-          showPositionStatementActionBar={showPositionStatementActionBar}
-          ballotItemWeVoteId={ballotItemWeVoteId}
-          ballotItemDisplayName={ballotItemDisplayName}
-          commentEditModeOn={showPositionStatement}
-          externalUniqueId={`${externalUniqueId}-desktop-fromBallotItemSupportOpposeComment-${ballotItemWeVoteId}`}
-          // shouldFocus={this.state.shouldFocusCommentArea}
-          transitioning={transitioning}
-          ballotItemType={ballotItemType}
-          shownInList
-        />
+        <Suspense fallback={<></>}>
+          <ItemPositionStatementActionBar
+            showPositionPublicToggle={showPositionPublicToggle}
+            inModal={inModal2}
+            showPositionStatementActionBar={showPositionStatementActionBar}
+            ballotItemWeVoteId={ballotItemWeVoteId}
+            ballotItemDisplayName={ballotItemDisplayName}
+            commentEditModeOn={showPositionStatement}
+            externalUniqueId={`${externalUniqueId}-desktop-fromBallotItemSupportOpposeComment-${ballotItemWeVoteId}`}
+            // shouldFocus={this.state.shouldFocusCommentArea}
+            transitioning={transitioning}
+            ballotItemType={ballotItemType}
+            shownInList
+          />
+        </Suspense>
       </div>
     ) :
       null;
 
     const commentDisplayMobile = showPositionStatementActionBar || voterSupportsBallotItem || voterOpposesBallotItem || voterTextStatement ? (
       <div className="d-block d-sm-none">
-        <ItemPositionStatementActionBar
-          showPositionPublicToggle={showPositionPublicToggle}
-          inModal={inModal2}
-          showPositionStatementActionBar={showPositionStatementActionBar}
-          ballotItemWeVoteId={ballotItemWeVoteId}
-          ballotItemDisplayName={ballotItemDisplayName}
-          hidePositionPublicToggle={hidePositionPublicToggle}
-          // shouldFocus={this.state.shouldFocusCommentArea}
-          transitioning={transitioning}
-          ballotItemType={ballotItemType}
-          externalUniqueId={`${externalUniqueId}-mobile-fromBallotItemSupportOpposeComment-${ballotItemWeVoteId}`}
-          shownInList
-          mobile
-        />
+        <Suspense fallback={<></>}>
+          <ItemPositionStatementActionBar
+            showPositionPublicToggle={showPositionPublicToggle}
+            inModal={inModal2}
+            showPositionStatementActionBar={showPositionStatementActionBar}
+            ballotItemWeVoteId={ballotItemWeVoteId}
+            ballotItemDisplayName={ballotItemDisplayName}
+            hidePositionPublicToggle={hidePositionPublicToggle}
+            // shouldFocus={this.state.shouldFocusCommentArea}
+            transitioning={transitioning}
+            ballotItemType={ballotItemType}
+            externalUniqueId={`${externalUniqueId}-mobile-fromBallotItemSupportOpposeComment-${ballotItemWeVoteId}`}
+            shownInList
+            mobile
+          />
+        </Suspense>
       </div>
     ) :
       null;
@@ -221,7 +224,9 @@ class BallotItemSupportOpposeComment extends PureComponent {
         {/* <BallotHeaderDivider className="u-show-mobile" /> */}
         <ActionBarWrapper inModal={inModal2} crunched={isCordova() && !inModal2}>
           {/* Support/Oppose/Comment toggle here */}
-          {itemActionBar}
+          <Suspense fallback={<></>}>
+            {itemActionBar}
+          </Suspense>
         </ActionBarWrapper>
         <CommentDisplayWrapper inModal={inModal2} crunched={isCordova() && !inModal2}>
           { commentDisplayDesktop }

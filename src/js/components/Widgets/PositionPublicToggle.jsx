@@ -2,7 +2,7 @@ import { Dialog, DialogContent, DialogTitle, FormControl, FormControlLabel, Icon
 import { withStyles } from '@material-ui/core/styles';
 import { Close } from '@material-ui/icons';
 import PropTypes from 'prop-types';
-import React, { Component } from 'react';
+import React, { Component, Suspense } from 'react';
 import styled from 'styled-components';
 import SupportActions from '../../actions/SupportActions';
 import SupportStore from '../../stores/SupportStore';
@@ -244,11 +244,13 @@ class PositionPublicToggle extends Component {
             </div>
           ) : (
             <div>
-              <SettingsAccount
-                pleaseSignInTitle="Sign in to Make Your Endorsements Public"
-                pleaseSignInSubTitle=""
-                inModal
-              />
+              <Suspense fallback={<></>}>
+                <SettingsAccount
+                  pleaseSignInTitle="Sign in to Make Your Endorsements Public"
+                  pleaseSignInSubTitle=""
+                  inModal
+                />
+              </Suspense>
             </div>
           )}
           <br />

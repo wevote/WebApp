@@ -1,6 +1,6 @@
 import { Twitter } from '@material-ui/icons';
 import PropTypes from 'prop-types';
-import React, { Component } from 'react';
+import React, { Component, Suspense } from 'react';
 import Button from 'react-bootstrap/Button';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
@@ -150,7 +150,9 @@ class OrganizationPopoverCard extends Component {
             ) : (
               <div>
                 <FollowToggleContainer>
-                  <FollowToggle organizationWeVoteId={organizationWeVoteId} />
+                  <Suspense fallback={<></>}>
+                    <FollowToggle organizationWeVoteId={organizationWeVoteId} />
+                  </Suspense>
                 </FollowToggleContainer>
               </div>
             )}
@@ -184,18 +186,20 @@ class OrganizationPopoverCard extends Component {
             )}
             {organizationWebsite && (
               <span className="u-wrap-links">
-                <OpenExternalWebSite
-                  linkIdAttribute="organizationWebsite"
-                  url={organizationWebsite}
-                  target="_blank"
-                  body={(
-                    <span>
-                      {organizationWebsite}
-                      {' '}
-                      <ExternalLinkIcon />
-                    </span>
-                  )}
-                />
+                <Suspense fallback={<></>}>
+                  <OpenExternalWebSite
+                    linkIdAttribute="organizationWebsite"
+                    url={organizationWebsite}
+                    target="_blank"
+                    body={(
+                      <span>
+                        {organizationWebsite}
+                        {' '}
+                        <ExternalLinkIcon />
+                      </span>
+                    )}
+                  />
+                </Suspense>
               </span>
             )}
             {/* 5 of your friends follow Organization Name<br /> */}

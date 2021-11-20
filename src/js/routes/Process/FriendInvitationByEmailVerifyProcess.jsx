@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import React, { Component } from 'react';
+import React, { Component, Suspense } from 'react';
 import FriendActions from '../../actions/FriendActions';
 import VoterActions from '../../actions/VoterActions';
 import LoadingWheel from '../../components/LoadingWheel';
@@ -146,25 +146,27 @@ export default class FriendInvitationByEmailVerifyProcess extends Component {
     if (saving || !invitationStatus || !friendInvitationInformation || !hostname || hostname === '') {
       // console.log('FriendInvitationByEmailVerifyProcess, saving:', saving, ', or waiting for invitationStatus:', invitationStatus);
       return (
-        <div>
-          <DelayedLoad waitBeforeShow={1000}>
-            <div>
-              Verifying invitation code...
-              {' '}
-            </div>
-          </DelayedLoad>
-          <DelayedLoad waitBeforeShow={3000}>
-            <div>
-              Setting up your account...
-            </div>
-          </DelayedLoad>
-          <DelayedLoad waitBeforeShow={5000}>
-            <div>
-              Preparing your ballot based on our best guess of your location...
-            </div>
-          </DelayedLoad>
-          {LoadingWheel}
-        </div>
+        <Suspense fallback={<></>}>
+          <div>
+            <DelayedLoad waitBeforeShow={1000}>
+              <div>
+                Verifying invitation code...
+                {' '}
+              </div>
+            </DelayedLoad>
+            <DelayedLoad waitBeforeShow={3000}>
+              <div>
+                Setting up your account...
+              </div>
+            </DelayedLoad>
+            <DelayedLoad waitBeforeShow={5000}>
+              <div>
+                Preparing your ballot based on our best guess of your location...
+              </div>
+            </DelayedLoad>
+            {LoadingWheel}
+          </div>
+        </Suspense>
       );
     } else if (!invitationSecretKey) {
       historyPush({
@@ -227,25 +229,27 @@ export default class FriendInvitationByEmailVerifyProcess extends Component {
       this.voterMergeTwoAccountsByInvitationKey(invitationSecretKey);
       // return <span>this.voterMergeTwoAccountsByInvitationKey - go ahead</span>;
       return (
-        <div>
-          <DelayedLoad waitBeforeShow={1000}>
-            <div>
-              Verifying invitation code.
-              {' '}
-            </div>
-          </DelayedLoad>
-          <DelayedLoad waitBeforeShow={3000}>
-            <div>
-              Setting up your account.
-            </div>
-          </DelayedLoad>
-          <DelayedLoad waitBeforeShow={5000}>
-            <div>
-              Preparing your ballot based on our best guess of your location.
-            </div>
-          </DelayedLoad>
-          {LoadingWheel}
-        </div>
+        <Suspense fallback={<></>}>
+          <div>
+            <DelayedLoad waitBeforeShow={1000}>
+              <div>
+                Verifying invitation code.
+                {' '}
+              </div>
+            </DelayedLoad>
+            <DelayedLoad waitBeforeShow={3000}>
+              <div>
+                Setting up your account.
+              </div>
+            </DelayedLoad>
+            <DelayedLoad waitBeforeShow={5000}>
+              <div>
+                Preparing your ballot based on our best guess of your location.
+              </div>
+            </DelayedLoad>
+            {LoadingWheel}
+          </div>
+        </Suspense>
       );
     }
   }

@@ -2,7 +2,7 @@ import { Card } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 import { Ballot, Business, Info } from '@material-ui/icons';
 import PropTypes from 'prop-types';
-import React, { Component } from 'react';
+import React, { Component, Suspense } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import ActivityActions from '../actions/ActivityActions';
@@ -757,10 +757,12 @@ class Opinions2020 extends Component {
               })}
             </CardChildListGroup>
             <ShowMoreItemsWrapper id="showMoreItemsId" onClick={this.increaseNumberOfBallotItemsToDisplay}>
-              <ShowMoreItems
-                numberOfItemsDisplayed={numberOfBallotItemsDisplayed}
-                numberOfItemsTotal={isSearching ? totalNumberOfBallotSearchResults : totalNumberOfBallotItems}
-              />
+              <Suspense fallback={<></>}>
+                <ShowMoreItems
+                  numberOfItemsDisplayed={numberOfBallotItemsDisplayed}
+                  numberOfItemsTotal={isSearching ? totalNumberOfBallotSearchResults : totalNumberOfBallotItems}
+                />
+              </Suspense>
             </ShowMoreItemsWrapper>
           </div>
         ) : (

@@ -1,7 +1,7 @@
 import { Box, Button, Tab, Tabs } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
-import React, { Component } from 'react';
+import React, { Component, Suspense } from 'react';
 import styled from 'styled-components';
 import AnalyticsActions from '../../actions/AnalyticsActions';
 import CandidateActions from '../../actions/CandidateActions';
@@ -151,36 +151,40 @@ class CandidateForExtension extends Component {
         >
           {activeTabIndex === 0 && (
             <Box classes={{ root: classes.Box }} p={3}>
-              <CandidateItem
-                inModal
-                candidateWeVoteId={candidateWeVoteId}
-                organizationWeVoteId={organizationWeVoteId}
-                expandIssuesByDefault
-                forMoreInformationTextOff
-                hideCandidateUrl
-                hideShowMoreFooter
-                showLargeImage
-                showOfficeName
-                showPositionStatementActionBar
-                showTopCommentByBallotItem
-              />
+              <Suspense fallback={<></>}>
+                <CandidateItem
+                  inModal
+                  candidateWeVoteId={candidateWeVoteId}
+                  organizationWeVoteId={organizationWeVoteId}
+                  expandIssuesByDefault
+                  forMoreInformationTextOff
+                  hideCandidateUrl
+                  hideShowMoreFooter
+                  showLargeImage
+                  showOfficeName
+                  showPositionStatementActionBar
+                  showTopCommentByBallotItem
+                />
+              </Suspense>
               <Buttons>
                 <OneButton>
-                  <OpenExternalWebSite
-                    linkIdAttribute="candidateWeVoteId"
-                    className=""
-                    body={(
-                      <Button
-                        classes={{ root: classes.oneButtonShown }}
-                        color="primary"
-                        variant="outlined"
-                      >
-                        Jump To We Vote
-                      </Button>
-                    )}
-                    target="_blank"
-                    url={`https://WeVote.US/candidate/${candidateWeVoteId}/b/btdb`}
-                  />
+                  <Suspense fallback={<></>}>
+                    <OpenExternalWebSite
+                      linkIdAttribute="candidateWeVoteId"
+                      className=""
+                      body={(
+                        <Button
+                          classes={{ root: classes.oneButtonShown }}
+                          color="primary"
+                          variant="outlined"
+                        >
+                          Jump To We Vote
+                        </Button>
+                      )}
+                      target="_blank"
+                      url={`https://WeVote.US/candidate/${candidateWeVoteId}/b/btdb`}
+                    />
+                  </Suspense>
                 </OneButton>
                 {/* <OneButton> */}
                 {/*  <Button classes={{ root: classes.button }} variant="outlined" color="primary">Save</Button> */}
@@ -188,19 +192,21 @@ class CandidateForExtension extends Component {
               </Buttons>
               {candidateSpecificEndorsementUrl && (
                 <OriginalLinkWrapper>
-                  <OpenExternalWebSite
-                    linkIdAttribute="candidateSpecificEndorsement"
-                    className=""
-                    body={(
-                      <OriginalLinkStyle>
-                        {candidateSpecificEndorsementUrl}
-                        {' '}
-                        <ExternalLinkIcon />
-                      </OriginalLinkStyle>
-                    )}
-                    target="_blank"
-                    url={candidateSpecificEndorsementUrl}
-                  />
+                  <Suspense fallback={<></>}>
+                    <OpenExternalWebSite
+                      linkIdAttribute="candidateSpecificEndorsement"
+                      className=""
+                      body={(
+                        <OriginalLinkStyle>
+                          {candidateSpecificEndorsementUrl}
+                          {' '}
+                          <ExternalLinkIcon />
+                        </OriginalLinkStyle>
+                      )}
+                      target="_blank"
+                      url={candidateSpecificEndorsementUrl}
+                    />
+                  </Suspense>
                 </OriginalLinkWrapper>
               )}
             </Box>

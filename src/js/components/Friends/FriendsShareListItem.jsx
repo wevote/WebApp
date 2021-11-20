@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import React, { Component } from 'react';
+import React, { Component, Suspense } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { renderLog } from '../../utils/logging';
@@ -59,7 +59,11 @@ class FriendsShareListItem extends Component {
       <Wrapper>
         <Flex>
           <Avatar>
-            <span>{voterImage}</span>
+            <span>
+              <Suspense fallback={<></>}>
+                {voterImage}
+              </Suspense>
+            </span>
           </Avatar>
           <span>{detailsHTML}</span>
         </Flex>

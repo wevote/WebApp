@@ -1,7 +1,7 @@
 /* eslint-disable no-nested-ternary */
 import { Button } from '@material-ui/core';
 import PropTypes from 'prop-types';
-import React, { Component } from 'react';
+import React, { Component, Suspense } from 'react';
 import styled from 'styled-components';
 import BallotActions from '../../actions/BallotActions';
 import OrganizationActions from '../../actions/OrganizationActions';
@@ -613,11 +613,13 @@ export default class BallotElectionListWithFilters extends Component {
                       'There are no upcoming elections for this state.'}
                 </>
               ) : (
-                <DelayedLoad showLoadingText waitBeforeShow={2000}>
-                  <div>
-                    {stateToShow !== 'all' ? 'There are no upcoming elections at this time for this state.' : 'There are no upcoming elections at this time.'}
-                  </div>
-                </DelayedLoad>
+                <Suspense fallback={<></>}>
+                  <DelayedLoad showLoadingText waitBeforeShow={2000}>
+                    <div>
+                      {stateToShow !== 'all' ? 'There are no upcoming elections at this time for this state.' : 'There are no upcoming elections at this time.'}
+                    </div>
+                  </DelayedLoad>
+                </Suspense>
               )}
           </div>
         )}
@@ -637,11 +639,13 @@ export default class BallotElectionListWithFilters extends Component {
                       'There are no prior elections for this state.'}
                 </PriorOrUpcomingElectionsWrapper>
               ) : (
-                <DelayedLoad showLoadingText waitBeforeShow={2000}>
-                  <div>
-                    {stateToShow !== 'all' ? 'There are no prior elections at this time for this state.' : 'There are no prior elections at this time.'}
-                  </div>
-                </DelayedLoad>
+                <Suspense fallback={<></>}>
+                  <DelayedLoad showLoadingText waitBeforeShow={2000}>
+                    <div>
+                      {stateToShow !== 'all' ? 'There are no prior elections at this time for this state.' : 'There are no prior elections at this time.'}
+                    </div>
+                  </DelayedLoad>
+                </Suspense>
               )}
           </div>
         )}

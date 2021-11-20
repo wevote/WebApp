@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import React, { Component } from 'react';
+import React, { Component, Suspense } from 'react';
 import { historyPush } from '../../utils/cordovaUtils';
 import { renderLog } from '../../utils/logging';
 
@@ -43,16 +43,18 @@ export default class CandidateList extends Component {
           if (candidateNumber <= 3) {
             return (
               <div key={child.we_vote_id} className="card">
-                <CandidateItem
-                  candidateWeVoteId={child.we_vote_id}
-                  forMoreInformationTextOff={forMoreInformationTextOff}
-                  goToBallotItem={this.goToCandidateLink}
-                  hideBallotItemSupportOpposeComment
-                  key={child.we_vote_id}
-                  linkToBallotItemPage
-                  showHover
-                  showTopCommentByBallotItem
-                />
+                <Suspense fallback={<></>}>
+                  <CandidateItem
+                    candidateWeVoteId={child.we_vote_id}
+                    forMoreInformationTextOff={forMoreInformationTextOff}
+                    goToBallotItem={this.goToCandidateLink}
+                    hideBallotItemSupportOpposeComment
+                    key={child.we_vote_id}
+                    linkToBallotItemPage
+                    showHover
+                    showTopCommentByBallotItem
+                  />
+                </Suspense>
               </div>
             );
           } else {
@@ -62,19 +64,23 @@ export default class CandidateList extends Component {
               showLoadingText = false;
             }
             return (
-              <DelayedLoad key={child.we_vote_id} showLoadingText={showLoadingText} waitBeforeShow={1000}>
-                <div className="card">
-                  <CandidateItem
-                    candidateWeVoteId={child.we_vote_id}
-                    goToBallotItem={this.goToCandidateLink}
-                    hideBallotItemSupportOpposeComment
-                    key={child.we_vote_id}
-                    linkToBallotItemPage
-                    showHover
-                    showTopCommentByBallotItem
-                  />
-                </div>
-              </DelayedLoad>
+              <Suspense fallback={<></>}>
+                <DelayedLoad key={child.we_vote_id} showLoadingText={showLoadingText} waitBeforeShow={1000}>
+                  <div className="card">
+                    <Suspense fallback={<></>}>
+                      <CandidateItem
+                        candidateWeVoteId={child.we_vote_id}
+                        goToBallotItem={this.goToCandidateLink}
+                        hideBallotItemSupportOpposeComment
+                        key={child.we_vote_id}
+                        linkToBallotItemPage
+                        showHover
+                        showTopCommentByBallotItem
+                      />
+                    </Suspense>
+                  </div>
+                </DelayedLoad>
+              </Suspense>
             );
           }
         })}

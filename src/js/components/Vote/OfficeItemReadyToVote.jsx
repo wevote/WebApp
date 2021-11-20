@@ -1,7 +1,7 @@
 import { Avatar } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
-import React, { Component } from 'react';
+import React, { Component, Suspense } from 'react';
 import styled from 'styled-components';
 import SupportStore from '../../stores/SupportStore';
 import VoterGuideStore from '../../stores/VoterGuideStore';
@@ -94,13 +94,15 @@ class OfficeItemReadyToVote extends Component {
               candidatePhotoUrl = oneCandidate.candidate_photo_url_large;
             }
             const candidatePhotoUrlHtml = (
-              <ImageHandler
-                className="card-main__avatar"
-                sizeClassName="icon-office-child "
-                imageUrl={candidatePhotoUrl}
-                alt="candidate-photo"
-                kind_of_ballot_item="CANDIDATE"
-              />
+              <Suspense fallback={<></>}>
+                <ImageHandler
+                  className="card-main__avatar"
+                  sizeClassName="icon-office-child "
+                  imageUrl={candidatePhotoUrl}
+                  alt="candidate-photo"
+                  kind_of_ballot_item="CANDIDATE"
+                />
+              </Suspense>
             );
             return (
               <React.Fragment key={oneCandidate.we_vote_id}>
@@ -123,7 +125,9 @@ class OfficeItemReadyToVote extends Component {
                         <OfficeText>{oneCandidate.contest_office_name}</OfficeText>
                       </DesktopTabletView>
                       <BallotItemSupportOpposeCountDisplayWrapper>
-                        <BallotItemSupportOpposeCountDisplay ballotItemWeVoteId={oneCandidate.we_vote_id} />
+                        <Suspense fallback={<></>}>
+                          <BallotItemSupportOpposeCountDisplay ballotItemWeVoteId={oneCandidate.we_vote_id} />
+                        </Suspense>
                       </BallotItemSupportOpposeCountDisplayWrapper>
                     </OfficeColumn>
                   </InnerWrapper>

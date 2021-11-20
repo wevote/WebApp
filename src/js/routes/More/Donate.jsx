@@ -3,7 +3,7 @@ import { withStyles } from '@material-ui/core/styles';
 import { Elements } from '@stripe/react-stripe-js';
 import { loadStripe } from '@stripe/stripe-js';
 import PropTypes from 'prop-types';
-import React, { Component } from 'react';
+import React, { Component, Suspense } from 'react';
 import Helmet from 'react-helmet';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
@@ -19,8 +19,8 @@ import DonateStore from '../../common/stores/DonateStore';
 import VoterStore from '../../stores/VoterStore';
 import { renderLog } from '../../utils/logging';
 
-const WelcomeFooter = React.lazy(() => import(/* webpackChunkName: 'WelcomeFooter' */ '../../components/Welcome/WelcomeFooter'));
 const WelcomeAppbar = React.lazy(() => import(/* webpackChunkName: 'WelcomeAppbar' */ '../../components/Navigation/WelcomeAppbar'));
+const WelcomeFooter = React.lazy(() => import(/* webpackChunkName: 'WelcomeFooter' */ '../../components/Welcome/WelcomeFooter'));
 
 const stripePromise = loadStripe(webAppConfig.STRIPE_API_KEY);
 
@@ -172,7 +172,9 @@ class Donate extends Component {
     return (
       <Wrapper>
         <Helmet title="Donate - We Vote" />
-        <WelcomeAppbar pathname="/more/pricing" />
+        <Suspense fallback={<></>}>
+          <WelcomeAppbar pathname="/more/pricing" />
+        </Suspense>
         <HeaderForDonate>
           <DonateTitle>{preDonation ? 'Donate' : 'Thank you for your donation!'}</DonateTitle>
         </HeaderForDonate>
@@ -277,7 +279,9 @@ class Donate extends Component {
             leftTabIsMembership={false}
           />
         </InnerWrapper>
-        <WelcomeFooter />
+        <Suspense fallback={<></>}>
+          <WelcomeFooter />
+        </Suspense>
       </Wrapper>
     );
   }

@@ -1,6 +1,6 @@
 import { Twitter } from '@material-ui/icons';
 import PropTypes from 'prop-types';
-import React, { Component } from 'react';
+import React, { Component, Suspense } from 'react';
 import styled from 'styled-components';
 import ActivityStore from '../../stores/ActivityStore';
 import VoterStore from '../../stores/VoterStore';
@@ -135,10 +135,12 @@ class ActivitySpeakerCard extends Component {
             </StickyPopover>
             {(actionDescription && isActivityNoticeSeed) && (
               <ActionDescriptionWrapper>
-                <ReadMore
-                  textToDisplay={`${actionDescription}.`}
-                  numberOfLines={5}
-                />
+                <Suspense fallback={<></>}>
+                  <ReadMore
+                    textToDisplay={`${actionDescription}.`}
+                    numberOfLines={5}
+                  />
+                </Suspense>
               </ActionDescriptionWrapper>
             )}
           </SpeakerAndActionWrapper>
@@ -154,25 +156,27 @@ class ActivitySpeakerCard extends Component {
               )}
             </TimeAndFriendsOnlyWrapper>
             {(speakerTwitterHandle && showTwitterInformation) && (
-              <OpenExternalWebSite
-                linkIdAttribute="speakerTwitterHandle"
-                url={`https://twitter.com/${speakerTwitterHandle}`}
-                target="_blank"
-                body={(
-                  <TwitterName>
-                    <TwitterHandleWrapper>
-                      @
-                      {speakerTwitterHandle}
-                    </TwitterHandleWrapper>
-                    { !!(speakerTwitterFollowersCount && String(speakerTwitterFollowersCount) !== '0') && (
-                      <span className="twitter-followers__badge">
-                        <Twitter />
-                        {numberWithCommas(speakerTwitterFollowersCount)}
-                      </span>
-                    )}
-                  </TwitterName>
-                )}
-              />
+              <Suspense fallback={<></>}>
+                <OpenExternalWebSite
+                  linkIdAttribute="speakerTwitterHandle"
+                  url={`https://twitter.com/${speakerTwitterHandle}`}
+                  target="_blank"
+                  body={(
+                    <TwitterName>
+                      <TwitterHandleWrapper>
+                        @
+                        {speakerTwitterHandle}
+                      </TwitterHandleWrapper>
+                      { !!(speakerTwitterFollowersCount && String(speakerTwitterFollowersCount) !== '0') && (
+                        <span className="twitter-followers__badge">
+                          <Twitter />
+                          {numberWithCommas(speakerTwitterFollowersCount)}
+                        </span>
+                      )}
+                    </TwitterName>
+                  )}
+                />
+              </Suspense>
             )}
           </SecondLineWrapper>
         </SpeakerActionTimeWrapper>

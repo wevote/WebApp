@@ -1,7 +1,7 @@
 import { withStyles, withTheme } from '@material-ui/core/styles';
 import { ArrowRightAlt, Comment, Done, NotInterested, ThumbDown, ThumbUp } from '@material-ui/icons';
 import PropTypes from 'prop-types';
-import React, { Component } from 'react';
+import React, { Component, Suspense } from 'react';
 import styled from 'styled-components';
 import SupportActions from '../../actions/SupportActions';
 import CandidateStore from '../../stores/CandidateStore';
@@ -558,15 +558,17 @@ class BallotItemSupportOpposeCountDisplay extends Component {
                 </YourOpinion>
               )}
               <ItemActionBarWrapper>
-                <ItemActionBar
-                  inModal={inModal}
-                  ballotItemWeVoteId={ballotItemWeVoteId}
-                  commentButtonHide
-                  externalUniqueId={`BallotItemSupportOrOpposeCountDisplay-ItemActionBar-${uniqueExternalId}-${ballotItemWeVoteId}`}
-                  hidePositionPublicToggle
-                  positionPublicToggleWrapAllowed
-                  shareButtonHide
-                />
+                <Suspense fallback={<></>}>
+                  <ItemActionBar
+                    inModal={inModal}
+                    ballotItemWeVoteId={ballotItemWeVoteId}
+                    commentButtonHide
+                    externalUniqueId={`BallotItemSupportOrOpposeCountDisplay-ItemActionBar-${uniqueExternalId}-${ballotItemWeVoteId}`}
+                    hidePositionPublicToggle
+                    positionPublicToggleWrapAllowed
+                    shareButtonHide
+                  />
+                </Suspense>
               </ItemActionBarWrapper>
               <YourPersonalNetworkIntroText>
                 Your personal network also has
@@ -579,17 +581,19 @@ class BallotItemSupportOpposeCountDisplay extends Component {
               </YourPersonalNetworkIntroText>
               {positionsInNetworkSummaryList && (
                 <RenderedOrganizationsWrapper>
-                  <PositionSummaryListForPopover
-                    ballotItemWeVoteId={ballotItemWeVoteId}
-                    controlAdviserMaterialUIPopoverFromProp={controlAdviserMaterialUIPopoverFromProp}
-                    openAdviserMaterialUIPopover={openAdviserMaterialUIPopover}
-                    positionSummaryList={positionsInNetworkSummaryList}
-                    showAllPositions={this.props.goToBallotItem}
-                    voterPersonalNetworkScore={voterPersonalNetworkScore}
-                    voterPersonalNetworkScoreIsNegative={voterPersonalNetworkScoreIsNegative}
-                    voterPersonalNetworkScoreIsPositive={voterPersonalNetworkScoreIsPositive}
-                    voterPersonalNetworkScoreWithSign={voterPersonalNetworkScoreWithSign}
-                  />
+                  <Suspense fallback={<></>}>
+                    <PositionSummaryListForPopover
+                      ballotItemWeVoteId={ballotItemWeVoteId}
+                      controlAdviserMaterialUIPopoverFromProp={controlAdviserMaterialUIPopoverFromProp}
+                      openAdviserMaterialUIPopover={openAdviserMaterialUIPopover}
+                      positionSummaryList={positionsInNetworkSummaryList}
+                      showAllPositions={this.props.goToBallotItem}
+                      voterPersonalNetworkScore={voterPersonalNetworkScore}
+                      voterPersonalNetworkScoreIsNegative={voterPersonalNetworkScoreIsNegative}
+                      voterPersonalNetworkScoreIsPositive={voterPersonalNetworkScoreIsPositive}
+                      voterPersonalNetworkScoreWithSign={voterPersonalNetworkScoreWithSign}
+                    />
+                  </Suspense>
                 </RenderedOrganizationsWrapper>
               )}
             </PopoverBody>
@@ -624,32 +628,36 @@ class BallotItemSupportOpposeCountDisplay extends Component {
               ) : (
                 <>
                   <ItemActionBarWrapper>
-                    <ItemActionBar
-                      inModal={inModal}
-                      ballotItemWeVoteId={ballotItemWeVoteId}
-                      commentButtonHide
-                      externalUniqueId={`BallotItemSupportOrOpposeCountDisplay-ItemActionBar-${uniqueExternalId}-${ballotItemWeVoteId}`}
-                      hidePositionPublicToggle
-                      positionPublicToggleWrapAllowed
-                      shareButtonHide
-                    />
+                    <Suspense fallback={<></>}>
+                      <ItemActionBar
+                        inModal={inModal}
+                        ballotItemWeVoteId={ballotItemWeVoteId}
+                        commentButtonHide
+                        externalUniqueId={`BallotItemSupportOrOpposeCountDisplay-ItemActionBar-${uniqueExternalId}-${ballotItemWeVoteId}`}
+                        hidePositionPublicToggle
+                        positionPublicToggleWrapAllowed
+                        shareButtonHide
+                      />
+                    </Suspense>
                   </ItemActionBarWrapper>
                   {positionsInNetworkVoterNotDecidedIntro}
                 </>
               )}
               {positionsInNetworkSummaryList && (
                 <RenderedOrganizationsWrapper>
-                  <PositionSummaryListForPopover
-                    ballotItemWeVoteId={ballotItemWeVoteId}
-                    controlAdviserMaterialUIPopoverFromProp={controlAdviserMaterialUIPopoverFromProp}
-                    openAdviserMaterialUIPopover={openAdviserMaterialUIPopover}
-                    positionSummaryList={positionsInNetworkSummaryList}
-                    showAllPositions={this.props.goToBallotItem}
-                    voterPersonalNetworkScore={voterPersonalNetworkScore}
-                    voterPersonalNetworkScoreIsNegative={voterPersonalNetworkScoreIsNegative}
-                    voterPersonalNetworkScoreIsPositive={voterPersonalNetworkScoreIsPositive}
-                    voterPersonalNetworkScoreWithSign={voterPersonalNetworkScoreWithSign}
-                  />
+                  <Suspense fallback={<></>}>
+                    <PositionSummaryListForPopover
+                      ballotItemWeVoteId={ballotItemWeVoteId}
+                      controlAdviserMaterialUIPopoverFromProp={controlAdviserMaterialUIPopoverFromProp}
+                      openAdviserMaterialUIPopover={openAdviserMaterialUIPopover}
+                      positionSummaryList={positionsInNetworkSummaryList}
+                      showAllPositions={this.props.goToBallotItem}
+                      voterPersonalNetworkScore={voterPersonalNetworkScore}
+                      voterPersonalNetworkScoreIsNegative={voterPersonalNetworkScoreIsNegative}
+                      voterPersonalNetworkScoreIsPositive={voterPersonalNetworkScoreIsPositive}
+                      voterPersonalNetworkScoreWithSign={voterPersonalNetworkScoreWithSign}
+                    />
+                  </Suspense>
                 </RenderedOrganizationsWrapper>
               )}
             </PopoverBody>
@@ -664,15 +672,17 @@ class BallotItemSupportOpposeCountDisplay extends Component {
           </PopoverHeader>
           <PopoverBody>
             <ItemActionBarWrapper>
-              <ItemActionBar
-                inModal={inModal}
-                ballotItemWeVoteId={ballotItemWeVoteId}
-                commentButtonHide
-                externalUniqueId={`BallotItemSupportOrOpposeCountDisplay-ItemActionBar-${uniqueExternalId}-${ballotItemWeVoteId}`}
-                hidePositionPublicToggle
-                positionPublicToggleWrapAllowed
-                shareButtonHide
-              />
+              <Suspense fallback={<></>}>
+                <ItemActionBar
+                  inModal={inModal}
+                  ballotItemWeVoteId={ballotItemWeVoteId}
+                  commentButtonHide
+                  externalUniqueId={`BallotItemSupportOrOpposeCountDisplay-ItemActionBar-${uniqueExternalId}-${ballotItemWeVoteId}`}
+                  hidePositionPublicToggle
+                  positionPublicToggleWrapAllowed
+                  shareButtonHide
+                />
+              </Suspense>
             </ItemActionBarWrapper>
             Your personalized score about
             {' '}
@@ -701,23 +711,27 @@ class BallotItemSupportOpposeCountDisplay extends Component {
               yet.
             </PopoverBodyText>
             <ItemActionBarWrapper>
-              <ItemActionBar
-                inModal={inModal}
-                ballotItemWeVoteId={ballotItemWeVoteId}
-                commentButtonHide
-                externalUniqueId={`BallotItemSupportOrOpposeCountDisplay-ItemActionBar-${uniqueExternalId}-${ballotItemWeVoteId}`}
-                hidePositionPublicToggle
-                positionPublicToggleWrapAllowed
-                shareButtonHide
-              />
+              <Suspense fallback={<></>}>
+                <ItemActionBar
+                  inModal={inModal}
+                  ballotItemWeVoteId={ballotItemWeVoteId}
+                  commentButtonHide
+                  externalUniqueId={`BallotItemSupportOrOpposeCountDisplay-ItemActionBar-${uniqueExternalId}-${ballotItemWeVoteId}`}
+                  hidePositionPublicToggle
+                  positionPublicToggleWrapAllowed
+                  shareButtonHide
+                />
+              </Suspense>
             </ItemActionBarWrapper>
             {!hideShowMoreLink && (
               <ShowCandidateFooterWrapper>
-                <ShowMoreFooter
-                  showMoreId={`noPositionsForPopoverShowAllPositions-${ballotItemWeVoteId}`}
-                  showMoreLink={() => this.goToBallotItemLinkLocal(ballotItemWeVoteId)}
-                  showMoreText="Show More"
-                />
+                <Suspense fallback={<></>}>
+                  <ShowMoreFooter
+                    showMoreId={`noPositionsForPopoverShowAllPositions-${ballotItemWeVoteId}`}
+                    showMoreLink={() => this.goToBallotItemLinkLocal(ballotItemWeVoteId)}
+                    showMoreText="Show More"
+                  />
+                </Suspense>
               </ShowCandidateFooterWrapper>
             )}
           </PopoverBody>
@@ -773,15 +787,17 @@ class BallotItemSupportOpposeCountDisplay extends Component {
               </YourOpinion>
             )}
             <ItemActionBarWrapper>
-              <ItemActionBar
-                inModal={inModal}
-                ballotItemWeVoteId={ballotItemWeVoteId}
-                commentButtonHide
-                externalUniqueId={`BallotItemSupportOrOpposeCountDisplay-ItemActionBar-${uniqueExternalId}-${ballotItemWeVoteId}`}
-                hidePositionPublicToggle
-                positionPublicToggleWrapAllowed
-                shareButtonHide
-              />
+              <Suspense fallback={<></>}>
+                <ItemActionBar
+                  inModal={inModal}
+                  ballotItemWeVoteId={ballotItemWeVoteId}
+                  commentButtonHide
+                  externalUniqueId={`BallotItemSupportOrOpposeCountDisplay-ItemActionBar-${uniqueExternalId}-${ballotItemWeVoteId}`}
+                  hidePositionPublicToggle
+                  positionPublicToggleWrapAllowed
+                  shareButtonHide
+                />
+              </Suspense>
             </ItemActionBarWrapper>
           </PopoverBody>
         </PopoverWrapper>
@@ -798,15 +814,17 @@ class BallotItemSupportOpposeCountDisplay extends Component {
           </PopoverHeader>
           <PopoverBody>
             <ItemActionBarWrapper>
-              <ItemActionBar
-                inModal={inModal}
-                ballotItemWeVoteId={ballotItemWeVoteId}
-                commentButtonHide
-                externalUniqueId={`BallotItemSupportOrOpposeCountDisplay-ItemActionBar-${uniqueExternalId}-${ballotItemWeVoteId}`}
-                hidePositionPublicToggle
-                positionPublicToggleWrapAllowed
-                shareButtonHide
-              />
+              <Suspense fallback={<></>}>
+                <ItemActionBar
+                  inModal={inModal}
+                  ballotItemWeVoteId={ballotItemWeVoteId}
+                  commentButtonHide
+                  externalUniqueId={`BallotItemSupportOrOpposeCountDisplay-ItemActionBar-${uniqueExternalId}-${ballotItemWeVoteId}`}
+                  hidePositionPublicToggle
+                  positionPublicToggleWrapAllowed
+                  shareButtonHide
+                />
+              </Suspense>
             </ItemActionBarWrapper>
             <div>
               Follow opinions to build your personalized score
@@ -825,17 +843,19 @@ class BallotItemSupportOpposeCountDisplay extends Component {
             <div>
               {positionsOutOfNetworkSummaryList && (
                 <RenderedOrganizationsWrapper>
-                  <PositionSummaryListForPopover
-                    ballotItemWeVoteId={ballotItemWeVoteId}
-                    controlAdviserMaterialUIPopoverFromProp={controlAdviserMaterialUIPopoverFromProp}
-                    openAdviserMaterialUIPopover={openAdviserMaterialUIPopover}
-                    positionSummaryList={positionsOutOfNetworkSummaryList}
-                    showAllPositions={this.props.goToBallotItem}
-                    voterPersonalNetworkScore={voterPersonalNetworkScore}
-                    voterPersonalNetworkScoreIsNegative={voterPersonalNetworkScoreIsNegative}
-                    voterPersonalNetworkScoreIsPositive={voterPersonalNetworkScoreIsPositive}
-                    voterPersonalNetworkScoreWithSign={voterPersonalNetworkScoreWithSign}
-                  />
+                  <Suspense fallback={<></>}>
+                    <PositionSummaryListForPopover
+                      ballotItemWeVoteId={ballotItemWeVoteId}
+                      controlAdviserMaterialUIPopoverFromProp={controlAdviserMaterialUIPopoverFromProp}
+                      openAdviserMaterialUIPopover={openAdviserMaterialUIPopover}
+                      positionSummaryList={positionsOutOfNetworkSummaryList}
+                      showAllPositions={this.props.goToBallotItem}
+                      voterPersonalNetworkScore={voterPersonalNetworkScore}
+                      voterPersonalNetworkScoreIsNegative={voterPersonalNetworkScoreIsNegative}
+                      voterPersonalNetworkScoreIsPositive={voterPersonalNetworkScoreIsPositive}
+                      voterPersonalNetworkScoreWithSign={voterPersonalNetworkScoreWithSign}
+                    />
+                  </Suspense>
                 </RenderedOrganizationsWrapper>
               )}
             </div>
@@ -854,15 +874,17 @@ class BallotItemSupportOpposeCountDisplay extends Component {
         </PopoverHeader>
         <PopoverBody>
           <ItemActionBarWrapper>
-            <ItemActionBar
-              inModal={inModal}
-              ballotItemWeVoteId={ballotItemWeVoteId}
-              commentButtonHide
-              externalUniqueId={`BallotItemSupportOrOpposeCountDisplay-ItemActionBar-${uniqueExternalId}-${ballotItemWeVoteId}`}
-              hidePositionPublicToggle
-              positionPublicToggleWrapAllowed
-              shareButtonHide
-            />
+            <Suspense fallback={<></>}>
+              <ItemActionBar
+                inModal={inModal}
+                ballotItemWeVoteId={ballotItemWeVoteId}
+                commentButtonHide
+                externalUniqueId={`BallotItemSupportOrOpposeCountDisplay-ItemActionBar-${uniqueExternalId}-${ballotItemWeVoteId}`}
+                hidePositionPublicToggle
+                positionPublicToggleWrapAllowed
+                shareButtonHide
+              />
+            </Suspense>
           </ItemActionBarWrapper>
           <div>
             Follow opinions to build your personalized score
@@ -881,17 +903,19 @@ class BallotItemSupportOpposeCountDisplay extends Component {
           <div>
             {positionsOutOfNetworkSummaryList && (
               <RenderedOrganizationsWrapper>
-                <PositionSummaryListForPopover
-                  ballotItemWeVoteId={ballotItemWeVoteId}
-                  controlAdviserMaterialUIPopoverFromProp={controlAdviserMaterialUIPopoverFromProp}
-                  openAdviserMaterialUIPopover={openAdviserMaterialUIPopover}
-                  positionSummaryList={positionsOutOfNetworkSummaryList}
-                  showAllPositions={this.props.goToBallotItem}
-                  voterPersonalNetworkScore={voterPersonalNetworkScore}
-                  voterPersonalNetworkScoreIsNegative={voterPersonalNetworkScoreIsNegative}
-                  voterPersonalNetworkScoreIsPositive={voterPersonalNetworkScoreIsPositive}
-                  voterPersonalNetworkScoreWithSign={voterPersonalNetworkScoreWithSign}
-                />
+                <Suspense fallback={<></>}>
+                  <PositionSummaryListForPopover
+                    ballotItemWeVoteId={ballotItemWeVoteId}
+                    controlAdviserMaterialUIPopoverFromProp={controlAdviserMaterialUIPopoverFromProp}
+                    openAdviserMaterialUIPopover={openAdviserMaterialUIPopover}
+                    positionSummaryList={positionsOutOfNetworkSummaryList}
+                    showAllPositions={this.props.goToBallotItem}
+                    voterPersonalNetworkScore={voterPersonalNetworkScore}
+                    voterPersonalNetworkScoreIsNegative={voterPersonalNetworkScoreIsNegative}
+                    voterPersonalNetworkScoreIsPositive={voterPersonalNetworkScoreIsPositive}
+                    voterPersonalNetworkScoreWithSign={voterPersonalNetworkScoreWithSign}
+                  />
+                </Suspense>
               </RenderedOrganizationsWrapper>
             )}
           </div>

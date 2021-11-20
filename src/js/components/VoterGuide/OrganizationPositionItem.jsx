@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import React, { Component } from 'react';
+import React, { Component, Suspense } from 'react';
 import { Link } from 'react-router-dom';
 import OrganizationStore from '../../stores/OrganizationStore';
 import SupportStore from '../../stores/SupportStore';
@@ -368,13 +368,15 @@ export default class OrganizationPositionItem extends Component {
               to={ballotItemLink}
               className="u-no-underline"
             >
-              <ImageHandler
-                className="card-child__avatar--round"
-                sizeClassName="icon-lg "
-                imageUrl={position.ballot_item_image_url_https_large}
-                alt="candidate-photo"
-                kind_of_ballot_item={kindOfBallotItem}
-              />
+              <Suspense fallback={<></>}>
+                <ImageHandler
+                  className="card-child__avatar--round"
+                  sizeClassName="icon-lg "
+                  imageUrl={position.ballot_item_image_url_https_large}
+                  alt="candidate-photo"
+                  kind_of_ballot_item={kindOfBallotItem}
+                />
+              </Suspense>
             </Link>
           </div>
         )}
@@ -395,25 +397,29 @@ export default class OrganizationPositionItem extends Component {
               </div>
             ) : null}
             { kindOfBallotItem === 'CANDIDATE' && contestOfficeName !== undefined ? (
-              <OfficeNameText
-                politicalParty={politicalParty}
-                contestOfficeName={contestOfficeName}
-              />
+              <Suspense fallback={<></>}>
+                <OfficeNameText
+                  politicalParty={politicalParty}
+                  contestOfficeName={contestOfficeName}
+                />
+              </Suspense>
             ) : null}
             {/* show explicit position, if available, otherwise show rating */}
             { positionDescription }
             { this.props.editMode ? (
               <div>
-                <ItemActionBar
-                  inModal={this.props.inModal}
-                  ballotItemWeVoteId={ballotItemWeVoteId}
-                  ballotItemDisplayName={ballotItemDisplayNameCaps}
-                  commentButtonHide
-                  externalUniqueId={`organizationPositionItem-${ballotItemWeVoteId}`}
-                  shareButtonHide
-                  transitioning={this.state.transitioning}
-                  togglePositionStatementFunction={this.togglePositionStatement}
-                />
+                <Suspense fallback={<></>}>
+                  <ItemActionBar
+                    inModal={this.props.inModal}
+                    ballotItemWeVoteId={ballotItemWeVoteId}
+                    ballotItemDisplayName={ballotItemDisplayNameCaps}
+                    commentButtonHide
+                    externalUniqueId={`organizationPositionItem-${ballotItemWeVoteId}`}
+                    shareButtonHide
+                    transitioning={this.state.transitioning}
+                    togglePositionStatementFunction={this.togglePositionStatement}
+                  />
+                </Suspense>
                 { this.state.hidePositionStatement ?
                   null : (
                     <ItemPositionStatementActionBar

@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import React, { Component } from 'react';
+import React, { Component, Suspense } from 'react';
 import OrganizationActions from '../../actions/OrganizationActions';
 import LoadingWheel from '../../components/LoadingWheel';
 import OrganizationCard from '../../components/VoterGuide/OrganizationCard';
@@ -70,7 +70,9 @@ export default class PositionListForFriends extends Component {
         <div className="card">
           <div className="card-main">
             <OrganizationCard organization={this.state.organization} />
-            <FollowToggle organizationWeVoteId={organizationWeVoteId} />
+            <Suspense fallback={<></>}>
+              <FollowToggle organizationWeVoteId={organizationWeVoteId} />
+            </Suspense>
           </div>
           <ul className="list-group">
             { friendsPositionListForOneElection ?

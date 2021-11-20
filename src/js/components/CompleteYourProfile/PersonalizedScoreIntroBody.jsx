@@ -1,7 +1,7 @@
 import { Button } from '@material-ui/core';
 import { withStyles, withTheme } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
-import React, { Component } from 'react';
+import React, { Component, Suspense } from 'react';
 import styled from 'styled-components';
 import VoterActions from '../../actions/VoterActions';
 import VoterConstants from '../../constants/VoterConstants';
@@ -323,25 +323,27 @@ class PersonalizedScoreIntroBody extends Component {
           <div className="full-width">
             <ScrollableContentWrapper>
               <CandidateItemOuterWrapper>
-                <CandidateItem
-                  candidateWeVoteId="candidateAlexanderHamilton"
-                  closeSupportOpposeCountDisplayModal={closeSupportOpposeCountDisplayModal}
-                  controlAdviserMaterialUIPopoverFromProp={controlAdviserMaterialUIPopoverFromProp}
-                  hideBallotItemSupportOpposeComment
-                  hideCandidateText
-                  hideCandidateUrl
-                  hideEndorsementsOverview
-                  hideIssuesRelatedToCandidate
-                  hideShowMoreFooter
-                  openAdviserMaterialUIPopover={openAdviserMaterialUIPopover}
-                  openSupportOpposeCountDisplayModal={openSupportOpposeCountDisplayModal}
-                  supportOpposeCountDisplayModalTutorialOn={supportOpposeCountDisplayModalTutorialOn}
-                  supportOpposeCountDisplayModalTutorialText={supportOpposeCountDisplayModalTutorialText}
-                  showDownArrow={showPersonalizedScoreDownArrow}
-                  showUpArrow={showPersonalizedScoreUpArrow}
-                  showLargeImage
-                  showOfficeName
-                />
+                <Suspense fallback={<></>}>
+                  <CandidateItem
+                    candidateWeVoteId="candidateAlexanderHamilton"
+                    closeSupportOpposeCountDisplayModal={closeSupportOpposeCountDisplayModal}
+                    controlAdviserMaterialUIPopoverFromProp={controlAdviserMaterialUIPopoverFromProp}
+                    hideBallotItemSupportOpposeComment
+                    hideCandidateText
+                    hideCandidateUrl
+                    hideEndorsementsOverview
+                    hideIssuesRelatedToCandidate
+                    hideShowMoreFooter
+                    openAdviserMaterialUIPopover={openAdviserMaterialUIPopover}
+                    openSupportOpposeCountDisplayModal={openSupportOpposeCountDisplayModal}
+                    supportOpposeCountDisplayModalTutorialOn={supportOpposeCountDisplayModalTutorialOn}
+                    supportOpposeCountDisplayModalTutorialText={supportOpposeCountDisplayModalTutorialText}
+                    showDownArrow={showPersonalizedScoreDownArrow}
+                    showUpArrow={showPersonalizedScoreUpArrow}
+                    showLargeImage
+                    showOfficeName
+                  />
+                </Suspense>
               </CandidateItemOuterWrapper>
               <ExplanationTextTop>
                 {explanationTextTopBlue && (

@@ -1,6 +1,6 @@
 import { Twitter } from '@material-ui/icons';
 import PropTypes from 'prop-types';
-import React, { PureComponent } from 'react';
+import React, { PureComponent, Suspense } from 'react';
 import styled from 'styled-components';
 import VoterStore from '../../stores/VoterStore';
 import SplitIconButton from './SplitIconButton';
@@ -57,24 +57,26 @@ class EndorsementCard extends PureComponent {
         <div className="card">
           <Container>
             <div className="endorsement-card">
-              <OpenExternalWebSite
-                linkIdAttribute="endorsementCard"
-                url="https://api.wevoteusa.org/vg/create/"
-                target="_blank"
-                title={this.props.title}
-                className="u-no-underline"
-                body={(
-                  <SplitIconButton
-                    backgroundColor={backgroundColor}
-                    buttonText={this.props.buttonText}
-                    externalUniqueId="endorsementCardAddEndorsementsToWeVote"
-                    fontColor={fontColor}
-                    icon={icon}
-                    id="endorsementCardAddEndorsementsToWeVote"
-                    title="Add endorsements to We Vote"
-                  />
-                )}
-              />
+              <Suspense fallback={<></>}>
+                <OpenExternalWebSite
+                  linkIdAttribute="endorsementCard"
+                  url="https://api.wevoteusa.org/vg/create/"
+                  target="_blank"
+                  title={this.props.title}
+                  className="u-no-underline"
+                  body={(
+                    <SplitIconButton
+                      backgroundColor={backgroundColor}
+                      buttonText={this.props.buttonText}
+                      externalUniqueId="endorsementCardAddEndorsementsToWeVote"
+                      fontColor={fontColor}
+                      icon={icon}
+                      id="endorsementCardAddEndorsementsToWeVote"
+                      title="Add endorsements to We Vote"
+                    />
+                  )}
+                />
+              </Suspense>
               <div className="endorsement-card__text">
                 {this.props.text}
               </div>

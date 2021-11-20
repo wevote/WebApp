@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import React, { Component } from 'react';
+import React, { Component, Suspense } from 'react';
 import IssueStore from '../../stores/IssueStore';
 import { cordovaDot } from '../../utils/cordovaUtils';
 import { renderLog } from '../../utils/logging';
@@ -87,7 +87,7 @@ export default class IssueImageDisplay extends Component {
       );
     }
 
-    return <span className="issue__image-modal">{issueImage}</span>;
+    return <span className="issue__image-modal"><Suspense fallback={<></>}>{issueImage}</Suspense></span>;
   }
 }
 IssueImageDisplay.propTypes = {

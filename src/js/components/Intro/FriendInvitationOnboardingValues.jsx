@@ -1,13 +1,13 @@
 import { withStyles, withTheme } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
-import React, { Component } from 'react';
+import React, { Component, Suspense } from 'react';
 import styled from 'styled-components';
 import { cordovaDot } from '../../utils/cordovaUtils';
 import { renderLog } from '../../utils/logging';
-import FriendInvitationOnboardingFriendValuesList from '../Values/FriendInvitationOnboardingFriendValuesList';
 import InfoCircleIcon from '../Widgets/InfoCircleIcon';
 
-const FriendInvitationOnboardingValuesList = React.lazy(() => import(/* webpackChunkName: 'ImageHandler' */ '../Values/FriendInvitationOnboardingValuesList'));
+const FriendInvitationOnboardingFriendValuesList = React.lazy(() => import(/* webpackChunkName: 'FriendInvitationOnboardingFriendValuesList' */ '../Values/FriendInvitationOnboardingFriendValuesList'));
+const FriendInvitationOnboardingValuesList = React.lazy(() => import(/* webpackChunkName: 'FriendInvitationOnboardingValuesList' */ '../Values/FriendInvitationOnboardingValuesList'));
 const ImageHandler = React.lazy(() => import(/* webpackChunkName: 'ImageHandler' */ '../ImageHandler'));
 
 const logoDark = '../../../img/global/svg-icons/we-vote-logo-horizontal-color-dark-141x46.svg';
@@ -75,12 +75,14 @@ class FriendInvitationOnboardingValues extends Component {
           <PopularValuesWrapper>
             <FriendInvitationValuesHeader className="FriendInvitationValuesHeader">
               {friendImageUrlHttpsTiny && (
-                <ImageHandler
-                  sizeClassName="image-24x24 "
-                  imageUrl={friendImageUrlHttpsTiny}
-                  alt="organization-photo"
-                  kind_of_ballot_item="ORGANIZATION"
-                />
+                <Suspense fallback={<></>}>
+                  <ImageHandler
+                    sizeClassName="image-24x24 "
+                    imageUrl={friendImageUrlHttpsTiny}
+                    alt="organization-photo"
+                    kind_of_ballot_item="ORGANIZATION"
+                  />
+                </Suspense>
               )}
               {friendFirstName ? (
                 <>
@@ -101,9 +103,11 @@ class FriendInvitationOnboardingValues extends Component {
               )}
             </FriendInvitationValuesHeader>
             <ValuesWrapper>
-              <FriendInvitationOnboardingFriendValuesList
-                friendIssueWeVoteIdList={friendIssueWeVoteIdList}
-              />
+              <Suspense fallback={<></>}>
+                <FriendInvitationOnboardingFriendValuesList
+                  friendIssueWeVoteIdList={friendIssueWeVoteIdList}
+                />
+              </Suspense>
             </ValuesWrapper>
           </PopularValuesWrapper>
         )}
@@ -120,10 +124,12 @@ class FriendInvitationOnboardingValues extends Component {
             )}
           </FriendInvitationValuesHeader>
           <ValuesWrapper>
-            <FriendInvitationOnboardingValuesList
-              displayOnlyIssuesNotFollowedByVoter
-              friendIssueWeVoteIdList={friendIssueWeVoteIdList}
-            />
+            <Suspense fallback={<></>}>
+              <FriendInvitationOnboardingValuesList
+                displayOnlyIssuesNotFollowedByVoter
+                friendIssueWeVoteIdList={friendIssueWeVoteIdList}
+              />
+            </Suspense>
           </ValuesWrapper>
         </PopularValuesWrapper>
       </Wrapper>

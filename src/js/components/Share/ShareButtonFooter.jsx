@@ -2,7 +2,7 @@ import { Button, Drawer, MenuItem } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 import { ArrowBackIos, Comment, FileCopyOutlined, Info, Reply } from '@material-ui/icons';
 import PropTypes from 'prop-types';
-import React, { Component } from 'react';
+import React, { Component, Suspense } from 'react';
 import { EmailIcon, EmailShareButton, FacebookIcon, FacebookShareButton, TwitterIcon, TwitterShareButton } from 'react-share';
 import styled from 'styled-components';
 import AnalyticsActions from '../../actions/AnalyticsActions';
@@ -781,19 +781,21 @@ class ShareButtonFooter extends Component {
                     </Flex>
                   )}
                   {isWebApp() && (  // This has many problems in Cordova
-                    <OpenExternalWebSite
-                      linkIdAttribute="allOpinions"
-                      url={linkToBeShared}
-                      target="_blank"
-                      // title={this.props.title}
-                      className="u-no-underline"
-                      body={(
-                        <Button className={classes.previewButton} variant="outlined" fullWidth color="primary">
-                          Preview Link in New Window
-                        </Button>
-                      )}
-                      style={isCordova() ? { display: 'none' } : {}}
-                    />
+                    <Suspense fallback={<></>}>
+                      <OpenExternalWebSite
+                        linkIdAttribute="allOpinions"
+                        url={linkToBeShared}
+                        target="_blank"
+                        // title={this.props.title}
+                        className="u-no-underline"
+                        body={(
+                          <Button className={classes.previewButton} variant="outlined" fullWidth color="primary">
+                            Preview Link in New Window
+                          </Button>
+                        )}
+                        style={isCordova() ? { display: 'none' } : {}}
+                      />
+                    </Suspense>
                   )}
                   <Button className={classes.cancelButton} fullWidth onClick={this.handleCloseShareButtonDrawer} variant="outlined" color="primary">
                     Cancel
@@ -804,10 +806,12 @@ class ShareButtonFooter extends Component {
                   {shareMenuItemsDescription && (
                     <MenuDescription>
                       <Info classes={{ root: classes.informationIcon }} />
-                      <ReadMore
-                        textToDisplay={shareMenuItemsDescription}
-                        numberOfLines={2}
-                      />
+                      <Suspense fallback={<></>}>
+                        <ReadMore
+                          textToDisplay={shareMenuItemsDescription}
+                          numberOfLines={2}
+                        />
+                      </Suspense>
                     </MenuDescription>
                   )}
                   <MenuItemsWrapper>

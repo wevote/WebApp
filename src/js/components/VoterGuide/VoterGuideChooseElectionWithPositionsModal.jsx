@@ -2,7 +2,7 @@ import { Dialog, DialogContent, DialogTitle, IconButton, Typography } from '@mat
 import { withStyles, withTheme } from '@material-ui/core/styles';
 import { Close } from '@material-ui/icons';
 import PropTypes from 'prop-types';
-import React, { Component } from 'react';
+import React, { Component, Suspense } from 'react';
 import { renderLog } from '../../utils/logging';
 import { calculateBallotBaseUrlForVoterGuide } from '../../utils/textFormat';
 
@@ -68,15 +68,17 @@ class VoterGuideChooseElectionWithPositionsModal extends Component {
           </IconButton>
         </DialogTitle>
         <DialogContent classes={{ root: classes.dialogContent }}>
-          <BallotElectionListWithFilters
-            ballotBaseUrl={ballotBaseUrl}
-            displayElectionsForOrganizationVoterGuidesMode
-            hideUpcomingElectionTitle
-            organizationWeVoteId={organizationWeVoteId}
-            showPriorElectionsList
-            stateToShow="all"
-            toggleFunction={this.props.toggleFunction}
-          />
+          <Suspense fallback={<></>}>
+            <BallotElectionListWithFilters
+              ballotBaseUrl={ballotBaseUrl}
+              displayElectionsForOrganizationVoterGuidesMode
+              hideUpcomingElectionTitle
+              organizationWeVoteId={organizationWeVoteId}
+              showPriorElectionsList
+              stateToShow="all"
+              toggleFunction={this.props.toggleFunction}
+            />
+          </Suspense>
         </DialogContent>
       </Dialog>
     );

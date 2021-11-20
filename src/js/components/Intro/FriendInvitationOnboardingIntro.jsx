@@ -1,6 +1,6 @@
 import { withStyles, withTheme } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
-import React, { Component } from 'react';
+import React, { Component, Suspense } from 'react';
 import styled from 'styled-components';
 import BallotActions from '../../actions/BallotActions';
 import BallotStore from '../../stores/BallotStore';
@@ -122,18 +122,22 @@ class FriendInvitationOnboardingIntro extends Component {
                   <InvitationMessageDescription>
                     {friendImageUrlHttpsTiny && (
                       <OrganizationImageWrapper>
-                        <ImageHandler
-                          sizeClassName="image-24x24 "
-                          imageUrl={friendImageUrlHttpsTiny}
-                          alt="organization-photo"
-                          kind_of_ballot_item="ORGANIZATION"
-                        />
+                        <Suspense fallback={<></>}>
+                          <ImageHandler
+                            sizeClassName="image-24x24 "
+                            imageUrl={friendImageUrlHttpsTiny}
+                            alt="organization-photo"
+                            kind_of_ballot_item="ORGANIZATION"
+                          />
+                        </Suspense>
                       </OrganizationImageWrapper>
                     )}
-                    <ReadMore
-                      textToDisplay={invitationMessage}
-                      numberOfLines={3}
-                    />
+                    <Suspense fallback={<></>}>
+                      <ReadMore
+                        textToDisplay={invitationMessage}
+                        numberOfLines={3}
+                      />
+                    </Suspense>
                   </InvitationMessageDescription>
                 </InvitationMessageWrapper>
               )}

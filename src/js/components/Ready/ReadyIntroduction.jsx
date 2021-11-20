@@ -1,6 +1,6 @@
 import { withStyles, withTheme } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
-import React, { Component } from 'react';
+import React, { Component, Suspense } from 'react';
 import styled from 'styled-components';
 import { renderLog } from '../../utils/logging';
 import ShowMoreButtons from './ShowMoreButtons';
@@ -67,10 +67,12 @@ class ReadyIntroduction extends Component {
                 <ListRow>
                   <Dot><StepNumberPlaceholder>&nbsp;</StepNumberPlaceholder></Dot>
                   <StepText>
-                    <ReadMore
-                      textToDisplay="Who's running for office? We show you what will be on your actual ballot, based on your full address. What do your trusted friends think about what is on the ballot? We Vote helps you make sense of your options."
-                      numberOfLines={contentUnfurledOnLoad ? 7 : 3}
-                    />
+                    <Suspense fallback={<></>}>
+                      <ReadMore
+                        textToDisplay="Who's running for office? We show you what will be on your actual ballot, based on your full address. What do your trusted friends think about what is on the ballot? We Vote helps you make sense of your options."
+                        numberOfLines={contentUnfurledOnLoad ? 7 : 3}
+                      />
+                    </Suspense>
                   </StepText>
                 </ListRow>
               )}
@@ -85,10 +87,12 @@ class ReadyIntroduction extends Component {
                 <ListRow>
                   <Dot><StepNumberPlaceholder>&nbsp;</StepNumberPlaceholder></Dot>
                   <StepText>
-                    <ReadMore
-                      textToDisplay="Show your friends how to make sense of their decisions, so they can vote their values. The more of your friends who vote, the more impact you will have on the outcome of the election."
-                      numberOfLines={contentUnfurledOnLoad ? 7 : 3}
-                    />
+                    <Suspense fallback={<></>}>
+                      <ReadMore
+                        textToDisplay="Show your friends how to make sense of their decisions, so they can vote their values. The more of your friends who vote, the more impact you will have on the outcome of the election."
+                        numberOfLines={contentUnfurledOnLoad ? 7 : 3}
+                      />
+                    </Suspense>
                   </StepText>
                 </ListRow>
               )}

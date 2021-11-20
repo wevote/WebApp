@@ -2,7 +2,7 @@ import { DialogContent, DialogTitle, IconButton } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 import { Close } from '@material-ui/icons';
 import PropTypes from 'prop-types';
-import React, { Component } from 'react';
+import React, { Component, Suspense } from 'react';
 import styled from 'styled-components';
 import VoterStore from '../../../stores/VoterStore';
 import PositionPublicToggle from '../PositionPublicToggle';
@@ -73,12 +73,14 @@ class ChooseOrOppose extends Component {
               Thank you for signing in!
             </div>
           ) : (
-            <SettingsAccount
-              pleaseSignInTitle="Sign in to save your choices!"
-              pleaseSignInSubTitle=""
-              toggleSignInModal={this.props.onClose}
-              inModal
-            />
+            <Suspense fallback={<></>}>
+              <SettingsAccount
+                pleaseSignInTitle="Sign in to save your choices!"
+                pleaseSignInSubTitle=""
+                toggleSignInModal={this.props.onClose}
+                inModal
+              />
+            </Suspense>
           )}
         </>
       ),

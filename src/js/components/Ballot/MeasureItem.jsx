@@ -1,17 +1,19 @@
 import { withStyles, withTheme } from '@material-ui/core/styles';
 import { Info } from '@material-ui/icons';
 import PropTypes from 'prop-types';
-import React, { Component } from 'react';
+import React, { Component, Suspense } from 'react';
 import styled from 'styled-components';
 import { messageService } from '../../stores/AppObservableStore';
 import MeasureStore from '../../stores/MeasureStore';
 import { historyPush } from '../../utils/cordovaUtils';
 import { renderLog } from '../../utils/logging';
 import { capitalizeString } from '../../utils/textFormat';
+import ExternalLinkIcon from '../Widgets/ExternalLinkIcon';
 
 const ReadMore = React.lazy(() => import(/* webpackChunkName: 'ReadMore' */ '../Widgets/ReadMore'));
 const BallotItemSupportOpposeComment = React.lazy(() => import(/* webpackChunkName: 'BallotItemSupportOpposeComment' */ '../Widgets/BallotItemSupportOpposeComment'));
 const BallotItemSupportOpposeCountDisplay = React.lazy(() => import(/* webpackChunkName: 'BallotItemSupportOpposeCountDisplay' */ '../Widgets/BallotItemSupportOpposeCountDisplay'));
+const OpenExternalWebSite = React.lazy(() => import(/* webpackChunkName: 'OpenExternalWebSite' */ '../Widgets/OpenExternalWebSite'));
 
 
 class MeasureItem extends Component {
@@ -22,7 +24,7 @@ class MeasureItem extends Component {
       ballotpediaMeasureUrl: '',
       measureSubtitle: '',
       measureText: '',
-      measureWeVoteId: '',
+      measureUrl: '',
       electionDisplayName: '',
       regionalDisplayName: '',
       stateCode: '',
@@ -40,19 +42,26 @@ class MeasureItem extends Component {
     this.appStateSubscription = messageService.getMessage().subscribe(() => this.onAppObservableStoreChange());
   }
 
+  componentDidUpdate (prevProps) {
+    if (this.props.measureWeVoteId !== prevProps.measureWeVoteId) {
+      this.onMeasureStoreChange();
+    }
+  }
+
   componentWillUnmount () {
     this.measureStoreListener.remove();
     this.appStateSubscription.unsubscribe();
   }
 
   onMeasureStoreChange () {
-    const measure = MeasureStore.getMeasure(this.props.measureWeVoteId);
+    const { measureWeVoteId } = this.props;
+    const measure = MeasureStore.getMeasure(measureWeVoteId);
     this.setState({
       ballotItemDisplayName: measure.ballot_item_display_name,
       ballotpediaMeasureUrl: measure.ballotpedia_measure_url,
       measureSubtitle: measure.measure_subtitle,
       measureText: measure.measure_text,
-      measureWeVoteId: measure.we_vote_id,
+      measureUrl: measure.measure_url,
       electionDisplayName: measure.election_display_name,
       regionalDisplayName: measure.regional_display_name,
       stateCode: measure.state_code,
@@ -83,13 +92,13 @@ class MeasureItem extends Component {
 
   render () {
     renderLog('MeasureItem');  // Set LOG_RENDER_EVENTS to log all renders
-    const { classes, forMoreInformationTextOff } = this.props;
+    const { classes, forMoreInformationTextOff, measureWeVoteId } = this.props;
     const { measureSubtitle } = this.state;
     let {
       ballotItemDisplayName, stateDisplayName,
     } = this.state;
     const {
-      ballotpediaMeasureUrl, measureText, measureWeVoteId, electionDisplayName, regionalDisplayName, stateCode,
+      ballotpediaMeasureUrl, measureText, measureUrl, electionDisplayName, regionalDisplayName, stateCode,
     } = this.state;
     if (stateDisplayName === undefined && stateCode) {
       stateDisplayName = stateCode.toUpperCase();
@@ -106,9 +115,30 @@ class MeasureItem extends Component {
             <Title>
               {ballotItemDisplayName}
             </Title>
+            {measureUrl && (
+              <ExternalWebSiteWrapper className="u-show-desktop">
+                <Suspense fallback={<></>}>
+                  <OpenExternalWebSite
+                    linkIdAttribute="measureUrlDesktop"
+                    url={measureUrl}
+                    target="_blank"
+                    className="u-gray-mid"
+                    body={(
+                      <span>
+                        measure website
+                        {' '}
+                        <ExternalLinkIcon />
+                      </span>
+                    )}
+                  />
+                </Suspense>
+              </ExternalWebSiteWrapper>
+            )}
           </MeasureInfoWrapper>
           <BallotItemSupportOpposeCountDisplayWrapper>
-            <BallotItemSupportOpposeCountDisplay ballotItemWeVoteId={measureWeVoteId} />
+            <Suspense fallback={<></>}>
+              <BallotItemSupportOpposeCountDisplay ballotItemWeVoteId={measureWeVoteId} />
+            </Suspense>
           </BallotItemSupportOpposeCountDisplayWrapper>
         </InfoRow>
         <InfoDetailsRow>
@@ -127,10 +157,12 @@ class MeasureItem extends Component {
         </InfoDetailsRow>
         { measureText && (
           <MeasureTextWrapper>
-            <ReadMore
-              numberOfLines={numberOfLines}
-              textToDisplay={measureText}
-            />
+            <Suspense fallback={<></>}>
+              <ReadMore
+                numberOfLines={numberOfLines}
+                textToDisplay={measureText}
+              />
+            </Suspense>
           </MeasureTextWrapper>
         )}
         {!forMoreInformationTextOff && (
@@ -143,11 +175,13 @@ class MeasureItem extends Component {
               )}
           </ForMoreInformationInfoText>
         )}
-        <BallotItemSupportOpposeComment
-          ballotItemWeVoteId={measureWeVoteId}
-          externalUniqueId="measureItem"
-          showPositionStatementActionBar={this.state.showPositionStatementActionBar}
-        />
+        <Suspense fallback={<></>}>
+          <BallotItemSupportOpposeComment
+            ballotItemWeVoteId={measureWeVoteId}
+            externalUniqueId="measureItem"
+            showPositionStatementActionBar={this.state.showPositionStatementActionBar}
+          />
+        </Suspense>
       </MeasureItemWrapper>
     );
   }
@@ -190,6 +224,11 @@ const styles = (theme) => ({
 const BallotItemSupportOpposeCountDisplayWrapper = styled.div`
   cursor: pointer;
   float: right;
+`;
+
+const ExternalWebSiteWrapper = styled.span`
+  padding-left: 15px;
+  white-space: nowrap;
 `;
 
 const ForMoreInformationInfoText = styled.div`

@@ -1,7 +1,7 @@
 import { Card, InputBase } from '@material-ui/core';
 import { withStyles, withTheme } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
-import React, { Component } from 'react';
+import React, { Component, Suspense } from 'react';
 import styled from 'styled-components';
 import VoterStore from '../../stores/VoterStore';
 import { avatarGeneric } from '../../utils/applicationUtils';
@@ -143,12 +143,14 @@ class ActivityPostAdd extends Component {
             />
           </InnerFlexWrapper>
           {showActivityPostModal && (
-            <ActivityPostModal
-              activityPostWeVoteId=""
-              externalUniqueId={externalUniqueId}
-              show={showActivityPostModal}
-              toggleActivityPostModal={this.toggleActivityPostModal}
-            />
+            <Suspense fallback={<></>}>
+              <ActivityPostModal
+                activityPostWeVoteId=""
+                externalUniqueId={externalUniqueId}
+                show={showActivityPostModal}
+                toggleActivityPostModal={this.toggleActivityPostModal}
+              />
+            </Suspense>
           )}
         </CardNewsWrapper>
       </Card>

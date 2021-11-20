@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import React, { Component } from 'react';
+import React, { Component, Suspense } from 'react';
 import styled from 'styled-components';
 import CandidateStore from '../../stores/CandidateStore';
 import MeasureStore from '../../stores/MeasureStore';
@@ -248,20 +248,24 @@ class GuideList extends Component {
                   key={organization.organization_we_vote_id}
                   {...organization}
                 >
-                  <FollowToggle
-                    organizationWeVoteId={organization.organization_we_vote_id}
-                    handleIgnore={handleIgnoreFunc}
-                  />
+                  <Suspense fallback={<></>}>
+                    <FollowToggle
+                      organizationWeVoteId={organization.organization_we_vote_id}
+                      handleIgnore={handleIgnoreFunc}
+                    />
+                  </Suspense>
                 </VoterGuideDisplayForList>
               );
             })}
             {!hideShowMoreItems && (
               <ShowMoreItemsWrapper id="showMoreItemsId" onClick={this.increaseNumberOfItemsToDisplay}>
-                <ShowMoreItems
-                  loadingMoreItemsNow={loadingMoreItems}
-                  numberOfItemsDisplayed={numberOfItemsDisplayed}
-                  numberOfItemsTotal={filteredOrganizationsWithPositionsCount}
-                />
+                <Suspense fallback={<></>}>
+                  <ShowMoreItems
+                    loadingMoreItemsNow={loadingMoreItems}
+                    numberOfItemsDisplayed={numberOfItemsDisplayed}
+                    numberOfItemsTotal={filteredOrganizationsWithPositionsCount}
+                  />
+                </Suspense>
               </ShowMoreItemsWrapper>
             )}
           </div>

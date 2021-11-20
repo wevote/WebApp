@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import React, { Component } from 'react';
+import React, { Component, Suspense } from 'react';
 import VoterActions from '../../actions/VoterActions';
 import AppObservableStore, { messageService } from '../../stores/AppObservableStore';
 import VoterStore from '../../stores/VoterStore';
@@ -235,37 +235,47 @@ export default class Header extends Component {
           <IPhoneSpacer />
           <HeadroomWrapper>
             <div className={pageHeaderClasses} style={cordovaTopHeaderTopMargin()} id="header-container">
-              {headerBarObject}
+              <Suspense fallback={<></>}>
+                {headerBarObject}
+              </Suspense>
             </div>
           </HeadroomWrapper>
           {showHowItWorksModal && (
-            <HowItWorksModal
-              show={showHowItWorksModal}
-              toggleFunction={this.closeHowItWorksModal}
-            />
+            <Suspense fallback={<></>}>
+              <HowItWorksModal
+                show={showHowItWorksModal}
+                toggleFunction={this.closeHowItWorksModal}
+              />
+            </Suspense>
           )}
           {showVoterPlanModal && (
-            <VoterPlanModal
-              show={showVoterPlanModal}
-              toggleFunction={this.closeVoterPlanModal}
-            />
+            <Suspense fallback={<></>}>
+              <VoterPlanModal
+                show={showVoterPlanModal}
+                toggleFunction={this.closeVoterPlanModal}
+              />
+            </Suspense>
           )}
           {showOrganizationModal && (
-            <OrganizationModal
-              isSignedIn={voter.is_signed_in}
-              show={showOrganizationModal}
-              ballotItemWeVoteId={this.state.organizationModalBallotItemWeVoteId}
-              modalOpen={showOrganizationModal}
-              toggleFunction={this.closeOrganizationModal}
-              params={params}
-            />
+            <Suspense fallback={<></>}>
+              <OrganizationModal
+                isSignedIn={voter.is_signed_in}
+                show={showOrganizationModal}
+                ballotItemWeVoteId={this.state.organizationModalBallotItemWeVoteId}
+                modalOpen={showOrganizationModal}
+                toggleFunction={this.closeOrganizationModal}
+                params={params}
+              />
+            </Suspense>
           )}
           {showSharedItemModal && (
-            <SharedItemModal
-              sharedItemCode={sharedItemCode}
-              show
-              closeSharedItemModal={this.closeSharedItemModal}
-            />
+            <Suspense fallback={<></>}>
+              <SharedItemModal
+                sharedItemCode={sharedItemCode}
+                show
+                closeSharedItemModal={this.closeSharedItemModal}
+              />
+            </Suspense>
           )}
         </div>
       );
@@ -283,11 +293,15 @@ export default class Header extends Component {
               { showBackToSettingsDesktop && (
                 <span>
                   <span className="u-show-desktop-tablet">
-                    <HeaderBackTo backToLink={backToSettingsLinkDesktop} backToLinkText={backToSettingsLinkText} />
+                    <Suspense fallback={<></>}>
+                      <HeaderBackTo backToLink={backToSettingsLinkDesktop} backToLinkText={backToSettingsLinkText} />
+                    </Suspense>
                   </span>
                   { !showBackToVoterGuides && !showBackToSettingsMobile && (
                     <span className="u-show-mobile">
-                      <HeaderBar />
+                      <Suspense fallback={<></>}>
+                        <HeaderBar />
+                      </Suspense>
                     </span>
                   )}
                 </span>
@@ -295,52 +309,70 @@ export default class Header extends Component {
               { showBackToSettingsMobile && (
                 <span>
                   <span className={isWebApp() ? 'u-show-mobile' : ''}>
-                    <HeaderBackTo
-                      backToLink={backToSettingsLinkMobile}
-                      backToLinkText={backToSettingsLinkText}
-                    />
+                    <Suspense fallback={<></>}>
+                      <HeaderBackTo
+                        backToLink={backToSettingsLinkMobile}
+                        backToLinkText={backToSettingsLinkText}
+                      />
+                    </Suspense>
                   </span>
                   { isWebApp() && !showBackToVoterGuides && !showBackToSettingsDesktop && (
                     <span className="u-show-desktop-tablet">
-                      <HeaderBar />
+                      <Suspense fallback={<></>}>
+                        <HeaderBar />
+                      </Suspense>
                     </span>
                   )}
                 </span>
               )}
-              { showBackToVoterGuides &&
-                <HeaderBackToVoterGuides params={params} />}
-              { !showBackToVoterGuides && !showBackToSettingsDesktop && !showBackToSettingsMobile &&
-                <HeaderBar />}
+              { showBackToVoterGuides && (
+                <Suspense fallback={<></>}>
+                  <HeaderBackToVoterGuides params={params} />
+                </Suspense>
+              )}
+              { !showBackToVoterGuides && !showBackToSettingsDesktop && !showBackToSettingsMobile && (
+                <Suspense fallback={<></>}>
+                  <HeaderBar />
+                </Suspense>
+              )}
             </div>
           </HeadroomWrapper>
           {showHowItWorksModal && (
-            <HowItWorksModal
-              show={showHowItWorksModal}
-              toggleFunction={this.closeHowItWorksModal}
-            />
+            <Suspense fallback={<></>}>
+              <HowItWorksModal
+                show={showHowItWorksModal}
+                toggleFunction={this.closeHowItWorksModal}
+              />
+            </Suspense>
           )}
           {showVoterPlanModal && (
-            <VoterPlanModal
-              show={showVoterPlanModal}
-              toggleFunction={this.closeVoterPlanModal}
-            />
+            <Suspense fallback={<></>}>
+              <VoterPlanModal
+                show={showVoterPlanModal}
+                toggleFunction={this.closeVoterPlanModal}
+              />
+            </Suspense>
           )}
           {showOrganizationModal && (
-            <OrganizationModal
-              isSignedIn={voter.is_signed_in}
-              show={showOrganizationModal}
-              ballotItemWeVoteId={this.state.organizationModalBallotItemWeVoteId}
-              modalOpen={showOrganizationModal}
-              toggleFunction={this.closeOrganizationModal}
-              params={params}
-            />
+            <Suspense fallback={<></>}>
+              <OrganizationModal
+                isSignedIn={voter.is_signed_in}
+                show={showOrganizationModal}
+                ballotItemWeVoteId={this.state.organizationModalBallotItemWeVoteId}
+                modalOpen={showOrganizationModal}
+                toggleFunction={this.closeOrganizationModal}
+                params={params}
+              />
+            </Suspense>
           )}
           {showSharedItemModal && (
-            <SharedItemModal
-              sharedItemCode={sharedItemCode}
-              show
-              closeSharedItemModal={this.closeSharedItemModal}
-            />
+            <Suspense fallback={<></>}>
+              <SharedItemModal
+                sharedItemCode={sharedItemCode}
+                show
+                closeSharedItemModal={this.closeSharedItemModal}
+              />
+            </Suspense>
           )}
         </div>
       );
@@ -359,39 +391,49 @@ export default class Header extends Component {
           <HeadroomWrapper>
             {/* <div className={isWebApp ? 'headroom-wrapper-webapp__default' : ''} id="headroom-wrapper"> */}
             <div className={pageHeaderClasses} style={cordovaTopHeaderTopMargin()} id="header-container">
-              { showBackToValues ?
-                <HeaderBackTo backToLink={backToValuesLink} backToLinkText={backToValuesLinkText} /> :
-                <HeaderBar />}
+              <Suspense fallback={<></>}>
+                { showBackToValues ?
+                  <HeaderBackTo backToLink={backToValuesLink} backToLinkText={backToValuesLinkText} /> :
+                  <HeaderBar />}
+              </Suspense>
             </div>
           </HeadroomWrapper>
           {showHowItWorksModal && (
-            <HowItWorksModal
-              show={showHowItWorksModal}
-              toggleFunction={this.closeHowItWorksModal}
-            />
+            <Suspense fallback={<></>}>
+              <HowItWorksModal
+                show={showHowItWorksModal}
+                toggleFunction={this.closeHowItWorksModal}
+              />
+            </Suspense>
           )}
           {showVoterPlanModal && (
-            <VoterPlanModal
-              show={showVoterPlanModal}
-              toggleFunction={this.closeVoterPlanModal}
-            />
+            <Suspense fallback={<></>}>
+              <VoterPlanModal
+                show={showVoterPlanModal}
+                toggleFunction={this.closeVoterPlanModal}
+              />
+            </Suspense>
           )}
           {showOrganizationModal && (
-            <OrganizationModal
-              isSignedIn={voter.is_signed_in}
-              show={showOrganizationModal}
-              ballotItemWeVoteId={this.state.organizationModalBallotItemWeVoteId}
-              modalOpen={showOrganizationModal}
-              toggleFunction={this.closeOrganizationModal}
-              params={params}
-            />
+            <Suspense fallback={<></>}>
+              <OrganizationModal
+                isSignedIn={voter.is_signed_in}
+                show={showOrganizationModal}
+                ballotItemWeVoteId={this.state.organizationModalBallotItemWeVoteId}
+                modalOpen={showOrganizationModal}
+                toggleFunction={this.closeOrganizationModal}
+                params={params}
+              />
+            </Suspense>
           )}
           {showSharedItemModal && (
-            <SharedItemModal
-              sharedItemCode={sharedItemCode}
-              show
-              closeSharedItemModal={this.closeSharedItemModal}
-            />
+            <Suspense fallback={<></>}>
+              <SharedItemModal
+                sharedItemCode={sharedItemCode}
+                show
+                closeSharedItemModal={this.closeSharedItemModal}
+              />
+            </Suspense>
           )}
         </div>
       );
@@ -413,47 +455,59 @@ export default class Header extends Component {
           <IPhoneSpacer />
           <HeadroomWrapper>
             <div className={pageHeaderClasses} style={cordovaTopHeaderTopMargin()} id="header-container">
-              { showBackToBallotHeader ?
-                <HeaderBackToBallot params={params} /> :
-                <HeaderBar />}
+              <Suspense fallback={<></>}>
+                { showBackToBallotHeader ?
+                  <HeaderBackToBallot params={params} /> :
+                  <HeaderBar />}
+              </Suspense>
             </div>
           </HeadroomWrapper>
           {showActivityTidbitDrawer && (
-            <ActivityTidbitDrawer
-              activityTidbitWeVoteId={activityTidbitWeVoteIdForDrawer}
-              show={showActivityTidbitDrawer}
-              modalOpen={showActivityTidbitDrawer}
-              toggleFunction={this.closeActivityTidbitDrawer}
-            />
+            <Suspense fallback={<></>}>
+              <ActivityTidbitDrawer
+                activityTidbitWeVoteId={activityTidbitWeVoteIdForDrawer}
+                show={showActivityTidbitDrawer}
+                modalOpen={showActivityTidbitDrawer}
+                toggleFunction={this.closeActivityTidbitDrawer}
+              />
+            </Suspense>
           )}
           {showHowItWorksModal && (
-            <HowItWorksModal
-              show={showHowItWorksModal}
-              toggleFunction={this.closeHowItWorksModal}
-            />
+            <Suspense fallback={<></>}>
+              <HowItWorksModal
+                show={showHowItWorksModal}
+                toggleFunction={this.closeHowItWorksModal}
+              />
+            </Suspense>
           )}
           {showVoterPlanModal && (
-            <VoterPlanModal
-              show={showVoterPlanModal}
-              toggleFunction={this.closeVoterPlanModal}
-            />
+            <Suspense fallback={<></>}>
+              <VoterPlanModal
+                show={showVoterPlanModal}
+                toggleFunction={this.closeVoterPlanModal}
+              />
+            </Suspense>
           )}
           {showOrganizationModal && (
-            <OrganizationModal
-              isSignedIn={voter.is_signed_in}
-              show={showOrganizationModal}
-              ballotItemWeVoteId={this.state.organizationModalBallotItemWeVoteId}
-              modalOpen={showOrganizationModal}
-              toggleFunction={this.closeOrganizationModal}
-              params={params}
-            />
+            <Suspense fallback={<></>}>
+              <OrganizationModal
+                isSignedIn={voter.is_signed_in}
+                show={showOrganizationModal}
+                ballotItemWeVoteId={this.state.organizationModalBallotItemWeVoteId}
+                modalOpen={showOrganizationModal}
+                toggleFunction={this.closeOrganizationModal}
+                params={params}
+              />
+            </Suspense>
           )}
           {showSharedItemModal && (
-            <SharedItemModal
-              sharedItemCode={sharedItemCode}
-              show
-              closeSharedItemModal={this.closeSharedItemModal}
-            />
+            <Suspense fallback={<></>}>
+              <SharedItemModal
+                sharedItemCode={sharedItemCode}
+                show
+                closeSharedItemModal={this.closeSharedItemModal}
+              />
+            </Suspense>
           )}
         </div>
       );

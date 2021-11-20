@@ -1,7 +1,7 @@
 import { withStyles } from '@material-ui/core/styles';
 import { Twitter } from '@material-ui/icons';
 import PropTypes from 'prop-types';
-import React, { Component } from 'react';
+import React, { Component, Suspense } from 'react';
 import { ReactSVG } from 'react-svg';
 import styled from 'styled-components';
 import CandidateActions from '../../actions/CandidateActions';
@@ -266,11 +266,13 @@ class VoterGuidePositionItem extends Component {
                 <DesktopItemImage onClick={this.onClickShowOrganizationModal} className="u-cursor--pointer">
                   <div>
                     { ballotItemImageUrlHttpsMedium ? (
-                      <ImageHandler
-                        className="card-child__avatar--round"
-                        sizeClassName="icon-lg"
-                        imageUrl={ballotItemImageUrlHttpsMedium}
-                      />
+                      <Suspense fallback={<></>}>
+                        <ImageHandler
+                          className="card-child__avatar--round"
+                          sizeClassName="icon-lg"
+                          imageUrl={ballotItemImageUrlHttpsMedium}
+                        />
+                      </Suspense>
                     ) :
                       imagePlaceholder }
                   </div>
@@ -295,11 +297,13 @@ class VoterGuidePositionItem extends Component {
                   </DesktopItemNameContainer>
                   <DesktopItemOffice onClick={this.onClickShowOrganizationModal} className="u-cursor--pointer">
                     {(contestOfficeName) && (
-                      <OfficeNameText
-                        contestOfficeName={contestOfficeName}
-                        // politicalParty={politicalParty}
-                        showOfficeName
-                      />
+                      <Suspense fallback={<></>}>
+                        <OfficeNameText
+                          contestOfficeName={contestOfficeName}
+                          // politicalParty={politicalParty}
+                          showOfficeName
+                        />
+                      </Suspense>
                     )}
                     {(positionYear) && (
                       <PositionYearText>
@@ -312,12 +316,14 @@ class VoterGuidePositionItem extends Component {
                   </DesktopItemOffice>
                 </DesktopItemNameAndOfficeContainer>
                 <BallotItemSupportOpposeCountDisplayWrapper>
-                  <BallotItemSupportOpposeCountDisplay
-                    ballotItemDisplayName={ballotItemDisplayName}
-                    ballotItemWeVoteId={ballotItemWeVoteId}
-                    // hideEndorsementsOverview
-                    hideNumbersOfAllPositions
-                  />
+                  <Suspense fallback={<></>}>
+                    <BallotItemSupportOpposeCountDisplay
+                      ballotItemDisplayName={ballotItemDisplayName}
+                      ballotItemWeVoteId={ballotItemWeVoteId}
+                      // hideEndorsementsOverview
+                      hideNumbersOfAllPositions
+                    />
+                  </Suspense>
                   <VerticalSeparator />
                   <BallotItemVoterGuideSupportOpposeDisplay
                     positionWeVoteId={positionWeVoteId}
@@ -327,10 +333,12 @@ class VoterGuidePositionItem extends Component {
               <DesktopItemBody>
                 <DesktopItemDescription>
                   {positionDescription && (
-                    <ReadMore
-                      textToDisplay={positionDescription}
-                      numberOfLines={4}
-                    />
+                    <Suspense fallback={<></>}>
+                      <ReadMore
+                        textToDisplay={positionDescription}
+                        numberOfLines={4}
+                      />
+                    </Suspense>
                   )}
                 </DesktopItemDescription>
                 <DesktopItemFooter>
@@ -341,19 +349,21 @@ class VoterGuidePositionItem extends Component {
                   </div> */}
                   {moreInfoUrl ? (
                     <SourceLink>
-                      <OpenExternalWebSite
-                        linkIdAttribute="moreInfo-desktop"
-                        body={(
-                          <span>
-                            view source
-                            {' '}
-                            <ExternalLinkIcon />
-                          </span>
-                        )}
-                        className="u-gray-mid"
-                        target="_blank"
-                        url={moreInfoUrl}
-                      />
+                      <Suspense fallback={<></>}>
+                        <OpenExternalWebSite
+                          linkIdAttribute="moreInfo-desktop"
+                          body={(
+                            <span>
+                              view source
+                              {' '}
+                              <ExternalLinkIcon />
+                            </span>
+                          )}
+                          className="u-gray-mid"
+                          target="_blank"
+                          url={moreInfoUrl}
+                        />
+                      </Suspense>
                     </SourceLink>
                   ) : null}
                 </DesktopItemFooter>
@@ -369,11 +379,13 @@ class VoterGuidePositionItem extends Component {
                   {isCandidate && (
                     <MobileItemImage>
                       { ballotItemImageUrlHttpsMedium ? (
-                        <ImageHandler
-                          className="card-child__avatar"
-                          sizeClassName="icon-lg"
-                          imageUrl={ballotItemImageUrlHttpsMedium}
-                        />
+                        <Suspense fallback={<></>}>
+                          <ImageHandler
+                            className="card-child__avatar"
+                            sizeClassName="icon-lg"
+                            imageUrl={ballotItemImageUrlHttpsMedium}
+                          />
+                        </Suspense>
                       ) :
                         imagePlaceholder }
                     </MobileItemImage>
@@ -385,11 +397,13 @@ class VoterGuidePositionItem extends Component {
                     </MobileItemName>
                     <MobileItemOffice>
                       {(contestOfficeName) && (
-                        <OfficeNameText
-                          contestOfficeName={contestOfficeName}
-                          // politicalParty={politicalParty}
-                          showOfficeName
-                        />
+                        <Suspense fallback={<></>}>
+                          <OfficeNameText
+                            contestOfficeName={contestOfficeName}
+                            // politicalParty={politicalParty}
+                            showOfficeName
+                          />
+                        </Suspense>
                       )}
                       {(positionYear) && (
                         <PositionYearText>
@@ -412,12 +426,14 @@ class VoterGuidePositionItem extends Component {
               <MobileItemEndorsementContainer>
                 <MobileItemEndorsementDisplay>
                   <BallotItemSupportOpposeCountDisplayWrapper>
-                    <BallotItemSupportOpposeCountDisplay
-                      ballotItemDisplayName={ballotItemDisplayName}
-                      ballotItemWeVoteId={ballotItemWeVoteId}
-                      // hideEndorsementsOverview
-                      hideNumbersOfAllPositions
-                    />
+                    <Suspense fallback={<></>}>
+                      <BallotItemSupportOpposeCountDisplay
+                        ballotItemDisplayName={ballotItemDisplayName}
+                        ballotItemWeVoteId={ballotItemWeVoteId}
+                        // hideEndorsementsOverview
+                        hideNumbersOfAllPositions
+                      />
+                    </Suspense>
                     <VerticalSeparator />
                     <BallotItemVoterGuideSupportOpposeDisplay
                       positionWeVoteId={positionWeVoteId}
@@ -429,11 +445,13 @@ class VoterGuidePositionItem extends Component {
             <div className="u-show-mobile-iphone5-or-smaller">
               <MobileItemOfficeSmallerPhones onClick={this.onClickShowOrganizationModal} className="u-cursor--pointer">
                 {(contestOfficeName) && (
-                  <OfficeNameText
-                    contestOfficeName={contestOfficeName}
-                    // politicalParty={politicalParty}
-                    showOfficeName
-                  />
+                  <Suspense fallback={<></>}>
+                    <OfficeNameText
+                      contestOfficeName={contestOfficeName}
+                      // politicalParty={politicalParty}
+                      showOfficeName
+                    />
+                  </Suspense>
                 )}
                 {(positionYear) && (
                   <PositionYearText>
@@ -449,10 +467,12 @@ class VoterGuidePositionItem extends Component {
               <MobileItemDescriptionFollowToggleContainer>
                 <MobileItemDescription>
                   {positionDescription && (
-                    <ReadMore
-                      textToDisplay={positionDescription}
-                      numberOfLines={4}
-                    />
+                    <Suspense fallback={<></>}>
+                      <ReadMore
+                        textToDisplay={positionDescription}
+                        numberOfLines={4}
+                      />
+                    </Suspense>
                   )}
                 </MobileItemDescription>
               </MobileItemDescriptionFollowToggleContainer>
@@ -464,19 +484,21 @@ class VoterGuidePositionItem extends Component {
                 </div> */}
                 {moreInfoUrl && (
                   <SourceLink>
-                    <OpenExternalWebSite
-                      linkIdAttribute="moreInfo-mobile"
-                      body={(
-                        <span>
-                          source
-                          {' '}
-                          <ExternalLinkIcon />
-                        </span>
-                      )}
-                      className="u-gray-mid"
-                      target="_blank"
-                      url={moreInfoUrl}
-                    />
+                    <Suspense fallback={<></>}>
+                      <OpenExternalWebSite
+                        linkIdAttribute="moreInfo-mobile"
+                        body={(
+                          <span>
+                            source
+                            {' '}
+                            <ExternalLinkIcon />
+                          </span>
+                        )}
+                        className="u-gray-mid"
+                        target="_blank"
+                        url={moreInfoUrl}
+                      />
+                    </Suspense>
                   </SourceLink>
                 )}
               </MobileItemFooter>

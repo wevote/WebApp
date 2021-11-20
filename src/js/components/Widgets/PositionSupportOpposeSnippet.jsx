@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import React, { Component } from 'react';
+import React, { Component, Suspense } from 'react';
 import { cordovaDot } from '../../utils/cordovaUtils';
 import { renderLog } from '../../utils/logging';
 import { vimeoRegX, youTubeRegX } from '../../utils/textFormat';
@@ -114,27 +114,35 @@ export default class PositionSupportOpposeSnippet extends Component {
               </span>
               { commentTextOff ? null : (
                 <span>
-                  <span className="u-wrap-links d-print-none">{statementTextHtml}</span>
+                  <span className="u-wrap-links d-print-none">
+                    <Suspense fallback={<></>}>
+                      {statementTextHtml}
+                    </Suspense>
+                  </span>
                   {/* if there's an external source for the explicit position/endorsement, show it */}
-                  { videoUrl ?
-                    <ReactPlayer className="explicit-position__media-player" url={`${videoUrl}`} width="100%" height="100%" /> :
-                    null }
+                  { videoUrl ? (
+                    <Suspense fallback={<></>}>
+                      <ReactPlayer className="explicit-position__media-player" url={`${videoUrl}`} width="100%" height="100%" /> :
+                    </Suspense>
+                  ) : null }
                   {moreInfoUrl ? (
                     <div className="d-none d-sm-block">
                       {/* default: open in new tab */}
-                      <OpenExternalWebSite
-                        linkIdAttribute="moreInfo"
-                        url={moreInfoUrl}
-                        target="_blank"
-                        className="u-gray-mid"
-                        body={(
-                          <span>
-                            view source
-                            {' '}
-                            <ExternalLinkIcon />
-                          </span>
-                        )}
-                      />
+                      <Suspense fallback={<></>}>
+                        <OpenExternalWebSite
+                          linkIdAttribute="moreInfo"
+                          url={moreInfoUrl}
+                          target="_blank"
+                          className="u-gray-mid"
+                          body={(
+                            <span>
+                              view source
+                              {' '}
+                              <ExternalLinkIcon />
+                            </span>
+                          )}
+                        />
+                      </Suspense>
                     </div>
                   ) : null}
                 </span>

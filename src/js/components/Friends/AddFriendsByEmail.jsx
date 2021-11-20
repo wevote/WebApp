@@ -2,7 +2,7 @@ import { Button, TextField } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 import { Close } from '@material-ui/icons';
 import PropTypes from 'prop-types';
-import React, { Component } from 'react';
+import React, { Component, Suspense } from 'react';
 import Alert from 'react-bootstrap/Alert';
 import styled from 'styled-components';
 import FriendActions from '../../actions/FriendActions';
@@ -283,24 +283,28 @@ class AddFriendsByEmail extends Component {
           </FriendsDisplay>
         )}
         {(invitationEmailsAlreadyScheduledStepFromApi && !voterIsSignedIn) ? (
-          <DelayedLoad waitBeforeShow={1000}>
-            <>
-              <Alert variant="danger">
-                Your invitations will be sent after you sign in:
-                <ul>
-                  {friendInvitationsWaitingForVerification.map((friend) => (
-                    <li key={friend.invitation_sent_to}>
-                      {friend.invitation_sent_to}
-                    </li>
-                  ))}
-                </ul>
-              </Alert>
-              <SettingsAccount
-                pleaseSignInTitle="Sign in to Send Your Friend Requests"
-                pleaseSignInSubTitle=""
-              />
-            </>
-          </DelayedLoad>
+          <Suspense fallback={<></>}>
+            <DelayedLoad waitBeforeShow={1000}>
+              <>
+                <Alert variant="danger">
+                  Your invitations will be sent after you sign in:
+                  <ul>
+                    {friendInvitationsWaitingForVerification.map((friend) => (
+                      <li key={friend.invitation_sent_to}>
+                        {friend.invitation_sent_to}
+                      </li>
+                    ))}
+                  </ul>
+                </Alert>
+                <Suspense fallback={<></>}>
+                  <SettingsAccount
+                    pleaseSignInTitle="Sign in to Send Your Friend Requests"
+                    pleaseSignInSubTitle=""
+                  />
+                </Suspense>
+              </>
+            </DelayedLoad>
+          </Suspense>
         ) : (
           <>
             {onEnterEmailAddressesStep && (

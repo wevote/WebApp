@@ -1,6 +1,6 @@
 import { Twitter } from '@material-ui/icons';
 import PropTypes from 'prop-types';
-import React, { Component } from 'react';
+import React, { Component, Suspense } from 'react';
 import { Link } from 'react-router-dom';
 import OrganizationStore from '../../stores/OrganizationStore';
 import { renderLog } from '../../utils/logging';
@@ -90,7 +90,9 @@ export default class OrganizationDisplayForList extends Component {
       <div className="card-child card-child--not-followed">
         <div className="card-child__media-object-anchor">
           <Link to={voterGuideLink} className="u-no-underline">
-            <ImageHandler className="card-child__avatar" sizeClassName="image-lg " imageUrl={organizationPhotoUrlMedium} />
+            <Suspense fallback={<></>}>
+              <ImageHandler className="card-child__avatar" sizeClassName="image-lg " imageUrl={organizationPhotoUrlMedium} />
+            </Suspense>
           </Link>
         </div>
         <div className="card-child__media-object-content">
@@ -99,11 +101,13 @@ export default class OrganizationDisplayForList extends Component {
               <h4 className="card-child__display-name">{organizationName}</h4>
             </Link>
             { twitterDescriptionMinusName ? (
-              <ReadMore
-                className="card-child__organization-description"
-                textToDisplay={twitterDescriptionMinusName}
-                numberOfLines={numberOfLines}
-              />
+              <Suspense fallback={<></>}>
+                <ReadMore
+                  className="card-child__organization-description"
+                  textToDisplay={twitterDescriptionMinusName}
+                  numberOfLines={numberOfLines}
+                />
+              </Suspense>
             ) : null}
             { positionDescription }
           </div>

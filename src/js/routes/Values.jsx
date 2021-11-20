@@ -1,7 +1,6 @@
 import React, { Component, Suspense } from 'react';
 import Helmet from 'react-helmet';
 import styled from 'styled-components';
-import TestimonialPhoto from '../../img/global/photos/Dale_McGrew-200x200.jpg';
 import AnalyticsActions from '../actions/AnalyticsActions';
 import IssueActions from '../actions/IssueActions';
 import AddFriendsByEmail from '../components/Friends/AddFriendsByEmail';
@@ -28,9 +27,11 @@ import { PageContentContainer } from '../utils/pageLayoutStyles';
 
 const FirstAndLastNameRequiredAlert = React.lazy(() => import(/* webpackChunkName: 'FirstAndLastNameRequiredAlert' */ '../components/Widgets/FirstAndLastNameRequiredAlert'));
 
+const testimonialPhoto = '../../img/global/photos/Dale_McGrew-48x48.jpg';
+
 // const facebookInfoText = "By signing into Facebook here, you can choose which friends you want to talk politics with, and avoid the trolls (or that guy from work who rambles on)! You control who is in your We Vote network.";
 const testimonialAuthor = 'Dale M., Oakland, California';
-const imageUrl = cordovaDot(TestimonialPhoto);
+const imageUrl = cordovaDot(testimonialPhoto);
 const testimonial = 'I like seeing the opinions of people who share my values.';
 
 export default class Values extends Component {

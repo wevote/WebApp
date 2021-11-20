@@ -2,7 +2,7 @@ import { Card } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 import { Ballot, Info } from '@material-ui/icons';
 import PropTypes from 'prop-types';
-import React, { Component } from 'react';
+import React, { Component, Suspense } from 'react';
 import Helmet from 'react-helmet';
 import styled from 'styled-components';
 import BallotActions from '../../actions/BallotActions';
@@ -292,34 +292,38 @@ class VoterGuideEndorsements extends Component {
             )}
             { (allOrganizationPositionsLength) ? (
               <section className="card">
-                <DelayedLoad showLoadingText waitBeforeShow={500}>
-                  <VoterGuidePositionList
-                    incomingPositionList={allOrganizationPositions}
-                    organizationWeVoteId={organizationWeVoteId}
-                    params={params}
-                    positionListExistsTitle={(
-                      <PositionListIntroductionText>
-                        <Info classes={{ root: classes.informationIcon }} />
-                        {organizationName}
-                        &apos;s opinions are below. Use these filters to sort:
-                      </PositionListIntroductionText>
-                    )}
-                  />
-                </DelayedLoad>
+                <Suspense fallback={<></>}>
+                  <DelayedLoad showLoadingText waitBeforeShow={500}>
+                    <VoterGuidePositionList
+                      incomingPositionList={allOrganizationPositions}
+                      organizationWeVoteId={organizationWeVoteId}
+                      params={params}
+                      positionListExistsTitle={(
+                        <PositionListIntroductionText>
+                          <Info classes={{ root: classes.informationIcon }} />
+                          {organizationName}
+                          &apos;s opinions are below. Use these filters to sort:
+                        </PositionListIntroductionText>
+                      )}
+                    />
+                  </DelayedLoad>
+                </Suspense>
               </section>
             ) : (
               <Card>
-                <DelayedLoad showLoadingText waitBeforeShow={2000}>
-                  <EmptyBallotMessageContainer>
-                    <Ballot classes={{ root: classes.ballotIconRoot }} location={window.location} />
-                    <EmptyBallotText>
-                      No endorsements have been found for
-                      {' '}
-                      {organization.organization_name}
-                      .
-                    </EmptyBallotText>
-                  </EmptyBallotMessageContainer>
-                </DelayedLoad>
+                <Suspense fallback={<></>}>
+                  <DelayedLoad showLoadingText waitBeforeShow={2000}>
+                    <EmptyBallotMessageContainer>
+                      <Ballot classes={{ root: classes.ballotIconRoot }} location={window.location} />
+                      <EmptyBallotText>
+                        No endorsements have been found for
+                        {' '}
+                        {organization.organization_name}
+                        .
+                      </EmptyBallotText>
+                    </EmptyBallotMessageContainer>
+                  </DelayedLoad>
+                </Suspense>
               </Card>
             )}
           </VoterGuideEndorsementsWrapper>

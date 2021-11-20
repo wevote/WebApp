@@ -2,7 +2,7 @@ import { Button, Dialog, DialogContent, FormControl, FormControlLabel, IconButto
 import { withStyles, withTheme } from '@material-ui/core/styles';
 import { ArrowBack, ArrowBackIos, Close } from '@material-ui/icons';
 import PropTypes from 'prop-types';
-import React, { Component } from 'react';
+import React, { Component, Suspense } from 'react';
 // TODO 5/11/21: import { Elements, StripeProvider } from 'react-stripe-elements';
 import styled from 'styled-components';
 import DonateActions from '../../common/actions/DonateActions';
@@ -623,13 +623,15 @@ class PaidAccountUpgradeModal extends Component {
                 </div>
               )}
               {contactSalesRequired ? (
-                <OpenExternalWebSite
-                  linkIdAttribute="weVoteSupportPaidAccountUpgradeModalMobile"
-                  className="open-web-site"
-                  url="https://help.wevote.us/hc/en-us/requests/new"
-                  target="_blank"
-                  body={<div>Contact Sales for Enterprise Coupon Code</div>}
-                />
+                <Suspense fallback={<></>}>
+                  <OpenExternalWebSite
+                    linkIdAttribute="weVoteSupportPaidAccountUpgradeModalMobile"
+                    className="open-web-site"
+                    url="https://help.wevote.us/hc/en-us/requests/new"
+                    target="_blank"
+                    body={<div>Contact Sales for Enterprise Coupon Code</div>}
+                  />
+                </Suspense>
               ) : (
                 <>
                   <Fieldset disabledMode={(radioGroupValue !== 'annualPlanRadio')}>
@@ -803,13 +805,15 @@ class PaidAccountUpgradeModal extends Component {
                   </div>
                 )}
                 {contactSalesRequired ? (
-                  <OpenExternalWebSite
-                    linkIdAttribute="weVoteSupportPaidAccountUpgradeModalDesktop"
-                    className="open-web-site"
-                    url="https://help.wevote.us/hc/en-us/requests/new"
-                    target="_blank"
-                    body={<div>Contact Sales for Enterprise Coupon Code</div>}
-                  />
+                  <Suspense fallback={<></>}>
+                    <OpenExternalWebSite
+                      linkIdAttribute="weVoteSupportPaidAccountUpgradeModalDesktop"
+                      className="open-web-site"
+                      url="https://help.wevote.us/hc/en-us/requests/new"
+                      target="_blank"
+                      body={<div>Contact Sales for Enterprise Coupon Code</div>}
+                    />
+                  </Suspense>
                 ) : (
                   <>
                     <Fieldset disabledMode={(radioGroupValue !== 'annualPlanRadio')}>
@@ -1025,11 +1029,15 @@ class PaidAccountUpgradeModal extends Component {
         </ModalTitleArea>
         {paidAccountProcessStep === 'choosePlan' ? (
           <DialogContent classes={{ root: classes.dialogContentWhite }}>
-            {modalHtmlContents}
+            <Suspense fallback={<></>}>
+              {modalHtmlContents}
+            </Suspense>
           </DialogContent>
         ) : (
           <DialogContent classes={{ root: classes.dialogContent }}>
-            {modalHtmlContents}
+            <Suspense fallback={<></>}>
+              {modalHtmlContents}
+            </Suspense>
           </DialogContent>
         )}
       </Dialog>

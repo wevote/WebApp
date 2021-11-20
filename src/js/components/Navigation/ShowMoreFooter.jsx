@@ -77,6 +77,9 @@ const ShowMoreFooterText = styled.div`
   padding: 8px !important;
   padding-bottom: 0px !important;
   text-align: right !important;
+  @media (min-width: ${({ theme }) => theme.breakpoints.md}) {
+    white-space: nowrap;
+  }
   &:hover {
     text-decoration: underline;
   }

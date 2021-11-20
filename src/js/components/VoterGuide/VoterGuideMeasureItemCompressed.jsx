@@ -1,6 +1,6 @@
 import { withStyles, withTheme } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
-import React, { Component } from 'react';
+import React, { Component, Suspense } from 'react';
 import MeasureActions from '../../actions/MeasureActions';
 import OrganizationActions from '../../actions/OrganizationActions';
 import MeasureStore from '../../stores/MeasureStore';
@@ -163,11 +163,13 @@ class VoterGuideMeasureItemCompressed extends Component {
     }
 
     return (
-      <VoterGuidePositionItem
-        ballotItemWeVoteId={measureWeVoteId}
-        organizationWeVoteId={organizationWeVoteId}
-        positionWeVoteId={organizationPositionForMeasure.position_we_vote_id}
-      />
+      <Suspense fallback={<></>}>
+        <VoterGuidePositionItem
+          ballotItemWeVoteId={measureWeVoteId}
+          organizationWeVoteId={organizationWeVoteId}
+          positionWeVoteId={organizationPositionForMeasure.position_we_vote_id}
+        />
+      </Suspense>
     );
   }
 }

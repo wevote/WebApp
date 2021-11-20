@@ -2,7 +2,7 @@ import { Card } from '@material-ui/core';
 import { withStyles, withTheme } from '@material-ui/core/styles';
 import { ArrowForward } from '@material-ui/icons';
 import PropTypes from 'prop-types';
-import React, { Component } from 'react';
+import React, { Component, Suspense } from 'react';
 import styled from 'styled-components';
 import MeasureActions from '../../actions/MeasureActions';
 import BallotStore from '../../stores/BallotStore';
@@ -285,10 +285,12 @@ class MeasureItemCompressed extends Component {
             </Title>
           </MeasureInfoWrapper>
           <BallotItemSupportOpposeCountDisplayWrapper>
-            <BallotItemSupportOpposeCountDisplay
-              ballotItemWeVoteId={measureWeVoteId}
-              goToBallotItem={this.goToMeasureLink}
-            />
+            <Suspense fallback={<></>}>
+              <BallotItemSupportOpposeCountDisplay
+                ballotItemWeVoteId={measureWeVoteId}
+                goToBallotItem={this.goToMeasureLink}
+              />
+            </Suspense>
           </BallotItemSupportOpposeCountDisplayWrapper>
         </InfoRow>
         <InfoDetailsRow onClick={() => { this.goToMeasureLink(measureWeVoteId); }}>
@@ -309,28 +311,32 @@ class MeasureItemCompressed extends Component {
               </ChoiceTitle>
               <ChoiceInfo>
                 {/* If there is a "yes vote" quote about the measure, show that. If not, show the yesVoteDescription */}
-                <DelayedLoad showLoadingText waitBeforeShow={500}>
-                  <TopCommentByBallotItem
-                    ballotItemWeVoteId={measureWeVoteId}
-                    childChangeIndicator={yesVoteDescription}
-                    // learnMoreUrl={this.getMeasureLink(measureWeVoteId)}
-                    limitToYes
-                  >
-                    <span>
-                      {shortenText(yesVoteDescription, 200)}
-                      <ItemActionBar
-                        ballotItemDisplayName={ballotItemDisplayName}
-                        ballotItemWeVoteId={measureWeVoteId}
-                        commentButtonHide
-                        commentButtonHideInMobile
-                        externalUniqueId={`${externalUniqueId}-${localUniqueId}-MeasureItemCompressedVoteYes-${measureWeVoteId}`}
-                        hideOpposeNo
-                        shareButtonHide
-                        hidePositionPublicToggle
-                      />
-                    </span>
-                  </TopCommentByBallotItem>
-                </DelayedLoad>
+                <Suspense fallback={<></>}>
+                  <DelayedLoad showLoadingText waitBeforeShow={500}>
+                    <TopCommentByBallotItem
+                      ballotItemWeVoteId={measureWeVoteId}
+                      childChangeIndicator={yesVoteDescription}
+                      // learnMoreUrl={this.getMeasureLink(measureWeVoteId)}
+                      limitToYes
+                    >
+                      <span>
+                        {shortenText(yesVoteDescription, 200)}
+                        <Suspense fallback={<></>}>
+                          <ItemActionBar
+                            ballotItemDisplayName={ballotItemDisplayName}
+                            ballotItemWeVoteId={measureWeVoteId}
+                            commentButtonHide
+                            commentButtonHideInMobile
+                            externalUniqueId={`${externalUniqueId}-${localUniqueId}-MeasureItemCompressedVoteYes-${measureWeVoteId}`}
+                            hideOpposeNo
+                            shareButtonHide
+                            hidePositionPublicToggle
+                          />
+                        </Suspense>
+                      </span>
+                    </TopCommentByBallotItem>
+                  </DelayedLoad>
+                </Suspense>
               </ChoiceInfo>
             </Choice>
             <Choice
@@ -345,34 +351,40 @@ class MeasureItemCompressed extends Component {
               </ChoiceTitle>
               <ChoiceInfo>
                 {/* If there is a "yes vote" quote about the measure, show that. If not, show the yesVoteDescription */}
-                <DelayedLoad showLoadingText waitBeforeShow={500}>
-                  <TopCommentByBallotItem
-                    ballotItemWeVoteId={measureWeVoteId}
-                    childChangeIndicator={noVoteDescription}
-                    // learnMoreUrl={this.getMeasureLink(measureWeVoteId)}
-                    limitToNo
-                  >
-                    <span>
-                      {shortenText(noVoteDescription, 200)}
-                      <ItemActionBar
-                        ballotItemDisplayName={ballotItemDisplayName}
-                        ballotItemWeVoteId={measureWeVoteId}
-                        commentButtonHide
-                        commentButtonHideInMobile
-                        externalUniqueId={`${externalUniqueId}-${localUniqueId}-MeasureItemCompressedVoteNo-${measureWeVoteId}`}
-                        hideSupportYes
-                        shareButtonHide
-                        hidePositionPublicToggle
-                      />
-                    </span>
-                  </TopCommentByBallotItem>
-                </DelayedLoad>
+                <Suspense fallback={<></>}>
+                  <DelayedLoad showLoadingText waitBeforeShow={500}>
+                    <TopCommentByBallotItem
+                      ballotItemWeVoteId={measureWeVoteId}
+                      childChangeIndicator={noVoteDescription}
+                      // learnMoreUrl={this.getMeasureLink(measureWeVoteId)}
+                      limitToNo
+                    >
+                      <span>
+                        {shortenText(noVoteDescription, 200)}
+                        <Suspense fallback={<></>}>
+                          <ItemActionBar
+                            ballotItemDisplayName={ballotItemDisplayName}
+                            ballotItemWeVoteId={measureWeVoteId}
+                            commentButtonHide
+                            commentButtonHideInMobile
+                            externalUniqueId={`${externalUniqueId}-${localUniqueId}-MeasureItemCompressedVoteNo-${measureWeVoteId}`}
+                            hideSupportYes
+                            shareButtonHide
+                            hidePositionPublicToggle
+                          />
+                        </Suspense>
+                      </span>
+                    </TopCommentByBallotItem>
+                  </DelayedLoad>
+                </Suspense>
               </ChoiceInfo>
             </Choice>
           </ChoicesRow>
         )}
         {(!voterOpposesBallotItem && !voterSupportsBallotItem) && (
-          <ShowMoreFooter showMoreId="measureItemCompressedShowMoreFooter" showMoreLink={() => this.goToMeasureLink(measureWeVoteId)} showMoreText="Learn more" />
+          <Suspense fallback={<></>}>
+            <ShowMoreFooter showMoreId="measureItemCompressedShowMoreFooter" showMoreLink={() => this.goToMeasureLink(measureWeVoteId)} showMoreText="Learn more" />
+          </Suspense>
         )}
       </Card>
     );

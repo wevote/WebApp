@@ -3,8 +3,8 @@ import styled from 'styled-components';
 import VoterGuideStore from '../../stores/VoterGuideStore';
 import { historyPush } from '../../utils/cordovaUtils';
 import { renderLog } from '../../utils/logging';
-import GuideList from '../VoterGuide/GuideList';
 
+const GuideList = React.lazy(() => import(/* webpackChunkName: 'GuideList' */ '../VoterGuide/GuideList'));
 const ShowMoreFooter = React.lazy(() => import(/* webpackChunkName: 'ShowMoreFooter' */ '../Navigation/ShowMoreFooter'));
 
 
@@ -55,18 +55,20 @@ export default class PublicFiguresToFollowPreview extends Component {
             <SectionDescription>
               Follow a public figure to add their opinions to your personalized score.
             </SectionDescription>
-            <Suspense fallback={<span>Loading...</span>}>
+            <Suspense fallback={<></>}>
               <GuideList
                 hideShowMoreItems
                 incomingVoterGuideList={voterGuidesToFollow}
                 instantRefreshOn
               />
             </Suspense>
-            <ShowMoreFooter
-              showMoreId="publicFiguresToFollowPreviewShowMoreId"
-              showMoreLink={() => this.goToPublicFigures()}
-              showMoreText="Find more public figures"
-            />
+            <Suspense fallback={<></>}>
+              <ShowMoreFooter
+                showMoreId="publicFiguresToFollowPreviewShowMoreId"
+                showMoreLink={() => this.goToPublicFigures()}
+                showMoreText="Find more public figures"
+              />
+            </Suspense>
           </div>
         </section>
       </div>

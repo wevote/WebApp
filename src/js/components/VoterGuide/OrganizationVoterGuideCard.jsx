@@ -1,7 +1,7 @@
 import { Button } from '@material-ui/core';
 import { Twitter } from '@material-ui/icons';
 import PropTypes from 'prop-types';
-import React, { Component } from 'react';
+import React, { Component, Suspense } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { historyPush } from '../../utils/cordovaUtils';
@@ -72,42 +72,46 @@ class OrganizationVoterGuideCard extends Component {
           <h3 className="card-main__display-name">{displayName}</h3>
         </Link>
         { organizationTwitterHandle && (
-          <OpenExternalWebSite
-            linkIdAttribute="organizationTwitterHandle"
-            url={`https://twitter.com/${organizationTwitterHandle}`}
-            target="_blank"
-            body={(
-              <TwitterName>
-                <TwitterHandleWrapper>
-                  @
-                  {organizationTwitterHandle}
-                </TwitterHandleWrapper>
-                { !!(twitterFollowersCount && String(twitterFollowersCount) !== '0') && (
-                  <span className="twitter-followers__badge">
-                    <Twitter />
-                    {numberWithCommas(twitterFollowersCount)}
-                  </span>
-                )}
-              </TwitterName>
-            )}
-          />
+          <Suspense fallback={<></>}>
+            <OpenExternalWebSite
+              linkIdAttribute="organizationTwitterHandle"
+              url={`https://twitter.com/${organizationTwitterHandle}`}
+              target="_blank"
+              body={(
+                <TwitterName>
+                  <TwitterHandleWrapper>
+                    @
+                    {organizationTwitterHandle}
+                  </TwitterHandleWrapper>
+                  { !!(twitterFollowersCount && String(twitterFollowersCount) !== '0') && (
+                    <span className="twitter-followers__badge">
+                      <Twitter />
+                      {numberWithCommas(twitterFollowersCount)}
+                    </span>
+                  )}
+                </TwitterName>
+              )}
+            />
+          </Suspense>
         )}
         { organizationWebsite && (
           <OrganizationWebsiteWrapper>
-            <span className="u-wrap-links">
-              <OpenExternalWebSite
-                linkIdAttribute="organizationWebsite"
-                url={organizationWebsite}
-                target="_blank"
-                body={(
-                  <span>
-                    {organizationWebsite}
-                    {' '}
-                    <ExternalLinkIcon />
-                  </span>
-                )}
-              />
-            </span>
+            <Suspense fallback={<></>}>
+              <span className="u-wrap-links">
+                <OpenExternalWebSite
+                  linkIdAttribute="organizationWebsite"
+                  url={organizationWebsite}
+                  target="_blank"
+                  body={(
+                    <span>
+                      {organizationWebsite}
+                      {' '}
+                      <ExternalLinkIcon />
+                    </span>
+                  )}
+                />
+              </span>
+            </Suspense>
           </OrganizationWebsiteWrapper>
         )}
         <EditOrFollow>
@@ -125,7 +129,7 @@ class OrganizationVoterGuideCard extends Component {
             </EditYourEndorsementsCardWrapper>
           )}
           { !isVoterOwner && (
-            <>
+            <Suspense fallback={<></>}>
               <FollowToggleWrapper>
                 <FollowToggle
                   platformType="desktop"
@@ -143,7 +147,7 @@ class OrganizationVoterGuideCard extends Component {
                   />
                 </FriendToggleWrapper>
               )}
-            </>
+            </Suspense>
           )}
         </EditOrFollow>
         { twitterDescriptionMinusName && !this.props.turnOffDescription ? (

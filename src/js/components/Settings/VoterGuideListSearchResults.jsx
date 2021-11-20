@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import React, { Component } from 'react';
+import React, { Component, Suspense } from 'react';
 import styled from 'styled-components';
 import BallotActions from '../../actions/BallotActions';
 import OrganizationActions from '../../actions/OrganizationActions';
@@ -280,7 +280,11 @@ class VoterGuideListSearchResults extends Component {
                 })}
               </CardChildListGroup>
             ) : (
-              <span>{ noSearchResultsPossibility }</span>
+              <span>
+                <Suspense fallback={<></>}>
+                  { noSearchResultsPossibility }
+                </Suspense>
+              </span>
             )}
             {ballotItemSearchResultsList.length > 0 && (
             <ShowMoreItemsWrapper id="showMoreItemsId" onClick={this.increaseNumberOfItemsToDisplay}>

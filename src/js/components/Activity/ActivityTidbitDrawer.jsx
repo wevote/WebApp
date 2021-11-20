@@ -1,7 +1,7 @@
 import { Drawer, IconButton } from '@material-ui/core';
 import { withStyles, withTheme } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
-import React, { Component } from 'react';
+import React, { Component, Suspense } from 'react';
 import styled from 'styled-components';
 import ActivityStore from '../../stores/ActivityStore';
 import { hideZenDeskHelpVisibility, showZenDeskHelpVisibility } from '../../utils/applicationUtils';
@@ -94,34 +94,46 @@ class ActivityTidbitDrawer extends Component {
             {(activityTidbitWeVoteId && speakerVoterWeVoteId) ? (
               <>
                 <ActivityTidbitItemWrapper>
-                  <ActivityTidbitItem
-                    activityTidbitWeVoteId={activityTidbitWeVoteId}
-                    startingNumberOfPositionsToDisplay={3}
-                  />
+                  <Suspense fallback={<></>}>
+                    <ActivityTidbitItem
+                      activityTidbitWeVoteId={activityTidbitWeVoteId}
+                      startingNumberOfPositionsToDisplay={3}
+                    />
+                  </Suspense>
                 </ActivityTidbitItemWrapper>
-                <ActivityTidbitReactionsSummary
-                  activityTidbitWeVoteId={activityTidbitWeVoteId}
-                />
-                <ActivityTidbitAddReaction
-                  activityTidbitWeVoteId={activityTidbitWeVoteId}
-                />
-                <ActivityTidbitComments
-                  activityTidbitWeVoteId={activityTidbitWeVoteId}
-                  showAllParentComments
-                />
-                <ActivityCommentAdd
-                  activityTidbitWeVoteId={activityTidbitWeVoteId}
-                />
+                <Suspense fallback={<></>}>
+                  <ActivityTidbitReactionsSummary
+                    activityTidbitWeVoteId={activityTidbitWeVoteId}
+                  />
+                </Suspense>
+                <Suspense fallback={<></>}>
+                  <ActivityTidbitAddReaction
+                    activityTidbitWeVoteId={activityTidbitWeVoteId}
+                  />
+                </Suspense>
+                <Suspense fallback={<></>}>
+                  <ActivityTidbitComments
+                    activityTidbitWeVoteId={activityTidbitWeVoteId}
+                    showAllParentComments
+                  />
+                </Suspense>
+                <Suspense fallback={<></>}>
+                  <ActivityCommentAdd
+                    activityTidbitWeVoteId={activityTidbitWeVoteId}
+                  />
+                </Suspense>
               </>
             ) : (
-              <DelayedLoad showLoadingText waitBeforeShow={500}>
-                <div>
-                  That discussion item could not be found, or you are not allowed to see it.
-                  <br />
-                  <br />
-                  Please make sure you are signed in so you can see all of your friend&apos;s amazing thoughts!
-                </div>
-              </DelayedLoad>
+              <Suspense fallback={<></>}>
+                <DelayedLoad showLoadingText waitBeforeShow={500}>
+                  <div>
+                    That discussion item could not be found, or you are not allowed to see it.
+                    <br />
+                    <br />
+                    Please make sure you are signed in so you can see all of your friend&apos;s amazing thoughts!
+                  </div>
+                </DelayedLoad>
+              </Suspense>
             )}
           </ActivityTidbitDrawerInnerWrapper>
         </Drawer>

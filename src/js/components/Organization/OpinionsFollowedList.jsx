@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import React, { Component } from 'react';
+import React, { Component, Suspense } from 'react';
 import OrganizationActions from '../../actions/OrganizationActions';
 import { renderLog } from '../../utils/logging';
 import OrganizationDisplayForList from './OrganizationDisplayForList';
@@ -46,7 +46,9 @@ export default class OpinionsFollowedList extends Component {
     const organizationsList = this.state.organizationsFollowed.map((oneOrganization) => { // eslint-disable-line
       return (
         <OrganizationDisplayForList key={oneOrganization.organization_we_vote_id} organizationWeVoteId={oneOrganization.organization_we_vote_id}>
-          <FollowToggle organizationWeVoteId={oneOrganization.organization_we_vote_id} />
+          <Suspense fallback={<></>}>
+            <FollowToggle organizationWeVoteId={oneOrganization.organization_we_vote_id} />
+          </Suspense>
           <span />
         </OrganizationDisplayForList>
       );

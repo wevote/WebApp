@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import React, { Component } from 'react';
+import React, { Component, Suspense } from 'react';
 import styled, { keyframes } from 'styled-components';
 import MeasureStore from '../../stores/MeasureStore';
 import { cordovaStickyHeaderPaddingTop } from '../../utils/cordovaOffsets';
@@ -51,23 +51,29 @@ class MeasureStickyHeader extends Component {
               </Profile>
               <MobileSubtitle className="u-show-mobile-tablet">
                 {!!(ballotItemDisplay[1]) && (
-                  <ReadMore
-                    textToDisplay={ballotItemDisplay[1]}
-                    numberOfLines={2}
-                  />
+                  <Suspense fallback={<></>}>
+                    <ReadMore
+                      textToDisplay={ballotItemDisplay[1]}
+                      numberOfLines={2}
+                    />
+                  </Suspense>
                 )}
               </MobileSubtitle>
             </ColumnOne>
             <ColumnTwo>
-              <BallotItemSupportOpposeCountDisplay ballotItemWeVoteId={measureWeVoteId} />
+              <Suspense fallback={<></>}>
+                <BallotItemSupportOpposeCountDisplay ballotItemWeVoteId={measureWeVoteId} />
+              </Suspense>
             </ColumnTwo>
           </Flex>
           <MeasureCommentContainer>
-            <BallotItemSupportOpposeComment
-              ballotItemWeVoteId={measureWeVoteId}
-              externalUniqueId="measureStickyHeader"
-              showPositionStatementActionBar={false}
-            />
+            <Suspense fallback={<></>}>
+              <BallotItemSupportOpposeComment
+                ballotItemWeVoteId={measureWeVoteId}
+                externalUniqueId="measureStickyHeader"
+                showPositionStatementActionBar={false}
+              />
+            </Suspense>
           </MeasureCommentContainer>
         </Container>
       </Wrapper>

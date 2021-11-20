@@ -2,7 +2,7 @@ import { Button, Card } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 import { Ballot } from '@material-ui/icons';
 import PropTypes from 'prop-types';
-import React, { Component } from 'react';
+import React, { Component, Suspense } from 'react';
 import Helmet from 'react-helmet';
 import styled from 'styled-components';
 import BallotActions from '../actions/BallotActions';
@@ -431,13 +431,15 @@ class Vote extends Component {
                       <div className="ballot__item-filter-tabs">
                         { ballotWithItemsFromCompletionFilterType && ballotWithItemsFromCompletionFilterType.length ? (
                           <>
-                            <FilterBaseSearch
-                              isSearching={isSearching}
-                              onToggleSearch={this.handleToggleSearchBallot}
-                              allItems={ballotWithItemsFromCompletionFilterType}
-                              onFilterBaseSearch={this.handleSearch}
-                              alwaysOpen={!showFilterTabs}
-                            />
+                            <Suspense fallback={<></>}>
+                              <FilterBaseSearch
+                                isSearching={isSearching}
+                                onToggleSearch={this.handleToggleSearchBallot}
+                                allItems={ballotWithItemsFromCompletionFilterType}
+                                onFilterBaseSearch={this.handleSearch}
+                                alwaysOpen={!showFilterTabs}
+                              />
+                            </Suspense>
                           </>
                         ) : null}
                       </div>

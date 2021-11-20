@@ -2,7 +2,7 @@ import { IconButton, InputBase } from '@material-ui/core';
 import { withStyles, withTheme } from '@material-ui/core/styles';
 import { Search } from '@material-ui/icons';
 import PropTypes from 'prop-types';
-import React, { Component } from 'react';
+import React, { Component, Suspense } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import VoterGuideStore from '../../stores/VoterGuideStore';
@@ -51,7 +51,9 @@ class FindOpinionsForm extends Component {
                   id={`findOpinionsFormPreviewImageLink-${voterGuide.organization_we_vote_id}-${uniqueExternalId}`}
                   to={voterGuideLink}
                 >
-                  <ImageHandler className="card-child__avatar" sizeClassName="image-sm " imageUrl={voterGuide.voter_guide_image_url_tiny} />
+                  <Suspense fallback={<></>}>
+                    <ImageHandler className="card-child__avatar" sizeClassName="image-sm " imageUrl={voterGuide.voter_guide_image_url_tiny} />
+                  </Suspense>
                 </Link>
               </OneVoterGuideWrapper>
             );

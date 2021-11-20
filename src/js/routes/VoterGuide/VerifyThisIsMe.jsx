@@ -1,7 +1,7 @@
 import { Button } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
-import React, { Component } from 'react';
+import React, { Component, Suspense } from 'react';
 import Alert from 'react-bootstrap/Alert';
 import Helmet from 'react-helmet';
 import styled from 'styled-components';
@@ -191,11 +191,13 @@ class VerifyThisIsMe extends Component {
             </div>
           </div>
           <section className="card">
-            <CandidateItem
-              candidateWeVoteId={candidate.we_vote_id}
-              showLargeImage
-              showOfficeName
-            />
+            <Suspense fallback={<></>}>
+              <CandidateItem
+                candidateWeVoteId={candidate.we_vote_id}
+                showLargeImage
+                showOfficeName
+              />
+            </Suspense>
           </section>
         </span>
       );
@@ -270,7 +272,9 @@ class VerifyThisIsMe extends Component {
             <div className="card">
               <div className="card-main">
                 <OrganizationCard organization={organization} />
-                <FollowToggle organizationWeVoteId={params.we_vote_id} />
+                <Suspense fallback={<></>}>
+                  <FollowToggle organizationWeVoteId={params.we_vote_id} />
+                </Suspense>
               </div>
             </div>
           )}

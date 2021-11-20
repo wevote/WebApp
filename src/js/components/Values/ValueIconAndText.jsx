@@ -1,7 +1,7 @@
 import { Chip } from '@material-ui/core';
 import { withStyles, withTheme } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
-import React, { Component } from 'react';
+import React, { Component, Suspense } from 'react';
 import styled from 'styled-components';
 import CandidateStore from '../../stores/CandidateStore';
 import IssueStore from '../../stores/IssueStore';
@@ -128,10 +128,12 @@ class ValueIconAndText extends Component {
               </OpinionsRelatedToText>
               {issueSpecificPositionList && (
                 <RenderedOrganizationsWrapper>
-                  <PositionSummaryListForPopover
-                    ballotItemWeVoteId={ballotItemWeVoteId}
-                    positionSummaryList={issueSpecificPositionList}
-                  />
+                  <Suspense fallback={<></>}>
+                    <PositionSummaryListForPopover
+                      ballotItemWeVoteId={ballotItemWeVoteId}
+                      positionSummaryList={issueSpecificPositionList}
+                    />
+                  </Suspense>
                 </RenderedOrganizationsWrapper>
               )}
             </>
@@ -149,10 +151,12 @@ class ValueIconAndText extends Component {
                 />
               </FollowIssueToggleContainer>
               <FollowIfYouCare>
-                <ReadMore
-                  textToDisplay={issueFollowedByVoter ? oneIssue.issue_description : `Follow if you care about ${oneIssue.issue_name}: "${oneIssue.issue_description}"`}
-                  numberOfLines={4}
-                />
+                <Suspense fallback={<></>}>
+                  <ReadMore
+                    textToDisplay={issueFollowedByVoter ? oneIssue.issue_description : `Follow if you care about ${oneIssue.issue_name}: "${oneIssue.issue_description}"`}
+                    numberOfLines={4}
+                  />
+                </Suspense>
               </FollowIfYouCare>
             </>
           )}

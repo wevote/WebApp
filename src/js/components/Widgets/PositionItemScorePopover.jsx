@@ -1,7 +1,7 @@
 import { withStyles, withTheme } from '@material-ui/core/styles';
 import { CheckCircle, Info, ThumbDown, ThumbUp } from '@material-ui/icons';
 import PropTypes from 'prop-types';
-import React, { Component } from 'react';
+import React, { Component, Suspense } from 'react';
 import styled from 'styled-components';
 import FriendStore from '../../stores/FriendStore';
 import IssueStore from '../../stores/IssueStore';
@@ -313,7 +313,9 @@ class PositionItemScorePopover extends Component {
                     )}
                   </FollowOrganizationText>
                   <FollowOrganizationToggleContainer>
-                    <FollowToggle organizationWeVoteId={organizationWeVoteId} lightModeOn hideDropdownButtonUntilFollowing />
+                    <Suspense fallback={<></>}>
+                      <FollowToggle organizationWeVoteId={organizationWeVoteId} lightModeOn hideDropdownButtonUntilFollowing />
+                    </Suspense>
                   </FollowOrganizationToggleContainer>
                 </>
               )}

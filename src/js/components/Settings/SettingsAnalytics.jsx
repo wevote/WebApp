@@ -1,7 +1,7 @@
 import { Button, FormControl, TextField } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
-import React, { Component } from 'react';
+import React, { Component, Suspense } from 'react';
 import Helmet from 'react-helmet';
 import styled from 'styled-components';
 import OrganizationActions from '../../actions/OrganizationActions';
@@ -283,9 +283,11 @@ class SettingsAnalytics extends Component {
     } else if (!voterIsSignedIn) {
       // console.log('voterIsSignedIn is false');
       return (
-        <DelayedLoad waitBeforeShow={1000}>
-          <SettingsAccount />
-        </DelayedLoad>
+        <Suspense fallback={<></>}>
+          <DelayedLoad waitBeforeShow={1000}>
+            <SettingsAccount />
+          </DelayedLoad>
+        </Suspense>
       );
     }
 
@@ -306,7 +308,9 @@ class SettingsAnalytics extends Component {
             <FormControl classes={{ root: classes.formControl }}>
               <InputLabel>
                 Google Analytics Tracker
-                <SettingsAccountLevelChip chosenFeaturePackage={chosenFeaturePackage} requiredFeaturePackage="ENTERPRISE" />
+                <Suspense fallback={<></>}>
+                  <SettingsAccountLevelChip chosenFeaturePackage={chosenFeaturePackage} requiredFeaturePackage="ENTERPRISE" />
+                </Suspense>
               </InputLabel>
               <InputLabelHelperText>Add your tracking code (e.g., UA-XXXXXXX-X) so you can see which parts of your site voters like the best.</InputLabelHelperText>
               <TextField

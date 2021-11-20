@@ -265,7 +265,7 @@ class EditAddressOneHorizontalRow extends Component {
               {' '}
               We are a nonprofit, and will never reveal your address.
               {' '}
-              Note: our partner who provides what&apos;s-on-the-ballot data works incredibly hard to cover the entire United States, but we cannot guarantee 100% of the items on your official ballot will be shown on We Vote. Please contact us if you have questions.
+              Note: our partners who provide what&apos;s-on-the-ballot data work incredibly hard to cover the entire United States, but we cannot guarantee 100% of the items on your official ballot will be shown on We Vote. Please contact us using the &apos;Help&apos; link if you have questions.
               {' '}
               (
               <span className="u-cursor--pointer u-link-color">

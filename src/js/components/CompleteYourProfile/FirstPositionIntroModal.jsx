@@ -2,7 +2,7 @@ import { Button, Dialog, DialogContent, IconButton } from '@material-ui/core';
 import { withStyles, withTheme } from '@material-ui/core/styles';
 import { Close } from '@material-ui/icons';
 import PropTypes from 'prop-types';
-import React, { Component } from 'react';
+import React, { Component, Suspense } from 'react';
 import styled from 'styled-components';
 import VoterActions from '../../actions/VoterActions';
 import VoterConstants from '../../constants/VoterConstants';
@@ -121,21 +121,23 @@ class FirstPositionIntroModal extends Component {
               {explanationText}
             </ExplanationText>
             <section className="card">
-              <CandidateItem
-                inModal
-                candidateWeVoteId="candidateAlexanderHamilton"
-                // hideBallotItemSupportOpposeComment
-                hideCandidateText
-                hideCandidateUrl
-                hideIssuesRelatedToCandidate
-                hideShowMoreFooter
-                showDownArrow={showPersonalizedScoreArrow}
-                showLargeImage
-                showOfficeName
-                showPositionStatementActionBar
-                // showPositionPublicToggle={false}
-                // hidePositionPublicToggle
-              />
+              <Suspense fallback={<></>}>
+                <CandidateItem
+                  inModal
+                  candidateWeVoteId="candidateAlexanderHamilton"
+                  // hideBallotItemSupportOpposeComment
+                  hideCandidateText
+                  hideCandidateUrl
+                  hideIssuesRelatedToCandidate
+                  hideShowMoreFooter
+                  showDownArrow={showPersonalizedScoreArrow}
+                  showLargeImage
+                  showOfficeName
+                  showPositionStatementActionBar
+                  // showPositionPublicToggle={false}
+                  // hidePositionPublicToggle
+                />
+              </Suspense>
             </section>
             <ExplanationTextLighter>
               Your personalized score is the number of friends (or advisers you follow) who support a candidate, minus the number who oppose.

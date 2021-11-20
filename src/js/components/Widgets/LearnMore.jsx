@@ -1,8 +1,8 @@
 import { Button } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
-import React, { Component } from 'react';
-import TextTruncate from 'react-text-truncate';
+import React, { Component, Suspense } from 'react';
+import TextTruncate from 'react-text-truncate'; // Replace with: import TruncateMarkup from 'react-truncate-markup';
 import { renderLog } from '../../utils/logging';
 import ExternalLinkIcon from './ExternalLinkIcon';
 
@@ -110,18 +110,20 @@ class LearnMore extends Component {
     });
 
     const externalLink = learnMoreLink ? (
-      <OpenExternalWebSite
-        linkIdAttribute="learnMore"
-        url={learnMoreLink}
-        target="_blank"
-        body={(
-          <span>
-            {learnMoreText}
-            &nbsp;
-            <ExternalLinkIcon />
-          </span>
-        )}
-      />
+      <Suspense fallback={<></>}>
+        <OpenExternalWebSite
+          linkIdAttribute="learnMore"
+          url={learnMoreLink}
+          target="_blank"
+          body={(
+            <span>
+              {learnMoreText}
+              &nbsp;
+              <ExternalLinkIcon />
+            </span>
+          )}
+        />
+      </Suspense>
     ) : (
       <Button
         color="primary"
