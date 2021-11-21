@@ -88,7 +88,7 @@ export function initializationForCordova (startReact) {
       $.ajax({
         url: initialAjaxUrl,
         context: document.body,
-        timeout: 5000,
+        timeout: 10000,
       }).done((resp) => {
         const { voter_device_id: voterDeviceId } = resp;
         if (voterDeviceId) {
@@ -139,7 +139,7 @@ export function initializationForCordova (startReact) {
             startMessaging(voterDeviceId);
           }
           const { splashscreen } = navigator;
-          splashscreen.hide();
+          if (splashscreen) splashscreen.hide();
           startReact();
         } else {
           console.error('Cordova:   voterRetrieve did not return a voter_device_id');

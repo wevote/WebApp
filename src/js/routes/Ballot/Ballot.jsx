@@ -1316,6 +1316,7 @@ class Ballot extends Component {
                                               classes={{ root: classes.chipRoot, label: classes.chipLabel, outlinedPrimary: (oneTypeOfBallotItem === raceLevelFilterType && !isSearching) ? classes.chipOutlined : null }}
                                               label={chipLabelText(oneTypeOfBallotItem)}
                                               style={isSearching && isCordova() ? { width: 'unset' } : {}}
+                                              id={chipLabelText(oneTypeOfBallotItem)}
                                             />
                                           );
                                           return (
@@ -1458,6 +1459,7 @@ class Ballot extends Component {
                                     <BallotItemCompressed
                                       isMeasure={item.kind_of_ballot_item === TYPES.MEASURE}
                                       ballotItemDisplayName={item.ballot_item_display_name}
+                                      id={chipLabelText(item.ballot_item_display_name)}
                                       candidateList={item.candidate_list}
                                       candidatesToShowForSearchResults={item.candidatesToShowForSearchResults}
                                       weVoteId={item.we_vote_id}

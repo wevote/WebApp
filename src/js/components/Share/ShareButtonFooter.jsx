@@ -10,9 +10,10 @@ import ShareActions from '../../common/actions/ShareActions';
 import ShareStore from '../../common/stores/ShareStore';
 import AppObservableStore, { messageService } from '../../stores/AppObservableStore';
 import VoterStore from '../../stores/VoterStore';
-import { getApplicationViewBooleans, normalizedHref } from '../../utils/applicationUtils';
+import { getApplicationViewBooleans } from '../../utils/applicationUtils';
 import { shareBottomOffset } from '../../utils/cordovaOffsets';
 import { cordovaLinkToBeSharedFixes, historyPush, isAndroid, isCordova, isWebApp } from '../../utils/cordovaUtils';
+import { normalizedHref } from '../../utils/hrefUtils';
 import isMobile from '../../utils/isMobile';
 import { renderLog } from '../../utils/logging';
 import { stringContains } from '../../utils/textFormat';
@@ -182,9 +183,12 @@ class ShareButtonFooter extends Component {
     if (currentFullUrl.startsWith('https://localhost')) {
       currentFullUrl = currentFullUrl.replace(/https:\/\/localhost.*?\//, 'https://wevote.us/');
       // console.log(`currentFullUrl adjusted for localhost: ${currentFullUrl}`);
+    } else if (currentFullUrl.startsWith('file:///')) {
+      currentFullUrl = currentFullUrl.replace(/file:.*?android_asset\/www\/index.html#\//, 'https://wevote.us/');
+      // console.log(`currentFullUrl adjusted for Cordova android: ${currentFullUrl}`);
     } else if (currentFullUrl.startsWith('file://')) {
       currentFullUrl = currentFullUrl.replace(/file:\/\/.*?Vote.app\/www\/index.html#\//, 'https://wevote.us/');
-      // console.log(`currentFullUrl adjusted for Cordova: ${currentFullUrl}`);
+      // console.log(`currentFullUrl adjusted for Cordova ios: ${currentFullUrl}`);
     }
     return currentFullUrl;
   }

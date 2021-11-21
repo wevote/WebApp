@@ -17,9 +17,9 @@ import MeasureStore from '../../stores/MeasureStore';
 import OrganizationStore from '../../stores/OrganizationStore';
 import VoterGuideStore from '../../stores/VoterGuideStore';
 import VoterStore from '../../stores/VoterStore';
-import { normalizedHref } from '../../utils/applicationUtils';
 import { cordovaDrawerTopMargin } from '../../utils/cordovaOffsets';
 import { hasIPhoneNotch } from '../../utils/cordovaUtils';
+import { normalizedHref } from '../../utils/hrefUtils';
 import { renderLog } from '../../utils/logging';
 import { convertToInteger, stringContains } from '../../utils/textFormat';
 

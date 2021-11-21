@@ -1,17 +1,17 @@
+import { BottomNavigation, BottomNavigationAction } from '@material-ui/core';
+import { withStyles } from '@material-ui/core/styles';
+import { Ballot, HowToVote, People, QuestionAnswer } from '@material-ui/icons';
 import React from 'react';
 import styled from 'styled-components';
-import { withStyles } from '@material-ui/core/styles';
-import { BottomNavigation, BottomNavigationAction } from '@material-ui/core';
-import { QuestionAnswer, Ballot, HowToVote, People } from '@material-ui/icons';
 import AppObservableStore, { messageService } from '../../stores/AppObservableStore';
-import { normalizedHref } from '../../utils/applicationUtils';
+import FriendStore from '../../stores/FriendStore';
+import VoterStore from '../../stores/VoterStore';
 import { cordovaFooterHeight } from '../../utils/cordovaOffsets';
 import { historyPush, isCordova } from '../../utils/cordovaUtils';
-import { stringContains } from '../../utils/textFormat';
-import FriendStore from '../../stores/FriendStore';
+import { normalizedHref } from '../../utils/hrefUtils';
 import { renderLog } from '../../utils/logging';
+import { stringContains } from '../../utils/textFormat';
 import signInModalGlobalState from '../Widgets/signInModalGlobalState';
-import VoterStore from '../../stores/VoterStore';
 
 
 function isFriendsTabSelected () {

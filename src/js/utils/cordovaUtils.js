@@ -1,6 +1,7 @@
 import React from 'react';
 import webAppConfig from '../config';
 import { dumpObjProps } from './appleSiliconUtils';
+import { normalizedHrefPage } from './hrefUtils';
 import { cordovaOffsetLog, oAuthLog } from './logging';
 
 /* global $  */
@@ -625,15 +626,14 @@ export function getCordovaScreenHeight () {
   return isIPad() ? `${size.height / size.scale}px` : '100%';
 }
 
-export function prepareForCordovaKeyboard (callerString) {
-  if (callerString && isCordova() && !isIOSAppOnMac()) {
-    let fileName = '';
-    try {
-      fileName = callerString.substr(callerString.lastIndexOf('/') + 1);
-      // eslint-disable-next-line no-empty
-    } catch (e) {}
-    console.log(`prepareForCordovaKeyboard ^^^^^^^^^^ ${fileName}`);
-    cordovaOffsetLog(`prepareForCordovaKeyboard ^^^^^^^^^^ ${fileName}`);
+export function prepareForCordovaKeyboard (fileName) {
+  let displayName = fileName;
+  if (!fileName || typeof fileName !== 'string') {
+    displayName = normalizedHrefPage();
+  }
+  if (isCordova() && !isIOSAppOnMac()) {
+    console.log(`prepareForCordovaKeyboard ^^^^^^^^^^ ${displayName}`);
+    cordovaOffsetLog(`prepareForCordovaKeyboard ^^^^^^^^^^ ${displayName}`);
     $('#app').removeClass('app-wrapper').addClass('app-wrapper__cordova');
     $('body').css('height', '');
     $('.footroom-wrapper').css('display', 'none');
@@ -641,9 +641,12 @@ export function prepareForCordovaKeyboard (callerString) {
 }
 
 export function restoreStylesAfterCordovaKeyboard (callerString) {
-  if (callerString && isCordova() && !isIOSAppOnMac()) {
-    const fileName = callerString.substr(callerString.lastIndexOf('/') + 1);
-    cordovaOffsetLog(`restoreStylesAfterCordovaKeyboard vvvvvvvvvv ${fileName}`);
+  let displayName = callerString;
+  if (!callerString || typeof fileName !== 'string') {
+    displayName = normalizedHrefPage();
+  }
+  if (isCordova() && !isIOSAppOnMac()) {
+    cordovaOffsetLog(`restoreStylesAfterCordovaKeyboard vvvvvvvvvv ${displayName}`);
     $('#app').removeClass('app-wrapper__cordova').addClass('app-wrapper');
     $('body').css('height', getCordovaScreenHeight());
     $('.footroom-wrapper').css('display', '');

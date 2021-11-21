@@ -250,7 +250,7 @@ class Opinions2020 extends Component {
         for (let count = 0; count < newBallotItemSearchResults.length; count++) {
           ballotItemWeVoteIdsAlreadyFoundList.push(newBallotItemSearchResults[count].we_vote_id);
           ballotItemWeVoteIdsAlreadyFoundChanged = true;
-          if (newBallotItemSearchResults[count].we_vote_id.includes('cand')) {
+          if (newBallotItemSearchResults[count].we_vote_id && newBallotItemSearchResults[count].we_vote_id.includes('cand')) {
             newBallotItem = {
               ballot_item_display_name: newBallotItemSearchResults[count].ballot_item_display_name,
               candidate_photo_url_medium: newBallotItemSearchResults[count].candidate_photo_url_medium,
