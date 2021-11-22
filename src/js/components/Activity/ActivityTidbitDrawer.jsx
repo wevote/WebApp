@@ -4,7 +4,6 @@ import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
 import styled from 'styled-components';
 import ActivityStore from '../../stores/ActivityStore';
-import { hideZenDeskHelpVisibility, showZenDeskHelpVisibility } from '../../utils/applicationUtils';
 import { cordovaDrawerTopMargin } from '../../utils/cordovaOffsets';
 import { historyPush, isCordova } from '../../utils/cordovaUtils';
 import { renderLog } from '../../utils/logging';
@@ -28,13 +27,11 @@ class ActivityTidbitDrawer extends Component {
   componentDidMount () {
     this.onActivityStoreChange();
     this.activityStoreListener = ActivityStore.addListener(this.onActivityStoreChange.bind(this));
-    hideZenDeskHelpVisibility();
   }
 
   componentWillUnmount () {
     if (this.closeTimeout) clearTimeout(this.closeTimeout);
     this.activityStoreListener.remove();
-    showZenDeskHelpVisibility();
   }
 
   onActivityStoreChange () {

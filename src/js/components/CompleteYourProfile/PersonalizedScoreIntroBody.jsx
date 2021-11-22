@@ -240,6 +240,8 @@ class PersonalizedScoreIntroBody extends Component {
     // Step 1 settings
     const { personalizedScoreSteps } = this.state;
     this.setState(personalizedScoreSteps[1]);
+    this.setState({
+    });
   }
 
   closeThisModal = () => {

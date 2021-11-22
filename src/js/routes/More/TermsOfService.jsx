@@ -20,7 +20,7 @@ export default class TermsOfService extends React.Component {
         <Helmet title="Terms of Service - We Vote" />
         <div className="container-fluid well">
           <h1 className="text-center">Terms of Service</h1>
-          <p><strong>Last updated: October 2nd, 2021</strong></p>
+          <p><strong>Last updated: November 20th, 2021</strong></p>
 
           <h2>Overview</h2>
           <p>This website (also packaged in mobile apps) is operated by We Vote USA. Throughout the site, the terms “We Vote”, “we”, “us” and “our” refer to We Vote USA. We Vote USA offers this website, including all information, tools and services available from this site to you, the user, conditioned upon your acceptance of all terms, conditions, policies and notices stated here.</p>

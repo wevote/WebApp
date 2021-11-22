@@ -602,7 +602,7 @@ export default function cordovaScrollablePaneTopPadding (pageEnumerationOverride
       // case CordovaPageConstants.ballotVote:
       //   return isSignedIn ? '131px' : '128px';
       // case CordovaPageConstants.candidate:                return '48px';
-      case CordovaPageConstants.candidateWild:            return '48px';
+      case CordovaPageConstants.candidateWild:            return '58px';
       case CordovaPageConstants.measureWild:              return '100px';
       // case CordovaPageConstants.moreFaq:                  return '58px';
       // case CordovaPageConstants.moreTerms:                return '58px';
@@ -629,7 +629,7 @@ export default function cordovaScrollablePaneTopPadding (pageEnumerationOverride
   switch (page) {
     case CordovaPageConstants.ballotLgHdrWild:       return showBallotDecisionsTabs() ? '32px' : '0px';
     case CordovaPageConstants.ballotSmHdrWild:       return '30px';
-    case CordovaPageConstants.candidateWild:         return '48px';
+    case CordovaPageConstants.candidateWild:         return '60px';
     case CordovaPageConstants.friends:               return '102px';
     case CordovaPageConstants.measureWild:           return '102px';
     case CordovaPageConstants.officeWild:            return '102px';

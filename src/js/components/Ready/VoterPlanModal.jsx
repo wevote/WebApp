@@ -10,7 +10,6 @@ import webAppConfig from '../../config';
 import BallotStore from '../../stores/BallotStore';
 import ReadyStore from '../../stores/ReadyStore';
 import VoterStore from '../../stores/VoterStore';
-import { hideZenDeskHelpVisibility, setZenDeskHelpVisibility } from '../../utils/applicationUtils';
 import { hasIPhoneNotch } from '../../utils/cordovaUtils';
 import { formatDateToMonthDayYear } from '../../utils/dateFormat';
 import { renderLog } from '../../utils/logging';
@@ -74,12 +73,6 @@ class VoterPlanModal extends Component {
       savedVoterPlanFound,
     });
     this.setVoterPlanSavedStates(savedVoterPlan, true);
-    if (this.props.show) {
-      hideZenDeskHelpVisibility();
-    } else {
-      const { location: { pathname } } = window;
-      setZenDeskHelpVisibility(pathname);
-    }
     AnalyticsActions.saveActionModalVoterPlan(VoterStore.electionId());
   }
 
@@ -133,10 +126,8 @@ class VoterPlanModal extends Component {
   }
 
   componentWillUnmount () {
-    const { location: { pathname } } = window;
     this.ballotStoreListener.remove();
     this.readyStoreListener.remove();
-    setZenDeskHelpVisibility(pathname);
   }
 
 

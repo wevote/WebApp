@@ -21,7 +21,7 @@ export default class Privacy extends React.Component {
         <Helmet title="Privacy Policy - We Vote" />
         <div className="container-fluid well">
           <h1 className="text-center">Privacy Policy</h1>
-          <p><strong>Last updated: October 2, 2021</strong></p>
+          <p><strong>Last updated: November 20th, 2021</strong></p>
           <p>
             <span>We Vote USA has created this privacy policy to explain how We Vote (or “we”) uses information that we collect from you while you visit We Vote, currently located at </span>
             <span>

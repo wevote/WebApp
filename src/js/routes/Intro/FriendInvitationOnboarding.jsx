@@ -14,7 +14,6 @@ import StepsChips from '../../components/Widgets/StepsChips';
 import VoterConstants from '../../constants/VoterConstants';
 import FriendStore from '../../stores/FriendStore';
 import VoterStore from '../../stores/VoterStore';
-import { hideZenDeskHelpVisibility, showZenDeskHelpVisibility } from '../../utils/applicationUtils';
 import { cordovaFooterHeight, cordovaNetworkNextButtonTop } from '../../utils/cordovaOffsets';
 import { cordovaDot, getAndroidSize, historyPush, isAndroid, isWebApp } from '../../utils/cordovaUtils';
 import { renderLog } from '../../utils/logging';
@@ -95,7 +94,6 @@ class FriendInvitationOnboarding extends Component {
     const { maxSlideIndex } = this.state;
     // console.log('goToSpecificSlide index:', index);
     const minSlideIndex = 0;
-    hideZenDeskHelpVisibility();
     if (index <= maxSlideIndex && index >= minSlideIndex) {
       this.setState({
         currentSlideIndex: index,
@@ -109,7 +107,6 @@ class FriendInvitationOnboarding extends Component {
       VoterActions.voterUpdateInterfaceStatusFlags(VoterConstants.PERSONALIZED_SCORE_INTRO_COMPLETED);
     }
     const ballotLink = '/ready';
-    showZenDeskHelpVisibility();
     historyPush(ballotLink);
   }
 
@@ -195,7 +192,6 @@ class FriendInvitationOnboarding extends Component {
     if (invitationSecretKey) {
       this.friendInvitationInformation(invitationSecretKey);
     }
-    hideZenDeskHelpVisibility();
     const { currentSlideIndex, maxSlideIndex } = this.state;
     // console.log('nextSlide currentSlideIndex:', currentSlideIndex);
     if (currentSlideIndex < maxSlideIndex) {
@@ -207,7 +203,6 @@ class FriendInvitationOnboarding extends Component {
 
   previousSlide () {
     // console.log('previousSlide, currentSlideIndex:', currentSlideIndex);
-    hideZenDeskHelpVisibility();
     const { currentSlideIndex } = this.state;
     const minSlideIndex = 0;
     if (currentSlideIndex > minSlideIndex) {
