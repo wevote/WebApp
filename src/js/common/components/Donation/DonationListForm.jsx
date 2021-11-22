@@ -2,13 +2,13 @@ import { AppBar, Tab, Tabs } from '@material-ui/core';
 import { ThemeProvider } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import { normalizedHref } from '../../../utils/applicationUtils';
-import DonateActions from '../../actions/DonateActions';
-import DonateStore from '../../stores/DonateStore';
-import { renderLog } from '../../../utils/logging';
-import { stringContains } from '../../../utils/textFormat';
 import { campaignTheme } from '../../../components/Style/campaignTheme';
 import TabPanel from '../../../components/Widgets/TabPanel';
+import { normalizedHref } from '../../../utils/hrefUtils';
+import { renderLog } from '../../../utils/logging';
+import { stringContains } from '../../../utils/textFormat';
+import DonateActions from '../../actions/DonateActions';
+import DonateStore from '../../stores/DonateStore';
 import DonationList from './DonationList';
 
 /*

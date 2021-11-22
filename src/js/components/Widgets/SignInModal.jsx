@@ -311,7 +311,7 @@ const styles = (theme) => ({
     },
   },
   signInModalDialogAndroid: {
-    transform: 'translate(-50%, -60%)',
+    // transform: 'translate(-50%, -60%)',
   },
   signInModalDialogLarger: {
     bottom: 'unset',

@@ -47,7 +47,6 @@ class DeviceDialog extends Component {
   render () {
     renderLog('DeviceDialog');  // Set LOG_RENDER_EVENTS to log all renders
     const { classes } = this.props;
-
     if (!this.props.show) {
       return null;
     }
@@ -73,6 +72,10 @@ class DeviceDialog extends Component {
               <TableRow>
                 <TableCell>window.device.model</TableCell>
                 <TableCell>{window.device.model}</TableCell>
+              </TableRow>
+              <TableRow>
+                <TableCell>device OS version</TableCell>
+                <TableCell>{`${window.device.platform} ${window.device.version}`}</TableCell>
               </TableRow>
               <TableRow>
                 <TableCell>window.screen.width</TableCell>

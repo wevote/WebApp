@@ -14,8 +14,10 @@ function fileRewriterForCordova (path) {
     newValue = newValue.replace(/import .*?, Suspense }.*?$/gim,
       'import React, { Component } from \'react\';');
     // Remove all Suspense mark up
-    newValue = newValue.replace(/^(\s*)(<\/?Suspense.*?)$/gim,
-      '$1{/* $2   // Rewritten from Suspense */}');
+    newValue = newValue.replace(/^(\s*)(<\Suspense.*?)(\n)/gim,
+      '$1<>$3  $1{/* $2   // Rewritten from Suspense */}$3');
+    newValue = newValue.replace(/^(\s*)(<\/Suspense>)(\n)/gim,
+      '$1  {/* </Suspense>  // Rewritten from Suspense */}$3$1</>$3');
     // Replace "initializeMoment" everywhere
     newValue = newValue.replace(/initializeMoment/gim, 'initializeMomentCordova');
     // Inject cordova startup in index.jsx, replace "importStartCordovaToken" etc

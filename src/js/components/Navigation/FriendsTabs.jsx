@@ -7,10 +7,10 @@ import AnalyticsActions from '../../actions/AnalyticsActions';
 import FriendActions from '../../actions/FriendActions';
 import FriendStore from '../../stores/FriendStore';
 import VoterStore from '../../stores/VoterStore';
-import { normalizedHref } from '../../utils/applicationUtils';
 import { historyPush } from '../../utils/cordovaUtils';
 import displayFriendsTabs from '../../utils/displayFriendsTabs';
 import sortFriendListByMutualFriends from '../../utils/friendFunctions';
+import { normalizedHref } from '../../utils/hrefUtils';
 import isMobileScreenSize from '../../utils/isMobileScreenSize';
 import { renderLog } from '../../utils/logging';
 

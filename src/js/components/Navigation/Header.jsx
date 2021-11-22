@@ -5,9 +5,10 @@ import AppObservableStore, { messageService } from '../../stores/AppObservableSt
 import VoterStore from '../../stores/VoterStore';
 import apiCalming from '../../utils/apiCalming';
 import { dumpCssFromId } from '../../utils/appleSiliconUtils';
-import { getApplicationViewBooleans, normalizedHref, weVoteBrandingOff } from '../../utils/applicationUtils';
+import { getApplicationViewBooleans, weVoteBrandingOff } from '../../utils/applicationUtils';
 import cordovaTopHeaderTopMargin from '../../utils/cordovaTopHeaderTopMargin';
 import { historyPush, isCordova, isIOSAppOnMac, isIPad, isWebApp } from '../../utils/cordovaUtils';
+import { normalizedHref } from '../../utils/hrefUtils';
 import { renderLog } from '../../utils/logging';
 import { HeadroomWrapper } from '../../utils/pageLayoutStyles';
 import { stringContains } from '../../utils/textFormat';

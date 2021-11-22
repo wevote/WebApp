@@ -55,7 +55,10 @@ class HeaderBarProfilePopUp extends Component {
     return (
       <div className={popUpOpen}>
         <div className="page-overlay" onClick={this.hideProfilePopUp} />
-        <ProfileMenu className={isWebApp() ? `${isWelcomeMobilePage ? 'profile-menu-welcome-mobile-page' : 'profile-menu'}` : 'profile-pop-up-menu-cordova'}>
+        <ProfileMenu
+          className={isWebApp() ? `${isWelcomeMobilePage ? 'profile-menu-welcome-mobile-page' : 'profile-menu'}` : 'profile-pop-up-menu-cordova'}
+          style={isCordova() && window.innerWidth > 1000 ?  { left: '12px' } : {}}    // Android Nexus 10 in Cordova
+        >
           <span className="we-vote-promise">Our Promise: We&apos;ll never sell your email.</span>
           <ul className="nav flex-column">
             {/* Desktop only */}

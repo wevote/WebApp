@@ -1,9 +1,10 @@
+import { withStyles } from '@material-ui/core/styles';
 import React, { Component, Suspense } from 'react';
 import styled from 'styled-components';
-import { withStyles } from '@material-ui/core/styles';
 import AppObservableStore, { messageService } from '../../stores/AppObservableStore';
-import { getApplicationViewBooleans, normalizedHref } from '../../utils/applicationUtils';
+import { getApplicationViewBooleans } from '../../utils/applicationUtils';
 import { isWebApp } from '../../utils/cordovaUtils';
+import { normalizedHref } from '../../utils/hrefUtils';
 // importRemoveCordovaListenersToken2  -- Do not remove this line!
 
 

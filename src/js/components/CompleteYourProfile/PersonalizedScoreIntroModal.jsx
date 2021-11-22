@@ -6,8 +6,8 @@ import React, { Component, Suspense } from 'react';
 import styled from 'styled-components';
 import VoterActions from '../../actions/VoterActions';
 import VoterConstants from '../../constants/VoterConstants';
-import { hideZenDeskHelpVisibility, normalizedHref, setZenDeskHelpVisibility } from '../../utils/applicationUtils';
 import { hasIPhoneNotch, isCordova } from '../../utils/cordovaUtils';
+import { normalizedHref } from '../../utils/hrefUtils';
 import { renderLog } from '../../utils/logging';
 
 const PersonalizedScoreIntroBody = React.lazy(() => import(/* webpackChunkName: 'PersonalizedScoreIntroBody' */ './PersonalizedScoreIntroBody'));
@@ -18,20 +18,7 @@ class PersonalizedScoreIntroModal extends Component {
     this.state = {};
   }
 
-  componentDidMount () {
-    if (this.props.show) {
-      hideZenDeskHelpVisibility();
-    } else {
-      setZenDeskHelpVisibility(normalizedHref());
-    }
-  }
-
-  componentWillUnmount () {
-    setZenDeskHelpVisibility(normalizedHref());
-  }
-
   closeThisModal = () => {
-    setZenDeskHelpVisibility(normalizedHref());
     const { currentStep } = this.state;
     const currentStepCompletedThreshold = 7;
     if (currentStep >= currentStepCompletedThreshold) {

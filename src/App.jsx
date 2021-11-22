@@ -10,8 +10,8 @@ import WeVoteRouter from './js/components/Widgets/WeVoteRouter';
 import muiTheme from './js/mui-theme';
 import AppObservableStore from './js/stores/AppObservableStore';
 import styledTheme from './js/styled-theme';
-import { normalizedHref } from './js/utils/applicationUtils';
 import { isWebApp } from './js/utils/cordovaUtils';
+import { normalizedHref } from './js/utils/hrefUtils';
 import initializejQuery from './js/utils/initializejQuery';
 import { renderLog } from './js/utils/logging';
 import RouterV5SendMatch from './js/utils/RouterV5SendMatch';
@@ -198,7 +198,7 @@ class App extends Component {
             <StylesProvider injectFirst>
               <WeVoteRouter>
                 <WeVoteBody>
-                  {/* DO NOT put SnackNotifier or anything else that is non-essential here (to keep it out of the main chuck. */}
+                  {/* DO NOT put SnackNotifier or anything else that is non-essential here (to keep it out of the main chunk. */}
                   <Suspense fallback={<HeaderBarSuspense />}>
                     <Header params={{ }} pathname={normalizedHref()} />
                   </Suspense>

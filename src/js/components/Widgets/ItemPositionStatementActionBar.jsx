@@ -7,6 +7,7 @@ import SupportActions from '../../actions/SupportActions';
 import SupportStore from '../../stores/SupportStore';
 import VoterStore from '../../stores/VoterStore';
 import { prepareForCordovaKeyboard, restoreStylesAfterCordovaKeyboard } from '../../utils/cordovaUtils';
+import { normalizedHref } from '../../utils/hrefUtils';
 import isMobileScreenSize from '../../utils/isMobileScreenSize';
 import { renderLog } from '../../utils/logging';
 import { shortenText } from '../../utils/textFormat';
@@ -159,7 +160,7 @@ class ItemPositionStatementActionBar extends Component {
     // }
     // console.log('ItemPositionStatementActionBar, onBlurInput:', e.target);
 
-    restoreStylesAfterCordovaKeyboard(ItemPositionStatementActionBar);
+    restoreStylesAfterCordovaKeyboard(normalizedHref());
   };
 
   onFocusInput = () => {

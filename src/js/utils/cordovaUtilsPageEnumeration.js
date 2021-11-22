@@ -1,7 +1,7 @@
 import CordovaPageConstants from '../constants/CordovaPageConstants';
 import AppObservableStore from '../stores/AppObservableStore';
 import showBallotDecisionsTabs from '../utilsApi/showBallotDecisionsTabs';
-import { normalizedHref } from './applicationUtils';
+import { normalizedHref } from './hrefUtils';
 import { stringContains } from './textFormat';
 
 
@@ -53,7 +53,7 @@ export function pageEnumeration () {
     return CordovaPageConstants.valuesList;
 
   // then wildcarded second level paths
-  } else if (path.startsWith('/candidate/')) {
+  } else if (path.startsWith('/candidate/') || path.startsWith('/verifythisisme/')) {
     return CordovaPageConstants.candidateWild;
   } else if (path.startsWith('/office/')) {
     return CordovaPageConstants.officeWild;
