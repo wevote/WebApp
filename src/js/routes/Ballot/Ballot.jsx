@@ -1322,6 +1322,7 @@ class Ballot extends Component {
                                               color={(oneTypeOfBallotItem === raceLevelFilterType && !isSearching) ? 'primary' : 'default'}
                                               className="btn_ballot_filter"
                                               classes={{ root: classes.chipRoot, label: classes.chipLabel, outlinedPrimary: (oneTypeOfBallotItem === raceLevelFilterType && !isSearching) ? classes.chipOutlined : null }}
+                                              id={chipLabelText(oneTypeOfBallotItem)}
                                               label={chipLabelText(oneTypeOfBallotItem)}
                                               style={widthOverride}
                                             />
@@ -1466,6 +1467,7 @@ class Ballot extends Component {
                                     <BallotItemCompressed
                                       isMeasure={item.kind_of_ballot_item === TYPES.MEASURE}
                                       ballotItemDisplayName={item.ballot_item_display_name}
+                                      id={chipLabelText(item.ballot_item_display_name)}
                                       candidateList={item.candidate_list}
                                       candidatesToShowForSearchResults={item.candidatesToShowForSearchResults}
                                       weVoteId={item.we_vote_id}

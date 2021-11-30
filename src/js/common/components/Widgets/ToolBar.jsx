@@ -4,10 +4,10 @@ import { Facebook, GitHub, Instagram, Mail, Twitter } from '@material-ui/icons';
 import { styled as muiStyled } from '@material-ui/styles';
 import React, { Suspense } from 'react';
 import styled from 'styled-components';
-import { cordovaDot } from '../../utils/cordovaUtils';
-import { renderLog } from '../../utils/logging';
+import cordovaDot from '../../../utils/cordovaDot';
+import { renderLog } from '../../../utils/logging';
 
-const OpenExternalWebSite = React.lazy(() => import(/* webpackChunkName: 'OpenExternalWebSite' */ '../../components/Widgets/OpenExternalWebSite'));
+const OpenExternalWebSite = React.lazy(() => import(/* webpackChunkName: 'OpenExternalWebSite' */ '../../../components/Widgets/OpenExternalWebSite'));
 
 
 function ToolBar (params) {

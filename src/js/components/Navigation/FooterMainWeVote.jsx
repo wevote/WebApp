@@ -6,12 +6,7 @@ import styled from 'styled-components';
 import isMobileScreenSize from '../../utils/isMobileScreenSize';
 import OpenExternalWebSite from '../Widgets/OpenExternalWebSite';
 
-
 class FooterMainWeVote extends Component {
-  componentDidMount () {
-    window.scrollTo(0, 0);
-  }
-
   render () {
     const { classes } = this.props;
 
@@ -23,7 +18,7 @@ class FooterMainWeVote extends Component {
               <ColumnTitle>About We Vote</ColumnTitle>
               <Link id="footerLinkHowWeVoteHelps" className={classes.link} to="/more/howwevotehelps">How We Vote Helps</Link>
               <Link id="footerLinkAbout" className={classes.link} to="/more/about">About &amp; Team</Link>
-              <Link id="footerLinkCredits" className={classes.link} to="/credits">Credits &amp; Thanks</Link>
+              <Link id="footerLinkCredits" className={classes.link} to="/more/credits">Credits &amp; Thanks</Link>
               {/* <Link id="footerLinkImpact" className={classes.link} to="/impact">Impact</Link> */}
               <OpenExternalWebSite
                 linkIdAttribute="footerLinkCareers"

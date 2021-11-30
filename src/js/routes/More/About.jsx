@@ -4,7 +4,7 @@ import Helmet from 'react-helmet';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import AnalyticsActions from '../../actions/AnalyticsActions';
-import { weVoteBoard, weVoteFounders, weVoteStaff } from '../../components/More/people';
+import { weVoteBoard, weVoteFounders, weVoteStaff } from '../../common/constants/people';
 import TeamMemberDisplayForList from '../../components/More/TeamMemberDisplayForList';
 import ShowMoreButtons from '../../components/Ready/ShowMoreButtons';
 import { Title } from '../../components/Welcome/headerWelcomeStyles';
@@ -14,7 +14,7 @@ import VoterStore from '../../stores/VoterStore';
 import cordovaScrollablePaneTopPadding from '../../utils/cordovaScrollablePaneTopPadding';
 import { cordovaDot } from '../../utils/cordovaUtils';
 import { renderLog } from '../../utils/logging';
-import ToolBar from './ToolBar';
+import ToolBar from '../../common/components/Widgets/ToolBar';
 
 const OpenExternalWebSite = React.lazy(() => import(/* webpackChunkName: 'OpenExternalWebSite' */ '../../components/Widgets/OpenExternalWebSite'));
 const WelcomeAppbar = React.lazy(() => import(/* webpackChunkName: 'WelcomeAppbar' */ '../../components/Navigation/WelcomeAppbar'));

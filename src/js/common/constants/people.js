@@ -1,5 +1,5 @@
 import webAppConfig from '../../config';
-import { cordovaDot } from '../../utils/cordovaUtils';
+import cordovaDot from '../../utils/cordovaDot';
 
 if (window.cordova) { // Static constants are initialized before the app starts
   webAppConfig.IS_CORDOVA = true;
@@ -225,7 +225,7 @@ export const organizationalDonors = [{
 }, {
   alt: 'Ballotpedia',
   name: '',
-  title: 'Data',
+  title: 'Ballot Data',
   logo: `${logoPath}ballotpedia-logo.png`,
 }, {
   alt: 'BrowserStack',
@@ -235,12 +235,14 @@ export const organizationalDonors = [{
 }, {
   alt: 'Center for Technology and Civic Life',
   name: '',
-  title: 'Data & Love',
+  title: 'Ballot Data & Love',
+  link: 'https://techandciviclife.org',
   logo: `${logoPath}ctcl_logo-600x230.jpg`,
 }, {
   alt: 'CivicMakers',
   name: '',
   title: 'Event Collaborations',
+  link: 'https://civicmakers.com',
   logo: `${logoPath}civicmakers-logo.png`,
 }, {
   alt: 'Code for San Francisco & Code for America',
@@ -261,16 +263,18 @@ export const organizationalDonors = [{
   alt: 'Fast Forward',
   name: '',
   title: 'Most Amazing Nonprofit Technology Accelerator Ever',
+  link: 'https://ffwd.org',
   logo: `${logoPath}ffwd-logo.png`,
 }, {
   alt: 'Fastly.com',
   name: '',
   title: 'Scalable Content Delivery (CDN)',
+  link: 'https://fastly.com',
   logo: `${logoPath}fastly-logo.png`,
 }, {
   alt: 'Google Civic',
   name: '',
-  title: 'Data',
+  title: 'Ballot Data',
   logo: `${logoPath}google-logo.svg`,
 }, {
   alt: 'Greenberg Traurig, LLP',
@@ -293,6 +297,12 @@ export const organizationalDonors = [{
   title: 'For supporting Code for San Francisco',
   logo: `${logoPath}microsoft-logo.png`,
 }, {
+  alt: 'Open People Search',
+  name: '',
+  title: 'Contact Data Augmentation',
+  link: 'https://www.openpeoplesearch.com/',
+  logo: `${logoPath}open-people-search-logo.png`,
+}, {
   alt: 'TurboVote, Democracy Works',
   name: '',
   title: 'Data',
@@ -301,6 +311,7 @@ export const organizationalDonors = [{
   alt: 'Twilio',
   name: '',
   title: 'Mobile Tech & for supporting nonprofit tech',
+  link: 'https://twilio.com',
   logo: `${logoPath}twilio-logo.png`,
 }, {
   alt: 'Twitter',
@@ -312,6 +323,12 @@ export const organizationalDonors = [{
   name: '',
   title: 'Data',
   logo: `${logoPath}vote-smart-logo.jpeg`,
+}, {
+  alt: 'Vote USA',
+  name: '',
+  title: 'Ballot Data',
+  link: 'https://www.vote-usa.org/',
+  logo: `${logoPath}vote-usa-logo.png`,
 }, {
   alt: 'Voting Information Project, Pew Charitable Trusts',
   name: 'Voting Information Project',

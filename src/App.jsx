@@ -10,8 +10,8 @@ import WeVoteRouter from './js/components/Widgets/WeVoteRouter';
 import muiTheme from './js/mui-theme';
 import AppObservableStore from './js/stores/AppObservableStore';
 import styledTheme from './js/styled-theme';
-import { normalizedHref } from './js/utils/applicationUtils';
 import { isWebApp } from './js/utils/cordovaUtils';
+import { normalizedHref } from './js/utils/hrefUtils';
 import initializejQuery from './js/utils/initializejQuery';
 import { renderLog } from './js/utils/logging';
 import RouterV5SendMatch from './js/utils/RouterV5SendMatch';
@@ -198,7 +198,7 @@ class App extends Component {
             <StylesProvider injectFirst>
               <WeVoteRouter>
                 <WeVoteBody>
-                  {/* DO NOT put SnackNotifier or anything else that is non-essential here (to keep it out of the main chuck. */}
+                  {/* DO NOT put SnackNotifier or anything else that is non-essential here (to keep it out of the main chunk. */}
                   <Suspense fallback={<HeaderBarSuspense />}>
                     <Header params={{ }} pathname={normalizedHref()} />
                   </Suspense>
@@ -317,6 +317,7 @@ class App extends Component {
                       <Route path="/opinions_followed" component={OpinionsFollowed} />
                       <Route path="/opinions_ignored" component={OpinionsIgnored} />
                       <Route path="/opinions" exact component={Opinions2020} />
+                      <Route path="/privacy" component={Privacy} />
                       {/* <Route exact path="/ready"><Redirect to="/" /></Route> */}
                       <Route path="/ready" exact><Ready /></Route>
                       <Route path="/ready/election/:google_civic_election_id" component={Ready} />
@@ -324,6 +325,7 @@ class App extends Component {
                       <Route path="/ready/modal/:modal_to_show" exact render={(props) => (<RouterV5SendMatch componentName="Ready" {...props} />)} />
                       <Route path="/register" component={Register} />
                       <Route path="/sign_in_email/:email_secret_key" component={SignInEmailProcess} />
+                      <Route path="/terms" component={TermsOfService} />
                       <Route path="/twittersigninprocess/:sign_in_step" component={TwitterSignInProcess} />
                       <Route path="/values/list" component={ValuesList} />
                       <Route path="/values" exact component={Values} />

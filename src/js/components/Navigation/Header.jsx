@@ -5,9 +5,10 @@ import AppObservableStore, { messageService } from '../../stores/AppObservableSt
 import VoterStore from '../../stores/VoterStore';
 import apiCalming from '../../utils/apiCalming';
 import { dumpCssFromId } from '../../utils/appleSiliconUtils';
-import { getApplicationViewBooleans, normalizedHref, weVoteBrandingOff } from '../../utils/applicationUtils';
+import { getApplicationViewBooleans, weVoteBrandingOff } from '../../utils/applicationUtils';
 import cordovaTopHeaderTopMargin from '../../utils/cordovaTopHeaderTopMargin';
 import { historyPush, isCordova, isIOSAppOnMac, isIPad, isWebApp } from '../../utils/cordovaUtils';
+import { normalizedHref } from '../../utils/hrefUtils';
 import { renderLog } from '../../utils/logging';
 import { HeadroomWrapper } from '../../utils/pageLayoutStyles';
 import { stringContains } from '../../utils/textFormat';
@@ -162,9 +163,12 @@ export default class Header extends Component {
       path.startsWith('/about') ||
       path.startsWith('/for-campaigns') ||
       path.startsWith('/how/for-campaigns') ||
+      path.startsWith('/more/about') ||
+      path.startsWith('/more/credits') ||
       path.startsWith('/twitter_sign_in') ||
       path.startsWith('/wevoteintro') ||
-      path.startsWith('/welcome'));
+      path.startsWith('/welcome')
+    );
   }
 
 
@@ -438,7 +442,8 @@ export default class Header extends Component {
         </div>
       );
     } else if (typeof pathname !== 'undefined' && pathname &&
-      (pathname === '/for-campaigns' ||
+      (pathname === '/about' ||
+      pathname === '/for-campaigns' ||
       pathname === '/for-organizations' ||
       pathname.startsWith('/how') ||
       pathname === '/more/about' ||

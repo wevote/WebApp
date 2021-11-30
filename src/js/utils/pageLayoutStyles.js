@@ -2,11 +2,11 @@ import { AppBar } from '@material-ui/core';
 import styled from 'styled-components';
 import CordovaPageConstants from '../constants/CordovaPageConstants';
 import AppObservableStore from '../stores/AppObservableStore';
-import { normalizedHrefPage } from './applicationUtils';
 import { cordovaBallotFilterTopMargin, cordovaDualHeaderContainerPadding } from './cordovaOffsets';
 import cordovaScrollablePaneTopPadding from './cordovaScrollablePaneTopPadding';
 import { hasIPhoneNotch, isAndroidSizeFold, isAndroidSizeMD, isAndroidSizeXL, isIPad, isIPad11in, isIPadGiantSize, isIPhone4p7in, isIPhone5p5inEarly, isIPhone5p5inMini, isIPhone5p8in, isIPhone6p1in, isIPhone6p5in, isWebApp } from './cordovaUtils';
 import { pageEnumeration } from './cordovaUtilsPageEnumeration';
+import { normalizedHrefPage } from './hrefUtils';
 import isMobileScreenSize from './isMobileScreenSize';
 
 
@@ -204,6 +204,7 @@ export const TopRowTwoRightContainer = styled.div`
       return {
         gridRow: '2 / 2',
         gridColumn: '3 /3',
+        paddingRight: '13px',
       };
     } else if (isAndroidSizeXL() || isAndroidSizeFold()) {
       return {

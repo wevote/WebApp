@@ -135,6 +135,7 @@ class WelcomeFooter extends Component {
             </Column>
             <Column>
               <ColumnTitle>Support</ColumnTitle>
+              <Link id="footerLinkFAQ" className={classes.link} to="/more/faq">Frequent Questions</Link>
               <Suspense fallback={<></>}>
                 <OpenExternalWebSite
                   linkIdAttribute="footerLinkWeVoteHelp"
