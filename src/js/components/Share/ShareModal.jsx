@@ -55,7 +55,7 @@ class ShareModal extends Component {
     this.shareStoreListener = ShareStore.addListener(this.onShareStoreChange.bind(this));
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
     const chosenPreventSharingOpinions = AppObservableStore.getChosenPreventSharingOpinions();
-    const currentFullUrl = window.location.href || '';
+    const currentFullUrl = cordovaLinkToBeSharedFixes(window.location.href || '');
     const currentFullUrlToShare = currentFullUrl.replace('/modal/share', '').toLowerCase();
     const urlWithSharedItemCode = ShareStore.getUrlWithSharedItemCodeByFullUrl(currentFullUrlToShare);
     const urlWithSharedItemCodeAllOpinions = ShareStore.getUrlWithSharedItemCodeByFullUrl(currentFullUrlToShare, true);
@@ -252,7 +252,7 @@ class ShareModal extends Component {
       }
       linkToBeShared = cordovaLinkToBeSharedFixes(linkToBeShared);
       linkToBeSharedUrlEncoded = encodeURI(linkToBeShared);
-      console.log('ShareModal linkToBeShared:', linkToBeShared);
+      // console.log('ShareModal linkToBeShared:', linkToBeShared);
 
       // const twitterTextEncoded = encodeURI('Check out this cool ballot tool!');
       // if (shareModalStep === 'ballotShareOptions') {

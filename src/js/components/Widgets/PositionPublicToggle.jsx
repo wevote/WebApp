@@ -7,7 +7,7 @@ import styled from 'styled-components';
 import SupportActions from '../../actions/SupportActions';
 import SupportStore from '../../stores/SupportStore';
 import VoterStore from '../../stores/VoterStore';
-import { isCordova, isWebApp } from '../../utils/cordovaUtils'; // hasIPhoneNotch,
+import { isAndroidSizeMD, isCordova, isWebApp } from '../../utils/cordovaUtils'; // hasIPhoneNotch,
 import isMobileScreenSize from '../../utils/isMobileScreenSize';
 import { renderLog } from '../../utils/logging';
 import { openSnackbar } from './SnackNotifier';
@@ -283,6 +283,7 @@ class PositionPublicToggle extends Component {
                       />
                     )
                   }
+                  style={{ marginRight: `${isAndroidSizeMD() ? '10px' : ''}` }}
                 />
               </RadioItem>
               <RadioItem preventStackedButtons={preventStackedButtons}>
@@ -370,6 +371,7 @@ const styles = (theme) => ({
     [theme.breakpoints.down('sm')]: {
       fontSize: '11px',
     },
+    marginRight: isAndroidSizeMD() ? '2px' : '',
   },
   formControl: {
     width: '100%',

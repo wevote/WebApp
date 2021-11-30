@@ -8,7 +8,7 @@ import ActivityActions from '../../actions/ActivityActions';
 import ActivityStore from '../../stores/ActivityStore';
 import VoterStore from '../../stores/VoterStore';
 import { avatarGeneric } from '../../utils/applicationUtils';
-import { hasIPhoneNotch, prepareForCordovaKeyboard, restoreStylesAfterCordovaKeyboard } from '../../utils/cordovaUtils';
+import { hasIPhoneNotch, isAndroid, isAndroidSizeLG, isAndroidSizeMD, isAndroidTablet, prepareForCordovaKeyboard, restoreStylesAfterCordovaKeyboard } from '../../utils/cordovaUtils';
 import { renderLog } from '../../utils/logging';
 import ActivityPostPublicToggle from './ActivityPostPublicToggle';
 
@@ -75,11 +75,11 @@ class ActivityPostModal extends Component {
   }
 
   onBlurInput = () => {
-    restoreStylesAfterCordovaKeyboard(ActivityPostModal);
+    restoreStylesAfterCordovaKeyboard('ActivityPostModal');
   };
 
   onFocusInput = () => {
-    prepareForCordovaKeyboard('ItemPositionStatementActionBar');
+    prepareForCordovaKeyboard('ActivityPostModal');
   };
 
   onPublicToggleChange = (visibilityIsPublic) => {
@@ -119,9 +119,11 @@ class ActivityPostModal extends Component {
     // const horizontalEllipsis = '\u2026';
     const statementPlaceholderText = 'What\'s on your mind?';
 
-    const rowsToShow = 6;
+    const rowsToShow = isAndroid() ? 4 : 6;
 
     // console.log('ActivityPostModal render, voter_address_object: ', voter_address_object);
+
+    // TODO: This class is too similar to PositionStatementModal -- the common code should be extracted, so that it doesn't have to be maintained twice (the code was copied to make a slightly different version)
     return (
       <Dialog
         classes={{ paper: classes.dialogPaper }}
@@ -161,7 +163,7 @@ class ActivityPostModal extends Component {
                   alignItems: 'flex-start',
                   border: '1px solid #e8e8e8',
                   borderRadius: 3,
-                  padding: 12,
+                  padding: isAndroidTablet() ? '12px 12px 0 12px' : '12px',
                   marginBottom: 0,
                 }}
               >
@@ -215,26 +217,26 @@ ActivityPostModal.propTypes = {
 
 const styles = (theme) => ({
   dialogTitle: {
-    padding: 16,
+    padding: isAndroid() ? 8 : 16,
   },
   dialogPaper: {
     marginTop: hasIPhoneNotch() ? '107px !important' : '48px !important',
-    minHeight: '200px',
+    minHeight: isAndroid() ? '257px' : '200px',
     maxHeight: '350px',
     height: '80%',
     width: '90%',
     maxWidth: '600px',
     top: '0px',
-    transform: 'translate(0%, -20%)',
+    transform: isAndroid() ? 'none' : 'translate(0%, -20%)',
     [theme.breakpoints.down('xs')]: {
       minWidth: '95%',
       maxWidth: '95%',
       width: '95%',
       minHeight: '200px',
       maxHeight: '330px',
-      height: '70%',
+      height: isAndroid() ? '79%' : '70%',
       margin: '0 auto',
-      transform: 'translate(0%, -30%)',
+      transform: isAndroidSizeMD()  || isAndroidSizeLG() ? 'translate(0%, -20%)' : 'translate(0%, -30%)',
     },
   },
   dialogContent: {
@@ -247,7 +249,7 @@ const styles = (theme) => ({
   closeButton: {
     position: 'absolute',
     right: `${theme.spacing(1)}px`,
-    top: `${theme.spacing(1)}px`,
+    top: isAndroid() ? '-4px' : `${theme.spacing(1)}px`,
   },
   saveButtonRoot: {
     width: '100%',
