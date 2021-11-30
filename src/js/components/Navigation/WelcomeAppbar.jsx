@@ -229,7 +229,8 @@ class WelcomeAppbar extends Component {
     }
     if (typeof pathname !== 'undefined' && pathname &&
       !pathname.startsWith('/how') &&
-      (String(pathname) === '/for-campaigns' ||
+      (String(pathname) === '/about' ||
+        String(pathname) === '/for-campaigns' ||
         String(pathname) === '/more/about' ||
         String(pathname) === '/more/credits' ||
         pathname.startsWith('/more/donate') ||
@@ -254,7 +255,10 @@ class WelcomeAppbar extends Component {
       showHowItWorksForOrganizations = true;
     }
     if (typeof pathname !== 'undefined' && pathname &&
-      (String(pathname) === '/welcome' || String(pathname) === '/more/about')) {
+      (String(pathname) === '/about' ||
+        String(pathname) === '/more/about' ||
+        String(pathname) === '/welcome')
+    ) {
       showHowItWorksForVoters = true;
     }
     return (

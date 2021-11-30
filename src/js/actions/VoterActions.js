@@ -294,6 +294,12 @@ export default {
     Dispatcher.loadEndpoint('voterRetrieve');
   },
 
+  voterSignOut (signOutAllDevices = false) {
+    Dispatcher.loadEndpoint('voterSignOut', {
+      sign_out_all_devices: signOutAllDevices,
+    });
+  },
+
   voterSMSPhoneNumberRetrieve () {
     Dispatcher.loadEndpoint('voterSMSPhoneNumberRetrieve', {});
   },

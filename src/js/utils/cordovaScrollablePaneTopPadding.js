@@ -26,7 +26,7 @@ export default function cordovaScrollablePaneTopPadding (pageEnumerationOverride
     if (isIPhone4in()) {
       cordovaOffsetLog(`cordovaScrollablePaneTopPadding: isIPhone4in, page: ${page}`);
       switch (page) {
-        case CordovaPageConstants.about:                 return '12px';
+        // case CordovaPageConstants.about:                 return '12px'; // We should use "CordovaPageConstants.moreAbout"
         case CordovaPageConstants.ballotLgHdrWild:       return showBallotDecisionsTabs() ? '48px' : '32px';
         case CordovaPageConstants.ballotSmHdrWild:       return '141px';  // $body-padding-top-no-decision-tabs
         case CordovaPageConstants.ballotVote:            return '157px';
@@ -69,7 +69,7 @@ export default function cordovaScrollablePaneTopPadding (pageEnumerationOverride
     } else if (isIPhone4p7in()) {
       cordovaOffsetLog(`cordovaScrollablePaneTopPadding: isIPhone4p7in, page: ${page}`);
       switch (page) {
-        // case CordovaPageConstants.about:                 return '12px';
+        // case CordovaPageConstants.about:                 return '12px'; // We should use "CordovaPageConstants.moreAbout"
         case CordovaPageConstants.ballotLgHdrWild:       return showBallotDecisionsTabs() ? '52px' : '36px';
         case CordovaPageConstants.ballotSmHdrWild:       return '140px';
         case CordovaPageConstants.ballotVote:            return isSignedIn ? '149px' : '148px';
@@ -153,7 +153,7 @@ export default function cordovaScrollablePaneTopPadding (pageEnumerationOverride
     } else if (isIPhone5p5inMini()) {
       cordovaOffsetLog(`cordovaScrollablePaneTopPadding: isIPhone5p5inMini, page: ${page}`);
       switch (page) {
-        // case CordovaPageConstants.about:                 return '0px';
+        // case CordovaPageConstants.about:                 return '0px'; // We should use "CordovaPageConstants.moreAbout"
         case CordovaPageConstants.ballotLgHdrWild:       return showBallotDecisionsTabs() ? '35px' : '19px';
         case CordovaPageConstants.ballotSmHdrWild:       return '193px';
         case CordovaPageConstants.ballotVote:            return '157px';
@@ -196,7 +196,7 @@ export default function cordovaScrollablePaneTopPadding (pageEnumerationOverride
     } else if (isIPhone6p1in()) {  // XR, iPhone 11, iPhone 13 and 13 Pro
       cordovaOffsetLog(`cordovaScrollablePaneTopPadding: isIPhone6p1in, page: ${page}`);
       switch (page) {
-        case CordovaPageConstants.about:                 return '12px';
+        // case CordovaPageConstants.about:                 return '12px'; // We should use "CordovaPageConstants.moreAbout"
         case CordovaPageConstants.ballotLgHdrWild:       return showBallotDecisionsTabs() ? '58px' : '41px';
         case CordovaPageConstants.ballotSmHdrWild:       return '156px';
         case CordovaPageConstants.ballotVote:            return isSignedIn ? '163px' : '165px';
@@ -360,7 +360,7 @@ export default function cordovaScrollablePaneTopPadding (pageEnumerationOverride
     } else if (isIPad()) {
       cordovaOffsetLog(`cordovaScrollablePaneTopPadding: is IPad, page: ${page}`);
       switch (page) {
-        case CordovaPageConstants.about:                 return '12px';
+        // case CordovaPageConstants.about:                 return '12px'; // We should use "CordovaPageConstants.moreAbout"
         case CordovaPageConstants.ballotLgHdrWild:       return '64px';  // Ballot when signed in on iPad Nov 2021
         case CordovaPageConstants.ballotSmHdrWild:       return isIPadGiantSize() ? '67px' : '175px';
         case CordovaPageConstants.ballotVote:            return '131px';
@@ -547,6 +547,7 @@ export default function cordovaScrollablePaneTopPadding (pageEnumerationOverride
       }
     } else if (sizeString === '--sm') {
       switch (page) {
+        // case CordovaPageConstants.about:                 return '0px'; // We should use "CordovaPageConstants.moreAbout"
         case CordovaPageConstants.ballotLgHdrWild:       return showBallotDecisionsTabs() ? '58px' : '42px';
         case CordovaPageConstants.ballotSmHdrWild:       return '114px';
         case CordovaPageConstants.ballotVote:            return isSignedIn ? '131px' : '128px';
@@ -576,6 +577,8 @@ export default function cordovaScrollablePaneTopPadding (pageEnumerationOverride
       // case CordovaPageConstants.candidate:                return '48px';
       case CordovaPageConstants.candidateWild:            return '58px';
       case CordovaPageConstants.measureWild:              return '100px';
+      case CordovaPageConstants.moreAbout:                return 0;
+      case CordovaPageConstants.moreCredits:              return 0;
       // case CordovaPageConstants.moreFaq:                  return '58px';
       // case CordovaPageConstants.moreTerms:                return '58px';
       case CordovaPageConstants.officeWild:               return '78px';
@@ -604,6 +607,8 @@ export default function cordovaScrollablePaneTopPadding (pageEnumerationOverride
     case CordovaPageConstants.candidateWild:         return '60px';
     case CordovaPageConstants.friends:               return '102px';
     case CordovaPageConstants.measureWild:           return '102px';
+    case CordovaPageConstants.moreAbout:             return 0;
+    case CordovaPageConstants.moreCredits:           return 0;
     case CordovaPageConstants.officeWild:            return '102px';
     case CordovaPageConstants.welcomeWild:           return 0;
     case CordovaPageConstants.twitterHandleLanding:  return '102px';

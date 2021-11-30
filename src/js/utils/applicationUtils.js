@@ -29,7 +29,9 @@ export function getApplicationViewBooleans (pathname) {
     pathnameLowerCase.startsWith('/voterguidepositions') ||
     pathnameLowerCase.startsWith('/wevoteintro')) {
     inTheaterMode = true;
-  } else if (pathnameLowerCase.startsWith('/candidate/') ||
+  } else if (
+    pathnameLowerCase === '/about' ||
+    pathnameLowerCase.startsWith('/candidate/') ||
     pathnameLowerCase === '/for-campaigns' ||
     pathnameLowerCase === '/for-organizations' ||
     pathnameLowerCase.startsWith('/how') ||

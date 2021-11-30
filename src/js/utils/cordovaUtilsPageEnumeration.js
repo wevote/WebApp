@@ -12,13 +12,13 @@ export function pageEnumeration () {
   const path = normalizedHref();
 
   // second level paths must be tried first
-  if (path.startsWith('/about')) {
-    return CordovaPageConstants.about;
-  } else if (path.startsWith('/ballot/vote')) {
+  if (path.startsWith('/ballot/vote')) {
     return CordovaPageConstants.ballotVote;
-  } else if (path.startsWith('/more/about')) {
+  } else if (path.startsWith('/about') ||
+             path.startsWith('/more/about')) {
     return CordovaPageConstants.moreAbout;
-  } else if (path.startsWith('/more/credits')) {
+  } else if (path.startsWith('/credits') ||
+             path.startsWith('/more/credits')) {
     return CordovaPageConstants.moreCredits;
   } else if (path.startsWith('/more/elections')) {
     return CordovaPageConstants.moreElections;

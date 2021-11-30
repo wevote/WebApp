@@ -294,6 +294,7 @@ class VoterStore extends ReduceStore {
   setVoterDeviceIdCookie (id) { // eslint-disable-line
     Cookies.remove('voter_device_id');
     Cookies.remove('voter_device_id', { path: '/' });
+    Cookies.remove('voter_device_id', { path: '/', domain: 'wevote.us' });
     let { hostname } = window.location;
     hostname = hostname || '';
     // console.log('setVoterDeviceIdCookie hostname:', hostname, 'cookie id:', id);

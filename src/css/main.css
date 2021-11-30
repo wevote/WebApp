@@ -10301,25 +10301,6 @@ body {
     padding-left: 0;
     padding-right: 0; }
 
-.credits-company {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin: 1em 0 1em 0;
-  max-width: 220px; }
-  @media all and (max-width: 767px) {
-    .credits-company {
-      max-width: 45%;
-      width: 45%; } }
-  .credits-company__title {
-    color: #555; }
-  .credits-company__logo-container {
-    margin-bottom: 10px; }
-  .credits-company__logo {
-    width: 300px;
-    max-height: 120px;
-    max-width: 100%; }
-
 .donate-frequency {
   display: flex;
   flex-flow: row; }
