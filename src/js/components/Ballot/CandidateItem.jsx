@@ -9,7 +9,7 @@ import CandidateStore from '../../stores/CandidateStore';
 import IssueStore from '../../stores/IssueStore';
 import SupportStore from '../../stores/SupportStore';
 import VoterGuideStore from '../../stores/VoterGuideStore';
-import { historyPush } from '../../utils/cordovaUtils';
+import { historyPush, isAndroidSizeMD } from '../../utils/cordovaUtils';
 import isMobileAndTabletScreenSize from '../../utils/isMobileAndTabletScreenSize';
 import { renderLog } from '../../utils/logging';
 import { abbreviateNumber, numberWithCommas, stripHtmlFromString } from '../../utils/textFormat';
@@ -681,6 +681,7 @@ const CandidateWrapper = styled.div`
   @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
     width: 100%;
   }
+  ${() => (isAndroidSizeMD() ? { width: '92% !important' } : {})}
 `;
 
 const CandidateTextWrapper = styled.div`

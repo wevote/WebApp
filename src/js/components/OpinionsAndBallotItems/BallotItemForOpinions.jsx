@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
 import styled from 'styled-components';
 import { renderLog } from '../../utils/logging';
-
 import MeasureItemForOpinions from './MeasureItemForOpinions';
 import OfficeItemForOpinions from './OfficeItemForOpinions';
 

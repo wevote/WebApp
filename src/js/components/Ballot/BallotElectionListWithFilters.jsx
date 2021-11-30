@@ -302,7 +302,7 @@ export default class BallotElectionListWithFilters extends Component {
   executeDifferentElection (election) {
     if (election) {
       const { ballotBaseUrl, displayElectionsForOrganizationVoterGuidesMode } = this.props;
-      console.log('executeDifferentElection ballotBaseUrl:', ballotBaseUrl, ', displayElectionsForOrganizationVoterGuidesMode:', displayElectionsForOrganizationVoterGuidesMode);
+      // console.log('executeDifferentElection ballotBaseUrl:', ballotBaseUrl, ', displayElectionsForOrganizationVoterGuidesMode:', displayElectionsForOrganizationVoterGuidesMode);
       if (displayElectionsForOrganizationVoterGuidesMode) {
         this.switchElectionBehindTheScenes(election.google_civic_election_id);
       } else if (ballotBaseUrl) {

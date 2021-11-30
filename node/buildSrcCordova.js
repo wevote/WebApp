@@ -11,8 +11,13 @@ function fileRewriterForCordova (path) {
     let newValue = data.replace(/(?:const )(.*?)\s(?:.*?\*\/)(.*?)\)\);$/gim,
       'import $1 from $2;  // rewritten from lazy');
     // Remove all Suspense imports
-    newValue = newValue.replace(/import .*?, Suspense }.*?$/gim,
-      'import React, { Component } from \'react\';');
+    newValue = newValue.replace(/import React, { Suspense } from 'react';/gim,
+      'import React from \'react\';');
+    newValue = newValue.replace(/import React, {\s*(.*?), Suspense } from 'react';/gim,
+      'import React, { $1 } from \'react\';');
+    // Remove one line Suspense mark up
+    newValue = newValue.replace(/(<Suspense fallback={<><\/>}>)(.*?)(<\/Suspense>)/gim,
+      '$2');
     // Remove all Suspense mark up
     newValue = newValue.replace(/^(\s*)(<\Suspense.*?)(\n)/gim,
       '$1<>$3  $1{/* $2   // Rewritten from Suspense */}$3');
@@ -60,7 +65,7 @@ fs.remove('./build').then(() => {
     try {
       fs.copy('./src', './srcCordova', () => {
         console.log('> Cordova: Copied the /src dir to a newly created /srcCordova directory');
-        exec('egrep -rl "React.lazy|BrowserRouter|initializeMoment" ./srcCordova', (error, stdout, stderr) => {
+        exec('egrep -rl "React.lazy|BrowserRouter|initializeMoment|Suspense" ./srcCordova', (error, stdout, stderr) => {
           if (error) {
             console.log(`> Cordova bldSrcCordova error: ${error.message}`);
             return;
@@ -74,13 +79,13 @@ fs.remove('./build').then(() => {
           listOfFiles.push('./srcCordova/index.jsx');
           for (let i = 0; i < listOfFiles.length; i++) {
             const path = listOfFiles[i];
-            // console.log("path: " + path);
+            // console.log(`path: ${path}`);
             if (path.length) {
               fileRewriterForCordova(path);
             }
           }
           console.log('> Cordova: Files in ./srcCordova, rewritten without React.lazy: ', listOfFiles.length);
-          exec('grep -r "React.lazy" ./srcCordova | grep -v "//" | grep -v "(factory)"',
+          exec('egrep -r "React.lazy|Suspense" ./srcCordova | grep -v "//" | grep -v "" | grep -v "(factory)"',
             (error2, stdout2) => {
               const out = stdout2.split('\n');
               if (!(out.length === 1 && out[1] === undefined)) {

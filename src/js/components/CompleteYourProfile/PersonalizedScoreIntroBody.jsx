@@ -425,7 +425,7 @@ PersonalizedScoreIntroBody.propTypes = {
   classes: PropTypes.object,
   inModal: PropTypes.bool,
   markPersonalizedScoreIntroCompleted: PropTypes.func,
-  show: PropTypes.bool,
+  // show: PropTypes.bool,
   stepAdvanced: PropTypes.func,
   toggleFunction: PropTypes.func,
 };

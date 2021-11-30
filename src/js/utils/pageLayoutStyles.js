@@ -4,7 +4,7 @@ import CordovaPageConstants from '../constants/CordovaPageConstants';
 import AppObservableStore from '../stores/AppObservableStore';
 import { cordovaBallotFilterTopMargin, cordovaDualHeaderContainerPadding } from './cordovaOffsets';
 import cordovaScrollablePaneTopPadding from './cordovaScrollablePaneTopPadding';
-import { hasIPhoneNotch, isAndroidSizeFold, isAndroidSizeXL, isIPad, isIPad11in, isIPadGiantSize, isIPhone4p7in, isIPhone5p5inEarly, isIPhone5p5inMini, isIPhone5p8in, isIPhone6p1in, isIPhone6p5in, isWebApp } from './cordovaUtils';
+import { hasIPhoneNotch, isAndroidSizeFold, isAndroidSizeMD, isAndroidSizeXL, isIPad, isIPad11in, isIPadGiantSize, isIPhone4p7in, isIPhone5p5inEarly, isIPhone5p5inMini, isIPhone5p8in, isIPhone6p1in, isIPhone6p5in, isWebApp } from './cordovaUtils';
 import { pageEnumeration } from './cordovaUtilsPageEnumeration';
 import { normalizedHrefPage } from './hrefUtils';
 import isMobileScreenSize from './isMobileScreenSize';
@@ -163,8 +163,13 @@ export const TopRowOneMiddleContainer = styled.div`
 `;
 
 export const TopRowOneRightContainer = styled.div`
-  // padding-right: 0px; // ${() => (((isMobileScreenSize() && !isIPhone5p5inMini()) || isIPadGiantSize()) ? '15px' : '0px')}; // Can this always be 0px?
-  padding-right: ${() => (isAndroidSizeFold() || isAndroidSizeXL() ? '15px' : '0px')};
+  // padding-right: 0px;
+  // ${() => (((isMobileScreenSize() && !isIPhone5p5inMini()) || isIPadGiantSize()) ? '15px' : '0px')}; // Can this always be 0px?
+  padding-right: ${() => {
+    // if (isAndroidSizeFold()) return '55px';
+    if (isAndroidSizeMD() || isAndroidSizeXL()) return '15px';
+    return '0px';
+  }};
   display: flex;
   justify-content: flex-end;
   cursor: pointer;
@@ -187,13 +192,6 @@ export const TopRowTwoLeftContainer = styled.div`
   }};
   overflow: hidden;
   text-overflow: ellipsis;
-  ${() => {
-    if (isAndroidSizeXL() || isAndroidSizeFold()) {
-      return { paddingLeft: '12px' };
-    }
-    return {};
-  }};
-
 `;
 
 export const TopRowTwoRightContainer = styled.div`
@@ -202,11 +200,16 @@ export const TopRowTwoRightContainer = styled.div`
   cursor: pointer;
   padding-right: ${() => ((isMobileScreenSize()) ? '15px' : '0px')};  //grid-row-start: 2;
   ${() => {
-    if ((isWebApp() && !isMobileScreenSize()) || (isAndroidSizeXL() || isAndroidSizeFold())) {
+    if ((isWebApp() && !isMobileScreenSize())) {
       return {
         gridRow: '2 / 2',
         gridColumn: '3 /3',
         paddingRight: '13px',
+      };
+    } else if (isAndroidSizeXL() || isAndroidSizeFold()) {
+      return {
+        gridRow: '2 / 2',
+        gridColumn: '3 /3',
       };
     }
     return {};

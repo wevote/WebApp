@@ -1,7 +1,6 @@
 import React from 'react';
 import webAppConfig from '../config';
 import { dumpObjProps } from './appleSiliconUtils';
-import { normalizedHrefPage } from './hrefUtils';
 import { cordovaOffsetLog, oAuthLog } from './logging';
 
 /* global $  */
@@ -439,26 +438,27 @@ export function getAndroidSize () {
 
   androidPixels = screen.width * screen.height;
   androidSizeString = 'default';
-  const ratioString = parseFloat(ratio).toFixed(2);
+  // const ratioString = parseFloat(ratio).toFixed(2);
 
   /* sm   = 480*800   =   384,000     Nexus One
      md   = 1080*1920 = 2,073,600     PixelXL, Nexus5X, Moto G5
      lg   = 1440*2560 = 3,686,400     Nexus6P
-     xl   = 2560*1600 = 4,096,000     Nexus10 Tablet
+     xl   = 2560*1600 = 4,240,000     Nexus10 Tablet ratio = 1.656
      xl   = 1200*1920 = 2,306,705     Galaxy Tab A 10.1", ratio = 1.3312500715255737
      xl with AndroidNotch                 (for camera)
           = 1440*3201 = 4,609,440,    Samsung Galaxy S20 Ultra, ratio = 3
      fold = 1536*2152 = 3,305,372     Galaxy Fold 7.3", ratio = 2, aspectRatio ~= 1.401
+         && 1170*2208 = 3,908,160     'Galaxy Z Fold 3' 7.6" ratioString = '3.00' aspectRatio ~= 1.247
      June 2019: detecting the Galaxy Tab A by ratio, is a bit of a hack, and could bite us someday if there was an android phone with a 1.33 ratio
   */
 
   if (window.device.model === 'Moto G (5) Plus') {
     logMatch('Moto G (5) Plus', true);
     androidSizeString = '--md';
-  } else if (androidPixels < 3.4E6 && ratioString === '2.00' && aspectRatio > 1.4) {
-    androidSizeString = '--fold';
-  } else if (androidPixels > 3.7E6 || ratioString === '1.33') {
+  } else if (androidPixels > 3.7E6 && aspectRatio < 1.0) {
     androidSizeString = '--xl';
+  } else if (androidPixels > 3.3E6 && aspectRatio < 1.4 && aspectRatio > 1.2) {
+    androidSizeString = '--fold';
   } else if (androidPixels > 3E6) {
     androidSizeString = '--lg';
   } else if (androidPixels > 1E6) {
@@ -515,7 +515,7 @@ export function isAndroidSizeLG () {
 export function isAndroidSizeXL () {
   if (isAndroid()) {
     if (getAndroidSize() === '--xl') {
-      logMatch('isAndroidSizeXL: xl = 2560*1600 = 4,096,000  Nexus10 Tablet', true);
+      logMatch('isAndroidSizeXL: xl = 2560*1600 = 4,420,000  Nexus10 Tablet', true);
       return true;
     }
   }
@@ -525,7 +525,7 @@ export function isAndroidSizeXL () {
 export function isAndroidSizeFold () {
   if (isAndroid()) {
     if (getAndroidSize() === '--fold') {
-      logMatch('isAndroidSizeSM: based on aspect ratio, probably a Galaxy Fold 7.3"', true);
+      logMatch('isAndroidSizeFold: based on aspect ratio, probably a Galaxy Fold 7.3"', true);
       return true;
     }
   }
@@ -626,14 +626,15 @@ export function getCordovaScreenHeight () {
   return isIPad() ? `${size.height / size.scale}px` : '100%';
 }
 
-export function prepareForCordovaKeyboard (fileName) {
-  let displayName = fileName;
-  if (!fileName || typeof fileName !== 'string') {
-    displayName = normalizedHrefPage();
-  }
-  if (isCordova() && !isIOSAppOnMac()) {
-    console.log(`prepareForCordovaKeyboard ^^^^^^^^^^ ${displayName}`);
-    cordovaOffsetLog(`prepareForCordovaKeyboard ^^^^^^^^^^ ${displayName}`);
+export function prepareForCordovaKeyboard (callerString) {
+  if (callerString && isCordova() && !isIOSAppOnMac()) {
+    let fileName = '';
+    try {
+      fileName = callerString.substr(callerString.lastIndexOf('/') + 1);
+      // eslint-disable-next-line no-empty
+    } catch (e) {}
+    console.log(`prepareForCordovaKeyboard ^^^^^^^^^^ ${fileName}`);
+    cordovaOffsetLog(`prepareForCordovaKeyboard ^^^^^^^^^^ ${fileName}`);
     $('#app').removeClass('app-wrapper').addClass('app-wrapper__cordova');
     $('body').css('height', '');
     $('.footroom-wrapper').css('display', 'none');
@@ -641,12 +642,13 @@ export function prepareForCordovaKeyboard (fileName) {
 }
 
 export function restoreStylesAfterCordovaKeyboard (callerString) {
-  let displayName = callerString;
-  if (!callerString || typeof fileName !== 'string') {
-    displayName = normalizedHrefPage();
-  }
-  if (isCordova() && !isIOSAppOnMac()) {
-    cordovaOffsetLog(`restoreStylesAfterCordovaKeyboard vvvvvvvvvv ${displayName}`);
+  if (callerString && isCordova() && !isIOSAppOnMac()) {
+    let fileName = '';
+    try {
+      fileName = callerString.substr(callerString.lastIndexOf('/') + 1);
+      // eslint-disable-next-line no-empty
+    } catch (e) {}
+    cordovaOffsetLog(`restoreStylesAfterCordovaKeyboard vvvvvvvvvv ${fileName}`);
     $('#app').removeClass('app-wrapper__cordova').addClass('app-wrapper');
     $('body').css('height', getCordovaScreenHeight());
     $('.footroom-wrapper').css('display', '');
@@ -782,6 +784,7 @@ export function cordovaLinkToBeSharedFixes (link) {
   linkToBeShared = linkToBeShared.replace('https://file:/', 'https://wevote.us/');  // Cordova
   linkToBeShared = linkToBeShared.replace('https://file:/', 'https://wevote.us/');    // Cordova
   linkToBeShared = linkToBeShared.replace('https://app:/', 'https://wevote.us/');     // Cordova iOS Nov 2021
+  linkToBeShared = linkToBeShared.replace('file:///android_asset/www/index.html#/', 'https://wevote.us/');     // Cordova Android Nov 2021
   linkToBeShared = linkToBeShared.replace('app://localhost/index.html#/', 'https://wevote.us/');  // Cordova iOS Nov 2021
   return linkToBeShared;
 }

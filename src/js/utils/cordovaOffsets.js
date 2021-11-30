@@ -1,6 +1,6 @@
 import CordovaPageConstants from '../constants/CordovaPageConstants';
 import { getApplicationViewBooleans } from './applicationUtils';
-import { getAndroidSize, hasIPhoneNotch, isAndroid, isAndroidSizeLG, isAndroidSizeMD, isIOS, isIOSAppOnMac, isIPad, isIPadGiantSize, isIPhone4in, isIPhone4p7in, isIPhone5p5inEarly, isIPhone5p5inMini, isIPhone5p8in, isIPhone6p1in, isIPhone6p5in, isSimulator, isWebApp } from './cordovaUtils';
+import { getAndroidSize, hasIPhoneNotch, isAndroid, isIOS, isIOSAppOnMac, isIPad, isIPadGiantSize, isIPhone4in, isIPhone4p7in, isIPhone5p5inEarly, isIPhone5p5inMini, isIPhone5p8in, isIPhone6p1in, isIPhone6p5in, isSimulator, isWebApp } from './cordovaUtils';
 import { pageEnumeration } from './cordovaUtilsPageEnumeration';
 import { normalizedHref } from './hrefUtils';
 import { cordovaOffsetLog } from './logging';
@@ -311,6 +311,8 @@ export function cordovaStickyHeaderPaddingTop () {
       return '48px';
     } else if (sizeString === '--xl') {
       return '48px';
+    } else if (sizeString === '--fold') {
+      return '43px';
     }
   }
   return '';
@@ -355,8 +357,7 @@ export function shareBottomOffset (pinToBottom) {
       return showFooterBar ? '56px' : '0px';
     }
   } else if (isAndroid()) {
-    const noShowSize = isAndroidSizeLG() || isAndroidSizeMD() ? '0px' : '18px';
-    return showFooterBar ? '57px' : noShowSize;
+    return showFooterBar ? '57px' : '0px';
   }
 
   // Default for all other devices, including desktop and mobile browsers

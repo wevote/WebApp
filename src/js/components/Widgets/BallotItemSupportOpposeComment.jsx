@@ -3,7 +3,7 @@ import React, { PureComponent, Suspense } from 'react';
 import styled from 'styled-components';
 import CandidateStore from '../../stores/CandidateStore';
 import MeasureStore from '../../stores/MeasureStore';
-import { isCordova } from '../../utils/cordovaUtils';
+import { isAndroidSizeMD, isCordova } from '../../utils/cordovaUtils';
 import { renderLog } from '../../utils/logging';
 import { stringContains } from '../../utils/textFormat';
 
@@ -247,10 +247,15 @@ BallotItemSupportOpposeComment.propTypes = {
   inModal: PropTypes.bool,
 };
 
+function wrapperPadding (props) {
+  const padString = isAndroidSizeMD() ? '8px 0px 8px 4px' : '8px 12px 8px 12px';
+  return props.showPositionStatementActionBar || props.inModal ? padString : '0';
+}
+
 const Wrapper = styled.div`
-  width: 100%;
+  width: ${() => (isAndroidSizeMD() ? '95%' : '100%')};
   background-color: ${({ showPositionStatementActionBar, inModal }) => (showPositionStatementActionBar || inModal ? '#eee' : 'white')} !important;
-  padding: ${(props) => (props.showPositionStatementActionBar || props.inModal ? '8px 12px 8px 12px' : '0')} !important;
+  padding: ${(props) => wrapperPadding(props)} !important;
   border-radius: 4px;
   @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
     background-color: white;

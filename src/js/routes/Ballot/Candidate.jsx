@@ -14,7 +14,6 @@ import CandidateStickyHeader from '../../components/Ballot/CandidateStickyHeader
 import LoadingWheel from '../../components/LoadingWheel';
 import ShareButtonDesktopTablet from '../../components/Share/ShareButtonDesktopTablet';
 import EndorsementCard from '../../components/Widgets/EndorsementCard';
-import { PageContentContainer } from '../../utils/pageLayoutStyles';
 import SearchOnGoogle from '../../components/Widgets/SearchOnGoogle';
 import SnackNotifier from '../../components/Widgets/SnackNotifier';
 import ThisIsMeAction from '../../components/Widgets/ThisIsMeAction';
@@ -26,8 +25,9 @@ import CandidateStore from '../../stores/CandidateStore';
 import IssueStore from '../../stores/IssueStore';
 import VoterGuideStore from '../../stores/VoterGuideStore';
 import VoterStore from '../../stores/VoterStore';
-import { isWebApp } from '../../utils/cordovaUtils';
+import { isAndroidSizeFold, isWebApp } from '../../utils/cordovaUtils';
 import { renderLog } from '../../utils/logging';
+import { PageContentContainer } from '../../utils/pageLayoutStyles';
 import { capitalizeString, convertToInteger } from '../../utils/textFormat';
 
 const CandidateItem = React.lazy(() => import(/* webpackChunkName: 'CandidateItem' */ '../../components/Ballot/CandidateItem'));
@@ -429,7 +429,7 @@ const RightColumnWrapper = styled.div`
 
 const TwoColumns = styled.div`
   display: flex;
-  margin: 0 -8px 0 -8px;
+  ${() => (isAndroidSizeFold() ? { margin: 0 } : { margin: '0 -8px 0 -8px' })};
 `;
 
 export default withStyles(styles)(Candidate);

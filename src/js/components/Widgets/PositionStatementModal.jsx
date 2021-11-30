@@ -10,7 +10,7 @@ import MeasureStore from '../../stores/MeasureStore';
 import SupportStore from '../../stores/SupportStore';
 import VoterStore from '../../stores/VoterStore';
 import { avatarGeneric } from '../../utils/applicationUtils';
-import { hasIPhoneNotch, isCordova, prepareForCordovaKeyboard, restoreStylesAfterCordovaKeyboard } from '../../utils/cordovaUtils';
+import { hasIPhoneNotch, isAndroid, isCordova, prepareForCordovaKeyboard, restoreStylesAfterCordovaKeyboard } from '../../utils/cordovaUtils';
 import { renderLog } from '../../utils/logging';
 import { stringContains } from '../../utils/textFormat';
 
@@ -219,9 +219,11 @@ class PositionStatementModal extends Component {
       }
     }
 
-    const rowsToShow = 6;
+    const rowsToShow = isAndroid() ? 4 : 6;
 
     // console.log('PositionStatementModal render, voter_address_object: ', voter_address_object);
+
+    // TODO: This class is too similar to ActivityPostModal - the common code should be extracted, so that it doesn't have to be maintained twice (the code was copied to make a slightly different version)
     return (
       <Dialog
         classes={{ paper: classes.dialogPaper }}
@@ -336,22 +338,23 @@ PositionStatementModal.propTypes = {
 
 const styles = (theme) => ({
   dialogTitle: {
-    paddingTop: 16,
+    padding: isAndroid() ? 8 : 'inherit',
+    paddingTop: !isAndroid() ? 16 : 'inherit',
   },
   dialogPaper: {
     marginTop: hasIPhoneNotch() ? 68 : 48,
-    minHeight: '200px',
+    minHeight: isAndroid() ? '257px' : '200px',
     maxHeight: '350px',
     height: '80%',
     width: '90%',
     maxWidth: '600px',
     top: '0px',
-    transform: 'translate(0%, -20%)',
+    transform: isAndroid() ? 'translate(0%, -18%)' : 'translate(0%, -20%)',
     [theme.breakpoints.down('xs')]: {
       minWidth: '95%',
       maxWidth: '95%',
       width: '95%',
-      minHeight: '200px',
+      minHeight: isAndroid() ? '237px' : '200px',
       maxHeight: '330px',
       height: '70%',
       margin: '0 auto',
@@ -368,7 +371,7 @@ const styles = (theme) => ({
   closeButton: {
     position: 'absolute',
     right: `${theme.spacing(1)}px`,
-    top: `${theme.spacing(1)}px`,
+    top: isAndroid() ? '-4px' : `${theme.spacing(1)}px`,
   },
   saveButtonRoot: {
     width: '100%',

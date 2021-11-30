@@ -6,7 +6,7 @@ import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
 import { Link } from 'react-router-dom';
 import VoterStore from '../../stores/VoterStore';
-import { historyPush, isAndroid, isCordova, isIOS, isIOsSmallerThanPlus, isIPhone5p5inEarly, isIPhone5p5inMini, isIPhone5p8in, isIPhone6p1in, isIPhone6p5in, isWebApp, isWebAppHeight0to568, isWebAppHeight569to667, isWebAppHeight668to736, isWebAppHeight737to896, restoreStylesAfterCordovaKeyboard } from '../../utils/cordovaUtils';
+import { historyPush, isAndroid, isAndroidSizeFold, isCordova, isIOS, isIOsSmallerThanPlus, isIPhone5p5inEarly, isIPhone5p5inMini, isIPhone5p8in, isIPhone6p1in, isIPhone6p5in, isWebApp, isWebAppHeight0to568, isWebAppHeight569to667, isWebAppHeight668to736, isWebAppHeight737to896, restoreStylesAfterCordovaKeyboard } from '../../utils/cordovaUtils';
 import initializeAppleSDK from '../../utils/initializeAppleSDK';
 import initializeFacebookSDK from '../../utils/initializeFacebookSDK';
 import { renderLog } from '../../utils/logging';
@@ -267,6 +267,7 @@ const styles = (theme) => ({
     maxHeight: '90%',
     offsetHeight: 'unset !important',
     top: () => {
+      if (isAndroidSizeFold()) return '15%';
       if (isCordova()) return '7%';
       return '50%';
     },
@@ -311,7 +312,7 @@ const styles = (theme) => ({
     },
   },
   signInModalDialogAndroid: {
-    // transform: 'translate(-50%, -60%)',
+    transform: isAndroid() ? 'none' : 'translate(-50%, -60%)',
   },
   signInModalDialogLarger: {
     bottom: 'unset',
