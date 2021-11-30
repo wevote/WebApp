@@ -159,7 +159,7 @@ class ItemPositionStatementActionBar extends Component {
     // }
     // console.log('ItemPositionStatementActionBar, onBlurInput:', e.target);
 
-    restoreStylesAfterCordovaKeyboard(ItemPositionStatementActionBar);
+    restoreStylesAfterCordovaKeyboard('ItemPositionStatementActionBar');
   };
 
   onFocusInput = () => {

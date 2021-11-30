@@ -305,11 +305,13 @@ export function cordovaStickyHeaderPaddingTop () {
     if (sizeString === '--sm') {
       return '48px';
     } else if (sizeString === '--md') {
-      return '49px';
+      return '48px';
     } else if (sizeString === '--lg') {
       return '48px';
     } else if (sizeString === '--xl') {
       return '48px';
+    } else if (sizeString === '--fold') {
+      return '43px';
     }
   }
   return '';
@@ -354,7 +356,7 @@ export function shareBottomOffset (pinToBottom) {
       return showFooterBar ? '56px' : '0px';
     }
   } else if (isAndroid()) {
-    return showFooterBar ? '57px' : '18px';
+    return showFooterBar ? '57px' : '0px';
   }
 
   // Default for all other devices, including desktop and mobile browsers

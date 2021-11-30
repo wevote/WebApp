@@ -7,7 +7,7 @@ import IPhoneSpacer from '../../components/Widgets/IPhoneSpacer';
 import AppObservableStore, { messageService } from '../../stores/AppObservableStore';
 import TwitterStore from '../../stores/TwitterStore';
 import VoterStore from '../../stores/VoterStore';
-import { historyPush, isIPad, isWebApp } from '../../utils/cordovaUtils';
+import { historyPush, isAndroidSizeFold, isIPad, isWebApp } from '../../utils/cordovaUtils';
 import Cookies from '../../utils/js-cookie/Cookies';
 import { oAuthLog, renderLog } from '../../utils/logging';
 import { PageContentContainer } from '../../utils/pageLayoutStyles';
@@ -29,6 +29,7 @@ export default class TwitterSignInProcess extends Component {
     this.twitterStoreListener = TwitterStore.addListener(this.onTwitterStoreChange.bind(this));
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
     this.twitterSignInRetrieve();
+    window.scrollTo(0, 0);
   }
 
   componentWillUnmount () {
@@ -272,7 +273,7 @@ export default class TwitterSignInProcess extends Component {
 const LoadingDiv = styled.div`
   font-size: 18px;
   margin-top: 50px;
-  ${() => (isIPad() ? {
+  ${() => (isIPad() || isAndroidSizeFold() ? {
     marginLeft: '80px',
     marginRight: '80px',
   } : {})};

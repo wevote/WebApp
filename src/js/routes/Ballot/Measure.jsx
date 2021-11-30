@@ -11,7 +11,6 @@ import OrganizationActions from '../../actions/OrganizationActions';
 import MeasureStickyHeader from '../../components/Ballot/MeasureStickyHeader';
 import LoadingWheelComp from '../../components/LoadingWheelComp';
 import EndorsementCard from '../../components/Widgets/EndorsementCard';
-import { PageContentContainer } from '../../utils/pageLayoutStyles';
 import SearchOnGoogle from '../../components/Widgets/SearchOnGoogle';
 import SnackNotifier from '../../components/Widgets/SnackNotifier';
 import ViewOnBallotpedia from '../../components/Widgets/ViewOnBallotpedia';
@@ -22,8 +21,10 @@ import MeasureStore from '../../stores/MeasureStore';
 import VoterGuideStore from '../../stores/VoterGuideStore';
 import VoterStore from '../../stores/VoterStore';
 import { cordovaBallotFilterTopMargin } from '../../utils/cordovaOffsets';
+import { isAndroidSizeFold } from '../../utils/cordovaUtils';
 import isMobileScreenSize from '../../utils/isMobileScreenSize';
 import { renderLog } from '../../utils/logging';
+import { PageContentContainer } from '../../utils/pageLayoutStyles';
 import { capitalizeString } from '../../utils/textFormat';
 
 const DelayedLoad = React.lazy(() => import(/* webpackChunkName: 'DelayedLoad' */ '../../components/Widgets/DelayedLoad'));
@@ -424,7 +425,7 @@ const RightColumnWrapper = styled.div`
 
 const TwoColumns = styled.div`
   display: flex;
-  margin: 0 -8px 0 -8px;
+  ${() => (isAndroidSizeFold() ? { margin: 0 } : { margin: '0 -8px 0 -8px' })};
   @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
     margin: 0 3px;
   }

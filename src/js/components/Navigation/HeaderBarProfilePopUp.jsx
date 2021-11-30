@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
-import { isCordova, isWebApp, restoreStylesAfterCordovaKeyboard } from '../../utils/cordovaUtils';
+import { isAndroidSizeXL, isCordova, isWebApp, restoreStylesAfterCordovaKeyboard } from '../../utils/cordovaUtils';
 import { renderLog } from '../../utils/logging';
 
 class HeaderBarProfilePopUp extends Component {
@@ -215,6 +215,11 @@ const ProfileMenu = styled.div`
   @media (max-width: 965px) {
     right: 15px;
   }
+  ${() => (isAndroidSizeXL() ? {
+    left: '55%',
+    top: '42px',
+    width: '30%',
+  } : {})}
 `;
 
 const styles = {

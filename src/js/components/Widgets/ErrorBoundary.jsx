@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes  from 'prop-types';
+import { isAndroidSizeFold } from '../../utils/cordovaUtils';
 
 class ErrorBoundary extends Component {
   constructor (props) {
@@ -24,7 +25,7 @@ class ErrorBoundary extends Component {
       // You could render any custom fallback UI here
       return (
         <div style={{
-          margin: '100px',
+          margin: isAndroidSizeFold() ? '50px' : '100px',
           padding: '10px',
           backgroundColor: 'white',
           boxShadow: 'rgba(0, 0, 0, 0.2) 0px 1px 3px 0px, rgba(0, 0, 0, 0.14) 0px 1px 1px 0px, rgba(0, 0, 0, 0.12) 0px 2px 1px -1px',

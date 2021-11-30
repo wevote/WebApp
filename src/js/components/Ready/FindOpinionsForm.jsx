@@ -296,7 +296,7 @@ const OuterWrapper = styled.div`
   display: flex;
   justify-content: center;
   padding: 0 !important;
-  min-height: 100px;
+  min-height: ${() => (isCordova() ? '65px' : '100px')};
   max-width: 260px;
 `;
 

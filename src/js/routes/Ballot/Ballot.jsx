@@ -34,7 +34,7 @@ import VoterGuideStore from '../../stores/VoterGuideStore';
 import VoterStore from '../../stores/VoterStore';
 import apiCalming from '../../utils/apiCalming';
 import { dumpCssFromId } from '../../utils/appleSiliconUtils';
-import { chipLabelText, historyPush, isCordova, isIOSAppOnMac, isIPadGiantSize, isIPhone6p1in, isWebApp } from '../../utils/cordovaUtils';
+import { chipLabelText, historyPush, isAndroidSizeFold, isCordova, isIOSAppOnMac, isIPadGiantSize, isIPhone6p1in, isWebApp } from '../../utils/cordovaUtils';
 import isMobile from '../../utils/isMobile';
 import isMobileScreenSize from '../../utils/isMobileScreenSize';
 import Cookies from '../../utils/js-cookie/Cookies';
@@ -1225,6 +1225,14 @@ class Ballot extends Component {
       historyPush(pathname);
     }
 
+    let widthOverride = {};
+    if (isAndroidSizeFold()) {
+      widthOverride = { width: '96px' };
+    }
+    if (isSearching && isCordova()) {
+      widthOverride = { width: 'unset' };
+    }
+
     let numberOfBallotItemsDisplayed = 0;
     let showLoadingText = true;
     let searchTextString = '';
@@ -1288,7 +1296,7 @@ class Ballot extends Component {
                                           className="btn_ballot_filter"
                                           classes={{ root: classes.chipRootAll, label: classes.chipLabel, outlinedPrimary: (raceLevelFilterType === 'All' && !isSearching) ? classes.chipOutlined : null }}
                                           label="All"
-                                          style={isSearching && isCordova() ? { width: 'unset' } : {}}
+                                          style={widthOverride}
                                         />
                                       </div>
                                     )}
@@ -1315,7 +1323,7 @@ class Ballot extends Component {
                                               className="btn_ballot_filter"
                                               classes={{ root: classes.chipRoot, label: classes.chipLabel, outlinedPrimary: (oneTypeOfBallotItem === raceLevelFilterType && !isSearching) ? classes.chipOutlined : null }}
                                               label={chipLabelText(oneTypeOfBallotItem)}
-                                              style={isSearching && isCordova() ? { width: 'unset' } : {}}
+                                              style={widthOverride}
                                             />
                                           );
                                           return (
