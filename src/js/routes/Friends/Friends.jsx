@@ -513,7 +513,7 @@ class Friends extends Component {
     return (
       <PageContentContainer>
         {displayFriendsTabs() ? (
-          <div className="friends__heading friends__heading__cordova">
+          <div className="friends__heading">
             <div className="container-fluid debugStyleBottom">
               <div className="Friends__Wrapper" style={cordovaFriendsWrapper()}>
                 {mobileContentToDisplay}

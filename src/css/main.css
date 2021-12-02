@@ -10637,9 +10637,9 @@ body {
     z-index: 6 !important;
     transform: translate3d(0, -50px, 0);
     transition: all 100ms ease-in-out 0s; }
-  .friends__heading__cordova {
-    transform: translate3d(0, -68px, 0);
-    padding-top: 157px; }
+  /*.friends__heading__cordova {*/
+  /*  transform: translate3d(0, -68px, 0);*/
+  /*  padding-top: 157px; }*/
 
 .invite-inputs {
   position: relative;

@@ -111,6 +111,18 @@ class App extends Component {
     // this.setShowHeaderFooter = this.setShowHeaderFooter.bind(this);
     this.setShowReadyHeavy = this.setShowReadyHeavy.bind(this);
     this.localIsCordova();
+    const { headerObjects: temp } = window;
+    if (!temp) {
+      window.headerObjects = {
+        logo: null,
+        ready: null,
+        ballot: null,
+        opinions: null,
+        discuss: null,
+        bell: null,
+        photo: null,
+      };
+    }
   }
 
   // See https://reactjs.org/docs/error-boundaries.html
