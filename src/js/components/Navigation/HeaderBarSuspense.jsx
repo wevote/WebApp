@@ -36,19 +36,6 @@ export default function HeaderBarSuspense () {
   renderLog('"Render" of HeaderBarSuspense');
   const left = (window.innerWidth - 964) / 2;  // about 358 on a high res screen
   const leftForBeta = (left + 80).toString();
-
-  const { headerObjects: temp } = window;
-  if (!temp) {
-    window.headerObjects = {
-      logo: null,
-      ready: null,
-      ballot: null,
-      opinions: null,
-      discuss: null,
-      bell: null,
-      photo: null,
-    };
-  }
   const { headerObjects } = window;
   let logoModified = window.headerObjects.logo;
   if (logoModified && logoModified.includes('>beta<')) {
