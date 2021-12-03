@@ -4,7 +4,9 @@ import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
-import { cordovaDot, historyPush, isWebApp } from '../../utils/cordovaUtils';
+import { isWebApp } from '../../utils/cordovaUtils';
+import normalizedImagePath from '../../common/utils/normalizedImagePath';
+import historyPush from '../../common/utils/historyPush';
 
 const OpenExternalWebSite = React.lazy(() => import(/* webpackChunkName: 'OpenExternalWebSite' */ '../../common/components/Widgets/OpenExternalWebSite'));
 
@@ -203,7 +205,7 @@ class WelcomeFooter extends Component {
                   body={(
                     <img
                       alt="Google Play Store badge"
-                      src={cordovaDot(googlePlayIcon)}
+                      src={normalizedImagePath(googlePlayIcon)}
                       className={classes.badgeIcon}
                     />
                   )}
@@ -222,7 +224,7 @@ class WelcomeFooter extends Component {
                   body={(
                     <img
                       alt="Apple App Store badge"
-                      src={cordovaDot(appStoreIcon)}
+                      src={normalizedImagePath(appStoreIcon)}
                       className={classes.appleBadgeIcon}
                     />
                   )}

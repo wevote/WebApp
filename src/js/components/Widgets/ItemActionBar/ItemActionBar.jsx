@@ -12,7 +12,7 @@ import webAppConfig from '../../../config';
 import VoterConstants from '../../../constants/VoterConstants';
 import SupportStore from '../../../stores/SupportStore';
 import VoterStore from '../../../stores/VoterStore';
-import { cordovaDot } from '../../../utils/cordovaUtils';
+import normalizedImagePath from '../../../common/utils/normalizedImagePath';
 import { renderLog } from '../../../common/utils/logging';
 import { stringContains } from '../../../utils/textFormat';
 import PositionPublicToggle from '../PositionPublicToggle';
@@ -609,7 +609,7 @@ class ItemActionBar extends PureComponent {
 
     const shareIcon = (
       <span className="btn__icon">
-        <img src={cordovaDot(shareIconSvg)}
+        <img src={normalizedImagePath(shareIconSvg)}
              width={iconSize}
              height={iconSize}
              color={iconColor}

@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import AppObservableStore, { messageService } from '../../stores/AppObservableStore';
 import VoterStore from '../../stores/VoterStore';
-import { historyPush, isWebApp } from '../../utils/cordovaUtils';
+import { isWebApp } from '../../utils/cordovaUtils';
+import historyPush from '../../common/utils/historyPush';
 import Cookies from '../../common/utils/js-cookie/Cookies';
 import { oAuthLog, renderLog } from '../../common/utils/logging';
 import { PageContentContainer } from '../../utils/pageLayoutStyles';

@@ -8,7 +8,9 @@ import OfficeActions from '../../actions/OfficeActions';
 import BallotStore from '../../stores/BallotStore';
 import CandidateStore from '../../stores/CandidateStore';
 import SupportStore from '../../stores/SupportStore';
-import { cordovaDot, historyPush, isCordova } from '../../utils/cordovaUtils';
+import { isCordova } from '../../utils/cordovaUtils';
+import normalizedImagePath from '../../common/utils/normalizedImagePath';
+import historyPush from '../../common/utils/historyPush';
 import { renderLog } from '../../common/utils/logging';
 import { sortCandidateList } from '../../utils/positionFunctions';
 import { toTitleCase } from '../../utils/textFormat';
@@ -240,7 +242,7 @@ class OfficeItemCompressed extends Component {
             }
             const candidatePartyText = oneCandidate.party && oneCandidate.party.length ? `${oneCandidate.party}` : '';
             const avatarCompressed = `card-main__avatar-compressed${isCordova() ? '-cordova' : ''}`;
-            const avatarBackgroundImage = cordovaDot('../img/global/svg-icons/avatar-generic.svg');
+            const avatarBackgroundImage = normalizedImagePath('../img/global/svg-icons/avatar-generic.svg');
 
             return (
               <Column

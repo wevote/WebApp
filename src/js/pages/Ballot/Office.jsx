@@ -16,7 +16,7 @@ import CandidateStore from '../../stores/CandidateStore';
 import IssueStore from '../../stores/IssueStore';
 import OfficeStore from '../../stores/OfficeStore';
 import VoterStore from '../../stores/VoterStore';
-import { cordovaDot } from '../../utils/cordovaUtils';
+import normalizedImagePath from '../../common/utils/normalizedImagePath';
 import { renderLog } from '../../common/utils/logging';
 import { sortCandidateList } from '../../utils/positionFunctions';
 import { capitalizeString } from '../../utils/textFormat';
@@ -297,7 +297,7 @@ class Office extends Component {
     // =========== Testimonial variables ============================
 
     const testimonialAuthor = 'Dale M., Oakland, California';
-    const imageUrl = cordovaDot(testimonialPhoto);
+    const imageUrl = normalizedImagePath(testimonialPhoto);
     const testimonial = 'I like seeing the opinions of people who share my values.';
 
     // ==============================================================

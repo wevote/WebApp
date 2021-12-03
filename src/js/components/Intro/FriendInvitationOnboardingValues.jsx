@@ -2,7 +2,7 @@ import { withStyles, withTheme } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
 import styled from 'styled-components';
-import { cordovaDot } from '../../utils/cordovaUtils';
+import normalizedImagePath from '../../common/utils/normalizedImagePath';
 import { renderLog } from '../../common/utils/logging';
 import InfoCircleIcon from '../Widgets/InfoCircleIcon';
 
@@ -36,7 +36,7 @@ class FriendInvitationOnboardingValues extends Component {
           <img
             className="header-logo-img"
             alt="We Vote logo"
-            src={cordovaDot(logoDark)}
+            src={normalizedImagePath(logoDark)}
           />
         </WeVoteLogoWrapper>
         <FriendInvitationTopHeader>

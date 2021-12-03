@@ -1,4 +1,4 @@
-import webAppConfig from '../config';
+import webAppConfig from '../../config';
 
 // If history retention is not working, see TabWithPushHistory.jsx for an example of how to do it.
 // See v5: https://reactrouter.com/native/api/Hooks/usehistory

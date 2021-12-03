@@ -8,7 +8,8 @@ import AppObservableStore from '../../stores/AppObservableStore';
 import OrganizationActions from '../../actions/OrganizationActions';
 import OrganizationStore from '../../stores/OrganizationStore';
 import VoterStore from '../../stores/VoterStore';
-import { cordovaDot, cordovaOpenSafariView, isCordova, isWebApp } from '../../utils/cordovaUtils';
+import { cordovaOpenSafariView, isCordova, isWebApp } from '../../utils/cordovaUtils';
+import normalizedImagePath from '../../common/utils/normalizedImagePath';
 import { renderLog } from '../../common/utils/logging';
 import { voterFeaturePackageExceedsOrEqualsRequired } from '../../utils/pricingFunctions';
 import LoadingWheel from '../../common/components/Widgets/LoadingWheel';
@@ -344,7 +345,7 @@ class SettingsSharing extends Component {
                         width: 'auto',
                         height: '100%',
                       }}
-                      src={chosenLogoFromFileReader || chosenLogoUrlHttps || cordovaDot('/img/global/svg-icons/we-vote-logo-horizontal-color-dark-141x46.svg')}
+                      src={chosenLogoFromFileReader || chosenLogoUrlHttps || normalizedImagePath('/img/global/svg-icons/we-vote-logo-horizontal-color-dark-141x46.svg')}
                     />
                   </div>
                   <DescriptionText>Place your logo in the header bar. Image will be resized to be no more than 132px wide, and 42px tall.</DescriptionText>
@@ -387,7 +388,7 @@ class SettingsSharing extends Component {
                   <PreviewImage
                     alt="Favicon"
                     width="32px"
-                    src={chosenFaviconFromFileReader || chosenFaviconUrlHttps || cordovaDot('/img/global/svg-icons/we-vote-icon-square-color-dark.svg')}
+                    src={chosenFaviconFromFileReader || chosenFaviconUrlHttps || normalizedImagePath('/img/global/svg-icons/we-vote-icon-square-color-dark.svg')}
                   />
                   <DescriptionText>The icon for your site in the browser&apos;s tab. Optimal size is 32x32.</DescriptionText>
                 </ImageDescription>
@@ -439,7 +440,7 @@ class SettingsSharing extends Component {
                   <PreviewImage
                     alt="Social share image"
                     width="96px"
-                    src={chosenSocialShareMasterImageFromFileReader || chosenSocialShareMasterImageUrlHttps || cordovaDot('/img/global/svg-icons/we-vote-icon-square-color-dark.svg')}
+                    src={chosenSocialShareMasterImageFromFileReader || chosenSocialShareMasterImageUrlHttps || normalizedImagePath('/img/global/svg-icons/we-vote-icon-square-color-dark.svg')}
                   />
                   <DescriptionText>The icon used when your page is shared on social media. Ideal size is 1600x900. Size must be at least 200x200.</DescriptionText>
                 </ImageDescription>

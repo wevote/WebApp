@@ -6,7 +6,7 @@ import styled from 'styled-components';
 import AppObservableStore from '../../stores/AppObservableStore';
 import ReadyStore from '../../stores/ReadyStore';
 import VoterStore from '../../stores/VoterStore';
-import { cordovaDot } from '../../utils/cordovaUtils';
+import normalizedImagePath from '../../common/utils/normalizedImagePath';
 import { renderLog } from '../../common/utils/logging';
 import { ButtonLeft, ButtonText, Icon, PercentComplete, ReadyCard, StyledButton, StyledCheckbox, SubTitle, TitleRowWrapper } from './ReadyTaskStyles';
 
@@ -66,14 +66,14 @@ class ReadyTaskPlan extends React.Component {
         <Icon className="u-cursor--pointer" onClick={this.showVoterPlanModal}>
           {completed ?  (
             <img
-              src={cordovaDot(plan100Percent)}
+              src={normalizedImagePath(plan100Percent)}
               width="50"
               height="50"
               alt="Made a Plan to Vote"
             />
           ) : (
             <img
-              src={cordovaDot(plan0Percent)}
+              src={normalizedImagePath(plan0Percent)}
               width="50"
               height="50"
               alt="Make a Plan to Vote"

@@ -6,7 +6,9 @@ import CandidateStore from '../../stores/CandidateStore';
 import OrganizationStore from '../../stores/OrganizationStore';
 import SupportStore from '../../stores/SupportStore';
 import VoterGuideStore from '../../stores/VoterGuideStore';
-import { cordovaDot, historyPush, isCordova } from '../../utils/cordovaUtils';
+import { isCordova } from '../../utils/cordovaUtils';
+import normalizedImagePath from '../../common/utils/normalizedImagePath';
+import historyPush from '../../common/utils/historyPush';
 import { renderLog } from '../../common/utils/logging';
 
 const ImageHandler = React.lazy(() => import(/* webpackChunkName: 'ImageHandler' */ '../ImageHandler'));
@@ -112,7 +114,7 @@ export default class CandidateItemCompressed extends Component {
     const candidateDescriptionText = this.state.oneCandidate.twitter_description && this.state.oneCandidate.twitter_description.length ? this.state.oneCandidate.twitter_description : '';
     const candidateText = candidatePartyText + candidateDescriptionText;
     const avatarCompressed = `card-main__avatar-compressed${isCordova() ? '-cordova' : ''} o-media-object__anchor u-cursor--pointer u-self-start u-push--sm`;
-    const avatarBackgroundImage = cordovaDot('../img/global/svg-icons/avatar-generic.svg');
+    const avatarBackgroundImage = normalizedImagePath('../img/global/svg-icons/avatar-generic.svg');
 
     return (
       <div key={oneCandidateWeVoteId} className="u-stack--md">

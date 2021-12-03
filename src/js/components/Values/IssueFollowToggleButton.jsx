@@ -6,7 +6,7 @@ import React, { Component } from 'react';
 import IssueActions from '../../actions/IssueActions';
 import IssueStore from '../../stores/IssueStore';
 import VoterStore from '../../stores/VoterStore';
-import { historyPush } from '../../utils/cordovaUtils';
+import historyPush from '../../common/utils/historyPush';
 import { renderLog } from '../../common/utils/logging';
 import { shortenText } from '../../utils/textFormat';
 import { openSnackbar } from '../Widgets/SnackNotifier';

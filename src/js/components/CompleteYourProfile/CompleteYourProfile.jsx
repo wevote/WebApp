@@ -8,7 +8,7 @@ import AppObservableStore from '../../stores/AppObservableStore';
 import BallotStore from '../../stores/BallotStore';
 import SupportStore from '../../stores/SupportStore';
 import VoterStore from '../../stores/VoterStore';
-import { cordovaDot } from '../../utils/cordovaUtils';
+import normalizedImagePath from '../../common/utils/normalizedImagePath';
 import Cookies from '../../common/utils/js-cookie/Cookies';
 import { renderLog } from '../../common/utils/logging';
 // import { Ballot } from '@material-ui/icons';
@@ -41,7 +41,7 @@ class CompleteYourProfile extends Component {
           buttonText: 'Choose Interests',
           completed: false,
           description: '',
-          icon: (<img alt="Choose Interests" src={cordovaDot('/img/global/svg-icons/issues/climate-change-24.svg')} />),
+          icon: (<img alt="Choose Interests" src={normalizedImagePath('/img/global/svg-icons/issues/climate-change-24.svg')} />),
           onClick: this.openValuesIntroModal,
         },
         // {

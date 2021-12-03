@@ -2,7 +2,8 @@ import { withStyles, withTheme } from '@material-ui/core/styles';
 import { ArrowForward, CheckCircle } from '@material-ui/icons';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { cordovaDot, historyPush } from '../../utils/cordovaUtils';
+import normalizedImagePath from '../../common/utils/normalizedImagePath';
+import historyPush from '../../common/utils/historyPush';
 import { renderLog } from '../../common/utils/logging';
 import { ButtonLeft, ButtonText, Icon, PercentComplete, ReadyCard, StyledButton, StyledCheckbox, StyledCheckboxCompleted, SubTitle, Title, TitleRowWrapper } from './ReadyTaskStyles';
 
@@ -45,14 +46,14 @@ class ReadyTaskFriends extends React.Component {
         <Icon>
           {numberOfFriendsReady ?  (
             <img
-              src={cordovaDot(register100Percent)}
+              src={normalizedImagePath(register100Percent)}
               width="50"
               height="50"
               alt="Are your friends ready?"
             />
           ) : (
             <img
-              src={cordovaDot(register0Percent)}
+              src={normalizedImagePath(register0Percent)}
               width="50"
               height="50"
               alt="Are your friends ready?"

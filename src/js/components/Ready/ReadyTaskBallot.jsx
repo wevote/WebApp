@@ -9,7 +9,8 @@ import AppObservableStore from '../../stores/AppObservableStore';
 import BallotStore from '../../stores/BallotStore';
 import SupportStore from '../../stores/SupportStore';
 import VoterStore from '../../stores/VoterStore';
-import { cordovaDot, historyPush } from '../../utils/cordovaUtils';
+import normalizedImagePath from '../../common/utils/normalizedImagePath';
+import historyPush from '../../common/utils/historyPush';
 import { renderLog } from '../../common/utils/logging';
 import { ButtonLeft, ButtonText, Icon, PercentComplete, ReadyCard, StyledButton, StyledCheckbox, StyledCheckboxCompleted, SubTitle, TitleRowWrapper } from './ReadyTaskStyles';
 import ShowMoreButtons from './ShowMoreButtons';
@@ -420,7 +421,7 @@ class ReadyTaskBallot extends React.Component {
     }
     const completedIcon = (
       <img
-        src={cordovaDot(ballotImage)}
+        src={normalizedImagePath(ballotImage)}
         width="50"
         height="50"
         alt={altValue}

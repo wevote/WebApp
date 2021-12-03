@@ -5,7 +5,8 @@ import LoadingWheel from '../../common/components/Widgets/LoadingWheel';
 import TwitterSignIn from '../../components/Twitter/TwitterSignIn';
 import FacebookStore from '../../stores/FacebookStore';
 import VoterStore from '../../stores/VoterStore';
-import { cordovaDot, historyPush } from '../../utils/cordovaUtils';
+import normalizedImagePath from '../../common/utils/normalizedImagePath';
+import historyPush from '../../common/utils/historyPush';
 import { renderLog } from '../../common/utils/logging';
 
 const closeIcon = '../../../img/global/icons/x-close.png';
@@ -78,7 +79,7 @@ export default class GetStarted extends Component {
         <Helmet title="Welcome to We Vote" />
         <div className="intro-story container-fluid well u-inset--md">
           <span onClick={this.goToBallotLink}>
-            <img src={cordovaDot(closeIcon)} className="x-close" alt="close" />
+            <img src={normalizedImagePath(closeIcon)} className="x-close" alt="close" />
           </span>
           <div className="intro-story__h1 xs-text-left">Sign In</div>
           <div className="intro-story__padding--btm">

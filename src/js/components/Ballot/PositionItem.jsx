@@ -12,7 +12,7 @@ import IssueStore from '../../stores/IssueStore';
 import OrganizationStore from '../../stores/OrganizationStore';
 import VoterGuideStore from '../../stores/VoterGuideStore';
 import VoterStore from '../../stores/VoterStore';
-import { cordovaDot } from '../../utils/cordovaUtils';
+import normalizedImagePath from '../../common/utils/normalizedImagePath';
 import { renderLog } from '../../common/utils/logging';
 import { isSpeakerTypeIndividual, isSpeakerTypeOrganization } from '../../utils/organization-functions';
 import { isOrganizationInVotersNetwork } from '../../utils/positionFunctions';
@@ -250,7 +250,7 @@ class PositionItem extends Component {
         <SvgImage imageName="organization-icon" />
       );
     } else if (isSpeakerTypeIndividual(position.speaker_type)) {
-      const avatar = cordovaDot('../../img/global/svg-icons/avatar-generic.svg');
+      const avatar = normalizedImagePath('../../img/global/svg-icons/avatar-generic.svg');
       imagePlaceholder = (
         <SvgImage imageName={avatar} />
       );

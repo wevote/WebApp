@@ -5,7 +5,8 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import Helmet from 'react-helmet';
 import styled from 'styled-components';
-import { historyPush, isCordova } from '../utils/cordovaUtils';
+import { isCordova } from '../utils/cordovaUtils';
+import historyPush from '../common/utils/historyPush';
 import { renderLog } from '../common/utils/logging';
 import { PageContentContainer } from '../utils/pageLayoutStyles';
 

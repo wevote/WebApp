@@ -10,7 +10,7 @@ import AppObservableStore from '../../stores/AppObservableStore';
 import FriendStore from '../../stores/FriendStore';
 import IssueStore from '../../stores/IssueStore';
 import OrganizationStore from '../../stores/OrganizationStore';
-import { cordovaDot } from '../../utils/cordovaUtils';
+import normalizedImagePath from '../../common/utils/normalizedImagePath';
 import { renderLog } from '../../common/utils/logging';
 import { isSpeakerTypeIndividual, isSpeakerTypeOrganization } from '../../utils/organization-functions';
 import { numberWithCommas } from '../../utils/textFormat';
@@ -98,13 +98,13 @@ class voterGuideDisplayForListForOpinions extends Component {
     if (isSpeakerTypeOrganization(voterGuideOwnerType)) {
       imagePlaceholder = (
         <ReactSVG
-          src={cordovaDot('/img/global/svg-icons/organization-icon.svg')}
+          src={normalizedImagePath('/img/global/svg-icons/organization-icon.svg')}
         />
       );
     } else if (isSpeakerTypeIndividual(voterGuideOwnerType)) {
       imagePlaceholder = (
         <ReactSVG
-          src={cordovaDot('/img/global/svg-icons/avatar-generic.svg')}
+          src={normalizedImagePath('/img/global/svg-icons/avatar-generic.svg')}
         />
       );
     }

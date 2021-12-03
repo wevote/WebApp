@@ -12,7 +12,7 @@ import { Section, Bold, DescriptionContainer, MemberListContainer, SectionTitle 
 import ExternalLinkIcon from '../../common/components/Widgets/ExternalLinkIcon';
 import VoterStore from '../../stores/VoterStore';
 import cordovaScrollablePaneTopPadding from '../../utils/cordovaScrollablePaneTopPadding';
-import { cordovaDot } from '../../utils/cordovaUtils';
+import normalizedImagePath from '../../common/utils/normalizedImagePath';
 import { renderLog } from '../../common/utils/logging';
 import ToolBar from '../../common/components/Widgets/ToolBar';
 
@@ -106,7 +106,7 @@ class About extends Component {
                 <Image
                   alt="We Vote at iOS Dev camp, where we won 'Best App for Good'."
                   title="We Vote at iOS Dev camp, where we won 'Best App for Good'."
-                  src={cordovaDot('/img/global/photos/iOSDevCamp2016.png')}
+                  src={normalizedImagePath('/img/global/photos/iOSDevCamp2016.png')}
                 />
                 <AboutFigCaption>We Vote at iOS Dev camp.</AboutFigCaption>
               </figure>

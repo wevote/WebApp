@@ -3,7 +3,7 @@ import React, { Component, Suspense } from 'react';
 import styled from 'styled-components';
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 import Tooltip from 'react-bootstrap/Tooltip';
-import { cordovaDot } from '../../utils/cordovaUtils';
+import normalizedImagePath from '../../common/utils/normalizedImagePath';
 import { renderLog } from '../../common/utils/logging';
 import { vimeoRegX, youTubeRegX } from '../../utils/textFormat';
 import ExternalLinkIcon from '../../common/components/Widgets/ExternalLinkIcon';
@@ -77,7 +77,7 @@ export default class PositionInformationOnlySnippet extends Component {
               <span>
                 <OverlayTrigger placement="top" overlay={tooltip}>
                   <PublicFriendsIndicator>
-                    <img src={cordovaDot(noPositionIcon)}
+                    <img src={normalizedImagePath(noPositionIcon)}
                          className={className}
                          width={24}
                          height={24}

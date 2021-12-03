@@ -8,7 +8,7 @@ import MeasureActions from '../../actions/MeasureActions';
 import BallotStore from '../../stores/BallotStore';
 import MeasureStore from '../../stores/MeasureStore';
 import SupportStore from '../../stores/SupportStore';
-import { historyPush } from '../../utils/cordovaUtils';
+import historyPush from '../../common/utils/historyPush';
 import extractNumber from '../../common/utils/extractNumber';
 import { renderLog } from '../../common/utils/logging';
 import { capitalizeString, shortenText, stripHtmlFromString } from '../../utils/textFormat';

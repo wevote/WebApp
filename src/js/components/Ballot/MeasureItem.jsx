@@ -5,7 +5,7 @@ import React, { Component, Suspense } from 'react';
 import styled from 'styled-components';
 import { messageService } from '../../stores/AppObservableStore';
 import MeasureStore from '../../stores/MeasureStore';
-import { historyPush } from '../../utils/cordovaUtils';
+import historyPush from '../../common/utils/historyPush';
 import { renderLog } from '../../common/utils/logging';
 import { capitalizeString } from '../../utils/textFormat';
 import ExternalLinkIcon from '../../common/components/Widgets/ExternalLinkIcon';

@@ -1,5 +1,5 @@
 import React, { Component, Suspense } from 'react';
-import { cordovaDot } from '../../utils/cordovaUtils';
+import normalizedImagePath from '../../common/utils/normalizedImagePath';
 import InfoCircleIcon from './InfoCircleIcon';
 import SplitIconButton from '../../common/components/Widgets/SplitIconButton';
 
@@ -37,7 +37,7 @@ class AddEndorsements extends Component {
                   <SplitIconButton
                     buttonText="Add endorsements"
                     externalUniqueId="myValuesAddEndorsementsToWeVote"
-                    icon={<img src={cordovaDot(positionIcon)} alt="" />}
+                    icon={<img src={normalizedImagePath(positionIcon)} alt="" />}
                     id="myValuesAddEndorsementsToWeVote"
                     title="Endorsements missing?"
                   />

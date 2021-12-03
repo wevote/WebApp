@@ -27,7 +27,9 @@ import BallotStore from '../../stores/BallotStore';
 import OrganizationStore from '../../stores/OrganizationStore';
 import VoterStore from '../../stores/VoterStore';
 import apiCalming from '../../utils/apiCalming';
-import { cordovaDot, historyPush, isCordova, isIPad } from '../../utils/cordovaUtils';
+import { isCordova, isIPad } from '../../utils/cordovaUtils';
+import normalizedImagePath from '../../common/utils/normalizedImagePath';
+import historyPush from '../../common/utils/historyPush';
 import { formatDateToMonthDayYear, timeFromDate } from '../../common/utils/dateFormat';
 import lazyPreloadPages from '../../utils/lazyPreloadPages';
 import { renderLog } from '../../common/utils/logging';
@@ -264,7 +266,7 @@ class News extends Component {
     let numberOfActivityTidbitsDisplayed = 0;
 
     const testimonialAuthor = 'Alissa B., Oakland, California';
-    const imageUrl = cordovaDot('/img/global/photos/Alissa_B-128x128.jpg');
+    const imageUrl = normalizedImagePath('/img/global/photos/Alissa_B-128x128.jpg');
     const testimonial = 'Great way to sort through my ballot! My husband and I used We Vote during the last election to learn more about our ballots and make some tough choices. Between following various organizations, and friending a couple of trusted friends, we felt like we had an excellent pool of information to draw from.';
 
     // August 23, 2020: These resolve a problem that exists in the WebApp, but looks much worse in
@@ -387,7 +389,7 @@ class News extends Component {
                             <PreviewImage
                               alt="we vote logo"
                               width="96px"
-                              src={cordovaDot('/img/global/svg-icons/we-vote-icon-square-color-dark.svg')}
+                              src={normalizedImagePath('/img/global/svg-icons/we-vote-icon-square-color-dark.svg')}
                             />
                           </VoterAndWeVoteLogos>
                           <DateVoterJoined>

@@ -22,7 +22,7 @@ import BallotStore from '../stores/BallotStore';
 import OrganizationStore from '../stores/OrganizationStore';
 import VoterGuideStore from '../stores/VoterGuideStore';
 import VoterStore from '../stores/VoterStore';
-import { cordovaDot } from '../utils/cordovaUtils';
+import normalizedImagePath from '../common/utils/normalizedImagePath';
 import { renderLog } from '../common/utils/logging';
 import { PageContentContainer } from '../utils/pageLayoutStyles';
 import { stringContains } from '../utils/textFormat';
@@ -37,7 +37,7 @@ const groupedFilters = [
   //   filterId: 'federalRaceFilter',  // thumbUpFilter
   // },
 ];
-const group = cordovaDot('../../img/global/svg-icons/group-icon.svg');
+const group = normalizedImagePath('../../img/global/svg-icons/group-icon.svg');
 
 const islandFilters = [
   {

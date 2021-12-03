@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
 import { ReactSVG } from 'react-svg';
 import styled from 'styled-components';
-import { cordovaDot } from '../../utils/cordovaUtils';
+import normalizedImagePath from '../../common/utils/normalizedImagePath';
 import { cleanArray } from '../../utils/textFormat';
 import FriendsIcon from './FriendsIcon';
 import PositionItemScorePopoverTextOnly from './PositionItemScorePopoverTextOnly';
@@ -165,7 +165,7 @@ class PositionSummaryListForPopover extends Component {
                       {issuesInCommonForIconDisplayArray.map((issue) => (
                         <IssueIcon key={`issueInScore-${issue.issue_we_vote_id}`}>
                           <ReactSVG
-                            src={cordovaDot(`/img/global/svg-icons/issues/${issue.issue_icon_local_path}.svg`)}
+                            src={normalizedImagePath(`/img/global/svg-icons/issues/${issue.issue_icon_local_path}.svg`)}
                             beforeInjection={(svg) => svg.setAttribute('style', { fill: '#555', padding: '1px 1px 1px 0px' })}
                           />
                         </IssueIcon>

@@ -1,6 +1,6 @@
 import React from 'react';
 // import { ReactSVG } from 'react-svg';
-import { cordovaDot } from '../../../utils/cordovaUtils';
+import normalizedImagePath from '../../utils/normalizedImagePath';
 
 
 export default function ExternalLinkIcon (largeBlue = false) {
@@ -8,7 +8,7 @@ export default function ExternalLinkIcon (largeBlue = false) {
     '../../../img/global/svg-icons/external_link_font_awesome_blue.svg' :
     '../../../img/global/svg-icons/external_link_font_awesome.svg';
   return (
-    <img src={cordovaDot(icon)}
+    <img src={normalizedImagePath(icon)}
          width={largeBlue ? 18 : 14}
          height={largeBlue ? 18 : 14}
          alt="External Link"

@@ -7,7 +7,7 @@ import styled from 'styled-components';
 import FriendStore from '../../stores/FriendStore';
 import IssueStore from '../../stores/IssueStore';
 import OrganizationStore from '../../stores/OrganizationStore';
-import { cordovaDot } from '../../utils/cordovaUtils';
+import normalizedImagePath from '../../common/utils/normalizedImagePath';
 import { isOrganizationInVotersNetwork } from '../../utils/positionFunctions';
 import FriendsIcon from './FriendsIcon';
 
@@ -223,7 +223,7 @@ class PositionItemScorePopoverTextOnly extends Component {
               <ScoreExplanationWrapper key={`issueInScore-${issue.issue_we_vote_id}`}>
                 <PopoverTitleIcon>
                   <ReactSVG
-                    src={cordovaDot(`/img/global/svg-icons/issues/${issue.issue_icon_local_path}.svg`)}
+                    src={normalizedImagePath(`/img/global/svg-icons/issues/${issue.issue_icon_local_path}.svg`)}
                     beforeInjection={(svg) => svg.setAttribute('style', { fill: '#555', padding: '1px 1px 1px 0px' })}
                   />
                 </PopoverTitleIcon>

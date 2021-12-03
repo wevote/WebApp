@@ -7,7 +7,8 @@ import AppObservableStore, { messageService } from '../../stores/AppObservableSt
 import FriendStore from '../../stores/FriendStore';
 import VoterStore from '../../stores/VoterStore';
 import { cordovaFooterHeight } from '../../utils/cordovaOffsets';
-import { historyPush, isCordova } from '../../utils/cordovaUtils';
+import { isCordova } from '../../utils/cordovaUtils';
+import historyPush from '../../common/utils/historyPush';
 import { normalizedHref } from '../../utils/hrefUtils';
 import { renderLog } from '../../common/utils/logging';
 import { stringContains } from '../../utils/textFormat';

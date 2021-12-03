@@ -12,7 +12,8 @@ import WouldYouLikeToMergeAccounts from '../components/WouldYouLikeToMergeAccoun
 import webAppConfig from '../config';
 import FacebookStore from '../stores/FacebookStore';
 import VoterStore from '../stores/VoterStore';
-import { historyPush, isWebApp } from '../utils/cordovaUtils';
+import { isWebApp } from '../utils/cordovaUtils';
+import historyPush from '../common/utils/historyPush';
 import { oAuthLog, renderLog } from '../common/utils/logging';
 
 

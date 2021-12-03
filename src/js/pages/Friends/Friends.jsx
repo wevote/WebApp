@@ -22,7 +22,8 @@ import TooltipIcon from '../../components/Widgets/TooltipIcon';
 import FriendStore from '../../stores/FriendStore';
 import VoterStore from '../../stores/VoterStore';
 import { cordovaFriendsWrapper } from '../../utils/cordovaOffsets';
-import { cordovaDot, historyPush } from '../../utils/cordovaUtils';
+import normalizedImagePath from '../../common/utils/normalizedImagePath';
+import historyPush from '../../common/utils/historyPush';
 import displayFriendsTabs from '../../utils/displayFriendsTabs';
 import sortFriendListByMutualFriends from '../../utils/friendFunctions';
 import { renderLog } from '../../common/utils/logging';
@@ -38,7 +39,7 @@ const FirstAndLastNameRequiredAlert = React.lazy(() => import(/* webpackChunkNam
 const testimonialPhoto = '../../../img/global/photos/Dale_McGrew-48x48.jpg';
 
 const testimonialAuthor = 'Dale M., Oakland, California';
-const imageUrl = cordovaDot(testimonialPhoto);
+const imageUrl = normalizedImagePath(testimonialPhoto);
 const testimonial = 'Instead of searching through emails and social media for recommendations, I can see how my friends are voting on We Vote.';
 
 class Friends extends Component {

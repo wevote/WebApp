@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
-import { cordovaDot } from '../../utils/cordovaUtils';
+import normalizedImagePath from '../../common/utils/normalizedImagePath';
 import { renderLog } from '../../common/utils/logging';
 import { vimeoRegX, youTubeRegX } from '../../utils/textFormat';
 import ExternalLinkIcon from '../../common/components/Widgets/ExternalLinkIcon';
@@ -52,13 +52,13 @@ export default class PositionSupportOpposeSnippet extends Component {
     }
 
     if (isSupport) {
-      stanceIconSrc = cordovaDot(thumbsUpColorIcon);
+      stanceIconSrc = normalizedImagePath(thumbsUpColorIcon);
       className = 'explicit-position__icon';
       alt = 'Supports';
       actorSupportsBallotItemLabel = isLookingAtSelf ? 'You Support' : 'Supports'; // Actor supports Ballot item (Active voice)
       ballotItemIsSupportedByActorLabel = isLookingAtSelf ? 'is Supported by You' : 'is Supported by'; // Ballot item is supported by Actor (Passive voice)
     } else if (isOppose) {
-      stanceIconSrc = cordovaDot(thumbsDownColorIcon);
+      stanceIconSrc = normalizedImagePath(thumbsDownColorIcon);
       className = 'explicit-position__icon';
       alt = 'Opposes';
       actorSupportsBallotItemLabel = isLookingAtSelf ? 'You Oppose' : 'Opposes';

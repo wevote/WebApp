@@ -3,7 +3,7 @@ import VoterActions from '../actions/VoterActions';
 import LoadingWheel from '../common/components/Widgets/LoadingWheel';
 import TwitterHandleBox from '../components/Twitter/TwitterHandleBox';
 import VoterStore from '../stores/VoterStore';
-import { historyPush } from '../utils/cordovaUtils';
+import historyPush from '../common/utils/historyPush';
 import { renderLog } from '../common/utils/logging';
 
 // This file is only for use with people who aren't signed in

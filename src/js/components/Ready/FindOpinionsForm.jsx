@@ -6,7 +6,8 @@ import React, { Component, Suspense } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import VoterGuideStore from '../../stores/VoterGuideStore';
-import { blurTextFieldAndroid, focusTextFieldAndroid, historyPush, isAndroid, isCordova, isIOS } from '../../utils/cordovaUtils';
+import { blurTextFieldAndroid, focusTextFieldAndroid, isAndroid, isCordova, isIOS } from '../../utils/cordovaUtils';
+import historyPush from '../../common/utils/historyPush';
 import { renderLog } from '../../common/utils/logging';
 
 const ImageHandler = React.lazy(() => import(/* webpackChunkName: 'ImageHandler' */ '../ImageHandler'));

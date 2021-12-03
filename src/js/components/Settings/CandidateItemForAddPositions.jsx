@@ -4,7 +4,8 @@ import React, { Component, Suspense } from 'react';
 import styled from 'styled-components';
 import CandidateStore from '../../stores/CandidateStore';
 import SupportStore from '../../stores/SupportStore';
-import { cordovaDot, isCordova } from '../../utils/cordovaUtils';
+import { isCordova } from '../../utils/cordovaUtils';
+import normalizedImagePath from '../../common/utils/normalizedImagePath';
 import { renderLog } from '../../common/utils/logging';
 import ItemPositionStatementActionBar from '../Widgets/ItemPositionStatementActionBar';
 
@@ -177,7 +178,7 @@ class CandidateItemForAddPositions extends Component {
       null;
 
     const avatarCompressed = `card-main__avatar-compressed${isCordova() ? '-cordova' : ''}`;
-    const avatarBackgroundImage = cordovaDot('../img/global/svg-icons/avatar-generic.svg');
+    const avatarBackgroundImage = normalizedImagePath('../img/global/svg-icons/avatar-generic.svg');
     const candidatePartyText = oneCandidate.party && oneCandidate.party.length ? `${oneCandidate.party}` : '';
     return (
       <Wrapper>

@@ -20,7 +20,7 @@ import SnackNotifier from '../components/Widgets/SnackNotifier';
 import Testimonial from '../components/Widgets/Testimonial';
 import IssueStore from '../stores/IssueStore';
 import VoterStore from '../stores/VoterStore';
-import { cordovaDot } from '../utils/cordovaUtils';
+import normalizedImagePath from '../common/utils/normalizedImagePath';
 import lazyPreloadPages from '../utils/lazyPreloadPages';
 import { renderLog } from '../common/utils/logging';
 import { PageContentContainer } from '../utils/pageLayoutStyles';
@@ -31,7 +31,7 @@ const testimonialPhoto = '../../img/global/photos/Dale_McGrew-48x48.jpg';
 
 // const facebookInfoText = "By signing into Facebook here, you can choose which friends you want to talk politics with, and avoid the trolls (or that guy from work who rambles on)! You control who is in your We Vote network.";
 const testimonialAuthor = 'Dale M., Oakland, California';
-const imageUrl = cordovaDot(testimonialPhoto);
+const imageUrl = normalizedImagePath(testimonialPhoto);
 const testimonial = 'I like seeing the opinions of people who share my values.';
 
 export default class Values extends Component {

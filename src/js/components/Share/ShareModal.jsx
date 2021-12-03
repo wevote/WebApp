@@ -12,7 +12,8 @@ import AppObservableStore, { messageService } from '../../stores/AppObservableSt
 import FriendStore from '../../stores/FriendStore';
 import ShareStore from '../../common/stores/ShareStore';
 import VoterStore from '../../stores/VoterStore';
-import { cordovaDot, cordovaLinkToBeSharedFixes, hasIPhoneNotch, isAndroid, isCordova, isWebApp } from '../../utils/cordovaUtils';
+import { cordovaLinkToBeSharedFixes, hasIPhoneNotch, isAndroid, isCordova, isWebApp } from '../../utils/cordovaUtils';
+import normalizedImagePath from '../../common/utils/normalizedImagePath';
 import sortFriendListByMutualFriends from '../../utils/friendFunctions';
 import { renderLog } from '../../common/utils/logging';
 import { stringContains } from '../../utils/textFormat';
@@ -385,7 +386,7 @@ class ShareModal extends Component {
                 {developmentFeatureTurnedOn && (
                   <ShareModalOption
                     background="#2E3C5D"
-                    icon={<img src={cordovaDot('../../../img/global/svg-icons/we-vote-icon-square-color.svg')} alt="" />}
+                    icon={<img src={normalizedImagePath('../../../img/global/svg-icons/we-vote-icon-square-color.svg')} alt="" />}
                     id="shareWithFriends"
                     noLink
                     onClickFunction={this.saveActionShareButtonFriends}

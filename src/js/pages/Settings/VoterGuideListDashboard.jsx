@@ -8,7 +8,7 @@ import VoterGuideListSearchResults from '../../components/Settings/VoterGuideLis
 import OrganizationStore from '../../stores/OrganizationStore';
 import VoterGuideStore from '../../stores/VoterGuideStore';
 import VoterStore from '../../stores/VoterStore';
-import { cordovaDot } from '../../utils/cordovaUtils';
+import normalizedImagePath from '../../common/utils/normalizedImagePath';
 import { renderLog } from '../../common/utils/logging';
 import { PageContentContainer } from '../../utils/pageLayoutStyles';
 
@@ -194,7 +194,7 @@ class VoterGuideListDashboard extends Component {
                         If you have already chosen or opposed any candidates (or measures), you can click &quot;Edit&quot; under the election in the left column.
                       </Description>
                       <Questions>What does an endorsement look like as I am entering it?</Questions>
-                      <img src={cordovaDot('../../../img/global/screens/endorsement-1422x354.png')} alt="" />
+                      <img src={normalizedImagePath('../../../img/global/screens/endorsement-1422x354.png')} alt="" />
                     </div>
                   </div>
                 )}

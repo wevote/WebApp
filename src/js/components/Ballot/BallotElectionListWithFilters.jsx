@@ -10,7 +10,7 @@ import VoterGuideActions from '../../actions/VoterGuideActions';
 import BallotStore from '../../stores/BallotStore';
 import VoterGuideStore from '../../stores/VoterGuideStore';
 import VoterStore from '../../stores/VoterStore';
-import { historyPush } from '../../utils/cordovaUtils';
+import historyPush from '../../common/utils/historyPush';
 import { electionDateTomorrowFormatted, formatDateMMMDoYYYY } from '../../common/utils/dateFormat';
 import { renderLog } from '../../common/utils/logging';
 import { cleanArray } from '../../utils/textFormat';

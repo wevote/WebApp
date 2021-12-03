@@ -1,7 +1,8 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import { ReactSVG } from 'react-svg';
-import { cordovaDot, isWebApp } from '../../../utils/cordovaUtils';
+import { isWebApp } from '../../../utils/cordovaUtils';
+import normalizedImagePath from '../../utils/normalizedImagePath';
 import { renderLog } from '../../utils/logging';
 
 
@@ -13,7 +14,7 @@ export default function SvgImage (props) {
   if (imageName.includes('/img/')) {
     imageSrc = `${imageName}`;
   } else {
-    imageSrc = cordovaDot(`../../img/global/svg-icons/issues/${imageName}.svg`);
+    imageSrc = normalizedImagePath(`../../img/global/svg-icons/issues/${imageName}.svg`);
   }
   let stylesList = {
     fill: '#2e3c5d',

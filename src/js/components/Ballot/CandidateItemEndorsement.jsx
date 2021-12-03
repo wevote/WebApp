@@ -8,7 +8,7 @@ import styled from 'styled-components';
 import VoterGuidePossibilityActions from '../../actions/VoterGuidePossibilityActions';
 import CandidateStore from '../../stores/CandidateStore';
 import VoterGuidePossibilityStore from '../../stores/VoterGuidePossibilityStore';
-import { historyPush } from '../../utils/cordovaUtils';
+import historyPush from '../../common/utils/historyPush';
 import { renderLog } from '../../common/utils/logging';
 import { abbreviateNumber, numberWithCommas } from '../../utils/textFormat';
 import ExternalLinkIcon from '../../common/components/Widgets/ExternalLinkIcon';
