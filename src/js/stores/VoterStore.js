@@ -8,7 +8,7 @@ import VoterGuideActions from '../actions/VoterGuideActions';
 import Dispatcher from '../common/dispatcher/Dispatcher';
 import signInModalGlobalState from '../components/Widgets/signInModalGlobalState';
 import { dumpObjProps } from '../utils/appleSiliconUtils';
-import Cookies from '../utils/js-cookie/Cookies';
+import Cookies from '../common/utils/js-cookie/Cookies';
 import { stringContains } from '../utils/textFormat';
 import AppObservableStore from './AppObservableStore';
 

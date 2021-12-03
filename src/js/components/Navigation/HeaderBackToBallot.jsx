@@ -21,7 +21,7 @@ import { normalizedHref, normalizedHrefPage } from '../../utils/hrefUtils';
 import { renderLog } from '../../common/utils/logging';
 import { AppBarForBackTo, OfficeShareWrapper, TopOfPageHeader, TopRowOneLeftContainer, TopRowOneMiddleContainer, TopRowOneRightContainer, TopRowTwoLeftContainer, TopRowTwoRightContainer } from '../../utils/pageLayoutStyles';
 import { shortenText, stringContains } from '../../utils/textFormat';
-import { voterPhoto } from '../../utils/voterPhoto';
+import voterPhoto from '../../common/utils/voterPhoto';
 import ShareButtonDesktopTablet from '../Share/ShareButtonDesktopTablet';
 import SignInButton from '../Widgets/SignInButton';
 import HeaderBackToButton from './HeaderBackToButton';

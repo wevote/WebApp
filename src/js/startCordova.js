@@ -3,7 +3,7 @@ import TwitterSignIn from './components/Twitter/TwitterSignIn';
 import webAppConfig from './config';
 import VoterStore from './stores/VoterStore';
 import { getCordovaScreenHeight, getProcessorArchitecture, isCordova, isIOS, isIOSAppOnMac, isIPad, isSimulator, prepareForCordovaKeyboard, restoreStylesAfterCordovaKeyboard } from './utils/cordovaUtils';
-import Cookies from './utils/js-cookie/Cookies';
+import Cookies from './common/utils/js-cookie/Cookies';
 import { httpLog } from './common/utils/logging';
 
 function localPrepareForCordovaKeyboard () {

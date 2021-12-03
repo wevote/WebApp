@@ -1,5 +1,5 @@
 import { cordovaDot, isCordova, isIOSAppOnMac, isWebApp } from './cordovaUtils';
-import Cookies from './js-cookie/Cookies';
+import Cookies from '../common/utils/js-cookie/Cookies';
 import { stringContains } from './textFormat';
 
 // We have to do all this, because we allow urls where the path starts with a twitter username (handle)

@@ -24,7 +24,7 @@ import { renderLog } from '../../common/utils/logging';
 import { TopOfPageHeader, TopRowOneLeftContainer, TopRowOneMiddleContainer, TopRowOneRightContainer, TopRowTwoLeftContainer } from '../../utils/pageLayoutStyles';
 import shouldHeaderRetreat from '../../utils/shouldHeaderRetreat';
 import { getBooleanValue, shortenText, stringContains } from '../../utils/textFormat';
-import { voterPhoto } from '../../utils/voterPhoto';
+import voterPhoto from '../../common/utils/voterPhoto';
 import SignInButton from '../Widgets/SignInButton';
 import signInModalGlobalState from '../Widgets/signInModalGlobalState';
 import FriendsTabs from './FriendsTabs';

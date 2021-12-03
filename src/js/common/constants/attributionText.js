@@ -25,6 +25,9 @@ module.exports = [
   'Copyright (c) 2014 Call-Em-All\n',
   // Jan 2021, https://github.com/mui-org/material-ui/tree/master/packages/material-ui-icons
   // No license cited
+  // https://github.com/Yuvaleros/material-ui-dropzone/blob/master/LICENSE
+  'Yuvaleros/material-ui-dropzone is licensed under the MIT License\n' +
+  'Copyright (c) 2017 Yuvaleros',
   // Jan 2019, https://github.com/twbs/bootstrap/blob/v4-dev/LICENSE
   'twbs/bootstrap is licensed under the MIT License (MIT)\n' +
   '\n' +
@@ -88,17 +91,17 @@ module.exports = [
   'davidjbradshaw/iframe-resizer is licensed under the MIT License (MIT)\n' +
   '\n' +
   'Copyright (c) 2013-2018 David J. Bradshaw',
+  // https://github.com/partnerhero/gapi-script/blob/master/LICENSE
+  'partnerhero/gapi-script is licensed under the MIT License (MIT)\n' +
+  'Copyright (c) 2019 Lucas Andrade Oliveira\n',
+  // https://github.com/isaacs/node-glob/blob/master/LICENSE
+  'issacs/node-glob is licenced under the ISC License (ISC)\n' +
+  'https://opensource.org/licenses/ISC \n' +
+  'Copyright (c) Isaac Z. Schlueter and Contributors\n',
   // Jan 2019, https://github.com/jquery/jquery/blob/master/LICENSE.txt
   'jquery/jquery is licensed under the MIT License (MIT)\n' +
   'Copyright JS Foundation and other contributors, https://js.foundation/\n',
   // Jan 2021, keymirror is unlicensed, https://www.npmjs.com/package/keymirror
-  // Jan 2019, https://github.com/lodash/lodash/blob/master/LICENSE
-  'lodash/lodash is licensed under the MIT License (MIT)\n' +
-  '\n' +
-  'Copyright JS Foundation and other contributors <https://js.foundation/>\n' +
-  '\n' +
-  'Based on Underscore.js, copyright Jeremy Ashkenas, ' +
-  'DocumentCloud and Investigative Reporters & Editors <http://underscorejs.org/>\n',
   // Jan 2021, https://github.com/lodash/lodash/blob/master/LICENSE
   'lodash/lodash (and lodash-assign) is licensed under the MIT License (MIT)\n' +
   '\n' +
@@ -123,12 +126,14 @@ module.exports = [
   // Jan 2019, https://github.com/facebook/react/blob/master/LICENSE
   'facebook/react (and facebook/react-dom) is licensed under the MIT License (MIT)\n' +
   'Copyright (c) Facebook, Inc. and its affiliates.\n',
+  // https://github.com/gregberge/loadable-components/blob/main/LICENSE
+  'gregberge/loadable-components is licensed under the MIT License (MIT)\n' +
+  'Copyright 2019 Greg Bergé.\n',
   // Jan 2019, https://github.com/react-bootstrap/react-bootstrap/blob/master/LICENSE
   'react-bootstrap/react-bootstrap is licensed under the MIT License (MIT)\n' +
   'Copyright (c) 2014-present Stephen J. Collings, Matthew Honnibal, Pieter Vanderwerff\n',
   // Jan 2019, https://github.com/nkbt/react-copy-to-clipboard/blob/master/LICENSE
   'nkbt/react-copy-to-clipboard is licensed under the MIT License (MIT)\n' +
-  '\n' +
   'Copyright (c) 2016 Nik Butenko\n',
   // Jan 2021, https://github.com/arnthor3/react-delay-render/blob/master/LICENCE
   'arnthor3/react-delay-render is licensed under MIT License (MIT)\n' +
@@ -154,6 +159,12 @@ module.exports = [
   // https://github.com/stripe/react-stripe-elements/blob/master/LICENSE
   'stripe/react-stripe-elements is licensed under the MIT License (MIT)\n' +
   'Copyright (c) 2017 Stripe\n',
+  // https://github.com/stripe/react-stripe-js/blob/master/LICENSE
+  'stripe/stripe-js is licensed under the MIT License  (MIT)\n' +
+  'Copyright (c) 2017 Stripe',
+  // https://github.com/stripe/react-stripe-js/blob/master/LICENSE
+  'stripe/react-stripe-js is licensed under the MIT License  (MIT)\n' +
+  'Copyright (c) 2017 Stripe',
   // Jan 2019, https://github.com/tanem/react-svg/blob/master/LICENSE
   'tanem/react-svg is licensed under the  MIT License (MIT)\n' +
   'Copyright (c) 2014-present Tane Morgan <tane.morgan@gmail.com>\n',

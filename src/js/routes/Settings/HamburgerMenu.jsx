@@ -11,7 +11,7 @@ import { avatarGeneric } from '../../utils/applicationUtils';
 import { isCordova, isWebApp } from '../../utils/cordovaUtils';
 import { renderLog } from '../../common/utils/logging';
 import { PageContentContainer } from '../../utils/pageLayoutStyles';
-import { voterPhoto } from '../../utils/voterPhoto';
+import voterPhoto from '../../common/utils/voterPhoto';
 
 const webAppConfig = require('../../config');
 

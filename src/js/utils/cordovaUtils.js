@@ -1,6 +1,5 @@
 import React from 'react';
 import webAppConfig from '../config';
-import { dumpObjProps } from './appleSiliconUtils';
 import { cordovaOffsetLog, oAuthLog } from '../common/utils/logging';
 
 /* global $  */
@@ -9,6 +8,11 @@ let androidPixels = 0;
 let androidSizeString;
 let polyfillsLoaded;
 
+// Copy of this function also in ./appleSiliconUtils, but moved here to fix dependency cycle problem
+function dumpObjProps (name, obj) {
+  // eslint-disable-next-line guard-for-in
+  Object.keys(obj).forEach((key) => console.log(`Dump Object ${name} ${key}: ${obj[key]}`));
+}
 
 export function isCordova () {
   const { cordova } = window;

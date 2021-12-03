@@ -10,7 +10,7 @@ import DonateActions from '../../actions/DonateActions';
 import DonateStore from '../../stores/DonateStore';
 import VoterStore from '../../../stores/VoterStore';
 import { renderLog } from '../../utils/logging';
-import moneyStringToPennies from '../../../utils/moneyStringToPennies';
+import moneyStringToPennies from '../../utils/moneyStringToPennies';
 import SplitIconButton from '../../../components/Widgets/SplitIconButton';
 
 

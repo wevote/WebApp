@@ -28,7 +28,7 @@ import IssueStore from '../stores/IssueStore';
 import VoterStore from '../stores/VoterStore';
 import apiCalming from '../utils/apiCalming';
 import { historyPush, isAndroid, isIOS, isWebApp } from '../utils/cordovaUtils';
-import Cookies from '../utils/js-cookie/Cookies';
+import Cookies from '../common/utils/js-cookie/Cookies';
 import lazyPreloadPages from '../utils/lazyPreloadPages';
 import { renderLog } from '../common/utils/logging';
 import { PageContentContainer } from '../utils/pageLayoutStyles';

@@ -15,7 +15,7 @@ import VoterStore from '../../stores/VoterStore';
 import { historyPush, isCordova, isIPhone4in, isIPhone4p7in, restoreStylesAfterCordovaKeyboard } from '../../utils/cordovaUtils';
 import { normalizedHref } from '../../utils/hrefUtils';
 import initializeAppleSDK from '../../utils/initializeAppleSDK';
-import Cookies from '../../utils/js-cookie/Cookies';
+import Cookies from '../../common/utils/js-cookie/Cookies';
 import { oAuthLog, renderLog } from '../../common/utils/logging';
 import { stringContains } from '../../utils/textFormat';
 import AppleSignIn from '../Apple/AppleSignIn';

@@ -19,7 +19,7 @@ import { normalizedHref } from '../../utils/hrefUtils';
 import isMobile from '../../utils/isMobile';
 import { renderLog } from '../../common/utils/logging';
 import { isProperlyFormattedVoterGuideWeVoteId, shortenText, stringContains } from '../../utils/textFormat';
-import { voterPhoto } from '../../utils/voterPhoto';
+import voterPhoto from '../../common/utils/voterPhoto';
 import VoterGuideChooseElectionModal from '../VoterGuide/VoterGuideChooseElectionModal';
 import SignInButton from '../Widgets/SignInButton';
 import EndorsementModeTabs from './EndorsementModeTabs';

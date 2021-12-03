@@ -4,7 +4,7 @@ import { FilterList } from '@material-ui/icons';
 import PropTypes from 'prop-types';
 import React, { Suspense } from 'react';
 import styled from 'styled-components';
-import { getAllStateCodeFilters } from '../../utils/addressFunctions';
+import { getAllStateCodeFilters } from '../../common/utils/addressFunctions';
 import { isWebApp } from '../../utils/cordovaUtils';
 import { renderLog } from '../../common/utils/logging';
 import StateDropDown from './StateDropDown';

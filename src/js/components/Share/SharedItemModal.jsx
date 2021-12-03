@@ -16,7 +16,7 @@ import ShareStore from '../../common/stores/ShareStore';
 import VoterStore from '../../stores/VoterStore';
 import { cordovaFooterHeight, cordovaNetworkNextButtonTop } from '../../utils/cordovaOffsets';
 import { cordovaDot, hasIPhoneNotch, isCordova, isWebApp } from '../../utils/cordovaUtils';
-import { formatDateToMonthDayYear } from '../../utils/dateFormat';
+import { formatDateToMonthDayYear } from '../../common/utils/dateFormat';
 import { renderLog } from '../../common/utils/logging';
 import { isSpeakerTypeOrganization, isSpeakerTypePublicFigure } from '../../utils/organization-functions';
 import { convertToInteger } from '../../utils/textFormat';

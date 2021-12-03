@@ -5,8 +5,8 @@ import styled from 'styled-components';
 import BallotActions from '../../actions/BallotActions';
 import BallotStore from '../../stores/BallotStore';
 import { historyPush } from '../../utils/cordovaUtils';
-import { formatDateToMonthDayYear } from '../../utils/dateFormat';
-import initializeMoment from '../../utils/initializeMoment';
+import { formatDateToMonthDayYear } from '../../common/utils/dateFormat';
+import initializeMoment from '../../common/utils/initializeMoment';
 import { renderLog } from '../../common/utils/logging';
 
 

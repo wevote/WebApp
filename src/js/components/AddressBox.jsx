@@ -8,7 +8,7 @@ import VoterActions from '../actions/VoterActions';
 import BallotStore from '../stores/BallotStore';
 import VoterStore from '../stores/VoterStore';
 import { historyPush, isCordova, isWebApp, prepareForCordovaKeyboard, restoreStylesAfterCordovaKeyboard } from '../utils/cordovaUtils';
-import Cookies from '../utils/js-cookie/Cookies';
+import Cookies from '../common/utils/js-cookie/Cookies';
 import { renderLog } from '../common/utils/logging';
 import LoadingWheel from './LoadingWheel';
 

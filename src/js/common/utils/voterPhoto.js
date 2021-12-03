@@ -1,5 +1,5 @@
 // eslint-disable-next-line import/prefer-default-export
-export function voterPhoto (voter) {
+export default function voterPhoto (voter) {
   // const placeholderImageUrl = 'https://wevote.us/img/global/logos/Apple_logo_grey.svg';
   const placeholderImageUrl = '';
   if (!voter) {

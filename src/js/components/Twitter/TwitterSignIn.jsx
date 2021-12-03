@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import TwitterActions from '../../actions/TwitterActions';
 import webAppConfig from '../../config';
-import Cookies from '../../utils/js-cookie/Cookies';
+import Cookies from '../../common/utils/js-cookie/Cookies';
 import { cordovaOpenSafariView, historyPush, isAndroid, isIOS, isWebApp } from '../../utils/cordovaUtils';
 import { oAuthLog, renderLog } from '../../common/utils/logging';
 import $ajax from '../../utils/service';
