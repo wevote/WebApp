@@ -14,7 +14,7 @@ import AppObservableStore from '../stores/AppObservableStore';
 import VoterStore from '../stores/VoterStore';
 import cordovaScrollablePaneTopPadding from '../utils/cordovaScrollablePaneTopPadding';
 import { cordovaDot, historyPush } from '../utils/cordovaUtils';
-import { renderLog } from '../utils/logging';
+import { renderLog } from '../common/utils/logging';
 import { validateEmail } from '../utils/regex-checks';
 
 const WelcomeAppbar = React.lazy(() => import(/* webpackChunkName: 'WelcomeAppbar' */ '../components/Navigation/WelcomeAppbar'));

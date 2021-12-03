@@ -7,7 +7,7 @@ import SettingsBannerAndOrganizationCard from '../../components/Settings/Setting
 import OrganizationStore from '../../stores/OrganizationStore';
 import VoterGuideStore from '../../stores/VoterGuideStore';
 import VoterStore from '../../stores/VoterStore';
-import { renderLog } from '../../utils/logging';
+import { renderLog } from '../../common/utils/logging';
 
 export default class VoterGuideSettingsMenuMobile extends Component {
   constructor (props) {

@@ -4,7 +4,7 @@ import React, { Component, Suspense } from 'react';
 import CopyToClipboard from 'react-copy-to-clipboard';
 import styled from 'styled-components';
 import AppObservableStore, { messageService } from '../../stores/AppObservableStore';
-import { renderLog } from '../../utils/logging';
+import { renderLog } from '../../common/utils/logging';
 import { openSnackbar } from '../Widgets/SnackNotifier';
 
 const OpenExternalWebSite = React.lazy(() => import(/* webpackChunkName: 'OpenExternalWebSite' */ '../Widgets/OpenExternalWebSite'));

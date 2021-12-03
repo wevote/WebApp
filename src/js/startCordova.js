@@ -4,7 +4,7 @@ import webAppConfig from './config';
 import VoterStore from './stores/VoterStore';
 import { getCordovaScreenHeight, getProcessorArchitecture, isCordova, isIOS, isIOSAppOnMac, isIPad, isSimulator, prepareForCordovaKeyboard, restoreStylesAfterCordovaKeyboard } from './utils/cordovaUtils';
 import Cookies from './utils/js-cookie/Cookies';
-import { httpLog } from './utils/logging';
+import { httpLog } from './common/utils/logging';
 
 function localPrepareForCordovaKeyboard () {
   prepareForCordovaKeyboard('ballot');

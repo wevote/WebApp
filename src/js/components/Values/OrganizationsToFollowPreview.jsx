@@ -2,7 +2,7 @@ import React, { Component, Suspense } from 'react';
 import styled from 'styled-components';
 import VoterGuideStore from '../../stores/VoterGuideStore';
 import { historyPush } from '../../utils/cordovaUtils';
-import { renderLog } from '../../utils/logging';
+import { renderLog } from '../../common/utils/logging';
 import LoadingWheel from '../LoadingWheel';
 
 const GuideList = React.lazy(() => import(/* webpackChunkName: 'GuideList' */ '../VoterGuide/GuideList'));

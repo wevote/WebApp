@@ -15,7 +15,7 @@ import OrganizationStore from '../../stores/OrganizationStore';
 import VoterStore from '../../stores/VoterStore';
 import { cordovaOpenSafariView, isWebApp } from '../../utils/cordovaUtils';
 import { formatDateToYearMonthDay } from '../../utils/dateFormat';
-import { renderLog } from '../../utils/logging';
+import { renderLog } from '../../common/utils/logging';
 import { stringContains } from '../../utils/textFormat';
 import CreateConfiguredVersion from './CreateConfiguredVersion';
 

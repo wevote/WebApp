@@ -6,7 +6,7 @@ import SuggestedFriendList from '../../components/Friends/SuggestedFriendList';
 import MessageCard from '../../components/Widgets/MessageCard';
 import FriendStore from '../../stores/FriendStore';
 import sortFriendListByMutualFriends from '../../utils/friendFunctions';
-import { renderLog } from '../../utils/logging';
+import { renderLog } from '../../common/utils/logging';
 
 export default class SuggestedFriends extends Component {
   constructor (props) {

@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import React, { Suspense } from 'react';
-import { renderLog } from './logging';
+import { renderLog } from '../common/utils/logging';
 
 const OrganizationVoterGuideEdit = React.lazy(() => import(/* webpackChunkName: 'OrganizationVoterGuideEdit' */ '../routes/VoterGuide/OrganizationVoterGuideEdit'));
 const PageNotFound = React.lazy(() => import(/* webpackChunkName: 'PageNotFound' */ '../routes/PageNotFound'));

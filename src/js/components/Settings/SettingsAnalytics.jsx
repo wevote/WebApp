@@ -8,7 +8,7 @@ import OrganizationActions from '../../actions/OrganizationActions';
 import AppObservableStore from '../../stores/AppObservableStore';
 import OrganizationStore from '../../stores/OrganizationStore';
 import VoterStore from '../../stores/VoterStore';
-import { renderLog } from '../../utils/logging';
+import { renderLog } from '../../common/utils/logging';
 import { voterFeaturePackageExceedsOrEqualsRequired } from '../../utils/pricingFunctions';
 import LoadingWheel from '../LoadingWheel';
 import CreateConfiguredVersion from './CreateConfiguredVersion';

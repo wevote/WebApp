@@ -7,7 +7,7 @@ import VoterActions from '../actions/VoterActions';
 import FacebookStore from '../stores/FacebookStore';
 import VoterStore from '../stores/VoterStore';
 import { historyPush } from '../utils/cordovaUtils';
-import { renderLog } from '../utils/logging';
+import { renderLog } from '../common/utils/logging';
 import LoadingWheel from './LoadingWheel';
 
 export default class WouldYouLikeToMergeAccountsOld extends Component {

@@ -1,7 +1,7 @@
 import { Button } from '@material-ui/core';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { renderLog } from '../../utils/logging';
+import { renderLog } from '../../common/utils/logging';
 
 
 // A function component

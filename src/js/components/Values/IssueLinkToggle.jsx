@@ -4,7 +4,7 @@ import Button from 'react-bootstrap/Button';
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 import Popover from 'react-bootstrap/Popover';
 import IssueActions from '../../actions/IssueActions';
-import { renderLog } from '../../utils/logging';
+import { renderLog } from '../../common/utils/logging';
 import IssueImageDisplay from './IssueImageDisplay';
 
 

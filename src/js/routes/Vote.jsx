@@ -25,7 +25,7 @@ import { cordovaVoteMiniHeader } from '../utils/cordovaOffsets';
 import cordovaScrollablePaneTopPadding from '../utils/cordovaScrollablePaneTopPadding';
 import { historyPush, isCordova, isWebApp } from '../utils/cordovaUtils';
 import Cookies from '../utils/js-cookie/Cookies';
-import { renderLog } from '../utils/logging';
+import { renderLog } from '../common/utils/logging';
 import { DualHeaderContainer, PageContentContainer } from '../utils/pageLayoutStyles';
 import BallotTitleHeader from './Ballot/BallotTitleHeader';
 

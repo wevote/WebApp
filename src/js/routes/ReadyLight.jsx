@@ -18,7 +18,7 @@ import AppObservableStore from '../stores/AppObservableStore';
 import VoterStore from '../stores/VoterStore';
 import { historyPush, isAndroid, isIOS, isWebApp } from '../utils/cordovaUtils';
 import lazyPreloadPages from '../utils/lazyPreloadPages';
-import { renderLog } from '../utils/logging';
+import { renderLog } from '../common/utils/logging';
 import { PageContentContainer } from '../utils/pageLayoutStyles';
 
 const ReadMore = React.lazy(() => import(/* webpackChunkName: 'ReadMore' */ '../components/Widgets/ReadMore'));

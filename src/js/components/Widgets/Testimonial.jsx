@@ -2,7 +2,7 @@ import { FormatQuote } from '@material-ui/icons';
 import PropTypes from 'prop-types';
 import React, { Suspense } from 'react';
 import styled from 'styled-components';
-import { renderLog } from '../../utils/logging';
+import { renderLog } from '../../common/utils/logging';
 
 const ImageHandler = React.lazy(() => import(/* webpackChunkName: 'ImageHandler' */ '../ImageHandler'));
 

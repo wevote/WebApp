@@ -7,7 +7,7 @@ import FriendInvitationList from '../../components/Friends/FriendInvitationList'
 import SearchBar from '../../components/Search/SearchBar';
 import MessageCard from '../../components/Widgets/MessageCard';
 import FriendStore from '../../stores/FriendStore';
-import { renderLog } from '../../utils/logging';
+import { renderLog } from '../../common/utils/logging';
 
 export default class FriendInvitationsSentByMe extends Component {
   constructor (props) {

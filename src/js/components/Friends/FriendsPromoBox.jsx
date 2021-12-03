@@ -2,7 +2,7 @@ import { withStyles, withTheme } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 import React from 'react';
 import Cookies from '../../utils/js-cookie/Cookies';
-import { renderLog } from '../../utils/logging';
+import { renderLog } from '../../common/utils/logging';
 import Testimonial from '../Widgets/Testimonial';
 
 class FriendsPromoBox extends React.Component {

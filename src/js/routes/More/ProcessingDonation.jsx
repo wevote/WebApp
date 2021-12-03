@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { historyPush } from '../../utils/cordovaUtils';
 import DonateStore from '../../common/stores/DonateStore';
-import { renderLog } from '../../utils/logging';
+import { renderLog } from '../../common/utils/logging';
 
 const loadingScreenStyles = {
   position: 'fixed',

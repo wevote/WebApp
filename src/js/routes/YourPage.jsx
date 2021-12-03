@@ -4,7 +4,7 @@ import LoadingWheel from '../components/LoadingWheel';
 import TwitterHandleBox from '../components/Twitter/TwitterHandleBox';
 import VoterStore from '../stores/VoterStore';
 import { historyPush } from '../utils/cordovaUtils';
-import { renderLog } from '../utils/logging';
+import { renderLog } from '../common/utils/logging';
 
 // This file is only for use with people who aren't signed in
 export default class YourPage extends Component {

@@ -9,7 +9,7 @@ import AppObservableStore from '../../stores/AppObservableStore';
 import ActivityStore from '../../stores/ActivityStore';
 import OrganizationStore from '../../stores/OrganizationStore';
 import VoterStore from '../../stores/VoterStore';
-import { renderLog } from '../../utils/logging';
+import { renderLog } from '../../common/utils/logging';
 import ActivityPositionList from './ActivityPositionList';
 import ActivitySpeakerCard from './ActivitySpeakerCard';
 

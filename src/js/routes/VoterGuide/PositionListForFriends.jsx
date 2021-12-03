@@ -6,7 +6,7 @@ import OrganizationCard from '../../components/VoterGuide/OrganizationCard';
 import OrganizationPositionItem from '../../components/VoterGuide/OrganizationPositionItem';
 import ThisIsMeAction from '../../components/Widgets/ThisIsMeAction';
 import OrganizationStore from '../../stores/OrganizationStore';
-import { renderLog } from '../../utils/logging';
+import { renderLog } from '../../common/utils/logging';
 
 const FollowToggle = React.lazy(() => import(/* webpackChunkName: 'FollowToggle' */ '../../components/Widgets/FollowToggle'));
 

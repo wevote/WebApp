@@ -25,7 +25,7 @@ import { cordovaFriendsWrapper } from '../../utils/cordovaOffsets';
 import { cordovaDot, historyPush } from '../../utils/cordovaUtils';
 import displayFriendsTabs from '../../utils/displayFriendsTabs';
 import sortFriendListByMutualFriends from '../../utils/friendFunctions';
-import { renderLog } from '../../utils/logging';
+import { renderLog } from '../../common/utils/logging';
 import { PageContentContainer } from '../../utils/pageLayoutStyles';
 import FriendInvitationsSentByMe from './FriendInvitationsSentByMe';
 import FriendInvitationsSentToMe from './FriendInvitationsSentToMe';

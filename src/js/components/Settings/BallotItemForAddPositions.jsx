@@ -2,7 +2,7 @@ import { withStyles, withTheme } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import styled from 'styled-components';
-import { renderLog } from '../../utils/logging';
+import { renderLog } from '../../common/utils/logging';
 import MeasureItemForAddPositions from './MeasureItemForAddPositions';
 import OfficeItemForAddPositions from './OfficeItemForAddPositions';
 

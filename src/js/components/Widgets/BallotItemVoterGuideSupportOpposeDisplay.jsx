@@ -5,7 +5,7 @@ import React, { Component, Suspense } from 'react';
 import styled from 'styled-components';
 import OrganizationStore from '../../stores/OrganizationStore';
 import { isCordova } from '../../utils/cordovaUtils';
-import { renderLog } from '../../utils/logging';
+import { renderLog } from '../../common/utils/logging';
 import StickyPopover from '../Ballot/StickyPopover';
 import FriendsOnlyIndicator from './FriendsOnlyIndicator';
 import PositionItemScorePopover from './PositionItemScorePopover';

@@ -4,7 +4,7 @@ import AnalyticsActions from '../../actions/AnalyticsActions';
 import ElectionActions from '../../actions/ElectionActions';
 import ElectionStore from '../../stores/ElectionStore';
 import VoterStore from '../../stores/VoterStore';
-import { renderLog } from '../../utils/logging';
+import { renderLog } from '../../common/utils/logging';
 import BallotElectionList from '../Ballot/BallotElectionList';
 import BrowserPushMessage from '../Widgets/BrowserPushMessage';
 

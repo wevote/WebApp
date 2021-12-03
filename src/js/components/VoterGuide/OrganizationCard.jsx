@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import OrganizationActions from '../../actions/OrganizationActions';
 import OrganizationStore from '../../stores/OrganizationStore';
-import { renderLog } from '../../utils/logging';
+import { renderLog } from '../../common/utils/logging';
 import { numberWithCommas, removeTwitterNameFromDescription, stringContains } from '../../utils/textFormat';
 import LoadingWheel from '../LoadingWheel';
 import ParsedTwitterDescription from '../Twitter/ParsedTwitterDescription';

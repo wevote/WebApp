@@ -3,7 +3,7 @@ import signInModalGlobalState from '../components/Widgets/signInModalGlobalState
 import webAppConfig from '../config';
 import FacebookConstants from '../constants/FacebookConstants';
 import { isWebApp } from '../utils/cordovaUtils'; // eslint-disable-line import/no-cycle
-import { oAuthLog } from '../utils/logging';
+import { oAuthLog } from '../common/utils/logging';
 import FriendActions from './FriendActions'; // eslint-disable-line import/no-cycle
 import VoterActions from './VoterActions'; // eslint-disable-line import/no-cycle
 import VoterSessionActions from './VoterSessionActions'; // eslint-disable-line import/no-cycle

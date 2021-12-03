@@ -39,7 +39,7 @@ import isMobile from '../../utils/isMobile';
 import isMobileScreenSize from '../../utils/isMobileScreenSize';
 import Cookies from '../../utils/js-cookie/Cookies';
 import lazyPreloadPages from '../../utils/lazyPreloadPages';
-import { renderLog } from '../../utils/logging';
+import { renderLog } from '../../common/utils/logging';
 import mapCategoryFilterType from '../../utils/map-category-filter-type';
 import { DualHeaderContainer, HeaderContentContainer, HeaderContentOuterContainer, PageContentContainer } from '../../utils/pageLayoutStyles';
 import { getBooleanValue } from '../../utils/textFormat';

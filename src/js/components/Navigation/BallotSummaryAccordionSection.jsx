@@ -4,7 +4,7 @@ import { ArrowDropDown, ArrowDropUp } from '@material-ui/icons';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import styled from 'styled-components';
-import { renderLog } from '../../utils/logging';
+import { renderLog } from '../../common/utils/logging';
 
 
 class BallotSummaryAccordionSection extends Component {

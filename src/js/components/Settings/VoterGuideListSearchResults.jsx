@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import BallotActions from '../../actions/BallotActions';
 import OrganizationActions from '../../actions/OrganizationActions';
 import BallotStore from '../../stores/BallotStore';
-import { renderLog } from '../../utils/logging';
+import { renderLog } from '../../common/utils/logging';
 import voterGuideSearchPriority from '../../utils/voterGuideSearchPriority';
 import SearchBar from '../Search/SearchBar';
 import BallotItemForAddPositions from './BallotItemForAddPositions';

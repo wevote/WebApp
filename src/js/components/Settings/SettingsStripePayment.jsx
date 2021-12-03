@@ -7,7 +7,7 @@ import styled from 'styled-components';
 import DonateActions from '../../common/actions/DonateActions';
 import DonateStore from '../../common/stores/DonateStore';
 import VoterStore from '../../stores/VoterStore';
-import { renderLog } from '../../utils/logging';
+import { renderLog } from '../../common/utils/logging';
 import { numberWithCommas } from '../../utils/textFormat';
 import LoadingWheel from '../LoadingWheel';
 

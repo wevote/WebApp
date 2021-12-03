@@ -13,7 +13,7 @@ import styledTheme from './js/styled-theme';
 import { isWebApp } from './js/utils/cordovaUtils';
 import { normalizedHref } from './js/utils/hrefUtils';
 import initializejQuery from './js/utils/initializejQuery';
-import { renderLog } from './js/utils/logging';
+import { renderLog } from './js/common/utils/logging';
 import RouterV5SendMatch from './js/utils/RouterV5SendMatch';
 // importRemoveCordovaListenersToken1  -- Do not remove this line!
 

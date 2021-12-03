@@ -6,7 +6,7 @@ import BallotActions from '../../actions/BallotActions';
 import BallotStore from '../../stores/BallotStore';
 import { cordovaDot } from '../../utils/cordovaUtils';
 import { formatDateToMonthDayYear } from '../../utils/dateFormat';
-import { renderLog } from '../../utils/logging';
+import { renderLog } from '../../common/utils/logging';
 import { convertToInteger } from '../../utils/textFormat';
 
 const ImageHandler = React.lazy(() => import(/* webpackChunkName: 'ImageHandler' */ '../ImageHandler'));

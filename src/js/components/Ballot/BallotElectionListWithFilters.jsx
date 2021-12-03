@@ -12,7 +12,7 @@ import VoterGuideStore from '../../stores/VoterGuideStore';
 import VoterStore from '../../stores/VoterStore';
 import { historyPush } from '../../utils/cordovaUtils';
 import { electionDateTomorrowFormatted, formatDateMMMDoYYYY } from '../../utils/dateFormat';
-import { renderLog } from '../../utils/logging';
+import { renderLog } from '../../common/utils/logging';
 import { cleanArray } from '../../utils/textFormat';
 import LoadingWheel from '../LoadingWheel';
 import initializeMoment from '../../utils/initializeMoment';

@@ -2,7 +2,7 @@ import { Button, Checkbox, FormControl, FormControlLabel, FormGroup } from '@mat
 import { withStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import { renderLog } from '../../utils/logging';
+import { renderLog } from '../../common/utils/logging';
 import FriendsShareListItem from './FriendsShareListItem';
 
 class FriendShareList extends Component {

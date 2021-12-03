@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { withTheme, withStyles } from '@material-ui/core/styles';
 import { ArrowForward } from '@material-ui/icons';
-import { renderLog } from '../../utils/logging';
+import { renderLog } from '../../common/utils/logging';
 
 
 class ShowMoreFooter extends React.Component {

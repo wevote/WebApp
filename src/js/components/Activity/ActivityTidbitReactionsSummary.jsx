@@ -7,7 +7,7 @@ import styled from 'styled-components';
 import ActivityStore from '../../stores/ActivityStore';
 import AppObservableStore from '../../stores/AppObservableStore';
 import ReactionStore from '../../stores/ReactionStore';
-import { renderLog } from '../../utils/logging';
+import { renderLog } from '../../common/utils/logging';
 import StickyPopover from '../Ballot/StickyPopover';
 
 

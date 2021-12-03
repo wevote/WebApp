@@ -4,7 +4,7 @@ import Helmet from 'react-helmet';
 import SearchAllActions from '../../actions/SearchAllActions';
 import SearchAllStore from '../../stores/SearchAllStore';
 import { isCordova } from '../../utils/cordovaUtils';
-import { renderLog } from '../../utils/logging';
+import { renderLog } from '../../common/utils/logging';
 import { makeSearchLink } from '../../utils/searchFunctions';
 
 import SearchResultsDisplay from '../../components/Search/SearchResultsDisplay';

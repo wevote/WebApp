@@ -1,7 +1,7 @@
 import { withStyles, withTheme } from '@material-ui/core/styles';
 import React, { Component } from 'react';
 import styled from 'styled-components';
-import { renderLog } from '../../utils/logging';
+import { renderLog } from '../../common/utils/logging';
 
 class SharedItemIntroduction extends Component {
   constructor (props) {

@@ -7,7 +7,7 @@ import VoterStore from '../../stores/VoterStore';
 import { createDescriptionOfFriendPosts } from '../../utils/activityUtils';
 import { cordovaDot } from '../../utils/cordovaUtils';
 import { timeFromDate } from '../../utils/dateFormat';
-import { renderLog } from '../../utils/logging';
+import { renderLog } from '../../common/utils/logging';
 import { numberWithCommas } from '../../utils/textFormat';
 import StickyPopover from '../Ballot/StickyPopover';
 import LoadingWheel from '../LoadingWheel';

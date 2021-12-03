@@ -1,6 +1,6 @@
 import { ElementsConsumer } from '@stripe/react-stripe-js';
 import React from 'react';
-import { renderLog } from '../../../utils/logging';
+import { renderLog } from '../../utils/logging';
 import CheckoutForm from './CheckoutForm';
 
 /*

@@ -4,7 +4,7 @@ import BallotActions from '../../actions/BallotActions';
 import OrganizationActions from '../../actions/OrganizationActions';
 import BallotStore from '../../stores/BallotStore';
 import { cordovaDot } from '../../utils/cordovaUtils';
-import { renderLog } from '../../utils/logging';
+import { renderLog } from '../../common/utils/logging';
 import SearchBar from '../Search/SearchBar';
 import BallotItemSearchResult from './BallotItemSearchResult';
 

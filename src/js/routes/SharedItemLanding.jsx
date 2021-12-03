@@ -2,7 +2,7 @@ import { Component } from 'react';
 import PropTypes from 'prop-types';
 import { historyPush } from '../utils/cordovaUtils';
 import LoadingWheel from '../components/LoadingWheel';
-import { renderLog } from '../utils/logging';
+import { renderLog } from '../common/utils/logging';
 import ShareActions from '../common/actions/ShareActions';
 import ShareStore from '../common/stores/ShareStore';
 

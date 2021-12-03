@@ -11,7 +11,7 @@ import SupportStore from '../../stores/SupportStore';
 import VoterGuideStore from '../../stores/VoterGuideStore';
 import { historyPush, isAndroidSizeMD } from '../../utils/cordovaUtils';
 import isMobileAndTabletScreenSize from '../../utils/isMobileAndTabletScreenSize';
-import { renderLog } from '../../utils/logging';
+import { renderLog } from '../../common/utils/logging';
 import { abbreviateNumber, numberWithCommas, stripHtmlFromString } from '../../utils/textFormat';
 import ExternalLinkIcon from '../Widgets/ExternalLinkIcon';
 

@@ -9,7 +9,7 @@ import ActivityStore from '../../stores/ActivityStore';
 import VoterStore from '../../stores/VoterStore';
 import { avatarGeneric } from '../../utils/applicationUtils';
 import { hasIPhoneNotch, isAndroid, isAndroidSizeLG, isAndroidSizeMD, isAndroidTablet, prepareForCordovaKeyboard, restoreStylesAfterCordovaKeyboard } from '../../utils/cordovaUtils';
-import { renderLog } from '../../utils/logging';
+import { renderLog } from '../../common/utils/logging';
 import ActivityPostPublicToggle from './ActivityPostPublicToggle';
 
 

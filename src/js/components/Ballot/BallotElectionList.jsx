@@ -10,7 +10,7 @@ import VoterStore from '../../stores/VoterStore';
 import { convertStateCodeToStateText } from '../../utils/addressFunctions';
 import { historyPush } from '../../utils/cordovaUtils';
 import { electionDateTomorrowFormatted, formatDateMMMDoYYYY } from '../../utils/dateFormat';
-import { renderLog } from '../../utils/logging';
+import { renderLog } from '../../common/utils/logging';
 import { cleanArray } from '../../utils/textFormat';
 import LoadingWheel from '../LoadingWheel';
 

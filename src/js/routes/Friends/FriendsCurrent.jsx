@@ -8,7 +8,7 @@ import SearchBar from '../../components/Search/SearchBar';
 import MessageCard from '../../components/Widgets/MessageCard';
 import FriendStore from '../../stores/FriendStore';
 import sortFriendListByMutualFriends from '../../utils/friendFunctions';
-import { renderLog } from '../../utils/logging';
+import { renderLog } from '../../common/utils/logging';
 
 export default class FriendsCurrent extends Component {
   constructor (props) {

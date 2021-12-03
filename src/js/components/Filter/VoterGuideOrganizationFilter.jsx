@@ -8,7 +8,7 @@ import FriendStore from '../../stores/FriendStore';
 import IssueStore from '../../stores/IssueStore';
 import ShareStore from '../../common/stores/ShareStore';
 import VoterStore from '../../stores/VoterStore';
-import { renderLog } from '../../utils/logging';
+import { renderLog } from '../../common/utils/logging';
 import getGroupedFilterSecondClass from './utils/grouped-filter-second-class';
 
 

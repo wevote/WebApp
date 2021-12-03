@@ -4,7 +4,7 @@ import Helmet from 'react-helmet';
 import { Link } from 'react-router-dom';
 import OrganizationActions from '../actions/OrganizationActions';
 import OrganizationStore from '../stores/OrganizationStore';
-import { renderLog } from '../utils/logging';
+import { renderLog } from '../common/utils/logging';
 
 import OpinionsFollowedList from '../components/Organization/OpinionsFollowedList';
 import SearchBar from '../components/Search/SearchBar';

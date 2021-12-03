@@ -22,7 +22,7 @@ import IssueStore from '../stores/IssueStore';
 import VoterStore from '../stores/VoterStore';
 import { cordovaDot } from '../utils/cordovaUtils';
 import lazyPreloadPages from '../utils/lazyPreloadPages';
-import { renderLog } from '../utils/logging';
+import { renderLog } from '../common/utils/logging';
 import { PageContentContainer } from '../utils/pageLayoutStyles';
 
 const FirstAndLastNameRequiredAlert = React.lazy(() => import(/* webpackChunkName: 'FirstAndLastNameRequiredAlert' */ '../components/Widgets/FirstAndLastNameRequiredAlert'));

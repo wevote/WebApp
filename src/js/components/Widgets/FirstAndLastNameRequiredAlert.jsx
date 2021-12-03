@@ -7,7 +7,7 @@ import FriendStore from '../../stores/FriendStore';
 import OrganizationStore from '../../stores/OrganizationStore';
 import VoterStore from '../../stores/VoterStore';
 import apiCalming from '../../utils/apiCalming';
-import { renderLog } from '../../utils/logging';
+import { renderLog } from '../../common/utils/logging';
 import { isSpeakerTypeOrganization } from '../../utils/organization-functions';
 import { stringContains } from '../../utils/textFormat';
 import SettingsWidgetFirstLastName from '../Settings/SettingsWidgetFirstLastName';

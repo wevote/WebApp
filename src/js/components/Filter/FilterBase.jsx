@@ -6,7 +6,7 @@ import React, { Suspense } from 'react';
 import styled from 'styled-components';
 import { getAllStateCodeFilters } from '../../utils/addressFunctions';
 import { isWebApp } from '../../utils/cordovaUtils';
-import { renderLog } from '../../utils/logging';
+import { renderLog } from '../../common/utils/logging';
 import StateDropDown from './StateDropDown';
 import getGroupedFilterSecondClass from './utils/grouped-filter-second-class';
 

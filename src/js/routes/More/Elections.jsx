@@ -5,7 +5,7 @@ import ElectionActions from '../../actions/ElectionActions';
 import BallotElectionListWithFilters from '../../components/Ballot/BallotElectionListWithFilters';
 import ElectionStore from '../../stores/ElectionStore';
 import VoterStore from '../../stores/VoterStore';
-import { renderLog } from '../../utils/logging';
+import { renderLog } from '../../common/utils/logging';
 import { PageContentContainer } from '../../utils/pageLayoutStyles';
 
 export default class Elections extends Component {

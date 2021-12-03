@@ -9,7 +9,7 @@ import VoterGuideActions from '../../actions/VoterGuideActions';
 import OrganizationStore from '../../stores/OrganizationStore';
 import VoterGuideStore from '../../stores/VoterGuideStore';
 import VoterStore from '../../stores/VoterStore';
-import { renderLog } from '../../utils/logging';
+import { renderLog } from '../../common/utils/logging';
 import LoadingWheel from '../LoadingWheel';
 import SearchBar from '../Search/SearchBar';
 import GuideList from './GuideList';

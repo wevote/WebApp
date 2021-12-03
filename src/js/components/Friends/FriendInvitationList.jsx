@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import { renderLog } from '../../utils/logging';
+import { renderLog } from '../../common/utils/logging';
 import FriendInvitationEmailLinkDisplayForList from './FriendInvitationEmailLinkDisplayForList';
 import FriendInvitationVoterLinkDisplayForList from './FriendInvitationVoterLinkDisplayForList';
 

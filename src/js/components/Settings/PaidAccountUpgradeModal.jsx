@@ -11,7 +11,7 @@ import DonateStore from '../../common/stores/DonateStore';
 import { hasIPhoneNotch, isIOS } from '../../utils/cordovaUtils';
 import extractNumber from '../../utils/extractNumber';
 import { normalizedHref } from '../../utils/hrefUtils';
-import { renderLog } from '../../utils/logging';
+import { renderLog } from '../../common/utils/logging';
 import { numberWithCommas, stringContains } from '../../utils/textFormat';
 // TODO 5/11/21: import SettingsStripePayment from './SettingsStripePayment';
 

@@ -3,7 +3,7 @@ import { Settings } from '@material-ui/icons';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
 import styled from 'styled-components';
-import { renderLog } from '../../utils/logging';
+import { renderLog } from '../../common/utils/logging';
 import { calculateBallotBaseUrl, shortenText } from '../../utils/textFormat';
 import AddressBox from '../AddressBox';
 
