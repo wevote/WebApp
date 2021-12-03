@@ -8,10 +8,10 @@ import IssueStore from '../../stores/IssueStore';
 import { renderLog } from '../../common/utils/logging';
 import { getPositionSummaryListForBallotItem } from '../../utils/positionFunctions';
 import StickyPopover from '../Ballot/StickyPopover';
-import SvgImage from '../Widgets/SvgImage';
+import SvgImage from '../../common/components/Widgets/SvgImage';
 import IssueFollowToggleButton from './IssueFollowToggleButton';
 
-const ReadMore = React.lazy(() => import(/* webpackChunkName: 'ReadMore' */ '../Widgets/ReadMore'));
+const ReadMore = React.lazy(() => import(/* webpackChunkName: 'ReadMore' */ '../../common/components/Widgets/ReadMore'));
 const PositionSummaryListForPopover = React.lazy(() => import(/* webpackChunkName: 'PositionSummaryListForPopover' */ '../Widgets/PositionSummaryListForPopover'));
 
 

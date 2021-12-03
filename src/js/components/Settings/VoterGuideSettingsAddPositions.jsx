@@ -17,7 +17,7 @@ import { isProperlyFormattedVoterGuideWeVoteId } from '../../utils/textFormat';
 import FilterBase from '../Filter/FilterBase';
 import SettingsAddBallotItemsFilter from '../Filter/SettingsAddBallotItemsFilter';
 import SettingsSeePositionsFilter from '../Filter/SettingsSeePositionsFilter';
-import LoadingWheel from '../LoadingWheel';
+import LoadingWheel from '../../common/components/Widgets/LoadingWheel';
 import NumberOfItemsFound from '../Widgets/NumberOfItemsFound';
 import BallotItemForAddPositions from './BallotItemForAddPositions';
 

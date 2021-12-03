@@ -12,7 +12,7 @@ import apiCalming from '../../utils/apiCalming';
 import { isCordova, isWebApp, prepareForCordovaKeyboard, restoreStylesAfterCordovaKeyboard } from '../../utils/cordovaUtils';
 import { renderLog } from '../../common/utils/logging';
 import { isSpeakerTypeOrganization } from '../../utils/organization-functions';
-import LoadingWheel from '../LoadingWheel';
+import LoadingWheel from '../../common/components/Widgets/LoadingWheel';
 
 const delayBeforeApiUpdateCall = 2000;
 const delayBeforeRemovingSavedStatus = 4000;

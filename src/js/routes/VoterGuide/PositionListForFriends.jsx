@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
 import OrganizationActions from '../../actions/OrganizationActions';
-import LoadingWheel from '../../components/LoadingWheel';
+import LoadingWheel from '../../common/components/Widgets/LoadingWheel';
 import OrganizationCard from '../../components/VoterGuide/OrganizationCard';
 import OrganizationPositionItem from '../../components/VoterGuide/OrganizationPositionItem';
 import ThisIsMeAction from '../../components/Widgets/ThisIsMeAction';

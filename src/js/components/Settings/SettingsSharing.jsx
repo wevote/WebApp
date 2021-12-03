@@ -11,13 +11,13 @@ import VoterStore from '../../stores/VoterStore';
 import { cordovaDot, cordovaOpenSafariView, isCordova, isWebApp } from '../../utils/cordovaUtils';
 import { renderLog } from '../../common/utils/logging';
 import { voterFeaturePackageExceedsOrEqualsRequired } from '../../utils/pricingFunctions';
-import LoadingWheel from '../LoadingWheel';
+import LoadingWheel from '../../common/components/Widgets/LoadingWheel';
 import PremiumableButton from '../Widgets/PremiumableButton';
 import CreateConfiguredVersion from './CreateConfiguredVersion';
 import SeeTheseSettingsInAction from './SeeTheseSettingsInAction';
 import { Actions, DescriptionText, GiantTextInput, HiddenInput, ImageDescription, PreviewImage, SharingColumn, SharingRow } from './SettingsStyled';
 
-const DelayedLoad = React.lazy(() => import(/* webpackChunkName: 'DelayedLoad' */ '../Widgets/DelayedLoad'));
+const DelayedLoad = React.lazy(() => import(/* webpackChunkName: 'DelayedLoad' */ '../../common/components/Widgets/DelayedLoad'));
 const SettingsAccount = React.lazy(() => import(/* webpackChunkName: 'SettingsAccount' */ './SettingsAccount'));
 const SettingsAccountLevelChip = React.lazy(() => import(/* webpackChunkName: 'SettingsAccountLeveLChip' */ './SettingsAccountLevelChip'));
 

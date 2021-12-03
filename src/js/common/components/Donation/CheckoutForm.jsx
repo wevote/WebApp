@@ -11,7 +11,7 @@ import DonateStore from '../../stores/DonateStore';
 import VoterStore from '../../../stores/VoterStore';
 import { renderLog } from '../../utils/logging';
 import moneyStringToPennies from '../../utils/moneyStringToPennies';
-import SplitIconButton from '../../../components/Widgets/SplitIconButton';
+import SplitIconButton from '../Widgets/SplitIconButton';
 
 
 const iconButtonStyles = {

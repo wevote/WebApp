@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import { renderLog } from '../../common/utils/logging';
 import ShowMoreButtons from './ShowMoreButtons';
 
-const ReadMore = React.lazy(() => import(/* webpackChunkName: 'ReadMore' */ '../Widgets/ReadMore'));
+const ReadMore = React.lazy(() => import(/* webpackChunkName: 'ReadMore' */ '../../common/components/Widgets/ReadMore'));
 
 class ReadyIntroduction extends Component {
   constructor (props) {

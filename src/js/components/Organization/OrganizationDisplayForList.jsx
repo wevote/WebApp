@@ -10,7 +10,7 @@ import PositionRatingSnippet from '../Widgets/PositionRatingSnippet';
 import PositionSupportOpposeSnippet from '../Widgets/PositionSupportOpposeSnippet';
 
 const ImageHandler = React.lazy(() => import(/* webpackChunkName: 'ImageHandler' */ '../ImageHandler'));
-const ReadMore = React.lazy(() => import(/* webpackChunkName: 'ReadMore' */ '../Widgets/ReadMore'));
+const ReadMore = React.lazy(() => import(/* webpackChunkName: 'ReadMore' */ '../../common/components/Widgets/ReadMore'));
 
 // OrganizationDisplayForList is used to display Organizations (as opposed to Voter Guides)
 export default class OrganizationDisplayForList extends Component {

@@ -9,14 +9,14 @@ import TeamMemberDisplayForList from '../../components/More/TeamMemberDisplayFor
 import ShowMoreButtons from '../../components/Ready/ShowMoreButtons';
 import { Title } from '../../components/Welcome/headerWelcomeStyles';
 import { Section, Bold, DescriptionContainer, MemberListContainer, SectionTitle } from '../../components/Welcome/sectionStyles';
-import ExternalLinkIcon from '../../components/Widgets/ExternalLinkIcon';
+import ExternalLinkIcon from '../../common/components/Widgets/ExternalLinkIcon';
 import VoterStore from '../../stores/VoterStore';
 import cordovaScrollablePaneTopPadding from '../../utils/cordovaScrollablePaneTopPadding';
 import { cordovaDot } from '../../utils/cordovaUtils';
 import { renderLog } from '../../common/utils/logging';
 import ToolBar from '../../common/components/Widgets/ToolBar';
 
-const OpenExternalWebSite = React.lazy(() => import(/* webpackChunkName: 'OpenExternalWebSite' */ '../../components/Widgets/OpenExternalWebSite'));
+const OpenExternalWebSite = React.lazy(() => import(/* webpackChunkName: 'OpenExternalWebSite' */ '../../common/components/Widgets/OpenExternalWebSite'));
 const WelcomeAppbar = React.lazy(() => import(/* webpackChunkName: 'WelcomeAppbar' */ '../../components/Navigation/WelcomeAppbar'));
 const WelcomeFooter = React.lazy(() => import(/* webpackChunkName: 'WelcomeFooter' */ '../../components/Welcome/WelcomeFooter'));
 

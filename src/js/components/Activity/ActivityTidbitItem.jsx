@@ -14,7 +14,7 @@ import ActivityPositionList from './ActivityPositionList';
 import ActivitySpeakerCard from './ActivitySpeakerCard';
 
 const ActivityPostModal = React.lazy(() => import(/* webpackChunkName: 'ActivityPostModal' */ './ActivityPostModal'));
-const DelayedLoad = React.lazy(() => import(/* webpackChunkName: 'DelayedLoad' */ '../Widgets/DelayedLoad'));
+const DelayedLoad = React.lazy(() => import(/* webpackChunkName: 'DelayedLoad' */ '../../common/components/Widgets/DelayedLoad'));
 
 
 class ActivityTidbitItem extends Component {

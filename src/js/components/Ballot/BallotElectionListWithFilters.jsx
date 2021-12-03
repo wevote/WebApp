@@ -14,10 +14,10 @@ import { historyPush } from '../../utils/cordovaUtils';
 import { electionDateTomorrowFormatted, formatDateMMMDoYYYY } from '../../common/utils/dateFormat';
 import { renderLog } from '../../common/utils/logging';
 import { cleanArray } from '../../utils/textFormat';
-import LoadingWheel from '../LoadingWheel';
+import LoadingWheel from '../../common/components/Widgets/LoadingWheel';
 import initializeMoment from '../../common/utils/initializeMoment';
 
-const DelayedLoad = React.lazy(() => import(/* webpackChunkName: 'DelayedLoad' */ '../Widgets/DelayedLoad'));
+const DelayedLoad = React.lazy(() => import(/* webpackChunkName: 'DelayedLoad' */ '../../common/components/Widgets/DelayedLoad'));
 
 
 export default class BallotElectionListWithFilters extends Component {

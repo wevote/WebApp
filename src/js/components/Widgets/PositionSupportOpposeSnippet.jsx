@@ -3,11 +3,11 @@ import React, { Component, Suspense } from 'react';
 import { cordovaDot } from '../../utils/cordovaUtils';
 import { renderLog } from '../../common/utils/logging';
 import { vimeoRegX, youTubeRegX } from '../../utils/textFormat';
-import ExternalLinkIcon from './ExternalLinkIcon';
+import ExternalLinkIcon from '../../common/components/Widgets/ExternalLinkIcon';
 
-const ReadMore = React.lazy(() => import(/* webpackChunkName: 'ReadMore' */ './ReadMore'));
+const ReadMore = React.lazy(() => import(/* webpackChunkName: 'ReadMore' */ '../../common/components/Widgets/ReadMore'));
 const ReactPlayer = React.lazy(() => import(/* webpackChunkName: 'ReactPlayer' */ 'react-player'));
-const OpenExternalWebSite = React.lazy(() => import(/* webpackChunkName: 'OpenExternalWebSite' */ './OpenExternalWebSite'));
+const OpenExternalWebSite = React.lazy(() => import(/* webpackChunkName: 'OpenExternalWebSite' */ '../../common/components/Widgets/OpenExternalWebSite'));
 const thumbsUpColorIcon = '../../../img/global/svg-icons/thumbs-up-color-icon.svg';
 const thumbsDownColorIcon = '../../../img/global/svg-icons/thumbs-down-color-icon.svg';
 

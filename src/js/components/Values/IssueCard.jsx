@@ -7,11 +7,11 @@ import VoterGuideStore from '../../stores/VoterGuideStore';
 import { isCordova } from '../../utils/cordovaUtils';
 import { renderLog } from '../../common/utils/logging';
 import { convertNameToSlug } from '../../utils/textFormat';
-import LoadingWheel from '../LoadingWheel';
+import LoadingWheel from '../../common/components/Widgets/LoadingWheel';
 import IssueFollowToggleButton from './IssueFollowToggleButton';
 import IssueImageDisplay from './IssueImageDisplay';
 
-const ReadMore = React.lazy(() => import(/* webpackChunkName: 'ReadMore' */ '../Widgets/ReadMore'));
+const ReadMore = React.lazy(() => import(/* webpackChunkName: 'ReadMore' */ '../../common/components/Widgets/ReadMore'));
 
 
 class IssueCard extends Component {

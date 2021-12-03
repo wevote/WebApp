@@ -3,7 +3,7 @@ import Table from 'react-bootstrap/Table';
 import Helmet from 'react-helmet';
 import { Link } from 'react-router-dom';
 import LazyImage from '../../common/components/LazyImage';
-import LoadingWheel from '../../components/LoadingWheel';
+import LoadingWheel from '../../common/components/Widgets/LoadingWheel';
 import HamburgerMenuRow from '../../components/Navigation/HamburgerMenuRow';
 import DeviceDialog from '../../components/Widgets/DeviceDialog';
 import VoterStore from '../../stores/VoterStore';

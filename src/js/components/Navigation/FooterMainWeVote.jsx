@@ -4,7 +4,7 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import isMobileScreenSize from '../../utils/isMobileScreenSize';
-import OpenExternalWebSite from '../Widgets/OpenExternalWebSite';
+import OpenExternalWebSite from '../../common/components/Widgets/OpenExternalWebSite';
 
 class FooterMainWeVote extends Component {
   render () {

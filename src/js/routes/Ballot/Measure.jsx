@@ -9,7 +9,7 @@ import AnalyticsActions from '../../actions/AnalyticsActions';
 import MeasureActions from '../../actions/MeasureActions';
 import OrganizationActions from '../../actions/OrganizationActions';
 import MeasureStickyHeader from '../../components/Ballot/MeasureStickyHeader';
-import LoadingWheelComp from '../../components/LoadingWheelComp';
+import LoadingWheelComp from '../../common/components/Widgets/LoadingWheelComp';
 import EndorsementCard from '../../components/Widgets/EndorsementCard';
 import SearchOnGoogle from '../../components/Widgets/SearchOnGoogle';
 import SnackNotifier from '../../components/Widgets/SnackNotifier';
@@ -27,9 +27,9 @@ import { renderLog } from '../../common/utils/logging';
 import { PageContentContainer } from '../../utils/pageLayoutStyles';
 import { capitalizeString } from '../../utils/textFormat';
 
-const DelayedLoad = React.lazy(() => import(/* webpackChunkName: 'DelayedLoad' */ '../../components/Widgets/DelayedLoad'));
+const DelayedLoad = React.lazy(() => import(/* webpackChunkName: 'DelayedLoad' */ '../../common/components/Widgets/DelayedLoad'));
 const MeasureItem = React.lazy(() => import(/* webpackChunkName: 'MeasureItem' */ '../../components/Ballot/MeasureItem'));
-const OpenExternalWebSite = React.lazy(() => import(/* webpackChunkName: 'OpenExternalWebSite' */ '../../components/Widgets/OpenExternalWebSite'));
+const OpenExternalWebSite = React.lazy(() => import(/* webpackChunkName: 'OpenExternalWebSite' */ '../../common/components/Widgets/OpenExternalWebSite'));
 const PositionList = React.lazy(() => import(/* webpackChunkName: 'PositionList' */ '../../components/Ballot/PositionList'));
 const ShareButtonDesktopTablet = React.lazy(() => import(/* webpackChunkName: 'ShareButtonDesktopTablet' */ '../../components/Share/ShareButtonDesktopTablet'));
 

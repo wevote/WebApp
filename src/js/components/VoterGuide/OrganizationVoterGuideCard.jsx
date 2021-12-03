@@ -9,13 +9,13 @@ import { renderLog } from '../../common/utils/logging';
 import { isSpeakerTypePrivateCitizen } from '../../utils/organization-functions';
 import { numberWithCommas, removeTwitterNameFromDescription } from '../../utils/textFormat';
 import FriendToggle from '../Friends/FriendToggle';
-import LoadingWheel from '../LoadingWheel';
+import LoadingWheel from '../../common/components/Widgets/LoadingWheel';
 import ParsedTwitterDescription from '../Twitter/ParsedTwitterDescription';
 import IssuesByOrganizationDisplayList from '../Values/IssuesByOrganizationDisplayList';
-import ExternalLinkIcon from '../Widgets/ExternalLinkIcon';
+import ExternalLinkIcon from '../../common/components/Widgets/ExternalLinkIcon';
 
 const FollowToggle = React.lazy(() => import(/* webpackChunkName: 'FollowToggle' */ '../Widgets/FollowToggle'));
-const OpenExternalWebSite = React.lazy(() => import(/* webpackChunkName: 'OpenExternalWebSite' */ '../Widgets/OpenExternalWebSite'));
+const OpenExternalWebSite = React.lazy(() => import(/* webpackChunkName: 'OpenExternalWebSite' */ '../../common/components/Widgets/OpenExternalWebSite'));
 
 // This Component is used to display the Organization by TwitterHandle
 // Please see VoterGuide/Organization for the Component used by GuideList for Candidate and Opinions (you can follow)

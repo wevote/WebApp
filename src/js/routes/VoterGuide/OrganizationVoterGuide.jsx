@@ -7,7 +7,7 @@ import AnalyticsActions from '../../actions/AnalyticsActions';
 import FriendActions from '../../actions/FriendActions';
 import OrganizationActions from '../../actions/OrganizationActions';
 import FriendToggle from '../../components/Friends/FriendToggle';
-import LoadingWheel from '../../components/LoadingWheel';
+import LoadingWheel from '../../common/components/Widgets/LoadingWheel';
 import ShareButtonDesktopTablet from '../../components/Share/ShareButtonDesktopTablet';
 import OrganizationCard from '../../components/VoterGuide/OrganizationCard';
 import OrganizationVoterGuideCard from '../../components/VoterGuide/OrganizationVoterGuideCard';
@@ -21,7 +21,7 @@ import { renderLog } from '../../common/utils/logging';
 import { isSpeakerTypePrivateCitizen } from '../../utils/organization-functions';
 import { PageContentContainer } from '../../utils/pageLayoutStyles';
 
-const DelayedLoad = React.lazy(() => import(/* webpackChunkName: 'DelayedLoad' */ '../../components/Widgets/DelayedLoad'));
+const DelayedLoad = React.lazy(() => import(/* webpackChunkName: 'DelayedLoad' */ '../../common/components/Widgets/DelayedLoad'));
 const FollowToggle = React.lazy(() => import(/* webpackChunkName: 'FollowToggle' */ '../../components/Widgets/FollowToggle'));
 
 const AUTO_FOLLOW = 'af';

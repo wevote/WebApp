@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { cordovaDot, historyPush, isWebApp } from '../../utils/cordovaUtils';
 
-const OpenExternalWebSite = React.lazy(() => import(/* webpackChunkName: 'OpenExternalWebSite' */ '../Widgets/OpenExternalWebSite'));
+const OpenExternalWebSite = React.lazy(() => import(/* webpackChunkName: 'OpenExternalWebSite' */ '../../common/components/Widgets/OpenExternalWebSite'));
 
 const appStoreIcon = '../../../img/global/logos/download_on_the_app_store_badge_us-uk_blk.svg';
 const googlePlayIcon = '../../../img/global/logos/google-play-badge-cropped.png';

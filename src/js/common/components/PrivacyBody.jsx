@@ -2,7 +2,7 @@ import React, { Component, Suspense } from 'react';
 import styled from 'styled-components';
 import { renderLog } from '../utils/logging';
 
-const OpenExternalWebSite = React.lazy(() => import(/* webpackChunkName: 'OpenExternalWebSite' */ '../../components/Widgets/OpenExternalWebSite'));
+const OpenExternalWebSite = React.lazy(() => import(/* webpackChunkName: 'OpenExternalWebSite' */ './Widgets/OpenExternalWebSite'));
 
 export default class PrivacyBody extends Component {
   static getProps () {

@@ -13,7 +13,7 @@ const ActivityTidbitAddReaction = React.lazy(() => import(/* webpackChunkName: '
 const ActivityTidbitComments = React.lazy(() => import(/* webpackChunkName: 'ActivityTidbitComments' */ './ActivityTidbitComments'));
 const ActivityTidbitItem = React.lazy(() => import(/* webpackChunkName: 'ActivityTidbitItem' */ './ActivityTidbitItem'));
 const ActivityTidbitReactionsSummary = React.lazy(() => import(/* webpackChunkName: 'ActivityTidbitReactionsSummary' */ './ActivityTidbitReactionsSummary'));
-const DelayedLoad = React.lazy(() => import(/* webpackChunkName: 'DelayedLoad' */ '../Widgets/DelayedLoad'));
+const DelayedLoad = React.lazy(() => import(/* webpackChunkName: 'DelayedLoad' */ '../../common/components/Widgets/DelayedLoad'));
 
 
 class ActivityTidbitDrawer extends Component {

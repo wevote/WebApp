@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import VoterStore from '../../stores/VoterStore';
 import { renderLog } from '../../common/utils/logging';
-import SplitIconButton from './SplitIconButton';
+import SplitIconButton from '../../common/components/Widgets/SplitIconButton';
 
 class ThisIsMeAction extends Component {
   constructor (props) {

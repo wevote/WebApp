@@ -11,7 +11,7 @@ import OrganizationStore from '../../stores/OrganizationStore';
 import { renderLog } from '../../common/utils/logging';
 import FilterBase from '../Filter/FilterBase';
 import VoterGuideOrganizationFilter from '../Filter/VoterGuideOrganizationFilter';
-import LoadingWheel from '../LoadingWheel';
+import LoadingWheel from '../../common/components/Widgets/LoadingWheel';
 import NumberOfItemsFound from '../Widgets/NumberOfItemsFound';
 import PositionItem from './PositionItem';
 
