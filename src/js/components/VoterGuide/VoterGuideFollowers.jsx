@@ -9,11 +9,11 @@ import OrganizationStore from '../../stores/OrganizationStore';
 import VoterGuideStore from '../../stores/VoterGuideStore';
 import VoterStore from '../../stores/VoterStore';
 import { renderLog } from '../../common/utils/logging';
-import LoadingWheel from '../LoadingWheel';
+import LoadingWheel from '../../common/components/Widgets/LoadingWheel';
 import SearchBar from '../Search/SearchBar';
 import GuideList from './GuideList';
 
-const DelayedLoad = React.lazy(() => import(/* webpackChunkName: 'DelayedLoad' */ '../Widgets/DelayedLoad'));
+const DelayedLoad = React.lazy(() => import(/* webpackChunkName: 'DelayedLoad' */ '../../common/components/Widgets/DelayedLoad'));
 
 
 class VoterGuideFollowers extends Component {

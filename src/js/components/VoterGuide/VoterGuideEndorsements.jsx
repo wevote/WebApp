@@ -22,7 +22,7 @@ import EndorsementCard from '../Widgets/EndorsementCard';
 import ThisIsMeAction from '../Widgets/ThisIsMeAction';
 import VoterGuidePositionList from './VoterGuidePositionList';
 
-const DelayedLoad = React.lazy(() => import(/* webpackChunkName: 'DelayedLoad' */ '../Widgets/DelayedLoad'));
+const DelayedLoad = React.lazy(() => import(/* webpackChunkName: 'DelayedLoad' */ '../../common/components/Widgets/DelayedLoad'));
 
 class VoterGuideEndorsements extends Component {
   constructor (props) {

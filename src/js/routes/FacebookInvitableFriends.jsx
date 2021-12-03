@@ -7,7 +7,7 @@ import FacebookActions from '../actions/FacebookActions';
 import FriendActions from '../actions/FriendActions';
 import VoterActions from '../actions/VoterActions';
 import CheckBox from '../components/Connect/CheckBox';
-import LoadingWheel from '../components/LoadingWheel';
+import LoadingWheel from '../common/components/Widgets/LoadingWheel';
 import WouldYouLikeToMergeAccounts from '../components/WouldYouLikeToMergeAccounts';
 import webAppConfig from '../config';
 import FacebookStore from '../stores/FacebookStore';

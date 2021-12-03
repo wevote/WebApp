@@ -6,7 +6,7 @@ import React, { Component, Suspense } from 'react';
 import styled from 'styled-components';
 import InfoCircleIcon from '../Widgets/InfoCircleIcon';
 
-const OpenExternalWebSite = React.lazy(() => import(/* webpackChunkName: 'OpenExternalWebSite' */ '../Widgets/OpenExternalWebSite'));
+const OpenExternalWebSite = React.lazy(() => import(/* webpackChunkName: 'OpenExternalWebSite' */ '../../common/components/Widgets/OpenExternalWebSite'));
 
 
 class FindPollingLocation extends Component {

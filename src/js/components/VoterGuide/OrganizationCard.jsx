@@ -7,10 +7,10 @@ import OrganizationActions from '../../actions/OrganizationActions';
 import OrganizationStore from '../../stores/OrganizationStore';
 import { renderLog } from '../../common/utils/logging';
 import { numberWithCommas, removeTwitterNameFromDescription, stringContains } from '../../utils/textFormat';
-import LoadingWheel from '../LoadingWheel';
+import LoadingWheel from '../../common/components/Widgets/LoadingWheel';
 import ParsedTwitterDescription from '../Twitter/ParsedTwitterDescription';
 import IssuesByOrganizationDisplayList from '../Values/IssuesByOrganizationDisplayList';
-import ExternalLinkIcon from '../Widgets/ExternalLinkIcon';
+import ExternalLinkIcon from '../../common/components/Widgets/ExternalLinkIcon';
 import PositionInformationOnlySnippet from '../Widgets/PositionInformationOnlySnippet';
 import PositionRatingSnippet from '../Widgets/PositionRatingSnippet';
 import PositionSupportOpposeSnippet from '../Widgets/PositionSupportOpposeSnippet';
@@ -18,8 +18,8 @@ import RatingPopover from '../Widgets/RatingPopover';
 
 const FollowToggle = React.lazy(() => import(/* webpackChunkName: 'FollowToggle' */ '../Widgets/FollowToggle'));
 const ImageHandler = React.lazy(() => import(/* webpackChunkName: 'ImageHandler' */ '../ImageHandler'));
-const OpenExternalWebSite = React.lazy(() => import(/* webpackChunkName: 'OpenExternalWebSite' */ '../Widgets/OpenExternalWebSite'));
-const ReadMore = React.lazy(() => import(/* webpackChunkName: 'ReadMore' */ '../Widgets/ReadMore'));
+const OpenExternalWebSite = React.lazy(() => import(/* webpackChunkName: 'OpenExternalWebSite' */ '../../common/components/Widgets/OpenExternalWebSite'));
+const ReadMore = React.lazy(() => import(/* webpackChunkName: 'ReadMore' */ '../../common/components/Widgets/ReadMore'));
 
 // This Component is used to display the Organization by TwitterHandle
 // Please see VoterGuide/Organization for the Component used by GuideList for Candidate and Opinions (you can follow)

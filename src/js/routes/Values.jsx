@@ -5,7 +5,7 @@ import AnalyticsActions from '../actions/AnalyticsActions';
 import IssueActions from '../actions/IssueActions';
 import AddFriendsByEmail from '../components/Friends/AddFriendsByEmail';
 import SuggestedFriendsPreview from '../components/Friends/SuggestedFriendsPreview';
-import LoadingWheelComp from '../components/LoadingWheelComp';
+import LoadingWheelComp from '../common/components/Widgets/LoadingWheelComp';
 import FindOpinionsForm from '../components/Ready/FindOpinionsForm';
 import TwitterSignInCard from '../components/Twitter/TwitterSignInCard';
 import NetworkOpinionsFollowed from '../components/Values/NetworkOpinionsFollowed';

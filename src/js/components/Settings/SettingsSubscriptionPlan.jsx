@@ -19,7 +19,7 @@ import { renderLog } from '../../common/utils/logging';
 import { stringContains } from '../../utils/textFormat';
 import CreateConfiguredVersion from './CreateConfiguredVersion';
 
-const DelayedLoad = React.lazy(() => import(/* webpackChunkName: 'DelayedLoad' */ '../Widgets/DelayedLoad'));
+const DelayedLoad = React.lazy(() => import(/* webpackChunkName: 'DelayedLoad' */ '../../common/components/Widgets/DelayedLoad'));
 const SettingsAccount = React.lazy(() => import(/* webpackChunkName: 'SettingsAccount' */ './SettingsAccount'));
 
 

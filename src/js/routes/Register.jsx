@@ -8,7 +8,7 @@ import styled from 'styled-components';
 import AnalyticsActions from '../actions/AnalyticsActions';
 import BallotActions from '../actions/BallotActions';
 import ReadyActions from '../actions/ReadyActions';
-import LoadingWheel from '../components/LoadingWheel';
+import LoadingWheel from '../common/components/Widgets/LoadingWheel';
 import BrowserPushMessage from '../components/Widgets/BrowserPushMessage';
 import { messageService } from '../stores/AppObservableStore';
 import BallotStore from '../stores/BallotStore';

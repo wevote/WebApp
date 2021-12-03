@@ -4,7 +4,7 @@ import Helmet from 'react-helmet';
 import MeasureActions from '../../actions/MeasureActions';
 import OrganizationActions from '../../actions/OrganizationActions';
 import VoterGuideActions from '../../actions/VoterGuideActions';
-import LoadingWheel from '../../components/LoadingWheel';
+import LoadingWheel from '../../common/components/Widgets/LoadingWheel';
 import webAppConfig from '../../config';
 import MeasureStore from '../../stores/MeasureStore';
 import VoterGuideStore from '../../stores/VoterGuideStore';
@@ -13,7 +13,7 @@ import { renderLog } from '../../common/utils/logging';
 import { capitalizeString } from '../../utils/textFormat';
 
 const MeasureItem = React.lazy(() => import(/* webpackChunkName: 'MeasureItem' */ '../../components/Ballot/MeasureItem'));
-const OpenExternalWebSite = React.lazy(() => import(/* webpackChunkName: 'OpenExternalWebSite' */ '../../components/Widgets/OpenExternalWebSite'));
+const OpenExternalWebSite = React.lazy(() => import(/* webpackChunkName: 'OpenExternalWebSite' */ '../../common/components/Widgets/OpenExternalWebSite'));
 const PositionList = React.lazy(() => import(/* webpackChunkName: 'PositionList' */ '../../components/Ballot/PositionList'));
 
 // This is based on routes/Ballot/Measure - TO BE DEPRECATED?

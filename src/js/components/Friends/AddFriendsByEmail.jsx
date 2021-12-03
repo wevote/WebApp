@@ -13,9 +13,9 @@ import { blurTextFieldAndroid, focusTextFieldAndroid } from '../../utils/cordova
 import isMobileScreenSize from '../../utils/isMobileScreenSize';
 import { renderLog } from '../../common/utils/logging';
 import { validatePhoneOrEmail } from '../../utils/regex-checks';
-import LoadingWheel from '../LoadingWheel';
+import LoadingWheel from '../../common/components/Widgets/LoadingWheel';
 
-const DelayedLoad = React.lazy(() => import(/* webpackChunkName: 'DelayedLoad' */ '../Widgets/DelayedLoad'));
+const DelayedLoad = React.lazy(() => import(/* webpackChunkName: 'DelayedLoad' */ '../../common/components/Widgets/DelayedLoad'));
 const SettingsAccount = React.lazy(() => import(/* webpackChunkName: 'SettingsAccount' */ '../Settings/SettingsAccount'));
 
 

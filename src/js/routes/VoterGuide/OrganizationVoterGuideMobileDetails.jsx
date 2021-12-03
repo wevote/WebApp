@@ -3,14 +3,14 @@ import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
 import styled from 'styled-components';
 import TwitterActions from '../../actions/TwitterActions';
-import LoadingWheel from '../../components/LoadingWheel';
+import LoadingWheel from '../../common/components/Widgets/LoadingWheel';
 import VoterGuideFollowers from '../../components/VoterGuide/VoterGuideFollowers';
 import VoterGuideFollowing from '../../components/VoterGuide/VoterGuideFollowing';
 import TwitterStore from '../../stores/TwitterStore';
 import { renderLog } from '../../common/utils/logging';
 import { PageContentContainer } from '../../utils/pageLayoutStyles';
 
-const DelayedLoad = React.lazy(() => import(/* webpackChunkName: 'DelayedLoad' */ '../../components/Widgets/DelayedLoad'));
+const DelayedLoad = React.lazy(() => import(/* webpackChunkName: 'DelayedLoad' */ '../../common/components/Widgets/DelayedLoad'));
 
 class OrganizationVoterGuideMobileDetails extends Component {
   constructor (props) {

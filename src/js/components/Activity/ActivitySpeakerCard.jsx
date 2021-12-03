@@ -10,12 +10,12 @@ import { timeFromDate } from '../../common/utils/dateFormat';
 import { renderLog } from '../../common/utils/logging';
 import { numberWithCommas } from '../../utils/textFormat';
 import StickyPopover from '../Ballot/StickyPopover';
-import LoadingWheel from '../LoadingWheel';
+import LoadingWheel from '../../common/components/Widgets/LoadingWheel';
 import OrganizationPopoverCard from '../Organization/OrganizationPopoverCard';
 import FriendsOnlyIndicator from '../Widgets/FriendsOnlyIndicator';
 
-const ReadMore = React.lazy(() => import(/* webpackChunkName: 'ReadMore' */ '../Widgets/ReadMore'));
-const OpenExternalWebSite = React.lazy(() => import(/* webpackChunkName: 'OpenExternalWebSite' */ '../Widgets/OpenExternalWebSite'));
+const ReadMore = React.lazy(() => import(/* webpackChunkName: 'ReadMore' */ '../../common/components/Widgets/ReadMore'));
+const OpenExternalWebSite = React.lazy(() => import(/* webpackChunkName: 'OpenExternalWebSite' */ '../../common/components/Widgets/OpenExternalWebSite'));
 const avatarGenericIcon = '../../../img/global/svg-icons/avatar-generic.svg';
 
 class ActivitySpeakerCard extends Component {

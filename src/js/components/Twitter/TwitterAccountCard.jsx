@@ -3,11 +3,11 @@ import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
 import { renderLog } from '../../common/utils/logging';
 import { abbreviateNumber, numberWithCommas, removeTwitterNameFromDescription } from '../../utils/textFormat';
-import ExternalLinkIcon from '../Widgets/ExternalLinkIcon';
+import ExternalLinkIcon from '../../common/components/Widgets/ExternalLinkIcon';
 import ParsedTwitterDescription from './ParsedTwitterDescription';
 
 const ImageHandler = React.lazy(() => import(/* webpackChunkName: 'ImageHandler' */ '../ImageHandler'));
-const OpenExternalWebSite = React.lazy(() => import(/* webpackChunkName: 'OpenExternalWebSite' */ '../Widgets/OpenExternalWebSite'));
+const OpenExternalWebSite = React.lazy(() => import(/* webpackChunkName: 'OpenExternalWebSite' */ '../../common/components/Widgets/OpenExternalWebSite'));
 
 export default class TwitterAccountCard extends Component {
   render () {

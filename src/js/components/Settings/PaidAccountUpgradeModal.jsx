@@ -16,7 +16,7 @@ import { numberWithCommas, stringContains } from '../../utils/textFormat';
 // TODO 5/11/21: import SettingsStripePayment from './SettingsStripePayment';
 
 
-const OpenExternalWebSite = React.lazy(() => import(/* webpackChunkName: 'OpenExternalWebSite' */ '../Widgets/OpenExternalWebSite'));
+const OpenExternalWebSite = React.lazy(() => import(/* webpackChunkName: 'OpenExternalWebSite' */ '../../common/components/Widgets/OpenExternalWebSite'));
 const Pricing = React.lazy(() => import(/* webpackChunkName: 'Pricing' */'../../routes/More/Pricing'));
 
 // April 2021:  Need to convert over to the up-to-date (allowed by stripe) "@stripe/react-stripe-js"

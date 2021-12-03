@@ -12,7 +12,7 @@ import { historyPush } from '../../utils/cordovaUtils';
 import { electionDateTomorrowFormatted, formatDateMMMDoYYYY } from '../../common/utils/dateFormat';
 import { renderLog } from '../../common/utils/logging';
 import { cleanArray } from '../../utils/textFormat';
-import LoadingWheel from '../LoadingWheel';
+import LoadingWheel from '../../common/components/Widgets/LoadingWheel';
 
 const MAXIMUM_NUMBER_OF_CHARACTERS_TO_SHOW = 36;
 const MAXIMUM_NUMBER_OF_CHARACTERS_TO_SHOW_DESKTOP = 36;

@@ -3,10 +3,10 @@ import PropTypes from 'prop-types';
 import React, { PureComponent, Suspense } from 'react';
 import styled from 'styled-components';
 import VoterStore from '../../stores/VoterStore';
-import SplitIconButton from './SplitIconButton';
-import SvgImage from './SvgImage';
+import SplitIconButton from '../../common/components/Widgets/SplitIconButton';
+import SvgImage from '../../common/components/Widgets/SvgImage';
 
-const OpenExternalWebSite = React.lazy(() => import(/* webpackChunkName: 'OpenExternalWebSite' */ './OpenExternalWebSite'));
+const OpenExternalWebSite = React.lazy(() => import(/* webpackChunkName: 'OpenExternalWebSite' */ '../../common/components/Widgets/OpenExternalWebSite'));
 
 
 class EndorsementCard extends PureComponent {

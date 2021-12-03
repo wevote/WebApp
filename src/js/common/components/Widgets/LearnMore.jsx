@@ -3,7 +3,7 @@ import { withStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
 import TextTruncate from 'react-text-truncate'; // Replace with: import TruncateMarkup from 'react-truncate-markup';
-import { renderLog } from '../../common/utils/logging';
+import { renderLog } from '../../utils/logging';
 import ExternalLinkIcon from './ExternalLinkIcon';
 
 const OpenExternalWebSite = React.lazy(() => import(/* webpackChunkName: 'OpenExternalWebSite' */ './OpenExternalWebSite'));

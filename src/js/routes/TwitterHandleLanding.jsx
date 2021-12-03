@@ -5,7 +5,7 @@ import Helmet from 'react-helmet';
 import { Link } from 'react-router-dom';
 import OrganizationActions from '../actions/OrganizationActions';
 import TwitterActions from '../actions/TwitterActions';
-import LoadingWheelComp from '../components/LoadingWheelComp';
+import LoadingWheelComp from '../common/components/Widgets/LoadingWheelComp';
 import AppObservableStore from '../stores/AppObservableStore';
 import TwitterStore from '../stores/TwitterStore';
 import VoterStore from '../stores/VoterStore';
@@ -17,7 +17,7 @@ import OrganizationVoterGuide from './VoterGuide/OrganizationVoterGuide';
 import PositionListForFriends from './VoterGuide/PositionListForFriends';
 import UnknownTwitterAccount from './VoterGuide/UnknownTwitterAccount';
 
-const DelayedLoad = React.lazy(() => import(/* webpackChunkName: 'DelayedLoad' */ '../components/Widgets/DelayedLoad'));
+const DelayedLoad = React.lazy(() => import(/* webpackChunkName: 'DelayedLoad' */ '../common/components/Widgets/DelayedLoad'));
 
 
 // The component that gets called for paths like https://localhost:3000/sierraclub

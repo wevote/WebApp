@@ -11,11 +11,11 @@ import VoterGuidePossibilityStore from '../../stores/VoterGuidePossibilityStore'
 import { historyPush } from '../../utils/cordovaUtils';
 import { renderLog } from '../../common/utils/logging';
 import { abbreviateNumber, numberWithCommas } from '../../utils/textFormat';
-import ExternalLinkIcon from '../Widgets/ExternalLinkIcon';
+import ExternalLinkIcon from '../../common/components/Widgets/ExternalLinkIcon';
 
 const ImageHandler = React.lazy(() => import(/* webpackChunkName: 'ImageHandler' */ '../ImageHandler'));
 const OfficeNameText = React.lazy(() => import(/* webpackChunkName: 'OfficeNameText' */ '../Widgets/OfficeNameText'));
-const OpenExternalWebSite = React.lazy(() => import(/* webpackChunkName: 'OpenExternalWebSite' */ '../Widgets/OpenExternalWebSite'));
+const OpenExternalWebSite = React.lazy(() => import(/* webpackChunkName: 'OpenExternalWebSite' */ '../../common/components/Widgets/OpenExternalWebSite'));
 
 /* global $ */
 

@@ -8,7 +8,7 @@ import IssueStore from '../../stores/IssueStore';
 import OrganizationStore from '../../stores/OrganizationStore';
 import { isOrganizationInVotersNetwork } from '../../utils/positionFunctions';
 import FriendsIcon from './FriendsIcon';
-import SvgImage from './SvgImage';
+import SvgImage from '../../common/components/Widgets/SvgImage';
 
 const FollowToggle = React.lazy(() => import(/* webpackChunkName: 'FollowToggle' */ './FollowToggle'));
 

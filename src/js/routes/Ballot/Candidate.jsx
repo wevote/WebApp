@@ -11,7 +11,7 @@ import IssueActions from '../../actions/IssueActions';
 import OrganizationActions from '../../actions/OrganizationActions';
 import VoterGuideActions from '../../actions/VoterGuideActions';
 import CandidateStickyHeader from '../../components/Ballot/CandidateStickyHeader';
-import LoadingWheel from '../../components/LoadingWheel';
+import LoadingWheel from '../../common/components/Widgets/LoadingWheel';
 import ShareButtonDesktopTablet from '../../components/Share/ShareButtonDesktopTablet';
 import EndorsementCard from '../../components/Widgets/EndorsementCard';
 import SearchOnGoogle from '../../components/Widgets/SearchOnGoogle';
@@ -31,8 +31,8 @@ import { PageContentContainer } from '../../utils/pageLayoutStyles';
 import { capitalizeString, convertToInteger } from '../../utils/textFormat';
 
 const CandidateItem = React.lazy(() => import(/* webpackChunkName: 'CandidateItem' */ '../../components/Ballot/CandidateItem'));
-const DelayedLoad = React.lazy(() => import(/* webpackChunkName: 'DelayedLoad' */ '../../components/Widgets/DelayedLoad'));
-const OpenExternalWebSite = React.lazy(() => import(/* webpackChunkName: 'OpenExternalWebSite' */ '../../components/Widgets/OpenExternalWebSite'));
+const DelayedLoad = React.lazy(() => import(/* webpackChunkName: 'DelayedLoad' */ '../../common/components/Widgets/DelayedLoad'));
+const OpenExternalWebSite = React.lazy(() => import(/* webpackChunkName: 'OpenExternalWebSite' */ '../../common/components/Widgets/OpenExternalWebSite'));
 const PositionList = React.lazy(() => import(/* webpackChunkName: 'PositionList' */ '../../components/Ballot/PositionList'));
 
 // const nextReleaseFeaturesEnabled = webAppConfig.ENABLE_NEXT_RELEASE_FEATURES === undefined ? false : webAppConfig.ENABLE_NEXT_RELEASE_FEATURES;

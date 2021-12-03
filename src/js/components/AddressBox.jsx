@@ -10,7 +10,7 @@ import VoterStore from '../stores/VoterStore';
 import { historyPush, isCordova, isWebApp, prepareForCordovaKeyboard, restoreStylesAfterCordovaKeyboard } from '../utils/cordovaUtils';
 import Cookies from '../common/utils/js-cookie/Cookies';
 import { renderLog } from '../common/utils/logging';
-import LoadingWheel from './LoadingWheel';
+import LoadingWheel from '../common/components/Widgets/LoadingWheel';
 
 class AddressBox extends Component {
   constructor (props) {

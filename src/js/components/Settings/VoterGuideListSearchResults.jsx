@@ -9,7 +9,7 @@ import voterGuideSearchPriority from '../../utils/voterGuideSearchPriority';
 import SearchBar from '../Search/SearchBar';
 import BallotItemForAddPositions from './BallotItemForAddPositions';
 
-const DelayedLoad = React.lazy(() => import(/* webpackChunkName: 'DelayedLoad' */ '../Widgets/DelayedLoad'));
+const DelayedLoad = React.lazy(() => import(/* webpackChunkName: 'DelayedLoad' */ '../../common/components/Widgets/DelayedLoad'));
 const ShowMoreItems = React.lazy(() => import(/* webpackChunkName: 'ShowMoreItems' */ '../Widgets/ShowMoreItems'));
 
 

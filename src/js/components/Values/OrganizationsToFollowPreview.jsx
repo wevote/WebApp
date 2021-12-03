@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import VoterGuideStore from '../../stores/VoterGuideStore';
 import { historyPush } from '../../utils/cordovaUtils';
 import { renderLog } from '../../common/utils/logging';
-import LoadingWheel from '../LoadingWheel';
+import LoadingWheel from '../../common/components/Widgets/LoadingWheel';
 
 const GuideList = React.lazy(() => import(/* webpackChunkName: 'GuideList' */ '../VoterGuide/GuideList'));
 const ShowMoreFooter = React.lazy(() => import(/* webpackChunkName: 'ShowMoreFooter' */ '../Navigation/ShowMoreFooter'));

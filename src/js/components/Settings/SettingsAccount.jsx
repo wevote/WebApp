@@ -20,7 +20,7 @@ import { oAuthLog, renderLog } from '../../common/utils/logging';
 import { stringContains } from '../../utils/textFormat';
 import AppleSignIn from '../Apple/AppleSignIn';
 import FacebookSignIn from '../Facebook/FacebookSignIn';
-import LoadingWheel from '../LoadingWheel';
+import LoadingWheel from '../../common/components/Widgets/LoadingWheel';
 import TwitterSignIn from '../Twitter/TwitterSignIn';
 import BrowserPushMessage from '../Widgets/BrowserPushMessage';
 import signInModalGlobalState from '../Widgets/signInModalGlobalState';

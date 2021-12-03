@@ -8,7 +8,7 @@ import styled from 'styled-components';
 import AppObservableStore from '../../stores/AppObservableStore';
 import TwitterActions from '../../actions/TwitterActions';
 import VoterSessionActions from '../../actions/VoterSessionActions';
-import LoadingWheel from '../../components/LoadingWheel';
+import LoadingWheel from '../../common/components/Widgets/LoadingWheel';
 import TwitterAccountCard from '../../components/Twitter/TwitterAccountCard';
 import TwitterSignIn from '../../components/Twitter/TwitterSignIn';
 import OrganizationCard from '../../components/VoterGuide/OrganizationCard';

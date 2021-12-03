@@ -8,7 +8,7 @@ import { cordovaOpenSafariView, historyPush, isAndroid, isIOS, isWebApp } from '
 import { oAuthLog, renderLog } from '../../common/utils/logging';
 import $ajax from '../../utils/service';
 import { shortenText } from '../../utils/textFormat';
-import SplitIconButton from '../Widgets/SplitIconButton';
+import SplitIconButton from '../../common/components/Widgets/SplitIconButton';
 
 const returnURL = `${webAppConfig.WE_VOTE_URL_PROTOCOL + webAppConfig.WE_VOTE_HOSTNAME}/twitter_sign_in`;
 

@@ -1,12 +1,14 @@
+import React, { PureComponent } from 'react';
+import PropTypes from 'prop-types';
+import styled from 'styled-components';
 import { Button } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
-import PropTypes from 'prop-types';
-import React, { PureComponent } from 'react';
-import styled from 'styled-components';
-import { getTextColorFromBackground } from '../../common/utils/color';
+import { getTextColorFromBackground } from '../../utils/color';
+import { renderLog } from '../../utils/logging';
 
 class SplitIconButton extends PureComponent {
   render () {
+    renderLog('SplitIconButton');  // Set LOG_RENDER_EVENTS to log all renders
     const {
       backgroundColor,
       buttonText,
@@ -15,20 +17,32 @@ class SplitIconButton extends PureComponent {
       fontColor,
       fontSize,
       icon,
+      styles,
       title,
       variant,
     } = this.props;
-    const buttonStyle = {
+    const defaultButtonStyles = {
       background: backgroundColor || '#2e3c5d',
       border: '1px solid rgba(46, 60, 93, .5)',
       color: fontColor || getTextColorFromBackground(backgroundColor || '#2e3c5d'),
       fontSize: fontSize || '13px',
     };
+
+    let buttonStyles;
+    if (styles) {
+      buttonStyles = {
+        ...defaultButtonStyles,
+        ...styles,
+      };
+    } else {
+      buttonStyles = defaultButtonStyles;
+    }
+
     if (compressedSize) {
-      buttonStyle.border = '1px solid rgba(46, 60, 93, .5)';
-      buttonStyle.padding = 4;
-      buttonStyle.width = 160;
-      buttonStyle.height = 32;
+      buttonStyles.border = '1px solid rgba(46, 60, 93, .5)';
+      buttonStyles.padding = 4;
+      buttonStyles.width = 160;
+      buttonStyles.height = 32;
     }
 
     return (
@@ -38,7 +52,7 @@ class SplitIconButton extends PureComponent {
         disabled={this.props.disabled}
         id={`${this.props.externalUniqueId}-splitIconButton`}
         title={title}
-        style={buttonStyle}
+        style={buttonStyles}
         onClick={this.props.onClick}
         onKeyDown={this.props.onKeyDown}
         variant={variant || 'contained'}
@@ -71,7 +85,7 @@ class SplitIconButton extends PureComponent {
 SplitIconButton.propTypes = {
   adjustedIconWidth: PropTypes.number,
   backgroundColor: PropTypes.string,
-  buttonText: PropTypes.string,
+  buttonText: PropTypes.oneOfType([PropTypes.element, PropTypes.string]),
   classes: PropTypes.object,
   compressedSize: PropTypes.bool,
   disabled: PropTypes.bool,
@@ -83,6 +97,7 @@ SplitIconButton.propTypes = {
   onClick: PropTypes.func,
   onKeyDown: PropTypes.func,
   separatorColor: PropTypes.string,
+  styles: PropTypes.object,
   title: PropTypes.string,
   variant: PropTypes.string,
 };
@@ -133,9 +148,10 @@ const SplitButtonIcon = styled.span`
   display: flex;
   align-items: center;
   height: 100%;
-  padding: 0 11px;
+  padding: 0 13.3px;
   ${({ adjustedIconWidth }) => (adjustedIconWidth ? `width: ${adjustedIconWidth}px;` : 'width: 44px;')}
   * {
+    padding-right: 24px;
     width: 100%;
     font-size: 22px;
   }

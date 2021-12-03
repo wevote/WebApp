@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import VoterActions from '../actions/VoterActions';
-import LoadingWheel from '../components/LoadingWheel';
+import LoadingWheel from '../common/components/Widgets/LoadingWheel';
 import TwitterHandleBox from '../components/Twitter/TwitterHandleBox';
 import VoterStore from '../stores/VoterStore';
 import { historyPush } from '../utils/cordovaUtils';

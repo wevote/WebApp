@@ -7,7 +7,7 @@ import { renderLog } from '../../common/utils/logging';
 import { calculateBallotBaseUrl, shortenText } from '../../utils/textFormat';
 import AddressBox from '../AddressBox';
 
-const ReadMore = React.lazy(() => import(/* webpackChunkName: 'ReadMore' */ './ReadMore'));
+const ReadMore = React.lazy(() => import(/* webpackChunkName: 'ReadMore' */ '../../common/components/Widgets/ReadMore'));
 
 class EditAddressInPlace extends Component {
   constructor (props, context) {

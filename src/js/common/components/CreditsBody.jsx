@@ -3,12 +3,12 @@ import React, { Component, Suspense } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { organizationalDonors, teamOfVolunteers } from '../constants/people';
-import ExternalLinkIcon from '../../components/Widgets/ExternalLinkIcon';
+import ExternalLinkIcon from './Widgets/ExternalLinkIcon';
 import cordovaScrollablePaneTopPadding from '../../utils/cordovaScrollablePaneTopPadding';
 import { isWebApp } from '../../utils/cordovaUtils';
 import { renderLog } from '../utils/logging';
 
-const OpenExternalWebSite = React.lazy(() => import(/* webpackChunkName: 'OpenExternalWebSite' */ '../../components/Widgets/OpenExternalWebSite'));
+const OpenExternalWebSite = React.lazy(() => import(/* webpackChunkName: 'OpenExternalWebSite' */ './Widgets/OpenExternalWebSite'));
 
 
 class Credits extends Component {

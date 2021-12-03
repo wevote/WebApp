@@ -4,7 +4,7 @@ import VoterStore from '../../stores/VoterStore';
 import { historyPush } from '../../utils/cordovaUtils';
 import { renderLog } from '../../common/utils/logging';
 import { extractTwitterHandleFromTextString } from '../../utils/textFormat';
-import LoadingWheel from '../LoadingWheel';
+import LoadingWheel from '../../common/components/Widgets/LoadingWheel';
 
 
 export default class TwitterHandleBox extends Component {

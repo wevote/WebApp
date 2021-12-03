@@ -1,6 +1,6 @@
 import React from 'react';
 // import { ReactSVG } from 'react-svg';
-import { cordovaDot } from '../../utils/cordovaUtils';
+import { cordovaDot } from '../../../utils/cordovaUtils';
 
 
 export default function ExternalLinkIcon (largeBlue = false) {

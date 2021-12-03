@@ -2,9 +2,9 @@ import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
 import styled from 'styled-components';
 import { cordovaDot } from '../../utils/cordovaUtils';
-import SplitIconButton from './SplitIconButton';
+import SplitIconButton from '../../common/components/Widgets/SplitIconButton';
 
-const OpenExternalWebSite = React.lazy(() => import(/* webpackChunkName: 'OpenExternalWebSite' */ './OpenExternalWebSite'));
+const OpenExternalWebSite = React.lazy(() => import(/* webpackChunkName: 'OpenExternalWebSite' */ '../../common/components/Widgets/OpenExternalWebSite'));
 
 const googleIcon = '../../../img/global/logos/google-icon.svg';
 

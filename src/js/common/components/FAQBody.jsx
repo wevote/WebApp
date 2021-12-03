@@ -5,7 +5,7 @@ import { renderLog } from '../utils/logging';
 import ToolBar from './Widgets/ToolBar';
 
 
-const OpenExternalWebSite = React.lazy(() => import(/* webpackChunkName: 'OpenExternalWebSite' */ '../../components/Widgets/OpenExternalWebSite'));
+const OpenExternalWebSite = React.lazy(() => import(/* webpackChunkName: 'OpenExternalWebSite' */ './Widgets/OpenExternalWebSite'));
 
 export default class FAQBody extends Component {
   static getProps () {

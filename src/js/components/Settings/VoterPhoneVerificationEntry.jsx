@@ -11,11 +11,11 @@ import VoterStore from '../../stores/VoterStore';
 import { isCordova, isWebApp } from '../../utils/cordovaUtils';
 import isMobileScreenSize from '../../utils/isMobileScreenSize';
 import { renderLog } from '../../common/utils/logging';
-import LoadingWheel from '../LoadingWheel';
+import LoadingWheel from '../../common/components/Widgets/LoadingWheel';
 import signInModalGlobalState from '../Widgets/signInModalGlobalState';
 import SettingsVerifySecretCode from './SettingsVerifySecretCode';
 
-const OpenExternalWebSite = React.lazy(() => import(/* webpackChunkName: 'OpenExternalWebSite' */ '../Widgets/OpenExternalWebSite'));
+const OpenExternalWebSite = React.lazy(() => import(/* webpackChunkName: 'OpenExternalWebSite' */ '../../common/components/Widgets/OpenExternalWebSite'));
 
 
 /* global $ */

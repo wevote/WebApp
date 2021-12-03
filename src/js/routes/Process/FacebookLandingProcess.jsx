@@ -1,6 +1,6 @@
 import { Component } from 'react';
 import FacebookActions from '../../actions/FacebookActions';
-import LoadingWheel from '../../components/LoadingWheel';
+import LoadingWheel from '../../common/components/Widgets/LoadingWheel';
 import FacebookStore from '../../stores/FacebookStore';
 import FriendStore from '../../stores/FriendStore';
 import VoterStore from '../../stores/VoterStore';

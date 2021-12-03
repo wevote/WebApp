@@ -3,7 +3,7 @@ import React, { Component, Suspense } from 'react';
 import styled from 'styled-components';
 import { renderLog } from '../../common/utils/logging';
 
-const OpenExternalWebSite = React.lazy(() => import(/* webpackChunkName: 'OpenExternalWebSite' */ '../Widgets/OpenExternalWebSite'));
+const OpenExternalWebSite = React.lazy(() => import(/* webpackChunkName: 'OpenExternalWebSite' */ '../../common/components/Widgets/OpenExternalWebSite'));
 
 
 class CreateConfiguredVersion extends Component {

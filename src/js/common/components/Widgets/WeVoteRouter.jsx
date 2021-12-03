@@ -1,6 +1,6 @@
 import { BrowserRouter } from 'react-router-dom';
-import webAppConfig from '../../config';
-import AppObservableStore from '../../stores/AppObservableStore';
+import webAppConfig from '../../../config';
+import AppObservableStore from '../../../stores/AppObservableStore';
 
 // https://stackoverflow.com/questions/34093913/how-to-debug-react-router
 // When a history.push is called correctly for the v5 react-router, the incoming

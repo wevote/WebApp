@@ -1,8 +1,8 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import { ReactSVG } from 'react-svg';
-import { cordovaDot, isWebApp } from '../../utils/cordovaUtils';
-import { renderLog } from '../../common/utils/logging';
+import { cordovaDot, isWebApp } from '../../../utils/cordovaUtils';
+import { renderLog } from '../../utils/logging';
 
 
 // A function component to avoid CORS issues in Cordova for ReactSVG

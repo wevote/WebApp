@@ -7,7 +7,7 @@ import AppObservableStore, { messageService } from '../../stores/AppObservableSt
 import { renderLog } from '../../common/utils/logging';
 import { openSnackbar } from '../Widgets/SnackNotifier';
 
-const OpenExternalWebSite = React.lazy(() => import(/* webpackChunkName: 'OpenExternalWebSite' */ '../Widgets/OpenExternalWebSite'));
+const OpenExternalWebSite = React.lazy(() => import(/* webpackChunkName: 'OpenExternalWebSite' */ '../../common/components/Widgets/OpenExternalWebSite'));
 
 class ShareModalOption extends Component {
   constructor (props) {

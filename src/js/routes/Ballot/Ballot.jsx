@@ -17,7 +17,7 @@ import BallotItemCompressed from '../../components/Ballot/BallotItemCompressed';
 import BallotStatusMessage from '../../components/Ballot/BallotStatusMessage';
 import AddFriendsByEmail from '../../components/Friends/AddFriendsByEmail';
 import SuggestedFriendsPreview from '../../components/Friends/SuggestedFriendsPreview';
-import LoadingWheelComp from '../../components/LoadingWheelComp';
+import LoadingWheelComp from '../../common/components/Widgets/LoadingWheelComp';
 import BallotDecisionsTabs from '../../components/Navigation/BallotDecisionsTabs';
 import BallotShowAllItemsFooter from '../../components/Navigation/BallotShowAllItemsFooter';
 import BallotSideBar from '../../components/Navigation/BallotSideBar';
@@ -48,9 +48,9 @@ import BallotTitleHeader from './BallotTitleHeader';
 import { checkShouldUpdate, formatVoterBallotList } from './utils/ballotUtils';
 import EditAddressOneHorizontalRow from '../../components/Ready/EditAddressOneHorizontalRow';
 
-const DelayedLoad = React.lazy(() => import(/* webpackChunkName: 'DelayedLoad' */ '../../components/Widgets/DelayedLoad'));
+const DelayedLoad = React.lazy(() => import(/* webpackChunkName: 'DelayedLoad' */ '../../common/components/Widgets/DelayedLoad'));
 const FilterBaseSearch = React.lazy(() => import(/* webpackChunkName: 'FilterBaseSearch' */ '../../components/Filter/FilterBaseSearch'));
-const OpenExternalWebSite = React.lazy(() => import(/* webpackChunkName: 'OpenExternalWebSite' */ '../../components/Widgets/OpenExternalWebSite'));
+const OpenExternalWebSite = React.lazy(() => import(/* webpackChunkName: 'OpenExternalWebSite' */ '../../common/components/Widgets/OpenExternalWebSite'));
 const ShowMoreItems = React.lazy(() => import(/* webpackChunkName: 'ShowMoreItems' */ '../../components/Widgets/ShowMoreItems'));
 
 const TYPES = require('keymirror')({

@@ -11,7 +11,7 @@ import { renderLog } from '../../common/utils/logging';
 
 const ImageHandler = React.lazy(() => import(/* webpackChunkName: 'ImageHandler' */ '../ImageHandler'));
 const BallotItemSupportOpposeCountDisplay = React.lazy(() => import(/* webpackChunkName: 'BallotItemSupportOpposeCountDisplay' */ '../Widgets/BallotItemSupportOpposeCountDisplay'));
-const LearnMore = React.lazy(() => import(/* webpackChunkName: 'LearnMore' */ '../Widgets/LearnMore'));
+const LearnMore = React.lazy(() => import(/* webpackChunkName: 'LearnMore' */ '../../common/components/Widgets/LearnMore'));
 
 export default class CandidateItemCompressed extends Component {
   constructor (props) {

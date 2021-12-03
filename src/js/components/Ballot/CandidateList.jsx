@@ -4,7 +4,7 @@ import { historyPush } from '../../utils/cordovaUtils';
 import { renderLog } from '../../common/utils/logging';
 
 const CandidateItem = React.lazy(() => import(/* webpackChunkName: 'CandidateItem' */ './CandidateItem'));
-const DelayedLoad = React.lazy(() => import(/* webpackChunkName: 'DelayedLoad' */ '../Widgets/DelayedLoad'));
+const DelayedLoad = React.lazy(() => import(/* webpackChunkName: 'DelayedLoad' */ '../../common/components/Widgets/DelayedLoad'));
 
 
 // This is related to components/VoterGuide/OrganizationVoterGuideCandidateList.jsx

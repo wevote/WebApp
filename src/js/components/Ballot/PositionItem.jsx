@@ -19,14 +19,14 @@ import { isOrganizationInVotersNetwork } from '../../utils/positionFunctions';
 import { numberWithCommas } from '../../utils/textFormat';
 import OrganizationPopoverCard from '../Organization/OrganizationPopoverCard';
 import IssuesByOrganizationDisplayList from '../Values/IssuesByOrganizationDisplayList';
-import ExternalLinkIcon from '../Widgets/ExternalLinkIcon';
+import ExternalLinkIcon from '../../common/components/Widgets/ExternalLinkIcon';
 import PositionItemScorePopover from '../Widgets/PositionItemScorePopover';
-import SvgImage from '../Widgets/SvgImage';
+import SvgImage from '../../common/components/Widgets/SvgImage';
 
 const FollowToggle = React.lazy(() => import(/* webpackChunkName: 'FollowToggle' */ '../Widgets/FollowToggle'));
 const ImageHandler = React.lazy(() => import(/* webpackChunkName: 'ImageHandler' */ '../ImageHandler'));
-const OpenExternalWebSite = React.lazy(() => import(/* webpackChunkName: 'OpenExternalWebSite' */ '../Widgets/OpenExternalWebSite'));
-const ReadMore = React.lazy(() => import(/* webpackChunkName: 'ReadMore' */ '../Widgets/ReadMore'));
+const OpenExternalWebSite = React.lazy(() => import(/* webpackChunkName: 'OpenExternalWebSite' */ '../../common/components/Widgets/OpenExternalWebSite'));
+const ReadMore = React.lazy(() => import(/* webpackChunkName: 'ReadMore' */ '../../common/components/Widgets/ReadMore'));
 const StickyPopover = React.lazy(() => import(/* webpackChunkName: 'StickyPopover' */ './StickyPopover'));
 
 

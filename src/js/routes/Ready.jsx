@@ -9,7 +9,7 @@ import BallotActions from '../actions/BallotActions';
 import FriendActions from '../actions/FriendActions';
 import IssueActions from '../actions/IssueActions';
 import ReadyActions from '../actions/ReadyActions';
-import LoadingWheelComp from '../components/LoadingWheelComp';
+import LoadingWheelComp from '../common/components/Widgets/LoadingWheelComp';
 import EditAddressOneHorizontalRow from '../components/Ready/EditAddressOneHorizontalRow';
 import ElectionCountdown from '../components/Ready/ElectionCountdown';
 import ReadyInformationDisclaimer from '../components/Ready/ReadyInformationDisclaimer';
@@ -33,7 +33,7 @@ import lazyPreloadPages from '../utils/lazyPreloadPages';
 import { renderLog } from '../common/utils/logging';
 import { PageContentContainer } from '../utils/pageLayoutStyles';
 
-const ReadMore = React.lazy(() => import(/* webpackChunkName: 'ReadMore' */ '../components/Widgets/ReadMore'));
+const ReadMore = React.lazy(() => import(/* webpackChunkName: 'ReadMore' */ '../common/components/Widgets/ReadMore'));
 const FirstAndLastNameRequiredAlert = React.lazy(() => import(/* webpackChunkName: 'FirstAndLastNameRequiredAlert' */ '../components/Widgets/FirstAndLastNameRequiredAlert'));
 // import PledgeToVote from '../components/Ready/PledgeToVote';
 

@@ -9,7 +9,7 @@ import { renderLog } from '../../common/utils/logging';
 import IssueLinkToggle from '../Values/IssueLinkToggle';
 import BrowserPushMessage from '../Widgets/BrowserPushMessage';
 
-const DelayedLoad = React.lazy(() => import(/* webpackChunkName: 'DelayedLoad' */ '../Widgets/DelayedLoad'));
+const DelayedLoad = React.lazy(() => import(/* webpackChunkName: 'DelayedLoad' */ '../../common/components/Widgets/DelayedLoad'));
 const SettingsAccount = React.lazy(() => import(/* webpackChunkName: 'SettingsAccount' */ './SettingsAccount'));
 
 

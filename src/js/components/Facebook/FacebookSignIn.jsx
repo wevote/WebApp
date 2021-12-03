@@ -8,10 +8,10 @@ import { messageService } from '../../stores/AppObservableStore';
 import FacebookStore from '../../stores/FacebookStore';
 import VoterStore from '../../stores/VoterStore';
 import { oAuthLog, renderLog } from '../../common/utils/logging';
-import LoadingWheelComp from '../LoadingWheelComp';
+import LoadingWheelComp from '../../common/components/Widgets/LoadingWheelComp';
 import signInModalGlobalState from '../Widgets/signInModalGlobalState';
 
-import SplitIconButton from '../Widgets/SplitIconButton';
+import SplitIconButton from '../../common/components/Widgets/SplitIconButton';
 
 
 class FacebookSignIn extends Component {

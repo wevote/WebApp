@@ -13,7 +13,7 @@ import FriendInvitationsSentToMePreview from '../../components/Friends/FriendInv
 import FriendsCurrentPreview from '../../components/Friends/FriendsCurrentPreview';
 import FriendsPromoBox from '../../components/Friends/FriendsPromoBox';
 import SuggestedFriendsPreview from '../../components/Friends/SuggestedFriendsPreview';
-import LoadingWheel from '../../components/LoadingWheel';
+import LoadingWheel from '../../common/components/Widgets/LoadingWheel';
 import TwitterSignInCard from '../../components/Twitter/TwitterSignInCard';
 import BrowserPushMessage from '../../components/Widgets/BrowserPushMessage';
 import MessageCard from '../../components/Widgets/MessageCard';

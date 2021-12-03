@@ -11,7 +11,7 @@ import webAppConfig from '../../config';
 import VoterConstants from '../../constants/VoterConstants';
 import VoterStore from '../../stores/VoterStore';
 import { renderLog } from '../../common/utils/logging';
-import LoadingWheel from '../LoadingWheel';
+import LoadingWheel from '../../common/components/Widgets/LoadingWheel';
 // import { PhoneAndroid } from '@material-ui/icons';
 import BrowserPushMessage from '../Widgets/BrowserPushMessage';
 import { openSnackbar } from '../Widgets/SnackNotifier';
