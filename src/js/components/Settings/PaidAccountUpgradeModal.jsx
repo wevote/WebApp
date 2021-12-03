@@ -17,7 +17,7 @@ import { numberWithCommas, stringContains } from '../../utils/textFormat';
 
 
 const OpenExternalWebSite = React.lazy(() => import(/* webpackChunkName: 'OpenExternalWebSite' */ '../../common/components/Widgets/OpenExternalWebSite'));
-const Pricing = React.lazy(() => import(/* webpackChunkName: 'Pricing' */'../../routes/More/Pricing'));
+const Pricing = React.lazy(() => import(/* webpackChunkName: 'Pricing' */'../../pages/More/Pricing'));
 
 // April 2021:  Need to convert over to the up-to-date (allowed by stripe) "@stripe/react-stripe-js"
 // TODO: Backport "@stripe/react-stripe-js" use from Campaigns

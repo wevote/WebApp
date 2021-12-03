@@ -16,7 +16,7 @@ const MeasureItem = React.lazy(() => import(/* webpackChunkName: 'MeasureItem' *
 const OpenExternalWebSite = React.lazy(() => import(/* webpackChunkName: 'OpenExternalWebSite' */ '../../common/components/Widgets/OpenExternalWebSite'));
 const PositionList = React.lazy(() => import(/* webpackChunkName: 'PositionList' */ '../../components/Ballot/PositionList'));
 
-// This is based on routes/Ballot/Measure - TO BE DEPRECATED?
+// This is based on pages/Ballot/Measure - TO BE DEPRECATED?
 export default class OrganizationVoterGuideMeasure extends Component {
   constructor (props) {
     super(props);

@@ -24,7 +24,7 @@ import { capitalizeString } from '../../utils/textFormat';
 const testimonialPhoto = '../../../img/global/photos/Dale_McGrew-48x48.jpg';
 
 
-// This is related to routes/VoterGuide/OrganizationVoterGuideOffice
+// This is related to pages/VoterGuide/OrganizationVoterGuideOffice
 class Office extends Component {
   constructor (props) {
     super(props);
