@@ -1,7 +1,7 @@
 import assign from 'object-assign';
 import url from 'url';
 import webAppConfig from '../config';
-import Cookies from './js-cookie/Cookies';
+import Cookies from '../common/utils/js-cookie/Cookies';
 import { httpLog } from '../common/utils/logging';
 /* eslint no-param-reassign: 0 */
 

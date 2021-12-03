@@ -9,7 +9,7 @@ import BallotStore from '../../stores/BallotStore';
 import SupportStore from '../../stores/SupportStore';
 import VoterStore from '../../stores/VoterStore';
 import { cordovaDot } from '../../utils/cordovaUtils';
-import Cookies from '../../utils/js-cookie/Cookies';
+import Cookies from '../../common/utils/js-cookie/Cookies';
 import { renderLog } from '../../common/utils/logging';
 // import { Ballot } from '@material-ui/icons';
 // import { ThumbUp } from '@material-ui/icons';

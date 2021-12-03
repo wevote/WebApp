@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import BallotActions from '../../actions/BallotActions';
 import BallotStore from '../../stores/BallotStore';
 import { cordovaDot } from '../../utils/cordovaUtils';
-import { formatDateToMonthDayYear } from '../../utils/dateFormat';
+import { formatDateToMonthDayYear } from '../../common/utils/dateFormat';
 import { renderLog } from '../../common/utils/logging';
 import { convertToInteger } from '../../utils/textFormat';
 

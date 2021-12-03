@@ -11,7 +11,7 @@ import BallotStore from '../../stores/BallotStore';
 import ReadyStore from '../../stores/ReadyStore';
 import VoterStore from '../../stores/VoterStore';
 import { hasIPhoneNotch } from '../../utils/cordovaUtils';
-import { formatDateToMonthDayYear } from '../../utils/dateFormat';
+import { formatDateToMonthDayYear } from '../../common/utils/dateFormat';
 import { renderLog } from '../../common/utils/logging';
 
 const OpenExternalWebSite = React.lazy(() => import(/* webpackChunkName: 'OpenExternalWebSite' */ '../Widgets/OpenExternalWebSite'));

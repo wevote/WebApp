@@ -11,11 +11,11 @@ import BallotStore from '../../stores/BallotStore';
 import VoterGuideStore from '../../stores/VoterGuideStore';
 import VoterStore from '../../stores/VoterStore';
 import { historyPush } from '../../utils/cordovaUtils';
-import { electionDateTomorrowFormatted, formatDateMMMDoYYYY } from '../../utils/dateFormat';
+import { electionDateTomorrowFormatted, formatDateMMMDoYYYY } from '../../common/utils/dateFormat';
 import { renderLog } from '../../common/utils/logging';
 import { cleanArray } from '../../utils/textFormat';
 import LoadingWheel from '../LoadingWheel';
-import initializeMoment from '../../utils/initializeMoment';
+import initializeMoment from '../../common/utils/initializeMoment';
 
 const DelayedLoad = React.lazy(() => import(/* webpackChunkName: 'DelayedLoad' */ '../Widgets/DelayedLoad'));
 

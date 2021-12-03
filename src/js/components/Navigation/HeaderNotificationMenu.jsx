@@ -9,7 +9,7 @@ import ActivityStore from '../../stores/ActivityStore';
 import { createDescriptionOfFriendPosts } from '../../utils/activityUtils';
 import apiCalming from '../../utils/apiCalming';
 import { historyPush, isIOSAppOnMac, setIconBadgeMessageCount } from '../../utils/cordovaUtils';
-import { timeFromDate } from '../../utils/dateFormat';
+import { timeFromDate } from '../../common/utils/dateFormat';
 import { renderLog } from '../../common/utils/logging';
 import returnFirstXWords from '../../common/utils/returnFirstXWords';
 import VoterStore from '../../stores/VoterStore';

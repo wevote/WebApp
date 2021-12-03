@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import AppObservableStore, { messageService } from '../../stores/AppObservableStore';
 import VoterStore from '../../stores/VoterStore';
 import { historyPush, isWebApp } from '../../utils/cordovaUtils';
-import Cookies from '../../utils/js-cookie/Cookies';
+import Cookies from '../../common/utils/js-cookie/Cookies';
 import { oAuthLog, renderLog } from '../../common/utils/logging';
 import { PageContentContainer } from '../../utils/pageLayoutStyles';
 import { stringContains } from '../../utils/textFormat';

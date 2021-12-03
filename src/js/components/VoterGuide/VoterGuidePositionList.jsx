@@ -9,7 +9,7 @@ import FriendActions from '../../actions/FriendActions';
 import OrganizationActions from '../../actions/OrganizationActions';
 import FriendStore from '../../stores/FriendStore';
 import OrganizationStore from '../../stores/OrganizationStore';
-import { getStateCodesFoundInObjectList } from '../../utils/addressFunctions';
+import { getStateCodesFoundInObjectList } from '../../common/utils/addressFunctions';
 import { renderLog } from '../../common/utils/logging';
 import FilterBase from '../Filter/FilterBase';
 import VoterGuidePositionFilter from '../Filter/VoterGuidePositionFilter';

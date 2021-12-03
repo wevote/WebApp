@@ -16,7 +16,7 @@ import OrganizationStore from '../../stores/OrganizationStore';
 import VoterGuidePossibilityStore from '../../stores/VoterGuidePossibilityStore';
 import VoterGuideStore from '../../stores/VoterGuideStore';
 import VoterStore from '../../stores/VoterStore';
-import Cookies from '../../utils/js-cookie/Cookies';
+import Cookies from '../../common/utils/js-cookie/Cookies';
 import { renderLog } from '../../common/utils/logging';
 
 const CandidateItem = React.lazy(() => import(/* webpackChunkName: 'CandidateItem' */ '../../components/Ballot/CandidateItem'));

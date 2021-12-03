@@ -5,9 +5,9 @@ import React, { Component } from 'react';
 import BallotStore from '../../stores/BallotStore';
 import ElectionStore from '../../stores/ElectionStore';
 import VoterStore from '../../stores/VoterStore';
-import { formatDateMMMDoYYYY } from '../../utils/dateFormat';
-import initializeMoment from '../../utils/initializeMoment';
-import Cookies from '../../utils/js-cookie/Cookies';
+import { formatDateMMMDoYYYY } from '../../common/utils/dateFormat';
+import initializeMoment from '../../common/utils/initializeMoment';
+import Cookies from '../../common/utils/js-cookie/Cookies';
 import { renderLog } from '../../common/utils/logging';
 
 const styles = (theme) => ({

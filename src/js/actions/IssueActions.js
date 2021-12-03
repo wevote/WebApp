@@ -1,5 +1,5 @@
 import Dispatcher from '../common/dispatcher/Dispatcher';
-import Cookies from '../utils/js-cookie/Cookies';
+import Cookies from '../common/utils/js-cookie/Cookies';
 
 let uniqueKeyIssuesDescriptionRetrieve = '';
 let uniqueKeyIssuesFollowedRetrieve = '';

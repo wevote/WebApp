@@ -9,7 +9,7 @@ import DonateActions from '../../common/actions/DonateActions';
 // TODO 5/11/21: import webAppConfig from '../../config';
 import DonateStore from '../../common/stores/DonateStore';
 import { hasIPhoneNotch, isIOS } from '../../utils/cordovaUtils';
-import extractNumber from '../../utils/extractNumber';
+import extractNumber from '../../common/utils/extractNumber';
 import { normalizedHref } from '../../utils/hrefUtils';
 import { renderLog } from '../../common/utils/logging';
 import { numberWithCommas, stringContains } from '../../utils/textFormat';

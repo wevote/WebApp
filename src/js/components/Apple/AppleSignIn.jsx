@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import VoterActions from '../../actions/VoterActions';
 import webAppConfig from '../../config';
 import { isAndroid, isIOS, isWebApp } from '../../utils/cordovaUtils';
-import Cookies from '../../utils/js-cookie/Cookies';
+import Cookies from '../../common/utils/js-cookie/Cookies';
 import { oAuthLog, renderLog } from '../../common/utils/logging';
 import { openSnackbar } from '../Widgets/SnackNotifier';
 

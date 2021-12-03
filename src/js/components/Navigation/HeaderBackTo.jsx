@@ -17,7 +17,7 @@ import { normalizedHref } from '../../utils/hrefUtils';
 import { renderLog } from '../../common/utils/logging';
 import { AppBarForBackTo, TopRowOneRightContainer } from '../../utils/pageLayoutStyles';
 import { shortenText, stringContains } from '../../utils/textFormat';
-import { voterPhoto } from '../../utils/voterPhoto';
+import voterPhoto from '../../common/utils/voterPhoto';
 import SignInButton from '../Widgets/SignInButton';
 import HeaderBackToButton from './HeaderBackToButton';
 

@@ -6,7 +6,7 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 import BallotActions from '../../actions/BallotActions';
 import BallotStore from '../../stores/BallotStore';
-import { convertStateCodeToStateText, convertStateTextToStateCode, stateCodeMap } from '../../utils/addressFunctions';
+import { convertStateCodeToStateText, convertStateTextToStateCode, stateCodeMap } from '../../common/utils/addressFunctions';
 import { renderLog } from '../../common/utils/logging';
 import { removeValueFromArray } from '../../utils/textFormat';
 

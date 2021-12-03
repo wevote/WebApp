@@ -3,7 +3,7 @@ import { withStyles, withTheme } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import styled from 'styled-components';
-import { convertStateCodeToStateText } from '../../utils/addressFunctions';
+import { convertStateCodeToStateText } from '../../common/utils/addressFunctions';
 import { renderLog } from '../../common/utils/logging';
 
 

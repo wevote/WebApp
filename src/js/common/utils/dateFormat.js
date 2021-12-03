@@ -1,3 +1,4 @@
+// dateFormat.js
 import initializeMoment from './initializeMoment';
 
 // eslint-disable-next-line consistent-return

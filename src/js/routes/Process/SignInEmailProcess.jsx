@@ -6,7 +6,7 @@ import WouldYouLikeToMergeAccountsOld from '../../components/WouldYouLikeToMerge
 import AppObservableStore from '../../stores/AppObservableStore';
 import VoterStore from '../../stores/VoterStore';
 import { historyPush } from '../../utils/cordovaUtils';
-import Cookies from '../../utils/js-cookie/Cookies';
+import Cookies from '../../common/utils/js-cookie/Cookies';
 import { oAuthLog, renderLog } from '../../common/utils/logging';
 
 export default class SignInEmailProcess extends Component {

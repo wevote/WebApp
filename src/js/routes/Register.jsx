@@ -13,7 +13,7 @@ import BrowserPushMessage from '../components/Widgets/BrowserPushMessage';
 import { messageService } from '../stores/AppObservableStore';
 import BallotStore from '../stores/BallotStore';
 import VoterStore from '../stores/VoterStore';
-import { formatDateToMonthDayYear } from '../utils/dateFormat';
+import { formatDateToMonthDayYear } from '../common/utils/dateFormat';
 import { formatStateName } from '../utils/formatStateName';
 import { renderLog } from '../common/utils/logging';
 import { PageContentContainer } from '../utils/pageLayoutStyles';

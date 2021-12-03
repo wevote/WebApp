@@ -3,7 +3,7 @@ import { withStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 import React, { PureComponent } from 'react';
 import styled from 'styled-components';
-import { getTextColorFromBackground } from '../../utils/color';
+import { getTextColorFromBackground } from '../../common/utils/color';
 
 class SplitIconButton extends PureComponent {
   render () {

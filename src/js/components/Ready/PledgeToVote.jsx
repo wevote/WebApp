@@ -3,7 +3,7 @@ import { withStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 import React from 'react';
 import styled from 'styled-components';
-import { formatDateToYearMonthDay } from '../../utils/dateFormat';
+import { formatDateToYearMonthDay } from '../../common/utils/dateFormat';
 import { renderLog } from '../../common/utils/logging';
 
 class PledgeToVote extends React.Component {

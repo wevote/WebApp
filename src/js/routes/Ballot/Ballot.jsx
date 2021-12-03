@@ -37,7 +37,7 @@ import { dumpCssFromId } from '../../utils/appleSiliconUtils';
 import { chipLabelText, historyPush, isAndroidSizeFold, isCordova, isIOSAppOnMac, isIPadGiantSize, isIPhone6p1in, isWebApp } from '../../utils/cordovaUtils';
 import isMobile from '../../utils/isMobile';
 import isMobileScreenSize from '../../utils/isMobileScreenSize';
-import Cookies from '../../utils/js-cookie/Cookies';
+import Cookies from '../../common/utils/js-cookie/Cookies';
 import lazyPreloadPages from '../../utils/lazyPreloadPages';
 import { renderLog } from '../../common/utils/logging';
 import mapCategoryFilterType from '../../utils/map-category-filter-type';

@@ -28,7 +28,7 @@ import OrganizationStore from '../../stores/OrganizationStore';
 import VoterStore from '../../stores/VoterStore';
 import apiCalming from '../../utils/apiCalming';
 import { cordovaDot, historyPush, isCordova, isIPad } from '../../utils/cordovaUtils';
-import { formatDateToMonthDayYear, timeFromDate } from '../../utils/dateFormat';
+import { formatDateToMonthDayYear, timeFromDate } from '../../common/utils/dateFormat';
 import lazyPreloadPages from '../../utils/lazyPreloadPages';
 import { renderLog } from '../../common/utils/logging';
 import { PageContentContainer } from '../../utils/pageLayoutStyles';

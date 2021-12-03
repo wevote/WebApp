@@ -14,7 +14,7 @@ import DonateStore from '../../common/stores/DonateStore';
 import OrganizationStore from '../../stores/OrganizationStore';
 import VoterStore from '../../stores/VoterStore';
 import { cordovaOpenSafariView, isWebApp } from '../../utils/cordovaUtils';
-import { formatDateToYearMonthDay } from '../../utils/dateFormat';
+import { formatDateToYearMonthDay } from '../../common/utils/dateFormat';
 import { renderLog } from '../../common/utils/logging';
 import { stringContains } from '../../utils/textFormat';
 import CreateConfiguredVersion from './CreateConfiguredVersion';

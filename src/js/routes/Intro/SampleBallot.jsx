@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import Helmet from 'react-helmet';
-import Cookies from '../../utils/js-cookie/Cookies';
+import Cookies from '../../common/utils/js-cookie/Cookies';
 import { historyPush } from '../../utils/cordovaUtils';
 import { renderLog } from '../../common/utils/logging';
 

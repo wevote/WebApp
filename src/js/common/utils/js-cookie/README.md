@@ -311,7 +311,7 @@ Check out the [Servers Docs](SERVER_SIDE.md)
 
 ## Contributing
 
-Check out the [Contributing Guidelines](../../../../CONTRIBUTING.md)
+Check out the [Contributing Guidelines](../../../../../CONTRIBUTING.md)
 
 ## Security
 

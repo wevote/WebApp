@@ -16,6 +16,7 @@ export function dumpCssFromId (id) {
   }
 }
 
+// Copy of this function moved into cordovaUtils to avoid Dependency cycle problem
 export function dumpObjProps (name, obj) {
   // eslint-disable-next-line guard-for-in
   Object.keys(obj).forEach((key) => console.log(`Dump Object ${name} ${key}: ${obj[key]}`));

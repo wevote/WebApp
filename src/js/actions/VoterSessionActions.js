@@ -1,7 +1,7 @@
 import Dispatcher from '../common/dispatcher/Dispatcher';
 // eslint-disable-next-line import/no-cycle
 import AppObservableStore from '../stores/AppObservableStore';
-import Cookies from '../utils/js-cookie/Cookies';
+import Cookies from '../common/utils/js-cookie/Cookies';
 import { stringContains } from '../utils/textFormat';
 
 export default {
