@@ -9,7 +9,7 @@ import FriendStore from '../../stores/FriendStore';
 import { hasIPhoneNotch } from '../../utils/cordovaUtils';
 import { renderLog } from '../../common/utils/logging';
 
-const HowItWorks = React.lazy(() => import(/* webpackChunkName: 'HowItWorks' */ '../../routes/HowItWorks'));
+const HowItWorks = React.lazy(() => import(/* webpackChunkName: 'HowItWorks' */ '../../pages/HowItWorks'));
 
 class HowItWorksModal extends Component {
   constructor (props) {

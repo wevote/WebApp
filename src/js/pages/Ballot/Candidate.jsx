@@ -37,7 +37,7 @@ const PositionList = React.lazy(() => import(/* webpackChunkName: 'PositionList'
 
 // const nextReleaseFeaturesEnabled = webAppConfig.ENABLE_NEXT_RELEASE_FEATURES === undefined ? false : webAppConfig.ENABLE_NEXT_RELEASE_FEATURES;
 
-// The component /routes/VoterGuide/OrganizationVoterGuideCandidate is based on this component
+// The component /pages/VoterGuide/OrganizationVoterGuideCandidate is based on this component
 class Candidate extends Component {
   constructor (props) {
     super(props);

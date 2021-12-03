@@ -10,7 +10,7 @@ import VoterStore from '../../stores/VoterStore';
 import { renderLog } from '../../common/utils/logging';
 import { capitalizeString } from '../../utils/textFormat';
 
-// This is based on routes/Ballot/Office
+// This is based on pages/Ballot/Office
 export default class OrganizationVoterGuideOffice extends Component {
   constructor (props) {
     super(props);

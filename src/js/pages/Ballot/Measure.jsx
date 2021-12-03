@@ -33,7 +33,7 @@ const OpenExternalWebSite = React.lazy(() => import(/* webpackChunkName: 'OpenEx
 const PositionList = React.lazy(() => import(/* webpackChunkName: 'PositionList' */ '../../components/Ballot/PositionList'));
 const ShareButtonDesktopTablet = React.lazy(() => import(/* webpackChunkName: 'ShareButtonDesktopTablet' */ '../../components/Share/ShareButtonDesktopTablet'));
 
-// The component /routes/VoterGuide/OrganizationVoterGuideMeasure is based on this component
+// The component /pages/VoterGuide/OrganizationVoterGuideMeasure is based on this component
 class Measure extends Component {
   constructor (props) {
     super(props);

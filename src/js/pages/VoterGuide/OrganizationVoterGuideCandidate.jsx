@@ -23,7 +23,7 @@ const OpenExternalWebSite = React.lazy(() => import(/* webpackChunkName: 'OpenEx
 const PositionList = React.lazy(() => import(/* webpackChunkName: 'PositionList' */ '../../components/Ballot/PositionList'));
 
 
-// This is based on routes/Ballot/Candidate - TO BE DEPRECATED?
+// This is based on pages/Ballot/Candidate - TO BE DEPRECATED?
 // TODO: Not called anywhere Dec 2020, delete when Dale agrees
 class OrganizationVoterGuideCandidate extends Component {
   constructor (props) {

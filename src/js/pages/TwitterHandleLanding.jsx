@@ -161,7 +161,7 @@ export default class TwitterHandleLanding extends Component {
     const isNeitherOrganizationNorPolitician = kindOfOwner !== 'ORGANIZATION' && kindOfOwner !== 'POLITICIAN';
     if (signedInWithThisTwitterAccount && isNeitherOrganizationNorPolitician) {
       // We make the API call to create a new organization for this Twitter handle. This will create a cascade so that
-      // js/routes/TwitterHandleLanding will switch the view to an Organization card / PositionList
+      // js/pages/TwitterHandleLanding will switch the view to an Organization card / PositionList
       // console.log('TwitterHandleLanding, calling organizationCreateFromTwitter because isNeitherOrganizationNorPolitician');
       this.organizationCreateFromTwitter(voter.twitter_screen_name);
     }

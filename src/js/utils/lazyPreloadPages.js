@@ -33,25 +33,25 @@ export default function lazyPreloadPages () {
   if (!pathname.startsWith('/ready') && !loaded.ready) {
     loaded.ready = true;
     loadedOne = true;
-    lazyWithPreload(() => import(/* webpackChunkName: 'Ready' */ '../routes/Ready'));
+    lazyWithPreload(() => import(/* webpackChunkName: 'Ready' */ '../pages/Ready'));
   }
 
   if (!pathname.startsWith('/ballot') && !loaded.ballot) {
     loaded.ballot = true;
     loadedOne = true;
-    lazyWithPreload(() => import(/* webpackChunkName: 'Ballot' */ '../routes/Ballot/Ballot'));
+    lazyWithPreload(() => import(/* webpackChunkName: 'Ballot' */ '../pages/Ballot/Ballot'));
   }
 
   if (!pathname.startsWith('/values') && !loaded.values) {
     loaded.values = true;
     loadedOne = true;
-    lazyWithPreload(() => import(/* webpackChunkName: 'Values' */ '../routes/Values'));
+    lazyWithPreload(() => import(/* webpackChunkName: 'Values' */ '../pages/Values'));
   }
 
   if (!pathname.startsWith('/news') && !loaded.news) {
     loaded.news = true;
     loadedOne = true;
-    lazyWithPreload(() => import(/* webpackChunkName: 'News' */ '../routes/Activity/News'));
+    lazyWithPreload(() => import(/* webpackChunkName: 'News' */ '../pages/Activity/News'));
   }
 
   if (pathname.startsWith('/ready') || pathname === '/') {
