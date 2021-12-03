@@ -9,7 +9,7 @@ import SupportStore from '../../stores/SupportStore';
 import VoterStore from '../../stores/VoterStore';
 import { isAndroidSizeMD, isCordova, isWebApp } from '../../utils/cordovaUtils'; // hasIPhoneNotch,
 import isMobileScreenSize from '../../utils/isMobileScreenSize';
-import { renderLog } from '../../utils/logging';
+import { renderLog } from '../../common/utils/logging';
 import { openSnackbar } from './SnackNotifier';
 
 const SettingsAccount = React.lazy(() => import(/* webpackChunkName: 'SettingsAccount' */ '../Settings/SettingsAccount'));

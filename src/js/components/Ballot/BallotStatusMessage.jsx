@@ -8,7 +8,7 @@ import VoterStore from '../../stores/VoterStore';
 import { formatDateMMMDoYYYY } from '../../utils/dateFormat';
 import initializeMoment from '../../utils/initializeMoment';
 import Cookies from '../../utils/js-cookie/Cookies';
-import { renderLog } from '../../utils/logging';
+import { renderLog } from '../../common/utils/logging';
 
 const styles = (theme) => ({
   anchorOriginBottomCenter: {

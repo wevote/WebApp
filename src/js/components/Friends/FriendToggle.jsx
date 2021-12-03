@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import FriendActions from '../../actions/FriendActions';
 import FriendStore from '../../stores/FriendStore';
 import VoterStore from '../../stores/VoterStore';
-import { renderLog } from '../../utils/logging';
+import { renderLog } from '../../common/utils/logging';
 import FriendsIcon from '../Widgets/FriendsIcon';
 import SuggestedFriendToggle from './SuggestedFriendToggle';
 

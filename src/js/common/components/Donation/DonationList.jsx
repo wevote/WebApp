@@ -7,7 +7,7 @@ import styled from 'styled-components';
 import DonateActions from '../../actions/DonateActions';
 import DonateStore from '../../stores/DonateStore';
 import VoterStore from '../../../stores/VoterStore';
-import { renderLog } from '../../../utils/logging';
+import { renderLog } from '../../utils/logging';
 import DonationCancelOrRefund from './DonationCancelOrRefund';
 
 /* global $ */

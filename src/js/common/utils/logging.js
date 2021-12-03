@@ -1,4 +1,4 @@
-const webAppConfig = require('../config');
+const webAppConfig = require('../../config');
 // import { default as webAppConfig } from '../config';
 
 // react-native-router-flux state change logging

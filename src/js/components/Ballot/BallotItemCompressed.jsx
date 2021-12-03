@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import React, { PureComponent } from 'react';
-import { renderLog } from '../../utils/logging';
+import { renderLog } from '../../common/utils/logging';
 import MeasureItemCompressed from './MeasureItemCompressed';
 import OfficeItemCompressed from './OfficeItemCompressed';
 

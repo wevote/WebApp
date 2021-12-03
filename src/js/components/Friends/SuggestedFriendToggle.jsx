@@ -6,7 +6,7 @@ import FriendActions from '../../actions/FriendActions';
 import AppObservableStore from '../../stores/AppObservableStore';
 import FriendStore from '../../stores/FriendStore';
 import VoterStore from '../../stores/VoterStore';
-import { renderLog } from '../../utils/logging';
+import { renderLog } from '../../common/utils/logging';
 
 
 export default class SuggestedFriendToggle extends Component {

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { historyPush } from '../../utils/cordovaUtils';
-import { renderLog } from '../../utils/logging';
+import { renderLog } from '../../common/utils/logging';
 import webAppConfig from '../../config';
 
 export default class FacebookRedirectToWeVote extends Component {

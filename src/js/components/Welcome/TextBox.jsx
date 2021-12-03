@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { InputBase } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
-import { renderLog } from '../../utils/logging';
+import { renderLog } from '../../common/utils/logging';
 
 class TextBox extends Component {
   render () {

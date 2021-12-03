@@ -20,7 +20,7 @@ import { avatarGeneric, displayTopMenuShadow, weVoteBrandingOff } from '../../ut
 import { hasIPhoneNotch, historyPush, isCordova, isDeviceZoomed, isIOS, isIOSAppOnMac, isWebApp } from '../../utils/cordovaUtils';
 import { normalizedHref, normalizedHrefPage } from '../../utils/hrefUtils';
 import isMobileScreenSize from '../../utils/isMobileScreenSize';
-import { renderLog } from '../../utils/logging';
+import { renderLog } from '../../common/utils/logging';
 import { TopOfPageHeader, TopRowOneLeftContainer, TopRowOneMiddleContainer, TopRowOneRightContainer, TopRowTwoLeftContainer } from '../../utils/pageLayoutStyles';
 import shouldHeaderRetreat from '../../utils/shouldHeaderRetreat';
 import { getBooleanValue, shortenText, stringContains } from '../../utils/textFormat';

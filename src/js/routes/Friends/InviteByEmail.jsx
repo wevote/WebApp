@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import AnalyticsActions from '../../actions/AnalyticsActions';
 import AddFriendsByEmail from '../../components/Friends/AddFriendsByEmail';
 import VoterStore from '../../stores/VoterStore';
-import { renderLog } from '../../utils/logging';
+import { renderLog } from '../../common/utils/logging';
 
 export default class InviteByEmail extends Component {
   constructor (props) {

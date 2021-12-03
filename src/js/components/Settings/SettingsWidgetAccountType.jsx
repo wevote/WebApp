@@ -6,7 +6,7 @@ import OrganizationActions from '../../actions/OrganizationActions';
 import OrganizationStore from '../../stores/OrganizationStore';
 import VoterStore from '../../stores/VoterStore';
 import { prepareForCordovaKeyboard, restoreStylesAfterCordovaKeyboard } from '../../utils/cordovaUtils';
-import { renderLog } from '../../utils/logging';
+import { renderLog } from '../../common/utils/logging';
 import LoadingWheel from '../LoadingWheel';
 
 const delayBeforeRemovingSavedStatus = 2000;

@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import VoterGuideStore from '../../stores/VoterGuideStore';
 import { isCordova } from '../../utils/cordovaUtils';
-import { renderLog } from '../../utils/logging';
+import { renderLog } from '../../common/utils/logging';
 import { convertNameToSlug } from '../../utils/textFormat';
 import LoadingWheel from '../LoadingWheel';
 import IssueFollowToggleButton from './IssueFollowToggleButton';

@@ -7,7 +7,7 @@ import IssueActions from '../../actions/IssueActions';
 import IssueStore from '../../stores/IssueStore';
 import VoterStore from '../../stores/VoterStore';
 import { historyPush } from '../../utils/cordovaUtils';
-import { renderLog } from '../../utils/logging';
+import { renderLog } from '../../common/utils/logging';
 import { shortenText } from '../../utils/textFormat';
 import { openSnackbar } from '../Widgets/SnackNotifier';
 

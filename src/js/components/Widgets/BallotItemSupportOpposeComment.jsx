@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import CandidateStore from '../../stores/CandidateStore';
 import MeasureStore from '../../stores/MeasureStore';
 import { isAndroidSizeMD, isCordova } from '../../utils/cordovaUtils';
-import { renderLog } from '../../utils/logging';
+import { renderLog } from '../../common/utils/logging';
 import { stringContains } from '../../utils/textFormat';
 
 const ItemActionBar = React.lazy(() => import(/* webpackChunkName: 'ItemActionBar' */ './ItemActionBar/ItemActionBar'));

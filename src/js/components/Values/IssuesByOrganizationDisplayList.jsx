@@ -6,7 +6,7 @@ import styled from 'styled-components';
 import IssueStore from '../../stores/IssueStore';
 import VoterGuideStore from '../../stores/VoterGuideStore';
 import { cordovaDot } from '../../utils/cordovaUtils';
-import { renderLog } from '../../utils/logging';
+import { renderLog } from '../../common/utils/logging';
 import StickyPopover from '../Ballot/StickyPopover';
 import SvgImage from '../Widgets/SvgImage';
 import IssueFollowToggleButton from './IssueFollowToggleButton';

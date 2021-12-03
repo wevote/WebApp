@@ -13,7 +13,7 @@ import webAppConfig from '../config';
 import FacebookStore from '../stores/FacebookStore';
 import VoterStore from '../stores/VoterStore';
 import { historyPush, isWebApp } from '../utils/cordovaUtils';
-import { oAuthLog, renderLog } from '../utils/logging';
+import { oAuthLog, renderLog } from '../common/utils/logging';
 
 
 // December 2018:  We want to work toward being airbnb style compliant, but for now these are disabled in this file to minimize massive changes

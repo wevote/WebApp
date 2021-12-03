@@ -5,7 +5,7 @@ import { styled as muiStyled } from '@material-ui/styles';
 import React, { Suspense } from 'react';
 import styled from 'styled-components';
 import cordovaDot from '../../../utils/cordovaDot';
-import { renderLog } from '../../../utils/logging';
+import { renderLog } from '../../utils/logging';
 
 const OpenExternalWebSite = React.lazy(() => import(/* webpackChunkName: 'OpenExternalWebSite' */ '../../../components/Widgets/OpenExternalWebSite'));
 

@@ -23,7 +23,7 @@ import VoterStore from '../../stores/VoterStore';
 import { cordovaBallotFilterTopMargin } from '../../utils/cordovaOffsets';
 import { isAndroidSizeFold } from '../../utils/cordovaUtils';
 import isMobileScreenSize from '../../utils/isMobileScreenSize';
-import { renderLog } from '../../utils/logging';
+import { renderLog } from '../../common/utils/logging';
 import { PageContentContainer } from '../../utils/pageLayoutStyles';
 import { capitalizeString } from '../../utils/textFormat';
 

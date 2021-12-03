@@ -9,7 +9,7 @@ import OrganizationActions from '../../actions/OrganizationActions';
 import OrganizationStore from '../../stores/OrganizationStore';
 import VoterStore from '../../stores/VoterStore';
 import { cordovaDot, cordovaOpenSafariView, isCordova, isWebApp } from '../../utils/cordovaUtils';
-import { renderLog } from '../../utils/logging';
+import { renderLog } from '../../common/utils/logging';
 import { voterFeaturePackageExceedsOrEqualsRequired } from '../../utils/pricingFunctions';
 import LoadingWheel from '../LoadingWheel';
 import PremiumableButton from '../Widgets/PremiumableButton';

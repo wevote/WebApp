@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 import CandidateStore from '../../stores/CandidateStore';
 import VoterGuideStore from '../../stores/VoterGuideStore';
 import { historyPush } from '../../utils/cordovaUtils';
-import { renderLog } from '../../utils/logging';
+import { renderLog } from '../../common/utils/logging';
 import { abbreviateNumber, numberWithCommas } from '../../utils/textFormat';
 import ParsedTwitterDescription from '../Twitter/ParsedTwitterDescription';
 

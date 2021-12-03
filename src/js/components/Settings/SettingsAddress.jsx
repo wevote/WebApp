@@ -3,7 +3,7 @@ import Helmet from 'react-helmet';
 import AnalyticsActions from '../../actions/AnalyticsActions';
 import VoterStore from '../../stores/VoterStore';
 import { isWebApp } from '../../utils/cordovaUtils';
-import { renderLog } from '../../utils/logging';
+import { renderLog } from '../../common/utils/logging';
 import AddressBox from '../AddressBox';
 import BrowserPushMessage from '../Widgets/BrowserPushMessage';
 

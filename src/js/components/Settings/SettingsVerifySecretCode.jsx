@@ -8,7 +8,7 @@ import styled from 'styled-components';
 import VoterActions from '../../actions/VoterActions';
 import VoterStore from '../../stores/VoterStore';
 import { hasIPhoneNotch, isCordova, isIOS, isIPhone4in, isWebApp } from '../../utils/cordovaUtils';
-import { renderLog } from '../../utils/logging';
+import { renderLog } from '../../common/utils/logging';
 
 /* global $ */
 

@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import TwitterAccountCard from '../../components/Twitter/TwitterAccountCard';
 import ThisIsMeAction from '../../components/Widgets/ThisIsMeAction';
-import { renderLog } from '../../utils/logging';
+import { renderLog } from '../../common/utils/logging';
 
 export default class UnknownTwitterAccount extends Component {
   constructor (props) {

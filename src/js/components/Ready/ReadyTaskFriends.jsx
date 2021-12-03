@@ -3,7 +3,7 @@ import { ArrowForward, CheckCircle } from '@material-ui/icons';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { cordovaDot, historyPush } from '../../utils/cordovaUtils';
-import { renderLog } from '../../utils/logging';
+import { renderLog } from '../../common/utils/logging';
 import { ButtonLeft, ButtonText, Icon, PercentComplete, ReadyCard, StyledButton, StyledCheckbox, StyledCheckboxCompleted, SubTitle, Title, TitleRowWrapper } from './ReadyTaskStyles';
 
 const register0Percent = '../../../img/global/svg-icons/ready/register-0-percent.svg';

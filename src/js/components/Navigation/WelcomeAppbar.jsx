@@ -14,7 +14,7 @@ import { avatarGeneric } from '../../utils/applicationUtils';
 import { cordovaWelcomeAppToolbarTop, welcomeAppBarPaddingTop } from '../../utils/cordovaOffsets';
 import { historyPush } from '../../utils/cordovaUtils';
 import Cookies from '../../utils/js-cookie/Cookies';
-import { renderLog } from '../../utils/logging';
+import { renderLog } from '../../common/utils/logging';
 import { shortenText } from '../../utils/textFormat';
 import { voterPhoto } from '../../utils/voterPhoto';
 import { Divider, LogoContainer, MobileNavDivider, MobileNavigationMenu, Navigation, NavLink, NavRow } from '../Welcome/navigationStyles';

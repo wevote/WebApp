@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import ElectionStore from '../../stores/ElectionStore';
-import { renderLog } from '../../utils/logging';
+import { renderLog } from '../../common/utils/logging';
 
 
 // DALE 2019-02-12 I would like to get rid of this page. (We can add the list of voter guide settings to the "Settings" page.)

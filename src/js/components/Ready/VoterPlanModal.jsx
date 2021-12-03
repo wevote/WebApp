@@ -12,7 +12,7 @@ import ReadyStore from '../../stores/ReadyStore';
 import VoterStore from '../../stores/VoterStore';
 import { hasIPhoneNotch } from '../../utils/cordovaUtils';
 import { formatDateToMonthDayYear } from '../../utils/dateFormat';
-import { renderLog } from '../../utils/logging';
+import { renderLog } from '../../common/utils/logging';
 
 const OpenExternalWebSite = React.lazy(() => import(/* webpackChunkName: 'OpenExternalWebSite' */ '../Widgets/OpenExternalWebSite'));
 const nextReleaseFeaturesEnabled = webAppConfig.ENABLE_NEXT_RELEASE_FEATURES === undefined ? false : webAppConfig.ENABLE_NEXT_RELEASE_FEATURES;

@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import OrganizationStore from '../../stores/OrganizationStore';
 import SupportStore from '../../stores/SupportStore';
 import VoterStore from '../../stores/VoterStore';
-import { renderLog } from '../../utils/logging';
+import { renderLog } from '../../common/utils/logging';
 import { capitalizeString } from '../../utils/textFormat';
 import FriendsOnlyIndicator from '../Widgets/FriendsOnlyIndicator';
 import ItemPositionStatementActionBar from '../Widgets/ItemPositionStatementActionBar';

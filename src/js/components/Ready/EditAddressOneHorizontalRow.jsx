@@ -11,7 +11,7 @@ import VoterStore from '../../stores/VoterStore';
 import { historyPush, isIPhoneMiniOrSmaller, isWebApp, restoreStylesAfterCordovaKeyboard } from '../../utils/cordovaUtils';
 import isMobile from '../../utils/isMobile';
 import Cookies from '../../utils/js-cookie/Cookies';
-import { renderLog } from '../../utils/logging';
+import { renderLog } from '../../common/utils/logging';
 import InfoCircleIcon from '../Widgets/InfoCircleIcon';
 
 class EditAddressOneHorizontalRow extends Component {

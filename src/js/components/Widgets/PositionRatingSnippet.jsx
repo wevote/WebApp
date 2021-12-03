@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { cordovaDot } from '../../utils/cordovaUtils';
-import { renderLog } from '../../utils/logging';
+import { renderLog } from '../../common/utils/logging';
 
 const upArrowColorIcon = '../../../img/global/icons/up-arrow-color-icon.svg';
 const downArrowColorIcon = '../../../img/global/icons/down-arrow-color-icon.svg';

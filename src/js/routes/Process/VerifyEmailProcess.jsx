@@ -6,7 +6,7 @@ import AppObservableStore from '../../stores/AppObservableStore';
 import VoterStore from '../../stores/VoterStore';
 import { historyPush } from '../../utils/cordovaUtils';
 import Cookies from '../../utils/js-cookie/Cookies';
-import { renderLog } from '../../utils/logging';
+import { renderLog } from '../../common/utils/logging';
 
 export default class VerifyEmailProcess extends Component {
   constructor (props) {

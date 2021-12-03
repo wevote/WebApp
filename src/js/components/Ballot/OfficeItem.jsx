@@ -4,7 +4,7 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { hasIPhoneNotch, historyPush, isCordova } from '../../utils/cordovaUtils';
-import { renderLog } from '../../utils/logging';
+import { renderLog } from '../../common/utils/logging';
 import { capitalizeString } from '../../utils/textFormat';
 
 class OfficeItem extends Component {

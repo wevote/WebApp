@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import isMobileScreenSize from '../../utils/isMobileScreenSize';
-import { renderLog } from '../../utils/logging';
+import { renderLog } from '../../common/utils/logging';
 import OrganizationVoterGuideCandidateItem from './OrganizationVoterGuideCandidateItem';
 
 // This is related to components/Ballot/CandidateList.jsx

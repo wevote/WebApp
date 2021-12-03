@@ -9,7 +9,7 @@ import VoterStore from '../../stores/VoterStore';
 import { cordovaFooterHeight } from '../../utils/cordovaOffsets';
 import { historyPush, isCordova } from '../../utils/cordovaUtils';
 import { normalizedHref } from '../../utils/hrefUtils';
-import { renderLog } from '../../utils/logging';
+import { renderLog } from '../../common/utils/logging';
 import { stringContains } from '../../utils/textFormat';
 import signInModalGlobalState from '../Widgets/signInModalGlobalState';
 

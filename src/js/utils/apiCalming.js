@@ -1,4 +1,4 @@
-import { httpLog } from './logging';
+import { httpLog } from '../common/utils/logging';
 
 /*
 If we were building the app from scratch, every API query would be conditioned by logic

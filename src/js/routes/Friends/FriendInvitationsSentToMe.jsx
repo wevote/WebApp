@@ -8,7 +8,7 @@ import FriendActions from '../../actions/FriendActions';
 import FriendInvitationList from '../../components/Friends/FriendInvitationList';
 import MessageCard from '../../components/Widgets/MessageCard';
 import FriendStore from '../../stores/FriendStore';
-import { renderLog } from '../../utils/logging';
+import { renderLog } from '../../common/utils/logging';
 
 class FriendInvitationsSentToMe extends Component {
   constructor (props) {

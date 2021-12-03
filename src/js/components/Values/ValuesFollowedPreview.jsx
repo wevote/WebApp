@@ -5,7 +5,7 @@ import IssueActions from '../../actions/IssueActions';
 import IssueStore from '../../stores/IssueStore';
 import VoterStore from '../../stores/VoterStore';
 import { historyPush } from '../../utils/cordovaUtils';
-import { renderLog } from '../../utils/logging';
+import { renderLog } from '../../common/utils/logging';
 import IssueCardCompressed from './IssueCardCompressed';
 
 const ShowMoreFooter = React.lazy(() => import(/* webpackChunkName: 'ShowMoreFooter' */ '../Navigation/ShowMoreFooter'));

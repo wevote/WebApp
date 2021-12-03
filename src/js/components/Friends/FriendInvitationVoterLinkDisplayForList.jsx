@@ -6,7 +6,7 @@ import styled from 'styled-components';
 import FriendActions from '../../actions/FriendActions';
 import FriendStore from '../../stores/FriendStore';
 import isMobileScreenSize from '../../utils/isMobileScreenSize';
-import { renderLog } from '../../utils/logging';
+import { renderLog } from '../../common/utils/logging';
 import { removeTwitterNameFromDescription } from '../../utils/textFormat';
 import FriendInvitationToggle from './FriendInvitationToggle';
 

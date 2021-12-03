@@ -6,7 +6,7 @@ import { organizationalDonors, teamOfVolunteers } from '../constants/people';
 import ExternalLinkIcon from '../../components/Widgets/ExternalLinkIcon';
 import cordovaScrollablePaneTopPadding from '../../utils/cordovaScrollablePaneTopPadding';
 import { isWebApp } from '../../utils/cordovaUtils';
-import { renderLog } from '../../utils/logging';
+import { renderLog } from '../utils/logging';
 
 const OpenExternalWebSite = React.lazy(() => import(/* webpackChunkName: 'OpenExternalWebSite' */ '../../components/Widgets/OpenExternalWebSite'));
 

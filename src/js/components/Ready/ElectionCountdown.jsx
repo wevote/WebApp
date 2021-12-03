@@ -7,7 +7,7 @@ import BallotStore from '../../stores/BallotStore';
 import { historyPush } from '../../utils/cordovaUtils';
 import { formatDateToMonthDayYear } from '../../utils/dateFormat';
 import initializeMoment from '../../utils/initializeMoment';
-import { renderLog } from '../../utils/logging';
+import { renderLog } from '../../common/utils/logging';
 
 
 class ElectionCountdown extends React.Component {

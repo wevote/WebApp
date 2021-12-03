@@ -1,7 +1,7 @@
 import React from 'react';
 import webAppConfig from '../config';
 import { dumpObjProps } from './appleSiliconUtils';
-import { cordovaOffsetLog, oAuthLog } from './logging';
+import { cordovaOffsetLog, oAuthLog } from '../common/utils/logging';
 
 /* global $  */
 

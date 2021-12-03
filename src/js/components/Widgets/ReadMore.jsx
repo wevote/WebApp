@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import TextTruncate from 'react-text-truncate'; // TODO APRIL 2021:  This doesn't support the latest React libs, can't we do the same with css? (See note below)
-import { renderLog } from '../../utils/logging';
+import { renderLog } from '../../common/utils/logging';
 
 // 2021-02-23 NOTE FROM DALE: I'd like to try to upgrade ReadMore to use react-truncate-markup
 // This newer package supports truncating JSX, and isn't limited to text only:

@@ -14,7 +14,7 @@ import ShareStore from '../../common/stores/ShareStore';
 import VoterStore from '../../stores/VoterStore';
 import { cordovaDot, cordovaLinkToBeSharedFixes, hasIPhoneNotch, isAndroid, isCordova, isWebApp } from '../../utils/cordovaUtils';
 import sortFriendListByMutualFriends from '../../utils/friendFunctions';
-import { renderLog } from '../../utils/logging';
+import { renderLog } from '../../common/utils/logging';
 import { stringContains } from '../../utils/textFormat';
 import FriendsShareList from '../Friends/FriendsShareList';
 import InfoCircleIcon from '../Widgets/InfoCircleIcon';

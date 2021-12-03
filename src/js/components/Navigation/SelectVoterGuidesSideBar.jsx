@@ -5,7 +5,7 @@ import AppObservableStore, { messageService } from '../../stores/AppObservableSt
 import ElectionStore from '../../stores/ElectionStore';
 import VoterGuideStore from '../../stores/VoterGuideStore';
 import VoterStore from '../../stores/VoterStore';
-import { renderLog } from '../../utils/logging';
+import { renderLog } from '../../common/utils/logging';
 import VoterGuideChooseElectionModal from '../VoterGuide/VoterGuideChooseElectionModal';
 import SelectVoterGuidesSideBarLink from './SelectVoterGuidesSideBarLink';
 

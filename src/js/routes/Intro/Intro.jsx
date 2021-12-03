@@ -4,7 +4,7 @@ import React, { Component } from 'react';
 import Helmet from 'react-helmet';
 import AddressBox from '../../components/AddressBox';
 import webAppConfig from '../../config';
-import { renderLog } from '../../utils/logging';
+import { renderLog } from '../../common/utils/logging';
 import { numberWithCommas } from '../../utils/textFormat';
 
 export default class Intro extends Component {

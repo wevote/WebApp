@@ -11,7 +11,7 @@ import TwitterStore from '../stores/TwitterStore';
 import VoterStore from '../stores/VoterStore';
 import { normalizedHrefPage } from '../utils/applicationUtils';
 import { isCordova } from '../utils/cordovaUtils';
-import { renderLog } from '../utils/logging';
+import { renderLog } from '../common/utils/logging';
 import Candidate from './Ballot/Candidate';
 import OrganizationVoterGuide from './VoterGuide/OrganizationVoterGuide';
 import PositionListForFriends from './VoterGuide/PositionListForFriends';

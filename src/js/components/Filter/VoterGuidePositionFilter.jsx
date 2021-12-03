@@ -7,7 +7,7 @@ import styled from 'styled-components';
 import IssueStore from '../../stores/IssueStore';
 import OrganizationStore from '../../stores/OrganizationStore';
 import { convertStateCodeFilterToStateCode } from '../../utils/addressFunctions';
-import { renderLog } from '../../utils/logging';
+import { renderLog } from '../../common/utils/logging';
 import { convertToInteger } from '../../utils/textFormat';
 import getGroupedFilterSecondClass from './utils/grouped-filter-second-class';
 

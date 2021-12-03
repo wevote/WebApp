@@ -9,7 +9,7 @@ import TwitterStore from '../../stores/TwitterStore';
 import VoterStore from '../../stores/VoterStore';
 import { historyPush, isAndroidSizeFold, isIPad, isWebApp } from '../../utils/cordovaUtils';
 import Cookies from '../../utils/js-cookie/Cookies';
-import { oAuthLog, renderLog } from '../../utils/logging';
+import { oAuthLog, renderLog } from '../../common/utils/logging';
 import { PageContentContainer } from '../../utils/pageLayoutStyles';
 import { stringContains } from '../../utils/textFormat';
 

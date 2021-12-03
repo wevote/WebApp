@@ -16,7 +16,7 @@ import { historyPush, isCordova, isIPhone4in, isIPhone4p7in, restoreStylesAfterC
 import { normalizedHref } from '../../utils/hrefUtils';
 import initializeAppleSDK from '../../utils/initializeAppleSDK';
 import Cookies from '../../utils/js-cookie/Cookies';
-import { oAuthLog, renderLog } from '../../utils/logging';
+import { oAuthLog, renderLog } from '../../common/utils/logging';
 import { stringContains } from '../../utils/textFormat';
 import AppleSignIn from '../Apple/AppleSignIn';
 import FacebookSignIn from '../Facebook/FacebookSignIn';

@@ -5,7 +5,7 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { isAndroidSizeXL, isCordova, isWebApp, restoreStylesAfterCordovaKeyboard } from '../../utils/cordovaUtils';
-import { renderLog } from '../../utils/logging';
+import { renderLog } from '../../common/utils/logging';
 
 class HeaderBarProfilePopUp extends Component {
   constructor (props) {

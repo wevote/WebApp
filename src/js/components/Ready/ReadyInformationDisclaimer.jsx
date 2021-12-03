@@ -4,7 +4,7 @@ import React from 'react';
 import { OverlayTrigger } from 'react-bootstrap'; // TODO APRIL 2021:  Replace with MUI
 import Popover from 'react-bootstrap/Popover';
 import { isAndroid, isIOS, isWebApp } from '../../utils/cordovaUtils';
-import { renderLog } from '../../utils/logging';
+import { renderLog } from '../../common/utils/logging';
 
 
 class ReadyInformationDisclaimer extends React.Component {

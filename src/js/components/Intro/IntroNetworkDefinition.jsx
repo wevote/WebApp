@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { renderLog } from '../../utils/logging';
+import { renderLog } from '../../common/utils/logging';
 import { cordovaNetworkNextButtonTop } from '../../utils/cordovaOffsets';
 import { cordovaDot } from '../../utils/cordovaUtils';
 

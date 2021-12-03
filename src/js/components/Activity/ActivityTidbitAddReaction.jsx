@@ -7,7 +7,7 @@ import styled from 'styled-components';
 import ReactionActions from '../../actions/ReactionActions';
 import AppObservableStore from '../../stores/AppObservableStore';
 import ReactionStore from '../../stores/ReactionStore';
-import { renderLog } from '../../utils/logging';
+import { renderLog } from '../../common/utils/logging';
 
 
 class ActivityTidbitAddReaction extends Component {

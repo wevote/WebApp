@@ -5,7 +5,7 @@ import React from 'react';
 import register0Percent from '../../../img/global/svg-icons/ready/register-0-percent.svg';
 import register100Percent from '../../../img/global/svg-icons/ready/register-100-percent.svg';
 import { cordovaDot, historyPush } from '../../utils/cordovaUtils';
-import { renderLog } from '../../utils/logging';
+import { renderLog } from '../../common/utils/logging';
 import { ButtonLeft, ButtonText, Icon, PercentComplete, ReadyCard, StyledButton, StyledCheckbox, StyledCheckboxCompleted, SubTitle, Title, TitleRowWrapper } from './ReadyTaskStyles';
 
 class ReadyTaskRegister extends React.Component {

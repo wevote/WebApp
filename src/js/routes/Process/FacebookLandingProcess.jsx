@@ -5,7 +5,7 @@ import FacebookStore from '../../stores/FacebookStore';
 import FriendStore from '../../stores/FriendStore';
 import VoterStore from '../../stores/VoterStore';
 import { historyPush } from '../../utils/cordovaUtils';
-import { renderLog } from '../../utils/logging';
+import { renderLog } from '../../common/utils/logging';
 
 
 export default class FacebookLandingProcess extends Component {

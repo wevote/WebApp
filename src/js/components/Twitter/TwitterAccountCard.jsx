@@ -1,7 +1,7 @@
 import { Twitter } from '@material-ui/icons';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
-import { renderLog } from '../../utils/logging';
+import { renderLog } from '../../common/utils/logging';
 import { abbreviateNumber, numberWithCommas, removeTwitterNameFromDescription } from '../../utils/textFormat';
 import ExternalLinkIcon from '../Widgets/ExternalLinkIcon';
 import ParsedTwitterDescription from './ParsedTwitterDescription';

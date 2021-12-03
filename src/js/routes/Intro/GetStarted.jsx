@@ -6,7 +6,7 @@ import TwitterSignIn from '../../components/Twitter/TwitterSignIn';
 import FacebookStore from '../../stores/FacebookStore';
 import VoterStore from '../../stores/VoterStore';
 import { cordovaDot, historyPush } from '../../utils/cordovaUtils';
-import { renderLog } from '../../utils/logging';
+import { renderLog } from '../../common/utils/logging';
 
 const closeIcon = '../../../img/global/icons/x-close.png';
 

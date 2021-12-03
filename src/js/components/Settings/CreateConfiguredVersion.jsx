@@ -1,7 +1,7 @@
 import { withStyles } from '@material-ui/core/styles';
 import React, { Component, Suspense } from 'react';
 import styled from 'styled-components';
-import { renderLog } from '../../utils/logging';
+import { renderLog } from '../../common/utils/logging';
 
 const OpenExternalWebSite = React.lazy(() => import(/* webpackChunkName: 'OpenExternalWebSite' */ '../Widgets/OpenExternalWebSite'));
 

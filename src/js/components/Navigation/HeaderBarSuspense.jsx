@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { renderLog } from '../../utils/logging';
+import { renderLog } from '../../common/utils/logging';
 
 function SmallCloud (params) {
   const styleObj = {

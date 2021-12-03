@@ -3,7 +3,7 @@ import Helmet from 'react-helmet';
 import { Link } from 'react-router-dom';
 import attributions from '../../attributions';
 import compileDate from '../../compileDate';
-import { renderLog } from '../../utils/logging';
+import { renderLog } from '../../common/utils/logging';
 import { PageContentContainer } from '../../utils/pageLayoutStyles';
 
 export default class Attributions extends React.Component {

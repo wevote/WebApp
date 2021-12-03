@@ -6,7 +6,7 @@ import AppObservableStore, { messageService } from '../../stores/AppObservableSt
 import OrganizationStore from '../../stores/OrganizationStore';
 import VoterGuideStore from '../../stores/VoterGuideStore';
 import VoterStore from '../../stores/VoterStore';
-import { renderLog } from '../../utils/logging';
+import { renderLog } from '../../common/utils/logging';
 import { abbreviateNumber } from '../../utils/textFormat';
 import LoadingWheel from '../LoadingWheel';
 import VoterGuideChooseElectionWithPositionsModal from './VoterGuideChooseElectionWithPositionsModal';

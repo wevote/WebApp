@@ -15,7 +15,7 @@ import { shareBottomOffset } from '../../utils/cordovaOffsets';
 import { cordovaLinkToBeSharedFixes, historyPush, isAndroid, isCordova, isWebApp } from '../../utils/cordovaUtils';
 import { normalizedHref } from '../../utils/hrefUtils';
 import isMobile from '../../utils/isMobile';
-import { renderLog } from '../../utils/logging';
+import { renderLog } from '../../common/utils/logging';
 import { stringContains } from '../../utils/textFormat';
 import { openSnackbar } from '../Widgets/SnackNotifier';
 import { androidFacebookClickHandler, androidTwitterClickHandler, cordovaSocialSharingByEmail } from './shareButtonCommon';

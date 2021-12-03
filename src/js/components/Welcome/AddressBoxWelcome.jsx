@@ -3,7 +3,7 @@ import React, { PureComponent } from 'react';
 import VoterActions from '../../actions/VoterActions';
 import VoterStore from '../../stores/VoterStore';
 import { isWebApp, restoreStylesAfterCordovaKeyboard } from '../../utils/cordovaUtils';
-import { renderLog } from '../../utils/logging';
+import { renderLog } from '../../common/utils/logging';
 import TextBox from './TextBox';
 
 class AddressBoxWelcome extends PureComponent {

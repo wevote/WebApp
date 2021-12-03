@@ -8,7 +8,7 @@ import ActivityActions from '../../actions/ActivityActions';
 import AppObservableStore from '../../stores/AppObservableStore';
 import ActivityStore from '../../stores/ActivityStore';
 import VoterStore from '../../stores/VoterStore';
-import { renderLog } from '../../utils/logging';
+import { renderLog } from '../../common/utils/logging';
 
 
 class ActivityCommentAdd extends Component {

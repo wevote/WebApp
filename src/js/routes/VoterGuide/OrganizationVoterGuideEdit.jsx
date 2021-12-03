@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { historyPush } from '../../utils/cordovaUtils';
 import LoadingWheel from '../../components/LoadingWheel';
-import { renderLog } from '../../utils/logging';
+import { renderLog } from '../../common/utils/logging';
 import BallotActions from '../../actions/BallotActions';
 import OrganizationActions from '../../actions/OrganizationActions';
 import OrganizationStore from '../../stores/OrganizationStore';

@@ -5,7 +5,7 @@ import { Ballot } from '@material-ui/icons';
 import { Typography, Button } from '@material-ui/core';
 import styled from 'styled-components';
 import BallotStore from '../../stores/BallotStore';
-import { renderLog } from '../../utils/logging';
+import { renderLog } from '../../common/utils/logging';
 
 class BallotShowAllItemsFooter extends Component {
   constructor (props) {

@@ -8,7 +8,7 @@ import SearchBar from '../../components/Search/SearchBar';
 import IssueStore from '../../stores/IssueStore';
 import VoterStore from '../../stores/VoterStore';
 import { isCordova } from '../../utils/cordovaUtils';
-import { renderLog } from '../../utils/logging';
+import { renderLog } from '../../common/utils/logging';
 import { PageContentContainer } from '../../utils/pageLayoutStyles';
 
 const ReadMore = React.lazy(() => import(/* webpackChunkName: 'ReadMore' */ '../../components/Widgets/ReadMore'));

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { renderLog } from '../../utils/logging';
+import { renderLog } from '../../common/utils/logging';
 import InfoCircleIcon from '../Widgets/InfoCircleIcon';
 import FacebookSignIn from './FacebookSignIn';
 

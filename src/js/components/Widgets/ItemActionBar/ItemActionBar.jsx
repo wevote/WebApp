@@ -13,7 +13,7 @@ import VoterConstants from '../../../constants/VoterConstants';
 import SupportStore from '../../../stores/SupportStore';
 import VoterStore from '../../../stores/VoterStore';
 import { cordovaDot } from '../../../utils/cordovaUtils';
-import { renderLog } from '../../../utils/logging';
+import { renderLog } from '../../../common/utils/logging';
 import { stringContains } from '../../../utils/textFormat';
 import PositionPublicToggle from '../PositionPublicToggle';
 import ShareButtonDropDown from '../ShareButtonDropdown';

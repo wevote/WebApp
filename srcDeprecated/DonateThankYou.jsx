@@ -4,7 +4,7 @@ import Helmet from 'react-helmet';
 import styled from 'styled-components';
 import DonationListForm from '../src/js/common/components/Donation/DonationListForm';
 import { Section } from '../src/js/components/Welcome/sectionStyles';
-import { renderLog } from '../src/js/utils/logging';
+import { renderLog } from '../src/js/common/utils/logging';
 
 const WelcomeAppbar = React.lazy(() => import(/* webpackChunkName: 'WelcomeAppbar' */ '../src/js/components/Navigation/WelcomeAppbar'));
 const WelcomeFooter = React.lazy(() => import(/* webpackChunkName: 'WelcomeFooter' */ '../src/js/components/Welcome/WelcomeFooter'));

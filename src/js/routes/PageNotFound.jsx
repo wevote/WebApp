@@ -6,7 +6,7 @@ import React, { Component } from 'react';
 import Helmet from 'react-helmet';
 import styled from 'styled-components';
 import { historyPush, isCordova } from '../utils/cordovaUtils';
-import { renderLog } from '../utils/logging';
+import { renderLog } from '../common/utils/logging';
 import { PageContentContainer } from '../utils/pageLayoutStyles';
 
 

@@ -9,7 +9,7 @@ import VoterGuidePossibilityActions from '../../actions/VoterGuidePossibilityAct
 import CandidateStore from '../../stores/CandidateStore';
 import VoterGuidePossibilityStore from '../../stores/VoterGuidePossibilityStore';
 import { historyPush } from '../../utils/cordovaUtils';
-import { renderLog } from '../../utils/logging';
+import { renderLog } from '../../common/utils/logging';
 import { abbreviateNumber, numberWithCommas } from '../../utils/textFormat';
 import ExternalLinkIcon from '../Widgets/ExternalLinkIcon';
 

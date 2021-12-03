@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
 import IssueStore from '../../stores/IssueStore';
 import { cordovaDot } from '../../utils/cordovaUtils';
-import { renderLog } from '../../utils/logging';
+import { renderLog } from '../../common/utils/logging';
 
 const ImageHandler = React.lazy(() => import(/* webpackChunkName: 'ImageHandler' */ '../ImageHandler'));
 

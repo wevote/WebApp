@@ -9,7 +9,7 @@ import { getApplicationViewBooleans, weVoteBrandingOff } from '../../utils/appli
 import cordovaTopHeaderTopMargin from '../../utils/cordovaTopHeaderTopMargin';
 import { historyPush, isCordova, isIOSAppOnMac, isIPad, isWebApp } from '../../utils/cordovaUtils';
 import { normalizedHref } from '../../utils/hrefUtils';
-import { renderLog } from '../../utils/logging';
+import { renderLog } from '../../common/utils/logging';
 import { HeadroomWrapper } from '../../utils/pageLayoutStyles';
 import { stringContains } from '../../utils/textFormat';
 import IPhoneSpacer from '../Widgets/IPhoneSpacer';

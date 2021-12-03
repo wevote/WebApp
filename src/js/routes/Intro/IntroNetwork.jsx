@@ -5,7 +5,7 @@ import IntroNetworkBallotIsNext from '../../components/Intro/IntroNetworkBallotI
 import IntroNetworkDefinition from '../../components/Intro/IntroNetworkDefinition';
 import IntroNetworkSafety from '../../components/Intro/IntroNetworkSafety';
 import { cordovaDot, getAndroidSize, historyPush, isAndroid, isWebApp } from '../../utils/cordovaUtils';
-import { renderLog } from '../../utils/logging';
+import { renderLog } from '../../common/utils/logging';
 
 const closeIcon = '../../../img/global/icons/x-close.png';
 

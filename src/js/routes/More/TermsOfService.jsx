@@ -1,7 +1,7 @@
 import React from 'react';
 import Helmet from 'react-helmet';
 import TermsOfServiceBody from '../../common/components/TermsOfServiceBody';
-import { renderLog } from '../../utils/logging';
+import { renderLog } from '../../common/utils/logging';
 import { PageContentContainer } from '../../utils/pageLayoutStyles';
 
 export default class TermsOfService extends React.Component {

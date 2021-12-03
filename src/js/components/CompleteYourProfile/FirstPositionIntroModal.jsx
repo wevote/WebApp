@@ -8,7 +8,7 @@ import VoterActions from '../../actions/VoterActions';
 import VoterConstants from '../../constants/VoterConstants';
 import { hasIPhoneNotch } from '../../utils/cordovaUtils';
 import { normalizedHref } from '../../utils/hrefUtils';
-import { renderLog } from '../../utils/logging';
+import { renderLog } from '../../common/utils/logging';
 
 const CandidateItem = React.lazy(() => import(/* webpackChunkName: 'CandidateItem' */ '../Ballot/CandidateItem'));
 

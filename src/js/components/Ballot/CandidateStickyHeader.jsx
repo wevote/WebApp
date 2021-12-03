@@ -3,7 +3,7 @@ import React, { Component, Suspense } from 'react';
 import styled, { keyframes } from 'styled-components';
 import { cordovaStickyHeaderPaddingTop } from '../../utils/cordovaOffsets';
 import { isIOSAppOnMac, isIPad } from '../../utils/cordovaUtils';
-import { renderLog } from '../../utils/logging';
+import { renderLog } from '../../common/utils/logging';
 
 const BallotItemSupportOpposeComment = React.lazy(() => import(/* webpackChunkName: 'BallotItemSupportOpposeComment' */ '../Widgets/BallotItemSupportOpposeComment'));
 const BallotItemSupportOpposeCountDisplay = React.lazy(() => import(/* webpackChunkName: 'BallotItemSupportOpposeCountDisplay' */ '../Widgets/BallotItemSupportOpposeCountDisplay'));

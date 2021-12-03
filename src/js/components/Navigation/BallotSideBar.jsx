@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import styled from 'styled-components';
 import BallotStore from '../../stores/BallotStore';
-import { renderLog } from '../../utils/logging';
+import { renderLog } from '../../common/utils/logging';
 import BallotSideBarLink from './BallotSideBarLink';
 import BallotSummaryAccordion from './BallotSummaryAccordion';
 

@@ -7,7 +7,7 @@ import { AccountCircle } from '@material-ui/icons';
 import VoterActions from '../../../actions/VoterActions';
 import VoterStore from '../../../stores/VoterStore';
 import isMobileScreenSize from '../../utils/isMobileScreenSize';
-import { renderLog } from '../../../utils/logging';
+import { renderLog } from '../../utils/logging';
 
 const muiTheme = createMuiTheme({
   overrides: {

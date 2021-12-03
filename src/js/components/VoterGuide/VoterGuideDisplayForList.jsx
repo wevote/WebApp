@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import React, { PureComponent, Suspense } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
-import { renderLog } from '../../utils/logging';
+import { renderLog } from '../../common/utils/logging';
 import { removeTwitterNameFromDescription } from '../../utils/textFormat';
 import StickyPopover from '../Ballot/StickyPopover';
 import OrganizationPopoverCard from '../Organization/OrganizationPopoverCard';

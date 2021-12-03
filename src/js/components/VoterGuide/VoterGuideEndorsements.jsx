@@ -14,7 +14,7 @@ import OrganizationStore from '../../stores/OrganizationStore';
 import SupportStore from '../../stores/SupportStore';
 import VoterStore from '../../stores/VoterStore';
 import { historyPush } from '../../utils/cordovaUtils';
-import { renderLog } from '../../utils/logging';
+import { renderLog } from '../../common/utils/logging';
 import { calculateBallotBaseUrl, capitalizeString } from '../../utils/textFormat';
 import BallotSearchResults from '../Ballot/BallotSearchResults';
 import FooterDoneBar from '../Navigation/FooterDoneBar';

@@ -9,7 +9,7 @@ import ShareActions from '../../common/actions/ShareActions';
 import AppObservableStore, { messageService } from '../../stores/AppObservableStore';
 import VoterStore from '../../stores/VoterStore';
 import { historyPush, isWebApp } from '../../utils/cordovaUtils';
-import { renderLog } from '../../utils/logging';
+import { renderLog } from '../../common/utils/logging';
 import { stringContains } from '../../utils/textFormat';
 
 class ShareButtonDesktopTablet extends Component {

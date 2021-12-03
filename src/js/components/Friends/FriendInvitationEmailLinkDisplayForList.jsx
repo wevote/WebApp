@@ -6,7 +6,7 @@ import styled from 'styled-components';
 import FriendActions from '../../actions/FriendActions';
 import VoterStore from '../../stores/VoterStore';
 import { isWebApp } from '../../utils/cordovaUtils';
-import { renderLog } from '../../utils/logging';
+import { renderLog } from '../../common/utils/logging';
 
 const ImageHandler = React.lazy(() => import(/* webpackChunkName: 'ImageHandler' */ '../ImageHandler'));
 

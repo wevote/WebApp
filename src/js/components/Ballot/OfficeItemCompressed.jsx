@@ -9,7 +9,7 @@ import BallotStore from '../../stores/BallotStore';
 import CandidateStore from '../../stores/CandidateStore';
 import SupportStore from '../../stores/SupportStore';
 import { cordovaDot, historyPush, isCordova } from '../../utils/cordovaUtils';
-import { renderLog } from '../../utils/logging';
+import { renderLog } from '../../common/utils/logging';
 import { sortCandidateList } from '../../utils/positionFunctions';
 import { toTitleCase } from '../../utils/textFormat';
 import signInModalGlobalState from '../Widgets/signInModalGlobalState';

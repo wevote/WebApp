@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
 import { cordovaDot } from '../../utils/cordovaUtils';
-import { renderLog } from '../../utils/logging';
+import { renderLog } from '../../common/utils/logging';
 import { vimeoRegX, youTubeRegX } from '../../utils/textFormat';
 import ExternalLinkIcon from './ExternalLinkIcon';
 

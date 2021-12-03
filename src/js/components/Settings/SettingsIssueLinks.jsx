@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 import IssueActions from '../../actions/IssueActions';
 import IssueStore from '../../stores/IssueStore';
 import VoterStore from '../../stores/VoterStore';
-import { renderLog } from '../../utils/logging';
+import { renderLog } from '../../common/utils/logging';
 import IssueLinkToggle from '../Values/IssueLinkToggle';
 import BrowserPushMessage from '../Widgets/BrowserPushMessage';
 

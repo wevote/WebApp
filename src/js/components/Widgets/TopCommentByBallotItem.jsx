@@ -7,7 +7,7 @@ import styled from 'styled-components';
 import CandidateStore from '../../stores/CandidateStore';
 import MeasureStore from '../../stores/MeasureStore';
 import VoterGuideStore from '../../stores/VoterGuideStore';
-import { renderLog } from '../../utils/logging';
+import { renderLog } from '../../common/utils/logging';
 import { extractFirstEndorsementFromPositionList } from '../../utils/positionFunctions';
 import { shortenText, stringContains } from '../../utils/textFormat';
 

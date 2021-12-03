@@ -7,7 +7,7 @@ import LoadingWheel from '../../components/LoadingWheel';
 import OrganizationVoterGuideCandidateList from '../../components/VoterGuide/OrganizationVoterGuideCandidateList';
 import OfficeStore from '../../stores/OfficeStore';
 import VoterStore from '../../stores/VoterStore';
-import { renderLog } from '../../utils/logging';
+import { renderLog } from '../../common/utils/logging';
 import { capitalizeString } from '../../utils/textFormat';
 
 // This is based on routes/Ballot/Office

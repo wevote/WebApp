@@ -11,7 +11,7 @@ import VoterStore from '../../stores/VoterStore';
 import apiCalming from '../../utils/apiCalming';
 import { blurTextFieldAndroid, focusTextFieldAndroid } from '../../utils/cordovaUtils';
 import isMobileScreenSize from '../../utils/isMobileScreenSize';
-import { renderLog } from '../../utils/logging';
+import { renderLog } from '../../common/utils/logging';
 import { validatePhoneOrEmail } from '../../utils/regex-checks';
 import LoadingWheel from '../LoadingWheel';
 

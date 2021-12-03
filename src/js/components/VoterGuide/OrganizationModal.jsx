@@ -20,7 +20,7 @@ import VoterStore from '../../stores/VoterStore';
 import { cordovaDrawerTopMargin } from '../../utils/cordovaOffsets';
 import { hasIPhoneNotch } from '../../utils/cordovaUtils';
 import { normalizedHref } from '../../utils/hrefUtils';
-import { renderLog } from '../../utils/logging';
+import { renderLog } from '../../common/utils/logging';
 import { convertToInteger, stringContains } from '../../utils/textFormat';
 
 const CandidateItem = React.lazy(() => import(/* webpackChunkName: 'CandidateItem' */ '../Ballot/CandidateItem'));

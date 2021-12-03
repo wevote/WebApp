@@ -5,7 +5,7 @@ import TwitterActions from '../../actions/TwitterActions';
 import webAppConfig from '../../config';
 import Cookies from '../../utils/js-cookie/Cookies';
 import { cordovaOpenSafariView, historyPush, isAndroid, isIOS, isWebApp } from '../../utils/cordovaUtils';
-import { oAuthLog, renderLog } from '../../utils/logging';
+import { oAuthLog, renderLog } from '../../common/utils/logging';
 import $ajax from '../../utils/service';
 import { shortenText } from '../../utils/textFormat';
 import SplitIconButton from '../Widgets/SplitIconButton';

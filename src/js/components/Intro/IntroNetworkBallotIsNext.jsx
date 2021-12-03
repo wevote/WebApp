@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { cordovaDot,  historyPush } from '../../utils/cordovaUtils';
 import { cordovaNetworkNextButtonTop } from '../../utils/cordovaOffsets';
-import { renderLog } from '../../utils/logging';
+import { renderLog } from '../../common/utils/logging';
 
 /*
 The problem with urls in css for Apache Cordova

@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 import { ListItem } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 import { capitalizeString, sentenceCaseString } from '../../utils/textFormat';
-import { renderLog } from '../../utils/logging';
+import { renderLog } from '../../common/utils/logging';
 
 class BallotSideBarLink extends Component {
   constructor (props) {

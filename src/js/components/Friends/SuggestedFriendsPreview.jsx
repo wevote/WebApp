@@ -7,7 +7,7 @@ import FriendStore from '../../stores/FriendStore';
 import apiCalming from '../../utils/apiCalming';
 import { historyPush } from '../../utils/cordovaUtils';
 import sortFriendListByMutualFriends from '../../utils/friendFunctions';
-import { renderLog } from '../../utils/logging';
+import { renderLog } from '../../common/utils/logging';
 import SuggestedFriendList from './SuggestedFriendList';
 
 export default class SuggestedFriendsPreview extends Component {
