@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import FriendActions from '../../actions/FriendActions';
 import FriendStore from '../../stores/FriendStore';
-import { historyPush } from '../../utils/cordovaUtils';
+import historyPush from '../../common/utils/historyPush';
 import sortFriendListByMutualFriends from '../../utils/friendFunctions';
 import { renderLog } from '../../common/utils/logging';
 import FriendList from './FriendList';

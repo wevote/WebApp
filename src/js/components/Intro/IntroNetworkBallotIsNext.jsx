@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { cordovaDot,  historyPush } from '../../utils/cordovaUtils';
+import normalizedImagePath from '../../common/utils/normalizedImagePath';
+import historyPush from '../../common/utils/historyPush';
 import { cordovaNetworkNextButtonTop } from '../../utils/cordovaOffsets';
 import { renderLog } from '../../common/utils/logging';
 
@@ -38,7 +39,7 @@ export default class IntroNetworkBallotIsNext extends Component {
         <div>
           <img
             className="center-block intro-story__img-height intro-story__placeholder"
-            src={cordovaDot('/img/how-it-works/HowItWorksForVoters-Decide-20190401.gif')}
+            src={normalizedImagePath('/img/how-it-works/HowItWorksForVoters-Decide-20190401.gif')}
             alt="Decide your ballot with We Vote"
           />
           {/* <div className="center-block intro-story__img-height intro-story__placeholder">Fle Nme: Decide.GIF</div> */}

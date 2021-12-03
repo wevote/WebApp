@@ -11,7 +11,7 @@ import BallotStore from '../../stores/BallotStore';
 import OrganizationStore from '../../stores/OrganizationStore';
 import VoterGuideStore from '../../stores/VoterGuideStore';
 import VoterStore from '../../stores/VoterStore';
-import { historyPush } from '../../utils/cordovaUtils';
+import historyPush from '../../common/utils/historyPush';
 import { renderLog } from '../../common/utils/logging';
 import { isProperlyFormattedVoterGuideWeVoteId } from '../../utils/textFormat';
 import FilterBase from '../Filter/FilterBase';

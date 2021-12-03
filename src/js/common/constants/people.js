@@ -1,13 +1,13 @@
 import webAppConfig from '../../config';
-import cordovaDot from '../../utils/cordovaDot';
+import normalizedImagePath from '../utils/normalizedImagePath';
 
 if (window.cordova) { // Static constants are initialized before the app starts
   webAppConfig.IS_CORDOVA = true;
   window.isCordovaGlobal = true;
 }
 
-const photoPath = cordovaDot('/img/global/photos/');
-const logoPath = cordovaDot('/img/global/logos/');
+const photoPath = normalizedImagePath('/img/global/photos/');
+const logoPath = normalizedImagePath('/img/global/logos/');
 
 export const weVoteFounders = [{
   name: 'Dale John McGrew',

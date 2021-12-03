@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 import Tooltip from 'react-bootstrap/Tooltip';
 import { ReactSVG } from 'react-svg';
-import { cordovaDot } from '../../utils/cordovaUtils';
+import normalizedImagePath from '../../common/utils/normalizedImagePath';
 import { renderLog } from '../../common/utils/logging';
 
 const groupIcon = '../../../img/global/svg-icons/group-icon.svg';
@@ -29,7 +29,7 @@ export default class FriendsOnlyIndicator extends Component {
       labelText = 'This is only visible to We Vote friends.';
       visibilityIcon = (
         <ReactSVG
-          src={cordovaDot(groupIcon)}
+          src={normalizedImagePath(groupIcon)}
           // beforeInjection={(svg) => svg.setAttribute('style',
           //   { backgroundColor: '#fff', borderRadius: '3px', fill: '#555', width: '16px', height: '16px', display: 'flex', verticalAlign: 'unset' })}
           beforeInjection={(svg) => {
@@ -45,7 +45,7 @@ export default class FriendsOnlyIndicator extends Component {
       labelText = 'This is visible to the public.';
       visibilityIcon = (
         <ReactSVG
-          src={cordovaDot(publicIcon)}
+          src={normalizedImagePath(publicIcon)}
           // beforeInjection={(svg) => svg.setAttribute('style',
           //   { backgroundColor: '#fff', borderRadius: '3px', fill: '#555', width: '16px', height: '16px', display: 'flex', verticalAlign: 'unset' })}
           beforeInjection={(svg) => {

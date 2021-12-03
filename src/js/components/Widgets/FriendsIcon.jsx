@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { cordovaDot } from '../../utils/cordovaUtils';
+import normalizedImagePath from '../../common/utils/normalizedImagePath';
 
 const groupIcon = '../../../img/global/svg-icons/group-icon.svg';
 
@@ -12,7 +12,7 @@ export default class FriendsIcon extends Component {
   render () {
     return (
       <span>
-        <img src={cordovaDot(groupIcon)} width="18" height="18" color="#999" alt="Friends" />
+        <img src={normalizedImagePath(groupIcon)} width="18" height="18" color="#999" alt="Friends" />
       </span>
     );
   }

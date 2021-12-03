@@ -12,7 +12,8 @@ import AppObservableStore, { messageService } from '../../stores/AppObservableSt
 import VoterStore from '../../stores/VoterStore';
 import { getApplicationViewBooleans } from '../../utils/applicationUtils';
 import { shareBottomOffset } from '../../utils/cordovaOffsets';
-import { cordovaLinkToBeSharedFixes, historyPush, isAndroid, isCordova, isWebApp } from '../../utils/cordovaUtils';
+import { cordovaLinkToBeSharedFixes, isAndroid, isCordova, isWebApp } from '../../utils/cordovaUtils';
+import historyPush from '../../common/utils/historyPush';
 import { normalizedHref } from '../../utils/hrefUtils';
 import isMobile from '../../utils/isMobile';
 import { renderLog } from '../../common/utils/logging';

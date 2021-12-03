@@ -4,7 +4,7 @@ import { Facebook, GitHub, Instagram, Mail, Twitter } from '@material-ui/icons';
 import { styled as muiStyled } from '@material-ui/styles';
 import React, { Suspense } from 'react';
 import styled from 'styled-components';
-import cordovaDot from '../../../utils/cordovaDot';
+import normalizedImagePath from '../../utils/normalizedImagePath';
 import { renderLog } from '../../utils/logging';
 
 const OpenExternalWebSite = React.lazy(() => import(/* webpackChunkName: 'OpenExternalWebSite' */ './OpenExternalWebSite'));
@@ -108,7 +108,7 @@ function ToolBar (params) {
             body={(
               <Tooltip title="Blog">
                 <IconButton>
-                  <img src={cordovaDot('/img/global/svg-icons/wordpress-logo.svg')}
+                  <img src={normalizedImagePath('/img/global/svg-icons/wordpress-logo.svg')}
                        width={24}
                        height={24}
                        color="white"

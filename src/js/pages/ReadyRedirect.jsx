@@ -1,5 +1,5 @@
 import { Component } from 'react';
-import { historyPush } from '../utils/cordovaUtils';
+import historyPush from '../common/utils/historyPush';
 
 export default class ReadyRedirect extends Component {
   componentDidMount () {

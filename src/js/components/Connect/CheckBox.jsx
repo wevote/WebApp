@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
-import { cordovaDot } from '../../utils/cordovaUtils';
+import normalizedImagePath from '../../common/utils/normalizedImagePath';
 import { renderLog } from '../../common/utils/logging';
 
 const ImageHandler = React.lazy(() => import(/* webpackChunkName: 'ImageHandler' */ '../ImageHandler'));
@@ -41,7 +41,7 @@ export default class CheckBox extends Component {
           { isChecked && (
             <ImageHandler
               className="friends-list__square-check-mark"
-              imageUrl={cordovaDot(checkMarkIcon)}
+              imageUrl={normalizedImagePath(checkMarkIcon)}
               alt="Inviting"
             />
           )}

@@ -4,7 +4,9 @@ import Slider from 'react-slick';
 import IntroNetworkBallotIsNext from '../../components/Intro/IntroNetworkBallotIsNext';
 import IntroNetworkDefinition from '../../components/Intro/IntroNetworkDefinition';
 import IntroNetworkSafety from '../../components/Intro/IntroNetworkSafety';
-import { cordovaDot, getAndroidSize, historyPush, isAndroid, isWebApp } from '../../utils/cordovaUtils';
+import { getAndroidSize, isAndroid, isWebApp } from '../../utils/cordovaUtils';
+import normalizedImagePath from '../../common/utils/normalizedImagePath';
+import historyPush from '../../common/utils/historyPush';
 import { renderLog } from '../../common/utils/logging';
 
 const closeIcon = '../../../img/global/icons/x-close.png';
@@ -79,7 +81,7 @@ export default class IntroNetwork extends Component {
         <div className="intro-story container-fluid well u-inset--md" style={this.overrideMediaQueryForAndroidTablets()}>
           <span onClick={IntroNetwork.goToReadyLink}>
             <img
-              src={cordovaDot(closeIcon)}
+              src={normalizedImagePath(closeIcon)}
               className={isWebApp() ? 'x-close' : 'x-close x-close__cordova'}
               alt="close"
             />

@@ -7,7 +7,7 @@ import styled from 'styled-components';
 import OrganizationActions from '../../actions/OrganizationActions';
 import OrganizationStore from '../../stores/OrganizationStore';
 import VoterStore from '../../stores/VoterStore';
-import { historyPush } from '../../utils/cordovaUtils';
+import historyPush from '../../common/utils/historyPush';
 import { renderLog } from '../../common/utils/logging';
 import { numberWithCommas, removeTwitterNameFromDescription } from '../../utils/textFormat';
 import LoadingWheel from '../../common/components/Widgets/LoadingWheel';

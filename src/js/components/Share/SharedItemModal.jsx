@@ -15,7 +15,8 @@ import OrganizationStore from '../../stores/OrganizationStore';
 import ShareStore from '../../common/stores/ShareStore';
 import VoterStore from '../../stores/VoterStore';
 import { cordovaFooterHeight, cordovaNetworkNextButtonTop } from '../../utils/cordovaOffsets';
-import { cordovaDot, hasIPhoneNotch, isCordova, isWebApp } from '../../utils/cordovaUtils';
+import { hasIPhoneNotch, isCordova, isWebApp } from '../../utils/cordovaUtils';
+import normalizedImagePath from '../../common/utils/normalizedImagePath';
 import { formatDateToMonthDayYear } from '../../common/utils/dateFormat';
 import { renderLog } from '../../common/utils/logging';
 import { isSpeakerTypeOrganization, isSpeakerTypePublicFigure } from '../../utils/organization-functions';
@@ -399,7 +400,7 @@ class SharedItemModal extends Component {
     const nameForNextToInfoIcon = organizationName || 'This person';
     const nameForNextToInfoIconMidSentence = organizationName || 'this person';
     const avatarCompressed = `card-main__avatar-compressed${isCordova() ? '-cordova' : ''}`;
-    const avatarBackgroundImage = cordovaDot('../img/global/svg-icons/avatar-generic.svg');
+    const avatarBackgroundImage = normalizedImagePath('../img/global/svg-icons/avatar-generic.svg');
 
     if (isFriend) {
       textNextToInfoIcon = `${nameForNextToInfoIcon}'s opinions will be added to your personalized scores. `;

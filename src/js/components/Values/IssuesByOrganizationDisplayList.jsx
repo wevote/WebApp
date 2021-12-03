@@ -5,7 +5,7 @@ import React, { Component, Suspense } from 'react';
 import styled from 'styled-components';
 import IssueStore from '../../stores/IssueStore';
 import VoterGuideStore from '../../stores/VoterGuideStore';
-import { cordovaDot } from '../../utils/cordovaUtils';
+import normalizedImagePath from '../../common/utils/normalizedImagePath';
 import { renderLog } from '../../common/utils/logging';
 import StickyPopover from '../Ballot/StickyPopover';
 import SvgImage from '../../common/components/Widgets/SvgImage';
@@ -169,7 +169,7 @@ class IssuesByOrganizationDisplayList extends Component {
 
     // Tried to make the issues icons accessible via tabbing, caused too many side affects
     const svgFill = issueFollowedByVoter ? '#555' : '#999';
-    const svg = oneIssue.issue_icon_local_path ? oneIssue.issue_icon_local_path : cordovaDot('../.../../img/global/svg-icons/issues/two-leaves.svg');
+    const svg = oneIssue.issue_icon_local_path ? oneIssue.issue_icon_local_path : normalizedImagePath('../.../../img/global/svg-icons/issues/two-leaves.svg');
     // console.log('-----------------', oneIssue.issue_icon_local_path);
     const valueIconAndText = (
       <ValueIconAndTextOrganization

@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
 import styled from 'styled-components';
-import { cordovaDot } from '../../utils/cordovaUtils';
+import normalizedImagePath from '../../common/utils/normalizedImagePath';
 import SplitIconButton from '../../common/components/Widgets/SplitIconButton';
 
 const OpenExternalWebSite = React.lazy(() => import(/* webpackChunkName: 'OpenExternalWebSite' */ '../../common/components/Widgets/OpenExternalWebSite'));
@@ -32,7 +32,7 @@ class ViewOnBallotpedia extends Component {
                 compressedSize
                 externalUniqueId="viewOnBallotpedia"
                 fontColor="#000"
-                icon={<img src={cordovaDot(ballotpediaIcon)} alt="" />}
+                icon={<img src={normalizedImagePath(ballotpediaIcon)} alt="" />}
                 title="View on Ballotpedia"
               />
             )}

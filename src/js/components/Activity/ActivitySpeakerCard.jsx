@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import ActivityStore from '../../stores/ActivityStore';
 import VoterStore from '../../stores/VoterStore';
 import { createDescriptionOfFriendPosts } from '../../utils/activityUtils';
-import { cordovaDot } from '../../utils/cordovaUtils';
+import normalizedImagePath from '../../common/utils/normalizedImagePath';
 import { timeFromDate } from '../../common/utils/dateFormat';
 import { renderLog } from '../../common/utils/logging';
 import { numberWithCommas } from '../../utils/textFormat';
@@ -117,7 +117,7 @@ class ActivitySpeakerCard extends Component {
             </SpeakerAvatar>
           ) : (
             <SpeakerAvatar>
-              <ActivityImage src={cordovaDot(avatarGenericIcon)} alt={`${speakerName}`} />
+              <ActivityImage src={normalizedImagePath(avatarGenericIcon)} alt={`${speakerName}`} />
             </SpeakerAvatar>
           )}
         </StickyPopover>

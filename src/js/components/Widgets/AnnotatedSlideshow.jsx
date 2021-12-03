@@ -4,7 +4,7 @@ import { ArrowLeft, ArrowRight } from '@material-ui/icons';
 import PropTypes from 'prop-types';
 import React, { PureComponent } from 'react';
 import styled, { withTheme } from 'styled-components';
-import { cordovaDot } from '../../utils/cordovaUtils';
+import normalizedImagePath from '../../common/utils/normalizedImagePath';
 
 class AnnotatedSlideshow extends PureComponent {
   componentDidMount () {
@@ -39,7 +39,7 @@ class AnnotatedSlideshow extends PureComponent {
               <ArrowLeft classes={{ root: classes.navIconRoot }} />
             </Nav>
           )}
-          <Image inModal={this.props.inModal} src={cordovaDot(imgSrc)} />
+          <Image inModal={this.props.inModal} src={normalizedImagePath(imgSrc)} />
           {!this.props.inModal && (
             <Nav disabled={selectedStepIndex === length - 1} id="howItWorksRightArrow" onClick={() => this.handleChangeSlide(true)}>
               <ArrowRight classes={{ root: classes.navIconRoot }} />

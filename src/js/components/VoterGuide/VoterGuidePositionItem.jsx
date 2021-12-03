@@ -11,7 +11,7 @@ import BallotStore from '../../stores/BallotStore';
 import CandidateStore from '../../stores/CandidateStore';
 import MeasureStore from '../../stores/MeasureStore';
 import OrganizationStore from '../../stores/OrganizationStore';
-import { cordovaDot } from '../../utils/cordovaUtils';
+import normalizedImagePath from '../../common/utils/normalizedImagePath';
 import { renderLog } from '../../common/utils/logging';
 import { capitalizeString, numberWithCommas, stringContains } from '../../utils/textFormat';
 import BallotItemVoterGuideSupportOpposeDisplay from '../Widgets/BallotItemVoterGuideSupportOpposeDisplay';
@@ -248,7 +248,7 @@ class VoterGuidePositionItem extends Component {
     }
     const imagePlaceholder = (
       <ReactSVG
-        src={cordovaDot('/img/global/svg-icons/avatar-generic.svg')}
+        src={normalizedImagePath('/img/global/svg-icons/avatar-generic.svg')}
       />
     );
 

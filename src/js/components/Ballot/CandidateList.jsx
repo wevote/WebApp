@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
-import { historyPush } from '../../utils/cordovaUtils';
+import historyPush from '../../common/utils/historyPush';
 import { renderLog } from '../../common/utils/logging';
 
 const CandidateItem = React.lazy(() => import(/* webpackChunkName: 'CandidateItem' */ './CandidateItem'));

@@ -15,7 +15,9 @@ import VoterConstants from '../../constants/VoterConstants';
 import FriendStore from '../../stores/FriendStore';
 import VoterStore from '../../stores/VoterStore';
 import { cordovaFooterHeight, cordovaNetworkNextButtonTop } from '../../utils/cordovaOffsets';
-import { cordovaDot, getAndroidSize, historyPush, isAndroid, isWebApp } from '../../utils/cordovaUtils';
+import { getAndroidSize, isAndroid, isWebApp } from '../../utils/cordovaUtils';
+import normalizedImagePath from '../../common/utils/normalizedImagePath';
+import historyPush from '../../common/utils/historyPush';
 import { renderLog } from '../../common/utils/logging';
 
 const closeIcon = '../../../img/global/icons/x-close.png';
@@ -164,7 +166,7 @@ class FriendInvitationOnboarding extends Component {
             <img
               className="header-logo-img"
               alt="We Vote logo"
-              src={cordovaDot(logoDark)}
+              src={normalizedImagePath(logoDark)}
             />
           </WeVoteLogoWrapper>
           <SlideShowTitle>
@@ -249,7 +251,7 @@ class FriendInvitationOnboarding extends Component {
         <div className="intro-story container-fluid well u-inset--md" style={this.overrideMediaQueryForAndroidTablets()}>
           <span onClick={this.onExitOnboarding}>
             <img
-              src={cordovaDot(closeIcon)}
+              src={normalizedImagePath(closeIcon)}
               className={`x-close x-close__black ${isWebApp() ? '' : 'x-close__cordova'}`}
               alt="close"
             />

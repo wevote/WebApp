@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import { cordovaDot } from '../../utils/cordovaUtils';
+import normalizedImagePath from '../../common/utils/normalizedImagePath';
 import { renderLog } from '../../common/utils/logging';
 
 const downArrowColorIcon = '../../../img/global/icons/down-arrow-color-icon.svg';
@@ -18,7 +18,7 @@ export default class RatingPopover extends Component {
         nonprofit Vote Smart.
         <br />
         <span className="u-no-break">
-          <img src={cordovaDot(downArrowColorIcon)} width="20" height="20" alt="down-arrow" />
+          <img src={normalizedImagePath(downArrowColorIcon)} width="20" height="20" alt="down-arrow" />
           {' '}
           0%
         </span>
@@ -26,7 +26,7 @@ export default class RatingPopover extends Component {
         is a low score, and
         <br />
         <span className="u-no-break">
-          <img src={cordovaDot(upArrowColorIcon)} width="20" height="20" alt="up-arrow" />
+          <img src={normalizedImagePath(upArrowColorIcon)} width="20" height="20" alt="up-arrow" />
           {' '}
           100%
         </span>

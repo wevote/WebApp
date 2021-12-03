@@ -17,7 +17,8 @@ import VoterConstants from '../constants/VoterConstants';
 import AppObservableStore from '../stores/AppObservableStore';
 import VoterStore from '../stores/VoterStore';
 import cordovaScrollablePaneTopPadding from '../utils/cordovaScrollablePaneTopPadding';
-import { cordovaDot, historyPush } from '../utils/cordovaUtils';
+import normalizedImagePath from '../common/utils/normalizedImagePath';
+import historyPush from '../common/utils/historyPush';
 import { renderLog } from '../common/utils/logging';
 import { validateEmail } from '../utils/regex-checks';
 
@@ -131,7 +132,7 @@ class WelcomeForVoters extends PureComponent {
     } = this.state;
 
     const testimonialAuthor = 'Alissa B., Oakland, California';
-    const imageUrl = cordovaDot('/img/global/photos/Alissa_B-128x128.jpg');
+    const imageUrl = normalizedImagePath('/img/global/photos/Alissa_B-128x128.jpg');
     const testimonial = 'Great way to sort through my ballot! My husband and I used We Vote during the last election to learn more about our ballots and make some tough choices. Between following various organizations, and friending a couple of trusted friends, we felt like we had an excellent pool of information to draw from. It was so great!';
     return (
       <Wrapper padTop={cordovaScrollablePaneTopPadding()}>
@@ -216,7 +217,7 @@ class WelcomeForVoters extends PureComponent {
               </Description>
             </DescriptionLeftColumn>
             <DescriptionImageColumn>
-              <Image src={cordovaDot(welcomeForVotersImage)} />
+              <Image src={normalizedImagePath(welcomeForVotersImage)} />
             </DescriptionImageColumn>
           </DescriptionContainer>
         </Section>
@@ -240,11 +241,11 @@ class WelcomeForVoters extends PureComponent {
         <Section variant="dark" rounded={!emailAddressVerifiedCount}>
           <SectionTitle>Our Network</SectionTitle>
           <NetworkContainer>
-            <NetworkImage src={cordovaDot(ffwdLogo)} alt="Fast Forward" />
-            <NetworkImage src={cordovaDot(googleLogo)} alt="Google" />
-            {/* <NetworkImage src={cordovaDot('/img/global/logos/ctcl_logo-200x200.png')} alt="Center for Technology and Civic Life" /> */}
-            <NetworkImage src={cordovaDot(voteDotOrgLogo)} alt="Vote.org" />
-            <NetworkImage src={cordovaDot(vipLogo)} alt="Voting Information Project" />
+            <NetworkImage src={normalizedImagePath(ffwdLogo)} alt="Fast Forward" />
+            <NetworkImage src={normalizedImagePath(googleLogo)} alt="Google" />
+            {/* <NetworkImage src={normalizedImagePath('/img/global/logos/ctcl_logo-200x200.png')} alt="Center for Technology and Civic Life" /> */}
+            <NetworkImage src={normalizedImagePath(voteDotOrgLogo)} alt="Vote.org" />
+            <NetworkImage src={normalizedImagePath(vipLogo)} alt="Voting Information Project" />
           </NetworkContainer>
         </Section>
         {emailAddressVerifiedCount ? (

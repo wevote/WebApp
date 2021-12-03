@@ -13,7 +13,8 @@ import VoterConstants from '../constants/VoterConstants';
 import AppObservableStore from '../stores/AppObservableStore';
 import VoterStore from '../stores/VoterStore';
 import cordovaScrollablePaneTopPadding from '../utils/cordovaScrollablePaneTopPadding';
-import { cordovaDot, historyPush } from '../utils/cordovaUtils';
+import normalizedImagePath from '../common/utils/normalizedImagePath';
+import historyPush from '../common/utils/historyPush';
 import { renderLog } from '../common/utils/logging';
 import { validateEmail } from '../utils/regex-checks';
 
@@ -112,7 +113,7 @@ class WelcomeForCampaigns extends PureComponent {
     const voterIsSignedIn = voter.is_signed_in;
 
     const testimonialAuthor = 'Neelam J., Columbus, Ohio';
-    const imageUrl = cordovaDot('/img/global/photos/Neelam_Joshi-200x200.jpg');
+    const imageUrl = normalizedImagePath('/img/global/photos/Neelam_Joshi-200x200.jpg');
     const testimonial = 'I don\'t have time to attend rallies and listen to campaign speeches, and I don\'t trust much of what I see on Facebook. We Vote helps me cut through the chatter and use endorsements from people I trust.';
     return (
       <Wrapper padTop={cordovaScrollablePaneTopPadding()}>
@@ -204,7 +205,7 @@ class WelcomeForCampaigns extends PureComponent {
               </Description>
             </DescriptionLeftColumn>
             <DescriptionImageColumn>
-              <Image src={cordovaDot('/img/welcome/WelcomeForCampaigns-SierraClubScreenShot-20190507.png')} />
+              <Image src={normalizedImagePath('/img/welcome/WelcomeForCampaigns-SierraClubScreenShot-20190507.png')} />
             </DescriptionImageColumn>
           </DescriptionContainer>
         </Section>
@@ -215,7 +216,7 @@ class WelcomeForCampaigns extends PureComponent {
           </SectionTitle>
           <DescriptionContainer>
             <DescriptionImageColumn>
-              <Image src={cordovaDot('/img/welcome/WelcomeForVoters-Ballot-20190507.png')} />
+              <Image src={normalizedImagePath('/img/welcome/WelcomeForVoters-Ballot-20190507.png')} />
             </DescriptionImageColumn>
             <DescriptionLeftColumn>
               <Description>
@@ -267,11 +268,11 @@ class WelcomeForCampaigns extends PureComponent {
         <Section variant="dark" rounded={!voterIsSignedIn}>
           <SectionTitle>Our Network</SectionTitle>
           <NetworkContainer>
-            <NetworkImage src={cordovaDot(ffwdLogo)} alt="Fast Forward" />
-            <NetworkImage src={cordovaDot(googleLogo)} alt="Google" />
-            {/* <NetworkImage src={cordovaDot('/img/global/logos/ctcl_logo-200x200.png')} alt="Center for Technology and Civic Life" /> */}
-            <NetworkImage src={cordovaDot(voteDotOrgLogo)} alt="Vote.org" />
-            <NetworkImage src={cordovaDot(vipLogo)} alt="Voting Information Project" />
+            <NetworkImage src={normalizedImagePath(ffwdLogo)} alt="Fast Forward" />
+            <NetworkImage src={normalizedImagePath(googleLogo)} alt="Google" />
+            {/* <NetworkImage src={normalizedImagePath('/img/global/logos/ctcl_logo-200x200.png')} alt="Center for Technology and Civic Life" /> */}
+            <NetworkImage src={normalizedImagePath(voteDotOrgLogo)} alt="Vote.org" />
+            <NetworkImage src={normalizedImagePath(vipLogo)} alt="Voting Information Project" />
           </NetworkContainer>
         </Section>
         <Suspense fallback={<></>}>

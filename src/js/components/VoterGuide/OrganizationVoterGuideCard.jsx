@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
-import { historyPush } from '../../utils/cordovaUtils';
+import historyPush from '../../common/utils/historyPush';
 import { renderLog } from '../../common/utils/logging';
 import { isSpeakerTypePrivateCitizen } from '../../utils/organization-functions';
 import { numberWithCommas, removeTwitterNameFromDescription } from '../../utils/textFormat';

@@ -1,4 +1,5 @@
-import { cordovaDot, isCordova, isIOSAppOnMac, isWebApp } from './cordovaUtils';
+import { isCordova, isIOSAppOnMac, isWebApp } from './cordovaUtils';
+import normalizedImagePath from '../common/utils/normalizedImagePath';
 import Cookies from '../common/utils/js-cookie/Cookies';
 import { stringContains } from './textFormat';
 
@@ -291,7 +292,7 @@ export function displayTopMenuShadow () {  //
 }
 
 export function avatarGeneric () {
-  return cordovaDot('../../img/global/icons/avatar-generic.png');
+  return normalizedImagePath('../../img/global/icons/avatar-generic.png');
 }
 
 export function dumpCookies () {

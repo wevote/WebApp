@@ -11,7 +11,8 @@ import { Bold, Description, DescriptionContainer, DescriptionImageColumn, Descri
 import Testimonial from '../components/Widgets/Testimonial';
 import VoterStore from '../stores/VoterStore';
 import cordovaScrollablePaneTopPadding from '../utils/cordovaScrollablePaneTopPadding';
-import { cordovaDot, historyPush } from '../utils/cordovaUtils';
+import normalizedImagePath from '../common/utils/normalizedImagePath';
+import historyPush from '../common/utils/historyPush';
 import { renderLog } from '../common/utils/logging';
 
 const WelcomeAppbar = React.lazy(() => import(/* webpackChunkName: 'WelcomeAppbar' */ '../components/Navigation/WelcomeAppbar'));
@@ -91,7 +92,7 @@ class WelcomeForOrganizations extends Component {
     // console.log(currentTitleTextToDisplay);
 
     const testimonialAuthor = 'Judy J., Oakland, California';
-    const testimonialImageUrl = cordovaDot('/img/global/photos/Judy_J-109x109.jpg');
+    const testimonialImageUrl = normalizedImagePath('/img/global/photos/Judy_J-109x109.jpg');
     const testimonial = 'Let\'s be real: few people are reading those wonky ballot descriptions. I want deciding how to vote to be as easy and obvious as a solid Yelp review. Finally We Vote helps me plan the whole thing out way faster.';
     return (
       <Wrapper padTop={cordovaScrollablePaneTopPadding()}>
@@ -180,7 +181,7 @@ class WelcomeForOrganizations extends Component {
               </Description>
             </DescriptionLeftColumn>
             <DescriptionImageColumn>
-              <Image src={cordovaDot('/img/welcome/WelcomeForOrganizations-YourLogoScreenShot.png')} />
+              <Image src={normalizedImagePath('/img/welcome/WelcomeForOrganizations-YourLogoScreenShot.png')} />
             </DescriptionImageColumn>
           </DescriptionContainer>
         </Section>
@@ -191,7 +192,7 @@ class WelcomeForOrganizations extends Component {
           </SectionTitle>
           <DescriptionContainer>
             <DescriptionImageColumn>
-              <Image src={cordovaDot('/img/welcome/WelcomeForOrganizations-PollingLocationScreenShot.png')} />
+              <Image src={normalizedImagePath('/img/welcome/WelcomeForOrganizations-PollingLocationScreenShot.png')} />
             </DescriptionImageColumn>
             <DescriptionLeftColumn>
               <Description>
@@ -266,11 +267,11 @@ class WelcomeForOrganizations extends Component {
         <Section variant="dark" rounded={!voterIsSignedIn}>
           <SectionTitle>Our Network</SectionTitle>
           <NetworkContainer>
-            <NetworkImage src={cordovaDot(ffwdLogo)} alt="Fast Forward" />
-            <NetworkImage src={cordovaDot(googleLogo)} alt="Google" />
-            {/* <NetworkImage src={cordovaDot('/img/global/logos/ctcl_logo-200x200.png')} alt="Center for Technology and Civic Life" /> */}
-            <NetworkImage src={cordovaDot(voteDotOrgLogo)} alt="Vote.org" />
-            <NetworkImage src={cordovaDot(vipLogo)} alt="Voting Information Project" />
+            <NetworkImage src={normalizedImagePath(ffwdLogo)} alt="Fast Forward" />
+            <NetworkImage src={normalizedImagePath(googleLogo)} alt="Google" />
+            {/* <NetworkImage src={normalizedImagePath('/img/global/logos/ctcl_logo-200x200.png')} alt="Center for Technology and Civic Life" /> */}
+            <NetworkImage src={normalizedImagePath(voteDotOrgLogo)} alt="Vote.org" />
+            <NetworkImage src={normalizedImagePath(vipLogo)} alt="Voting Information Project" />
           </NetworkContainer>
         </Section>
         <Suspense fallback={<></>}>

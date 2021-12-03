@@ -3,7 +3,7 @@ import OfficeActions from '../actions/OfficeActions';
 import Dispatcher from '../common/dispatcher/Dispatcher';
 
 import { mostLikelyOfficeDictFromList } from '../utils/candidateFunctions';
-import { cordovaDot } from '../utils/cordovaUtils'; // eslint-disable-line import/no-cycle
+import normalizedImagePath from '../common/utils/normalizedImagePath'; // eslint-disable-line import/no-cycle
 import { extractNumberOfPositionsFromPositionList } from '../utils/positionFunctions'; // eslint-disable-line import/no-cycle
 import { stringContains } from '../utils/textFormat';
 import OfficeStore from './OfficeStore';
@@ -14,7 +14,7 @@ class CandidateStore extends ReduceStore {
       candidateAlexanderHamilton: {
         we_vote_id: 'candidateAlexanderHamilton',
         ballot_item_display_name: 'Alexander Hamilton',
-        candidate_photo_url_large: cordovaDot('../../../img/global/photos/Alexander_Hamilton-48x48.png'),
+        candidate_photo_url_large: normalizedImagePath('../../../img/global/photos/Alexander_Hamilton-48x48.png'),
         contest_office_name: 'President',
         party: 'Nonpartisan',
       },

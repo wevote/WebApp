@@ -12,7 +12,7 @@ import AppObservableStore, { messageService } from '../../stores/AppObservableSt
 import VoterStore from '../../stores/VoterStore';
 import { avatarGeneric } from '../../utils/applicationUtils';
 import { cordovaWelcomeAppToolbarTop, welcomeAppBarPaddingTop } from '../../utils/cordovaOffsets';
-import { historyPush } from '../../utils/cordovaUtils';
+import historyPush from '../../common/utils/historyPush';
 import Cookies from '../../common/utils/js-cookie/Cookies';
 import { renderLog } from '../../common/utils/logging';
 import { shortenText } from '../../utils/textFormat';

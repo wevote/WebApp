@@ -92,11 +92,11 @@ export function cordovaDot (path) {
     // In cordova the root for all relative file paths is the www directory which contains a symlink
     // to the image files in the WebApp source.
     // So for ios it would be /Users/sp/WebstormProjects/WeVoteCordova/platforms/ios/www
-    // For example cordovaDot needs to transform '../../img/global/svg-icons/avatar-generic.svg' to
+    // For example normalizedImagePath needs to transform '../../img/global/svg-icons/avatar-generic.svg' to
     // './img/global/svg-icons/avatar-generic.svg'
-    // console.log(`cordovaDot incoming: ${path}`);
+    // console.log(`normalizedImagePath incoming: ${path}`);
     const adjustedPath = path.replace(/.*?(\/img\/.*?)/gi, '.$1'); // HACK
-    // console.log(`cordovaDot return: ${adjustedPath}`);
+    // console.log(`normalizedImagePath return: ${adjustedPath}`);
     return adjustedPath;
   } else {
     return path;

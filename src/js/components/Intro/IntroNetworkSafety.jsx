@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { cordovaNetworkNextButtonTop } from '../../utils/cordovaOffsets';
-import { cordovaDot } from '../../utils/cordovaUtils';
+import normalizedImagePath from '../../common/utils/normalizedImagePath';
 import { renderLog } from '../../common/utils/logging';
 
 /*
@@ -34,7 +34,7 @@ export default class IntroNetworkSafety extends Component {
         <div>
           <img
             className="center-block intro-story__img-height intro-story__placeholder"
-            src={cordovaDot('/img/how-it-works/HowItWorksForVoters-Choose-20190507.gif')}
+            src={normalizedImagePath('/img/how-it-works/HowItWorksForVoters-Choose-20190507.gif')}
             alt="Create your ballot with ease with We Vote"
           />
           {/* <div className="center-block intro-story__img-height intro-story__placeholder">Fle Nme: FollowValues.GIF</div> */}

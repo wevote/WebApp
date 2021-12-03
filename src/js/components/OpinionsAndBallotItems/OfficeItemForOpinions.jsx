@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import styled from 'styled-components';
 import CandidateStore from '../../stores/CandidateStore';
-import { historyPush } from '../../utils/cordovaUtils';
+import historyPush from '../../common/utils/historyPush';
 import { renderLog } from '../../common/utils/logging';
 import { toTitleCase } from '../../utils/textFormat';
 import CandidateItemForOpinions from './CandidateItemForOpinions';

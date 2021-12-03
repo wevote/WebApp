@@ -13,7 +13,8 @@ import VoterConstants from '../constants/VoterConstants';
 import AppObservableStore from '../stores/AppObservableStore';
 import VoterStore from '../stores/VoterStore';
 import cordovaScrollablePaneTopPadding from '../utils/cordovaScrollablePaneTopPadding';
-import { historyPush, isCordova } from '../utils/cordovaUtils';
+import { isCordova } from '../utils/cordovaUtils';
+import historyPush from '../common/utils/historyPush';
 import { renderLog } from '../common/utils/logging';
 
 const WelcomeAppbar = React.lazy(() => import(/* webpackChunkName: 'WelcomeAppbar' */ '../components/Navigation/WelcomeAppbar'));

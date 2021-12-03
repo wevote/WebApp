@@ -5,7 +5,7 @@ import LoadingWheel from '../../common/components/Widgets/LoadingWheel';
 import WouldYouLikeToMergeAccountsOld from '../../components/WouldYouLikeToMergeAccountsOld';
 import AppObservableStore from '../../stores/AppObservableStore';
 import VoterStore from '../../stores/VoterStore';
-import { historyPush } from '../../utils/cordovaUtils';
+import historyPush from '../../common/utils/historyPush';
 import Cookies from '../../common/utils/js-cookie/Cookies';
 import { oAuthLog, renderLog } from '../../common/utils/logging';
 

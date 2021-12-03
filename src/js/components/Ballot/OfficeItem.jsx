@@ -3,7 +3,8 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
-import { hasIPhoneNotch, historyPush, isCordova } from '../../utils/cordovaUtils';
+import { hasIPhoneNotch, isCordova } from '../../utils/cordovaUtils';
+import historyPush from '../../common/utils/historyPush';
 import { renderLog } from '../../common/utils/logging';
 import { capitalizeString } from '../../utils/textFormat';
 

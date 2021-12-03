@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import { blurTextFieldAndroid, cordovaDot, focusTextFieldAndroid } from '../../utils/cordovaUtils';
+import { blurTextFieldAndroid, focusTextFieldAndroid } from '../../utils/cordovaUtils';
+import normalizedImagePath from '../../common/utils/normalizedImagePath';
 import { renderLog } from '../../common/utils/logging';
 // Dec 2019 TODO: This is the last icon from the svg-icons package used in the Web App, all the other have been removed from git
 const removeCircleIcon = '../../../img/global/svg-icons/glyphicons-pro-halflings/glyphicons-halflings-88-remove-circle.svg';
@@ -88,7 +89,7 @@ export default class SearchBar extends Component {
               type="button"
               id="search-clear"
             >
-              <img src={cordovaDot(removeCircleIcon)} width="26" height="26" color="#ccc" alt="clear query" />
+              <img src={normalizedImagePath(removeCircleIcon)} width="26" height="26" color="#ccc" alt="clear query" />
             </button>
           )}
           {(this.props.searchButton) && (

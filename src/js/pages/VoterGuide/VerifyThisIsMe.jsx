@@ -16,7 +16,7 @@ import CandidateStore from '../../stores/CandidateStore';
 import OrganizationStore from '../../stores/OrganizationStore';
 import TwitterStore from '../../stores/TwitterStore';
 import VoterStore from '../../stores/VoterStore';
-import { historyPush } from '../../utils/cordovaUtils';
+import historyPush from '../../common/utils/historyPush';
 import { PageContentContainer } from '../../utils/pageLayoutStyles';
 import { renderLog } from '../../common/utils/logging';
 

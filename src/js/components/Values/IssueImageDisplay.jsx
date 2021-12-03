@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
 import IssueStore from '../../stores/IssueStore';
-import { cordovaDot } from '../../utils/cordovaUtils';
+import normalizedImagePath from '../../common/utils/normalizedImagePath';
 import { renderLog } from '../../common/utils/logging';
 
 const ImageHandler = React.lazy(() => import(/* webpackChunkName: 'ImageHandler' */ '../ImageHandler'));
@@ -31,8 +31,8 @@ export default class IssueImageDisplay extends Component {
     // console.log('IssueImageDisplay issueIconLocalPath:', issueIconLocalPath);
 
     const issueIconImageUrl = (!issueIconLocalPath || issueIconLocalPath.length === 0) ?
-      cordovaDot('/img/global/svg-icons/issues/thumbs-up-icon.svg') :
-      cordovaDot(`/img/global/svg-icons/issues/${issueIconLocalPath}.svg`);
+      normalizedImagePath('/img/global/svg-icons/issues/thumbs-up-icon.svg') :
+      normalizedImagePath(`/img/global/svg-icons/issues/${issueIconLocalPath}.svg`);
 
     let supportOrOpposeClass = '';
     if (this.props.showSupport) {

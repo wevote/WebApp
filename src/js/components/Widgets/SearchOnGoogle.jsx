@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
 import styled from 'styled-components';
-import { cordovaDot } from '../../utils/cordovaUtils';
+import normalizedImagePath from '../../common/utils/normalizedImagePath';
 import SplitIconButton from '../../common/components/Widgets/SplitIconButton';
 
 const OpenExternalWebSite = React.lazy(() => import(/* webpackChunkName: 'OpenExternalWebSite' */ '../../common/components/Widgets/OpenExternalWebSite'));
@@ -38,7 +38,7 @@ class SearchOnGoogle extends Component {
                 externalUniqueId="searchOnGoogle"
                 fontColor="#000"
                 fontSize="10px"
-                icon={<img src={cordovaDot(googleIcon)} alt="" />}
+                icon={<img src={normalizedImagePath(googleIcon)} alt="" />}
                 title="Search on Google"
               />
             )}

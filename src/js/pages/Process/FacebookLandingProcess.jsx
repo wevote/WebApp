@@ -4,7 +4,7 @@ import LoadingWheel from '../../common/components/Widgets/LoadingWheel';
 import FacebookStore from '../../stores/FacebookStore';
 import FriendStore from '../../stores/FriendStore';
 import VoterStore from '../../stores/VoterStore';
-import { historyPush } from '../../utils/cordovaUtils';
+import historyPush from '../../common/utils/historyPush';
 import { renderLog } from '../../common/utils/logging';
 
 

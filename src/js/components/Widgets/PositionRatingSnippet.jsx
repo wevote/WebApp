@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import { cordovaDot } from '../../utils/cordovaUtils';
+import normalizedImagePath from '../../common/utils/normalizedImagePath';
 import { renderLog } from '../../common/utils/logging';
 
 const upArrowColorIcon = '../../../img/global/icons/up-arrow-color-icon.svg';
@@ -19,15 +19,15 @@ export default class PositionRatingSnippet extends Component {
     let alt;
 
     if (rating >= 65) {
-      src = cordovaDot(upArrowColorIcon);
+      src = normalizedImagePath(upArrowColorIcon);
       className = 'position-rating__icon position-rating__icon--positive u-cursor--pointer';
       alt = 'Positive Rating';
     } else if (rating < 35) {
-      src = cordovaDot(downArrowColorIcon);
+      src = normalizedImagePath(downArrowColorIcon);
       className = 'position-rating__icon position-rating__icon--negative u-cursor--pointer';
       alt = 'Negative Rating';
     } else {
-      src = cordovaDot(mixedRatingIcon);
+      src = normalizedImagePath(mixedRatingIcon);
       className = 'position-rating__icon position-rating__icon--mixed u-cursor--pointer';
       alt = 'Mixed Rating';
     }

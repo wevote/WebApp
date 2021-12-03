@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import BallotActions from '../../actions/BallotActions';
 import OrganizationActions from '../../actions/OrganizationActions';
 import BallotStore from '../../stores/BallotStore';
-import { cordovaDot } from '../../utils/cordovaUtils';
+import normalizedImagePath from '../../common/utils/normalizedImagePath';
 import { renderLog } from '../../common/utils/logging';
 import SearchBar from '../Search/SearchBar';
 import BallotItemSearchResult from './BallotItemSearchResult';
@@ -105,7 +105,7 @@ export default class BallotSearchResults extends Component {
         {' '}
         <span className="u-no-break">
           <span className="btn__icon">
-            <img src={cordovaDot(thumbUpIcon)}
+            <img src={normalizedImagePath(thumbUpIcon)}
                  width={iconSize}
                  height={iconSize}
                  color={iconColor}
@@ -119,7 +119,7 @@ export default class BallotSearchResults extends Component {
         or&nbsp;
         <span className="u-no-break">
           <span className="btn__icon">
-            <img src={cordovaDot(thumbDownIcon)}
+            <img src={normalizedImagePath(thumbDownIcon)}
                  width={iconSize}
                  height={iconSize}
                  color={iconColor}
