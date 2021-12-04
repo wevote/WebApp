@@ -1,6 +1,6 @@
 import { Button } from '@material-ui/core';
 import styled from 'styled-components';
-import { isCordova } from '../../utils/cordovaUtils';
+import { isCordova } from '../../common/utils/isCordovaOrWebApp';
 
 const ButtonLeft = styled.div`
   display: flex !important;

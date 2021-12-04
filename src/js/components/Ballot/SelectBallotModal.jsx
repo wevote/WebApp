@@ -6,7 +6,7 @@ import React, { Component, Suspense } from 'react';
 import styled from 'styled-components';
 import AnalyticsActions from '../../actions/AnalyticsActions';
 import VoterStore from '../../stores/VoterStore';
-import { hasIPhoneNotch } from '../../utils/cordovaUtils';
+import { hasIPhoneNotch } from '../../common/utils/cordovaUtils';
 import { renderLog } from '../../common/utils/logging';
 import { calculateBallotBaseUrl } from '../../utils/textFormat';
 import EditAddressInPlace from '../Widgets/EditAddressInPlace';

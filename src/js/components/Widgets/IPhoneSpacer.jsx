@@ -1,5 +1,6 @@
 import React from 'react';
-import { hasIPhoneNotch, isCordova, isIOS, isIOSAppOnMac } from '../../utils/cordovaUtils';
+import { hasIPhoneNotch, isIOS, isIOSAppOnMac } from '../../common/utils/cordovaUtils';
+import { isCordova } from '../../common/utils/isCordovaOrWebApp';
 import { renderLog } from '../../common/utils/logging';
 import { IOSNoNotchSpacer, IOSNotchedSpacer } from '../../utils/pageLayoutStyles';
 

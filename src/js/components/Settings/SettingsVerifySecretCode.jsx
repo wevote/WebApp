@@ -7,7 +7,8 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 import VoterActions from '../../actions/VoterActions';
 import VoterStore from '../../stores/VoterStore';
-import { hasIPhoneNotch, isCordova, isIOS, isIPhone4in, isWebApp } from '../../utils/cordovaUtils';
+import { hasIPhoneNotch, isIOS, isIPhone4in } from '../../common/utils/cordovaUtils';
+import { isCordova, isWebApp } from '../../common/utils/isCordovaOrWebApp';
 import { renderLog } from '../../common/utils/logging';
 
 /* global $ */

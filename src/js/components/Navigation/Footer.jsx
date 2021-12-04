@@ -3,8 +3,8 @@ import React, { Component, Suspense } from 'react';
 import styled from 'styled-components';
 import AppObservableStore, { messageService } from '../../stores/AppObservableStore';
 import { getApplicationViewBooleans } from '../../utils/applicationUtils';
-import { isWebApp } from '../../utils/cordovaUtils';
-import { normalizedHref } from '../../utils/hrefUtils';
+import { isWebApp } from '../../common/utils/isCordovaOrWebApp';
+import { normalizedHref } from '../../common/utils/hrefUtils';
 // importRemoveCordovaListenersToken2  -- Do not remove this line!
 
 

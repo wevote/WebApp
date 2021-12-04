@@ -8,7 +8,7 @@ import ActivityActions from '../../actions/ActivityActions';
 import ActivityStore from '../../stores/ActivityStore';
 import { createDescriptionOfFriendPosts } from '../../utils/activityUtils';
 import apiCalming from '../../utils/apiCalming';
-import { isIOSAppOnMac, setIconBadgeMessageCount } from '../../utils/cordovaUtils';
+import { isIOSAppOnMac, setIconBadgeMessageCount } from '../../common/utils/cordovaUtils';
 import historyPush from '../../common/utils/historyPush';
 import { timeFromDate } from '../../common/utils/dateFormat';
 import { renderLog } from '../../common/utils/logging';

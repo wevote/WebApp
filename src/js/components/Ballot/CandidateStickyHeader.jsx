@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
 import styled, { keyframes } from 'styled-components';
 import { cordovaStickyHeaderPaddingTop } from '../../utils/cordovaOffsets';
-import { isIOSAppOnMac, isIPad } from '../../utils/cordovaUtils';
+import { isIOSAppOnMac, isIPad } from '../../common/utils/cordovaUtils';
 import { renderLog } from '../../common/utils/logging';
 
 const BallotItemSupportOpposeComment = React.lazy(() => import(/* webpackChunkName: 'BallotItemSupportOpposeComment' */ '../Widgets/BallotItemSupportOpposeComment'));

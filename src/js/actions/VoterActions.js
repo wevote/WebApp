@@ -1,5 +1,5 @@
 import Dispatcher from '../common/dispatcher/Dispatcher';
-import { isCordova } from '../utils/cordovaUtils'; // eslint-disable-line import/no-cycle
+import { isCordova } from '../common/utils/isCordovaOrWebApp'; // eslint-disable-line import/no-cycle
 import AppObservableStore from '../stores/AppObservableStore'; // eslint-disable-line import/no-cycle
 import arrayContains from '../common/utils/arrayContains';
 

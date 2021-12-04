@@ -23,7 +23,7 @@ import VoterGuideStore from '../stores/VoterGuideStore';
 import VoterStore from '../stores/VoterStore';
 import { cordovaVoteMiniHeader } from '../utils/cordovaOffsets';
 import cordovaScrollablePaneTopPadding from '../utils/cordovaScrollablePaneTopPadding';
-import { isCordova, isWebApp } from '../utils/cordovaUtils';
+import { isCordova, isWebApp } from '../common/utils/isCordovaOrWebApp';
 import historyPush from '../common/utils/historyPush';
 import Cookies from '../common/utils/js-cookie/Cookies';
 import { renderLog } from '../common/utils/logging';

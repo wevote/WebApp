@@ -10,7 +10,7 @@ import AppObservableStore from '../stores/AppObservableStore';
 import TwitterStore from '../stores/TwitterStore';
 import VoterStore from '../stores/VoterStore';
 import { normalizedHrefPage } from '../utils/applicationUtils';
-import { isCordova } from '../utils/cordovaUtils';
+import { isCordova } from '../common/utils/isCordovaOrWebApp';
 import { renderLog } from '../common/utils/logging';
 import Candidate from './Ballot/Candidate';
 import OrganizationVoterGuide from './VoterGuide/OrganizationVoterGuide';

@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import React, { Suspense } from 'react';
 import styled from 'styled-components';
 import { getAllStateCodeFilters } from '../../common/utils/addressFunctions';
-import { isWebApp } from '../../utils/cordovaUtils';
+import { isWebApp } from '../../common/utils/isCordovaOrWebApp';
 import { renderLog } from '../../common/utils/logging';
 import StateDropDown from './StateDropDown';
 import getGroupedFilterSecondClass from './utils/grouped-filter-second-class';

@@ -4,8 +4,7 @@ import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { organizationalDonors, teamOfVolunteers } from '../constants/people';
 import ExternalLinkIcon from './Widgets/ExternalLinkIcon';
-import cordovaScrollablePaneTopPadding from '../../utils/cordovaScrollablePaneTopPadding';
-import { isWebApp } from '../../utils/cordovaUtils';
+import { isWebApp } from '../utils/isCordovaOrWebApp';
 import { renderLog } from '../utils/logging';
 
 const OpenExternalWebSite = React.lazy(() => import(/* webpackChunkName: 'OpenExternalWebSite' */ './Widgets/OpenExternalWebSite'));
@@ -212,7 +211,6 @@ const Wrapper = styled.div`
   align-items: center;
   background: white;
   overflow-x: hidden;
-  padding-top: ${() => cordovaScrollablePaneTopPadding()}
 `;
 
 export default withStyles(styles)(Credits);

@@ -12,9 +12,10 @@ import AppObservableStore, { messageService } from '../../stores/AppObservableSt
 import VoterStore from '../../stores/VoterStore';
 import { getApplicationViewBooleans } from '../../utils/applicationUtils';
 import { shareBottomOffset } from '../../utils/cordovaOffsets';
-import { cordovaLinkToBeSharedFixes, isAndroid, isCordova, isWebApp } from '../../utils/cordovaUtils';
+import { cordovaLinkToBeSharedFixes, isAndroid } from '../../common/utils/cordovaUtils';
+import { isCordova, isWebApp } from '../../common/utils/isCordovaOrWebApp';
 import historyPush from '../../common/utils/historyPush';
-import { normalizedHref } from '../../utils/hrefUtils';
+import { normalizedHref } from '../../common/utils/hrefUtils';
 import isMobile from '../../utils/isMobile';
 import { renderLog } from '../../common/utils/logging';
 import { stringContains } from '../../utils/textFormat';

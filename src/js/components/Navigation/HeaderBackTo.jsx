@@ -12,9 +12,10 @@ import AppObservableStore, { messageService } from '../../stores/AppObservableSt
 import VoterStore from '../../stores/VoterStore';
 import { dumpCssFromId } from '../../utils/appleSiliconUtils';
 import { avatarGeneric } from '../../utils/applicationUtils';
-import { isCordova, isIOSAppOnMac, isIPad, isWebApp } from '../../utils/cordovaUtils';
+import { isIOSAppOnMac, isIPad } from '../../common/utils/cordovaUtils';
+import { isCordova, isWebApp } from '../../common/utils/isCordovaOrWebApp';
 import historyPush from '../../common/utils/historyPush';
-import { normalizedHref } from '../../utils/hrefUtils';
+import { normalizedHref } from '../../common/utils/hrefUtils';
 import { renderLog } from '../../common/utils/logging';
 import { AppBarForBackTo, TopRowOneRightContainer } from '../../utils/pageLayoutStyles';
 import { shortenText, stringContains } from '../../utils/textFormat';

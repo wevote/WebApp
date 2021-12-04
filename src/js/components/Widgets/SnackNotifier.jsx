@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import { Snackbar } from '@material-ui/core';
 import { renderLog } from '../../common/utils/logging';
-import { snackOffset } from '../../utils/cordovaUtils';
+import { snackOffset } from '../../common/utils/cordovaUtils';
 
 let openSnackbarFn;
 

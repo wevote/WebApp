@@ -16,7 +16,7 @@
 /* eslint-disable semi */
 /* eslint-disable vars-on-top */
 
-import { isIOS } from '../../../utils/cordovaUtils';
+import { isIOS } from '../cordovaUtils';
 import assign from './assign';
 import defaultConverter from './converter';
 

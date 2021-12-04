@@ -12,7 +12,8 @@ import AppObservableStore, { messageService } from '../../stores/AppObservableSt
 import FriendStore from '../../stores/FriendStore';
 import ShareStore from '../../common/stores/ShareStore';
 import VoterStore from '../../stores/VoterStore';
-import { cordovaLinkToBeSharedFixes, hasIPhoneNotch, isAndroid, isCordova, isWebApp } from '../../utils/cordovaUtils';
+import { cordovaLinkToBeSharedFixes, hasIPhoneNotch, isAndroid } from '../../common/utils/cordovaUtils';
+import { isCordova, isWebApp } from '../../common/utils/isCordovaOrWebApp';
 import normalizedImagePath from '../../common/utils/normalizedImagePath';
 import sortFriendListByMutualFriends from '../../utils/friendFunctions';
 import { renderLog } from '../../common/utils/logging';

@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import { blurTextFieldAndroid, focusTextFieldAndroid } from '../../utils/cordovaUtils';
+import { blurTextFieldAndroid, focusTextFieldAndroid } from '../../common/utils/cordovaUtils';
 import normalizedImagePath from '../../common/utils/normalizedImagePath';
 import { renderLog } from '../../common/utils/logging';
 // Dec 2019 TODO: This is the last icon from the svg-icons package used in the Web App, all the other have been removed from git

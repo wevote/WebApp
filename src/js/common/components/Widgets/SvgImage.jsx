@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import { ReactSVG } from 'react-svg';
-import { isWebApp } from '../../../utils/cordovaUtils';
+import { isWebApp } from '../../utils/isCordovaOrWebApp';
 import normalizedImagePath from '../../utils/normalizedImagePath';
 import { renderLog } from '../../utils/logging';
 

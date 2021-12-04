@@ -2,7 +2,8 @@ import VoterActions from './actions/VoterActions';
 import TwitterSignIn from './components/Twitter/TwitterSignIn';
 import webAppConfig from './config';
 import VoterStore from './stores/VoterStore';
-import { getCordovaScreenHeight, getProcessorArchitecture, isCordova, isIOS, isIOSAppOnMac, isIPad, isSimulator, prepareForCordovaKeyboard, restoreStylesAfterCordovaKeyboard } from './utils/cordovaUtils';
+import { getCordovaScreenHeight, getProcessorArchitecture, isIOS, isIOSAppOnMac, isIPad, isSimulator, prepareForCordovaKeyboard, restoreStylesAfterCordovaKeyboard } from './common/utils/cordovaUtils';
+import { isCordova } from './common/utils/isCordovaOrWebApp';
 import Cookies from './common/utils/js-cookie/Cookies';
 import { httpLog } from './common/utils/logging';
 

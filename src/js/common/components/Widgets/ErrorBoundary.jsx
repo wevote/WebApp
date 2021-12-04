@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes  from 'prop-types';
-import { isAndroidSizeFold, isWebApp } from '../../../utils/cordovaUtils';
+import { isAndroidSizeFold } from '../../utils/cordovaUtils';
+import { isWebApp } from '../../utils/isCordovaOrWebApp';
 
 class ErrorBoundary extends Component {
   constructor (props) {

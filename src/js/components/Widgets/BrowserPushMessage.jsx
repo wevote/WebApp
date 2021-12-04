@@ -3,7 +3,8 @@ import { withStyles } from '@material-ui/core/styles';
 import { Close } from '@material-ui/icons';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import { isWebApp, snackOffset } from '../../utils/cordovaUtils';
+import { snackOffset } from '../../common/utils/cordovaUtils';
+import { isWebApp } from '../../common/utils/isCordovaOrWebApp';
 import { renderLog } from '../../common/utils/logging';
 
 

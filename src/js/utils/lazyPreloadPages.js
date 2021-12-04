@@ -1,6 +1,6 @@
 import React from 'react';
 import { normalizedHref } from './applicationUtils';
-import { isCordova } from './cordovaUtils';
+import { isCordova } from '../common/utils/isCordovaOrWebApp';
 
 const webAppConfig = require('../config');
 

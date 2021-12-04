@@ -6,7 +6,7 @@ import React, { Component, Suspense } from 'react';
 import styled from 'styled-components';
 import ActivityStore from '../../stores/ActivityStore';
 import VoterStore from '../../stores/VoterStore';
-import { isCordova, isWebApp } from '../../utils/cordovaUtils';
+import { isCordova, isWebApp } from '../../common/utils/isCordovaOrWebApp';
 import { renderLog } from '../../common/utils/logging';
 import { openSnackbar } from '../Widgets/SnackNotifier';
 
