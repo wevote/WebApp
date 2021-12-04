@@ -13,7 +13,7 @@ import VoterConstants from '../constants/VoterConstants';
 import AppObservableStore from '../stores/AppObservableStore';
 import VoterStore from '../stores/VoterStore';
 import cordovaScrollablePaneTopPadding from '../utils/cordovaScrollablePaneTopPadding';
-import { isCordova } from '../utils/cordovaUtils';
+import { isCordova } from '../common/utils/isCordovaOrWebApp';
 import historyPush from '../common/utils/historyPush';
 import { renderLog } from '../common/utils/logging';
 

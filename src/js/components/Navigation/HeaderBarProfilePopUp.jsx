@@ -4,7 +4,8 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
-import { isAndroidSizeXL, isCordova, isWebApp, restoreStylesAfterCordovaKeyboard } from '../../utils/cordovaUtils';
+import { isAndroidSizeXL, restoreStylesAfterCordovaKeyboard } from '../../common/utils/cordovaUtils';
+import { isCordova, isWebApp } from '../../common/utils/isCordovaOrWebApp';
 import { renderLog } from '../../common/utils/logging';
 
 class HeaderBarProfilePopUp extends Component {

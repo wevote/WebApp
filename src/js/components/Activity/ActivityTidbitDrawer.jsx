@@ -5,7 +5,7 @@ import React, { Component, Suspense } from 'react';
 import styled from 'styled-components';
 import ActivityStore from '../../stores/ActivityStore';
 import { cordovaDrawerTopMargin } from '../../utils/cordovaOffsets';
-import { isCordova } from '../../utils/cordovaUtils';
+import { isCordova } from '../../common/utils/isCordovaOrWebApp';
 import historyPush from '../../common/utils/historyPush';
 import { renderLog } from '../../common/utils/logging';
 

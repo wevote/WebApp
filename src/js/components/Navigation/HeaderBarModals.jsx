@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React, { Suspense } from 'react';
 import AppObservableStore from '../../stores/AppObservableStore';
 import VoterStore from '../../stores/VoterStore';
-import { normalizedHrefPage } from '../../utils/hrefUtils';
+import { normalizedHrefPage } from '../../common/utils/hrefUtils';
 import AdviserIntroModal from '../CompleteYourProfile/AdviserIntroModal';
 
 const FirstPositionIntroModal = React.lazy(() => import(/* webpackChunkName: 'FirstPositionIntroModal' */ '../CompleteYourProfile/FirstPositionIntroModal'));

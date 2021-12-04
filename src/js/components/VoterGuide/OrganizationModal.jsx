@@ -18,8 +18,8 @@ import OrganizationStore from '../../stores/OrganizationStore';
 import VoterGuideStore from '../../stores/VoterGuideStore';
 import VoterStore from '../../stores/VoterStore';
 import { cordovaDrawerTopMargin } from '../../utils/cordovaOffsets';
-import { hasIPhoneNotch } from '../../utils/cordovaUtils';
-import { normalizedHref } from '../../utils/hrefUtils';
+import { hasIPhoneNotch } from '../../common/utils/cordovaUtils';
+import { normalizedHref } from '../../common/utils/hrefUtils';
 import { renderLog } from '../../common/utils/logging';
 import { convertToInteger, stringContains } from '../../utils/textFormat';
 

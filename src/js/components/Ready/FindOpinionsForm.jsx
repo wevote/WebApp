@@ -6,7 +6,8 @@ import React, { Component, Suspense } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import VoterGuideStore from '../../stores/VoterGuideStore';
-import { blurTextFieldAndroid, focusTextFieldAndroid, isAndroid, isCordova, isIOS } from '../../utils/cordovaUtils';
+import { blurTextFieldAndroid, focusTextFieldAndroid, isAndroid, isIOS } from '../../common/utils/cordovaUtils';
+import { isCordova } from '../../common/utils/isCordovaOrWebApp';
 import historyPush from '../../common/utils/historyPush';
 import { renderLog } from '../../common/utils/logging';
 

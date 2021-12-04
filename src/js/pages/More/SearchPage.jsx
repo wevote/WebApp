@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import Helmet from 'react-helmet';
 import SearchAllActions from '../../actions/SearchAllActions';
 import SearchAllStore from '../../stores/SearchAllStore';
-import { isCordova } from '../../utils/cordovaUtils';
+import { isCordova } from '../../common/utils/isCordovaOrWebApp';
 import { renderLog } from '../../common/utils/logging';
 import { makeSearchLink } from '../../utils/searchFunctions';
 

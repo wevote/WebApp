@@ -1,8 +1,9 @@
 import CordovaPageConstants from '../constants/CordovaPageConstants';
 import { getApplicationViewBooleans } from './applicationUtils';
-import { getAndroidSize, hasIPhoneNotch, isAndroid, isIOS, isIOSAppOnMac, isIPad, isIPadGiantSize, isIPhone4in, isIPhone4p7in, isIPhone5p5inEarly, isIPhone5p5inMini, isIPhone5p8in, isIPhone6p1in, isIPhone6p5in, isSimulator, isWebApp } from './cordovaUtils';
+import { getAndroidSize, hasIPhoneNotch, isAndroid, isIOS, isIOSAppOnMac, isIPad, isIPadGiantSize, isIPhone4in, isIPhone4p7in, isIPhone5p5inEarly, isIPhone5p5inMini, isIPhone5p8in, isIPhone6p1in, isIPhone6p5in, isSimulator } from '../common/utils/cordovaUtils';
+import { isWebApp } from '../common/utils/isCordovaOrWebApp';
 import { pageEnumeration } from './cordovaUtilsPageEnumeration';
-import { normalizedHref } from './hrefUtils';
+import { normalizedHref } from '../common/utils/hrefUtils';
 import { cordovaOffsetLog } from '../common/utils/logging';
 
 

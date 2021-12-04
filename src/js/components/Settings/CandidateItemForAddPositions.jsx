@@ -4,7 +4,7 @@ import React, { Component, Suspense } from 'react';
 import styled from 'styled-components';
 import CandidateStore from '../../stores/CandidateStore';
 import SupportStore from '../../stores/SupportStore';
-import { isCordova } from '../../utils/cordovaUtils';
+import { isCordova } from '../../common/utils/isCordovaOrWebApp';
 import normalizedImagePath from '../../common/utils/normalizedImagePath';
 import { renderLog } from '../../common/utils/logging';
 import ItemPositionStatementActionBar from '../Widgets/ItemPositionStatementActionBar';

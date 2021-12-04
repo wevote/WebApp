@@ -5,7 +5,7 @@ import React, { Component, Suspense } from 'react';
 import styled from 'styled-components';
 import SupportStore from '../../stores/SupportStore';
 import VoterGuideStore from '../../stores/VoterGuideStore';
-import { isCordova } from '../../utils/cordovaUtils';
+import { isCordova } from '../../common/utils/isCordovaOrWebApp';
 import { renderLog } from '../../common/utils/logging';
 import { toTitleCase } from '../../utils/textFormat';
 

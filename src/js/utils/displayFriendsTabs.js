@@ -1,5 +1,5 @@
 import { stringContains } from './textFormat';
-import { isCordova } from './cordovaUtils';
+import { isCordova } from '../common/utils/isCordovaOrWebApp';
 
 export default function displayFriendsTabs () {
   if (isCordova() && stringContains('/friends', window.location.href)) {

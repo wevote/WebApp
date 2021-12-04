@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import styled from 'styled-components';
-import { isCordova } from '../../../utils/cordovaUtils';
+import { isCordova } from '../../utils/isCordovaOrWebApp';
 
 class DelayedLoad extends Component {
   constructor (props) {

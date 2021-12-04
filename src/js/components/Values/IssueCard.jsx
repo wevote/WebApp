@@ -4,7 +4,7 @@ import React, { Component, Suspense } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import VoterGuideStore from '../../stores/VoterGuideStore';
-import { isCordova } from '../../utils/cordovaUtils';
+import { isCordova } from '../../common/utils/isCordovaOrWebApp';
 import { renderLog } from '../../common/utils/logging';
 import { convertNameToSlug } from '../../utils/textFormat';
 import LoadingWheel from '../../common/components/Widgets/LoadingWheel';

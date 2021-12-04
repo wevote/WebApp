@@ -1,4 +1,5 @@
-import { isCordova, isIOSAppOnMac, isWebApp } from './cordovaUtils';
+import { isIOSAppOnMac } from '../common/utils/cordovaUtils';
+import { isCordova, isWebApp } from '../common/utils/isCordovaOrWebApp';
 import normalizedImagePath from '../common/utils/normalizedImagePath';
 import Cookies from '../common/utils/js-cookie/Cookies';
 import { stringContains } from './textFormat';

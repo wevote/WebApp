@@ -2,7 +2,8 @@ import PropTypes from 'prop-types';
 import React, { PureComponent } from 'react';
 import VoterActions from '../../actions/VoterActions';
 import VoterStore from '../../stores/VoterStore';
-import { isWebApp, restoreStylesAfterCordovaKeyboard } from '../../utils/cordovaUtils';
+import { restoreStylesAfterCordovaKeyboard } from '../../common/utils/cordovaUtils';
+import { isWebApp } from '../../common/utils/isCordovaOrWebApp';
 import { renderLog } from '../../common/utils/logging';
 import TextBox from './TextBox';
 

@@ -7,7 +7,8 @@ import styled from 'styled-components';
 import SupportActions from '../../actions/SupportActions';
 import SupportStore from '../../stores/SupportStore';
 import VoterStore from '../../stores/VoterStore';
-import { isAndroidSizeMD, isCordova, isWebApp } from '../../utils/cordovaUtils'; // hasIPhoneNotch,
+import { isAndroidSizeMD } from '../../common/utils/cordovaUtils'; // hasIPhoneNotch,
+import { isCordova, isWebApp } from '../../common/utils/isCordovaOrWebApp';
 import isMobileScreenSize from '../../utils/isMobileScreenSize';
 import { renderLog } from '../../common/utils/logging';
 import { openSnackbar } from './SnackNotifier';

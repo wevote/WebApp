@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
 import styled from 'styled-components';
 import OrganizationStore from '../../stores/OrganizationStore';
-import { isCordova } from '../../utils/cordovaUtils';
+import { isCordova } from '../../common/utils/isCordovaOrWebApp';
 import { renderLog } from '../../common/utils/logging';
 import StickyPopover from '../Ballot/StickyPopover';
 import FriendsOnlyIndicator from './FriendsOnlyIndicator';

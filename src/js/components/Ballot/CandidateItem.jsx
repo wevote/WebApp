@@ -9,7 +9,7 @@ import CandidateStore from '../../stores/CandidateStore';
 import IssueStore from '../../stores/IssueStore';
 import SupportStore from '../../stores/SupportStore';
 import VoterGuideStore from '../../stores/VoterGuideStore';
-import { isAndroidSizeMD } from '../../utils/cordovaUtils';
+import { isAndroidSizeMD } from '../../common/utils/cordovaUtils';
 import historyPush from '../../common/utils/historyPush';
 import isMobileAndTabletScreenSize from '../../utils/isMobileAndTabletScreenSize';
 import { renderLog } from '../../common/utils/logging';

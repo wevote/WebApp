@@ -10,7 +10,7 @@ import VoterStore from '../../stores/VoterStore';
 import historyPush from '../../common/utils/historyPush';
 import displayFriendsTabs from '../../utils/displayFriendsTabs';
 import sortFriendListByMutualFriends from '../../utils/friendFunctions';
-import { normalizedHref } from '../../utils/hrefUtils';
+import { normalizedHref } from '../../common/utils/hrefUtils';
 import isMobileScreenSize from '../../utils/isMobileScreenSize';
 import { renderLog } from '../../common/utils/logging';
 
