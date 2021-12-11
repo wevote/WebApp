@@ -24,6 +24,7 @@ import { normalizedHref, normalizedHrefPage } from '../../common/utils/hrefUtils
 import isMobileScreenSize from '../../utils/isMobileScreenSize';
 import { renderLog } from '../../common/utils/logging';
 import { TopOfPageHeader, TopRowOneLeftContainer, TopRowOneMiddleContainer, TopRowOneRightContainer, TopRowTwoLeftContainer } from '../../utils/pageLayoutStyles';
+import { getHeaderObjects } from '../../utils/reactStartupUtils';
 import shouldHeaderRetreat from '../../utils/shouldHeaderRetreat';
 import { getBooleanValue, shortenText, stringContains } from '../../utils/textFormat';
 import voterPhoto from '../../common/utils/voterPhoto';
@@ -123,7 +124,7 @@ class HeaderBar extends Component {
     });
     if (isWebApp()) {
       this.setStyleTimeout = setTimeout(() => {
-        const { headerObjects } = window;
+        const headerObjects = getHeaderObjects();
         if (document.getElementById('HeaderBarLogoWrapper')) {
           headerObjects.logo = document.getElementById('HeaderBarLogoWrapper').innerHTML;
         }
@@ -367,12 +368,9 @@ class HeaderBar extends Component {
   }
 
   setShowAddressButtonIfMobile (newState) {
-    // Oct 21, 2021: I think we want this component if not mobile
-    // if (isMobileScreenSize() || isIPad()) {
     if (AppObservableStore.showEditAddressButton() !== newState) {
       AppObservableStore.setShowEditAddressButton(newState);
     }
-    // }
   }
 
   manuallyUnderlineTab = (setInitial = false) => {

@@ -12,7 +12,7 @@ import { renderLog } from '../../common/utils/logging';
 const closeIcon = '../../../img/global/icons/x-close.png';
 
 
-export default class GetStarted extends Component {
+export default class GetStarted2019 extends Component {
   constructor (props) {
     super(props);
     this.state = {

@@ -75,7 +75,7 @@ const StepLabel = styled.p`
   }
 `;
 
-const GetStarted = styled.div`
+const GetStarted2019 = styled.div`
   align-items: center;
   display: flex;
   flex-flow: column;
@@ -201,7 +201,7 @@ export {
   DescriptionContainer,
   DescriptionImageColumn,
   DescriptionLeftColumn,
-  GetStarted,
+  GetStarted2019,
   Image,
   MemberListContainer,
   NetworkContainer,

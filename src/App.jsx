@@ -7,9 +7,9 @@ import Header from './js/components/Navigation/Header';
 import HeaderBarSuspense from './js/components/Navigation/HeaderBarSuspense';
 import ErrorBoundary from './js/common/components/Widgets/ErrorBoundary';
 import WeVoteRouter from './js/common/components/Widgets/WeVoteRouter';
-import muiTheme from './js/mui-theme';
+import muiTheme from './js/common/components/Style/mui-theme';
 import AppObservableStore from './js/stores/AppObservableStore';
-import styledTheme from './js/styled-theme';
+import styledTheme from './js/common/components/Style/styled-theme';
 import { isWebApp } from './js/common/utils/isCordovaOrWebApp';
 import { normalizedHref } from './js/common/utils/hrefUtils';
 import initializejQuery from './js/utils/initializejQuery';
@@ -41,7 +41,8 @@ const Footer = React.lazy(() => import(/* webpackChunkName: 'Footer' */ './js/co
 const FriendInvitationByEmailVerifyProcess = React.lazy(() => import(/* webpackChunkName: 'FriendInvitationByEmailVerifyProcess' */ './js/pages/Process/FriendInvitationByEmailVerifyProcess'));
 const FriendInvitationOnboarding = React.lazy(() => import(/* webpackChunkName: 'FriendInvitationOnboarding' */ './js/pages/Intro/FriendInvitationOnboarding'));
 const Friends = React.lazy(() => import(/* webpackChunkName: 'Friends' */ './js/pages/Friends/Friends'));
-const GetStarted = React.lazy(() => import(/* webpackChunkName: 'GetStarted' */ './js/pages/Intro/GetStarted'));
+const GetStarted2019 = React.lazy(() => import(/* webpackChunkName: 'GetStarted' */ './js/pages/Intro/GetStarted2019'));
+const Start = React.lazy(() => import(/* webpackChunkName: 'Start' */ './js/pages/Startup/GetStarted'));
 const HamburgerMenu = React.lazy(() => import(/* webpackChunkName: 'HamburgerMenu' */ './js/pages/Settings/HamburgerMenu'));
 const HowItWorks = React.lazy(() => import(/* webpackChunkName: 'HowItWorks' */ './js/pages/HowItWorks'));
 const HowWeVoteHelps = React.lazy(() => import(/* webpackChunkName: 'HowWeVoteHelps' */ './js/pages/More/HowWeVoteHelps'));
@@ -111,18 +112,6 @@ class App extends Component {
     // this.setShowHeaderFooter = this.setShowHeaderFooter.bind(this);
     this.setShowReadyHeavy = this.setShowReadyHeavy.bind(this);
     this.localIsCordova();
-    const { headerObjects: temp } = window;
-    if (!temp) {
-      window.headerObjects = {
-        logo: null,
-        ready: null,
-        ballot: null,
-        opinions: null,
-        discuss: null,
-        bell: null,
-        photo: null,
-      };
-    }
   }
 
   // See https://reactjs.org/docs/error-boundaries.html
@@ -274,8 +263,9 @@ class App extends Component {
                       <Route path="/for-organizations" component={isNotWeVoteMarketingSite ? ReadyRedirect : (props) => <WelcomeForOrganizations {...props} pathname="/for-organizations" />} />
                       <Route path="/how/:category_string" component={isNotWeVoteMarketingSite ? ReadyRedirect : HowItWorks} />
                       <Route path="/how" exact component={isNotWeVoteMarketingSite ? ReadyRedirect : HowItWorks} />
+                      <Route path="/start" exact><Start /></Route>
                       <Route path="/intro" exact component={Intro} />
-                      <Route path="/intro/get_started" component={GetStarted} />
+                      <Route path="/intro/get_started" component={GetStarted2019} />
                       <Route path="/intro/sample_ballot" component={SampleBallot} />
                       <Route path="/measure/:measure_we_vote_id/b/:back_to_variable/modal/:modal_to_show/:shared_item_code" component={Measure} />
                       <Route path="/measure/:measure_we_vote_id/b/:back_to_variable/modal/:modal_to_show" component={Measure} />

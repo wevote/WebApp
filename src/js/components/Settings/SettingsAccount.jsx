@@ -54,6 +54,7 @@ export default class SettingsAccount extends Component {
       pleaseSignInTitle: '',
       pleaseSignInSubTitle: '',
       showTwitterDisconnect: false,
+      showRecommendedText: true,
     };
     this.toggleTwitterDisconnectClose = this.toggleTwitterDisconnectClose.bind(this);
     this.toggleTwitterDisconnectOpen = this.toggleTwitterDisconnectOpen.bind(this);
@@ -89,15 +90,24 @@ export default class SettingsAccount extends Component {
     AnalyticsActions.saveActionAccountPage(VoterStore.electionId());
     const { origin } = window.location;
 
-    // if (window.location.pathname === '/ballot/modal/share') {
-
-    // }
-
     if (this.props.pleaseSignInTitle || this.props.pleaseSignInSubTitle || this.props.pleaseSignInTextOff) {
       this.setState({
         pleaseSignInTitle: this.props.pleaseSignInTitle || '',
         pleaseSignInSubTitle: this.props.pleaseSignInSubTitle || '',
       }, () => this.localStoreSignInStartFullUrl());
+    } else if (getStartedMode && getStartedMode === 'startup') {
+      // js/pages/Startup
+      this.setState({
+        pleaseSignInTitle: '',
+        pleaseSignInSubTitle: '',
+        showRecommendedText: false,
+      });
+      pathname = '/settings/profile';
+      signInStartFullUrl = `${origin}${pathname}`;
+      // console.log('SettingsAccount getStartedForCampaigns, new origin: ', origin, ', pathname: ', pathname, ', signInStartFullUrl: ', signInStartFullUrl);
+      if (origin && stringContains('wevote.us', origin)) {
+        Cookies.set('sign_in_start_full_url', signInStartFullUrl, { expires: 31, path: '/', domain: 'wevote.us' });
+      }
     } else if (getStartedMode && getStartedMode === 'getStartedForCampaigns') {
       pathname = '/settings/profile';
       signInStartFullUrl = `${origin}${pathname}`;
@@ -328,7 +338,7 @@ export default class SettingsAccount extends Component {
       facebookAuthResponse, hideCurrentlySignedInHeader,
       hideAppleSignInButton, hideFacebookSignInButton, hideTwitterSignInButton,
       hideVoterEmailAddressEntry, hideVoterPhoneEntry, isOnWeVoteRootUrl, isOnWeVoteSubdomainUrl,
-      isOnFacebookSupportedDomainUrl, pleaseSignInTitle, pleaseSignInSubTitle, voter, hideDialogForCordova,
+      isOnFacebookSupportedDomainUrl, pleaseSignInTitle, pleaseSignInSubTitle, showRecommendedText, voter, hideDialogForCordova,
     } = this.state;
     if (!voter) {
       return LoadingWheel;
@@ -401,7 +411,8 @@ export default class SettingsAccount extends Component {
                 <div className="u-stack--md">
                   { !hideTwitterSignInButton && !voterIsSignedInTwitter && (isOnWeVoteRootUrl || isOnWeVoteSubdomainUrl) && (
                     <span>
-                      <RecommendedText className="u-tl u-stack--sm">Recommended</RecommendedText>
+                      {showRecommendedText &&
+                        <RecommendedText className="u-tl u-stack--sm">Recommended</RecommendedText>}
                       <TwitterSignIn
                         buttonText="Sign in with Twitter"
                         buttonSubmittedText="Signing in..."

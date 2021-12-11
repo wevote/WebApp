@@ -75,7 +75,7 @@ fs.remove('./build').then(() => {
             return;
           }
           const listOfFiles = stdout.split('\n');
-          listOfFiles.push('./srcCordova/js/components/Widgets/WeVoteRouter.jsx');
+          listOfFiles.push('./srcCordova/js/common/components/Widgets/WeVoteRouter.jsx');
           listOfFiles.push('./srcCordova/index.jsx');
           for (let i = 0; i < listOfFiles.length; i++) {
             const path = listOfFiles[i];

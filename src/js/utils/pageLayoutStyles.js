@@ -55,6 +55,10 @@ export const PageContentContainer = styled.div`
   // for debugging... ${({ theme }) => ((theme) ? console.log(theme) : console.log(theme))}
 `;
 
+export const PageContentContainerGetStarted = styled.div`
+  background-color: white;
+`;
+
 
 export const HeaderContentContainer = styled.div`
   margin: ${() => cordovaBallotFilterTopMargin()} auto 0 auto;
