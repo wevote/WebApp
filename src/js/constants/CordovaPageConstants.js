@@ -10,6 +10,7 @@ const CordovaPageConstants = {
   friends: null,
   friendsCurrent: null,
   friendsSentRequest: null,
+  start: null,
   measureWild: null,
   moreAbout: null,
   moreCredits: null,

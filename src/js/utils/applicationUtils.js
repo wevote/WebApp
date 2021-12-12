@@ -173,6 +173,7 @@ export function getApplicationViewBooleans (pathname) {
       (pathnameLowerCase === '/more/about') ||
       (pathnameLowerCase === '/more/credits') ||
       (pathnameLowerCase === '/more/myballot') ||
+      (pathnameLowerCase === '/start') ||
       (pathnameLowerCase === '/values/list') ||
       (pathnameLowerCase === '/welcome') ||
       pathnameLowerCase.startsWith('/how') ||

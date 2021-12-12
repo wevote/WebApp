@@ -26,15 +26,23 @@ class ErrorBoundary extends Component {
       // You could render any custom fallback UI here
       return (
         <div style={{
-          margin: isAndroidSizeFold() ? '50px' : '100px',
+          margin: isAndroidSizeFold() ? '50px' : '10px',
           padding: '10px',
+          top: '60px',
+          position: 'fixed',
           backgroundColor: 'white',
           boxShadow: 'rgba(0, 0, 0, 0.2) 0px 1px 3px 0px, rgba(0, 0, 0, 0.14) 0px 1px 1px 0px, rgba(0, 0, 0, 0.12) 0px 2px 1px -1px',
         }}
         >
-          <h1 style={{ margin: '20px', color: 'black', fontSize: '24px' }}>Whoops! Something went wrong.</h1>
+          <h1 style={{ margin: '20px', color: 'black', fontSize: '20px' }}>Whoops! Something went wrong.</h1>
           <h1 style={{ margin: '20px', color: 'black' }}>
-            {isWebApp() ? 'Please refresh the browser' : 'Try restarting the app.'}
+            {isWebApp() ? 'Please refresh the browser' : (
+              <>
+                Try&nbsp;
+                <a style={{ color: 'blue' }} href="/">restarting</a>
+                &nbsp;the app.
+              </>
+            )}
           </h1>
           <h1 style={{ margin: '20px', color: 'black' }}>
             Please send us an email at &nbsp;

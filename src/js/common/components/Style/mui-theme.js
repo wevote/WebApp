@@ -31,12 +31,8 @@ const overrides = {
   },
   MuiToolbar: {
     root: {
-      // marginLeft: 'calc((100vw - 960px)/2)',
       padding: 0,
       flexDirection: 'unset',
-      // '@media (max-width: 520px)': {
-      //   marginLeft: 'calc((100vw - 710px)/2)',
-      // },
     },
     regular: {
       minHeight: '48px !important',

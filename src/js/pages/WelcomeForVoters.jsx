@@ -10,7 +10,7 @@ import VoterActions from '../actions/VoterActions';
 import SettingsVerifySecretCode from '../components/Settings/SettingsVerifySecretCode';
 import AddressBoxWelcome from '../components/Welcome/AddressBoxWelcome';
 import { BlueTitle, PlayerContainer, SubTitle, Title, Video } from '../components/Welcome/headerWelcomeStyles';
-import { Bold, Description, DescriptionContainer, DescriptionImageColumn, DescriptionLeftColumn, GetStarted, Image, NetworkContainer, NetworkImage, Section, SectionTitle, SectionTitleBold, SignUpContainer, SignUpMessage, Step, StepLabel, StepNumber } from '../components/Welcome/sectionStyles';
+import { Bold, Description, DescriptionContainer, DescriptionImageColumn, DescriptionLeftColumn, GetStarted2019, Image, NetworkContainer, NetworkImage, Section, SectionTitle, SectionTitleBold, SignUpContainer, SignUpMessage, Step, StepLabel, StepNumber } from '../components/Welcome/sectionStyles';
 import TextBox from '../components/Welcome/TextBox';
 import Testimonial from '../components/Widgets/Testimonial';
 import VoterConstants from '../constants/VoterConstants';
@@ -146,7 +146,7 @@ class WelcomeForVoters extends PureComponent {
             <BlueTitle> in 6 Minutes</BlueTitle>
           </Title>
           <SubTitle>Finally, a simple way to fill out your ballot.</SubTitle>
-          <GetStarted>
+          <GetStarted2019>
             <AddressBoxWelcome
               icon={<LocationOn classes={{ root: classes.locationIcon }} />}
             />
@@ -159,7 +159,7 @@ class WelcomeForVoters extends PureComponent {
             >
               View Ballot
             </Button>
-          </GetStarted>
+          </GetStarted2019>
         </HeaderForVoters>
         <Section>
           <SectionTitle>

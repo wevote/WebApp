@@ -7,6 +7,8 @@ import styled from 'styled-components';
 import { isAndroidSizeXL, restoreStylesAfterCordovaKeyboard } from '../../common/utils/cordovaUtils';
 import { isCordova, isWebApp } from '../../common/utils/isCordovaOrWebApp';
 import { renderLog } from '../../common/utils/logging';
+import webAppConfig from '../../config';
+import DeviceURLField from '../../pages/Startup/DeviceURLField';
 
 class HeaderBarProfilePopUp extends Component {
   constructor (props) {
@@ -195,6 +197,12 @@ class HeaderBarProfilePopUp extends Component {
               <Link id="profilePopUpPrivacyPolicy" onClick={this.hideProfilePopUp} to="/more/privacy">
                 <span className="u-no-break">Privacy Policy</span>
               </Link>
+              {webAppConfig.SHOW_CORDOVA_URL_FIELD && (
+                <>
+                  <span style={{ paddingLeft: 20 }} />
+                  <DeviceURLField closeFunction={this.toggleProfilePopUp} />
+                </>
+              )}
             </span>
           </div>
         </ProfileMenu>
