@@ -1,4 +1,4 @@
-import { createMuiTheme } from '@material-ui/core/styles';
+import { createTheme } from '@material-ui/core/styles';
 
 const overrides = {
   MuiButton: {
@@ -63,7 +63,7 @@ const breakpoints = {
   },
 };
 
-const theme = createMuiTheme({
+const theme = createTheme({
   palette: {
     primary: {
       // main: "#25536D",

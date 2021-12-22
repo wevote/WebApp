@@ -52,6 +52,7 @@ const nonFluxState = {
   showSignInModal: false,
   showTwitterLandingPage: false,
   showVoterPlanModal: false,
+  signInStateChanged: false,
   siteConfigurationHasBeenRetrieved: false,
   siteOwnerOrganizationWeVoteId: '',
   storeSignInStartFullUrl: false,
@@ -210,6 +211,11 @@ export default {
     messageService.sendMessage('state updated showVoterPlanModal');
   },
 
+  setSignInStateChanged (signin) {
+    nonFluxState.signInStateChanged = signin;
+    messageService.sendMessage('state updated signInStateChanged');
+  },
+
   setShowValuesIntroModal (show) {
     nonFluxState.showValuesIntroModal = show;
     messageService.sendMessage('state updated showValuesIntroModal');
@@ -296,6 +302,10 @@ export default {
   getShowTwitterLandingPage () {
     // console.log('AppObservableStore getShowTwitterLandingPage:', nonFluxState.showTwitterLandingPage);
     return nonFluxState.showTwitterLandingPage;
+  },
+
+  getSignInStateChanged () {
+    return nonFluxState.signInStateChanged;
   },
 
   getSiteOwnerOrganizationWeVoteId () {

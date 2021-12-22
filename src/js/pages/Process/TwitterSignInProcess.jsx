@@ -45,13 +45,16 @@ export default class TwitterSignInProcess extends Component {
   }
 
   onTwitterStoreChange () {
+    const auth = TwitterStore.getTwitterAuthResponse();
+    const { twitter_image_load_info: twitterImageLoadInfo } = auth;
     this.setState({
-      twitterAuthResponse: TwitterStore.getTwitterAuthResponse(),
+      twitterAuthResponse: auth,
+      twitterImageLoadInfo,
     });
   }
 
   onVoterStoreChange () {
-    const { redirectInProcess } = this.state;
+    const { redirectInProcess, twitterImageLoadInfo } = this.state;
     // console.log('TwitterSignInProcess onVoterStoreChange, redirectInProcess:', redirectInProcess);
     if (!redirectInProcess) {
       const twitterSignInStatus = VoterStore.getTwitterSignInStatus();
@@ -86,7 +89,11 @@ export default class TwitterSignInProcess extends Component {
               // console.log('newRedirectPathname:', newRedirectPathname);
               this.setState({ redirectInProcess: true });
               oAuthLog(`Twitter sign in (1), onVoterStoreChange - push to ${newRedirectPathname}`);
-
+              if (twitterImageLoadInfo) {
+                AppObservableStore.setSignInStateChanged(true);
+                TwitterActions.twitterProcessDeferredImages(twitterImageLoadInfo);
+                TwitterStore.clearTwitterImageLoadInfo();
+              }
               historyPush({
                 pathname: newRedirectPathname,
                 state: {
@@ -107,6 +114,11 @@ export default class TwitterSignInProcess extends Component {
           this.setState({ redirectInProcess: true });
           const redirectPathname = '/ballot';
           oAuthLog(`Twitter sign in (2), onVoterStoreChange - push to ${redirectPathname}`);
+          if (twitterImageLoadInfo) {
+            AppObservableStore.setSignInStateChanged(true);
+            TwitterActions.twitterProcessDeferredImages(twitterImageLoadInfo);
+            TwitterStore.clearTwitterImageLoadInfo();
+          }
           historyPush({
             pathname: redirectPathname,
             // query: {voter_refresh_timer_on: voterHasDataToPreserve ? 0 : 1},

@@ -30,6 +30,7 @@ import BallotStore from '../../stores/BallotStore';
 import ElectionStore from '../../stores/ElectionStore';
 import IssueStore from '../../stores/IssueStore';
 import SupportStore from '../../stores/SupportStore';
+import TwitterStore from '../../stores/TwitterStore';
 import VoterGuideStore from '../../stores/VoterGuideStore';
 import VoterStore from '../../stores/VoterStore';
 import apiCalming from '../../utils/apiCalming';
@@ -118,7 +119,7 @@ class Ballot extends Component {
 
   componentDidMount () {
     const { location: { pathname: currentPathname } } = window;
-    // console.log('componentDidMount, Current pathname:', currentPathname);
+    console.log('Ballot componentDidMount, Current pathname:', currentPathname);
     const ballotBaseUrl = '/ballot';
     this.appStateSubscription = messageService.getMessage().subscribe(() => this.onAppObservableStoreChange());
     // We need a ballotStoreListener here because we want the ballot to display before positions are received
@@ -128,6 +129,7 @@ class Ballot extends Component {
     this.supportStoreListener = SupportStore.addListener(this.onBallotStoreChange.bind(this));
     this.voterGuideStoreListener = VoterGuideStore.addListener(this.onVoterGuideStoreChange.bind(this));
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
+    this.twitterStoreListener = TwitterStore.addListener(this.onTwitterStoreChange.bind(this));
     AppObservableStore.setShowSelectBallotModal(false, false, false);
     this.setState({
       componentDidMountFinished: true,
@@ -515,11 +517,13 @@ class Ballot extends Component {
     this.supportStoreListener.remove();
     this.voterGuideStoreListener.remove();
     this.voterStoreListener.remove();
+    this.twitterStoreListener.remove();
     clearTimeout(this.timerToRetrieve);
     clearTimeout(this.preloadTimer);     // In componentDidMount
     clearTimeout(this.ballotItemTimer);
     clearTimeout(this.modalOpenTimer);   // In componentDidMount
     clearTimeout(this.hashLinkTimer);
+    clearTimeout(this.twitterSignInTimer);
     window.removeEventListener('scroll', this.onScroll);
   }
 
@@ -616,6 +620,17 @@ class Ballot extends Component {
           // console.log('onVoterStoreChange already saved: ', googleCivicElectionIdViewed);
         }
       }
+    }
+  }
+
+  onTwitterStoreChange () {
+    if (AppObservableStore.getSignInStateChanged()) {
+      console.log('--------- onTwitterStoreChange in Ballot, voterRetrieve AFTER AFTER AFTER 15 seconds-----------');
+      this.twitterSignInTimer = setTimeout(() => {
+        // Needed to pull in the newly cached twitter photo on a first signin with a twitter account
+        VoterActions.voterRetrieve();
+      }, 15000);
+      AppObservableStore.setSignInStateChanged(false);
     }
   }
 

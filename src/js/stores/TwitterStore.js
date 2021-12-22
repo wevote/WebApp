@@ -14,24 +14,25 @@ class TwitterStore extends ReduceStore {
 
   get () {
     return {
+      existing_twitter_account_found: this.getState().existing_twitter_account_found || '',
       kind_of_owner: this.getState().kind_of_owner || '',
       owner_we_vote_id: this.getState().owner_we_vote_id || '',
-      twitter_handle: this.getState().twitter_handle || '',
+      status: this.status || '',
       twitter_description: this.getState().twitter_description || '',
       twitter_followers_count: this.getState().twitter_followers_count || '',
+      twitter_handle: this.getState().twitter_handle || '',
+      twitter_handle_found: this.getState().twitter_handle_found || '',
+      twitter_images_were_processed: this.getState().twitter_images_were_processed || '',
       twitter_name: this.getState().twitter_name || '',
       twitter_photo_url: this.getState().twitter_photo_url || '',
-      twitter_user_website: this.getState().twitter_user_website || '',
-      status: this.status || '',
-      voter_device_id: this.getState().voter_device_id || '',
-      twitter_handle_found: this.getState().twitter_handle_found || '',
-      twitter_secret_key: this.getState().twitter_secret_key || '',
-      existing_twitter_account_found: this.getState().existing_twitter_account_found || '',
       twitter_profile_image_url_https: this.getState().twitter_profile_image_url_https || '',
       twitter_retrieve_attempted: this.getState().twitter_retrieve_attempted || '',
+      twitter_secret_key: this.getState().twitter_secret_key || '',
       twitter_sign_in_failed: this.getState().twitter_sign_in_failed || '',
       twitter_sign_in_found: this.getState().twitter_sign_in_found || '',
       twitter_sign_in_verified: this.getState().twitter_sign_in_verified || '',
+      twitter_user_website: this.getState().twitter_user_website || '',
+      voter_device_id: this.getState().voter_device_id || '',
       voter_has_data_to_preserve: this.getState().voter_has_data_to_preserve || '',
       voter_we_vote_id: this.getState().voter_we_vote_id || '',
       voter_we_vote_id_attached_to_twitter: this.getState().voter_we_vote_id_attached_to_twitter || '',
@@ -52,11 +53,20 @@ class TwitterStore extends ReduceStore {
       twitter_photo_url: this.getState().twitter_photo_url || '',
       twitter_user_website: this.getState().twitter_user_website || '',
       status: this.status || '',
+      twitter_images_were_processed: false,
     };
   }
 
   resetState () {
     return this.getInitialState();
+  }
+
+  clearTwitterImagesWereProcessed () {
+    this._state.twitter_images_were_processed = false;
+  }
+
+  clearTwitterImageLoadInfo () {
+    this._state.twitter_image_load_info = null;
   }
 
   get kindOfOwner () {
@@ -69,6 +79,10 @@ class TwitterStore extends ReduceStore {
 
   get twitterHandle () {
     return this.getState().twitter_handle;
+  }
+
+  getTwitterImagesWereProcessed () {
+    return this.getState().twitter_images_were_processed;
   }
 
   get status () {
@@ -86,6 +100,7 @@ class TwitterStore extends ReduceStore {
       voter_has_data_to_preserve: this.getState().voter_has_data_to_preserve,
       existing_twitter_account_found: this.getState().existing_twitter_account_found,
       voter_we_vote_id_attached_to_twitter: this.getState().voter_we_vote_id_attached_to_twitter,
+      twitter_image_load_info: this.getState().twitter_image_load_info,
     };
   }
 
@@ -156,6 +171,18 @@ class TwitterStore extends ReduceStore {
           twitter_secret_key: action.res.twitter_secret_key,
         };
 
+      case 'twitterProcessDeferredImages':
+        if (!action.res || !action.res.success) return state;
+        console.log('twitter twitterProcessDeferredImages', action.res);
+        return {
+          ...state,
+          twitter_images_were_processed: action.res.twitter_images_were_processed,
+          twitter_profile_image_url_https: action.res.twitter_profile_image_url_https,
+          we_vote_hosted_profile_image_url_large: action.res.we_vote_hosted_profile_image_url_large,
+          we_vote_hosted_profile_image_url_medium: action.res.we_vote_hosted_profile_image_url_medium,
+          we_vote_hosted_profile_image_url_tiny: action.res.we_vote_hosted_profile_image_url_tiny,
+        };
+
 
       case 'twitterSignInRetrieve':
         // Exit if we don't have a successful response (since we expect certain variables in a successful response below)
@@ -180,6 +207,7 @@ class TwitterStore extends ReduceStore {
           we_vote_hosted_profile_image_url_large: action.res.we_vote_hosted_profile_image_url_large,
           we_vote_hosted_profile_image_url_medium: action.res.we_vote_hosted_profile_image_url_medium,
           we_vote_hosted_profile_image_url_tiny: action.res.we_vote_hosted_profile_image_url_tiny,
+          twitter_image_load_info: action.res.twitter_image_load_info,
         };
 
       case 'voterSignOut':
