@@ -1,9 +1,9 @@
-import { createMuiTheme } from '@material-ui/core/styles';
+import { createTheme } from '@material-ui/core/styles';
 
 export function donationTheme (topNav, heightOfBar) {
-  const defaultTheme = createMuiTheme();
+  const defaultTheme = createTheme();
 
-  return createMuiTheme({
+  return createTheme({
     typography: {
       button: {
         textTransform: 'none',

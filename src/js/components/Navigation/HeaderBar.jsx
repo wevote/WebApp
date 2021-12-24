@@ -10,24 +10,22 @@ import VoterActions from '../../actions/VoterActions';
 import VoterGuideActions from '../../actions/VoterGuideActions';
 import VoterSessionActions from '../../actions/VoterSessionActions';
 import LazyImage from '../../common/components/LazyImage';
+import { hasIPhoneNotch, historyPush, isDeviceZoomed, isIOS, isIOSAppOnMac } from '../../common/utils/cordovaUtils';
+import { isCordova, isWebApp } from '../../common/utils/isCordovaOrWebApp';
+import { renderLog } from '../../common/utils/logging';
+import voterPhoto from '../../common/utils/voterPhoto';
 import AnalyticsStore from '../../stores/AnalyticsStore';
 import AppObservableStore, { messageService } from '../../stores/AppObservableStore';
 import FacebookStore from '../../stores/FacebookStore';
 import FriendStore from '../../stores/FriendStore';
 import VoterStore from '../../stores/VoterStore';
 import apiCalming from '../../utils/apiCalming';
-import { avatarGeneric, displayTopMenuShadow, weVoteBrandingOff } from '../../utils/applicationUtils';
-import { hasIPhoneNotch, isDeviceZoomed, isIOS, isIOSAppOnMac } from '../../common/utils/cordovaUtils';
-import { isCordova, isWebApp } from '../../common/utils/isCordovaOrWebApp';
-import historyPush from '../../common/utils/historyPush';
-import { normalizedHref, normalizedHrefPage } from '../../common/utils/hrefUtils';
+import { avatarGeneric, displayTopMenuShadow, normalizedHref, normalizedHrefPage, weVoteBrandingOff } from '../../utils/applicationUtils';
+import getHeaderObjects from '../../utils/getHeaderObjects';
 import isMobileScreenSize from '../../utils/isMobileScreenSize';
-import { renderLog } from '../../common/utils/logging';
 import { TopOfPageHeader, TopRowOneLeftContainer, TopRowOneMiddleContainer, TopRowOneRightContainer, TopRowTwoLeftContainer } from '../../utils/pageLayoutStyles';
-import { getHeaderObjects } from '../../utils/reactStartupUtils';
 import shouldHeaderRetreat from '../../utils/shouldHeaderRetreat';
 import { getBooleanValue, shortenText, stringContains } from '../../utils/textFormat';
-import voterPhoto from '../../common/utils/voterPhoto';
 import SignInButton from '../Widgets/SignInButton';
 import signInModalGlobalState from '../Widgets/signInModalGlobalState';
 import FriendsTabs from './FriendsTabs';
@@ -339,7 +337,7 @@ class HeaderBar extends Component {
     }
 
     if (!signInModalGlobalState.get('textOrEmailSignInInProcess')) {
-      // console.log('HeaderBar, onVoterStoreChange'};
+      // console.log('HeaderBar, onVoterStoreChange ', VoterStore.getFirstName(), VoterStore.getFullName());
       const voter = VoterStore.getVoter();
       const voterFirstName = VoterStore.getFirstName();
       const voterIsSignedIn = voter.is_signed_in || false;

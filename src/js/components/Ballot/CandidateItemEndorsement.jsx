@@ -1,6 +1,6 @@
-// import { createMuiTheme, MuiThemeProvider } from '@material-ui/core';
+// import { createTheme, MuiThemeProvider } from '@material-ui/core';
 import { Button, TextField } from '@material-ui/core';
-import { createMuiTheme, MuiThemeProvider, withStyles } from '@material-ui/core/styles';
+import { createTheme, MuiThemeProvider, withStyles } from '@material-ui/core/styles';
 import { Twitter } from '@material-ui/icons';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
@@ -334,7 +334,7 @@ class CandidateItemEndorsement extends Component {
       return null;
     }
 
-    const showInfoOnlyTheme = createMuiTheme({
+    const showInfoOnlyTheme = createTheme({
       palette: {
         primary: {
           main: '#888',
@@ -343,7 +343,7 @@ class CandidateItemEndorsement extends Component {
       },
     });
 
-    const showOpposeTheme = createMuiTheme({
+    const showOpposeTheme = createTheme({
       palette: {
         primary: {
           main: '#FF7031',
@@ -352,7 +352,7 @@ class CandidateItemEndorsement extends Component {
       },
     });
 
-    const showSupportTheme = createMuiTheme({
+    const showSupportTheme = createTheme({
       palette: {
         primary: {
           main: '#21c06e',

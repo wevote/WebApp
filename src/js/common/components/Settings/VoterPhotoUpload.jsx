@@ -2,14 +2,14 @@ import React, { Component } from 'react';
 import { DropzoneArea } from 'material-ui-dropzone';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { MuiThemeProvider, createMuiTheme, withStyles } from '@material-ui/core/styles';
+import { MuiThemeProvider, createTheme, withStyles } from '@material-ui/core/styles';
 import { AccountCircle } from '@material-ui/icons';
 import VoterActions from '../../../actions/VoterActions';
 import VoterStore from '../../../stores/VoterStore';
 import isMobileScreenSize from '../../utils/isMobileScreenSize';
 import { renderLog } from '../../utils/logging';
 
-const muiTheme = createMuiTheme({
+const muiTheme = createTheme({
   overrides: {
     MuiDropzonePreviewList: {
       image: {

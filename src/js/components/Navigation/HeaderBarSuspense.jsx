@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import getHeaderObjects from '../../utils/getHeaderObjects';
 import { renderLog } from '../../common/utils/logging';
 
 function SmallCloud (params) {
@@ -36,8 +37,9 @@ export default function HeaderBarSuspense () {
   renderLog('"Render" of HeaderBarSuspense');
   const left = (window.innerWidth - 964) / 2;  // about 358 on a high res screen
   const leftForBeta = (left + 80).toString();
-  const { headerObjects } = window;
-  let logoModified = window.headerObjects.logo;
+
+  const headerObjects = getHeaderObjects();
+  let logoModified = headerObjects.logo;
   if (logoModified && logoModified.includes('>beta<')) {
     const parts = logoModified.split('>beta<');
     logoModified = `${parts[0]} style="top: 14px; left: ${leftForBeta}">beta<${parts[1]}`;
