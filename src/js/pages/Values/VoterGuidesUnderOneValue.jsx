@@ -36,30 +36,24 @@ class VoterGuidesUnderOneValue extends Component {
     this.voterGuideStoreListener = VoterGuideStore.addListener(this.onVoterGuideStoreChange.bind(this));
     this.onIssueStoreChange();
     IssueActions.issueDescriptionsRetrieve(VoterStore.getVoterWeVoteId());
+    window.scrollTo(0, 0);
   }
 
-  // eslint-disable-next-line camelcase,react/sort-comp
-  UNSAFE_componentWillReceiveProps (nextProps) {
-    const { match: { params: nextParams } } = nextProps;
-    const issue = IssueStore.getIssueBySlug(nextParams.value_slug);
-    const voterGuidesForValue = VoterGuideStore.getVoterGuidesForValue(issue.issue_we_vote_id);
-    const voterGuidesForValueLength = voterGuidesForValue.length || 0;
-    this.setState({
-      voterGuidesForValue,
-      voterGuidesForValueLength,
-      issue,
-      issueWeVoteId: issue.issue_we_vote_id,
-    });
-  }
-
-  shouldComponentUpdate (nextProps, nextState) {
-    if (this.state.issueWeVoteId !== nextState.issueWeVoteId) {
-      return true;
+  componentDidUpdate (prevProps) {
+    const { match: { params: prevParams } } = prevProps;
+    const { match: { params: nextParams } } = this.props;
+    if (prevParams.value_slug !== nextParams.value_slug) {
+      const newIssue = IssueStore.getIssueBySlug(nextParams.value_slug);
+      const voterGuidesForValue = VoterGuideStore.getVoterGuidesForValue(newIssue.issue_we_vote_id);
+      const voterGuidesForValueLength = voterGuidesForValue.length || 0;
+      this.setState({
+        voterGuidesForValue,
+        voterGuidesForValueLength,
+        issue: newIssue,
+        issueWeVoteId: newIssue.issue_we_vote_id,
+      });
+      window.scrollTo(0, 0);
     }
-    if (this.state.voterGuidesForValueLength !== nextState.voterGuidesForValueLength) {
-      return true;
-    }
-    return false;
   }
 
   componentWillUnmount () {
@@ -213,8 +207,8 @@ const EmptyValueText = styled.p`
 const Title = styled.h3`
   color: #333;
   font-size: 22px;
-  margin-bottom: 32px;
-  margin-top: 24px;
+  margin-bottom: 12px;
+  margin-top: 64px;
 `;
 
 export default withStyles(styles)(VoterGuidesUnderOneValue);

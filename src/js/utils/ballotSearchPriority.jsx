@@ -10,11 +10,13 @@ export default function ballotSearchPriority (originalString, item, ignoreDescri
   let candidateDetailsArray = [];
   let candidateElement;
   let candidateDetailsString;
-  const candidatesToShowForSearchResults = [];
-  const foundInArray = [];
+  let candidatesToShowForSearchResults = [];
+  let foundInArray = [];
   let foundInItemsAlreadyShown = 0;
+  let foundInOneCandidate = false;
   let foundInThisOfficeOrMeasure = false;
   let foundInThisCandidate = false;
+  let notFoundInThisBallotItemWithAndSearch = false;
   let officeOrMeasureElement;
   let oneWordScore = 0;
   let searchPriority = 0;
@@ -80,6 +82,7 @@ export default function ballotSearchPriority (originalString, item, ignoreDescri
           if (!candidateDetailsArray.includes('political party')) candidateDetailsArray.push('political party');
         }
         searchPriority += oneWordScore;
+        if (!foundInThisCandidate) foundInOneCandidate = true;
       }
       if (foundInThisCandidate) {
         if (candidateDetailsArray.length) {
@@ -101,6 +104,12 @@ export default function ballotSearchPriority (originalString, item, ignoreDescri
         candidatesToShowForSearchResults.push(candidate.we_vote_id);
       }
     });
+  }
+  if (!foundInThisOfficeOrMeasure && !foundInOneCandidate) notFoundInThisBallotItemWithAndSearch = true;
+  if (notFoundInThisBallotItemWithAndSearch) {
+    foundInArray = [];
+    candidatesToShowForSearchResults = [];
+    searchPriority = 0;
   }
   return {
     searchPriority,

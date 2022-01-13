@@ -396,12 +396,12 @@ class ReadyTaskBallot extends React.Component {
     if (percentCompleted === 0) {
       altValue = 'Start deciding';
       ballotImage = ballot0Percent;
-      yourBallotTitle = 'Ballot To-Do List';
+      yourBallotTitle = 'Decide How To Vote';
       yourBallotSubtitle = 'Start deciding how you\'ll vote.';
     } else if (percentCompleted < 100) {
       altValue = 'Ballot decisions underway';
       ballotImage = ballot50Percent;
-      yourBallotTitle = 'Ballot To-Do List';
+      yourBallotTitle = 'Decide How To Vote';
       if (percentCompleted < 10) {
         yourBallotSubtitle = 'Start filling out your ballot now!';
       } else if (percentCompleted < 50) {
@@ -457,9 +457,9 @@ class ReadyTaskBallot extends React.Component {
               )}
             </PercentComplete>
           </TitleRowWrapper>
-          <SubTitle className="u-cursor--pointer" onClick={this.goToBallot}>
-            {yourBallotSubtitle}
-          </SubTitle>
+          {/* <SubTitle className="u-cursor--pointer" onClick={this.goToBallot}> */}
+          {/*  {yourBallotSubtitle} */}
+          {/* </SubTitle> */}
           {/* ************* */}
           {/* Decide on All Candidates */}
           {/* ************* */}

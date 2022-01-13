@@ -119,9 +119,8 @@ export default class ValuesList extends Component {
       } else {
         // We create a delay after the first 6 issues are rendered, so the initial page load is a little faster
         return (
-          <Suspense fallback={<></>}>
+          <Suspense fallback={<></>} key={`delayed-issue-list-key-${issue.issue_we_vote_id}`}>
             <DelayedLoad
-              key={`delayed-issue-list-key-${issue.issue_we_vote_id}`}
               showLoadingText={issuesRenderedCount === (issuesToShowBeforeDelayedLoad + 1)}
               waitBeforeShow={500}
             >
@@ -133,7 +132,7 @@ export default class ValuesList extends Component {
     });
 
     return (
-      <PageContentContainer>
+      <ValuesListWrapper>
         {this.props.displayOnlyIssuesNotFollowedByVoter ? (
           <Row className="row">
             {issuesListForDisplay}
@@ -183,7 +182,7 @@ export default class ValuesList extends Component {
             </section>
           </div>
         )}
-      </PageContentContainer>
+      </ValuesListWrapper>
     );
   }
 }
@@ -192,14 +191,17 @@ ValuesList.propTypes = {
   currentIssue: PropTypes.object,
 };
 
+const Column = styled.div`
+  @media (max-width: 768px) {
+    margin-bottom: 24px !important;
+  }
+`;
+
 const Row = styled.div`
   // margin-left: -16px;
   // margin-right: -16px;
   // width: calc(100% + 32px);
 `;
 
-const Column = styled.div`
-  @media (max-width: 768px) {
-    margin-bottom: 24px !important;
-  }
+const ValuesListWrapper = styled.div`
 `;
