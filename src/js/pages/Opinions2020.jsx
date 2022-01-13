@@ -90,7 +90,7 @@ class Opinions2020 extends Component {
   }
 
   componentDidMount () {
-    const { match: params } = this.props;
+    const { match: { params } } = this.props;
     this.setState({
       componentDidMount: true,
       numberOfBallotItemsToDisplay: 5,
@@ -261,7 +261,7 @@ class Opinions2020 extends Component {
               state_code: newBallotItemSearchResults[count].state_code,
               we_vote_id: newBallotItemSearchResults[count].we_vote_id,
             };
-          } else if (newBallotItemSearchResults[count].we_vote_id.includes('meas') || newBallotItemSearchResults[count].measure_we_vote_id.includes('meas')) {
+          } else if (stringContains('meas', newBallotItemSearchResults[count].we_vote_id) || stringContains('meas', newBallotItemSearchResults[count].measure_we_vote_id)) {
             newBallotItem = {
               ballot_item_display_name: newBallotItemSearchResults[count].ballot_item_display_name,
               google_civic_election_id: newBallotItemSearchResults[count].google_civic_election_id,
@@ -646,7 +646,7 @@ class Opinions2020 extends Component {
         </Card>
         {((!isSearching && atLeastOneFoundWithTheseFilters && filteredOpinionsAndBallotItems && filteredOpinionsAndBallotItems.length) || (isSearching && ballotSearchResults && ballotSearchResults.length)) ? (
           <div>
-            <CardChildListGroup className="card-child__list-group">
+            <CardChildListGroup>
               {(isSearching ? ballotSearchResults : filteredOpinionsAndBallotItems).map((oneBallotItemOrOrganization) => {
                 // console.log('oneBallotItemOrOrganization: ', oneBallotItemOrOrganization);
                 if (!oneBallotItemOrOrganization.we_vote_id) {
@@ -685,7 +685,7 @@ class Opinions2020 extends Component {
                   isVoterGuide = true;
                 }
                 return (
-                  <div key={`addNewPositionKey-${oneBallotItemOrOrganization.we_vote_id}`}>
+                  <CardChildListItem key={`addNewPositionKey-${oneBallotItemOrOrganization.we_vote_id}`}>
                     {!!(isSearching && searchTextString && oneBallotItemOrOrganization.foundInArray && oneBallotItemOrOrganization.foundInArray.length) && (
                       <SearchResultsFoundInExplanation>
                         {searchTextString}
@@ -752,7 +752,7 @@ class Opinions2020 extends Component {
                         voterGuideOwnerType={oneBallotItemOrOrganization.voter_guide_owner_type}
                       />
                     )}
-                  </div>
+                  </CardChildListItem>
                 );
               })}
             </CardChildListGroup>
@@ -834,6 +834,10 @@ const CardChildListGroup = styled.ul`
   padding: 0;
 `;
 
+const CardChildListItem = styled.div`
+  margin-top: 15px;
+`;
+
 const EmptyBallotMessageContainer = styled.div`
   padding: 1em 2em;
   display: flex;
@@ -861,10 +865,6 @@ const SearchResultsFoundInExplanation = styled.div`
   background-color: #C2DCE8;
   color: #0E759F;
   padding: 12px !important;
-  @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
-    margin-left: -15px !important;
-    margin-right: -15px !important;
-  }
 `;
 
 const ShowMoreItemsWrapper = styled.div`

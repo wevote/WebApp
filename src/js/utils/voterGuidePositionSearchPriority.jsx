@@ -8,9 +8,10 @@ export default function voterGuidePositionSearchPriority (originalString, item) 
   }
   let searchNeedleString = '';
   const candidatesToShowForSearchResults = [];
-  const foundInArray = [];
+  let foundInArray = [];
   let foundInItemsAlreadyShown;
   let foundInThisPosition = false;
+  let notFoundInThisPositionWithAndSearch = false;
   let positionDetailsString = '';
   let positionElement;
   let oneWordScore = 0;
@@ -56,8 +57,12 @@ export default function voterGuidePositionSearchPriority (originalString, item) 
       if (!positionDetailsArray.includes('Endorsement text')) positionDetailsArray.push('Endorsement text');
     }
     searchPriority += oneWordScore;
+    if (!foundInThisPosition) notFoundInThisPositionWithAndSearch = true;
   }
-  if (foundInThisPosition) {
+  if (notFoundInThisPositionWithAndSearch) {
+    foundInArray = [];
+    searchPriority = 0;
+  } else if (foundInThisPosition) {
     if (positionDetailsArray.length) {
       foundInItemsAlreadyShown = 0;
       positionDetailsString += ' (';
