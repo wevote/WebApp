@@ -45,10 +45,10 @@ export default class TwitterSignInProcess extends Component {
   }
 
   onTwitterStoreChange () {
-    const auth = TwitterStore.getTwitterAuthResponse();
-    const { twitter_image_load_info: twitterImageLoadInfo } = auth;
+    const twitterAuthResponse = TwitterStore.getTwitterAuthResponse();
+    const { twitter_image_load_info: twitterImageLoadInfo } = twitterAuthResponse;
     this.setState({
-      twitterAuthResponse: auth,
+      twitterAuthResponse,
       twitterImageLoadInfo,
     });
   }

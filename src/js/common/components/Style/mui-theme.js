@@ -1,54 +1,5 @@
 import { createTheme } from '@material-ui/core/styles';
-
-const overrides = {
-  MuiButton: {
-    root: {
-      userSelect: 'none',
-      '@media print': {
-        color: '#fff',
-      },
-    },
-  },
-  MuiTooltip: {
-    tooltip: {
-      fontSize: '14px',
-    },
-  },
-  MuiFormControlLabel: {
-    root: {
-      marginBottom: '-.5rem',
-    },
-  },
-  MuiAppBar: {
-    colorDefault: {
-      backgroundColor: '#fff',
-      color: '#333',
-    },
-    root: {
-      padding: 0,
-      flexDirection: 'unset',
-    },
-  },
-  MuiToolbar: {
-    root: {
-      padding: 0,
-      flexDirection: 'unset',
-    },
-    regular: {
-      minHeight: '48px !important',
-    },
-  },
-  MuiTab: {
-    root: {
-      outline: 'none !important',
-    },
-  },
-  MuiBottomNavigationAction: {
-    root: {
-      minWidth: '60px',
-    },
-  },
-};
+import overrides from '../../../components/Style/muiOverrides';
 
 // See also styled-theme.js
 // I recommend being cautious about using 'md' for transitions relating explicitly to mobile, tablet, desktop
