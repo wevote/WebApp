@@ -14,25 +14,6 @@ class AdviserIntroModal extends Component {
     };
   }
 
-  componentDidMount () {
-    // this.friendStoreListener = FriendStore.addListener(this.onFriendStoreChange.bind(this));
-    // FriendActions.currentFriends();
-
-    this.setState({
-    });
-  }
-
-  componentWillUnmount () {
-    // this.friendStoreListener.remove();
-  }
-
-  // onFriendStoreChange () {
-  //   const { currentFriendsList } = this.state;
-  //   if (currentFriendsList.length !== FriendStore.currentFriends().length) {
-  //     this.setState({ currentFriendsList: FriendStore.currentFriends() });
-  //   }
-  // }
-
   closeThisModal = () => {
     const { location: { pathname } } = window;
     this.props.toggleFunction(pathname);

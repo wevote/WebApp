@@ -12,7 +12,7 @@ import VoterStore from '../../stores/VoterStore';
 import normalizedImagePath from '../../common/utils/normalizedImagePath';
 import historyPush from '../../common/utils/historyPush';
 import { renderLog } from '../../common/utils/logging';
-import { ButtonLeft, ButtonText, Icon, PercentComplete, ReadyCard, StyledButton, StyledCheckbox, StyledCheckboxCompleted, SubTitle, TitleRowWrapper } from './ReadyTaskStyles';
+import { ButtonLeft, ButtonText, Icon, PercentComplete, ReadyCard, StyledButton, StyledCheckbox, StyledCheckboxCompleted, TitleRowWrapper } from './ReadyTaskStyles';
 import ShowMoreButtons from './ShowMoreButtons';
 
 const ballot0Percent = '../../../img/global/svg-icons/ready/ballot-0-percent.svg';
@@ -392,32 +392,32 @@ class ReadyTaskBallot extends React.Component {
     let ballotImage;
     let altValue;
     let yourBallotTitle;
-    let yourBallotSubtitle;
+    // let yourBallotSubtitle;
     if (percentCompleted === 0) {
       altValue = 'Start deciding';
       ballotImage = ballot0Percent;
       yourBallotTitle = 'Decide How To Vote';
-      yourBallotSubtitle = 'Start deciding how you\'ll vote.';
+      // yourBallotSubtitle = 'Start deciding how you\'ll vote.';
     } else if (percentCompleted < 100) {
       altValue = 'Ballot decisions underway';
       ballotImage = ballot50Percent;
       yourBallotTitle = 'Decide How To Vote';
-      if (percentCompleted < 10) {
-        yourBallotSubtitle = 'Start filling out your ballot now!';
-      } else if (percentCompleted < 50) {
-        yourBallotSubtitle = 'Keep filling out your ballot now!';
-      } else if (percentCompleted === 50) {
-        yourBallotSubtitle = 'You\'re half way there! Filling out your ballot completely will feel soooo good.';
-      } else if (percentCompleted < 80) {
-        yourBallotSubtitle = 'After you finish filling out your ballot, you can buy yourself a donut.';
-      } else {
-        yourBallotSubtitle = 'You are almost there! Finish filling out your ballot.';
-      }
+      // if (percentCompleted < 10) {
+      //   yourBallotSubtitle = 'Start filling out your ballot now!';
+      // } else if (percentCompleted < 50) {
+      //   yourBallotSubtitle = 'Keep filling out your ballot now!';
+      // } else if (percentCompleted === 50) {
+      //   yourBallotSubtitle = 'You\'re half way there! Filling out your ballot completely will feel soooo good.';
+      // } else if (percentCompleted < 80) {
+      //   yourBallotSubtitle = 'After you finish filling out your ballot, you can buy yourself a donut.';
+      // } else {
+      //   yourBallotSubtitle = 'You are almost there! Finish filling out your ballot.';
+      // }
     } else {
       altValue = 'Ballot Completed';
       ballotImage = ballot100Percent;
       yourBallotTitle = 'Your Ballot is Complete!';
-      yourBallotSubtitle = 'Review your decisions.';
+      // yourBallotSubtitle = 'Review your decisions.';
     }
     const completedIcon = (
       <img

@@ -285,6 +285,7 @@ class FriendStore extends ReduceStore {
           friendInvitationsSentToMe: action.res.invitations_sent_to_me,
           friendInvitationsProcessed: action.res.invitations_processed,
           friendInvitationsWaitingForVerification: action.res.invitations_waiting_for_verify,
+          suggestedFriendList: action.res.suggested_friends,
         };
 
       case 'friendList':
@@ -373,20 +374,15 @@ class FriendStore extends ReduceStore {
         // July 2021: This also trips on first load of the news page if you are signed in
         if (apiCalming('friendListsAll', 1500)) {
           FriendActions.getAllFriendLists();
-          // FriendActions.currentFriends();
-          // FriendActions.friendInvitationsSentByMe();
-          // FriendActions.friendInvitationsSentToMe();
-          // FriendActions.friendInvitationsProcessed();
         }
         return this.resetState();
 
       case 'voterSignOut':
         // Firing all of these "just in case" api queries is slow, and firing queries from Stores should bed avoidd
         // console.log('resetting FriendStore from voterSignOut');
-        FriendActions.currentFriends();
-        FriendActions.friendInvitationsSentByMe();
-        FriendActions.friendInvitationsSentToMe();
-        FriendActions.friendInvitationsProcessed();
+        if (apiCalming('friendListsAll', 1500)) {
+          FriendActions.getAllFriendLists();
+        }
         return this.resetState();
 
       default:

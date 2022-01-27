@@ -98,9 +98,8 @@ class News extends Component {
       } else if (apiCalming('activityNoticeListRetrieve', 500)) {
         ActivityActions.activityListRetrieve();
       }
-      if (apiCalming('friendListsAll', 1500)) {
-        FriendActions.getAllFriendLists();
-        // FriendActions.currentFriends();  // We need this so we can identify if the voter is friends with this organization/person
+      if (apiCalming('friendListsAll', 30000)) {
+        FriendActions.getAllFriendLists(); // We need this so we can identify if the voter is friends with this organization/person
       }
       if (!BallotStore.allBallotItemsRetrieveCalled()) {
         BallotActions.voterBallotItemsRetrieve(0, '', '');

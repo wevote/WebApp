@@ -657,10 +657,7 @@ class VoterStore extends ReduceStore {
         VoterActions.voterSMSPhoneNumberRetrieve();
         if (!signInModalGlobalState.get('textOrEmailSignInInProcess')) {
           // Cascading actions like this causes serious problems when you have a dialog with components that change stores.
-          FriendActions.currentFriends();
-          FriendActions.friendInvitationsSentByMe();
-          FriendActions.friendInvitationsSentToMe();
-          FriendActions.friendInvitationsProcessed();
+          FriendActions.getAllFriendLists();
           BallotActions.voterBallotItemsRetrieve();
         }
         return {

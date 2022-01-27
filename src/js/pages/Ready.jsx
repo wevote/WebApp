@@ -75,9 +75,8 @@ class Ready extends Component {
 
     ReadyActions.voterPlansForVoterRetrieve();
     ActivityActions.activityNoticeListRetrieve();
-    if (apiCalming('friendListsAll', 1500)) {
+    if (apiCalming('friendListsAll', 30000)) {
       FriendActions.getAllFriendLists();
-      // FriendActions.suggestedFriendList();
     }
     let modalToShow = '';
     let sharedItemCode = '';

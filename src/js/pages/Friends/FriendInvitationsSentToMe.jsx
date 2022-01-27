@@ -1,6 +1,3 @@
-import { Badge } from '@material-ui/core';
-import { withStyles } from '@material-ui/core/styles';
-import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import Helmet from 'react-helmet';
 import styled from 'styled-components';
@@ -39,11 +36,8 @@ class FriendInvitationsSentToMe extends Component {
 
   render () {
     renderLog('FriendInvitationsSentToMe');  // Set LOG_RENDER_EVENTS to log all renders
-    const { classes } = this.props;
     const { friendInvitationsSentToMe } = this.state;
     // console.log(this.state.suggestedFriends);
-    const numberOfIncomingFriendRequests = friendInvitationsSentToMe.length || 0;
-
     return (
       <div className="opinion-view">
         <Helmet title="Friend Requests - We Vote" />
@@ -51,19 +45,13 @@ class FriendInvitationsSentToMe extends Component {
           { friendInvitationsSentToMe && friendInvitationsSentToMe.length > 0 ? (
             <span>
               <SectionTitle>
-                { friendInvitationsSentToMe && friendInvitationsSentToMe.length > 0 ? (
-                  <Badge
-                    classes={{ badge: classes.headerBadge }}
-                    badgeContent={numberOfIncomingFriendRequests}
-                    color="primary"
-                  >
-                    Friend Requests
-                  </Badge>
-                ) : (
-                  <>
-                    Friend Requests (0)
-                  </>
-                )}
+                <>
+                  Friend Requests
+                  {' '}
+                  (
+                  {friendInvitationsSentToMe.length}
+                  )
+                </>
               </SectionTitle>
               <FriendInvitationList
                 editMode
@@ -82,16 +70,6 @@ class FriendInvitationsSentToMe extends Component {
     );
   }
 }
-FriendInvitationsSentToMe.propTypes = {
-  classes: PropTypes.object,
-};
-
-const styles = () => ({
-  headerBadge: {
-    right: -15,
-    top: 9,
-  },
-});
 
 const SectionTitle = styled.h2`
   width: fit-content;  font-weight: bold;
@@ -99,4 +77,4 @@ const SectionTitle = styled.h2`
   margin-bottom: 16px;
 `;
 
-export default withStyles(styles)(FriendInvitationsSentToMe);
+export default FriendInvitationsSentToMe;

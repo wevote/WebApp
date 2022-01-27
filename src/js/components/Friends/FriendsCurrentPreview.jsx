@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
-import FriendActions from '../../actions/FriendActions';
 import FriendStore from '../../stores/FriendStore';
 import historyPush from '../../common/utils/historyPush';
 import sortFriendListByMutualFriends from '../../utils/friendFunctions';
@@ -17,7 +16,6 @@ export default class FriendsCurrentPreview extends Component {
   }
 
   componentDidMount () {
-    FriendActions.currentFriends();
     const currentFriendListUnsorted = FriendStore.currentFriends();
     const currentFriendList = sortFriendListByMutualFriends(currentFriendListUnsorted);
     this.setState({

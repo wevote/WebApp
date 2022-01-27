@@ -4,8 +4,6 @@ import { Close } from '@material-ui/icons';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
 import styled from 'styled-components';
-import FriendActions from '../../actions/FriendActions';
-import FriendStore from '../../stores/FriendStore';
 import { hasIPhoneNotch } from '../../common/utils/cordovaUtils';
 import { renderLog } from '../../common/utils/logging';
 
@@ -18,26 +16,6 @@ class HowItWorksModal extends Component {
     };
 
     this.closeHowItWorksModal = this.closeHowItWorksModal.bind(this);
-  }
-
-  componentDidMount () {
-    this.friendStoreListener = FriendStore.addListener(this.onFriendStoreChange.bind(this));
-    FriendActions.currentFriends();
-
-    this.setState({
-      currentFriendsList: FriendStore.currentFriends(),
-    });
-  }
-
-  componentWillUnmount () {
-    this.friendStoreListener.remove();
-  }
-
-  onFriendStoreChange () {
-    const { currentFriendsList } = this.state;
-    if (currentFriendsList.length !== FriendStore.currentFriends().length) {
-      this.setState({ currentFriendsList: FriendStore.currentFriends() });
-    }
   }
 
   closeHowItWorksModal () {

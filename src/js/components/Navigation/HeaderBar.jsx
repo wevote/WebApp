@@ -796,7 +796,7 @@ class HeaderBar extends Component {
               </>
             )}
           </TopRowOneRightContainer>
-          <TopRowTwoLeftContainer style={{ display: `${isFriends ? 'inherit' : 'none'}` }}>
+          <TopRowTwoLeftContainer style={{ display: `${isFriends ? 'inherit' : 'none'}`, paddingBottom: `${isFriends ? '0px' : ''}` }}>
             {(isFriends) && (
               <FriendsTabs />
             )}

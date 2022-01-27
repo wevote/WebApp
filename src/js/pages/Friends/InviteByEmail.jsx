@@ -21,13 +21,13 @@ export default class InviteByEmail extends Component {
     renderLog('InviteByEmail');  // Set LOG_RENDER_EVENTS to log all renders
     return (
       <div>
-        <Helmet title="Build Your We Vote Network" />
+        <Helmet title="Invite Friends" />
         <SectionTitle>Invite Friends by Email</SectionTitle>
-        <section className="card">
+        <div className="card">
           <div className="card-main">
             <AddFriendsByEmail />
           </div>
-        </section>
+        </div>
       </div>
     );
   }

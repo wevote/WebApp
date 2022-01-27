@@ -14,6 +14,7 @@ import VoterGuideOrganizationFilter from '../Filter/VoterGuideOrganizationFilter
 import LoadingWheel from '../../common/components/Widgets/LoadingWheel';
 import NumberOfItemsFound from '../Widgets/NumberOfItemsFound';
 import PositionItem from './PositionItem';
+import apiCalming from '../../utils/apiCalming';
 
 const ShowMoreItems = React.lazy(() => import(/* webpackChunkName: 'ShowMoreItems' */ '../Widgets/ShowMoreItems'));
 
@@ -123,7 +124,9 @@ class PositionList extends Component {
 
     OrganizationActions.organizationsFollowedRetrieve();
     if (!organizationsVoterIsFriendsWith.length > 0) {
-      FriendActions.currentFriends();
+      if (apiCalming('friendList', 1500)) {
+        FriendActions.currentFriends();
+      }
     }
 
     window.addEventListener('scroll', this.onScroll);
