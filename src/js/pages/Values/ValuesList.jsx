@@ -9,6 +9,7 @@ import IssueStore from '../../stores/IssueStore';
 import VoterStore from '../../stores/VoterStore';
 import { isCordova } from '../../common/utils/isCordovaOrWebApp';
 import { renderLog } from '../../common/utils/logging';
+// import { PageContentContainer } from '../../utils/pageLayoutStyles';
 
 const ReadMore = React.lazy(() => import(/* webpackChunkName: 'ReadMore' */ '../../common/components/Widgets/ReadMore'));
 const DelayedLoad = React.lazy(() => import(/* webpackChunkName: 'DelayedLoad' */ '../../common/components/Widgets/DelayedLoad'));
@@ -130,6 +131,7 @@ export default class ValuesList extends Component {
       }
     });
 
+    // Cordova Note Jan 26, 2022: The <PageContentContainer> wrapper replaced a few days ago with an empty <ValuesListWrapper> which will probably cause problems.
     return (
       <ValuesListWrapper>
         {this.props.displayOnlyIssuesNotFollowedByVoter ? (

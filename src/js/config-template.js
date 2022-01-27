@@ -22,6 +22,7 @@ module.exports = {
   LOG_ROUTING: false,
   LOG_SIGNIN_STEPS: false,
   LOG_CORDOVA_OFFSETS: false,
+  SHOW_CORDOVA_URL_FIELD: false,  // Only needed for debugging in Cordova
 
   // Use 1 or 0 as opposed to true or false
   test: {

@@ -6,6 +6,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MomentLocalesPlugin = require('moment-locales-webpack-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
 const UnusedWebpackPlugin = require('unused-webpack-plugin');
+const SourceMapDevToolPlugin = require('webpack/lib/SourceMapDevToolPlugin');
 const WebpackShellPluginNext = require('webpack-shell-plugin-next');
 const fs = require('fs');
 const path = require('path');
@@ -18,12 +19,14 @@ const isHTTPS = process.env.PROTOCOL && process.env.PROTOCOL === 'HTTPS';
 const isWebApp = !process.env.npm_lifecycle_script.includes('CORDOVA=1');
 const source = isWebApp ? 'src' : 'srcCordova';
 const bundleAnalysis = process.env.ANALYSIS || false;  // enable the interactive bundle analyser and the Unused component analyzer
-const minimized = process.env.MINIMIZED || false;  // enable the Terser plugin that strips comments and shrinks long variable names
-// console.log('>>>> process.env: ', process.env);
-// console.log('>>>> process.env.MINIMIZED: ', process.env.MINIMIZED);
-// console.log('>>>> minimized: ', minimized);
-// console.log('>>>> bundleAnalysis: ', bundleAnalysis);
-// console.log('>>>> copy css path: ', `${source}/css/`);
+const minimized = process.env.MINIMIZED === '1' || process.env.MINIMIZED === 1 || false;  // enable the Terser plugin that strips comments and shrinks long variable names
+const verBits = process.version.split('.');
+const major = parseInt(verBits[0].replace('v', ''));
+if (major < 13) {
+  console.error(`The minimum Node version is: v14.0.0, but you are running ${process.version}\n`);
+} else {
+  console.log(`Node version is: ${process.version}`);
+}
 
 module.exports = (env, argv) => ({
   entry: path.resolve(__dirname, `./${source}/index.jsx`),
@@ -77,10 +80,10 @@ module.exports = (env, argv) => ({
     filename: isWebApp ? '[name].[contenthash].js' : 'bundle.js',
     publicPath: isWebApp ? '/' : undefined,
   },
+  devtool: false,
   plugins: [
     new CleanWebpackPlugin(),
     new ESLintPlugin({ failOnError: false, failOnWarning: false  }),
-    new webpack.HotModuleReplacementPlugin(),
     new HtmlWebpackPlugin({
       title: 'We Vote Web App',
       template: path.resolve(__dirname, `./${source}/index.html`),
@@ -108,7 +111,7 @@ module.exports = (env, argv) => ({
         {
           from: `${source}/img`,
           to: 'img/',
-          globOptions: { ignore: ['DO-NOT-BUNDLE/**/*'] },
+          globOptions: { ignore: ['DO-NOT-BUNDLE/**/*']},
         },
         { from: `${source}/javascript/`, to: 'javascript/' },
       ],
@@ -128,27 +131,29 @@ module.exports = (env, argv) => ({
         // PRODUCTION: JSON.stringify(true),
         'process.env.NODE_ENV': JSON.stringify('production'),
       }),
-    ] : []),
+    ] : [
+      new SourceMapDevToolPlugin({
+        filename: isWebApp ? null : '[file].map', // if no value is provided the sourcemap is inlined
+        exclude: [/node_modules/, /css/],
+      }),
+    ]),
   ],
-  devServer: (isHTTPS ? {
-    contentBase: path.resolve(__dirname, './build'),
-    https: {
-      key: fs.readFileSync(`./${source}/cert/server.key`),
-      cert: fs.readFileSync(`./${source}/cert/server.crt`),
+  devServer: {
+    static: {
+      directory: path.join(__dirname, './build'),
     },
     host: 'localhost',
     port,
-    public: `localhost:${port}`,
     historyApiFallback: true,
-    open: true,
-    disableHostCheck: true,
-  } : {
-    contentBase: path.resolve(__dirname, './build'),
-    host: 'localhost',
-    port,
-    public: `localhost:${port}`,
-    historyApiFallback: true,
-    open: true,
-  }),
-  devtool: 'source-map',
+    // open: true,
+    ...(isHTTPS ? {
+      server: {
+        type: 'https',
+        options: {
+          key: fs.readFileSync(`./${source}/cert/server.key`),
+          cert: fs.readFileSync(`./${source}/cert/server.crt`),
+        },
+      },
+    } : {}),
+  },
 });

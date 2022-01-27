@@ -1,5 +1,5 @@
 import assign from 'object-assign';
-import url from 'url';
+// import url from 'url';
 import webAppConfig from '../config';
 import Cookies from '../common/utils/js-cookie/Cookies';
 import { httpLog } from '../common/utils/logging';
@@ -51,13 +51,6 @@ function innerAjax (options) {
       options.endpoint === 'reactionLikeStatusRetrieve' ||
       options.endpoint === 'voterUpdate') {
     options.method = 'POST';
-    // const csrftoken = cookies.getItem('csrftoken');
-    // const headers = new Headers();
-    // headers.append('X-CSRFToken', csrftoken);
-    // headers.append('Access-Control-Allow-Headers', 'Access-Control-Allow-Headers, Origin,Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers');
-    // headers.append('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,PATCH,OPTIONS');
-    // headers.append('Access-Control-Allow-Origin', '*');
-    // options.headers = headers;
   } else {
     options.method = 'GET';
   }
@@ -78,11 +71,11 @@ function innerAjax (options) {
   ) {
     // Retrieve API data from CDN
     options.data = assign({}, options.data || {}); // Do not pass voter_device_id
-    options.url = `${url.resolve(defaults.baseCdnUrl, options.endpoint)}/`;
+    options.url = new URL(options.endpoint, defaults.baseCdnUrl); // `${URL.resolve(defaults.baseCdnUrl, options.endpoint)}/`;
   } else {
     // Retrieve API from API Server Pool
     options.data = assign({}, options.data || {}, defaults.data());
-    options.url = `${url.resolve(defaults.baseUrl, options.endpoint)}/`;
+    options.url = new URL(options.endpoint, defaults.baseUrl); // `${URL.resolve(defaults.baseUrl, options.endpoint)}/`;
   }
 
   httpLog(`AJAX URL: ${options.url}`);
