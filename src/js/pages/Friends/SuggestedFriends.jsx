@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import Helmet from 'react-helmet';
 import styled from 'styled-components';
-import FriendActions from '../../actions/FriendActions';
 import SuggestedFriendList from '../../components/Friends/SuggestedFriendList';
 import MessageCard from '../../components/Widgets/MessageCard';
 import FriendStore from '../../stores/FriendStore';
@@ -17,7 +16,6 @@ export default class SuggestedFriends extends Component {
   }
 
   componentDidMount () {
-    FriendActions.suggestedFriendList();
     const suggestedFriendListUnsorted = FriendStore.suggestedFriendList();
     const suggestedFriendList = sortFriendListByMutualFriends(suggestedFriendListUnsorted);
     this.setState({

@@ -23,7 +23,7 @@ class AddFriendsByEmail extends Component {
   constructor (props) {
     super(props);
     this.state = {
-      addFriendsMessage: 'Here’s how I’m figuring out this election.',
+      addFriendsMessage: 'I\'m using We Vote to get ready to vote. Join me!',
       friendsToInvite: [],
       friendFirstName: '',
       friendLastName: '',
@@ -47,12 +47,11 @@ class AddFriendsByEmail extends Component {
     // console.log('AddFriendsByEmail componentDidMount');
     this.onFriendStoreChange();
     this.setState({
-      loading: true,
       voter: VoterStore.getVoter(),
     });
     this.friendStoreListener = FriendStore.addListener(this.onFriendStoreChange.bind(this));
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
-    if (apiCalming('friendListsAll', 1500)) {
+    if (apiCalming('friendListsAll', 30000)) {
       FriendActions.getAllFriendLists();
       // FriendActions.friendInvitationsWaitingForVerification();
     }
@@ -384,7 +383,7 @@ class AddFriendsByEmail extends Component {
                             fullWidth
                             onFocus={focusTextFieldAndroid}
                             onBlur={blurTextFieldAndroid}
-                            placeholder="Here’s how I’m figuring out this election."
+                            placeholder="I'm using We Vote to get ready to vote. Join me!"
                           />
                         </>
                       ) : null}

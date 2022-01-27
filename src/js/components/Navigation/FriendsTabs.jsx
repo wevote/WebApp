@@ -1,5 +1,7 @@
-import { Tab, Tabs } from '@material-ui/core';
+import { Badge, Tab, Tabs } from '@material-ui/core';
+import { withStyles } from '@material-ui/core/styles';
 import { styled as muiStyled } from '@material-ui/styles';
+import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import Helmet from 'react-helmet';
 import ActivityActions from '../../actions/ActivityActions';
@@ -8,6 +10,7 @@ import FriendActions from '../../actions/FriendActions';
 import FriendStore from '../../stores/FriendStore';
 import VoterStore from '../../stores/VoterStore';
 import historyPush from '../../common/utils/historyPush';
+import apiCalming from '../../utils/apiCalming';
 import displayFriendsTabs from '../../utils/displayFriendsTabs';
 import sortFriendListByMutualFriends from '../../utils/friendFunctions';
 import { normalizedHref } from '../../common/utils/hrefUtils';
@@ -30,10 +33,9 @@ class FriendsTabs extends Component {
   componentDidMount () {
     // console.log('FriendsTabs componentDidMount');
     this.friendStoreListener = FriendStore.addListener(this.onFriendStoreChange.bind(this));
-    FriendActions.currentFriends();
-    FriendActions.friendInvitationsSentToMe();
-    FriendActions.friendInvitationsSentByMe();
-    FriendActions.suggestedFriendList();
+    if (apiCalming('friendListsAll', 30000)) {
+      FriendActions.getAllFriendLists();
+    }
     const friendInvitationsSentByMe = FriendStore.friendInvitationsSentByMe();
     const friendInvitationsSentToMe = FriendStore.friendInvitationsSentToMe();
     const suggestedFriendListUnsorted = FriendStore.suggestedFriendList();
@@ -103,19 +105,19 @@ class FriendsTabs extends Component {
     // Don't return a selected tab if the tab isn't available
     if (String(selectedTab) === 'requests') {
       if (friendInvitationsSentToMe.length < 1) {
-        selectedTab = 'invite';
+        selectedTab = 'all';
       }
     } else if (String(selectedTab) === 'suggested') {
       if (suggestedFriendList.length < 1) {
-        selectedTab = 'invite';
+        selectedTab = 'all';
       }
     } else if (String(selectedTab) === 'friends') {
       if (currentFriendList.length < 1) {
-        selectedTab = 'invite';
+        selectedTab = 'all';
       }
     } else if (String(selectedTab) === 'sent-requests') {
       if (friendInvitationsSentByMe.length < 1) {
-        selectedTab = 'invite';
+        selectedTab = 'all';
       }
     }
     return selectedTab;
@@ -128,7 +130,7 @@ class FriendsTabs extends Component {
     // console.log('------------ in FriendsTabs getPageFromUrl', href);
     if (href === '/friends') {
       // console.log('------------ in FriendsTabs tabItem: invite');
-      return 'invite';
+      return 'all';
     }
     return href.replace('/friends/', '');
   }
@@ -147,7 +149,7 @@ class FriendsTabs extends Component {
     } else if (friendInvitationsSentByMe && friendInvitationsSentByMe.length > 0) {
       defaultTabItem = 'sent-requests';
     } else {
-      defaultTabItem = 'invite';
+      defaultTabItem = 'all';
     }
     this.setState({ defaultTabItem });
     // console.log('resetDefaultTabForMobile defaultTabItem:', defaultTabItem, ', tabItem:', tabItem);
@@ -159,8 +161,9 @@ class FriendsTabs extends Component {
 
   render () {
     renderLog('FriendsTabs');  // Set LOG_RENDER_EVENTS to log all renders
+    const { classes } = this.props;
     const {
-      currentFriendList, friendInvitationsSentByMe,
+      friendInvitationsSentByMe,
       friendInvitationsSentToMe, suggestedFriendList, /* voter, */
     } = this.state;
 
@@ -177,10 +180,29 @@ class FriendsTabs extends Component {
             scrollButtons="auto"
             aria-label="scrollable auto tabs example"
           >
-            {friendInvitationsSentToMe.length > 0 && (
+            <FriendsNavTab
+              value="all"
+              label="All"
+              onClick={() => {
+                this.handleNavigation('/friends/all');
+              }}
+            />
+            {friendInvitationsSentToMe && friendInvitationsSentToMe.length > 0 && (
               <FriendsNavTab
                 value="requests"
-                label="Requests"
+                label={(
+                  <>
+                    <Badge
+                      badgeContent={friendInvitationsSentToMe.length}
+                      classes={{ badge: classes.headerBadge }}
+                      color="primary"
+                      max={9}
+                    >
+                      Requests
+                      &nbsp;&nbsp;
+                    </Badge>
+                  </>
+                )}
                 onClick={() => {
                   this.handleNavigation('/friends/requests');
                 }}
@@ -202,15 +224,13 @@ class FriendsTabs extends Component {
                 this.handleNavigation('/friends/invite');
               }}
             />
-            {currentFriendList.length > 0 && (
-              <FriendsNavTab
-                value="current"
-                label="Friends"
-                onClick={() => {
-                  this.handleNavigation('/friends/current');
-                }}
-              />
-            )}
+            <FriendsNavTab
+              value="current"
+              label="Friends"
+              onClick={() => {
+                this.handleNavigation('/friends/current');
+              }}
+            />
             {friendInvitationsSentByMe.length > 0 && (
               <FriendsNavTab
                 value="sent-requests"
@@ -226,6 +246,18 @@ class FriendsTabs extends Component {
     );
   }
 }
+FriendsTabs.propTypes = {
+  classes: PropTypes.object,
+};
+
+const styles = () => ({
+  headerBadge: {
+    // backgroundColor: 'rgba(250, 62, 62)',
+    fontSize: 10,
+    right: 0,
+    top: 11,
+  },
+});
 
 // Styled Mui Component, Tab example:
 const FriendsNavTab = muiStyled(Tab)({
@@ -235,4 +267,4 @@ const FriendsNavTab = muiStyled(Tab)({
   maxHeight: '40px !important',
 });
 
-export default FriendsTabs;
+export default withStyles(styles)(FriendsTabs);

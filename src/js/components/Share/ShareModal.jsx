@@ -23,6 +23,7 @@ import InfoCircleIcon from '../Widgets/InfoCircleIcon';
 import MessageCard from '../Widgets/MessageCard';
 import { androidFacebookClickHandler, androidTwitterClickHandler, cordovaSocialSharingByEmail } from './shareButtonCommon';
 import ShareModalOption from './ShareModalOption';
+import apiCalming from '../../utils/apiCalming';
 
 const OpenExternalWebSite = React.lazy(() => import(/* webpackChunkName: 'OpenExternalWebSite' */ '../../common/components/Widgets/OpenExternalWebSite'));
 
@@ -53,7 +54,9 @@ class ShareModal extends Component {
 
     this.appStateSubscription = messageService.getMessage().subscribe(() => this.onAppObservableStoreChange());
     this.friendStoreListener = FriendStore.addListener(this.onFriendStoreChange.bind(this));
-    FriendActions.currentFriends();
+    if (apiCalming('friendList', 1500)) {
+      FriendActions.currentFriends();
+    }
     this.shareStoreListener = ShareStore.addListener(this.onShareStoreChange.bind(this));
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
     const chosenPreventSharingOpinions = AppObservableStore.getChosenPreventSharingOpinions();

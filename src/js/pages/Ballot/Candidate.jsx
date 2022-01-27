@@ -57,6 +57,7 @@ class Candidate extends Component {
 
   componentDidMount () {
     // console.log('Candidate componentDidMount');
+    window.scrollTo(0, 0);
     const { match: { params: {
       candidate_we_vote_id: candidateWeVoteId,
       organization_we_vote_id: organizationWeVoteId,

@@ -5,10 +5,10 @@ import styled from 'styled-components';
 import FriendActions from '../../actions/FriendActions';
 import FriendList from '../../components/Friends/FriendList';
 import SearchBar from '../../components/Search/SearchBar';
-import MessageCard from '../../components/Widgets/MessageCard';
 import FriendStore from '../../stores/FriendStore';
 import sortFriendListByMutualFriends from '../../utils/friendFunctions';
 import { renderLog } from '../../common/utils/logging';
+import apiCalming from '../../utils/apiCalming';
 
 export default class FriendsCurrent extends Component {
   constructor (props) {
@@ -24,7 +24,9 @@ export default class FriendsCurrent extends Component {
   }
 
   componentDidMount () {
-    FriendActions.currentFriends();
+    if (apiCalming('friendList', 1500)) {
+      FriendActions.currentFriends();
+    }
     const currentFriendListUnsorted = FriendStore.currentFriends();
     const currentFriendList = sortFriendListByMutualFriends(currentFriendListUnsorted);
     this.setState({
@@ -97,35 +99,27 @@ export default class FriendsCurrent extends Component {
           )}
         </SectionTitle>
         <div>
-          { currentFriendList && currentFriendList.length > 0 ? (
-            <span>
-              <SearchBar
-                clearButton
-                searchButton
-                placeholder="Search by name"
-                searchFunction={this.searchFriends}
-                clearFunction={this.clearSearch}
-                searchUpdateDelayTime={0}
-              />
-              <br />
-              { this.state.searchFilterOn && currentFriendList.length === 0 ? (
-                <p>
-                  &quot;
-                  {this.state.searchTerm}
-                  &quot; not found
-                </p>
-              ) : null}
-              <FriendList
-                friendList={currentFriendList}
-              />
-            </span>
-          ) : (
-            <MessageCard
-              mainText="You currently have no friends on We Vote. Send some invites to connect with your friends!"
-              buttonText="Invite Friends"
-              buttonURL="/friends/invite"
+          <span>
+            <SearchBar
+              clearButton
+              searchButton
+              placeholder="Search by name"
+              searchFunction={this.searchFriends}
+              clearFunction={this.clearSearch}
+              searchUpdateDelayTime={0}
             />
-          )}
+            <br />
+            { (this.state.searchFilterOn && currentFriendList.length === 0) && (
+              <p>
+                &quot;
+                {this.state.searchTerm}
+                &quot; not found
+              </p>
+            )}
+            <FriendList
+              friendList={currentFriendList}
+            />
+          </span>
         </div>
       </div>
     );

@@ -33,6 +33,7 @@ import FriendInvitationsSentToMe from './FriendInvitationsSentToMe';
 import FriendsCurrent from './FriendsCurrent';
 import InviteByEmail from './InviteByEmail';
 import SuggestedFriends from './SuggestedFriends';
+import apiCalming from '../../utils/apiCalming';
 
 const FirstAndLastNameRequiredAlert = React.lazy(() => import(/* webpackChunkName: 'FirstAndLastNameRequiredAlert' */ '../../components/Widgets/FirstAndLastNameRequiredAlert'));
 
@@ -71,14 +72,14 @@ class Friends extends Component {
 
   componentDidMount () {
     // console.log('Friends componentDidMount');
+    window.scrollTo(0, 0);
 
     // this.appStateSubscription = messageService.getMessage().subscribe(() => this.onAppObservableStoreChange());
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
     this.friendStoreListener = FriendStore.addListener(this.onFriendStoreChange.bind(this));
-    FriendActions.currentFriends();
-    FriendActions.friendInvitationsSentToMe();
-    FriendActions.friendInvitationsSentByMe();
-    FriendActions.suggestedFriendList();
+    if (apiCalming('friendListsAll', 30000)) {
+      FriendActions.getAllFriendLists();
+    }
     const friendInvitationsSentByMe = FriendStore.friendInvitationsSentByMe();
     const friendInvitationsSentToMe = FriendStore.friendInvitationsSentToMe();
     const suggestedFriendListUnsorted = FriendStore.suggestedFriendList();
@@ -102,6 +103,16 @@ class Friends extends Component {
     this.resetDefaultTabForMobile(friendInvitationsSentToMe, suggestedFriendList, friendInvitationsSentByMe);
     ActivityActions.activityNoticeListRetrieve();
     AnalyticsActions.saveActionNetwork(VoterStore.electionId());
+  }
+
+  // eslint-disable-next-line no-unused-vars
+  componentDidUpdate (prevProps, prevState, snapshot) {
+    const { match: { params: { tabItem } } } = this.props;
+    const { match: { params: { tabItem: previousTabItem } } } = prevProps;
+
+    if (tabItem && previousTabItem && tabItem !== previousTabItem) {
+      window.scrollTo(0, 0);
+    }
   }
 
   componentWillUnmount () {
@@ -178,19 +189,19 @@ class Friends extends Component {
     // Don't return a selected tab if the tab isn't available
     if (String(selectedTab) === 'requests') {
       if (friendInvitationsSentToMe.length < 1) {
-        selectedTab = 'invite';
+        selectedTab = 'all';
       }
     } else if (String(selectedTab) === 'suggested') {
       if (suggestedFriendList.length < 1) {
-        selectedTab = 'invite';
+        selectedTab = 'all';
       }
     } else if (String(selectedTab) === 'friends') {
       if (currentFriendList.length < 1) {
-        selectedTab = 'invite';
+        selectedTab = 'all';
       }
     } else if (String(selectedTab) === 'sent-requests') {
       if (friendInvitationsSentByMe.length < 1) {
-        selectedTab = 'invite';
+        selectedTab = 'all';
       }
     }
     return selectedTab;
@@ -211,7 +222,7 @@ class Friends extends Component {
     } else if (friendInvitationsSentByMe && friendInvitationsSentByMe.length > 0) {
       defaultTabItem = 'sent-requests';
     } else {
-      defaultTabItem = 'invite';
+      defaultTabItem = 'all';
     }
     this.setState({ defaultTabItem });
     // console.log('resetDefaultTabForMobile defaultTabItem:', defaultTabItem, ', tabItem:', tabItem);
@@ -256,7 +267,7 @@ class Friends extends Component {
                   />
                 ) : (
                   <MessageCard
-                    mainText="You have no incoming friend requests. Send some invites to connect with your friends!"
+                    mainText="Send some invites to connect with your friends!"
                     buttonText="Invite Friends"
                     buttonURL="/friends/invite"
                   />
@@ -282,13 +293,13 @@ class Friends extends Component {
               <>
                 {friendInvitationsSentToMe.length > 0 ? (
                   <MessageCard
-                    mainText="You currently have no suggested friends. Check out your incoming friend requests!"
+                    mainText="Check out your incoming friend requests!"
                     buttonText="View Requests"
                     buttonURL="/friends/requests"
                   />
                 ) : (
                   <MessageCard
-                    mainText="You currently have no suggested friends. Send some invites to connect with your friends!"
+                    mainText="Send some invites to connect with your friends!"
                     buttonText="Invite Friends"
                     buttonURL="/friends/invite"
                   />
@@ -337,13 +348,13 @@ class Friends extends Component {
               <>
                 {friendInvitationsSentToMe.length > 0 ? (
                   <MessageCard
-                    mainText="You currently have no friends on We Vote, but you do have friend requests. Check them out!"
+                    mainText="You have friend requests. Check them out!"
                     buttonText="View Requests"
                     buttonURL="/friends/requests"
                   />
                 ) : (
                   <MessageCard
-                    mainText="You currently have no friends on We Vote. Send some invites to connect with your friends!"
+                    mainText="Send some invites to connect with your friends!"
                     buttonText="Invite Friends"
                     buttonURL="/friends/invite"
                   />
@@ -368,28 +379,54 @@ class Friends extends Component {
           </>
         );
         break;
+      case 'all':
       default:
         mobileContentToDisplay = (
           <>
-            {friendInvitationsSentToMe.length > 0 ? (
-              <FriendInvitationsSentToMe />
-            ) : (
-              <>
-                {suggestedFriendList.length > 0 ? (
-                  <MessageCard
-                    mainText="You have no incoming friend requests. Check out your suggested friends."
-                    buttonText="View Suggested Friends"
-                    buttonURL="/friends/suggested"
-                  />
-                ) : (
-                  <MessageCard
-                    mainText="You have no incoming friend requests. Send some invites to connect with your friends!"
-                    buttonText="Invite Friends"
-                    buttonURL="/friends/invite"
-                  />
-                )}
-              </>
+            <>
+              {voterIsSignedIn && (
+                <Suspense fallback={<></>}>
+                  <FirstAndLastNameRequiredAlert />
+                </Suspense>
+              )}
+              {!!(!voterIsSignedIn || !friendActivityExists) && (
+                <InviteByEmail />
+              )}
+              <FriendInvitationsSentToMePreview />
+              <SuggestedFriendsPreview />
+              <FriendsCurrentPreview />
+              {voterIsSignedIn && (
+                <FriendInvitationsSentByMePreview />
+              )}
+            </>
+            {!!(voterIsSignedIn && friendActivityExists) && (
+              <div className="card">
+                <div className="card-main">
+                  <SectionTitle>
+                    Invite Friends
+                  </SectionTitle>
+                  <TooltipIcon title="These friends will see what you support and oppose." />
+                  <AddFriendsByEmail inSideColumn />
+                </div>
+              </div>
             )}
+            <SignInOptionsWrapper>
+              {voter.signed_in_twitter ? null : (
+                <TwitterSignInWrapper>
+                  <TwitterSignInCard />
+                </TwitterSignInWrapper>
+              )}
+              {voter.signed_in_facebook ? null : (
+                <FacebookSignInWrapper>
+                  <FacebookSignInCard />
+                </FacebookSignInWrapper>
+              )}
+            </SignInOptionsWrapper>
+            <FriendsPromoBox
+              imageUrl={imageUrl}
+              testimonialAuthor={testimonialAuthor}
+              testimonial={testimonial}
+            />
           </>
         );
     }
@@ -451,6 +488,7 @@ class Friends extends Component {
           <FriendInvitationsSentByMe />
         );
         break;
+      case 'all':
       default:
         desktopContentToDisplay = (
           <>
@@ -477,7 +515,7 @@ class Friends extends Component {
               </div>
               <div className="col-md-12 col-lg-4">
                 {!!(voterIsSignedIn && friendActivityExists) && (
-                  <section className="card">
+                  <div className="card">
                     <div className="card-main">
                       <SectionTitle>
                         Invite Friends
@@ -485,7 +523,7 @@ class Friends extends Component {
                       <TooltipIcon title="These friends will see what you support and oppose." />
                       <AddFriendsByEmail inSideColumn />
                     </div>
-                  </section>
+                  </div>
                 )}
                 <SignInOptionsWrapper>
                   {voter.signed_in_twitter ? null : (
@@ -514,13 +552,13 @@ class Friends extends Component {
     return (
       <PageContentContainer>
         {displayFriendsTabs() ? (
-          <div className="friends__heading">
+          <FriendsHeading>
             <div className="container-fluid debugStyleBottom">
               <div className="Friends__Wrapper" style={cordovaFriendsWrapper()}>
                 {mobileContentToDisplay}
               </div>
             </div>
-          </div>
+          </FriendsHeading>
         ) : (
           <div className="container-fluid">
             <div className="container-main">
@@ -548,6 +586,20 @@ const FacebookSignInWrapper = styled.div`
   @media (min-width: 614px) and (max-width: 991px) {
     padding-left: 8px;
   }
+`;
+
+const FriendsHeading = styled.div`
+  // width: 100%;
+  // background-color: #fff;
+  // border-bottom: 1px solid #aaa;
+  // // overflow: hidden;
+  // // position: fixed;
+  // z-index: 1;
+  // left: 0;
+  // padding-top: 50px;
+  // // transform: translate3d(0, -53px, 0);
+  // // transition: all 100ms ease-in-out 0s;
+  // box-shadow: 0 2px 4px -1px rgba(0, 0, 0, 0.2), 0 4px 5px 0 rgba(0, 0, 0, 0.14), 0 1px 10px 0 rgba(0, 0, 0, 0.12);
 `;
 
 const SectionTitle = styled.h2`

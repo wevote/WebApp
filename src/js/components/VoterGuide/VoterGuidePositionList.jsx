@@ -14,6 +14,7 @@ import { renderLog } from '../../common/utils/logging';
 import FilterBase from '../Filter/FilterBase';
 import VoterGuidePositionFilter from '../Filter/VoterGuidePositionFilter';
 import NumberOfItemsFound from '../Widgets/NumberOfItemsFound';
+import apiCalming from '../../utils/apiCalming';
 
 const ShowMoreItems = React.lazy(() => import(/* webpackChunkName: 'ShowMoreItems' */ '../Widgets/ShowMoreItems'));
 const VoterGuidePositionItem = React.lazy(() => import(/* webpackChunkName: 'VoterGuidePositionItem' */ './VoterGuidePositionItem'));
@@ -122,7 +123,9 @@ class VoterGuidePositionList extends Component {
 
     OrganizationActions.organizationsFollowedRetrieve();
     if (!organizationsVoterIsFriendsWith.length > 0) {
-      FriendActions.currentFriends();
+      if (apiCalming('friendList', 1500)) {
+        FriendActions.currentFriends();
+      }
     }
 
     const stateCodesToDisplay = getStateCodesFoundInObjectList(incomingPositionList);

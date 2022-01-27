@@ -1,10 +1,12 @@
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
+import styled from 'styled-components';
 import FriendActions from '../../actions/FriendActions';
 import VoterActions from '../../actions/VoterActions';
 import LoadingWheel from '../../common/components/Widgets/LoadingWheel';
 import AppObservableStore, { messageService } from '../../stores/AppObservableStore';
 import FriendStore from '../../stores/FriendStore';
+import VoterStore from '../../stores/VoterStore';
 import historyPush from '../../common/utils/historyPush';
 import { renderLog } from '../../common/utils/logging';
 
@@ -28,9 +30,12 @@ export default class FriendInvitationByEmailVerifyProcess extends Component {
   componentDidMount () {
     this.appStateSubscription = messageService.getMessage().subscribe(() => this.onAppObservableStoreChange());
     this.friendStoreListener = FriendStore.addListener(this.onFriendStoreChange.bind(this));
+    this.voterStoreListener = VoterStore.addListener(this.onAppObservableStoreChange.bind(this));
     const { match: { params: { invitation_secret_key: invitationSecretKey } } } = this.props;
     // console.log('FriendInvitationByEmailVerifyProcess, componentDidMount, params.invitation_secret_key: ', invitationSecretKey);
     const hostname = AppObservableStore.getHostname();
+    // console.log('FriendInvitationByEmailVerifyProcess, componentDidMount, hostname: ', hostname);
+    FriendActions.friendInvitationInformation(invitationSecretKey); // Get data flowing but don't set friendInvitationInformationCalled: true yet
     if (invitationSecretKey && hostname && hostname !== '') {
       this.friendInvitationByEmailVerify(invitationSecretKey);
       this.setState({
@@ -43,12 +48,14 @@ export default class FriendInvitationByEmailVerifyProcess extends Component {
   componentWillUnmount () {
     this.appStateSubscription.unsubscribe();
     this.friendStoreListener.remove();
+    this.voterStoreListener.remove();
   }
 
   onAppObservableStoreChange () {
     const { match: { params: { invitation_secret_key: invitationSecretKey } } } = this.props;
     const { friendInvitationByEmailVerifyCalled, friendInvitationInformationCalled } = this.state;
     const hostname = AppObservableStore.getHostname();
+    // console.log('FriendInvitationByEmailVerifyProcess, onAppObservableStoreChange, hostname: ', hostname);
     if (!friendInvitationByEmailVerifyCalled && invitationSecretKey && hostname && hostname !== '') {
       // console.log('onAppObservableStoreChange, calling friendInvitationByEmailVerify');
       this.friendInvitationByEmailVerify(invitationSecretKey);
@@ -72,6 +79,7 @@ export default class FriendInvitationByEmailVerifyProcess extends Component {
     const { match: { params: { invitation_secret_key: invitationSecretKey } } } = this.props;
     const { friendInvitationByEmailVerifyCalled, friendInvitationInformationCalled } = this.state;
     const hostname = AppObservableStore.getHostname();
+    // console.log('FriendInvitationByEmailVerifyProcess, onFriendStoreChange, hostname: ', hostname);
     if (friendInvitationByEmailVerifyCalled && !friendInvitationInformationCalled && invitationSecretKey && hostname && hostname !== '') {
       // console.log('onFriendStoreChange, calling friendInvitationInformation');
       FriendActions.friendInvitationInformation(invitationSecretKey);
@@ -148,22 +156,26 @@ export default class FriendInvitationByEmailVerifyProcess extends Component {
       return (
         <Suspense fallback={<></>}>
           <div>
-            <DelayedLoad waitBeforeShow={1000}>
-              <div>
-                Verifying invitation code...
-                {' '}
-              </div>
-            </DelayedLoad>
-            <DelayedLoad waitBeforeShow={3000}>
-              <div>
-                Setting up your account...
-              </div>
-            </DelayedLoad>
-            <DelayedLoad waitBeforeShow={5000}>
-              <div>
-                Preparing your ballot based on our best guess of your location...
-              </div>
-            </DelayedLoad>
+            <CenteredText>
+              <DelayedLoad waitBeforeShow={1000}>
+                <div>
+                  Verifying invitation code...
+                  <br />
+                </div>
+              </DelayedLoad>
+              <DelayedLoad waitBeforeShow={3000}>
+                <div>
+                  Setting up your account...
+                  <br />
+                </div>
+              </DelayedLoad>
+              <DelayedLoad waitBeforeShow={5000}>
+                <div>
+                  Preparing your ballot based on our best guess of your location...
+                  <br />
+                </div>
+              </DelayedLoad>
+            </CenteredText>
             {LoadingWheel}
           </div>
         </Suspense>
@@ -231,22 +243,24 @@ export default class FriendInvitationByEmailVerifyProcess extends Component {
       return (
         <Suspense fallback={<></>}>
           <div>
-            <DelayedLoad waitBeforeShow={1000}>
-              <div>
-                Verifying invitation code.
-                {' '}
-              </div>
-            </DelayedLoad>
-            <DelayedLoad waitBeforeShow={3000}>
-              <div>
-                Setting up your account.
-              </div>
-            </DelayedLoad>
-            <DelayedLoad waitBeforeShow={5000}>
-              <div>
-                Preparing your ballot based on our best guess of your location.
-              </div>
-            </DelayedLoad>
+            <CenteredText>
+              <DelayedLoad waitBeforeShow={1000}>
+                <div>
+                  Verifying invitation code.
+                  {' '}
+                </div>
+              </DelayedLoad>
+              <DelayedLoad waitBeforeShow={3000}>
+                <div>
+                  Setting up your account.
+                </div>
+              </DelayedLoad>
+              <DelayedLoad waitBeforeShow={5000}>
+                <div>
+                  Preparing your ballot based on our best guess of your location.
+                </div>
+              </DelayedLoad>
+            </CenteredText>
             {LoadingWheel}
           </div>
         </Suspense>
@@ -257,3 +271,12 @@ export default class FriendInvitationByEmailVerifyProcess extends Component {
 FriendInvitationByEmailVerifyProcess.propTypes = {
   match: PropTypes.object,
 };
+
+const CenteredText = styled.div`
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin-top: 70px;
+  padding: 15px;
+`;

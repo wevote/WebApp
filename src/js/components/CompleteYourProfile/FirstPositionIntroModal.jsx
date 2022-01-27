@@ -20,22 +20,6 @@ class FirstPositionIntroModal extends Component {
     };
   }
 
-  componentDidMount () {
-    // this.friendStoreListener = FriendStore.addListener(this.onFriendStoreChange.bind(this));
-    // FriendActions.currentFriends();
-  }
-
-  componentWillUnmount () {
-    // this.friendStoreListener.remove();
-  }
-
-  // onFriendStoreChange () {
-  //   const { currentFriendsList } = this.state;
-  //   if (currentFriendsList.length !== FriendStore.currentFriends().length) {
-  //     this.setState({ currentFriendsList: FriendStore.currentFriends() });
-  //   }
-  // }
-
   closeThisModal = () => {
     this.props.toggleFunction(normalizedHref());
   };

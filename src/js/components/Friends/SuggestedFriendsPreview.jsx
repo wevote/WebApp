@@ -23,9 +23,8 @@ export default class SuggestedFriendsPreview extends Component {
     const { friendsToShowMaxIncoming } = this.props;
     this.friendStoreListener = FriendStore.addListener(this.onFriendStoreChange.bind(this));
     this.onFriendStoreChange();
-    if (apiCalming('friendListsAll', 1500)) {
-      FriendActions.getAllFriendLists();
-      // FriendActions.suggestedFriendList();
+    if (apiCalming('friendList', 1500)) {
+      FriendActions.suggestedFriendList();
     }
     const FRIENDS_TO_SHOW_MAX_DEFAULT = 3;
     const friendsToShowMax = friendsToShowMaxIncoming || FRIENDS_TO_SHOW_MAX_DEFAULT;

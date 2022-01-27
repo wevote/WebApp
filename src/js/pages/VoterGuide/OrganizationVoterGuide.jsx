@@ -20,6 +20,7 @@ import { isIPad } from '../../common/utils/cordovaUtils';
 import { isWebApp } from '../../common/utils/isCordovaOrWebApp';
 import historyPush from '../../common/utils/historyPush';
 import { renderLog } from '../../common/utils/logging';
+import apiCalming from '../../utils/apiCalming';
 import { isSpeakerTypePrivateCitizen } from '../../utils/organization-functions';
 import { PageContentContainer } from '../../utils/pageLayoutStyles';
 
@@ -50,6 +51,7 @@ export default class OrganizationVoterGuide extends Component {
   }
 
   componentDidMount () {
+    window.scrollTo(0, 0);
     const { match: { params: {
       organization_we_vote_id: organizationWeVoteId,
       modal_to_show: modalToShow,
@@ -124,7 +126,9 @@ export default class OrganizationVoterGuide extends Component {
       organizationWeVoteId,
       voter,
     });
-    FriendActions.currentFriends();  // We need this so we can identify if the voter is friends with this organization/person
+    if (apiCalming('friendList', 1500)) {
+      FriendActions.currentFriends(); // We need this so we can identify if the voter is friends with this organization/person
+    }
   }
 
   // eslint-disable-next-line camelcase,react/sort-comp

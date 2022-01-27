@@ -38,6 +38,7 @@ class Office extends Component {
   }
 
   componentDidMount () {
+    window.scrollTo(0, 0);
     const { match: { params } } = this.props;
     this.candidateStoreListener = CandidateStore.addListener(this.onCandidateStoreChange.bind(this));
     this.officeStoreListener = OfficeStore.addListener(this.onOfficeStoreChange.bind(this));
