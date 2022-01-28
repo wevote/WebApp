@@ -1,11 +1,11 @@
 import { Button } from '@material-ui/core';
+import { withStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import FriendActions from '../../actions/FriendActions';
 import FriendStore from '../../stores/FriendStore';
-import isMobileScreenSize from '../../utils/isMobileScreenSize';
 import { renderLog } from '../../common/utils/logging';
 import { removeTwitterNameFromDescription } from '../../utils/textFormat';
 import FriendInvitationToggle from './FriendInvitationToggle';
@@ -61,6 +61,7 @@ class FriendInvitationVoterLinkDisplayForList extends Component {
     }
 
     const {
+      classes,
       invitationsSentByMe,
       mutual_friends: mutualFriends,
       positions_taken: positionsTaken,
@@ -137,6 +138,7 @@ class FriendInvitationVoterLinkDisplayForList extends Component {
           <ButtonWrapper>
             <CancelButtonContainer>
               <Button
+                classes={{ root: classes.ignoreButton }}
                 color="primary"
                 disabled={cancelFriendInviteVoterSubmitted}
                 fullWidth
@@ -158,18 +160,19 @@ class FriendInvitationVoterLinkDisplayForList extends Component {
           </ButtonWrapper>
         ) : (
           <ButtonWrapper>
-            <FriendInvitationToggle otherVoterWeVoteId={otherVoterWeVoteId} />
-            <ButtonContainer>
+            <IgnoreButtonContainer>
               <Button
+                classes={{ root: classes.ignoreButton }}
                 color="primary"
                 fullWidth
                 onClick={() => this.ignoreFriendInvite(otherVoterWeVoteId)}
                 type="button"
                 variant="outlined"
               >
-                {isMobileScreenSize() ? 'Delete' : 'Delete'}
+                Ignore
               </Button>
-            </ButtonContainer>
+            </IgnoreButtonContainer>
+            <FriendInvitationToggle otherVoterWeVoteId={otherVoterWeVoteId} />
           </ButtonWrapper>
         )}
       </Wrapper>
@@ -201,6 +204,12 @@ FriendInvitationVoterLinkDisplayForList.propTypes = {
   previewMode: PropTypes.bool,
 };
 
+const styles = () => ({
+  ignoreButton: {
+    fontSize: '12.5px',
+  },
+});
+
 const Wrapper = styled.div`
   margin: 24px 0;
   display: flex;
@@ -217,6 +226,7 @@ const Wrapper = styled.div`
   }
   @media (min-width: 520px) {
     height: 68px;
+    justify-content: space-between;
     padding-left: 85px;
   }
 `;
@@ -317,26 +327,28 @@ const ButtonWrapper = styled.div`
   justify-content: space-between;
   @media(min-width: 400px) {
     margin: 0;
-    margin-left: auto;
-    width: fit-content;
+    // margin-left: auto;
+    // width: fit-content;
     align-items: flex-end;
-    flex-direction: column;
+    // flex-direction: column;
     justify-content: flex-end;
   }
   @media (min-width: 520px) {
-    flex-direction: row-reverse;
-    justify-content: flex-end;
     align-items: center;
+    // flex-direction: row-reverse;
+    justify-content: flex-end;
+    width: fit-content;
   }
 `;
 
-const ButtonContainer = styled.div`
+const IgnoreButtonContainer = styled.div`
   width: 100%;
-  margin-left: 12px;
+  margin-right: 12px;
   @media(min-width: 400px) {
     width: fit-content;
     margin: 0;
-    margin-top: 6px;
+    margin-bottom: 6px;
+    margin-right: 8px;
   }
   @media(min-width: 520px) {
     margin: 0;
@@ -347,10 +359,13 @@ const ButtonContainer = styled.div`
 const CancelButtonContainer = styled.div`
   width: 100%;
   margin-right: 12px;
+  @media(min-width: 400px) {
+    margin-left: 8px;
+  }
   @media(min-width: 520px) {
     margin: 0;
     margin-right: 8px;
   }
 `;
 
-export default FriendInvitationVoterLinkDisplayForList;
+export default withStyles(styles)(FriendInvitationVoterLinkDisplayForList);

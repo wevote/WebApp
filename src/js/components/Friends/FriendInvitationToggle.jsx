@@ -1,4 +1,5 @@
 import { Button } from '@material-ui/core';
+import { withStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import styled from 'styled-components';
@@ -7,7 +8,7 @@ import FriendStore from '../../stores/FriendStore';
 import VoterStore from '../../stores/VoterStore';
 import { renderLog } from '../../common/utils/logging';
 
-export default class FriendInvitationToggle extends Component {
+class FriendInvitationToggle extends Component {
   constructor (props) {
     super(props);
     this.state = {
@@ -56,7 +57,7 @@ export default class FriendInvitationToggle extends Component {
   render () {
     renderLog('FriendInvitationToggle');  // Set LOG_RENDER_EVENTS to log all renders
     if (!this.state) { return <div />; }
-    const { otherVoterWeVoteId } = this.props;
+    const { classes, otherVoterWeVoteId } = this.props;
     const { acceptFriendInviteSent, isFriend } = this.state;
     // console.log("FriendInvitationToggle, my voter_we_vote_id:", this.state.voter.we_vote_id, ", otherVoterWeVoteId:", otherVoterWeVoteId, ", isFriend:", isFriend);
     const isLookingAtSelf = this.state.voter.we_vote_id === otherVoterWeVoteId;
@@ -71,13 +72,14 @@ export default class FriendInvitationToggle extends Component {
         {isFriend ? null : (
           <ButtonContainer>
             <Button
+              classes={{ root: classes.ignoreButton }}
               color="primary"
               disabled={acceptFriendInviteSent}
               fullWidth
               onClick={this.acceptFriendInvite}
               variant="contained"
             >
-              {acceptFriendInviteSent ? 'Confirming...' : 'Confirm'}
+              {acceptFriendInviteSent ? 'Accepting...' : 'Accept'}
             </Button>
           </ButtonContainer>
         )}
@@ -86,8 +88,15 @@ export default class FriendInvitationToggle extends Component {
   }
 }
 FriendInvitationToggle.propTypes = {
+  classes: PropTypes.object,
   otherVoterWeVoteId: PropTypes.string.isRequired,
 };
+
+const styles = () => ({
+  ignoreButton: {
+    fontSize: '12.5px',
+  },
+});
 
 const ButtonContainer = styled.div`
   width: 100%;
@@ -102,3 +111,5 @@ const ButtonContainer = styled.div`
     margin-left: 8px;
   }
 `;
+
+export default withStyles(styles)(FriendInvitationToggle);

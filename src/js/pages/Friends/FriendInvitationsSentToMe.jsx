@@ -60,7 +60,7 @@ class FriendInvitationsSentToMe extends Component {
             </span>
           ) : (
             <MessageCard
-              mainText="You have no incoming friend requests. Send some invites to connect with your friends!"
+              mainText="You have no incoming friend requests. Invite your friends to connect!"
               buttonText="Invite Friends"
               buttonURL="/friends/invite"
             />
