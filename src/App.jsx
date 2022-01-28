@@ -1,19 +1,20 @@
 import { MuiThemeProvider, StylesProvider } from '@material-ui/core/styles';
 import React, { Component, Suspense } from 'react';
+import FullStory from 'react-fullstory';
 import { Redirect, Route, Switch } from 'react-router-dom';
 import styled, { ThemeProvider } from 'styled-components';
+import muiTheme from './js/common/components/Style/mui-theme';
+import styledTheme from './js/common/components/Style/styled-theme';
+import ErrorBoundary from './js/common/components/Widgets/ErrorBoundary';
 import LoadingWheelComp from './js/common/components/Widgets/LoadingWheelComp';
+import WeVoteRouter from './js/common/components/Widgets/WeVoteRouter';
+import { normalizedHref } from './js/common/utils/hrefUtils';
+import { isWebApp } from './js/common/utils/isCordovaOrWebApp';
+import { renderLog } from './js/common/utils/logging';
 import Header from './js/components/Navigation/Header';
 import HeaderBarSuspense from './js/components/Navigation/HeaderBarSuspense';
-import ErrorBoundary from './js/common/components/Widgets/ErrorBoundary';
-import WeVoteRouter from './js/common/components/Widgets/WeVoteRouter';
-import muiTheme from './js/common/components/Style/mui-theme';
 import AppObservableStore from './js/stores/AppObservableStore';
-import styledTheme from './js/common/components/Style/styled-theme';
-import { isWebApp } from './js/common/utils/isCordovaOrWebApp';
-import { normalizedHref } from './js/common/utils/hrefUtils';
 import initializejQuery from './js/utils/initializejQuery';
-import { renderLog } from './js/common/utils/logging';
 import RouterV5SendMatch from './js/utils/RouterV5SendMatch';
 // importRemoveCordovaListenersToken1  -- Do not remove this line!
 
@@ -106,6 +107,7 @@ class App extends Component {
       // doShowHeader: true,
       // doShowFooter: true,
       showReadyLight: true,
+      enableFullStory: false,
     };
     // this.setShowHeader = this.setShowHeader.bind(this);
     // this.setShowFooter = this.setShowFooter.bind(this);
@@ -129,6 +131,9 @@ class App extends Component {
     });
     console.log('href in App.js componentDidMount: ', window.location.href);
     console.log('normalizedHrefPage in App.js componentDidMount: ', normalizedHref());
+    setTimeout(() => {
+      this.setState({ enableFullStory: true });
+    }, 3000);
   }
 
   componentDidCatch (error, info) {
@@ -139,25 +144,6 @@ class App extends Component {
   componentWillUnmount () {
     // removeCordovaListenersToken -- Do not remove this line!
   }
-
-  // setShowHeader (doShowHeader) {
-  //   console.log('-----------HEADER setShowHeader');
-  //   this.setState({ doShowHeader });
-  // }
-
-  // setShowFooter (doShowFooter) {
-  //   console.log('-----------HEADER setShowFooter');
-  //   this.setState({ doShowFooter });
-  // }
-
-  // setShowHeaderFooter (doShow) {
-  //   console.log('-----------HEADER setShowHeaderFooter', doShow);
-  //   // console.log('setShowHeaderFooter -------------- doShow:', doShow);
-  //   this.setState({
-  //     doShowHeader: doShow,
-  //     doShowFooter: doShow,
-  //   });
-  // }
 
   setShowReadyHeavy () {
     this.setState({ showReadyLight: false });
@@ -172,8 +158,8 @@ class App extends Component {
 
   render () {
     renderLog('App');
-    const { /* doShowHeader, doShowFooter, */ showReadyLight } = this.state;
-    // console.log(`App doShowHeader: ${doShowHeader}, doShowFooter:${doShowFooter}`);
+    const { showReadyLight, enableFullStory } = this.state;
+    // console.log('App.js:  enableFullStory: ', enableFullStory);
     let { hostname } = window.location;
     hostname = hostname || '';
     const weVoteSites = ['wevote.us', 'quality.wevote.us', 'localhost', 'silicon', ''];   // localhost on Cordova is a ''
@@ -194,6 +180,7 @@ class App extends Component {
 
     return (
       <ErrorBoundary>
+        {enableFullStory && (<FullStory org="ESD0B" />)}
         <MuiThemeProvider theme={muiTheme}>
           <ThemeProvider theme={styledTheme}>
             <StylesProvider injectFirst>
