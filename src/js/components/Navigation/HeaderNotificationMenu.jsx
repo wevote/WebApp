@@ -9,6 +9,7 @@ import ActivityStore from '../../stores/ActivityStore';
 import { createDescriptionOfFriendPosts } from '../../utils/activityUtils';
 import apiCalming from '../../utils/apiCalming';
 import { isIOSAppOnMac, setIconBadgeMessageCount } from '../../common/utils/cordovaUtils';
+import { isWebApp } from '../../common/utils/isCordovaOrWebApp';
 import historyPush from '../../common/utils/historyPush';
 import { timeFromDate } from '../../common/utils/dateFormat';
 import { renderLog } from '../../common/utils/logging';
@@ -290,7 +291,7 @@ class HeaderNotificationMenu extends Component {
         </IconButton>
         <Menu
           id="headerNotificationsMenu"
-          classes={{ list: classes.list, paper: classes.paper }}
+          classes={isWebApp() ? { list: classes.listWebApp, paper: classes.paper } : { list: classes.listCordova, paper: classes.paper }}
           open={menuOpen}
           onClose={this.handleClose}
           elevation={2}
@@ -351,8 +352,12 @@ const styles = (theme) => ({
       backgroundColor: 'transparent',
     },
   },
-  list: {
+  listCordova: {
     padding: '0 !important',
+  },
+  listWebApp: {
+    padding: '0 !important',
+    width: '100%',
   },
   menuItemClicked: {
     backgroundColor: 'white',

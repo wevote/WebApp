@@ -103,7 +103,7 @@ class SuggestedFriendDisplayForList extends Component {
           <SuggestedFriendToggle otherVoterWeVoteId={otherVoterWeVoteId} />
           <ButtonContainer inSideColumn={inSideColumn}>
             <Button
-              classes={{ root: classes.removeButton }}
+              classes={{ root: classes.ignoreButton }}
               color="primary"
               disabled={ignoreSuggestedFriendSent}
               fullWidth
@@ -111,7 +111,7 @@ class SuggestedFriendDisplayForList extends Component {
               type="button"
               variant="outlined"
             >
-              {ignoreSuggestedFriendSent ? 'Removing...' : 'Remove'}
+              {ignoreSuggestedFriendSent ? 'Ignoring...' : 'Ignore'}
             </Button>
           </ButtonContainer>
         </ButtonWrapper>
@@ -146,8 +146,8 @@ SuggestedFriendDisplayForList.propTypes = {
 };
 
 const styles = () => ({
-  removeButton: {
-    fontSize: 10,
+  ignoreButton: {
+    fontSize: '12.5px',
   },
 });
 

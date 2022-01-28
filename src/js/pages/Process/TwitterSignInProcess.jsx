@@ -47,6 +47,7 @@ export default class TwitterSignInProcess extends Component {
   onTwitterStoreChange () {
     const twitterAuthResponse = TwitterStore.getTwitterAuthResponse();
     const { twitter_image_load_info: twitterImageLoadInfo } = twitterAuthResponse;
+    console.log('TwitterSignInProcess onTwitterStoreChange, twitterImageLoadInfo:', twitterImageLoadInfo);
     this.setState({
       twitterAuthResponse,
       twitterImageLoadInfo,
@@ -56,6 +57,7 @@ export default class TwitterSignInProcess extends Component {
   onVoterStoreChange () {
     const { redirectInProcess, twitterImageLoadInfo } = this.state;
     // console.log('TwitterSignInProcess onVoterStoreChange, redirectInProcess:', redirectInProcess);
+    console.log('TwitterSignInProcess onVoterStoreChange, twitterImageLoadInfo:', twitterImageLoadInfo);
     if (!redirectInProcess) {
       const twitterSignInStatus = VoterStore.getTwitterSignInStatus();
       // console.log('twitterSignInStatus:', twitterSignInStatus);

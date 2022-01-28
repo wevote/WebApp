@@ -118,7 +118,7 @@ export default class FriendInvitationsSentByMe extends Component {
             </span>
           ) : (
             <MessageCard
-              mainText="You currently have no sent requests. Send some invites to connect with your friends!"
+              mainText="You have\'t sent any requests. Invite your friends to connect!"
               buttonText="Invite Friends"
               buttonURL="/friends/invite"
             />

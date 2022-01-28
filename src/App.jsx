@@ -124,16 +124,22 @@ class App extends Component {
   }
 
   componentDidMount () {
+    let { hostname } = window.location;
+    hostname = hostname || '';
+    console.log('hostname:', hostname);
     initializejQuery(() => {
-      let { hostname } = window.location;
-      hostname = hostname || '';
       AppObservableStore.siteConfigurationRetrieve(hostname);
     });
     console.log('href in App.js componentDidMount: ', window.location.href);
     console.log('normalizedHrefPage in App.js componentDidMount: ', normalizedHref());
-    setTimeout(() => {
-      this.setState({ enableFullStory: true });
-    }, 3000);
+    const onWeVoteUS = (hostname && (hostname.toLowerCase() === 'wevote.us'));
+    const onMobileApp = false;
+    if (onWeVoteUS || onMobileApp) {
+      console.log('FullStory ENABLED');
+      setTimeout(() => {
+        this.setState({ enableFullStory: true });
+      }, 3000);
+    }
   }
 
   componentDidCatch (error, info) {

@@ -1,4 +1,5 @@
 import { Button } from '@material-ui/core';
+import { withStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
 import { Link } from 'react-router-dom';
@@ -44,6 +45,7 @@ class FriendInvitationEmailLinkDisplayForList extends Component {
   render () {
     renderLog('FriendInvitationEmailLinkDisplayForList');  // Set LOG_RENDER_EVENTS to log all renders
     const {
+      classes,
       invitation_status: invitationState,
       mutual_friends: mutualFriends,
       positions_taken: positionsTaken,
@@ -120,6 +122,7 @@ class FriendInvitationEmailLinkDisplayForList extends Component {
         <ButtonWrapper>
           <CancelButtonContainer>
             <Button
+              classes={{ root: classes.ignoreButton }}
               color="primary"
               disabled={cancelFriendInviteEmailSubmitted}
               fullWidth
@@ -167,6 +170,12 @@ FriendInvitationEmailLinkDisplayForList.propTypes = {
   // voter_we_vote_id: PropTypes.string, // Comes friend data object from API server
   previewMode: PropTypes.bool,
 };
+
+const styles = () => ({
+  ignoreButton: {
+    fontSize: '12.5px',
+  },
+});
 
 const Wrapper = isWebApp() ? styled.div`
   margin: 24px 0;
@@ -343,4 +352,4 @@ const CancelButtonContainer = styled.div`
   }
 `;
 
-export default FriendInvitationEmailLinkDisplayForList;
+export default withStyles(styles)(FriendInvitationEmailLinkDisplayForList);

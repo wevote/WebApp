@@ -267,7 +267,7 @@ class Friends extends Component {
                   />
                 ) : (
                   <MessageCard
-                    mainText="Send some invites to connect with your friends!"
+                    mainText="Invite your friends to connect!"
                     buttonText="Invite Friends"
                     buttonURL="/friends/invite"
                   />
@@ -299,7 +299,7 @@ class Friends extends Component {
                   />
                 ) : (
                   <MessageCard
-                    mainText="Send some invites to connect with your friends!"
+                    mainText="Invite your friends to connect!"
                     buttonText="Invite Friends"
                     buttonURL="/friends/invite"
                   />
@@ -354,7 +354,7 @@ class Friends extends Component {
                   />
                 ) : (
                   <MessageCard
-                    mainText="Send some invites to connect with your friends!"
+                    mainText="Invite your friends to connect!"
                     buttonText="Invite Friends"
                     buttonURL="/friends/invite"
                   />

@@ -176,7 +176,6 @@ export function getApplicationViewBooleans (pathname) {
       (pathnameLowerCase === '/start') ||
       (pathnameLowerCase === '/values/list') ||
       (pathnameLowerCase === '/welcome') ||
-      pathnameLowerCase.startsWith('/friends') ||
       pathnameLowerCase.startsWith('/how') ||
       pathnameLowerCase.startsWith('/more/donate') ||
       pathnameLowerCase.startsWith('/more/pricing') ||
@@ -214,7 +213,13 @@ export function getApplicationViewBooleans (pathname) {
       pathnameLowerCase.startsWith('/settings')) {
     // We want to SHOW the footer bar on the above path patterns
     showFooterBar = isWebApp() || (!isIOSAppOnMac() && isSmallScreen);
-    showFooterMain = isWebApp();
+    // Even when showFooterBar is true, in some cases we want showFooterMain to be false
+    if (pathnameLowerCase.startsWith('/friends')) {
+      // hide it
+      showFooterMain = false;
+    } else {
+      showFooterMain = isWebApp();
+    }
   } else {
     // URLs like: https://WeVote.US/orlandosentinel  (The URL pathname consists of a Twitter Handle only)
     contentFullWidthMode = true;
