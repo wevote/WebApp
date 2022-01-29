@@ -1,17 +1,17 @@
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
 import VoterActions from '../../actions/VoterActions';
+import { isIOSAppOnMac, isIPad } from '../../common/utils/cordovaUtils';
+import historyPush from '../../common/utils/historyPush';
+import { normalizedHref } from '../../common/utils/hrefUtils';
+import { isCordova, isWebApp } from '../../common/utils/isCordovaOrWebApp';
+import { renderLog } from '../../common/utils/logging';
 import AppObservableStore, { messageService } from '../../stores/AppObservableStore';
 import VoterStore from '../../stores/VoterStore';
 import apiCalming from '../../utils/apiCalming';
 import { dumpCssFromId } from '../../utils/appleSiliconUtils';
 import { getApplicationViewBooleans, weVoteBrandingOff } from '../../utils/applicationUtils';
 import cordovaTopHeaderTopMargin from '../../utils/cordovaTopHeaderTopMargin';
-import { isIOSAppOnMac, isIPad } from '../../common/utils/cordovaUtils';
-import { isCordova, isWebApp } from '../../common/utils/isCordovaOrWebApp';
-import historyPush from '../../common/utils/historyPush';
-import { normalizedHref } from '../../common/utils/hrefUtils';
-import { renderLog } from '../../common/utils/logging';
 import { HeadroomWrapper } from '../../utils/pageLayoutStyles';
 import { stringContains } from '../../utils/textFormat';
 import IPhoneSpacer from '../Widgets/IPhoneSpacer';
@@ -46,7 +46,7 @@ export default class Header extends Component {
     this.closeOrganizationModal = this.closeOrganizationModal.bind(this);
     this.closeSharedItemModal = this.closeSharedItemModal.bind(this);
     this.handleResize = this.handleResize.bind(this);
-    this.storeSub = null;
+    // this.storeSub = null;
   }
 
   componentDidMount () {

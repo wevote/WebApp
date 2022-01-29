@@ -1,6 +1,7 @@
 import { MuiThemeProvider, StylesProvider } from '@material-ui/core/styles';
 import React, { Component, Suspense } from 'react';
 import FullStory from 'react-fullstory';
+import ReactGA from 'react-ga';
 import { Redirect, Route, Switch } from 'react-router-dom';
 import styled, { ThemeProvider } from 'styled-components';
 import muiTheme from './js/common/components/Style/mui-theme';
@@ -8,11 +9,12 @@ import styledTheme from './js/common/components/Style/styled-theme';
 import ErrorBoundary from './js/common/components/Widgets/ErrorBoundary';
 import LoadingWheelComp from './js/common/components/Widgets/LoadingWheelComp';
 import WeVoteRouter from './js/common/components/Widgets/WeVoteRouter';
-import { normalizedHref } from './js/common/utils/hrefUtils';
+import { normalizedHref, normalizedHrefPage } from './js/common/utils/hrefUtils';
 import { isWebApp } from './js/common/utils/isCordovaOrWebApp';
 import { renderLog } from './js/common/utils/logging';
 import Header from './js/components/Navigation/Header';
 import HeaderBarSuspense from './js/components/Navigation/HeaderBarSuspense';
+import webAppConfig from './js/config';
 import AppObservableStore from './js/stores/AppObservableStore';
 import initializejQuery from './js/utils/initializejQuery';
 import RouterV5SendMatch from './js/utils/RouterV5SendMatch';
@@ -130,14 +132,20 @@ class App extends Component {
     initializejQuery(() => {
       AppObservableStore.siteConfigurationRetrieve(hostname);
     });
-    console.log('href in App.js componentDidMount: ', window.location.href);
-    console.log('normalizedHrefPage in App.js componentDidMount: ', normalizedHref());
+    // console.log('href in App.js componentDidMount: ', window.location.href);
+    // console.log('normalizedHrefPage in App.js componentDidMount: ', normalizedHref());
     const onWeVoteUS = (hostname && (hostname.toLowerCase() === 'wevote.us'));
     const onMobileApp = false;
     if (onWeVoteUS || onMobileApp) {
-      console.log('FullStory ENABLED');
       setTimeout(() => {
+        console.log('FullStory ENABLED');
         this.setState({ enableFullStory: true });
+      }, 3000);
+      setTimeout(() => {
+        console.log('Google Analytics ENABLED');
+        ReactGA.initialize(webAppConfig.GOOGLE_ANALYTICS_TRACKING_ID);
+        AppObservableStore.setGoogleAnalyticsEnabled(true);
+        ReactGA.pageview(normalizedHrefPage() ? `/${normalizedHrefPage()}` : '/readyLight');
       }, 3000);
     }
   }
@@ -186,7 +194,7 @@ class App extends Component {
 
     return (
       <ErrorBoundary>
-        {enableFullStory && (<FullStory org="ESD0B" />)}
+        {enableFullStory && (<FullStory org={webAppConfig.FULL_STORY_ORG} />)}
         <MuiThemeProvider theme={muiTheme}>
           <ThemeProvider theme={styledTheme}>
             <StylesProvider injectFirst>

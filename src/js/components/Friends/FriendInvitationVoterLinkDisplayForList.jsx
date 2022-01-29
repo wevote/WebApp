@@ -190,6 +190,7 @@ class FriendInvitationVoterLinkDisplayForList extends Component {
   }
 }
 FriendInvitationVoterLinkDisplayForList.propTypes = {
+  classes: PropTypes.object,
   invitationsSentByMe: PropTypes.bool,
   linked_organization_we_vote_id: PropTypes.string,
   mutual_friends: PropTypes.number,

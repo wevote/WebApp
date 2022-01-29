@@ -27,6 +27,7 @@ const nonFluxState = {
   currentPathname: '',
   getStartedMode: '',
   getVoterGuideSettingsDashboardEditMode: '',
+  googleAnalyticsEnabled: false,
   hideWeVoteLogo: false,
   hostname: '',
   observableUpdateCounter: 0,
@@ -62,10 +63,6 @@ const nonFluxState = {
 
 
 export default {
-  // getNonFluxState () {
-  //   return nonFluxState;
-  // },
-
   incrementObservableUpdateCounter () {
     nonFluxState.observableUpdateCounter += 1;
     messageService.sendMessage('state incremented ObservableUpdateCounter');
@@ -89,6 +86,11 @@ export default {
     // Force the Header to evaluate whether it should display
     nonFluxState.showHeader = Date.now();
     messageService.sendMessage('state updated showHeader');
+  },
+
+  setGoogleAnalyticsEnabled (enabled) {
+    nonFluxState.googleAnalyticsEnabled = enabled;
+    messageService.sendMessage('state updated googleAnalyticsEnabled');
   },
 
   setGetStartedMode (getStartedMode) {
@@ -272,6 +274,10 @@ export default {
 
   getCurrentPathname () {
     return nonFluxState.currentPathname;
+  },
+
+  getGoogleAnalyticsEnabled () {
+    return nonFluxState.googleAnalyticsEnabled;
   },
 
   getHideWeVoteLogo () {

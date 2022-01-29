@@ -111,7 +111,7 @@ class ActivityCommentAdd extends Component {
               margin="dense"
               multiline
               onChange={this.updateStatementTextToBeSaved}
-              rowsMax={4}
+              maxRows={4}
               value={statementText}
               variant="outlined"
               InputProps={{

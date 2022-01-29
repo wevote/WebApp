@@ -114,7 +114,6 @@ module.exports = (env, argv) => ({
           to: 'img/',
           globOptions: { ignore: ['DO-NOT-BUNDLE/**/*']},
         },
-        { from: `${source}/javascript/`, to: 'javascript/' },
       ],
     }),
     new MomentLocalesPlugin(),

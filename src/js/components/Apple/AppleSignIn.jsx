@@ -27,7 +27,7 @@ class AppleSignIn extends Component {
         return_url: window.location.href,
       });
       if (AppleID) {
-        console.log('voter_device_id from cookie', Cookies.get('voter_device_id'));
+        // console.log('voter_device_id from cookie', Cookies.get('voter_device_id'));
         AppleID.auth.init({
           clientId: 'us.wevote.webapp',
           scope: 'name email',

@@ -1,6 +1,8 @@
+import ReactGA from 'react-ga';
 import { BrowserRouter } from 'react-router-dom';
 import webAppConfig from '../../../config';
 import AppObservableStore from '../../../stores/AppObservableStore';
+import { normalizedHrefPage } from '../../utils/hrefUtils';
 
 // https://stackoverflow.com/questions/34093913/how-to-debug-react-router
 // When a history.push is called correctly for the v5 react-router, the incoming
@@ -35,6 +37,9 @@ export default class WeVoteRouter extends BrowserRouter {
       console.log('Router:  initial history is: ', JSON.stringify(this.history, null, 2));
     }
     this.history.listen((location, action) => {
+      if (AppObservableStore.getGoogleAnalyticsEnabled()) {
+        ReactGA.pageview(normalizedHrefPage() ? `/${normalizedHrefPage()}` : '/readyLight');
+      }
       AppObservableStore.incrementObservableUpdateCounter();   // Encourage an update of Header.jsx on each push
       const currentPathname = location.pathname || '';
       AppObservableStore.setCurrentPathname(currentPathname);
