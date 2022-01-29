@@ -144,15 +144,6 @@ class FriendInvitationEmailLinkDisplayForList extends Component {
               {cancelFriendInviteEmailSubmitted ? 'Canceling...' : 'Cancel Invite'}
             </Button>
           </CancelButtonContainer>
-          {invitationState === 'PENDING_EMAIL_VERIFICATION' && !voter.signed_in_with_email ? (
-            <Link to="/settings/account">
-              <ButtonContainer>
-                <Button variant="outlined" color="primary">
-                  Verify Your Email
-                </Button>
-              </ButtonContainer>
-            </Link>
-          ) : null}
         </ButtonWrapper>
       </Wrapper>
     );
