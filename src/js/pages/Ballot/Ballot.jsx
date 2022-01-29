@@ -119,7 +119,7 @@ class Ballot extends Component {
 
   componentDidMount () {
     const { location: { pathname: currentPathname } } = window;
-    console.log('Ballot componentDidMount, Current pathname:', currentPathname);
+    // console.log('Ballot componentDidMount, Current pathname:', currentPathname);
     const ballotBaseUrl = '/ballot';
     this.appStateSubscription = messageService.getMessage().subscribe(() => this.onAppObservableStoreChange());
     // We need a ballotStoreListener here because we want the ballot to display before positions are received
