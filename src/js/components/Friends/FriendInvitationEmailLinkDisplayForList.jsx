@@ -157,6 +157,7 @@ class FriendInvitationEmailLinkDisplayForList extends Component {
   }
 }
 FriendInvitationEmailLinkDisplayForList.propTypes = {
+  classes: PropTypes.object,
   invitation_status: PropTypes.string, // Comes friend data object from API server
   linked_organization_we_vote_id: PropTypes.string,
   mutual_friends: PropTypes.number,
@@ -231,11 +232,10 @@ const Avatar = isWebApp() ? styled.div`
 ` : styled.div`
   max-width: 68.8px;
   margin-right: 8px;
-    & img {
-      border-radius: 6px;
-      width: 68.8px;
-      height: 68.8px;
-    }
+  & img {
+    border-radius: 6px;
+    width: 68.8px;
+    height: 68.8px;
   }
 `;
 

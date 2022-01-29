@@ -11,7 +11,7 @@ module.exports = {
   WE_VOTE_SERVER_API_CDN_ROOT_URL: 'https://cdn.wevoteusa.org/apis/v1/',
 
   ENABLE_NEXT_RELEASE_FEATURES: true,
-  ENABLE_WORKBOX_SERVICE_WORKER: true,  // After setting this false, in Chrome DevTools go to Application Tab, Application/Service Worker and for the sw.js click the "unregister" button to the right
+  ENABLE_WORKBOX_SERVICE_WORKER: false,  // After setting this false, in Chrome DevTools go to Application Tab, Application/Service Worker and for the sw.js click the "unregister" button to the right
 
   DEBUG_MODE: false,
   SHOW_TEST_OPTIONS: false,    // On the DeviceDialog and elsewhere
@@ -35,10 +35,8 @@ module.exports = {
 
   ENABLE_FACEBOOK: true,
 
-  // We currently store the Google Places API key in /src/index.html
-
   FACEBOOK_APP_ID: '1097389196952441',
-
-  // This is the publishable key (not secret)
-  STRIPE_API_KEY: 'pk_test_bWuWGC3jrMIFH3wvRvHR6Z5H',
+  FULL_STORY_ORG: 'ESD0B',
+  GOOGLE_ANALYTICS_TRACKING_ID: 'UA-53643204-3',
+  STRIPE_API_KEY: 'pk_test_bWuWGC3jrMIFH3wvRvHR6Z5H',  // This is the publishable key (not secret)
 };
