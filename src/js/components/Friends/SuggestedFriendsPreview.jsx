@@ -94,8 +94,6 @@ SuggestedFriendsPreview.propTypes = {
 };
 
 const SectionDescription = styled.div`
-  font-weight: 200;
-  font-size: 14px;
   margin-bottom: 16px;
   width: fit-content;
 `;

@@ -606,6 +606,8 @@ export default function cordovaScrollablePaneTopPadding (pageEnumerationOverride
     case CordovaPageConstants.ballotSmHdrWild:       return '30px';
     case CordovaPageConstants.candidateWild:         return '60px';
     case CordovaPageConstants.friends:               return '102px';
+    case CordovaPageConstants.friendsCurrent:        return '102px';
+    case CordovaPageConstants.friendsSentRequest:    return '102px';
     case CordovaPageConstants.measureWild:           return '102px';
     case CordovaPageConstants.moreAbout:             return 0;
     case CordovaPageConstants.moreCredits:           return 0;

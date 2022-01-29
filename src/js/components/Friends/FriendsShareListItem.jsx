@@ -3,6 +3,7 @@ import React, { Component, Suspense } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { renderLog } from '../../common/utils/logging';
+import { Avatar } from '../Style/avatarStyles';
 
 const ImageHandler = React.lazy(() => import(/* webpackChunkName: 'ImageHandler' */ '../ImageHandler'));
 
@@ -104,21 +105,6 @@ const Flex = styled.div`
   flex-direction: row;
   align-items: center;
   justify-content: flex-start;
-`;
-
-const Avatar = styled.div`
-  margin-right: 8px;
-  width: 45px;
-  height: 45px;
-  @media (min-width: 520px) {
-    width: 55px;
-    height: 55px;
-  }
-  & img {
-    object-fit: cover;
-    width: 100%;
-    height: 100%;
-  }
 `;
 
 const Details = styled.div`

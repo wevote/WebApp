@@ -17,7 +17,7 @@ class ShowMoreFooter extends React.Component {
     }
 
     return (
-      <ShowMoreFooterStyled className="card-child" id={showMoreId} onClick={showMoreLink}>
+      <ShowMoreFooterStyled id={showMoreId} onClick={showMoreLink}>
         <ShowMoreFooterText>
           { showMoreText }
           {' '}

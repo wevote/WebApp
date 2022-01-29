@@ -173,7 +173,7 @@ class TwitterStore extends ReduceStore {
 
       case 'twitterProcessDeferredImages':
         if (!action.res || !action.res.success) return state;
-        console.log('twitter twitterProcessDeferredImages', action.res);
+        // console.log('twitter twitterProcessDeferredImages', action.res);
         return {
           ...state,
           twitter_images_were_processed: action.res.twitter_images_were_processed,

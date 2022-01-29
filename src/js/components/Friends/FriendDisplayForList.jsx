@@ -2,6 +2,7 @@ import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
+import { Avatar } from '../Style/avatarStyles';
 import { renderLog } from '../../common/utils/logging';
 import FriendToggle from './FriendToggle';
 
@@ -134,26 +135,6 @@ const Flex = styled.div`
   flex-direction: row;
   align-items: flex-start;
   justify-content: flex-start;
-`;
-
-const Avatar = styled.div`
-  max-width: 68.8px;
-  margin-right: 8px;
-  @media (min-width: 400px) {
-    height: 100% !important;
-    max-width: 100%;
-    min-height: 100% !important;
-    max-height: 100% !important;
-    position: absolute !important;
-    left: 0;
-    top: 0;
-    margin: 0 auto;
-    & img {
-      border-radius: 6px;
-      width: 68.8px;
-      height: 68.8px;
-    }
-  }
 `;
 
 const Details = styled.div`

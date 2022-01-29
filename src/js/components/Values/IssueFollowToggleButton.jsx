@@ -221,7 +221,6 @@ IssueFollowToggleButton.propTypes = {
 
 const styles = () => ({
   paper: {
-    fontSize: '12.5px !important',
     width: '140px !important',
     minWidth: '0 !important',
     maxWidth: '140px !important',

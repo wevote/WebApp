@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import FriendActions from '../../actions/FriendActions';
 import { renderLog } from '../../common/utils/logging';
+import { Avatar } from '../Style/avatarStyles';
 import { removeTwitterNameFromDescription } from '../../utils/textFormat';
 import SuggestedFriendToggle from './SuggestedFriendToggle';
 
@@ -100,7 +101,6 @@ class SuggestedFriendDisplayForList extends Component {
           )}
         </Flex>
         <ButtonWrapper inSideColumn={inSideColumn}>
-          <SuggestedFriendToggle otherVoterWeVoteId={otherVoterWeVoteId} />
           <ButtonContainer inSideColumn={inSideColumn}>
             <Button
               classes={{ root: classes.ignoreButton }}
@@ -114,6 +114,7 @@ class SuggestedFriendDisplayForList extends Component {
               {ignoreSuggestedFriendSent ? 'Ignoring...' : 'Ignore'}
             </Button>
           </ButtonContainer>
+          <SuggestedFriendToggle inSideColumn={inSideColumn} otherVoterWeVoteId={otherVoterWeVoteId} />
         </ButtonWrapper>
       </Wrapper>
     );
@@ -147,33 +148,9 @@ SuggestedFriendDisplayForList.propTypes = {
 
 const styles = () => ({
   ignoreButton: {
-    fontSize: '12.5px',
+    // fontSize: '12.5px',
   },
 });
-
-const AvatarNotInColumn = `
-  @media (min-width: 400px) {
-    height: 100% !important;
-    max-width: 100%;
-    min-height: 100% !important;
-    max-height: 100% !important;
-    position: absolute !important;
-    left: 0;
-    top: 0;
-    margin: 0 auto;
-    & img {
-      border-radius: 6px;
-      width: 68.8px;
-      height: 68.8px;
-    }
-  }
-`;
-
-const Avatar = styled.div`
-  max-width: 68.8px;
-  margin-right: 8px;
-  ${({ inSideColumn }) => ((inSideColumn) ? '' : AvatarNotInColumn)}
-`;
 
 const ButtonContainerNotInColumn = `
   @media(min-width: 400px) {
@@ -183,13 +160,13 @@ const ButtonContainerNotInColumn = `
   }
   @media(min-width: 520px) {
     margin: 0;
-    margin-right: 8px;
+    margin-left: 8px;
   }
 `;
 
 const ButtonContainer = styled.div`
-  width: 100%;
-  margin-right: 8px;
+  width: fit-content;
+  margin-left: 8px;
   ${({ inSideColumn }) => ((inSideColumn) ? '' : ButtonContainerNotInColumn)}
 `;
 

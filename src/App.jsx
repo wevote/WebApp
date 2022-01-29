@@ -128,7 +128,6 @@ class App extends Component {
   componentDidMount () {
     let { hostname } = window.location;
     hostname = hostname || '';
-    console.log('hostname:', hostname);
     initializejQuery(() => {
       AppObservableStore.siteConfigurationRetrieve(hostname);
     });
@@ -137,16 +136,20 @@ class App extends Component {
     const onWeVoteUS = (hostname && (hostname.toLowerCase() === 'wevote.us'));
     const onMobileApp = false;
     if (onWeVoteUS || onMobileApp) {
-      setTimeout(() => {
-        console.log('FullStory ENABLED');
-        this.setState({ enableFullStory: true });
-      }, 3000);
-      setTimeout(() => {
-        console.log('Google Analytics ENABLED');
-        ReactGA.initialize(webAppConfig.GOOGLE_ANALYTICS_TRACKING_ID);
-        AppObservableStore.setGoogleAnalyticsEnabled(true);
-        ReactGA.pageview(normalizedHrefPage() ? `/${normalizedHrefPage()}` : '/readyLight');
-      }, 3000);
+      if (webAppConfig.FULL_STORY_ORG) {
+        setTimeout(() => {
+          console.log('FullStory ENABLED');
+          this.setState({ enableFullStory: true });
+        }, 3000);
+      }
+      if (webAppConfig.GOOGLE_ANALYTICS_TRACKING_ID) {
+        setTimeout(() => {
+          console.log('Google Analytics ENABLED');
+          ReactGA.initialize(webAppConfig.GOOGLE_ANALYTICS_TRACKING_ID);
+          AppObservableStore.setGoogleAnalyticsEnabled(true);
+          ReactGA.pageview(normalizedHrefPage() ? `/${normalizedHrefPage()}` : '/readyLight');
+        }, 3000);
+      }
     }
   }
 
@@ -194,7 +197,7 @@ class App extends Component {
 
     return (
       <ErrorBoundary>
-        {enableFullStory && (<FullStory org={webAppConfig.FULL_STORY_ORG} />)}
+        {enableFullStory && <FullStory org={webAppConfig.FULL_STORY_ORG} />}
         <MuiThemeProvider theme={muiTheme}>
           <ThemeProvider theme={styledTheme}>
             <StylesProvider injectFirst>

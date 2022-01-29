@@ -27,9 +27,16 @@ export default class FriendInvitationList extends Component {
                   <div key={`invite-key-${friend.voter_we_vote_id}`}>
                     <FriendInvitationVoterLinkDisplayForList
                       id={`invite-id-${friend.voter_we_vote_id}`}
-                      {...friend}
                       invitationsSentByMe={invitationsSentByMe}
+                      linkedOrganizationWeVoteId={friend.linked_organization_we_vote_id}
+                      mutualFriends={friend.mutual_friends}
                       previewMode={previewMode}
+                      voterDisplayName={friend.voter_display_name}
+                      voterEmailAddress={friend.voter_email_address}
+                      voterPhotoUrlLarge={friend.voter_photo_url_large}
+                      voterTwitterDescription={friend.voter_twitter_description}
+                      voterTwitterHandle={friend.voter_twitter_handle}
+                      voterWeVoteId={friend.voter_we_vote_id}
                     />
                     {index !== friendList.length - 1 ? (
                       <hr />
@@ -42,9 +49,13 @@ export default class FriendInvitationList extends Component {
                   <div key={`invite-key-${simpleKeyCounter}`}>
                     <FriendInvitationEmailLinkDisplayForList
                       id={`invite-id-${simpleKeyCounter}`}
-                      {...friend}
-                      invitationsSentByMe={invitationsSentByMe}
+                      invitationState={friend.invitation_status}
+                      linkedOrganizationWeVoteId={friend.linked_organization_we_vote_id}
+                      mutualFriends={friend.mutual_friends}
                       previewMode={previewMode}
+                      voterEmailAddress={friend.voter_email_address}
+                      voterPhotoUrlLarge={friend.voter_photo_url_large}
+                      voterTwitterHandle={friend.voter_twitter_handle}
                     />
                     {index !== friendList.length - 1 ? (
                       <hr />

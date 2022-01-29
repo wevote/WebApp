@@ -95,7 +95,7 @@ class News extends Component {
       if (activityTidbitWeVoteIdList && activityTidbitWeVoteIdList.length > 0 && activityTidbitWeVoteIdForDrawer.length > 0) {
         // Retrieve just the one activity being shown in the drawer
         ActivityActions.activityListRetrieve(activityTidbitWeVoteIdList);
-      } else if (apiCalming('activityNoticeListRetrieve', 500)) {
+      } else if (apiCalming('activityListRetrieve', 2000)) {
         ActivityActions.activityListRetrieve();
       }
       if (apiCalming('friendListsAll', 30000)) {

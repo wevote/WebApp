@@ -1,6 +1,7 @@
 import { filter } from 'lodash-es';
 import React, { Component } from 'react';
 import Helmet from 'react-helmet';
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import FriendActions from '../../actions/FriendActions';
 import FriendInvitationList from '../../components/Friends/FriendInvitationList';
@@ -94,6 +95,9 @@ export default class FriendInvitationsSentByMe extends Component {
                   </>
                 )}
               </SectionTitle>
+              <p>
+                <Link className="u-link-color" to="/friends/requests">See friend requests you have received.</Link>
+              </p>
               <SearchBar
                 clearButton
                 searchButton
@@ -117,11 +121,16 @@ export default class FriendInvitationsSentByMe extends Component {
               />
             </span>
           ) : (
-            <MessageCard
-              mainText="You have\'t sent any requests. Invite your friends to connect!"
-              buttonText="Invite Friends"
-              buttonURL="/friends/invite"
-            />
+            <>
+              <MessageCard
+                mainText="You have\'t sent any requests. Invite your friends to connect!"
+                buttonText="Invite Friends"
+                buttonURL="/friends/invite"
+              />
+              <p>
+                <Link to="/friends/sent-requests">See invitations you have sent to friends.</Link>
+              </p>
+            </>
           )}
         </div>
       </div>
@@ -130,8 +139,8 @@ export default class FriendInvitationsSentByMe extends Component {
 }
 
 const SectionTitle = styled.h2`
-  width: fit-content;
   font-weight: bold;
   font-size: 18px;
   margin-bottom: 16px;
+  width: fit-content;
 `;

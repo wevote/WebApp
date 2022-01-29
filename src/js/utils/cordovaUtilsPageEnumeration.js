@@ -83,9 +83,9 @@ export function pageEnumeration () {
   // then specific first level paths
   } if (path.startsWith('/candidate')) {
     return CordovaPageConstants.candidate;
-  } else if (path.startsWith('/friends/current')) {
+  } else if (path.startsWith('/friends/current') || path.startsWith('/friends/all')) {
     return CordovaPageConstants.friendsCurrent;
-  } else if (path.startsWith('/friends/sent-requests')) {
+  } else if (path.startsWith('/friends/sent-requests') || path.startsWith('/friends/requests')) {
     return CordovaPageConstants.friendsSentRequest;
   } else if (path.startsWith('/start')) {
     return CordovaPageConstants.start;
