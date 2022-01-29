@@ -101,7 +101,9 @@ class Friends extends Component {
       voterIsSignedIn,
     });
     this.resetDefaultTabForMobile(friendInvitationsSentToMe, suggestedFriendList, friendInvitationsSentByMe);
-    ActivityActions.activityNoticeListRetrieve();
+    if (apiCalming('activityNoticeListRetrieve', 10000)) {
+      ActivityActions.activityNoticeListRetrieve();
+    }
     AnalyticsActions.saveActionNetwork(VoterStore.electionId());
   }
 

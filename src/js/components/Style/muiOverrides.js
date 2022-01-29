@@ -1,6 +1,8 @@
 const overrides = {
   MuiButton: {
     root: {
+      fontSize: '16px',
+      textTransform: 'unset',
       userSelect: 'none',
       '@media print': {
         color: '#fff',
@@ -39,6 +41,7 @@ const overrides = {
   MuiTab: {
     root: {
       outline: 'none !important',
+      textTransform: 'unset',
     },
   },
   MuiBottomNavigationAction: {

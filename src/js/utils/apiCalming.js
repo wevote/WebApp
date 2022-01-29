@@ -24,7 +24,7 @@ export default function apiCalming (name, duration = 1000) {
   }
 
   const entry =  window.apiCalmingDict[name];
-  if (entry.timeStamp +  duration < Date.now()) {
+  if (entry.timeStamp + duration < Date.now()) {
     window.apiCalmingDict[name] = {
       duration,
       timeStamp: Date.now(),

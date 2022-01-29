@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Helmet from 'react-helmet';
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import FriendActions from '../../actions/FriendActions';
 import FriendInvitationList from '../../components/Friends/FriendInvitationList';
@@ -53,17 +54,25 @@ class FriendInvitationsSentToMe extends Component {
                   )
                 </>
               </SectionTitle>
+              <p>
+                <Link className="u-link-color" to="/friends/sent-requests">See invitations you have sent to friends.</Link>
+              </p>
               <FriendInvitationList
                 editMode
                 friendList={friendInvitationsSentToMe}
               />
             </span>
           ) : (
-            <MessageCard
-              mainText="You have no incoming friend requests. Invite your friends to connect!"
-              buttonText="Invite Friends"
-              buttonURL="/friends/invite"
-            />
+            <>
+              <MessageCard
+                mainText="You have no incoming friend requests. Invite your friends to connect!"
+                buttonText="Invite Friends"
+                buttonURL="/friends/invite"
+              />
+              <p>
+                <Link to="/friends/sent-requests">See invitations you have sent to friends.</Link>
+              </p>
+            </>
           )}
         </div>
       </div>
@@ -72,9 +81,10 @@ class FriendInvitationsSentToMe extends Component {
 }
 
 const SectionTitle = styled.h2`
-  width: fit-content;  font-weight: bold;
+  font-weight: bold;
   font-size: 18px;
   margin-bottom: 16px;
+  width: fit-content;
 `;
 
 export default FriendInvitationsSentToMe;

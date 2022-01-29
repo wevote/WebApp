@@ -39,7 +39,7 @@ export default class FriendInvitationsSentByMePreview extends Component {
       return null;
     }
 
-    const FRIENDS_TO_SHOW = 3;
+    const FRIENDS_TO_SHOW = 1;
     const friendInvitationsSentByMeLimited = friendInvitationsSentByMe.slice(0, FRIENDS_TO_SHOW);
 
     return (!!(friendInvitationsSentByMeLimited && friendInvitationsSentByMeLimited.length > 0) && (

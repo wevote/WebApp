@@ -74,7 +74,9 @@ class Ready extends Component {
     }, 5000);  // April 19, 2021: Tuned to keep performance above 83.  LCP at 597ms
 
     ReadyActions.voterPlansForVoterRetrieve();
-    ActivityActions.activityNoticeListRetrieve();
+    if (apiCalming('activityNoticeListRetrieve', 10000)) {
+      ActivityActions.activityNoticeListRetrieve();
+    }
     if (apiCalming('friendListsAll', 30000)) {
       FriendActions.getAllFriendLists();
     }

@@ -18,6 +18,7 @@ import OfficeStore from '../../stores/OfficeStore';
 import VoterStore from '../../stores/VoterStore';
 import normalizedImagePath from '../../common/utils/normalizedImagePath';
 import { renderLog } from '../../common/utils/logging';
+import apiCalming from '../../utils/apiCalming';
 import { sortCandidateList } from '../../utils/positionFunctions';
 import { capitalizeString } from '../../utils/textFormat';
 
@@ -112,7 +113,9 @@ class Office extends Component {
         }, 1000);
       }
     }
-    ActivityActions.activityNoticeListRetrieve();
+    if (apiCalming('activityNoticeListRetrieve', 10000)) {
+      ActivityActions.activityNoticeListRetrieve();
+    }
     AnalyticsActions.saveActionOffice(VoterStore.electionId(), params.office_we_vote_id);
   }
 

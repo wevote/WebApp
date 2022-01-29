@@ -50,7 +50,9 @@ class FriendsTabs extends Component {
       suggestedFriendList,
     });
     this.resetDefaultTabForMobile(friendInvitationsSentToMe, suggestedFriendList, friendInvitationsSentByMe);
-    ActivityActions.activityNoticeListRetrieve();
+    if (apiCalming('activityNoticeListRetrieve', 10000)) {
+      ActivityActions.activityNoticeListRetrieve();
+    }
     AnalyticsActions.saveActionNetwork(VoterStore.electionId());
   }
 
@@ -96,11 +98,12 @@ class FriendsTabs extends Component {
 
   getSelectedTab () {
     const tabItem = this.getPageFromUrl();
-    const { currentFriendList, defaultTabItem, friendInvitationsSentByMe, friendInvitationsSentToMe, suggestedFriendList } = this.state;
+    const { currentFriendList, defaultTabItem, friendInvitationsSentToMe, suggestedFriendList } = this.state;
     // console.log('getSelectedTab tabItem:', tabItem, ', defaultTabItem:', defaultTabItem);
     let selectedTab = tabItem || defaultTabItem;
 
     if (selectedTab === 'request') selectedTab = 'sent-requests';   /// Hack Oct 17, 2021
+    if (selectedTab === 'sent-requests') selectedTab = 'requests';
 
     // Don't return a selected tab if the tab isn't available
     if (String(selectedTab) === 'requests') {
@@ -113,10 +116,6 @@ class FriendsTabs extends Component {
       }
     } else if (String(selectedTab) === 'friends') {
       if (currentFriendList.length < 1) {
-        selectedTab = 'all';
-      }
-    } else if (String(selectedTab) === 'sent-requests') {
-      if (friendInvitationsSentByMe.length < 1) {
         selectedTab = 'all';
       }
     }
@@ -162,10 +161,7 @@ class FriendsTabs extends Component {
   render () {
     renderLog('FriendsTabs');  // Set LOG_RENDER_EVENTS to log all renders
     const { classes } = this.props;
-    const {
-      friendInvitationsSentByMe,
-      friendInvitationsSentToMe, suggestedFriendList, /* voter, */
-    } = this.state;
+    const { friendInvitationsSentToMe } = this.state;
 
     return (
       <div className="row" id="friendsHorizontalMenu">
@@ -187,11 +183,11 @@ class FriendsTabs extends Component {
                 this.handleNavigation('/friends/all');
               }}
             />
-            {friendInvitationsSentToMe && friendInvitationsSentToMe.length > 0 && (
-              <FriendsNavTab
-                value="requests"
-                label={(
-                  <>
+            <FriendsNavTab
+              value="requests"
+              label={(
+                <>
+                  {friendInvitationsSentToMe && friendInvitationsSentToMe.length > 0 ? (
                     <Badge
                       badgeContent={friendInvitationsSentToMe.length}
                       classes={{ badge: classes.headerBadge }}
@@ -201,29 +197,31 @@ class FriendsTabs extends Component {
                       Requests
                       &nbsp;&nbsp;
                     </Badge>
-                  </>
-                )}
-                onClick={() => {
-                  this.handleNavigation('/friends/requests');
-                }}
-              />
-            )}
-            {suggestedFriendList.length > 0 && (
-              <FriendsNavTab
-                value="suggested"
-                label="Suggested"
-                onClick={() => {
-                  this.handleNavigation('/friends/suggested');
-                }}
-              />
-            )}
-            <FriendsNavTab
-              value="invite"
-              label={isMobileScreenSize() ? 'Invite' : 'Invite Friends'}
+                  ) : (
+                    <>Requests</>
+                  )}
+                </>
+              )}
               onClick={() => {
-                this.handleNavigation('/friends/invite');
+                this.handleNavigation('/friends/requests');
               }}
             />
+            <FriendsNavTab
+              value="suggested"
+              label="Suggested"
+              onClick={() => {
+                this.handleNavigation('/friends/suggested');
+              }}
+            />
+            {this.getSelectedTab() === 'invite' && (
+              <FriendsNavTab
+                value="invite"
+                label={isMobileScreenSize() ? 'Invite' : 'Invite Friends'}
+                onClick={() => {
+                  this.handleNavigation('/friends/invite');
+                }}
+              />
+            )}
             <FriendsNavTab
               value="current"
               label="Friends"
@@ -231,15 +229,6 @@ class FriendsTabs extends Component {
                 this.handleNavigation('/friends/current');
               }}
             />
-            {friendInvitationsSentByMe.length > 0 && (
-              <FriendsNavTab
-                value="sent-requests"
-                label="Requests Sent"
-                onClick={() => {
-                  this.handleNavigation('/friends/sent-requests');
-                }}
-              />
-            )}
           </Tabs>
         </div>
       </div>

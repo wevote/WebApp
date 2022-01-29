@@ -145,6 +145,7 @@ export function getApplicationViewBooleans (pathname) {
     pathnameLowerCase === '/opinions_ignored') {
     showBackToValues = true;
   } else if (pathnameLowerCase === '/friends/add' ||
+    pathnameLowerCase === '/friends/all' ||
     pathnameLowerCase === '/friends/current' ||
     pathnameLowerCase === '/friends/requests' ||
     pathnameLowerCase === '/friends/sent-requests' ||

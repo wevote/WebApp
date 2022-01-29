@@ -34,10 +34,10 @@ class HeaderNotificationMenu extends Component {
     // console.log('HeaderNotificationMenu componentDidMount, this.props: ', this.props);
     this.timer = setTimeout(() => {
       this.activityStoreListener = ActivityStore.addListener(this.onActivityStoreChange.bind(this));
-      if (apiCalming('activityNoticeListRetrieve', 500)) {
+      if (apiCalming('activityNoticeListRetrieve', 10000)) {
         ActivityActions.activityNoticeListRetrieve();
       }
-      if (apiCalming('activityNoticeListRetrieve', 500)) {
+      if (apiCalming('activityListRetrieve', 2000)) {
         ActivityActions.activityListRetrieve();
       }
       if (!isIOSAppOnMac()) setIconBadgeMessageCount(0);

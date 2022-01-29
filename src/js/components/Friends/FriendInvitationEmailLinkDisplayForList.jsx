@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import FriendActions from '../../actions/FriendActions';
 import VoterStore from '../../stores/VoterStore';
+import { Avatar } from '../Style/avatarStyles';
 import { isWebApp } from '../../common/utils/isCordovaOrWebApp';
 import { renderLog } from '../../common/utils/logging';
 
@@ -46,12 +47,14 @@ class FriendInvitationEmailLinkDisplayForList extends Component {
     renderLog('FriendInvitationEmailLinkDisplayForList');  // Set LOG_RENDER_EVENTS to log all renders
     const {
       classes,
-      invitation_status: invitationState,
-      mutual_friends: mutualFriends,
-      positions_taken: positionsTaken,
-      voter_twitter_handle: voterTwitterHandle,
-      voter_email_address: voterEmailAddress,
-      voter_photo_url_large: voterPhotoUrlLarge,
+      invitationState,
+      linkedOrganizationWeVoteId,
+      mutualFriends,
+      positionsTaken,
+      previewMode,
+      voterTwitterHandle,
+      voterEmailAddress,
+      voterPhotoUrlLarge,
     } = this.props;
 
     const { cancelFriendInviteEmailSubmitted, voter } = this.state;
@@ -64,7 +67,7 @@ class FriendInvitationEmailLinkDisplayForList extends Component {
 
     // Link to their voter guide
     const twitterVoterGuideLink = voterTwitterHandle ? `/${voterTwitterHandle}` : null;
-    const weVoteIdVoterGuideLink = this.props.linked_organization_we_vote_id ? `/voterguide/${this.props.linked_organization_we_vote_id}` : null;
+    const weVoteIdVoterGuideLink = linkedOrganizationWeVoteId ? `/voterguide/${linkedOrganizationWeVoteId}` : null;
     const voterGuideLink = twitterVoterGuideLink || weVoteIdVoterGuideLink;
     const voterImage = <ImageHandler sizeClassName="icon-lg " imageUrl={voterPhotoUrlLarge} kind_of_ballot_item="CANDIDATE" />;
     const voterDisplayNameFormatted = <span className="card-child__display-name">{voterEmailAddress}</span>;
@@ -92,7 +95,7 @@ class FriendInvitationEmailLinkDisplayForList extends Component {
     );
 
     const friendInvitationHtml = (
-      <Wrapper previewMode={this.props.previewMode}>
+      <Wrapper previewMode={previewMode}>
         <Flex>
           <Avatar>
             { voterGuideLink ? (
@@ -120,6 +123,15 @@ class FriendInvitationEmailLinkDisplayForList extends Component {
           )}
         </Flex>
         <ButtonWrapper>
+          {invitationState === 'PENDING_EMAIL_VERIFICATION' && !voter.signed_in_with_email ? (
+            <Link to="/settings/account">
+              <ButtonContainer>
+                <Button variant="outlined" color="primary">
+                  Verify Your Email
+                </Button>
+              </ButtonContainer>
+            </Link>
+          ) : null}
           <CancelButtonContainer>
             <Button
               classes={{ root: classes.ignoreButton }}
@@ -132,20 +144,11 @@ class FriendInvitationEmailLinkDisplayForList extends Component {
               {cancelFriendInviteEmailSubmitted ? 'Canceling...' : 'Cancel Invite'}
             </Button>
           </CancelButtonContainer>
-          {invitationState === 'PENDING_EMAIL_VERIFICATION' && !voter.signed_in_with_email ? (
-            <Link to="/settings/account">
-              <ButtonContainer>
-                <Button variant="outlined" color="primary">
-                  Verify Your Email
-                </Button>
-              </ButtonContainer>
-            </Link>
-          ) : null}
         </ButtonWrapper>
       </Wrapper>
     );
 
-    if (this.props.previewMode) {
+    if (previewMode) {
       return <span>{friendInvitationHtml}</span>;
     } else {
       return (
@@ -158,23 +161,19 @@ class FriendInvitationEmailLinkDisplayForList extends Component {
 }
 FriendInvitationEmailLinkDisplayForList.propTypes = {
   classes: PropTypes.object,
-  invitation_status: PropTypes.string, // Comes friend data object from API server
-  linked_organization_we_vote_id: PropTypes.string,
-  mutual_friends: PropTypes.number,
-  positions_taken: PropTypes.number,
-  // voter_display_name: PropTypes.string, // Comes friend data object from API server
-  voter_email_address: PropTypes.string, // Comes friend data object from API server
-  voter_photo_url_large: PropTypes.string, // Comes friend data object from API server
-  // voter_twitter_description: PropTypes.string, // Comes friend data object from API server
-  // voter_twitter_followers_count: PropTypes.number, // Comes friend data object from API server
-  voter_twitter_handle: PropTypes.string, // Comes friend data object from API server
-  // voter_we_vote_id: PropTypes.string, // Comes friend data object from API server
+  invitationState: PropTypes.string, // Comes friend data object from API server
+  linkedOrganizationWeVoteId: PropTypes.string,
+  mutualFriends: PropTypes.number,
+  positionsTaken: PropTypes.number,
   previewMode: PropTypes.bool,
+  voterEmailAddress: PropTypes.string,
+  voterPhotoUrlLarge: PropTypes.string,
+  voterTwitterHandle: PropTypes.string,
 };
 
 const styles = () => ({
   ignoreButton: {
-    fontSize: '12.5px',
+    // fontSize: '12.5px',
   },
 });
 
@@ -209,34 +208,6 @@ const Flex = styled.div`
   flex-direction: row;
   align-items: flex-start;
   justify-content: flex-start;
-`;
-
-const Avatar = isWebApp() ? styled.div`
-  max-width: 68.8px;
-  margin-right: 8px;
-  @media (min-width: 400px) {
-    height: 100% !important;
-    max-width: 100%;
-    min-height: 100% !important;
-    max-height: 100% !important;
-    position: absolute !important;
-    left: 0;
-    top: 0;
-    margin: 0 auto;
-    & img {
-      border-radius: 6px;
-      width: 68.8px;
-      height: 68.8px;
-    }
-  }
-` : styled.div`
-  max-width: 68.8px;
-  margin-right: 8px;
-  & img {
-    border-radius: 6px;
-    width: 68.8px;
-    height: 68.8px;
-  }
 `;
 
 const Details = isWebApp() ? styled.div`
@@ -345,10 +316,10 @@ const ButtonContainer = styled.div`
 
 const CancelButtonContainer = styled.div`
   width: 100%;
-  margin-right: 12px;
+  margin-left: 12px;
   @media(min-width: 520px) {
     margin: 0;
-    margin-right: 8px;
+    margin-left: 8px;
   }
 `;
 

@@ -20,10 +20,11 @@ import BallotStore from '../../stores/BallotStore';
 import MeasureStore from '../../stores/MeasureStore';
 import VoterGuideStore from '../../stores/VoterGuideStore';
 import VoterStore from '../../stores/VoterStore';
-import { cordovaBallotFilterTopMargin } from '../../utils/cordovaOffsets';
 import { isAndroidSizeFold } from '../../common/utils/cordovaUtils';
-import isMobileScreenSize from '../../utils/isMobileScreenSize';
 import { renderLog } from '../../common/utils/logging';
+import apiCalming from '../../utils/apiCalming';
+import { cordovaBallotFilterTopMargin } from '../../utils/cordovaOffsets';
+import isMobileScreenSize from '../../utils/isMobileScreenSize';
 import { PageContentContainer } from '../../utils/pageLayoutStyles';
 import { capitalizeString } from '../../utils/textFormat';
 
@@ -117,7 +118,9 @@ class Measure extends Component {
         }, 1000);
       }
     }
-    ActivityActions.activityNoticeListRetrieve();
+    if (apiCalming('activityNoticeListRetrieve', 10000)) {
+      ActivityActions.activityNoticeListRetrieve();
+    }
     AnalyticsActions.saveActionMeasure(VoterStore.electionId(), measureWeVoteId);
   }
 

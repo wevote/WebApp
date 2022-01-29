@@ -98,7 +98,7 @@ export default class FriendToggle extends Component {
             >
               <span className="sr-only">Toggle Dropdown</span>
             </Button>
-            <Menu id="issues-follow-btn__menu" className="dropdown-menu issues-follow-btn__menu" aria-labelledby="dropdown-toggle-id">
+            <Menu id="issues-follow-btn__menu" className="dropdown-menu" aria-labelledby="dropdown-toggle-id">
               <Button
                 type="button"
                 id="dropdown-item-id"

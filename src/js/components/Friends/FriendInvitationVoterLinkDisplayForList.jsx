@@ -7,6 +7,7 @@ import styled from 'styled-components';
 import FriendActions from '../../actions/FriendActions';
 import FriendStore from '../../stores/FriendStore';
 import { renderLog } from '../../common/utils/logging';
+import { Avatar } from '../Style/avatarStyles';
 import { removeTwitterNameFromDescription } from '../../utils/textFormat';
 import FriendInvitationToggle from './FriendInvitationToggle';
 
@@ -33,7 +34,8 @@ class FriendInvitationVoterLinkDisplayForList extends Component {
   }
 
   onFriendStoreChange () {
-    const isFriend = FriendStore.isFriend(this.props.voter_we_vote_id);
+    const { voterWeVoteId } = this.props;
+    const isFriend = FriendStore.isFriend(voterWeVoteId);
     this.setState({
       isFriend,
     });
@@ -63,26 +65,30 @@ class FriendInvitationVoterLinkDisplayForList extends Component {
     const {
       classes,
       invitationsSentByMe,
-      mutual_friends: mutualFriends,
-      positions_taken: positionsTaken,
+      linkedOrganizationWeVoteId,
+      mutualFriends,
+      positionsTaken,
       previewMode,
-      // voter_twitter_followers_count: voterTwitterFollowersCount,
-      voter_twitter_handle: voterTwitterHandle,
-      voter_we_vote_id: otherVoterWeVoteId,
-      voter_photo_url_large: voterPhotoUrlLarge,
+      voterDisplayName,
+      voterEmailAddress,
+      voterTwitterDescription,
+      // voterTwitterFollowersCount,
+      voterTwitterHandle,
+      voterWeVoteId: otherVoterWeVoteId,
+      voterPhotoUrlLarge,
     } = this.props;
 
-    const voterDisplayName = this.props.voter_display_name ? this.props.voter_display_name : this.props.voter_email_address;
-    const twitterDescription = this.props.voter_twitter_description ? this.props.voter_twitter_description : '';
-    // If the voterDisplayName is in the voter_twitter_description, remove it
-    const twitterDescriptionMinusName = removeTwitterNameFromDescription(voterDisplayName, twitterDescription);
+    const voterDisplayNameFiltered = voterDisplayName || voterEmailAddress;
+    const twitterDescription = voterTwitterDescription || '';
+    // If the voterDisplayName is in the twitterDescription, remove it
+    const twitterDescriptionMinusName = removeTwitterNameFromDescription(voterDisplayNameFiltered, twitterDescription);
 
     // Link to their voter guide
     const twitterVoterGuideLink = voterTwitterHandle ? `/${voterTwitterHandle}` : null;
-    const weVoteIdVoterGuideLink = this.props.linked_organization_we_vote_id ? `/voterguide/${this.props.linked_organization_we_vote_id}` : null;
+    const weVoteIdVoterGuideLink = linkedOrganizationWeVoteId ? `/voterguide/${linkedOrganizationWeVoteId}` : null;
     const voterGuideLink = twitterVoterGuideLink || weVoteIdVoterGuideLink;
     const voterImage = <ImageHandler sizeClassName="icon-lg " imageUrl={voterPhotoUrlLarge} kind_of_ballot_item="CANDIDATE" />;
-    const voterDisplayNameFormatted = <span className="card-child__display-name">{voterDisplayName}</span>;
+    const voterDisplayNameFormatted = <span className="card-child__display-name">{voterDisplayNameFiltered}</span>;
     const detailsHTML = (
       <Details>
         <Name>
@@ -160,6 +166,7 @@ class FriendInvitationVoterLinkDisplayForList extends Component {
           </ButtonWrapper>
         ) : (
           <ButtonWrapper>
+            <FriendInvitationToggle otherVoterWeVoteId={otherVoterWeVoteId} />
             <IgnoreButtonContainer>
               <Button
                 classes={{ root: classes.ignoreButton }}
@@ -172,7 +179,6 @@ class FriendInvitationVoterLinkDisplayForList extends Component {
                 Ignore
               </Button>
             </IgnoreButtonContainer>
-            <FriendInvitationToggle otherVoterWeVoteId={otherVoterWeVoteId} />
           </ButtonWrapper>
         )}
       </Wrapper>
@@ -192,22 +198,22 @@ class FriendInvitationVoterLinkDisplayForList extends Component {
 FriendInvitationVoterLinkDisplayForList.propTypes = {
   classes: PropTypes.object,
   invitationsSentByMe: PropTypes.bool,
-  linked_organization_we_vote_id: PropTypes.string,
-  mutual_friends: PropTypes.number,
-  positions_taken: PropTypes.number,
-  voter_we_vote_id: PropTypes.string,
-  voter_photo_url_large: PropTypes.string,
-  voter_display_name: PropTypes.string,
-  voter_twitter_handle: PropTypes.string,
-  voter_twitter_description: PropTypes.string,
-  // voter_twitter_followers_count: PropTypes.number,
-  voter_email_address: PropTypes.string,
+  linkedOrganizationWeVoteId: PropTypes.string,
+  mutualFriends: PropTypes.number,
+  positionsTaken: PropTypes.number,
+  voterWeVoteId: PropTypes.string,
+  voterPhotoUrlLarge: PropTypes.string,
+  voterDisplayName: PropTypes.string,
+  voterTwitterHandle: PropTypes.string,
+  voterTwitterDescription: PropTypes.string,
+  // voterTwitterFollowersCount: PropTypes.number,
+  voterEmailAddress: PropTypes.string,
   previewMode: PropTypes.bool,
 };
 
 const styles = () => ({
   ignoreButton: {
-    fontSize: '12.5px',
+    // fontSize: '12.5px',
   },
 });
 
@@ -237,26 +243,6 @@ const Flex = styled.div`
   flex-direction: row;
   align-items: flex-start;
   justify-content: flex-start;
-`;
-
-const Avatar = styled.div`
-  max-width: 68.8px;
-  margin-right: 8px;
-  @media (min-width: 400px) {
-    height: 100% !important;
-    max-width: 100%;
-    min-height: 100% !important;
-    max-height: 100% !important;
-    position: absolute !important;
-    left: 0;
-    top: 0;
-    margin: 0 auto;
-    & img {
-      border-radius: 6px;
-      width: 68.8px;
-      height: 68.8px;
-    }
-  }
 `;
 
 const Details = styled.div`
@@ -344,28 +330,28 @@ const ButtonWrapper = styled.div`
 
 const IgnoreButtonContainer = styled.div`
   width: 100%;
-  margin-right: 12px;
+  margin-left: 12px;
   @media(min-width: 400px) {
     width: fit-content;
     margin: 0;
     margin-bottom: 6px;
-    margin-right: 8px;
+    margin-left: 8px;
   }
   @media(min-width: 520px) {
     margin: 0;
-    margin-right: 8px;
+    margin-left: 8px;
   }
 `;
 
 const CancelButtonContainer = styled.div`
   width: 100%;
-  margin-right: 12px;
+  margin-left: 12px;
   @media(min-width: 400px) {
     margin-left: 8px;
   }
   @media(min-width: 520px) {
     margin: 0;
-    margin-right: 8px;
+    margin-left: 8px;
   }
 `;
 

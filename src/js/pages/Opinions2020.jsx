@@ -24,6 +24,7 @@ import VoterGuideStore from '../stores/VoterGuideStore';
 import VoterStore from '../stores/VoterStore';
 import normalizedImagePath from '../common/utils/normalizedImagePath';
 import { renderLog } from '../common/utils/logging';
+import apiCalming from '../utils/apiCalming';
 import { PageContentContainer } from '../utils/pageLayoutStyles';
 import { stringContains } from '../utils/textFormat';
 
@@ -153,7 +154,9 @@ class Opinions2020 extends Component {
       BallotActions.voterBallotItemsRetrieve(0, '', '');
     }
     OrganizationActions.organizationsFollowedRetrieve();
-    ActivityActions.activityNoticeListRetrieve();
+    if (apiCalming('activityNoticeListRetrieve', 10000)) {
+      ActivityActions.activityNoticeListRetrieve();
+    }
 
     window.scrollTo(0, 0);
     window.addEventListener('scroll', this.onScroll);

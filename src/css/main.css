@@ -5,6 +5,8 @@
  * Copyright 2011-2021 Twitter, Inc.
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
  */
+@import url('https://fonts.googleapis.com/css?family=Nunito+Sans:400,700&display=swap');
+
 :root {
   --blue: #007bff;
   --indigo: #6610f2;
@@ -41,23 +43,28 @@
   box-sizing: border-box; }
 
 html {
-  font-family: sans-serif;
-  line-height: 1.15;
+  box-sizing: border-box;
+  /* 1 */
+  -ms-text-size-adjust: 100%;
+  /* 2 */
   -webkit-text-size-adjust: 100%;
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0); }
 
+body {
+  background-color: #ebecee;
+  color: #212529;
+  font-family: "Nunito Sans", "Helvetica Neue Light", "Helvetica Neue", "Helvetica", "Arial", sans-serif;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: normal;
+  letter-spacing: 0.15px;
+  line-height: 24px;
+  margin: 0;
+  text-align: left;
+}
+
 article, aside, figcaption, figure, footer, header, hgroup, main, nav, section {
   display: block; }
-
-body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
-  font-size: 1rem;
-  font-weight: 400;
-  line-height: 1.5;
-  color: #212529;
-  text-align: left;
-  background-color: #fff; }
 
 [tabindex="-1"]:focus:not(:focus-visible) {
   outline: 0 !important; }
@@ -5120,7 +5127,6 @@ a.close.disabled {
   z-index: 1060;
   display: block;
   max-width: 276px;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
   font-style: normal;
   font-weight: 400;
   line-height: 1.5;
@@ -8176,27 +8182,6 @@ a.text-dark:hover, a.text-dark:focus {
     color: inherit;
     border-color: #dee2e6; } }
 
-/*# sourceMappingURL=bootstrap.css.map */
-/*! normalize.css v3.0.3 | MIT License | github.com/necolas/normalize.css */
-/**
- * 1. Set default font family to sans-serif.
- * 2. Prevent iOS and IE text size adjust after device orientation change,
- *    without disabling user zoom.
- */
-html {
-  font-family: sans-serif;
-  /* 1 */
-  -ms-text-size-adjust: 100%;
-  /* 2 */
-  -webkit-text-size-adjust: 100%;
-  /* 2 */ }
-
-/**
- * Remove default margin.
- */
-body {
-  margin: 0; }
-
 /* HTML5 display definitions
    ========================================================================= */
 /**
@@ -8546,9 +8531,6 @@ th {
   z-index: 9999;
   border-radius: 50px; }
 
-html {
-  box-sizing: border-box; }
-
 svg.map-svg,
 path.map-svg {
   fill: #2e3c5d70; }
@@ -8556,9 +8538,6 @@ path.map-svg {
   path.map-svg text {
     pointer-events: none;
     fill: white !important; }
-
-body {
-  background-color: #ebecee; }
 
 svg {
   width: 100%; }
@@ -8737,22 +8716,6 @@ button:focus {
 
 h1, h2, h3, h4, h5, h6 {
   font-size: 16px; }
-
-.h1,
-.h2,
-.h3,
-.h4,
-.h5,
-.h6 {
-  font-family: "Nunito Sans", sans-serif; }
-
-html {
-  font-size: 16px; }
-
-body {
-  color: #333;
-  font-family: "Nunito Sans", "Helvetica Neue Light", "Helvetica Neue", "Helvetica", "Arial", sans-serif;
-  line-height: 1.4; }
 
 .image-lg {
   width: 50px; }
@@ -8975,7 +8938,6 @@ body {
 .u-f4,
 .u-f5,
 .u-f6 {
-  font-family: "Nunito Sans", sans-serif;
   line-height: 1.25; }
 
 .u-f1,
@@ -9524,7 +9486,6 @@ body {
     cursor: pointer;
     user-select: none;
     font-family: inherit;
-    font-size: 100%;
     padding: 0.5em 1em;
     text-decoration: none;
     border: 0;
@@ -9743,7 +9704,6 @@ body {
       font-size: .875rem;
       color: #999; }
     .card-main__display-name {
-      font-family: "Nunito Sans", sans-serif;
       display: inline-block;
       font-size: 18px;
       font-weight: 700;
@@ -9796,7 +9756,6 @@ body {
     .card-main__candidate-read-more-link {
       margin-left: 8px;
       top: 0;
-      font-family: "Nunito Sans", "Helvetica Neue Light", "Helvetica Neue", "Helvetica", "Arial", sans-serif;
       font-size: 14px;
       font-weight: 100 !important;
       color: #4371cc;
@@ -9805,7 +9764,6 @@ body {
       overflow: hidden; }
     .card-main__measure-read-more-link {
       margin-left: 8px;
-      font-family: "Nunito Sans", "Helvetica Neue Light", "Helvetica Neue", "Helvetica", "Arial", sans-serif;
       font-size: 14px;
       font-weight: 100 !important;
       color: #4371cc;
@@ -9822,7 +9780,6 @@ body {
       font-weight: 600; }
     .card-main__ballot-read-more-link {
       margin-left: 8px;
-      font-family: "Nunito Sans", "Helvetica Neue Light", "Helvetica Neue", "Helvetica", "Arial", sans-serif;
       font-size: 14px;
       font-weight: 100 !important;
       width: 100%;
@@ -9905,7 +9862,6 @@ body {
           margin-right: 0;
           margin-left: 0; } }
     .card .card-child__display-name {
-      font-family: "Nunito Sans", sans-serif;
       margin-bottom: 4px;
       flex: auto; }
     .card .card-child__organization-description {
@@ -9958,7 +9914,6 @@ body {
     .card__additional::after {
       clear: both; }
   .card__additional-heading {
-    font-family: "Nunito Sans", sans-serif;
     font-size: 18px;
     margin: 16px 16px; }
   .card__additional-text {
@@ -10188,12 +10143,10 @@ body {
   .position-rating__rating {
     color: #549bb6; }
   .position-rating__percentage {
-    font-family: "Nunito Sans", sans-serif;
     font-size: 18px; }
   .position-rating__source {
     color: #999; }
   .position-rating__candidate-name {
-    font-family: "Nunito Sans", sans-serif;
     font-size: 18px; }
 
 .with-popover {
@@ -10509,7 +10462,6 @@ body {
   position: relative;
   margin-bottom: 16px; }
   .BallotItem__display-name {
-    font-family: "Nunito Sans", sans-serif;
     font-size: 24px;
     color: #555; }
     @media all and (max-width: 479px) {
@@ -10554,7 +10506,6 @@ body {
     padding: 0 !important; }
   .BallotItem__top-comment {
     color: #555;
-    font-family: "Nunito Sans", sans-serif;
     font-size: 14px;
     font-weight: 600; }
     .BallotItem__top-comment__endorser-name {
@@ -10870,25 +10821,21 @@ body {
   position: relative;
   margin-bottom: 16px; }
   .SettingsItem__summary__organization-title {
-    font-family: "Nunito Sans", sans-serif;
     font-size: 1.6rem;
     color: #555;
     padding-bottom: 0;
     padding-top: 8px; }
   .SettingsItem__summary__title {
-    font-family: "Nunito Sans", sans-serif;
     font-size: 1.6rem;
     color: #555;
     padding-bottom: 0;
     padding-top: 16px; }
   .SettingsItem__summary__election-title {
-    font-family: "Nunito Sans", sans-serif;
     font-size: 1.2rem;
     color: #555;
     padding-bottom: 0;
     padding-top: 4px; }
   .SettingsItem__summary__election-date {
-    font-family: "Nunito Sans", sans-serif;
     font-size: 1rem;
     color: #ccc;
     padding-bottom: 16px;
@@ -10904,7 +10851,6 @@ body {
     font-size: 1rem; }
     .SettingsItem__summary__item__display-name {
       color: #4371cc;
-      font-family: "Nunito Sans", sans-serif;
       font-size: 1.2rem; }
       .SettingsItem__summary__item__display-name--selected {
         color: #000;
@@ -10912,7 +10858,6 @@ body {
         margin-left: 14px; }
     .SettingsItem__summary__item__subtitle {
       color: #999;
-      font-family: "Nunito Sans", sans-serif;
       font-size: .8rem; }
       .SettingsItem__summary__item__subtitle--selected {
         margin-left: 14px; }
@@ -11171,7 +11116,6 @@ a {
       margin-top: 5vh; }
   .ballot-election-list__h1,
   .select-address__h1 {
-    font-family: "Nunito Sans", sans-serif;
     font-size: 30px; }
     @media all and (max-width: 959px) {
       .ballot-election-list__h1,
@@ -11504,7 +11448,6 @@ a {
   margin-left: 16px; }
   .footerNav .badge-total {
     position: absolute;
-    font-family: "Nunito Sans", "Helvetica Neue Light", "Helvetica Neue", "Helvetica", "Arial", sans-serif;
     background-color: #db4437;
     top: 0;
     right: 0; }
@@ -12300,7 +12243,6 @@ a {
 .issues-follow-btn {
   height: 100% !important;
   min-width: 0 !important;
-  font-size: 12.5px !important;
   padding-left: 0 !important;
   padding-right: 0 !important;
   max-height: none !important; }

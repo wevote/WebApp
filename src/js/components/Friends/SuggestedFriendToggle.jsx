@@ -64,7 +64,7 @@ export default class SuggestedFriendToggle extends Component {
   render () {
     renderLog('SuggestedFriendToggle');  // Set LOG_RENDER_EVENTS to log all renders
     if (!this.state) { return <div />; }
-    const { displayFullWidth, lightModeOn, otherVoterWeVoteId } = this.props;
+    const { displayFullWidth, inSideColumn, lightModeOn, otherVoterWeVoteId } = this.props;
     const { addSuggestedFriendSent, isFriend, voter } = this.state;
     // console.log('SuggestedFriendToggle, otherVoterWeVoteId:', otherVoterWeVoteId, ', isFriend:', isFriend);
     const isLookingAtSelf = voter.we_vote_id === otherVoterWeVoteId;
@@ -77,7 +77,7 @@ export default class SuggestedFriendToggle extends Component {
     return (
       <ButtonContainer displayFullWidth={displayFullWidth}>
         <Button
-          className={`issues-follow-btn issues-follow-btn__main issues-follow-btn__main--radius ${lightModeOn ? ' issues-follow-btn--white' : ' issues-follow-btn--blue'}`}
+          // className={`issues-follow-btn issues-follow-btn__main issues-follow-btn__main--radius ${lightModeOn ? ' issues-follow-btn--white' : ' issues-follow-btn--blue'}`}
           color="primary"
           disabled={addSuggestedFriendSent || isFriend}
           fullWidth
@@ -86,7 +86,15 @@ export default class SuggestedFriendToggle extends Component {
         >
           {isFriend ? 'Already Friends' : (
             <>
-              {addSuggestedFriendSent ? 'Invite Sent' : 'Add Friend'}
+              {inSideColumn ? (
+                <>
+                  {addSuggestedFriendSent ? 'Sent' : 'Add'}
+                </>
+              ) : (
+                <>
+                  {addSuggestedFriendSent ? 'Invite Sent' : 'Add Friend'}
+                </>
+              )}
             </>
           )}
         </Button>
@@ -96,6 +104,7 @@ export default class SuggestedFriendToggle extends Component {
 }
 SuggestedFriendToggle.propTypes = {
   displayFullWidth: PropTypes.bool,
+  inSideColumn: PropTypes.bool,
   lightModeOn: PropTypes.bool,
   otherVoterWeVoteId: PropTypes.string.isRequired,
 };

@@ -3,6 +3,7 @@ import React, { Component, Suspense } from 'react';
 import { Link } from 'react-router-dom';
 import BallotActions from '../../actions/BallotActions';
 import OrganizationActions from '../../actions/OrganizationActions';
+import VoterActions from '../../actions/VoterActions';
 import VoterGuideActions from '../../actions/VoterGuideActions';
 import SelectVoterGuidesSideBar from '../../components/Navigation/SelectVoterGuidesSideBar';
 import SettingsPersonalSideBar from '../../components/Navigation/SettingsPersonalSideBar';
@@ -25,6 +26,7 @@ import VoterGuideStore from '../../stores/VoterGuideStore';
 import VoterStore from '../../stores/VoterStore';
 import { isWebApp } from '../../common/utils/isCordovaOrWebApp';
 import { renderLog } from '../../common/utils/logging';
+import apiCalming from '../../utils/apiCalming';
 import { isProperlyFormattedVoterGuideWeVoteId } from '../../utils/textFormat';
 
 const SettingsAccount = React.lazy(() => import(/* webpackChunkName: 'SettingsAccount' */ '../../components/Settings/SettingsAccount'));
@@ -55,6 +57,9 @@ export default class SettingsDashboard extends Component {
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
 
     // Get Voter and Voter's Organization
+    if (apiCalming('voterRetrieve', 2000)) {
+      VoterActions.voterRetrieve(); // We need to make sure we have the latest voter settings
+    }
     const voter = VoterStore.getVoter();
     this.setState({
       voter,

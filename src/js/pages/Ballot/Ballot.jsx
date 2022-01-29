@@ -318,7 +318,7 @@ class Ballot extends Component {
     } else {
       AppObservableStore.setEvaluateHeaderDisplay();
     }
-    if (apiCalming('activityNoticeListRetrieve', 3500)) {
+    if (apiCalming('activityNoticeListRetrieve', 10000)) {
       ActivityActions.activityNoticeListRetrieve();
     }
     window.addEventListener('scroll', this.onScroll);

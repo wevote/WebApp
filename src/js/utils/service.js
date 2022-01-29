@@ -71,10 +71,16 @@ function innerAjax (options) {
   ) {
     // Retrieve API data from CDN
     options.data = assign({}, options.data || {}); // Do not pass voter_device_id
+    if (options.endpoint && !options.endpoint.endsWith('/')) {
+      options.endpoint += '/';
+    }
     options.url = new URL(options.endpoint, defaults.baseCdnUrl); // `${URL.resolve(defaults.baseCdnUrl, options.endpoint)}/`;
   } else {
     // Retrieve API from API Server Pool
     options.data = assign({}, options.data || {}, defaults.data());
+    if (options.endpoint && !options.endpoint.endsWith('/')) {
+      options.endpoint += '/';
+    }
     options.url = new URL(options.endpoint, defaults.baseUrl); // `${URL.resolve(defaults.baseUrl, options.endpoint)}/`;
   }
 
