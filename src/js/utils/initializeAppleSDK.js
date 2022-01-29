@@ -4,7 +4,7 @@ const initializeAppleSDK = (afterFunction) => {
     document.getElementById('loadingMessage').innerHTML = "We're sorry, we no longer support Internet Explorer. We recommend Chrome, Safari, Firefox, Edge or Chromium.";
     console.log('NOT LOADING appleid.auth.js for those who still are using Internet Explorer');
   } else if (window.AppleID) {
-    console.log('Apple API ALREADY LOADED, SO NOT RELOADING');
+    // console.log('Apple API ALREADY LOADED, SO NOT RELOADING');
     if (afterFunction) {
       afterFunction();
     }
