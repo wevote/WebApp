@@ -69,6 +69,14 @@ module.exports = (env, argv) => ({
       ] : []),
       new CssMinimizerPlugin({
         test: /\.css$/i,
+        minimizerOptions: {
+          preset: [
+            'default',
+            {
+              discardComments: { removeAll: true },
+            },
+          ],
+        },
       }),
     ],
   },
@@ -143,10 +151,7 @@ module.exports = (env, argv) => ({
           include: [
             './srcCordova',
           ],
-          log: true,
-          logWarning: true,
-          logError: true,
-          logDebug: true,
+          logWarning: false,
         },
       }),
     ] : []),
