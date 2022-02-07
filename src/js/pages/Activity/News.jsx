@@ -26,7 +26,7 @@ import AppObservableStore from '../../stores/AppObservableStore';
 import BallotStore from '../../stores/BallotStore';
 import OrganizationStore from '../../stores/OrganizationStore';
 import VoterStore from '../../stores/VoterStore';
-import apiCalming from '../../utils/apiCalming';
+import apiCalming from '../../common/utils/apiCalming';
 import { isIPad } from '../../common/utils/cordovaUtils';
 import { isCordova } from '../../common/utils/isCordovaOrWebApp';
 import normalizedImagePath from '../../common/utils/normalizedImagePath';

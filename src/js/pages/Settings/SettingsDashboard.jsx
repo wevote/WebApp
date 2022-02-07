@@ -26,7 +26,7 @@ import VoterGuideStore from '../../stores/VoterGuideStore';
 import VoterStore from '../../stores/VoterStore';
 import { isWebApp } from '../../common/utils/isCordovaOrWebApp';
 import { renderLog } from '../../common/utils/logging';
-import apiCalming from '../../utils/apiCalming';
+import apiCalming from '../../common/utils/apiCalming';
 import { isProperlyFormattedVoterGuideWeVoteId } from '../../utils/textFormat';
 
 const SettingsAccount = React.lazy(() => import(/* webpackChunkName: 'SettingsAccount' */ '../../components/Settings/SettingsAccount'));

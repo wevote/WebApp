@@ -23,7 +23,7 @@ import InfoCircleIcon from '../Widgets/InfoCircleIcon';
 import MessageCard from '../Widgets/MessageCard';
 import { androidFacebookClickHandler, androidTwitterClickHandler, cordovaSocialSharingByEmail } from './shareButtonCommon';
 import ShareModalOption from './ShareModalOption';
-import apiCalming from '../../utils/apiCalming';
+import apiCalming from '../../common/utils/apiCalming';
 
 const OpenExternalWebSite = React.lazy(() => import(/* webpackChunkName: 'OpenExternalWebSite' */ '../../common/components/Widgets/OpenExternalWebSite'));
 

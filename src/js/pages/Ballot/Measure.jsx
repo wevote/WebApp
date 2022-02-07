@@ -22,7 +22,7 @@ import VoterGuideStore from '../../stores/VoterGuideStore';
 import VoterStore from '../../stores/VoterStore';
 import { isAndroidSizeFold } from '../../common/utils/cordovaUtils';
 import { renderLog } from '../../common/utils/logging';
-import apiCalming from '../../utils/apiCalming';
+import apiCalming from '../../common/utils/apiCalming';
 import { cordovaBallotFilterTopMargin } from '../../utils/cordovaOffsets';
 import isMobileScreenSize from '../../utils/isMobileScreenSize';
 import { PageContentContainer } from '../../utils/pageLayoutStyles';

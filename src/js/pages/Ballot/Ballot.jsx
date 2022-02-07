@@ -33,7 +33,7 @@ import SupportStore from '../../stores/SupportStore';
 import TwitterStore from '../../stores/TwitterStore';
 import VoterGuideStore from '../../stores/VoterGuideStore';
 import VoterStore from '../../stores/VoterStore';
-import apiCalming from '../../utils/apiCalming';
+import apiCalming from '../../common/utils/apiCalming';
 import { dumpCssFromId } from '../../utils/appleSiliconUtils';
 import { chipLabelText, isAndroidSizeFold, isIOSAppOnMac, isIPadGiantSize, isIPhone6p1in } from '../../common/utils/cordovaUtils';
 import { isCordova, isWebApp } from '../../common/utils/isCordovaOrWebApp';

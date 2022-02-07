@@ -24,7 +24,7 @@ import VoterGuideStore from '../stores/VoterGuideStore';
 import VoterStore from '../stores/VoterStore';
 import normalizedImagePath from '../common/utils/normalizedImagePath';
 import { renderLog } from '../common/utils/logging';
-import apiCalming from '../utils/apiCalming';
+import apiCalming from '../common/utils/apiCalming';
 import { PageContentContainer } from '../utils/pageLayoutStyles';
 import { stringContains } from '../utils/textFormat';
 

@@ -10,7 +10,7 @@ import FriendActions from '../../actions/FriendActions';
 import FriendStore from '../../stores/FriendStore';
 import VoterStore from '../../stores/VoterStore';
 import historyPush from '../../common/utils/historyPush';
-import apiCalming from '../../utils/apiCalming';
+import apiCalming from '../../common/utils/apiCalming';
 import displayFriendsTabs from '../../utils/displayFriendsTabs';
 import sortFriendListByMutualFriends from '../../utils/friendFunctions';
 import { normalizedHref } from '../../common/utils/hrefUtils';

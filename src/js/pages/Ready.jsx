@@ -26,7 +26,7 @@ import AppObservableStore, { messageService } from '../stores/AppObservableStore
 import BallotStore from '../stores/BallotStore';
 import IssueStore from '../stores/IssueStore';
 import VoterStore from '../stores/VoterStore';
-import apiCalming from '../utils/apiCalming';
+import apiCalming from '../common/utils/apiCalming';
 import { isAndroid, isIOS } from '../common/utils/cordovaUtils';
 import { isWebApp } from '../common/utils/isCordovaOrWebApp';
 import historyPush from '../common/utils/historyPush';

@@ -8,7 +8,7 @@ import OrganizationActions from '../../actions/OrganizationActions';
 import VoterActions from '../../actions/VoterActions';
 import OrganizationStore from '../../stores/OrganizationStore';
 import VoterStore from '../../stores/VoterStore';
-import apiCalming from '../../utils/apiCalming';
+import apiCalming from '../../common/utils/apiCalming';
 import { prepareForCordovaKeyboard, restoreStylesAfterCordovaKeyboard } from '../../common/utils/cordovaUtils';
 import { isCordova, isWebApp } from '../../common/utils/isCordovaOrWebApp';
 import { renderLog } from '../../common/utils/logging';

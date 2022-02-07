@@ -10,7 +10,7 @@ import BallotStore from '../../stores/BallotStore';
 import IssueStore from '../../stores/IssueStore';
 import VoterGuideStore from '../../stores/VoterGuideStore';
 import VoterStore from '../../stores/VoterStore';
-import apiCalming from '../../utils/apiCalming';
+import apiCalming from '../../common/utils/apiCalming';
 import historyPush from '../../common/utils/historyPush';
 import { renderLog } from '../../common/utils/logging';
 import InfoCircleIcon from '../Widgets/InfoCircleIcon';

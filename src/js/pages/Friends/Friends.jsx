@@ -33,7 +33,7 @@ import FriendInvitationsSentToMe from './FriendInvitationsSentToMe';
 import FriendsCurrent from './FriendsCurrent';
 import InviteByEmail from './InviteByEmail';
 import SuggestedFriends from './SuggestedFriends';
-import apiCalming from '../../utils/apiCalming';
+import apiCalming from '../../common/utils/apiCalming';
 
 const FirstAndLastNameRequiredAlert = React.lazy(() => import(/* webpackChunkName: 'FirstAndLastNameRequiredAlert' */ '../../components/Widgets/FirstAndLastNameRequiredAlert'));
 

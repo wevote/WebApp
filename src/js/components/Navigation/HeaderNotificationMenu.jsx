@@ -7,7 +7,7 @@ import styled from 'styled-components';
 import ActivityActions from '../../actions/ActivityActions';
 import ActivityStore from '../../stores/ActivityStore';
 import { createDescriptionOfFriendPosts } from '../../utils/activityUtils';
-import apiCalming from '../../utils/apiCalming';
+import apiCalming from '../../common/utils/apiCalming';
 import { isIOSAppOnMac, setIconBadgeMessageCount } from '../../common/utils/cordovaUtils';
 import { isWebApp } from '../../common/utils/isCordovaOrWebApp';
 import historyPush from '../../common/utils/historyPush';

@@ -3,7 +3,7 @@ import OrganizationActions from '../actions/OrganizationActions';
 import SupportActions from '../actions/SupportActions';
 import VoterGuideActions from '../actions/VoterGuideActions';
 import Dispatcher from '../common/dispatcher/Dispatcher';
-import apiCalming from '../utils/apiCalming';
+import apiCalming from '../common/utils/apiCalming';
 import { isSpeakerTypeOrganization, isSpeakerTypePublicFigure } from '../utils/organization-functions';
 import { convertToInteger } from '../utils/textFormat';
 import convertVoterGuideToElection from '../utils/voterGuideFunctions';

@@ -8,7 +8,7 @@ import { isCordova, isWebApp } from '../../common/utils/isCordovaOrWebApp';
 import { renderLog } from '../../common/utils/logging';
 import AppObservableStore, { messageService } from '../../stores/AppObservableStore';
 import VoterStore from '../../stores/VoterStore';
-import apiCalming from '../../utils/apiCalming';
+import apiCalming from '../../common/utils/apiCalming';
 import { dumpCssFromId } from '../../utils/appleSiliconUtils';
 import { getApplicationViewBooleans, weVoteBrandingOff } from '../../utils/applicationUtils';
 import cordovaTopHeaderTopMargin from '../../utils/cordovaTopHeaderTopMargin';
