@@ -2,7 +2,7 @@ import { ReduceStore } from 'flux/utils';
 import FriendActions from '../actions/FriendActions'; // eslint-disable-line import/no-cycle
 import VoterActions from '../actions/VoterActions'; // eslint-disable-line import/no-cycle
 import Dispatcher from '../common/dispatcher/Dispatcher';
-import apiCalming from '../utils/apiCalming';
+import apiCalming from '../common/utils/apiCalming';
 
 class FriendStore extends ReduceStore {
   getInitialState () {

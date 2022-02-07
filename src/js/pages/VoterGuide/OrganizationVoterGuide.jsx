@@ -20,7 +20,7 @@ import { isIPad } from '../../common/utils/cordovaUtils';
 import { isWebApp } from '../../common/utils/isCordovaOrWebApp';
 import historyPush from '../../common/utils/historyPush';
 import { renderLog } from '../../common/utils/logging';
-import apiCalming from '../../utils/apiCalming';
+import apiCalming from '../../common/utils/apiCalming';
 import { isSpeakerTypePrivateCitizen } from '../../utils/organization-functions';
 import { PageContentContainer } from '../../utils/pageLayoutStyles';
 

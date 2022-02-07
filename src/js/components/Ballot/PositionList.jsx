@@ -14,7 +14,7 @@ import VoterGuideOrganizationFilter from '../Filter/VoterGuideOrganizationFilter
 import LoadingWheel from '../../common/components/Widgets/LoadingWheel';
 import NumberOfItemsFound from '../Widgets/NumberOfItemsFound';
 import PositionItem from './PositionItem';
-import apiCalming from '../../utils/apiCalming';
+import apiCalming from '../../common/utils/apiCalming';
 
 const ShowMoreItems = React.lazy(() => import(/* webpackChunkName: 'ShowMoreItems' */ '../Widgets/ShowMoreItems'));
 

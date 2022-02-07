@@ -19,7 +19,7 @@ import AppObservableStore, { messageService } from '../../stores/AppObservableSt
 import FacebookStore from '../../stores/FacebookStore';
 import FriendStore from '../../stores/FriendStore';
 import VoterStore from '../../stores/VoterStore';
-import apiCalming from '../../utils/apiCalming';
+import apiCalming from '../../common/utils/apiCalming';
 import { avatarGeneric, displayTopMenuShadow, normalizedHref, normalizedHrefPage, weVoteBrandingOff } from '../../utils/applicationUtils';
 import getHeaderObjects from '../../utils/getHeaderObjects';
 import isMobileScreenSize from '../../utils/isMobileScreenSize';
