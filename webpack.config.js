@@ -69,6 +69,14 @@ module.exports = (env, argv) => ({
       ] : []),
       new CssMinimizerPlugin({
         test: /\.css$/i,
+        minimizerOptions: {
+          preset: [
+            'default',
+            {
+              discardComments: { removeAll: true },
+            },
+          ],
+        },
       }),
     ],
   },
