@@ -12,7 +12,14 @@ function startReact () {
     document.getElementById('app'),
   );
 
-  module.hot.accept();
+  try {
+    const { hostname } = window.location;
+    if (hostname && hostname === 'localhost') {
+      module.hot.accept();   // For Webpack
+    }
+  } catch (e) {
+    console.log('Webpack\'s module.hot.accept() threw:', e);
+  }
 }
 
 // Begin inline code
