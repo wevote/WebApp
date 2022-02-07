@@ -127,7 +127,7 @@ module.exports = (env, argv) => ({
     new MomentLocalesPlugin(),
     new WebpackShellPluginNext({
       onBuildEnd: {
-        scripts: ['node main.name.js'],
+        scripts: ['node ./src/js/common/node/webPackPostBuild.js'],
         blocking: false,
         parallel: true,
       },
@@ -151,7 +151,10 @@ module.exports = (env, argv) => ({
           include: [
             './srcCordova',
           ],
+          log: true,
           logWarning: false,
+          // logError: true,
+          // logDebug: true,
         },
       }),
     ] : []),
