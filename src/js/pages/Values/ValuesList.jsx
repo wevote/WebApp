@@ -9,7 +9,7 @@ import IssueStore from '../../stores/IssueStore';
 import VoterStore from '../../stores/VoterStore';
 import { isCordova } from '../../common/utils/isCordovaOrWebApp';
 import { renderLog } from '../../common/utils/logging';
-// import { PageContentContainer } from '../../utils/pageLayoutStyles';
+import { PageContentContainer } from '../../utils/pageLayoutStyles';
 
 const ReadMore = React.lazy(() => import(/* webpackChunkName: 'ReadMore' */ '../../common/components/Widgets/ReadMore'));
 const DelayedLoad = React.lazy(() => import(/* webpackChunkName: 'DelayedLoad' */ '../../common/components/Widgets/DelayedLoad'));
@@ -33,7 +33,10 @@ export default class ValuesList extends Component {
     this.issueStoreListener = IssueStore.addListener(this.onIssueStoreChange.bind(this));
     IssueActions.issueDescriptionsRetrieve(VoterStore.getVoterWeVoteId());
     IssueActions.issuesFollowedRetrieve(VoterStore.getVoterWeVoteId());
-    const { currentIssue } = this.props;
+    const { currentIssue, includedOnAnotherPage } = this.props;
+    if (!includedOnAnotherPage) {
+      window.scrollTo(0, 0);
+    }
     const allIssues = IssueStore.getAllIssues();
     this.setState({
       allIssues,
@@ -72,12 +75,13 @@ export default class ValuesList extends Component {
 
   render () {
     renderLog('ValuesList');  // Set LOG_RENDER_EVENTS to log all renders
+    const { displayOnlyIssuesNotFollowedByVoter, includedOnAnotherPage } = this.props;
     const { allIssues, searchQuery, currentIssue } = this.state;
     let issuesList = [];
     // let issuesNotFollowedByVoterList = [];
     // let issuesNotCurrentIssue = [];
     if (allIssues) {
-      if (this.props.displayOnlyIssuesNotFollowedByVoter) {
+      if (displayOnlyIssuesNotFollowedByVoter) {
         issuesList = allIssues.filter((issue) => issue.issue_we_vote_id !== currentIssue.issue_we_vote_id).filter((issue) => !IssueStore.isVoterFollowingThisIssue(issue.issue_we_vote_id));
       } else {
         issuesList = allIssues;
@@ -131,16 +135,14 @@ export default class ValuesList extends Component {
       }
     });
 
-    // Cordova Note Jan 26, 2022: The <PageContentContainer> wrapper replaced a few days ago with an empty <ValuesListWrapper> which will probably cause problems.
-    return (
-      <ValuesListWrapper>
-        {this.props.displayOnlyIssuesNotFollowedByVoter ? (
+    const generatedContent = (
+      <div>
+        {displayOnlyIssuesNotFollowedByVoter ? (
           <Row className="row">
             {issuesListForDisplay}
           </Row>
         ) : (
           <div className="opinions-followed__container">
-            <Helmet title="Values - We Vote" />
             <section className="card">
               <div className="card-main" style={{ paddingTop: `${isCordova() ? '0px' : '16px'}` }}>
                 <h1 className="h1">
@@ -183,13 +185,29 @@ export default class ValuesList extends Component {
             </section>
           </div>
         )}
-      </ValuesListWrapper>
+      </div>
     );
+
+    if (includedOnAnotherPage) {
+      return (
+        <ValuesListWrapper>
+          {generatedContent}
+        </ValuesListWrapper>
+      );
+    } else {
+      return (
+        <PageContentContainer>
+          <Helmet title="Values - We Vote" />
+          {generatedContent}
+        </PageContentContainer>
+      );
+    }
   }
 }
 ValuesList.propTypes = {
-  displayOnlyIssuesNotFollowedByVoter: PropTypes.bool,
   currentIssue: PropTypes.object,
+  displayOnlyIssuesNotFollowedByVoter: PropTypes.bool,
+  includedOnAnotherPage: PropTypes.bool,
 };
 
 const Column = styled.div`
