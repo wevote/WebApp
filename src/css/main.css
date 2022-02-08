@@ -6925,9 +6925,9 @@ small, .small {
 /*  content: "";*/
 /*}*/
 
-/*.d-none {*/
-/*  display: none !important;*/
-/*}*/
+.d-none {
+  display: none !important;
+}
 
 /*.d-inline {*/
 /*  display: inline !important;*/
@@ -7001,23 +7001,23 @@ small, .small {
   /*    display: -ms-inline-flexbox !important;*/
   /*    display: inline-flex !important;*/
   /*  }*/
-  /*}*/
+}
 
-  @media (min-width: 768px) {
-    .d-md-none {
-      display: none !important;
-    }
-
-    /*.d-md-inline {*/
-    /*  display: inline !important;*/
-    /*}*/
-    /*.d-md-inline-block {*/
-    /*  display: inline-block !important;*/
-    /*}*/
-    .d-md-block {
-      display: block !important;
-    }
+@media (min-width: 768px) {
+  .d-md-none {
+    display: none !important;
   }
+
+  /*.d-md-inline {*/
+  /*  display: inline !important;*/
+  /*}*/
+  /*.d-md-inline-block {*/
+  /*  display: inline-block !important;*/
+  /*}*/
+  .d-md-block {
+    display: block !important;
+  }
+}
   /*  .d-md-table {*/
   /*    display: table !important;*/
   /*  }*/
@@ -7041,10 +7041,10 @@ small, .small {
   /*  }*/
   /*}*/
 
-  /*@media (min-width: 992px) {*/
-  /*  .d-lg-none {*/
-  /*    display: none !important;*/
-  /*  }*/
+@media (min-width: 992px) {
+  .d-lg-none {
+    display: none !important;
+  }
 
   /*  .d-lg-inline {*/
   /*    display: inline !important;*/
@@ -7054,9 +7054,9 @@ small, .small {
   /*    display: inline-block !important;*/
   /*  }*/
 
-  /*  .d-lg-block {*/
-  /*    display: block !important;*/
-  /*  }*/
+  .d-lg-block {
+    display: block !important;
+  }
 
   /*  .d-lg-table {*/
   /*    display: table !important;*/
@@ -7079,13 +7079,13 @@ small, .small {
   /*    display: -ms-inline-flexbox !important;*/
   /*    display: inline-flex !important;*/
   /*  }*/
-  /*}*/
+}
 
-  @media (min-width: 1200px) {
-    .d-xl-none {
-      display: none !important;
-    }
+@media (min-width: 1200px) {
+  .d-xl-none {
+    display: none !important;
   }
+}
   /* Temporary Feb 1, 2022 */
   /*  .d-xl-inline {*/
   /*    display: inline !important;*/
@@ -7121,10 +7121,10 @@ small, .small {
   /*  }*/
   /*}*/
 
-  /*@media print {*/
-  /*  .d-print-none {*/
-  /*    display: none !important;*/
-  /*  }*/
+@media print {
+  .d-print-none {
+    display: none !important;
+  }
 
   /*  .d-print-inline {*/
   /*    display: inline !important;*/

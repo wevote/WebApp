@@ -156,7 +156,7 @@ class VoterGuidesUnderOneValue extends Component {
             <DelayedLoad waitBeforeShow={2000}>
               <>
                 <Title id="valuesListTitle">Explore More Values</Title>
-                <ValuesList displayOnlyIssuesNotFollowedByVoter currentIssue={issue} />
+                <ValuesList displayOnlyIssuesNotFollowedByVoter currentIssue={issue} includedOnAnotherPage />
               </>
             </DelayedLoad>
           </Suspense>
