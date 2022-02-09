@@ -155,11 +155,6 @@ const SplitButtonIcon = styled.span`
   height: 100%;
   padding: 0 13.3px;
   ${({ adjustedIconWidth }) => (adjustedIconWidth ? `width: ${adjustedIconWidth}px;` : 'width: 44px;')}
-  // * {
-  //   padding-right: 24px;
-  //   width: 100%;
-  //   font-size: 22px;
-  // }
 `;
 
 const SplitButtonText = styled.span`
