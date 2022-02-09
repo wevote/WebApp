@@ -37,7 +37,6 @@ class SearchOnGoogle extends Component {
                 compressedSize
                 externalUniqueId="searchOnGoogle"
                 fontColor="#000"
-                fontSize="10px"
                 icon={<img src={normalizedImagePath(googleIcon)} alt="" />}
                 title="Search on Google"
               />

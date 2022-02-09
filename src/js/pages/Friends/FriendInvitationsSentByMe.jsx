@@ -123,7 +123,7 @@ export default class FriendInvitationsSentByMe extends Component {
           ) : (
             <>
               <MessageCard
-                mainText="You have\'t sent any requests. Invite your friends to connect!"
+                mainText="You haven't sent any requests. Invite your friends to connect!"
                 buttonText="Invite Friends"
                 buttonURL="/friends/invite"
               />

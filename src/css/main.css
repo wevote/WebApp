@@ -13764,24 +13764,20 @@ h1, h2, h3, h4, h5, h6 {
 .item-actionbar__position-btn-label {
   color: #000;
   font-weight: bold;
-  text-transform: uppercase;
 }
 
 .item-actionbar__position-btn-label--at-state {
   color: #fff;
   font-weight: bold;
-  text-transform: uppercase;
 }
 
 .item-actionbar__position-choose-btn-label {
   color: #000;
   font-weight: bold;
-  text-transform: uppercase;
 }
 
 .item-actionbar__position-choose-btn-label--at-state {
   font-weight: bold;
-  text-transform: uppercase;
 }
 
 .item-actionbar__following-text {
@@ -13801,23 +13797,19 @@ h1, h2, h3, h4, h5, h6 {
 .item-actionbar--inline__position-btn-label {
   color: #000;
   font-weight: bold;
-  text-transform: uppercase;
 }
 
 .item-actionbar--inline__position-btn-label--at-state {
   color: #fff;
-  text-transform: uppercase;
 }
 
 .item-actionbar--inline__position-choose-btn-label {
   color: #000;
   font-weight: bold;
-  text-transform: uppercase;
 }
 
 .item-actionbar--inline__position-choose-btn-label--at-state {
   font-weight: bold;
-  text-transform: uppercase;
 }
 
 /*.item-actionbar--inline .btn-group {*/
@@ -15804,7 +15796,6 @@ a {
   color: #fff;
   border: none;
   border-radius: 0;
-  text-transform: uppercase;
   font-size: 18px;
   line-height: 2.2rem;
   z-index: 999;
