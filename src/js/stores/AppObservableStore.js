@@ -20,6 +20,7 @@ export const messageService = {
 
 const nonFluxState = {
   activityTidbitWeVoteIdForDrawer: '',
+  chosenGoogleAnalyticsTrackingID: false,
   chosenPreventSharingOpinions: false,
   chosenReadyIntroductionText: '',
   chosenReadyIntroductionTitle: '',
@@ -28,6 +29,7 @@ const nonFluxState = {
   getStartedMode: '',
   getVoterGuideSettingsDashboardEditMode: '',
   googleAnalyticsEnabled: false,
+  googleAnalyticsPending: false,
   hideWeVoteLogo: false,
   hostname: '',
   observableUpdateCounter: 0,
@@ -91,6 +93,11 @@ export default {
   setGoogleAnalyticsEnabled (enabled) {
     nonFluxState.googleAnalyticsEnabled = enabled;
     messageService.sendMessage('state updated googleAnalyticsEnabled');
+  },
+
+  setGoogleAnalyticsPending (enabled) {
+    nonFluxState.googleAnalyticsPending = enabled;
+    messageService.sendMessage('state updated googleAnalyticsPending');
   },
 
   setGetStartedMode (getStartedMode) {
@@ -256,6 +263,10 @@ export default {
     return nonFluxState.chosenAboutOrganizationExternalUrl;
   },
 
+  getChosenGoogleAnalyticsTrackingID () {
+    return nonFluxState.chosenGoogleAnalyticsTrackingID;
+  },
+
   getChosenPreventSharingOpinions () {
     return nonFluxState.chosenPreventSharingOpinions;
   },
@@ -278,6 +289,10 @@ export default {
 
   getGoogleAnalyticsEnabled () {
     return nonFluxState.googleAnalyticsEnabled;
+  },
+
+  getGoogleAnalyticsPending () {
+    return nonFluxState.googleAnalyticsPending;
   },
 
   getHideWeVoteLogo () {
@@ -459,6 +474,7 @@ export default {
           hostname: hostFromApi,
           organization_we_vote_id: siteOwnerOrganizationWeVoteId,
           chosen_about_organization_external_url: chosenAboutOrganizationExternalUrl,
+          chosen_google_analytics_tracking_id: chosenGoogleAnalyticsTrackingID,
           chosen_hide_we_vote_logo: hideWeVoteLogo,
           chosen_logo_url_https: chosenSiteLogoUrl,
           chosen_prevent_sharing_opinions: chosenPreventSharingOpinions,
@@ -507,6 +523,7 @@ export default {
           nonFluxState.apiStatus = apiStatus;
           nonFluxState.apiSuccess = apiSuccess;
           nonFluxState.chosenAboutOrganizationExternalUrl = chosenAboutOrganizationExternalUrl;
+          nonFluxState.chosen_google_analytics_tracking_id = chosenGoogleAnalyticsTrackingID;
           nonFluxState.chosenPreventSharingOpinions = chosenPreventSharingOpinions;
           nonFluxState.chosenReadyIntroductionText = chosenReadyIntroductionText;
           nonFluxState.chosenReadyIntroductionTitle = chosenReadyIntroductionTitle;

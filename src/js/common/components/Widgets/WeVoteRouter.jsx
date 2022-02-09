@@ -43,6 +43,9 @@ export default class WeVoteRouter extends BrowserRouter {
       AppObservableStore.incrementObservableUpdateCounter();   // Encourage an update of Header.jsx on each push
       const currentPathname = location.pathname || '';
       AppObservableStore.setCurrentPathname(currentPathname);
+      if (AppObservableStore.getGoogleAnalyticsEnabled()) {
+        ReactGA.pageview(normalizedHrefPage() ? `/${normalizedHrefPage()}` : '/readyLight');
+      }
       if (webAppConfig.LOG_ROUTING) {
         console.log(` Router: The current URL is ${location.pathname}${location.search}${location.hash}`);
         console.log(` Router: The last navigation action was ${action}`, JSON.stringify(this.history, null, 2));
