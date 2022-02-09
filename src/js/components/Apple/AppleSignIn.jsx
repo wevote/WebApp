@@ -21,23 +21,7 @@ class AppleSignIn extends Component {
 
   componentDidMount () {
     if (isWebApp()) {
-      const { AppleID } = window;
-      const state = JSON.stringify({
-        voter_device_id: Cookies.get('voter_device_id'),
-        return_url: window.location.href,
-      });
-      if (AppleID) {
-        // console.log('voter_device_id from cookie', Cookies.get('voter_device_id'));
-        AppleID.auth.init({
-          clientId: 'us.wevote.webapp',
-          scope: 'name email',
-          redirectURI: `${webAppConfig.WE_VOTE_SERVER_API_ROOT_URL}appleSignInOauthRedirectDestination`,
-          state,
-          popup: true,
-        });
-      } else {
-        console.log('ERROR in AppleSignIn, the Sign In with Apple client did not load');
-      }
+      this.localInitializeSDK(false);
       document.addEventListener('AppleIDSignInOnSuccess', (data) => {
         console.log('AppleIDSignInOnSuccessListener  data:', data);
       });
@@ -60,6 +44,31 @@ class AppleSignIn extends Component {
 
   onSignInFailure (data) {
     console.log('onSignInFailure  data:', data);
+  }
+
+  localInitializeSDK (signInAfterInit) {
+    const { AppleID } = window;
+    const state = JSON.stringify({
+      voter_device_id: Cookies.get('voter_device_id'),
+      return_url: window.location.href,
+    });
+    if (AppleID) {
+      // console.log('voter_device_id from cookie', Cookies.get('voter_device_id'));
+      console.log(`${webAppConfig.WE_VOTE_SERVER_API_ROOT_URL}appleSignInOauthRedirectDestination`);
+      AppleID.auth.init({
+        clientId: 'us.wevote.webapp',
+        scope: 'name email',
+        redirectURI: `${webAppConfig.WE_VOTE_SERVER_API_ROOT_URL}appleSignInOauthRedirectDestination`,
+        state,
+        popup: true,
+      });
+      if (signInAfterInit) {
+        const { auth } = window.AppleID;
+        auth.signIn();
+      }
+    } else {
+      console.log('ERROR in AppleSignIn, the Sign In with Apple client did not load');
+    }
   }
 
   signInToAppleIOS () {
@@ -116,7 +125,8 @@ class AppleSignIn extends Component {
       const { auth } = window.AppleID;
       auth.signIn();
     } catch (error) {
-      oAuthLog('signInToAppleWebApp exception ERROR:', error);
+      this.localInitializeSDK(true);
+      oAuthLog('signInToAppleWebApp API Not yet loaded:');
     }
   }
 
@@ -136,6 +146,8 @@ class AppleSignIn extends Component {
     renderLog('AppleSignIn');  // Set LOG_RENDER_EVENTS to log all renders
     const isWeb = isWebApp();
     const { signedIn } = this.props;
+    const { AppleID } = window;
+    let buttonLabel = 'Sign in with Apple';
     let enabled = true;
     const tinyScreen = isWeb && window.innerWidth < 300;  // Galaxy fold, folded
 
@@ -148,7 +160,11 @@ class AppleSignIn extends Component {
       if (floatVersion < 13.0) {
         console.log('Sign in with Apple is not available on iOS < 13, this phone is running: ', floatVersion);
         enabled = false;
+        buttonLabel = '(REQUIRES iOS 13)';
       }
+    } else if (!AppleID) {
+      enabled = false;
+      buttonLabel = 'loading, please wait';
     }
 
     if (signedIn) {
@@ -167,7 +183,7 @@ class AppleSignIn extends Component {
           >
             <AppleLogo signedIn={signedIn} enabled={enabled} />
             <AppleSignInText id="appleSignInText" enabled={enabled}>
-              {enabled ? 'Sign in with Apple' : '(REQUIRES iOS 13)'}
+              {buttonLabel}
             </AppleSignInText>
           </AppleSignInButton>
         </AppleSignInContainer>

@@ -9,13 +9,13 @@ import styledTheme from './js/common/components/Style/styled-theme';
 import ErrorBoundary from './js/common/components/Widgets/ErrorBoundary';
 import LoadingWheelComp from './js/common/components/Widgets/LoadingWheelComp';
 import WeVoteRouter from './js/common/components/Widgets/WeVoteRouter';
-import { normalizedHref, normalizedHrefPage } from './js/common/utils/hrefUtils';
+import { normalizedHref } from './js/common/utils/hrefUtils';
 import { isWebApp } from './js/common/utils/isCordovaOrWebApp';
 import { renderLog } from './js/common/utils/logging';
 import Header from './js/components/Navigation/Header';
 import HeaderBarSuspense from './js/components/Navigation/HeaderBarSuspense';
 import webAppConfig from './js/config';
-import AppObservableStore from './js/stores/AppObservableStore';
+import AppObservableStore, { messageService } from './js/stores/AppObservableStore';
 import initializejQuery from './js/utils/initializejQuery';
 import RouterV5SendMatch from './js/utils/RouterV5SendMatch';
 // importRemoveCordovaListenersToken1  -- Do not remove this line!
@@ -126,6 +126,8 @@ class App extends Component {
   }
 
   componentDidMount () {
+    this.appStateSubscription = messageService.getMessage().subscribe(() => this.onAppObservableStoreChange());
+
     let { hostname } = window.location;
     hostname = hostname || '';
     initializejQuery(() => {
@@ -142,14 +144,6 @@ class App extends Component {
           this.setState({ enableFullStory: true });
         }, 3000);
       }
-      if (webAppConfig.GOOGLE_ANALYTICS_TRACKING_ID) {
-        setTimeout(() => {
-          console.log('Google Analytics ENABLED');
-          ReactGA.initialize(webAppConfig.GOOGLE_ANALYTICS_TRACKING_ID);
-          AppObservableStore.setGoogleAnalyticsEnabled(true);
-          ReactGA.pageview(normalizedHrefPage() ? `/${normalizedHrefPage()}` : '/readyLight');
-        }, 3000);
-      }
     }
   }
 
@@ -159,8 +153,29 @@ class App extends Component {
   }
 
   componentWillUnmount () {
+    this.appStateSubscription.unsubscribe();
     // removeCordovaListenersToken -- Do not remove this line!
   }
+
+  onAppObservableStoreChange () {
+    if (!AppObservableStore.getGoogleAnalyticsEnabled() && !AppObservableStore.getGoogleAnalyticsPending()) {
+      AppObservableStore.setGoogleAnalyticsPending(true);
+      setTimeout(() => {
+        const storedTrackingID = AppObservableStore.getChosenGoogleAnalyticsTrackingID();
+        const configuredTrackingID = webAppConfig.GOOGLE_ANALYTICS_TRACKING_ID;
+        const trackingID = storedTrackingID || configuredTrackingID;
+        if (trackingID) {
+          console.log('Google Analytics ENABLED');
+          ReactGA.initialize(trackingID);
+          AppObservableStore.setGoogleAnalyticsEnabled(true);
+          AppObservableStore.setGoogleAnalyticsPending(false);
+        } else {
+          console.log('Google Analytics did not receive a trackingID, NOT ENABLED');
+        }
+      }, 3000);
+    }
+  }
+
 
   setShowReadyHeavy () {
     this.setState({ showReadyLight: false });
