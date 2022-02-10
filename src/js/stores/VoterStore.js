@@ -71,6 +71,7 @@ class VoterStore extends ReduceStore {
   getTextForMapSearch () {
     let textForMapSearch = this.getState().address.text_for_map_search;
     if (textForMapSearch === undefined) {
+      // Attaching full address object to voterRetrieve, so we can phase this out
       textForMapSearch = this.getState().voter.text_for_map_search;
       if (textForMapSearch === undefined) return '';
     }
@@ -801,13 +802,18 @@ class VoterStore extends ReduceStore {
         //     incomingVoter.voter_photo_url_medium = 'https://wevote.us/img/global/logos/Apple_logo_grey.svg';  // TODO: Switch over to wevote.us once live server is updated
         //   }
         // }
-
-        return {
-          ...state,
+        revisedState = state;
+        revisedState = {
+          ...revisedState,
           facebookPhotoRetrieveLoopCount: facebookPhotoRetrieveLoopCount + 1,
           voter: incomingVoter,
           voterFound: action.res.voter_found,
         };
+        if (incomingVoter.address) {
+          // console.log('incomingVoter.address:', incomingVoter.address);
+          revisedState = { ...revisedState, address: incomingVoter.address };
+        }
+        return revisedState;
 
       case 'voterSignOut':
         // console.log("VoterStore resetting voterStore via voterSignOut");
