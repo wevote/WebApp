@@ -337,7 +337,7 @@ class VoterGuideEndorsements extends Component {
           ) : null}
           <ExtraActionsWrapper>
             <EndorsementCard
-              buttonText="ENDORSEMENTS MISSING?"
+              buttonText="Endorsements missing?"
               organizationWeVoteId={organizationWeVoteId}
               text={`Are there endorsements from ${organizationName} that you expected to see?`}
               title="Endorsements Missing?"

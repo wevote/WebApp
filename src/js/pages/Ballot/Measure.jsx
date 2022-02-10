@@ -361,7 +361,7 @@ class Measure extends Component {
             <EndorsementCard
               bsPrefix="u-margin-top--sm u-stack--xs"
               variant="primary"
-              buttonText="ENDORSEMENTS MISSING?"
+              buttonText="Endorsements missing?"
               text={`Are there endorsements for ${measureName} that you expected to see?`}
               whiteOnBlue
             />

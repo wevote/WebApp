@@ -40,8 +40,8 @@ class CandidateItem extends Component {
       candidateUrl: '',
       contestOfficeName: '',
       candidateWeVoteId: '',
-      issuesUnderThisBallotItemVoterIsFollowingLength: 0,
-      issuesUnderThisBallotItemVoterIsNotFollowingLength: 0,
+      issuesSupportingThisBallotItemVoterIsFollowingLength: 0,
+      issuesSupportingThisBallotItemVoterIsNotFollowingLength: 0,
       largeAreaHoverColorOnNow: null,
       largeAreaHoverLinkOnNow: false,
       officeWeVoteId: '',
@@ -132,10 +132,10 @@ class CandidateItem extends Component {
     if (this.props.closeSupportOpposeCountDisplayModal !== nextProps.closeSupportOpposeCountDisplayModal) {
       return true;
     }
-    if (this.state.issuesUnderThisBallotItemVoterIsFollowingLength !== nextState.issuesUnderThisBallotItemVoterIsFollowingLength) {
+    if (this.state.issuesSupportingThisBallotItemVoterIsFollowingLength !== nextState.issuesSupportingThisBallotItemVoterIsFollowingLength) {
       return true;
     }
-    if (this.state.issuesUnderThisBallotItemVoterIsNotFollowingLength !== nextState.issuesUnderThisBallotItemVoterIsNotFollowingLength) {
+    if (this.state.issuesSupportingThisBallotItemVoterIsNotFollowingLength !== nextState.issuesSupportingThisBallotItemVoterIsNotFollowingLength) {
       return true;
     }
     if (this.state.largeAreaHoverColorOnNow !== nextState.largeAreaHoverColorOnNow) {
@@ -229,13 +229,17 @@ class CandidateItem extends Component {
     const { candidateWeVoteId } = this.props;
     // console.log('CandidateItem onIssueStoreChange candidateWeVoteId:', candidateWeVoteId);
     if (candidateWeVoteId) {
-      const issuesUnderThisBallotItemVoterIsFollowing = IssueStore.getIssuesUnderThisBallotItemVoterIsFollowing(candidateWeVoteId) || [];
-      const issuesUnderThisBallotItemVoterIsNotFollowing = IssueStore.getIssuesUnderThisBallotItemVoterNotFollowing(candidateWeVoteId) || [];
-      const issuesUnderThisBallotItemVoterIsFollowingLength = issuesUnderThisBallotItemVoterIsFollowing.length;
-      const issuesUnderThisBallotItemVoterIsNotFollowingLength = issuesUnderThisBallotItemVoterIsNotFollowing.length;
+      // const issuesUnderThisBallotItemVoterIsFollowing = IssueStore.getIssuesUnderThisBallotItemVoterIsFollowing(candidateWeVoteId) || [];
+      // const issuesUnderThisBallotItemVoterIsNotFollowing = IssueStore.getIssuesUnderThisBallotItemVoterNotFollowing(candidateWeVoteId) || [];
+      // const issuesUnderThisBallotItemVoterIsFollowingLength = issuesUnderThisBallotItemVoterIsFollowing.length;
+      // const issuesUnderThisBallotItemVoterIsNotFollowingLength = issuesUnderThisBallotItemVoterIsNotFollowing.length;
+      const issuesSupportingThisBallotItemVoterIsFollowing = IssueStore.getIssuesSupportingThisBallotItemVoterIsFollowing(candidateWeVoteId) || [];
+      const issuesSupportingThisBallotItemVoterIsNotFollowing = IssueStore.getIssuesSupportingThisBallotItemVoterNotFollowing(candidateWeVoteId) || [];
+      const issuesSupportingThisBallotItemVoterIsFollowingLength = issuesSupportingThisBallotItemVoterIsFollowing.length;
+      const issuesSupportingThisBallotItemVoterIsNotFollowingLength = issuesSupportingThisBallotItemVoterIsNotFollowing.length;
       this.setState({
-        issuesUnderThisBallotItemVoterIsFollowingLength,
-        issuesUnderThisBallotItemVoterIsNotFollowingLength,
+        issuesSupportingThisBallotItemVoterIsFollowingLength,
+        issuesSupportingThisBallotItemVoterIsNotFollowingLength,
       });
     }
   }

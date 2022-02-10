@@ -88,7 +88,6 @@ class SelectBallotModal extends Component {
     const { editingAddress } = this.state;
     const ballotBaseUrl = calculateBallotBaseUrl(this.props.ballotBaseUrl, pathname);
 
-    const voterAddressObject = VoterStore.getAddressObject();
     let dialogTitleText = 'Address & Elections';
     if (hideAddressEdit || hideElections) {
       dialogTitleText = '';
@@ -121,7 +120,6 @@ class SelectBallotModal extends Component {
               {!hideAddressEdit && (
                 <EditAddressInPlaceWrapperMobile>
                   <EditAddressInPlace
-                    address={voterAddressObject}
                     ballotBaseUrl={ballotBaseUrl}
                     defaultIsEditingAddress={editingAddress}
                     // toggleFunction={this.props.toggleFunction}
@@ -148,7 +146,6 @@ class SelectBallotModal extends Component {
               <div className="u-show-desktop">
                 {!hideAddressEdit && (
                   <EditAddressInPlace
-                    address={voterAddressObject}
                     ballotBaseUrl={ballotBaseUrl}
                     defaultIsEditingAddress={editingAddress}
                     // toggleFunction={this.props.toggleFunction}

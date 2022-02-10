@@ -35,8 +35,10 @@ module.exports = {
 
   ENABLE_FACEBOOK: true,
 
+  // These are publishable keys (not secret)
   FACEBOOK_APP_ID: '1097389196952441',
-  FULL_STORY_ORG: 'ESD0B',
-  GOOGLE_ANALYTICS_TRACKING_ID: 'UA-53643204-3',
+  FULL_STORY_ORG: '',
+  GOOGLE_ANALYTICS_TRACKING_ID: '',
+
   STRIPE_API_KEY: 'pk_test_bWuWGC3jrMIFH3wvRvHR6Z5H',  // This is the publishable key (not secret)
 };

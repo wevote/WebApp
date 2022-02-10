@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
 import styled from 'styled-components';
 import { renderLog } from '../../common/utils/logging';
+import VoterStore from '../../stores/VoterStore';
 import { calculateBallotBaseUrl, shortenText } from '../../utils/textFormat';
 import AddressBox from '../AddressBox';
 
@@ -16,22 +17,31 @@ class EditAddressInPlace extends Component {
       editingAddress: false,
       textForMapSearch: '',
     };
-    this.toggleEditingAddress = this.toggleEditingAddress.bind(this);
   }
 
   componentDidMount () {
-    // console.log('In EditAddressInPlace componentDidMount');
+    // console.log('EditAddressInPlace componentDidMount');
+    this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange);
+    this.onVoterStoreChange();
+    const { defaultIsEditingAddress } = this.props;
     this.setState({
-      editingAddress: this.props.defaultIsEditingAddress,
-      textForMapSearch: this.props.address.text_for_map_search || '',
+      editingAddress: defaultIsEditingAddress,
     });
   }
 
-  // eslint-disable-next-line camelcase,react/sort-comp
-  UNSAFE_componentWillReceiveProps (nextProps) {
+  componentWillUnmount() {
+    this.voterStoreListener.remove();
+  }
+
+  onVoterStoreChange () {
     // console.log('EditAddressInPlace componentWillReceiveProps');
+    const voterAddressObject = VoterStore.getAddressObject();
+    let textForMapSearch = '';
+    if (voterAddressObject && voterAddressObject.text_for_map_search) {
+      textForMapSearch = voterAddressObject.text_for_map_search;
+    }
     this.setState({
-      textForMapSearch: nextProps.address.text_for_map_search || '',
+      textForMapSearch,
     });
   }
 
@@ -41,7 +51,7 @@ class EditAddressInPlace extends Component {
     }
   }
 
-  toggleEditingAddress () {
+  toggleEditingAddress = () => {
     const { editingAddress } = this.state;
     if (this.props.toggleEditingAddress) {
       this.props.toggleEditingAddress();
@@ -53,10 +63,10 @@ class EditAddressInPlace extends Component {
 
   render () {
     renderLog('EditAddressInPlace');  // Set LOG_RENDER_EVENTS to log all renders
-    const { classes } = this.props;
+    const { classes, noAddressMessage } = this.props;
     const { location: { pathname } } = window;
     const { editingAddress, textForMapSearch } = this.state;
-    const noAddressMessage = this.props.noAddressMessage ? this.props.noAddressMessage : '- no address entered -';
+    const noAddressMessageFiltered = noAddressMessage || '- no address entered -';
     const maximumAddressDisplayLength = 60;
     const ballotBaseUrl = calculateBallotBaseUrl(this.props.ballotBaseUrl, pathname);
     const addressIntroduction = "To find your correct ballot, we need your full address, including house number. We are a nonprofit, and will never reveal your address. Note: our partners who provide what's-on-the-ballot data work incredibly hard to cover the entire United States, but we cannot guarantee 100% of the items on your official ballot will be shown on We Vote. Please contact us using the 'Help' link if you have questions.";
@@ -70,8 +80,8 @@ class EditAddressInPlace extends Component {
             showCancelEditAddressButton
             toggleEditingAddress={this.toggleEditingAddress}
             saveUrl={ballotBaseUrl}
-            toggleSelectAddressModal={this.props.toggleFunction}
-            editingAddress={editingAddress}
+            toggleSelectAddressModal={this.incomingToggleFunction}
+            editingAddress
           />
         </span>
       );
@@ -84,7 +94,7 @@ class EditAddressInPlace extends Component {
             onClick={this.toggleEditingAddress}
           >
             <EditAddressPreview>
-              { textForMapSearch.length ? shortenText(textForMapSearch, maximumAddressDisplayLength) : noAddressMessage }
+              { textForMapSearch.length ? shortenText(textForMapSearch, maximumAddressDisplayLength) : noAddressMessageFiltered }
               {' '}
               <ChangeAddressWrapper className="u-no-break">
                 <SettingsIconWrapper>
@@ -110,7 +120,6 @@ class EditAddressInPlace extends Component {
   }
 }
 EditAddressInPlace.propTypes = {
-  address: PropTypes.object.isRequired,
   ballotBaseUrl: PropTypes.string,
   classes: PropTypes.object,
   defaultIsEditingAddress: PropTypes.bool,
