@@ -38,7 +38,7 @@ class FindPollingLocation extends Component {
             )}
           />
         </Suspense>
-        <InformationTextWrapper className="social-btn-description u-show-desktop">
+        <InformationTextWrapper className="u-show-desktop">
           <InfoCircleIcon />
           Find the location where you can hand deliver your official ballot before the end of election day.
         </InformationTextWrapper>

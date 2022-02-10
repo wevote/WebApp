@@ -49,7 +49,7 @@ class FriendsTabs extends Component {
       friendInvitationsSentByMe,
       suggestedFriendList,
     });
-    this.resetDefaultTabForMobile(friendInvitationsSentToMe, suggestedFriendList, friendInvitationsSentByMe);
+    this.resetDefaultTabForMobile();
     if (apiCalming('activityNoticeListRetrieve', 10000)) {
       ActivityActions.activityNoticeListRetrieve();
     }
@@ -92,33 +92,19 @@ class FriendsTabs extends Component {
       resetDefaultTab = true;
     }
     if (resetDefaultTab) {
-      this.resetDefaultTabForMobile(FriendStore.friendInvitationsSentToMe(), FriendStore.suggestedFriendList(), FriendStore.friendInvitationsSentByMe());
+      this.resetDefaultTabForMobile();
     }
   }
 
   getSelectedTab () {
     const tabItem = this.getPageFromUrl();
-    const { currentFriendList, defaultTabItem, friendInvitationsSentToMe, suggestedFriendList } = this.state;
+    const { defaultTabItem } = this.state;
     // console.log('getSelectedTab tabItem:', tabItem, ', defaultTabItem:', defaultTabItem);
     let selectedTab = tabItem || defaultTabItem;
 
     if (selectedTab === 'request') selectedTab = 'sent-requests';   /// Hack Oct 17, 2021
     if (selectedTab === 'sent-requests') selectedTab = 'requests';
 
-    // Don't return a selected tab if the tab isn't available
-    if (String(selectedTab) === 'requests') {
-      if (friendInvitationsSentToMe.length < 1) {
-        selectedTab = 'all';
-      }
-    } else if (String(selectedTab) === 'suggested') {
-      if (suggestedFriendList.length < 1) {
-        selectedTab = 'all';
-      }
-    } else if (String(selectedTab) === 'friends') {
-      if (currentFriendList.length < 1) {
-        selectedTab = 'all';
-      }
-    }
     return selectedTab;
   }
 
@@ -134,19 +120,13 @@ class FriendsTabs extends Component {
     return href.replace('/friends/', '');
   }
 
-  resetDefaultTabForMobile (friendInvitationsSentToMe, suggestedFriendList, friendInvitationsSentByMe) {
+  resetDefaultTabForMobile () {
     const tabItem = this.getPageFromUrl();
 
     let defaultTabItem;
     if (tabItem) {
       // If the voter is directed to a friends tab, make that the default
       defaultTabItem = tabItem;
-    } else if (friendInvitationsSentToMe && friendInvitationsSentToMe.length > 0) {
-      defaultTabItem = 'requests';
-    } else if (suggestedFriendList && suggestedFriendList.length > 0) {
-      defaultTabItem = 'suggested';
-    } else if (friendInvitationsSentByMe && friendInvitationsSentByMe.length > 0) {
-      defaultTabItem = 'sent-requests';
     } else {
       defaultTabItem = 'all';
     }

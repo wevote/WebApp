@@ -29,6 +29,7 @@ class FriendInvitationOnboarding extends Component {
     super(props);
     this.state = {
       currentSlideIndex: 0,
+      friendInvitationInformationCalled: false,
       personalizedScoreIntroWatchedThisSession: false,
       invitationMessage: '',
     };
@@ -48,9 +49,13 @@ class FriendInvitationOnboarding extends Component {
     this.friendStoreListener = FriendStore.addListener(this.onFriendStoreChange.bind(this));
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
     const { match: { params: { invitationSecretKey }  } } = this.props;
+    const voterDeviceId = VoterStore.voterDeviceId();
     // console.log('FriendInvitationOnboarding, componentDidMount, invitation_secret_key: ', invitationSecretKey);
-    if (invitationSecretKey) {
-      this.friendInvitationInformation(invitationSecretKey);
+    if (voterDeviceId && invitationSecretKey) {
+      FriendActions.friendInvitationInformation(invitationSecretKey);
+      this.setState({
+        friendInvitationInformationCalled: true,
+      });
     }
     // Pre-load this so it is ready for slide 2
     IssueActions.issueDescriptionsRetrieve(VoterStore.getVoterWeVoteId());
@@ -70,18 +75,43 @@ class FriendInvitationOnboarding extends Component {
   }
 
   onFriendStoreChange () {
-    const friendInvitationInformation = FriendStore.getFriendInvitationInformation();
-    if (friendInvitationInformation) {
-      const {
-        friendFirstName, friendLastName, friendImageUrlHttpsTiny, friendIssueWeVoteIdList, invitationMessage,
-      } = friendInvitationInformation;
+    const { match: { params: { invitationSecretKey }  } } = this.props;
+    const { friendInvitationInformationCalled } = this.state;
+    const voterDeviceId = VoterStore.voterDeviceId();
+    if (voterDeviceId && invitationSecretKey && !friendInvitationInformationCalled) {
+      FriendActions.friendInvitationInformation(invitationSecretKey);
       this.setState({
-        friendFirstName,
-        friendLastName,
-        friendImageUrlHttpsTiny,
-        friendIssueWeVoteIdList,
-        invitationMessage,
-      }, this.updateSlideshowVariables);
+        friendInvitationInformationCalled: true,
+      });
+    } else {
+      const friendInvitationInformation = FriendStore.getFriendInvitationInformation();
+      if (friendInvitationInformation) {
+        const {
+          friendFirstName,
+          friendLastName,
+          friendImageUrlHttpsTiny,
+          friendIssueWeVoteIdList,
+          invitationMessage,
+          invitationSecretKeyBelongsToThisVoter,
+        } = friendInvitationInformation;
+        if (!invitationSecretKeyBelongsToThisVoter) {
+          // We have a response, but voterMergeTwoAccounts hasn't finished
+          if (voterDeviceId && invitationSecretKey) {
+            FriendActions.friendInvitationInformation(invitationSecretKey);
+            this.setState({
+              friendInvitationInformationCalled: true,
+            });
+          }
+        } else {
+          this.setState({
+            friendFirstName,
+            friendLastName,
+            friendImageUrlHttpsTiny,
+            friendIssueWeVoteIdList,
+            invitationMessage,
+          }, this.updateSlideshowVariables);
+        }
+      }
     }
   }
 
@@ -193,7 +223,7 @@ class FriendInvitationOnboarding extends Component {
   nextSlide () {
     const { match: { params: { invitationSecretKey } } } = this.props;
     if (invitationSecretKey) {
-      this.friendInvitationInformation(invitationSecretKey);
+      FriendActions.friendInvitationInformation(invitationSecretKey);
     }
     const { currentSlideIndex, maxSlideIndex } = this.state;
     // console.log('nextSlide currentSlideIndex:', currentSlideIndex);
@@ -227,10 +257,6 @@ class FriendInvitationOnboarding extends Component {
       }
     }
     return {};
-  }
-
-  friendInvitationInformation (invitationSecretKey) {
-    FriendActions.friendInvitationInformation(invitationSecretKey);
   }
 
   render () {
