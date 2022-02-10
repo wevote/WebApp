@@ -1,4 +1,5 @@
 import React, { Component, Suspense } from 'react';
+import styled from 'styled-components';
 import normalizedImagePath from '../../common/utils/normalizedImagePath';
 import InfoCircleIcon from './InfoCircleIcon';
 import SplitIconButton from '../../common/components/Widgets/SplitIconButton';
@@ -6,14 +7,6 @@ import SplitIconButton from '../../common/components/Widgets/SplitIconButton';
 const OpenExternalWebSite = React.lazy(() => import(/* webpackChunkName: 'OpenExternalWebSite' */ '../../common/components/Widgets/OpenExternalWebSite'));
 
 const positionIcon = '../../../img/global/svg-icons/positions-icon-24-x-24.svg';
-const text = 'Don\'t see your favorite organization or endorsement? We Vote is nonpartisan and welcomes public endorsements of candidates and measures from any organization or public figure.';
-
-const endorsementText = (
-  <span className="social-btn-description">
-    <InfoCircleIcon />
-    {text}
-  </span>
-);
 
 class AddEndorsements extends Component {
   constructor (props) {
@@ -32,7 +25,7 @@ class AddEndorsements extends Component {
                 url="https://api.wevoteusa.org/vg/create/"
                 className="u-no-underline"
                 target="_blank"
-                title="ENDORSEMENTS MISSING?"
+                title="Endorsements missing?"
                 body={(
                   <SplitIconButton
                     buttonText="Add endorsements"
@@ -44,12 +37,22 @@ class AddEndorsements extends Component {
                 )}
               />
             </Suspense>
-            {endorsementText}
+            <InfoText>
+              <InfoCircleIcon />
+              Don&apos;t see your favorite organization or endorsement? We Vote is nonpartisan and welcomes public endorsements of candidates and measures from any organization or public figure.
+            </InfoText>
           </div>
         </div>
       </div>
     );
   }
 }
+
+const InfoText = styled.div`
+  margin-top: 10px;
+  word-wrap: break-word;
+  float: left;
+  text-align: left;
+`;
 
 export default AddEndorsements;

@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
+import { Button } from '@material-ui/core';
 import styled from 'styled-components';
 import FriendActions from '../../actions/FriendActions';
 import VoterActions from '../../actions/VoterActions';
@@ -30,13 +31,15 @@ export default class FriendInvitationByEmailVerifyProcess extends Component {
   componentDidMount () {
     this.appStateSubscription = messageService.getMessage().subscribe(() => this.onAppObservableStoreChange());
     this.friendStoreListener = FriendStore.addListener(this.onFriendStoreChange.bind(this));
-    this.voterStoreListener = VoterStore.addListener(this.onAppObservableStoreChange.bind(this));
+    this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
     const { match: { params: { invitation_secret_key: invitationSecretKey } } } = this.props;
     // console.log('FriendInvitationByEmailVerifyProcess, componentDidMount, params.invitation_secret_key: ', invitationSecretKey);
     const hostname = AppObservableStore.getHostname();
+    const voterDeviceId = VoterStore.voterDeviceId();
     // console.log('FriendInvitationByEmailVerifyProcess, componentDidMount, hostname: ', hostname);
-    FriendActions.friendInvitationInformation(invitationSecretKey); // Get data flowing but don't set friendInvitationInformationCalled: true yet
-    if (invitationSecretKey && hostname && hostname !== '') {
+    if (voterDeviceId && invitationSecretKey && hostname && hostname !== '') {
+      // console.log('componentDidMount, calling friendInvitationByEmailVerify');
+      FriendActions.friendInvitationInformation(invitationSecretKey); // Get data flowing but don't set friendInvitationInformationCalled: true yet
       this.friendInvitationByEmailVerify(invitationSecretKey);
       this.setState({
         friendInvitationByEmailVerifyCalled: true,
@@ -55,8 +58,9 @@ export default class FriendInvitationByEmailVerifyProcess extends Component {
     const { match: { params: { invitation_secret_key: invitationSecretKey } } } = this.props;
     const { friendInvitationByEmailVerifyCalled, friendInvitationInformationCalled } = this.state;
     const hostname = AppObservableStore.getHostname();
-    // console.log('FriendInvitationByEmailVerifyProcess, onAppObservableStoreChange, hostname: ', hostname);
-    if (!friendInvitationByEmailVerifyCalled && invitationSecretKey && hostname && hostname !== '') {
+    const voterDeviceId = VoterStore.voterDeviceId();
+    // console.log('FriendInvitationByEmailVerifyProcess, onAppObservableStoreChange, hostname: ', hostname, 'voterDeviceId:', voterDeviceId);
+    if (voterDeviceId && !friendInvitationByEmailVerifyCalled && invitationSecretKey && hostname && hostname !== '') {
       // console.log('onAppObservableStoreChange, calling friendInvitationByEmailVerify');
       this.friendInvitationByEmailVerify(invitationSecretKey);
       this.setState({
@@ -65,7 +69,7 @@ export default class FriendInvitationByEmailVerifyProcess extends Component {
       });
     }
     // If we know the verification API call has been called...
-    if (friendInvitationByEmailVerifyCalled && !friendInvitationInformationCalled && invitationSecretKey && hostname && hostname !== '') {
+    if (voterDeviceId && friendInvitationByEmailVerifyCalled && !friendInvitationInformationCalled && invitationSecretKey && hostname && hostname !== '') {
       // console.log('onAppObservableStoreChange, calling friendInvitationInformation');
       FriendActions.friendInvitationInformation(invitationSecretKey);
       this.setState({
@@ -79,8 +83,9 @@ export default class FriendInvitationByEmailVerifyProcess extends Component {
     const { match: { params: { invitation_secret_key: invitationSecretKey } } } = this.props;
     const { friendInvitationByEmailVerifyCalled, friendInvitationInformationCalled } = this.state;
     const hostname = AppObservableStore.getHostname();
-    // console.log('FriendInvitationByEmailVerifyProcess, onFriendStoreChange, hostname: ', hostname);
-    if (friendInvitationByEmailVerifyCalled && !friendInvitationInformationCalled && invitationSecretKey && hostname && hostname !== '') {
+    const voterDeviceId = VoterStore.voterDeviceId();
+    // console.log('FriendInvitationByEmailVerifyProcess, onFriendStoreChange, hostname: ', hostname, 'voterDeviceId:', voterDeviceId);
+    if (voterDeviceId && friendInvitationByEmailVerifyCalled && !friendInvitationInformationCalled && invitationSecretKey && hostname && hostname !== '') {
       // console.log('onFriendStoreChange, calling friendInvitationInformation');
       FriendActions.friendInvitationInformation(invitationSecretKey);
       this.setState({
@@ -103,6 +108,11 @@ export default class FriendInvitationByEmailVerifyProcess extends Component {
     }
   }
 
+  onVoterStoreChange () {
+    // console.log('onVoterStoreChange');
+    this.onAppObservableStoreChange();
+  }
+
   cancelMergeFunction = () => {
     historyPush({
       pathname: '/ready',
@@ -119,6 +129,7 @@ export default class FriendInvitationByEmailVerifyProcess extends Component {
 
   voterMergeTwoAccountsByInvitationKey = (invitationSecretKey) => {
     VoterActions.voterMergeTwoAccountsByInvitationKey(invitationSecretKey);
+    console.log('You have successfully signed in.');
     historyPush({
       pathname: `/wevoteintro/newfriend/${invitationSecretKey}`,
       state: {
@@ -177,10 +188,24 @@ export default class FriendInvitationByEmailVerifyProcess extends Component {
               </DelayedLoad>
             </CenteredText>
             {LoadingWheel}
+            <CenteredText>
+              <DelayedLoad waitBeforeShow={8000}>
+                <Button
+                  color="primary"
+                  id="setYesPleaseMergeAccounts"
+                  onClick={this.setYesPleaseMergeAccounts}
+                  variant="contained"
+                  // classes={showCancelEditAddressButton ? { root: classes.saveButton } : { root: classes.fullWidthSaveButton }}
+                >
+                  Continue
+                </Button>
+              </DelayedLoad>
+            </CenteredText>
           </div>
         </Suspense>
       );
     } else if (!invitationSecretKey) {
+      console.log('Invitation secret key not found. Invitation not accepted.');
       historyPush({
         pathname: '/ready',
         state: {
@@ -193,9 +218,10 @@ export default class FriendInvitationByEmailVerifyProcess extends Component {
 
     // This process starts when we return from attempting friendInvitationByEmailVerify
     if (!invitationStatus.voterDeviceId) {
-      // console.log('voterDeviceId Missing');
+      console.log('voterDeviceId Missing');
       return LoadingWheel;
     } else if (invitationStatus.attemptedToApproveOwnInvitation) {
+      console.log('You are not allowed to approve your own invitation.');
       historyPush({
         pathname: '/friends',
         state: {
@@ -206,6 +232,7 @@ export default class FriendInvitationByEmailVerifyProcess extends Component {
       return LoadingWheel;
     } else if (friendInvitationInformation.invitationSecretKeyBelongsToThisVoter) {
       // We don't need to do anything more except redirect to the introduction page
+      console.log('You have accepted your friend\'s invitation. See what your friends are supporting or opposing!');
       historyPush({
         pathname: `/wevoteintro/newfriend/${invitationSecretKey}`,
         state: {
@@ -215,6 +242,7 @@ export default class FriendInvitationByEmailVerifyProcess extends Component {
       });
       return LoadingWheel;
     } else if (!invitationStatus.invitationThatCanBeAcceptedFound) {
+      console.log('You may have already accepted this invitation. Invitation links may only be used once.');
       historyPush({
         pathname: '/ready',
         state: {
@@ -223,21 +251,9 @@ export default class FriendInvitationByEmailVerifyProcess extends Component {
         },
       });
       return LoadingWheel;
-    // 2020-08-05 At this point we always want to proceed below, so no need to respond to voterHasDataToPreserve.
-    // } else if (invitationStatus.voterHasDataToPreserve) {
-    //   // If so, ask if they want to connect two accounts?
-    //   // console.log('FriendInvitationByEmailVerifyProcess yesPleaseMergeAccounts is FALSE');
-    //   // Display the question of whether to merge accounts or not
-    //   return (
-    //     <WouldYouLikeToMergeAccounts
-    //       cancelMergeFunction={this.cancelMergeFunction}
-    //       pleaseMergeAccountsFunction={this.setYesPleaseMergeAccounts}
-    //     />
-    //   );
-    //   // return <span>WouldYouLikeToMergeAccounts</span>;
     } else {
       // Go ahead and merge the accounts, which means deleting the current voter and switching to the invitation owner
-      // console.log('FriendInvitationByEmailVerifyProcess - voterHasDataToPreserve is FALSE');
+      console.log('FriendInvitationByEmailVerifyProcess - voterMergeTwoAccountsByInvitationKey has been called.');
       this.voterMergeTwoAccountsByInvitationKey(invitationSecretKey);
       // return <span>this.voterMergeTwoAccountsByInvitationKey - go ahead</span>;
       return (

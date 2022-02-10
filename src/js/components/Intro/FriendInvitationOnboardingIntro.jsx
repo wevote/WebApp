@@ -96,14 +96,14 @@ class FriendInvitationOnboardingIntro extends Component {
           />
         </WeVoteLogoWrapper>
         <FriendInvitationTopHeader className="FriendInvitationTopHeader">
+          Welcome to We Vote.
+          {' '}
           {friendFirstName || invitationMessage ? (
             <>
               <div>
-                Invitation
-                {friendFirstName && (
+                {friendFirstName ? (
                   <>
-                    {' '}
-                    from
+                    You are
                     {' '}
                     {friendFirstName}
                     {friendLastName && (
@@ -112,10 +112,13 @@ class FriendInvitationOnboardingIntro extends Component {
                         {friendLastName}
                       </>
                     )}
+                    &apos;s friend!
+                  </>
+                ) : (
+                  <>
+                    Invitation accepted!
                   </>
                 )}
-                {' '}
-                accepted!
               </div>
               {invitationMessage && (
                 <InvitationMessageWrapper>

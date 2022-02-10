@@ -1,16 +1,8 @@
 import React, { Component } from 'react';
+import styled from 'styled-components';
 import { renderLog } from '../../common/utils/logging';
 import InfoCircleIcon from '../Widgets/InfoCircleIcon';
 import TwitterSignIn from './TwitterSignIn';
-
-const twitterText = 'Signing into Twitter is the fastest way to find voter guides related to your values. We Vote will find the voter guides of everyone you are following on Twitter.';
-
-const twitterInfoText = (
-  <span className="social-btn-description">
-    <InfoCircleIcon />
-    {twitterText}
-  </span>
-);
 
 class TwitterSignInCard extends Component {
   constructor (props) {
@@ -28,12 +20,22 @@ class TwitterSignInCard extends Component {
               buttonText="Find Public Opinions"
               id="signInToFindVoterGuides"
             />
-            {twitterInfoText}
+            <InfoText>
+              <InfoCircleIcon />
+              Signing into Twitter is the fastest way to find voter guides related to your values. We Vote will find the voter guides of everyone you are following on Twitter.
+            </InfoText>
           </div>
         </div>
       </div>
     );
   }
 }
+
+const InfoText = styled.div`
+  margin-top: 10px;
+  word-wrap: break-word;
+  float: left;
+  text-align: left;
+`;
 
 export default TwitterSignInCard;
