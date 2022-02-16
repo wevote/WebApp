@@ -9,6 +9,7 @@ import { isWebApp } from '../../common/utils/isCordovaOrWebApp';
 import Cookies from '../../common/utils/js-cookie/Cookies';
 import { oAuthLog, renderLog } from '../../common/utils/logging';
 import IPhoneSpacer from '../../components/Widgets/IPhoneSpacer';
+import SnackNotifier from '../../components/Widgets/SnackNotifier';
 import AppObservableStore, { messageService } from '../../stores/AppObservableStore';
 import TwitterStore from '../../stores/TwitterStore';
 import VoterStore from '../../stores/VoterStore';
@@ -54,7 +55,7 @@ export default class TwitterSignInProcess extends Component {
     if (twitterAuthResponse.twitter_sign_in_failed) {
       oAuthLog('Twitter sign in failed - push to /settings/account');
       historyPush({
-        pathname: '/settings/account',
+        pathname: '/settings/account',  // SnackNotifier that handles this is in SettingsDashboard
         state: {
           message: 'Twitter sign in failed. Please try again.',
           message_type: 'success',
@@ -65,7 +66,7 @@ export default class TwitterSignInProcess extends Component {
       // If twitter_sign_in_found NOT True, go back to the sign in page to try again
       oAuthLog('twitterAuthResponse.twitter_sign_in_found', twitterAuthResponse.twitter_sign_in_found);
       historyPush({
-        pathname: '/settings/account',
+        pathname: '/settings/account',   // SnackNotifier that handles this is in SettingsDashboard
         state: {
           message: 'Twitter authentication not found. Please try again.',
           message_type: 'warning',
@@ -125,7 +126,7 @@ export default class TwitterSignInProcess extends Component {
                 TwitterStore.clearTwitterImageLoadInfo();
               }
               historyPush({
-                pathname: newRedirectPathname,
+                pathname: newRedirectPathname,   // This works in tested return paths, but if you add another, you will need to handle AppObservableStore.getPendingSnackMessage() in the componentDidUpdate()
                 state: {
                   message: 'You have successfully signed in with Twitter.',
                   message_type: 'success',
@@ -142,15 +143,14 @@ export default class TwitterSignInProcess extends Component {
           }
         } else {
           this.setState({ redirectInProcess: true });
-          const redirectPathname = '/ballot';
-          oAuthLog(`Twitter sign in (2), onVoterStoreChange - push to ${redirectPathname}`);
+          oAuthLog('Twitter sign in (2), onVoterStoreChange - push to /ballot');
           if (twitterImageLoadInfo) {
             AppObservableStore.setSignInStateChanged(true);
             TwitterActions.twitterProcessDeferredImages(twitterImageLoadInfo);
             TwitterStore.clearTwitterImageLoadInfo();
           }
           historyPush({
-            pathname: redirectPathname,
+            pathname: '/ballot',    // SnackNotifier that handles this is in Ballot
             // query: {voter_refresh_timer_on: voterHasDataToPreserve ? 0 : 1},
             state: {
               message: 'You have successfully signed in with Twitter.',
@@ -201,6 +201,7 @@ export default class TwitterSignInProcess extends Component {
         <div className="twitter_sign_in_root">
           <IPhoneSpacer />
           <PageContentContainer>
+            <SnackNotifier />
             <LoadingDiv>
               <span>
                 Loading libraries...
@@ -220,6 +221,7 @@ export default class TwitterSignInProcess extends Component {
         <div className="twitter_sign_in_root">
           <IPhoneSpacer />
           <PageContentContainer>
+            <SnackNotifier />
             <LoadingDiv>
               <span>
                 Waiting for a response from Twitter...
@@ -248,6 +250,7 @@ export default class TwitterSignInProcess extends Component {
         <div className="twitter_sign_in_root">
           <IPhoneSpacer />
           <PageContentContainer>
+            <SnackNotifier />
             <LoadingDiv>
               <span>
                 Loading your account...

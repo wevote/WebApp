@@ -9,23 +9,24 @@ import FacebookActions from '../../actions/FacebookActions';
 import TwitterActions from '../../actions/TwitterActions';
 import VoterActions from '../../actions/VoterActions';
 import VoterSessionActions from '../../actions/VoterSessionActions';
+import LoadingWheel from '../../common/components/Widgets/LoadingWheel';
+import { isIPhone4in, isIPhone4p7in, restoreStylesAfterCordovaKeyboard } from '../../common/utils/cordovaUtils';
+import historyPush from '../../common/utils/historyPush';
+import { normalizedHref } from '../../common/utils/hrefUtils';
+import { isCordova } from '../../common/utils/isCordovaOrWebApp';
+import Cookies from '../../common/utils/js-cookie/Cookies';
+import { oAuthLog, renderLog } from '../../common/utils/logging';
 import AppObservableStore, { messageService } from '../../stores/AppObservableStore';
 import FacebookStore from '../../stores/FacebookStore';
 import VoterStore from '../../stores/VoterStore';
-import { isIPhone4in, isIPhone4p7in, restoreStylesAfterCordovaKeyboard } from '../../common/utils/cordovaUtils';
-import { isCordova } from '../../common/utils/isCordovaOrWebApp';
-import historyPush from '../../common/utils/historyPush';
-import { normalizedHref } from '../../common/utils/hrefUtils';
 import initializeAppleSDK from '../../utils/initializeAppleSDK';
-import Cookies from '../../common/utils/js-cookie/Cookies';
-import { oAuthLog, renderLog } from '../../common/utils/logging';
 import { stringContains } from '../../utils/textFormat';
 import AppleSignIn from '../Apple/AppleSignIn';
 import FacebookSignIn from '../Facebook/FacebookSignIn';
-import LoadingWheel from '../../common/components/Widgets/LoadingWheel';
 import TwitterSignIn from '../Twitter/TwitterSignIn';
 import BrowserPushMessage from '../Widgets/BrowserPushMessage';
 import signInModalGlobalState from '../Widgets/signInModalGlobalState';
+import SnackNotifier, { openSnackbar } from '../Widgets/SnackNotifier';
 import VoterEmailAddressEntry from './VoterEmailAddressEntry';
 import VoterPhoneEmailCordovaEntryModal from './VoterPhoneEmailCordovaEntryModal';
 import VoterPhoneVerificationEntry from './VoterPhoneVerificationEntry';
@@ -197,6 +198,11 @@ export default class SettingsAccount extends Component {
           console.log(`SettingsAccount componentDidUpdate was rendered. transform was already there. style: ${$(cont).attr('style')}`);
         }
       }
+    }
+    const snackMessage = AppObservableStore.getPendingSnackMessage();
+    if (snackMessage) {
+      openSnackbar({ message: snackMessage, duration: 5000 });
+      AppObservableStore.setPendingSnackMessage('');
     }
   }
 
@@ -382,6 +388,7 @@ export default class SettingsAccount extends Component {
     return (
       <>
         <Helmet title={pageTitle} />
+        <SnackNotifier />
         {!hideDialogForCordova &&
           <BrowserPushMessage incomingProps={this.props} />}
         <div className={inModal ? 'card-main full-width' : 'card'} style={{ display: `${hideDialogForCordova ? ' none' : 'undefined'}` }}>

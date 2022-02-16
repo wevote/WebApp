@@ -227,6 +227,7 @@ export function getApplicationViewBooleans (pathname) {
     showFooterBar = isWebApp() || (!isIOSAppOnMac() && isSmallScreen);
     showFooterMain = isWebApp();
   }
+  // showFooterMain = false;
 
   let showShareButtonFooter = false;
   const onFollowSubPage = stringContains('/m/followers', pathnameLowerCase) || stringContains('/m/following', pathnameLowerCase);

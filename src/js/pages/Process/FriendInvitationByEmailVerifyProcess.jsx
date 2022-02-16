@@ -115,7 +115,7 @@ export default class FriendInvitationByEmailVerifyProcess extends Component {
 
   cancelMergeFunction = () => {
     historyPush({
-      pathname: '/ready',
+      pathname: '/ready',  // SnackNotifier that handles this is in Ready
       state: {
       },
     });
@@ -207,7 +207,7 @@ export default class FriendInvitationByEmailVerifyProcess extends Component {
     } else if (!invitationSecretKey) {
       console.log('Invitation secret key not found. Invitation not accepted.');
       historyPush({
-        pathname: '/ready',
+        pathname: '/ready',  // SnackNotifier that handles this is in Ready
         state: {
           message: 'Invitation secret key not found. Invitation not accepted.',
           message_type: 'warning',
@@ -223,7 +223,7 @@ export default class FriendInvitationByEmailVerifyProcess extends Component {
     } else if (invitationStatus.attemptedToApproveOwnInvitation) {
       console.log('You are not allowed to approve your own invitation.');
       historyPush({
-        pathname: '/friends',
+        pathname: '/friends',   // SnackNotifier that handles this is in Friends
         state: {
           message: 'You are not allowed to approve your own invitation.',
           message_type: 'danger',
@@ -244,7 +244,7 @@ export default class FriendInvitationByEmailVerifyProcess extends Component {
     } else if (!invitationStatus.invitationThatCanBeAcceptedFound) {
       console.log('You may have already accepted this invitation. Invitation links may only be used once.');
       historyPush({
-        pathname: '/ready',
+        pathname: '/ready',   // SnackNotifier that handles this is in Ready
         state: {
           message: 'You may have already accepted this invitation. Invitation links may only be used once.',
           message_type: 'warning',

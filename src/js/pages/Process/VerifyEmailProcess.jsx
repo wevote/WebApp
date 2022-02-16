@@ -73,7 +73,7 @@ export default class VerifyEmailProcess extends Component {
         redirectPathname = '/ballot';
       }
       historyPush({
-        pathname: redirectPathname,
+        pathname: redirectPathname,   // SnackNotifier that handles this is in SettingsDashboard and Ballot
         // The Email sign in delay isn't as great as Twitter, so this isn't needed.
         // query: { voter_refresh_timer_on: voterHasDataToPreserve ? 0 : 1 },
         state: {
@@ -109,7 +109,7 @@ export default class VerifyEmailProcess extends Component {
     if (!this.state.emailSignInStatus.email_address_found) {
       console.log('Could not find secret_key - push to /settings/account');
       historyPush({
-        pathname: '/settings/account',
+        pathname: '/settings/account',  // SnackNotifier that handles this is in SettingsDashboard
         state: {
           message: "Email verification did not work. Please try 'Send Verification Email' again.",
           message_type: 'danger',
@@ -130,7 +130,7 @@ export default class VerifyEmailProcess extends Component {
     if (!this.state.emailSignInStatus.email_ownership_is_verified) {
       console.log('email_ownership_is_verified not true - push to /settings/account');
       historyPush({
-        pathname: '/settings/account',
+        pathname: '/settings/account',  // SnackNotifier that handles this is in SettingsDashboard
       });
       return LoadingWheel;
     }
@@ -139,7 +139,6 @@ export default class VerifyEmailProcess extends Component {
       // We don't need to do anything more except redirect
       // console.log('secret key owned by this voter - push to /ballot');
       let redirectFullUrl = '';
-      let redirectPathname = '';
       const signInStartFullUrl = Cookies.get('sign_in_start_full_url');
       if (signInStartFullUrl) {
         AppObservableStore.unsetStoreSignInStartFullUrl();
@@ -152,9 +151,8 @@ export default class VerifyEmailProcess extends Component {
         // }
         window.location.assign(redirectFullUrl);
       } else {
-        redirectPathname = '/ballot';
         historyPush({
-          pathname: redirectPathname,
+          pathname: '/ballot',  // SnackNotifier that handles this is in Ballot
           // The Email sign in delay isn't as great as Twitter, so this isn't needed.
           // query: { voter_refresh_timer_on: voterHasDataToPreserve ? 0 : 1 },
           state: {
