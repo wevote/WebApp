@@ -19,6 +19,8 @@ import SettingsSharing from '../../components/Settings/SettingsSharing';
 import SettingsSiteText from '../../components/Settings/SettingsSiteText';
 import SettingsSubscriptionPlan from '../../components/Settings/SettingsSubscriptionPlan';
 import ToolsToShareOnOtherWebsites from '../../components/Settings/ToolsToShareOnOtherWebsites';
+import SnackNotifier, { openSnackbar } from '../../components/Widgets/SnackNotifier';
+import AppObservableStore from '../../stores/AppObservableStore';
 import { PageContentContainer } from '../../utils/pageLayoutStyles';
 import BallotStore from '../../stores/BallotStore';
 import OrganizationStore from '../../stores/OrganizationStore';
@@ -145,6 +147,15 @@ export default class SettingsDashboard extends Component {
     }
   }
 
+  componentDidUpdate () {
+    const snackMessage = AppObservableStore.getPendingSnackMessage();
+    if (snackMessage) {
+      openSnackbar({ message: snackMessage });
+      AppObservableStore.setPendingSnackMessage('');
+    }
+  }
+
+
   componentWillUnmount () {
     if (this.organizationStoreListener) {
       this.organizationStoreListener.remove();
@@ -251,6 +262,7 @@ export default class SettingsDashboard extends Component {
 
     return (
       <PageContentContainer>
+        <SnackNotifier />
         <div className={isWebApp() ? 'settings-dashboard u-stack--xl' : 'settings-dashboard SettingsCardBottomCordova'}>
           {/* Desktop left navigation + Settings content.
             WebApp only, since the dashboard doesn't go well with the HamburgerMenu on iPad */}

@@ -84,7 +84,7 @@ export default class AppleSignInProcess extends Component {
               oAuthLog(`Apple sign in (1), onVoterStoreChange - push to ${newRedirectPathname}`);
 
               historyPush({
-                pathname: newRedirectPathname,
+                pathname: newRedirectPathname,   // This works in tested return paths, but if you add another, you will need to handle AppObservableStore.getPendingSnackMessage() in the componentDidUpdate()
                 state: {
                   message: 'You have successfully signed in with Apple.',
                   message_type: 'success',
@@ -104,7 +104,7 @@ export default class AppleSignInProcess extends Component {
           const redirectPathname = '/ballot';
           oAuthLog(`Apple sign in (2), onVoterStoreChange - push to ${redirectPathname}`);
           historyPush({
-            pathname: redirectPathname,
+            pathname: redirectPathname,   // This works in tested return paths, but if you add another, you will need to handle AppObservableStore.getPendingSnackMessage() in the componentDidUpdate()
             // query: {voter_refresh_timer_on: voterHasDataToPreserve ? 0 : 1},
             state: {
               message: 'You have successfully signed in with your Apple Id.',

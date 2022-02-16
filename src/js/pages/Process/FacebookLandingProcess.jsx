@@ -58,7 +58,7 @@ export default class FacebookLandingProcess extends Component {
 
     if (this.state.appRequestAlreadyProcessed) {
       historyPush({
-        pathname: '/ready',
+        pathname: '/ready',   // SnackNotifier that handles this is in Ready
       });
       return LoadingWheel;
     }
@@ -87,7 +87,7 @@ export default class FacebookLandingProcess extends Component {
     // This process starts when we return from attempting friendInvitationByFacebookVerify
     if (!this.state.facebookInvitationStatus.invitationThatCanBeAcceptedFound) {
       historyPush({
-        pathname: '/ready',
+        pathname: '/ready',  // SnackNotifier that handles this is in Ready
         state: {
           message: 'Invitation not found. You may have already accepted this invitation. Invitation links may only be used once.',
           message_type: 'warning',
@@ -98,7 +98,7 @@ export default class FacebookLandingProcess extends Component {
 
     if (this.state.facebookInvitationStatus.attemptedToApproveOwnInvitation) {
       historyPush({
-        pathname: '/friends',
+        pathname: '/friends',   // SnackNotifier that handles this is in Friends
         state: {
           message: 'You are not allowed to approve your own invitation.',
           message_type: 'danger',
@@ -110,7 +110,7 @@ export default class FacebookLandingProcess extends Component {
     if (this.state.facebookInvitationStatus.invitationThatCanBeAcceptedFound) {
       FacebookActions.deleteFacebookAppRequest(this.state.facebookInvitationStatus.facebookRequestId);
       historyPush({
-        pathname: '/ready',
+        pathname: '/ready',    // SnackNotifier that handles this is in Ready
         state: {
           message: "You have accepted your friend's invitation. Visit your ballot to see what your friends are supporting or opposing.",
           message_type: 'success',

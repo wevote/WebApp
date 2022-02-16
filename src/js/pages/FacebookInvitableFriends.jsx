@@ -102,7 +102,7 @@ export default class FacebookInvitableFriends extends Component {
 
   cancelMergeFunction = () => {
     historyPush({
-      pathname: '/more/network',
+      pathname: '/more/network',   // SnackNotifier that SHOULD handle this is in Friends or Values
       state: {},
     });
   }
@@ -191,7 +191,7 @@ export default class FacebookInvitableFriends extends Component {
         oAuthLog('Final data for all invitations', data);
         FriendActions.friendInvitationByFacebookSend(data);
         historyPush({
-          pathname: '/friends',
+          pathname: '/friends',  // SnackNotifier that handles this is in Friends
           state: {
             message: 'You have successfully sent Invitation to your friends.',
             message_type: 'success',
@@ -240,7 +240,7 @@ export default class FacebookInvitableFriends extends Component {
     if (this.state.facebookAuthResponse.facebook_sign_in_failed) {
       // console.log("Facebook sign in failed - push to /more/sign_in");
       historyPush({
-        pathname: '/more/network',
+        pathname: '/more/network',   // SnackNotifier that SHOULD handle this is in Friends or Values
         state: {
           message: 'Facebook sign in failed. Please try again.',
           message_type: 'success',
@@ -294,7 +294,7 @@ export default class FacebookInvitableFriends extends Component {
     // console.log("facebook friends not exist:", this.state.facebookInvitableFriends.facebook_friends_not_exist);
     if (this.state.facebookInvitableFriends.facebook_friends_not_exist) {
       historyPush({
-        pathname: '/friends',
+        pathname: '/friends',   // SnackNotifier that handles this is in Friends
         state: {
           message: 'There are no friends to invite from Facebook. Either there is an error, or you already invited all of your friends on Facebook!',
           message_type: 'success',

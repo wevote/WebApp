@@ -136,8 +136,8 @@ class SignInModal extends Component {
   render () {
     renderLog('SignInModal');  // Set LOG_RENDER_EVENTS to log all renders
     const { classes } = this.props;
-
     const { focusedInputName, focusedOnSingleInputToggle, voter, voterIsSignedIn } = this.state;
+
     if (!voter) {
       // console.log('SignInModal render voter NOT found');
       return <div className="undefined-props" />;
@@ -207,7 +207,7 @@ class SignInModal extends Component {
               )}
             </div>
           </section>
-          {isCordova && (
+          {isCordova() && (
             <div className="text-center">
               <span id="termsAndPrivacySignInModal" className="terms-and-privacy">
                 <Link to="/more/privacy" onClick={this.closeFunction}>

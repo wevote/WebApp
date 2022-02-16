@@ -10,6 +10,12 @@ import FriendActions from '../actions/FriendActions';
 import IssueActions from '../actions/IssueActions';
 import ReadyActions from '../actions/ReadyActions';
 import LoadingWheelComp from '../common/components/Widgets/LoadingWheelComp';
+import apiCalming from '../common/utils/apiCalming';
+import { isAndroid, isIOS } from '../common/utils/cordovaUtils';
+import historyPush from '../common/utils/historyPush';
+import { isWebApp } from '../common/utils/isCordovaOrWebApp';
+import Cookies from '../common/utils/js-cookie/Cookies';
+import { renderLog } from '../common/utils/logging';
 import EditAddressOneHorizontalRow from '../components/Ready/EditAddressOneHorizontalRow';
 import ElectionCountdown from '../components/Ready/ElectionCountdown';
 import ReadyInformationDisclaimer from '../components/Ready/ReadyInformationDisclaimer';
@@ -20,19 +26,13 @@ import ReadyTaskRegister from '../components/Ready/ReadyTaskRegister';
 import ShareButtonDesktopTablet from '../components/Share/ShareButtonDesktopTablet';
 import ValuesToFollowPreview from '../components/Values/ValuesToFollowPreview';
 import BrowserPushMessage from '../components/Widgets/BrowserPushMessage';
-import SnackNotifier from '../components/Widgets/SnackNotifier';
+import SnackNotifier, { openSnackbar } from '../components/Widgets/SnackNotifier';
 import webAppConfig from '../config';
 import AppObservableStore, { messageService } from '../stores/AppObservableStore';
 import BallotStore from '../stores/BallotStore';
 import IssueStore from '../stores/IssueStore';
 import VoterStore from '../stores/VoterStore';
-import apiCalming from '../common/utils/apiCalming';
-import { isAndroid, isIOS } from '../common/utils/cordovaUtils';
-import { isWebApp } from '../common/utils/isCordovaOrWebApp';
-import historyPush from '../common/utils/historyPush';
-import Cookies from '../common/utils/js-cookie/Cookies';
 import lazyPreloadPages from '../utils/lazyPreloadPages';
-import { renderLog } from '../common/utils/logging';
 import { PageContentContainer } from '../utils/pageLayoutStyles';
 
 const ReadMore = React.lazy(() => import(/* webpackChunkName: 'ReadMore' */ '../common/components/Widgets/ReadMore'));
@@ -116,6 +116,14 @@ class Ready extends Component {
 
     this.preloadTimer = setTimeout(() => lazyPreloadPages(), 2000);
     window.scrollTo(0, 0);
+  }
+
+  componentDidUpdate () {
+    const snackMessage = AppObservableStore.getPendingSnackMessage();
+    if (snackMessage) {
+      openSnackbar({ message: snackMessage, duration: 5000 });
+      AppObservableStore.setPendingSnackMessage('');
+    }
   }
 
   componentDidCatch (error, info) {

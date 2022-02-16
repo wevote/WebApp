@@ -6,6 +6,11 @@ import styled from 'styled-components';
 import ActivityActions from '../../actions/ActivityActions';
 import AnalyticsActions from '../../actions/AnalyticsActions';
 import FriendActions from '../../actions/FriendActions';
+import LoadingWheel from '../../common/components/Widgets/LoadingWheel';
+import apiCalming from '../../common/utils/apiCalming';
+import historyPush from '../../common/utils/historyPush';
+import { renderLog } from '../../common/utils/logging';
+import normalizedImagePath from '../../common/utils/normalizedImagePath';
 import FacebookSignInCard from '../../components/Facebook/FacebookSignInCard';
 import AddFriendsByEmail from '../../components/Friends/AddFriendsByEmail';
 import FriendInvitationsSentByMePreview from '../../components/Friends/FriendInvitationsSentByMePreview';
@@ -13,27 +18,23 @@ import FriendInvitationsSentToMePreview from '../../components/Friends/FriendInv
 import FriendsCurrentPreview from '../../components/Friends/FriendsCurrentPreview';
 import FriendsPromoBox from '../../components/Friends/FriendsPromoBox';
 import SuggestedFriendsPreview from '../../components/Friends/SuggestedFriendsPreview';
-import LoadingWheel from '../../common/components/Widgets/LoadingWheel';
 import TwitterSignInCard from '../../components/Twitter/TwitterSignInCard';
 import BrowserPushMessage from '../../components/Widgets/BrowserPushMessage';
 import MessageCard from '../../components/Widgets/MessageCard';
+import SnackNotifier, { openSnackbar } from '../../components/Widgets/SnackNotifier';
 import TooltipIcon from '../../components/Widgets/TooltipIcon';
-// import AppObservableStore, { messageService } from '../../stores/AppObservableStore';
+import AppObservableStore from '../../stores/AppObservableStore';
 import FriendStore from '../../stores/FriendStore';
 import VoterStore from '../../stores/VoterStore';
 import { cordovaFriendsWrapper } from '../../utils/cordovaOffsets';
-import normalizedImagePath from '../../common/utils/normalizedImagePath';
-import historyPush from '../../common/utils/historyPush';
 import displayFriendsTabs from '../../utils/displayFriendsTabs';
 import sortFriendListByMutualFriends from '../../utils/friendFunctions';
-import { renderLog } from '../../common/utils/logging';
 import { PageContentContainer } from '../../utils/pageLayoutStyles';
 import FriendInvitationsSentByMe from './FriendInvitationsSentByMe';
 import FriendInvitationsSentToMe from './FriendInvitationsSentToMe';
 import FriendsCurrent from './FriendsCurrent';
 import InviteByEmail from './InviteByEmail';
 import SuggestedFriends from './SuggestedFriends';
-import apiCalming from '../../common/utils/apiCalming';
 
 const FirstAndLastNameRequiredAlert = React.lazy(() => import(/* webpackChunkName: 'FirstAndLastNameRequiredAlert' */ '../../components/Widgets/FirstAndLastNameRequiredAlert'));
 
@@ -114,6 +115,11 @@ class Friends extends Component {
 
     if (tabItem && previousTabItem && tabItem !== previousTabItem) {
       window.scrollTo(0, 0);
+    }
+    const snackMessage = AppObservableStore.getPendingSnackMessage();
+    if (snackMessage) {
+      openSnackbar({ message: snackMessage });
+      AppObservableStore.setPendingSnackMessage('');
     }
   }
 
@@ -553,6 +559,7 @@ class Friends extends Component {
 
     return (
       <PageContentContainer>
+        <SnackNotifier />
         {displayFriendsTabs() ? (
           <FriendsHeading>
             <div className="container-fluid debugStyleBottom">

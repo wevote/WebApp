@@ -16,8 +16,9 @@ import ValuesFollowedPreview from '../components/Values/ValuesFollowedPreview';
 import ValuesToFollowPreview from '../components/Values/ValuesToFollowPreview';
 import AddEndorsements from '../components/Widgets/AddEndorsements';
 import BrowserPushMessage from '../components/Widgets/BrowserPushMessage';
-import SnackNotifier from '../components/Widgets/SnackNotifier';
+import SnackNotifier, { openSnackbar } from '../components/Widgets/SnackNotifier';
 import Testimonial from '../components/Widgets/Testimonial';
+import AppObservableStore from '../stores/AppObservableStore';
 import IssueStore from '../stores/IssueStore';
 import VoterStore from '../stores/VoterStore';
 import normalizedImagePath from '../common/utils/normalizedImagePath';
@@ -53,6 +54,14 @@ export default class Values extends Component {
     IssueActions.issuesFollowedRetrieve(VoterStore.getVoterWeVoteId());
     AnalyticsActions.saveActionNetwork(VoterStore.electionId());
     this.preloadTimer = setTimeout(() => lazyPreloadPages(), 2000);
+  }
+
+  componentDidUpdate () {
+    const snackMessage = AppObservableStore.getPendingSnackMessage();
+    if (snackMessage) {
+      openSnackbar({ message: snackMessage });
+      AppObservableStore.setPendingSnackMessage('');
+    }
   }
 
   componentDidCatch (error, info) {

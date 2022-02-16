@@ -62,7 +62,6 @@ export default class SignInEmailProcess extends Component {
     }
 
     let redirectFullUrl = '';
-    let redirectPathname = '';
     const signInStartFullUrl = Cookies.get('sign_in_start_full_url');
 
     // We redirect after voterMergeTwoAccountsByEmailKey comes back
@@ -79,9 +78,8 @@ export default class SignInEmailProcess extends Component {
         // }
         window.location.assign(redirectFullUrl);
       } else {
-        redirectPathname = '/ballot';
         historyPush({
-          pathname: redirectPathname,
+          pathname: '/ballot',  // SnackNotifier that handles this is in Ballot
           // The Email sign in delay isn't as great as Twitter, so this isn't needed.
           // query: { voter_refresh_timer_on: voterHasDataToPreserve ? 0 : 1 },
           state: {
@@ -110,9 +108,8 @@ export default class SignInEmailProcess extends Component {
           // }
           window.location.assign(redirectFullUrl);
         } else {
-          redirectPathname = '/settings/account';
           historyPush({
-            pathname: redirectPathname,
+            pathname: '/settings/account',    // SnackNotifier that handles this is in SettingsDashboard
             // The Email sign in delay isn't as great as Twitter, so this isn't needed.
             // query: { voter_refresh_timer_on: voterHasDataToPreserve ? 0 : 1 },
             state: {
@@ -126,7 +123,7 @@ export default class SignInEmailProcess extends Component {
         Cookies.remove('sign_in_start_full_url', { path: '/' });
         Cookies.remove('sign_in_start_full_url', { path: '/', domain: 'wevote.us' });
         historyPush({
-          pathname: '/settings/account',
+          pathname: '/settings/account',  // SnackNotifier that handles this is in SettingsDashboard
           state: {
             message: 'Could not find your email key code in the database.',
             message_type: 'error',
@@ -152,9 +149,8 @@ export default class SignInEmailProcess extends Component {
           // }
           window.location.assign(redirectFullUrl);
         } else {
-          redirectPathname = '/ballot';
           historyPush({
-            pathname: redirectPathname,
+            pathname: '/ballot',
             // The Email sign in delay isn't as great as Twitter, so this isn't needed.
             // query: { voter_refresh_timer_on: voterHasDataToPreserve ? 0 : 1 },
             state: {

@@ -23,7 +23,7 @@ import BallotShowAllItemsFooter from '../../components/Navigation/BallotShowAllI
 import BallotSideBar from '../../components/Navigation/BallotSideBar';
 import ValuesToFollowPreview from '../../components/Values/ValuesToFollowPreview';
 import BrowserPushMessage from '../../components/Widgets/BrowserPushMessage';
-import SnackNotifier from '../../components/Widgets/SnackNotifier';
+import SnackNotifier, { openSnackbar } from '../../components/Widgets/SnackNotifier';
 import webAppConfig from '../../config';
 import AppObservableStore, { messageService } from '../../stores/AppObservableStore';
 import BallotStore from '../../stores/BallotStore';
@@ -495,6 +495,11 @@ class Ballot extends Component {
           showFilterTabs: raceLevelFilterItemsInThisBallot.length > 1,
         });
       }
+    }
+    const snackMessage = AppObservableStore.getPendingSnackMessage();
+    if (snackMessage) {
+      openSnackbar({ message: snackMessage });
+      AppObservableStore.setPendingSnackMessage('');
     }
   }
 
