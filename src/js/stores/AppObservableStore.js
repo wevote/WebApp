@@ -35,6 +35,7 @@ const nonFluxState = {
   observableUpdateCounter: 0,
   organizationModalBallotItemWeVoteId: '',
   pendingSnackMessage: '',
+  pendingSnackSeverity: '',
   scrolledDown: false,
   shareModalStep: '',
   sharedItemCode: '',
@@ -111,8 +112,9 @@ export default {
     messageService.sendMessage('state updated organizationModalBallotItemWeVoteId');
   },
 
-  setPendingSnackMessage (message) {
+  setPendingSnackMessage (message, severity) {
     nonFluxState.pendingSnackMessage = message;
+    nonFluxState.pendingSnackSeverity = severity;
   },
 
   setScrolled (scrolledDown) {
@@ -316,6 +318,10 @@ export default {
     return nonFluxState.pendingSnackMessage;
   },
 
+  getPendingSnackSeverity () {
+    return nonFluxState.pendingSnackSeverity;
+  },
+
   getScrolledDown () {
     return nonFluxState.scrolledDown;
   },
@@ -352,6 +358,10 @@ export default {
 
   getVoterGuideSettingsDashboardEditMode () {
     return nonFluxState.getVoterGuideSettingsDashboardEditMode;
+  },
+
+  isSnackMessagePending () {
+    return nonFluxState.pendingSnackMessage && nonFluxState.pendingSnackMessage.length > 0;
   },
 
   isOnWeVoteRootUrl () {

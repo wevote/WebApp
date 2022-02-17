@@ -84,7 +84,7 @@ export default class SignInEmailProcess extends Component {
           // query: { voter_refresh_timer_on: voterHasDataToPreserve ? 0 : 1 },
           state: {
             message: 'You have successfully signed in.',
-            message_type: 'success',
+            severity: 'success',
           },
         });
       }
@@ -114,7 +114,7 @@ export default class SignInEmailProcess extends Component {
             // query: { voter_refresh_timer_on: voterHasDataToPreserve ? 0 : 1 },
             state: {
               message: 'You have successfully signed in.',
-              message_type: 'success',
+              severity: 'success',
             },
           });
         }
@@ -126,7 +126,7 @@ export default class SignInEmailProcess extends Component {
           pathname: '/settings/account',  // SnackNotifier that handles this is in SettingsDashboard
           state: {
             message: 'Could not find your email key code in the database.',
-            message_type: 'error',
+            severity: 'error',
           },
         });
       }
@@ -155,7 +155,7 @@ export default class SignInEmailProcess extends Component {
             // query: { voter_refresh_timer_on: voterHasDataToPreserve ? 0 : 1 },
             state: {
               message: 'You have successfully signed in.',
-              message_type: 'success',
+              severity: 'success',
             },
           });
         }

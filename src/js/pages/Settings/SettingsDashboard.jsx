@@ -148,13 +148,8 @@ export default class SettingsDashboard extends Component {
   }
 
   componentDidUpdate () {
-    const snackMessage = AppObservableStore.getPendingSnackMessage();
-    if (snackMessage) {
-      openSnackbar({ message: snackMessage });
-      AppObservableStore.setPendingSnackMessage('');
-    }
+    if (AppObservableStore.isSnackMessagePending()) openSnackbar({});
   }
-
 
   componentWillUnmount () {
     if (this.organizationStoreListener) {

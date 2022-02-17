@@ -120,7 +120,7 @@ export default class FriendInvitationByEmailVerifyProcess extends Component {
       },
     });
     // message: 'You have chosen to NOT merge your two accounts.',
-    // message_type: 'success'
+    // severity: 'success'
   }
 
   setYesPleaseMergeAccounts = () => {
@@ -134,7 +134,7 @@ export default class FriendInvitationByEmailVerifyProcess extends Component {
       pathname: `/wevoteintro/newfriend/${invitationSecretKey}`,
       state: {
         message: 'You have successfully signed in.',
-        message_type: 'success',
+        severity: 'success',
       },
     });
   };
@@ -210,7 +210,7 @@ export default class FriendInvitationByEmailVerifyProcess extends Component {
         pathname: '/ready',  // SnackNotifier that handles this is in Ready
         state: {
           message: 'Invitation secret key not found. Invitation not accepted.',
-          message_type: 'warning',
+          severity: 'warning',
         },
       });
       return LoadingWheel;
@@ -226,7 +226,7 @@ export default class FriendInvitationByEmailVerifyProcess extends Component {
         pathname: '/friends',   // SnackNotifier that handles this is in Friends
         state: {
           message: 'You are not allowed to approve your own invitation.',
-          message_type: 'danger',
+          severity: 'error',
         },
       });
       return LoadingWheel;
@@ -237,7 +237,7 @@ export default class FriendInvitationByEmailVerifyProcess extends Component {
         pathname: `/wevoteintro/newfriend/${invitationSecretKey}`,
         state: {
           message: 'You have accepted your friend\'s invitation. See what your friends are supporting or opposing!',
-          message_type: 'success',
+          severity: 'success',
         },
       });
       return LoadingWheel;
@@ -247,7 +247,7 @@ export default class FriendInvitationByEmailVerifyProcess extends Component {
         pathname: '/ready',   // SnackNotifier that handles this is in Ready
         state: {
           message: 'You may have already accepted this invitation. Invitation links may only be used once.',
-          message_type: 'warning',
+          severity: 'warning',
         },
       });
       return LoadingWheel;

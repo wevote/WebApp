@@ -50,9 +50,9 @@ export default class WeVoteRouter extends BrowserRouter {
         console.log(` Router: The current URL is ${location.pathname}${location.search}${location.hash}`);
         console.log(` Router: The last navigation action was ${action}`, JSON.stringify(this.history, null, 2));
       }
-      // This message has to be handeled in the componentDidMount of the class that will receive it
+      // This message has to be handled in the componentDidMount of the class that will receive it
       if (location && location.state && location.state.message) {
-        AppObservableStore.setPendingSnackMessage(location.state.message);
+        AppObservableStore.setPendingSnackMessage(location.state.message, location.state.severity);
       }
     });
   }

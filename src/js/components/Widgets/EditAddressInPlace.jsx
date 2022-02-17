@@ -29,7 +29,7 @@ class EditAddressInPlace extends Component {
     });
   }
 
-  componentWillUnmount() {
+  componentWillUnmount () {
     this.voterStoreListener.remove();
   }
 

@@ -199,11 +199,7 @@ export default class SettingsAccount extends Component {
         }
       }
     }
-    const snackMessage = AppObservableStore.getPendingSnackMessage();
-    if (snackMessage) {
-      openSnackbar({ message: snackMessage, duration: 5000 });
-      AppObservableStore.setPendingSnackMessage('');
-    }
+    if (AppObservableStore.isSnackMessagePending()) openSnackbar({});
   }
 
   componentDidCatch (error, info) {

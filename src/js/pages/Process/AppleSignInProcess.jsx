@@ -87,7 +87,7 @@ export default class AppleSignInProcess extends Component {
                 pathname: newRedirectPathname,   // This works in tested return paths, but if you add another, you will need to handle AppObservableStore.getPendingSnackMessage() in the componentDidUpdate()
                 state: {
                   message: 'You have successfully signed in with Apple.',
-                  message_type: 'success',
+                  severity: 'success',
                 },
               });
             } else {
@@ -108,7 +108,7 @@ export default class AppleSignInProcess extends Component {
             // query: {voter_refresh_timer_on: voterHasDataToPreserve ? 0 : 1},
             state: {
               message: 'You have successfully signed in with your Apple Id.',
-              message_type: 'success',
+              severity: 'success',
             },
           });
         }

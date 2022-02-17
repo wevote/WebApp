@@ -37,7 +37,7 @@ export default class VerifyEmailProcess extends Component {
   //     },
   //   });
   //   // message: "You have chosen to NOT merge your two accounts.",
-  //   // message_type: "success"
+  //   // severity: "success"
   // }
 
   onVoterStoreChange () {
@@ -78,7 +78,7 @@ export default class VerifyEmailProcess extends Component {
         // query: { voter_refresh_timer_on: voterHasDataToPreserve ? 0 : 1 },
         state: {
           message,
-          message_type: 'success',
+          severity: 'success',
         },
       });
     }
@@ -112,7 +112,7 @@ export default class VerifyEmailProcess extends Component {
         pathname: '/settings/account',  // SnackNotifier that handles this is in SettingsDashboard
         state: {
           message: "Email verification did not work. Please try 'Send Verification Email' again.",
-          message_type: 'danger',
+          severity: 'warning',
         },
       });
       return LoadingWheel;
@@ -157,7 +157,7 @@ export default class VerifyEmailProcess extends Component {
           // query: { voter_refresh_timer_on: voterHasDataToPreserve ? 0 : 1 },
           state: {
             message: 'You have successfully verified your email.',
-            message_type: 'success',
+            severity: 'success',
           },
         });
       }
