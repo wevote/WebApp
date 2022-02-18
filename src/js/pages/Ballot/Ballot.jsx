@@ -12,17 +12,23 @@ import IssueActions from '../../actions/IssueActions';
 import OrganizationActions from '../../actions/OrganizationActions';
 import SupportActions from '../../actions/SupportActions';
 import VoterActions from '../../actions/VoterActions';
+import LoadingWheelComp from '../../common/components/Widgets/LoadingWheelComp';
+import apiCalming from '../../common/utils/apiCalming';
+import { chipLabelText, isAndroidSizeFold, isIOSAppOnMac, isIPadGiantSize, isIPhone6p1in } from '../../common/utils/cordovaUtils';
+import historyPush from '../../common/utils/historyPush';
+import { isCordova, isWebApp } from '../../common/utils/isCordovaOrWebApp';
+import Cookies from '../../common/utils/js-cookie/Cookies';
+import { renderLog } from '../../common/utils/logging';
 import AddressBox from '../../components/AddressBox';
 import BallotItemCompressed from '../../components/Ballot/BallotItemCompressed';
 import BallotStatusMessage from '../../components/Ballot/BallotStatusMessage';
 import AddFriendsByEmail from '../../components/Friends/AddFriendsByEmail';
 import SuggestedFriendsPreview from '../../components/Friends/SuggestedFriendsPreview';
-import LoadingWheelComp from '../../common/components/Widgets/LoadingWheelComp';
 import BallotDecisionsTabs from '../../components/Navigation/BallotDecisionsTabs';
 import BallotShowAllItemsFooter from '../../components/Navigation/BallotShowAllItemsFooter';
 import BallotSideBar from '../../components/Navigation/BallotSideBar';
+import EditAddressOneHorizontalRow from '../../components/Ready/EditAddressOneHorizontalRow';
 import ValuesToFollowPreview from '../../components/Values/ValuesToFollowPreview';
-import BrowserPushMessage from '../../components/Widgets/BrowserPushMessage';
 import SnackNotifier, { openSnackbar } from '../../components/Widgets/SnackNotifier';
 import webAppConfig from '../../config';
 import AppObservableStore, { messageService } from '../../stores/AppObservableStore';
@@ -33,23 +39,16 @@ import SupportStore from '../../stores/SupportStore';
 import TwitterStore from '../../stores/TwitterStore';
 import VoterGuideStore from '../../stores/VoterGuideStore';
 import VoterStore from '../../stores/VoterStore';
-import apiCalming from '../../common/utils/apiCalming';
 import { dumpCssFromId } from '../../utils/appleSiliconUtils';
-import { chipLabelText, isAndroidSizeFold, isIOSAppOnMac, isIPadGiantSize, isIPhone6p1in } from '../../common/utils/cordovaUtils';
-import { isCordova, isWebApp } from '../../common/utils/isCordovaOrWebApp';
-import historyPush from '../../common/utils/historyPush';
 import isMobile from '../../utils/isMobile';
 import isMobileScreenSize from '../../utils/isMobileScreenSize';
-import Cookies from '../../common/utils/js-cookie/Cookies';
 import lazyPreloadPages from '../../utils/lazyPreloadPages';
-import { renderLog } from '../../common/utils/logging';
 import mapCategoryFilterType from '../../utils/map-category-filter-type';
 import { DualHeaderContainer, HeaderContentContainer, HeaderContentOuterContainer, PageContentContainer } from '../../utils/pageLayoutStyles';
 import { getBooleanValue } from '../../utils/textFormat';
 import showBallotDecisionsTabs from '../../utilsApi/showBallotDecisionsTabs';
 import BallotTitleHeader from './BallotTitleHeader';
 import { checkShouldUpdate, formatVoterBallotList } from './utils/ballotUtils';
-import EditAddressOneHorizontalRow from '../../components/Ready/EditAddressOneHorizontalRow';
 
 const DelayedLoad = React.lazy(() => import(/* webpackChunkName: 'DelayedLoad' */ '../../common/components/Widgets/DelayedLoad'));
 const FilterBaseSearch = React.lazy(() => import(/* webpackChunkName: 'FilterBaseSearch' */ '../../components/Filter/FilterBaseSearch'));
@@ -496,11 +495,7 @@ class Ballot extends Component {
         });
       }
     }
-    const snackMessage = AppObservableStore.getPendingSnackMessage();
-    if (snackMessage) {
-      openSnackbar({ message: snackMessage });
-      AppObservableStore.setPendingSnackMessage('');
-    }
+    if (AppObservableStore.isSnackMessagePending()) openSnackbar({});
   }
 
   componentDidCatch (error, info) {
@@ -1401,7 +1396,6 @@ class Ballot extends Component {
                 {emptyBallot}
                 {/* eslint-disable-next-line no-nested-ternary */}
                 <div className={showBallotDecisionsTabs() ? 'row ballot__body' : isWebApp() || twoColumnDisplay ? 'row ballot__body__no-decision-tabs' : undefined}>
-                  <BrowserPushMessage incomingProps={this.props} />
                   {ballotWithItemsFromCompletionFilterType.length > 0 ? (
                     <BallotStatusMessage
                       ballotLocationChosen

@@ -3,9 +3,11 @@ import Helmet from 'react-helmet';
 import styled from 'styled-components';
 import AnalyticsActions from '../actions/AnalyticsActions';
 import IssueActions from '../actions/IssueActions';
+import LoadingWheelComp from '../common/components/Widgets/LoadingWheelComp';
+import { renderLog } from '../common/utils/logging';
+import normalizedImagePath from '../common/utils/normalizedImagePath';
 import AddFriendsByEmail from '../components/Friends/AddFriendsByEmail';
 import SuggestedFriendsPreview from '../components/Friends/SuggestedFriendsPreview';
-import LoadingWheelComp from '../common/components/Widgets/LoadingWheelComp';
 import FindOpinionsForm from '../components/Ready/FindOpinionsForm';
 import TwitterSignInCard from '../components/Twitter/TwitterSignInCard';
 import NetworkOpinionsFollowed from '../components/Values/NetworkOpinionsFollowed';
@@ -21,9 +23,7 @@ import Testimonial from '../components/Widgets/Testimonial';
 import AppObservableStore from '../stores/AppObservableStore';
 import IssueStore from '../stores/IssueStore';
 import VoterStore from '../stores/VoterStore';
-import normalizedImagePath from '../common/utils/normalizedImagePath';
 import lazyPreloadPages from '../utils/lazyPreloadPages';
-import { renderLog } from '../common/utils/logging';
 import { PageContentContainer } from '../utils/pageLayoutStyles';
 
 const FirstAndLastNameRequiredAlert = React.lazy(() => import(/* webpackChunkName: 'FirstAndLastNameRequiredAlert' */ '../components/Widgets/FirstAndLastNameRequiredAlert'));
@@ -57,11 +57,7 @@ export default class Values extends Component {
   }
 
   componentDidUpdate () {
-    const snackMessage = AppObservableStore.getPendingSnackMessage();
-    if (snackMessage) {
-      openSnackbar({ message: snackMessage });
-      AppObservableStore.setPendingSnackMessage('');
-    }
+    if (AppObservableStore.isSnackMessagePending()) openSnackbar({});
   }
 
   componentDidCatch (error, info) {

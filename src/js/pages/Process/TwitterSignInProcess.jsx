@@ -5,6 +5,7 @@ import VoterActions from '../../actions/VoterActions';
 import LoadingWheel from '../../common/components/Widgets/LoadingWheel';
 import { isAndroidSizeFold, isIPad } from '../../common/utils/cordovaUtils';
 import historyPush from '../../common/utils/historyPush';
+import { normalizedHref } from '../../common/utils/hrefUtils';
 import { isWebApp } from '../../common/utils/isCordovaOrWebApp';
 import Cookies from '../../common/utils/js-cookie/Cookies';
 import { oAuthLog, renderLog } from '../../common/utils/logging';
@@ -58,7 +59,7 @@ export default class TwitterSignInProcess extends Component {
         pathname: '/settings/account',  // SnackNotifier that handles this is in SettingsDashboard
         state: {
           message: 'Twitter sign in failed. Please try again.',
-          message_type: 'success',
+          message_type: 'warning',
         },
       });
     } else if (!twitterAuthResponse.twitter_sign_in_found) {
@@ -69,7 +70,7 @@ export default class TwitterSignInProcess extends Component {
         pathname: '/settings/account',   // SnackNotifier that handles this is in SettingsDashboard
         state: {
           message: 'Twitter authentication not found. Please try again.',
-          message_type: 'warning',
+          severity: 'warning',
         },
       });
     } else if (twitterAuthResponse.existing_twitter_account_found) {
@@ -129,7 +130,7 @@ export default class TwitterSignInProcess extends Component {
                 pathname: newRedirectPathname,   // This works in tested return paths, but if you add another, you will need to handle AppObservableStore.getPendingSnackMessage() in the componentDidUpdate()
                 state: {
                   message: 'You have successfully signed in with Twitter.',
-                  message_type: 'success',
+                  severity: 'success',
                 },
               });
             } else {
@@ -149,14 +150,15 @@ export default class TwitterSignInProcess extends Component {
             TwitterActions.twitterProcessDeferredImages(twitterImageLoadInfo);
             TwitterStore.clearTwitterImageLoadInfo();
           }
-          historyPush({
-            pathname: '/ballot',    // SnackNotifier that handles this is in Ballot
-            // query: {voter_refresh_timer_on: voterHasDataToPreserve ? 0 : 1},
-            state: {
-              message: 'You have successfully signed in with Twitter.',
-              message_type: 'success',
-            },
-          });
+          if (normalizedHref() !== 'ballot') {
+            historyPush({
+              pathname: '/ballot',    // SnackNotifier that handles this is in Ballot
+              state: {
+                message: 'You have successfully signed in with Twitter.',
+                severity: 'success',
+              },
+            });
+          }
         }
       }
     }

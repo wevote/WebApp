@@ -1,9 +1,13 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import { withStyles } from '@material-ui/core/styles';
 import { Snackbar } from '@material-ui/core';
-import { renderLog } from '../../common/utils/logging';
+import { withStyles } from '@material-ui/core/styles';
+import Alert from '@material-ui/lab/Alert';
+import PropTypes from 'prop-types';
+import React, { Component } from 'react';
 import { snackOffset } from '../../common/utils/cordovaUtils';
+import { renderLog } from '../../common/utils/logging';
+import AppObservableStore from '../../stores/AppObservableStore';
+
+// Alert is in Mui Version 5, and won't have to be included from the "Lab"
 
 let openSnackbarFn;
 
@@ -13,6 +17,7 @@ class SnackNotifier extends Component {
     this.state = {
       open: false,
       message: '',
+      severity: '',
     };
   }
 
@@ -25,36 +30,81 @@ class SnackNotifier extends Component {
     this.setState({
       open: false,
       message: '',
+      severity: '',
     });
   };
 
-  openSnackbar = ({ message, duration }) => {
-    let autoHideDuration = 3000;
-    if (duration) {
-      autoHideDuration = duration;
+  openSnackbar = ({ message, severity, duration }) => {
+    const autoHideDuration = duration || 3000;
+    if (!message) {
+      // eslint-disable-next-line no-param-reassign
+      message = AppObservableStore.getPendingSnackMessage();
+      if (message && message.length === 0) {
+        return;
+      }
+    }
+    AppObservableStore.setPendingSnackMessage('');
+    if (!severity) {
+      // eslint-disable-next-line no-param-reassign
+      severity = AppObservableStore.getPendingSnackSeverity();
+      if (!['error', 'info', 'success', 'warning'].includes(severity)) {
+        console.log('SnackNotifier received invalid severity: ', severity);
+        // eslint-disable-next-line no-param-reassign
+        severity = 'success';
+      }
     }
 
-    this.setState({ open: true, message, autoHideDuration  });
+    this.setState({ open: true, message, severity, autoHideDuration  });
   };
+
+  getStyles  = (severity) => {
+    switch (severity) {
+      case 'error':
+        return {
+          color: 'white',
+          backgroundColor: 'red',
+        };
+      case 'info':
+        return {
+          color: 'white',
+          backgroundColor: 'blue',
+        };
+      case 'warning':
+        return {
+          color: 'white',
+          backgroundColor: 'orange',
+        };
+      case 'success':
+      default:
+        return {
+          color: 'white',
+          backgroundColor: '#313131',
+        };
+    }
+  }
 
   render () {
     renderLog('SnackNotifier');  // Set LOG_RENDER_EVENTS to log all renders
     const { classes } = this.props;
-    const { message, autoHideDuration } = this.state;
-    // console.log('SnackNotifier.jsx message: ', message);
+    const { open, message, severity, autoHideDuration } = this.state;
+
+    if (!message || message.length === 0) return <></>;
 
     return (
       <Snackbar
         anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
         autoHideDuration={autoHideDuration}
-        message={<span id="message-id">{ message }</span>}
         onClose={this.handleSnackbarClose}
-        open={this.state.open}
+        open={open}
         ContentProps={{
           'aria-describedby': 'snackbar-message-id',
         }}
         classes={{ anchorOriginBottomCenter: classes.anchorOriginBottomCenter }}
-      />
+      >
+        <Alert severity={severity} variant="standard" style={this.getStyles(severity)}>
+          {message}
+        </Alert>
+      </Snackbar>
     );
   }
 }
@@ -72,9 +122,9 @@ function isFunction (functionToCheck) {
   return functionToCheck && {}.toString.call(functionToCheck) === '[object Function]';
 }
 
-export function openSnackbar ({ message, duration }) {
+export function openSnackbar ({ message, severity, duration }) {
   if (isFunction(openSnackbarFn)) {
-    openSnackbarFn({ message, duration });
+    openSnackbarFn({ message, severity, duration });
   } else {
     console.error('*** SnackNotifier was not initialized before first use in the parent class ***');
   }

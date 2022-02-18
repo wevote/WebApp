@@ -63,7 +63,7 @@ export default class SignInJumpProcess extends Component {
       pathname: this.state.jumpPath,
       state: {
         // message: "You have successfully verified and signed in with your email.",
-        // message_type: "success"
+        // severity: "success"
       },
     });
   }
@@ -96,7 +96,7 @@ export default class SignInJumpProcess extends Component {
     //     pathname: "/more/sign_in",
     //     state: {
     //       message: "Email verification did not work. Please try 'Send Verification Email' again.",
-    //       message_type: "danger"
+    //       severity: "error"
     //     }
     //   });
     //   return LoadingWheel;
@@ -117,7 +117,7 @@ export default class SignInJumpProcess extends Component {
         pathname: this.state.jumpPath,
         state: {
           // message: "You have successfully verified your email.",
-          // message_type: "success"
+          // severity: "success"
         },
       });
       return LoadingWheel;

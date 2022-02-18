@@ -194,7 +194,7 @@ export default class FacebookInvitableFriends extends Component {
           pathname: '/friends',  // SnackNotifier that handles this is in Friends
           state: {
             message: 'You have successfully sent Invitation to your friends.',
-            message_type: 'success',
+            severity: 'success',
           },
         });
       } else {
@@ -243,7 +243,7 @@ export default class FacebookInvitableFriends extends Component {
         pathname: '/more/network',   // SnackNotifier that SHOULD handle this is in Friends or Values
         state: {
           message: 'Facebook sign in failed. Please try again.',
-          message_type: 'success',
+          severity: 'success',
         },
       });
       return LoadingWheel;
@@ -297,7 +297,7 @@ export default class FacebookInvitableFriends extends Component {
         pathname: '/friends',   // SnackNotifier that handles this is in Friends
         state: {
           message: 'There are no friends to invite from Facebook. Either there is an error, or you already invited all of your friends on Facebook!',
-          message_type: 'success',
+          severity: 'success',
         },
       });
       return LoadingWheel;

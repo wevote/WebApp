@@ -116,11 +116,7 @@ class Friends extends Component {
     if (tabItem && previousTabItem && tabItem !== previousTabItem) {
       window.scrollTo(0, 0);
     }
-    const snackMessage = AppObservableStore.getPendingSnackMessage();
-    if (snackMessage) {
-      openSnackbar({ message: snackMessage });
-      AppObservableStore.setPendingSnackMessage('');
-    }
+    if (AppObservableStore.isSnackMessagePending()) openSnackbar({});
   }
 
   componentWillUnmount () {

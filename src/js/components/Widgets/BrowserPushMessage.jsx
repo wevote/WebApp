@@ -23,7 +23,7 @@ class BrowserPushMessage extends Component {
       this.setState({
         message: nextProps.incomingProps.location.state.message,
         name: nextProps.incomingProps.location.state.message_name,
-        // type: nextProps.incomingProps.location.state.message_type,
+        // type: nextProps.incomingProps.location.state.severity,
       });
     }
   }
