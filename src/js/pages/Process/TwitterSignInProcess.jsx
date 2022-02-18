@@ -59,7 +59,7 @@ export default class TwitterSignInProcess extends Component {
         pathname: '/settings/account',  // SnackNotifier that handles this is in SettingsDashboard
         state: {
           message: 'Twitter sign in failed. Please try again.',
-          message_type: 'warning',
+          severity: 'warning',
         },
       });
     } else if (!twitterAuthResponse.twitter_sign_in_found) {
