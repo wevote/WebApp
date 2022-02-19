@@ -197,7 +197,7 @@ const ActionDescriptionWrapper = styled.div`
 `;
 
 const ActivityImage = styled.img`
-  border-radius: 4px;
+  border-radius: 25px;
   width: 50px;
 `;
 

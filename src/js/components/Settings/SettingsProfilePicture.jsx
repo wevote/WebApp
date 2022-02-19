@@ -29,8 +29,14 @@ class SettingsProfilePicture extends Component {
 
   onVoterStoreChange = () => {
     const voter = VoterStore.getVoter();
+    let profileImageTypeCurrentlyActive = 'UPLOADED';
+    if (voter.profile_image_type_currently_active) {
+      if (voter.profile_image_type_currently_active !== 'UNKNOWN') {
+        profileImageTypeCurrentlyActive = voter.profile_image_type_currently_active;
+      }
+    }
     this.setState({
-      profileImageTypeCurrentlyActive: voter.profile_image_type_currently_active,
+      profileImageTypeCurrentlyActive,
       voterFacebookImageUrlLarge: voter.we_vote_hosted_profile_facebook_image_url_large,
       voterPhotoQueuedToSaveSet: VoterStore.getVoterPhotoQueuedToSaveSet(),
       voterTwitterImageUrlLarge: voter.we_vote_hosted_profile_twitter_image_url_large,
@@ -68,50 +74,52 @@ class SettingsProfilePicture extends Component {
     const onlyOneOption = !(voterFacebookImageUrlLarge || voterTwitterImageUrlLarge);
 
     return (
-      <Wrapper value={profileImageTypeCurrentlyActive} onChange={this.changeProfileImageTypeCurrentlyActive} name="profile-option">
-        <ColumnWrapper>
-          <CustomColumns onlyOneOption={onlyOneOption} style={isCordova() ? {  display: 'none' } : {}}>
-            <ProfilePictureOption>
-              <FormControlLabel
-                value="UPLOADED"
-                control={<Radio color="primary" />}
-                label="Custom photo"
-              />
-              <Separator />
-              <VoterPhotoUpload maxWidth={100} />
-            </ProfilePictureOption>
-          </CustomColumns>
-          {voterFacebookImageUrlLarge && (
-            <CustomColumns>
+      <Wrapper>
+        <RadioWrapper value={profileImageTypeCurrentlyActive} onChange={this.changeProfileImageTypeCurrentlyActive} name="profile-option">
+          <ColumnWrapper>
+            <CustomColumns onlyOneOption={onlyOneOption} style={isCordova() ? {  display: 'none' } : {}}>
               <ProfilePictureOption>
                 <FormControlLabel
-                  value="FACEBOOK"
+                  value="UPLOADED"
                   control={<Radio color="primary" />}
-                  label="Facebook photo"
+                  label="Custom photo"
                 />
                 <Separator />
-                <ProfilePictureWrapper>
-                  <ProfilePicture src={voterFacebookImageUrlLarge} />
-                </ProfilePictureWrapper>
+                <VoterPhotoUpload maxWidth={100} />
               </ProfilePictureOption>
             </CustomColumns>
-          )}
-          {voterTwitterImageUrlLarge && (
-            <CustomColumns>
-              <ProfilePictureOption>
-                <FormControlLabel
-                  value="TWITTER"
-                  control={<Radio color="primary" />}
-                  label="Twitter photo"
-                />
-                <Separator />
-                <ProfilePictureWrapper>
-                  <ProfilePicture src={voterTwitterImageUrlLarge} />
-                </ProfilePictureWrapper>
-              </ProfilePictureOption>
-            </CustomColumns>
-          )}
-        </ColumnWrapper>
+            {voterFacebookImageUrlLarge && (
+              <CustomColumns>
+                <ProfilePictureOption>
+                  <FormControlLabel
+                    value="FACEBOOK"
+                    control={<Radio color="primary" />}
+                    label="Facebook photo"
+                  />
+                  <Separator />
+                  <ProfilePictureWrapper>
+                    <ProfilePicture src={voterFacebookImageUrlLarge} />
+                  </ProfilePictureWrapper>
+                </ProfilePictureOption>
+              </CustomColumns>
+            )}
+            {voterTwitterImageUrlLarge && (
+              <CustomColumns>
+                <ProfilePictureOption>
+                  <FormControlLabel
+                    value="TWITTER"
+                    control={<Radio color="primary" />}
+                    label="Twitter photo"
+                  />
+                  <Separator />
+                  <ProfilePictureWrapper>
+                    <ProfilePicture src={voterTwitterImageUrlLarge} />
+                  </ProfilePictureWrapper>
+                </ProfilePictureOption>
+              </CustomColumns>
+            )}
+          </ColumnWrapper>
+        </RadioWrapper>
         <SaveOuterWrapper>
           <SaveInnerWrapper>
             <Button
@@ -150,9 +158,6 @@ const styles = () => ({
   },
 });
 
-const Wrapper = styled(RadioGroup)`
-`;
-
 const ColumnWrapper = styled.div`
   display: flex;
   flex-direction: row;
@@ -189,6 +194,9 @@ const ProfilePictureWrapper = styled.div`
   width: 100%;
 `;
 
+const RadioWrapper = styled(RadioGroup)`
+`;
+
 const SaveInnerWrapper = styled.div`
   display: flex;
 `;
@@ -205,6 +213,9 @@ const Separator = styled.div`
   margin: 12px 0;
   background: #e8e8e8;
   height: 1px;
+`;
+
+const Wrapper = styled.div`
 `;
 
 export default withStyles(styles)(SettingsProfilePicture);

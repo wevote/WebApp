@@ -10987,11 +10987,13 @@ button:focus {
 }
 
 .icon-lg {
+  border-radius: 40px;
   font-size: 5rem;
 }
 
 @media all and (max-width: 479px) {
   .icon-lg {
+    border-radius: 20px;
     font-size: 2rem;
   }
 }
@@ -12299,13 +12301,14 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .card-main__avatar-compressed {
-  border-radius: 2px;
+  border-radius: 20px;
   width: 40px;
   height: 40px;
 }
 
 .card-main .card-main__avatar-compressed {
-  border-radius: 100rem;
+  /* border-radius: 100rem; */
+  border-radius: 20px;
 }
 
 @media all and (min-width: 480px) {
@@ -12321,7 +12324,7 @@ h1, h2, h3, h4, h5, h6 {
 /*}*/
 
 /*.card-main__avatar-compressed-cordova {*/
-/*  border-radius: 2px;*/
+/*  border-radius: 20px;*/
 /*  width: 40px;*/
 /*  height: 40px;*/
 /*}*/
@@ -12353,11 +12356,13 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .card-main .icon-lg {
+  border-radius: 25px;
   font-size: 50px;
 }
 
 @media all and (min-width: 480px) {
   .card-main .icon-lg {
+    border-radius: 40px;
     font-size: 80px;
   }
 }
@@ -12579,11 +12584,13 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .card .card-child__avatar {
+  border-radius: 50px;
   max-width: 50px;
 }
 
 @media all and (max-width: 479px) {
   .card .card-child__avatar {
+    border-radius: 50px;
     max-width: 32px;
   }
 }
@@ -12601,6 +12608,7 @@ h1, h2, h3, h4, h5, h6 {
 
 @media print {
   .card .card-child__avatar--round {
+    border-radius: 25px;
     max-width: 50px;
   }
 }
@@ -16521,7 +16529,7 @@ a {
 }
 
 .header-nav__avatar {
-  border-radius: 4px;
+  border-radius: 18px;
   background: #fff;
   overflow: hidden;
   display: inline;
@@ -16542,7 +16550,7 @@ a {
 }
 
 .header-nav__avatar-cordova {
-  border-radius: 4px;
+  border-radius: 18px;
   background: #fff;
   display: inline;
   overflow: hidden;

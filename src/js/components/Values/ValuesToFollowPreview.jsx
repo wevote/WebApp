@@ -208,6 +208,9 @@ ValuesToFollowPreview.propTypes = {
 
 const OneVoterGuideWrapper = styled.div`
   margin: 1px !important;
+  * {
+    border-radius: 25px;
+  }
 `;
 
 const PublicFiguresAndOrganizationsList = styled.div`

@@ -63,7 +63,7 @@ class OrganizationVoterGuideCard extends Component {
         { organizationPhotoUrlLarge ? (
           <ProfileAvatar>
             <Link to={voterGuideLink} className="u-no-underline">
-              <img src={organizationPhotoUrlLarge} alt={`${displayName}`} />
+              <ProfileAvatarImg src={organizationPhotoUrlLarge} alt={`${displayName}`} />
             </Link>
           </ProfileAvatar>
         ) : null}
@@ -211,6 +211,10 @@ const ProfileAvatar = styled.div`
   justify-content: center;
   background: transparent;
   position: relative;
+`;
+
+const ProfileAvatarImg = styled.img`
+  border-radius: 100px;
 `;
 
 const TwitterDescription = styled.div`

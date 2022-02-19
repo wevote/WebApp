@@ -127,7 +127,7 @@ class ActivityPostAdd extends Component {
             <img
               alt=""
               src={voterPhotoUrlMedium || avatarGeneric()}
-              style={{ borderRadius: 6, display: 'block', marginRight: 12, width: 50 }}
+              style={{ borderRadius: 25, display: 'block', marginRight: 12, width: 50 }}
             />
             <InputBase
               classes={{ root: classes.textInput }}
