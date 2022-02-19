@@ -399,7 +399,7 @@ const DesktopItemImage = styled.div`
   justify-content: center;
   margin-bottom: 8px;
   * {
-    border-radius: 6px;
+    border-radius: 29px;
     width: 57.76px !important;
     height: 57.76px !important;
     max-width: 57.76px !important;
@@ -490,7 +490,7 @@ const MobileItemImage = styled.div`
   width: 40px;
   height: 40px;
   * {
-    border-radius: 4px;
+    border-radius: 20px;
     width: 40px !important;
     height: 40px !important;
     max-width: 40px !important;

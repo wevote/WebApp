@@ -424,6 +424,10 @@ const MenuItemInternalWrapper = styled.div`
 
 const MenuItemPhoto = styled.div`
   min-width: 48px;
+  * {
+    border-radius: 24px;
+    min-width: 48px;
+  }
 `;
 
 const MenuItemText = styled.div`

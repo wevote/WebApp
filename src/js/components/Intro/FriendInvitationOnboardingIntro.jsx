@@ -127,7 +127,7 @@ class FriendInvitationOnboardingIntro extends Component {
                       <OrganizationImageWrapper>
                         <Suspense fallback={<></>}>
                           <ImageHandler
-                            sizeClassName="image-24x24 "
+                            sizeClassName=""
                             imageUrl={friendImageUrlHttpsTiny}
                             alt="organization-photo"
                             kind_of_ballot_item="ORGANIZATION"
@@ -356,7 +356,12 @@ const Dot = styled.div`
 `;
 
 const OrganizationImageWrapper = styled.span`
-  margin-right: 4px;
+  margin-right: 6px;
+  * {
+    border-radius: 24px;
+    width: 48px;
+    height: 48px;
+  }
 `;
 
 const StepNumber = styled.div`

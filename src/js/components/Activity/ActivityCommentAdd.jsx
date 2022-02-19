@@ -200,7 +200,7 @@ const AddReplyTextWrapper = styled.div`
 `;
 
 const ActivityImage = styled.img`
-  border-radius: 4px;
+  border-radius: 12px;
   width: 24px;
   height: 24px;
   margin-top: 3px;
