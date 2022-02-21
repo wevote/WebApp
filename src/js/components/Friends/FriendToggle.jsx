@@ -1,11 +1,11 @@
-import { Button } from '@material-ui/core';
+import { Button, ClickAwayListener, MenuItem, MenuList } from '@material-ui/core';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import styled from 'styled-components';
+import { renderLog } from '../../common/utils/logging';
 import FriendActions from '../../actions/FriendActions';
 import FriendStore from '../../stores/FriendStore';
 import VoterStore from '../../stores/VoterStore';
-import { renderLog } from '../../common/utils/logging';
 import FriendsIcon from '../Widgets/FriendsIcon';
 import SuggestedFriendToggle from './SuggestedFriendToggle';
 
@@ -15,11 +15,14 @@ export default class FriendToggle extends Component {
     super(props);
     this.state = {
       unFriendSubmitted: false,
+      menuOpen: false,
       voter: {
         we_vote_id: '',
       },
     };
     this.unFriend = this.unFriend.bind(this);
+    this.handleTriangleClick = this.handleTriangleClick.bind(this);
+    this.handleClose = this.handleClose.bind(this);
   }
 
   componentDidMount () {
@@ -54,15 +57,26 @@ export default class FriendToggle extends Component {
     const { otherVoterWeVoteId } = this.props;
     FriendActions.unFriend(otherVoterWeVoteId);
     this.setState({
+      menuOpen: false,
       unFriendSubmitted: true,
     });
   }
+
+  handleTriangleClick () {
+    const { menuOpen } = this.state;
+    this.setState({ menuOpen: !menuOpen });
+  }
+
+  handleClose () {
+    this.setState({ menuOpen: false });
+  }
+
 
   render () {
     renderLog('FriendToggle');  // Set LOG_RENDER_EVENTS to log all renders
     if (!this.state) { return <div />; }
     const { displayFullWidth, lightModeOn, otherVoterWeVoteId, showFriendsText } = this.props;
-    const { isFriend, unFriendSubmitted } = this.state;
+    const { isFriend, unFriendSubmitted, menuOpen } = this.state;
     const isLookingAtSelf = this.state.voter.we_vote_id === otherVoterWeVoteId;
     // You should not be able to friend yourself
     if (isLookingAtSelf) { return <div />; }
@@ -87,29 +101,29 @@ export default class FriendToggle extends Component {
               )}
             </Button>
             <div className="issues-follow-btn__separator" />
-            <Button
+            <ToggleButton
               type="button"
               id="dropdown-toggle-id"
-              className="dropdown-toggle dropdown-toggle-split issues-follow-btn issues-follow-btn__dropdown issues-follow-btn--white"
               data-toggle="dropdown"
               aria-haspopup="true"
               aria-expanded="false"
               data-reference="parent"
+              onClick={() => this.handleTriangleClick()}
             >
-              <span className="sr-only">Toggle Dropdown</span>
-            </Button>
-            <Menu id="issues-follow-btn__menu" className="dropdown-menu" aria-labelledby="dropdown-toggle-id">
-              <Button
-                type="button"
-                id="dropdown-item-id"
-                className="dropdown-item issues-follow-btn issues-follow-btn__menu-item u-z-index-5020"
-                disabled={unFriendSubmitted}
-                // data-toggle="dropdown"
-                onClick={this.unFriend}
-              >
-                Remove Friend
-              </Button>
-            </Menu>
+              <DownwardTriangle />
+            </ToggleButton>
+            <StyledMenuList>
+              {menuOpen ? (
+                <ClickAwayListener onClickAway={this.handleClose}>
+                  <StyledMenuItem
+                    disabled={unFriendSubmitted}
+                    onClick={this.unFriend}
+                  >
+                    Remove Friend
+                  </StyledMenuItem>
+                </ClickAwayListener>
+              ) : null}
+            </StyledMenuList>
           </InnerButtonContainer>
         ) : (
           <InnerButtonContainer>
@@ -131,10 +145,6 @@ FriendToggle.propTypes = {
   showFriendsText: PropTypes.bool,
 };
 
-const Menu = styled.div`
-  position: absolute !important;
-  right: 0 !important;
-`;
 
 const ButtonContainer = styled.div`
   width: 100%;
@@ -152,4 +162,43 @@ const InnerButtonContainer = styled.div`
   justify-content: center;
   height: 32px !important;
   width: 100%;
+`;
+
+const StyledMenuList = styled(MenuList)`
+  position: absolute;
+  top: 29px;
+  right: 0;
+  left: 0;
+  z-index: 10;
+`;
+
+const StyledMenuItem = styled(MenuItem)`
+  height: 30px;
+  border: 1px solid;
+  background-color: white;
+`;
+
+const ToggleButton = styled(Button)`
+  width: 35px !important;
+  min-width: 35px !important;
+  padding: 4px 8px !important;
+  height: 100% !important;
+  vertical-align: middle !important;
+  color: #0d546f !important;
+  background: white !important;
+  font-weight: 600 !important;
+  border: 1px solid #ccc !important;
+  max-height: none !important;
+  white-space: nowrap;
+  border-radius: 3px !important;
+  border-top-left-radius: 0 !important;
+  border-bottom-left-radius: 0 !important;
+`;
+
+const DownwardTriangle = styled.span`
+    width: 0;
+    height: 0;
+    border-left: 7px solid transparent;
+    border-right: 7px solid transparent;
+    border-top: 7px solid #0d546f;
 `;
