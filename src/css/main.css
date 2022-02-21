@@ -1,4 +1,12 @@
-@charset "UTF-8"; /*!
+@charset "UTF-8";
+/* TODO FEB 2022, when we are sure that nothing in comments is needed, this tool strips out
+the commented out selectors, then merges, simplifies, and dedupes the rest of the css. It reduces the file
+size by 81.5% and still leaves it humanly readable!  Worth a try.
+https://www.cssportal.com/css-optimize/
+ */
+
+/*!
+ TODO: February 2022: We want to move to Material UI from bootstrap.  So try to use less or no bootstrap styles.
  * Bootstrap v4.6.0 (https://getbootstrap.com/)
  * Copyright 2011-2021 The Bootstrap Authors
  * Copyright 2011-2021 Twitter, Inc.
