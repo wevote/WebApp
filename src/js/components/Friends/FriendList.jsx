@@ -19,12 +19,19 @@ export default class FriendList extends Component {
     }
 
     return (
-      <div className="guidelist card-child__list-group">
+      <div>
         {friendList.map((friend) => (
           <FriendDisplayForList
             key={friend.voter_we_vote_id}
+            linkedOrganizationWeVoteId={friend.linked_organization_we_vote_id}
+            mutualFriends={friend.mutual_friends}
+            positionsTaken={friend.positions_taken}
             previewMode={this.props.previewMode}
-            {...friend}
+            voterDisplayName={friend.voter_display_name}
+            voterEmailAddress={friend.voter_email_address}
+            voterPhotoUrlLarge={friend.voter_photo_url_large}
+            voterTwitterHandle={friend.voter_twitter_handle}
+            voterWeVoteId={friend.voter_we_vote_id}
           />
         ))}
       </div>

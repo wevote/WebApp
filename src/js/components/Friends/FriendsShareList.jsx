@@ -28,13 +28,13 @@ class FriendShareList extends Component {
       classes,
     } = this.props;
 
-    const handleChange = (index, item) => (event) => {
+    const handleChange = (index, friend) => (event) => {
       let newFriendsToShareWith = [];
 
       if (!event.target.checked) {
-        newFriendsToShareWith = this.state.friendsToShareWith.filter((newItem) => newItem.voter_we_vote_id !== item.voter_we_vote_id);
+        newFriendsToShareWith = this.state.friendsToShareWith.filter((newItem) => newItem.voter_we_vote_id !== friend.voter_we_vote_id);
       } else {
-        newFriendsToShareWith = [...this.state.friendsToShareWith, item];
+        newFriendsToShareWith = [...this.state.friendsToShareWith, friend];
       }
 
       this.setState({ friendsToShareWith: newFriendsToShareWith, [index]: event.target.checked });
@@ -43,12 +43,22 @@ class FriendShareList extends Component {
     return (
       <FormControl component="fieldset" className={classes.formControl}>
         <FormGroup className={classes.formGroup}>
-          {this.props.list.map((item, index) => { // eslint-disable-line arrow-body-style
+          {this.props.list.map((friend, index) => { // eslint-disable-line arrow-body-style
             return (
               <FormControlLabel
-                control={<Checkbox color="primary" checked={this.state[index]} onChange={handleChange(index, item)} value={index} />}
+                control={<Checkbox color="primary" checked={this.state[index]} onChange={handleChange(index, friend)} value={index} />}
                 classes={{ label: classes.label, root: classes.label }}
-                label={<FriendsShareListItem {...item} />}
+                label={(
+                  <FriendsShareListItem
+                    linkedOrganizationWeVoteId={friend.linked_organization_we_vote_id}
+                    mutualFriends={friend.mutual_friends}
+                    positionsTaken={friend.positions_taken}
+                    voterDisplayName={friend.voter_display_name}
+                    voterEmailAddress={friend.voter_email_address}
+                    voterPhotoUrlLarge={friend.voter_photo_url_large}
+                    voterTwitterHandle={friend.voter_twitter_handle}
+                  />
+                )}
               />
             );
           })}

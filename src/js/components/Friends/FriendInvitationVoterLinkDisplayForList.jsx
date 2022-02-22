@@ -7,8 +7,10 @@ import styled from 'styled-components';
 import FriendActions from '../../actions/FriendActions';
 import FriendStore from '../../stores/FriendStore';
 import { renderLog } from '../../common/utils/logging';
-import { Avatar } from '../Style/avatarStyles';
+import Avatar from '../Style/avatarStyles';
+import { CancelButtonWrapper, FriendButtonsWrapper, FriendColumnWithoutButtons, FriendDisplayOuterWrapper } from '../Style/friendStyles';
 import { removeTwitterNameFromDescription } from '../../utils/textFormat';
+import FriendDetails from './FriendDetails';
 import FriendInvitationToggle from './FriendInvitationToggle';
 
 const ImageHandler = React.lazy(() => import(/* webpackChunkName: 'ImageHandler' */ '../ImageHandler'));
@@ -72,7 +74,6 @@ class FriendInvitationVoterLinkDisplayForList extends Component {
       voterDisplayName,
       voterEmailAddress,
       voterTwitterDescription,
-      // voterTwitterFollowersCount,
       voterTwitterHandle,
       voterWeVoteId: otherVoterWeVoteId,
       voterPhotoUrlLarge,
@@ -88,33 +89,20 @@ class FriendInvitationVoterLinkDisplayForList extends Component {
     const weVoteIdVoterGuideLink = linkedOrganizationWeVoteId ? `/voterguide/${linkedOrganizationWeVoteId}` : null;
     const voterGuideLink = twitterVoterGuideLink || weVoteIdVoterGuideLink;
     const voterImage = <ImageHandler sizeClassName="icon-lg " imageUrl={voterPhotoUrlLarge} kind_of_ballot_item="CANDIDATE" />;
-    const voterDisplayNameFormatted = <span className="card-child__display-name">{voterDisplayNameFiltered}</span>;
     const detailsHTML = (
-      <Details>
-        <Name>
-          {voterDisplayNameFormatted}
-        </Name>
-        {!!(positionsTaken) && (
-          <Info>
-            Opinions:
-            {' '}
-            <strong>{positionsTaken}</strong>
-          </Info>
-        )}
-        {!!(mutualFriends) && (
-          <Info>
-            Mutual Friends:
-            {' '}
-            <strong>{mutualFriends || 0}</strong>
-          </Info>
-        )}
-        { twitterDescriptionMinusName ? <p>{twitterDescriptionMinusName}</p> : null }
-      </Details>
+      <FriendDetails
+        mutualFriends={mutualFriends}
+        positionsTaken={positionsTaken}
+        twitterDescriptionMinusName={twitterDescriptionMinusName}
+        voterDisplayName={voterDisplayName}
+        voterEmailAddress={voterEmailAddress}
+        voterTwitterHandle={voterTwitterHandle}
+      />
     );
 
     const friendInvitationHtml = (
-      <Wrapper previewMode={previewMode}>
-        <Flex>
+      <FriendDisplayOuterWrapper previewMode={previewMode}>
+        <FriendColumnWithoutButtons>
           <Avatar>
             { voterGuideLink ? (
               <Link to={voterGuideLink} className="u-no-underline">
@@ -130,19 +118,21 @@ class FriendInvitationVoterLinkDisplayForList extends Component {
               </span>
             )}
           </Avatar>
-          { voterGuideLink ? (
-            <Link to={voterGuideLink} className="u-no-underline">
-              {detailsHTML}
-            </Link>
-          ) : (
-            <>
-              {detailsHTML}
-            </>
-          )}
-        </Flex>
+          <div>
+            { voterGuideLink ? (
+              <Link to={voterGuideLink} className="u-no-underline">
+                {detailsHTML}
+              </Link>
+            ) : (
+              <>
+                {detailsHTML}
+              </>
+            )}
+          </div>
+        </FriendColumnWithoutButtons>
         { invitationsSentByMe ? (
-          <ButtonWrapper>
-            <CancelButtonContainer>
+          <FriendButtonsWrapper>
+            <CancelButtonWrapper>
               <Button
                 classes={{ root: classes.ignoreButton }}
                 color="primary"
@@ -153,21 +143,16 @@ class FriendInvitationVoterLinkDisplayForList extends Component {
               >
                 {cancelFriendInviteVoterSubmitted ? 'Canceling...' : (
                   <>
-                    <span className="u-show-mobile">
-                      Cancel
-                    </span>
-                    <span className="u-show-desktop-tablet">
-                      Cancel Invite
-                    </span>
+                    Cancel Invite
                   </>
                 )}
               </Button>
-            </CancelButtonContainer>
-          </ButtonWrapper>
+            </CancelButtonWrapper>
+          </FriendButtonsWrapper>
         ) : (
-          <ButtonWrapper>
+          <FriendButtonsWrapper>
             <FriendInvitationToggle otherVoterWeVoteId={otherVoterWeVoteId} />
-            <IgnoreButtonContainer>
+            <IgnoreButtonWrapper>
               <Button
                 classes={{ root: classes.ignoreButton }}
                 color="primary"
@@ -178,10 +163,10 @@ class FriendInvitationVoterLinkDisplayForList extends Component {
               >
                 Ignore
               </Button>
-            </IgnoreButtonContainer>
-          </ButtonWrapper>
+            </IgnoreButtonWrapper>
+          </FriendButtonsWrapper>
         )}
-      </Wrapper>
+      </FriendDisplayOuterWrapper>
     );
 
     if (previewMode) {
@@ -206,7 +191,6 @@ FriendInvitationVoterLinkDisplayForList.propTypes = {
   voterDisplayName: PropTypes.string,
   voterTwitterHandle: PropTypes.string,
   voterTwitterDescription: PropTypes.string,
-  // voterTwitterFollowersCount: PropTypes.number,
   voterEmailAddress: PropTypes.string,
   previewMode: PropTypes.bool,
 };
@@ -217,142 +201,25 @@ const styles = () => ({
   },
 });
 
-const Wrapper = styled.div`
-  margin: 24px 0;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  position: relative;
-  flex-wrap: wrap;
-  @media(min-width: 400px) {
-    align-items: center;
-    justify-content: flex-start;
-    flex-direction: row;
-    padding-left: 100px;
-    height: 68px;
-  }
-  @media (min-width: 520px) {
-    height: 68px;
-    justify-content: space-between;
-    padding-left: 85px;
-  }
-`;
-
-const Flex = styled.div`
-  display: flex;
-  flex-direction: row;
-  align-items: flex-start;
-  justify-content: flex-start;
-`;
-
-const Details = styled.div`
-  margin: 0 auto;
+const IgnoreButtonWrapperNotInColumn = `
+/* TODO REMOVE
   @media(min-width: 400px) {
     width: fit-content;
     margin: 0;
-  }
-`;
-
-const Name = styled.h3`
-  color: black !important;
-  font-size: 20px;
-  font-weight: bold;
-  margin-bottom: 4px;
-  text-align: left;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  max-width: 23ch;
-  width: 100%;
-  @media(max-width: 321px) {
-    max-width: 20ch;
-  }
-  @media (min-width: 322px) and (max-width: 370px) {
-    max-width: 20ch;
-  }
-  @media (min-width: 371px) and (max-width: 441px) {
-    max-width: 20ch;
-  }
-  @media (min-width: 442px) and (max-width: 519px) {
-    max-width: 12ch;
-  }
-  @media (min-width: 520px) and (max-width: 559px) {
-    max-width: 15ch;
-  }
-  @media (min-width: 560px) and (max-width: 653px) {
-    max-width: 20ch;
-  }
-  @media (min-width: 654px) and (max-width: 773px) {
-    max-width: 25ch;
-  }
-  @media (min-width: 774px) and (max-width: 991px) {
-    max-width: 34ch;
-  }
-  @media(min-width: 400px) {
-    text-align: left;
-    font-size: 22px;
-    width: fit-content;
-  }
-`;
-
-const Info = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  width: 100%;
-  @media (min-width: 400px){
-    display: block;
-    width: fit-content;
-  }
-`;
-
-const ButtonWrapper = styled.div`
-  width: 100%;
-  margin: 12px 0 0;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  @media(min-width: 400px) {
-    margin: 0;
-    // margin-left: auto;
-    // width: fit-content;
-    align-items: flex-end;
-    // flex-direction: column;
-    justify-content: flex-end;
-  }
-  @media (min-width: 520px) {
-    align-items: center;
-    // flex-direction: row-reverse;
-    justify-content: flex-end;
-    width: fit-content;
-  }
-`;
-
-const IgnoreButtonContainer = styled.div`
-  width: 100%;
-  margin-left: 12px;
-  @media(min-width: 400px) {
-    width: fit-content;
-    margin: 0;
-    margin-bottom: 6px;
-    margin-left: 8px;
+    margin-top: 6px;
   }
   @media(min-width: 520px) {
     margin: 0;
-    margin-left: 8px;
+    margin-right: 8px;
   }
+*/
 `;
 
-const CancelButtonContainer = styled.div`
-  width: 100%;
-  margin-left: 12px;
-  @media(min-width: 400px) {
-    margin-left: 8px;
-  }
-  @media(min-width: 520px) {
-    margin: 0;
-    margin-left: 8px;
-  }
+const IgnoreButtonWrapper = styled.div`
+  margin-bottom: 0;
+  margin-left: 8px;
+  width: fit-content;
+  ${({ inSideColumn }) => ((inSideColumn) ? '' : IgnoreButtonWrapperNotInColumn)}
 `;
 
 export default withStyles(styles)(FriendInvitationVoterLinkDisplayForList);

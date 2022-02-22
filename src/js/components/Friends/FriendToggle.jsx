@@ -37,6 +37,15 @@ export default class FriendToggle extends Component {
     this.voterStoreListener.remove();
   }
 
+  handleClose () {
+    this.setState({ menuOpen: false });
+  }
+
+  handleTriangleClick () {
+    const { menuOpen } = this.state;
+    this.setState({ menuOpen: !menuOpen });
+  }
+
   onFriendStoreChange () {
     const { otherVoterWeVoteId } = this.props;
     const { unFriendSubmitted } = this.state;
@@ -61,16 +70,6 @@ export default class FriendToggle extends Component {
       unFriendSubmitted: true,
     });
   }
-
-  handleTriangleClick () {
-    const { menuOpen } = this.state;
-    this.setState({ menuOpen: !menuOpen });
-  }
-
-  handleClose () {
-    this.setState({ menuOpen: false });
-  }
-
 
   render () {
     renderLog('FriendToggle');  // Set LOG_RENDER_EVENTS to log all renders

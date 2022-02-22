@@ -100,11 +100,11 @@ const styles = () => ({
 
 const ButtonContainer = styled.div`
   width: 100%;
+  margin-bottom: 0;
   margin-right: 12px;
   @media(min-width: 400px) {
     width: fit-content;
     margin: 0;
-    margin-bottom: 6px;
   }
   @media(min-width: 520px) {
     margin: 0;
