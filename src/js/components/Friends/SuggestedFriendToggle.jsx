@@ -116,10 +116,8 @@ const ButtonContainer = styled.div`
   @media(min-width: 400px) {
     ${({ displayFullWidth }) => (displayFullWidth ? 'width: 100%;' : 'width: fit-content;')}
     margin: 0;
-    margin-bottom: 6px;
   }
   @media(min-width: 520px) {
     margin: 0;
-    // margin-left: 8px;
   }
 `;

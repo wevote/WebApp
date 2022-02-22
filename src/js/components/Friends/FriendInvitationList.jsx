@@ -53,6 +53,7 @@ export default class FriendInvitationList extends Component {
                       linkedOrganizationWeVoteId={friend.linked_organization_we_vote_id}
                       mutualFriends={friend.mutual_friends}
                       previewMode={previewMode}
+                      voterDisplayName={friend.voter_display_name}
                       voterEmailAddress={friend.voter_email_address}
                       voterPhotoUrlLarge={friend.voter_photo_url_large}
                       voterTwitterHandle={friend.voter_twitter_handle}

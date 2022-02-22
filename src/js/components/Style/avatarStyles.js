@@ -1,40 +1,41 @@
 import styled from 'styled-components';
 import { isWebApp } from '../../common/utils/isCordovaOrWebApp';
 
+const AvatarInSideColumn = `
+  max-width: 40px;
+  & img {
+    border-radius: 19px;
+    max-width: 40px;
+    width: 40px;
+    height: 40px;
+  }
+`;
+
 const AvatarNotInColumn = `
-  @media (min-width: 400px) {
-    height: 100% !important;
-    max-width: 100%;
-    min-height: 100% !important;
-    max-height: 100% !important;
-    position: absolute !important;
-    left: 0;
-    top: 0;
-    margin: 0 auto;
-    & img {
-      border-radius: 6px;
-      width: 68.8px;
-      height: 68.8px;
-    }
+  max-width: 68.8px;
+  margin-right: 8px;
+  & img {
+    border-radius: 35px;
+    max-width: 68.8px;
+    width: 68.8px;
+    height: 68.8px;
+  }
+`;
+
+const AvatarCordovaStyles = `
+  max-width: 68.8px;
+  margin-right: 8px;
+  & img {
+    border-radius: 35px;
+    max-width: 68.8px;
+    width: 68.8px;
+    height: 68.8px;
   }
 `;
 
 const Avatar = isWebApp() ? styled.div`
-  max-width: 68.8px;
   margin-right: 8px;
-  ${({ inSideColumn }) => ((inSideColumn) ? '' : AvatarNotInColumn)}
-` : styled.div`
-  max-width: 68.8px;
-  margin-right: 8px;
-    & img {
-      border-radius: 6px;
-      width: 68.8px;
-      height: 68.8px;
-    }
-  }
-`;
+  ${({ inSideColumn }) => ((inSideColumn) ? AvatarInSideColumn : AvatarNotInColumn)}
+` : AvatarCordovaStyles;
 
-export {
-  Avatar,
-  AvatarNotInColumn,
-};
+export default Avatar;

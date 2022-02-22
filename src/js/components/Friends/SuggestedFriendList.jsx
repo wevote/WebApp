@@ -37,9 +37,17 @@ export default class SuggestedFriendList extends Component {
           {this.state.suggestedFriendList.map((friend, index) => (
             <div key={friend.voter_we_vote_id}>
               <SuggestedFriendDisplayForList
-                {...friend}
                 inSideColumn={inSideColumn}
+                linkedOrganizationWeVoteId={friend.linked_organization_we_vote_id}
+                mutualFriends={friend.mutual_friends}
+                positionsTaken={friend.positions_taken}
                 previewMode={previewMode}
+                voterDisplayName={friend.voter_display_name}
+                voterEmailAddress={friend.voter_email_address}
+                voterPhotoUrlLarge={friend.voter_photo_url_large}
+                voterTwitterDescription={friend.voter_twitter_description}
+                voterTwitterHandle={friend.voter_twitter_handle}
+                voterWeVoteId={friend.voter_we_vote_id}
               />
               {index !== this.state.suggestedFriendList.length - 1 ? (
                 <hr />
