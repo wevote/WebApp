@@ -128,6 +128,9 @@ class AddressBox extends Component {
 
     if (textForMapSearch && voterSavedAddress) {
       this.incomingToggleSelectAddressModal();
+      this.setState({
+        loading: false,
+      });
       historyPush(this.props.saveUrl);
     } else {
       this.setState({
@@ -173,6 +176,13 @@ class AddressBox extends Component {
     this.setState({ textForMapSearch: event.target.value });
   }
 
+  toggleEditingAddressLocal = () => {
+    const { toggleEditingAddress } = this.props;
+    if (toggleEditingAddress) {
+      toggleEditingAddress();
+    }
+  }
+
   voterAddressSaveLocal (event) {
     // console.log('CALLING-VoterActions.voterAddressSave, event.target.value:', event.target.value);
     event.preventDefault();
@@ -196,15 +206,14 @@ class AddressBox extends Component {
       voterSavedAddress: true,
     });
     // New June 2021, once they save we want to go back to the original view with the map
-    const { toggleEditingAddress } = this.props;
-    toggleEditingAddress();
+    this.toggleEditingAddressLocal();
   }
 
   render () {
     renderLog('AddressBox');  // Set LOG_RENDER_EVENTS to log all renders
     // console.log('AddressBox render');
     let { waitingMessage } = this.props;
-    const { classes, disableAutoFocus, externalUniqueId, showCancelEditAddressButton, toggleEditingAddress } = this.props;
+    const { classes, disableAutoFocus, externalUniqueId, showCancelEditAddressButton } = this.props;
     const { ballotCaveat, loading, textForMapSearch } = this.state;
     if (loading) {
       if (!waitingMessage) waitingMessage = 'Please wait a moment while we find your ballot...';
@@ -242,7 +251,7 @@ class AddressBox extends Component {
             <Button
               color="primary"
               id={externalUniqueId ? `addressBoxModalCancelButton-${externalUniqueId}` : 'addressBoxModalCancelButton'}
-              onClick={toggleEditingAddress}
+              onClick={this.toggleEditingAddressLocal}
               classes={{ root: classes.cancelButton }}
             >
               Cancel

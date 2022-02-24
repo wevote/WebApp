@@ -567,9 +567,13 @@ class BallotStore extends ReduceStore {
         // voterAddressRetrieve causes a cascade of other actions, rather than untangle the cascade...
         return state;
 
+      case 'voterAddressSave':
       case 'voterBallotItemsRetrieve':
-        // console.log('BallotStore, voterBallotItemsRetrieve response received, action.res:', action.res);
-        // Exit if we don't have a successful response
+        if (action.res.status === 'SIMPLE_ADDRESS_SAVE') {
+          // console.log('BallotStore, voterAddressSave SIMPLE_ADDRESS_SAVE response received.');
+          return state;
+        }
+        // console.log('BallotStore, ', action.type, ' response received, action.res:', action.res);
         AppObservableStore.voterBallotItemsRetrieveHasBeenCalled(false);
         if (action.res && action.res.success === false && stringContains('VALID_VOTER_DEVICE_ID_MISSING', action.res.status)) {
           // On the first call, we didn't have a valid voter_device_id yet. Call again.
@@ -584,6 +588,7 @@ class BallotStore extends ReduceStore {
           voterBallotItemsRetrieveHasReturned = true;
         }
 
+        // Exit if we don't have a successful response
         if (!action.res || !action.res.success) return state;
 
         tempBallotItemList = action.res.ballot_item_list;
@@ -592,10 +597,12 @@ class BallotStore extends ReduceStore {
         if (state.ballots) {
           newBallots = state.ballots;
         }
+        ballotCaveat = action.res.ballot_caveat;
         googleCivicElectionId = action.res.google_civic_election_id || 0;
         googleCivicElectionId = parseInt(googleCivicElectionId, 10);
         revisedState = state;
         textForMapSearch = action.res.text_for_map_search;
+        revisedState = { ...revisedState, ballotCaveat };
         revisedState = { ...revisedState, textForMapSearch };
         revisedState = { ...revisedState, voterBallotItemsRetrieveHasReturned };
         if (googleCivicElectionId !== 0) {
@@ -675,6 +682,7 @@ class BallotStore extends ReduceStore {
           ballotElectionList: voterBallotList || [],
         };
 
+        /*
       case 'voterAddressSave':
         // console.log('BallotStore, voterAddressSave response received.');
         // Exit if we don't have a successful response
@@ -700,6 +708,7 @@ class BallotStore extends ReduceStore {
           }
         }
         return state;
+        */
 
       case 'voterBallotItemOpenOrClosedSave':
         // console.log('action.res', action.res)

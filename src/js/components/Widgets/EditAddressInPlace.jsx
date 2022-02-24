@@ -21,7 +21,7 @@ class EditAddressInPlace extends Component {
 
   componentDidMount () {
     // console.log('EditAddressInPlace componentDidMount');
-    this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange);
+    this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
     this.onVoterStoreChange();
     const { defaultIsEditingAddress } = this.props;
     this.setState({
@@ -34,7 +34,7 @@ class EditAddressInPlace extends Component {
   }
 
   onVoterStoreChange () {
-    // console.log('EditAddressInPlace componentWillReceiveProps');
+    // console.log('EditAddressInPlace onVoterStoreChange');
     const voterAddressObject = VoterStore.getAddressObject();
     let textForMapSearch = '';
     if (voterAddressObject && voterAddressObject.text_for_map_search) {

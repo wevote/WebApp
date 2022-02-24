@@ -1192,6 +1192,7 @@ class Ballot extends Component {
     const voterAddressMissing = this.state.location === null;
 
     // const ballot_caveat = BallotStore.ballotProperties.ballot_caveat; // ballotProperties might be undefined
+    const ballotCaveat = BallotStore.getBallotCaveat() || '';
     const electionName = BallotStore.currentBallotElectionName || '';
     const electionDayText = BallotStore.currentBallotElectionDate;
     const sourcePollingLocationWeVoteId = BallotStore.currentBallotPollingLocationSource;
@@ -1202,7 +1203,17 @@ class Ballot extends Component {
     const emptyBallotButton = completionLevelFilterType !== 'none' && !voterAddressMissing ? (
       <EmptyBallotNotice>
         <EmptyBallotCard className="card">
-          No ballot items found. Please try again later.
+          {ballotCaveat ? (
+            <>
+              {ballotCaveat}
+            </>
+          ) : (
+            <>
+              Your next ballot isn&apos;t available yet.
+            </>
+          )}
+          {' '}
+          Please try again later.
         </EmptyBallotCard>
       </EmptyBallotNotice>
     ) : (
@@ -1220,14 +1231,16 @@ class Ballot extends Component {
     // console.log('ballotWithItemsFromCompletionFilterType: ', ballotWithItemsFromCompletionFilterType);
     // Was: ballotWithItemsFromCompletionFilterType
     const emptyBallot = ballotWithAllItems.length === 0 ? (
-      <Suspense fallback={<></>}>
-        <DelayedLoad waitBeforeShow={3000}>
-          <div>
-            <h3 className="text-center">{this.getEmptyMessageByFilterType(completionLevelFilterType)}</h3>
-            {emptyBallotButton}
-          </div>
-        </DelayedLoad>
-      </Suspense>
+      <LoadingWrapper>
+        <Suspense fallback={<></>}>
+          <DelayedLoad showLoadingText waitBeforeShow={5000}>
+            <div>
+              <h3 className="text-center">{this.getEmptyMessageByFilterType(completionLevelFilterType)}</h3>
+              {emptyBallotButton}
+            </div>
+          </DelayedLoad>
+        </Suspense>
+      </LoadingWrapper>
     ) : null;
 
     const electionDayTextFormatted = electionDayText && window.moment ? window.moment(electionDayText).format('MMM Do, YYYY') : '';
@@ -1642,6 +1655,10 @@ const LoadingItemsWheel = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+`;
+
+const LoadingWrapper = styled.div`
+  margin-top: 60px;
 `;
 
 const ShowMoreItemsWrapper = styled.div`

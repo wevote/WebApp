@@ -54,7 +54,7 @@ export default class FAQBody extends Component {
             body="www.WeVoteEducation.org"
           />
         </Suspense>
-        - 501(c)(3) and
+        - 501(c)(3) FEIN 47-2691544 and
         <Suspense fallback={<></>}>
           <OpenExternalWebSite
             linkIdAttribute="weVoteUSAWebsite"
@@ -63,7 +63,7 @@ export default class FAQBody extends Component {
             body="www.WeVoteUSA.org"
           />
         </Suspense>
-        - 501(c)(4))
+        - 501(c)(4) FEIN 81-1052585)
         based in Oakland, CA. We do not support or oppose any political candidate or party.
         We are not affiliated with WeVoteProject.org or WeVoteUSA.com.
         <br />
@@ -74,7 +74,7 @@ export default class FAQBody extends Component {
         We Vote is a volunteer-driven movement. We
         rely on volunteers across the country who use
         their engineering, design, and other skills to build
-        We Vote. We are over 100 people who have donated 9,000+ volunteer hours, including
+        We Vote. We are over 100 people who have donated 12,000+ volunteer hours, including
         <Suspense fallback={<></>}>
           <OpenExternalWebSite
             linkIdAttribute="wevoteGithubContributors"

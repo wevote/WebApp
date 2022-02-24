@@ -5,7 +5,7 @@ import ElectionActions from '../../actions/ElectionActions';
 import ElectionStore from '../../stores/ElectionStore';
 import VoterStore from '../../stores/VoterStore';
 import { renderLog } from '../../common/utils/logging';
-import BallotElectionList from '../Ballot/BallotElectionList';
+import BallotElectionListWithFilters from '../Ballot/BallotElectionListWithFilters';
 import BrowserPushMessage from '../Widgets/BrowserPushMessage';
 
 export default class SettingsElection extends Component {
@@ -79,7 +79,7 @@ export default class SettingsElection extends Component {
           <BrowserPushMessage incomingProps={this.props} />
           <div className="card">
             <div className="card-main">
-              <BallotElectionList ballotElectionList={this.state.voterBallotList} ballotBaseUrl="/ballot" />
+              <BallotElectionListWithFilters ballotElectionList={this.state.voterBallotList} ballotBaseUrl="/ballot" />
             </div>
           </div>
         </div>
