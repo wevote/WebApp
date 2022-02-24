@@ -2,17 +2,19 @@ import { Button } from '@material-ui/core';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import styled from 'styled-components';
-import BallotActions from '../../actions/BallotActions';
-import OrganizationActions from '../../actions/OrganizationActions';
-import VoterActions from '../../actions/VoterActions';
-import BallotStore from '../../stores/BallotStore';
-import VoterStore from '../../stores/VoterStore';
-import { convertStateCodeToStateText } from '../../common/utils/addressFunctions';
-import historyPush from '../../common/utils/historyPush';
-import { electionDateTomorrowFormatted, formatDateMMMDoYYYY } from '../../common/utils/dateFormat';
-import { renderLog } from '../../common/utils/logging';
-import { cleanArray } from '../../utils/textFormat';
-import LoadingWheel from '../../common/components/Widgets/LoadingWheel';
+import BallotActions from '../src/js/actions/BallotActions';
+import OrganizationActions from '../src/js/actions/OrganizationActions';
+import VoterActions from '../src/js/actions/VoterActions';
+import BallotStore from '../src/js/stores/BallotStore';
+import ElectionStore from '../src/js/stores/ElectionStore';
+import VoterStore from '../src/js/stores/VoterStore';
+import { convertStateCodeToStateText } from '../src/js/common/utils/addressFunctions';
+import historyPush from '../src/js/common/utils/historyPush';
+import { electionDateTomorrowFormatted, formatDateMMMDoYYYY } from '../src/js/common/utils/dateFormat';
+import { renderLog } from '../src/js/common/utils/logging';
+import { cleanArray } from '../src/js/utils/textFormat';
+import LoadingWheel from '../src/js/common/components/Widgets/LoadingWheel';
+import initializeMoment from '../src/js/common/utils/initializeMoment';
 
 const MAXIMUM_NUMBER_OF_CHARACTERS_TO_SHOW = 36;
 const MAXIMUM_NUMBER_OF_CHARACTERS_TO_SHOW_DESKTOP = 36;
@@ -22,6 +24,26 @@ const MAXIMUM_NUMBER_OF_CHARACTERS_TO_SHOW_DESKTOP = 36;
 export default class BallotElectionList extends Component {
   constructor (props) {
     super(props);
+
+    this.state = {
+      loadingNewBallotItems: false,
+      priorElectionId: 0,
+      showMoreUpcomingElections: false,
+      showMorePriorElections: false,
+      showPriorElectionsList: false,
+      stateName: '',
+      updatedElectionId: '',
+    };
+  }
+
+  componentDidMount() {
+    this.ballotStoreListener = BallotStore.addListener(this.onBallotStoreChange.bind(this));
+    this.electionStoreListener = ElectionStore.addListener(this.onBallotStoreChange.bind(this));
+    this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
+    if (typeof window.moment === 'undefined') {
+      initializeMoment(() => {
+      });
+    }
     let priorElectionId = '';
     if (BallotStore.ballotProperties) {
       priorElectionId = BallotStore.ballotProperties.google_civic_election_id;
@@ -29,23 +51,15 @@ export default class BallotElectionList extends Component {
       priorElectionId = VoterStore.electionId();
     }
     const stateCode = VoterStore.getStateCodeFromIPAddress();
-
-    this.state = {
-      loadingNewBallotItems: false,
+    this.setState({
       priorElectionId,
-      showMoreUpcomingElections: false,
-      showMorePriorElections: false,
-      showPriorElectionsList: false,
       stateName: convertStateCodeToStateText(stateCode),
-      updatedElectionId: '',
-    };
-
-    this.ballotStoreListener = BallotStore.addListener(this.onBallotStoreChange.bind(this));
-    this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
+    });
   }
 
   componentWillUnmount () {
     this.ballotStoreListener.remove();
+    this.electionStoreListener.remove();
     this.voterStoreListener.remove();
   }
 

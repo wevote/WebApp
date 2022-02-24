@@ -835,6 +835,7 @@ const styles = (theme) => ({
       backgroundColor: 'transparent',
     },
     color: 'rgba(17, 17, 17, .5)',
+    fontSize: 14,
     outline: 'none !important',
     paddingRight: 6,
     [theme.breakpoints.up('sm')]: {

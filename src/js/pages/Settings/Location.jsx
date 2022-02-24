@@ -2,13 +2,16 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import Helmet from 'react-helmet';
 import AnalyticsActions from '../../actions/AnalyticsActions';
+import BallotActions from '../../actions/BallotActions';
+import BallotStore from '../../stores/BallotStore';
 import ElectionActions from '../../actions/ElectionActions';
 import AddressBox from '../../components/AddressBox';
-import BallotElectionList from '../../components/Ballot/BallotElectionList';
+import BallotElectionListWithFilters from '../../components/Ballot/BallotElectionListWithFilters';
 import BrowserPushMessage from '../../components/Widgets/BrowserPushMessage';
 import ElectionStore from '../../stores/ElectionStore';
 import VoterStore from '../../stores/VoterStore';
 import { renderLog } from '../../common/utils/logging';
+import { PageContentContainer } from '../../utils/pageLayoutStyles';
 
 export default class Location extends Component {
   constructor (props) {
@@ -23,12 +26,15 @@ export default class Location extends Component {
   }
 
   componentDidMount () {
+    this.ballotStoreListener = BallotStore.addListener(this.onElectionStoreChange.bind(this));
     this.electionListListener = ElectionStore.addListener(this.onElectionStoreChange.bind(this));
+    BallotActions.voterBallotListRetrieve();
     ElectionActions.electionsRetrieve();
     AnalyticsActions.saveActionElections(VoterStore.electionId());
   }
 
   componentWillUnmount () {
+    this.ballotStoreListener.remove();
     this.electionListListener.remove();
   }
 
@@ -71,7 +77,7 @@ export default class Location extends Component {
   render () {
     renderLog('Location');  // Set LOG_RENDER_EVENTS to log all renders
     return (
-      <div>
+      <PageContentContainer>
         <div className="container-fluid well u-stack--md u-inset--md">
           <Helmet title="Enter Your Address - We Vote" />
           <BrowserPushMessage incomingProps={this.props} />
@@ -79,13 +85,13 @@ export default class Location extends Component {
             Enter address where you are registered to vote
           </h3>
           <div>
-            <AddressBox {...this.props} saveUrl="/ballot" />
+            <AddressBox location={this.props.location} saveUrl="/ballot" />
           </div>
         </div>
         <div className="elections-list-container container-fluid well u-stack--md u-inset--md">
-          <BallotElectionList ballotElectionList={this.state.voterBallotList} ballotBaseUrl="/ballot" />
+          <BallotElectionListWithFilters ballotElectionList={this.state.voterBallotList} ballotBaseUrl="/ballot" stateToShow="all" />
         </div>
-      </div>
+      </PageContentContainer>
     );
   }
 }

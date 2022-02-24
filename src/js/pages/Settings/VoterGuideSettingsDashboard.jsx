@@ -13,6 +13,7 @@ import VoterGuideStore from '../../stores/VoterGuideStore';
 import VoterStore from '../../stores/VoterStore';
 import { renderLog } from '../../common/utils/logging';
 import { isProperlyFormattedVoterGuideWeVoteId } from '../../utils/textFormat';
+import { PageContentContainer } from '../../utils/pageLayoutStyles';
 
 class VoterGuideSettingsDashboard extends Component {
   constructor (props) {
@@ -212,12 +213,8 @@ class VoterGuideSettingsDashboard extends Component {
     const { getVoterGuideSettingsDashboardEditMode, voterGuideWeVoteId } = this.state;
     // console.log('VoterGuideSettingsDashboard, getVoterGuideSettingsDashboardEditMode:', getVoterGuideSettingsDashboardEditMode, ', voterGuideWeVoteId:', voterGuideWeVoteId);
 
-    // const cordovaPaddingTop = cordovaScrollablePaneTopPadding();
-    // const paddingTop = cordovaPaddingTop || '125px';
-    const paddingTop = '10px';
-
     return (
-      <Wrapper padTop={paddingTop}>
+      <PageContentContainer>
         <EndorsementListBody>
           {/* Body of page "/vg/wvYYvgYY/settings/positions" */}
           <VoterGuideSettingsAddPositions
@@ -225,7 +222,7 @@ class VoterGuideSettingsDashboard extends Component {
             voterGuideWeVoteId={voterGuideWeVoteId}
           />
         </EndorsementListBody>
-      </Wrapper>
+      </PageContentContainer>
     );
   }
 }
@@ -238,10 +235,6 @@ const styles = () => ({
     width: '100%',
   },
 });
-
-const Wrapper = styled.div`
-  padding-top: ${({ padTop }) => padTop};
-`;
 
 const EndorsementListBody = styled.div`
 `;

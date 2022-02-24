@@ -60,7 +60,7 @@ export default function cordovaScrollablePaneTopPadding (pageEnumerationOverride
         case CordovaPageConstants.values:                return '89px';
         case CordovaPageConstants.valuesList:            return '92px';
         case CordovaPageConstants.valuesWild:            return '20px';
-        case CordovaPageConstants.voterGuideCreatorWild: return '10px'; // $headroom-wrapper-webapp__voter-guide
+        case CordovaPageConstants.voterGuideCreatorWild: return '10px'; // should be '130px'; // $headroom-wrapper-webapp__voter-guide-creator
         case CordovaPageConstants.voterGuideWild:        return '59px';
         case CordovaPageConstants.welcomeWild:           return '10px';
         case CordovaPageConstants.wevoteintroWild:       return '18px';
@@ -102,7 +102,7 @@ export default function cordovaScrollablePaneTopPadding (pageEnumerationOverride
         case CordovaPageConstants.values:                return '78px';
         case CordovaPageConstants.valuesList:            return '77px';
         case CordovaPageConstants.valuesWild:            return '77px';
-        case CordovaPageConstants.voterGuideCreatorWild: return '10px'; // $headroom-wrapper-webapp__voter-guide
+        case CordovaPageConstants.voterGuideCreatorWild: return '10px'; // should be '130px'; // $headroom-wrapper-webapp__voter-guide-creator
         case CordovaPageConstants.voterGuideWild:        return '55px';
         case CordovaPageConstants.welcomeWild:           return '10px';
         case CordovaPageConstants.wevoteintroWild:       return '18px';
@@ -144,7 +144,7 @@ export default function cordovaScrollablePaneTopPadding (pageEnumerationOverride
         case CordovaPageConstants.values:                return '71px';
         case CordovaPageConstants.valuesList:            return '74px';
         case CordovaPageConstants.valuesWild:            return '74px';
-        case CordovaPageConstants.voterGuideCreatorWild: return '10px'; // $headroom-wrapper-webapp__voter-guide
+        case CordovaPageConstants.voterGuideCreatorWild: return '10px'; // should be '130px'; // $headroom-wrapper-webapp__voter-guide-creator
         case CordovaPageConstants.voterGuideWild:        return '51px';
         case CordovaPageConstants.welcomeWild:           return '22px';
         case CordovaPageConstants.wevoteintroWild:       return '18px';
@@ -187,7 +187,7 @@ export default function cordovaScrollablePaneTopPadding (pageEnumerationOverride
         case CordovaPageConstants.values:                return '94px';
         case CordovaPageConstants.valuesList:            return '93px';
         case CordovaPageConstants.valuesWild:            return '693px';
-        case CordovaPageConstants.voterGuideCreatorWild: return '10px'; // $headroom-wrapper-webapp__voter-guide
+        case CordovaPageConstants.voterGuideCreatorWild: return '10px'; // should be '130px'; // $headroom-wrapper-webapp__voter-guide-creator
         case CordovaPageConstants.voterGuideWild:        return '51px';
         case CordovaPageConstants.welcomeWild:           return '22px';
         case CordovaPageConstants.wevoteintroWild:       return '18px';
@@ -230,7 +230,7 @@ export default function cordovaScrollablePaneTopPadding (pageEnumerationOverride
         case CordovaPageConstants.values:                return '87px';
         case CordovaPageConstants.valuesList:            return '87px';
         case CordovaPageConstants.valuesWild:            return '87px';
-        case CordovaPageConstants.voterGuideCreatorWild: return '10px'; // $headroom-wrapper-webapp__voter-guide
+        case CordovaPageConstants.voterGuideCreatorWild: return '10px'; // should be '130px'; // $headroom-wrapper-webapp__voter-guide-creator
         case CordovaPageConstants.voterGuideWild:        return '74px';
         case CordovaPageConstants.welcomeWild:           return '22px';
         case CordovaPageConstants.wevoteintroWild:       return '32px';
@@ -270,7 +270,7 @@ export default function cordovaScrollablePaneTopPadding (pageEnumerationOverride
         case CordovaPageConstants.values:                return '89px';
         case CordovaPageConstants.valuesList:            return '92px';
         case CordovaPageConstants.valuesWild:            return '89px';
-        case CordovaPageConstants.voterGuideCreatorWild: return '10px'; // $headroom-wrapper-webapp__voter-guide
+        case CordovaPageConstants.voterGuideCreatorWild: return '10px'; // should be '130px'; // $headroom-wrapper-webapp__voter-guide-creator
         case CordovaPageConstants.voterGuideWild:        return '59px';
         case CordovaPageConstants.welcomeWild:           return '22px';
         case CordovaPageConstants.wevoteintroWild:       return '32px';
@@ -311,7 +311,7 @@ export default function cordovaScrollablePaneTopPadding (pageEnumerationOverride
         case CordovaPageConstants.values:                return '90px';
         case CordovaPageConstants.valuesList:            return '90px';
         case CordovaPageConstants.valuesWild:            return '90px';
-        case CordovaPageConstants.voterGuideCreatorWild: return '10px'; // $headroom-wrapper-webapp__voter-guide
+        case CordovaPageConstants.voterGuideCreatorWild: return '10px'; // should be '130px'; // $headroom-wrapper-webapp__voter-guide-creator
         case CordovaPageConstants.voterGuideWild:        return '75px'; // See cordovaVoterGuideTopPadding instead
         case CordovaPageConstants.welcomeWild:           return '22px';
         case CordovaPageConstants.wevoteintroWild:       return '32px';
@@ -351,7 +351,7 @@ export default function cordovaScrollablePaneTopPadding (pageEnumerationOverride
         case CordovaPageConstants.values:                return '89px';
         case CordovaPageConstants.valuesList:            return '92px';
         case CordovaPageConstants.valuesWild:            return '89px';
-        case CordovaPageConstants.voterGuideCreatorWild: return '10px';  // $headroom-wrapper-webapp__voter-guide
+        case CordovaPageConstants.voterGuideCreatorWild: return '10px'; // should be '130px';  // $headroom-wrapper-webapp__voter-guide-creator
         case CordovaPageConstants.voterGuideWild:        return '47px';
         case CordovaPageConstants.welcomeWild:           return '0px';
         case CordovaPageConstants.wevoteintroWild:       return '18px';
@@ -393,7 +393,7 @@ export default function cordovaScrollablePaneTopPadding (pageEnumerationOverride
         case CordovaPageConstants.values:                return '92px';
         case CordovaPageConstants.valuesList:            return '80px';
         case CordovaPageConstants.valuesWild:            return '80px';
-        case CordovaPageConstants.voterGuideCreatorWild: return '10px'; // $headroom-wrapper-webapp__voter-guide
+        case CordovaPageConstants.voterGuideCreatorWild: return '10px'; // should be '130px'; // $headroom-wrapper-webapp__voter-guide-creator
         case CordovaPageConstants.voterGuideWild:        return '65px';
         case CordovaPageConstants.welcomeWild:           return '0px';
         case CordovaPageConstants.wevoteintroWild:       return '18px';
@@ -435,7 +435,7 @@ export default function cordovaScrollablePaneTopPadding (pageEnumerationOverride
         case CordovaPageConstants.values:                 return '60px';
         case CordovaPageConstants.valuesList:             return '60px';
         case CordovaPageConstants.valuesWild:             return '60px';
-        case CordovaPageConstants.voterGuideCreatorWild:  return '10px'; // $headroom-wrapper-webapp__voter-guide
+        case CordovaPageConstants.voterGuideCreatorWild:  return '10px'; // should be '130px'; // $headroom-wrapper-webapp__voter-guide-creator
         case CordovaPageConstants.voterGuideWild:         return '53px';
         default:                                          return '0px';
       }
@@ -469,7 +469,7 @@ export default function cordovaScrollablePaneTopPadding (pageEnumerationOverride
         case CordovaPageConstants.values:                 return '60px';
         case CordovaPageConstants.valuesList:             return '60px';
         case CordovaPageConstants.valuesWild:             return '60px';
-        case CordovaPageConstants.voterGuideCreatorWild:  return '10px'; // $headroom-wrapper-webapp__voter-guide
+        case CordovaPageConstants.voterGuideCreatorWild:  return '10px'; // should be '130px'; // $headroom-wrapper-webapp__voter-guide-creator
         case CordovaPageConstants.voterGuideWild:         return '55px';
         default:                                          return '0px';
       }
@@ -506,7 +506,7 @@ export default function cordovaScrollablePaneTopPadding (pageEnumerationOverride
         case CordovaPageConstants.values:                return '53px';
         case CordovaPageConstants.valuesList:            return '92px';
         case CordovaPageConstants.valuesWild:            return '53px';
-        case CordovaPageConstants.voterGuideCreatorWild: return '10px'; // $headroom-wrapper-webapp__voter-guide
+        case CordovaPageConstants.voterGuideCreatorWild: return '10px'; // should be '130px'; // $headroom-wrapper-webapp__voter-guide-creator
         case CordovaPageConstants.voterGuideWild:        return '47px';
         case CordovaPageConstants.welcomeWild:           return '0px';
         case CordovaPageConstants.wevoteintroWild:       return '18px';
@@ -541,7 +541,7 @@ export default function cordovaScrollablePaneTopPadding (pageEnumerationOverride
         case CordovaPageConstants.values:                return '53px';
         case CordovaPageConstants.valuesList:            return '53px';
         case CordovaPageConstants.valuesWild:            return '53px';
-        case CordovaPageConstants.voterGuideCreatorWild: return '10px'; // $headroom-wrapper-webapp__voter-guide
+        case CordovaPageConstants.voterGuideCreatorWild: return '10px'; // should be '130px'; // $headroom-wrapper-webapp__voter-guide-creator
         case CordovaPageConstants.voterGuideWild:        return '53px';
         default:                                         return '0px';
       }
@@ -563,7 +563,7 @@ export default function cordovaScrollablePaneTopPadding (pageEnumerationOverride
         case CordovaPageConstants.settingsNotifications: return '39px';
         case CordovaPageConstants.settingsWild:          return '55px';
         case CordovaPageConstants.values:                return '0';
-        case CordovaPageConstants.voterGuideCreatorWild: return '10px'; // $headroom-wrapper-webapp__voter-guide
+        case CordovaPageConstants.voterGuideCreatorWild: return '10px'; // should be '130px'; // $headroom-wrapper-webapp__voter-guide-creator
         default:                                         return '0px';
       }
     }
@@ -593,8 +593,7 @@ export default function cordovaScrollablePaneTopPadding (pageEnumerationOverride
       // case CordovaPageConstants.settingsWild:
       //   return '55px';
       // case CordovaPageConstants.values:                   return '58px';
-      // case CordovaPageConstants.voterGuideCreatorWild:
-      //   return '10px'; // $headroom-wrapper-webapp__voter-guide
+      case CordovaPageConstants.voterGuideCreatorWild:    return '130px';
       default:                                            return '58px';
     }
   }
@@ -614,6 +613,7 @@ export default function cordovaScrollablePaneTopPadding (pageEnumerationOverride
     case CordovaPageConstants.officeWild:            return '102px';
     case CordovaPageConstants.welcomeWild:           return 0;
     case CordovaPageConstants.twitterHandleLanding:  return '102px';
+    case CordovaPageConstants.voterGuideCreatorWild: return '130px';
     default:                                         return '60px';
   }
 }

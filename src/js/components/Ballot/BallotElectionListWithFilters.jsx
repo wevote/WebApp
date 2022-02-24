@@ -634,7 +634,7 @@ export default class BallotElectionListWithFilters extends Component {
               (
                 <PriorOrUpcomingElectionsWrapper>
                   <strong><h4 className="h4">Prior Elections</h4></strong>
-                  {stateToShow === 'all' ? priorElectionList :
+                  {(!stateToShow || stateToShow === 'all') ? priorElectionList :
                     priorElectionListByState.length > 0 ? priorElectionListByState :
                       'There are no prior elections for this state.'}
                 </PriorOrUpcomingElectionsWrapper>

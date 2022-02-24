@@ -49,8 +49,8 @@ class CheckoutForm extends React.Component {
   }
 
   componentDidMount () {
-    this.donateStoreListener = DonateStore.addListener(this.onDonateStoreChange);
-    this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange);
+    this.donateStoreListener = DonateStore.addListener(this.onDonateStoreChange.bind(this));
+    this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
     DonateStore.noDispatchClearStripeErrorState();
     DonateActions.donationRefreshDonationList();
   }
