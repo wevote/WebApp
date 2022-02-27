@@ -14,7 +14,7 @@ import SnackNotifier from '../../components/Widgets/SnackNotifier';
 import AppObservableStore, { messageService } from '../../stores/AppObservableStore';
 import TwitterStore from '../../stores/TwitterStore';
 import VoterStore from '../../stores/VoterStore';
-import { PageContentContainer } from '../../utils/pageLayoutStyles';
+import { PageContentContainer } from '../../components/Style/pageLayoutStyles';
 import { stringContains } from '../../utils/textFormat';
 
 export default class TwitterSignInProcess extends Component {

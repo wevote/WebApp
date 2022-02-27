@@ -29,7 +29,7 @@ import VoterStore from '../../stores/VoterStore';
 import { cordovaFriendsWrapper } from '../../utils/cordovaOffsets';
 import displayFriendsTabs from '../../utils/displayFriendsTabs';
 import sortFriendListByMutualFriends from '../../utils/friendFunctions';
-import { PageContentContainer } from '../../utils/pageLayoutStyles';
+import { PageContentContainer } from '../../components/Style/pageLayoutStyles';
 import FriendInvitationsSentByMe from './FriendInvitationsSentByMe';
 import FriendInvitationsSentToMe from './FriendInvitationsSentToMe';
 import FriendsCurrent from './FriendsCurrent';

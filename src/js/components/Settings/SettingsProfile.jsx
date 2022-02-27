@@ -8,7 +8,7 @@ import styled from 'styled-components';
 import AnalyticsActions from '../../actions/AnalyticsActions';
 import VoterStore from '../../stores/VoterStore';
 import { renderLog } from '../../common/utils/logging';
-import { HeaderContentContainer } from '../../utils/pageLayoutStyles';
+import { HeaderContentContainer } from '../Style/pageLayoutStyles';
 import LoadingWheel from '../../common/components/Widgets/LoadingWheel';
 import BrowserPushMessage from '../Widgets/BrowserPushMessage';
 import SettingsProfilePicture from './SettingsProfilePicture';

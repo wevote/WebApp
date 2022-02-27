@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import Helmet from 'react-helmet';
 import PrivacyBody from '../../common/components/PrivacyBody';
 import { renderLog } from '../../common/utils/logging';
-import { PageContentContainer } from '../../utils/pageLayoutStyles';
+import { PageContentContainer } from '../../components/Style/pageLayoutStyles';
 
 export default class Privacy extends Component {
   static getProps () {

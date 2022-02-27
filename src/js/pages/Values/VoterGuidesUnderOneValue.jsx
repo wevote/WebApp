@@ -12,7 +12,7 @@ import VoterGuideStore from '../../stores/VoterGuideStore';
 import VoterStore from '../../stores/VoterStore';
 import historyPush from '../../common/utils/historyPush';
 import { renderLog } from '../../common/utils/logging';
-import { PageContentContainer } from '../../utils/pageLayoutStyles';
+import { PageContentContainer } from '../../components/Style/pageLayoutStyles';
 import ValuesList from './ValuesList';
 
 const DelayedLoad = React.lazy(() => import(/* webpackChunkName: 'DelayedLoad' */ '../../common/components/Widgets/DelayedLoad'));

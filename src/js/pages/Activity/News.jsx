@@ -34,7 +34,7 @@ import historyPush from '../../common/utils/historyPush';
 import { formatDateToMonthDayYear, timeFromDate } from '../../common/utils/dateFormat';
 import lazyPreloadPages from '../../utils/lazyPreloadPages';
 import { renderLog } from '../../common/utils/logging';
-import { PageContentContainer } from '../../utils/pageLayoutStyles';
+import { PageContentContainer } from '../../components/Style/pageLayoutStyles';
 
 const ActivityTidbitAddReaction = React.lazy(() => import(/* webpackChunkName: 'ActivityTidbitAddReaction' */ '../../components/Activity/ActivityTidbitAddReaction'));
 const ActivityTidbitComments = React.lazy(() => import(/* webpackChunkName: 'ActivityTidbitComments' */ '../../components/Activity/ActivityTidbitComments'));

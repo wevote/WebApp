@@ -12,7 +12,7 @@ import apiCalming from '../../common/utils/apiCalming';
 import { dumpCssFromId } from '../../utils/appleSiliconUtils';
 import { getApplicationViewBooleans, weVoteBrandingOff } from '../../utils/applicationUtils';
 import cordovaTopHeaderTopMargin from '../../utils/cordovaTopHeaderTopMargin';
-import { HeadroomWrapper } from '../../utils/pageLayoutStyles';
+import { HeadroomWrapper } from '../Style/pageLayoutStyles';
 import { stringContains } from '../../utils/textFormat';
 import IPhoneSpacer from '../Widgets/IPhoneSpacer';
 import HeaderBar from './HeaderBar';

@@ -17,7 +17,7 @@ import { isCordova, isWebApp } from '../../common/utils/isCordovaOrWebApp';
 import historyPush from '../../common/utils/historyPush';
 import { normalizedHref } from '../../common/utils/hrefUtils';
 import { renderLog } from '../../common/utils/logging';
-import { AppBarForBackTo, TopRowOneRightContainer } from '../../utils/pageLayoutStyles';
+import { AppBarForBackTo, TopRowOneRightContainer } from '../Style/pageLayoutStyles';
 import { shortenText, stringContains } from '../../utils/textFormat';
 import voterPhoto from '../../common/utils/voterPhoto';
 import SignInButton from '../Widgets/SignInButton';
