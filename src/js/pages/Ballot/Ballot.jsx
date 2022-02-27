@@ -1568,7 +1568,7 @@ class Ballot extends Component {
                         raceLevelFilterItemsInThisBallot={raceLevelFilterItemsInThisBallot}
                       />
                     )}
-                    {(issuesFollowedCount < 3) && (
+                    {((ballotWithAllItems.length > 0) && (issuesFollowedCount < 3)) && (
                       <ValuesListWrapper>
                         <ValuesToFollowPreview
                           followToggleOnItsOwnLine
@@ -1576,18 +1576,22 @@ class Ballot extends Component {
                         />
                       </ValuesListWrapper>
                     )}
-                    <SuggestedFriendsPreview friendsToShowMaxIncoming={7} inSideColumn />
-                    <div className="card">
-                      <div className="card-main">
-                        <SectionTitle>
-                          Voting Is Better with Friends
-                        </SectionTitle>
-                        <SectionDescription>
-                          Hear about upcoming elections and what you can do to get ready to vote. Add friends you feel comfortable talking politics with.
-                        </SectionDescription>
-                        <AddFriendsByEmail addAnotherButtonOff inSideColumn uniqueExternalId="sidebar" />
+                    {(ballotWithAllItems.length > 0) && (
+                      <SuggestedFriendsPreview friendsToShowMaxIncoming={7} inSideColumn />
+                    )}
+                    {(ballotWithAllItems.length > 0) && (
+                      <div className="card">
+                        <div className="card-main">
+                          <SectionTitle>
+                            Voting Is Better with Friends
+                          </SectionTitle>
+                          <SectionDescription>
+                            Hear about upcoming elections and what you can do to get ready to vote. Add friends you feel comfortable talking politics with.
+                          </SectionDescription>
+                          <AddFriendsByEmail addAnotherButtonOff inSideColumn uniqueExternalId="sidebar" />
+                        </div>
                       </div>
-                    </div>
+                    )}
                   </div>
                 </div>
               </Wrapper>

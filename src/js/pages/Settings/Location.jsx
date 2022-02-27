@@ -31,6 +31,7 @@ export default class Location extends Component {
     BallotActions.voterBallotListRetrieve();
     ElectionActions.electionsRetrieve();
     AnalyticsActions.saveActionElections(VoterStore.electionId());
+    window.scrollTo(0, 0);
   }
 
   componentWillUnmount () {

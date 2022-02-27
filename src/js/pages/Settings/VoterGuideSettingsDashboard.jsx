@@ -67,6 +67,7 @@ class VoterGuideSettingsDashboard extends Component {
     this.organizationStoreListener = OrganizationStore.addListener(this.onOrganizationStoreChange.bind(this));
     this.voterGuideStoreListener = VoterGuideStore.addListener(this.onVoterGuideStoreChange.bind(this));
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
+    window.scrollTo(0, 0);
   }
 
   // eslint-disable-next-line camelcase,react/sort-comp
