@@ -33,37 +33,6 @@ class SelectBallotModal extends Component {
     AnalyticsActions.saveActionSelectBallotModal(VoterStore.electionId());
   }
 
-  //
-  // shouldComponentUpdate (nextProps, nextState) {
-  //   // This lifecycle method tells the component to NOT render if componentWillReceiveProps didn't see any changes
-  //   const { location: { pathname } } = window;
-  //   if (pathname !== nextProps.pathname) {
-  //     // console.log('pathname:', pathname, ', nextProps.pathname:', nextProps.pathname);
-  //     return true;
-  //   }
-  //   if (this.state.selectedState !== nextState.selectedState) return true;
-  //   if (this.state.prior !== nextState.prior) return true;
-  //   if (this.state.upcoming !== nextState.upcoming) return true;
-  //   if (this.props.ballotBaseUrl !== nextProps.ballotBaseUrl) {
-  //     // console.log('this.props.ballotBaseUrl:', this.props.ballotBaseUrl, ', nextProps.ballotBaseUrl:', nextProps.ballotBaseUrl);
-  //     return true;
-  //   }
-  //   if (this.props.hideAddressEdit !== nextProps.hideAddressEdit) {
-  //     // console.log('this.props.hideAddressEdit:', this.props.hideAddressEdit, ', nextProps.hideAddressEdit:', nextProps.hideAddressEdit);
-  //     return true;
-  //   }
-  //   if (this.props.hideElections !== nextProps.hideElections) {
-  //     // console.log('this.props.hideElections:', this.props.hideElections, ', nextProps.hideElections:', nextProps.hideElections);
-  //     return true;
-  //   }
-  //   if (this.props.organization_we_vote_id !== nextProps.organization_we_vote_id) {
-  //     // console.log('this.props.organization_we_vote_id:', this.props.organization_we_vote_id, ', nextProps.organization_we_vote_id:', nextProps.organization_we_vote_id);
-  //     return true;
-  //   }
-  //   // console.log('shouldComponentUpdate no change');
-  //   return false;
-  // }
-
   handleChooseStateChange (e) {
     this.setState({ selectedState: e.target.value });
     // console.log(e.target.value);

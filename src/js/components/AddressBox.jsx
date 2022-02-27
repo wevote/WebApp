@@ -154,6 +154,22 @@ class AddressBox extends Component {
     }
   }
 
+  // saveAddressFromOnBlur (event) {
+  //   // console.log('saveAddressFromOnBlur CALLING-VoterActions.voterAddressSave event.target.value: ', event.target.value);
+  //   VoterActions.voterAddressSave(event.target.value);
+  // }
+
+  toggleEditingAddressLocal = () => {
+    const { toggleEditingAddress } = this.props;
+    if (toggleEditingAddress) {
+      toggleEditingAddress();
+    }
+  }
+
+  updateVoterAddress (event) {
+    this.setState({ textForMapSearch: event.target.value });
+  }
+
   _placeChanged (addressAutocomplete) {
     const place = addressAutocomplete.getPlace();
     if (place.formatted_address) {
@@ -167,19 +183,10 @@ class AddressBox extends Component {
     }
   }
 
-  // saveAddressFromOnBlur (event) {
-  //   // console.log('saveAddressFromOnBlur CALLING-VoterActions.voterAddressSave event.target.value: ', event.target.value);
-  //   VoterActions.voterAddressSave(event.target.value);
-  // }
-
-  updateVoterAddress (event) {
-    this.setState({ textForMapSearch: event.target.value });
-  }
-
-  toggleEditingAddressLocal = () => {
-    const { toggleEditingAddress } = this.props;
-    if (toggleEditingAddress) {
-      toggleEditingAddress();
+  returnNewTextForMapSearchLocal (textForMapSearch) {
+    const { returnNewTextForMapSearch } = this.props;
+    if (returnNewTextForMapSearch) {
+      returnNewTextForMapSearch(textForMapSearch);
     }
   }
 
@@ -205,7 +212,7 @@ class AddressBox extends Component {
       loading: true,
       voterSavedAddress: true,
     });
-    // New June 2021, once they save we want to go back to the original view with the map
+    this.returnNewTextForMapSearchLocal(textForMapSearch);
     this.toggleEditingAddressLocal();
   }
 
@@ -276,15 +283,16 @@ class AddressBox extends Component {
   }
 }
 AddressBox.propTypes = {
-  externalUniqueId: PropTypes.string,
-  showCancelEditAddressButton: PropTypes.bool,
+  classes: PropTypes.object,
   disableAutoFocus: PropTypes.bool,
+  externalUniqueId: PropTypes.string,
   manualFocus: PropTypes.bool,
+  returnNewTextForMapSearch: PropTypes.func,
+  saveUrl: PropTypes.string.isRequired,
+  showCancelEditAddressButton: PropTypes.bool,
   toggleEditingAddress: PropTypes.func,
   toggleSelectAddressModal: PropTypes.func,
-  saveUrl: PropTypes.string.isRequired,
   waitingMessage: PropTypes.string,
-  classes: PropTypes.object,
 };
 
 const styles = {

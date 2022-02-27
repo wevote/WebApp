@@ -170,6 +170,7 @@ class HowItWorks extends Component {
     this.setState({
       howItWorksWatched,
     });
+    window.scrollTo(0, 0);
   }
 
   // eslint-disable-next-line camelcase,react/sort-comp

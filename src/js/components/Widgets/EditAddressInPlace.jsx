@@ -51,6 +51,12 @@ class EditAddressInPlace extends Component {
     }
   }
 
+  localTextForMapSearchUpdate = (textForMapSearch) => {
+    this.setState({
+      textForMapSearch,
+    });
+  }
+
   toggleEditingAddress = () => {
     const { editingAddress } = this.state;
     if (this.props.toggleEditingAddress) {
@@ -77,11 +83,12 @@ class EditAddressInPlace extends Component {
             Please enter your full street address with house number for your correct ballot.
           </div>
           <AddressBox
+            editingAddress
+            returnNewTextForMapSearch={this.localTextForMapSearchUpdate}
+            saveUrl={ballotBaseUrl}
             showCancelEditAddressButton
             toggleEditingAddress={this.toggleEditingAddress}
-            saveUrl={ballotBaseUrl}
             toggleSelectAddressModal={this.incomingToggleFunction}
-            editingAddress
           />
         </span>
       );

@@ -181,7 +181,6 @@ class ValuesToFollowPreview extends Component {
             <Row>
               <Suspense fallback={<></>}>
                 <FriendInvitationOnboardingValuesList
-                  displayOnlyIssuesNotFollowedByVoter
                   followToggleOnItsOwnLine={followToggleOnItsOwnLine}
                   includeLinkToIssue={includeLinkToIssue}
                   oneColumn
