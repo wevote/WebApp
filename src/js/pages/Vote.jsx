@@ -27,7 +27,7 @@ import { isCordova, isWebApp } from '../common/utils/isCordovaOrWebApp';
 import historyPush from '../common/utils/historyPush';
 import Cookies from '../common/utils/js-cookie/Cookies';
 import { renderLog } from '../common/utils/logging';
-import { DualHeaderContainer, PageContentContainer } from '../utils/pageLayoutStyles';
+import { DualHeaderContainer, PageContentContainer } from '../components/Style/pageLayoutStyles';
 import BallotTitleHeader from './Ballot/BallotTitleHeader';
 
 const FilterBaseSearch = React.lazy(() => import(/* webpackChunkName: 'FilterBaseSearch' */ '../components/Filter/FilterBaseSearch'));

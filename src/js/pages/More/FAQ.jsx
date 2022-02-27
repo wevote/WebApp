@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import FAQBody from '../../common/components/FAQBody';
 import { isCordova } from '../../common/utils/isCordovaOrWebApp';
 import { renderLog } from '../../common/utils/logging';
-import { PageContentContainer } from '../../utils/pageLayoutStyles';
+import { PageContentContainer } from '../../components/Style/pageLayoutStyles';
 
 export default class FAQ extends Component {
   static getProps () {

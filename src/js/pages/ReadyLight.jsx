@@ -22,7 +22,7 @@ import historyPush from '../common/utils/historyPush';
 import lazyPreloadPages from '../utils/lazyPreloadPages';
 import { renderLog } from '../common/utils/logging';
 import apiCalming from '../common/utils/apiCalming';
-import { PageContentContainer } from '../utils/pageLayoutStyles';
+import { PageContentContainer } from '../components/Style/pageLayoutStyles';
 
 const ReadMore = React.lazy(() => import(/* webpackChunkName: 'ReadMore' */ '../common/components/Widgets/ReadMore'));
 const FirstAndLastNameRequiredAlert = React.lazy(() => import(/* webpackChunkName: 'FirstAndLastNameRequiredAlert' */ '../components/Widgets/FirstAndLastNameRequiredAlert'));

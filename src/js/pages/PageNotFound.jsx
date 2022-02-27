@@ -8,7 +8,7 @@ import styled from 'styled-components';
 import { isCordova } from '../common/utils/isCordovaOrWebApp';
 import historyPush from '../common/utils/historyPush';
 import { renderLog } from '../common/utils/logging';
-import { PageContentContainer } from '../utils/pageLayoutStyles';
+import { PageContentContainer } from '../components/Style/pageLayoutStyles';
 
 
 class PageNotFound extends Component {

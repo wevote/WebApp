@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import { PageTitle } from '../../common/components/Style/stepDisplayStyles';
 import { renderLog } from '../../common/utils/logging';
 import VoterStore from '../../stores/VoterStore';
-import { PageContentContainerGetStarted } from '../../utils/pageLayoutStyles';
+import { PageContentContainerGetStarted } from '../../components/Style/pageLayoutStyles';
 import Congratulations from './Congratulations';
 import ContactsTable from './ContactsTable';
 import ImportContactsButton from './ImportContactsButton';

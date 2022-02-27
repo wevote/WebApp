@@ -25,7 +25,7 @@ import VoterStore from '../stores/VoterStore';
 import normalizedImagePath from '../common/utils/normalizedImagePath';
 import { renderLog } from '../common/utils/logging';
 import apiCalming from '../common/utils/apiCalming';
-import { PageContentContainer } from '../utils/pageLayoutStyles';
+import { PageContentContainer } from '../components/Style/pageLayoutStyles';
 import { stringContains } from '../utils/textFormat';
 
 const ShowMoreItems = React.lazy(() => import(/* webpackChunkName: 'ShowMoreItems' */ '../components/Widgets/ShowMoreItems'));

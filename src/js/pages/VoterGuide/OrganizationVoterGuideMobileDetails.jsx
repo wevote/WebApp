@@ -8,7 +8,7 @@ import VoterGuideFollowers from '../../components/VoterGuide/VoterGuideFollowers
 import VoterGuideFollowing from '../../components/VoterGuide/VoterGuideFollowing';
 import TwitterStore from '../../stores/TwitterStore';
 import { renderLog } from '../../common/utils/logging';
-import { PageContentContainer } from '../../utils/pageLayoutStyles';
+import { PageContentContainer } from '../../components/Style/pageLayoutStyles';
 
 const DelayedLoad = React.lazy(() => import(/* webpackChunkName: 'DelayedLoad' */ '../../common/components/Widgets/DelayedLoad'));
 

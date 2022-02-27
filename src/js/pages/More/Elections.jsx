@@ -6,7 +6,7 @@ import BallotElectionListWithFilters from '../../components/Ballot/BallotElectio
 import ElectionStore from '../../stores/ElectionStore';
 import VoterStore from '../../stores/VoterStore';
 import { renderLog } from '../../common/utils/logging';
-import { PageContentContainer } from '../../utils/pageLayoutStyles';
+import { PageContentContainer } from '../../components/Style/pageLayoutStyles';
 
 export default class Elections extends Component {
   constructor (props) {

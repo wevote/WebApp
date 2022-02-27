@@ -2,7 +2,7 @@ import React from 'react';
 import Helmet from 'react-helmet';
 import TermsOfServiceBody from '../../common/components/TermsOfServiceBody';
 import { renderLog } from '../../common/utils/logging';
-import { PageContentContainer } from '../../utils/pageLayoutStyles';
+import { PageContentContainer } from '../../components/Style/pageLayoutStyles';
 
 export default class TermsOfService extends React.Component {
   static getProps () {

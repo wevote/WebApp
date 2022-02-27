@@ -16,7 +16,7 @@ import VoterStore from '../stores/VoterStore';
 import { formatDateToMonthDayYear } from '../common/utils/dateFormat';
 import { formatStateName } from '../utils/formatStateName';
 import { renderLog } from '../common/utils/logging';
-import { PageContentContainer } from '../utils/pageLayoutStyles';
+import { PageContentContainer } from '../components/Style/pageLayoutStyles';
 
 const voteDotOrg = '../../img/global/logos/vote_dot_org_logo-530x200.png';
 const turboVote = '../../img/global/logos/turbovote-logo.png';
