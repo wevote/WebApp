@@ -330,12 +330,17 @@ class Ballot extends Component {
 
     this.preloadTimer = setTimeout(() => lazyPreloadPages(), 2000);
 
-    this.googleAutoCompleteDelayTimer = setTimeout(() => {
-      // Don't load autocomplete until the Ballot page has had 3 seconds to load,
-      // this prevents the google autocomplete api from loading until it is needed
-      // following the click of "Address & Elections"
+    const { google } = window;
+    if (google === undefined) {
+      this.googleAutoCompleteDelayTimer = setTimeout(() => {
+        // Don't load autocomplete until the Ballot page has had 3 seconds to load,
+        // this prevents the google autocomplete api from loading until it is needed
+        // following the click of "Address & Elections"
+        this.setState({ enableEditAddressOneHorizontalRow: true });
+      }, 3000);
+    } else {
       this.setState({ enableEditAddressOneHorizontalRow: true });
-    }, 3000);
+    }
 
     if (isWebApp() && webAppConfig.ENABLE_WORKBOX_SERVICE_WORKER &&
         window.serviceWorkerLoaded === undefined) {

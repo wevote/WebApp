@@ -203,15 +203,15 @@ class AddressBox extends Component {
   }
 }
 AddressBox.propTypes = {
+  classes: PropTypes.object,
   externalUniqueId: PropTypes.string,
+  saveUrl: PropTypes.string.isRequired,
   showCancelEditAddressButton: PropTypes.bool,
-  // disableAutoFocus: PropTypes.bool,
-  // manualFocus: PropTypes.bool,
   toggleEditingAddress: PropTypes.func,
   toggleSelectAddressModal: PropTypes.func,
-  saveUrl: PropTypes.string.isRequired,
   waitingMessage: PropTypes.string,
-  classes: PropTypes.object,
+  // disableAutoFocus: PropTypes.bool,
+  // manualFocus: PropTypes.bool,
 };
 
 const styles = {
