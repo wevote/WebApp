@@ -1,19 +1,18 @@
-import { Button, InputBase, Paper } from '@material-ui/core';
+import { Button } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
-import { EditLocation } from '@material-ui/icons';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import styled from 'styled-components';
 import BallotActions from '../../actions/BallotActions';
 import VoterActions from '../../actions/VoterActions';
-import BallotStore from '../../stores/BallotStore';
-import VoterStore from '../../stores/VoterStore';
 import { isIPhoneMiniOrSmaller, restoreStylesAfterCordovaKeyboard } from '../../common/utils/cordovaUtils';
-import { isWebApp } from '../../common/utils/isCordovaOrWebApp';
 import historyPush from '../../common/utils/historyPush';
-import isMobile from '../../utils/isMobile';
 import Cookies from '../../common/utils/js-cookie/Cookies';
 import { renderLog } from '../../common/utils/logging';
+import BallotStore from '../../stores/BallotStore';
+import VoterStore from '../../stores/VoterStore';
+import isMobile from '../../utils/isMobile';
+import GoogleAutoComplete from '../Widgets/GoogleAutoComplete';
 import InfoCircleIcon from '../Widgets/InfoCircleIcon';
 
 class EditAddressOneHorizontalRow extends Component {
@@ -27,7 +26,6 @@ class EditAddressOneHorizontalRow extends Component {
     this.updateVoterAddress = this.updateVoterAddress.bind(this);
     this.voterAddressSaveLocal = this.voterAddressSaveLocal.bind(this);
     this.voterAddressSaveSubmit = this.voterAddressSaveSubmit.bind(this);
-    this.handleKeyPress = this.handleKeyPress.bind(this);
   }
 
 
@@ -38,23 +36,6 @@ class EditAddressOneHorizontalRow extends Component {
     });
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
     this.ballotStoreListener = BallotStore.addListener(this.onBallotStoreChange.bind(this));
-    const { google } = window;
-    if (google !== undefined) {
-      const addressAutocomplete = new google.maps.places.Autocomplete(this.autoComplete);
-      addressAutocomplete.setComponentRestrictions({ country: 'us' });
-      this.googleAutocompleteListener = addressAutocomplete.addListener('place_changed', this._placeChanged.bind(this, addressAutocomplete));
-    }
-  }
-
-  componentDidUpdate () {
-    if (this.googleAutocompleteListener === undefined) {
-      const { google } = window;
-      if (google !== undefined) {
-        const addressAutocomplete = new google.maps.places.Autocomplete(this.autoComplete);
-        addressAutocomplete.setComponentRestrictions({ country: 'us' });
-        this.googleAutocompleteListener = addressAutocomplete.addListener('place_changed', this._placeChanged.bind(this, addressAutocomplete));
-      }
-    }
   }
 
   componentDidCatch (error, info) {
@@ -65,11 +46,6 @@ class EditAddressOneHorizontalRow extends Component {
   componentWillUnmount () {
     this.voterStoreListener.remove();
     this.ballotStoreListener.remove();
-    if (this.googleAutocompleteListener !== undefined) { // Temporary fix until google maps key is fixed for Cordova
-      this.googleAutocompleteListener.remove();
-    } else if (isWebApp()) {
-      // console.log('EditAddressOneHorizontalRow ERROR: Google Maps API IS NOT LOADED');
-    }
     restoreStylesAfterCordovaKeyboard('EditAddressOneHorizontalRow');
   }
 
@@ -77,18 +53,6 @@ class EditAddressOneHorizontalRow extends Component {
   static getDerivedStateFromError (error) { // eslint-disable-line no-unused-vars
     // Update state so the next render will show the fallback UI, We should have a "Oh snap" page
     return { hasError: true };
-  }
-
-
-  handleKeyPress (event) {
-    // console.log('EditAddressOneHorizontalRow, handleKeyPress, event: ', event, ', event.keyCode:', event.keyCode);
-    // console.log('this.autoComplete:', this.autoComplete);
-    // console.log('handleKeyPress');
-    const enterAndSpaceKeyCodes = [13]; // We actually don't want to use the space character to save, 32
-    if (enterAndSpaceKeyCodes.includes(event.keyCode)) {
-      event.preventDefault();
-      this.voterAddressSaveLocal(event);
-    }
   }
 
   onBallotStoreChange () {
@@ -127,32 +91,10 @@ class EditAddressOneHorizontalRow extends Component {
     });
   }
 
-  _placeChanged (addressAutocomplete) {
-    // I believe this gets called when we get a response from Google
-    const place = addressAutocomplete.getPlace();
-    if (place.formatted_address) {
-      // console.log('_placeChanged CALLING-VoterActions.voterAddressSave place.formatted_address:', place.formatted_address);
-      // VoterActions.voterAddressSave(place.formatted_address);
-      this.setState({
-        textForMapSearch: place.formatted_address,
-      });
-    } else {
-      // console.log('_placeChanged CALLING-VoterActions.voterAddressSave place.name:', place.name);
-      // VoterActions.voterAddressSave(place.name);
-      this.setState({
-        textForMapSearch: place.name,
-      });
-    }
-  }
-
-  // saveAddressFromOnBlur (event) {
-  //   // console.log('saveAddressFromOnBlur CALLING-VoterActions.voterAddressSave event.target.value: ', event.target.value);
-  //   VoterActions.voterAddressSave(event.target.value);
-  // }
-
-  updateVoterAddress (event) {
-    // console.log('updateVoterAddress, event.target.value:', event.target.value);
-    this.setState({ textForMapSearch: event.target.value });
+  updateVoterAddress (placeResult) {
+    const { formatted_address: address } = placeResult;
+    console.log('updateVoterAddress, placeResult address:', address);
+    this.setState({ textForMapSearch: address });
   }
 
   voterAddressSaveLocal (event) {
@@ -184,9 +126,13 @@ class EditAddressOneHorizontalRow extends Component {
     const { classes } = this.props;
     const { showAddressExplanation, textForMapSearch } = this.state; // voterSavedAddress
 
-    // if (voterSavedAddress) {
-    //   return <span />;
-    // }
+    const paperstyles = {
+      padding: '2px .7rem',
+      display: 'flex',
+      alignItems: 'center',
+      width: '100%',
+      minWidth: '250px',
+    };
 
     return (
       <OuterWrapper id="EditAddressOneHorizontalRow">
@@ -218,23 +164,11 @@ class EditAddressOneHorizontalRow extends Component {
           </AddressLabel>
           <SubmitFormWrapper onSubmit={this.voterAddressSaveSubmit}>
             <InternalFormWrapper>
-              <Paper className={classes.paperInputForm} elevation={2} style={{ minWidth: 250 }}>
-                <EditLocation className="ion-input-icon" />
-                <InputBase
-                  className={classes.inputBase}
-                  name="address"
-                  aria-label="Address"
-                  placeholder="Street number, full address and ZIP..."
-                  value={textForMapSearch}
-                  inputRef={(autocomplete) => { this.autoComplete = autocomplete; }}
-                  inputProps={{
-                    // onBlur: this.saveAddressFromOnBlur,
-                    onChange: this.updateVoterAddress,
-                    onKeyDown: this.handleKeyPress,
-                  }}
-                  id="editAddressOneHorizontalRowTextForMapSearch"
-                />
-              </Paper>
+              <GoogleAutoComplete
+                updateVoterAddress={this.updateVoterAddress}
+                paperstyles={paperstyles}
+                id="oneHorizRow"
+              />
               <ButtonWrapper>
                 <Button
                   classes={{ root: classes.saveButton }}
@@ -356,12 +290,6 @@ const InnerWrapper = styled.div`
 `;
 
 const styles = (theme) => ({
-  paperInputForm: {
-    padding: '2px .7rem',
-    display: 'flex',
-    alignItems: 'center',
-    width: '100%',
-  },
   saveButton: {
     height: 'fit-content',
     width: '100%',

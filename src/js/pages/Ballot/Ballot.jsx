@@ -87,6 +87,7 @@ class Ballot extends Component {
         position_list: [],
       },
       componentDidMountFinished: false,
+      enableEditAddressOneHorizontalRow: false,
       foundFirstRaceLevel: false,
       isSearching: false,
       lastHashUsedInLinkScroll: '',
@@ -328,6 +329,13 @@ class Ballot extends Component {
     }
 
     this.preloadTimer = setTimeout(() => lazyPreloadPages(), 2000);
+
+    this.googleAutoCompleteDelayTimer = setTimeout(() => {
+      // Don't load autocomplete until the Ballot page has had 3 seconds to load,
+      // this prevents the google autocomplete api from loading until it is needed
+      // following the click of "Address & Elections"
+      this.setState({ enableEditAddressOneHorizontalRow: true });
+    }, 3000);
 
     if (isWebApp() && webAppConfig.ENABLE_WORKBOX_SERVICE_WORKER &&
         window.serviceWorkerLoaded === undefined) {
@@ -1112,8 +1120,8 @@ class Ballot extends Component {
 
     const {
       ballotSearchResults, ballotWithAllItems, ballotWithItemsFromCompletionFilterType,
-      completionLevelFilterType, doubleFilteredBallotItemsLength, isSearching, issuesFollowedCount,
-      loadingMoreItems, locationGuessClosed, numberOfBallotItemsToDisplay,
+      completionLevelFilterType, doubleFilteredBallotItemsLength, enableEditAddressOneHorizontalRow,
+      isSearching, issuesFollowedCount, loadingMoreItems, locationGuessClosed, numberOfBallotItemsToDisplay,
       raceLevelFilterItemsInThisBallot, searchText, showFilterTabs, totalNumberOfBallotItems,
       voterBallotItemsRetrieveHasBeenCalled, voterBallotItemsRetrieveHasReturned,
     } = this.state;
@@ -1426,7 +1434,9 @@ class Ballot extends Component {
                     {(showAddressVerificationForm && (voterBallotItemsRetrieveHasReturned || !voterBallotItemsRetrieveHasBeenCalled)) && (
                       <EditAddressWrapper>
                         <EditAddressCard className="card">
-                          <EditAddressOneHorizontalRow saveUrl="/ballot" onSave={this.onVoterAddressSave} />
+                          {enableEditAddressOneHorizontalRow && (
+                            <EditAddressOneHorizontalRow saveUrl="/ballot" onSave={this.onVoterAddressSave} />
+                          )}
                         </EditAddressCard>
                       </EditAddressWrapper>
                     )}

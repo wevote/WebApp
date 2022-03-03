@@ -15,34 +15,23 @@ class EditAddressInPlace extends Component {
     super(props, context);
     this.state = {
       editingAddress: false,
-      textForMapSearch: '',
     };
   }
 
   componentDidMount () {
     // console.log('EditAddressInPlace componentDidMount');
-    this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
-    this.onVoterStoreChange();
     const { defaultIsEditingAddress } = this.props;
     this.setState({
       editingAddress: defaultIsEditingAddress,
     });
   }
 
-  componentWillUnmount () {
-    this.voterStoreListener.remove();
-  }
-
-  onVoterStoreChange () {
-    // console.log('EditAddressInPlace onVoterStoreChange');
+  getAddressFromVoterStore () {
     const voterAddressObject = VoterStore.getAddressObject();
-    let textForMapSearch = '';
     if (voterAddressObject && voterAddressObject.text_for_map_search) {
-      textForMapSearch = voterAddressObject.text_for_map_search;
+      return voterAddressObject.text_for_map_search;
     }
-    this.setState({
-      textForMapSearch,
-    });
+    return '';
   }
 
   incomingToggleFunction = () => {
@@ -71,7 +60,8 @@ class EditAddressInPlace extends Component {
     renderLog('EditAddressInPlace');  // Set LOG_RENDER_EVENTS to log all renders
     const { classes, noAddressMessage } = this.props;
     const { location: { pathname } } = window;
-    const { editingAddress, textForMapSearch } = this.state;
+    const { editingAddress } = this.state;
+    const textForMapSearch = this.getAddressFromVoterStore();
     const noAddressMessageFiltered = noAddressMessage || '- no address entered -';
     const maximumAddressDisplayLength = 60;
     const ballotBaseUrl = calculateBallotBaseUrl(this.props.ballotBaseUrl, pathname);
