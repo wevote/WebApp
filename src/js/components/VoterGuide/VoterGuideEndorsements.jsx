@@ -348,7 +348,6 @@ class VoterGuideEndorsements extends Component {
                 kindOfOwner="ORGANIZATION"
                 nameBeingViewed={organization.organization_name}
                 twitterHandleBeingViewed={organization.organization_twitter_handle}
-                whiteOnBlue
               />
             )}
           </ExtraActionsWrapper>

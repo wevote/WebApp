@@ -191,6 +191,7 @@ class MeasureStore extends ReduceStore {
           allCachedPositionsAboutMeasuresByOrganization,
         };
 
+      case 'voterAddressSave':
       case 'voterBallotItemsRetrieve':
         if (tempBallotItemList) {
           tempBallotItemList.forEach((oneBallotItem) => {

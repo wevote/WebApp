@@ -286,6 +286,7 @@ class CandidateStore extends ReduceStore {
           numberOfCandidatesRetrievedByOffice,
         };
 
+      case 'voterAddressSave':
       case 'voterBallotItemsRetrieve':
         googleCivicElectionId = action.res.google_civic_election_id || 0;
         if (googleCivicElectionId !== 0) {

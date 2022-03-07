@@ -878,7 +878,7 @@ const styles = (theme) => ({
 
 const ItemActionBarWrapper = styled.div`
   ${({ positionPublicToggleWrapAllowed }) => (positionPublicToggleWrapAllowed ? '' : 'display: flex;')}
-  ${({ positionPublicToggleWrapAllowed }) => (positionPublicToggleWrapAllowed ? '' : 'justify-content: flex-end;')}
+  ${({ positionPublicToggleWrapAllowed }) => (positionPublicToggleWrapAllowed ? '' : 'justify-content: flex-start;')}
   ${({ positionPublicToggleWrapAllowed }) => (positionPublicToggleWrapAllowed ? '' : 'width: 100%;')}
   align-items: center;
   border-top: ${({ displayInline }) => (displayInline ? '' : '1px solid #eee !default')};

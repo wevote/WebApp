@@ -22,10 +22,6 @@ class AddressBox extends Component {
       ballotCaveat: '',
       voterSavedAddress: false,
     };
-
-    this.updateVoterAddress = this.updateVoterAddress.bind(this);
-    this.voterAddressSaveLocal = this.voterAddressSaveLocal.bind(this);
-    this.voterAddressSaveSubmit = this.voterAddressSaveSubmit.bind(this);
   }
 
   // eslint-disable-next-line camelcase,react/sort-comp
@@ -105,28 +101,35 @@ class AddressBox extends Component {
     }
   }
 
-  updateVoterAddress (placeResult) {
-    console.log('updateVoterAddress');
-    const { formatted_address: address } = placeResult;
-    this.setState({ textForMapSearch: address });
-    VoterActions.voterAddressSave(address);
+  returnNewTextForMapSearchLocal (textForMapSearch) {
+    const { returnNewTextForMapSearch } = this.props;
+    if (returnNewTextForMapSearch) {
+      returnNewTextForMapSearch(textForMapSearch);
+    }
   }
 
-  voterAddressSaveLocal (event) {
-    // console.log('CALLING-VoterActions.voterAddressSave, event.target.value:', event.target.value);
+  updateTextForMapSearch = (textForMapSearch) => {
+    // console.log('AddressBox updateTextForMapSearch textForMapSearch:', textForMapSearch);
+    this.setState({ textForMapSearch });
+  }
+
+  updateTextForMapSearchFromGoogle = (textForMapSearch) => {
+    // console.log('AddressBox updateTextForMapSearchFromGoogle textForMapSearch:', textForMapSearch);
+    if (textForMapSearch) {
+      this.setState({ textForMapSearch });
+    }
+  }
+
+  voterAddressSaveSubmit = (event) => {
     event.preventDefault();
-    VoterActions.voterAddressSave(event.target.value);
-    BallotActions.completionLevelFilterTypeSave('filterAllBallotItems');
-    Cookies.set('location_guess_closed', '1', { expires: 31, path: '/' });
-    this.setState({
-      loading: true,
-      textForMapSearch: event.target.value,
-      voterSavedAddress: true,
-    });
-  }
-
-  voterAddressSaveSubmit () {
     const { textForMapSearch } = this.state;
+    // console.log('AddressBox voterAddressSaveSubmit, textForMapSearch:', textForMapSearch);
+    let ballotCaveat = 'Saving new address...';
+    if (textForMapSearch && textForMapSearch !== '') {
+      ballotCaveat = `Saving new address '${textForMapSearch}'...`;
+    }
+    BallotActions.setBallotCaveat(ballotCaveat);
+    VoterActions.clearVoterElectionId();
     VoterActions.voterAddressSave(textForMapSearch);
     BallotActions.completionLevelFilterTypeSave('filterAllBallotItems');
     Cookies.set('location_guess_closed', '1', { expires: 31, path: '/' });
@@ -135,6 +138,7 @@ class AddressBox extends Component {
       voterSavedAddress: true,
     });
     // New June 2021, once they save we want to go back to the original view with the map
+    this.returnNewTextForMapSearchLocal(textForMapSearch);
     const { toggleEditingAddress } = this.props;
     if (toggleEditingAddress) {
       toggleEditingAddress();
@@ -149,14 +153,13 @@ class AddressBox extends Component {
     let { waitingMessage } = this.props;
     const { classes, externalUniqueId, showCancelEditAddressButton, toggleEditingAddress } = this.props;
 
-    const paperstyles = {
-      padding: '2px .7rem',
-      display: 'flex',
-      alignItems: 'center',
-      width: '100%',
-      marginBottom: '1rem',
-    };
-
+    // const addressBoxPaperStyles = {
+    //   padding: '2px .7rem',
+    //   display: 'flex',
+    //   alignItems: 'center',
+    //   width: '100%',
+    //   marginBottom: '1rem',
+    // };
 
     const { ballotCaveat, loading } = this.state;
     if (loading) {
@@ -172,8 +175,13 @@ class AddressBox extends Component {
 
     return (
       <div className="container">
-        <form onSubmit={this.voterAddressSaveSubmit} className="row">
-          <GoogleAutoComplete paperstyles={paperstyles} updateVoterAddress={this.updateVoterAddress} id="entryBox" />
+        <div className="row">
+          <GoogleAutoComplete
+            id="entryBox"
+            // paperstyles={addressBoxPaperStyles}
+            updateTextForMapSearchInParent={this.updateTextForMapSearch}
+            updateTextForMapSearchInParentFromGoogle={this.updateTextForMapSearchFromGoogle}
+          />
           {showCancelEditAddressButton ? (
             <Button
               color="primary"
@@ -195,7 +203,7 @@ class AddressBox extends Component {
           >
             Save
           </Button>
-        </form>
+        </div>
         <p />
         <h4>{ballotCaveat}</h4>
       </div>
@@ -205,6 +213,7 @@ class AddressBox extends Component {
 AddressBox.propTypes = {
   classes: PropTypes.object,
   externalUniqueId: PropTypes.string,
+  returnNewTextForMapSearch: PropTypes.func,
   saveUrl: PropTypes.string.isRequired,
   showCancelEditAddressButton: PropTypes.bool,
   toggleEditingAddress: PropTypes.func,

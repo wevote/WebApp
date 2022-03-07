@@ -33,6 +33,10 @@ export default {
     });
   },
 
+  setBallotCaveat (newBallotCaveat) {
+    Dispatcher.dispatch({ type: 'setBallotCaveat', payload: newBallotCaveat });
+  },
+
   completionLevelFilterTypeSave (completionLevelFilterType = '') {
     Dispatcher.dispatch({
       type: 'completionLevelFilterTypeSave',

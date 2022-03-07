@@ -21,6 +21,7 @@ import { isWebApp } from '../../common/utils/isCordovaOrWebApp';
 import historyPush from '../../common/utils/historyPush';
 import { renderLog } from '../../common/utils/logging';
 import apiCalming from '../../common/utils/apiCalming';
+import isMobileScreenSize from '../../common/utils/isMobileScreenSize';
 import { isSpeakerTypePrivateCitizen } from '../../utils/organization-functions';
 import { PageContentContainer } from '../../components/Style/pageLayoutStyles';
 
@@ -342,22 +343,22 @@ export default class OrganizationVoterGuide extends Component {
               </BannerOverlayDesktopShareButtonWrapper>
               <BannerContainerDesktop ipad={isIPad()}>
                 { organizationBannerUrl !== '' ? (
-                  <div className="organization-banner-image-div d-print-none">
-                    <img alt="Organization Banner Image" className="organization-banner-image-img" src={organizationBannerUrl} aria-hidden="true" />
-                  </div>
+                  <OrganizationBannerImageDiv className="d-print-none">
+                    <OrganizationBannerImageImg alt="Organization Banner Image" src={organizationBannerUrl} aria-hidden="true" />
+                  </OrganizationBannerImageDiv>
                 ) :
-                  <OrganizationEmptyBannerImage />}
+                  <OrganizationEmptyBannerImageDesktop />}
               </BannerContainerDesktop>
             </BannerOverlayDesktopInnerWrapper>
           </BannerOverlayDesktopOuterWrapper>
           {/* Header Banner Spacing for Mobile */}
           <div className="d-block d-sm-none d-print-none">
             { organizationBannerUrl !== '' ? (
-              <div className="organization-banner-image-div d-print-none">
-                <img alt="Organization Banner Image" className="organization-banner-image-img" src={organizationBannerUrl} aria-hidden="true" />
-              </div>
+              <OrganizationBannerImageDiv className="d-print-none">
+                <OrganizationBannerImageImg alt="Organization Banner Image" src={organizationBannerUrl} aria-hidden="true" />
+              </OrganizationBannerImageDiv>
             ) :
-              <div className="organization-banner-image-non-twitter-users" />}
+              <OrganizationEmptyBannerImageMobile />}
           </div>
           <div className="u-show-mobile">
             <div className="col-12">
@@ -441,7 +442,7 @@ export default class OrganizationVoterGuide extends Component {
           </div>
           <div className="container-fluid">
             <div className="row">
-              <div className="u-show-desktop-tablet col-4">
+              <DesktopLeftColumn className="u-show-desktop-tablet col-4">
                 <CardContainer bannerUrl={organizationBannerUrl}>
                   <div className="card">
                     <div className="card-main">
@@ -450,9 +451,11 @@ export default class OrganizationVoterGuide extends Component {
                     <br />
                   </div>
                 </CardContainer>
-              </div>
+              </DesktopLeftColumn>
 
-              <div className="col-12 col-sm-8">
+              <div className={isMobileScreenSize() ? 'col-12' : 'col-12 col-sm-8'}>
+                {/* Using isMobileScreenSize is not ideal, but 'col-12 col-sm-8' is not working as expected. */}
+                {/* <div style={{ height: 45, width: '100%', backgroundColor: 'red' }}>Proof that the problem that this div shows only 8 columns wide in mobile isn&apos;t something in a subcomponent.&nbsp;</div> */}
                 <OrganizationVoterGuideTabs
                   activeRoute={activeRoute}
                   activeRouteChanged={this.changeActiveRoute}
@@ -535,6 +538,11 @@ const CardContainer = styled.div`
   }
 `;
 
+const DesktopLeftColumn = styled.div`
+  padding-left: 0px !important;
+  padding-right: 0px !important;
+`;
+
 const EditYourEndorsementsWrapper = styled.div`
   margin-top: 4px;
 `;
@@ -554,9 +562,32 @@ const FriendToggleMobileWrapper = styled.div`
   margin-top: 4px;
 `;
 
-const OrganizationEmptyBannerImage = styled.div`
+const OrganizationEmptyBannerImageDesktop = styled.div`
   height: 29px;
   display: block;
+`;
+
+const OrganizationEmptyBannerImageMobile = styled.div`
+  height: 47px;
+  background-color: #999;
+  display: block;
+`;
+
+const OrganizationBannerImageDiv = styled.div`
+  min-height: 200px;
+  max-height: 300px;
+  overflow: hidden;
+  @media (max-width: 767px) {
+    max-height: 200px;
+    min-height: 0;
+  }
+  @media (min-width: 768px) and (max-width: 959px) {
+    min-height: 0;
+  }
+`;
+
+const OrganizationBannerImageImg = styled.img`
+  width: 100%;
 `;
 
 const TabNumber = styled.span`

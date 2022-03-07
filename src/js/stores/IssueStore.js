@@ -678,6 +678,7 @@ class IssueStore extends ReduceStore {
           issueScoreForEachBallotItem,
         };
 
+      case 'voterAddressSave':
       case 'voterBallotItemsRetrieve':
         // When a new ballot is retrieved, update the Issues so that we get the summary of issues related to each ballot item
         if (action.res.google_civic_election_id && action.res.google_civic_election_id > 0) {
