@@ -1,4 +1,5 @@
 import { Button } from '@material-ui/core';
+import { withStyles } from '@material-ui/core/styles';
 import { Twitter } from '@material-ui/icons';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
@@ -7,7 +8,7 @@ import styled from 'styled-components';
 import historyPush from '../../common/utils/historyPush';
 import { renderLog } from '../../common/utils/logging';
 import { isSpeakerTypePrivateCitizen } from '../../utils/organization-functions';
-import { numberWithCommas, removeTwitterNameFromDescription } from '../../utils/textFormat';
+import { abbreviateNumber, removeTwitterNameFromDescription } from '../../utils/textFormat';
 import FriendToggle from '../Friends/FriendToggle';
 import LoadingWheel from '../../common/components/Widgets/LoadingWheel';
 import ParsedTwitterDescription from '../Twitter/ParsedTwitterDescription';
@@ -37,7 +38,7 @@ class OrganizationVoterGuideCard extends Component {
       return <div>{LoadingWheel}</div>;
     }
     // console.log('this.props.organization:', this.props.organization);
-    const { isVoterOwner } = this.props;
+    const { classes, isVoterOwner } = this.props;
     const {
       organization_name: organizationName,
       organization_photo_url_large: organizationPhotoUrlLarge,
@@ -79,15 +80,15 @@ class OrganizationVoterGuideCard extends Component {
               target="_blank"
               body={(
                 <TwitterName>
+                  <Twitter classes={{ root: classes.twitterLogo }} />
                   <TwitterHandleWrapper>
                     @
                     {organizationTwitterHandle}
                   </TwitterHandleWrapper>
                   { !!(twitterFollowersCount && String(twitterFollowersCount) !== '0') && (
-                    <span className="twitter-followers__badge">
-                      <Twitter />
-                      {numberWithCommas(twitterFollowersCount)}
-                    </span>
+                    <TwitterFollowersWrapper>
+                      {abbreviateNumber(twitterFollowersCount)}
+                    </TwitterFollowersWrapper>
                   )}
                 </TwitterName>
               )}
@@ -170,10 +171,25 @@ class OrganizationVoterGuideCard extends Component {
   }
 }
 OrganizationVoterGuideCard.propTypes = {
+  classes: PropTypes.object,
   organization: PropTypes.object.isRequired,
   isVoterOwner: PropTypes.bool,
   turnOffDescription: PropTypes.bool,
 };
+
+const styles = () => ({
+  externalLinkIcon: {
+    color: '#999',
+    height: 14,
+    marginTop: '-3px',
+  },
+  twitterLogo: {
+    color: '#1d9bf0',
+    height: 18,
+    marginRight: '-2px',
+    marginTop: '-4px',
+  },
+});
 
 const CardMain = styled.div`
   border: 1px solid #fff;
@@ -221,11 +237,16 @@ const TwitterDescription = styled.div`
   margin-top: 10px;
 `;
 
+const TwitterFollowersWrapper = styled.span`
+  color: #000;
+`;
+
 const TwitterHandleWrapper = styled.span`
-  margin-right: 10px;
+  color: #000;
+  margin-right: 5px;
 `;
 
 const TwitterName = styled.div`
 `;
 
-export default OrganizationVoterGuideCard;
+export default withStyles(styles)(OrganizationVoterGuideCard);

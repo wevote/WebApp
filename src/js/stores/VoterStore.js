@@ -405,6 +405,9 @@ class VoterStore extends ReduceStore {
       case 'clearSMSPhoneNumberStatus':
         // console.log('VoterStore clearSMSPhoneNumberStatus');
         return { ...state, smsPhoneNumberStatus: {} };
+      case 'clearVoterElectionId':
+        // console.log('VoterStore clearVoterElectionId');
+        return { ...state, latestGoogleCivicElectionId: 0 };
       case 'organizationSave':
         // console.log('VoterStore organizationSave');
         // If an organization saves, we want to check to see if it is tied to this voter. If so,
@@ -531,10 +534,17 @@ class VoterStore extends ReduceStore {
 
       case 'voterAddressSave':
         // console.log('VoterStore, voterAddressSave, action.res:', action.res);
+        revisedState = state;
         if (action.res.status === 'SIMPLE_ADDRESS_SAVE') {
           // Don't do any other refreshing
         } else {
-          BallotActions.voterBallotItemsRetrieve();
+          // BallotActions.voterBallotItemsRetrieve();
+          googleCivicElectionId = action.res.google_civic_election_id || 0;
+          if (googleCivicElectionId !== 0) {
+            revisedState = { ...revisedState,
+              latestGoogleCivicElectionId: googleCivicElectionId,
+            };
+          }
         }
         ({ address } = action.res);
         if (!address) {
@@ -549,7 +559,7 @@ class VoterStore extends ReduceStore {
         }
 
         return {
-          ...state,
+          ...revisedState,
           address: {
             text_for_map_search: address.text_for_map_search,
             google_civic_election_id: address.google_civic_election_id,

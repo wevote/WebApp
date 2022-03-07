@@ -1222,11 +1222,9 @@ class Ballot extends Component {
             </>
           ) : (
             <>
-              Your next ballot isn&apos;t available yet.
+              Your next ballot isn&apos;t available yet. Please try again later.
             </>
           )}
-          {' '}
-          Please try again later.
         </EmptyBallotCard>
       </EmptyBallotNotice>
     ) : (
@@ -1419,9 +1417,20 @@ class Ballot extends Component {
           <PageContentContainer>
             <div className="container-fluid">
               <Wrapper padBottom={padBallotWindowBottomForCordova} id="ballotWrapper">
-                {emptyBallot}
                 {/* eslint-disable-next-line no-nested-ternary */}
                 <div className={showBallotDecisionsTabs() ? 'row ballot__body' : isWebApp() || twoColumnDisplay ? 'row ballot__body__no-decision-tabs' : undefined}>
+                  <div className="col-sm-12 col-lg-12">
+                    {(showAddressVerificationForm && (voterBallotItemsRetrieveHasReturned || !voterBallotItemsRetrieveHasBeenCalled)) && (
+                      <EditAddressWrapper>
+                        <EditAddressCard className="card">
+                          {enableEditAddressOneHorizontalRow && (
+                            <EditAddressOneHorizontalRow saveUrl="/ballot" onSave={this.onVoterAddressSave} />
+                          )}
+                        </EditAddressCard>
+                      </EditAddressWrapper>
+                    )}
+                    {emptyBallot}
+                  </div>
                   {ballotWithItemsFromCompletionFilterType.length > 0 ? (
                     <BallotStatusMessage
                       ballotLocationChosen
@@ -1435,15 +1444,6 @@ class Ballot extends Component {
                         {searchText}
                         &quot;
                       </SearchTitle>
-                    )}
-                    {(showAddressVerificationForm && (voterBallotItemsRetrieveHasReturned || !voterBallotItemsRetrieveHasBeenCalled)) && (
-                      <EditAddressWrapper>
-                        <EditAddressCard className="card">
-                          {enableEditAddressOneHorizontalRow && (
-                            <EditAddressOneHorizontalRow saveUrl="/ballot" onSave={this.onVoterAddressSave} />
-                          )}
-                        </EditAddressCard>
-                      </EditAddressWrapper>
                     )}
                     {/* <span className="u-show-desktop-tablet"> */}
                     {/*  <CompleteYourProfile /> */}
@@ -1677,7 +1677,6 @@ const LoadingItemsWheel = styled.div`
 `;
 
 const LoadingWrapper = styled.div`
-  margin-top: 60px;
 `;
 
 const ShowMoreItemsWrapper = styled.div`

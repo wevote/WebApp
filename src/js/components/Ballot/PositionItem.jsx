@@ -16,7 +16,7 @@ import normalizedImagePath from '../../common/utils/normalizedImagePath';
 import { renderLog } from '../../common/utils/logging';
 import { isSpeakerTypeIndividual, isSpeakerTypeOrganization } from '../../utils/organization-functions';
 import { isOrganizationInVotersNetwork } from '../../utils/positionFunctions';
-import { numberWithCommas } from '../../utils/textFormat';
+import { abbreviateNumber } from '../../utils/textFormat';
 import OrganizationPopoverCard from '../Organization/OrganizationPopoverCard';
 import IssuesByOrganizationDisplayList from '../Values/IssuesByOrganizationDisplayList';
 import ExternalLinkIcon from '../../common/components/Widgets/ExternalLinkIcon';
@@ -64,74 +64,6 @@ class PositionItem extends Component {
       }
     }
   }
-
-  // Jan 23, 2021: This was blocking updates that we needed, commented out for now
-  // shouldComponentUpdate (nextProps, nextState) {
-  //   if (this.props.ballotItemDisplayName !== nextProps.ballotItemDisplayName) {
-  //     // console.log('this.props.ballotItemDisplayName: ', this.props.ballotItemDisplayName, ', nextProps.ballotItemDisplayName', nextProps.ballotItemDisplayName);
-  //     return true;
-  //   }
-  //   if (this.props.searchResultsNode !== nextProps.searchResultsNode) {
-  //     // console.log('this.props.searchResultsNode: ', this.props.searchResultsNode, ', nextProps.searchResultsNode', nextProps.searchResultsNode);
-  //     return true;
-  //   }
-  //   if (this.state.componentDidMount !== nextState.componentDidMount) {
-  //     // console.log('this.state.componentDidMount: ', this.state.componentDidMount, ', nextState.componentDidMount', nextState.componentDidMount);
-  //     return true;
-  //   }
-  //   if (this.state.organizationInVotersNetwork !== nextState.organizationInVotersNetwork) {
-  //     // console.log('this.state.organizationInVotersNetwork: ', this.state.organizationInVotersNetwork, ', nextState.organizationInVotersNetwork', nextState.organizationInVotersNetwork);
-  //     return true;
-  //   }
-  //   if (this.state.voterIsFriendsWithThisOrganization !== nextState.voterIsFriendsWithThisOrganization) {
-  //     // console.log('this.state.voterIsFriendsWithThisOrganization: ', this.state.voterIsFriendsWithThisOrganization, ', nextState.voterIsFriendsWithThisOrganization', nextState.voterIsFriendsWithThisOrganization);
-  //     return true;
-  //   }
-  //   const { position: priorPosition } = this.props;
-  //   const { position: nextPosition } = nextProps;
-  //   if (priorPosition.speaker_we_vote_id !== nextPosition.speaker_we_vote_id) {
-  //     // console.log('priorPosition.speaker_we_vote_id: ', priorPosition.speaker_we_vote_id, ', nextPosition.speaker_we_vote_id:', nextPosition.speaker_we_vote_id);
-  //     return true;
-  //   }
-  //   // if (priorPosition.organization_we_vote_id !== nextPosition.organization_we_vote_id) {
-  //   //   console.log('priorPosition.organization_we_vote_id: ', priorPosition.organization_we_vote_id, ', nextPosition.organization_we_vote_id:', nextPosition.organization_we_vote_id);
-  //   //   return true;
-  //   // }
-  //   if (priorPosition.statement_text !== nextPosition.statement_text) {
-  //     // console.log('priorPosition.statement_text: ', priorPosition.statement_text, ', nextPosition.statement_text:', nextPosition.statement_text);
-  //     return true;
-  //   }
-  //   if (priorPosition.speaker_twitter_handle !== nextPosition.speaker_twitter_handle) {
-  //     // console.log('priorPosition.speaker_twitter_handle: ', priorPosition.speaker_twitter_handle, ', nextPosition.speaker_twitter_handle:', nextPosition.speaker_twitter_handle);
-  //     return true;
-  //   }
-  //   if (priorPosition.is_information_only !== nextPosition.is_information_only) {
-  //     // console.log('priorPosition.is_information_only: ', priorPosition.is_information_only, ', nextPosition.is_information_only:', nextPosition.is_information_only);
-  //     return true;
-  //   }
-  //   if (priorPosition.is_oppose !== nextPosition.is_oppose) {
-  //     // console.log('priorPosition.is_oppose: ', priorPosition.is_oppose, ', nextPosition.is_oppose:', nextPosition.is_oppose);
-  //     return true;
-  //   }
-  //   if (priorPosition.is_support !== nextPosition.is_support) {
-  //     // console.log('priorPosition.is_oppose: ', priorPosition.is_oppose, ', nextPosition.is_oppose:', nextPosition.is_oppose);
-  //     return true;
-  //   }
-  //   let priorPositionFollowed = false;
-  //   let nextPositionFollowed = false;
-  //   if (priorPosition.followed !== undefined) {
-  //     priorPositionFollowed = priorPosition.followed;
-  //   }
-  //   if (nextPosition.followed !== undefined) {
-  //     nextPositionFollowed = nextPosition.followed;
-  //   }
-  //   if (priorPositionFollowed !== nextPositionFollowed) {
-  //     // console.log('priorPositionFollowed: ', priorPositionFollowed, ', nextPositionFollowed:', nextPositionFollowed);
-  //     return true;
-  //   }
-  //   // console.log('PositionItem shouldComponentUpdate return FALSE');
-  //   return false;
-  // }
 
   componentWillUnmount () {
     this.friendStoreListener.remove();
@@ -519,8 +451,14 @@ class PositionItem extends Component {
                       <DesktopItemTwitterContainer>
                         { !!(position.twitter_followers_count && String(position.twitter_followers_count) !== '0') && (
                           <DesktopItemTwitter>
-                            <Twitter />
-                            {numberWithCommas(position.twitter_followers_count)}
+                            <Twitter classes={{ root: classes.twitterLogo }} />
+                            <TwitterHandleWrapper>
+                              @
+                              {position.speaker_twitter_handle}
+                            </TwitterHandleWrapper>
+                            <TwitterFollowersWrapper>
+                              {abbreviateNumber(position.twitter_followers_count)}
+                            </TwitterFollowersWrapper>
                           </DesktopItemTwitter>
                         )}
                       </DesktopItemTwitterContainer>
@@ -738,6 +676,12 @@ const styles = (theme) => ({
   buttonOutlinedPrimary: {
     background: 'white',
   },
+  twitterLogo: {
+    color: '#1d9bf0',
+    height: 18,
+    marginRight: '-2px',
+    marginTop: '-4px',
+  },
 });
 
 const DesktopContainer = styled.div`
@@ -814,9 +758,8 @@ const DesktopItemNameIssueContainer = styled.div`
 `;
 
 const DesktopItemTwitter = styled.div`
-  color: #999;
   display: inline-block;
-  font-size: 12px;
+  font-size: 13px;
   padding-left: 10px;
   white-space: nowrap;
 `;
@@ -1098,11 +1041,13 @@ const ToScoreLabel = styled.div`
   ${({ advisorImageExists }) => (advisorImageExists ? 'margin-top: -23px;' : 'margin-top: -20px;')}
 `;
 
-// const TwitterIcon = styled.span`
-//   font-size: 16px;
-//   color: #ccc;
-//   margin-right: 2px;
-//   vertical-align: bottom;
-// `;
+const TwitterFollowersWrapper = styled.span`
+  color: #000;
+`;
+
+const TwitterHandleWrapper = styled.span`
+  color: #000;
+  margin-right: 5px;
+`;
 
 export default withTheme(withStyles(styles)(PositionItem));

@@ -639,11 +639,11 @@ small, .small {
 /*  max-width: 16.666667%;*/
 /*}*/
 
-/*.col-3 {*/
-/*  -ms-flex: 0 0 25%;*/
-/*  flex: 0 0 25%;*/
-/*  max-width: 25%;*/
-/*}*/
+.col-3 {
+  -ms-flex: 0 0 25%;
+  flex: 0 0 25%;
+  max-width: 25%;
+}
 
 .col-4 {
   /*-ms-flex: 0 0 33.333333%;*/
@@ -669,17 +669,17 @@ small, .small {
 /*  max-width: 58.333333%;*/
 /*}*/
 
-/*.col-8 {*/
-/*  -ms-flex: 0 0 66.666667%;*/
-/*  flex: 0 0 66.666667%;*/
-/*  max-width: 66.666667%;*/
-/*}*/
+.col-8 {
+  -ms-flex: 0 0 66.666667%;
+  flex: 0 0 66.666667%;
+  max-width: 66.666667%;
+}
 
-/*.col-9 {*/
-/*  -ms-flex: 0 0 75%;*/
-/*  flex: 0 0 75%;*/
-/*  max-width: 75%;*/
-/*}*/
+.col-9 {
+  -ms-flex: 0 0 75%;
+  flex: 0 0 75%;
+  max-width: 75%;
+}
 
 /*.col-10 {*/
 /*  -ms-flex: 0 0 83.333333%;*/
@@ -876,11 +876,11 @@ small, .small {
 /*    max-width: 8.333333%;*/
 /*  }*/
 
-/*  .col-sm-2 {*/
-/*    -ms-flex: 0 0 16.666667%;*/
-/*    flex: 0 0 16.666667%;*/
-/*    max-width: 16.666667%;*/
-/*  }*/
+  .col-sm-2 {
+    -ms-flex: 0 0 16.666667%;
+    flex: 0 0 16.666667%;
+    max-width: 16.666667%;
+  }
 
 /*  .col-sm-3 {*/
 /*    -ms-flex: 0 0 25%;*/
@@ -12144,13 +12144,11 @@ h1, h2, h3, h4, h5, h6 {
 /*  }*/
 /*}*/
 
-/*.twitter-followers__badge {*/
-/*  color: #999;*/
-/*  display: inline-block;*/
-/*  line-height: 1.25rem;*/
-/*  padding: 4px 0;*/
-/*  white-space: nowrap;*/
-/*}*/
+.twitter-followers__badge {
+  color: #1d9bf0;
+  display: inline-block;
+  white-space: nowrap;
+}
 
 .twitter-followers__icon {
   font-size: 1.25rem;

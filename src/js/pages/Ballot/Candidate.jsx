@@ -371,7 +371,6 @@ class Candidate extends Component {
           kindOfOwner="POLITICIAN"
           nameBeingViewed={candidate.ballot_item_display_name}
           twitterHandleBeingViewed={candidate.twitter_handle}
-          whiteOnBlue
         />
         <br />
         {/* Show links to this candidate in the admin tools */}

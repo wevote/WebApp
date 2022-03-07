@@ -16,6 +16,10 @@ export default {
     Dispatcher.dispatch({ type: 'clearSMSPhoneNumberStatus', payload: true });
   },
 
+  clearVoterElectionId () {
+    Dispatcher.dispatch({ type: 'clearVoterElectionId', payload: true });
+  },
+
   organizationSuggestionTasks (kindOfSuggestionTask, kindOfFollowTask) {
     Dispatcher.loadEndpoint('organizationSuggestionTasks',
       {
@@ -125,6 +129,7 @@ export default {
   },
 
   voterAddressSave (text, simple_save = false, google_civic_election_id = 0) {
+    // console.log('VoterActions voterAddressSave, text:', text);
     Dispatcher.loadEndpoint('voterAddressSave', { text_for_map_search: text, simple_save, google_civic_election_id });
   },
 

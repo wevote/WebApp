@@ -508,6 +508,9 @@ class BallotStore extends ReduceStore {
           ballotItemSearchResultsList: action.res.ballot_item_list,
         };
 
+      case 'setBallotCaveat':
+        return { ...state, ballotCaveat: action.payload };
+
       case 'positionListForBallotItem':
         // console.log('BallotStore, positionListForBallotItem response received.');
         // Exit if we don't have a successful response

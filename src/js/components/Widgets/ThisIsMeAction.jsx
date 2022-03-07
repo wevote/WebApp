@@ -1,4 +1,5 @@
 import { Twitter } from '@material-ui/icons';
+import { withStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
@@ -34,7 +35,7 @@ class ThisIsMeAction extends Component {
       // We do not want to show the "This is me" link if there isn't a twitter_handle associated with this organization
       return <span />;
     }
-    const { kindOfOwner, nameBeingViewed, whiteOnBlue } = this.props;
+    const { classes, kindOfOwner, nameBeingViewed, whiteOnBlue } = this.props;
     // Manage the control over this organization voter guide
     const { voter } = this.state;
     const signedInTwitter = voter === undefined ? false : voter.signed_in_twitter;
@@ -58,13 +59,13 @@ class ThisIsMeAction extends Component {
     } else {
       thisIsMeActionText = 'Is this you, or do you work here?';
     }
-    let backgroundColor = '';
-    let fontColor = '';
-    let icon = <Twitter />;
+    let backgroundColor = '#fff';
+    let fontColor = '#2e3c5d';
+    let icon = <Twitter classes={{ root: classes.twitterLogo }} />;
     if (whiteOnBlue) {
-      backgroundColor = '#fff';
-      fontColor = '#2e3c5d';
-      icon = <Twitter />;
+      backgroundColor = '#2e3c5d';
+      fontColor = '#fff';
+      icon = <Twitter classes={{ root: classes.twitterLogoWhite }} />;
     }
 
     return (
@@ -97,14 +98,24 @@ class ThisIsMeAction extends Component {
   }
 }
 ThisIsMeAction.propTypes = {
+  classes: PropTypes.object,
   kindOfOwner: PropTypes.string,
   nameBeingViewed: PropTypes.string,
   twitterHandleBeingViewed: PropTypes.string,
   whiteOnBlue: PropTypes.bool,
 };
 
+const styles = () => ({
+  twitterLogo: {
+    color: '#1d9bf0',
+  },
+  twitterLogoWhite: {
+    color: '#fff',
+  },
+});
+
 const Container = styled.div`
   padding: 16px;
 `;
 
-export default ThisIsMeAction;
+export default withStyles(styles)(ThisIsMeAction);

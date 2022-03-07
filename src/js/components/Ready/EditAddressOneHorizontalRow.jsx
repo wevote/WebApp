@@ -9,6 +9,7 @@ import { isIPhoneMiniOrSmaller, restoreStylesAfterCordovaKeyboard } from '../../
 import historyPush from '../../common/utils/historyPush';
 import Cookies from '../../common/utils/js-cookie/Cookies';
 import { renderLog } from '../../common/utils/logging';
+import AppObservableStore from '../../stores/AppObservableStore';
 import BallotStore from '../../stores/BallotStore';
 import VoterStore from '../../stores/VoterStore';
 import isMobile from '../../utils/isMobile';
@@ -23,14 +24,11 @@ class EditAddressOneHorizontalRow extends Component {
       textForMapSearch: '',
       voterSavedAddress: false,
     };
-    this.updateVoterAddress = this.updateVoterAddress.bind(this);
-    this.voterAddressSaveLocal = this.voterAddressSaveLocal.bind(this);
-    this.voterAddressSaveSubmit = this.voterAddressSaveSubmit.bind(this);
   }
 
 
   componentDidMount () {
-    // console.log("In EditAddressOneHorizontalRow componentDidMount");
+    // console.log('In EditAddressOneHorizontalRow componentDidMount');
     this.setState({
       textForMapSearch: VoterStore.getTextForMapSearch(),
     });
@@ -56,14 +54,13 @@ class EditAddressOneHorizontalRow extends Component {
   }
 
   onBallotStoreChange () {
-    // console.log('EditAddressOneHorizontalRow, onBallotStoreChange, this.state:', this.state);
     const { saveUrl } = this.props;
     const { textForMapSearch, voterSavedAddress } = this.state;
     // console.log('onBallotStoreChange, state.voterSavedAddress:', voterSavedAddress, ', VoterStore.getTextForMapSearch():', VoterStore.getTextForMapSearch())
     const { pathname } = window.location;
     if (saveUrl && saveUrl !== '' && pathname !== saveUrl && textForMapSearch && voterSavedAddress) {
       historyPush(saveUrl);
-    } else {
+    } else if (VoterStore.getTextForMapSearch() !== '') {
       this.setState({
         textForMapSearch: VoterStore.getTextForMapSearch(),
       });
@@ -77,7 +74,7 @@ class EditAddressOneHorizontalRow extends Component {
     const { pathname } = window.location;
     if (saveUrl && saveUrl !== '' && pathname !== saveUrl && textForMapSearch && voterSavedAddress) {
       historyPush(saveUrl);
-    } else {
+    } else if (VoterStore.getTextForMapSearch() !== '') {
       this.setState({
         textForMapSearch: VoterStore.getTextForMapSearch(),
       });
@@ -91,27 +88,31 @@ class EditAddressOneHorizontalRow extends Component {
     });
   }
 
-  updateVoterAddress (placeResult) {
-    const { formatted_address: address } = placeResult;
-    console.log('updateVoterAddress, placeResult address:', address);
-    this.setState({ textForMapSearch: address });
+  updateTextForMapSearch = (textForMapSearch) => {
+    // console.log('EditAddressHorizontalRow updateTextForMapSearch textForMapSearch:', textForMapSearch);
+    this.setState({ textForMapSearch });
   }
 
-  voterAddressSaveLocal (event) {
-    // console.log('CALLING-VoterActions.voterAddressSave, event.target.value:', event.target.value);
+  updateTextForMapSearchFromGoogle = (textForMapSearch) => {
+    // console.log('EditAddressHorizontalRow updateTextForMapSearchFromGoogle, textForMapSearch:', textForMapSearch);
+    if (textForMapSearch) {
+      this.setState({ textForMapSearch });
+    }
+  }
+
+  voterAddressSaveSubmit = (event) => {
     event.preventDefault();
-    VoterActions.voterAddressSave(event.target.value);
-    Cookies.set('location_guess_closed', '1', { expires: 31, path: '/' });
-    this.setState({
-      textForMapSearch: event.target.value,
-      voterSavedAddress: true,
-    });
-  }
-
-  voterAddressSaveSubmit () {
     const { textForMapSearch } = this.state;
+    // console.log('EditAddressOneHorizontalRow voterAddressSaveSubmit textForMapSearch:', textForMapSearch);
+    let ballotCaveat = 'Saving new address...';
+    if (textForMapSearch && textForMapSearch !== '') {
+      ballotCaveat = `Saving new address '${textForMapSearch}'...`;
+    }
+    BallotActions.setBallotCaveat(ballotCaveat);
+    VoterActions.clearVoterElectionId();
     VoterActions.voterAddressSave(textForMapSearch);
     BallotActions.completionLevelFilterTypeSave('filterAllBallotItems');
+    AppObservableStore.voterBallotItemsRetrieveHasBeenCalled(true);
     Cookies.set('location_guess_closed', '1', { expires: 31, path: '/' });
     this.setState({
       voterSavedAddress: true,
@@ -122,17 +123,17 @@ class EditAddressOneHorizontalRow extends Component {
 
   render () {
     renderLog('EditAddressOneHorizontalRow');  // Set LOG_RENDER_EVENTS to log all renders
-    // console.log('EditAddressOneHorizontalrow render');
     const { classes } = this.props;
     const { showAddressExplanation, textForMapSearch } = this.state; // voterSavedAddress
+    // console.log('EditAddressOneHorizontalrow render textForMapSearch:', textForMapSearch);
 
-    const paperstyles = {
-      padding: '2px .7rem',
-      display: 'flex',
-      alignItems: 'center',
-      width: '100%',
-      minWidth: '250px',
-    };
+    // const addressBoxPaperStyles = {
+    //   padding: '2px .7rem',
+    //   display: 'flex',
+    //   alignItems: 'center',
+    //   width: '100%',
+    //   minWidth: '350px',
+    // };
 
     return (
       <OuterWrapper id="EditAddressOneHorizontalRow">
@@ -162,12 +163,13 @@ class EditAddressOneHorizontalRow extends Component {
             </span>
             &nbsp;
           </AddressLabel>
-          <SubmitFormWrapper onSubmit={this.voterAddressSaveSubmit}>
+          <SubmitFormWrapper>
             <InternalFormWrapper>
               <GoogleAutoComplete
-                updateVoterAddress={this.updateVoterAddress}
-                paperstyles={paperstyles}
                 id="oneHorizRow"
+                // paperstyles={addressBoxPaperStyles}
+                updateTextForMapSearchInParent={this.updateTextForMapSearch}
+                updateTextForMapSearchInParentFromGoogle={this.updateTextForMapSearchFromGoogle}
               />
               <ButtonWrapper>
                 <Button
@@ -298,15 +300,7 @@ const styles = (theme) => ({
     },
     [theme.breakpoints.up('sm')]: {
       marginLeft: 8,
-    },
-  },
-  inputBase: {
-    flex: 1,
-    [theme.breakpoints.up('sm')]: {
-      width: 210,
-    },
-    [theme.breakpoints.up('md')]: {
-      width: 250,
+      width: 150,
     },
   },
 });

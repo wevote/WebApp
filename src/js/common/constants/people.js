@@ -447,6 +447,9 @@ export const teamOfVolunteers = [{
   name: 'Aaron Travis',
   title: 'New York, NY',
 }, {
+  name: 'Jehan Azad',
+  title: 'Greenville, SC',
+}, {
   name: 'Eric Ogawa',
   title: 'San Francisco, CA',
 }, {

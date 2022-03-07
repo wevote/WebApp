@@ -1,4 +1,5 @@
 import { Twitter } from '@material-ui/icons';
+import { withStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 import React, { PureComponent, Suspense } from 'react';
 import styled from 'styled-components';
@@ -30,7 +31,7 @@ class EndorsementCard extends PureComponent {
   }
 
   render () {
-    const { organizationWeVoteId, whiteOnBlue } = this.props;
+    const { classes, organizationWeVoteId, whiteOnBlue } = this.props;
     const { voter } = this.state;
     if (!voter) {
       return null;
@@ -50,7 +51,7 @@ class EndorsementCard extends PureComponent {
     if (whiteOnBlue) {
       backgroundColor = '#fff';
       fontColor = '#2e3c5d';
-      icon = <Twitter />;
+      icon = <Twitter classes={{ root: classes.twitterLogo }} />;
     }
     return (
       <div>
@@ -89,14 +90,21 @@ class EndorsementCard extends PureComponent {
 }
 EndorsementCard.propTypes = {
   buttonText: PropTypes.string,
+  classes: PropTypes.object,
   organizationWeVoteId: PropTypes.string,
   title: PropTypes.string,
   text: PropTypes.string,
   whiteOnBlue: PropTypes.bool,
 };
 
+const styles = () => ({
+  twitterLogo: {
+    color: '#1d9bf0',
+  },
+});
+
 const Container = styled.div`
   padding: 16px;
 `;
 
-export default EndorsementCard;
+export default withStyles(styles)(EndorsementCard);

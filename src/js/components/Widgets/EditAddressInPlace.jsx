@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
 import styled from 'styled-components';
 import { renderLog } from '../../common/utils/logging';
+import BallotStore from '../../stores/BallotStore';
 import VoterStore from '../../stores/VoterStore';
 import { calculateBallotBaseUrl, shortenText } from '../../utils/textFormat';
 import AddressBox from '../AddressBox';
@@ -15,23 +16,44 @@ class EditAddressInPlace extends Component {
     super(props, context);
     this.state = {
       editingAddress: false,
+      textForMapSearch: '',
     };
   }
 
   componentDidMount () {
     // console.log('EditAddressInPlace componentDidMount');
+    this.ballotStoreListener = BallotStore.addListener(this.onBallotStoreChange.bind(this));
+    this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
+    this.onBallotStoreChange();
+    this.onVoterStoreChange();
     const { defaultIsEditingAddress } = this.props;
     this.setState({
       editingAddress: defaultIsEditingAddress,
     });
   }
 
-  getAddressFromVoterStore () {
+  componentWillUnmount () {
+    this.ballotStoreListener.remove();
+    this.voterStoreListener.remove();
+  }
+
+  onBallotStoreChange () {
+    // console.log('AddressBox, onBallotStoreChange, this.state:', this.state);
+    this.setState({
+      ballotCaveat: BallotStore.getBallotCaveat(),
+    });
+  }
+
+  onVoterStoreChange () {
+    // console.log('EditAddressInPlace onVoterStoreChange');
     const voterAddressObject = VoterStore.getAddressObject();
+    let textForMapSearch = '';
     if (voterAddressObject && voterAddressObject.text_for_map_search) {
-      return voterAddressObject.text_for_map_search;
+      textForMapSearch = voterAddressObject.text_for_map_search;
     }
-    return '';
+    this.setState({
+      textForMapSearch,
+    });
   }
 
   incomingToggleFunction = () => {
@@ -60,8 +82,7 @@ class EditAddressInPlace extends Component {
     renderLog('EditAddressInPlace');  // Set LOG_RENDER_EVENTS to log all renders
     const { classes, noAddressMessage } = this.props;
     const { location: { pathname } } = window;
-    const { editingAddress } = this.state;
-    const textForMapSearch = this.getAddressFromVoterStore();
+    const { ballotCaveat, editingAddress, textForMapSearch } = this.state;
     const noAddressMessageFiltered = noAddressMessage || '- no address entered -';
     const maximumAddressDisplayLength = 60;
     const ballotBaseUrl = calculateBallotBaseUrl(this.props.ballotBaseUrl, pathname);
@@ -104,6 +125,9 @@ class EditAddressInPlace extends Component {
             </EditAddressPreview>
           </EditBlockWrapper>
           <AddressIntroductionWrapper>
+            {ballotCaveat && (
+              <div>{ballotCaveat}</div>
+            )}
             <Suspense fallback={<></>}>
               <ReadMore
                 textToDisplay={addressIntroduction}
