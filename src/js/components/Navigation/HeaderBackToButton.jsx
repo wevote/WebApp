@@ -7,7 +7,7 @@ import styled from 'styled-components';
 import { isIOS } from '../../common/utils/cordovaUtils';
 import { isCordova } from '../../common/utils/isCordovaOrWebApp';
 import historyPush from '../../common/utils/historyPush';
-import isMobileScreenSize from '../../utils/isMobileScreenSize';
+import isMobileScreenSize from '../../common/utils/isMobileScreenSize';
 import { renderLog } from '../../common/utils/logging';
 import { shortenText } from '../../utils/textFormat';
 

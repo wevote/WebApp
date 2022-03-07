@@ -24,7 +24,7 @@ import { isAndroidSizeFold } from '../../common/utils/cordovaUtils';
 import { renderLog } from '../../common/utils/logging';
 import apiCalming from '../../common/utils/apiCalming';
 import { cordovaBallotFilterTopMargin } from '../../utils/cordovaOffsets';
-import isMobileScreenSize from '../../utils/isMobileScreenSize';
+import isMobileScreenSize from '../../common/utils/isMobileScreenSize';
 import { PageContentContainer } from '../../components/Style/pageLayoutStyles';
 import { capitalizeString } from '../../utils/textFormat';
 

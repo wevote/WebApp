@@ -8,7 +8,7 @@ import { hasIPhoneNotch, isAndroidSizeFold, isAndroidSizeMD, isAndroidSizeXL, is
 import { isWebApp } from '../../common/utils/isCordovaOrWebApp';
 import { pageEnumeration } from '../../utils/cordovaUtilsPageEnumeration';
 import { normalizedHrefPage } from '../../common/utils/hrefUtils';
-import isMobileScreenSize from '../../utils/isMobileScreenSize';
+import isMobileScreenSize from '../../common/utils/isMobileScreenSize';
 
 
 export const IOSNotchedSpacer = styled.div`

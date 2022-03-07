@@ -9,7 +9,7 @@ import SupportStore from '../../stores/SupportStore';
 import VoterStore from '../../stores/VoterStore';
 import { isAndroidSizeMD } from '../../common/utils/cordovaUtils'; // hasIPhoneNotch,
 import { isCordova, isWebApp } from '../../common/utils/isCordovaOrWebApp';
-import isMobileScreenSize from '../../utils/isMobileScreenSize';
+import isMobileScreenSize from '../../common/utils/isMobileScreenSize';
 import { renderLog } from '../../common/utils/logging';
 import { openSnackbar } from './SnackNotifier';
 

@@ -156,7 +156,7 @@ class ElectionCountdown extends React.Component {
                 {(daysMobile || hours || minutes || seconds) ? (
                   <>
                     {daysMobile}
-                    {' '}
+                    <SpaceBetweenNumberAndWord />
                     {daysMobile === '1' ? 'day' : 'days'}
                   </>
                 ) : (
@@ -455,6 +455,10 @@ const DaysFindingText = styled.div`
   color: #ccc;
   font-size: 20px;
   margin-top: 20px;
+`;
+
+const SpaceBetweenNumberAndWord = styled.span`
+  margin-left: 8px;
 `;
 
 const TimeFlex = styled.div`
