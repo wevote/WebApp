@@ -2,109 +2,60 @@ import { Paper } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 import { EditLocation } from '@material-ui/icons';
 import PropTypes from 'prop-types';
-import React, { Component } from 'react';
+import React, { useEffect, useState } from 'react';
 import AutoComplete from 'react-google-autocomplete';
-// import styled from 'styled-components';
 import { renderLog } from '../../common/utils/logging';
 import webAppConfig from '../../config';
 import VoterStore from '../../stores/VoterStore';
 import initializejQuery from '../../utils/initializejQuery';
 
-class GoogleAutoComplete extends Component {
-  constructor (props, context) {
-    super(props, context);
-    this.state = {
-      textForMapSearch: '',
-    };
-  }
+function GoogleAutoComplete (props) {
+  renderLog('GoogleAutoComplete  functional component');
+  const [textForMapSearch, setTextForMapSearch] = useState('');
+  const { id, classes, updateTextForMapSearchInParentFromGoogle, updateTextForMapSearchInParent } = props;
 
-  componentDidMount () {
-    // console.log('In EditAddressOneHorizontalRow componentDidMount');
-    this.setState({
-      textForMapSearch: VoterStore.getTextForMapSearch(),
-    });
-    this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
-  }
+  useEffect(() => {
+    setTextForMapSearch(VoterStore.getTextForMapSearch());
+  }, []);
 
-  componentWillUnmount () {
-    this.voterStoreListener.remove();
-  }
+  initializejQuery(() => {
+    // If you started a session at settings/address, jQuery would not already be loaded
+    const { $ } = window;
+    // Put the Google guesses container higher than the pop-up, so it is visible
+    $('<style> .pac-container { z-index: 10000; } </style>').appendTo('head');
+  });
 
-  onVoterStoreChange () {
-    this.setState({
-      textForMapSearch: VoterStore.getTextForMapSearch(),
-    });
-  }
-
-  parsePlaceForTargetValue (placeResult) {
-    if (placeResult && placeResult.target && placeResult.target.value) {
-      return placeResult.target.value;
-    }
-    return '';
-  }
-
-  parsePlaceForFormattedAddress (placeResult) {
-    if (placeResult && placeResult.formatted_address) {
-      return placeResult.formatted_address;
-    }
-    return '';
-  }
-
-  render () {
-    renderLog('GoogleAutoComplete  functional component');
-    const {
-      classes,
-      id,
-      updateTextForMapSearchInParent,
-      updateTextForMapSearchInParentFromGoogle,
-    } = this.props;
-    const { textForMapSearch } = this.state;
-
-    initializejQuery(() => {
-      const { $ } = window;
-      // Put the Google guesses container higher than the pop-up, so it is visible
-      $('<style> .pac-container { z-index: 10000; } </style>').appendTo('head');
-    });
-
-    // paperstyles={paperstyles}
-    return (
-      <Paper
-        classes={{ root: classes.addressBoxPaperStyles }}
-        elevation={2}
-      >
-        <EditLocation className="ion-input-icon" />
-        <AutoComplete
-          apiKey={webAppConfig.GOOGLE_MAPS_API_KEY}
-          defaultValue={textForMapSearch}
-          onChange={(placeResult) => updateTextForMapSearchInParent(this.parsePlaceForTargetValue(placeResult))}
-          onPlaceSelected={(placeResult) => updateTextForMapSearchInParentFromGoogle(this.parsePlaceForFormattedAddress(placeResult))}
-          style={{
-            width: '100%',
-            border: 'unset',
-            height: '2em',
-          }}
-          placeholder="Street number, full address & ZIP..."
-          aria-label="Address"
-          options={{
-            componentRestrictions: { country: 'us' },
-            types: ['geocode'],
-          }}
-          id={id || ''}
-          inputAutocompleteValue="off"
-        />
-      </Paper>
-    );
-  }
+  return (
+    <Paper classes={{ root: classes.addressBoxPaperStyles }} elevation={2}>
+      <EditLocation className="ion-input-icon" />
+      <AutoComplete
+        apiKey={webAppConfig.GOOGLE_MAPS_API_KEY}
+        onChange={(place) => updateTextForMapSearchInParent((place && place.target && place.target.value) || '')}
+        onPlaceSelected={(place) => updateTextForMapSearchInParentFromGoogle((place && place.formatted_address) || '')}
+        defaultValue={textForMapSearch}
+        style={{
+          width: '100%',
+          border: 'unset',
+          height: '2em',
+        }}
+        placeholder="Street number, full address and ZIP..."
+        aria-label="Address"
+        options={{
+          componentRestrictions: { country: 'us' },
+          types: ['geocode'],
+        }}
+        id={id || ''}
+        inputAutocompleteValue="off"
+      />
+    </Paper>
+  );
 }
 GoogleAutoComplete.propTypes = {
   classes: PropTypes.object,
   id: PropTypes.string,
-  // paperstyles: PropTypes.object,
   updateTextForMapSearchInParent: PropTypes.func,
   updateTextForMapSearchInParentFromGoogle: PropTypes.func,
 };
-
-// const StyledPaper = styled(Paper)`${(props) => props.paperstyles}`;
 
 const styles = (theme) => ({
   addressBoxPaperStyles: {
