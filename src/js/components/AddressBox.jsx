@@ -101,25 +101,6 @@ class AddressBox extends Component {
     }
   }
 
-  returnNewTextForMapSearchLocal (textForMapSearch) {
-    const { returnNewTextForMapSearch } = this.props;
-    if (returnNewTextForMapSearch) {
-      returnNewTextForMapSearch(textForMapSearch);
-    }
-  }
-
-  updateTextForMapSearch = (textForMapSearch) => {
-    // console.log('AddressBox updateTextForMapSearch textForMapSearch:', textForMapSearch);
-    this.setState({ textForMapSearch });
-  }
-
-  updateTextForMapSearchFromGoogle = (textForMapSearch) => {
-    // console.log('AddressBox updateTextForMapSearchFromGoogle textForMapSearch:', textForMapSearch);
-    if (textForMapSearch) {
-      this.setState({ textForMapSearch });
-    }
-  }
-
   voterAddressSaveSubmit = (event) => {
     event.preventDefault();
     const { textForMapSearch } = this.state;
@@ -144,6 +125,25 @@ class AddressBox extends Component {
       toggleEditingAddress();
     } else {
       console.log('AddressBox did not receive a toggleEditingAddress() function');
+    }
+  }
+
+  updateTextForMapSearch = (textForMapSearch) => {
+    // console.log('AddressBox updateTextForMapSearch textForMapSearch:', textForMapSearch);
+    this.setState({ textForMapSearch });
+  }
+
+  updateTextForMapSearchFromGoogle = (textForMapSearch) => {
+    // console.log('AddressBox updateTextForMapSearchFromGoogle textForMapSearch:', textForMapSearch);
+    if (textForMapSearch) {
+      this.setState({ textForMapSearch });
+    }
+  }
+
+  returnNewTextForMapSearchLocal (textForMapSearch) {
+    const { returnNewTextForMapSearch } = this.props;
+    if (returnNewTextForMapSearch) {
+      returnNewTextForMapSearch(textForMapSearch);
     }
   }
 

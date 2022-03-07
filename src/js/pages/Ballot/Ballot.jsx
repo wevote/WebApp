@@ -41,7 +41,7 @@ import VoterGuideStore from '../../stores/VoterGuideStore';
 import VoterStore from '../../stores/VoterStore';
 import { dumpCssFromId } from '../../utils/appleSiliconUtils';
 import isMobile from '../../utils/isMobile';
-import isMobileScreenSize from '../../utils/isMobileScreenSize';
+import isMobileScreenSize from '../../common/utils/isMobileScreenSize';
 import lazyPreloadPages from '../../utils/lazyPreloadPages';
 import mapCategoryFilterType from '../../utils/map-category-filter-type';
 import { DualHeaderContainer, HeaderContentContainer, HeaderContentOuterContainer, PageContentContainer } from '../../components/Style/pageLayoutStyles';

@@ -23,7 +23,7 @@ import apiCalming from '../../common/utils/apiCalming';
 import { normalizedHref, normalizedHrefPage } from '../../common/utils/hrefUtils';
 import { avatarGeneric, displayTopMenuShadow, weVoteBrandingOff } from '../../utils/applicationUtils';
 import getHeaderObjects from '../../utils/getHeaderObjects';
-import isMobileScreenSize from '../../utils/isMobileScreenSize';
+import isMobileScreenSize from '../../common/utils/isMobileScreenSize';
 import { TopOfPageHeader, TopRowOneLeftContainer, TopRowOneMiddleContainer, TopRowOneRightContainer, TopRowTwoLeftContainer } from '../Style/pageLayoutStyles';
 import shouldHeaderRetreat from '../../utils/shouldHeaderRetreat';
 import { getBooleanValue, shortenText, stringContains } from '../../utils/textFormat';

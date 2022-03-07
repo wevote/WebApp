@@ -6,7 +6,7 @@ import React, { Component, Suspense } from 'react';
 import styled from 'styled-components';
 import { isAndroid, isAndroidSizeFold, isIOSAppOnMac, isIPad, isIPhone3p5in, isIPhone4in } from '../../common/utils/cordovaUtils';
 import { isWebApp } from '../../common/utils/isCordovaOrWebApp';
-import isMobileScreenSize from '../../utils/isMobileScreenSize';
+import isMobileScreenSize from '../../common/utils/isMobileScreenSize';
 import { renderLog } from '../../common/utils/logging';
 import { shortenText } from '../../utils/textFormat';
 

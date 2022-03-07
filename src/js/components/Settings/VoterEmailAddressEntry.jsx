@@ -9,7 +9,7 @@ import VoterActions from '../../actions/VoterActions';
 import VoterStore from '../../stores/VoterStore';
 import { blurTextFieldAndroid, focusTextFieldAndroid } from '../../common/utils/cordovaUtils';
 import { isCordova, isWebApp } from '../../common/utils/isCordovaOrWebApp';
-import isMobileScreenSize from '../../utils/isMobileScreenSize';
+import isMobileScreenSize from '../../common/utils/isMobileScreenSize';
 import { renderLog } from '../../common/utils/logging';
 import LoadingWheel from '../../common/components/Widgets/LoadingWheel';
 import signInModalGlobalState from '../Widgets/signInModalGlobalState';
