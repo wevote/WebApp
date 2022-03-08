@@ -16,6 +16,8 @@ function GoogleAutoComplete (props) {
 
   useEffect(() => {
     setTextForMapSearch(VoterStore.getTextForMapSearch());
+    const voterStoreListener = VoterStore.addListener(() => setTextForMapSearch(VoterStore.getTextForMapSearch()));
+    return () => voterStoreListener.remove();
   }, []);
 
   initializejQuery(() => {

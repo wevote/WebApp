@@ -136,7 +136,6 @@ class AddressBox extends Component {
   updateTextForMapSearchFromGoogle = (textForMapSearch) => {
     // console.log('AddressBox updateTextForMapSearchFromGoogle textForMapSearch:', textForMapSearch);
     if (textForMapSearch) {
-      VoterActions.voterAddressSave(textForMapSearch);
       this.setState({ textForMapSearch });
     }
   }
