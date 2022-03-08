@@ -96,6 +96,7 @@ class EditAddressOneHorizontalRow extends Component {
   updateTextForMapSearchFromGoogle = (textForMapSearch) => {
     // console.log('EditAddressHorizontalRow updateTextForMapSearchFromGoogle, textForMapSearch:', textForMapSearch);
     if (textForMapSearch) {
+      VoterActions.voterAddressSave(textForMapSearch);
       this.setState({ textForMapSearch });
     }
   }

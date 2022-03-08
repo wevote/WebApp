@@ -136,6 +136,7 @@ class AddressBox extends Component {
   updateTextForMapSearchFromGoogle = (textForMapSearch) => {
     // console.log('AddressBox updateTextForMapSearchFromGoogle textForMapSearch:', textForMapSearch);
     if (textForMapSearch) {
+      VoterActions.voterAddressSave(textForMapSearch);
       this.setState({ textForMapSearch });
     }
   }
@@ -178,7 +179,6 @@ class AddressBox extends Component {
         <div className="row">
           <GoogleAutoComplete
             id="entryBox"
-            // paperstyles={addressBoxPaperStyles}
             updateTextForMapSearchInParent={this.updateTextForMapSearch}
             updateTextForMapSearchInParentFromGoogle={this.updateTextForMapSearchFromGoogle}
           />
