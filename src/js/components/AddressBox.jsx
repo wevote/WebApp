@@ -178,7 +178,6 @@ class AddressBox extends Component {
         <div className="row">
           <GoogleAutoComplete
             id="entryBox"
-            // paperstyles={addressBoxPaperStyles}
             updateTextForMapSearchInParent={this.updateTextForMapSearch}
             updateTextForMapSearchInParentFromGoogle={this.updateTextForMapSearchFromGoogle}
           />
