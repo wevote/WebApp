@@ -489,7 +489,7 @@ class App extends Component {
 }
 
 const WeVoteBody = styled.div`
-  background-color: rgb(235, 236, 238);
+  background-color: #fff; // rgb(235, 236, 238);
   color: #333;
   display: block;
   font-family: "Nunito Sans", "Helvetica Neue Light", "Helvetica Neue", "Helvetica", "Arial", sans-serif;

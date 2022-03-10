@@ -1,10 +1,11 @@
 import { withStyles, withTheme } from '@material-ui/core/styles';
-import { ArrowForward } from '@material-ui/icons';
+// import { ArrowForward } from '@material-ui/icons';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
-import { Link } from 'react-router-dom';
+// import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import OfficeActions from '../../actions/OfficeActions';
+import AppObservableStore from '../../stores/AppObservableStore';
 import BallotStore from '../../stores/BallotStore';
 import CandidateStore from '../../stores/CandidateStore';
 import SupportStore from '../../stores/SupportStore';
@@ -14,6 +15,7 @@ import historyPush from '../../common/utils/historyPush';
 import { renderLog } from '../../common/utils/logging';
 import { sortCandidateList } from '../../utils/positionFunctions';
 import { toTitleCase } from '../../utils/textFormat';
+import PositionRowList from './PositionRowList';
 import signInModalGlobalState from '../Widgets/signInModalGlobalState';
 
 const BallotItemSupportOpposeCountDisplay = React.lazy(() => import(/* webpackChunkName: 'BallotItemSupportOpposeCountDisplay' */ '../Widgets/BallotItemSupportOpposeCountDisplay'));
@@ -24,7 +26,7 @@ const ItemActionBar = React.lazy(() => import(/* webpackChunkName: 'ItemActionBa
 const ShowMoreFooter = React.lazy(() => import(/* webpackChunkName: 'ShowMoreFooter' */ '../Navigation/ShowMoreFooter'));
 const TopCommentByBallotItem = React.lazy(() => import(/* webpackChunkName: 'TopCommentByBallotItem' */ '../Widgets/TopCommentByBallotItem'));
 
-const NUMBER_OF_CANDIDATES_TO_DISPLAY = 4;
+const NUMBER_OF_CANDIDATES_TO_DISPLAY = 3;
 
 // This is related to components/VoterGuide/VoterGuideOfficeItemCompressed
 class OfficeItemCompressed extends Component {
@@ -32,14 +34,13 @@ class OfficeItemCompressed extends Component {
     super(props);
     this.state = {
       candidateList: [],
-      // changeFound: false,
-      // componentDidMount: false,
-      maximumNumberOrganizationsToDisplay: NUMBER_OF_CANDIDATES_TO_DISPLAY,
+      numberOfCandidatesToDisplay: NUMBER_OF_CANDIDATES_TO_DISPLAY,
       organizationWeVoteId: '',
       positionListFromFriendsHasBeenRetrievedOnce: {},
       positionListHasBeenRetrievedOnce: {},
     };
 
+    this.onClickShowOrganizationModal = this.onClickShowOrganizationModal.bind(this);
     this.getCandidateLink = this.getCandidateLink.bind(this);
     this.getOfficeLink = this.getOfficeLink.bind(this);
     this.goToCandidateLink = this.goToCandidateLink.bind(this);
@@ -83,26 +84,6 @@ class OfficeItemCompressed extends Component {
       }
     }
   }
-
-  // shouldComponentUpdate (nextProps, nextState) {
-  //   if (this.state.componentDidMount !== nextState.componentDidMount) {
-  //     // console.log('this.state.componentDidMount: ', this.state.componentDidMount, ', nextState.componentDidMount: ', nextState.componentDidMount);
-  //     return true;
-  //   }
-  //   if (this.state.organizationWeVoteId !== nextState.organizationWeVoteId) {
-  //     // console.log('this.state.organizationWeVoteId: ', this.state.organizationWeVoteId, ', nextState.organizationWeVoteId: ', nextState.organizationWeVoteId);
-  //     return true;
-  //   }
-  //   if (this.state.changeFound !== nextState.changeFound) {
-  //     // console.log('this.state.changeFound: ', this.state.changeFound, ', nextState.changeFound: ', nextState.changeFound);
-  //     return true;
-  //   }
-  //   if (this.props.ballotItemDisplayName !== nextProps.ballotItemDisplayName) {
-  //     // console.log('this.props.ballotItemDisplayName: ', this.props.ballotItemDisplayName, ', nextProps.ballotItemDisplayName: ', nextProps.ballotItemDisplayName);
-  //     return true;
-  //   }
-  //   return false;
-  // }
 
   componentDidCatch (error, info) {
     // We should get this information to Splunk!
@@ -193,6 +174,11 @@ class OfficeItemCompressed extends Component {
     this.setState({});
   }
 
+  onClickShowOrganizationModal (candidateWeVoteId) {
+    AppObservableStore.setOrganizationModalBallotItemWeVoteId(candidateWeVoteId);
+    AppObservableStore.setShowOrganizationModal(true);
+  }
+
   getCandidateLink (candidateWeVoteId) {
     if (this.state.organizationWeVoteId) {
       // If there is an organizationWeVoteId, signal that we want to link back to voter_guide for that organization
@@ -223,19 +209,24 @@ class OfficeItemCompressed extends Component {
     historyPush(officeLink);
   }
 
+  showAllCandidates () {
+    this.setState({
+      numberOfCandidatesToDisplay: 99,
+    });
+  }
+
   generateCandidates () {
     const { externalUniqueId, theme } = this.props;
     let { candidatesToShowForSearchResults } = this.props;
     candidatesToShowForSearchResults = candidatesToShowForSearchResults || [];
-    const { candidateList } = this.state;
-    const candidatePreviewLimit = this.state.maximumNumberOrganizationsToDisplay;
+    const { candidateList, numberOfCandidatesToDisplay } = this.state;
     // If voter has chosen 1+ candidates, only show those
     const supportedCandidatesList = candidateList.filter((candidate) => candidatesToShowForSearchResults.includes(candidate.we_vote_id) || (SupportStore.getVoterSupportsByBallotItemWeVoteId(candidate.we_vote_id) && !candidate.withdrawn_from_election));
     const candidatesToRender = supportedCandidatesList.length ? supportedCandidatesList : candidateList;
     const hideCandidateDetails = supportedCandidatesList.length;
     return (
-      <Container candidateLength={candidatesToRender.length}>
-        { candidatesToRender.slice(0, candidatePreviewLimit)
+      <CandidatesContainer candidateLength={candidatesToRender.length}>
+        { candidatesToRender.slice(0, numberOfCandidatesToDisplay)
           .map((oneCandidate) => {
             if (!oneCandidate || !oneCandidate.we_vote_id) {
               return null;
@@ -245,8 +236,7 @@ class OfficeItemCompressed extends Component {
             const avatarBackgroundImage = normalizedImagePath('../img/global/svg-icons/avatar-generic.svg');
 
             return (
-              <Column
-                candidateLength={candidatesToRender.length}
+              <CandidateContainer
                 key={`candidate_preview-${oneCandidate.we_vote_id}-${externalUniqueId}`}
               >
                 <CandidateInfo
@@ -256,7 +246,7 @@ class OfficeItemCompressed extends Component {
                   <CandidateTopRow>
                     <Candidate
                       id={`officeItemCompressedCandidateImageAndName-${oneCandidate.we_vote_id}-${externalUniqueId}`}
-                      onClick={() => this.goToCandidateLink(oneCandidate.we_vote_id)}
+                      onClick={() => this.onClickShowOrganizationModal(oneCandidate.we_vote_id)}
                     >
                       {/* Candidate Image */}
                       <Suspense fallback={<></>}>
@@ -284,7 +274,7 @@ class OfficeItemCompressed extends Component {
                       <Suspense fallback={<></>}>
                         <BallotItemSupportOpposeCountDisplay
                           ballotItemWeVoteId={oneCandidate.we_vote_id}
-                          goToBallotItem={this.goToCandidateLink}
+                          goToBallotItem={this.onClickShowOrganizationModal}
                         />
                       </Suspense>
                     </BallotItemSupportOpposeCountDisplayWrapper>
@@ -297,7 +287,7 @@ class OfficeItemCompressed extends Component {
                           <TopCommentByBallotItem
                             ballotItemWeVoteId={oneCandidate.we_vote_id}
                             // learnMoreUrl={this.getCandidateLink(oneCandidate.we_vote_id)}
-                            onClickFunction={this.goToCandidateLink}
+                            onClickFunction={this.onClickShowOrganizationModal}
                           >
                             <span>
                               <Suspense fallback={<></>}>
@@ -327,10 +317,15 @@ class OfficeItemCompressed extends Component {
                     </CandidateBottomRow>
                   )}
                 </CandidateInfo>
-              </Column>
+                <PositionRowListWrapper>
+                  <PositionRowList
+                    ballotItemWeVoteId={oneCandidate.we_vote_id}
+                  />
+                </PositionRowListWrapper>
+              </CandidateContainer>
             );
           })}
-      </Container>
+      </CandidatesContainer>
     );
   }
 
@@ -354,9 +349,10 @@ class OfficeItemCompressed extends Component {
     renderLog('OfficeItemCompressed');  // Set LOG_RENDER_EVENTS to log all renders
     // console.log('OfficeItemCompressed render');
     let { ballotItemDisplayName } = this.props;
-    const { officeWeVoteId, classes } = this.props;
+    const { officeWeVoteId } = this.props; // classes
+    const { numberOfCandidatesToDisplay } = this.state;
     ballotItemDisplayName = toTitleCase(ballotItemDisplayName);
-    const totalNumberOfCandidatesToDisplay = this.state.candidateList.length;
+    const totalNumberOfCandidates = this.state.candidateList.length;
     // If voter has chosen 1+ candidates, hide the "Show more" link
     const { candidateList } = this.state;
     const supportedCandidatesList = candidateList.filter((candidate) => (SupportStore.getVoterSupportsByBallotItemWeVoteId(candidate.we_vote_id) && !candidate.withdrawn_from_election));
@@ -368,14 +364,9 @@ class OfficeItemCompressed extends Component {
           name={officeWeVoteId}
         />
         {/* Desktop */}
-        <Link id={`officeItemCompressedTopNameLink-${officeWeVoteId}`} to={this.getOfficeLink()}>
-          <Title>
-            {ballotItemDisplayName}
-            <ArrowForward
-              classes={{ root: classes.cardHeaderIconRoot }}
-            />
-          </Title>
-        </Link>
+        <Title>
+          {ballotItemDisplayName}
+        </Title>
         {/* *************************
           Display either a) the candidates the voter supports, or b) the first several candidates running for this office
           ************************* */}
@@ -383,9 +374,15 @@ class OfficeItemCompressed extends Component {
 
         {!turnOffShowMoreFooter && (
           <Suspense fallback={<></>}>
-            { totalNumberOfCandidatesToDisplay > this.state.maximumNumberOrganizationsToDisplay ?
-              <ShowMoreFooter showMoreId={`officeItemCompressedShowMoreFooter-${officeWeVoteId}`} showMoreLink={() => this.goToOfficeLink()} showMoreText={`Show all ${totalNumberOfCandidatesToDisplay} candidates`} /> :
-              <ShowMoreFooter showMoreId={`officeItemCompressedShowMoreFooter-${officeWeVoteId}`} showMoreLink={() => this.goToOfficeLink()} showMoreText="Learn more" />}
+            { totalNumberOfCandidates > numberOfCandidatesToDisplay && (
+              <ShowMoreFooter
+                hideArrow
+                showMoreId={`officeItemCompressedShowMoreFooter-${officeWeVoteId}`}
+                showMoreLink={() => this.showAllCandidates()}
+                showMoreText={`Show all ${totalNumberOfCandidates} candidates`}
+                textAlign="left"
+              />
+            )}
           </Suspense>
         )}
       </OfficeItemCompressedWrapper>
@@ -397,7 +394,7 @@ OfficeItemCompressed.propTypes = {
   ballotItemDisplayName: PropTypes.string.isRequired,
   candidateList: PropTypes.array,
   candidatesToShowForSearchResults: PropTypes.array,
-  classes: PropTypes.object,
+  // classes: PropTypes.object,
   externalUniqueId: PropTypes.string,
   organization: PropTypes.object,
   organizationWeVoteId: PropTypes.string,
@@ -422,21 +419,6 @@ const styles = (theme) => ({
       fontSize: 10,
     },
   },
-  buttonOutlinedPrimary: {
-    background: 'white',
-  },
-  cardHeaderIconRoot: {
-    marginTop: '-.3rem',
-    fontSize: 20,
-    marginLeft: '.3rem',
-  },
-  cardFooterIconRoot: {
-    fontSize: 14,
-    margin: '0 0 .1rem .3rem',
-    [theme.breakpoints.down('lg')]: {
-      marginBottom: '.2rem',
-    },
-  },
 });
 
 const BallotItemSupportOpposeCountDisplayWrapper = styled.div`
@@ -444,43 +426,53 @@ const BallotItemSupportOpposeCountDisplayWrapper = styled.div`
   float: right;
 `;
 
-const Column = styled.div`
+const Candidate = styled.div`
+  display: flex;
+  flex-grow: 8;
+`;
+
+const CandidateBottomRow = styled.div`
+  display: flex;
+  flex-flow: column;
+  height: 100%;
+  justify-content: space-between;
+  margin-top: 4px;
+`;
+
+const CandidateContainer = styled.div`
+  display: flex;
+  justify-content: flex-start;
   padding: 10px;
-  width: 100%;
-  @media (min-width: ${({ theme }) => theme.breakpoints.md}) {
-    width: ${({ candidateLength }) => (candidateLength > 1 ? '50%' : '100%')};
-  }
 `;
 
 const CandidateInfo = styled.div`
-  background-color: #f8f8f8;
-  border: 1px solid ${({ theme }) => theme.colors.grayBorder};
-  display: flex;
-  flex-flow: column;
+  // background-color: #f8f8f8;
+  border: 1px solid #fff;
+  display: block;
   height: 100%;
   margin: 0 !important;
   padding: 8px !important;
   transition: all 200ms ease-in;
-  width: 100% !important;
+  max-width: 320px;
+  @media (max-width: ${({ theme }) => theme.breakpoints.xs}) {
+    width: 100%;
+  }
+  @media (min-width: ${({ theme }) => theme.breakpoints.xs}) {
+    min-width: 320px;
+  }
   &:hover {
     border: 1px solid ${(props) => (props.brandBlue)};
   }
   @media (min-width: ${({ theme }) => theme.breakpoints.md}) {
-    position: relative;
+    // position: relative;
   }
   @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
     padding: 8px 8px 4px 8px !important;
-    flex-flow: column;
-    width: 100%;
+    // flex-flow: column;
   }
   @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
-    flex-flow: column;
+    // flex-flow: column;
   }
-`;
-
-const Candidate = styled.div`
-  display: flex;
-  flex-grow: 8;
 `;
 
 const CandidateName = styled.h4`
@@ -495,29 +487,15 @@ const CandidateParty = styled.div`
   font-size: .7rem;
 `;
 
+const CandidatesContainer = styled.div`
+  margin: 0px -10px;
+`;
+
 const CandidateTopRow = styled.div`
   cursor: pointer;
   display: flex;
   flex-flow: row nowrap;
   justify-content: space-between;
-`;
-
-const CandidateBottomRow = styled.div`
-  display: flex;
-  flex-flow: column;
-  height: 100%;
-  justify-content: space-between;
-  margin-top: 4px;
-`;
-
-const Container = styled.div`
-  display: flex;
-  flex-flow: ${({ candidateLength }) => (candidateLength > 2 ? 'row wrap' : 'row')};
-  justify-content: center;
-  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
-    flex-flow: row wrap;
-  }
-  margin: 0px -10px;
 `;
 
 const ItemActionBarWrapper = styled.div`
@@ -540,8 +518,18 @@ const OfficeItemCompressedWrapper = styled.div`
   }
 `;
 
+const PositionRowListWrapper = styled.div`
+  display: block;
+  height: 110px;
+  margin-left: 8px;
+  margin-top: 10px;
+  max-width: 570px !important;
+  overflow: hidden;
+  overflow-x: hidden;
+  overflow-y: hidden:
+`;
+
 const Title = styled.h2`
-  cursor: pointer;
   font-weight: bold;
   font-size: 18px;
   margin-bottom: 6px;

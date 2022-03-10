@@ -274,7 +274,7 @@ class HeaderNotificationMenu extends Component {
               badgeContent={<BadgeCountWrapper>{allActivityNoticesNotSeenCount}</BadgeCountWrapper>}
               classes={{
                 badge: classes.badgeClasses,
-                anchorOriginTopRightRectangle: classes.anchorOriginTopRightRectangle,
+                anchorOriginTopRightRectangular: classes.anchorOriginTopRightRectangular,
               }}
               color="primary"
               max={9}
@@ -317,7 +317,7 @@ HeaderNotificationMenu.propTypes = {
 };
 
 const styles = (theme) => ({
-  anchorOriginTopRightRectangle: {
+  anchorOriginTopRightRectangular: {
     right: 3,
     top: 11,
   },

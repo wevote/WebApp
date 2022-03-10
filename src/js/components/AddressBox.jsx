@@ -153,14 +153,6 @@ class AddressBox extends Component {
     let { waitingMessage } = this.props;
     const { classes, externalUniqueId, showCancelEditAddressButton, toggleEditingAddress } = this.props;
 
-    // const addressBoxPaperStyles = {
-    //   padding: '2px .7rem',
-    //   display: 'flex',
-    //   alignItems: 'center',
-    //   width: '100%',
-    //   marginBottom: '1rem',
-    // };
-
     const { ballotCaveat, loading } = this.state;
     if (loading) {
       if (!waitingMessage) waitingMessage = 'Please wait a moment while we find your ballot...';

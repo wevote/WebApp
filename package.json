@@ -98,7 +98,7 @@
     "object-assign": "~4.1.1",
     "prop-types": "~15.7.2",
     "react": "~17.0.1",
-    "react-bootstrap": "^1.4.0",
+    "react-bootstrap": "^1.6.4",
     "react-copy-to-clipboard": "^5.0.3",
     "react-dom": "~17.0.1",
     "react-fullstory": "^1.4.0",

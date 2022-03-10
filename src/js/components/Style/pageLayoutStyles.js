@@ -84,14 +84,14 @@ export const DualHeaderContainer = styled.div`   // was ballot__heading
   padding-top: ${() => cordovaDualHeaderContainerPadding()};
   width: 100%;
   background-color: #fff;
-  border-bottom: 1px solid #aaa;
+  ${({ scrolledDown }) => (scrolledDown ? 'border-bottom: 1px solid #aaa' : '')};
+  ${({ scrolledDown }) => (scrolledDown ? 'box-shadow: 0 2px 4px -1px rgba(0, 0, 0, 0.2), 0 4px 5px 0 rgba(0, 0, 0, 0.14), 0 1px 10px 0 rgba(0, 0, 0, 0.12);' : '')};
   overflow: hidden;
   position: fixed;
   z-index: 1;
   left: 0;
   //transform: translate3d(0, -53px, 0);
   //transition: all 100ms ease-in-out 0s;
-  box-shadow: 0 2px 4px -1px rgba(0, 0, 0, 0.2), 0 4px 5px 0 rgba(0, 0, 0, 0.14), 0 1px 10px 0 rgba(0, 0, 0, 0.12); }
   //.ballot__heading__unpinned {
   //  position: fixed;
   //  top: 0;
@@ -256,6 +256,7 @@ export const AppBarForBackTo = styled(AppBar)`
       CordovaPageConstants.measureWild,
       CordovaPageConstants.valuesList,
       CordovaPageConstants.valuesWild].includes(pageEnumeration())) {
+      // Do not show border or shadow
       return {};
     }
     return {

@@ -9,7 +9,7 @@ import { renderLog } from '../../common/utils/logging';
 class ShowMoreFooter extends React.Component {
   render () {
     renderLog('ShowMoreFooter');  // Set LOG_RENDER_EVENTS to log all renders
-    const { classes, showMoreId, showMoreLink } = this.props;
+    const { classes, hideArrow, showMoreId, showMoreLink, textAlign } = this.props;
 
     let { showMoreText } = this.props;
     if (!showMoreText) {
@@ -17,11 +17,15 @@ class ShowMoreFooter extends React.Component {
     }
 
     return (
-      <ShowMoreFooterStyled id={showMoreId} onClick={showMoreLink}>
-        <ShowMoreFooterText>
+      <ShowMoreFooterStyled id={showMoreId} onClick={showMoreLink} textAlign={textAlign}>
+        <ShowMoreFooterText textAlign={textAlign}>
           { showMoreText }
-          {' '}
-          <ArrowForward classes={{ root: classes.cardFooterIconRoot }} />
+          {!hideArrow && (
+            <>
+              {' '}
+              <ArrowForward classes={{ root: classes.cardFooterIconRoot }} />
+            </>
+          )}
         </ShowMoreFooterText>
       </ShowMoreFooterStyled>
     );
@@ -29,9 +33,11 @@ class ShowMoreFooter extends React.Component {
 }
 ShowMoreFooter.propTypes = {
   classes: PropTypes.object,
+  hideArrow: PropTypes.bool,
   showMoreId: PropTypes.string.isRequired,
   showMoreLink: PropTypes.func.isRequired,
   showMoreText: PropTypes.string,
+  textAlign: PropTypes.string,
 };
 
 const styles = (theme) => ({
@@ -58,7 +64,7 @@ const ShowMoreFooterStyled = styled.div`
   margin-bottom: 0px !important;
   margin-top: 0px !important;
   padding: 0px !important;
-  text-align: right !important;
+  text-align: ${({ textAlign }) => (textAlign ? { textAlign } : 'right')} !important;
   user-select: none;
   @media (min-width: ${({ theme }) => theme.breakpoints.md}) {
     font-size: 18px;
@@ -76,7 +82,7 @@ const ShowMoreFooterText = styled.div`
   margin-top: 8px !important;
   padding: 8px !important;
   padding-bottom: 0px !important;
-  text-align: right !important;
+  text-align: ${({ textAlign }) => (textAlign ? { textAlign } : 'right')} !important;
   @media (min-width: ${({ theme }) => theme.breakpoints.md}) {
     white-space: nowrap;
   }

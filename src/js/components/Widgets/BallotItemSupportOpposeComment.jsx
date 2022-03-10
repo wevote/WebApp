@@ -255,7 +255,8 @@ function wrapperPadding (props) {
 
 const Wrapper = styled.div`
   width: ${() => (isAndroidSizeMD() ? '95%' : '100%')};
-  background-color: ${({ showPositionStatementActionBar, inModal }) => (showPositionStatementActionBar || inModal ? '#eee' : 'white')} !important;
+  // background-color: ${({ showPositionStatementActionBar, inModal }) => (showPositionStatementActionBar || inModal ? '#eee' : 'white')} !important;
+  background-color: white !important;
   padding: ${(props) => wrapperPadding(props)} !important;
   border-radius: 4px;
   @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
