@@ -21,7 +21,6 @@ import { isWebApp } from '../../common/utils/isCordovaOrWebApp';
 import historyPush from '../../common/utils/historyPush';
 import { renderLog } from '../../common/utils/logging';
 import apiCalming from '../../common/utils/apiCalming';
-import isMobileScreenSize from '../../common/utils/isMobileScreenSize';
 import { isSpeakerTypePrivateCitizen } from '../../utils/organization-functions';
 import { PageContentContainer } from '../../components/Style/pageLayoutStyles';
 
@@ -453,9 +452,7 @@ export default class OrganizationVoterGuide extends Component {
                 </CardContainer>
               </DesktopLeftColumn>
 
-              <div className={isMobileScreenSize() ? 'col-12' : 'col-12 col-sm-8'}>
-                {/* Using isMobileScreenSize is not ideal, but 'col-12 col-sm-8' is not working as expected. */}
-                {/* <div style={{ height: 45, width: '100%', backgroundColor: 'red' }}>Proof that the problem that this div shows only 8 columns wide in mobile isn&apos;t something in a subcomponent.&nbsp;</div> */}
+              <div className="col-12 col-sm-8">
                 <OrganizationVoterGuideTabs
                   activeRoute={activeRoute}
                   activeRouteChanged={this.changeActiveRoute}

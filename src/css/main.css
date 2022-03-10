@@ -57,7 +57,7 @@ html {
 }
 
 body {
-  background-color: #ebecee;
+  background-color: #fff; /* #ebecee; */
   color: #212529;
   font-family: "Nunito Sans", "Helvetica Neue Light", "Helvetica Neue", "Helvetica", "Arial", sans-serif;
   font-size: 16px;
@@ -11840,6 +11840,10 @@ h1, h2, h3, h4, h5, h6 {
   z-index: 9010 !important;
 }
 
+.u-z-index-9020 {
+  z-index: 9020 !important;
+}
+
 /*.o-media-object, .o-media-object--center, .o-media-object--end {*/
 /*  display: flex;*/
 /*  position: relative;*/
@@ -12401,7 +12405,6 @@ h1, h2, h3, h4, h5, h6 {
   font-size: 18px;
   font-weight: 700;
   margin-right: 8px;
-  margin-bottom: 8px;
   vertical-align: middle;
 }
 
@@ -13399,18 +13402,18 @@ h1, h2, h3, h4, h5, h6 {
 
 .ballot__body__no-decision-tabs {
   margin-top: 16px;
-  padding-top: 90px;
+  padding-top: 105px;
 }
 
 @media all and (min-width: 375px) and (max-width: 575px) {
   .ballot__body__no-decision-tabs {
-    padding-top: 85px;
+    padding-top: 105px;
   }
 }
 
 @media all and (min-width: 320px) and (max-width: 374px) {
   .ballot__body__no-decision-tabs {
-    padding-top: 84px;
+    padding-top: 105px;
   }
 }
 

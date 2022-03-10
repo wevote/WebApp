@@ -156,7 +156,7 @@ class FooterBar extends React.Component {
               label="Friends"
               showLabel
               icon={(
-                <Badge badgeContent={numberOfIncomingFriendRequests} className={classes.anchorOriginTopRightRectangle} color="primary" max={9} style={badgeStyle} onClick={() => this.handleNavigation('/friends')}>
+                <Badge badgeContent={numberOfIncomingFriendRequests} className={classes.anchorOriginTopRightRectangular} color="primary" max={9} style={badgeStyle} onClick={() => this.handleNavigation('/friends')}>
                   <People />
                 </Badge>
               )}
@@ -189,7 +189,7 @@ FooterBar.propTypes = {
 };
 
 const styles = () => ({
-  anchorOriginTopRightRectangle: {
+  anchorOriginTopRightRectangular: {
     top: isFriendsTabSelected ? 0 : 2,
   },
 });

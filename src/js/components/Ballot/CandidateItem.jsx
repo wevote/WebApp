@@ -340,60 +340,6 @@ class CandidateItem extends Component {
                 <div className={`card-main__display-name ${linkToBallotItemPage && largeAreaHoverColorOnNow && showHover ? 'card__blue' : ''}`}>
                   {ballotItemDisplayName}
                 </div>
-                <CandidateToRightOfName>
-                  {!!(twitterHandle && twitterFollowersCount && forDesktop) && (
-                    <div className="u-show-desktop">
-                      {linkToBallotItemPage ? (
-                        <TwitterWrapper className="u-cursor--pointer" onClick={this.goToCandidateLink}>
-                          <Twitter classes={{ root: classes.twitterLogo }} />
-                          <TwitterHandleWrapper>
-                            @
-                            {twitterHandle}
-                          </TwitterHandleWrapper>
-                          <span title={numberWithCommas(twitterFollowersCount)}>{abbreviateNumber(twitterFollowersCount)}</span>
-                        </TwitterWrapper>
-                      ) : (
-                        <TwitterWrapper>
-                          <Suspense fallback={<></>}>
-                            <OpenExternalWebSite
-                              linkIdAttribute="candidateTwitterDesktop"
-                              url={`https://twitter.com/${twitterHandle}`}
-                              target="_blank"
-                              body={(
-                                <TwitterInnerWrapper>
-                                  <Twitter classes={{ root: classes.twitterLogo }} />
-                                  <TwitterHandleWrapper>
-                                    @
-                                    {twitterHandle}
-                                  </TwitterHandleWrapper>
-                                  <TwitterFollowersWrapper title={numberWithCommas(twitterFollowersCount)}>{abbreviateNumber(twitterFollowersCount)}</TwitterFollowersWrapper>
-                                </TwitterInnerWrapper>
-                              )}
-                            />
-                          </Suspense>
-                        </TwitterWrapper>
-                      )}
-                    </div>
-                  )}
-                  {(!hideCandidateUrl && candidateUrl && forDesktop) && (
-                    <ExternalWebSiteWrapper className="u-show-desktop">
-                      <Suspense fallback={<></>}>
-                        <OpenExternalWebSite
-                          linkIdAttribute="candidateDesktop"
-                          url={candidateUrl}
-                          target="_blank"
-                          className="u-gray-mid"
-                          body={(
-                            <div>
-                              candidate website
-                              <Launch classes={{ root: classes.externalLinkIcon }} />
-                            </div>
-                          )}
-                        />
-                      </Suspense>
-                    </ExternalWebSiteWrapper>
-                  )}
-                </CandidateToRightOfName>
               </CandidateNameRow>
               { contestOfficeName && (
                 <div className={linkToBallotItemPage && largeAreaHoverColorOnNow && showHover ? 'card__blue' : ''}>
@@ -405,6 +351,60 @@ class CandidateItem extends Component {
                   />
                 </div>
               )}
+              <CandidateLinksWrapper>
+                {!!(twitterHandle && twitterFollowersCount) && (
+                  <div>
+                    {linkToBallotItemPage ? (
+                      <TwitterWrapper className="u-cursor--pointer" onClick={this.goToCandidateLink}>
+                        <Twitter classes={{ root: classes.twitterLogo }} />
+                        <TwitterHandleWrapper>
+                          @
+                          {twitterHandle}
+                        </TwitterHandleWrapper>
+                        <span title={numberWithCommas(twitterFollowersCount)}>{abbreviateNumber(twitterFollowersCount)}</span>
+                      </TwitterWrapper>
+                    ) : (
+                      <TwitterWrapper>
+                        <Suspense fallback={<></>}>
+                          <OpenExternalWebSite
+                            linkIdAttribute="candidateTwitterDesktop"
+                            url={`https://twitter.com/${twitterHandle}`}
+                            target="_blank"
+                            body={(
+                              <TwitterInnerWrapper>
+                                <Twitter classes={{ root: classes.twitterLogo }} />
+                                <TwitterHandleWrapper>
+                                  @
+                                  {twitterHandle}
+                                </TwitterHandleWrapper>
+                                <TwitterFollowersWrapper title={numberWithCommas(twitterFollowersCount)}>{abbreviateNumber(twitterFollowersCount)}</TwitterFollowersWrapper>
+                              </TwitterInnerWrapper>
+                            )}
+                          />
+                        </Suspense>
+                      </TwitterWrapper>
+                    )}
+                  </div>
+                )}
+                {(!hideCandidateUrl && candidateUrl && forDesktop) && (
+                  <ExternalWebSiteWrapper className="u-show-desktop">
+                    <Suspense fallback={<></>}>
+                      <OpenExternalWebSite
+                        linkIdAttribute="candidateDesktop"
+                        url={candidateUrl}
+                        target="_blank"
+                        className="u-gray-mid"
+                        body={(
+                          <div>
+                            candidate website
+                            <Launch classes={{ root: classes.externalLinkIcon }} />
+                          </div>
+                        )}
+                      />
+                    </Suspense>
+                  </ExternalWebSiteWrapper>
+                )}
+              </CandidateLinksWrapper>
             </Candidate>
           </CandidateInfo>
           <BallotItemSupportOpposeCountDisplayWrapper>
@@ -720,8 +720,8 @@ const CandidateItemWrapper = styled.div`
 `;
 
 const CandidateNameRow = styled.div`
-  display: flex;
-  justify-content: flex-start;
+  // display: flex;
+  // justify-content: flex-start;
 `;
 
 const CandidateWrapper = styled.div`
@@ -739,7 +739,7 @@ const CandidateTextWrapper = styled.div`
   margin: 12px 0;
 `;
 
-const CandidateToRightOfName = styled.div`
+const CandidateLinksWrapper = styled.div`
   display: flex;
   justify-content: flex-start;
 `;

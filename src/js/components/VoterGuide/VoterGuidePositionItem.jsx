@@ -611,6 +611,7 @@ const DesktopItemTwitter = styled.div`
   display: inline-block;
   font-size: 12px;
   padding-left: 10px;
+  padding-right: 3px;
   white-space: nowrap;
 `;
 

@@ -543,7 +543,7 @@ class ItemActionBar extends PureComponent {
     this.setState({
       transitioning: true,
     });
-    openSnackbar({ message: 'Opposition added!' });
+    openSnackbar({ message: 'Opposition added!', severity: 'error' });
   }
 
   stopOpposingItem () {
@@ -560,7 +560,7 @@ class ItemActionBar extends PureComponent {
     this.setState({
       transitioning: true,
     });
-    openSnackbar({ message: 'Opposition removed!' });
+    openSnackbar({ message: 'Opposition removed!', severity: 'error' });
   }
 
   render () {

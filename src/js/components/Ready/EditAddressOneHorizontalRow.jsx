@@ -127,23 +127,15 @@ class EditAddressOneHorizontalRow extends Component {
     const { showAddressExplanation, textForMapSearch } = this.state; // voterSavedAddress
     // console.log('EditAddressOneHorizontalrow render textForMapSearch:', textForMapSearch);
 
-    // const addressBoxPaperStyles = {
-    //   padding: '2px .7rem',
-    //   display: 'flex',
-    //   alignItems: 'center',
-    //   width: '100%',
-    //   minWidth: '350px',
-    // };
-
     return (
       <OuterWrapper id="EditAddressOneHorizontalRow">
         <InnerWrapper className="u-show-mobile">
           <AddressLabelMobile>
             <span className="u-show-mobile-iphone5-or-smaller">
-              Your street address w/ number
+              Street address w/ number
             </span>
             <span className="u-show-mobile-bigger-than-iphone5">
-              Your street address with house number
+              Street address w/ house number
             </span>
             &nbsp;
           </AddressLabelMobile>
@@ -167,7 +159,6 @@ class EditAddressOneHorizontalRow extends Component {
             <InternalFormWrapper>
               <GoogleAutoComplete
                 id="oneHorizRow"
-                // paperstyles={addressBoxPaperStyles}
                 updateTextForMapSearchInParent={this.updateTextForMapSearch}
                 updateTextForMapSearchInParentFromGoogle={this.updateTextForMapSearchFromGoogle}
               />

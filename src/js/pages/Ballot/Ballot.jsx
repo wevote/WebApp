@@ -22,13 +22,13 @@ import { renderLog } from '../../common/utils/logging';
 import AddressBox from '../../components/AddressBox';
 import BallotItemCompressed from '../../components/Ballot/BallotItemCompressed';
 import BallotStatusMessage from '../../components/Ballot/BallotStatusMessage';
-import AddFriendsByEmail from '../../components/Friends/AddFriendsByEmail';
-import SuggestedFriendsPreview from '../../components/Friends/SuggestedFriendsPreview';
+// import AddFriendsByEmail from '../../components/Friends/AddFriendsByEmail';
+// import SuggestedFriendsPreview from '../../components/Friends/SuggestedFriendsPreview';
 import BallotDecisionsTabs from '../../components/Navigation/BallotDecisionsTabs';
 import BallotShowAllItemsFooter from '../../components/Navigation/BallotShowAllItemsFooter';
-import BallotSideBar from '../../components/Navigation/BallotSideBar';
+// import BallotSideBar from '../../components/Navigation/BallotSideBar';
 import EditAddressOneHorizontalRow from '../../components/Ready/EditAddressOneHorizontalRow';
-import ValuesToFollowPreview from '../../components/Values/ValuesToFollowPreview';
+// import ValuesToFollowPreview from '../../components/Values/ValuesToFollowPreview';
 import SnackNotifier, { openSnackbar } from '../../components/Widgets/SnackNotifier';
 import webAppConfig from '../../config';
 import AppObservableStore, { messageService } from '../../stores/AppObservableStore';
@@ -73,7 +73,6 @@ class Ballot extends Component {
     super(props);
     this.state = {
       ballotElectionList: [],
-      ballotHeaderUnpinned: false,
       ballotItemUnfurledTracker: {},
       ballotLength: 0,
       ballotLocationShortcut: '',
@@ -102,6 +101,7 @@ class Ballot extends Component {
       numberOfVoterRetrieveAttempts: 0,
       raceLevelFilterItemsInThisBallot: undefined,
       raceLevelFilterType: '',
+      scrolledDown: false,
       showAddressVerificationForm: false,
       showFilterTabs: false,
       totalNumberOfBallotItems: 0,
@@ -549,7 +549,7 @@ class Ballot extends Component {
 
   onAppObservableStoreChange () {
     this.setState({
-      ballotHeaderUnpinned: AppObservableStore.getScrolledDown(),
+      scrolledDown: AppObservableStore.getScrolledDown(),
       voterBallotItemsRetrieveHasBeenCalled: AppObservableStore.voterBallotItemsRetrieveHasBeenCalled(),
     });
     const { googleCivicElectionId } = this.state;
@@ -1121,13 +1121,13 @@ class Ballot extends Component {
     renderLog('Ballot');  // Set LOG_RENDER_EVENTS to log all renders
     const ballotBaseUrl = '/ballot';
     const { classes } = this.props;
-    const { location: { pathname, search } } = window;
+    const { location: { pathname } } = window; // search
 
     const {
       ballotSearchResults, ballotWithAllItems, ballotWithItemsFromCompletionFilterType,
       completionLevelFilterType, doubleFilteredBallotItemsLength, enableEditAddressOneHorizontalRow,
-      isSearching, issuesFollowedCount, loadingMoreItems, locationGuessClosed, numberOfBallotItemsToDisplay,
-      raceLevelFilterItemsInThisBallot, searchText, showFilterTabs, totalNumberOfBallotItems,
+      isSearching, loadingMoreItems, locationGuessClosed, numberOfBallotItemsToDisplay,
+      scrolledDown, searchText, showFilterTabs, totalNumberOfBallotItems,
       voterBallotItemsRetrieveHasBeenCalled, voterBallotItemsRetrieveHasReturned,
     } = this.state;
     let { raceLevelFilterType } = this.state;
@@ -1153,25 +1153,25 @@ class Ballot extends Component {
 
     const twoColumnDisplay = isIOSAppOnMac() || isIPadGiantSize();
     // Undo the breakpoints/media queries
-    const leftTwoColumnDisplay = twoColumnDisplay ? {
-      flex: '0 0 75%',
-      maxWidth: '75%',
-      position: 'relative',
-      // width: '100%',
-      paddingRight: '15px',
-      paddingLeft: '15px',
-    } : {};
+    // const leftTwoColumnDisplay = twoColumnDisplay ? {
+    //   flex: '0 0 75%',
+    //   maxWidth: '75%',
+    //   position: 'relative',
+    //   // width: '100%',
+    //   paddingRight: '15px',
+    //   paddingLeft: '15px',
+    // } : {};
 
     // Undo the breakpoints/media queries
-    const rightTwoColumnDisplay = twoColumnDisplay ? {
-      display: 'block !important',
-      flex: '0 0 25%',
-      maxWidth: '25%',
-      position: 'relative',
-      // width: '100%',
-      paddingRight: '15px',
-      paddingLeft: '15px',
-    } : {};
+    // const rightTwoColumnDisplay = twoColumnDisplay ? {
+    //   display: 'block !important',
+    //   flex: '0 0 25%',
+    //   maxWidth: '25%',
+    //   position: 'relative',
+    //   // width: '100%',
+    //   paddingRight: '15px',
+    //   paddingLeft: '15px',
+    // } : {};
 
     if (!ballotWithItemsFromCompletionFilterType) {
       return (
@@ -1281,7 +1281,7 @@ class Ballot extends Component {
       <div className="ballot_root">
         <Suspense fallback={<LoadingWheelComp />}>
           <SnackNotifier />
-          <DualHeaderContainer>
+          <DualHeaderContainer scrolledDown={scrolledDown}>
             <HeaderContentOuterContainer>
               <HeaderContentContainer>
                 <div className="container-fluid">
@@ -1293,7 +1293,7 @@ class Ballot extends Component {
                           electionName={electionName}
                           electionDayTextObject={electionDayTextObject}
                           toggleSelectBallotModal={this.toggleSelectBallotModal}
-                          scrolled={this.state.ballotHeaderUnpinned}
+                          scrolled={scrolledDown}
                         />
                       </header>
                       <BallotBottomWrapper>
@@ -1419,7 +1419,7 @@ class Ballot extends Component {
               <Wrapper padBottom={padBallotWindowBottomForCordova} id="ballotWrapper">
                 {/* eslint-disable-next-line no-nested-ternary */}
                 <div className={showBallotDecisionsTabs() ? 'row ballot__body' : isWebApp() || twoColumnDisplay ? 'row ballot__body__no-decision-tabs' : undefined}>
-                  <div className="col-sm-12 col-lg-12">
+                  <div className="col-12">
                     {(showAddressVerificationForm && (voterBallotItemsRetrieveHasReturned || !voterBallotItemsRetrieveHasBeenCalled)) && (
                       <EditAddressWrapper>
                         <EditAddressCard className="card">
@@ -1429,6 +1429,11 @@ class Ballot extends Component {
                         </EditAddressCard>
                       </EditAddressWrapper>
                     )}
+                    {ballotCaveat && (
+                      <BallotCaveatWrapper>
+                        {ballotCaveat}
+                      </BallotCaveatWrapper>
+                    )}
                     {emptyBallot}
                   </div>
                   {ballotWithItemsFromCompletionFilterType.length > 0 ? (
@@ -1437,7 +1442,7 @@ class Ballot extends Component {
                       googleCivicElectionId={this.state.googleCivicElectionId}
                     />
                   ) : null}
-                  <div className={twoColumnDisplay ? '' : 'col-sm-12 col-lg-9'} id="ballotRoute-topOfBallot" style={leftTwoColumnDisplay}>
+                  <div className="col-12" id="ballotRoute-topOfBallot">
                     {(isSearching && searchText) && (
                       <SearchTitle>
                         Searching for &quot;
@@ -1571,6 +1576,7 @@ class Ballot extends Component {
                     ) : null}
                   </div>
 
+                  {/*
                   <div className={twoColumnDisplay ? '' : 'col-lg-3 d-none d-lg-block sidebar-menu'} style={rightTwoColumnDisplay} id="rightColumnSidebar">
                     { ballotWithItemsFromCompletionFilterType.length > 5 && (
                       <BallotSideBar
@@ -1608,6 +1614,7 @@ class Ballot extends Component {
                       </div>
                     )}
                   </div>
+                  */}
                 </div>
               </Wrapper>
             </div>
@@ -1625,6 +1632,14 @@ Ballot.propTypes = {
 
 const BallotBottomWrapper = styled.div`
   width: 100%;
+`;
+
+const BallotCaveatWrapper = styled.div`
+  margin-bottom: 3px;
+  @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+  }
 `;
 
 const BallotListWrapper = styled.div`
@@ -1693,23 +1708,23 @@ const SearchTitle = styled.div`
   margin-bottom: 12px;
 `;
 
-const SectionDescription = styled.div`
-  color: #999;
-  font-size: 14px;
-  margin-bottom: 4px;
-`;
+// const SectionDescription = styled.div`
+//   color: #999;
+//   font-size: 14px;
+//   margin-bottom: 4px;
+// `;
 
-const SectionTitle = styled.h2`
-  width: fit-content;
-  font-weight: bolder;
-  font-size: 18px;
-  margin-bottom: 4px;
-  display: inline;
-`;
+// const SectionTitle = styled.h2`
+//   width: fit-content;
+//   font-weight: bolder;
+//   font-size: 18px;
+//   margin-bottom: 4px;
+//   display: inline;
+// `;
 
-const ValuesListWrapper = styled.div`
-  margin-bottom: 12px;
-`;
+// const ValuesListWrapper = styled.div`
+//   margin-bottom: 12px;
+// `;
 
 const Wrapper = styled.div`
   padding-top: ${({ padTop }) => padTop};

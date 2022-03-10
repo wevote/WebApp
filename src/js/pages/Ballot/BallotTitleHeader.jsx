@@ -63,7 +63,7 @@ class BallotTitleHeader extends Component {
                       {shortenText(electionName, 22)}
                     </span>
                     <span className="u-show-mobile-bigger-than-iphone5">
-                      {shortenText(electionName, 30)}
+                      {shortenText(electionName, 27)}
                     </span>
                     <span className="u-show-desktop-tablet">
                       {electionName}

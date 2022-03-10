@@ -3,6 +3,7 @@ import { getApplicationViewBooleans } from './applicationUtils';
 import { getAndroidSize, hasIPhoneNotch, isAndroid, isIOS, isIOSAppOnMac, isIPad, isIPadGiantSize, isIPhone4in, isIPhone4p7in, isIPhone5p5inEarly, isIPhone5p5inMini, isIPhone5p8in, isIPhone6p1in, isIPhone6p5in, isSimulator } from '../common/utils/cordovaUtils';
 import { isWebApp } from '../common/utils/isCordovaOrWebApp';
 import { pageEnumeration } from './cordovaUtilsPageEnumeration';
+import isMobileScreenSize from '../common/utils/isMobileScreenSize';
 import { normalizedHref } from '../common/utils/hrefUtils';
 import { cordovaOffsetLog } from '../common/utils/logging';
 
@@ -11,6 +12,12 @@ import { cordovaOffsetLog } from '../common/utils/logging';
 // This determines where the top of the "All", "Choices" and "Decided" tabs should start.
 export function cordovaBallotFilterTopMargin () {
   if (isWebApp()) {
+    if (isMobileScreenSize()) {
+      if (window.location.pathname.startsWith('/ballot')) {
+        return '30px';
+      }
+    }
+    // console.log('cordovaBallotFilterTopMargin window', window);
     return undefined;
   }
 

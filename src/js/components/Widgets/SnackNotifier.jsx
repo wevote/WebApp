@@ -62,17 +62,17 @@ class SnackNotifier extends Component {
       case 'error':
         return {
           color: 'white',
-          backgroundColor: 'red',
+          backgroundColor: '#313131',
         };
       case 'info':
         return {
           color: 'white',
-          backgroundColor: 'blue',
+          backgroundColor: '#313131',
         };
       case 'warning':
         return {
           color: 'white',
-          backgroundColor: 'orange',
+          backgroundColor: '#313131',
         };
       case 'success':
       default:
@@ -89,7 +89,7 @@ class SnackNotifier extends Component {
     const { open, message, severity, autoHideDuration } = this.state;
 
     if (!message || message.length === 0) return <></>;
-
+    // console.log('severity:', severity);
     return (
       <Snackbar
         anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
@@ -101,7 +101,12 @@ class SnackNotifier extends Component {
         }}
         classes={{ anchorOriginBottomCenter: classes.anchorOriginBottomCenter }}
       >
-        <Alert severity={severity} variant="standard" style={this.getStyles(severity)}>
+        <Alert
+          classes={{ root: classes.alertStyle }}
+          severity={severity}
+          style={this.getStyles(severity)}
+          variant="standard"
+        >
           {message}
         </Alert>
       </Snackbar>
@@ -113,6 +118,9 @@ SnackNotifier.propTypes = {
 };
 
 const styles = () => ({
+  alertStyle: {
+    zIndex: '9020 !important', // z-index: 9020
+  },
   anchorOriginBottomCenter: {
     bottom: snackOffset(),
   },
