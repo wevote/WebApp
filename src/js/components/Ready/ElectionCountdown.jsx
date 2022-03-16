@@ -1,14 +1,13 @@
 import { Button } from '@mui/material';
+import styled from '@mui/material/styles/styled';
 import PropTypes from 'prop-types';
 import React from 'react';
-import styled from '@mui/material/styles/styled';
 import BallotActions from '../../actions/BallotActions';
-import passBool from '../../common/utils/passBool';
-import BallotStore from '../../stores/BallotStore';
-import historyPush from '../../common/utils/historyPush';
 import { formatDateToMonthDayYear } from '../../common/utils/dateFormat';
+import historyPush from '../../common/utils/historyPush';
 import initializeMoment from '../../common/utils/initializeMoment';
 import { renderLog } from '../../common/utils/logging';
+import BallotStore from '../../stores/BallotStore';
 
 
 class ElectionCountdown extends React.Component {
@@ -198,30 +197,30 @@ class ElectionCountdown extends React.Component {
               <div>
                 <TimeFlex>
                   <TimeSection>
-                    <Time timestillloading={passBool(timeStillLoading)}>
+                    <Time timeStillLoading={timeStillLoading}>
                       {timeStillLoading ? <span>&ndash;</span> : days || '00'}
                     </Time>
                     <Small>
                       {days === '1' ? 'Day' : 'Days'}
                     </Small>
                   </TimeSection>
-                  <TimeSection><Time timestillloading={passBool(timeStillLoading)}>:</Time></TimeSection>
+                  <TimeSection><Time timeStillLoading={timeStillLoading}>:</Time></TimeSection>
                   <TimeSection>
-                    <Time timestillloading={passBool(timeStillLoading)}>
+                    <Time timeStillLoading={timeStillLoading}>
                       {timeStillLoading ? <span>&ndash;</span> : hours || '00'}
                     </Time>
                     <Small>Hours</Small>
                   </TimeSection>
-                  <TimeSection><Time timestillloading={passBool(timeStillLoading)}>:</Time></TimeSection>
+                  <TimeSection><Time timeStillLoading={timeStillLoading}>:</Time></TimeSection>
                   <TimeSection>
-                    <Time timestillloading={passBool(timeStillLoading)}>
+                    <Time timeStillLoading={timeStillLoading}>
                       {timeStillLoading ? <span>&ndash;</span> : minutes || '00'}
                     </Time>
                     <Small>Minutes</Small>
                   </TimeSection>
-                  <TimeSection><Time timestillloading={passBool(timeStillLoading)}>:</Time></TimeSection>
+                  <TimeSection><Time timeStillLoading={timeStillLoading}>:</Time></TimeSection>
                   <TimeSection>
-                    <Time timestillloading={passBool(timeStillLoading)}>
+                    <Time timeStillLoading={timeStillLoading}>
                       {timeStillLoading ? <span>&ndash;</span> : seconds || '00'}
                     </Time>
                     <Small>Seconds</Small>
@@ -229,7 +228,7 @@ class ElectionCountdown extends React.Component {
                 </TimeFlex>
               </div>
               <div>
-                <CardSubTitle center="true" desktopmode="true">
+                <CardSubTitle center desktopMode>
                   {(electionDateMDY) ? (
                     <>
                       until your next election on
@@ -259,7 +258,7 @@ class ElectionCountdown extends React.Component {
               </CardTitleToday>
             </div>
             <div>
-              <CardSubTitle center="true">
+              <CardSubTitle center>
                 {(electionDateMDY) ? (
                   <>
                     Your election is today
@@ -287,7 +286,7 @@ class ElectionCountdown extends React.Component {
                 </TimeFlex>
               </div>
               <div>
-                <CardSubTitle center="true" desktopmode="true">
+                <CardSubTitle center desktopMode>
                   {(electionDateMDY) ? (
                     <>
                       Your election is today
@@ -317,7 +316,7 @@ class ElectionCountdown extends React.Component {
               </CardTitlePast>
             </div>
             <div>
-              <CardSubTitle center="true">
+              <CardSubTitle center>
                 {(electionDateMDY) ? (
                   <>
                     This election was held on
@@ -345,7 +344,7 @@ class ElectionCountdown extends React.Component {
                 </TimeFlex>
               </div>
               <div>
-                <CardSubTitle center="true" desktopmode="true">
+                <CardSubTitle center desktopMode>
                   {(electionDateMDY) ? (
                     <>
                       This election was on
@@ -434,23 +433,25 @@ const CardTitlePast = styled('h1')`
   }
 `;
 
-const CardSubTitle = styled('h3')`
-  font-size: ${(props) => (props.desktopmode ? '18px' : '22px')};
+const CardSubTitle = styled('h3', {
+  shouldForwardProp: (prop) => !['desktopMode', 'center'].includes(prop),
+})(({ desktopMode, center, theme }) => (`
+  font-size: ${desktopMode ? '18px' : '22px'};
   font-weight: 700;
   color: #2E3C5D !important;
   // width: fit-content;
   margin-bottom: 0 !important;
-  margin-top: ${(props) => (props.desktopmode ? '24px' : null)};
+  margin-top: ${desktopMode ? '24px' : null};
   width: 100%;
-  text-align: ${(props) => (props.center ? 'center' : 'left')};
+  text-align: ${center ? 'center' : 'left'};
   // border-bottom: 1px solid #2E3C5D;
-  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+  @media (max-width: ${theme.breakpoints.values.md}) {
     font-size: 14px;
   }
-  @media (max-width: ${({ theme }) => theme.breakpoints.xs}) {
+  @media (max-width: ${theme.breakpoints.values.xs}) {
     font-size: 13px;
   }
-`;
+`));
 
 const DaysFindingText = styled('div')`
   color: #ccc;
@@ -478,12 +479,14 @@ const TimeSection = styled('div')`
   color: #2E3C5D !important;
 `;
 
-const Time = styled('h1')`
-  ${(props) => (props.timestillloading ? 'color: #ccc;' : '')}
+const Time = styled('h1', {
+  shouldForwardProp: (prop) => !['timeStillLoading'].includes(prop),
+})(({ timeStillLoading }) => (`
+  ${timeStillLoading ? 'color: #ccc;' : ''}
   font-size: 60px !important;
   font-weight: 800 !important;
   margin: 0;
-`;
+`));
 
 const Small = styled('small')`
   font-size: 18px !important;

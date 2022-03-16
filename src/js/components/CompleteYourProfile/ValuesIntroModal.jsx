@@ -1,17 +1,17 @@
+import { Close } from '@mui/icons-material';
 import { Button, Dialog, DialogContent, IconButton } from '@mui/material';
+import styled from '@mui/material/styles/styled';
 import withStyles from '@mui/styles/withStyles';
 import withTheme from '@mui/styles/withTheme';
-import { Close } from '@mui/icons-material';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
-import styled from '@mui/material/styles/styled';
 import IssueActions from '../../actions/IssueActions';
 import VoterActions from '../../actions/VoterActions';
+import { hasIPhoneNotch } from '../../common/utils/cordovaUtils';
+import { renderLog } from '../../common/utils/logging';
 import VoterConstants from '../../constants/VoterConstants';
 import IssueStore from '../../stores/IssueStore';
 import VoterStore from '../../stores/VoterStore';
-import { hasIPhoneNotch } from '../../common/utils/cordovaUtils';
-import { renderLog } from '../../common/utils/logging';
 
 const FriendInvitationOnboardingValuesList = React.lazy(() => import(/* webpackChunkName: 'FriendInvitationOnboardingValuesList' */ '../Values/FriendInvitationOnboardingValuesList'));
 
@@ -77,7 +77,8 @@ class ValuesIntroModal extends Component {
             className={classes.closeButton}
             onClick={this.closeThisModal}
             id="closeValuesIntroModal"
-            size="large">
+            size="large"
+          >
             <Close />
           </IconButton>
         </ModalTitleArea>

@@ -1,11 +1,11 @@
-import { Button, Dialog, DialogContent, FormControl, FormControlLabel, IconButton, OutlinedInput, Radio, RadioGroup } from '@mui/material';
-import withStyles from '@mui/styles/withStyles';
-import withTheme from '@mui/styles/withTheme';
 import { ArrowBack, ArrowBackIos, Close } from '@mui/icons-material';
-import PropTypes from 'prop-types';
-import React, { Component, Suspense } from 'react';
+import { Button, Dialog, DialogContent, FormControl, FormControlLabel, IconButton, OutlinedInput, Radio, RadioGroup } from '@mui/material';
 // TODO 5/11/21: import { Elements, StripeProvider } from 'react-stripe-elements';
 import styled from '@mui/material/styles/styled';
+import withStyles from '@mui/styles/withStyles';
+import withTheme from '@mui/styles/withTheme';
+import PropTypes from 'prop-types';
+import React, { Component, Suspense } from 'react';
 import DonateActions from '../../common/actions/DonateActions';
 // TODO 5/11/21: import webAppConfig from '../../config';
 import DonateStore from '../../common/stores/DonateStore';
@@ -13,7 +13,6 @@ import { hasIPhoneNotch, isIOS } from '../../common/utils/cordovaUtils';
 import extractNumber from '../../common/utils/extractNumber';
 import { normalizedHref } from '../../common/utils/hrefUtils';
 import { renderLog } from '../../common/utils/logging';
-import passBool from '../../common/utils/passBool';
 import { numberWithCommas, stringContains } from '../../utils/textFormat';
 // TODO 5/11/21: import SettingsStripePayment from './SettingsStripePayment';
 
@@ -636,7 +635,7 @@ class PaidAccountUpgradeModal extends Component {
                 </Suspense>
               ) : (
                 <>
-                  <Fieldset disabledMode={passBool(radioGroupValue !== 'annualPlanRadio')}>
+                  <Fieldset disabledMode={(radioGroupValue !== 'annualPlanRadio')}>
                     <FormControl classes={{ root: classes.formControl }}>
                       <RadioGroup
                         name="planRadioGroup"
@@ -661,7 +660,7 @@ class PaidAccountUpgradeModal extends Component {
                       </RadioGroup>
                     </FormControl>
                   </Fieldset>
-                  <Fieldset disabledMode={passBool(radioGroupValue !== 'monthlyPlanRadio')}>
+                  <Fieldset disabledMode={(radioGroupValue !== 'monthlyPlanRadio')}>
                     <FormControl classes={{ root: classes.formControl }}>
                       <RadioGroup
                         name="planRadioGroup"
@@ -818,7 +817,7 @@ class PaidAccountUpgradeModal extends Component {
                   </Suspense>
                 ) : (
                   <>
-                    <Fieldset disabledMode={passBool(radioGroupValue !== 'annualPlanRadio')}>
+                    <Fieldset disabledMode={(radioGroupValue !== 'annualPlanRadio')}>
                       <Legend>
                         Billed Yearly
                       </Legend>
@@ -845,7 +844,7 @@ class PaidAccountUpgradeModal extends Component {
                         </RadioGroup>
                       </FormControl>
                     </Fieldset>
-                    <Fieldset disabledmode={passBool(radioGroupValue !== 'monthlyPlanRadio')}>
+                    <Fieldset disabledMode={(radioGroupValue !== 'monthlyPlanRadio')}>
                       <Legend>
                         Billed Monthly
                       </Legend>
@@ -1015,7 +1014,7 @@ class PaidAccountUpgradeModal extends Component {
         open={this.props.show}
         onClose={() => { this.props.toggleFunction(pathname); }}
       >
-        <ModalTitleArea noboxshadowmode={passBool(paidAccountProcessStep !== 'choosePlan')}>
+        <ModalTitleArea noBoxShadowMode={(paidAccountProcessStep !== 'choosePlan')}>
           {backToButton}
           <Title>
             {modalTitle}
@@ -1025,7 +1024,8 @@ class PaidAccountUpgradeModal extends Component {
             className={classes.closeButton}
             onClick={this.closePaidAccountUpgradeModal}
             id="profileClosePaidAccountUpgradeModal"
-            size="large">
+            size="large"
+          >
             <Close />
           </IconButton>
         </ModalTitleArea>
@@ -1261,24 +1261,26 @@ const ButtonsContainer = styled('div')`
   margin-top: 12px;
 `;
 
-const ModalTitleArea = styled('div')`
+const ModalTitleArea = styled('div', {
+  shouldForwardProp: (prop) => !['noBoxShadowMode'].includes(prop),
+})(({ noBoxShadowMode }) => (`
   width: 100%;
   padding: 12px 12px 4px 12px;
-  ${({ noboxshadowmode }) => ((noboxshadowmode) ? '' : 'box-shadow: 0 20px 40px -25px #999')};
+  ${noBoxShadowMode ? '' : 'box-shadow: 0 20px 40px -25px #999'};
   z-index: 999;
   @media (min-width: 769px) {
     text-align: center;
-    ${({ noboxshadowmode }) => ((noboxshadowmode) ? '' : 'box-shadow: none')};
+    ${noBoxShadowMode ? '' : 'box-shadow: none'};
     border-bottom: 2px solid #f7f7f7;
   }
-  ${({ noboxshadowmode }) => ((noboxshadowmode) ? '@media (max-width: 376px) {\n    padding: 8px 6px;\n  }' : '')}
-`;
+  ${noBoxShadowMode ? '@media (max-width: 376px) {\n    padding: 8px 6px;\n  }' : ''}
+`));
 
 const MobilePricingPlanName = styled('span')`
   color: ${({ theme }) => theme.colors.main};
   font-size: 18px;
   font-weight: bold;
-  v-align: middle;
+  vertical-align: middle;
   position: relative;
   top: 16.8px;
   float: right;
@@ -1356,17 +1358,19 @@ const WrapperRight = styled('div')`
   margin-top: 32px;
 `;
 
-const Fieldset = styled('fieldset')`
-  border: 2px solid ${({ disabledmode, theme }) => ((disabledmode) ? '#ddd' : theme.colors.main)};
+const Fieldset = styled('fieldset', {
+  shouldForwardProp: (prop) => !['disabledMode'].includes(prop),
+})(({ disabledMode, theme }) => (`
+  border: 2px solid ${disabledMode ? '#ddd' : theme.colors.main};
   border-radius: 3px;
   margin-bottom: 16px;
   padding-bottom: 0;
   background: white;
   @media (min-width: 769px) {
     height: 76px;
-    ${({ disabledmode }) => ((disabledmode) ? 'margin-bottom: 12px' : '')};
+    ${disabledMode ? 'margin-bottom: 12px' : ''};
   }
-`;
+`));
 
 const Legend = styled('legend')`
   color: ${({ theme }) => theme.colors.main};
@@ -1374,7 +1378,7 @@ const Legend = styled('legend')`
   text-align: left;
   margin: 0;
   margin-left: 16px;
-  padding: 0px 8px;
+  padding: 0 8px;
   width: fit-content;
 `;
 

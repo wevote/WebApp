@@ -1,11 +1,11 @@
+import styled from '@mui/material/styles/styled';
 import withTheme from '@mui/styles/withTheme';
 import React, { Component, Suspense } from 'react';
-import styled from '@mui/material/styles/styled';
 import IssueActions from '../../actions/IssueActions';
-import IssueStore from '../../stores/IssueStore';
-import VoterStore from '../../stores/VoterStore';
 import historyPush from '../../common/utils/historyPush';
 import { renderLog } from '../../common/utils/logging';
+import IssueStore from '../../stores/IssueStore';
+import VoterStore from '../../stores/VoterStore';
 import IssueCardCompressed from './IssueCardCompressed';
 
 const ShowMoreFooter = React.lazy(() => import(/* webpackChunkName: 'ShowMoreFooter' */ '../Navigation/ShowMoreFooter'));

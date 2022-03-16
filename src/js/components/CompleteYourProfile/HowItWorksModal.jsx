@@ -46,7 +46,8 @@ class HowItWorksModal extends Component {
             className={classes.closeButton}
             onClick={this.closeHowItWorksModal}
             id="profileCloseHowItWorksModal"
-            size="large">
+            size="large"
+          >
             <Close />
           </IconButton>
         </ModalTitleArea>

@@ -1,9 +1,9 @@
-import { createTheme, adaptV4Theme } from '@mui/material/styles';
+import { createTheme } from '@mui/material/styles';
 
 export function campaignTheme (topNav, heightOfBar) {
   const defaultTheme = createTheme();
 
-  return createTheme(adaptV4Theme({
+  return createTheme({
     typography: {
       button: {
         textTransform: 'none',
@@ -53,7 +53,7 @@ export function campaignTheme (topNav, heightOfBar) {
         },
       },
     },
-  }));
+  });
 }
 
 export function dummy () {

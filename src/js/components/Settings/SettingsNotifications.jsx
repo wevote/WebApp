@@ -1,17 +1,17 @@
-import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
-import withStyles from '@mui/styles/withStyles';
 import { MailOutline, Notifications, Settings } from '@mui/icons-material';
+import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
+import styled from '@mui/material/styles/styled';
+import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import Helmet from 'react-helmet';
-import styled from '@mui/material/styles/styled';
 import AnalyticsActions from '../../actions/AnalyticsActions';
 import VoterActions from '../../actions/VoterActions';
+import LoadingWheel from '../../common/components/Widgets/LoadingWheel';
+import { renderLog } from '../../common/utils/logging';
 import webAppConfig from '../../config';
 import VoterConstants from '../../constants/VoterConstants';
 import VoterStore from '../../stores/VoterStore';
-import { renderLog } from '../../common/utils/logging';
-import LoadingWheel from '../../common/components/Widgets/LoadingWheel';
 // import { PhoneAndroid } from '@mui/icons-material';
 import BrowserPushMessage from '../Widgets/BrowserPushMessage';
 import { openSnackbar } from '../Widgets/SnackNotifier';
@@ -544,7 +544,7 @@ const AddNewEmailWrapper = styled('div')`
 `;
 
 const ColumnIcon = styled('div')`
-  margin-bottom: 0px !important;
+  margin-bottom: 0 !important;
 `;
 
 const ColumnLabel = styled('div')`

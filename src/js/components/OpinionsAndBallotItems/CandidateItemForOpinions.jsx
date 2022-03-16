@@ -1,16 +1,16 @@
+import { Twitter } from '@mui/icons-material';
+import styled from '@mui/material/styles/styled';
 import withStyles from '@mui/styles/withStyles';
 import withTheme from '@mui/styles/withTheme';
-import { Twitter } from '@mui/icons-material';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
 import { Link } from 'react-router-dom';
-import styled from '@mui/material/styles/styled';
+import historyPush from '../../common/utils/historyPush';
+import { isCordova } from '../../common/utils/isCordovaOrWebApp';
+import { renderLog } from '../../common/utils/logging';
+import normalizedImagePath from '../../common/utils/normalizedImagePath';
 import CandidateStore from '../../stores/CandidateStore';
 import SupportStore from '../../stores/SupportStore';
-import { isCordova } from '../../common/utils/isCordovaOrWebApp';
-import normalizedImagePath from '../../common/utils/normalizedImagePath';
-import historyPush from '../../common/utils/historyPush';
-import { renderLog } from '../../common/utils/logging';
 import { abbreviateNumber, numberWithCommas } from '../../utils/textFormat';
 import ItemPositionStatementActionBar from '../Widgets/ItemPositionStatementActionBar';
 

@@ -1,9 +1,9 @@
+import styled from '@mui/material/styles/styled';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
-import styled from '@mui/material/styles/styled';
+import { renderLog } from '../../common/utils/logging';
 import CandidateStore from '../../stores/CandidateStore';
 import MeasureStore from '../../stores/MeasureStore';
-import { renderLog } from '../../common/utils/logging';
 import { stringContains } from '../../utils/textFormat';
 import EndorsementCard from '../Widgets/EndorsementCard';
 import { openSnackbar } from '../Widgets/SnackNotifier';

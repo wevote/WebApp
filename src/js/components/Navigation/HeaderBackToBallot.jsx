@@ -1,13 +1,19 @@
-import { IconButton } from '@mui/material';
-import withStyles from '@mui/styles/withStyles';
 import { AccountCircle } from '@mui/icons-material';
+import { IconButton } from '@mui/material';
+import styled from '@mui/material/styles/styled';
+import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
-import styled from '@mui/material/styles/styled';
 import OrganizationActions from '../../actions/OrganizationActions';
 import VoterGuideActions from '../../actions/VoterGuideActions';
 import VoterSessionActions from '../../actions/VoterSessionActions';
 import LazyImage from '../../common/components/LazyImage';
+import { isIOSAppOnMac, isIPad, isIPadGiantSize } from '../../common/utils/cordovaUtils';
+import historyPush from '../../common/utils/historyPush';
+import { normalizedHref, normalizedHrefPage } from '../../common/utils/hrefUtils';
+import { isCordova, isWebApp } from '../../common/utils/isCordovaOrWebApp';
+import { renderLog } from '../../common/utils/logging';
+import voterPhoto from '../../common/utils/voterPhoto';
 import AppObservableStore, { messageService } from '../../stores/AppObservableStore';
 import CandidateStore from '../../stores/CandidateStore';
 import MeasureStore from '../../stores/MeasureStore';
@@ -16,15 +22,9 @@ import OrganizationStore from '../../stores/OrganizationStore';
 import VoterStore from '../../stores/VoterStore';
 import { dumpCssFromId } from '../../utils/appleSiliconUtils';
 import { avatarGeneric } from '../../utils/applicationUtils';
-import { isIOSAppOnMac, isIPad, isIPadGiantSize } from '../../common/utils/cordovaUtils';
-import { isCordova, isWebApp } from '../../common/utils/isCordovaOrWebApp';
-import historyPush from '../../common/utils/historyPush';
-import { normalizedHref, normalizedHrefPage } from '../../common/utils/hrefUtils';
-import { renderLog } from '../../common/utils/logging';
-import { AppBarForBackTo, OfficeShareWrapper, TopOfPageHeader, TopRowOneLeftContainer, TopRowOneMiddleContainer, TopRowOneRightContainer, TopRowTwoLeftContainer, TopRowTwoRightContainer } from '../Style/pageLayoutStyles';
 import { shortenText, stringContains } from '../../utils/textFormat';
-import voterPhoto from '../../common/utils/voterPhoto';
 import ShareButtonDesktopTablet from '../Share/ShareButtonDesktopTablet';
+import { AppBarForBackTo, OfficeShareWrapper, TopOfPageHeader, TopRowOneLeftContainer, TopRowOneMiddleContainer, TopRowOneRightContainer, TopRowTwoLeftContainer, TopRowTwoRightContainer } from '../Style/pageLayoutStyles';
 import SignInButton from '../Widgets/SignInButton';
 import HeaderBackToButton from './HeaderBackToButton';
 
@@ -817,7 +817,8 @@ class HeaderBackToBallot extends Component {
                       classes={{ root: classes.iconButtonRoot }}
                       id="profileAvatarHeaderBar"
                       onClick={this.toggleProfilePopUp}
-                      size="large">
+                      size="large"
+                    >
                       <FirstNameWrapper>
                         {shortenText(voterFirstName, 9)}
                       </FirstNameWrapper>

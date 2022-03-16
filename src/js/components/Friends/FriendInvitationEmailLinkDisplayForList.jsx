@@ -1,14 +1,14 @@
 import { Button } from '@mui/material';
+import styled from '@mui/material/styles/styled';
 import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
 import { Link } from 'react-router-dom';
-import styled from '@mui/material/styles/styled';
 import FriendActions from '../../actions/FriendActions';
+import { renderLog } from '../../common/utils/logging';
 import VoterStore from '../../stores/VoterStore';
 import Avatar from '../Style/avatarStyles';
 import { CancelButtonWrapper, FriendButtonsWrapper, FriendColumnWithoutButtons, FriendDisplayOuterWrapper } from '../Style/friendStyles';
-import { renderLog } from '../../common/utils/logging';
 import FriendDetails from './FriendDetails';
 
 const ImageHandler = React.lazy(() => import(/* webpackChunkName: 'ImageHandler' */ '../ImageHandler'));

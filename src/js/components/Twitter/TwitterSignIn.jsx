@@ -2,15 +2,15 @@ import { Twitter } from '@mui/icons-material';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import TwitterActions from '../../actions/TwitterActions';
-import webAppConfig from '../../config';
-import Cookies from '../../common/utils/js-cookie/Cookies';
+import SplitIconButton from '../../common/components/Widgets/SplitIconButton';
 import { cordovaOpenSafariView, isAndroid, isIOS } from '../../common/utils/cordovaUtils';
-import { isWebApp } from '../../common/utils/isCordovaOrWebApp';
 import historyPush from '../../common/utils/historyPush';
+import { isWebApp } from '../../common/utils/isCordovaOrWebApp';
+import Cookies from '../../common/utils/js-cookie/Cookies';
 import { oAuthLog, renderLog } from '../../common/utils/logging';
+import webAppConfig from '../../config';
 import $ajax from '../../utils/service';
 import { shortenText } from '../../utils/textFormat';
-import SplitIconButton from '../../common/components/Widgets/SplitIconButton';
 
 const returnURL = `${webAppConfig.WE_VOTE_URL_PROTOCOL + webAppConfig.WE_VOTE_HOSTNAME}/twitter_sign_in`;
 

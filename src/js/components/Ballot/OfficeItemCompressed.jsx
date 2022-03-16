@@ -1,21 +1,21 @@
+import styled from '@mui/material/styles/styled';
 import withStyles from '@mui/styles/withStyles';
 import withTheme from '@mui/styles/withTheme';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
-import styled from '@mui/material/styles/styled';
 import OfficeActions from '../../actions/OfficeActions';
+import historyPush from '../../common/utils/historyPush';
+import { isCordova } from '../../common/utils/isCordovaOrWebApp';
+import { renderLog } from '../../common/utils/logging';
+import normalizedImagePath from '../../common/utils/normalizedImagePath';
 import AppObservableStore from '../../stores/AppObservableStore';
 import BallotStore from '../../stores/BallotStore';
 import CandidateStore from '../../stores/CandidateStore';
 import SupportStore from '../../stores/SupportStore';
-import { isCordova } from '../../common/utils/isCordovaOrWebApp';
-import normalizedImagePath from '../../common/utils/normalizedImagePath';
-import historyPush from '../../common/utils/historyPush';
-import { renderLog } from '../../common/utils/logging';
 import { sortCandidateList } from '../../utils/positionFunctions';
 import { toTitleCase } from '../../utils/textFormat';
-import PositionRowList from './PositionRowList';
 import signInModalGlobalState from '../Widgets/signInModalGlobalState';
+import PositionRowList from './PositionRowList';
 
 const BallotItemSupportOpposeCountDisplay = React.lazy(() => import(/* webpackChunkName: 'BallotItemSupportOpposeCountDisplay' */ '../Widgets/BallotItemSupportOpposeCountDisplay'));
 const DelayedLoad = React.lazy(() => import(/* webpackChunkName: 'DelayedLoad' */ '../../common/components/Widgets/DelayedLoad'));
@@ -215,7 +215,7 @@ class OfficeItemCompressed extends Component {
   }
 
   generateCandidates () {
-    const { externalUniqueId, theme } = this.props;
+    const { externalUniqueId } = this.props;
     let { candidatesToShowForSearchResults } = this.props;
     candidatesToShowForSearchResults = candidatesToShowForSearchResults || [];
     const { candidateList, numberOfCandidatesToDisplay } = this.state;
@@ -238,10 +238,7 @@ class OfficeItemCompressed extends Component {
               <CandidateContainer
                 key={`candidate_preview-${oneCandidate.we_vote_id}-${externalUniqueId}`}
               >
-                <CandidateInfo
-                  brandblue={theme.palette.primary.main}
-                  /* numberOfCandidatesInList={candidatesToRender.length} */
-                >
+                <CandidateInfo>
                   <CandidateTopRow>
                     <Candidate
                       id={`officeItemCompressedCandidateImageAndName-${oneCandidate.we_vote_id}-${externalUniqueId}`}
@@ -444,7 +441,7 @@ const CandidateContainer = styled('div')`
   padding: 10px;
 `;
 
-const CandidateInfo = styled('div')`
+const CandidateInfo = styled('div')(({ theme }) => (`
   // background-color: #f8f8f8;
   border: 1px solid #fff;
   display: block;
@@ -453,26 +450,23 @@ const CandidateInfo = styled('div')`
   padding: 8px !important;
   transition: all 200ms ease-in;
   max-width: 320px;
-  @media (max-width: ${({ theme }) => theme.breakpoints.xs}) {
+  [theme.breakpoints.down('sm')]: {
     width: 100%;
   }
-  @media (min-width: ${({ theme }) => theme.breakpoints.xs}) {
+  [theme.breakpoints.up('sm')]: {
     min-width: 320px;
   }
   &:hover {
-    border: 1px solid ${(props) => (props.brandblue)};
+    border: 1px solid ${theme.palette.primary.main};
   }
-  @media (min-width: ${({ theme }) => theme.breakpoints.md}) {
-    // position: relative;
-  }
-  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+  [theme.breakpoints.up('md')]: {
     padding: 8px 8px 4px 8px !important;
     // flex-flow: column;
   }
-  @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
+  [theme.breakpoints.down('sm')]: {
     // flex-flow: column;
   }
-`;
+`));
 
 const CandidateName = styled('h4')`
   color: #4371cc;
@@ -508,7 +502,7 @@ const ItemActionBarWrapper = styled('div')`
 
 const OfficeItemCompressedWrapper = styled('div')`
   border: 1px solid #fff;
-  padding: 16px 16px 0px;
+  padding: 16px 16px 0;
   font-size: 14px;
   position: relative;
   @include print {
@@ -524,19 +518,17 @@ const PositionRowListWrapper = styled('div')`
   margin-top: 10px;
   max-width: 570px !important;
   overflow: hidden;
-  //overflow-x: hidden;
-  //overflow-y: hidden;
 `;
 
-const Title = styled('h2')`
+const Title = styled('h2')(({ theme }) => (`
   font-weight: bold;
   font-size: 18px;
   margin-bottom: 6px;
   width: fit-content;
-  @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
+  ${[theme.breakpoints.down('md')]}: {
     font-size: 16px;
     margin-bottom: 2px;
   }
-`;
+`));
 
 export default withTheme(withStyles(styles)(OfficeItemCompressed));

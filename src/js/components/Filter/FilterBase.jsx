@@ -1,9 +1,9 @@
-import { Badge } from '@mui/material';
-import withStyles from '@mui/styles/withStyles';
 import { FilterList } from '@mui/icons-material';
+import { Badge } from '@mui/material';
+import styled from '@mui/material/styles/styled';
+import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
 import React, { Suspense } from 'react';
-import styled from '@mui/material/styles/styled';
 import { getAllStateCodeFilters } from '../../common/utils/addressFunctions';
 import { isWebApp } from '../../common/utils/isCordovaOrWebApp';
 import { renderLog } from '../../common/utils/logging';

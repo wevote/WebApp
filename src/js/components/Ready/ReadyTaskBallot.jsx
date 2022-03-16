@@ -1,19 +1,18 @@
+import { ArrowForward, CheckCircle } from '@mui/icons-material';
+import styled from '@mui/material/styles/styled';
 import withStyles from '@mui/styles/withStyles';
 import withTheme from '@mui/styles/withTheme';
-import { ArrowForward, CheckCircle } from '@mui/icons-material';
 import PropTypes from 'prop-types';
 import React from 'react';
-import styled from '@mui/material/styles/styled';
 import BallotActions from '../../actions/BallotActions';
-import passBool from '../../common/utils/passBool';
+import historyPush from '../../common/utils/historyPush';
+import { renderLog } from '../../common/utils/logging';
+import normalizedImagePath from '../../common/utils/normalizedImagePath';
 import VoterConstants from '../../constants/VoterConstants';
 import AppObservableStore from '../../stores/AppObservableStore';
 import BallotStore from '../../stores/BallotStore';
 import SupportStore from '../../stores/SupportStore';
 import VoterStore from '../../stores/VoterStore';
-import normalizedImagePath from '../../common/utils/normalizedImagePath';
-import historyPush from '../../common/utils/historyPush';
-import { renderLog } from '../../common/utils/logging';
 import { ButtonLeft, ButtonText, Icon, PercentComplete, ReadyCard, StyledButton, StyledCheckbox, StyledCheckboxCompleted, TitleRowWrapper } from './ReadyTaskStyles';
 import ShowMoreButtons from './ShowMoreButtons';
 
@@ -430,7 +429,7 @@ class ReadyTaskBallot extends React.Component {
       />
     );
     return (
-      <ReadyCard showprogresscolor={passBool(percentCompleted > 0)} className="card">
+      <ReadyCard showprogresscolor={percentCompleted > 0} className="card">
         <Icon className="u-cursor--pointer" onClick={this.goToBallot}>
           {completedIcon}
         </Icon>
@@ -445,7 +444,7 @@ class ReadyTaskBallot extends React.Component {
             <PercentComplete
               className="u-cursor--pointer"
               onClick={() => this.showMoreButtonsLink()}
-              showprogresscolor={passBool(percentCompleted > 0)}
+              showprogresscolor={percentCompleted > 0}
             >
               {percentCompleted}
               %

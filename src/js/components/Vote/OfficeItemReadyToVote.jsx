@@ -1,12 +1,12 @@
 import { Avatar } from '@mui/material';
+import styled from '@mui/material/styles/styled';
 import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
-import styled from '@mui/material/styles/styled';
-import SupportStore from '../../stores/SupportStore';
-import VoterGuideStore from '../../stores/VoterGuideStore';
 import { isCordova } from '../../common/utils/isCordovaOrWebApp';
 import { renderLog } from '../../common/utils/logging';
+import SupportStore from '../../stores/SupportStore';
+import VoterGuideStore from '../../stores/VoterGuideStore';
 import { toTitleCase } from '../../utils/textFormat';
 
 const ImageHandler = React.lazy(() => import(/* webpackChunkName: 'ImageHandler' */ '../ImageHandler'));

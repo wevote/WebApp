@@ -1,20 +1,20 @@
-import { Badge, IconButton, Menu, MenuItem } from '@mui/material';
-import withStyles from '@mui/styles/withStyles';
 import { Notifications } from '@mui/icons-material';
+import { Badge, IconButton, Menu, MenuItem } from '@mui/material';
+import styled from '@mui/material/styles/styled';
+import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
-import styled from '@mui/material/styles/styled';
 import ActivityActions from '../../actions/ActivityActions';
-import ActivityStore from '../../stores/ActivityStore';
-import { createDescriptionOfFriendPosts } from '../../utils/activityUtils';
 import apiCalming from '../../common/utils/apiCalming';
 import { isIOSAppOnMac, setIconBadgeMessageCount } from '../../common/utils/cordovaUtils';
-import { isWebApp } from '../../common/utils/isCordovaOrWebApp';
-import historyPush from '../../common/utils/historyPush';
 import { timeFromDate } from '../../common/utils/dateFormat';
+import historyPush from '../../common/utils/historyPush';
+import { isWebApp } from '../../common/utils/isCordovaOrWebApp';
 import { renderLog } from '../../common/utils/logging';
 import returnFirstXWords from '../../common/utils/returnFirstXWords';
+import ActivityStore from '../../stores/ActivityStore';
 import VoterStore from '../../stores/VoterStore';
+import { createDescriptionOfFriendPosts } from '../../utils/activityUtils';
 
 const ImageHandler = React.lazy(() => import(/* webpackChunkName: 'ImageHandler' */ '../ImageHandler'));
 
@@ -268,7 +268,8 @@ class HeaderNotificationMenu extends Component {
           classes={menuOpen ? { root: classes.iconButtonRootSelected } : { root: classes.iconButtonRoot }}
           id="headerNotificationMenuIcon"
           onClick={this.handleClick}
-          size="large">
+          size="large"
+        >
           {allActivityNoticesNotSeenCount ? (
             <Badge
               badgeContent={<BadgeCountWrapper>{allActivityNoticesNotSeenCount}</BadgeCountWrapper>}

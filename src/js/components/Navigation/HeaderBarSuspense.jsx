@@ -1,7 +1,7 @@
-import React from 'react';
 import styled from '@mui/material/styles/styled';
-import getHeaderObjects from '../../utils/getHeaderObjects';
+import React from 'react';
 import { renderLog } from '../../common/utils/logging';
+import getHeaderObjects from '../../utils/getHeaderObjects';
 
 function SmallCloud (params) {
   const styleObj = {

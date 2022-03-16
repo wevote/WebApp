@@ -5,11 +5,11 @@ import React, { Component, Suspense } from 'react';
 import { Link } from 'react-router-dom';
 import FriendActions from '../../actions/FriendActions';
 import { renderLog } from '../../common/utils/logging';
+import { removeTwitterNameFromDescription } from '../../utils/textFormat';
 import Avatar from '../Style/avatarStyles';
 import { CancelButtonWrapper, FriendButtonsWrapper, FriendColumnWithoutButtons, FriendDisplayOuterWrapper } from '../Style/friendStyles';
-import { removeTwitterNameFromDescription } from '../../utils/textFormat';
-import SuggestedFriendToggle from './SuggestedFriendToggle';
 import FriendDetails from './FriendDetails';
+import SuggestedFriendToggle from './SuggestedFriendToggle';
 
 const ImageHandler = React.lazy(() => import(/* webpackChunkName: 'ImageHandler' */ '../ImageHandler'));
 

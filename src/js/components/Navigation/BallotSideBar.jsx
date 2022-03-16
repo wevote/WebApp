@@ -1,10 +1,10 @@
 import { List, Typography } from '@mui/material';
+import styled from '@mui/material/styles/styled';
 import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import styled from '@mui/material/styles/styled';
-import BallotStore from '../../stores/BallotStore';
 import { renderLog } from '../../common/utils/logging';
+import BallotStore from '../../stores/BallotStore';
 import BallotSideBarLink from './BallotSideBarLink';
 import BallotSummaryAccordion from './BallotSummaryAccordion';
 

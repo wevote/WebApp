@@ -2,10 +2,10 @@ import { Twitter } from '@mui/icons-material';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
 import { Link } from 'react-router-dom';
-import CandidateStore from '../../stores/CandidateStore';
-import VoterGuideStore from '../../stores/VoterGuideStore';
 import historyPush from '../../common/utils/historyPush';
 import { renderLog } from '../../common/utils/logging';
+import CandidateStore from '../../stores/CandidateStore';
+import VoterGuideStore from '../../stores/VoterGuideStore';
 import { abbreviateNumber, numberWithCommas } from '../../utils/textFormat';
 import ParsedTwitterDescription from '../Twitter/ParsedTwitterDescription';
 

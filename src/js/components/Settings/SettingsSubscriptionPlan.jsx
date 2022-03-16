@@ -1,22 +1,19 @@
-// import { ArrowBackIos } from '@mui/icons-material';
-// import { Edit } from '@mui/icons-material';
-
-import { Button, Table, TableBody, TableCell, TableHead, TableRow } from '@mui/material';
-import withStyles from '@mui/styles/withStyles';
 import { CheckCircle } from '@mui/icons-material';
+import { Button, Table, TableBody, TableCell, TableHead, TableRow } from '@mui/material';
+import styled from '@mui/material/styles/styled';
+import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
 import Helmet from 'react-helmet';
-import styled from '@mui/material/styles/styled';
 import DonateActions from '../../common/actions/DonateActions';
-import AppObservableStore from '../../stores/AppObservableStore';
 import DonateStore from '../../common/stores/DonateStore';
+import { cordovaOpenSafariView } from '../../common/utils/cordovaUtils';
+import { formatDateToYearMonthDay } from '../../common/utils/dateFormat';
+import { isWebApp } from '../../common/utils/isCordovaOrWebApp';
+import { renderLog } from '../../common/utils/logging';
+import AppObservableStore from '../../stores/AppObservableStore';
 import OrganizationStore from '../../stores/OrganizationStore';
 import VoterStore from '../../stores/VoterStore';
-import { cordovaOpenSafariView } from '../../common/utils/cordovaUtils';
-import { isWebApp } from '../../common/utils/isCordovaOrWebApp';
-import { formatDateToYearMonthDay } from '../../common/utils/dateFormat';
-import { renderLog } from '../../common/utils/logging';
 import { stringContains } from '../../utils/textFormat';
 import CreateConfiguredVersion from './CreateConfiguredVersion';
 

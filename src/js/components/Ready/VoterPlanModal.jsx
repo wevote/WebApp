@@ -1,19 +1,19 @@
+import { Close, EditLocation } from '@mui/icons-material';
 import { Button, Checkbox, Dialog, DialogContent, FormControlLabel, IconButton, InputBase, Paper, Select } from '@mui/material';
+import styled from '@mui/material/styles/styled';
 import withStyles from '@mui/styles/withStyles';
 import withTheme from '@mui/styles/withTheme';
-import { Close, EditLocation } from '@mui/icons-material';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
-import styled from '@mui/material/styles/styled';
 import AnalyticsActions from '../../actions/AnalyticsActions';
 import ReadyActions from '../../actions/ReadyActions';
+import { hasIPhoneNotch } from '../../common/utils/cordovaUtils';
+import { formatDateToMonthDayYear } from '../../common/utils/dateFormat';
+import { renderLog } from '../../common/utils/logging';
 import webAppConfig from '../../config';
 import BallotStore from '../../stores/BallotStore';
 import ReadyStore from '../../stores/ReadyStore';
 import VoterStore from '../../stores/VoterStore';
-import { hasIPhoneNotch } from '../../common/utils/cordovaUtils';
-import { formatDateToMonthDayYear } from '../../common/utils/dateFormat';
-import { renderLog } from '../../common/utils/logging';
 
 const OpenExternalWebSite = React.lazy(() => import(/* webpackChunkName: 'OpenExternalWebSite' */ '../../common/components/Widgets/OpenExternalWebSite'));
 const nextReleaseFeaturesEnabled = webAppConfig.ENABLE_NEXT_RELEASE_FEATURES === undefined ? false : webAppConfig.ENABLE_NEXT_RELEASE_FEATURES;

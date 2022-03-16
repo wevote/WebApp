@@ -1,12 +1,11 @@
 import { Button, FormControlLabel, Radio, RadioGroup } from '@mui/material';
+import styled from '@mui/material/styles/styled';
 import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import styled from '@mui/material/styles/styled';
-import { isCordova } from '../../common/utils/isCordovaOrWebApp';
 import VoterActions from '../../actions/VoterActions';
 import VoterPhotoUpload from '../../common/components/Settings/VoterPhotoUpload';
-import passBool from '../../common/utils/passBool';
+import { isCordova } from '../../common/utils/isCordovaOrWebApp';
 import VoterStore from '../../stores/VoterStore';
 
 
@@ -78,7 +77,7 @@ class SettingsProfilePicture extends Component {
       <Wrapper>
         <RadioWrapper value={profileImageTypeCurrentlyActive} onChange={this.changeProfileImageTypeCurrentlyActive} name="profile-option">
           <ColumnWrapper>
-            <CustomColumns onlyoneoption={passBool(onlyOneOption)} style={isCordova() ? {  display: 'none' } : {}}>
+            <CustomColumns onlyOneOption={onlyOneOption} style={isCordova() ? {  display: 'none' } : {}}>
               <ProfilePictureOption>
                 <FormControlLabel
                   value="UPLOADED"
@@ -166,9 +165,11 @@ const ColumnWrapper = styled('div')`
   justify-content: space-between;
 `;
 
-const CustomColumns = styled('div')`
-  ${(props) => ((props.onlyoneoption) ? 'width: 100% !important;' : 'width: 49% !important;')}
-`;
+const CustomColumns = styled('div', {
+  shouldForwardProp: (prop) => !['onlyOneOption'].includes(prop),
+})(({ onlyOneOption }) => (`
+  ${onlyOneOption ? 'width: 100% !important;' : 'width: 49% !important;'}
+`));
 
 const ProfilePictureOption = styled('div')`
   border: 2px solid #e8e8e8;

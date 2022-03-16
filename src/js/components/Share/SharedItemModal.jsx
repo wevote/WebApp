@@ -1,26 +1,26 @@
+import { Close, Info } from '@mui/icons-material';
 import { Button, Dialog, IconButton } from '@mui/material';
+import styled from '@mui/material/styles/styled';
 import withStyles from '@mui/styles/withStyles';
 import withTheme from '@mui/styles/withTheme';
-import { Close, Info } from '@mui/icons-material';
 import clsx from 'clsx';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
-import styled from '@mui/material/styles/styled';
 import BallotActions from '../../actions/BallotActions';
 import OrganizationActions from '../../actions/OrganizationActions';
-import ShareActions from '../../common/actions/ShareActions';
 import VoterActions from '../../actions/VoterActions';
+import ShareActions from '../../common/actions/ShareActions';
+import ShareStore from '../../common/stores/ShareStore';
+import { hasIPhoneNotch } from '../../common/utils/cordovaUtils';
+import { formatDateToMonthDayYear } from '../../common/utils/dateFormat';
+import { isCordova, isWebApp } from '../../common/utils/isCordovaOrWebApp';
+import { renderLog } from '../../common/utils/logging';
+import normalizedImagePath from '../../common/utils/normalizedImagePath';
 import VoterConstants from '../../constants/VoterConstants';
 import BallotStore from '../../stores/BallotStore';
 import OrganizationStore from '../../stores/OrganizationStore';
-import ShareStore from '../../common/stores/ShareStore';
 import VoterStore from '../../stores/VoterStore';
 import { cordovaFooterHeight, cordovaNetworkNextButtonTop } from '../../utils/cordovaOffsets';
-import { hasIPhoneNotch } from '../../common/utils/cordovaUtils';
-import { isCordova, isWebApp } from '../../common/utils/isCordovaOrWebApp';
-import normalizedImagePath from '../../common/utils/normalizedImagePath';
-import { formatDateToMonthDayYear } from '../../common/utils/dateFormat';
-import { renderLog } from '../../common/utils/logging';
 import { isSpeakerTypeOrganization, isSpeakerTypePublicFigure } from '../../utils/organization-functions';
 import { convertToInteger } from '../../utils/textFormat';
 import PersonalizedScoreIntroBody from '../CompleteYourProfile/PersonalizedScoreIntroBody';
@@ -447,7 +447,8 @@ class SharedItemModal extends Component {
                 className={classes.closeButtonAbsolute}
                 onClick={this.closeSharedItemModalLocal}
                 id="closeSharedItemModal"
-                size="large">
+                size="large"
+              >
                 <Close />
               </IconButton>
             </ModalTitleOneRow>
@@ -668,7 +669,6 @@ const ElectionCountdownText = styled('h3')`
   font-size: 14px;
   font-weight: 700;
   color: #2E3C5D !important;
-  width: fit-content;
   padding-bottom: 8px;
   width: 100%;
   text-align: center;
@@ -708,7 +708,7 @@ const FriendToggleWrapper = styled('div')`
 `;
 
 const IntroductionWrapper = styled('div')`
-  margin: 0px 15px;
+  margin: 0 15px;
   margin-bottom: 45px;
 `;
 
@@ -792,9 +792,11 @@ const ModalContent = styled('div')`
   width: 100%;
 `;
 
-const ModalContentInnerWrapper = styled('div')`
-  ${({ hideSharedByIntro }) => ((hideSharedByIntro) ? ModalContentSharedByHidden : ModalContentSharedByShown)}
-`;
+const ModalContentInnerWrapper = styled('div', {
+  shouldForwardProp: (prop) => !['hideSharedByIntro'].includes(prop),
+})(({ hideSharedByIntro }) => (`
+  ${hideSharedByIntro ? ModalContentSharedByHidden : ModalContentSharedByShown}
+`));
 
 const NextButtonWrapper = styled('div')`
   width: 100%;

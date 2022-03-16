@@ -1,15 +1,15 @@
+import { ArrowForward } from '@mui/icons-material';
+import styled from '@mui/material/styles/styled';
 import withStyles from '@mui/styles/withStyles';
 import withTheme from '@mui/styles/withTheme';
-import { ArrowForward } from '@mui/icons-material';
 import PropTypes from 'prop-types';
 import React from 'react';
-import styled from '@mui/material/styles/styled';
+import { renderLog } from '../../common/utils/logging';
+import normalizedImagePath from '../../common/utils/normalizedImagePath';
 import passBool from '../../common/utils/passBool';
 import AppObservableStore from '../../stores/AppObservableStore';
 import ReadyStore from '../../stores/ReadyStore';
 import VoterStore from '../../stores/VoterStore';
-import normalizedImagePath from '../../common/utils/normalizedImagePath';
-import { renderLog } from '../../common/utils/logging';
 import { ButtonLeft, ButtonText, Icon, PercentComplete, ReadyCard, StyledButton, StyledCheckbox, SubTitle, TitleRowWrapper } from './ReadyTaskStyles';
 
 const plan0Percent = '../../../img/global/svg-icons/ready/plan-0-percent.svg';
@@ -64,7 +64,7 @@ class ReadyTaskPlan extends React.Component {
     const { completed, voterPlanText } = this.state;
 
     return (
-      <ReadyCard showprogresscolor={passBool(completed)} className="card">
+      <ReadyCard showprogresscolor={completed} className="card">
         <Icon className="u-cursor--pointer" onClick={this.showVoterPlanModal}>
           {completed ?  (
             <img
@@ -108,7 +108,7 @@ class ReadyTaskPlan extends React.Component {
                 </>
               )}
             </PlanTitle>
-            <PercentComplete showprogresscolor={passBool(completed)}>
+            <PercentComplete showprogresscolor={completed || undefined}>
               {completed ? '100%' : '0%'}
               {!!(completed) && (
                 <span className="u-show-desktop-tablet">

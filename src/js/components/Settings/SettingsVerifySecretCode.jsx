@@ -1,16 +1,16 @@
+import { ArrowBack, ArrowBackIos } from '@mui/icons-material';
 import { Button, Dialog, OutlinedInput } from '@mui/material';
+import styled from '@mui/material/styles/styled';
 import withStyles from '@mui/styles/withStyles';
 import withTheme from '@mui/styles/withTheme';
-import { ArrowBack, ArrowBackIos } from '@mui/icons-material';
 import clsx from 'clsx';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import styled from '@mui/material/styles/styled';
 import VoterActions from '../../actions/VoterActions';
-import VoterStore from '../../stores/VoterStore';
 import { hasIPhoneNotch, isIOS, isIPhone4in } from '../../common/utils/cordovaUtils';
 import { isCordova, isWebApp } from '../../common/utils/isCordovaOrWebApp';
 import { renderLog } from '../../common/utils/logging';
+import VoterStore from '../../stores/VoterStore';
 
 /* global $ */
 

@@ -443,18 +443,20 @@ const styles = () => ({
 const CandidateItemOuterWrapper = styled('div')`
 `;
 
-const ContinueButtonWrapper = styled('div')`
+const ContinueButtonWrapper = styled('div', {
+  shouldForwardProp: (prop) => !['inModal'].includes(prop),
+})(({ inModal }) => (`
   align-items: center;
   background: #fff;
   border-top: 1px solid #eee;
-  ${({ inModal }) => (inModal ? 'bottom: 0;' : '')}
+  ${inModal ? 'bottom: 0;' : ''}
   display: flex;
   justify-content: space-between;
-  ${({ inModal }) => (inModal ? 'margin: 0 !important;' : '')}
-  ${({ inModal }) => (inModal ? 'position: absolute;' : '')}
-  ${({ inModal }) => (inModal ? 'width: 90%;' : '')}
+  ${inModal ? 'margin: 0 !important;' : ''}
+  ${inModal ? 'position: absolute;' : ''}
+  ${inModal ? 'width: 90%;' : ''}
   height: 50px;
-`;
+`));
 
 const ExplanationTextBottom = styled('div')`
 `;
@@ -462,9 +464,11 @@ const ExplanationTextBottom = styled('div')`
 const ExplanationTextTop = styled('div')`
 `;
 
-const OneButtonWrapper = styled('div')`
-  ${({ inModal }) => (inModal ? 'width: 90%;' : '')}
-`;
+const OneButtonWrapper = styled('div', {
+  shouldForwardProp: (prop) => !['inModal'].includes(prop),
+})(({ inModal }) => (`
+  ${inModal ? 'width: 90%;' : ''}
+`));
 
 const PersonalizedScoreIntroBodyWrapper = styled('div')`
 `;
@@ -474,13 +478,15 @@ const ScrollableContentWrapper = styled('div')`
   overflow-y: auto;
 `;
 
-const TwoButtonsWrapper = styled('div')`
+const TwoButtonsWrapper = styled('div', {
+  shouldForwardProp: (prop) => !['inModal'].includes(prop),
+})(({ inModal }) => (`
   align-items: center;
   display: flex;
-  ${({ inModal }) => (inModal ? 'justify-content: space-between;' : 'justify-content: center;')}
+  ${inModal ? 'justify-content: space-between;' : 'justify-content: center;'}
   margin: 0;
   padding: 4px 0 0 0;
   width: 100%;
-`;
+`));
 
 export default withTheme(withStyles(styles)(PersonalizedScoreIntroBody));

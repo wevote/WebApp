@@ -1,16 +1,16 @@
 import { Chip } from '@mui/material';
+import styled from '@mui/material/styles/styled';
 import withStyles from '@mui/styles/withStyles';
 import withTheme from '@mui/styles/withTheme';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
-import styled from '@mui/material/styles/styled';
+import SvgImage from '../../common/components/Widgets/SvgImage';
+import { renderLog } from '../../common/utils/logging';
+import normalizedImagePath from '../../common/utils/normalizedImagePath';
 import passBool from '../../common/utils/passBool';
 import IssueStore from '../../stores/IssueStore';
 import VoterGuideStore from '../../stores/VoterGuideStore';
-import normalizedImagePath from '../../common/utils/normalizedImagePath';
-import { renderLog } from '../../common/utils/logging';
 import StickyPopover from '../Ballot/StickyPopover';
-import SvgImage from '../../common/components/Widgets/SvgImage';
 import IssueFollowToggleButton from './IssueFollowToggleButton';
 
 const ReadMore = React.lazy(() => import(/* webpackChunkName: 'ReadMore' */ '../../common/components/Widgets/ReadMore'));
@@ -248,7 +248,7 @@ class IssuesByOrganizationDisplayList extends Component {
         onMouseOut={this.handleLeaveHoverLocalArea}
         onMouseOver={this.handleEnterHoverLocalArea}
       >
-        <IssuesByOrganization fullwidth={passBool(!!this.props.fullWidth)}>
+        <IssuesByOrganization fullWidth={!!this.props.fullWidth}>
           <IssueByOrganizationList>
             {issuesUnderThisOrganizationHtml}
           </IssueByOrganizationList>
@@ -275,7 +275,7 @@ const styles = () => ({
 });
 
 const Wrapper = styled('div')`
-  overflow: show;
+  overflow: visible;
   display: flex;
   flex-flow: row;
   justify-content: space-between;
@@ -291,13 +291,15 @@ const FollowIssueToggleContainer = styled('div')`
   margin-top: 20px;
 `;
 
-const IssuesByOrganization = styled('div')`
-  width: ${(props) => (props.fullwidth ? '100%' : '85%')};
+const IssuesByOrganization = styled('div', {
+  shouldForwardProp: (prop) => !['fullWidth'].includes(prop),
+})(({ fullWidth }) => (`
+  width: ${fullWidth ? '100%' : '85%'};
   padding: 6px 0 0 0;
   @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
-    width: ${(props) => (props.fullwidth ? '100%' : '90%')};
+    width: ${fullWidth ? '100%' : '90%'};
   }
-`;
+`));
 
 const IssueByOrganizationList = styled('ul')`
   display: flex;
@@ -311,15 +313,17 @@ const OrganizationAdvocatesText = styled('div')`
   padding-bottom: 8px;
 `;
 
-const ValueIconAndTextOrganization = styled('span')`
+const ValueIconAndTextOrganization = styled('span', {
+  shouldForwardProp: (prop) => !['issueFollowedByVoter'].includes(prop),
+})(({ issueFollowedByVoter }) => (`
   align-items: start;
   display: flex;
   flex: none;
-  ${({ issueFollowedByVoter }) => (issueFollowedByVoter ? 'font-weight: 800;' : '')}
+  ${issueFollowedByVoter ? 'font-weight: 800;' : ''}
   padding: 2px 4px 2px 0;
   position: relative;
   width: fit-content;
-`;
+`));
 
 const PopoverWrapper = styled('div')`
   width: calc(100%);

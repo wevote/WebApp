@@ -1,10 +1,10 @@
+import styled from '@mui/material/styles/styled';
 import withStyles from '@mui/styles/withStyles';
 import React, { Component, Suspense } from 'react';
-import styled from '@mui/material/styles/styled';
+import { normalizedHref } from '../../common/utils/hrefUtils';
+import { isWebApp } from '../../common/utils/isCordovaOrWebApp';
 import AppObservableStore, { messageService } from '../../stores/AppObservableStore';
 import { getApplicationViewBooleans } from '../../utils/applicationUtils';
-import { isWebApp } from '../../common/utils/isCordovaOrWebApp';
-import { normalizedHref } from '../../common/utils/hrefUtils';
 // importRemoveCordovaListenersToken2  -- Do not remove this line!
 
 

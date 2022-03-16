@@ -1,8 +1,8 @@
+import styled from '@mui/material/styles/styled';
 import withTheme from '@mui/styles/withTheme';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
 import { Link } from 'react-router-dom';
-import styled from '@mui/material/styles/styled';
 import { renderLog } from '../../common/utils/logging';
 import { convertNameToSlug } from '../../utils/textFormat';
 import IssueFollowToggleButton from './IssueFollowToggleButton';
@@ -185,7 +185,7 @@ IssueCardCompressed.propTypes = {
 
 const Item = styled('div')`
   width: 100%;
-  padding: 0px;
+  padding: 0;
   @media (min-width: ${({ theme }) => theme.breakpoints.md}) {
     width: 50%;
   }

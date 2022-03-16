@@ -1,8 +1,8 @@
+import styled from '@mui/material/styles/styled';
 import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
 import { Link } from 'react-router-dom';
-import styled from '@mui/material/styles/styled';
 import { renderLog } from '../../common/utils/logging';
 
 const SettingsAccountLevelChip = React.lazy(() => import(/* webpackChunkName: 'SettingsAccountLeveLChip' */ '../Settings/SettingsAccountLevelChip'));

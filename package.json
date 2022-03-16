@@ -74,6 +74,7 @@
   },
   "dependencies": {
     "@emotion/is-prop-valid": "^1.1.2",
+    "@emotion/react": "^11.8.2",
     "@mui/icons-material": "^5.5.1",
     "@mui/lab": "^5.0.0-alpha.73",
     "@mui/material": "^5.5.1",

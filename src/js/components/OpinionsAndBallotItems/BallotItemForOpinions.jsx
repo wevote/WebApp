@@ -1,8 +1,8 @@
+import styled from '@mui/material/styles/styled';
 import withStyles from '@mui/styles/withStyles';
 import withTheme from '@mui/styles/withTheme';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
-import styled from '@mui/material/styles/styled';
 import { renderLog } from '../../common/utils/logging';
 import MeasureItemForOpinions from './MeasureItemForOpinions';
 import OfficeItemForOpinions from './OfficeItemForOpinions';

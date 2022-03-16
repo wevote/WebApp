@@ -1,13 +1,13 @@
+import { ArrowForward, CheckCircle } from '@mui/icons-material';
 import withStyles from '@mui/styles/withStyles';
 import withTheme from '@mui/styles/withTheme';
-import { ArrowForward, CheckCircle } from '@mui/icons-material';
 import PropTypes from 'prop-types';
 import React from 'react';
 import register0Percent from '../../../img/global/svg-icons/ready/register-0-percent.svg';
 import register100Percent from '../../../img/global/svg-icons/ready/register-100-percent.svg';
-import normalizedImagePath from '../../common/utils/normalizedImagePath';
 import historyPush from '../../common/utils/historyPush';
 import { renderLog } from '../../common/utils/logging';
+import normalizedImagePath from '../../common/utils/normalizedImagePath';
 import { ButtonLeft, ButtonText, Icon, PercentComplete, ReadyCard, StyledButton, StyledCheckbox, StyledCheckboxCompleted, SubTitle, Title, TitleRowWrapper } from './ReadyTaskStyles';
 
 class ReadyTaskRegister extends React.Component {

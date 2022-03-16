@@ -1,11 +1,11 @@
-import { Button } from '@mui/material';
-import withStyles from '@mui/styles/withStyles';
 import { Check, Close } from '@mui/icons-material';
+import { Button } from '@mui/material';
+import styled from '@mui/material/styles/styled';
+import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
-import styled from '@mui/material/styles/styled';
-import OrganizationStore from '../../stores/OrganizationStore';
 import { renderLog } from '../../common/utils/logging';
+import OrganizationStore from '../../stores/OrganizationStore';
 import { voterFeaturePackageExceedsOrEqualsRequired } from '../../utils/pricingFunctions';
 
 const OpenExternalWebSite = React.lazy(() => import(/* webpackChunkName: 'OpenExternalWebSite' */ '../../common/components/Widgets/OpenExternalWebSite'));
@@ -198,7 +198,7 @@ const CardWrapper = styled('div')`
 
 const PricingCardHeader = styled('div')`
   min-height: ${(props) => (props.mobile ? '75px' : '105px')}
-  @media (min-width: 960px) and (max-width: 991px) {
+  @media(min-width: 960px) and (max-width: 991px) {
     min-height: 100px;
   }
 `;
@@ -238,12 +238,11 @@ const PriceDescribe = styled('div')`
 `;
 
 const PriceDescribeLight = styled('div')`
-  margin: 3px 0 0 0;
+  margin: -5px 0 0 0;
   padding: 0;
   color: #888;
   font-weight: normal;
-  margin-top: -5px;
-`;
+ `;
 
 const Description = styled('p')`
   font-weight: 600;

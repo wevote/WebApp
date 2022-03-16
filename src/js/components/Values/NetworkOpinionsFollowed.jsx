@@ -1,9 +1,9 @@
+import styled from '@mui/material/styles/styled';
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import styled from '@mui/material/styles/styled';
 import OrganizationActions from '../../actions/OrganizationActions';
-import OrganizationStore from '../../stores/OrganizationStore';
 import { renderLog } from '../../common/utils/logging';
+import OrganizationStore from '../../stores/OrganizationStore';
 import OpinionsFollowedListCompressed from '../Organization/OpinionsFollowedListCompressed';
 import EndorsementCard from '../Widgets/EndorsementCard';
 

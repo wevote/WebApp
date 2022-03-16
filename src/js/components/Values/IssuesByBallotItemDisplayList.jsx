@@ -1,10 +1,10 @@
 import { MoreHoriz } from '@mui/icons-material';
+import styled from '@mui/material/styles/styled';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import styled from '@mui/material/styles/styled';
+import { renderLog } from '../../common/utils/logging';
 import IssueStore from '../../stores/IssueStore';
 import VoterGuideStore from '../../stores/VoterGuideStore';
-import { renderLog } from '../../common/utils/logging';
 import signInModalGlobalState from '../Widgets/signInModalGlobalState';
 import ValueIconAndText from './ValueIconAndText';
 
@@ -318,13 +318,15 @@ const Issues = styled('div')`
   margin-left: 0;
 `;
 
-const IssueList = styled('ul')`
+const IssueList = styled('ul', {
+  shouldForwardProp: (prop) => !['expandIssues'].includes(prop),
+})(({ expandIssues }) => (`
   display: flex;
-  flex-flow: row${({ expandIssues }) => (expandIssues ? ' wrap' : '')};
+  flex-flow: row${expandIssues ? ' wrap' : ''};
   margin-bottom: 8px;
   overflow: hidden;
   padding-inline-start: 0;
-`;
+`));
 
 const MoreWrapper = styled('p')`
   align-items: center;

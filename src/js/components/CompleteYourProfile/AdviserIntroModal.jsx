@@ -1,10 +1,10 @@
+import { Close } from '@mui/icons-material';
 import { Dialog, DialogContent, IconButton } from '@mui/material';
+import styled from '@mui/material/styles/styled';
 import withStyles from '@mui/styles/withStyles';
 import withTheme from '@mui/styles/withTheme';
-import { Close } from '@mui/icons-material';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import styled from '@mui/material/styles/styled';
 import { hasIPhoneNotch } from '../../common/utils/cordovaUtils';
 import { renderLog } from '../../common/utils/logging';
 
@@ -42,7 +42,8 @@ class AdviserIntroModal extends Component {
             className={classes.closeButton}
             onClick={this.closeThisModal}
             id="closeAdviserIntroModal"
-            size="large">
+            size="large"
+          >
             <Close />
           </IconButton>
         </ModalTitleArea>

@@ -1,9 +1,9 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import styled from '@mui/material/styles/styled';
-import withTheme from '@mui/styles/withTheme';
-import withStyles from '@mui/styles/withStyles';
 import { ArrowForward } from '@mui/icons-material';
+import styled from '@mui/material/styles/styled';
+import withStyles from '@mui/styles/withStyles';
+import withTheme from '@mui/styles/withTheme';
+import PropTypes from 'prop-types';
+import React from 'react';
 import { renderLog } from '../../common/utils/logging';
 
 
@@ -20,7 +20,7 @@ class ShowMoreFooter extends React.Component {
 
     return (
       <ShowMoreFooterStyled id={showMoreId} onClick={showMoreLink} textalign={cleanTextAlign}>
-        <ShowMoreFooterText textalign={cleanTextAlign}>
+        <ShowMoreFooterText textAlign={cleanTextAlign}>
           { showMoreText }
           {!hideArrow && (
             <>
@@ -55,18 +55,20 @@ const styles = (theme) => ({
   },
 });
 
-const ShowMoreFooterStyled = styled('div')`
-  border: 0px !important;
+const ShowMoreFooterStyled = styled('div', {
+  shouldForwardProp: (prop) => !['textAlign'].includes(prop),
+})(({ textAlign }) => (`
+  border: 0 !important;
   color: #2e3c5d;
   cursor: pointer;
   display: block !important;
   background: #fff !important;
   font-size: 16px;
   font-weight: bold;
-  margin-bottom: 0px !important;
-  margin-top: 0px !important;
-  padding: 0px !important;
-  text-align: ${({ textAlign }) => (textAlign ? { textAlign } : 'right')} !important;
+  margin-bottom: 0 !important;
+  margin-top: 0 !important;
+  padding: 0 !important;
+  text-align: ${textAlign ? { textAlign } : 'right'} !important;
   user-select: none;
   @media (min-width: ${({ theme }) => theme.breakpoints.md}) {
     font-size: 18px;
@@ -78,20 +80,22 @@ const ShowMoreFooterStyled = styled('div')`
   @media print{
     display: none;
   }
-`;
+`));
 
-const ShowMoreFooterText = styled('div')`
+const ShowMoreFooterText = styled('div', {
+  shouldForwardProp: (prop) => !['textAlign'].includes(prop),
+})(({ textAlign }) => (`
   margin-top: 8px !important;
   padding: 8px !important;
-  padding-bottom: 0px !important;
-  text-align: ${({ textAlign }) => (textAlign ? { textAlign } : 'right')} !important;
+  padding-bottom: 0 !important;
+  text-align: ${textAlign ? { textAlign } : 'right'} !important;
   @media (min-width: ${({ theme }) => theme.breakpoints.md}) {
     white-space: nowrap;
   }
   &:hover {
     text-decoration: underline;
   }
-`;
+`));
 
 export default withTheme(withStyles(styles)(ShowMoreFooter));
 

@@ -1,13 +1,13 @@
+import { ArrowDropDown, CheckCircle } from '@mui/icons-material';
 import { Button, Menu, MenuItem } from '@mui/material';
 import withStyles from '@mui/styles/withStyles';
-import { ArrowDropDown, CheckCircle } from '@mui/icons-material';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import IssueActions from '../../actions/IssueActions';
-import IssueStore from '../../stores/IssueStore';
-import VoterStore from '../../stores/VoterStore';
 import historyPush from '../../common/utils/historyPush';
 import { renderLog } from '../../common/utils/logging';
+import IssueStore from '../../stores/IssueStore';
+import VoterStore from '../../stores/VoterStore';
 import { shortenText } from '../../utils/textFormat';
 import { openSnackbar } from '../Widgets/SnackNotifier';
 

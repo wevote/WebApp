@@ -1,8 +1,8 @@
 import { Checkbox, FormControlLabel } from '@mui/material';
+import styled from '@mui/material/styles/styled';
 import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import styled from '@mui/material/styles/styled';
 import { renderLog } from '../../common/utils/logging';
 
 
@@ -272,11 +272,13 @@ const styles = (theme) => ({
   },
 });
 
-const Wrapper = styled('div')`
-  display: ${({ showAllFilters }) => (showAllFilters ? 'flex' : 'none')};
+const Wrapper = styled('div', {
+  shouldForwardProp: (prop) => !['showAllFilters'].includes(prop),
+})(({ showAllFilters }) => (`
+  display: ${showAllFilters ? 'flex' : 'none'};
   flex-flow: column;
   padding-top: 1rem;
-`;
+`));
 
 const FilterRow = styled('div')`
   display: flex;

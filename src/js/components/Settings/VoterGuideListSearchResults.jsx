@@ -1,10 +1,10 @@
+import styled from '@mui/material/styles/styled';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
-import styled from '@mui/material/styles/styled';
 import BallotActions from '../../actions/BallotActions';
 import OrganizationActions from '../../actions/OrganizationActions';
-import BallotStore from '../../stores/BallotStore';
 import { renderLog } from '../../common/utils/logging';
+import BallotStore from '../../stores/BallotStore';
 import voterGuideSearchPriority from '../../utils/voterGuideSearchPriority';
 import SearchBar from '../Search/SearchBar';
 import BallotItemForAddPositions from './BallotItemForAddPositions';

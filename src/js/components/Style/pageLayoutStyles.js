@@ -1,14 +1,14 @@
 import { AppBar } from '@mui/material';
 import styled from 'styled-components';
+import { hasIPhoneNotch, isAndroidSizeFold, isAndroidSizeMD, isAndroidSizeXL, isIPad, isIPad11in, isIPadGiantSize, isIPhone4p7in, isIPhone5p5inEarly, isIPhone5p5inMini, isIPhone5p8in, isIPhone6p1in, isIPhone6p5in } from '../../common/utils/cordovaUtils';
+import { normalizedHrefPage } from '../../common/utils/hrefUtils';
+import { isWebApp } from '../../common/utils/isCordovaOrWebApp';
+import isMobileScreenSize from '../../common/utils/isMobileScreenSize';
 import CordovaPageConstants from '../../constants/CordovaPageConstants';
 import AppObservableStore from '../../stores/AppObservableStore';
 import { cordovaBallotFilterTopMargin, cordovaDualHeaderContainerPadding } from '../../utils/cordovaOffsets';
 import cordovaScrollablePaneTopPadding from '../../utils/cordovaScrollablePaneTopPadding';
-import { hasIPhoneNotch, isAndroidSizeFold, isAndroidSizeMD, isAndroidSizeXL, isIPad, isIPad11in, isIPadGiantSize, isIPhone4p7in, isIPhone5p5inEarly, isIPhone5p5inMini, isIPhone5p8in, isIPhone6p1in, isIPhone6p5in } from '../../common/utils/cordovaUtils';
-import { isWebApp } from '../../common/utils/isCordovaOrWebApp';
 import { pageEnumeration } from '../../utils/cordovaUtilsPageEnumeration';
-import { normalizedHrefPage } from '../../common/utils/hrefUtils';
-import isMobileScreenSize from '../../common/utils/isMobileScreenSize';
 
 
 export const IOSNotchedSpacer = styled.div`

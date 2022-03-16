@@ -1,12 +1,12 @@
 import { Chip, FormControlLabel, Input, MenuItem, Select } from '@mui/material';
+import styled from '@mui/material/styles/styled';
 import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import styled from '@mui/material/styles/styled';
 import BallotActions from '../../actions/BallotActions';
-import BallotStore from '../../stores/BallotStore';
 import { convertStateCodeToStateText, convertStateTextToStateCode, stateCodeMap } from '../../common/utils/addressFunctions';
 import { renderLog } from '../../common/utils/logging';
+import BallotStore from '../../stores/BallotStore';
 import { isSpeakerTypeIndividual, isSpeakerTypeOrganization, isSpeakerTypePublicFigure } from '../../utils/organization-functions';
 import { removeValueFromArray } from '../../utils/textFormat';
 
@@ -467,19 +467,19 @@ const FilterRow = styled('div')`
   flex-flow: row;
 `;
 
-const SortBy = styled('p')`
-  font-size: ${({ selected }) => (selected ? '.95rem' : '.875rem')};
+const SortBy = styled('p')(({ selected, theme }) => (`
+  font-size: ${selected ? '.95rem' : '.875rem'};
   margin: 8px 0 0 0;
   cursor: pointer;
-  color: ${({ selected, theme }) => (selected ? theme.colors.brandBlue : '#555')};
-  font-weight: ${({ selected }) => (selected ? '800' : '400')};
-  @media (max-width: ${({ theme }) => theme.breakpoints.lg}) {
+  color: ${selected ? theme.colors.brandBlue : '#555'};
+  font-weight: ${selected ? '800' : '400'};
+  @media (max-width: ${theme.breakpoints.lg}) {
     font-size: 14px;
   }
   &:hover {
     filter: opacity(0.7);
   }
-`;
+`));
 
 const SortByContainer = styled('div')`
   height: 40px;
@@ -487,10 +487,12 @@ const SortByContainer = styled('div')`
   align-items: center;
 `;
 
-const Wrapper = styled('div')`
-  display: ${({ showAllFilters }) => (showAllFilters ? 'flex' : 'none')};
+const Wrapper = styled('div', {
+  shouldForwardProp: (prop) => !['showAllFilters'].includes(prop),
+})(({ showAllFilters }) => (`
+  display: ${showAllFilters ? 'flex' : 'none'};
   flex-flow: column;
   padding-top: 1rem;
-`;
+`));
 
 export default withStyles(styles)(OpinionsAndBallotItemsFilter);

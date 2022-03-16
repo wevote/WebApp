@@ -1,8 +1,8 @@
 import { Button } from '@mui/material';
+import styled from '@mui/material/styles/styled';
 import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import styled from '@mui/material/styles/styled';
 import BallotActions from '../../actions/BallotActions';
 import VoterActions from '../../actions/VoterActions';
 import { isIPhoneMiniOrSmaller, restoreStylesAfterCordovaKeyboard } from '../../common/utils/cordovaUtils';
@@ -268,16 +268,6 @@ const OuterWrapper = styled('div')({
   marginBottom: '8px !important',
   width: '100%',
 });
-
-const SteveDiv3 = styled('div', {
-  shouldForwardProp: (prop) => !['coDo'].includes(prop),
-})(({ coDo }) => (`
-  fontSize: 30px;
-  padding-right: 4px;
-  padding-top: 5px;
-  color: ${coDo};
-`));
-
 
 const ButtonWrapper = styled('div')`
   min-width: 208px;

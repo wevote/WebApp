@@ -1,17 +1,17 @@
+import { CheckCircle, EditLocation, PlayCircleFilled } from '@mui/icons-material';
 import { Button } from '@mui/material';
+import styled from '@mui/material/styles/styled';
 import withStyles from '@mui/styles/withStyles';
 import withTheme from '@mui/styles/withTheme';
-import { CheckCircle, EditLocation, PlayCircleFilled } from '@mui/icons-material';
 import React, { Component } from 'react';
-import styled from '@mui/material/styles/styled';
+import Cookies from '../../common/utils/js-cookie/Cookies';
+import { renderLog } from '../../common/utils/logging';
+import normalizedImagePath from '../../common/utils/normalizedImagePath';
 import VoterConstants from '../../constants/VoterConstants';
 import AppObservableStore from '../../stores/AppObservableStore';
 import BallotStore from '../../stores/BallotStore';
 import SupportStore from '../../stores/SupportStore';
 import VoterStore from '../../stores/VoterStore';
-import normalizedImagePath from '../../common/utils/normalizedImagePath';
-import Cookies from '../../common/utils/js-cookie/Cookies';
-import { renderLog } from '../../common/utils/logging';
 // import { Ballot } from '@mui/icons-material';
 // import { ThumbUp } from '@mui/icons-material';
 
@@ -548,7 +548,7 @@ const Info = styled('span')`
 
 const MobileActionButton = styled('div')`
   border-bottom: 1px solid #e1e1e1;
-  margin-bottom: 0px;
+  margin-bottom: 0;
   margin-top: 8px;
   padding-bottom: 8px;
   @media (min-width: 576px) {

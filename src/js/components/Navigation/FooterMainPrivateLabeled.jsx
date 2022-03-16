@@ -1,10 +1,10 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
 import styled from '@mui/material/styles/styled';
 import withStyles from '@mui/styles/withStyles';
-import AppObservableStore, { messageService } from '../../stores/AppObservableStore';
+import PropTypes from 'prop-types';
+import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 import OpenExternalWebSite from '../../common/components/Widgets/OpenExternalWebSite';
+import AppObservableStore, { messageService } from '../../stores/AppObservableStore';
 
 
 class FooterMainPrivateLabeled extends Component {

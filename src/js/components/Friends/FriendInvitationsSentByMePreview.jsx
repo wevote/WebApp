@@ -1,9 +1,9 @@
+import styled from '@mui/material/styles/styled';
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import styled from '@mui/material/styles/styled';
 import FriendActions from '../../actions/FriendActions';
-import FriendStore from '../../stores/FriendStore';
 import { renderLog } from '../../common/utils/logging';
+import FriendStore from '../../stores/FriendStore';
 import FriendInvitationList from './FriendInvitationList';
 
 export default class FriendInvitationsSentByMePreview extends Component {

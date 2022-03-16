@@ -1,7 +1,7 @@
+import styled from '@mui/material/styles/styled';
 import withStyles from '@mui/styles/withStyles';
 import withTheme from '@mui/styles/withTheme';
 import React, { Component } from 'react';
-import styled from '@mui/material/styles/styled';
 import { renderLog } from '../../common/utils/logging';
 
 class SharedItemIntroduction extends Component {

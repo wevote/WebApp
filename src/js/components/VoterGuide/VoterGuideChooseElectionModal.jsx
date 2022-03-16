@@ -1,7 +1,7 @@
+import { Close } from '@mui/icons-material';
 import { Dialog, DialogContent, DialogTitle, IconButton, Typography } from '@mui/material';
 import withStyles from '@mui/styles/withStyles';
 import withTheme from '@mui/styles/withTheme';
-import { Close } from '@mui/icons-material';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
 import { renderLog } from '../../common/utils/logging';
@@ -61,7 +61,8 @@ class VoterGuideChooseElectionModal extends Component {
             classes={{ root: classes.closeButton }}
             onClick={() => { this.props.toggleFunction(); }}
             id="profileCloseVoterGuideChooseElectionModal"
-            size="large">
+            size="large"
+          >
             <Close />
           </IconButton>
         </DialogTitle>

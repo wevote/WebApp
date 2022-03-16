@@ -1,14 +1,13 @@
 /* eslint-disable quotes */
+import styled from '@mui/material/styles/styled';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
 import { Link } from 'react-router-dom';
-import styled from '@mui/material/styles/styled';
-import passBool from '../../common/utils/passBool';
-import VoterGuideStore from '../../stores/VoterGuideStore';
+import LoadingWheel from '../../common/components/Widgets/LoadingWheel';
 import { isCordova } from '../../common/utils/isCordovaOrWebApp';
 import { renderLog } from '../../common/utils/logging';
+import VoterGuideStore from '../../stores/VoterGuideStore';
 import { convertNameToSlug } from '../../utils/textFormat';
-import LoadingWheel from '../../common/components/Widgets/LoadingWheel';
 import IssueFollowToggleButton from './IssueFollowToggleButton';
 import IssueImageDisplay from './IssueImageDisplay';
 
@@ -139,11 +138,11 @@ class IssueCard extends Component {
       <Wrapper
         key={`issue-card-${issueWeVoteId}`}
         className={this.props.condensed ? "card-child u-full-height" : "card-child u-inset__h--md u-padding-top--md u-padding-bottom--xs u-full-height"}
-        condensed={passBool(!!this.props.condensed)}
+        condensed={!!this.props.condensed}
         style={isCordova() ? { margin: 'unset' } : {}}   // stops horizontal scrolling
       >
-        <Flex condensed={passBool(!!this.props.condensed)} followtoggleonitsownline={passBool(!!followToggleOnItsOwnLine)}>
-          <FlexNameAndIcon condensed={passBool(!!this.props.condensed)}>
+        <Flex condensed={!!this.props.condensed} followToggleOnItsOwnLine={!!followToggleOnItsOwnLine}>
+          <FlexNameAndIcon condensed={!!this.props.condensed}>
             <div className="card-main__media-object-anchor">
               {!turnOffIssueImage && (
                 <span>

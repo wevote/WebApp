@@ -1,19 +1,19 @@
 import { Button, FormControl, TextField } from '@mui/material';
+import styled from '@mui/material/styles/styled';
 import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import styled from '@mui/material/styles/styled';
 import FriendActions from '../../actions/FriendActions';
 import OrganizationActions from '../../actions/OrganizationActions';
 import VoterActions from '../../actions/VoterActions';
-import OrganizationStore from '../../stores/OrganizationStore';
-import VoterStore from '../../stores/VoterStore';
+import LoadingWheel from '../../common/components/Widgets/LoadingWheel';
 import apiCalming from '../../common/utils/apiCalming';
 import { prepareForCordovaKeyboard, restoreStylesAfterCordovaKeyboard } from '../../common/utils/cordovaUtils';
 import { isCordova, isWebApp } from '../../common/utils/isCordovaOrWebApp';
 import { renderLog } from '../../common/utils/logging';
+import OrganizationStore from '../../stores/OrganizationStore';
+import VoterStore from '../../stores/VoterStore';
 import { isSpeakerTypeOrganization } from '../../utils/organization-functions';
-import LoadingWheel from '../../common/components/Widgets/LoadingWheel';
 
 const delayBeforeApiUpdateCall = 2000;
 const delayBeforeRemovingSavedStatus = 4000;

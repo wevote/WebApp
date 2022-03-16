@@ -1,11 +1,11 @@
 import { Button } from '@mui/material';
-import React, { Component } from 'react';
 import styled from '@mui/material/styles/styled';
+import React, { Component } from 'react';
+import { renderLog } from '../../common/utils/logging';
 import AppObservableStore, { messageService } from '../../stores/AppObservableStore';
 import ElectionStore from '../../stores/ElectionStore';
 import VoterGuideStore from '../../stores/VoterGuideStore';
 import VoterStore from '../../stores/VoterStore';
-import { renderLog } from '../../common/utils/logging';
 import VoterGuideChooseElectionModal from '../VoterGuide/VoterGuideChooseElectionModal';
 import SelectVoterGuidesSideBarLink from './SelectVoterGuidesSideBarLink';
 

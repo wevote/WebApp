@@ -1,12 +1,12 @@
+import { ArrowDropDown, ArrowDropUp } from '@mui/icons-material';
+import styled from '@mui/material/styles/styled';
 import withStyles from '@mui/styles/withStyles';
 import withTheme from '@mui/styles/withTheme';
-import { ArrowDropDown, ArrowDropUp } from '@mui/icons-material';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import styled from '@mui/material/styles/styled';
-import CandidateStore from '../../stores/CandidateStore';
 import historyPush from '../../common/utils/historyPush';
 import { renderLog } from '../../common/utils/logging';
+import CandidateStore from '../../stores/CandidateStore';
 import { toTitleCase } from '../../utils/textFormat';
 import CandidateItemForAddPositions from './CandidateItemForAddPositions';
 
@@ -272,14 +272,16 @@ const styles = (theme) => ({
   },
 });
 
-const Container = styled('div')`
+const Container = styled('div', {
+  shouldForwardProp: (prop) => !['candidateLength'].includes(prop),
+})(({ candidateLength }) => (`
   display: flex;
-  flex-flow: ${({ candidateLength }) => (candidateLength > 2 ? 'row wrap' : 'row')};
+  flex-flow: ${candidateLength > 2 ? 'row wrap' : 'row'};
   justify-content: center;
   @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
     flex-flow: row wrap;
   }
-`;
+`));
 
 const Title = styled('div')`
   font-size: 18px;
@@ -292,7 +294,9 @@ const Title = styled('div')`
   }
 `;
 
-const CandidateInfo = styled('div')`
+const CandidateInfo = styled('div', {
+  shouldForwardProp: (prop) => !['numberOfCandidatesInList'].includes(prop),
+})(({ numberOfCandidatesInList }) => (`
   display: flex;
   flex-flow: column;
   padding: 16px 16px 0 16px;
@@ -325,6 +329,6 @@ const CandidateInfo = styled('div')`
       box-shadow: none;
     }
   }
-`;
+`));
 
 export default withTheme(withStyles(styles)(OfficeItemForAddPositions));

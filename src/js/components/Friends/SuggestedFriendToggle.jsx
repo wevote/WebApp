@@ -1,12 +1,12 @@
 import { Button } from '@mui/material';
+import styled from '@mui/material/styles/styled';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import styled from '@mui/material/styles/styled';
 import FriendActions from '../../actions/FriendActions';
+import { renderLog } from '../../common/utils/logging';
 import AppObservableStore from '../../stores/AppObservableStore';
 import FriendStore from '../../stores/FriendStore';
 import VoterStore from '../../stores/VoterStore';
-import { renderLog } from '../../common/utils/logging';
 
 
 export default class SuggestedFriendToggle extends Component {
@@ -109,15 +109,17 @@ SuggestedFriendToggle.propTypes = {
   otherVoterWeVoteId: PropTypes.string.isRequired,
 };
 
-const ButtonContainer = styled('div')`
+const ButtonContainer = styled('div', {
+  shouldForwardProp: (prop) => !['displayFullWidth'].includes(prop),
+})(({ displayFullWidth }) => (`
   white-space: nowrap;
   width: 100%;
   // margin-right: 12px;
   @media(min-width: 400px) {
-    ${({ displayFullWidth }) => (displayFullWidth ? 'width: 100%;' : 'width: fit-content;')}
+    ${displayFullWidth ? 'width: 100%;' : 'width: fit-content;'}
     margin: 0;
   }
   @media(min-width: 520px) {
     margin: 0;
   }
-`;
+`));

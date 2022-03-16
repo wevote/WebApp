@@ -1,11 +1,11 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import withStyles from '@mui/styles/withStyles';
 import { Ballot } from '@mui/icons-material';
-import { Typography, Button } from '@mui/material';
+import { Button, Typography } from '@mui/material';
 import styled from '@mui/material/styles/styled';
-import BallotStore from '../../stores/BallotStore';
+import withStyles from '@mui/styles/withStyles';
+import PropTypes from 'prop-types';
+import React, { Component } from 'react';
 import { renderLog } from '../../common/utils/logging';
+import BallotStore from '../../stores/BallotStore';
 
 class BallotShowAllItemsFooter extends Component {
   constructor (props) {

@@ -1,18 +1,18 @@
+import { Close, Search } from '@mui/icons-material';
 import { IconButton, InputBase } from '@mui/material';
+import styled from '@mui/material/styles/styled';
 import withStyles from '@mui/styles/withStyles';
 import withTheme from '@mui/styles/withTheme';
-import { Close, Search } from '@mui/icons-material';
 import sortBy from 'lodash-es/sortBy';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import styled from '@mui/material/styles/styled';
 import BallotActions from '../../actions/BallotActions';
 import OrganizationActions from '../../actions/OrganizationActions';
+import { blurTextFieldAndroid, focusTextFieldAndroid, isAndroidSizeFold } from '../../common/utils/cordovaUtils';
+import { isCordova } from '../../common/utils/isCordovaOrWebApp';
 import BallotStore from '../../stores/BallotStore';
 import OrganizationStore from '../../stores/OrganizationStore';
 import ballotSearchPriority from '../../utils/ballotSearchPriority';
-import { blurTextFieldAndroid, focusTextFieldAndroid, isAndroidSizeFold } from '../../common/utils/cordovaUtils';
-import { isCordova } from '../../common/utils/isCordovaOrWebApp';
 import opinionsAndBallotItemsSearchPriority from '../../utils/opinionsAndBallotItemsSearchPriority';
 import positionSearchPriority from '../../utils/positionSearchPriority';
 import voterGuidePositionSearchPriority from '../../utils/voterGuidePositionSearchPriority';
@@ -216,10 +216,10 @@ class FilterBaseSearch extends Component {
     // console.log('FilterBaseSearch render');
     return (
       <SearchWrapper
-        brandblue={theme.palette.primary.main}
-        issearching={isSearching.toString()}
-        searchtextlarge={searchTextLarge}
-        searchopen={(isSearching || alwaysOpen).toString()}
+        brandBlue={theme.palette.primary.main}
+        isSearching={isSearching}
+        searchTextLarge={searchTextLarge}
+        // searchOpen={isSearching || alwaysOpen}
       >
         <IconButton
           classes={{ root: classes.iconButtonRoot }}
@@ -228,7 +228,7 @@ class FilterBaseSearch extends Component {
         >
           <Search classes={{ root: searchIconClasses }} />
         </IconButton>
-        <Separator issearching={isSearching.toString()} alwaysopen={alwaysOpen.toString()} />
+        <Separator isSearching={isSearching} alwaysOpen={alwaysOpen} />
         <InputBase
           classes={{ input: inputBaseInputClasses, root: inputBaseRootClasses }}
           inputRef={(input) => { this.searchInput = input; }}
@@ -239,10 +239,9 @@ class FilterBaseSearch extends Component {
           placeholder="Search"
         />
         <Closer
-          brandblue={theme.palette.primary.main}
+          isSearching={isSearching}
           onClick={(isSearching || !alwaysOpen) ? this.toggleSearch : undefined}
-          issearching={isSearching.toString()}
-          showcloser={isSearching.toString()}
+          showCloser={isSearching}
         >
           <IconButton classes={{ root: classes.iconButtonRoot }} size="large">
             <Close classes={{ root: classes.closeIconRoot }} />
@@ -352,35 +351,41 @@ const styles = (theme) => ({
   },
 });
 
-const Closer = styled('div')`
-  display: ${({ issearching }) => (issearching ? 'inherit' : 'none')};
+const Closer = styled('div', {
+  shouldForwardProp: (prop) => !['isSearching', 'showCloser'].includes(prop),
+})(({ isSearching, showCloser }) => (`
+  display: ${isSearching ? 'inherit' : 'none'};
   border-radius: 16px;
   border-top-left-radius: 0;
   border-bottom-left-radius: 0;
-  opacity: ${({ showcloser }) => (showcloser ? '1' : '0')};
-  pointer-events: ${({ showcloser }) => (showcloser ? 'auto' : 'none')};
+  opacity: ${showCloser ? '1' : '0'};
+  pointer-events: ${showCloser ? 'auto' : 'none'};
   transition: all 150ms ease-in;
-`;
+`));
 
-const Separator = styled('div')(({ issearching, alwaysopen }) => ({
-  display: issearching || alwaysopen ? 'inherit' : 'none',
+const Separator = styled('div', {
+  shouldForwardProp: (prop) => !['isSearching', 'alwaysOpen'].includes(prop),
+})(({ isSearching, alwaysOpen }) => (`
+  display: ${isSearching || alwaysOpen ? 'inherit' : 'none'},
   // height: 100%;
   // width: 1px;
   // background: rgba(0, 0, 0, .3);
-}));
+`));
 
-const SearchWrapper = styled('div')`
+const SearchWrapper = styled('div', {
+  shouldForwardProp: (prop) => !['isSearching', 'brandBlue', 'searchTextLarge'].includes(prop),
+})(({ isSearching, brandBlue, searchTextLarge }) => (`
   display: flex;
   flex-flow: row;
   border-radius: 4px;
-  height: ${({ searchtextlarge }) => (searchtextlarge ? '32px' : '26px')};
-  border: 1px solid ${({ issearching, brandblue }) => (issearching ? brandblue : '#ccc')};
+  height: ${searchTextLarge ? '32px' : '26px'};
+  border: 1px solid ${isSearching ? brandBlue : '#ccc'};
   padding: 0 3px 0 3px;
   margin-right: 16px;
   margin-bottom: 8px;
   @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
     margin-right: 8px;
   }
-`;
+`));
 
 export default withTheme(withStyles(styles)(FilterBaseSearch));

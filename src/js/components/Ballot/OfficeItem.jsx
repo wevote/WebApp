@@ -1,12 +1,12 @@
+import styled from '@mui/material/styles/styled';
 import withStyles from '@mui/styles/withStyles';
 import withTheme from '@mui/styles/withTheme';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import styled from '@mui/material/styles/styled';
 import { hasIPhoneNotch } from '../../common/utils/cordovaUtils';
-import { isCordova } from '../../common/utils/isCordovaOrWebApp';
 import historyPush from '../../common/utils/historyPush';
+import { isCordova } from '../../common/utils/isCordovaOrWebApp';
 import { renderLog } from '../../common/utils/logging';
 import { capitalizeString } from '../../utils/textFormat';
 

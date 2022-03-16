@@ -1,18 +1,18 @@
+import styled from '@mui/material/styles/styled';
 import withTheme from '@mui/styles/withTheme';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
 import { Link } from 'react-router-dom';
-import styled from '@mui/material/styles/styled';
 import BallotActions from '../../actions/BallotActions';
 import IssueActions from '../../actions/IssueActions';
 import VoterGuideActions from '../../actions/VoterGuideActions';
+import apiCalming from '../../common/utils/apiCalming';
+import historyPush from '../../common/utils/historyPush';
+import { renderLog } from '../../common/utils/logging';
 import BallotStore from '../../stores/BallotStore';
 import IssueStore from '../../stores/IssueStore';
 import VoterGuideStore from '../../stores/VoterGuideStore';
 import VoterStore from '../../stores/VoterStore';
-import apiCalming from '../../common/utils/apiCalming';
-import historyPush from '../../common/utils/historyPush';
-import { renderLog } from '../../common/utils/logging';
 import InfoCircleIcon from '../Widgets/InfoCircleIcon';
 
 const FriendInvitationOnboardingValuesList = React.lazy(() => import(/* webpackChunkName: 'ImageHandler' */ './FriendInvitationOnboardingValuesList'));

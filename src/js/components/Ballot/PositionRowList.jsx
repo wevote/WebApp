@@ -248,7 +248,7 @@ const CandidateEndorsementsContainer = styled('div')`
   display: flex;
   justify-content: flex-start;
   overflow-x: auto;
-  overflow-y: hidden:
+  overflow-y: hidden;
 `;
 
 const CandidateEndorsementContainer = styled('div')`

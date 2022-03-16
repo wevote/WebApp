@@ -1,8 +1,8 @@
+import styled from '@mui/material/styles/styled';
 import withStyles from '@mui/styles/withStyles';
 import withTheme from '@mui/styles/withTheme';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import styled from '@mui/material/styles/styled';
 import historyPush from '../../common/utils/historyPush';
 import { renderLog } from '../../common/utils/logging';
 import CandidateItemForOpinions from './CandidateItemForOpinions';
@@ -120,21 +120,23 @@ const BallotItemCard = styled('div')`
   border-radius: 4px;
   box-shadow: 0 1px 3px 0 rgba(0, 0, 0, .2), 0 1px 1px 0 rgba(0, 0, 0, .14), 0 2px 1px -1px rgba(0, 0, 0, .12);
   margin-bottom: 16px;
-  overflow-y: none;
+  overflow-y: hidden;
   border: none;
   @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
     border-radius: 0;
   }
 `;
 
-const Container = styled('div')`
+const Container = styled('div', {
+  shouldForwardProp: (prop) => !['candidateLength'].includes(prop),
+})(({ candidateLength }) => (`
   display: flex;
-  flex-flow: ${({ candidateLength }) => (candidateLength > 2 ? 'row wrap' : 'row')};
+  flex-flow: ${candidateLength > 2 ? 'row wrap' : 'row'};
   justify-content: center;
   @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
     flex-flow: row wrap;
   }
-`;
+`));
 
 const Title = styled('div')`
   font-size: 18px;
@@ -147,7 +149,9 @@ const Title = styled('div')`
   }
 `;
 
-const CandidateInfo = styled('div')`
+const CandidateInfo = styled('div', {
+  shouldForwardProp: (prop) => !['numberOfCandidatesInList'].includes(prop),
+})(({ numberOfCandidatesInList }) => (`
   display: flex;
   flex-flow: column;
   padding: 16px 16px 0 16px;
@@ -155,7 +159,7 @@ const CandidateInfo = styled('div')`
   overflow-x: hidden;
   transition: all 200ms ease-in;
   border: 1px solid ${({ theme }) => theme.colors.grayBorder};
-  width: ${({ numberOfCandidatesInList }) => (numberOfCandidatesInList > 1 ? '48%' : '100%')};
+  width: ${numberOfCandidatesInList > 1 ? '48%' : '100%'};
   margin-right: 8px;
   border-radius: 4px;
   cursor: pointer;
@@ -180,6 +184,6 @@ const CandidateInfo = styled('div')`
       box-shadow: none;
     }
   }
-`;
+`));
 
 export default withTheme(withStyles(styles)(CandidateSearchItemForOpinions));

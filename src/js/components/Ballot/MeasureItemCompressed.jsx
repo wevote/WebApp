@@ -265,7 +265,7 @@ class MeasureItemCompressed extends Component {
     if (!measureWeVoteId) {
       return null;
     }
-    const { classes, theme } = this.props;
+    const { classes } = this.props;
     let ballotDisplay = [];
     if (ballotItemDisplayName) {
       ballotDisplay = ballotItemDisplayName.split(':');
@@ -302,10 +302,8 @@ class MeasureItemCompressed extends Component {
           <ChoicesRow>
             <Choice
               id={`measureItemCompressedChoiceYes-${measureWeVoteId}`}
-              brandBlue={theme.palette.primary.main}
             >
               <ChoiceTitle
-                brandBlue={theme.palette.primary.main}
                 onClick={() => { this.goToMeasureLink(measureWeVoteId); }}
               >
                 {`Yes On ${extractNumber(ballotItemDisplayName)}`}
@@ -344,10 +342,8 @@ class MeasureItemCompressed extends Component {
             </Choice>
             <Choice
               id={`measureItemCompressedChoiceNo-${measureWeVoteId}`}
-              brandBlue={theme.palette.primary.main}
             >
               <ChoiceTitle
-                brandBlue={theme.palette.primary.main}
                 onClick={() => { this.goToMeasureLink(measureWeVoteId); }}
               >
                 {`No On ${extractNumber(ballotItemDisplayName)}`}
@@ -482,7 +478,7 @@ const Choice = styled('div')`
     margin-right: 10px;
     margin-bottom: 16px;
     &:hover {
-      border: 1px solid ${({ brandBlue }) => brandBlue};
+      border: 1px solid ${(theme) => theme.palette.primary.main};
       box-shadow: 0 1px 3px 0 rgba(0,0,0,.2), 0 1px 1px 0 rgba(0,0,0,.14), 0 2px 1px -1px rgba(0,0,0,.12);
     }
   }

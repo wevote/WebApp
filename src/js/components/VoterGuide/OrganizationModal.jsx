@@ -1,16 +1,19 @@
+import { Info } from '@mui/icons-material';
 import { Drawer, IconButton } from '@mui/material';
+import styled from '@mui/material/styles/styled';
 import withStyles from '@mui/styles/withStyles';
 import withTheme from '@mui/styles/withTheme';
-import { Info } from '@mui/icons-material';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
-import styled from '@mui/material/styles/styled';
 import AnalyticsActions from '../../actions/AnalyticsActions';
 import CandidateActions from '../../actions/CandidateActions';
 import IssueActions from '../../actions/IssueActions';
 import MeasureActions from '../../actions/MeasureActions';
 import OrganizationActions from '../../actions/OrganizationActions';
 import VoterGuideActions from '../../actions/VoterGuideActions';
+import { hasIPhoneNotch } from '../../common/utils/cordovaUtils';
+import { normalizedHref } from '../../common/utils/hrefUtils';
+import { renderLog } from '../../common/utils/logging';
 import BallotStore from '../../stores/BallotStore';
 import CandidateStore from '../../stores/CandidateStore';
 import IssueStore from '../../stores/IssueStore';
@@ -19,9 +22,6 @@ import OrganizationStore from '../../stores/OrganizationStore';
 import VoterGuideStore from '../../stores/VoterGuideStore';
 import VoterStore from '../../stores/VoterStore';
 import { cordovaDrawerTopMargin } from '../../utils/cordovaOffsets';
-import { hasIPhoneNotch } from '../../common/utils/cordovaUtils';
-import { normalizedHref } from '../../common/utils/hrefUtils';
-import { renderLog } from '../../common/utils/logging';
 import { convertToInteger, stringContains } from '../../utils/textFormat';
 
 const CandidateItem = React.lazy(() => import(/* webpackChunkName: 'CandidateItem' */ '../Ballot/CandidateItem'));
@@ -240,7 +240,7 @@ class OrganizationModal extends Component {
     const { classes, organizationWeVoteId, ballotItemWeVoteId, params } = this.props;
     const { allCachedPositionsForThisBallotItem, ballotItemDisplayName, isCandidate, isMeasure, modalOpen } = this.state;
 
-    return <>
+    return (
       <Drawer
         anchor="right"
         classes={{ paper: classes.drawer }}
@@ -254,7 +254,8 @@ class OrganizationModal extends Component {
           className={classes.closeButton}
           id="closeOrganizationModal"
           onClick={this.closeOrganizationModal}
-          size="large">
+          size="large"
+        >
           <span className="fas fa-times u-cursor--pointer" />
         </IconButton>
         {isCandidate && (
@@ -304,7 +305,7 @@ class OrganizationModal extends Component {
           </Suspense>
         )}
       </Drawer>
-    </>;
+    );
   }
 }
 OrganizationModal.propTypes = {

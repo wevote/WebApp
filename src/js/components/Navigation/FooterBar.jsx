@@ -1,16 +1,16 @@
-import { BottomNavigation, BottomNavigationAction } from '@mui/material';
-import withStyles from '@mui/styles/withStyles';
 import { Ballot, HowToVote, People, QuestionAnswer } from '@mui/icons-material';
-import React from 'react';
+import { BottomNavigation, BottomNavigationAction } from '@mui/material';
 import styled from '@mui/material/styles/styled';
+import withStyles from '@mui/styles/withStyles';
+import React from 'react';
+import historyPush from '../../common/utils/historyPush';
+import { normalizedHref } from '../../common/utils/hrefUtils';
+import { isCordova } from '../../common/utils/isCordovaOrWebApp';
+import { renderLog } from '../../common/utils/logging';
 import AppObservableStore, { messageService } from '../../stores/AppObservableStore';
 import FriendStore from '../../stores/FriendStore';
 import VoterStore from '../../stores/VoterStore';
 import { cordovaFooterHeight } from '../../utils/cordovaOffsets';
-import { isCordova } from '../../common/utils/isCordovaOrWebApp';
-import historyPush from '../../common/utils/historyPush';
-import { normalizedHref } from '../../common/utils/hrefUtils';
-import { renderLog } from '../../common/utils/logging';
 import { stringContains } from '../../utils/textFormat';
 import signInModalGlobalState from '../Widgets/signInModalGlobalState';
 

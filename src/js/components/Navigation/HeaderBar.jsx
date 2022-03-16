@@ -1,33 +1,31 @@
-import { Button, IconButton, Tabs, Tooltip } from '@mui/material';
-import withStyles from '@mui/styles/withStyles';
 import { AccountCircle, Place, Search } from '@mui/icons-material';
+import { Button, IconButton, Tabs, Tooltip } from '@mui/material';
+import styled from '@mui/material/styles/styled';
+import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
-import styled from '@mui/material/styles/styled';
 import BallotActions from '../../actions/BallotActions';
 import OrganizationActions from '../../actions/OrganizationActions';
 import VoterActions from '../../actions/VoterActions';
 import VoterGuideActions from '../../actions/VoterGuideActions';
 import VoterSessionActions from '../../actions/VoterSessionActions';
 import LazyImage from '../../common/components/LazyImage';
+import apiCalming from '../../common/utils/apiCalming';
 import { hasIPhoneNotch, historyPush, isDeviceZoomed, isIOS, isIOSAppOnMac } from '../../common/utils/cordovaUtils';
+import { normalizedHref, normalizedHrefPage } from '../../common/utils/hrefUtils';
 import { isCordova, isWebApp } from '../../common/utils/isCordovaOrWebApp';
+import isMobileScreenSize from '../../common/utils/isMobileScreenSize';
 import { renderLog } from '../../common/utils/logging';
-import passBool from '../../common/utils/passBool';
 import voterPhoto from '../../common/utils/voterPhoto';
 import AnalyticsStore from '../../stores/AnalyticsStore';
 import AppObservableStore, { messageService } from '../../stores/AppObservableStore';
 import FacebookStore from '../../stores/FacebookStore';
 import FriendStore from '../../stores/FriendStore';
 import VoterStore from '../../stores/VoterStore';
-import apiCalming from '../../common/utils/apiCalming';
-import { normalizedHref, normalizedHrefPage } from '../../common/utils/hrefUtils';
 import { avatarGeneric, displayTopMenuShadow, weVoteBrandingOff } from '../../utils/applicationUtils';
 import getHeaderObjects from '../../utils/getHeaderObjects';
-import isMobileScreenSize from '../../common/utils/isMobileScreenSize';
-import { TopOfPageHeader, TopRowOneLeftContainer, TopRowOneMiddleContainer, TopRowOneRightContainer, TopRowTwoLeftContainer } from '../Style/pageLayoutStyles';
-// import shouldHeaderRetreat from '../../utils/shouldHeaderRetreat';
 import { getBooleanValue, shortenText, stringContains } from '../../utils/textFormat';
+import { TopOfPageHeader, TopRowOneLeftContainer, TopRowOneMiddleContainer, TopRowOneRightContainer, TopRowTwoLeftContainer } from '../Style/pageLayoutStyles';
 import SignInButton from '../Widgets/SignInButton';
 import signInModalGlobalState from '../Widgets/signInModalGlobalState';
 import FriendsTabs from './FriendsTabs';
@@ -667,10 +665,9 @@ class HeaderBar extends Component {
 
     return (
       <HeaderBarWrapper
-        hasNotch={passBool(hasIPhoneNotch())}
-        // scrolledDown={scrolledDown && isWebApp() && shouldHeaderRetreat(pathname)}
-        scrolledDown={passBool(scrolledDown)}
-        hasSubmenu={passBool(displayTopMenuShadow())}
+        hasNotch={hasIPhoneNotch()}
+        scrolledDown={scrolledDown}
+        hasSubmenu={displayTopMenuShadow()}
       >
         <TopOfPageHeader>
           {/* <AppBar position="relative" */}

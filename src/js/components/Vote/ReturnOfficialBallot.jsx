@@ -1,6 +1,6 @@
+import styled from '@mui/material/styles/styled';
 import withStyles from '@mui/styles/withStyles';
 import React, { Component, Suspense } from 'react';
-import styled from '@mui/material/styles/styled';
 import Cookies from '../../common/utils/js-cookie/Cookies';
 import { renderLog } from '../../common/utils/logging';
 
@@ -84,7 +84,6 @@ const styles = ({
 });
 
 const ParagraphStyled = styled('div')`
-  margin: auto;
   margin: 10px;
   font-weight: normal;
 `;

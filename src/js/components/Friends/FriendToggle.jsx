@@ -1,9 +1,9 @@
 import { Button, ClickAwayListener, MenuItem, MenuList } from '@mui/material';
+import styled from '@mui/material/styles/styled';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import styled from '@mui/material/styles/styled';
-import { renderLog } from '../../common/utils/logging';
 import FriendActions from '../../actions/FriendActions';
+import { renderLog } from '../../common/utils/logging';
 import FriendStore from '../../stores/FriendStore';
 import VoterStore from '../../stores/VoterStore';
 import FriendsIcon from '../Widgets/FriendsIcon';
@@ -145,14 +145,16 @@ FriendToggle.propTypes = {
 };
 
 
-const ButtonContainer = styled('div')`
+const ButtonContainer = styled('div', {
+  shouldForwardProp: (prop) => !['displayFullWidth'].includes(prop),
+})(({ displayFullWidth }) => (`
   width: 100%;
   margin-top: 0;
   @media(min-width: 400px) {
-    ${({ displayFullWidth }) => (displayFullWidth ? 'width: 100%;' : 'width: fit-content;')}
+    ${displayFullWidth ? 'width: 100%;' : 'width: fit-content;'}
     margin-left: auto;
   }
-`;
+`));
 
 const InnerButtonContainer = styled('div')`
   margin-left: auto;

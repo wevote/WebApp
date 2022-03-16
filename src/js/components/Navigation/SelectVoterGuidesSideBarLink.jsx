@@ -1,10 +1,10 @@
 import { Button } from '@mui/material';
+import styled from '@mui/material/styles/styled';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import styled from '@mui/material/styles/styled';
-import VoterStore from '../../stores/VoterStore';
 import historyPush from '../../common/utils/historyPush';
 import { renderLog } from '../../common/utils/logging';
+import VoterStore from '../../stores/VoterStore';
 import { capitalizeString, sentenceCaseString } from '../../utils/textFormat';
 
 

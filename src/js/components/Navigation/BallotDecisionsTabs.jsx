@@ -1,8 +1,8 @@
-import { Tab, Tabs, Badge } from '@mui/material';
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
+import { Badge, Tab, Tabs } from '@mui/material';
 import styled from '@mui/material/styles/styled';
 import withStyles from '@mui/styles/withStyles';
+import PropTypes from 'prop-types';
+import React, { Component } from 'react';
 import BallotActions from '../../actions/BallotActions';
 import { renderLog } from '../../common/utils/logging';
 

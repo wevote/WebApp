@@ -1,13 +1,13 @@
+import styled from '@mui/material/styles/styled';
 import withStyles from '@mui/styles/withStyles';
 import withTheme from '@mui/styles/withTheme';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
-import styled from '@mui/material/styles/styled';
 import BallotActions from '../../actions/BallotActions';
-import BallotStore from '../../stores/BallotStore';
-import normalizedImagePath from '../../common/utils/normalizedImagePath';
 import { formatDateToMonthDayYear } from '../../common/utils/dateFormat';
 import { renderLog } from '../../common/utils/logging';
+import normalizedImagePath from '../../common/utils/normalizedImagePath';
+import BallotStore from '../../stores/BallotStore';
 import { convertToInteger } from '../../utils/textFormat';
 
 const ImageHandler = React.lazy(() => import(/* webpackChunkName: 'ImageHandler' */ '../ImageHandler'));
@@ -366,7 +366,7 @@ const OrganizationImageWrapper = styled('span')`
 `;
 
 const StepNumber = styled('div')`
-  background: ${(props) => props.theme.colors.brandBlue};
+  background: ${({ theme }) => theme.colors.brandBlue};
   border-radius: 4px;
   color: white;
   font-size: 16px;

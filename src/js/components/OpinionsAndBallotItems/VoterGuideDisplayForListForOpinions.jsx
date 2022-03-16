@@ -1,18 +1,18 @@
+import { Twitter } from '@mui/icons-material';
 import { Button, Card } from '@mui/material';
+import styled from '@mui/material/styles/styled';
 import withStyles from '@mui/styles/withStyles';
 import withTheme from '@mui/styles/withTheme';
-import { Twitter } from '@mui/icons-material';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
 import { Link } from 'react-router-dom';
 import { ReactSVG } from 'react-svg';
-import styled from '@mui/material/styles/styled';
+import { renderLog } from '../../common/utils/logging';
+import normalizedImagePath from '../../common/utils/normalizedImagePath';
 import AppObservableStore from '../../stores/AppObservableStore';
 import FriendStore from '../../stores/FriendStore';
 import IssueStore from '../../stores/IssueStore';
 import OrganizationStore from '../../stores/OrganizationStore';
-import normalizedImagePath from '../../common/utils/normalizedImagePath';
-import { renderLog } from '../../common/utils/logging';
 import { isSpeakerTypeIndividual, isSpeakerTypeOrganization } from '../../utils/organization-functions';
 import { numberWithCommas } from '../../utils/textFormat';
 import StickyPopover from '../Ballot/StickyPopover';
@@ -387,7 +387,7 @@ const DesktopItemFooter = styled('div')`
 
 const DesktopItemHeader = styled('div')`
   display: flex;
-  align-items: top;
+  // align-items: top;  // nonsense value
   justify-content: flex-start;
 `;
 
@@ -431,7 +431,7 @@ const DesktopItemNameContainer = styled('div')`
 `;
 
 const DesktopItemNameIssueContainer = styled('div')`
-  padding: 0px;
+  padding: 0;
 `;
 
 const DesktopItemTwitter = styled('div')`
@@ -537,27 +537,31 @@ const MobileSmallItemNameContainer = styled('div')`
   }
 `;
 
-const VoterGuideDesktop = styled('div')`
+const VoterGuideDesktop = styled('div', {
+  shouldForwardProp: (prop) => !['isSupport', 'isOppose'].includes(prop),
+})(({ isSupport, isOppose }) => (`
   background: #eee;
-  ${({ isSupport, isOppose }) => ((!isOppose && !isSupport) ? 'border-left: 4px solid #ccc;' : '')}
-  ${({ isOppose }) => (isOppose ? 'border-left: 4px solid rgb(255, 73, 34);' : '')}
-  ${({ isSupport }) => (isSupport ? 'border-left: 4px solid rgb(31, 192, 111);' : '')}
+  ${( !isOppose && !isSupport) ? 'border-left: 4px solid #ccc;' : '' }
+  ${ isOppose ? 'border-left: 4px solid rgb(255, 73, 34);' : '' }
+  ${ isSupport ? 'border-left: 4px solid rgb(31, 192, 111);' : '' }
   border-radius: 5px;
   flex: 1 1 0;
   list-style: none;
   padding: 6px 16px;
-`;
+`));
 
-const VoterGuideMobile = styled('li')`
+const VoterGuideMobile = styled('li', {
+  shouldForwardProp: (prop) => !['isSupport', 'isOppose'].includes(prop),
+})(({ isSupport, isOppose }) => (`
   background: #fff;
-  ${({ isSupport, isOppose }) => ((!isOppose && !isSupport) ? 'border-left: 4px solid #ccc;' : '')}
-  ${({ isOppose }) => (isOppose ? 'border-left: 4px solid rgb(255, 73, 34);' : '')}
-  ${({ isSupport }) => (isSupport ? 'border-left: 4px solid rgb(31, 192, 111);' : '')}
+  ${( !isOppose && !isSupport) ? 'border-left: 4px solid #ccc;' : '' }
+  ${ isOppose ? 'border-left: 4px solid rgb(255, 73, 34);' : '' }
+  ${ isSupport ? 'border-left: 4px solid rgb(31, 192, 111);' : '' }
   border-radius: 5px;
   list-style: none;
   margin: 0 !important;
   max-width: 100% !important;
-`;
+`));
 
 const SourceLink = styled('div')`
   float: right;

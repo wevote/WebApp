@@ -1,7 +1,7 @@
+import styled from '@mui/material/styles/styled';
 import PropTypes from 'prop-types';
 import React, { Suspense } from 'react';
 import { Link } from 'react-router-dom';
-import styled from '@mui/material/styles/styled';
 import { isCordova } from '../../common/utils/isCordovaOrWebApp';
 import normalizedImagePath from '../../common/utils/normalizedImagePath';
 

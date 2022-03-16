@@ -1,16 +1,16 @@
+import { Close } from '@mui/icons-material';
 import { Dialog, DialogContent, IconButton } from '@mui/material';
+import styled from '@mui/material/styles/styled';
 import withStyles from '@mui/styles/withStyles';
 import withTheme from '@mui/styles/withTheme';
-import { Close } from '@mui/icons-material';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
-import styled from '@mui/material/styles/styled';
 import VoterActions from '../../actions/VoterActions';
-import VoterConstants from '../../constants/VoterConstants';
 import { hasIPhoneNotch } from '../../common/utils/cordovaUtils';
-import { isCordova } from '../../common/utils/isCordovaOrWebApp';
 import { normalizedHref } from '../../common/utils/hrefUtils';
+import { isCordova } from '../../common/utils/isCordovaOrWebApp';
 import { renderLog } from '../../common/utils/logging';
+import VoterConstants from '../../constants/VoterConstants';
 
 const PersonalizedScoreIntroBody = React.lazy(() => import(/* webpackChunkName: 'PersonalizedScoreIntroBody' */ './PersonalizedScoreIntroBody'));
 
@@ -59,7 +59,8 @@ class PersonalizedScoreIntroModal extends Component {
               className={classes.closeButton}
               onClick={this.closeThisModal}
               id="closePersonalizedScoreIntroModal"
-              size="large">
+              size="large"
+            >
               <Close />
             </IconButton>
           </IconButtonWrapper>

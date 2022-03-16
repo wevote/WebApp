@@ -1,8 +1,8 @@
+import styled from '@mui/material/styles/styled';
 import withStyles from '@mui/styles/withStyles';
 import withTheme from '@mui/styles/withTheme';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
-import styled from '@mui/material/styles/styled';
 import { renderLog } from '../../common/utils/logging';
 import ShowMoreButtons from './ShowMoreButtons';
 
@@ -187,7 +187,7 @@ const Dot = styled('div')`
 `;
 
 const StepNumber = styled('div')`
-  background: ${(props) => props.theme.colors.brandBlue};
+  background: ${(theme) => theme.colors.brandBlue};
   border-radius: 4px;
   color: white;
   font-size: 14px;

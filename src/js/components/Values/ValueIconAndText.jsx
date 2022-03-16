@@ -1,15 +1,15 @@
 import { Chip } from '@mui/material';
+import styled from '@mui/material/styles/styled';
 import withStyles from '@mui/styles/withStyles';
 import withTheme from '@mui/styles/withTheme';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
-import styled from '@mui/material/styles/styled';
+import SvgImage from '../../common/components/Widgets/SvgImage';
+import { renderLog } from '../../common/utils/logging';
 import CandidateStore from '../../stores/CandidateStore';
 import IssueStore from '../../stores/IssueStore';
-import { renderLog } from '../../common/utils/logging';
 import { getPositionSummaryListForBallotItem } from '../../utils/positionFunctions';
 import StickyPopover from '../Ballot/StickyPopover';
-import SvgImage from '../../common/components/Widgets/SvgImage';
 import IssueFollowToggleButton from './IssueFollowToggleButton';
 
 const ReadMore = React.lazy(() => import(/* webpackChunkName: 'ReadMore' */ '../../common/components/Widgets/ReadMore'));
@@ -239,15 +239,17 @@ const PopoverWrapper = styled('div')`
   margin-top: 8px;
 `;
 
-const ValueIconAndTextSpan = styled('span')`
+const ValueIconAndTextSpan = styled('span', {
+  shouldForwardProp: (prop) => !['issueFollowedByVoter'].includes(prop),
+})(({ issueFollowedByVoter }) => (`
   align-items: start;
   display: flex;
   flex: none;
-  ${({ issueFollowedByVoter }) => (issueFollowedByVoter ? 'font-weight: 800;' : '')}
+  ${issueFollowedByVoter ? 'font-weight: 800;' : ''}
   padding: 4px;
   position: relative;
   width: fit-content;
-`;
+`));
 
 const FollowIfYouCare = styled('div')`
   color: #999;

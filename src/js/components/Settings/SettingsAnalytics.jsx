@@ -1,16 +1,16 @@
 import { Button, FormControl, TextField } from '@mui/material';
+import styled from '@mui/material/styles/styled';
 import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
 import Helmet from 'react-helmet';
-import styled from '@mui/material/styles/styled';
 import OrganizationActions from '../../actions/OrganizationActions';
+import LoadingWheel from '../../common/components/Widgets/LoadingWheel';
+import { renderLog } from '../../common/utils/logging';
 import AppObservableStore from '../../stores/AppObservableStore';
 import OrganizationStore from '../../stores/OrganizationStore';
 import VoterStore from '../../stores/VoterStore';
-import { renderLog } from '../../common/utils/logging';
 import { voterFeaturePackageExceedsOrEqualsRequired } from '../../utils/pricingFunctions';
-import LoadingWheel from '../../common/components/Widgets/LoadingWheel';
 import CreateConfiguredVersion from './CreateConfiguredVersion';
 import SeeTheseSettingsInAction from './SeeTheseSettingsInAction';
 
@@ -442,7 +442,6 @@ const ButtonsContainer = styled('div')`
   display: flex;
   align-items: center;
   justify-content: flex-end;
-  width: fit-content;
   width: 100%;
   margin-top: 12px;
 `;

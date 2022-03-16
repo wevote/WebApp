@@ -5,7 +5,6 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import styled from '@mui/material/styles/styled';
 import { renderLog } from '../../common/utils/logging';
-import passBool from '../../common/utils/passBool';
 
 
 class BallotSummaryAccordionSection extends Component {
@@ -23,7 +22,7 @@ class BallotSummaryAccordionSection extends Component {
     return (
       <AccordionWrapper>
         <AccordionBorderWrapper>
-          <AccordionTitle isopen={passBool(!!isOpen)} onClick={onClick} style={{ cursor: 'pointer' }}>
+          <AccordionTitle isOpen={!!isOpen} onClick={onClick} style={{ cursor: 'pointer' }}>
             {label}
             <div style={{ float: 'right' }}>
               <IconButton classes={{ root: classes.iconButtonRoot }} size="large">
@@ -69,11 +68,13 @@ const AccordionBorderWrapper = styled('div')`
   padding: 16px 0;
 `;
 
-const AccordionTitle = styled('div')`
-  font-weight: ${(props) => (props.isopen ? 600 : 500)};
+const AccordionTitle = styled('div', {
+  shouldForwardProp: (prop) => !['isOpen'].includes(prop),
+})(({ isOpen }) => (`
+  font-weight: ${isOpen ? 600 : 500};
   font-size: 16px;
   width: 100%;
-`;
+`));
 
 const AccordionBody = styled('div')`
   font-size: 13px;

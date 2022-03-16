@@ -1,19 +1,19 @@
-import { Button, TextField } from '@mui/material';
-import withStyles from '@mui/styles/withStyles';
 import { Close } from '@mui/icons-material';
+import { Button, TextField } from '@mui/material';
+import styled from '@mui/material/styles/styled';
+import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
 import Alert from 'react-bootstrap/Alert';
-import styled from '@mui/material/styles/styled';
 import FriendActions from '../../actions/FriendActions';
-import FriendStore from '../../stores/FriendStore';
-import VoterStore from '../../stores/VoterStore';
+import LoadingWheel from '../../common/components/Widgets/LoadingWheel';
 import apiCalming from '../../common/utils/apiCalming';
 import { blurTextFieldAndroid, focusTextFieldAndroid } from '../../common/utils/cordovaUtils';
 import isMobileScreenSize from '../../common/utils/isMobileScreenSize';
 import { renderLog } from '../../common/utils/logging';
+import FriendStore from '../../stores/FriendStore';
+import VoterStore from '../../stores/VoterStore';
 import { validatePhoneOrEmail } from '../../utils/regex-checks';
-import LoadingWheel from '../../common/components/Widgets/LoadingWheel';
 
 const DelayedLoad = React.lazy(() => import(/* webpackChunkName: 'DelayedLoad' */ '../../common/components/Widgets/DelayedLoad'));
 const SettingsAccount = React.lazy(() => import(/* webpackChunkName: 'SettingsAccount' */ '../Settings/SettingsAccount'));

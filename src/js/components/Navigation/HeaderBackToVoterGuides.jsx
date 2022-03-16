@@ -1,27 +1,27 @@
-import { AppBar, Button, IconButton, Toolbar, Tooltip } from '@mui/material';
-import withStyles from '@mui/styles/withStyles';
 import { AccountCircle, Place } from '@mui/icons-material';
+import { AppBar, Button, IconButton, Toolbar, Tooltip } from '@mui/material';
+import styled from '@mui/material/styles/styled';
+import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
-import styled from '@mui/material/styles/styled';
 import OrganizationActions from '../../actions/OrganizationActions';
 import VoterGuideActions from '../../actions/VoterGuideActions';
 import VoterSessionActions from '../../actions/VoterSessionActions';
 import LazyImage from '../../common/components/LazyImage';
+import { hasIPhoneNotch } from '../../common/utils/cordovaUtils';
+import historyPush from '../../common/utils/historyPush';
+import { normalizedHref } from '../../common/utils/hrefUtils';
+import { isCordova, isWebApp } from '../../common/utils/isCordovaOrWebApp';
+import { renderLog } from '../../common/utils/logging';
+import voterPhoto from '../../common/utils/voterPhoto';
 import AppObservableStore, { messageService } from '../../stores/AppObservableStore';
 import BallotStore from '../../stores/BallotStore';
 import OrganizationStore from '../../stores/OrganizationStore';
 import VoterGuideStore from '../../stores/VoterGuideStore';
 import VoterStore from '../../stores/VoterStore';
 import { avatarGeneric } from '../../utils/applicationUtils';
-import { hasIPhoneNotch } from '../../common/utils/cordovaUtils';
-import { isCordova, isWebApp } from '../../common/utils/isCordovaOrWebApp';
-import historyPush from '../../common/utils/historyPush';
-import { normalizedHref } from '../../common/utils/hrefUtils';
 import isMobile from '../../utils/isMobile';
-import { renderLog } from '../../common/utils/logging';
 import { isProperlyFormattedVoterGuideWeVoteId, shortenText, stringContains } from '../../utils/textFormat';
-import voterPhoto from '../../common/utils/voterPhoto';
 import VoterGuideChooseElectionModal from '../VoterGuide/VoterGuideChooseElectionModal';
 import SignInButton from '../Widgets/SignInButton';
 import EndorsementModeTabs from './EndorsementModeTabs';
@@ -291,7 +291,8 @@ class HeaderBackToVoterGuides extends Component {
             classes={{ root: classes.iconButtonRoot }}
             id="changeVoterGuideElectionHeaderBar"
             onClick={this.toggleVoterGuideModal}
-            size="large">
+            size="large"
+          >
             <Place />
           </IconButton>
           <Button
@@ -359,7 +360,8 @@ class HeaderBackToVoterGuides extends Component {
                       classes={{ root: classes.iconButtonRoot }}
                       id="profileAvatarHeaderBar"
                       onClick={this.toggleProfilePopUp}
-                      size="large">
+                      size="large"
+                    >
                       <FirstNameWrapper>
                         {shortenText(voterFirstName, 9)}
                       </FirstNameWrapper>

@@ -1,18 +1,18 @@
-import { Button, InputBase, Paper } from '@mui/material';
-import withStyles from '@mui/styles/withStyles';
 import { Delete, Phone } from '@mui/icons-material';
+import { Button, InputBase, Paper } from '@mui/material';
+import styled from '@mui/material/styles/styled';
+import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
 import Alert from 'react-bootstrap/Alert';
 import { isValidPhoneNumber } from 'react-phone-number-input';
-import styled from '@mui/material/styles/styled';
 import VoterActions from '../../actions/VoterActions';
-import passBool from '../../common/utils/passBool';
-import VoterStore from '../../stores/VoterStore';
+import LoadingWheel from '../../common/components/Widgets/LoadingWheel';
 import { isCordova, isWebApp } from '../../common/utils/isCordovaOrWebApp';
 import isMobileScreenSize from '../../common/utils/isMobileScreenSize';
 import { renderLog } from '../../common/utils/logging';
-import LoadingWheel from '../../common/components/Widgets/LoadingWheel';
+import passBool from '../../common/utils/passBool';
+import VoterStore from '../../stores/VoterStore';
 import signInModalGlobalState from '../Widgets/signInModalGlobalState';
 import SettingsVerifySecretCode from './SettingsVerifySecretCode';
 
@@ -570,7 +570,7 @@ class VoterPhoneVerificationEntry extends Component {
     });
 
     return (
-      <Wrapper isweb={passBool(isWebApp())} id="voterPhoneEntryWrapper">
+      <Wrapper isWeb={isWebApp()} id="voterPhoneEntryWrapper">
         {(hideEverythingButSignInWithPhoneForm || hideExistingPhoneNumbers) ? (
           <span>
             {smsPhoneNumberStatusHtml}
@@ -578,7 +578,7 @@ class VoterPhoneVerificationEntry extends Component {
         ) : (
           <div>
             {verifiedSMSFound ? (
-              <PhoneNumberSection isweb={passBool(isWebApp())}>
+              <PhoneNumberSection isWeb={isWebApp()}>
                 <span className="h3">
                   Your Phone Number
                   {smsPhoneNumberListCount > 1 ? 's' : ''}
@@ -592,7 +592,7 @@ class VoterPhoneVerificationEntry extends Component {
               </span>
             )}
             {unverifiedSMSFound && (
-              <PhoneNumberSection isweb={passBool(isWebApp())}>
+              <PhoneNumberSection isWeb={isWebApp()}>
                 <span className="h3">Phone Numbers to Verify</span>
                 {toVerifySMSListHtml}
               </PhoneNumberSection>
@@ -600,7 +600,7 @@ class VoterPhoneVerificationEntry extends Component {
           </div>
         )}
         {!hideSignInWithPhoneForm && (
-          <PhoneNumberSection isweb={passBool(isWebApp())}>
+          <PhoneNumberSection isWeb={isWebApp()}>
             {enterSMSPhoneNumberHtml}
           </PhoneNumberSection>
         )}
@@ -664,13 +664,17 @@ const CancelButtonContainer = styled('div')`
   width: fit-content;
 `;
 
-const Wrapper = styled('div')`
-  margin-top: ${({ isweb }) => (isweb ? '32px;' : '0')};
-`;
+const Wrapper = styled('div', {
+  shouldForwardProp: (prop) => !['isWeb'].includes(prop),
+})(({ isWeb }) => (`
+  margin-top: ${isWeb ? '32px;' : '0'};
+`));
 
-const PhoneNumberSection = styled('div')`
-  margin-top: ${({ isweb }) => (isweb ? '18px;' : '0')};
-`;
+const PhoneNumberSection = styled('div', {
+  shouldForwardProp: (prop) => !['isWeb'].includes(prop),
+})(({ isWeb }) => (`
+  margin-top: ${isWeb ? '18px;' : '0'};
+`));
 
 const Error = styled('div')`
   color: rgb(255, 73, 34);

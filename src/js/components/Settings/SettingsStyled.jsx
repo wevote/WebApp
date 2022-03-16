@@ -34,15 +34,17 @@ const LinkToDomainRow = styled('div')`
   padding-top: 20px;
 `;
 
-const SharingColumn = styled('div')`
+const SharingColumn = styled('div', {
+  shouldForwardProp: (prop) => !['alignRight'].includes(prop),
+})(({ alignRight }) => (`
   display: flex;
   flex-flow: column;
-  ${({ alignRight }) => (alignRight ? 'align-items: flex-end;' : '')}
-  padding-right: ${({ alignRight }) => (alignRight ? '0' : '8px')};
+  ${alignRight ? 'align-items: flex-end;' : ''}
+  padding-right: ${alignRight ? '0' : '8px'};
   @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
     justify-content: center;
   }
-`;
+`));
 
 const GiantTextInput = styled('input')`
   font-size: 16px;

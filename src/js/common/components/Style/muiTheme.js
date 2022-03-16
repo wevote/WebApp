@@ -1,4 +1,4 @@
-import { createTheme, adaptV4Theme } from '@mui/material/styles';
+import { createTheme } from '@mui/material/styles';
 import overrides from '../../../components/Style/muiOverrides';
 
 // See also styled-theme.js
@@ -16,7 +16,7 @@ import overrides from '../../../components/Style/muiOverrides';
 //   },
 // };
 
-const muiTheme = createTheme(adaptV4Theme({
+const muiTheme = createTheme({
   palette: {
     primary: {
       // main: "#25536D",
@@ -48,6 +48,6 @@ const muiTheme = createTheme(adaptV4Theme({
     supportGreenRgb: 'rgb(31, 192, 111)',
     brandBlue: '#2e3c5d',
   },
-}));
+});
 
 export default muiTheme;

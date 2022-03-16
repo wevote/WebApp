@@ -1,9 +1,9 @@
 import { Twitter } from '@mui/icons-material';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
+import ExternalLinkIcon from '../../common/components/Widgets/ExternalLinkIcon';
 import { renderLog } from '../../common/utils/logging';
 import { abbreviateNumber, numberWithCommas, removeTwitterNameFromDescription } from '../../utils/textFormat';
-import ExternalLinkIcon from '../../common/components/Widgets/ExternalLinkIcon';
 import ParsedTwitterDescription from './ParsedTwitterDescription';
 
 const ImageHandler = React.lazy(() => import(/* webpackChunkName: 'ImageHandler' */ '../ImageHandler'));

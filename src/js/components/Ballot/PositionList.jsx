@@ -1,20 +1,20 @@
-import { CircularProgress } from '@mui/material';
-import withStyles from '@mui/styles/withStyles';
 import { Comment, Info, ThumbDown, ThumbUp } from '@mui/icons-material';
+import { CircularProgress } from '@mui/material';
+import styled from '@mui/material/styles/styled';
+import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
-import styled from '@mui/material/styles/styled';
 import FriendActions from '../../actions/FriendActions';
 import OrganizationActions from '../../actions/OrganizationActions';
+import LoadingWheel from '../../common/components/Widgets/LoadingWheel';
+import apiCalming from '../../common/utils/apiCalming';
+import { renderLog } from '../../common/utils/logging';
 import FriendStore from '../../stores/FriendStore';
 import OrganizationStore from '../../stores/OrganizationStore';
-import { renderLog } from '../../common/utils/logging';
 import FilterBase from '../Filter/FilterBase';
 import VoterGuideOrganizationFilter from '../Filter/VoterGuideOrganizationFilter';
-import LoadingWheel from '../../common/components/Widgets/LoadingWheel';
 import NumberOfItemsFound from '../Widgets/NumberOfItemsFound';
 import PositionItem from './PositionItem';
-import apiCalming from '../../common/utils/apiCalming';
 
 const ShowMoreItems = React.lazy(() => import(/* webpackChunkName: 'ShowMoreItems' */ '../Widgets/ShowMoreItems'));
 

@@ -1,8 +1,8 @@
-import React, { Component, Suspense } from 'react';
 import styled from '@mui/material/styles/styled';
-import VoterGuideStore from '../../stores/VoterGuideStore';
+import React, { Component, Suspense } from 'react';
 import historyPush from '../../common/utils/historyPush';
 import { renderLog } from '../../common/utils/logging';
+import VoterGuideStore from '../../stores/VoterGuideStore';
 
 const GuideList = React.lazy(() => import(/* webpackChunkName: 'GuideList' */ '../VoterGuide/GuideList'));
 const ShowMoreFooter = React.lazy(() => import(/* webpackChunkName: 'ShowMoreFooter' */ '../Navigation/ShowMoreFooter'));

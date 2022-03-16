@@ -1,8 +1,8 @@
 import { Button, Checkbox, FormControlLabel, TextField } from '@mui/material';
+import styled from '@mui/material/styles/styled';
 import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
 import React from 'react';
-import styled from '@mui/material/styles/styled';
 import { formatDateToYearMonthDay } from '../../common/utils/dateFormat';
 import { renderLog } from '../../common/utils/logging';
 
@@ -218,7 +218,7 @@ const CardTitle = styled('h2')`
   color: black !important;
   font-weight: 800;
   margin-top: 0;
-  margin-bottom: 0px;
+  margin-bottom: 0;
 `;
 
 const CardSubTitle = styled('h3')`
@@ -231,7 +231,7 @@ const ProgressBar = styled('div')`
   width: 100%;
   height: 12px;
   border-radius: 50px;
-  margin: 0px 0 12px;
+  margin: 0 0 12px;
   span {
     width: ${(props) => props.percentage}%;
     display: block;

@@ -1,15 +1,15 @@
+import { Close } from '@mui/icons-material';
 import { Button, Dialog, DialogContent, DialogTitle, FormControl, IconButton, InputLabel, Select } from '@mui/material';
+import styled from '@mui/material/styles/styled';
 import withStyles from '@mui/styles/withStyles';
 import withTheme from '@mui/styles/withTheme';
-import { Close } from '@mui/icons-material';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
-import styled from '@mui/material/styles/styled';
 import AnalyticsActions from '../../actions/AnalyticsActions';
-import passBool from '../../common/utils/passBool';
-import VoterStore from '../../stores/VoterStore';
 import { hasIPhoneNotch } from '../../common/utils/cordovaUtils';
 import { renderLog } from '../../common/utils/logging';
+import passBool from '../../common/utils/passBool';
+import VoterStore from '../../stores/VoterStore';
 import { calculateBallotBaseUrl } from '../../utils/textFormat';
 import EditAddressInPlace from '../Widgets/EditAddressInPlace';
 
@@ -198,7 +198,7 @@ class SelectBallotModal extends Component {
                       <option value="WY">Wyoming</option>
                     </Select>
                   </FormControl>
-                  <BallotElectionListWrapper addtopmargin={passBool(!hideAddressEdit)}>
+                  <BallotElectionListWrapper addTopMargin={passBool(!hideAddressEdit)}>
                     <Suspense fallback={<></>}>
                       <BallotElectionListWithFilters
                           ballotBaseUrl={ballotBaseUrl}
@@ -355,9 +355,11 @@ const SidebarWrapper = styled('div')`
   }
 `;
 
-const BallotElectionListWrapper = styled('div')`
-  margin-top: ${(props) => (props.addtopmargin ? '24px' : '0')};
-`;
+const BallotElectionListWrapper = styled('div', {
+  shouldForwardProp: (prop) => !['addTopMargin'].includes(prop),
+})(({ addTopMargin }) => (`
+  margin-top: ${addTopMargin ? '24px' : '0'};
+`));
 
 const ToggleGroup = styled('div')`
   display: flex;

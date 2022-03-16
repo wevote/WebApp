@@ -1,6 +1,7 @@
+import styled from '@mui/material/styles/styled';
+import { keyframes } from '@emotion/react';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
-import styled, { keyframes } from 'styled-components';
 import { renderLog } from '../../common/utils/logging';
 
 const ImageHandler = React.lazy(() => import(/* webpackChunkName: 'ImageHandler' */ '../ImageHandler'));
@@ -120,7 +121,7 @@ const CardDefault = styled('div')`
   }
 `;
 
-const scaleCard = keyframes`
+const scaleCard = keyframes`  // March 2022, from @emotion/react (hope these can be mixed)
   from {
     box-shadow: 1px .5px 5px 0 #cacaca;
   }

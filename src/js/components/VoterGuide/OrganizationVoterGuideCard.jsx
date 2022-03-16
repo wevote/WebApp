@@ -1,19 +1,19 @@
-import { Button } from '@mui/material';
-import withStyles from '@mui/styles/withStyles';
 import { Twitter } from '@mui/icons-material';
+import { Button } from '@mui/material';
+import styled from '@mui/material/styles/styled';
+import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
 import { Link } from 'react-router-dom';
-import styled from '@mui/material/styles/styled';
+import ExternalLinkIcon from '../../common/components/Widgets/ExternalLinkIcon';
+import LoadingWheel from '../../common/components/Widgets/LoadingWheel';
 import historyPush from '../../common/utils/historyPush';
 import { renderLog } from '../../common/utils/logging';
 import { isSpeakerTypePrivateCitizen } from '../../utils/organization-functions';
 import { abbreviateNumber, removeTwitterNameFromDescription } from '../../utils/textFormat';
 import FriendToggle from '../Friends/FriendToggle';
-import LoadingWheel from '../../common/components/Widgets/LoadingWheel';
 import ParsedTwitterDescription from '../Twitter/ParsedTwitterDescription';
 import IssuesByOrganizationDisplayList from '../Values/IssuesByOrganizationDisplayList';
-import ExternalLinkIcon from '../../common/components/Widgets/ExternalLinkIcon';
 
 const FollowToggle = React.lazy(() => import(/* webpackChunkName: 'FollowToggle' */ '../Widgets/FollowToggle'));
 const OpenExternalWebSite = React.lazy(() => import(/* webpackChunkName: 'OpenExternalWebSite' */ '../../common/components/Widgets/OpenExternalWebSite'));
@@ -193,7 +193,7 @@ const styles = () => ({
 
 const CardMain = styled('div')`
   border: 1px solid #fff;
-  padding: 0px !important;
+  padding: 0 !important;
   font-size: 14px;
   position: relative;
 `;
@@ -215,11 +215,11 @@ const FriendToggleWrapper = styled('div')`
 `;
 
 const IssuesWrapper = styled('div')`
-  margin-top: 0px;
+  margin-top: 0;
 `;
 
 const OrganizationWebsiteWrapper = styled('div')`
-  margin-top: 0px;
+  margin-top: 0;
 `;
 
 const ProfileAvatar = styled('div')`

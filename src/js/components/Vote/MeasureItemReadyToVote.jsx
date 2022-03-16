@@ -1,10 +1,10 @@
+import styled from '@mui/material/styles/styled';
 import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
-import styled from '@mui/material/styles/styled';
+import { renderLog } from '../../common/utils/logging';
 import SupportStore from '../../stores/SupportStore';
 import VoterGuideStore from '../../stores/VoterGuideStore';
-import { renderLog } from '../../common/utils/logging';
 
 const BallotItemSupportOpposeCountDisplay = React.lazy(() => import(/* webpackChunkName: 'BallotItemSupportOpposeCountDisplay' */ '../Widgets/BallotItemSupportOpposeCountDisplay'));
 

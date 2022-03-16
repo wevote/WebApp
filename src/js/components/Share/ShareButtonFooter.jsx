@@ -1,24 +1,24 @@
-import { Button, Drawer, MenuItem } from '@mui/material';
-import withStyles from '@mui/styles/withStyles';
 import { ArrowBackIos, Comment, FileCopyOutlined, Info, Reply } from '@mui/icons-material';
+import { Button, Drawer, MenuItem } from '@mui/material';
+import styled from '@mui/material/styles/styled';
+import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
 import { EmailIcon, EmailShareButton, FacebookIcon, FacebookShareButton, TwitterIcon, TwitterShareButton } from 'react-share';
-import styled from '@mui/material/styles/styled';
 import AnalyticsActions from '../../actions/AnalyticsActions';
 import ShareActions from '../../common/actions/ShareActions';
 import ShareStore from '../../common/stores/ShareStore';
+import { cordovaLinkToBeSharedFixes, isAndroid } from '../../common/utils/cordovaUtils';
+import historyPush from '../../common/utils/historyPush';
+import { normalizedHref } from '../../common/utils/hrefUtils';
+import { isCordova, isWebApp } from '../../common/utils/isCordovaOrWebApp';
+import { renderLog } from '../../common/utils/logging';
 import passBool from '../../common/utils/passBool';
 import AppObservableStore, { messageService } from '../../stores/AppObservableStore';
 import VoterStore from '../../stores/VoterStore';
 import { getApplicationViewBooleans } from '../../utils/applicationUtils';
 import { shareBottomOffset } from '../../utils/cordovaOffsets';
-import { cordovaLinkToBeSharedFixes, isAndroid } from '../../common/utils/cordovaUtils';
-import { isCordova, isWebApp } from '../../common/utils/isCordovaOrWebApp';
-import historyPush from '../../common/utils/historyPush';
-import { normalizedHref } from '../../common/utils/hrefUtils';
 import isMobile from '../../utils/isMobile';
-import { renderLog } from '../../common/utils/logging';
 import { stringContains } from '../../utils/textFormat';
 import { openSnackbar } from '../Widgets/SnackNotifier';
 import { androidFacebookClickHandler, androidTwitterClickHandler, cordovaSocialSharingByEmail } from './shareButtonCommon';
@@ -510,7 +510,7 @@ class ShareButtonFooter extends Component {
     return (
       <Wrapper
         className={hideFooterBehindModal ? 'u-z-index-1000' : 'u-z-index-9000'}
-        sharebottomvalue={shareBottomOffset(!showFooterBar)}
+        shareBottomValue={() => shareBottomOffset(!showFooterBar)}
       >
         {showShareButton && (
           <Button
@@ -540,7 +540,7 @@ class ShareButtonFooter extends Component {
           open={openShareButtonDrawer}
         >
           <Container
-            shareOptionsMode={passBool(
+            shareOptionsMode={(
               (shareFooterStep === 'ballotShareOptions') ||
               (shareFooterStep === 'ballotShareOptionsAllOpinions') ||
               (shareFooterStep === 'candidateShareOptions') ||
@@ -552,7 +552,7 @@ class ShareButtonFooter extends Component {
               (shareFooterStep === 'organizationShareOptions') ||
               (shareFooterStep === 'organizationShareOptionsAllOpinions') ||
               (shareFooterStep === 'readyShareOptions') ||
-              (shareFooterStep === 'readyShareOptionsAllOpinions'),
+              (shareFooterStep === 'readyShareOptionsAllOpinions')
             )}
           >
             {(shareFooterStep === 'ballotShareOptions') ||
@@ -926,11 +926,13 @@ const styles = () => ({
   },
 });
 
-const Container = styled('div')`
+const Container = styled('div', {
+  shouldForwardProp: (prop) => !['shareOptionsMode'].includes(prop),
+})(({ shareOptionsMode }) => (`
   margin: 0 auto;
   max-width: 576px;
-  padding: ${(props) => (props.shareoptionsmode ? '16px 16px 32px' : '24px 16px 32px')};
-`;
+  padding: ${shareOptionsMode ? '16px 16px 32px' : '24px 16px 32px'};
+`));
 
 const Flex = styled('div')`
   display: flex;
@@ -997,7 +999,9 @@ const MenuSeparator = styled('div')`
   }
 `;
 
-const ModalTitleArea = styled('div')`
+const ModalTitleArea = styled('div', {
+  shouldForwardProp: (prop) => !['noBoxShadowMode'].includes(prop),
+})(({ noBoxShadowMode }) => (`
   text-align: left;
   width: 100%;
   padding: 0;
@@ -1005,8 +1009,8 @@ const ModalTitleArea = styled('div')`
   @media (min-width: 769px) {
     border-bottom: 2px solid #f7f7f7;
   }
-  ${({ noBoxShadowMode }) => ((noBoxShadowMode) ? '@media (max-width: 376px) {\n    padding: 8px 6px;\n  }' : '')}
-`;
+  ${noBoxShadowMode ? '@media (max-width: 376px) {\n    padding: 8px 6px;\n  }' : ''}
+`));
 
 // Media queries cause a lot of problems in Cordova, please test in Cordova first, or avoid them
 const ShareWrapper = styled('div')`
@@ -1063,14 +1067,16 @@ const Title = styled('h3')`
   }
 `;
 
-const Wrapper = styled('div')`
+const Wrapper = styled('div', {
+  shouldForwardProp: (prop) => !['shareBottomValue'].includes(prop),
+})(({ shareBottomValue }) => (`
   position: fixed;
   width: 100%;
-  bottom:  ${(props) => (props.sharebottomvalue)};
+  bottom:  ${shareBottomValue};
   display: block;
   @media (min-width: 576px) {
     display: none;
   }
-`;
+`));
 
 export default withStyles(styles)(ShareButtonFooter);
