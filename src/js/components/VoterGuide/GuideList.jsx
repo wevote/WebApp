@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
-import styled from 'styled-components';
+import styled from '@mui/material/styles/styled';
 import CandidateStore from '../../stores/CandidateStore';
 import MeasureStore from '../../stores/MeasureStore';
 import { renderLog } from '../../common/utils/logging';
@@ -281,7 +281,7 @@ GuideList.propTypes = {
   instantRefreshOn: PropTypes.bool,
 };
 
-const ShowMoreItemsWrapper = styled.div`
+const ShowMoreItemsWrapper = styled('div')`
 `;
 
 export default (GuideList);

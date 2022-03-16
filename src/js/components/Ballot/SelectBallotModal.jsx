@@ -1,10 +1,12 @@
-import { Button, Dialog, DialogContent, DialogTitle, FormControl, IconButton, InputLabel, Select } from '@material-ui/core';
-import { withStyles, withTheme } from '@material-ui/core/styles';
-import { Close } from '@material-ui/icons';
+import { Button, Dialog, DialogContent, DialogTitle, FormControl, IconButton, InputLabel, Select } from '@mui/material';
+import withStyles from '@mui/styles/withStyles';
+import withTheme from '@mui/styles/withTheme';
+import { Close } from '@mui/icons-material';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
-import styled from 'styled-components';
+import styled from '@mui/material/styles/styled';
 import AnalyticsActions from '../../actions/AnalyticsActions';
+import passBool from '../../common/utils/passBool';
 import VoterStore from '../../stores/VoterStore';
 import { hasIPhoneNotch } from '../../common/utils/cordovaUtils';
 import { renderLog } from '../../common/utils/logging';
@@ -79,6 +81,7 @@ class SelectBallotModal extends Component {
             classes={{ root: classes.closeButton }}
             onClick={() => { this.props.toggleFunction(); }}
             id="profileCloseSelectBallotModal"
+            size="large"
           >
             <Close />
           </IconButton>
@@ -195,7 +198,7 @@ class SelectBallotModal extends Component {
                       <option value="WY">Wyoming</option>
                     </Select>
                   </FormControl>
-                  <BallotElectionListWrapper addTopMargin={!hideAddressEdit}>
+                  <BallotElectionListWrapper addtopmargin={passBool(!hideAddressEdit)}>
                     <Suspense fallback={<></>}>
                       <BallotElectionListWithFilters
                           ballotBaseUrl={ballotBaseUrl}
@@ -236,7 +239,7 @@ const styles = (theme) => ({
     height: '80%',
     width: '90%',
     maxWidth: '1200px',
-    [theme.breakpoints.down('xs')]: {
+    [theme.breakpoints.down('sm')]: {
       minWidth: '95%',
       maxWidth: '95%',
       width: '95%',
@@ -248,14 +251,14 @@ const styles = (theme) => ({
     },
   },
   dialogContent: {
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down('lg')]: {
       padding: '0 8px 8px',
     },
   },
   closeButton: {
     position: 'absolute',
-    right: `${theme.spacing(1)}px`,
-    top: `${theme.spacing(1)}px`,
+    right: theme.spacing(1),
+    top: theme.spacing(1),
   },
   formControl: {
     width: '100%',
@@ -267,16 +270,16 @@ const styles = (theme) => ({
   },
 });
 
-const EditAddressInPlaceWrapperMobile = styled.div`
+const EditAddressInPlaceWrapperMobile = styled('div')`
   margin-top: 18px;
   width: 100%;
 `;
 
-const ElectionChoiceWrapper = styled.div`
+const ElectionChoiceWrapper = styled('div')`
   margin-top: 12px;
 `;
 
-const Title = styled.div`
+const Title = styled('div')`
   font-size: 20px;
   font-weight: bold;
   margin: 0;
@@ -284,7 +287,7 @@ const Title = styled.div`
   text-align: left;
 `;
 
-const Row = styled.div`
+const Row = styled('div')`
   margin-top: -8px;
   margin-bottom: -8px;
   margin-left: auto;
@@ -297,7 +300,7 @@ const Row = styled.div`
   }
 `;
 
-const MapChartWrapper = styled.div`
+const MapChartWrapper = styled('div')`
   display: block;
   width: 100%;
   padding: 12px;
@@ -321,7 +324,7 @@ const MapChartWrapper = styled.div`
   // }
 `;
 
-const MapChartWrapperDesktop = styled.div`
+const MapChartWrapperDesktop = styled('div')`
   display: block;
   width: 50%;
   padding: 12px;
@@ -340,7 +343,7 @@ const MapChartWrapperDesktop = styled.div`
   }
 `;
 
-const SidebarWrapper = styled.div`
+const SidebarWrapper = styled('div')`
   padding: 16px;
   @media (max-width: 575px) {
     padding-top: 0;
@@ -352,11 +355,11 @@ const SidebarWrapper = styled.div`
   }
 `;
 
-const BallotElectionListWrapper = styled.div`
-  margin-top: ${(props) => (props.addTopMargin ? '24px' : '0')};
+const BallotElectionListWrapper = styled('div')`
+  margin-top: ${(props) => (props.addtopmargin ? '24px' : '0')};
 `;
 
-const ToggleGroup = styled.div`
+const ToggleGroup = styled('div')`
   display: flex;
   align-items: center;
   justify-content: center;

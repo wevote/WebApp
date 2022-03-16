@@ -1,9 +1,9 @@
-import { Button } from '@material-ui/core';
-import { withStyles } from '@material-ui/core/styles';
+import { Button } from '@mui/material';
+import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
 import { Link } from 'react-router-dom';
-import styled from 'styled-components';
+import styled from '@mui/material/styles/styled';
 import { isWebApp } from '../../common/utils/isCordovaOrWebApp';
 import normalizedImagePath from '../../common/utils/normalizedImagePath';
 import historyPush from '../../common/utils/historyPush';
@@ -156,20 +156,16 @@ class WelcomeFooter extends Component {
           </LinksContainer>
           <OptionsContainer>
             <Button
-              color="default"
               variant="outlined"
               classes={{ root: classes.buttonOutlined }}
               id="footerLinkGetStarted"
-              onClick={() => historyPush('/ready')}
-            >
+              onClick={() => historyPush('/ready')}>
               Get Started
             </Button>
             <Button
-              color="default"
               variant="outlined"
               classes={{ root: classes.buttonOutlined }}
-              onClick={() => window.open('https://help.wevote.us/hc/en-us/requests/new', '_blank')}
-            >
+              onClick={() => window.open('https://help.wevote.us/hc/en-us/requests/new', '_blank')}>
               Contact Sales
             </Button>
           </OptionsContainer>
@@ -249,12 +245,12 @@ const styles = (theme) => ({
     border: '3px solid white',
     marginBottom: '1em',
     fontWeight: 'bold',
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down('lg')]: {
       padding: '8px 0',
       border: '1.5px solid white',
       height: 40,
     },
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down('md')]: {
       width: '47%',
       fontSize: 12,
       border: '1px solid white',
@@ -265,11 +261,11 @@ const styles = (theme) => ({
     height: 60,
     marginRight: '.5em',
     cursor: 'pointer',
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down('lg')]: {
       width: 175,
       height: 53,
     },
-    [theme.breakpoints.down('xs')]: {
+    [theme.breakpoints.down('sm')]: {
       width: 150,
       height: 45,
       marginRight: '.2em',
@@ -279,10 +275,10 @@ const styles = (theme) => ({
     width: 179,
     marginLeft: '.5em',
     cursor: 'pointer',
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down('lg')]: {
       width: 160,
     },
-    [theme.breakpoints.down('xs')]: {
+    [theme.breakpoints.down('sm')]: {
       width: 135,
       marginLeft: '.2em',
     },
@@ -294,7 +290,7 @@ const styles = (theme) => ({
     '&:hover': {
       color: 'white',
     },
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down('lg')]: {
       fontSize: 16,
     },
   },
@@ -305,13 +301,13 @@ const styles = (theme) => ({
     '&:hover': {
       color: 'white',
     },
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down('lg')]: {
       fontSize: 16,
     },
   },
 });
 
-const Wrapper = styled.div`
+const Wrapper = styled('div')`
   color: rgb(255, 255, 255, .6) !important;
   background-image: linear-gradient(to bottom, #415a99, ${({ theme }) => theme.colors.brandBlue});
   padding: 4em 1em 0 1em;
@@ -325,7 +321,7 @@ const Wrapper = styled.div`
   }
 `;
 
-const Top = styled.div`
+const Top = styled('div')`
   width: 960px;
   max-width: 90vw;
   display: flex;
@@ -335,7 +331,7 @@ const Top = styled.div`
   }
 `;
 
-const LinksContainer = styled.div`
+const LinksContainer = styled('div')`
   display: flex;
   flex-flow: row;
   width: 75%;
@@ -346,7 +342,7 @@ const LinksContainer = styled.div`
   }
 `;
 
-const Column = styled.div`
+const Column = styled('div')`
   width: 150px;
   display: flex;
   flex-flow: column nowrap;
@@ -355,14 +351,14 @@ const Column = styled.div`
   }
 `;
 
-const ColumnTitle = styled.h3`
+const ColumnTitle = styled('h3')`
   font-size: 18px;
   color: white;
   font-weight: bold;
   margin: .8em 0;
 `;
 
-const OptionsContainer = styled.div`
+const OptionsContainer = styled('div')`
   width: 25%;
   display: flex;
   flex-flow: column;
@@ -373,7 +369,7 @@ const OptionsContainer = styled.div`
   }
 `;
 
-const BadgeContainer = styled.div`
+const BadgeContainer = styled('div')`
   width: 100%;
   margin-top: 4em;
   display: flex;
@@ -383,7 +379,7 @@ const BadgeContainer = styled.div`
 `;
 
 
-const Bottom = styled.div`
+const Bottom = styled('div')`
   width: 750px;
   max-width: 90vw;
   display: flex;
@@ -392,7 +388,7 @@ const Bottom = styled.div`
   text-align: center;
 `;
 
-const Text = styled.p`
+const Text = styled('p')`
   font-size: 12px;
   @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
     font-size: 16px;

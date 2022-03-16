@@ -1,6 +1,7 @@
-import { Dialog, DialogContent, DialogTitle, IconButton, Typography } from '@material-ui/core';
-import { withStyles, withTheme } from '@material-ui/core/styles';
-import { Close } from '@material-ui/icons';
+import { Dialog, DialogContent, DialogTitle, IconButton, Typography } from '@mui/material';
+import withStyles from '@mui/styles/withStyles';
+import withTheme from '@mui/styles/withTheme';
+import { Close } from '@mui/icons-material';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
 import { renderLog } from '../../common/utils/logging';
@@ -63,7 +64,7 @@ class VoterGuideChooseElectionWithPositionsModal extends Component {
             classes={{ root: classes.closeButton }}
             onClick={() => { this.props.toggleFunction(); }}
             id="profileCloseVoterGuideChooseElectionModal"
-          >
+            size="large">
             <Close />
           </IconButton>
         </DialogTitle>
@@ -95,7 +96,7 @@ VoterGuideChooseElectionWithPositionsModal.propTypes = {
 
 const styles = (theme) => ({
   dialogPaper: {
-    [theme.breakpoints.down('xs')]: {
+    [theme.breakpoints.down('sm')]: {
       minWidth: '95%',
       maxWidth: '95%',
       width: '95%',
@@ -106,14 +107,14 @@ const styles = (theme) => ({
   },
   dialogContent: {
     height: '100%',
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down('lg')]: {
       padding: '0 8px',
     },
   },
   closeButton: {
     position: 'absolute',
-    right: `${theme.spacing(1)}px`,
-    top: `${theme.spacing(1)}px`,
+    right: theme.spacing(1),
+    top: theme.spacing(1),
   },
 });
 

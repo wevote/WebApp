@@ -1,6 +1,6 @@
 import styled, { keyframes } from 'styled-components';
 
-const Title = styled.h1`
+const Title = styled('h1')`
   font-weight: bold;
   font-size: 36px;
   text-align: center;
@@ -14,7 +14,7 @@ const Title = styled.h1`
   }
 `;
 
-const BlueTitle = styled.span`
+const BlueTitle = styled('span')`
   color: rgb(167, 231, 255);
   margin-bottom: 1em;
 `;
@@ -39,7 +39,7 @@ const fadeOut = keyframes`
   }
 `;
 
-const SubTitle = styled.h3`
+const SubTitle = styled('h3')`
   font-weight: 300;
   font-size: 24px;
   text-align: center;
@@ -51,7 +51,7 @@ const SubTitle = styled.h3`
   }
 `;
 
-const Video = styled.iframe`
+const Video = styled('iframe')`
   position: absolute;
   top: 0;
   left: 0;
@@ -59,7 +59,7 @@ const Video = styled.iframe`
   height: 100%;
 `;
 
-const PlayerContainer = styled.div`
+const PlayerContainer = styled('div')`
   width: 640px;
   height: 360px;
   max-width: 90%;

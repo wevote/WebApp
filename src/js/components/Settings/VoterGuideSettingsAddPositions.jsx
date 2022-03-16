@@ -1,9 +1,9 @@
-import { Button, Card, CircularProgress } from '@material-ui/core';
-import { withStyles } from '@material-ui/core/styles';
-import { Ballot } from '@material-ui/icons';
+import { Button, Card, CircularProgress } from '@mui/material';
+import withStyles from '@mui/styles/withStyles';
+import { Ballot } from '@mui/icons-material';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
-import styled from 'styled-components';
+import styled from '@mui/material/styles/styled';
 import AppObservableStore from '../../stores/AppObservableStore';
 import BallotActions from '../../actions/BallotActions';
 import OrganizationActions from '../../actions/OrganizationActions';
@@ -832,18 +832,18 @@ VoterGuideSettingsAddPositions.propTypes = {
   voterGuideWeVoteId: PropTypes.string.isRequired,
 };
 
-const CardChildListGroup = styled.ul`
+const CardChildListGroup = styled('ul')`
   padding: 0;
 `;
 
-const EmptyBallotMessageContainer = styled.div`
+const EmptyBallotMessageContainer = styled('div')`
   padding: 1em 2em;
   display: flex;
   flex-flow: column;
   align-items: center;
 `;
 
-const EmptyBallotText = styled.p`
+const EmptyBallotText = styled('p')`
   font-size: 16px;
   text-align: center;
   margin: 1em 2em;
@@ -852,35 +852,35 @@ const EmptyBallotText = styled.p`
   }
 `;
 
-const FilterBaseWrapper = styled.div`
+const FilterBaseWrapper = styled('div')`
   margin-top: -12px;
 `;
 
-const PreviewButtonWrapper = styled.div`
+const PreviewButtonWrapper = styled('div')`
   text-align: right;
   margin-bottom: 2px;
 `;
 
-const LoadingItemsWheel = styled.div`
+const LoadingItemsWheel = styled('div')`
   width: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
 `;
 
-const SearchResultsFoundInExplanation = styled.div`
+const SearchResultsFoundInExplanation = styled('div')`
   background-color: #C2DCE8;
   color: #0E759F;
   padding: 12px !important;
 `;
 
-const SearchTitle = styled.div`
+const SearchTitle = styled('div')`
   font-size: 24px;
   margin-top: 12px;
   margin-bottom: 12px;
 `;
 
-const ShowMoreItemsWrapper = styled.div`
+const ShowMoreItemsWrapper = styled('div')`
 `;
 
 const styles = (theme) => ({
@@ -894,7 +894,7 @@ const styles = (theme) => ({
   },
   ballotButtonRoot: {
     width: 250,
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down('lg')]: {
       width: '100%',
     },
   },

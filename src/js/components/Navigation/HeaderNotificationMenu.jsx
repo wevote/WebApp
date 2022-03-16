@@ -1,9 +1,9 @@
-import { Badge, IconButton, Menu, MenuItem } from '@material-ui/core';
-import { withStyles } from '@material-ui/core/styles';
-import { Notifications } from '@material-ui/icons';
+import { Badge, IconButton, Menu, MenuItem } from '@mui/material';
+import withStyles from '@mui/styles/withStyles';
+import { Notifications } from '@mui/icons-material';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
-import styled from 'styled-components';
+import styled from '@mui/material/styles/styled';
 import ActivityActions from '../../actions/ActivityActions';
 import ActivityStore from '../../stores/ActivityStore';
 import { createDescriptionOfFriendPosts } from '../../utils/activityUtils';
@@ -268,7 +268,7 @@ class HeaderNotificationMenu extends Component {
           classes={menuOpen ? { root: classes.iconButtonRootSelected } : { root: classes.iconButtonRoot }}
           id="headerNotificationMenuIcon"
           onClick={this.handleClick}
-        >
+          size="large">
           {allActivityNoticesNotSeenCount ? (
             <Badge
               badgeContent={<BadgeCountWrapper>{allActivityNoticesNotSeenCount}</BadgeCountWrapper>}
@@ -390,25 +390,25 @@ const styles = (theme) => ({
     padding: '0 !important',
     border: 'none !important',
     boxShadow: '0 2px 3px 2px #ccc',
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down('md')]: {
       width: '300px !important',
       maxWidth: '320px !important',
     },
   },
 });
 
-const ActivityTime = styled.div`
+const ActivityTime = styled('div')`
   color: #999;
   font-size: 11px;
   font-weight: 400;
 `;
 
-const BadgeCountWrapper = styled.span`
+const BadgeCountWrapper = styled('span')`
   margin-top: -3px;
   margin-left: 1px;
 `;
 
-const HeaderNotificationMenuWrapper = styled.div`
+const HeaderNotificationMenuWrapper = styled('div')`
   height: 48px;
   margin-right: 12px;
   @media (min-width: 576px) {
@@ -416,13 +416,13 @@ const HeaderNotificationMenuWrapper = styled.div`
   }
 `;
 
-const MenuItemInternalWrapper = styled.div`
+const MenuItemInternalWrapper = styled('div')`
   align-items: flex-start;
   display: flex;
   justify-content: flex-start;
 `;
 
-const MenuItemPhoto = styled.div`
+const MenuItemPhoto = styled('div')`
   min-width: 48px;
   * {
     border-radius: 24px;
@@ -430,20 +430,20 @@ const MenuItemPhoto = styled.div`
   }
 `;
 
-const MenuItemText = styled.div`
+const MenuItemText = styled('div')`
   margin-left: 12px;
 `;
 
-const NotificationsHeaderWrapper = styled.div`
+const NotificationsHeaderWrapper = styled('div')`
   display: flex;
   justify-content: space-between;
   width: 100%;
 `;
 
-const NotificationsSettings = styled.div`
+const NotificationsSettings = styled('div')`
 `;
 
-const NotificationsTitle = styled.div`
+const NotificationsTitle = styled('div')`
   font-weight: 600;
 `;
 

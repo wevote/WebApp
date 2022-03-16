@@ -1,18 +1,19 @@
-import { withStyles, withTheme } from '@material-ui/core/styles';
-import { Info, Launch, Twitter } from '@material-ui/icons';
+import { Info, Launch, Twitter } from '@mui/icons-material';
+import styled from '@mui/material/styles/styled';
+import withStyles from '@mui/styles/withStyles';
+import withTheme from '@mui/styles/withTheme';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
 import TextTruncate from 'react-text-truncate'; // Replace with: import TruncateMarkup from 'react-truncate-markup';
-import styled from 'styled-components';
+import { isAndroidSizeMD } from '../../common/utils/cordovaUtils';
+import historyPush from '../../common/utils/historyPush';
+import { renderLog } from '../../common/utils/logging';
 import AppObservableStore from '../../stores/AppObservableStore';
 import CandidateStore from '../../stores/CandidateStore';
 import IssueStore from '../../stores/IssueStore';
 import SupportStore from '../../stores/SupportStore';
 import VoterGuideStore from '../../stores/VoterGuideStore';
-import { isAndroidSizeMD } from '../../common/utils/cordovaUtils';
-import historyPush from '../../common/utils/historyPush';
 import isMobileAndTabletScreenSize from '../../utils/isMobileAndTabletScreenSize';
-import { renderLog } from '../../common/utils/logging';
 import { abbreviateNumber, numberWithCommas, stripHtmlFromString } from '../../utils/textFormat';
 
 const BallotItemSupportOpposeComment = React.lazy(() => import(/* webpackChunkName: 'BallotItemSupportOpposeComment' */ '../Widgets/BallotItemSupportOpposeComment'));
@@ -702,29 +703,31 @@ const styles = () => ({
   },
 });
 
-const BallotItemSupportOpposeCountDisplayWrapper = styled.div`
+const BallotItemSupportOpposeCountDisplayWrapper = styled('div')`
   cursor: pointer;
   float: right;
 `;
 
-const CandidateInfo = styled.div`
-  ${({ isClickable }) => ((isClickable) ? 'cursor: pointer;' : '')}
+const CandidateInfo = styled('div', {
+  shouldForwardProp: (prop) => !['isClickable'].includes(prop),
+})(({ isClickable }) => (`
+  ${isClickable ? 'cursor: pointer;' : ''}
   display: flex;
   flex-flow: row nowrap;
+`));
+
+const Candidate = styled('div')`
 `;
 
-const Candidate = styled.div`
+const CandidateItemWrapper = styled('div')`
 `;
 
-const CandidateItemWrapper = styled.div`
+const CandidateNameRow = styled('div')`
+  //display: flex;
+  //justify-content: flex-start;
 `;
 
-const CandidateNameRow = styled.div`
-  // display: flex;
-  // justify-content: flex-start;
-`;
-
-const CandidateWrapper = styled.div`
+const CandidateWrapper = styled('div')`
   display: flex;
   flex-flow: row nowrap;
   justify-content: space-between;
@@ -735,46 +738,46 @@ const CandidateWrapper = styled.div`
   ${() => (isAndroidSizeMD() ? { width: '92% !important' } : {})}
 `;
 
-const CandidateTextWrapper = styled.div`
+const CandidateTextWrapper = styled('div')`
   margin: 12px 0;
 `;
 
-const CandidateLinksWrapper = styled.div`
+const CandidateLinksWrapper = styled('div')`
   display: flex;
   justify-content: flex-start;
 `;
 
-const DesktopWrapper = styled.div`
+const DesktopWrapper = styled('div')`
 `;
 
-const ExternalWebSiteWrapper = styled.div`
+const ExternalWebSiteWrapper = styled('div')`
   margin-top: 3px;
   padding-left: 15px;
   white-space: nowrap;
 `;
 
-const ForMoreInformationInfoText = styled.div`
+const ForMoreInformationInfoText = styled('div')`
   color: #999;
   margin-bottom: 4px;
 `;
 
-const MobileTabletWrapper = styled.div`
+const MobileTabletWrapper = styled('div')`
 `;
 
-const TwitterFollowersWrapper = styled.span`
+const TwitterFollowersWrapper = styled('span')`
   color: #000;
 `;
 
-const TwitterHandleWrapper = styled.span`
+const TwitterHandleWrapper = styled('span')`
   color: #000;
   margin-right: 5px;
 `;
 
-const TwitterInnerWrapper = styled.span`
+const TwitterInnerWrapper = styled('span')`
   margin: 0;
 `;
 
-const TwitterWrapper = styled.div`
+const TwitterWrapper = styled('div')`
   font-size: 13px;
   margin: 0;
   margin-top: 4px;

@@ -1,10 +1,10 @@
-import { Button, Link } from '@material-ui/core';
-import { withStyles } from '@material-ui/core/styles';
-import { Email, LocationOn, Person } from '@material-ui/icons';
+import { Button, Link } from '@mui/material';
+import withStyles from '@mui/styles/withStyles';
+import { Email, LocationOn, Person } from '@mui/icons-material';
 import PropTypes from 'prop-types';
 import React, { PureComponent, Suspense } from 'react';
 import Helmet from 'react-helmet';
-import styled from 'styled-components';
+import styled from '@mui/material/styles/styled';
 import AnalyticsActions from '../actions/AnalyticsActions';
 import VoterActions from '../actions/VoterActions';
 import SettingsVerifySecretCode from '../components/Settings/SettingsVerifySecretCode';
@@ -255,7 +255,7 @@ class WelcomeForVoters extends PureComponent {
               <Bold>Welcome! </Bold>
               Thank you for being part of We Vote.
               <br />
-              <Link to="/ready">
+              <Link to="/ready" underline="hover">
                 <span className="u-link-color">
                   Click to get ready to vote
                 </span>
@@ -325,7 +325,7 @@ const styles = (theme) => ({
   buttonContained: {
     borderRadius: 32,
     height: 50,
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down('lg')]: {
       height: 36,
     },
   },
@@ -338,7 +338,7 @@ const styles = (theme) => ({
   viewBallotButton: {
     borderRadius: 32,
     height: 50,
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down('lg')]: {
       height: 36,
     },
     background: 'linear-gradient(180deg, white, rgb(178, 200, 255))',
@@ -353,7 +353,7 @@ const styles = (theme) => ({
   },
 });
 
-const HeaderForVoters = styled.div`
+const HeaderForVoters = styled('div')`
   position: relative;
   width: 110%;
   color: white;
@@ -364,7 +364,7 @@ const HeaderForVoters = styled.div`
   margin-top: -72px;
 `;
 
-const Wrapper = styled.div`
+const Wrapper = styled('div')`
   display: flex;
   flex-flow: column nowrap;
   align-items: center;

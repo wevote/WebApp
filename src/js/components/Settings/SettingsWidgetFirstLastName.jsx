@@ -1,8 +1,8 @@
-import { Button, FormControl, TextField } from '@material-ui/core';
-import { withStyles } from '@material-ui/core/styles';
+import { Button, FormControl, TextField } from '@mui/material';
+import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import styled from 'styled-components';
+import styled from '@mui/material/styles/styled';
 import FriendActions from '../../actions/FriendActions';
 import OrganizationActions from '../../actions/OrganizationActions';
 import VoterActions from '../../actions/VoterActions';
@@ -415,24 +415,24 @@ const styles = () => ({
   },
 });
 
-const Row = styled.div`
+const Row = styled('div')`
   width: calc(100% + 24px);
   margin-left: -12px;
   display: flex;
   justify-content: space-between;
 `;
 
-const ColumnFullWidth = styled.div`
+const ColumnFullWidth = styled('div')`
   padding: 6px 12px;
   width: 100%;
 `;
 
-const ColumnHalfWidth = styled.div`
+const ColumnHalfWidth = styled('div')`
   padding: 6px 12px;
   width: 50%;
 `;
 
-const Label = styled.label`
+const Label = styled('label')`
   margin-bottom: 4px;
   display: block;
 `;

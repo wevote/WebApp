@@ -244,14 +244,14 @@ const styles = () => ({
   },
 });
 
-const CandidateEndorsementsContainer = styled.div`
+const CandidateEndorsementsContainer = styled('div')`
   display: flex;
   justify-content: flex-start;
   overflow-x: auto;
   overflow-y: hidden:
 `;
 
-const CandidateEndorsementContainer = styled.div`
+const CandidateEndorsementContainer = styled('div')`
   min-width: 50px;
   width: 50px;
   @media (max-width: ${({ theme }) => theme.breakpoints.xs}) {

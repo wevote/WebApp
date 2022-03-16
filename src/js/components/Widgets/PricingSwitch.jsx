@@ -59,7 +59,7 @@ PricingSwitch.propTypes = {
   switchToDifferentCategoryFunction: PropTypes.func,
 };
 
-const Container = styled.div`
+const Container = styled('div')`
   display: flex;
   flex-flow: row;
   border-radius: 64px;
@@ -73,7 +73,7 @@ const Container = styled.div`
   transition: all 150ms ease-in;
 `;
 
-const Choice = styled.div`
+const Choice = styled('div')`
   display: flex;
   background: ${({ thisPricingPlanInView, chosenBackgroundColor }) => (thisPricingPlanInView ? chosenBackgroundColor : 'transparent')};
   color: ${({ thisPricingPlanInView, chosenBackgroundColor, chosenTextColor }) => (thisPricingPlanInView ? chosenTextColor : chosenBackgroundColor)};
@@ -86,7 +86,7 @@ const Choice = styled.div`
   transition: all 150ms ease-in;
 `;
 
-const ChoiceText = styled.p`
+const ChoiceText = styled('p')`
   margin: auto;
   font-size: 14px;
   text-align: center;

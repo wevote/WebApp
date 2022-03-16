@@ -1,7 +1,8 @@
-import { withStyles, withTheme } from '@material-ui/core/styles';
+import withStyles from '@mui/styles/withStyles';
+import withTheme from '@mui/styles/withTheme';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
-import styled from 'styled-components';
+import styled from '@mui/material/styles/styled';
 import normalizedImagePath from '../../common/utils/normalizedImagePath';
 import { renderLog } from '../../common/utils/logging';
 import InfoCircleIcon from '../Widgets/InfoCircleIcon';
@@ -149,9 +150,9 @@ const styles = (theme) => ({
     padding: '4px 8px',
     height: 32,
     width: '100%',
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down('lg')]: {
     },
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down('md')]: {
       padding: '4px 4px',
     },
   },
@@ -160,7 +161,7 @@ const styles = (theme) => ({
   },
 });
 
-const Wrapper = styled.div`
+const Wrapper = styled('div')`
   margin: 0 !important;
   padding-bottom: 64px;
   padding-left: 24px;
@@ -168,21 +169,21 @@ const Wrapper = styled.div`
 `;
 
 // Styled divs are not working in react-slick environment, so I put these styles in _intro-story.scss
-const FriendInvitationTopHeader = styled.div`
+const FriendInvitationTopHeader = styled('div')`
   margin-bottom: 24px;
 `;
 
 // Styled divs are not working in react-slick environment, so I put these styles in _intro-story.scss
-const FriendInvitationValuesHeader = styled.div`
+const FriendInvitationValuesHeader = styled('div')`
 `;
 
-const PopularValuesWrapper = styled.div`
+const PopularValuesWrapper = styled('div')`
 `;
 
-const ValuesWrapper = styled.div`
+const ValuesWrapper = styled('div')`
 `;
 
-const WeVoteLogoWrapper = styled.div`
+const WeVoteLogoWrapper = styled('div')`
   display: flex;
   justify-content: center;
   padding: 12px;

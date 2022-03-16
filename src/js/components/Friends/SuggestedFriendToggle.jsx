@@ -1,7 +1,7 @@
-import { Button } from '@material-ui/core';
+import { Button } from '@mui/material';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import styled from 'styled-components';
+import styled from '@mui/material/styles/styled';
 import FriendActions from '../../actions/FriendActions';
 import AppObservableStore from '../../stores/AppObservableStore';
 import FriendStore from '../../stores/FriendStore';
@@ -109,7 +109,7 @@ SuggestedFriendToggle.propTypes = {
   otherVoterWeVoteId: PropTypes.string.isRequired,
 };
 
-const ButtonContainer = styled.div`
+const ButtonContainer = styled('div')`
   white-space: nowrap;
   width: 100%;
   // margin-right: 12px;

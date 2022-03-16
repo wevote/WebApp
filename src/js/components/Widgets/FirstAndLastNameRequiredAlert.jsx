@@ -1,7 +1,7 @@
-import { withStyles } from '@material-ui/core/styles';
+import withStyles from '@mui/styles/withStyles';
 import React, { Component } from 'react';
 import Alert from 'react-bootstrap/Alert';
-import styled from 'styled-components';
+import styled from '@mui/material/styles/styled';
 import FriendActions from '../../actions/FriendActions';
 import FriendStore from '../../stores/FriendStore';
 import OrganizationStore from '../../stores/OrganizationStore';
@@ -233,18 +233,18 @@ const styles = ({
   },
 });
 
-const ExplanationText = styled.div`
+const ExplanationText = styled('div')`
   margin-bottom: 10px;
 `;
 
-const ParagraphStyled = styled.div`
+const ParagraphStyled = styled('div')`
   font-size: 16px;
   font-weight: normal;
   margin: 15px 15px;
   width: 100%;
 `;
 
-const PrintWrapper = styled.div`
+const PrintWrapper = styled('div')`
   background-color: white;
   background-clip: border-box;
   border: 2px solid #999;

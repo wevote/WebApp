@@ -33,7 +33,7 @@ HeaderSwitch.propTypes = {
   switchToDifferentCategoryFunction: PropTypes.func,
 };
 
-const Container = styled.div`
+const Container = styled('div')`
   display: flex;
   flex-flow: row;
   border-radius: 64px;
@@ -45,7 +45,7 @@ const Container = styled.div`
   transition: all 150ms ease-in;
 `;
 
-const Choice = styled.div`
+const Choice = styled('div')`
   display: flex;
   background: ${({ selectedCategoryIndex, color }) => (selectedCategoryIndex ? color : 'transparent')};
   color: ${({ selectedCategoryIndex, color, theme }) => (selectedCategoryIndex ? theme.colors.brandBlue : color)};
@@ -58,7 +58,7 @@ const Choice = styled.div`
   transition: all 150ms ease-in;
 `;
 
-const ChoiceText = styled.p`
+const ChoiceText = styled('p')`
   margin: auto;
   font-size: 16px;
   text-align: center;

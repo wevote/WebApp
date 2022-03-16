@@ -1,5 +1,5 @@
-import { Chip } from '@material-ui/core';
-import { withStyles } from '@material-ui/core/styles';
+import { Chip } from '@mui/material';
+import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import AppObservableStore from '../../stores/AppObservableStore';

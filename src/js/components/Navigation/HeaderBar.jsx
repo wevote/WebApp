@@ -1,9 +1,9 @@
-import { Button, IconButton, Tabs, Tooltip } from '@material-ui/core';
-import { withStyles } from '@material-ui/core/styles';
-import { AccountCircle, Place, Search } from '@material-ui/icons';
+import { Button, IconButton, Tabs, Tooltip } from '@mui/material';
+import withStyles from '@mui/styles/withStyles';
+import { AccountCircle, Place, Search } from '@mui/icons-material';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
-import styled from 'styled-components';
+import styled from '@mui/material/styles/styled';
 import BallotActions from '../../actions/BallotActions';
 import OrganizationActions from '../../actions/OrganizationActions';
 import VoterActions from '../../actions/VoterActions';
@@ -13,6 +13,7 @@ import LazyImage from '../../common/components/LazyImage';
 import { hasIPhoneNotch, historyPush, isDeviceZoomed, isIOS, isIOSAppOnMac } from '../../common/utils/cordovaUtils';
 import { isCordova, isWebApp } from '../../common/utils/isCordovaOrWebApp';
 import { renderLog } from '../../common/utils/logging';
+import passBool from '../../common/utils/passBool';
 import voterPhoto from '../../common/utils/voterPhoto';
 import AnalyticsStore from '../../stores/AnalyticsStore';
 import AppObservableStore, { messageService } from '../../stores/AppObservableStore';
@@ -25,7 +26,7 @@ import { avatarGeneric, displayTopMenuShadow, weVoteBrandingOff } from '../../ut
 import getHeaderObjects from '../../utils/getHeaderObjects';
 import isMobileScreenSize from '../../common/utils/isMobileScreenSize';
 import { TopOfPageHeader, TopRowOneLeftContainer, TopRowOneMiddleContainer, TopRowOneRightContainer, TopRowTwoLeftContainer } from '../Style/pageLayoutStyles';
-import shouldHeaderRetreat from '../../utils/shouldHeaderRetreat';
+// import shouldHeaderRetreat from '../../utils/shouldHeaderRetreat';
 import { getBooleanValue, shortenText, stringContains } from '../../utils/textFormat';
 import SignInButton from '../Widgets/SignInButton';
 import signInModalGlobalState from '../Widgets/signInModalGlobalState';
@@ -514,11 +515,13 @@ class HeaderBar extends Component {
   }
 
   // June 2021:  This is a hack, not an elegant solution.  The Tabs object seems to get confused
-  // when it is inside the render of a of HeaderBarSuspense, and in addition, we are not using the Tabs
+  // when it is inside the render of a HeaderBarSuspense, and in addition, we are not using the Tabs
   // object to load a pane, we are using it to HistoryPush to a different page.
   // The first id in the tabNamesString gets the underline, the others, in whatever order they
   // arrive get the underline removed.  Once the voter navigates to a tab in a session, this hack becomes
   // unnecessary for that tab, but there doesn't seem to be a downside of calling it all the time
+
+  // March 2022:  With MUI 5, this is no longer necessary, the "confusion" bug was fixed.
   changeOverrideUnderline (tabNamesString) {
     const tabNames = tabNamesString.split(',');
     for (let i = 0; i < tabNames.length; i++) {
@@ -568,8 +571,6 @@ class HeaderBar extends Component {
     }
 
     const { classes } = this.props;
-    const pathname = normalizedHref();
-
     const {
       chosenSiteLogoUrl, hideWeVoteLogo, /* paidAccountUpgradeMode, */ scrolledDown,
       showAdviserIntroModal, showEditAddressButton, showFirstPositionIntroModal,
@@ -598,6 +599,7 @@ class HeaderBar extends Component {
               classes={{ root: classes.addressIconButtonRoot }}
               id="changeAddressOrElectionHeaderBarElection"
               onClick={() => this.toggleSelectBallotModal(false, false)}
+              size="large"
             >
               <Place />
             </IconButton>
@@ -617,6 +619,7 @@ class HeaderBar extends Component {
               classes={{ root: classes.addressIconButtonRoot }}
               id="changeAddressOnlyHeaderBar"
               onClick={() => this.toggleSelectBallotModal(false, true)}
+              size="large"
             >
               <Place />
             </IconButton>
@@ -632,6 +635,7 @@ class HeaderBar extends Component {
               classes={{ root: classes.searchButtonRoot }}
               id="searchHeaderBarDesktop"
               onClick={this.goToSearch}
+              size="large"
             >
               <Search />
             </IconButton>
@@ -641,6 +645,7 @@ class HeaderBar extends Component {
               classes={{ root: classes.searchButtonRoot }}
               id="searchHeaderBarMobile"
               onClick={this.goToSearch}
+              size="large"
             >
               <Search />
             </IconButton>
@@ -662,11 +667,10 @@ class HeaderBar extends Component {
 
     return (
       <HeaderBarWrapper
-        hasNotch={hasIPhoneNotch()}
+        hasNotch={passBool(hasIPhoneNotch())}
         // scrolledDown={scrolledDown && isWebApp() && shouldHeaderRetreat(pathname)}
-        scrolledDown={scrolledDown}
-        shouldHeaderRetreat={shouldHeaderRetreat(pathname)}
-        hasSubMenu={displayTopMenuShadow()}
+        scrolledDown={passBool(scrolledDown)}
+        hasSubmenu={passBool(displayTopMenuShadow())}
       >
         <TopOfPageHeader>
           {/* <AppBar position="relative" */}
@@ -765,6 +769,7 @@ class HeaderBar extends Component {
                   classes={{ root: classes.iconButtonRoot }}
                   id="profileAvatarHeaderBar"
                   onClick={this.toggleProfilePopUp}
+                  size="large"
                 >
                   <FirstNameWrapper>
                     {shortenText(voterFirstName, 9)}
@@ -831,7 +836,7 @@ const styles = (theme) => ({
     top: 9,
   },
   padding: {
-    padding: `0 ${theme.spacing(2)}px`,
+    padding: `0 ${theme.spacing(2)}`,
   },
   addressButtonRoot: {
     '&:hover': {
@@ -844,7 +849,7 @@ const styles = (theme) => ({
     [theme.breakpoints.up('sm')]: {
       paddingLeft: 0,
     },
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down('md')]: {
       paddingTop: 6,
       marginLeft: 2,
       paddingLeft: 0,
@@ -873,7 +878,7 @@ const styles = (theme) => ({
     color: 'rgb(6, 95, 212)',
     marginLeft: '1rem',
     outline: 'none !important',
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down('md')]: {
       marginLeft: 12,
       paddingLeft: 0,
     },
@@ -900,7 +905,7 @@ const styles = (theme) => ({
     [theme.breakpoints.up('sm')]: {
       paddingLeft: 0,
     },
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down('md')]: {
       marginLeft: 2,
       paddingLeft: 0,
     },
@@ -911,7 +916,7 @@ const styles = (theme) => ({
   outlinedPrimary: {
     minWidth: 36,
     marginRight: '.5rem',
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down('lg')]: {
       padding: 2,
     },
   },
@@ -938,16 +943,16 @@ const styles = (theme) => ({
   },
 });
 
-const AddressWrapperDesktop = styled.div`
+const AddressWrapperDesktop = styled('div')`
   margin-top: 5px;
   width: 212px;
 `;
 
-const AddressWrapperMobile = styled.div`
+const AddressWrapperMobile = styled('div')`
   margin-top: 9px;
 `;
 
-const FirstNameWrapper = styled.div`
+const FirstNameWrapper = styled('div')`
   font-size: 14px;
   padding-right: 4px;
 `;
@@ -956,13 +961,14 @@ const FirstNameWrapper = styled.div`
 //   margin-left: ${({ incomingFriendRequests }) => (incomingFriendRequests ? '-20px' : '0')};
 // `;
 
+const HeaderBarWrapper = styled('div', {
+  shouldForwardProp: (prop) => !['hasNotch', 'hasSubmenu', 'scrolledDown'].includes(prop),
+})(({ hasNotch, hasSubmenu, scrolledDown }) => ({
+  marginTop: hasNotch || '1.5rem',
+  boxShadow: !scrolledDown || !hasSubmenu  || '0 2px 4px -1px rgba(0, 0, 0, 0.2), 0 4px 5px 0 rgba(0, 0, 0, 0.14), 0 1px 10px 0 rgba(0, 0, 0, 0.12)',
+  borderBottom: !scrolledDown || !hasSubmenu  || '1px solid #aaa',
+}));
 
-const HeaderBarWrapper = styled.div`
-  margin-top: ${({ hasNotch }) => (hasNotch ? '1.5rem' : '0')};
-  ${({ hasSubMenu, scrolledDown }) => (!scrolledDown || !hasSubMenu ? '' :
-    'box-shadow: 0 2px 4px -1px rgba(0, 0, 0, 0.2), 0 4px 5px 0 rgba(0, 0, 0, 0.14), 0 1px 10px 0 rgba(0, 0, 0, 0.12);' +
-    'border-bottom = 1px solid #aaa;')}
-`;
 
 // Historical
 // const HeaderBarWrapper = styled.div`
@@ -974,7 +980,7 @@ const HeaderBarWrapper = styled.div`
 //     'border-bottom = 1px solid #aaa;')}
 // `;
 
-const SearchWrapper = styled.div`
+const SearchWrapper = styled('div')`
   margin-top: 10px;
 `;
 

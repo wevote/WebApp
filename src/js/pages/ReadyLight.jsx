@@ -1,8 +1,8 @@
-import { withStyles } from '@material-ui/core/styles';
+import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
 import Helmet from 'react-helmet';
-import styled from 'styled-components';
+import styled from '@mui/material/styles/styled';
 import ActivityActions from '../actions/ActivityActions';
 import AnalyticsActions from '../actions/AnalyticsActions';
 import ReadyActions from '../actions/ReadyActions';
@@ -201,21 +201,21 @@ const styles = (theme) => ({
   },
   ballotButtonRoot: {
     width: 250,
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down('lg')]: {
       width: '100%',
     },
   },
 });
 
-const Card = styled.div`
+const Card = styled('div')`
   padding-bottom: 4px;
 `;
 
-const ElectionCountdownMobileTabletWrapper = styled.div`
+const ElectionCountdownMobileTabletWrapper = styled('div')`
   margin-top: -37px; // 29px for height of ShareButtonDesktopTablet - 8px for margin-top
 `;
 
-const SuspenseCard = styled.div`
+const SuspenseCard = styled('div')`
   position: relative;
   display: flex;
   flex-direction: column;
@@ -223,28 +223,28 @@ const SuspenseCard = styled.div`
   height: 138px;
 `;
 
-const IntroAndFindTabletWrapper = styled.div`
+const IntroAndFindTabletWrapper = styled('div')`
   display: flex;
   justify-content: center;
 `;
 
-const IntroAndFindTabletSpacer = styled.div`
+const IntroAndFindTabletSpacer = styled('div')`
   width: 20px;
 `;
 
-const MobileTabletCountdownWrapper = styled.div`
+const MobileTabletCountdownWrapper = styled('div')`
   position: relative;
   z-index: 1;
 `;
 
-const PageContainer = styled.div`
+const PageContainer = styled('div')`
 // This is a bad place to set a top padding for the scrollable pane, it should be in Application__Wrapper
 `;
 
-const Paragraph = styled.div`
+const Paragraph = styled('div')`
 `;
 
-const ShareButtonTabletWrapper = styled.div`
+const ShareButtonTabletWrapper = styled('div')`
   display: flex;
   height: 29px;
   justify-content: flex-end;
@@ -253,7 +253,7 @@ const ShareButtonTabletWrapper = styled.div`
   z-index: 2;
 `;
 
-const Title = styled.h2`
+const Title = styled('h2')`
   font-size: 26px;
   font-weight: 800;
   margin: 0 0 12px;

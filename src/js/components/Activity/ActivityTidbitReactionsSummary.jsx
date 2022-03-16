@@ -1,13 +1,14 @@
-import { IconButton } from '@material-ui/core';
-import { withStyles, withTheme } from '@material-ui/core/styles';
-import { ThumbUp } from '@material-ui/icons';
+import { ThumbUp } from '@mui/icons-material';
+import { IconButton } from '@mui/material';
+import styled from '@mui/material/styles/styled';
+import withStyles from '@mui/styles/withStyles';
+import withTheme from '@mui/styles/withTheme';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import styled from 'styled-components';
+import { renderLog } from '../../common/utils/logging';
 import ActivityStore from '../../stores/ActivityStore';
 import AppObservableStore from '../../stores/AppObservableStore';
 import ReactionStore from '../../stores/ReactionStore';
-import { renderLog } from '../../common/utils/logging';
 import StickyPopover from '../Ballot/StickyPopover';
 
 
@@ -101,6 +102,7 @@ class ActivityTidbitReactionsSummary extends Component {
                 <IconButton
                   classes={{ root: classes.numberOfLikesButton }}
                   id={`numberOfLikes-${activityTidbitWeVoteId}`}
+                  size="large"
                 >
                   <ThumbUp classes={{ root: classes.likeIcon }} />
                   <LikeTextWrapper>
@@ -118,6 +120,7 @@ class ActivityTidbitReactionsSummary extends Component {
                 classes={{ root: classes.numberOfCommentsButton }}
                 id={`numberOfComments-${activityTidbitWeVoteId}`}
                 onClick={this.onClickShowActivityTidbitDrawer}
+                size="large"
               >
                 <CommentTextWrapper>
                   {numberOfComments}
@@ -162,44 +165,44 @@ const styles = () => ({
   },
 });
 
-const LeftColumnWrapper = styled.div`
+const LeftColumnWrapper = styled('div')`
   align-items: center;
   display: flex;
   justify-content: flex-start;
   width: 100%;
 `;
 
-const RightColumnWrapper = styled.div`
+const RightColumnWrapper = styled('div')`
   align-items: center;
   display: flex;
   justify-content: flex-end;
   width: 100%;
 `;
 
-const CommentWrapper = styled.div`
+const CommentWrapper = styled('div')`
 `;
 
-const CommentTextWrapper = styled.div`
+const CommentTextWrapper = styled('div')`
   font-size: 10px;
   padding-left: 4px;
 `;
 
-const LikeTextWrapper = styled.div`
+const LikeTextWrapper = styled('div')`
   color: #fff; // #1fc06f
   font-size: 10px;
   font-weight: 500;
   padding-left: 4px;
 `;
 
-const LikeWrapper = styled.div`
+const LikeWrapper = styled('div')`
 `;
 
-const PopoverWrapper = styled.div`
+const PopoverWrapper = styled('div')`
   width: 100%;
   height: 100%;
 `;
 
-const PopoverHeader = styled.div`
+const PopoverHeader = styled('div')`
   background: ${({ theme }) => theme.colors.brandBlue};
   padding: 4px 8px;
   min-height: 35px;
@@ -212,13 +215,13 @@ const PopoverHeader = styled.div`
   border-bottom-left-radius: 0;
 `;
 
-const PopoverTitleText = styled.div`
+const PopoverTitleText = styled('div')`
   font-size: 14px;
   font-weight: bold;
   margin-right: 20px;
 `;
 
-const PopoverBody = styled.div`
+const PopoverBody = styled('div')`
   padding: 8px;
   border-left: .5px solid #ddd;
   border-right: .5px solid #ddd;
@@ -227,13 +230,13 @@ const PopoverBody = styled.div`
   border-bottom-right-radius: 5px;
 `;
 
-const Wrapper = styled.div`
+const Wrapper = styled('div')`
   align-items: center;
   border-bottom: 1px solid #e8e8e8;
   display: flex;
   justify-content: space-between;
-  margin-bottom: 0px !important;
-  padding: 0px !important;
+  margin-bottom: 0 !important;
+  padding: 0 !important;
 `;
 
 export default withTheme(withStyles(styles)(ActivityTidbitReactionsSummary));

@@ -1,4 +1,5 @@
-import { withStyles, withTheme } from '@material-ui/core/styles';
+import withStyles from '@mui/styles/withStyles';
+import withTheme from '@mui/styles/withTheme';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
 import MeasureActions from '../../actions/MeasureActions';
@@ -181,7 +182,7 @@ VoterGuideMeasureItemCompressed.propTypes = {
 const styles = (theme) => ({
   cardRoot: {
     padding: '16px 16px 8px 16px',
-    [theme.breakpoints.down('lg')]: {
+    [theme.breakpoints.down('xl')]: {
       padding: '16px 16px 0 16px',
     },
   },

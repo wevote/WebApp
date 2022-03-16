@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import styled from 'styled-components';
+import styled from '@mui/material/styles/styled';
 
 
 class DragAndDrop extends Component {
@@ -81,7 +81,7 @@ DragAndDrop.propTypes = {
 };
 
 
-const Wrapper = styled.div`
+const Wrapper = styled('div')`
   background: ${(props) => (props.active ? '#e8e8e8' : '#f7f7f7')};
   color: #666;
   width: 100%;

@@ -1,16 +1,17 @@
-import { Card } from '@material-ui/core';
-import { withStyles, withTheme } from '@material-ui/core/styles';
-import { ArrowForward } from '@material-ui/icons';
+import { ArrowForward } from '@mui/icons-material';
+import { Card } from '@mui/material';
+import styled from '@mui/material/styles/styled';
+import withStyles from '@mui/styles/withStyles';
+import withTheme from '@mui/styles/withTheme';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
-import styled from 'styled-components';
 import MeasureActions from '../../actions/MeasureActions';
+import extractNumber from '../../common/utils/extractNumber';
+import historyPush from '../../common/utils/historyPush';
+import { renderLog } from '../../common/utils/logging';
 import BallotStore from '../../stores/BallotStore';
 import MeasureStore from '../../stores/MeasureStore';
 import SupportStore from '../../stores/SupportStore';
-import historyPush from '../../common/utils/historyPush';
-import extractNumber from '../../common/utils/extractNumber';
-import { renderLog } from '../../common/utils/logging';
 import { capitalizeString, shortenText, stripHtmlFromString } from '../../utils/textFormat';
 
 const BallotItemSupportOpposeCountDisplay = React.lazy(() => import(/* webpackChunkName: 'BallotItemSupportOpposeCountDisplay' */ '../Widgets/BallotItemSupportOpposeCountDisplay'));
@@ -410,11 +411,11 @@ const styles = (theme) => ({
     fontSize: 12,
     minWidth: 60,
     height: 30,
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down('lg')]: {
       minWidth: 60,
       height: 30,
     },
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down('md')]: {
       width: 'fit-content',
       minWidth: 50,
       height: 30,
@@ -427,7 +428,7 @@ const styles = (theme) => ({
   },
   cardRoot: {
     padding: '16px 16px 8px 16px',
-    [theme.breakpoints.down('lg')]: {
+    [theme.breakpoints.down('xl')]: {
       padding: '16px 16px 0 16px',
     },
   },
@@ -445,28 +446,28 @@ const styles = (theme) => ({
   },
 });
 
-const BallotItemSupportOpposeCountDisplayWrapper = styled.div`
+const BallotItemSupportOpposeCountDisplayWrapper = styled('div')`
   cursor: pointer;
   float: right;
 `;
 
-const InfoRow = styled.div`
+const InfoRow = styled('div')`
   cursor: pointer;
   display: flex;
   flex-flow: row nowrap;
   justify-content: space-between;
 `;
 
-const InfoDetailsRow = styled.div`
+const InfoDetailsRow = styled('div')`
   cursor: pointer;
 `;
 
-const ChoicesRow = styled.div`
+const ChoicesRow = styled('div')`
   display: flex;
   flex-flow: row wrap;
 `;
 
-const Choice = styled.div`
+const Choice = styled('div')`
   cursor: pointer;
   display: flex;
   flex-flow: column;
@@ -475,7 +476,6 @@ const Choice = styled.div`
   transition: all 200ms ease-in;
   @media (min-width: 768px) {
     max-width: 47%;
-    border: none;
     border: 1px solid #eee;
     border-radius: 4px;
     padding: 0 16px;
@@ -488,12 +488,12 @@ const Choice = styled.div`
   }
 `;
 
-const ChoiceTitle = styled.h1`
+const ChoiceTitle = styled('h1')`
   font-weight: bold;
   color: #4371cc;
 `;
 
-const ChoiceInfo = styled.span`
+const ChoiceInfo = styled('span')`
   font-size: 12px;
   color: #777;
   @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
@@ -501,7 +501,7 @@ const ChoiceInfo = styled.span`
   }
 `;
 
-const MeasureInfoWrapper = styled.div`
+const MeasureInfoWrapper = styled('div')`
   display: flex;
   flex-flow: column;
   max-width: 75%;
@@ -513,7 +513,7 @@ const MeasureInfoWrapper = styled.div`
   }
 `;
 
-const Title = styled.h1`
+const Title = styled('h1')`
   font-size: 18px;
   font-weight: bold;
   margin: .1rem 0;
@@ -522,7 +522,7 @@ const Title = styled.h1`
   }
 `;
 
-const SubTitle = styled.h3`
+const SubTitle = styled('h3')`
   font-size: 16px;
   font-weight: 300;
   color: #555;
@@ -533,7 +533,7 @@ const SubTitle = styled.h3`
   }
 `;
 
-const MeasureText = styled.div`
+const MeasureText = styled('div')`
   font-size: 13px;
   font-weight: 300;
   color: #777;

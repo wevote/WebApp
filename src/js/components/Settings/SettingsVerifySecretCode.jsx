@@ -1,10 +1,11 @@
-import { Button, Dialog, OutlinedInput } from '@material-ui/core';
-import { withStyles, withTheme } from '@material-ui/core/styles';
-import { ArrowBack, ArrowBackIos } from '@material-ui/icons';
+import { Button, Dialog, OutlinedInput } from '@mui/material';
+import withStyles from '@mui/styles/withStyles';
+import withTheme from '@mui/styles/withTheme';
+import { ArrowBack, ArrowBackIos } from '@mui/icons-material';
 import clsx from 'clsx';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import styled from 'styled-components';
+import styled from '@mui/material/styles/styled';
 import VoterActions from '../../actions/VoterActions';
 import VoterStore from '../../stores/VoterStore';
 import { hasIPhoneNotch, isIOS, isIPhone4in } from '../../common/utils/cordovaUtils';
@@ -642,7 +643,7 @@ const styles = (theme) => ({
       height: '90%',
       margin: '0 auto',
     },
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down('md')]: {
       minWidth: '95%',
       maxWidth: '95%',
       width: '95%',
@@ -702,7 +703,7 @@ const styles = (theme) => ({
   },
 });
 
-const ModalTitleArea = styled.div`
+const ModalTitleArea = styled('div')`
   width: 100%;
   padding: ${(props) => (props.condensed ? '8px' : '12px')};
   box-shadow: 0 20px 40px -25px #999;
@@ -713,7 +714,7 @@ const ModalTitleArea = styled.div`
   top: 0;
 `;
 
-const ModalContent = styled.div`
+const ModalContent = styled('div')`
   display: flex;
   flex-direction: column;
   align-items: ${(props) => (props.condensed ? 'flex-start' : 'space-evenly')};
@@ -724,14 +725,14 @@ const ModalContent = styled.div`
   padding: ${(props) => (props.condensed ? '66px 0 0 0' : '86px 0 72px 0')};
 `;
 
-const TextContainer = styled.div`
+const TextContainer = styled('div')`
 `;
 
-const ButtonsContainer = styled.div`
+const ButtonsContainer = styled('div')`
   margin-top: ${(props) => (props.condensed ? '16px' : 'auto')};
 `;
 
-const Title = styled.h3`
+const Title = styled('h3')`
   font-weight: bold;
   font-size: ${() => (isIPhone4in() ? '26px' : '30px')};
   padding: 0 10px;
@@ -743,19 +744,19 @@ const Title = styled.h3`
   }
 `;
 
-const Subtitle = styled.h4`
+const Subtitle = styled('h4')`
   color: #ccc;
   font-weight: bold;
   text-align: center;
 `;
 
-const PhoneSubtitle = styled.h4`
+const PhoneSubtitle = styled('h4')`
   color: black;
   font-weight: bold;
   text-align: center;
 `;
 
-const InputContainer = styled.div`
+const InputContainer = styled('div')`
   display: flex;
   justify-content: space-between;
   margin: auto;
@@ -763,7 +764,7 @@ const InputContainer = styled.div`
   margin-top: ${(props) => (props.condensed ? '16px' : '32px')};
 `;
 
-const ErrorMessage = styled.div`
+const ErrorMessage = styled('div')`
   color: red;
   margin: 12px 0;
   text-align: center;

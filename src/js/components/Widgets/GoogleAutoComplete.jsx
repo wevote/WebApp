@@ -1,6 +1,6 @@
-import { Paper } from '@material-ui/core';
-import { withStyles } from '@material-ui/core/styles';
-import { EditLocation } from '@material-ui/icons';
+import { Paper } from '@mui/material';
+import withStyles from '@mui/styles/withStyles';
+import { EditLocation } from '@mui/icons-material';
 import PropTypes from 'prop-types';
 import React, { useEffect, useState } from 'react';
 import AutoComplete from 'react-google-autocomplete';

@@ -1,15 +1,16 @@
-import React, { Component } from 'react';
+import { AccountCircle } from '@mui/icons-material';
+import { adaptV4Theme, createTheme } from '@mui/material/styles';
+import styled from '@mui/material/styles/styled';
+import withStyles from '@mui/styles/withStyles';
 import { DropzoneArea } from 'material-ui-dropzone';
 import PropTypes from 'prop-types';
-import styled from 'styled-components';
-import { MuiThemeProvider, createTheme, withStyles } from '@material-ui/core/styles';
-import { AccountCircle } from '@material-ui/icons';
+import React, { Component } from 'react';
 import VoterActions from '../../../actions/VoterActions';
 import VoterStore from '../../../stores/VoterStore';
 import isMobileScreenSize from '../../utils/isMobileScreenSize';
 import { renderLog } from '../../utils/logging';
 
-const muiTheme = createTheme({
+const muiTheme = createTheme(adaptV4Theme({
   overrides: {
     MuiDropzonePreviewList: {
       image: {
@@ -19,7 +20,7 @@ const muiTheme = createTheme({
       },
     },
   },
-});
+}));
 
 class VoterPhotoUpload extends Component {
   constructor (props) {
@@ -84,7 +85,7 @@ class VoterPhotoUpload extends Component {
             <ColumnFullWidth>
               {voterProfileUploadedImageUrlLarge ? (
                 <VoterPhotoWrapper>
-                  <VoterPhotoImage maxWidth={maxWidth} src={voterProfileUploadedImageUrlLarge} alt="Profile Photo" />
+                  <VoterPhotoImage maxwidth={maxWidth} src={voterProfileUploadedImageUrlLarge} alt="Profile Photo" />
                   <DeleteLink
                     className="u-link-color u-link-underline u-cursor--pointer"
                     onClick={this.submitDeleteYourPhoto}
@@ -93,7 +94,7 @@ class VoterPhotoUpload extends Component {
                   </DeleteLink>
                 </VoterPhotoWrapper>
               ) : (
-                <MuiThemeProvider theme={muiTheme}>
+                // <MuiXThemeProvider theme={muiTheme}>
                   <DropzoneArea
                     acceptedFiles={['image/*']}
                     classes={{
@@ -108,7 +109,7 @@ class VoterPhotoUpload extends Component {
                     maxFileSize={6000000}
                     onChange={this.handleDrop}
                   />
-                </MuiThemeProvider>
+                // </MuiXThemeProvider>
               )}
             </ColumnFullWidth>
           </Wrapper>
@@ -129,7 +130,7 @@ const styles = (theme) => ({
   dropzoneRoot: {
     color: '#999',
     minHeight: '162px',
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down('md')]: {
       minHeight: '160px',
     },
   },
@@ -143,25 +144,25 @@ const styles = (theme) => ({
   },
 });
 
-const ColumnFullWidth = styled.div`
+const ColumnFullWidth = styled('div')`
   padding: 8px 12px;
   width: 100%;
 `;
 
-const DeleteLink = styled.div`
+const DeleteLink = styled('div')`
 `;
 
-const OuterWrapper = styled.div`
+const OuterWrapper = styled('div')`
   width: 100%;
 `;
 
-const VoterPhotoImage = styled.img`
+const VoterPhotoImage = styled('img')`
   border-radius: 100px;
   max-width: 100px;
-  ${(props) => ((props.maxWidth) ? `max-width: ${props.maxWidth}px;` : 'max-width: 200px;')}
+  ${(props) => ((props.maxwidth) ? `max-width: ${props.maxwidth}px;` : 'max-width: 200px;')}
 `;
 
-const VoterPhotoWrapper = styled.div`
+const VoterPhotoWrapper = styled('div')`
   align-items: center;
   display: flex;
   flex-direction: column;
@@ -170,7 +171,7 @@ const VoterPhotoWrapper = styled.div`
   width: 100%;
 `;
 
-const Wrapper = styled.div`
+const Wrapper = styled('div')`
   display: flex;
   justify-content: space-between;
   margin-left: -12px;

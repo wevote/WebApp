@@ -1,10 +1,10 @@
-import { Button, TextField } from '@material-ui/core';
-import { withStyles } from '@material-ui/core/styles';
-import { Close } from '@material-ui/icons';
+import { Button, TextField } from '@mui/material';
+import withStyles from '@mui/styles/withStyles';
+import { Close } from '@mui/icons-material';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
 import Alert from 'react-bootstrap/Alert';
-import styled from 'styled-components';
+import styled from '@mui/material/styles/styled';
 import FriendActions from '../../actions/FriendActions';
 import FriendStore from '../../stores/FriendStore';
 import VoterStore from '../../stores/VoterStore';
@@ -463,35 +463,35 @@ const styles = () => ({
   },
 });
 
-const FriendsDisplay = styled.div`
+const FriendsDisplay = styled('div')`
   background: #fff;
   padding: 12px 0;
   margin-bottom: 8px;
 `;
 
-const FriendBadge = styled.div`
+const FriendBadge = styled('div')`
   background: #eee;
   margin: 0 10px 0 0;
   display: inline-block;
   padding: 6px 8px;
 `;
 
-const SectionTitle = styled.h2`
+const SectionTitle = styled('h2')`
   width: fit-content;  font-weight: bold;
   font-size: 18px;
   margin-bottom: 16px;
 `;
 
-const FormWrapper = styled.div`
+const FormWrapper = styled('div')`
   margin-bottom: 8px;
 `;
 
-const Label = styled.div`
+const Label = styled('div')`
   margin-bottom: -4px;
   white-space: nowrap;
 `;
 
-const ButtonContainer = styled.div`
+const ButtonContainer = styled('div')`
   display: flex;
   align-items: center;
   justify-content: flex-end;

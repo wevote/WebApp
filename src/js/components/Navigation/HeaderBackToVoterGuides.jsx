@@ -1,9 +1,9 @@
-import { AppBar, Button, IconButton, Toolbar, Tooltip } from '@material-ui/core';
-import { withStyles } from '@material-ui/core/styles';
-import { AccountCircle, Place } from '@material-ui/icons';
+import { AppBar, Button, IconButton, Toolbar, Tooltip } from '@mui/material';
+import withStyles from '@mui/styles/withStyles';
+import { AccountCircle, Place } from '@mui/icons-material';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
-import styled from 'styled-components';
+import styled from '@mui/material/styles/styled';
 import OrganizationActions from '../../actions/OrganizationActions';
 import VoterGuideActions from '../../actions/VoterGuideActions';
 import VoterSessionActions from '../../actions/VoterSessionActions';
@@ -291,7 +291,7 @@ class HeaderBackToVoterGuides extends Component {
             classes={{ root: classes.iconButtonRoot }}
             id="changeVoterGuideElectionHeaderBar"
             onClick={this.toggleVoterGuideModal}
-          >
+            size="large">
             <Place />
           </IconButton>
           <Button
@@ -359,7 +359,7 @@ class HeaderBackToVoterGuides extends Component {
                       classes={{ root: classes.iconButtonRoot }}
                       id="profileAvatarHeaderBar"
                       onClick={this.toggleProfilePopUp}
-                    >
+                      size="large">
                       <FirstNameWrapper>
                         {shortenText(voterFirstName, 9)}
                       </FirstNameWrapper>
@@ -434,7 +434,7 @@ const styles = (theme) => ({
     top: 9,
   },
   padding: {
-    padding: `0 ${theme.spacing(2)}px`,
+    padding: `0 ${theme.spacing(2)}`,
   },
   addressButtonRoot: {
     '&:hover': {
@@ -443,7 +443,7 @@ const styles = (theme) => ({
     color: 'rgba(17, 17, 17, .5)',
     outline: 'none !important',
     paddingRight: 20,
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down('md')]: {
       paddingTop: 6,
       marginLeft: 2,
       paddingLeft: 0,
@@ -458,7 +458,7 @@ const styles = (theme) => ({
     color: 'rgb(6, 95, 212)',
     marginLeft: '1rem',
     outline: 'none !important',
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down('md')]: {
       marginLeft: 12,
       paddingLeft: 0,
     },
@@ -486,7 +486,7 @@ const styles = (theme) => ({
   outlinedPrimary: {
     minWidth: 36,
     marginRight: '.5rem',
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down('lg')]: {
       padding: 2,
     },
   },
@@ -502,21 +502,21 @@ const styles = (theme) => ({
   },
 });
 
-const FirstNameWrapper = styled.div`
+const FirstNameWrapper = styled('div')`
   font-size: 14px;
   padding-right: 4px;
 `;
 
-const PreviewButtonWrapper = styled.div`
+const PreviewButtonWrapper = styled('div')`
   margin-right: 30px;
 `;
 
-const VoterGuideTitle = styled.div`
+const VoterGuideTitle = styled('div')`
   margin-left: calc((100vw - 960px)/2);
   width: 100%;
 `;
 
-const EndorsementModeSwitch = styled.div`
+const EndorsementModeSwitch = styled('div')`
   display: flex;
   align-items: flex-end;
   justify-content: space-between;

@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
 import Helmet from 'react-helmet';
-import styled from 'styled-components';
+import styled from '@mui/material/styles/styled';
 import OrganizationStore from '../../stores/OrganizationStore';
 import VoterStore from '../../stores/VoterStore';
 import { renderLog } from '../../common/utils/logging';
@@ -112,11 +112,11 @@ SettingsPromotedOrganizations.propTypes = {
   samplePropName: PropTypes.bool, // eslint-disable-line react/no-unused-prop-types
 };
 
-const Wrapper = styled.div`
+const Wrapper = styled('div')`
 `;
 
-const Card = styled.div`
+const Card = styled('div')`
 `;
 
-const CardMain = styled.div`
+const CardMain = styled('div')`
 `;

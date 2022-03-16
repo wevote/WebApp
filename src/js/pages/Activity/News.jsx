@@ -1,9 +1,9 @@
-import { Card, CircularProgress } from '@material-ui/core';
-import { withStyles } from '@material-ui/core/styles';
+import { Card, CircularProgress } from '@mui/material';
+import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
 import Helmet from 'react-helmet';
-import styled from 'styled-components';
+import styled from '@mui/material/styles/styled';
 import ActivityActions from '../../actions/ActivityActions';
 import AnalyticsActions from '../../actions/AnalyticsActions';
 import BallotActions from '../../actions/BallotActions';
@@ -498,27 +498,27 @@ News.propTypes = {
   match: PropTypes.object,
 };
 
-const ActivityPostAddWrapper = styled.div`
+const ActivityPostAddWrapper = styled('div')`
 `;
 
-const ActivityTidbitItemWrapper = styled.div`
+const ActivityTidbitItemWrapper = styled('div')`
   margin-bottom: 4px;
 `;
 
-const ActivityTidbitWrapper = styled.div`
+const ActivityTidbitWrapper = styled('div')`
 `;
 
-const AddFriendsMobileWrapper = styled.div`
+const AddFriendsMobileWrapper = styled('div')`
   margin: 0 15px;
 `;
 
-const CardNewsWrapper = styled.div`
+const CardNewsWrapper = styled('div')`
   @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
     // margin: 0 15px;
   }
 `;
 
-const DateVoterJoined = styled.div`
+const DateVoterJoined = styled('div')`
   align-items: center;
   color: #2e3c5d;
   display: flex;
@@ -527,7 +527,7 @@ const DateVoterJoined = styled.div`
   text-align: center;
 `;
 
-const DateVoterJoinedWrapper = styled.div`
+const DateVoterJoinedWrapper = styled('div')`
   align-items: center;
   display: flex;
   flex-flow: column nowrap;
@@ -535,27 +535,27 @@ const DateVoterJoinedWrapper = styled.div`
   margin: 0 20px 24px 20px;
 `;
 
-const FacebookSignInWrapper = styled.div`
+const FacebookSignInWrapper = styled('div')`
   flex: 1;
   @media (min-width: 614px) and (max-width: 991px) {
     padding-left: 8px;
   }
 `;
 
-const LoadingItemsWheel = styled.div`
+const LoadingItemsWheel = styled('div')`
   width: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
 `;
 
-const SectionDescription = styled.div`
+const SectionDescription = styled('div')`
   color: #999;
   font-size: 14px;
   margin-bottom: 4px;
 `;
 
-const SectionTitle = styled.h2`
+const SectionTitle = styled('h2')`
   width: fit-content;
   font-weight: bolder;
   font-size: 18px;
@@ -563,13 +563,13 @@ const SectionTitle = styled.h2`
   display: inline;
 `;
 
-const SettingsAccountWrapper = styled.div`
+const SettingsAccountWrapper = styled('div')`
   @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
     margin: 0 12px;
   }
 `;
 
-const ShowMoreItemsWrapper = styled.div`
+const ShowMoreItemsWrapper = styled('div')`
   margin-bottom: 16px;
   padding-left: 16px;
   padding-right: 26px;
@@ -581,21 +581,21 @@ const ShowMoreItemsWrapper = styled.div`
   }
 `;
 
-const SignInOptionsWrapper = styled.div`
+const SignInOptionsWrapper = styled('div')`
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   flex-wrap: wrap;
 `;
 
-const TwitterSignInWrapper = styled.div`
+const TwitterSignInWrapper = styled('div')`
   flex: 1;
   @media (min-width: 614px) and (max-width: 991px) {
     padding-right: 8px;
   }
 `;
 
-const VoterAndWeVoteLogos = styled.div`
+const VoterAndWeVoteLogos = styled('div')`
   align-items: center;
   display: flex;
   justify-content: center;
@@ -612,7 +612,7 @@ const styles = (theme) => ({
   },
   ballotButtonRoot: {
     width: 250,
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down('lg')]: {
       width: '100%',
     },
   },

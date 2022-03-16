@@ -1,13 +1,14 @@
-import { Card, InputBase } from '@material-ui/core';
-import { withStyles, withTheme } from '@material-ui/core/styles';
+import { Card, InputBase } from '@mui/material';
+import styled from '@mui/material/styles/styled';
+import withStyles from '@mui/styles/withStyles';
+import withTheme from '@mui/styles/withTheme';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
-import styled from 'styled-components';
+import { isCordova } from '../../common/utils/isCordovaOrWebApp';
+import { renderLog } from '../../common/utils/logging';
 import VoterStore from '../../stores/VoterStore';
 import { avatarGeneric } from '../../utils/applicationUtils';
 import { cordovaNewsPaddingTop } from '../../utils/cordovaOffsets';
-import { isCordova } from '../../common/utils/isCordovaOrWebApp';
-import { renderLog } from '../../common/utils/logging';
 
 const ActivityPostModal = React.lazy(() => import(/* webpackChunkName: 'ActivityPostModal' */ './ActivityPostModal'));
 
@@ -167,7 +168,7 @@ const styles = (theme) => ({
     boxShadow: 'none',
     border: '1px solid #333',
     padding: '8px',
-    [theme.breakpoints.down('xs')]: {
+    [theme.breakpoints.down('sm')]: {
       height: 'auto',
     },
   },
@@ -175,7 +176,7 @@ const styles = (theme) => ({
     boxShadow: 'none',
     border: 'none',
     padding: '8px',
-    [theme.breakpoints.down('xs')]: {
+    [theme.breakpoints.down('sm')]: {
       height: 'auto',
     },
   },
@@ -183,7 +184,7 @@ const styles = (theme) => ({
     flex: '1 1 0',
     fontSize: 20,
     height: '100%',
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down('md')]: {
       fontSize: 18,
     },
   },
@@ -203,12 +204,12 @@ const styles = (theme) => ({
     fontWeight: 600,
     background: 'white',
     color: '#313131',
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down('lg')]: {
       fontWeight: 500,
       height: '100%',
       fontSize: 12,
     },
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down('md')]: {
       padding: '2px 4px',
       fontWeight: 600,
       height: '100%',
@@ -217,7 +218,7 @@ const styles = (theme) => ({
   },
 });
 
-const AddTidbitTitle = styled.div`
+const AddTidbitTitle = styled('div')`
   background: #2e3c5d;
   border-bottom: 1px solid #ddd;
   color: #fff;
@@ -231,7 +232,7 @@ const AddTidbitTitle = styled.div`
   }
 `;
 
-const CardNewsWrapper = styled.div`
+const CardNewsWrapper = styled('div')`
   margin: 0 0 8px 0;
   padding: 8px 16px 8px 16px;
   @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
@@ -239,7 +240,7 @@ const CardNewsWrapper = styled.div`
   }
 `;
 
-const InnerFlexWrapper = styled.div`
+const InnerFlexWrapper = styled('div')`
   align-items: center;
   display: flex;
   justify-content: flex-start;

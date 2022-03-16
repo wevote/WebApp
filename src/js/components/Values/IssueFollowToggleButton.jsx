@@ -1,6 +1,6 @@
-import { Button, Menu, MenuItem } from '@material-ui/core';
-import { withStyles } from '@material-ui/core/styles';
-import { ArrowDropDown, CheckCircle } from '@material-ui/icons';
+import { Button, Menu, MenuItem } from '@mui/material';
+import withStyles from '@mui/styles/withStyles';
+import { ArrowDropDown, CheckCircle } from '@mui/icons-material';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import IssueActions from '../../actions/IssueActions';

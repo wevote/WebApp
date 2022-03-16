@@ -1,6 +1,6 @@
-import styled from 'styled-components';
+import styled from '@mui/material/styles/styled';
 
-const ImageDescription = styled.div`
+const ImageDescription = styled('div')`
   display: flex;
   align-items: center;
   @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
@@ -8,11 +8,11 @@ const ImageDescription = styled.div`
   }
 `;
 
-const PreviewImage = styled.img`
+const PreviewImage = styled('img')`
   margin-right: 8px;
 `;
 
-const DescriptionText = styled.span`
+const DescriptionText = styled('span')`
   font-size: 14px;
   margin: .5em auto;
   @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
@@ -20,7 +20,7 @@ const DescriptionText = styled.span`
   }
 `;
 
-const SharingRow = styled.div`
+const SharingRow = styled('div')`
   display: flex;
   justify-content: space-between;
   border-top: 1px solid #eee;
@@ -28,13 +28,13 @@ const SharingRow = styled.div`
   padding-top: 20px;
 `;
 
-const LinkToDomainRow = styled.div`
+const LinkToDomainRow = styled('div')`
   border-top: 1px solid #eee;
   padding: 16px 0;
   padding-top: 20px;
 `;
 
-const SharingColumn = styled.div`
+const SharingColumn = styled('div')`
   display: flex;
   flex-flow: column;
   ${({ alignRight }) => (alignRight ? 'align-items: flex-end;' : '')}
@@ -44,7 +44,7 @@ const SharingColumn = styled.div`
   }
 `;
 
-const GiantTextInput = styled.input`
+const GiantTextInput = styled('input')`
   font-size: 16px;
   padding: 20px 16px;
   width: 100%;
@@ -56,11 +56,11 @@ const GiantTextInput = styled.input`
   }
 `;
 
-const HiddenInput = styled.input`
+const HiddenInput = styled('input')`
   display: none;
 `;
 
-const Actions = styled.div`
+const Actions = styled('div')`
   display: flex;
   justify-content: flex-end;
   margin-top: 1em;

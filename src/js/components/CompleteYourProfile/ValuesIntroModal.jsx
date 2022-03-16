@@ -1,9 +1,10 @@
-import { Button, Dialog, DialogContent, IconButton } from '@material-ui/core';
-import { withStyles, withTheme } from '@material-ui/core/styles';
-import { Close } from '@material-ui/icons';
+import { Button, Dialog, DialogContent, IconButton } from '@mui/material';
+import withStyles from '@mui/styles/withStyles';
+import withTheme from '@mui/styles/withTheme';
+import { Close } from '@mui/icons-material';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
-import styled from 'styled-components';
+import styled from '@mui/material/styles/styled';
 import IssueActions from '../../actions/IssueActions';
 import VoterActions from '../../actions/VoterActions';
 import VoterConstants from '../../constants/VoterConstants';
@@ -76,7 +77,7 @@ class ValuesIntroModal extends Component {
             className={classes.closeButton}
             onClick={this.closeThisModal}
             id="closeValuesIntroModal"
-          >
+            size="large">
             <Close />
           </IconButton>
         </ModalTitleArea>
@@ -155,7 +156,7 @@ const styles = () => ({
 });
 
 /* eslint no-nested-ternary: ["off"] */
-const ModalTitleArea = styled.div`
+const ModalTitleArea = styled('div')`
   justify-content: flex-start;
   align-items: center;
   width: 100%;
@@ -167,7 +168,7 @@ const ModalTitleArea = styled.div`
   display: flex;
 `;
 
-const Title = styled.h3`
+const Title = styled('h3')`
   font-size: 24px;
   color: black;
   margin-top: 0;
@@ -178,7 +179,7 @@ const Title = styled.h3`
   }
 `;
 
-const ExplanationText = styled.div`
+const ExplanationText = styled('div')`
   color: #2e3c5d;
   font-size: 18px;
   font-weight: 600;
@@ -189,7 +190,7 @@ const ExplanationText = styled.div`
   }
 `;
 
-const ExplanationTextLighter = styled.div`
+const ExplanationTextLighter = styled('div')`
   font-size: 14px;
   font-weight: 400;
   margin: 24px 0 0 0;
@@ -198,10 +199,10 @@ const ExplanationTextLighter = styled.div`
   }
 `;
 
-const ValuesListWrapper = styled.div`
+const ValuesListWrapper = styled('div')`
 `;
 
-const ContinueButtonWrapper = styled.div`
+const ContinueButtonWrapper = styled('div')`
   width: 100%;
   padding-top: 12px;
   display: flex;

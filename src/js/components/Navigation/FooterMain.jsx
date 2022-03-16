@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import styled from 'styled-components';
-import { withStyles } from '@material-ui/core/styles';
+import styled from '@mui/material/styles/styled';
+import withStyles from '@mui/styles/withStyles';
 import AppObservableStore, { messageService } from '../../stores/AppObservableStore';
 import FooterMainWeVote from './FooterMainWeVote';
 import FooterMainPrivateLabeled from './FooterMainPrivateLabeled';
@@ -69,7 +69,7 @@ FooterMain.propTypes = {
 const styles = () => ({
 });
 
-const InnerWrapper = styled.div`
+const InnerWrapper = styled('div')`
   align-items: center;
   display: flex;
   flex-flow: column;
@@ -83,7 +83,7 @@ const InnerWrapper = styled.div`
   }
 `;
 
-const OuterWrapper = styled.div`
+const OuterWrapper = styled('div')`
   background-color: #f6f4f6;
   border-top: 1px solid #ddd;
   margin-top: 90px;

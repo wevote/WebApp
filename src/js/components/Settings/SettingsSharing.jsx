@@ -1,9 +1,9 @@
-import { Button, Switch } from '@material-ui/core';
-import { withStyles } from '@material-ui/core/styles';
+import { Button, Switch } from '@mui/material';
+import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
 import Helmet from 'react-helmet';
-import styled from 'styled-components';
+import styled from '@mui/material/styles/styled';
 import AppObservableStore from '../../stores/AppObservableStore';
 import OrganizationActions from '../../actions/OrganizationActions';
 import OrganizationStore from '../../stores/OrganizationStore';
@@ -566,7 +566,7 @@ const styles = (theme) => ({
     marginRight: 8,
   },
   upgradeButton: {
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down('lg')]: {
       width: 97,
     },
   },
@@ -576,32 +576,32 @@ const styles = (theme) => ({
   },
 });
 
-const Wrapper = styled.div`
+const Wrapper = styled('div')`
   display: flex;
   flex-flow: column;
 `;
 
-const Card = styled.div`
+const Card = styled('div')`
 `;
 
-const CardMain = styled.div`
+const CardMain = styled('div')`
 `;
 
-const InputBoxLabel = styled.h4`
+const InputBoxLabel = styled('h4')`
   font-weight: bold;
   font-size: 14px;
   margin-top: .5em;
 `;
 
-const DesktopView = styled.div`
+const DesktopView = styled('div')`
   display: inherit;
 `;
 
-const MobileTabletView = styled.div`
+const MobileTabletView = styled('div')`
   display: inherit;
 `;
 
-const Separator = styled.div`
+const Separator = styled('div')`
   width: 100%;
   height: 2px;
   background: #eee;

@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 import React, { PureComponent, Suspense } from 'react';
-import styled from 'styled-components';
+import styled from '@mui/material/styles/styled';
+import passBool from '../../common/utils/passBool';
 import CandidateStore from '../../stores/CandidateStore';
 import MeasureStore from '../../stores/MeasureStore';
 import { isAndroidSizeMD } from '../../common/utils/cordovaUtils';
@@ -221,7 +222,7 @@ class BallotItemSupportOpposeComment extends PureComponent {
     // console.log('White background from root: ', showPositionStatementActionBar);
 
     return (
-      <Wrapper inModal={inModal2} showPositionStatementActionBar={showPositionStatementActionBar} crunched={isCordova() && !inModal2}>
+      <Wrapper inmodal={passBool(inModal2)} showpositionstatementactionbar={passBool(showPositionStatementActionBar)} crunched={passBool(isCordova() && !inModal2)}>
         {/* <BallotHeaderDivider className="u-show-mobile" /> */}
         <ActionBarWrapper inModal={inModal2} crunched={isCordova() && !inModal2}>
           {/* Support/Oppose/Comment toggle here */}
@@ -229,7 +230,7 @@ class BallotItemSupportOpposeComment extends PureComponent {
             {itemActionBar}
           </Suspense>
         </ActionBarWrapper>
-        <CommentDisplayWrapper inModal={inModal2} crunched={isCordova() && !inModal2}>
+        <CommentDisplayWrapper inmodal={passBool(inModal2)} crunched={passBool(isCordova() && !inModal2)}>
           { commentDisplayDesktop }
           { commentDisplayMobile }
         </CommentDisplayWrapper>
@@ -250,12 +251,12 @@ BallotItemSupportOpposeComment.propTypes = {
 
 function wrapperPadding (props) {
   const padString = isAndroidSizeMD() ? '8px 0px 8px 4px' : '8px 12px 8px 12px';
-  return props.showPositionStatementActionBar || props.inModal ? padString : '0';
+  return props.showpositionstatementactionbar || props.inModal ? padString : '0';
 }
 
-const Wrapper = styled.div`
+const Wrapper = styled('div')`
   width: ${() => (isAndroidSizeMD() ? '95%' : '100%')};
-  // background-color: ${({ showPositionStatementActionBar, inModal }) => (showPositionStatementActionBar || inModal ? '#eee' : 'white')} !important;
+  // background-color: ${({ showpositionstatementactionbar, inModal }) => (showpositionstatementactionbar || inModal ? '#eee' : 'white')} !important;
   background-color: white !important;
   padding: ${(props) => wrapperPadding(props)} !important;
   border-radius: 4px;
@@ -266,13 +267,13 @@ const Wrapper = styled.div`
   margin-top: ${(crunched) => (crunched ? '0' : '12px')};
 `;
 
-const ActionBarWrapper = styled.div`
-  padding: 0px;
+const ActionBarWrapper = styled('div')`
+  padding: 0;
   margin-bottom: ${(crunched) => (crunched ? '3px' : '12px')};
 `;
 
-const CommentDisplayWrapper = styled.div`
-  padding: 0px;
+const CommentDisplayWrapper = styled('div')`
+  padding: 0;
   padding-bottom: ${(crunched) => (crunched ? '0' : '12px')};
 `;
 

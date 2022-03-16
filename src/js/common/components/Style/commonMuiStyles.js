@@ -1,4 +1,4 @@
-import muiTheme from './mui-theme';
+import muiTheme from './muiTheme';
 
 const theme = muiTheme;
 const commonMuiStyles = {
@@ -68,7 +68,7 @@ const commonMuiStyles = {
   },
   doneIcon: {
     fontSize: 28,
-    [theme.breakpoints.down('lg')]: {
+    [theme.breakpoints.down('xl')]: {
       fontSize: 28,
     },
     paddingTop: '5px',

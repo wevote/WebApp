@@ -1,8 +1,8 @@
-import { withStyles } from '@material-ui/core/styles';
-import { Settings } from '@material-ui/icons';
+import withStyles from '@mui/styles/withStyles';
+import { Settings } from '@mui/icons-material';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
-import styled from 'styled-components';
+import styled from '@mui/material/styles/styled';
 import { renderLog } from '../../common/utils/logging';
 import BallotStore from '../../stores/BallotStore';
 import VoterStore from '../../stores/VoterStore';
@@ -161,21 +161,21 @@ const styles = {
   },
 };
 
-const ChangeAddressText = styled.div`
+const ChangeAddressText = styled('div')`
   color: #999;
 `;
 
-const ChangeAddressWrapper = styled.div`
+const ChangeAddressWrapper = styled('div')`
   align-items: center;
   display: flex;
 `;
 
-const EditAddressPreview = styled.div`
+const EditAddressPreview = styled('div')`
   font-size: 1.1rem;
   font-weight: bold;
 `;
 
-const AddressIntroductionWrapper = styled.div`
+const AddressIntroductionWrapper = styled('div')`
   font-size: 0.9rem;
   font-weight: 500;
   margin-top: 8px;
@@ -185,14 +185,14 @@ const AddressIntroductionWrapper = styled.div`
   }
 `;
 
-const EditBlockWrapper = styled.div`
+const EditBlockWrapper = styled('div')`
   @media (max-width: ${({ theme }) => theme.breakpoints.lg}) {
     margin-left: 15px;
     margin-right: 15px;
   }
 `;
 
-const SettingsIconWrapper = styled.div`
+const SettingsIconWrapper = styled('div')`
 `;
 
 export default withStyles(styles)(EditAddressInPlace);

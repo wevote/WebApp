@@ -1,8 +1,8 @@
-import { BottomNavigation, BottomNavigationAction } from '@material-ui/core';
-import { withStyles } from '@material-ui/core/styles';
-import { Ballot, HowToVote, People, QuestionAnswer } from '@material-ui/icons';
+import { BottomNavigation, BottomNavigationAction } from '@mui/material';
+import withStyles from '@mui/styles/withStyles';
+import { Ballot, HowToVote, People, QuestionAnswer } from '@mui/icons-material';
 import React from 'react';
-import styled from 'styled-components';
+import styled from '@mui/material/styles/styled';
 import AppObservableStore, { messageService } from '../../stores/AppObservableStore';
 import FriendStore from '../../stores/FriendStore';
 import VoterStore from '../../stores/VoterStore';
@@ -194,7 +194,7 @@ const styles = () => ({
   },
 });
 
-const FooterBarWrapper = styled.div`
+const FooterBarWrapper = styled('div')`
   @media print{
     display: none;
   }

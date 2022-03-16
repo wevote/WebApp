@@ -1,10 +1,10 @@
-import { Button, Card, CardContent, FormControl, InputLabel, Select } from '@material-ui/core';
-import { withStyles } from '@material-ui/core/styles';
-import { CheckCircle } from '@material-ui/icons';
+import { Button, Card, CardContent, FormControl, InputLabel, Select } from '@mui/material';
+import withStyles from '@mui/styles/withStyles';
+import { CheckCircle } from '@mui/icons-material';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import Helmet from 'react-helmet';
-import styled from 'styled-components';
+import styled from '@mui/material/styles/styled';
 import AnalyticsActions from '../actions/AnalyticsActions';
 import BallotActions from '../actions/BallotActions';
 import ReadyActions from '../actions/ReadyActions';
@@ -629,7 +629,7 @@ const styles = (theme) => ({
   },
   ballotButtonRoot: {
     width: 250,
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down('lg')]: {
       width: '100%',
     },
   },
@@ -673,7 +673,7 @@ const CustomButton = styled(Button)`
   }
 `;
 
-const StickyFooter = styled.div`
+const StickyFooter = styled('div')`
   position: fixed;
   bottom: 0;
   width: 100%;
@@ -687,7 +687,7 @@ const StickyFooter = styled.div`
   box-shadow: 0px -2px 4px -1px rgba(0,0,0,0.2), 0px -4px 5px 0px rgba(0,0,0,0.14), 0px -1px 10px 0px rgba(0,0,0,0.12);
 `;
 
-const Row = styled.div`
+const Row = styled('div')`
   margin: 0 -12px 0 -12px;
   @media (min-width: 769px) {
     display: flex;
@@ -695,7 +695,7 @@ const Row = styled.div`
   width: 100%;
 `;
 
-const Column = styled.div`
+const Column = styled('div')`
   padding: 12px;
   @media(min-width: 769px) {
     width: 50%;
@@ -706,7 +706,7 @@ const Column = styled.div`
   flex-direction: column;
 `;
 
-const Input = styled.input`
+const Input = styled('input')`
   display: block;
   width: 100%;
   padding: 10px 14px !important;
@@ -722,7 +722,7 @@ const Input = styled.input`
   }
 `;
 
-const Section = styled.div`
+const Section = styled('div')`
   margin-bottom: 48px;
 `;
 
@@ -733,7 +733,7 @@ const Section = styled.div`
 //   padding-right: 0 !important;
 // `;
 
-const PageContainer = styled.div`
+const PageContainer = styled('div')`
   padding-top: 0 !important;
 `;
 

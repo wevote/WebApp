@@ -1,8 +1,8 @@
-import { Button, Checkbox, FormControlLabel, TextField } from '@material-ui/core';
-import { withStyles } from '@material-ui/core/styles';
+import { Button, Checkbox, FormControlLabel, TextField } from '@mui/material';
+import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
 import React from 'react';
-import styled from 'styled-components';
+import styled from '@mui/material/styles/styled';
 import { formatDateToYearMonthDay } from '../../common/utils/dateFormat';
 import { renderLog } from '../../common/utils/logging';
 
@@ -209,10 +209,10 @@ const styles = () => ({
   },
 });
 
-const Card = styled.div`
+const Card = styled('div')`
 `;
 
-const CardTitle = styled.h2`
+const CardTitle = styled('h2')`
   display: inline-block;
   font-size: 26px;
   color: black !important;
@@ -221,12 +221,12 @@ const CardTitle = styled.h2`
   margin-bottom: 0px;
 `;
 
-const CardSubTitle = styled.h3`
+const CardSubTitle = styled('h3')`
   display: inline-block;
   font-size: 16px;
 `;
 
-const ProgressBar = styled.div`
+const ProgressBar = styled('div')`
   background: #f7f7f7;
   width: 100%;
   height: 12px;
@@ -245,13 +245,13 @@ const ProgressBar = styled.div`
   }
 `;
 
-const CommentsWrapper = styled.div`
+const CommentsWrapper = styled('div')`
   max-height: 140px;
   overflow-y: scroll;
   transition-duration: .3s;
 `;
 
-const CommentWrapper = styled.div`
+const CommentWrapper = styled('div')`
   width: 100%;
   margin: 8px 0;
   border-radius: 10px;
@@ -260,13 +260,13 @@ const CommentWrapper = styled.div`
   padding: 6px;
 `;
 
-const Comment = styled.p`
+const Comment = styled('p')`
   margin: 0;
   font-weight: 900 !important;
   color: #2e3c5d;
 `;
 
-const CommentName = styled.div`
+const CommentName = styled('div')`
   font-size: 12px;
   color: #999;
 `;

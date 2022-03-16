@@ -1,6 +1,6 @@
-import { Badge, Tab, Tabs } from '@material-ui/core';
-import { withStyles } from '@material-ui/core/styles';
-import { styled as muiStyled } from '@material-ui/styles';
+import { Badge, Tab, Tabs } from '@mui/material';
+import withStyles from '@mui/styles/withStyles';
+import { styled as muiStyled } from '@mui/styles';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import Helmet from 'react-helmet';

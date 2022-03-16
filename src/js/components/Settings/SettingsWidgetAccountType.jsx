@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import styled from 'styled-components';
+import styled from '@mui/material/styles/styled';
 import AnalyticsActions from '../../actions/AnalyticsActions';
 import OrganizationActions from '../../actions/OrganizationActions';
 import OrganizationStore from '../../stores/OrganizationStore';
@@ -321,6 +321,6 @@ SettingsWidgetAccountType.propTypes = {
   showEditToggleOption: PropTypes.bool, // Should the voter be able to hide/show the form fields
 };
 
-const Wrapper = styled.div`
+const Wrapper = styled('div')`
   margin-top: 20px;
 `;

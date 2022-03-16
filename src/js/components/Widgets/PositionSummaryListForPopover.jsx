@@ -1,9 +1,11 @@
-import { withStyles, withTheme } from '@material-ui/core/styles';
-import { CheckCircle, ThumbDown, ThumbUp } from '@material-ui/icons';
+import withStyles from '@mui/styles/withStyles';
+import withTheme from '@mui/styles/withTheme';
+import { CheckCircle, ThumbDown, ThumbUp } from '@mui/icons-material';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
 import { ReactSVG } from 'react-svg';
-import styled from 'styled-components';
+import styled from '@mui/material/styles/styled';
+import passBool from '../../common/utils/passBool';
 import normalizedImagePath from '../../common/utils/normalizedImagePath';
 import { cleanArray } from '../../utils/textFormat';
 import FriendsIcon from './FriendsIcon';
@@ -217,11 +219,11 @@ class PositionSummaryListForPopover extends Component {
           key={`onePositionForPopoverPersonalNetworkScore-${ballotItemWeVoteId}`}
         >
           { voterPersonalNetworkScore === 0 ? (
-            <NetworkScoreSmall voterPersonalNetworkScoreIsNegative={voterPersonalNetworkScoreIsNegative} voterPersonalNetworkScoreIsPositive={voterPersonalNetworkScoreIsPositive}>
+            <NetworkScoreSmall voterpersonalnetworkscoreisnegative={passBool(voterPersonalNetworkScoreIsNegative)} voterpersonalnetworkscoreispositive={passBool(voterPersonalNetworkScoreIsPositive)}>
               0
             </NetworkScoreSmall>
           ) : (
-            <NetworkScoreSmall voterPersonalNetworkScoreIsNegative={voterPersonalNetworkScoreIsNegative} voterPersonalNetworkScoreIsPositive={voterPersonalNetworkScoreIsPositive}>
+            <NetworkScoreSmall voterpersonalnetworkscoreisnegative={passBool(voterPersonalNetworkScoreIsNegative)} I={passBool(voterPersonalNetworkScoreIsPositive)}>
               { voterPersonalNetworkScoreWithSign }
             </NetworkScoreSmall>
           )}
@@ -270,26 +272,26 @@ const styles = () => ({
   },
 });
 
-const FollowToggleWrapper = styled.div`
+const FollowToggleWrapper = styled('div')`
 `;
 
-const FollowingWrapper = styled.div`
+const FollowingWrapper = styled('div')`
   color: #0d546f !important;
 `;
 
-const IssueIcon = styled.div`
+const IssueIcon = styled('div')`
   font-weight: bold;
   font-size: 16px;
 `;
 
-const NetworkScoreDescriptionText = styled.div`
+const NetworkScoreDescriptionText = styled('div')`
   align-items: center;
   display: flex;
   font-size: 14px;
   margin-left: 6px;
 `;
 
-const NetworkScoreSmall = styled.div`
+const NetworkScoreSmall = styled('div')`
   background: ${({ voterPersonalNetworkScoreIsNegative, voterPersonalNetworkScoreIsPositive }) => ((voterPersonalNetworkScoreIsNegative && 'rgb(255, 73, 34)') || (voterPersonalNetworkScoreIsPositive && 'rgb(31, 192, 111)') || '#888')};
   color: white;
   box-shadow: 0 1px 3px 0 rgba(0,0,0,.2), 0 1px 1px 0 rgba(0,0,0,.14), 0 2px 1px -1px rgba(0,0,0,.12);
@@ -309,7 +311,7 @@ const NetworkScoreSmall = styled.div`
   }
 `;
 
-const NetworkScoreSumLine = styled.div`
+const NetworkScoreSumLine = styled('div')`
   background: #2E3C5D;
   border-radius: 2px;
   width: 40px;
@@ -317,7 +319,7 @@ const NetworkScoreSumLine = styled.div`
   margin-left: -5px;
 `;
 
-const OpposeAndPartOfScore = styled.div`
+const OpposeAndPartOfScore = styled('div')`
   background: ${({ theme }) => theme.colors.opposeRedRgb};
   color: white;
   cursor: pointer;
@@ -337,7 +339,7 @@ const OpposeAndPartOfScore = styled.div`
   }
 `;
 
-const OpposeButNotPartOfScore = styled.div`
+const OpposeButNotPartOfScore = styled('div')`
   color: ${({ theme }) => theme.colors.opposeRedRgb};
   background: white;
   display: flex;
@@ -354,35 +356,35 @@ const OpposeButNotPartOfScore = styled.div`
   margin-right: 6px;
 `;
 
-const OrganizationNameWrapper = styled.div`
+const OrganizationNameWrapper = styled('div')`
   flex-grow: 8;
   padding-right: 8px;
 `;
 
-const OrganizationNameWrapperWithPopover = styled.div`
+const OrganizationNameWrapperWithPopover = styled('div')`
   cursor: pointer;
   flex-grow: 8;
   padding-right: 8px;
 `;
 
-const OrganizationPopoverWrapper = styled.div`
+const OrganizationPopoverWrapper = styled('div')`
   cursor: pointer;
   display: flex;
   flex-wrap: nowrap;
   justify-content: flex-start;
 `;
 
-const PositionSummaryWrapper = styled.div`
+const PositionSummaryWrapper = styled('div')`
   display: flex;
   flex-wrap: nowrap;
   justify-content: flex-start;
 `;
 
-const ShowMoreFooterWrapper = styled.div`
+const ShowMoreFooterWrapper = styled('div')`
   margin-top: 10px;
 `;
 
-const ShowXMoreWrapper = styled.div`
+const ShowXMoreWrapper = styled('div')`
   color: ${({ theme }) => theme.colors.grayMid};
   font-size: 16px;
   font-style: italic;
@@ -392,7 +394,7 @@ const ShowXMoreWrapper = styled.div`
   width: 100%;
 `;
 
-const SupportAndPartOfScore = styled.div`
+const SupportAndPartOfScore = styled('div')`
   background: ${({ theme }) => theme.colors.supportGreenRgb};
   color: white;
   cursor: pointer;
@@ -412,7 +414,7 @@ const SupportAndPartOfScore = styled.div`
   }
 `;
 
-const SupportButNotPartOfScore = styled.div`
+const SupportButNotPartOfScore = styled('div')`
   color: ${({ theme }) => theme.colors.supportGreenRgb};
   background: white;
   display: flex;
@@ -429,20 +431,20 @@ const SupportButNotPartOfScore = styled.div`
   margin-right: 6px;
 `;
 
-const VoterAndOrganizationShareTheseIssuesWrapper  = styled.div`
+const VoterAndOrganizationShareTheseIssuesWrapper  = styled('div')`
   display: flex;
   flex-wrap: nowrap;
   justify-content: flex-start;
 `;
 
-const VoterPersonalNetworkScoreWrapper = styled.div`
+const VoterPersonalNetworkScoreWrapper = styled('div')`
   display: flex;
   flex-wrap: nowrap;
   margin-top: 3px;
   justify-content: flex-start;
 `;
 
-const VoterPersonalNetworkScoreSumLineWrapper = styled.div`
+const VoterPersonalNetworkScoreSumLineWrapper = styled('div')`
   display: flex;
   flex-wrap: nowrap;
   margin-top: 10px;

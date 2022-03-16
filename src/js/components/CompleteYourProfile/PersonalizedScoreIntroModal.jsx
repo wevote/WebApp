@@ -1,9 +1,10 @@
-import { Dialog, DialogContent, IconButton } from '@material-ui/core';
-import { withStyles, withTheme } from '@material-ui/core/styles';
-import { Close } from '@material-ui/icons';
+import { Dialog, DialogContent, IconButton } from '@mui/material';
+import withStyles from '@mui/styles/withStyles';
+import withTheme from '@mui/styles/withTheme';
+import { Close } from '@mui/icons-material';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
-import styled from 'styled-components';
+import styled from '@mui/material/styles/styled';
 import VoterActions from '../../actions/VoterActions';
 import VoterConstants from '../../constants/VoterConstants';
 import { hasIPhoneNotch } from '../../common/utils/cordovaUtils';
@@ -58,7 +59,7 @@ class PersonalizedScoreIntroModal extends Component {
               className={classes.closeButton}
               onClick={this.closeThisModal}
               id="closePersonalizedScoreIntroModal"
-            >
+              size="large">
               <Close />
             </IconButton>
           </IconButtonWrapper>
@@ -107,11 +108,11 @@ const styles = () => ({
   },
 });
 
-const IconButtonWrapper = styled.div`
+const IconButtonWrapper = styled('div')`
   margin: 4px 0 12px 0;
 `;
 
-const ModalTitleArea = styled.div`
+const ModalTitleArea = styled('div')`
   align-items: center;
   display: flex;
   flex-wrap: nowrap;
@@ -121,7 +122,7 @@ const ModalTitleArea = styled.div`
   }
 `;
 
-const Title = styled.div`
+const Title = styled('div')`
   color: black;
   font-size: 24px;
   font-weight: bold;

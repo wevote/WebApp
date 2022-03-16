@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import styled from 'styled-components';
+import styled from '@mui/material/styles/styled';
 import TwitterActions from '../../actions/TwitterActions';
 import VoterActions from '../../actions/VoterActions';
 import LoadingWheel from '../../common/components/Widgets/LoadingWheel';
@@ -268,7 +268,7 @@ export default class TwitterSignInProcess extends Component {
   }
 }
 
-const LoadingDiv = styled.div`
+const LoadingDiv = styled('div')`
   font-size: 18px;
   margin-top: 50px;
   ${() => (isIPad() || isAndroidSizeFold() ? {

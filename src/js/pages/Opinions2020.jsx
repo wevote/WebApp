@@ -1,10 +1,10 @@
-import { Card } from '@material-ui/core';
-import { withStyles } from '@material-ui/core/styles';
-import { Ballot, Business, Info } from '@material-ui/icons';
+import { Card } from '@mui/material';
+import withStyles from '@mui/styles/withStyles';
+import { Ballot, Business, Info } from '@mui/icons-material';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
 import { Link } from 'react-router-dom';
-import styled from 'styled-components';
+import styled from '@mui/material/styles/styled';
 import ActivityActions from '../actions/ActivityActions';
 import AnalyticsActions from '../actions/AnalyticsActions';
 import BallotActions from '../actions/BallotActions';
@@ -815,7 +815,7 @@ const styles = (theme) => ({
   },
   ballotButtonRoot: {
     width: 250,
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down('lg')]: {
       width: '100%',
     },
   },
@@ -833,22 +833,22 @@ const styles = (theme) => ({
   },
 });
 
-const CardChildListGroup = styled.ul`
+const CardChildListGroup = styled('ul')`
   padding: 0;
 `;
 
-const CardChildListItem = styled.div`
+const CardChildListItem = styled('div')`
   margin-top: 15px;
 `;
 
-const EmptyBallotMessageContainer = styled.div`
+const EmptyBallotMessageContainer = styled('div')`
   padding: 1em 2em;
   display: flex;
   flex-flow: column;
   align-items: center;
 `;
 
-const EmptyBallotText = styled.p`
+const EmptyBallotText = styled('p')`
   font-size: 16px;
   text-align: center;
   margin: 1em 2em;
@@ -857,20 +857,20 @@ const EmptyBallotText = styled.p`
   }
 `;
 
-const FilterBaseWrapper = styled.div`
+const FilterBaseWrapper = styled('div')`
   margin-top: -12px;
 `;
 
-const IntroductionWrapper = styled.div`
+const IntroductionWrapper = styled('div')`
 `;
 
-const SearchResultsFoundInExplanation = styled.div`
+const SearchResultsFoundInExplanation = styled('div')`
   background-color: #C2DCE8;
   color: #0E759F;
   padding: 12px !important;
 `;
 
-const ShowMoreItemsWrapper = styled.div`
+const ShowMoreItemsWrapper = styled('div')`
 `;
 
 export default withStyles(styles)(Opinions2020);

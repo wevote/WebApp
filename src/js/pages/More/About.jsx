@@ -1,8 +1,8 @@
-import { withStyles } from '@material-ui/core/styles';
+import withStyles from '@mui/styles/withStyles';
 import React, { Component, Suspense } from 'react';
 import Helmet from 'react-helmet';
 import { Link } from 'react-router-dom';
-import styled from 'styled-components';
+import styled from '@mui/material/styles/styled';
 import AnalyticsActions from '../../actions/AnalyticsActions';
 import { weVoteBoard, weVoteFounders, weVoteStaff } from '../../common/constants/people';
 import TeamMemberDisplayForList from '../../components/More/TeamMemberDisplayForList';
@@ -314,7 +314,7 @@ const styles = (theme) => ({
   buttonContained: {
     borderRadius: 32,
     height: 50,
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down('lg')]: {
       height: 36,
     },
   },
@@ -326,7 +326,7 @@ const styles = (theme) => ({
   },
 });
 
-const Wrapper = styled.div`
+const Wrapper = styled('div')`
   display: flex;
   flex-flow: column nowrap;
   align-items: center;
@@ -335,7 +335,7 @@ const Wrapper = styled.div`
   padding-top: ${({ padTop }) => padTop};
 `;
 
-const HeaderForAbout = styled.div`
+const HeaderForAbout = styled('div')`
   position: relative;
   height: 230px;
   width: 110%;
@@ -353,7 +353,7 @@ const HeaderForAbout = styled.div`
   }
 `;
 
-const AboutDescriptionContainer = styled.div`
+const AboutDescriptionContainer = styled('div')`
   margin: 1em auto;
   width: 960px;
   max-width: 90vw;
@@ -363,7 +363,7 @@ const AboutDescriptionContainer = styled.div`
   }
 `;
 
-const DescriptionLeftColumn = styled.div`
+const DescriptionLeftColumn = styled('div')`
   display: flex;
   flex-flow: column;
   padding: 0 20px 0 0;
@@ -376,7 +376,7 @@ const DescriptionLeftColumn = styled.div`
   }
 `;
 
-const DescriptionImageColumn = styled.div`
+const DescriptionImageColumn = styled('div')`
   width: 35%;
   text-align: right;
   @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
@@ -386,11 +386,11 @@ const DescriptionImageColumn = styled.div`
   }
 `;
 
-const Image = styled.img`
+const Image = styled('img')`
   width: 100%;
 `;
 
-const AboutFigCaption = styled.figcaption`
+const AboutFigCaption = styled('figcaption')`
   color: #555;
   font-size: .8rem;
   text-align: center;

@@ -1,21 +1,21 @@
 /* eslint-disable no-nested-ternary */
-import { Button } from '@material-ui/core';
+import { Button } from '@mui/material';
+import styled from '@mui/material/styles/styled';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
-import styled from 'styled-components';
 import BallotActions from '../../actions/BallotActions';
 import OrganizationActions from '../../actions/OrganizationActions';
 import VoterActions from '../../actions/VoterActions';
 import VoterGuideActions from '../../actions/VoterGuideActions';
+import LoadingWheel from '../../common/components/Widgets/LoadingWheel';
+import { electionDateTomorrowFormatted, formatDateMMMDoYYYY } from '../../common/utils/dateFormat';
+import historyPush from '../../common/utils/historyPush';
+import initializeMoment from '../../common/utils/initializeMoment';
+import { renderLog } from '../../common/utils/logging';
 import BallotStore from '../../stores/BallotStore';
 import VoterGuideStore from '../../stores/VoterGuideStore';
 import VoterStore from '../../stores/VoterStore';
-import historyPush from '../../common/utils/historyPush';
-import { electionDateTomorrowFormatted, formatDateMMMDoYYYY } from '../../common/utils/dateFormat';
-import { renderLog } from '../../common/utils/logging';
 import { cleanArray } from '../../utils/textFormat';
-import LoadingWheel from '../../common/components/Widgets/LoadingWheel';
-import initializeMoment from '../../common/utils/initializeMoment';
 
 const DelayedLoad = React.lazy(() => import(/* webpackChunkName: 'DelayedLoad' */ '../../common/components/Widgets/DelayedLoad'));
 
@@ -674,7 +674,7 @@ const ElectionButton = styled(Button)`
   padding: 10px !important;
 `;
 
-const ElectionTitle = styled.h3`
+const ElectionTitle = styled('h3')`
   margin: 0 !important;
   font-size: 15px;
   font-weight: 600;
@@ -682,7 +682,7 @@ const ElectionTitle = styled.h3`
   margin-bottom: 6px !important;
 `;
 
-const ButtonContentsWrapper = styled.div`
+const ButtonContentsWrapper = styled('div')`
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -690,14 +690,14 @@ const ButtonContentsWrapper = styled.div`
   align-items: flex-start;
 `;
 
-const ElectionStates = styled.div`
+const ElectionStates = styled('div')`
   display: flex;
   align-items: center;
   justify-content: flex-start;
   margin-top: 4px;
 `;
 
-const ElectionState = styled.div`
+const ElectionState = styled('div')`
   border-radius: 50px;
   height: 20px;
   width: fit-content;
@@ -708,10 +708,10 @@ const ElectionState = styled.div`
   margin: 0 2px;
 `;
 
-const PriorOrUpcomingElectionsWrapper = styled.div`
+const PriorOrUpcomingElectionsWrapper = styled('div')`
   margin-top: 20px;
 `;
 
-const SpaceBetweenElections = styled.div`
+const SpaceBetweenElections = styled('div')`
   margin-bottom: 20px;
 `;

@@ -1,9 +1,9 @@
-import { DialogContent, DialogTitle, IconButton } from '@material-ui/core';
-import { withStyles } from '@material-ui/core/styles';
-import { Close } from '@material-ui/icons';
+import { DialogContent, DialogTitle, IconButton } from '@mui/material';
+import withStyles from '@mui/styles/withStyles';
+import { Close } from '@mui/icons-material';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
-import styled from 'styled-components';
+import styled from '@mui/material/styles/styled';
 import VoterStore from '../../../stores/VoterStore';
 import PositionPublicToggle from '../PositionPublicToggle';
 import Slides from './Slides';
@@ -91,29 +91,27 @@ class ChooseOrOppose extends Component {
   render () {
     const { classes } = this.props;
     const { voterIsSignedIn } = this.state;
-    return (
-      <>
-        <DialogTitle classes={{ root: classes.dialogTitle }}>
-          <TitleText>Choose or Oppose</TitleText>
-          <IconButton
-            aria-label="Close"
-            classes={{ root: classes.closeButton }}
-            onClick={this.props.onClose}
-            id="profileCloseItemActionBar"
-          >
-            <Close />
-          </IconButton>
-        </DialogTitle>
-        <HorizontalLine />
-        <DialogContent classes={{ root: classes.dialogContent }}>
-          <Slides
-            onClose={this.props.onClose}
-            slides={this.getSlides()}
-            voterIsSignedIn={voterIsSignedIn}
-          />
-        </DialogContent>
-      </>
-    );
+    return <>
+      <DialogTitle classes={{ root: classes.dialogTitle }}>
+        <TitleText>Choose or Oppose</TitleText>
+        <IconButton
+          aria-label="Close"
+          classes={{ root: classes.closeButton }}
+          onClick={this.props.onClose}
+          id="profileCloseItemActionBar"
+          size="large">
+          <Close />
+        </IconButton>
+      </DialogTitle>
+      <HorizontalLine />
+      <DialogContent classes={{ root: classes.dialogContent }}>
+        <Slides
+          onClose={this.props.onClose}
+          slides={this.getSlides()}
+          voterIsSignedIn={voterIsSignedIn}
+        />
+      </DialogContent>
+    </>;
   }
 }
 ChooseOrOppose.propTypes = {
@@ -135,12 +133,12 @@ const styles = (theme) => ({
   },
   closeButton: {
     position: 'absolute',
-    right: `${theme.spacing(1)}px`,
-    top: `${theme.spacing(1)}px`,
+    right: theme.spacing(1),
+    top: theme.spacing(1),
   },
 });
 
-const HorizontalLine = styled.div`
+const HorizontalLine = styled('div')`
   background-color: #eee;
   height: 2px;
   margin: 0 24px;
@@ -151,31 +149,31 @@ const HorizontalLine = styled.div`
   }
 `;
 
-const TitleText = styled.div`
+const TitleText = styled('div')`
   font-weight: bold;
   font-size: 20px;
   color: #333;
   margin-bottom: 4px;
 `;
 
-const SubTitle = styled.div`
+const SubTitle = styled('div')`
   font-size: 18px;
   color: #333;
   text-align: left;
   margin-bottom: 4px;
 `;
 
-const PlainText = styled.div`
+const PlainText = styled('div')`
   font-size: 14px;
   color: #666;
   text-align: left;
 `;
 
-const BoldText = styled.span`
+const BoldText = styled('span')`
   font-weight: bold;
 `;
 
-const Row = styled.div`
+const Row = styled('div')`
   display: flex;
   margin: 16px 0;
   margin-top: 20px;

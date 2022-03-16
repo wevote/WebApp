@@ -1,9 +1,11 @@
-import { withStyles, withTheme } from '@material-ui/core/styles';
-import { ArrowForward, CheckCircle } from '@material-ui/icons';
+import withStyles from '@mui/styles/withStyles';
+import withTheme from '@mui/styles/withTheme';
+import { ArrowForward, CheckCircle } from '@mui/icons-material';
 import PropTypes from 'prop-types';
 import React from 'react';
-import styled from 'styled-components';
+import styled from '@mui/material/styles/styled';
 import BallotActions from '../../actions/BallotActions';
+import passBool from '../../common/utils/passBool';
 import VoterConstants from '../../constants/VoterConstants';
 import AppObservableStore from '../../stores/AppObservableStore';
 import BallotStore from '../../stores/BallotStore';
@@ -428,7 +430,7 @@ class ReadyTaskBallot extends React.Component {
       />
     );
     return (
-      <ReadyCard showprogresscolor={percentCompleted > 0} className="card">
+      <ReadyCard showprogresscolor={passBool(percentCompleted > 0)} className="card">
         <Icon className="u-cursor--pointer" onClick={this.goToBallot}>
           {completedIcon}
         </Icon>
@@ -443,7 +445,7 @@ class ReadyTaskBallot extends React.Component {
             <PercentComplete
               className="u-cursor--pointer"
               onClick={() => this.showMoreButtonsLink()}
-              showprogresscolor={percentCompleted > 0}
+              showprogresscolor={passBool(percentCompleted > 0)}
             >
               {percentCompleted}
               %
@@ -840,7 +842,7 @@ const styles = (theme) => ({
     fontSize: 14,
     marginBottom: 3,
     marginLeft: 4,
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down('md')]: {
       fontSize: 14,
     },
   },
@@ -888,7 +890,7 @@ const styles = (theme) => ({
   width: 562,
 });
 
-const BallotToDoTitle = styled.h3`
+const BallotToDoTitle = styled('h3')`
   margin: 0;
   font-size: 30px;
   font-weight: 600;
@@ -904,15 +906,15 @@ const BallotToDoTitle = styled.h3`
   }
 `;
 
-const ButtonTextMobileFont = styled.span`
+const ButtonTextMobileFont = styled('span')`
   font-size: 16px;
 `;
 
-const ButtonTextMobileFontSmallest = styled.span`
+const ButtonTextMobileFontSmallest = styled('span')`
   font-size: 12px;
 `;
 
-const NumberComplete = styled.div`
+const NumberComplete = styled('div')`
   font-size: 12px;
 `;
 

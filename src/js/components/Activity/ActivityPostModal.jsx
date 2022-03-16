@@ -1,15 +1,16 @@
-import { Button, Dialog, DialogContent, DialogTitle, IconButton, InputBase } from '@material-ui/core';
-import { withStyles, withTheme } from '@material-ui/core/styles';
-import { Close } from '@material-ui/icons';
+import { Close } from '@mui/icons-material';
+import { Button, Dialog, DialogContent, DialogTitle, IconButton, InputBase } from '@mui/material';
+import styled from '@mui/material/styles/styled';
+import withStyles from '@mui/styles/withStyles';
+import withTheme from '@mui/styles/withTheme';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import styled from 'styled-components';
 import ActivityActions from '../../actions/ActivityActions';
+import { hasIPhoneNotch, isAndroid, isAndroidSizeLG, isAndroidSizeMD, isAndroidTablet, prepareForCordovaKeyboard, restoreStylesAfterCordovaKeyboard } from '../../common/utils/cordovaUtils';
+import { renderLog } from '../../common/utils/logging';
 import ActivityStore from '../../stores/ActivityStore';
 import VoterStore from '../../stores/VoterStore';
 import { avatarGeneric } from '../../utils/applicationUtils';
-import { hasIPhoneNotch, isAndroid, isAndroidSizeLG, isAndroidSizeMD, isAndroidTablet, prepareForCordovaKeyboard, restoreStylesAfterCordovaKeyboard } from '../../common/utils/cordovaUtils';
-import { renderLog } from '../../common/utils/logging';
 import ActivityPostPublicToggle from './ActivityPostPublicToggle';
 
 
@@ -139,6 +140,7 @@ class ActivityPostModal extends Component {
             classes={{ root: classes.closeButton }}
             onClick={() => { this.props.toggleActivityPostModal(); }}
             id="closeActivityPostModal"
+            size="large"
           >
             <Close />
           </IconButton>
@@ -228,7 +230,7 @@ const styles = (theme) => ({
     maxWidth: '600px',
     top: '0px',
     transform: isAndroid() ? 'none' : 'translate(0%, -20%)',
-    [theme.breakpoints.down('xs')]: {
+    [theme.breakpoints.down('sm')]: {
       minWidth: '95%',
       maxWidth: '95%',
       width: '95%',
@@ -248,8 +250,8 @@ const styles = (theme) => ({
   },
   closeButton: {
     position: 'absolute',
-    right: `${theme.spacing(1)}px`,
-    top: isAndroid() ? '-4px' : `${theme.spacing(1)}px`,
+    right: theme.spacing(1),
+    top: isAndroid() ? '-4px' : theme.spacing(1),
   },
   saveButtonRoot: {
     width: '100%',
@@ -265,7 +267,7 @@ const styles = (theme) => ({
     fontSize: 20,
     height: '100%',
     width: '100%',
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down('md')]: {
       fontSize: 18,
     },
   },
@@ -274,7 +276,7 @@ const styles = (theme) => ({
     fontSize: 18,
     height: '100%',
     width: '100%',
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down('md')]: {
       fontSize: 16,
     },
   },
@@ -284,18 +286,18 @@ const styles = (theme) => ({
   },
 });
 
-const PostSaveButton = styled.div`
+const PostSaveButton = styled('div')`
   width: 100%;
 `;
 
-const TextFieldWrapper = styled.div`
+const TextFieldWrapper = styled('div')`
   height: 100%;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
 `;
 
-const Title = styled.div`
+const Title = styled('div')`
   font-size: 16px;
   font-weight: bold;
   margin: 0;

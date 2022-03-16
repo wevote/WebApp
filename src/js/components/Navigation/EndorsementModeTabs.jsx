@@ -1,5 +1,5 @@
-import { Badge, Tab, Tabs } from '@material-ui/core';
-import { withStyles } from '@material-ui/core/styles';
+import { Badge, Tab, Tabs } from '@mui/material';
+import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import AppObservableStore, { messageService } from '../../stores/AppObservableStore';
@@ -113,7 +113,7 @@ const styles = (theme) => ({
     minWidth: 16,
     width: 20,
     height: 19.5,
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down('lg')]: {
       fontSize: 8,
       right: -11,
       width: 16,
@@ -127,14 +127,14 @@ const styles = (theme) => ({
   },
   tabLabelContainer: {
     padding: '6px 6px',
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down('lg')]: {
       padding: '6px 20px',
     },
   },
   tabsRoot: {
     minHeight: 38,
     height: 38,
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down('lg')]: {
       fontSize: 12,
     },
   },

@@ -1,8 +1,9 @@
-import { Card } from '@material-ui/core';
-import { withStyles, withTheme } from '@material-ui/core/styles';
+import { Card } from '@mui/material';
+import withStyles from '@mui/styles/withStyles';
+import withTheme from '@mui/styles/withTheme';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
-import styled from 'styled-components';
+import styled from '@mui/material/styles/styled';
 import SupportStore from '../../stores/SupportStore';
 import historyPush from '../../common/utils/historyPush';
 import { renderLog } from '../../common/utils/logging';
@@ -243,7 +244,7 @@ MeasureItemForOpinions.propTypes = {
 const styles = (theme) => ({
   cardRoot: {
     padding: '16px 16px 8px 16px',
-    [theme.breakpoints.down('lg')]: {
+    [theme.breakpoints.down('xl')]: {
       padding: '16px 16px 0 16px',
     },
   },
@@ -261,13 +262,13 @@ const styles = (theme) => ({
   },
 });
 
-const InfoRow = styled.div`
+const InfoRow = styled('div')`
   display: flex;
   flex-flow: row wrap;
   justify-content: space-between;
 `;
 
-const MeasureInfoWrapper = styled.div`
+const MeasureInfoWrapper = styled('div')`
   display: flex;
   flex-flow: column;
   max-width: 75%;
@@ -279,7 +280,7 @@ const MeasureInfoWrapper = styled.div`
   }
 `;
 
-const Title = styled.h1`
+const Title = styled('h1')`
   font-size: 18px;
   font-weight: bold;
   margin: .1rem 0;
@@ -288,7 +289,7 @@ const Title = styled.h1`
   }
 `;
 
-const SubTitle = styled.h3`
+const SubTitle = styled('h3')`
   font-size: 16px;
   font-weight: 300;
   color: #555;
@@ -299,7 +300,7 @@ const SubTitle = styled.h3`
   }
 `;
 
-const MeasureText = styled.div`
+const MeasureText = styled('div')`
   font-size: 13px;
   font-weight: 300;
   color: #777;

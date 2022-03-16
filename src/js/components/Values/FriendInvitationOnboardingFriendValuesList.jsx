@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
-import styled from 'styled-components';
+import styled from '@mui/material/styles/styled';
 import IssueActions from '../../actions/IssueActions';
 import IssueStore from '../../stores/IssueStore';
 import VoterStore from '../../stores/VoterStore';
@@ -90,12 +90,12 @@ FriendInvitationOnboardingFriendValuesList.propTypes = {
   friendIssueWeVoteIdList: PropTypes.array,
 };
 
-const Wrapper = styled.div`
+const Wrapper = styled('div')`
   margin-bottom: 12px;
 `;
 
-const Row = styled.div`
+const Row = styled('div')`
 `;
 
-const Column = styled.div`
+const Column = styled('div')`
 `;

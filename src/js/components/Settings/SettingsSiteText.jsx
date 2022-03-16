@@ -1,9 +1,9 @@
-import { Button, FormControl, TextField } from '@material-ui/core';
-import { withStyles } from '@material-ui/core/styles';
+import { Button, FormControl, TextField } from '@mui/material';
+import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
 import Helmet from 'react-helmet';
-import styled from 'styled-components';
+import styled from '@mui/material/styles/styled';
 import OrganizationActions from '../../actions/OrganizationActions';
 import OrganizationStore from '../../stores/OrganizationStore';
 import VoterStore from '../../stores/VoterStore';
@@ -273,17 +273,17 @@ const styles = () => ({
   },
 });
 
-const InputLabel = styled.h4`
+const InputLabel = styled('h4')`
   font-size: 14px;
   font-weight: bold;
 `;
 
-const InputLabelHelperText = styled.p`
+const InputLabelHelperText = styled('p')`
   font-size: 14px;
   font-weight: normal;
 `;
 
-const ButtonsContainer = styled.div`
+const ButtonsContainer = styled('div')`
   display: flex;
   align-items: center;
   justify-content: flex-end;
@@ -292,7 +292,7 @@ const ButtonsContainer = styled.div`
   margin-top: 12px;
 `;
 
-const Separator = styled.div`
+const Separator = styled('div')`
   width: 100%;
   height: 2px;
   background: #eee;

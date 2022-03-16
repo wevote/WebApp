@@ -1,6 +1,6 @@
-import { Box, Grid } from '@material-ui/core';
+import { Box, Grid } from '@mui/material';
 import React from 'react';
-import styled from 'styled-components';
+import styled from '@mui/material/styles/styled';
 import { PageTitle } from '../../common/components/Style/stepDisplayStyles';
 import { renderLog } from '../../common/utils/logging';
 import VoterStore from '../../stores/VoterStore';
@@ -93,7 +93,7 @@ export default class GetStarted extends React.Component {
     );
   }
 }
-const GetStartedWrapper = styled.div`
+const GetStartedWrapper = styled('div')`
   background-color: white;
   padding: 80px 20px 150% 20px;
 `;

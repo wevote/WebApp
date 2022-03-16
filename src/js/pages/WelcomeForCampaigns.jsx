@@ -1,9 +1,9 @@
-import { Button } from '@material-ui/core';
-import { withStyles } from '@material-ui/core/styles';
+import { Button } from '@mui/material';
+import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
 import React, { PureComponent, Suspense } from 'react';
 import Helmet from 'react-helmet';
-import styled from 'styled-components';
+import styled from '@mui/material/styles/styled';
 import AnalyticsActions from '../actions/AnalyticsActions';
 import VoterActions from '../actions/VoterActions';
 import { BlueTitle, SubTitle, Title } from '../components/Welcome/headerWelcomeStyles';
@@ -299,7 +299,7 @@ const styles = () => ({
   },
 });
 
-const Wrapper = styled.div`
+const Wrapper = styled('div')`
   display: flex;
   flex-flow: column nowrap;
   align-items: center;
@@ -308,7 +308,7 @@ const Wrapper = styled.div`
   padding-top: ${({ padTop }) => padTop};
 `;
 
-const HeaderSection = styled.div`
+const HeaderSection = styled('div')`
   display: flex;
   flex-flow: column;
   padding: 1em 1em 3em 1em;
@@ -318,7 +318,7 @@ const HeaderSection = styled.div`
   width: 100%;
 `;
 
-const HeaderForCampaigns = styled.div`
+const HeaderForCampaigns = styled('div')`
   position: relative;
   height: 530px;
   width: 110%;
@@ -336,7 +336,7 @@ const HeaderForCampaigns = styled.div`
   }
 `;
 
-const HeaderStep = styled.div`
+const HeaderStep = styled('div')`
   display: flex;
   flex-flow: row nowrap;
   font-size: 18px;
@@ -351,7 +351,7 @@ const HeaderStep = styled.div`
   }
 `;
 
-const HeaderStepNumber = styled.div`
+const HeaderStepNumber = styled('div')`
   width: 24px;
   height: 24px;
   background: white;
@@ -364,7 +364,7 @@ const HeaderStepNumber = styled.div`
   }
 `;
 
-const HeaderStepLabel = styled.p`
+const HeaderStepLabel = styled('p')`
   font-weight: bold;
   color: white;
   margin: 0 .7rem;
@@ -374,11 +374,11 @@ const HeaderStepLabel = styled.p`
   }
 `;
 
-const HeaderStepButton = styled.p`
+const HeaderStepButton = styled('p')`
   margin: 30px auto;
 `;
 
-const FeatureStep = styled.div`
+const FeatureStep = styled('div')`
   display: flex;
   flex-flow: row nowrap;
   font-size: 18px;
@@ -394,7 +394,7 @@ const FeatureStep = styled.div`
   }
 `;
 
-const FeatureStepLabel = styled.p`
+const FeatureStepLabel = styled('p')`
   font-weight: bold;
   margin: 0 .7rem;
   text-align: left;
@@ -403,7 +403,7 @@ const FeatureStepLabel = styled.p`
   }
 `;
 
-const FeatureBlueTitle = styled.span`
+const FeatureBlueTitle = styled('span')`
   color: rgb(6, 33, 79);
 `;
 

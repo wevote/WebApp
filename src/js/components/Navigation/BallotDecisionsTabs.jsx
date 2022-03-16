@@ -1,8 +1,8 @@
-import { Tab, Tabs, Badge } from '@material-ui/core';
+import { Tab, Tabs, Badge } from '@mui/material';
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import styled from 'styled-components';
-import { withStyles } from '@material-ui/core/styles';
+import styled from '@mui/material/styles/styled';
+import withStyles from '@mui/styles/withStyles';
 import BallotActions from '../../actions/BallotActions';
 import { renderLog } from '../../common/utils/logging';
 
@@ -163,7 +163,7 @@ const styles = (theme) => ({
     top: 9,
     minWidth: 16,
     width: 20,
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down('md')]: {
       fontSize: 8,
       height: 16,
       right: -11,
@@ -177,14 +177,14 @@ const styles = (theme) => ({
   },
   tabLabelContainer: {
     padding: '6px 6px',
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down('md')]: {
       padding: '6px 20px',
     },
   },
   tabsRoot: {
     minHeight: 38,
     height: 38,
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down('md')]: {
       fontSize: 12,
     },
   },
@@ -192,7 +192,7 @@ const styles = (theme) => ({
     height: 38,
   },
   tabRootAllChoice: {
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down('md')]: {
       minWidth: 75,
     },
     [theme.breakpoints.up('sm')]: {
@@ -200,7 +200,7 @@ const styles = (theme) => ({
     },
   },
   tabRoot: {
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down('md')]: {
       minWidth: 100,
     },
     [theme.breakpoints.up('sm')]: {
@@ -217,7 +217,7 @@ const styles = (theme) => ({
   },
 });
 
-const BadgeCountWrapper = styled.span`
+const BadgeCountWrapper = styled('span')`
   padding-top: 2px;
   @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
     padding-top: 1px;

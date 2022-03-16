@@ -81,7 +81,7 @@ const slideDown = keyframes`
   }
 `;
 
-const Wrapper = styled.div`
+const Wrapper = styled('div')`
   max-width: 100%;
   position: fixed;
   padding-right: 16px;
@@ -103,23 +103,23 @@ const Wrapper = styled.div`
   }
 `;
 
-const Bold = styled.span`
+const Bold = styled('span')`
   font-weight: 550;
 `;
 
-const Container = styled.div`
+const Container = styled('div')`
   max-width: calc(960px - 18px);
   margin: 0 auto;
 `;
 
-const ColumnOne = styled.div`
+const ColumnOne = styled('div')`
   width: 100%;
   @media (min-width: ${({ theme }) => theme.breakpoints.sm}) {
     flex: 1 1 0;
   }
 `;
 
-const ColumnTwo = styled.div`
+const ColumnTwo = styled('div')`
   float: right;
   @media (min-width: ${({ theme }) => theme.breakpoints.sm}) {
     display: block;
@@ -128,7 +128,7 @@ const ColumnTwo = styled.div`
 `;
 
 // Defaults to style in mobile
-const CandidateName = styled.h1`
+const CandidateName = styled('h1')`
   font-size: 14px;
   margin-bottom: 2px;
   margin-top: 8px;
@@ -140,7 +140,7 @@ const CandidateName = styled.h1`
 `;
 
 // Uses min-width. Parallel style is CandidateDescriptionMobile
-const CandidateDescription = styled.div`
+const CandidateDescription = styled('div')`
   display: block;
   @media (min-width: ${({ theme }) => theme.breakpoints.md}) {
     font-size: 14px;
@@ -153,26 +153,26 @@ const CandidateDescription = styled.div`
   }
 `;
 
-const Profile = styled.div`
+const Profile = styled('div')`
   display: flex;
   flex-flow: row nowrap;
 `;
 
-const Avatar = styled.img`
+const Avatar = styled('img')`
   width: 48px;
   height: 48px;
   border-radius: 50%;
   margin: 0 1em 4px 0;
 `;
 
-const Flex = styled.div`
+const Flex = styled('div')`
   display: flex;
   justify-content: space-evenly;
   position: relative;
   top: 0;
 `;
 
-const BallotCommentContainer = styled.div`
+const BallotCommentContainer = styled('div')`
   margin-top: 0;
   margin-bottom: 0;
   padding-top: 0;

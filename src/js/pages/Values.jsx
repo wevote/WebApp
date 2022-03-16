@@ -1,6 +1,6 @@
 import React, { Component, Suspense } from 'react';
 import Helmet from 'react-helmet';
-import styled from 'styled-components';
+import styled from '@mui/material/styles/styled';
 import AnalyticsActions from '../actions/AnalyticsActions';
 import IssueActions from '../actions/IssueActions';
 import LoadingWheelComp from '../common/components/Widgets/LoadingWheelComp';
@@ -221,13 +221,13 @@ export default class Values extends Component {
 Values.propTypes = {
 };
 
-const SectionDescription = styled.div`
+const SectionDescription = styled('div')`
   color: #999;
   font-size: 14px;
   margin-bottom: 4px;
 `;
 
-const SectionTitle = styled.h2`
+const SectionTitle = styled('h2')`
   width: fit-content;
   font-weight: bolder;
   font-size: 18px;

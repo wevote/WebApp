@@ -1,10 +1,10 @@
-import { withStyles } from '@material-ui/core/styles';
-import { Info } from '@material-ui/icons';
+import withStyles from '@mui/styles/withStyles';
+import { Info } from '@mui/icons-material';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import Helmet from 'react-helmet';
 import { Link } from 'react-router-dom';
-import styled from 'styled-components';
+import styled from '@mui/material/styles/styled';
 import AnalyticsActions from '../../actions/AnalyticsActions';
 import VoterStore from '../../stores/VoterStore';
 import { renderLog } from '../../common/utils/logging';
@@ -97,7 +97,7 @@ const styles = () => ({
   },
 });
 
-const IntroductionWrapper = styled.div`
+const IntroductionWrapper = styled('div')`
   margin-bottom: 12px;
 `;
 

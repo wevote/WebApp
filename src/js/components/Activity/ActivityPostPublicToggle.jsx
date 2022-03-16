@@ -1,13 +1,13 @@
-import { Dialog, DialogContent, DialogTitle, FormControl, FormControlLabel, IconButton, Radio, Typography } from '@material-ui/core';
-import { withStyles } from '@material-ui/core/styles';
-import { Close } from '@material-ui/icons';
+import { Close } from '@mui/icons-material';
+import { Dialog, DialogContent, DialogTitle, FormControl, FormControlLabel, IconButton, Radio, Typography } from '@mui/material';
+import styled from '@mui/material/styles/styled';
+import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
-import styled from 'styled-components';
-import ActivityStore from '../../stores/ActivityStore';
-import VoterStore from '../../stores/VoterStore';
 import { isCordova, isWebApp } from '../../common/utils/isCordovaOrWebApp';
 import { renderLog } from '../../common/utils/logging';
+import ActivityStore from '../../stores/ActivityStore';
+import VoterStore from '../../stores/VoterStore';
 import { openSnackbar } from '../Widgets/SnackNotifier';
 
 const SettingsAccount = React.lazy(() => import(/* webpackChunkName: 'SettingsAccount' */ '../Settings/SettingsAccount'));
@@ -175,6 +175,7 @@ class ActivityPostPublicToggle extends Component {
             classes={{ root: classes.closeButton }}
             onClick={() => { this.toggleActivityPostIsPublicHelpModal(); }}
             id="profileCloseActivityPostPublicToggle"
+            size="large"
           >
             <Close />
           </IconButton>
@@ -276,7 +277,7 @@ const styles = (theme) => ({
     width: '100%',
   } : {},
   dialogPaper: isWebApp() ? {
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down('md')]: {
       minWidth: '95%',
       maxWidth: '95%',
       width: '95%',
@@ -297,14 +298,14 @@ const styles = (theme) => ({
     transform: 'translate(-50%, -25%)',
   },
   dialogContent: {
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down('lg')]: {
       padding: '0 8px 8px',
     },
   },
   radioPrimary: {
     padding: '.1rem',
     margin: '.1rem .1rem .6rem .6rem',
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down('lg')]: {
       marginLeft: 0,
     },
   },
@@ -312,7 +313,7 @@ const styles = (theme) => ({
     fontSize: '14px',
     bottom: '4px',
     position: 'relative',
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down('md')]: {
       fontSize: '11px',
     },
   },
@@ -321,17 +322,17 @@ const styles = (theme) => ({
   },
   closeButton: {
     position: 'absolute',
-    right: `${theme.spacing(1)}px`,
-    top: `${theme.spacing(1)}px`,
+    right: theme.spacing(1),
+    top: theme.spacing(1),
   },
 });
 
-const Wrapper = styled.div`
+const Wrapper = styled('div')`
   margin-left: auto;
   width: fit-content;
 `;
 
-const PublicToggle = styled.div`
+const PublicToggle = styled('div')`
   padding-left: 15px;
   @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
     padding-top: 4px;
@@ -347,11 +348,11 @@ const RadioItemStackedStyles = `
   }
 `;
 
-const RadioItem = styled.div`
+const RadioItem = styled('div')`
   ${({ preventStackedButtons }) => ((preventStackedButtons) ? '' : RadioItemStackedStyles)}
 `;
 
-const RadioGroup = styled.div`
+const RadioGroup = styled('div')`
   display: flex;
   flex-flow: row nowrap;
   width: 100%;

@@ -1,8 +1,9 @@
-import { Chip } from '@material-ui/core';
-import { withStyles, withTheme } from '@material-ui/core/styles';
+import { Chip } from '@mui/material';
+import withStyles from '@mui/styles/withStyles';
+import withTheme from '@mui/styles/withTheme';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
-import styled from 'styled-components';
+import styled from '@mui/material/styles/styled';
 import CandidateStore from '../../stores/CandidateStore';
 import IssueStore from '../../stores/IssueStore';
 import { renderLog } from '../../common/utils/logging';
@@ -222,11 +223,11 @@ const styles = () => ({
   },
 });
 
-const FollowIssueToggleContainer = styled.div`
+const FollowIssueToggleContainer = styled('div')`
   margin-top: 24px;
 `;
 
-const PopoverWrapper = styled.div`
+const PopoverWrapper = styled('div')`
   overflow-x: hidden;
   width: 100%;
   height: 100%;
@@ -238,7 +239,7 @@ const PopoverWrapper = styled.div`
   margin-top: 8px;
 `;
 
-const ValueIconAndTextSpan = styled.span`
+const ValueIconAndTextSpan = styled('span')`
   align-items: start;
   display: flex;
   flex: none;
@@ -248,17 +249,17 @@ const ValueIconAndTextSpan = styled.span`
   width: fit-content;
 `;
 
-const FollowIfYouCare = styled.div`
+const FollowIfYouCare = styled('div')`
   color: #999;
   font-size: .75rem;
   padding-top: 8px;
 `;
 
-const OpinionsRelatedToText = styled.div`
+const OpinionsRelatedToText = styled('div')`
   margin-top: 4px;
 `;
 
-const PopoverHeader = styled.div`
+const PopoverHeader = styled('div')`
   background: ${({ theme }) => theme.colors.brandBlue};
   padding: 4px 8px;
   min-height: 35px;
@@ -271,22 +272,22 @@ const PopoverHeader = styled.div`
   border-bottom-left-radius: 0;
 `;
 
-const PopoverTitleIcon = styled.span`
+const PopoverTitleIcon = styled('span')`
   font-weight: bold;
   font-size: 16px;
 `;
 
-const PopoverTitleText = styled.div`
+const PopoverTitleText = styled('div')`
   font-size: 14px;
   font-weight: bold;
   margin-left: 8px;
 `;
 
-const PopoverDescriptionText = styled.div`
+const PopoverDescriptionText = styled('div')`
   padding: 8px;
 `;
 
-const RenderedOrganizationsWrapper = styled.div`
+const RenderedOrganizationsWrapper = styled('div')`
   margin-top: 6px;
 `;
 

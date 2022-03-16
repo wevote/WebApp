@@ -1,9 +1,9 @@
-import { Button } from '@material-ui/core';
-import { withStyles } from '@material-ui/core/styles';
-import { ArrowBack, ArrowBackIos } from '@material-ui/icons';
+import { Button } from '@mui/material';
+import withStyles from '@mui/styles/withStyles';
+import { ArrowBack, ArrowBackIos } from '@mui/icons-material';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import styled from 'styled-components';
+import styled from '@mui/material/styles/styled';
 import { isIOS } from '../../common/utils/cordovaUtils';
 import { isCordova } from '../../common/utils/isCordovaOrWebApp';
 import historyPush from '../../common/utils/historyPush';

@@ -242,10 +242,10 @@ const styles = (theme) => ({
   },
 });
 
-const EndorsementWrapper = styled.div`
+const EndorsementWrapper = styled('div')`
 `;
 
-const OrganizationPhotoWrapper = styled.div`
+const OrganizationPhotoWrapper = styled('div')`
   width: 42px;
   margin: 0 auto 8px auto;
   height: 42px;
@@ -262,7 +262,7 @@ const OrganizationPhotoWrapper = styled.div`
   }
 `;
 
-const RowItemWrapper = styled.div`
+const RowItemWrapper = styled('div')`
   align-items: center;
   display: flex;
   flex-direction: column;

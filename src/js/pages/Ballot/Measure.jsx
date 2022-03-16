@@ -1,9 +1,9 @@
-import { withStyles } from '@material-ui/core/styles';
-import { Info } from '@material-ui/icons';
+import withStyles from '@mui/styles/withStyles';
+import { Info } from '@mui/icons-material';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
 import Helmet from 'react-helmet';
-import styled from 'styled-components';
+import styled from '@mui/material/styles/styled';
 import ActivityActions from '../../actions/ActivityActions';
 import AnalyticsActions from '../../actions/AnalyticsActions';
 import MeasureActions from '../../actions/MeasureActions';
@@ -408,25 +408,25 @@ const styles = () => ({
   },
 });
 
-const MeasureShareWrapper = styled.div`
+const MeasureShareWrapper = styled('div')`
   margin-bottom: 12px;
   padding-left: 2px;
 `;
 
-const LeftColumnWrapper = styled.div`
+const LeftColumnWrapper = styled('div')`
   flex: 1 1 0;
 `;
 
-const PositionListIntroductionText = styled.div`
+const PositionListIntroductionText = styled('div')`
   color: #999;
 `;
 
-const RightColumnWrapper = styled.div`
+const RightColumnWrapper = styled('div')`
   padding: 16px 16px 16px 0;
   width: fit-content;
 `;
 
-const TwoColumns = styled.div`
+const TwoColumns = styled('div')`
   display: flex;
   ${() => (isAndroidSizeFold() ? { margin: 0 } : { margin: '0 -8px 0 -8px' })};
   @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {

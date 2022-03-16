@@ -1,8 +1,9 @@
-import { Button } from '@material-ui/core';
-import { withStyles, withTheme } from '@material-ui/core/styles';
+import { Button } from '@mui/material';
+import withStyles from '@mui/styles/withStyles';
+import withTheme from '@mui/styles/withTheme';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
-import styled from 'styled-components';
+import styled from '@mui/material/styles/styled';
 import VoterActions from '../../actions/VoterActions';
 import VoterConstants from '../../constants/VoterConstants';
 import { normalizedHref } from '../../common/utils/hrefUtils';
@@ -439,10 +440,10 @@ const styles = () => ({
   },
 });
 
-const CandidateItemOuterWrapper = styled.div`
+const CandidateItemOuterWrapper = styled('div')`
 `;
 
-const ContinueButtonWrapper = styled.div`
+const ContinueButtonWrapper = styled('div')`
   align-items: center;
   background: #fff;
   border-top: 1px solid #eee;
@@ -455,25 +456,25 @@ const ContinueButtonWrapper = styled.div`
   height: 50px;
 `;
 
-const ExplanationTextBottom = styled.div`
+const ExplanationTextBottom = styled('div')`
 `;
 
-const ExplanationTextTop = styled.div`
+const ExplanationTextTop = styled('div')`
 `;
 
-const OneButtonWrapper = styled.div`
+const OneButtonWrapper = styled('div')`
   ${({ inModal }) => (inModal ? 'width: 90%;' : '')}
 `;
 
-const PersonalizedScoreIntroBodyWrapper = styled.div`
+const PersonalizedScoreIntroBodyWrapper = styled('div')`
 `;
 
-const ScrollableContentWrapper = styled.div`
+const ScrollableContentWrapper = styled('div')`
   padding-bottom: 15px;
   overflow-y: auto;
 `;
 
-const TwoButtonsWrapper = styled.div`
+const TwoButtonsWrapper = styled('div')`
   align-items: center;
   display: flex;
   ${({ inModal }) => (inModal ? 'justify-content: space-between;' : 'justify-content: center;')}

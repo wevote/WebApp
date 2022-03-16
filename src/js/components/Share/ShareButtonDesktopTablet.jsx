@@ -1,9 +1,9 @@
-import { Button } from '@material-ui/core';
-import { withStyles } from '@material-ui/core/styles';
-import { Reply } from '@material-ui/icons';
+import { Button } from '@mui/material';
+import withStyles from '@mui/styles/withStyles';
+import { Reply } from '@mui/icons-material';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import styled from 'styled-components';
+import styled from '@mui/material/styles/styled';
 import AnalyticsActions from '../../actions/AnalyticsActions';
 import ShareActions from '../../common/actions/ShareActions';
 import AppObservableStore, { messageService } from '../../stores/AppObservableStore';
@@ -224,7 +224,7 @@ const styles = () => ({
   },
 });
 
-const Icon = styled.span`
+const Icon = styled('span')`
   margin-right: 4px;
 `;
 

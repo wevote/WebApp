@@ -1,9 +1,9 @@
-import { Box, Tab, Tabs, Typography, TableContainer, TableHead, TableRow, TableCell, TableBody, ThemeProvider } from '@material-ui/core';
-import { Check } from '@material-ui/icons';
+import { Box, Tab, Tabs, Typography, TableContainer, TableHead, TableRow, TableCell, TableBody } from '@mui/material';
+import { Check } from '@mui/icons-material';
 import PropTypes from 'prop-types';
 import * as React from 'react';
 import Table from 'react-bootstrap/Table';
-import styled from 'styled-components';
+import styled from '@mui/material/styles/styled';
 import { renderLog } from '../../common/utils/logging';
 import { donationTheme } from '../../common/components/Style/donationTheme';
 
@@ -97,7 +97,7 @@ export default function ContactsTable (props) {
           Connect To Friends
         </h4>
       </div>
-      <ThemeProvider theme={donationTheme(false, 40)}>
+      {/*<XThemeProvider theme={donationTheme(false, 40)}>*/}
         <Box
           style={{
             justifyContent: 'flex-start',
@@ -154,7 +154,7 @@ export default function ContactsTable (props) {
         <TabPanel value={value} index={1}>
           Item Two
         </TabPanel>
-      </ThemeProvider>
+      {/*</XThemeProvider>*/}
     </Box>
   );
 }
@@ -163,7 +163,7 @@ ContactsTable.propTypes = {
   displayState: PropTypes.number.isRequired,
 };
 
-const ShortenedDiv = styled.div`
+const ShortenedDiv = styled('div')`
   max-width: 180px;
   white-space: nowrap;
   overflow: hidden;
@@ -172,7 +172,7 @@ const ShortenedDiv = styled.div`
 
 
 
-const StyledCheckbox = styled.div`
+const StyledCheckbox = styled('div')`
 width: 20px;
 height: 20px;
 background: transparent;

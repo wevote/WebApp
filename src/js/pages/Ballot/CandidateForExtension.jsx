@@ -1,8 +1,8 @@
-import { Box, Button, Tab, Tabs } from '@material-ui/core';
-import { withStyles } from '@material-ui/core/styles';
+import { Box, Button, Tab, Tabs } from '@mui/material';
+import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
-import styled from 'styled-components';
+import styled from '@mui/material/styles/styled';
 import AnalyticsActions from '../../actions/AnalyticsActions';
 import CandidateActions from '../../actions/CandidateActions';
 import IssueActions from '../../actions/IssueActions';
@@ -312,12 +312,12 @@ const styles = (theme) => ({
 //   overflow-y
 // `;
 
-const Wrapper = styled.div`
+const Wrapper = styled('div')`
   height: 100vh;
   background: white;
 `;
 
-const Buttons = styled.div`
+const Buttons = styled('div')`
   padding: 0 16px;
   width: calc(100% + 32px);
   margin: -16px -16px 0;
@@ -326,17 +326,17 @@ const Buttons = styled.div`
   justify-content: space-between;
 `;
 
-const OneButton = styled.div`
+const OneButton = styled('div')`
   width: 100%;
   margin: 16px;
 `;
 
-const OriginalLinkStyle = styled.div`
+const OriginalLinkStyle = styled('div')`
   font-size: 18px;
   font-weight: 600;
 `;
 
-const OriginalLinkWrapper = styled.div`
+const OriginalLinkWrapper = styled('div')`
   width: 100%;
   margin: 16px;
   display: flex;
@@ -344,13 +344,13 @@ const OriginalLinkWrapper = styled.div`
   justify-content: center;
 `;
 
-const OrganizationNameHeader = styled.div`
+const OrganizationNameHeader = styled('div')`
   font-size: 18px;
   font-weight: 600;
   margin: 0 15px 8px 15px;
 `;
 
-const ExplanationContainer = styled.div`
+const ExplanationContainer = styled('div')`
   display: block;
   float: right;
   background-color: white;
@@ -361,7 +361,7 @@ const ExplanationContainer = styled.div`
   }
 `;
 
-const ExplanationTextStyled = styled.div`
+const ExplanationTextStyled = styled('div')`
   display: block;
   color: #2e3c5d;
   font-weight: 200;

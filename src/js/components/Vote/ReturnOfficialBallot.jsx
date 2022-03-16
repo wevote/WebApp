@@ -1,6 +1,6 @@
-import { withStyles } from '@material-ui/core/styles/index';
+import withStyles from '@mui/styles/withStyles';
 import React, { Component, Suspense } from 'react';
-import styled from 'styled-components';
+import styled from '@mui/material/styles/styled';
 import Cookies from '../../common/utils/js-cookie/Cookies';
 import { renderLog } from '../../common/utils/logging';
 
@@ -83,12 +83,12 @@ const styles = ({
   },
 });
 
-const ParagraphStyled = styled.div`
+const ParagraphStyled = styled('div')`
   margin: auto;
   margin: 10px;
   font-weight: normal;
 `;
-const CloseComponent = styled.div`
+const CloseComponent = styled('div')`
   font-size: 25px;
   margin: 15px 15px 15px 15px;
   position: relative;
@@ -100,7 +100,7 @@ const CloseComponent = styled.div`
   opacity: 0.5;
 `;
 
-const HidePopupWrapper = styled.div`
+const HidePopupWrapper = styled('div')`
   @media print{
     display: none;
   }

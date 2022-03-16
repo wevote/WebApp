@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
 import { Link } from 'react-router-dom';
-import styled from 'styled-components';
+import styled from '@mui/material/styles/styled';
 import { renderLog } from '../../common/utils/logging';
 import Avatar from '../Style/avatarStyles';
 import { FriendColumnWithoutButtons } from '../Style/friendStyles';
@@ -85,7 +85,7 @@ FriendsShareListItem.propTypes = {
   voterTwitterHandle: PropTypes.string,
 };
 
-const Wrapper = styled.div`
+const Wrapper = styled('div')`
   width: 100%;
   margin-left: 12px;
   @media (min-width: 520px) {

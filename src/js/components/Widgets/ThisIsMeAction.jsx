@@ -1,9 +1,9 @@
-import { Twitter } from '@material-ui/icons';
-import { withStyles } from '@material-ui/core/styles';
+import { Twitter } from '@mui/icons-material';
+import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import styled from 'styled-components';
+import styled from '@mui/material/styles/styled';
 import VoterStore from '../../stores/VoterStore';
 import { renderLog } from '../../common/utils/logging';
 import SplitIconButton from '../../common/components/Widgets/SplitIconButton';
@@ -114,7 +114,7 @@ const styles = () => ({
   },
 });
 
-const Container = styled.div`
+const Container = styled('div')`
   padding: 16px;
 `;
 

@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import styled from 'styled-components';
-import { TextField, FormControl } from '@material-ui/core';
-import { withStyles } from '@material-ui/core/styles';
+import styled from '@mui/material/styles/styled';
+import { TextField, FormControl } from '@mui/material';
+import withStyles from '@mui/styles/withStyles';
 import { prepareForCordovaKeyboard, restoreStylesAfterCordovaKeyboard } from '../../common/utils/cordovaUtils';
 import { isSpeakerTypeOrganization } from '../../utils/organization-functions';
 import LoadingWheel from '../../common/components/Widgets/LoadingWheel';
@@ -161,19 +161,19 @@ const styles = () => ({
   },
 });
 
-const Row = styled.div`
+const Row = styled('div')`
   width: calc(100% + 24px);
   margin-left: -12px;
   display: flex;
   justify-content: space-between;
 `;
 
-const Column = styled.div`
+const Column = styled('div')`
   padding: 8px 12px;
   width: 100%;
 `;
 
-const Label = styled.label`
+const Label = styled('label')`
   margin-bottom: 4px;
   display: block;
 `;

@@ -1,7 +1,7 @@
-import { Facebook } from '@material-ui/icons';
+import { Facebook } from '@mui/icons-material';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import styled from 'styled-components';
+import styled from '@mui/material/styles/styled';
 import FacebookActions from '../../actions/FacebookActions';
 import VoterActions from '../../actions/VoterActions';
 import { messageService } from '../../stores/AppObservableStore';
@@ -231,7 +231,7 @@ FacebookSignIn.propTypes = {
 
 export default FacebookSignIn;
 
-const FacebookErrorContainer  = styled.h3`
+const FacebookErrorContainer  = styled('h3')`
   margin-top: 8px;
   background-color: #fff;
   box-shadow: 0px 2px 4px -1px rgba(0,0,0,0.2), 0px 4px 5px 0px rgba(0,0,0,0.14), 0px 1px 10px 0px rgba(0,0,0,0.12);

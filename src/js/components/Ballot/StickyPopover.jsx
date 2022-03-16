@@ -1,9 +1,10 @@
-import { withStyles, withTheme } from '@material-ui/core/styles';
+import withStyles from '@mui/styles/withStyles';
+import withTheme from '@mui/styles/withTheme';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import Overlay from 'react-bootstrap/Overlay';
 import Popover from 'react-bootstrap/Popover';
-import styled from 'styled-components';
+import styled from '@mui/material/styles/styled';
 import { renderLog } from '../../common/utils/logging';
 
 
@@ -139,7 +140,7 @@ const styles = () => ({
   },
 });
 
-const CloseIcon = styled.div`
+const CloseIcon = styled('div')`
   position: absolute;
   top: 8px;
   right: 8px;

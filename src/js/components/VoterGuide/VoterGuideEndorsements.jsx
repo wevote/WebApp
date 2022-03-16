@@ -1,10 +1,10 @@
-import { Card } from '@material-ui/core';
-import { withStyles } from '@material-ui/core/styles';
-import { Ballot, Info } from '@material-ui/icons';
+import { Card } from '@mui/material';
+import withStyles from '@mui/styles/withStyles';
+import { Ballot, Info } from '@mui/icons-material';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
 import Helmet from 'react-helmet';
-import styled from 'styled-components';
+import styled from '@mui/material/styles/styled';
 import BallotActions from '../../actions/BallotActions';
 import OrganizationActions from '../../actions/OrganizationActions';
 import SupportActions from '../../actions/SupportActions';
@@ -369,14 +369,14 @@ const styles = (theme) => ({
     width: 150,
     height: 150,
     color: 'rgb(171, 177, 191)',
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down('md')]: {
       width: 75,
       height: 75,
     },
   },
   ballotButtonRoot: {
     width: 250,
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down('lg')]: {
       width: '100%',
     },
   },
@@ -396,7 +396,7 @@ const styles = (theme) => ({
   },
 });
 
-const EmptyBallotMessageContainer = styled.div`
+const EmptyBallotMessageContainer = styled('div')`
   align-items: center;
   display: flex;
   flex-flow: column;
@@ -406,7 +406,7 @@ const EmptyBallotMessageContainer = styled.div`
   }
 `;
 
-const EmptyBallotText = styled.p`
+const EmptyBallotText = styled('p')`
   font-size: 16px;
   text-align: center;
   margin: 1em 2em;
@@ -415,24 +415,24 @@ const EmptyBallotText = styled.p`
   }
 `;
 
-const ExtraActionsWrapper = styled.div`
+const ExtraActionsWrapper = styled('div')`
   margin-bottom: 20px;
   margin-left: -15px;
   margin-right: -15px;
 `;
 
-const PositionListIntroductionText = styled.div`
+const PositionListIntroductionText = styled('div')`
   color: #999;
   margin-top: 10px;
 `;
 
-const VoterGuideEndorsementsWrapper = styled.div`
+const VoterGuideEndorsementsWrapper = styled('div')`
   margin-bottom: 10px;
   margin-left: -15px;
   margin-right: -15px;
 `;
 
-const VoterGuideEndorsementsOuterWrapper = styled.div`
+const VoterGuideEndorsementsOuterWrapper = styled('div')`
   margin-bottom: 45px;
 `;
 

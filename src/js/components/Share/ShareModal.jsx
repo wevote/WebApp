@@ -1,10 +1,11 @@
-import { Button, Dialog, DialogContent, IconButton, Tooltip } from '@material-ui/core';
-import { withStyles, withTheme } from '@material-ui/core/styles';
-import { ArrowBackIos, Close, FileCopyOutlined, People } from '@material-ui/icons';
+import { Button, Dialog, DialogContent, IconButton, Tooltip } from '@mui/material';
+import withStyles from '@mui/styles/withStyles';
+import withTheme from '@mui/styles/withTheme';
+import { ArrowBackIos, Close, FileCopyOutlined, People } from '@mui/icons-material';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
 import { EmailIcon, EmailShareButton, FacebookIcon, FacebookShareButton, TwitterIcon, TwitterShareButton } from 'react-share';
-import styled from 'styled-components';
+import styled from '@mui/material/styles/styled';
 import AnalyticsActions from '../../actions/AnalyticsActions';
 import FriendActions from '../../actions/FriendActions';
 import ShareActions from '../../common/actions/ShareActions';
@@ -291,7 +292,7 @@ class ShareModal extends Component {
           open={this.props.show}
           onClose={() => { this.props.closeShareModal(pathname); }}
         >
-          <ModalTitleArea firstSlide>
+          <ModalTitleArea firstslide="true">
             <div>
               <Title>
                 Share:
@@ -380,6 +381,7 @@ class ShareModal extends Component {
               className={classes.closeButtonAbsolute}
               onClick={this.closeShareModal}
               id="closeShareModal"
+              size="large"
             >
               <Close />
             </IconButton>
@@ -559,6 +561,7 @@ class ShareModal extends Component {
               className={classes.closeButton}
               onClick={this.closeShareModal}
               id="profileCloseShareModal"
+              size="large"
             >
               <Close />
             </IconButton>
@@ -599,6 +602,7 @@ class ShareModal extends Component {
               className={classes.closeButton}
               onClick={this.closeShareModal}
               id="profileCloseShareModal"
+              size="large"
             >
               <Close />
             </IconButton>
@@ -690,31 +694,31 @@ const styles = () => ({
 });
 
 /* eslint no-nested-ternary: ["off"] */
-const ModalTitleArea = styled.div`
+const ModalTitleArea = styled('div')`
   justify-content: flex-start;
   width: 100%;
-  padding: ${(props) => (props.firstSlide ? '24px 24px 12px 24px' : props.onSignInSlide ? '20px 14px 10px' : '10px 14px')};
+  padding: ${(props) => (props.firstslide ? '24px 24px 12px 24px' : props.onsigninslide ? '20px 14px 10px' : '10px 14px')};
   z-index: 999;
   @media (min-width: 769px) {
     border-bottom: 2px solid #f7f7f7;
   }
-  display: ${(props) => (props.onSignInSlide ? 'block' : 'flex')};
-  text-align: ${(props) => (props.onSignInSlide ? 'center' : 'left')};
+  display: ${(props) => (props.onsigninslide ? 'block' : 'flex')};
+  text-align: ${(props) => (props.onsigninslide ? 'center' : 'left')};
 `;
 
-const FriendsShareTextWrapper = styled.div`
+const FriendsShareTextWrapper = styled('div')`
   position: relative;
   top: -16px;
   margin-bottom: 12px;
 `;
 
-const Flex = styled.div`
+const Flex = styled('div')`
   display: flex;
   flex-wrap: wrap;
   padding-top: 16px;
 `;
 
-const SubTitle = styled.div`
+const SubTitle = styled('div')`
   margin-top: 0;
   font-size: ${(props) => (props.larger ? '18px' : '14px')};
   width: 100%;
@@ -724,24 +728,24 @@ const SubTitle = styled.div`
   }
 `;
 
-const Text = styled.h3`
+const Text = styled('h3')`
   font-weight: normal;
   font-size: 16px;
   color: black !important;
   padding: 6px;
 `;
 
-const Title = styled.h3`
+const Title = styled('h3')`
   font-size: ${(props) => (props.bold ? '30px' : '24px')};
   color: black;
-  margin: ${(props) => (props.onSignInSlide ? '0 auto' : '0')};
+  margin: ${(props) => (props.onsigninslide ? '0 auto' : '0')};
   margin-top: 0;
   margin-bottom: ${(props) => (props.bold ? '0' : '12px')};
   font-weight: ${(props) => (props.bold ? 'bold' : 'initial')};
   text-align: ${(props) => (props.left && 'left')};
 `;
 
-const Wrapper = styled.div`
+const Wrapper = styled('div')`
   cursor: pointer;
   display: block !important;
   margin-bottom: 12px;

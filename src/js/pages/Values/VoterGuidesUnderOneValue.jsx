@@ -1,10 +1,10 @@
-import { Button, Card } from '@material-ui/core';
-import { withStyles } from '@material-ui/core/styles';
-import { Ballot } from '@material-ui/icons';
+import { Button, Card } from '@mui/material';
+import withStyles from '@mui/styles/withStyles';
+import { Ballot } from '@mui/icons-material';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
 import Helmet from 'react-helmet';
-import styled from 'styled-components';
+import styled from '@mui/material/styles/styled';
 import IssueActions from '../../actions/IssueActions';
 import GuideList from '../../components/VoterGuide/GuideList';
 import IssueStore from '../../stores/IssueStore';
@@ -182,20 +182,20 @@ const styles = (theme) => ({
   },
   ballotButtonRoot: {
     width: 250,
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down('lg')]: {
       width: '100%',
     },
   },
 });
 
-const EmptyValueMessageContainer = styled.div`
+const EmptyValueMessageContainer = styled('div')`
   padding: 1em 2em;
   display: flex;
   flex-flow: column;
   align-items: center;
 `;
 
-const EmptyValueText = styled.p`
+const EmptyValueText = styled('p')`
   font-size: 16px;
   text-align: center;
   margin: 1em 2em;
@@ -204,7 +204,7 @@ const EmptyValueText = styled.p`
   }
 `;
 
-const Title = styled.h3`
+const Title = styled('h3')`
   color: #333;
   font-size: 22px;
   margin-bottom: 12px;

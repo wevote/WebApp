@@ -1,9 +1,9 @@
 /* eslint-disable object-property-newline */
-import { Button } from '@material-ui/core';
-import Menu from '@material-ui/core/Menu';
-import MenuItem from '@material-ui/core/MenuItem';
-import { CheckCircle, NotInterested } from '@material-ui/icons';
-import { styled as muiStyled } from '@material-ui/styles';
+import { Button } from '@mui/material';
+import Menu from '@mui/material/Menu';
+import MenuItem from '@mui/material/MenuItem';
+import { CheckCircle, NotInterested } from '@mui/icons-material';
+import { styled as muiStyled } from '@mui/styles';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import OrganizationActions from '../../actions/OrganizationActions';

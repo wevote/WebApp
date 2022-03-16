@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
-import styled from 'styled-components';
-import { withStyles } from '@material-ui/core/styles';
+import styled from '@mui/material/styles/styled';
+import withStyles from '@mui/styles/withStyles';
 import AppObservableStore, { messageService } from '../../stores/AppObservableStore';
 import OpenExternalWebSite from '../../common/components/Widgets/OpenExternalWebSite';
 
@@ -89,7 +89,7 @@ const styles = (theme) => ({
       color: '#4371cc',
     },
     textDecoration: 'none',
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down('lg')]: {
       fontSize: 14,
     },
   },
@@ -102,7 +102,7 @@ const styles = (theme) => ({
   },
 });
 
-const Column = styled.div`
+const Column = styled('div')`
   display: flex;
   flex-flow: column nowrap;
   width: 150px;
@@ -114,7 +114,7 @@ const Column = styled.div`
   }
 `;
 
-const TopSectionInnerWrapper = styled.div`
+const TopSectionInnerWrapper = styled('div')`
   display: flex;
   flex-direction: row;
   flex-wrap: nowrap;
@@ -125,13 +125,13 @@ const TopSectionInnerWrapper = styled.div`
   }
 `;
 
-const TopSectionOuterWrapper = styled.div`
+const TopSectionOuterWrapper = styled('div')`
   display: flex;
   justify-content: space-between;
   width: 100%;
 `;
 
-const Wrapper = styled.div`
+const Wrapper = styled('div')`
 `;
 
 export default withStyles(styles)(FooterMainPrivateLabeled);

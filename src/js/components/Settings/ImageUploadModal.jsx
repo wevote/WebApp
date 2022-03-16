@@ -1,9 +1,10 @@
-import { Dialog, DialogContent, IconButton } from '@material-ui/core';
-import { withStyles, withTheme } from '@material-ui/core/styles';
-import { Close } from '@material-ui/icons';
+import { Dialog, DialogContent, IconButton } from '@mui/material';
+import withStyles from '@mui/styles/withStyles';
+import withTheme from '@mui/styles/withTheme';
+import { Close } from '@mui/icons-material';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import styled from 'styled-components';
+import styled from '@mui/material/styles/styled';
 import { hasIPhoneNotch } from '../../common/utils/cordovaUtils';
 import { renderLog } from '../../common/utils/logging';
 import DragAndDrop from './DragAndDrop';
@@ -54,7 +55,7 @@ class ImageUploadModal extends Component {
             className={classes.closeButton}
             onClick={this.closeThisModal}
             id="closeImageUploadModal"
-          >
+            size="large">
             <Close />
           </IconButton>
         </ModalTitleArea>
@@ -112,7 +113,7 @@ const styles = () => ({
 });
 
 /* eslint no-nested-ternary: ["off"] */
-const ModalTitleArea = styled.div`
+const ModalTitleArea = styled('div')`
   justify-content: flex-start;
   align-items: center;
   width: 100%;
@@ -124,7 +125,7 @@ const ModalTitleArea = styled.div`
   display: flex;
 `;
 
-const Title = styled.h3`
+const Title = styled('h3')`
   font-size: 24px;
   color: black;
   margin-top: 0;

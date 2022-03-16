@@ -1,8 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import styled from 'styled-components';
-import { withTheme, withStyles } from '@material-ui/core/styles';
-import { ArrowDropDown, ArrowDropUp } from '@material-ui/icons';
+import styled from '@mui/material/styles/styled';
+import withTheme from '@mui/styles/withTheme';
+import withStyles from '@mui/styles/withStyles';
+import { ArrowDropDown, ArrowDropUp } from '@mui/icons-material';
 import { renderLog } from '../../common/utils/logging';
 
 
@@ -48,13 +49,13 @@ const styles = (theme) => ({
   cardFooterIconRoot: {
     fontSize: 30,
     marginBottom: '.2rem',
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down('md')]: {
       fontSize: 18,
     },
   },
 });
 
-const ShowMoreButtonsStyled = styled.div`
+const ShowMoreButtonsStyled = styled('div')`
   border: 0px !important;
   color: #999;
   cursor: pointer;
@@ -78,7 +79,7 @@ const ShowMoreButtonsStyled = styled.div`
   }
 `;
 
-const ShowMoreButtonsText = styled.div`
+const ShowMoreButtonsText = styled('div')`
   margin-top: 8px !important;
   padding: 0px !important;
   text-align: center !important;

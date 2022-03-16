@@ -1,5 +1,5 @@
 import React, { Component, Suspense } from 'react';
-import styled from 'styled-components';
+import styled from '@mui/material/styles/styled';
 import normalizedImagePath from '../../common/utils/normalizedImagePath';
 import InfoCircleIcon from './InfoCircleIcon';
 import SplitIconButton from '../../common/components/Widgets/SplitIconButton';
@@ -48,7 +48,7 @@ class AddEndorsements extends Component {
   }
 }
 
-const InfoText = styled.div`
+const InfoText = styled('div')`
   margin-top: 10px;
   word-wrap: break-word;
   float: left;

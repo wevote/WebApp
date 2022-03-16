@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import muiTheme from './mui-theme';
+import muiTheme from './muiTheme';
 
 const theme = muiTheme;
 

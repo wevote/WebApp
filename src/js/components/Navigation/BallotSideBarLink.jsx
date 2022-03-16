@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
-import { ListItem } from '@material-ui/core';
-import { withStyles } from '@material-ui/core/styles';
+import { ListItem } from '@mui/material';
+import withStyles from '@mui/styles/withStyles';
 import { capitalizeString, sentenceCaseString } from '../../utils/textFormat';
 import { renderLog } from '../../common/utils/logging';
 

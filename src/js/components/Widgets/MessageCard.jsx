@@ -1,7 +1,7 @@
-import { Button } from '@material-ui/core';
+import { Button } from '@mui/material';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import styled from 'styled-components';
+import styled from '@mui/material/styles/styled';
 import AppObservableStore from '../../stores/AppObservableStore';
 import historyPush from '../../common/utils/historyPush';
 import { renderLog } from '../../common/utils/logging';
@@ -56,11 +56,11 @@ MessageCard.propTypes = {
   secondaryText: PropTypes.string,
 };
 
-const Card = styled.div`
+const Card = styled('div')`
   padding: ${(props) => (props.inModal ? '0' : '64px 32px')};
 `;
 
-const InnerWrapper = styled.div`
+const InnerWrapper = styled('div')`
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -68,7 +68,7 @@ const InnerWrapper = styled.div`
   text-align: center;
 `;
 
-const Icon = styled.div`
+const Icon = styled('div')`
   margin: 0 auto;
   font-size: 80px;
   width: 200px;
@@ -80,13 +80,13 @@ const Icon = styled.div`
   }
 `;
 
-const MainText = styled.h3`
+const MainText = styled('h3')`
   font-size: 24px;
   font-weight: bold;
   margin-bottom: 12px !important;
 `;
 
-const SecondaryText = styled.h4`
+const SecondaryText = styled('h4')`
   font-size: 18px;
   font-weight: normal;
   margin-bottom: 28px !important;

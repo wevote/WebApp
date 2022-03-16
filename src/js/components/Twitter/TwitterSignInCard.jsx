@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import styled from 'styled-components';
+import styled from '@mui/material/styles/styled';
 import { renderLog } from '../../common/utils/logging';
 import InfoCircleIcon from '../Widgets/InfoCircleIcon';
 import TwitterSignIn from './TwitterSignIn';
@@ -31,7 +31,7 @@ class TwitterSignInCard extends Component {
   }
 }
 
-const InfoText = styled.div`
+const InfoText = styled('div')`
   margin-top: 10px;
   word-wrap: break-word;
   float: left;

@@ -1,6 +1,6 @@
 import React from 'react';
 import { geoCentroid } from 'd3-geo';
-import styled from 'styled-components';
+import styled from '@mui/material/styles/styled';
 import allStates from '../../../../json/allStates.json';
 import { Annotation, ComposableMap, Geographies, Geography, Marker } from './mapChartFunctions';
 
@@ -106,7 +106,7 @@ const StyledGeography = styled(Geography)`
   }
 `;
 
-const StyledG = styled.g`
+const StyledG = styled('g')`
   background: orange !important;
   display: block !important;
   width: 10px !important;

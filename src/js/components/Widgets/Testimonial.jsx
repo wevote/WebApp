@@ -1,7 +1,7 @@
-import { FormatQuote } from '@material-ui/icons';
+import { FormatQuote } from '@mui/icons-material';
 import PropTypes from 'prop-types';
 import React, { Suspense } from 'react';
-import styled from 'styled-components';
+import styled from '@mui/material/styles/styled';
 import { renderLog } from '../../common/utils/logging';
 
 const ImageHandler = React.lazy(() => import(/* webpackChunkName: 'ImageHandler' */ '../ImageHandler'));
@@ -62,7 +62,7 @@ Testimonial.propTypes = {
   textStyle: PropTypes.object,
 };
 
-const TestimonialContainer = styled.div`
+const TestimonialContainer = styled('div')`
   display: block;
   float: right;
   background-color: white;
@@ -73,14 +73,14 @@ const TestimonialContainer = styled.div`
   }
 `;
 
-const TestimonialAuthor = styled.div`
+const TestimonialAuthor = styled('div')`
   text-align: center;
   color: #999;
   font-style: italic;
   font-size: 10px;
 `;
 
-const TextStyled = styled.div`
+const TextStyled = styled('div')`
   display: block;
   color: #2e3c5d;
   font-weight: 600;

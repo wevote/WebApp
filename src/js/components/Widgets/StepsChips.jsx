@@ -44,7 +44,7 @@ StepChips.propTypes = {
   onSelectStep: PropTypes.func,
 };
 
-const Wrapper = styled.div`
+const Wrapper = styled('div')`
   display: flex;
   flex-flow: row;
   height: 44px;
@@ -59,7 +59,7 @@ const Wrapper = styled.div`
   }
 `;
 
-const Chip = styled.div`
+const Chip = styled('div')`
   display: flex;
   flex-flow: row;
   min-width: 100px;
@@ -80,7 +80,7 @@ const Chip = styled.div`
   }
 `;
 
-const ChipIndex = styled.p`
+const ChipIndex = styled('p')`
   margin: auto 6px;
   background: ${({ selected, theme }) => (selected ? theme.colors.brandBlue : theme.colors.grayPale)};
   ${({ selected, theme }) => (selected ? '' : `border: 1px solid ${theme.colors.grayBorder};`)}
@@ -99,7 +99,7 @@ const ChipIndex = styled.p`
   }
 `;
 
-const ChipLabel = styled.p`
+const ChipLabel = styled('p')`
   margin: auto;
   font-weight: bold;
   padding-right: 24px;

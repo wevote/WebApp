@@ -1,6 +1,6 @@
-import { Button } from '@material-ui/core';
+import { Button } from '@mui/material';
 import React, { Component } from 'react';
-import styled from 'styled-components';
+import styled from '@mui/material/styles/styled';
 import AppObservableStore, { messageService } from '../../stores/AppObservableStore';
 import ElectionStore from '../../stores/ElectionStore';
 import VoterGuideStore from '../../stores/VoterGuideStore';
@@ -118,13 +118,13 @@ export default class SelectVoterGuidesSideBar extends Component {
   }
 }
 
-const SectionTitle = styled.h2`
+const SectionTitle = styled('h2')`
   width: fit-content;  font-weight: bold;
   font-size: 22px;
   margin-bottom: 16px;
 `;
 
-const Row = styled.div`
+const Row = styled('div')`
   @media (min-width: 576px) and (max-width: 767px) {
     margin: 0 -12px;
     display: flex;
@@ -133,7 +133,7 @@ const Row = styled.div`
   }
 `;
 
-const Column = styled.div`
+const Column = styled('div')`
   width: 100%;
   padding: 12px 0;
   height: 100%;

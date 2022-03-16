@@ -1,9 +1,10 @@
-import { withStyles, withTheme } from '@material-ui/core/styles';
-import { Twitter } from '@material-ui/icons';
+import withStyles from '@mui/styles/withStyles';
+import withTheme from '@mui/styles/withTheme';
+import { Twitter } from '@mui/icons-material';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
 import { Link } from 'react-router-dom';
-import styled from 'styled-components';
+import styled from '@mui/material/styles/styled';
 import CandidateStore from '../../stores/CandidateStore';
 import SupportStore from '../../stores/SupportStore';
 import { isCordova } from '../../common/utils/isCordovaOrWebApp';
@@ -282,39 +283,39 @@ const styles = (theme) => ({
   cardFooterIconRoot: {
     fontSize: 14,
     margin: '0 0 .1rem .3rem',
-    [theme.breakpoints.down('lg')]: {
+    [theme.breakpoints.down('xl')]: {
       marginBottom: '.2rem',
     },
   },
 });
 
-const CandidateTopRow = styled.div`
+const CandidateTopRow = styled('div')`
   display: flex;
   flex-flow: row nowrap;
   justify-content: space-between;
 `;
 
-const Candidate = styled.div`
+const Candidate = styled('div')`
   display: flex;
   cursor: pointer;
 `;
 
-const CandidateDescription = styled.div`
+const CandidateDescription = styled('div')`
 `;
 
-const ItemPositionStatementActionBarDesktopWrapper = styled.div`
+const ItemPositionStatementActionBarDesktopWrapper = styled('div')`
   margin-bottom: 8px;
 `;
 
-const ItemPositionStatementActionBarMobileWrapper = styled.div`
+const ItemPositionStatementActionBarMobileWrapper = styled('div')`
   margin-bottom: 4px;
 `;
 
-const TwitterWrapper = styled.div`
+const TwitterWrapper = styled('div')`
   margin-left: 15px;
 `;
 
-const Wrapper = styled.div`
+const Wrapper = styled('div')`
 `;
 
 export default withTheme(withStyles(styles)(CandidateItemForOpinions));

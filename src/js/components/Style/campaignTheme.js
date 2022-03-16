@@ -1,9 +1,9 @@
-import { createTheme } from '@material-ui/core/styles';
+import { createTheme, adaptV4Theme } from '@mui/material/styles';
 
 export function campaignTheme (topNav, heightOfBar) {
   const defaultTheme = createTheme();
 
-  return createTheme({
+  return createTheme(adaptV4Theme({
     typography: {
       button: {
         textTransform: 'none',
@@ -13,7 +13,7 @@ export function campaignTheme (topNav, heightOfBar) {
       MuiTab: {
         root: {
           minHeight: 0,
-          [defaultTheme.breakpoints.down('sm')]: {
+          [defaultTheme.breakpoints.down('md')]: {
             paddingLeft: 10,
             paddingRight: 10,
           },
@@ -32,7 +32,7 @@ export function campaignTheme (topNav, heightOfBar) {
           flexGrow: 1,
           height: heightOfBar,
           paddingTop: topNav ? 14 : '',
-          [defaultTheme.breakpoints.down('xs')]: {
+          [defaultTheme.breakpoints.down('sm')]: {
             display: topNav ? 'none !important' : '',
           },
         },
@@ -53,7 +53,7 @@ export function campaignTheme (topNav, heightOfBar) {
         },
       },
     },
-  });
+  }));
 }
 
 export function dummy () {

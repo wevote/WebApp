@@ -1,8 +1,8 @@
-import { Button } from '@material-ui/core';
+import { Button } from '@mui/material';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
 import { Link } from 'react-router-dom';
-import styled from 'styled-components';
+import styled from '@mui/material/styles/styled';
 import AnalyticsActions from '../../actions/AnalyticsActions';
 import FriendActions from '../../actions/FriendActions';
 import OrganizationActions from '../../actions/OrganizationActions';
@@ -474,17 +474,17 @@ OrganizationVoterGuide.propTypes = {
   match: PropTypes.object.isRequired,
 };
 
-const WrapperFlex = styled.div`
+const WrapperFlex = styled('div')`
   display: flex;
   flex-flow: column;
   // padding-bottom: 625px;  // This is a lame way of pinning the bottom menu to the bottom on iOS
 `;
 
-const BannerContainerDesktop = styled.div`
+const BannerContainerDesktop = styled('div')`
   margin-top: ${({ ipad }) => (ipad ? '-11px' : '-37px')}; // -29px (BannerOverlayDesktopShareButtonWrapper height) - 8px from BannerOverlayDesktopShareButtonInnerWrapper
 `;
 
-const BannerOverlayDesktopShareButtonWrapper = styled.div`
+const BannerOverlayDesktopShareButtonWrapper = styled('div')`
   display: flex;
   justify-content: flex-end;
   width: 100%;
@@ -493,13 +493,13 @@ const BannerOverlayDesktopShareButtonWrapper = styled.div`
   transform: ${({ ipad }) => (ipad ? 'translate(0%, 100%)' : '')}
 `;
 
-const BannerOverlayDesktopShareButtonInnerWrapper = styled.div`
+const BannerOverlayDesktopShareButtonInnerWrapper = styled('div')`
   // margin-top: 8px;
   margin-right: 8px;
   z-index: 2;
 `;
 
-const BannerOverlayDesktopOuterWrapper = styled.div`
+const BannerOverlayDesktopOuterWrapper = styled('div')`
   display: block;
   @media (min-width: ${({ theme }) => theme.breakpoints.lg}) {
     align-self: flex-end;
@@ -515,7 +515,7 @@ const BannerOverlayDesktopOuterWrapper = styled.div`
   }
 `;
 
-const BannerOverlayDesktopInnerWrapper = styled.div`
+const BannerOverlayDesktopInnerWrapper = styled('div')`
   min-height: 37px;
   @media (max-width: ${({ theme }) => theme.breakpoints.lg}) {
     margin-right: 7px;
@@ -529,48 +529,48 @@ const BannerOverlayDesktopInnerWrapper = styled.div`
   }
 `;
 
-const CardContainer = styled.div`
+const CardContainer = styled('div')`
   @media (min-width: ${({ theme }) => theme.breakpoints.lg}) {
     margin-top: ${({ bannerUrl }) => (bannerUrl ? '-203px' : '0')};
   }
 `;
 
-const DesktopLeftColumn = styled.div`
+const DesktopLeftColumn = styled('div')`
   padding-left: 0px !important;
   padding-right: 0px !important;
 `;
 
-const EditYourEndorsementsWrapper = styled.div`
+const EditYourEndorsementsWrapper = styled('div')`
   margin-top: 4px;
 `;
 
-const FollowToggleMobileWrapper = styled.div`
+const FollowToggleMobileWrapper = styled('div')`
   margin-top: 4px;
 `;
 
-const FriendsFollowingFollowersMobileWrapper = styled.div`
+const FriendsFollowingFollowersMobileWrapper = styled('div')`
   margin-top: 6px;
   overflow-x: scroll;
   overflow-y: hidden;
   white-space: nowrap;
 `;
 
-const FriendToggleMobileWrapper = styled.div`
+const FriendToggleMobileWrapper = styled('div')`
   margin-top: 4px;
 `;
 
-const OrganizationEmptyBannerImageDesktop = styled.div`
+const OrganizationEmptyBannerImageDesktop = styled('div')`
   height: 29px;
   display: block;
 `;
 
-const OrganizationEmptyBannerImageMobile = styled.div`
+const OrganizationEmptyBannerImageMobile = styled('div')`
   height: 47px;
   background-color: #999;
   display: block;
 `;
 
-const OrganizationBannerImageDiv = styled.div`
+const OrganizationBannerImageDiv = styled('div')`
   min-height: 200px;
   max-height: 300px;
   overflow: hidden;
@@ -583,16 +583,16 @@ const OrganizationBannerImageDiv = styled.div`
   }
 `;
 
-const OrganizationBannerImageImg = styled.img`
+const OrganizationBannerImageImg = styled('img')`
   width: 100%;
 `;
 
-const TabNumber = styled.span`
+const TabNumber = styled('span')`
   color: #333;
   font-weight: bold;
 `;
 
-const TabText = styled.span`
+const TabText = styled('span')`
   color: #999;
   font-weight: 500;
 `;

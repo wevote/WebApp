@@ -1,4 +1,4 @@
-import { Twitter } from '@material-ui/icons';
+import { Twitter } from '@mui/icons-material';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import TwitterActions from '../../actions/TwitterActions';

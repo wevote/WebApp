@@ -1,5 +1,5 @@
 import React, { Component, Suspense } from 'react';
-import styled from 'styled-components';
+import styled from '@mui/material/styles/styled';
 import VoterGuideStore from '../../stores/VoterGuideStore';
 import historyPush from '../../common/utils/historyPush';
 import { renderLog } from '../../common/utils/logging';
@@ -78,14 +78,14 @@ export default class PublicFiguresToFollowPreview extends Component {
 PublicFiguresToFollowPreview.propTypes = {
 };
 
-const SectionDescription = styled.h2`
+const SectionDescription = styled('h2')`
   font-weight: 200;
   font-size: 14px;
   margin-bottom: 16px;
   width: fit-content;
 `;
 
-const SectionTitle = styled.h2`
+const SectionTitle = styled('h2')`
   font-weight: bold;
   font-size: 18px;
   margin-bottom: 4px;

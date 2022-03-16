@@ -1,10 +1,10 @@
-import { Button } from '@material-ui/core';
-import { withStyles } from '@material-ui/core/styles';
-import { Twitter } from '@material-ui/icons';
+import { Button } from '@mui/material';
+import withStyles from '@mui/styles/withStyles';
+import { Twitter } from '@mui/icons-material';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
 import { Link } from 'react-router-dom';
-import styled from 'styled-components';
+import styled from '@mui/material/styles/styled';
 import historyPush from '../../common/utils/historyPush';
 import { renderLog } from '../../common/utils/logging';
 import { isSpeakerTypePrivateCitizen } from '../../utils/organization-functions';
@@ -191,62 +191,62 @@ const styles = () => ({
   },
 });
 
-const CardMain = styled.div`
+const CardMain = styled('div')`
   border: 1px solid #fff;
   padding: 0px !important;
   font-size: 14px;
   position: relative;
 `;
 
-const EditOrFollow = styled.div`
+const EditOrFollow = styled('div')`
   display: block;
   width: 100%;
 `;
 
-const EditYourEndorsementsCardWrapper = styled.div`
+const EditYourEndorsementsCardWrapper = styled('div')`
 `;
 
-const FollowToggleWrapper = styled.div`
+const FollowToggleWrapper = styled('div')`
   margin-top: 10px;
 `;
 
-const FriendToggleWrapper = styled.div`
+const FriendToggleWrapper = styled('div')`
   margin-top: 10px;
 `;
 
-const IssuesWrapper = styled.div`
+const IssuesWrapper = styled('div')`
   margin-top: 0px;
 `;
 
-const OrganizationWebsiteWrapper = styled.div`
+const OrganizationWebsiteWrapper = styled('div')`
   margin-top: 0px;
 `;
 
-const ProfileAvatar = styled.div`
+const ProfileAvatar = styled('div')`
   display: flex;
   justify-content: center;
   background: transparent;
   position: relative;
 `;
 
-const ProfileAvatarImg = styled.img`
+const ProfileAvatarImg = styled('img')`
   border-radius: 100px;
 `;
 
-const TwitterDescription = styled.div`
+const TwitterDescription = styled('div')`
   margin-top: 10px;
 `;
 
-const TwitterFollowersWrapper = styled.span`
+const TwitterFollowersWrapper = styled('span')`
   color: #000;
 `;
 
-const TwitterHandleWrapper = styled.span`
+const TwitterHandleWrapper = styled('span')`
   color: #000;
   margin-right: 5px;
 `;
 
-const TwitterName = styled.div`
+const TwitterName = styled('div')`
 `;
 
 export default withStyles(styles)(OrganizationVoterGuideCard);

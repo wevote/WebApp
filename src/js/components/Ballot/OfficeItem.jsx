@@ -1,8 +1,9 @@
-import { withStyles, withTheme } from '@material-ui/core/styles';
+import withStyles from '@mui/styles/withStyles';
+import withTheme from '@mui/styles/withTheme';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import styled from 'styled-components';
+import styled from '@mui/material/styles/styled';
 import { hasIPhoneNotch } from '../../common/utils/cordovaUtils';
 import { isCordova } from '../../common/utils/isCordovaOrWebApp';
 import historyPush from '../../common/utils/historyPush';
@@ -49,7 +50,7 @@ OfficeItem.propTypes = {
 const styles = (theme) => ({
   dialogPaper: {
     marginTop: hasIPhoneNotch() ? 68 : 48,
-    [theme.breakpoints.down('xs')]: {
+    [theme.breakpoints.down('sm')]: {
       minWidth: '95%',
       maxWidth: '95%',
       width: '95%',
@@ -61,7 +62,7 @@ const styles = (theme) => ({
   },
 });
 
-const OfficeNameWrapper = styled.h2`
+const OfficeNameWrapper = styled('h2')`
   display: inline-block;
   font-size: 18px;
   font-weight: 700;

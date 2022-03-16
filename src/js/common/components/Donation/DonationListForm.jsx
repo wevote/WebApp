@@ -1,5 +1,4 @@
-import { AppBar, Tab, Tabs } from '@material-ui/core';
-import { ThemeProvider } from '@material-ui/core/styles';
+import { AppBar, Tab, Tabs } from '@mui/material';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { donationTheme } from '../Style/donationTheme';
@@ -75,7 +74,7 @@ class DonationListForm extends Component {
         <div style={{ padding: '32px  0' }}>
           <h4>{h4Txt}</h4>
           <input type="hidden" value={this.state.activeKey} />
-          <ThemeProvider theme={donationTheme(false, 40)}>
+          {/*<XThemeProvider theme={donationTheme(false, 40)}>*/}
             <AppBar position="relative" color="default" elevation={0}>
               <Tabs
                 value={this.state.value}
@@ -100,7 +99,7 @@ class DonationListForm extends Component {
                 <DonationList isCampaign={isCampaign} displayMembershipTab={!leftTabIsMembership} showPremiumPlan={false} />
               </TabPanel>
             </div>
-          </ThemeProvider>
+          {/*</XThemeProvider>*/}
         </div>
       );
     } else {

@@ -1,12 +1,12 @@
-import { Button, FormControl, FormControlLabel, FormLabel, InputAdornment, TextField, Radio, RadioGroup } from '@material-ui/core';
-import { withStyles } from '@material-ui/core/styles';
+import { Button, FormControl, FormControlLabel, FormLabel, InputAdornment, TextField, Radio, RadioGroup } from '@mui/material';
+import withStyles from '@mui/styles/withStyles';
 import { Elements } from '@stripe/react-stripe-js';
 import { loadStripe } from '@stripe/stripe-js';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
 import Helmet from 'react-helmet';
 import { Link } from 'react-router-dom';
-import styled from 'styled-components';
+import styled from '@mui/material/styles/styled';
 import AnalyticsActions from '../../actions/AnalyticsActions';
 import DonateActions from '../../common/actions/DonateActions';
 import DonationListForm from '../../common/components/Donation/DonationListForm';
@@ -295,7 +295,7 @@ const styles = (theme) => ({
   buttonContained: {
     borderRadius: 32,
     height: 50,
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down('lg')]: {
       height: 36,
     },
   },
@@ -339,7 +339,7 @@ const styles = (theme) => ({
   },
 });
 
-const Wrapper = styled.div`
+const Wrapper = styled('div')`
   display: flex;
   flex-flow: column nowrap;
   align-items: center;
@@ -347,11 +347,11 @@ const Wrapper = styled.div`
   overflow-x: hidden;
 `;
 
-const InnerWrapper = styled.div`
+const InnerWrapper = styled('div')`
   margin-bottom: 16px;
 `;
 
-const HeaderForDonate = styled.div`
+const HeaderForDonate = styled('div')`
   position: relative;
   height: 190px;
   width: 110%;
@@ -370,7 +370,7 @@ const HeaderForDonate = styled.div`
   }
 `;
 
-const DonateTitle = styled.h1`
+const DonateTitle = styled('h1')`
   font-weight: bold;
   font-size: 36px;
   text-align: center;
@@ -387,7 +387,7 @@ const DonateTitle = styled.h1`
   }
 `;
 
-const DonateDescriptionContainer = styled.div`
+const DonateDescriptionContainer = styled('div')`
   margin: 1em auto;
   margin-bottom: 0;
   width: 960px;
@@ -405,19 +405,19 @@ const DonateDescriptionContainer = styled.div`
   }
 `;
 
-const PaymentWrapper  = styled.div`
+const PaymentWrapper  = styled('div')`
   display: ${({ joining }) => ((joining) ? '' : 'none')};
   text-align: center;
 `;
 
-const DonateCaveat = styled.p`
+const DonateCaveat = styled('p')`
   font-size: 17px;
   text-align: center;
   margin-top: 1em;
   font-style: italic;
 `;
 
-const PaymentCenteredWrapper  = styled.div`
+const PaymentCenteredWrapper  = styled('div')`
   width: 500px;
   @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
     width: 300px;
@@ -431,7 +431,7 @@ const PaymentCenteredWrapper  = styled.div`
 `;
 
 
-const ContributeGridWrapper = styled.div`
+const ContributeGridWrapper = styled('div')`
   background-color: #ebebeb;
   padding: 10px;
   border: 1px solid darkgrey;
@@ -441,26 +441,26 @@ const ContributeGridWrapper = styled.div`
     width: 300px;
 `;
 
-const ContributeGridSection = styled.div`
+const ContributeGridSection = styled('div')`
   display: grid;
   grid-template-columns: auto auto;
   background-color: #ebebeb;
   padding: 10px 10px 2px 10px;
 `;
 
-const ContributeMonthlyText = styled.div`
+const ContributeMonthlyText = styled('div')`
   font-weight: 600;
   padding: 0 0 2px 18px;
 `;
 
-const ContributeGridItem = styled.div`
+const ContributeGridItem = styled('div')`
   background-color: #ebebeb;
   padding: 5px 10px;
   font-size: 30px;
   text-align: center;
 `;
 
-const ContributeGridItemJoin = styled.div`
+const ContributeGridItemJoin = styled('div')`
   ${({ joining }) => ((joining) ?
     'padding: 5px 10px;' :
     'padding: 5px 10px;'

@@ -1,9 +1,9 @@
-import { withStyles } from '@material-ui/core/styles';
-import { Info } from '@material-ui/icons';
+import withStyles from '@mui/styles/withStyles';
+import { Info } from '@mui/icons-material';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
 import Helmet from 'react-helmet';
-import styled from 'styled-components';
+import styled from '@mui/material/styles/styled';
 import AnalyticsActions from '../../actions/AnalyticsActions';
 import CandidateActions from '../../actions/CandidateActions';
 import OrganizationActions from '../../actions/OrganizationActions';
@@ -237,7 +237,7 @@ const styles = () => ({
   },
 });
 
-const PositionListIntroductionText = styled.div`
+const PositionListIntroductionText = styled('div')`
   color: #999;
 `;
 

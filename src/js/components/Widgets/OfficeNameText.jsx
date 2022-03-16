@@ -68,6 +68,6 @@ OfficeNameText.propTypes = {
   showOfficeName: PropTypes.bool,
 };
 
-const PartyAndOfficeWrapper = styled.div`
+const PartyAndOfficeWrapper = styled('div')`
   line-height: 17px;
 `;

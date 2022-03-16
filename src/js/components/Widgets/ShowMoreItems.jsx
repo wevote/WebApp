@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import styled from 'styled-components';
+import styled from '@mui/material/styles/styled';
 
 class ShowMoreItems extends Component {
   constructor (props) {
@@ -40,7 +40,7 @@ ShowMoreItems.propTypes = {
   numberOfItemsTotal: PropTypes.number,
 };
 
-const Wrapper = styled.div`
+const Wrapper = styled('div')`
   font-size: 14px;
   text-align: right;
   user-select: none;

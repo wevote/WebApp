@@ -1,9 +1,9 @@
-import { Button } from '@material-ui/core';
-import { withStyles } from '@material-ui/core/styles';
+import { Button } from '@mui/material';
+import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
 import Helmet from 'react-helmet';
-import styled from 'styled-components';
+import styled from '@mui/material/styles/styled';
 import AnalyticsActions from '../actions/AnalyticsActions';
 import AppObservableStore from '../stores/AppObservableStore';
 import { BlueTitle, PlayerContainer, SubTitle, Title, Video } from '../components/Welcome/headerWelcomeStyles';
@@ -302,7 +302,7 @@ const styles = () => ({
   },
 });
 
-const Wrapper = styled.div`
+const Wrapper = styled('div')`
   display: flex;
   flex-flow: column nowrap;
   align-items: center;
@@ -311,7 +311,7 @@ const Wrapper = styled.div`
   padding-top: ${({ padTop }) => padTop};
 `;
 
-const HeaderForOrganizations = styled.div`
+const HeaderForOrganizations = styled('div')`
   position: relative;
   height: 590px;
   width: 110%;
@@ -329,7 +329,7 @@ const HeaderForOrganizations = styled.div`
   }
 `;
 
-const SectionTitleBoldGold = styled.span`
+const SectionTitleBoldGold = styled('span')`
   color: rgb(219, 179, 86);
   font-weight: bold;
 `;

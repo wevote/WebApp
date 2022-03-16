@@ -1,4 +1,4 @@
-import { Tab } from '@material-ui/core';
+import { Tab } from '@mui/material';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { useHistory } from 'react-router-dom';

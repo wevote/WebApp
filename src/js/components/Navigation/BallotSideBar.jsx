@@ -1,8 +1,8 @@
-import { List, Typography } from '@material-ui/core';
-import { withStyles } from '@material-ui/core/styles';
+import { List, Typography } from '@mui/material';
+import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import styled from 'styled-components';
+import styled from '@mui/material/styles/styled';
 import BallotStore from '../../stores/BallotStore';
 import { renderLog } from '../../common/utils/logging';
 import BallotSideBarLink from './BallotSideBarLink';
@@ -233,13 +233,13 @@ const styles = (theme) => ({
     textAlign: 'center',
     fontSize: 14,
     fontWeight: 600,
-    [theme.breakpoints.down('lg')]: {
+    [theme.breakpoints.down('xl')]: {
       padding: '12px 0',
     },
   },
 });
 
-const Separator = styled.div`
+const Separator = styled('div')`
   height: 2px;
   width: 90%;
   margin: 0 auto;

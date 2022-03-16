@@ -1,6 +1,7 @@
-import { Dialog, DialogContent } from '@material-ui/core';
-import { withStyles, withTheme } from '@material-ui/core/styles';
-import { MailOutline, Message } from '@material-ui/icons';
+import { Dialog, DialogContent } from '@mui/material';
+import withStyles from '@mui/styles/withStyles';
+import withTheme from '@mui/styles/withTheme';
+import { MailOutline, Message } from '@mui/icons-material';
 import clsx from 'clsx';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
@@ -108,7 +109,7 @@ VoterPhoneEmailCordovaEntryModal.propTypes = {
 const styles = (theme) => ({
   dialogPaper: {
     marginTop: 48,
-    [theme.breakpoints.down('xs')]: {
+    [theme.breakpoints.down('sm')]: {
       minWidth: '95%',
       maxWidth: '95%',
       width: '95%',
@@ -140,14 +141,14 @@ const styles = (theme) => ({
     top: '-5%',
   },
   dialogContent: {
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down('lg')]: {
       padding: '0 8px 8px',
     },
   },
   closeButton: {
     position: 'absolute',
-    right: `${theme.spacing(1)}px`,
-    top: `${theme.spacing(1)}px`,
+    right: theme.spacing(1),
+    top: theme.spacing(1),
   },
 });
 

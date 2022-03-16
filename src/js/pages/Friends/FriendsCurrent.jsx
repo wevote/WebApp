@@ -1,7 +1,7 @@
 import { filter } from 'lodash-es';
 import React, { Component } from 'react';
 import Helmet from 'react-helmet';
-import styled from 'styled-components';
+import styled from '@mui/material/styles/styled';
 import FriendActions from '../../actions/FriendActions';
 import FriendList from '../../components/Friends/FriendList';
 import SearchBar from '../../components/Search/SearchBar';
@@ -126,7 +126,7 @@ export default class FriendsCurrent extends Component {
   }
 }
 
-const SectionTitle = styled.h2`
+const SectionTitle = styled('h2')`
   width: fit-content;  font-weight: bold;
   font-size: 18px;
   margin-bottom: 16px;

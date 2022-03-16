@@ -1,13 +1,14 @@
-import { Button, Drawer, MenuItem } from '@material-ui/core';
-import { withStyles } from '@material-ui/core/styles';
-import { ArrowBackIos, Comment, FileCopyOutlined, Info, Reply } from '@material-ui/icons';
+import { Button, Drawer, MenuItem } from '@mui/material';
+import withStyles from '@mui/styles/withStyles';
+import { ArrowBackIos, Comment, FileCopyOutlined, Info, Reply } from '@mui/icons-material';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
 import { EmailIcon, EmailShareButton, FacebookIcon, FacebookShareButton, TwitterIcon, TwitterShareButton } from 'react-share';
-import styled from 'styled-components';
+import styled from '@mui/material/styles/styled';
 import AnalyticsActions from '../../actions/AnalyticsActions';
 import ShareActions from '../../common/actions/ShareActions';
 import ShareStore from '../../common/stores/ShareStore';
+import passBool from '../../common/utils/passBool';
 import AppObservableStore, { messageService } from '../../stores/AppObservableStore';
 import VoterStore from '../../stores/VoterStore';
 import { getApplicationViewBooleans } from '../../utils/applicationUtils';
@@ -509,7 +510,7 @@ class ShareButtonFooter extends Component {
     return (
       <Wrapper
         className={hideFooterBehindModal ? 'u-z-index-1000' : 'u-z-index-9000'}
-        shareBottomValue={() => shareBottomOffset(!showFooterBar)}
+        sharebottomvalue={shareBottomOffset(!showFooterBar)}
       >
         {showShareButton && (
           <Button
@@ -539,7 +540,7 @@ class ShareButtonFooter extends Component {
           open={openShareButtonDrawer}
         >
           <Container
-            shareOptionsMode={(
+            shareOptionsMode={passBool(
               (shareFooterStep === 'ballotShareOptions') ||
               (shareFooterStep === 'ballotShareOptionsAllOpinions') ||
               (shareFooterStep === 'candidateShareOptions') ||
@@ -551,7 +552,7 @@ class ShareButtonFooter extends Component {
               (shareFooterStep === 'organizationShareOptions') ||
               (shareFooterStep === 'organizationShareOptionsAllOpinions') ||
               (shareFooterStep === 'readyShareOptions') ||
-              (shareFooterStep === 'readyShareOptionsAllOpinions')
+              (shareFooterStep === 'readyShareOptionsAllOpinions'),
             )}
           >
             {(shareFooterStep === 'ballotShareOptions') ||
@@ -925,13 +926,13 @@ const styles = () => ({
   },
 });
 
-const Container = styled.div`
+const Container = styled('div')`
   margin: 0 auto;
   max-width: 576px;
-  padding: ${(props) => (props.shareOptionsMode ? '16px 16px 32px' : '24px 16px 32px')};
+  padding: ${(props) => (props.shareoptionsmode ? '16px 16px 32px' : '24px 16px 32px')};
 `;
 
-const Flex = styled.div`
+const Flex = styled('div')`
   display: flex;
   flex-wrap: wrap;
   padding: 10px 0 0 0;
@@ -940,15 +941,15 @@ const Flex = styled.div`
   margin: 0 auto;
 `;
 
-const Icon = styled.span`
+const Icon = styled('span')`
   margin-right: 4px;
 `;
 
-const MenuDescription = styled.div`
+const MenuDescription = styled('div')`
   font-size: 18px;
 `;
 
-const MenuFlex = styled.div`
+const MenuFlex = styled('div')`
   display: flex;
   align-items: center;
   justify-content: flex-start;
@@ -957,7 +958,7 @@ const MenuFlex = styled.div`
   padding: 14px 12px;
 `;
 
-const MenuIcon = styled.div`
+const MenuIcon = styled('div')`
   width: 20px !important;
   height: 20px !important;
   top: -2px;
@@ -974,15 +975,15 @@ const MenuIcon = styled.div`
   }
 `;
 
-const MenuItemsWrapper = styled.div`
+const MenuItemsWrapper = styled('div')`
   padding: 16px 0;
 `;
 
-const MenuText = styled.div`
+const MenuText = styled('div')`
   margin-left: 12px;
 `;
 
-const MenuSeparator = styled.div`
+const MenuSeparator = styled('div')`
   height: 2px;
   background: #efefef;
   width: 80%;
@@ -996,7 +997,7 @@ const MenuSeparator = styled.div`
   }
 `;
 
-const ModalTitleArea = styled.div`
+const ModalTitleArea = styled('div')`
   text-align: left;
   width: 100%;
   padding: 0;
@@ -1008,7 +1009,7 @@ const ModalTitleArea = styled.div`
 `;
 
 // Media queries cause a lot of problems in Cordova, please test in Cordova first, or avoid them
-const ShareWrapper = styled.div`
+const ShareWrapper = styled('div')`
   cursor: pointer;
   display: block !important;
   // margin-bottom: 12px;
@@ -1034,7 +1035,7 @@ const ShareWrapper = styled.div`
   }
 `;
 
-const SubTitle = styled.div`
+const SubTitle = styled('div')`
   margin-top: 0;
   font-size: 19px;
   width: 100%;
@@ -1043,14 +1044,14 @@ const SubTitle = styled.div`
   }
 `;
 
-const Text = styled.h3`
+const Text = styled('h3')`
   font-weight: normal;
   font-size: 16px;
   color: black !important;
   padding: 6px;
 `;
 
-const Title = styled.h3`
+const Title = styled('h3')`
   font-weight: normal;
   font-size: 21px;
   color: black;
@@ -1062,10 +1063,10 @@ const Title = styled.h3`
   }
 `;
 
-const Wrapper = styled.div`
+const Wrapper = styled('div')`
   position: fixed;
   width: 100%;
-  bottom:  ${(props) => (props.shareBottomValue)};
+  bottom:  ${(props) => (props.sharebottomvalue)};
   display: block;
   @media (min-width: 576px) {
     display: none;

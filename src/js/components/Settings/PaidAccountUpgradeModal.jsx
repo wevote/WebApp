@@ -1,10 +1,11 @@
-import { Button, Dialog, DialogContent, FormControl, FormControlLabel, IconButton, OutlinedInput, Radio, RadioGroup } from '@material-ui/core';
-import { withStyles, withTheme } from '@material-ui/core/styles';
-import { ArrowBack, ArrowBackIos, Close } from '@material-ui/icons';
+import { Button, Dialog, DialogContent, FormControl, FormControlLabel, IconButton, OutlinedInput, Radio, RadioGroup } from '@mui/material';
+import withStyles from '@mui/styles/withStyles';
+import withTheme from '@mui/styles/withTheme';
+import { ArrowBack, ArrowBackIos, Close } from '@mui/icons-material';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
 // TODO 5/11/21: import { Elements, StripeProvider } from 'react-stripe-elements';
-import styled from 'styled-components';
+import styled from '@mui/material/styles/styled';
 import DonateActions from '../../common/actions/DonateActions';
 // TODO 5/11/21: import webAppConfig from '../../config';
 import DonateStore from '../../common/stores/DonateStore';
@@ -12,6 +13,7 @@ import { hasIPhoneNotch, isIOS } from '../../common/utils/cordovaUtils';
 import extractNumber from '../../common/utils/extractNumber';
 import { normalizedHref } from '../../common/utils/hrefUtils';
 import { renderLog } from '../../common/utils/logging';
+import passBool from '../../common/utils/passBool';
 import { numberWithCommas, stringContains } from '../../utils/textFormat';
 // TODO 5/11/21: import SettingsStripePayment from './SettingsStripePayment';
 
@@ -634,7 +636,7 @@ class PaidAccountUpgradeModal extends Component {
                 </Suspense>
               ) : (
                 <>
-                  <Fieldset disabledMode={(radioGroupValue !== 'annualPlanRadio')}>
+                  <Fieldset disabledMode={passBool(radioGroupValue !== 'annualPlanRadio')}>
                     <FormControl classes={{ root: classes.formControl }}>
                       <RadioGroup
                         name="planRadioGroup"
@@ -659,7 +661,7 @@ class PaidAccountUpgradeModal extends Component {
                       </RadioGroup>
                     </FormControl>
                   </Fieldset>
-                  <Fieldset disabledMode={(radioGroupValue !== 'monthlyPlanRadio')}>
+                  <Fieldset disabledMode={passBool(radioGroupValue !== 'monthlyPlanRadio')}>
                     <FormControl classes={{ root: classes.formControl }}>
                       <RadioGroup
                         name="planRadioGroup"
@@ -816,7 +818,7 @@ class PaidAccountUpgradeModal extends Component {
                   </Suspense>
                 ) : (
                   <>
-                    <Fieldset disabledMode={(radioGroupValue !== 'annualPlanRadio')}>
+                    <Fieldset disabledMode={passBool(radioGroupValue !== 'annualPlanRadio')}>
                       <Legend>
                         Billed Yearly
                       </Legend>
@@ -843,7 +845,7 @@ class PaidAccountUpgradeModal extends Component {
                         </RadioGroup>
                       </FormControl>
                     </Fieldset>
-                    <Fieldset disabledMode={(radioGroupValue !== 'monthlyPlanRadio')}>
+                    <Fieldset disabledmode={passBool(radioGroupValue !== 'monthlyPlanRadio')}>
                       <Legend>
                         Billed Monthly
                       </Legend>
@@ -1013,7 +1015,7 @@ class PaidAccountUpgradeModal extends Component {
         open={this.props.show}
         onClose={() => { this.props.toggleFunction(pathname); }}
       >
-        <ModalTitleArea noBoxShadowMode={(paidAccountProcessStep !== 'choosePlan')}>
+        <ModalTitleArea noboxshadowmode={passBool(paidAccountProcessStep !== 'choosePlan')}>
           {backToButton}
           <Title>
             {modalTitle}
@@ -1023,7 +1025,7 @@ class PaidAccountUpgradeModal extends Component {
             className={classes.closeButton}
             onClick={this.closePaidAccountUpgradeModal}
             id="profileClosePaidAccountUpgradeModal"
-          >
+            size="large">
             <Close />
           </IconButton>
         </ModalTitleArea>
@@ -1251,29 +1253,28 @@ const styles = () => ({
   },
 });
 
-const ButtonsContainer = styled.div`
+const ButtonsContainer = styled('div')`
   display: flex;
   align-items: center;
   justify-content: center !important;
-  width: fit-content;
   width: 100%;
   margin-top: 12px;
 `;
 
-const ModalTitleArea = styled.div`
+const ModalTitleArea = styled('div')`
   width: 100%;
   padding: 12px 12px 4px 12px;
-  ${({ noBoxShadowMode }) => ((noBoxShadowMode) ? '' : 'box-shadow: 0 20px 40px -25px #999')};
+  ${({ noboxshadowmode }) => ((noboxshadowmode) ? '' : 'box-shadow: 0 20px 40px -25px #999')};
   z-index: 999;
   @media (min-width: 769px) {
     text-align: center;
-    ${({ noBoxShadowMode }) => ((noBoxShadowMode) ? '' : 'box-shadow: none')};
+    ${({ noboxshadowmode }) => ((noboxshadowmode) ? '' : 'box-shadow: none')};
     border-bottom: 2px solid #f7f7f7;
   }
-  ${({ noBoxShadowMode }) => ((noBoxShadowMode) ? '@media (max-width: 376px) {\n    padding: 8px 6px;\n  }' : '')}
+  ${({ noboxshadowmode }) => ((noboxshadowmode) ? '@media (max-width: 376px) {\n    padding: 8px 6px;\n  }' : '')}
 `;
 
-const MobilePricingPlanName = styled.span`
+const MobilePricingPlanName = styled('span')`
   color: ${({ theme }) => theme.colors.main};
   font-size: 18px;
   font-weight: bold;
@@ -1288,7 +1289,7 @@ const MobilePricingPlanName = styled.span`
 `;
 
 
-const Title = styled.h3`
+const Title = styled('h3')`
   font-weight: bold;
   font-size: 24px;
   margin-top: 8px;
@@ -1304,7 +1305,7 @@ const Title = styled.h3`
   }
 `;
 
-const SectionTitle = styled.h4`
+const SectionTitle = styled('h4')`
   color: #666;
   font-size: 20px;
   font-weight: bold;
@@ -1320,12 +1321,12 @@ const SectionTitle = styled.h4`
   }
 `;
 
-const Row = styled.div`
+const Row = styled('div')`
   max-width: 700px;
   margin: 0 auto !important;
 `;
 
-const MobileWrapper = styled.div`
+const MobileWrapper = styled('div')`
   padding: 16px 18px 16px;
   display: flex;
   flex-direction: column;
@@ -1333,41 +1334,41 @@ const MobileWrapper = styled.div`
   justify-content: space-between;
 `;
 
-const FlexSectionOne = styled.div`
+const FlexSectionOne = styled('div')`
   margin: 0;
 `;
 
-const FlexSectionTwo = styled.div`
+const FlexSectionTwo = styled('div')`
   margin: 0;
 `;
 
-const WrapperLeft = styled.div`
+const WrapperLeft = styled('div')`
   padding: 0 32px 32px 16px;
   border-right: 1px solid #f7f7f7;
   height: calc(100% - 32px);
   margin-top: 32px;
 `;
 
-const WrapperRight = styled.div`
+const WrapperRight = styled('div')`
   padding: 0 16px 32px 32px;
   border-left: 1px solid #f7f7f7;
   height: calc(100% - 32px);
   margin-top: 32px;
 `;
 
-const Fieldset = styled.fieldset`
-  border: 2px solid ${({ disabledMode, theme }) => ((disabledMode) ? '#ddd' : theme.colors.main)};
+const Fieldset = styled('fieldset')`
+  border: 2px solid ${({ disabledmode, theme }) => ((disabledmode) ? '#ddd' : theme.colors.main)};
   border-radius: 3px;
   margin-bottom: 16px;
   padding-bottom: 0;
   background: white;
   @media (min-width: 769px) {
     height: 76px;
-    ${({ disabledMode }) => ((disabledMode) ? 'margin-bottom: 12px' : '')};
+    ${({ disabledmode }) => ((disabledmode) ? 'margin-bottom: 12px' : '')};
   }
 `;
 
-const Legend = styled.legend`
+const Legend = styled('legend')`
   color: ${({ theme }) => theme.colors.main};
   font-size: 12px;
   text-align: left;
@@ -1377,7 +1378,7 @@ const Legend = styled.legend`
   width: fit-content;
 `;
 
-const PriceLabel = styled.span`
+const PriceLabel = styled('span')`
   font-size: 40px;
   font-weight: bold;
   color: ${({ theme }) => theme.colors.main};
@@ -1387,7 +1388,7 @@ const PriceLabel = styled.span`
   }
 `;
 
-const PriceLabelDollarSign = styled.span`
+const PriceLabelDollarSign = styled('span')`
   font-size: 18px;
   color: ${({ theme }) => theme.colors.main};
   position: relative;
@@ -1398,7 +1399,7 @@ const PriceLabelDollarSign = styled.span`
   }
 `;
 
-const PriceLabelSubText = styled.span`
+const PriceLabelSubText = styled('span')`
   font-size: 16px;
   font-weight: bold;
   color: ${({ theme }) => theme.colors.main};
@@ -1407,14 +1408,14 @@ const PriceLabelSubText = styled.span`
   }
 `;
 
-const Wrapper = styled.div`
+const Wrapper = styled('div')`
   padding: 12px 30px;
   @media (max-width: 500px) {
     padding: 12px 0;
   }
 `;
 
-const InvoiceItem = styled.div`
+const InvoiceItem = styled('div')`
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -1425,7 +1426,7 @@ const InvoiceItem = styled.div`
   }
 `;
 
-const InvoiceTitle = styled.div`
+const InvoiceTitle = styled('div')`
   @media (max-width: 500px) {
     font-size: 16px;
   }
@@ -1434,13 +1435,13 @@ const InvoiceTitle = styled.div`
   font-size: 18px;
 `;
 
-const InvoiceValue = styled.div`
+const InvoiceValue = styled('div')`
   color: #000;
   font-weight: bold;
   font-size: 18px;
 `;
 
-const InvoiceButtonsContainer = styled.div`
+const InvoiceButtonsContainer = styled('div')`
   display: flex;
   align-items: center;
   justify-content: space-between;

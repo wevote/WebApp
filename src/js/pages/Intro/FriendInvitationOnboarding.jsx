@@ -1,9 +1,10 @@
-import { Button } from '@material-ui/core';
-import { withStyles, withTheme } from '@material-ui/core/styles';
+import { Button } from '@mui/material';
+import withStyles from '@mui/styles/withStyles';
+import withTheme from '@mui/styles/withTheme';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import Helmet from 'react-helmet';
-import styled from 'styled-components';
+import styled from '@mui/material/styles/styled';
 import FriendActions from '../../actions/FriendActions';
 import IssueActions from '../../actions/IssueActions';
 import VoterActions from '../../actions/VoterActions';
@@ -334,9 +335,9 @@ const styles = (theme) => ({
     padding: '4px 8px',
     height: 32,
     width: '100%',
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down('lg')]: {
     },
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down('md')]: {
       padding: '4px 4px',
     },
   },
@@ -348,7 +349,7 @@ const styles = (theme) => ({
   },
 });
 
-const BackButtonWrapper = styled.div`
+const BackButtonWrapper = styled('div')`
   padding-right: 12px;
   width: 100%;
   @media(min-width: 520px) {
@@ -356,7 +357,7 @@ const BackButtonWrapper = styled.div`
   }
 `;
 
-const FooterBarWrapper = styled.div`
+const FooterBarWrapper = styled('div')`
   background: #fff;
   border-top: 1px solid #eee;
   bottom: 0;
@@ -370,7 +371,7 @@ const FooterBarWrapper = styled.div`
   }
 `;
 
-const HowItWorksDescription = styled.div`
+const HowItWorksDescription = styled('div')`
   font-size: 16px;
   margin-top: 30px;
   padding-bottom: 12px;
@@ -379,7 +380,7 @@ const HowItWorksDescription = styled.div`
   }
 `;
 
-const HowItWorksWrapper = styled.div`
+const HowItWorksWrapper = styled('div')`
   padding-left: 24px;
   padding-right: 24px;
   @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
@@ -388,11 +389,11 @@ const HowItWorksWrapper = styled.div`
   }
 `;
 
-const NextButtonWrapper = styled.div`
+const NextButtonWrapper = styled('div')`
   width: 100%;
 `;
 
-const SlideShowTitle = styled.h3`
+const SlideShowTitle = styled('h3')`
   font-weight: bold;
   font-size: 24px;
   margin-top:  16px;
@@ -402,7 +403,7 @@ const SlideShowTitle = styled.h3`
   }
 `;
 
-const StepsOuterWrapper = styled.div`
+const StepsOuterWrapper = styled('div')`
   align-items: center;
   display: flex;
   justify-content: center;
@@ -410,11 +411,11 @@ const StepsOuterWrapper = styled.div`
   width: 100%;
 `;
 
-const StepsWrapper = styled.div`
+const StepsWrapper = styled('div')`
   width: ${({ width }) => `${width}px`};
 `;
 
-const TwoButtonsWrapper = styled.div`
+const TwoButtonsWrapper = styled('div')`
   width: 100%;
   padding: 4px 8px 12px 8px;
   display: flex;
@@ -422,7 +423,7 @@ const TwoButtonsWrapper = styled.div`
   justify-content: space-between;
 `;
 
-const WeVoteLogoWrapper = styled.div`
+const WeVoteLogoWrapper = styled('div')`
   display: flex;
   justify-content: center;
   padding: 12px;

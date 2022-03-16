@@ -1,7 +1,8 @@
-import { withStyles, withTheme } from '@material-ui/core/styles';
+import withStyles from '@mui/styles/withStyles';
+import withTheme from '@mui/styles/withTheme';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
-import styled from 'styled-components';
+import styled from '@mui/material/styles/styled';
 import { renderLog } from '../../common/utils/logging';
 import ShowMoreButtons from './ShowMoreButtons';
 
@@ -121,9 +122,9 @@ const styles = (theme) => ({
     padding: '4px 8px',
     height: 32,
     width: '100%',
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down('lg')]: {
     },
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down('md')]: {
       padding: '4px 4px',
     },
   },
@@ -132,16 +133,16 @@ const styles = (theme) => ({
   },
 });
 
-const OuterWrapper = styled.div`
+const OuterWrapper = styled('div')`
   display: flex;
   justify-content: center;
   padding: 0 !important;
 `;
 
-const InnerWrapper = styled.div`
+const InnerWrapper = styled('div')`
 `;
 
-const IntroHeader = styled.div`
+const IntroHeader = styled('div')`
   color: #2e3c5d;
   padding-top: 0;
   padding-bottom: 0;
@@ -157,35 +158,35 @@ const IntroHeader = styled.div`
   }
 `;
 
-const ListWrapper = styled.div`
+const ListWrapper = styled('div')`
   display: flex;
   justify-content: center;
 `;
 
-const ListMaxWidth = styled.div`
+const ListMaxWidth = styled('div')`
   max-width: 450px;
 `;
 
-const ListTitleRow = styled.div`
+const ListTitleRow = styled('div')`
   display: flex;
   flex-flow: row nowrap;
   justify-content: flex-start;
   padding-top: 8px;
 `;
 
-const ListRow = styled.div`
+const ListRow = styled('div')`
   display: flex;
   flex-flow: row nowrap;
   justify-content: flex-start;
 `;
 
-const Dot = styled.div`
+const Dot = styled('div')`
   padding-top: 2px;
   text-align: center;
   vertical-align: top;
 `;
 
-const StepNumber = styled.div`
+const StepNumber = styled('div')`
   background: ${(props) => props.theme.colors.brandBlue};
   border-radius: 4px;
   color: white;
@@ -195,7 +196,7 @@ const StepNumber = styled.div`
   padding-top: 1px;
 `;
 
-const StepTitle = styled.div`
+const StepTitle = styled('div')`
   font-size: 15px;
   font-weight: 600;
   padding: 0 8px;
@@ -203,7 +204,7 @@ const StepTitle = styled.div`
   vertical-align: top;
 `;
 
-const StepText = styled.div`
+const StepText = styled('div')`
   color: #555;
   font-size: 14px;
   font-weight: 200;
@@ -212,7 +213,7 @@ const StepText = styled.div`
   vertical-align: top;
 `;
 
-const StepNumberPlaceholder = styled.div`
+const StepNumberPlaceholder = styled('div')`
   width: 20px;
   height: 20px;
 `;

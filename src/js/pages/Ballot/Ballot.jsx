@@ -1,9 +1,9 @@
-import { Badge, Chip, CircularProgress, Link } from '@material-ui/core';
-import { withStyles } from '@material-ui/core/styles';
+import { Badge, Chip, CircularProgress, Link } from '@mui/material';
+import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
 import Helmet from 'react-helmet';
-import styled from 'styled-components';
+import styled from '@mui/material/styles/styled';
 import ActivityActions from '../../actions/ActivityActions';
 import AnalyticsActions from '../../actions/AnalyticsActions';
 import BallotActions from '../../actions/BallotActions';
@@ -1189,6 +1189,7 @@ class Ballot extends Component {
                     id="ballotIfBallotDoesNotAppear"
                     onClick={() => this.toggleSelectBallotModal('', false, true)}
                     style={{ color: 'rgb(6, 95, 212)' }}
+                    underline="hover"
                   >
                     please click here to enter an address
                   </Link>
@@ -1312,7 +1313,7 @@ class Ballot extends Component {
                                 <hr className="ballot-header-divider" />
                               </>
                             )}
-                            <BallotFilterRow showFilterTabs={showFilterTabs}>
+                            <BallotFilterRow/* showFilterTabs={showFilterTabs} */>
                               <div className="ballot__item-filter-tabs" ref={(chips) => { this.chipContainer = chips; }}>
                                 { ballotWithItemsFromCompletionFilterType.length ? (
                                   <>
@@ -1416,7 +1417,7 @@ class Ballot extends Component {
 
           <PageContentContainer>
             <div className="container-fluid">
-              <Wrapper padBottom={padBallotWindowBottomForCordova} id="ballotWrapper">
+              <BallotWrapper padbottom={padBallotWindowBottomForCordova} id="ballotWrapper">
                 {/* eslint-disable-next-line no-nested-ternary */}
                 <div className={showBallotDecisionsTabs() ? 'row ballot__body' : isWebApp() || twoColumnDisplay ? 'row ballot__body__no-decision-tabs' : undefined}>
                   <div className="col-12">
@@ -1616,7 +1617,7 @@ class Ballot extends Component {
                   </div>
                   */}
                 </div>
-              </Wrapper>
+              </BallotWrapper>
             </div>
           </PageContentContainer>
         </Suspense>
@@ -1630,11 +1631,11 @@ Ballot.propTypes = {
   match: PropTypes.object,
 };
 
-const BallotBottomWrapper = styled.div`
+const BallotBottomWrapper = styled('div')`
   width: 100%;
 `;
 
-const BallotCaveatWrapper = styled.div`
+const BallotCaveatWrapper = styled('div')`
   margin-bottom: 3px;
   @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
     padding-left: 0 !important;
@@ -1642,11 +1643,11 @@ const BallotCaveatWrapper = styled.div`
   }
 `;
 
-const BallotListWrapper = styled.div`
+const BallotListWrapper = styled('div')`
   padding-bottom: 40px;
 `;
 
-const BallotLoadingWrapper = styled.div`
+const BallotLoadingWrapper = styled('div')`
   font-size: 20px;
   padding-top: 20px;
   text-align: center;
@@ -1654,55 +1655,55 @@ const BallotLoadingWrapper = styled.div`
 `;
 
 // If we want to turn off filter tabs navigation bar:  ${({ showFilterTabs }) => !showFilterTabs && 'height: 0;'}
-const BallotFilterRow = styled.div`
+const BallotFilterRow = styled('div')`
   // TODO: 10/4/21 Steve, this is temporary and needs to be more responsive
   // margin-left: ${() => (isWebApp() && !isMobileScreenSize() ? 'calc((100vw - 975px)/2)' : '')};
 `;
 
-const EditAddressCard = styled.div`
+const EditAddressCard = styled('div')`
   padding: 12px 15px 0 15px;
 `;
 
-const EditAddressWrapper = styled.div`
+const EditAddressWrapper = styled('div')`
   @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
     padding-left: 0 !important;
     padding-right: 0 !important;
   }
 `;
 
-const EmptyBallotCard = styled.div`
+const EmptyBallotCard = styled('div')`
   padding: 12px 15px;
 `;
 
-const EmptyBallotNotice = styled.div`
+const EmptyBallotNotice = styled('div')`
   margin-top: 40px;
 `;
 
-const SearchResultsFoundInExplanation = styled.div`
+const SearchResultsFoundInExplanation = styled('div')`
   background-color: #C2DCE8;
   color: #0E759F;
   padding: 12px !important;
 `;
 
-const LoadingItemsWheel = styled.div`
+const LoadingItemsWheel = styled('div')`
   width: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
 `;
 
-const LoadingWrapper = styled.div`
+const LoadingWrapper = styled('div')`
 `;
 
-const ShowMoreItemsWrapper = styled.div`
+const ShowMoreItemsWrapper = styled('div')`
   margin-bottom: 16px;
 `;
 
-const SearchResultsEmpty = styled.div`
+const SearchResultsEmpty = styled('div')`
   font-size: 20px;
 `;
 
-const SearchTitle = styled.div`
+const SearchTitle = styled('div')`
   font-size: 24px;
   margin-top: 12px;
   margin-bottom: 12px;
@@ -1726,10 +1727,10 @@ const SearchTitle = styled.div`
 //   margin-bottom: 12px;
 // `;
 
-const Wrapper = styled.div`
-  padding-top: ${({ padTop }) => padTop};
-  padding-bottom: ${({ padBottom }) => padBottom};
-`;
+const BallotWrapper = styled('div')(({ padbottom }) => ({
+  // padding-top: ${({ padTop }) => padTop};
+  paddingBottom: padbottom,
+}));
 
 const styles = (theme) => ({
   badge: {
@@ -1741,7 +1742,7 @@ const styles = (theme) => ({
     background: 'rgba(46, 60, 93, 0.08)',
     color: '#333',
     cursor: 'pointer',
-    [theme.breakpoints.down('lg')]: {
+    [theme.breakpoints.down('xl')]: {
       fontSize: 9,
       width: 16,
       top: 11,
@@ -1792,7 +1793,7 @@ const styles = (theme) => ({
     top: 1,
     color: theme.palette.primary.main,
     cursor: 'pointer',
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down('lg')]: {
       fontSize: 16,
       top: 3,
     },

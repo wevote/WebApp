@@ -2,7 +2,8 @@
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
 import { Link } from 'react-router-dom';
-import styled from 'styled-components';
+import styled from '@mui/material/styles/styled';
+import passBool from '../../common/utils/passBool';
 import VoterGuideStore from '../../stores/VoterGuideStore';
 import { isCordova } from '../../common/utils/isCordovaOrWebApp';
 import { renderLog } from '../../common/utils/logging';
@@ -138,11 +139,11 @@ class IssueCard extends Component {
       <Wrapper
         key={`issue-card-${issueWeVoteId}`}
         className={this.props.condensed ? "card-child u-full-height" : "card-child u-inset__h--md u-padding-top--md u-padding-bottom--xs u-full-height"}
-        condensed={!!this.props.condensed}
+        condensed={passBool(!!this.props.condensed)}
         style={isCordova() ? { margin: 'unset' } : {}}   // stops horizontal scrolling
       >
-        <Flex condensed={!!this.props.condensed} followToggleOnItsOwnLine={!!followToggleOnItsOwnLine}>
-          <FlexNameAndIcon condensed={!!this.props.condensed}>
+        <Flex condensed={passBool(!!this.props.condensed)} followtoggleonitsownline={passBool(!!followToggleOnItsOwnLine)}>
+          <FlexNameAndIcon condensed={passBool(!!this.props.condensed)}>
             <div className="card-main__media-object-anchor">
               {!turnOffIssueImage && (
                 <span>
@@ -229,7 +230,7 @@ IssueCard.propTypes = {
   condensed: PropTypes.bool,
 };
 
-const Wrapper = styled.div`
+const Wrapper = styled('div')`
   display: block !important;
   background: white;
   // border: ${(props) => (props.condensed ? '1px solid #888' : 'none')};
@@ -241,37 +242,37 @@ const Wrapper = styled.div`
   }
 `;
 
-const IssueName = styled.h3`
+const IssueName = styled('h3')`
   font-size: 18px;
   font-weight: bold;
   margin-bottom: 0;
 `;
 
-const IssueAdvocatesCount = styled.span`
+const IssueAdvocatesCount = styled('span')`
   font-weight: normal;
   white-space: nowrap;
 `;
 
-const FollowIssueToggleContainer = styled.div`
+const FollowIssueToggleContainer = styled('div')`
   margin-left: auto;
 `;
 
-const Flex = styled.div`
-  ${(props) => (props.followToggleOnItsOwnLine ?
+const Flex = styled('div')`
+  ${(props) => (props.followtoggleonitsownline ?
     '' :
     'display: flex; align-items: center; justify-content: flex-start;'
   )}
   width: ${(props) => (props.condensed ? '100%' : null)};
 `;
 
-const FlexNameAndIcon = styled.div`
+const FlexNameAndIcon = styled('div')`
   display: flex;
   align-items: center;
   justify-content: flex-start;
   width: ${(props) => (props.condensed ? '100%' : null)};
 `;
 
-const Description = styled.div`
+const Description = styled('div')`
   margin-top: 8px;
   font-size: 14px;
   color: #333;

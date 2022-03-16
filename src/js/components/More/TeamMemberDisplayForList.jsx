@@ -96,20 +96,20 @@ TeamMemberDisplayForList.propTypes = {
   teamMember: PropTypes.object,
 };
 
-const Col = styled.div`
+const Col = styled('div')`
   @media (min-width: 992px) {
     padding-left: 20px;
     padding-right: 20px;
   }
 `;
 
-const MemberContainer = styled.div`
+const MemberContainer = styled('div')`
   width: 90%;
   height: 100%;
   margin: 0 auto;
 `;
 
-const CardDefault = styled.div`
+const CardDefault = styled('div')`
   text-align: left;
   height: 100%;
   @media (max-width: 576px) {
@@ -129,7 +129,7 @@ const scaleCard = keyframes`
   }
 `;
 
-const CardHover = styled.div`
+const CardHover = styled('div')`
   background: white;
   margin: 0 auto;
   z-index: 999;
@@ -145,7 +145,7 @@ const CardHover = styled.div`
   }
 `;
 
-const Image = styled.div`
+const Image = styled('div')`
   width: 100%;
   > * {
     width: 100%;
@@ -159,7 +159,7 @@ const Image = styled.div`
   }
 `;
 
-const ImageHover = styled.div`
+const ImageHover = styled('div')`
   width: 75px;
   height: 75px;
   @media (max-width: 576px) {
@@ -171,14 +171,14 @@ const ImageHover = styled.div`
   }
 `;
 
-const TextWrapper = styled.div`
+const TextWrapper = styled('div')`
   @media (max-width: 576px) {
     position: relative;
     bottom: 4px;
   }
 `;
 
-const NameHover = styled.h4`
+const NameHover = styled('h4')`
   font-size: 16px;
   font-weight: bold;
   margin-top: 4px;
@@ -191,7 +191,7 @@ const NameHover = styled.h4`
   }
 `;
 
-const NameDefault = styled.h3`
+const NameDefault = styled('h3')`
   font-size: 20px;
   font-weight: bold;
   text-align: left;
@@ -202,7 +202,7 @@ const NameDefault = styled.h3`
   }
 `;
 
-const TitleHover = styled.p`
+const TitleHover = styled('p')`
   color: #cacaca;
   font-size: 12px;
   text-align: left;
@@ -212,7 +212,7 @@ const TitleHover = styled.p`
   }
 `;
 
-const TitleDefault = styled.p`
+const TitleDefault = styled('p')`
   font-size: 16px;
   color: #cacaca;
   text-align: left;
@@ -221,13 +221,13 @@ const TitleDefault = styled.p`
   }
 `;
 
-const Divider = styled.div`
+const Divider = styled('div')`
   height: 2px;
   background: #e3e3e3;
   width: 100%;
 `;
 
-const Description = styled.p`
+const Description = styled('p')`
   font-size: 16px;
   color: black;
   margin-top: 8px;

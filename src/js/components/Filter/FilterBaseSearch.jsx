@@ -1,10 +1,11 @@
-import { IconButton, InputBase } from '@material-ui/core';
-import { withStyles, withTheme } from '@material-ui/core/styles';
-import { Close, Search } from '@material-ui/icons';
+import { IconButton, InputBase } from '@mui/material';
+import withStyles from '@mui/styles/withStyles';
+import withTheme from '@mui/styles/withTheme';
+import { Close, Search } from '@mui/icons-material';
 import sortBy from 'lodash-es/sortBy';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import styled from 'styled-components';
+import styled from '@mui/material/styles/styled';
 import BallotActions from '../../actions/BallotActions';
 import OrganizationActions from '../../actions/OrganizationActions';
 import BallotStore from '../../stores/BallotStore';
@@ -215,19 +216,19 @@ class FilterBaseSearch extends Component {
     // console.log('FilterBaseSearch render');
     return (
       <SearchWrapper
-        brandBlue={theme.palette.primary.main}
-        isCordova={isCordova()}
-        isSearching={isSearching}
-        searchTextLarge={searchTextLarge}
-        searchOpen={isSearching || alwaysOpen}
+        brandblue={theme.palette.primary.main}
+        issearching={isSearching.toString()}
+        searchtextlarge={searchTextLarge}
+        searchopen={(isSearching || alwaysOpen).toString()}
       >
         <IconButton
           classes={{ root: classes.iconButtonRoot }}
           onClick={!alwaysOpen ? this.toggleSearch : undefined}
+          size="large"
         >
           <Search classes={{ root: searchIconClasses }} />
         </IconButton>
-        <Separator isSearching={isSearching} alwaysOpen={alwaysOpen} />
+        <Separator issearching={isSearching.toString()} alwaysopen={alwaysOpen.toString()} />
         <InputBase
           classes={{ input: inputBaseInputClasses, root: inputBaseRootClasses }}
           inputRef={(input) => { this.searchInput = input; }}
@@ -238,14 +239,12 @@ class FilterBaseSearch extends Component {
           placeholder="Search"
         />
         <Closer
-          brandBlue={theme.palette.primary.main}
-          isSearching={isSearching}
+          brandblue={theme.palette.primary.main}
           onClick={(isSearching || !alwaysOpen) ? this.toggleSearch : undefined}
-          showCloser={isSearching}
+          issearching={isSearching.toString()}
+          showcloser={isSearching.toString()}
         >
-          <IconButton
-            classes={{ root: classes.iconButtonRoot }}
-          >
+          <IconButton classes={{ root: classes.iconButtonRoot }} size="large">
             <Close classes={{ root: classes.closeIconRoot }} />
           </IconButton>
         </Closer>
@@ -303,11 +302,11 @@ const styles = (theme) => ({
     marginLeft: 8,
     width: 75,
     transition: 'all ease-in 150ms',
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down('lg')]: {
       width: '50%',
       fontSize: 'inherit',
     },
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down('md')]: {
       width: 55,
       fontSize: 'inherit',
     },
@@ -335,11 +334,11 @@ const styles = (theme) => ({
     padding: 0,
     width: 350,
     transition: 'all ease-in 150ms',
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down('lg')]: {
       width: '50%',
       fontSize: 'inherit',
     },
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down('md')]: {
       width: 150,
       fontSize: 'inherit',
     },
@@ -353,29 +352,29 @@ const styles = (theme) => ({
   },
 });
 
-const Closer = styled.div`
-  display: ${({ isSearching }) => (isSearching ? 'inherit' : 'none')};
+const Closer = styled('div')`
+  display: ${({ issearching }) => (issearching ? 'inherit' : 'none')};
   border-radius: 16px;
   border-top-left-radius: 0;
   border-bottom-left-radius: 0;
-  opacity: ${({ showCloser }) => (showCloser ? '1' : '0')};
-  pointer-events: ${({ showCloser }) => (showCloser ? 'auto' : 'none')};
+  opacity: ${({ showcloser }) => (showcloser ? '1' : '0')};
+  pointer-events: ${({ showcloser }) => (showcloser ? 'auto' : 'none')};
   transition: all 150ms ease-in;
 `;
 
-const Separator = styled.div`
-  display: ${({ isSearching, alwaysOpen }) => (isSearching || alwaysOpen ? 'inherit' : 'none')};
-  height: 100%;
-  width: 1px;
-  background: rgba(0, 0, 0, .3);
-`;
+const Separator = styled('div')(({ issearching, alwaysopen }) => ({
+  display: issearching || alwaysopen ? 'inherit' : 'none',
+  // height: 100%;
+  // width: 1px;
+  // background: rgba(0, 0, 0, .3);
+}));
 
-const SearchWrapper = styled.div`
+const SearchWrapper = styled('div')`
   display: flex;
   flex-flow: row;
   border-radius: 4px;
-  height: ${({ searchTextLarge }) => (searchTextLarge ? '32px' : '26px')};
-  border: 1px solid ${({ isSearching, brandBlue }) => (isSearching ? brandBlue : '#ccc')};
+  height: ${({ searchtextlarge }) => (searchtextlarge ? '32px' : '26px')};
+  border: 1px solid ${({ issearching, brandblue }) => (issearching ? brandblue : '#ccc')};
   padding: 0 3px 0 3px;
   margin-right: 16px;
   margin-bottom: 8px;

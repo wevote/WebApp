@@ -1,8 +1,9 @@
-import { Button } from '@material-ui/core';
-import { withStyles, withTheme } from '@material-ui/core/styles';
-import { CheckCircle, EditLocation, PlayCircleFilled } from '@material-ui/icons';
+import { Button } from '@mui/material';
+import withStyles from '@mui/styles/withStyles';
+import withTheme from '@mui/styles/withTheme';
+import { CheckCircle, EditLocation, PlayCircleFilled } from '@mui/icons-material';
 import React, { Component } from 'react';
-import styled from 'styled-components';
+import styled from '@mui/material/styles/styled';
 import VoterConstants from '../../constants/VoterConstants';
 import AppObservableStore from '../../stores/AppObservableStore';
 import BallotStore from '../../stores/BallotStore';
@@ -11,8 +12,8 @@ import VoterStore from '../../stores/VoterStore';
 import normalizedImagePath from '../../common/utils/normalizedImagePath';
 import Cookies from '../../common/utils/js-cookie/Cookies';
 import { renderLog } from '../../common/utils/logging';
-// import { Ballot } from '@material-ui/icons';
-// import { ThumbUp } from '@material-ui/icons';
+// import { Ballot } from '@mui/icons-material';
+// import { ThumbUp } from '@mui/icons-material';
 
 class CompleteYourProfile extends Component {
   constructor (props) {
@@ -475,11 +476,11 @@ class CompleteYourProfile extends Component {
 const styles = () => ({
 });
 
-const BestGuess = styled.span`
+const BestGuess = styled('span')`
   font-weight: bold;
 `;
 
-const Completed = styled.div`
+const Completed = styled('div')`
   color: green;
   margin-left: -2px;
   & * {
@@ -490,7 +491,7 @@ const Completed = styled.div`
   }
 `;
 
-const Description = styled.div`
+const Description = styled('div')`
   @media (min-width: 769px) {
     display: flex;
     align-items: flex-start;
@@ -499,12 +500,12 @@ const Description = styled.div`
   }
 `;
 
-const Flex = styled.div`
+const Flex = styled('div')`
   display: flex;
   justify-content: space-between;
 `;
 
-const Icon = styled.div`
+const Icon = styled('div')`
   cursor: pointer;
   display: inline-block;
   width: 35px;
@@ -520,14 +521,14 @@ const Icon = styled.div`
   }
 `;
 
-const Indicators = styled.div`
+const Indicators = styled('div')`
   align-items: center;
   display: flex;
   flex: 1 1 0;
   margin-left: 8px;
 `;
 
-const Indicator = styled.div`
+const Indicator = styled('div')`
   cursor: pointer;
   flex: 1 1 0;
   height: 8px;
@@ -538,14 +539,14 @@ const Indicator = styled.div`
   ${(props) => (!props.complete && !props.active ? 'background: #e1e1e1;' : '')}
 `;
 
-const Info = styled.span`
+const Info = styled('span')`
   display: none;
   @media(min-width: 525px) {
     display: inline;
   }
 `;
 
-const MobileActionButton = styled.div`
+const MobileActionButton = styled('div')`
   border-bottom: 1px solid #e1e1e1;
   margin-bottom: 0px;
   margin-top: 8px;
@@ -555,13 +556,13 @@ const MobileActionButton = styled.div`
   }
 `;
 
-const NavButton = styled.div`
+const NavButton = styled('div')`
   * {
     font-weight: bold;
   }
 `;
 
-const NavButtons = styled.div`
+const NavButtons = styled('div')`
   align-items: center;
   display: flex;
   // margin-top: 12px;
@@ -574,11 +575,11 @@ const NavButtons = styled.div`
   }
 `;
 
-const NextButtonPlaceholder = styled.div`
+const NextButtonPlaceholder = styled('div')`
   width: 64px;
 `;
 
-const PersonalizedScorePlusOne = styled.div`
+const PersonalizedScorePlusOne = styled('div')`
   align-items: center;
   background: #2E3C5D;
   border-radius: 5px;
@@ -594,14 +595,14 @@ const PersonalizedScorePlusOne = styled.div`
   }
 `;
 
-const Separator = styled.div`
+const Separator = styled('div')`
   background: #e1e1e1;
   margin: 8px auto;
   width: 100%;
   height: 1px;
 `;
 
-const TabletActionButton = styled.div`
+const TabletActionButton = styled('div')`
   display: none;
   @media(min-width: 576px) {
     display: block;
@@ -612,13 +613,13 @@ const TabletActionButton = styled.div`
   }
 `;
 
-const Title = styled.h2`
+const Title = styled('h2')`
   display: inline-block;
   font-weight: 600;
   margin: 0;
 `;
 
-const TitleArea = styled.div`
+const TitleArea = styled('div')`
   align-items: center;
   cursor: pointer;
   display: flex;
@@ -629,13 +630,13 @@ const TitleArea = styled.div`
   }
 `;
 
-const TitleFlex = styled.div`
+const TitleFlex = styled('div')`
   display: inline-block;
   // margin: 2px 0 0 0;
   margin-right: 8px;
 `;
 
-const YourLocation = styled.span`
+const YourLocation = styled('span')`
 `;
 
 export default withTheme(withStyles(styles)(CompleteYourProfile));

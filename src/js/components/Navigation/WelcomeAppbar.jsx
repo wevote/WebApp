@@ -1,9 +1,9 @@
-import { AppBar, Button, IconButton, Toolbar } from '@material-ui/core';
-import { withStyles } from '@material-ui/core/styles';
-import { AccountCircle, Close, Menu } from '@material-ui/icons';
+import { AppBar, Button, IconButton, Toolbar } from '@mui/material';
+import withStyles from '@mui/styles/withStyles';
+import { AccountCircle, Close, Menu } from '@mui/icons-material';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
-import styled from 'styled-components';
+import styled from '@mui/material/styles/styled';
 import OrganizationActions from '../../actions/OrganizationActions';
 import VoterGuideActions from '../../actions/VoterGuideActions';
 import VoterSessionActions from '../../actions/VoterSessionActions';
@@ -327,7 +327,7 @@ class WelcomeAppbar extends Component {
                         classes={{ root: classes.iconButtonRoot }}
                         id="profileAvatarHeaderBar"
                         onClick={this.toggleProfilePopUp}
-                      >
+                        size="large">
                         <FirstNameWrapper>
                           {shortenText(voterFirstName, 9)}
                         </FirstNameWrapper>
@@ -376,7 +376,7 @@ class WelcomeAppbar extends Component {
                         classes={{ root: classes.iconProfileButtonRoot }}
                         id="profileAvatarHeaderBar"
                         onClick={this.toggleProfilePopUp}
-                      >
+                        size="large">
                         <AccountCircle />
                       </IconButton>
                     </ProfileIconWrapper>
@@ -402,7 +402,7 @@ class WelcomeAppbar extends Component {
                 classes={{ root: classes.iconButton }}
                 id="hamburgerMenuHeaderBar"
                 onClick={() => this.handleShowMobileNavigation(true)}
-              >
+                size="large">
                 <Menu />
               </IconButton>
               {
@@ -525,7 +525,7 @@ const styles = (theme) => ({
     '&:hover': {
       backgroundColor: 'transparent',
     },
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down('md')]: {
       paddingLeft: 8,
       paddingRight: 0,
     },
@@ -549,7 +549,7 @@ const styles = (theme) => ({
   },
 });
 
-const DesktopView = styled.div`
+const DesktopView = styled('div')`
   display: inherit;
   max-width: unset;
   @media (max-width: ${({ theme }) => theme.breakpoints.lg}) {
@@ -557,23 +557,23 @@ const DesktopView = styled.div`
   }
 `;
 
-const FirstNameWrapper = styled.div`
+const FirstNameWrapper = styled('div')`
   font-size: 14px;
   padding-right: 4px;
 `;
 
-const MobileTabletView = styled.div`
+const MobileTabletView = styled('div')`
   display: inherit;
   @media (min-width: ${({ theme }) => theme.breakpoints.lg}) {
     display: none;
   }
 `;
 
-const ProfileIconWrapper = styled.div`
+const ProfileIconWrapper = styled('div')`
   color: white;
 `;
 
-const ProfileImageWrapper = styled.div`
+const ProfileImageWrapper = styled('div')`
   margin-top: 7px;
   margin-left: 6px;
 `;

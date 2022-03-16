@@ -1,5 +1,6 @@
-import { withStyles, withTheme } from '@material-ui/core/styles';
-import { ArrowForward, CheckCircle } from '@material-ui/icons';
+import withStyles from '@mui/styles/withStyles';
+import withTheme from '@mui/styles/withTheme';
+import { ArrowForward, CheckCircle } from '@mui/icons-material';
 import PropTypes from 'prop-types';
 import React from 'react';
 import register0Percent from '../../../img/global/svg-icons/ready/register-0-percent.svg';
@@ -133,7 +134,7 @@ const styles = (theme) => ({
     fontSize: 14,
     marginBottom: 3,
     marginLeft: 4,
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down('md')]: {
       fontSize: 14,
     },
   },

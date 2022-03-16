@@ -1,9 +1,10 @@
-import { Button, Dialog, DialogContent, DialogTitle, IconButton, InputBase } from '@material-ui/core';
-import { withStyles, withTheme } from '@material-ui/core/styles';
-import { Close } from '@material-ui/icons';
+import { Button, Dialog, DialogContent, DialogTitle, IconButton, InputBase } from '@mui/material';
+import withStyles from '@mui/styles/withStyles';
+import withTheme from '@mui/styles/withTheme';
+import { Close } from '@mui/icons-material';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
-import styled from 'styled-components';
+import styled from '@mui/material/styles/styled';
 import SupportActions from '../../actions/SupportActions';
 import CandidateStore from '../../stores/CandidateStore';
 import MeasureStore from '../../stores/MeasureStore';
@@ -241,7 +242,7 @@ class PositionStatementModal extends Component {
             classes={{ root: classes.closeButton }}
             onClick={() => { this.props.togglePositionStatementModal(); }}
             id="closePositionStatementModal"
-          >
+            size="large">
             <Close />
           </IconButton>
         </DialogTitle>
@@ -351,7 +352,7 @@ const styles = (theme) => ({
     maxWidth: '600px',
     top: '0px',
     transform: isAndroid() ? 'translate(0%, -18%)' : 'translate(0%, -20%)',
-    [theme.breakpoints.down('xs')]: {
+    [theme.breakpoints.down('sm')]: {
       minWidth: '95%',
       maxWidth: '95%',
       width: '95%',
@@ -371,8 +372,8 @@ const styles = (theme) => ({
   },
   closeButton: {
     position: 'absolute',
-    right: `${theme.spacing(1)}px`,
-    top: isAndroid() ? '-4px' : `${theme.spacing(1)}px`,
+    right: theme.spacing(1),
+    top: isAndroid() ? '-4px' : theme.spacing(1),
   },
   saveButtonRoot: {
     width: '100%',
@@ -388,7 +389,7 @@ const styles = (theme) => ({
     fontSize: 20,
     height: '100%',
     width: '100%',
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down('md')]: {
       fontSize: 18,
     },
   },
@@ -397,7 +398,7 @@ const styles = (theme) => ({
     fontSize: 18,
     height: '100%',
     width: '100%',
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down('md')]: {
       fontSize: 16,
     },
   },
@@ -407,18 +408,18 @@ const styles = (theme) => ({
   },
 });
 
-const PostSaveButton = styled.div`
+const PostSaveButton = styled('div')`
   width: 100%;
 `;
 
-const TextFieldWrapper = styled.div`
+const TextFieldWrapper = styled('div')`
   height: 100%;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
 `;
 
-const Title = styled.div`
+const Title = styled('div')`
   font-size: 16px;
   font-weight: bold;
   margin: 0;

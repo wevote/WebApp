@@ -1,9 +1,9 @@
-import { Facebook, Twitter } from '@material-ui/icons';
+import { Facebook, Twitter } from '@mui/icons-material';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import Button from 'react-bootstrap/Button';
 import Helmet from 'react-helmet';
-import styled from 'styled-components';
+import styled from '@mui/material/styles/styled';
 import AnalyticsActions from '../../actions/AnalyticsActions';
 import FacebookActions from '../../actions/FacebookActions';
 import TwitterActions from '../../actions/TwitterActions';
@@ -16,6 +16,7 @@ import { normalizedHref } from '../../common/utils/hrefUtils';
 import { isCordova } from '../../common/utils/isCordovaOrWebApp';
 import Cookies from '../../common/utils/js-cookie/Cookies';
 import { oAuthLog, renderLog } from '../../common/utils/logging';
+import passBool from '../../common/utils/passBool';
 import AppObservableStore, { messageService } from '../../stores/AppObservableStore';
 import FacebookStore from '../../stores/FacebookStore';
 import VoterStore from '../../stores/VoterStore';
@@ -388,7 +389,7 @@ export default class SettingsAccount extends Component {
         {!hideDialogForCordova &&
           <BrowserPushMessage incomingProps={this.props} />}
         <div className={inModal ? 'card-main full-width' : 'card'} style={{ display: `${hideDialogForCordova ? ' none' : 'undefined'}` }}>
-          <Main inModal={inModal} id={`settingsAccountMain-${externalUniqueId}`}>
+          <Main inmodal={passBool(inModal)} id={`settingsAccountMain-${externalUniqueId}`}>
             {voterIsSignedInTwitter && voterIsSignedInFacebook ?
               null :
               <h1 className="h3">{!hideTwitterSignInButton && !hideFacebookSignInButton && voterIsSignedIn ? <span>{yourAccountTitle}</span> : null}</h1>}
@@ -599,28 +600,28 @@ SettingsAccount.propTypes = {
   focusedOnSingleInputToggle: PropTypes.func,
 };
 
-const Main = styled.div`
-  margin-top: ${({ inModal }) => (inModal ? '-16px' : '0')};
-  padding: ${({ inModal }) => (inModal ? '0' : '16px')};
+const Main = styled('div')`
+  margin-top: ${({ inmodal }) => (inmodal ? '-16px' : '0')};
+  padding: ${({ inmodal }) => (inmodal ? '0' : '16px')};
   text-align: center;
   padding-top: 0;
   width: 100%;
 `;
 
-const SignInSubtitle = styled.p`
+const SignInSubtitle = styled('p')`
   font-weight: 500;
   font-size: 16px;
   margin-bottom: 24px;
 `;
 
-const RecommendedText = styled.p`
+const RecommendedText = styled('p')`
   margin: 0;
   color: #333;
   font-weight: bold;
   font-size: 16px;
 `;
 
-const TwitterContainer = styled.span`
+const TwitterContainer = styled('span')`
   color: #fff !important;
   background-color: #55acee !important;
   border-color: rgba(0,0,0,0.2);
@@ -632,7 +633,7 @@ const TwitterContainer = styled.span`
   text-overflow: ellipsis;
 `;
 
-const FacebookContainer = styled.span`
+const FacebookContainer = styled('span')`
   color: #fff;
   background-color: #3b5998 !important;
   borderColor: rgba(0,0,0,0.2);

@@ -2,7 +2,7 @@ import { filter } from 'lodash-es';
 import React, { Component } from 'react';
 import Helmet from 'react-helmet';
 import { Link } from 'react-router-dom';
-import styled from 'styled-components';
+import styled from '@mui/material/styles/styled';
 import FriendActions from '../../actions/FriendActions';
 import FriendInvitationList from '../../components/Friends/FriendInvitationList';
 import SearchBar from '../../components/Search/SearchBar';
@@ -138,7 +138,7 @@ export default class FriendInvitationsSentByMe extends Component {
   }
 }
 
-const SectionTitle = styled.h2`
+const SectionTitle = styled('h2')`
   font-weight: bold;
   font-size: 18px;
   margin-bottom: 16px;

@@ -1,9 +1,9 @@
-import { Checkbox, FormControlLabel } from '@material-ui/core';
-import { withStyles } from '@material-ui/core/styles';
+import { Checkbox, FormControlLabel } from '@mui/material';
+import withStyles from '@mui/styles/withStyles';
 import { uniqBy } from 'lodash-es';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import styled from 'styled-components';
+import styled from '@mui/material/styles/styled';
 import FriendStore from '../../stores/FriendStore';
 import IssueStore from '../../stores/IssueStore';
 import ShareStore from '../../common/stores/ShareStore';
@@ -384,30 +384,30 @@ VoterGuideOrganizationFilter.propTypes = {
 
 const styles = (theme) => ({
   formControlLabel: {
-    [theme.breakpoints.down('lg')]: {
+    [theme.breakpoints.down('xl')]: {
       fontSize: 14,
     },
   },
 });
 
-const Wrapper = styled.div`
+const Wrapper = styled('div')`
   display: ${({ showAllFilters }) => (showAllFilters ? 'flex' : 'none')};
   flex-flow: column;
   padding-top: 1rem;
 `;
 
-const FilterRow = styled.div`
+const FilterRow = styled('div')`
   display: flex;
   flex-flow: row;
 `;
 
-const FilterColumn = styled.div`
+const FilterColumn = styled('div')`
   display: flex;
   flex-flow: column;
   margin-right: 2rem;
 `;
 
-const SortBy = styled.p`
+const SortBy = styled('p')`
   font-size: ${({ selected }) => (selected ? '.95rem' : '.875rem')};
   margin: 8px 0 0 0;
   cursor: pointer;
@@ -421,7 +421,7 @@ const SortBy = styled.p`
   }
 `;
 
-const SortByContainer = styled.div`
+const SortByContainer = styled('div')`
   height: 40px;
   display: flex;
   align-items: center;

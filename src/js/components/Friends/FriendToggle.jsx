@@ -1,7 +1,7 @@
-import { Button, ClickAwayListener, MenuItem, MenuList } from '@material-ui/core';
+import { Button, ClickAwayListener, MenuItem, MenuList } from '@mui/material';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import styled from 'styled-components';
+import styled from '@mui/material/styles/styled';
 import { renderLog } from '../../common/utils/logging';
 import FriendActions from '../../actions/FriendActions';
 import FriendStore from '../../stores/FriendStore';
@@ -145,7 +145,7 @@ FriendToggle.propTypes = {
 };
 
 
-const ButtonContainer = styled.div`
+const ButtonContainer = styled('div')`
   width: 100%;
   margin-top: 0;
   @media(min-width: 400px) {
@@ -154,7 +154,7 @@ const ButtonContainer = styled.div`
   }
 `;
 
-const InnerButtonContainer = styled.div`
+const InnerButtonContainer = styled('div')`
   margin-left: auto;
   position: relative;
   display: flex;
@@ -194,7 +194,7 @@ const ToggleButton = styled(Button)`
   border-bottom-left-radius: 0 !important;
 `;
 
-const DownwardTriangle = styled.span`
+const DownwardTriangle = styled('span')`
     width: 0;
     height: 0;
     border-left: 7px solid transparent;

@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React, { Suspense } from 'react';
 import { Link } from 'react-router-dom';
-import styled from 'styled-components';
+import styled from '@mui/material/styles/styled';
 import { isCordova } from '../../common/utils/isCordovaOrWebApp';
 import normalizedImagePath from '../../common/utils/normalizedImagePath';
 
@@ -47,7 +47,7 @@ HeaderBarLogo.propTypes = {
   light: PropTypes.bool,
 };
 
-const BetaMarkerInner = styled.span`
+const BetaMarkerInner = styled('span')`
   position: absolute;
   font-size: 10px;
   right: 0;
@@ -55,7 +55,7 @@ const BetaMarkerInner = styled.span`
   color: ${({ light }) => (light ? 'white' : '#2e3c5d')};
 `;
 
-const HeaderBarLogoWrapper = styled.div`
+const HeaderBarLogoWrapper = styled('div')`
   @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
     padding-top: 5px;
   }
@@ -64,7 +64,7 @@ const HeaderBarLogoWrapper = styled.div`
   }
 `;
 
-const WeVoteLogoWrapper = styled.div`
+const WeVoteLogoWrapper = styled('div')`
   // margin-left: -12px;
   // @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
   //   margin-left: 278px;

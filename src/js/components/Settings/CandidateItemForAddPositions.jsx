@@ -1,7 +1,8 @@
-import { withStyles, withTheme } from '@material-ui/core/styles';
+import withStyles from '@mui/styles/withStyles';
+import withTheme from '@mui/styles/withTheme';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
-import styled from 'styled-components';
+import styled from '@mui/material/styles/styled';
 import CandidateStore from '../../stores/CandidateStore';
 import SupportStore from '../../stores/SupportStore';
 import { isCordova } from '../../common/utils/isCordovaOrWebApp';
@@ -240,31 +241,31 @@ const styles = (theme) => ({
   cardFooterIconRoot: {
     fontSize: 14,
     margin: '0 0 .1rem .3rem',
-    [theme.breakpoints.down('lg')]: {
+    [theme.breakpoints.down('xl')]: {
       marginBottom: '.2rem',
     },
   },
 });
 
-const Wrapper = styled.div`
+const Wrapper = styled('div')`
 `;
 
-const CandidateTopRow = styled.div`
+const CandidateTopRow = styled('div')`
   display: flex;
   flex-flow: row nowrap;
   justify-content: space-between;
 `;
 
-const Candidate = styled.div`
+const Candidate = styled('div')`
   display: flex;
   cursor: pointer;
 `;
 
-const ItemPositionStatementActionBarDesktopWrapper = styled.div`
+const ItemPositionStatementActionBarDesktopWrapper = styled('div')`
   margin-bottom: 8px;
 `;
 
-const ItemPositionStatementActionBarMobileWrapper = styled.div`
+const ItemPositionStatementActionBarMobileWrapper = styled('div')`
   margin-bottom: 4px;
 `;
 

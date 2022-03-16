@@ -1,6 +1,7 @@
-import { Dialog, DialogContent, DialogTitle, IconButton, Typography } from '@material-ui/core';
-import { withStyles, withTheme } from '@material-ui/core/styles';
-import { Close } from '@material-ui/icons';
+import { Dialog, DialogContent, DialogTitle, IconButton, Typography } from '@mui/material';
+import withStyles from '@mui/styles/withStyles';
+import withTheme from '@mui/styles/withTheme';
+import { Close } from '@mui/icons-material';
 import clsx from 'clsx';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
@@ -183,7 +184,7 @@ class SignInModal extends Component {
             classes={{ root: classes.closeButton }}
             onClick={() => { this.closeFunction(); }}
             id="profileCloseSignInModal"
-          >
+            size="large">
             <Close />
           </IconButton>
         </DialogTitle>
@@ -265,7 +266,7 @@ const styles = (theme) => ({
     // zIndex: '9010 !important',
   },
   dialogPaper: isWebApp() ? {
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down('md')]: {
       minWidth: '95%',
       maxWidth: '95%',
       width: '95%',
@@ -289,39 +290,39 @@ const styles = (theme) => ({
     position: 'absolute',
   },
   focusedOnSingleInput: isWebApp() ? {
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down('md')]: {
       position: 'absolute',
       top: '75%',
       left: '73%',
     },
   } : {},
   emailInputWebApp0to568: {
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down('md')]: {
       transform: 'translate(-75%, -50%)',
     },
   },
   phoneInputWebApp0to568: {
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down('md')]: {
       transform: 'translate(-75%, -60%)',
     },
   },
   emailInputWebApp569to736: {
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down('md')]: {
       transform: 'translate(-75%, -55%)',
     },
   },
   phoneInputWebApp569to736: {
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down('md')]: {
       transform: 'translate(-75%, -55%)',
     },
   },
   emailInputWebApp737to896: {
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down('md')]: {
       transform: 'translate(-75%, -40%)',
     },
   },
   phoneInputWebApp737to896: {
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down('md')]: {
       transform: 'translate(-75%, -55%)',
     },
   },
@@ -333,14 +334,14 @@ const styles = (theme) => ({
     top: isCordova() ? '6%' : '180px',
   },
   dialogContent: {
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down('lg')]: {
       padding: '0 8px 8px',
     },
   },
   closeButton: {
     position: 'absolute',
-    right: `${theme.spacing(1)}px`,
-    top: `${theme.spacing(1)}px`,
+    right: theme.spacing(1),
+    top: theme.spacing(1),
   },
 });
 

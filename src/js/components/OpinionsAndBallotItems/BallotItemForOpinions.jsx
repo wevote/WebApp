@@ -1,7 +1,8 @@
-import { withStyles, withTheme } from '@material-ui/core/styles';
+import withStyles from '@mui/styles/withStyles';
+import withTheme from '@mui/styles/withTheme';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
-import styled from 'styled-components';
+import styled from '@mui/material/styles/styled';
 import { renderLog } from '../../common/utils/logging';
 import MeasureItemForOpinions from './MeasureItemForOpinions';
 import OfficeItemForOpinions from './OfficeItemForOpinions';
@@ -124,14 +125,14 @@ const styles = (theme) => ({
   cardFooterIconRoot: {
     fontSize: 14,
     margin: '0 0 .1rem .3rem',
-    [theme.breakpoints.down('lg')]: {
+    [theme.breakpoints.down('xl')]: {
       marginBottom: '.2rem',
     },
   },
 });
 
 // Dale to update when I have time to work out the kinks
-const BallotItemCard = styled.div`
+const BallotItemCard = styled('div')`
   $item-padding: 16px;
   background-color: #fff;
   border-radius: 4px;

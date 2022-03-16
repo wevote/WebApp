@@ -1,13 +1,14 @@
-import { Drawer, IconButton } from '@material-ui/core';
-import { withStyles, withTheme } from '@material-ui/core/styles';
+import { Drawer, IconButton } from '@mui/material';
+import styled from '@mui/material/styles/styled';
+import withStyles from '@mui/styles/withStyles';
+import withTheme from '@mui/styles/withTheme';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
-import styled from 'styled-components';
+import historyPush from '../../common/utils/historyPush';
+import { isCordova } from '../../common/utils/isCordovaOrWebApp';
+import { renderLog } from '../../common/utils/logging';
 import ActivityStore from '../../stores/ActivityStore';
 import { cordovaDrawerTopMargin } from '../../utils/cordovaOffsets';
-import { isCordova } from '../../common/utils/isCordovaOrWebApp';
-import historyPush from '../../common/utils/historyPush';
-import { renderLog } from '../../common/utils/logging';
 
 const ActivityCommentAdd = React.lazy(() => import(/* webpackChunkName: 'ActivityCommentAdd' */ './ActivityCommentAdd'));
 const ActivityTidbitAddReaction = React.lazy(() => import(/* webpackChunkName: 'ActivityTidbitAddReaction' */ './ActivityTidbitAddReaction'));
@@ -71,71 +72,70 @@ class ActivityTidbitDrawer extends Component {
     const { modalOpen, speakerVoterWeVoteId } = this.state;
 
     return (
-      <>
-        <Drawer
-          anchor="right"
-          classes={{ paper: classes.drawerClasses }}
-          direction="left"
-          id="share-menu"
-          onClose={this.closeActivityTidbitDrawer}
-          open={modalOpen}
+      <Drawer
+        anchor="right"
+        classes={{ paper: classes.drawerClasses }}
+        direction="left"
+        id="share-menu"
+        onClose={this.closeActivityTidbitDrawer}
+        open={modalOpen}
+      >
+        <IconButton
+          aria-label="Close"
+          className={classes.closeButton}
+          id="closeActivityTidbitDrawer"
+          onClick={this.closeActivityTidbitDrawer}
+          size="large"
         >
-          <IconButton
-            aria-label="Close"
-            className={classes.closeButton}
-            id="closeActivityTidbitDrawer"
-            onClick={this.closeActivityTidbitDrawer}
-          >
-            <span className="fas fa-times u-cursor--pointer" />
-          </IconButton>
-          <ActivityTidbitDrawerInnerWrapper>
-            {(activityTidbitWeVoteId && speakerVoterWeVoteId) ? (
-              <>
-                <ActivityTidbitItemWrapper>
-                  <Suspense fallback={<></>}>
-                    <ActivityTidbitItem
-                      activityTidbitWeVoteId={activityTidbitWeVoteId}
-                      startingNumberOfPositionsToDisplay={3}
-                    />
-                  </Suspense>
-                </ActivityTidbitItemWrapper>
+          <span className="fas fa-times u-cursor--pointer" />
+        </IconButton>
+        <ActivityTidbitDrawerInnerWrapper>
+          {(activityTidbitWeVoteId && speakerVoterWeVoteId) ? (
+            <>
+              <ActivityTidbitItemWrapper>
                 <Suspense fallback={<></>}>
-                  <ActivityTidbitReactionsSummary
+                  <ActivityTidbitItem
                     activityTidbitWeVoteId={activityTidbitWeVoteId}
+                    startingNumberOfPositionsToDisplay={3}
                   />
                 </Suspense>
-                <Suspense fallback={<></>}>
-                  <ActivityTidbitAddReaction
-                    activityTidbitWeVoteId={activityTidbitWeVoteId}
-                  />
-                </Suspense>
-                <Suspense fallback={<></>}>
-                  <ActivityTidbitComments
-                    activityTidbitWeVoteId={activityTidbitWeVoteId}
-                    showAllParentComments
-                  />
-                </Suspense>
-                <Suspense fallback={<></>}>
-                  <ActivityCommentAdd
-                    activityTidbitWeVoteId={activityTidbitWeVoteId}
-                  />
-                </Suspense>
-              </>
-            ) : (
+              </ActivityTidbitItemWrapper>
               <Suspense fallback={<></>}>
-                <DelayedLoad showLoadingText waitBeforeShow={500}>
-                  <div>
-                    That discussion item could not be found, or you are not allowed to see it.
-                    <br />
-                    <br />
-                    Please make sure you are signed in so you can see all of your friend&apos;s amazing thoughts!
-                  </div>
-                </DelayedLoad>
+                <ActivityTidbitReactionsSummary
+                  activityTidbitWeVoteId={activityTidbitWeVoteId}
+                />
               </Suspense>
-            )}
-          </ActivityTidbitDrawerInnerWrapper>
-        </Drawer>
-      </>
+              <Suspense fallback={<></>}>
+                <ActivityTidbitAddReaction
+                  activityTidbitWeVoteId={activityTidbitWeVoteId}
+                />
+              </Suspense>
+              <Suspense fallback={<></>}>
+                <ActivityTidbitComments
+                  activityTidbitWeVoteId={activityTidbitWeVoteId}
+                  showAllParentComments
+                />
+              </Suspense>
+              <Suspense fallback={<></>}>
+                <ActivityCommentAdd
+                  activityTidbitWeVoteId={activityTidbitWeVoteId}
+                />
+              </Suspense>
+            </>
+          ) : (
+            <Suspense fallback={<></>}>
+              <DelayedLoad showLoadingText waitBeforeShow={500}>
+                <div>
+                  That discussion item could not be found, or you are not allowed to see it.
+                  <br />
+                  <br />
+                  Please make sure you are signed in so you can see all of your friend&apos;s amazing thoughts!
+                </div>
+              </DelayedLoad>
+            </Suspense>
+          )}
+        </ActivityTidbitDrawerInnerWrapper>
+      </Drawer>
     );
   }
 }
@@ -165,10 +165,10 @@ const styles = () => ({
   },
 });
 
-const ActivityTidbitItemWrapper = styled.div`
+const ActivityTidbitItemWrapper = styled('div')`
 `;
 
-const ActivityTidbitDrawerInnerWrapper = styled.div`
+const ActivityTidbitDrawerInnerWrapper = styled('div')`
   margin-left: 12px;
   margin-right: 12px;
 `;

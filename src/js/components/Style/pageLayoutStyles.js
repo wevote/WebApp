@@ -1,4 +1,4 @@
-import { AppBar } from '@material-ui/core';
+import { AppBar } from '@mui/material';
 import styled from 'styled-components';
 import CordovaPageConstants from '../../constants/CordovaPageConstants';
 import AppObservableStore from '../../stores/AppObservableStore';

@@ -1,8 +1,8 @@
-import { Button } from '@material-ui/core';
-import { withStyles } from '@material-ui/core/styles';
+import { Button } from '@mui/material';
+import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import styled from 'styled-components';
+import styled from '@mui/material/styles/styled';
 import FriendActions from '../../actions/FriendActions';
 import FriendStore from '../../stores/FriendStore';
 import VoterStore from '../../stores/VoterStore';
@@ -98,7 +98,7 @@ const styles = () => ({
   },
 });
 
-const ButtonContainer = styled.div`
+const ButtonContainer = styled('div')`
   width: 100%;
   margin-bottom: 0;
   margin-right: 12px;

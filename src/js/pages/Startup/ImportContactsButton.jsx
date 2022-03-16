@@ -1,7 +1,7 @@
-import { Button } from '@material-ui/core';
+import { Button } from '@mui/material';
 import PropTypes from 'prop-types';
 import React from 'react';
-import styled from 'styled-components';
+import styled from '@mui/material/styles/styled';
 import { renderLog } from '../../common/utils/logging';
 import { checkPermissionContacts } from './cordovaContactUtils';
 
@@ -30,7 +30,7 @@ ImportContactsButton.propTypes = {
 };
 
 
-const ImportContactsButtonWrapper = styled.div`
+const ImportContactsButtonWrapper = styled('div')`
   padding-top: 35px;
   padding-bottom: 20px;
 `;

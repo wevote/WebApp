@@ -1,9 +1,9 @@
-import { withStyles } from '@material-ui/core/styles';
+import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
 import Helmet from 'react-helmet';
 import { Link } from 'react-router-dom';
-import styled from 'styled-components';
+import styled from '@mui/material/styles/styled';
 import PricingCard from '../../components/More/PricingCard';
 import { Section } from '../../components/Welcome/sectionStyles';
 import PricingSwitch from '../../components/Widgets/PricingSwitch';
@@ -645,7 +645,7 @@ const styles = (theme) => ({
   buttonContained: {
     borderRadius: 32,
     height: 50,
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down('lg')]: {
       height: 36,
     },
   },
@@ -661,7 +661,7 @@ const styles = (theme) => ({
     '&:hover': {
       color: 'white',
     },
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down('lg')]: {
       fontSize: 12,
     },
   },
@@ -670,7 +670,7 @@ const styles = (theme) => ({
   },
 });
 
-const Wrapper = styled.div`
+const Wrapper = styled('div')`
   display: flex;
   flex-flow: column nowrap;
   align-items: center;
@@ -679,7 +679,7 @@ const Wrapper = styled.div`
   padding-top: ${({ padTop }) => padTop};
 `;
 
-const HeaderForPricing = styled.div`
+const HeaderForPricing = styled('div')`
   position: relative;
   height: 210px;
   width: 110%;
@@ -698,14 +698,14 @@ const HeaderForPricing = styled.div`
   }
 `;
 
-const HeaderForPricingModal = styled.div`
+const HeaderForPricingModal = styled('div')`
   position: relative;
   width: 110%;
   padding: 0 0 10px 0;
   text-align: center;
 `;
 
-const PricingTitle = styled.h1`
+const PricingTitle = styled('h1')`
   font-weight: bold;
   font-size: 36px;
   text-align: center;
@@ -722,13 +722,13 @@ const PricingTitle = styled.h1`
   }
 `;
 
-const PricingSubTitleDesktop = styled.div`
+const PricingSubTitleDesktop = styled('div')`
 `;
 
-const PricingSubTitleMobile = styled.div`
+const PricingSubTitleMobile = styled('div')`
 `;
 
-const PricingDescriptionContainer = styled.div`
+const PricingDescriptionContainer = styled('div')`
   margin: 1em auto;
   width: 100%;
   min-width: 100%;
@@ -744,7 +744,7 @@ const PricingDescriptionContainer = styled.div`
   }
 `;
 
-const Row = styled.div`
+const Row = styled('div')`
   margin: 0 auto !important;
 `;
 

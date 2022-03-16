@@ -1,21 +1,18 @@
-import { withStyles, withTheme } from '@material-ui/core/styles';
-import { Launch, Twitter } from '@material-ui/icons';
+import { Launch, Twitter } from '@mui/icons-material';
+import styled from '@mui/material/styles/styled';
+import withStyles from '@mui/styles/withStyles';
+import withTheme from '@mui/styles/withTheme';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
 import Button from 'react-bootstrap/Button';
 import { Link } from 'react-router-dom';
-import styled from 'styled-components';
 import OrganizationActions from '../../actions/OrganizationActions';
-import OrganizationStore from '../../stores/OrganizationStore';
-import VoterStore from '../../stores/VoterStore';
+import LoadingWheel from '../../common/components/Widgets/LoadingWheel';
 import historyPush from '../../common/utils/historyPush';
 import { renderLog } from '../../common/utils/logging';
-import {
-  abbreviateNumber,
-  numberWithCommas,
-  removeTwitterNameFromDescription,
-} from '../../utils/textFormat';
-import LoadingWheel from '../../common/components/Widgets/LoadingWheel';
+import OrganizationStore from '../../stores/OrganizationStore';
+import VoterStore from '../../stores/VoterStore';
+import { abbreviateNumber, numberWithCommas, removeTwitterNameFromDescription } from '../../utils/textFormat';
 import ParsedTwitterDescription from '../Twitter/ParsedTwitterDescription';
 
 const FollowToggle = React.lazy(() => import(/* webpackChunkName: 'FollowToggle' */ '../Widgets/FollowToggle'));
@@ -210,35 +207,35 @@ const styles = () => ({
   },
 });
 
-const BannerImage = styled.div`
+const BannerImage = styled('div')`
   background: #f7f7f7;
   min-height: 90.05px !important;
   display: block;
   width: 100%;
 `;
 
-const Container = styled.div`
+const Container = styled('div')`
   padding: 8px;
 `;
 
-const Description = styled.div`
+const Description = styled('div')`
   margin-top: 8px;
   color: #333 !important;
   font-weight: 500 !important;
   font-size: 12px !important;
 `;
 
-const FollowToggleContainer = styled.div`
+const FollowToggleContainer = styled('div')`
   width: 125px;
 `;
 
-const ImageContainer = styled.div`
+const ImageContainer = styled('div')`
   * {
     border-radius: 50px;
   }
 `;
 
-const LogoFollowToggleContainer = styled.div`
+const LogoFollowToggleContainer = styled('div')`
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -246,11 +243,11 @@ const LogoFollowToggleContainer = styled.div`
   bottom: 32px;
 `;
 
-const MainContent = styled.div`
+const MainContent = styled('div')`
   margin-top: -24px;
 `;
 
-const OrganizationName = styled.h3`
+const OrganizationName = styled('h3')`
   font-weight: bold;
   font-size: 18px;
   color: ${({ theme }) => theme.colors.brandBlue};
@@ -258,19 +255,19 @@ const OrganizationName = styled.h3`
   text-decoration: none !important;
 `;
 
-const TwitterHandleWrapper = styled.span`
+const TwitterHandleWrapper = styled('span')`
   color: #000;
   margin-right: 5px;
 `;
 
-const TwitterWrapper = styled.div`
+const TwitterWrapper = styled('div')`
   font-size: 13px;
   margin: 0;
   margin-top: 4px;
   white-space: nowrap;
 `;
 
-const Wrapper = styled.div`
+const Wrapper = styled('div')`
   overflow-x: hidden;
   width: 100%;
   height: 100%;

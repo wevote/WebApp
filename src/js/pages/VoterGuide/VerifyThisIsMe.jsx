@@ -1,10 +1,10 @@
-import { Button } from '@material-ui/core';
-import { withStyles } from '@material-ui/core/styles';
+import { Button } from '@mui/material';
+import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
 import Alert from 'react-bootstrap/Alert';
 import Helmet from 'react-helmet';
-import styled from 'styled-components';
+import styled from '@mui/material/styles/styled';
 import AppObservableStore from '../../stores/AppObservableStore';
 import TwitterActions from '../../actions/TwitterActions';
 import VoterSessionActions from '../../actions/VoterSessionActions';
@@ -349,12 +349,12 @@ VerifyThisIsMe.propTypes = {
   twitter_handle: PropTypes.string,
 };
 
-const BackToVoterGuideWrapper = styled.div`
+const BackToVoterGuideWrapper = styled('div')`
   text-align: left;
   margin: 20px 0;
 `;
 
-const FakeLink = styled.span`
+const FakeLink = styled('span')`
   text-decoration: underline;
 `;
 

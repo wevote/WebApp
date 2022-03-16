@@ -1,8 +1,10 @@
-import { withStyles, withTheme } from '@material-ui/core/styles';
-import { ArrowForward } from '@material-ui/icons';
+import withStyles from '@mui/styles/withStyles';
+import withTheme from '@mui/styles/withTheme';
+import { ArrowForward } from '@mui/icons-material';
 import PropTypes from 'prop-types';
 import React from 'react';
-import styled from 'styled-components';
+import styled from '@mui/material/styles/styled';
+import passBool from '../../common/utils/passBool';
 import AppObservableStore from '../../stores/AppObservableStore';
 import ReadyStore from '../../stores/ReadyStore';
 import VoterStore from '../../stores/VoterStore';
@@ -62,7 +64,7 @@ class ReadyTaskPlan extends React.Component {
     const { completed, voterPlanText } = this.state;
 
     return (
-      <ReadyCard showprogresscolor={completed} className="card">
+      <ReadyCard showprogresscolor={passBool(completed)} className="card">
         <Icon className="u-cursor--pointer" onClick={this.showVoterPlanModal}>
           {completed ?  (
             <img
@@ -106,7 +108,7 @@ class ReadyTaskPlan extends React.Component {
                 </>
               )}
             </PlanTitle>
-            <PercentComplete showprogresscolor={completed || undefined}>
+            <PercentComplete showprogresscolor={passBool(completed)}>
               {completed ? '100%' : '0%'}
               {!!(completed) && (
                 <span className="u-show-desktop-tablet">
@@ -165,13 +167,13 @@ const styles = (theme) => ({
     fontSize: 14,
     marginBottom: 3,
     marginLeft: 4,
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down('md')]: {
       fontSize: 14,
     },
   },
 });
 
-const PlanTitle = styled.h3`
+const PlanTitle = styled('h3')`
   margin: 0;
   font-size: 30px;
   font-weight: 600;
@@ -187,7 +189,7 @@ const PlanTitle = styled.h3`
   }
 `;
 
-const VoterPlanPreview = styled.div`
+const VoterPlanPreview = styled('div')`
   padding: 8px;
   background: #e8e8e8;
   font-size: 16px;

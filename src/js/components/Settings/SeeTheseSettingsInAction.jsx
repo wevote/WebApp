@@ -1,7 +1,7 @@
-import { withStyles } from '@material-ui/core/styles';
+import withStyles from '@mui/styles/withStyles';
 import React, { Component, Suspense } from 'react';
 import { Link } from 'react-router-dom';
-import styled from 'styled-components';
+import styled from '@mui/material/styles/styled';
 import OrganizationStore from '../../stores/OrganizationStore';
 import VoterStore from '../../stores/VoterStore';
 import { renderLog } from '../../common/utils/logging';
@@ -145,7 +145,7 @@ const styles = () => ({
   },
 });
 
-const LinkToDomainRow = styled.div`
+const LinkToDomainRow = styled('div')`
   padding: 0;
 `;
 

@@ -1,7 +1,7 @@
-import { withStyles } from '@material-ui/core/styles';
+import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import styled from 'styled-components';
+import styled from '@mui/material/styles/styled';
 import BallotActions from '../../actions/BallotActions';
 import OrganizationActions from '../../actions/OrganizationActions';
 import VoterGuideActions from '../../actions/VoterGuideActions';
@@ -237,7 +237,7 @@ const styles = () => ({
   },
 });
 
-const EndorsementListBody = styled.div`
+const EndorsementListBody = styled('div')`
 `;
 
 export default withStyles(styles)(VoterGuideSettingsDashboard);

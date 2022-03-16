@@ -2,7 +2,7 @@ import { filter } from 'lodash-es';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
 import Helmet from 'react-helmet';
-import styled from 'styled-components';
+import styled from '@mui/material/styles/styled';
 import OrganizationActions from '../../actions/OrganizationActions';
 import VoterGuideActions from '../../actions/VoterGuideActions';
 import OrganizationStore from '../../stores/OrganizationStore';
@@ -236,22 +236,22 @@ VoterGuideFollowers.propTypes = {
   organizationWeVoteId: PropTypes.string.isRequired,
 };
 
-const SearchInputWrapper = styled.div`
+const SearchInputWrapper = styled('div')`
   margin-left: 15px;
   margin-right: 15px;
   margin-bottom: 8px;
 `;
 
-const SearchResultsWrapper = styled.div`
+const SearchResultsWrapper = styled('div')`
   margin-left: 15px;
   margin-right: 15px;
 `;
 
-const TitleWrapper = styled.div`
+const TitleWrapper = styled('div')`
   margin: 15px;
 `;
 
-const Wrapper = styled.div`
+const Wrapper = styled('div')`
   @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
     // margin-left: 15px;
     // margin-right: 15px;

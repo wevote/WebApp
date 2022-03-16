@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { withStyles } from '@material-ui/core/styles';
-import { Ballot } from '@material-ui/icons';
-import { Typography, Button } from '@material-ui/core';
-import styled from 'styled-components';
+import withStyles from '@mui/styles/withStyles';
+import { Ballot } from '@mui/icons-material';
+import { Typography, Button } from '@mui/material';
+import styled from '@mui/material/styles/styled';
 import BallotStore from '../../stores/BallotStore';
 import { renderLog } from '../../common/utils/logging';
 
@@ -74,7 +74,7 @@ const styles = (theme) => ({
     padding: '16px 0',
     fontWeight: 600,
     fontSize: 18,
-    [theme.breakpoints.down('lg')]: {
+    [theme.breakpoints.down('xl')]: {
       padding: '12px 0',
     },
     marginBottom: 0,
@@ -86,7 +86,7 @@ const styles = (theme) => ({
     borderRadius: '0px',
     boxShadow: '0 1px 3px 0 rgba(0, 0, 0, 0.2), 0 1px 1px 0 rgba(0, 0, 0, 0.14), 0 2px 1px -1px rgba(0, 0, 0, 0.12)',
     marginBottom: '16px',
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down('lg')]: {
       marginLeft: '-16px',
       marginRight: '-16px',
     },
@@ -103,7 +103,7 @@ const styles = (theme) => ({
   },
 });
 
-const Row = styled.div`
+const Row = styled('div')`
   margin: 0 !important;
 `;
 

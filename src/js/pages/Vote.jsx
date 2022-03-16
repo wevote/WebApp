@@ -1,10 +1,10 @@
-import { Button, Card } from '@material-ui/core';
-import { withStyles } from '@material-ui/core/styles';
-import { Ballot } from '@material-ui/icons';
+import { Button, Card } from '@mui/material';
+import withStyles from '@mui/styles/withStyles';
+import { Ballot } from '@mui/icons-material';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
 import Helmet from 'react-helmet';
-import styled from 'styled-components';
+import styled from '@mui/material/styles/styled';
 import BallotActions from '../actions/BallotActions';
 import ElectionActions from '../actions/ElectionActions';
 import IssueActions from '../actions/IssueActions';
@@ -523,7 +523,7 @@ Vote.propTypes = {
   classes: PropTypes.object,
 };
 
-const VoteContainer = styled.div`
+const VoteContainer = styled('div')`
   padding-top: ${({ padTop }) => padTop};
   @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
     overflow-x: hidden;
@@ -531,18 +531,18 @@ const VoteContainer = styled.div`
 `;
 
 // Breakpoints cause trouble in Cordova
-const Wrapper = styled.div`
+const Wrapper = styled('div')`
   @media (max-width: ${({ theme, cordova }) => (cordova ? undefined : theme.breakpoints.md)}) {
     margin: 1em 0;
   }
 `;
 
-const TitleContainer = styled.div`
+const TitleContainer = styled('div')`
   padding: 1em 1em 0 1em;
   align-items: center;
 `;
 
-const TitleText = styled.h3`
+const TitleText = styled('h3')`
   width: fit-content;
   font-weight: bold;
   font-size: 18px;
@@ -552,24 +552,24 @@ const TitleText = styled.h3`
   }
 `;
 
-const ReturnOfficialBallotContainer = styled.div`
+const ReturnOfficialBallotContainer = styled('div')`
   padding: 0 1em 0 1em;
   align-items: center;
 `;
 
 // If we want to turn off filter tabs navigation bar:  ${({ showFilterTabs }) => !showFilterTabs && 'height: 0;'}
-const BallotFilterRow = styled.div`
+const BallotFilterRow = styled('div')`
   display: flex;
 `;
 
-const EmptyBallotMessageContainer = styled.div`
+const EmptyBallotMessageContainer = styled('div')`
   padding: 1em 2em;
   display: flex;
   flex-flow: column;
   align-items: center;
 `;
 
-const EmptyBallotText = styled.span`
+const EmptyBallotText = styled('span')`
   font-size: 16px;
   text-align: center;
   margin: 1em 2em;
@@ -578,12 +578,12 @@ const EmptyBallotText = styled.span`
   }
 `;
 
-const PollingLocationContainer = styled.div`
+const PollingLocationContainer = styled('div')`
   padding: 1em 1em;
   align-items: center;
 `;
 
-const CardGap = styled.div`
+const CardGap = styled('div')`
   padding: 7px;
 `;
 
@@ -598,7 +598,7 @@ const styles = (theme) => ({
   },
   ballotButtonRoot: {
     width: 250,
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down('lg')]: {
       width: '100%',
     },
   },

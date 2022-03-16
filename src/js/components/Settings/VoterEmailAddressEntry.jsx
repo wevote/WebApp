@@ -1,11 +1,12 @@
-import { Button, InputBase, Paper } from '@material-ui/core';
-import { withStyles } from '@material-ui/core/styles';
-import { Delete, Mail } from '@material-ui/icons';
+import { Button, InputBase, Paper } from '@mui/material';
+import withStyles from '@mui/styles/withStyles';
+import { Delete, Mail } from '@mui/icons-material';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
 import Alert from 'react-bootstrap/Alert';
-import styled from 'styled-components';
+import styled from '@mui/material/styles/styled';
 import VoterActions from '../../actions/VoterActions';
+import passBool from '../../common/utils/passBool';
 import VoterStore from '../../stores/VoterStore';
 import { blurTextFieldAndroid, focusTextFieldAndroid } from '../../common/utils/cordovaUtils';
 import { isCordova, isWebApp } from '../../common/utils/isCordovaOrWebApp';
@@ -550,7 +551,7 @@ class VoterEmailAddressEntry extends Component {
     });
 
     return (
-      <Wrapper isWeb={isWebApp()}>
+      <Wrapper isweb={passBool(isWebApp())}>
         {(hideEverythingButSignInWithEmailForm || hideExistingEmailAddresses) ? (
           <span>
             {emailAddressStatusHtml}
@@ -558,7 +559,7 @@ class VoterEmailAddressEntry extends Component {
         ) : (
           <div>
             {verifiedEmailsFound ? (
-              <EmailSection isWeb={isWebApp()}>
+              <EmailSection isweb={passBool(isWebApp())}>
                 <span className="h3">
                   Your Email
                   {voterEmailAddressListCount > 1 ? 's' : ''}
@@ -572,7 +573,7 @@ class VoterEmailAddressEntry extends Component {
               </span>
             )}
             {unverifiedEmailsFound && (
-              <EmailSection isWeb={isWebApp()}>
+              <EmailSection isweb={passBool(isWebApp())}>
                 <span className="h3">Emails to Verify</span>
                 {toVerifyEmailListHtml}
               </EmailSection>
@@ -580,7 +581,7 @@ class VoterEmailAddressEntry extends Component {
           </div>
         )}
         {!hideSignInWithEmailForm && (
-          <EmailSection isWeb={isWebApp()}>
+          <EmailSection isweb={passBool(isWebApp())}>
             {enterEmailHtml}
           </EmailSection>
         )}
@@ -621,7 +622,7 @@ const styles = {
   },
 };
 
-const ButtonWrapper = styled.div`
+const ButtonWrapper = styled('div')`
   width: 100%;
   margin: 4px 0 0 0;
   display: flex;
@@ -629,21 +630,21 @@ const ButtonWrapper = styled.div`
   justify-content: flex-end;
 `;
 
-const ButtonContainer = styled.div`
+const ButtonContainer = styled('div')`
   width: fit-content;
   margin-left: 8px;
 `;
 
-const CancelButtonContainer = styled.div`
+const CancelButtonContainer = styled('div')`
   width: fit-content;
 `;
 
-const Wrapper = styled.div`
-  margin-top: ${({ isWeb }) => (isWeb ? '32px;' : '0')};
+const Wrapper = styled('div')`
+  margin-top: ${({ isweb }) => (isweb ? '32px;' : '0')};
 `;
 
-const EmailSection = styled.div`
-  margin-top: ${({ isWeb }) => (isWeb ? '18px;' : '0')};
+const EmailSection = styled('div')`
+  margin-top: ${({ isweb }) => (isweb ? '18px;' : '0')};
 `;
 
 export default withStyles(styles)(VoterEmailAddressEntry);

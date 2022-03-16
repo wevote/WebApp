@@ -1,8 +1,9 @@
-import { Button, InputBase, Paper } from '@material-ui/core';
-import { withStyles, withTheme } from '@material-ui/core/styles';
+import { Button, InputBase, Paper } from '@mui/material';
+import withStyles from '@mui/styles/withStyles';
+import withTheme from '@mui/styles/withTheme';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import styled from 'styled-components';
+import styled from '@mui/material/styles/styled';
 import SupportActions from '../../actions/SupportActions';
 import SupportStore from '../../stores/SupportStore';
 import VoterStore from '../../stores/VoterStore';
@@ -368,7 +369,7 @@ const styles = (theme) => ({
     boxShadow: 'none',
     border: '1px solid #333',
     padding: '8px',
-    [theme.breakpoints.down('xs')]: {
+    [theme.breakpoints.down('sm')]: {
       height: 'auto',
     },
   },
@@ -376,7 +377,7 @@ const styles = (theme) => ({
     boxShadow: 'none',
     border: 'none',
     padding: '8px',
-    [theme.breakpoints.down('xs')]: {
+    [theme.breakpoints.down('sm')]: {
       height: 'auto',
     },
   },
@@ -385,14 +386,14 @@ const styles = (theme) => ({
     width: '100%',
     alignItems: 'flex-end',
     justifyContent: 'flex-start',
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down('md')]: {
       alignItems: 'center',
     },
   },
   input: {
     flex: '1 1 0',
     height: '100%',
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down('md')]: {
       fontSize: 14,
     },
   },
@@ -412,12 +413,12 @@ const styles = (theme) => ({
     fontWeight: 600,
     background: 'white',
     color: '#313131',
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down('lg')]: {
       fontWeight: 500,
       height: '100%',
       fontSize: 12,
     },
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down('md')]: {
       padding: '2px 4px',
       fontWeight: 600,
       height: '100%',
@@ -426,7 +427,7 @@ const styles = (theme) => ({
   },
 });
 
-const Wrapper = styled.div`
+const Wrapper = styled('div')`
   ${({ shownInList }) => (shownInList ? '' : (
     'background-color: #f8f8f8;' +
     'padding: 8px 16px;' +
@@ -435,7 +436,7 @@ const Wrapper = styled.div`
   )}
 `;
 
-const PostSaveButton = styled.div`
+const PostSaveButton = styled('div')`
   width: auto;
   margin-left: auto;
   margin-top: auto;

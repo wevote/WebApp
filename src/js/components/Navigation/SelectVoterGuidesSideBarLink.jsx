@@ -1,7 +1,7 @@
-import { Button } from '@material-ui/core';
+import { Button } from '@mui/material';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import styled from 'styled-components';
+import styled from '@mui/material/styles/styled';
 import VoterStore from '../../stores/VoterStore';
 import historyPush from '../../common/utils/historyPush';
 import { renderLog } from '../../common/utils/logging';
@@ -96,18 +96,18 @@ SelectVoterGuidesSideBarLink.propTypes = {
   voterGuideWeVoteId: PropTypes.string,
 };
 
-const Wrapper = styled.div`
+const Wrapper = styled('div')`
   border: 1px solid #ddd;
   border-radius: 4px;
   padding: 16px;
   width: 100%;
 `;
 
-const Content = styled.div`
+const Content = styled('div')`
 
 `;
 
-const Name = styled.h3`
+const Name = styled('h3')`
   color: black !important;
   cursor: pointer;
   font-size: 18px;
@@ -115,14 +115,14 @@ const Name = styled.h3`
   margin-bottom: 4px;
 `;
 
-const Date = styled.small`
+const Date = styled('small')`
   color: #666;
   cursor: pointer;
   font-size: 14px;
   font-weight: normal;
 `;
 
-const ButtonWrapper = styled.div`
+const ButtonWrapper = styled('div')`
   align-items: center;
   display: flex;
   flex-direction: row;
@@ -132,7 +132,7 @@ const ButtonWrapper = styled.div`
   }
 `;
 
-const ButtonContainer = styled.div`
+const ButtonContainer = styled('div')`
   &:first-child {
     margin-bottom: 0;
     margin-right: 8px;

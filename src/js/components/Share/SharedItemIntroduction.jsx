@@ -1,6 +1,7 @@
-import { withStyles, withTheme } from '@material-ui/core/styles';
+import withStyles from '@mui/styles/withStyles';
+import withTheme from '@mui/styles/withTheme';
 import React, { Component } from 'react';
-import styled from 'styled-components';
+import styled from '@mui/material/styles/styled';
 import { renderLog } from '../../common/utils/logging';
 
 class SharedItemIntroduction extends Component {
@@ -128,9 +129,9 @@ const styles = (theme) => ({
     padding: '4px 8px',
     height: 32,
     width: '100%',
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down('lg')]: {
     },
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down('md')]: {
       padding: '4px 4px',
     },
   },
@@ -139,17 +140,17 @@ const styles = (theme) => ({
   },
 });
 
-const OuterWrapper = styled.div`
+const OuterWrapper = styled('div')`
   display: flex;
   justify-content: center;
   padding-left: 12px;
   padding-right: 12px;
 `;
 
-const InnerWrapper = styled.div`
+const InnerWrapper = styled('div')`
 `;
 
-const IntroHeader = styled.div`
+const IntroHeader = styled('div')`
   color: #2e3c5d;
   font-size: 20px;
   font-weight: 600;
@@ -162,29 +163,29 @@ const IntroHeader = styled.div`
   }
 `;
 
-const ListWrapper = styled.div`
+const ListWrapper = styled('div')`
   display: flex;
   justify-content: center;
 `;
 
-const ListMaxWidth = styled.div`
+const ListMaxWidth = styled('div')`
   max-width: 450px;
 `;
 
-const ListTitleRow = styled.div`
+const ListTitleRow = styled('div')`
   display: flex;
   flex-flow: row nowrap;
   justify-content: flex-start;
   padding-top: 14px;
 `;
 
-const ListRow = styled.div`
+const ListRow = styled('div')`
   display: flex;
   flex-flow: row nowrap;
   justify-content: flex-start;
 `;
 
-const Dot = styled.div`
+const Dot = styled('div')`
   padding-top: 2px;
   text-align: center;
   vertical-align: top;
@@ -193,7 +194,7 @@ const Dot = styled.div`
   }
 `;
 
-const StepNumber = styled.div`
+const StepNumber = styled('div')`
   background: ${(props) => props.theme.colors.brandBlue};
   border-radius: 4px;
   color: white;
@@ -209,7 +210,7 @@ const StepNumber = styled.div`
   }
 `;
 
-const StepTitle = styled.div`
+const StepTitle = styled('div')`
   font-size: 20px;
   font-weight: 600;
   padding: 0 8px;
@@ -220,7 +221,7 @@ const StepTitle = styled.div`
   }
 `;
 
-const StepText = styled.div`
+const StepText = styled('div')`
   color: #555;
   font-size: 16px;
   font-weight: 200;
@@ -232,7 +233,7 @@ const StepText = styled.div`
   }
 `;
 
-const StepNumberPlaceholder = styled.div`
+const StepNumberPlaceholder = styled('div')`
   width: 22px;
   height: 22px;
   @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {

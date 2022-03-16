@@ -1,8 +1,8 @@
-import { Twitter } from '@material-ui/icons';
+import { Twitter } from '@mui/icons-material';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
 import { Link } from 'react-router-dom';
-import styled from 'styled-components';
+import styled from '@mui/material/styles/styled';
 import OrganizationActions from '../../actions/OrganizationActions';
 import OrganizationStore from '../../stores/OrganizationStore';
 import { renderLog } from '../../common/utils/logging';
@@ -282,7 +282,7 @@ OrganizationCard.propTypes = {
   we_vote_id: PropTypes.string,
 };
 
-const OrganizationCardWrapper = styled.div`
+const OrganizationCardWrapper = styled('div')`
 `;
 
 // const TwitterFollowersIcon = styled.span`
@@ -292,10 +292,10 @@ const OrganizationCardWrapper = styled.div`
 //   vertical-align: bottom;
 // `;
 
-const TwitterHandleWrapper = styled.span`
+const TwitterHandleWrapper = styled('span')`
   margin-right: 10px;
 `;
 
-const WebsiteWrapper = styled.div`
+const WebsiteWrapper = styled('div')`
   margin-left: 4px;
 `;

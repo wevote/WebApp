@@ -1,9 +1,9 @@
-import { Button } from '@material-ui/core';
-import { withStyles } from '@material-ui/core/styles';
-import { Check, Close } from '@material-ui/icons';
+import { Button } from '@mui/material';
+import withStyles from '@mui/styles/withStyles';
+import { Check, Close } from '@mui/icons-material';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
-import styled from 'styled-components';
+import styled from '@mui/material/styles/styled';
 import OrganizationStore from '../../stores/OrganizationStore';
 import { renderLog } from '../../common/utils/logging';
 import { voterFeaturePackageExceedsOrEqualsRequired } from '../../utils/pricingFunctions';
@@ -187,49 +187,49 @@ const styles = () => ({
   },
 });
 
-const Card = styled.div`
+const Card = styled('div')`
   border-radius: 2px;
   box-shadow: ${(props) => (props.mobile ? '1px 1px 10px 4px #e1e1e1' : '1px 1px 8px 2px #e3e3e3')};
 `;
 
-const CardWrapper = styled.div`
+const CardWrapper = styled('div')`
   padding: 8px;
 `;
 
-const PricingCardHeader = styled.div`
+const PricingCardHeader = styled('div')`
   min-height: ${(props) => (props.mobile ? '75px' : '105px')}
   @media (min-width: 960px) and (max-width: 991px) {
     min-height: 100px;
   }
 `;
 
-const PremiumName = styled.h4`
+const PremiumName = styled('h4')`
   font-size: 18px;
   color: rgb(219,179,86);
   font-weight: bold;
 `;
 
-const DefaultName = styled.h4`
+const DefaultName = styled('h4')`
   color: #2E3C5D;
   font-size: 18px;
   font-weight: bold;
 `;
 
-const DollarSign = styled.span`
+const DollarSign = styled('span')`
   font-size: 18px;
   font-weight: 500;
   position: relative;
   bottom: 8px;
 `;
 
-const Price = styled.h2`
+const Price = styled('h2')`
   font-size: 34px;
   margin: 0;
   display: inline-block;
   font-weight: 500;
 `;
 
-const PriceDescribe = styled.div`
+const PriceDescribe = styled('div')`
   display: inline-block;
   font-size: 12px;
   color: #666;
@@ -237,7 +237,7 @@ const PriceDescribe = styled.div`
   font-weight: 600;
 `;
 
-const PriceDescribeLight = styled.div`
+const PriceDescribeLight = styled('div')`
   margin: 3px 0 0 0;
   padding: 0;
   color: #888;
@@ -245,37 +245,37 @@ const PriceDescribeLight = styled.div`
   margin-top: -5px;
 `;
 
-const Description = styled.p`
+const Description = styled('p')`
   font-weight: 600;
   color: black;
   font-size: 14px;
   min-height: 75px;
 `;
 
-const Bullets = styled.ul`
+const Bullets = styled('ul')`
   margin-left: 0;
   font-size: 12px;
   padding-left: 16px;
   color: #888;
 `;
 
-const BulletItem = styled.li`
+const BulletItem = styled('li')`
   font-weight: 500;
   margin-bottom: 3px;
 `;
 
-const ButtonText = styled.span`
+const ButtonText = styled('span')`
   text-transform: uppercase;
 `;
 
-const Collection = styled.ul`
+const Collection = styled('ul')`
   list-style: none;
   padding: 0;
   margin-top: 8px;
   width: 100%;
 `;
 
-const CollectionItem = styled.li`
+const CollectionItem = styled('li')`
   border-bottom: 1px solid #ddd;
   padding: 6px 0;
   display: flex;
@@ -286,7 +286,7 @@ const CollectionItem = styled.li`
   position: relative;
 `;
 
-const CollectionItemLight = styled.div`
+const CollectionItemLight = styled('div')`
   box-sizing: border-box;
   width: 100%;
   height: 100% !important;
@@ -298,7 +298,7 @@ const CollectionItemLight = styled.div`
 
 `;
 
-const ItemText = styled.span`
+const ItemText = styled('span')`
   margin-left: 6px;
 `;
 

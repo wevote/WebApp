@@ -1,10 +1,10 @@
-import { Button, Card } from '@material-ui/core';
-import { withStyles } from '@material-ui/core/styles';
-import { Ballot } from '@material-ui/icons';
+import { Button, Card } from '@mui/material';
+import withStyles from '@mui/styles/withStyles';
+import { Ballot } from '@mui/icons-material';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import Helmet from 'react-helmet';
-import styled from 'styled-components';
+import styled from '@mui/material/styles/styled';
 import { isCordova } from '../common/utils/isCordovaOrWebApp';
 import historyPush from '../common/utils/historyPush';
 import { renderLog } from '../common/utils/logging';
@@ -51,20 +51,20 @@ PageNotFound.propTypes = {
   classes: PropTypes.object,
 };
 
-const Wrapper = styled.div`
+const Wrapper = styled('div')`
   @media (max-width: ${({ theme, cordova }) => (cordova ? undefined : theme.breakpoints.md)}) {
     margin: 1em 0;
   }
 `;
 
-const EmptyBallotMessageContainer = styled.div`
+const EmptyBallotMessageContainer = styled('div')`
   padding: 3em 2em;
   display: flex;
   flex-flow: column;
   align-items: center;
 `;
 
-const EmptyBallotText = styled.p`
+const EmptyBallotText = styled('p')`
   font-size: 24px;
   text-align: center;
   margin: 1em 2em 3em;
@@ -84,7 +84,7 @@ const styles = (theme) => ({
   },
   ballotButtonRoot: {
     width: 250,
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down('lg')]: {
       width: '100%',
     },
   },

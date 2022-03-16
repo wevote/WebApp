@@ -1,9 +1,9 @@
-import { Chip, FormControlLabel, Input, MenuItem, Radio, Select } from '@material-ui/core';
-import { withStyles } from '@material-ui/core/styles';
+import { Chip, FormControlLabel, Input, MenuItem, Radio, Select } from '@mui/material';
+import withStyles from '@mui/styles/withStyles';
 import isEqual from 'lodash-es/isEqual';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import styled from 'styled-components';
+import styled from '@mui/material/styles/styled';
 import BallotActions from '../../actions/BallotActions';
 import BallotStore from '../../stores/BallotStore';
 import { convertStateCodeToStateText, convertStateTextToStateCode, stateCodeMap } from '../../common/utils/addressFunctions';
@@ -578,7 +578,7 @@ SettingsAddBallotItemsFilter.propTypes = {
 
 const styles = (theme) => ({
   formControlLabel: {
-    [theme.breakpoints.down('lg')]: {
+    [theme.breakpoints.down('xl')]: {
       fontSize: 14,
     },
   },
@@ -594,18 +594,18 @@ const styles = (theme) => ({
   },
 });
 
-const Wrapper = styled.div`
+const Wrapper = styled('div')`
   display: ${({ showAllFilters }) => (showAllFilters ? 'flex' : 'none')};
   flex-flow: column;
   padding-top: 1rem;
 `;
 
-const FilterRow = styled.div`
+const FilterRow = styled('div')`
   display: flex;
   flex-flow: row;
 `;
 
-const FilterColumn = styled.div`
+const FilterColumn = styled('div')`
   display: flex;
   flex-flow: column;
   margin-right: 2rem;

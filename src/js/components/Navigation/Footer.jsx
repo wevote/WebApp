@@ -1,6 +1,6 @@
-import { withStyles } from '@material-ui/core/styles';
+import withStyles from '@mui/styles/withStyles';
 import React, { Component, Suspense } from 'react';
-import styled from 'styled-components';
+import styled from '@mui/material/styles/styled';
 import AppObservableStore, { messageService } from '../../stores/AppObservableStore';
 import { getApplicationViewBooleans } from '../../utils/applicationUtils';
 import { isWebApp } from '../../common/utils/isCordovaOrWebApp';
@@ -133,16 +133,16 @@ class Footer extends Component {
 const styles = () => ({
 });
 
-const FooterBarWrapper = styled.div`
+const FooterBarWrapper = styled('div')`
 `;
 
-const FooterMainWrapper = styled.div`
+const FooterMainWrapper = styled('div')`
 `;
 
-const FooterWrapper = styled.div`
+const FooterWrapper = styled('div')`
 `;
 
-const ShareButtonFooterWrapper = styled.div`
+const ShareButtonFooterWrapper = styled('div')`
 `;
 
 export default withStyles(styles)(Footer);

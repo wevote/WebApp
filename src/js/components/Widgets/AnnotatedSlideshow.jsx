@@ -1,6 +1,6 @@
-import { Button } from '@material-ui/core';
-import { withStyles } from '@material-ui/core/styles';
-import { ArrowLeft, ArrowRight } from '@material-ui/icons';
+import { Button } from '@mui/material';
+import withStyles from '@mui/styles/withStyles';
+import { ArrowLeft, ArrowRight } from '@mui/icons-material';
 import PropTypes from 'prop-types';
 import React, { PureComponent } from 'react';
 import styled, { withTheme } from 'styled-components';
@@ -106,7 +106,7 @@ const styles = (theme) => ({
   },
 });
 
-const Wrapper = styled.div`
+const Wrapper = styled('div')`
   display: flex;
   flex-flow: column;
   text-align: left;
@@ -115,7 +115,7 @@ const Wrapper = styled.div`
   }
 `;
 
-const SlideShowTitle = styled.h3`
+const SlideShowTitle = styled('h3')`
   font-weight: bold;
   font-size: 24px;
   margin-top:  ${({ inModal }) => (inModal ? '0' : '36px')};
@@ -125,7 +125,7 @@ const SlideShowTitle = styled.h3`
   }
 `;
 
-const TwoButtonsWrapper = styled.div`
+const TwoButtonsWrapper = styled('div')`
   width: 100%;
   margin: 12px 0 0;
   display: flex;
@@ -133,7 +133,7 @@ const TwoButtonsWrapper = styled.div`
   justify-content: space-between;
 `;
 
-const BackButtonWrapper = styled.div`
+const BackButtonWrapper = styled('div')`
   margin: 0;
   margin-right: 12px;
   width: 100%;
@@ -142,7 +142,7 @@ const BackButtonWrapper = styled.div`
   }
 `;
 
-const NextButtonWrapper = styled.div`
+const NextButtonWrapper = styled('div')`
   margin: 0;
   margin-right: 0;
   width: 100%;
@@ -151,11 +151,11 @@ const NextButtonWrapper = styled.div`
   }
 `;
 
-const Description = styled.p`
+const Description = styled('p')`
   font-size: 16px;
 `;
 
-const Slide = styled.div`
+const Slide = styled('div')`
   display: flex;
   flex-flow: row;
   margin: 1em 0 3em 0;
@@ -163,7 +163,7 @@ const Slide = styled.div`
   justify-content: space-between;
 `;
 
-const Nav = styled.div`
+const Nav = styled('div')`
   display: flex;
   align-items: center;
   justify-content: center;
@@ -187,7 +187,7 @@ const Nav = styled.div`
   }
 `;
 
-const Image = styled.img`
+const Image = styled('img')`
   border: 1px solid #999;
   border-radius: 16px;
   box-shadow: 2px 2px 4px 2px ${({ theme }) => theme.colors.grayLight};

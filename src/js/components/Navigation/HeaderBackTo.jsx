@@ -1,9 +1,9 @@
-import { IconButton, Toolbar } from '@material-ui/core';
-import { withStyles } from '@material-ui/core/styles';
-import { AccountCircle } from '@material-ui/icons';
+import { IconButton, Toolbar } from '@mui/material';
+import withStyles from '@mui/styles/withStyles';
+import { AccountCircle } from '@mui/icons-material';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
-import styled from 'styled-components';
+import styled from '@mui/material/styles/styled';
 import OrganizationActions from '../../actions/OrganizationActions';
 import VoterGuideActions from '../../actions/VoterGuideActions';
 import VoterSessionActions from '../../actions/VoterSessionActions';
@@ -290,7 +290,7 @@ class HeaderBackTo extends Component {
                       classes={{ root: classes.iconButtonRoot }}
                       id="profileAvatarHeaderBar"
                       onClick={this.toggleProfilePopUp}
-                    >
+                      size="large">
                       <FirstNameWrapper>
                         {shortenText(voterFirstName, 9)}
                       </FirstNameWrapper>
@@ -348,7 +348,7 @@ const styles = (theme) => ({
     color: 'rgb(6, 95, 212)',
     marginLeft: '1rem',
     outline: 'none !important',
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down('lg')]: {
       marginLeft: '.1rem',
     },
   },
@@ -366,7 +366,7 @@ const styles = (theme) => ({
   },
 });
 
-const FirstNameWrapper = styled.div`
+const FirstNameWrapper = styled('div')`
   font-size: 14px;
   padding-right: 4px;
 `;

@@ -1,10 +1,12 @@
-import { IconButton, InputBase } from '@material-ui/core';
-import { withStyles, withTheme } from '@material-ui/core/styles';
-import { Search } from '@material-ui/icons';
+import { IconButton, InputBase } from '@mui/material';
+import withStyles from '@mui/styles/withStyles';
+import withTheme from '@mui/styles/withTheme';
+import { Search } from '@mui/icons-material';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
 import { Link } from 'react-router-dom';
-import styled from 'styled-components';
+import styled from '@mui/material/styles/styled';
+import passBool from '../../common/utils/passBool';
 import VoterGuideStore from '../../stores/VoterGuideStore';
 import { blurTextFieldAndroid, focusTextFieldAndroid, isAndroid, isIOS } from '../../common/utils/cordovaUtils';
 import { isCordova } from '../../common/utils/isCordovaOrWebApp';
@@ -143,9 +145,9 @@ class FindOpinionsForm extends Component {
             </IntroHeader>
           )}
           <SearchWrapper
-            brandBlue={theme.palette.primary.main}
-            isCordova={isCordova()}
-            searchTextLarge={searchTextLarge}
+            // brandBlue={theme.palette.primary.main}
+            // isCordova={isCordova()}
+            searchtextlarge={passBool(searchTextLarge)}
           >
             <InputBase
               id={`findCandidatesAndOpinionsSearch-${uniqueExternalId}`}
@@ -163,7 +165,7 @@ class FindOpinionsForm extends Component {
               classes={{ root: classes.iconButtonRoot }}
               id={`findCandidatesAndOpinionsIconClick-${uniqueExternalId}`}
               onClick={this.goToSearchPage}
-            >
+              size="large">
               <Search classes={{ root: searchIconClasses }} />
             </IconButton>
           </SearchWrapper>
@@ -191,9 +193,9 @@ const styles = (theme) => ({
     padding: '4px 8px',
     height: 32,
     width: '100%',
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down('lg')]: {
     },
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down('md')]: {
       padding: '4px 4px',
     },
   },
@@ -232,11 +234,11 @@ const styles = (theme) => ({
     marginLeft: 8,
     width: 75,
     transition: 'all ease-in 150ms',
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down('lg')]: {
       width: '50%',
       fontSize: 'inherit',
     },
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down('md')]: {
       width: 55,
       fontSize: 'inherit',
     },
@@ -258,11 +260,11 @@ const styles = (theme) => ({
     padding: 0,
     width: 350,
     transition: 'all ease-in 150ms',
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down('lg')]: {
       width: '50%',
       fontSize: 'inherit',
     },
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down('md')]: {
       width: 150,
       fontSize: 'inherit',
     },
@@ -276,10 +278,10 @@ const styles = (theme) => ({
   },
 });
 
-const InnerWrapper = styled.div`
+const InnerWrapper = styled('div')`
 `;
 
-const IntroHeader = styled.div`
+const IntroHeader = styled('div')`
   margin: 0;
   font-size: 18px;
   font-weight: 600;
@@ -290,11 +292,11 @@ const IntroHeader = styled.div`
   }
 `;
 
-const OneVoterGuideWrapper = styled.div`
+const OneVoterGuideWrapper = styled('div')`
   margin: 1px !important;
 `;
 
-const OuterWrapper = styled.div`
+const OuterWrapper = styled('div')`
   display: flex;
   justify-content: center;
   padding: 0 !important;
@@ -302,27 +304,27 @@ const OuterWrapper = styled.div`
   max-width: 260px;
 `;
 
-const PublicFiguresAndOrganizationsList = styled.div`
+const PublicFiguresAndOrganizationsList = styled('div')`
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
 `;
 
-const PublicFiguresAndOrganizationsWrapper = styled.div`
+const PublicFiguresAndOrganizationsWrapper = styled('div')`
 `;
 
-const Separator = styled.div`
+const Separator = styled('div')`
   // background: rgba(0, 0, 0, .2);
   // display: 'inherit';
   // height: 100%;
   // width: 1px;
 `;
 
-const SearchWrapper = styled.div`
+const SearchWrapper = styled('div')`
   display: flex;
   flex-flow: row;
   border-radius: 4px;
-  height: ${({ searchTextLarge }) => (searchTextLarge ? '32px' : '26px')};
+  height: ${({ searchtextlarge }) => (searchtextlarge ? '32px' : '26px')};
   border: 1px solid #ccc;
   padding: 0 3px 0 3px;
   margin-bottom: 8px;

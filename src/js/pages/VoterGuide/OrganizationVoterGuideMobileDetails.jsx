@@ -1,7 +1,7 @@
-import { Card } from '@material-ui/core';
+import { Card } from '@mui/material';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
-import styled from 'styled-components';
+import styled from '@mui/material/styles/styled';
 import TwitterActions from '../../actions/TwitterActions';
 import LoadingWheel from '../../common/components/Widgets/LoadingWheel';
 import VoterGuideFollowers from '../../components/VoterGuide/VoterGuideFollowers';
@@ -103,14 +103,14 @@ OrganizationVoterGuideMobileDetails.propTypes = {
   match: PropTypes.object,
 };
 
-const EmptyContainer = styled.div`
+const EmptyContainer = styled('div')`
   padding: 3em 2em;
   display: flex;
   flex-flow: column;
   align-items: center;
 `;
 
-const EmptyText = styled.p`
+const EmptyText = styled('p')`
   font-size: 20px;
   text-align: center;
   margin: 1em 2em 3em;

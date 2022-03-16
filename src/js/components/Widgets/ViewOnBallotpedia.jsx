@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
-import styled from 'styled-components';
+import styled from '@mui/material/styles/styled';
 import normalizedImagePath from '../../common/utils/normalizedImagePath';
 import SplitIconButton from '../../common/components/Widgets/SplitIconButton';
 
@@ -46,7 +46,7 @@ ViewOnBallotpedia.propTypes = {
   externalLinkUrl: PropTypes.string,
 };
 
-const Wrapper = styled.div`
+const Wrapper = styled('div')`
   margin-bottom: 12px;
 `;
 

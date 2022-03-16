@@ -1,7 +1,7 @@
-import { withStyles } from '@material-ui/core/styles';
+import withStyles from '@mui/styles/withStyles';
 import React, { Component, Suspense } from 'react';
 import Helmet from 'react-helmet';
-import styled from 'styled-components';
+import styled from '@mui/material/styles/styled';
 import CreditsBody from '../../common/components/CreditsBody';
 import { Section } from '../../components/Welcome/sectionStyles';
 import cordovaScrollablePaneTopPadding from '../../utils/cordovaScrollablePaneTopPadding';
@@ -46,13 +46,13 @@ const styles = (theme) => ({
   buttonContained: {
     borderRadius: 32,
     height: 50,
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down('lg')]: {
       height: 36,
     },
   },
 });
 
-const Wrapper = styled.div`
+const Wrapper = styled('div')`
   display: flex;
   flex-flow: column nowrap;
   align-items: center;
@@ -61,7 +61,7 @@ const Wrapper = styled.div`
   padding-top: ${() => cordovaScrollablePaneTopPadding()}
 `;
 
-const HeaderForCredits = styled.div`
+const HeaderForCredits = styled('div')`
   position: relative;
   height: 190px;
   width: 110%;
@@ -80,7 +80,7 @@ const HeaderForCredits = styled.div`
   }
 `;
 
-const CreditsTitle = styled.h1`
+const CreditsTitle = styled('h1')`
   font-weight: bold;
   font-size: 36px;
   text-align: center;

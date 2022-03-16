@@ -1,4 +1,4 @@
-import { Check } from '@material-ui/icons';
+import { Check } from '@mui/icons-material';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import Helmet from 'react-helmet';

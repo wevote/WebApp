@@ -1,8 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import styled from 'styled-components';
-import { withTheme, withStyles } from '@material-ui/core/styles';
-import { ArrowForward } from '@material-ui/icons';
+import styled from '@mui/material/styles/styled';
+import withTheme from '@mui/styles/withTheme';
+import withStyles from '@mui/styles/withStyles';
+import { ArrowForward } from '@mui/icons-material';
 import { renderLog } from '../../common/utils/logging';
 
 
@@ -15,10 +16,11 @@ class ShowMoreFooter extends React.Component {
     if (!showMoreText) {
       showMoreText = 'Show more';
     }
+    const cleanTextAlign = (textAlign !== undefined && (typeof textAlign === 'string' || textAlign instanceof String)) ? textAlign : '';
 
     return (
-      <ShowMoreFooterStyled id={showMoreId} onClick={showMoreLink} textAlign={textAlign}>
-        <ShowMoreFooterText textAlign={textAlign}>
+      <ShowMoreFooterStyled id={showMoreId} onClick={showMoreLink} textalign={cleanTextAlign}>
+        <ShowMoreFooterText textalign={cleanTextAlign}>
           { showMoreText }
           {!hideArrow && (
             <>
@@ -44,7 +46,7 @@ const styles = (theme) => ({
   cardFooterIconRoot: {
     fontSize: 16,
     margin: '0 0 .1rem .3rem',
-    [theme.breakpoints.down('lg')]: {
+    [theme.breakpoints.down('xl')]: {
       marginBottom: '.2rem',
     },
     [theme.breakpoints.up('md')]: {
@@ -53,7 +55,7 @@ const styles = (theme) => ({
   },
 });
 
-const ShowMoreFooterStyled = styled.div`
+const ShowMoreFooterStyled = styled('div')`
   border: 0px !important;
   color: #2e3c5d;
   cursor: pointer;
@@ -78,7 +80,7 @@ const ShowMoreFooterStyled = styled.div`
   }
 `;
 
-const ShowMoreFooterText = styled.div`
+const ShowMoreFooterText = styled('div')`
   margin-top: 8px !important;
   padding: 8px !important;
   padding-bottom: 0px !important;
