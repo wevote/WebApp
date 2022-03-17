@@ -2,8 +2,8 @@ import { keyframes } from '@emotion/react';
 import styled from '@mui/material/styles/styled';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
-import { isIOSAppOnMac, isIPad } from '../../common/utils/cordovaUtils';
 import { isCordova, isWebApp } from '../../common/utils/isCordovaOrWebApp';
+import { renderLog } from '../../common/utils/logging';
 import MeasureStore from '../../stores/MeasureStore';
 import { cordovaStickyHeaderPaddingTop } from '../../utils/cordovaOffsets';
 
@@ -37,11 +37,12 @@ class MeasureStickyHeader extends Component {
   }
 
   render () {
+    renderLog('MeasureStickyHeader');  // Set LOG_RENDER_EVENTS to log all renders
     const { measureWeVoteId } = this.props;
     const { ballotItemDisplayName } = this.state;
     const ballotItemDisplay = ballotItemDisplayName ? ballotItemDisplayName.split(':') : [];
     return (
-      <Wrapper ipad={isIPad() || isIOSAppOnMac()}>
+      <MeasureStickyHeaderWrapper>
         <Container>
           <Flex>
             <ColumnOne>
@@ -78,7 +79,7 @@ class MeasureStickyHeader extends Component {
             </Suspense>
           </MeasureCommentContainer>
         </Container>
-      </Wrapper>
+      </MeasureStickyHeaderWrapper>
     );
   }
 }
@@ -95,7 +96,7 @@ const slideDown = keyframes`
   }
 `;
 
-const Wrapper = styled('div')`
+const MeasureStickyHeaderWrapper = styled('div')`
   max-width: 100%;
   position: fixed;
   padding-right: 16px;

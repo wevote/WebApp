@@ -63,7 +63,7 @@ class ReadyTaskPlan extends React.Component {
     const { completed, voterPlanText } = this.state;
 
     return (
-      <ReadyCard showprogresscolor={completed} className="card">
+      <ReadyCard showProgressColor={completed} className="card">
         <Icon className="u-cursor--pointer" onClick={this.showVoterPlanModal}>
           {completed ?  (
             <img
@@ -107,7 +107,7 @@ class ReadyTaskPlan extends React.Component {
                 </>
               )}
             </PlanTitle>
-            <PercentComplete showprogresscolor={completed || undefined}>
+            <PercentComplete showProgressColor={completed || undefined}>
               {completed ? '100%' : '0%'}
               {!!(completed) && (
                 <span className="u-show-desktop-tablet">

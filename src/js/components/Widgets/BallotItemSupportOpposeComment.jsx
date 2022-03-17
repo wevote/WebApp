@@ -221,15 +221,15 @@ class BallotItemSupportOpposeComment extends PureComponent {
     // console.log('White background from root: ', showPositionStatementActionBar);
 
     return (
-      <Wrapper inModal={inModal2} showPositionStatementActionBar={showPositionStatementActionBar} crunched={isCordova() && !inModal2}>
+      <Wrapper inModal={inModal2} showPositionStatementActionBar={showPositionStatementActionBar} isCrunched={!!(isCordova() && !inModal2)}>
         {/* <BallotHeaderDivider className="u-show-mobile" /> */}
-        <ActionBarWrapper inModal={inModal2} crunched={isCordova() && !inModal2}>
+        <ActionBarWrapper isCrunched={!!(isCordova() && !inModal2)}>
           {/* Support/Oppose/Comment toggle here */}
           <Suspense fallback={<></>}>
             {itemActionBar}
           </Suspense>
         </ActionBarWrapper>
-        <CommentDisplayWrapper inModal={inModal2} crunched={isCordova() && !inModal2}>
+        <CommentDisplayWrapper isCrunched={!!(isCordova() && !inModal2)}>
           { commentDisplayDesktop }
           { commentDisplayMobile }
         </CommentDisplayWrapper>
@@ -254,8 +254,8 @@ function wrapperPadding (props) {
 }
 
 const Wrapper = styled('div', {
-  shouldForwardProp: (prop) => !['showPositionStatementActionBar', 'inModal'].includes(prop),
-})(({ showPositionStatementActionBar, inModal, crunched }) => (`
+  shouldForwardProp: (prop) => !['showPositionStatementActionBar', 'inModal', 'isCrunched'].includes(prop),
+})(({ showPositionStatementActionBar, inModal, isCrunched }) => (`
   width: ${() => (isAndroidSizeMD() ? '95%' : '100%')};
   // background-color: ${showPositionStatementActionBar || inModal ? '#eee' : 'white'} !important;
   background-color: white !important;
@@ -265,18 +265,22 @@ const Wrapper = styled('div', {
     background-color: white;
     padding: 0;
   }
-  margin-top: ${crunched ? '0' : '12px'};
+  margin-top: ${isCrunched ? '0' : '12px'};
 `));
 
-const ActionBarWrapper = styled('div')`
+const ActionBarWrapper = styled('div', {
+  shouldForwardProp: (prop) => !['isCrunched'].includes(prop),
+})(({ isCrunched }) => (`
   padding: 0;
-  margin-bottom: ${(crunched) => (crunched ? '3px' : '12px')};
-`;
+  margin-bottom: ${isCrunched ? '3px' : '12px'};
+`));
 
-const CommentDisplayWrapper = styled('div')`
+const CommentDisplayWrapper = styled('div', {
+  shouldForwardProp: (prop) => !['isCrunched'].includes(prop),
+})(({ isCrunched }) => (`
   padding: 0;
-  padding-bottom: ${(crunched) => (crunched ? '0' : '12px')};
-`;
+  padding-bottom: ${isCrunched ? '0' : '12px'};
+`));
 
 
 export default BallotItemSupportOpposeComment;

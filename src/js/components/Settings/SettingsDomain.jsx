@@ -700,19 +700,23 @@ const IconInputContainer = styled('div')`
   width: 100%;
 `;
 
-const InputBoxLabel = styled('h4')`
+const InputBoxLabel = styled('h4', {
+  shouldForwardProp: (prop) => !['error'].includes(prop),
+})(({ error }) => (`
   font-size: 14px;
   font-weight: bold;
-  color: ${(props) => (props.error ? 'rgb(255, 73, 34)' : 'black')}
-`;
+  color: ${error ? 'rgb(255, 73, 34)' : 'black'}
+`));
 
-const InputBoxHelperLabel = styled('p')`
+const InputBoxHelperLabel = styled('p', {
+  shouldForwardProp: (prop) => !['error'].includes(prop),
+})(({ error }) => (`
   margin: 0;
   font-size: 14px;
-  margin-bottom:  ${(props) => (props.error ? '6px' : '4px')};
-  margin-top:  ${(props) => (props.error ? '6px' : '-4px')};
-  color: ${(props) => (props.error ? 'rgb(255, 73, 34)' : 'black')};
-`;
+  margin-bottom:  ${error ? '6px' : '4px'};
+  margin-top:  ${error ? '6px' : '-4px'};
+  color: ${error ? 'rgb(255, 73, 34)' : 'black'};
+`));
 
 const InputBoxDescriptionUnder = styled('div')`
   color: rgba(0, 0, 0, 0.54);
@@ -721,10 +725,12 @@ const InputBoxDescriptionUnder = styled('div')`
   margin-top:  4px;
 `;
 
-const SubdomainExtensionText = styled('h5')`
+const SubdomainExtensionText = styled('h5', {
+  shouldForwardProp: (prop) => !['error'].includes(prop),
+})(({ error }) => (`
   margin: 0;
-  height: ${(props) => (props.error ? '52.4px' : '53.4px')};
-  border-left: ${(props) => (props.error ? '1.6px solid rgb(255, 73, 34)' : '1px solid rgba(0, 0, 0, 0.45)')};
+  height: ${error ? '52.4px' : '53.4px'};
+  border-left: ${error ? '1.6px solid rgb(255, 73, 34)' : '1px solid rgba(0, 0, 0, 0.45)'};
   background-color: #eee;
   color: rgba(0, 0, 0, 0.45);
   width: fit-content;
@@ -732,7 +738,7 @@ const SubdomainExtensionText = styled('h5')`
   border-bottom-right-radius: 3px;
   border-top-right-radius: 3px;
   pointer: none;
-`;
+`));
 
 const ButtonsContainer = styled('div')`
   display: flex;

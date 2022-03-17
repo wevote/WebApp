@@ -343,10 +343,12 @@ const OpposeAndPartOfScore = styled('div')`
   }
 `;
 
-const OrganizationInfoOnlyIconWrapper = styled('div')`
-  margin-left: ${({ speakerImageExists }) => (speakerImageExists ? '4px' : '0')};
-  margin-top: ${({ speakerImageExists }) => (speakerImageExists ? '-5px' : '0')};
-`;
+const OrganizationInfoOnlyIconWrapper = styled('div', {
+  shouldForwardProp: (prop) => !['speakerImageExists'].includes(prop),
+})(({ speakerImageExists }) => (`
+  margin-left: ${speakerImageExists ? '4px' : '0'};
+  margin-top: ${speakerImageExists ? '-5px' : '0'};
+`));
 
 const OrganizationInformationOnlySquare = styled('div')`
   color: ${({ theme }) => theme.colors.grayMid};
@@ -368,10 +370,12 @@ const OrganizationInformationOnlyWrapper = styled('div')`
   z-index: 1;
 `;
 
-const OrganizationOpposeIconWrapper = styled('div')`
-  margin-left: ${({ speakerImageExists }) => (speakerImageExists ? '2px' : '0')};
-  margin-top: ${({ speakerImageExists }) => (speakerImageExists ? '-2px' : '0')};
-`;
+const OrganizationOpposeIconWrapper = styled('div', {
+  shouldForwardProp: (prop) => !['speakerImageExists'].includes(prop),
+})(({ speakerImageExists }) => (`
+  margin-left: ${speakerImageExists ? '2px' : '0'};
+  margin-top: ${speakerImageExists ? '-2px' : '0'};
+`));
 
 const OrganizationOpposeSquare = styled('div')`
   background: white;
@@ -449,9 +453,11 @@ const SupportAndPartOfScore = styled('div')`
   }
 `;
 
-const ToScoreLabel = styled('div')`
+const ToScoreLabel = styled('div', {
+  shouldForwardProp: (prop) => !['advisorImageExists'].includes(prop),
+})(({ advisorImageExists }) => (`
   font-size: 10px;
-  ${({ advisorImageExists }) => (advisorImageExists ? 'margin-top: -23px;' : 'margin-top: -20px;')}
-`;
+  ${advisorImageExists ? 'margin-top: -23px;' : 'margin-top: -20px;'}
+`));
 
 export default withTheme(withStyles(styles)(PositionItemSquare));

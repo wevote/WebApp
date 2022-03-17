@@ -229,17 +229,19 @@ IssueCard.propTypes = {
   condensed: PropTypes.bool,
 };
 
-const Wrapper = styled('div')`
+const Wrapper = styled('div', {
+  shouldForwardProp: (prop) => !['condensed'].includes(prop),
+})(({ condensed }) => (`
   display: block !important;
   background: white;
-  // border: ${(props) => (props.condensed ? '1px solid #888' : 'none')};
-  box-shadow: ${(props) => (props.condensed ? 'none !important' : null)};
-  padding: ${(props) => (props.condensed ? '0 0' : null)};
-  height: ${(props) => (props.condensed ? 'fit-content' : null)};
+  // border: ${condensed ? '1px solid #888' : 'none'};
+  box-shadow: ${condensed ? 'none !important' : ''};
+  padding: ${condensed ? '0 0' : ''};
+  height: ${condensed ? 'fit-content' : ''};
   @media (max-width: 479px) {
     margin: 0 -16px;
   }
-`;
+`));
 
 const IssueName = styled('h3')`
   font-size: 18px;
@@ -256,20 +258,24 @@ const FollowIssueToggleContainer = styled('div')`
   margin-left: auto;
 `;
 
-const Flex = styled('div')`
-  ${(props) => (props.followtoggleonitsownline ?
+const Flex = styled('div', {
+  shouldForwardProp: (prop) => !['condensed', 'followToggleOnItsOwnLine'].includes(prop),
+})(({ condensed, followToggleOnItsOwnLine }) => (`
+  ${followToggleOnItsOwnLine ?
     '' :
     'display: flex; align-items: center; justify-content: flex-start;'
-  )}
-  width: ${(props) => (props.condensed ? '100%' : null)};
-`;
+  }
+  width: ${condensed ? '100%' : null};
+`));
 
-const FlexNameAndIcon = styled('div')`
+const FlexNameAndIcon = styled('div', {
+  shouldForwardProp: (prop) => !['condensed'].includes(prop),
+})(({ condensed }) => (`
   display: flex;
   align-items: center;
   justify-content: flex-start;
-  width: ${(props) => (props.condensed ? '100%' : null)};
-`;
+  width: ${condensed ? '100%' : null};
+`));
 
 const Description = styled('div')`
   margin-top: 8px;

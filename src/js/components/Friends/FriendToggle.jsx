@@ -113,7 +113,7 @@ export default class FriendToggle extends Component {
             </ToggleButton>
             <StyledMenuList>
               {menuOpen ? (
-                <ClickAwayListener onClickAway={this.handleClose}>
+                <ClickAwayListener onClickAway={() => this.handleClose}>
                   <StyledMenuItem
                     disabled={unFriendSubmitted}
                     onClick={this.unFriend}

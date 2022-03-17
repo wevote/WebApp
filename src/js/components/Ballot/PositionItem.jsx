@@ -742,11 +742,13 @@ const PositionItemDesktop = styled('div', {
   padding: 6px 16px;
 `));
 
-const PositionItemMobile = styled('li')`
+const PositionItemMobile = styled('li', {
+  shouldForwardProp: (prop) => !['isSupport', 'isOppose'].includes(prop),
+})(({ isSupport, isOppose }) => (`
   background: #eee;
-  ${({ isSupport, isOppose }) => ((!isOppose && !isSupport) ? 'border-left: 4px solid #ccc;' : '')}
-  ${({ isOppose }) => (isOppose ? 'border-left: 4px solid rgb(255, 73, 34);' : '')}
-  ${({ isSupport }) => (isSupport ? 'border-left: 4px solid rgb(31, 192, 111);' : '')}
+  ${(!isOppose && !isSupport) ? 'border-left: 4px solid #ccc;' : ''}
+  ${isOppose ? 'border-left: 4px solid rgb(255, 73, 34);' : ''}
+  ${isSupport ? 'border-left: 4px solid rgb(31, 192, 111);' : ''}
   border-radius: 5px;
   list-style: none;
   margin: 16px;
@@ -754,7 +756,7 @@ const PositionItemMobile = styled('li')`
   @media (max-width: 476px) {
     margin: 16px 0;
   }
-`;
+`));
 
 const SourceLink = styled('div')`
   float: right;

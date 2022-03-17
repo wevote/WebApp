@@ -405,10 +405,12 @@ const DonateDescriptionContainer = styled('div')`
   }
 `;
 
-const PaymentWrapper  = styled('div')`
-  display: ${({ joining }) => ((joining) ? '' : 'none')};
+const PaymentWrapper  = styled('div', {
+  shouldForwardProp: (prop) => !['joining'].includes(prop),
+})(({ joining }) => (`
+  display: ${joining ? '' : 'none'};
   text-align: center;
-`;
+`));
 
 const DonateCaveat = styled('p')`
   font-size: 17px;
@@ -460,16 +462,18 @@ const ContributeGridItem = styled('div')`
   text-align: center;
 `;
 
-const ContributeGridItemJoin = styled('div')`
-  ${({ joining }) => ((joining) ?
+const ContributeGridItemJoin = styled('div', {
+  shouldForwardProp: (prop) => !['joining'].includes(prop),
+})(({ joining }) => (`
+  ${joining ?
     'padding: 5px 10px;' :
     'padding: 5px 10px;'
-  )};
+  };
   background-color: #ebebeb;
   font-size: 30px;
   text-align: center;
   grid-column: auto / span 2;
-`;
+`));
 
 
 // const OuterWrapper = styled.div`

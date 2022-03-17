@@ -186,15 +186,15 @@ const Dot = styled('div')`
   vertical-align: top;
 `;
 
-const StepNumber = styled('div')`
-  background: ${(theme) => theme.colors.brandBlue};
+const StepNumber = styled('div')(({ theme }) => (`
+  background: ${theme.colors.brandBlue};
   border-radius: 4px;
   color: white;
   font-size: 14px;
   width: 20px;
   height: 20px;
   padding-top: 1px;
-`;
+`));
 
 const StepTitle = styled('div')`
   font-size: 15px;

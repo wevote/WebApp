@@ -187,21 +187,25 @@ const styles = () => ({
   },
 });
 
-const Card = styled('div')`
+const Card = styled('div', {
+  shouldForwardProp: (prop) => !['mobile'].includes(prop),
+})(({ mobile }) => (`
   border-radius: 2px;
-  box-shadow: ${(props) => (props.mobile ? '1px 1px 10px 4px #e1e1e1' : '1px 1px 8px 2px #e3e3e3')};
-`;
+  box-shadow: ${mobile ? '1px 1px 10px 4px #e1e1e1' : '1px 1px 8px 2px #e3e3e3'};
+`));
 
 const CardWrapper = styled('div')`
   padding: 8px;
 `;
 
-const PricingCardHeader = styled('div')`
-  min-height: ${(props) => (props.mobile ? '75px' : '105px')}
+const PricingCardHeader = styled('div', {
+  shouldForwardProp: (prop) => !['mobile'].includes(prop),
+})(({ mobile }) => (`
+  min-height: ${mobile ? '75px' : '105px'}
   @media(min-width: 960px) and (max-width: 991px) {
     min-height: 100px;
   }
-`;
+`));
 
 const PremiumName = styled('h4')`
   font-size: 18px;
