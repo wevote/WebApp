@@ -1,5 +1,4 @@
 import { AccountCircle } from '@mui/icons-material';
-import { adaptV4Theme, createTheme } from '@mui/material/styles';
 import styled from '@mui/material/styles/styled';
 import withStyles from '@mui/styles/withStyles';
 import { DropzoneArea } from 'mui-file-dropzone';
@@ -10,17 +9,18 @@ import VoterStore from '../../../stores/VoterStore';
 import isMobileScreenSize from '../../utils/isMobileScreenSize';
 import { renderLog } from '../../utils/logging';
 
-const muiTheme = createTheme(adaptV4Theme({
-  overrides: {
-    MuiDropzonePreviewList: {
-      image: {
-        height: 'auto',
-        maxHeight: '200px',
-        maxWidth: 'auto',
-      },
-    },
-  },
-}));
+// This was wrapping the DropzoneArea component, removed for MUI 5 March 17, 2022
+// const muiTheme = createTheme(adaptV4Theme({
+//   overrides: {
+//     MuiDropzonePreviewList: {
+//       image: {
+//         height: 'auto',
+//         maxHeight: '200px',
+//         maxWidth: 'auto',
+//       },
+//     },
+//   },
+// }));
 
 class VoterPhotoUpload extends Component {
   constructor (props) {
@@ -94,22 +94,20 @@ class VoterPhotoUpload extends Component {
                   </DeleteLink>
                 </VoterPhotoWrapper>
               ) : (
-                // <MuiXThemeProvider theme={muiTheme}>
-                  <DropzoneArea
-                    acceptedFiles={['image/*']}
-                    classes={{
-                      icon: classes.dropzoneIcon,
-                      root: classes.dropzoneRoot,
-                      text: classes.dropzoneText,
-                    }}
-                    dropzoneText={dropzoneText}
-                    filesLimit={1}
-                    Icon={AccountCircle}
-                    initialFiles={voterProfileUploadedImageUrlLarge ? [voterProfileUploadedImageUrlLarge] : undefined}
-                    maxFileSize={6000000}
-                    onChange={this.handleDrop}
-                  />
-                // </MuiXThemeProvider>
+                <DropzoneArea
+                  acceptedFiles={['image/*']}
+                  classes={{
+                    icon: classes.dropzoneIcon,
+                    root: classes.dropzoneRoot,
+                    text: classes.dropzoneText,
+                  }}
+                  dropzoneText={dropzoneText}
+                  filesLimit={1}
+                  Icon={AccountCircle}
+                  initialFiles={voterProfileUploadedImageUrlLarge ? [voterProfileUploadedImageUrlLarge] : undefined}
+                  maxFileSize={6000000}
+                  onChange={this.handleDrop}
+                />
               )}
             </ColumnFullWidth>
           </Wrapper>

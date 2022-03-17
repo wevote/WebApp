@@ -97,64 +97,64 @@ export default function ContactsTable (props) {
           Connect To Friends
         </h4>
       </div>
-      {/*<XThemeProvider theme={donationTheme(false, 40)}>*/}
-        <Box
-          style={{
-            justifyContent: 'flex-start',
-            alignItems: 'flex-start',
-            borderBottom: 1,
-            borderColor: 'divider',
-            paddingLeft: '16px',
+      {/* <ThemeProvider theme={donationTheme(false, 40)}> */}
+      <Box
+        style={{
+          justifyContent: 'flex-start',
+          alignItems: 'flex-start',
+          borderBottom: 1,
+          borderColor: 'divider',
+          paddingLeft: '16px',
+        }}
+        id="BoxAroundTabs"
+      >
+        <Tabs
+          value={value}
+          onChange={handleChange}
+          aria-label="basic tabs example"
+          sx={{
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            width: '70%',
           }}
-          id="BoxAroundTabs"
         >
-          <Tabs
-            value={value}
-            onChange={handleChange}
-            aria-label="basic tabs example"
-            sx={{
-              alignItems: 'center',
-              justifyContent: 'space-between',
-              width: '70%',
-            }}
-          >
-            <Tab label="Found" {...a11yProps(0)} />
-            <Tab label="Invite" {...a11yProps(1)} />
-          </Tabs>
-        </Box>
-        <TabPanel value={value} index={0}>
-          <div style={{ width: '100%' }}>
-            <StyledTableContainer>
-              <Table aria-label="simple table">
-                <TableHead>
-                  <TableRow>
-                    <TableCell>Name</TableCell>
-                    <TableCell align="right">State</TableCell>
-                    <TableCell><Check /></TableCell>
+          <Tab label="Found" {...a11yProps(0)} />
+          <Tab label="Invite" {...a11yProps(1)} />
+        </Tabs>
+      </Box>
+      <TabPanel value={value} index={0}>
+        <div style={{ width: '100%' }}>
+          <StyledTableContainer>
+            <Table aria-label="simple table">
+              <TableHead>
+                <TableRow>
+                  <TableCell>Name</TableCell>
+                  <TableCell align="right">State</TableCell>
+                  <TableCell><Check /></TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {rows.map((row) => (
+                  <TableRow key={row.name}>
+                    <TableCell>
+                      <div>
+                        <ShortenedDiv align="left" style={{ fontWeight: '600' }}>{row.name}</ShortenedDiv>
+                        <ShortenedDiv align="left">{row.email}</ShortenedDiv>
+                      </div>
+                    </TableCell>
+                    <TableCell align="right">{row.state}</TableCell>
+                    <TableCell><StyledCheckbox /></TableCell>
                   </TableRow>
-                </TableHead>
-                <TableBody>
-                  {rows.map((row) => (
-                    <TableRow key={row.name}>
-                      <TableCell>
-                        <div>
-                          <ShortenedDiv align="left" style={{ fontWeight: '600' }}>{row.name}</ShortenedDiv>
-                          <ShortenedDiv align="left">{row.email}</ShortenedDiv>
-                        </div>
-                      </TableCell>
-                      <TableCell align="right">{row.state}</TableCell>
-                      <TableCell><StyledCheckbox /></TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </StyledTableContainer>
-          </div>
-        </TabPanel>
-        <TabPanel value={value} index={1}>
-          Item Two
-        </TabPanel>
-      {/*</XThemeProvider>*/}
+                ))}
+              </TableBody>
+            </Table>
+          </StyledTableContainer>
+        </div>
+      </TabPanel>
+      <TabPanel value={value} index={1}>
+        Item Two
+      </TabPanel>
+      {/* </ThemeProvider> */}
     </Box>
   );
 }

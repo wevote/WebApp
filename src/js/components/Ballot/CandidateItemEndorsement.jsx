@@ -1,6 +1,5 @@
 import { Twitter } from '@mui/icons-material';
-import { adaptV4Theme, Button, TextField } from '@mui/material';
-import { createTheme } from '@mui/material/styles';
+import {  Button, TextField } from '@mui/material';
 import styled from '@mui/material/styles/styled';
 import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
@@ -334,32 +333,33 @@ class CandidateItemEndorsement extends Component {
       return null;
     }
 
-    const showInfoOnlyTheme = createTheme(adaptV4Theme({
-      palette: {
-        primary: {
-          main: '#888',
-          contrastText: '#fff',
-        },
-      },
-    }));
-
-    const showOpposeTheme = createTheme(adaptV4Theme({
-      palette: {
-        primary: {
-          main: '#FF7031',
-          contrastText: '#fff',
-        },
-      },
-    }));
-
-    const showSupportTheme = createTheme(adaptV4Theme({
-      palette: {
-        primary: {
-          main: '#21c06e',
-          contrastText: '#fff',
-        },
-      },
-    }));
+    // Themes removed for MUI 5, nested themes are possible, if we need them here
+    // const showInfoOnlyTheme = createTheme(adaptV4Theme({
+    //   palette: {
+    //     primary: {
+    //       main: '#888',
+    //       contrastText: '#fff',
+    //     },
+    //   },
+    // }));
+    //
+    // const showOpposeTheme = createTheme(adaptV4Theme({
+    //   palette: {
+    //     primary: {
+    //       main: '#FF7031',
+    //       contrastText: '#fff',
+    //     },
+    //   },
+    // }));
+    //
+    // const showSupportTheme = createTheme(adaptV4Theme({
+    //   palette: {
+    //     primary: {
+    //       main: '#21c06e',
+    //       contrastText: '#fff',
+    //     },
+    //   },
+    // }));
 
     const enableDeletion = voterGuidePossibilityPositionId &&
       parseInt(voterGuidePossibilityPositionId, 10) &&
@@ -435,33 +435,33 @@ class CandidateItemEndorsement extends Component {
           </BallotItemSupportOpposeCountDisplayWrapper>
         </CandidateWrapper>
         <Buttons>
-          {/*<MuiXThemeProvider theme={possibilityPositionIsSupport ? showSupportTheme : {}}>*/}
-            <Button
-              color="primary"
-              onClick={this.togglePossibilityPositionIsSupport}
-              variant={possibilityPositionIsSupport ? 'contained' : 'outlined'}
-            >
-              {possibilityPositionIsSupport ? 'Endorsed' : 'Endorse'}
-            </Button>
-          {/*</MuiXThemeProvider>*/}
-          {/*<MuiXThemeProvider theme={possibilityPositionIsOppose ? showOpposeTheme : {}}>*/}
-            <Button
-              color="primary"
-              onClick={this.togglePossibilityPositionIsOppose}
-              variant={possibilityPositionIsOppose ? 'contained' : 'outlined'}
-            >
-              {possibilityPositionIsOppose ? 'Opposed' : 'Oppose'}
-            </Button>
-          {/*</MuiXThemeProvider>*/}
-          {/*<MuiXThemeProvider theme={possibilityPositionIsInfoOnly ? showInfoOnlyTheme : {}}>*/}
-            <Button
-              color="primary"
-              onClick={this.togglePossibilityPositionIsInfoOnly}
-              variant={possibilityPositionIsInfoOnly ? 'contained' : 'outlined'}
-            >
-              Information Only
-            </Button>
-          {/*</MuiXThemeProvider>*/}
+          {/* <MuiThemeProvider theme={possibilityPositionIsSupport ? showSupportTheme : {}}> */}
+          <Button
+            color="primary"
+            onClick={this.togglePossibilityPositionIsSupport}
+            variant={possibilityPositionIsSupport ? 'contained' : 'outlined'}
+          >
+            {possibilityPositionIsSupport ? 'Endorsed' : 'Endorse'}
+          </Button>
+          {/* </MuiThemeProvider> */}
+          {/* <MuiThemeProvider theme={possibilityPositionIsOppose ? showOpposeTheme : {}}> */}
+          <Button
+            color="primary"
+            onClick={this.togglePossibilityPositionIsOppose}
+            variant={possibilityPositionIsOppose ? 'contained' : 'outlined'}
+          >
+            {possibilityPositionIsOppose ? 'Opposed' : 'Oppose'}
+          </Button>
+          {/* </MuiThemeProvider> */}
+          {/* <MuiThemeProvider theme={possibilityPositionIsInfoOnly ? showInfoOnlyTheme : {}}> */}
+          <Button
+            color="primary"
+            onClick={this.togglePossibilityPositionIsInfoOnly}
+            variant={possibilityPositionIsInfoOnly ? 'contained' : 'outlined'}
+          >
+            Information Only
+          </Button>
+          {/* </MuiThemeProvider> */}
         </Buttons>
         <TextArea
           fullWidth
