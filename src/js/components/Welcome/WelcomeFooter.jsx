@@ -1,12 +1,12 @@
 import { Button } from '@mui/material';
+import styled from '@mui/material/styles/styled';
 import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
 import { Link } from 'react-router-dom';
-import styled from '@mui/material/styles/styled';
+import historyPush from '../../common/utils/historyPush';
 import { isWebApp } from '../../common/utils/isCordovaOrWebApp';
 import normalizedImagePath from '../../common/utils/normalizedImagePath';
-import historyPush from '../../common/utils/historyPush';
 
 const OpenExternalWebSite = React.lazy(() => import(/* webpackChunkName: 'OpenExternalWebSite' */ '../../common/components/Widgets/OpenExternalWebSite'));
 
@@ -159,13 +159,15 @@ class WelcomeFooter extends Component {
               variant="outlined"
               classes={{ root: classes.buttonOutlined }}
               id="footerLinkGetStarted"
-              onClick={() => historyPush('/ready')}>
+              onClick={() => historyPush('/ready')}
+            >
               Get Started
             </Button>
             <Button
               variant="outlined"
               classes={{ root: classes.buttonOutlined }}
-              onClick={() => window.open('https://help.wevote.us/hc/en-us/requests/new', '_blank')}>
+              onClick={() => window.open('https://help.wevote.us/hc/en-us/requests/new', '_blank')}
+            >
               Contact Sales
             </Button>
           </OptionsContainer>

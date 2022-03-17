@@ -1,9 +1,9 @@
 import { Badge, Chip, CircularProgress, Link } from '@mui/material';
+import styled from '@mui/material/styles/styled';
 import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
 import Helmet from 'react-helmet';
-import styled from '@mui/material/styles/styled';
 import ActivityActions from '../../actions/ActivityActions';
 import AnalyticsActions from '../../actions/AnalyticsActions';
 import BallotActions from '../../actions/BallotActions';
@@ -17,6 +17,7 @@ import apiCalming from '../../common/utils/apiCalming';
 import { chipLabelText, isAndroidSizeFold, isIOSAppOnMac, isIPadGiantSize, isIPhone6p1in } from '../../common/utils/cordovaUtils';
 import historyPush from '../../common/utils/historyPush';
 import { isCordova, isWebApp } from '../../common/utils/isCordovaOrWebApp';
+import isMobileScreenSize from '../../common/utils/isMobileScreenSize';
 import Cookies from '../../common/utils/js-cookie/Cookies';
 import { renderLog } from '../../common/utils/logging';
 import AddressBox from '../../components/AddressBox';
@@ -28,6 +29,7 @@ import BallotDecisionsTabs from '../../components/Navigation/BallotDecisionsTabs
 import BallotShowAllItemsFooter from '../../components/Navigation/BallotShowAllItemsFooter';
 // import BallotSideBar from '../../components/Navigation/BallotSideBar';
 import EditAddressOneHorizontalRow from '../../components/Ready/EditAddressOneHorizontalRow';
+import { DualHeaderContainer, HeaderContentContainer, HeaderContentOuterContainer, PageContentContainer } from '../../components/Style/pageLayoutStyles';
 // import ValuesToFollowPreview from '../../components/Values/ValuesToFollowPreview';
 import SnackNotifier, { openSnackbar } from '../../components/Widgets/SnackNotifier';
 import webAppConfig from '../../config';
@@ -41,10 +43,8 @@ import VoterGuideStore from '../../stores/VoterGuideStore';
 import VoterStore from '../../stores/VoterStore';
 import { dumpCssFromId } from '../../utils/appleSiliconUtils';
 import isMobile from '../../utils/isMobile';
-import isMobileScreenSize from '../../common/utils/isMobileScreenSize';
 import lazyPreloadPages from '../../utils/lazyPreloadPages';
 import mapCategoryFilterType from '../../utils/map-category-filter-type';
-import { DualHeaderContainer, HeaderContentContainer, HeaderContentOuterContainer, PageContentContainer } from '../../components/Style/pageLayoutStyles';
 import { getBooleanValue } from '../../utils/textFormat';
 import showBallotDecisionsTabs from '../../utilsApi/showBallotDecisionsTabs';
 import BallotTitleHeader from './BallotTitleHeader';
@@ -1417,7 +1417,7 @@ class Ballot extends Component {
 
           <PageContentContainer>
             <div className="container-fluid">
-              <BallotWrapper padbottom={padBallotWindowBottomForCordova} id="ballotWrapper">
+              <BallotWrapper padBottom={padBallotWindowBottomForCordova} id="ballotWrapper">
                 {/* eslint-disable-next-line no-nested-ternary */}
                 <div className={showBallotDecisionsTabs() ? 'row ballot__body' : isWebApp() || twoColumnDisplay ? 'row ballot__body__no-decision-tabs' : undefined}>
                   <div className="col-12">
@@ -1727,10 +1727,12 @@ const SearchTitle = styled('div')`
 //   margin-bottom: 12px;
 // `;
 
-const BallotWrapper = styled('div')(({ padbottom }) => ({
-  // padding-top: ${({ padTop }) => padTop};
-  paddingBottom: padbottom,
-}));
+const BallotWrapper = styled('div', {
+  shouldForwardProp: (prop) => !['padTop', 'padBottom'].includes(prop),
+})(({ padTop, padBottom }) => (`
+  padding-top: ${padTop};
+  padding-bottom: ${padBottom};
+`));
 
 const styles = (theme) => ({
   badge: {

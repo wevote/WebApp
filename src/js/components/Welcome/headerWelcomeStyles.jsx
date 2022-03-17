@@ -1,4 +1,6 @@
-import styled, { keyframes } from 'styled-components';
+import { keyframes } from '@emotion/react';
+import styled from '@mui/material/styles/styled';
+
 
 const Title = styled('h1')`
   font-weight: bold;
@@ -19,7 +21,7 @@ const BlueTitle = styled('span')`
   margin-bottom: 1em;
 `;
 
-const fadeIn = keyframes`
+const fadeIn = keyframes`  // March 2022, from @emotion/react (hope these libraries can be mixed)
   from {
     opacity: 0;
   }

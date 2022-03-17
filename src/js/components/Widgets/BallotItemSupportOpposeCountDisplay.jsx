@@ -1,17 +1,17 @@
+import { ArrowRightAlt, Comment, Done, NotInterested, ThumbDown, ThumbUp } from '@mui/icons-material';
+import styled from '@mui/material/styles/styled';
 import withStyles from '@mui/styles/withStyles';
 import withTheme from '@mui/styles/withTheme';
-import { ArrowRightAlt, Comment, Done, NotInterested, ThumbDown, ThumbUp } from '@mui/icons-material';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
-import styled from '@mui/material/styles/styled';
 import SupportActions from '../../actions/SupportActions';
+import { renderLog } from '../../common/utils/logging';
 import CandidateStore from '../../stores/CandidateStore';
 import FriendStore from '../../stores/FriendStore';
 import IssueStore from '../../stores/IssueStore';
 import MeasureStore from '../../stores/MeasureStore';
 import OrganizationStore from '../../stores/OrganizationStore';
 import SupportStore from '../../stores/SupportStore';
-import { renderLog } from '../../common/utils/logging';
 import { getPositionListSummaryIncomingDataStats, getPositionSummaryListForBallotItem } from '../../utils/positionFunctions';
 import { stringContains } from '../../utils/textFormat';
 import StickyPopover from '../Ballot/StickyPopover';
@@ -519,9 +519,9 @@ class BallotItemSupportOpposeCountDisplay extends Component {
                   <DecidedIconWrapper>
                     <NetworkScoreSmall
                       onClick={this.stopSupportingItem}
-                      voterpersonalnetworkscoreisnegative={voterPersonalNetworkScoreIsNegative.toString()}
-                      voterpersonalnetworkscoreispositive={voterPersonalNetworkScoreIsPositive.toString()}
-                      votersupportsballotitem={voterSupportsBallotItem.toString()}
+                      voterPersonalNetworkScoreIsNegative={voterPersonalNetworkScoreIsNegative}
+                      voterPersonalNetworkScoreIsPositive={voterPersonalNetworkScoreIsPositive}
+                      voterSupportsBallotItem={voterSupportsBallotItem}
                     >
                       <Done classes={{ root: classes.decidedIconSmall }} />
                     </NetworkScoreSmall>
@@ -541,9 +541,9 @@ class BallotItemSupportOpposeCountDisplay extends Component {
                   <DecidedIconWrapper>
                     <NetworkScoreSmall
                       onClick={this.stopOpposingItem}
-                      voterpersonalnetworkscoreisnegative={voterPersonalNetworkScoreIsNegative.toString()}
-                      voterpersonalnetworkscoreispositive={voterPersonalNetworkScoreIsPositive.toString()}
-                      voteropposesballotitem={voterOpposesBallotItem.toString()}
+                      voterPersonalNetworkScoreIsNegative={voterPersonalNetworkScoreIsNegative}
+                      voterPersonalNetworkScoreIsPositive={voterPersonalNetworkScoreIsPositive}
+                      voterOpposesBallotItem={voterOpposesBallotItem}
                     >
                       <NotInterested classes={{ root: classes.decidedIconSmall }} />
                     </NetworkScoreSmall>
@@ -750,9 +750,9 @@ class BallotItemSupportOpposeCountDisplay extends Component {
                 <DecidedIconWrapper>
                   <NetworkScoreSmall
                     onClick={this.stopSupportingItem}
-                    votersupportsballotitem={voterSupportsBallotItem.toString()}
-                    voterpersonalnetworkscoreisnegative={voterPersonalNetworkScoreIsNegative.toString()}
-                    voterpersonalnetworkscoreispositive={voterPersonalNetworkScoreIsPositive.toString()}
+                    voterSupportsBallotItem={voterSupportsBallotItem}
+                    voterPersonalNetworkScoreIsNegative={voterPersonalNetworkScoreIsNegative}
+                    voterPersonalNetworkScoreIsPositive={voterPersonalNetworkScoreIsPositive}
                   >
                     <Done classes={{ root: classes.decidedIconSmall }} />
                   </NetworkScoreSmall>
@@ -773,9 +773,9 @@ class BallotItemSupportOpposeCountDisplay extends Component {
                 <DecidedIconWrapper>
                   <NetworkScoreSmall
                     onClick={this.stopOpposingItem}
-                    voteropposesballotitem={voterOpposesBallotItem.toString()}
-                    voterpersonalnetworkscoreisnegative={voterPersonalNetworkScoreIsNegative.toString()}
-                    voterpersonalnetworkscoreispositive={voterPersonalNetworkScoreIsPositive.toString()}
+                    voterOpposesBallotItem={voterOpposesBallotItem}
+                    voterPersonalNetworkScoreIsNegative={voterPersonalNetworkScoreIsNegative}
+                    voterPersonalNetworkScoreIsPositive={voterPersonalNetworkScoreIsPositive}
                   >
                     <NotInterested classes={{ root: classes.decidedIconSmall }} />
                   </NetworkScoreSmall>
@@ -1009,10 +1009,10 @@ class BallotItemSupportOpposeCountDisplay extends Component {
             showCloseIcon
           >
             <NetworkScore
-              voteropposesballotitem={voterOpposesBallotItem.toString()}
-              voterpersonalnetworkscoreisnegative={voterPersonalNetworkScoreIsNegative.toString()}
-              voterpersonalnetworkscoreispositive={voterPersonalNetworkScoreIsPositive.toString()}
-              votersupportsballotitem={voterSupportsBallotItem.toString()}
+              voterOpposesBallotItem={voterOpposesBallotItem}
+              voterPersonalNetworkScoreIsNegative={voterPersonalNetworkScoreIsNegative}
+              voterPersonalNetworkScoreIsPositive={voterPersonalNetworkScoreIsPositive}
+              voterSupportsBallotItem={voterSupportsBallotItem}
             >
               <VoterChoiceWrapper>
                 <Done classes={{ root: classes.decidedIcon }} />
@@ -1053,9 +1053,9 @@ class BallotItemSupportOpposeCountDisplay extends Component {
             showCloseIcon
           >
             <NetworkScore
-              voteropposesballotitem={voterOpposesBallotItem.toString()}
-              voterpersonalnetworkscoreisnegative={voterPersonalNetworkScoreIsNegative.toString()}
-              voterpersonalnetworkscoreispositive={voterPersonalNetworkScoreIsPositive.toString()}
+              voterOpposesBallotItem={voterOpposesBallotItem}
+              voterPersonalNetworkScoreIsNegative={voterPersonalNetworkScoreIsNegative}
+              voterPersonalNetworkScoreIsPositive={voterPersonalNetworkScoreIsPositive}
             >
               <VoterChoiceWrapper>
                 <NotInterested classes={{ root: classes.decidedIcon }} />
@@ -1097,7 +1097,7 @@ class BallotItemSupportOpposeCountDisplay extends Component {
             showCloseIcon
           >
             { voterPersonalNetworkScore === 0 ? (
-              <NetworkScore voterpersonalnetworkscoreisnegative={voterPersonalNetworkScoreIsNegative.toString()} voterpersonalnetworkscoreispositive={voterPersonalNetworkScoreIsPositive.toString()}>
+              <NetworkScore voterPersonalNetworkScoreIsNegative={voterPersonalNetworkScoreIsNegative} voterPersonalNetworkScoreIsPositive={voterPersonalNetworkScoreIsPositive}>
                 <ScoreLabel>
                   score
                 </ScoreLabel>
@@ -1108,10 +1108,10 @@ class BallotItemSupportOpposeCountDisplay extends Component {
             ) : (
               <NetworkScoreWrapper>
                 <NetworkScore
-                  voteropposesballotitem={voterOpposesBallotItem.toString()}
-                  voterpersonalnetworkscoreisnegative={voterPersonalNetworkScoreIsNegative.toString()}
-                  voterpersonalnetworkscoreispositive={voterPersonalNetworkScoreIsPositive.toString()}
-                  votersupportsballotitem={voterSupportsBallotItem.toString()}
+                  voterOpposesBallotItem={voterOpposesBallotItem}
+                  voterPersonalNetworkScoreIsNegative={voterPersonalNetworkScoreIsNegative}
+                  voterPersonalNetworkScoreIsPositive={voterPersonalNetworkScoreIsPositive}
+                  voterSupportsBallotItem={voterSupportsBallotItem}
                 >
                   <ScoreLabel>
                     score
@@ -1148,9 +1148,9 @@ class BallotItemSupportOpposeCountDisplay extends Component {
               showCloseIcon
             >
               <NetworkScore
-                hidenumbersofallpositions={hideNumbersOfAllPositions ? hideNumbersOfAllPositions.toString() : 'false'}
-                voterpersonalnetworkscoreisnegative={voterPersonalNetworkScoreIsNegative ? voterPersonalNetworkScoreIsNegative.toString() : 'false'}
-                voterpersonalnetworkscoreispositive={voterPersonalNetworkScoreIsPositive ? voterPersonalNetworkScoreIsPositive.toString() : 'false'}
+                hideNumbersOfAllPositions
+                voterPersonalNetworkScoreIsNegative={voterPersonalNetworkScoreIsNegative}
+                voterPersonalNetworkScoreIsPositive={voterPersonalNetworkScoreIsPositive}
               >
                 <YourScoreWrapper>
                   Your Score
@@ -1279,7 +1279,6 @@ const EndorsementsTitle = styled('div')`
 `;
 
 const EndorsementWrapper = styled('div')`
-  max-width: 25%;
   color: #888;
   text-align: right;
   user-select: none;
@@ -1302,8 +1301,10 @@ const NetworkScoreWrapper = styled('div')`
 `;
 
 // TODO:  This is almost identical to BallotItemVoterGuideSupportOpposeDisplay, it should be a reused component
-const NetworkScore = styled('div')`
-  background: ${({ hidenumbersofallpositions, voteropposesballotitem, voterpersonalnetworkscoreisnegative, voterpersonalnetworkscoreispositive, votersupportsballotitem }) => ((votersupportsballotitem && 'rgb(31, 192, 111)') || (voteropposesballotitem && 'rgb(255, 73, 34)') || (voterpersonalnetworkscoreispositive && 'rgb(31, 192, 111)') || (voterpersonalnetworkscoreisnegative && 'rgb(255, 73, 34)') || (hidenumbersofallpositions && 'rgb(211, 211, 211)') || '#888')};
+const NetworkScore = styled('div', {
+  shouldForwardProp: (prop) => !['hideNumbersOfAllPositions', 'voterOpposesBallotItem', 'voterPersonalNetworkScoreIsNegative', 'voterPersonalNetworkScoreIsPositive', 'voterSupportsBallotItem'].includes(prop),
+})(({ hideNumbersOfAllPositions, voterOpposesBallotItem, voterPersonalNetworkScoreIsNegative, voterPersonalNetworkScoreIsPositive, voterSupportsBallotItem }) => (`
+  background: ${(voterSupportsBallotItem && 'rgb(31, 192, 111)') || (voterOpposesBallotItem && 'rgb(255, 73, 34)') || (voterPersonalNetworkScoreIsPositive && 'rgb(31, 192, 111)') || (voterPersonalNetworkScoreIsNegative && 'rgb(255, 73, 34)') || (hideNumbersOfAllPositions && 'rgb(211, 211, 211)') || '#888'};
   color: white;
   box-shadow: 0 1px 3px 0 rgba(0,0,0,.2), 0 1px 1px 0 rgba(0,0,0,.14), 0 2px 1px -1px rgba(0,0,0,.12);
   cursor: pointer;
@@ -1319,12 +1320,14 @@ const NetworkScore = styled('div')`
   @media print{
     border-width: 1px;
     border-style: solid;
-    border-color: ${({ hidenumbersofallpositions, voteropposesballotitem, voterpersonalnetworkscoreisnegative, voterpersonalnetworkscoreispositive, votersupportsballotitem }) => ((votersupportsballotitem && 'rgb(31, 192, 111)') || (voteropposesballotitem && 'rgb(255, 73, 34)') || (voterpersonalnetworkscoreispositive && 'rgb(31, 192, 111)') || (voterpersonalnetworkscoreisnegative && 'rgb(255, 73, 34)') || (hidenumbersofallpositions && 'rgb(211, 211, 211)') || '#888')};
+    border-color: ${(voterSupportsBallotItem && 'rgb(31, 192, 111)') || (voterOpposesBallotItem && 'rgb(255, 73, 34)') || (voterPersonalNetworkScoreIsPositive && 'rgb(31, 192, 111)') || (voterPersonalNetworkScoreIsNegative && 'rgb(255, 73, 34)') || (hideNumbersOfAllPositions && 'rgb(211, 211, 211)') || '#888'};
   }
-`;
+`));
 
-const NetworkScoreSmall = styled('div')`
-  background: ${({ hidenumbersofallpositions, voteropposesballotitem, voterpersonalnetworkscoreisnegative, voterpersonalnetworkscoreispositive, votersupportsballotitem }) => ((votersupportsballotitem && 'rgb(31, 192, 111)') || (voteropposesballotitem && 'rgb(255, 73, 34)') || (voterpersonalnetworkscoreispositive && 'rgb(31, 192, 111)') || (voterpersonalnetworkscoreisnegative && 'rgb(255, 73, 34)') || (hidenumbersofallpositions && 'rgb(211, 211, 211)') || '#888')};
+const NetworkScoreSmall = styled('div', {
+  shouldForwardProp: (prop) => !['hideNumbersOfAllPositions', 'voterOpposesBallotItem', 'voterPersonalNetworkScoreIsNegative', 'voterPersonalNetworkScoreIsPositive', 'voterSupportsBallotItem'].includes(prop),
+})(({ hideNumbersOfAllPositions, voterOpposesBallotItem, voterPersonalNetworkScoreIsNegative, voterPersonalNetworkScoreIsPositive, voterSupportsBallotItem }) => (`
+  background: ${(voterSupportsBallotItem && 'rgb(31, 192, 111)') || (voterOpposesBallotItem && 'rgb(255, 73, 34)') || (voterPersonalNetworkScoreIsPositive && 'rgb(31, 192, 111)') || (voterPersonalNetworkScoreIsNegative && 'rgb(255, 73, 34)') || (hideNumbersOfAllPositions && 'rgb(211, 211, 211)') || '#888'};
   color: white;
   box-shadow: 0 1px 3px 0 rgba(0,0,0,.2), 0 1px 1px 0 rgba(0,0,0,.14), 0 2px 1px -1px rgba(0,0,0,.12);
   display: flex;
@@ -1339,9 +1342,9 @@ const NetworkScoreSmall = styled('div')`
   @media print{
     border-width: 1px;
     border-style: solid;
-    border-color: ${({ hidenumbersofallpositions, voteropposesballotitem, voterpersonalnetworkscoreisnegative, voterpersonalnetworkscoreispositive, votersupportsballotitem }) => ((votersupportsballotitem && 'rgb(31, 192, 111)') || (voteropposesballotitem && 'rgb(255, 73, 34)') || (voterpersonalnetworkscoreispositive && 'rgb(31, 192, 111)') || (voterpersonalnetworkscoreisnegative && 'rgb(255, 73, 34)') || (hidenumbersofallpositions && 'rgb(211, 211, 211)') || '#888')};
+    border-color: ${(voterSupportsBallotItem && 'rgb(31, 192, 111)') || (voterOpposesBallotItem && 'rgb(255, 73, 34)') || (voterPersonalNetworkScoreIsPositive && 'rgb(31, 192, 111)') || (voterPersonalNetworkScoreIsNegative && 'rgb(255, 73, 34)') || (hideNumbersOfAllPositions && 'rgb(211, 211, 211)') || '#888'};
   }
-`;
+`));
 
 const PopoverWrapper = styled('div')`
   width: 100%;
@@ -1420,7 +1423,7 @@ const VoterChoiceWrapper = styled('div')`
   @media print{
     color: #1fc06f;
   }
-  margin-top: 0px;
+  margin-top: 0;
 `;
 
 const YourOpinion = styled('div')`

@@ -1,6 +1,7 @@
+import styled from '@mui/material/styles/styled';
+import withTheme from '@mui/styles/withTheme';
 import PropTypes from 'prop-types';
 import React, { PureComponent } from 'react';
-import styled, { withTheme } from 'styled-components';
 
 class StepChips extends PureComponent {
   generateChips = () => this.props.chips.map((item, idx) => (

@@ -1,7 +1,7 @@
-import withStyles from '@mui/styles/withStyles';
 import { Done } from '@mui/icons-material';
-import React from 'react';
 import styled from '@mui/material/styles/styled';
+import withStyles from '@mui/styles/withStyles';
+import React from 'react';
 import commonMuiStyles from '../../common/components/Style/commonMuiStyles';
 import { InnerWrapper, OuterWrapper, StepCircle, StepNumber } from '../../common/components/Style/stepDisplayStyles';
 import { renderLog } from '../../common/utils/logging';

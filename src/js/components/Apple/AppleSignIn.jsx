@@ -6,7 +6,6 @@ import { isAndroid, isIOS } from '../../common/utils/cordovaUtils';
 import { isWebApp } from '../../common/utils/isCordovaOrWebApp';
 import Cookies from '../../common/utils/js-cookie/Cookies';
 import { oAuthLog, renderLog } from '../../common/utils/logging';
-import passBool from '../../common/utils/passBool';
 import webAppConfig from '../../config';
 import { openSnackbar } from '../Widgets/SnackNotifier';
 
@@ -176,14 +175,14 @@ class AppleSignIn extends Component {
       );
     } else {
       return (
-        <AppleSignInContainer enabled={passBool(enabled)}>
+        <AppleSignInContainer enabled={enabled}>
           <AppleSignInButton type="submit"
-                             isWeb={passBool(isWeb)}
-                             tinyScreen={passBool(tinyScreen)}
+                             isWeb={isWeb}
+                             tinyScreen={tinyScreen}
                              onClick={() => this.signInClicked(enabled)}
           >
             <AppleLogo signedIn={signedIn} enabled={enabled} />
-            <AppleSignInText id="appleSignInText" enabled={passBool(enabled)}>
+            <AppleSignInText id="appleSignInText" enabled={enabled}>
               {buttonLabel}
             </AppleSignInText>
           </AppleSignInButton>
@@ -207,8 +206,8 @@ export function AppleLogo (parameters) {
                   focusable="false"
                   aria-hidden="true"
                   id="appleLogo"
-                  signedIn={passBool(parameters.signedIn)}
-                  enabled={passBool(parameters.enabled)}
+                  signedIn={parameters.signedIn}
+                  enabled={parameters.enabled}
     >
       <title>Apple Logo</title>
       <path

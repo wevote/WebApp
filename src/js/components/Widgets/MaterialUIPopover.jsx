@@ -1,10 +1,10 @@
+import { Close } from '@mui/icons-material';
 import { IconButton, Popover, Typography } from '@mui/material';
+import styled from '@mui/material/styles/styled';
 import withStyles from '@mui/styles/withStyles';
 import withTheme from '@mui/styles/withTheme';
-import { Close } from '@mui/icons-material';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import styled from '@mui/material/styles/styled';
 
 class MaterialUIPopover extends Component {
   constructor (props) {
@@ -121,7 +121,8 @@ class MaterialUIPopover extends Component {
               classes={{ root: classes.iconButtonRoot }}
               onClick={this.handleClose}
               id="popoverCloseButton"
-              size="large">
+              size="large"
+            >
               <Close classes={{ root: classes.closeButton }} />
             </IconButton>
           </CloseWrapper>

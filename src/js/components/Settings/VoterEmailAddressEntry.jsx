@@ -11,7 +11,6 @@ import { blurTextFieldAndroid, focusTextFieldAndroid } from '../../common/utils/
 import { isCordova, isWebApp } from '../../common/utils/isCordovaOrWebApp';
 import isMobileScreenSize from '../../common/utils/isMobileScreenSize';
 import { renderLog } from '../../common/utils/logging';
-import passBool from '../../common/utils/passBool';
 import VoterStore from '../../stores/VoterStore';
 import signInModalGlobalState from '../Widgets/signInModalGlobalState';
 import SettingsVerifySecretCode from './SettingsVerifySecretCode';

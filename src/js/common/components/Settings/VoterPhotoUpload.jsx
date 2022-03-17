@@ -2,7 +2,7 @@ import { AccountCircle } from '@mui/icons-material';
 import { adaptV4Theme, createTheme } from '@mui/material/styles';
 import styled from '@mui/material/styles/styled';
 import withStyles from '@mui/styles/withStyles';
-import { DropzoneArea } from 'material-ui-dropzone';
+import { DropzoneArea } from 'mui-file-dropzone';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import VoterActions from '../../../actions/VoterActions';
@@ -85,7 +85,7 @@ class VoterPhotoUpload extends Component {
             <ColumnFullWidth>
               {voterProfileUploadedImageUrlLarge ? (
                 <VoterPhotoWrapper>
-                  <VoterPhotoImage maxwidth={maxWidth} src={voterProfileUploadedImageUrlLarge} alt="Profile Photo" />
+                  <VoterPhotoImage maxWidth={maxWidth} src={voterProfileUploadedImageUrlLarge} alt="Profile Photo" />
                   <DeleteLink
                     className="u-link-color u-link-underline u-cursor--pointer"
                     onClick={this.submitDeleteYourPhoto}
@@ -159,7 +159,7 @@ const OuterWrapper = styled('div')`
 const VoterPhotoImage = styled('img')`
   border-radius: 100px;
   max-width: 100px;
-  ${(props) => ((props.maxwidth) ? `max-width: ${props.maxwidth}px;` : 'max-width: 200px;')}
+  ${(props) => ((props.maxWidth) ? `max-width: ${props.maxWidth}px;` : 'max-width: 200px;')}
 `;
 
 const VoterPhotoWrapper = styled('div')`

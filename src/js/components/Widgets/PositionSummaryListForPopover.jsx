@@ -1,11 +1,10 @@
+import { CheckCircle, ThumbDown, ThumbUp } from '@mui/icons-material';
+import styled from '@mui/material/styles/styled';
 import withStyles from '@mui/styles/withStyles';
 import withTheme from '@mui/styles/withTheme';
-import { CheckCircle, ThumbDown, ThumbUp } from '@mui/icons-material';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
 import { ReactSVG } from 'react-svg';
-import styled from '@mui/material/styles/styled';
-import passBool from '../../common/utils/passBool';
 import normalizedImagePath from '../../common/utils/normalizedImagePath';
 import { cleanArray } from '../../utils/textFormat';
 import FriendsIcon from './FriendsIcon';
@@ -219,11 +218,11 @@ class PositionSummaryListForPopover extends Component {
           key={`onePositionForPopoverPersonalNetworkScore-${ballotItemWeVoteId}`}
         >
           { voterPersonalNetworkScore === 0 ? (
-            <NetworkScoreSmall voterpersonalnetworkscoreisnegative={passBool(voterPersonalNetworkScoreIsNegative)} voterpersonalnetworkscoreispositive={passBool(voterPersonalNetworkScoreIsPositive)}>
+            <NetworkScoreSmall voterPersonalNetworkScoreIsNegative={voterPersonalNetworkScoreIsNegative} voterPersonalNetworkScoreIsPositive={voterPersonalNetworkScoreIsPositive}>
               0
             </NetworkScoreSmall>
           ) : (
-            <NetworkScoreSmall voterpersonalnetworkscoreisnegative={passBool(voterPersonalNetworkScoreIsNegative)} I={passBool(voterPersonalNetworkScoreIsPositive)}>
+            <NetworkScoreSmall voterPersonalNetworkScoreIsNegative={voterPersonalNetworkScoreIsNegative} voterPersonalNetworkScoreIsPositive={voterPersonalNetworkScoreIsPositive}>
               { voterPersonalNetworkScoreWithSign }
             </NetworkScoreSmall>
           )}
@@ -291,8 +290,10 @@ const NetworkScoreDescriptionText = styled('div')`
   margin-left: 6px;
 `;
 
-const NetworkScoreSmall = styled('div')`
-  background: ${({ voterPersonalNetworkScoreIsNegative, voterPersonalNetworkScoreIsPositive }) => ((voterPersonalNetworkScoreIsNegative && 'rgb(255, 73, 34)') || (voterPersonalNetworkScoreIsPositive && 'rgb(31, 192, 111)') || '#888')};
+const NetworkScoreSmall = styled('div', {
+  shouldForwardProp: (prop) => !['voterPersonalNetworkScoreIsNegative', 'voterPersonalNetworkScoreIsPositive'].includes(prop),
+})(({ voterPersonalNetworkScoreIsNegative, voterPersonalNetworkScoreIsPositive }) => (`
+  background: ${(voterPersonalNetworkScoreIsNegative && 'rgb(255, 73, 34)') || (voterPersonalNetworkScoreIsPositive && 'rgb(31, 192, 111)') || '#888'};
   color: white;
   box-shadow: 0 1px 3px 0 rgba(0,0,0,.2), 0 1px 1px 0 rgba(0,0,0,.14), 0 2px 1px -1px rgba(0,0,0,.12);
   display: flex;
@@ -307,9 +308,9 @@ const NetworkScoreSmall = styled('div')`
   @media print{
     border-width: 1 px;
     border-style: solid;
-    border-color: ${({ voterPersonalNetworkScoreIsNegative, voterPersonalNetworkScoreIsPositive }) => ((voterPersonalNetworkScoreIsNegative && 'rgb(255, 73, 34)') || (voterPersonalNetworkScoreIsPositive && 'rgb(31, 192, 111)') || '#888')};
+    border-color: ${(voterPersonalNetworkScoreIsNegative && 'rgb(255, 73, 34)') || (voterPersonalNetworkScoreIsPositive && 'rgb(31, 192, 111)') || '#888'};
   }
-`;
+`));
 
 const NetworkScoreSumLine = styled('div')`
   background: #2E3C5D;

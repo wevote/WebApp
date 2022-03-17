@@ -304,7 +304,7 @@ const CandidateInfo = styled('div', {
   overflow-x: hidden;
   transition: all 200ms ease-in;
   border: 1px solid ${({ theme }) => theme.colors.grayBorder};
-  width: ${({ numberOfCandidatesInList }) => (numberOfCandidatesInList > 1 ? '48%' : '100%')};
+  width: ${numberOfCandidatesInList > 1 ? '48%' : '100%'};
   margin-right: 8px;
   border-radius: 4px;
   cursor: pointer;

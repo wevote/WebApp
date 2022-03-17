@@ -1,16 +1,16 @@
+import styled from '@mui/material/styles/styled';
 import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
 import Helmet from 'react-helmet';
 import { Link } from 'react-router-dom';
-import styled from '@mui/material/styles/styled';
+import { renderLog } from '../../common/utils/logging';
 import PricingCard from '../../components/More/PricingCard';
 import { Section } from '../../components/Welcome/sectionStyles';
 import PricingSwitch from '../../components/Widgets/PricingSwitch';
 import AppObservableStore from '../../stores/AppObservableStore';
 import VoterStore from '../../stores/VoterStore';
 import cordovaScrollablePaneTopPadding from '../../utils/cordovaScrollablePaneTopPadding';
-import { renderLog } from '../../common/utils/logging';
 
 const WelcomeAppbar = React.lazy(() => import(/* webpackChunkName: 'WelcomeAppbar' */ '../../components/Navigation/WelcomeAppbar'));
 const WelcomeFooter = React.lazy(() => import(/* webpackChunkName: 'WelcomeFooter' */ '../../components/Welcome/WelcomeFooter'));
@@ -670,14 +670,16 @@ const styles = (theme) => ({
   },
 });
 
-const Wrapper = styled('div')`
+const Wrapper = styled('div', {
+  shouldForwardProp: (prop) => !['padTop'].includes(prop),
+})(({ padTop }) => (`
   display: flex;
   flex-flow: column nowrap;
   align-items: center;
   background: white;
   overflow-x: hidden;
-  padding-top: ${({ padTop }) => padTop};
-`;
+  padding-top: ${padTop};
+`));
 
 const HeaderForPricing = styled('div')`
   position: relative;

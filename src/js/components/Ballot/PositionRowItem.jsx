@@ -1,20 +1,21 @@
-import { withStyles, withTheme } from '@material-ui/core/styles';
+import styled from '@mui/material/styles/styled';
+import withStyles from '@mui/styles/withStyles';
+import withTheme from '@mui/styles/withTheme';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
-import styled from 'styled-components';
 import OrganizationActions from '../../actions/OrganizationActions';
+import SvgImage from '../../common/components/Widgets/SvgImage';
+import { renderLog } from '../../common/utils/logging';
+import normalizedImagePath from '../../common/utils/normalizedImagePath';
 import AppObservableStore from '../../stores/AppObservableStore';
 import FriendStore from '../../stores/FriendStore';
 import IssueStore from '../../stores/IssueStore';
 import OrganizationStore from '../../stores/OrganizationStore';
 import VoterGuideStore from '../../stores/VoterGuideStore';
-import normalizedImagePath from '../../common/utils/normalizedImagePath';
-import { renderLog } from '../../common/utils/logging';
 import { isSpeakerTypeIndividual, isSpeakerTypeOrganization } from '../../utils/organization-functions';
 import OrganizationPopoverCard from '../Organization/OrganizationPopoverCard';
-import PositionItemSquare from './PositionItemSquare';
 import PositionItemScorePopover from '../Widgets/PositionItemScorePopover';
-import SvgImage from '../../common/components/Widgets/SvgImage';
+import PositionItemSquare from './PositionItemSquare';
 
 const ImageHandler = React.lazy(() => import(/* webpackChunkName: 'ImageHandler' */ '../ImageHandler'));
 const StickyPopover = React.lazy(() => import(/* webpackChunkName: 'StickyPopover' */ './StickyPopover'));
@@ -28,8 +29,8 @@ class PositionRowItem extends Component {
   }
 
   componentDidMount () {
-    const { position } = this.props;
-    const { ballot_item_we_vote_id: ballotItemWeVoteId, speaker_we_vote_id: organizationWeVoteId } = position;
+    // const { position } = this.props;
+    // const { ballot_item_we_vote_id: ballotItemWeVoteId, speaker_we_vote_id: organizationWeVoteId } = position;
     // console.log('PositionRowItem componentDidMount, position:', position);
     this.onOrganizationInVotersNetworkChange();
     this.friendStoreListener = FriendStore.addListener(this.onFriendStoreChange.bind(this));

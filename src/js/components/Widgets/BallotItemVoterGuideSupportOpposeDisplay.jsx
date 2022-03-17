@@ -1,12 +1,12 @@
+import { Info, ThumbDown, ThumbUp } from '@mui/icons-material';
+import styled from '@mui/material/styles/styled';
 import withStyles from '@mui/styles/withStyles';
 import withTheme from '@mui/styles/withTheme';
-import { Info, ThumbDown, ThumbUp } from '@mui/icons-material';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
-import styled from '@mui/material/styles/styled';
-import OrganizationStore from '../../stores/OrganizationStore';
 import { isCordova } from '../../common/utils/isCordovaOrWebApp';
 import { renderLog } from '../../common/utils/logging';
+import OrganizationStore from '../../stores/OrganizationStore';
 import StickyPopover from '../Ballot/StickyPopover';
 import FriendsOnlyIndicator from './FriendsOnlyIndicator';
 import PositionItemScorePopover from './PositionItemScorePopover';
@@ -223,7 +223,7 @@ class BallotItemVoterGuideSupportOpposeDisplay extends Component {
             showCloseIcon
           >
             <NetworkScore
-              hidenumbersofallpositions="true"
+              hideNumbersOfAllPositions
             >
               &nbsp;
             </NetworkScore>
@@ -253,7 +253,7 @@ const styles = (theme) => ({
 });
 
 const FriendsOnlyIndicatorWrapper = styled('div')`
-  margin-top: 0px !important;
+  margin-top: 0 !important;
   display: flex;
 `;
 
@@ -263,24 +263,27 @@ const Wrapper = styled('div')`
 `;
 
 // TODO:  This is almost identical to BallotItemSupportOpposeDisplay, it should be a reused component
-const NetworkScore = styled('div')`
-  background: ${({ hidenumbersofallpositions, voterpersonalnetworkscoreisnegative, voterpersonalnetworkscoreispositive }) => ((voterpersonalnetworkscoreisnegative && 'rgb(255, 73, 34)') || (voterpersonalnetworkscoreispositive && 'rgb(31, 192, 111)') || (hidenumbersofallpositions && 'rgb(240, 240, 240)') || '#888')};
-  color: white;
+const NetworkScore = styled('div', {
+  shouldForwardProp: (prop) => !['hideNumbersOfAllPositions', 'voterPersonalNetworkScoreIsNegative', 'voterPersonalNetworkScoreIsPositive'].includes(prop),
+})(({ hideNumbersOfAllPositions, voterPersonalNetworkScoreIsNegative, voterPersonalNetworkScoreIsPositive }) => (`
+
+  background: ${(voterPersonalNetworkScoreIsNegative && 'rgb(255, 73, 34)') || (voterPersonalNetworkScoreIsPositive && 'rgb(31, 192, 111)') || (hideNumbersOfAllPositions && 'rgb(240, 240, 240)') || '#888'};
+  border-radius: 5px;
   box-shadow: 0 1px 3px 0 rgba(0,0,0,.2), 0 1px 1px 0 rgba(0,0,0,.14), 0 2px 1px -1px rgba(0,0,0,.12);
+  color: white;
   cursor: pointer;
   display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 40px;
-  height: 40px;
   font-size: 16px;
   font-weight: bold;
+  height: 40px;
+  justify-content: center;
+  width: 40px;
   @media print{
     border-width: 1px;
     border-style: solid;
-    border-color: ${({ hidenumbersofallpositions, voterpersonalnetworkscoreisnegative, voterpersonalnetworkscoreispositive }) => ((voterpersonalnetworkscoreisnegative && 'rgb(255, 73, 34)') || (voterpersonalnetworkscoreispositive && 'rgb(31, 192, 111)') || (hidenumbersofallpositions && 'rgb(240, 240, 240)') || '#888')};
+    border-color: ${(voterPersonalNetworkScoreIsNegative && 'rgb(255, 73, 34)') || (voterPersonalNetworkScoreIsPositive && 'rgb(31, 192, 111)') || (hideNumbersOfAllPositions && 'rgb(240, 240, 240)') || '#888'};
   }
-`;
+`));
 
 const OrganizationSupportWrapper = styled('div')`
   position: relative;
@@ -328,7 +331,7 @@ const OrganizationOpposeSquare = styled('div')`
 `;
 
 const OrganizationOpposeIconWrapper = styled('div')`
-  margin-left: 0px;
+  margin-left: 0;
   margin-top: -10px;
 `;
 
@@ -369,7 +372,7 @@ const OverlayImage = styled('div')`
 `;
 
 const OrganizationIconWrapper = styled('div')`
-  margin-top: 0px !important;
+  margin-top: 0 !important;
   padding: 0 !important;
   width: 22px;
   display: flex;
@@ -378,8 +381,8 @@ const OrganizationIconWrapper = styled('div')`
 const TinyImageSpacer = styled('div')`
   background: white;
   border-radius: 3px;
-  margin: 0px !important;
-  padding: 0px !important;
+  margin: 0 !important;
+  padding: 0 !important;
   width: 16px;
   height: 16px;
 `;

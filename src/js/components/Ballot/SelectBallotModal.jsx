@@ -8,7 +8,6 @@ import React, { Component, Suspense } from 'react';
 import AnalyticsActions from '../../actions/AnalyticsActions';
 import { hasIPhoneNotch } from '../../common/utils/cordovaUtils';
 import { renderLog } from '../../common/utils/logging';
-import passBool from '../../common/utils/passBool';
 import VoterStore from '../../stores/VoterStore';
 import { calculateBallotBaseUrl } from '../../utils/textFormat';
 import EditAddressInPlace from '../Widgets/EditAddressInPlace';
@@ -198,7 +197,7 @@ class SelectBallotModal extends Component {
                       <option value="WY">Wyoming</option>
                     </Select>
                   </FormControl>
-                  <BallotElectionListWrapper addTopMargin={passBool(!hideAddressEdit)}>
+                  <BallotElectionListWrapper addTopMargin={!hideAddressEdit}>
                     <Suspense fallback={<></>}>
                       <BallotElectionListWithFilters
                           ballotBaseUrl={ballotBaseUrl}

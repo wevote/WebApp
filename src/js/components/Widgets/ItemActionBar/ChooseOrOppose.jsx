@@ -1,9 +1,9 @@
-import { DialogContent, DialogTitle, IconButton } from '@mui/material';
-import withStyles from '@mui/styles/withStyles';
 import { Close } from '@mui/icons-material';
+import { DialogContent, DialogTitle, IconButton } from '@mui/material';
+import styled from '@mui/material/styles/styled';
+import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
-import styled from '@mui/material/styles/styled';
 import VoterStore from '../../../stores/VoterStore';
 import PositionPublicToggle from '../PositionPublicToggle';
 import Slides from './Slides';
@@ -91,27 +91,30 @@ class ChooseOrOppose extends Component {
   render () {
     const { classes } = this.props;
     const { voterIsSignedIn } = this.state;
-    return <>
-      <DialogTitle classes={{ root: classes.dialogTitle }}>
-        <TitleText>Choose or Oppose</TitleText>
-        <IconButton
-          aria-label="Close"
-          classes={{ root: classes.closeButton }}
-          onClick={this.props.onClose}
-          id="profileCloseItemActionBar"
-          size="large">
-          <Close />
-        </IconButton>
-      </DialogTitle>
-      <HorizontalLine />
-      <DialogContent classes={{ root: classes.dialogContent }}>
-        <Slides
-          onClose={this.props.onClose}
-          slides={this.getSlides()}
-          voterIsSignedIn={voterIsSignedIn}
-        />
-      </DialogContent>
-    </>;
+    return (
+      <>
+        <DialogTitle classes={{ root: classes.dialogTitle }}>
+          <TitleText>Choose or Oppose</TitleText>
+          <IconButton
+            aria-label="Close"
+            classes={{ root: classes.closeButton }}
+            onClick={this.props.onClose}
+            id="profileCloseItemActionBar"
+            size="large"
+          >
+            <Close />
+          </IconButton>
+        </DialogTitle>
+        <HorizontalLine />
+        <DialogContent classes={{ root: classes.dialogContent }}>
+          <Slides
+            onClose={this.props.onClose}
+            slides={this.getSlides()}
+            voterIsSignedIn={voterIsSignedIn}
+          />
+        </DialogContent>
+      </>
+    );
   }
 }
 ChooseOrOppose.propTypes = {
@@ -144,8 +147,7 @@ const HorizontalLine = styled('div')`
   margin: 0 24px;
   margin-bottom: 8px;
   @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
-    margin 0;
-    margin-bottom: 8px;
+    margin: 0 0 8px 0;
   }
 `;
 

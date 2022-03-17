@@ -1,10 +1,10 @@
+import styled from '@mui/material/styles/styled';
 import React, { Component } from 'react';
 import Helmet from 'react-helmet';
 import { Link } from 'react-router-dom';
-import styled from '@mui/material/styles/styled';
 import { renderLog } from '../../common/utils/logging';
-import { PageContentContainer } from '../../components/Style/pageLayoutStyles';
 import ReadyIntroduction from '../../components/Ready/ReadyIntroduction';
+import { PageContentContainer } from '../../components/Style/pageLayoutStyles';
 
 
 export default class HowWeVoteHelps extends Component {

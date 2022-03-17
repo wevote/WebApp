@@ -1,20 +1,20 @@
+import styled from '@mui/material/styles/styled';
 import withStyles from '@mui/styles/withStyles';
 import React, { Component, Suspense } from 'react';
 import Helmet from 'react-helmet';
 import { Link } from 'react-router-dom';
-import styled from '@mui/material/styles/styled';
 import AnalyticsActions from '../../actions/AnalyticsActions';
+import ExternalLinkIcon from '../../common/components/Widgets/ExternalLinkIcon';
+import ToolBar from '../../common/components/Widgets/ToolBar';
 import { weVoteBoard, weVoteFounders, weVoteStaff } from '../../common/constants/people';
+import { renderLog } from '../../common/utils/logging';
+import normalizedImagePath from '../../common/utils/normalizedImagePath';
 import TeamMemberDisplayForList from '../../components/More/TeamMemberDisplayForList';
 import ShowMoreButtons from '../../components/Ready/ShowMoreButtons';
 import { Title } from '../../components/Welcome/headerWelcomeStyles';
-import { Section, Bold, DescriptionContainer, MemberListContainer, SectionTitle } from '../../components/Welcome/sectionStyles';
-import ExternalLinkIcon from '../../common/components/Widgets/ExternalLinkIcon';
+import { Bold, DescriptionContainer, MemberListContainer, Section, SectionTitle } from '../../components/Welcome/sectionStyles';
 import VoterStore from '../../stores/VoterStore';
 import cordovaScrollablePaneTopPadding from '../../utils/cordovaScrollablePaneTopPadding';
-import normalizedImagePath from '../../common/utils/normalizedImagePath';
-import { renderLog } from '../../common/utils/logging';
-import ToolBar from '../../common/components/Widgets/ToolBar';
 
 const OpenExternalWebSite = React.lazy(() => import(/* webpackChunkName: 'OpenExternalWebSite' */ '../../common/components/Widgets/OpenExternalWebSite'));
 const WelcomeAppbar = React.lazy(() => import(/* webpackChunkName: 'WelcomeAppbar' */ '../../components/Navigation/WelcomeAppbar'));
@@ -81,7 +81,7 @@ class About extends Component {
     let weVoteStaffCount = 0;
 
     return (
-      <Wrapper padTop={cordovaScrollablePaneTopPadding()}>
+      <AboutWrapper>
         <Helmet title="About We Vote" />
         <Suspense fallback={<></>}>
           <WelcomeAppbar pathname="/more/about" />
@@ -305,7 +305,7 @@ class About extends Component {
         <Suspense fallback={<></>}>
           <WelcomeFooter />
         </Suspense>
-      </Wrapper>
+      </AboutWrapper>
     );
   }
 }
@@ -326,13 +326,13 @@ const styles = (theme) => ({
   },
 });
 
-const Wrapper = styled('div')`
+const AboutWrapper = styled('div')`
   display: flex;
   flex-flow: column nowrap;
   align-items: center;
   background: white;
   overflow-x: hidden;
-  padding-top: ${({ padTop }) => padTop};
+  padding-top: ${cordovaScrollablePaneTopPadding()};
 `;
 
 const HeaderForAbout = styled('div')`

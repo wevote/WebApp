@@ -1,8 +1,8 @@
 import { Grid } from '@mui/material';
 import React from 'react';
-import VoterStore from '../../stores/VoterStore';
 import { renderLog } from '../../common/utils/logging';
 import webAppConfig from '../../config';
+import VoterStore from '../../stores/VoterStore';
 
 
 // React functional component example

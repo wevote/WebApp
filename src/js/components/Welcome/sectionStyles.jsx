@@ -1,24 +1,26 @@
 import styled from '@mui/material/styles/styled';
 
-const Section = styled('div')`
+const Section = styled('div', {
+  shouldForwardProp: (prop) => !['noTopMargin', 'noSideMargins', 'variant', 'rounded'].includes(prop),
+})(({ noTopMargin, noSideMargins, variant, rounded }) => (`
   display: flex;
   flex-flow: column;
-  padding-top: ${({ noTopMargin }) => (noTopMargin ? '0' : '3em')};
-  padding-right: ${({ noSideMargins }) => (noSideMargins ? '0' : '1em')};
-  padding-bottom: ${({ noTopMargin }) => (noTopMargin ? '0' : '2em')};
-  padding-left: ${({ noSideMargins }) => (noSideMargins ? '0' : '1em')};
+  padding-top: ${noTopMargin ? '0' : '3em'};
+  padding-right: ${noSideMargins ? '0' : '1em'};
+  padding-bottom: ${noTopMargin ? '0' : '2em'};
+  padding-left: ${noSideMargins ? '0' : '1em'};
   text-align: center;
   align-items: center;
   color: #333;
   width: 100%;
-  background: ${({ variant }) => (variant === 'dark' ? 'rgb(235, 236, 240)' : 'white')};
-  ${({ rounded }) => (rounded ? // eslint-disable-next-line
-      'border-radius: 50% 50%;\nwidth: 200%;\npadding: 3em 2em;' : '')};
+  background: ${variant === 'dark' ? 'rgb(235, 236, 240)' : 'white'};
+  ${rounded ? // eslint-disable-next-line
+      'border-radius: 50% 50%;\nwidth: 200%;\npadding: 3em 2em;' : ''};
   @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
-    padding-top: ${({ noTopMargin }) => (noTopMargin ? '0' : '2em')};
-    padding-bottom: ${({ noTopMargin }) => (noTopMargin ? '0' : '1em')};
+    padding-top: ${noTopMargin ? '0' : '2em'};
+    padding-bottom: ${noTopMargin ? '0' : '1em'};
   }
-`;
+`));
 
 const SectionTitle = styled('h1')`
   font-size: 36px;

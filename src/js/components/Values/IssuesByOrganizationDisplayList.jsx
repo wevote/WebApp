@@ -7,7 +7,6 @@ import React, { Component, Suspense } from 'react';
 import SvgImage from '../../common/components/Widgets/SvgImage';
 import { renderLog } from '../../common/utils/logging';
 import normalizedImagePath from '../../common/utils/normalizedImagePath';
-import passBool from '../../common/utils/passBool';
 import IssueStore from '../../stores/IssueStore';
 import VoterGuideStore from '../../stores/VoterGuideStore';
 import StickyPopover from '../Ballot/StickyPopover';

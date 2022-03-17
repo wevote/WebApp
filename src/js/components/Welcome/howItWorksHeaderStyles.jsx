@@ -9,7 +9,6 @@ const Header = styled('div')`
   margin-top: -72px;
   display: flex;
   flex-flow: row;
-  justify-content: space-between;
   padding-top: 84px;
   justify-content: center;
 `;

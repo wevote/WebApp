@@ -121,7 +121,7 @@ const CardDefault = styled('div')`
   }
 `;
 
-const scaleCard = keyframes`  // March 2022, from @emotion/react (hope these can be mixed)
+const scaleCard = keyframes`  // March 2022, from @emotion/react (hope these libraries can be mixed)
   from {
     box-shadow: 1px .5px 5px 0 #cacaca;
   }

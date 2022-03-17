@@ -1,8 +1,7 @@
+import { Button } from '@mui/material';
 import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
 import React, { PureComponent } from 'react';
-
-import { Button } from '@mui/material';
 
 class PremiumableButton extends PureComponent {
   render () {

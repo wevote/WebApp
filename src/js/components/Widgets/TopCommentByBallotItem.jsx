@@ -1,13 +1,13 @@
 import { Button } from '@mui/material';
+import styled from '@mui/material/styles/styled';
 import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import styled from '@mui/material/styles/styled';
+import { renderLog } from '../../common/utils/logging';
 import CandidateStore from '../../stores/CandidateStore';
 import MeasureStore from '../../stores/MeasureStore';
 import VoterGuideStore from '../../stores/VoterGuideStore';
-import { renderLog } from '../../common/utils/logging';
 import { extractFirstEndorsementFromPositionList } from '../../utils/positionFunctions';
 import { shortenText, stringContains } from '../../utils/textFormat';
 
@@ -313,10 +313,12 @@ const BallotItemEndorsementTextMobile = styled('span')`
   font-weight: 400;
 `;
 
-const LearnMoreWrapper = styled('div')`
+const LearnMoreWrapper = styled('div', {
+  shouldForwardProp: (prop) => !['isButton'].includes(prop),
+})(({ isButton }) => (`
   margin-left: auto;
-  display: ${(props) => (props.isButton ? 'flex' : 'inline')};
+  display: ${isButton ? 'flex' : 'inline'};
   justify-content: flex-end;
-`;
+`));
 
 export default withStyles(styles)(TopCommentByBallotItem);

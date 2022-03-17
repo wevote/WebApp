@@ -1,14 +1,20 @@
 import { Button } from '@mui/material';
+import styled from '@mui/material/styles/styled';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
 import { Link } from 'react-router-dom';
-import styled from '@mui/material/styles/styled';
 import AnalyticsActions from '../../actions/AnalyticsActions';
 import FriendActions from '../../actions/FriendActions';
 import OrganizationActions from '../../actions/OrganizationActions';
-import FriendToggle from '../../components/Friends/FriendToggle';
 import LoadingWheel from '../../common/components/Widgets/LoadingWheel';
+import apiCalming from '../../common/utils/apiCalming';
+import { isIPad } from '../../common/utils/cordovaUtils';
+import historyPush from '../../common/utils/historyPush';
+import { isWebApp } from '../../common/utils/isCordovaOrWebApp';
+import { renderLog } from '../../common/utils/logging';
+import FriendToggle from '../../components/Friends/FriendToggle';
 import ShareButtonDesktopTablet from '../../components/Share/ShareButtonDesktopTablet';
+import { PageContentContainer } from '../../components/Style/pageLayoutStyles';
 import OrganizationCard from '../../components/VoterGuide/OrganizationCard';
 import OrganizationVoterGuideCard from '../../components/VoterGuide/OrganizationVoterGuideCard';
 import OrganizationVoterGuideTabs from '../../components/VoterGuide/OrganizationVoterGuideTabs';
@@ -16,13 +22,7 @@ import AppObservableStore from '../../stores/AppObservableStore';
 import OrganizationStore from '../../stores/OrganizationStore';
 import VoterGuideStore from '../../stores/VoterGuideStore';
 import VoterStore from '../../stores/VoterStore';
-import { isIPad } from '../../common/utils/cordovaUtils';
-import { isWebApp } from '../../common/utils/isCordovaOrWebApp';
-import historyPush from '../../common/utils/historyPush';
-import { renderLog } from '../../common/utils/logging';
-import apiCalming from '../../common/utils/apiCalming';
 import { isSpeakerTypePrivateCitizen } from '../../utils/organization-functions';
-import { PageContentContainer } from '../../components/Style/pageLayoutStyles';
 
 const DelayedLoad = React.lazy(() => import(/* webpackChunkName: 'DelayedLoad' */ '../../common/components/Widgets/DelayedLoad'));
 const FollowToggle = React.lazy(() => import(/* webpackChunkName: 'FollowToggle' */ '../../components/Widgets/FollowToggle'));
@@ -529,15 +529,17 @@ const BannerOverlayDesktopInnerWrapper = styled('div')`
   }
 `;
 
-const CardContainer = styled('div')`
+const CardContainer = styled('div', {
+  shouldForwardProp: (prop) => !['bannerUrl'].includes(prop),
+})(({ bannerUrl }) => (`
   @media (min-width: ${({ theme }) => theme.breakpoints.lg}) {
-    margin-top: ${({ bannerUrl }) => (bannerUrl ? '-203px' : '0')};
+    margin-top: ${bannerUrl ? '-203px' : '0'};
   }
-`;
+`));
 
 const DesktopLeftColumn = styled('div')`
-  padding-left: 0px !important;
-  padding-right: 0px !important;
+  padding-left: 0 !important;
+  padding-right: 0 !important;
 `;
 
 const EditYourEndorsementsWrapper = styled('div')`

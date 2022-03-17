@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
 import styled from '@mui/material/styles/styled';
+import React, { Component } from 'react';
 import TwitterActions from '../../actions/TwitterActions';
 import VoterActions from '../../actions/VoterActions';
 import LoadingWheel from '../../common/components/Widgets/LoadingWheel';
@@ -9,12 +9,12 @@ import { normalizedHref } from '../../common/utils/hrefUtils';
 import { isWebApp } from '../../common/utils/isCordovaOrWebApp';
 import Cookies from '../../common/utils/js-cookie/Cookies';
 import { oAuthLog, renderLog } from '../../common/utils/logging';
+import { PageContentContainer } from '../../components/Style/pageLayoutStyles';
 import IPhoneSpacer from '../../components/Widgets/IPhoneSpacer';
 import SnackNotifier from '../../components/Widgets/SnackNotifier';
 import AppObservableStore, { messageService } from '../../stores/AppObservableStore';
 import TwitterStore from '../../stores/TwitterStore';
 import VoterStore from '../../stores/VoterStore';
-import { PageContentContainer } from '../../components/Style/pageLayoutStyles';
 import { stringContains } from '../../utils/textFormat';
 
 export default class TwitterSignInProcess extends Component {

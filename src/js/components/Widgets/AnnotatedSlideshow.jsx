@@ -1,9 +1,10 @@
-import { Button } from '@mui/material';
-import withStyles from '@mui/styles/withStyles';
 import { ArrowLeft, ArrowRight } from '@mui/icons-material';
+import { Button } from '@mui/material';
+import styled from '@mui/material/styles/styled';
+import withStyles from '@mui/styles/withStyles';
+import withTheme from '@mui/styles/withTheme';
 import PropTypes from 'prop-types';
 import React, { PureComponent } from 'react';
-import styled, { withTheme } from 'styled-components';
 import normalizedImagePath from '../../common/utils/normalizedImagePath';
 
 class AnnotatedSlideshow extends PureComponent {
@@ -106,24 +107,28 @@ const styles = (theme) => ({
   },
 });
 
-const Wrapper = styled('div')`
+const Wrapper = styled('div', {
+  shouldForwardProp: (prop) => !['inModal'].includes(prop),
+})(({ inModal }) => (`
   display: flex;
   flex-flow: column;
   text-align: left;
   @media (max-width: ${({ theme }) => theme.breakpoints.lg}) {
-    padding: ${({ inModal }) => (inModal ? '0' : '1em 0')};
+    padding: ${inModal ? '0' : '1em 0'};
   }
-`;
+`));
 
-const SlideShowTitle = styled('h3')`
+const SlideShowTitle = styled('h3', {
+  shouldForwardProp: (prop) => !['inModal'].includes(prop),
+})(({ inModal }) => (`
   font-weight: bold;
   font-size: 24px;
-  margin-top:  ${({ inModal }) => (inModal ? '0' : '36px')};
+  margin-top:  ${inModal ? '0' : '36px'};
   @media (max-width: ${({ theme }) => theme.breakpoints.lg}) {
     font-size: 20px;
-    margin-top: ${({ inModal }) => (inModal ? '0' : '16px')};
+    margin-top: ${inModal ? '0' : '16px'};
   }
-`;
+`));
 
 const TwoButtonsWrapper = styled('div')`
   width: 100%;
@@ -144,7 +149,6 @@ const BackButtonWrapper = styled('div')`
 
 const NextButtonWrapper = styled('div')`
   margin: 0;
-  margin-right: 0;
   width: 100%;
   @media(min-width: 520px) {
     margin-right: 8px;
@@ -187,17 +191,19 @@ const Nav = styled('div')`
   }
 `;
 
-const Image = styled('img')`
+const Image = styled('img', {
+  shouldForwardProp: (prop) => !['inModal'].includes(prop),
+})(({ inModal }) => (`
   border: 1px solid #999;
   border-radius: 16px;
   box-shadow: 2px 2px 4px 2px ${({ theme }) => theme.colors.grayLight};
-  ${(inModal) => (inModal ? 'width: 100%;' : 'width: 640px;')}
-  ${(inModal) => (inModal ? 'height: auto;' : 'height: 360px;')}
+  ${inModal ? 'width: 100%;' : 'width: 640px;'}
+  ${inModal ? 'height: auto;' : 'height: 360px;'}
   transition: all 150ms ease-in;
   @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
     width: 90vw;
     height: calc(90vw * 0.5625);
   }
-`;
+`));
 
 export default withStyles(styles)(withTheme(AnnotatedSlideshow));

@@ -1,9 +1,9 @@
+import styled from '@mui/material/styles/styled';
 import withStyles from '@mui/styles/withStyles';
 import withTheme from '@mui/styles/withTheme';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
 import Helmet from 'react-helmet';
-import styled from '@mui/material/styles/styled';
 import ActivityActions from '../actions/ActivityActions';
 import AnalyticsActions from '../actions/AnalyticsActions';
 import BallotActions from '../actions/BallotActions';
@@ -25,6 +25,7 @@ import ReadyTaskFriends from '../components/Ready/ReadyTaskFriends';
 import ReadyTaskPlan from '../components/Ready/ReadyTaskPlan';
 import ReadyTaskRegister from '../components/Ready/ReadyTaskRegister';
 import ShareButtonDesktopTablet from '../components/Share/ShareButtonDesktopTablet';
+import { PageContentContainer } from '../components/Style/pageLayoutStyles';
 import ValuesToFollowPreview from '../components/Values/ValuesToFollowPreview';
 import BrowserPushMessage from '../components/Widgets/BrowserPushMessage';
 import SnackNotifier, { openSnackbar } from '../components/Widgets/SnackNotifier';
@@ -34,7 +35,6 @@ import BallotStore from '../stores/BallotStore';
 import IssueStore from '../stores/IssueStore';
 import VoterStore from '../stores/VoterStore';
 import lazyPreloadPages from '../utils/lazyPreloadPages';
-import { PageContentContainer } from '../components/Style/pageLayoutStyles';
 
 const ReadMore = React.lazy(() => import(/* webpackChunkName: 'ReadMore' */ '../common/components/Widgets/ReadMore'));
 const FirstAndLastNameRequiredAlert = React.lazy(() => import(/* webpackChunkName: 'FirstAndLastNameRequiredAlert' */ '../components/Widgets/FirstAndLastNameRequiredAlert'));
@@ -226,7 +226,7 @@ class Ready extends Component {
     return (
       <PageContentContainer>
         <Suspense fallback={<LoadingWheelComp />}>
-          <ReadyPageContainer id="ReadyPageContainer">
+          <ReadyPageContainer className="container-fluid" style={this.getTopPadding()}>
             <SnackNotifier />
             <Helmet title="Ready to Vote? - We Vote" />
             <BrowserPushMessage incomingProps={this.props} />
@@ -400,18 +400,8 @@ const MobileTabletCountdownWrapper = styled('div')`
 `;
 
 const ReadyPageContainer = styled('div')`
-  padding-top: 0 !important;
+// This is a bad place to set a top padding for the scrollable pane, it should be in Application__Wrapper
 `;
-// ${() => {
-//   if (isWebApp()) {
-//     return '0 !important';
-//   } else if (isIOS()) {
-//     return '56px !important';
-//   } else if (isAndroid()) {
-//     return 'unset';
-//   }
-//   return '';
-// }};
 
 const Paragraph = styled('div')`
 `;

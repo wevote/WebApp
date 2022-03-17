@@ -1,22 +1,21 @@
-import withStyles from '@mui/styles/withStyles';
 import { Twitter } from '@mui/icons-material';
+import styled from '@mui/material/styles/styled';
+import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
 import { ReactSVG } from 'react-svg';
-import styled from '@mui/material/styles/styled';
 import CandidateActions from '../../actions/CandidateActions';
 import MeasureActions from '../../actions/MeasureActions';
-import passBool from '../../common/utils/passBool';
+import ExternalLinkIcon from '../../common/components/Widgets/ExternalLinkIcon';
+import { renderLog } from '../../common/utils/logging';
+import normalizedImagePath from '../../common/utils/normalizedImagePath';
 import AppObservableStore from '../../stores/AppObservableStore';
 import BallotStore from '../../stores/BallotStore';
 import CandidateStore from '../../stores/CandidateStore';
 import MeasureStore from '../../stores/MeasureStore';
 import OrganizationStore from '../../stores/OrganizationStore';
-import normalizedImagePath from '../../common/utils/normalizedImagePath';
-import { renderLog } from '../../common/utils/logging';
 import { capitalizeString, numberWithCommas, stringContains } from '../../utils/textFormat';
 import BallotItemVoterGuideSupportOpposeDisplay from '../Widgets/BallotItemVoterGuideSupportOpposeDisplay';
-import ExternalLinkIcon from '../../common/components/Widgets/ExternalLinkIcon';
 
 const BallotItemSupportOpposeCountDisplay = React.lazy(() => import(/* webpackChunkName: 'BallotItemSupportOpposeCountDisplay' */ '../Widgets/BallotItemSupportOpposeCountDisplay'));
 const ImageHandler = React.lazy(() => import(/* webpackChunkName: 'ImageHandler' */ '../ImageHandler'));
@@ -280,10 +279,7 @@ class VoterGuidePositionItem extends Component {
                 </DesktopItemImage>
               </DesktopItemLeft>
             )}
-            <PositionItemDesktop
-              issupport={passBool(organizationSupportsBallotItem)}
-              isoppose={passBool(organizationOpposesBallotItem)}
-            >
+            <PositionItemDesktop isSupport={organizationSupportsBallotItem} isOppose={organizationOpposesBallotItem}>
               <DesktopItemHeader>
                 <DesktopItemNameAndOfficeContainer>
                   <DesktopItemNameContainer>
@@ -376,7 +372,7 @@ class VoterGuidePositionItem extends Component {
           </DesktopContainer>
         </DesktopContainerWrapper>
         <MobileContainerWrapper className="u-show-mobile">
-          <PositionItemMobile issupport={passBool(organizationSupportsBallotItem)} isoppose={passBool(organizationOpposesBallotItem)}>
+          <PositionItemMobile isSupport={organizationSupportsBallotItem} isOppose={organizationOpposesBallotItem}>
             <MobileItemHeader>
               <MobileItemNameAndOfficeContainer>
                 <MobileItemNameContainer onClick={this.onClickShowOrganizationModal} className="u-cursor--pointer">
@@ -565,7 +561,7 @@ const DesktopItemFooter = styled('div')`
 
 const DesktopItemHeader = styled('div')`
   display: flex;
-  align-items: top;
+  align-items: top;  // nonsense css
   justify-content: space-between;
 `;
 
@@ -604,7 +600,7 @@ const DesktopItemNameContainer = styled('div')`
 `;
 
 const DesktopItemNameAndOfficeContainer = styled('div')`
-  padding: 0px;
+  padding: 0;
 `;
 
 const DesktopItemOffice = styled('div')`
@@ -720,28 +716,32 @@ const MobileItemOfficeSmallerPhones = styled('div')`
 const MobileItemNameAndOfficeContainerSmaller = styled('div')`
 `;
 
-const PositionItemDesktop = styled('div')`
+const PositionItemDesktop = styled('div', {
+  shouldForwardProp: (prop) => !['isSupport', 'isOppose'].includes(prop),
+})(({ isSupport, isOppose }) => (`
   background: #eee;
-  ${({ issupport, isoppose }) => ((!isoppose && !issupport) ? 'border-left: 4px solid #ccc;' : '')}
-  ${({ isoppose }) => (isoppose ? 'border-left: 4px solid rgb(255, 73, 34);' : '')}
-  ${({ issupport }) => (issupport ? 'border-left: 4px solid rgb(31, 192, 111);' : '')}
+  ${(!isOppose && !isSupport) ? 'border-left: 4px solid #ccc;' : ''}
+  ${isOppose ? 'border-left: 4px solid rgb(255, 73, 34);' : ''}
+  ${isSupport ? 'border-left: 4px solid rgb(31, 192, 111);' : ''}
   border-radius: 5px;
   flex: 1 1 0;
   list-style: none;
   padding: 6px 16px;
-`;
+`));
 
-const PositionItemMobile = styled('li')`
+const PositionItemMobile = styled('li', {
+  shouldForwardProp: (prop) => !['isSupport', 'isOppose'].includes(prop),
+})(({ isSupport, isOppose }) => (`
   background: #eee;
-  ${({ issupport, isoppose }) => ((!isoppose && !issupport) ? 'border-left: 4px solid #ccc;' : '')}
-  ${({ isoppose }) => (isoppose ? 'border-left: 4px solid rgb(255, 73, 34);' : '')}
-  ${({ issupport }) => (issupport ? 'border-left: 4px solid rgb(31, 192, 111);' : '')}
+  ${(!isOppose && !isSupport) ? 'border-left: 4px solid #ccc;' : ''}
+  ${isOppose ? 'border-left: 4px solid rgb(255, 73, 34);' : ''}
+  ${isSupport ? 'border-left: 4px solid rgb(31, 192, 111);' : ''}
   border-radius: 5px;
   list-style: none;
   margin-top: 2px;
   margin-bottom: 12px;
   max-width: 100% !important;
-`;
+`));
 
 const PositionYearText = styled('span')`
   color: #999;

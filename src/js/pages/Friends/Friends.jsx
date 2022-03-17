@@ -1,8 +1,8 @@
+import styled from '@mui/material/styles/styled';
 import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
 import Helmet from 'react-helmet';
-import styled from '@mui/material/styles/styled';
 import ActivityActions from '../../actions/ActivityActions';
 import AnalyticsActions from '../../actions/AnalyticsActions';
 import FriendActions from '../../actions/FriendActions';
@@ -18,6 +18,7 @@ import FriendInvitationsSentToMePreview from '../../components/Friends/FriendInv
 import FriendsCurrentPreview from '../../components/Friends/FriendsCurrentPreview';
 import FriendsPromoBox from '../../components/Friends/FriendsPromoBox';
 import SuggestedFriendsPreview from '../../components/Friends/SuggestedFriendsPreview';
+import { PageContentContainer } from '../../components/Style/pageLayoutStyles';
 import TwitterSignInCard from '../../components/Twitter/TwitterSignInCard';
 import BrowserPushMessage from '../../components/Widgets/BrowserPushMessage';
 import MessageCard from '../../components/Widgets/MessageCard';
@@ -29,7 +30,6 @@ import VoterStore from '../../stores/VoterStore';
 import { cordovaFriendsWrapper } from '../../utils/cordovaOffsets';
 import displayFriendsTabs from '../../utils/displayFriendsTabs';
 import sortFriendListByMutualFriends from '../../utils/friendFunctions';
-import { PageContentContainer } from '../../components/Style/pageLayoutStyles';
 import FriendInvitationsSentByMe from './FriendInvitationsSentByMe';
 import FriendInvitationsSentToMe from './FriendInvitationsSentToMe';
 import FriendsCurrent from './FriendsCurrent';

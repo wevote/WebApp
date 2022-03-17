@@ -1,14 +1,14 @@
+import styled from '@mui/material/styles/styled';
 import { filter } from 'lodash-es';
 import React, { Component } from 'react';
 import Helmet from 'react-helmet';
 import { Link } from 'react-router-dom';
-import styled from '@mui/material/styles/styled';
 import FriendActions from '../../actions/FriendActions';
+import { renderLog } from '../../common/utils/logging';
 import FriendInvitationList from '../../components/Friends/FriendInvitationList';
 import SearchBar from '../../components/Search/SearchBar';
 import MessageCard from '../../components/Widgets/MessageCard';
 import FriendStore from '../../stores/FriendStore';
-import { renderLog } from '../../common/utils/logging';
 
 export default class FriendInvitationsSentByMe extends Component {
   constructor (props) {

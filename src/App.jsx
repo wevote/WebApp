@@ -1,12 +1,10 @@
-import { ThemeProvider, StyledEngineProvider } from '@mui/material/styles';
-import StylesProvider from '@mui/styles/StylesProvider';
+import { StyledEngineProvider, ThemeProvider } from '@mui/material/styles';
+import styled from '@mui/material/styles/styled';
 import React, { Component, Suspense } from 'react';
 import FullStory from 'react-fullstory';
 import ReactGA from 'react-ga';
 import { Redirect, Route, Switch } from 'react-router-dom';
-import styled from '@mui/material/styles/styled';
 import muiTheme from './js/common/components/Style/muiTheme';
-import styledTheme from './js/common/components/Style/styled-theme';
 import ErrorBoundary from './js/common/components/Widgets/ErrorBoundary';
 import LoadingWheelComp from './js/common/components/Widgets/LoadingWheelComp';
 import WeVoteRouter from './js/common/components/Widgets/WeVoteRouter';

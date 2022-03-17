@@ -1,6 +1,6 @@
+import { Close } from '@mui/icons-material';
 import { IconButton, Snackbar } from '@mui/material';
 import withStyles from '@mui/styles/withStyles';
-import { Close } from '@mui/icons-material';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { snackOffset } from '../../common/utils/cordovaUtils';
@@ -67,7 +67,8 @@ class BrowserPushMessage extends Component {
             aria-label="Close"
             color="inherit"
             onClick={this.handleClose}
-            size="large">
+            size="large"
+          >
             <Close />
           </IconButton>,
         ]}

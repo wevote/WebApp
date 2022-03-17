@@ -7,7 +7,6 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import ActivityActions from '../../actions/ActivityActions';
 import { renderLog } from '../../common/utils/logging';
-import passBool from '../../common/utils/passBool';
 import ActivityStore from '../../stores/ActivityStore';
 import AppObservableStore from '../../stores/AppObservableStore';
 import VoterStore from '../../stores/VoterStore';
@@ -102,7 +101,7 @@ class ActivityCommentAdd extends Component {
     const showSendButton = inEditMode || statementText;
     // console.log('activityCommentCount:', activityCommentCount);
     return (
-      <Wrapper commentsExist={passBool(activityCommentCount > 0)}>
+      <Wrapper commentsExist={activityCommentCount > 0}>
         <AddReplyTextWrapper>
           <FormControl classes={{ root: classes.formControl }}>
             {/* NOT WORKING in classes: , multiline: classes.textFieldMultilineClasses */}

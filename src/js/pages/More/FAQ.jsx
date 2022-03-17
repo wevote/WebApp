@@ -1,6 +1,6 @@
+import styled from '@mui/material/styles/styled';
 import React, { Component } from 'react';
 import Helmet from 'react-helmet';
-import styled from '@mui/material/styles/styled';
 import FAQBody from '../../common/components/FAQBody';
 import { isCordova } from '../../common/utils/isCordovaOrWebApp';
 import { renderLog } from '../../common/utils/logging';

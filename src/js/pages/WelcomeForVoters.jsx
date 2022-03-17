@@ -1,12 +1,15 @@
-import { Button, Link } from '@mui/material';
-import withStyles from '@mui/styles/withStyles';
 import { Email, LocationOn, Person } from '@mui/icons-material';
+import { Button, Link } from '@mui/material';
+import styled from '@mui/material/styles/styled';
+import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
 import React, { PureComponent, Suspense } from 'react';
 import Helmet from 'react-helmet';
-import styled from '@mui/material/styles/styled';
 import AnalyticsActions from '../actions/AnalyticsActions';
 import VoterActions from '../actions/VoterActions';
+import historyPush from '../common/utils/historyPush';
+import { renderLog } from '../common/utils/logging';
+import normalizedImagePath from '../common/utils/normalizedImagePath';
 import SettingsVerifySecretCode from '../components/Settings/SettingsVerifySecretCode';
 import AddressBoxWelcome from '../components/Welcome/AddressBoxWelcome';
 import { BlueTitle, PlayerContainer, SubTitle, Title, Video } from '../components/Welcome/headerWelcomeStyles';
@@ -17,9 +20,6 @@ import VoterConstants from '../constants/VoterConstants';
 import AppObservableStore from '../stores/AppObservableStore';
 import VoterStore from '../stores/VoterStore';
 import cordovaScrollablePaneTopPadding from '../utils/cordovaScrollablePaneTopPadding';
-import normalizedImagePath from '../common/utils/normalizedImagePath';
-import historyPush from '../common/utils/historyPush';
-import { renderLog } from '../common/utils/logging';
 import { validateEmail } from '../utils/regex-checks';
 
 const WelcomeFooter = React.lazy(() => import(/* webpackChunkName: 'WelcomeFooter' */ '../components/Welcome/WelcomeFooter'));
@@ -135,7 +135,7 @@ class WelcomeForVoters extends PureComponent {
     const imageUrl = normalizedImagePath('/img/global/photos/Alissa_B-128x128.jpg');
     const testimonial = 'Great way to sort through my ballot! My husband and I used We Vote during the last election to learn more about our ballots and make some tough choices. Between following various organizations, and friending a couple of trusted friends, we felt like we had an excellent pool of information to draw from. It was so great!';
     return (
-      <Wrapper padTop={cordovaScrollablePaneTopPadding()}>
+      <WelcomeForVotersWrapper>
         <Helmet title="Welcome Voters - We Vote" />
         <Suspense fallback={<></>}>
           <WelcomeAppbar pathname={pathname} />
@@ -313,7 +313,7 @@ class WelcomeForVoters extends PureComponent {
         <Suspense fallback={<></>}>
           <WelcomeFooter />
         </Suspense>
-      </Wrapper>
+      </WelcomeForVotersWrapper>
     );
   }
 }
@@ -364,13 +364,13 @@ const HeaderForVoters = styled('div')`
   margin-top: -72px;
 `;
 
-const Wrapper = styled('div')`
+const WelcomeForVotersWrapper = styled('div')`
   display: flex;
   flex-flow: column nowrap;
   align-items: center;
   background: white;
   overflow-x: hidden;
-  padding-top: ${({ padTop }) => padTop};
+  padding-top: ${() => cordovaScrollablePaneTopPadding()};
 `;
 
 export default withStyles(styles)(WelcomeForVoters);

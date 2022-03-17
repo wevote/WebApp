@@ -397,8 +397,6 @@ MeasureItemCompressed.propTypes = {
   measureWeVoteId: PropTypes.string.isRequired,
   organization: PropTypes.object,
   organizationWeVoteId: PropTypes.string,
-  // showPositionStatementActionBar: PropTypes.bool,
-  theme: PropTypes.object,
 };
 
 const styles = (theme) => ({

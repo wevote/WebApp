@@ -1,10 +1,10 @@
 import { Button } from '@mui/material';
+import styled from '@mui/material/styles/styled';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import styled from '@mui/material/styles/styled';
-import AppObservableStore from '../../stores/AppObservableStore';
 import historyPush from '../../common/utils/historyPush';
 import { renderLog } from '../../common/utils/logging';
+import AppObservableStore from '../../stores/AppObservableStore';
 
 export default class MessageCard extends Component {
   constructor (props) {
@@ -56,9 +56,11 @@ MessageCard.propTypes = {
   secondaryText: PropTypes.string,
 };
 
-const Card = styled('div')`
-  padding: ${(props) => (props.inModal ? '0' : '64px 32px')};
-`;
+const Card = styled('div', {
+  shouldForwardProp: (prop) => !['inModal'].includes(prop),
+})(({ inModal }) => (`
+  padding: ${inModal ? '0' : '64px 32px'};
+`));
 
 const InnerWrapper = styled('div')`
   display: flex;

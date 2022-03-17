@@ -541,9 +541,9 @@ const VoterGuideDesktop = styled('div', {
   shouldForwardProp: (prop) => !['isSupport', 'isOppose'].includes(prop),
 })(({ isSupport, isOppose }) => (`
   background: #eee;
-  ${( !isOppose && !isSupport) ? 'border-left: 4px solid #ccc;' : '' }
-  ${ isOppose ? 'border-left: 4px solid rgb(255, 73, 34);' : '' }
-  ${ isSupport ? 'border-left: 4px solid rgb(31, 192, 111);' : '' }
+  ${(!isOppose && !isSupport) ? 'border-left: 4px solid #ccc;' : ''}
+  ${isOppose ? 'border-left: 4px solid rgb(255, 73, 34);' : ''}
+  ${isSupport ? 'border-left: 4px solid rgb(31, 192, 111);' : ''}
   border-radius: 5px;
   flex: 1 1 0;
   list-style: none;
@@ -554,9 +554,9 @@ const VoterGuideMobile = styled('li', {
   shouldForwardProp: (prop) => !['isSupport', 'isOppose'].includes(prop),
 })(({ isSupport, isOppose }) => (`
   background: #fff;
-  ${( !isOppose && !isSupport) ? 'border-left: 4px solid #ccc;' : '' }
-  ${ isOppose ? 'border-left: 4px solid rgb(255, 73, 34);' : '' }
-  ${ isSupport ? 'border-left: 4px solid rgb(31, 192, 111);' : '' }
+  ${(!isOppose && !isSupport) ? 'border-left: 4px solid #ccc;' : ''}
+  ${isOppose ? 'border-left: 4px solid rgb(255, 73, 34);' : ''}
+  ${isSupport ? 'border-left: 4px solid rgb(31, 192, 111);' : ''}
   border-radius: 5px;
   list-style: none;
   margin: 0 !important;

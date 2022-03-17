@@ -1,13 +1,13 @@
+import styled from '@mui/material/styles/styled';
 import withStyles from '@mui/styles/withStyles';
 import React, { Component } from 'react';
 import Alert from 'react-bootstrap/Alert';
-import styled from '@mui/material/styles/styled';
 import FriendActions from '../../actions/FriendActions';
+import apiCalming from '../../common/utils/apiCalming';
+import { renderLog } from '../../common/utils/logging';
 import FriendStore from '../../stores/FriendStore';
 import OrganizationStore from '../../stores/OrganizationStore';
 import VoterStore from '../../stores/VoterStore';
-import apiCalming from '../../common/utils/apiCalming';
-import { renderLog } from '../../common/utils/logging';
 import { isSpeakerTypeOrganization } from '../../utils/organization-functions';
 import { stringContains } from '../../utils/textFormat';
 import SettingsWidgetFirstLastName from '../Settings/SettingsWidgetFirstLastName';

@@ -124,7 +124,7 @@ ToolsToShareOnOtherWebsites.propTypes = {
 const Wrapper = styled('div', {
   shouldForwardProp: (prop) => !['padTop'].includes(prop),
 })(({ padTop }) => (`
-  padding-top: ${({ padTop }) => padTop};
+  padding-top: ${padTop};
 `));
 
 const SectionTitle = styled('h4')`

@@ -1,11 +1,11 @@
 import { Twitter } from '@mui/icons-material';
+import styled from '@mui/material/styles/styled';
 import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
 import React, { PureComponent, Suspense } from 'react';
-import styled from '@mui/material/styles/styled';
-import VoterStore from '../../stores/VoterStore';
 import SplitIconButton from '../../common/components/Widgets/SplitIconButton';
 import SvgImage from '../../common/components/Widgets/SvgImage';
+import VoterStore from '../../stores/VoterStore';
 
 const OpenExternalWebSite = React.lazy(() => import(/* webpackChunkName: 'OpenExternalWebSite' */ '../../common/components/Widgets/OpenExternalWebSite'));
 

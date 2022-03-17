@@ -1,4 +1,5 @@
-import { Button, FormControl, FormControlLabel, FormLabel, InputAdornment, TextField, Radio, RadioGroup } from '@mui/material';
+import { Button, FormControl, FormControlLabel, FormLabel, InputAdornment, Radio, RadioGroup, TextField } from '@mui/material';
+import styled from '@mui/material/styles/styled';
 import withStyles from '@mui/styles/withStyles';
 import { Elements } from '@stripe/react-stripe-js';
 import { loadStripe } from '@stripe/stripe-js';
@@ -6,18 +7,17 @@ import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
 import Helmet from 'react-helmet';
 import { Link } from 'react-router-dom';
-import styled from '@mui/material/styles/styled';
 import AnalyticsActions from '../../actions/AnalyticsActions';
 import DonateActions from '../../common/actions/DonateActions';
 import DonationListForm from '../../common/components/Donation/DonationListForm';
 import InjectedCheckoutForm from '../../common/components/Donation/InjectedCheckoutForm';
-import { Section } from '../../components/Welcome/sectionStyles';
 import ExternalLinkIcon from '../../common/components/Widgets/ExternalLinkIcon';
 import OpenExternalWebSite from '../../common/components/Widgets/OpenExternalWebSite';
-import webAppConfig from '../../config';
 import DonateStore from '../../common/stores/DonateStore';
-import VoterStore from '../../stores/VoterStore';
 import { renderLog } from '../../common/utils/logging';
+import { Section } from '../../components/Welcome/sectionStyles';
+import webAppConfig from '../../config';
+import VoterStore from '../../stores/VoterStore';
 
 const WelcomeAppbar = React.lazy(() => import(/* webpackChunkName: 'WelcomeAppbar' */ '../../components/Navigation/WelcomeAppbar'));
 const WelcomeFooter = React.lazy(() => import(/* webpackChunkName: 'WelcomeFooter' */ '../../components/Welcome/WelcomeFooter'));

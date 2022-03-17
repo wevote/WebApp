@@ -6,7 +6,6 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { renderLog } from '../../common/utils/logging';
 import normalizedImagePath from '../../common/utils/normalizedImagePath';
-import passBool from '../../common/utils/passBool';
 import AppObservableStore from '../../stores/AppObservableStore';
 import ReadyStore from '../../stores/ReadyStore';
 import VoterStore from '../../stores/VoterStore';

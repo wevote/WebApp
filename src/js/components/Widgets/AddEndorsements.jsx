@@ -1,8 +1,8 @@
-import React, { Component, Suspense } from 'react';
 import styled from '@mui/material/styles/styled';
+import React, { Component, Suspense } from 'react';
+import SplitIconButton from '../../common/components/Widgets/SplitIconButton';
 import normalizedImagePath from '../../common/utils/normalizedImagePath';
 import InfoCircleIcon from './InfoCircleIcon';
-import SplitIconButton from '../../common/components/Widgets/SplitIconButton';
 
 const OpenExternalWebSite = React.lazy(() => import(/* webpackChunkName: 'OpenExternalWebSite' */ '../../common/components/Widgets/OpenExternalWebSite'));
 

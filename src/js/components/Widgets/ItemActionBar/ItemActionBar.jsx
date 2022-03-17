@@ -1,20 +1,19 @@
-import { Button, Dialog } from '@mui/material';
-import withStyles from '@mui/styles/withStyles';
 import { Comment, Done, NotInterested, ThumbDown, ThumbUp } from '@mui/icons-material';
+import { Button, Dialog } from '@mui/material';
+import styled from '@mui/material/styles/styled';
+import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
 import React, { PureComponent } from 'react';
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 import Tooltip from 'react-bootstrap/Tooltip';
-import styled from '@mui/material/styles/styled';
 import SupportActions from '../../../actions/SupportActions';
 import VoterActions from '../../../actions/VoterActions';
-import passBool from '../../../common/utils/passBool';
+import { renderLog } from '../../../common/utils/logging';
+import normalizedImagePath from '../../../common/utils/normalizedImagePath';
 import webAppConfig from '../../../config';
 import VoterConstants from '../../../constants/VoterConstants';
 import SupportStore from '../../../stores/SupportStore';
 import VoterStore from '../../../stores/VoterStore';
-import normalizedImagePath from '../../../common/utils/normalizedImagePath';
-import { renderLog } from '../../../common/utils/logging';
 import { stringContains } from '../../../utils/textFormat';
 import PositionPublicToggle from '../PositionPublicToggle';
 import ShareButtonDropDown from '../ShareButtonDropdown';
@@ -709,7 +708,7 @@ class ItemActionBar extends PureComponent {
               <>
                 {/* Visible on desktop screens */}
                 {buttonsOnly ? (
-                  <StackedButton className="d-none d-lg-block" onlyTwoButtons={passBool(commentButtonHide)}>
+                  <StackedButton className="d-none d-lg-block" onlyTwoButtons={commentButtonHide}>
                     {/* <OverlayTrigger placement="top" overlay={supportButtonPopoverTooltip}>
                     </OverlayTrigger> */}
                     {ballotItemType === 'CANDIDATE' ? this.supportButtonNoText(`desktopVersion-${ballotItemWeVoteId}`) : this.measureYesButtonNoText(`desktopVersion-${ballotItemWeVoteId}`)}

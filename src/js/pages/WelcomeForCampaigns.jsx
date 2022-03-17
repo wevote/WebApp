@@ -1,11 +1,14 @@
 import { Button } from '@mui/material';
+import styled from '@mui/material/styles/styled';
 import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
 import React, { PureComponent, Suspense } from 'react';
 import Helmet from 'react-helmet';
-import styled from '@mui/material/styles/styled';
 import AnalyticsActions from '../actions/AnalyticsActions';
 import VoterActions from '../actions/VoterActions';
+import historyPush from '../common/utils/historyPush';
+import { renderLog } from '../common/utils/logging';
+import normalizedImagePath from '../common/utils/normalizedImagePath';
 import { BlueTitle, SubTitle, Title } from '../components/Welcome/headerWelcomeStyles';
 import { Description, DescriptionContainer, DescriptionImageColumn, DescriptionLeftColumn, Image, NetworkContainer, NetworkImage, Section, SectionTitle, SectionTitleBold } from '../components/Welcome/sectionStyles';
 import Testimonial from '../components/Widgets/Testimonial';
@@ -13,9 +16,6 @@ import VoterConstants from '../constants/VoterConstants';
 import AppObservableStore from '../stores/AppObservableStore';
 import VoterStore from '../stores/VoterStore';
 import cordovaScrollablePaneTopPadding from '../utils/cordovaScrollablePaneTopPadding';
-import normalizedImagePath from '../common/utils/normalizedImagePath';
-import historyPush from '../common/utils/historyPush';
-import { renderLog } from '../common/utils/logging';
 import { validateEmail } from '../utils/regex-checks';
 
 const WelcomeAppbar = React.lazy(() => import(/* webpackChunkName: 'WelcomeAppbar' */ '../components/Navigation/WelcomeAppbar'));
@@ -116,7 +116,7 @@ class WelcomeForCampaigns extends PureComponent {
     const imageUrl = normalizedImagePath('/img/global/photos/Neelam_Joshi-200x200.jpg');
     const testimonial = 'I don\'t have time to attend rallies and listen to campaign speeches, and I don\'t trust much of what I see on Facebook. We Vote helps me cut through the chatter and use endorsements from people I trust.';
     return (
-      <Wrapper padTop={cordovaScrollablePaneTopPadding()}>
+      <WelcomeForCampaignsWrapper>
         <Helmet title="Welcome Campaigns - We Vote" />
         <Suspense fallback={<></>}>
           <WelcomeAppbar pathname={pathname} />
@@ -278,7 +278,7 @@ class WelcomeForCampaigns extends PureComponent {
         <Suspense fallback={<></>}>
           <WelcomeFooter />
         </Suspense>
-      </Wrapper>
+      </WelcomeForCampaignsWrapper>
     );
   }
 }
@@ -299,13 +299,13 @@ const styles = () => ({
   },
 });
 
-const Wrapper = styled('div')`
+const WelcomeForCampaignsWrapper = styled('div')`
   display: flex;
   flex-flow: column nowrap;
   align-items: center;
   background: white;
   overflow-x: hidden;
-  padding-top: ${({ padTop }) => padTop};
+  padding-top: ${() => cordovaScrollablePaneTopPadding()};
 `;
 
 const HeaderSection = styled('div')`
@@ -355,7 +355,7 @@ const HeaderStepNumber = styled('div')`
   width: 24px;
   height: 24px;
   background: white;
-  color: ${(props) => props.theme.colors.brandBlue};
+  color: ${(theme) => theme.colors.brandBlue};
   border-radius: 4px;
   @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
     width: 24px;
@@ -387,7 +387,7 @@ const FeatureStep = styled('div')`
   width: 600px;
   max-width: 100%;
   margin-top: 1rem;
-  padding-top: ${({ padTop }) => padTop};
+  // padding-top: ${({ padTop }) => padTop};
   border-radius: 4px;
   @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
     width: 100%;

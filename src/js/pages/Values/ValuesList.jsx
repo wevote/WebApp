@@ -1,15 +1,15 @@
+import styled from '@mui/material/styles/styled';
 import { filter } from 'lodash-es';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
 import Helmet from 'react-helmet';
-import styled from '@mui/material/styles/styled';
 import IssueActions from '../../actions/IssueActions';
-import SearchBar from '../../components/Search/SearchBar';
-import IssueStore from '../../stores/IssueStore';
-import VoterStore from '../../stores/VoterStore';
 import { isCordova } from '../../common/utils/isCordovaOrWebApp';
 import { renderLog } from '../../common/utils/logging';
+import SearchBar from '../../components/Search/SearchBar';
 import { PageContentContainer } from '../../components/Style/pageLayoutStyles';
+import IssueStore from '../../stores/IssueStore';
+import VoterStore from '../../stores/VoterStore';
 
 const ReadMore = React.lazy(() => import(/* webpackChunkName: 'ReadMore' */ '../../common/components/Widgets/ReadMore'));
 const DelayedLoad = React.lazy(() => import(/* webpackChunkName: 'DelayedLoad' */ '../../common/components/Widgets/DelayedLoad'));

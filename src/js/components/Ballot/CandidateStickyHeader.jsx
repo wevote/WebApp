@@ -1,10 +1,11 @@
+import { keyframes } from '@emotion/react';
+import styled from '@mui/material/styles/styled';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
-import styled, { keyframes } from 'styled-components';
-import { cordovaStickyHeaderPaddingTop } from '../../utils/cordovaOffsets';
 import { isIOSAppOnMac, isIPad } from '../../common/utils/cordovaUtils';
 import { isWebApp } from '../../common/utils/isCordovaOrWebApp';
 import { renderLog } from '../../common/utils/logging';
+import { cordovaStickyHeaderPaddingTop } from '../../utils/cordovaOffsets';
 
 const BallotItemSupportOpposeComment = React.lazy(() => import(/* webpackChunkName: 'BallotItemSupportOpposeComment' */ '../Widgets/BallotItemSupportOpposeComment'));
 const BallotItemSupportOpposeCountDisplay = React.lazy(() => import(/* webpackChunkName: 'BallotItemSupportOpposeCountDisplay' */ '../Widgets/BallotItemSupportOpposeCountDisplay'));

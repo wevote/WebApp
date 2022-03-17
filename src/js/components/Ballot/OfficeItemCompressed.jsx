@@ -394,7 +394,6 @@ OfficeItemCompressed.propTypes = {
   externalUniqueId: PropTypes.string,
   organization: PropTypes.object,
   organizationWeVoteId: PropTypes.string,
-  theme: PropTypes.object,
 };
 
 const styles = (theme) => ({

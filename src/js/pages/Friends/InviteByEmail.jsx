@@ -1,10 +1,10 @@
+import styled from '@mui/material/styles/styled';
 import React, { Component } from 'react';
 import Helmet from 'react-helmet';
-import styled from '@mui/material/styles/styled';
 import AnalyticsActions from '../../actions/AnalyticsActions';
+import { renderLog } from '../../common/utils/logging';
 import AddFriendsByEmail from '../../components/Friends/AddFriendsByEmail';
 import VoterStore from '../../stores/VoterStore';
-import { renderLog } from '../../common/utils/logging';
 
 export default class InviteByEmail extends Component {
   constructor (props) {

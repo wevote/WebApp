@@ -1,22 +1,22 @@
-import { Button, Card, CardContent, FormControl, InputLabel, Select } from '@mui/material';
-import withStyles from '@mui/styles/withStyles';
 import { CheckCircle } from '@mui/icons-material';
+import { Button, Card, CardContent, FormControl, InputLabel, Select } from '@mui/material';
+import styled from '@mui/material/styles/styled';
+import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import Helmet from 'react-helmet';
-import styled from '@mui/material/styles/styled';
 import AnalyticsActions from '../actions/AnalyticsActions';
 import BallotActions from '../actions/BallotActions';
 import ReadyActions from '../actions/ReadyActions';
 import LoadingWheel from '../common/components/Widgets/LoadingWheel';
+import { formatDateToMonthDayYear } from '../common/utils/dateFormat';
+import { renderLog } from '../common/utils/logging';
+import { PageContentContainer } from '../components/Style/pageLayoutStyles';
 import BrowserPushMessage from '../components/Widgets/BrowserPushMessage';
 import { messageService } from '../stores/AppObservableStore';
 import BallotStore from '../stores/BallotStore';
 import VoterStore from '../stores/VoterStore';
-import { formatDateToMonthDayYear } from '../common/utils/dateFormat';
 import { formatStateName } from '../utils/formatStateName';
-import { renderLog } from '../common/utils/logging';
-import { PageContentContainer } from '../components/Style/pageLayoutStyles';
 
 const voteDotOrg = '../../img/global/logos/vote_dot_org_logo-530x200.png';
 const turboVote = '../../img/global/logos/turbovote-logo.png';
@@ -683,7 +683,7 @@ const StickyFooter = styled('div')`
   background: white;
   display: flex;
   align-items: center;
-  padding: 0px 32px;
+  padding: 0 32px;
   box-shadow: 0px -2px 4px -1px rgba(0,0,0,0.2), 0px -4px 5px 0px rgba(0,0,0,0.14), 0px -1px 10px 0px rgba(0,0,0,0.12);
 `;
 

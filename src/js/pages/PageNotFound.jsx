@@ -1,12 +1,12 @@
-import { Button, Card } from '@mui/material';
-import withStyles from '@mui/styles/withStyles';
 import { Ballot } from '@mui/icons-material';
+import { Button, Card } from '@mui/material';
+import styled from '@mui/material/styles/styled';
+import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import Helmet from 'react-helmet';
-import styled from '@mui/material/styles/styled';
-import { isCordova } from '../common/utils/isCordovaOrWebApp';
 import historyPush from '../common/utils/historyPush';
+import { isCordova } from '../common/utils/isCordovaOrWebApp';
 import { renderLog } from '../common/utils/logging';
 import { PageContentContainer } from '../components/Style/pageLayoutStyles';
 
@@ -26,7 +26,7 @@ class PageNotFound extends Component {
       <PageContentContainer>
         <div className="container-fluid">
           <Helmet title="Page Not Found - We Vote" />
-          <Wrapper cordova={isCordova()}>
+          <Wrapper>
             <Card>
               <EmptyBallotMessageContainer>
                 <EmptyBallotText>Page not found.</EmptyBallotText>
@@ -52,7 +52,7 @@ PageNotFound.propTypes = {
 };
 
 const Wrapper = styled('div')`
-  @media (max-width: ${({ theme, cordova }) => (cordova ? undefined : theme.breakpoints.md)}) {
+  @media (max-width: ${(theme) => (isCordova() ? undefined : theme.breakpoints.md)}) {
     margin: 1em 0;
   }
 `;

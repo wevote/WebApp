@@ -1,6 +1,6 @@
+import withTheme from '@mui/styles/withTheme';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import { withTheme } from 'styled-components';
 import { renderLog } from '../../common/utils/logging';
 import MeasureItemReadyToVote from './MeasureItemReadyToVote';
 import OfficeItemReadyToVote from './OfficeItemReadyToVote';

@@ -543,7 +543,7 @@ const SortByContainer = styled('div')`
 `;
 
 const SortBy = styled('p')(({ selected, theme }) => (`
-  font-size: ${ selected ? '.95rem' : '.875rem'};
+  font-size: ${selected ? '.95rem' : '.875rem'};
   margin: 8px 0 0 0;
   cursor: pointer;
   color: ${selected ? theme.colors.brandBlue : '#555'};

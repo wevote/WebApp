@@ -1,11 +1,11 @@
+import styled from '@mui/material/styles/styled';
 import React, { Component } from 'react';
 import Helmet from 'react-helmet';
-import styled from '@mui/material/styles/styled';
+import { renderLog } from '../../common/utils/logging';
 import SuggestedFriendList from '../../components/Friends/SuggestedFriendList';
 import MessageCard from '../../components/Widgets/MessageCard';
 import FriendStore from '../../stores/FriendStore';
 import sortFriendListByMutualFriends from '../../utils/friendFunctions';
-import { renderLog } from '../../common/utils/logging';
 
 export default class SuggestedFriends extends Component {
   constructor (props) {

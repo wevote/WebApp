@@ -1,6 +1,6 @@
 import { Snackbar } from '@mui/material';
-import withStyles from '@mui/styles/withStyles';
 import Alert from '@mui/material/Alert';
+import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { snackOffset } from '../../common/utils/cordovaUtils';

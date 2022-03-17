@@ -1,6 +1,7 @@
+import styled from '@mui/material/styles/styled';
+import withTheme from '@mui/styles/withTheme';
 import PropTypes from 'prop-types';
 import React, { PureComponent } from 'react';
-import styled, { withTheme } from 'styled-components';
 
 class PricingSwitch extends PureComponent {
   switchToDifferentCategory (switchToChoice = 0) {
@@ -59,7 +60,9 @@ PricingSwitch.propTypes = {
   switchToDifferentCategoryFunction: PropTypes.func,
 };
 
-const Container = styled('div')`
+const Container = styled('div', {
+  shouldForwardProp: (prop) => !['chosenBackgroundColor'].includes(prop),
+})(({ chosenBackgroundColor }) => (`
   display: flex;
   flex-flow: row;
   border-radius: 64px;
@@ -69,14 +72,16 @@ const Container = styled('div')`
   margin: 0 auto;
   margin-bottom: 32px;
   cursor: pointer;
-  border: 1px solid ${({ chosenBackgroundColor }) => chosenBackgroundColor};
+  border: 1px solid ${chosenBackgroundColor};
   transition: all 150ms ease-in;
-`;
+`));
 
-const Choice = styled('div')`
+const Choice = styled('div', {
+  shouldForwardProp: (prop) => !['thisPricingPlanInView', 'chosenBackgroundColor', 'chosenTextColor'].includes(prop),
+})(({ thisPricingPlanInView, chosenBackgroundColor, chosenTextColor }) => (`
   display: flex;
-  background: ${({ thisPricingPlanInView, chosenBackgroundColor }) => (thisPricingPlanInView ? chosenBackgroundColor : 'transparent')};
-  color: ${({ thisPricingPlanInView, chosenBackgroundColor, chosenTextColor }) => (thisPricingPlanInView ? chosenTextColor : chosenBackgroundColor)};
+  background: ${thisPricingPlanInView ? chosenBackgroundColor : 'transparent'};
+  color: ${thisPricingPlanInView ? chosenTextColor : chosenBackgroundColor};
   border-radius: 64px;
   text-transform: uppercase;
   width: 50%;
@@ -84,7 +89,7 @@ const Choice = styled('div')`
   align-items: center;
   justify-content: center;
   transition: all 150ms ease-in;
-`;
+`));
 
 const ChoiceText = styled('p')`
   margin: auto;

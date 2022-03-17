@@ -1,6 +1,6 @@
-import React from 'react';
-import { geoCentroid } from 'd3-geo';
 import styled from '@mui/material/styles/styled';
+import { geoCentroid } from 'd3-geo';
+import React from 'react';
 import allStates from '../../../../json/allStates.json';
 import { Annotation, ComposableMap, Geographies, Geography, Marker } from './mapChartFunctions';
 

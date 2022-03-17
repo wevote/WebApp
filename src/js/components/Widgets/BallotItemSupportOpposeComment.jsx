@@ -1,12 +1,11 @@
+import styled from '@mui/material/styles/styled';
 import PropTypes from 'prop-types';
 import React, { PureComponent, Suspense } from 'react';
-import styled from '@mui/material/styles/styled';
-import passBool from '../../common/utils/passBool';
-import CandidateStore from '../../stores/CandidateStore';
-import MeasureStore from '../../stores/MeasureStore';
 import { isAndroidSizeMD } from '../../common/utils/cordovaUtils';
 import { isCordova } from '../../common/utils/isCordovaOrWebApp';
 import { renderLog } from '../../common/utils/logging';
+import CandidateStore from '../../stores/CandidateStore';
+import MeasureStore from '../../stores/MeasureStore';
 import { stringContains } from '../../utils/textFormat';
 
 const ItemActionBar = React.lazy(() => import(/* webpackChunkName: 'ItemActionBar' */ './ItemActionBar/ItemActionBar'));
@@ -222,7 +221,7 @@ class BallotItemSupportOpposeComment extends PureComponent {
     // console.log('White background from root: ', showPositionStatementActionBar);
 
     return (
-      <Wrapper inmodal={passBool(inModal2)} showpositionstatementactionbar={passBool(showPositionStatementActionBar)} crunched={passBool(isCordova() && !inModal2)}>
+      <Wrapper inModal={inModal2} showPositionStatementActionBar={showPositionStatementActionBar} crunched={isCordova() && !inModal2}>
         {/* <BallotHeaderDivider className="u-show-mobile" /> */}
         <ActionBarWrapper inModal={inModal2} crunched={isCordova() && !inModal2}>
           {/* Support/Oppose/Comment toggle here */}
@@ -230,7 +229,7 @@ class BallotItemSupportOpposeComment extends PureComponent {
             {itemActionBar}
           </Suspense>
         </ActionBarWrapper>
-        <CommentDisplayWrapper inmodal={passBool(inModal2)} crunched={passBool(isCordova() && !inModal2)}>
+        <CommentDisplayWrapper inModal={inModal2} crunched={isCordova() && !inModal2}>
           { commentDisplayDesktop }
           { commentDisplayMobile }
         </CommentDisplayWrapper>
@@ -251,12 +250,14 @@ BallotItemSupportOpposeComment.propTypes = {
 
 function wrapperPadding (props) {
   const padString = isAndroidSizeMD() ? '8px 0px 8px 4px' : '8px 12px 8px 12px';
-  return props.showpositionstatementactionbar || props.inModal ? padString : '0';
+  return props.showPositionStatementActionBar || props.inModal ? padString : '0';
 }
 
-const Wrapper = styled('div')`
+const Wrapper = styled('div', {
+  shouldForwardProp: (prop) => !['showPositionStatementActionBar', 'inModal'].includes(prop),
+})(({ showPositionStatementActionBar, inModal, crunched }) => (`
   width: ${() => (isAndroidSizeMD() ? '95%' : '100%')};
-  // background-color: ${({ showpositionstatementactionbar, inModal }) => (showpositionstatementactionbar || inModal ? '#eee' : 'white')} !important;
+  // background-color: ${showPositionStatementActionBar || inModal ? '#eee' : 'white'} !important;
   background-color: white !important;
   padding: ${(props) => wrapperPadding(props)} !important;
   border-radius: 4px;
@@ -264,8 +265,8 @@ const Wrapper = styled('div')`
     background-color: white;
     padding: 0;
   }
-  margin-top: ${(crunched) => (crunched ? '0' : '12px')};
-`;
+  margin-top: ${crunched ? '0' : '12px'};
+`));
 
 const ActionBarWrapper = styled('div')`
   padding: 0;

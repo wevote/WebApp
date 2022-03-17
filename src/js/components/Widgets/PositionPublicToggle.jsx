@@ -1,16 +1,16 @@
-import { Dialog, DialogContent, DialogTitle, FormControl, FormControlLabel, IconButton, Radio, Typography } from '@mui/material';
-import withStyles from '@mui/styles/withStyles';
 import { Close } from '@mui/icons-material';
+import { Dialog, DialogContent, DialogTitle, FormControl, FormControlLabel, IconButton, Radio, Typography } from '@mui/material';
+import styled from '@mui/material/styles/styled';
+import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
-import styled from '@mui/material/styles/styled';
 import SupportActions from '../../actions/SupportActions';
-import SupportStore from '../../stores/SupportStore';
-import VoterStore from '../../stores/VoterStore';
 import { isAndroidSizeMD } from '../../common/utils/cordovaUtils'; // hasIPhoneNotch,
 import { isCordova, isWebApp } from '../../common/utils/isCordovaOrWebApp';
 import isMobileScreenSize from '../../common/utils/isMobileScreenSize';
 import { renderLog } from '../../common/utils/logging';
+import SupportStore from '../../stores/SupportStore';
+import VoterStore from '../../stores/VoterStore';
 import { openSnackbar } from './SnackNotifier';
 
 const SettingsAccount = React.lazy(() => import(/* webpackChunkName: 'SettingsAccount' */ '../Settings/SettingsAccount'));
@@ -232,7 +232,8 @@ class PositionPublicToggle extends Component {
             classes={{ root: classes.closeButton }}
             onClick={() => { this.togglePositionPublicHelpModal(); }}
             id="profileClosePositionPublicToggle"
-            size="large">
+            size="large"
+          >
             <Close />
           </IconButton>
         </DialogTitle>
@@ -405,11 +406,15 @@ const RadioItemStackedStyles = `
   }
 `;
 
-const RadioItem = styled('div')`
-  ${({ preventStackedButtons }) => ((preventStackedButtons) ? '' : RadioItemStackedStyles)}
-`;
+const RadioItem = styled('div', {
+  shouldForwardProp: (prop) => !['preventStackedButtons'].includes(prop),
+})(({ preventStackedButtons }) => (`
+  ${preventStackedButtons ? '' : RadioItemStackedStyles}
+`));
 
-const RadioGroup = styled('div')`
+const RadioGroup = styled('div', {
+  shouldForwardProp: (prop) => !['preventStackedButtons'].includes(prop),
+})(({ preventStackedButtons }) => (`
   display: flex;
   flex-flow: row nowrap;
   width: 100%;
@@ -417,10 +422,10 @@ const RadioGroup = styled('div')`
     margin-bottom: -10px;
   }
   @media (max-width: ${({ theme }) => theme.breakpoints.xs}) {
-    ${({ preventStackedButtons }) => ((preventStackedButtons) ? '' : 'flex-flow: row wrap;')}
+    ${preventStackedButtons ? '' : 'flex-flow: row wrap;'}
     margin-bottom: 0;
   }
-`;
+`));
 
 
 export default withStyles(styles)(PositionPublicToggle);
