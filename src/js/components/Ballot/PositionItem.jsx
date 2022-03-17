@@ -729,16 +729,18 @@ const MobileSmallItemNameContainer = styled('div')`
 `;
 
 
-const PositionItemDesktop = styled('div')`
+const PositionItemDesktop = styled('div', {
+  shouldForwardProp: (prop) => !['isSupport', 'isOppose'].includes(prop),
+})(({ isSupport, isOppose }) => (`
   background: #eee;
-  ${({ isSupport, isOppose }) => ((!isOppose && !isSupport) ? 'border-left: 4px solid #ccc;' : '')}
-  ${({ isOppose }) => (isOppose ? 'border-left: 4px solid rgb(255, 73, 34);' : '')}
-  ${({ isSupport }) => (isSupport ? 'border-left: 4px solid rgb(31, 192, 111);' : '')}
+  ${(!isOppose && !isSupport) ? 'border-left: 4px solid #ccc;' : ''}
+  ${isOppose ? 'border-left: 4px solid rgb(255, 73, 34);' : ''}
+  ${isSupport ? 'border-left: 4px solid rgb(31, 192, 111);' : ''}
   border-radius: 5px;
   flex: 1 1 0;
   list-style: none;
   padding: 6px 16px;
-`;
+`));
 
 const PositionItemMobile = styled('li')`
   background: #eee;

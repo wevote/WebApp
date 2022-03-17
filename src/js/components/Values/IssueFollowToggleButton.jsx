@@ -170,7 +170,7 @@ class IssueFollowToggleButton extends Component {
               open={this.state.open}
               onClose={this.handleClose}
               elevation={2}
-              getContentAnchorEl={null}
+              // getContentAnchorEl={null}
               anchorEl={this.state.anchorEl}
               anchorOrigin={{
                 vertical: 'bottom',

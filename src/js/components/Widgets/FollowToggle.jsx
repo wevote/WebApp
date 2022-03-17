@@ -479,7 +479,6 @@ export default class FollowToggle extends Component {
             <Menu
               id="simple-menu"
               anchorEl={this.state.anchorEl}
-              getContentAnchorEl={null}
               anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
               transformOrigin={{ vertical: 'top', horizontal: 'left' }}
               keepMounted

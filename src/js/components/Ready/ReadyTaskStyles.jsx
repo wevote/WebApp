@@ -15,7 +15,9 @@ const ButtonText = styled('div')`
   }
 `;
 
-const ReadyCard = styled('div')`
+const ReadyCard = styled('div', {
+  shouldForwardProp: (prop) => !['showProgressColor'].includes(prop),
+})(({ showProgressColor }) => (`
   padding: 16px;
   padding-left: 82px;
   position: relative;
@@ -28,7 +30,7 @@ const ReadyCard = styled('div')`
     content: "";
     display: block;
     position: absolute;
-    background: ${(props) => (props.showprogresscolor ? 'rgb(31,192,111)' : '#bed1fb')};
+    background: ${showProgressColor ? 'rgb(31,192,111)' : '#bed1fb'};
     width: 4px;
     z-index: 0;
     height: calc(100% - 32px);
@@ -41,7 +43,7 @@ const ReadyCard = styled('div')`
       left: 29px;
     }
   }
-`;
+`));
 
 const Icon = styled('div')`
   align-items: center;
@@ -60,8 +62,10 @@ const Icon = styled('div')`
   }
 `;
 
-const PercentComplete = styled('div')`
-  color: ${(props) => (props.showprogresscolor ? 'green' : 'black')};
+const PercentComplete = styled('div', {
+  shouldForwardProp: (prop) => !['showProgressColor'].includes(prop),
+})(({ showProgressColor }) => (`
+  color: ${showProgressColor ? 'green' : 'black'};
   font-size: 22px;
   font-weight: 600;
   margin-bottom: 6px;
@@ -70,7 +74,7 @@ const PercentComplete = styled('div')`
     font-size: 18px;
     margin-top: 0;
   }
-`;
+`));
 
 const TitleRowWrapper = styled('div')`
   display: flex !important;

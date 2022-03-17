@@ -429,7 +429,7 @@ class ReadyTaskBallot extends React.Component {
       />
     );
     return (
-      <ReadyCard showprogresscolor={percentCompleted > 0} className="card">
+      <ReadyCard showProgressColor={percentCompleted > 0} className="card">
         <Icon className="u-cursor--pointer" onClick={this.goToBallot}>
           {completedIcon}
         </Icon>
@@ -444,7 +444,7 @@ class ReadyTaskBallot extends React.Component {
             <PercentComplete
               className="u-cursor--pointer"
               onClick={() => this.showMoreButtonsLink()}
-              showprogresscolor={percentCompleted > 0}
+              showProgressColor={percentCompleted > 0}
             >
               {percentCompleted}
               %

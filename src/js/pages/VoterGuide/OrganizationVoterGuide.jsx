@@ -332,7 +332,7 @@ export default class OrganizationVoterGuide extends Component {
           {/* Header Banner Spacing for Desktop */}
           <BannerOverlayDesktopOuterWrapper>
             <BannerOverlayDesktopInnerWrapper>
-              <BannerOverlayDesktopShareButtonWrapper ipad={isIPad()}>
+              <BannerOverlayDesktopShareButtonWrapper>
                 <BannerOverlayDesktopShareButtonInnerWrapper>
                   <ShareButtonDesktopTablet
                     organizationShare
@@ -340,7 +340,7 @@ export default class OrganizationVoterGuide extends Component {
                   />
                 </BannerOverlayDesktopShareButtonInnerWrapper>
               </BannerOverlayDesktopShareButtonWrapper>
-              <BannerContainerDesktop ipad={isIPad()}>
+              <BannerContainerDesktop>
                 { organizationBannerUrl !== '' ? (
                   <OrganizationBannerImageDiv className="d-print-none">
                     <OrganizationBannerImageImg alt="Organization Banner Image" src={organizationBannerUrl} aria-hidden="true" />
@@ -481,7 +481,7 @@ const WrapperFlex = styled('div')`
 `;
 
 const BannerContainerDesktop = styled('div')`
-  margin-top: ${({ ipad }) => (ipad ? '-11px' : '-37px')}; // -29px (BannerOverlayDesktopShareButtonWrapper height) - 8px from BannerOverlayDesktopShareButtonInnerWrapper
+  margin-top: ${() => (isIPad() ? '-11px' : '-37px')}; // -29px (BannerOverlayDesktopShareButtonWrapper height) - 8px from BannerOverlayDesktopShareButtonInnerWrapper
 `;
 
 const BannerOverlayDesktopShareButtonWrapper = styled('div')`
@@ -490,7 +490,7 @@ const BannerOverlayDesktopShareButtonWrapper = styled('div')`
   width: 100%;
   position: relative;
   z-index: 1;
-  transform: ${({ ipad }) => (ipad ? 'translate(0%, 100%)' : '')}
+  transform: ${() => (isIPad() ? 'translate(0%, 100%)' : '')}
 `;
 
 const BannerOverlayDesktopShareButtonInnerWrapper = styled('div')`

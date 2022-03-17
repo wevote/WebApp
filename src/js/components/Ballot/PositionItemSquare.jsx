@@ -393,9 +393,11 @@ const OrganizationOpposeWrapper = styled('div')`
   z-index: 1;
 `;
 
-const OrganizationSupportIconWrapper = styled('div')`
-  margin-left: ${({ speakerImageExists }) => (speakerImageExists ? '2px' : '0')};
-`;
+const OrganizationSupportIconWrapper = styled('div', {
+  shouldForwardProp: (prop) => !['speakerImageExists'].includes(prop),
+})(({ speakerImageExists }) => (`
+  margin-left: ${speakerImageExists ? '2px' : '0'};
+`));
 
 const OrganizationSupportSquare = styled('div')`
   align-items: center;
@@ -423,9 +425,11 @@ const OverlayImage = styled('div')`
   z-index: 2;
 `;
 
-const ScoreNumberWrapper = styled('div')`
-  ${({ advisorImageExists }) => (advisorImageExists ? 'margin-top: -5px;' : 'margin-top: 0px;')}
-`;
+const ScoreNumberWrapper = styled('div', {
+  shouldForwardProp: (prop) => !['advisorImageExists'].includes(prop),
+})(({ advisorImageExists }) => (`
+  ${advisorImageExists ? 'margin-top: -5px;' : 'margin-top: 0px;'}
+`));
 
 const SupportAndPartOfScore = styled('div')`
   align-items: center;
