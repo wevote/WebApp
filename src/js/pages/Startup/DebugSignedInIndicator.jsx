@@ -11,7 +11,7 @@ export default function DebugSignedInIndicator () {
   const signedInStatusText = VoterStore.getVoterIsSignedIn() ? 'signed in' : 'signed out';
   if (webAppConfig.SHOW_CORDOVA_DEBUG_HELPERS) {
     return (
-      <Grid container justifyContent="flex-end" style={{ padding: '30px 10px 0px 0px' }}>
+      <Grid container justifyContent="flex-end" style={{ padding: '30px 10px 0 0' }}>
         {signedInStatusText}
       </Grid>
     );

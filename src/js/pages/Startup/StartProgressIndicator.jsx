@@ -74,14 +74,16 @@ function StartProgressIndicator (params) {
   );
 }
 
-const SeparatorBar = styled('hr')`
-  display: ${(props) => (props.disp ? '' : 'none')};
+const SeparatorBar = styled('hr', {
+  shouldForwardProp: (prop) => !['disp'].includes(prop),
+})(({ disp }) => (`
+  display: ${disp ? '' : 'none'};
   width: 40px;
   margin-top: 14px;
   border-top: 2px solid green;
   border-radius: 2px;
   margin-right: 4px;
   margin-left: 4px;
-`;
+`));
 
 export default withStyles(commonMuiStyles)(StartProgressIndicator);

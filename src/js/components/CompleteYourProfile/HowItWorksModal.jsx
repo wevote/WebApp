@@ -115,17 +115,19 @@ const styles = () => ({
 });
 
 /* eslint no-nested-ternary: ["off"] */
-const ModalTitleArea = styled('div')`
+const ModalTitleArea = styled('div', {
+  shouldForwardProp: (prop) => !['firstslide'].includes(prop),
+})(({ firstslide }) => (`
   justify-content: flex-start;
   align-items: center;
   width: 100%;
-  padding: ${(props) => (props.firstslide ? '24px 24px 12px 24px' : '10px 14px')};
+  padding: ${firstslide ? '24px 24px 12px 24px' : '10px 14px'};
   z-index: 999;
   @media (min-width: 769px) {
     border-bottom: 2px solid #f7f7f7;
   }
   display: flex;
-`;
+`));
 
 const Title = styled('h3')`
   font-size: 28px;;

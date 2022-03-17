@@ -93,11 +93,11 @@ const Wrapper = styled('div')`
   background: white;
   z-index: 2;
   width: 100vw;
-  box-shadow: 0 2px 4px -1px rgba(0,0,0,0.2), 0px 4px 5px 0px rgba(0,0,0,0.14), 0px 1px 10px 0px rgba(0,0,0,0.12);
+  box-shadow: 0 2px 4px -1px rgba(0,0,0,0.2), 0 4px 5px 0 rgba(0,0,0,0.14), 0 1px 10px 0 rgba(0,0,0,0.12);
   animation: ${slideDown} 150ms ease-in;
   ${() => (isWebApp() ? 'margin-top: -16px;' : '')};
   @media (min-width: ${({ theme }) => theme.breakpoints.sm}) {
-    padding-top: ${({ ipad }) => (ipad ? '' : '0px')};
+    padding-top: ${({ ipad }) => (ipad ? '' : '0')};
   }
   @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
     ${() => (isWebApp() ? 'margin-top: -14px;' : '')};

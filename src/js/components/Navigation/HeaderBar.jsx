@@ -533,7 +533,7 @@ class HeaderBar extends Component {
         } else {
           element.style.borderBottomStyle = 'none';
           element.style.borderBottomStyle = 'none';
-          element.style.borderBottomWidth = '0px';
+          element.style.borderBottomWidth = '0';
           element.style.paddingBottom = '6px';
         }
       }
@@ -801,7 +801,7 @@ class HeaderBar extends Component {
               </>
             )}
           </TopRowOneRightContainer>
-          <TopRowTwoLeftContainer style={{ display: `${isFriends ? 'inherit' : 'none'}`, paddingBottom: `${isFriends ? '0px' : ''}` }}>
+          <TopRowTwoLeftContainer style={{ display: `${isFriends ? 'inherit' : 'none'}`, paddingBottom: `${isFriends ? '0' : ''}` }}>
             {(isFriends) && (
               <FriendsTabs />
             )}

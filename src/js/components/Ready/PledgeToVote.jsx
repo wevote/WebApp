@@ -226,14 +226,16 @@ const CardSubTitle = styled('h3')`
   font-size: 16px;
 `;
 
-const ProgressBar = styled('div')`
+const ProgressBar = styled('div', {
+  shouldForwardProp: (prop) => !['percentage'].includes(prop),
+})(({ percentage }) => (`
   background: #f7f7f7;
   width: 100%;
   height: 12px;
   border-radius: 50px;
   margin: 0 0 12px;
   span {
-    width: ${(props) => props.percentage}%;
+    width: ${percentage}%;
     display: block;
     height: 12px;
     border-radius: 50px;
@@ -243,7 +245,7 @@ const ProgressBar = styled('div')`
       #2e3c5d
     )
   }
-`;
+`));
 
 const CommentsWrapper = styled('div')`
   max-height: 140px;

@@ -720,15 +720,17 @@ const Flex = styled('div')`
   padding-top: 16px;
 `;
 
-const SubTitle = styled('div')`
+const SubTitle = styled('div', {
+  shouldForwardProp: (prop) => !['larger', 'left'].includes(prop),
+})(({ larger, left }) => (`
   margin-top: 0;
-  font-size: ${(props) => (props.larger ? '18px' : '14px')};
+  font-size: ${larger ? '18px' : '14px'};
   width: 100%;
-  text-align: ${(props) => (props.left && 'left')};
+  text-align: ${left && 'left'};
   @media(min-width: 420px) {
     // width: 80%;
   }
-`;
+`));
 
 const Text = styled('h3')`
   font-weight: normal;

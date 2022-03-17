@@ -154,11 +154,13 @@ const OuterWrapper = styled('div')`
   width: 100%;
 `;
 
-const VoterPhotoImage = styled('img')`
+const VoterPhotoImage = styled('img', {
+  shouldForwardProp: (prop) => !['maxWidth'].includes(prop),
+})(({ maxWidth }) => (`
   border-radius: 100px;
   max-width: 100px;
-  ${(props) => ((props.maxWidth) ? `max-width: ${props.maxWidth}px;` : 'max-width: 200px;')}
-`;
+  ${maxWidth ? `max-width: ${maxWidth}px;` : 'max-width: 200px;'}
+`));
 
 const VoterPhotoWrapper = styled('div')`
   align-items: center;

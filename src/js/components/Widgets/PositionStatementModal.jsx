@@ -351,7 +351,7 @@ const styles = (theme) => ({
     height: '80%',
     width: '90%',
     maxWidth: '600px',
-    top: '0px',
+    top: '0',
     transform: isAndroid() ? 'translate(0%, -18%)' : 'translate(0%, -20%)',
     [theme.breakpoints.down('sm')]: {
       minWidth: '95%',
@@ -365,7 +365,7 @@ const styles = (theme) => ({
     },
   },
   dialogContent: {
-    padding: '0px 16px',
+    padding: '0 16px',
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'space-between',
@@ -405,7 +405,7 @@ const styles = (theme) => ({
   },
   select: {
     padding: '12px 12px',
-    margin: '0px 1px',
+    margin: '0 1px',
   },
 });
 

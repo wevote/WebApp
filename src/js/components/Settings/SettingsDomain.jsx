@@ -689,16 +689,18 @@ const Introduction = styled('p')`
   font-size: 14px;
 `;
 
-const IconInputContainer = styled('div')`
+const IconInputContainer = styled('div', {
+  shouldForwardProp: (prop) => !['error'].includes(prop),
+})(({ error }) => (`
   display: flex;
   align-items: center;
   justify-content: flex-start;
-  border-left: ${(props) => (props.error ? '1.6px solid rgb(255, 73, 34)' : '1px solid rgba(0, 0, 0, 0.45)')} ;
+  border-left: ${error ? '1.6px solid rgb(255, 73, 34)' : '1px solid rgba(0, 0, 0, 0.45)'} ;
   padding-left: 12px;
   color: rgba(0, 0, 0, 0.54);
   height: 100%;
   width: 100%;
-`;
+`));
 
 const InputBoxLabel = styled('h4', {
   shouldForwardProp: (prop) => !['error'].includes(prop),

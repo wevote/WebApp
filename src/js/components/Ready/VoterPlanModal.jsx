@@ -685,11 +685,13 @@ const InternalFormWrapper = styled('div')`
 `;
 
 /* eslint no-nested-ternary: ["off"] */
-const ModalTitleArea = styled('div')`
+const ModalTitleArea = styled('div', {
+  shouldForwardProp: (prop) => !['firstslide'].includes(prop),
+})(({ firstslide }) => (`
   justify-content: flex-start;
   align-items: center;
   width: 100%;
-  padding: ${(props) => (props.firstslide ? '24px 24px 12px 24px' : '10px 14px')};
+  padding: ${firstslide ? '24px 24px 12px 24px' : '10px 14px'};
   z-index: 999;
   box-shadow: 0 0 25px 0 #ddd;
   @media (min-width: 769px) {
@@ -697,7 +699,7 @@ const ModalTitleArea = styled('div')`
     box-shadow: 0 0 25px 0 #ddd;
   }
   display: flex;
-`;
+`));
 
 const ModalFooter = styled('div')`
   box-shadow: 0 0 25px 0 #ddd;

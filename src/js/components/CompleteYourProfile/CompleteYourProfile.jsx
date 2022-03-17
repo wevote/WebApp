@@ -528,16 +528,18 @@ const Indicators = styled('div')`
   margin-left: 8px;
 `;
 
-const Indicator = styled('div')`
+const Indicator = styled('div', {
+  shouldForwardProp: (prop) => !['complete', 'active'].includes(prop),
+})(({ complete, active }) => (`
   cursor: pointer;
   flex: 1 1 0;
   height: 8px;
   margin: 0 4px;
-  ${(props) => (props.complete && props.active ? 'background: rgb(31,192,111); border-bottom: 2px solid #2E3C5D;' : '')}
-  ${(props) => (props.complete && !props.active ? 'background: rgb(31,192,111);' : '')}
-  ${(props) => (!props.complete && props.active ? 'background: #e1e1e1; border-bottom: 2px solid #2E3C5D;' : '')}
-  ${(props) => (!props.complete && !props.active ? 'background: #e1e1e1;' : '')}
-`;
+  ${complete && active ? 'background: rgb(31,192,111); border-bottom: 2px solid #2E3C5D;' : ''}
+  ${complete && !active ? 'background: rgb(31,192,111);' : ''}
+  ${!complete && active ? 'background: #e1e1e1; border-bottom: 2px solid #2E3C5D;' : ''}
+  ${!complete && !active ? 'background: #e1e1e1;' : ''}
+`));
 
 const Info = styled('span')`
   display: none;
