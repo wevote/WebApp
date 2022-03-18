@@ -440,7 +440,7 @@ OpinionsAndBallotItemsFilter.propTypes = {
 
 const styles = (theme) => ({
   formControlLabel: {
-    [theme.breakpoints.down('xl')]: {
+    [theme.breakpoints.down('lg')]: {
       fontSize: 14,
     },
   },

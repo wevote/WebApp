@@ -68,7 +68,7 @@ const commonMuiStyles = {
   },
   doneIcon: {
     fontSize: 28,
-    [theme.breakpoints.down('xl')]: {
+    [theme.breakpoints.down('lg')]: {
       fontSize: 28,
     },
     paddingTop: '5px',

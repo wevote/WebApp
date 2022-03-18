@@ -197,7 +197,7 @@ const styles = (theme) => ({
     color: 'rgb(6, 95, 212)',
     marginLeft: '1rem',
     outline: 'none !important',
-    [theme.breakpoints.down('lg')]: {
+    [theme.breakpoints.down('md')]: {
       marginLeft: '.1rem',
     },
   },

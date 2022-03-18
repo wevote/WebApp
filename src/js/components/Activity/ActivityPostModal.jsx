@@ -230,7 +230,7 @@ const styles = (theme) => ({
     maxWidth: '600px',
     top: '0',
     transform: isAndroid() ? 'none' : 'translate(0%, -20%)',
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down('xs')]: {
       minWidth: '95%',
       maxWidth: '95%',
       width: '95%',
@@ -267,7 +267,7 @@ const styles = (theme) => ({
     fontSize: 20,
     height: '100%',
     width: '100%',
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down('sm')]: {
       fontSize: 18,
     },
   },
@@ -276,7 +276,7 @@ const styles = (theme) => ({
     fontSize: 18,
     height: '100%',
     width: '100%',
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down('sm')]: {
       fontSize: 16,
     },
   },

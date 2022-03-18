@@ -402,11 +402,11 @@ const styles = (theme) => ({
     padding: 4,
     minWidth: 60,
     height: 30,
-    [theme.breakpoints.down('lg')]: {
+    [theme.breakpoints.down('md')]: {
       minWidth: 60,
       height: 30,
     },
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down('sm')]: {
       width: 'fit-content',
       minWidth: 50,
       height: 30,
@@ -449,10 +449,10 @@ const CandidateInfo = styled('div')(({ theme }) => (`
   padding: 8px !important;
   transition: all 200ms ease-in;
   max-width: 320px;
-  [theme.breakpoints.down('sm')]: {
+  [theme.breakpoints.down('xs')]: {
     width: 100%;
   }
-  [theme.breakpoints.up('sm')]: {
+  [theme.breakpoints.up('xs')]: {
     min-width: 320px;
   }
   &:hover {

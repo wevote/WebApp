@@ -122,8 +122,6 @@ const styles = (theme) => ({
     padding: '4px 8px',
     height: 32,
     width: '100%',
-    [theme.breakpoints.down('lg')]: {
-    },
     [theme.breakpoints.down('md')]: {
       padding: '4px 4px',
     },

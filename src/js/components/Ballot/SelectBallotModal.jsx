@@ -238,7 +238,7 @@ const styles = (theme) => ({
     height: '80%',
     width: '90%',
     maxWidth: '1200px',
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down('xs')]: {
       minWidth: '95%',
       maxWidth: '95%',
       width: '95%',
@@ -250,7 +250,7 @@ const styles = (theme) => ({
     },
   },
   dialogContent: {
-    [theme.breakpoints.down('lg')]: {
+    [theme.breakpoints.down('md')]: {
       padding: '0 8px 8px',
     },
   },

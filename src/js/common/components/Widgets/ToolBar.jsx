@@ -140,7 +140,7 @@ const styles = (theme) => ({
     },
     color: 'white',
     outline: 'none !important',
-    [theme.breakpoints.down('lg')]: {
+    [theme.breakpoints.down('md')]: {
       marginLeft: '.1rem',
     },
   },

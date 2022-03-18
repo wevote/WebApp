@@ -277,7 +277,7 @@ const styles = (theme) => ({
     width: '100%',
   } : {},
   dialogPaper: isWebApp() ? {
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down('sm')]: {
       minWidth: '95%',
       maxWidth: '95%',
       width: '95%',
@@ -298,14 +298,14 @@ const styles = (theme) => ({
     transform: 'translate(-50%, -25%)',
   },
   dialogContent: {
-    [theme.breakpoints.down('lg')]: {
+    [theme.breakpoints.down('md')]: {
       padding: '0 8px 8px',
     },
   },
   radioPrimary: {
     padding: '.1rem',
     margin: '.1rem .1rem .6rem .6rem',
-    [theme.breakpoints.down('lg')]: {
+    [theme.breakpoints.down('md')]: {
       marginLeft: 0,
     },
   },
@@ -313,7 +313,7 @@ const styles = (theme) => ({
     fontSize: '14px',
     bottom: '4px',
     position: 'relative',
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down('sm')]: {
       fontSize: '11px',
     },
   },

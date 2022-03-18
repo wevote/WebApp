@@ -405,11 +405,11 @@ const styles = (theme) => ({
     fontSize: 12,
     minWidth: 60,
     height: 30,
-    [theme.breakpoints.down('lg')]: {
+    [theme.breakpoints.down('md')]: {
       minWidth: 60,
       height: 30,
     },
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down('sm')]: {
       width: 'fit-content',
       minWidth: 50,
       height: 30,
@@ -422,7 +422,7 @@ const styles = (theme) => ({
   },
   cardRoot: {
     padding: '16px 16px 8px 16px',
-    [theme.breakpoints.down('xl')]: {
+    [theme.breakpoints.down('lg')]: {
       padding: '16px 16px 0 16px',
     },
   },

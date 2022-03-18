@@ -3,18 +3,17 @@ import overrides from '../../../components/Style/muiOverrides';
 
 // See also styled-theme.js
 // I recommend being cautious about using 'md' for transitions relating explicitly to mobile, tablet, desktop
-// TODO: March 2022: MUI 5 has made codemods for breakpoints, and has new values.  Let's try them first before overriding them:
 // See: https://mui.com/guides/migration-v4/#theme
-// const breakpoints = {
-//   keys: ['xs', 'sm', 'md', 'lg', 'xl'],
-//   values: {
-//     xs: 320,
-//     sm: 576,
-//     md: 768,
-//     lg: 960,
-//     xl: 1280,
-//   },
-// };
+const breakpoints = {
+  keys: ['xs', 'sm', 'md', 'lg', 'xl'],
+  values: {
+    xs: 320,
+    sm: 576,
+    md: 768,
+    lg: 960,
+    xl: 1280,
+  },
+};
 
 const muiTheme = createTheme({
   palette: {
@@ -28,7 +27,7 @@ const muiTheme = createTheme({
       contrastText: '#2e3c5d',
     }, // Feel free to change this
   },
-  // breakpoints,
+  breakpoints,
   overrides,
   typography: {
     useNextVariants: true,

@@ -352,7 +352,7 @@ const styles = (theme) => ({
   badge: {
     right: '1rem',
     background: theme.palette.primary.main,
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down('sm')]: {
       right: '.8rem',
     },
   },

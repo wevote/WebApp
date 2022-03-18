@@ -128,7 +128,7 @@ const styles = (theme) => ({
   dropzoneRoot: {
     color: '#999',
     minHeight: '162px',
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down('sm')]: {
       minHeight: '160px',
     },
   },
