@@ -1,5 +1,5 @@
+import styled from '@mui/material/styles/styled';
 import React, { Component } from 'react';
-import styled from 'styled-components';
 import TwitterActions from '../../actions/TwitterActions';
 import VoterActions from '../../actions/VoterActions';
 import LoadingWheel from '../../common/components/Widgets/LoadingWheel';
@@ -9,12 +9,12 @@ import { normalizedHref } from '../../common/utils/hrefUtils';
 import { isWebApp } from '../../common/utils/isCordovaOrWebApp';
 import Cookies from '../../common/utils/js-cookie/Cookies';
 import { oAuthLog, renderLog } from '../../common/utils/logging';
+import { PageContentContainer } from '../../components/Style/pageLayoutStyles';
 import IPhoneSpacer from '../../components/Widgets/IPhoneSpacer';
 import SnackNotifier from '../../components/Widgets/SnackNotifier';
 import AppObservableStore, { messageService } from '../../stores/AppObservableStore';
 import TwitterStore from '../../stores/TwitterStore';
 import VoterStore from '../../stores/VoterStore';
-import { PageContentContainer } from '../../components/Style/pageLayoutStyles';
 import { stringContains } from '../../utils/textFormat';
 
 export default class TwitterSignInProcess extends Component {
@@ -268,7 +268,7 @@ export default class TwitterSignInProcess extends Component {
   }
 }
 
-const LoadingDiv = styled.div`
+const LoadingDiv = styled('div')`
   font-size: 18px;
   margin-top: 50px;
   ${() => (isIPad() || isAndroidSizeFold() ? {
@@ -279,5 +279,5 @@ const LoadingDiv = styled.div`
   padding: 10px;
   background-color: white;
   border: 1px solid #333;
-  box-shadow: 0 2px 4px -1px rgba(0,0,0,0.2), 0px 4px 5px 0px rgba(0,0,0,0.14), 0px 1px 10px 0px rgba(0,0,0,0.12);
+  box-shadow: 0 2px 4px -1px rgba(0,0,0,0.2), 0 4px 5px 0 rgba(0,0,0,0.14), 0 1px 10px 0 rgba(0,0,0,0.12);
 `;

@@ -1,16 +1,16 @@
+import styled from '@mui/material/styles/styled';
 import React, { Component, Suspense } from 'react';
 import Helmet from 'react-helmet';
-import styled from 'styled-components';
 import OrganizationActions from '../../actions/OrganizationActions';
 import VoterGuideActions from '../../actions/VoterGuideActions';
+import { renderLog } from '../../common/utils/logging';
+import normalizedImagePath from '../../common/utils/normalizedImagePath';
 import SelectVoterGuidesSideBar from '../../components/Navigation/SelectVoterGuidesSideBar';
 import VoterGuideListSearchResults from '../../components/Settings/VoterGuideListSearchResults';
+import { PageContentContainer } from '../../components/Style/pageLayoutStyles';
 import OrganizationStore from '../../stores/OrganizationStore';
 import VoterGuideStore from '../../stores/VoterGuideStore';
 import VoterStore from '../../stores/VoterStore';
-import normalizedImagePath from '../../common/utils/normalizedImagePath';
-import { renderLog } from '../../common/utils/logging';
-import { PageContentContainer } from '../../components/Style/pageLayoutStyles';
 
 const DelayedLoad = React.lazy(() => import(/* webpackChunkName: 'DelayedLoad' */ '../../common/components/Widgets/DelayedLoad'));
 const SettingsAccount = React.lazy(() => import(/* webpackChunkName: 'SettingsAccount' */ '../../components/Settings/SettingsAccount'));
@@ -208,7 +208,7 @@ class VoterGuideListDashboard extends Component {
   }
 }
 
-const Faq = styled.h3`
+const Faq = styled('h3')`
   font-size: 20px;
   font-weight: bold;
   text-align: left;
@@ -219,7 +219,7 @@ const Faq = styled.h3`
   }
 `;
 
-const Questions = styled.p`
+const Questions = styled('p')`
   font-size: 16px;
   font-weight: bold;
   font-style: italic;
@@ -229,7 +229,7 @@ const Questions = styled.p`
   }
 `;
 
-const Description = styled.p`
+const Description = styled('p')`
   color: #A9A9A9;
   font-size: 16px;
   margin-top: 8px;

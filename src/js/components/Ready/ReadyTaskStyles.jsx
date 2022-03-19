@@ -1,21 +1,23 @@
-import { Button } from '@material-ui/core';
-import styled from 'styled-components';
+import { Button } from '@mui/material';
+import styled from '@mui/material/styles/styled';
 import { isCordova } from '../../common/utils/isCordovaOrWebApp';
 
-const ButtonLeft = styled.div`
+const ButtonLeft = styled('div')`
   display: flex !important;
   align-items: center !important;
   justify-content: flex-start !important;
 `;
 
-const ButtonText = styled.div`
+const ButtonText = styled('div')`
   font-size: 14px;
   @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
     font-size: 12px;
   }
 `;
 
-const ReadyCard = styled.div`
+const ReadyCard = styled('div', {
+  shouldForwardProp: (prop) => !['showProgressColor'].includes(prop),
+})(({ showProgressColor }) => (`
   padding: 16px;
   padding-left: 82px;
   position: relative;
@@ -28,7 +30,7 @@ const ReadyCard = styled.div`
     content: "";
     display: block;
     position: absolute;
-    background: ${(props) => (props.showprogresscolor ? 'rgb(31,192,111)' : '#bed1fb')};
+    background: ${showProgressColor ? 'rgb(31,192,111)' : '#bed1fb'};
     width: 4px;
     z-index: 0;
     height: calc(100% - 32px);
@@ -41,9 +43,9 @@ const ReadyCard = styled.div`
       left: 29px;
     }
   }
-`;
+`));
 
-const Icon = styled.div`
+const Icon = styled('div')`
   align-items: center;
   border-radius: 50px;
   display: flex;
@@ -60,8 +62,10 @@ const Icon = styled.div`
   }
 `;
 
-const PercentComplete = styled.div`
-  color: ${(props) => (props.showprogresscolor ? 'green' : 'black')};
+const PercentComplete = styled('div', {
+  shouldForwardProp: (prop) => !['showProgressColor'].includes(prop),
+})(({ showProgressColor }) => (`
+  color: ${showProgressColor ? 'green' : 'black'};
   font-size: 22px;
   font-weight: 600;
   margin-bottom: 6px;
@@ -70,15 +74,15 @@ const PercentComplete = styled.div`
     font-size: 18px;
     margin-top: 0;
   }
-`;
+`));
 
-const TitleRowWrapper = styled.div`
+const TitleRowWrapper = styled('div')`
   display: flex !important;
   align-items: center !important;
   justify-content: space-between !important;
 `;
 
-const Title = styled.h3`
+const Title = styled('h3')`
   margin: 0;
   font-size: 30px;
   font-weight: 600;
@@ -94,7 +98,7 @@ const Title = styled.h3`
   }
 `;
 
-const SubTitle = styled.small`
+const SubTitle = styled('small')`
   margin: 0;
   font-size: 16px;
   color: #555;
@@ -124,7 +128,7 @@ const StyledButton = styled(Button)`
   }
 `;
 
-const StyledCheckbox = styled.div`
+const StyledCheckbox = styled('div')`
   width: 20px;
   height: 20px;
   background: transparent;
@@ -137,7 +141,7 @@ const StyledCheckbox = styled.div`
   }
 `;
 
-const StyledCheckboxCompleted = styled.div`
+const StyledCheckboxCompleted = styled('div')`
   width: 25px;
   height: 25px;
   border-radius: 50px;

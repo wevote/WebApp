@@ -1,8 +1,8 @@
-import { withStyles } from '@material-ui/core/styles';
+import styled from '@mui/material/styles/styled';
+import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
 import Helmet from 'react-helmet';
-import styled from 'styled-components';
 import ActivityActions from '../../actions/ActivityActions';
 import AnalyticsActions from '../../actions/AnalyticsActions';
 import FriendActions from '../../actions/FriendActions';
@@ -18,6 +18,7 @@ import FriendInvitationsSentToMePreview from '../../components/Friends/FriendInv
 import FriendsCurrentPreview from '../../components/Friends/FriendsCurrentPreview';
 import FriendsPromoBox from '../../components/Friends/FriendsPromoBox';
 import SuggestedFriendsPreview from '../../components/Friends/SuggestedFriendsPreview';
+import { PageContentContainer } from '../../components/Style/pageLayoutStyles';
 import TwitterSignInCard from '../../components/Twitter/TwitterSignInCard';
 import BrowserPushMessage from '../../components/Widgets/BrowserPushMessage';
 import MessageCard from '../../components/Widgets/MessageCard';
@@ -29,7 +30,6 @@ import VoterStore from '../../stores/VoterStore';
 import { cordovaFriendsWrapper } from '../../utils/cordovaOffsets';
 import displayFriendsTabs from '../../utils/displayFriendsTabs';
 import sortFriendListByMutualFriends from '../../utils/friendFunctions';
-import { PageContentContainer } from '../../components/Style/pageLayoutStyles';
 import FriendInvitationsSentByMe from './FriendInvitationsSentByMe';
 import FriendInvitationsSentToMe from './FriendInvitationsSentToMe';
 import FriendsCurrent from './FriendsCurrent';
@@ -586,14 +586,14 @@ const styles = () => ({
   },
 });
 
-const FacebookSignInWrapper = styled.div`
+const FacebookSignInWrapper = styled('div')`
   flex: 1;
   @media (min-width: 614px) and (max-width: 991px) {
     padding-left: 8px;
   }
 `;
 
-const FriendsHeading = styled.div`
+const FriendsHeading = styled('div')`
   // width: 100%;
   // background-color: #fff;
   // border-bottom: 1px solid #aaa;
@@ -607,7 +607,7 @@ const FriendsHeading = styled.div`
   // box-shadow: 0 2px 4px -1px rgba(0, 0, 0, 0.2), 0 4px 5px 0 rgba(0, 0, 0, 0.14), 0 1px 10px 0 rgba(0, 0, 0, 0.12);
 `;
 
-const SectionTitle = styled.h2`
+const SectionTitle = styled('h2')`
   width: fit-content;
   font-weight: bolder;
   font-size: 18px;
@@ -615,14 +615,14 @@ const SectionTitle = styled.h2`
   display: inline;
 `;
 
-const SignInOptionsWrapper = styled.div`
+const SignInOptionsWrapper = styled('div')`
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   flex-wrap: wrap;
 `;
 
-const TwitterSignInWrapper = styled.div`
+const TwitterSignInWrapper = styled('div')`
   flex: 1;
   @media (min-width: 614px) and (max-width: 991px) {
     padding-right: 8px;

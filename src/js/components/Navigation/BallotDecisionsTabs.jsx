@@ -1,8 +1,8 @@
-import { Tab, Tabs, Badge } from '@material-ui/core';
-import React, { Component } from 'react';
+import { Badge, Tab, Tabs } from '@mui/material';
+import styled from '@mui/material/styles/styled';
+import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
-import styled from 'styled-components';
-import { withStyles } from '@material-ui/core/styles';
+import React, { Component } from 'react';
 import BallotActions from '../../actions/BallotActions';
 import { renderLog } from '../../common/utils/logging';
 
@@ -217,7 +217,7 @@ const styles = (theme) => ({
   },
 });
 
-const BadgeCountWrapper = styled.span`
+const BadgeCountWrapper = styled('span')`
   padding-top: 2px;
   @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
     padding-top: 1px;

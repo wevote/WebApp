@@ -1,10 +1,13 @@
-import { Button } from '@material-ui/core';
-import { withStyles } from '@material-ui/core/styles';
+import { Button } from '@mui/material';
+import styled from '@mui/material/styles/styled';
+import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
 import Helmet from 'react-helmet';
-import styled from 'styled-components';
 import VoterActions from '../actions/VoterActions';
+import historyPush from '../common/utils/historyPush';
+import { isCordova } from '../common/utils/isCordovaOrWebApp';
+import { renderLog } from '../common/utils/logging';
 import Header, { Container, Title } from '../components/Welcome/howItWorksHeaderStyles';
 import AnnotatedSlideshow from '../components/Widgets/AnnotatedSlideshow';
 import HeaderSwitch from '../components/Widgets/HeaderSwitch';
@@ -13,9 +16,6 @@ import VoterConstants from '../constants/VoterConstants';
 import AppObservableStore from '../stores/AppObservableStore';
 import VoterStore from '../stores/VoterStore';
 import cordovaScrollablePaneTopPadding from '../utils/cordovaScrollablePaneTopPadding';
-import { isCordova } from '../common/utils/isCordovaOrWebApp';
-import historyPush from '../common/utils/historyPush';
-import { renderLog } from '../common/utils/logging';
 
 const WelcomeAppbar = React.lazy(() => import(/* webpackChunkName: 'WelcomeAppbar' */ '../components/Navigation/WelcomeAppbar'));
 const WelcomeFooter = React.lazy(() => import(/* webpackChunkName: 'WelcomeFooter' */ '../components/Welcome/WelcomeFooter'));
@@ -348,7 +348,7 @@ class HowItWorks extends Component {
         }
       </>
     ) : (
-      <Wrapper padTop={cordovaScrollablePaneTopPadding()}>
+      <Wrapper>
         <Helmet title={helmetTitle} />
         <Suspense fallback={<></>}>
           <WelcomeAppbar pathname={simulatedPathname} />
@@ -364,7 +364,7 @@ class HowItWorks extends Component {
                 switchToDifferentCategoryFunction={this.switchToDifferentCategoryFunction}
               />
             </DesktopView>
-            <MobileTabletView margin={isCordova()}>
+            <MobileTabletView>
               <StepsChips onSelectStep={this.handleChangeSlide} selected={selectedStepIndex} chips={stepLabels} mobile />
             </MobileTabletView>
           </Container>
@@ -427,16 +427,16 @@ const styles = ({
   },
 });
 
-const Wrapper = styled.div`
+const Wrapper = styled('div')`
   display: flex;
   flex-flow: column nowrap;
   align-items: center;
   background: white;
   overflow-x: hidden;
-  padding-top: ${({ padTop }) => padTop};
+  padding-top: ${cordovaScrollablePaneTopPadding()};
 `;
 
-const Section = styled.div`
+const Section = styled('div')`
   background: white;
   display: flex;
   flex-flow: column;
@@ -445,22 +445,22 @@ const Section = styled.div`
   padding-bottom: 2em;
 `;
 
-const DesktopView = styled.div`
+const DesktopView = styled('div')`
   display: inherit;
   @media (max-width: ${({ theme }) => theme.breakpoints.lg}) {
     display: none;
   }
 `;
 
-const MobileTabletView = styled.div`
+const MobileTabletView = styled('div')`
   display: inherit;
-  margin-top: ${({ marginTop }) => marginTop || '-11px'};
+  margin-top: ${isCordova() ? '' : '-11px'};
   @media (min-width: ${({ theme }) => theme.breakpoints.lg}) {
     display: none;
   }
 `;
 
-const TwoButtonsWrapper = styled.div`
+const TwoButtonsWrapper = styled('div')`
   display: flex;
   align-items: center;
   justify-content: center;
@@ -471,18 +471,16 @@ const TwoButtonsWrapper = styled.div`
   }
 `;
 
-const BackButtonWrapper = styled.div`
-  margin: 0;
-  margin-right: 12px;
+const BackButtonWrapper = styled('div')`
+  margin: 0 12px 0 0;
   width: 100%;
   @media(max-width: ${({ theme }) => theme.breakpoints.lg}) {
     margin-right: 8px;
   }
 `;
 
-const NextButtonWrapper = styled.div`
+const NextButtonWrapper = styled('div')`
   margin: 0;
-  margin-right: 0;
   width: 50%;
   @media(max-width: ${({ theme }) => theme.breakpoints.lg}) {
     margin-right: 8px;

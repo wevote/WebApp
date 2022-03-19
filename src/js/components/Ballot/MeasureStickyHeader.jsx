@@ -1,10 +1,11 @@
+import { keyframes } from '@emotion/react';
+import styled from '@mui/material/styles/styled';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
-import styled, { keyframes } from 'styled-components';
+import { isCordova, isWebApp } from '../../common/utils/isCordovaOrWebApp';
+import { renderLog } from '../../common/utils/logging';
 import MeasureStore from '../../stores/MeasureStore';
 import { cordovaStickyHeaderPaddingTop } from '../../utils/cordovaOffsets';
-import { isIOSAppOnMac, isIPad } from '../../common/utils/cordovaUtils';
-import { isCordova, isWebApp } from '../../common/utils/isCordovaOrWebApp';
 
 const ReadMore = React.lazy(() => import(/* webpackChunkName: 'ReadMore' */ '../../common/components/Widgets/ReadMore'));
 const BallotItemSupportOpposeComment = React.lazy(() => import(/* webpackChunkName: 'BallotItemSupportOpposeComment' */ '../Widgets/BallotItemSupportOpposeComment'));
@@ -36,11 +37,12 @@ class MeasureStickyHeader extends Component {
   }
 
   render () {
+    renderLog('MeasureStickyHeader');  // Set LOG_RENDER_EVENTS to log all renders
     const { measureWeVoteId } = this.props;
     const { ballotItemDisplayName } = this.state;
     const ballotItemDisplay = ballotItemDisplayName ? ballotItemDisplayName.split(':') : [];
     return (
-      <Wrapper ipad={isIPad() || isIOSAppOnMac()}>
+      <MeasureStickyHeaderWrapper>
         <Container>
           <Flex>
             <ColumnOne>
@@ -77,7 +79,7 @@ class MeasureStickyHeader extends Component {
             </Suspense>
           </MeasureCommentContainer>
         </Container>
-      </Wrapper>
+      </MeasureStickyHeaderWrapper>
     );
   }
 }
@@ -94,7 +96,7 @@ const slideDown = keyframes`
   }
 `;
 
-const Wrapper = styled.div`
+const MeasureStickyHeaderWrapper = styled('div')`
   max-width: 100%;
   position: fixed;
   padding-right: 16px;
@@ -105,26 +107,23 @@ const Wrapper = styled.div`
   background: white;
   z-index: 2;
   width: 100vw;
-  box-shadow: 0px 2px 4px -1px rgba(0,0,0,0.2), 0px 4px 5px 0px rgba(0,0,0,0.14), 0px 1px 10px 0px rgba(0,0,0,0.12);
-  animation: ${slideDown} 150ms ease-in;
-  // @media (min-width: ${({ theme }) => theme.breakpoints.sm}) {
-  //   padding-top: ${({ ipad }) => (ipad ? '' : '48px')};
-  // }
-`;
+  box-shadow: 0 2px 4px -1px rgba(0,0,0,0.2), 0px 4px 5px 0px rgba(0,0,0,0.14), 0px 1px 10px 0px rgba(0,0,0,0.12);
+  //animation: ${slideDown} 150ms ease-in;
+  `;
 
-const Container = styled.div`
+const Container = styled('div')`
   max-width: calc(960px - 18px);
   margin: 0 auto;
 `;
 
-const ColumnOne = styled.div`
+const ColumnOne = styled('div')`
   width: 100%;
   @media (min-width: ${({ theme }) => theme.breakpoints.sm}) {
     flex: 1 1 0;
   }
 `;
 
-const ColumnTwo = styled.div`
+const ColumnTwo = styled('div')`
   float: right;
   @media (min-width: ${({ theme }) => theme.breakpoints.sm}) {
     display: block;
@@ -132,7 +131,7 @@ const ColumnTwo = styled.div`
   }
 `;
 
-const Title = styled.h1`
+const Title = styled('h1')`
   font-size: ${() => (isCordova() ? '16px' : '18px')};
   margin-bottom: 2px;
   margin-top: 8px;
@@ -143,7 +142,7 @@ const Title = styled.h1`
   }
 `;
 
-const SubTitle = styled.p`
+const SubTitle = styled('p')`
   display: none;
   @media (min-width: ${({ theme }) => theme.breakpoints.md}) {
     font-size: 15px;
@@ -151,7 +150,7 @@ const SubTitle = styled.p`
   }
 `;
 
-const MobileSubtitle = styled.h2`
+const MobileSubtitle = styled('h2')`
   display: none;
   @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
     font-size: 14px;
@@ -160,19 +159,19 @@ const MobileSubtitle = styled.h2`
   }
 `;
 
-const Profile = styled.div`
+const Profile = styled('div')`
   display: flex;
   flex-flow: row;
 `;
 
-const Flex = styled.div`
+const Flex = styled('div')`
   display: flex;
-  jusitify-content: space-evenly;
+  justify-content: space-evenly;
   position: relative;
   top: 8px;
 `;
 
-const MeasureCommentContainer = styled.div`
+const MeasureCommentContainer = styled('div')`
   width: fit-content;
   margin-top: ${() => (isWebApp() ? '8px' : '')};;
   @media (max-width : ${({ theme }) => theme.breakpoints.sm}) {

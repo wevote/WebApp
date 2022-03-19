@@ -1,11 +1,11 @@
+import styled from '@mui/material/styles/styled';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
 import Helmet from 'react-helmet';
-import styled from 'styled-components';
+import LoadingWheel from '../../common/components/Widgets/LoadingWheel';
+import { renderLog } from '../../common/utils/logging';
 import OrganizationStore from '../../stores/OrganizationStore';
 import VoterStore from '../../stores/VoterStore';
-import { renderLog } from '../../common/utils/logging';
-import LoadingWheel from '../../common/components/Widgets/LoadingWheel';
 
 const DelayedLoad = React.lazy(() => import(/* webpackChunkName: 'DelayedLoad' */ '../../common/components/Widgets/DelayedLoad'));
 const SettingsAccount = React.lazy(() => import(/* webpackChunkName: 'SettingsAccount' */ './SettingsAccount'));
@@ -112,11 +112,11 @@ SettingsPromotedOrganizations.propTypes = {
   samplePropName: PropTypes.bool, // eslint-disable-line react/no-unused-prop-types
 };
 
-const Wrapper = styled.div`
+const Wrapper = styled('div')`
 `;
 
-const Card = styled.div`
+const Card = styled('div')`
 `;
 
-const CardMain = styled.div`
+const CardMain = styled('div')`
 `;

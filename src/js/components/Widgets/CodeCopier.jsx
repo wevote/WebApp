@@ -1,9 +1,9 @@
-import { Button } from '@material-ui/core';
+import { Button } from '@mui/material';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
 import OrganizationActions from '../../actions/OrganizationActions';
-import OrganizationStore from '../../stores/OrganizationStore';
 import { renderLog } from '../../common/utils/logging';
+import OrganizationStore from '../../stores/OrganizationStore';
 import { openSnackbar } from './SnackNotifier';
 
 const ImageHandler = React.lazy(() => import(/* webpackChunkName: 'ImageHandler' */ '../ImageHandler'));

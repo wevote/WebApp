@@ -1,10 +1,10 @@
-import { Check } from '@material-ui/icons';
+import { Check } from '@mui/icons-material';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import Helmet from 'react-helmet';
+import { renderLog } from '../../common/utils/logging';
 import AddressBox from '../../components/AddressBox';
 import webAppConfig from '../../config';
-import { renderLog } from '../../common/utils/logging';
 import { numberWithCommas } from '../../utils/textFormat';
 
 export default class Intro extends Component {

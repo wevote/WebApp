@@ -1,16 +1,16 @@
-import { Dialog, DialogContent, DialogTitle, FormControl, FormControlLabel, IconButton, Radio, Typography } from '@material-ui/core';
-import { withStyles } from '@material-ui/core/styles';
-import { Close } from '@material-ui/icons';
+import { Close } from '@mui/icons-material';
+import { Dialog, DialogContent, DialogTitle, FormControl, FormControlLabel, IconButton, Radio, Typography } from '@mui/material';
+import styled from '@mui/material/styles/styled';
+import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
-import styled from 'styled-components';
 import SupportActions from '../../actions/SupportActions';
-import SupportStore from '../../stores/SupportStore';
-import VoterStore from '../../stores/VoterStore';
 import { isAndroidSizeMD } from '../../common/utils/cordovaUtils'; // hasIPhoneNotch,
 import { isCordova, isWebApp } from '../../common/utils/isCordovaOrWebApp';
 import isMobileScreenSize from '../../common/utils/isMobileScreenSize';
 import { renderLog } from '../../common/utils/logging';
+import SupportStore from '../../stores/SupportStore';
+import VoterStore from '../../stores/VoterStore';
 import { openSnackbar } from './SnackNotifier';
 
 const SettingsAccount = React.lazy(() => import(/* webpackChunkName: 'SettingsAccount' */ '../Settings/SettingsAccount'));
@@ -232,6 +232,7 @@ class PositionPublicToggle extends Component {
             classes={{ root: classes.closeButton }}
             onClick={() => { this.togglePositionPublicHelpModal(); }}
             id="profileClosePositionPublicToggle"
+            size="large"
           >
             <Close />
           </IconButton>
@@ -379,17 +380,17 @@ const styles = (theme) => ({
   },
   closeButton: {
     position: 'absolute',
-    right: `${theme.spacing(1)}px`,
-    top: `${theme.spacing(1)}px`,
+    right: theme.spacing(1),
+    top: theme.spacing(1),
   },
 });
 
-const Wrapper = styled.div`
+const Wrapper = styled('div')`
   margin-left: auto;
   width: fit-content;
 `;
 
-const PublicToggle = styled.div`
+const PublicToggle = styled('div')`
   padding-left: 15px;
   @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
     padding-top: 4px;
@@ -405,11 +406,15 @@ const RadioItemStackedStyles = `
   }
 `;
 
-const RadioItem = styled.div`
-  ${({ preventStackedButtons }) => ((preventStackedButtons) ? '' : RadioItemStackedStyles)}
-`;
+const RadioItem = styled('div', {
+  shouldForwardProp: (prop) => !['preventStackedButtons'].includes(prop),
+})(({ preventStackedButtons }) => (`
+  ${preventStackedButtons ? '' : RadioItemStackedStyles}
+`));
 
-const RadioGroup = styled.div`
+const RadioGroup = styled('div', {
+  shouldForwardProp: (prop) => !['preventStackedButtons'].includes(prop),
+})(({ preventStackedButtons }) => (`
   display: flex;
   flex-flow: row nowrap;
   width: 100%;
@@ -417,10 +422,10 @@ const RadioGroup = styled.div`
     margin-bottom: -10px;
   }
   @media (max-width: ${({ theme }) => theme.breakpoints.xs}) {
-    ${({ preventStackedButtons }) => ((preventStackedButtons) ? '' : 'flex-flow: row wrap;')}
+    ${preventStackedButtons ? '' : 'flex-flow: row wrap;'}
     margin-bottom: 0;
   }
-`;
+`));
 
 
 export default withStyles(styles)(PositionPublicToggle);

@@ -1,6 +1,6 @@
+import styled from '@mui/material/styles/styled';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import styled from 'styled-components';
 
 
 class DragAndDrop extends Component {
@@ -81,8 +81,10 @@ DragAndDrop.propTypes = {
 };
 
 
-const Wrapper = styled.div`
-  background: ${(props) => (props.active ? '#e8e8e8' : '#f7f7f7')};
+const Wrapper = styled('div', {
+  shouldForwardProp: (prop) => !['active'].includes(prop),
+})(({ active }) => (`
+  background: ${active ? '#e8e8e8' : '#f7f7f7'};
   color: #666;
   width: 100%;
   display: flex;
@@ -92,8 +94,8 @@ const Wrapper = styled.div`
   font-size: 24px;
   text-align: center;
   transition: .1s;
-  border: ${(props) => (props.active ? '2px dashed #cccccc' : '2px dashed #e8e8e8')};
-  border-radius: ${(props) => (props.active ? '8px' : '8px')};
-`;
+  border: ${active ? '2px dashed #cccccc' : '2px dashed #e8e8e8'};
+  border-radius: ${active ? '8px' : '8px'};
+`));
 
 export default DragAndDrop;

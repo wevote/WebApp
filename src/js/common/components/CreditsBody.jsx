@@ -1,11 +1,11 @@
-import { withStyles } from '@material-ui/core/styles';
+import styled from '@mui/material/styles/styled';
+import withStyles from '@mui/styles/withStyles';
 import React, { Component, Suspense } from 'react';
 import { Link } from 'react-router-dom';
-import styled from 'styled-components';
 import { organizationalDonors, teamOfVolunteers } from '../constants/people';
-import ExternalLinkIcon from './Widgets/ExternalLinkIcon';
 import { isWebApp } from '../utils/isCordovaOrWebApp';
 import { renderLog } from '../utils/logging';
+import ExternalLinkIcon from './Widgets/ExternalLinkIcon';
 
 const OpenExternalWebSite = React.lazy(() => import(/* webpackChunkName: 'OpenExternalWebSite' */ './Widgets/OpenExternalWebSite'));
 
@@ -145,7 +145,7 @@ const styles = (theme) => ({
   },
 });
 
-const CreditsCompany = styled.div`
+const CreditsCompany = styled('div')`
   display: flex;
   justify-content: center;
   align-items: center;
@@ -157,21 +157,21 @@ const CreditsCompany = styled.div`
   }
 `;
 
-const CreditsCompanyLogo = styled.img`
+const CreditsCompanyLogo = styled('img')`
   width: 300px;
   max-height: 120px;
   max-width: 100%;
 `;
 
-const CreditsCompanyLogoContainer = styled.div`
+const CreditsCompanyLogoContainer = styled('div')`
   margin-bottom: 10px;
 `;
 
-const CreditsCompanyTitle = styled.p`
+const CreditsCompanyTitle = styled('p')`
   color: #555;
 `;
 
-const CreditsDescriptionContainer = styled.div`
+const CreditsDescriptionContainer = styled('div')`
   margin: 1em auto;
   width: 960px;
   max-width: 90vw;
@@ -188,14 +188,14 @@ const CreditsDescriptionContainer = styled.div`
   }
 `;
 
-const CompanyWrapper = styled.div`
+const CompanyWrapper = styled('div')`
   display: flex;
   flex-flow: row wrap;
   justify-content: space-between;
   text-align: center;
 `;
 
-const SectionTitle = styled.h1`
+const SectionTitle = styled('h1')`
   font-size: 28px;
   font-weight: 300;
   margin-bottom: 10px;
@@ -205,7 +205,7 @@ const SectionTitle = styled.h1`
   }
 `;
 
-const Wrapper = styled.div`
+const Wrapper = styled('div')`
   display: flex;
   flex-flow: column nowrap;
   align-items: center;

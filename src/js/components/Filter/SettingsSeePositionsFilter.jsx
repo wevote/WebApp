@@ -1,8 +1,8 @@
-import { Checkbox, FormControlLabel } from '@material-ui/core';
-import { withStyles } from '@material-ui/core/styles';
+import { Checkbox, FormControlLabel } from '@mui/material';
+import styled from '@mui/material/styles/styled';
+import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import styled from 'styled-components';
 import { renderLog } from '../../common/utils/logging';
 
 
@@ -272,18 +272,20 @@ const styles = (theme) => ({
   },
 });
 
-const Wrapper = styled.div`
-  display: ${({ showAllFilters }) => (showAllFilters ? 'flex' : 'none')};
+const Wrapper = styled('div', {
+  shouldForwardProp: (prop) => !['showAllFilters'].includes(prop),
+})(({ showAllFilters }) => (`
+  display: ${showAllFilters ? 'flex' : 'none'};
   flex-flow: column;
   padding-top: 1rem;
-`;
+`));
 
-const FilterRow = styled.div`
+const FilterRow = styled('div')`
   display: flex;
   flex-flow: row;
 `;
 
-const FilterColumn = styled.div`
+const FilterColumn = styled('div')`
   display: flex;
   flex-flow: column;
   margin-right: 2rem;

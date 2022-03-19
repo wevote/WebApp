@@ -1,6 +1,7 @@
+import styled from '@mui/material/styles/styled';
+import withTheme from '@mui/styles/withTheme';
 import PropTypes from 'prop-types';
 import React, { PureComponent } from 'react';
-import styled, { withTheme } from 'styled-components';
 
 class HeaderSwitch extends PureComponent {
   switchToDifferentCategory (switchToChoice = 0) {
@@ -33,7 +34,7 @@ HeaderSwitch.propTypes = {
   switchToDifferentCategoryFunction: PropTypes.func,
 };
 
-const Container = styled.div`
+const Container = styled('div')`
   display: flex;
   flex-flow: row;
   border-radius: 64px;
@@ -45,10 +46,12 @@ const Container = styled.div`
   transition: all 150ms ease-in;
 `;
 
-const Choice = styled.div`
+const Choice = styled('div', {
+  shouldForwardProp: (prop) => !['selectedCategoryIndex', 'color'].includes(prop),
+})(({ selectedCategoryIndex, color, theme }) => (`
   display: flex;
-  background: ${({ selectedCategoryIndex, color }) => (selectedCategoryIndex ? color : 'transparent')};
-  color: ${({ selectedCategoryIndex, color, theme }) => (selectedCategoryIndex ? theme.colors.brandBlue : color)};
+  background: ${selectedCategoryIndex ? color : 'transparent'};
+  color: ${selectedCategoryIndex ? theme.colors.brandBlue : color};
   border-radius: 64px;
   text-transform: uppercase;
   width: 50%;
@@ -56,9 +59,9 @@ const Choice = styled.div`
   align-items: center;
   justify-content: center;
   transition: all 150ms ease-in;
-`;
+`));
 
-const ChoiceText = styled.p`
+const ChoiceText = styled('p')`
   margin: auto;
   font-size: 16px;
   text-align: center;

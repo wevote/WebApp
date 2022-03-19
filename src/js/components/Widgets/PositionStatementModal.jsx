@@ -1,18 +1,19 @@
-import { Button, Dialog, DialogContent, DialogTitle, IconButton, InputBase } from '@material-ui/core';
-import { withStyles, withTheme } from '@material-ui/core/styles';
-import { Close } from '@material-ui/icons';
+import { Close } from '@mui/icons-material';
+import { Button, Dialog, DialogContent, DialogTitle, IconButton, InputBase } from '@mui/material';
+import styled from '@mui/material/styles/styled';
+import withStyles from '@mui/styles/withStyles';
+import withTheme from '@mui/styles/withTheme';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
-import styled from 'styled-components';
 import SupportActions from '../../actions/SupportActions';
+import { hasIPhoneNotch, isAndroid, prepareForCordovaKeyboard, restoreStylesAfterCordovaKeyboard } from '../../common/utils/cordovaUtils';
+import { isCordova } from '../../common/utils/isCordovaOrWebApp';
+import { renderLog } from '../../common/utils/logging';
 import CandidateStore from '../../stores/CandidateStore';
 import MeasureStore from '../../stores/MeasureStore';
 import SupportStore from '../../stores/SupportStore';
 import VoterStore from '../../stores/VoterStore';
 import { avatarGeneric } from '../../utils/applicationUtils';
-import { hasIPhoneNotch, isAndroid, prepareForCordovaKeyboard, restoreStylesAfterCordovaKeyboard } from '../../common/utils/cordovaUtils';
-import { isCordova } from '../../common/utils/isCordovaOrWebApp';
-import { renderLog } from '../../common/utils/logging';
 import { stringContains } from '../../utils/textFormat';
 
 const FirstAndLastNameRequiredAlert = React.lazy(() => import(/* webpackChunkName: 'FirstAndLastNameRequiredAlert' */ './FirstAndLastNameRequiredAlert'));
@@ -241,6 +242,7 @@ class PositionStatementModal extends Component {
             classes={{ root: classes.closeButton }}
             onClick={() => { this.props.togglePositionStatementModal(); }}
             id="closePositionStatementModal"
+            size="large"
           >
             <Close />
           </IconButton>
@@ -349,7 +351,7 @@ const styles = (theme) => ({
     height: '80%',
     width: '90%',
     maxWidth: '600px',
-    top: '0px',
+    top: '0',
     transform: isAndroid() ? 'translate(0%, -18%)' : 'translate(0%, -20%)',
     [theme.breakpoints.down('xs')]: {
       minWidth: '95%',
@@ -363,7 +365,7 @@ const styles = (theme) => ({
     },
   },
   dialogContent: {
-    padding: '0px 16px',
+    padding: '0 16px',
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'space-between',
@@ -371,8 +373,8 @@ const styles = (theme) => ({
   },
   closeButton: {
     position: 'absolute',
-    right: `${theme.spacing(1)}px`,
-    top: isAndroid() ? '-4px' : `${theme.spacing(1)}px`,
+    right: theme.spacing(1),
+    top: isAndroid() ? '-4px' : theme.spacing(1),
   },
   saveButtonRoot: {
     width: '100%',
@@ -403,22 +405,22 @@ const styles = (theme) => ({
   },
   select: {
     padding: '12px 12px',
-    margin: '0px 1px',
+    margin: '0 1px',
   },
 });
 
-const PostSaveButton = styled.div`
+const PostSaveButton = styled('div')`
   width: 100%;
 `;
 
-const TextFieldWrapper = styled.div`
+const TextFieldWrapper = styled('div')`
   height: 100%;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
 `;
 
-const Title = styled.div`
+const Title = styled('div')`
   font-size: 16px;
   font-weight: bold;
   margin: 0;

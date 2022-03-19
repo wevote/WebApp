@@ -1,9 +1,9 @@
-import { Facebook, Twitter } from '@material-ui/icons';
+import { Facebook, Twitter } from '@mui/icons-material';
+import styled from '@mui/material/styles/styled';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import Button from 'react-bootstrap/Button';
 import Helmet from 'react-helmet';
-import styled from 'styled-components';
 import AnalyticsActions from '../../actions/AnalyticsActions';
 import FacebookActions from '../../actions/FacebookActions';
 import TwitterActions from '../../actions/TwitterActions';
@@ -599,28 +599,30 @@ SettingsAccount.propTypes = {
   focusedOnSingleInputToggle: PropTypes.func,
 };
 
-const Main = styled.div`
-  margin-top: ${({ inModal }) => (inModal ? '-16px' : '0')};
-  padding: ${({ inModal }) => (inModal ? '0' : '16px')};
+const Main = styled('div', {
+  shouldForwardProp: (prop) => !['inModal'].includes(prop),
+})(({ inModal }) => (`
+  margin-top: ${inModal ? '-16px' : '0'};
+  padding: ${inModal ? '0' : '16px'};
   text-align: center;
   padding-top: 0;
   width: 100%;
-`;
+`));
 
-const SignInSubtitle = styled.p`
+const SignInSubtitle = styled('p')`
   font-weight: 500;
   font-size: 16px;
   margin-bottom: 24px;
 `;
 
-const RecommendedText = styled.p`
+const RecommendedText = styled('p')`
   margin: 0;
   color: #333;
   font-weight: bold;
   font-size: 16px;
 `;
 
-const TwitterContainer = styled.span`
+const TwitterContainer = styled('span')`
   color: #fff !important;
   background-color: #55acee !important;
   border-color: rgba(0,0,0,0.2);
@@ -632,10 +634,10 @@ const TwitterContainer = styled.span`
   text-overflow: ellipsis;
 `;
 
-const FacebookContainer = styled.span`
+const FacebookContainer = styled('span')`
   color: #fff;
   background-color: #3b5998 !important;
-  borderColor: rgba(0,0,0,0.2);
+  border-color: rgba(0,0,0,0.2);
   font-size: 1.25rem;
   line-height: 1.5;
   border-radius: 0.3rem;

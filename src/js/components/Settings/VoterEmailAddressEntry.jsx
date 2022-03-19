@@ -1,17 +1,17 @@
-import { Button, InputBase, Paper } from '@material-ui/core';
-import { withStyles } from '@material-ui/core/styles';
-import { Delete, Mail } from '@material-ui/icons';
+import { Delete, Mail } from '@mui/icons-material';
+import { Button, InputBase, Paper } from '@mui/material';
+import styled from '@mui/material/styles/styled';
+import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
 import Alert from 'react-bootstrap/Alert';
-import styled from 'styled-components';
 import VoterActions from '../../actions/VoterActions';
-import VoterStore from '../../stores/VoterStore';
+import LoadingWheel from '../../common/components/Widgets/LoadingWheel';
 import { blurTextFieldAndroid, focusTextFieldAndroid } from '../../common/utils/cordovaUtils';
 import { isCordova, isWebApp } from '../../common/utils/isCordovaOrWebApp';
 import isMobileScreenSize from '../../common/utils/isMobileScreenSize';
 import { renderLog } from '../../common/utils/logging';
-import LoadingWheel from '../../common/components/Widgets/LoadingWheel';
+import VoterStore from '../../stores/VoterStore';
 import signInModalGlobalState from '../Widgets/signInModalGlobalState';
 import SettingsVerifySecretCode from './SettingsVerifySecretCode';
 
@@ -621,7 +621,7 @@ const styles = {
   },
 };
 
-const ButtonWrapper = styled.div`
+const ButtonWrapper = styled('div')`
   width: 100%;
   margin: 4px 0 0 0;
   display: flex;
@@ -629,21 +629,25 @@ const ButtonWrapper = styled.div`
   justify-content: flex-end;
 `;
 
-const ButtonContainer = styled.div`
+const ButtonContainer = styled('div')`
   width: fit-content;
   margin-left: 8px;
 `;
 
-const CancelButtonContainer = styled.div`
+const CancelButtonContainer = styled('div')`
   width: fit-content;
 `;
 
-const Wrapper = styled.div`
-  margin-top: ${({ isWeb }) => (isWeb ? '32px;' : '0')};
-`;
+const Wrapper = styled('div', {
+  shouldForwardProp: (prop) => !['isWeb'].includes(prop),
+})(({ isWeb }) => (`
+  margin-top: ${isWeb ? '32px;' : '0'};
+`));
 
-const EmailSection = styled.div`
-  margin-top: ${({ isWeb }) => (isWeb ? '18px;' : '0')};
-`;
+const EmailSection = styled('div', {
+  shouldForwardProp: (prop) => !['isWeb'].includes(prop),
+})(({ isWeb }) => (`
+  margin-top: ${isWeb ? '18px;' : '0'};
+`));
 
 export default withStyles(styles)(VoterEmailAddressEntry);

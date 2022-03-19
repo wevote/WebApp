@@ -1,22 +1,22 @@
-import { Button, Card, CardContent, FormControl, InputLabel, Select } from '@material-ui/core';
-import { withStyles } from '@material-ui/core/styles';
-import { CheckCircle } from '@material-ui/icons';
+import { CheckCircle } from '@mui/icons-material';
+import { Button, Card, CardContent, FormControl, InputLabel, Select } from '@mui/material';
+import styled from '@mui/material/styles/styled';
+import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import Helmet from 'react-helmet';
-import styled from 'styled-components';
 import AnalyticsActions from '../actions/AnalyticsActions';
 import BallotActions from '../actions/BallotActions';
 import ReadyActions from '../actions/ReadyActions';
 import LoadingWheel from '../common/components/Widgets/LoadingWheel';
+import { formatDateToMonthDayYear } from '../common/utils/dateFormat';
+import { renderLog } from '../common/utils/logging';
+import { PageContentContainer } from '../components/Style/pageLayoutStyles';
 import BrowserPushMessage from '../components/Widgets/BrowserPushMessage';
 import { messageService } from '../stores/AppObservableStore';
 import BallotStore from '../stores/BallotStore';
 import VoterStore from '../stores/VoterStore';
-import { formatDateToMonthDayYear } from '../common/utils/dateFormat';
 import { formatStateName } from '../utils/formatStateName';
-import { renderLog } from '../common/utils/logging';
-import { PageContentContainer } from '../components/Style/pageLayoutStyles';
 
 const voteDotOrg = '../../img/global/logos/vote_dot_org_logo-530x200.png';
 const turboVote = '../../img/global/logos/turbovote-logo.png';
@@ -673,7 +673,7 @@ const CustomButton = styled(Button)`
   }
 `;
 
-const StickyFooter = styled.div`
+const StickyFooter = styled('div')`
   position: fixed;
   bottom: 0;
   width: 100%;
@@ -683,11 +683,11 @@ const StickyFooter = styled.div`
   background: white;
   display: flex;
   align-items: center;
-  padding: 0px 32px;
+  padding: 0 32px;
   box-shadow: 0px -2px 4px -1px rgba(0,0,0,0.2), 0px -4px 5px 0px rgba(0,0,0,0.14), 0px -1px 10px 0px rgba(0,0,0,0.12);
 `;
 
-const Row = styled.div`
+const Row = styled('div')`
   margin: 0 -12px 0 -12px;
   @media (min-width: 769px) {
     display: flex;
@@ -695,7 +695,7 @@ const Row = styled.div`
   width: 100%;
 `;
 
-const Column = styled.div`
+const Column = styled('div')`
   padding: 12px;
   @media(min-width: 769px) {
     width: 50%;
@@ -706,7 +706,7 @@ const Column = styled.div`
   flex-direction: column;
 `;
 
-const Input = styled.input`
+const Input = styled('input')`
   display: block;
   width: 100%;
   padding: 10px 14px !important;
@@ -722,7 +722,7 @@ const Input = styled.input`
   }
 `;
 
-const Section = styled.div`
+const Section = styled('div')`
   margin-bottom: 48px;
 `;
 
@@ -733,7 +733,7 @@ const Section = styled.div`
 //   padding-right: 0 !important;
 // `;
 
-const PageContainer = styled.div`
+const PageContainer = styled('div')`
   padding-top: 0 !important;
 `;
 

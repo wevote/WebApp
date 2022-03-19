@@ -1,14 +1,15 @@
-import { withStyles, withTheme } from '@material-ui/core/styles';
-import { Info, ThumbDown, ThumbUp } from '@material-ui/icons';
+import { Info, ThumbDown, ThumbUp } from '@mui/icons-material';
+import styled from '@mui/material/styles/styled';
+import withStyles from '@mui/styles/withStyles';
+import withTheme from '@mui/styles/withTheme';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
-import styled from 'styled-components';
 import OrganizationActions from '../../actions/OrganizationActions';
+import { renderLog } from '../../common/utils/logging';
 import FriendStore from '../../stores/FriendStore';
 import IssueStore from '../../stores/IssueStore';
 import OrganizationStore from '../../stores/OrganizationStore';
 import VoterGuideStore from '../../stores/VoterGuideStore';
-import { renderLog } from '../../common/utils/logging';
 import { isOrganizationInVotersNetwork } from '../../utils/positionFunctions';
 
 const ImageHandler = React.lazy(() => import(/* webpackChunkName: 'ImageHandler' */ '../ImageHandler'));
@@ -310,21 +311,21 @@ const styles = (theme) => ({
   },
 });
 
-const FromScoreLabel = styled.div`
+const FromScoreLabel = styled('div')`
   font-size: 10px;
   line-height: .7;
   margin-top: -13px;
   margin-left: 15px;
 `;
 
-const FromScoreLabelNoImage = styled.div`
+const FromScoreLabelNoImage = styled('div')`
   font-size: 10px;
   line-height: .7;
   margin-top: -13px;
   margin-left: 9px;
 `;
 
-const OpposeAndPartOfScore = styled.div`
+const OpposeAndPartOfScore = styled('div')`
   align-items: center;
   background: ${({ theme }) => theme.colors.opposeRedRgb};
   border-radius: 5px;
@@ -342,12 +343,14 @@ const OpposeAndPartOfScore = styled.div`
   }
 `;
 
-const OrganizationInfoOnlyIconWrapper = styled.div`
-  margin-left: ${({ speakerImageExists }) => (speakerImageExists ? '4px' : '0')};
-  margin-top: ${({ speakerImageExists }) => (speakerImageExists ? '-5px' : '0')};
-`;
+const OrganizationInfoOnlyIconWrapper = styled('div', {
+  shouldForwardProp: (prop) => !['speakerImageExists'].includes(prop),
+})(({ speakerImageExists }) => (`
+  margin-left: ${speakerImageExists ? '4px' : '0'};
+  margin-top: ${speakerImageExists ? '-5px' : '0'};
+`));
 
-const OrganizationInformationOnlySquare = styled.div`
+const OrganizationInformationOnlySquare = styled('div')`
   color: ${({ theme }) => theme.colors.grayMid};
   background: white;
   cursor: pointer;
@@ -362,17 +365,19 @@ const OrganizationInformationOnlySquare = styled.div`
   font-weight: bold;
 `;
 
-const OrganizationInformationOnlyWrapper = styled.div`
+const OrganizationInformationOnlyWrapper = styled('div')`
   position: relative;
   z-index: 1;
 `;
 
-const OrganizationOpposeIconWrapper = styled.div`
-  margin-left: ${({ speakerImageExists }) => (speakerImageExists ? '2px' : '0')};
-  margin-top: ${({ speakerImageExists }) => (speakerImageExists ? '-2px' : '0')};
-`;
+const OrganizationOpposeIconWrapper = styled('div', {
+  shouldForwardProp: (prop) => !['speakerImageExists'].includes(prop),
+})(({ speakerImageExists }) => (`
+  margin-left: ${speakerImageExists ? '2px' : '0'};
+  margin-top: ${speakerImageExists ? '-2px' : '0'};
+`));
 
-const OrganizationOpposeSquare = styled.div`
+const OrganizationOpposeSquare = styled('div')`
   background: white;
   border: 3px solid ${({ theme }) => theme.colors.opposeRedRgb};
   color: ${({ theme }) => theme.colors.opposeRedRgb};
@@ -387,16 +392,18 @@ const OrganizationOpposeSquare = styled.div`
   font-weight: bold;
 `;
 
-const OrganizationOpposeWrapper = styled.div`
+const OrganizationOpposeWrapper = styled('div')`
   position: relative;
   z-index: 1;
 `;
 
-const OrganizationSupportIconWrapper = styled.div`
-  margin-left: ${({ speakerImageExists }) => (speakerImageExists ? '2px' : '0')};
-`;
+const OrganizationSupportIconWrapper = styled('div', {
+  shouldForwardProp: (prop) => !['speakerImageExists'].includes(prop),
+})(({ speakerImageExists }) => (`
+  margin-left: ${speakerImageExists ? '2px' : '0'};
+`));
 
-const OrganizationSupportSquare = styled.div`
+const OrganizationSupportSquare = styled('div')`
   align-items: center;
   background: white;
   border: 3px solid ${({ theme }) => theme.colors.supportGreenRgb};
@@ -411,22 +418,24 @@ const OrganizationSupportSquare = styled.div`
   width: 40px;
 `;
 
-const OrganizationSupportWrapper = styled.div`
+const OrganizationSupportWrapper = styled('div')`
   position: relative;
   z-index: 1;
 `;
 
-const OverlayImage = styled.div`
+const OverlayImage = styled('div')`
   margin-left: -2px;
   margin-top: -17px;
   z-index: 2;
 `;
 
-const ScoreNumberWrapper = styled.div`
-  ${({ advisorImageExists }) => (advisorImageExists ? 'margin-top: -5px;' : 'margin-top: 0px;')}
-`;
+const ScoreNumberWrapper = styled('div', {
+  shouldForwardProp: (prop) => !['advisorImageExists'].includes(prop),
+})(({ advisorImageExists }) => (`
+  ${advisorImageExists ? 'margin-top: -5px;' : 'margin-top: 0px;'}
+`));
 
-const SupportAndPartOfScore = styled.div`
+const SupportAndPartOfScore = styled('div')`
   align-items: center;
   background: ${({ theme }) => theme.colors.supportGreenRgb};
   border-radius: 5px;
@@ -444,9 +453,11 @@ const SupportAndPartOfScore = styled.div`
   }
 `;
 
-const ToScoreLabel = styled.div`
+const ToScoreLabel = styled('div', {
+  shouldForwardProp: (prop) => !['advisorImageExists'].includes(prop),
+})(({ advisorImageExists }) => (`
   font-size: 10px;
-  ${({ advisorImageExists }) => (advisorImageExists ? 'margin-top: -23px;' : 'margin-top: -20px;')}
-`;
+  ${advisorImageExists ? 'margin-top: -23px;' : 'margin-top: -20px;'}
+`));
 
 export default withTheme(withStyles(styles)(PositionItemSquare));

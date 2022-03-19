@@ -1,9 +1,9 @@
+import styled from '@mui/material/styles/styled';
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import styled from 'styled-components';
 import FriendActions from '../../actions/FriendActions';
-import FriendStore from '../../stores/FriendStore';
 import { renderLog } from '../../common/utils/logging';
+import FriendStore from '../../stores/FriendStore';
 import FriendInvitationList from './FriendInvitationList';
 
 export default class FriendInvitationsSentToMePreview extends Component {
@@ -67,7 +67,7 @@ export default class FriendInvitationsSentToMePreview extends Component {
   }
 }
 
-const SectionTitle = styled.h2`
+const SectionTitle = styled('h2')`
   width: fit-content;  font-weight: bold;
   font-size: 18px;
   margin-bottom: 16px;

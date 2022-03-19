@@ -1,27 +1,28 @@
-import { Button } from '@material-ui/core';
-import { withStyles, withTheme } from '@material-ui/core/styles';
-import { Twitter } from '@material-ui/icons';
+import { Twitter } from '@mui/icons-material';
+import { Button } from '@mui/material';
+import styled from '@mui/material/styles/styled';
+import withStyles from '@mui/styles/withStyles';
+import withTheme from '@mui/styles/withTheme';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
 import { Link } from 'react-router-dom';
-import styled from 'styled-components';
 import OrganizationActions from '../../actions/OrganizationActions';
+import ExternalLinkIcon from '../../common/components/Widgets/ExternalLinkIcon';
+import SvgImage from '../../common/components/Widgets/SvgImage';
+import { renderLog } from '../../common/utils/logging';
+import normalizedImagePath from '../../common/utils/normalizedImagePath';
 import AppObservableStore from '../../stores/AppObservableStore';
 import FriendStore from '../../stores/FriendStore';
 import IssueStore from '../../stores/IssueStore';
 import OrganizationStore from '../../stores/OrganizationStore';
 import VoterGuideStore from '../../stores/VoterGuideStore';
 import VoterStore from '../../stores/VoterStore';
-import normalizedImagePath from '../../common/utils/normalizedImagePath';
-import { renderLog } from '../../common/utils/logging';
 import { isSpeakerTypeIndividual, isSpeakerTypeOrganization } from '../../utils/organization-functions';
 import { abbreviateNumber } from '../../utils/textFormat';
 import OrganizationPopoverCard from '../Organization/OrganizationPopoverCard';
-import PositionItemSquare from './PositionItemSquare';
 import IssuesByOrganizationDisplayList from '../Values/IssuesByOrganizationDisplayList';
-import ExternalLinkIcon from '../../common/components/Widgets/ExternalLinkIcon';
 import PositionItemScorePopover from '../Widgets/PositionItemScorePopover';
-import SvgImage from '../../common/components/Widgets/SvgImage';
+import PositionItemSquare from './PositionItemSquare';
 
 const FollowToggle = React.lazy(() => import(/* webpackChunkName: 'FollowToggle' */ '../Widgets/FollowToggle'));
 const ImageHandler = React.lazy(() => import(/* webpackChunkName: 'ImageHandler' */ '../ImageHandler'));
@@ -521,8 +522,6 @@ const styles = (theme) => ({
     padding: '4px 8px',
     height: 32,
     width: '100%',
-    [theme.breakpoints.down('md')]: {
-    },
     [theme.breakpoints.down('sm')]: {
       padding: '4px 4px',
     },
@@ -538,38 +537,38 @@ const styles = (theme) => ({
   },
 });
 
-const DesktopContainer = styled.div`
+const DesktopContainer = styled('div')`
   display: flex;
   justify-content: space-between;
   margin: 8px 24px 24px 24px;
 `;
 
-const DesktopItemBody = styled.div`
+const DesktopItemBody = styled('div')`
   margin: 0;
 `;
 
-const DesktopItemDescription = styled.div`
+const DesktopItemDescription = styled('div')`
   font-size: 14px;
   margin-top: 8px;
 `;
 
-const DesktopItemEndorsementDisplay = styled.div`
+const DesktopItemEndorsementDisplay = styled('div')`
   margin-left: auto;
   padding: 0;
 `;
 
-const DesktopItemFooter = styled.div`
+const DesktopItemFooter = styled('div')`
   font-size: 12px;
   margin-top: 2px;
 `;
 
-const DesktopItemHeader = styled.div`
+const DesktopItemHeader = styled('div')`
   display: flex;
   // align-items: top;   // nonsense property value, commented out July 7, 2021
   justify-content: flex-start;
 `;
 
-const DesktopItemImage = styled.div`
+const DesktopItemImage = styled('div')`
   width: 57.76px;
   margin: 0 auto 8px auto;
   height: 57.76px;
@@ -586,32 +585,32 @@ const DesktopItemImage = styled.div`
   }
 `;
 
-const DesktopItemIssues = styled.div`
+const DesktopItemIssues = styled('div')`
   margin: 0;
   padding: 0;
 `;
 
-const DesktopItemLeft = styled.div`
+const DesktopItemLeft = styled('div')`
   width: 85px;
   padding: 0 16px 0 0;
 `;
 
-const DesktopItemName = styled.h4`
+const DesktopItemName = styled('h4')`
   font-size: 18px;
   font-weight: bold;
   margin: 0;
 `;
 
-const DesktopItemNameContainer = styled.div`
+const DesktopItemNameContainer = styled('div')`
   display: flex;
   justify-content: flex-start;
 `;
 
-const DesktopItemNameIssueContainer = styled.div`
+const DesktopItemNameIssueContainer = styled('div')`
   padding: 0;
 `;
 
-const DesktopItemTwitter = styled.div`
+const DesktopItemTwitter = styled('div')`
   display: inline-block;
   font-size: 13px;
   padding-left: 10px;
@@ -619,17 +618,17 @@ const DesktopItemTwitter = styled.div`
   white-space: nowrap;
 `;
 
-const DesktopItemTwitterContainer = styled.div`
+const DesktopItemTwitterContainer = styled('div')`
 `;
 
-const MobileItemBody = styled.div`
+const MobileItemBody = styled('div')`
   padding: 6px 6px 6px;
   border-bottom-right-radius: 8px;
   border-top-right-radius: 8px;
   border-bottom-left-radius: 5px;
 `;
 
-const MobileItemDescription = styled.div`
+const MobileItemDescription = styled('div')`
   font-size: 16px;
   color: #333;
   flex: 1 1 0;
@@ -638,13 +637,13 @@ const MobileItemDescription = styled.div`
   }
 `;
 
-const MobileItemDescriptionFollowToggleContainer = styled.div`
+const MobileItemDescriptionFollowToggleContainer = styled('div')`
   left: 2px;
   display: flex;
   justify-content: space-between;
 `;
 
-const MobileItemEndorsementContainer = styled.div`
+const MobileItemEndorsementContainer = styled('div')`
   margin-left: auto;
   margin-bottom: auto;
   width: 50px;
@@ -652,24 +651,24 @@ const MobileItemEndorsementContainer = styled.div`
   max-height: 100%;
 `;
 
-const MobileItemEndorsementDisplay = styled.div`
+const MobileItemEndorsementDisplay = styled('div')`
   width: 100%;
   height: 100%;
   margin-bottom: 4px;
 `;
 
-const MobileItemFollowToggleDisplay = styled.div`
+const MobileItemFollowToggleDisplay = styled('div')`
   width: 75px;
 `;
 
-const MobileItemFooter = styled.div`
+const MobileItemFooter = styled('div')`
   height: 20px;
   width: 100%;
   margin-top: 2px;
   font-size: 12px;
 `;
 
-const MobileItemHeader = styled.div`
+const MobileItemHeader = styled('div')`
   display: flex;
   align-items: flex-start;
   justify-content: flex-start;
@@ -677,7 +676,7 @@ const MobileItemHeader = styled.div`
   min-height: 46px;
 `;
 
-const MobileItemImage = styled.div`
+const MobileItemImage = styled('div')`
   margin-right: 16px;
   width: 40px;
   height: 40px;
@@ -694,26 +693,26 @@ const MobileItemImage = styled.div`
   }
 `;
 
-const MobileItemIssues = styled.div`
+const MobileItemIssues = styled('div')`
   margin: 0;
   font-size: 14px;
   flex: 1 1 0;
 `;
 
-const MobileItemName = styled.h4`
+const MobileItemName = styled('h4')`
   font-size: 18px;
   font-weight: 500;
   margin-bottom: 4px;
 `;
 
-const MobileItemNameIssuesContainer = styled.div`
+const MobileItemNameIssuesContainer = styled('div')`
   display: block;
   @media (max-width: 374px) {
     display: none;
   }
 `;
 
-const MobileSmallItemIssuesContainer = styled.div`
+const MobileSmallItemIssuesContainer = styled('div')`
   @media (min-width: 375px) {
     display: none;
   }
@@ -721,29 +720,33 @@ const MobileSmallItemIssuesContainer = styled.div`
   margin-top: -12px;
 `;
 
-const MobileSmallItemNameContainer = styled.div`
+const MobileSmallItemNameContainer = styled('div')`
   @media (min-width: 375px) {
     display: none;
   }
 `;
 
 
-const PositionItemDesktop = styled.div`
+const PositionItemDesktop = styled('div', {
+  shouldForwardProp: (prop) => !['isSupport', 'isOppose'].includes(prop),
+})(({ isSupport, isOppose }) => (`
   background: #eee;
-  ${({ isSupport, isOppose }) => ((!isOppose && !isSupport) ? 'border-left: 4px solid #ccc;' : '')}
-  ${({ isOppose }) => (isOppose ? 'border-left: 4px solid rgb(255, 73, 34);' : '')}
-  ${({ isSupport }) => (isSupport ? 'border-left: 4px solid rgb(31, 192, 111);' : '')}
+  ${(!isOppose && !isSupport) ? 'border-left: 4px solid #ccc;' : ''}
+  ${isOppose ? 'border-left: 4px solid rgb(255, 73, 34);' : ''}
+  ${isSupport ? 'border-left: 4px solid rgb(31, 192, 111);' : ''}
   border-radius: 5px;
   flex: 1 1 0;
   list-style: none;
   padding: 6px 16px;
-`;
+`));
 
-const PositionItemMobile = styled.li`
+const PositionItemMobile = styled('li', {
+  shouldForwardProp: (prop) => !['isSupport', 'isOppose'].includes(prop),
+})(({ isSupport, isOppose }) => (`
   background: #eee;
-  ${({ isSupport, isOppose }) => ((!isOppose && !isSupport) ? 'border-left: 4px solid #ccc;' : '')}
-  ${({ isOppose }) => (isOppose ? 'border-left: 4px solid rgb(255, 73, 34);' : '')}
-  ${({ isSupport }) => (isSupport ? 'border-left: 4px solid rgb(31, 192, 111);' : '')}
+  ${(!isOppose && !isSupport) ? 'border-left: 4px solid #ccc;' : ''}
+  ${isOppose ? 'border-left: 4px solid rgb(255, 73, 34);' : ''}
+  ${isSupport ? 'border-left: 4px solid rgb(31, 192, 111);' : ''}
   border-radius: 5px;
   list-style: none;
   margin: 16px;
@@ -751,18 +754,18 @@ const PositionItemMobile = styled.li`
   @media (max-width: 476px) {
     margin: 16px 0;
   }
-`;
+`));
 
-const SourceLink = styled.div`
+const SourceLink = styled('div')`
   float: right;
   margin-bottom: -4px;
 `;
 
-const TwitterFollowersWrapper = styled.span`
+const TwitterFollowersWrapper = styled('span')`
   color: #000;
 `;
 
-const TwitterHandleWrapper = styled.span`
+const TwitterHandleWrapper = styled('span')`
   color: #000;
   margin-right: 5px;
 `;

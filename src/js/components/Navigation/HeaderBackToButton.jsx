@@ -1,12 +1,12 @@
-import { Button } from '@material-ui/core';
-import { withStyles } from '@material-ui/core/styles';
-import { ArrowBack, ArrowBackIos } from '@material-ui/icons';
+import { ArrowBack, ArrowBackIos } from '@mui/icons-material';
+import { Button } from '@mui/material';
+import styled from '@mui/material/styles/styled';
+import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import styled from 'styled-components';
 import { isIOS } from '../../common/utils/cordovaUtils';
-import { isCordova } from '../../common/utils/isCordovaOrWebApp';
 import historyPush from '../../common/utils/historyPush';
+import { isCordova } from '../../common/utils/isCordovaOrWebApp';
 import isMobileScreenSize from '../../common/utils/isMobileScreenSize';
 import { renderLog } from '../../common/utils/logging';
 import { shortenText } from '../../utils/textFormat';

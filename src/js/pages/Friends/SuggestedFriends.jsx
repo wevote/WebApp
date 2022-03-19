@@ -1,11 +1,11 @@
+import styled from '@mui/material/styles/styled';
 import React, { Component } from 'react';
 import Helmet from 'react-helmet';
-import styled from 'styled-components';
+import { renderLog } from '../../common/utils/logging';
 import SuggestedFriendList from '../../components/Friends/SuggestedFriendList';
 import MessageCard from '../../components/Widgets/MessageCard';
 import FriendStore from '../../stores/FriendStore';
 import sortFriendListByMutualFriends from '../../utils/friendFunctions';
-import { renderLog } from '../../common/utils/logging';
 
 export default class SuggestedFriends extends Component {
   constructor (props) {
@@ -76,7 +76,7 @@ export default class SuggestedFriends extends Component {
   }
 }
 
-const SectionTitle = styled.h2`
+const SectionTitle = styled('h2')`
   width: fit-content;  font-weight: bold;
   font-size: 18px;
   margin-bottom: 16px;

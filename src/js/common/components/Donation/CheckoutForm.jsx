@@ -1,14 +1,15 @@
-import { CircularProgress, TextField } from '@material-ui/core';
-import { withStyles, withTheme } from '@material-ui/core/styles';
-import { LockOutlined } from '@material-ui/icons';
-import { styled as muiStyled } from '@material-ui/styles';
+import { LockOutlined } from '@mui/icons-material';
+import { CircularProgress, TextField } from '@mui/material';
+import styled from '@mui/material/styles/styled';
+import { styled as muiStyled } from '@mui/styles';
+import withStyles from '@mui/styles/withStyles';
+import withTheme from '@mui/styles/withTheme';
 import { CardElement } from '@stripe/react-stripe-js';
 import PropTypes from 'prop-types';
 import React from 'react';
-import styled from 'styled-components';
+import VoterStore from '../../../stores/VoterStore';
 import DonateActions from '../../actions/DonateActions';
 import DonateStore from '../../stores/DonateStore';
-import VoterStore from '../../../stores/VoterStore';
 import { renderLog } from '../../utils/logging';
 import moneyStringToPennies from '../../utils/moneyStringToPennies';
 import SplitIconButton from '../Widgets/SplitIconButton';
@@ -352,18 +353,18 @@ CheckoutForm.propTypes = {
   campaignXWeVoteId: PropTypes.string,
 };
 
-const StripeTagLine = styled.div`
+const StripeTagLine = styled('div')`
   color: grey;
   font-size: 12px;
   padding-top: 5px;
 `;
 
-const TextFieldContainer = styled.div`
+const TextFieldContainer = styled('div')`
   color: grey;
   font-size: 12px;
   padding: 5px 0 10px 0;
 `;
-const ButtonContainer = styled.div`
+const ButtonContainer = styled('div')`
   margin-top: 10px;
 `;
 

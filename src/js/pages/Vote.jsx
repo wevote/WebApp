@@ -1,16 +1,21 @@
-import { Button, Card } from '@material-ui/core';
-import { withStyles } from '@material-ui/core/styles';
-import { Ballot } from '@material-ui/icons';
+import { Ballot } from '@mui/icons-material';
+import { Button, Card } from '@mui/material';
+import styled from '@mui/material/styles/styled';
+import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
 import Helmet from 'react-helmet';
-import styled from 'styled-components';
 import BallotActions from '../actions/BallotActions';
 import ElectionActions from '../actions/ElectionActions';
 import IssueActions from '../actions/IssueActions';
 import OrganizationActions from '../actions/OrganizationActions';
 import SupportActions from '../actions/SupportActions';
 import VoterActions from '../actions/VoterActions';
+import historyPush from '../common/utils/historyPush';
+import { isCordova, isWebApp } from '../common/utils/isCordovaOrWebApp';
+import Cookies from '../common/utils/js-cookie/Cookies';
+import { renderLog } from '../common/utils/logging';
+import { DualHeaderContainer, PageContentContainer } from '../components/Style/pageLayoutStyles';
 import BallotItemReadyToVote from '../components/Vote/BallotItemReadyToVote';
 import FindPollingLocation from '../components/Vote/FindPollingLocation';
 import ReturnOfficialBallot from '../components/Vote/ReturnOfficialBallot';
@@ -23,11 +28,6 @@ import VoterGuideStore from '../stores/VoterGuideStore';
 import VoterStore from '../stores/VoterStore';
 import { cordovaVoteMiniHeader } from '../utils/cordovaOffsets';
 import cordovaScrollablePaneTopPadding from '../utils/cordovaScrollablePaneTopPadding';
-import { isCordova, isWebApp } from '../common/utils/isCordovaOrWebApp';
-import historyPush from '../common/utils/historyPush';
-import Cookies from '../common/utils/js-cookie/Cookies';
-import { renderLog } from '../common/utils/logging';
-import { DualHeaderContainer, PageContentContainer } from '../components/Style/pageLayoutStyles';
 import BallotTitleHeader from './Ballot/BallotTitleHeader';
 
 const FilterBaseSearch = React.lazy(() => import(/* webpackChunkName: 'FilterBaseSearch' */ '../components/Filter/FilterBaseSearch'));
@@ -414,7 +414,7 @@ class Vote extends Component {
     }
 
     return (
-      <VoteContainer padTop={cordovaScrollablePaneTopPadding()}>
+      <VoteContainer>
         <DualHeaderContainer className={`ballot__heading-vote-section ${ballotHeaderUnpinned && isWebApp() ? 'ballot__heading__unpinned' : ''}`} style={cordovaVoteMiniHeader()}>
           <PageContentContainer>
             <div className="container-fluid">
@@ -454,7 +454,7 @@ class Vote extends Component {
 
         <PageContentContainer>
           <div className="container-fluid">
-            <Wrapper cordova={isCordova()}>
+            <VoteWrapper>
               <div className={votePaddingClass}>
                 <BrowserPushMessage incomingProps={this.props} />
                 <div className="col-sm-12 col-lg-8">
@@ -511,7 +511,7 @@ class Vote extends Component {
                   </Card>
                 </div>
               </div>
-            </Wrapper>
+            </VoteWrapper>
           </div>
         </PageContentContainer>
       </VoteContainer>
@@ -523,26 +523,25 @@ Vote.propTypes = {
   classes: PropTypes.object,
 };
 
-const VoteContainer = styled.div`
-  padding-top: ${({ padTop }) => padTop};
+const VoteContainer = styled('div')`
+  padding-top: ${cordovaScrollablePaneTopPadding()};
   @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
     overflow-x: hidden;
   }
 `;
 
-// Breakpoints cause trouble in Cordova
-const Wrapper = styled.div`
-  @media (max-width: ${({ theme, cordova }) => (cordova ? undefined : theme.breakpoints.md)}) {
+const VoteWrapper = styled('div')`
+  @media (max-width: ${({ theme }) => (isCordova() ? undefined : theme.breakpoints.md)}) {
     margin: 1em 0;
   }
 `;
 
-const TitleContainer = styled.div`
+const TitleContainer = styled('div')`
   padding: 1em 1em 0 1em;
   align-items: center;
 `;
 
-const TitleText = styled.h3`
+const TitleText = styled('h3')`
   width: fit-content;
   font-weight: bold;
   font-size: 18px;
@@ -552,24 +551,24 @@ const TitleText = styled.h3`
   }
 `;
 
-const ReturnOfficialBallotContainer = styled.div`
+const ReturnOfficialBallotContainer = styled('div')`
   padding: 0 1em 0 1em;
   align-items: center;
 `;
 
 // If we want to turn off filter tabs navigation bar:  ${({ showFilterTabs }) => !showFilterTabs && 'height: 0;'}
-const BallotFilterRow = styled.div`
+const BallotFilterRow = styled('div')`
   display: flex;
 `;
 
-const EmptyBallotMessageContainer = styled.div`
+const EmptyBallotMessageContainer = styled('div')`
   padding: 1em 2em;
   display: flex;
   flex-flow: column;
   align-items: center;
 `;
 
-const EmptyBallotText = styled.span`
+const EmptyBallotText = styled('span')`
   font-size: 16px;
   text-align: center;
   margin: 1em 2em;
@@ -578,12 +577,12 @@ const EmptyBallotText = styled.span`
   }
 `;
 
-const PollingLocationContainer = styled.div`
+const PollingLocationContainer = styled('div')`
   padding: 1em 1em;
   align-items: center;
 `;
 
-const CardGap = styled.div`
+const CardGap = styled('div')`
   padding: 7px;
 `;
 

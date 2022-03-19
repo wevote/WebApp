@@ -1,6 +1,6 @@
+import styled from '@mui/material/styles/styled';
 import PropTypes from 'prop-types';
 import React from 'react';
-import styled from 'styled-components';
 import { renderLog } from '../../common/utils/logging';
 
 // React functional component example
@@ -21,11 +21,11 @@ Congratulations.propTypes = {
   displayState: PropTypes.number.isRequired,
 };
 
-const CongratsBox = styled.div`
+const CongratsBox = styled('div')`
   margin: 25px;
 `;
 
-const Congrats = styled.div`
+const Congrats = styled('div')`
   text-align: center;
   padding: 40px 20px 20px 20px;
 `;

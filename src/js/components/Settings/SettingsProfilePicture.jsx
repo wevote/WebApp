@@ -1,11 +1,11 @@
-import { Button, FormControlLabel, Radio, RadioGroup } from '@material-ui/core';
-import { withStyles } from '@material-ui/core/styles';
+import { Button, FormControlLabel, Radio, RadioGroup } from '@mui/material';
+import styled from '@mui/material/styles/styled';
+import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import styled from 'styled-components';
-import { isCordova } from '../../common/utils/isCordovaOrWebApp';
 import VoterActions from '../../actions/VoterActions';
 import VoterPhotoUpload from '../../common/components/Settings/VoterPhotoUpload';
+import { isCordova } from '../../common/utils/isCordovaOrWebApp';
 import VoterStore from '../../stores/VoterStore';
 
 
@@ -158,18 +158,20 @@ const styles = () => ({
   },
 });
 
-const ColumnWrapper = styled.div`
+const ColumnWrapper = styled('div')`
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
   justify-content: space-between;
 `;
 
-const CustomColumns = styled.div`
-  ${(props) => ((props.onlyOneOption) ? 'width: 100% !important;' : 'width: 49% !important;')}
-`;
+const CustomColumns = styled('div', {
+  shouldForwardProp: (prop) => !['onlyOneOption'].includes(prop),
+})(({ onlyOneOption }) => (`
+  ${onlyOneOption ? 'width: 100% !important;' : 'width: 49% !important;'}
+`));
 
-const ProfilePictureOption = styled.div`
+const ProfilePictureOption = styled('div')`
   border: 2px solid #e8e8e8;
   border-radius: 3px;
   padding: 4px 12px 12px 12px;
@@ -180,13 +182,13 @@ const ProfilePictureOption = styled.div`
   margin-bottom: 3px;
 `;
 
-const ProfilePicture = styled.img`
+const ProfilePicture = styled('img')`
   border-radius: 50px;
   margin: 0 auto;
   max-width: 100px;
 `;
 
-const ProfilePictureWrapper = styled.div`
+const ProfilePictureWrapper = styled('div')`
   display: flex;
   justify-content: center;
   margin-top: 9px;
@@ -197,25 +199,25 @@ const ProfilePictureWrapper = styled.div`
 const RadioWrapper = styled(RadioGroup)`
 `;
 
-const SaveInnerWrapper = styled.div`
+const SaveInnerWrapper = styled('div')`
   display: flex;
 `;
 
-const SaveOuterWrapper = styled.div`
+const SaveOuterWrapper = styled('div')`
   align-items: center;
   display: flex;
   justify-content: flex-end;
   padding: 0 0 8px 0;
 `;
 
-const Separator = styled.div`
+const Separator = styled('div')`
   width: 100%;
   margin: 12px 0;
   background: #e8e8e8;
   height: 1px;
 `;
 
-const Wrapper = styled.div`
+const Wrapper = styled('div')`
 `;
 
 export default withStyles(styles)(SettingsProfilePicture);

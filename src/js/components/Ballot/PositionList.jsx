@@ -1,20 +1,20 @@
-import { CircularProgress } from '@material-ui/core';
-import { withStyles } from '@material-ui/core/styles';
-import { Comment, Info, ThumbDown, ThumbUp } from '@material-ui/icons';
+import { Comment, Info, ThumbDown, ThumbUp } from '@mui/icons-material';
+import { CircularProgress } from '@mui/material';
+import styled from '@mui/material/styles/styled';
+import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
-import styled from 'styled-components';
 import FriendActions from '../../actions/FriendActions';
 import OrganizationActions from '../../actions/OrganizationActions';
+import LoadingWheel from '../../common/components/Widgets/LoadingWheel';
+import apiCalming from '../../common/utils/apiCalming';
+import { renderLog } from '../../common/utils/logging';
 import FriendStore from '../../stores/FriendStore';
 import OrganizationStore from '../../stores/OrganizationStore';
-import { renderLog } from '../../common/utils/logging';
 import FilterBase from '../Filter/FilterBase';
 import VoterGuideOrganizationFilter from '../Filter/VoterGuideOrganizationFilter';
-import LoadingWheel from '../../common/components/Widgets/LoadingWheel';
 import NumberOfItemsFound from '../Widgets/NumberOfItemsFound';
 import PositionItem from './PositionItem';
-import apiCalming from '../../common/utils/apiCalming';
 
 const ShowMoreItems = React.lazy(() => import(/* webpackChunkName: 'ShowMoreItems' */ '../Widgets/ShowMoreItems'));
 
@@ -423,11 +423,11 @@ const styles = () => ({
   },
 });
 
-const FilterWrapper = styled.div`
+const FilterWrapper = styled('div')`
   margin: 10px 15px;
 `;
 
-const LoadingItemsWheel = styled.div`
+const LoadingItemsWheel = styled('div')`
   width: 100%;
   display: flex;
   align-items: center;
@@ -435,7 +435,7 @@ const LoadingItemsWheel = styled.div`
   min-height: 70px;
 `;
 
-const SearchResultsFoundInExplanation = styled.div`
+const SearchResultsFoundInExplanation = styled('div')`
   background-color: #C2DCE8;
   color: #0E759F;
   padding: 12px !important;
@@ -445,13 +445,13 @@ const SearchResultsFoundInExplanation = styled.div`
   }
 `;
 
-const SearchTitle = styled.div`
+const SearchTitle = styled('div')`
   font-size: 24px;
   margin-top: 12px;
   margin-bottom: 12px;
 `;
 
-const ShowMoreItemsWrapper = styled.div`
+const ShowMoreItemsWrapper = styled('div')`
   margin-bottom: 16px;
   padding-left: 16px;
   padding-right: 26px;
@@ -463,7 +463,7 @@ const ShowMoreItemsWrapper = styled.div`
   }
 `;
 
-const UnorderedListWrapper = styled.ul`
+const UnorderedListWrapper = styled('ul')`
   padding-inline-start: 0 !important;
 `;
 

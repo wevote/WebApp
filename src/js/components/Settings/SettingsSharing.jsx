@@ -1,19 +1,19 @@
-import { Button, Switch } from '@material-ui/core';
-import { withStyles } from '@material-ui/core/styles';
+import { Button, Switch } from '@mui/material';
+import styled from '@mui/material/styles/styled';
+import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
 import Helmet from 'react-helmet';
-import styled from 'styled-components';
-import AppObservableStore from '../../stores/AppObservableStore';
 import OrganizationActions from '../../actions/OrganizationActions';
-import OrganizationStore from '../../stores/OrganizationStore';
-import VoterStore from '../../stores/VoterStore';
+import LoadingWheel from '../../common/components/Widgets/LoadingWheel';
 import { cordovaOpenSafariView } from '../../common/utils/cordovaUtils';
 import { isCordova, isWebApp } from '../../common/utils/isCordovaOrWebApp';
-import normalizedImagePath from '../../common/utils/normalizedImagePath';
 import { renderLog } from '../../common/utils/logging';
+import normalizedImagePath from '../../common/utils/normalizedImagePath';
+import AppObservableStore from '../../stores/AppObservableStore';
+import OrganizationStore from '../../stores/OrganizationStore';
+import VoterStore from '../../stores/VoterStore';
 import { voterFeaturePackageExceedsOrEqualsRequired } from '../../utils/pricingFunctions';
-import LoadingWheel from '../../common/components/Widgets/LoadingWheel';
 import PremiumableButton from '../Widgets/PremiumableButton';
 import CreateConfiguredVersion from './CreateConfiguredVersion';
 import SeeTheseSettingsInAction from './SeeTheseSettingsInAction';
@@ -576,32 +576,32 @@ const styles = (theme) => ({
   },
 });
 
-const Wrapper = styled.div`
+const Wrapper = styled('div')`
   display: flex;
   flex-flow: column;
 `;
 
-const Card = styled.div`
+const Card = styled('div')`
 `;
 
-const CardMain = styled.div`
+const CardMain = styled('div')`
 `;
 
-const InputBoxLabel = styled.h4`
+const InputBoxLabel = styled('h4')`
   font-weight: bold;
   font-size: 14px;
   margin-top: .5em;
 `;
 
-const DesktopView = styled.div`
+const DesktopView = styled('div')`
   display: inherit;
 `;
 
-const MobileTabletView = styled.div`
+const MobileTabletView = styled('div')`
   display: inherit;
 `;
 
-const Separator = styled.div`
+const Separator = styled('div')`
   width: 100%;
   height: 2px;
   background: #eee;

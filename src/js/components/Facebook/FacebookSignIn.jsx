@@ -1,17 +1,16 @@
-import { Facebook } from '@material-ui/icons';
+import { Facebook } from '@mui/icons-material';
+import styled from '@mui/material/styles/styled';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import styled from 'styled-components';
 import FacebookActions from '../../actions/FacebookActions';
 import VoterActions from '../../actions/VoterActions';
+import LoadingWheelComp from '../../common/components/Widgets/LoadingWheelComp';
+import SplitIconButton from '../../common/components/Widgets/SplitIconButton';
+import { oAuthLog, renderLog } from '../../common/utils/logging';
 import { messageService } from '../../stores/AppObservableStore';
 import FacebookStore from '../../stores/FacebookStore';
 import VoterStore from '../../stores/VoterStore';
-import { oAuthLog, renderLog } from '../../common/utils/logging';
-import LoadingWheelComp from '../../common/components/Widgets/LoadingWheelComp';
 import signInModalGlobalState from '../Widgets/signInModalGlobalState';
-
-import SplitIconButton from '../../common/components/Widgets/SplitIconButton';
 
 
 class FacebookSignIn extends Component {
@@ -231,8 +230,8 @@ FacebookSignIn.propTypes = {
 
 export default FacebookSignIn;
 
-const FacebookErrorContainer  = styled.h3`
+const FacebookErrorContainer  = styled('h3')`
   margin-top: 8px;
   background-color: #fff;
-  box-shadow: 0px 2px 4px -1px rgba(0,0,0,0.2), 0px 4px 5px 0px rgba(0,0,0,0.14), 0px 1px 10px 0px rgba(0,0,0,0.12);
+  box-shadow: 0 2px 4px -1px rgba(0,0,0,0.2), 0px 4px 5px 0px rgba(0,0,0,0.14), 0px 1px 10px 0px rgba(0,0,0,0.12);
 `;

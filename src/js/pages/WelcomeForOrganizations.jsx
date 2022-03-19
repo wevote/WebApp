@@ -1,19 +1,19 @@
-import { Button } from '@material-ui/core';
-import { withStyles } from '@material-ui/core/styles';
+import { Button } from '@mui/material';
+import styled from '@mui/material/styles/styled';
+import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
 import Helmet from 'react-helmet';
-import styled from 'styled-components';
 import AnalyticsActions from '../actions/AnalyticsActions';
-import AppObservableStore from '../stores/AppObservableStore';
+import historyPush from '../common/utils/historyPush';
+import { renderLog } from '../common/utils/logging';
+import normalizedImagePath from '../common/utils/normalizedImagePath';
 import { BlueTitle, PlayerContainer, SubTitle, Title, Video } from '../components/Welcome/headerWelcomeStyles';
 import { Bold, Description, DescriptionContainer, DescriptionImageColumn, DescriptionLeftColumn, Image, NetworkContainer, NetworkImage, Section, SectionTitle, SectionTitleBold } from '../components/Welcome/sectionStyles';
 import Testimonial from '../components/Widgets/Testimonial';
+import AppObservableStore from '../stores/AppObservableStore';
 import VoterStore from '../stores/VoterStore';
 import cordovaScrollablePaneTopPadding from '../utils/cordovaScrollablePaneTopPadding';
-import normalizedImagePath from '../common/utils/normalizedImagePath';
-import historyPush from '../common/utils/historyPush';
-import { renderLog } from '../common/utils/logging';
 
 const WelcomeAppbar = React.lazy(() => import(/* webpackChunkName: 'WelcomeAppbar' */ '../components/Navigation/WelcomeAppbar'));
 const WelcomeFooter = React.lazy(() => import(/* webpackChunkName: 'WelcomeFooter' */ '../components/Welcome/WelcomeFooter'));
@@ -95,7 +95,7 @@ class WelcomeForOrganizations extends Component {
     const testimonialImageUrl = normalizedImagePath('/img/global/photos/Judy_J-109x109.jpg');
     const testimonial = 'Let\'s be real: few people are reading those wonky ballot descriptions. I want deciding how to vote to be as easy and obvious as a solid Yelp review. Finally We Vote helps me plan the whole thing out way faster.';
     return (
-      <Wrapper padTop={cordovaScrollablePaneTopPadding()}>
+      <WelcomeForOrganizationsWrapper>
         <Helmet title="Welcome Organizations - We Vote" />
         <Suspense fallback={<></>}>
           <WelcomeAppbar pathname={pathname} />
@@ -277,7 +277,7 @@ class WelcomeForOrganizations extends Component {
         <Suspense fallback={<></>}>
           <WelcomeFooter />
         </Suspense>
-      </Wrapper>
+      </WelcomeForOrganizationsWrapper>
     );
   }
 }
@@ -302,16 +302,16 @@ const styles = () => ({
   },
 });
 
-const Wrapper = styled.div`
+const WelcomeForOrganizationsWrapper = styled('div')`
   display: flex;
   flex-flow: column nowrap;
   align-items: center;
   background: white;
   overflow-x: hidden;
-  padding-top: ${({ padTop }) => padTop};
+  padding-top: ${() => cordovaScrollablePaneTopPadding()};
 `;
 
-const HeaderForOrganizations = styled.div`
+const HeaderForOrganizations = styled('div')`
   position: relative;
   height: 590px;
   width: 110%;
@@ -329,7 +329,7 @@ const HeaderForOrganizations = styled.div`
   }
 `;
 
-const SectionTitleBoldGold = styled.span`
+const SectionTitleBoldGold = styled('span')`
   color: rgb(219, 179, 86);
   font-weight: bold;
 `;

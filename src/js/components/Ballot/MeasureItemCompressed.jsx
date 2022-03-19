@@ -1,16 +1,17 @@
-import { Card } from '@material-ui/core';
-import { withStyles, withTheme } from '@material-ui/core/styles';
-import { ArrowForward } from '@material-ui/icons';
+import { ArrowForward } from '@mui/icons-material';
+import { Card } from '@mui/material';
+import styled from '@mui/material/styles/styled';
+import withStyles from '@mui/styles/withStyles';
+import withTheme from '@mui/styles/withTheme';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
-import styled from 'styled-components';
 import MeasureActions from '../../actions/MeasureActions';
+import extractNumber from '../../common/utils/extractNumber';
+import historyPush from '../../common/utils/historyPush';
+import { renderLog } from '../../common/utils/logging';
 import BallotStore from '../../stores/BallotStore';
 import MeasureStore from '../../stores/MeasureStore';
 import SupportStore from '../../stores/SupportStore';
-import historyPush from '../../common/utils/historyPush';
-import extractNumber from '../../common/utils/extractNumber';
-import { renderLog } from '../../common/utils/logging';
 import { capitalizeString, shortenText, stripHtmlFromString } from '../../utils/textFormat';
 
 const BallotItemSupportOpposeCountDisplay = React.lazy(() => import(/* webpackChunkName: 'BallotItemSupportOpposeCountDisplay' */ '../Widgets/BallotItemSupportOpposeCountDisplay'));
@@ -264,7 +265,7 @@ class MeasureItemCompressed extends Component {
     if (!measureWeVoteId) {
       return null;
     }
-    const { classes, theme } = this.props;
+    const { classes } = this.props;
     let ballotDisplay = [];
     if (ballotItemDisplayName) {
       ballotDisplay = ballotItemDisplayName.split(':');
@@ -301,10 +302,8 @@ class MeasureItemCompressed extends Component {
           <ChoicesRow>
             <Choice
               id={`measureItemCompressedChoiceYes-${measureWeVoteId}`}
-              brandBlue={theme.palette.primary.main}
             >
               <ChoiceTitle
-                brandBlue={theme.palette.primary.main}
                 onClick={() => { this.goToMeasureLink(measureWeVoteId); }}
               >
                 {`Yes On ${extractNumber(ballotItemDisplayName)}`}
@@ -343,10 +342,8 @@ class MeasureItemCompressed extends Component {
             </Choice>
             <Choice
               id={`measureItemCompressedChoiceNo-${measureWeVoteId}`}
-              brandBlue={theme.palette.primary.main}
             >
               <ChoiceTitle
-                brandBlue={theme.palette.primary.main}
                 onClick={() => { this.goToMeasureLink(measureWeVoteId); }}
               >
                 {`No On ${extractNumber(ballotItemDisplayName)}`}
@@ -400,8 +397,6 @@ MeasureItemCompressed.propTypes = {
   measureWeVoteId: PropTypes.string.isRequired,
   organization: PropTypes.object,
   organizationWeVoteId: PropTypes.string,
-  // showPositionStatementActionBar: PropTypes.bool,
-  theme: PropTypes.object,
 };
 
 const styles = (theme) => ({
@@ -445,28 +440,28 @@ const styles = (theme) => ({
   },
 });
 
-const BallotItemSupportOpposeCountDisplayWrapper = styled.div`
+const BallotItemSupportOpposeCountDisplayWrapper = styled('div')`
   cursor: pointer;
   float: right;
 `;
 
-const InfoRow = styled.div`
+const InfoRow = styled('div')`
   cursor: pointer;
   display: flex;
   flex-flow: row nowrap;
   justify-content: space-between;
 `;
 
-const InfoDetailsRow = styled.div`
+const InfoDetailsRow = styled('div')`
   cursor: pointer;
 `;
 
-const ChoicesRow = styled.div`
+const ChoicesRow = styled('div')`
   display: flex;
   flex-flow: row wrap;
 `;
 
-const Choice = styled.div`
+const Choice = styled('div')`
   cursor: pointer;
   display: flex;
   flex-flow: column;
@@ -475,25 +470,24 @@ const Choice = styled.div`
   transition: all 200ms ease-in;
   @media (min-width: 768px) {
     max-width: 47%;
-    border: none;
     border: 1px solid #eee;
     border-radius: 4px;
     padding: 0 16px;
     margin-right: 10px;
     margin-bottom: 16px;
     &:hover {
-      border: 1px solid ${({ brandBlue }) => brandBlue};
+      border: 1px solid ${(theme) => theme.palette.primary.main};
       box-shadow: 0 1px 3px 0 rgba(0,0,0,.2), 0 1px 1px 0 rgba(0,0,0,.14), 0 2px 1px -1px rgba(0,0,0,.12);
     }
   }
 `;
 
-const ChoiceTitle = styled.h1`
+const ChoiceTitle = styled('h1')`
   font-weight: bold;
   color: #4371cc;
 `;
 
-const ChoiceInfo = styled.span`
+const ChoiceInfo = styled('span')`
   font-size: 12px;
   color: #777;
   @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
@@ -501,7 +495,7 @@ const ChoiceInfo = styled.span`
   }
 `;
 
-const MeasureInfoWrapper = styled.div`
+const MeasureInfoWrapper = styled('div')`
   display: flex;
   flex-flow: column;
   max-width: 75%;
@@ -513,7 +507,7 @@ const MeasureInfoWrapper = styled.div`
   }
 `;
 
-const Title = styled.h1`
+const Title = styled('h1')`
   font-size: 18px;
   font-weight: bold;
   margin: .1rem 0;
@@ -522,7 +516,7 @@ const Title = styled.h1`
   }
 `;
 
-const SubTitle = styled.h3`
+const SubTitle = styled('h3')`
   font-size: 16px;
   font-weight: 300;
   color: #555;
@@ -533,7 +527,7 @@ const SubTitle = styled.h3`
   }
 `;
 
-const MeasureText = styled.div`
+const MeasureText = styled('div')`
   font-size: 13px;
   font-weight: 300;
   color: #777;

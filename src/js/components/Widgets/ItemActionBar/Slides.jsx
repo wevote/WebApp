@@ -1,8 +1,8 @@
-import { Button } from '@material-ui/core';
-import { withStyles } from '@material-ui/core/styles';
+import { Button } from '@mui/material';
+import styled from '@mui/material/styles/styled';
+import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import styled from 'styled-components';
 import { renderLog } from '../../../common/utils/logging';
 
 class Slides extends Component {
@@ -139,7 +139,7 @@ const styles = (theme) => ({
   },
 });
 
-const Wrapper = styled.div`
+const Wrapper = styled('div')`
   display: flex;
   flex-flow: column;
   min-width: 508px;
@@ -151,14 +151,14 @@ const Wrapper = styled.div`
   }
 `;
 
-const Options = styled.div`
+const Options = styled('div')`
   display: flex;
   flex-flow: ${({ buttons }) => (buttons > 1 ? 'row' : 'column')};
   ${({ buttons }) => (buttons > 1 ? 'justify-content: space-between;' : '')};
   margin-top: 1em;
 `;
 
-const SlidesContainer = styled.div`
+const SlidesContainer = styled('div')`
   display: block;
 `;
 

@@ -1,13 +1,14 @@
-import { Dialog, DialogContent } from '@material-ui/core';
-import { withStyles, withTheme } from '@material-ui/core/styles';
-import { MailOutline, Message } from '@material-ui/icons';
+import { MailOutline, Message } from '@mui/icons-material';
+import { Dialog, DialogContent } from '@mui/material';
+import withStyles from '@mui/styles/withStyles';
+import withTheme from '@mui/styles/withTheme';
 import clsx from 'clsx';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
+import SplitIconButton from '../../common/components/Widgets/SplitIconButton';
 import { isIPhone3p5in, isIPhone4in, isIPhone4p7in, restoreStylesAfterCordovaKeyboard } from '../../common/utils/cordovaUtils';
 import { isCordova } from '../../common/utils/isCordovaOrWebApp';
 import { renderLog } from '../../common/utils/logging';
-import SplitIconButton from '../../common/components/Widgets/SplitIconButton';
 import VoterEmailAddressEntry from './VoterEmailAddressEntry';
 import VoterPhoneVerificationEntry from './VoterPhoneVerificationEntry';
 
@@ -146,8 +147,8 @@ const styles = (theme) => ({
   },
   closeButton: {
     position: 'absolute',
-    right: `${theme.spacing(1)}px`,
-    top: `${theme.spacing(1)}px`,
+    right: theme.spacing(1),
+    top: theme.spacing(1),
   },
 });
 

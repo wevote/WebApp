@@ -1,17 +1,17 @@
-import { IconButton, InputBase } from '@material-ui/core';
-import { withStyles, withTheme } from '@material-ui/core/styles';
-import { Close, Search } from '@material-ui/icons';
+import { Close, Search } from '@mui/icons-material';
+import { IconButton, InputBase } from '@mui/material';
+import styled from '@mui/material/styles/styled';
+import withStyles from '@mui/styles/withStyles';
+import withTheme from '@mui/styles/withTheme';
 import sortBy from 'lodash-es/sortBy';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import styled from 'styled-components';
 import BallotActions from '../../actions/BallotActions';
 import OrganizationActions from '../../actions/OrganizationActions';
+import { blurTextFieldAndroid, focusTextFieldAndroid, isAndroidSizeFold } from '../../common/utils/cordovaUtils';
 import BallotStore from '../../stores/BallotStore';
 import OrganizationStore from '../../stores/OrganizationStore';
 import ballotSearchPriority from '../../utils/ballotSearchPriority';
-import { blurTextFieldAndroid, focusTextFieldAndroid, isAndroidSizeFold } from '../../common/utils/cordovaUtils';
-import { isCordova } from '../../common/utils/isCordovaOrWebApp';
 import opinionsAndBallotItemsSearchPriority from '../../utils/opinionsAndBallotItemsSearchPriority';
 import positionSearchPriority from '../../utils/positionSearchPriority';
 import voterGuidePositionSearchPriority from '../../utils/voterGuidePositionSearchPriority';
@@ -216,14 +216,14 @@ class FilterBaseSearch extends Component {
     return (
       <SearchWrapper
         brandBlue={theme.palette.primary.main}
-        isCordova={isCordova()}
         isSearching={isSearching}
         searchTextLarge={searchTextLarge}
-        searchOpen={isSearching || alwaysOpen}
+        // searchOpen={isSearching || alwaysOpen}
       >
         <IconButton
           classes={{ root: classes.iconButtonRoot }}
           onClick={!alwaysOpen ? this.toggleSearch : undefined}
+          size="large"
         >
           <Search classes={{ root: searchIconClasses }} />
         </IconButton>
@@ -238,14 +238,11 @@ class FilterBaseSearch extends Component {
           placeholder="Search"
         />
         <Closer
-          brandBlue={theme.palette.primary.main}
           isSearching={isSearching}
           onClick={(isSearching || !alwaysOpen) ? this.toggleSearch : undefined}
           showCloser={isSearching}
         >
-          <IconButton
-            classes={{ root: classes.iconButtonRoot }}
-          >
+          <IconButton classes={{ root: classes.iconButtonRoot }} size="large">
             <Close classes={{ root: classes.closeIconRoot }} />
           </IconButton>
         </Closer>
@@ -353,35 +350,41 @@ const styles = (theme) => ({
   },
 });
 
-const Closer = styled.div`
-  display: ${({ isSearching }) => (isSearching ? 'inherit' : 'none')};
+const Closer = styled('div', {
+  shouldForwardProp: (prop) => !['isSearching', 'showCloser'].includes(prop),
+})(({ isSearching, showCloser }) => (`
+  display: ${isSearching ? 'inherit' : 'none'};
   border-radius: 16px;
   border-top-left-radius: 0;
   border-bottom-left-radius: 0;
-  opacity: ${({ showCloser }) => (showCloser ? '1' : '0')};
-  pointer-events: ${({ showCloser }) => (showCloser ? 'auto' : 'none')};
+  opacity: ${showCloser ? '1' : '0'};
+  pointer-events: ${showCloser ? 'auto' : 'none'};
   transition: all 150ms ease-in;
-`;
+`));
 
-const Separator = styled.div`
-  display: ${({ isSearching, alwaysOpen }) => (isSearching || alwaysOpen ? 'inherit' : 'none')};
-  height: 100%;
-  width: 1px;
-  background: rgba(0, 0, 0, .3);
-`;
+const Separator = styled('div', {
+  shouldForwardProp: (prop) => !['isSearching', 'alwaysOpen'].includes(prop),
+})(({ isSearching, alwaysOpen }) => (`
+  display: ${isSearching || alwaysOpen ? 'inherit' : 'none'},
+  // height: 100%;
+  // width: 1px;
+  // background: rgba(0, 0, 0, .3);
+`));
 
-const SearchWrapper = styled.div`
+const SearchWrapper = styled('div', {
+  shouldForwardProp: (prop) => !['isSearching', 'brandBlue', 'searchTextLarge'].includes(prop),
+})(({ isSearching, brandBlue, searchTextLarge }) => (`
   display: flex;
   flex-flow: row;
   border-radius: 4px;
-  height: ${({ searchTextLarge }) => (searchTextLarge ? '32px' : '26px')};
-  border: 1px solid ${({ isSearching, brandBlue }) => (isSearching ? brandBlue : '#ccc')};
+  height: ${searchTextLarge ? '32px' : '26px'};
+  border: 1px solid ${isSearching ? brandBlue : '#ccc'};
   padding: 0 3px 0 3px;
   margin-right: 16px;
   margin-bottom: 8px;
   @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
     margin-right: 8px;
   }
-`;
+`));
 
 export default withTheme(withStyles(styles)(FilterBaseSearch));

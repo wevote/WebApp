@@ -1,5 +1,5 @@
+import { Box, CircularProgress } from '@mui/material';
 import React from 'react';
-import { CircularProgress, Box } from '@material-ui/core';
 
 // React functional component example
 export default function LoadingWheelComp (message = null, padBottom = false) {

@@ -1,10 +1,10 @@
-import { MoreHoriz } from '@material-ui/icons';
+import { MoreHoriz } from '@mui/icons-material';
+import styled from '@mui/material/styles/styled';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import styled from 'styled-components';
+import { renderLog } from '../../common/utils/logging';
 import IssueStore from '../../stores/IssueStore';
 import VoterGuideStore from '../../stores/VoterGuideStore';
-import { renderLog } from '../../common/utils/logging';
 import signInModalGlobalState from '../Widgets/signInModalGlobalState';
 import ValueIconAndText from './ValueIconAndText';
 
@@ -304,7 +304,7 @@ IssuesByBallotItemDisplayList.propTypes = {
   handleEnterCandidateCard: PropTypes.func,
 };
 
-const Wrapper = styled.div`
+const Wrapper = styled('div')`
   overflow: unset;
   display: flex;
   flex-flow: row;
@@ -313,20 +313,22 @@ const Wrapper = styled.div`
   width: 100%;
 `;
 
-const Issues = styled.div`
+const Issues = styled('div')`
   width: 100%;
   margin-left: 0;
 `;
 
-const IssueList = styled.ul`
+const IssueList = styled('ul', {
+  shouldForwardProp: (prop) => !['expandIssues'].includes(prop),
+})(({ expandIssues }) => (`
   display: flex;
-  flex-flow: row${({ expandIssues }) => (expandIssues ? ' wrap' : '')};
+  flex-flow: row${expandIssues ? ' wrap' : ''};
   margin-bottom: 8px;
   overflow: hidden;
   padding-inline-start: 0;
-`;
+`));
 
-const MoreWrapper = styled.p`
+const MoreWrapper = styled('p')`
   align-items: center;
   background-image: linear-gradient(to right, rgba(255,255,255,0), rgba(255,255,255,1));
   cursor: pointer;

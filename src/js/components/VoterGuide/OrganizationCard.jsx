@@ -1,16 +1,16 @@
-import { Twitter } from '@material-ui/icons';
+import { Twitter } from '@mui/icons-material';
+import styled from '@mui/material/styles/styled';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
 import { Link } from 'react-router-dom';
-import styled from 'styled-components';
 import OrganizationActions from '../../actions/OrganizationActions';
-import OrganizationStore from '../../stores/OrganizationStore';
-import { renderLog } from '../../common/utils/logging';
-import { numberWithCommas, removeTwitterNameFromDescription, stringContains } from '../../utils/textFormat';
+import ExternalLinkIcon from '../../common/components/Widgets/ExternalLinkIcon';
 import LoadingWheel from '../../common/components/Widgets/LoadingWheel';
+import { renderLog } from '../../common/utils/logging';
+import OrganizationStore from '../../stores/OrganizationStore';
+import { numberWithCommas, removeTwitterNameFromDescription, stringContains } from '../../utils/textFormat';
 import ParsedTwitterDescription from '../Twitter/ParsedTwitterDescription';
 import IssuesByOrganizationDisplayList from '../Values/IssuesByOrganizationDisplayList';
-import ExternalLinkIcon from '../../common/components/Widgets/ExternalLinkIcon';
 import PositionInformationOnlySnippet from '../Widgets/PositionInformationOnlySnippet';
 import PositionRatingSnippet from '../Widgets/PositionRatingSnippet';
 import PositionSupportOpposeSnippet from '../Widgets/PositionSupportOpposeSnippet';
@@ -282,7 +282,7 @@ OrganizationCard.propTypes = {
   we_vote_id: PropTypes.string,
 };
 
-const OrganizationCardWrapper = styled.div`
+const OrganizationCardWrapper = styled('div')`
 `;
 
 // const TwitterFollowersIcon = styled.span`
@@ -292,10 +292,10 @@ const OrganizationCardWrapper = styled.div`
 //   vertical-align: bottom;
 // `;
 
-const TwitterHandleWrapper = styled.span`
+const TwitterHandleWrapper = styled('span')`
   margin-right: 10px;
 `;
 
-const WebsiteWrapper = styled.div`
+const WebsiteWrapper = styled('div')`
   margin-left: 4px;
 `;

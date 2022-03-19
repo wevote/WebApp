@@ -1,11 +1,11 @@
-import { IconButton, Tooltip } from '@material-ui/core';
-import { withStyles } from '@material-ui/core/styles';
-import { Facebook, GitHub, Instagram, Mail, Twitter } from '@material-ui/icons';
-import { styled as muiStyled } from '@material-ui/styles';
+import { Facebook, GitHub, Instagram, Mail, Twitter } from '@mui/icons-material';
+import { IconButton, Tooltip } from '@mui/material';
+import styled from '@mui/material/styles/styled';
+import { styled as muiStyled } from '@mui/styles';
+import withStyles from '@mui/styles/withStyles';
 import React, { Suspense } from 'react';
-import styled from 'styled-components';
-import normalizedImagePath from '../../utils/normalizedImagePath';
 import { renderLog } from '../../utils/logging';
+import normalizedImagePath from '../../utils/normalizedImagePath';
 
 const OpenExternalWebSite = React.lazy(() => import(/* webpackChunkName: 'OpenExternalWebSite' */ './OpenExternalWebSite'));
 
@@ -26,7 +26,7 @@ function ToolBar (params) {
             target="_blank"
             body={(
               <Tooltip title="Twitter">
-                <IconButton>
+                <IconButton size="large">
                   <TwitterStyled />
                 </IconButton>
               </Tooltip>
@@ -42,7 +42,7 @@ function ToolBar (params) {
             target="_blank"
             body={(
               <Tooltip title="Facebook">
-                <IconButton>
+                <IconButton size="large">
                   <FacebookStyled />
                 </IconButton>
               </Tooltip>
@@ -58,7 +58,7 @@ function ToolBar (params) {
             target="_blank"
             body={(
               <Tooltip title="Instagram">
-                <IconButton>
+                <IconButton size="large">
                   <InstagramStyled />
                 </IconButton>
               </Tooltip>
@@ -74,7 +74,7 @@ function ToolBar (params) {
             target="_blank"
             body={(
               <Tooltip title="Newsletter">
-                <IconButton>
+                <IconButton size="large">
                   <MailStyled />
                 </IconButton>
               </Tooltip>
@@ -91,7 +91,7 @@ function ToolBar (params) {
               target="_blank"
               body={(
                 <Tooltip title="Github">
-                  <IconButton>
+                  <IconButton size="large">
                     <GitHubStyled />
                   </IconButton>
                 </Tooltip>
@@ -107,7 +107,7 @@ function ToolBar (params) {
             target="_blank"
             body={(
               <Tooltip title="Blog">
-                <IconButton>
+                <IconButton size="large">
                   <img src={normalizedImagePath('/img/global/svg-icons/wordpress-logo.svg')}
                        width={24}
                        height={24}
@@ -124,7 +124,7 @@ function ToolBar (params) {
   );
 }
 
-const ToolBarContainer = styled.div`
+const ToolBarContainer = styled('div')`
   text-align: center;
   margin-top: 0;
   justify-content: center;

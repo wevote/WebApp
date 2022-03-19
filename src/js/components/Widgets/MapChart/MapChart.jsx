@@ -1,6 +1,6 @@
-import React from 'react';
+import styled from '@mui/material/styles/styled';
 import { geoCentroid } from 'd3-geo';
-import styled from 'styled-components';
+import React from 'react';
 import allStates from '../../../../json/allStates.json';
 import { Annotation, ComposableMap, Geographies, Geography, Marker } from './mapChartFunctions';
 
@@ -106,15 +106,17 @@ const StyledGeography = styled(Geography)`
   }
 `;
 
-const StyledG = styled.g`
+const StyledG = styled('g', {
+  shouldForwardProp: (prop) => !['dx', 'dy'].includes(prop),
+})(({ dx, dy }) => (`
   background: orange !important;
   display: block !important;
   width: 10px !important;
   height: 10px !important;
   position: relative;
-  left: ${(props) => props.dx}px;
-  top: ${(props) => props.dy}px;
-`;
+  left: ${dx}px;
+  top: ${dy}px;
+`));
 
 const StyledMarker = styled(Marker)`
   background: orange !important;

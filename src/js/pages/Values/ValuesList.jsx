@@ -1,15 +1,15 @@
+import styled from '@mui/material/styles/styled';
 import { filter } from 'lodash-es';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
 import Helmet from 'react-helmet';
-import styled from 'styled-components';
 import IssueActions from '../../actions/IssueActions';
-import SearchBar from '../../components/Search/SearchBar';
-import IssueStore from '../../stores/IssueStore';
-import VoterStore from '../../stores/VoterStore';
 import { isCordova } from '../../common/utils/isCordovaOrWebApp';
 import { renderLog } from '../../common/utils/logging';
+import SearchBar from '../../components/Search/SearchBar';
 import { PageContentContainer } from '../../components/Style/pageLayoutStyles';
+import IssueStore from '../../stores/IssueStore';
+import VoterStore from '../../stores/VoterStore';
 
 const ReadMore = React.lazy(() => import(/* webpackChunkName: 'ReadMore' */ '../../common/components/Widgets/ReadMore'));
 const DelayedLoad = React.lazy(() => import(/* webpackChunkName: 'DelayedLoad' */ '../../common/components/Widgets/DelayedLoad'));
@@ -210,17 +210,17 @@ ValuesList.propTypes = {
   includedOnAnotherPage: PropTypes.bool,
 };
 
-const Column = styled.div`
+const Column = styled('div')`
   @media (max-width: 768px) {
     margin-bottom: 24px !important;
   }
 `;
 
-const Row = styled.div`
+const Row = styled('div')`
   // margin-left: -16px;
   // margin-right: -16px;
   // width: calc(100% + 32px);
 `;
 
-const ValuesListWrapper = styled.div`
+const ValuesListWrapper = styled('div')`
 `;

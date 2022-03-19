@@ -1,10 +1,10 @@
-import { Box, Grid } from '@material-ui/core';
+import { Box, Grid } from '@mui/material';
+import styled from '@mui/material/styles/styled';
 import React from 'react';
-import styled from 'styled-components';
 import { PageTitle } from '../../common/components/Style/stepDisplayStyles';
 import { renderLog } from '../../common/utils/logging';
-import VoterStore from '../../stores/VoterStore';
 import { PageContentContainerGetStarted } from '../../components/Style/pageLayoutStyles';
+import VoterStore from '../../stores/VoterStore';
 import Congratulations from './Congratulations';
 import ContactsTable from './ContactsTable';
 import ImportContactsButton from './ImportContactsButton';
@@ -93,7 +93,7 @@ export default class GetStarted extends React.Component {
     );
   }
 }
-const GetStartedWrapper = styled.div`
+const GetStartedWrapper = styled('div')`
   background-color: white;
   padding: 80px 20px 150% 20px;
 `;

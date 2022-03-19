@@ -1,10 +1,10 @@
+import styled from '@mui/material/styles/styled';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
-import styled from 'styled-components';
 import BallotActions from '../../actions/BallotActions';
 import OrganizationActions from '../../actions/OrganizationActions';
-import BallotStore from '../../stores/BallotStore';
 import { renderLog } from '../../common/utils/logging';
+import BallotStore from '../../stores/BallotStore';
 import voterGuideSearchPriority from '../../utils/voterGuideSearchPriority';
 import SearchBar from '../Search/SearchBar';
 import BallotItemForAddPositions from './BallotItemForAddPositions';
@@ -308,23 +308,23 @@ VoterGuideListSearchResults.propTypes = {
   searchUnderwayFunction: PropTypes.func,
 };
 
-const CardChildListGroup = styled.ul`
+const CardChildListGroup = styled('ul')`
   padding: 0;
 `;
 
-const SearchTitle = styled.div`
+const SearchTitle = styled('div')`
   font-size: 20px;
   margin-top: 12px;
   margin-bottom: 12px;
 `;
 
-const SearchResultsFoundInExplanation = styled.div`
+const SearchResultsFoundInExplanation = styled('div')`
   background-color: #C2DCE8;
   color: #0E759F;
   padding: 12px !important;
 `;
 
-const ShowMoreItemsWrapper = styled.div`
+const ShowMoreItemsWrapper = styled('div')`
 `;
 
 export default (VoterGuideListSearchResults);

@@ -1,9 +1,9 @@
+import styled from '@mui/material/styles/styled';
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import styled from 'styled-components';
 import OrganizationActions from '../../actions/OrganizationActions';
-import OrganizationStore from '../../stores/OrganizationStore';
 import { renderLog } from '../../common/utils/logging';
+import OrganizationStore from '../../stores/OrganizationStore';
 // import OpenExternalWebSite from '../../utils/OpenExternalWebSite';
 import OpinionsFollowedListCompressed from '../Organization/OpinionsFollowedListCompressed';
 import EndorsementCard from '../Widgets/EndorsementCard';
@@ -118,7 +118,7 @@ export default class PublicFiguresFollowedPreview extends Component {
   }
 }
 
-const SectionTitle = styled.h2`
+const SectionTitle = styled('h2')`
   width: fit-content;  font-weight: bold;
   font-size: 18px;
   margin-bottom: 16px;

@@ -1,19 +1,19 @@
-import { withStyles } from '@material-ui/core/styles';
+import styled from '@mui/material/styles/styled';
+import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import styled from 'styled-components';
 import BallotActions from '../../actions/BallotActions';
 import OrganizationActions from '../../actions/OrganizationActions';
 import VoterGuideActions from '../../actions/VoterGuideActions';
+import { renderLog } from '../../common/utils/logging';
 import VoterGuideSettingsAddPositions from '../../components/Settings/VoterGuideSettingsAddPositions';
+import { PageContentContainer } from '../../components/Style/pageLayoutStyles';
 import AppObservableStore, { messageService } from '../../stores/AppObservableStore';
 import BallotStore from '../../stores/BallotStore';
 import OrganizationStore from '../../stores/OrganizationStore';
 import VoterGuideStore from '../../stores/VoterGuideStore';
 import VoterStore from '../../stores/VoterStore';
-import { renderLog } from '../../common/utils/logging';
 import { isProperlyFormattedVoterGuideWeVoteId } from '../../utils/textFormat';
-import { PageContentContainer } from '../../components/Style/pageLayoutStyles';
 
 class VoterGuideSettingsDashboard extends Component {
   constructor (props) {
@@ -237,7 +237,7 @@ const styles = () => ({
   },
 });
 
-const EndorsementListBody = styled.div`
+const EndorsementListBody = styled('div')`
 `;
 
 export default withStyles(styles)(VoterGuideSettingsDashboard);

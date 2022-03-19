@@ -1,11 +1,11 @@
+import styled from '@mui/material/styles/styled';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import styled from 'styled-components';
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 import Tooltip from 'react-bootstrap/Tooltip';
 import { ReactSVG } from 'react-svg';
-import normalizedImagePath from '../../common/utils/normalizedImagePath';
 import { renderLog } from '../../common/utils/logging';
+import normalizedImagePath from '../../common/utils/normalizedImagePath';
 
 const groupIcon = '../../../img/global/svg-icons/group-icon.svg';
 const publicIcon = '../../../img/global/svg-icons/public-icon.svg';
@@ -72,7 +72,7 @@ FriendsOnlyIndicator.propTypes = {
   isFriendsOnly: PropTypes.bool,
 };
 
-const PublicFriendsIndicator = styled.span`
+const PublicFriendsIndicator = styled('span')`
   color: #999;
   display: inline-block;
   margin-top: -5px;

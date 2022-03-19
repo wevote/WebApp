@@ -1,6 +1,6 @@
-import styled from 'styled-components';
+import styled from '@mui/material/styles/styled';
 
-const Header = styled.div`
+const Header = styled('div')`
   position: relative;
   width: 100%;
   color: white;
@@ -9,12 +9,11 @@ const Header = styled.div`
   margin-top: -72px;
   display: flex;
   flex-flow: row;
-  justify-content: space-between;
   padding-top: 84px;
   justify-content: center;
 `;
 
-const Container = styled.div`
+const Container = styled('div')`
   display: flex;
   flex-flow: row;
   justify-content: space-between;
@@ -26,7 +25,7 @@ const Container = styled.div`
   }
 `;
 
-const Title = styled.h3`
+const Title = styled('h3')`
   font-size: 24px;
   font-weight: bold;
   @media (max-width: ${({ theme }) => theme.breakpoints.lg}) {

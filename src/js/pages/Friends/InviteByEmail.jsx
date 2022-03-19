@@ -1,10 +1,10 @@
+import styled from '@mui/material/styles/styled';
 import React, { Component } from 'react';
 import Helmet from 'react-helmet';
-import styled from 'styled-components';
 import AnalyticsActions from '../../actions/AnalyticsActions';
+import { renderLog } from '../../common/utils/logging';
 import AddFriendsByEmail from '../../components/Friends/AddFriendsByEmail';
 import VoterStore from '../../stores/VoterStore';
-import { renderLog } from '../../common/utils/logging';
 
 export default class InviteByEmail extends Component {
   constructor (props) {
@@ -33,7 +33,7 @@ export default class InviteByEmail extends Component {
   }
 }
 
-const SectionTitle = styled.h2`
+const SectionTitle = styled('h2')`
   width: fit-content;  font-weight: bold;
   font-size: 18px;
   margin-bottom: 16px;

@@ -1,8 +1,8 @@
-import { withTheme } from '@material-ui/core/styles';
+import styled from '@mui/material/styles/styled';
+import withTheme from '@mui/styles/withTheme';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
 import { Link } from 'react-router-dom';
-import styled from 'styled-components';
 import { renderLog } from '../../common/utils/logging';
 import { convertNameToSlug } from '../../utils/textFormat';
 import IssueFollowToggleButton from './IssueFollowToggleButton';
@@ -183,15 +183,15 @@ IssueCardCompressed.propTypes = {
   urlWithoutHash: PropTypes.string,
 };
 
-const Item = styled.div`
+const Item = styled('div')`
   width: 100%;
-  padding: 0px;
+  padding: 0;
   @media (min-width: ${({ theme }) => theme.breakpoints.md}) {
     width: 50%;
   }
 `;
 
-const Wrapper = styled.div`
+const Wrapper = styled('div')`
   display: block !important;
   padding: 12px !important;
   margin: 8px 6px !important;
@@ -202,7 +202,7 @@ const Wrapper = styled.div`
   }
 `;
 
-const IssueName = styled.h3`
+const IssueName = styled('h3')`
   font-size: 18px;
   font-weight: bold;
   margin-bottom: 0;
@@ -218,13 +218,13 @@ const IssueName = styled.h3`
   }
 `;
 
-const Flex = styled.div`
+const Flex = styled('div')`
   display: flex;
   align-items: center;
   justify-content: flex-start;
 `;
 
-const Description = styled.div`
+const Description = styled('div')`
   margin-top: 8px;
   font-size: 14px;
   color: #333;

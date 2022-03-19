@@ -1,22 +1,21 @@
-import { withStyles, withTheme } from '@material-ui/core/styles';
-// import { ArrowForward } from '@material-ui/icons';
+import styled from '@mui/material/styles/styled';
+import withStyles from '@mui/styles/withStyles';
+import withTheme from '@mui/styles/withTheme';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
-// import { Link } from 'react-router-dom';
-import styled from 'styled-components';
 import OfficeActions from '../../actions/OfficeActions';
+import historyPush from '../../common/utils/historyPush';
+import { isCordova } from '../../common/utils/isCordovaOrWebApp';
+import { renderLog } from '../../common/utils/logging';
+import normalizedImagePath from '../../common/utils/normalizedImagePath';
 import AppObservableStore from '../../stores/AppObservableStore';
 import BallotStore from '../../stores/BallotStore';
 import CandidateStore from '../../stores/CandidateStore';
 import SupportStore from '../../stores/SupportStore';
-import { isCordova } from '../../common/utils/isCordovaOrWebApp';
-import normalizedImagePath from '../../common/utils/normalizedImagePath';
-import historyPush from '../../common/utils/historyPush';
-import { renderLog } from '../../common/utils/logging';
 import { sortCandidateList } from '../../utils/positionFunctions';
 import { toTitleCase } from '../../utils/textFormat';
-import PositionRowList from './PositionRowList';
 import signInModalGlobalState from '../Widgets/signInModalGlobalState';
+import PositionRowList from './PositionRowList';
 
 const BallotItemSupportOpposeCountDisplay = React.lazy(() => import(/* webpackChunkName: 'BallotItemSupportOpposeCountDisplay' */ '../Widgets/BallotItemSupportOpposeCountDisplay'));
 const DelayedLoad = React.lazy(() => import(/* webpackChunkName: 'DelayedLoad' */ '../../common/components/Widgets/DelayedLoad'));
@@ -216,7 +215,7 @@ class OfficeItemCompressed extends Component {
   }
 
   generateCandidates () {
-    const { externalUniqueId, theme } = this.props;
+    const { externalUniqueId } = this.props;
     let { candidatesToShowForSearchResults } = this.props;
     candidatesToShowForSearchResults = candidatesToShowForSearchResults || [];
     const { candidateList, numberOfCandidatesToDisplay } = this.state;
@@ -225,7 +224,7 @@ class OfficeItemCompressed extends Component {
     const candidatesToRender = supportedCandidatesList.length ? supportedCandidatesList : candidateList;
     const hideCandidateDetails = supportedCandidatesList.length;
     return (
-      <CandidatesContainer candidateLength={candidatesToRender.length}>
+      <CandidatesContainer/* candidateLength={candidatesToRender.length} */>
         { candidatesToRender.slice(0, numberOfCandidatesToDisplay)
           .map((oneCandidate) => {
             if (!oneCandidate || !oneCandidate.we_vote_id) {
@@ -239,10 +238,7 @@ class OfficeItemCompressed extends Component {
               <CandidateContainer
                 key={`candidate_preview-${oneCandidate.we_vote_id}-${externalUniqueId}`}
               >
-                <CandidateInfo
-                  brandBlue={theme.palette.primary.main}
-                  numberOfCandidatesInList={candidatesToRender.length}
-                >
+                <CandidateInfo>
                   <CandidateTopRow>
                     <Candidate
                       id={`officeItemCompressedCandidateImageAndName-${oneCandidate.we_vote_id}-${externalUniqueId}`}
@@ -398,7 +394,6 @@ OfficeItemCompressed.propTypes = {
   externalUniqueId: PropTypes.string,
   organization: PropTypes.object,
   organizationWeVoteId: PropTypes.string,
-  theme: PropTypes.object,
 };
 
 const styles = (theme) => ({
@@ -421,17 +416,17 @@ const styles = (theme) => ({
   },
 });
 
-const BallotItemSupportOpposeCountDisplayWrapper = styled.div`
+const BallotItemSupportOpposeCountDisplayWrapper = styled('div')`
   cursor: pointer;
   float: right;
 `;
 
-const Candidate = styled.div`
+const Candidate = styled('div')`
   display: flex;
   flex-grow: 8;
 `;
 
-const CandidateBottomRow = styled.div`
+const CandidateBottomRow = styled('div')`
   display: flex;
   flex-flow: column;
   height: 100%;
@@ -439,13 +434,13 @@ const CandidateBottomRow = styled.div`
   margin-top: 4px;
 `;
 
-const CandidateContainer = styled.div`
+const CandidateContainer = styled('div')`
   display: flex;
   justify-content: flex-start;
   padding: 10px;
 `;
 
-const CandidateInfo = styled.div`
+const CandidateInfo = styled('div')(({ theme }) => (`
   // background-color: #f8f8f8;
   border: 1px solid #fff;
   display: block;
@@ -454,51 +449,48 @@ const CandidateInfo = styled.div`
   padding: 8px !important;
   transition: all 200ms ease-in;
   max-width: 320px;
-  @media (max-width: ${({ theme }) => theme.breakpoints.xs}) {
+  [theme.breakpoints.down('xs')]: {
     width: 100%;
   }
-  @media (min-width: ${({ theme }) => theme.breakpoints.xs}) {
+  [theme.breakpoints.up('xs')]: {
     min-width: 320px;
   }
   &:hover {
-    border: 1px solid ${(props) => (props.brandBlue)};
+    border: 1px solid ${theme.palette.primary.main};
   }
-  @media (min-width: ${({ theme }) => theme.breakpoints.md}) {
-    // position: relative;
-  }
-  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+  [theme.breakpoints.down:('md')]: {
     padding: 8px 8px 4px 8px !important;
     // flex-flow: column;
   }
-  @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
+  [theme.breakpoints.down('sm')]: {
     // flex-flow: column;
   }
-`;
+`));
 
-const CandidateName = styled.h4`
+const CandidateName = styled('h4')`
   color: #4371cc;
   font-weight: 400;
   font-size: 1.1rem;
   margin-bottom: 0 !important;
 `;
 
-const CandidateParty = styled.div`
+const CandidateParty = styled('div')`
   color: #555;
   font-size: .7rem;
 `;
 
-const CandidatesContainer = styled.div`
+const CandidatesContainer = styled('div')`
   margin: 0px -10px;
 `;
 
-const CandidateTopRow = styled.div`
+const CandidateTopRow = styled('div')`
   cursor: pointer;
   display: flex;
   flex-flow: row nowrap;
   justify-content: space-between;
 `;
 
-const ItemActionBarWrapper = styled.div`
+const ItemActionBarWrapper = styled('div')`
   display: flex;
   cursor: pointer;
   flex-direction: row;
@@ -507,9 +499,9 @@ const ItemActionBarWrapper = styled.div`
   width: 100%;
 `;
 
-const OfficeItemCompressedWrapper = styled.div`
+const OfficeItemCompressedWrapper = styled('div')`
   border: 1px solid #fff;
-  padding: 16px 16px 0px;
+  padding: 16px 16px 0;
   font-size: 14px;
   position: relative;
   @include print {
@@ -518,26 +510,24 @@ const OfficeItemCompressedWrapper = styled.div`
   }
 `;
 
-const PositionRowListWrapper = styled.div`
+const PositionRowListWrapper = styled('div')`
   display: block;
   height: 110px;
   margin-left: 8px;
   margin-top: 10px;
   max-width: 570px !important;
   overflow: hidden;
-  overflow-x: hidden;
-  overflow-y: hidden:
 `;
 
-const Title = styled.h2`
+const Title = styled('h2')(({ theme }) => (`
   font-weight: bold;
   font-size: 18px;
   margin-bottom: 6px;
   width: fit-content;
-  @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
+  ${[theme.breakpoints.down('sm')]}: {
     font-size: 16px;
     margin-bottom: 2px;
   }
-`;
+`));
 
 export default withTheme(withStyles(styles)(OfficeItemCompressed));

@@ -1,9 +1,10 @@
-import { withStyles, withTheme } from '@material-ui/core/styles';
-import { CheckCircle } from '@material-ui/icons';
+import withStyles from '@mui/styles/withStyles';
+import withTheme from '@mui/styles/withTheme';
+import { CheckCircle } from '@mui/icons-material';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { ReactSVG } from 'react-svg';
-import styled from 'styled-components';
+import styled from '@mui/material/styles/styled';
 import FriendStore from '../../stores/FriendStore';
 import IssueStore from '../../stores/IssueStore';
 import OrganizationStore from '../../stores/OrganizationStore';
@@ -277,32 +278,32 @@ const styles = () => ({
   },
 });
 
-const FollowOrganizationText = styled.div`
+const FollowOrganizationText = styled('div')`
   margin-top: 10px;
 `;
 
-const OrganizationAddsToYourPersonalScoreExplanation = styled.div`
+const OrganizationAddsToYourPersonalScoreExplanation = styled('div')`
   // margin-top: 4px;
 `;
 
-const PopoverTitleIcon = styled.span`
+const PopoverTitleIcon = styled('span')`
   font-weight: bold;
   font-size: 16px;
 `;
 
-const PopoverDescriptionText = styled.div`
+const PopoverDescriptionText = styled('div')`
   font-size: 14px;
   padding: 8px;
 `;
 
-const ScoreExplanationWrapper = styled.div`
+const ScoreExplanationWrapper = styled('div')`
   display: flex;
   flex-wrap: nowrap;
   justify-content: flex-start;
   margin-top: 6px;
 `;
 
-const ScoreExplanationText = styled.div`
+const ScoreExplanationText = styled('div')`
   margin-left: 4px;
 `;
 

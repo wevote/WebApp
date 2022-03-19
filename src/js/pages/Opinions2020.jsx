@@ -1,31 +1,31 @@
-import { Card } from '@material-ui/core';
-import { withStyles } from '@material-ui/core/styles';
-import { Ballot, Business, Info } from '@material-ui/icons';
+import { Ballot, Business, Info } from '@mui/icons-material';
+import { Card } from '@mui/material';
+import styled from '@mui/material/styles/styled';
+import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
 import { Link } from 'react-router-dom';
-import styled from 'styled-components';
 import ActivityActions from '../actions/ActivityActions';
 import AnalyticsActions from '../actions/AnalyticsActions';
 import BallotActions from '../actions/BallotActions';
 import OrganizationActions from '../actions/OrganizationActions';
+import LoadingWheel from '../common/components/Widgets/LoadingWheel';
+import SvgImage from '../common/components/Widgets/SvgImage';
+import apiCalming from '../common/utils/apiCalming';
+import { renderLog } from '../common/utils/logging';
+import normalizedImagePath from '../common/utils/normalizedImagePath';
 import FilterBase from '../components/Filter/FilterBase';
 import OpinionsAndBallotItemsFilter from '../components/Filter/OpinionsAndBallotItemsFilter';
-import LoadingWheel from '../common/components/Widgets/LoadingWheel';
 import BallotItemForOpinions from '../components/OpinionsAndBallotItems/BallotItemForOpinions';
 import CandidateSearchItemForOpinions from '../components/OpinionsAndBallotItems/CandidateSearchItemForOpinions';
 import VoterGuideDisplayForListForOpinions from '../components/OpinionsAndBallotItems/VoterGuideDisplayForListForOpinions';
+import { PageContentContainer } from '../components/Style/pageLayoutStyles';
 import NumberOfItemsFound from '../components/Widgets/NumberOfItemsFound';
 import SnackNotifier from '../components/Widgets/SnackNotifier';
-import SvgImage from '../common/components/Widgets/SvgImage';
 import BallotStore from '../stores/BallotStore';
 import OrganizationStore from '../stores/OrganizationStore';
 import VoterGuideStore from '../stores/VoterGuideStore';
 import VoterStore from '../stores/VoterStore';
-import normalizedImagePath from '../common/utils/normalizedImagePath';
-import { renderLog } from '../common/utils/logging';
-import apiCalming from '../common/utils/apiCalming';
-import { PageContentContainer } from '../components/Style/pageLayoutStyles';
 import { stringContains } from '../utils/textFormat';
 
 const ShowMoreItems = React.lazy(() => import(/* webpackChunkName: 'ShowMoreItems' */ '../components/Widgets/ShowMoreItems'));
@@ -833,22 +833,22 @@ const styles = (theme) => ({
   },
 });
 
-const CardChildListGroup = styled.ul`
+const CardChildListGroup = styled('ul')`
   padding: 0;
 `;
 
-const CardChildListItem = styled.div`
+const CardChildListItem = styled('div')`
   margin-top: 15px;
 `;
 
-const EmptyBallotMessageContainer = styled.div`
+const EmptyBallotMessageContainer = styled('div')`
   padding: 1em 2em;
   display: flex;
   flex-flow: column;
   align-items: center;
 `;
 
-const EmptyBallotText = styled.p`
+const EmptyBallotText = styled('p')`
   font-size: 16px;
   text-align: center;
   margin: 1em 2em;
@@ -857,20 +857,20 @@ const EmptyBallotText = styled.p`
   }
 `;
 
-const FilterBaseWrapper = styled.div`
+const FilterBaseWrapper = styled('div')`
   margin-top: -12px;
 `;
 
-const IntroductionWrapper = styled.div`
+const IntroductionWrapper = styled('div')`
 `;
 
-const SearchResultsFoundInExplanation = styled.div`
+const SearchResultsFoundInExplanation = styled('div')`
   background-color: #C2DCE8;
   color: #0E759F;
   padding: 12px !important;
 `;
 
-const ShowMoreItemsWrapper = styled.div`
+const ShowMoreItemsWrapper = styled('div')`
 `;
 
 export default withStyles(styles)(Opinions2020);

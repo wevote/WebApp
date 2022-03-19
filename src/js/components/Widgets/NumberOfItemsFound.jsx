@@ -1,6 +1,6 @@
-import React, { Component } from 'react';
-import styled from 'styled-components';
+import styled from '@mui/material/styles/styled';
 import PropTypes from 'prop-types';
+import React, { Component } from 'react';
 
 class NumberOfItemsFound extends Component {
   constructor (props) {
@@ -34,7 +34,7 @@ NumberOfItemsFound.propTypes = {
   numberOfItemsTotal: PropTypes.number,
 };
 
-const Wrapper = styled.div`
+const Wrapper = styled('div')`
   font-size: 14px;
   text-align: right;
   user-select: none;

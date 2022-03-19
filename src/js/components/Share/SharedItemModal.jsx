@@ -1,25 +1,26 @@
-import { Button, Dialog, IconButton } from '@material-ui/core';
-import { withStyles, withTheme } from '@material-ui/core/styles';
-import { Close, Info } from '@material-ui/icons';
+import { Close, Info } from '@mui/icons-material';
+import { Button, Dialog, IconButton } from '@mui/material';
+import styled from '@mui/material/styles/styled';
+import withStyles from '@mui/styles/withStyles';
+import withTheme from '@mui/styles/withTheme';
 import clsx from 'clsx';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
-import styled from 'styled-components';
 import BallotActions from '../../actions/BallotActions';
 import OrganizationActions from '../../actions/OrganizationActions';
-import ShareActions from '../../common/actions/ShareActions';
 import VoterActions from '../../actions/VoterActions';
+import ShareActions from '../../common/actions/ShareActions';
+import ShareStore from '../../common/stores/ShareStore';
+import { hasIPhoneNotch } from '../../common/utils/cordovaUtils';
+import { formatDateToMonthDayYear } from '../../common/utils/dateFormat';
+import { isCordova, isWebApp } from '../../common/utils/isCordovaOrWebApp';
+import { renderLog } from '../../common/utils/logging';
+import normalizedImagePath from '../../common/utils/normalizedImagePath';
 import VoterConstants from '../../constants/VoterConstants';
 import BallotStore from '../../stores/BallotStore';
 import OrganizationStore from '../../stores/OrganizationStore';
-import ShareStore from '../../common/stores/ShareStore';
 import VoterStore from '../../stores/VoterStore';
 import { cordovaFooterHeight, cordovaNetworkNextButtonTop } from '../../utils/cordovaOffsets';
-import { hasIPhoneNotch } from '../../common/utils/cordovaUtils';
-import { isCordova, isWebApp } from '../../common/utils/isCordovaOrWebApp';
-import normalizedImagePath from '../../common/utils/normalizedImagePath';
-import { formatDateToMonthDayYear } from '../../common/utils/dateFormat';
-import { renderLog } from '../../common/utils/logging';
 import { isSpeakerTypeOrganization, isSpeakerTypePublicFigure } from '../../utils/organization-functions';
 import { convertToInteger } from '../../utils/textFormat';
 import PersonalizedScoreIntroBody from '../CompleteYourProfile/PersonalizedScoreIntroBody';
@@ -446,6 +447,7 @@ class SharedItemModal extends Component {
                 className={classes.closeButtonAbsolute}
                 onClick={this.closeSharedItemModalLocal}
                 id="closeSharedItemModal"
+                size="large"
               >
                 <Close />
               </IconButton>
@@ -635,13 +637,13 @@ const styles = (theme) => ({
   },
 });
 
-const ActionButtonsRow = styled.div`
+const ActionButtonsRow = styled('div')`
   display: flex;
   justify-content: flex-start;
   // margin-top: 10px;
 `;
 
-const BackButtonWrapper = styled.div`
+const BackButtonWrapper = styled('div')`
   padding-right: 12px;
   width: 100%;
   @media(min-width: 520px) {
@@ -649,11 +651,11 @@ const BackButtonWrapper = styled.div`
   }
 `;
 
-const ContentWrapper = styled.div`
+const ContentWrapper = styled('div')`
   overflow-y: auto;
 `;
 
-const ElectionCountdownDays = styled.span`
+const ElectionCountdownDays = styled('span')`
   font-size: 24px;
   @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
     font-size: 18px;
@@ -663,11 +665,10 @@ const ElectionCountdownDays = styled.span`
   }
 `;
 
-const ElectionCountdownText = styled.h3`
+const ElectionCountdownText = styled('h3')`
   font-size: 14px;
   font-weight: 700;
   color: #2E3C5D !important;
-  width: fit-content;
   padding-bottom: 8px;
   width: 100%;
   text-align: center;
@@ -685,7 +686,7 @@ const ElectionCountdownText = styled.h3`
   }
 `;
 
-const FooterBarWrapper = styled.div`
+const FooterBarWrapper = styled('div')`
   background: #fff;
   border-top: 1px solid #eee;
   bottom: 0;
@@ -699,19 +700,19 @@ const FooterBarWrapper = styled.div`
   }
 `;
 
-const FollowToggleWrapper = styled.div`
+const FollowToggleWrapper = styled('div')`
 `;
 
-const FriendToggleWrapper = styled.div`
+const FriendToggleWrapper = styled('div')`
   padding-right: 8px;
 `;
 
-const IntroductionWrapper = styled.div`
-  margin: 0px 15px;
+const IntroductionWrapper = styled('div')`
+  margin: 0 15px;
   margin-bottom: 45px;
 `;
 
-const IntroHeader = styled.div`
+const IntroHeader = styled('div')`
   color: #2e3c5d;
   font-size: 20px;
   font-weight: 600;
@@ -724,12 +725,12 @@ const IntroHeader = styled.div`
   }
 `;
 
-const IntroHeaderOptional = styled.span`
+const IntroHeaderOptional = styled('span')`
   color: #999;
   font-weight: 400;
 `;
 
-const IntroductionTopHeader = styled.div`
+const IntroductionTopHeader = styled('div')`
   color: #2e3c5d;
   font-size: 24px;
   font-weight: 600;
@@ -753,7 +754,7 @@ const ModalTitleSharedByShown = `
   // height: 177px;
 `;
 
-const ModalTitleArea = styled.div`
+const ModalTitleArea = styled('div')`
   background: #fff;
   box-shadow: 0 20px 40px -25px #999;
   padding: 8px;
@@ -764,7 +765,7 @@ const ModalTitleArea = styled.div`
   ${({ hideSharedByIntro }) => ((hideSharedByIntro) ? ModalTitleSharedByHidden : ModalTitleSharedByShown)}
 `;
 
-const ModalTitleOneRow = styled.div`
+const ModalTitleOneRow = styled('div')`
   display: flex;
   justify-content: flex-start;
   width: 100%;
@@ -786,20 +787,22 @@ const ModalContentSharedByShown = `
   }
 `;
 
-const ModalContent = styled.div`
+const ModalContent = styled('div')`
   height: ${isWebApp() ? 'unset' : 'unset'};
   width: 100%;
 `;
 
-const ModalContentInnerWrapper = styled.div`
-  ${({ hideSharedByIntro }) => ((hideSharedByIntro) ? ModalContentSharedByHidden : ModalContentSharedByShown)}
-`;
+const ModalContentInnerWrapper = styled('div', {
+  shouldForwardProp: (prop) => !['hideSharedByIntro'].includes(prop),
+})(({ hideSharedByIntro }) => (`
+  ${hideSharedByIntro ? ModalContentSharedByHidden : ModalContentSharedByShown}
+`));
 
-const NextButtonWrapper = styled.div`
+const NextButtonWrapper = styled('div')`
   width: 100%;
 `;
 
-const OpinionsAddedToPersonalizedScore = styled.div`
+const OpinionsAddedToPersonalizedScore = styled('div')`
   color: ${({ theme }) => theme.colors.grayMid};
   display: flex;
   font-size: 12px;
@@ -811,23 +814,23 @@ const OpinionsAddedToPersonalizedScore = styled.div`
   }
 `;
 
-const OpinionsAddedText = styled.div`
+const OpinionsAddedText = styled('div')`
   margin-left: 4px;
 `;
 
-const OrganizationImageWrapper = styled.div`
+const OrganizationImageWrapper = styled('div')`
   margin-top: 6px !important;
 `;
 
-const OrganizationNameColumn = styled.div`
+const OrganizationNameColumn = styled('div')`
 `;
 
-const OrganizationNameText = styled.div`
+const OrganizationNameText = styled('div')`
   font-size: 22px;
   font-weight: 600;
 `;
 
-const PersonalizedScoreDescription = styled.div`
+const PersonalizedScoreDescription = styled('div')`
   font-size: 16px;
   padding-bottom: 12px;
   @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
@@ -835,12 +838,12 @@ const PersonalizedScoreDescription = styled.div`
   }
 `;
 
-const PersonalizedScoreWrapper = styled.div`
+const PersonalizedScoreWrapper = styled('div')`
   margin: 0 15px;
   margin-bottom: 45px;
 `;
 
-const SharedByOrganizationOuterWrapper = styled.div`
+const SharedByOrganizationOuterWrapper = styled('div')`
   display: flex;
   justify-content: center;
   width: 100% !important;
@@ -849,35 +852,35 @@ const SharedByOrganizationOuterWrapper = styled.div`
   }
 `;
 
-const SharedByOrganizationInnerWrapper = styled.div`
+const SharedByOrganizationInnerWrapper = styled('div')`
   margin: 0 !important;
   max-width: 450px;
   padding: 0 4px 12px 4px !important;
   transition: all 200ms ease-in;
 `;
 
-const SharedByOrganization = styled.div`
+const SharedByOrganization = styled('div')`
   display: flex;
   flex-grow: 8;
 `;
 
-const SharedByOrganizationTopRow = styled.div`
+const SharedByOrganizationTopRow = styled('div')`
 `;
 
-const SharedByOrganizationBottomRow = styled.div`
+const SharedByOrganizationBottomRow = styled('div')`
   // padding-bottom: 10px;
 `;
 
-const SharedContextText = styled.div`
+const SharedContextText = styled('div')`
   color: #555;
   font-size: 14px;
 `;
 
-const SignInWrapper = styled.div`
+const SignInWrapper = styled('div')`
   margin: 30px 15px 60px 15px;
 `;
 
-const SlideShowTitle = styled.h3`
+const SlideShowTitle = styled('h3')`
   font-weight: bold;
   font-size: 24px;
   margin-top:  16px;
@@ -887,7 +890,7 @@ const SlideShowTitle = styled.h3`
   }
 `;
 
-const StepsOuterWrapper = styled.div`
+const StepsOuterWrapper = styled('div')`
   align-items: center;
   display: flex;
   justify-content: center;
@@ -895,11 +898,11 @@ const StepsOuterWrapper = styled.div`
   width: 100%;
 `;
 
-const StepsWrapper = styled.div`
+const StepsWrapper = styled('div')`
   width: ${({ width }) => `${width}px`};
 `;
 
-const TwoButtonsWrapper = styled.div`
+const TwoButtonsWrapper = styled('div')`
   width: 100%;
   padding: 4px 8px 12px 8px;
   display: flex;

@@ -1,4 +1,5 @@
-import { withStyles, withTheme } from '@material-ui/core/styles';
+import withStyles from '@mui/styles/withStyles';
+import withTheme from '@mui/styles/withTheme';
 import PropTypes from 'prop-types';
 import React from 'react';
 import Cookies from '../../common/utils/js-cookie/Cookies';
@@ -91,7 +92,7 @@ const styles = (theme) => ({
   mobile: {
     position: 'relative',
     display: 'flex',
-    marginBottom: `${theme.spacing(1)}px`,
+    marginBottom: theme.spacing(1),
     fontSize: '14px',
     backgroundClip: 'border-box',
     border: '2px solid #999',

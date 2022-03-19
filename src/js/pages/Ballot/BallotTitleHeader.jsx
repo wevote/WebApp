@@ -1,9 +1,9 @@
-import { Tooltip } from '@material-ui/core';
-import { withStyles } from '@material-ui/core/styles';
-import { Settings } from '@material-ui/icons';
+import { Settings } from '@mui/icons-material';
+import { Tooltip } from '@mui/material';
+import styled from '@mui/material/styles/styled';
+import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
-import styled from 'styled-components';
 import { isAndroid, isAndroidSizeFold, isIOSAppOnMac, isIPad, isIPhone3p5in, isIPhone4in } from '../../common/utils/cordovaUtils';
 import { isWebApp } from '../../common/utils/isCordovaOrWebApp';
 import isMobileScreenSize from '../../common/utils/isMobileScreenSize';
@@ -49,14 +49,14 @@ class BallotTitleHeader extends Component {
   render () {
     renderLog('BallotTitleHeader');  // Set LOG_RENDER_EVENTS to log all renders
     // const nextReleaseFeaturesEnabled = webAppConfig.ENABLE_NEXT_RELEASE_FEATURES === undefined ? false : webAppConfig.ENABLE_NEXT_RELEASE_FEATURES;
-    const { classes, electionName, electionDayTextObject, scrolled } = this.props;
+    const { classes, electionName, electionDayTextObject } = this.props;
 
     if (electionName) {
       return (
-        <Wrapper/* marginTop={this.marginTopOffset()} */>
+        <Wrapper/* margintop={this.marginTopOffset()} */>
           <Tooltip title="Change my election" aria-label="Change Election" classes={{ tooltipPlacementBottom: classes.tooltipPlacementBottom }}>
             <Title onClick={() => this.props.toggleSelectBallotModal('', false, false)} id="ballotTitleHeaderSelectBallotModal">
-              <ElectionName scrolled={scrolled}>
+              <ElectionName/* scrolled={scrolled} */>
                 {isWebApp() ? (
                   <>
                     <span className="u-show-mobile-iphone5-or-smaller">
@@ -130,11 +130,11 @@ const styles = {
   },
 };
 
-const Wrapper = styled.div`
+const Wrapper = styled('div')`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  // margin-top: ${(props) => (props.marginTop)};
+  // margin-top: ${(props) => (props.margintop)};
   ${() => {
     if (isWebApp() && !isMobileScreenSize()) {
       // TODO: Steve 10/4/21, this is temporary and needs to be more responsive
@@ -149,14 +149,14 @@ const Wrapper = styled.div`
   }};
 `;
 
-const Title = styled.h1`
+const Title = styled('h1')`
   cursor: pointer;
   margin: 0;
   @media (min-width: 576px) {
   }
 `;
 
-const ElectionName = styled.span`
+const ElectionName = styled('span')`
   font-size: 16px;
   font-weight: bold;
   @media (min-width: 576px) {
@@ -165,17 +165,17 @@ const ElectionName = styled.span`
   }
 `;
 
-const ElectionDate = styled.span`
+const ElectionDate = styled('span')`
   font-size: 14px;
   @media (min-width: 576px) {
     font-size: 16px;
   }
 `;
 
-const SettingsIconWrapper = styled.span`
+const SettingsIconWrapper = styled('span')`
 `;
 
-const ShareButtonWrapper = styled.div`
+const ShareButtonWrapper = styled('div')`
   display: none;
   margin-left: auto;
   margin-top: 4px;

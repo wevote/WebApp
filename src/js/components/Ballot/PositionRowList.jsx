@@ -1,17 +1,17 @@
-import { withStyles } from '@material-ui/core/styles';
+import styled from '@mui/material/styles/styled';
+import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import styled from 'styled-components';
 import FriendActions from '../../actions/FriendActions';
 import OrganizationActions from '../../actions/OrganizationActions';
+import LoadingWheel from '../../common/components/Widgets/LoadingWheel';
+import apiCalming from '../../common/utils/apiCalming';
+import { renderLog } from '../../common/utils/logging';
 import CandidateStore from '../../stores/CandidateStore';
 import FriendStore from '../../stores/FriendStore';
 import MeasureStore from '../../stores/MeasureStore';
 import OrganizationStore from '../../stores/OrganizationStore';
-import { renderLog } from '../../common/utils/logging';
-import LoadingWheel from '../../common/components/Widgets/LoadingWheel';
 import PositionRowItem from './PositionRowItem';
-import apiCalming from '../../common/utils/apiCalming';
 
 
 const STARTING_NUMBER_OF_POSITIONS_TO_DISPLAY = 10;
@@ -85,7 +85,7 @@ class PositionRowList extends Component {
     this.setState({
       positionList: incomingPositionList,
       filteredPositionList: incomingPositionList,
-      filteredPositionListLength: incomingPositionList.length,
+      // filteredPositionListLength: incomingPositionList.length,
     });
   }
 
@@ -100,12 +100,12 @@ class PositionRowList extends Component {
   onCandidateStoreChange () {
     const { ballotItemWeVoteId } = this.props;
     // console.log('PositionRowList onCandidateStoreChange, ballotItemWeVoteId:', ballotItemWeVoteId);
-    let allCachedPositionsForThisBallotItem;
+    // let allCachedPositionsForThisBallotItem;
     if (ballotItemWeVoteId.includes('cand')) {
-      allCachedPositionsForThisBallotItem = CandidateStore.getAllCachedPositionsByCandidateWeVoteId(ballotItemWeVoteId);
+      // allCachedPositionsForThisBallotItem = CandidateStore.getAllCachedPositionsByCandidateWeVoteId(ballotItemWeVoteId);
       this.setState({
         // positionList: incomingPositionList,
-        incomingPositionList: allCachedPositionsForThisBallotItem,
+        // incomingPositionList: allCachedPositionsForThisBallotItem,
       });
     }
   }
@@ -140,12 +140,12 @@ class PositionRowList extends Component {
   onMeasureStoreChange () {
     const { ballotItemWeVoteId } = this.props;
     // console.log('PositionRowList onMeasureStoreChange, ballotItemWeVoteId:', ballotItemWeVoteId);
-    let allCachedPositionsForThisBallotItem;
+    // let allCachedPositionsForThisBallotItem;
     if (ballotItemWeVoteId.includes('meas')) {
-      allCachedPositionsForThisBallotItem = MeasureStore.getAllCachedPositionsByCandidateWeVoteId(ballotItemWeVoteId);
+      // allCachedPositionsForThisBallotItem = MeasureStore.getAllCachedPositionsByCandidateWeVoteId(ballotItemWeVoteId);
       this.setState({
         // positionList: incomingPositionList,
-        incomingPositionList: allCachedPositionsForThisBallotItem,
+        // incomingPositionList: allCachedPositionsForThisBallotItem,
       });
     }
   }
@@ -173,7 +173,7 @@ class PositionRowList extends Component {
     this.setState({
       positionList: positionListWithFollowedData,
       filteredPositionList: filteredPositionListWithFollowedData,
-      filteredPositionListLength: filteredPositionListWithFollowedData.length,
+      // filteredPositionListLength: filteredPositionListWithFollowedData.length,
     });
   }
 
@@ -181,8 +181,8 @@ class PositionRowList extends Component {
     // console.log('PositionRowList onFilteredItemsChange, filteredOrganizations:', filteredOrganizations);
     this.setState({
       filteredPositionList: filteredOrganizations,
-      filteredPositionListLength: filteredOrganizations.length,
-      isSearching: false,
+      // filteredPositionListLength: filteredOrganizations.length,
+      // isSearching: false,
     });
   }
 
@@ -244,14 +244,14 @@ const styles = () => ({
   },
 });
 
-const CandidateEndorsementsContainer = styled.div`
+const CandidateEndorsementsContainer = styled('div')`
   display: flex;
   justify-content: flex-start;
   overflow-x: auto;
-  overflow-y: hidden:
+  overflow-y: hidden;
 `;
 
-const CandidateEndorsementContainer = styled.div`
+const CandidateEndorsementContainer = styled('div')`
   min-width: 50px;
   width: 50px;
   @media (max-width: ${({ theme }) => theme.breakpoints.xs}) {

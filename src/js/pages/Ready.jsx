@@ -1,8 +1,9 @@
-import { withStyles, withTheme } from '@material-ui/core/styles';
+import styled from '@mui/material/styles/styled';
+import withStyles from '@mui/styles/withStyles';
+import withTheme from '@mui/styles/withTheme';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
 import Helmet from 'react-helmet';
-import styled from 'styled-components';
 import ActivityActions from '../actions/ActivityActions';
 import AnalyticsActions from '../actions/AnalyticsActions';
 import BallotActions from '../actions/BallotActions';
@@ -24,6 +25,7 @@ import ReadyTaskFriends from '../components/Ready/ReadyTaskFriends';
 import ReadyTaskPlan from '../components/Ready/ReadyTaskPlan';
 import ReadyTaskRegister from '../components/Ready/ReadyTaskRegister';
 import ShareButtonDesktopTablet from '../components/Share/ShareButtonDesktopTablet';
+import { PageContentContainer } from '../components/Style/pageLayoutStyles';
 import ValuesToFollowPreview from '../components/Values/ValuesToFollowPreview';
 import BrowserPushMessage from '../components/Widgets/BrowserPushMessage';
 import SnackNotifier, { openSnackbar } from '../components/Widgets/SnackNotifier';
@@ -33,7 +35,6 @@ import BallotStore from '../stores/BallotStore';
 import IssueStore from '../stores/IssueStore';
 import VoterStore from '../stores/VoterStore';
 import lazyPreloadPages from '../utils/lazyPreloadPages';
-import { PageContentContainer } from '../components/Style/pageLayoutStyles';
 
 const ReadMore = React.lazy(() => import(/* webpackChunkName: 'ReadMore' */ '../common/components/Widgets/ReadMore'));
 const FirstAndLastNameRequiredAlert = React.lazy(() => import(/* webpackChunkName: 'FirstAndLastNameRequiredAlert' */ '../components/Widgets/FirstAndLastNameRequiredAlert'));
@@ -225,7 +226,7 @@ class Ready extends Component {
     return (
       <PageContentContainer>
         <Suspense fallback={<LoadingWheelComp />}>
-          <PageContainer className="container-fluid" style={this.getTopPadding()}>
+          <ReadyPageContainer className="container-fluid" style={this.getTopPadding()}>
             <SnackNotifier />
             <Helmet title="Ready to Vote? - We Vote" />
             <BrowserPushMessage incomingProps={this.props} />
@@ -339,7 +340,7 @@ class Ready extends Component {
                 {/* nextReleaseFeaturesEnabled && <PledgeToVote /> */}
               </div>
             </div>
-          </PageContainer>
+          </ReadyPageContainer>
         </Suspense>
       </PageContentContainer>
     );
@@ -366,26 +367,26 @@ const styles = (theme) => ({
   },
 });
 
-const Card = styled.div`
+const Card = styled('div')`
   padding-bottom: 4px;
 `;
 
-const EditAddressCard = styled.div`
+const EditAddressCard = styled('div')`
   padding: 12px 15px 0 15px;
 `;
 
-const EditAddressWrapper = styled.div`
+const EditAddressWrapper = styled('div')`
   @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
     padding-left: 0 !important;
     padding-right: 0 !important;
   }
 `;
 
-const ElectionCountdownMobileTabletWrapper = styled.div`
+const ElectionCountdownMobileTabletWrapper = styled('div')`
   margin-top: -37px; // 29px for height of ShareButtonDesktopTablet - 8px for margin-top
 `;
 
-const SuspenseCard = styled.div`
+const SuspenseCard = styled('div')`
   position: relative;
   display: flex;
   flex-direction: column;
@@ -393,28 +394,28 @@ const SuspenseCard = styled.div`
   height: 138px;
 `;
 
-const MobileTabletCountdownWrapper = styled.div`
+const MobileTabletCountdownWrapper = styled('div')`
   position: relative;
   z-index: 1;
 `;
 
-const PageContainer = styled.div`
+const ReadyPageContainer = styled('div')`
 // This is a bad place to set a top padding for the scrollable pane, it should be in Application__Wrapper
 `;
 
-const Paragraph = styled.div`
+const Paragraph = styled('div')`
 `;
 
-const ShareButtonInnerWrapper = styled.div`
+const ShareButtonInnerWrapper = styled('div')`
   z-index: 2;
 `;
 
-const ShareButtonDesktopWrapper = styled.div`
+const ShareButtonDesktopWrapper = styled('div')`
   display: flex;
   justify-content: center;
 `;
 
-const ShareButtonTabletWrapper = styled.div`
+const ShareButtonTabletWrapper = styled('div')`
   display: flex;
   height: 29px;
   justify-content: flex-end;
@@ -423,7 +424,7 @@ const ShareButtonTabletWrapper = styled.div`
   z-index: 2;
 `;
 
-const Title = styled.h2`
+const Title = styled('h2')`
   font-size: 26px;
   font-weight: 800;
   margin: 0 0 12px;
@@ -433,7 +434,7 @@ const Title = styled.h2`
   }
 `;
 
-const ValuesListWrapper = styled.div`
+const ValuesListWrapper = styled('div')`
   margin-top: 12px;
   margin-bottom: 12px;
 `;

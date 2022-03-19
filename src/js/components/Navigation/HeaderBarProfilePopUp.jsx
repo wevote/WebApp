@@ -1,9 +1,9 @@
-import { Button } from '@material-ui/core';
-import { withStyles } from '@material-ui/core/styles';
+import { Button } from '@mui/material';
+import styled from '@mui/material/styles/styled';
+import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import styled from 'styled-components';
 import { isAndroidSizeXL, restoreStylesAfterCordovaKeyboard } from '../../common/utils/cordovaUtils';
 import { isCordova, isWebApp } from '../../common/utils/isCordovaOrWebApp';
 import { renderLog } from '../../common/utils/logging';
@@ -222,7 +222,7 @@ HeaderBarProfilePopUp.propTypes = {
   voter: PropTypes.object,
 };
 
-const ProfileMenu = styled.div`
+const ProfileMenu = styled('div')`
   right: calc((100% - 965px)/2);
   @media (max-width: 965px) {
     right: 15px;
@@ -247,7 +247,7 @@ const styles = {
   },
 };
 
-const ListItemWrapper = styled.div`
+const ListItemWrapper = styled('div')`
   padding: 5px 0 5px 0;
 `;
 

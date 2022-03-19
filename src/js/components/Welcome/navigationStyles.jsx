@@ -1,13 +1,13 @@
-import styled from 'styled-components';
+import styled from '@mui/material/styles/styled';
 import { Link } from 'react-router-dom';
 
-const LogoContainer = styled.div`
+const LogoContainer = styled('div')`
   @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
     width: 100px;
   }
 `;
 
-const Navigation = styled.div`
+const Navigation = styled('div')`
   display: flex;
   flex-flow: row;
   color: white;
@@ -25,14 +25,14 @@ const NavLink = styled(Link)`
   }
 `;
 
-const Divider = styled.div`
+const Divider = styled('div')`
   width: 2px;
   background: rgba(255, 255, 255, 0.2);
   margin: 0 .3em;
   padding: 12px 0;
 `;
 
-const MobileNavigationMenu = styled.div`
+const MobileNavigationMenu = styled('div')`
   position: absolute;
   left: -32px;
   top: 0;
@@ -45,13 +45,13 @@ const MobileNavigationMenu = styled.div`
   transition: all 150ms ease-in;
 `;
 
-const MobileNavDivider = styled.div`
+const MobileNavDivider = styled('div')`
   width: 100%;
   border-bottom: 1px solid rgba(255, 255, 255, 0.3);
   margin: .6em 0;
 `;
 
-const NavRow = styled.div`
+const NavRow = styled('div')`
   display: flex;
   height: 32px;
   justify-content: space-between;

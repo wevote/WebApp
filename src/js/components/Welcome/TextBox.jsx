@@ -1,8 +1,8 @@
-import React, { Component } from 'react';
+import { InputBase } from '@mui/material';
+import styled from '@mui/material/styles/styled';
+import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
-import styled from 'styled-components';
-import { InputBase } from '@material-ui/core';
-import { withStyles } from '@material-ui/core/styles';
+import React, { Component } from 'react';
 import { renderLog } from '../../common/utils/logging';
 
 class TextBox extends Component {
@@ -43,7 +43,7 @@ const styles = (theme) => ({
   },
 });
 
-const Container = styled.div`
+const Container = styled('div')`
   border-radius: 32px;
   min-width: 100px;
   width: 100%;
@@ -60,7 +60,7 @@ const Container = styled.div`
   }
 `;
 
-const IconContainer = styled.div`
+const IconContainer = styled('div')`
   color: rgb(107, 122, 155);
   padding-right: 4px;
   @media (max-width: ${({ theme }) => theme.breakpoints.md}) {

@@ -1,13 +1,13 @@
+import styled from '@mui/material/styles/styled';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import styled from 'styled-components';
 import AnalyticsActions from '../../actions/AnalyticsActions';
 import OrganizationActions from '../../actions/OrganizationActions';
-import OrganizationStore from '../../stores/OrganizationStore';
-import VoterStore from '../../stores/VoterStore';
+import LoadingWheel from '../../common/components/Widgets/LoadingWheel';
 import { prepareForCordovaKeyboard, restoreStylesAfterCordovaKeyboard } from '../../common/utils/cordovaUtils';
 import { renderLog } from '../../common/utils/logging';
-import LoadingWheel from '../../common/components/Widgets/LoadingWheel';
+import OrganizationStore from '../../stores/OrganizationStore';
+import VoterStore from '../../stores/VoterStore';
 
 const delayBeforeRemovingSavedStatus = 2000;
 
@@ -321,6 +321,6 @@ SettingsWidgetAccountType.propTypes = {
   showEditToggleOption: PropTypes.bool, // Should the voter be able to hide/show the form fields
 };
 
-const Wrapper = styled.div`
+const Wrapper = styled('div')`
   margin-top: 20px;
 `;

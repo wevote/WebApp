@@ -1,13 +1,13 @@
-import { Button } from '@material-ui/core';
+import { Button } from '@mui/material';
+import styled from '@mui/material/styles/styled';
 import PropTypes from 'prop-types';
 import React from 'react';
-import styled from 'styled-components';
 import BallotActions from '../../actions/BallotActions';
-import BallotStore from '../../stores/BallotStore';
-import historyPush from '../../common/utils/historyPush';
 import { formatDateToMonthDayYear } from '../../common/utils/dateFormat';
+import historyPush from '../../common/utils/historyPush';
 import initializeMoment from '../../common/utils/initializeMoment';
 import { renderLog } from '../../common/utils/logging';
+import BallotStore from '../../stores/BallotStore';
 
 
 class ElectionCountdown extends React.Component {
@@ -180,7 +180,7 @@ class ElectionCountdown extends React.Component {
               </CardTitleUpcoming>
             </div>
             <div>
-              <CardSubTitle center>
+              <CardSubTitle center="true">
                 {(electionDateMDY) ? (
                   <>
                     until your next election on
@@ -379,7 +379,7 @@ ElectionCountdown.propTypes = {
   initialDelay: PropTypes.number,
 };
 
-const CardCountdown = styled.div`
+const CardCountdown = styled('div')`
   align-items: center;
   flex-direction: row;
   justify-content: center;
@@ -391,10 +391,10 @@ const CardCountdown = styled.div`
   }
 `;
 
-const CardCountdownInternalWrapper = styled.div`
+const CardCountdownInternalWrapper = styled('div')`
 `;
 
-const CardTitleUpcoming = styled.h1`
+const CardTitleUpcoming = styled('h1')`
   color: #2E3C5D !important;
   font-size: 64px;
   font-weight: 900;
@@ -406,7 +406,7 @@ const CardTitleUpcoming = styled.h1`
   }
 `;
 
-const CardTitleToday = styled.h1`
+const CardTitleToday = styled('h1')`
   color: #2E3C5D !important;
   font-size: 60px;
   font-weight: 900;
@@ -418,7 +418,7 @@ const CardTitleToday = styled.h1`
   }
 `;
 
-const CardTitlePast = styled.h1`
+const CardTitlePast = styled('h1')`
   color: #2E3C5D !important;
   font-size: 48px;
   font-weight: 900;
@@ -433,42 +433,44 @@ const CardTitlePast = styled.h1`
   }
 `;
 
-const CardSubTitle = styled.h3`
-  font-size: ${(props) => (props.desktopMode ? '18px' : '22px')};
+const CardSubTitle = styled('h3', {
+  shouldForwardProp: (prop) => !['desktopMode', 'center'].includes(prop),
+})(({ desktopMode, center, theme }) => (`
+  font-size: ${desktopMode ? '18px' : '22px'};
   font-weight: 700;
   color: #2E3C5D !important;
   // width: fit-content;
   margin-bottom: 0 !important;
-  margin-top: ${(props) => (props.desktopMode ? '24px' : null)};
+  margin-top: ${desktopMode ? '24px' : null};
   width: 100%;
-  text-align: ${(props) => (props.center ? 'center' : 'left')};
+  text-align: ${center ? 'center' : 'left'};
   // border-bottom: 1px solid #2E3C5D;
-  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+  @media (max-width: ${theme.breakpoints.values.md}) {
     font-size: 14px;
   }
-  @media (max-width: ${({ theme }) => theme.breakpoints.xs}) {
+  @media (max-width: ${theme.breakpoints.values.xs}) {
     font-size: 13px;
   }
-`;
+`));
 
-const DaysFindingText = styled.div`
+const DaysFindingText = styled('div')`
   color: #ccc;
   font-size: 20px;
   margin-top: 20px;
 `;
 
-const SpaceBetweenNumberAndWord = styled.span`
+const SpaceBetweenNumberAndWord = styled('span')`
   margin-left: 8px;
 `;
 
-const TimeFlex = styled.div`
+const TimeFlex = styled('div')`
   width: 100%;
   display: flex;
   justify-content: center;
   margin: 0 -8px 0 -8px;
 `;
 
-const TimeSection = styled.div`
+const TimeSection = styled('div')`
   padding: 0 8px;
   display: flex;
   flex-direction: column;
@@ -477,14 +479,16 @@ const TimeSection = styled.div`
   color: #2E3C5D !important;
 `;
 
-const Time = styled.h1`
-  ${(props) => (props.timeStillLoading ? 'color: #ccc;' : '')}
+const Time = styled('h1', {
+  shouldForwardProp: (prop) => !['timeStillLoading'].includes(prop),
+})(({ timeStillLoading }) => (`
+  ${timeStillLoading ? 'color: #ccc;' : ''}
   font-size: 60px !important;
   font-weight: 800 !important;
   margin: 0;
-`;
+`));
 
-const Small = styled.small`
+const Small = styled('small')`
   font-size: 18px !important;
 `;
 

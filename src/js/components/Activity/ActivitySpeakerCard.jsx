@@ -1,16 +1,16 @@
-import { Twitter } from '@material-ui/icons';
+import { Twitter } from '@mui/icons-material';
+import styled from '@mui/material/styles/styled';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
-import styled from 'styled-components';
+import LoadingWheel from '../../common/components/Widgets/LoadingWheel';
+import { timeFromDate } from '../../common/utils/dateFormat';
+import { renderLog } from '../../common/utils/logging';
+import normalizedImagePath from '../../common/utils/normalizedImagePath';
 import ActivityStore from '../../stores/ActivityStore';
 import VoterStore from '../../stores/VoterStore';
 import { createDescriptionOfFriendPosts } from '../../utils/activityUtils';
-import normalizedImagePath from '../../common/utils/normalizedImagePath';
-import { timeFromDate } from '../../common/utils/dateFormat';
-import { renderLog } from '../../common/utils/logging';
 import { numberWithCommas } from '../../utils/textFormat';
 import StickyPopover from '../Ballot/StickyPopover';
-import LoadingWheel from '../../common/components/Widgets/LoadingWheel';
 import OrganizationPopoverCard from '../Organization/OrganizationPopoverCard';
 import FriendsOnlyIndicator from '../Widgets/FriendsOnlyIndicator';
 
@@ -189,26 +189,26 @@ ActivitySpeakerCard.propTypes = {
   showTwitterInformation: PropTypes.bool,
 };
 
-const ActionDescriptionWrapper = styled.div`
+const ActionDescriptionWrapper = styled('div')`
   font-size: 14px;
   margin-left: 3px;
   margin-top: 4px;
-  padding: 0px !important;
+  padding: 0 !important;
 `;
 
-const ActivityImage = styled.img`
+const ActivityImage = styled('img')`
   border-radius: 25px;
   width: 50px;
 `;
 
-const ActivityTime = styled.div`
+const ActivityTime = styled('div')`
   color: #999;
   font-size: 11px;
   font-weight: 400;
   margin-right: 6px;
 `;
 
-const SpeakerAvatar = styled.div`
+const SpeakerAvatar = styled('div')`
   background: transparent;
   display: flex;
   justify-content: center;
@@ -216,45 +216,45 @@ const SpeakerAvatar = styled.div`
   position: relative;
 `;
 
-const SecondLineWrapper = styled.div`
+const SecondLineWrapper = styled('div')`
 `;
 
-const SpeakerActionTimeWrapper = styled.div`
+const SpeakerActionTimeWrapper = styled('div')`
   margin-left: 6px;
 `;
 
-const SpeakerAndActionWrapper = styled.div`
+const SpeakerAndActionWrapper = styled('div')`
   align-items: flex-start;
   display: flex;
   justify-content: start;
 `;
 
-const SpeakerNameWrapper = styled.div`
+const SpeakerNameWrapper = styled('div')`
   font-size: 18px;
   font-weight: 700;
-  padding: 0px !important;
+  padding: 0 !important;
   margin-right: 3px;
 `;
 
-const TimeAndFriendsOnlyWrapper = styled.div`
+const TimeAndFriendsOnlyWrapper = styled('div')`
   align-items: center;
   display: flex;
   justify-content: start;
 `;
 
-const TwitterHandleWrapper = styled.span`
+const TwitterHandleWrapper = styled('span')`
   margin-right: 10px;
 `;
 
-const TwitterName = styled.span`
+const TwitterName = styled('span')`
 `;
 
-const Wrapper = styled.div`
+const Wrapper = styled('div')`
   align-items: flex-start;
   display: flex;
   font-size: 14px;
   justify-content: flex-start;
-  padding: 0px !important;
+  padding: 0 !important;
 `;
 
 export default ActivitySpeakerCard;

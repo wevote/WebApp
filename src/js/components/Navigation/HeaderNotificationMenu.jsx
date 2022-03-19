@@ -1,20 +1,20 @@
-import { Badge, IconButton, Menu, MenuItem } from '@material-ui/core';
-import { withStyles } from '@material-ui/core/styles';
-import { Notifications } from '@material-ui/icons';
+import { Notifications } from '@mui/icons-material';
+import { Badge, IconButton, Menu, MenuItem } from '@mui/material';
+import styled from '@mui/material/styles/styled';
+import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
-import styled from 'styled-components';
 import ActivityActions from '../../actions/ActivityActions';
-import ActivityStore from '../../stores/ActivityStore';
-import { createDescriptionOfFriendPosts } from '../../utils/activityUtils';
 import apiCalming from '../../common/utils/apiCalming';
 import { isIOSAppOnMac, setIconBadgeMessageCount } from '../../common/utils/cordovaUtils';
-import { isWebApp } from '../../common/utils/isCordovaOrWebApp';
-import historyPush from '../../common/utils/historyPush';
 import { timeFromDate } from '../../common/utils/dateFormat';
+import historyPush from '../../common/utils/historyPush';
+import { isWebApp } from '../../common/utils/isCordovaOrWebApp';
 import { renderLog } from '../../common/utils/logging';
 import returnFirstXWords from '../../common/utils/returnFirstXWords';
+import ActivityStore from '../../stores/ActivityStore';
 import VoterStore from '../../stores/VoterStore';
+import { createDescriptionOfFriendPosts } from '../../utils/activityUtils';
 
 const ImageHandler = React.lazy(() => import(/* webpackChunkName: 'ImageHandler' */ '../ImageHandler'));
 
@@ -268,6 +268,7 @@ class HeaderNotificationMenu extends Component {
           classes={menuOpen ? { root: classes.iconButtonRootSelected } : { root: classes.iconButtonRoot }}
           id="headerNotificationMenuIcon"
           onClick={this.handleClick}
+          size="large"
         >
           {allActivityNoticesNotSeenCount ? (
             <Badge
@@ -295,8 +296,7 @@ class HeaderNotificationMenu extends Component {
           open={menuOpen}
           onClose={this.handleClose}
           elevation={2}
-          getContentAnchorEl={null}
-          anchorEl={anchorEl}
+           anchorEl={anchorEl}
           anchorOrigin={{
             vertical: 'bottom',
             horizontal: 'right',
@@ -397,18 +397,18 @@ const styles = (theme) => ({
   },
 });
 
-const ActivityTime = styled.div`
+const ActivityTime = styled('div')`
   color: #999;
   font-size: 11px;
   font-weight: 400;
 `;
 
-const BadgeCountWrapper = styled.span`
+const BadgeCountWrapper = styled('span')`
   margin-top: -3px;
   margin-left: 1px;
 `;
 
-const HeaderNotificationMenuWrapper = styled.div`
+const HeaderNotificationMenuWrapper = styled('div')`
   height: 48px;
   margin-right: 12px;
   @media (min-width: 576px) {
@@ -416,13 +416,13 @@ const HeaderNotificationMenuWrapper = styled.div`
   }
 `;
 
-const MenuItemInternalWrapper = styled.div`
+const MenuItemInternalWrapper = styled('div')`
   align-items: flex-start;
   display: flex;
   justify-content: flex-start;
 `;
 
-const MenuItemPhoto = styled.div`
+const MenuItemPhoto = styled('div')`
   min-width: 48px;
   * {
     border-radius: 24px;
@@ -430,20 +430,20 @@ const MenuItemPhoto = styled.div`
   }
 `;
 
-const MenuItemText = styled.div`
+const MenuItemText = styled('div')`
   margin-left: 12px;
 `;
 
-const NotificationsHeaderWrapper = styled.div`
+const NotificationsHeaderWrapper = styled('div')`
   display: flex;
   justify-content: space-between;
   width: 100%;
 `;
 
-const NotificationsSettings = styled.div`
+const NotificationsSettings = styled('div')`
 `;
 
-const NotificationsTitle = styled.div`
+const NotificationsTitle = styled('div')`
   font-weight: 600;
 `;
 

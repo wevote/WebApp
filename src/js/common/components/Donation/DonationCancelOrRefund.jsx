@@ -1,8 +1,8 @@
-import React, { Component } from 'react';
-import { Button, Grid, Modal } from '@material-ui/core';
+import { Button, Grid, Modal } from '@mui/material';
+import styled from '@mui/material/styles/styled';
 import moment from 'moment';
 import PropTypes from 'prop-types';
-import styled from 'styled-components';
+import React, { Component } from 'react';
 import DonateActions from '../../actions/DonateActions';
 import { renderLog } from '../../utils/logging';
 
@@ -149,7 +149,7 @@ DonationCancelOrRefund.propTypes = {
   showPremiumPlan: PropTypes.bool,
 };
 
-const StyledModalFrame = styled.div`
+const StyledModalFrame = styled('div')`
   color: black;
   background-color: white;
   width: 340px;
@@ -166,6 +166,6 @@ const StyledModalFrame = styled.div`
   }
 `;
 
-const ButtonSpacer = styled.div`
+const ButtonSpacer = styled('div')`
   margin: 8px 0;
 `;

@@ -1,15 +1,16 @@
-import { IconButton, InputBase } from '@material-ui/core';
-import { withStyles, withTheme } from '@material-ui/core/styles';
-import { Search } from '@material-ui/icons';
+import { Search } from '@mui/icons-material';
+import { IconButton, InputBase } from '@mui/material';
+import styled from '@mui/material/styles/styled';
+import withStyles from '@mui/styles/withStyles';
+import withTheme from '@mui/styles/withTheme';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
 import { Link } from 'react-router-dom';
-import styled from 'styled-components';
-import VoterGuideStore from '../../stores/VoterGuideStore';
 import { blurTextFieldAndroid, focusTextFieldAndroid, isAndroid, isIOS } from '../../common/utils/cordovaUtils';
-import { isCordova } from '../../common/utils/isCordovaOrWebApp';
 import historyPush from '../../common/utils/historyPush';
+import { isCordova } from '../../common/utils/isCordovaOrWebApp';
 import { renderLog } from '../../common/utils/logging';
+import VoterGuideStore from '../../stores/VoterGuideStore';
 
 const ImageHandler = React.lazy(() => import(/* webpackChunkName: 'ImageHandler' */ '../ImageHandler'));
 
@@ -118,7 +119,7 @@ class FindOpinionsForm extends Component {
 
   render () {
     renderLog('FindOpinionsForm');  // Set LOG_RENDER_EVENTS to log all renders
-    const { classes, headerText, introHeaderLink, searchTextLarge, theme, uniqueExternalId } = this.props;
+    const { classes, headerText, introHeaderLink, searchTextLarge, uniqueExternalId } = this.props;
     const { opinionPhotosHtml, searchText } = this.state;
     const inputBaseInputClasses = searchTextLarge ? classes.inputDefaultLarge : classes.inputDefault;
     const inputBaseRootClasses = searchTextLarge ? classes.inputBaseRootLarge : classes.inputBaseRoot;
@@ -143,8 +144,6 @@ class FindOpinionsForm extends Component {
             </IntroHeader>
           )}
           <SearchWrapper
-            brandBlue={theme.palette.primary.main}
-            isCordova={isCordova()}
             searchTextLarge={searchTextLarge}
           >
             <InputBase
@@ -163,6 +162,7 @@ class FindOpinionsForm extends Component {
               classes={{ root: classes.iconButtonRoot }}
               id={`findCandidatesAndOpinionsIconClick-${uniqueExternalId}`}
               onClick={this.goToSearchPage}
+              size="large"
             >
               <Search classes={{ root: searchIconClasses }} />
             </IconButton>
@@ -181,7 +181,6 @@ FindOpinionsForm.propTypes = {
   introHeaderLink: PropTypes.string,
   searchTextLarge: PropTypes.bool,
   showVoterGuidePhotos: PropTypes.bool,
-  theme: PropTypes.object,
   uniqueExternalId: PropTypes.string,
 };
 
@@ -191,8 +190,6 @@ const styles = (theme) => ({
     padding: '4px 8px',
     height: 32,
     width: '100%',
-    [theme.breakpoints.down('md')]: {
-    },
     [theme.breakpoints.down('sm')]: {
       padding: '4px 4px',
     },
@@ -276,10 +273,10 @@ const styles = (theme) => ({
   },
 });
 
-const InnerWrapper = styled.div`
+const InnerWrapper = styled('div')`
 `;
 
-const IntroHeader = styled.div`
+const IntroHeader = styled('div')`
   margin: 0;
   font-size: 18px;
   font-weight: 600;
@@ -290,11 +287,11 @@ const IntroHeader = styled.div`
   }
 `;
 
-const OneVoterGuideWrapper = styled.div`
+const OneVoterGuideWrapper = styled('div')`
   margin: 1px !important;
 `;
 
-const OuterWrapper = styled.div`
+const OuterWrapper = styled('div')`
   display: flex;
   justify-content: center;
   padding: 0 !important;
@@ -302,31 +299,33 @@ const OuterWrapper = styled.div`
   max-width: 260px;
 `;
 
-const PublicFiguresAndOrganizationsList = styled.div`
+const PublicFiguresAndOrganizationsList = styled('div')`
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
 `;
 
-const PublicFiguresAndOrganizationsWrapper = styled.div`
+const PublicFiguresAndOrganizationsWrapper = styled('div')`
 `;
 
-const Separator = styled.div`
+const Separator = styled('div')`
   // background: rgba(0, 0, 0, .2);
   // display: 'inherit';
   // height: 100%;
   // width: 1px;
 `;
 
-const SearchWrapper = styled.div`
+const SearchWrapper = styled('div', {
+  shouldForwardProp: (prop) => !['searchTextLarge'].includes(prop),
+})(({ searchTextLarge }) => (`
   display: flex;
   flex-flow: row;
   border-radius: 4px;
-  height: ${({ searchTextLarge }) => (searchTextLarge ? '32px' : '26px')};
+  height: ${searchTextLarge ? '32px' : '26px'};
   border: 1px solid #ccc;
   padding: 0 3px 0 3px;
   margin-bottom: 8px;
   text-align: center;
-`;
+`));
 
 export default withTheme(withStyles(styles)(FindOpinionsForm));

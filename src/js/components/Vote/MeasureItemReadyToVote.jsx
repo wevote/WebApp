@@ -1,10 +1,10 @@
-import { withStyles } from '@material-ui/core/styles';
+import styled from '@mui/material/styles/styled';
+import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
-import styled from 'styled-components';
+import { renderLog } from '../../common/utils/logging';
 import SupportStore from '../../stores/SupportStore';
 import VoterGuideStore from '../../stores/VoterGuideStore';
-import { renderLog } from '../../common/utils/logging';
 
 const BallotItemSupportOpposeCountDisplay = React.lazy(() => import(/* webpackChunkName: 'BallotItemSupportOpposeCountDisplay' */ '../Widgets/BallotItemSupportOpposeCountDisplay'));
 
@@ -92,30 +92,30 @@ MeasureItemReadyToVote.propTypes = {
 const styles = ({
 });
 
-const Wrapper = styled.div`
+const Wrapper = styled('div')`
   padding: 24px 24px 20px 24px;
   transition: all 200ms ease-in;
   border: 1px solid transparent;
   border-radius: 4px;
 `;
 
-const InnerWrapper = styled.div`
+const InnerWrapper = styled('div')`
   display: flex;
   justify-content: space-between;
   margin-bottom: 4px;
   width: 100%;
 `;
 
-const BioColumn = styled.div`
+const BioColumn = styled('div')`
   display: flex;
 `;
 
-const OfficeColumn = styled.div`
+const OfficeColumn = styled('div')`
   display: flex;
   float: right;
 `;
 
-const MeasureNameText = styled.p`
+const MeasureNameText = styled('p')`
   font-size: 18px;
   font-weight: 500;
   margin: auto 0;
@@ -128,13 +128,13 @@ const MeasureNameText = styled.p`
   }
 `;
 
-const BioInformation = styled.div`
+const BioInformation = styled('div')`
   display: flex;
   flex-flow: column;
   margin-left: 8px;
 `;
 
-const HR = styled.hr`
+const HR = styled('hr')`
   margin: 0 24px;
 `;
 

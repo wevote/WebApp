@@ -1,18 +1,18 @@
-import { withTheme } from '@material-ui/core/styles';
+import styled from '@mui/material/styles/styled';
+import withTheme from '@mui/styles/withTheme';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
 import { Link } from 'react-router-dom';
-import styled from 'styled-components';
 import BallotActions from '../../actions/BallotActions';
 import IssueActions from '../../actions/IssueActions';
 import VoterGuideActions from '../../actions/VoterGuideActions';
+import apiCalming from '../../common/utils/apiCalming';
+import historyPush from '../../common/utils/historyPush';
+import { renderLog } from '../../common/utils/logging';
 import BallotStore from '../../stores/BallotStore';
 import IssueStore from '../../stores/IssueStore';
 import VoterGuideStore from '../../stores/VoterGuideStore';
 import VoterStore from '../../stores/VoterStore';
-import apiCalming from '../../common/utils/apiCalming';
-import historyPush from '../../common/utils/historyPush';
-import { renderLog } from '../../common/utils/logging';
 import InfoCircleIcon from '../Widgets/InfoCircleIcon';
 
 const FriendInvitationOnboardingValuesList = React.lazy(() => import(/* webpackChunkName: 'ImageHandler' */ './FriendInvitationOnboardingValuesList'));
@@ -205,42 +205,42 @@ ValuesToFollowPreview.propTypes = {
   includeLinkToIssue: PropTypes.bool,
 };
 
-const OneVoterGuideWrapper = styled.div`
+const OneVoterGuideWrapper = styled('div')`
   margin: 1px !important;
   * {
     border-radius: 25px;
   }
 `;
 
-const PublicFiguresAndOrganizationsList = styled.div`
+const PublicFiguresAndOrganizationsList = styled('div')`
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
 `;
 
-const Row = styled.div`
+const Row = styled('div')`
   margin: 0 !important;
 `;
 
-const SectionInformation = styled.div`
+const SectionInformation = styled('div')`
   margin-bottom: 16px;
 `;
 
-const SectionTitle = styled.h2`
+const SectionTitle = styled('h2')`
   font-weight: bold;
   font-size: 18px;
   margin-bottom: 4px;
   width: fit-content;
 `;
 
-const SharedValuesTitle = styled.h2`
+const SharedValuesTitle = styled('h2')`
   font-weight: bold;
   font-size: 14px;
   margin-bottom: 4px;
   width: fit-content;
 `;
 
-const ThoseWhoShareYourValuesWrapper = styled.div`
+const ThoseWhoShareYourValuesWrapper = styled('div')`
   margin-bottom: 15px;
 `;
 

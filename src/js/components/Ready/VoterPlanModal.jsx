@@ -1,18 +1,19 @@
-import { Button, Checkbox, Dialog, DialogContent, FormControlLabel, IconButton, InputBase, Paper, Select } from '@material-ui/core';
-import { withStyles, withTheme } from '@material-ui/core/styles';
-import { Close, EditLocation } from '@material-ui/icons';
+import { Close, EditLocation } from '@mui/icons-material';
+import { Button, Checkbox, Dialog, DialogContent, FormControlLabel, IconButton, InputBase, Paper, Select } from '@mui/material';
+import styled from '@mui/material/styles/styled';
+import withStyles from '@mui/styles/withStyles';
+import withTheme from '@mui/styles/withTheme';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
-import styled from 'styled-components';
 import AnalyticsActions from '../../actions/AnalyticsActions';
 import ReadyActions from '../../actions/ReadyActions';
+import { hasIPhoneNotch } from '../../common/utils/cordovaUtils';
+import { formatDateToMonthDayYear } from '../../common/utils/dateFormat';
+import { renderLog } from '../../common/utils/logging';
 import webAppConfig from '../../config';
 import BallotStore from '../../stores/BallotStore';
 import ReadyStore from '../../stores/ReadyStore';
 import VoterStore from '../../stores/VoterStore';
-import { hasIPhoneNotch } from '../../common/utils/cordovaUtils';
-import { formatDateToMonthDayYear } from '../../common/utils/dateFormat';
-import { renderLog } from '../../common/utils/logging';
 
 const OpenExternalWebSite = React.lazy(() => import(/* webpackChunkName: 'OpenExternalWebSite' */ '../../common/components/Widgets/OpenExternalWebSite'));
 const nextReleaseFeaturesEnabled = webAppConfig.ENABLE_NEXT_RELEASE_FEATURES === undefined ? false : webAppConfig.ENABLE_NEXT_RELEASE_FEATURES;
@@ -292,6 +293,7 @@ class VoterPlanModal extends Component {
             className={classes.closeButton}
             id="closeVoterPlanModal"
             onClick={this.closeVoterPlanModal}
+            size="large"
           >
             <Close />
           </IconButton>
@@ -647,23 +649,23 @@ const styles = (theme) => ({
   },
 });
 
-const AddToMyCalendarWrapper = styled.div`
+const AddToMyCalendarWrapper = styled('div')`
 `;
 
-const CreatePlanWrapper = styled.div`
+const CreatePlanWrapper = styled('div')`
   line-height: 2;
 `;
 
-const HowWillIRememberWrapper = styled.div`
+const HowWillIRememberWrapper = styled('div')`
 `;
 
-const EmailReminderWrapper = styled.div`
+const EmailReminderWrapper = styled('div')`
 `;
 
-const TextReminderWrapper = styled.div`
+const TextReminderWrapper = styled('div')`
 `;
 
-const VoterPlanPreview = styled.div`
+const VoterPlanPreview = styled('div')`
   padding: 8px;
   background: #e8e8e8;
   font-size: 16px;
@@ -671,23 +673,25 @@ const VoterPlanPreview = styled.div`
   margin-top: 32px;
 `;
 
-const Bold = styled.h3`
+const Bold = styled('h3')`
   font-weight: bold;
   font-size: 18px;
 `;
 
-const InternalFormWrapper = styled.div`
+const InternalFormWrapper = styled('div')`
   display: flex;
   justify-content: center;
   margin-top: 4px;
 `;
 
 /* eslint no-nested-ternary: ["off"] */
-const ModalTitleArea = styled.div`
+const ModalTitleArea = styled('div', {
+  shouldForwardProp: (prop) => !['firstslide'].includes(prop),
+})(({ firstslide }) => (`
   justify-content: flex-start;
   align-items: center;
   width: 100%;
-  padding: ${(props) => (props.firstSlide ? '24px 24px 12px 24px' : '10px 14px')};
+  padding: ${firstslide ? '24px 24px 12px 24px' : '10px 14px'};
   z-index: 999;
   box-shadow: 0 0 25px 0 #ddd;
   @media (min-width: 769px) {
@@ -695,9 +699,9 @@ const ModalTitleArea = styled.div`
     box-shadow: 0 0 25px 0 #ddd;
   }
   display: flex;
-`;
+`));
 
-const ModalFooter = styled.div`
+const ModalFooter = styled('div')`
   box-shadow: 0 0 25px 0 #ddd;
   margin-bottom: 12px !important;
   padding: 12px 12px 0 12px;
@@ -709,7 +713,7 @@ const ModalFooter = styled.div`
   width: 100%;
 `;
 
-const Title = styled.h3`
+const Title = styled('h3')`
   font-size: 24px;
   color: black;
   margin-top: 0;

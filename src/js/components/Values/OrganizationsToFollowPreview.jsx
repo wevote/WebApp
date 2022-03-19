@@ -1,9 +1,9 @@
+import styled from '@mui/material/styles/styled';
 import React, { Component, Suspense } from 'react';
-import styled from 'styled-components';
-import VoterGuideStore from '../../stores/VoterGuideStore';
+import LoadingWheel from '../../common/components/Widgets/LoadingWheel';
 import historyPush from '../../common/utils/historyPush';
 import { renderLog } from '../../common/utils/logging';
-import LoadingWheel from '../../common/components/Widgets/LoadingWheel';
+import VoterGuideStore from '../../stores/VoterGuideStore';
 
 const GuideList = React.lazy(() => import(/* webpackChunkName: 'GuideList' */ '../VoterGuide/GuideList'));
 const ShowMoreFooter = React.lazy(() => import(/* webpackChunkName: 'ShowMoreFooter' */ '../Navigation/ShowMoreFooter'));
@@ -80,14 +80,14 @@ export default class OrganizationsToFollowPreview extends Component {
 OrganizationsToFollowPreview.propTypes = {
 };
 
-const SectionDescription = styled.div`
+const SectionDescription = styled('div')`
   font-weight: 200;
   font-size: 14px;
   margin-bottom: 16px;
   width: fit-content;
 `;
 
-const SectionTitle = styled.h2`
+const SectionTitle = styled('h2')`
   font-weight: bold;
   font-size: 18px;
   margin-bottom: 4px;

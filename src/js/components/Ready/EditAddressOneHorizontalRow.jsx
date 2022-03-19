@@ -1,8 +1,8 @@
-import { Button } from '@material-ui/core';
-import { withStyles } from '@material-ui/core/styles';
+import { Button } from '@mui/material';
+import styled from '@mui/material/styles/styled';
+import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import styled from 'styled-components';
 import BallotActions from '../../actions/BallotActions';
 import VoterActions from '../../actions/VoterActions';
 import { isIPhoneMiniOrSmaller, restoreStylesAfterCordovaKeyboard } from '../../common/utils/cordovaUtils';
@@ -225,7 +225,7 @@ EditAddressOneHorizontalRow.propTypes = {
   onSave: PropTypes.func,
 };
 
-const AddressExplanation = styled.div`
+const AddressExplanation = styled('div')`
   color: #999;
   font-size: 16px;
   font-weight: 400;
@@ -236,25 +236,25 @@ const AddressExplanation = styled.div`
   }
 `;
 
-const AddressLabel = styled.div`
+const AddressLabel = styled('div')`
   font-weight: 600;
   margin-right: 12px;
   ${() => (isIPhoneMiniOrSmaller() ? { display: 'flex' } : {})}
 `;
 
-const AddressLabelMobile = styled.div`
+const AddressLabelMobile = styled('div')`
   font-weight: 600;
   margin-bottom: 4px;
   text-align: center;
   ${() => (isIPhoneMiniOrSmaller() ? { display: 'flex' } : {})}
 `;
 
-const SubmitFormWrapper = styled.div`
+const SubmitFormWrapper = styled('div')`
   ${() => (isIPhoneMiniOrSmaller() ? { display: 'flex' } : {})}
   ${() => (isMobile() ? { width: '100%' } : {})}
 `;
 
-const InternalFormWrapper = styled.div`
+const InternalFormWrapper = styled('div')`
   display: flex;
   @media (max-width: 490px) {
     flex-wrap: wrap;
@@ -264,19 +264,19 @@ const InternalFormWrapper = styled.div`
   width: 100%;
 `;
 
-const OuterWrapper = styled.div`
-  margin-bottom: 8px !important;
-  width: 100%;
-`;
+const OuterWrapper = styled('div')({
+  marginBottom: '8px !important',
+  width: '100%',
+});
 
-const ButtonWrapper = styled.div`
+const ButtonWrapper = styled('div')`
   min-width: 208px;
   @media (max-width: 490px) {
     width: 100%;
   }
 `;
 
-const InnerWrapper = styled.div`
+const InnerWrapper = styled('div')`
   align-items: center;
   display: flex;
   justify-content: center;

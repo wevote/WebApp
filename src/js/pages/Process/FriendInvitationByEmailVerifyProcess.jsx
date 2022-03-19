@@ -1,15 +1,15 @@
+import { Button } from '@mui/material';
+import styled from '@mui/material/styles/styled';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
-import { Button } from '@material-ui/core';
-import styled from 'styled-components';
 import FriendActions from '../../actions/FriendActions';
 import VoterActions from '../../actions/VoterActions';
 import LoadingWheel from '../../common/components/Widgets/LoadingWheel';
+import historyPush from '../../common/utils/historyPush';
+import { renderLog } from '../../common/utils/logging';
 import AppObservableStore, { messageService } from '../../stores/AppObservableStore';
 import FriendStore from '../../stores/FriendStore';
 import VoterStore from '../../stores/VoterStore';
-import historyPush from '../../common/utils/historyPush';
-import { renderLog } from '../../common/utils/logging';
 
 const DelayedLoad = React.lazy(() => import(/* webpackChunkName: 'DelayedLoad' */ '../../common/components/Widgets/DelayedLoad'));
 
@@ -288,7 +288,7 @@ FriendInvitationByEmailVerifyProcess.propTypes = {
   match: PropTypes.object,
 };
 
-const CenteredText = styled.div`
+const CenteredText = styled('div')`
   align-items: center;
   display: flex;
   flex-direction: column;

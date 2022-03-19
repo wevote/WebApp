@@ -1,10 +1,11 @@
-import { withStyles, withTheme } from '@material-ui/core/styles';
-import { ArrowForward, CheckCircle } from '@material-ui/icons';
+import { ArrowForward, CheckCircle } from '@mui/icons-material';
+import withStyles from '@mui/styles/withStyles';
+import withTheme from '@mui/styles/withTheme';
 import PropTypes from 'prop-types';
 import React from 'react';
-import normalizedImagePath from '../../common/utils/normalizedImagePath';
 import historyPush from '../../common/utils/historyPush';
 import { renderLog } from '../../common/utils/logging';
+import normalizedImagePath from '../../common/utils/normalizedImagePath';
 import { ButtonLeft, ButtonText, Icon, PercentComplete, ReadyCard, StyledButton, StyledCheckbox, StyledCheckboxCompleted, SubTitle, Title, TitleRowWrapper } from './ReadyTaskStyles';
 
 const register0Percent = '../../../img/global/svg-icons/ready/register-0-percent.svg';

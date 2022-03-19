@@ -1,13 +1,14 @@
-import { Button, Dialog, DialogContent, DialogTitle, FormControl, IconButton, InputLabel, Select } from '@material-ui/core';
-import { withStyles, withTheme } from '@material-ui/core/styles';
-import { Close } from '@material-ui/icons';
+import { Close } from '@mui/icons-material';
+import { Button, Dialog, DialogContent, DialogTitle, FormControl, IconButton, InputLabel, Select } from '@mui/material';
+import styled from '@mui/material/styles/styled';
+import withStyles from '@mui/styles/withStyles';
+import withTheme from '@mui/styles/withTheme';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
-import styled from 'styled-components';
 import AnalyticsActions from '../../actions/AnalyticsActions';
-import VoterStore from '../../stores/VoterStore';
 import { hasIPhoneNotch } from '../../common/utils/cordovaUtils';
 import { renderLog } from '../../common/utils/logging';
+import VoterStore from '../../stores/VoterStore';
 import { calculateBallotBaseUrl } from '../../utils/textFormat';
 import EditAddressInPlace from '../Widgets/EditAddressInPlace';
 
@@ -79,6 +80,7 @@ class SelectBallotModal extends Component {
             classes={{ root: classes.closeButton }}
             onClick={() => { this.props.toggleFunction(); }}
             id="profileCloseSelectBallotModal"
+            size="large"
           >
             <Close />
           </IconButton>
@@ -254,8 +256,8 @@ const styles = (theme) => ({
   },
   closeButton: {
     position: 'absolute',
-    right: `${theme.spacing(1)}px`,
-    top: `${theme.spacing(1)}px`,
+    right: theme.spacing(1),
+    top: theme.spacing(1),
   },
   formControl: {
     width: '100%',
@@ -267,16 +269,16 @@ const styles = (theme) => ({
   },
 });
 
-const EditAddressInPlaceWrapperMobile = styled.div`
+const EditAddressInPlaceWrapperMobile = styled('div')`
   margin-top: 18px;
   width: 100%;
 `;
 
-const ElectionChoiceWrapper = styled.div`
+const ElectionChoiceWrapper = styled('div')`
   margin-top: 12px;
 `;
 
-const Title = styled.div`
+const Title = styled('div')`
   font-size: 20px;
   font-weight: bold;
   margin: 0;
@@ -284,7 +286,7 @@ const Title = styled.div`
   text-align: left;
 `;
 
-const Row = styled.div`
+const Row = styled('div')`
   margin-top: -8px;
   margin-bottom: -8px;
   margin-left: auto;
@@ -297,7 +299,7 @@ const Row = styled.div`
   }
 `;
 
-const MapChartWrapper = styled.div`
+const MapChartWrapper = styled('div')`
   display: block;
   width: 100%;
   padding: 12px;
@@ -321,7 +323,7 @@ const MapChartWrapper = styled.div`
   // }
 `;
 
-const MapChartWrapperDesktop = styled.div`
+const MapChartWrapperDesktop = styled('div')`
   display: block;
   width: 50%;
   padding: 12px;
@@ -340,7 +342,7 @@ const MapChartWrapperDesktop = styled.div`
   }
 `;
 
-const SidebarWrapper = styled.div`
+const SidebarWrapper = styled('div')`
   padding: 16px;
   @media (max-width: 575px) {
     padding-top: 0;
@@ -352,11 +354,13 @@ const SidebarWrapper = styled.div`
   }
 `;
 
-const BallotElectionListWrapper = styled.div`
-  margin-top: ${(props) => (props.addTopMargin ? '24px' : '0')};
-`;
+const BallotElectionListWrapper = styled('div', {
+  shouldForwardProp: (prop) => !['addTopMargin'].includes(prop),
+})(({ addTopMargin }) => (`
+  margin-top: ${addTopMargin ? '24px' : '0'};
+`));
 
-const ToggleGroup = styled.div`
+const ToggleGroup = styled('div')`
   display: flex;
   align-items: center;
   justify-content: center;

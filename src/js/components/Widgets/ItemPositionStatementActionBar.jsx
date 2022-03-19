@@ -1,14 +1,15 @@
-import { Button, InputBase, Paper } from '@material-ui/core';
-import { withStyles, withTheme } from '@material-ui/core/styles';
+import { Button, InputBase, Paper } from '@mui/material';
+import styled from '@mui/material/styles/styled';
+import withStyles from '@mui/styles/withStyles';
+import withTheme from '@mui/styles/withTheme';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import styled from 'styled-components';
 import SupportActions from '../../actions/SupportActions';
-import SupportStore from '../../stores/SupportStore';
-import VoterStore from '../../stores/VoterStore';
 import { prepareForCordovaKeyboard, restoreStylesAfterCordovaKeyboard } from '../../common/utils/cordovaUtils';
 import isMobileScreenSize from '../../common/utils/isMobileScreenSize';
 import { renderLog } from '../../common/utils/logging';
+import SupportStore from '../../stores/SupportStore';
+import VoterStore from '../../stores/VoterStore';
 import { shortenText } from '../../utils/textFormat';
 
 class ItemPositionStatementActionBar extends Component {
@@ -426,16 +427,17 @@ const styles = (theme) => ({
   },
 });
 
-const Wrapper = styled.div`
-  ${({ shownInList }) => (shownInList ? '' : (
+const Wrapper = styled('div', {
+  shouldForwardProp: (prop) => !['shownInList'].includes(prop),
+})(({ shownInList }) => (`
+  ${shownInList ? '' : (
     'background-color: #f8f8f8;' +
     'padding: 8px 16px;' +
     'margin: 0 -16px 8px 0;'
-  )
   )}
-`;
+`));
 
-const PostSaveButton = styled.div`
+const PostSaveButton = styled('div')`
   width: auto;
   margin-left: auto;
   margin-top: auto;

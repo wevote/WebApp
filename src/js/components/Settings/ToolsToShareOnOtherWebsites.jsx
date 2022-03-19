@@ -1,7 +1,7 @@
+import styled from '@mui/material/styles/styled';
 import PropTypes from 'prop-types';
 import React, { Suspense } from 'react';
 import Helmet from 'react-helmet';
-import styled from 'styled-components';
 import cordovaScrollablePaneTopPadding from '../../utils/cordovaScrollablePaneTopPadding';
 import CodeCopier from '../Widgets/CodeCopier';
 
@@ -121,11 +121,13 @@ ToolsToShareOnOtherWebsites.propTypes = {
   externalUniqueId: PropTypes.string,
 };
 
-const Wrapper = styled.div`
-  padding-top: ${({ padTop }) => padTop};
-`;
+const Wrapper = styled('div', {
+  shouldForwardProp: (prop) => !['padTop'].includes(prop),
+})(({ padTop }) => (`
+  padding-top: ${padTop};
+`));
 
-const SectionTitle = styled.h4`
+const SectionTitle = styled('h4')`
   font-size: 14px;
   font-weight: bold;
   margin: 0;

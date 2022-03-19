@@ -1,14 +1,15 @@
-import { withStyles, withTheme } from '@material-ui/core/styles';
-import { CheckCircle, Info, ThumbDown, ThumbUp } from '@material-ui/icons';
+import { CheckCircle, Info, ThumbDown, ThumbUp } from '@mui/icons-material';
+import styled from '@mui/material/styles/styled';
+import withStyles from '@mui/styles/withStyles';
+import withTheme from '@mui/styles/withTheme';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
-import styled from 'styled-components';
+import SvgImage from '../../common/components/Widgets/SvgImage';
 import FriendStore from '../../stores/FriendStore';
 import IssueStore from '../../stores/IssueStore';
 import OrganizationStore from '../../stores/OrganizationStore';
 import { isOrganizationInVotersNetwork } from '../../utils/positionFunctions';
 import FriendsIcon from './FriendsIcon';
-import SvgImage from '../../common/components/Widgets/SvgImage';
 
 const FollowToggle = React.lazy(() => import(/* webpackChunkName: 'FollowToggle' */ './FollowToggle'));
 
@@ -343,18 +344,18 @@ const styles = () => ({
   },
 });
 
-const FollowOrganizationText = styled.div`
+const FollowOrganizationText = styled('div')`
   margin-top: 10px;
 `;
 
-const FollowOrganizationToggleContainer = styled.div`
+const FollowOrganizationToggleContainer = styled('div')`
   margin-top: 10px;
 `;
 
-const OrganizationSupportsOrOpposesText = styled.div`
+const OrganizationSupportsOrOpposesText = styled('div')`
 `;
 
-const PopoverWrapper = styled.div`
+const PopoverWrapper = styled('div')`
   overflow-x: hidden;
   width: 100%;
   height: 100%;
@@ -366,17 +367,17 @@ const PopoverWrapper = styled.div`
   margin-top: 8px;
 `;
 
-const OrganizationAddsToYourPersonalScoreExplanation = styled.div`
+const OrganizationAddsToYourPersonalScoreExplanation = styled('div')`
   margin-top: 4px;
 `;
 
-const PositionSummaryWrapper = styled.div`
+const PositionSummaryWrapper = styled('div')`
   display: flex;
   flex-wrap: nowrap;
   justify-content: flex-start;
 `;
 
-const PopoverHeader = styled.div`
+const PopoverHeader = styled('div')`
   background: ${({ theme }) => theme.colors.brandBlue};
   padding: 4px 8px;
   min-height: 35px;
@@ -389,34 +390,34 @@ const PopoverHeader = styled.div`
   border-bottom-left-radius: 0;
 `;
 
-const PopoverTitleIcon = styled.span`
+const PopoverTitleIcon = styled('span')`
   font-weight: bold;
   font-size: 16px;
 `;
 
-const PopoverTitleText = styled.div`
+const PopoverTitleText = styled('div')`
   font-size: 14px;
   font-weight: bold;
   margin-left: 8px;
   margin-right: 20px;
 `;
 
-const PopoverDescriptionText = styled.div`
+const PopoverDescriptionText = styled('div')`
   padding: 8px;
 `;
 
-const ScoreExplanationWrapper = styled.div`
+const ScoreExplanationWrapper = styled('div')`
   display: flex;
   flex-wrap: nowrap;
   justify-content: flex-start;
   margin-top: 6px;
 `;
 
-const ScoreExplanationText = styled.div`
+const ScoreExplanationText = styled('div')`
   margin-left: 4px;
 `;
 
-const SupportAndPartOfScore = styled.div`
+const SupportAndPartOfScore = styled('div')`
   color: white;
   background: ${({ theme }) => theme.colors.supportGreenRgb};
   display: flex;
@@ -435,7 +436,7 @@ const SupportAndPartOfScore = styled.div`
   }
 `;
 
-const OpposeAndPartOfScore = styled.div`
+const OpposeAndPartOfScore = styled('div')`
   color: white;
   background: ${({ theme }) => theme.colors.opposeRedRgb};
   display: flex;
@@ -454,7 +455,7 @@ const OpposeAndPartOfScore = styled.div`
   }
 `;
 
-const SupportButNotPartOfScore = styled.div`
+const SupportButNotPartOfScore = styled('div')`
   color: ${({ theme }) => theme.colors.supportGreenRgb};
   background: white;
   display: flex;
@@ -471,7 +472,7 @@ const SupportButNotPartOfScore = styled.div`
   margin-right: 6px;
 `;
 
-const OpposeButNotPartOfScore = styled.div`
+const OpposeButNotPartOfScore = styled('div')`
   color: ${({ theme }) => theme.colors.opposeRedRgb};
   background: white;
   display: flex;
@@ -488,7 +489,7 @@ const OpposeButNotPartOfScore = styled.div`
   margin-right: 6px;
 `;
 
-const InformationOnly = styled.div`
+const InformationOnly = styled('div')`
   color: ${({ theme }) => theme.colors.grayMid};
   background: white;
   display: flex;

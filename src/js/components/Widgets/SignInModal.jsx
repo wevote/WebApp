@@ -1,19 +1,20 @@
-import { Dialog, DialogContent, DialogTitle, IconButton, Typography } from '@material-ui/core';
-import { withStyles, withTheme } from '@material-ui/core/styles';
-import { Close } from '@material-ui/icons';
+import { Close } from '@mui/icons-material';
+import { Dialog, DialogContent, DialogTitle, IconButton, Typography } from '@mui/material';
+import withStyles from '@mui/styles/withStyles';
+import withTheme from '@mui/styles/withTheme';
 import clsx from 'clsx';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
 import { Link } from 'react-router-dom';
+import { isAndroid, isAndroidSizeFold, isIOS, isIOsSmallerThanPlus, isIPhone5p5inEarly, isIPhone5p5inMini, isIPhone5p8in, isIPhone6p1in, isIPhone6p5in, isWebAppHeight0to568, isWebAppHeight569to667, isWebAppHeight668to736, isWebAppHeight737to896, restoreStylesAfterCordovaKeyboard } from '../../common/utils/cordovaUtils';
+import historyPush from '../../common/utils/historyPush';
+import { isCordova, isWebApp } from '../../common/utils/isCordovaOrWebApp';
+import { renderLog } from '../../common/utils/logging';
 import webAppConfig from '../../config';
 import DeviceURLField from '../../pages/Startup/DeviceURLField';
 import VoterStore from '../../stores/VoterStore';
-import { isAndroid, isAndroidSizeFold, isIOS, isIOsSmallerThanPlus, isIPhone5p5inEarly, isIPhone5p5inMini, isIPhone5p8in, isIPhone6p1in, isIPhone6p5in, isWebAppHeight0to568, isWebAppHeight569to667, isWebAppHeight668to736, isWebAppHeight737to896, restoreStylesAfterCordovaKeyboard } from '../../common/utils/cordovaUtils';
-import { isCordova, isWebApp } from '../../common/utils/isCordovaOrWebApp';
-import historyPush from '../../common/utils/historyPush';
 import initializeAppleSDK from '../../utils/initializeAppleSDK';
 import initializeFacebookSDK from '../../utils/initializeFacebookSDK';
-import { renderLog } from '../../common/utils/logging';
 import { stringContains } from '../../utils/textFormat';
 import signInModalGlobalState from './signInModalGlobalState';
 
@@ -183,6 +184,7 @@ class SignInModal extends Component {
             classes={{ root: classes.closeButton }}
             onClick={() => { this.closeFunction(); }}
             id="profileCloseSignInModal"
+            size="large"
           >
             <Close />
           </IconButton>
@@ -339,8 +341,8 @@ const styles = (theme) => ({
   },
   closeButton: {
     position: 'absolute',
-    right: `${theme.spacing(1)}px`,
-    top: `${theme.spacing(1)}px`,
+    right: theme.spacing(1),
+    top: theme.spacing(1),
   },
 });
 

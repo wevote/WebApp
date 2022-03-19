@@ -1,6 +1,6 @@
+import styled from '@mui/material/styles/styled';
 import React, { Component, Suspense } from 'react';
 import Helmet from 'react-helmet';
-import styled from 'styled-components';
 import AnalyticsActions from '../actions/AnalyticsActions';
 import IssueActions from '../actions/IssueActions';
 import LoadingWheelComp from '../common/components/Widgets/LoadingWheelComp';
@@ -9,6 +9,7 @@ import normalizedImagePath from '../common/utils/normalizedImagePath';
 import AddFriendsByEmail from '../components/Friends/AddFriendsByEmail';
 import SuggestedFriendsPreview from '../components/Friends/SuggestedFriendsPreview';
 import FindOpinionsForm from '../components/Ready/FindOpinionsForm';
+import { PageContentContainer } from '../components/Style/pageLayoutStyles';
 import TwitterSignInCard from '../components/Twitter/TwitterSignInCard';
 import NetworkOpinionsFollowed from '../components/Values/NetworkOpinionsFollowed';
 import OrganizationsToFollowPreview from '../components/Values/OrganizationsToFollowPreview';
@@ -24,7 +25,6 @@ import AppObservableStore from '../stores/AppObservableStore';
 import IssueStore from '../stores/IssueStore';
 import VoterStore from '../stores/VoterStore';
 import lazyPreloadPages from '../utils/lazyPreloadPages';
-import { PageContentContainer } from '../components/Style/pageLayoutStyles';
 
 const FirstAndLastNameRequiredAlert = React.lazy(() => import(/* webpackChunkName: 'FirstAndLastNameRequiredAlert' */ '../components/Widgets/FirstAndLastNameRequiredAlert'));
 
@@ -221,13 +221,13 @@ export default class Values extends Component {
 Values.propTypes = {
 };
 
-const SectionDescription = styled.div`
+const SectionDescription = styled('div')`
   color: #999;
   font-size: 14px;
   margin-bottom: 4px;
 `;
 
-const SectionTitle = styled.h2`
+const SectionTitle = styled('h2')`
   width: fit-content;
   font-weight: bolder;
   font-size: 18px;

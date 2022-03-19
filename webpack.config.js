@@ -83,6 +83,9 @@ module.exports = (env, argv) => ({
   resolve: {
     modules: [path.resolve(__dirname, source), 'node_modules'],
     extensions: ['*', '.js', '.jsx'],
+    alias: {
+      '@mui/styled-engine': '@mui/styled-engine-sc',
+    },
   },
   output: {
     path: path.resolve(__dirname, './build'),

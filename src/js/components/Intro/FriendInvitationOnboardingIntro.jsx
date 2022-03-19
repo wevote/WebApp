@@ -1,12 +1,13 @@
-import { withStyles, withTheme } from '@material-ui/core/styles';
+import styled from '@mui/material/styles/styled';
+import withStyles from '@mui/styles/withStyles';
+import withTheme from '@mui/styles/withTheme';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
-import styled from 'styled-components';
 import BallotActions from '../../actions/BallotActions';
-import BallotStore from '../../stores/BallotStore';
-import normalizedImagePath from '../../common/utils/normalizedImagePath';
 import { formatDateToMonthDayYear } from '../../common/utils/dateFormat';
 import { renderLog } from '../../common/utils/logging';
+import normalizedImagePath from '../../common/utils/normalizedImagePath';
+import BallotStore from '../../stores/BallotStore';
 import { convertToInteger } from '../../utils/textFormat';
 
 const ImageHandler = React.lazy(() => import(/* webpackChunkName: 'ImageHandler' */ '../ImageHandler'));
@@ -281,8 +282,6 @@ const styles = (theme) => ({
     padding: '4px 8px',
     height: 32,
     width: '100%',
-    [theme.breakpoints.down('md')]: {
-    },
     [theme.breakpoints.down('sm')]: {
       padding: '4px 4px',
     },
@@ -292,17 +291,17 @@ const styles = (theme) => ({
   },
 });
 
-const Wrapper = styled.div`
+const Wrapper = styled('div')`
   padding-left: 12px;
   padding-right: 12px;
 `;
 
-const InvitationMessageWrapper = styled.div`
+const InvitationMessageWrapper = styled('div')`
   display: flex;
   justify-content: center;
 `;
 
-const InvitationMessageDescription = styled.div`
+const InvitationMessageDescription = styled('div')`
   background: #eee;
   border: 1px solid #ddd;
   border-radius: 5px;
@@ -317,37 +316,37 @@ const InvitationMessageDescription = styled.div`
 `;
 
 // Styled divs are not working in react-slick environment, so I put these styles in _intro-story.scss
-const FriendInvitationTopHeader = styled.div`
+const FriendInvitationTopHeader = styled('div')`
 `;
 
 // Styled divs are not working in react-slick environment, so I put these styles in _intro-story.scss
-const FriendInvitationIntroHeader = styled.div`
+const FriendInvitationIntroHeader = styled('div')`
 `;
 
-const FriendInvitationListWrapper = styled.div`
+const FriendInvitationListWrapper = styled('div')`
   display: flex;
   justify-content: center;
 `;
 
-const FriendInvitationList = styled.div`
+const FriendInvitationList = styled('div')`
   margin-bottom: 100px !important;
   max-width: 450px;
 `;
 
-const FriendInvitationListTitleRow = styled.div`
+const FriendInvitationListTitleRow = styled('div')`
   display: flex;
   flex-flow: row nowrap;
   justify-content: flex-start;
   padding-top: 14px;
 `;
 
-const FriendInvitationListRow = styled.div`
+const FriendInvitationListRow = styled('div')`
   display: flex;
   flex-flow: row nowrap;
   justify-content: flex-start;
 `;
 
-const Dot = styled.div`
+const Dot = styled('div')`
   padding-top: 2px;
   vertical-align: top;
   @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
@@ -355,7 +354,7 @@ const Dot = styled.div`
   }
 `;
 
-const OrganizationImageWrapper = styled.span`
+const OrganizationImageWrapper = styled('span')`
   margin-right: 6px;
   * {
     border-radius: 24px;
@@ -364,8 +363,8 @@ const OrganizationImageWrapper = styled.span`
   }
 `;
 
-const StepNumber = styled.div`
-  background: ${(props) => props.theme.colors.brandBlue};
+const StepNumber = styled('div')`
+  background: ${({ theme }) => theme.colors.brandBlue};
   border-radius: 4px;
   color: white;
   font-size: 16px;
@@ -380,7 +379,7 @@ const StepNumber = styled.div`
   }
 `;
 
-const StepTitle = styled.div`
+const StepTitle = styled('div')`
   font-size: 20px;
   font-weight: 600;
   padding: 0 8px;
@@ -391,7 +390,7 @@ const StepTitle = styled.div`
   }
 `;
 
-const StepText = styled.div`
+const StepText = styled('div')`
   color: #999;
   font-size: 16px;
   font-weight: 200;
@@ -403,7 +402,7 @@ const StepText = styled.div`
   }
 `;
 
-const StepNumberPlaceholder = styled.div`
+const StepNumberPlaceholder = styled('div')`
   width: 22px;
   height: 22px;
   @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
@@ -413,7 +412,7 @@ const StepNumberPlaceholder = styled.div`
   }
 `;
 
-const WeVoteLogoWrapper = styled.div`
+const WeVoteLogoWrapper = styled('div')`
   display: flex;
   justify-content: center;
   padding: 12px;

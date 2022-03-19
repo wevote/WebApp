@@ -1,7 +1,7 @@
-import { TextField } from '@material-ui/core';
+import { TextField } from '@mui/material';
+import styled from '@mui/material/styles/styled';
 import PropTypes from 'prop-types';
 import React from 'react';
-import styled from 'styled-components';
 import { historyPush } from '../../common/utils/cordovaUtils';
 import { renderLog } from '../../common/utils/logging';
 
@@ -52,7 +52,7 @@ DeviceURLField.propTypes = {
   closeFunction: PropTypes.func.isRequired,
 };
 
-const URLField = styled.div`
+const URLField = styled('div')`
   padding-top: 25px;
   padding-left: 25%
 `;

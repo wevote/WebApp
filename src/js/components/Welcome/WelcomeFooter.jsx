@@ -1,12 +1,12 @@
-import { Button } from '@material-ui/core';
-import { withStyles } from '@material-ui/core/styles';
+import { Button } from '@mui/material';
+import styled from '@mui/material/styles/styled';
+import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
 import { Link } from 'react-router-dom';
-import styled from 'styled-components';
+import historyPush from '../../common/utils/historyPush';
 import { isWebApp } from '../../common/utils/isCordovaOrWebApp';
 import normalizedImagePath from '../../common/utils/normalizedImagePath';
-import historyPush from '../../common/utils/historyPush';
 
 const OpenExternalWebSite = React.lazy(() => import(/* webpackChunkName: 'OpenExternalWebSite' */ '../../common/components/Widgets/OpenExternalWebSite'));
 
@@ -156,7 +156,6 @@ class WelcomeFooter extends Component {
           </LinksContainer>
           <OptionsContainer>
             <Button
-              color="default"
               variant="outlined"
               classes={{ root: classes.buttonOutlined }}
               id="footerLinkGetStarted"
@@ -165,7 +164,6 @@ class WelcomeFooter extends Component {
               Get Started
             </Button>
             <Button
-              color="default"
               variant="outlined"
               classes={{ root: classes.buttonOutlined }}
               onClick={() => window.open('https://help.wevote.us/hc/en-us/requests/new', '_blank')}
@@ -311,7 +309,7 @@ const styles = (theme) => ({
   },
 });
 
-const Wrapper = styled.div`
+const Wrapper = styled('div')`
   color: rgb(255, 255, 255, .6) !important;
   background-image: linear-gradient(to bottom, #415a99, ${({ theme }) => theme.colors.brandBlue});
   padding: 4em 1em 0 1em;
@@ -325,7 +323,7 @@ const Wrapper = styled.div`
   }
 `;
 
-const Top = styled.div`
+const Top = styled('div')`
   width: 960px;
   max-width: 90vw;
   display: flex;
@@ -335,7 +333,7 @@ const Top = styled.div`
   }
 `;
 
-const LinksContainer = styled.div`
+const LinksContainer = styled('div')`
   display: flex;
   flex-flow: row;
   width: 75%;
@@ -346,7 +344,7 @@ const LinksContainer = styled.div`
   }
 `;
 
-const Column = styled.div`
+const Column = styled('div')`
   width: 150px;
   display: flex;
   flex-flow: column nowrap;
@@ -355,14 +353,14 @@ const Column = styled.div`
   }
 `;
 
-const ColumnTitle = styled.h3`
+const ColumnTitle = styled('h3')`
   font-size: 18px;
   color: white;
   font-weight: bold;
   margin: .8em 0;
 `;
 
-const OptionsContainer = styled.div`
+const OptionsContainer = styled('div')`
   width: 25%;
   display: flex;
   flex-flow: column;
@@ -373,7 +371,7 @@ const OptionsContainer = styled.div`
   }
 `;
 
-const BadgeContainer = styled.div`
+const BadgeContainer = styled('div')`
   width: 100%;
   margin-top: 4em;
   display: flex;
@@ -383,7 +381,7 @@ const BadgeContainer = styled.div`
 `;
 
 
-const Bottom = styled.div`
+const Bottom = styled('div')`
   width: 750px;
   max-width: 90vw;
   display: flex;
@@ -392,7 +390,7 @@ const Bottom = styled.div`
   text-align: center;
 `;
 
-const Text = styled.p`
+const Text = styled('p')`
   font-size: 12px;
   @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
     font-size: 16px;

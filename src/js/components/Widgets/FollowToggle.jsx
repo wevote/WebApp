@@ -1,18 +1,18 @@
 /* eslint-disable object-property-newline */
-import { Button } from '@material-ui/core';
-import Menu from '@material-ui/core/Menu';
-import MenuItem from '@material-ui/core/MenuItem';
-import { CheckCircle, NotInterested } from '@material-ui/icons';
-import { styled as muiStyled } from '@material-ui/styles';
+import { CheckCircle, NotInterested } from '@mui/icons-material';
+import { Button } from '@mui/material';
+import Menu from '@mui/material/Menu';
+import MenuItem from '@mui/material/MenuItem';
+import { styled as muiStyled } from '@mui/styles';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import OrganizationActions from '../../actions/OrganizationActions';
+import historyPush from '../../common/utils/historyPush';
+import { renderLog } from '../../common/utils/logging';
 import FriendStore from '../../stores/FriendStore';
 import OrganizationStore from '../../stores/OrganizationStore';
 import VoterGuideStore from '../../stores/VoterGuideStore';
 import VoterStore from '../../stores/VoterStore';
-import historyPush from '../../common/utils/historyPush';
-import { renderLog } from '../../common/utils/logging';
 import { openSnackbar } from './SnackNotifier';
 
 
@@ -479,7 +479,6 @@ export default class FollowToggle extends Component {
             <Menu
               id="simple-menu"
               anchorEl={this.state.anchorEl}
-              getContentAnchorEl={null}
               anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
               transformOrigin={{ vertical: 'top', horizontal: 'left' }}
               keepMounted

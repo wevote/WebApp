@@ -1,15 +1,16 @@
-import { withStyles, withTheme } from '@material-ui/core/styles';
-import { MoreHoriz } from '@material-ui/icons';
+import { MoreHoriz } from '@mui/icons-material';
+import styled from '@mui/material/styles/styled';
+import withStyles from '@mui/styles/withStyles';
+import withTheme from '@mui/styles/withTheme';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
 import Alert from 'react-bootstrap/Alert';
 import { Link } from 'react-router-dom';
-import styled from 'styled-components';
-import AppObservableStore from '../../stores/AppObservableStore';
+import { renderLog } from '../../common/utils/logging';
 import ActivityStore from '../../stores/ActivityStore';
+import AppObservableStore from '../../stores/AppObservableStore';
 import OrganizationStore from '../../stores/OrganizationStore';
 import VoterStore from '../../stores/VoterStore';
-import { renderLog } from '../../common/utils/logging';
 import ActivityPositionList from './ActivityPositionList';
 import ActivitySpeakerCard from './ActivitySpeakerCard';
 
@@ -202,33 +203,33 @@ const styles = () => ({
   },
 });
 
-const ActivityPositionListWrapper = styled.div`
+const ActivityPositionListWrapper = styled('div')`
   margin-top: 12px;
 `;
 
-const ActivityPositionListMissingWrapper = styled.div`
+const ActivityPositionListMissingWrapper = styled('div')`
   margin-bottom: 8px;
 `;
 
-const ActivityPostEditWrapper = styled.div`
+const ActivityPostEditWrapper = styled('div')`
 `;
 
-const ActivityPostWrapper = styled.div`
+const ActivityPostWrapper = styled('div')`
   font-size: 18px;
 `;
 
-const ActivitySpeakerCardWrapper = styled.div`
+const ActivitySpeakerCardWrapper = styled('div')`
   align-items: flex-start;
   display: flex;
   justify-content: space-between;
   width: 100%;
 `;
 
-const MissingNameAlertWrapper = styled.div`
+const MissingNameAlertWrapper = styled('div')`
   margin-top: 3px;
 `;
 
-const Wrapper = styled.div`
+const Wrapper = styled('div')`
 `;
 
 export default withTheme(withStyles(styles)(ActivityTidbitItem));

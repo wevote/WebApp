@@ -1,12 +1,12 @@
+import styled from '@mui/material/styles/styled';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import styled from 'styled-components';
 import VoterActions from '../../actions/VoterActions';
-import webAppConfig from '../../config';
 import { isAndroid, isIOS } from '../../common/utils/cordovaUtils';
 import { isWebApp } from '../../common/utils/isCordovaOrWebApp';
 import Cookies from '../../common/utils/js-cookie/Cookies';
 import { oAuthLog, renderLog } from '../../common/utils/logging';
+import webAppConfig from '../../config';
 import { openSnackbar } from '../Widgets/SnackNotifier';
 
 class AppleSignIn extends Component {
@@ -231,19 +231,21 @@ export function AppleLogo (parameters) {
 Note, May 21, 2020: Before making changes to these styles, be sure you are compliant with
 https://developer.apple.com/design/resources/ or we risk getting rejected by Apple
 */
-const AppleLogoSvg = styled.svg`
+const AppleLogoSvg = styled('svg', {
+  shouldForwardProp: (prop) => !['signedIn', 'enabled'].includes(prop),
+})(({ signedIn, enabled }) => (`
   position: absolute;
-  left: ${({ signedIn }) => (signedIn ? '29%' : '5%')};
+  left: ${signedIn ? '29%' : '5%'};
   top: 11px;
   height: 20px;
-  color: ${({ enabled }) => (enabled ? '#fff' : 'grey')};
-`;
+  color: ${enabled ? '#fff' : 'grey'};
+`));
 
 /*
 Note, May 21, 2020: Before making changes to these styles, be sure you are compliant with
 https://developer.apple.com/design/resources/ or we risk getting rejected by Apple
 */
-const AppleSignInText = styled.span`
+const AppleSignInText = styled('span')`
   font-size: 18px;
   padding: 0;
   border: none;
@@ -254,23 +256,27 @@ const AppleSignInText = styled.span`
 Note, May 21, 2020: Before making changes to these styles, be sure you are compliant with
 https://developer.apple.com/design/resources/ or we risk getting rejected by Apple
 */
-const AppleSignInButton = styled.button`
-  margin-top: ${({ isWeb }) => (isWeb ? '8px' : '10px')};
+const AppleSignInButton = styled('button', {
+  shouldForwardProp: (prop) => !['isWeb', 'tinyScreen'].includes(prop),
+})(({ isWeb, tinyScreen }) => (`
+  margin-top: ${isWeb ? '8px' : '10px'};
   border: none;
-  padding-left: ${({ tinyScreen }) => (tinyScreen ? '20px' : '40px')};
+  padding-left: ${tinyScreen ? '20px' : '40px'};
   background-color: #000;
   color: #fff;
-`;
+`));
 
 /*
 Note, May 21, 2020: Before making changes to these styles, be sure you are compliant with
 https://developer.apple.com/design/resources/ or we risk getting rejected by Apple
 */
-const AppleSignInContainer  = styled.div`
+const AppleSignInContainer  = styled('div', {
+  shouldForwardProp: (prop) => !['enabled'].includes(prop),
+})(({ enabled }) => (`
   font-family: -apple-system, BlinkMacSystemFont, sans-serif;
   background-color: #000;
   border-color: #000;
-  color: ${({ enabled }) => (enabled ? '#fff' : 'grey')};
+  color: ${enabled ? '#fff' : 'grey'};
   display: block;
   margin: 0 auto 11px;
   height: 46px;
@@ -281,13 +287,13 @@ const AppleSignInContainer  = styled.div`
   text-overflow: ellipsis;
   white-space: nowrap;
   width: 100%;
-`;
+`));
 
 /*
 Note, May 21, 2020: Before making changes to these styles, be sure you are compliant with
 https://developer.apple.com/design/resources/ or we risk getting rejected by Apple
 */
-const AppleSignedInContainer  = styled.div`
+const AppleSignedInContainer  = styled('div')`
   background-color: #000;
   border-color: #000;
   color: #fff;

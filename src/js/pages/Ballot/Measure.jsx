@@ -1,15 +1,20 @@
-import { withStyles } from '@material-ui/core/styles';
-import { Info } from '@material-ui/icons';
+import { Info } from '@mui/icons-material';
+import styled from '@mui/material/styles/styled';
+import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
 import Helmet from 'react-helmet';
-import styled from 'styled-components';
 import ActivityActions from '../../actions/ActivityActions';
 import AnalyticsActions from '../../actions/AnalyticsActions';
 import MeasureActions from '../../actions/MeasureActions';
 import OrganizationActions from '../../actions/OrganizationActions';
-import MeasureStickyHeader from '../../components/Ballot/MeasureStickyHeader';
 import LoadingWheelComp from '../../common/components/Widgets/LoadingWheelComp';
+import apiCalming from '../../common/utils/apiCalming';
+import { isAndroidSizeFold } from '../../common/utils/cordovaUtils';
+import isMobileScreenSize from '../../common/utils/isMobileScreenSize';
+import { renderLog } from '../../common/utils/logging';
+import MeasureStickyHeader from '../../components/Ballot/MeasureStickyHeader';
+import { PageContentContainer } from '../../components/Style/pageLayoutStyles';
 import EndorsementCard from '../../components/Widgets/EndorsementCard';
 import SearchOnGoogle from '../../components/Widgets/SearchOnGoogle';
 import SnackNotifier from '../../components/Widgets/SnackNotifier';
@@ -20,12 +25,7 @@ import BallotStore from '../../stores/BallotStore';
 import MeasureStore from '../../stores/MeasureStore';
 import VoterGuideStore from '../../stores/VoterGuideStore';
 import VoterStore from '../../stores/VoterStore';
-import { isAndroidSizeFold } from '../../common/utils/cordovaUtils';
-import { renderLog } from '../../common/utils/logging';
-import apiCalming from '../../common/utils/apiCalming';
 import { cordovaBallotFilterTopMargin } from '../../utils/cordovaOffsets';
-import isMobileScreenSize from '../../common/utils/isMobileScreenSize';
-import { PageContentContainer } from '../../components/Style/pageLayoutStyles';
 import { capitalizeString } from '../../utils/textFormat';
 
 const DelayedLoad = React.lazy(() => import(/* webpackChunkName: 'DelayedLoad' */ '../../common/components/Widgets/DelayedLoad'));
@@ -408,25 +408,25 @@ const styles = () => ({
   },
 });
 
-const MeasureShareWrapper = styled.div`
+const MeasureShareWrapper = styled('div')`
   margin-bottom: 12px;
   padding-left: 2px;
 `;
 
-const LeftColumnWrapper = styled.div`
+const LeftColumnWrapper = styled('div')`
   flex: 1 1 0;
 `;
 
-const PositionListIntroductionText = styled.div`
+const PositionListIntroductionText = styled('div')`
   color: #999;
 `;
 
-const RightColumnWrapper = styled.div`
+const RightColumnWrapper = styled('div')`
   padding: 16px 16px 16px 0;
   width: fit-content;
 `;
 
-const TwoColumns = styled.div`
+const TwoColumns = styled('div')`
   display: flex;
   ${() => (isAndroidSizeFold() ? { margin: 0 } : { margin: '0 -8px 0 -8px' })};
   @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {

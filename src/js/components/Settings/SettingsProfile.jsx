@@ -1,15 +1,15 @@
-import { withStyles } from '@material-ui/core/styles';
-import { Info } from '@material-ui/icons';
+import { Info } from '@mui/icons-material';
+import styled from '@mui/material/styles/styled';
+import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import Helmet from 'react-helmet';
 import { Link } from 'react-router-dom';
-import styled from 'styled-components';
 import AnalyticsActions from '../../actions/AnalyticsActions';
-import VoterStore from '../../stores/VoterStore';
-import { renderLog } from '../../common/utils/logging';
-import { HeaderContentContainer } from '../Style/pageLayoutStyles';
 import LoadingWheel from '../../common/components/Widgets/LoadingWheel';
+import { renderLog } from '../../common/utils/logging';
+import VoterStore from '../../stores/VoterStore';
+import { HeaderContentContainer } from '../Style/pageLayoutStyles';
 import BrowserPushMessage from '../Widgets/BrowserPushMessage';
 import SettingsProfilePicture from './SettingsProfilePicture';
 import SettingsWidgetAccountType from './SettingsWidgetAccountType';
@@ -97,7 +97,7 @@ const styles = () => ({
   },
 });
 
-const IntroductionWrapper = styled.div`
+const IntroductionWrapper = styled('div')`
   margin-bottom: 12px;
 `;
 

@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import styled from 'styled-components';
+import styled from '@mui/material/styles/styled';
 import FriendActions from '../../actions/FriendActions';
 import FriendStore from '../../stores/FriendStore';
 import apiCalming from '../../common/utils/apiCalming';
@@ -93,12 +93,12 @@ SuggestedFriendsPreview.propTypes = {
   inSideColumn: PropTypes.bool,
 };
 
-const SectionDescription = styled.div`
+const SectionDescription = styled('div')`
   margin-bottom: 16px;
   width: fit-content;
 `;
 
-const SectionTitle = styled.h2`
+const SectionTitle = styled('h2')`
   font-weight: bold;
   font-size: 18px;
   margin-bottom: 4px;

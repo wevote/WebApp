@@ -1,10 +1,10 @@
-import { withStyles } from '@material-ui/core/styles';
+import styled from '@mui/material/styles/styled';
+import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import styled from 'styled-components';
-import isMobileScreenSize from '../../common/utils/isMobileScreenSize';
 import OpenExternalWebSite from '../../common/components/Widgets/OpenExternalWebSite';
+import isMobileScreenSize from '../../common/utils/isMobileScreenSize';
 
 class FooterMainWeVote extends Component {
   render () {
@@ -175,7 +175,7 @@ const styles = (theme) => ({
   },
 });
 
-const BottomSection = styled.div`
+const BottomSection = styled('div')`
   border-top: 1px solid lightgray;
   display: flex;
   flex-flow: column;
@@ -183,7 +183,7 @@ const BottomSection = styled.div`
   text-align: left;
 `;
 
-const Column = styled.div`
+const Column = styled('div')`
   display: flex;
   flex-flow: column nowrap;
   width: 150px;
@@ -195,7 +195,7 @@ const Column = styled.div`
   }
 `;
 
-const ColumnTitle = styled.div`
+const ColumnTitle = styled('div')`
   color: #808080;
   font-size: 13px;
   font-weight: 700;
@@ -204,7 +204,7 @@ const ColumnTitle = styled.div`
   text-transform: uppercase;
 `;
 
-const Text = styled.p`
+const Text = styled('p')`
   color: #808080;
   font-size: 14px;
   margin-right: 0.5em;
@@ -213,7 +213,7 @@ const Text = styled.p`
   }
 `;
 
-const TopSectionInnerWrapper = styled.div`
+const TopSectionInnerWrapper = styled('div')`
   display: flex;
   flex-direction: row;
   flex-wrap: nowrap;
@@ -224,17 +224,17 @@ const TopSectionInnerWrapper = styled.div`
   }
 `;
 
-const TopSectionOuterWrapper = styled.div`
+const TopSectionOuterWrapper = styled('div')`
   display: flex;
   justify-content: space-between;
   width: 100%;
 `;
 
-const WeVoteName = styled.span`
+const WeVoteName = styled('span')`
   font-weight: 600;
 `;
 
-const Wrapper = styled.div`
+const Wrapper = styled('div')`
 `;
 
 export default withStyles(styles)(FooterMainWeVote);

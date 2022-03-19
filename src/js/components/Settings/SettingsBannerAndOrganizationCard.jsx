@@ -1,6 +1,6 @@
+import styled from '@mui/material/styles/styled';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import styled from 'styled-components';
 import { renderLog } from '../../common/utils/logging';
 import OrganizationCard from '../VoterGuide/OrganizationCard';
 
@@ -64,7 +64,7 @@ SettingsBannerAndOrganizationCard.propTypes = {
   organization: PropTypes.object,
 };
 
-const OrganizationBannerImageDiv = styled.div`
+const OrganizationBannerImageDiv = styled('div')`
   min-height: 200px;
   max-height: 300px;
   overflow: hidden;
@@ -77,6 +77,6 @@ const OrganizationBannerImageDiv = styled.div`
   }
 `;
 
-const OrganizationBannerImageImg = styled.img`
+const OrganizationBannerImageImg = styled('img')`
   width: 100%;
 `;

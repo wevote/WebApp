@@ -1,19 +1,19 @@
-import { Button, Dialog } from '@material-ui/core';
-import { withStyles } from '@material-ui/core/styles';
-import { Comment, Done, NotInterested, ThumbDown, ThumbUp } from '@material-ui/icons';
+import { Comment, Done, NotInterested, ThumbDown, ThumbUp } from '@mui/icons-material';
+import { Button, Dialog } from '@mui/material';
+import styled from '@mui/material/styles/styled';
+import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
 import React, { PureComponent } from 'react';
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 import Tooltip from 'react-bootstrap/Tooltip';
-import styled from 'styled-components';
 import SupportActions from '../../../actions/SupportActions';
 import VoterActions from '../../../actions/VoterActions';
+import { renderLog } from '../../../common/utils/logging';
+import normalizedImagePath from '../../../common/utils/normalizedImagePath';
 import webAppConfig from '../../../config';
 import VoterConstants from '../../../constants/VoterConstants';
 import SupportStore from '../../../stores/SupportStore';
 import VoterStore from '../../../stores/VoterStore';
-import normalizedImagePath from '../../../common/utils/normalizedImagePath';
-import { renderLog } from '../../../common/utils/logging';
 import { stringContains } from '../../../utils/textFormat';
 import PositionPublicToggle from '../PositionPublicToggle';
 import ShareButtonDropDown from '../ShareButtonDropdown';
@@ -683,7 +683,7 @@ class ItemActionBar extends PureComponent {
     return (
       <>
         <ItemActionBarWrapper
-          inModal={this.props.inModal}
+          // inModal={this.props.inModal}
           displayInline={buttonsOnly || this.props.shareButtonHide}
           onMouseOver={handleEnterHoverLocalArea}
           onFocus={handleEnterHoverLocalArea}
@@ -714,7 +714,7 @@ class ItemActionBar extends PureComponent {
                     {ballotItemType === 'CANDIDATE' ? this.supportButtonNoText(`desktopVersion-${ballotItemWeVoteId}`) : this.measureYesButtonNoText(`desktopVersion-${ballotItemWeVoteId}`)}
                   </StackedButton>
                 ) : (
-                  <ButtonWrapper className="u-push--xs d-none d-lg-block" onlyTwoButtons={commentButtonHide}>
+                  <ButtonWrapper className="u-push--xs d-none d-lg-block">
                     <OverlayTrigger placement="top" overlay={supportButtonPopoverTooltip}>
                       {ballotItemType === 'CANDIDATE' ? this.supportButton(`desktopVersion-${ballotItemWeVoteId}`) : this.measureYesButton(`desktopVersion-${ballotItemWeVoteId}`)}
                     </OverlayTrigger>
@@ -726,7 +726,7 @@ class ItemActionBar extends PureComponent {
                     {ballotItemType === 'CANDIDATE' ? this.supportButtonNoText(`mobileVersion-${ballotItemWeVoteId}`) : this.measureYesButtonNoText(`mobileVersion-${ballotItemWeVoteId}`)}
                   </StackedButton>
                 ) : (
-                  <ButtonWrapper className="u-push--xs u-push--xs d-lg-none" onlyTwoButtons={commentButtonHide}>
+                  <ButtonWrapper className="u-push--xs u-push--xs d-lg-none">
                     {ballotItemType === 'CANDIDATE' ? this.supportButton(`mobileVersion-${ballotItemWeVoteId}`) : this.measureYesButton(`mobileVersion-${ballotItemWeVoteId}`)}
                   </ButtonWrapper>
                 )}
@@ -742,7 +742,7 @@ class ItemActionBar extends PureComponent {
                     {ballotItemType === 'CANDIDATE' ? this.opposeButtonNoText(`desktopVersion-${ballotItemWeVoteId}`) : this.measureNoButtonNoText(`desktopVersion-${ballotItemWeVoteId}`)}
                   </StackedButton>
                 ) : (
-                  <ButtonWrapperRight className="d-none d-lg-block" onlyTwoButtons={commentButtonHide}>
+                  <ButtonWrapperRight className="d-none d-lg-block">
                     <OverlayTrigger placement="top" overlay={opposeButtonPopoverTooltip}>
                       {ballotItemType === 'CANDIDATE' ? this.opposeButton(`desktopVersion-${ballotItemWeVoteId}`) : this.measureNoButton(`desktopVersion-${ballotItemWeVoteId}`)}
                     </OverlayTrigger>
@@ -754,7 +754,7 @@ class ItemActionBar extends PureComponent {
                     {ballotItemType === 'CANDIDATE' ? this.opposeButtonNoText(`mobileVersion-${ballotItemWeVoteId}`) : this.measureNoButtonNoText(`mobileVersion-${ballotItemWeVoteId}`)}
                   </StackedButton>
                 ) : (
-                  <ButtonWrapperRight className="d-lg-none" onlyTwoButtons={commentButtonHide}>
+                  <ButtonWrapperRight className="d-lg-none">
                     {ballotItemType === 'CANDIDATE' ? this.opposeButton(`mobileVersion-${ballotItemWeVoteId}`) : this.measureNoButton(`mobileVersion-${ballotItemWeVoteId}`)}
                   </ButtonWrapperRight>
                 )}
@@ -867,8 +867,8 @@ const styles = (theme) => ({
   },
   closeButton: {
     position: 'absolute',
-    right: `${theme.spacing(1)}px`,
-    top: `${theme.spacing(1)}px`,
+    right: theme.spacing(1),
+    top: theme.spacing(1),
   },
   dialogTitle: {
     paddingTop: 22,
@@ -876,20 +876,24 @@ const styles = (theme) => ({
   },
 });
 
-const ItemActionBarWrapper = styled.div`
-  ${({ positionPublicToggleWrapAllowed }) => (positionPublicToggleWrapAllowed ? '' : 'display: flex;')}
-  ${({ positionPublicToggleWrapAllowed }) => (positionPublicToggleWrapAllowed ? '' : 'justify-content: flex-start;')}
-  ${({ positionPublicToggleWrapAllowed }) => (positionPublicToggleWrapAllowed ? '' : 'width: 100%;')}
+const ItemActionBarWrapper = styled('div', {
+  shouldForwardProp: (prop) => !['positionPublicToggleWrapAllowed', 'displayInline'].includes(prop),
+})(({ positionPublicToggleWrapAllowed, displayInline }) => (`
+  display: ${positionPublicToggleWrapAllowed ? '' :  'flex'};
+  justify-content: ${positionPublicToggleWrapAllowed ? '' :  'flex-start'};
+  width: ${positionPublicToggleWrapAllowed ? '' :  '100%'};
   align-items: center;
-  border-top: ${({ displayInline }) => (displayInline ? '' : '1px solid #eee !default')};
-  margin-top: ${({ displayInline }) => (displayInline ? '' : '16px')};
+  border-top: ${displayInline ? '' : '1px solid #eee !default'};
+  margin-top: ${displayInline ? '' : '16px'};
   margin-right: 0;
   margin-left: 0;
   margin-bottom: 0;
-  padding-top: ${({ displayInline }) => (displayInline ? '0' : '8px')};
-`;
+  padding-top: ${displayInline ? '0' : '8px'};
+`));
 
-const ButtonGroup = styled.div`
+const ButtonGroup = styled('div', {
+  shouldForwardProp: (prop) => !['positionPublicToggleWrapAllowed'].includes(prop),
+})(({ positionPublicToggleWrapAllowed }) => (`
   display: flex;
   // border-color: red;
   // border-style: solid;
@@ -898,15 +902,17 @@ const ButtonGroup = styled.div`
   height: fit-content;
   justify-content: center;
   margin-left: 0;
-  ${({ positionPublicToggleWrapAllowed }) => (positionPublicToggleWrapAllowed ? 'width: 100%;' : '')}
-`;
+  ${positionPublicToggleWrapAllowed ? 'width: 100%;' : ''};
+`));
 
-const StackedButton = styled.div`
-  margin-left: 3px;
-  width:  ${({ onlyTwoButtons }) => (onlyTwoButtons ? '50% !important' : '33% !important')};
-`;
+const StackedButton = styled('div', {
+  shouldForwardProp: (prop) => prop !== 'onlyTwoButtons',
+})(({ onlyTwoButtons }) => ({
+  marginLeft: '3px',
+  width: onlyTwoButtons ? '50% !important' : '33% !important',
+}));
 
-const ButtonWrapper = styled.div`
+const ButtonWrapper = styled('div')`
   &:last-child {
     margin-right: 0;
   }
@@ -916,7 +922,7 @@ const ButtonWrapper = styled.div`
   // ${({ onlyTwoButtons }) => (onlyTwoButtons ? 'width: 50% !important;' : '')}
 `;
 
-const ButtonWrapperRight = styled.div`
+const ButtonWrapperRight = styled('div')`
   margin-right: 0;
   display: flex;
   align-items: center;

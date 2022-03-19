@@ -1,9 +1,10 @@
-import { Dialog, DialogContent, IconButton } from '@material-ui/core';
-import { withStyles, withTheme } from '@material-ui/core/styles';
-import { Close } from '@material-ui/icons';
+import { Dialog, DialogContent, IconButton } from '@mui/material';
+import withStyles from '@mui/styles/withStyles';
+import withTheme from '@mui/styles/withTheme';
+import { Close } from '@mui/icons-material';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
-import styled from 'styled-components';
+import styled from '@mui/material/styles/styled';
 import { hasIPhoneNotch } from '../../common/utils/cordovaUtils';
 import { renderLog } from '../../common/utils/logging';
 
@@ -45,6 +46,7 @@ class HowItWorksModal extends Component {
             className={classes.closeButton}
             onClick={this.closeHowItWorksModal}
             id="profileCloseHowItWorksModal"
+            size="large"
           >
             <Close />
           </IconButton>
@@ -113,19 +115,21 @@ const styles = () => ({
 });
 
 /* eslint no-nested-ternary: ["off"] */
-const ModalTitleArea = styled.div`
+const ModalTitleArea = styled('div', {
+  shouldForwardProp: (prop) => !['firstslide'].includes(prop),
+})(({ firstslide }) => (`
   justify-content: flex-start;
   align-items: center;
   width: 100%;
-  padding: ${(props) => (props.firstSlide ? '24px 24px 12px 24px' : '10px 14px')};
+  padding: ${firstslide ? '24px 24px 12px 24px' : '10px 14px'};
   z-index: 999;
   @media (min-width: 769px) {
     border-bottom: 2px solid #f7f7f7;
   }
   display: flex;
-`;
+`));
 
-const Title = styled.h3`
+const Title = styled('h3')`
   font-size: 28px;;
   color: black;
   margin-top: 0;

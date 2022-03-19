@@ -1,6 +1,8 @@
-import styled, { keyframes } from 'styled-components';
+import { keyframes } from '@emotion/react';
+import styled from '@mui/material/styles/styled';
 
-const Title = styled.h1`
+
+const Title = styled('h1')`
   font-weight: bold;
   font-size: 36px;
   text-align: center;
@@ -14,12 +16,12 @@ const Title = styled.h1`
   }
 `;
 
-const BlueTitle = styled.span`
+const BlueTitle = styled('span')`
   color: rgb(167, 231, 255);
   margin-bottom: 1em;
 `;
 
-const fadeIn = keyframes`
+const fadeIn = keyframes`  // March 2022, from @emotion/react (hope these libraries can be mixed)
   from {
     opacity: 0;
   }
@@ -39,19 +41,21 @@ const fadeOut = keyframes`
   }
 `;
 
-const SubTitle = styled.h3`
+const SubTitle = styled('h3', {
+  shouldForwardProp: (prop) => !['out'].includes(prop),
+})(({ out }) => (`
   font-weight: 300;
   font-size: 24px;
   text-align: center;
-  visibility: ${(props) => (props.out ? 'hidden' : 'visible')};
-  animation: ${(props) => (props.out ? fadeOut : fadeIn)} 300ms ease-in;
+  visibility: ${out ? 'hidden' : 'visible'};
+  animation: ${out ? fadeOut : fadeIn} 300ms ease-in;
   transition: visibility 1s linear;
   @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
     font-size: 20px;
   }
-`;
+`));
 
-const Video = styled.iframe`
+const Video = styled('iframe')`
   position: absolute;
   top: 0;
   left: 0;
@@ -59,7 +63,7 @@ const Video = styled.iframe`
   height: 100%;
 `;
 
-const PlayerContainer = styled.div`
+const PlayerContainer = styled('div')`
   width: 640px;
   height: 360px;
   max-width: 90%;

@@ -1,13 +1,14 @@
-import { Card, InputBase } from '@material-ui/core';
-import { withStyles, withTheme } from '@material-ui/core/styles';
+import { Card, InputBase } from '@mui/material';
+import styled from '@mui/material/styles/styled';
+import withStyles from '@mui/styles/withStyles';
+import withTheme from '@mui/styles/withTheme';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
-import styled from 'styled-components';
+import { isCordova } from '../../common/utils/isCordovaOrWebApp';
+import { renderLog } from '../../common/utils/logging';
 import VoterStore from '../../stores/VoterStore';
 import { avatarGeneric } from '../../utils/applicationUtils';
 import { cordovaNewsPaddingTop } from '../../utils/cordovaOffsets';
-import { isCordova } from '../../common/utils/isCordovaOrWebApp';
-import { renderLog } from '../../common/utils/logging';
 
 const ActivityPostModal = React.lazy(() => import(/* webpackChunkName: 'ActivityPostModal' */ './ActivityPostModal'));
 
@@ -217,7 +218,7 @@ const styles = (theme) => ({
   },
 });
 
-const AddTidbitTitle = styled.div`
+const AddTidbitTitle = styled('div')`
   background: #2e3c5d;
   border-bottom: 1px solid #ddd;
   color: #fff;
@@ -231,7 +232,7 @@ const AddTidbitTitle = styled.div`
   }
 `;
 
-const CardNewsWrapper = styled.div`
+const CardNewsWrapper = styled('div')`
   margin: 0 0 8px 0;
   padding: 8px 16px 8px 16px;
   @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
@@ -239,7 +240,7 @@ const CardNewsWrapper = styled.div`
   }
 `;
 
-const InnerFlexWrapper = styled.div`
+const InnerFlexWrapper = styled('div')`
   align-items: center;
   display: flex;
   justify-content: flex-start;

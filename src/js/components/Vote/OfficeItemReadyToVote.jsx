@@ -1,12 +1,12 @@
-import { Avatar } from '@material-ui/core';
-import { withStyles } from '@material-ui/core/styles';
+import { Avatar } from '@mui/material';
+import styled from '@mui/material/styles/styled';
+import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
-import styled from 'styled-components';
-import SupportStore from '../../stores/SupportStore';
-import VoterGuideStore from '../../stores/VoterGuideStore';
 import { isCordova } from '../../common/utils/isCordovaOrWebApp';
 import { renderLog } from '../../common/utils/logging';
+import SupportStore from '../../stores/SupportStore';
+import VoterGuideStore from '../../stores/VoterGuideStore';
 import { toTitleCase } from '../../utils/textFormat';
 
 const ImageHandler = React.lazy(() => import(/* webpackChunkName: 'ImageHandler' */ '../ImageHandler'));
@@ -148,34 +148,34 @@ OfficeItemReadyToVote.propTypes = {
 const styles = ({
 });
 
-const BallotItemSupportOpposeCountDisplayWrapper = styled.div`
+const BallotItemSupportOpposeCountDisplayWrapper = styled('div')`
   cursor: pointer;
   float: right;
 `;
 
-const Wrapper = styled.div`
+const Wrapper = styled('div')`
   padding: 24px 24px 20px 24px;
   transition: all 200ms ease-in;
   border: 1px solid transparent;
   border-radius: 4px;
 `;
 
-const InnerWrapper = styled.div`
+const InnerWrapper = styled('div')`
   display: flex;
   justify-content: space-between;
   margin-bottom: 4px;
   width: 100%;
 `;
 
-const BioColumn = styled.div`
+const BioColumn = styled('div')`
   display: flex;
 `;
 
-const OfficeColumn = styled.div`
+const OfficeColumn = styled('div')`
   display: flex;
 `;
 
-const OfficeText = styled.p`
+const OfficeText = styled('p')`
   font-size: 18px;
   font-weight: 500;
   margin: auto 0;
@@ -188,13 +188,13 @@ const OfficeText = styled.p`
   }
 `;
 
-const BioInformation = styled.div`
+const BioInformation = styled('div')`
   display: flex;
   flex-flow: column;
   margin-left: 8px;
 `;
 
-const NameText = styled.h3`
+const NameText = styled('h3')`
   font-size: 18px;
   font-weight: bold;
   margin: 0;
@@ -203,7 +203,7 @@ const NameText = styled.h3`
   }
 `;
 
-const DescriptionText = styled.p`
+const DescriptionText = styled('p')`
   font-size: 12px;
   margin: 0;
   @media print {
@@ -211,18 +211,18 @@ const DescriptionText = styled.p`
   }
 `;
 
-const HR = styled.hr`
+const HR = styled('hr')`
   margin: 0 24px;
 `;
 
-const DesktopTabletView = styled.div`
+const DesktopTabletView = styled('div')`
   display: inherit;
   @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
     display: none;
   }
 `;
 
-const MobileView = styled.div`
+const MobileView = styled('div')`
   display: inherit;
   @media (min-width: ${({ theme }) => theme.breakpoints.sm}) {
     display: none;

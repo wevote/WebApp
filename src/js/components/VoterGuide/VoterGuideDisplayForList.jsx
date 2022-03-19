@@ -1,8 +1,8 @@
-import { withStyles } from '@material-ui/core/styles';
+import styled from '@mui/material/styles/styled';
+import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
 import React, { PureComponent, Suspense } from 'react';
 import { Link } from 'react-router-dom';
-import styled from 'styled-components';
 import { renderLog } from '../../common/utils/logging';
 import { removeTwitterNameFromDescription } from '../../utils/textFormat';
 import StickyPopover from '../Ballot/StickyPopover';
@@ -144,7 +144,7 @@ const styles = (theme) => ({
   },
 });
 
-const Wrapper = styled.div`
+const Wrapper = styled('div')`
   padding: 8px;
   background-color: #f8f8f8 !default;
   border: 1px solid #e7e7e7;
