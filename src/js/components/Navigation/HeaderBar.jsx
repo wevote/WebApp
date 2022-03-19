@@ -663,7 +663,6 @@ class HeaderBar extends Component {
 
     const isFriends = normalizedHrefPage() === 'friends';  // The URL '/friends/request' yields 'friends'
 
-    console.log('HeaderBarWrapper hasIPhoneNotch', hasIPhoneNotch());
     return (
       <HeaderBarWrapper
         hasNotch={hasIPhoneNotch()}
