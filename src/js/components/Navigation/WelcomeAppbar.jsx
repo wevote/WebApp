@@ -528,7 +528,7 @@ const styles = (theme) => ({
     '&:hover': {
       backgroundColor: 'transparent',
     },
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down('sm')]: {
       paddingLeft: 8,
       paddingRight: 0,
     },

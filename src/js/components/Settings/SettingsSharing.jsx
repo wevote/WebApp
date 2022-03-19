@@ -566,7 +566,7 @@ const styles = (theme) => ({
     marginRight: 8,
   },
   upgradeButton: {
-    [theme.breakpoints.down('lg')]: {
+    [theme.breakpoints.down('md')]: {
       width: 97,
     },
   },

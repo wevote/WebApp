@@ -109,7 +109,7 @@ VoterPhoneEmailCordovaEntryModal.propTypes = {
 const styles = (theme) => ({
   dialogPaper: {
     marginTop: 48,
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down('xs')]: {
       minWidth: '95%',
       maxWidth: '95%',
       width: '95%',
@@ -141,7 +141,7 @@ const styles = (theme) => ({
     top: '-5%',
   },
   dialogContent: {
-    [theme.breakpoints.down('lg')]: {
+    [theme.breakpoints.down('md')]: {
       padding: '0 8px 8px',
     },
   },

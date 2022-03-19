@@ -369,14 +369,14 @@ const styles = (theme) => ({
     width: 150,
     height: 150,
     color: 'rgb(171, 177, 191)',
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down('sm')]: {
       width: 75,
       height: 75,
     },
   },
   ballotButtonRoot: {
     width: 250,
-    [theme.breakpoints.down('lg')]: {
+    [theme.breakpoints.down('md')]: {
       width: '100%',
     },
   },

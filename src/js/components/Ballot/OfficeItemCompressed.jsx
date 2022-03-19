@@ -458,7 +458,7 @@ const CandidateInfo = styled('div')(({ theme }) => (`
   &:hover {
     border: 1px solid ${theme.palette.primary.main};
   }
-  [theme.breakpoints.up('md')]: {
+  [theme.breakpoints.down:('md')]: {
     padding: 8px 8px 4px 8px !important;
     // flex-flow: column;
   }
@@ -524,7 +524,7 @@ const Title = styled('h2')(({ theme }) => (`
   font-size: 18px;
   margin-bottom: 6px;
   width: fit-content;
-  ${[theme.breakpoints.down('md')]}: {
+  ${[theme.breakpoints.down('sm')]}: {
     font-size: 16px;
     margin-bottom: 2px;
   }

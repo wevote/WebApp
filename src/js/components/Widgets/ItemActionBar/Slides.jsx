@@ -129,7 +129,7 @@ const styles = (theme) => ({
     minWidth: '40%',
     width: '100%',
     margin: '8px 0',
-    [theme.breakpoints.down('lg')]: {
+    [theme.breakpoints.down('md')]: {
       width: '40%',
     },
   },

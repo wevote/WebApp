@@ -1201,19 +1201,19 @@ const styles = (theme) => ({
   },
   decidedIcon: {
     fontSize: 32,
-    [theme.breakpoints.down('xl')]: {
+    [theme.breakpoints.down('lg')]: {
       fontSize: 28,
     },
   },
   decidedIconSmall: {
     fontSize: 16,
-    [theme.breakpoints.down('xl')]: {
+    [theme.breakpoints.down('lg')]: {
       fontSize: 16,
     },
   },
   cardRoot: {
     padding: '8px 16px',
-    [theme.breakpoints.down('xl')]: {
+    [theme.breakpoints.down('lg')]: {
       padding: '2px 16px',
     },
   },

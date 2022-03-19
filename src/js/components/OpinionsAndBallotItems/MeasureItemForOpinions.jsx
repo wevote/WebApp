@@ -244,7 +244,7 @@ MeasureItemForOpinions.propTypes = {
 const styles = (theme) => ({
   cardRoot: {
     padding: '16px 16px 8px 16px',
-    [theme.breakpoints.down('xl')]: {
+    [theme.breakpoints.down('lg')]: {
       padding: '16px 16px 0 16px',
     },
   },

@@ -190,7 +190,7 @@ const styles = (theme) => ({
     padding: '4px 8px',
     height: 32,
     width: '100%',
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down('sm')]: {
       padding: '4px 4px',
     },
   },
@@ -229,11 +229,11 @@ const styles = (theme) => ({
     marginLeft: 8,
     width: 75,
     transition: 'all ease-in 150ms',
-    [theme.breakpoints.down('lg')]: {
+    [theme.breakpoints.down('md')]: {
       width: '50%',
       fontSize: 'inherit',
     },
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down('sm')]: {
       width: 55,
       fontSize: 'inherit',
     },
@@ -255,11 +255,11 @@ const styles = (theme) => ({
     padding: 0,
     width: 350,
     transition: 'all ease-in 150ms',
-    [theme.breakpoints.down('lg')]: {
+    [theme.breakpoints.down('md')]: {
       width: '50%',
       fontSize: 'inherit',
     },
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down('sm')]: {
       width: 150,
       fontSize: 'inherit',
     },

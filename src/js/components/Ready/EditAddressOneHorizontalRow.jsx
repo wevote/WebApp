@@ -286,7 +286,7 @@ const styles = (theme) => ({
   saveButton: {
     height: 'fit-content',
     width: '100%',
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down('sm')]: {
       marginTop: 3,
     },
     [theme.breakpoints.up('sm')]: {

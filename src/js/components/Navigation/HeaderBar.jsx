@@ -846,7 +846,7 @@ const styles = (theme) => ({
     [theme.breakpoints.up('sm')]: {
       paddingLeft: 0,
     },
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down('sm')]: {
       paddingTop: 6,
       marginLeft: 2,
       paddingLeft: 0,
@@ -875,7 +875,7 @@ const styles = (theme) => ({
     color: 'rgb(6, 95, 212)',
     marginLeft: '1rem',
     outline: 'none !important',
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down('sm')]: {
       marginLeft: 12,
       paddingLeft: 0,
     },
@@ -902,7 +902,7 @@ const styles = (theme) => ({
     [theme.breakpoints.up('sm')]: {
       paddingLeft: 0,
     },
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down('sm')]: {
       marginLeft: 2,
       paddingLeft: 0,
     },
@@ -913,7 +913,7 @@ const styles = (theme) => ({
   outlinedPrimary: {
     minWidth: 36,
     marginRight: '.5rem',
-    [theme.breakpoints.down('lg')]: {
+    [theme.breakpoints.down('md')]: {
       padding: 2,
     },
   },

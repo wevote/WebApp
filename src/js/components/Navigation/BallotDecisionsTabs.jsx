@@ -163,7 +163,7 @@ const styles = (theme) => ({
     top: 9,
     minWidth: 16,
     width: 20,
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down('sm')]: {
       fontSize: 8,
       height: 16,
       right: -11,
@@ -177,14 +177,14 @@ const styles = (theme) => ({
   },
   tabLabelContainer: {
     padding: '6px 6px',
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down('sm')]: {
       padding: '6px 20px',
     },
   },
   tabsRoot: {
     minHeight: 38,
     height: 38,
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down('sm')]: {
       fontSize: 12,
     },
   },
@@ -192,7 +192,7 @@ const styles = (theme) => ({
     height: 38,
   },
   tabRootAllChoice: {
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down('sm')]: {
       minWidth: 75,
     },
     [theme.breakpoints.up('sm')]: {
@@ -200,7 +200,7 @@ const styles = (theme) => ({
     },
   },
   tabRoot: {
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down('sm')]: {
       minWidth: 100,
     },
     [theme.breakpoints.up('sm')]: {

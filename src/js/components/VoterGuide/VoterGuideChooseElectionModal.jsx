@@ -90,7 +90,7 @@ VoterGuideChooseElectionModal.propTypes = {
 
 const styles = (theme) => ({
   dialogPaper: {
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down('xs')]: {
       minWidth: '95%',
       maxWidth: '95%',
       width: '95%',
@@ -101,7 +101,7 @@ const styles = (theme) => ({
   },
   dialogContent: {
     height: '100%',
-    [theme.breakpoints.down('lg')]: {
+    [theme.breakpoints.down('lmd')]: {
       padding: '0 8px',
     },
   },

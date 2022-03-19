@@ -267,7 +267,7 @@ const styles = (theme) => ({
     // zIndex: '9010 !important',
   },
   dialogPaper: isWebApp() ? {
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down('sm')]: {
       minWidth: '95%',
       maxWidth: '95%',
       width: '95%',
@@ -291,24 +291,24 @@ const styles = (theme) => ({
     position: 'absolute',
   },
   focusedOnSingleInput: isWebApp() ? {
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down('sm')]: {
       position: 'absolute',
       top: '75%',
       left: '73%',
     },
   } : {},
   emailInputWebApp0to568: {
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down('sm')]: {
       transform: 'translate(-75%, -50%)',
     },
   },
   phoneInputWebApp0to568: {
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down('sm')]: {
       transform: 'translate(-75%, -60%)',
     },
   },
   emailInputWebApp569to736: {
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down('sm')]: {
       transform: 'translate(-75%, -55%)',
     },
   },
@@ -318,12 +318,12 @@ const styles = (theme) => ({
     },
   },
   emailInputWebApp737to896: {
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down('sm')]: {
       transform: 'translate(-75%, -40%)',
     },
   },
   phoneInputWebApp737to896: {
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down('sm')]: {
       transform: 'translate(-75%, -55%)',
     },
   },
@@ -335,7 +335,7 @@ const styles = (theme) => ({
     top: isCordova() ? '6%' : '180px',
   },
   dialogContent: {
-    [theme.breakpoints.down('lg')]: {
+    [theme.breakpoints.down('md')]: {
       padding: '0 8px 8px',
     },
   },

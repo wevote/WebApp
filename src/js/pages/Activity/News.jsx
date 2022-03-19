@@ -612,7 +612,7 @@ const styles = (theme) => ({
   },
   ballotButtonRoot: {
     width: 250,
-    [theme.breakpoints.down('lg')]: {
+    [theme.breakpoints.down('md')]: {
       width: '100%',
     },
   },

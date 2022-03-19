@@ -46,7 +46,7 @@ const styles = (theme) => ({
   cardFooterIconRoot: {
     fontSize: 16,
     margin: '0 0 .1rem .3rem',
-    [theme.breakpoints.down('xl')]: {
+    [theme.breakpoints.down('lg')]: {
       marginBottom: '.2rem',
     },
     [theme.breakpoints.up('md')]: {

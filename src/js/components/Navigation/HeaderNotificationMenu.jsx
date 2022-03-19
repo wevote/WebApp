@@ -390,7 +390,7 @@ const styles = (theme) => ({
     padding: '0 !important',
     border: 'none !important',
     boxShadow: '0 2px 3px 2px #ccc',
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down('sm')]: {
       width: '300px !important',
       maxWidth: '320px !important',
     },

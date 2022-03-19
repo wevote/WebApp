@@ -233,7 +233,7 @@ const styles = (theme) => ({
     textAlign: 'center',
     fontSize: 14,
     fontWeight: 600,
-    [theme.breakpoints.down('xl')]: {
+    [theme.breakpoints.down('lg')]: {
       padding: '12px 0',
     },
   },

@@ -354,9 +354,9 @@ const styles = (theme) => ({
     padding: '4px 8px',
     height: 32,
     width: '100%',
-    [theme.breakpoints.down('lg')]: {
-    },
     [theme.breakpoints.down('md')]: {
+    },
+    [theme.breakpoints.down('sm')]: {
       padding: '4px 4px',
     },
   },

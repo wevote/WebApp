@@ -89,7 +89,7 @@ const styles = (theme) => ({
       color: '#4371cc',
     },
     textDecoration: 'none',
-    [theme.breakpoints.down('lg')]: {
+    [theme.breakpoints.down('md')]: {
       fontSize: 14,
     },
   },

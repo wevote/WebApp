@@ -182,7 +182,7 @@ VoterGuideMeasureItemCompressed.propTypes = {
 const styles = (theme) => ({
   cardRoot: {
     padding: '16px 16px 8px 16px',
-    [theme.breakpoints.down('xl')]: {
+    [theme.breakpoints.down('xlg')]: {
       padding: '16px 16px 0 16px',
     },
   },

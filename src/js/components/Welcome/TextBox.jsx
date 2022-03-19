@@ -33,7 +33,7 @@ const styles = (theme) => ({
   input: {
     paddingTop: 4,
     color: '#555',
-    [theme.breakpoints.down('lg')]: {
+    [theme.breakpoints.down('md')]: {
       fontSize: 12,
       paddingTop: 8,
     },

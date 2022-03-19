@@ -1744,7 +1744,7 @@ const styles = (theme) => ({
     background: 'rgba(46, 60, 93, 0.08)',
     color: '#333',
     cursor: 'pointer',
-    [theme.breakpoints.down('xl')]: {
+    [theme.breakpoints.down('lg')]: {
       fontSize: 9,
       width: 16,
       top: 11,
@@ -1795,7 +1795,7 @@ const styles = (theme) => ({
     top: 1,
     color: theme.palette.primary.main,
     cursor: 'pointer',
-    [theme.breakpoints.down('lg')]: {
+    [theme.breakpoints.down('md')]: {
       fontSize: 16,
       top: 3,
     },

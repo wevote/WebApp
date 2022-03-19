@@ -445,7 +445,7 @@ const styles = (theme) => ({
     color: 'rgba(17, 17, 17, .5)',
     outline: 'none !important',
     paddingRight: 20,
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down('sm')]: {
       paddingTop: 6,
       marginLeft: 2,
       paddingLeft: 0,
@@ -460,7 +460,7 @@ const styles = (theme) => ({
     color: 'rgb(6, 95, 212)',
     marginLeft: '1rem',
     outline: 'none !important',
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down('sm')]: {
       marginLeft: 12,
       paddingLeft: 0,
     },
@@ -488,7 +488,7 @@ const styles = (theme) => ({
   outlinedPrimary: {
     minWidth: 36,
     marginRight: '.5rem',
-    [theme.breakpoints.down('lg')]: {
+    [theme.breakpoints.down('sm')]: {
       padding: 2,
     },
   },

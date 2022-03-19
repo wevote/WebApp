@@ -841,7 +841,7 @@ const styles = (theme) => ({
     fontSize: 14,
     marginBottom: 3,
     marginLeft: 4,
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down('sm')]: {
       fontSize: 14,
     },
   },

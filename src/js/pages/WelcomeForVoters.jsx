@@ -325,7 +325,7 @@ const styles = (theme) => ({
   buttonContained: {
     borderRadius: 32,
     height: 50,
-    [theme.breakpoints.down('lg')]: {
+    [theme.breakpoints.down('lmd')]: {
       height: 36,
     },
   },

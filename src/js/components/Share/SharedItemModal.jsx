@@ -596,7 +596,7 @@ const styles = (theme) => ({
       height: '90%',
       margin: '0 auto',
     },
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down('sm')]: {
       minWidth: '95%',
       maxWidth: '95%',
       width: '95%',
@@ -607,7 +607,7 @@ const styles = (theme) => ({
     },
   },
   dialogRoot: {
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down('sm')]: {
       zIndex: '5000 !important',
     },
   },

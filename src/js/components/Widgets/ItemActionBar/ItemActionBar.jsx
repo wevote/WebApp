@@ -813,10 +813,10 @@ const styles = (theme) => ({
     fontSize: 18,
     marginRight: '.3rem',
     fontWeight: 'bold',
-    [theme.breakpoints.down('lg')]: {
+    [theme.breakpoints.down('md')]: {
       fontSize: 16,
     },
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down('sm')]: {
       fontSize: 14,
       marginTop: -2,
     },
@@ -830,11 +830,11 @@ const styles = (theme) => ({
     fontSize: 12,
     width: 110,
     height: 32,
-    [theme.breakpoints.down('lg')]: {
+    [theme.breakpoints.down('md')]: {
       width: 100,
       height: 30,
     },
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down('sm')]: {
       width: 'fit-content',
       minWidth: 80,
       height: 28,
@@ -850,7 +850,7 @@ const styles = (theme) => ({
     marginLeft: '.1rem',
     marginTop: '.3rem',
     marginBottom: 4,
-    [theme.breakpoints.down('lg')]: {
+    [theme.breakpoints.down('md')]: {
       width: 30,
       height: 30,
     },

@@ -242,7 +242,7 @@ BallotItemVoterGuideSupportOpposeDisplay.propTypes = {
 const styles = (theme) => ({
   decidedIcon: {
     fontSize: 32,
-    [theme.breakpoints.down('xl')]: {
+    [theme.breakpoints.down('lg')]: {
       fontSize: 28,
     },
   },

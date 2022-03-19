@@ -259,11 +259,11 @@ const styles = (theme) => ({
     minWidth: 60,
     height: 30,
     margin: '4px 0 4px 0',
-    [theme.breakpoints.down('lg')]: {
+    [theme.breakpoints.down('md')]: {
       minWidth: 60,
       height: 30,
     },
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down('sm')]: {
       width: 'fit-content',
       minWidth: 50,
       height: 30,
