@@ -8,7 +8,7 @@ import OrganizationActions from '../../actions/OrganizationActions';
 import VoterGuideActions from '../../actions/VoterGuideActions';
 import VoterSessionActions from '../../actions/VoterSessionActions';
 import LazyImage from '../../common/components/LazyImage';
-import { isIOSAppOnMac, isIPad, isIPadGiantSize } from '../../common/utils/cordovaUtils';
+import { isIOSAppOnMac, isIPadGiantSize } from '../../common/utils/cordovaUtils';
 import historyPush from '../../common/utils/historyPush';
 import { normalizedHref, normalizedHrefPage } from '../../common/utils/hrefUtils';
 import { isCordova, isWebApp } from '../../common/utils/isCordovaOrWebApp';
