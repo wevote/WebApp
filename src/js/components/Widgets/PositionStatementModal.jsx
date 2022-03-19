@@ -399,7 +399,7 @@ const styles = (theme) => ({
     fontSize: 18,
     height: '100%',
     width: '100%',
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down('sm')]: {
       fontSize: 16,
     },
   },

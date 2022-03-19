@@ -302,7 +302,7 @@ const styles = (theme) => ({
     boxShadow: 'none',
     border: '1px solid #333',
     padding: '8px',
-    [theme.breakpoints.down('sxs')]: {
+    [theme.breakpoints.down('xs')]: {
       height: 'auto',
     },
   },

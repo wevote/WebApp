@@ -313,7 +313,7 @@ const styles = (theme) => ({
     },
   },
   phoneInputWebApp569to736: {
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down('sm')]: {
       transform: 'translate(-75%, -55%)',
     },
   },

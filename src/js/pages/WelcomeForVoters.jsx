@@ -325,7 +325,7 @@ const styles = (theme) => ({
   buttonContained: {
     borderRadius: 32,
     height: 50,
-    [theme.breakpoints.down('lmd')]: {
+    [theme.breakpoints.down('md')]: {
       height: 36,
     },
   },
@@ -338,7 +338,7 @@ const styles = (theme) => ({
   viewBallotButton: {
     borderRadius: 32,
     height: 50,
-    [theme.breakpoints.down('lg')]: {
+    [theme.breakpoints.down('md')]: {
       height: 36,
     },
     background: 'linear-gradient(180deg, white, rgb(178, 200, 255))',

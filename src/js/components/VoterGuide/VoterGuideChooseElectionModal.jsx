@@ -101,7 +101,7 @@ const styles = (theme) => ({
   },
   dialogContent: {
     height: '100%',
-    [theme.breakpoints.down('lmd')]: {
+    [theme.breakpoints.down('md')]: {
       padding: '0 8px',
     },
   },

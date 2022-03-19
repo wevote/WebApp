@@ -488,7 +488,7 @@ const styles = (theme) => ({
   outlinedPrimary: {
     minWidth: 36,
     marginRight: '.5rem',
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down('md')]: {
       padding: 2,
     },
   },

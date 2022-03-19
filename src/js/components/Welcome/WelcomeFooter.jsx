@@ -252,7 +252,7 @@ const styles = (theme) => ({
       border: '1.5px solid white',
       height: 40,
     },
-    [theme.breakpoints.down('xs')]: {
+    [theme.breakpoints.down('sm')]: {
       width: '47%',
       fontSize: 12,
       border: '1px solid white',
@@ -292,7 +292,7 @@ const styles = (theme) => ({
     '&:hover': {
       color: 'white',
     },
-    [theme.breakpoints.down('lg')]: {
+    [theme.breakpoints.down('md')]: {
       fontSize: 16,
     },
   },
@@ -303,7 +303,7 @@ const styles = (theme) => ({
     '&:hover': {
       color: 'white',
     },
-    [theme.breakpoints.down('lg')]: {
+    [theme.breakpoints.down('md')]: {
       fontSize: 16,
     },
   },
