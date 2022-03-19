@@ -854,7 +854,7 @@ const styles = (theme) => ({
       width: 30,
       height: 30,
     },
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down('sm')]: {
       width: 'fit-content',
       minWidth: 28,
       height: 28,
