@@ -245,12 +245,14 @@ const AppleLogoSvg = styled('svg', {
 Note, May 21, 2020: Before making changes to these styles, be sure you are compliant with
 https://developer.apple.com/design/resources/ or we risk getting rejected by Apple
 */
-const AppleSignInText = styled('span')`
+const AppleSignInText = styled('span', {
+  shouldForwardProp: (prop) => !['enabled'].includes(prop),
+})(({ enabled }) => (`
   font-size: 18px;
   padding: 0;
   border: none;
-  color: ${({ enabled }) => (enabled ? '#fff' : 'grey')};
-`;
+  color: ${enabled ? '#fff' : 'grey'};
+`));
 
 /*
 Note, May 21, 2020: Before making changes to these styles, be sure you are compliant with
