@@ -551,6 +551,7 @@ class SettingsAddBallotItemsFilter extends Component {
                   })}
                 </Select>
               )}
+              label=""
             />
           </FilterColumn>
         </FilterRow>

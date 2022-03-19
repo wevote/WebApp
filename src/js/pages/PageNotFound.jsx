@@ -52,7 +52,7 @@ PageNotFound.propTypes = {
 };
 
 const Wrapper = styled('div')`
-  @media (max-width: ${(theme) => (isCordova() ? undefined : theme.breakpoints.md)}) {
+  @media (max-width: ${({ theme }) => (isCordova() ? undefined : theme.breakpoints.md)}) {
     margin: 1em 0;
   }
 `;
