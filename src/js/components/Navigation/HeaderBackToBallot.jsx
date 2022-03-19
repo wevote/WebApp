@@ -852,7 +852,7 @@ class HeaderBackToBallot extends Component {
           )}
           {shareButtonInHeader && (
           <TopRowTwoRightContainer>
-            <OfficeShareWrapper className="u-show-desktop-tablet" >
+            <OfficeShareWrapper className="u-show-desktop-tablet">
               <ShareButtonDesktopTablet officeShare />
             </OfficeShareWrapper>
           </TopRowTwoRightContainer>
