@@ -12,11 +12,12 @@ import { useHistory } from 'react-router-dom';
  https://reactrouter.com/native/api/Hooks/usehistory
 */
 export default function TabWithPushHistory (props) {
-  const { classes, id, label, to } = props;
+  const { classes, id, label, to, value, change: handleTabChange } = props;
   const history = useHistory();
 
   function handleClick () {
     history.push(to);
+    handleTabChange(value);
   }
 
   // console.log(`TabWithPushHistory label:${label}`);
@@ -29,4 +30,6 @@ TabWithPushHistory.propTypes = {
   id: PropTypes.string.isRequired,
   label: PropTypes.string.isRequired,
   to: PropTypes.string.isRequired,
+  value: PropTypes.number.isRequired,
+  change: PropTypes.func.isRequired,
 };

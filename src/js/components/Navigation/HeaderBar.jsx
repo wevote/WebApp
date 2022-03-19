@@ -68,6 +68,7 @@ class HeaderBar extends Component {
       showValuesIntroModal: false,
       showImageUploadModal: false,
       shareModalStep: '',
+      tabsValue: 1,
       organizationModalBallotItemWeVoteId: '',
       voter: {},
       voterFirstName: '',
@@ -85,6 +86,7 @@ class HeaderBar extends Component {
     this.toggleSelectBallotModal = this.toggleSelectBallotModal.bind(this);
     this.toggleSignInModal = this.toggleSignInModal.bind(this);
     this.transitionToYourVoterGuide = this.transitionToYourVoterGuide.bind(this);
+    this.handleTabChange = this.handleTabChange.bind(this);
   }
 
   componentDidMount () {
@@ -146,20 +148,6 @@ class HeaderBar extends Component {
         }
       }, 1000);
     }
-    // 2021-11 From Dale: Automatically opening modals on first page load doesn't test well with voters
-    // this.showBallotModalTimeout = setTimeout(() => {
-    //   // We want the SelectBallotModal to appear on the ballot page (without a keystroke)
-    //   // if the page is empty and we have a textForMapSearch and we dont have the EditAddressOneHorizontalRow displayed
-    //   const elList = document.getElementById('BallotListId');
-    //   const elEditAddress = document.getElementById('EditAddressOneHorizontalRow');
-    //   if (elList && !!elEditAddress) {
-    //     const textForMapSearch = VoterStore.getTextForMapSearch();
-    //     if (elList.innerHTML.trim().length < 1 && textForMapSearch) {
-    //       console.log('Putting up SelectBallotModal since BallotList is empty and textForMapSearch exists.');
-    //       this.setState({ showSelectBallotModal: true });
-    //     }
-    //   }
-    // }, 1500);
   }
 
   shouldComponentUpdate (nextProps, nextState) {
@@ -261,9 +249,6 @@ class HeaderBar extends Component {
         update = true;
       }
     }
-
-    // console.log(`HeaderBar shouldComponentUpdate:  ${false}`);
-    if (update)  this.manuallyUnderlineTab(true);
 
     // console.log('HeaderBar shouldComponentUpdate: update === ', update);
     return update;
@@ -371,49 +356,10 @@ class HeaderBar extends Component {
     }
   }
 
-  manuallyUnderlineTab = (setInitial = false) => {
-    const pathname = normalizedHref();
-
-    // console.log('HeaderBar ------------------ manuallyUnderlineTab ', pathname);
-    if (typeof pathname !== 'undefined' && pathname) {
-      if (pathname.startsWith('/ready')  || pathname === '/') {
-        if (setInitial) {
-          this.changeOverrideUnderline('readyTabHeaderBar,ballotTabHeaderBar,valuesTabHeaderBar,discussTabHeaderBar');
-        }
-        this.setShowAddressButtonIfMobile(true);
-        return 0;
-      }
-      if (pathname.startsWith('/ballot'))  {
-        if (setInitial) {
-          this.changeOverrideUnderline('ballotTabHeaderBar,readyTabHeaderBar,valuesTabHeaderBar,discussTabHeaderBar');
-        }
-        this.setShowAddressButtonIfMobile(true);
-        return 1;
-      }
-      if (stringContains('/value', pathname) ||
-          stringContains('/opinions', pathname)) {    // '/values'
-        if (setInitial) {
-          this.changeOverrideUnderline('valuesTabHeaderBar,readyTabHeaderBar,ballotTabHeaderBar,discussTabHeaderBar');
-        }
-        this.setShowAddressButtonIfMobile(false);
-        return 2;
-      }
-      if (pathname.startsWith('/news')) {
-        if (setInitial) {
-          this.changeOverrideUnderline('discussTabHeaderBar,readyTabHeaderBar,ballotTabHeaderBar,valuesTabHeaderBar');
-        }
-        this.setShowAddressButtonIfMobile(false);
-        return 3;
-      }
-    }
-    this.setShowAddressButtonIfMobile(false);
-    return false;
-  };
-
-  // handleNavigation = (to) => {
-  //   const history = useHistory();
-  //   history.push(to);
-  // }
+  handleTabChange(newValue) {
+    // console.log('handleTabChange ', newValue);
+    this.setState({ tabsValue: newValue });
+  }
 
   goToSearch = () => {
     historyPush('/opinions');
@@ -475,23 +421,11 @@ class HeaderBar extends Component {
     });
   }
 
-  // closeNewVoterGuideModal () {
-  //   // console.log('HeaderBar closeNewVoterGuideModal');
-  //   AppObservableStore.setShowNewVoterGuideModal(false);
-  //   // signInModalGlobalState.set('isShowingSignInModal', false);
-  //   HeaderBar.goToGetStarted();
-  // }
-
   closeSignInModal () {
     // console.log('HeaderBar closeSignInModal');
     this.setState({ showSignInModal: false });
     VoterActions.voterRetrieve();
     VoterActions.voterEmailAddressRetrieve();
-    // AppObservableStore.setShowSignInModal(false);  6/10/21: Sends you in an endless loop
-
-    // signInModalGlobalState.set('isShowingSignInModal', false);
-    // When this is uncommented, closing the sign in box from pages like "Values" will redirect you to the ballot
-    // HeaderBar.goToGetStarted();
   }
 
   toggleSignInModal () {
@@ -510,34 +444,6 @@ class HeaderBar extends Component {
   signOutAndHideProfilePopUp () {
     VoterSessionActions.voterSignOut();
     this.setState({ profilePopUpOpen: false });
-  }
-
-  // June 2021:  This is a hack, not an elegant solution.  The Tabs object seems to get confused
-  // when it is inside the render of a HeaderBarSuspense, and in addition, we are not using the Tabs
-  // object to load a pane, we are using it to HistoryPush to a different page.
-  // The first id in the tabNamesString gets the underline, the others, in whatever order they
-  // arrive get the underline removed.  Once the voter navigates to a tab in a session, this hack becomes
-  // unnecessary for that tab, but there doesn't seem to be a downside of calling it all the time
-
-  // March 2022:  With MUI 5, this is no longer necessary, the "confusion" bug was fixed.
-  changeOverrideUnderline (tabNamesString) {
-    const tabNames = tabNamesString.split(',');
-    for (let i = 0; i < tabNames.length; i++) {
-      const element = document.getElementById(tabNames[i]);
-      if (element) {
-        if (i === 0) {
-          element.style.borderBottom = 'black';
-          element.style.borderBottomStyle = 'solid';
-          element.style.borderBottomWidth = '4px';
-          element.style.paddingBottom = '2px';
-        } else {
-          element.style.borderBottomStyle = 'none';
-          element.style.borderBottomStyle = 'none';
-          element.style.borderBottomWidth = '0';
-          element.style.paddingBottom = '6px';
-        }
-      }
-    }
   }
 
   transitionToYourVoterGuide () {
@@ -575,7 +481,7 @@ class HeaderBar extends Component {
       showPaidAccountUpgradeModal, showPersonalizedScoreIntroModal,
       showSelectBallotModal, showSelectBallotModalHideAddress, showSelectBallotModalHideElections,
       showShareModal, showSignInModal, showValuesIntroModal, showImageUploadModal,
-      voter, voterFirstName, voterIsSignedIn,
+      voter, voterFirstName, voterIsSignedIn, tabsValue,
     } = this.state;
     /* eslint object-property-newline: ["off"] */
     const shows = {
@@ -663,6 +569,7 @@ class HeaderBar extends Component {
 
     const isFriends = normalizedHrefPage() === 'friends';  // The URL '/friends/request' yields 'friends'
 
+    console.log('HeaderBar hasNotch, scrolledDown, hasSubmenu', hasIPhoneNotch(), scrolledDown, displayTopMenuShadow());
     return (
       <HeaderBarWrapper
         hasNotch={hasIPhoneNotch()}
@@ -690,19 +597,47 @@ class HeaderBar extends Component {
             <div className="header-nav" style={isMobileScreenSize() ? { display: 'none' } : {}}>
               <Tabs
                 className={isIOSAppOnMac() ? '' : 'u-show-desktop'}
-                value={this.manuallyUnderlineTab()}
+                value={tabsValue}
                 indicatorColor="primary"
                 classes={{ indicator: classes.indicator }}
               >
                 {showFullNavigation && (
-                  <TabWithPushHistory classes={{ root: classes.tabRootReady }} id="readyTabHeaderBar" label="Ready?" to="/ready" />
+                  <TabWithPushHistory
+                    classes={{ root: classes.tabRootReady }}
+                    value={1}
+                    change={this.handleTabChange}
+                    id="readyTabHeaderBar"
+                    label="Ready?"
+                    to="/ready"
+                  />
                 )}
                 {showFullNavigation && (
-                  <TabWithPushHistory classes={{ root: classes.tabRootBallot }} id="ballotTabHeaderBar" label="Ballot" to="/ballot" />
+                  <TabWithPushHistory
+                    classes={{ root: classes.tabRootBallot }}
+                    value={2}
+                    change={this.handleTabChange}
+                    id="ballotTabHeaderBar"
+                    label="Ballot"
+                    to="/ballot"
+                  />
                 )}
-                <TabWithPushHistory classes={{ root: classes.tabRootValues }} id="valuesTabHeaderBar" label="Opinions" to="/values" />
+                <TabWithPushHistory
+                  classes={{ root: classes.tabRootValues }}
+                  value={3}
+                  change={this.handleTabChange}
+                  id="valuesTabHeaderBar"
+                  label="Opinions"
+                  to="/values"
+                />
                 {(showFullNavigation) && (
-                  <TabWithPushHistory classes={{ root: classes.tabRootNews }} id="discussTabHeaderBar" label="Discuss" to="/news" />
+                  <TabWithPushHistory
+                    classes={{ root: classes.tabRootNews }}
+                    value={4}
+                    change={this.handleTabChange}
+                    id="discussTabHeaderBar"
+                    label="Discuss"
+                    to="/news"
+                  />
                 )}
               </Tabs>
             </div>
