@@ -181,14 +181,16 @@ const styles = (theme) => ({
   },
 });
 
-const Container = styled('div')`
+const Container = styled('div', {
+  shouldForwardProp: (prop) => !['candidateLength'].includes(prop),
+})(({ candidateLength }) => (`
   display: flex;
-  flex-flow: ${({ candidateLength }) => (candidateLength > 2 ? 'row wrap' : 'row')};
+  flex-flow: ${candidateLength > 2 ? 'row wrap' : 'row'};
   justify-content: center;
   @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
     flex-flow: row wrap;
   }
-`;
+`));
 
 const Title = styled('div')`
   font-size: 18px;
@@ -201,7 +203,9 @@ const Title = styled('div')`
   }
 `;
 
-const CandidateInfo = styled('div')`
+const CandidateInfo = styled('div', {
+  shouldForwardProp: (prop) => !['numberOfCandidatesInList'].includes(prop),
+})(({ numberOfCandidatesInList }) => (`
   display: flex;
   flex-flow: column;
   padding: 16px 16px 0 16px;
@@ -209,7 +213,7 @@ const CandidateInfo = styled('div')`
   overflow-x: hidden;
   transition: all 200ms ease-in;
   border: 1px solid ${({ theme }) => theme.colors.grayBorder};
-  width: ${({ numberOfCandidatesInList }) => (numberOfCandidatesInList > 1 ? '48%' : '100%')};
+  width: ${numberOfCandidatesInList > 1 ? '48%' : '100%'};
   margin-right: 8px;
   border-radius: 4px;
   cursor: pointer;
@@ -234,6 +238,6 @@ const CandidateInfo = styled('div')`
       box-shadow: none;
     }
   }
-`;
+`));
 
 export default withTheme(withStyles(styles)(OfficeItemForOpinions));
