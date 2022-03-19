@@ -119,7 +119,7 @@ export default class ReadMore extends Component {
             textTruncateChild={(
               <a // eslint-disable-line
                 className="u-link-color u-no-break"
-                tabIndex="0"
+                // tabIndex="0"
                 href="#"
                 id="readMore"
                 onClick={this.toggleLines}
@@ -139,7 +139,7 @@ export default class ReadMore extends Component {
           &nbsp;&nbsp;
           <a // eslint-disable-line
             className="u-link-color u-no-break"
-            tabIndex="0"
+            // tabIndex="0"
             href="#"
             id="showLess"
             onClick={this.toggleLines}

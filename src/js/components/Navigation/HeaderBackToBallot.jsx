@@ -852,7 +852,7 @@ class HeaderBackToBallot extends Component {
           )}
           {shareButtonInHeader && (
           <TopRowTwoRightContainer>
-            <OfficeShareWrapper className="u-show-desktop-tablet" ipad={isIPad() || isIOSAppOnMac()}>
+            <OfficeShareWrapper className="u-show-desktop-tablet" >
               <ShareButtonDesktopTablet officeShare />
             </OfficeShareWrapper>
           </TopRowTwoRightContainer>

@@ -663,11 +663,13 @@ class HeaderBar extends Component {
 
     const isFriends = normalizedHrefPage() === 'friends';  // The URL '/friends/request' yields 'friends'
 
+    console.log('HeaderBarWrapper hasIPhoneNotch', hasIPhoneNotch());
     return (
       <HeaderBarWrapper
         hasNotch={hasIPhoneNotch()}
         scrolledDown={scrolledDown}
         hasSubmenu={displayTopMenuShadow()}
+        id="Ballot-HeaderBarWrapper"
       >
         <TopOfPageHeader>
           {/* <AppBar position="relative" */}
@@ -961,9 +963,9 @@ const FirstNameWrapper = styled('div')`
 const HeaderBarWrapper = styled('div', {
   shouldForwardProp: (prop) => !['hasNotch', 'hasSubmenu', 'scrolledDown'].includes(prop),
 })(({ hasNotch, hasSubmenu, scrolledDown }) => ({
-  marginTop: hasNotch || '1.5rem',
-  boxShadow: !scrolledDown || !hasSubmenu  || '0 2px 4px -1px rgba(0, 0, 0, 0.2), 0 4px 5px 0 rgba(0, 0, 0, 0.14), 0 1px 10px 0 rgba(0, 0, 0, 0.12)',
-  borderBottom: !scrolledDown || !hasSubmenu  || '1px solid #aaa',
+  marginTop: hasNotch ? '1.5rem' : '',
+  boxShadow: (!scrolledDown || !hasSubmenu)  ? '0 2px 4px -1px rgba(0, 0, 0, 0.2), 0 4px 5px 0 rgba(0, 0, 0, 0.14), 0 1px 10px 0 rgba(0, 0, 0, 0.12)' : '',
+  borderBottom: (!scrolledDown || !hasSubmenu) ? '1px solid #aaa' : '',
 }));
 
 
