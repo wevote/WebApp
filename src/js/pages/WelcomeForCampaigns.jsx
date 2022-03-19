@@ -355,7 +355,7 @@ const HeaderStepNumber = styled('div')`
   width: 24px;
   height: 24px;
   background: white;
-  color: ${(theme) => theme.colors.brandBlue};
+  color: ${({ theme }) => theme.colors.brandBlue};
   border-radius: 4px;
   @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
     width: 24px;

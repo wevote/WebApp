@@ -414,6 +414,7 @@ class OpinionsAndBallotItemsFilter extends Component {
                   })}
                 </Select>
               )}
+              label=""
             />
           </FilterColumn>
         </FilterRow>

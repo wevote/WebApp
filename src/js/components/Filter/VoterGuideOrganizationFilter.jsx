@@ -413,9 +413,9 @@ const SortBy = styled('p')(({ selected }) => (`
   font-size: ${selected ? '.95rem' : '.875rem'};
   margin: 8px 0 0 0;
   cursor: pointer;
-  color: ${(theme) => (selected ? theme.colors.brandBlue : '#555')};
+  color: ${({ theme }) => (selected ? theme.colors.brandBlue : '#555')};
   font-weight: ${selected ? '800' : '400'};
-  @media (max-width: ${(theme) => theme.breakpoints.lg}) {
+  @media (max-width: ${({ theme }) => theme.breakpoints.lg}) {
     font-size: 14px;
   }
   &:hover {
