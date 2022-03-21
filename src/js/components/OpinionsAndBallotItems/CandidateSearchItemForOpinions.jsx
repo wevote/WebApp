@@ -72,7 +72,7 @@ class CandidateSearchItemForOpinions extends Component {
             <Container candidateLength={1}>
               { (oneCandidate && oneCandidate.we_vote_id) && (
                 <CandidateInfo
-                  brandBlue={theme.palette.primary.main}
+                  // brandBlue={theme.palette.primary.main}
                   numberOfCandidatesInList={1}
                   id={`officeItemCompressedAddPositions-${oneCandidate.we_vote_id}`}
                   key={`${externalUniqueId}-candidatePreview-${oneCandidate.we_vote_id}`}

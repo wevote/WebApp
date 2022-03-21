@@ -137,7 +137,7 @@ class OfficeItemForOpinions extends Component {
               }
               return (
                 <CandidateInfo
-                  brandBlue={theme.palette.primary.main}
+                  // brandBlue={theme.palette.primary.main}
                   numberOfCandidatesInList={candidateList.length}
                   id={`officeItemCompressedAddPositions-${oneCandidate.we_vote_id}`}
                   key={`${externalUniqueId}-candidatePreview-${oneCandidate.we_vote_id}`}
