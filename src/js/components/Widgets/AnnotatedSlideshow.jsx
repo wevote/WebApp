@@ -25,23 +25,23 @@ class AnnotatedSlideshow extends PureComponent {
   }
 
   render () {
-    const { slides, selectedStepIndex, classes } = this.props;
+    const { slides, selectedStepIndex, classes, inModal = false } = this.props;
     const data = Object.values(slides);
     const { length } = data;
     const { title, description, imgSrc } = data.find((slide) => slide.index === selectedStepIndex);
     // console.log('AnnotatedSlideshow selectedStepIndex:', selectedStepIndex, 'length:', length);
     return (
-      <Wrapper inModal={this.props.inModal}>
-        <SlideShowTitle inModal={this.props.inModal}>{title}</SlideShowTitle>
+      <Wrapper inModal={inModal}>
+        <SlideShowTitle inModal={inModal}>{title}</SlideShowTitle>
         <Description>{description}</Description>
         <Slide>
-          {!this.props.inModal && (
+          {!inModal && (
             <Nav disabled={selectedStepIndex === 0} id="howItWorksLeftArrow" onClick={() => this.handleChangeSlide(false)}>
               <ArrowLeft classes={{ root: classes.navIconRoot }} />
             </Nav>
           )}
-          <Image inModal={this.props.inModal} src={normalizedImagePath(imgSrc)} />
-          {!this.props.inModal && (
+          <Image inModal={inModal} src={normalizedImagePath(imgSrc)} />
+          {!inModal && (
             <Nav disabled={selectedStepIndex === length - 1} id="howItWorksRightArrow" onClick={() => this.handleChangeSlide(true)}>
               <ArrowRight classes={{ root: classes.navIconRoot }} />
             </Nav>
@@ -52,7 +52,7 @@ class AnnotatedSlideshow extends PureComponent {
             <TwoButtonsWrapper>
               <BackButtonWrapper>
                 <Button
-                  classes={{ root: this.props.inModal ? classes.nextButtonRootModal : classes.nextButtonRoot }}
+                  classes={{ root: inModal ? classes.nextButtonRootModal : classes.nextButtonRoot }}
                   id={`annotatedSlideShowStep${selectedStepIndex + 1}Back`}
                   color="primary"
                   disabled={selectedStepIndex === 0}
@@ -68,7 +68,7 @@ class AnnotatedSlideshow extends PureComponent {
                   color="primary"
                   id={`annotatedSlideShowStep${selectedStepIndex + 1}Next`}
                   variant="contained"
-                  classes={{ root: this.props.inModal ? classes.nextButtonRootModal : classes.nextButtonRoot }}
+                  classes={{ root: inModal ? classes.nextButtonRootModal : classes.nextButtonRoot }}
                   onClick={() => this.handleChangeSlide(true)}
                 >
                   Next
@@ -139,8 +139,7 @@ const TwoButtonsWrapper = styled('div')`
 `;
 
 const BackButtonWrapper = styled('div')`
-  margin: 0;
-  margin-right: 12px;
+  margin: 0 12px 0 0;
   width: 100%;
   @media(min-width: 520px) {
     margin-right: 8px;
@@ -186,7 +185,7 @@ const Nav = styled('div', {
     filter: ${disabled ? '' : 'brightness(102%)'};
   }
   &:active {
-    filter: $(disabled ? '' : 'brightness(105%)'};
+    filter: ${disabled ? '' : 'brightness(105%)'};
   }
   ${theme.breakpoints.down('lg')} {
     display: none;
