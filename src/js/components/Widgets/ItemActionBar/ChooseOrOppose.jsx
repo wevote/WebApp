@@ -141,15 +141,15 @@ const styles = (theme) => ({
   },
 });
 
-const HorizontalLine = styled('div')`
+const HorizontalLine = styled('div')(({ theme }) => (`
   background-color: #eee;
   height: 2px;
   margin: 0 24px;
   margin-bottom: 8px;
-  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+  ${theme.breakpoints.down('md')} {
     margin: 0 0 8px 0;
   }
-`;
+`));
 
 const TitleText = styled('div')`
   font-weight: bold;

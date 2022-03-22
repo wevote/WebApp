@@ -379,59 +379,59 @@ ElectionCountdown.propTypes = {
   initialDelay: PropTypes.number,
 };
 
-const CardCountdown = styled('div')`
+const CardCountdown = styled('div')(({ theme }) => (`
   align-items: center;
   flex-direction: row;
   justify-content: center;
   min-height: 190px;
   padding-top: 4px;
   padding-bottom: 8px;
-  @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
+  ${theme.breakpoints.down('sm')} {
     min-height: 10px;
   }
-`;
+`));
 
 const CardCountdownInternalWrapper = styled('div')`
 `;
 
-const CardTitleUpcoming = styled('h1')`
+const CardTitleUpcoming = styled('h1')(({ theme }) => (`
   color: #2E3C5D !important;
   font-size: 64px;
   font-weight: 900;
   margin-bottom: 8px;
   margin-top: 0;
   text-align: center;
-  @media (max-width: ${({ theme }) => theme.breakpoints.xs}) {
+  ${theme.breakpoints.down('xs')} {
     font-size: 60px;
   }
-`;
+`));
 
-const CardTitleToday = styled('h1')`
+const CardTitleToday = styled('h1')(({ theme }) => (`
   color: #2E3C5D !important;
   font-size: 60px;
   font-weight: 900;
   margin-bottom: 8px;
   margin-top: 0;
   text-align: center;
-  @media (max-width: ${({ theme }) => theme.breakpoints.xs}) {
+  ${theme.breakpoints.down('xs')} {
     font-size: 40px;
   }
-`;
+`));
 
-const CardTitlePast = styled('h1')`
+const CardTitlePast = styled('h1')(({ theme }) => (`
   color: #2E3C5D !important;
   font-size: 48px;
   font-weight: 900;
   margin-bottom: 8px;
   margin-top: 0;
   text-align: center;
-  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+  ${theme.breakpoints.down('md')} {
     font-size: 30px;
   }
-  @media (max-width: ${({ theme }) => theme.breakpoints.xs}) {
+  ${theme.breakpoints.down('xs')} {
     font-size: 20px;
   }
-`;
+`));
 
 const CardSubTitle = styled('h3', {
   shouldForwardProp: (prop) => !['desktopMode', 'center'].includes(prop),
@@ -445,10 +445,10 @@ const CardSubTitle = styled('h3', {
   width: 100%;
   text-align: ${center ? 'center' : 'left'};
   // border-bottom: 1px solid #2E3C5D;
-  @media (max-width: ${theme.breakpoints.values.md}) {
+  ${theme.breakpoints.down('md')} {
     font-size: 14px;
   }
-  @media (max-width: ${theme.breakpoints.values.xs}) {
+  ${theme.breakpoints.down('xs')} {
     font-size: 13px;
   }
 `));

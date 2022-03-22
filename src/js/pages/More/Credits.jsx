@@ -58,10 +58,10 @@ const Wrapper = styled('div')`
   align-items: center;
   background: white;
   overflow-x: hidden;
-  padding-top: ${() => cordovaScrollablePaneTopPadding()}
+  padding-top: ${cordovaScrollablePaneTopPadding()}
 `;
 
-const HeaderForCredits = styled('div')`
+const HeaderForCredits = styled('div')(({ theme }) => (`
   position: relative;
   height: 190px;
   width: 110%;
@@ -72,29 +72,29 @@ const HeaderForCredits = styled('div')`
   padding: 0 2em;
   margin-top: -72px;
   text-align: center;
-  @media (max-width: ${({ theme }) => theme.breakpoints.lg}) {
+  ${theme.breakpoints.down('lg')} {
     height: 190px;
   }
-  @media (max-width: ${({ theme }) => theme.breakpoints.xs}) {
+  ${theme.breakpoints.down('xs')} {
     height: 150px;
   }
-`;
+`));
 
-const CreditsTitle = styled('h1')`
+const CreditsTitle = styled('h1')(({ theme }) => (`
   font-weight: bold;
   font-size: 36px;
   text-align: center;
   margin-top: 3em;
   margin-bottom: 0;
   padding-bottom: 0;
-  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+  ${theme.breakpoints.down('md')} {
     font-size: 28px;
     margin-top: 3em;
   }
-  @media (max-width: ${({ theme }) => theme.breakpoints.xs}) {
+  ${theme.breakpoints.down('xs')} {
     font-size: 18px;
     margin-top: 5em;
   }
-`;
+`));
 
 export default withStyles(styles)(Credits);

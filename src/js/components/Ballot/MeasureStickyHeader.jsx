@@ -116,48 +116,48 @@ const Container = styled('div')`
   margin: 0 auto;
 `;
 
-const ColumnOne = styled('div')`
+const ColumnOne = styled('div')(({ theme }) => (`
   width: 100%;
-  @media (min-width: ${({ theme }) => theme.breakpoints.sm}) {
+  ${theme.breakpoints.up('sm')} {
     flex: 1 1 0;
   }
-`;
+`));
 
-const ColumnTwo = styled('div')`
+const ColumnTwo = styled('div')(({ theme }) => (`
   float: right;
-  @media (min-width: ${({ theme }) => theme.breakpoints.sm}) {
+  ${theme.breakpoints.up('sm')} {
     display: block;
     width: fit-content;
   }
-`;
+`));
 
-const Title = styled('h1')`
+const Title = styled('h1')(({ theme }) => (`
   font-size: ${() => (isCordova() ? '16px' : '18px')};
   margin-bottom: 2px;
   margin-top: 8px;
   font-weight: ${() => (isCordova() ? '500' : 'bold')};
-  @media (min-width: ${({ theme }) => theme.breakpoints.md}) {
+  ${theme.breakpoints.up('md')} {
     margin-top: 0;
     font-size: ${() => (isCordova() ? '16px' : '22px')};
   }
-`;
+`));
 
-const SubTitle = styled('p')`
+const SubTitle = styled('p')(({ theme }) => (`
   display: none;
-  @media (min-width: ${({ theme }) => theme.breakpoints.md}) {
+  ${theme.breakpoints.up('md')} {
     font-size: 15px;
     display: block;
   }
-`;
+`));
 
-const MobileSubtitle = styled('h2')`
+const MobileSubtitle = styled('h2')(({ theme }) => (`
   display: none;
-  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+  ${theme.breakpoints.down('md')} {
     font-size: 14px;
     display: block;
     font-weight: 400;
   }
-`;
+`));
 
 const Profile = styled('div')`
   display: flex;
@@ -171,15 +171,15 @@ const Flex = styled('div')`
   top: 8px;
 `;
 
-const MeasureCommentContainer = styled('div')`
+const MeasureCommentContainer = styled('div')(({ theme }) => (`
   width: fit-content;
   margin-top: ${() => (isWebApp() ? '8px' : '')};;
-  @media (max-width : ${({ theme }) => theme.breakpoints.sm}) {
+  ${theme.breakpoints.down('sm')} {
     padding-top: ${() => (isWebApp() ? '8px' : '')};
   }
   > * {
     padding: 0;
   }
-`;
+`));
 
 export default MeasureStickyHeader;

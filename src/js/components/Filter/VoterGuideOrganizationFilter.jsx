@@ -409,13 +409,13 @@ const FilterColumn = styled('div')`
   margin-right: 2rem;
 `;
 
-const SortBy = styled('p')(({ selected }) => (`
+const SortBy = styled('p')(({ selected, theme }) => (`
   font-size: ${selected ? '.95rem' : '.875rem'};
   margin: 8px 0 0 0;
   cursor: pointer;
-  color: ${({ theme }) => (selected ? theme.colors.brandBlue : '#555')};
+  color: ${selected ? theme.colors.brandBlue : '#555'};
   font-weight: ${selected ? '800' : '400'};
-  @media (max-width: ${({ theme }) => theme.breakpoints.lg}) {
+  ${theme.breakpoints.down('lg')} {
     font-size: 14px;
   }
   &:hover {

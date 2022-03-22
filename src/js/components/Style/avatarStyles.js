@@ -33,9 +33,11 @@ const AvatarCordovaStyles = `
   }
 `;
 
-const Avatar = isWebApp() ? styled.div`
+const Avatar = isWebApp() ? styled('div', {
+  shouldForwardProp: (prop) => !['inSideColumn'].includes(prop),
+})(({ inSideColumn }) => (`
   margin-right: 8px;
-  ${({ inSideColumn }) => ((inSideColumn) ? AvatarInSideColumn : AvatarNotInColumn)}
-` : AvatarCordovaStyles;
+  ${inSideColumn ? AvatarInSideColumn : AvatarNotInColumn}
+`)) : AvatarCordovaStyles;
 
 export default Avatar;

@@ -218,7 +218,7 @@ const styles = (theme) => ({
   },
 });
 
-const AddTidbitTitle = styled('div')`
+const AddTidbitTitle = styled('div')(({ theme }) => (`
   background: #2e3c5d;
   border-bottom: 1px solid #ddd;
   color: #fff;
@@ -226,19 +226,19 @@ const AddTidbitTitle = styled('div')`
   font-weight: 700;
   // margin: 0 -16px 0 0;
   padding: 4px 16px;
-  @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
+  ${theme.breakpoints.down('sm')} {
     font-size: 16px;
     // margin: 0 15px;
   }
-`;
+`));
 
-const CardNewsWrapper = styled('div')`
+const CardNewsWrapper = styled('div')(({ theme }) => (`
   margin: 0 0 8px 0;
   padding: 8px 16px 8px 16px;
-  @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
+  ${theme.breakpoints.down('sm')} {
     // margin: 0 15px;
   }
-`;
+`));
 
 const InnerFlexWrapper = styled('div')`
   align-items: center;

@@ -1,6 +1,6 @@
 import { AppBar } from '@mui/material';
 import styled from 'styled-components';
-import { hasIPhoneNotch, isAndroidSizeFold, isAndroidSizeMD, isAndroidSizeXL, isIOSAppOnMac, isIPad, isIPad11in, isIPadGiantSize, isIPhone4p7in, isIPhone5p5inEarly, isIPhone5p5inMini, isIPhone5p8in, isIPhone6p1in, isIPhone6p5in } from '../../common/utils/cordovaUtils';
+import { hasIPhoneNotch, isAndroidSizeFold, isAndroidSizeMD, isAndroidSizeXL, isIOSAppOnMac, isIPad, isIPad11in, isIPhone4p7in, isIPhone5p5inEarly, isIPhone5p5inMini, isIPhone5p8in, isIPhone6p1in, isIPhone6p5in } from '../../common/utils/cordovaUtils';
 import { normalizedHrefPage } from '../../common/utils/hrefUtils';
 import { isWebApp } from '../../common/utils/isCordovaOrWebApp';
 import isMobileScreenSize from '../../common/utils/isMobileScreenSize';
@@ -35,8 +35,8 @@ export const IOSNoNotchSpacer = styled.div`
   z-index: 3;
 `;
 
-export const PageContentContainer = styled.div`
-  padding-top: ${() => cordovaScrollablePaneTopPadding()};
+export const PageContentContainer = styled('div')(({ theme }) => (`
+  padding-top: ${cordovaScrollablePaneTopPadding()};
   padding-bottom ${() => {
     if (isWebApp()) return null;
     if (isIPhone6p1in() || isIPhone4p7in() || isIPhone5p5inEarly()) return '800px';
@@ -48,29 +48,28 @@ export const PageContentContainer = styled.div`
   z-index: 0;
   min-height: 190px;
   margin: 0 auto;
-  @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
+  ${theme.breakpoints.down('sm')} {
     min-height: 10px;
     margin: 0 10px;
   }
-  // for debugging... ${({ theme }) => ((theme) ? console.log(theme) : console.log(theme))}
-`;
+`));
 
-export const PageContentContainerGetStarted = styled.div`
+export const PageContentContainerGetStarted = styled('div')`
   background-color: white;
 `;
 
 
-export const HeaderContentContainer = styled.div`
+export const HeaderContentContainer = styled('div')(({ theme }) => (`
   margin: ${() => cordovaBallotFilterTopMargin()} auto 0 auto;
   position: relative;
   max-width: 960px;
   width: 100%;
   z-index: 0;
-  @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
+  ${theme.breakpoints.down('sm')} {
     min-height: 10px;
     //margin: 0 10px;
   }
-`;
+`));
 
 
 export const HeaderContentOuterContainer = styled.div`
@@ -80,12 +79,14 @@ export const HeaderContentOuterContainer = styled.div`
 `;
 
 
-export const DualHeaderContainer = styled.div`   // was ballot__heading
+export const DualHeaderContainer = styled('div', {
+  shouldForwardProp: (prop) => !['scrolledDown'].includes(prop),
+})(({ scrolledDown }) => (`
   padding-top: ${() => cordovaDualHeaderContainerPadding()};
   width: 100%;
   background-color: #fff;
-  ${({ scrolledDown }) => (scrolledDown ? 'border-bottom: 1px solid #aaa' : '')};
-  ${({ scrolledDown }) => (scrolledDown ? 'box-shadow: 0 2px 4px -1px rgba(0, 0, 0, 0.2), 0 4px 5px 0 rgba(0, 0, 0, 0.14), 0 1px 10px 0 rgba(0, 0, 0, 0.12);' : '')};
+  ${scrolledDown ? 'border-bottom: 1px solid #aaa' : ''};
+  ${scrolledDown ? 'box-shadow: 0 2px 4px -1px rgba(0, 0, 0, 0.2), 0 4px 5px 0 rgba(0, 0, 0, 0.14), 0 1px 10px 0 rgba(0, 0, 0, 0.12);' : ''};
   overflow: hidden;
   position: fixed;
   z-index: 1;
@@ -100,7 +101,7 @@ export const DualHeaderContainer = styled.div`   // was ballot__heading
   //  z-index: 9000 !important;
   //  transform: translate3d(0, -58px, 0);
   //  transition: all 100ms ease-in-out 0s; }
-`;
+`));
 
 // let classNameHeadroom = '';  // Value for isCordova is ''
 // if (isWebApp()) {
@@ -133,7 +134,7 @@ export const HeadroomWrapper = styled.div`
   z-index: 2;
 `;
 
-export const TopOfPageHeader = styled.div`
+export const TopOfPageHeader = styled('div')(({ theme }) => (`
   width: 100%;
   max-width: 960px;
   justify-content: space-between;  // .header-backto-toolbar
@@ -141,7 +142,7 @@ export const TopOfPageHeader = styled.div`
   grid-template-columns: auto auto auto;
   height: fit-content;
   margin: auto;
-  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+  ${theme.breakpoints.down('md')} {
     padding-left: 15px;
     padding-right: 15px;
   }
@@ -150,9 +151,9 @@ export const TopOfPageHeader = styled.div`
     paddingRight: '15px',
   } : {}
   )}
-`;
+`));
 
-export const TopRowOneLeftContainer = styled.div`
+export const TopRowOneLeftContainer = styled('div')`
   // grid-row-start: 1;
   // grid-row-end: 1;
   // grid-column: 1 / 2;
@@ -167,9 +168,9 @@ export const TopRowOneMiddleContainer = styled.div`
   //display: ${() => ((isMobileScreenSize()) ? 'none' : null)};
 `;
 
-export const TopRowOneRightContainer = styled.div`
+export const TopRowOneRightContainer = styled('div')`
   // padding-right: 0px;
-  // ${() => (((isMobileScreenSize() && !isIPhone5p5inMini()) || isIPadGiantSize()) ? '15px' : '0px')}; // Can this always be 0px?
+  // {() => (((isMobileScreenSize() && !isIPhone5p5inMini()) || isIPadGiantSize()) ? '15px' : '0px')}; // Can this always be 0px?
   padding-right: ${() => {
     // if (isAndroidSizeFold()) return '55px';
     if (isAndroidSizeMD() || isAndroidSizeXL()) return '15px';
@@ -180,12 +181,12 @@ export const TopRowOneRightContainer = styled.div`
   cursor: pointer;
 
   // z-index: 3; //to float above the account/ProfilePopUp menu option grey div
-  // @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
-  //   padding-left: ${(props) => (props.cordova ? '0 !important' : 'calc(100% - 147px)')};
+  // {theme.breakpoints.down('sm')} {
+  //   padding-left: {(props) => (props.cordova ? '0 !important' : 'calc(100% - 147px)')};
   // }
 `;
 
-export const TopRowTwoLeftContainer = styled.div`
+export const TopRowTwoLeftContainer = styled('div')`
   grid-row-start: 2;
   grid-row-end: 3;
   grid-column: ${() => (['measure', 'friends', 'office'].includes(normalizedHrefPage()) ? '1 / 4' : '1 / 3')};
@@ -221,7 +222,7 @@ export const TopRowTwoRightContainer = styled.div`
   }};
 `;
 
-export const AppBarForBackTo = styled(AppBar)`
+export const AppBarForBackTo = styled(AppBar)(({ theme }) => (`
   border-top: none;
   border-right: none;
   border-left: none;
@@ -264,10 +265,10 @@ export const AppBarForBackTo = styled(AppBar)`
       boxShadow: 'rgb(0 0 0 / 20%) 0 2px 4px -1px, rgb(0 0 0 / 14%) 0px 4px 5px 0px, rgb(0 0 0 / 12%) 0px 1px 10px 0px',
     };
   }};
-@media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
+${theme.breakpoints.down('sm')} {
   display: inherit;
 }
-`;
+`));
 
 export const OfficeShareWrapper = styled.div`
   margin-bottom: 12px;

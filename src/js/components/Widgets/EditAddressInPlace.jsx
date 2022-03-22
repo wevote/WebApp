@@ -175,22 +175,22 @@ const EditAddressPreview = styled('div')`
   font-weight: bold;
 `;
 
-const AddressIntroductionWrapper = styled('div')`
+const AddressIntroductionWrapper = styled('div')(({ theme }) => (`
   font-size: 0.9rem;
   font-weight: 500;
   margin-top: 8px;
-  @media (max-width: ${({ theme }) => theme.breakpoints.lg}) {
+  ${theme.breakpoints.down('lg')} {
     margin-left: 15px;
     margin-right: 15px;
   }
-`;
+`));
 
-const EditBlockWrapper = styled('div')`
-  @media (max-width: ${({ theme }) => theme.breakpoints.lg}) {
+const EditBlockWrapper = styled('div')(({ theme }) => (`
+  ${theme.breakpoints.down('lg')} {
     margin-left: 15px;
     margin-right: 15px;
   }
-`;
+`));
 
 const SettingsIconWrapper = styled('div')`
 `;

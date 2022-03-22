@@ -373,7 +373,7 @@ const Separator = styled('div', {
 
 const SearchWrapper = styled('div', {
   shouldForwardProp: (prop) => !['isSearching', 'brandBlue', 'searchTextLarge'].includes(prop),
-})(({ isSearching, brandBlue, searchTextLarge }) => (`
+})(({ isSearching, brandBlue, searchTextLarge, theme }) => (`
   display: flex;
   flex-flow: row;
   border-radius: 4px;
@@ -382,7 +382,7 @@ const SearchWrapper = styled('div', {
   padding: 0 3px 0 3px;
   margin-right: 16px;
   margin-bottom: 8px;
-  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+  ${theme.breakpoints.down('md')} {
     margin-right: 8px;
   }
 `));

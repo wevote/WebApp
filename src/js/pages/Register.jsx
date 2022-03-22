@@ -741,7 +741,7 @@ const PageContainer = styled('div')`
 //   font-size: 26px;
 //   font-weight: 800;
 //   margin: 0 0 12px;
-//   @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
+//   {theme.breakpoints.down('sm')} {
 //     font-size: 18px;
 //   }
 // `;

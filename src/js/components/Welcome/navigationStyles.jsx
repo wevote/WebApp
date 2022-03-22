@@ -1,11 +1,11 @@
 import styled from '@mui/material/styles/styled';
 import { Link } from 'react-router-dom';
 
-const LogoContainer = styled('div')`
-  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+const LogoContainer = styled('div')(({ theme }) => (`
+  ${theme.breakpoints.down('md')} {
     width: 100px;
   }
-`;
+`));
 
 const Navigation = styled('div')`
   display: flex;
@@ -13,17 +13,17 @@ const Navigation = styled('div')`
   color: white;
 `;
 
-const NavLink = styled(Link)`
+const NavLink = styled(Link)(({ theme }) => (`
   text-transform: uppercase;
   font-size: 14px;
   color: white !important;
   margin: auto 1em;
-  @media (max-width: ${({ theme }) => theme.breakpoints.lg}) {
+  ${theme.breakpoints.down('lg')} {
     margin: auto .4em;
     margin-left: 0;
     font-size: 12px;
   }
-`;
+`));
 
 const Divider = styled('div')`
   width: 2px;

@@ -346,13 +346,13 @@ const FriendInvitationListRow = styled('div')`
   justify-content: flex-start;
 `;
 
-const Dot = styled('div')`
+const Dot = styled('div')(({ theme }) => (`
   padding-top: 2px;
   vertical-align: top;
-  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+  ${theme.breakpoints.down('md')} {
     padding-top: 3px;
   }
-`;
+`));
 
 const OrganizationImageWrapper = styled('span')`
   margin-right: 6px;
@@ -363,54 +363,54 @@ const OrganizationImageWrapper = styled('span')`
   }
 `;
 
-const StepNumber = styled('div')`
-  background: ${({ theme }) => theme.colors.brandBlue};
+const StepNumber = styled('div')(({ theme }) => (`
+  background: ${theme.colors.values.brandBlue};
   border-radius: 4px;
   color: white;
   font-size: 16px;
   width: 22px;
   height: 22px;
   padding-top: 1px;
-  @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
+  ${theme.breakpoints.down('sm')} {
     font-size: 14px;
     min-width: 20px;
     width: 20px;
     height: 20px;
   }
-`;
+`));
 
-const StepTitle = styled('div')`
+const StepTitle = styled('div')(({ theme }) => (`
   font-size: 20px;
   font-weight: 600;
   padding: 0 8px;
   text-align: left;
   vertical-align: top;
-  @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
+  ${theme.breakpoints.down('sm')} {
     font-size: 17px;
   }
-`;
+`));
 
-const StepText = styled('div')`
+const StepText = styled('div')(({ theme }) => (`
   color: #999;
   font-size: 16px;
   font-weight: 200;
   padding: 0 8px;
   text-align: left;
   vertical-align: top;
-  @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
+  ${theme.breakpoints.down('sm')} {
     font-size: 16px;
   }
-`;
+`));
 
-const StepNumberPlaceholder = styled('div')`
+const StepNumberPlaceholder = styled('div')(({ theme }) => (`
   width: 22px;
   height: 22px;
-  @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
+  ${theme.breakpoints.down('sm')} {
     width: 20px;
     height: 20px;
     min-width: 20px;
   }
-`;
+`));
 
 const WeVoteLogoWrapper = styled('div')`
   display: flex;

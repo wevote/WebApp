@@ -132,7 +132,7 @@ const styles = (theme) => ({
 });
 
 // Dale to update when I have time to work out the kinks
-const BallotItemCard = styled('div')`
+const BallotItemCard = styled('div')(({ theme }) => (`
   $item-padding: 16px;
   background-color: #fff;
   border-radius: 4px;
@@ -140,9 +140,9 @@ const BallotItemCard = styled('div')`
   margin-bottom: 16px;
   overflow-y: none;
   border: none;
-  @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
+  ${theme.breakpoints.down('sm')} {
     border-radius: 0;
   }
-`;
+`));
 
 export default withTheme(withStyles(styles)(BallotItemForOpinions));

@@ -919,14 +919,14 @@ const ButtonWrapper = styled('div')`
   margin-right: 8px;
   display: flex;
   align-items: center;
-  // ${({ onlyTwoButtons }) => (onlyTwoButtons ? 'width: 50% !important;' : '')}
+  // {({ onlyTwoButtons }) => (onlyTwoButtons ? 'width: 50% !important;' : '')}
 `;
 
 const ButtonWrapperRight = styled('div')`
   margin-right: 0;
   display: flex;
   align-items: center;
-  // ${({ onlyTwoButtons }) => (onlyTwoButtons ? 'width: 50% !important;' : '')}
+  // {({ onlyTwoButtons }) => (onlyTwoButtons ? 'width: 50% !important;' : '')}
 `;
 
 export default withStyles(styles)(ItemActionBar);

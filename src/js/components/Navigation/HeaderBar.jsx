@@ -268,6 +268,11 @@ class HeaderBar extends Component {
     if (this.showBallotModalTimeout) clearTimeout(this.showBallotModalTimeout);
   }
 
+  handleTabChange (newValue) {
+    // console.log('handleTabChange ', newValue);
+    this.setState({ tabsValue: newValue });
+  }
+
   // eslint-disable-next-line no-unused-vars
   onAppObservableStoreChange (msg) {
     // console.log('------ HeaderBar, onAppObservableStoreChange received: ', msg);
@@ -354,11 +359,6 @@ class HeaderBar extends Component {
     if (AppObservableStore.showEditAddressButton() !== newState) {
       AppObservableStore.setShowEditAddressButton(newState);
     }
-  }
-
-  handleTabChange(newValue) {
-    // console.log('handleTabChange ', newValue);
-    this.setState({ tabsValue: newValue });
   }
 
   goToSearch = () => {
@@ -890,28 +890,14 @@ const FirstNameWrapper = styled('div')`
   padding-right: 4px;
 `;
 
-// const FriendTabWrapper = styled.div`
-//   margin-left: ${({ incomingFriendRequests }) => (incomingFriendRequests ? '-20px' : '0')};
-// `;
-
+// TODO: March 22, 2022 Dale to work on this (it is half way converted to a new ui scheme)
 const HeaderBarWrapper = styled('div', {
-  shouldForwardProp: (prop) => !['hasNotch', 'hasSubmenu', 'scrolledDown'].includes(prop),
-})(({ hasNotch, hasSubmenu, scrolledDown }) => ({
-  marginTop: hasNotch ? '1.5rem' : '',
-  boxShadow: (!scrolledDown || !hasSubmenu)  ? '0 2px 4px -1px rgba(0, 0, 0, 0.2), 0 4px 5px 0 rgba(0, 0, 0, 0.14), 0 1px 10px 0 rgba(0, 0, 0, 0.12)' : '',
-  borderBottom: (!scrolledDown || !hasSubmenu) ? '1px solid #aaa' : '',
-}));
-
-
-// Historical
-// const HeaderBarWrapper = styled.div`
-//   margin-top: ${({ hasNotch }) => (hasNotch ? '1.5rem' : '0')};
-//   // transition: all 50ms ease-in;
-//   // ${({ scrolledDown }) => (scrolledDown ? 'transform: translateY(-100%);' : '')}
-//   ${({ hasSubMenu }) => (!hasSubMenu ? '' :
-//     'box-shadow: 0 2px 4px -1px rgba(0, 0, 0, 0.2), 0 4px 5px 0 rgba(0, 0, 0, 0.14), 0 1px 10px 0 rgba(0, 0, 0, 0.12);' +
-//     'border-bottom = 1px solid #aaa;')}
-// `;
+  shouldForwardProp: (prop) => !['hasNotch', 'scrolledDown', 'hasSubmenu'].includes(prop),
+})(({ hasNotch, scrolledDown, hasSubmenu }) => (`
+  margin-top: ${hasNotch ? '1.5rem' : ''};
+  box-shadow: ${(!scrolledDown || !hasSubmenu)  ? '0 2px 4px -1px rgba(0, 0, 0, 0.2), 0 4px 5px 0 rgba(0, 0, 0, 0.14), 0 1px 10px 0 rgba(0, 0, 0, 0.12)' : ''};
+  border-bottom: ${(!scrolledDown || !hasSubmenu) ? '1px solid #aaa' : ''};
+`));
 
 const SearchWrapper = styled('div')`
   margin-top: 10px;

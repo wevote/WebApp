@@ -587,15 +587,15 @@ const CandidateItemWrapper = styled('div')`
   padding: 10px 16px 8px;
 `;
 
-const CandidateWrapper = styled('div')`
+const CandidateWrapper = styled('div')(({ theme }) => (`
   display: flex;
   flex-flow: row nowrap;
   justify-content: space-between;
   width: 100%;
-  @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
+  ${theme.breakpoints.down('sm')} {
     width: 100%;
   }
-`;
+`));
 
 const ExternalWebSiteWrapper = styled('span')`
   padding-left: 15px;

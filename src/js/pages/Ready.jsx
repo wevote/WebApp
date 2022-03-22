@@ -375,12 +375,12 @@ const EditAddressCard = styled('div')`
   padding: 12px 15px 0 15px;
 `;
 
-const EditAddressWrapper = styled('div')`
-  @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
+const EditAddressWrapper = styled('div')(({ theme }) => (`
+  ${theme.breakpoints.down('sm')} {
     padding-left: 0 !important;
     padding-right: 0 !important;
   }
-`;
+`));
 
 const ElectionCountdownMobileTabletWrapper = styled('div')`
   margin-top: -37px; // 29px for height of ShareButtonDesktopTablet - 8px for margin-top
@@ -424,15 +424,15 @@ const ShareButtonTabletWrapper = styled('div')`
   z-index: 2;
 `;
 
-const Title = styled('h2')`
+const Title = styled('h2')(({ theme }) => (`
   font-size: 26px;
   font-weight: 800;
   margin: 0 0 12px;
-  @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
+  ${theme.breakpoints.down('sm')} {
     font-size: 14px;
     margin: 0 0 4px;
   }
-`;
+`));
 
 const ValuesListWrapper = styled('div')`
   margin-top: 12px;

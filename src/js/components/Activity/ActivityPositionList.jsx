@@ -131,16 +131,16 @@ const LoadingItemsWheel = styled('div')`
   justify-content: center;
 `;
 
-const ShowMoreItemsWrapper = styled('div')`
-  margin-bottom: 0px;
+const ShowMoreItemsWrapper = styled('div')(({ theme }) => (`
+  margin-bottom: 0;
   padding-left: 16px;
   padding-right: 26px;
-  @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
+  ${theme.breakpoints.down('sm')} {
     padding-right: 16px;
   }
   @media print{
     display: none;
   }
-`;
+`));
 
 export default withStyles(styles)(ActivityPositionList);

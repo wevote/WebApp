@@ -62,7 +62,7 @@ const styles = (theme) => ({
   },
 });
 
-const OfficeNameWrapper = styled('h2')`
+const OfficeNameWrapper = styled('h2')(({ theme }) => (`
   display: inline-block;
   font-size: 18px;
   font-weight: 700;
@@ -72,12 +72,12 @@ const OfficeNameWrapper = styled('h2')`
   white-space: ${isCordova() ? 'nowrap' : 'normal'};
   overflow: hidden; // Not working yet
   text-overflow: ellipsis; // Not working yet
-  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+  ${theme.breakpoints.down('md')} {
     font-size: 18px;
   }
   @media print {
     font-size: 22px;
   }
-`;
+`));
 
 export default withTheme(withStyles(styles)(OfficeItem));

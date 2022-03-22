@@ -273,37 +273,37 @@ const InfoRow = styled('div')`
   justify-content: space-between;
 `;
 
-const MeasureInfoWrapper = styled('div')`
+const MeasureInfoWrapper = styled('div')(({ theme }) => (`
   display: flex;
   flex-flow: column;
   max-width: 75%;
   cursor: pointer;
   user-select: none;
   padding-right: 8px;
-  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+  ${theme.breakpoints.down('md')} {
     max-width: 70%;
   }
-`;
+`));
 
-const Title = styled('h1')`
+const Title = styled('h1')(({ theme }) => (`
   font-size: 18px;
   font-weight: bold;
   margin: .1rem 0;
-  @media (max-width: ${({ theme }) => theme.breakpoints.lg}) {
+  ${theme.breakpoints.down('lg')} {
     font-size: 16px;
   }
-`;
+`));
 
-const SubTitle = styled('h3')`
+const SubTitle = styled('h3')(({ theme }) => (`
   font-size: 16px;
   font-weight: 300;
   color: #555;
   margin-top: .6rem;
   width: 135%;
-  @media (max-width: ${({ theme }) => theme.breakpoints.lg}) {
+  ${theme.breakpoints.down('lg')} {
     font-size: 13px;
   }
-`;
+`));
 
 const MeasureText = styled('div')`
   font-size: 13px;

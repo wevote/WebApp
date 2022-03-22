@@ -461,7 +461,7 @@ const ChoicesRow = styled('div')`
   flex-flow: row wrap;
 `;
 
-const Choice = styled('div')`
+const Choice = styled('div')(({ theme }) => (`
   cursor: pointer;
   display: flex;
   flex-flow: column;
@@ -476,56 +476,56 @@ const Choice = styled('div')`
     margin-right: 10px;
     margin-bottom: 16px;
     &:hover {
-      border: 1px solid ${({ theme }) => theme.palette.primary.main};
+      border: 1px solid ${theme.palette.primary.main};
       box-shadow: 0 1px 3px 0 rgba(0,0,0,.2), 0 1px 1px 0 rgba(0,0,0,.14), 0 2px 1px -1px rgba(0,0,0,.12);
     }
   }
-`;
+`));
 
 const ChoiceTitle = styled('h1')`
   font-weight: bold;
   color: #4371cc;
 `;
 
-const ChoiceInfo = styled('span')`
+const ChoiceInfo = styled('span')(({ theme }) => (`
   font-size: 12px;
   color: #777;
-  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+  ${theme.breakpoints.down('md')} {
     max-width: 140%;
   }
-`;
+`));
 
-const MeasureInfoWrapper = styled('div')`
+const MeasureInfoWrapper = styled('div')(({ theme }) => (`
   display: flex;
   flex-flow: column;
   max-width: 75%;
   cursor: pointer;
   user-select: none;
   padding-right: 8px;
-  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+  ${theme.breakpoints.down('md')} {
     max-width: 70%;
   }
-`;
+`));
 
-const Title = styled('h1')`
+const Title = styled('h1')(({ theme }) => (`
   font-size: 18px;
   font-weight: bold;
   margin: .1rem 0;
-  @media (max-width: ${({ theme }) => theme.breakpoints.lg}) {
+  ${theme.breakpoints.down('lg')} {
     font-size: 16px;
   }
-`;
+`));
 
-const SubTitle = styled('h3')`
+const SubTitle = styled('h3')(({ theme }) => (`
   font-size: 16px;
   font-weight: 300;
   color: #555;
   margin-top: .6rem;
   width: 135%;
-  @media (max-width: ${({ theme }) => theme.breakpoints.lg}) {
+  ${theme.breakpoints.down('lg')} {
     font-size: 13px;
   }
-`;
+`));
 
 const MeasureText = styled('div')`
   font-size: 13px;

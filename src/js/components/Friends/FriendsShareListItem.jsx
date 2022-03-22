@@ -85,14 +85,13 @@ FriendsShareListItem.propTypes = {
   voterTwitterHandle: PropTypes.string,
 };
 
-const Wrapper = styled('div')`
+const Wrapper = styled('div')(({ theme }) => (`
   width: 100%;
-  @media (min-width: 520px) {
+  ${theme.breakpoints.up('sm')} {
     margin-left: 18px;
   }
   margin: 8px 0;
   display: flex;
-
-`;
+`));
 
 export default FriendsShareListItem;

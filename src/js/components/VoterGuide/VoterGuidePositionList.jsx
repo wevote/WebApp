@@ -564,16 +564,16 @@ const SearchTitle = styled('div')`
   margin-bottom: 12px;
 `;
 
-const ShowMoreItemsWrapper = styled('div')`
+const ShowMoreItemsWrapper = styled('div')(({ theme }) => (`
   margin-bottom: 16px;
   padding-left: 16px;
   padding-right: 26px;
-  @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
+  ${theme.breakpoints.down('sm')} {
     padding-right: 16px;
   }
   @media print{
     display: none;
   }
-`;
+`));
 
 export default withStyles(styles)(VoterGuidePositionList);

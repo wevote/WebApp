@@ -172,21 +172,21 @@ const styles = (theme) => ({
   },
 });
 
-const PlanTitle = styled('h3')`
+const PlanTitle = styled('h3')(({ theme }) => (`
   margin: 0;
   font-size: 30px;
   font-weight: 600;
   margin-bottom: 6px;
   margin-top: 12px;
-  @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
+  ${theme.breakpoints.down('sm')} {
     font-size: 24px;
     margin-top: 0;
   }
-  @media (max-width: ${({ theme }) => theme.breakpoints.xs}) {
+  ${theme.breakpoints.down('xs')} {
     font-size: 20px;
     margin-top: 0;
   }
-`;
+`));
 
 const VoterPlanPreview = styled('div')`
   padding: 8px;

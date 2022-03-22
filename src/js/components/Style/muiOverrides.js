@@ -1,52 +1,66 @@
 const overrides = {
   MuiButton: {
-    root: {
-      fontSize: '16px',
-      textTransform: 'unset',
-      userSelect: 'none',
-      '@media print': {
-        color: '#fff',
+    styleOverrides: {
+      root: {
+        fontSize: '16px',
+        textTransform: 'unset',
+        userSelect: 'none',
+        '@media print': {
+          color: '#fff',
+        },
       },
     },
   },
   MuiTooltip: {
-    tooltip: {
-      fontSize: '14px',
+    styleOverrides: {
+      tooltip: {
+        fontSize: '14px',
+      },
     },
   },
   MuiFormControlLabel: {
-    root: {
-      marginBottom: '-.5rem',
+    styleOverrides: {
+      root: {
+        marginBottom: '-.5rem',
+      },
     },
   },
   MuiAppBar: {
-    colorDefault: {
-      backgroundColor: '#fff',
-      color: '#333',
-    },
-    root: {
-      padding: 0,
-      flexDirection: 'unset',
+    styleOverrides: {
+      colorDefault: {
+        backgroundColor: '#fff',
+        color: '#333',
+      },
+      root: {
+        padding: 0,
+        flexDirection: 'unset',
+      },
     },
   },
   MuiToolbar: {
-    root: {
-      padding: 0,
-      flexDirection: 'unset',
-    },
-    regular: {
-      minHeight: '48px !important',
+    styleOverrides: {
+      root: {
+        padding: 0,
+        flexDirection: 'unset',
+      },
+      regular: {
+        minHeight: '48px !important',
+      },
     },
   },
   MuiTab: {
-    root: {
-      outline: 'none !important',
-      textTransform: 'unset',
+    styleOverrides: {
+      root: {
+        outline: 'none !important',
+        textTransform: 'unset',
+      },
     },
   },
   MuiBottomNavigationAction: {
-    root: {
-      minWidth: '60px',
+    styleOverrides: {
+      root: {
+        minWidth: '60px',
+      },
     },
   },
 };

@@ -1038,14 +1038,14 @@ const ShareWrapper = styled('div')`
   }
 `;
 
-const SubTitle = styled('div')`
+const SubTitle = styled('div')(({ theme }) => (`
   margin-top: 0;
   font-size: 19px;
   width: 100%;
-  @media (max-width: ${({ theme }) => theme.breakpoints.xs}) {
+  ${theme.breakpoints.down('xs')} {
     font-size: 17px;
   }
-`;
+`));
 
 const Text = styled('h3')`
   font-weight: normal;
@@ -1054,17 +1054,17 @@ const Text = styled('h3')`
   padding: 6px;
 `;
 
-const Title = styled('h3')`
+const Title = styled('h3')(({ theme }) => (`
   font-weight: normal;
   font-size: 21px;
   color: black;
   margin-top: 0;
   margin-bottom: 4px;
-  @media (max-width: ${({ theme }) => theme.breakpoints.xs}) {
+  ${theme.breakpoints.down('xs')} {
     font-size: 17px;
     margin-bottom: 8px;
   }
-`;
+`));
 
 const Wrapper = styled('div', {
   shouldForwardProp: (prop) => !['shareBottomValue'].includes(prop),

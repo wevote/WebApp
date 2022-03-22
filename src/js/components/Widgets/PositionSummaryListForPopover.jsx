@@ -320,8 +320,8 @@ const NetworkScoreSumLine = styled('div')`
   margin-left: -5px;
 `;
 
-const OpposeAndPartOfScore = styled('div')`
-  background: ${({ theme }) => theme.colors.opposeRedRgb};
+const OpposeAndPartOfScore = styled('div')(({ theme }) => (`
+  background: ${theme.colors.opposeRedRgb};
   color: white;
   cursor: pointer;
   display: flex;
@@ -338,10 +338,10 @@ const OpposeAndPartOfScore = styled('div')`
   @media print{
     border: 2px solid grey;
   }
-`;
+`));
 
-const OpposeButNotPartOfScore = styled('div')`
-  color: ${({ theme }) => theme.colors.opposeRedRgb};
+const OpposeButNotPartOfScore = styled('div')(({ theme }) => (`
+  color: ${theme.colors.opposeRedRgb};
   background: white;
   display: flex;
   align-items: center;
@@ -351,11 +351,11 @@ const OpposeButNotPartOfScore = styled('div')`
   height: 20px;
   border-radius: 5px;
   float: left;
-  border: 2px solid ${({ theme }) => theme.colors.opposeRedRgb};
+  border: 2px solid ${theme.colors.opposeRedRgb};
   font-size: 10px;
   font-weight: bold;
   margin-right: 6px;
-`;
+`));
 
 const OrganizationNameWrapper = styled('div')`
   flex-grow: 8;
@@ -385,18 +385,18 @@ const ShowMoreFooterWrapper = styled('div')`
   margin-top: 10px;
 `;
 
-const ShowXMoreWrapper = styled('div')`
-  color: ${({ theme }) => theme.colors.grayMid};
+const ShowXMoreWrapper = styled('div')(({ theme }) => (`
+  color: ${theme.colors.grayMid};
   font-size: 16px;
   font-style: italic;
   display: flex;
   align-items: center;
   justify-content: center;
   width: 100%;
-`;
+`));
 
-const SupportAndPartOfScore = styled('div')`
-  background: ${({ theme }) => theme.colors.supportGreenRgb};
+const SupportAndPartOfScore = styled('div')(({ theme }) => (`
+  background: ${theme.colors.supportGreenRgb};
   color: white;
   cursor: pointer;
   display: flex;
@@ -413,10 +413,10 @@ const SupportAndPartOfScore = styled('div')`
   @media print{
     border: 2px solid grey;
   }
-`;
+`));
 
-const SupportButNotPartOfScore = styled('div')`
-  color: ${({ theme }) => theme.colors.supportGreenRgb};
+const SupportButNotPartOfScore = styled('div')(({ theme }) => (`
+  color: ${theme.colors.supportGreenRgb};
   background: white;
   display: flex;
   align-items: center;
@@ -425,12 +425,12 @@ const SupportButNotPartOfScore = styled('div')`
   min-width: 20px;
   height: 20px;
   border-radius: 5px;
-  border: 2px solid ${({ theme }) => theme.colors.supportGreenRgb};
+  border: 2px solid ${theme.colors.supportGreenRgb};
   float: left;
   font-size: 10px;
   font-weight: bold;
   margin-right: 6px;
-`;
+`));
 
 const VoterAndOrganizationShareTheseIssuesWrapper  = styled('div')`
   display: flex;

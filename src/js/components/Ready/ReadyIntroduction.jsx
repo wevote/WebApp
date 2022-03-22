@@ -140,7 +140,7 @@ const OuterWrapper = styled('div')`
 const InnerWrapper = styled('div')`
 `;
 
-const IntroHeader = styled('div')`
+const IntroHeader = styled('div')(({ theme }) => (`
   color: #2e3c5d;
   padding-top: 0;
   padding-bottom: 0;
@@ -148,13 +148,13 @@ const IntroHeader = styled('div')`
   font-weight: 800;
   margin: 0 !important;
   text-align: center;
-  @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
+  ${theme.breakpoints.down('sm')} {
     font-size: 16px;
   }
-  @media (max-width: ${({ theme }) => theme.breakpoints.xs}) {
+  ${theme.breakpoints.down('xs')} {
     font-size: 15px;
   }
-`;
+`));
 
 const ListWrapper = styled('div')`
   display: flex;

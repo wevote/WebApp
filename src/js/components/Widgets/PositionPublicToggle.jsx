@@ -390,38 +390,42 @@ const Wrapper = styled('div')`
   width: fit-content;
 `;
 
-const PublicToggle = styled('div')`
+const PublicToggle = styled('div')(({ theme }) => (`
   padding-left: 15px;
-  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+  ${theme.breakpoints.down('md')} {
     padding-top: 4px;
     margin-bottom: 10px;
   }
-`;
+`));
 
-const RadioItemStackedStyles = `
-  @media (max-width: ${({ theme }) => theme.breakpoints.xs}) {
-    width: 100% !important;
-    min-width: 100% !important;
-    margin-bottom: -6px;
-  }
-`;
+// const RadioItemStackedStyles(theme) = `
+//   ${theme.breakpoints.down('xs')} {
+//     width: 100% !important;
+//     min-width: 100% !important;
+//     margin-bottom: -6px;
+//   }
+// `;
 
 const RadioItem = styled('div', {
   shouldForwardProp: (prop) => !['preventStackedButtons'].includes(prop),
-})(({ preventStackedButtons }) => (`
-  ${preventStackedButtons ? '' : RadioItemStackedStyles}
+})(({ preventStackedButtons, theme }) => (`
+  ${!preventStackedButtons && theme.breakpoints.down('xs') ? (`
+      width: 100% !important;
+      min-width: 100% !important;
+      margin-bottom: -6px;
+  `) : ''}
 `));
 
 const RadioGroup = styled('div', {
   shouldForwardProp: (prop) => !['preventStackedButtons'].includes(prop),
-})(({ preventStackedButtons }) => (`
+})(({ preventStackedButtons, theme }) => (`
   display: flex;
   flex-flow: row nowrap;
   width: 100%;
-  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+  ${theme.breakpoints.down('md')} {
     margin-bottom: -10px;
   }
-  @media (max-width: ${({ theme }) => theme.breakpoints.xs}) {
+  ${theme.breakpoints.down('xs')} {
     ${preventStackedButtons ? '' : 'flex-flow: row wrap;'}
     margin-bottom: 0;
   }

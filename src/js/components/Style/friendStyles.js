@@ -47,10 +47,12 @@ const FriendDetailsWrapperNotInColumn = `
   }
 `;
 
-const FriendDetailsWrapper = isWebApp() ? styled.div`
+const FriendDetailsWrapper = isWebApp() ? styled('div', {
+  shouldForwardProp: (prop) => !['inSideColumn'].includes(prop),
+})(({ inSideColumn }) => (`
   margin: 0 auto;
-  ${({ inSideColumn }) => ((inSideColumn) ? '' : FriendDetailsWrapperNotInColumn)}
-` : styled.div`
+  ${inSideColumn ? '' : FriendDetailsWrapperNotInColumn}
+`)) : styled('div')`
   margin: 0 auto;
 `;
 
@@ -68,7 +70,9 @@ const FriendDisplayOuterWrapperShowButtonsOnRight = `
 // When wider than 601px, show Buttons to the right
 // Otherwise, show Buttons under FriendColumnWithoutButtons
 // If inSideColumn is true, force buttons under FriendColumnWithoutButtons regardless of screen width
-const FriendDisplayOuterWrapper = styled.div`
+const FriendDisplayOuterWrapper = styled('div', {
+  shouldForwardProp: (prop) => !['inSideColumn'].includes(prop),
+})(({ inSideColumn }) => (`
   // In this default, fill up the full width with both Friend info & buttons
   align-items: center;
   display: flex;
@@ -78,8 +82,8 @@ const FriendDisplayOuterWrapper = styled.div`
   margin: 12px 0;
   position: relative;
   width: 100%;
-  ${({ inSideColumn }) => ((inSideColumn) ? '' : FriendDisplayOuterWrapperShowButtonsOnRight)}
-`;
+  ${inSideColumn ? '' : FriendDisplayOuterWrapperShowButtonsOnRight}
+`));
 
 const FriendNameInSideColumn = `
   font-size: 14px;
@@ -110,7 +114,9 @@ const FriendNameNotInSideColumn = `
   }
 `;
 
-const FriendName = styled.h3`
+const FriendName = styled('h3', {
+  shouldForwardProp: (prop) => !['inSideColumn'].includes(prop),
+})(({ inSideColumn }) => (`
   color: black !important;
   font-weight: bold;
   margin-bottom: 4px;
@@ -119,8 +125,8 @@ const FriendName = styled.h3`
   overflow: hidden;
   text-overflow: ellipsis;
   width: 100%;
-  ${({ inSideColumn }) => ((inSideColumn) ? FriendNameInSideColumn : FriendNameNotInSideColumn)}
-`;
+  ${inSideColumn ? FriendNameInSideColumn : FriendNameNotInSideColumn}
+`));
 
 export {
   CancelButtonWrapper,

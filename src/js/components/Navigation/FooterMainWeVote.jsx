@@ -183,17 +183,17 @@ const BottomSection = styled('div')`
   text-align: left;
 `;
 
-const Column = styled('div')`
+const Column = styled('div')(({ theme }) => (`
   display: flex;
   flex-flow: column nowrap;
   width: 150px;
-  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+  ${theme.breakpoints.down('md')} {
     width: 50%;
   }
-  @media (max-width: ${({ theme }) => theme.breakpoints.xs}) {
+  ${theme.breakpoints.down('xs')} {
     width: 100%;
   }
-`;
+`));
 
 const ColumnTitle = styled('div')`
   color: #808080;
@@ -204,25 +204,25 @@ const ColumnTitle = styled('div')`
   text-transform: uppercase;
 `;
 
-const Text = styled('p')`
+const Text = styled('p')(({ theme }) => (`
   color: #808080;
   font-size: 14px;
   margin-right: 0.5em;
-  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+  ${theme.breakpoints.down('md')} {
     font-size: 14px;
   }
-`;
+`));
 
-const TopSectionInnerWrapper = styled('div')`
+const TopSectionInnerWrapper = styled('div')(({ theme }) => (`
   display: flex;
   flex-direction: row;
   flex-wrap: nowrap;
   width: 100%;
   justify-content: space-between;
-  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+  ${theme.breakpoints.down('md')} {
     flex-wrap: wrap;
   }
-`;
+`));
 
 const TopSectionOuterWrapper = styled('div')`
   display: flex;

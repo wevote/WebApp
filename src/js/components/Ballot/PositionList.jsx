@@ -435,15 +435,15 @@ const LoadingItemsWheel = styled('div')`
   min-height: 70px;
 `;
 
-const SearchResultsFoundInExplanation = styled('div')`
+const SearchResultsFoundInExplanation = styled('div')(({ theme }) => (`
   background-color: #C2DCE8;
   color: #0E759F;
   padding: 12px !important;
-  @media (min-width: ${({ theme }) => theme.breakpoints.sm}) {
+  ${theme.breakpoints.up('sm')} {
     margin-left: 12px !important;
     margin-right: 12px !important;
   }
-`;
+`));
 
 const SearchTitle = styled('div')`
   font-size: 24px;
@@ -451,17 +451,17 @@ const SearchTitle = styled('div')`
   margin-bottom: 12px;
 `;
 
-const ShowMoreItemsWrapper = styled('div')`
+const ShowMoreItemsWrapper = styled('div')(({ theme }) => (`
   margin-bottom: 16px;
   padding-left: 16px;
   padding-right: 26px;
-  @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
+  ${theme.breakpoints.down('sm')} {
     padding-right: 16px;
   }
   @media print{
     display: none;
   }
-`;
+`));
 
 const UnorderedListWrapper = styled('ul')`
   padding-inline-start: 0 !important;

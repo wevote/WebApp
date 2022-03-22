@@ -348,10 +348,10 @@ class HowItWorks extends Component {
         }
       </>
     ) : (
-      <Wrapper>
+      <Wrapper id="HowItWorks_Wrapper">
         <Helmet title={helmetTitle} />
         <Suspense fallback={<></>}>
-          <WelcomeAppbar pathname={simulatedPathname} />
+          <WelcomeAppbar pathname={simulatedPathname} id="HowItWorks_WelcomeAppbar" />
         </Suspense>
         <Header>
           <Container>
@@ -445,47 +445,47 @@ const Section = styled('div')`
   padding-bottom: 2em;
 `;
 
-const DesktopView = styled('div')`
+const DesktopView = styled('div')(({ theme }) => (`
   display: inherit;
-  @media (max-width: ${({ theme }) => theme.breakpoints.lg}) {
+  ${theme.breakpoints.down('lg')} {
     display: none;
   }
-`;
+`));
 
-const MobileTabletView = styled('div')`
+const MobileTabletView = styled('div')(({ theme }) => (`
   display: inherit;
   margin-top: ${isCordova() ? '' : '-11px'};
-  @media (min-width: ${({ theme }) => theme.breakpoints.lg}) {
+  ${theme.breakpoints.up('lg')} {
     display: none;
   }
-`;
+`));
 
-const TwoButtonsWrapper = styled('div')`
+const TwoButtonsWrapper = styled('div')(({ theme }) => (`
   display: flex;
   align-items: center;
   justify-content: center;
   margin: 0;
   width: 100%;
-  @media (max-width: ${({ theme }) => theme.breakpoints.lg}) {
+  ${theme.breakpoints.down('lg')} {
     justify-content: space-between;
   }
-`;
+`));
 
-const BackButtonWrapper = styled('div')`
+const BackButtonWrapper = styled('div')(({ theme }) => (`
   margin: 0 12px 0 0;
   width: 100%;
-  @media(max-width: ${({ theme }) => theme.breakpoints.lg}) {
+  ${theme.breakpoints.down('lg')} {
     margin-right: 8px;
   }
-`;
+`));
 
-const NextButtonWrapper = styled('div')`
+const NextButtonWrapper = styled('div')(({ theme }) => (`
   margin: 0;
   width: 50%;
-  @media(max-width: ${({ theme }) => theme.breakpoints.lg}) {
+  ${theme.breakpoints.down('lg')} {
     margin-right: 8px;
     width: 100%;
   }
-`;
+`));
 
 export default withStyles(styles)(HowItWorks);

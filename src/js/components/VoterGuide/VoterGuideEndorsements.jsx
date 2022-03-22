@@ -396,24 +396,24 @@ const styles = (theme) => ({
   },
 });
 
-const EmptyBallotMessageContainer = styled('div')`
+const EmptyBallotMessageContainer = styled('div')(({ theme }) => (`
   align-items: center;
   display: flex;
   flex-flow: column;
   padding: 1em 2em;
-  @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
+  ${theme.breakpoints.down('sm')} {
     padding: .5em .5em;
   }
-`;
+`));
 
-const EmptyBallotText = styled('p')`
+const EmptyBallotText = styled('p')(({ theme }) => (`
   font-size: 16px;
   text-align: center;
   margin: 1em 2em;
-  @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
+  ${theme.breakpoints.down('sm')} {
     margin: 0 1em;
   }
-`;
+`));
 
 const ExtraActionsWrapper = styled('div')`
   margin-bottom: 20px;

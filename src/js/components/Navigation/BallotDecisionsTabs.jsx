@@ -217,12 +217,12 @@ const styles = (theme) => ({
   },
 });
 
-const BadgeCountWrapper = styled('span')`
+const BadgeCountWrapper = styled('span')(({ theme }) => (`
   padding-top: 2px;
-  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+  ${theme.breakpoints.down('md')} {
     padding-top: 1px;
   }
-`;
+`));
 
 export default withStyles(styles)(BallotDecisionsTabs);
 

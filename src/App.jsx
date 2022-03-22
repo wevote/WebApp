@@ -216,7 +216,7 @@ class App extends Component {
           <ThemeProvider theme={muiTheme}>
             {/* March 2022: We used to have two themeproviders here, one for material-ui, and one for styled-components, but the two are combined in V5 MUI */}
             <WeVoteRouter>
-              <WeVoteBody>
+              <WeVoteBody id="WeVoteBody">
                 {/* DO NOT put SnackNotifier or anything else that is non-essential here (to keep it out of the main chunk. */}
                 <Suspense fallback={<HeaderBarSuspense />}>
                   <Header params={{ }} pathname={normalizedHref()} />
@@ -497,6 +497,7 @@ const WeVoteBody = styled('div')`
   height: 100vw;
   position: relative;
   z-index: 0;
+  ${() => console.log('-----------------------------')}
 `;
 
 export default App;

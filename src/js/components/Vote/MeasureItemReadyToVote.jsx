@@ -115,18 +115,18 @@ const OfficeColumn = styled('div')`
   float: right;
 `;
 
-const MeasureNameText = styled('p')`
+const MeasureNameText = styled('p')(({ theme }) => (`
   font-size: 18px;
   font-weight: 500;
   margin: auto 0;
   margin-right: 16px;
-  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+  ${theme.breakpoints.down('md')} {
     font-size: 16px;
   }
   @media print {
     font-size: 24px !important;
   }
-`;
+`));
 
 const BioInformation = styled('div')`
   display: flex;

@@ -117,6 +117,7 @@ export default class FriendToggle extends Component {
                   <StyledMenuItem
                     disabled={unFriendSubmitted}
                     onClick={this.unFriend}
+                    id="StyledMenuItem"
                   >
                     Remove Friend
                   </StyledMenuItem>

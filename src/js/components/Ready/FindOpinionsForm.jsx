@@ -276,16 +276,16 @@ const styles = (theme) => ({
 const InnerWrapper = styled('div')`
 `;
 
-const IntroHeader = styled('div')`
+const IntroHeader = styled('div')(({ theme }) => (`
   margin: 0;
   font-size: 18px;
   font-weight: 600;
   text-align: center;
-  @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
+  ${theme.breakpoints.down('sm')} {
     font-size: 18px;
     margin-top: 0;
   }
-`;
+`));
 
 const OneVoterGuideWrapper = styled('div')`
   margin: 1px !important;

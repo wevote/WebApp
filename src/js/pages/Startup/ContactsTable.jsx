@@ -172,7 +172,7 @@ const ShortenedDiv = styled('div')`
 
 
 
-const StyledCheckbox = styled('div')`
+const StyledCheckbox = styled('div')(({ theme }) => (`
 width: 20px;
 height: 20px;
 background: transparent;
@@ -180,10 +180,10 @@ border-radius: 40px;
 margin: 0;
 margin-right: 12px;
 border: 1.5px solid #ddd;
-@media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
+${theme.breakpoints.down('sm')} {
     margin-right: 8px;
   }
-`;
+`));
 
 const StyledTableContainer = styled(TableContainer)`
   overflow-y: auto;

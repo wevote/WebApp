@@ -274,58 +274,58 @@ const styles = (theme) => ({
 
 const Container = styled('div', {
   shouldForwardProp: (prop) => !['candidateLength'].includes(prop),
-})(({ candidateLength }) => (`
+})(({ candidateLength, theme }) => (`
   display: flex;
   flex-flow: ${candidateLength > 2 ? 'row wrap' : 'row'};
   justify-content: center;
-  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+  ${theme.breakpoints.down('md')} {
     flex-flow: row wrap;
   }
 `));
 
-const Title = styled('div')`
+const Title = styled('div')(({ theme }) => (`
   font-size: 18px;
   font-weight: bold;
   margin-bottom: 12px;
   cursor: pointer;
-  @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
+  ${theme.breakpoints.down('sm')} {
     font-size: 16px;
     margin-bottom: 8px;
   }
-`;
+`));
 
 const CandidateInfo = styled('div', {
   shouldForwardProp: (prop) => !['numberOfCandidatesInList'].includes(prop),
-})(({ numberOfCandidatesInList }) => (`
+})(({ numberOfCandidatesInList, theme }) => (`
   display: flex;
   flex-flow: column;
   padding: 16px 16px 0 16px;
   margin-bottom: 8px;
   overflow-x: hidden;
   transition: all 200ms ease-in;
-  border: 1px solid ${({ theme }) => theme.colors.grayBorder};
+  border: 1px solid ${theme.colors.grayBorder};
   width: ${numberOfCandidatesInList > 1 ? '48%' : '100%'};
   margin-right: 8px;
   border-radius: 4px;
   cursor: pointer;
   &:hover {
-    border: 1px solid ${({ theme }) => theme.colors.linkHoverBorder};
+    border: 1px solid ${theme.colors.linkHoverBorder};
     box-shadow: 0 1px 3px 0 rgba(0,0,0,.2), 0 1px 1px 0 rgba(0,0,0,.14), 0 2px 1px -1px rgba(0,0,0,.12);
   }
-  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+  ${theme.breakpoints.down('md')} {
     flex-flow: column;
     width: 100%;
   }
-  @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
+  ${theme.breakpoints.down('sm')} {
     flex-flow: column;
     border: none;
-    border-bottom: 1px solid ${({ theme }) => theme.colors.grayBorder};
+    border-bottom: 1px solid ${theme.colors.grayBorder};
     padding: 16px 0 0 0;
     margin-bottom: 8px;
     width: 100%;
     &:hover {
       border: none;
-      border-bottom: 1px solid ${({ theme }) => theme.colors.grayBorder};
+      border-bottom: 1px solid ${theme.colors.grayBorder};
       box-shadow: none;
     }
   }

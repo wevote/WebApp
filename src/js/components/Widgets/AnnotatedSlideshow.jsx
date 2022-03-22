@@ -25,23 +25,23 @@ class AnnotatedSlideshow extends PureComponent {
   }
 
   render () {
-    const { slides, selectedStepIndex, classes } = this.props;
+    const { slides, selectedStepIndex, classes, inModal = false } = this.props;
     const data = Object.values(slides);
     const { length } = data;
     const { title, description, imgSrc } = data.find((slide) => slide.index === selectedStepIndex);
     // console.log('AnnotatedSlideshow selectedStepIndex:', selectedStepIndex, 'length:', length);
     return (
-      <Wrapper inModal={this.props.inModal}>
-        <SlideShowTitle inModal={this.props.inModal}>{title}</SlideShowTitle>
+      <Wrapper inModal={inModal}>
+        <SlideShowTitle inModal={inModal}>{title}</SlideShowTitle>
         <Description>{description}</Description>
         <Slide>
-          {!this.props.inModal && (
+          {!inModal && (
             <Nav disabled={selectedStepIndex === 0} id="howItWorksLeftArrow" onClick={() => this.handleChangeSlide(false)}>
               <ArrowLeft classes={{ root: classes.navIconRoot }} />
             </Nav>
           )}
-          <Image inModal={this.props.inModal} src={normalizedImagePath(imgSrc)} />
-          {!this.props.inModal && (
+          <Image inModal={inModal} src={normalizedImagePath(imgSrc)} />
+          {!inModal && (
             <Nav disabled={selectedStepIndex === length - 1} id="howItWorksRightArrow" onClick={() => this.handleChangeSlide(true)}>
               <ArrowRight classes={{ root: classes.navIconRoot }} />
             </Nav>
@@ -52,7 +52,7 @@ class AnnotatedSlideshow extends PureComponent {
             <TwoButtonsWrapper>
               <BackButtonWrapper>
                 <Button
-                  classes={{ root: this.props.inModal ? classes.nextButtonRootModal : classes.nextButtonRoot }}
+                  classes={{ root: inModal ? classes.nextButtonRootModal : classes.nextButtonRoot }}
                   id={`annotatedSlideShowStep${selectedStepIndex + 1}Back`}
                   color="primary"
                   disabled={selectedStepIndex === 0}
@@ -68,7 +68,7 @@ class AnnotatedSlideshow extends PureComponent {
                   color="primary"
                   id={`annotatedSlideShowStep${selectedStepIndex + 1}Next`}
                   variant="contained"
-                  classes={{ root: this.props.inModal ? classes.nextButtonRootModal : classes.nextButtonRoot }}
+                  classes={{ root: inModal ? classes.nextButtonRootModal : classes.nextButtonRoot }}
                   onClick={() => this.handleChangeSlide(true)}
                 >
                   Next
@@ -109,22 +109,22 @@ const styles = (theme) => ({
 
 const Wrapper = styled('div', {
   shouldForwardProp: (prop) => !['inModal'].includes(prop),
-})(({ inModal }) => (`
+})(({ inModal, theme }) => (`
   display: flex;
   flex-flow: column;
   text-align: left;
-  @media (max-width: ${({ theme }) => theme.breakpoints.lg}) {
+  ${theme.breakpoints.down('lg')} {
     padding: ${inModal ? '0' : '1em 0'};
   }
 `));
 
 const SlideShowTitle = styled('h3', {
   shouldForwardProp: (prop) => !['inModal'].includes(prop),
-})(({ inModal }) => (`
+})(({ inModal, theme }) => (`
   font-weight: bold;
   font-size: 24px;
   margin-top:  ${inModal ? '0' : '36px'};
-  @media (max-width: ${({ theme }) => theme.breakpoints.lg}) {
+  ${theme.breakpoints.down('lg')} {
     font-size: 20px;
     margin-top: ${inModal ? '0' : '16px'};
   }
@@ -139,8 +139,7 @@ const TwoButtonsWrapper = styled('div')`
 `;
 
 const BackButtonWrapper = styled('div')`
-  margin: 0;
-  margin-right: 12px;
+  margin: 0 12px 0 0;
   width: 100%;
   @media(min-width: 520px) {
     margin-right: 8px;
@@ -167,7 +166,9 @@ const Slide = styled('div')`
   justify-content: space-between;
 `;
 
-const Nav = styled('div')`
+const Nav = styled('div', {
+  shouldForwardProp: (prop) => !['disabled'].includes(prop),
+})(({ disabled, theme }) => (`
   display: flex;
   align-items: center;
   justify-content: center;
@@ -176,31 +177,31 @@ const Nav = styled('div')`
   height: 100px;
   border-radius: 100rem;
   transition: all 150ms ease-in;
-  cursor: ${({ disabled }) => (disabled ? 'default' : 'pointer')};
+  cursor: ${disabled ? 'default' : 'pointer'};
   font-size: 72px;
-  background: ${({ disabled, theme }) => (disabled ? theme.colors.grayPale : theme.colors.grayChip)};
-  color: ${({ disabled, theme }) => (disabled ? theme.colors.grayChip : theme.colors.brandBlue)};
+  background: ${disabled ? theme.colors.grayPale : theme.colors.grayChip};
+  color: ${disabled ? theme.colors.grayChip : theme.colors.brandBlue};
   &:hover {
-    filter: ${({ disabled }) => (disabled ? '' : 'brightness(102%)')};
+    filter: ${disabled ? '' : 'brightness(102%)'};
   }
   &:active {
-    filter: ${({ disabled }) => (disabled ? '' : 'brightness(105%)')};
+    filter: ${disabled ? '' : 'brightness(105%)'};
   }
-  @media (max-width: ${({ theme }) => theme.breakpoints.lg}) {
+  ${theme.breakpoints.down('lg')} {
     display: none;
   }
-`;
+`));
 
 const Image = styled('img', {
   shouldForwardProp: (prop) => !['inModal'].includes(prop),
-})(({ inModal }) => (`
+})(({ inModal, theme }) => (`
   border: 1px solid #999;
   border-radius: 16px;
-  box-shadow: 2px 2px 4px 2px ${({ theme }) => theme.colors.grayLight};
+  box-shadow: 2px 2px 4px 2px ${theme.colors.grayLight};
   ${inModal ? 'width: 100%;' : 'width: 640px;'}
   ${inModal ? 'height: auto;' : 'height: 360px;'}
   transition: all 150ms ease-in;
-  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+  ${theme.breakpoints.down('md')} {
     width: 90vw;
     height: calc(90vw * 0.5625);
   }

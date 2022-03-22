@@ -55,7 +55,7 @@ const styles = (theme) => ({
   },
 });
 
-const ShowMoreButtonsStyled = styled('div')`
+const ShowMoreButtonsStyled = styled('div')(({ theme }) => (`
   border: 0 !important;
   color: #999;
   cursor: pointer;
@@ -67,7 +67,7 @@ const ShowMoreButtonsStyled = styled('div')`
   padding: 0 !important;
   text-align: center !important;
   user-select: none;
-  @media (min-width: ${({ theme }) => theme.breakpoints.md}) {
+  ${theme.breakpoints.up('md')} {
     font-size: 16px;
   }
   &:hover {
@@ -77,7 +77,7 @@ const ShowMoreButtonsStyled = styled('div')`
   @media print{
     display: none;
   }
-`;
+`));
 
 const ShowMoreButtonsText = styled('div')`
   margin-top: 8px !important;

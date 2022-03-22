@@ -426,12 +426,12 @@ const RightColumnWrapper = styled('div')`
   width: fit-content;
 `;
 
-const TwoColumns = styled('div')`
+const TwoColumns = styled('div')(({ theme }) => (`
   display: flex;
   ${() => (isAndroidSizeFold() ? { margin: 0 } : { margin: '0 -8px 0 -8px' })};
-  @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
+  ${theme.breakpoints.down('sm')} {
     margin: 0 3px;
   }
-`;
+`));
 
 export default withStyles(styles)(Measure);

@@ -335,7 +335,7 @@ const AboutWrapper = styled('div')`
   padding-top: ${cordovaScrollablePaneTopPadding()};
 `;
 
-const HeaderForAbout = styled('div')`
+const HeaderForAbout = styled('div')(({ theme }) => (`
   position: relative;
   height: 230px;
   width: 110%;
@@ -345,46 +345,46 @@ const HeaderForAbout = styled('div')`
   border-bottom-right-radius: 50% 25%;
   padding: 0 2em;
   margin-top: -72px;
-  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+  ${theme.breakpoints.down('md')} {
     height: 230px;
   }
-  @media (max-width: ${({ theme }) => theme.breakpoints.xs}) {
+  ${theme.breakpoints.down('xs')} {
     height: 215px;
   }
-`;
+`));
 
-const AboutDescriptionContainer = styled('div')`
+const AboutDescriptionContainer = styled('div')(({ theme }) => (`
   margin: 1em auto;
   width: 960px;
   max-width: 90vw;
   text-align: left;
-  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+  ${theme.breakpoints.down('md')} {
     text-align: center;
   }
-`;
+`));
 
-const DescriptionLeftColumn = styled('div')`
+const DescriptionLeftColumn = styled('div')(({ theme }) => (`
   display: flex;
   flex-flow: column;
   padding: 0 20px 0 0;
   width: 65%;
   justify-content: center;
   text-align: left;
-  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+  ${theme.breakpoints.down('md')} {
     width: 100%;
     text-align: center;
   }
-`;
+`));
 
-const DescriptionImageColumn = styled('div')`
+const DescriptionImageColumn = styled('div')(({ theme }) => (`
   width: 35%;
   text-align: right;
-  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+  ${theme.breakpoints.down('md')} {
     margin: 1em 0 0 0;
     text-align: center;
     width: 100%;
   }
-`;
+`));
 
 const Image = styled('img')`
   width: 100%;

@@ -195,15 +195,15 @@ const CompanyWrapper = styled('div')`
   text-align: center;
 `;
 
-const SectionTitle = styled('h1')`
+const SectionTitle = styled('h1')(({ theme }) => (`
   font-size: 28px;
   font-weight: 300;
   margin-bottom: 10px;
-  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+  ${theme.breakpoints.down('md')} {
     font-size: 24px;
     margin-bottom: 9px;
   }
-`;
+`));
 
 const Wrapper = styled('div')`
   display: flex;

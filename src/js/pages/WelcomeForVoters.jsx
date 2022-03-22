@@ -138,7 +138,7 @@ class WelcomeForVoters extends PureComponent {
       <WelcomeForVotersWrapper>
         <Helmet title="Welcome Voters - We Vote" />
         <Suspense fallback={<></>}>
-          <WelcomeAppbar pathname={pathname} />
+          <WelcomeAppbar pathname={pathname} id="WelcomeForVoters_WelcomeAppbar" />
         </Suspense>
         <HeaderForVoters>
           <Title>
@@ -370,7 +370,7 @@ const WelcomeForVotersWrapper = styled('div')`
   align-items: center;
   background: white;
   overflow-x: hidden;
-  padding-top: ${() => cordovaScrollablePaneTopPadding()};
+  padding-top: ${cordovaScrollablePaneTopPadding()};
 `;
 
 export default withStyles(styles)(WelcomeForVoters);

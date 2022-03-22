@@ -681,7 +681,7 @@ const Wrapper = styled('div', {
   padding-top: ${padTop};
 `));
 
-const HeaderForPricing = styled('div')`
+const HeaderForPricing = styled('div')(({ theme }) => (`
   position: relative;
   height: 210px;
   width: 110%;
@@ -692,13 +692,13 @@ const HeaderForPricing = styled('div')`
   padding: 0 2em;
   margin-top: -72px;
   text-align: center;
-  @media (max-width: ${({ theme }) => theme.breakpoints.lg}) {
+  ${theme.breakpoints.down('lg')} {
     height: 280px;
   }
-  @media (max-width: ${({ theme }) => theme.breakpoints.xs}) {
+  ${theme.breakpoints.down('xs')} {
     height: 240px;
   }
-`;
+`));
 
 const HeaderForPricingModal = styled('div')`
   position: relative;
@@ -707,22 +707,22 @@ const HeaderForPricingModal = styled('div')`
   text-align: center;
 `;
 
-const PricingTitle = styled('h1')`
+const PricingTitle = styled('h1')(({ theme }) => (`
   font-weight: bold;
   font-size: 36px;
   text-align: center;
   margin-top: 3em;
   margin-bottom: 0;
   padding-bottom: 0;
-  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+  ${theme.breakpoints.down('md')} {
     font-size: 28px;
     margin-top: 3em;
   }
-  @media (max-width: ${({ theme }) => theme.breakpoints.xs}) {
+  ${theme.breakpoints.down('xs')} {
     font-size: 18px;
     margin-top: 5em;
   }
-`;
+`));
 
 const PricingSubTitleDesktop = styled('div')`
 `;

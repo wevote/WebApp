@@ -247,13 +247,13 @@ const MainContent = styled('div')`
   margin-top: -24px;
 `;
 
-const OrganizationName = styled('h3')`
+const OrganizationName = styled('h3')(({ theme }) => (`
   font-weight: bold;
   font-size: 18px;
-  color: ${({ theme }) => theme.colors.brandBlue};
+  color: ${theme.colors.brandBlue};
   margin-bottom: 4px;
   text-decoration: none !important;
-`;
+`));
 
 const TwitterHandleWrapper = styled('span')`
   color: #000;

@@ -499,40 +499,40 @@ const BannerOverlayDesktopShareButtonInnerWrapper = styled('div')`
   z-index: 2;
 `;
 
-const BannerOverlayDesktopOuterWrapper = styled('div')`
+const BannerOverlayDesktopOuterWrapper = styled('div')(({ theme }) => (`
   display: block;
-  @media (min-width: ${({ theme }) => theme.breakpoints.lg}) {
+  ${theme.breakpoints.up('lg')} {
     align-self: flex-end;
     width: 640px;
     display: flex;
     padding: 0 15px;
   }
-  @media (max-width: ${({ theme }) => theme.breakpoints.md - 1}) {
+  ${theme.breakpoints.down('md')} {
     display: none;
   }
-  @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
+  ${theme.breakpoints.down('sm')} {
     display: none;
   }
-`;
+`));
 
-const BannerOverlayDesktopInnerWrapper = styled('div')`
+const BannerOverlayDesktopInnerWrapper = styled('div')(({ theme }) => (`
   min-height: 37px;
-  @media (max-width: ${({ theme }) => theme.breakpoints.lg}) {
+  ${theme.breakpoints.down('lg')} {
     margin-right: 7px;
     min-height: 37px;
   }
-  @media (min-width: ${({ theme }) => theme.breakpoints.lg}) {
+  ${theme.breakpoints.up('lg')} {
     // background-color: #fff;
     // box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.2), 0 1px 1px 0 rgba(0, 0, 0, 0.14), 0 2px 1px -1px rgba(0, 0, 0, 0.12);
     // min-height: 37px;
     width: 100%;
   }
-`;
+`));
 
 const CardContainer = styled('div', {
   shouldForwardProp: (prop) => !['bannerUrl'].includes(prop),
-})(({ bannerUrl }) => (`
-  @media (min-width: ${({ theme }) => theme.breakpoints.lg}) {
+})(({ bannerUrl, theme }) => (`
+  ${theme.breakpoints.up('lg')} {
     margin-top: ${bannerUrl ? '-203px' : '0'};
   }
 `));

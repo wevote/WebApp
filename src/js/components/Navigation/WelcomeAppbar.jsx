@@ -268,7 +268,7 @@ class WelcomeAppbar extends Component {
             <HeaderBarLogo light />
           </LogoContainer>
           <Navigation>
-            <DesktopView>
+            <DesktopView id="DesktopView">
               {showWelcomeForVoters &&
                 <NavLink id="welcomePageLink" to="/welcome">Welcome</NavLink>}
               {showWelcomeForOrganizations &&
@@ -353,8 +353,8 @@ class WelcomeAppbar extends Component {
                 </div>
               )}
             </DesktopView>
-            <MobileTabletView>
-              <NavLink id="welcomeYourBallotMobile" to="/ballot">Your Ballot</NavLink>
+            <MobileTabletView id="MobileTabletView">
+              <NavLink id="welcomeYourBallotMobile1" to="/ballot">Your Ballot</NavLink>
               {voterIsSignedIn && (
                 <div>
                   {voterPhotoUrlMedium ? (
@@ -438,7 +438,7 @@ class WelcomeAppbar extends Component {
                       <Button
                         variant="outlined"
                         classes={{ root: classes.navButtonOutlined }}
-                        id="welcomeYourBallotMobile"
+                        id="welcomeYourBallotMobile2"
                         onClick={() => this.handleToPageFromMobileNav('/ready')}
                       >
                         Your Ballot
@@ -552,25 +552,25 @@ const styles = (theme) => ({
   },
 });
 
-const DesktopView = styled('div')`
+const DesktopView = styled('div')(({ theme }) => (`
   display: inherit;
   max-width: unset;
-  @media (max-width: ${({ theme }) => theme.breakpoints.lg}) {
+  ${theme.breakpoints.down('lg')} {
     display: none;
   }
-`;
+`));
 
 const FirstNameWrapper = styled('div')`
   font-size: 14px;
   padding-right: 4px;
 `;
 
-const MobileTabletView = styled('div')`
+const MobileTabletView = styled('div')(({ theme }) => (`
   display: inherit;
-  @media (min-width: ${({ theme }) => theme.breakpoints.lg}) {
+  ${theme.breakpoints.up('lg')} {
     display: none;
   }
-`;
+`));
 
 const ProfileIconWrapper = styled('div')`
   color: white;

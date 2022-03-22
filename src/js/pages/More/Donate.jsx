@@ -351,7 +351,7 @@ const InnerWrapper = styled('div')`
   margin-bottom: 16px;
 `;
 
-const HeaderForDonate = styled('div')`
+const HeaderForDonate = styled('div')(({ theme }) => (`
   position: relative;
   height: 190px;
   width: 110%;
@@ -362,30 +362,30 @@ const HeaderForDonate = styled('div')`
   padding: 0 2em;
   margin-top: -72px;
   text-align: center;
-  @media (max-width: ${({ theme }) => theme.breakpoints.lg}) {
+  ${theme.breakpoints.down('lg')} {
     height: 190px;
   }
-  @media (max-width: ${({ theme }) => theme.breakpoints.xs}) {
+  ${theme.breakpoints.down('xs')} {
     height: 150px;
   }
-`;
+`));
 
-const DonateTitle = styled('h1')`
+const DonateTitle = styled('h1')(({ theme }) => (`
   font-weight: bold;
   font-size: 36px;
   text-align: center;
   margin-top: 3em;
   margin-bottom: 0;
   padding-bottom: 0;
-  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+  ${theme.breakpoints.down('md')} {
     font-size: 28px;
     margin-top: 3em;
   }
-  @media (max-width: ${({ theme }) => theme.breakpoints.xs}) {
+  ${theme.breakpoints.down('xs')} {
     font-size: 18px;
     margin-top: 5em;
   }
-`;
+`));
 
 const DonateDescriptionContainer = styled('div')`
   margin: 1em auto;
@@ -419,9 +419,9 @@ const DonateCaveat = styled('p')`
   font-style: italic;
 `;
 
-const PaymentCenteredWrapper  = styled('div')`
+const PaymentCenteredWrapper  = styled('div')(({ theme }) => (`
   width: 500px;
-  @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
+  ${theme.breakpoints.down('sm')} {
     width: 300px;
   }
   display: inline-block;
@@ -430,18 +430,18 @@ const PaymentCenteredWrapper  = styled('div')`
   border: 2px solid darkgrey;
   border-radius: 3px;
   padding: 8px;
-`;
+`));
 
 
-const ContributeGridWrapper = styled('div')`
+const ContributeGridWrapper = styled('div')(({ theme }) => (`
   background-color: #ebebeb;
   padding: 10px;
   border: 1px solid darkgrey;
   margin: auto auto 20px auto;
   width: 500px;
-  @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
+  ${theme.breakpoints.down('sm')} {
     width: 300px;
-`;
+`));
 
 const ContributeGridSection = styled('div')`
   display: grid;

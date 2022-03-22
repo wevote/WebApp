@@ -246,49 +246,48 @@ const InfoRow = styled('div')`
 const InfoDetailsRow = styled('div')`
 `;
 
-const MeasureInfoWrapper = styled('div')`
+const MeasureInfoWrapper = styled('div')(({ theme }) => (`
   display: flex;
   flex-flow: column;
   max-width: 75%;
   cursor: pointer;
   user-select: none;
   padding-right: 8px;
-  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+  ${theme.breakpoints.down('md')} {
     max-width: 70%;
   }
-`;
+`));
 
-const MeasureItemWrapper = styled('div')`
-  @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
+const MeasureItemWrapper = styled('div')(({ theme }) => (`
+  ${theme.breakpoints.down('sm')} {
     padding: 16px 0 8px 0;
   }
-
-`;
+`));
 
 const MeasureTextWrapper = styled('div')`
   color: #999;
   padding-bottom: 8px;
 `;
 
-const Title = styled('h1')`
+const Title = styled('h1')(({ theme }) => (`
   font-size: 18px;
   font-weight: bold;
   margin: .1rem 0;
-  @media (max-width: ${({ theme }) => theme.breakpoints.lg}) {
+  ${theme.breakpoints.down('lg')} {
     font-size: 16px;
   }
-`;
+`));
 
-const SubTitle = styled('h3')`
+const SubTitle = styled('h3')(({ theme }) => (`
   font-size: 16px;
   font-weight: 300;
   color: #555;
   margin-bottom: 4px;
   margin-top: .6rem;
   width: 100%;
-  @media (max-width: ${({ theme }) => theme.breakpoints.lg}) {
+  ${theme.breakpoints.down('lg')} {
     font-size: 13px;
   }
-`;
+`));
 
 export default withTheme(withStyles(styles)(MeasureItem));

@@ -110,13 +110,13 @@ const EmptyContainer = styled('div')`
   align-items: center;
 `;
 
-const EmptyText = styled('p')`
+const EmptyText = styled('p')(({ theme }) => (`
   font-size: 20px;
   text-align: center;
   margin: 1em 2em 3em;
-  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+  ${theme.breakpoints.down('md')} {
     margin: 1em;
   }
-`;
+`));
 
 export default (OrganizationVoterGuideMobileDetails);

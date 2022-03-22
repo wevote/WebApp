@@ -1635,13 +1635,13 @@ const BallotBottomWrapper = styled('div')`
   width: 100%;
 `;
 
-const BallotCaveatWrapper = styled('div')`
+const BallotCaveatWrapper = styled('div')(({ theme }) => (`
   margin-bottom: 3px;
-  @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
+  ${theme.breakpoints.down('sm')} {
     padding-left: 0 !important;
     padding-right: 0 !important;
   }
-`;
+`));
 
 const BallotListWrapper = styled('div')`
   padding-bottom: 40px;
@@ -1654,22 +1654,22 @@ const BallotLoadingWrapper = styled('div')`
   margin-bottom: ${() => (isIPhone6p1in() ? '800px' : '625px')};
 `;
 
-// If we want to turn off filter tabs navigation bar:  ${({ showFilterTabs }) => !showFilterTabs && 'height: 0;'}
+// If we want to turn off filter tabs navigation bar:  {({ showFilterTabs }) => !showFilterTabs && 'height: 0;'}
 const BallotFilterRow = styled('div')`
   // TODO: 10/4/21 Steve, this is temporary and needs to be more responsive
-  // margin-left: ${() => (isWebApp() && !isMobileScreenSize() ? 'calc((100vw - 975px)/2)' : '')};
+  // margin-left: {() => (isWebApp() && !isMobileScreenSize() ? 'calc((100vw - 975px)/2)' : '')};
 `;
 
 const EditAddressCard = styled('div')`
   padding: 12px 15px 0 15px;
 `;
 
-const EditAddressWrapper = styled('div')`
-  @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
+const EditAddressWrapper = styled('div')(({ theme }) => (`
+  ${theme.breakpoints.down('sm')} {
     padding-left: 0 !important;
     padding-right: 0 !important;
   }
-`;
+`));
 
 const EmptyBallotCard = styled('div')`
   padding: 12px 15px;
