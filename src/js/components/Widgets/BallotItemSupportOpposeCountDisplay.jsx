@@ -1351,8 +1351,8 @@ const PopoverWrapper = styled('div')`
   height: 100%;
 `;
 
-const PopoverHeader = styled('div')`
-  background: ${({ theme }) => theme.colors.brandBlue};
+const PopoverHeader = styled('div')(({ theme }) => (`
+  background: ${theme.colors.brandBlue};
   padding: 4px 8px;
   min-height: 35px;
   color: white;
@@ -1362,7 +1362,7 @@ const PopoverHeader = styled('div')`
   border-radius: 5px;
   border-bottom-right-radius: 0;
   border-bottom-left-radius: 0;
-`;
+`));
 
 const PopoverTitleText = styled('div')`
   font-size: 14px;

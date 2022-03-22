@@ -251,12 +251,12 @@ const CandidateEndorsementsContainer = styled('div')`
   overflow-y: hidden;
 `;
 
-const CandidateEndorsementContainer = styled('div')`
+const CandidateEndorsementContainer = styled('div')(({ theme }) => (`
   min-width: 50px;
   width: 50px;
-  @media (max-width: ${({ theme }) => theme.breakpoints.xs}) {
+  ${theme.breakpoints.down('xs')} {
     display: none;
   }
-`;
+`));
 
 export default withStyles(styles)(PositionRowList);

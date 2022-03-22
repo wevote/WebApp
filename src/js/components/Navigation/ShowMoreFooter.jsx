@@ -57,7 +57,7 @@ const styles = (theme) => ({
 
 const ShowMoreFooterStyled = styled('div', {
   shouldForwardProp: (prop) => !['textAlign'].includes(prop),
-})(({ textAlign }) => (`
+})(({ textAlign, theme }) => (`
   border: 0 !important;
   color: #2e3c5d;
   cursor: pointer;
@@ -70,7 +70,7 @@ const ShowMoreFooterStyled = styled('div', {
   padding: 0 !important;
   text-align: ${textAlign ? { textAlign } : 'right'} !important;
   user-select: none;
-  @media (min-width: ${({ theme }) => theme.breakpoints.md}) {
+  ${theme.breakpoints.up('md')} {
     font-size: 18px;
   }
   &:hover {
@@ -84,12 +84,12 @@ const ShowMoreFooterStyled = styled('div', {
 
 const ShowMoreFooterText = styled('div', {
   shouldForwardProp: (prop) => !['textAlign'].includes(prop),
-})(({ textAlign }) => (`
+})(({ textAlign, theme }) => (`
   margin-top: 8px !important;
   padding: 8px !important;
   padding-bottom: 0 !important;
   text-align: ${textAlign ? { textAlign } : 'right'} !important;
-  @media (min-width: ${({ theme }) => theme.breakpoints.md}) {
+  ${theme.breakpoints.up('md')} {
     white-space: nowrap;
   }
   &:hover {

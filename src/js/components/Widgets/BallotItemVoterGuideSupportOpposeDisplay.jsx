@@ -290,12 +290,12 @@ const OrganizationSupportWrapper = styled('div')`
   z-index: 1;
 `;
 
-const OrganizationSupportSquare = styled('div')`
+const OrganizationSupportSquare = styled('div')(({ theme }) => (`
   align-items: center;
   background: white;
-  border: 3px solid ${({ theme }) => theme.colors.supportGreenRgb};
+  border: 3px solid ${theme.colors.supportGreenRgb};
   border-radius: 5px;
-  color: ${({ theme }) => theme.colors.supportGreenRgb};
+  color: ${theme.colors.supportGreenRgb};
   cursor: pointer;
   display: flex;
   height: 40px;
@@ -303,7 +303,7 @@ const OrganizationSupportSquare = styled('div')`
   font-weight: bold;
   justify-content: center;
   width: 40px;
-`;
+`));
 
 const OrganizationSupportIconWrapper = styled('div')`
   margin-left: 2px;
@@ -315,10 +315,10 @@ const OrganizationOpposeWrapper = styled('div')`
   z-index: 1;
 `;
 
-const OrganizationOpposeSquare = styled('div')`
+const OrganizationOpposeSquare = styled('div')(({ theme }) => (`
   background: white;
-  border: 3px solid ${({ theme }) => theme.colors.opposeRedRgb};
-  color: ${({ theme }) => theme.colors.opposeRedRgb};
+  border: 3px solid ${theme.colors.opposeRedRgb};
+  color: ${theme.colors.opposeRedRgb};
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -328,7 +328,7 @@ const OrganizationOpposeSquare = styled('div')`
   border-radius: 5px;
   font-size: 20px;
   font-weight: bold;
-`;
+`));
 
 const OrganizationOpposeIconWrapper = styled('div')`
   margin-left: 0;
@@ -340,8 +340,8 @@ const OrganizationInformationOnlyWrapper = styled('div')`
   z-index: 1;
 `;
 
-const OrganizationInformationOnlySquare = styled('div')`
-  color: ${({ theme }) => theme.colors.grayMid};
+const OrganizationInformationOnlySquare = styled('div')(({ theme }) => (`
+  color: ${theme.colors.grayMid};
   background: white;
   cursor: pointer;
   display: flex;
@@ -350,10 +350,10 @@ const OrganizationInformationOnlySquare = styled('div')`
   width: 40px;
   height: 40px;
   border-radius: 5px;
-  border: 3px solid ${({ theme }) => theme.colors.grayMid};
+  border: 3px solid ${theme.colors.grayMid};
   font-size: 20px;
   font-weight: bold;
-`;
+`));
 
 const OrganizationInfoOnlyIconWrapper = styled('div')`
   margin-left: 1px;
@@ -361,8 +361,8 @@ const OrganizationInfoOnlyIconWrapper = styled('div')`
 `;
 
 const OverlayImage = styled('div')`
-  // border: 2px solid ${({ theme }) => theme.colors.supportGreenRgb};
-  // color: ${({ theme }) => theme.colors.supportGreenRgb};
+  // border: 2px solid {({ theme }) => theme.colors.supportGreenRgb};
+  // color: {({ theme }) => theme.colors.supportGreenRgb};
   display: flex;
   width: 36px;
   height: 20px;

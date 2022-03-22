@@ -39,6 +39,7 @@ March 11, 2022  -- Feel free to delete this file in 6 months
    CandidateItemEndorsement
    VoterPhotoUpload
    ```
+   Note this is widespread in Campaigns -- Skipping for now 3/21/22
 
 7) Ran codemods
     ```
@@ -126,14 +127,25 @@ Retaining hover style in existing code
     to
     $1= styled('$2')`
     ```
-13) Remove import for keyframes, which are not in MUI 5 styled-components
+13) Convert all passed parameters to styled-components    
     ```
-    import styled, { keyframes } from 'styled-components';
+    const OuterWrapperHeaderBar = styled('div', {
+      shouldForwardProp: (prop) => !['displayHeader'].includes(prop),
+    })(({ displayHeader }) => (`
+      border-bottom: 1px solid #ddd;
+      flex-grow: 1;
+      min-height: 36px;
+      display: ${displayHeader ? '' : 'none'};
+    `));
+    ```
+14) Change imports for keyframes
+    ```
+    import { keyframes } from 'styled-components';
     to
-    import { styled } from '@mui/styles';
-    then remove references to keyframes
+    import { keyframes } from '@emotion/react';
     ```
-14) Default breakpoints -- Note: now use system values instead of our previous definitions
+    ```
+15) Default breakpoints -- Note: now use system values instead of our previous definitions
     Each breakpoint (a key) matches with a fixed screen width (a value):
     ```
     xs, extra-small: 0px
@@ -143,7 +155,7 @@ Retaining hover style in existing code
     xl, extra-large: 1536px
     These values can be customized.
     ```
-15) styled ending with `
+16) styled ending with `
     ```
      const CustomizedSlider = styled(Slider)`
      color: #20b2aa;
@@ -157,7 +169,7 @@ Retaining hover style in existing code
      }
      `;
      ```
-16) Style with literal css
+17) Style with literal css
      ```
      import * as React from 'react';
      import { styled } from '@mui/material/styles';
@@ -172,7 +184,7 @@ Retaining hover style in existing code
        }
      `;
      ```
-17) Raw css in styling
+18) Raw css in styling
      ```
     const CustomCheckbox = styled(Checkbox)(({ theme }) => ({
        color: theme.status.danger,
@@ -181,14 +193,14 @@ Retaining hover style in existing code
        },
      }));
     ```
-18) 3/15: Couldn't get styled('div')` to work, needed
+19) 3/15: Couldn't get styled('div')` to work, needed
     ```
     const OuterWrapper = styled('div')({
       marginBottom: '8px !important',
       width: '100%',
     });
     ```
-19) 3/15 works in codesandbox with our mui-theme imported
+20) 3/15 works in codesandbox with our mui-theme imported
     ```
     const SteveDiv = styled("div")`
       font-size: 30px;
@@ -225,7 +237,7 @@ Retaining hover style in existing code
       );
     }
     ```
-20) in Sandbox, our orignal form does not work
+21) in Sandbox, our orignal form does not work
     TypeError, _styled.default.div is not a function
     ```
     const SteveDiv3 = styled.div`
@@ -233,7 +245,7 @@ Retaining hover style in existing code
       font-size: 16px;
     `;
     ```
-21) Sandbox
+22) Sandbox
 
     https://codesandbox.io/s/mui-v5-styled-with-custom-props-example-forked-3r10s1?file=/demo.js:1305-1350
-22) 
+23) 

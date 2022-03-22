@@ -284,11 +284,11 @@ const TitleWrapper = styled('div')`
   margin: 15px;
 `;
 
-const Wrapper = styled('div')`
-  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+const Wrapper = styled('div')(({ theme }) => (`
+  ${theme.breakpoints.down('md')} {
     // margin-left: 15px;
     // margin-right: 15px;
   }
-`;
+`));
 
 export default (VoterGuideFollowing);

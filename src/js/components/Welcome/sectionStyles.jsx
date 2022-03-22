@@ -2,7 +2,7 @@ import styled from '@mui/material/styles/styled';
 
 const Section = styled('div', {
   shouldForwardProp: (prop) => !['noTopMargin', 'noSideMargins', 'variant', 'rounded'].includes(prop),
-})(({ noTopMargin, noSideMargins, variant, rounded }) => (`
+})(({ noTopMargin, noSideMargins, variant, rounded, theme }) => (`
   display: flex;
   flex-flow: column;
   padding-top: ${noTopMargin ? '0' : '3em'};
@@ -16,28 +16,28 @@ const Section = styled('div', {
   background: ${variant === 'dark' ? 'rgb(235, 236, 240)' : 'white'};
   ${rounded ? // eslint-disable-next-line
       'border-radius: 50% 50%;\nwidth: 200%;\npadding: 3em 2em;' : ''};
-  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+  ${theme.breakpoints.down('md')} {
     padding-top: ${noTopMargin ? '0' : '2em'};
     padding-bottom: ${noTopMargin ? '0' : '1em'};
   }
 `));
 
-const SectionTitle = styled('h1')`
+const SectionTitle = styled('h1')(({ theme }) => (`
   font-size: 36px;
   font-weight: 300;
   margin-bottom: 10px;
-  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+  ${theme.breakpoints.down('md')} {
     margin-bottom: 9px;
     font-size: 24px;
   }
-`;
+`));
 
 const SectionTitleBold = styled('span')`
   color: ${(props) => props.theme.colors.brandBlue};
   font-weight: bold;
 `;
 
-const Step = styled('div')`
+const Step = styled('div')(({ theme }) => (`
   display: flex;
   flex-flow: row nowrap;
   font-size: 18px;
@@ -47,37 +47,37 @@ const Step = styled('div')`
   max-width: 100%;
   margin-top: 1rem;
   border-radius: 4px;
-  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+  ${theme.breakpoints.down('md')} {
     width: 100%;
   }
-`;
+`));
 
-const StepNumber = styled('div')`
+const StepNumber = styled('div')(({ theme }) => (`
   width: 24px;
   height: 24px;
   background: ${(props) => props.theme.colors.brandBlue};
   color: white;
   border-radius: 4px;
-  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+  ${theme.breakpoints.down('md')} {
     width: 35px;
     height: 35px;
     min-width: 35px;
     font-size: 24px;
   }
-`;
+`));
 
-const StepLabel = styled('p')`
+const StepLabel = styled('p')(({ theme }) => (`
   font-weight: bold;
   color: #333;
   margin: 0 .7rem;
   text-align: left;
-  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+  ${theme.breakpoints.down('md')} {
     margin: auto .7rem;
     font-size: 16px;
   }
-`;
+`));
 
-const GetStarted2019 = styled('div')`
+const GetStarted2019 = styled('div')(({ theme }) => (`
   align-items: center;
   display: flex;
   flex-flow: column;
@@ -86,23 +86,23 @@ const GetStarted2019 = styled('div')`
   margin-bottom: 50px;
   margin-top: 15px;
   width: 500px;
-  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+  ${theme.breakpoints.down('md')} {
     margin-bottom: 20px;
     padding-left: 20px;
     padding-right: 20px;
     width: 100%;
   }
-  @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
+  ${theme.breakpoints.down('sm')} {
     padding-left: 0;
     padding-right: 0;
   }
-`;
+`));
 
 const ButtonContainer = styled('div')`
   margin-left: -132px;
 `;
 
-// @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+// ${theme.breakpoints.down('md')} {
 //   flex-flow: column-reverse;
 // }
 const DescriptionContainer = styled('div')`
@@ -121,24 +121,24 @@ const MemberListContainer = styled('div')`
   text-align: center;
 `;
 
-const DescriptionLeftColumn = styled('div')`
+const DescriptionLeftColumn = styled('div')(({ theme }) => (`
   display: flex;
   flex-flow: column;
   width: 70%;
   justify-content: center;
   text-align: left;
-  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+  ${theme.breakpoints.down('md')} {
     width: 100%;
   }
-`;
+`));
 
-const DescriptionImageColumn = styled('div')`
+const DescriptionImageColumn = styled('div')(({ theme }) => (`
   width: 30%;
-  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+  ${theme.breakpoints.down('md')} {
     width: 100%;
     text-align: center;
   }
-`;
+`));
 
 const Description = styled('span')`
   color: #333;
@@ -166,17 +166,17 @@ const NetworkContainer = styled('div')`
   padding-bottom: 3em;
 `;
 
-const NetworkImage = styled('img')`
+const NetworkImage = styled('img')(({ theme }) => (`
   filter: grayscale(100%);
   flex: 25%;
   max-width: 25%;
   padding: 0 2%;
   object-fit: scale-down;
-  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+  ${theme.breakpoints.down('md')} {
     flex: 50% !important;
     max-width: 50% !important;
   }
-`;
+`));
 
 const SignUpContainer = styled('div')`
   width: 350px;
@@ -184,17 +184,17 @@ const SignUpContainer = styled('div')`
   max-width: 90vw;
 `;
 
-const SignUpMessage = styled('div')`
+const SignUpMessage = styled('div')(({ theme }) => (`
   border-radius: 4px;
-  color: ${({ theme }) => theme.colors.brandBlue};
+  color: ${theme.colors.brandBlue};
   padding: 8px 16px;
   font-size: 14px;
   margin-top: 2em;
   background: rgb(243,243,247);
-  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+  ${theme.breakpoints.down('md')} {
     font-size: 12px;
   }
-`;
+`));
 
 export {
   Bold,

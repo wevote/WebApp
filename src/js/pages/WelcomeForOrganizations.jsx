@@ -98,7 +98,7 @@ class WelcomeForOrganizations extends Component {
       <WelcomeForOrganizationsWrapper>
         <Helmet title="Welcome Organizations - We Vote" />
         <Suspense fallback={<></>}>
-          <WelcomeAppbar pathname={pathname} />
+          <WelcomeAppbar pathname={pathname} id="WelcomeForOrganizations_WelcomeAppbar" />
         </Suspense>
         <HeaderForOrganizations>
           <Title>
@@ -308,10 +308,10 @@ const WelcomeForOrganizationsWrapper = styled('div')`
   align-items: center;
   background: white;
   overflow-x: hidden;
-  padding-top: ${() => cordovaScrollablePaneTopPadding()};
+  padding-top: ${cordovaScrollablePaneTopPadding()};
 `;
 
-const HeaderForOrganizations = styled('div')`
+const HeaderForOrganizations = styled('div')(({ theme }) => (`
   position: relative;
   height: 590px;
   width: 110%;
@@ -321,13 +321,13 @@ const HeaderForOrganizations = styled('div')`
   border-bottom-right-radius: 50% 25%;
   padding: 0 2em;
   margin-top: -72px;
-  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+  ${theme.breakpoints.down('md')} {
     height: 450px;
   }
-  @media (max-width: ${({ theme }) => theme.breakpoints.xs}) {
+  ${theme.breakpoints.down('xs')} {
     height: 380px;
   }
-`;
+`));
 
 const SectionTitleBoldGold = styled('span')`
   color: rgb(219, 179, 86);

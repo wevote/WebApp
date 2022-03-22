@@ -582,6 +582,7 @@ export default function cordovaScrollablePaneTopPadding (pageEnumerationOverride
       // case CordovaPageConstants.moreFaq:                  return '58px';
       // case CordovaPageConstants.moreTerms:                return '58px';
       case CordovaPageConstants.officeWild:               return '78px';
+      case CordovaPageConstants.welcomeWild:              return 0;
       // case CordovaPageConstants.ready:
       //   return '30px';
       // case CordovaPageConstants.settingsAccount:

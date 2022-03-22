@@ -282,22 +282,22 @@ const styles = (theme) => ({
   },
 });
 
-const Wrapper = styled('div')`
+const Wrapper = styled('div')(({ theme }) => (`
   cursor: pointer;
   font-size: 14px;
-  @media (min-width: ${({ theme }) => theme.breakpoints.md}) {
+  ${theme.breakpoints.up('md')} {
     font-size: 16px;
   }
-`;
+`));
 
-const BallotItemEndorserName = styled('span')`
+const BallotItemEndorserName = styled('span')(({ theme }) => (`
   color: #999;
   font-size: 14px;
   font-weight: 400;
-  @media (min-width: ${({ theme }) => theme.breakpoints.md}) {
+  ${theme.breakpoints.up('md')} {
     font-size: 15px;
   }
-`;
+`));
 
 const BallotItemEndorsementTextDesktop = styled('span')`
   color: #555;

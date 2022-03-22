@@ -134,19 +134,11 @@ const Wrapper = styled('div')`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  // margin-top: ${(props) => (props.margintop)};
-  ${() => {
-    if (isWebApp() && !isMobileScreenSize()) {
-      // TODO: Steve 10/4/21, this is temporary and needs to be more responsive
-      return {
-        paddingTop: '58px',
-        paddingBottom: '12px',
-        height: '25px',
-      };
-    } else {
-      return {};
-    }
-  }};
+  ${isWebApp() && !isMobileScreenSize() ? {
+    paddingTop: '58px',
+    paddingBottom: '12px',
+    height: '25px',
+  } : {}};
 `;
 
 const Title = styled('h1')`

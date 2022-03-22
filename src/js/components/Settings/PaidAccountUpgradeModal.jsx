@@ -1276,8 +1276,8 @@ const ModalTitleArea = styled('div', {
   ${noBoxShadowMode ? '@media (max-width: 376px) {\n    padding: 8px 6px;\n  }' : ''}
 `));
 
-const MobilePricingPlanName = styled('span')`
-  color: ${({ theme }) => theme.colors.main};
+const MobilePricingPlanName = styled('span')(({ theme }) => (`
+  color: ${theme.colors.main};
   font-size: 18px;
   font-weight: bold;
   vertical-align: middle;
@@ -1288,7 +1288,7 @@ const MobilePricingPlanName = styled('span')`
     font-size: 14px;
     top: 13.6px;
   }
-`;
+`));
 
 
 const Title = styled('h3')`
@@ -1372,45 +1372,45 @@ const Fieldset = styled('fieldset', {
   }
 `));
 
-const Legend = styled('legend')`
-  color: ${({ theme }) => theme.colors.main};
+const Legend = styled('legend')(({ theme }) => (`
+  color: ${theme.colors.main};
   font-size: 12px;
   text-align: left;
   margin: 0;
   margin-left: 16px;
   padding: 0 8px;
   width: fit-content;
-`;
+`));
 
-const PriceLabel = styled('span')`
+const PriceLabel = styled('span')(({ theme }) => (`
   font-size: 40px;
   font-weight: bold;
-  color: ${({ theme }) => theme.colors.main};
+  color: ${theme.colors.main};
   margin-left: 4px;
   @media (max-width: 569px) {
     font-size: 32px;
   }
-`;
+`));
 
-const PriceLabelDollarSign = styled('span')`
+const PriceLabelDollarSign = styled('span')(({ theme }) => (`
   font-size: 18px;
-  color: ${({ theme }) => theme.colors.main};
+  color: ${theme.colors.main};
   position: relative;
   top: -12px;
   font-weight: bold;
   @media (max-width: 569px) {
     font-size: 16px;
   }
-`;
+`));
 
-const PriceLabelSubText = styled('span')`
+const PriceLabelSubText = styled('span')(({ theme }) => (`
   font-size: 16px;
   font-weight: bold;
-  color: ${({ theme }) => theme.colors.main};
+  color: ${theme.colors.main};
   @media (max-width: 569px) {
     font-size: 14px;
   }
-`;
+`));
 
 const Wrapper = styled('div')`
   padding: 12px 30px;

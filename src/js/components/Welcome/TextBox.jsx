@@ -43,7 +43,7 @@ const styles = (theme) => ({
   },
 });
 
-const Container = styled('div')`
+const Container = styled('div')(({ theme }) => (`
   border-radius: 32px;
   min-width: 100px;
   width: 100%;
@@ -53,19 +53,19 @@ const Container = styled('div')`
   text-align: left;
   padding-bottom: 8px;
   margin-bottom: 1em;
-  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+  ${theme.breakpoints.down('md')} {
     height: 36px;
     padding: 8px 16px;
     font-size: 10px;
   }
-`;
+`));
 
-const IconContainer = styled('div')`
+const IconContainer = styled('div')(({ theme }) => (`
   color: rgb(107, 122, 155);
   padding-right: 4px;
-  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+  ${theme.breakpoints.down('md')} {
     margin-top: -2px;
   }
-`;
+`));
 
 export default withStyles(styles)(TextBox);

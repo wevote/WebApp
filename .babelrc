@@ -13,7 +13,8 @@
     [
       "babel-plugin-styled-components",
       {
-        "displayName": true
+        "displayName": true,
+        "fileName": false
       }
     ],
     "@babel/plugin-transform-runtime",

@@ -13,7 +13,7 @@ class HeaderSwitch extends PureComponent {
   render () {
     const { color, choices, selectedCategoryIndex } = this.props;
     return (
-      <Container color={color}>
+      <HeaderSwitchContainer color={color} id="HeaderSwitchContainer">
         <Choice id="howItWorksSwitchForVoters" selectedCategoryIndex={selectedCategoryIndex === 0} color={color} onClick={() => this.switchToDifferentCategory(0)}>
           <ChoiceText>{choices[0]}</ChoiceText>
         </Choice>
@@ -23,7 +23,7 @@ class HeaderSwitch extends PureComponent {
         <Choice id="howItWorksSwitchForCampaigns" selectedCategoryIndex={selectedCategoryIndex === 2} color={color} onClick={() => this.switchToDifferentCategory(2)}>
           <ChoiceText>{choices[2]}</ChoiceText>
         </Choice>
-      </Container>
+      </HeaderSwitchContainer>
     );
   }
 }
@@ -34,7 +34,9 @@ HeaderSwitch.propTypes = {
   switchToDifferentCategoryFunction: PropTypes.func,
 };
 
-const Container = styled('div')`
+const HeaderSwitchContainer = styled('div', {
+  shouldForwardProp: (prop) => !['color'].includes(prop),
+})(({ color }) => (`
   display: flex;
   flex-flow: row;
   border-radius: 64px;
@@ -42,9 +44,9 @@ const Container = styled('div')`
   min-width: 250px;
   width: 720px;
   cursor: pointer;
-  border: 1px solid ${({ color }) => color};
+  border: 1px solid ${color};
   transition: all 150ms ease-in;
-`;
+`));
 
 const Choice = styled('div', {
   shouldForwardProp: (prop) => !['selectedCategoryIndex', 'color'].includes(prop),

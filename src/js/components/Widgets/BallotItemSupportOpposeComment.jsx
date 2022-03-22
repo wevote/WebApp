@@ -255,13 +255,13 @@ function wrapperPadding (props) {
 
 const Wrapper = styled('div', {
   shouldForwardProp: (prop) => !['showPositionStatementActionBar', 'inModal', 'isCrunched'].includes(prop),
-})(({ showPositionStatementActionBar, inModal, isCrunched }) => (`
+})(({ showPositionStatementActionBar, inModal, isCrunched, theme }) => (`
   width: ${() => (isAndroidSizeMD() ? '95%' : '100%')};
   // background-color: ${showPositionStatementActionBar || inModal ? '#eee' : 'white'} !important;
   background-color: white !important;
   padding: ${(props) => wrapperPadding(props)} !important;
   border-radius: 4px;
-  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+  ${theme.breakpoints.down('md')} {
     background-color: white;
     padding: 0;
   }

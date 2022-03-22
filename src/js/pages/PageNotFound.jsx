@@ -51,11 +51,11 @@ PageNotFound.propTypes = {
   classes: PropTypes.object,
 };
 
-const Wrapper = styled('div')`
-  @media (max-width: ${({ theme }) => (isCordova() ? undefined : theme.breakpoints.md)}) {
+const Wrapper = styled('div')(({ theme }) => (`
+  ${theme.breakpoints.down('md')} {
     margin: 1em 0;
   }
-`;
+`));
 
 const EmptyBallotMessageContainer = styled('div')`
   padding: 3em 2em;
@@ -64,14 +64,14 @@ const EmptyBallotMessageContainer = styled('div')`
   align-items: center;
 `;
 
-const EmptyBallotText = styled('p')`
+const EmptyBallotText = styled('p')(({ theme }) => (`
   font-size: 24px;
   text-align: center;
   margin: 1em 2em 3em;
-  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+  ${theme.breakpoints.down('md')} {
     margin: 1em;
   }
-`;
+`));
 
 const styles = (theme) => ({
   ballotIconRoot: {

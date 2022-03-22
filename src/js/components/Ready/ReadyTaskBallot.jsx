@@ -889,21 +889,21 @@ const styles = (theme) => ({
   width: 562,
 });
 
-const BallotToDoTitle = styled('h3')`
+const BallotToDoTitle = styled('h3')(({ theme }) => (`
   margin: 0;
   font-size: 30px;
   font-weight: 600;
   margin-bottom: 6px;
   margin-top: 12px;
-  @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
+  ${theme.breakpoints.down('sm')} {
     font-size: 24px;
     margin-top: 0;
   }
-  @media (max-width: ${({ theme }) => theme.breakpoints.xs}) {
+  ${theme.breakpoints.down('xs')} {
     font-size: 20px;
     margin-top: 0;
   }
-`;
+`));
 
 const ButtonTextMobileFont = styled('span')`
   font-size: 16px;

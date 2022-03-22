@@ -13,26 +13,26 @@ const Header = styled('div')`
   justify-content: center;
 `;
 
-const Container = styled('div')`
+const Container = styled('div')(({ theme }) => (`
   display: flex;
   flex-flow: row;
   justify-content: space-between;
   width: 960px;
   padding-bottom: 1em;
   height: 48px;
-  @media (max-width: ${({ theme }) => theme.breakpoints.lg}) {
+  ${theme.breakpoints.down('lg')} {
     margin: 0 -1em;
   }
-`;
+`));
 
-const Title = styled('h3')`
+const Title = styled('h3')(({ theme }) => (`
   font-size: 24px;
   font-weight: bold;
-  @media (max-width: ${({ theme }) => theme.breakpoints.lg}) {
+  ${theme.breakpoints.down('lg')} {
     font-size: 18px;
     margin: auto 0;
   }
-`;
+`));
 
 export { Title, Container };
 

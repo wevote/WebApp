@@ -2,19 +2,19 @@ import { keyframes } from '@emotion/react';
 import styled from '@mui/material/styles/styled';
 
 
-const Title = styled('h1')`
+const Title = styled('h1')(({ theme }) => (`
   font-weight: bold;
   font-size: 36px;
   text-align: center;
   margin-top: 3em;
-  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+  ${theme.breakpoints.down('md')} {
     font-size: 28px;
     margin-top: 4em;
   }
-  @media (max-width: ${({ theme }) => theme.breakpoints.xs}) {
+  ${theme.breakpoints.down('xs')} {
     margin-top: 3em;
   }
-`;
+`));
 
 const BlueTitle = styled('span')`
   color: rgb(167, 231, 255);
@@ -43,14 +43,14 @@ const fadeOut = keyframes`
 
 const SubTitle = styled('h3', {
   shouldForwardProp: (prop) => !['out'].includes(prop),
-})(({ out }) => (`
+})(({ out, theme }) => (`
   font-weight: 300;
   font-size: 24px;
   text-align: center;
   visibility: ${out ? 'hidden' : 'visible'};
   animation: ${out ? fadeOut : fadeIn} 300ms ease-in;
   transition: visibility 1s linear;
-  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+  ${theme.breakpoints.down('md')} {
     font-size: 20px;
   }
 `));
@@ -63,7 +63,7 @@ const Video = styled('iframe')`
   height: 100%;
 `;
 
-const PlayerContainer = styled('div')`
+const PlayerContainer = styled('div')(({ theme }) => (`
   width: 640px;
   height: 360px;
   max-width: 90%;
@@ -74,14 +74,14 @@ const PlayerContainer = styled('div')`
   -webkit-box-shadow: 0px 3px 15px 2px rgba(0,0,0,.3);
   -moz-box-shadow: 0px 3px 15px 2px rgba(0,0,0,.3);
   box-shadow: 0px 3px 15px 2px rgba(0,0,0,.3);
-  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+  ${theme.breakpoints.down('md')} {
     max-width: 75%;
     max-height: calc(60vw * 0.5625);
   }
-  @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
+  ${theme.breakpoints.down('sm')} {
     max-width: 90%;
     max-height: calc(80vw * 0.5625);
   }
-`;
+`));
 
 export { Title, BlueTitle, SubTitle, Video, PlayerContainer };

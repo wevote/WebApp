@@ -32,9 +32,9 @@ export default class FAQ extends Component {
   }
 }
 
-const ContainerFluidWrapper = styled('div')`
-  @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
+const ContainerFluidWrapper = styled('div')(({ theme }) => (`
+  ${theme.breakpoints.down('sm')} {
     margin: 0 0 8px 0;
   }
-`;
+`));
 

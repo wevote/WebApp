@@ -292,10 +292,10 @@ const FollowIssueToggleContainer = styled('div')`
 
 const IssuesByOrganization = styled('div', {
   shouldForwardProp: (prop) => !['fullWidth'].includes(prop),
-})(({ fullWidth }) => (`
+})(({ fullWidth, theme }) => (`
   width: ${fullWidth ? '100%' : '85%'};
   padding: 6px 0 0 0;
-  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+  ${theme.breakpoints.down('md')} {
     width: ${fullWidth ? '100%' : '90%'};
   }
 `));
@@ -330,8 +330,8 @@ const PopoverWrapper = styled('div')`
   border-radius: 3px;
 `;
 
-const PopoverHeader = styled('div')`
-  background: ${({ theme }) => theme.colors.brandBlue};
+const PopoverHeader = styled('div')(({ theme }) => (`
+  background: ${theme.colors.brandBlue};
   padding: 4px 8px;
   color: white;
   display: flex;
@@ -340,7 +340,7 @@ const PopoverHeader = styled('div')`
   border-radius: 4px;
   border-bottom-right-radius: 0;
   border-bottom-left-radius: 0;
-`;
+`));
 
 const PopoverTitleIcon = styled('span')`
   font-weight: bold;

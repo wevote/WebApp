@@ -491,13 +491,13 @@ const Label = styled('div')`
   white-space: nowrap;
 `;
 
-const ButtonContainer = styled('div')`
+const ButtonContainer = styled('div')(({ theme }) => (`
   display: flex;
   align-items: center;
   justify-content: flex-end;
-  @media (max-width: 520px) {
+  ${theme.breakpoints.down('sm')} {
     justify-content: space-between;
   }
-`;
+`));
 
 export default withStyles(styles)(AddFriendsByEmail);

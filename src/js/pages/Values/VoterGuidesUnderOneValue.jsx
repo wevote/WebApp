@@ -195,14 +195,14 @@ const EmptyValueMessageContainer = styled('div')`
   align-items: center;
 `;
 
-const EmptyValueText = styled('p')`
+const EmptyValueText = styled('p')(({ theme }) => (`
   font-size: 16px;
   text-align: center;
   margin: 1em 2em;
-  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+  ${theme.breakpoints.down('md')} {
     margin: 1em;
   }
-`;
+`));
 
 const Title = styled('h3')`
   color: #333;

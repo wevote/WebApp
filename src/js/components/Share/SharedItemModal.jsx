@@ -655,50 +655,50 @@ const ContentWrapper = styled('div')`
   overflow-y: auto;
 `;
 
-const ElectionCountdownDays = styled('span')`
+const ElectionCountdownDays = styled('span')(({ theme }) => (`
   font-size: 24px;
-  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+  ${theme.breakpoints.down('md')} {
     font-size: 18px;
   }
-  @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
+  ${theme.breakpoints.down('sm')} {
     font-size: 13px;
   }
-`;
+`));
 
-const ElectionCountdownText = styled('h3')`
+const ElectionCountdownText = styled('h3')(({ theme }) => (`
   font-size: 14px;
   font-weight: 700;
   color: #2E3C5D !important;
   padding-bottom: 8px;
   width: 100%;
   text-align: center;
-  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+  ${theme.breakpoints.down('md')} {
     font-size: 12px;
     margin-left: 2px;
     margin-top: 2px;
     text-align: center;
   }
-  @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
+  ${theme.breakpoints.down('sm')} {
     font-size: 10px;
     margin-left: 2px;
     margin-top: 2px;
     text-align: left;
   }
-`;
+`));
 
-const FooterBarWrapper = styled('div')`
+const FooterBarWrapper = styled('div')(({ theme }) => (`
   background: #fff;
   border-top: 1px solid #eee;
   bottom: 0;
   position: absolute;
   width: 100%;
-  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+  ${theme.breakpoints.down('md')} {
     box-shadow: 0 -4px 4px -1px rgba(0, 0, 0, .2), 0 -4px 5px 0 rgba(0, 0, 0, .14), 0 -1px 10px 0 rgba(0, 0, 0, .12);
   }
   @media print{
     display: none;
   }
-`;
+`));
 
 const FollowToggleWrapper = styled('div')`
 `;
@@ -712,25 +712,25 @@ const IntroductionWrapper = styled('div')`
   margin-bottom: 45px;
 `;
 
-const IntroHeader = styled('div')`
+const IntroHeader = styled('div')(({ theme }) => (`
   color: #2e3c5d;
   font-size: 20px;
   font-weight: 600;
   padding-top: 20px;
   padding-bottom: 0;
   text-align: left;
-  @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
+  ${theme.breakpoints.down('sm')} {
     font-size: 16px;
     padding-top: 20px;
   }
-`;
+`));
 
 const IntroHeaderOptional = styled('span')`
   color: #999;
   font-weight: 400;
 `;
 
-const IntroductionTopHeader = styled('div')`
+const IntroductionTopHeader = styled('div')(({ theme }) => (`
   color: #2e3c5d;
   font-size: 24px;
   font-weight: 600;
@@ -738,23 +738,25 @@ const IntroductionTopHeader = styled('div')`
   padding-top: 20px;
   padding-bottom: 0;
   text-align: center;
-  @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
+  ${theme.breakpoints.down('sm')} {
     font-size: 20px;
   }
-`;
+`));
 
-const ModalTitleSharedByHidden = `
-  height: 40px;
-  @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
-    height: 40px;
-  }
-`;
+// const ModalTitleSharedByHidden = `
+//   height: 40px;
+//   ${theme.breakpoints.down('sm')} {
+//     height: 40px;
+//   }
+// `;
 
 const ModalTitleSharedByShown = `
   // height: 177px;
 `;
 
-const ModalTitleArea = styled('div')`
+const ModalTitleArea = styled('div', {
+  shouldForwardProp: (prop) => !['hideSharedByIntro'].includes(prop),
+})(({ hideSharedByIntro, theme }) => (`
   background: #fff;
   box-shadow: 0 20px 40px -25px #999;
   padding: 8px;
@@ -762,8 +764,13 @@ const ModalTitleArea = styled('div')`
   position: absolute;
   top: 0;
   width: 100%;
-  ${({ hideSharedByIntro }) => ((hideSharedByIntro) ? ModalTitleSharedByHidden : ModalTitleSharedByShown)}
-`;
+  ${hideSharedByIntro ? (`
+      height: 40px;
+      ${theme.breakpoints.down('sm')} {
+        height: 40px;
+      }
+    `) : ModalTitleSharedByShown}
+`));
 
 const ModalTitleOneRow = styled('div')`
   display: flex;
@@ -771,21 +778,21 @@ const ModalTitleOneRow = styled('div')`
   width: 100%;
 `;
 
-const ModalContentSharedByHidden = `
-  // background: green;
-  margin: 50px 0 0 0 !important;
-  @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
-    margin: 46px 0 0 0 !important;
-  }
-`;
+// const ModalContentSharedByHidden = `
+//   // background: green;
+//   margin: 50px 0 0 0 !important;
+//   ${theme.breakpoints.down('sm')} {
+//     margin: 46px 0 0 0 !important;
+//   }
+// `;
 
-const ModalContentSharedByShown = `
-  // background: red;
-  margin: 190px 0 0 0 !important;
-  @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
-    margin: 147px 0 0 0 !important;
-  }
-`;
+// const ModalContentSharedByShown = `
+//   // background: red;
+//   margin: 190px 0 0 0 !important;
+//   ${theme.breakpoints.down('sm')} {
+//     margin: 147px 0 0 0 !important;
+//   }
+// `;
 
 const ModalContent = styled('div')`
   height: ${isWebApp() ? 'unset' : 'unset'};
@@ -794,25 +801,35 @@ const ModalContent = styled('div')`
 
 const ModalContentInnerWrapper = styled('div', {
   shouldForwardProp: (prop) => !['hideSharedByIntro'].includes(prop),
-})(({ hideSharedByIntro }) => (`
-  ${hideSharedByIntro ? ModalContentSharedByHidden : ModalContentSharedByShown}
+})(({ hideSharedByIntro, theme }) => (`
+  ${hideSharedByIntro ? (`
+    margin: 50px 0 0 0 !important;
+    ${theme.breakpoints.down('sm')} {
+      margin: 46px 0 0 0 !important;
+    }
+  `) : (`
+    margin: 190px 0 0 0 !important;
+    ${theme.breakpoints.down('sm')} {
+      margin: 147px 0 0 0 !important;
+    }
+  `)}
 `));
 
 const NextButtonWrapper = styled('div')`
   width: 100%;
 `;
 
-const OpinionsAddedToPersonalizedScore = styled('div')`
-  color: ${({ theme }) => theme.colors.grayMid};
+const OpinionsAddedToPersonalizedScore = styled('div')(({ theme }) => (`
+  color: ${theme.colors.grayMid};
   display: flex;
   font-size: 12px;
   justify-content: flex-start;
   margin-bottom: 4px;
   margin-top: 4px;
-  @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
+  ${theme.breakpoints.down('sm')} {
     font-size: 10px;
   }
-`;
+`));
 
 const OpinionsAddedText = styled('div')`
   margin-left: 4px;
@@ -830,27 +847,27 @@ const OrganizationNameText = styled('div')`
   font-weight: 600;
 `;
 
-const PersonalizedScoreDescription = styled('div')`
+const PersonalizedScoreDescription = styled('div')(({ theme }) => (`
   font-size: 16px;
   padding-bottom: 12px;
-  @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
+  ${theme.breakpoints.down('sm')} {
     padding-bottom: 30px;
   }
-`;
+`));
 
 const PersonalizedScoreWrapper = styled('div')`
   margin: 0 15px;
   margin-bottom: 45px;
 `;
 
-const SharedByOrganizationOuterWrapper = styled('div')`
+const SharedByOrganizationOuterWrapper = styled('div')(({ theme }) => (`
   display: flex;
   justify-content: center;
   width: 100% !important;
-  @media (min-width: ${({ theme }) => theme.breakpoints.md}) {
+  ${theme.breakpoints.up('md')} {
     position: relative;
   }
-`;
+`));
 
 const SharedByOrganizationInnerWrapper = styled('div')`
   margin: 0 !important;
@@ -880,15 +897,15 @@ const SignInWrapper = styled('div')`
   margin: 30px 15px 60px 15px;
 `;
 
-const SlideShowTitle = styled('h3')`
+const SlideShowTitle = styled('h3')(({ theme }) => (`
   font-weight: bold;
   font-size: 24px;
   margin-top:  16px;
-  @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
+  ${theme.breakpoints.down('sm')} {
     font-size: 20px;
     margin-top: 32px;
   }
-`;
+`));
 
 const StepsOuterWrapper = styled('div')`
   align-items: center;

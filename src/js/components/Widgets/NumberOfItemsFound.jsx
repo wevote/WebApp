@@ -34,17 +34,17 @@ NumberOfItemsFound.propTypes = {
   numberOfItemsTotal: PropTypes.number,
 };
 
-const Wrapper = styled('div')`
+const Wrapper = styled('div')(({ theme }) => (`
   font-size: 14px;
   text-align: right;
   user-select: none;
-  @media (max-width: ${({ theme }) => theme.breakpoints.lg}) {
+  ${theme.breakpoints.down('lg')} {
     padding-top: 5px;
     padding-bottom: 3px;
   }
   @media print{
     display: none;
   }
-`;
+`));
 
 export default NumberOfItemsFound;

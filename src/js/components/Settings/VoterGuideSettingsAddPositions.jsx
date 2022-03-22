@@ -843,14 +843,14 @@ const EmptyBallotMessageContainer = styled('div')`
   align-items: center;
 `;
 
-const EmptyBallotText = styled('p')`
+const EmptyBallotText = styled('p')(({ theme }) => (`
   font-size: 16px;
   text-align: center;
   margin: 1em 2em;
-  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+  ${theme.breakpoints.down('md')} {
     margin: 1em;
   }
-`;
+`));
 
 const FilterBaseWrapper = styled('div')`
   margin-top: -12px;

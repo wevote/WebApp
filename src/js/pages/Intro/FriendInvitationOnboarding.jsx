@@ -369,37 +369,37 @@ const FooterBarWrapper = styled('div')`
   }
 `;
 
-const HowItWorksDescription = styled('div')`
+const HowItWorksDescription = styled('div')(({ theme }) => (`
   font-size: 16px;
   margin-top: 30px;
   padding-bottom: 12px;
-  @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
+  ${theme.breakpoints.down('sm')} {
     padding-bottom: 30px;
   }
-`;
+`));
 
-const HowItWorksWrapper = styled('div')`
+const HowItWorksWrapper = styled('div')(({ theme }) => (`
   padding-left: 24px;
   padding-right: 24px;
-  @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
+  ${theme.breakpoints.down('sm')} {
     padding-left: 12px;
     padding-right: 12px;
   }
-`;
+`));
 
 const NextButtonWrapper = styled('div')`
   width: 100%;
 `;
 
-const SlideShowTitle = styled('h3')`
+const SlideShowTitle = styled('h3')(({ theme }) => (`
   font-weight: bold;
   font-size: 24px;
   margin-top:  16px;
-  @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
+  ${theme.breakpoints.down('sm')} {
     font-size: 20px;
     margin-top: 32px;
   }
-`;
+`));
 
 const StepsOuterWrapper = styled('div')`
   align-items: center;
@@ -409,9 +409,11 @@ const StepsOuterWrapper = styled('div')`
   width: 100%;
 `;
 
-const StepsWrapper = styled('div')`
-  width: ${({ width }) => `${width}px`};
-`;
+const StepsWrapper = styled('div', {
+  shouldForwardProp: (prop) => !['width'].includes(prop),
+})(({ width }) => (`
+  width: ${`${width}px`};
+`));
 
 const TwoButtonsWrapper = styled('div')`
   width: 100%;

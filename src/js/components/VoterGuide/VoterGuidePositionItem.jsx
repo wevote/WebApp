@@ -628,14 +628,14 @@ const MobileItemBody = styled('div')`
   border-bottom-left-radius: 5px;
 `;
 
-const MobileItemDescription = styled('div')`
+const MobileItemDescription = styled('div')(({ theme }) => (`
   font-size: 16px;
   color: #333;
   flex: 1 1 0;
-  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+  ${theme.breakpoints.down('md')} {
     font-size: 14px;
   }
-`;
+`));
 
 const MobileItemDescriptionFollowToggleContainer = styled('div')`
   left: 2px;

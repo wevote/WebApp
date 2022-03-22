@@ -57,10 +57,10 @@ const styles = {
 };
 
 // July 2021: A working example of styled mui-core components -- enabled by the newly added StylesProvider in App.js
-const StyledButton = styled(Button)`
-  @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
+const StyledButton = styled(Button)(({ theme }) => (`
+  ${theme.breakpoints.down('sm')} {
     padding-left: ${() => (isCordova() ? '0 !important' : '40px')};
   }
-`;
+`));
 
 export default withStyles(styles)(HeaderBackToButton);

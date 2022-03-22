@@ -148,18 +148,18 @@ const OuterWrapper = styled('div')`
 const InnerWrapper = styled('div')`
 `;
 
-const IntroHeader = styled('div')`
+const IntroHeader = styled('div')(({ theme }) => (`
   color: #2e3c5d;
   font-size: 20px;
   font-weight: 600;
   padding-top: 20px;
   padding-bottom: 0;
   text-align: left;
-  @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
+  ${theme.breakpoints.down('sm')} {
     font-size: 16px;
     padding-top: 20px;
   }
-`;
+`));
 
 const ListWrapper = styled('div')`
   display: flex;
@@ -183,62 +183,62 @@ const ListRow = styled('div')`
   justify-content: flex-start;
 `;
 
-const Dot = styled('div')`
+const Dot = styled('div')(({ theme }) => (`
   padding-top: 2px;
   text-align: center;
   vertical-align: top;
-  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+  ${theme.breakpoints.down('md')} {
     padding-top: 3px;
   }
-`;
+`));
 
-const StepNumber = styled('div')`
-  background: ${(props) => props.theme.colors.brandBlue};
+const StepNumber = styled('div')(({ theme }) => (`
+  background: ${theme.colors.brandBlue};
   border-radius: 4px;
   color: white;
   font-size: 16px;
   width: 22px;
   height: 22px;
   padding-top: 1px;
-  @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
+  ${theme.breakpoints.down('sm')} {
     font-size: 14px;
     min-width: 20px;
     width: 20px;
     height: 20px;
   }
-`;
+`));
 
-const StepTitle = styled('div')`
+const StepTitle = styled('div')(({ theme }) => (`
   font-size: 20px;
   font-weight: 600;
   padding: 0 8px;
   text-align: left;
   vertical-align: top;
-  @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
+  ${theme.breakpoints.down('sm')} {
     font-size: 17px;
   }
-`;
+`));
 
-const StepText = styled('div')`
+const StepText = styled('div')(({ theme }) => (`
   color: #555;
   font-size: 16px;
   font-weight: 200;
   padding: 0 8px;
   text-align: left;
   vertical-align: top;
-  @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
+  ${theme.breakpoints.down('sm')} {
     font-size: 16px;
   }
-`;
+`));
 
-const StepNumberPlaceholder = styled('div')`
+const StepNumberPlaceholder = styled('div')(({ theme }) => (`
   width: 22px;
   height: 22px;
-  @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
+  ${theme.breakpoints.down('sm')} {
     width: 20px;
     height: 20px;
     min-width: 20px;
   }
-`;
+`));
 
 export default withTheme(withStyles(styles)(SharedItemIntroduction));

@@ -12,7 +12,7 @@ import OrganizationActions from '../actions/OrganizationActions';
 import SupportActions from '../actions/SupportActions';
 import VoterActions from '../actions/VoterActions';
 import historyPush from '../common/utils/historyPush';
-import { isCordova, isWebApp } from '../common/utils/isCordovaOrWebApp';
+import { isWebApp } from '../common/utils/isCordovaOrWebApp';
 import Cookies from '../common/utils/js-cookie/Cookies';
 import { renderLog } from '../common/utils/logging';
 import { DualHeaderContainer, PageContentContainer } from '../components/Style/pageLayoutStyles';
@@ -523,18 +523,18 @@ Vote.propTypes = {
   classes: PropTypes.object,
 };
 
-const VoteContainer = styled('div')`
+const VoteContainer = styled('div')(({ theme }) => (`
   padding-top: ${cordovaScrollablePaneTopPadding()};
-  @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
+  ${theme.breakpoints.down('sm')} {
     overflow-x: hidden;
   }
-`;
+`));
 
-const VoteWrapper = styled('div')`
-  @media (max-width: ${({ theme }) => (isCordova() ? undefined : theme.breakpoints.md)}) {
+const VoteWrapper = styled('div')(({ theme }) => (`
+  ${theme.breakpoints.down('md')} {
     margin: 1em 0;
   }
-`;
+`));
 
 const TitleContainer = styled('div')`
   padding: 1em 1em 0 1em;
@@ -556,7 +556,7 @@ const ReturnOfficialBallotContainer = styled('div')`
   align-items: center;
 `;
 
-// If we want to turn off filter tabs navigation bar:  ${({ showFilterTabs }) => !showFilterTabs && 'height: 0;'}
+// If we want to turn off filter tabs navigation bar:  ${!showFilterTabs && 'height: 0;'}
 const BallotFilterRow = styled('div')`
   display: flex;
 `;
@@ -568,14 +568,14 @@ const EmptyBallotMessageContainer = styled('div')`
   align-items: center;
 `;
 
-const EmptyBallotText = styled('span')`
+const EmptyBallotText = styled('span')(({ theme }) => (`
   font-size: 16px;
   text-align: center;
   margin: 1em 2em;
-  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+  ${theme.breakpoints.down('md')} {
     margin: 1em;
   }
-`;
+`));
 
 const PollingLocationContainer = styled('div')`
   padding: 1em 1em;

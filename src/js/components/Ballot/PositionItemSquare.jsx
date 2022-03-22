@@ -325,9 +325,9 @@ const FromScoreLabelNoImage = styled('div')`
   margin-left: 9px;
 `;
 
-const OpposeAndPartOfScore = styled('div')`
+const OpposeAndPartOfScore = styled('div')(({ theme }) => (`
   align-items: center;
-  background: ${({ theme }) => theme.colors.opposeRedRgb};
+  background: ${theme.colors.opposeRedRgb};
   border-radius: 5px;
   color: white;
   cursor: pointer;
@@ -341,7 +341,7 @@ const OpposeAndPartOfScore = styled('div')`
   @media print{
     border: 2px solid grey;
   }
-`;
+`));
 
 const OrganizationInfoOnlyIconWrapper = styled('div', {
   shouldForwardProp: (prop) => !['speakerImageExists'].includes(prop),
@@ -350,8 +350,8 @@ const OrganizationInfoOnlyIconWrapper = styled('div', {
   margin-top: ${speakerImageExists ? '-5px' : '0'};
 `));
 
-const OrganizationInformationOnlySquare = styled('div')`
-  color: ${({ theme }) => theme.colors.grayMid};
+const OrganizationInformationOnlySquare = styled('div')(({ theme }) => (`
+  color: ${theme.colors.grayMid};
   background: white;
   cursor: pointer;
   display: flex;
@@ -360,10 +360,10 @@ const OrganizationInformationOnlySquare = styled('div')`
   width: 40px;
   height: 40px;
   border-radius: 5px;
-  border: 3px solid ${({ theme }) => theme.colors.grayMid};
+  border: 3px solid ${theme.colors.grayMid};
   font-size: 20px;
   font-weight: bold;
-`;
+`));
 
 const OrganizationInformationOnlyWrapper = styled('div')`
   position: relative;
@@ -377,10 +377,10 @@ const OrganizationOpposeIconWrapper = styled('div', {
   margin-top: ${speakerImageExists ? '-2px' : '0'};
 `));
 
-const OrganizationOpposeSquare = styled('div')`
+const OrganizationOpposeSquare = styled('div')(({ theme }) => (`
   background: white;
-  border: 3px solid ${({ theme }) => theme.colors.opposeRedRgb};
-  color: ${({ theme }) => theme.colors.opposeRedRgb};
+  border: 3px solid ${theme.colors.opposeRedRgb};
+  color: ${theme.colors.opposeRedRgb};
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -390,7 +390,7 @@ const OrganizationOpposeSquare = styled('div')`
   border-radius: 5px;
   font-size: 20px;
   font-weight: bold;
-`;
+`));
 
 const OrganizationOpposeWrapper = styled('div')`
   position: relative;
@@ -403,12 +403,12 @@ const OrganizationSupportIconWrapper = styled('div', {
   margin-left: ${speakerImageExists ? '2px' : '0'};
 `));
 
-const OrganizationSupportSquare = styled('div')`
+const OrganizationSupportSquare = styled('div')(({ theme }) => (`
   align-items: center;
   background: white;
-  border: 3px solid ${({ theme }) => theme.colors.supportGreenRgb};
+  border: 3px solid ${theme.colors.supportGreenRgb};
   border-radius: 5px;
-  color: ${({ theme }) => theme.colors.supportGreenRgb};
+  color: ${theme.colors.supportGreenRgb};
   cursor: pointer;
   display: flex;
   height: 40px;
@@ -416,7 +416,7 @@ const OrganizationSupportSquare = styled('div')`
   font-weight: bold;
   justify-content: center;
   width: 40px;
-`;
+`));
 
 const OrganizationSupportWrapper = styled('div')`
   position: relative;
@@ -435,9 +435,9 @@ const ScoreNumberWrapper = styled('div', {
   ${advisorImageExists ? 'margin-top: -5px;' : 'margin-top: 0px;'}
 `));
 
-const SupportAndPartOfScore = styled('div')`
+const SupportAndPartOfScore = styled('div')(({ theme }) => (`
   align-items: center;
-  background: ${({ theme }) => theme.colors.supportGreenRgb};
+  background: ${theme.colors.supportGreenRgb};
   border-radius: 5px;
   color: white;
   cursor: pointer;
@@ -451,7 +451,7 @@ const SupportAndPartOfScore = styled('div')`
   @media print{
     border: 2px solid grey;
   }
-`;
+`));
 
 const ToScoreLabel = styled('div', {
   shouldForwardProp: (prop) => !['advisorImageExists'].includes(prop),

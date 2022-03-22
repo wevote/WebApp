@@ -309,49 +309,49 @@ const styles = (theme) => ({
   },
 });
 
-const Wrapper = styled('div')`
+const Wrapper = styled('div')(({ theme }) => (`
   color: rgb(255, 255, 255, .6) !important;
-  background-image: linear-gradient(to bottom, #415a99, ${({ theme }) => theme.colors.brandBlue});
+  background-image: linear-gradient(to bottom, #415a99, ${theme.colors.brandBlue});
   padding: 4em 1em 0 1em;
   display: flex;
   flex-flow: column;
   align-items: center;
   justify-content: center;
   width: 100%;
-  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+  ${theme.breakpoints.down('md')} {
     padding-top: 2em;
   }
-`;
+`));
 
-const Top = styled('div')`
+const Top = styled('div')(({ theme }) => (`
   width: 960px;
   max-width: 90vw;
   display: flex;
   flex-flow: row;
-  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+  ${theme.breakpoints.down('md')} {
     flex-flow: column-reverse;
   }
-`;
+`));
 
-const LinksContainer = styled('div')`
+const LinksContainer = styled('div')(({ theme }) => (`
   display: flex;
   flex-flow: row;
   width: 75%;
   justify-content: space-between;
-  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+  ${theme.breakpoints.down('md')} {
     flex-flow: column;
     width: 100%;
   }
-`;
+`));
 
-const Column = styled('div')`
+const Column = styled('div')(({ theme }) => (`
   width: 150px;
   display: flex;
   flex-flow: column nowrap;
-  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+  ${theme.breakpoints.down('md')} {
     width: 100%;
   }
-`;
+`));
 
 const ColumnTitle = styled('h3')`
   font-size: 18px;
@@ -360,16 +360,16 @@ const ColumnTitle = styled('h3')`
   margin: .8em 0;
 `;
 
-const OptionsContainer = styled('div')`
+const OptionsContainer = styled('div')(({ theme }) => (`
   width: 25%;
   display: flex;
   flex-flow: column;
-  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+  ${theme.breakpoints.down('md')} {
     width: 100%;
     flex-flow: row;
     justify-content: space-between;
   }
-`;
+`));
 
 const BadgeContainer = styled('div')`
   width: 100%;
@@ -390,11 +390,11 @@ const Bottom = styled('div')`
   text-align: center;
 `;
 
-const Text = styled('p')`
+const Text = styled('p')(({ theme }) => (`
   font-size: 12px;
-  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+  ${theme.breakpoints.down('md')} {
     font-size: 16px;
   }
-`;
+`));
 
 export default withStyles(styles)(WelcomeFooter);

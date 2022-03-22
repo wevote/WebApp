@@ -175,18 +175,18 @@ const OfficeColumn = styled('div')`
   display: flex;
 `;
 
-const OfficeText = styled('p')`
+const OfficeText = styled('p')(({ theme }) => (`
   font-size: 18px;
   font-weight: 500;
   margin: auto 0;
   margin-right: 16px;
-  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+  ${theme.breakpoints.down('md')} {
     font-size: 14px;
   }
   @media print {
     font-size: 16px !important;
   }
-`;
+`));
 
 const BioInformation = styled('div')`
   display: flex;
@@ -215,18 +215,18 @@ const HR = styled('hr')`
   margin: 0 24px;
 `;
 
-const DesktopTabletView = styled('div')`
+const DesktopTabletView = styled('div')(({ theme }) => (`
   display: inherit;
-  @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
+  ${theme.breakpoints.down('sm')} {
     display: none;
   }
-`;
+`));
 
-const MobileView = styled('div')`
+const MobileView = styled('div')(({ theme }) => (`
   display: inherit;
-  @media (min-width: ${({ theme }) => theme.breakpoints.sm}) {
+  ${theme.breakpoints.up('sm')} {
     display: none;
   }
-`;
+`));
 
 export default withStyles(styles)(OfficeItemReadyToVote);

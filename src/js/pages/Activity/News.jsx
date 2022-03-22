@@ -513,9 +513,6 @@ const AddFriendsMobileWrapper = styled('div')`
 `;
 
 const CardNewsWrapper = styled('div')`
-  @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
-    // margin: 0 15px;
-  }
 `;
 
 const DateVoterJoined = styled('div')`
@@ -563,23 +560,23 @@ const SectionTitle = styled('h2')`
   display: inline;
 `;
 
-const SettingsAccountWrapper = styled('div')`
-  @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
+const SettingsAccountWrapper = styled('div')(({ theme }) => (`
+  ${theme.breakpoints.down('sm')} {
     margin: 0 12px;
   }
-`;
+`));
 
-const ShowMoreItemsWrapper = styled('div')`
+const ShowMoreItemsWrapper = styled('div')(({ theme }) => (`
   margin-bottom: 16px;
   padding-left: 16px;
   padding-right: 26px;
-  @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
+  ${theme.breakpoints.down('sm')} {
     padding-right: 16px;
   }
   @media print{
     display: none;
   }
-`;
+`));
 
 const SignInOptionsWrapper = styled('div')`
   display: flex;

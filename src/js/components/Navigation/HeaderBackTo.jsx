@@ -375,7 +375,7 @@ const FirstNameWrapper = styled('div')`
 // const NotificationsAndProfileWrapper = styled.div`
 //   display: flex;
 //   z-index: 3; //to float above the account/ProfilePopUp menu option grey div
-//   @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
+//   ${theme.breakpoints.down('sm')} {
 //     padding-left: calc(100% - 154px);
 //   }
 // `;

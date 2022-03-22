@@ -727,16 +727,16 @@ const CandidateNameRow = styled('div')`
   //justify-content: flex-start;
 `;
 
-const CandidateWrapper = styled('div')`
+const CandidateWrapper = styled('div')(({ theme }) => (`
   display: flex;
   flex-flow: row nowrap;
   justify-content: space-between;
   width: 100%;
-  @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
+  ${theme.breakpoints.down('sm')} {
     width: 100%;
   }
   ${() => (isAndroidSizeMD() ? { width: '92% !important' } : {})}
-`;
+`));
 
 const CandidateTextWrapper = styled('div')`
   margin: 12px 0;
