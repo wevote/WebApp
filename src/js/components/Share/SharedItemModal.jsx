@@ -915,9 +915,11 @@ const StepsOuterWrapper = styled('div')`
   width: 100%;
 `;
 
-const StepsWrapper = styled('div')`
-  width: ${({ width }) => `${width}px`};
-`;
+const StepsWrapper = styled('div', {
+  shouldForwardProp: (prop) => !['width'].includes(prop),
+})(({ width }) => (`
+  width: ${`${width}px`};
+`));
 
 const TwoButtonsWrapper = styled('div')`
   width: 100%;

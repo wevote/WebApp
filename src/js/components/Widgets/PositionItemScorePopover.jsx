@@ -417,9 +417,9 @@ const ScoreExplanationText = styled('div')`
   margin-left: 4px;
 `;
 
-const SupportAndPartOfScore = styled('div')`
+const SupportAndPartOfScore = styled('div')(({ theme }) => (`
   color: white;
-  background: ${({ theme }) => theme.colors.supportGreenRgb};
+  background: ${theme.colors.supportGreenRgb};
   display: flex;
   align-items: center;
   justify-content: center;
@@ -434,7 +434,7 @@ const SupportAndPartOfScore = styled('div')`
   @media print{
     border: 2px solid grey;
   }
-`;
+`));
 
 const OpposeAndPartOfScore = styled('div')(({ theme }) => (`
   color: white;

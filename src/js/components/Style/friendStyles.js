@@ -70,7 +70,9 @@ const FriendDisplayOuterWrapperShowButtonsOnRight = `
 // When wider than 601px, show Buttons to the right
 // Otherwise, show Buttons under FriendColumnWithoutButtons
 // If inSideColumn is true, force buttons under FriendColumnWithoutButtons regardless of screen width
-const FriendDisplayOuterWrapper = styled.div`
+const FriendDisplayOuterWrapper = styled('div', {
+  shouldForwardProp: (prop) => !['inSideColumn'].includes(prop),
+})(({ inSideColumn }) => (`
   // In this default, fill up the full width with both Friend info & buttons
   align-items: center;
   display: flex;
@@ -80,8 +82,8 @@ const FriendDisplayOuterWrapper = styled.div`
   margin: 12px 0;
   position: relative;
   width: 100%;
-  ${({ inSideColumn }) => ((inSideColumn) ? '' : FriendDisplayOuterWrapperShowButtonsOnRight)}
-`;
+  ${inSideColumn ? '' : FriendDisplayOuterWrapperShowButtonsOnRight}
+`));
 
 const FriendNameInSideColumn = `
   font-size: 14px;

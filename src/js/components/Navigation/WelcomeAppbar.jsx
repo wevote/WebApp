@@ -353,7 +353,7 @@ class WelcomeAppbar extends Component {
                 </div>
               )}
             </DesktopView>
-            <MobileTabletView>
+            <MobileTabletView id="MobileTabletView">
               <NavLink id="welcomeYourBallotMobile1" to="/ballot">Your Ballot</NavLink>
               {voterIsSignedIn && (
                 <div>

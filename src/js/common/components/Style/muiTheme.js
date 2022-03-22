@@ -1,19 +1,6 @@
 import { createTheme } from '@mui/material/styles';
 import overrides from '../../../components/Style/muiOverrides';
 
-// See also styled-theme.js
-// I recommend being cautious about using 'md' for transitions relating explicitly to mobile, tablet, desktop
-// See: https://mui.com/guides/migration-v4/#theme
-// const breakpoints = {
-//   keys: ['xs', 'sm', 'md', 'lg', 'xl'],
-//   values: {
-//     xs: 320,
-//     sm: 576,
-//     md: 768,
-//     lg: 960,
-//     xl: 1280,
-//   },
-// };
 
 const muiTheme = createTheme({
   palette: {

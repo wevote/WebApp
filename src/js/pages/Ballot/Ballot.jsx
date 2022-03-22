@@ -1654,10 +1654,10 @@ const BallotLoadingWrapper = styled('div')`
   margin-bottom: ${() => (isIPhone6p1in() ? '800px' : '625px')};
 `;
 
-// If we want to turn off filter tabs navigation bar:  ${({ showFilterTabs }) => !showFilterTabs && 'height: 0;'}
+// If we want to turn off filter tabs navigation bar:  {({ showFilterTabs }) => !showFilterTabs && 'height: 0;'}
 const BallotFilterRow = styled('div')`
   // TODO: 10/4/21 Steve, this is temporary and needs to be more responsive
-  // margin-left: ${() => (isWebApp() && !isMobileScreenSize() ? 'calc((100vw - 975px)/2)' : '')};
+  // margin-left: {() => (isWebApp() && !isMobileScreenSize() ? 'calc((100vw - 975px)/2)' : '')};
 `;
 
 const EditAddressCard = styled('div')`
