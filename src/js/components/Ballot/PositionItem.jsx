@@ -176,8 +176,9 @@ class PositionItem extends Component {
 
     let imagePlaceholder = '';
     if (isSpeakerTypeOrganization(position.speaker_type)) {
+      const organizationIcon = normalizedImagePath('../../img/global/svg-icons/organization-icon.svg');
       imagePlaceholder = (
-        <SvgImage imageName="organization-icon" />
+        <SvgImage imageName={organizationIcon} />
       );
     } else if (isSpeakerTypeIndividual(position.speaker_type)) {
       const avatar = normalizedImagePath('../../img/global/svg-icons/avatar-generic.svg');
@@ -267,7 +268,14 @@ class PositionItem extends Component {
                   </>
                 ) : (
                   <Suspense fallback={<></>}>
-                    <FollowToggle organizationWeVoteId={organizationWeVoteId} lightModeOn hideDropdownButtonUntilFollowing anchorLeft platformType="desktop" />
+                    <FollowToggle
+                      addToScoreLabelOn
+                      anchorLeft
+                      hideDropdownButtonUntilFollowing
+                      lightModeOn
+                      organizationWeVoteId={organizationWeVoteId}
+                      platformType="desktop"
+                    />
                   </Suspense>
                 )}
               </DesktopItemLeft>
@@ -469,7 +477,13 @@ class PositionItem extends Component {
                       </>
                     ) : (
                       <Suspense fallback={<></>}>
-                        <FollowToggle organizationWeVoteId={organizationWeVoteId} lightModeOn hideDropdownButtonUntilFollowing platformType="mobile" />
+                        <FollowToggle
+                          addToScoreLabelOn
+                          lightModeOn
+                          hideDropdownButtonUntilFollowing
+                          organizationWeVoteId={organizationWeVoteId}
+                          platformType="mobile"
+                        />
                       </Suspense>
                     )}
                   </MobileItemFollowToggleDisplay>

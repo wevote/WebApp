@@ -55,6 +55,7 @@ class HeaderBar extends Component {
       profilePopUpOpen: false,
       scrolledDown: false,
       showAdviserIntroModal: false,
+      showChooseOrOpposeIntroModal: false,
       showEditAddressButton: false,
       showFirstPositionIntroModal: false,
       showSelectBallotModal: false,
@@ -65,6 +66,7 @@ class HeaderBar extends Component {
       showSignInModal: false,
       showPaidAccountUpgradeModal: false,
       showPersonalizedScoreIntroModal: false,
+      showPositionDrawer: false,
       showValuesIntroModal: false,
       showImageUploadModal: false,
       shareModalStep: '',
@@ -75,7 +77,6 @@ class HeaderBar extends Component {
       voterIsSignedIn: false,
       // firstVisitToBallot: true,
     };
-    this.closeOrganizationModal = this.closeOrganizationModal.bind(this);
     this.closePaidAccountUpgradeModal = this.closePaidAccountUpgradeModal.bind(this);
     this.closeShareModal = this.closeShareModal.bind(this);
     this.closeSignInModal = this.closeSignInModal.bind(this);
@@ -108,6 +109,7 @@ class HeaderBar extends Component {
       hideWeVoteLogo: AppObservableStore.getHideWeVoteLogo(),
       scrolledDown: AppObservableStore.getScrolledDown(),
       showAdviserIntroModal: AppObservableStore.showAdviserIntroModal(),
+      showChooseOrOpposeIntroModal: AppObservableStore.showChooseOrOpposeIntroModal(),
       showEditAddressButton: AppObservableStore.showEditAddressButton(),
       showFirstPositionIntroModal: AppObservableStore.showFirstPositionIntroModal(),
       showPaidAccountUpgradeModal: false, // June 2021 , TODO: Add back in paid upgrade modal
@@ -185,6 +187,8 @@ class HeaderBar extends Component {
       update = true;
     } else if (this.state.showAdviserIntroModal !== nextState.showAdviserIntroModal) {
       update = true;
+    } else if (this.state.showChooseOrOpposeIntroModal !== nextState.showChooseOrOpposeIntroModal) {
+      update = true;
     } if (this.state.showEditAddressButton !== nextState.showEditAddressButton) {
       update = true;
     } else if (this.state.showFirstPositionIntroModal !== nextState.showFirstPositionIntroModal) {
@@ -196,6 +200,8 @@ class HeaderBar extends Component {
     } else if (this.state.showShareModal !== nextState.showShareModal) {
       update = true;
     } else if (this.state.showOrganizationModal !== nextState.showOrganizationModal) {
+      update = true;
+    } else if (this.state.showPositionDrawer !== nextState.showPositionDrawer) {
       update = true;
     } else if (this.state.showSignInModal !== nextState.showSignInModal) {
       update = true;
@@ -288,6 +294,7 @@ class HeaderBar extends Component {
       scrolledDown: AppObservableStore.getScrolledDown(),
       shareModalStep: AppObservableStore.getShareModalStep(),
       showAdviserIntroModal: AppObservableStore.showAdviserIntroModal(),
+      showChooseOrOpposeIntroModal: AppObservableStore.showChooseOrOpposeIntroModal(),
       showEditAddressButton: AppObservableStore.showEditAddressButton(),
       showFirstPositionIntroModal: AppObservableStore.showFirstPositionIntroModal(),
       showPaidAccountUpgradeModal,
@@ -339,6 +346,7 @@ class HeaderBar extends Component {
         showShareModal: AppObservableStore.showShareModal(),
         showOrganizationModal: AppObservableStore.showOrganizationModal(),
         showPersonalizedScoreIntroModal: AppObservableStore.showPersonalizedScoreIntroModal(),
+        showPositionDrawer: AppObservableStore.showPositionDrawer(),
       });
     }
   }
@@ -369,8 +377,16 @@ class HeaderBar extends Component {
     AppObservableStore.setShowAdviserIntroModal(false);
   }
 
+  closeChooseOrOpposeIntroModal = () => {
+    AppObservableStore.setShowChooseOrOpposeIntroModal(false);
+  }
+
   closeFirstPositionIntroModal = () => {
     AppObservableStore.setShowFirstPositionIntroModal(false);
+  }
+
+  closeImageUploadModal = () => {
+    AppObservableStore.setShowImageUploadModal(false);
   }
 
   closeValuesIntroModal = () => {
@@ -395,10 +411,6 @@ class HeaderBar extends Component {
       // console.log('Navigation closeShareModal pathnameWithoutModalShare:', pathnameWithoutModalShare);
       historyPush(pathnameWithoutModalShare);
     }
-  }
-
-  closeOrganizationModal () {
-    AppObservableStore.setShowOrganizationModal(false);
   }
 
   toggleProfilePopUp () {
@@ -477,7 +489,7 @@ class HeaderBar extends Component {
     const { classes } = this.props;
     const {
       chosenSiteLogoUrl, hideWeVoteLogo, /* paidAccountUpgradeMode, */ scrolledDown,
-      showAdviserIntroModal, showEditAddressButton, showFirstPositionIntroModal,
+      showAdviserIntroModal, showChooseOrOpposeIntroModal, showEditAddressButton, showFirstPositionIntroModal,
       showPaidAccountUpgradeModal, showPersonalizedScoreIntroModal,
       showSelectBallotModal, showSelectBallotModalHideAddress, showSelectBallotModalHideElections,
       showShareModal, showSignInModal, showValuesIntroModal, showImageUploadModal,
@@ -485,7 +497,7 @@ class HeaderBar extends Component {
     } = this.state;
     /* eslint object-property-newline: ["off"] */
     const shows = {
-      showAdviserIntroModal, showEditAddressButton, showFirstPositionIntroModal,
+      showAdviserIntroModal, showChooseOrOpposeIntroModal, showEditAddressButton, showFirstPositionIntroModal,
       showPaidAccountUpgradeModal, showPersonalizedScoreIntroModal,
       showSelectBallotModal, showSelectBallotModalHideAddress, showSelectBallotModalHideElections,
       showShareModal, showSignInModal, showValuesIntroModal, showImageUploadModal,
@@ -569,7 +581,7 @@ class HeaderBar extends Component {
 
     const isFriends = normalizedHrefPage() === 'friends';  // The URL '/friends/request' yields 'friends'
 
-    console.log('HeaderBar hasNotch, scrolledDown, hasSubmenu', hasIPhoneNotch(), scrolledDown, displayTopMenuShadow());
+    // console.log('HeaderBar hasNotch, scrolledDown, hasSubmenu', hasIPhoneNotch(), scrolledDown, displayTopMenuShadow());
     return (
       <HeaderBarWrapper
         hasNotch={hasIPhoneNotch()}
@@ -591,7 +603,7 @@ class HeaderBar extends Component {
               <HeaderBarLogo
                 chosenSiteLogoUrl={chosenSiteLogoUrl}
                 showFullNavigation={!!showFullNavigation}
-                isBeta={showWeVoteLogo && !chosenSiteLogoUrl}
+                // isBeta={showWeVoteLogo && !chosenSiteLogoUrl}
               />
             )}
             <div className="header-nav" style={isMobileScreenSize() ? { display: 'none' } : {}}>
@@ -744,16 +756,17 @@ class HeaderBar extends Component {
           </TopRowTwoLeftContainer>
         </TopOfPageHeader>
         <HeaderBarModals
-          shows={shows}
-          closeSignInModal={this.closeSignInModal}
-          toggleSelectBallotModal={this.toggleSelectBallotModal}
-          closePaidAccountUpgradeModal={this.closePaidAccountUpgradeModal}
-          closeShareModal={this.closeShareModal}
           closeAdviserIntroModal={this.closeAdviserIntroModal}
+          closeChooseOrOpposeIntroModal={this.closeChooseOrOpposeIntroModal}
           closeFirstPositionIntroModal={this.closeFirstPositionIntroModal}
-          closePersonalizedScoreIntroModal={this.closePersonalizedScoreIntroModal}
-          closeValuesIntroModal={this.closeValuesIntroModal}
           closeImageUploadModal={this.closeImageUploadModal}
+          closeSignInModal={this.closeSignInModal}
+          closePaidAccountUpgradeModal={this.closePaidAccountUpgradeModal}
+          closePersonalizedScoreIntroModal={this.closePersonalizedScoreIntroModal}
+          closeShareModal={this.closeShareModal}
+          closeValuesIntroModal={this.closeValuesIntroModal}
+          shows={shows}
+          toggleSelectBallotModal={this.toggleSelectBallotModal}
         />
       </HeaderBarWrapper>
     );
@@ -769,14 +782,13 @@ const styles = (theme) => ({
     top: 9,
   },
   padding: {
-    padding: `0 ${theme.spacing(2)}`,
+    padding: `0 ${theme.spacing(2)}px`,
   },
   addressButtonRoot: {
     '&:hover': {
       backgroundColor: 'transparent',
     },
     color: 'rgba(17, 17, 17, .5)',
-    fontSize: 14,
     outline: 'none !important',
     paddingRight: 6,
     [theme.breakpoints.up('sm')]: {
@@ -895,8 +907,8 @@ const HeaderBarWrapper = styled('div', {
   shouldForwardProp: (prop) => !['hasNotch', 'scrolledDown', 'hasSubmenu'].includes(prop),
 })(({ hasNotch, scrolledDown, hasSubmenu }) => (`
   margin-top: ${hasNotch ? '1.5rem' : ''};
-  box-shadow: ${(!scrolledDown || !hasSubmenu)  ? '0 2px 4px -1px rgba(0, 0, 0, 0.2), 0 4px 5px 0 rgba(0, 0, 0, 0.14), 0 1px 10px 0 rgba(0, 0, 0, 0.12)' : ''};
-  border-bottom: ${(!scrolledDown || !hasSubmenu) ? '1px solid #aaa' : ''};
+  box-shadow: ${(!scrolledDown || !hasSubmenu)  ? '' : '0 2px 4px -1px rgba(0, 0, 0, 0.2), 0 4px 5px 0 rgba(0, 0, 0, 0.14), 0 1px 10px 0 rgba(0, 0, 0, 0.12)'};
+  border-bottom: ${(!scrolledDown || !hasSubmenu) ? '' : '1px solid #aaa'};
 `));
 
 const SearchWrapper = styled('div')`

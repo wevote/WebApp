@@ -1,4 +1,4 @@
-import { Info } from '@mui/icons-material';
+import { Close, Info } from '@mui/icons-material';
 import { Drawer, IconButton } from '@mui/material';
 import styled from '@mui/material/styles/styled';
 import withStyles from '@mui/styles/withStyles';
@@ -256,7 +256,9 @@ class OrganizationModal extends Component {
           onClick={this.closeOrganizationModal}
           size="large"
         >
-          <span className="fas fa-times u-cursor--pointer" />
+          <span className="u-cursor--pointer">
+            <Close classes={{ root: classes.closeIcon }} />
+          </span>
         </IconButton>
         {isCandidate && (
           <Suspense fallback={<></>}>
@@ -378,11 +380,17 @@ const styles = () => ({
   },
   closeButton: {
     marginRight: 'auto',
+    padding: 6,
   },
   closeButtonAbsolute: {
     position: 'absolute',
     right: 14,
     top: 14,
+  },
+  closeIcon: {
+    color: '#999',
+    width: 24,
+    height: 24,
   },
   informationIcon: {
     color: '#999',

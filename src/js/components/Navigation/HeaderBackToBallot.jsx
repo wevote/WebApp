@@ -929,14 +929,4 @@ const FirstNameWrapper = styled('div')`
   padding-right: 4px;
 `;
 
-// const OfficeNameWrapper = styled.div`
-//   display: flex;
-//   justify-content: space-between;
-//   transform: ${() => {
-//     if (normalizedHrefPage() !== 'measure') return null;
-//     return isMobileScreenSize() ? 'translate(2%, -2%)' : 'translate(-57%, 87%)';
-//   }};
-// `;
-
-
 export default withStyles(styles)(HeaderBackToBallot);

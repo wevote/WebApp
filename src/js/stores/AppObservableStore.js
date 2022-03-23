@@ -41,6 +41,7 @@ const nonFluxState = {
   sharedItemCode: '',
   showActivityTidbitDrawer: false,
   showAdviserIntroModal: false,
+  showChooseOrOpposeIntroModal: false,
   showEditAddressButton: false,
   showElectionsWithOrganizationVoterGuidesModal: false,
   showHeader: 0,
@@ -49,6 +50,7 @@ const nonFluxState = {
   showOrganizationModal: false,
   showPaidAccountUpgradeModal: false,
   showPersonalizedScoreIntroModal: false,
+  showPositionDrawer: false,
   showSelectBallotModal: false,
   showSelectBallotModalHideAddress: false,
   showSelectBallotModalHideElections: false,
@@ -138,6 +140,12 @@ export default {
     messageService.sendMessage('state updated showAdviserIntroModal');
   },
 
+  setShowChooseOrOpposeIntroModal (show, ballotItemType = 'CANDIDATE') {
+    nonFluxState.showChooseOrOpposeIntroModal = show;
+    nonFluxState.showChooseOrOpposeIntroModalBallotItemType = ballotItemType;
+    messageService.sendMessage('state updated showChooseOrOpposeIntroModal');
+  },
+
   setShowEditAddressButton (show) {
     nonFluxState.showEditAddressButton = show;
     messageService.sendMessage('state updated showEditAddressButton');
@@ -185,6 +193,11 @@ export default {
   setShowPersonalizedScoreIntroModal (show) {
     nonFluxState.showPersonalizedScoreIntroModal = show;
     messageService.sendMessage('state updated showPersonalizedScoreIntroModal');
+  },
+
+  setShowPositionDrawer (show) {
+    nonFluxState.showPositionDrawer = show;
+    messageService.sendMessage('state updated showPositionDrawer');
   },
 
   setShowSelectBallotModal (showSelectBallotModal, showSelectBallotModalHideAddress = false, showSelectBallotModalHideElections = false) {
@@ -408,6 +421,10 @@ export default {
     return nonFluxState.showAdviserIntroModal;
   },
 
+  showChooseOrOpposeIntroModal () {
+    return nonFluxState.showChooseOrOpposeIntroModal;
+  },
+
   showEditAddressButton () {
     return nonFluxState.showEditAddressButton;
   },
@@ -439,6 +456,10 @@ export default {
 
   showPersonalizedScoreIntroModal () {
     return nonFluxState.showPersonalizedScoreIntroModal;
+  },
+
+  showPositionDrawer () {
+    return nonFluxState.showPositionDrawer;
   },
 
   showShareModal () {

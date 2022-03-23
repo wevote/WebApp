@@ -190,14 +190,10 @@ class FirstAndLastNameRequiredAlert extends Component {
                   {organizationNameRelevantAndMissing ? (
                     <span>
                       Please add your name so people recognize you.
-                      {' '}
-                      Your name will only be shown on We Vote.
                     </span>
                   ) : (
                     <span>
                       Please add your name so your friends recognize you.
-                      {' '}
-                      Your name will only be shown on We Vote.
                     </span>
                   )}
                   {' '}
@@ -247,7 +243,7 @@ const ParagraphStyled = styled('div')`
 const PrintWrapper = styled('div')`
   background-color: white;
   background-clip: border-box;
-  border: 2px solid #999;
+  // border: 2px solid #999;
   display: flex;
   margin: 0 0 10px 0;
   position: relative;

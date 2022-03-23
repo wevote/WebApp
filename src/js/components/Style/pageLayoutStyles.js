@@ -36,9 +36,9 @@ export const IOSNoNotchSpacer = styled.div`
 `;
 
 export const PageContentContainer = styled('div')(({ theme }) => (`
-  padding-top: ${cordovaScrollablePaneTopPadding()};
+  padding-top: ${cordovaScrollablePaneTopPadding()}; // Vertical spacing so content isn't hidden by fixed header
   padding-bottom ${() => {
-    if (isWebApp()) return null;
+    if (isWebApp()) return '0px';
     if (isIPhone6p1in() || isIPhone4p7in() || isIPhone5p5inEarly()) return '800px';
     if (isIPhone5p5inMini() || isIPhone5p8in()) return '825px';
     return '625px';

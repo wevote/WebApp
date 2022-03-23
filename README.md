@@ -38,6 +38,8 @@ Automated Installation
 
 5. [Want to sign in with Facebook or Twitter on localhost?](docs/working/SECURE_CERTIFICATE.md)
 
+6. [Working with ngrok to test on mobile](docs/working/WORKING_WITH_NGROK.md)
+
 Thanks to BrowserStack for helping us with automated testing!
 
 <a href="https://www.browserstack.com" target="_blank" rel="noopener noreferrer"><img src='src/img/global/logos/browserstack-logo-600x315.png' width='150' height='79'/></a>

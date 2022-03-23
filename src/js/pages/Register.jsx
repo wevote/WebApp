@@ -726,28 +726,8 @@ const Section = styled('div')`
   margin-bottom: 48px;
 `;
 
-// const EditAddressWrapper = styled.div`
-//   margin-bottom: 8px !important;
-//   margin-left: 0 !important;
-//   padding-left: 0 !important;
-//   padding-right: 0 !important;
-// `;
-
 const PageContainer = styled('div')`
   padding-top: 0 !important;
 `;
-
-// const Title = styled.h2`
-//   font-size: 26px;
-//   font-weight: 800;
-//   margin: 0 0 12px;
-//   {theme.breakpoints.down('sm')} {
-//     font-size: 18px;
-//   }
-// `;
-
-// const Paragraph = styled.div`
-
-// `;
 
 export default withStyles(styles)(Register);

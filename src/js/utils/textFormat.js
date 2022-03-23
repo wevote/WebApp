@@ -306,7 +306,8 @@ export function shortenText (incomingString, maximumLength) {
   // Don't allow the string to use less than 3 characters
   const minimumCharactersToDisplay = 3;
   cropLengthToMakeRoomForEllipses = cropLengthToMakeRoomForEllipses > 2 ? cropLengthToMakeRoomForEllipses : minimumCharactersToDisplay;
-  return incomingString.length < maximumLengthInteger ? incomingString : `${incomingString.slice(0, cropLengthToMakeRoomForEllipses)}...`;
+  const shortenedText = incomingString.length < maximumLengthInteger ? incomingString : incomingString.slice(0, cropLengthToMakeRoomForEllipses);
+  return incomingString.length < maximumLengthInteger ? incomingString.trim() : `${shortenedText.trim()}...`;
 }
 
 export function stringContains (needle, stringHaystack) {

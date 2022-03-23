@@ -1,6 +1,7 @@
 import { Badge, Chip, CircularProgress, Link } from '@mui/material';
 import styled from '@mui/material/styles/styled';
 import withStyles from '@mui/styles/withStyles';
+import withTheme from '@mui/styles/withTheme';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
 import Helmet from 'react-helmet';
@@ -1216,12 +1217,8 @@ class Ballot extends Component {
 
     const emptyBallotButton = completionLevelFilterType !== 'none' && !voterAddressMissing ? (
       <EmptyBallotNotice>
-        <EmptyBallotCard className="card">
-          {ballotCaveat ? (
-            <>
-              {ballotCaveat}
-            </>
-          ) : (
+        <EmptyBallotCard>
+          {!ballotCaveat && (
             <>
               Your next ballot isn&apos;t available yet. Please try again later.
             </>
@@ -1297,7 +1294,7 @@ class Ballot extends Component {
                           scrolled={scrolledDown}
                         />
                       </header>
-                      <BallotBottomWrapper>
+                      <BallotBottomWrapper scrolledDown={scrolledDown}>
                         { textForMapSearch || ballotWithItemsFromCompletionFilterType.length > 0 ? (
                           <div className="ballot__filter__container">
                             { showBallotDecisionsTabs() && (
@@ -1631,15 +1628,22 @@ Ballot.propTypes = {
   match: PropTypes.object,
 };
 
-const BallotBottomWrapper = styled('div')`
+const BallotBottomWrapper = styled('div', {
+  shouldForwardProp: (prop) => !['scrolledDown'].includes(prop),
+})(({ scrolledDown }) => (`
+  ${scrolledDown ? 'margin-top: 28px;' : 'margin-top: 68px;'}
+  transition: all 150ms ease-in;
   width: 100%;
-`;
+  @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
+    margin-top: 20px;
+  }
+`));
 
 const BallotCaveatWrapper = styled('div')(({ theme }) => (`
-  margin-bottom: 3px;
+  margin-bottom: 22px;
   ${theme.breakpoints.down('sm')} {
-    padding-left: 0 !important;
-    padding-right: 0 !important;
+    margin-left: -15px !important;
+    margin-right: -15px !important;
   }
 `));
 
@@ -1709,24 +1713,6 @@ const SearchTitle = styled('div')`
   margin-bottom: 12px;
 `;
 
-// const SectionDescription = styled.div`
-//   color: #999;
-//   font-size: 14px;
-//   margin-bottom: 4px;
-// `;
-
-// const SectionTitle = styled.h2`
-//   width: fit-content;
-//   font-weight: bolder;
-//   font-size: 18px;
-//   margin-bottom: 4px;
-//   display: inline;
-// `;
-
-// const ValuesListWrapper = styled.div`
-//   margin-bottom: 12px;
-// `;
-
 const BallotWrapper = styled('div', {
   shouldForwardProp: (prop) => !['padTop', 'padBottom'].includes(prop),
 })(({ padTop, padBottom }) => (`
@@ -1783,10 +1769,10 @@ const styles = (theme) => ({
     },
   },
   chipLabel: {
-    fontSize: 13,
+    fontSize: 14,
     paddingLeft: 0,
     [theme.breakpoints.up('md')]: {
-      fontSize: 14,
+      fontSize: 16,
     },
   },
   iconRoot: {
@@ -1802,4 +1788,4 @@ const styles = (theme) => ({
   },
 });
 
-export default withStyles(styles)(Ballot);
+export default withTheme(withStyles(styles)(Ballot));

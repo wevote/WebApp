@@ -2,13 +2,13 @@ import { Settings } from '@mui/icons-material';
 import { Tooltip } from '@mui/material';
 import styled from '@mui/material/styles/styled';
 import withStyles from '@mui/styles/withStyles';
+import withTheme from '@mui/styles/withTheme';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
-import { isAndroid, isAndroidSizeFold, isIOSAppOnMac, isIPad, isIPhone3p5in, isIPhone4in } from '../../common/utils/cordovaUtils';
+import { isAndroid, isAndroidSizeFold, isIOSAppOnMac, isIPad } from '../../common/utils/cordovaUtils';
 import { isWebApp } from '../../common/utils/isCordovaOrWebApp';
 import isMobileScreenSize from '../../common/utils/isMobileScreenSize';
 import { renderLog } from '../../common/utils/logging';
-import { shortenText } from '../../utils/textFormat';
 
 const ShareButtonDesktopTablet = React.lazy(() => import(/* webpackChunkName: 'ShareButtonDesktopTablet' */ '../../components/Share/ShareButtonDesktopTablet'));
 
@@ -23,21 +23,30 @@ class BallotTitleHeader extends Component {
   //   return false;
   // }
 
-  shortenElectionNameCordova () {
-    if (isIPhone3p5in() || isIPhone4in()) {
-      return 26;  // iphone5-or-smaller
-    } if (isIPad()) {
-      return 60;
-    } else {
-      return 30;
-    }
-  }
+  // shortenElectionNameCordova () {
+  //   if (isIPhone3p5in() || isIPhone4in()) {
+  //     return 26;  // iphone5-or-smaller
+  //   } if (isIPad()) {
+  //     return 60;
+  //   } else {
+  //     return 30;
+  //   }
+  // }
 
   marginTopOffset () {
+    const { scrolled } = this.props;
     if (isIOSAppOnMac()) {
       return '44px';
     } else if (isIPad()) {
       return '12px';
+    } else if (isWebApp() && isMobileScreenSize()) {
+      return '24px';
+    } else if (isWebApp()) {
+      if (scrolled) {
+        return '64px';
+      } else {
+        return '110px';
+      }
     } else if (isAndroidSizeFold()) {
       return '41px';
     } else if (!isAndroid() && this.props.scrolled) {  // 2020-08-19, not sure if this is needed for ios or webapp
@@ -49,53 +58,54 @@ class BallotTitleHeader extends Component {
   render () {
     renderLog('BallotTitleHeader');  // Set LOG_RENDER_EVENTS to log all renders
     // const nextReleaseFeaturesEnabled = webAppConfig.ENABLE_NEXT_RELEASE_FEATURES === undefined ? false : webAppConfig.ENABLE_NEXT_RELEASE_FEATURES;
-    const { classes, electionName, electionDayTextObject } = this.props;
+    const { classes, electionName, electionDayTextObject, scrolled } = this.props;
 
     if (electionName) {
       return (
-        <Wrapper/* margintop={this.marginTopOffset()} */>
-          <Tooltip title="Change my election" aria-label="Change Election" classes={{ tooltipPlacementBottom: classes.tooltipPlacementBottom }}>
-            <Title onClick={() => this.props.toggleSelectBallotModal('', false, false)} id="ballotTitleHeaderSelectBallotModal">
-              <ElectionName/* scrolled={scrolled} */>
-                {isWebApp() ? (
-                  <>
-                    <span className="u-show-mobile-iphone5-or-smaller">
-                      {shortenText(electionName, 22)}
-                    </span>
-                    <span className="u-show-mobile-bigger-than-iphone5">
-                      {shortenText(electionName, 27)}
-                    </span>
-                    <span className="u-show-desktop-tablet">
-                      {electionName}
-                    </span>
-                  </>
-                ) : (
-                  <span className="electionNameCordova">
-                    {shortenText(electionName, this.shortenElectionNameCordova())}
-                  </span>
-                )}
-                <SettingsIconWrapper>
-                  <Settings classes={{ root: classes.settingsIcon }} />
-                </SettingsIconWrapper>
-              </ElectionName>
-              {electionDayTextObject && (
-                <>
-                  {' '}
-                  <span className="d-none d-sm-inline">&mdash;</span>
-                  {' '}
-                  <ElectionDate>{electionDayTextObject}</ElectionDate>
-                </>
-              )}
-            </Title>
-          </Tooltip>
+        <BallotTitleHeaderWrapper marginTopOffset={this.marginTopOffset()}>
+          <ContentWrapper>
+            <OverflowContainer>
+              <OverflowContent>
+                <ElectionNameScrollContent>
+                  <Tooltip title="Change my election" aria-label="Change Election" classes={{ tooltipPlacementBottom: classes.tooltipPlacementBottom }}>
+                    <Title onClick={() => this.props.toggleSelectBallotModal('', false, false)} id="ballotTitleHeaderSelectBallotModal">
+                      <ElectionName scrolled={scrolled && scrolled.toString()}>
+                        {electionName}
+                        {/*
+                        {isWebApp() ? (
+                          <span>
+                            {electionName}
+                          </span>
+                        ) : (
+                          <span className="electionNameCordova">
+                            {shortenText(electionName, this.shortenElectionNameCordova())}
+                          </span>
+                        )}
+                        */}
+                        <SettingsIconWrapper>
+                          <Settings classes={{ root: classes.settingsIcon }} />
+                        </SettingsIconWrapper>
+                      </ElectionName>
+                    </Title>
+                  </Tooltip>
+                </ElectionNameScrollContent>
+              </OverflowContent>
+            </OverflowContainer>
+            {electionDayTextObject && (
+              <ShareButtonWrapper>
+                <Suspense fallback={<></>}>
+                  <ShareButtonDesktopTablet />
+                </Suspense>
+              </ShareButtonWrapper>
+            )}
+          </ContentWrapper>
           {electionDayTextObject && (
-            <ShareButtonWrapper>
-              <Suspense fallback={<></>}>
-                <ShareButtonDesktopTablet />
-              </Suspense>
-            </ShareButtonWrapper>
+            <div>
+              {' '}
+              <ElectionDate>{electionDayTextObject}</ElectionDate>
+            </div>
           )}
-        </Wrapper>
+        </BallotTitleHeaderWrapper>
       );
     } else {
       return (
@@ -130,50 +140,73 @@ const styles = {
   },
 };
 
-const Wrapper = styled('div')`
+const BallotTitleHeaderWrapper = styled('div', {
+  shouldForwardProp: (prop) => !['marginTopOffset'].includes(prop),
+})(({ marginTopOffset }) => (`
+  margin-top: ${marginTopOffset};
+  height: 45px;
+  transition: all 150ms ease-in;
+`));
+
+const ContentWrapper = styled('div')`
   display: flex;
-  align-items: center;
-  justify-content: space-between;
-  ${isWebApp() && !isMobileScreenSize() ? {
-    paddingTop: '58px',
-    paddingBottom: '12px',
-    height: '25px',
-  } : {}};
+  flex: 1;
+  min-height: 0px;
 `;
 
-const Title = styled('h1')`
-  cursor: pointer;
-  margin: 0;
-  @media (min-width: 576px) {
+const ElectionName = styled('div')(({ theme }) => (`
+  font-size: 32px;
+  ${theme.breakpoints.down('sm')} {
+    font-size: 28px;
   }
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+`));
+
+const ElectionNameScrollContent = styled('div')`
 `;
 
-const ElectionName = styled('span')`
-  font-size: 16px;
-  font-weight: bold;
-  @media (min-width: 576px) {
-    font-size: 16px;
-    font-weight: bold;
+const OverflowContent = styled('div')(({ theme }) => (`
+  display: block;
+  flex: 1;
+  height: 40px;
+  ${theme.breakpoints.down('sm')} {
+    height: 32px;
   }
+`));
+
+const OverflowContainer = styled('div')`
+  flex: 1;
+  // overflow-x: hidden;
+  // overflow-y: hidden;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 `;
 
-const ElectionDate = styled('span')`
+const ElectionDate = styled('div')(({ theme }) => (`
   font-size: 14px;
-  @media (min-width: 576px) {
+  ${theme.breakpoints.up('sm')} {
     font-size: 16px;
   }
-`;
+`));
 
 const SettingsIconWrapper = styled('span')`
 `;
 
-const ShareButtonWrapper = styled('div')`
+const ShareButtonWrapper = styled('div')(({ theme }) => (`
   display: none;
   margin-left: auto;
   margin-top: 4px;
-  @media (min-width: 576px) {
+  ${theme.breakpoints.up('sm')} {
     display: block;
   }
+`));
+
+const Title = styled('h1')`
+  cursor: pointer;
+  margin: 0;
 `;
 
-export default withStyles(styles)(BallotTitleHeader);
+export default withTheme(withStyles(styles)(BallotTitleHeader));

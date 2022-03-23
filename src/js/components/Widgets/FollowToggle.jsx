@@ -3,6 +3,7 @@ import { CheckCircle, NotInterested } from '@mui/icons-material';
 import { Button } from '@mui/material';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
+import styled from '@mui/material/styles/styled';
 import { styled as muiStyled } from '@mui/styles';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
@@ -118,9 +119,11 @@ function IgnoreLine (params) {
 }
 
 function NotFollowingFriendOrIgnoringFollowLine (params) {
-  const { followInstantly, followFunction } = params;
-  const { lightModeOn, platformType, organizationWeVoteId, currentBallotIdInUrl, urlWithoutHash, ballotItemWeVoteId,
-    hideDropdownButtonUntilFollowing,
+  const { addToScoreLabelOn, followInstantly, followFunction } = params;
+  const {
+    ballotItemWeVoteId, currentBallotIdInUrl,
+    hideDropdownButtonUntilFollowing, lightModeOn, organizationWeVoteId, platformType,
+    urlWithoutHash,
   } = params.params;
   return (
     <Button
@@ -129,7 +132,20 @@ function NotFollowingFriendOrIgnoringFollowLine (params) {
       className={`issues-follow-btn issues-follow-btn__main ${hideDropdownButtonUntilFollowing ? ' dropdown-toggle dropdown-toggle-split issues-follow-btn__main--radius' : ''} ${lightModeOn ? ' issues-follow-btn--white' : ' issues-follow-btn--blue'}`}
       onClick={() => followInstantly(followFunction, currentBallotIdInUrl, urlWithoutHash, ballotItemWeVoteId)}
     >
-      Follow
+      {addToScoreLabelOn ? (
+        <AddToScoreWrapper>
+          <AddToScoreLabelTop>
+            Add
+          </AddToScoreLabelTop>
+          <AddToScoreLabelBottom>
+            to score
+          </AddToScoreLabelBottom>
+        </AddToScoreWrapper>
+      ) : (
+        <>
+          Follow
+        </>
+      )}
     </Button>
   );
 }
@@ -450,7 +466,8 @@ export default class FollowToggle extends Component {
 
   render () {
     renderLog('FollowToggle');  // Set LOG_RENDER_EVENTS to log all renders
-    const { anchorLeft, ballotItemWeVoteId, currentBallotIdInUrl, hideDropdownButtonUntilFollowing,
+    const {
+      addToScoreLabelOn, anchorLeft, ballotItemWeVoteId, currentBallotIdInUrl, hideDropdownButtonUntilFollowing,
       hideStopFollowingButton, hideStopIgnoringButton, lightModeOn, organizationWeVoteId,
       showFollowingText, urlWithoutHash, platformType,
     } = this.props;
@@ -525,6 +542,7 @@ export default class FollowToggle extends Component {
           </>
         ) : (
           <NotFollowingFriendOrIgnoringFollowLine
+            addToScoreLabelOn={addToScoreLabelOn}
             followFunction={followFunction}
             followInstantly={this.followInstantly}
             params={lineParams}
@@ -535,6 +553,7 @@ export default class FollowToggle extends Component {
   }
 }
 FollowToggle.propTypes = {
+  addToScoreLabelOn: PropTypes.bool,
   currentBallotIdInUrl: PropTypes.string,
   handleIgnore: PropTypes.func,
   hideStopFollowingButton: PropTypes.bool,
@@ -548,6 +567,23 @@ FollowToggle.propTypes = {
   anchorLeft: PropTypes.bool,
   platformType: PropTypes.string,
 };
+
+
+const AddToScoreLabelTop = styled('div')`
+  font-size: 16px;
+  margin-top: 0;
+`;
+
+const AddToScoreLabelBottom = styled('div')`
+  font-size: 12px;
+  margin-top: -12px;
+`;
+
+const AddToScoreWrapper = styled('div')`
+  align-items: center;
+  display: flex;
+  flex-flow: column;
+`;
 
 const CheckCircleStyled = muiStyled(CheckCircle)({
   fill: 'rgb(13, 84, 111)',
@@ -567,6 +603,6 @@ const NotInterestedStyled = muiStyled(NotInterested)({
 });
 
 const MenuItemStyled = muiStyled(MenuItem)({
-  height: 28,
+  // height: 48,
 });
 

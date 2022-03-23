@@ -37,6 +37,7 @@ export default class Header extends Component {
       showHowItWorksModal: false,
       showVoterPlanModal: false,
       showOrganizationModal: false,
+      showPositionDrawer: false,
       showSharedItemModal: false,
     };
 
@@ -130,6 +131,7 @@ export default class Header extends Component {
       showHowItWorksModal: AppObservableStore.showHowItWorksModal(),
       showVoterPlanModal: AppObservableStore.showVoterPlanModal(),
       showOrganizationModal: AppObservableStore.showOrganizationModal(),
+      showPositionDrawer: AppObservableStore.showPositionDrawer(),
       showSharedItemModal: AppObservableStore.showSharedItemModal(),
     });
   }
@@ -188,7 +190,7 @@ export default class Header extends Component {
     const pathname = normalizedHref();
     const {
       activityTidbitWeVoteIdForDrawer, sharedItemCode, showActivityTidbitDrawer,
-      showHowItWorksModal, showVoterPlanModal, showOrganizationModal, showSharedItemModal,
+      showHowItWorksModal, showOrganizationModal, showPositionDrawer, showVoterPlanModal, showSharedItemModal,
     } = this.state;
     const {
       settingsMode, valuesMode, voterGuideCreatorMode, voterGuideMode,
@@ -497,6 +499,18 @@ export default class Header extends Component {
             </Suspense>
           )}
           {showOrganizationModal && (
+            <Suspense fallback={<></>}>
+              <OrganizationModal
+                isSignedIn={voter.is_signed_in}
+                show={showOrganizationModal}
+                ballotItemWeVoteId={this.state.organizationModalBallotItemWeVoteId}
+                modalOpen={showOrganizationModal}
+                toggleFunction={this.closeOrganizationModal}
+                params={params}
+              />
+            </Suspense>
+          )}
+          {showPositionDrawer && (
             <Suspense fallback={<></>}>
               <OrganizationModal
                 isSignedIn={voter.is_signed_in}

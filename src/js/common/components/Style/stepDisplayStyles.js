@@ -1,28 +1,28 @@
-import styled from 'styled-components';
+import styled from '@mui/material/styles/styled';
 import muiTheme from './muiTheme';
 
 const theme = muiTheme;
 
-export const InnerWrapper = styled.div`
+export const InnerWrapper = styled('div')`
   display: flex;
   flex-direction: row;
   flex-wrap: nowrap;
   justify-content: center;
 `;
 
-export const OuterWrapper = styled.div`
+export const OuterWrapper = styled('div')`
   display: flex;
   justify-content: center;
   margin: 15px 0;
 `;
 
-export const OuterWrapperPageTitle = styled.div`
+export const OuterWrapperPageTitle = styled('div')`
   display: flex;
   justify-content: center;
   margin: 15px 0 0 0;
 `;
 
-export const OuterWrapperSteps = styled.div`
+export const OuterWrapperSteps = styled('div')`
   display: flex;
   justify-content: center;
   margin: 20px 0 35px;
@@ -32,14 +32,14 @@ export const OuterWrapperSteps = styled.div`
   }
 `;
 
-export const OuterWrapperStepsOff = styled.div`
+export const OuterWrapperStepsOff = styled('div')`
   margin: 0 0 35px;
   @media (max-width: ${() => theme.breakpoints.sm}) {
     margin-bottom: 25px;
   }
 `;
 
-export const PageWrapper = styled.div`
+export const PageWrapper = styled('div')`
   margin: 0 auto;
   max-width: 960px;
   @media (max-width: 1005px) {
@@ -48,14 +48,14 @@ export const PageWrapper = styled.div`
   }
 `;
 
-export const PageTitle = styled.div`
+export const PageTitle = styled('div')`
   color: #808080;
   font-size: 14px;
   font-weight: 700;
   text-transform: uppercase;
 `;
 
-export const StepCircle = styled.div`
+export const StepCircle = styled('div')`
   display: flex;
   flex-flow: row nowrap;
   justify-content: center;
@@ -67,7 +67,7 @@ export const StepCircle = styled.div`
   height: 30px;
 `;
 
-export const StepCircleGray = styled.div`
+export const StepCircleGray = styled('div')`
   display: flex;
   flex-flow: row nowrap;
   justify-content: center;
@@ -79,7 +79,7 @@ export const StepCircleGray = styled.div`
   height: 30px;
 `;
 
-export const StepNumber = styled.div`
+export const StepNumber = styled('div')`
   color: ${(props) => (props.inverseColor ? 'white' : props.theme.colors.brandBlue)};
   font-size: 16px;
   font-weight: 600;
@@ -89,7 +89,7 @@ export const StepNumber = styled.div`
   }
 `;
 
-export const StepNumberBordered = styled.div`
+export const StepNumberBordered = styled('div')`
   background: white;
   border: 2px solid ${(props) => props.theme.colors.brandBlue};
   border-radius: 4px;
@@ -107,7 +107,7 @@ export const StepNumberBordered = styled.div`
   }
 `;
 
-export const StepNumberPlaceholder = styled.div`
+export const StepNumberPlaceholder = styled('div')`
   width: 27px;
   height: 22px;
   @media (max-width: ${() => theme.breakpoints.sm}) {
@@ -117,7 +117,7 @@ export const StepNumberPlaceholder = styled.div`
   }
 `;
 
-export const StepWrapper = styled.div`
+export const StepWrapper = styled('div')`
   display: flex;
   flex-flow: row nowrap;
   justify-content: center;

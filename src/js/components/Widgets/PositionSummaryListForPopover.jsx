@@ -145,7 +145,12 @@ class PositionSummaryListForPopover extends Component {
           {(positionSummary.voterCanFollowOrganization && !positionSummary.organizationInVotersNetwork) && (
             <FollowToggleWrapper>
               <Suspense fallback={<></>}>
-                <FollowToggle organizationWeVoteId={positionSummary.organizationWeVoteId} lightModeOn hideDropdownButtonUntilFollowing />
+                <FollowToggle
+                  addToScoreLabelOn
+                  organizationWeVoteId={positionSummary.organizationWeVoteId}
+                  lightModeOn
+                  hideDropdownButtonUntilFollowing
+                />
               </Suspense>
             </FollowToggleWrapper>
           )}

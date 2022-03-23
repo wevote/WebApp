@@ -873,12 +873,6 @@ const SectionTitle = styled('h4')`
   color: #333;
 `;
 
-// const EditIcon = styled.div`
-//   position: absolute;
-//   right: 8px;
-//   top: 8px;
-// `;
-
 const SectionParagraph = styled('span')`
   font-size: 14px;
   margin-bottom: 4px;

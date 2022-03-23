@@ -306,15 +306,12 @@ IssuesByBallotItemDisplayList.propTypes = {
 
 const Wrapper = styled('div')`
   overflow: unset;
-  display: flex;
-  flex-flow: row;
-  align-items: center;
-  justify-content: space-between;
-  width: 100%;
+  overflow-x: unset;
+  overflow-y: unset;
 `;
 
 const Issues = styled('div')`
-  width: 100%;
+  // width: 100%;
   margin-left: 0;
 `;
 

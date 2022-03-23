@@ -301,6 +301,7 @@ const Row = styled('div')`
 
 const MapChartWrapper = styled('div')`
   display: block;
+  max-height: 300px;
   width: 100%;
   padding: 12px;
   top: 0;
@@ -321,6 +322,12 @@ const MapChartWrapper = styled('div')`
   //     margin-top: -36px;
   //   }
   // }
+  & svg, & path {
+    max-height: 300px;
+  }
+  & img {
+    max-height: 300px;
+  }
 `;
 
 const MapChartWrapperDesktop = styled('div')`
@@ -348,7 +355,7 @@ const SidebarWrapper = styled('div')`
     padding-top: 0;
   }
   @media(min-width: 576px) {
-    max-width: 50%;
+    // max-width: 50%;
     width: auto;
     flex: 1 1 0;
   }

@@ -196,13 +196,6 @@ const LeftColumnWrapper = styled('div')`
   width: 100%;
 `;
 
-// const CenterColumnWrapper = styled.div`
-//   align-items: center;
-//   display: flex;
-//   justify-content: center;
-//   width: 100%;
-// `;
-
 const RightColumnWrapper = styled('div')`
   align-items: center;
   display: flex;
@@ -217,9 +210,6 @@ const LikeTextWrapper = styled('div')`
 
 const LikeWrapper = styled('div')`
 `;
-
-// const ShareWrapper = styled.div`
-// `;
 
 const Wrapper = styled('div')`
   align-items: center;

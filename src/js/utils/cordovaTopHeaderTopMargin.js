@@ -1,8 +1,8 @@
 import CordovaPageConstants from '../constants/CordovaPageConstants';
 import { hasIPhoneNotch, isAndroidSimulator, isIOS, isIOSAppOnMac, isIPad, isIPhone4p7in, isIPhone5p5inEarly, isIPhone5p5inMini, isSimulator } from '../common/utils/cordovaUtils';
 import { isCordova } from '../common/utils/isCordovaOrWebApp';
-import { pageEnumeration } from './cordovaUtilsPageEnumeration';
 import { cordovaOffsetLog } from '../common/utils/logging';
+import { pageEnumeration } from './cordovaUtilsPageEnumeration';
 
 // <div className={pageHeaderStyle} style={cordovaTopHeaderTopMargin()} id="header-container">
 export default function cordovaTopHeaderTopMargin () {
