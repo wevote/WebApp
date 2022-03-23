@@ -89,7 +89,7 @@ class BallotDecisionsTabs extends Component {
                 All
               </span>
               <span className="u-show-desktop-tablet">
-                All Items
+                All
               </span>
             </Badge>
           )}
@@ -137,7 +137,7 @@ class BallotDecisionsTabs extends Component {
                   Decided
                 </span>
                 <span className="u-show-desktop-tablet">
-                  Items Decided
+                  Decided
                 </span>
               </Badge>
             )}

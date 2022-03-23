@@ -1,5 +1,5 @@
 import { createTheme } from '@mui/material/styles';
-import overrides from '../../../components/Style/muiOverrides';
+import muiOverrides from '../../../components/Style/muiOverrides';
 
 
 const muiTheme = createTheme({
@@ -23,7 +23,7 @@ const muiTheme = createTheme({
       xl: 1280,
     },
   },
-  overrides,
+  components: muiOverrides,
   typography: {
     useNextVariants: true,
   },

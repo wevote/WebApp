@@ -305,13 +305,6 @@ const styles = (theme) => ({
   },
 });
 
-// On 12/8/20, Reverted the change from 4/24/20, since it was incomplete
-// const Wrapper = styled.div`
-//   background: white;
-//   overflow-x: hidden !important;
-//   overflow-y
-// `;
-
 const Wrapper = styled('div')`
   height: 100vh;
   background: white;

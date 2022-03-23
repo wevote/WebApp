@@ -24,7 +24,6 @@ import ReadyTaskBallot from '../components/Ready/ReadyTaskBallot';
 import ReadyTaskFriends from '../components/Ready/ReadyTaskFriends';
 import ReadyTaskPlan from '../components/Ready/ReadyTaskPlan';
 import ReadyTaskRegister from '../components/Ready/ReadyTaskRegister';
-import ShareButtonDesktopTablet from '../components/Share/ShareButtonDesktopTablet';
 import { PageContentContainer } from '../components/Style/pageLayoutStyles';
 import ValuesToFollowPreview from '../components/Values/ValuesToFollowPreview';
 import BrowserPushMessage from '../components/Widgets/BrowserPushMessage';
@@ -231,6 +230,14 @@ class Ready extends Component {
             <Helmet title="Ready to Vote? - We Vote" />
             <BrowserPushMessage incomingProps={this.props} />
             <div className="row">
+              <ElectionCountdownOuterWrapper className="col-12">
+                <ElectionCountdownInnerWrapper>
+                  <Suspense fallback={<SuspenseCard>&nbsp;</SuspenseCard>}>
+                    <ElectionCountdown onClickFunction={this.goToBallot} initialDelay={4000} />
+                  </Suspense>
+                </ElectionCountdownInnerWrapper>
+              </ElectionCountdownOuterWrapper>
+
               {(showAddressVerificationForm && (voterBallotItemsRetrieveHasReturned || !voterBallotItemsRetrieveHasBeenCalled)) && (
                 <EditAddressWrapper className="col-12">
                   <EditAddressCard className="card">
@@ -240,19 +247,6 @@ class Ready extends Component {
               )}
 
               <div className="col-sm-12 col-lg-8">
-                <MobileTabletCountdownWrapper className="u-show-mobile-tablet">
-                  <ShareButtonTabletWrapper>
-                    <ShareButtonInnerWrapper className="u-show-tablet">
-                      <ShareButtonDesktopTablet readyShare shareButtonText="Share" />
-                    </ShareButtonInnerWrapper>
-                  </ShareButtonTabletWrapper>
-                  <ElectionCountdownMobileTabletWrapper
-                    className="u-cursor--pointer u-show-mobile-tablet"
-                    onClick={this.goToBallot}
-                  >
-                    <ElectionCountdown daysOnlyMode initialDelay={4000} />
-                  </ElectionCountdownMobileTabletWrapper>
-                </MobileTabletCountdownWrapper>
                 {(chosenReadyIntroductionTitle || chosenReadyIntroductionText) && (
                   <Card className="card u-show-mobile-tablet">
                     <div className="card-main">
@@ -305,18 +299,6 @@ class Ready extends Component {
                 </div>
               </div>
               <div className="col-lg-4 d-none d-lg-block">
-                <Card className="card">
-                  <div className="card-main">
-                    <ShareButtonDesktopWrapper>
-                      <ShareButtonDesktopTablet readyShare shareButtonText="Share Page" />
-                    </ShareButtonDesktopWrapper>
-                  </div>
-                </Card>
-                <div className="u-cursor--pointer" onClick={this.goToBallot}>
-                  <Suspense fallback={<SuspenseCard>&nbsp;</SuspenseCard>}>
-                    <ElectionCountdown daysOnlyMode initialDelay={4000} />
-                  </Suspense>
-                </div>
                 {(chosenReadyIntroductionTitle || chosenReadyIntroductionText) && (
                   <Card className="card">
                     <div className="card-main">
@@ -372,6 +354,7 @@ const Card = styled('div')`
 `;
 
 const EditAddressCard = styled('div')`
+  margin-bottom: 32px;
   padding: 12px 15px 0 15px;
 `;
 
@@ -382,7 +365,7 @@ const EditAddressWrapper = styled('div')(({ theme }) => (`
   }
 `));
 
-const ElectionCountdownMobileTabletWrapper = styled('div')`
+const ElectionCountdownInnerWrapper = styled('div')`
   margin-top: -37px; // 29px for height of ShareButtonDesktopTablet - 8px for margin-top
 `;
 
@@ -394,7 +377,8 @@ const SuspenseCard = styled('div')`
   height: 138px;
 `;
 
-const MobileTabletCountdownWrapper = styled('div')`
+const ElectionCountdownOuterWrapper = styled('div')`
+  margin-bottom: 32px;
   position: relative;
   z-index: 1;
 `;
@@ -404,24 +388,6 @@ const ReadyPageContainer = styled('div')`
 `;
 
 const Paragraph = styled('div')`
-`;
-
-const ShareButtonInnerWrapper = styled('div')`
-  z-index: 2;
-`;
-
-const ShareButtonDesktopWrapper = styled('div')`
-  display: flex;
-  justify-content: center;
-`;
-
-const ShareButtonTabletWrapper = styled('div')`
-  display: flex;
-  height: 29px;
-  justify-content: flex-end;
-  margin-top: 8px;
-  margin-right: 8px;
-  z-index: 2;
 `;
 
 const Title = styled('h2')(({ theme }) => (`

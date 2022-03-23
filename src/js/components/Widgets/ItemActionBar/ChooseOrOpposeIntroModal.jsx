@@ -11,7 +11,7 @@ import Slides from './Slides';
 const SettingsAccount = React.lazy(() => import(/* webpackChunkName: 'SettingsAccount' */ '../../Settings/SettingsAccount'));
 
 
-class ChooseOrOppose extends Component {
+class ChooseOrOpposeIntroModal extends Component {
   constructor (props) {
     super(props);
     this.state = {
@@ -45,7 +45,7 @@ class ChooseOrOppose extends Component {
       (
         <>
           <SubTitle>Your position is only visible to your We Vote friends.</SubTitle>
-          <PlainText>You can change the privacy toggle to make your views public.</PlainText>
+          <PlainText>You can make your views public with the privacy toggle.</PlainText>
           <Row>
             <BoldText>Test the toggle here:</BoldText>
             <PositionPublicToggle
@@ -117,7 +117,7 @@ class ChooseOrOppose extends Component {
     );
   }
 }
-ChooseOrOppose.propTypes = {
+ChooseOrOpposeIntroModal.propTypes = {
   classes: PropTypes.object,
   ballotItemType: PropTypes.string.isRequired,
   externalUniqueId: PropTypes.string,
@@ -181,4 +181,4 @@ const Row = styled('div')`
   margin-top: 20px;
 `;
 
-export default withStyles(styles)(ChooseOrOppose);
+export default withStyles(styles)(ChooseOrOpposeIntroModal);

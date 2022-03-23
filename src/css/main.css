@@ -6168,7 +6168,7 @@ small, .small {
   z-index: 1070;
   display: block;
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  /* font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"; */
   font-style: normal;
   font-weight: 400;
   line-height: 1.5;
@@ -11404,6 +11404,14 @@ h1, h2, h3, h4, h5, h6 {
   color: #4371cc;
 }
 
+.u-link-color-on-hover {
+}
+
+.u-link-color-on-hover:hover {
+  color: #4371cc;
+  text-decoration: underline;
+}
+
 /*.u-link-color-light {*/
 /*  color: #969dff;*/
 /*}*/
@@ -12171,7 +12179,7 @@ h1, h2, h3, h4, h5, h6 {
 .card {
   background-color: #fff;
   border-radius: 4px;
-  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.2), 0 1px 1px 0 rgba(0, 0, 0, 0.14), 0 2px 1px -1px rgba(0, 0, 0, 0.12);
+  /* box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.2), 0 1px 1px 0 rgba(0, 0, 0, 0.14), 0 2px 1px -1px rgba(0, 0, 0, 0.12); */
   margin-bottom: 16px;
   border: none;
 }
@@ -12205,7 +12213,7 @@ h1, h2, h3, h4, h5, h6 {
 
 .card-main {
   padding: 16px 16px 8px;
-  font-size: 14px;
+  /* font-size: 14px; */
 }
 
 @media print {
@@ -12304,9 +12312,9 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .card-main__avatar-compressed {
-  border-radius: 20px;
-  width: 40px;
-  height: 40px;
+  border-radius: 36px;
+  width: 72px;
+  height: 72px;
 }
 
 .card-main .card-main__avatar-compressed {
@@ -12427,7 +12435,7 @@ h1, h2, h3, h4, h5, h6 {
 
 .card-main__description {
   color: #555;
-  font-size: 14px;
+  /* font-size: 14px; */
 }
 
 .card-main__rating-description {
@@ -12439,6 +12447,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .card-main__description-container--truncated {
+  font-size: 16px;
   overflow: hidden;
   position: relative;
   height: 50px;
@@ -12543,6 +12552,10 @@ h1, h2, h3, h4, h5, h6 {
   display: flex;
   align-items: flex-start;
   position: relative;
+/*  padding: 16px; */
+/*  background-color: #f8f8f8; */
+/*  border: 1px solid #e7e7e7; */
+  margin: -1px 0 32px 0;
 }
 
 .card .card-child__media-object-anchor {
@@ -12551,13 +12564,6 @@ h1, h2, h3, h4, h5, h6 {
 
 .card .card-child__media-object-content {
   flex: 1;
-}
-
-.card .card-child {
-  padding: 16px;
-  background-color: #f8f8f8;
-  border: 1px solid #e7e7e7;
-  margin: -1px 0 12px 0;
 }
 
 @media all and (max-width: 479px) {
@@ -12586,6 +12592,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .card .card-child__avatar {
+  border: 1px solid #ccc;
   border-radius: 50px;
   max-width: 50px;
 }
@@ -13157,8 +13164,8 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .tabs__tabs .tab-active {
-  border-bottom: 4px solid #000;
-  color: #000;
+  /* border-bottom: 4px solid #000; */
+  color: #2E3C5D;
 }
 
 .tabs__tabs .tab-default {
@@ -13511,7 +13518,7 @@ h1, h2, h3, h4, h5, h6 {
 
 .BallotItem {
   position: relative;
-  margin-bottom: 16px;
+  margin-bottom: 32px;
 }
 
 /*.BallotItem__display-name {*/
@@ -13806,7 +13813,7 @@ h1, h2, h3, h4, h5, h6 {
 
 .item-actionbar--inline__position-btn-label {
   color: #000;
-  font-weight: bold;
+  /* font-weight: bold; */
 }
 
 .item-actionbar--inline__position-btn-label--at-state {
@@ -13815,7 +13822,7 @@ h1, h2, h3, h4, h5, h6 {
 
 .item-actionbar--inline__position-choose-btn-label {
   color: #000;
-  font-weight: bold;
+  /* font-weight: bold; */
 }
 
 .item-actionbar--inline__position-choose-btn-label--at-state {

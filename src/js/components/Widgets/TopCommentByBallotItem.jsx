@@ -181,6 +181,11 @@ class TopCommentByBallotItem extends Component {
     }
   }
 
+  onClickFunctionExists = () => {
+    const { ballotItemWeVoteId } = this.props;
+    return (this.props.onClickFunction && ballotItemWeVoteId);
+  }
+
   render () {
     renderLog('TopCommentByBallotItem');  // Set LOG_RENDER_EVENTS to log all renders
     const { classes, hideMoreButton } = this.props;
@@ -198,7 +203,7 @@ class TopCommentByBallotItem extends Component {
     // console.log('GuideList organizationsToFollow: ', this.state.organizationsToFollow);
     //       on_click={this.goToCandidateLink(this.state.oneCandidate.we_vote_id)}
     return (
-      <Wrapper onClick={() => this.onClickFunction()}>
+      <Wrapper onClick={() => this.onClickFunction()} cursorPointerOn={this.onClickFunctionExists()}>
         <BallotItemEndorserName>
           {endorsementOrganization}
           .
@@ -282,35 +287,31 @@ const styles = (theme) => ({
   },
 });
 
-const Wrapper = styled('div')(({ theme }) => (`
+const Wrapper = styled('div', {
+  shouldForwardProp: (prop) => !['cursorPointerOn'].includes(prop),
+})(({ cursorPointerOn, theme }) => (`
   cursor: pointer;
   font-size: 14px;
   ${theme.breakpoints.up('md')} {
     font-size: 16px;
   }
+  ${cursorPointerOn ? 'cursor: pointer;' : ''}
 `));
 
 const BallotItemEndorserName = styled('span')(({ theme }) => (`
   color: #999;
-  font-size: 14px;
   font-weight: 400;
   ${theme.breakpoints.up('md')} {
-    font-size: 15px;
+    font-size: 16px;
   }
 `));
 
 const BallotItemEndorsementTextDesktop = styled('span')`
   color: #555;
-  font-family: 'Source Sans Pro', sans-serif;
-  font-size: 16px;
-  font-weight: 400;
 `;
 
 const BallotItemEndorsementTextMobile = styled('span')`
   color: #555;
-  font-family: 'Source Sans Pro', sans-serif;
-  font-size: 16px;
-  font-weight: 400;
 `;
 
 const LearnMoreWrapper = styled('div', {

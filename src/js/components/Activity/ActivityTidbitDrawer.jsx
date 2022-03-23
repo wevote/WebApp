@@ -1,4 +1,5 @@
 import { Drawer, IconButton } from '@mui/material';
+import { Close } from '@mui/icons-material';
 import styled from '@mui/material/styles/styled';
 import withStyles from '@mui/styles/withStyles';
 import withTheme from '@mui/styles/withTheme';
@@ -87,7 +88,9 @@ class ActivityTidbitDrawer extends Component {
           onClick={this.closeActivityTidbitDrawer}
           size="large"
         >
-          <span className="fas fa-times u-cursor--pointer" />
+          <span className="u-cursor--pointer">
+            <Close classes={{ root: classes.closeIcon }} />
+          </span>
         </IconButton>
         <ActivityTidbitDrawerInnerWrapper>
           {(activityTidbitWeVoteId && speakerVoterWeVoteId) ? (
@@ -162,6 +165,11 @@ const styles = () => ({
   },
   closeButton: {
     marginRight: 'auto',
+  },
+  closeIcon: {
+    color: '#999',
+    width: 24,
+    height: 24,
   },
 });
 

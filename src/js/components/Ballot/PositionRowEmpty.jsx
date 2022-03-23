@@ -3,38 +3,34 @@ import withStyles from '@mui/styles/withStyles';
 import withTheme from '@mui/styles/withTheme';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import FriendActions from '../../actions/FriendActions';
-import OrganizationActions from '../../actions/OrganizationActions';
-import LoadingWheel from '../../common/components/Widgets/LoadingWheel';
-import apiCalming from '../../common/utils/apiCalming';
-import { renderLog } from '../../common/utils/logging';
 import CandidateStore from '../../stores/CandidateStore';
 import FriendStore from '../../stores/FriendStore';
 import MeasureStore from '../../stores/MeasureStore';
 import OrganizationStore from '../../stores/OrganizationStore';
 import VoterStore from '../../stores/VoterStore';
-import PositionRowItem from './PositionRowItem';
+import { renderLog } from '../../common/utils/logging';
+import normalizedImagePath from '../../common/utils/normalizedImagePath';
+import SvgImage from '../../common/components/Widgets/SvgImage';
 
 
 const STARTING_NUMBER_OF_POSITIONS_TO_DISPLAY = 5;
 
-class PositionRowList extends Component {
+class PositionRowEmpty extends Component {
   constructor (props) {
     super(props);
     this.state = {
       allCachedPositionsForThisBallotItem: [],
-      filteredPositionList: [],
-      filteredPositionListLength: 0,
+      allCachedPositionsForThisBallotItemLength: 0,
       numberOfPositionItemsToDisplay: STARTING_NUMBER_OF_POSITIONS_TO_DISPLAY,
     };
   }
 
   componentDidMount () {
-    // console.log('PositionRowList componentDidMount');
+    // console.log('PositionRowEmpty componentDidMount');
 
     // let { incomingPositionList } = this.props;
     const { ballotItemWeVoteId } = this.props;
-    // console.log('PositionRowList componentDidMount, ballotItemWeVoteId:', ballotItemWeVoteId);
+    // console.log('PositionRowEmpty componentDidMount, ballotItemWeVoteId:', ballotItemWeVoteId);
     let allCachedPositionsForThisBallotItem;
     if (ballotItemWeVoteId.includes('cand')) {
       allCachedPositionsForThisBallotItem = CandidateStore.getAllCachedPositionsByCandidateWeVoteId(ballotItemWeVoteId);
@@ -46,18 +42,20 @@ class PositionRowList extends Component {
     this.measureStoreListener = MeasureStore.addListener(this.onFriendStoreChange.bind(this));
     this.organizationStoreListener = OrganizationStore.addListener(this.onOrganizationStoreChange.bind(this));
 
-    OrganizationActions.organizationsFollowedRetrieve();
-    const organizationsVoterIsFriendsWith = FriendStore.currentFriendsOrganizationWeVoteIDList();
-    if (!organizationsVoterIsFriendsWith.length > 0) {
-      if (apiCalming('friendList', 1500)) {
-        FriendActions.currentFriends();
-      }
+    // OrganizationActions.organizationsFollowedRetrieve();
+    // const organizationsVoterIsFriendsWith = FriendStore.currentFriendsOrganizationWeVoteIDList();
+    // if (!organizationsVoterIsFriendsWith.length > 0) {
+    //   if (apiCalming('friendList', 1500)) {
+    //     FriendActions.currentFriends();
+    //   }
+    // }
+    if (allCachedPositionsForThisBallotItem) {
+      const allCachedPositionsForThisBallotItemLength = Object.keys(allCachedPositionsForThisBallotItem).length;
+      this.setState({
+        allCachedPositionsForThisBallotItem,
+        allCachedPositionsForThisBallotItemLength,
+      });
     }
-
-    this.onPositionListUpdate(allCachedPositionsForThisBallotItem);
-    this.setState({
-      allCachedPositionsForThisBallotItem,
-    });
   }
 
   componentWillUnmount () {
@@ -70,14 +68,17 @@ class PositionRowList extends Component {
 
   onCandidateStoreChange () {
     const { ballotItemWeVoteId } = this.props;
-    // console.log('PositionRowList onCandidateStoreChange, ballotItemWeVoteId:', ballotItemWeVoteId);
+    // console.log('PositionRowEmpty onCandidateStoreChange, ballotItemWeVoteId:', ballotItemWeVoteId);
     let allCachedPositionsForThisBallotItem;
     if (ballotItemWeVoteId.includes('cand')) {
       allCachedPositionsForThisBallotItem = CandidateStore.getAllCachedPositionsByCandidateWeVoteId(ballotItemWeVoteId);
-      this.setState({
-        // positionList: incomingPositionList,
-        allCachedPositionsForThisBallotItem,
-      });
+      if (allCachedPositionsForThisBallotItem) {
+        const allCachedPositionsForThisBallotItemLength = Object.keys(allCachedPositionsForThisBallotItem).length;
+        this.setState({
+          allCachedPositionsForThisBallotItem,
+          allCachedPositionsForThisBallotItemLength,
+        });
+      }
     }
   }
 
@@ -88,17 +89,23 @@ class PositionRowList extends Component {
 
   onMeasureStoreChange () {
     const { ballotItemWeVoteId } = this.props;
-    // console.log('PositionRowList onMeasureStoreChange, ballotItemWeVoteId:', ballotItemWeVoteId);
+    // console.log('PositionRowEmpty onMeasureStoreChange, ballotItemWeVoteId:', ballotItemWeVoteId);
     let allCachedPositionsForThisBallotItem;
     if (ballotItemWeVoteId.includes('meas')) {
       allCachedPositionsForThisBallotItem = MeasureStore.getAllCachedPositionsByCandidateWeVoteId(ballotItemWeVoteId);
-      this.setState({ allCachedPositionsForThisBallotItem });
-      this.onPositionListUpdate(allCachedPositionsForThisBallotItem);
+      if (allCachedPositionsForThisBallotItem) {
+        const allCachedPositionsForThisBallotItemLength = Object.keys(allCachedPositionsForThisBallotItem).length;
+        this.setState({
+          allCachedPositionsForThisBallotItem,
+          allCachedPositionsForThisBallotItemLength,
+        });
+      }
+      // this.onPositionListUpdate(allCachedPositionsForThisBallotItem);
     }
   }
 
   onOrganizationStoreChange () {
-    // console.log('PositionRowList onOrganizationStoreChange');
+    // console.log('PositionRowEmpty onOrganizationStoreChange');
     const { allCachedPositionsForThisBallotItem } = this.state;
     this.onPositionListUpdate(allCachedPositionsForThisBallotItem);
   }
@@ -108,7 +115,7 @@ class PositionRowList extends Component {
     const organizationsVoterIsFollowing = OrganizationStore.getOrganizationsVoterIsFollowing();
     // eslint-disable-next-line arrow-body-style
     let filteredPositionList = allCachedPositionsForThisBallotItem.map((position) => {
-      // console.log('PositionRowList onOrganizationStoreChange, position: ', position);
+      // console.log('PositionRowEmpty onOrganizationStoreChange, position: ', position);
       return ({
         ...position,
         followed: organizationsVoterIsFollowing.filter((org) => org.organization_we_vote_id === position.speaker_we_vote_id).length > 0,
@@ -116,10 +123,10 @@ class PositionRowList extends Component {
     });
 
     const organizationsVoterIsFriendsWith = FriendStore.currentFriendsOrganizationWeVoteIDList();
-    // console.log('PositionRowList onFriendStoreChange, organizationsVoterIsFriendsWith:', organizationsVoterIsFriendsWith);
+    // console.log('PositionRowEmpty onFriendStoreChange, organizationsVoterIsFriendsWith:', organizationsVoterIsFriendsWith);
     // eslint-disable-next-line arrow-body-style
     filteredPositionList = filteredPositionList.map((position) => {
-      // console.log('PositionRowList componentDidMount, position: ', position);
+      // console.log('PositionRowEmpty componentDidMount, position: ', position);
       return ({
         ...position,
         currentFriend: organizationsVoterIsFriendsWith.filter((organizationWeVoteId) => organizationWeVoteId === position.speaker_we_vote_id).length > 0,
@@ -139,7 +146,7 @@ class PositionRowList extends Component {
     filteredPositionList = filteredPositionList.sort(this.orderByCurrentFriendsFirst);
     filteredPositionList = filteredPositionList.sort(this.orderByCurrentVoterFirst); // Always put current voter at top
 
-    // console.log('PositionRowList onPositionListUpdate, filteredPositionList:', filteredPositionList);
+    // console.log('PositionRowEmpty onPositionListUpdate, filteredPositionList:', filteredPositionList);
     this.setState({
       filteredPositionList,
       filteredPositionListLength: filteredPositionList.length,
@@ -191,82 +198,51 @@ class PositionRowList extends Component {
   };
 
   render () {
-    const {
-      showInfoOnly, showOppose, showSupport,
-    } = this.props;
-    const {
-      filteredPositionList, filteredPositionListLength, numberOfPositionItemsToDisplay,
-    } = this.state;
-    renderLog('PositionRowList');  // Set LOG_RENDER_EVENTS to log all renders
-    if (!filteredPositionList) {
-      // console.log('PositionRowList Loading...');
-      return LoadingWheel;
-    }
-    // console.log('PositionRowList render, positionListExistsTitle:', positionListExistsTitle);
+    const { ballotItemWeVoteId } = this.props;
+    renderLog('PositionRowEmpty');  // Set LOG_RENDER_EVENTS to log all renders
+    // if (allCachedPositionsForThisBallotItemLength > 0) {
+    //   return null;
+    // }
+    const avatar = normalizedImagePath('../../img/global/svg-icons/avatar-generic.svg');
+    const imagePlaceholder = (
+      <SvgImage imageName={avatar} />
+    );
+    // console.log('PositionRowEmpty render, positionListExistsTitle:', positionListExistsTitle);
     // console.log('this.state.filteredPositionList render: ', this.state.filteredPositionList);
-    let numberOfPositionItemsDisplayed = 0;
     return (
-      <CandidateEndorsementsWrapper>
-        <CandidateEndorsementsContainer>
-          {filteredPositionList.map((onePosition) => {
-            // console.log('numberOfPositionItemsDisplayed:', numberOfPositionItemsDisplayed);
-            if (numberOfPositionItemsDisplayed >= numberOfPositionItemsToDisplay) {
-              return null;
-            }
-            numberOfPositionItemsDisplayed += 1;
-            return (
-              <CandidateEndorsementContainer key={`${onePosition.position_we_vote_id}-${onePosition.voter_guide_we_vote_id}-${onePosition.speaker_display_name}`}>
-                <PositionRowItem
-                  position={onePosition}
-                />
-              </CandidateEndorsementContainer>
-            );
-          })}
-          {filteredPositionListLength > numberOfPositionItemsToDisplay && (
-            <div>
-              <TopSpacer />
-              <ShowMoreEndorsementsContainer onClick={() => this.increaseNumberOfPositionItemsToDisplay()}>
-                <ShowMoreEndorsementsLink className="u-link-color">
-                  {filteredPositionListLength - numberOfPositionItemsDisplayed}
-                  {' '}
-                  more
-                  {showInfoOnly ? (
-                    <>
-                      {' '}
-                      info
-                    </>
-                  ) : (
-                    <>
-                      {showOppose ? (
-                        <>
-                          {' '}
-                          no
-                        </>
-                      ) : (
-                        <>
-                          {showSupport && (
-                            <>
-                              {' '}
-                              yes
-                            </>
-                          )}
-                        </>
-                      )}
-                    </>
-                  )}
-                </ShowMoreEndorsementsLink>
-              </ShowMoreEndorsementsContainer>
-            </div>
-          )}
-          {numberOfPositionItemsDisplayed > 0 && (
-            <CandidateEndorsementsRightSpacer />
-          )}
+      <OuterWrapper>
+        <CandidateEndorsementsContainer key={`PositionRowEmpty-${ballotItemWeVoteId}`}>
+          <RowItemWrapper>
+            <OrganizationPhotoOuterWrapper>
+              <OrganizationPhotoInnerWrapper>
+                { imagePlaceholder }
+              </OrganizationPhotoInnerWrapper>
+            </OrganizationPhotoOuterWrapper>
+            <HorizontalSpacer />
+            <YesNoScoreTextWrapper>
+              <OrganizationSupportWrapper>
+                <OrganizationSupportSquare>
+                  <OrganizationSupportWordWrapper>
+                    Yes?
+                  </OrganizationSupportWordWrapper>
+                  <AddScoreWrapper className="u-link-color-on-hover">
+                    <ToScoreLabel1>
+                      ask
+                    </ToScoreLabel1>
+                    <ToScoreLabel2 className="u-no-break">
+                      your friends
+                    </ToScoreLabel2>
+                  </AddScoreWrapper>
+                </OrganizationSupportSquare>
+              </OrganizationSupportWrapper>
+            </YesNoScoreTextWrapper>
+          </RowItemWrapper>
         </CandidateEndorsementsContainer>
-      </CandidateEndorsementsWrapper>
+      </OuterWrapper>
     );
   }
 }
-PositionRowList.propTypes = {
+PositionRowEmpty.propTypes = {
   ballotItemWeVoteId: PropTypes.string.isRequired,
   showInfoOnly: PropTypes.bool,
   showOppose: PropTypes.bool,
@@ -284,42 +260,96 @@ const CandidateEndorsementsContainer = styled('div')`
   justify-content: flex-start;
 `;
 
-const CandidateEndorsementContainer = styled('div')(({ theme }) => (`
-  min-width: 50px;
-  width: 50px;
-  ${theme.breakpoints.down('xs')} {
-    display: none;
-  }
-`));
-
-const CandidateEndorsementsRightSpacer = styled('div')`
-  margin-right: 30px;
-`;
-
-const CandidateEndorsementsWrapper = styled('div')`
+const OuterWrapper = styled('div')`
   height: 100%;
+  width: 64px;
 `;
 
-const ShowMoreEndorsementsContainer = styled('div')(({ theme }) => (`
+const RowItemWrapper = styled('div')`
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+`;
+const AddScoreWrapper = styled('div')`
+  align-items: center;
+  border-top: 1px dotted #dcdcdc;
+  color: #ccc;
+  display: flex;
+  flex-flow: column;
+  font-weight: normal;
+  justify-content: flex-start;
+  padding-top: 4px;
+`;
+
+const HorizontalSpacer = styled('div')`
+  border-bottom: 1px dotted #dcdcdc;
+`;
+
+const OrganizationPhotoInnerWrapper = styled('div')`
+  align-items: flex-start;
+  display: flex;
+  height: 42px;
+  width: 42px;
+  justify-content: center;
+  & img, & svg, & path {
+    border: 1px solid #ccc;
+    border-radius: 29px;
+    width: 42px !important;
+    height: 42px !important;
+    max-width: 42px !important;
+    display: flex;
+    align-items: flex-start;
+  }
+`;
+
+const OrganizationPhotoOuterWrapper = styled('div')`
+  border-bottom: 1px dotted #dcdcdc;
+  border-left: 1px dotted #dcdcdc;
   cursor: pointer;
   display: flex;
   justify-content: center;
-  min-width: 50px;
-  width: 50px;
-  ${theme.breakpoints.down('xs')} {
-    display: none;
-  }
+  padding: 4px 3px 6px 4px;
+  width: 64px;
+`;
+
+const OrganizationSupportWordWrapper = styled('div')`
+  margin-bottom: 1px;
+`;
+
+const OrganizationSupportSquare = styled('div')(({ theme }) => (`
+  align-items: center;
+  background: white;
+  color: ${theme.colors.supportGreenRgb};
+  cursor: pointer;
+  display: flex;
+  flex-flow: column;
+  flex-wrap: wrap;
+  font-size: 16px;
+  font-weight: bold;
+  justify-content: flex-start;
+  width: 40px;
 `));
 
-const ShowMoreEndorsementsLink = styled('div')`
+const OrganizationSupportWrapper = styled('div')`
+  position: relative;
+  z-index: 1;
+`;
+
+const ToScoreLabel1 = styled('div')`
   font-size: 14px;
-  line-height: 15px;
-  margin-top: 10px;
-  text-align: center
+  margin-top: 0;
 `;
 
-const TopSpacer = styled('div')`
-  height: 6px;
+const ToScoreLabel2 = styled('div')`
+  font-size: 10px;
+  margin-top: -3px;
 `;
 
-export default withTheme(withStyles(styles)(PositionRowList));
+const YesNoScoreTextWrapper = styled('div')`
+  border-left: 1px dotted #dcdcdc;
+  padding: 3px 3px 4px 4px;
+  width: 64px;
+`;
+
+export default withTheme(withStyles(styles)(PositionRowEmpty));

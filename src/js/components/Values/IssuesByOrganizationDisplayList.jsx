@@ -179,7 +179,7 @@ class IssuesByOrganizationDisplayList extends Component {
         issueFollowedByVoter={issueFollowedByVoter}
       >
         <Chip
-          avatar={<SvgImage imageName={svg} otherStyles={{ fill: svgFill }} />}
+          avatar={<SvgImage imageName={svg} stylesTextIncoming={`fill: ${svgFill} !important;`} />}
           classes={{ root: classes.chipStyle }}
           label={oneIssue.issue_name}
           ref={this.valueSpan}

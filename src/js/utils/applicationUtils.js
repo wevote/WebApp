@@ -236,7 +236,6 @@ export function getApplicationViewBooleans (pathname) {
     pathnameLowerCase.startsWith('/candidate') ||
     pathnameLowerCase.startsWith('/measure') ||
     pathnameLowerCase.startsWith('/office') ||
-    pathnameLowerCase.startsWith('/ready') ||
     (voterGuideMode && !onFollowSubPage)) {
     showShareButtonFooter = isWebApp() || (!isIOSAppOnMac() && isSmallScreen);
   }

@@ -137,35 +137,4 @@ const Title = styled('h3')`
   }
 `;
 
-// const ExplanationText = styled.div`
-//   color: #2e3c5d;
-//   font-size: 18px;
-//   font-weight: 600;
-//   margin: 24px 0 18px 0;
-//   padding: 0;
-//   @include breakpoints (max mid-small) {
-//     font-size: 16px;
-//   }
-// `;
-//
-// const ExplanationTextLighter = styled.div`
-//   font-size: 14px;
-//   font-weight: 400;
-//   margin: 24px 0 0 0;
-//   @include breakpoints (max mid-small) {
-//     font-size: 14px;
-//   }
-// `;
-//
-// const ValuesListWrapper = styled.div`
-// `;
-//
-// const ContinueButtonWrapper = styled.div`
-//   width: 100%;
-//   padding-top: 12px;
-//   display: flex;
-//   align-items: center;
-//   justify-content: space-between;
-// `;
-
 export default withTheme(withStyles(styles)(ImageUploadModal));

@@ -96,7 +96,9 @@ class ValueIconAndText extends Component {
       <PopoverWrapper>
         <PopoverHeader>
           <PopoverTitleIcon>
-            <SvgImage imageName={oneIssue.issue_icon_local_path} otherStyles={{ fill: '#fff', padding: '1px 1px 1px 0px' }} />
+            <PopoverIconWrapper>
+              <SvgImage imageName={oneIssue.issue_icon_local_path} stylesTextIncoming="fill: #fff !important;" />
+            </PopoverIconWrapper>
             {/* <ReactSVG */}
             {/*  src={normalizedImagePath(`/img/global/svg-icons/issues/${oneIssue.issue_icon_local_path}.svg`)} */}
             {/*  beforeInjection={(svg) => svg.setAttribute('style', { fill: '#fff', padding: '1px 1px 1px 0px' })} */}
@@ -189,7 +191,9 @@ class ValueIconAndText extends Component {
         >
           <Chip
             avatar={oneIssue.issue_icon_local_path ? (
-              <SvgImage imageName={oneIssue.issue_icon_local_path} otherStyles={{ fill: { svgFill }, padding: '1px 1px 1px 0px' }} />
+              <IconWrapper>
+                <SvgImage imageName={oneIssue.issue_icon_local_path} stylesTextIncoming={`fill: ${svgFill} !important; padding-bottom: 1px;`} />
+              </IconWrapper>
               // <ReactSVG
               //   src={normalizedImagePath(`/img/global/svg-icons/issues/${oneIssue.issue_icon_local_path}.svg`)}
               //   beforeInjection={(svg) => svg.setAttribute('style', { fill: svgFill, padding: '1px 1px 1px 0px' })}
@@ -225,6 +229,17 @@ const styles = () => ({
 
 const FollowIssueToggleContainer = styled('div')`
   margin-top: 24px;
+`;
+
+const IconWrapper = styled('div')`
+  height: 24px;
+  width: 24px;
+`;
+
+const PopoverIconWrapper = styled('div')`
+  height: 24px;
+  margin-top: -3px;
+  width: 24px;
 `;
 
 const PopoverWrapper = styled('div')`

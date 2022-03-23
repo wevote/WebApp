@@ -1,5 +1,5 @@
 import { Comment, Done, NotInterested, ThumbDown, ThumbUp } from '@mui/icons-material';
-import { Button, Dialog } from '@mui/material';
+import { Button } from '@mui/material';
 import styled from '@mui/material/styles/styled';
 import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
@@ -12,13 +12,14 @@ import { renderLog } from '../../../common/utils/logging';
 import normalizedImagePath from '../../../common/utils/normalizedImagePath';
 import webAppConfig from '../../../config';
 import VoterConstants from '../../../constants/VoterConstants';
+import AppObservableStore from '../../../stores/AppObservableStore';
 import SupportStore from '../../../stores/SupportStore';
 import VoterStore from '../../../stores/VoterStore';
 import { stringContains } from '../../../utils/textFormat';
 import PositionPublicToggle from '../PositionPublicToggle';
 import ShareButtonDropDown from '../ShareButtonDropdown';
 import { openSnackbar } from '../SnackNotifier';
-import ChooseOrOppose from './ChooseOrOppose';
+// import ChooseOrOppose from './ChooseOrOpposeIntroModal';
 
 const shareIconSvg = '../../../../img/global/svg-icons/share-icon.svg';
 
@@ -34,7 +35,6 @@ class ItemActionBar extends PureComponent {
       isSupportAPIState: undefined,
       isSupportLocalState: undefined,
       numberOfOpposePositionsForScore: 0,
-      showSupportOrOpposeHelpModal: false,
       numberOfSupportPositionsForScore: 0,
       transitioning: false,
       voterTextStatement: undefined,
@@ -44,7 +44,6 @@ class ItemActionBar extends PureComponent {
     this.isSupportCalculated = this.isSupportCalculated.bind(this);
     this.opposeItem = this.opposeItem.bind(this);
     this.supportItem = this.supportItem.bind(this);
-    this.toggleSupportOrOpposeHelpModal = this.toggleSupportOrOpposeHelpModal.bind(this);
     this.opposeButton = this.opposeButton.bind(this);
     this.supportButton = this.supportButton.bind(this);
   }
@@ -210,7 +209,7 @@ class ItemActionBar extends PureComponent {
         onClick={() => this.opposeItem()}
         classes={{ root: classes.buttonRoot, outlinedPrimary: classes.buttonOutlinedPrimary }}
       >
-        <NotInterested classes={{ root: classes.buttonIcon }} />
+        <NotInterested classes={{ root: classes.buttonIconNotInterested }} />
         {this.isOpposeCalculated() ? (
           <span
             className={this.props.shareButtonHide ? 'item-actionbar--inline__position-btn-label--at-state' :
@@ -241,7 +240,7 @@ class ItemActionBar extends PureComponent {
         onClick={() => this.opposeItem()}
         classes={{ root: classes.buttonNoTextRoot, outlinedPrimary: classes.buttonOutlinedPrimary }}
       >
-        <NotInterested classes={{ root: classes.buttonIcon }} />
+        <NotInterested classes={{ root: classes.buttonIconNotInterested }} />
       </Button>
     );
   };
@@ -257,7 +256,7 @@ class ItemActionBar extends PureComponent {
        classes={{ root: classes.buttonRoot, outlinedPrimary: classes.buttonOutlinedPrimary }}
       >
         <Done
-        classes={{ root: classes.buttonIcon }}
+          classes={{ root: classes.buttonIconDone }}
         />
         {this.isSupportCalculated() ? (
           <span
@@ -289,7 +288,7 @@ class ItemActionBar extends PureComponent {
        classes={{ root: classes.buttonNoTextRoot, outlinedPrimary: classes.buttonOutlinedPrimary }}
       >
         <Done
-          classes={{ root: classes.buttonIcon }}
+          classes={{ root: classes.buttonIconDone }}
         />
       </Button>
     );
@@ -444,13 +443,6 @@ class ItemActionBar extends PureComponent {
     return this.isOpposeCalculated() || this.isSupportCalculated() || this.state.voterTextStatement || this.state.voterTextStatementOpened;
   }
 
-  toggleSupportOrOpposeHelpModal () {
-    const { showSupportOrOpposeHelpModal } = this.state;
-    this.setState({
-      showSupportOrOpposeHelpModal: !showSupportOrOpposeHelpModal,
-    });
-  }
-
   supportItem () {
     // Button to support this item was clicked
     // const { currentBallotIdInUrl, urlWithoutHash, we_vote_id: weVoteId } = this.props;
@@ -480,7 +472,7 @@ class ItemActionBar extends PureComponent {
     const supportOpposeModalHasBeenShown = VoterStore.getInterfaceFlagState(VoterConstants.SUPPORT_OPPOSE_MODAL_SHOWN);
     // const supportOpposeModalHasBeenShown = false; // For testing
     if (!supportOpposeModalHasBeenShown) {
-      this.toggleSupportOrOpposeHelpModal();
+      AppObservableStore.setShowChooseOrOpposeIntroModal(true, this.state.ballotItemType);
       VoterActions.voterUpdateInterfaceStatusFlags(VoterConstants.SUPPORT_OPPOSE_MODAL_SHOWN);
     }
 
@@ -535,7 +527,7 @@ class ItemActionBar extends PureComponent {
     const supportOpposeModalHasBeenShown = VoterStore.getInterfaceFlagState(VoterConstants.SUPPORT_OPPOSE_MODAL_SHOWN);
     // const supportOpposeModalHasBeenShown = false; // For testing
     if (!supportOpposeModalHasBeenShown) {
-      this.toggleSupportOrOpposeHelpModal();
+      AppObservableStore.setShowChooseOrOpposeIntroModal(true, this.state.ballotItemType);
       VoterActions.voterUpdateInterfaceStatusFlags(VoterConstants.SUPPORT_OPPOSE_MODAL_SHOWN);
     }
 
@@ -566,11 +558,11 @@ class ItemActionBar extends PureComponent {
   render () {
     renderLog('ItemActionBar ItemActionBar.jsx');  // Set LOG_RENDER_EVENTS to log all renders
     // console.log('ItemActionBar render');
-    const { buttonsOnly, commentButtonHide, commentButtonHideInMobile, classes, hideSupportYes, hideOpposeNo } = this.props;
+    const { buttonsOnly, commentButtonHide, commentButtonHideInMobile, hideSupportYes, hideOpposeNo } = this.props;
     const {
       ballotItemType, ballotItemWeVoteId, isOpposeAPIState, isSupportAPIState,
       numberOfOpposePositionsForScore, numberOfSupportPositionsForScore,
-      showSupportOrOpposeHelpModal, voterPositionIsPublic,
+      voterPositionIsPublic,
     } = this.state;
 
     if (numberOfSupportPositionsForScore === undefined ||
@@ -616,21 +608,6 @@ class ItemActionBar extends PureComponent {
              alt="share"
         />
       </span>
-    );
-
-    // This modal is shown when user clicks on support or oppose button for the first time only.
-    const SupportOrOpposeHelpModal = (
-      <Dialog
-        classes={{ paper: classes.dialogPaper }}
-        open
-        onClose={() => { this.toggleSupportOrOpposeHelpModal(); }}
-      >
-        <ChooseOrOppose
-          ballotItemType={ballotItemType}
-          externalUniqueId={this.props.externalUniqueId}
-          onClose={this.toggleSupportOrOpposeHelpModal}
-        />
-      </Dialog>
     );
 
     const ballotItemDisplayName = this.props.ballotItemDisplayName || '';
@@ -691,14 +668,6 @@ class ItemActionBar extends PureComponent {
           onBlur={handleLeaveHoverLocalArea}
           positionPublicToggleWrapAllowed={this.props.positionPublicToggleWrapAllowed}
         >
-          {showPositionPublicToggle && (
-            <PositionPublicToggle
-              ballotItemWeVoteId={ballotItemWeVoteId}
-              className="null"
-              externalUniqueId={`itemActionBar-${this.props.externalUniqueId}`}
-              ballotItemType={ballotItemType}
-            />
-          )}
           <ButtonGroup
             className={`${!this.props.shareButtonHide ? ' u-push--sm' : ''}`}
             positionPublicToggleWrapAllowed={this.props.positionPublicToggleWrapAllowed}
@@ -778,8 +747,15 @@ class ItemActionBar extends PureComponent {
             { this.props.shareButtonHide || this.props.inModal ?
               null :
               <ShareButtonDropDown showMoreId="itemActionBarShowMoreFooter" urlBeingShared={urlBeingShared} shareIcon={shareIcon} shareText="Share" /> }
-            { showSupportOrOpposeHelpModal ? SupportOrOpposeHelpModal : null }
           </ButtonGroup>
+          {showPositionPublicToggle && (
+            <PositionPublicToggle
+              ballotItemWeVoteId={ballotItemWeVoteId}
+              className="null"
+              externalUniqueId={`itemActionBar-${this.props.externalUniqueId}`}
+              ballotItemType={ballotItemType}
+            />
+          )}
         </ItemActionBarWrapper>
       </>
     );
@@ -821,13 +797,24 @@ const styles = (theme) => ({
       marginTop: -2,
     },
   },
+  buttonIconDone: {
+    fontSize: 22,
+    fontWeight: 'bold',
+    marginRight: '.3rem',
+    marginTop: '-2px',
+  },
+  buttonIconNotInterested: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    marginRight: '.3rem',
+    marginTop: '-2px',
+  },
   dialogPaper: {
     minHeight: 282,
     margin: '0 8px',
   },
   buttonRoot: {
     padding: 4,
-    fontSize: 12,
     width: 110,
     height: 32,
     [theme.breakpoints.down('md')]: {
@@ -839,7 +826,6 @@ const styles = (theme) => ({
       minWidth: 80,
       height: 28,
       padding: '0 8px',
-      fontSize: 10,
     },
   },
   buttonNoTextRoot: {

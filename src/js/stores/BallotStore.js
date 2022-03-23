@@ -26,6 +26,7 @@ class BallotStore extends ReduceStore {
       ballotItemSearchResultsList: [],
       ballotItemUnfurledTracker: {},
       ballotItemListCandidatesDict: {}, // Dictionary with ballot_item_we_vote_id as key and list of candidate we_vote_ids as value
+      nextNationalElectionDayText: '',
       positionListHasBeenRetrievedOnceByBallotItem: {}, // Dictionary with ballot_item_we_vote_id as key and true/false as value
       positionListFromFriendsHasBeenRetrievedOnceByBallotItem: {}, // Dictionary with ballot_item_we_vote_id as key and true/false as value
       voterGuideElectionListByElectionId: {}, // Dictionary with google_civic_election_id as key and list of voter guides for this voter for this election as value
@@ -131,6 +132,10 @@ class BallotStore extends ReduceStore {
       return this.getState().voterGuideElectionListByElectionId[civicId].election_day_text;
     }
     return '';
+  }
+
+  get nextNationalElectionDayText () {
+    return this.getState().nextNationalElectionDayText || '2022-11-08';
   }
 
   get currentBallotGoogleCivicElectionId () {
@@ -405,6 +410,7 @@ class BallotStore extends ReduceStore {
     let isCandidate = false;
     let isMeasure = false;
     let newBallots = {};
+    let nextNationalElectionDayText = '';
     let positionListFromFriendsHasBeenRetrievedOnceByBallotItem = {};
     let revisedState;
     let tempBallotItemList = [];
@@ -600,12 +606,16 @@ class BallotStore extends ReduceStore {
         if (state.ballots) {
           newBallots = state.ballots;
         }
+        revisedState = state;
         ballotCaveat = action.res.ballot_caveat;
+        revisedState = { ...revisedState, ballotCaveat };
         googleCivicElectionId = action.res.google_civic_election_id || 0;
         googleCivicElectionId = parseInt(googleCivicElectionId, 10);
-        revisedState = state;
+        nextNationalElectionDayText = action.res.next_national_election_day_text;
+        if (nextNationalElectionDayText && nextNationalElectionDayText !== '') {
+          revisedState = { ...revisedState, nextNationalElectionDayText };
+        }
         textForMapSearch = action.res.text_for_map_search;
-        revisedState = { ...revisedState, ballotCaveat };
         revisedState = { ...revisedState, textForMapSearch };
         revisedState = { ...revisedState, voterBallotItemsRetrieveHasReturned };
         if (googleCivicElectionId !== 0) {

@@ -475,12 +475,4 @@ const ContributeGridItemJoin = styled('div', {
   grid-column: auto / span 2;
 `));
 
-
-// const OuterWrapper = styled.div`
-//   display: flex;
-//   justify-content: center;
-//   margin: 0 0 5px 0;
-// `;
-
-
 export default withStyles(styles)(Donate);

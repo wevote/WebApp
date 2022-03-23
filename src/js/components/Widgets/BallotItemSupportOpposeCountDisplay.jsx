@@ -98,45 +98,6 @@ class BallotItemSupportOpposeCountDisplay extends Component {
     this.onCachedPositionsOrIssueStoreChange();
   }
 
-  // // eslint-disable-next-line camelcase,react/sort-comp
-  // UNSAFE_componentWillReceiveProps (nextProps) {
-  //   // console.log('BallotItemSupportOpposeCountDisplay componentWillReceiveProps, nextProps: ', nextProps);
-  //   let ballotItemDisplayName;
-  //   const { ballotItemWeVoteId } = nextProps;
-  //   const isCandidate = stringContains('cand', ballotItemWeVoteId);
-  //   const isMeasure = stringContains('meas', ballotItemWeVoteId);
-  //   if (isCandidate) {
-  //     const candidate = CandidateStore.getCandidate(ballotItemWeVoteId);
-  //     ballotItemDisplayName = candidate.ballot_item_display_name || this.props.ballotItemDisplayName;
-  //     const countResults = CandidateStore.getNumberOfPositionsByCandidateWeVoteId(ballotItemWeVoteId);
-  //     const { numberOfAllSupportPositions, numberOfAllOpposePositions, numberOfAllInfoOnlyPositions } = countResults;
-  //     this.setState({
-  //       ballotItemDisplayName,
-  //       numberOfAllSupportPositions,
-  //       numberOfAllOpposePositions,
-  //       numberOfAllInfoOnlyPositions,
-  //     });
-  //   } else if (isMeasure) {
-  //     const measure = MeasureStore.getMeasure(ballotItemWeVoteId);
-  //     ballotItemDisplayName = measure.ballot_item_display_name || this.props.ballotItemDisplayName;
-  //     const countResults = MeasureStore.getNumberOfPositionsByMeasureWeVoteId(ballotItemWeVoteId);
-  //     const { numberOfAllSupportPositions, numberOfAllOpposePositions, numberOfAllInfoOnlyPositions } = countResults;
-  //     this.setState({
-  //       ballotItemDisplayName,
-  //       numberOfAllSupportPositions,
-  //       numberOfAllOpposePositions,
-  //       numberOfAllInfoOnlyPositions,
-  //     });
-  //   }
-  //   this.setState(() => ({
-  //     ballotItemDisplayName,
-  //     ballotItemWeVoteId,
-  //     isCandidate,
-  //     isMeasure,
-  //   }));
-  //   this.onCachedPositionsOrIssueStoreChange();
-  // }
-
   shouldComponentUpdate (nextProps, nextState) {
     // This lifecycle method tells the component to NOT render if componentWillReceiveProps didn't see any changes
     if (this.state.componentDidMountFinished === false) {
@@ -925,14 +886,13 @@ class BallotItemSupportOpposeCountDisplay extends Component {
     );
 
     const commentCountExists = numberOfAllInfoOnlyPositions > 0;
-    const opposeCountExists = numberOfAllOpposePositions > 0;
+    // const opposeCountExists = numberOfAllOpposePositions > 0;
     // Default settings
+    const showOpposeCount = true;
     let showCommentCount = false;
-    let showOpposeCount = true;
-    if (commentCountExists && !opposeCountExists) {
+    if (commentCountExists) {
       // Override if comment count exists, and oppose count does not
       showCommentCount = true;
-      showOpposeCount = false;
     }
     // console.log('showVoterPersonalScore:', showVoterPersonalScore);
     // console.log('voterSupportsBallotItem:', voterSupportsBallotItem);
@@ -963,32 +923,32 @@ class BallotItemSupportOpposeCountDisplay extends Component {
                   <EndorsementsTitle>
                     Opinions
                   </EndorsementsTitle>
-                  <EndorsementWrapper>
-                    <EndorsementRow>
-                      <Endorsement>
+                  <EndorsementsOuterWrapper>
+                    <EndorsementsInnerWrapper>
+                      <EndorsementRow>
                         <ThumbUp classes={{ root: classes.endorsementIconRoot }} />
                         <EndorsementCount>
                           {numberOfAllSupportPositions}
                         </EndorsementCount>
-                      </Endorsement>
+                      </EndorsementRow>
                       { showOpposeCount && (
-                        <Endorsement>
+                        <EndorsementRow>
                           <ThumbDown classes={{ root: classes.endorsementIconRoot }} />
                           <EndorsementCount>
                             {numberOfAllOpposePositions}
                           </EndorsementCount>
-                        </Endorsement>
+                        </EndorsementRow>
                       )}
                       { showCommentCount && (
-                        <Endorsement>
+                        <EndorsementRow>
                           <Comment classes={{ root: classes.endorsementIconRoot }} />
                           <EndorsementCount>
                             {numberOfAllInfoOnlyPositions}
                           </EndorsementCount>
-                        </Endorsement>
+                        </EndorsementRow>
                       )}
-                    </EndorsementRow>
-                  </EndorsementWrapper>
+                    </EndorsementsInnerWrapper>
+                  </EndorsementsOuterWrapper>
                 </EndorsementsContainer>
               </StickyPopover>
             </EndorsementsOverviewShowOrNotShow>
@@ -1219,7 +1179,7 @@ const styles = (theme) => ({
   },
   endorsementIconRoot: {
     fontSize: 14,
-    margin: '.3rem .3rem 0 .5rem',
+    margin: '3px 3px 0 0',
   },
   endorsementIcon: {
     width: 12,
@@ -1242,20 +1202,23 @@ const DecidedIconWrapper = styled('span')`
   margin-right: 6px;
 `;
 
-const Endorsement = styled('div')`
+const EndorsementRow = styled('div')`
   display: flex;
   flex-flow: row nowrap;
   font-size: 12px;
+  justify-content: space-between;
+  margin-bottom: -4px;
 `;
 
 const EndorsementCount = styled('div')`
-  padding-top: 4px;
+  line-height: 15px;
+  padding-top: 3px;
 `;
 
-const EndorsementRow = styled('div')`
+const EndorsementsOuterWrapper = styled('div')`
   display: flex;
-  flex-flow: row wrap;
-  justify-content: flex-end;
+  flex-flow: row;
+  justify-content: center;
 `;
 
 const EndorsementsOverviewShowOrNotShow = styled('div')`
@@ -1275,19 +1238,20 @@ const EndorsementsTitle = styled('div')`
   color: #888;
   font-weight: 500;
   font-size: 10px;
-  text-align: right;
+  line-height: 15px;
+  text-align: center;
 `;
 
-const EndorsementWrapper = styled('div')`
+const EndorsementsInnerWrapper = styled('div')`
+  max-width: 25%;
   color: #888;
   text-align: right;
   user-select: none;
   max-width: 100%;
   display: flex;
-  flex-flow: row;
-  padding-bottom: 8px;
+  flex-flow: column;
   margin-top: -4px;
-  justify-content: space-between;
+  justify-content: flex-start;
 `;
 
 const ItemActionBarWrapper = styled('div')`
@@ -1305,18 +1269,19 @@ const NetworkScore = styled('div', {
   shouldForwardProp: (prop) => !['hideNumbersOfAllPositions', 'voterOpposesBallotItem', 'voterPersonalNetworkScoreIsNegative', 'voterPersonalNetworkScoreIsPositive', 'voterSupportsBallotItem'].includes(prop),
 })(({ hideNumbersOfAllPositions, voterOpposesBallotItem, voterPersonalNetworkScoreIsNegative, voterPersonalNetworkScoreIsPositive, voterSupportsBallotItem }) => (`
   background: ${(voterSupportsBallotItem && 'rgb(31, 192, 111)') || (voterOpposesBallotItem && 'rgb(255, 73, 34)') || (voterPersonalNetworkScoreIsPositive && 'rgb(31, 192, 111)') || (voterPersonalNetworkScoreIsNegative && 'rgb(255, 73, 34)') || (hideNumbersOfAllPositions && 'rgb(211, 211, 211)') || '#888'};
-  color: white;
+  align-items: center;
+  border-radius: 5px;
   box-shadow: 0 1px 3px 0 rgba(0,0,0,.2), 0 1px 1px 0 rgba(0,0,0,.14), 0 2px 1px -1px rgba(0,0,0,.12);
+  color: white;
   cursor: pointer;
   display: flex;
   flex-wrap: wrap;
-  align-items: center;
-  justify-content: center;
-  width: 40px;
-  height: 40px;
-  border-radius: 5px;
   font-size: 16px;
   font-weight: bold;
+  justify-content: center;
+  margin-top: 2px;
+  width: 40px;
+  height: 40px;
   @media print{
     border-width: 1px;
     border-style: solid;

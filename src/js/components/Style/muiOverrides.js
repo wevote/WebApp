@@ -2,12 +2,21 @@ const overrides = {
   MuiButton: {
     styleOverrides: {
       root: {
+        fontFamily: '"Nunito Sans", "Helvetica Neue Light", "Helvetica Neue", "Helvetica", "Arial", sans-serif',
         fontSize: '16px',
-        textTransform: 'unset',
+        textTransform: 'none',
         userSelect: 'none',
         '@media print': {
           color: '#fff',
         },
+      },
+    },
+  },
+  MuiChip: {
+    styleOverrides: {
+      root: {
+        fontFamily: '"Nunito Sans", "Helvetica Neue Light", "Helvetica Neue", "Helvetica", "Arial", sans-serif',
+        fontSize: 16,
       },
     },
   },
@@ -51,8 +60,10 @@ const overrides = {
   MuiTab: {
     styleOverrides: {
       root: {
+        fontFamily: '"Nunito Sans", "Helvetica Neue Light", "Helvetica Neue", "Helvetica", "Arial", sans-serif',
+        fontSize: 16,
         outline: 'none !important',
-        textTransform: 'unset',
+        textTransform: 'none',
       },
     },
   },

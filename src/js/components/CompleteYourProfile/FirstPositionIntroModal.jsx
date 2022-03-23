@@ -223,17 +223,6 @@ const ExplanationText = styled('div')`
   }
 `;
 
-// const ActionButtonWrapper = styled.div`
-//   width: 100%;
-//   margin-bottom: 24px
-//   display: flex;
-//   align-items: center;
-//   justify-content: space-between;
-// `;
-//
-// const ActionButtonInsideWrapper = styled.div`
-// `;
-
 const ExplanationTextLighter = styled('div')`
   font-size: 14px;
   font-weight: 400;

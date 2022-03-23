@@ -195,6 +195,7 @@ class IssueCard extends Component {
                 currentBallotIdInUrl={currentBallotIdInUrl}
                 issueName={this.state.issue.issue_name}
                 issueWeVoteId={issueWeVoteId}
+                lightModeOn
                 urlWithoutHash={urlWithoutHash}
               />
             </FollowIssueToggleContainer>
