@@ -9,18 +9,6 @@ import VoterStore from '../../../stores/VoterStore';
 import isMobileScreenSize from '../../utils/isMobileScreenSize';
 import { renderLog } from '../../utils/logging';
 
-// This was wrapping the DropzoneArea component, removed for MUI 5 March 17, 2022
-// const muiTheme = createTheme(adaptV4Theme({
-//   overrides: {
-//     MuiDropzonePreviewList: {
-//       image: {
-//         height: 'auto',
-//         maxHeight: '200px',
-//         maxWidth: 'auto',
-//       },
-//     },
-//   },
-// }));
 
 class VoterPhotoUpload extends Component {
   constructor (props) {

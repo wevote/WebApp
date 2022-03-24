@@ -1,21 +1,21 @@
-import { Comment,  ThumbDown, ThumbUp } from '@mui/icons-material';
+import { Comment, ThumbDown, ThumbUp } from '@mui/icons-material';
+import styled from '@mui/material/styles/styled';
 import withStyles from '@mui/styles/withStyles';
 import withTheme from '@mui/styles/withTheme';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
-import styled from 'styled-components';
 import SupportActions from '../../actions/SupportActions';
+import { renderLog } from '../../common/utils/logging';
 import CandidateStore from '../../stores/CandidateStore';
 import FriendStore from '../../stores/FriendStore';
 import IssueStore from '../../stores/IssueStore';
 import MeasureStore from '../../stores/MeasureStore';
 import OrganizationStore from '../../stores/OrganizationStore';
 import SupportStore from '../../stores/SupportStore';
-import { renderLog } from '../../common/utils/logging';
 import { getPositionListSummaryIncomingDataStats, getPositionSummaryListForBallotItem } from '../../utils/positionFunctions';
 import { stringContains } from '../../utils/textFormat';
-import StickyPopover from './StickyPopover';
 import { openSnackbar } from '../Widgets/SnackNotifier';
+import StickyPopover from './StickyPopover';
 
 const ItemActionBar = React.lazy(() => import(/* webpackChunkName: 'ItemActionBar' */ '../Widgets/ItemActionBar/ItemActionBar'));
 const PositionSummaryListForPopover = React.lazy(() => import(/* webpackChunkName: 'PositionSummaryListForPopover' */ '../Widgets/PositionSummaryListForPopover'));

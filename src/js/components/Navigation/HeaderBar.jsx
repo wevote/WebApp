@@ -260,6 +260,21 @@ class HeaderBar extends Component {
     return update;
   }
 
+
+  componentDidUpdate () {
+    // console.log('HeaderBar componentDidUpdate');
+    const { location: { pathname } } = window;
+    if (stringContains('/ballot', pathname.toLowerCase().slice(0, 7)) ||
+      stringContains('/ready', pathname.toLowerCase().slice(0, 7))) {
+      if (!AppObservableStore.showEditAddressButton()) {
+        AppObservableStore.setShowEditAddressButton(true);
+      }
+    } else if (AppObservableStore.showEditAddressButton()) {
+      AppObservableStore.setShowEditAddressButton(false);
+    }
+  }
+
+
   componentDidCatch (error, info) {
     // We should get this information to Splunk!
     console.error('HeaderBar caught error: ', `${error} with info: `, info);
