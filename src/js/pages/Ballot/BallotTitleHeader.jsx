@@ -58,7 +58,7 @@ class BallotTitleHeader extends Component {
   render () {
     renderLog('BallotTitleHeader');  // Set LOG_RENDER_EVENTS to log all renders
     // const nextReleaseFeaturesEnabled = webAppConfig.ENABLE_NEXT_RELEASE_FEATURES === undefined ? false : webAppConfig.ENABLE_NEXT_RELEASE_FEATURES;
-    const { classes, electionName, electionDayTextObject, scrolled } = this.props;
+    const { classes, electionName, electionDayTextObject } = this.props;
 
     if (electionName) {
       return (
@@ -69,7 +69,7 @@ class BallotTitleHeader extends Component {
                 <ElectionNameScrollContent>
                   <Tooltip title="Change my election" aria-label="Change Election" classes={{ tooltipPlacementBottom: classes.tooltipPlacementBottom }}>
                     <Title onClick={() => this.props.toggleSelectBallotModal('', false, false)} id="ballotTitleHeaderSelectBallotModal">
-                      <ElectionName scrolled={scrolled && scrolled.toString()}>
+                      <ElectionName>
                         {electionName}
                         {/*
                         {isWebApp() ? (

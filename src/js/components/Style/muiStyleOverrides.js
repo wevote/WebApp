@@ -1,4 +1,4 @@
-const overrides = {
+const muiStyleOverrides = {
   MuiButton: {
     styleOverrides: {
       root: {
@@ -76,4 +76,4 @@ const overrides = {
   },
 };
 
-export default overrides;
+export default muiStyleOverrides;

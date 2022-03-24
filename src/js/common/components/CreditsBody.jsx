@@ -171,12 +171,13 @@ const CreditsCompanyTitle = styled('p')`
   color: #555;
 `;
 
-const CreditsDescriptionContainer = styled('div')`
+const CreditsDescriptionContainer = styled('div')(({ theme }) => (`
   margin: 1em auto;
   width: 960px;
   max-width: 90vw;
   text-align: left;
-  @media (min-width: 960px) and (max-width: 991px) {
+  // @media (min-width: 960px) and (max-width: 991px) {
+  ${[theme.breakpoints.between('lg', 'xl')]}: {
     > * {
       width: 90%;
       margin: 0 auto;
@@ -186,7 +187,7 @@ const CreditsDescriptionContainer = styled('div')`
     width: 100%;
     margin: 0 auto;
   }
-`;
+`));
 
 const CompanyWrapper = styled('div')`
   display: flex;
