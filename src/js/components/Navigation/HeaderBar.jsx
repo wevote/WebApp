@@ -525,7 +525,7 @@ class HeaderBar extends Component {
     const editAddressButtonHtml = (
       <Tooltip title="Change my location or election" aria-label="Change Address or Election" classes={{ tooltipPlacementBottom: classes.tooltipPlacementBottom }}>
         <>
-          <AddressWrapperDesktop>
+          <AddressWrapperDesktop className="u-show-desktop-tablet">
             <IconButton
               classes={{ root: classes.addressIconButtonRoot }}
               id="changeAddressOrElectionHeaderBarElection"
