@@ -63,24 +63,24 @@ class ElectionCountdown extends React.Component {
         }, delay);
       }
     }
-    const nextNationalElectionDayText = BallotStore.nextNationalElectionDayText || '2022-11-08';
+    const nextNationalElectionDayText = `${BallotStore.nextNationalElectionDayText || '2022-11-08'}`;
     // console.log('nextNationalElectionDayText:', nextNationalElectionDayText);
     initializeMoment(() => {
       const { moment } = window;
-      const nextNationalElectionDayMDYSlash = moment(nextNationalElectionDayText).format('MM/DD/YYYY');
-      const nextNationalElectionDate = new Date(nextNationalElectionDayMDYSlash);
-      const nextNationalElectionDateMDY = formatDateToMonthDayYear(nextNationalElectionDate);
+      const nextNationalElectionDayMDYSlash = moment(nextNationalElectionDayText, ['YYYY-MM-DD', 'MM/DD/YY', 'MM-DD-YY']).format('MM/DD/YYYY');
+      const nextNationalElectionDateMDY = formatDateToMonthDayYear(nextNationalElectionDayMDYSlash);
       this.setState({
         nextNationalElectionDateMDY,
       });
+      const nextNationalElectionDate = new Date(nextNationalElectionDayMDYSlash);
       this.setNextNationalElectionDate(nextNationalElectionDate);
       if (electionDayText) {
         const electionDayMDYSlash = moment(electionDayText).format('MM/DD/YYYY');
-        const electionDate = new Date(electionDayMDYSlash);
-        const electionDateMDY = formatDateToMonthDayYear(electionDate);
+        const electionDateMDY = formatDateToMonthDayYear(electionDayMDYSlash);
         this.setState({
           electionDateMDY,
         });
+        const electionDate = new Date(electionDayMDYSlash);
         this.setNewTime(electionDate);
         const refreshIntervalInMilliseconds = 3600000; // One hours worth of milliseconds
         clearInterval(this.timeInterval);

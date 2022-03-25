@@ -1,13 +1,13 @@
-import styled from 'styled-components';
+import styled from '@mui/material/styles/styled';
 import { isWebApp } from '../../common/utils/isCordovaOrWebApp';
 
-const CancelButtonWrapper = styled.div`
+const CancelButtonWrapper = styled('div')`
   width: fit-content;
   margin-bottom: 0;
   margin-left: 8px;
 `;
 
-const FriendButtonsWrapper = styled.div`
+const FriendButtonsWrapper = styled('div')`
   width: 100%;
   margin: 12px 0 0;
   display: flex;
@@ -15,14 +15,14 @@ const FriendButtonsWrapper = styled.div`
   justify-content: flex-end;
 `;
 
-const FriendColumnWithoutButtons = styled.div`
+const FriendColumnWithoutButtons = styled('div')`
   align-items: center;
   display: flex;
   justify-content: flex-start;
   width: 100%;
 `;
 
-const FriendDetailsLine = styled.div`
+const FriendDetailsLine = styled('div')`
   display: flex;
   align-items: center;
   justify-content: space-between;

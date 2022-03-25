@@ -68,7 +68,7 @@ class SuggestedFriendDisplayForList extends Component {
     );
 
     const suggestedFriendHtml = (
-      <FriendDisplayOuterWrapper inSideColumn={inSideColumn} previewMode={previewMode}>
+      <FriendDisplayOuterWrapper inSideColumn={inSideColumn}/* previewMode={previewMode} */>
         <FriendColumnWithoutButtons>
           <Avatar inSideColumn={inSideColumn}>
             { voterGuideLink ? (

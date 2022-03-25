@@ -365,10 +365,6 @@ const EditAddressWrapper = styled('div')(({ theme }) => (`
   }
 `));
 
-const ElectionCountdownInnerWrapper = styled('div')`
-  margin-top: -37px; // 29px for height of ShareButtonDesktopTablet - 8px for margin-top
-`;
-
 const SuspenseCard = styled('div')`
   position: relative;
   display: flex;
@@ -377,14 +373,18 @@ const SuspenseCard = styled('div')`
   height: 138px;
 `;
 
+const ElectionCountdownInnerWrapper = styled('div')`
+  margin-top: -37px;
+`;
+
 const ElectionCountdownOuterWrapper = styled('div')`
   margin-bottom: 32px;
   position: relative;
   z-index: 1;
 `;
 
+// March 2022: Are these empty styled causing babel-plugin-styled-components problems?
 const ReadyPageContainer = styled('div')`
-// This is a bad place to set a top padding for the scrollable pane, it should be in Application__Wrapper
 `;
 
 const Paragraph = styled('div')`

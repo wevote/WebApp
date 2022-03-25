@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled from '@mui/material/styles/styled';
 import { isWebApp } from '../../common/utils/isCordovaOrWebApp';
 
 const AvatarInSideColumn = `

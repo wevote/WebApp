@@ -5,14 +5,13 @@ import muiStyleOverrides from '../../../components/Style/muiStyleOverrides';
 const muiTheme = createTheme({
   palette: {
     primary: {
-      // main: "#25536D",
-      main: '#2E3C5D', // brandBlue
+      main: '#2E3C5D',
     },
     secondary: {
       main: '#ffffff',
       dark: '#f7f7f7',
       contrastText: '#2e3c5d',
-    }, // Feel free to change this
+    },
   },
   breakpoints: {
     values: {
@@ -28,15 +27,15 @@ const muiTheme = createTheme({
     useNextVariants: true,
   },
   colors: {
-    grayPale: '#f8f8f8', // $gray-pale:    #f8f8f8 !default;
-    grayLighter: '#eee', // $gray-lighter: #eee !default;
+    grayPale: '#f8f8f8',
+    grayLighter: '#eee',
     grayLighter2: '#e7e7e7',
-    grayBorder: '#ddd', // $gray-border:  #ddd !default;
+    grayBorder: '#ddd',
     grayChip: '#dee2eb',
-    grayLight: '#ccc', // $gray-light:   #ccc !default;
-    grayMid: '#999', // $gray-mid:     #999 !default;
-    grayDark: '#555', // $gray-dark:    #555 !default;
-    grayDarker: '#333', // $gray-darker:  #333 !default;
+    grayLight: '#ccc',
+    grayMid: '#999',
+    grayDark: '#555',
+    grayDarker: '#333',
     linkHoverBorder: '#3771c8',
     opposeRedRgb: 'rgb(255, 73, 34)',
     supportGreenRgb: 'rgb(31, 192, 111)',

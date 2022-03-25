@@ -1,5 +1,5 @@
 import { AppBar } from '@mui/material';
-import styled from 'styled-components';
+import styled from '@mui/material/styles/styled';
 import { hasIPhoneNotch, isAndroidSizeFold, isAndroidSizeMD, isAndroidSizeXL, isIOSAppOnMac, isIPad, isIPad11in, isIPhone4p7in, isIPhone5p5inEarly, isIPhone5p5inMini, isIPhone5p8in, isIPhone6p1in, isIPhone6p5in } from '../../common/utils/cordovaUtils';
 import { normalizedHrefPage } from '../../common/utils/hrefUtils';
 import { isWebApp } from '../../common/utils/isCordovaOrWebApp';
@@ -11,7 +11,7 @@ import cordovaScrollablePaneTopPadding from '../../utils/cordovaScrollablePaneTo
 import { pageEnumeration } from '../../utils/cordovaUtilsPageEnumeration';
 
 
-export const IOSNotchedSpacer = styled.div`
+export const IOSNotchedSpacer = styled('div')`
   height: ${() => ((isIPhone5p5inMini()) ? '40px' : '36px')};
   top: 0;
   position: fixed;
@@ -21,7 +21,7 @@ export const IOSNotchedSpacer = styled.div`
   z-index: 1300;
 `;
 
-export const IOSNoNotchSpacer = styled.div`
+export const IOSNoNotchSpacer = styled('div')`
   height: ${() => {
     if (isIPad())                                   return '26px';
     if (isIPhone4p7in() || isIPhone5p5inEarly())    return '22px';
@@ -72,7 +72,7 @@ export const HeaderContentContainer = styled('div')(({ theme }) => (`
 `));
 
 
-export const HeaderContentOuterContainer = styled.div`
+export const HeaderContentOuterContainer = styled('div')`
   display: flex;
   justify-content: center;
   width: 100%;
@@ -124,7 +124,7 @@ export const DualHeaderContainer = styled('div', {
 //   classNameHeadroom = showBackToVoterGuides ? 'headroom-wrapper-webapp__voter-guide' : 'headroom-wrapper-webapp__default';
 // }
 // was <div className={isWebApp() ? classNameHeadroom : ''} id="headroom-wrapper">
-export const HeadroomWrapper = styled.div`
+export const HeadroomWrapper = styled('div')`
   // margin-top: ${() => ((isWebApp()) ? '48px' : '')};  // headroom-wrapper-webapp   // headroom-wrapper-webapp__default was 54px
   position: fixed;
   top: 0;
@@ -161,7 +161,7 @@ export const TopRowOneLeftContainer = styled('div')`
   justify-content: flex-start;
 `;
 
-export const TopRowOneMiddleContainer = styled.div`
+export const TopRowOneMiddleContainer = styled('div')`
   grid-row-start: 1;
   grid-row-end: 1;
   grid-column: 2 / 3;
@@ -200,7 +200,7 @@ export const TopRowTwoLeftContainer = styled('div')`
   text-overflow: ellipsis;
 `;
 
-export const TopRowTwoRightContainer = styled.div`
+export const TopRowTwoRightContainer = styled('div')`
   display: flex;
   justify-content: space-between;
   cursor: pointer;
@@ -270,7 +270,7 @@ ${theme.breakpoints.down('sm')} {
 }
 `));
 
-export const OfficeShareWrapper = styled.div`
+export const OfficeShareWrapper = styled('div')`
   margin-bottom: 12px;
   margin-right: ${(isIPad() || isIOSAppOnMac()) ? '19px' : ''};
 `;
