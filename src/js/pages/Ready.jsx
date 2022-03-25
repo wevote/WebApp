@@ -33,6 +33,8 @@ import AppObservableStore, { messageService } from '../stores/AppObservableStore
 import BallotStore from '../stores/BallotStore';
 import IssueStore from '../stores/IssueStore';
 import VoterStore from '../stores/VoterStore';
+// Lint is not smart enough to know that lazyPreloadPages will not attempt to preload/reload this page
+// eslint-disable-next-line import/no-cycle
 import lazyPreloadPages from '../utils/lazyPreloadPages';
 
 const ReadMore = React.lazy(() => import(/* webpackChunkName: 'ReadMore' */ '../common/components/Widgets/ReadMore'));
