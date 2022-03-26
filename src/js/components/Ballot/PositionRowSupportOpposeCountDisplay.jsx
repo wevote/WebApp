@@ -96,83 +96,6 @@ class PositionRowSupportOpposeCountDisplay extends Component {
     this.onCachedPositionsOrIssueStoreChange();
   }
 
-  shouldComponentUpdate (nextProps, nextState) {
-    // This lifecycle method tells the component to NOT render if componentWillReceiveProps didn't see any changes
-    if (this.state.componentDidMountFinished === false) {
-      // console.log('shouldComponentUpdate: componentDidMountFinished === false');
-      return true;
-    }
-    if (this.state.ballotItemDisplayName !== nextState.ballotItemDisplayName) {
-      // console.log('this.state.ballotItemDisplayName:', this.state.ballotItemDisplayName, ', nextState.ballotItemDisplayName:', nextState.ballotItemDisplayName);
-      return true;
-    }
-    if (this.state.ballotItemWeVoteId !== nextState.ballotItemWeVoteId) {
-      // console.log('this.state.ballotItemWeVoteId:', this.state.ballotItemWeVoteId, ', nextState.ballotItemWeVoteId:', nextState.ballotItemWeVoteId);
-      return true;
-    }
-    if (this.state.controlAdviserMaterialUIPopoverFromProp !== nextState.controlAdviserMaterialUIPopoverFromProp) {
-      // console.log('this.state.controlAdviserMaterialUIPopoverFromProp:', this.state.controlAdviserMaterialUIPopoverFromProp, ', nextState.controlAdviserMaterialUIPopoverFromProp:', nextState.controlAdviserMaterialUIPopoverFromProp);
-      return true;
-    }
-    if (this.state.issueWeVoteIdsLinkedToByOrganizationDictLength !== nextState.issueWeVoteIdsLinkedToByOrganizationDictLength) {
-      // console.log('this.state.issueWeVoteIdsLinkedToByOrganizationDictLength:', this.state.issueWeVoteIdsLinkedToByOrganizationDictLength, ', nextState.issueWeVoteIdsLinkedToByOrganizationDictLength:', nextState.issueWeVoteIdsLinkedToByOrganizationDictLength);
-      return true;
-    }
-    if (this.state.numberOfAllSupportPositions !== nextState.numberOfAllSupportPositions) {
-      return true;
-    }
-    if (this.state.numberOfAllOpposePositions !== nextState.numberOfAllOpposePositions) {
-      return true;
-    }
-    if (this.state.numberOfAllInfoOnlyPositions !== nextState.numberOfAllInfoOnlyPositions) {
-      return true;
-    }
-    if (this.props.closeSupportOpposeCountDisplayModal !== nextProps.closeSupportOpposeCountDisplayModal) {
-      return true;
-    }
-    if (this.props.openAdviserMaterialUIPopover !== nextProps.openAdviserMaterialUIPopover) {
-      return true;
-    }
-    if (this.props.openSupportOpposeCountDisplayModal !== nextProps.openSupportOpposeCountDisplayModal) {
-      return true;
-    }
-    if (this.state.organizationWeVoteIdsVoterIsFollowingLength !== nextState.organizationWeVoteIdsVoterIsFollowingLength) {
-      // console.log('this.state.organizationWeVoteIdsVoterIsFollowingLength:', this.state.organizationWeVoteIdsVoterIsFollowingLength, ', nextState.organizationWeVoteIdsVoterIsFollowingLength:', nextState.organizationWeVoteIdsVoterIsFollowingLength);
-      return true;
-    }
-    if (this.state.positionsInNetworkSummaryListLength !== nextState.positionsInNetworkSummaryListLength) {
-      return true;
-    }
-    if (this.state.positionsOutOfNetworkSummaryListLength !== nextState.positionsOutOfNetworkSummaryListLength) {
-      return true;
-    }
-    if (this.props.supportOpposeCountDisplayModalTutorialOn !== nextProps.supportOpposeCountDisplayModalTutorialOn) {
-      return true;
-    }
-    if (this.props.supportOpposeCountDisplayModalTutorialText !== nextProps.supportOpposeCountDisplayModalTutorialText) {
-      return true;
-    }
-    if (this.props.showDownArrow !== nextProps.showDownArrow) {
-      return true;
-    }
-    if (this.props.showUpArrow !== nextProps.showUpArrow) {
-      return true;
-    }
-    if (this.state.voterPersonalNetworkScore !== nextState.voterPersonalNetworkScore) {
-      // console.log('this.state.voterPersonalNetworkScore:', this.state.voterPersonalNetworkScore, ', nextState.voterPersonalNetworkScore:', nextState.voterPersonalNetworkScore);
-      return true;
-    }
-    if (this.state.voterOpposesBallotItem !== nextState.voterOpposesBallotItem) {
-      // console.log('this.state.voterOpposesBallotItem:', this.state.voterOpposesBallotItem, ', nextState.voterOpposesBallotItem:', nextState.voterOpposesBallotItem);
-      return true;
-    }
-    if (this.state.voterSupportsBallotItem !== nextState.voterSupportsBallotItem) {
-      // console.log('this.state.voterSupportsBallotItem:', this.state.voterSupportsBallotItem, ', nextState.voterSupportsBallotItem:', nextState.voterSupportsBallotItem);
-      return true;
-    }
-    return false;
-  }
-
   componentDidCatch (error, info) {
     // We should get this information to Splunk!
     console.error('PositionRowSupportOpposeCountDisplay caught error: ', `${error} with info: `, info);
@@ -310,10 +233,12 @@ class PositionRowSupportOpposeCountDisplay extends Component {
   onCandidateStoreChange () {
     const { isCandidate } = this.state;
     if (isCandidate) {
-      const { ballotItemWeVoteId: candidateWeVoteId } = this.state;
-      const countResults = CandidateStore.getNumberOfPositionsByCandidateWeVoteId(candidateWeVoteId);
+      const { ballotItemWeVoteId } = this.props;
+      const ballotItemDisplayName = CandidateStore.getCandidateName(ballotItemWeVoteId);
+      const countResults = CandidateStore.getNumberOfPositionsByCandidateWeVoteId(ballotItemWeVoteId);
       const { numberOfAllSupportPositions, numberOfAllOpposePositions, numberOfAllInfoOnlyPositions } = countResults;
       this.setState({
+        ballotItemDisplayName,
         numberOfAllSupportPositions,
         numberOfAllOpposePositions,
         numberOfAllInfoOnlyPositions,
@@ -325,10 +250,12 @@ class PositionRowSupportOpposeCountDisplay extends Component {
   onMeasureStoreChange () {
     const { isMeasure } = this.state;
     if (isMeasure) {
-      const { ballotItemWeVoteId: measureWeVoteId } = this.state;
-      const countResults = MeasureStore.getNumberOfPositionsByMeasureWeVoteId(measureWeVoteId);
+      const { ballotItemWeVoteId } = this.props;
+      const ballotItemDisplayName = MeasureStore.getMeasureName(ballotItemWeVoteId);
+      const countResults = MeasureStore.getNumberOfPositionsByMeasureWeVoteId(ballotItemWeVoteId);
       const { numberOfAllSupportPositions, numberOfAllOpposePositions, numberOfAllInfoOnlyPositions } = countResults;
       this.setState({
+        ballotItemDisplayName,
         numberOfAllSupportPositions,
         numberOfAllOpposePositions,
         numberOfAllInfoOnlyPositions,
@@ -364,24 +291,6 @@ class PositionRowSupportOpposeCountDisplay extends Component {
     this.onCachedPositionsOrIssueStoreChange();
   }
 
-  handleEnterHoverLocalArea = () => {
-    const { openSupportOpposeCountDisplayModal } = this.props;
-    if (openSupportOpposeCountDisplayModal) {
-      // If we open the Popover with a prop, then don't let the mouse motion close it
-    } else if (this.props.handleLeaveCandidateCard) {
-      this.props.handleLeaveCandidateCard();
-    }
-  };
-
-  handleLeaveHoverLocalArea = () => {
-    const { openSupportOpposeCountDisplayModal } = this.props;
-    if (openSupportOpposeCountDisplayModal) {
-      // If we open the Popover with a prop, then don't let the mouse motion close it
-    } else if (this.props.handleEnterCandidateCard) {
-      this.props.handleEnterCandidateCard();
-    }
-  };
-
   stopOpposingItem () {
     const { ballotItemWeVoteId } = this.props;
     const isMeasure = stringContains('meas', ballotItemWeVoteId);
@@ -416,7 +325,7 @@ class PositionRowSupportOpposeCountDisplay extends Component {
     renderLog('PositionRowSupportOpposeCountDisplay');  // Set LOG_RENDER_EVENTS to log all renders
     const {
       ballotItemWeVoteId, classes, controlAdviserMaterialUIPopoverFromProp, inModal,
-      openAdviserMaterialUIPopover, uniqueExternalId,
+      openAdviserMaterialUIPopover, showInfoOnly, showNoOpinions, showOppose, showSupport, uniqueExternalId,
     } = this.props;
     // console.log('PositionRowSupportOpposeCountDisplay, controlAdviserMaterialUIPopoverFromProp: ', controlAdviserMaterialUIPopoverFromProp,  ', openAdviserMaterialUIPopover:', openAdviserMaterialUIPopover);
     const {
@@ -507,10 +416,7 @@ class PositionRowSupportOpposeCountDisplay extends Component {
     // console.log('(!showVoterPersonalScore && !voterSupportsBallotItem && !voterOpposesBallotItem):', (!showVoterPersonalScore && !voterSupportsBallotItem && !voterOpposesBallotItem));
     // console.log('(showVoterPersonalScore && !voterSupportsBallotItem && !voterOpposesBallotItem):', (showVoterPersonalScore && !voterSupportsBallotItem && !voterOpposesBallotItem));
     return (
-      <Wrapper
-        onMouseEnter={this.handleEnterHoverLocalArea}
-        onMouseLeave={this.handleLeaveHoverLocalArea}
-      >
+      <Wrapper>
         {/* Gray overview display. Show if no personalized score, or voter position */}
         <EndorsementsOverviewShowOrNotShow>
           <StickyPopover
@@ -524,38 +430,77 @@ class PositionRowSupportOpposeCountDisplay extends Component {
             showCloseIcon
           >
             <EndorsementsContainer className="u-cursor--pointer u-no-break">
-              <EndorsementsTitle>
-                Opinions
-              </EndorsementsTitle>
               <EndorsementsOuterWrapper>
                 <EndorsementsInnerWrapper>
-                  <EndorsementRow>
-                    <ThumbUp classes={{ root: classes.endorsementIconRoot }} />
-                    <EndorsementCount>
-                      {numberOfAllSupportPositions}
-                      {' '}
-                      Yes
-                    </EndorsementCount>
-                  </EndorsementRow>
-                  { showOpposeCount && (
+                  {showSupport && (
                     <EndorsementRow>
-                      <ThumbDown classes={{ root: classes.endorsementIconRoot }} />
                       <EndorsementCount>
-                        {numberOfAllOpposePositions}
-                        {' '}
-                        No
+                        <ChooseWrapper>
+                          {numberOfAllSupportPositions > 1 ? (
+                            <>
+                              {numberOfAllSupportPositions}
+                              {' '}
+                              Choose
+                            </>
+                          ) : (
+                            <>Chooses</>
+                          )}
+                          {' '}
+                          {ballotItemDisplayName}
+                        </ChooseWrapper>
                       </EndorsementCount>
                     </EndorsementRow>
                   )}
-                  { showCommentCount && (
-                    <EndorsementRow>
-                      <Comment classes={{ root: classes.endorsementIconRoot }} />
-                      <EndorsementCount>
-                        {numberOfAllInfoOnlyPositions}
-                        {' '}
-                        Info
-                      </EndorsementCount>
-                    </EndorsementRow>
+                  {showOppose && (
+                    <>
+                      { showOpposeCount && (
+                        <EndorsementRow>
+                          <EndorsementCount>
+                            <OpposeWrapper>
+                              {numberOfAllOpposePositions > 1 ? (
+                                <>
+                                  {numberOfAllOpposePositions}
+                                  {' '}
+                                  Oppose
+                                </>
+                              ) : (
+                                <>Opposes</>
+                              )}
+                            </OpposeWrapper>
+                          </EndorsementCount>
+                        </EndorsementRow>
+                      )}
+                    </>
+                  )}
+                  {showInfoOnly && (
+                    <>
+                      { showCommentCount && (
+                        <EndorsementRow>
+                          <EndorsementCount>
+                            {numberOfAllOpposePositions > 1 ? (
+                              <>
+                                {numberOfAllOpposePositions}
+                                {' '}
+                                Info Only
+                              </>
+                            ) : (
+                              <>Info Only</>
+                            )}
+                          </EndorsementCount>
+                        </EndorsementRow>
+                      )}
+                    </>
+                  )}
+                  {showNoOpinions && (
+                    <>
+                      { showCommentCount && (
+                        <EndorsementRow>
+                          <EndorsementCount>
+                            No Opinions
+                          </EndorsementCount>
+                        </EndorsementRow>
+                      )}
+                    </>
                   )}
                 </EndorsementsInnerWrapper>
               </EndorsementsOuterWrapper>
@@ -571,18 +516,14 @@ PositionRowSupportOpposeCountDisplay.propTypes = {
   ballotItemDisplayName: PropTypes.string,
   ballotItemWeVoteId: PropTypes.string.isRequired,
   classes: PropTypes.object,
-  closeSupportOpposeCountDisplayModal: PropTypes.bool,
   controlAdviserMaterialUIPopoverFromProp: PropTypes.bool,
   goToBallotItem: PropTypes.func, // We don't require this because sometimes we don't want the link to do anything
-  handleLeaveCandidateCard: PropTypes.func,
-  handleEnterCandidateCard: PropTypes.func,
   inModal: PropTypes.bool,
   openAdviserMaterialUIPopover: PropTypes.bool,
-  openSupportOpposeCountDisplayModal: PropTypes.bool,
-  supportOpposeCountDisplayModalTutorialOn: PropTypes.bool,
-  supportOpposeCountDisplayModalTutorialText: PropTypes.object,
-  showDownArrow: PropTypes.bool,
-  showUpArrow: PropTypes.bool,
+  showInfoOnly: PropTypes.bool,
+  showOppose: PropTypes.bool,
+  showNoOpinions: PropTypes.bool,
+  showSupport: PropTypes.bool,
   uniqueExternalId: PropTypes.string,
 };
 
@@ -597,7 +538,12 @@ const styles = () => ({
   },
 });
 
+const ChooseWrapper = styled('div')(({ theme }) => (`
+  color: ${theme.colors.supportGreenRgb};
+`));
+
 const EndorsementCount = styled('div')`
+  color: #000;
   line-height: 15px;
   padding-top: 3px;
 `;
@@ -606,7 +552,8 @@ const EndorsementRow = styled('div')`
   display: flex;
   flex-flow: row nowrap;
   justify-content: space-between;
-  margin-left: 16px;
+  margin-left: 6px;
+  margin-right: 24px;
 `;
 
 const EndorsementsOuterWrapper = styled('div')`
@@ -624,28 +571,23 @@ const EndorsementsContainer = styled('div')`
 `;
 
 const EndorsementsInnerWrapper = styled('div')`
-  color: #888;
   display: flex;
   justify-content: flex-start;
-  text-align: right;
   user-select: none;
-  margin-top: -4px;
 `;
 
 const EndorsementsOverviewSpacer = styled('div')`
   padding-right: 8px;
 `;
 
-const EndorsementsTitle = styled('div')`
-  color: #888;
-  margin-left: 8px;
-  margin-right: 8px;
-`;
-
 const ItemActionBarWrapper = styled('div')`
   margin-bottom: 8px;
   width: 100%;
 `;
+
+const OpposeWrapper = styled('div')(({ theme }) => (`
+  color: ${theme.colors.opposeRedRgb};
+`));
 
 const PopoverWrapper = styled('div')`
   width: 100%;

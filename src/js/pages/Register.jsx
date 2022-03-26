@@ -16,7 +16,7 @@ import BrowserPushMessage from '../components/Widgets/BrowserPushMessage';
 import { messageService } from '../stores/AppObservableStore';
 import BallotStore from '../stores/BallotStore';
 import VoterStore from '../stores/VoterStore';
-import { formatStateName } from '../utils/formatStateName';
+import { formatStateName } from '../common/utils/formatStateName';
 
 const voteDotOrg = '../../img/global/logos/vote_dot_org_logo-530x200.png';
 const turboVote = '../../img/global/logos/turbovote-logo.png';

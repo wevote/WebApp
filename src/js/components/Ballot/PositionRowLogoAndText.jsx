@@ -110,12 +110,12 @@ class PositionRowLogoAndText extends Component {
     }
   }
 
-  onClickShowPositionDrawer (candidateWeVoteId) {
-    AppObservableStore.setOrganizationModalBallotItemWeVoteId(candidateWeVoteId);
-    // AppObservableStore.setPositionDrawerOrganizationWeVoteId(organizationWeVoteId);
-    // AppObservableStore.setPositionDrawerPositionWeVoteId(positionWeVoteId);
-    AppObservableStore.setShowOrganizationModal(true);
-    // AppObservableStore.setShowPositionDrawer(true);
+  onClickShowPositionDrawer (candidateWeVoteId, organizationWeVoteId) {
+    // AppObservableStore.setOrganizationModalBallotItemWeVoteId(candidateWeVoteId);
+    AppObservableStore.setPositionDrawerBallotItemWeVoteId(candidateWeVoteId);
+    AppObservableStore.setPositionDrawerOrganizationWeVoteId(organizationWeVoteId);
+    // AppObservableStore.setShowOrganizationModal(true);
+    AppObservableStore.setShowPositionDrawer(true);
   }
 
   render () {
@@ -130,7 +130,7 @@ class PositionRowLogoAndText extends Component {
       return null;
     }
     // console.log('PositionRowLogoAndText position render, position:', position);
-    const { ballot_item_we_vote_id: ballotItemWeVoteId } = position;
+    const { ballot_item_we_vote_id: ballotItemWeVoteId, speaker_we_vote_id: organizationWeVoteId } = position;
     const { organizationInVotersNetwork } = this.state;
 
     // console.log(position);
@@ -170,7 +170,7 @@ class PositionRowLogoAndText extends Component {
         <Wrapper>
           <OrganizationScoreSpacer />
           <OrganizationPhotoOuterWrapper
-            onClick={() => this.onClickShowPositionDrawer(ballotItemWeVoteId)}
+            onClick={() => this.onClickShowPositionDrawer(ballotItemWeVoteId, organizationWeVoteId)}
           >
             <OrganizationPhotoInnerWrapper>
               { position.speaker_image_url_https_medium ? (
@@ -190,9 +190,6 @@ class PositionRowLogoAndText extends Component {
             {supportOpposeInfo === 'SupportAndPartOfScore' ? (
               <OrganizationSupportWrapper>
                 <SupportAndPartOfScore>
-                  <OrganizationSupportWordWrapper>
-                    Yes
-                  </OrganizationSupportWordWrapper>
                   <ScoreWrapper>
                     <ScoreNumberWrapper>
                       +1
@@ -208,9 +205,6 @@ class PositionRowLogoAndText extends Component {
                 {supportOpposeInfo === 'OpposeAndPartOfScore' ? (
                   <OrganizationOpposeWrapper>
                     <OpposeAndPartOfScore>
-                      <OrganizationOpposeWordWrapper>
-                        No
-                      </OrganizationOpposeWordWrapper>
                       <ScoreWrapper>
                         <ScoreNumberWrapper>
                           -1
@@ -226,9 +220,6 @@ class PositionRowLogoAndText extends Component {
                     {supportOpposeInfo === 'SupportButNotPartOfScore' ? (
                       <OrganizationSupportWrapper>
                         <OrganizationSupportSquare>
-                          <OrganizationSupportWordWrapper>
-                            Yes
-                          </OrganizationSupportWordWrapper>
                           <AddScoreWrapper className="u-link-color-on-hover">
                             <ToScoreLabel1>
                               add
@@ -244,9 +235,6 @@ class PositionRowLogoAndText extends Component {
                         {supportOpposeInfo === 'OpposeButNotPartOfScore' ? (
                           <OrganizationOpposeWrapper>
                             <OrganizationOpposeSquare>
-                              <OrganizationOpposeWordWrapper>
-                                No
-                              </OrganizationOpposeWordWrapper>
                               <AddScoreWrapper className="u-link-color-on-hover">
                                 <ToScoreLabel1>
                                   add
@@ -304,7 +292,6 @@ const styles = (theme) => ({
 
 const AddScoreWrapper = styled('div')`
   align-items: center;
-  border-top: 1px dotted #dcdcdc;
   color: #ccc;
   display: flex;
   flex-flow: column;
@@ -357,10 +344,6 @@ const OrganizationInformationOnlyWrapper = styled('div')`
   z-index: 1;
 `;
 
-const OrganizationOpposeWordWrapper = styled('div')`
-  margin-bottom: 1px;
-`;
-
 const OrganizationOpposeSquare = styled('div')(({ theme }) => (`
   align-items: center;
   background: white;
@@ -407,10 +390,6 @@ const OrganizationScoreSpacer = styled('div')`
   height: 0px;
 `;
 
-const OrganizationSupportWordWrapper = styled('div')`
-  margin-bottom: 1px;
-`;
-
 const OrganizationSupportSquare = styled('div')(({ theme }) => (`
   align-items: center;
   background: white;
@@ -435,7 +414,6 @@ const ScoreNumberWrapper = styled('div')`
 
 const ScoreWrapper = styled('div')`
   align-items: center;
-  border-top: 1px dotted #dcdcdc;
   display: flex;
   flex-flow: column;
   justify-content: flex-start;

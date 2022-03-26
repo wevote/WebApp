@@ -367,14 +367,6 @@ const EditAddressWrapper = styled('div')(({ theme }) => (`
   }
 `));
 
-const SuspenseCard = styled('div')`
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  width: 290px;
-  height: 138px;
-`;
-
 const ElectionCountdownInnerWrapper = styled('div')`
   margin-top: -37px;
 `;
@@ -390,6 +382,14 @@ const ReadyPageContainer = styled('div')`
 `;
 
 const Paragraph = styled('div')`
+`;
+
+const SuspenseCard = styled('div')`
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 290px;
+  height: 138px;
 `;
 
 const Title = styled('h2')(({ theme }) => (`

@@ -198,11 +198,12 @@ class PositionRowEmpty extends Component {
   };
 
   render () {
-    const { ballotItemWeVoteId } = this.props;
     renderLog('PositionRowEmpty');  // Set LOG_RENDER_EVENTS to log all renders
-    // if (allCachedPositionsForThisBallotItemLength > 0) {
-    //   return null;
-    // }
+    const { ballotItemWeVoteId } = this.props;
+    const { allCachedPositionsForThisBallotItemLength } = this.state;
+    if (allCachedPositionsForThisBallotItemLength > 0) {
+      return null;
+    }
     const avatar = normalizedImagePath('../../img/global/svg-icons/avatar-generic.svg');
     const imagePlaceholder = (
       <SvgImage imageName={avatar} />
@@ -211,6 +212,9 @@ class PositionRowEmpty extends Component {
     // console.log('this.state.filteredPositionList render: ', this.state.filteredPositionList);
     return (
       <OuterWrapper>
+        <NoOneChoosesWrapper>
+          No Opinions Yet
+        </NoOneChoosesWrapper>
         <CandidateEndorsementsContainer key={`PositionRowEmpty-${ballotItemWeVoteId}`}>
           <RowItemWrapper>
             <OrganizationPhotoOuterWrapper>
@@ -222,9 +226,6 @@ class PositionRowEmpty extends Component {
             <YesNoScoreTextWrapper>
               <OrganizationSupportWrapper>
                 <OrganizationSupportSquare>
-                  <OrganizationSupportWordWrapper>
-                    Yes?
-                  </OrganizationSupportWordWrapper>
                   <AddScoreWrapper className="u-link-color-on-hover">
                     <ToScoreLabel1>
                       ask
@@ -255,31 +256,34 @@ const styles = () => ({
   },
 });
 
-const CandidateEndorsementsContainer = styled('div')`
-  display: flex;
-  justify-content: flex-start;
-`;
-
-const OuterWrapper = styled('div')`
-  height: 100%;
-  width: 64px;
-`;
-
-const RowItemWrapper = styled('div')`
-  align-items: center;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-`;
 const AddScoreWrapper = styled('div')`
   align-items: center;
-  border-top: 1px dotted #dcdcdc;
   color: #ccc;
   display: flex;
   flex-flow: column;
   font-weight: normal;
   justify-content: flex-start;
   padding-top: 4px;
+`;
+
+const CandidateEndorsementsContainer = styled('div')`
+  display: flex;
+  justify-content: flex-start;
+`;
+
+const NoOneChoosesWrapper = styled('div')`
+  line-height: 15px;
+  margin-left: 6px;
+  margin-right: 24px;
+  padding-bottom: 12px;
+  padding-top: 6px;
+  white-space: nowrap;
+`;
+
+const OuterWrapper = styled('div')`
+  border-left: 1px dotted #dcdcdc;
+  height: 100%;
+  width: 64px;
 `;
 
 const HorizontalSpacer = styled('div')`
@@ -313,10 +317,6 @@ const OrganizationPhotoOuterWrapper = styled('div')`
   width: 64px;
 `;
 
-const OrganizationSupportWordWrapper = styled('div')`
-  margin-bottom: 1px;
-`;
-
 const OrganizationSupportSquare = styled('div')(({ theme }) => (`
   align-items: center;
   background: white;
@@ -334,6 +334,13 @@ const OrganizationSupportSquare = styled('div')(({ theme }) => (`
 const OrganizationSupportWrapper = styled('div')`
   position: relative;
   z-index: 1;
+`;
+
+const RowItemWrapper = styled('div')`
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 `;
 
 const ToScoreLabel1 = styled('div')`

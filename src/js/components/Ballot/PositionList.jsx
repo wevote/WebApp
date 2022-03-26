@@ -14,8 +14,8 @@ import OrganizationStore from '../../stores/OrganizationStore';
 import FilterBase from '../Filter/FilterBase';
 import VoterGuideOrganizationFilter from '../Filter/VoterGuideOrganizationFilter';
 import NumberOfItemsFound from '../Widgets/NumberOfItemsFound';
-import PositionItem from './PositionItem';
 
+const PositionItem = React.lazy(() => import(/* webpackChunkName: 'PositionItem' */ './PositionItem'));
 const ShowMoreItems = React.lazy(() => import(/* webpackChunkName: 'ShowMoreItems' */ '../Widgets/ShowMoreItems'));
 
 
@@ -314,8 +314,8 @@ class PositionList extends Component {
           )}
           <FilterBase
             allItems={positionList}
-            groupedFilters={groupedFilters}
-            islandFilters={islandFilters}
+            groupedFilters={filteredPositionListLength > 10 ? groupedFilters : []}
+            islandFilters={filteredPositionListLength > 10 ? islandFilters : []}
             numberOfItemsFoundNode={(
               <NumberOfItemsFound
                 numberOfItemsTotal={isSearching ? totalNumberOfPositionSearchResults : filteredPositionListLength}
@@ -383,12 +383,14 @@ class PositionList extends Component {
             ) : null;
             return (
               <div key={`${onePosition.position_we_vote_id}-${onePosition.voter_guide_we_vote_id}-${onePosition.speaker_display_name}`}>
-                <PositionItem
-                  // ballotItemDisplayName={this.props.ballotItemDisplayName}
-                  position={onePosition}
-                  searchResultsNode={searchResultsNode}
-                  params={this.props.params}
-                />
+                <Suspense fallback={<></>}>
+                  <PositionItem
+                    // ballotItemDisplayName={this.props.ballotItemDisplayName}
+                    position={onePosition}
+                    searchResultsNode={searchResultsNode}
+                    params={this.props.params}
+                  />
+                </Suspense>
               </div>
             );
           })}

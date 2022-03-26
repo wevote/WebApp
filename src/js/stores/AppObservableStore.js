@@ -119,6 +119,16 @@ export default {
     nonFluxState.pendingSnackSeverity = severity;
   },
 
+  setPositionDrawerBallotItemWeVoteId (ballotItemWeVoteId) {
+    nonFluxState.positionDrawerBallotItemWeVoteId = ballotItemWeVoteId;
+    messageService.sendMessage('state updated positionDrawerBallotItemWeVoteId');
+  },
+
+  setPositionDrawerOrganizationWeVoteId (organizationWeVoteId) {
+    nonFluxState.positionDrawerOrganizationWeVoteId = organizationWeVoteId;
+    messageService.sendMessage('state updated positionDrawerOrganizationWeVoteId');
+  },
+
   setScrolled (scrolledDown) {
     nonFluxState.scrolledDown = scrolledDown;
     messageService.sendMessage('state updated scrolledDown');
@@ -305,6 +315,14 @@ export default {
 
   getCurrentPathname () {
     return nonFluxState.currentPathname;
+  },
+
+  getPositionDrawerBallotItemWeVoteId () {
+    return nonFluxState.positionDrawerBallotItemWeVoteId;
+  },
+
+  getPositionDrawerOrganizationWeVoteId () {
+    return nonFluxState.positionDrawerOrganizationWeVoteId;
   },
 
   getGoogleAnalyticsEnabled () {

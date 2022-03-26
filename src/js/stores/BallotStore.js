@@ -5,7 +5,8 @@ import BallotActions from '../actions/BallotActions';
 import CandidateActions from '../actions/CandidateActions';
 import MeasureActions from '../actions/MeasureActions'; // eslint-disable-line import/no-cycle
 import Dispatcher from '../common/dispatcher/Dispatcher';
-import { stringContains } from '../utils/textFormat';
+import { formatStateName } from '../common/utils/formatStateName';
+import { stringContains, toTitleCase } from '../utils/textFormat';
 import convertVoterGuideToElection from '../utils/voterGuideFunctions';
 import SupportStore from './SupportStore'; // eslint-disable-line import/no-cycle
 import VoterStore from './VoterStore';
@@ -365,6 +366,88 @@ class BallotStore extends ReduceStore {
   getRaceLevelFilterTypeSaved () {
     // console.log('getRaceLevelFilterTypeSaved:', this.getState().raceLevelFilterTypeSaved);
     return this.getState().raceLevelFilterTypeSaved || 'All';
+  }
+
+  getOriginalTextAddress (simple = true) {
+    if (!this.isLoaded()) { return undefined; }
+    const civicId = VoterStore.electionId();
+    if (simple) {
+      let originalTextAddressSimple = '';
+      if (this.getState().ballots[civicId]) {
+        if (this.getState().ballots[civicId].original_text_city) {
+          let adjustedCity = this.getState().ballots[civicId].original_text_city;
+          if (adjustedCity.toUpperCase() === adjustedCity) {
+            adjustedCity = toTitleCase(adjustedCity);
+          }
+          originalTextAddressSimple += adjustedCity;
+          if (this.getState().ballots[civicId].original_text_state || this.getState().ballots[civicId].original_text_zip) {
+            originalTextAddressSimple += ', ';
+          }
+        }
+        if (this.getState().ballots[civicId].original_text_state) {
+          originalTextAddressSimple += formatStateName(this.getState().ballots[civicId].original_text_state);
+          originalTextAddressSimple += ' ';
+        }
+        if (this.getState().ballots[civicId].original_text_zip) {
+          originalTextAddressSimple += this.getState().ballots[civicId].original_text_zip;
+        }
+      }
+      return originalTextAddressSimple;
+    }
+    return '';
+  }
+
+  getOriginalTextState () {
+    if (!this.isLoaded()) { return undefined; }
+    const civicId = VoterStore.electionId();
+    let originalTextState = '';
+    if (this.getState().ballots[civicId]) {
+      if (this.getState().ballots[civicId].original_text_state) {
+        originalTextState += formatStateName(this.getState().ballots[civicId].original_text_state);
+      }
+    }
+    return originalTextState;
+  }
+
+  getSubstitutedAddress (simple = true) {
+    if (!this.isLoaded()) { return undefined; }
+    const civicId = VoterStore.electionId();
+    if (simple) {
+      let substitutedAddressSimple = '';
+      if (this.getState().ballots[civicId]) {
+        if (this.getState().ballots[civicId].substituted_address_city) {
+          let adjustedCity = this.getState().ballots[civicId].substituted_address_city;
+          if (adjustedCity.toUpperCase() === adjustedCity) {
+            adjustedCity = toTitleCase(adjustedCity);
+          }
+          substitutedAddressSimple += adjustedCity;
+          if (this.getState().ballots[civicId].substituted_address_state || this.getState().ballots[civicId].substituted_address_zip) {
+            substitutedAddressSimple += ', ';
+          }
+        }
+        if (this.getState().ballots[civicId].substituted_address_state) {
+          substitutedAddressSimple += formatStateName(this.getState().ballots[civicId].substituted_address_state);
+          substitutedAddressSimple += ' ';
+        }
+        if (this.getState().ballots[civicId].substituted_address_zip) {
+          substitutedAddressSimple += this.getState().ballots[civicId].substituted_address_zip;
+        }
+      }
+      return substitutedAddressSimple;
+    }
+    return '';
+  }
+
+  getSubstitutedState () {
+    if (!this.isLoaded()) { return undefined; }
+    const civicId = VoterStore.electionId();
+    let substitutedState = '';
+    if (this.getState().ballots[civicId]) {
+      if (this.getState().ballots[civicId].substituted_address_state) {
+        substitutedState += formatStateName(this.getState().ballots[civicId].substituted_address_state);
+      }
+    }
+    return substitutedState;
   }
 
   getTopLevelBallotItemWeVoteIds () {

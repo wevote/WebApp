@@ -2,7 +2,7 @@ import styled from '@mui/material/styles/styled';
 import withStyles from '@mui/styles/withStyles';
 import withTheme from '@mui/styles/withTheme';
 import PropTypes from 'prop-types';
-import React, { Component } from 'react';
+import React, { Component, Suspense } from 'react';
 import FriendActions from '../../actions/FriendActions';
 import OrganizationActions from '../../actions/OrganizationActions';
 import LoadingWheel from '../../common/components/Widgets/LoadingWheel';
@@ -15,6 +15,7 @@ import OrganizationStore from '../../stores/OrganizationStore';
 import VoterStore from '../../stores/VoterStore';
 import PositionRowItem from './PositionRowItem';
 
+const PositionRowSupportOpposeCountDisplay = React.lazy(() => import(/* webpackChunkName: 'PositionRowSupportOpposeCountDisplay' */ './PositionRowSupportOpposeCountDisplay'));
 
 const STARTING_NUMBER_OF_POSITIONS_TO_DISPLAY = 5;
 
@@ -192,7 +193,7 @@ class PositionRowList extends Component {
 
   render () {
     const {
-      showInfoOnly, showOppose, showSupport,
+      ballotItemWeVoteId, showInfoOnly, showOppose, showSupport,
     } = this.props;
     const {
       filteredPositionList, filteredPositionListLength, numberOfPositionItemsToDisplay,
@@ -207,6 +208,19 @@ class PositionRowList extends Component {
     let numberOfPositionItemsDisplayed = 0;
     return (
       <CandidateEndorsementsWrapper>
+        {filteredPositionListLength > 0 && (
+          <ChooseOpposeInfoHeaderWrapper>
+            <Suspense fallback={<></>}>
+              <PositionRowSupportOpposeCountDisplay
+                ballotItemWeVoteId={ballotItemWeVoteId}
+                // goToBallotItem={this.onClickShowOrganizationModal}
+                showInfoOnly={showInfoOnly}
+                showOppose={showOppose}
+                showSupport={showSupport}
+              />
+            </Suspense>
+          </ChooseOpposeInfoHeaderWrapper>
+        )}
         <CandidateEndorsementsContainer>
           {filteredPositionList.map((onePosition) => {
             // console.log('numberOfPositionItemsDisplayed:', numberOfPositionItemsDisplayed);
@@ -298,6 +312,11 @@ const CandidateEndorsementsRightSpacer = styled('div')`
 
 const CandidateEndorsementsWrapper = styled('div')`
   height: 100%;
+`;
+
+const ChooseOpposeInfoHeaderWrapper = styled('div')`
+  border-left: 1px dotted #dcdcdc;
+  padding-bottom: 9px;
 `;
 
 const ShowMoreEndorsementsContainer = styled('div')(({ theme }) => (`

@@ -188,6 +188,7 @@ class FooterBar extends React.Component {
 FooterBar.propTypes = {
 };
 
+// DALE NOTE MAY HAVE CHANGED WITH MUI 5 2022-03-23
 const styles = () => ({
   anchorOriginTopRightRectangular: {
     top: isFriendsTabSelected ? 0 : 2,
