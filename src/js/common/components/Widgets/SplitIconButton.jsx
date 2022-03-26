@@ -1,8 +1,8 @@
 import { Button } from '@mui/material';
-import styled from '@mui/material/styles/styled';
 import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
 import React, { PureComponent } from 'react';
+import styled from 'styled-components';
 import { getTextColorFromBackground } from '../../utils/color';
 import { renderLog } from '../../utils/logging';
 

@@ -1,10 +1,10 @@
 import { Close } from '@mui/icons-material';
 import { Button, Dialog, DialogContent, DialogTitle, IconButton, InputBase } from '@mui/material';
-import styled from '@mui/material/styles/styled';
 import withStyles from '@mui/styles/withStyles';
 import withTheme from '@mui/styles/withTheme';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
+import styled from 'styled-components';
 import SupportActions from '../../actions/SupportActions';
 import { hasIPhoneNotch, isAndroid, prepareForCordovaKeyboard, restoreStylesAfterCordovaKeyboard } from '../../common/utils/cordovaUtils';
 import { isCordova } from '../../common/utils/isCordovaOrWebApp';

@@ -1,9 +1,9 @@
 import { Close } from '@mui/icons-material';
 import { Dialog, DialogContent, DialogTitle, FormControl, FormControlLabel, IconButton, Radio, Typography } from '@mui/material';
-import styled from '@mui/material/styles/styled';
 import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
+import styled from 'styled-components';
 import SupportActions from '../../actions/SupportActions';
 import { isAndroidSizeMD } from '../../common/utils/cordovaUtils'; // hasIPhoneNotch,
 import { isCordova, isWebApp } from '../../common/utils/isCordovaOrWebApp';

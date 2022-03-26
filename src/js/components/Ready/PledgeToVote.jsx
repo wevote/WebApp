@@ -1,8 +1,8 @@
 import { Button, Checkbox, FormControlLabel, TextField } from '@mui/material';
-import styled from '@mui/material/styles/styled';
 import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
 import React from 'react';
+import styled from 'styled-components';
 import { formatDateToYearMonthDay } from '../../common/utils/dateFormat';
 import { renderLog } from '../../common/utils/logging';
 

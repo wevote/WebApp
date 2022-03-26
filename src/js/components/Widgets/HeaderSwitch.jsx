@@ -1,7 +1,7 @@
-import styled from '@mui/material/styles/styled';
 import withTheme from '@mui/styles/withTheme';
 import PropTypes from 'prop-types';
 import React, { PureComponent } from 'react';
+import styled from 'styled-components';
 
 class HeaderSwitch extends PureComponent {
   switchToDifferentCategory (switchToChoice = 0) {

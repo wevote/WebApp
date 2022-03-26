@@ -1,8 +1,8 @@
-import styled from '@mui/material/styles/styled';
 import withStyles from '@mui/styles/withStyles';
 import React, { Component, Suspense } from 'react';
 import Helmet from 'react-helmet';
 import { Link } from 'react-router-dom';
+import styled from 'styled-components';
 import AnalyticsActions from '../../actions/AnalyticsActions';
 import ExternalLinkIcon from '../../common/components/Widgets/ExternalLinkIcon';
 import ToolBar from '../../common/components/Widgets/ToolBar';

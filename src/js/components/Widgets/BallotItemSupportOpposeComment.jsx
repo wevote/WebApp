@@ -1,6 +1,6 @@
-import styled from '@mui/material/styles/styled';
 import PropTypes from 'prop-types';
 import React, { PureComponent, Suspense } from 'react';
+import styled from 'styled-components';
 import { isAndroidSizeMD } from '../../common/utils/cordovaUtils';
 import { isCordova } from '../../common/utils/isCordovaOrWebApp';
 import { renderLog } from '../../common/utils/logging';

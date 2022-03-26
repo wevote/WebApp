@@ -1,10 +1,10 @@
 import { Ballot } from '@mui/icons-material';
 import { Button, Card } from '@mui/material';
-import styled from '@mui/material/styles/styled';
 import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
 import Helmet from 'react-helmet';
+import styled from 'styled-components';
 import BallotActions from '../actions/BallotActions';
 import ElectionActions from '../actions/ElectionActions';
 import IssueActions from '../actions/IssueActions';

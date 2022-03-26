@@ -1,8 +1,8 @@
-import styled from '@mui/material/styles/styled';
 import withStyles from '@mui/styles/withStyles';
 import withTheme from '@mui/styles/withTheme';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
+import styled from 'styled-components';
 import OfficeActions from '../../actions/OfficeActions';
 import historyPush from '../../common/utils/historyPush';
 import { isCordova } from '../../common/utils/isCordovaOrWebApp';
@@ -220,22 +220,6 @@ class OfficeItemCompressed extends Component {
     }
   }
 
-  goToCandidateLink (candidateWeVoteId) {
-    const candidateLink = this.getCandidateLink(candidateWeVoteId);
-    historyPush(candidateLink);
-  }
-
-  goToOfficeLink () {
-    const officeLink = this.getOfficeLink();
-    historyPush(officeLink);
-  }
-
-  showAllCandidates () {
-    this.setState({
-      limitNumberOfCandidatesShowToThisNumber: 99,
-    });
-  }
-
   generateCandidates = () => {
     const { externalUniqueId } = this.props;
     let { candidatesToShowForSearchResults } = this.props;
@@ -400,6 +384,22 @@ class OfficeItemCompressed extends Component {
     );
   }
 
+  showAllCandidates () {
+    this.setState({
+      limitNumberOfCandidatesShowToThisNumber: 99,
+    });
+  }
+
+  goToCandidateLink (candidateWeVoteId) {
+    const candidateLink = this.getCandidateLink(candidateWeVoteId);
+    historyPush(candidateLink);
+  }
+
+  goToOfficeLink () {
+    const officeLink = this.getOfficeLink();
+    historyPush(officeLink);
+  }
+
   localPositionListHasBeenRetrievedOnce (officeWeVoteId) {
     if (officeWeVoteId) {
       const { positionListHasBeenRetrievedOnce } = this.state;
@@ -545,7 +545,7 @@ const CandidateParty = styled('div')`
 const CandidatesContainer = styled('div')`
   height: 100%;
   margin: 0px -10px;
-  min-width: 0px;
+  min-width: 0;
   width: 100%;
 `;
 

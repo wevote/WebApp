@@ -1,6 +1,6 @@
 import { Box, Grid } from '@mui/material';
-import styled from '@mui/material/styles/styled';
 import React from 'react';
+import styled from 'styled-components';
 import { PageTitle } from '../../common/components/Style/stepDisplayStyles';
 import { renderLog } from '../../common/utils/logging';
 import { PageContentContainerGetStarted } from '../../components/Style/pageLayoutStyles';

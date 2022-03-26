@@ -1,9 +1,9 @@
 import { Info } from '@mui/icons-material';
-import styled from '@mui/material/styles/styled';
 import withStyles from '@mui/styles/withStyles';
 import withTheme from '@mui/styles/withTheme';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
+import styled from 'styled-components';
 import ExternalLinkIcon from '../../common/components/Widgets/ExternalLinkIcon';
 import historyPush from '../../common/utils/historyPush';
 import { renderLog } from '../../common/utils/logging';

@@ -1,6 +1,5 @@
-import { Close, Info } from '@mui/icons-material';
+import { Close } from '@mui/icons-material';
 import { Drawer, IconButton } from '@mui/material';
-import styled from '@mui/material/styles/styled';
 import withStyles from '@mui/styles/withStyles';
 import withTheme from '@mui/styles/withTheme';
 import PropTypes from 'prop-types';
@@ -243,7 +242,7 @@ class PositionDrawer extends Component {
     // console.log(this.props.candidate_we_vote_id);
     renderLog('PositionDrawer');  // Set LOG_RENDER_EVENTS to log all renders
     const { classes, organizationWeVoteId, ballotItemWeVoteId, params } = this.props;
-    const { allCachedPositionsForThisBallotItem, ballotItemDisplayName, featuredPosition, isCandidate, isMeasure, modalOpen } = this.state;
+    const { featuredPosition, isCandidate, isMeasure, modalOpen } = this.state;
 
     return (
       <Drawer
@@ -401,8 +400,8 @@ const styles = () => ({
   },
 });
 
-const PositionListIntroductionText = styled('div')`
-  color: #999;
-`;
+// const PositionListIntroductionText = styled('div')`
+//   color: #999;
+// `;
 
 export default withTheme(withStyles(styles)(PositionDrawer));

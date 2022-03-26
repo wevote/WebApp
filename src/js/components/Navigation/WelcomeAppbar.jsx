@@ -1,9 +1,9 @@
 import { AccountCircle, Close, Menu } from '@mui/icons-material';
 import { AppBar, Button, IconButton, Toolbar } from '@mui/material';
-import styled from '@mui/material/styles/styled';
 import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
+import styled from 'styled-components';
 import OrganizationActions from '../../actions/OrganizationActions';
 import VoterGuideActions from '../../actions/VoterGuideActions';
 import VoterSessionActions from '../../actions/VoterSessionActions';
@@ -268,7 +268,7 @@ class WelcomeAppbar extends Component {
             <HeaderBarLogo light />
           </LogoContainer>
           <Navigation>
-            <DesktopView id="DesktopView">
+            <DesktopView>
               {showWelcomeForVoters &&
                 <NavLink id="welcomePageLink" to="/welcome">Welcome</NavLink>}
               {showWelcomeForOrganizations &&
@@ -353,7 +353,7 @@ class WelcomeAppbar extends Component {
                 </div>
               )}
             </DesktopView>
-            <MobileTabletView id="MobileTabletView">
+            <MobileTabletView>
               <NavLink id="welcomeYourBallotMobile1" to="/ballot">Your Ballot</NavLink>
               {voterIsSignedIn && (
                 <div>

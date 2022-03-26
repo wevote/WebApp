@@ -138,10 +138,6 @@ export default class Header extends Component {
     });
   }
 
-  closeActivityTidbitDrawer () {
-    AppObservableStore.setShowActivityTidbitDrawer(false);
-  }
-
   closeHowItWorksModal () {
     AppObservableStore.setShowHowItWorksModal(false);
   }
@@ -156,6 +152,10 @@ export default class Header extends Component {
 
   closePositionDrawer = () => {
     AppObservableStore.setShowPositionDrawer(false);
+  }
+
+  closeActivityTidbitDrawer () {
+    AppObservableStore.setShowActivityTidbitDrawer(false);
   }
 
   closeSharedItemModal () {

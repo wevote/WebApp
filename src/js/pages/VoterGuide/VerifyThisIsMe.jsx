@@ -1,10 +1,10 @@
 import { Button } from '@mui/material';
-import styled from '@mui/material/styles/styled';
 import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
 import Alert from 'react-bootstrap/Alert';
 import Helmet from 'react-helmet';
+import styled from 'styled-components';
 import TwitterActions from '../../actions/TwitterActions';
 import VoterSessionActions from '../../actions/VoterSessionActions';
 import LoadingWheel from '../../common/components/Widgets/LoadingWheel';

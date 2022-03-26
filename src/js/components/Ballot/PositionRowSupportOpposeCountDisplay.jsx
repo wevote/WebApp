@@ -1,4 +1,3 @@
-import { Comment, ThumbDown, ThumbUp } from '@mui/icons-material';
 import styled from '@mui/material/styles/styled';
 import withStyles from '@mui/styles/withStyles';
 import withTheme from '@mui/styles/withTheme';
@@ -324,7 +323,7 @@ class PositionRowSupportOpposeCountDisplay extends Component {
   render () {
     renderLog('PositionRowSupportOpposeCountDisplay');  // Set LOG_RENDER_EVENTS to log all renders
     const {
-      ballotItemWeVoteId, classes, controlAdviserMaterialUIPopoverFromProp, inModal,
+      ballotItemWeVoteId, controlAdviserMaterialUIPopoverFromProp, inModal,
       openAdviserMaterialUIPopover, showInfoOnly, showNoOpinions, showOppose, showSupport, uniqueExternalId,
     } = this.props;
     // console.log('PositionRowSupportOpposeCountDisplay, controlAdviserMaterialUIPopoverFromProp: ', controlAdviserMaterialUIPopoverFromProp,  ', openAdviserMaterialUIPopover:', openAdviserMaterialUIPopover);

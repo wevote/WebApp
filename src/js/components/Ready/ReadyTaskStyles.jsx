@@ -1,5 +1,5 @@
 import { Button } from '@mui/material';
-import styled from '@mui/material/styles/styled';
+import styled from 'styled-components';
 import { isCordova } from '../../common/utils/isCordovaOrWebApp';
 
 const ButtonLeft = styled('div')`

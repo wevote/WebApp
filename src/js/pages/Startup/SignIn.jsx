@@ -1,6 +1,6 @@
-import styled from '@mui/material/styles/styled';
 import PropTypes from 'prop-types';
 import React from 'react';
+import styled from 'styled-components';
 import { renderLog } from '../../common/utils/logging';
 import SettingsAccount from '../../components/Settings/SettingsAccount';
 import AppObservableStore from '../../stores/AppObservableStore';

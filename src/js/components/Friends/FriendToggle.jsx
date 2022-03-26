@@ -1,7 +1,7 @@
 import { Button, ClickAwayListener, MenuItem, MenuList } from '@mui/material';
-import styled from '@mui/material/styles/styled';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
+import styled from 'styled-components';
 import FriendActions from '../../actions/FriendActions';
 import { renderLog } from '../../common/utils/logging';
 import FriendStore from '../../stores/FriendStore';

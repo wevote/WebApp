@@ -5,13 +5,13 @@ import muiStyleOverrides from '../../../components/Style/muiStyleOverrides';
 const muiTheme = createTheme({
   palette: {
     primary: {
-      main: '#2E3C5D',
+      main: '#2E3C5D', // brandBlue
     },
     secondary: {
       main: '#ffffff',
       dark: '#f7f7f7',
       contrastText: '#2e3c5d',
-    },
+    }, // Feel free to change this
   },
   breakpoints: {
     values: {

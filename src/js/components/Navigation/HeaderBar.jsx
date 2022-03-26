@@ -1,9 +1,9 @@
 import { AccountCircle, Place, Search } from '@mui/icons-material';
 import { Button, IconButton, Tabs, Tooltip } from '@mui/material';
-import styled from '@mui/material/styles/styled';
 import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
+import styled from 'styled-components';
 import BallotActions from '../../actions/BallotActions';
 import OrganizationActions from '../../actions/OrganizationActions';
 import VoterActions from '../../actions/VoterActions';
@@ -666,7 +666,6 @@ class HeaderBar extends Component {
         hasNotch={hasIPhoneNotch()}
         scrolledDown={scrolledDown}
         hasSubmenu={displayTopMenuShadow()}
-        id="Ballot-HeaderBarWrapper"
       >
         <TopOfPageHeader>
           {/* <AppBar position="relative" */}

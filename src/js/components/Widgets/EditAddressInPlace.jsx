@@ -82,7 +82,7 @@ class EditAddressInPlace extends Component {
     renderLog('EditAddressInPlace');  // Set LOG_RENDER_EVENTS to log all renders
     const { classes, noAddressMessage } = this.props;
     const { location: { pathname } } = window;
-    const { ballotCaveat, editingAddress, textForMapSearch } = this.state;
+    const { editingAddress, textForMapSearch } = this.state;
     const noAddressMessageFiltered = noAddressMessage || '- no address entered -';
     const maximumAddressDisplayLength = 60;
     const ballotBaseUrl = calculateBallotBaseUrl(this.props.ballotBaseUrl, pathname);

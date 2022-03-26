@@ -1,9 +1,9 @@
 import { Check } from '@mui/icons-material';
 import { Box, Tab, TableBody, TableCell, TableContainer, TableHead, TableRow, Tabs, Typography } from '@mui/material';
-import styled from '@mui/material/styles/styled';
 import PropTypes from 'prop-types';
 import * as React from 'react';
 import Table from 'react-bootstrap/Table';
+import styled from 'styled-components';
 import { renderLog } from '../../common/utils/logging';
 // import { donationTheme } from '../../common/components/Style/donationTheme';
 
