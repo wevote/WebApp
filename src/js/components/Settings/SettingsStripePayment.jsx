@@ -1,15 +1,15 @@
-import { Button } from '@material-ui/core';
-import { withStyles } from '@material-ui/core/styles';
+import { Button } from '@mui/material';
+// TODO 5/11/21: Use Campaigns payment code:  import { CardElement, injectStripe } from 'react-stripe-elements';
+import styled from '@mui/material/styles/styled';
+import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-// TODO 5/11/21: Use Campaigns payment code:  import { CardElement, injectStripe } from 'react-stripe-elements';
-import styled from 'styled-components';
 import DonateActions from '../../common/actions/DonateActions';
-import DonateStore from '../../common/stores/DonateStore';
-import VoterStore from '../../stores/VoterStore';
-import { renderLog } from '../../common/utils/logging';
-import { numberWithCommas } from '../../utils/textFormat';
 import LoadingWheel from '../../common/components/Widgets/LoadingWheel';
+import DonateStore from '../../common/stores/DonateStore';
+import { renderLog } from '../../common/utils/logging';
+import VoterStore from '../../stores/VoterStore';
+import { numberWithCommas } from '../../utils/textFormat';
 
 /*
 July 2021 TODO: Same named file in the WebApp and Campaigns -- PLEASE KEEP THEM IDENTICAL -- make symmetrical changes and test on both sides
@@ -312,14 +312,13 @@ const styles = () => ({
   },
 });
 
-const PaymentDescriptionText = styled.div`
+const PaymentDescriptionText = styled('div')`
   align-items: center;
-  width: fit-content;
   width: 100%;
   margin-top: 12px;
 `;
 
-const StripeElementContainer = styled.div`
+const StripeElementContainer = styled('div')`
   margin: 32px 0 32px 0;
 `;
 

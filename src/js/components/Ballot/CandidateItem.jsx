@@ -1,20 +1,20 @@
-import { withStyles, withTheme } from '@material-ui/core/styles';
-import { Info, Twitter } from '@material-ui/icons';
+import { Info, Launch, Twitter } from '@mui/icons-material';
+import styled from '@mui/material/styles/styled';
+import withStyles from '@mui/styles/withStyles';
+import withTheme from '@mui/styles/withTheme';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
 import TextTruncate from 'react-text-truncate'; // Replace with: import TruncateMarkup from 'react-truncate-markup';
-import styled from 'styled-components';
+import { isAndroidSizeMD } from '../../common/utils/cordovaUtils';
+import historyPush from '../../common/utils/historyPush';
+import { renderLog } from '../../common/utils/logging';
 import AppObservableStore from '../../stores/AppObservableStore';
 import CandidateStore from '../../stores/CandidateStore';
 import IssueStore from '../../stores/IssueStore';
 import SupportStore from '../../stores/SupportStore';
 import VoterGuideStore from '../../stores/VoterGuideStore';
-import { isAndroidSizeMD } from '../../common/utils/cordovaUtils';
-import historyPush from '../../common/utils/historyPush';
 import isMobileAndTabletScreenSize from '../../utils/isMobileAndTabletScreenSize';
-import { renderLog } from '../../common/utils/logging';
 import { abbreviateNumber, numberWithCommas, stripHtmlFromString } from '../../utils/textFormat';
-import ExternalLinkIcon from '../../common/components/Widgets/ExternalLinkIcon';
 
 const BallotItemSupportOpposeComment = React.lazy(() => import(/* webpackChunkName: 'BallotItemSupportOpposeComment' */ '../Widgets/BallotItemSupportOpposeComment'));
 const BallotItemSupportOpposeCountDisplay = React.lazy(() => import(/* webpackChunkName: 'BallotItemSupportOpposeCountDisplay' */ '../Widgets/BallotItemSupportOpposeCountDisplay'));
@@ -100,6 +100,7 @@ class CandidateItem extends Component {
         officeWeVoteId: candidate.contest_office_we_vote_id,
         politicalParty: candidate.party,
         twitterFollowersCount: candidate.twitter_followers_count,
+        twitterHandle: candidate.twitter_handle,
         voterOpposesBallotItem,
         voterSupportsBallotItem,
         voterTextStatement,
@@ -215,6 +216,7 @@ class CandidateItem extends Component {
         ballotpediaCandidateUrl,
         candidatePhotoUrl,
         candidateText,
+        twitterHandle: candidate.twitter_handle,
         candidateUrl,
         candidateWeVoteId, // Move into state to signal that all state data is ready
         contestOfficeName: candidate.contest_office_name,
@@ -300,7 +302,7 @@ class CandidateItem extends Component {
 
   candidateRenderBlock = (candidateWeVoteId, useLinkToCandidatePage = false, forDesktop = false, openSupportOpposeCountDisplayModal = false) => {
     const {
-      controlAdviserMaterialUIPopoverFromProp, closeSupportOpposeCountDisplayModal,
+      classes, controlAdviserMaterialUIPopoverFromProp, closeSupportOpposeCountDisplayModal,
       hideCandidateUrl, linkToBallotItemPage, linkToOfficePage,
       openAdviserMaterialUIPopover,
       supportOpposeCountDisplayModalTutorialOn, supportOpposeCountDisplayModalTutorialText,
@@ -314,6 +316,7 @@ class CandidateItem extends Component {
       largeAreaHoverColorOnNow,
       politicalParty,
       twitterFollowersCount,
+      twitterHandle,
     } = this.state;
     // console.log('CandidateItem candidateRenderBlock, candidateWeVoteId:', candidateWeVoteId, ', useLinkToCandidatePage:', useLinkToCandidatePage, ', forDesktop:', forDesktop, ', linkToBallotItemPage:', linkToBallotItemPage);
     // console.log('candidateRenderBlock candidatePhotoUrl: ', candidatePhotoUrl);
@@ -334,37 +337,11 @@ class CandidateItem extends Component {
               />
             </div>
             <Candidate>
-              <div className={`card-main__display-name ${linkToBallotItemPage && largeAreaHoverColorOnNow && showHover ? 'card__blue' : ''}`}>
-                {ballotItemDisplayName}
-              </div>
-              {!!(twitterFollowersCount && forDesktop) && (
-                <span
-                  className={`u-show-desktop twitter-followers__badge ${linkToBallotItemPage ? 'u-cursor--pointer' : ''}`}
-                  onClick={linkToBallotItemPage ? this.goToCandidateLink : null}
-                >
-                  <Twitter />
-                  <span title={numberWithCommas(twitterFollowersCount)}>{abbreviateNumber(twitterFollowersCount)}</span>
-                </span>
-              )}
-              {(!hideCandidateUrl && candidateUrl && forDesktop) && (
-                <ExternalWebSiteWrapper className="u-show-desktop">
-                  <Suspense fallback={<></>}>
-                    <OpenExternalWebSite
-                      linkIdAttribute="candidateDesktop"
-                      url={candidateUrl}
-                      target="_blank"
-                      className="u-gray-mid"
-                      body={(
-                        <span>
-                          candidate website
-                          {' '}
-                          <ExternalLinkIcon />
-                        </span>
-                      )}
-                    />
-                  </Suspense>
-                </ExternalWebSiteWrapper>
-              )}
+              <CandidateNameRow>
+                <div className={`card-main__display-name ${linkToBallotItemPage && largeAreaHoverColorOnNow && showHover ? 'card__blue' : ''}`}>
+                  {ballotItemDisplayName}
+                </div>
+              </CandidateNameRow>
               { contestOfficeName && (
                 <div className={linkToBallotItemPage && largeAreaHoverColorOnNow && showHover ? 'card__blue' : ''}>
                   <OfficeNameText
@@ -375,6 +352,60 @@ class CandidateItem extends Component {
                   />
                 </div>
               )}
+              <CandidateLinksWrapper>
+                {!!(twitterHandle && twitterFollowersCount) && (
+                  <div>
+                    {linkToBallotItemPage ? (
+                      <TwitterWrapper className="u-cursor--pointer" onClick={this.goToCandidateLink}>
+                        <Twitter classes={{ root: classes.twitterLogo }} />
+                        <TwitterHandleWrapper>
+                          @
+                          {twitterHandle}
+                        </TwitterHandleWrapper>
+                        <span title={numberWithCommas(twitterFollowersCount)}>{abbreviateNumber(twitterFollowersCount)}</span>
+                      </TwitterWrapper>
+                    ) : (
+                      <TwitterWrapper>
+                        <Suspense fallback={<></>}>
+                          <OpenExternalWebSite
+                            linkIdAttribute="candidateTwitterDesktop"
+                            url={`https://twitter.com/${twitterHandle}`}
+                            target="_blank"
+                            body={(
+                              <TwitterInnerWrapper>
+                                <Twitter classes={{ root: classes.twitterLogo }} />
+                                <TwitterHandleWrapper>
+                                  @
+                                  {twitterHandle}
+                                </TwitterHandleWrapper>
+                                <TwitterFollowersWrapper title={numberWithCommas(twitterFollowersCount)}>{abbreviateNumber(twitterFollowersCount)}</TwitterFollowersWrapper>
+                              </TwitterInnerWrapper>
+                            )}
+                          />
+                        </Suspense>
+                      </TwitterWrapper>
+                    )}
+                  </div>
+                )}
+                {(!hideCandidateUrl && candidateUrl && forDesktop) && (
+                  <ExternalWebSiteWrapper className="u-show-desktop">
+                    <Suspense fallback={<></>}>
+                      <OpenExternalWebSite
+                        linkIdAttribute="candidateDesktop"
+                        url={candidateUrl}
+                        target="_blank"
+                        className="u-gray-mid"
+                        body={(
+                          <div>
+                            candidate website
+                            <Launch classes={{ root: classes.externalLinkIcon }} />
+                          </div>
+                        )}
+                      />
+                    </Suspense>
+                  </ExternalWebSiteWrapper>
+                )}
+              </CandidateLinksWrapper>
             </Candidate>
           </CandidateInfo>
           <BallotItemSupportOpposeCountDisplayWrapper>
@@ -652,6 +683,11 @@ CandidateItem.propTypes = {
 };
 
 const styles = () => ({
+  externalLinkIcon: {
+    color: '#999',
+    height: 14,
+    marginTop: '-3px',
+  },
   informationIcon: {
     color: '#999',
     width: 16,
@@ -659,54 +695,93 @@ const styles = () => ({
     marginTop: '-3px',
     marginRight: 4,
   },
+  twitterLogo: {
+    color: '#1d9bf0',
+    height: 18,
+    marginRight: '-2px',
+    marginTop: '-4px',
+  },
 });
 
-const BallotItemSupportOpposeCountDisplayWrapper = styled.div`
+const BallotItemSupportOpposeCountDisplayWrapper = styled('div')`
   cursor: pointer;
   float: right;
 `;
 
-const CandidateInfo = styled.div`
-  ${({ isClickable }) => ((isClickable) ? 'cursor: pointer;' : '')}
+const CandidateInfo = styled('div', {
+  shouldForwardProp: (prop) => !['isClickable'].includes(prop),
+})(({ isClickable }) => (`
+  ${isClickable ? 'cursor: pointer;' : ''}
   display: flex;
   flex-flow: row nowrap;
+`));
+
+const Candidate = styled('div')`
 `;
 
-const Candidate = styled.div`
+const CandidateItemWrapper = styled('div')`
 `;
 
-const CandidateItemWrapper = styled.div`
+const CandidateNameRow = styled('div')`
+  //display: flex;
+  //justify-content: flex-start;
 `;
 
-const CandidateWrapper = styled.div`
+const CandidateWrapper = styled('div')(({ theme }) => (`
   display: flex;
   flex-flow: row nowrap;
   justify-content: space-between;
   width: 100%;
-  @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
+  ${theme.breakpoints.down('sm')} {
     width: 100%;
   }
   ${() => (isAndroidSizeMD() ? { width: '92% !important' } : {})}
-`;
+`));
 
-const CandidateTextWrapper = styled.div`
+const CandidateTextWrapper = styled('div')`
   margin: 12px 0;
 `;
 
-const DesktopWrapper = styled.div`
+const CandidateLinksWrapper = styled('div')`
+  display: flex;
+  justify-content: flex-start;
 `;
 
-const ExternalWebSiteWrapper = styled.span`
+const DesktopWrapper = styled('div')`
+`;
+
+const ExternalWebSiteWrapper = styled('div')`
+  margin-top: 3px;
   padding-left: 15px;
   white-space: nowrap;
 `;
 
-const ForMoreInformationInfoText = styled.div`
+const ForMoreInformationInfoText = styled('div')`
   color: #999;
   margin-bottom: 4px;
 `;
 
-const MobileTabletWrapper = styled.div`
+const MobileTabletWrapper = styled('div')`
+`;
+
+const TwitterFollowersWrapper = styled('span')`
+  color: #000;
+`;
+
+const TwitterHandleWrapper = styled('span')`
+  color: #000;
+  margin-right: 5px;
+`;
+
+const TwitterInnerWrapper = styled('span')`
+  margin: 0;
+`;
+
+const TwitterWrapper = styled('div')`
+  font-size: 13px;
+  margin: 0;
+  margin-top: 4px;
+  white-space: nowrap;
 `;
 
 export default withTheme(withStyles(styles)(CandidateItem));

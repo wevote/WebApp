@@ -1,7 +1,7 @@
-import { withStyles } from '@material-ui/core/styles';
-import { Done } from '@material-ui/icons';
+import { Done } from '@mui/icons-material';
+import styled from '@mui/material/styles/styled';
+import withStyles from '@mui/styles/withStyles';
 import React from 'react';
-import styled from 'styled-components';
 import commonMuiStyles from '../../common/components/Style/commonMuiStyles';
 import { InnerWrapper, OuterWrapper, StepCircle, StepNumber } from '../../common/components/Style/stepDisplayStyles';
 import { renderLog } from '../../common/utils/logging';
@@ -74,14 +74,16 @@ function StartProgressIndicator (params) {
   );
 }
 
-const SeparatorBar = styled.hr`
-  display: ${(props) => (props.disp ? '' : 'none')};
+const SeparatorBar = styled('hr', {
+  shouldForwardProp: (prop) => !['disp'].includes(prop),
+})(({ disp }) => (`
+  display: ${disp ? '' : 'none'};
   width: 40px;
   margin-top: 14px;
   border-top: 2px solid green;
   border-radius: 2px;
   margin-right: 4px;
   margin-left: 4px;
-`;
+`));
 
 export default withStyles(commonMuiStyles)(StartProgressIndicator);

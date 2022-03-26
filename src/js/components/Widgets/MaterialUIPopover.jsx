@@ -1,9 +1,10 @@
-import { IconButton, Popover, Typography } from '@material-ui/core';
-import { withStyles, withTheme } from '@material-ui/core/styles';
-import { Close } from '@material-ui/icons';
+import { Close } from '@mui/icons-material';
+import { IconButton, Popover, Typography } from '@mui/material';
+import styled from '@mui/material/styles/styled';
+import withStyles from '@mui/styles/withStyles';
+import withTheme from '@mui/styles/withTheme';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import styled from 'styled-components';
 
 class MaterialUIPopover extends Component {
   constructor (props) {
@@ -116,10 +117,11 @@ class MaterialUIPopover extends Component {
           </Typography>
           <CloseWrapper>
             <IconButton
-            aria-label="Close"
-            classes={{ root: classes.iconButtonRoot }}
-            onClick={this.handleClose}
-            id="popoverCloseButton"
+              aria-label="Close"
+              classes={{ root: classes.iconButtonRoot }}
+              onClick={this.handleClose}
+              id="popoverCloseButton"
+              size="large"
             >
               <Close classes={{ root: classes.closeButton }} />
             </IconButton>
@@ -158,10 +160,10 @@ const styles = () => ({
   },
 });
 
-const ClickWrapper = styled.div`
+const ClickWrapper = styled('div')`
 `;
 
-const CloseWrapper = styled.div`
+const CloseWrapper = styled('div')`
 `;
 
 export default withTheme(withStyles(styles)(MaterialUIPopover));

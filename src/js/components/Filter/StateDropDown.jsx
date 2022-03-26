@@ -1,8 +1,9 @@
-import { FormControl, InputLabel, Select } from '@material-ui/core';
-import { withStyles, withTheme } from '@material-ui/core/styles';
+import { FormControl, InputLabel, Select } from '@mui/material';
+import styled from '@mui/material/styles/styled';
+import withStyles from '@mui/styles/withStyles';
+import withTheme from '@mui/styles/withTheme';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import styled from 'styled-components';
 import { convertStateCodeToStateText } from '../../common/utils/addressFunctions';
 import { renderLog } from '../../common/utils/logging';
 
@@ -150,7 +151,7 @@ const styles = ({
   },
 });
 
-const StateDropDownWrapper = styled.div`
+const StateDropDownWrapper = styled('div')`
   margin-right: 12px;
 `;
 

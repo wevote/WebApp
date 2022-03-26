@@ -1,14 +1,15 @@
-import { Chip } from '@material-ui/core';
-import { withStyles, withTheme } from '@material-ui/core/styles';
+import { Chip } from '@mui/material';
+import styled from '@mui/material/styles/styled';
+import withStyles from '@mui/styles/withStyles';
+import withTheme from '@mui/styles/withTheme';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
-import styled from 'styled-components';
+import SvgImage from '../../common/components/Widgets/SvgImage';
+import { renderLog } from '../../common/utils/logging';
+import normalizedImagePath from '../../common/utils/normalizedImagePath';
 import IssueStore from '../../stores/IssueStore';
 import VoterGuideStore from '../../stores/VoterGuideStore';
-import normalizedImagePath from '../../common/utils/normalizedImagePath';
-import { renderLog } from '../../common/utils/logging';
 import StickyPopover from '../Ballot/StickyPopover';
-import SvgImage from '../../common/components/Widgets/SvgImage';
 import IssueFollowToggleButton from './IssueFollowToggleButton';
 
 const ReadMore = React.lazy(() => import(/* webpackChunkName: 'ReadMore' */ '../../common/components/Widgets/ReadMore'));
@@ -178,7 +179,7 @@ class IssuesByOrganizationDisplayList extends Component {
         issueFollowedByVoter={issueFollowedByVoter}
       >
         <Chip
-          avatar={<SvgImage imageName={svg} otherStyles={{ fill: svgFill }} />}
+          avatar={<SvgImage imageName={svg} stylesTextIncoming={`fill: ${svgFill} !important;`} />}
           classes={{ root: classes.chipStyle }}
           label={oneIssue.issue_name}
           ref={this.valueSpan}
@@ -272,32 +273,34 @@ const styles = () => ({
   },
 });
 
-const Wrapper = styled.div`
-  overflow: show;
+const Wrapper = styled('div')`
+  overflow: visible;
   display: flex;
   flex-flow: row;
   justify-content: space-between;
 `;
 
-const FollowIfYouCare = styled.div`
+const FollowIfYouCare = styled('div')`
   color: #999;
   font-size: .75rem;
   margin-top: 6px;
 `;
 
-const FollowIssueToggleContainer = styled.div`
+const FollowIssueToggleContainer = styled('div')`
   margin-top: 20px;
 `;
 
-const IssuesByOrganization = styled.div`
-  width: ${(props) => (props.fullWidth ? '100%' : '85%')};
+const IssuesByOrganization = styled('div', {
+  shouldForwardProp: (prop) => !['fullWidth'].includes(prop),
+})(({ fullWidth, theme }) => (`
+  width: ${fullWidth ? '100%' : '85%'};
   padding: 6px 0 0 0;
-  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
-    width: ${(props) => (props.fullWidth ? '100%' : '90%')};
+  ${theme.breakpoints.down('md')} {
+    width: ${fullWidth ? '100%' : '90%'};
   }
-`;
+`));
 
-const IssueByOrganizationList = styled.ul`
+const IssueByOrganizationList = styled('ul')`
   display: flex;
   flex-wrap: wrap;
   padding-inline-start: 0;
@@ -305,28 +308,30 @@ const IssueByOrganizationList = styled.ul`
   width: 100%;
 `;
 
-const OrganizationAdvocatesText = styled.div`
+const OrganizationAdvocatesText = styled('div')`
   padding-bottom: 8px;
 `;
 
-const ValueIconAndTextOrganization = styled.span`
+const ValueIconAndTextOrganization = styled('span', {
+  shouldForwardProp: (prop) => !['issueFollowedByVoter'].includes(prop),
+})(({ issueFollowedByVoter }) => (`
   align-items: start;
   display: flex;
   flex: none;
-  ${({ issueFollowedByVoter }) => (issueFollowedByVoter ? 'font-weight: 800;' : '')}
+  ${issueFollowedByVoter ? 'font-weight: 800;' : ''}
   padding: 2px 4px 2px 0;
   position: relative;
   width: fit-content;
-`;
+`));
 
-const PopoverWrapper = styled.div`
+const PopoverWrapper = styled('div')`
   width: calc(100%);
   height: 100%;
   border-radius: 3px;
 `;
 
-const PopoverHeader = styled.div`
-  background: ${({ theme }) => theme.colors.brandBlue};
+const PopoverHeader = styled('div')(({ theme }) => (`
+  background: ${theme.colors.brandBlue};
   padding: 4px 8px;
   color: white;
   display: flex;
@@ -335,20 +340,20 @@ const PopoverHeader = styled.div`
   border-radius: 4px;
   border-bottom-right-radius: 0;
   border-bottom-left-radius: 0;
-`;
+`));
 
-const PopoverTitleIcon = styled.span`
+const PopoverTitleIcon = styled('span')`
   font-weight: bold;
   font-size: 16px;
 `;
 
-const PopoverTitleText = styled.div`
+const PopoverTitleText = styled('div')`
   font-size: 14px;
   font-weight: bold;
   margin-left: 8px;
 `;
 
-const PopoverDescriptionText = styled.div`
+const PopoverDescriptionText = styled('div')`
   padding: 8px;
 `;
 

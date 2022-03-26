@@ -1,3 +1,4 @@
+import styled from '@mui/material/styles/styled';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
@@ -35,7 +36,7 @@ export default class OfficeNameText extends Component {
       }
     } else if (showOfficeName) {
       nameText = (
-        <span>
+        <PartyAndOfficeWrapper>
           <span className="card-main__political-party u-bold u-gray-darker">
             {politicalParty}
             {' '}
@@ -47,7 +48,7 @@ export default class OfficeNameText extends Component {
             </Link>
           ) :
             <span className="candidate-card-main__office u-bold u-gray-darker">{ contestOfficeName }</span>}
-        </span>
+        </PartyAndOfficeWrapper>
       );
     } else {
       nameText = (
@@ -66,3 +67,7 @@ OfficeNameText.propTypes = {
   politicalParty: PropTypes.string,
   showOfficeName: PropTypes.bool,
 };
+
+const PartyAndOfficeWrapper = styled('div')`
+  line-height: 17px;
+`;

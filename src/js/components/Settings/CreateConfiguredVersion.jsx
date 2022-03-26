@@ -1,6 +1,6 @@
-import { withStyles } from '@material-ui/core/styles';
+import styled from '@mui/material/styles/styled';
+import withStyles from '@mui/styles/withStyles';
 import React, { Component, Suspense } from 'react';
-import styled from 'styled-components';
 import { renderLog } from '../../common/utils/logging';
 
 const OpenExternalWebSite = React.lazy(() => import(/* webpackChunkName: 'OpenExternalWebSite' */ '../../common/components/Widgets/OpenExternalWebSite'));
@@ -40,7 +40,7 @@ const styles = () => ({
   },
 });
 
-const Introduction = styled.p`
+const Introduction = styled('p')`
   margin: 0 0 16px 0;
   font-size: 14px;
 `;

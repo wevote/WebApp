@@ -1,11 +1,11 @@
+import styled from '@mui/material/styles/styled';
 import PropTypes from 'prop-types';
 import React, { PureComponent, Suspense } from 'react';
-import styled from 'styled-components';
-import CandidateStore from '../../stores/CandidateStore';
-import MeasureStore from '../../stores/MeasureStore';
 import { isAndroidSizeMD } from '../../common/utils/cordovaUtils';
 import { isCordova } from '../../common/utils/isCordovaOrWebApp';
 import { renderLog } from '../../common/utils/logging';
+import CandidateStore from '../../stores/CandidateStore';
+import MeasureStore from '../../stores/MeasureStore';
 import { stringContains } from '../../utils/textFormat';
 
 const ItemActionBar = React.lazy(() => import(/* webpackChunkName: 'ItemActionBar' */ './ItemActionBar/ItemActionBar'));
@@ -221,15 +221,15 @@ class BallotItemSupportOpposeComment extends PureComponent {
     // console.log('White background from root: ', showPositionStatementActionBar);
 
     return (
-      <Wrapper inModal={inModal2} showPositionStatementActionBar={showPositionStatementActionBar} crunched={isCordova() && !inModal2}>
+      <Wrapper inModal={inModal2} showPositionStatementActionBar={showPositionStatementActionBar} isCrunched={!!(isCordova() && !inModal2)}>
         {/* <BallotHeaderDivider className="u-show-mobile" /> */}
-        <ActionBarWrapper inModal={inModal2} crunched={isCordova() && !inModal2}>
+        <ActionBarWrapper isCrunched={!!(isCordova() && !inModal2)}>
           {/* Support/Oppose/Comment toggle here */}
           <Suspense fallback={<></>}>
             {itemActionBar}
           </Suspense>
         </ActionBarWrapper>
-        <CommentDisplayWrapper inModal={inModal2} crunched={isCordova() && !inModal2}>
+        <CommentDisplayWrapper isCrunched={!!(isCordova() && !inModal2)}>
           { commentDisplayDesktop }
           { commentDisplayMobile }
         </CommentDisplayWrapper>
@@ -253,27 +253,34 @@ function wrapperPadding (props) {
   return props.showPositionStatementActionBar || props.inModal ? padString : '0';
 }
 
-const Wrapper = styled.div`
+const Wrapper = styled('div', {
+  shouldForwardProp: (prop) => !['showPositionStatementActionBar', 'inModal', 'isCrunched'].includes(prop),
+})(({ showPositionStatementActionBar, inModal, isCrunched, theme }) => (`
   width: ${() => (isAndroidSizeMD() ? '95%' : '100%')};
-  background-color: ${({ showPositionStatementActionBar, inModal }) => (showPositionStatementActionBar || inModal ? '#eee' : 'white')} !important;
+  // background-color: ${showPositionStatementActionBar || inModal ? '#eee' : 'white'} !important;
+  background-color: white !important;
   padding: ${(props) => wrapperPadding(props)} !important;
   border-radius: 4px;
-  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+  ${theme.breakpoints.down('md')} {
     background-color: white;
     padding: 0;
   }
-  margin-top: ${(crunched) => (crunched ? '0' : '12px')};
-`;
+  margin-top: ${isCrunched ? '0' : '12px'};
+`));
 
-const ActionBarWrapper = styled.div`
-  padding: 0px;
-  margin-bottom: ${(crunched) => (crunched ? '3px' : '12px')};
-`;
+const ActionBarWrapper = styled('div', {
+  shouldForwardProp: (prop) => !['isCrunched'].includes(prop),
+})(({ isCrunched }) => (`
+  padding: 0;
+  margin-bottom: ${isCrunched ? '3px' : '12px'};
+`));
 
-const CommentDisplayWrapper = styled.div`
-  padding: 0px;
-  padding-bottom: ${(crunched) => (crunched ? '0' : '12px')};
-`;
+const CommentDisplayWrapper = styled('div', {
+  shouldForwardProp: (prop) => !['isCrunched'].includes(prop),
+})(({ isCrunched }) => (`
+  padding: 0;
+  padding-bottom: ${isCrunched ? '0' : '12px'};
+`));
 
 
 export default BallotItemSupportOpposeComment;

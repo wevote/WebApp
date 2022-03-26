@@ -1,22 +1,19 @@
-// import { ArrowBackIos } from '@material-ui/icons';
-// import { Edit } from '@material-ui/icons';
-
-import { Button, Table, TableBody, TableCell, TableHead, TableRow } from '@material-ui/core';
-import { withStyles } from '@material-ui/core/styles';
-import { CheckCircle } from '@material-ui/icons';
+import { CheckCircle } from '@mui/icons-material';
+import { Button, Table, TableBody, TableCell, TableHead, TableRow } from '@mui/material';
+import styled from '@mui/material/styles/styled';
+import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
 import Helmet from 'react-helmet';
-import styled from 'styled-components';
 import DonateActions from '../../common/actions/DonateActions';
-import AppObservableStore from '../../stores/AppObservableStore';
 import DonateStore from '../../common/stores/DonateStore';
+import { cordovaOpenSafariView } from '../../common/utils/cordovaUtils';
+import { formatDateToYearMonthDay } from '../../common/utils/dateFormat';
+import { isWebApp } from '../../common/utils/isCordovaOrWebApp';
+import { renderLog } from '../../common/utils/logging';
+import AppObservableStore from '../../stores/AppObservableStore';
 import OrganizationStore from '../../stores/OrganizationStore';
 import VoterStore from '../../stores/VoterStore';
-import { cordovaOpenSafariView } from '../../common/utils/cordovaUtils';
-import { isWebApp } from '../../common/utils/isCordovaOrWebApp';
-import { formatDateToYearMonthDay } from '../../common/utils/dateFormat';
-import { renderLog } from '../../common/utils/logging';
 import { stringContains } from '../../utils/textFormat';
 import CreateConfiguredVersion from './CreateConfiguredVersion';
 
@@ -823,26 +820,26 @@ const styles = () => ({
   },
 });
 
-const Wrapper = styled.div`
+const Wrapper = styled('div')`
 `;
 
-const Card = styled.div`
+const Card = styled('div')`
 `;
 
-const CardMain = styled.div`
+const CardMain = styled('div')`
 `;
 
-const MobileWrapper = styled.div`
+const MobileWrapper = styled('div')`
 `;
 
-const Separator = styled.div`
+const Separator = styled('div')`
   height: 1px;
   background: #ddd;
   width: 100%;
   margin: 24px 0;
 `;
 
-const SectionCard = styled.div`
+const SectionCard = styled('div')`
   width: 100%;
   border-radius: 3px;
   border: 1px solid #ddd;
@@ -856,7 +853,7 @@ const SectionCard = styled.div`
   overflow: hidden;
 `;
 
-const SectionCardMobile = styled.div`
+const SectionCardMobile = styled('div')`
   box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.2), 0 1px 1px 0 rgba(0, 0, 0, 0.14), 0 2px 1px -1px rgba(0, 0, 0, 0.12);
   width: 100%;
   border-radius: 3px;
@@ -867,7 +864,7 @@ const SectionCardMobile = styled.div`
   margin-bottom: 16px;
 `;
 
-const SectionTitle = styled.h4`
+const SectionTitle = styled('h4')`
   font-size: 14px;
   font-weight: bold;
   margin: 0;
@@ -876,13 +873,7 @@ const SectionTitle = styled.h4`
   color: #333;
 `;
 
-// const EditIcon = styled.div`
-//   position: absolute;
-//   right: 8px;
-//   top: 8px;
-// `;
-
-const SectionParagraph = styled.span`
+const SectionParagraph = styled('span')`
   font-size: 14px;
   margin-bottom: 4px;
   @media (min-width: 569px) {
@@ -890,11 +881,11 @@ const SectionParagraph = styled.span`
   }
 `;
 
-const StaticColumn = styled.div`
+const StaticColumn = styled('div')`
   position: static !important;
 `;
 
-const InvoiceFlexContainer = styled.div`
+const InvoiceFlexContainer = styled('div')`
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -902,12 +893,12 @@ const InvoiceFlexContainer = styled.div`
   margin-bottom: 4px;
 `;
 
-const FlexOne = styled.div`
+const FlexOne = styled('div')`
   font-weight: 500;
   color: #444;
 `;
 
-const FlexTwo = styled.div`
+const FlexTwo = styled('div')`
   font-weight: 500;
   color: black;
 `;

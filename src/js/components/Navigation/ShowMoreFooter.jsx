@@ -1,27 +1,33 @@
-import React from 'react';
+import { ArrowForward } from '@mui/icons-material';
+import styled from '@mui/material/styles/styled';
+import withStyles from '@mui/styles/withStyles';
+import withTheme from '@mui/styles/withTheme';
 import PropTypes from 'prop-types';
-import styled from 'styled-components';
-import { withTheme, withStyles } from '@material-ui/core/styles';
-import { ArrowForward } from '@material-ui/icons';
+import React from 'react';
 import { renderLog } from '../../common/utils/logging';
 
 
 class ShowMoreFooter extends React.Component {
   render () {
     renderLog('ShowMoreFooter');  // Set LOG_RENDER_EVENTS to log all renders
-    const { classes, showMoreId, showMoreLink } = this.props;
+    const { classes, hideArrow, showMoreId, showMoreLink, textAlign } = this.props;
 
     let { showMoreText } = this.props;
     if (!showMoreText) {
       showMoreText = 'Show more';
     }
+    const cleanTextAlign = (textAlign !== undefined && (typeof textAlign === 'string' || textAlign instanceof String)) ? textAlign : '';
 
     return (
-      <ShowMoreFooterStyled id={showMoreId} onClick={showMoreLink}>
-        <ShowMoreFooterText>
+      <ShowMoreFooterStyled id={showMoreId} onClick={showMoreLink} textalign={cleanTextAlign}>
+        <ShowMoreFooterText textAlign={cleanTextAlign}>
           { showMoreText }
-          {' '}
-          <ArrowForward classes={{ root: classes.cardFooterIconRoot }} />
+          {!hideArrow && (
+            <>
+              {' '}
+              <ArrowForward classes={{ root: classes.cardFooterIconRoot }} />
+            </>
+          )}
         </ShowMoreFooterText>
       </ShowMoreFooterStyled>
     );
@@ -29,9 +35,11 @@ class ShowMoreFooter extends React.Component {
 }
 ShowMoreFooter.propTypes = {
   classes: PropTypes.object,
+  hideArrow: PropTypes.bool,
   showMoreId: PropTypes.string.isRequired,
   showMoreLink: PropTypes.func.isRequired,
   showMoreText: PropTypes.string,
+  textAlign: PropTypes.string,
 };
 
 const styles = (theme) => ({
@@ -47,20 +55,22 @@ const styles = (theme) => ({
   },
 });
 
-const ShowMoreFooterStyled = styled.div`
-  border: 0px !important;
+const ShowMoreFooterStyled = styled('div', {
+  shouldForwardProp: (prop) => !['textAlign'].includes(prop),
+})(({ textAlign, theme }) => (`
+  border: 0 !important;
   color: #2e3c5d;
   cursor: pointer;
   display: block !important;
   background: #fff !important;
   font-size: 16px;
   font-weight: bold;
-  margin-bottom: 0px !important;
-  margin-top: 0px !important;
-  padding: 0px !important;
-  text-align: right !important;
+  margin-bottom: 0 !important;
+  margin-top: 0 !important;
+  padding: 0 !important;
+  text-align: ${textAlign ? { textAlign } : 'right'} !important;
   user-select: none;
-  @media (min-width: ${({ theme }) => theme.breakpoints.md}) {
+  ${theme.breakpoints.up('md')} {
     font-size: 18px;
   }
   &:hover {
@@ -70,20 +80,22 @@ const ShowMoreFooterStyled = styled.div`
   @media print{
     display: none;
   }
-`;
+`));
 
-const ShowMoreFooterText = styled.div`
+const ShowMoreFooterText = styled('div', {
+  shouldForwardProp: (prop) => !['textAlign'].includes(prop),
+})(({ textAlign, theme }) => (`
   margin-top: 8px !important;
   padding: 8px !important;
-  padding-bottom: 0px !important;
-  text-align: right !important;
-  @media (min-width: ${({ theme }) => theme.breakpoints.md}) {
+  padding-bottom: 0 !important;
+  text-align: ${textAlign ? { textAlign } : 'right'} !important;
+  ${theme.breakpoints.up('md')} {
     white-space: nowrap;
   }
   &:hover {
     text-decoration: underline;
   }
-`;
+`));
 
 export default withTheme(withStyles(styles)(ShowMoreFooter));
 

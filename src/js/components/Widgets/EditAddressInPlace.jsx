@@ -1,9 +1,10 @@
-import { withStyles } from '@material-ui/core/styles';
-import { Settings } from '@material-ui/icons';
+import { Settings } from '@mui/icons-material';
+import styled from '@mui/material/styles/styled';
+import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
-import styled from 'styled-components';
 import { renderLog } from '../../common/utils/logging';
+import BallotStore from '../../stores/BallotStore';
 import VoterStore from '../../stores/VoterStore';
 import { calculateBallotBaseUrl, shortenText } from '../../utils/textFormat';
 import AddressBox from '../AddressBox';
@@ -21,7 +22,9 @@ class EditAddressInPlace extends Component {
 
   componentDidMount () {
     // console.log('EditAddressInPlace componentDidMount');
+    this.ballotStoreListener = BallotStore.addListener(this.onBallotStoreChange.bind(this));
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
+    this.onBallotStoreChange();
     this.onVoterStoreChange();
     const { defaultIsEditingAddress } = this.props;
     this.setState({
@@ -30,7 +33,15 @@ class EditAddressInPlace extends Component {
   }
 
   componentWillUnmount () {
+    this.ballotStoreListener.remove();
     this.voterStoreListener.remove();
+  }
+
+  onBallotStoreChange () {
+    // console.log('AddressBox, onBallotStoreChange, this.state:', this.state);
+    this.setState({
+      ballotCaveat: BallotStore.getBallotCaveat(),
+    });
   }
 
   onVoterStoreChange () {
@@ -51,6 +62,12 @@ class EditAddressInPlace extends Component {
     }
   }
 
+  localTextForMapSearchUpdate = (textForMapSearch) => {
+    this.setState({
+      textForMapSearch,
+    });
+  }
+
   toggleEditingAddress = () => {
     const { editingAddress } = this.state;
     if (this.props.toggleEditingAddress) {
@@ -65,7 +82,7 @@ class EditAddressInPlace extends Component {
     renderLog('EditAddressInPlace');  // Set LOG_RENDER_EVENTS to log all renders
     const { classes, noAddressMessage } = this.props;
     const { location: { pathname } } = window;
-    const { editingAddress, textForMapSearch } = this.state;
+    const { ballotCaveat, editingAddress, textForMapSearch } = this.state;
     const noAddressMessageFiltered = noAddressMessage || '- no address entered -';
     const maximumAddressDisplayLength = 60;
     const ballotBaseUrl = calculateBallotBaseUrl(this.props.ballotBaseUrl, pathname);
@@ -77,11 +94,12 @@ class EditAddressInPlace extends Component {
             Please enter your full street address with house number for your correct ballot.
           </div>
           <AddressBox
+            editingAddress
+            returnNewTextForMapSearch={this.localTextForMapSearchUpdate}
+            saveUrl={ballotBaseUrl}
             showCancelEditAddressButton
             toggleEditingAddress={this.toggleEditingAddress}
-            saveUrl={ballotBaseUrl}
             toggleSelectAddressModal={this.incomingToggleFunction}
-            editingAddress
           />
         </span>
       );
@@ -101,7 +119,7 @@ class EditAddressInPlace extends Component {
                   <Settings classes={{ root: classes.settingsIcon }} />
                 </SettingsIconWrapper>
                 <ChangeAddressText>
-                  change address
+                  change your address
                 </ChangeAddressText>
               </ChangeAddressWrapper>
             </EditAddressPreview>
@@ -140,38 +158,38 @@ const styles = {
   },
 };
 
-const ChangeAddressText = styled.div`
+const ChangeAddressText = styled('div')`
   color: #999;
 `;
 
-const ChangeAddressWrapper = styled.div`
+const ChangeAddressWrapper = styled('div')`
   align-items: center;
   display: flex;
 `;
 
-const EditAddressPreview = styled.div`
+const EditAddressPreview = styled('div')`
   font-size: 1.1rem;
   font-weight: bold;
 `;
 
-const AddressIntroductionWrapper = styled.div`
+const AddressIntroductionWrapper = styled('div')(({ theme }) => (`
   font-size: 0.9rem;
   font-weight: 500;
   margin-top: 8px;
-  @media (max-width: ${({ theme }) => theme.breakpoints.lg}) {
+  ${theme.breakpoints.down('lg')} {
     margin-left: 15px;
     margin-right: 15px;
   }
-`;
+`));
 
-const EditBlockWrapper = styled.div`
-  @media (max-width: ${({ theme }) => theme.breakpoints.lg}) {
+const EditBlockWrapper = styled('div')(({ theme }) => (`
+  ${theme.breakpoints.down('lg')} {
     margin-left: 15px;
     margin-right: 15px;
   }
-`;
+`));
 
-const SettingsIconWrapper = styled.div`
+const SettingsIconWrapper = styled('div')`
 `;
 
 export default withStyles(styles)(EditAddressInPlace);

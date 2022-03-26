@@ -1,10 +1,10 @@
+import styled from '@mui/material/styles/styled';
 import React, { Component } from 'react';
 import Helmet from 'react-helmet';
 import { Link } from 'react-router-dom';
-import styled from 'styled-components';
 import { renderLog } from '../../common/utils/logging';
-import { PageContentContainer } from '../../utils/pageLayoutStyles';
 import ReadyIntroduction from '../../components/Ready/ReadyIntroduction';
+import { PageContentContainer } from '../../components/Style/pageLayoutStyles';
 
 
 export default class HowWeVoteHelps extends Component {
@@ -41,16 +41,16 @@ export default class HowWeVoteHelps extends Component {
   }
 }
 
-const CenteredWrapper = styled.div`
+const CenteredWrapper = styled('div')`
   display: flex;
   font-size: 1.1rem;
   justify-content: center;
   width: 100%;
 `;
 
-const ContainerFluidWrapper = styled.div`
-  @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
+const ContainerFluidWrapper = styled('div')(({ theme }) => (`
+  ${theme.breakpoints.down('sm')} {
     margin: 0 0 8px 0;
   }
-`;
+`));
 

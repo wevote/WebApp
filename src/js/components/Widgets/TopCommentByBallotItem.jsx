@@ -1,13 +1,13 @@
-import { Button } from '@material-ui/core';
-import { withStyles } from '@material-ui/core/styles';
+import { Button } from '@mui/material';
+import styled from '@mui/material/styles/styled';
+import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import styled from 'styled-components';
+import { renderLog } from '../../common/utils/logging';
 import CandidateStore from '../../stores/CandidateStore';
 import MeasureStore from '../../stores/MeasureStore';
 import VoterGuideStore from '../../stores/VoterGuideStore';
-import { renderLog } from '../../common/utils/logging';
 import { extractFirstEndorsementFromPositionList } from '../../utils/positionFunctions';
 import { shortenText, stringContains } from '../../utils/textFormat';
 
@@ -181,6 +181,11 @@ class TopCommentByBallotItem extends Component {
     }
   }
 
+  onClickFunctionExists = () => {
+    const { ballotItemWeVoteId } = this.props;
+    return (this.props.onClickFunction && ballotItemWeVoteId);
+  }
+
   render () {
     renderLog('TopCommentByBallotItem');  // Set LOG_RENDER_EVENTS to log all renders
     const { classes, hideMoreButton } = this.props;
@@ -198,7 +203,7 @@ class TopCommentByBallotItem extends Component {
     // console.log('GuideList organizationsToFollow: ', this.state.organizationsToFollow);
     //       on_click={this.goToCandidateLink(this.state.oneCandidate.we_vote_id)}
     return (
-      <Wrapper onClick={() => this.onClickFunction()}>
+      <Wrapper onClick={() => this.onClickFunction()} cursorPointerOn={this.onClickFunctionExists()}>
         <BallotItemEndorserName>
           {endorsementOrganization}
           .
@@ -277,46 +282,44 @@ const styles = (theme) => ({
   },
   closeButton: {
     position: 'absolute',
-    right: `${theme.spacing(1)}px`,
-    top: `${theme.spacing(1)}px`,
+    right: theme.spacing(1),
+    top: theme.spacing(1),
   },
 });
 
-const Wrapper = styled.div`
+const Wrapper = styled('div', {
+  shouldForwardProp: (prop) => !['cursorPointerOn'].includes(prop),
+})(({ cursorPointerOn, theme }) => (`
   cursor: pointer;
   font-size: 14px;
-  @media (min-width: ${({ theme }) => theme.breakpoints.md}) {
+  ${theme.breakpoints.up('md')} {
     font-size: 16px;
   }
-`;
+  ${cursorPointerOn ? 'cursor: pointer;' : ''}
+`));
 
-const BallotItemEndorserName = styled.span`
+const BallotItemEndorserName = styled('span')(({ theme }) => (`
   color: #999;
-  font-size: 14px;
   font-weight: 400;
-  @media (min-width: ${({ theme }) => theme.breakpoints.md}) {
-    font-size: 15px;
+  ${theme.breakpoints.up('md')} {
+    font-size: 16px;
   }
-`;
+`));
 
-const BallotItemEndorsementTextDesktop = styled.span`
+const BallotItemEndorsementTextDesktop = styled('span')`
   color: #555;
-  font-family: 'Source Sans Pro', sans-serif;
-  font-size: 16px;
-  font-weight: 400;
 `;
 
-const BallotItemEndorsementTextMobile = styled.span`
+const BallotItemEndorsementTextMobile = styled('span')`
   color: #555;
-  font-family: 'Source Sans Pro', sans-serif;
-  font-size: 16px;
-  font-weight: 400;
 `;
 
-const LearnMoreWrapper = styled.div`
+const LearnMoreWrapper = styled('div', {
+  shouldForwardProp: (prop) => !['isButton'].includes(prop),
+})(({ isButton }) => (`
   margin-left: auto;
-  display: ${(props) => (props.isButton ? 'flex' : 'inline')};
+  display: ${isButton ? 'flex' : 'inline'};
   justify-content: flex-end;
-`;
+`));
 
 export default withStyles(styles)(TopCommentByBallotItem);

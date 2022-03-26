@@ -1,8 +1,9 @@
-import { withStyles, withTheme } from '@material-ui/core/styles';
+import styled from '@mui/material/styles/styled';
+import withStyles from '@mui/styles/withStyles';
+import withTheme from '@mui/styles/withTheme';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
 import Helmet from 'react-helmet';
-import styled from 'styled-components';
 import ActivityActions from '../actions/ActivityActions';
 import AnalyticsActions from '../actions/AnalyticsActions';
 import BallotActions from '../actions/BallotActions';
@@ -23,7 +24,7 @@ import ReadyTaskBallot from '../components/Ready/ReadyTaskBallot';
 import ReadyTaskFriends from '../components/Ready/ReadyTaskFriends';
 import ReadyTaskPlan from '../components/Ready/ReadyTaskPlan';
 import ReadyTaskRegister from '../components/Ready/ReadyTaskRegister';
-import ShareButtonDesktopTablet from '../components/Share/ShareButtonDesktopTablet';
+import { PageContentContainer } from '../components/Style/pageLayoutStyles';
 import ValuesToFollowPreview from '../components/Values/ValuesToFollowPreview';
 import BrowserPushMessage from '../components/Widgets/BrowserPushMessage';
 import SnackNotifier, { openSnackbar } from '../components/Widgets/SnackNotifier';
@@ -32,8 +33,9 @@ import AppObservableStore, { messageService } from '../stores/AppObservableStore
 import BallotStore from '../stores/BallotStore';
 import IssueStore from '../stores/IssueStore';
 import VoterStore from '../stores/VoterStore';
+// Lint is not smart enough to know that lazyPreloadPages will not attempt to preload/reload this page
+// eslint-disable-next-line import/no-cycle
 import lazyPreloadPages from '../utils/lazyPreloadPages';
-import { PageContentContainer } from '../utils/pageLayoutStyles';
 
 const ReadMore = React.lazy(() => import(/* webpackChunkName: 'ReadMore' */ '../common/components/Widgets/ReadMore'));
 const FirstAndLastNameRequiredAlert = React.lazy(() => import(/* webpackChunkName: 'FirstAndLastNameRequiredAlert' */ '../components/Widgets/FirstAndLastNameRequiredAlert'));
@@ -225,11 +227,19 @@ class Ready extends Component {
     return (
       <PageContentContainer>
         <Suspense fallback={<LoadingWheelComp />}>
-          <PageContainer className="container-fluid" style={this.getTopPadding()}>
+          <ReadyPageContainer className="container-fluid" style={this.getTopPadding()}>
             <SnackNotifier />
             <Helmet title="Ready to Vote? - We Vote" />
             <BrowserPushMessage incomingProps={this.props} />
             <div className="row">
+              <ElectionCountdownOuterWrapper className="col-12">
+                <ElectionCountdownInnerWrapper>
+                  <Suspense fallback={<SuspenseCard>&nbsp;</SuspenseCard>}>
+                    <ElectionCountdown onClickFunction={this.goToBallot} initialDelay={4000} />
+                  </Suspense>
+                </ElectionCountdownInnerWrapper>
+              </ElectionCountdownOuterWrapper>
+
               {(showAddressVerificationForm && (voterBallotItemsRetrieveHasReturned || !voterBallotItemsRetrieveHasBeenCalled)) && (
                 <EditAddressWrapper className="col-12">
                   <EditAddressCard className="card">
@@ -239,19 +249,6 @@ class Ready extends Component {
               )}
 
               <div className="col-sm-12 col-lg-8">
-                <MobileTabletCountdownWrapper className="u-show-mobile-tablet">
-                  <ShareButtonTabletWrapper>
-                    <ShareButtonInnerWrapper className="u-show-tablet">
-                      <ShareButtonDesktopTablet readyShare shareButtonText="Share" />
-                    </ShareButtonInnerWrapper>
-                  </ShareButtonTabletWrapper>
-                  <ElectionCountdownMobileTabletWrapper
-                    className="u-cursor--pointer u-show-mobile-tablet"
-                    onClick={this.goToBallot}
-                  >
-                    <ElectionCountdown daysOnlyMode initialDelay={4000} />
-                  </ElectionCountdownMobileTabletWrapper>
-                </MobileTabletCountdownWrapper>
                 {(chosenReadyIntroductionTitle || chosenReadyIntroductionText) && (
                   <Card className="card u-show-mobile-tablet">
                     <div className="card-main">
@@ -304,18 +301,6 @@ class Ready extends Component {
                 </div>
               </div>
               <div className="col-lg-4 d-none d-lg-block">
-                <Card className="card">
-                  <div className="card-main">
-                    <ShareButtonDesktopWrapper>
-                      <ShareButtonDesktopTablet readyShare shareButtonText="Share Page" />
-                    </ShareButtonDesktopWrapper>
-                  </div>
-                </Card>
-                <div className="u-cursor--pointer" onClick={this.goToBallot}>
-                  <Suspense fallback={<SuspenseCard>&nbsp;</SuspenseCard>}>
-                    <ElectionCountdown daysOnlyMode initialDelay={4000} />
-                  </Suspense>
-                </div>
                 {(chosenReadyIntroductionTitle || chosenReadyIntroductionText) && (
                   <Card className="card">
                     <div className="card-main">
@@ -339,7 +324,7 @@ class Ready extends Component {
                 {/* nextReleaseFeaturesEnabled && <PledgeToVote /> */}
               </div>
             </div>
-          </PageContainer>
+          </ReadyPageContainer>
         </Suspense>
       </PageContentContainer>
     );
@@ -366,26 +351,40 @@ const styles = (theme) => ({
   },
 });
 
-const Card = styled.div`
+const Card = styled('div')`
   padding-bottom: 4px;
 `;
 
-const EditAddressCard = styled.div`
+const EditAddressCard = styled('div')`
+  margin-bottom: 32px;
   padding: 12px 15px 0 15px;
 `;
 
-const EditAddressWrapper = styled.div`
-  @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
+const EditAddressWrapper = styled('div')(({ theme }) => (`
+  ${theme.breakpoints.down('sm')} {
     padding-left: 0 !important;
     padding-right: 0 !important;
   }
+`));
+
+const ElectionCountdownInnerWrapper = styled('div')`
+  margin-top: -37px;
 `;
 
-const ElectionCountdownMobileTabletWrapper = styled.div`
-  margin-top: -37px; // 29px for height of ShareButtonDesktopTablet - 8px for margin-top
+const ElectionCountdownOuterWrapper = styled('div')`
+  margin-bottom: 32px;
+  position: relative;
+  z-index: 1;
 `;
 
-const SuspenseCard = styled.div`
+// March 2022: Are these empty styled causing babel-plugin-styled-components problems?
+const ReadyPageContainer = styled('div')`
+`;
+
+const Paragraph = styled('div')`
+`;
+
+const SuspenseCard = styled('div')`
   position: relative;
   display: flex;
   flex-direction: column;
@@ -393,47 +392,17 @@ const SuspenseCard = styled.div`
   height: 138px;
 `;
 
-const MobileTabletCountdownWrapper = styled.div`
-  position: relative;
-  z-index: 1;
-`;
-
-const PageContainer = styled.div`
-// This is a bad place to set a top padding for the scrollable pane, it should be in Application__Wrapper
-`;
-
-const Paragraph = styled.div`
-`;
-
-const ShareButtonInnerWrapper = styled.div`
-  z-index: 2;
-`;
-
-const ShareButtonDesktopWrapper = styled.div`
-  display: flex;
-  justify-content: center;
-`;
-
-const ShareButtonTabletWrapper = styled.div`
-  display: flex;
-  height: 29px;
-  justify-content: flex-end;
-  margin-top: 8px;
-  margin-right: 8px;
-  z-index: 2;
-`;
-
-const Title = styled.h2`
+const Title = styled('h2')(({ theme }) => (`
   font-size: 26px;
   font-weight: 800;
   margin: 0 0 12px;
-  @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
+  ${theme.breakpoints.down('sm')} {
     font-size: 14px;
     margin: 0 0 4px;
   }
-`;
+`));
 
-const ValuesListWrapper = styled.div`
+const ValuesListWrapper = styled('div')`
   margin-top: 12px;
   margin-bottom: 12px;
 `;

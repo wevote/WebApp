@@ -1,10 +1,11 @@
-import { Button, Dialog, DialogContent, FormControl, FormControlLabel, IconButton, OutlinedInput, Radio, RadioGroup } from '@material-ui/core';
-import { withStyles, withTheme } from '@material-ui/core/styles';
-import { ArrowBack, ArrowBackIos, Close } from '@material-ui/icons';
+import { ArrowBack, ArrowBackIos, Close } from '@mui/icons-material';
+import { Button, Dialog, DialogContent, FormControl, FormControlLabel, IconButton, OutlinedInput, Radio, RadioGroup } from '@mui/material';
+// TODO 5/11/21: import { Elements, StripeProvider } from 'react-stripe-elements';
+import styled from '@mui/material/styles/styled';
+import withStyles from '@mui/styles/withStyles';
+import withTheme from '@mui/styles/withTheme';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
-// TODO 5/11/21: import { Elements, StripeProvider } from 'react-stripe-elements';
-import styled from 'styled-components';
 import DonateActions from '../../common/actions/DonateActions';
 // TODO 5/11/21: import webAppConfig from '../../config';
 import DonateStore from '../../common/stores/DonateStore';
@@ -1023,6 +1024,7 @@ class PaidAccountUpgradeModal extends Component {
             className={classes.closeButton}
             onClick={this.closePaidAccountUpgradeModal}
             id="profileClosePaidAccountUpgradeModal"
+            size="large"
           >
             <Close />
           </IconButton>
@@ -1251,33 +1253,34 @@ const styles = () => ({
   },
 });
 
-const ButtonsContainer = styled.div`
+const ButtonsContainer = styled('div')`
   display: flex;
   align-items: center;
   justify-content: center !important;
-  width: fit-content;
   width: 100%;
   margin-top: 12px;
 `;
 
-const ModalTitleArea = styled.div`
+const ModalTitleArea = styled('div', {
+  shouldForwardProp: (prop) => !['noBoxShadowMode'].includes(prop),
+})(({ noBoxShadowMode }) => (`
   width: 100%;
   padding: 12px 12px 4px 12px;
-  ${({ noBoxShadowMode }) => ((noBoxShadowMode) ? '' : 'box-shadow: 0 20px 40px -25px #999')};
+  ${noBoxShadowMode ? '' : 'box-shadow: 0 20px 40px -25px #999'};
   z-index: 999;
   @media (min-width: 769px) {
     text-align: center;
-    ${({ noBoxShadowMode }) => ((noBoxShadowMode) ? '' : 'box-shadow: none')};
+    ${noBoxShadowMode ? '' : 'box-shadow: none'};
     border-bottom: 2px solid #f7f7f7;
   }
-  ${({ noBoxShadowMode }) => ((noBoxShadowMode) ? '@media (max-width: 376px) {\n    padding: 8px 6px;\n  }' : '')}
-`;
+  ${noBoxShadowMode ? '@media (max-width: 376px) {\n    padding: 8px 6px;\n  }' : ''}
+`));
 
-const MobilePricingPlanName = styled.span`
-  color: ${({ theme }) => theme.colors.main};
+const MobilePricingPlanName = styled('span')(({ theme }) => (`
+  color: ${theme.colors.main};
   font-size: 18px;
   font-weight: bold;
-  v-align: middle;
+  vertical-align: middle;
   position: relative;
   top: 16.8px;
   float: right;
@@ -1285,10 +1288,10 @@ const MobilePricingPlanName = styled.span`
     font-size: 14px;
     top: 13.6px;
   }
-`;
+`));
 
 
-const Title = styled.h3`
+const Title = styled('h3')`
   font-weight: bold;
   font-size: 24px;
   margin-top: 8px;
@@ -1304,7 +1307,7 @@ const Title = styled.h3`
   }
 `;
 
-const SectionTitle = styled.h4`
+const SectionTitle = styled('h4')`
   color: #666;
   font-size: 20px;
   font-weight: bold;
@@ -1320,12 +1323,12 @@ const SectionTitle = styled.h4`
   }
 `;
 
-const Row = styled.div`
+const Row = styled('div')`
   max-width: 700px;
   margin: 0 auto !important;
 `;
 
-const MobileWrapper = styled.div`
+const MobileWrapper = styled('div')`
   padding: 16px 18px 16px;
   display: flex;
   flex-direction: column;
@@ -1333,88 +1336,90 @@ const MobileWrapper = styled.div`
   justify-content: space-between;
 `;
 
-const FlexSectionOne = styled.div`
+const FlexSectionOne = styled('div')`
   margin: 0;
 `;
 
-const FlexSectionTwo = styled.div`
+const FlexSectionTwo = styled('div')`
   margin: 0;
 `;
 
-const WrapperLeft = styled.div`
+const WrapperLeft = styled('div')`
   padding: 0 32px 32px 16px;
   border-right: 1px solid #f7f7f7;
   height: calc(100% - 32px);
   margin-top: 32px;
 `;
 
-const WrapperRight = styled.div`
+const WrapperRight = styled('div')`
   padding: 0 16px 32px 32px;
   border-left: 1px solid #f7f7f7;
   height: calc(100% - 32px);
   margin-top: 32px;
 `;
 
-const Fieldset = styled.fieldset`
-  border: 2px solid ${({ disabledMode, theme }) => ((disabledMode) ? '#ddd' : theme.colors.main)};
+const Fieldset = styled('fieldset', {
+  shouldForwardProp: (prop) => !['disabledMode'].includes(prop),
+})(({ disabledMode, theme }) => (`
+  border: 2px solid ${disabledMode ? '#ddd' : theme.colors.main};
   border-radius: 3px;
   margin-bottom: 16px;
   padding-bottom: 0;
   background: white;
   @media (min-width: 769px) {
     height: 76px;
-    ${({ disabledMode }) => ((disabledMode) ? 'margin-bottom: 12px' : '')};
+    ${disabledMode ? 'margin-bottom: 12px' : ''};
   }
-`;
+`));
 
-const Legend = styled.legend`
-  color: ${({ theme }) => theme.colors.main};
+const Legend = styled('legend')(({ theme }) => (`
+  color: ${theme.colors.main};
   font-size: 12px;
   text-align: left;
   margin: 0;
   margin-left: 16px;
-  padding: 0px 8px;
+  padding: 0 8px;
   width: fit-content;
-`;
+`));
 
-const PriceLabel = styled.span`
+const PriceLabel = styled('span')(({ theme }) => (`
   font-size: 40px;
   font-weight: bold;
-  color: ${({ theme }) => theme.colors.main};
+  color: ${theme.colors.main};
   margin-left: 4px;
   @media (max-width: 569px) {
     font-size: 32px;
   }
-`;
+`));
 
-const PriceLabelDollarSign = styled.span`
+const PriceLabelDollarSign = styled('span')(({ theme }) => (`
   font-size: 18px;
-  color: ${({ theme }) => theme.colors.main};
+  color: ${theme.colors.main};
   position: relative;
   top: -12px;
   font-weight: bold;
   @media (max-width: 569px) {
     font-size: 16px;
   }
-`;
+`));
 
-const PriceLabelSubText = styled.span`
+const PriceLabelSubText = styled('span')(({ theme }) => (`
   font-size: 16px;
   font-weight: bold;
-  color: ${({ theme }) => theme.colors.main};
+  color: ${theme.colors.main};
   @media (max-width: 569px) {
     font-size: 14px;
   }
-`;
+`));
 
-const Wrapper = styled.div`
+const Wrapper = styled('div')`
   padding: 12px 30px;
   @media (max-width: 500px) {
     padding: 12px 0;
   }
 `;
 
-const InvoiceItem = styled.div`
+const InvoiceItem = styled('div')`
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -1425,7 +1430,7 @@ const InvoiceItem = styled.div`
   }
 `;
 
-const InvoiceTitle = styled.div`
+const InvoiceTitle = styled('div')`
   @media (max-width: 500px) {
     font-size: 16px;
   }
@@ -1434,13 +1439,13 @@ const InvoiceTitle = styled.div`
   font-size: 18px;
 `;
 
-const InvoiceValue = styled.div`
+const InvoiceValue = styled('div')`
   color: #000;
   font-weight: bold;
   font-size: 18px;
 `;
 
-const InvoiceButtonsContainer = styled.div`
+const InvoiceButtonsContainer = styled('div')`
   display: flex;
   align-items: center;
   justify-content: space-between;

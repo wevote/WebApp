@@ -1,8 +1,8 @@
-import { withTheme } from '@material-ui/core/styles';
+import styled from '@mui/material/styles/styled';
+import withTheme from '@mui/styles/withTheme';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
 import { Link } from 'react-router-dom';
-import styled from 'styled-components';
 import { renderLog } from '../../common/utils/logging';
 import { convertNameToSlug } from '../../utils/textFormat';
 import IssueFollowToggleButton from './IssueFollowToggleButton';
@@ -183,26 +183,26 @@ IssueCardCompressed.propTypes = {
   urlWithoutHash: PropTypes.string,
 };
 
-const Item = styled.div`
+const Item = styled('div')(({ theme }) => (`
   width: 100%;
-  padding: 0px;
-  @media (min-width: ${({ theme }) => theme.breakpoints.md}) {
+  padding: 0;
+  ${theme.breakpoints.up('md')} {
     width: 50%;
   }
-`;
+`));
 
-const Wrapper = styled.div`
+const Wrapper = styled('div')(({ theme }) => (`
   display: block !important;
   padding: 12px !important;
   margin: 8px 6px !important;
-  @media (min-width: ${({ theme }) => theme.breakpoints.md}) {
+  ${theme.breakpoints.up('md')} {
     padding: 6px 72px 6px 4px !important;
     position: relative;
     height: 46px !important;
   }
-`;
+`));
 
-const IssueName = styled.h3`
+const IssueName = styled('h3')(({ theme }) => (`
   font-size: 18px;
   font-weight: bold;
   margin-bottom: 0;
@@ -211,26 +211,26 @@ const IssueName = styled.h3`
   white-space: nowrap !important;
   overflow: hidden !important;
   text-overflow: ellipsis !important;
-  @media (min-width: ${({ theme }) => theme.breakpoints.md}) {
+  ${theme.breakpoints.up('md')} {
     font-size: 16px;
     position: relative;
     right: 10px;
   }
-`;
+`));
 
-const Flex = styled.div`
+const Flex = styled('div')`
   display: flex;
   align-items: center;
   justify-content: flex-start;
 `;
 
-const Description = styled.div`
+const Description = styled('div')(({ theme }) => (`
   margin-top: 8px;
   font-size: 14px;
   color: #333;
-  @media (min-width: ${({ theme }) => theme.breakpoints.md}) {
+  ${theme.breakpoints.up('md')} {
     display: none;
   }
-`;
+`));
 
 export default withTheme((IssueCardCompressed));

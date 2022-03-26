@@ -1,9 +1,9 @@
-import { Button, ClickAwayListener, MenuItem, MenuList } from '@material-ui/core';
+import { Button, ClickAwayListener, MenuItem, MenuList } from '@mui/material';
+import styled from '@mui/material/styles/styled';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import styled from 'styled-components';
-import { renderLog } from '../../common/utils/logging';
 import FriendActions from '../../actions/FriendActions';
+import { renderLog } from '../../common/utils/logging';
 import FriendStore from '../../stores/FriendStore';
 import VoterStore from '../../stores/VoterStore';
 import FriendsIcon from '../Widgets/FriendsIcon';
@@ -113,10 +113,11 @@ export default class FriendToggle extends Component {
             </ToggleButton>
             <StyledMenuList>
               {menuOpen ? (
-                <ClickAwayListener onClickAway={this.handleClose}>
+                <ClickAwayListener onClickAway={() => this.handleClose}>
                   <StyledMenuItem
                     disabled={unFriendSubmitted}
                     onClick={this.unFriend}
+                    id="StyledMenuItem"
                   >
                     Remove Friend
                   </StyledMenuItem>
@@ -145,16 +146,18 @@ FriendToggle.propTypes = {
 };
 
 
-const ButtonContainer = styled.div`
+const ButtonContainer = styled('div', {
+  shouldForwardProp: (prop) => !['displayFullWidth'].includes(prop),
+})(({ displayFullWidth }) => (`
   width: 100%;
   margin-top: 0;
   @media(min-width: 400px) {
-    ${({ displayFullWidth }) => (displayFullWidth ? 'width: 100%;' : 'width: fit-content;')}
+    ${displayFullWidth ? 'width: 100%;' : 'width: fit-content;'}
     margin-left: auto;
   }
-`;
+`));
 
-const InnerButtonContainer = styled.div`
+const InnerButtonContainer = styled('div')`
   margin-left: auto;
   position: relative;
   display: flex;
@@ -194,7 +197,7 @@ const ToggleButton = styled(Button)`
   border-bottom-left-radius: 0 !important;
 `;
 
-const DownwardTriangle = styled.span`
+const DownwardTriangle = styled('span')`
     width: 0;
     height: 0;
     border-left: 7px solid transparent;

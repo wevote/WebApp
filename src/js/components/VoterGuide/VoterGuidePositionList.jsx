@@ -1,20 +1,20 @@
-import { CircularProgress } from '@material-ui/core';
-import { withStyles } from '@material-ui/core/styles';
-// import { Comment } from '@material-ui/icons';
-import { Info, ThumbDown, ThumbUp } from '@material-ui/icons';
+// import { Comment } from '@mui/icons-material';
+import { Info, ThumbDown, ThumbUp } from '@mui/icons-material';
+import { CircularProgress } from '@mui/material';
+import styled from '@mui/material/styles/styled';
+import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import styled from 'styled-components';
 import FriendActions from '../../actions/FriendActions';
 import OrganizationActions from '../../actions/OrganizationActions';
+import { getStateCodesFoundInObjectList } from '../../common/utils/addressFunctions';
+import apiCalming from '../../common/utils/apiCalming';
+import { renderLog } from '../../common/utils/logging';
 import FriendStore from '../../stores/FriendStore';
 import OrganizationStore from '../../stores/OrganizationStore';
-import { getStateCodesFoundInObjectList } from '../../common/utils/addressFunctions';
-import { renderLog } from '../../common/utils/logging';
 import FilterBase from '../Filter/FilterBase';
 import VoterGuidePositionFilter from '../Filter/VoterGuidePositionFilter';
 import NumberOfItemsFound from '../Widgets/NumberOfItemsFound';
-import apiCalming from '../../common/utils/apiCalming';
 
 const ShowMoreItems = React.lazy(() => import(/* webpackChunkName: 'ShowMoreItems' */ '../Widgets/ShowMoreItems'));
 const VoterGuidePositionItem = React.lazy(() => import(/* webpackChunkName: 'VoterGuidePositionItem' */ './VoterGuidePositionItem'));
@@ -395,7 +395,8 @@ class VoterGuidePositionList extends Component {
             null}
           <FilterBase
             allItems={positionList}
-            groupedFilters={groupedFilters}
+            filteredPositionListLength={filteredPositionListLength}
+            groupedFilters={filteredPositionListLength > 10 ? groupedFilters : []}
             islandFilters={islandFilters}
             numberOfItemsFoundNode={(
               <NumberOfItemsFound
@@ -408,7 +409,7 @@ class VoterGuidePositionList extends Component {
             voterGuidePositionSearchMode
             selectedFiltersDefault={selectedFiltersDefault}
             sortFilters={['sortByAlphabetical']}
-            stateCodesToDisplay={stateCodesToDisplay}
+            stateCodesToDisplay={filteredPositionListLength > 20 ? stateCodesToDisplay : []}
           >
             {/* props get added to this component in FilterBase */}
             <VoterGuidePositionFilter />
@@ -534,22 +535,22 @@ const styles = () => ({
   },
 });
 
-const FilterWrapper = styled.div`
+const FilterWrapper = styled('div')`
   margin: 0 15px;
 `;
 
-const LoadingItemsWheel = styled.div`
+const LoadingItemsWheel = styled('div')`
   width: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
 `;
 
-const NoResultsText = styled.div`
+const NoResultsText = styled('div')`
   margin: 15px;
 `;
 
-const SearchResultsFoundInExplanation = styled.div`
+const SearchResultsFoundInExplanation = styled('div')`
   background-color: #C2DCE8;
   border-radius: 4px;
   color: #0E759F;
@@ -558,22 +559,22 @@ const SearchResultsFoundInExplanation = styled.div`
   padding: 8px !important;
 `;
 
-const SearchTitle = styled.div`
+const SearchTitle = styled('div')`
   font-size: 24px;
   margin-top: 12px;
   margin-bottom: 12px;
 `;
 
-const ShowMoreItemsWrapper = styled.div`
+const ShowMoreItemsWrapper = styled('div')(({ theme }) => (`
   margin-bottom: 16px;
   padding-left: 16px;
   padding-right: 26px;
-  @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
+  ${theme.breakpoints.down('sm')} {
     padding-right: 16px;
   }
   @media print{
     display: none;
   }
-`;
+`));
 
 export default withStyles(styles)(VoterGuidePositionList);

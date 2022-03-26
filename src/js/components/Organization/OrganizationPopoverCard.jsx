@@ -1,18 +1,19 @@
-import { Twitter } from '@material-ui/icons';
+import { Launch, Twitter } from '@mui/icons-material';
+import styled from '@mui/material/styles/styled';
+import withStyles from '@mui/styles/withStyles';
+import withTheme from '@mui/styles/withTheme';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
 import Button from 'react-bootstrap/Button';
 import { Link } from 'react-router-dom';
-import styled from 'styled-components';
 import OrganizationActions from '../../actions/OrganizationActions';
-import OrganizationStore from '../../stores/OrganizationStore';
-import VoterStore from '../../stores/VoterStore';
+import LoadingWheel from '../../common/components/Widgets/LoadingWheel';
 import historyPush from '../../common/utils/historyPush';
 import { renderLog } from '../../common/utils/logging';
-import { numberWithCommas, removeTwitterNameFromDescription } from '../../utils/textFormat';
-import LoadingWheel from '../../common/components/Widgets/LoadingWheel';
+import OrganizationStore from '../../stores/OrganizationStore';
+import VoterStore from '../../stores/VoterStore';
+import { abbreviateNumber, numberWithCommas, removeTwitterNameFromDescription } from '../../utils/textFormat';
 import ParsedTwitterDescription from '../Twitter/ParsedTwitterDescription';
-import ExternalLinkIcon from '../../common/components/Widgets/ExternalLinkIcon';
 
 const FollowToggle = React.lazy(() => import(/* webpackChunkName: 'FollowToggle' */ '../Widgets/FollowToggle'));
 const OpenExternalWebSite = React.lazy(() => import(/* webpackChunkName: 'OpenExternalWebSite' */ '../../common/components/Widgets/OpenExternalWebSite'));
@@ -46,25 +47,6 @@ class OrganizationPopoverCard extends Component {
       // organizationWeVoteId,
     });
   }
-
-  // shouldComponentUpdate (nextProps, nextState) {
-  //   // This lifecycle method tells the component to NOT render if onOrganizationStoreChange didn't see any changes
-  //   let organizationWeVoteId = '';
-  //   if (this.state.organization) {
-  //     ({ organization_we_vote_id: organizationWeVoteId } = this.state.organization);
-  //   }
-  //   let nextOrganizationWeVoteId = '';
-  //   if (nextState.organization) {
-  //     ({ organization_we_vote_id: nextOrganizationWeVoteId } = nextState.organization);
-  //   }
-  //   if (organizationWeVoteId !== nextOrganizationWeVoteId) {
-  //     return true;
-  //   }
-  //   if (this.state.isVoterOwner !== nextState.isVoterOwner) {
-  //     return true;
-  //   }
-  //   return false;
-  // }
 
   componentWillUnmount () {
     this.organizationStoreListener.remove();
@@ -101,7 +83,7 @@ class OrganizationPopoverCard extends Component {
     if (!this.state.organization) {
       return <div>{LoadingWheel}</div>;
     }
-    const { organizationWeVoteId } = this.props;
+    const { classes, organizationWeVoteId } = this.props;
     const { isVoterOwner } = this.state;
     const {
       organization_twitter_handle: organizationTwitterHandle, twitter_description: twitterDescriptionRaw,
@@ -165,17 +147,14 @@ class OrganizationPopoverCard extends Component {
               <OrganizationName>{displayName}</OrganizationName>
             </Link>
             { organizationTwitterHandle && (
-              <OrganizationTwitterHandle>
-                @
-                {organizationTwitterHandle}
-                &nbsp;&nbsp;
-                {!!(twitterFollowersCount) && (
-                  <span>
-                    <Twitter />
-                    {numberWithCommas(twitterFollowersCount)}
-                  </span>
-                )}
-              </OrganizationTwitterHandle>
+              <TwitterWrapper>
+                <Twitter classes={{ root: classes.twitterLogo }} />
+                <TwitterHandleWrapper>
+                  @
+                  {organizationTwitterHandle}
+                </TwitterHandleWrapper>
+                <span title={numberWithCommas(twitterFollowersCount)}>{abbreviateNumber(twitterFollowersCount)}</span>
+              </TwitterWrapper>
             )}
             {twitterDescriptionMinusName && (
               <Description>
@@ -195,7 +174,7 @@ class OrganizationPopoverCard extends Component {
                       <span>
                         {organizationWebsite}
                         {' '}
-                        <ExternalLinkIcon />
+                        <Launch classes={{ root: classes.externalLinkIcon }} />
                       </span>
                     )}
                   />
@@ -210,10 +189,85 @@ class OrganizationPopoverCard extends Component {
   }
 }
 OrganizationPopoverCard.propTypes = {
+  classes: PropTypes.object,
   organizationWeVoteId: PropTypes.string.isRequired,
 };
 
-const Wrapper = styled.div`
+const styles = () => ({
+  externalLinkIcon: {
+    color: '#999',
+    height: 14,
+    marginTop: '-3px',
+  },
+  twitterLogo: {
+    color: '#1d9bf0',
+    height: 18,
+    marginRight: '-2px',
+    marginTop: '-4px',
+  },
+});
+
+const BannerImage = styled('div')`
+  background: #f7f7f7;
+  min-height: 90.05px !important;
+  display: block;
+  width: 100%;
+`;
+
+const Container = styled('div')`
+  padding: 8px;
+`;
+
+const Description = styled('div')`
+  margin-top: 8px;
+  color: #333 !important;
+  font-weight: 500 !important;
+  font-size: 12px !important;
+`;
+
+const FollowToggleContainer = styled('div')`
+  width: 125px;
+`;
+
+const ImageContainer = styled('div')`
+  * {
+    border-radius: 50px;
+  }
+`;
+
+const LogoFollowToggleContainer = styled('div')`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: relative;
+  bottom: 32px;
+`;
+
+const MainContent = styled('div')`
+  margin-top: -24px;
+`;
+
+const OrganizationName = styled('h3')(({ theme }) => (`
+  font-weight: bold;
+  font-size: 18px;
+  color: ${theme.colors.brandBlue};
+  margin-bottom: 4px;
+  text-decoration: none !important;
+`));
+
+const TwitterHandleWrapper = styled('span')`
+  color: #000;
+  margin-right: 5px;
+`;
+
+const TwitterWrapper = styled('div')`
+  font-size: 13px;
+  margin: 0;
+  margin-top: 4px;
+  white-space: nowrap;
+`;
+
+const Wrapper = styled('div')`
   overflow-x: hidden;
   width: 100%;
   height: 100%;
@@ -225,60 +279,4 @@ const Wrapper = styled.div`
   margin-top: 8px;
 `;
 
-const Container = styled.div`
-  padding: 8px;
-`;
-
-const BannerImage = styled.div`
-  background: #f7f7f7;
-  min-height: 90.05px !important;
-  display: block;
-  width: 100%;
-`;
-
-const LogoFollowToggleContainer = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  position: relative;
-  bottom: 32px;
-`;
-
-const ImageContainer = styled.div`
-  * {
-    border-radius: 50px;
-  }
-`;
-
-const FollowToggleContainer = styled.div`
-  width: 125px;
-`;
-
-const MainContent = styled.div`
-  margin-top: -24px;
-`;
-
-const OrganizationName = styled.h3`
-  font-weight: bold;
-  font-size: 18px;
-  color: ${({ theme }) => theme.colors.brandBlue};
-  margin-bottom: 4px;
-  text-decoration: none !important;
-`;
-
-const OrganizationTwitterHandle = styled.div`
-  font-weight: 500;
-  font-size: 14px;
-  margin: 0;
-  padding: 0;
-  color: #ccc;
-`;
-
-const Description = styled.div`
-  margin-top: 8px;
-  color: #333 !important;
-  font-weight: 500 !important;
-  font-size: 12px !important;
-`;
-
-export default OrganizationPopoverCard;
+export default withTheme(withStyles(styles)(OrganizationPopoverCard));

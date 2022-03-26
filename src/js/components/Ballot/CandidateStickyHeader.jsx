@@ -1,9 +1,11 @@
+import { keyframes } from '@emotion/react';
+import styled from '@mui/material/styles/styled';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
-import styled, { keyframes } from 'styled-components';
-import { cordovaStickyHeaderPaddingTop } from '../../utils/cordovaOffsets';
 import { isIOSAppOnMac, isIPad } from '../../common/utils/cordovaUtils';
+import { isWebApp } from '../../common/utils/isCordovaOrWebApp';
 import { renderLog } from '../../common/utils/logging';
+import { cordovaStickyHeaderPaddingTop } from '../../utils/cordovaOffsets';
 
 const BallotItemSupportOpposeComment = React.lazy(() => import(/* webpackChunkName: 'BallotItemSupportOpposeComment' */ '../Widgets/BallotItemSupportOpposeComment'));
 const BallotItemSupportOpposeCountDisplay = React.lazy(() => import(/* webpackChunkName: 'BallotItemSupportOpposeCountDisplay' */ '../Widgets/BallotItemSupportOpposeCountDisplay'));
@@ -28,7 +30,7 @@ class CandidateStickyHeader extends Component {
     // console.log('CandidateStickyHeader, displayName/candidateWeVoteId:', displayName, candidateWeVoteId);
 
     return (
-      <Wrapper ipad={isIPad() || isIOSAppOnMac()}>
+      <Wrapper ipad={isIPad() || isIOSAppOnMac()} isWebApp={isWebApp()}>
         <Container>
           <Flex>
             <ColumnOne>
@@ -80,7 +82,9 @@ const slideDown = keyframes`
   }
 `;
 
-const Wrapper = styled.div`
+const Wrapper = styled('div', {
+  shouldForwardProp: (prop) => !['ipad'].includes(prop),
+})(({ ipad, theme }) => (`
   max-width: 100%;
   position: fixed;
   padding-right: 16px;
@@ -91,93 +95,97 @@ const Wrapper = styled.div`
   background: white;
   z-index: 2;
   width: 100vw;
-  box-shadow: 0 2px 4px -1px rgba(0,0,0,0.2), 0px 4px 5px 0px rgba(0,0,0,0.14), 0px 1px 10px 0px rgba(0,0,0,0.12);
+  box-shadow: 0 2px 4px -1px rgba(0,0,0,0.2), 0 4px 5px 0 rgba(0,0,0,0.14), 0 1px 10px 0 rgba(0,0,0,0.12);
   animation: ${slideDown} 150ms ease-in;
-  @media (min-width: ${({ theme }) => theme.breakpoints.sm}) {
-    padding-top: ${({ ipad }) => (ipad ? '' : '0px')};
+  ${() => (isWebApp() ? 'margin-top: -16px;' : '')};
+  ${theme.breakpoints.up('sm')} {
+    padding-top: ${ipad ? '' : '0'};
   }
-`;
+  ${theme.breakpoints.down('sm')} {
+    ${() => (isWebApp() ? 'margin-top: -14px;' : '')};
+  }
+`));
 
-const Bold = styled.span`
+const Bold = styled('span')`
   font-weight: 550;
 `;
 
-const Container = styled.div`
+const Container = styled('div')`
   max-width: calc(960px - 18px);
   margin: 0 auto;
 `;
 
-const ColumnOne = styled.div`
+const ColumnOne = styled('div')(({ theme }) => (`
   width: 100%;
-  @media (min-width: ${({ theme }) => theme.breakpoints.sm}) {
+  ${theme.breakpoints.up('sm')} {
     flex: 1 1 0;
   }
-`;
+`));
 
-const ColumnTwo = styled.div`
+const ColumnTwo = styled('div')(({ theme }) => (`
   float: right;
-  @media (min-width: ${({ theme }) => theme.breakpoints.sm}) {
+  ${theme.breakpoints.up('sm')} {
     display: block;
     width: fit-content;
   }
-`;
+`));
 
 // Defaults to style in mobile
-const CandidateName = styled.h1`
+const CandidateName = styled('h1')(({ theme }) => (`
   font-size: 14px;
   margin-bottom: 2px;
   margin-top: 8px;
   font-weight: bold;
-  @media (min-width: ${({ theme }) => theme.breakpoints.md}) {
+  ${theme.breakpoints.up('md')} {
     margin-top: 0;
     font-size: 16px;
   }
-`;
+`));
 
 // Uses min-width. Parallel style is CandidateDescriptionMobile
-const CandidateDescription = styled.div`
+const CandidateDescription = styled('div')(({ theme }) => (`
   display: block;
-  @media (min-width: ${({ theme }) => theme.breakpoints.md}) {
+  ${theme.breakpoints.up('md')} {
     font-size: 14px;
     font-weight: 100;
   }
-  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+  ${theme.breakpoints.down('md')} {
     font-size: 12px;
     font-weight: 100;
     margin-top: 6px;
   }
-`;
+`));
 
-const Profile = styled.div`
+const Profile = styled('div')`
   display: flex;
   flex-flow: row nowrap;
 `;
 
-const Avatar = styled.img`
+const Avatar = styled('img')`
   width: 48px;
   height: 48px;
   border-radius: 50%;
   margin: 0 1em 4px 0;
 `;
 
-const Flex = styled.div`
+const Flex = styled('div')`
   display: flex;
   justify-content: space-evenly;
   position: relative;
   top: 0;
 `;
 
-const BallotCommentContainer = styled.div`
+const BallotCommentContainer = styled('div')(({ theme }) => (`
   margin-top: 0;
   margin-bottom: 0;
   padding-top: 0;
   padding-bottom: 0;
   width: 100%;
-  @media (max-width : ${({ theme }) => theme.breakpoints.sm}) {
+  ${theme.breakpoints.down('sm')} {
   }
   > * {
     padding: 0;
   }
-`;
+`));
 
 export default CandidateStickyHeader;

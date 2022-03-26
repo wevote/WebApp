@@ -1,15 +1,19 @@
-import { Drawer, IconButton } from '@material-ui/core';
-import { withStyles, withTheme } from '@material-ui/core/styles';
-import { Info } from '@material-ui/icons';
+import { Close, Info } from '@mui/icons-material';
+import { Drawer, IconButton } from '@mui/material';
+import styled from '@mui/material/styles/styled';
+import withStyles from '@mui/styles/withStyles';
+import withTheme from '@mui/styles/withTheme';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
-import styled from 'styled-components';
 import AnalyticsActions from '../../actions/AnalyticsActions';
 import CandidateActions from '../../actions/CandidateActions';
 import IssueActions from '../../actions/IssueActions';
 import MeasureActions from '../../actions/MeasureActions';
 import OrganizationActions from '../../actions/OrganizationActions';
 import VoterGuideActions from '../../actions/VoterGuideActions';
+import { hasIPhoneNotch } from '../../common/utils/cordovaUtils';
+import { normalizedHref } from '../../common/utils/hrefUtils';
+import { renderLog } from '../../common/utils/logging';
 import BallotStore from '../../stores/BallotStore';
 import CandidateStore from '../../stores/CandidateStore';
 import IssueStore from '../../stores/IssueStore';
@@ -18,9 +22,6 @@ import OrganizationStore from '../../stores/OrganizationStore';
 import VoterGuideStore from '../../stores/VoterGuideStore';
 import VoterStore from '../../stores/VoterStore';
 import { cordovaDrawerTopMargin } from '../../utils/cordovaOffsets';
-import { hasIPhoneNotch } from '../../common/utils/cordovaUtils';
-import { normalizedHref } from '../../common/utils/hrefUtils';
-import { renderLog } from '../../common/utils/logging';
 import { convertToInteger, stringContains } from '../../utils/textFormat';
 
 const CandidateItem = React.lazy(() => import(/* webpackChunkName: 'CandidateItem' */ '../Ballot/CandidateItem'));
@@ -240,71 +241,72 @@ class OrganizationModal extends Component {
     const { allCachedPositionsForThisBallotItem, ballotItemDisplayName, isCandidate, isMeasure, modalOpen } = this.state;
 
     return (
-      <>
-        <Drawer
-          anchor="right"
-          classes={{ paper: classes.drawer }}
-          direction="left"
-          id="share-menu"
-          onClose={this.closeOrganizationModal}
-          open={modalOpen}
+      <Drawer
+        anchor="right"
+        classes={{ paper: classes.drawer }}
+        direction="left"
+        id="share-menu"
+        onClose={this.closeOrganizationModal}
+        open={modalOpen}
+      >
+        <IconButton
+          aria-label="Close"
+          className={classes.closeButton}
+          id="closeOrganizationModal"
+          onClick={this.closeOrganizationModal}
+          size="large"
         >
-          <IconButton
-            aria-label="Close"
-            className={classes.closeButton}
-            id="closeOrganizationModal"
-             onClick={this.closeOrganizationModal}
-          >
-            <span className="fas fa-times u-cursor--pointer" />
-          </IconButton>
-          {isCandidate && (
-            <Suspense fallback={<></>}>
-              <CandidateItem
-                candidateWeVoteId={ballotItemWeVoteId}
-                expandIssuesByDefault
-                forMoreInformationTextOff
-                hideShowMoreFooter
-                inModal
-                linkToBallotItemPage
-                organizationWeVoteId={organizationWeVoteId}
-                showLargeImage
-                showTopCommentByBallotItem
-                showOfficeName
-                showPositionStatementActionBar
-              />
-            </Suspense>
-          )}
-          {isMeasure && (
-            <Suspense fallback={<></>}>
-              <MeasureItem forMoreInformationTextOff measureWeVoteId={ballotItemWeVoteId} />
-            </Suspense>
-          )}
-          { !!(allCachedPositionsForThisBallotItem.length) && (
-            <Suspense fallback={<></>}>
-              <DelayedLoad showLoadingText waitBeforeShow={500}>
-                <>
-                  <Suspense fallback={<></>}>
-                    <PositionList
-                      ballotItemDisplayName={ballotItemDisplayName || ''}
-                      incomingPositionList={allCachedPositionsForThisBallotItem}
-                      params={params}
-                      positionListExistsTitle={(
-                        <PositionListIntroductionText>
-                          <Info classes={{ root: classes.informationIcon }} />
-                          Opinions about this ballot item are below. Use these filters to sort:
-                        </PositionListIntroductionText>
-                      )}
-                    />
-                  </Suspense>
-                  <br />
-                  <br />
-                  <br />
-                </>
-              </DelayedLoad>
-            </Suspense>
-          )}
-        </Drawer>
-      </>
+          <span className="u-cursor--pointer">
+            <Close classes={{ root: classes.closeIcon }} />
+          </span>
+        </IconButton>
+        {isCandidate && (
+          <Suspense fallback={<></>}>
+            <CandidateItem
+              candidateWeVoteId={ballotItemWeVoteId}
+              expandIssuesByDefault
+              forMoreInformationTextOff
+              hideShowMoreFooter
+              inModal
+              linkToBallotItemPage
+              organizationWeVoteId={organizationWeVoteId}
+              showLargeImage
+              showTopCommentByBallotItem
+              showOfficeName
+              showPositionStatementActionBar
+            />
+          </Suspense>
+        )}
+        {isMeasure && (
+          <Suspense fallback={<></>}>
+            <MeasureItem forMoreInformationTextOff measureWeVoteId={ballotItemWeVoteId} />
+          </Suspense>
+        )}
+        { !!(allCachedPositionsForThisBallotItem.length) && (
+          <Suspense fallback={<></>}>
+            <DelayedLoad showLoadingText waitBeforeShow={500}>
+              <>
+                <Suspense fallback={<></>}>
+                  <PositionList
+                    ballotItemDisplayName={ballotItemDisplayName || ''}
+                    incomingPositionList={allCachedPositionsForThisBallotItem}
+                    params={params}
+                    positionListExistsTitle={(
+                      <PositionListIntroductionText>
+                        <Info classes={{ root: classes.informationIcon }} />
+                        Opinions about this ballot item are below. Use these filters to sort:
+                      </PositionListIntroductionText>
+                    )}
+                  />
+                </Suspense>
+                <br />
+                <br />
+                <br />
+              </>
+            </DelayedLoad>
+          </Suspense>
+        )}
+      </Drawer>
     );
   }
 }
@@ -378,11 +380,17 @@ const styles = () => ({
   },
   closeButton: {
     marginRight: 'auto',
+    padding: 6,
   },
   closeButtonAbsolute: {
     position: 'absolute',
     right: 14,
     top: 14,
+  },
+  closeIcon: {
+    color: '#999',
+    width: 24,
+    height: 24,
   },
   informationIcon: {
     color: '#999',
@@ -393,7 +401,7 @@ const styles = () => ({
   },
 });
 
-const PositionListIntroductionText = styled.div`
+const PositionListIntroductionText = styled('div')`
   color: #999;
 `;
 

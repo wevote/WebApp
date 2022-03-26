@@ -1,10 +1,10 @@
+import styled from '@mui/material/styles/styled';
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import styled from 'styled-components';
-import FriendStore from '../../stores/FriendStore';
 import historyPush from '../../common/utils/historyPush';
-import sortFriendListByMutualFriends from '../../utils/friendFunctions';
 import { renderLog } from '../../common/utils/logging';
+import FriendStore from '../../stores/FriendStore';
+import sortFriendListByMutualFriends from '../../utils/friendFunctions';
 import FriendList from './FriendList';
 
 export default class FriendsCurrentPreview extends Component {
@@ -75,7 +75,7 @@ export default class FriendsCurrentPreview extends Component {
   }
 }
 
-const SectionTitle = styled.h2`
+const SectionTitle = styled('h2')`
   width: fit-content;  font-weight: bolder;
   font-size: 18px;
   margin-bottom: 16px;

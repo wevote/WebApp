@@ -1,14 +1,15 @@
-import { Button, Dialog, DialogContent, IconButton } from '@material-ui/core';
-import { withStyles, withTheme } from '@material-ui/core/styles';
-import { Close } from '@material-ui/icons';
+import { Close } from '@mui/icons-material';
+import { Button, Dialog, DialogContent, IconButton } from '@mui/material';
+import styled from '@mui/material/styles/styled';
+import withStyles from '@mui/styles/withStyles';
+import withTheme from '@mui/styles/withTheme';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
-import styled from 'styled-components';
 import VoterActions from '../../actions/VoterActions';
-import VoterConstants from '../../constants/VoterConstants';
 import { hasIPhoneNotch } from '../../common/utils/cordovaUtils';
 import { normalizedHref } from '../../common/utils/hrefUtils';
 import { renderLog } from '../../common/utils/logging';
+import VoterConstants from '../../constants/VoterConstants';
 
 const CandidateItem = React.lazy(() => import(/* webpackChunkName: 'CandidateItem' */ '../Ballot/CandidateItem'));
 
@@ -95,6 +96,7 @@ class FirstPositionIntroModal extends Component {
             className={classes.closeButton}
             onClick={this.closeThisModal}
             id="closeFirstPositionIntroModal"
+            size="large"
           >
             <Close />
           </IconButton>
@@ -188,7 +190,7 @@ const styles = () => ({
 });
 
 /* eslint no-nested-ternary: ["off"] */
-const ModalTitleArea = styled.div`
+const ModalTitleArea = styled('div')`
   justify-content: flex-start;
   align-items: center;
   width: 100%;
@@ -200,7 +202,7 @@ const ModalTitleArea = styled.div`
   display: flex;
 `;
 
-const Title = styled.h3`
+const Title = styled('h3')`
   font-size: 28px;
   color: black;
   margin-top: 0;
@@ -211,7 +213,7 @@ const Title = styled.h3`
   }
 `;
 
-const ExplanationText = styled.div`
+const ExplanationText = styled('div')`
   color: #2e3c5d;
   font-size: 16px;
   font-weight: 500;
@@ -221,18 +223,7 @@ const ExplanationText = styled.div`
   }
 `;
 
-// const ActionButtonWrapper = styled.div`
-//   width: 100%;
-//   margin-bottom: 24px
-//   display: flex;
-//   align-items: center;
-//   justify-content: space-between;
-// `;
-//
-// const ActionButtonInsideWrapper = styled.div`
-// `;
-
-const ExplanationTextLighter = styled.div`
+const ExplanationTextLighter = styled('div')`
   font-size: 14px;
   font-weight: 400;
   margin: 0;
@@ -243,7 +234,7 @@ const ExplanationTextLighter = styled.div`
   margin-bottom: 12px;
 `;
 
-const ContinueButtonWrapper = styled.div`
+const ContinueButtonWrapper = styled('div')`
   width: 100%;
   padding-top: 12px;
   display: flex;

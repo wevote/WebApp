@@ -1,17 +1,18 @@
-import { withStyles, withTheme } from '@material-ui/core/styles';
-import { ArrowForward, CheckCircle } from '@material-ui/icons';
+import { ArrowForward, CheckCircle } from '@mui/icons-material';
+import styled from '@mui/material/styles/styled';
+import withStyles from '@mui/styles/withStyles';
+import withTheme from '@mui/styles/withTheme';
 import PropTypes from 'prop-types';
 import React from 'react';
-import styled from 'styled-components';
 import BallotActions from '../../actions/BallotActions';
+import historyPush from '../../common/utils/historyPush';
+import { renderLog } from '../../common/utils/logging';
+import normalizedImagePath from '../../common/utils/normalizedImagePath';
 import VoterConstants from '../../constants/VoterConstants';
 import AppObservableStore from '../../stores/AppObservableStore';
 import BallotStore from '../../stores/BallotStore';
 import SupportStore from '../../stores/SupportStore';
 import VoterStore from '../../stores/VoterStore';
-import normalizedImagePath from '../../common/utils/normalizedImagePath';
-import historyPush from '../../common/utils/historyPush';
-import { renderLog } from '../../common/utils/logging';
 import { ButtonLeft, ButtonText, Icon, PercentComplete, ReadyCard, StyledButton, StyledCheckbox, StyledCheckboxCompleted, TitleRowWrapper } from './ReadyTaskStyles';
 import ShowMoreButtons from './ShowMoreButtons';
 
@@ -428,7 +429,7 @@ class ReadyTaskBallot extends React.Component {
       />
     );
     return (
-      <ReadyCard showprogresscolor={percentCompleted > 0} className="card">
+      <ReadyCard showProgressColor={percentCompleted > 0} className="card">
         <Icon className="u-cursor--pointer" onClick={this.goToBallot}>
           {completedIcon}
         </Icon>
@@ -443,7 +444,7 @@ class ReadyTaskBallot extends React.Component {
             <PercentComplete
               className="u-cursor--pointer"
               onClick={() => this.showMoreButtonsLink()}
-              showprogresscolor={percentCompleted > 0}
+              showProgressColor={percentCompleted > 0}
             >
               {percentCompleted}
               %
@@ -888,31 +889,31 @@ const styles = (theme) => ({
   width: 562,
 });
 
-const BallotToDoTitle = styled.h3`
+const BallotToDoTitle = styled('h3')(({ theme }) => (`
   margin: 0;
   font-size: 30px;
   font-weight: 600;
   margin-bottom: 6px;
   margin-top: 12px;
-  @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
+  ${theme.breakpoints.down('sm')} {
     font-size: 24px;
     margin-top: 0;
   }
-  @media (max-width: ${({ theme }) => theme.breakpoints.xs}) {
+  ${theme.breakpoints.down('xs')} {
     font-size: 20px;
     margin-top: 0;
   }
-`;
+`));
 
-const ButtonTextMobileFont = styled.span`
+const ButtonTextMobileFont = styled('span')`
   font-size: 16px;
 `;
 
-const ButtonTextMobileFontSmallest = styled.span`
+const ButtonTextMobileFontSmallest = styled('span')`
   font-size: 12px;
 `;
 
-const NumberComplete = styled.div`
+const NumberComplete = styled('div')`
   font-size: 12px;
 `;
 

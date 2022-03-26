@@ -1,9 +1,10 @@
-import { withStyles, withTheme } from '@material-ui/core/styles';
-import { CheckCircle, ThumbDown, ThumbUp } from '@material-ui/icons';
+import { CheckCircle, ThumbDown, ThumbUp } from '@mui/icons-material';
+import styled from '@mui/material/styles/styled';
+import withStyles from '@mui/styles/withStyles';
+import withTheme from '@mui/styles/withTheme';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
 import { ReactSVG } from 'react-svg';
-import styled from 'styled-components';
 import normalizedImagePath from '../../common/utils/normalizedImagePath';
 import { cleanArray } from '../../utils/textFormat';
 import FriendsIcon from './FriendsIcon';
@@ -144,7 +145,12 @@ class PositionSummaryListForPopover extends Component {
           {(positionSummary.voterCanFollowOrganization && !positionSummary.organizationInVotersNetwork) && (
             <FollowToggleWrapper>
               <Suspense fallback={<></>}>
-                <FollowToggle organizationWeVoteId={positionSummary.organizationWeVoteId} lightModeOn hideDropdownButtonUntilFollowing />
+                <FollowToggle
+                  addToScoreLabelOn
+                  organizationWeVoteId={positionSummary.organizationWeVoteId}
+                  lightModeOn
+                  hideDropdownButtonUntilFollowing
+                />
               </Suspense>
             </FollowToggleWrapper>
           )}
@@ -270,27 +276,29 @@ const styles = () => ({
   },
 });
 
-const FollowToggleWrapper = styled.div`
+const FollowToggleWrapper = styled('div')`
 `;
 
-const FollowingWrapper = styled.div`
+const FollowingWrapper = styled('div')`
   color: #0d546f !important;
 `;
 
-const IssueIcon = styled.div`
+const IssueIcon = styled('div')`
   font-weight: bold;
   font-size: 16px;
 `;
 
-const NetworkScoreDescriptionText = styled.div`
+const NetworkScoreDescriptionText = styled('div')`
   align-items: center;
   display: flex;
   font-size: 14px;
   margin-left: 6px;
 `;
 
-const NetworkScoreSmall = styled.div`
-  background: ${({ voterPersonalNetworkScoreIsNegative, voterPersonalNetworkScoreIsPositive }) => ((voterPersonalNetworkScoreIsNegative && 'rgb(255, 73, 34)') || (voterPersonalNetworkScoreIsPositive && 'rgb(31, 192, 111)') || '#888')};
+const NetworkScoreSmall = styled('div', {
+  shouldForwardProp: (prop) => !['voterPersonalNetworkScoreIsNegative', 'voterPersonalNetworkScoreIsPositive'].includes(prop),
+})(({ voterPersonalNetworkScoreIsNegative, voterPersonalNetworkScoreIsPositive }) => (`
+  background: ${(voterPersonalNetworkScoreIsNegative && 'rgb(255, 73, 34)') || (voterPersonalNetworkScoreIsPositive && 'rgb(31, 192, 111)') || '#888'};
   color: white;
   box-shadow: 0 1px 3px 0 rgba(0,0,0,.2), 0 1px 1px 0 rgba(0,0,0,.14), 0 2px 1px -1px rgba(0,0,0,.12);
   display: flex;
@@ -305,11 +313,11 @@ const NetworkScoreSmall = styled.div`
   @media print{
     border-width: 1 px;
     border-style: solid;
-    border-color: ${({ voterPersonalNetworkScoreIsNegative, voterPersonalNetworkScoreIsPositive }) => ((voterPersonalNetworkScoreIsNegative && 'rgb(255, 73, 34)') || (voterPersonalNetworkScoreIsPositive && 'rgb(31, 192, 111)') || '#888')};
+    border-color: ${(voterPersonalNetworkScoreIsNegative && 'rgb(255, 73, 34)') || (voterPersonalNetworkScoreIsPositive && 'rgb(31, 192, 111)') || '#888'};
   }
-`;
+`));
 
-const NetworkScoreSumLine = styled.div`
+const NetworkScoreSumLine = styled('div')`
   background: #2E3C5D;
   border-radius: 2px;
   width: 40px;
@@ -317,8 +325,8 @@ const NetworkScoreSumLine = styled.div`
   margin-left: -5px;
 `;
 
-const OpposeAndPartOfScore = styled.div`
-  background: ${({ theme }) => theme.colors.opposeRedRgb};
+const OpposeAndPartOfScore = styled('div')(({ theme }) => (`
+  background: ${theme.colors.opposeRedRgb};
   color: white;
   cursor: pointer;
   display: flex;
@@ -335,10 +343,10 @@ const OpposeAndPartOfScore = styled.div`
   @media print{
     border: 2px solid grey;
   }
-`;
+`));
 
-const OpposeButNotPartOfScore = styled.div`
-  color: ${({ theme }) => theme.colors.opposeRedRgb};
+const OpposeButNotPartOfScore = styled('div')(({ theme }) => (`
+  color: ${theme.colors.opposeRedRgb};
   background: white;
   display: flex;
   align-items: center;
@@ -348,52 +356,52 @@ const OpposeButNotPartOfScore = styled.div`
   height: 20px;
   border-radius: 5px;
   float: left;
-  border: 2px solid ${({ theme }) => theme.colors.opposeRedRgb};
+  border: 2px solid ${theme.colors.opposeRedRgb};
   font-size: 10px;
   font-weight: bold;
   margin-right: 6px;
-`;
+`));
 
-const OrganizationNameWrapper = styled.div`
+const OrganizationNameWrapper = styled('div')`
   flex-grow: 8;
   padding-right: 8px;
 `;
 
-const OrganizationNameWrapperWithPopover = styled.div`
+const OrganizationNameWrapperWithPopover = styled('div')`
   cursor: pointer;
   flex-grow: 8;
   padding-right: 8px;
 `;
 
-const OrganizationPopoverWrapper = styled.div`
+const OrganizationPopoverWrapper = styled('div')`
   cursor: pointer;
   display: flex;
   flex-wrap: nowrap;
   justify-content: flex-start;
 `;
 
-const PositionSummaryWrapper = styled.div`
+const PositionSummaryWrapper = styled('div')`
   display: flex;
   flex-wrap: nowrap;
   justify-content: flex-start;
 `;
 
-const ShowMoreFooterWrapper = styled.div`
+const ShowMoreFooterWrapper = styled('div')`
   margin-top: 10px;
 `;
 
-const ShowXMoreWrapper = styled.div`
-  color: ${({ theme }) => theme.colors.grayMid};
+const ShowXMoreWrapper = styled('div')(({ theme }) => (`
+  color: ${theme.colors.grayMid};
   font-size: 16px;
   font-style: italic;
   display: flex;
   align-items: center;
   justify-content: center;
   width: 100%;
-`;
+`));
 
-const SupportAndPartOfScore = styled.div`
-  background: ${({ theme }) => theme.colors.supportGreenRgb};
+const SupportAndPartOfScore = styled('div')(({ theme }) => (`
+  background: ${theme.colors.supportGreenRgb};
   color: white;
   cursor: pointer;
   display: flex;
@@ -410,10 +418,10 @@ const SupportAndPartOfScore = styled.div`
   @media print{
     border: 2px solid grey;
   }
-`;
+`));
 
-const SupportButNotPartOfScore = styled.div`
-  color: ${({ theme }) => theme.colors.supportGreenRgb};
+const SupportButNotPartOfScore = styled('div')(({ theme }) => (`
+  color: ${theme.colors.supportGreenRgb};
   background: white;
   display: flex;
   align-items: center;
@@ -422,27 +430,27 @@ const SupportButNotPartOfScore = styled.div`
   min-width: 20px;
   height: 20px;
   border-radius: 5px;
-  border: 2px solid ${({ theme }) => theme.colors.supportGreenRgb};
+  border: 2px solid ${theme.colors.supportGreenRgb};
   float: left;
   font-size: 10px;
   font-weight: bold;
   margin-right: 6px;
-`;
+`));
 
-const VoterAndOrganizationShareTheseIssuesWrapper  = styled.div`
+const VoterAndOrganizationShareTheseIssuesWrapper  = styled('div')`
   display: flex;
   flex-wrap: nowrap;
   justify-content: flex-start;
 `;
 
-const VoterPersonalNetworkScoreWrapper = styled.div`
+const VoterPersonalNetworkScoreWrapper = styled('div')`
   display: flex;
   flex-wrap: nowrap;
   margin-top: 3px;
   justify-content: flex-start;
 `;
 
-const VoterPersonalNetworkScoreSumLineWrapper = styled.div`
+const VoterPersonalNetworkScoreSumLineWrapper = styled('div')`
   display: flex;
   flex-wrap: nowrap;
   margin-top: 10px;

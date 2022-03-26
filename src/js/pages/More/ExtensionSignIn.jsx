@@ -1,10 +1,10 @@
-import { Button } from '@material-ui/core';
+import { Button } from '@mui/material';
+import styled from '@mui/material/styles/styled';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
-import styled from 'styled-components';
 import LoadingWheel from '../../common/components/Widgets/LoadingWheel';
-import VoterStore from '../../stores/VoterStore';
 import { renderLog } from '../../common/utils/logging';
+import VoterStore from '../../stores/VoterStore';
 
 const DelayedLoad = React.lazy(() => import(/* webpackChunkName: 'DelayedLoad' */ '../../common/components/Widgets/DelayedLoad'));
 const SettingsAccount = React.lazy(() => import(/* webpackChunkName: 'SettingsAccount' */ '../../components/Settings/SettingsAccount'));
@@ -103,13 +103,13 @@ ExtensionSignIn.propTypes = {
 };
 
 
-const SignInOuterWrapper = styled.div`
+const SignInOuterWrapper = styled('div')`
   display: flex;
   justify-content: center;
   width: 100%;
 `;
 
-const SignInInnerWrapper = styled.div`
+const SignInInnerWrapper = styled('div')`
   padding: 24px;
   width: 50%;
   @media (max-width: 640px) {
@@ -117,7 +117,7 @@ const SignInInnerWrapper = styled.div`
   }
 `;
 
-const SignInIntro = styled.div`
+const SignInIntro = styled('div')`
   color: #2e3c5d;
   font-size: 25px;
   font-weight: bold;
@@ -128,7 +128,7 @@ const SignInIntro = styled.div`
   }
 `;
 
-const Success = styled.div`
+const Success = styled('div')`
   color: #2e3c5d;
   font-size: 25px;
   font-weight: bold;
@@ -140,7 +140,7 @@ const Success = styled.div`
   }
 `;
 
-const Wrapper = styled.div`
+const Wrapper = styled('div')`
   background-color: #E9EBEE;
   margin-bottom: 64px;
   margin-left: 12px;

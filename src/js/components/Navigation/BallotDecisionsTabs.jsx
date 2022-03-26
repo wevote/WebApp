@@ -1,8 +1,8 @@
-import { Tab, Tabs, Badge } from '@material-ui/core';
-import React, { Component } from 'react';
+import { Badge, Tab, Tabs } from '@mui/material';
+import styled from '@mui/material/styles/styled';
+import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
-import styled from 'styled-components';
-import { withStyles } from '@material-ui/core/styles';
+import React, { Component } from 'react';
 import BallotActions from '../../actions/BallotActions';
 import { renderLog } from '../../common/utils/logging';
 
@@ -89,7 +89,7 @@ class BallotDecisionsTabs extends Component {
                 All
               </span>
               <span className="u-show-desktop-tablet">
-                All Items
+                All
               </span>
             </Badge>
           )}
@@ -137,7 +137,7 @@ class BallotDecisionsTabs extends Component {
                   Decided
                 </span>
                 <span className="u-show-desktop-tablet">
-                  Items Decided
+                  Decided
                 </span>
               </Badge>
             )}
@@ -217,12 +217,12 @@ const styles = (theme) => ({
   },
 });
 
-const BadgeCountWrapper = styled.span`
+const BadgeCountWrapper = styled('span')(({ theme }) => (`
   padding-top: 2px;
-  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+  ${theme.breakpoints.down('md')} {
     padding-top: 1px;
   }
-`;
+`));
 
 export default withStyles(styles)(BallotDecisionsTabs);
 

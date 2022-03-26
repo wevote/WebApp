@@ -1,11 +1,12 @@
-import { Twitter } from '@material-ui/icons';
+import { Twitter } from '@mui/icons-material';
+import styled from '@mui/material/styles/styled';
+import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import styled from 'styled-components';
-import VoterStore from '../../stores/VoterStore';
-import { renderLog } from '../../common/utils/logging';
 import SplitIconButton from '../../common/components/Widgets/SplitIconButton';
+import { renderLog } from '../../common/utils/logging';
+import VoterStore from '../../stores/VoterStore';
 
 class ThisIsMeAction extends Component {
   constructor (props) {
@@ -34,7 +35,7 @@ class ThisIsMeAction extends Component {
       // We do not want to show the "This is me" link if there isn't a twitter_handle associated with this organization
       return <span />;
     }
-    const { kindOfOwner, nameBeingViewed, whiteOnBlue } = this.props;
+    const { classes, kindOfOwner, nameBeingViewed, whiteOnBlue } = this.props;
     // Manage the control over this organization voter guide
     const { voter } = this.state;
     const signedInTwitter = voter === undefined ? false : voter.signed_in_twitter;
@@ -58,13 +59,13 @@ class ThisIsMeAction extends Component {
     } else {
       thisIsMeActionText = 'Is this you, or do you work here?';
     }
-    let backgroundColor = '';
-    let fontColor = '';
-    let icon = <Twitter />;
+    let backgroundColor = '#fff';
+    let fontColor = '#2e3c5d';
+    let icon = <Twitter classes={{ root: classes.twitterLogo }} />;
     if (whiteOnBlue) {
-      backgroundColor = '#fff';
-      fontColor = '#2e3c5d';
-      icon = <Twitter />;
+      backgroundColor = '#2e3c5d';
+      fontColor = '#fff';
+      icon = <Twitter classes={{ root: classes.twitterLogoWhite }} />;
     }
 
     return (
@@ -97,14 +98,24 @@ class ThisIsMeAction extends Component {
   }
 }
 ThisIsMeAction.propTypes = {
+  classes: PropTypes.object,
   kindOfOwner: PropTypes.string,
   nameBeingViewed: PropTypes.string,
   twitterHandleBeingViewed: PropTypes.string,
   whiteOnBlue: PropTypes.bool,
 };
 
-const Container = styled.div`
+const styles = () => ({
+  twitterLogo: {
+    color: '#1d9bf0',
+  },
+  twitterLogoWhite: {
+    color: '#fff',
+  },
+});
+
+const Container = styled('div')`
   padding: 16px;
 `;
 
-export default ThisIsMeAction;
+export default withStyles(styles)(ThisIsMeAction);

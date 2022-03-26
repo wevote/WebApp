@@ -335,29 +335,6 @@ class VoterGuideStore extends ReduceStore {
           return state;
         }
 
-      case 'voterAddressSave':
-        if (action.res.status === 'SIMPLE_ADDRESS_SAVE') {
-          return state;
-        } else {
-          revisedState = state;
-          googleCivicElectionId = convertToInteger(action.res.google_civic_election_id);
-          if (!this.voterGuidesUpcomingFromFriendsStopped(googleCivicElectionId)) {
-            VoterGuideActions.voterGuidesFromFriendsUpcomingRetrieve(googleCivicElectionId);
-            voterGuidesUpcomingFromFriendsStoppedByGoogleCivicElectionId = state.voterGuidesUpcomingFromFriendsStoppedByGoogleCivicElectionId || [];
-            voterGuidesUpcomingFromFriendsStoppedByGoogleCivicElectionId.push(googleCivicElectionId);
-            revisedState = { ...revisedState, voterGuidesUpcomingFromFriendsStoppedByGoogleCivicElectionId };
-          }
-          if (!this.voterGuidesUpcomingStopped(googleCivicElectionId)) {
-            VoterGuideActions.voterGuidesUpcomingRetrieve(googleCivicElectionId);
-            voterGuidesUpcomingStoppedByGoogleCivicElectionId = state.voterGuidesUpcomingStoppedByGoogleCivicElectionId || [];
-            voterGuidesUpcomingStoppedByGoogleCivicElectionId.push(googleCivicElectionId);
-            revisedState = { ...revisedState, voterGuidesUpcomingStoppedByGoogleCivicElectionId };
-          }
-
-          VoterGuideActions.voterGuidesFollowedRetrieve(googleCivicElectionId);
-          return revisedState;
-        }
-
       case 'voterAddressRetrieve': // refresh guides when you change address
         googleCivicElectionId = convertToInteger(action.res.google_civic_election_id);
         revisedState = state;
@@ -382,11 +359,18 @@ class VoterGuideStore extends ReduceStore {
         }
         return revisedState;
 
+      case 'voterAddressSave':
       case 'voterBallotItemsRetrieve':
+        revisedState = state;
+        if (action.type === 'voterAddressSave') {
+          if (action.res.status === 'SIMPLE_ADDRESS_SAVE') {
+            return revisedState;
+          }
+        }
+        // voterBallotItemsRetrieve
         // console.log("VoterGuideStore, voterBallotItemsRetrieve response received.");
         googleCivicElectionId = convertToInteger(action.res.google_civic_election_id) || 0;
         googleCivicElectionId = parseInt(googleCivicElectionId, 10);
-        revisedState = state;
         if (googleCivicElectionId !== 0) {
           if (!this.voterGuidesUpcomingFromFriendsStopped(googleCivicElectionId)) {
             if (apiCalming('voterGuidesFromFriendsUpcomingRetrieve', 500)) {

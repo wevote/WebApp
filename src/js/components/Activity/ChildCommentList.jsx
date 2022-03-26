@@ -1,16 +1,17 @@
-import { IconButton } from '@material-ui/core';
-import { withStyles, withTheme } from '@material-ui/core/styles';
-import { AccountCircle, MoreHoriz } from '@material-ui/icons';
+import { AccountCircle, MoreHoriz } from '@mui/icons-material';
+import { IconButton } from '@mui/material';
+import styled from '@mui/material/styles/styled';
+import withStyles from '@mui/styles/withStyles';
+import withTheme from '@mui/styles/withTheme';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import styled from 'styled-components';
 import ReactionActions from '../../actions/ReactionActions';
+import { timeFromDate } from '../../common/utils/dateFormat';
+import { renderLog } from '../../common/utils/logging';
 import ActivityStore from '../../stores/ActivityStore';
 import AppObservableStore from '../../stores/AppObservableStore';
 import ReactionStore from '../../stores/ReactionStore';
 import VoterStore from '../../stores/VoterStore';
-import { timeFromDate } from '../../common/utils/dateFormat';
-import { renderLog } from '../../common/utils/logging';
 import ActivityCommentAdd from './ActivityCommentAdd';
 
 
@@ -260,6 +261,7 @@ class ChildCommentList extends Component {
                         classes={{ root: likeButtonSelected ? classes.likeButtonSelected : classes.likeButton }}
                         id={`likeButton-${childComment.parent_we_vote_id}-${childComment.we_vote_id}`}
                         onClick={() => this.onClickReactionLikeToggle(childComment.we_vote_id)}
+                        size="large"
                       >
                         <LikeTextWrapper likeButtonSelected={likeButtonSelected}>
                           Like
@@ -271,6 +273,7 @@ class ChildCommentList extends Component {
                         classes={{ root: classes.replyButton }}
                         id={`replyButton-${parentCommentWeVoteId}-${childComment.we_vote_id}`}
                         onClick={this.onClickToggleReplyToCommentLocal}
+                        size="large"
                       >
                         <ReplyTextWrapper>
                           Reply
@@ -283,6 +286,7 @@ class ChildCommentList extends Component {
                           classes={{ root: classes.cancelButton }}
                           id={`cancelButton-${childComment.parent_we_vote_id}-${childComment.we_vote_id}`}
                           onClick={() => this.onClickEditCommentCancel(childComment.we_vote_id)}
+                          size="large"
                         >
                           <CancelTextWrapper className="u-no-break">
                             Cancel Edit
@@ -360,25 +364,25 @@ const styles = () => ({
   },
 });
 
-const ActivityCommentEditWrapper = styled.div`
+const ActivityCommentEditWrapper = styled('div')`
 `;
 
-const ActivityImage = styled.img`
+const ActivityImage = styled('img')`
   border-radius: 4px;
   width: 24px;
   height: 24px;
 `;
 
-const CancelTextWrapper = styled.div`
+const CancelTextWrapper = styled('div')`
   color: #999;
   font-size: 11px;
   padding-left: 4px;
 `;
 
-const CancelWrapper = styled.div`
+const CancelWrapper = styled('div')`
 `;
 
-const ChildCommentBottomLinks = styled.div`
+const ChildCommentBottomLinks = styled('div')`
   align-items: center;
   display: flex;
   justify-content: start;
@@ -386,11 +390,11 @@ const ChildCommentBottomLinks = styled.div`
   margin-left: 12px;
 `;
 
-const ChildCommentStatementText = styled.div`
+const ChildCommentStatementText = styled('div')`
   width: 100%;
 `;
 
-const ChildCommentText = styled.div`
+const ChildCommentText = styled('div')`
   align-items: center;
   display: flex;
   justify-content: space-between;
@@ -403,21 +407,21 @@ const ChildCommentText = styled.div`
   margin-top: 0;
 `;
 
-const ChildCommentPhotoDiv = styled.div`
+const ChildCommentPhotoDiv = styled('div')`
 `;
 
-const ChildCommentWrapper = styled.div`
+const ChildCommentWrapper = styled('div')`
   width: 100%;
 `;
 
-const CommentActivityTime = styled.div`
+const CommentActivityTime = styled('div')`
   color: #999;
   font-size: 11px;
   font-weight: 400;
   margin-right: 6px;
 `;
 
-const CommentWrapper = styled.div`
+const CommentWrapper = styled('div')`
   align-items: flex-start;
   display: flex;
   justify-content: space-between;
@@ -425,37 +429,39 @@ const CommentWrapper = styled.div`
   margin-bottom: 3px;
 `;
 
-const LikeTextWrapper = styled.div`
-  ${({ likeButtonSelected }) => (likeButtonSelected ? 'color: #2e3c5d;' : 'color: #999;')}
+const LikeTextWrapper = styled('div', {
+  shouldForwardProp: (prop) => !['likeButtonSelected'].includes(prop),
+})(({ likeButtonSelected }) => (`
+  ${likeButtonSelected ? 'color: #2e3c5d;' : 'color: #999;'}
   font-size: 11px;
-  ${({ likeButtonSelected }) => (likeButtonSelected ? 'font-weight: 600;' : '')}
+  ${likeButtonSelected ? 'font-weight: 600;' : ''}
   padding-left: 4px;
+`));
+
+const LikeWrapper = styled('div')`
 `;
 
-const LikeWrapper = styled.div`
-`;
-
-const ReplyTextWrapper = styled.div`
+const ReplyTextWrapper = styled('div')`
   color: #999;
   font-size: 11px;
   padding-left: 4px;
 `;
 
-const ReplyWrapper = styled.div`
+const ReplyWrapper = styled('div')`
 `;
 
-const ShowMoreLink = styled.div`
+const ShowMoreLink = styled('div')`
   color: rgba(17, 17, 17, .4);
 `;
 
-const ShowMoreWrapper = styled.div`
+const ShowMoreWrapper = styled('div')`
   display: flex;
   justify-content: center;
   margin-top: -5px;
   width: 100%;
 `;
 
-const SpeakerAvatar = styled.div`
+const SpeakerAvatar = styled('div')`
   background: transparent;
   display: flex;
   justify-content: center;
@@ -463,7 +469,7 @@ const SpeakerAvatar = styled.div`
   position: relative;
 `;
 
-const Wrapper = styled.div`
+const Wrapper = styled('div')`
   margin-bottom: 6px !important;
   padding: 0 !important;
 `;

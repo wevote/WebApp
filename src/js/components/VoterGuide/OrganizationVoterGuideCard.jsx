@@ -1,18 +1,19 @@
-import { Button } from '@material-ui/core';
-import { Twitter } from '@material-ui/icons';
+import { Twitter } from '@mui/icons-material';
+import { Button } from '@mui/material';
+import styled from '@mui/material/styles/styled';
+import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
 import { Link } from 'react-router-dom';
-import styled from 'styled-components';
+import ExternalLinkIcon from '../../common/components/Widgets/ExternalLinkIcon';
+import LoadingWheel from '../../common/components/Widgets/LoadingWheel';
 import historyPush from '../../common/utils/historyPush';
 import { renderLog } from '../../common/utils/logging';
 import { isSpeakerTypePrivateCitizen } from '../../utils/organization-functions';
-import { numberWithCommas, removeTwitterNameFromDescription } from '../../utils/textFormat';
+import { abbreviateNumber, removeTwitterNameFromDescription } from '../../utils/textFormat';
 import FriendToggle from '../Friends/FriendToggle';
-import LoadingWheel from '../../common/components/Widgets/LoadingWheel';
 import ParsedTwitterDescription from '../Twitter/ParsedTwitterDescription';
 import IssuesByOrganizationDisplayList from '../Values/IssuesByOrganizationDisplayList';
-import ExternalLinkIcon from '../../common/components/Widgets/ExternalLinkIcon';
 
 const FollowToggle = React.lazy(() => import(/* webpackChunkName: 'FollowToggle' */ '../Widgets/FollowToggle'));
 const OpenExternalWebSite = React.lazy(() => import(/* webpackChunkName: 'OpenExternalWebSite' */ '../../common/components/Widgets/OpenExternalWebSite'));
@@ -37,7 +38,7 @@ class OrganizationVoterGuideCard extends Component {
       return <div>{LoadingWheel}</div>;
     }
     // console.log('this.props.organization:', this.props.organization);
-    const { isVoterOwner } = this.props;
+    const { classes, isVoterOwner } = this.props;
     const {
       organization_name: organizationName,
       organization_photo_url_large: organizationPhotoUrlLarge,
@@ -79,15 +80,15 @@ class OrganizationVoterGuideCard extends Component {
               target="_blank"
               body={(
                 <TwitterName>
+                  <Twitter classes={{ root: classes.twitterLogo }} />
                   <TwitterHandleWrapper>
                     @
                     {organizationTwitterHandle}
                   </TwitterHandleWrapper>
                   { !!(twitterFollowersCount && String(twitterFollowersCount) !== '0') && (
-                    <span className="twitter-followers__badge">
-                      <Twitter />
-                      {numberWithCommas(twitterFollowersCount)}
-                    </span>
+                    <TwitterFollowersWrapper>
+                      {abbreviateNumber(twitterFollowersCount)}
+                    </TwitterFollowersWrapper>
                   )}
                 </TwitterName>
               )}
@@ -170,62 +171,82 @@ class OrganizationVoterGuideCard extends Component {
   }
 }
 OrganizationVoterGuideCard.propTypes = {
+  classes: PropTypes.object,
   organization: PropTypes.object.isRequired,
   isVoterOwner: PropTypes.bool,
   turnOffDescription: PropTypes.bool,
 };
 
-const CardMain = styled.div`
+const styles = () => ({
+  externalLinkIcon: {
+    color: '#999',
+    height: 14,
+    marginTop: '-3px',
+  },
+  twitterLogo: {
+    color: '#1d9bf0',
+    height: 18,
+    marginRight: '-2px',
+    marginTop: '-4px',
+  },
+});
+
+const CardMain = styled('div')`
   border: 1px solid #fff;
-  padding: 0px !important;
+  padding: 0 !important;
   font-size: 14px;
   position: relative;
 `;
 
-const EditOrFollow = styled.div`
+const EditOrFollow = styled('div')`
   display: block;
   width: 100%;
 `;
 
-const EditYourEndorsementsCardWrapper = styled.div`
+const EditYourEndorsementsCardWrapper = styled('div')`
 `;
 
-const FollowToggleWrapper = styled.div`
+const FollowToggleWrapper = styled('div')`
   margin-top: 10px;
 `;
 
-const FriendToggleWrapper = styled.div`
+const FriendToggleWrapper = styled('div')`
   margin-top: 10px;
 `;
 
-const IssuesWrapper = styled.div`
-  margin-top: 0px;
+const IssuesWrapper = styled('div')`
+  margin-top: 0;
 `;
 
-const OrganizationWebsiteWrapper = styled.div`
-  margin-top: 0px;
+const OrganizationWebsiteWrapper = styled('div')`
+  margin-top: 0;
 `;
 
-const ProfileAvatar = styled.div`
+const ProfileAvatar = styled('div')`
   display: flex;
   justify-content: center;
   background: transparent;
   position: relative;
 `;
 
-const ProfileAvatarImg = styled.img`
+const ProfileAvatarImg = styled('img')`
   border-radius: 100px;
 `;
 
-const TwitterDescription = styled.div`
+const TwitterDescription = styled('div')`
   margin-top: 10px;
 `;
 
-const TwitterHandleWrapper = styled.span`
-  margin-right: 10px;
+const TwitterFollowersWrapper = styled('span')`
+  color: #000;
 `;
 
-const TwitterName = styled.div`
+const TwitterHandleWrapper = styled('span')`
+  color: #000;
+  margin-right: 5px;
 `;
 
-export default OrganizationVoterGuideCard;
+const TwitterName = styled('div')`
+`;
+
+export default withStyles(styles)(OrganizationVoterGuideCard);

@@ -1,11 +1,11 @@
+import styled from '@mui/material/styles/styled';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
-import styled from 'styled-components';
 import IssueActions from '../../actions/IssueActions';
+import { renderLog } from '../../common/utils/logging';
 import IssueStore from '../../stores/IssueStore';
 import VoterGuideStore from '../../stores/VoterGuideStore';
 import VoterStore from '../../stores/VoterStore';
-import { renderLog } from '../../common/utils/logging';
 
 const IssueCard = React.lazy(() => import(/* webpackChunkName: 'IssueCard' */ './IssueCard'));
 
@@ -194,12 +194,12 @@ FriendInvitationOnboardingValuesList.propTypes = {
   oneColumn: PropTypes.bool,
 };
 
-const Wrapper = styled.div`
+const Wrapper = styled('div')`
   margin-bottom: 18px;
 `;
 
-const Row = styled.div`
+const Row = styled('div')`
 `;
 
-const Column = styled.div`
+const Column = styled('div')`
 `;

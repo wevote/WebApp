@@ -5,7 +5,8 @@ import BallotActions from '../actions/BallotActions';
 import CandidateActions from '../actions/CandidateActions';
 import MeasureActions from '../actions/MeasureActions'; // eslint-disable-line import/no-cycle
 import Dispatcher from '../common/dispatcher/Dispatcher';
-import { stringContains } from '../utils/textFormat';
+import { formatStateName } from '../common/utils/formatStateName';
+import { stringContains, toTitleCase } from '../utils/textFormat';
 import convertVoterGuideToElection from '../utils/voterGuideFunctions';
 import SupportStore from './SupportStore'; // eslint-disable-line import/no-cycle
 import VoterStore from './VoterStore';
@@ -26,6 +27,7 @@ class BallotStore extends ReduceStore {
       ballotItemSearchResultsList: [],
       ballotItemUnfurledTracker: {},
       ballotItemListCandidatesDict: {}, // Dictionary with ballot_item_we_vote_id as key and list of candidate we_vote_ids as value
+      nextNationalElectionDayText: '',
       positionListHasBeenRetrievedOnceByBallotItem: {}, // Dictionary with ballot_item_we_vote_id as key and true/false as value
       positionListFromFriendsHasBeenRetrievedOnceByBallotItem: {}, // Dictionary with ballot_item_we_vote_id as key and true/false as value
       voterGuideElectionListByElectionId: {}, // Dictionary with google_civic_election_id as key and list of voter guides for this voter for this election as value
@@ -131,6 +133,10 @@ class BallotStore extends ReduceStore {
       return this.getState().voterGuideElectionListByElectionId[civicId].election_day_text;
     }
     return '';
+  }
+
+  get nextNationalElectionDayText () {
+    return this.getState().nextNationalElectionDayText || '2022-11-08';
   }
 
   get currentBallotGoogleCivicElectionId () {
@@ -362,6 +368,88 @@ class BallotStore extends ReduceStore {
     return this.getState().raceLevelFilterTypeSaved || 'All';
   }
 
+  getOriginalTextAddress (simple = true) {
+    if (!this.isLoaded()) { return undefined; }
+    const civicId = VoterStore.electionId();
+    if (simple) {
+      let originalTextAddressSimple = '';
+      if (this.getState().ballots[civicId]) {
+        if (this.getState().ballots[civicId].original_text_city) {
+          let adjustedCity = this.getState().ballots[civicId].original_text_city;
+          if (adjustedCity.toUpperCase() === adjustedCity) {
+            adjustedCity = toTitleCase(adjustedCity);
+          }
+          originalTextAddressSimple += adjustedCity;
+          if (this.getState().ballots[civicId].original_text_state || this.getState().ballots[civicId].original_text_zip) {
+            originalTextAddressSimple += ', ';
+          }
+        }
+        if (this.getState().ballots[civicId].original_text_state) {
+          originalTextAddressSimple += formatStateName(this.getState().ballots[civicId].original_text_state);
+          originalTextAddressSimple += ' ';
+        }
+        if (this.getState().ballots[civicId].original_text_zip) {
+          originalTextAddressSimple += this.getState().ballots[civicId].original_text_zip;
+        }
+      }
+      return originalTextAddressSimple;
+    }
+    return '';
+  }
+
+  getOriginalTextState () {
+    if (!this.isLoaded()) { return undefined; }
+    const civicId = VoterStore.electionId();
+    let originalTextState = '';
+    if (this.getState().ballots[civicId]) {
+      if (this.getState().ballots[civicId].original_text_state) {
+        originalTextState += formatStateName(this.getState().ballots[civicId].original_text_state);
+      }
+    }
+    return originalTextState;
+  }
+
+  getSubstitutedAddress (simple = true) {
+    if (!this.isLoaded()) { return undefined; }
+    const civicId = VoterStore.electionId();
+    if (simple) {
+      let substitutedAddressSimple = '';
+      if (this.getState().ballots[civicId]) {
+        if (this.getState().ballots[civicId].substituted_address_city) {
+          let adjustedCity = this.getState().ballots[civicId].substituted_address_city;
+          if (adjustedCity.toUpperCase() === adjustedCity) {
+            adjustedCity = toTitleCase(adjustedCity);
+          }
+          substitutedAddressSimple += adjustedCity;
+          if (this.getState().ballots[civicId].substituted_address_state || this.getState().ballots[civicId].substituted_address_zip) {
+            substitutedAddressSimple += ', ';
+          }
+        }
+        if (this.getState().ballots[civicId].substituted_address_state) {
+          substitutedAddressSimple += formatStateName(this.getState().ballots[civicId].substituted_address_state);
+          substitutedAddressSimple += ' ';
+        }
+        if (this.getState().ballots[civicId].substituted_address_zip) {
+          substitutedAddressSimple += this.getState().ballots[civicId].substituted_address_zip;
+        }
+      }
+      return substitutedAddressSimple;
+    }
+    return '';
+  }
+
+  getSubstitutedState () {
+    if (!this.isLoaded()) { return undefined; }
+    const civicId = VoterStore.electionId();
+    let substitutedState = '';
+    if (this.getState().ballots[civicId]) {
+      if (this.getState().ballots[civicId].substituted_address_state) {
+        substitutedState += formatStateName(this.getState().ballots[civicId].substituted_address_state);
+      }
+    }
+    return substitutedState;
+  }
+
   getTopLevelBallotItemWeVoteIds () {
     if (this.getState().ballotItemListCandidatesDict) {
       return Object.keys(this.getState().ballotItemListCandidatesDict);
@@ -405,6 +493,7 @@ class BallotStore extends ReduceStore {
     let isCandidate = false;
     let isMeasure = false;
     let newBallots = {};
+    let nextNationalElectionDayText = '';
     let positionListFromFriendsHasBeenRetrievedOnceByBallotItem = {};
     let revisedState;
     let tempBallotItemList = [];
@@ -508,6 +597,9 @@ class BallotStore extends ReduceStore {
           ballotItemSearchResultsList: action.res.ballot_item_list,
         };
 
+      case 'setBallotCaveat':
+        return { ...state, ballotCaveat: action.payload };
+
       case 'positionListForBallotItem':
         // console.log('BallotStore, positionListForBallotItem response received.');
         // Exit if we don't have a successful response
@@ -597,12 +689,16 @@ class BallotStore extends ReduceStore {
         if (state.ballots) {
           newBallots = state.ballots;
         }
+        revisedState = state;
         ballotCaveat = action.res.ballot_caveat;
+        revisedState = { ...revisedState, ballotCaveat };
         googleCivicElectionId = action.res.google_civic_election_id || 0;
         googleCivicElectionId = parseInt(googleCivicElectionId, 10);
-        revisedState = state;
+        nextNationalElectionDayText = action.res.next_national_election_day_text;
+        if (nextNationalElectionDayText && nextNationalElectionDayText !== '') {
+          revisedState = { ...revisedState, nextNationalElectionDayText };
+        }
         textForMapSearch = action.res.text_for_map_search;
-        revisedState = { ...revisedState, ballotCaveat };
         revisedState = { ...revisedState, textForMapSearch };
         revisedState = { ...revisedState, voterBallotItemsRetrieveHasReturned };
         if (googleCivicElectionId !== 0) {

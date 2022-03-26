@@ -1,10 +1,10 @@
-import React, { Component } from 'react';
+import styled from '@mui/material/styles/styled';
+import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
+import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import styled from 'styled-components';
-import { withStyles } from '@material-ui/core/styles';
-import AppObservableStore, { messageService } from '../../stores/AppObservableStore';
 import OpenExternalWebSite from '../../common/components/Widgets/OpenExternalWebSite';
+import AppObservableStore, { messageService } from '../../stores/AppObservableStore';
 
 
 class FooterMainPrivateLabeled extends Component {
@@ -102,36 +102,36 @@ const styles = (theme) => ({
   },
 });
 
-const Column = styled.div`
+const Column = styled('div')(({ theme }) => (`
   display: flex;
   flex-flow: column nowrap;
   width: 150px;
-  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+  ${theme.breakpoints.down('md')} {
     width: 50%;
   }
-  @media (max-width: ${({ theme }) => theme.breakpoints.xs}) {
+  ${theme.breakpoints.down('xs')} {
     width: 100%;
   }
-`;
+`));
 
-const TopSectionInnerWrapper = styled.div`
+const TopSectionInnerWrapper = styled('div')(({ theme }) => (`
   display: flex;
   flex-direction: row;
   flex-wrap: nowrap;
   width: 100%;
   justify-content: space-between;
-  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+  ${theme.breakpoints.down('md')} {
     flex-wrap: wrap;
   }
-`;
+`));
 
-const TopSectionOuterWrapper = styled.div`
+const TopSectionOuterWrapper = styled('div')`
   display: flex;
   justify-content: space-between;
   width: 100%;
 `;
 
-const Wrapper = styled.div`
+const Wrapper = styled('div')`
 `;
 
 export default withStyles(styles)(FooterMainPrivateLabeled);

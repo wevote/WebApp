@@ -1,11 +1,12 @@
-import { withStyles, withTheme } from '@material-ui/core/styles';
+import styled from '@mui/material/styles/styled';
+import withStyles from '@mui/styles/withStyles';
+import withTheme from '@mui/styles/withTheme';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import styled from 'styled-components';
 import { hasIPhoneNotch } from '../../common/utils/cordovaUtils';
-import { isCordova } from '../../common/utils/isCordovaOrWebApp';
 import historyPush from '../../common/utils/historyPush';
+import { isCordova } from '../../common/utils/isCordovaOrWebApp';
 import { renderLog } from '../../common/utils/logging';
 import { capitalizeString } from '../../utils/textFormat';
 
@@ -61,7 +62,7 @@ const styles = (theme) => ({
   },
 });
 
-const OfficeNameWrapper = styled.h2`
+const OfficeNameWrapper = styled('h2')(({ theme }) => (`
   display: inline-block;
   font-size: 18px;
   font-weight: 700;
@@ -71,12 +72,12 @@ const OfficeNameWrapper = styled.h2`
   white-space: ${isCordova() ? 'nowrap' : 'normal'};
   overflow: hidden; // Not working yet
   text-overflow: ellipsis; // Not working yet
-  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+  ${theme.breakpoints.down('md')} {
     font-size: 18px;
   }
   @media print {
     font-size: 22px;
   }
-`;
+`));
 
 export default withTheme(withStyles(styles)(OfficeItem));

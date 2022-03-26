@@ -1,17 +1,18 @@
-import { Button, Card } from '@material-ui/core';
-import { withStyles, withTheme } from '@material-ui/core/styles';
-import { Twitter } from '@material-ui/icons';
+import { Twitter } from '@mui/icons-material';
+import { Button, Card } from '@mui/material';
+import styled from '@mui/material/styles/styled';
+import withStyles from '@mui/styles/withStyles';
+import withTheme from '@mui/styles/withTheme';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
 import { Link } from 'react-router-dom';
 import { ReactSVG } from 'react-svg';
-import styled from 'styled-components';
+import { renderLog } from '../../common/utils/logging';
+import normalizedImagePath from '../../common/utils/normalizedImagePath';
 import AppObservableStore from '../../stores/AppObservableStore';
 import FriendStore from '../../stores/FriendStore';
 import IssueStore from '../../stores/IssueStore';
 import OrganizationStore from '../../stores/OrganizationStore';
-import normalizedImagePath from '../../common/utils/normalizedImagePath';
-import { renderLog } from '../../common/utils/logging';
 import { isSpeakerTypeIndividual, isSpeakerTypeOrganization } from '../../utils/organization-functions';
 import { numberWithCommas } from '../../utils/textFormat';
 import StickyPopover from '../Ballot/StickyPopover';
@@ -364,33 +365,33 @@ const styles = (theme) => ({
   },
 });
 
-const DesktopContainer = styled.div`
+const DesktopContainer = styled('div')`
   display: flex;
   justify-content: space-between;
   margin: 8px 24px;
 `;
 
-const DesktopItemBody = styled.div`
+const DesktopItemBody = styled('div')`
   margin: 0;
 `;
 
-const DesktopItemDescription = styled.div`
+const DesktopItemDescription = styled('div')`
   font-size: 14px;
   margin-top: 8px;
 `;
 
-const DesktopItemFooter = styled.div`
+const DesktopItemFooter = styled('div')`
   font-size: 12px;
   margin-top: 2px;
 `;
 
-const DesktopItemHeader = styled.div`
+const DesktopItemHeader = styled('div')`
   display: flex;
-  align-items: top;
+  // align-items: top;  // nonsense value
   justify-content: flex-start;
 `;
 
-const DesktopItemImage = styled.div`
+const DesktopItemImage = styled('div')`
   width: 57.76px;
   margin: 0 auto;
   height: 57.76px;
@@ -408,76 +409,77 @@ const DesktopItemImage = styled.div`
   }
 `;
 
-const DesktopItemIssues = styled.div`
+const DesktopItemIssues = styled('div')`
   margin: 0;
   padding: 0;
 `;
 
-const DesktopItemLeft = styled.div`
+const DesktopItemLeft = styled('div')`
   width: 85px;
   padding: 0 16px 0 0;
 `;
 
-const DesktopItemName = styled.h4`
+const DesktopItemName = styled('h4')`
   font-size: 18px;
   font-weight: bold;
   margin: 0;
 `;
 
-const DesktopItemNameContainer = styled.div`
+const DesktopItemNameContainer = styled('div')`
   display: flex;
   justify-content: flex-start;
 `;
 
-const DesktopItemNameIssueContainer = styled.div`
-  padding: 0px;
+const DesktopItemNameIssueContainer = styled('div')`
+  padding: 0;
 `;
 
-const DesktopItemTwitter = styled.div`
+const DesktopItemTwitter = styled('div')`
   color: #999;
   display: inline-block;
   font-size: 12px;
   padding-left: 10px;
+  padding-right: 3px;
   white-space: nowrap;
 `;
 
-const DesktopItemTwitterContainer = styled.div`
+const DesktopItemTwitterContainer = styled('div')`
 `;
 
-const MobileItemBody = styled.div`
+const MobileItemBody = styled('div')`
   padding: 6px 6px 6px;
   border-bottom-right-radius: 8px;
   border-top-right-radius: 8px;
   border-bottom-left-radius: 5px;
 `;
 
-const MobileItemDescription = styled.div`
+const MobileItemDescription = styled('div')(({ theme }) => (`
   font-size: 16px;
   color: #333;
   flex: 1 1 0;
-  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+  ${theme.breakpoints.down('md')} {
     font-size: 14px;
   }
-`;
+`));
 
-const MobileItemDescriptionFollowToggleContainer = styled.div`
+const MobileItemDescriptionFollowToggleContainer = styled('div')`
   left: 2px;
   display: flex;
   justify-content: space-between;
 `;
 
-const MobileItemFollowToggleDisplay = styled.div`
+const MobileItemFollowToggleDisplay = styled('div')`
   width: 75px;
 `;
 
-const MobileItemFooter = styled.div`
+const MobileItemFooter = styled('div')`
   height: 20px;
   width: 100%;
   margin-top: 2px;
   font-size: 12px;
 `;
 
-const MobileItemHeader = styled.div`
+const MobileItemHeader = styled('div')`
   display: flex;
   align-items: flex-start;
   justify-content: flex-start;
@@ -485,7 +487,7 @@ const MobileItemHeader = styled.div`
   min-height: 46px;
 `;
 
-const MobileItemImage = styled.div`
+const MobileItemImage = styled('div')`
   margin-right: 16px;
   width: 40px;
   height: 40px;
@@ -502,26 +504,26 @@ const MobileItemImage = styled.div`
   }
 `;
 
-const MobileItemIssues = styled.div`
+const MobileItemIssues = styled('div')`
   margin: 0;
   font-size: 14px;
   flex: 1 1 0;
 `;
 
-const MobileItemName = styled.h4`
+const MobileItemName = styled('h4')`
   font-size: 18px;
   font-weight: 500;
   margin-bottom: 4px;
 `;
 
-const MobileItemNameIssuesContainer = styled.div`
+const MobileItemNameIssuesContainer = styled('div')`
   display: block;
   @media (max-width: 374px) {
     display: none;
   }
 `;
 
-const MobileSmallItemIssuesContainer = styled.div`
+const MobileSmallItemIssuesContainer = styled('div')`
   @media (min-width: 375px) {
     display: none;
   }
@@ -529,40 +531,44 @@ const MobileSmallItemIssuesContainer = styled.div`
   margin-top: -12px;
 `;
 
-const MobileSmallItemNameContainer = styled.div`
+const MobileSmallItemNameContainer = styled('div')`
   @media (min-width: 375px) {
     display: none;
   }
 `;
 
-const VoterGuideDesktop = styled.div`
+const VoterGuideDesktop = styled('div', {
+  shouldForwardProp: (prop) => !['isSupport', 'isOppose'].includes(prop),
+})(({ isSupport, isOppose }) => (`
   background: #eee;
-  ${({ isSupport, isOppose }) => ((!isOppose && !isSupport) ? 'border-left: 4px solid #ccc;' : '')}
-  ${({ isOppose }) => (isOppose ? 'border-left: 4px solid rgb(255, 73, 34);' : '')}
-  ${({ isSupport }) => (isSupport ? 'border-left: 4px solid rgb(31, 192, 111);' : '')}
+  ${(!isOppose && !isSupport) ? 'border-left: 4px solid #ccc;' : ''}
+  ${isOppose ? 'border-left: 4px solid rgb(255, 73, 34);' : ''}
+  ${isSupport ? 'border-left: 4px solid rgb(31, 192, 111);' : ''}
   border-radius: 5px;
   flex: 1 1 0;
   list-style: none;
   padding: 6px 16px;
-`;
+`));
 
-const VoterGuideMobile = styled.li`
+const VoterGuideMobile = styled('li', {
+  shouldForwardProp: (prop) => !['isSupport', 'isOppose'].includes(prop),
+})(({ isSupport, isOppose }) => (`
   background: #fff;
-  ${({ isSupport, isOppose }) => ((!isOppose && !isSupport) ? 'border-left: 4px solid #ccc;' : '')}
-  ${({ isOppose }) => (isOppose ? 'border-left: 4px solid rgb(255, 73, 34);' : '')}
-  ${({ isSupport }) => (isSupport ? 'border-left: 4px solid rgb(31, 192, 111);' : '')}
+  ${(!isOppose && !isSupport) ? 'border-left: 4px solid #ccc;' : ''}
+  ${isOppose ? 'border-left: 4px solid rgb(255, 73, 34);' : ''}
+  ${isSupport ? 'border-left: 4px solid rgb(31, 192, 111);' : ''}
   border-radius: 5px;
   list-style: none;
   margin: 0 !important;
   max-width: 100% !important;
-`;
+`));
 
-const SourceLink = styled.div`
+const SourceLink = styled('div')`
   float: right;
   margin-bottom: -4px;
 `;
 
-// const TwitterIcon = styled.span`
+// const TwitterIcon = styled('span')`
 //   font-size: 16px;
 //   color: #ccc;
 //   margin-right: 2px;

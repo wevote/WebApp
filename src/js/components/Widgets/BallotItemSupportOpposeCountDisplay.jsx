@@ -1,16 +1,17 @@
-import { withStyles, withTheme } from '@material-ui/core/styles';
-import { ArrowRightAlt, Comment, Done, NotInterested, ThumbDown, ThumbUp } from '@material-ui/icons';
+import { ArrowRightAlt, Comment, Done, NotInterested, ThumbDown, ThumbUp } from '@mui/icons-material';
+import styled from '@mui/material/styles/styled';
+import withStyles from '@mui/styles/withStyles';
+import withTheme from '@mui/styles/withTheme';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
-import styled from 'styled-components';
 import SupportActions from '../../actions/SupportActions';
+import { renderLog } from '../../common/utils/logging';
 import CandidateStore from '../../stores/CandidateStore';
 import FriendStore from '../../stores/FriendStore';
 import IssueStore from '../../stores/IssueStore';
 import MeasureStore from '../../stores/MeasureStore';
 import OrganizationStore from '../../stores/OrganizationStore';
 import SupportStore from '../../stores/SupportStore';
-import { renderLog } from '../../common/utils/logging';
 import { getPositionListSummaryIncomingDataStats, getPositionSummaryListForBallotItem } from '../../utils/positionFunctions';
 import { stringContains } from '../../utils/textFormat';
 import StickyPopover from '../Ballot/StickyPopover';
@@ -96,45 +97,6 @@ class BallotItemSupportOpposeCountDisplay extends Component {
     });
     this.onCachedPositionsOrIssueStoreChange();
   }
-
-  // // eslint-disable-next-line camelcase,react/sort-comp
-  // UNSAFE_componentWillReceiveProps (nextProps) {
-  //   // console.log('BallotItemSupportOpposeCountDisplay componentWillReceiveProps, nextProps: ', nextProps);
-  //   let ballotItemDisplayName;
-  //   const { ballotItemWeVoteId } = nextProps;
-  //   const isCandidate = stringContains('cand', ballotItemWeVoteId);
-  //   const isMeasure = stringContains('meas', ballotItemWeVoteId);
-  //   if (isCandidate) {
-  //     const candidate = CandidateStore.getCandidate(ballotItemWeVoteId);
-  //     ballotItemDisplayName = candidate.ballot_item_display_name || this.props.ballotItemDisplayName;
-  //     const countResults = CandidateStore.getNumberOfPositionsByCandidateWeVoteId(ballotItemWeVoteId);
-  //     const { numberOfAllSupportPositions, numberOfAllOpposePositions, numberOfAllInfoOnlyPositions } = countResults;
-  //     this.setState({
-  //       ballotItemDisplayName,
-  //       numberOfAllSupportPositions,
-  //       numberOfAllOpposePositions,
-  //       numberOfAllInfoOnlyPositions,
-  //     });
-  //   } else if (isMeasure) {
-  //     const measure = MeasureStore.getMeasure(ballotItemWeVoteId);
-  //     ballotItemDisplayName = measure.ballot_item_display_name || this.props.ballotItemDisplayName;
-  //     const countResults = MeasureStore.getNumberOfPositionsByMeasureWeVoteId(ballotItemWeVoteId);
-  //     const { numberOfAllSupportPositions, numberOfAllOpposePositions, numberOfAllInfoOnlyPositions } = countResults;
-  //     this.setState({
-  //       ballotItemDisplayName,
-  //       numberOfAllSupportPositions,
-  //       numberOfAllOpposePositions,
-  //       numberOfAllInfoOnlyPositions,
-  //     });
-  //   }
-  //   this.setState(() => ({
-  //     ballotItemDisplayName,
-  //     ballotItemWeVoteId,
-  //     isCandidate,
-  //     isMeasure,
-  //   }));
-  //   this.onCachedPositionsOrIssueStoreChange();
-  // }
 
   shouldComponentUpdate (nextProps, nextState) {
     // This lifecycle method tells the component to NOT render if componentWillReceiveProps didn't see any changes
@@ -924,14 +886,13 @@ class BallotItemSupportOpposeCountDisplay extends Component {
     );
 
     const commentCountExists = numberOfAllInfoOnlyPositions > 0;
-    const opposeCountExists = numberOfAllOpposePositions > 0;
+    // const opposeCountExists = numberOfAllOpposePositions > 0;
     // Default settings
+    const showOpposeCount = true;
     let showCommentCount = false;
-    let showOpposeCount = true;
-    if (commentCountExists && !opposeCountExists) {
+    if (commentCountExists) {
       // Override if comment count exists, and oppose count does not
       showCommentCount = true;
-      showOpposeCount = false;
     }
     // console.log('showVoterPersonalScore:', showVoterPersonalScore);
     // console.log('voterSupportsBallotItem:', voterSupportsBallotItem);
@@ -962,32 +923,32 @@ class BallotItemSupportOpposeCountDisplay extends Component {
                   <EndorsementsTitle>
                     Opinions
                   </EndorsementsTitle>
-                  <EndorsementWrapper>
-                    <EndorsementRow>
-                      <Endorsement>
+                  <EndorsementsOuterWrapper>
+                    <EndorsementsInnerWrapper>
+                      <EndorsementRow>
                         <ThumbUp classes={{ root: classes.endorsementIconRoot }} />
                         <EndorsementCount>
                           {numberOfAllSupportPositions}
                         </EndorsementCount>
-                      </Endorsement>
+                      </EndorsementRow>
                       { showOpposeCount && (
-                        <Endorsement>
+                        <EndorsementRow>
                           <ThumbDown classes={{ root: classes.endorsementIconRoot }} />
                           <EndorsementCount>
                             {numberOfAllOpposePositions}
                           </EndorsementCount>
-                        </Endorsement>
+                        </EndorsementRow>
                       )}
                       { showCommentCount && (
-                        <Endorsement>
+                        <EndorsementRow>
                           <Comment classes={{ root: classes.endorsementIconRoot }} />
                           <EndorsementCount>
                             {numberOfAllInfoOnlyPositions}
                           </EndorsementCount>
-                        </Endorsement>
+                        </EndorsementRow>
                       )}
-                    </EndorsementRow>
-                  </EndorsementWrapper>
+                    </EndorsementsInnerWrapper>
+                  </EndorsementsOuterWrapper>
                 </EndorsementsContainer>
               </StickyPopover>
             </EndorsementsOverviewShowOrNotShow>
@@ -1218,7 +1179,7 @@ const styles = (theme) => ({
   },
   endorsementIconRoot: {
     fontSize: 14,
-    margin: '.3rem .3rem 0 .5rem',
+    margin: '3px 3px 0 0',
   },
   endorsementIcon: {
     width: 12,
@@ -1230,99 +1191,108 @@ const styles = (theme) => ({
   },
 });
 
-const Wrapper = styled.div`
+const Wrapper = styled('div')`
   align-items: flex-start;
   display: flex;
   justify-content: flex-end;
   margin-top: .1rem;
 `;
 
-const DecidedIconWrapper = styled.span`
+const DecidedIconWrapper = styled('span')`
   margin-right: 6px;
 `;
 
-const Endorsement = styled.div`
+const EndorsementRow = styled('div')`
   display: flex;
   flex-flow: row nowrap;
   font-size: 12px;
+  justify-content: space-between;
+  margin-bottom: -4px;
 `;
 
-const EndorsementCount = styled.div`
-  padding-top: 4px;
+const EndorsementCount = styled('div')`
+  line-height: 15px;
+  padding-top: 3px;
 `;
 
-const EndorsementRow = styled.div`
+const EndorsementsOuterWrapper = styled('div')`
   display: flex;
-  flex-flow: row wrap;
-  justify-content: flex-end;
+  flex-flow: row;
+  justify-content: center;
 `;
 
-const EndorsementsOverviewShowOrNotShow = styled.div`
+const EndorsementsOverviewShowOrNotShow = styled('div')`
 `;
 
-const EndorsementsContainer = styled.div`
+const EndorsementsContainer = styled('div')`
   display: flex;
   flex-flow: column;
   justify-content: space-between;
 `;
 
-const EndorsementsOverviewSpacer = styled.div`
+const EndorsementsOverviewSpacer = styled('div')`
   padding-right: 8px;
 `;
 
-const EndorsementsTitle = styled.div`
+const EndorsementsTitle = styled('div')`
   color: #888;
   font-weight: 500;
   font-size: 10px;
-  text-align: right;
+  line-height: 15px;
+  text-align: center;
 `;
 
-const EndorsementWrapper = styled.div`
+const EndorsementsInnerWrapper = styled('div')`
   max-width: 25%;
   color: #888;
   text-align: right;
   user-select: none;
   max-width: 100%;
   display: flex;
-  flex-flow: row;
-  padding-bottom: 8px;
+  flex-flow: column;
   margin-top: -4px;
-  justify-content: space-between;
+  justify-content: flex-start;
 `;
 
-const ItemActionBarWrapper = styled.div`
+const ItemActionBarWrapper = styled('div')`
   margin-bottom: 8px;
   width: 100%;
 `;
 
-const NetworkScoreWrapper = styled.div`
+const NetworkScoreWrapper = styled('div')`
   position: relative;
   z-index: 1;
 `;
 
-const NetworkScore = styled.div`
-  background: ${({ hideNumbersOfAllPositions, voterOpposesBallotItem, voterPersonalNetworkScoreIsNegative, voterPersonalNetworkScoreIsPositive, voterSupportsBallotItem }) => ((voterSupportsBallotItem && 'rgb(31, 192, 111)') || (voterOpposesBallotItem && 'rgb(255, 73, 34)') || (voterPersonalNetworkScoreIsPositive && 'rgb(31, 192, 111)') || (voterPersonalNetworkScoreIsNegative && 'rgb(255, 73, 34)') || (hideNumbersOfAllPositions && 'rgb(211, 211, 211)') || '#888')};
-  color: white;
+// TODO:  This is almost identical to BallotItemVoterGuideSupportOpposeDisplay, it should be a reused component
+const NetworkScore = styled('div', {
+  shouldForwardProp: (prop) => !['hideNumbersOfAllPositions', 'voterOpposesBallotItem', 'voterPersonalNetworkScoreIsNegative', 'voterPersonalNetworkScoreIsPositive', 'voterSupportsBallotItem'].includes(prop),
+})(({ hideNumbersOfAllPositions, voterOpposesBallotItem, voterPersonalNetworkScoreIsNegative, voterPersonalNetworkScoreIsPositive, voterSupportsBallotItem }) => (`
+  background: ${(voterSupportsBallotItem && 'rgb(31, 192, 111)') || (voterOpposesBallotItem && 'rgb(255, 73, 34)') || (voterPersonalNetworkScoreIsPositive && 'rgb(31, 192, 111)') || (voterPersonalNetworkScoreIsNegative && 'rgb(255, 73, 34)') || (hideNumbersOfAllPositions && 'rgb(211, 211, 211)') || '#888'};
+  align-items: center;
+  border-radius: 5px;
   box-shadow: 0 1px 3px 0 rgba(0,0,0,.2), 0 1px 1px 0 rgba(0,0,0,.14), 0 2px 1px -1px rgba(0,0,0,.12);
+  color: white;
   cursor: pointer;
   display: flex;
   flex-wrap: wrap;
-  align-items: center;
-  justify-content: center;
-  width: 40px;
-  height: 40px;
-  border-radius: 5px;
   font-size: 16px;
   font-weight: bold;
+  justify-content: center;
+  margin-top: 2px;
+  width: 40px;
+  height: 40px;
   @media print{
-    border-width: 1 px;
+    border-width: 1px;
     border-style: solid;
-    border-color: ${({ hideNumbersOfAllPositions, voterOpposesBallotItem, voterPersonalNetworkScoreIsNegative, voterPersonalNetworkScoreIsPositive, voterSupportsBallotItem }) => ((voterSupportsBallotItem && 'rgb(31, 192, 111)') || (voterOpposesBallotItem && 'rgb(255, 73, 34)') || (voterPersonalNetworkScoreIsPositive && 'rgb(31, 192, 111)') || (voterPersonalNetworkScoreIsNegative && 'rgb(255, 73, 34)') || (hideNumbersOfAllPositions && 'rgb(211, 211, 211)') || '#888')};
+    border-color: ${(voterSupportsBallotItem && 'rgb(31, 192, 111)') || (voterOpposesBallotItem && 'rgb(255, 73, 34)') || (voterPersonalNetworkScoreIsPositive && 'rgb(31, 192, 111)') || (voterPersonalNetworkScoreIsNegative && 'rgb(255, 73, 34)') || (hideNumbersOfAllPositions && 'rgb(211, 211, 211)') || '#888'};
   }
-`;
+`));
 
-const NetworkScoreSmall = styled.div`
-  background: ${({ hideNumbersOfAllPositions, voterOpposesBallotItem, voterPersonalNetworkScoreIsNegative, voterPersonalNetworkScoreIsPositive, voterSupportsBallotItem }) => ((voterSupportsBallotItem && 'rgb(31, 192, 111)') || (voterOpposesBallotItem && 'rgb(255, 73, 34)') || (voterPersonalNetworkScoreIsPositive && 'rgb(31, 192, 111)') || (voterPersonalNetworkScoreIsNegative && 'rgb(255, 73, 34)') || (hideNumbersOfAllPositions && 'rgb(211, 211, 211)') || '#888')};
+const NetworkScoreSmall = styled('div', {
+  shouldForwardProp: (prop) => !['hideNumbersOfAllPositions', 'voterOpposesBallotItem', 'voterPersonalNetworkScoreIsNegative', 'voterPersonalNetworkScoreIsPositive', 'voterSupportsBallotItem'].includes(prop),
+})(({ hideNumbersOfAllPositions, voterOpposesBallotItem, voterPersonalNetworkScoreIsNegative, voterPersonalNetworkScoreIsPositive, voterSupportsBallotItem }) => (`
+  background: ${(voterSupportsBallotItem && 'rgb(31, 192, 111)') || (voterOpposesBallotItem && 'rgb(255, 73, 34)') || (voterPersonalNetworkScoreIsPositive && 'rgb(31, 192, 111)') || (voterPersonalNetworkScoreIsNegative && 'rgb(255, 73, 34)') || (hideNumbersOfAllPositions && 'rgb(211, 211, 211)') || '#888'};
   color: white;
   box-shadow: 0 1px 3px 0 rgba(0,0,0,.2), 0 1px 1px 0 rgba(0,0,0,.14), 0 2px 1px -1px rgba(0,0,0,.12);
   display: flex;
@@ -1337,17 +1307,17 @@ const NetworkScoreSmall = styled.div`
   @media print{
     border-width: 1px;
     border-style: solid;
-    border-color: ${({ hideNumbersOfAllPositions, voterOpposesBallotItem, voterPersonalNetworkScoreIsNegative, voterPersonalNetworkScoreIsPositive, voterSupportsBallotItem }) => ((voterSupportsBallotItem && 'rgb(31, 192, 111)') || (voterOpposesBallotItem && 'rgb(255, 73, 34)') || (voterPersonalNetworkScoreIsPositive && 'rgb(31, 192, 111)') || (voterPersonalNetworkScoreIsNegative && 'rgb(255, 73, 34)') || (hideNumbersOfAllPositions && 'rgb(211, 211, 211)') || '#888')};
+    border-color: ${(voterSupportsBallotItem && 'rgb(31, 192, 111)') || (voterOpposesBallotItem && 'rgb(255, 73, 34)') || (voterPersonalNetworkScoreIsPositive && 'rgb(31, 192, 111)') || (voterPersonalNetworkScoreIsNegative && 'rgb(255, 73, 34)') || (hideNumbersOfAllPositions && 'rgb(211, 211, 211)') || '#888'};
   }
-`;
+`));
 
-const PopoverWrapper = styled.div`
+const PopoverWrapper = styled('div')`
   width: 100%;
   height: 100%;
 `;
 
-const PopoverHeader = styled.div`
-  background: ${({ theme }) => theme.colors.brandBlue};
+const PopoverHeader = styled('div')(({ theme }) => (`
+  background: ${theme.colors.brandBlue};
   padding: 4px 8px;
   min-height: 35px;
   color: white;
@@ -1357,15 +1327,15 @@ const PopoverHeader = styled.div`
   border-radius: 5px;
   border-bottom-right-radius: 0;
   border-bottom-left-radius: 0;
-`;
+`));
 
-const PopoverTitleText = styled.div`
+const PopoverTitleText = styled('div')`
   font-size: 14px;
   font-weight: bold;
   margin-right: 20px;
 `;
 
-const PopoverBody = styled.div`
+const PopoverBody = styled('div')`
   padding: 8px;
   border-left: .5px solid #ddd;
   border-right: .5px solid #ddd;
@@ -1374,62 +1344,62 @@ const PopoverBody = styled.div`
   border-bottom-right-radius: 5px;
 `;
 
-const PopoverBodyText = styled.div`
+const PopoverBodyText = styled('div')`
   margin-bottom: 8px;
 `;
 
-const RenderedOrganizationsWrapper = styled.div`
+const RenderedOrganizationsWrapper = styled('div')`
   margin-top: 6px;
 `;
 
-const ScoreLabel = styled.div`
+const ScoreLabel = styled('div')`
   font-size: 13px;
   margin-top: -4px;
 `;
 
-const ScoreNumberAfterDecision = styled.div`
+const ScoreNumberAfterDecision = styled('div')`
   font-size: 12px;
   margin-top: -5px;
 `;
 
-const ScoreNumberZeroAfterDecision = styled.div`
+const ScoreNumberZeroAfterDecision = styled('div')`
   font-size: 10px;
   margin-top: -5px;
 `;
 
-const ScoreLabelAfterDecisionNoScore = styled.div`
+const ScoreLabelAfterDecisionNoScore = styled('div')`
   font-size: 8px;
   margin-top: -5px;
 `;
 
-const ScoreNumberWrapper = styled.div`
+const ScoreNumberWrapper = styled('div')`
   font-size: 18px;
   margin-top: -8px;
 `;
-const ShowCandidateFooterWrapper = styled.div`
+const ShowCandidateFooterWrapper = styled('div')`
   margin-top: 10px;
 `;
 
-const TutorialTextBlue = styled.div`
+const TutorialTextBlue = styled('div')`
 `;
 
-const VoterChoiceWrapper = styled.div`
+const VoterChoiceWrapper = styled('div')`
   color: white;
   @media print{
     color: #1fc06f;
   }
-  margin-top: 0px;
+  margin-top: 0;
 `;
 
-const YourOpinion = styled.div`
+const YourOpinion = styled('div')`
   margin-bottom: 8px;
 `;
 
-const YourPersonalNetworkIntroText = styled.div`
+const YourPersonalNetworkIntroText = styled('div')`
   margin-top: 6px;
 `;
 
-const YourScoreWrapper = styled.div`
+const YourScoreWrapper = styled('div')`
   color: #999;
   display: flex;
   align-items: center;
@@ -1440,13 +1410,13 @@ const YourScoreWrapper = styled.div`
   height: 40px;
 `;
 
-const DownArrow = styled.div`
+const DownArrow = styled('div')`
   margin-left: 9px;
   margin-top: -70px;
   z-index: 2;
 `;
 
-const UpArrow = styled.div`
+const UpArrow = styled('div')`
   margin-left: 9px;
   margin-top: 10px;
   z-index: 2;

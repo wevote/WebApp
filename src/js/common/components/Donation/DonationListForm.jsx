@@ -1,15 +1,15 @@
-import { AppBar, Tab, Tabs } from '@material-ui/core';
-import { ThemeProvider } from '@material-ui/core/styles';
+import { AppBar, Tab, Tabs } from '@mui/material';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import { donationTheme } from '../Style/donationTheme';
-import TabPanel from '../Widgets/TabPanel';
-import { normalizedHref } from '../../utils/hrefUtils';
-import { renderLog } from '../../utils/logging';
 import { stringContains } from '../../../utils/textFormat';
 import DonateActions from '../../actions/DonateActions';
 import DonateStore from '../../stores/DonateStore';
+import { normalizedHref } from '../../utils/hrefUtils';
+import { renderLog } from '../../utils/logging';
+import TabPanel from '../Widgets/TabPanel';
 import DonationList from './DonationList';
+// import { donationTheme } from '../Style/donationTheme';
+// import { ThemeProvider } from '@mui/material/styles';
 
 /*
 July 2021 TODO: Same named file in the WebApp and Campaigns -- PLEASE KEEP THEM IDENTICAL -- make symmetrical changes and test on both sides
@@ -75,32 +75,30 @@ class DonationListForm extends Component {
         <div style={{ padding: '32px  0' }}>
           <h4>{h4Txt}</h4>
           <input type="hidden" value={this.state.activeKey} />
-          <ThemeProvider theme={donationTheme(false, 40)}>
-            <AppBar position="relative" color="default" elevation={0}>
-              <Tabs
-                value={this.state.value}
-                onChange={this.handleChange}
-                aria-label="payments or subscription choice bar"
-              >
-                <Tab label={firstTabLabel}
-                     id={`scrollable-auto-tab-${0}`}
-                     aria-controls={`scrollable-auto-tabpanel-${0}`}
-                />
-                <Tab label={secondTabLabel}
-                     id={`scrollable-auto-tab-${1}`}
-                     aria-controls={`scrollable-auto-tabpanel-${1}`}
-                />
-              </Tabs>
-            </AppBar>
-            <div style={{ paddingBottom: 16 }}>
-              <TabPanel value={value} index={0}>
-                <DonationList isCampaign={isCampaign} displayMembershipTab={leftTabIsMembership} showPremiumPlan={false} />
-              </TabPanel>
-              <TabPanel value={value} index={1}>
-                <DonationList isCampaign={isCampaign} displayMembershipTab={!leftTabIsMembership} showPremiumPlan={false} />
-              </TabPanel>
-            </div>
-          </ThemeProvider>
+          <AppBar position="relative" color="default" elevation={0}>
+            <Tabs
+              value={this.state.value}
+              onChange={this.handleChange}
+              aria-label="payments or subscription choice bar"
+            >
+              <Tab label={firstTabLabel}
+                   id={`scrollable-auto-tab-${0}`}
+                   aria-controls={`scrollable-auto-tabpanel-${0}`}
+              />
+              <Tab label={secondTabLabel}
+                   id={`scrollable-auto-tab-${1}`}
+                   aria-controls={`scrollable-auto-tabpanel-${1}`}
+              />
+            </Tabs>
+          </AppBar>
+          <div style={{ paddingBottom: 16 }}>
+            <TabPanel value={value} index={0}>
+              <DonationList isCampaign={isCampaign} displayMembershipTab={leftTabIsMembership} showPremiumPlan={false} />
+            </TabPanel>
+            <TabPanel value={value} index={1}>
+              <DonationList isCampaign={isCampaign} displayMembershipTab={!leftTabIsMembership} showPremiumPlan={false} />
+            </TabPanel>
+          </div>
         </div>
       );
     } else {

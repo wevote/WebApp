@@ -1,10 +1,11 @@
-import { withStyles, withTheme } from '@material-ui/core/styles';
+import styled from '@mui/material/styles/styled';
+import withStyles from '@mui/styles/withStyles';
+import withTheme from '@mui/styles/withTheme';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
 import CopyToClipboard from 'react-copy-to-clipboard';
-import styled from 'styled-components';
-import AppObservableStore, { messageService } from '../../stores/AppObservableStore';
 import { renderLog } from '../../common/utils/logging';
+import AppObservableStore, { messageService } from '../../stores/AppObservableStore';
 import { openSnackbar } from '../Widgets/SnackNotifier';
 
 const OpenExternalWebSite = React.lazy(() => import(/* webpackChunkName: 'OpenExternalWebSite' */ '../../common/components/Widgets/OpenExternalWebSite'));
@@ -151,7 +152,7 @@ const styles = () => ({
   },
 });
 
-const Wrapper = styled.div`
+const Wrapper = styled('div')`
   cursor: pointer;
   display: block !important;
   margin-bottom: 12px;
@@ -177,7 +178,9 @@ const Wrapper = styled.div`
   }
 `;
 
-const Icon = styled.div`
+const Icon = styled('div', {
+  shouldForwardProp: (prop) => !['backgroundColor'].includes(prop),
+})(({ backgroundColor }) => (`
   text-decoration: none !important;
   margin: 0 auto;
   width: 65px;
@@ -185,8 +188,8 @@ const Icon = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  background: ${(props) => props.backgroundColor || 'black'};
-  padding: 0px;
+  background: ${backgroundColor || 'black'};
+  padding: 0;
   border-radius: 60px;
   font-size: 30px;
   font-weight: bold;
@@ -203,9 +206,9 @@ const Icon = styled.div`
     height: 42px;
   }
   margin-bottom: 8px;
-`;
+`));
 
-const Text = styled.h3`
+const Text = styled('h3')`
   font-weight: normal;
   font-size: 16px;
   color: black !important;

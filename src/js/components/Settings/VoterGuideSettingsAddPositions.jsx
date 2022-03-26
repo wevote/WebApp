@@ -1,23 +1,23 @@
-import { Button, Card, CircularProgress } from '@material-ui/core';
-import { withStyles } from '@material-ui/core/styles';
-import { Ballot } from '@material-ui/icons';
+import { Ballot } from '@mui/icons-material';
+import { Button, Card, CircularProgress } from '@mui/material';
+import styled from '@mui/material/styles/styled';
+import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
-import styled from 'styled-components';
-import AppObservableStore from '../../stores/AppObservableStore';
 import BallotActions from '../../actions/BallotActions';
 import OrganizationActions from '../../actions/OrganizationActions';
+import LoadingWheel from '../../common/components/Widgets/LoadingWheel';
+import historyPush from '../../common/utils/historyPush';
+import { renderLog } from '../../common/utils/logging';
+import AppObservableStore from '../../stores/AppObservableStore';
 import BallotStore from '../../stores/BallotStore';
 import OrganizationStore from '../../stores/OrganizationStore';
 import VoterGuideStore from '../../stores/VoterGuideStore';
 import VoterStore from '../../stores/VoterStore';
-import historyPush from '../../common/utils/historyPush';
-import { renderLog } from '../../common/utils/logging';
 import { isProperlyFormattedVoterGuideWeVoteId } from '../../utils/textFormat';
 import FilterBase from '../Filter/FilterBase';
 import SettingsAddBallotItemsFilter from '../Filter/SettingsAddBallotItemsFilter';
 import SettingsSeePositionsFilter from '../Filter/SettingsSeePositionsFilter';
-import LoadingWheel from '../../common/components/Widgets/LoadingWheel';
 import NumberOfItemsFound from '../Widgets/NumberOfItemsFound';
 import BallotItemForAddPositions from './BallotItemForAddPositions';
 
@@ -832,55 +832,55 @@ VoterGuideSettingsAddPositions.propTypes = {
   voterGuideWeVoteId: PropTypes.string.isRequired,
 };
 
-const CardChildListGroup = styled.ul`
+const CardChildListGroup = styled('ul')`
   padding: 0;
 `;
 
-const EmptyBallotMessageContainer = styled.div`
+const EmptyBallotMessageContainer = styled('div')`
   padding: 1em 2em;
   display: flex;
   flex-flow: column;
   align-items: center;
 `;
 
-const EmptyBallotText = styled.p`
+const EmptyBallotText = styled('p')(({ theme }) => (`
   font-size: 16px;
   text-align: center;
   margin: 1em 2em;
-  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+  ${theme.breakpoints.down('md')} {
     margin: 1em;
   }
-`;
+`));
 
-const FilterBaseWrapper = styled.div`
+const FilterBaseWrapper = styled('div')`
   margin-top: -12px;
 `;
 
-const PreviewButtonWrapper = styled.div`
+const PreviewButtonWrapper = styled('div')`
   text-align: right;
   margin-bottom: 2px;
 `;
 
-const LoadingItemsWheel = styled.div`
+const LoadingItemsWheel = styled('div')`
   width: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
 `;
 
-const SearchResultsFoundInExplanation = styled.div`
+const SearchResultsFoundInExplanation = styled('div')`
   background-color: #C2DCE8;
   color: #0E759F;
   padding: 12px !important;
 `;
 
-const SearchTitle = styled.div`
+const SearchTitle = styled('div')`
   font-size: 24px;
   margin-top: 12px;
   margin-bottom: 12px;
 `;
 
-const ShowMoreItemsWrapper = styled.div`
+const ShowMoreItemsWrapper = styled('div')`
 `;
 
 const styles = (theme) => ({

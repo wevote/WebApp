@@ -1,17 +1,20 @@
-import { Button, IconButton, Tabs, Tooltip } from '@material-ui/core';
-import { withStyles } from '@material-ui/core/styles';
-import { AccountCircle, Place, Search } from '@material-ui/icons';
+import { AccountCircle, Place, Search } from '@mui/icons-material';
+import { Button, IconButton, Tabs, Tooltip } from '@mui/material';
+import styled from '@mui/material/styles/styled';
+import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
-import styled from 'styled-components';
 import BallotActions from '../../actions/BallotActions';
 import OrganizationActions from '../../actions/OrganizationActions';
 import VoterActions from '../../actions/VoterActions';
 import VoterGuideActions from '../../actions/VoterGuideActions';
 import VoterSessionActions from '../../actions/VoterSessionActions';
 import LazyImage from '../../common/components/LazyImage';
+import apiCalming from '../../common/utils/apiCalming';
 import { hasIPhoneNotch, historyPush, isDeviceZoomed, isIOS, isIOSAppOnMac } from '../../common/utils/cordovaUtils';
+import { normalizedHref, normalizedHrefPage } from '../../common/utils/hrefUtils';
 import { isCordova, isWebApp } from '../../common/utils/isCordovaOrWebApp';
+import isMobileScreenSize from '../../common/utils/isMobileScreenSize';
 import { renderLog } from '../../common/utils/logging';
 import voterPhoto from '../../common/utils/voterPhoto';
 import AnalyticsStore from '../../stores/AnalyticsStore';
@@ -19,13 +22,10 @@ import AppObservableStore, { messageService } from '../../stores/AppObservableSt
 import FacebookStore from '../../stores/FacebookStore';
 import FriendStore from '../../stores/FriendStore';
 import VoterStore from '../../stores/VoterStore';
-import apiCalming from '../../common/utils/apiCalming';
-import { avatarGeneric, displayTopMenuShadow, normalizedHref, normalizedHrefPage, weVoteBrandingOff } from '../../utils/applicationUtils';
+import { avatarGeneric, displayTopMenuShadow, weVoteBrandingOff } from '../../utils/applicationUtils';
 import getHeaderObjects from '../../utils/getHeaderObjects';
-import isMobileScreenSize from '../../utils/isMobileScreenSize';
-import { TopOfPageHeader, TopRowOneLeftContainer, TopRowOneMiddleContainer, TopRowOneRightContainer, TopRowTwoLeftContainer } from '../../utils/pageLayoutStyles';
-import shouldHeaderRetreat from '../../utils/shouldHeaderRetreat';
 import { getBooleanValue, shortenText, stringContains } from '../../utils/textFormat';
+import { TopOfPageHeader, TopRowOneLeftContainer, TopRowOneMiddleContainer, TopRowOneRightContainer, TopRowTwoLeftContainer } from '../Style/pageLayoutStyles';
 import SignInButton from '../Widgets/SignInButton';
 import signInModalGlobalState from '../Widgets/signInModalGlobalState';
 import FriendsTabs from './FriendsTabs';
@@ -36,6 +36,8 @@ import TabWithPushHistory from './TabWithPushHistory';
 
 const HeaderBarProfilePopUp = React.lazy(() => import(/* webpackChunkName: 'HeaderBarProfilePopUp' */ './HeaderBarProfilePopUp'));
 const HeaderNotificationMenu = React.lazy(() => import(/* webpackChunkName: 'HeaderNotificationMenu' */ './HeaderNotificationMenu'));
+
+/* global $ */
 
 // TODO: Backport "@stripe/react-stripe-js" use from Campaigns
 // import PaidAccountUpgradeModal from '../Settings/PaidAccountUpgradeModal';
@@ -55,6 +57,7 @@ class HeaderBar extends Component {
       profilePopUpOpen: false,
       scrolledDown: false,
       showAdviserIntroModal: false,
+      showChooseOrOpposeIntroModal: false,
       showEditAddressButton: false,
       showFirstPositionIntroModal: false,
       showSelectBallotModal: false,
@@ -65,16 +68,18 @@ class HeaderBar extends Component {
       showSignInModal: false,
       showPaidAccountUpgradeModal: false,
       showPersonalizedScoreIntroModal: false,
+      showPositionDrawer: false,
       showValuesIntroModal: false,
       showImageUploadModal: false,
       shareModalStep: '',
+      tabsValue: 1,
       organizationModalBallotItemWeVoteId: '',
+      page: 'non-blank-default-value',
       voter: {},
       voterFirstName: '',
       voterIsSignedIn: false,
       // firstVisitToBallot: true,
     };
-    this.closeOrganizationModal = this.closeOrganizationModal.bind(this);
     this.closePaidAccountUpgradeModal = this.closePaidAccountUpgradeModal.bind(this);
     this.closeShareModal = this.closeShareModal.bind(this);
     this.closeSignInModal = this.closeSignInModal.bind(this);
@@ -85,6 +90,7 @@ class HeaderBar extends Component {
     this.toggleSelectBallotModal = this.toggleSelectBallotModal.bind(this);
     this.toggleSignInModal = this.toggleSignInModal.bind(this);
     this.transitionToYourVoterGuide = this.transitionToYourVoterGuide.bind(this);
+    this.handleTabChange = this.handleTabChange.bind(this);
   }
 
   componentDidMount () {
@@ -106,6 +112,7 @@ class HeaderBar extends Component {
       hideWeVoteLogo: AppObservableStore.getHideWeVoteLogo(),
       scrolledDown: AppObservableStore.getScrolledDown(),
       showAdviserIntroModal: AppObservableStore.showAdviserIntroModal(),
+      showChooseOrOpposeIntroModal: AppObservableStore.showChooseOrOpposeIntroModal(),
       showEditAddressButton: AppObservableStore.showEditAddressButton(),
       showFirstPositionIntroModal: AppObservableStore.showFirstPositionIntroModal(),
       showPaidAccountUpgradeModal: false, // June 2021 , TODO: Add back in paid upgrade modal
@@ -146,20 +153,6 @@ class HeaderBar extends Component {
         }
       }, 1000);
     }
-    // 2021-11 From Dale: Automatically opening modals on first page load doesn't test well with voters
-    // this.showBallotModalTimeout = setTimeout(() => {
-    //   // We want the SelectBallotModal to appear on the ballot page (without a keystroke)
-    //   // if the page is empty and we have a textForMapSearch and we dont have the EditAddressOneHorizontalRow displayed
-    //   const elList = document.getElementById('BallotListId');
-    //   const elEditAddress = document.getElementById('EditAddressOneHorizontalRow');
-    //   if (elList && !!elEditAddress) {
-    //     const textForMapSearch = VoterStore.getTextForMapSearch();
-    //     if (elList.innerHTML.trim().length < 1 && textForMapSearch) {
-    //       console.log('Putting up SelectBallotModal since BallotList is empty and textForMapSearch exists.');
-    //       this.setState({ showSelectBallotModal: true });
-    //     }
-    //   }
-    // }, 1500);
   }
 
   shouldComponentUpdate (nextProps, nextState) {
@@ -173,6 +166,9 @@ class HeaderBar extends Component {
       update = true;
     } else if (this.state.componentDidMountFinished === false) {
       // console.log('shouldComponentUpdate: componentDidMountFinished === false');
+      update = true;
+    } else if (this.state.page !== normalizedHrefPage()) {
+      // console.log('shouldComponentUpdate: this.state.page', this.state.page, ', normalizedHrefPage()', normalizedHrefPage());
       update = true;
     } else if (this.state.profilePopUpOpen !== nextState.profilePopUpOpen) {
       // console.log('shouldComponentUpdate: this.state.profilePopUpOpen', this.state.profilePopUpOpen, ', nextState.profilePopUpOpen', nextState.profilePopUpOpen);
@@ -197,6 +193,8 @@ class HeaderBar extends Component {
       update = true;
     } else if (this.state.showAdviserIntroModal !== nextState.showAdviserIntroModal) {
       update = true;
+    } else if (this.state.showChooseOrOpposeIntroModal !== nextState.showChooseOrOpposeIntroModal) {
+      update = true;
     } if (this.state.showEditAddressButton !== nextState.showEditAddressButton) {
       update = true;
     } else if (this.state.showFirstPositionIntroModal !== nextState.showFirstPositionIntroModal) {
@@ -208,6 +206,8 @@ class HeaderBar extends Component {
     } else if (this.state.showShareModal !== nextState.showShareModal) {
       update = true;
     } else if (this.state.showOrganizationModal !== nextState.showOrganizationModal) {
+      update = true;
+    } else if (this.state.showPositionDrawer !== nextState.showPositionDrawer) {
       update = true;
     } else if (this.state.showSignInModal !== nextState.showSignInModal) {
       update = true;
@@ -262,12 +262,28 @@ class HeaderBar extends Component {
       }
     }
 
-    // console.log(`HeaderBar shouldComponentUpdate:  ${false}`);
-    if (update)  this.manuallyUnderlineTab(true);
-
     // console.log('HeaderBar shouldComponentUpdate: update === ', update);
     return update;
   }
+
+
+  componentDidUpdate () {
+    // console.log('HeaderBar componentDidUpdate');
+    const { location: { pathname } } = window;
+    if (stringContains('/ballot', pathname.toLowerCase().slice(0, 7)) ||
+      stringContains('/ready', pathname.toLowerCase().slice(0, 7))) {
+      if (!AppObservableStore.showEditAddressButton()) {
+        AppObservableStore.setShowEditAddressButton(true);
+      }
+    } else if (AppObservableStore.showEditAddressButton()) {
+      AppObservableStore.setShowEditAddressButton(false);
+    }
+    const { page } = this.state;
+    if (page !== normalizedHrefPage()) {
+      this.customHighlightSelector();
+    }
+  }
+
 
   componentDidCatch (error, info) {
     // We should get this information to Splunk!
@@ -281,6 +297,12 @@ class HeaderBar extends Component {
     this.analyticsStoreListener.remove();
     if (this.setStyleTimeout) clearTimeout(this.setStyleTimeout);
     if (this.showBallotModalTimeout) clearTimeout(this.showBallotModalTimeout);
+  }
+
+  handleTabChange (newValue) {
+    this.customHighlightSelector();
+    // console.log('handleTabChange ', newValue);
+    this.setState({ tabsValue: newValue });
   }
 
   // eslint-disable-next-line no-unused-vars
@@ -298,6 +320,7 @@ class HeaderBar extends Component {
       scrolledDown: AppObservableStore.getScrolledDown(),
       shareModalStep: AppObservableStore.getShareModalStep(),
       showAdviserIntroModal: AppObservableStore.showAdviserIntroModal(),
+      showChooseOrOpposeIntroModal: AppObservableStore.showChooseOrOpposeIntroModal(),
       showEditAddressButton: AppObservableStore.showEditAddressButton(),
       showFirstPositionIntroModal: AppObservableStore.showFirstPositionIntroModal(),
       showPaidAccountUpgradeModal,
@@ -349,6 +372,7 @@ class HeaderBar extends Component {
         showShareModal: AppObservableStore.showShareModal(),
         showOrganizationModal: AppObservableStore.showOrganizationModal(),
         showPersonalizedScoreIntroModal: AppObservableStore.showPersonalizedScoreIntroModal(),
+        showPositionDrawer: AppObservableStore.showPositionDrawer(),
       });
     }
   }
@@ -371,50 +395,6 @@ class HeaderBar extends Component {
     }
   }
 
-  manuallyUnderlineTab = (setInitial = false) => {
-    const pathname = normalizedHref();
-
-    // console.log('HeaderBar ------------------ manuallyUnderlineTab ', pathname);
-    if (typeof pathname !== 'undefined' && pathname) {
-      if (pathname.startsWith('/ready')  || pathname === '/') {
-        if (setInitial) {
-          this.changeOverrideUnderline('readyTabHeaderBar,ballotTabHeaderBar,valuesTabHeaderBar,discussTabHeaderBar');
-        }
-        this.setShowAddressButtonIfMobile(true);
-        return 0;
-      }
-      if (pathname.startsWith('/ballot'))  {
-        if (setInitial) {
-          this.changeOverrideUnderline('ballotTabHeaderBar,readyTabHeaderBar,valuesTabHeaderBar,discussTabHeaderBar');
-        }
-        this.setShowAddressButtonIfMobile(true);
-        return 1;
-      }
-      if (stringContains('/value', pathname) ||
-          stringContains('/opinions', pathname)) {    // '/values'
-        if (setInitial) {
-          this.changeOverrideUnderline('valuesTabHeaderBar,readyTabHeaderBar,ballotTabHeaderBar,discussTabHeaderBar');
-        }
-        this.setShowAddressButtonIfMobile(false);
-        return 2;
-      }
-      if (pathname.startsWith('/news')) {
-        if (setInitial) {
-          this.changeOverrideUnderline('discussTabHeaderBar,readyTabHeaderBar,ballotTabHeaderBar,valuesTabHeaderBar');
-        }
-        this.setShowAddressButtonIfMobile(false);
-        return 3;
-      }
-    }
-    this.setShowAddressButtonIfMobile(false);
-    return false;
-  };
-
-  // handleNavigation = (to) => {
-  //   const history = useHistory();
-  //   history.push(to);
-  // }
-
   goToSearch = () => {
     historyPush('/opinions');
   }
@@ -423,8 +403,16 @@ class HeaderBar extends Component {
     AppObservableStore.setShowAdviserIntroModal(false);
   }
 
+  closeChooseOrOpposeIntroModal = () => {
+    AppObservableStore.setShowChooseOrOpposeIntroModal(false);
+  }
+
   closeFirstPositionIntroModal = () => {
     AppObservableStore.setShowFirstPositionIntroModal(false);
+  }
+
+  closeImageUploadModal = () => {
+    AppObservableStore.setShowImageUploadModal(false);
   }
 
   closeValuesIntroModal = () => {
@@ -451,10 +439,6 @@ class HeaderBar extends Component {
     }
   }
 
-  closeOrganizationModal () {
-    AppObservableStore.setShowOrganizationModal(false);
-  }
-
   toggleProfilePopUp () {
     const { profilePopUpOpen } = this.state;
     this.setState({ profilePopUpOpen: !profilePopUpOpen });
@@ -475,23 +459,11 @@ class HeaderBar extends Component {
     });
   }
 
-  // closeNewVoterGuideModal () {
-  //   // console.log('HeaderBar closeNewVoterGuideModal');
-  //   AppObservableStore.setShowNewVoterGuideModal(false);
-  //   // signInModalGlobalState.set('isShowingSignInModal', false);
-  //   HeaderBar.goToGetStarted();
-  // }
-
   closeSignInModal () {
     // console.log('HeaderBar closeSignInModal');
     this.setState({ showSignInModal: false });
     VoterActions.voterRetrieve();
     VoterActions.voterEmailAddressRetrieve();
-    // AppObservableStore.setShowSignInModal(false);  6/10/21: Sends you in an endless loop
-
-    // signInModalGlobalState.set('isShowingSignInModal', false);
-    // When this is uncommented, closing the sign in box from pages like "Values" will redirect you to the ballot
-    // HeaderBar.goToGetStarted();
   }
 
   toggleSignInModal () {
@@ -510,32 +482,6 @@ class HeaderBar extends Component {
   signOutAndHideProfilePopUp () {
     VoterSessionActions.voterSignOut();
     this.setState({ profilePopUpOpen: false });
-  }
-
-  // June 2021:  This is a hack, not an elegant solution.  The Tabs object seems to get confused
-  // when it is inside the render of a of HeaderBarSuspense, and in addition, we are not using the Tabs
-  // object to load a pane, we are using it to HistoryPush to a different page.
-  // The first id in the tabNamesString gets the underline, the others, in whatever order they
-  // arrive get the underline removed.  Once the voter navigates to a tab in a session, this hack becomes
-  // unnecessary for that tab, but there doesn't seem to be a downside of calling it all the time
-  changeOverrideUnderline (tabNamesString) {
-    const tabNames = tabNamesString.split(',');
-    for (let i = 0; i < tabNames.length; i++) {
-      const element = document.getElementById(tabNames[i]);
-      if (element) {
-        if (i === 0) {
-          element.style.borderBottom = 'black';
-          element.style.borderBottomStyle = 'solid';
-          element.style.borderBottomWidth = '4px';
-          element.style.paddingBottom = '2px';
-        } else {
-          element.style.borderBottomStyle = 'none';
-          element.style.borderBottomStyle = 'none';
-          element.style.borderBottomWidth = '0px';
-          element.style.paddingBottom = '6px';
-        }
-      }
-    }
   }
 
   transitionToYourVoterGuide () {
@@ -560,6 +506,59 @@ class HeaderBar extends Component {
     }
   }
 
+  // Highlight the active tab, but don't highlight anything if not on one of the tabs, for example we are on 'friends'
+  customHighlightSelector () {
+    const normal = {
+      opacity: 0.7,
+      fontWeight: 500,
+      color: 'rgba(51, 51, 51)',
+    };
+    // Should use theme.colors.brandBlue instead of directly using '#2e3c5d'
+    const highlight = {
+      opacity: 1,
+      fontWeight: 800,
+      color: '#2e3c5d',
+    };
+
+    if (window.$) {
+      // console.log('customHighlightSelector called for page: ', normalizedHrefPage());
+      const ready = $('#readyTabHeaderBar');
+      const ballot = $('#ballotTabHeaderBar');
+      const values = $('#valuesTabHeaderBar');
+      const news = $('#discussTabHeaderBar');
+      ready.css(normal);
+      ballot.css(normal);
+      values.css(normal);       // Opinions
+      news.css(normal);         // Discuss
+
+      switch (normalizedHrefPage()) {
+        case 'ready':
+          ready.css(highlight);
+          break;
+        case '':
+          ready.css(highlight);
+          break;
+        case 'ballot':
+          ballot.css(highlight);
+          break;
+        case 'values':
+          values.css(highlight);
+          break;
+        case 'news':
+          news.css(highlight);
+          break;
+        default:
+          break;
+      }
+    } else {
+      setTimeout(() => {
+        console.log('customHighlightSelector purposefully called recursively');
+        this.customHighlightSelector();
+      }, 500);
+    }
+    this.setState({ page: normalizedHrefPage() });
+  }
+
   render () {
     renderLog('HeaderBar');  // Set LOG_RENDER_EVENTS to log all renders
     if (!this.state.componentDidMountFinished) {
@@ -567,19 +566,17 @@ class HeaderBar extends Component {
     }
 
     const { classes } = this.props;
-    const pathname = normalizedHref();
-
     const {
       chosenSiteLogoUrl, hideWeVoteLogo, /* paidAccountUpgradeMode, */ scrolledDown,
-      showAdviserIntroModal, showEditAddressButton, showFirstPositionIntroModal,
+      showAdviserIntroModal, showChooseOrOpposeIntroModal, showEditAddressButton, showFirstPositionIntroModal,
       showPaidAccountUpgradeModal, showPersonalizedScoreIntroModal,
       showSelectBallotModal, showSelectBallotModalHideAddress, showSelectBallotModalHideElections,
       showShareModal, showSignInModal, showValuesIntroModal, showImageUploadModal,
-      voter, voterFirstName, voterIsSignedIn,
+      voter, voterFirstName, voterIsSignedIn, tabsValue,
     } = this.state;
     /* eslint object-property-newline: ["off"] */
     const shows = {
-      showAdviserIntroModal, showEditAddressButton, showFirstPositionIntroModal,
+      showAdviserIntroModal, showChooseOrOpposeIntroModal, showEditAddressButton, showFirstPositionIntroModal,
       showPaidAccountUpgradeModal, showPersonalizedScoreIntroModal,
       showSelectBallotModal, showSelectBallotModalHideAddress, showSelectBallotModalHideElections,
       showShareModal, showSignInModal, showValuesIntroModal, showImageUploadModal,
@@ -597,6 +594,7 @@ class HeaderBar extends Component {
               classes={{ root: classes.addressIconButtonRoot }}
               id="changeAddressOrElectionHeaderBarElection"
               onClick={() => this.toggleSelectBallotModal(false, false)}
+              size="large"
             >
               <Place />
             </IconButton>
@@ -616,6 +614,7 @@ class HeaderBar extends Component {
               classes={{ root: classes.addressIconButtonRoot }}
               id="changeAddressOnlyHeaderBar"
               onClick={() => this.toggleSelectBallotModal(false, true)}
+              size="large"
             >
               <Place />
             </IconButton>
@@ -631,6 +630,7 @@ class HeaderBar extends Component {
               classes={{ root: classes.searchButtonRoot }}
               id="searchHeaderBarDesktop"
               onClick={this.goToSearch}
+              size="large"
             >
               <Search />
             </IconButton>
@@ -640,6 +640,7 @@ class HeaderBar extends Component {
               classes={{ root: classes.searchButtonRoot }}
               id="searchHeaderBarMobile"
               onClick={this.goToSearch}
+              size="large"
             >
               <Search />
             </IconButton>
@@ -659,11 +660,13 @@ class HeaderBar extends Component {
 
     const isFriends = normalizedHrefPage() === 'friends';  // The URL '/friends/request' yields 'friends'
 
+    // console.log('HeaderBar hasNotch, scrolledDown, hasSubmenu', hasIPhoneNotch(), scrolledDown, displayTopMenuShadow());
     return (
       <HeaderBarWrapper
         hasNotch={hasIPhoneNotch()}
-        scrolledDown={scrolledDown && isWebApp() && shouldHeaderRetreat(pathname)}
-        hasSubMenu={displayTopMenuShadow()}
+        scrolledDown={scrolledDown}
+        hasSubmenu={displayTopMenuShadow()}
+        id="Ballot-HeaderBarWrapper"
       >
         <TopOfPageHeader>
           {/* <AppBar position="relative" */}
@@ -679,25 +682,53 @@ class HeaderBar extends Component {
               <HeaderBarLogo
                 chosenSiteLogoUrl={chosenSiteLogoUrl}
                 showFullNavigation={!!showFullNavigation}
-                isBeta={showWeVoteLogo && !chosenSiteLogoUrl}
+                // isBeta={showWeVoteLogo && !chosenSiteLogoUrl}
               />
             )}
             <div className="header-nav" style={isMobileScreenSize() ? { display: 'none' } : {}}>
               <Tabs
                 className={isIOSAppOnMac() ? '' : 'u-show-desktop'}
-                value={this.manuallyUnderlineTab()}
+                value={tabsValue}
                 indicatorColor="primary"
                 classes={{ indicator: classes.indicator }}
               >
                 {showFullNavigation && (
-                  <TabWithPushHistory classes={{ root: classes.tabRootReady }} id="readyTabHeaderBar" label="Ready?" to="/ready" />
+                  <TabWithPushHistory
+                    classes={{ root: classes.tabRootReady }}
+                    value={1}
+                    change={this.handleTabChange}
+                    id="readyTabHeaderBar"
+                    label="Ready?"
+                    to="/ready"
+                  />
                 )}
                 {showFullNavigation && (
-                  <TabWithPushHistory classes={{ root: classes.tabRootBallot }} id="ballotTabHeaderBar" label="Ballot" to="/ballot" />
+                  <TabWithPushHistory
+                    classes={{ root: classes.tabRootBallot }}
+                    value={2}
+                    change={this.handleTabChange}
+                    id="ballotTabHeaderBar"
+                    label="Ballot"
+                    to="/ballot"
+                  />
                 )}
-                <TabWithPushHistory classes={{ root: classes.tabRootValues }} id="valuesTabHeaderBar" label="Opinions" to="/values" />
+                <TabWithPushHistory
+                  classes={{ root: classes.tabRootValues }}
+                  value={3}
+                  change={this.handleTabChange}
+                  id="valuesTabHeaderBar"
+                  label="Opinions"
+                  to="/values"
+                />
                 {(showFullNavigation) && (
-                  <TabWithPushHistory classes={{ root: classes.tabRootNews }} id="discussTabHeaderBar" label="Discuss" to="/news" />
+                  <TabWithPushHistory
+                    classes={{ root: classes.tabRootNews }}
+                    value={4}
+                    change={this.handleTabChange}
+                    id="discussTabHeaderBar"
+                    label="Discuss"
+                    to="/news"
+                  />
                 )}
               </Tabs>
             </div>
@@ -762,6 +793,7 @@ class HeaderBar extends Component {
                   classes={{ root: classes.iconButtonRoot }}
                   id="profileAvatarHeaderBar"
                   onClick={this.toggleProfilePopUp}
+                  size="large"
                 >
                   <FirstNameWrapper>
                     {shortenText(voterFirstName, 9)}
@@ -796,23 +828,24 @@ class HeaderBar extends Component {
               </>
             )}
           </TopRowOneRightContainer>
-          <TopRowTwoLeftContainer style={{ display: `${isFriends ? 'inherit' : 'none'}`, paddingBottom: `${isFriends ? '0px' : ''}` }}>
+          <TopRowTwoLeftContainer style={{ display: `${isFriends ? 'inherit' : 'none'}`, paddingBottom: `${isFriends ? '0' : ''}` }}>
             {(isFriends) && (
               <FriendsTabs />
             )}
           </TopRowTwoLeftContainer>
         </TopOfPageHeader>
         <HeaderBarModals
-          shows={shows}
-          closeSignInModal={this.closeSignInModal}
-          toggleSelectBallotModal={this.toggleSelectBallotModal}
-          closePaidAccountUpgradeModal={this.closePaidAccountUpgradeModal}
-          closeShareModal={this.closeShareModal}
           closeAdviserIntroModal={this.closeAdviserIntroModal}
+          closeChooseOrOpposeIntroModal={this.closeChooseOrOpposeIntroModal}
           closeFirstPositionIntroModal={this.closeFirstPositionIntroModal}
-          closePersonalizedScoreIntroModal={this.closePersonalizedScoreIntroModal}
-          closeValuesIntroModal={this.closeValuesIntroModal}
           closeImageUploadModal={this.closeImageUploadModal}
+          closeSignInModal={this.closeSignInModal}
+          closePaidAccountUpgradeModal={this.closePaidAccountUpgradeModal}
+          closePersonalizedScoreIntroModal={this.closePersonalizedScoreIntroModal}
+          closeShareModal={this.closeShareModal}
+          closeValuesIntroModal={this.closeValuesIntroModal}
+          shows={shows}
+          toggleSelectBallotModal={this.toggleSelectBallotModal}
         />
       </HeaderBarWrapper>
     );
@@ -835,7 +868,6 @@ const styles = (theme) => ({
       backgroundColor: 'transparent',
     },
     color: 'rgba(17, 17, 17, .5)',
-    fontSize: 14,
     outline: 'none !important',
     paddingRight: 6,
     [theme.breakpoints.up('sm')]: {
@@ -931,40 +963,35 @@ const styles = (theme) => ({
     minWidth: 90,
   },
   indicator: {
-    height: 4,
+    display: 'none',
   },
 });
 
-const AddressWrapperDesktop = styled.div`
+const AddressWrapperDesktop = styled('div')`
   margin-top: 5px;
   width: 212px;
 `;
 
-const AddressWrapperMobile = styled.div`
+const AddressWrapperMobile = styled('div')`
   margin-top: 9px;
 `;
 
-const FirstNameWrapper = styled.div`
+const FirstNameWrapper = styled('div')`
   font-size: 14px;
   padding-right: 4px;
 `;
 
-// const FriendTabWrapper = styled.div`
-//   margin-left: ${({ incomingFriendRequests }) => (incomingFriendRequests ? '-20px' : '0')};
-// `;
+// TODO: March 22, 2022 Dale to work on this (it is half way converted to a new ui scheme)
+const HeaderBarWrapper = styled('div', {
+  shouldForwardProp: (prop) => !['hasNotch', 'scrolledDown', 'hasSubmenu'].includes(prop),
+})(({ hasNotch, scrolledDown, hasSubmenu }) => (`
+  margin-top: ${hasNotch ? '1.5rem' : ''};
+  box-shadow: ${(!scrolledDown || !hasSubmenu)  ? '' : '0 2px 4px -1px rgba(0, 0, 0, 0.2), 0 4px 5px 0 rgba(0, 0, 0, 0.14), 0 1px 10px 0 rgba(0, 0, 0, 0.12)'};
+  border-bottom: ${(!scrolledDown || !hasSubmenu) ? '' : '1px solid #aaa'};
+`));
 
-
-const HeaderBarWrapper = styled.div`
-  margin-top: ${({ hasNotch }) => (hasNotch ? '1.5rem' : '0')};
-  // transition: all 50ms ease-in;
-  // ${({ scrolledDown }) => (scrolledDown ? 'transform: translateY(-100%);' : '')}
-  ${({ hasSubMenu }) => (!hasSubMenu ? '' :
-    'box-shadow: 0 2px 4px -1px rgba(0, 0, 0, 0.2), 0 4px 5px 0 rgba(0, 0, 0, 0.14), 0 1px 10px 0 rgba(0, 0, 0, 0.12);' +
-    'border-bottom = 1px solid #aaa;')}
-`;
-
-const SearchWrapper = styled.div`
-  margin-top: 10px;
+const SearchWrapper = styled('div')`
+  margin-top: 11px;
 `;
 
 export default withStyles(styles)(HeaderBar);

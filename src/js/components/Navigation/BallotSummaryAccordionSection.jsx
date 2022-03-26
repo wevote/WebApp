@@ -1,9 +1,9 @@
-import { IconButton } from '@material-ui/core';
-import { withStyles } from '@material-ui/core/styles';
-import { ArrowDropDown, ArrowDropUp } from '@material-ui/icons';
+import { IconButton } from '@mui/material';
+import withStyles from '@mui/styles/withStyles';
+import { ArrowDropDown, ArrowDropUp } from '@mui/icons-material';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import styled from 'styled-components';
+import styled from '@mui/material/styles/styled';
 import { renderLog } from '../../common/utils/logging';
 
 
@@ -25,9 +25,7 @@ class BallotSummaryAccordionSection extends Component {
           <AccordionTitle isOpen={!!isOpen} onClick={onClick} style={{ cursor: 'pointer' }}>
             {label}
             <div style={{ float: 'right' }}>
-              <IconButton
-                classes={{ root: classes.iconButtonRoot }}
-              >
+              <IconButton classes={{ root: classes.iconButtonRoot }} size="large">
                 {isOpen ? <ArrowDropUp /> : <ArrowDropDown />}
               </IconButton>
             </div>
@@ -60,23 +58,25 @@ const styles = () => ({
   },
 });
 
-const AccordionWrapper = styled.div`
+const AccordionWrapper = styled('div')`
   background: none;
   padding: 0 16px;
 `;
 
-const AccordionBorderWrapper = styled.div`
+const AccordionBorderWrapper = styled('div')`
   border-bottom: 1px solid #ddd;
   padding: 16px 0;
 `;
 
-const AccordionTitle = styled.div`
-  font-weight: ${(props) => (props.isOpen ? 600 : 500)};
+const AccordionTitle = styled('div', {
+  shouldForwardProp: (prop) => !['isOpen'].includes(prop),
+})(({ isOpen }) => (`
+  font-weight: ${isOpen ? 600 : 500};
   font-size: 16px;
   width: 100%;
-`;
+`));
 
-const AccordionBody = styled.div`
+const AccordionBody = styled('div')`
   font-size: 13px;
   padding-top: 8px;
 `;

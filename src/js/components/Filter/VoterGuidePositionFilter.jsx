@@ -1,13 +1,13 @@
-import { Checkbox, FormControlLabel } from '@material-ui/core';
-import { withStyles } from '@material-ui/core/styles';
+import { Checkbox, FormControlLabel } from '@mui/material';
+import styled from '@mui/material/styles/styled';
+import withStyles from '@mui/styles/withStyles';
 import { uniqBy } from 'lodash-es';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import styled from 'styled-components';
-import IssueStore from '../../stores/IssueStore';
-import OrganizationStore from '../../stores/OrganizationStore';
 import { convertStateCodeFilterToStateCode } from '../../common/utils/addressFunctions';
 import { renderLog } from '../../common/utils/logging';
+import IssueStore from '../../stores/IssueStore';
+import OrganizationStore from '../../stores/OrganizationStore';
 import { convertToInteger } from '../../utils/textFormat';
 import getGroupedFilterSecondClass from './utils/grouped-filter-second-class';
 
@@ -517,41 +517,43 @@ const styles = (theme) => ({
   },
 });
 
-const Wrapper = styled.div`
-  display: ${({ showAllFilters }) => (showAllFilters ? 'flex' : 'none')};
+const Wrapper = styled('div', {
+  shouldForwardProp: (prop) => !['showAllFilters'].includes(prop),
+})(({ showAllFilters }) => (`
+  display: ${showAllFilters ? 'flex' : 'none'};
   flex-flow: column;
   padding-top: 1rem;
-`;
+`));
 
-const FilterRow = styled.div`
+const FilterRow = styled('div')`
   display: flex;
   flex-flow: row;
 `;
 
-const FilterColumn = styled.div`
+const FilterColumn = styled('div')`
   display: flex;
   flex-flow: column;
   margin-right: 2rem;
 `;
 
-const SortByContainer = styled.div`
+const SortByContainer = styled('div')`
   height: 40px;
   display: flex;
   align-items: center;
 `;
 
-const SortBy = styled.p`
-  font-size: ${({ selected }) => (selected ? '.95rem' : '.875rem')};
+const SortBy = styled('p')(({ selected, theme }) => (`
+  font-size: ${selected ? '.95rem' : '.875rem'};
   margin: 8px 0 0 0;
   cursor: pointer;
-  color: ${({ selected, theme }) => (selected ? theme.colors.brandBlue : '#555')};
-  font-weight: ${({ selected }) => (selected ? '800' : '400')};
-  @media (max-width: ${({ theme }) => theme.breakpoints.lg}) {
+  color: ${selected ? theme.colors.brandBlue : '#555'};
+  font-weight: ${selected ? '800' : '400'};
+  @media (max-width: ${theme.breakpoints.lg}) {
     font-size: 14px;
   }
   &:hover {
     filter: opacity(0.7);
   }
-`;
+`));
 
 export default withStyles(styles)(VoterGuidePositionFilter);

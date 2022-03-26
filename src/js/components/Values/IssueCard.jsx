@@ -1,13 +1,13 @@
 /* eslint-disable quotes */
+import styled from '@mui/material/styles/styled';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
 import { Link } from 'react-router-dom';
-import styled from 'styled-components';
-import VoterGuideStore from '../../stores/VoterGuideStore';
+import LoadingWheel from '../../common/components/Widgets/LoadingWheel';
 import { isCordova } from '../../common/utils/isCordovaOrWebApp';
 import { renderLog } from '../../common/utils/logging';
+import VoterGuideStore from '../../stores/VoterGuideStore';
 import { convertNameToSlug } from '../../utils/textFormat';
-import LoadingWheel from '../../common/components/Widgets/LoadingWheel';
 import IssueFollowToggleButton from './IssueFollowToggleButton';
 import IssueImageDisplay from './IssueImageDisplay';
 
@@ -195,6 +195,7 @@ class IssueCard extends Component {
                 currentBallotIdInUrl={currentBallotIdInUrl}
                 issueName={this.state.issue.issue_name}
                 issueWeVoteId={issueWeVoteId}
+                lightModeOn
                 urlWithoutHash={urlWithoutHash}
               />
             </FollowIssueToggleContainer>
@@ -229,49 +230,55 @@ IssueCard.propTypes = {
   condensed: PropTypes.bool,
 };
 
-const Wrapper = styled.div`
+const Wrapper = styled('div', {
+  shouldForwardProp: (prop) => !['condensed'].includes(prop),
+})(({ condensed }) => (`
   display: block !important;
   background: white;
-  // border: ${(props) => (props.condensed ? '1px solid #888' : 'none')};
-  box-shadow: ${(props) => (props.condensed ? 'none !important' : null)};
-  padding: ${(props) => (props.condensed ? '0 0' : null)};
-  height: ${(props) => (props.condensed ? 'fit-content' : null)};
+  // border: ${condensed ? '1px solid #888' : 'none'};
+  box-shadow: ${condensed ? 'none !important' : ''};
+  padding: ${condensed ? '0 0' : ''};
+  height: ${condensed ? 'fit-content' : ''};
   @media (max-width: 479px) {
     margin: 0 -16px;
   }
-`;
+`));
 
-const IssueName = styled.h3`
+const IssueName = styled('h3')`
   font-size: 18px;
   font-weight: bold;
   margin-bottom: 0;
 `;
 
-const IssueAdvocatesCount = styled.span`
+const IssueAdvocatesCount = styled('span')`
   font-weight: normal;
   white-space: nowrap;
 `;
 
-const FollowIssueToggleContainer = styled.div`
+const FollowIssueToggleContainer = styled('div')`
   margin-left: auto;
 `;
 
-const Flex = styled.div`
-  ${(props) => (props.followToggleOnItsOwnLine ?
+const Flex = styled('div', {
+  shouldForwardProp: (prop) => !['condensed', 'followToggleOnItsOwnLine'].includes(prop),
+})(({ condensed, followToggleOnItsOwnLine }) => (`
+  ${followToggleOnItsOwnLine ?
     '' :
     'display: flex; align-items: center; justify-content: flex-start;'
-  )}
-  width: ${(props) => (props.condensed ? '100%' : null)};
-`;
+  }
+  width: ${condensed ? '100%' : null};
+`));
 
-const FlexNameAndIcon = styled.div`
+const FlexNameAndIcon = styled('div', {
+  shouldForwardProp: (prop) => !['condensed'].includes(prop),
+})(({ condensed }) => (`
   display: flex;
   align-items: center;
   justify-content: flex-start;
-  width: ${(props) => (props.condensed ? '100%' : null)};
-`;
+  width: ${condensed ? '100%' : null};
+`));
 
-const Description = styled.div`
+const Description = styled('div')`
   margin-top: 8px;
   font-size: 14px;
   color: #333;

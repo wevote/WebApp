@@ -1,14 +1,17 @@
-import { Button, Dialog, DialogContent, DialogTitle, FormControl, IconButton, InputLabel, Select } from '@material-ui/core';
-import { withStyles, withTheme } from '@material-ui/core/styles';
-import { Close } from '@material-ui/icons';
+import { Close } from '@mui/icons-material';
+import { Button, Dialog, DialogContent, DialogTitle, FormControl, IconButton, InputLabel, Select } from '@mui/material';
+import styled from '@mui/material/styles/styled';
+import withStyles from '@mui/styles/withStyles';
+import withTheme from '@mui/styles/withTheme';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
-import styled from 'styled-components';
 import AnalyticsActions from '../../actions/AnalyticsActions';
-import VoterStore from '../../stores/VoterStore';
 import { hasIPhoneNotch } from '../../common/utils/cordovaUtils';
 import { renderLog } from '../../common/utils/logging';
+import BallotStore from '../../stores/BallotStore';
+import VoterStore from '../../stores/VoterStore';
 import { calculateBallotBaseUrl } from '../../utils/textFormat';
+import BallotTitleHeader from '../../pages/Ballot/BallotTitleHeader';
 import EditAddressInPlace from '../Widgets/EditAddressInPlace';
 
 const MapChart = React.lazy(() => import(/* webpackChunkName: 'MapChart' */ '../Widgets/MapChart/MapChart'));
@@ -32,37 +35,6 @@ class SelectBallotModal extends Component {
   componentDidMount () {
     AnalyticsActions.saveActionSelectBallotModal(VoterStore.electionId());
   }
-
-  //
-  // shouldComponentUpdate (nextProps, nextState) {
-  //   // This lifecycle method tells the component to NOT render if componentWillReceiveProps didn't see any changes
-  //   const { location: { pathname } } = window;
-  //   if (pathname !== nextProps.pathname) {
-  //     // console.log('pathname:', pathname, ', nextProps.pathname:', nextProps.pathname);
-  //     return true;
-  //   }
-  //   if (this.state.selectedState !== nextState.selectedState) return true;
-  //   if (this.state.prior !== nextState.prior) return true;
-  //   if (this.state.upcoming !== nextState.upcoming) return true;
-  //   if (this.props.ballotBaseUrl !== nextProps.ballotBaseUrl) {
-  //     // console.log('this.props.ballotBaseUrl:', this.props.ballotBaseUrl, ', nextProps.ballotBaseUrl:', nextProps.ballotBaseUrl);
-  //     return true;
-  //   }
-  //   if (this.props.hideAddressEdit !== nextProps.hideAddressEdit) {
-  //     // console.log('this.props.hideAddressEdit:', this.props.hideAddressEdit, ', nextProps.hideAddressEdit:', nextProps.hideAddressEdit);
-  //     return true;
-  //   }
-  //   if (this.props.hideElections !== nextProps.hideElections) {
-  //     // console.log('this.props.hideElections:', this.props.hideElections, ', nextProps.hideElections:', nextProps.hideElections);
-  //     return true;
-  //   }
-  //   if (this.props.organization_we_vote_id !== nextProps.organization_we_vote_id) {
-  //     // console.log('this.props.organization_we_vote_id:', this.props.organization_we_vote_id, ', nextProps.organization_we_vote_id:', nextProps.organization_we_vote_id);
-  //     return true;
-  //   }
-  //   // console.log('shouldComponentUpdate no change');
-  //   return false;
-  // }
 
   handleChooseStateChange (e) {
     this.setState({ selectedState: e.target.value });
@@ -88,10 +60,17 @@ class SelectBallotModal extends Component {
     const { editingAddress } = this.state;
     const ballotBaseUrl = calculateBallotBaseUrl(this.props.ballotBaseUrl, pathname);
 
-    let dialogTitleText = 'Address & Elections';
-    if (hideAddressEdit || hideElections) {
+    let dialogTitleText = 'Election You Are Viewing';
+    if (editingAddress) {
+      dialogTitleText = 'Edit Your Address';
+    } else if (hideAddressEdit || hideElections) {
       dialogTitleText = '';
     }
+
+    const electionName = BallotStore.currentBallotElectionName || '';
+    const electionDayText = BallotStore.currentBallotElectionDate;
+    const electionDayTextFormatted = electionDayText && window.moment ? window.moment(electionDayText).format('MMM Do, YYYY') : '';
+    const electionDayTextObject = electionDayText && window.moment ? <span>{electionDayTextFormatted}</span> : null;
 
     // console.log('SelectBallotModal render, voter_address_object: ', voter_address_object);
     return (
@@ -110,11 +89,22 @@ class SelectBallotModal extends Component {
             classes={{ root: classes.closeButton }}
             onClick={() => { this.props.toggleFunction(); }}
             id="profileCloseSelectBallotModal"
+            size="large"
           >
             <Close />
           </IconButton>
         </DialogTitle>
         <DialogContent classes={{ root: classes.dialogContent }}>
+          {!editingAddress && (
+            <BallotTitleHeaderWrapper>
+              <BallotTitleHeader
+                electionName={electionName}
+                electionDayTextObject={electionDayTextObject}
+                linksOff
+                showBallotCaveat
+              />
+            </BallotTitleHeaderWrapper>
+          )}
           <Row>
             <div className="u-show-mobile-tablet">
               {!hideAddressEdit && (
@@ -285,8 +275,8 @@ const styles = (theme) => ({
   },
   closeButton: {
     position: 'absolute',
-    right: `${theme.spacing(1)}px`,
-    top: `${theme.spacing(1)}px`,
+    right: theme.spacing(1),
+    top: theme.spacing(1),
   },
   formControl: {
     width: '100%',
@@ -298,16 +288,20 @@ const styles = (theme) => ({
   },
 });
 
-const EditAddressInPlaceWrapperMobile = styled.div`
+const BallotTitleHeaderWrapper = styled('div')`
+  margin-bottom: 32px;
+`;
+
+const EditAddressInPlaceWrapperMobile = styled('div')`
   margin-top: 18px;
   width: 100%;
 `;
 
-const ElectionChoiceWrapper = styled.div`
+const ElectionChoiceWrapper = styled('div')`
   margin-top: 12px;
 `;
 
-const Title = styled.div`
+const Title = styled('div')`
   font-size: 20px;
   font-weight: bold;
   margin: 0;
@@ -315,7 +309,7 @@ const Title = styled.div`
   text-align: left;
 `;
 
-const Row = styled.div`
+const Row = styled('div')`
   margin-top: -8px;
   margin-bottom: -8px;
   margin-left: auto;
@@ -328,8 +322,9 @@ const Row = styled.div`
   }
 `;
 
-const MapChartWrapper = styled.div`
+const MapChartWrapper = styled('div')`
   display: block;
+  max-height: 300px;
   width: 100%;
   padding: 12px;
   top: 0;
@@ -350,9 +345,15 @@ const MapChartWrapper = styled.div`
   //     margin-top: -36px;
   //   }
   // }
+  & svg, & path {
+    max-height: 300px;
+  }
+  & img {
+    max-height: 300px;
+  }
 `;
 
-const MapChartWrapperDesktop = styled.div`
+const MapChartWrapperDesktop = styled('div')`
   display: block;
   width: 50%;
   padding: 12px;
@@ -371,23 +372,25 @@ const MapChartWrapperDesktop = styled.div`
   }
 `;
 
-const SidebarWrapper = styled.div`
+const SidebarWrapper = styled('div')`
   padding: 16px;
   @media (max-width: 575px) {
     padding-top: 0;
   }
   @media(min-width: 576px) {
-    max-width: 50%;
+    // max-width: 50%;
     width: auto;
     flex: 1 1 0;
   }
 `;
 
-const BallotElectionListWrapper = styled.div`
-  margin-top: ${(props) => (props.addTopMargin ? '24px' : '0')};
-`;
+const BallotElectionListWrapper = styled('div', {
+  shouldForwardProp: (prop) => !['addTopMargin'].includes(prop),
+})(({ addTopMargin }) => (`
+  margin-top: ${addTopMargin ? '24px' : '0'};
+`));
 
-const ToggleGroup = styled.div`
+const ToggleGroup = styled('div')`
   display: flex;
   align-items: center;
   justify-content: center;

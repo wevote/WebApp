@@ -1,13 +1,14 @@
-import { withStyles, withTheme } from '@material-ui/core/styles';
-import { ArrowForward } from '@material-ui/icons';
+import { ArrowForward } from '@mui/icons-material';
+import styled from '@mui/material/styles/styled';
+import withStyles from '@mui/styles/withStyles';
+import withTheme from '@mui/styles/withTheme';
 import PropTypes from 'prop-types';
 import React from 'react';
-import styled from 'styled-components';
+import { renderLog } from '../../common/utils/logging';
+import normalizedImagePath from '../../common/utils/normalizedImagePath';
 import AppObservableStore from '../../stores/AppObservableStore';
 import ReadyStore from '../../stores/ReadyStore';
 import VoterStore from '../../stores/VoterStore';
-import normalizedImagePath from '../../common/utils/normalizedImagePath';
-import { renderLog } from '../../common/utils/logging';
 import { ButtonLeft, ButtonText, Icon, PercentComplete, ReadyCard, StyledButton, StyledCheckbox, SubTitle, TitleRowWrapper } from './ReadyTaskStyles';
 
 const plan0Percent = '../../../img/global/svg-icons/ready/plan-0-percent.svg';
@@ -62,7 +63,7 @@ class ReadyTaskPlan extends React.Component {
     const { completed, voterPlanText } = this.state;
 
     return (
-      <ReadyCard showprogresscolor={completed} className="card">
+      <ReadyCard showProgressColor={completed} className="card">
         <Icon className="u-cursor--pointer" onClick={this.showVoterPlanModal}>
           {completed ?  (
             <img
@@ -106,7 +107,7 @@ class ReadyTaskPlan extends React.Component {
                 </>
               )}
             </PlanTitle>
-            <PercentComplete showprogresscolor={completed || undefined}>
+            <PercentComplete showProgressColor={completed || undefined}>
               {completed ? '100%' : '0%'}
               {!!(completed) && (
                 <span className="u-show-desktop-tablet">
@@ -171,23 +172,23 @@ const styles = (theme) => ({
   },
 });
 
-const PlanTitle = styled.h3`
+const PlanTitle = styled('h3')(({ theme }) => (`
   margin: 0;
   font-size: 30px;
   font-weight: 600;
   margin-bottom: 6px;
   margin-top: 12px;
-  @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
+  ${theme.breakpoints.down('sm')} {
     font-size: 24px;
     margin-top: 0;
   }
-  @media (max-width: ${({ theme }) => theme.breakpoints.xs}) {
+  ${theme.breakpoints.down('xs')} {
     font-size: 20px;
     margin-top: 0;
   }
-`;
+`));
 
-const VoterPlanPreview = styled.div`
+const VoterPlanPreview = styled('div')`
   padding: 8px;
   background: #e8e8e8;
   font-size: 16px;

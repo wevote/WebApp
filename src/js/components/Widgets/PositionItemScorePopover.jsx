@@ -1,14 +1,15 @@
-import { withStyles, withTheme } from '@material-ui/core/styles';
-import { CheckCircle, Info, ThumbDown, ThumbUp } from '@material-ui/icons';
+import { CheckCircle, Info, ThumbDown, ThumbUp } from '@mui/icons-material';
+import styled from '@mui/material/styles/styled';
+import withStyles from '@mui/styles/withStyles';
+import withTheme from '@mui/styles/withTheme';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
-import styled from 'styled-components';
+import SvgImage from '../../common/components/Widgets/SvgImage';
 import FriendStore from '../../stores/FriendStore';
 import IssueStore from '../../stores/IssueStore';
 import OrganizationStore from '../../stores/OrganizationStore';
 import { isOrganizationInVotersNetwork } from '../../utils/positionFunctions';
 import FriendsIcon from './FriendsIcon';
-import SvgImage from '../../common/components/Widgets/SvgImage';
 
 const FollowToggle = React.lazy(() => import(/* webpackChunkName: 'FollowToggle' */ './FollowToggle'));
 
@@ -343,18 +344,18 @@ const styles = () => ({
   },
 });
 
-const FollowOrganizationText = styled.div`
+const FollowOrganizationText = styled('div')`
   margin-top: 10px;
 `;
 
-const FollowOrganizationToggleContainer = styled.div`
+const FollowOrganizationToggleContainer = styled('div')`
   margin-top: 10px;
 `;
 
-const OrganizationSupportsOrOpposesText = styled.div`
+const OrganizationSupportsOrOpposesText = styled('div')`
 `;
 
-const PopoverWrapper = styled.div`
+const PopoverWrapper = styled('div')`
   overflow-x: hidden;
   width: 100%;
   height: 100%;
@@ -366,18 +367,18 @@ const PopoverWrapper = styled.div`
   margin-top: 8px;
 `;
 
-const OrganizationAddsToYourPersonalScoreExplanation = styled.div`
+const OrganizationAddsToYourPersonalScoreExplanation = styled('div')`
   margin-top: 4px;
 `;
 
-const PositionSummaryWrapper = styled.div`
+const PositionSummaryWrapper = styled('div')`
   display: flex;
   flex-wrap: nowrap;
   justify-content: flex-start;
 `;
 
-const PopoverHeader = styled.div`
-  background: ${({ theme }) => theme.colors.brandBlue};
+const PopoverHeader = styled('div')(({ theme }) => (`
+  background: ${theme.colors.brandBlue};
   padding: 4px 8px;
   min-height: 35px;
   color: white;
@@ -387,38 +388,38 @@ const PopoverHeader = styled.div`
   border-radius: 4px;
   border-bottom-right-radius: 0;
   border-bottom-left-radius: 0;
-`;
+`));
 
-const PopoverTitleIcon = styled.span`
+const PopoverTitleIcon = styled('span')`
   font-weight: bold;
   font-size: 16px;
 `;
 
-const PopoverTitleText = styled.div`
+const PopoverTitleText = styled('div')`
   font-size: 14px;
   font-weight: bold;
   margin-left: 8px;
   margin-right: 20px;
 `;
 
-const PopoverDescriptionText = styled.div`
+const PopoverDescriptionText = styled('div')`
   padding: 8px;
 `;
 
-const ScoreExplanationWrapper = styled.div`
+const ScoreExplanationWrapper = styled('div')`
   display: flex;
   flex-wrap: nowrap;
   justify-content: flex-start;
   margin-top: 6px;
 `;
 
-const ScoreExplanationText = styled.div`
+const ScoreExplanationText = styled('div')`
   margin-left: 4px;
 `;
 
-const SupportAndPartOfScore = styled.div`
+const SupportAndPartOfScore = styled('div')(({ theme }) => (`
   color: white;
-  background: ${({ theme }) => theme.colors.supportGreenRgb};
+  background: ${theme.colors.supportGreenRgb};
   display: flex;
   align-items: center;
   justify-content: center;
@@ -433,11 +434,11 @@ const SupportAndPartOfScore = styled.div`
   @media print{
     border: 2px solid grey;
   }
-`;
+`));
 
-const OpposeAndPartOfScore = styled.div`
+const OpposeAndPartOfScore = styled('div')(({ theme }) => (`
   color: white;
-  background: ${({ theme }) => theme.colors.opposeRedRgb};
+  background: ${theme.colors.opposeRedRgb};
   display: flex;
   align-items: center;
   justify-content: center;
@@ -452,10 +453,10 @@ const OpposeAndPartOfScore = styled.div`
   @media print{
     border: 2px solid grey;
   }
-`;
+`));
 
-const SupportButNotPartOfScore = styled.div`
-  color: ${({ theme }) => theme.colors.supportGreenRgb};
+const SupportButNotPartOfScore = styled('div')(({ theme }) => (`
+  color: ${theme.colors.supportGreenRgb};
   background: white;
   display: flex;
   align-items: center;
@@ -464,32 +465,15 @@ const SupportButNotPartOfScore = styled.div`
   min-width: 20px;
   height: 20px;
   border-radius: 5px;
-  border: 2px solid ${({ theme }) => theme.colors.supportGreenRgb};
+  border: 2px solid ${theme.colors.supportGreenRgb};
   float: left;
   font-size: 10px;
   font-weight: bold;
   margin-right: 6px;
-`;
+`));
 
-const OpposeButNotPartOfScore = styled.div`
-  color: ${({ theme }) => theme.colors.opposeRedRgb};
-  background: white;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 20px;
-  min-width: 20px;
-  height: 20px;
-  border-radius: 5px;
-  float: left;
-  border: 2px solid ${({ theme }) => theme.colors.opposeRedRgb};
-  font-size: 10px;
-  font-weight: bold;
-  margin-right: 6px;
-`;
-
-const InformationOnly = styled.div`
-  color: ${({ theme }) => theme.colors.grayMid};
+const OpposeButNotPartOfScore = styled('div')(({ theme }) => (`
+  color: ${theme.colors.opposeRedRgb};
   background: white;
   display: flex;
   align-items: center;
@@ -499,10 +483,27 @@ const InformationOnly = styled.div`
   height: 20px;
   border-radius: 5px;
   float: left;
-  border: 2px solid ${({ theme }) => theme.colors.grayMid};
+  border: 2px solid ${theme.colors.opposeRedRgb};
   font-size: 10px;
   font-weight: bold;
   margin-right: 6px;
-`;
+`));
+
+const InformationOnly = styled('div')(({ theme }) => (`
+  color: ${theme.colors.grayMid};
+  background: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  min-width: 20px;
+  height: 20px;
+  border-radius: 5px;
+  float: left;
+  border: 2px solid ${theme.colors.grayMid};
+  font-size: 10px;
+  font-weight: bold;
+  margin-right: 6px;
+`));
 
 export default withTheme(withStyles(styles)(PositionItemScorePopover));

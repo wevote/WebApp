@@ -1,16 +1,16 @@
-import { BottomNavigation, BottomNavigationAction } from '@material-ui/core';
-import { withStyles } from '@material-ui/core/styles';
-import { Ballot, HowToVote, People, QuestionAnswer } from '@material-ui/icons';
+import { Ballot, HowToVote, People, QuestionAnswer } from '@mui/icons-material';
+import { BottomNavigation, BottomNavigationAction } from '@mui/material';
+import styled from '@mui/material/styles/styled';
+import withStyles from '@mui/styles/withStyles';
 import React from 'react';
-import styled from 'styled-components';
+import historyPush from '../../common/utils/historyPush';
+import { normalizedHref } from '../../common/utils/hrefUtils';
+import { isCordova } from '../../common/utils/isCordovaOrWebApp';
+import { renderLog } from '../../common/utils/logging';
 import AppObservableStore, { messageService } from '../../stores/AppObservableStore';
 import FriendStore from '../../stores/FriendStore';
 import VoterStore from '../../stores/VoterStore';
 import { cordovaFooterHeight } from '../../utils/cordovaOffsets';
-import { isCordova } from '../../common/utils/isCordovaOrWebApp';
-import historyPush from '../../common/utils/historyPush';
-import { normalizedHref } from '../../common/utils/hrefUtils';
-import { renderLog } from '../../common/utils/logging';
 import { stringContains } from '../../utils/textFormat';
 import signInModalGlobalState from '../Widgets/signInModalGlobalState';
 
@@ -156,7 +156,7 @@ class FooterBar extends React.Component {
               label="Friends"
               showLabel
               icon={(
-                <Badge badgeContent={numberOfIncomingFriendRequests} className={classes.anchorOriginTopRightRectangle} color="primary" max={9} style={badgeStyle} onClick={() => this.handleNavigation('/friends')}>
+                <Badge badgeContent={numberOfIncomingFriendRequests} className={classes.anchorOriginTopRightRectangular} color="primary" max={9} style={badgeStyle} onClick={() => this.handleNavigation('/friends')}>
                   <People />
                 </Badge>
               )}
@@ -188,13 +188,14 @@ class FooterBar extends React.Component {
 FooterBar.propTypes = {
 };
 
+// DALE NOTE MAY HAVE CHANGED WITH MUI 5 2022-03-23
 const styles = () => ({
-  anchorOriginTopRightRectangle: {
+  anchorOriginTopRightRectangular: {
     top: isFriendsTabSelected ? 0 : 2,
   },
 });
 
-const FooterBarWrapper = styled.div`
+const FooterBarWrapper = styled('div')`
   @media print{
     display: none;
   }

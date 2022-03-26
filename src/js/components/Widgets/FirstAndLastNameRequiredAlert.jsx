@@ -1,13 +1,13 @@
-import { withStyles } from '@material-ui/core/styles';
+import styled from '@mui/material/styles/styled';
+import withStyles from '@mui/styles/withStyles';
 import React, { Component } from 'react';
 import Alert from 'react-bootstrap/Alert';
-import styled from 'styled-components';
 import FriendActions from '../../actions/FriendActions';
+import apiCalming from '../../common/utils/apiCalming';
+import { renderLog } from '../../common/utils/logging';
 import FriendStore from '../../stores/FriendStore';
 import OrganizationStore from '../../stores/OrganizationStore';
 import VoterStore from '../../stores/VoterStore';
-import apiCalming from '../../common/utils/apiCalming';
-import { renderLog } from '../../common/utils/logging';
 import { isSpeakerTypeOrganization } from '../../utils/organization-functions';
 import { stringContains } from '../../utils/textFormat';
 import SettingsWidgetFirstLastName from '../Settings/SettingsWidgetFirstLastName';
@@ -190,14 +190,10 @@ class FirstAndLastNameRequiredAlert extends Component {
                   {organizationNameRelevantAndMissing ? (
                     <span>
                       Please add your name so people recognize you.
-                      {' '}
-                      Your name will only be shown on We Vote.
                     </span>
                   ) : (
                     <span>
                       Please add your name so your friends recognize you.
-                      {' '}
-                      Your name will only be shown on We Vote.
                     </span>
                   )}
                   {' '}
@@ -233,21 +229,21 @@ const styles = ({
   },
 });
 
-const ExplanationText = styled.div`
+const ExplanationText = styled('div')`
   margin-bottom: 10px;
 `;
 
-const ParagraphStyled = styled.div`
+const ParagraphStyled = styled('div')`
   font-size: 16px;
   font-weight: normal;
   margin: 15px 15px;
   width: 100%;
 `;
 
-const PrintWrapper = styled.div`
+const PrintWrapper = styled('div')`
   background-color: white;
   background-clip: border-box;
-  border: 2px solid #999;
+  // border: 2px solid #999;
   display: flex;
   margin: 0 0 10px 0;
   position: relative;

@@ -11,7 +11,7 @@ import BrowserPushMessage from '../../components/Widgets/BrowserPushMessage';
 import ElectionStore from '../../stores/ElectionStore';
 import VoterStore from '../../stores/VoterStore';
 import { renderLog } from '../../common/utils/logging';
-import { PageContentContainer } from '../../utils/pageLayoutStyles';
+import { PageContentContainer } from '../../components/Style/pageLayoutStyles';
 
 export default class Location extends Component {
   constructor (props) {
@@ -31,6 +31,7 @@ export default class Location extends Component {
     BallotActions.voterBallotListRetrieve();
     ElectionActions.electionsRetrieve();
     AnalyticsActions.saveActionElections(VoterStore.electionId());
+    window.scrollTo(0, 0);
   }
 
   componentWillUnmount () {

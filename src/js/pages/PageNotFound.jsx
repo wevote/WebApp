@@ -1,14 +1,14 @@
-import { Button, Card } from '@material-ui/core';
-import { withStyles } from '@material-ui/core/styles';
-import { Ballot } from '@material-ui/icons';
+import { Ballot } from '@mui/icons-material';
+import { Button, Card } from '@mui/material';
+import styled from '@mui/material/styles/styled';
+import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import Helmet from 'react-helmet';
-import styled from 'styled-components';
-import { isCordova } from '../common/utils/isCordovaOrWebApp';
 import historyPush from '../common/utils/historyPush';
+import { isCordova } from '../common/utils/isCordovaOrWebApp';
 import { renderLog } from '../common/utils/logging';
-import { PageContentContainer } from '../utils/pageLayoutStyles';
+import { PageContentContainer } from '../components/Style/pageLayoutStyles';
 
 
 class PageNotFound extends Component {
@@ -26,7 +26,7 @@ class PageNotFound extends Component {
       <PageContentContainer>
         <div className="container-fluid">
           <Helmet title="Page Not Found - We Vote" />
-          <Wrapper cordova={isCordova()}>
+          <Wrapper>
             <Card>
               <EmptyBallotMessageContainer>
                 <EmptyBallotText>Page not found.</EmptyBallotText>
@@ -51,27 +51,27 @@ PageNotFound.propTypes = {
   classes: PropTypes.object,
 };
 
-const Wrapper = styled.div`
-  @media (max-width: ${({ theme, cordova }) => (cordova ? undefined : theme.breakpoints.md)}) {
+const Wrapper = styled('div')(({ theme }) => (`
+  ${theme.breakpoints.down('md')} {
     margin: 1em 0;
   }
-`;
+`));
 
-const EmptyBallotMessageContainer = styled.div`
+const EmptyBallotMessageContainer = styled('div')`
   padding: 3em 2em;
   display: flex;
   flex-flow: column;
   align-items: center;
 `;
 
-const EmptyBallotText = styled.p`
+const EmptyBallotText = styled('p')(({ theme }) => (`
   font-size: 24px;
   text-align: center;
   margin: 1em 2em 3em;
-  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+  ${theme.breakpoints.down('md')} {
     margin: 1em;
   }
-`;
+`));
 
 const styles = (theme) => ({
   ballotIconRoot: {

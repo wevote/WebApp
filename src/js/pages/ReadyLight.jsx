@@ -1,28 +1,28 @@
-import { withStyles } from '@material-ui/core/styles';
+import styled from '@mui/material/styles/styled';
+import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
 import Helmet from 'react-helmet';
-import styled from 'styled-components';
 import ActivityActions from '../actions/ActivityActions';
 import AnalyticsActions from '../actions/AnalyticsActions';
 import ReadyActions from '../actions/ReadyActions';
+import apiCalming from '../common/utils/apiCalming';
+import { isAndroid, isIOS } from '../common/utils/cordovaUtils';
+import historyPush from '../common/utils/historyPush';
+import { isWebApp } from '../common/utils/isCordovaOrWebApp';
+import { renderLog } from '../common/utils/logging';
 import ElectionCountdown from '../components/Ready/ElectionCountdown';
 import ReadyInformationDisclaimer from '../components/Ready/ReadyInformationDisclaimer';
 import ReadyTaskBallot from '../components/Ready/ReadyTaskBallot';
 import ReadyTaskFriends from '../components/Ready/ReadyTaskFriends';
 import ReadyTaskPlan from '../components/Ready/ReadyTaskPlan';
 import ReadyTaskRegister from '../components/Ready/ReadyTaskRegister';
+import { PageContentContainer } from '../components/Style/pageLayoutStyles';
 import BrowserPushMessage from '../components/Widgets/BrowserPushMessage';
 import webAppConfig from '../config';
 import AppObservableStore from '../stores/AppObservableStore';
 import VoterStore from '../stores/VoterStore';
-import { isAndroid, isIOS } from '../common/utils/cordovaUtils';
-import { isWebApp } from '../common/utils/isCordovaOrWebApp';
-import historyPush from '../common/utils/historyPush';
 import lazyPreloadPages from '../utils/lazyPreloadPages';
-import { renderLog } from '../common/utils/logging';
-import apiCalming from '../common/utils/apiCalming';
-import { PageContentContainer } from '../utils/pageLayoutStyles';
 
 const ReadMore = React.lazy(() => import(/* webpackChunkName: 'ReadMore' */ '../common/components/Widgets/ReadMore'));
 const FirstAndLastNameRequiredAlert = React.lazy(() => import(/* webpackChunkName: 'FirstAndLastNameRequiredAlert' */ '../components/Widgets/FirstAndLastNameRequiredAlert'));
@@ -106,16 +106,17 @@ class ReadyLight extends Component {
           <Helmet title="Ready to Vote? - We Vote" />
           <BrowserPushMessage incomingProps={this.props} />
           <div className="row">
+            <Suspense fallback={<SuspenseCard>&nbsp;</SuspenseCard>}>
+              <ElectionCountdownOuterWrapper className="col-12">
+                <ElectionCountdownInnerWrapper>
+                  <Suspense fallback={<SuspenseCard>&nbsp;</SuspenseCard>}>
+                    <ElectionCountdown onClickFunction={this.goToBallot} initialDelay={4000} />
+                  </Suspense>
+                </ElectionCountdownInnerWrapper>
+              </ElectionCountdownOuterWrapper>
+            </Suspense>
+
             <div className="col-sm-12 col-lg-8">
-              <MobileTabletCountdownWrapper className="u-show-mobile-tablet">
-                <ShareButtonTabletWrapper />
-                <ElectionCountdownMobileTabletWrapper
-                  className="u-cursor--pointer u-show-mobile-tablet"
-                  // onClick={this.goToBallot}
-                >
-                  <ElectionCountdown daysOnlyMode initialDelay={0} />
-                </ElectionCountdownMobileTabletWrapper>
-              </MobileTabletCountdownWrapper>
               {(chosenReadyIntroductionTitle || chosenReadyIntroductionText) && (
                 <Card className="card u-show-mobile-tablet">
                   <div className="card-main">
@@ -161,11 +162,6 @@ class ReadyLight extends Component {
               />
             </div>
             <div className="col-lg-4 d-none d-lg-block">
-              <div className="u-cursor--pointer">
-                <Suspense fallback={<SuspenseCard>&nbsp;</SuspenseCard>}>
-                  <ElectionCountdown daysOnlyMode initialDelay={0} />
-                </Suspense>
-              </div>
               {(chosenReadyIntroductionTitle || chosenReadyIntroductionText) && (
                 <Card className="card">
                   <div className="card-main">
@@ -207,15 +203,37 @@ const styles = (theme) => ({
   },
 });
 
-const Card = styled.div`
+const Card = styled('div')`
   padding-bottom: 4px;
 `;
 
-const ElectionCountdownMobileTabletWrapper = styled.div`
+const ElectionCountdownInnerWrapper = styled('div')`
   margin-top: -37px; // 29px for height of ShareButtonDesktopTablet - 8px for margin-top
 `;
 
-const SuspenseCard = styled.div`
+const ElectionCountdownOuterWrapper = styled('div')`
+  margin-bottom: 32px;
+  position: relative;
+  z-index: 1;
+`;
+
+const IntroAndFindTabletWrapper = styled('div')`
+  display: flex;
+  justify-content: center;
+`;
+
+const IntroAndFindTabletSpacer = styled('div')`
+  width: 20px;
+`;
+
+const PageContainer = styled('div')`
+// This is a bad place to set a top padding for the scrollable pane, it should be in Application__Wrapper
+`;
+
+const Paragraph = styled('div')`
+`;
+
+const SuspenseCard = styled('div')`
   position: relative;
   display: flex;
   flex-direction: column;
@@ -223,44 +241,14 @@ const SuspenseCard = styled.div`
   height: 138px;
 `;
 
-const IntroAndFindTabletWrapper = styled.div`
-  display: flex;
-  justify-content: center;
-`;
-
-const IntroAndFindTabletSpacer = styled.div`
-  width: 20px;
-`;
-
-const MobileTabletCountdownWrapper = styled.div`
-  position: relative;
-  z-index: 1;
-`;
-
-const PageContainer = styled.div`
-// This is a bad place to set a top padding for the scrollable pane, it should be in Application__Wrapper
-`;
-
-const Paragraph = styled.div`
-`;
-
-const ShareButtonTabletWrapper = styled.div`
-  display: flex;
-  height: 29px;
-  justify-content: flex-end;
-  margin-top: 8px;
-  margin-right: 8px;
-  z-index: 2;
-`;
-
-const Title = styled.h2`
+const Title = styled('h2')(({ theme }) => (`
   font-size: 26px;
   font-weight: 800;
   margin: 0 0 12px;
-  @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
+  ${theme.breakpoints.down('sm')} {
     font-size: 14px;
     margin: 0 0 4px;
   }
-`;
+`));
 
 export default withStyles(styles)(ReadyLight);

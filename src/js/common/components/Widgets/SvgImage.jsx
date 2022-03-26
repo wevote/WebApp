@@ -8,7 +8,7 @@ import { renderLog } from '../../utils/logging';
 
 // A function component to avoid CORS issues in Cordova for ReactSVG
 export default function SvgImage (props) {
-  const { imageName, width: localWidth, alt, otherStyles } = props;
+  const { imageName, width: localWidth, alt, stylesTextIncoming } = props;
   const passedAlt = (typeof alt === 'string') ? alt : '';
   let imageSrc;
   if (imageName.includes('/img/')) {
@@ -16,15 +16,14 @@ export default function SvgImage (props) {
   } else {
     imageSrc = normalizedImagePath(`../../img/global/svg-icons/issues/${imageName}.svg`);
   }
-  let stylesList = {
-    fill: '#2e3c5d',
-    padding: '1px 1px 1px 0px',
-    width: `${localWidth || ''}`,
-  };
-  if (otherStyles) {
-    stylesList = otherStyles;
+  let stylesText = `
+    fill: #2e3c5d;
+    padding: 1px 1px 1px 0px;
+    width: ${localWidth || ''};
+  `;
+  if (stylesTextIncoming) {
+    stylesText = stylesTextIncoming;
   }
-
   renderLog(`ChipImage for ${imageSrc}`);
   if (!imageName) {
     return <span />;
@@ -34,7 +33,7 @@ export default function SvgImage (props) {
       <ReactSVG
         alt={passedAlt}
         src={imageSrc}
-        beforeInjection={(svg) => svg.setAttribute('style', stylesList)}
+        beforeInjection={(svg) => svg.setAttribute('style', stylesText)}
       />
     );
   } else {
@@ -51,5 +50,5 @@ SvgImage.propTypes = {
   imageName: PropTypes.string,
   width: PropTypes.string,
   alt: PropTypes.string,
-  otherStyles: PropTypes.object,
+  stylesTextIncoming: PropTypes.object,
 };

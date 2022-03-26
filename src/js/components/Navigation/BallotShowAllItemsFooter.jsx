@@ -1,11 +1,11 @@
-import React, { Component } from 'react';
+import { Ballot } from '@mui/icons-material';
+import { Button, Typography } from '@mui/material';
+import styled from '@mui/material/styles/styled';
+import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
-import { withStyles } from '@material-ui/core/styles';
-import { Ballot } from '@material-ui/icons';
-import { Typography, Button } from '@material-ui/core';
-import styled from 'styled-components';
-import BallotStore from '../../stores/BallotStore';
+import React, { Component } from 'react';
 import { renderLog } from '../../common/utils/logging';
+import BallotStore from '../../stores/BallotStore';
 
 class BallotShowAllItemsFooter extends Component {
   constructor (props) {
@@ -103,7 +103,7 @@ const styles = (theme) => ({
   },
 });
 
-const Row = styled.div`
+const Row = styled('div')`
   margin: 0 !important;
 `;
 

@@ -1,3 +1,4 @@
+import styled from '@mui/material/styles/styled';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { renderLog } from '../../common/utils/logging';
@@ -35,9 +36,9 @@ export default class SettingsBannerAndOrganizationCard extends Component {
     return (
       <div>
         { this.state.organization && this.state.organization.organization_banner_url && this.state.organization.organization_banner_url !== '' ? (
-          <div className="organization-banner-image-div">
-            <img className="organization-banner-image-img" src={this.state.organization.organization_banner_url} />
-          </div>
+          <OrganizationBannerImageDiv>
+            <OrganizationBannerImageImg src={this.state.organization.organization_banner_url} />
+          </OrganizationBannerImageDiv>
         ) : null}
         {this.state.organization.organization_name && !this.state.organization.organization_name.startsWith('Voter-') ? (
           <div className="container-fluid">
@@ -62,3 +63,20 @@ export default class SettingsBannerAndOrganizationCard extends Component {
 SettingsBannerAndOrganizationCard.propTypes = {
   organization: PropTypes.object,
 };
+
+const OrganizationBannerImageDiv = styled('div')`
+  min-height: 200px;
+  max-height: 300px;
+  overflow: hidden;
+  @media (max-width: 767px) {
+    max-height: 200px;
+    min-height: 0;
+  }
+  @media (min-width: 768px) and (max-width: 959px) {
+    min-height: 0;
+  }
+`;
+
+const OrganizationBannerImageImg = styled('img')`
+  width: 100%;
+`;

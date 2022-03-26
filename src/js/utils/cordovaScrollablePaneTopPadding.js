@@ -3,7 +3,7 @@ import VoterStore from '../stores/VoterStore';
 import showBallotDecisionsTabs from '../utilsApi/showBallotDecisionsTabs';
 import { getAndroidSize, hasAndroidNotch, hasIPhoneNotch, isAndroid, isAndroidSimulator, isIOS, isIOSAppOnMac, isIPad, isIPadGiantSize, isIPhone4in, isIPhone4p7in, isIPhone5p5inEarly, isIPhone5p5inMini, isIPhone6p1in, isIPhone6p5in, isSimulator } from '../common/utils/cordovaUtils';
 import { pageEnumeration } from './cordovaUtilsPageEnumeration';
-import isMobileScreenSize from './isMobileScreenSize';
+import isMobileScreenSize from '../common/utils/isMobileScreenSize';
 import { cordovaOffsetLog } from '../common/utils/logging';
 
 
@@ -571,7 +571,7 @@ export default function cordovaScrollablePaneTopPadding (pageEnumerationOverride
     cordovaOffsetLog(`cordovaScrollablePaneTopPadding: WebApp mobile screen size, page: ${page}`);
     switch (page) {
       case CordovaPageConstants.ballotLgHdrWild:          return showBallotDecisionsTabs() ? '0px' : '0px';
-      case CordovaPageConstants.ballotSmHdrWild:          return '0px';
+      case CordovaPageConstants.ballotSmHdrWild:          return '70px';
       // case CordovaPageConstants.ballotVote:
       //   return isSignedIn ? '131px' : '128px';
       // case CordovaPageConstants.candidate:                return '48px';
@@ -582,8 +582,8 @@ export default function cordovaScrollablePaneTopPadding (pageEnumerationOverride
       // case CordovaPageConstants.moreFaq:                  return '58px';
       // case CordovaPageConstants.moreTerms:                return '58px';
       case CordovaPageConstants.officeWild:               return '78px';
-      // case CordovaPageConstants.ready:
-      //   return '30px';
+      case CordovaPageConstants.welcomeWild:              return 0;
+      case CordovaPageConstants.ready:                    return '128px';
       // case CordovaPageConstants.settingsAccount:
       //   return '40px';
       // case CordovaPageConstants.settingsHamburger:
@@ -601,8 +601,10 @@ export default function cordovaScrollablePaneTopPadding (pageEnumerationOverride
   // WebApp desktop mode
   cordovaOffsetLog(`cordovaScrollablePaneTopPadding: WebApp desktop, page: ${page}`);
   switch (page) {
-    case CordovaPageConstants.ballotLgHdrWild:       return showBallotDecisionsTabs() ? '32px' : '0px';
-    case CordovaPageConstants.ballotSmHdrWild:       return '30px';
+    // First number is with "Choices / Decided" showing
+    case CordovaPageConstants.ballotLgHdrWild:       return showBallotDecisionsTabs() ? '172px' : '64px'; // 32/0: Added ~80px
+    // Without showBallotDecisionsTabs
+    case CordovaPageConstants.ballotSmHdrWild:       return '160px';
     case CordovaPageConstants.candidateWild:         return '60px';
     case CordovaPageConstants.friends:               return '102px';
     case CordovaPageConstants.friendsCurrent:        return '102px';
@@ -611,6 +613,7 @@ export default function cordovaScrollablePaneTopPadding (pageEnumerationOverride
     case CordovaPageConstants.moreAbout:             return 0;
     case CordovaPageConstants.moreCredits:           return 0;
     case CordovaPageConstants.officeWild:            return '102px';
+    case CordovaPageConstants.ready:                 return '99px';
     case CordovaPageConstants.welcomeWild:           return 0;
     case CordovaPageConstants.twitterHandleLanding:  return '102px';
     case CordovaPageConstants.voterGuideCreatorWild: return '130px';

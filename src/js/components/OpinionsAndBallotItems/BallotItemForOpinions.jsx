@@ -1,7 +1,8 @@
-import { withStyles, withTheme } from '@material-ui/core/styles';
+import styled from '@mui/material/styles/styled';
+import withStyles from '@mui/styles/withStyles';
+import withTheme from '@mui/styles/withTheme';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
-import styled from 'styled-components';
 import { renderLog } from '../../common/utils/logging';
 import MeasureItemForOpinions from './MeasureItemForOpinions';
 import OfficeItemForOpinions from './OfficeItemForOpinions';
@@ -131,7 +132,7 @@ const styles = (theme) => ({
 });
 
 // Dale to update when I have time to work out the kinks
-const BallotItemCard = styled.div`
+const BallotItemCard = styled('div')(({ theme }) => (`
   $item-padding: 16px;
   background-color: #fff;
   border-radius: 4px;
@@ -139,9 +140,9 @@ const BallotItemCard = styled.div`
   margin-bottom: 16px;
   overflow-y: none;
   border: none;
-  @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
+  ${theme.breakpoints.down('sm')} {
     border-radius: 0;
   }
-`;
+`));
 
 export default withTheme(withStyles(styles)(BallotItemForOpinions));

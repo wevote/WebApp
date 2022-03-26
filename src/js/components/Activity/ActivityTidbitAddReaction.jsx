@@ -1,13 +1,14 @@
-import { IconButton } from '@material-ui/core';
-import { withStyles, withTheme } from '@material-ui/core/styles';
-import { Message, ThumbUp } from '@material-ui/icons'; // Reply,
+import { Message, ThumbUp } from '@mui/icons-material'; // Reply,
+import { IconButton } from '@mui/material';
+import styled from '@mui/material/styles/styled';
+import withStyles from '@mui/styles/withStyles';
+import withTheme from '@mui/styles/withTheme';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import styled from 'styled-components';
 import ReactionActions from '../../actions/ReactionActions';
+import { renderLog } from '../../common/utils/logging';
 import AppObservableStore from '../../stores/AppObservableStore';
 import ReactionStore from '../../stores/ReactionStore';
-import { renderLog } from '../../common/utils/logging';
 
 
 class ActivityTidbitAddReaction extends Component {
@@ -74,6 +75,7 @@ class ActivityTidbitAddReaction extends Component {
               classes={{ root: voterLikesThisItem ? classes.likeButtonSelected  : classes.likeButton }}
               id={`likeButton-${activityTidbitWeVoteId}`}
               onClick={this.onClickReactionLikeToggle}
+              size="large"
             >
               <ThumbUp classes={{ root: voterLikesThisItem ? classes.likeIconSelected : classes.likeIcon }} />
               <LikeTextWrapper>
@@ -90,6 +92,7 @@ class ActivityTidbitAddReaction extends Component {
               classes={{ root: classes.commentsButton }}
               id={`commentsButton-${activityTidbitWeVoteId}`}
               onClick={this.onClickShowActivityTidbitDrawer}
+              size="large"
             >
               <Message classes={{ root: classes.commentsIcon }} />
               <CommentTextWrapper>
@@ -178,47 +181,37 @@ const styles = () => ({
   },
 });
 
-const CommentWrapper = styled.div`
+const CommentWrapper = styled('div')`
 `;
 
-const CommentTextWrapper = styled.div`
+const CommentTextWrapper = styled('div')`
   font-size: 14px;
   padding-left: 4px;
 `;
 
-const LeftColumnWrapper = styled.div`
+const LeftColumnWrapper = styled('div')`
   align-items: center;
   display: flex;
   justify-content: flex-start;
   width: 100%;
 `;
 
-// const CenterColumnWrapper = styled.div`
-//   align-items: center;
-//   display: flex;
-//   justify-content: center;
-//   width: 100%;
-// `;
-
-const RightColumnWrapper = styled.div`
+const RightColumnWrapper = styled('div')`
   align-items: center;
   display: flex;
   justify-content: flex-end;
   width: 100%;
 `;
 
-const LikeTextWrapper = styled.div`
+const LikeTextWrapper = styled('div')`
   font-size: 14px;
   padding-left: 4px;
 `;
 
-const LikeWrapper = styled.div`
+const LikeWrapper = styled('div')`
 `;
 
-// const ShareWrapper = styled.div`
-// `;
-
-const Wrapper = styled.div`
+const Wrapper = styled('div')`
   align-items: center;
   display: flex;
   font-size: 14px;

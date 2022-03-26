@@ -1,11 +1,12 @@
-import { withStyles, withTheme } from '@material-ui/core/styles';
-import { Info, ThumbDown, ThumbUp } from '@material-ui/icons';
+import { Info, ThumbDown, ThumbUp } from '@mui/icons-material';
+import styled from '@mui/material/styles/styled';
+import withStyles from '@mui/styles/withStyles';
+import withTheme from '@mui/styles/withTheme';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
-import styled from 'styled-components';
-import OrganizationStore from '../../stores/OrganizationStore';
 import { isCordova } from '../../common/utils/isCordovaOrWebApp';
 import { renderLog } from '../../common/utils/logging';
+import OrganizationStore from '../../stores/OrganizationStore';
 import StickyPopover from '../Ballot/StickyPopover';
 import FriendsOnlyIndicator from './FriendsOnlyIndicator';
 import PositionItemScorePopover from './PositionItemScorePopover';
@@ -251,19 +252,22 @@ const styles = (theme) => ({
   },
 });
 
-const FriendsOnlyIndicatorWrapper = styled.div`
-  margin-top: 0px !important;
+const FriendsOnlyIndicatorWrapper = styled('div')`
+  margin-top: 0 !important;
   display: flex;
 `;
 
-const Wrapper = styled.div`
+const Wrapper = styled('div')`
   margin-top: .1rem;
   width: 100%;
 `;
 
-const NetworkScore = styled.div`
-  align-items: center;
-  background: ${({ hideNumbersOfAllPositions, voterPersonalNetworkScoreIsNegative, voterPersonalNetworkScoreIsPositive }) => ((voterPersonalNetworkScoreIsNegative && 'rgb(255, 73, 34)') || (voterPersonalNetworkScoreIsPositive && 'rgb(31, 192, 111)') || (hideNumbersOfAllPositions && 'rgb(240, 240, 240)') || '#888')};
+// TODO:  This is almost identical to BallotItemSupportOpposeDisplay, it should be a reused component
+const NetworkScore = styled('div', {
+  shouldForwardProp: (prop) => !['hideNumbersOfAllPositions', 'voterPersonalNetworkScoreIsNegative', 'voterPersonalNetworkScoreIsPositive'].includes(prop),
+})(({ hideNumbersOfAllPositions, voterPersonalNetworkScoreIsNegative, voterPersonalNetworkScoreIsPositive }) => (`
+
+  background: ${(voterPersonalNetworkScoreIsNegative && 'rgb(255, 73, 34)') || (voterPersonalNetworkScoreIsPositive && 'rgb(31, 192, 111)') || (hideNumbersOfAllPositions && 'rgb(240, 240, 240)') || '#888'};
   border-radius: 5px;
   box-shadow: 0 1px 3px 0 rgba(0,0,0,.2), 0 1px 1px 0 rgba(0,0,0,.14), 0 2px 1px -1px rgba(0,0,0,.12);
   color: white;
@@ -275,23 +279,23 @@ const NetworkScore = styled.div`
   justify-content: center;
   width: 40px;
   @media print{
-    border-width: 1 px;
+    border-width: 1px;
     border-style: solid;
-    border-color: ${({ hideNumbersOfAllPositions, voterPersonalNetworkScoreIsNegative, voterPersonalNetworkScoreIsPositive }) => ((voterPersonalNetworkScoreIsNegative && 'rgb(255, 73, 34)') || (voterPersonalNetworkScoreIsPositive && 'rgb(31, 192, 111)') || (hideNumbersOfAllPositions && 'rgb(240, 240, 240)') || '#888')};
+    border-color: ${(voterPersonalNetworkScoreIsNegative && 'rgb(255, 73, 34)') || (voterPersonalNetworkScoreIsPositive && 'rgb(31, 192, 111)') || (hideNumbersOfAllPositions && 'rgb(240, 240, 240)') || '#888'};
   }
-`;
+`));
 
-const OrganizationSupportWrapper = styled.div`
+const OrganizationSupportWrapper = styled('div')`
   position: relative;
   z-index: 1;
 `;
 
-const OrganizationSupportSquare = styled.div`
+const OrganizationSupportSquare = styled('div')(({ theme }) => (`
   align-items: center;
   background: white;
-  border: 3px solid ${({ theme }) => theme.colors.supportGreenRgb};
+  border: 3px solid ${theme.colors.supportGreenRgb};
   border-radius: 5px;
-  color: ${({ theme }) => theme.colors.supportGreenRgb};
+  color: ${theme.colors.supportGreenRgb};
   cursor: pointer;
   display: flex;
   height: 40px;
@@ -299,22 +303,22 @@ const OrganizationSupportSquare = styled.div`
   font-weight: bold;
   justify-content: center;
   width: 40px;
-`;
+`));
 
-const OrganizationSupportIconWrapper = styled.div`
+const OrganizationSupportIconWrapper = styled('div')`
   margin-left: 2px;
   margin-top: -10px;
 `;
 
-const OrganizationOpposeWrapper = styled.div`
+const OrganizationOpposeWrapper = styled('div')`
   position: relative;
   z-index: 1;
 `;
 
-const OrganizationOpposeSquare = styled.div`
+const OrganizationOpposeSquare = styled('div')(({ theme }) => (`
   background: white;
-  border: 3px solid ${({ theme }) => theme.colors.opposeRedRgb};
-  color: ${({ theme }) => theme.colors.opposeRedRgb};
+  border: 3px solid ${theme.colors.opposeRedRgb};
+  color: ${theme.colors.opposeRedRgb};
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -324,20 +328,20 @@ const OrganizationOpposeSquare = styled.div`
   border-radius: 5px;
   font-size: 20px;
   font-weight: bold;
-`;
+`));
 
-const OrganizationOpposeIconWrapper = styled.div`
-  margin-left: 0px;
+const OrganizationOpposeIconWrapper = styled('div')`
+  margin-left: 0;
   margin-top: -10px;
 `;
 
-const OrganizationInformationOnlyWrapper = styled.div`
+const OrganizationInformationOnlyWrapper = styled('div')`
   position: relative;
   z-index: 1;
 `;
 
-const OrganizationInformationOnlySquare = styled.div`
-  color: ${({ theme }) => theme.colors.grayMid};
+const OrganizationInformationOnlySquare = styled('div')(({ theme }) => (`
+  color: ${theme.colors.grayMid};
   background: white;
   cursor: pointer;
   display: flex;
@@ -346,19 +350,19 @@ const OrganizationInformationOnlySquare = styled.div`
   width: 40px;
   height: 40px;
   border-radius: 5px;
-  border: 3px solid ${({ theme }) => theme.colors.grayMid};
+  border: 3px solid ${theme.colors.grayMid};
   font-size: 20px;
   font-weight: bold;
-`;
+`));
 
-const OrganizationInfoOnlyIconWrapper = styled.div`
+const OrganizationInfoOnlyIconWrapper = styled('div')`
   margin-left: 1px;
   margin-top: -10px;
 `;
 
-const OverlayImage = styled.div`
-  // border: 2px solid ${({ theme }) => theme.colors.supportGreenRgb};
-  // color: ${({ theme }) => theme.colors.supportGreenRgb};
+const OverlayImage = styled('div')`
+  // border: 2px solid {({ theme }) => theme.colors.supportGreenRgb};
+  // color: {({ theme }) => theme.colors.supportGreenRgb};
   display: flex;
   width: 36px;
   height: 20px;
@@ -367,18 +371,18 @@ const OverlayImage = styled.div`
   z-index: 2;
 `;
 
-const OrganizationIconWrapper = styled.div`
-  margin-top: 0px !important;
+const OrganizationIconWrapper = styled('div')`
+  margin-top: 0 !important;
   padding: 0 !important;
   width: 22px;
   display: flex;
 `;
 
-const TinyImageSpacer = styled.div`
+const TinyImageSpacer = styled('div')`
   background: white;
   border-radius: 3px;
-  margin: 0px !important;
-  padding: 0px !important;
+  margin: 0 !important;
+  padding: 0 !important;
   width: 16px;
   height: 16px;
 `;

@@ -1,9 +1,9 @@
-import { Badge, Tab, Tabs } from '@material-ui/core';
-import { withStyles } from '@material-ui/core/styles';
+import { Badge, Tab, Tabs } from '@mui/material';
+import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import AppObservableStore, { messageService } from '../../stores/AppObservableStore';
 import { renderLog } from '../../common/utils/logging';
+import AppObservableStore, { messageService } from '../../stores/AppObservableStore';
 
 
 class EndorsementModeTabs extends Component {

@@ -1,9 +1,9 @@
-import { Button } from '@material-ui/core';
-import { withStyles } from '@material-ui/core/styles';
-import { Place } from '@material-ui/icons';
+import { Place } from '@mui/icons-material';
+import { Button } from '@mui/material';
+import styled from '@mui/material/styles/styled';
+import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
-import styled from 'styled-components';
 import InfoCircleIcon from '../Widgets/InfoCircleIcon';
 
 const OpenExternalWebSite = React.lazy(() => import(/* webpackChunkName: 'OpenExternalWebSite' */ '../../common/components/Widgets/OpenExternalWebSite'));
@@ -73,14 +73,14 @@ const styles = (theme) => ({
   },
 });
 
-const Wrapper = styled.div`
+const Wrapper = styled('div')`
   margin-bottom: 15px;
   @media print{
     display: none;
   }
 `;
 
-const InformationTextWrapper = styled.div`
+const InformationTextWrapper = styled('div')`
   margin: 10px 0;
   word-wrap: break-word;
   float: left;

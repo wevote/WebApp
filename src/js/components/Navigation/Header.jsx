@@ -12,7 +12,7 @@ import apiCalming from '../../common/utils/apiCalming';
 import { dumpCssFromId } from '../../utils/appleSiliconUtils';
 import { getApplicationViewBooleans, weVoteBrandingOff } from '../../utils/applicationUtils';
 import cordovaTopHeaderTopMargin from '../../utils/cordovaTopHeaderTopMargin';
-import { HeadroomWrapper } from '../../utils/pageLayoutStyles';
+import { HeadroomWrapper } from '../Style/pageLayoutStyles';
 import { stringContains } from '../../utils/textFormat';
 import IPhoneSpacer from '../Widgets/IPhoneSpacer';
 import HeaderBar from './HeaderBar';
@@ -23,6 +23,7 @@ const HeaderBackToBallot = React.lazy(() => import(/* webpackChunkName: 'HeaderB
 const HeaderBackToVoterGuides = React.lazy(() => import(/* webpackChunkName: 'HeaderBackToVoterGuides' */ './HeaderBackToVoterGuides'));
 const HowItWorksModal = React.lazy(() => import(/* webpackChunkName: 'HowItWorksModal' */ '../CompleteYourProfile/HowItWorksModal'));
 const OrganizationModal = React.lazy(() => import(/* webpackChunkName: 'OrganizationModal' */ '../VoterGuide/OrganizationModal'));
+const PositionDrawer = React.lazy(() => import(/* webpackChunkName: 'PositionDrawer' */ '../Ballot/PositionDrawer'));
 const SharedItemModal = React.lazy(() => import(/* webpackChunkName: 'SharedItemModal' */ '../Share/SharedItemModal'));
 const VoterPlanModal = React.lazy(() => import(/* webpackChunkName: 'VoterPlanModal' */ '../Ready/VoterPlanModal'));
 const appleSiliconDebug = false;
@@ -37,13 +38,13 @@ export default class Header extends Component {
       showHowItWorksModal: false,
       showVoterPlanModal: false,
       showOrganizationModal: false,
+      showPositionDrawer: false,
       showSharedItemModal: false,
     };
 
     // console.log('-----------HEADER constructor');
     this.closeHowItWorksModal = this.closeHowItWorksModal.bind(this);
     this.closeVoterPlanModal = this.closeVoterPlanModal.bind(this);
-    this.closeOrganizationModal = this.closeOrganizationModal.bind(this);
     this.closeSharedItemModal = this.closeSharedItemModal.bind(this);
     this.handleResize = this.handleResize.bind(this);
     // this.storeSub = null;
@@ -125,11 +126,14 @@ export default class Header extends Component {
     this.setState({
       activityTidbitWeVoteIdForDrawer: AppObservableStore.getActivityTidbitWeVoteIdForDrawer(),
       organizationModalBallotItemWeVoteId: AppObservableStore.getOrganizationModalBallotItemWeVoteId(),
+      positionDrawerBallotItemWeVoteId: AppObservableStore.getPositionDrawerBallotItemWeVoteId(),
+      positionDrawerOrganizationWeVoteId: AppObservableStore.getPositionDrawerOrganizationWeVoteId(),
       sharedItemCode: AppObservableStore.getSharedItemCode(),
       showActivityTidbitDrawer: AppObservableStore.showActivityTidbitDrawer(),
       showHowItWorksModal: AppObservableStore.showHowItWorksModal(),
       showVoterPlanModal: AppObservableStore.showVoterPlanModal(),
       showOrganizationModal: AppObservableStore.showOrganizationModal(),
+      showPositionDrawer: AppObservableStore.showPositionDrawer(),
       showSharedItemModal: AppObservableStore.showSharedItemModal(),
     });
   }
@@ -146,8 +150,12 @@ export default class Header extends Component {
     AppObservableStore.setShowVoterPlanModal(false);
   }
 
-  closeOrganizationModal () {
+  closeOrganizationModal = () => {
     AppObservableStore.setShowOrganizationModal(false);
+  }
+
+  closePositionDrawer = () => {
+    AppObservableStore.setShowPositionDrawer(false);
   }
 
   closeSharedItemModal () {
@@ -187,8 +195,10 @@ export default class Header extends Component {
     // console.log('Header global.weVoteGlobalHistory', global.weVoteGlobalHistory);
     const pathname = normalizedHref();
     const {
-      activityTidbitWeVoteIdForDrawer, sharedItemCode, showActivityTidbitDrawer,
-      showHowItWorksModal, showVoterPlanModal, showOrganizationModal, showSharedItemModal,
+      activityTidbitWeVoteIdForDrawer, organizationModalBallotItemWeVoteId,
+      positionDrawerBallotItemWeVoteId, positionDrawerOrganizationWeVoteId,
+      sharedItemCode, showActivityTidbitDrawer,
+      showHowItWorksModal, showOrganizationModal, showPositionDrawer, showVoterPlanModal, showSharedItemModal,
     } = this.state;
     const {
       settingsMode, valuesMode, voterGuideCreatorMode, voterGuideMode,
@@ -197,7 +207,7 @@ export default class Header extends Component {
     } = getApplicationViewBooleans(pathname);
     const voter = VoterStore.getVoter();
 
-    // console.log('organizationModalBallotItemWeVoteId: ', this.state.organizationModalBallotItemWeVoteId);
+    // console.log('organizationModalBallotItemWeVoteId: ', organizationModalBallotItemWeVoteId);
 
     let pageHeaderClasses = weVoteBrandingOff() ? 'page-header__container_branding_off headroom' : 'page-header__container headroom';
     if (isIPad() && !isIOSAppOnMac()) {
@@ -268,7 +278,7 @@ export default class Header extends Component {
               <OrganizationModal
                 isSignedIn={voter.is_signed_in}
                 show={showOrganizationModal}
-                ballotItemWeVoteId={this.state.organizationModalBallotItemWeVoteId}
+                ballotItemWeVoteId={organizationModalBallotItemWeVoteId}
                 modalOpen={showOrganizationModal}
                 toggleFunction={this.closeOrganizationModal}
                 params={params}
@@ -365,7 +375,7 @@ export default class Header extends Component {
               <OrganizationModal
                 isSignedIn={voter.is_signed_in}
                 show={showOrganizationModal}
-                ballotItemWeVoteId={this.state.organizationModalBallotItemWeVoteId}
+                ballotItemWeVoteId={organizationModalBallotItemWeVoteId}
                 modalOpen={showOrganizationModal}
                 toggleFunction={this.closeOrganizationModal}
                 params={params}
@@ -426,7 +436,7 @@ export default class Header extends Component {
               <OrganizationModal
                 isSignedIn={voter.is_signed_in}
                 show={showOrganizationModal}
-                ballotItemWeVoteId={this.state.organizationModalBallotItemWeVoteId}
+                ballotItemWeVoteId={organizationModalBallotItemWeVoteId}
                 modalOpen={showOrganizationModal}
                 toggleFunction={this.closeOrganizationModal}
                 params={params}
@@ -501,10 +511,23 @@ export default class Header extends Component {
               <OrganizationModal
                 isSignedIn={voter.is_signed_in}
                 show={showOrganizationModal}
-                ballotItemWeVoteId={this.state.organizationModalBallotItemWeVoteId}
+                ballotItemWeVoteId={organizationModalBallotItemWeVoteId}
                 modalOpen={showOrganizationModal}
                 toggleFunction={this.closeOrganizationModal}
                 params={params}
+              />
+            </Suspense>
+          )}
+          {showPositionDrawer && (
+            <Suspense fallback={<></>}>
+              <PositionDrawer
+                ballotItemWeVoteId={positionDrawerBallotItemWeVoteId}
+                featuredOrganizationWeVoteId={positionDrawerOrganizationWeVoteId}
+                isSignedIn={voter.is_signed_in}
+                modalOpen={showPositionDrawer}
+                params={params}
+                show={showPositionDrawer}
+                toggleFunction={this.closePositionDrawer}
               />
             </Suspense>
           )}

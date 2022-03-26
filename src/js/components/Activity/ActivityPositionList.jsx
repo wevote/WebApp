@@ -1,8 +1,8 @@
-import { CircularProgress } from '@material-ui/core';
-import { withStyles } from '@material-ui/core/styles';
+import { CircularProgress } from '@mui/material';
+import styled from '@mui/material/styles/styled';
+import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
-import styled from 'styled-components';
 import { renderLog } from '../../common/utils/logging';
 
 const VoterGuidePositionItem = React.lazy(() => import(/* webpackChunkName: 'VoterGuidePositionItem' */ '../VoterGuide/VoterGuidePositionItem'));
@@ -124,23 +124,23 @@ const styles = () => ({
   },
 });
 
-const LoadingItemsWheel = styled.div`
+const LoadingItemsWheel = styled('div')`
   width: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
 `;
 
-const ShowMoreItemsWrapper = styled.div`
-  margin-bottom: 0px;
+const ShowMoreItemsWrapper = styled('div')(({ theme }) => (`
+  margin-bottom: 0;
   padding-left: 16px;
   padding-right: 26px;
-  @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
+  ${theme.breakpoints.down('sm')} {
     padding-right: 16px;
   }
   @media print{
     display: none;
   }
-`;
+`));
 
 export default withStyles(styles)(ActivityPositionList);

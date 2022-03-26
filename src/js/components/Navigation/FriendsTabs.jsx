@@ -1,21 +1,21 @@
-import { Badge, Tab, Tabs } from '@material-ui/core';
-import { withStyles } from '@material-ui/core/styles';
-import { styled as muiStyled } from '@material-ui/styles';
+import { Badge, Tab, Tabs } from '@mui/material';
+import { styled as muiStyled } from '@mui/styles';
+import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import Helmet from 'react-helmet';
 import ActivityActions from '../../actions/ActivityActions';
 import AnalyticsActions from '../../actions/AnalyticsActions';
 import FriendActions from '../../actions/FriendActions';
+import apiCalming from '../../common/utils/apiCalming';
+import historyPush from '../../common/utils/historyPush';
+import { normalizedHref } from '../../common/utils/hrefUtils';
+import isMobileScreenSize from '../../common/utils/isMobileScreenSize';
+import { renderLog } from '../../common/utils/logging';
 import FriendStore from '../../stores/FriendStore';
 import VoterStore from '../../stores/VoterStore';
-import historyPush from '../../common/utils/historyPush';
-import apiCalming from '../../common/utils/apiCalming';
 import displayFriendsTabs from '../../utils/displayFriendsTabs';
 import sortFriendListByMutualFriends from '../../utils/friendFunctions';
-import { normalizedHref } from '../../common/utils/hrefUtils';
-import isMobileScreenSize from '../../utils/isMobileScreenSize';
-import { renderLog } from '../../common/utils/logging';
 
 
 class FriendsTabs extends Component {

@@ -1,4 +1,5 @@
 import { isIOSAppOnMac } from '../common/utils/cordovaUtils';
+import { normalizedHrefPage } from '../common/utils/hrefUtils';
 import { isCordova, isWebApp } from '../common/utils/isCordovaOrWebApp';
 import normalizedImagePath from '../common/utils/normalizedImagePath';
 import Cookies from '../common/utils/js-cookie/Cookies';
@@ -235,7 +236,6 @@ export function getApplicationViewBooleans (pathname) {
     pathnameLowerCase.startsWith('/candidate') ||
     pathnameLowerCase.startsWith('/measure') ||
     pathnameLowerCase.startsWith('/office') ||
-    pathnameLowerCase.startsWith('/ready') ||
     (voterGuideMode && !onFollowSubPage)) {
     showShareButtonFooter = isWebApp() || (!isIOSAppOnMac() && isSmallScreen);
   }
@@ -285,16 +285,6 @@ export function weVoteBrandingOff () {
 
   weVoteBrandingOffGlobal = weVoteBrandingOffFromUrl || weVoteBrandingOffFromCookie;
   return weVoteBrandingOffGlobal;
-}
-
-export function normalizedHref () {
-  const { location: { hash, pathname } } = window;
-  return isWebApp() ? pathname.toLowerCase() : hash.substring(1).toLowerCase();
-}
-
-export function normalizedHrefPage () {
-  const [, page] = normalizedHref().split('/');
-  return page;
 }
 
 export function displayTopMenuShadow () {  //

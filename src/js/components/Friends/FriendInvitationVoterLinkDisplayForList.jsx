@@ -1,15 +1,15 @@
-import { Button } from '@material-ui/core';
-import { withStyles } from '@material-ui/core/styles';
+import { Button } from '@mui/material';
+import styled from '@mui/material/styles/styled';
+import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
 import { Link } from 'react-router-dom';
-import styled from 'styled-components';
 import FriendActions from '../../actions/FriendActions';
-import FriendStore from '../../stores/FriendStore';
 import { renderLog } from '../../common/utils/logging';
+import FriendStore from '../../stores/FriendStore';
+import { removeTwitterNameFromDescription } from '../../utils/textFormat';
 import Avatar from '../Style/avatarStyles';
 import { CancelButtonWrapper, FriendButtonsWrapper, FriendColumnWithoutButtons, FriendDisplayOuterWrapper } from '../Style/friendStyles';
-import { removeTwitterNameFromDescription } from '../../utils/textFormat';
 import FriendDetails from './FriendDetails';
 import FriendInvitationToggle from './FriendInvitationToggle';
 
@@ -101,7 +101,7 @@ class FriendInvitationVoterLinkDisplayForList extends Component {
     );
 
     const friendInvitationHtml = (
-      <FriendDisplayOuterWrapper previewMode={previewMode}>
+      <FriendDisplayOuterWrapper/* previewMode={previewMode} */>
         <FriendColumnWithoutButtons>
           <Avatar>
             { voterGuideLink ? (
@@ -215,11 +215,13 @@ const IgnoreButtonWrapperNotInColumn = `
 */
 `;
 
-const IgnoreButtonWrapper = styled.div`
+const IgnoreButtonWrapper = styled('div', {
+  shouldForwardProp: (prop) => !['inSideColumn'].includes(prop),
+})(({ inSideColumn }) => (`
   margin-bottom: 0;
   margin-left: 8px;
   width: fit-content;
-  ${({ inSideColumn }) => ((inSideColumn) ? '' : IgnoreButtonWrapperNotInColumn)}
-`;
+  ${inSideColumn ? '' : IgnoreButtonWrapperNotInColumn}
+`));
 
 export default withStyles(styles)(FriendInvitationVoterLinkDisplayForList);

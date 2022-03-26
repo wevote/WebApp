@@ -1,14 +1,14 @@
-import { Card } from '@material-ui/core';
+import { Card } from '@mui/material';
+import styled from '@mui/material/styles/styled';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
-import styled from 'styled-components';
 import TwitterActions from '../../actions/TwitterActions';
 import LoadingWheel from '../../common/components/Widgets/LoadingWheel';
+import { renderLog } from '../../common/utils/logging';
+import { PageContentContainer } from '../../components/Style/pageLayoutStyles';
 import VoterGuideFollowers from '../../components/VoterGuide/VoterGuideFollowers';
 import VoterGuideFollowing from '../../components/VoterGuide/VoterGuideFollowing';
 import TwitterStore from '../../stores/TwitterStore';
-import { renderLog } from '../../common/utils/logging';
-import { PageContentContainer } from '../../utils/pageLayoutStyles';
 
 const DelayedLoad = React.lazy(() => import(/* webpackChunkName: 'DelayedLoad' */ '../../common/components/Widgets/DelayedLoad'));
 
@@ -103,20 +103,20 @@ OrganizationVoterGuideMobileDetails.propTypes = {
   match: PropTypes.object,
 };
 
-const EmptyContainer = styled.div`
+const EmptyContainer = styled('div')`
   padding: 3em 2em;
   display: flex;
   flex-flow: column;
   align-items: center;
 `;
 
-const EmptyText = styled.p`
+const EmptyText = styled('p')(({ theme }) => (`
   font-size: 20px;
   text-align: center;
   margin: 1em 2em 3em;
-  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+  ${theme.breakpoints.down('md')} {
     margin: 1em;
   }
-`;
+`));
 
 export default (OrganizationVoterGuideMobileDetails);

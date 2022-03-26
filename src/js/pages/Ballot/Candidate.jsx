@@ -1,18 +1,23 @@
-import { withStyles } from '@material-ui/core/styles';
-import { Info } from '@material-ui/icons';
+import { Info } from '@mui/icons-material';
+import styled from '@mui/material/styles/styled';
+import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
 import Helmet from 'react-helmet';
-import styled from 'styled-components';
 import ActivityActions from '../../actions/ActivityActions';
 import AnalyticsActions from '../../actions/AnalyticsActions';
 import CandidateActions from '../../actions/CandidateActions';
 import IssueActions from '../../actions/IssueActions';
 import OrganizationActions from '../../actions/OrganizationActions';
 import VoterGuideActions from '../../actions/VoterGuideActions';
-import CandidateStickyHeader from '../../components/Ballot/CandidateStickyHeader';
 import LoadingWheel from '../../common/components/Widgets/LoadingWheel';
+import apiCalming from '../../common/utils/apiCalming';
+import { isAndroidSizeFold } from '../../common/utils/cordovaUtils';
+import { isWebApp } from '../../common/utils/isCordovaOrWebApp';
+import { renderLog } from '../../common/utils/logging';
+import CandidateStickyHeader from '../../components/Ballot/CandidateStickyHeader';
 import ShareButtonDesktopTablet from '../../components/Share/ShareButtonDesktopTablet';
+import { PageContentContainer } from '../../components/Style/pageLayoutStyles';
 import EndorsementCard from '../../components/Widgets/EndorsementCard';
 import SearchOnGoogle from '../../components/Widgets/SearchOnGoogle';
 import SnackNotifier from '../../components/Widgets/SnackNotifier';
@@ -25,11 +30,6 @@ import CandidateStore from '../../stores/CandidateStore';
 import IssueStore from '../../stores/IssueStore';
 import VoterGuideStore from '../../stores/VoterGuideStore';
 import VoterStore from '../../stores/VoterStore';
-import { isAndroidSizeFold } from '../../common/utils/cordovaUtils';
-import { isWebApp } from '../../common/utils/isCordovaOrWebApp';
-import { renderLog } from '../../common/utils/logging';
-import apiCalming from '../../common/utils/apiCalming';
-import { PageContentContainer } from '../../utils/pageLayoutStyles';
 import { capitalizeString, convertToInteger } from '../../utils/textFormat';
 
 const CandidateItem = React.lazy(() => import(/* webpackChunkName: 'CandidateItem' */ '../../components/Ballot/CandidateItem'));
@@ -371,7 +371,6 @@ class Candidate extends Component {
           kindOfOwner="POLITICIAN"
           nameBeingViewed={candidate.ballot_item_display_name}
           twitterHandleBeingViewed={candidate.twitter_handle}
-          whiteOnBlue
         />
         <br />
         {/* Show links to this candidate in the admin tools */}
@@ -414,27 +413,27 @@ const styles = () => ({
   },
 });
 
-const CandidateShareWrapper = styled.div`
+const CandidateShareWrapper = styled('div')`
   margin-bottom: 12px;
   padding-left: 2px;
 `;
 
-const LeftColumnWrapper = styled.div`
+const LeftColumnWrapper = styled('div')`
   flex: 1 1 0;
 `;
 
-const PositionListIntroductionText = styled.div`
+const PositionListIntroductionText = styled('div')`
   color: #999;
 `;
 
-const RightColumnWrapper = styled.div`
+const RightColumnWrapper = styled('div')`
   padding: 16px 16px 16px 0;
   width: fit-content;
 `;
 
-const TwoColumns = styled.div`
+const TwoColumns = styled('div')`
   display: flex;
-  ${() => (isAndroidSizeFold() ? { margin: 0 } : { margin: '0 -8px 0 -8px' })};
+  margin: ${isAndroidSizeFold() ?  0  :  '0 -8px 0 -8px'};
 `;
 
 export default withStyles(styles)(Candidate);

@@ -1,13 +1,13 @@
-import { Button, Menu, MenuItem } from '@material-ui/core';
-import { withStyles } from '@material-ui/core/styles';
-import { ArrowDropDown, CheckCircle } from '@material-ui/icons';
+import { ArrowDropDown, CheckCircle } from '@mui/icons-material';
+import { Button, Menu, MenuItem } from '@mui/material';
+import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import IssueActions from '../../actions/IssueActions';
-import IssueStore from '../../stores/IssueStore';
-import VoterStore from '../../stores/VoterStore';
 import historyPush from '../../common/utils/historyPush';
 import { renderLog } from '../../common/utils/logging';
+import IssueStore from '../../stores/IssueStore';
+import VoterStore from '../../stores/VoterStore';
 import { shortenText } from '../../utils/textFormat';
 import { openSnackbar } from '../Widgets/SnackNotifier';
 
@@ -170,7 +170,7 @@ class IssueFollowToggleButton extends Component {
               open={this.state.open}
               onClose={this.handleClose}
               elevation={2}
-              getContentAnchorEl={null}
+              // getContentAnchorEl={null}
               anchorEl={this.state.anchorEl}
               anchorOrigin={{
                 vertical: 'bottom',

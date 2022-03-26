@@ -1,13 +1,13 @@
-import { Button } from '@material-ui/core';
-import { withStyles } from '@material-ui/core/styles';
-import { ArrowBack, ArrowBackIos } from '@material-ui/icons';
+import { ArrowBack, ArrowBackIos } from '@mui/icons-material';
+import { Button } from '@mui/material';
+import styled from '@mui/material/styles/styled';
+import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import styled from 'styled-components';
 import { isIOS } from '../../common/utils/cordovaUtils';
-import { isCordova } from '../../common/utils/isCordovaOrWebApp';
 import historyPush from '../../common/utils/historyPush';
-import isMobileScreenSize from '../../utils/isMobileScreenSize';
+import { isCordova } from '../../common/utils/isCordovaOrWebApp';
+import isMobileScreenSize from '../../common/utils/isMobileScreenSize';
 import { renderLog } from '../../common/utils/logging';
 import { shortenText } from '../../utils/textFormat';
 
@@ -57,10 +57,10 @@ const styles = {
 };
 
 // July 2021: A working example of styled mui-core components -- enabled by the newly added StylesProvider in App.js
-const StyledButton = styled(Button)`
-  @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
+const StyledButton = styled(Button)(({ theme }) => (`
+  ${theme.breakpoints.down('sm')} {
     padding-left: ${() => (isCordova() ? '0 !important' : '40px')};
   }
-`;
+`));
 
 export default withStyles(styles)(HeaderBackToButton);

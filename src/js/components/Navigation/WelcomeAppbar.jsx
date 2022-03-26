@@ -1,22 +1,22 @@
-import { AppBar, Button, IconButton, Toolbar } from '@material-ui/core';
-import { withStyles } from '@material-ui/core/styles';
-import { AccountCircle, Close, Menu } from '@material-ui/icons';
+import { AccountCircle, Close, Menu } from '@mui/icons-material';
+import { AppBar, Button, IconButton, Toolbar } from '@mui/material';
+import styled from '@mui/material/styles/styled';
+import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
-import styled from 'styled-components';
 import OrganizationActions from '../../actions/OrganizationActions';
 import VoterGuideActions from '../../actions/VoterGuideActions';
 import VoterSessionActions from '../../actions/VoterSessionActions';
 import LazyImage from '../../common/components/LazyImage';
+import historyPush from '../../common/utils/historyPush';
+import Cookies from '../../common/utils/js-cookie/Cookies';
+import { renderLog } from '../../common/utils/logging';
+import voterPhoto from '../../common/utils/voterPhoto';
 import AppObservableStore, { messageService } from '../../stores/AppObservableStore';
 import VoterStore from '../../stores/VoterStore';
 import { avatarGeneric } from '../../utils/applicationUtils';
 import { cordovaWelcomeAppToolbarTop, welcomeAppBarPaddingTop } from '../../utils/cordovaOffsets';
-import historyPush from '../../common/utils/historyPush';
-import Cookies from '../../common/utils/js-cookie/Cookies';
-import { renderLog } from '../../common/utils/logging';
 import { shortenText } from '../../utils/textFormat';
-import voterPhoto from '../../common/utils/voterPhoto';
 import { Divider, LogoContainer, MobileNavDivider, MobileNavigationMenu, Navigation, NavLink, NavRow } from '../Welcome/navigationStyles';
 import HeaderBarLogo from './HeaderBarLogo';
 
@@ -262,13 +262,13 @@ class WelcomeAppbar extends Component {
       showHowItWorksForVoters = true;
     }
     return (
-      <AppBar id="welcomeAppBar" position="relative" classes={{ root: classes.appBarRoot }} elevation={0} style={{ paddingTop: `${welcomeAppBarPaddingTop()}` }}>
+      <AppBar id="welcomeAppBar" position="relative" classes={{ root: classes.appBarRoot }} elevation={0} style={{ paddingTop: `${welcomeAppBarPaddingTop()}`, zIndex: 1 }}>
         <Toolbar classes={{ root: classes.toolbar }} disableGutters style={{ top: cordovaWelcomeAppToolbarTop() }}>
           <LogoContainer>
             <HeaderBarLogo light />
           </LogoContainer>
           <Navigation>
-            <DesktopView>
+            <DesktopView id="DesktopView">
               {showWelcomeForVoters &&
                 <NavLink id="welcomePageLink" to="/welcome">Welcome</NavLink>}
               {showWelcomeForOrganizations &&
@@ -327,6 +327,7 @@ class WelcomeAppbar extends Component {
                         classes={{ root: classes.iconButtonRoot }}
                         id="profileAvatarHeaderBar"
                         onClick={this.toggleProfilePopUp}
+                        size="large"
                       >
                         <FirstNameWrapper>
                           {shortenText(voterFirstName, 9)}
@@ -352,8 +353,8 @@ class WelcomeAppbar extends Component {
                 </div>
               )}
             </DesktopView>
-            <MobileTabletView>
-              <NavLink id="welcomeYourBallotMobile" to="/ballot">Your Ballot</NavLink>
+            <MobileTabletView id="MobileTabletView">
+              <NavLink id="welcomeYourBallotMobile1" to="/ballot">Your Ballot</NavLink>
               {voterIsSignedIn && (
                 <div>
                   {voterPhotoUrlMedium ? (
@@ -376,6 +377,7 @@ class WelcomeAppbar extends Component {
                         classes={{ root: classes.iconProfileButtonRoot }}
                         id="profileAvatarHeaderBar"
                         onClick={this.toggleProfilePopUp}
+                        size="large"
                       >
                         <AccountCircle />
                       </IconButton>
@@ -402,6 +404,7 @@ class WelcomeAppbar extends Component {
                 classes={{ root: classes.iconButton }}
                 id="hamburgerMenuHeaderBar"
                 onClick={() => this.handleShowMobileNavigation(true)}
+                size="large"
               >
                 <Menu />
               </IconButton>
@@ -435,7 +438,7 @@ class WelcomeAppbar extends Component {
                       <Button
                         variant="outlined"
                         classes={{ root: classes.navButtonOutlined }}
-                        id="welcomeYourBallotMobile"
+                        id="welcomeYourBallotMobile2"
                         onClick={() => this.handleToPageFromMobileNav('/ready')}
                       >
                         Your Ballot
@@ -549,31 +552,31 @@ const styles = (theme) => ({
   },
 });
 
-const DesktopView = styled.div`
+const DesktopView = styled('div')(({ theme }) => (`
   display: inherit;
   max-width: unset;
-  @media (max-width: ${({ theme }) => theme.breakpoints.lg}) {
+  ${theme.breakpoints.down('lg')} {
     display: none;
   }
-`;
+`));
 
-const FirstNameWrapper = styled.div`
+const FirstNameWrapper = styled('div')`
   font-size: 14px;
   padding-right: 4px;
 `;
 
-const MobileTabletView = styled.div`
+const MobileTabletView = styled('div')(({ theme }) => (`
   display: inherit;
-  @media (min-width: ${({ theme }) => theme.breakpoints.lg}) {
+  ${theme.breakpoints.up('lg')} {
     display: none;
   }
-`;
+`));
 
-const ProfileIconWrapper = styled.div`
+const ProfileIconWrapper = styled('div')`
   color: white;
 `;
 
-const ProfileImageWrapper = styled.div`
+const ProfileImageWrapper = styled('div')`
   margin-top: 7px;
   margin-left: 6px;
 `;

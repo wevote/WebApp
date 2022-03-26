@@ -1,11 +1,11 @@
-import { withTheme } from '@material-ui/core/styles';
+import styled from '@mui/material/styles/styled';
+import withTheme from '@mui/styles/withTheme';
 import React, { Component, Suspense } from 'react';
-import styled from 'styled-components';
 import IssueActions from '../../actions/IssueActions';
-import IssueStore from '../../stores/IssueStore';
-import VoterStore from '../../stores/VoterStore';
 import historyPush from '../../common/utils/historyPush';
 import { renderLog } from '../../common/utils/logging';
+import IssueStore from '../../stores/IssueStore';
+import VoterStore from '../../stores/VoterStore';
 import IssueCardCompressed from './IssueCardCompressed';
 
 const ShowMoreFooter = React.lazy(() => import(/* webpackChunkName: 'ShowMoreFooter' */ '../Navigation/ShowMoreFooter'));
@@ -106,11 +106,11 @@ class ValuesFollowedPreview extends Component {
   }
 }
 
-const Row = styled.div`
+const Row = styled('div')`
   margin: 0px -6px;
 `;
 
-const SectionTitle = styled.h2`
+const SectionTitle = styled('h2')`
   width: fit-content;  font-weight: bold;
   font-size: 18px;
   margin-bottom: 16px;

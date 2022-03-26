@@ -1,18 +1,18 @@
-import { Button, FormControl, FormControlLabel, InputBase, Radio, RadioGroup } from '@material-ui/core';
-import { withStyles } from '@material-ui/core/styles';
+import { Button, FormControl, FormControlLabel, InputBase, Radio, RadioGroup } from '@mui/material';
+import styled from '@mui/material/styles/styled';
+import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
 import Helmet from 'react-helmet';
-import styled from 'styled-components';
 import OrganizationActions from '../../actions/OrganizationActions';
-import AppObservableStore from '../../stores/AppObservableStore';
-import OrganizationStore from '../../stores/OrganizationStore';
-import VoterStore from '../../stores/VoterStore';
+import LoadingWheel from '../../common/components/Widgets/LoadingWheel';
 import { cordovaOpenSafariView } from '../../common/utils/cordovaUtils';
 import { isWebApp } from '../../common/utils/isCordovaOrWebApp';
 import { renderLog } from '../../common/utils/logging';
+import AppObservableStore from '../../stores/AppObservableStore';
+import OrganizationStore from '../../stores/OrganizationStore';
+import VoterStore from '../../stores/VoterStore';
 import { voterFeaturePackageExceedsOrEqualsRequired } from '../../utils/pricingFunctions';
-import LoadingWheel from '../../common/components/Widgets/LoadingWheel';
 import PremiumableButton from '../Widgets/PremiumableButton';
 
 const DelayedLoad = React.lazy(() => import(/* webpackChunkName: 'DelayedLoad' */ '../../common/components/Widgets/DelayedLoad'));
@@ -684,47 +684,55 @@ const styles = () => ({
   },
 });
 
-const Introduction = styled.p`
+const Introduction = styled('p')`
   margin: 0 0 16px 0;
   font-size: 14px;
 `;
 
-const IconInputContainer = styled.div`
+const IconInputContainer = styled('div', {
+  shouldForwardProp: (prop) => !['error'].includes(prop),
+})(({ error }) => (`
   display: flex;
   align-items: center;
   justify-content: flex-start;
-  border-left: ${(props) => (props.error ? '1.6px solid rgb(255, 73, 34)' : '1px solid rgba(0, 0, 0, 0.45)')} ;
+  border-left: ${error ? '1.6px solid rgb(255, 73, 34)' : '1px solid rgba(0, 0, 0, 0.45)'} ;
   padding-left: 12px;
   color: rgba(0, 0, 0, 0.54);
   height: 100%;
   width: 100%;
-`;
+`));
 
-const InputBoxLabel = styled.h4`
+const InputBoxLabel = styled('h4', {
+  shouldForwardProp: (prop) => !['error'].includes(prop),
+})(({ error }) => (`
   font-size: 14px;
   font-weight: bold;
-  color: ${(props) => (props.error ? 'rgb(255, 73, 34)' : 'black')}
-`;
+  color: ${error ? 'rgb(255, 73, 34)' : 'black'}
+`));
 
-const InputBoxHelperLabel = styled.p`
+const InputBoxHelperLabel = styled('p', {
+  shouldForwardProp: (prop) => !['error'].includes(prop),
+})(({ error }) => (`
   margin: 0;
   font-size: 14px;
-  margin-bottom:  ${(props) => (props.error ? '6px' : '4px')};
-  margin-top:  ${(props) => (props.error ? '6px' : '-4px')};
-  color: ${(props) => (props.error ? 'rgb(255, 73, 34)' : 'black')};
-`;
+  margin-bottom:  ${error ? '6px' : '4px'};
+  margin-top:  ${error ? '6px' : '-4px'};
+  color: ${error ? 'rgb(255, 73, 34)' : 'black'};
+`));
 
-const InputBoxDescriptionUnder = styled.div`
+const InputBoxDescriptionUnder = styled('div')`
   color: rgba(0, 0, 0, 0.54);
   font-size: 14px;
   margin-bottom:  4px;
   margin-top:  4px;
 `;
 
-const SubdomainExtensionText = styled.h5`
+const SubdomainExtensionText = styled('h5', {
+  shouldForwardProp: (prop) => !['error'].includes(prop),
+})(({ error }) => (`
   margin: 0;
-  height: ${(props) => (props.error ? '52.4px' : '53.4px')};
-  border-left: ${(props) => (props.error ? '1.6px solid rgb(255, 73, 34)' : '1px solid rgba(0, 0, 0, 0.45)')};
+  height: ${error ? '52.4px' : '53.4px'};
+  border-left: ${error ? '1.6px solid rgb(255, 73, 34)' : '1px solid rgba(0, 0, 0, 0.45)'};
   background-color: #eee;
   color: rgba(0, 0, 0, 0.45);
   width: fit-content;
@@ -732,23 +740,22 @@ const SubdomainExtensionText = styled.h5`
   border-bottom-right-radius: 3px;
   border-top-right-radius: 3px;
   pointer: none;
-`;
+`));
 
-const ButtonsContainer = styled.div`
+const ButtonsContainer = styled('div')`
   display: flex;
   align-items: center;
   justify-content: flex-end;
-  width: fit-content;
   width: 100%;
   margin-top: 12px;
 `;
 
-const LinkToDomainRow = styled.div`
+const LinkToDomainRow = styled('div')`
   margin: 0;
   padding: 0;
 `;
 
-const Separator = styled.div`
+const Separator = styled('div')`
   width: 100%;
   height: 2px;
   background: #eee;

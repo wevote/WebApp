@@ -1,27 +1,27 @@
-import { AppBar, Button, IconButton, Toolbar, Tooltip } from '@material-ui/core';
-import { withStyles } from '@material-ui/core/styles';
-import { AccountCircle, Place } from '@material-ui/icons';
+import { AccountCircle, Place } from '@mui/icons-material';
+import { AppBar, Button, IconButton, Toolbar, Tooltip } from '@mui/material';
+import styled from '@mui/material/styles/styled';
+import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
-import styled from 'styled-components';
 import OrganizationActions from '../../actions/OrganizationActions';
 import VoterGuideActions from '../../actions/VoterGuideActions';
 import VoterSessionActions from '../../actions/VoterSessionActions';
 import LazyImage from '../../common/components/LazyImage';
+import { hasIPhoneNotch } from '../../common/utils/cordovaUtils';
+import historyPush from '../../common/utils/historyPush';
+import { normalizedHref } from '../../common/utils/hrefUtils';
+import { isCordova, isWebApp } from '../../common/utils/isCordovaOrWebApp';
+import { renderLog } from '../../common/utils/logging';
+import voterPhoto from '../../common/utils/voterPhoto';
 import AppObservableStore, { messageService } from '../../stores/AppObservableStore';
 import BallotStore from '../../stores/BallotStore';
 import OrganizationStore from '../../stores/OrganizationStore';
 import VoterGuideStore from '../../stores/VoterGuideStore';
 import VoterStore from '../../stores/VoterStore';
 import { avatarGeneric } from '../../utils/applicationUtils';
-import { hasIPhoneNotch } from '../../common/utils/cordovaUtils';
-import { isCordova, isWebApp } from '../../common/utils/isCordovaOrWebApp';
-import historyPush from '../../common/utils/historyPush';
-import { normalizedHref } from '../../common/utils/hrefUtils';
 import isMobile from '../../utils/isMobile';
-import { renderLog } from '../../common/utils/logging';
 import { isProperlyFormattedVoterGuideWeVoteId, shortenText, stringContains } from '../../utils/textFormat';
-import voterPhoto from '../../common/utils/voterPhoto';
 import VoterGuideChooseElectionModal from '../VoterGuide/VoterGuideChooseElectionModal';
 import SignInButton from '../Widgets/SignInButton';
 import EndorsementModeTabs from './EndorsementModeTabs';
@@ -291,6 +291,7 @@ class HeaderBackToVoterGuides extends Component {
             classes={{ root: classes.iconButtonRoot }}
             id="changeVoterGuideElectionHeaderBar"
             onClick={this.toggleVoterGuideModal}
+            size="large"
           >
             <Place />
           </IconButton>
@@ -359,6 +360,7 @@ class HeaderBackToVoterGuides extends Component {
                       classes={{ root: classes.iconButtonRoot }}
                       id="profileAvatarHeaderBar"
                       onClick={this.toggleProfilePopUp}
+                      size="large"
                     >
                       <FirstNameWrapper>
                         {shortenText(voterFirstName, 9)}
@@ -434,7 +436,7 @@ const styles = (theme) => ({
     top: 9,
   },
   padding: {
-    padding: `0 ${theme.spacing(2)}px`,
+    padding: `0 ${theme.spacing(2)}`,
   },
   addressButtonRoot: {
     '&:hover': {
@@ -502,21 +504,21 @@ const styles = (theme) => ({
   },
 });
 
-const FirstNameWrapper = styled.div`
+const FirstNameWrapper = styled('div')`
   font-size: 14px;
   padding-right: 4px;
 `;
 
-const PreviewButtonWrapper = styled.div`
+const PreviewButtonWrapper = styled('div')`
   margin-right: 30px;
 `;
 
-const VoterGuideTitle = styled.div`
+const VoterGuideTitle = styled('div')`
   margin-left: calc((100vw - 960px)/2);
   width: 100%;
 `;
 
-const EndorsementModeSwitch = styled.div`
+const EndorsementModeSwitch = styled('div')`
   display: flex;
   align-items: flex-end;
   justify-content: space-between;

@@ -10,10 +10,13 @@
         "loose": true
       }
     ],
+    ["@babel/plugin-proposal-private-methods", { "loose": true }],
+    ["@babel/plugin-proposal-private-property-in-object", { "loose": true }],
     [
       "babel-plugin-styled-components",
       {
-        "displayName": true
+        "displayName": true,
+        "fileName": false
       }
     ],
     "@babel/plugin-transform-runtime",

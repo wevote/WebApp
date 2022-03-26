@@ -1,20 +1,20 @@
-import { withStyles } from '@material-ui/core/styles';
+import styled from '@mui/material/styles/styled';
+import withStyles from '@mui/styles/withStyles';
 import React, { Component, Suspense } from 'react';
 import Helmet from 'react-helmet';
 import { Link } from 'react-router-dom';
-import styled from 'styled-components';
 import AnalyticsActions from '../../actions/AnalyticsActions';
+import ExternalLinkIcon from '../../common/components/Widgets/ExternalLinkIcon';
+import ToolBar from '../../common/components/Widgets/ToolBar';
 import { weVoteBoard, weVoteFounders, weVoteStaff } from '../../common/constants/people';
+import { renderLog } from '../../common/utils/logging';
+import normalizedImagePath from '../../common/utils/normalizedImagePath';
 import TeamMemberDisplayForList from '../../components/More/TeamMemberDisplayForList';
 import ShowMoreButtons from '../../components/Ready/ShowMoreButtons';
 import { Title } from '../../components/Welcome/headerWelcomeStyles';
-import { Section, Bold, DescriptionContainer, MemberListContainer, SectionTitle } from '../../components/Welcome/sectionStyles';
-import ExternalLinkIcon from '../../common/components/Widgets/ExternalLinkIcon';
+import { Bold, DescriptionContainer, MemberListContainer, Section, SectionTitle } from '../../components/Welcome/sectionStyles';
 import VoterStore from '../../stores/VoterStore';
 import cordovaScrollablePaneTopPadding from '../../utils/cordovaScrollablePaneTopPadding';
-import normalizedImagePath from '../../common/utils/normalizedImagePath';
-import { renderLog } from '../../common/utils/logging';
-import ToolBar from '../../common/components/Widgets/ToolBar';
 
 const OpenExternalWebSite = React.lazy(() => import(/* webpackChunkName: 'OpenExternalWebSite' */ '../../common/components/Widgets/OpenExternalWebSite'));
 const WelcomeAppbar = React.lazy(() => import(/* webpackChunkName: 'WelcomeAppbar' */ '../../components/Navigation/WelcomeAppbar'));
@@ -81,7 +81,7 @@ class About extends Component {
     let weVoteStaffCount = 0;
 
     return (
-      <Wrapper padTop={cordovaScrollablePaneTopPadding()}>
+      <AboutWrapper>
         <Helmet title="About We Vote" />
         <Suspense fallback={<></>}>
           <WelcomeAppbar pathname="/more/about" />
@@ -305,7 +305,7 @@ class About extends Component {
         <Suspense fallback={<></>}>
           <WelcomeFooter />
         </Suspense>
-      </Wrapper>
+      </AboutWrapper>
     );
   }
 }
@@ -326,16 +326,16 @@ const styles = (theme) => ({
   },
 });
 
-const Wrapper = styled.div`
+const AboutWrapper = styled('div')`
   display: flex;
   flex-flow: column nowrap;
   align-items: center;
   background: white;
   overflow-x: hidden;
-  padding-top: ${({ padTop }) => padTop};
+  padding-top: ${cordovaScrollablePaneTopPadding()};
 `;
 
-const HeaderForAbout = styled.div`
+const HeaderForAbout = styled('div')(({ theme }) => (`
   position: relative;
   height: 230px;
   width: 110%;
@@ -345,52 +345,52 @@ const HeaderForAbout = styled.div`
   border-bottom-right-radius: 50% 25%;
   padding: 0 2em;
   margin-top: -72px;
-  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+  ${theme.breakpoints.down('md')} {
     height: 230px;
   }
-  @media (max-width: ${({ theme }) => theme.breakpoints.xs}) {
+  ${theme.breakpoints.down('xs')} {
     height: 215px;
   }
-`;
+`));
 
-const AboutDescriptionContainer = styled.div`
+const AboutDescriptionContainer = styled('div')(({ theme }) => (`
   margin: 1em auto;
   width: 960px;
   max-width: 90vw;
   text-align: left;
-  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+  ${theme.breakpoints.down('md')} {
     text-align: center;
   }
-`;
+`));
 
-const DescriptionLeftColumn = styled.div`
+const DescriptionLeftColumn = styled('div')(({ theme }) => (`
   display: flex;
   flex-flow: column;
   padding: 0 20px 0 0;
   width: 65%;
   justify-content: center;
   text-align: left;
-  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+  ${theme.breakpoints.down('md')} {
     width: 100%;
     text-align: center;
   }
-`;
+`));
 
-const DescriptionImageColumn = styled.div`
+const DescriptionImageColumn = styled('div')(({ theme }) => (`
   width: 35%;
   text-align: right;
-  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+  ${theme.breakpoints.down('md')} {
     margin: 1em 0 0 0;
     text-align: center;
     width: 100%;
   }
-`;
+`));
 
-const Image = styled.img`
+const Image = styled('img')`
   width: 100%;
 `;
 
-const AboutFigCaption = styled.figcaption`
+const AboutFigCaption = styled('figcaption')`
   color: #555;
   font-size: .8rem;
   text-align: center;

@@ -1,14 +1,15 @@
-import { FormControl, IconButton, InputAdornment, TextField } from '@material-ui/core';
-import { withStyles, withTheme } from '@material-ui/core/styles';
-import { AccountCircle, Send } from '@material-ui/icons';
+import { AccountCircle, Send } from '@mui/icons-material';
+import { FormControl, IconButton, InputAdornment, TextField } from '@mui/material';
+import styled from '@mui/material/styles/styled';
+import withStyles from '@mui/styles/withStyles';
+import withTheme from '@mui/styles/withTheme';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import styled from 'styled-components';
 import ActivityActions from '../../actions/ActivityActions';
-import AppObservableStore from '../../stores/AppObservableStore';
-import ActivityStore from '../../stores/ActivityStore';
-import VoterStore from '../../stores/VoterStore';
 import { renderLog } from '../../common/utils/logging';
+import ActivityStore from '../../stores/ActivityStore';
+import AppObservableStore from '../../stores/AppObservableStore';
+import VoterStore from '../../stores/VoterStore';
 
 
 class ActivityCommentAdd extends Component {
@@ -100,7 +101,7 @@ class ActivityCommentAdd extends Component {
     const showSendButton = inEditMode || statementText;
     // console.log('activityCommentCount:', activityCommentCount);
     return (
-      <Wrapper commentsExist={(activityCommentCount > 0)}>
+      <Wrapper commentsExist={activityCommentCount > 0}>
         <AddReplyTextWrapper>
           <FormControl classes={{ root: classes.formControl }}>
             {/* NOT WORKING in classes: , multiline: classes.textFieldMultilineClasses */}
@@ -140,6 +141,7 @@ class ActivityCommentAdd extends Component {
               disabled={!statementText}
               id={`saveComment-${activityTidbitWeVoteId}`}
               onClick={this.saveActivityComment}
+              size="large"
             >
               <Send />
             </IconButton>
@@ -195,35 +197,37 @@ const styles = () => ({
   },
 });
 
-const AddReplyTextWrapper = styled.div`
+const AddReplyTextWrapper = styled('div')`
   width: 100%;
 `;
 
-const ActivityImage = styled.img`
+const ActivityImage = styled('img')`
   border-radius: 12px;
   width: 24px;
   height: 24px;
   margin-top: 3px;
 `;
 
-const SendButtonWrapper = styled.div`
+const SendButtonWrapper = styled('div')`
   width: 22px;
 `;
 
-const SpeakerAvatar = styled.div`
+const SpeakerAvatar = styled('div')`
   background: transparent;
   display: flex;
   justify-content: center;
   position: relative;
 `;
 
-const Wrapper = styled.div`
+const Wrapper = styled('div', {
+  shouldForwardProp: (prop) => !['commentsExist'].includes(prop),
+})(({ commentsExist }) => (`
   align-items: center;
   display: flex;
   font-size: 14px;
   justify-content: space-between;
-  ${({ commentsExist }) => ((commentsExist) ? 'margin-top: 6px !important;' : 'margin-top: 4px !important;')}
+  ${commentsExist ? 'margin-top: 6px !important;' : 'margin-top: 4px !important;'}
   padding: 0px !important;
-`;
+`));
 
 export default withTheme(withStyles(styles)(ActivityCommentAdd));

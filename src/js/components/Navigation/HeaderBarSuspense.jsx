@@ -1,7 +1,7 @@
+import styled from '@mui/material/styles/styled';
 import React from 'react';
-import styled from 'styled-components';
-import getHeaderObjects from '../../utils/getHeaderObjects';
 import { renderLog } from '../../common/utils/logging';
+import getHeaderObjects from '../../utils/getHeaderObjects';
 
 function SmallCloud (params) {
   const styleObj = {
@@ -53,7 +53,7 @@ export default function HeaderBarSuspense () {
       backgroundColor: 'white',
       fontFamily: '"Nunito Sans", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, sans-serif',
       height: '48px',
-      boxShadow: 'rgba(0, 0, 0, 0.2) 0px 2px 4px -1px, rgba(0, 0, 0, 0.14) 0px 4px 5px 0px, rgba(0, 0, 0, 0.12) 0px 1px 10px 0px',
+      boxShadow: 'rgba(0, 0, 0, 0.2) 0 2px 4px -1px, rgba(0, 0, 0, 0.14) 0 4px 5px 0, rgba(0, 0, 0, 0.12) 0 1px 10px 0',
     }}
     >
       {headerObjects.logo ?
@@ -80,7 +80,7 @@ export default function HeaderBarSuspense () {
   );
 }
 
-const MenuText = styled.div`
+const MenuText = styled('div')`
   text-transform: uppercase;
   line-height: 24.5px;
   white-space: normal;
@@ -92,7 +92,7 @@ const MenuText = styled.div`
   top: 22.5%;
 `;
 
-const MenuLogo = styled.div`
+const MenuLogo = styled('div')`
   font-size: 10px;
   font-weight: 400;
   opacity: 1;
@@ -100,7 +100,7 @@ const MenuLogo = styled.div`
   top: 6px;
 `;
 
-const MenuBell = styled.div`
+const MenuBell = styled('div')`
   opacity: 1;
   position: absolute;
 `;

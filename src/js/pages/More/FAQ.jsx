@@ -1,10 +1,10 @@
+import styled from '@mui/material/styles/styled';
 import React, { Component } from 'react';
 import Helmet from 'react-helmet';
-import styled from 'styled-components';
 import FAQBody from '../../common/components/FAQBody';
 import { isCordova } from '../../common/utils/isCordovaOrWebApp';
 import { renderLog } from '../../common/utils/logging';
-import { PageContentContainer } from '../../utils/pageLayoutStyles';
+import { PageContentContainer } from '../../components/Style/pageLayoutStyles';
 
 export default class FAQ extends Component {
   static getProps () {
@@ -32,9 +32,9 @@ export default class FAQ extends Component {
   }
 }
 
-const ContainerFluidWrapper = styled.div`
-  @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
+const ContainerFluidWrapper = styled('div')(({ theme }) => (`
+  ${theme.breakpoints.down('sm')} {
     margin: 0 0 8px 0;
   }
-`;
+`));
 

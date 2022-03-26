@@ -1,6 +1,6 @@
+import styled from '@mui/material/styles/styled';
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import styled from 'styled-components';
 import { renderLog } from '../utils/logging';
 
 export default class TermsOfServiceBody extends Component {
@@ -111,12 +111,12 @@ export default class TermsOfServiceBody extends Component {
   }
 }
 
-const ContentTitle = styled.h1`
+const ContentTitle = styled('h1')(({ theme }) => (`
   font-size: 22px;
   font-weight: 600;
   margin: 20px 0;
   text-align: center !important;
-  @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
+  ${theme.breakpoints.down('sm')} {
     font-size: 20px;
   }
-`;
+`));

@@ -1,14 +1,14 @@
-import { Button, FormControl, TextField } from '@material-ui/core';
-import { withStyles } from '@material-ui/core/styles';
+import { Button, FormControl, TextField } from '@mui/material';
+import styled from '@mui/material/styles/styled';
+import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
 import Helmet from 'react-helmet';
-import styled from 'styled-components';
 import OrganizationActions from '../../actions/OrganizationActions';
+import LoadingWheel from '../../common/components/Widgets/LoadingWheel';
+import { renderLog } from '../../common/utils/logging';
 import OrganizationStore from '../../stores/OrganizationStore';
 import VoterStore from '../../stores/VoterStore';
-import { renderLog } from '../../common/utils/logging';
-import LoadingWheel from '../../common/components/Widgets/LoadingWheel';
 import CreateConfiguredVersion from './CreateConfiguredVersion';
 import SeeTheseSettingsInAction from './SeeTheseSettingsInAction';
 
@@ -273,26 +273,25 @@ const styles = () => ({
   },
 });
 
-const InputLabel = styled.h4`
+const InputLabel = styled('h4')`
   font-size: 14px;
   font-weight: bold;
 `;
 
-const InputLabelHelperText = styled.p`
+const InputLabelHelperText = styled('p')`
   font-size: 14px;
   font-weight: normal;
 `;
 
-const ButtonsContainer = styled.div`
+const ButtonsContainer = styled('div')`
   display: flex;
   align-items: center;
   justify-content: flex-end;
-  width: fit-content;
   width: 100%;
   margin-top: 12px;
 `;
 
-const Separator = styled.div`
+const Separator = styled('div')`
   width: 100%;
   height: 2px;
   background: #eee;

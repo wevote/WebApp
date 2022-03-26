@@ -1,12 +1,12 @@
-import { Button } from '@material-ui/core';
-import { withStyles } from '@material-ui/core/styles';
+import { Button } from '@mui/material';
+import styled from '@mui/material/styles/styled';
+import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import styled from 'styled-components';
 import FriendActions from '../../actions/FriendActions';
+import { renderLog } from '../../common/utils/logging';
 import FriendStore from '../../stores/FriendStore';
 import VoterStore from '../../stores/VoterStore';
-import { renderLog } from '../../common/utils/logging';
 
 class FriendInvitationToggle extends Component {
   constructor (props) {
@@ -98,7 +98,7 @@ const styles = () => ({
   },
 });
 
-const ButtonContainer = styled.div`
+const ButtonContainer = styled('div')`
   width: 100%;
   margin-bottom: 0;
   margin-right: 12px;

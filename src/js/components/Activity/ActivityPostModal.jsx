@@ -1,15 +1,16 @@
-import { Button, Dialog, DialogContent, DialogTitle, IconButton, InputBase } from '@material-ui/core';
-import { withStyles, withTheme } from '@material-ui/core/styles';
-import { Close } from '@material-ui/icons';
+import { Close } from '@mui/icons-material';
+import { Button, Dialog, DialogContent, DialogTitle, IconButton, InputBase } from '@mui/material';
+import styled from '@mui/material/styles/styled';
+import withStyles from '@mui/styles/withStyles';
+import withTheme from '@mui/styles/withTheme';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import styled from 'styled-components';
 import ActivityActions from '../../actions/ActivityActions';
+import { hasIPhoneNotch, isAndroid, isAndroidSizeLG, isAndroidSizeMD, isAndroidTablet, prepareForCordovaKeyboard, restoreStylesAfterCordovaKeyboard } from '../../common/utils/cordovaUtils';
+import { renderLog } from '../../common/utils/logging';
 import ActivityStore from '../../stores/ActivityStore';
 import VoterStore from '../../stores/VoterStore';
 import { avatarGeneric } from '../../utils/applicationUtils';
-import { hasIPhoneNotch, isAndroid, isAndroidSizeLG, isAndroidSizeMD, isAndroidTablet, prepareForCordovaKeyboard, restoreStylesAfterCordovaKeyboard } from '../../common/utils/cordovaUtils';
-import { renderLog } from '../../common/utils/logging';
 import ActivityPostPublicToggle from './ActivityPostPublicToggle';
 
 
@@ -139,6 +140,7 @@ class ActivityPostModal extends Component {
             classes={{ root: classes.closeButton }}
             onClick={() => { this.props.toggleActivityPostModal(); }}
             id="closeActivityPostModal"
+            size="large"
           >
             <Close />
           </IconButton>
@@ -226,7 +228,7 @@ const styles = (theme) => ({
     height: '80%',
     width: '90%',
     maxWidth: '600px',
-    top: '0px',
+    top: '0',
     transform: isAndroid() ? 'none' : 'translate(0%, -20%)',
     [theme.breakpoints.down('xs')]: {
       minWidth: '95%',
@@ -240,7 +242,7 @@ const styles = (theme) => ({
     },
   },
   dialogContent: {
-    padding: '0px 16px',
+    padding: '0 16px',
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'space-between',
@@ -248,8 +250,8 @@ const styles = (theme) => ({
   },
   closeButton: {
     position: 'absolute',
-    right: `${theme.spacing(1)}px`,
-    top: isAndroid() ? '-4px' : `${theme.spacing(1)}px`,
+    right: theme.spacing(1),
+    top: isAndroid() ? '-4px' : theme.spacing(1),
   },
   saveButtonRoot: {
     width: '100%',
@@ -280,22 +282,22 @@ const styles = (theme) => ({
   },
   select: {
     padding: '12px 12px',
-    margin: '0px 1px',
+    margin: '0 1px',
   },
 });
 
-const PostSaveButton = styled.div`
+const PostSaveButton = styled('div')`
   width: 100%;
 `;
 
-const TextFieldWrapper = styled.div`
+const TextFieldWrapper = styled('div')`
   height: 100%;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
 `;
 
-const Title = styled.div`
+const Title = styled('div')`
   font-size: 16px;
   font-weight: bold;
   margin: 0;

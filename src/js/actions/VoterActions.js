@@ -16,6 +16,10 @@ export default {
     Dispatcher.dispatch({ type: 'clearSMSPhoneNumberStatus', payload: true });
   },
 
+  clearVoterElectionId () {
+    Dispatcher.dispatch({ type: 'clearVoterElectionId', payload: true });
+  },
+
   organizationSuggestionTasks (kindOfSuggestionTask, kindOfFollowTask) {
     Dispatcher.loadEndpoint('organizationSuggestionTasks',
       {
@@ -125,6 +129,7 @@ export default {
   },
 
   voterAddressSave (text, simple_save = false, google_civic_election_id = 0) {
+    // console.log('VoterActions voterAddressSave, text:', text);
     Dispatcher.loadEndpoint('voterAddressSave', { text_for_map_search: text, simple_save, google_civic_election_id });
   },
 
@@ -181,12 +186,15 @@ export default {
   },
 
   // Tell the server to only save this name if a name does not currently exist
-  voterFullNameSoftSave (firstName, lastName, full_name = '') {
+  voterFullNameSoftSave (firstName, lastName, fullName = '') {
     Dispatcher.loadEndpoint('voterUpdate',
       {
         first_name: firstName,
+        first_name_changed: firstName && firstName !== '',
         last_name: lastName,
-        full_name,
+        last_name_changed: lastName && lastName !== '',
+        full_name: fullName,
+        full_name_changed: fullName && fullName !== '',
         name_save_only_if_no_existing_names: true,
       });
   },
@@ -257,7 +265,9 @@ export default {
     Dispatcher.loadEndpoint('voterUpdate',
       {
         first_name: firstName,
+        first_name_changed: true,
         last_name: lastName,
+        last_name_changed: true,
       });
   },
 
@@ -346,13 +356,6 @@ export default {
         sms_subscription_secret_key: smsSubscriptionSecretKey,
         notification_flag_integer_to_set: flagIntegerToSet,
         notification_flag_integer_to_unset: flagIntegerToUnset,
-      });
-  },
-
-  voterUpdateRefresh () {
-    // Just make sure we have the latest voter data
-    Dispatcher.loadEndpoint('voterUpdate',
-      {
       });
   },
 

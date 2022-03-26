@@ -1,9 +1,11 @@
-import { withStyles, withTheme } from '@material-ui/core/styles';
+import { Close } from '@mui/icons-material';
+import styled from '@mui/material/styles/styled';
+import withStyles from '@mui/styles/withStyles';
+import withTheme from '@mui/styles/withTheme';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import Overlay from 'react-bootstrap/Overlay';
 import Popover from 'react-bootstrap/Popover';
-import styled from 'styled-components';
 import { renderLog } from '../../common/utils/logging';
 
 
@@ -75,7 +77,7 @@ class StickyPopover extends Component {
 
   render () {
     renderLog('StickyPopover');  // Set LOG_RENDER_EVENTS to log all renders
-    const { children, openOnClick, placement, popoverComponent, popoverId } = this.props;
+    const { children, classes, openOnClick, placement, popoverComponent, popoverId } = this.props;
     const { showPopover, target } = this.state;
     // console.log('StickyPopover render, showPopover:', showPopover);
     return (
@@ -110,7 +112,9 @@ class StickyPopover extends Component {
             {popoverComponent}
             {this.props.showCloseIcon && (
               <CloseIcon id="closeYourPersonalizedScorePopover">
-                <span className="fas fa-times u-cursor--pointer" aria-hidden="true" onClick={this.closePopover} />
+                <span className="u-cursor--pointer" aria-hidden="true" onClick={this.closePopover}>
+                  <Close classes={{ root: classes.closeIcon }} />
+                </span>
               </CloseIcon>
             )}
           </Popover>
@@ -121,6 +125,7 @@ class StickyPopover extends Component {
 }
 StickyPopover.propTypes = {
   children: PropTypes.element.isRequired,
+  classes: PropTypes.object,
   closePopoverByProp: PropTypes.bool,
   delay: PropTypes.shape({
     show: PropTypes.number,
@@ -135,11 +140,18 @@ StickyPopover.propTypes = {
 };
 
 const styles = () => ({
+  closeIcon: {
+    color: '#fff',
+    width: 24,
+    height: 24,
+    marginTop: '-3px',
+    marginRight: 4,
+  },
   popoverRoot: {
   },
 });
 
-const CloseIcon = styled.div`
+const CloseIcon = styled('div')`
   position: absolute;
   top: 8px;
   right: 8px;

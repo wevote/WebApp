@@ -1,14 +1,14 @@
-import { Button } from '@material-ui/core';
-import { withStyles } from '@material-ui/core/styles';
+import { Button } from '@mui/material';
+import styled from '@mui/material/styles/styled';
+import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
 import { Link } from 'react-router-dom';
-import styled from 'styled-components';
 import FriendActions from '../../actions/FriendActions';
+import { renderLog } from '../../common/utils/logging';
 import VoterStore from '../../stores/VoterStore';
 import Avatar from '../Style/avatarStyles';
 import { CancelButtonWrapper, FriendButtonsWrapper, FriendColumnWithoutButtons, FriendDisplayOuterWrapper } from '../Style/friendStyles';
-import { renderLog } from '../../common/utils/logging';
 import FriendDetails from './FriendDetails';
 
 const ImageHandler = React.lazy(() => import(/* webpackChunkName: 'ImageHandler' */ '../ImageHandler'));
@@ -84,7 +84,7 @@ class FriendInvitationEmailLinkDisplayForList extends Component {
     );
 
     const friendInvitationHtml = (
-      <FriendDisplayOuterWrapper previewMode={previewMode}>
+      <FriendDisplayOuterWrapper/* previewMode={previewMode} */>
         <FriendColumnWithoutButtons>
           <Avatar>
             { voterGuideLink ? (
@@ -169,7 +169,7 @@ const styles = () => ({
   },
 });
 
-const ButtonContainer = styled.div`
+const ButtonContainer = styled('div')`
   width: 100%;
   margin-left: 12px;
   @media(min-width: 400px) {

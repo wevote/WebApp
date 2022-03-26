@@ -1,6 +1,7 @@
+import styled from '@mui/material/styles/styled';
+import withTheme from '@mui/styles/withTheme';
 import PropTypes from 'prop-types';
 import React, { PureComponent } from 'react';
-import styled, { withTheme } from 'styled-components';
 
 class StepChips extends PureComponent {
   generateChips = () => this.props.chips.map((item, idx) => (
@@ -44,31 +45,33 @@ StepChips.propTypes = {
   onSelectStep: PropTypes.func,
 };
 
-const Wrapper = styled.div`
+const Wrapper = styled('div')(({ theme }) => (`
   display: flex;
   flex-flow: row;
   height: 44px;
   width: 100%;
-  background: ${({ theme }) => theme.colors.grayLighter2};
+  background: ${theme.colors.grayLighter2};
   justify-content: space-between;
   border-radius: 64px;
-  @media (max-width: ${({ theme }) => theme.breakpoints.lg}) {
+  ${theme.breakpoints.down('lg')} {
     height: 32px;
     margin: auto 0;
     padding: 0 4px;
   }
-`;
+`));
 
-const Chip = styled.div`
+const Chip = styled('div', {
+  shouldForwardProp: (prop) => !['count', 'selected'].includes(prop),
+})(({ count, selected, theme }) => (`
   display: flex;
   flex-flow: row;
   min-width: 100px;
-  width: ${({ count }) => `${100 / count}%`};
+  width: ${`${100 / count}%`};
   font-size: 16px;
   height: 36px;
   cursor: pointer;
-  background: ${({ selected, theme }) => (selected ? theme.colors.brandBlue : theme.colors.grayChip)};
-  color: ${({ selected, theme }) => (selected ? '#fff' : theme.colors.brandBlue)};
+  background: ${selected ? theme.colors.brandBlue : theme.colors.grayChip};
+  color: ${selected ? '#fff' : theme.colors.brandBlue};
   border-radius: 64px;
   margin: auto 6px;
   transition: all 150ms ease-in;
@@ -78,28 +81,30 @@ const Chip = styled.div`
   &:active {
     filter: brightness(102%);
   }
-`;
+`));
 
-const ChipIndex = styled.p`
+const ChipIndex = styled('p', {
+  shouldForwardProp: (prop) => !['selected'].includes(prop),
+})(({ selected, theme }) => (`
   margin: auto 6px;
-  background: ${({ selected, theme }) => (selected ? theme.colors.brandBlue : theme.colors.grayPale)};
-  ${({ selected, theme }) => (selected ? '' : `border: 1px solid ${theme.colors.grayBorder};`)}
+  background: ${selected ? theme.colors.brandBlue : theme.colors.grayPale};
+  ${selected ? '' : `border: 1px solid ${theme.colors.grayBorder};`}
   border-radius: 64px;
-  color: ${({ selected, theme }) => (selected ? '#fff' : theme.colors.brandBlue)};
+  color: ${selected ? '#fff' : theme.colors.brandBlue};
   cursor: pointer;
   padding: 2px 9px;
   font-weight: bold;
   transition: all 150ms ease-in;
-  filter: ${({ selected }) => (selected ? 'brightness(150%)' : 'brightness(100%)')};
-  @media (max-width: ${({ theme }) => theme.breakpoints.lg}) {
-    // background: ${({ selected }) => (selected ? 'white' : 'rgba(255, 255, 255, 0.2)')};
+  filter: ${selected ? 'brightness(150%)' : 'brightness(100%)'};
+  ${theme.breakpoints.down('lg')} {
+    // background: ${selected ? 'white' : 'rgba(255, 255, 255, 0.2)'};
     font-size: 14px;
     margin: auto 2px;
     padding: 2px 8px;
   }
-`;
+`));
 
-const ChipLabel = styled.p`
+const ChipLabel = styled('p')`
   margin: auto;
   font-weight: bold;
   padding-right: 24px;

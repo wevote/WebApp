@@ -1,10 +1,13 @@
+import { Dialog } from '@mui/material';
+import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
 import React, { Suspense } from 'react';
 import AppObservableStore from '../../stores/AppObservableStore';
 import VoterStore from '../../stores/VoterStore';
 import { normalizedHrefPage } from '../../common/utils/hrefUtils';
-import AdviserIntroModal from '../CompleteYourProfile/AdviserIntroModal';
 
+const AdviserIntroModal = React.lazy(() => import(/* webpackChunkName: 'AdviserIntroModal' */ '../CompleteYourProfile/AdviserIntroModal'));
+const ChooseOrOpposeIntroModal = React.lazy(() => import(/* webpackChunkName: 'ChooseOrOpposeIntroModal' */ '../Widgets/ItemActionBar/ChooseOrOpposeIntroModal'));
 const FirstPositionIntroModal = React.lazy(() => import(/* webpackChunkName: 'FirstPositionIntroModal' */ '../CompleteYourProfile/FirstPositionIntroModal'));
 const ImageUploadModal = React.lazy(() => import(/* webpackChunkName: 'ImageUploadModal' */ '../Settings/ImageUploadModal'));
 const PersonalizedScoreIntroModal = React.lazy(() => import(/* webpackChunkName: 'PersonalizedScoreIntroModal' */ '../CompleteYourProfile/PersonalizedScoreIntroModal'));
@@ -14,14 +17,16 @@ const SignInModal = React.lazy(() => import(/* webpackChunkName: 'SignInModal' *
 const ValuesIntroModal = React.lazy(() => import(/* webpackChunkName: 'ValuesIntroModal' */ '../CompleteYourProfile/ValuesIntroModal'));
 
 // A function component, for all the various modals that come out of the HeaderBar
-export default function HeaderBarModals (props) {
-  const { shows, closeSignInModal, toggleSelectBallotModal, closeShareModal, closeAdviserIntroModal,
-    closeFirstPositionIntroModal, closePersonalizedScoreIntroModal, closeValuesIntroModal,
-    closeImageUploadModal,
+function HeaderBarModals (props) {
+  const {
+    classes, closeAdviserIntroModal, closeChooseOrOpposeIntroModal,
+    closeFirstPositionIntroModal, closeImageUploadModal,
+    closePersonalizedScoreIntroModal, closeShareModal, closeSignInModal,
+    closeValuesIntroModal, shows, toggleSelectBallotModal,
   } = props;
 
   const {
-    showAdviserIntroModal, showFirstPositionIntroModal,
+    showAdviserIntroModal, showChooseOrOpposeIntroModal, showFirstPositionIntroModal,
     showPaidAccountUpgradeModal, showPersonalizedScoreIntroModal,
     showSelectBallotModal, showSelectBallotModalHideAddress, showSelectBallotModalHideElections,
     showShareModal, showSignInModal, showValuesIntroModal, showImageUploadModal,
@@ -85,6 +90,22 @@ export default function HeaderBarModals (props) {
         />
       </Suspense>
     );
+  } else if (showChooseOrOpposeIntroModal) {
+    const ballotItemType = 'CANDIDATE';
+    return (
+      <Suspense fallback={<></>}>
+        <Dialog
+          classes={{ paper: classes.dialogPaper }}
+          open
+          onClose={closeChooseOrOpposeIntroModal}
+        >
+          <ChooseOrOpposeIntroModal
+            ballotItemType={ballotItemType}
+            onClose={closeChooseOrOpposeIntroModal}
+          />
+        </Dialog>
+      </Suspense>
+    );
   } else if (showFirstPositionIntroModal) {
     return (
       <Suspense fallback={<></>}>
@@ -124,15 +145,27 @@ export default function HeaderBarModals (props) {
   }
   return null;
 }
+
 HeaderBarModals.propTypes = {
+  classes: PropTypes.object,
   shows: PropTypes.object,
   closeSignInModal: PropTypes.func,
   toggleSelectBallotModal: PropTypes.func,
   // closePaidAccountUpgradeModal: PropTypes.func,
   closeShareModal: PropTypes.func,
   closeAdviserIntroModal: PropTypes.func,
+  closeChooseOrOpposeIntroModal: PropTypes.func,
   closeFirstPositionIntroModal: PropTypes.func,
   closePersonalizedScoreIntroModal: PropTypes.func,
   closeValuesIntroModal: PropTypes.func,
   closeImageUploadModal: PropTypes.func,
 };
+
+const styles = () => ({
+  dialogPaper: {
+    minHeight: 282,
+    margin: '0 8px',
+  },
+});
+
+export default withStyles(styles)(HeaderBarModals);

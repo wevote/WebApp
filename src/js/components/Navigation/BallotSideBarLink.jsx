@@ -1,11 +1,10 @@
-import React, { Component } from 'react';
-
+import { ListItem } from '@mui/material';
+import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
+import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import { ListItem } from '@material-ui/core';
-import { withStyles } from '@material-ui/core/styles';
-import { capitalizeString, sentenceCaseString } from '../../utils/textFormat';
 import { renderLog } from '../../common/utils/logging';
+import { capitalizeString, sentenceCaseString } from '../../utils/textFormat';
 
 class BallotSideBarLink extends Component {
   constructor (props) {

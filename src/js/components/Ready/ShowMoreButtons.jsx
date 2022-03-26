@@ -1,8 +1,9 @@
-import React from 'react';
+import { ArrowDropDown, ArrowDropUp } from '@mui/icons-material';
+import styled from '@mui/material/styles/styled';
+import withStyles from '@mui/styles/withStyles';
+import withTheme from '@mui/styles/withTheme';
 import PropTypes from 'prop-types';
-import styled from 'styled-components';
-import { withTheme, withStyles } from '@material-ui/core/styles';
-import { ArrowDropDown, ArrowDropUp } from '@material-ui/icons';
+import React from 'react';
 import { renderLog } from '../../common/utils/logging';
 
 
@@ -54,19 +55,19 @@ const styles = (theme) => ({
   },
 });
 
-const ShowMoreButtonsStyled = styled.div`
-  border: 0px !important;
+const ShowMoreButtonsStyled = styled('div')(({ theme }) => (`
+  border: 0 !important;
   color: #999;
   cursor: pointer;
   display: block !important;
   background: #fff !important;
   font-size: 18px;
-  margin-bottom: 0px !important;
-  margin-top: 0px !important;
-  padding: 0px !important;
+  margin-bottom: 0 !important;
+  margin-top: 0 !important;
+  padding: 0 !important;
   text-align: center !important;
   user-select: none;
-  @media (min-width: ${({ theme }) => theme.breakpoints.md}) {
+  ${theme.breakpoints.up('md')} {
     font-size: 16px;
   }
   &:hover {
@@ -76,11 +77,11 @@ const ShowMoreButtonsStyled = styled.div`
   @media print{
     display: none;
   }
-`;
+`));
 
-const ShowMoreButtonsText = styled.div`
+const ShowMoreButtonsText = styled('div')`
   margin-top: 8px !important;
-  padding: 0px !important;
+  padding: 0 !important;
   text-align: center !important;
   &:hover {
     text-decoration: underline;

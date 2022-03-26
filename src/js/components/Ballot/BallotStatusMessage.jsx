@@ -1,14 +1,14 @@
-import { Snackbar } from '@material-ui/core';
-import { withStyles } from '@material-ui/core/styles';
+import { Snackbar } from '@mui/material';
+import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import BallotStore from '../../stores/BallotStore';
-import ElectionStore from '../../stores/ElectionStore';
-import VoterStore from '../../stores/VoterStore';
 import { formatDateMMMDoYYYY } from '../../common/utils/dateFormat';
 import initializeMoment from '../../common/utils/initializeMoment';
 import Cookies from '../../common/utils/js-cookie/Cookies';
 import { renderLog } from '../../common/utils/logging';
+import BallotStore from '../../stores/BallotStore';
+import ElectionStore from '../../stores/ElectionStore';
+import VoterStore from '../../stores/VoterStore';
 
 const styles = (theme) => ({
   anchorOriginBottomCenter: {

@@ -1,17 +1,16 @@
-// import { createTheme, MuiThemeProvider } from '@material-ui/core';
-import { Button, TextField } from '@material-ui/core';
-import { createTheme, MuiThemeProvider, withStyles } from '@material-ui/core/styles';
-import { Twitter } from '@material-ui/icons';
+import { Twitter } from '@mui/icons-material';
+import {  Button, TextField } from '@mui/material';
+import styled from '@mui/material/styles/styled';
+import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
-import styled from 'styled-components';
 import VoterGuidePossibilityActions from '../../actions/VoterGuidePossibilityActions';
-import CandidateStore from '../../stores/CandidateStore';
-import VoterGuidePossibilityStore from '../../stores/VoterGuidePossibilityStore';
+import ExternalLinkIcon from '../../common/components/Widgets/ExternalLinkIcon';
 import historyPush from '../../common/utils/historyPush';
 import { renderLog } from '../../common/utils/logging';
+import CandidateStore from '../../stores/CandidateStore';
+import VoterGuidePossibilityStore from '../../stores/VoterGuidePossibilityStore';
 import { abbreviateNumber, numberWithCommas } from '../../utils/textFormat';
-import ExternalLinkIcon from '../../common/components/Widgets/ExternalLinkIcon';
 
 const ImageHandler = React.lazy(() => import(/* webpackChunkName: 'ImageHandler' */ '../ImageHandler'));
 const OfficeNameText = React.lazy(() => import(/* webpackChunkName: 'OfficeNameText' */ '../Widgets/OfficeNameText'));
@@ -334,32 +333,33 @@ class CandidateItemEndorsement extends Component {
       return null;
     }
 
-    const showInfoOnlyTheme = createTheme({
-      palette: {
-        primary: {
-          main: '#888',
-          contrastText: '#fff',
-        },
-      },
-    });
-
-    const showOpposeTheme = createTheme({
-      palette: {
-        primary: {
-          main: '#FF7031',
-          contrastText: '#fff',
-        },
-      },
-    });
-
-    const showSupportTheme = createTheme({
-      palette: {
-        primary: {
-          main: '#21c06e',
-          contrastText: '#fff',
-        },
-      },
-    });
+    // Themes removed for MUI 5, nested themes are possible, if we need them here
+    // const showInfoOnlyTheme = createTheme(adaptV4Theme({
+    //   palette: {
+    //     primary: {
+    //       main: '#888',
+    //       contrastText: '#fff',
+    //     },
+    //   },
+    // }));
+    //
+    // const showOpposeTheme = createTheme(adaptV4Theme({
+    //   palette: {
+    //     primary: {
+    //       main: '#FF7031',
+    //       contrastText: '#fff',
+    //     },
+    //   },
+    // }));
+    //
+    // const showSupportTheme = createTheme(adaptV4Theme({
+    //   palette: {
+    //     primary: {
+    //       main: '#21c06e',
+    //       contrastText: '#fff',
+    //     },
+    //   },
+    // }));
 
     const enableDeletion = voterGuidePossibilityPositionId &&
       parseInt(voterGuidePossibilityPositionId, 10) &&
@@ -435,33 +435,33 @@ class CandidateItemEndorsement extends Component {
           </BallotItemSupportOpposeCountDisplayWrapper>
         </CandidateWrapper>
         <Buttons>
-          <MuiThemeProvider theme={possibilityPositionIsSupport ? showSupportTheme : {}}>
-            <Button
-              color="primary"
-              onClick={this.togglePossibilityPositionIsSupport}
-              variant={possibilityPositionIsSupport ? 'contained' : 'outlined'}
-            >
-              {possibilityPositionIsSupport ? 'Endorsed' : 'Endorse'}
-            </Button>
-          </MuiThemeProvider>
-          <MuiThemeProvider theme={possibilityPositionIsOppose ? showOpposeTheme : {}}>
-            <Button
-              color="primary"
-              onClick={this.togglePossibilityPositionIsOppose}
-              variant={possibilityPositionIsOppose ? 'contained' : 'outlined'}
-            >
-              {possibilityPositionIsOppose ? 'Opposed' : 'Oppose'}
-            </Button>
-          </MuiThemeProvider>
-          <MuiThemeProvider theme={possibilityPositionIsInfoOnly ? showInfoOnlyTheme : {}}>
-            <Button
-              color="primary"
-              onClick={this.togglePossibilityPositionIsInfoOnly}
-              variant={possibilityPositionIsInfoOnly ? 'contained' : 'outlined'}
-            >
-              Information Only
-            </Button>
-          </MuiThemeProvider>
+          {/* <MuiThemeProvider theme={possibilityPositionIsSupport ? showSupportTheme : {}}> */}
+          <Button
+            color="primary"
+            onClick={this.togglePossibilityPositionIsSupport}
+            variant={possibilityPositionIsSupport ? 'contained' : 'outlined'}
+          >
+            {possibilityPositionIsSupport ? 'Endorsed' : 'Endorse'}
+          </Button>
+          {/* </MuiThemeProvider> */}
+          {/* <MuiThemeProvider theme={possibilityPositionIsOppose ? showOpposeTheme : {}}> */}
+          <Button
+            color="primary"
+            onClick={this.togglePossibilityPositionIsOppose}
+            variant={possibilityPositionIsOppose ? 'contained' : 'outlined'}
+          >
+            {possibilityPositionIsOppose ? 'Opposed' : 'Oppose'}
+          </Button>
+          {/* </MuiThemeProvider> */}
+          {/* <MuiThemeProvider theme={possibilityPositionIsInfoOnly ? showInfoOnlyTheme : {}}> */}
+          <Button
+            color="primary"
+            onClick={this.togglePossibilityPositionIsInfoOnly}
+            variant={possibilityPositionIsInfoOnly ? 'contained' : 'outlined'}
+          >
+            Information Only
+          </Button>
+          {/* </MuiThemeProvider> */}
         </Buttons>
         <TextArea
           fullWidth
@@ -539,7 +539,7 @@ const styles = () => ({
   },
 });
 
-const Buttons = styled.div`
+const Buttons = styled('div')`
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -553,7 +553,7 @@ const Buttons = styled.div`
   }
 `;
 
-const FourButtons = styled.div`
+const FourButtons = styled('div')`
   display: flex;
   align-items: center;
   justify-content: space-around;
@@ -567,35 +567,37 @@ const FourButtons = styled.div`
   }
 `;
 
-const BallotItemSupportOpposeCountDisplayWrapper = styled.div`
+const BallotItemSupportOpposeCountDisplayWrapper = styled('div')`
   cursor: pointer;
   float: right;
 `;
 
-const CandidateInfo = styled.div`
-  ${({ isClickable }) => ((isClickable) ? 'cursor: pointer;' : '')}
+const CandidateInfo = styled('div', {
+  shouldForwardProp: (prop) => !['isClickable'].includes(prop),
+})(({ isClickable }) => (`
+  ${isClickable ? 'cursor: pointer;' : ''}
   display: flex;
   flex-flow: row nowrap;
+`));
+
+const Candidate = styled('div')`
 `;
 
-const Candidate = styled.div`
-`;
-
-const CandidateItemWrapper = styled.div`
+const CandidateItemWrapper = styled('div')`
   padding: 10px 16px 8px;
 `;
 
-const CandidateWrapper = styled.div`
+const CandidateWrapper = styled('div')(({ theme }) => (`
   display: flex;
   flex-flow: row nowrap;
   justify-content: space-between;
   width: 100%;
-  @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
+  ${theme.breakpoints.down('sm')} {
     width: 100%;
   }
-`;
+`));
 
-const ExternalWebSiteWrapper = styled.span`
+const ExternalWebSiteWrapper = styled('span')`
   padding-left: 15px;
   white-space: nowrap;
 `;

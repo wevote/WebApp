@@ -1,15 +1,15 @@
-import React, { Component } from 'react';
+import { FormControl, TextField } from '@mui/material';
+import styled from '@mui/material/styles/styled';
+import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
-import styled from 'styled-components';
-import { TextField, FormControl } from '@material-ui/core';
-import { withStyles } from '@material-ui/core/styles';
-import { prepareForCordovaKeyboard, restoreStylesAfterCordovaKeyboard } from '../../common/utils/cordovaUtils';
-import { isSpeakerTypeOrganization } from '../../utils/organization-functions';
-import LoadingWheel from '../../common/components/Widgets/LoadingWheel';
-import { renderLog } from '../../common/utils/logging';
+import React, { Component } from 'react';
 import OrganizationActions from '../../actions/OrganizationActions';
+import LoadingWheel from '../../common/components/Widgets/LoadingWheel';
+import { prepareForCordovaKeyboard, restoreStylesAfterCordovaKeyboard } from '../../common/utils/cordovaUtils';
+import { renderLog } from '../../common/utils/logging';
 import OrganizationStore from '../../stores/OrganizationStore';
 import VoterStore from '../../stores/VoterStore';
+import { isSpeakerTypeOrganization } from '../../utils/organization-functions';
 // import Textarea from 'react-textarea-autosize';
 
 const delayBeforeApiUpdateCall = 1200;
@@ -161,19 +161,19 @@ const styles = () => ({
   },
 });
 
-const Row = styled.div`
+const Row = styled('div')`
   width: calc(100% + 24px);
   margin-left: -12px;
   display: flex;
   justify-content: space-between;
 `;
 
-const Column = styled.div`
+const Column = styled('div')`
   padding: 8px 12px;
   width: 100%;
 `;
 
-const Label = styled.label`
+const Label = styled('label')`
   margin-bottom: 4px;
   display: block;
 `;

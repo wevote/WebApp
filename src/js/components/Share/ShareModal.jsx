@@ -1,29 +1,30 @@
-import { Button, Dialog, DialogContent, IconButton, Tooltip } from '@material-ui/core';
-import { withStyles, withTheme } from '@material-ui/core/styles';
-import { ArrowBackIos, Close, FileCopyOutlined, People } from '@material-ui/icons';
+import { ArrowBackIos, Close, FileCopyOutlined, People } from '@mui/icons-material';
+import { Button, Dialog, DialogContent, IconButton, Tooltip } from '@mui/material';
+import styled from '@mui/material/styles/styled';
+import withStyles from '@mui/styles/withStyles';
+import withTheme from '@mui/styles/withTheme';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
 import { EmailIcon, EmailShareButton, FacebookIcon, FacebookShareButton, TwitterIcon, TwitterShareButton } from 'react-share';
-import styled from 'styled-components';
 import AnalyticsActions from '../../actions/AnalyticsActions';
 import FriendActions from '../../actions/FriendActions';
 import ShareActions from '../../common/actions/ShareActions';
-import AppObservableStore, { messageService } from '../../stores/AppObservableStore';
-import FriendStore from '../../stores/FriendStore';
 import ShareStore from '../../common/stores/ShareStore';
-import VoterStore from '../../stores/VoterStore';
+import apiCalming from '../../common/utils/apiCalming';
 import { cordovaLinkToBeSharedFixes, hasIPhoneNotch, isAndroid } from '../../common/utils/cordovaUtils';
 import { isCordova, isWebApp } from '../../common/utils/isCordovaOrWebApp';
-import normalizedImagePath from '../../common/utils/normalizedImagePath';
-import sortFriendListByMutualFriends from '../../utils/friendFunctions';
 import { renderLog } from '../../common/utils/logging';
+import normalizedImagePath from '../../common/utils/normalizedImagePath';
+import AppObservableStore, { messageService } from '../../stores/AppObservableStore';
+import FriendStore from '../../stores/FriendStore';
+import VoterStore from '../../stores/VoterStore';
+import sortFriendListByMutualFriends from '../../utils/friendFunctions';
 import { stringContains } from '../../utils/textFormat';
 import FriendsShareList from '../Friends/FriendsShareList';
 import InfoCircleIcon from '../Widgets/InfoCircleIcon';
 import MessageCard from '../Widgets/MessageCard';
 import { androidFacebookClickHandler, androidTwitterClickHandler, cordovaSocialSharingByEmail } from './shareButtonCommon';
 import ShareModalOption from './ShareModalOption';
-import apiCalming from '../../common/utils/apiCalming';
 
 const OpenExternalWebSite = React.lazy(() => import(/* webpackChunkName: 'OpenExternalWebSite' */ '../../common/components/Widgets/OpenExternalWebSite'));
 
@@ -380,6 +381,7 @@ class ShareModal extends Component {
               className={classes.closeButtonAbsolute}
               onClick={this.closeShareModal}
               id="closeShareModal"
+              size="large"
             >
               <Close />
             </IconButton>
@@ -559,6 +561,7 @@ class ShareModal extends Component {
               className={classes.closeButton}
               onClick={this.closeShareModal}
               id="profileCloseShareModal"
+              size="large"
             >
               <Close />
             </IconButton>
@@ -599,6 +602,7 @@ class ShareModal extends Component {
               className={classes.closeButton}
               onClick={this.closeShareModal}
               id="profileCloseShareModal"
+              size="large"
             >
               <Close />
             </IconButton>
@@ -690,58 +694,64 @@ const styles = () => ({
 });
 
 /* eslint no-nested-ternary: ["off"] */
-const ModalTitleArea = styled.div`
+const ModalTitleArea = styled('div', {
+  shouldForwardProp: (prop) => !['firstSlide', 'onSignInSlide'].includes(prop),
+})(({ firstSlide, onSignInSlide }) => (`
   justify-content: flex-start;
   width: 100%;
-  padding: ${(props) => (props.firstSlide ? '24px 24px 12px 24px' : props.onSignInSlide ? '20px 14px 10px' : '10px 14px')};
+  padding: ${firstSlide ? '24px 24px 12px 24px' : (onSignInSlide ? '20px 14px 10px' : '10px 14px')};
   z-index: 999;
   @media (min-width: 769px) {
     border-bottom: 2px solid #f7f7f7;
   }
-  display: ${(props) => (props.onSignInSlide ? 'block' : 'flex')};
-  text-align: ${(props) => (props.onSignInSlide ? 'center' : 'left')};
-`;
+  display: ${onSignInSlide ? 'block' : 'flex'};
+  text-align: ${onSignInSlide ? 'center' : 'left'};
+`));
 
-const FriendsShareTextWrapper = styled.div`
+const FriendsShareTextWrapper = styled('div')`
   position: relative;
   top: -16px;
   margin-bottom: 12px;
 `;
 
-const Flex = styled.div`
+const Flex = styled('div')`
   display: flex;
   flex-wrap: wrap;
   padding-top: 16px;
 `;
 
-const SubTitle = styled.div`
+const SubTitle = styled('div', {
+  shouldForwardProp: (prop) => !['larger', 'left'].includes(prop),
+})(({ larger, left }) => (`
   margin-top: 0;
-  font-size: ${(props) => (props.larger ? '18px' : '14px')};
+  font-size: ${larger ? '18px' : '14px'};
   width: 100%;
-  text-align: ${(props) => (props.left && 'left')};
+  text-align: ${left && 'left'};
   @media(min-width: 420px) {
     // width: 80%;
   }
-`;
+`));
 
-const Text = styled.h3`
+const Text = styled('h3')`
   font-weight: normal;
   font-size: 16px;
   color: black !important;
   padding: 6px;
 `;
 
-const Title = styled.h3`
-  font-size: ${(props) => (props.bold ? '30px' : '24px')};
+const Title = styled('h3', {
+  shouldForwardProp: (prop) => !['onSignInSlide'].includes(prop),
+})(({ bold, left, onSignInSlide }) => (`
+  font-size: ${bold ? '30px' : '24px'};
   color: black;
-  margin: ${(props) => (props.onSignInSlide ? '0 auto' : '0')};
+  margin: ${onSignInSlide ? '0 auto' : '0'};
   margin-top: 0;
-  margin-bottom: ${(props) => (props.bold ? '0' : '12px')};
-  font-weight: ${(props) => (props.bold ? 'bold' : 'initial')};
-  text-align: ${(props) => (props.left && 'left')};
-`;
+  margin-bottom: ${bold ? '0' : '12px'};
+  font-weight: ${bold ? 'bold' : 'initial'};
+  text-align: ${left && 'left'};
+`));
 
-const Wrapper = styled.div`
+const Wrapper = styled('div')`
   cursor: pointer;
   display: block !important;
   margin-bottom: 12px;

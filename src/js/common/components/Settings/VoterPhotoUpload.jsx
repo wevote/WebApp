@@ -1,25 +1,14 @@
-import React, { Component } from 'react';
-import { DropzoneArea } from 'material-ui-dropzone';
+import { AccountCircle } from '@mui/icons-material';
+import styled from '@mui/material/styles/styled';
+import withStyles from '@mui/styles/withStyles';
+import { DropzoneArea } from 'mui-file-dropzone';
 import PropTypes from 'prop-types';
-import styled from 'styled-components';
-import { MuiThemeProvider, createTheme, withStyles } from '@material-ui/core/styles';
-import { AccountCircle } from '@material-ui/icons';
+import React, { Component } from 'react';
 import VoterActions from '../../../actions/VoterActions';
 import VoterStore from '../../../stores/VoterStore';
 import isMobileScreenSize from '../../utils/isMobileScreenSize';
 import { renderLog } from '../../utils/logging';
 
-const muiTheme = createTheme({
-  overrides: {
-    MuiDropzonePreviewList: {
-      image: {
-        height: 'auto',
-        maxHeight: '200px',
-        maxWidth: 'auto',
-      },
-    },
-  },
-});
 
 class VoterPhotoUpload extends Component {
   constructor (props) {
@@ -93,22 +82,20 @@ class VoterPhotoUpload extends Component {
                   </DeleteLink>
                 </VoterPhotoWrapper>
               ) : (
-                <MuiThemeProvider theme={muiTheme}>
-                  <DropzoneArea
-                    acceptedFiles={['image/*']}
-                    classes={{
-                      icon: classes.dropzoneIcon,
-                      root: classes.dropzoneRoot,
-                      text: classes.dropzoneText,
-                    }}
-                    dropzoneText={dropzoneText}
-                    filesLimit={1}
-                    Icon={AccountCircle}
-                    initialFiles={voterProfileUploadedImageUrlLarge ? [voterProfileUploadedImageUrlLarge] : undefined}
-                    maxFileSize={6000000}
-                    onChange={this.handleDrop}
-                  />
-                </MuiThemeProvider>
+                <DropzoneArea
+                  acceptedFiles={['image/*']}
+                  classes={{
+                    icon: classes.dropzoneIcon,
+                    root: classes.dropzoneRoot,
+                    text: classes.dropzoneText,
+                  }}
+                  dropzoneText={dropzoneText}
+                  filesLimit={1}
+                  Icon={AccountCircle}
+                  initialFiles={voterProfileUploadedImageUrlLarge ? [voterProfileUploadedImageUrlLarge] : undefined}
+                  maxFileSize={6000000}
+                  onChange={this.handleDrop}
+                />
               )}
             </ColumnFullWidth>
           </Wrapper>
@@ -143,25 +130,27 @@ const styles = (theme) => ({
   },
 });
 
-const ColumnFullWidth = styled.div`
+const ColumnFullWidth = styled('div')`
   padding: 8px 12px;
   width: 100%;
 `;
 
-const DeleteLink = styled.div`
+const DeleteLink = styled('div')`
 `;
 
-const OuterWrapper = styled.div`
+const OuterWrapper = styled('div')`
   width: 100%;
 `;
 
-const VoterPhotoImage = styled.img`
+const VoterPhotoImage = styled('img', {
+  shouldForwardProp: (prop) => !['maxWidth'].includes(prop),
+})(({ maxWidth }) => (`
   border-radius: 100px;
   max-width: 100px;
-  ${(props) => ((props.maxWidth) ? `max-width: ${props.maxWidth}px;` : 'max-width: 200px;')}
-`;
+  ${maxWidth ? `max-width: ${maxWidth}px;` : 'max-width: 200px;'}
+`));
 
-const VoterPhotoWrapper = styled.div`
+const VoterPhotoWrapper = styled('div')`
   align-items: center;
   display: flex;
   flex-direction: column;
@@ -170,7 +159,7 @@ const VoterPhotoWrapper = styled.div`
   width: 100%;
 `;
 
-const Wrapper = styled.div`
+const Wrapper = styled('div')`
   display: flex;
   justify-content: space-between;
   margin-left: -12px;

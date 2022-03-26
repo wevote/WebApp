@@ -41,6 +41,7 @@ const nonFluxState = {
   sharedItemCode: '',
   showActivityTidbitDrawer: false,
   showAdviserIntroModal: false,
+  showChooseOrOpposeIntroModal: false,
   showEditAddressButton: false,
   showElectionsWithOrganizationVoterGuidesModal: false,
   showHeader: 0,
@@ -49,6 +50,7 @@ const nonFluxState = {
   showOrganizationModal: false,
   showPaidAccountUpgradeModal: false,
   showPersonalizedScoreIntroModal: false,
+  showPositionDrawer: false,
   showSelectBallotModal: false,
   showSelectBallotModalHideAddress: false,
   showSelectBallotModalHideElections: false,
@@ -117,6 +119,16 @@ export default {
     nonFluxState.pendingSnackSeverity = severity;
   },
 
+  setPositionDrawerBallotItemWeVoteId (ballotItemWeVoteId) {
+    nonFluxState.positionDrawerBallotItemWeVoteId = ballotItemWeVoteId;
+    messageService.sendMessage('state updated positionDrawerBallotItemWeVoteId');
+  },
+
+  setPositionDrawerOrganizationWeVoteId (organizationWeVoteId) {
+    nonFluxState.positionDrawerOrganizationWeVoteId = organizationWeVoteId;
+    messageService.sendMessage('state updated positionDrawerOrganizationWeVoteId');
+  },
+
   setScrolled (scrolledDown) {
     nonFluxState.scrolledDown = scrolledDown;
     messageService.sendMessage('state updated scrolledDown');
@@ -136,6 +148,12 @@ export default {
   setShowAdviserIntroModal (show) {
     nonFluxState.showAdviserIntroModal = show;
     messageService.sendMessage('state updated showAdviserIntroModal');
+  },
+
+  setShowChooseOrOpposeIntroModal (show, ballotItemType = 'CANDIDATE') {
+    nonFluxState.showChooseOrOpposeIntroModal = show;
+    nonFluxState.showChooseOrOpposeIntroModalBallotItemType = ballotItemType;
+    messageService.sendMessage('state updated showChooseOrOpposeIntroModal');
   },
 
   setShowEditAddressButton (show) {
@@ -185,6 +203,11 @@ export default {
   setShowPersonalizedScoreIntroModal (show) {
     nonFluxState.showPersonalizedScoreIntroModal = show;
     messageService.sendMessage('state updated showPersonalizedScoreIntroModal');
+  },
+
+  setShowPositionDrawer (show) {
+    nonFluxState.showPositionDrawer = show;
+    messageService.sendMessage('state updated showPositionDrawer');
   },
 
   setShowSelectBallotModal (showSelectBallotModal, showSelectBallotModalHideAddress = false, showSelectBallotModalHideElections = false) {
@@ -292,6 +315,14 @@ export default {
 
   getCurrentPathname () {
     return nonFluxState.currentPathname;
+  },
+
+  getPositionDrawerBallotItemWeVoteId () {
+    return nonFluxState.positionDrawerBallotItemWeVoteId;
+  },
+
+  getPositionDrawerOrganizationWeVoteId () {
+    return nonFluxState.positionDrawerOrganizationWeVoteId;
   },
 
   getGoogleAnalyticsEnabled () {
@@ -408,6 +439,10 @@ export default {
     return nonFluxState.showAdviserIntroModal;
   },
 
+  showChooseOrOpposeIntroModal () {
+    return nonFluxState.showChooseOrOpposeIntroModal;
+  },
+
   showEditAddressButton () {
     return nonFluxState.showEditAddressButton;
   },
@@ -439,6 +474,10 @@ export default {
 
   showPersonalizedScoreIntroModal () {
     return nonFluxState.showPersonalizedScoreIntroModal;
+  },
+
+  showPositionDrawer () {
+    return nonFluxState.showPositionDrawer;
   },
 
   showShareModal () {
