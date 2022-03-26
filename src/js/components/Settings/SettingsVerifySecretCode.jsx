@@ -493,7 +493,7 @@ class SettingsVerifySecretCode extends Component {
           </Button>
         </ModalTitleArea>
         <ModalContent condensed={condensed} style={{ padding: `${isWebApp() ? 'undefined' : '37px 0 2px 0'}` }}>
-          <TextContainer condensed={condensed}>
+          <TextContainer>
             <Title condensed={condensed}>Code Verification</Title>
             <Subtitle>A 6-digit code has been sent to</Subtitle>
             <PhoneSubtitle>{voterPhoneNumber || voterEmailAddress}</PhoneSubtitle>
@@ -503,6 +503,7 @@ class SettingsVerifySecretCode extends Component {
                 disabled={(this.state.numberOfTriesRemaining === 0) || voterVerifySecretCodeSubmitted}
                 error={errorToDisplay}
                 id="digit1"
+                label={false}
                 maxLength={1}
                 onBlur={this.handleBlur}
                 onFocus={this.handleFocus}
@@ -517,6 +518,7 @@ class SettingsVerifySecretCode extends Component {
                 disabled={(this.state.numberOfTriesRemaining === 0) || voterVerifySecretCodeSubmitted}
                 error={errorToDisplay}
                 id="digit2"
+                label={false}
                 maxLength={1}
                 onBlur={this.handleBlur}
                 onFocus={this.handleFocus}
@@ -531,6 +533,7 @@ class SettingsVerifySecretCode extends Component {
                 disabled={(this.state.numberOfTriesRemaining === 0) || voterVerifySecretCodeSubmitted}
                 error={errorToDisplay}
                 id="digit3"
+                label={false}
                 maxLength={1}
                 onBlur={this.handleBlur}
                 onFocus={this.handleFocus}
@@ -545,6 +548,7 @@ class SettingsVerifySecretCode extends Component {
                 disabled={(this.state.numberOfTriesRemaining === 0) || voterVerifySecretCodeSubmitted}
                 error={errorToDisplay}
                 id="digit4"
+                label={false}
                 maxLength={1}
                 onBlur={this.handleBlur}
                 onFocus={this.handleFocus}
@@ -559,6 +563,7 @@ class SettingsVerifySecretCode extends Component {
                 disabled={(this.state.numberOfTriesRemaining === 0) || voterVerifySecretCodeSubmitted}
                 error={errorToDisplay}
                 id="digit5"
+                label={false}
                 maxLength={1}
                 onBlur={this.handleBlur}
                 onFocus={this.handleFocus}
@@ -573,6 +578,7 @@ class SettingsVerifySecretCode extends Component {
                 disabled={(this.state.numberOfTriesRemaining === 0) || voterVerifySecretCodeSubmitted}
                 error={errorToDisplay}
                 id="digit6"
+                label={false}
                 maxLength={1}
                 onChange={this.onDigit6Change}
                 onFocus={this.handleFocus}

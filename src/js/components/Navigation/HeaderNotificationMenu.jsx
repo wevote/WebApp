@@ -275,13 +275,12 @@ class HeaderNotificationMenu extends Component {
               badgeContent={<BadgeCountWrapper>{allActivityNoticesNotSeenCount}</BadgeCountWrapper>}
               classes={{
                 badge: classes.badgeClasses,
-                anchorOriginTopRightRectangular: classes.anchorOriginTopRightRectangular,
               }}
               color="primary"
               max={9}
               style={{
                 display: 'inline-block',
-                height: '35px',
+                height: 40,
               }}
             >
               <Notifications />
@@ -317,14 +316,12 @@ HeaderNotificationMenu.propTypes = {
 };
 
 const styles = (theme) => ({
-  anchorOriginTopRightRectangular: {
-    right: 3,
-    top: 11,
-  },
   badgeClasses: {
     backgroundColor: 'rgba(250, 62, 62)',
     fontSize: 10,
     height: 15,
+    marginRight: 1,
+    marginTop: 11,
     minWidth: 15,
     width: 15,
   },
@@ -405,7 +402,7 @@ const ActivityTime = styled('div')`
 
 const BadgeCountWrapper = styled('span')`
   margin-top: -3px;
-  margin-left: 1px;
+  margin-left: -1px;
 `;
 
 const HeaderNotificationMenuWrapper = styled('div')`

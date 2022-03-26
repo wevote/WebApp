@@ -97,6 +97,14 @@ class CandidateStore extends ReduceStore {
     return this.getState().allCachedCandidates[candidateWeVoteId] || {};
   }
 
+  getCandidateName (candidateWeVoteId) {
+    const candidate = this.getState().allCachedCandidates[candidateWeVoteId] || {};
+    if (candidate && candidate.ballot_item_display_name) {
+      return candidate.ballot_item_display_name;
+    }
+    return '';
+  }
+
   getMostLikelyOfficeDictFromCandidateWeVoteId (candidateWeVoteId) {
     const candidate = this.getState().allCachedCandidates[candidateWeVoteId] || {};
     // console.log('getMostLikelyOfficeDictFromCandidateWeVoteId candidate:', candidate)

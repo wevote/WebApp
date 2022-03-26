@@ -249,7 +249,7 @@ class FilterBase extends React.Component {
     // console.log('FilterBase render');
     const { isSearching, selectedFilters, showAllFilters, sortFilters } = this.state;
     const {
-      allItems, classes, opinionsAndBallotItemsSearchMode, positionSearchMode,
+      allItems, classes, filteredPositionListLength, opinionsAndBallotItemsSearchMode, positionSearchMode,
       numberOfItemsFoundNode, searchOnOwnLine, searchTextDefault, searchTextLarge,
       stateCodesToDisplay, voterGuidePositionSearchMode,
     } = this.props;
@@ -275,17 +275,18 @@ class FilterBase extends React.Component {
 
     return (
       <Wrapper>
-        {searchOnOwnLine && filterBaseSearch}
+        {(searchOnOwnLine && filteredPositionListLength > 5) && filterBaseSearch}
         <FilterTop>
-          {!searchOnOwnLine && filterBaseSearch}
+          {(!searchOnOwnLine && filteredPositionListLength > 5) && filterBaseSearch}
           {!isSearching && this.generateGroupedFilters()}
           {!isSearching && this.generateIslandFilters()}
-          {(!isSearching && stateCodesToDisplay) && (
+          {(!isSearching && stateCodesToDisplay && stateCodesToDisplay.length > 0) && (
             <StateDropDown
               onStateDropDownChange={this.onStateDropDownChange}
               stateCodesToDisplay={stateCodesToDisplay}
             />
           )}
+          {/* TODO: Mar 2022 we need to remove " && isWebApp()" or else voters can't get to endorsements for prior years */}
           {!isSearching && isWebApp() && (     // TODO: November 9, 2021: This feature needs work, and is temporarily out of Cordova
             <Badge
               classes={{ badge: classes.badge }}
@@ -331,6 +332,7 @@ FilterBase.propTypes = {
   allItems: PropTypes.array,
   children: PropTypes.node, // This is the component that updates the items displayed
   classes: PropTypes.object,
+  filteredPositionListLength: PropTypes.number,
   groupedFilters: PropTypes.array,
   islandFilters: PropTypes.array,
   numberOfItemsFoundNode: PropTypes.node,

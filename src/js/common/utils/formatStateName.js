@@ -56,10 +56,12 @@ export const formatStateName = (input) => {
   ];
 
   const inputModified = input.toUpperCase();
+  let formattedStateName = input;
   states.forEach((state) => {
     if (state[1] === inputModified) {
-      return (state[0]);
+      // console.log('state: ', state, ', inputModified:', inputModified);
+      ({ 0: formattedStateName } = state);
     }
-    return null;
   });
+  return formattedStateName;
 };

@@ -513,10 +513,11 @@ class HeaderBar extends Component {
       fontWeight: 500,
       color: 'rgba(51, 51, 51)',
     };
+    // Should use theme.colors.brandBlue instead of directly using '#2e3c5d'
     const highlight = {
       opacity: 1,
       fontWeight: 800,
-      color: 'black',
+      color: '#2e3c5d',
     };
 
     if (window.$) {
@@ -990,7 +991,7 @@ const HeaderBarWrapper = styled('div', {
 `));
 
 const SearchWrapper = styled('div')`
-  margin-top: 10px;
+  margin-top: 11px;
 `;
 
 export default withStyles(styles)(HeaderBar);

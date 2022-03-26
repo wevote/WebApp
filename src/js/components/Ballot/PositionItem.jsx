@@ -129,7 +129,7 @@ class PositionItem extends Component {
   render () {
     renderLog('PositionItem');  // Set LOG_RENDER_EVENTS to log all renders
     let position;
-    const { classes, searchResultsNode } = this.props;
+    const { classes, searchResultsNode, showEntireStatementText } = this.props;
     ({ position } = this.props);
     const { updatedPosition } = this.state;
     if (updatedPosition && updatedPosition.speaker_we_vote_id) {
@@ -192,14 +192,17 @@ class PositionItem extends Component {
     const organizationOpposesBallotItem = position.is_oppose;
 
     // console.log('PositionItem supportOpposeInfo: ', supportOpposeInfo);
-    const positionDescription = position.statement_text && (
-      <Suspense fallback={<></>}>
-        <ReadMore
-          numberOfLines={3}
-          textToDisplay={position.statement_text}
-        />
-      </Suspense>
-    );
+    let positionDescription = <>{position.statement_text}</>;
+    if (!!(position.statement_text) && !showEntireStatementText) {
+      positionDescription = (
+        <Suspense fallback={<></>}>
+          <ReadMore
+            numberOfLines={3}
+            textToDisplay={position.statement_text}
+          />
+        </Suspense>
+      );
+    }
 
     const showPosition = true;
     const nothingToDisplay = null;
@@ -528,6 +531,7 @@ PositionItem.propTypes = {
   classes: PropTypes.object,
   position: PropTypes.object.isRequired,
   searchResultsNode: PropTypes.object,
+  showEntireStatementText: PropTypes.bool,
 };
 
 const styles = (theme) => ({

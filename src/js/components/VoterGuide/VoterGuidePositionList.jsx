@@ -395,7 +395,8 @@ class VoterGuidePositionList extends Component {
             null}
           <FilterBase
             allItems={positionList}
-            groupedFilters={groupedFilters}
+            filteredPositionListLength={filteredPositionListLength}
+            groupedFilters={filteredPositionListLength > 10 ? groupedFilters : []}
             islandFilters={islandFilters}
             numberOfItemsFoundNode={(
               <NumberOfItemsFound
@@ -408,7 +409,7 @@ class VoterGuidePositionList extends Component {
             voterGuidePositionSearchMode
             selectedFiltersDefault={selectedFiltersDefault}
             sortFilters={['sortByAlphabetical']}
-            stateCodesToDisplay={stateCodesToDisplay}
+            stateCodesToDisplay={filteredPositionListLength > 20 ? stateCodesToDisplay : []}
           >
             {/* props get added to this component in FilterBase */}
             <VoterGuidePositionFilter />

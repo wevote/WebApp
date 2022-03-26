@@ -8,8 +8,10 @@ import React, { Component, Suspense } from 'react';
 import AnalyticsActions from '../../actions/AnalyticsActions';
 import { hasIPhoneNotch } from '../../common/utils/cordovaUtils';
 import { renderLog } from '../../common/utils/logging';
+import BallotStore from '../../stores/BallotStore';
 import VoterStore from '../../stores/VoterStore';
 import { calculateBallotBaseUrl } from '../../utils/textFormat';
+import BallotTitleHeader from '../../pages/Ballot/BallotTitleHeader';
 import EditAddressInPlace from '../Widgets/EditAddressInPlace';
 
 const MapChart = React.lazy(() => import(/* webpackChunkName: 'MapChart' */ '../Widgets/MapChart/MapChart'));
@@ -58,10 +60,17 @@ class SelectBallotModal extends Component {
     const { editingAddress } = this.state;
     const ballotBaseUrl = calculateBallotBaseUrl(this.props.ballotBaseUrl, pathname);
 
-    let dialogTitleText = 'Address & Elections';
-    if (hideAddressEdit || hideElections) {
+    let dialogTitleText = 'Election You Are Viewing';
+    if (editingAddress) {
+      dialogTitleText = 'Edit Your Address';
+    } else if (hideAddressEdit || hideElections) {
       dialogTitleText = '';
     }
+
+    const electionName = BallotStore.currentBallotElectionName || '';
+    const electionDayText = BallotStore.currentBallotElectionDate;
+    const electionDayTextFormatted = electionDayText && window.moment ? window.moment(electionDayText).format('MMM Do, YYYY') : '';
+    const electionDayTextObject = electionDayText && window.moment ? <span>{electionDayTextFormatted}</span> : null;
 
     // console.log('SelectBallotModal render, voter_address_object: ', voter_address_object);
     return (
@@ -86,6 +95,16 @@ class SelectBallotModal extends Component {
           </IconButton>
         </DialogTitle>
         <DialogContent classes={{ root: classes.dialogContent }}>
+          {!editingAddress && (
+            <BallotTitleHeaderWrapper>
+              <BallotTitleHeader
+                electionName={electionName}
+                electionDayTextObject={electionDayTextObject}
+                linksOff
+                showBallotCaveat
+              />
+            </BallotTitleHeaderWrapper>
+          )}
           <Row>
             <div className="u-show-mobile-tablet">
               {!hideAddressEdit && (
@@ -268,6 +287,10 @@ const styles = (theme) => ({
     margin: '0px 1px',
   },
 });
+
+const BallotTitleHeaderWrapper = styled('div')`
+  margin-bottom: 32px;
+`;
 
 const EditAddressInPlaceWrapperMobile = styled('div')`
   margin-top: 18px;

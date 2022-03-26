@@ -106,16 +106,17 @@ class ReadyLight extends Component {
           <Helmet title="Ready to Vote? - We Vote" />
           <BrowserPushMessage incomingProps={this.props} />
           <div className="row">
+            <Suspense fallback={<SuspenseCard>&nbsp;</SuspenseCard>}>
+              <ElectionCountdownOuterWrapper className="col-12">
+                <ElectionCountdownInnerWrapper>
+                  <Suspense fallback={<SuspenseCard>&nbsp;</SuspenseCard>}>
+                    <ElectionCountdown onClickFunction={this.goToBallot} initialDelay={4000} />
+                  </Suspense>
+                </ElectionCountdownInnerWrapper>
+              </ElectionCountdownOuterWrapper>
+            </Suspense>
+
             <div className="col-sm-12 col-lg-8">
-              <MobileTabletCountdownWrapper className="u-show-mobile-tablet">
-                <ShareButtonTabletWrapper />
-                <ElectionCountdownMobileTabletWrapper
-                  className="u-cursor--pointer u-show-mobile-tablet"
-                  // onClick={this.goToBallot}
-                >
-                  <ElectionCountdown daysOnlyMode initialDelay={0} />
-                </ElectionCountdownMobileTabletWrapper>
-              </MobileTabletCountdownWrapper>
               {(chosenReadyIntroductionTitle || chosenReadyIntroductionText) && (
                 <Card className="card u-show-mobile-tablet">
                   <div className="card-main">
@@ -161,11 +162,6 @@ class ReadyLight extends Component {
               />
             </div>
             <div className="col-lg-4 d-none d-lg-block">
-              <div className="u-cursor--pointer">
-                <Suspense fallback={<SuspenseCard>&nbsp;</SuspenseCard>}>
-                  <ElectionCountdown daysOnlyMode initialDelay={0} />
-                </Suspense>
-              </div>
               {(chosenReadyIntroductionTitle || chosenReadyIntroductionText) && (
                 <Card className="card">
                   <div className="card-main">
@@ -211,16 +207,14 @@ const Card = styled('div')`
   padding-bottom: 4px;
 `;
 
-const ElectionCountdownMobileTabletWrapper = styled('div')`
+const ElectionCountdownInnerWrapper = styled('div')`
   margin-top: -37px; // 29px for height of ShareButtonDesktopTablet - 8px for margin-top
 `;
 
-const SuspenseCard = styled('div')`
+const ElectionCountdownOuterWrapper = styled('div')`
+  margin-bottom: 32px;
   position: relative;
-  display: flex;
-  flex-direction: column;
-  width: 290px;
-  height: 138px;
+  z-index: 1;
 `;
 
 const IntroAndFindTabletWrapper = styled('div')`
@@ -232,11 +226,6 @@ const IntroAndFindTabletSpacer = styled('div')`
   width: 20px;
 `;
 
-const MobileTabletCountdownWrapper = styled('div')`
-  position: relative;
-  z-index: 1;
-`;
-
 const PageContainer = styled('div')`
 // This is a bad place to set a top padding for the scrollable pane, it should be in Application__Wrapper
 `;
@@ -244,13 +233,12 @@ const PageContainer = styled('div')`
 const Paragraph = styled('div')`
 `;
 
-const ShareButtonTabletWrapper = styled('div')`
+const SuspenseCard = styled('div')`
+  position: relative;
   display: flex;
-  height: 29px;
-  justify-content: flex-end;
-  margin-top: 8px;
-  margin-right: 8px;
-  z-index: 2;
+  flex-direction: column;
+  width: 290px;
+  height: 138px;
 `;
 
 const Title = styled('h2')(({ theme }) => (`

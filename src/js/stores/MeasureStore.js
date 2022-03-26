@@ -12,7 +12,15 @@ class MeasureStore extends ReduceStore {
   }
 
   getMeasure (measureWeVoteId) {
-    return this.getState().allCachedMeasures[measureWeVoteId] || [];
+    return this.getState().allCachedMeasures[measureWeVoteId] || {};
+  }
+
+  getMeasureName (measureWeVoteId) {
+    const measure = this.getState().allCachedMeasures[measureWeVoteId] || {};
+    if (measure && measure.ballot_item_display_name) {
+      return measure.ballot_item_display_name;
+    }
+    return '';
   }
 
   getYesVoteDescription (measureWeVoteId) {

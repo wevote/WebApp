@@ -119,15 +119,12 @@ class EditAddressInPlace extends Component {
                   <Settings classes={{ root: classes.settingsIcon }} />
                 </SettingsIconWrapper>
                 <ChangeAddressText>
-                  change address
+                  change your address
                 </ChangeAddressText>
               </ChangeAddressWrapper>
             </EditAddressPreview>
           </EditBlockWrapper>
           <AddressIntroductionWrapper>
-            {ballotCaveat && (
-              <div>{ballotCaveat}</div>
-            )}
             <Suspense fallback={<></>}>
               <ReadMore
                 textToDisplay={addressIntroduction}

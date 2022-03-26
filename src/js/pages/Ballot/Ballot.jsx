@@ -15,7 +15,14 @@ import SupportActions from '../../actions/SupportActions';
 import VoterActions from '../../actions/VoterActions';
 import LoadingWheelComp from '../../common/components/Widgets/LoadingWheelComp';
 import apiCalming from '../../common/utils/apiCalming';
-import { chipLabelText, isAndroidSizeFold, isIOSAppOnMac, isIPadGiantSize, isIPhone6p1in } from '../../common/utils/cordovaUtils';
+import {
+  chipLabelText, isAndroid,
+  isAndroidSizeFold,
+  isIOSAppOnMac,
+  isIPad,
+  isIPadGiantSize,
+  isIPhone6p1in,
+} from '../../common/utils/cordovaUtils';
 import historyPush from '../../common/utils/historyPush';
 import { isCordova, isWebApp } from '../../common/utils/isCordovaOrWebApp';
 import isMobileScreenSize from '../../common/utils/isMobileScreenSize';
@@ -1111,6 +1118,28 @@ class Ballot extends Component {
     }
   }
 
+  marginTopOffset () {
+    const { scrolledDown } = this.state;
+    if (isIOSAppOnMac()) {
+      return '44px';
+    } else if (isIPad()) {
+      return '12px';
+    } else if (isWebApp() && isMobileScreenSize()) {
+      return '24px';
+    } else if (isWebApp()) {
+      if (scrolledDown) {
+        return '64px';
+      } else {
+        return '110px';
+      }
+    } else if (isAndroidSizeFold()) {
+      return '41px';
+    } else if (!isAndroid() && scrolledDown) {  // 2020-08-19, not sure if this is needed for ios or webapp
+      return '12px';
+    }
+    return 0;
+  }
+
   updateOfficeDisplayUnfurledTracker (weVoteId, status) {
     const { ballotItemUnfurledTracker } = this.state;
     const newBallotItemUnfurledTracker = { ...ballotItemUnfurledTracker, [weVoteId]: status };
@@ -1220,7 +1249,11 @@ class Ballot extends Component {
     const emptyBallotButton = completionLevelFilterType !== 'none' && !voterAddressMissing ? (
       <EmptyBallotNotice>
         <EmptyBallotCard>
-          {!ballotCaveat && (
+          {ballotCaveat ? (
+            <BallotCaveatWrapper>
+              {ballotCaveat}
+            </BallotCaveatWrapper>
+          ) : (
             <>
               Your next ballot isn&apos;t available yet. Please try again later.
             </>
@@ -1289,12 +1322,14 @@ class Ballot extends Component {
                     <div className="col-md-12">
                       <Helmet title="Ballot - We Vote" />
                       <header className="ballot__header__group">
-                        <BallotTitleHeader
-                          electionName={electionName}
-                          electionDayTextObject={electionDayTextObject}
-                          toggleSelectBallotModal={this.toggleSelectBallotModal}
-                          scrolled={scrolledDown}
-                        />
+                        <BallotTitleHeaderWrapper marginTopOffset={this.marginTopOffset()}>
+                          <BallotTitleHeader
+                            electionName={electionName}
+                            electionDayTextObject={electionDayTextObject}
+                            toggleSelectBallotModal={this.toggleSelectBallotModal}
+                            scrolled={!!(scrolledDown) || false}
+                          />
+                        </BallotTitleHeaderWrapper>
                       </header>
                       <BallotBottomWrapper scrolledDown={scrolledDown}>
                         { textForMapSearch || ballotWithItemsFromCompletionFilterType.length > 0 ? (
@@ -1429,11 +1464,6 @@ class Ballot extends Component {
                         </EditAddressCard>
                       </EditAddressWrapper>
                     )}
-                    {ballotCaveat && (
-                      <BallotCaveatWrapper>
-                        {ballotCaveat}
-                      </BallotCaveatWrapper>
-                    )}
                     {emptyBallot}
                   </div>
                   {ballotWithItemsFromCompletionFilterType.length > 0 ? (
@@ -1519,6 +1549,7 @@ class Ballot extends Component {
                                       id={chipLabelText(item.ballot_item_display_name)}
                                       candidateList={item.candidate_list}
                                       candidatesToShowForSearchResults={item.candidatesToShowForSearchResults}
+                                      totalNumberOfBallotItems={totalNumberOfBallotItems}
                                       weVoteId={item.we_vote_id}
                                     />
                                   </>
@@ -1633,7 +1664,7 @@ Ballot.propTypes = {
 const BallotBottomWrapper = styled('div', {
   shouldForwardProp: (prop) => !['scrolledDown'].includes(prop),
 })(({ scrolledDown }) => (`
-  ${scrolledDown ? 'margin-top: 28px;' : 'margin-top: 68px;'}
+  ${scrolledDown ? 'margin-top: 18px;' : 'margin-top: 38px;'}
   transition: all 150ms ease-in;
   width: 100%;
   @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
@@ -1655,6 +1686,7 @@ const BallotListWrapper = styled('div')`
 
 const BallotLoadingWrapper = styled('div')`
   font-size: 20px;
+  margin-top: 50px;
   padding-top: 20px;
   text-align: center;
   margin-bottom: ${() => (isIPhone6p1in() ? '800px' : '625px')};
@@ -1665,6 +1697,14 @@ const BallotFilterRow = styled('div')`
   // TODO: 10/4/21 Steve, this is temporary and needs to be more responsive
   // margin-left: {() => (isWebApp() && !isMobileScreenSize() ? 'calc((100vw - 975px)/2)' : '')};
 `;
+
+const BallotTitleHeaderWrapper = styled('div', {
+  shouldForwardProp: (prop) => !['marginTopOffset'].includes(prop),
+})(({ marginTopOffset }) => (`
+  margin-top: ${marginTopOffset};
+  height: 80px; // Includes 35px for ballot address
+  transition: all 150ms ease-in;
+`));
 
 const EditAddressCard = styled('div')`
   padding: 12px 15px 0 15px;
@@ -1755,7 +1795,7 @@ const styles = (theme) => ({
   },
   chipRootAll: {
     height: 22.5,
-    width: 54,
+    width: 64,
   },
   chipOutlined: {
     background: theme.palette.primary.main,
