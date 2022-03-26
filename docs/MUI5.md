@@ -1,4 +1,4 @@
-March 11, 2022  -- Feel free to delete this file in 1 year, there are lots of good thing to find by searching in this file
+March 11, 2022  -- Feel free to delete this file in 1 year, there are lots of good things to find by including this file in code searches
 ## MUI 4 to 5 update
 
 1) "MUI is using emotion as a styling engine by default. If you want to use styled-components instead"
