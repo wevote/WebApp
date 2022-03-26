@@ -37,6 +37,8 @@ import TabWithPushHistory from './TabWithPushHistory';
 const HeaderBarProfilePopUp = React.lazy(() => import(/* webpackChunkName: 'HeaderBarProfilePopUp' */ './HeaderBarProfilePopUp'));
 const HeaderNotificationMenu = React.lazy(() => import(/* webpackChunkName: 'HeaderNotificationMenu' */ './HeaderNotificationMenu'));
 
+/* global $ */
+
 // TODO: Backport "@stripe/react-stripe-js" use from Campaigns
 // import PaidAccountUpgradeModal from '../Settings/PaidAccountUpgradeModal';
 
@@ -72,6 +74,7 @@ class HeaderBar extends Component {
       shareModalStep: '',
       tabsValue: 1,
       organizationModalBallotItemWeVoteId: '',
+      page: 'non-blank-default-value',
       voter: {},
       voterFirstName: '',
       voterIsSignedIn: false,
@@ -163,6 +166,9 @@ class HeaderBar extends Component {
       update = true;
     } else if (this.state.componentDidMountFinished === false) {
       // console.log('shouldComponentUpdate: componentDidMountFinished === false');
+      update = true;
+    } else if (this.state.page !== normalizedHrefPage()) {
+      // console.log('shouldComponentUpdate: this.state.page', this.state.page, ', normalizedHrefPage()', normalizedHrefPage());
       update = true;
     } else if (this.state.profilePopUpOpen !== nextState.profilePopUpOpen) {
       // console.log('shouldComponentUpdate: this.state.profilePopUpOpen', this.state.profilePopUpOpen, ', nextState.profilePopUpOpen', nextState.profilePopUpOpen);
@@ -272,6 +278,10 @@ class HeaderBar extends Component {
     } else if (AppObservableStore.showEditAddressButton()) {
       AppObservableStore.setShowEditAddressButton(false);
     }
+    const { page } = this.state;
+    if (page !== normalizedHrefPage()) {
+      this.customHighlightSelector();
+    }
   }
 
 
@@ -290,6 +300,7 @@ class HeaderBar extends Component {
   }
 
   handleTabChange (newValue) {
+    this.customHighlightSelector();
     // console.log('handleTabChange ', newValue);
     this.setState({ tabsValue: newValue });
   }
@@ -493,6 +504,58 @@ class HeaderBar extends Component {
     if (isDebugLogging) {
       console.log(`HeaderBar shouldComponentUpdate: ${text}`);
     }
+  }
+
+  // Highlight the active tab, but don't highlight anything if not on one of the tabs, for example we are on 'friends'
+  customHighlightSelector () {
+    const normal = {
+      opacity: 0.7,
+      fontWeight: 500,
+      color: 'rgba(51, 51, 51)',
+    };
+    const highlight = {
+      opacity: 1,
+      fontWeight: 800,
+      color: 'black',
+    };
+
+    if (window.$) {
+      // console.log('customHighlightSelector called for page: ', normalizedHrefPage());
+      const ready = $('#readyTabHeaderBar');
+      const ballot = $('#ballotTabHeaderBar');
+      const values = $('#valuesTabHeaderBar');
+      const news = $('#discussTabHeaderBar');
+      ready.css(normal);
+      ballot.css(normal);
+      values.css(normal);       // Opinions
+      news.css(normal);         // Discuss
+
+      switch (normalizedHrefPage()) {
+        case 'ready':
+          ready.css(highlight);
+          break;
+        case '':
+          ready.css(highlight);
+          break;
+        case 'ballot':
+          ballot.css(highlight);
+          break;
+        case 'values':
+          values.css(highlight);
+          break;
+        case 'news':
+          news.css(highlight);
+          break;
+        default:
+          break;
+      }
+    } else {
+      setTimeout(() => {
+        console.log('customHighlightSelector purposefully called recursively');
+        this.customHighlightSelector();
+      }, 500);
+    }
+    this.setState({ page: normalizedHrefPage() });
   }
 
   render () {
@@ -899,7 +962,7 @@ const styles = (theme) => ({
     minWidth: 90,
   },
   indicator: {
-    height: 4,
+    display: 'none',
   },
 });
 

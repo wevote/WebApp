@@ -24,6 +24,8 @@ import Testimonial from '../components/Widgets/Testimonial';
 import AppObservableStore from '../stores/AppObservableStore';
 import IssueStore from '../stores/IssueStore';
 import VoterStore from '../stores/VoterStore';
+// Lint is not smart enough to know that lazyPreloadPages will not attempt to preload/reload this page
+// eslint-disable-next-line import/no-cycle
 import lazyPreloadPages from '../utils/lazyPreloadPages';
 
 const FirstAndLastNameRequiredAlert = React.lazy(() => import(/* webpackChunkName: 'FirstAndLastNameRequiredAlert' */ '../components/Widgets/FirstAndLastNameRequiredAlert'));

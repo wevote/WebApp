@@ -568,7 +568,7 @@ const SourceLink = styled('div')`
   margin-bottom: -4px;
 `;
 
-// const TwitterIcon = styled.span`
+// const TwitterIcon = styled('span')`
 //   font-size: 16px;
 //   color: #ccc;
 //   margin-right: 2px;

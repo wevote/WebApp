@@ -50,5 +50,5 @@ SvgImage.propTypes = {
   imageName: PropTypes.string,
   width: PropTypes.string,
   alt: PropTypes.string,
-  stylesText: PropTypes.object,
+  stylesTextIncoming: PropTypes.object,
 };

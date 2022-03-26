@@ -40,7 +40,7 @@ class FriendDisplayForList extends Component {
     );
 
     const friendDisplayHtml = (
-      <FriendDisplayOuterWrapper previewMode={this.props.previewMode}>
+      <FriendDisplayOuterWrapper/* previewMode={this.props.previewMode} */>
         <FriendColumnWithoutButtons>
           <Avatar>
             { voterGuideLink ? (

@@ -101,7 +101,7 @@ class FriendInvitationVoterLinkDisplayForList extends Component {
     );
 
     const friendInvitationHtml = (
-      <FriendDisplayOuterWrapper previewMode={previewMode}>
+      <FriendDisplayOuterWrapper/* previewMode={previewMode} */>
         <FriendColumnWithoutButtons>
           <Avatar>
             { voterGuideLink ? (
