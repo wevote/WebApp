@@ -1,11 +1,11 @@
 import { Search } from '@mui/icons-material';
 import { IconButton, InputBase } from '@mui/material';
-import styled from '@mui/material/styles/styled';
 import withStyles from '@mui/styles/withStyles';
 import withTheme from '@mui/styles/withTheme';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
 import { Link } from 'react-router-dom';
+import styled from 'styled-components';
 import { blurTextFieldAndroid, focusTextFieldAndroid, isAndroid, isIOS } from '../../common/utils/cordovaUtils';
 import historyPush from '../../common/utils/historyPush';
 import { isCordova } from '../../common/utils/isCordovaOrWebApp';

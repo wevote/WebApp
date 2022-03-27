@@ -1,5 +1,5 @@
-import styled from '@mui/material/styles/styled';
 import React, { Component, Suspense } from 'react';
+import styled from 'styled-components';
 import { renderLog } from '../utils/logging';
 
 const OpenExternalWebSite = React.lazy(() => import(/* webpackChunkName: 'OpenExternalWebSite' */ './Widgets/OpenExternalWebSite'));

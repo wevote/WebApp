@@ -1,7 +1,7 @@
 import { Button } from '@mui/material';
-import styled from '@mui/material/styles/styled';
 import PropTypes from 'prop-types';
 import React from 'react';
+import styled from 'styled-components';
 import BallotActions from '../../actions/BallotActions';
 import { formatDateToMonthDayYear } from '../../common/utils/dateFormat';
 import historyPush from '../../common/utils/historyPush';

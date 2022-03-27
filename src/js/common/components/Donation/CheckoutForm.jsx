@@ -1,12 +1,12 @@
 import { LockOutlined } from '@mui/icons-material';
 import { CircularProgress, TextField } from '@mui/material';
-import styled from '@mui/material/styles/styled';
 import { styled as muiStyled } from '@mui/styles';
 import withStyles from '@mui/styles/withStyles';
 import withTheme from '@mui/styles/withTheme';
 import { CardElement } from '@stripe/react-stripe-js';
 import PropTypes from 'prop-types';
 import React from 'react';
+import styled from 'styled-components';
 import VoterStore from '../../../stores/VoterStore';
 import DonateActions from '../../actions/DonateActions';
 import DonateStore from '../../stores/DonateStore';

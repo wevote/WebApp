@@ -1,8 +1,8 @@
 import { Button, Grid, Modal } from '@mui/material';
-import styled from '@mui/material/styles/styled';
 import moment from 'moment';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
+import styled from 'styled-components';
 import DonateActions from '../../actions/DonateActions';
 import { renderLog } from '../../utils/logging';
 

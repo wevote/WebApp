@@ -1,9 +1,9 @@
 import { Info } from '@mui/icons-material';
-import styled from '@mui/material/styles/styled';
 import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
 import Helmet from 'react-helmet';
+import styled from 'styled-components';
 import AnalyticsActions from '../../actions/AnalyticsActions';
 import CandidateActions from '../../actions/CandidateActions';
 import OrganizationActions from '../../actions/OrganizationActions';

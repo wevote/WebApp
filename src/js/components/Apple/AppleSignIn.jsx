@@ -1,6 +1,6 @@
-import styled from '@mui/material/styles/styled';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
+import styled from 'styled-components';
 import VoterActions from '../../actions/VoterActions';
 import { isAndroid, isIOS } from '../../common/utils/cordovaUtils';
 import { isWebApp } from '../../common/utils/isCordovaOrWebApp';

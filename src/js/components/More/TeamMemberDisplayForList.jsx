@@ -1,7 +1,7 @@
-import styled from '@mui/material/styles/styled';
 import { keyframes } from '@emotion/react';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
+import styled from 'styled-components';
 import { renderLog } from '../../common/utils/logging';
 
 const ImageHandler = React.lazy(() => import(/* webpackChunkName: 'ImageHandler' */ '../ImageHandler'));

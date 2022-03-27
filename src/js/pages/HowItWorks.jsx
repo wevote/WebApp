@@ -1,9 +1,9 @@
 import { Button } from '@mui/material';
-import styled from '@mui/material/styles/styled';
 import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
 import Helmet from 'react-helmet';
+import styled from 'styled-components';
 import VoterActions from '../actions/VoterActions';
 import historyPush from '../common/utils/historyPush';
 import { isCordova } from '../common/utils/isCordovaOrWebApp';

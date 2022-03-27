@@ -1,9 +1,9 @@
 import { AccountCircle } from '@mui/icons-material';
-import styled from '@mui/material/styles/styled';
 import withStyles from '@mui/styles/withStyles';
 import { DropzoneArea } from 'mui-file-dropzone';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
+import styled from 'styled-components';
 import VoterActions from '../../../actions/VoterActions';
 import VoterStore from '../../../stores/VoterStore';
 import isMobileScreenSize from '../../utils/isMobileScreenSize';

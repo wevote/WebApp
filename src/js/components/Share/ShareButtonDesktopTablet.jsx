@@ -1,9 +1,9 @@
 import { Reply } from '@mui/icons-material';
 import { Button } from '@mui/material';
-import styled from '@mui/material/styles/styled';
 import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
+import styled from 'styled-components';
 import AnalyticsActions from '../../actions/AnalyticsActions';
 import ShareActions from '../../common/actions/ShareActions';
 import historyPush from '../../common/utils/historyPush';

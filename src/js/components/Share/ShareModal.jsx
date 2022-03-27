@@ -1,11 +1,11 @@
 import { ArrowBackIos, Close, FileCopyOutlined, People } from '@mui/icons-material';
 import { Button, Dialog, DialogContent, IconButton, Tooltip } from '@mui/material';
-import styled from '@mui/material/styles/styled';
 import withStyles from '@mui/styles/withStyles';
 import withTheme from '@mui/styles/withTheme';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
 import { EmailIcon, EmailShareButton, FacebookIcon, FacebookShareButton, TwitterIcon, TwitterShareButton } from 'react-share';
+import styled from 'styled-components';
 import AnalyticsActions from '../../actions/AnalyticsActions';
 import FriendActions from '../../actions/FriendActions';
 import ShareActions from '../../common/actions/ShareActions';

@@ -1,9 +1,9 @@
 import { StyledEngineProvider, ThemeProvider } from '@mui/material/styles';
-import styled from '@mui/material/styles/styled';
 import React, { Component, Suspense } from 'react';
 import FullStory from 'react-fullstory';
 import ReactGA from 'react-ga';
 import { Redirect, Route, Switch } from 'react-router-dom';
+import styled from 'styled-components';
 import muiTheme from './js/common/components/Style/muiTheme';
 import ErrorBoundary from './js/common/components/Widgets/ErrorBoundary';
 import LoadingWheelComp from './js/common/components/Widgets/LoadingWheelComp';
@@ -216,7 +216,7 @@ class App extends Component {
           <ThemeProvider theme={muiTheme}>
             {/* March 2022: We used to have two themeproviders here, one for material-ui, and one for styled-components, but the two are combined in V5 MUI */}
             <WeVoteRouter>
-              <WeVoteBody id="WeVoteBody">
+              <WeVoteBody>
                 {/* DO NOT put SnackNotifier or anything else that is non-essential here (to keep it out of the main chunk. */}
                 <Suspense fallback={<HeaderBarSuspense />}>
                   <Header params={{ }} pathname={normalizedHref()} />

@@ -1,6 +1,6 @@
-import styled from '@mui/material/styles/styled';
 import React, { Component, Suspense } from 'react';
 import Helmet from 'react-helmet';
+import styled from 'styled-components';
 import OrganizationActions from '../../actions/OrganizationActions';
 import VoterGuideActions from '../../actions/VoterGuideActions';
 import { renderLog } from '../../common/utils/logging';

@@ -1,5 +1,5 @@
-import styled from '@mui/material/styles/styled';
 import React, { Component } from 'react';
+import styled from 'styled-components';
 import TwitterActions from '../../actions/TwitterActions';
 import VoterActions from '../../actions/VoterActions';
 import LoadingWheel from '../../common/components/Widgets/LoadingWheel';

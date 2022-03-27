@@ -1,7 +1,7 @@
 import { Card } from '@mui/material';
-import styled from '@mui/material/styles/styled';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
+import styled from 'styled-components';
 import TwitterActions from '../../actions/TwitterActions';
 import LoadingWheel from '../../common/components/Widgets/LoadingWheel';
 import { renderLog } from '../../common/utils/logging';

@@ -1,5 +1,5 @@
-import styled from '@mui/material/styles/styled';
 import React from 'react';
+import styled from 'styled-components';
 import { renderLog } from '../../common/utils/logging';
 import getHeaderObjects from '../../utils/getHeaderObjects';
 

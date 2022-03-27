@@ -1,10 +1,10 @@
 import { Info, Launch, Twitter } from '@mui/icons-material';
-import styled from '@mui/material/styles/styled';
 import withStyles from '@mui/styles/withStyles';
 import withTheme from '@mui/styles/withTheme';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
 import TextTruncate from 'react-text-truncate'; // Replace with: import TruncateMarkup from 'react-truncate-markup';
+import styled from 'styled-components';
 import { isAndroidSizeMD } from '../../common/utils/cordovaUtils';
 import historyPush from '../../common/utils/historyPush';
 import { renderLog } from '../../common/utils/logging';

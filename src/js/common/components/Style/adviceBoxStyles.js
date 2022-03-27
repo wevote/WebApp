@@ -1,4 +1,4 @@
-import styled from '@mui/material/styles/styled';
+import styled from 'styled-components';
 
 const AdviceBox = styled('div')(({ theme }) => (`
   margin: 25px;
