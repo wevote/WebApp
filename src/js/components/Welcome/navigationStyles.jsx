@@ -1,4 +1,4 @@
-import styled from '@mui/material/styles/styled';
+import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 
 const LogoContainer = styled('div')(({ theme }) => (`

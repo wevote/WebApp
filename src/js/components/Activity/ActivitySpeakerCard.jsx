@@ -1,5 +1,5 @@
 import { Twitter } from '@mui/icons-material';
-import styled from '@mui/material/styles/styled';
+import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
 import LoadingWheel from '../../common/components/Widgets/LoadingWheel';

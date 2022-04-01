@@ -1,6 +1,6 @@
 import { Close, Info } from '@mui/icons-material';
 import { Drawer, IconButton } from '@mui/material';
-import styled from '@mui/material/styles/styled';
+import styled from 'styled-components';
 import withStyles from '@mui/styles/withStyles';
 import withTheme from '@mui/styles/withTheme';
 import PropTypes from 'prop-types';

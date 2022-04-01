@@ -3,7 +3,7 @@ import { CheckCircle, NotInterested } from '@mui/icons-material';
 import { Button } from '@mui/material';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
-import styled from '@mui/material/styles/styled';
+import styled from 'styled-components';
 import { styled as muiStyled } from '@mui/styles';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';

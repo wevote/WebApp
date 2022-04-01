@@ -2,7 +2,7 @@ import { filter } from 'lodash-es';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
 import Helmet from 'react-helmet';
-import styled from '@mui/material/styles/styled';
+import styled from 'styled-components';
 import OrganizationActions from '../../actions/OrganizationActions';
 import VoterGuideActions from '../../actions/VoterGuideActions';
 import OrganizationStore from '../../stores/OrganizationStore';

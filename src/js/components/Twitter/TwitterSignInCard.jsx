@@ -1,4 +1,4 @@
-import styled from '@mui/material/styles/styled';
+import styled from 'styled-components';
 import React, { Component } from 'react';
 import { renderLog } from '../../common/utils/logging';
 import InfoCircleIcon from '../Widgets/InfoCircleIcon';

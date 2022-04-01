@@ -1,4 +1,4 @@
-import styled from '@mui/material/styles/styled';
+import styled from 'styled-components';
 import withTheme from '@mui/styles/withTheme';
 import PropTypes from 'prop-types';
 import React, { PureComponent } from 'react';

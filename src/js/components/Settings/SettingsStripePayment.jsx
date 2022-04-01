@@ -1,6 +1,6 @@
 import { Button } from '@mui/material';
 // TODO 5/11/21: Use Campaigns payment code:  import { CardElement, injectStripe } from 'react-stripe-elements';
-import styled from '@mui/material/styles/styled';
+import styled from 'styled-components';
 import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';

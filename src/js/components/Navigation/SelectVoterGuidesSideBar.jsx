@@ -1,5 +1,5 @@
 import { Button } from '@mui/material';
-import styled from '@mui/material/styles/styled';
+import styled from 'styled-components';
 import React, { Component } from 'react';
 import { renderLog } from '../../common/utils/logging';
 import AppObservableStore, { messageService } from '../../stores/AppObservableStore';

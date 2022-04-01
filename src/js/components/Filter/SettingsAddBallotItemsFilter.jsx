@@ -1,5 +1,5 @@
 import { Chip, FormControlLabel, Input, MenuItem, Radio, Select } from '@mui/material';
-import styled from '@mui/material/styles/styled';
+import styled from 'styled-components';
 import withStyles from '@mui/styles/withStyles';
 import isEqual from 'lodash-es/isEqual';
 import PropTypes from 'prop-types';

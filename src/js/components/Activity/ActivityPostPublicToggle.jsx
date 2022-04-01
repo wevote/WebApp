@@ -1,6 +1,6 @@
 import { Close } from '@mui/icons-material';
 import { Dialog, DialogContent, DialogTitle, FormControl, FormControlLabel, IconButton, Radio, Typography } from '@mui/material';
-import styled from '@mui/material/styles/styled';
+import styled from 'styled-components';
 import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
