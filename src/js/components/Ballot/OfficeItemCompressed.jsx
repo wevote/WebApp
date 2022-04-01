@@ -34,7 +34,7 @@ class OfficeItemCompressed extends Component {
     super(props);
     this.state = {
       candidateList: [],
-      limitNumberOfCandidatesShowToThisNumber: NUMBER_OF_CANDIDATES_TO_DISPLAY,
+      limitNumberOfCandidatesShownToThisNumber: NUMBER_OF_CANDIDATES_TO_DISPLAY,
       organizationWeVoteId: '',
       positionListFromFriendsHasBeenRetrievedOnce: {},
       positionListHasBeenRetrievedOnce: {},
@@ -178,7 +178,7 @@ class OfficeItemCompressed extends Component {
           if (!limitCandidatesShownBecauseMoreThanFourBallotItems) {
             // If the ballot is only show 5 ballot items, then don't limit the number of candidates we show
             this.setState({
-              limitNumberOfCandidatesShowToThisNumber: newCandidateList.length,
+              limitNumberOfCandidatesShownToThisNumber: newCandidateList.length,
             });
           }
         }
@@ -224,7 +224,7 @@ class OfficeItemCompressed extends Component {
     const { externalUniqueId } = this.props;
     let { candidatesToShowForSearchResults } = this.props;
     candidatesToShowForSearchResults = candidatesToShowForSearchResults || [];
-    const { candidateList, limitNumberOfCandidatesShowToThisNumber } = this.state;
+    const { candidateList, limitNumberOfCandidatesShownToThisNumber } = this.state;
     // If voter has chosen 1+ candidates, only show those
     const supportedCandidatesList = candidateList.filter((candidate) => candidatesToShowForSearchResults.includes(candidate.we_vote_id) || (SupportStore.getVoterSupportsByBallotItemWeVoteId(candidate.we_vote_id) && !candidate.withdrawn_from_election));
     const candidatesToRender = supportedCandidatesList.length ? supportedCandidatesList : candidateList;
@@ -233,7 +233,7 @@ class OfficeItemCompressed extends Component {
     let candidateCount = 0;
     return (
       <CandidatesContainer>
-        { candidatesToRender.slice(0, limitNumberOfCandidatesShowToThisNumber)
+        { candidatesToRender.slice(0, limitNumberOfCandidatesShownToThisNumber)
           .map((oneCandidate) => {
             if (!oneCandidate || !oneCandidate.we_vote_id) {
               return null;
@@ -284,10 +284,10 @@ class OfficeItemCompressed extends Component {
                           </Suspense>
                         </BallotItemSupportOpposeCountDisplayWrapper>
                       </CandidateTopRow>
-                      {!hideCandidateDetails && (
-                        <CandidateBottomRow>
-                          {/* If there is a quote about the candidate, show that. If not, show issues related to candidate */}
+                      <CandidateBottomRow>
+                        {!hideCandidateDetails && (
                           <Suspense fallback={<></>}>
+                            {/* If there is a quote about the candidate, show that. If not, show issues related to candidate */}
                             <DelayedLoad showLoadingText waitBeforeShow={500}>
                               <TopCommentByBallotItem
                                 ballotItemWeVoteId={oneCandidate.we_vote_id}
@@ -307,20 +307,20 @@ class OfficeItemCompressed extends Component {
                               </TopCommentByBallotItem>
                             </DelayedLoad>
                           </Suspense>
-                          <ItemActionBarWrapper>
-                            <Suspense fallback={<></>}>
-                              <ItemActionBar
-                                ballotItemWeVoteId={oneCandidate.we_vote_id}
-                                commentButtonHide
-                                externalUniqueId={`OfficeItemCompressed-ItemActionBar-${oneCandidate.we_vote_id}-${externalUniqueId}`}
-                                hidePositionPublicToggle
-                                positionPublicToggleWrapAllowed
-                                shareButtonHide
-                              />
-                            </Suspense>
-                          </ItemActionBarWrapper>
-                        </CandidateBottomRow>
-                      )}
+                        )}
+                        <ItemActionBarWrapper>
+                          <Suspense fallback={<></>}>
+                            <ItemActionBar
+                              ballotItemWeVoteId={oneCandidate.we_vote_id}
+                              commentButtonHide
+                              externalUniqueId={`OfficeItemCompressed-ItemActionBar-${oneCandidate.we_vote_id}-${externalUniqueId}`}
+                              // hidePositionPublicToggle
+                              positionPublicToggleWrapAllowed
+                              shareButtonHide
+                            />
+                          </Suspense>
+                        </ItemActionBarWrapper>
+                      </CandidateBottomRow>
                     </CandidateInfo>
                   </CandidateWrapper>
                   <PositionRowListOuterWrapper className="u-show-desktop-tablet">
@@ -329,7 +329,7 @@ class OfficeItemCompressed extends Component {
                         Score
                       </ScoreWrapper>
                       <PositionWrapper>
-                        Opinions
+                        Endorsements
                       </PositionWrapper>
                     </SupportOpposeCountDisplayWrapper>
                     <OverflowContainer>
@@ -372,7 +372,7 @@ class OfficeItemCompressed extends Component {
                     </OverflowContainer>
                   </PositionRowListOuterWrapper>
                 </CandidateContainer>
-                {((candidateCount < candidatesToRenderLength) && (candidateCount < limitNumberOfCandidatesShowToThisNumber)) && (
+                {((candidateCount < candidatesToRenderLength) && (candidateCount < limitNumberOfCandidatesShownToThisNumber)) && (
                   <div>
                     <HrSeparator />
                   </div>
@@ -386,7 +386,7 @@ class OfficeItemCompressed extends Component {
 
   showAllCandidates () {
     this.setState({
-      limitNumberOfCandidatesShowToThisNumber: 99,
+      limitNumberOfCandidatesShownToThisNumber: 99,
     });
   }
 
@@ -421,13 +421,13 @@ class OfficeItemCompressed extends Component {
     // console.log('OfficeItemCompressed render');
     let { ballotItemDisplayName } = this.props;
     const { officeWeVoteId } = this.props; // classes
-    const { limitNumberOfCandidatesShowToThisNumber } = this.state;
+    const { limitNumberOfCandidatesShownToThisNumber } = this.state;
     ballotItemDisplayName = toTitleCase(ballotItemDisplayName);
     // If voter has chosen 1+ candidates, hide the "Show more" link
     const { candidateList, candidateListLength } = this.state;
     const supportedCandidatesList = candidateList.filter((candidate) => (SupportStore.getVoterSupportsByBallotItemWeVoteId(candidate.we_vote_id) && !candidate.withdrawn_from_election));
     const thereIsAtLeastOneSupportedCandidate = supportedCandidatesList.length > 0;
-    const moreCandidatesToDisplay = limitNumberOfCandidatesShowToThisNumber < candidateListLength;
+    const moreCandidatesToDisplay = limitNumberOfCandidatesShownToThisNumber < candidateListLength;
     return (
       <OfficeItemCompressedWrapper>
         <a // eslint-disable-line
@@ -575,7 +575,7 @@ const ItemActionBarWrapper = styled('div')`
   cursor: pointer;
   flex-direction: row;
   justify-content: flex-start;
-  margin-top: 4px;
+  margin-top: 12px;
   width: 100%;
 `;
 
@@ -636,7 +636,7 @@ const Title = styled('h2')(({ theme }) => (`
   margin-bottom: 6px;
   width: fit-content;
   ${theme.breakpoints.down('lg')} {
-    font-size: 16px;
+    font-size: 24px;
     margin-bottom: 2px;
   }
 `));

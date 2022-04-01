@@ -11405,6 +11405,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .u-link-color-on-hover {
+  color: #4371cc;
 }
 
 .u-link-color-on-hover:hover {
@@ -14553,11 +14554,13 @@ a {
   color: #2e3c5d;
 }
 
+{/*
 @media all and (min-width: 320px) and (max-width: 575px) {
   .header-sign-in {
     font-size: 0.8rem !important;
   }
 }
+*/}
 
 .search-cordova {
   width: 100%;

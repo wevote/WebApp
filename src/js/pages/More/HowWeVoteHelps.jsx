@@ -24,7 +24,11 @@ export default class HowWeVoteHelps extends Component {
         <PageContentContainer>
           <ContainerFluidWrapper className="container-fluid card">
             <div className="card-main">
-              <ReadyIntroduction contentUnfurledOnLoad />
+              <ReadyIntroduction
+                contentUnfurledOnLoad
+                titleCentered
+                titleLarge
+              />
               <br />
               <br />
               <CenteredWrapper>

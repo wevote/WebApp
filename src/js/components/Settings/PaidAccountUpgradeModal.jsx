@@ -13,7 +13,8 @@ import { hasIPhoneNotch, isIOS } from '../../common/utils/cordovaUtils';
 import extractNumber from '../../common/utils/extractNumber';
 import { normalizedHref } from '../../common/utils/hrefUtils';
 import { renderLog } from '../../common/utils/logging';
-import { numberWithCommas, stringContains } from '../../utils/textFormat';
+import numberWithCommas from '../../common/utils/numberWithCommas';
+import { stringContains } from '../../utils/textFormat';
 // TODO 5/11/21: import SettingsStripePayment from './SettingsStripePayment';
 
 

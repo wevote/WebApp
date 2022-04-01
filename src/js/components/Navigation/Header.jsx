@@ -138,20 +138,20 @@ export default class Header extends Component {
     });
   }
 
-  closeHowItWorksModal () {
-    AppObservableStore.setShowHowItWorksModal(false);
-  }
-
-  closeVoterPlanModal () {
-    AppObservableStore.setShowVoterPlanModal(false);
+  closePositionDrawer = () => {
+    AppObservableStore.setShowPositionDrawer(false);
   }
 
   closeOrganizationModal = () => {
     AppObservableStore.setShowOrganizationModal(false);
   }
 
-  closePositionDrawer = () => {
-    AppObservableStore.setShowPositionDrawer(false);
+  closeHowItWorksModal () {
+    AppObservableStore.setShowHowItWorksModal(false);
+  }
+
+  closeVoterPlanModal () {
+    AppObservableStore.setShowVoterPlanModal(false);
   }
 
   closeActivityTidbitDrawer () {

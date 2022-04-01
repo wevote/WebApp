@@ -1,8 +1,9 @@
-import styled from '@mui/material/styles/styled';
+import { Add, Check } from '@mui/icons-material';
 import withStyles from '@mui/styles/withStyles';
 import withTheme from '@mui/styles/withTheme';
 import React, { Component, Suspense } from 'react';
 import PropTypes from 'prop-types';
+import styled from 'styled-components';
 import OrganizationActions from '../../actions/OrganizationActions';
 import AppObservableStore from '../../stores/AppObservableStore';
 import FriendStore from '../../stores/FriendStore';
@@ -192,11 +193,13 @@ class PositionRowLogoAndText extends Component {
                 <SupportAndPartOfScore>
                   <ScoreWrapper>
                     <ScoreNumberWrapper>
-                      +1
+                      <Check />
                     </ScoreNumberWrapper>
+                    {/*
                     <ToScoreLabel className="u-no-break">
                       to score
                     </ToScoreLabel>
+                    */}
                   </ScoreWrapper>
                 </SupportAndPartOfScore>
               </OrganizationSupportWrapper>
@@ -206,12 +209,14 @@ class PositionRowLogoAndText extends Component {
                   <OrganizationOpposeWrapper>
                     <OpposeAndPartOfScore>
                       <ScoreWrapper>
-                        <ScoreNumberWrapper>
-                          -1
+                        <ScoreNumberWrapper className="u-no-break">
+                          <Check />
                         </ScoreNumberWrapper>
+                        {/*
                         <FromScoreLabel>
                           from score
                         </FromScoreLabel>
+                        */}
                       </ScoreWrapper>
                     </OpposeAndPartOfScore>
                   </OrganizationOpposeWrapper>
@@ -220,13 +225,15 @@ class PositionRowLogoAndText extends Component {
                     {supportOpposeInfo === 'SupportButNotPartOfScore' ? (
                       <OrganizationSupportWrapper>
                         <OrganizationSupportSquare>
-                          <AddScoreWrapper className="u-link-color-on-hover">
-                            <ToScoreLabel1>
-                              add
+                          <AddScoreWrapper>
+                            <ToScoreLabel1 className="u-no-break">
+                              <Add />
                             </ToScoreLabel1>
+                            {/*
                             <ToScoreLabel2 className="u-no-break">
                               to score
                             </ToScoreLabel2>
+                            */}
                           </AddScoreWrapper>
                         </OrganizationSupportSquare>
                       </OrganizationSupportWrapper>
@@ -235,13 +242,15 @@ class PositionRowLogoAndText extends Component {
                         {supportOpposeInfo === 'OpposeButNotPartOfScore' ? (
                           <OrganizationOpposeWrapper>
                             <OrganizationOpposeSquare>
-                              <AddScoreWrapper className="u-link-color-on-hover">
-                                <ToScoreLabel1>
-                                  add
+                              <AddScoreWrapper>
+                                <ToScoreLabel1 className="u-no-break">
+                                  <Add />
                                 </ToScoreLabel1>
+                                {/*
                                 <ToScoreLabel2 className="u-no-break">
-                                  to score
+                                  from score
                                 </ToScoreLabel2>
+                                */}
                               </AddScoreWrapper>
                             </OrganizationOpposeSquare>
                           </OrganizationOpposeWrapper>
@@ -300,12 +309,12 @@ const AddScoreWrapper = styled('div')`
   padding-top: 4px;
 `;
 
-const FromScoreLabel = styled('div')`
-  font-size: 10px;
-  line-height: 11px;
-  margin-top: -4px;
-  text-align: center;
-`;
+// const FromScoreLabel = styled('div')`
+//   font-size: 10px;
+//   line-height: 11px;
+//   margin-top: -4px;
+//   text-align: center;
+// `;
 
 const HorizontalSpacer = styled('div')`
   border-bottom: 1px dotted #dcdcdc;
@@ -434,20 +443,20 @@ const SupportAndPartOfScore = styled('div')(({ theme }) => (`
   width: 40px;
 `));
 
-const ToScoreLabel = styled('div')`
-  font-size: 10px;
-  margin-top: -6px;
-`;
+// const ToScoreLabel = styled('div')`
+//   font-size: 10px;
+//   margin-top: -6px;
+// `;
 
 const ToScoreLabel1 = styled('div')`
   font-size: 14px;
   margin-top: 0;
 `;
 
-const ToScoreLabel2 = styled('div')`
-  font-size: 10px;
-  margin-top: -3px;
-`;
+// const ToScoreLabel2 = styled('div')`
+//   font-size: 10px;
+//   margin-top: -3px;
+// `;
 
 const Wrapper = styled('div')`
 `;

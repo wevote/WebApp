@@ -2,6 +2,7 @@ const muiStyleOverrides = {
   MuiButton: {
     styleOverrides: {
       root: {
+        boxShadow: 'unset',
         fontFamily: '"Nunito Sans", "Helvetica Neue Light", "Helvetica Neue", "Helvetica", "Arial", sans-serif',
         fontSize: '16px',
         textTransform: 'none',

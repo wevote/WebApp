@@ -16,7 +16,7 @@ class FooterMainWeVote extends Component {
           <TopSectionInnerWrapper>
             <Column>
               <ColumnTitle>About We Vote</ColumnTitle>
-              <Link id="footerLinkHowWeVoteHelps" className={classes.link} to="/more/howwevotehelps">How We Vote Helps</Link>
+              <Link id="footerLinkWelcome" className={classes.link} to="/welcome">Welcome</Link>
               <Link id="footerLinkAbout" className={classes.link} to="/more/about">About &amp; Team</Link>
               <Link id="footerLinkCredits" className={classes.link} to="/more/credits">Credits &amp; Thanks</Link>
               {/* <Link id="footerLinkImpact" className={classes.link} to="/impact">Impact</Link> */}

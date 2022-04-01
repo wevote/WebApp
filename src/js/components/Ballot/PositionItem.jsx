@@ -1,14 +1,15 @@
 import { Twitter } from '@mui/icons-material';
 import { Button } from '@mui/material';
-import styled from '@mui/material/styles/styled';
 import withStyles from '@mui/styles/withStyles';
 import withTheme from '@mui/styles/withTheme';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
 import { Link } from 'react-router-dom';
+import styled from 'styled-components';
 import OrganizationActions from '../../actions/OrganizationActions';
 import ExternalLinkIcon from '../../common/components/Widgets/ExternalLinkIcon';
 import SvgImage from '../../common/components/Widgets/SvgImage';
+import abbreviateNumber from '../../common/utils/abbreviateNumber';
 import { renderLog } from '../../common/utils/logging';
 import normalizedImagePath from '../../common/utils/normalizedImagePath';
 import AppObservableStore from '../../stores/AppObservableStore';
@@ -18,7 +19,6 @@ import OrganizationStore from '../../stores/OrganizationStore';
 import VoterGuideStore from '../../stores/VoterGuideStore';
 import VoterStore from '../../stores/VoterStore';
 import { isSpeakerTypeIndividual, isSpeakerTypeOrganization } from '../../utils/organization-functions';
-import { abbreviateNumber } from '../../utils/textFormat';
 import OrganizationPopoverCard from '../Organization/OrganizationPopoverCard';
 import IssuesByOrganizationDisplayList from '../Values/IssuesByOrganizationDisplayList';
 import PositionItemScorePopover from '../Widgets/PositionItemScorePopover';
@@ -321,6 +321,27 @@ class PositionItem extends Component {
                         )}
                       </DesktopItemTwitterContainer>
                     </DesktopItemNameContainer>
+                    {(position.is_support || position.is_oppose) && (
+                      <DesktopItemSupportOrOppose>
+                        {position.is_support ? (
+                          <>
+                            endorses
+                            {' '}
+                            {position.ballot_item_display_name}
+                          </>
+                        ) : (
+                          <>
+                            {position.is_oppose && (
+                              <>
+                                opposes
+                                {' '}
+                                {position.ballot_item_display_name}
+                              </>
+                            )}
+                          </>
+                        )}
+                      </DesktopItemSupportOrOppose>
+                    )}
                     <DesktopItemIssues>
                       <IssuesByOrganizationDisplayList
                         organizationWeVoteId={organizationWeVoteId}
@@ -353,11 +374,6 @@ class PositionItem extends Component {
                     {positionDescription}
                   </DesktopItemDescription>
                   <DesktopItemFooter>
-                    {/* <strong>Was this Useful?</strong>
-                    Yes  No
-                    <div className="u-float-right">
-                      Flag Links
-                    </div> */}
                     {moreInfoUrl ? (
                       <SourceLink>
                         <Suspense fallback={<></>}>
@@ -566,7 +582,7 @@ const DesktopItemBody = styled('div')`
 `;
 
 const DesktopItemDescription = styled('div')`
-  font-size: 14px;
+  // font-size: 14px;
   margin-top: 8px;
 `;
 
@@ -628,6 +644,11 @@ const DesktopItemNameIssueContainer = styled('div')`
   padding: 0;
 `;
 
+const DesktopItemSupportOrOppose = styled('div')`
+  margin-top: -4px;
+  margin-right: 10px;
+`;
+
 const DesktopItemTwitter = styled('div')`
   display: inline-block;
   font-size: 13px;
@@ -651,7 +672,7 @@ const MobileItemDescription = styled('div')(({ theme }) => (`
   color: #333;
   flex: 1 1 0;
   ${theme.breakpoints.down('md')} {
-    font-size: 14px;
+    // font-size: 14px;
   }
 `));
 

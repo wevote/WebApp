@@ -1,8 +1,8 @@
-import styled from '@mui/material/styles/styled';
 import withStyles from '@mui/styles/withStyles';
 import withTheme from '@mui/styles/withTheme';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
+import styled from 'styled-components';
 import FriendActions from '../../actions/FriendActions';
 import OrganizationActions from '../../actions/OrganizationActions';
 import LoadingWheel from '../../common/components/Widgets/LoadingWheel';
@@ -244,7 +244,7 @@ class PositionRowList extends Component {
                   {filteredPositionListLength - numberOfPositionItemsDisplayed}
                   {' '}
                   more
-                  {showInfoOnly ? (
+                  {/* showInfoOnly ? (
                     <>
                       {' '}
                       info
@@ -267,7 +267,7 @@ class PositionRowList extends Component {
                         </>
                       )}
                     </>
-                  )}
+                  ) */}
                 </ShowMoreEndorsementsLink>
               </ShowMoreEndorsementsContainer>
             </div>

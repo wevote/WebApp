@@ -33,25 +33,18 @@ class ReadyIntroduction extends Component {
   render () {
     renderLog('ReadyIntroduction');  // Set LOG_RENDER_EVENTS to log all renders
     const { contentUnfurled } = this.state;
-    const { contentUnfurledOnLoad, showStep3WhenCompressed } = this.props;
-    // const numberOfCandidates = '12,600';
-    // const numberOfOffices = '6,500';
+    const { contentUnfurledOnLoad, showStep3WhenCompressed, titleCentered, titleLarge } = this.props;
     return (
       <OuterWrapper>
         <InnerWrapper>
-          <IntroHeader>
-            <span className="u-show-mobile-tablet">
-              We Vote helps you:
-            </span>
-            <span className="u-show-desktop">
-              We Vote helps you:
-            </span>
+          <IntroHeader titleCentered={titleCentered} titleLarge={titleLarge}>
+            We Vote helps you:
           </IntroHeader>
           <ListWrapper>
             <ListMaxWidth>
               <ListTitleRow>
                 <Dot><StepNumber>1</StepNumber></Dot>
-                <StepTitle>Be ready to vote in 6 minutes</StepTitle>
+                <StepTitle>Be ready to vote</StepTitle>
               </ListTitleRow>
               {contentUnfurled && (
                 <ListRow>
@@ -81,7 +74,7 @@ class ReadyIntroduction extends Component {
               {(contentUnfurled || showStep3WhenCompressed) && (
                 <ListTitleRow>
                   <Dot><StepNumber>3</StepNumber></Dot>
-                  <StepTitle>Help your friends &amp; amplify your impact</StepTitle>
+                  <StepTitle>Help friends &amp; amplify your impact</StepTitle>
                 </ListTitleRow>
               )}
               {contentUnfurled && (
@@ -114,6 +107,8 @@ class ReadyIntroduction extends Component {
 ReadyIntroduction.propTypes = {
   contentUnfurledOnLoad: PropTypes.bool,
   showStep3WhenCompressed: PropTypes.bool,
+  titleCentered: PropTypes.bool,
+  titleLarge: PropTypes.bool,
 };
 
 const styles = (theme) => ({
@@ -140,17 +135,16 @@ const OuterWrapper = styled('div')`
 const InnerWrapper = styled('div')`
 `;
 
-const IntroHeader = styled('div')(({ theme }) => (`
+const IntroHeader = styled('div', {
+  shouldForwardProp: (prop) => !['titleCentered', 'titleLarge'].includes(prop),
+})(({ titleCentered, titleLarge, theme }) => (`
   color: #2e3c5d;
   padding-top: 0;
   padding-bottom: 0;
-  font-size: 26px;
+  ${titleLarge ? 'font-size: 26px;' : 'font-size: 18px;'}
   font-weight: 800;
   margin: 0 !important;
-  text-align: center;
-  ${theme.breakpoints.down('sm')} {
-    font-size: 16px;
-  }
+  ${titleCentered ? 'text-align: center;' : ''}
   ${theme.breakpoints.down('xs')} {
     font-size: 15px;
   }

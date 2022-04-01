@@ -6,15 +6,17 @@ import React, { Component, Suspense } from 'react';
 import TextTruncate from 'react-text-truncate'; // Replace with: import TruncateMarkup from 'react-truncate-markup';
 import styled from 'styled-components';
 import { isAndroidSizeMD } from '../../common/utils/cordovaUtils';
+import abbreviateNumber from '../../common/utils/abbreviateNumber';
 import historyPush from '../../common/utils/historyPush';
 import { renderLog } from '../../common/utils/logging';
+import numberWithCommas from '../../common/utils/numberWithCommas';
 import AppObservableStore from '../../stores/AppObservableStore';
 import CandidateStore from '../../stores/CandidateStore';
 import IssueStore from '../../stores/IssueStore';
 import SupportStore from '../../stores/SupportStore';
 import VoterGuideStore from '../../stores/VoterGuideStore';
 import isMobileAndTabletScreenSize from '../../utils/isMobileAndTabletScreenSize';
-import { abbreviateNumber, numberWithCommas, stripHtmlFromString } from '../../utils/textFormat';
+import { stripHtmlFromString } from '../../utils/textFormat';
 
 const BallotItemSupportOpposeComment = React.lazy(() => import(/* webpackChunkName: 'BallotItemSupportOpposeComment' */ '../Widgets/BallotItemSupportOpposeComment'));
 const BallotItemSupportOpposeCountDisplay = React.lazy(() => import(/* webpackChunkName: 'BallotItemSupportOpposeCountDisplay' */ '../Widgets/BallotItemSupportOpposeCountDisplay'));

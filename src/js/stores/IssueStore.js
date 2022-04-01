@@ -282,7 +282,7 @@ class IssueStore extends ReduceStore {
     // We want a list of all organizations tagged with this issue, so we can offer organizations to follow
     // These are issues that an organization has linked itself to, to help Voters find the organization
     const organizationWeVoteIdsLinkedToIssue = this.getState().organizationWeVoteIdsLinkedToIssueDict[issueWeVoteId];
-    // console.log('getOrganizationsForOneIssue: ', organizationWeVoteIdsLinkedToIssue);
+    // console.log('getOrganizationsForOneIssue: ', organizationWeVoteIdsLinkedToIssue, ', issueWeVoteId:', issueWeVoteId);
     if (organizationWeVoteIdsLinkedToIssue === undefined) {
       return [];
     }

@@ -1,9 +1,10 @@
-/* eslint-disable quotes */
-import styled from '@mui/material/styles/styled';
+import { Check } from '@mui/icons-material';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
 import { Link } from 'react-router-dom';
+import styled from 'styled-components';
 import LoadingWheel from '../../common/components/Widgets/LoadingWheel';
+import abbreviateNumber from '../../common/utils/abbreviateNumber';
 import { isCordova } from '../../common/utils/isCordovaOrWebApp';
 import { renderLog } from '../../common/utils/logging';
 import VoterGuideStore from '../../stores/VoterGuideStore';
@@ -12,6 +13,8 @@ import IssueFollowToggleButton from './IssueFollowToggleButton';
 import IssueImageDisplay from './IssueImageDisplay';
 
 const ReadMore = React.lazy(() => import(/* webpackChunkName: 'ReadMore' */ '../../common/components/Widgets/ReadMore'));
+
+const NUMBER_OF_LINKED_ORGANIZATION_IMAGES_TO_SHOW = 3; // Maximum available coming from issueDescriptionsRetrieve is currently 5
 
 
 class IssueCard extends Component {
@@ -29,8 +32,9 @@ class IssueCard extends Component {
 
   componentDidMount () {
     // console.log("IssueCard, componentDidMount, this.props:", this.props);
-    if (this.props.issue && this.props.issue.issue_we_vote_id) {
-      const { issue_we_vote_id: issueWeVoteId } = this.props.issue;
+    const { issue } = this.props;
+    if (issue && issue.issue_we_vote_id) {
+      const { issue_we_vote_id: issueWeVoteId } = issue;
       const imageSizes = new Set(['SMALL', 'MEDIUM', 'LARGE']);
       let issueImageSize = 'SMALL'; // Set the default
       if (imageSizes.has(this.props.issueImageSize)) {
@@ -39,7 +43,7 @@ class IssueCard extends Component {
       this.setState({
         ballotItemWeVoteId: this.props.ballotItemWeVoteId,
         countOfOrganizationsUnderThisIssue: VoterGuideStore.getVoterGuidesForValue(issueWeVoteId).length,
-        issue: this.props.issue,
+        issue,
         issueImageSize,
         issueWeVoteId,
       });
@@ -66,19 +70,6 @@ class IssueCard extends Component {
     }
   }
 
-  shouldComponentUpdate (nextProps, nextState) {
-    if (this.state.issueWeVoteId !== nextState.issueWeVoteId) {
-      // console.log('this.state.issueWeVoteId', this.state.issueWeVoteId, ', nextState.issueWeVoteId', nextState.issueWeVoteId);
-      return true;
-    }
-    if (this.state.countOfOrganizationsUnderThisIssue !== nextState.countOfOrganizationsUnderThisIssue) {
-      // console.log('this.state.countOfOrganizationsUnderThisIssue', this.state.countOfOrganizationsUnderThisIssue, ', nextState.countOfOrganizationsUnderThisIssue', nextState.countOfOrganizationsUnderThisIssue);
-      return true;
-    }
-
-    return false;
-  }
-
   getIssueLink () {
     const { issue } = this.state;
     if (issue && issue.issue_name) {
@@ -91,40 +82,54 @@ class IssueCard extends Component {
 
   render () {
     renderLog('IssueCard');  // Set LOG_RENDER_EVENTS to log all renders
-    const { countOfOrganizationsUnderThisIssue } = this.state;
-    if (!this.state.issueWeVoteId.length) {
+    const {
+      currentBallotIdInUrl, followToggleOn, followToggleOnItsOwnLine,
+      hideAdvocatesCount, includeLinkToIssue, turnOffDescription,
+      turnOffIssueImage, urlWithoutHash,
+    } = this.props;
+    const {
+      issue, issueImageSize, issueWeVoteId,
+      ballotItemWeVoteId, countOfOrganizationsUnderThisIssue,
+    } = this.state;
+
+    if (!issueWeVoteId.length) {
       return <div className="card-popover__width--minimum">{LoadingWheel}</div>;
     }
 
-    let { issue_description: issueDescription, issue_name: issueDisplayName } = this.state.issue;
+    const {
+      issue_followers_count: issueFollowersCount,
+      linked_organization_count: linkedOrganizationCount,
+      linked_organization_preview_list: linkedOrganizationPreviewList,
+    } = issue;
+    let { issue_description: issueDescription, issue_name: issueDisplayName } = issue;
 
     issueDisplayName = issueDisplayName || '';
     issueDescription = issueDescription || '';
 
     let issueImage;
     const numberOfLines = 3;
-    if (this.state.issueImageSize === 'SMALL') {
+    if (issueImageSize === 'SMALL') {
       issueImage = (
         <IssueImageDisplay
-          issueWeVoteId={this.state.issue.issue_we_vote_id}
+          issueWeVoteId={issueWeVoteId}
           issueImageSize="SMALL"
           showPlaceholderImage
           turnOffIssueFade
         />
       );
-    } else if (this.state.issueImageSize === 'MEDIUM') {
+    } else if (issueImageSize === 'MEDIUM') {
       issueImage = (
         <IssueImageDisplay
-          issueWeVoteId={this.state.issue.issue_we_vote_id}
+          issueWeVoteId={issueWeVoteId}
           issueImageSize="MEDIUM"
           showPlaceholderImage
           turnOffIssueFade
         />
       );
-    } else if (this.state.issueImageSize === 'LARGE') {
+    } else if (issueImageSize === 'LARGE') {
       issueImage = (
         <IssueImageDisplay
-          issueWeVoteId={this.state.issue.issue_we_vote_id}
+          issueWeVoteId={issueWeVoteId}
           issueImageSize="LARGE"
           showPlaceholderImage
           turnOffIssueFade
@@ -132,18 +137,18 @@ class IssueCard extends Component {
       );
     }
 
-    const { issueWeVoteId, ballotItemWeVoteId } = this.state;
-    const { currentBallotIdInUrl, followToggleOn, followToggleOnItsOwnLine, hideAdvocatesCount, includeLinkToIssue, turnOffDescription, turnOffIssueImage, urlWithoutHash } = this.props;
+    let isFirst = true;
+    let organizationImageCount = 0;
     return (
       <Wrapper
         key={`issue-card-${issueWeVoteId}`}
-        className={this.props.condensed ? "card-child u-full-height" : "card-child u-inset__h--md u-padding-top--md u-padding-bottom--xs u-full-height"}
+        className={this.props.condensed ? 'card-child u-full-height' : 'card-child u-inset__h--md u-padding-top--md u-padding-bottom--md u-full-height'}
         condensed={!!this.props.condensed}
         style={isCordova() ? { margin: 'unset' } : {}}   // stops horizontal scrolling
       >
         <Flex condensed={!!this.props.condensed} followToggleOnItsOwnLine={!!followToggleOnItsOwnLine}>
           <FlexNameAndIcon condensed={!!this.props.condensed}>
-            <div className="card-main__media-object-anchor">
+            <IssueImage>
               {!turnOffIssueImage && (
                 <span>
                   {includeLinkToIssue ? (
@@ -159,7 +164,7 @@ class IssueCard extends Component {
                   )}
                 </span>
               )}
-            </div>
+            </IssueImage>
             <>
               {includeLinkToIssue ? (
                 <Link id="valueListLink"
@@ -193,7 +198,7 @@ class IssueCard extends Component {
                 ballotItemWeVoteId={ballotItemWeVoteId}
                 classNameOverride="pull-left"
                 currentBallotIdInUrl={currentBallotIdInUrl}
-                issueName={this.state.issue.issue_name}
+                issueName={issue.issue_name}
                 issueWeVoteId={issueWeVoteId}
                 lightModeOn
                 urlWithoutHash={urlWithoutHash}
@@ -211,6 +216,50 @@ class IssueCard extends Component {
             </Suspense>
           </Description>
         )}
+        <IssueAdvocatesAndFollowersWrapper>
+          <IssueAdvocatesWrapper>
+            {linkedOrganizationPreviewList && (
+              <IssueAdvocatesImages>
+                {linkedOrganizationPreviewList.slice(0, NUMBER_OF_LINKED_ORGANIZATION_IMAGES_TO_SHOW).map((organization) => {
+                  isFirst = organizationImageCount === 0;
+                  organizationImageCount += 1;
+                  // console.log('organization:', organization);
+                  return (
+                    <>
+                      {(organization.we_vote_hosted_profile_image_url_tiny) && (
+                        <OrganizationImage
+                          alt={organization.organization_name}
+                          isFirst={isFirst}
+                          key={`OrganizationImage-${organization.organization_we_vote_id}`}
+                          organizationImageCount={organizationImageCount}
+                          src={organization.we_vote_hosted_profile_image_url_tiny}
+                          title={organization.organization_name}
+                        />
+                      )}
+                    </>
+                  );
+                })}
+              </IssueAdvocatesImages>
+            )}
+            {linkedOrganizationCount && (
+              <LinkedOrganizationCountWrapper>
+                {abbreviateNumber(linkedOrganizationCount)}
+                <CheckWrapper>
+                  <Check />
+                </CheckWrapper>
+              </LinkedOrganizationCountWrapper>
+            )}
+          </IssueAdvocatesWrapper>
+          <FollowersWrapper>
+            {issueFollowersCount && (
+              <>
+                {abbreviateNumber(issueFollowersCount)}
+                {' '}
+                followers
+              </>
+            )}
+          </FollowersWrapper>
+        </IssueAdvocatesAndFollowersWrapper>
       </Wrapper>
     );
   }
@@ -230,19 +279,29 @@ IssueCard.propTypes = {
   condensed: PropTypes.bool,
 };
 
+const CheckWrapper = styled('div')`
+  color: #999;
+  margin-top: -4px;
+`;
+
 const Wrapper = styled('div', {
   shouldForwardProp: (prop) => !['condensed'].includes(prop),
 })(({ condensed }) => (`
   display: block !important;
   background: white;
   // border: ${condensed ? '1px solid #888' : 'none'};
-  box-shadow: ${condensed ? 'none !important' : ''};
+  // box-shadow: ${condensed ? 'none !important' : ''};
   padding: ${condensed ? '0 0' : ''};
   height: ${condensed ? 'fit-content' : ''};
   @media (max-width: 479px) {
     margin: 0 -16px;
   }
 `));
+
+const FollowersWrapper = styled('div')`
+  color: #999;
+  font-size: 14px;
+`;
 
 const IssueName = styled('h3')`
   font-size: 18px;
@@ -253,6 +312,27 @@ const IssueName = styled('h3')`
 const IssueAdvocatesCount = styled('span')`
   font-weight: normal;
   white-space: nowrap;
+`;
+
+const IssueAdvocatesAndFollowersWrapper = styled('div')`
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+`;
+
+const IssueAdvocatesImages = styled('div')`
+  align-items: center;
+  display: flex;
+  justify-content: start;
+  margin-right: 2px;
+`;
+
+const IssueAdvocatesWrapper = styled('div')`
+  align-items: center;
+  color: #999;
+  display: flex;
+  font-size: 14px;
+  justify-content: flex-start;
 `;
 
 const FollowIssueToggleContainer = styled('div')`
@@ -280,8 +360,32 @@ const FlexNameAndIcon = styled('div', {
 
 const Description = styled('div')`
   margin-top: 8px;
-  font-size: 14px;
   color: #333;
 `;
+
+const IssueImage = styled('div')`
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  margin-right: 10px;
+`;
+
+const LinkedOrganizationCountWrapper = styled('div')`
+  display: flex;
+  justify-content: start;
+  margin-top: 4px;
+`;
+
+const OrganizationImage = styled('img', {
+  shouldForwardProp: (prop) => !['isFirst', 'organizationImageCount'].includes(prop),
+})(({ isFirst, organizationImageCount }) => (`
+  border: 2px solid #fff;
+  border-radius: 16px;
+  height: 32px;
+  margin-top: 3px;
+  ${!isFirst ? 'margin-left: -8px;' : ''}
+  width: 32px;
+  z-index: ${200 - organizationImageCount};
+`));
 
 export default IssueCard;

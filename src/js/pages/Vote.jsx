@@ -399,13 +399,6 @@ class Vote extends Component {
     } = this.state;
     const { classes } = this.props;
 
-    // const ballot_caveat = BallotStore.ballotProperties.ballot_caveat; // ballotProperties might be undefined
-    const electionName = BallotStore.currentBallotElectionName;
-    const electionDayText = BallotStore.currentBallotElectionDate;
-    const dateText = window.moment ? window.moment(electionDayText).format('MMM Do, YYYY') : '--x--';
-    const electionDayTextObject = electionDayText ? <span>{dateText}</span> : <span />;
-    // console.log("electionName: ", electionName, ", electionDayText: ", electionDayText);
-
     let votePaddingClass = 'cordova-dummy-class';
     if (isWebApp() && ballotWithItemsFromCompletionFilterType && ballotWithItemsFromCompletionFilterType.length) {
       votePaddingClass = 'row ballot__body__ready-to-vote';
@@ -422,10 +415,7 @@ class Vote extends Component {
                 <div className="col-md-12">
                   <Helmet title="Vote - We Vote" />
                   <header className="ballot__header__group">
-                    <BallotTitleHeader
-                      electionName={electionName}
-                      electionDayTextObject={electionDayTextObject}
-                    />
+                    <BallotTitleHeader />
                   </header>
                   <div className="ballot__filter__container">
                     <BallotFilterRow>

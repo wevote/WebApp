@@ -8,11 +8,13 @@ import Button from 'react-bootstrap/Button';
 import { Link } from 'react-router-dom';
 import OrganizationActions from '../../actions/OrganizationActions';
 import LoadingWheel from '../../common/components/Widgets/LoadingWheel';
+import abbreviateNumber from '../../common/utils/abbreviateNumber';
 import historyPush from '../../common/utils/historyPush';
 import { renderLog } from '../../common/utils/logging';
+import numberWithCommas from '../../common/utils/numberWithCommas';
 import OrganizationStore from '../../stores/OrganizationStore';
 import VoterStore from '../../stores/VoterStore';
-import { abbreviateNumber, numberWithCommas, removeTwitterNameFromDescription } from '../../utils/textFormat';
+import { removeTwitterNameFromDescription } from '../../utils/textFormat';
 import ParsedTwitterDescription from '../Twitter/ParsedTwitterDescription';
 
 const FollowToggle = React.lazy(() => import(/* webpackChunkName: 'FollowToggle' */ '../Widgets/FollowToggle'));

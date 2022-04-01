@@ -1,8 +1,8 @@
-import styled from '@mui/material/styles/styled';
 import withTheme from '@mui/styles/withTheme';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
 import { Link } from 'react-router-dom';
+import styled from 'styled-components';
 import BallotActions from '../../actions/BallotActions';
 import IssueActions from '../../actions/IssueActions';
 import VoterGuideActions from '../../actions/VoterGuideActions';

@@ -341,7 +341,6 @@ class VoterGuideEndorsements extends Component {
               organizationWeVoteId={organizationWeVoteId}
               text={`Are there endorsements from ${organizationName} that you expected to see?`}
               title="Endorsements Missing?"
-              whiteOnBlue
             />
             {organization.organization_twitter_handle && (
               <ThisIsMeAction

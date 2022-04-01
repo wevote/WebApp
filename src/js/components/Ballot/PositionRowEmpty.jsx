@@ -1,8 +1,8 @@
-import styled from '@mui/material/styles/styled';
 import withStyles from '@mui/styles/withStyles';
 import withTheme from '@mui/styles/withTheme';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
+import styled from 'styled-components';
 import CandidateStore from '../../stores/CandidateStore';
 import FriendStore from '../../stores/FriendStore';
 import MeasureStore from '../../stores/MeasureStore';
@@ -212,9 +212,11 @@ class PositionRowEmpty extends Component {
     // console.log('this.state.filteredPositionList render: ', this.state.filteredPositionList);
     return (
       <OuterWrapper>
+        {/*
         <NoOneChoosesWrapper>
           No Opinions Yet
         </NoOneChoosesWrapper>
+        */}
         <CandidateEndorsementsContainer key={`PositionRowEmpty-${ballotItemWeVoteId}`}>
           <RowItemWrapper>
             <OrganizationPhotoOuterWrapper>
@@ -228,11 +230,13 @@ class PositionRowEmpty extends Component {
                 <OrganizationSupportSquare>
                   <AddScoreWrapper className="u-link-color-on-hover">
                     <ToScoreLabel1>
-                      ask
+                      No one has endorsed this candidate. Ask your friends how they are going to vote.
                     </ToScoreLabel1>
+                    {/*
                     <ToScoreLabel2 className="u-no-break">
                       your friends
                     </ToScoreLabel2>
+                    */}
                   </AddScoreWrapper>
                 </OrganizationSupportSquare>
               </OrganizationSupportWrapper>
@@ -271,14 +275,14 @@ const CandidateEndorsementsContainer = styled('div')`
   justify-content: flex-start;
 `;
 
-const NoOneChoosesWrapper = styled('div')`
-  line-height: 15px;
-  margin-left: 6px;
-  margin-right: 24px;
-  padding-bottom: 12px;
-  padding-top: 6px;
-  white-space: nowrap;
-`;
+// const NoOneChoosesWrapper = styled('div')`
+//   line-height: 15px;
+//   margin-left: 6px;
+//   margin-right: 24px;
+//   padding-bottom: 12px;
+//   padding-top: 6px;
+//   white-space: nowrap;
+// `;
 
 const OuterWrapper = styled('div')`
   border-left: 1px dotted #dcdcdc;
@@ -348,10 +352,10 @@ const ToScoreLabel1 = styled('div')`
   margin-top: 0;
 `;
 
-const ToScoreLabel2 = styled('div')`
-  font-size: 10px;
-  margin-top: -3px;
-`;
+// const ToScoreLabel2 = styled('div')`
+//   font-size: 10px;
+//   margin-top: -3px;
+// `;
 
 const YesNoScoreTextWrapper = styled('div')`
   border-left: 1px dotted #dcdcdc;

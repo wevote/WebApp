@@ -1,8 +1,8 @@
-import styled from '@mui/material/styles/styled';
 import withStyles from '@mui/styles/withStyles';
 import withTheme from '@mui/styles/withTheme';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
+import styled from 'styled-components';
 import SupportActions from '../../actions/SupportActions';
 import { renderLog } from '../../common/utils/logging';
 import CandidateStore from '../../stores/CandidateStore';
@@ -32,13 +32,9 @@ class PositionRowSupportOpposeCountDisplay extends Component {
       allCachedPositionsLength: 0,
       allIssuesVoterIsFollowingLength: 0,
       ballotItemDisplayName: '',
-      ballotItemWeVoteId: '',
-      componentDidMountFinished: false,
       issueWeVoteIdsLinkedToByOrganizationDictLength: 0,
       organizationWeVoteIdsVoterIsFollowingLength: 0,
-      positionsInNetworkSummaryListLength: 0,
       positionsOutOfNetworkSummaryList: [],
-      positionsOutOfNetworkSummaryListLength: 0,
       voterOpposesListLength: 0,
       voterSupportsListLength: 0,
       voterPersonalNetworkScore: 0,
@@ -87,8 +83,6 @@ class PositionRowSupportOpposeCountDisplay extends Component {
       });
     }
     this.setState({
-      ballotItemWeVoteId,
-      componentDidMountFinished: true,
       isCandidate,
       isMeasure,
     });
@@ -445,7 +439,7 @@ class PositionRowSupportOpposeCountDisplay extends Component {
                             <>Chooses</>
                           )}
                           {' '}
-                          {ballotItemDisplayName}
+                          {/* ballotItemDisplayName */}
                         </ChooseWrapper>
                       </EndorsementCount>
                     </EndorsementRow>
@@ -463,7 +457,7 @@ class PositionRowSupportOpposeCountDisplay extends Component {
                                   Oppose
                                 </>
                               ) : (
-                                <>Opposes</>
+                                <>Oppose</>
                               )}
                             </OpposeWrapper>
                           </EndorsementCount>
@@ -514,7 +508,6 @@ class PositionRowSupportOpposeCountDisplay extends Component {
 PositionRowSupportOpposeCountDisplay.propTypes = {
   ballotItemDisplayName: PropTypes.string,
   ballotItemWeVoteId: PropTypes.string.isRequired,
-  classes: PropTypes.object,
   controlAdviserMaterialUIPopoverFromProp: PropTypes.bool,
   goToBallotItem: PropTypes.func, // We don't require this because sometimes we don't want the link to do anything
   inModal: PropTypes.bool,

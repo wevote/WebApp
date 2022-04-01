@@ -27,7 +27,7 @@ class ReadyInformationDisclaimer extends React.Component {
 
     const { top, bottom } = this.props;
 
-    if (isWebApp() || (isAndroid() && bottom)  || (isIOS() && top)) {
+    if ((isAndroid() && bottom) || (isIOS() && top) || (isWebApp() && top)) {
       return null;
     }
     return (

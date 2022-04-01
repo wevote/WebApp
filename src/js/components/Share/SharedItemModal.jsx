@@ -118,6 +118,7 @@ class SharedItemModal extends Component {
   }
 
   onBallotStoreChange () {
+    // DALE 2022-03-29 This should be updated to use /src/js/common/utils/daysUntil if we keep this code after the interface rework
     const electionDayText = BallotStore.currentBallotElectionDate;
     // console.log('electionDayText:', electionDayText);
     if (electionDayText) {

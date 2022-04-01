@@ -12,6 +12,7 @@ import VoterSessionActions from '../../actions/VoterSessionActions';
 import LazyImage from '../../common/components/LazyImage';
 import apiCalming from '../../common/utils/apiCalming';
 import { hasIPhoneNotch, historyPush, isDeviceZoomed, isIOS, isIOSAppOnMac } from '../../common/utils/cordovaUtils';
+import getBooleanValue from '../../common/utils/getBooleanValue';
 import { normalizedHref, normalizedHrefPage } from '../../common/utils/hrefUtils';
 import { isCordova, isWebApp } from '../../common/utils/isCordovaOrWebApp';
 import isMobileScreenSize from '../../common/utils/isMobileScreenSize';
@@ -24,7 +25,7 @@ import FriendStore from '../../stores/FriendStore';
 import VoterStore from '../../stores/VoterStore';
 import { avatarGeneric, displayTopMenuShadow, weVoteBrandingOff } from '../../utils/applicationUtils';
 import getHeaderObjects from '../../utils/getHeaderObjects';
-import { getBooleanValue, shortenText, stringContains } from '../../utils/textFormat';
+import { shortenText, stringContains } from '../../utils/textFormat';
 import { TopOfPageHeader, TopRowOneLeftContainer, TopRowOneMiddleContainer, TopRowOneRightContainer, TopRowTwoLeftContainer } from '../Style/pageLayoutStyles';
 import SignInButton from '../Widgets/SignInButton';
 import signInModalGlobalState from '../Widgets/signInModalGlobalState';
@@ -133,14 +134,11 @@ class HeaderBar extends Component {
         if (document.getElementById('HeaderBarLogoWrapper')) {
           headerObjects.logo = document.getElementById('HeaderBarLogoWrapper').innerHTML;
         }
-        if (document.getElementById('readyTabHeaderBar')) {
-          headerObjects.ready = document.getElementById('readyTabHeaderBar').innerHTML;
-        }
         if (document.getElementById('ballotTabHeaderBar')) {
           headerObjects.ballot = document.getElementById('ballotTabHeaderBar').innerHTML;
         }
-        if (document.getElementById('valuesTabHeaderBar')) {
-          headerObjects.opinions = document.getElementById('valuesTabHeaderBar').innerHTML;
+        if (document.getElementById('friendsTabHeaderBar')) {
+          headerObjects.opinions = document.getElementById('friendsTabHeaderBar').innerHTML;
         }
         if (document.getElementById('discussTabHeaderBar')) {
           headerObjects.discuss = document.getElementById('discussTabHeaderBar').innerHTML;
@@ -321,7 +319,8 @@ class HeaderBar extends Component {
       shareModalStep: AppObservableStore.getShareModalStep(),
       showAdviserIntroModal: AppObservableStore.showAdviserIntroModal(),
       showChooseOrOpposeIntroModal: AppObservableStore.showChooseOrOpposeIntroModal(),
-      showEditAddressButton: AppObservableStore.showEditAddressButton(),
+      // showEditAddressButton: AppObservableStore.showEditAddressButton(),
+      showEditAddressButton: false, // 2022-03-30 Turned off now -- may be permanently off
       showFirstPositionIntroModal: AppObservableStore.showFirstPositionIntroModal(),
       showPaidAccountUpgradeModal,
       showShareModal: AppObservableStore.showShareModal(),
@@ -522,27 +521,19 @@ class HeaderBar extends Component {
 
     if (window.$) {
       // console.log('customHighlightSelector called for page: ', normalizedHrefPage());
-      const ready = $('#readyTabHeaderBar');
       const ballot = $('#ballotTabHeaderBar');
-      const values = $('#valuesTabHeaderBar');
+      const friends = $('#friendsTabHeaderBar');
       const news = $('#discussTabHeaderBar');
-      ready.css(normal);
       ballot.css(normal);
-      values.css(normal);       // Opinions
+      friends.css(normal);       // Opinions
       news.css(normal);         // Discuss
 
       switch (normalizedHrefPage()) {
-        case 'ready':
-          ready.css(highlight);
-          break;
-        case '':
-          ready.css(highlight);
-          break;
         case 'ballot':
           ballot.css(highlight);
           break;
-        case 'values':
-          values.css(highlight);
+        case 'friends':
+          friends.css(highlight);
           break;
         case 'news':
           news.css(highlight);
@@ -693,18 +684,8 @@ class HeaderBar extends Component {
               >
                 {showFullNavigation && (
                   <TabWithPushHistory
-                    classes={{ root: classes.tabRootReady }}
-                    value={1}
-                    change={this.handleTabChange}
-                    id="readyTabHeaderBar"
-                    label="Ready?"
-                    to="/ready"
-                  />
-                )}
-                {showFullNavigation && (
-                  <TabWithPushHistory
                     classes={{ root: classes.tabRootBallot }}
-                    value={2}
+                    value={1}
                     change={this.handleTabChange}
                     id="ballotTabHeaderBar"
                     label="Ballot"
@@ -713,16 +694,16 @@ class HeaderBar extends Component {
                 )}
                 <TabWithPushHistory
                   classes={{ root: classes.tabRootValues }}
-                  value={3}
+                  value={2}
                   change={this.handleTabChange}
-                  id="valuesTabHeaderBar"
-                  label="Opinions"
-                  to="/values"
+                  id="friendsTabHeaderBar"
+                  label="Friends"
+                  to="/friends"
                 />
                 {(showFullNavigation) && (
                   <TabWithPushHistory
                     classes={{ root: classes.tabRootNews }}
-                    value={4}
+                    value={3}
                     change={this.handleTabChange}
                     id="discussTabHeaderBar"
                     label="Discuss"
@@ -827,8 +808,8 @@ class HeaderBar extends Component {
               </>
             )}
           </TopRowOneRightContainer>
-          <TopRowTwoLeftContainer style={{ display: `${isFriends ? 'inherit' : 'none'}`, paddingBottom: `${isFriends ? '0' : ''}` }}>
-            {(isFriends) && (
+          <TopRowTwoLeftContainer style={{ display: `${(isFriends && voterIsSignedIn) ? 'inherit' : 'none'}`, paddingBottom: `${(isFriends && voterIsSignedIn) ? '0' : ''}` }}>
+            {(isFriends && voterIsSignedIn) && (
               <FriendsTabs />
             )}
           </TopRowTwoLeftContainer>

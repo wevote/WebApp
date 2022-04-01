@@ -1,9 +1,9 @@
 import { Comment, Done, NotInterested, ThumbDown, ThumbUp } from '@mui/icons-material';
 import { Button } from '@mui/material';
-import styled from '@mui/material/styles/styled';
 import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
 import React, { PureComponent } from 'react';
+import styled from 'styled-components';
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 import Tooltip from 'react-bootstrap/Tooltip';
 import SupportActions from '../../../actions/SupportActions';
@@ -14,7 +14,6 @@ import webAppConfig from '../../../config';
 import VoterConstants from '../../../constants/VoterConstants';
 import AppObservableStore from '../../../stores/AppObservableStore';
 import SupportStore from '../../../stores/SupportStore';
-import VoterStore from '../../../stores/VoterStore';
 import { stringContains } from '../../../utils/textFormat';
 import PositionPublicToggle from '../PositionPublicToggle';
 import ShareButtonDropDown from '../ShareButtonDropdown';
@@ -469,8 +468,8 @@ class ItemActionBar extends PureComponent {
       return;
     }
 
-    const supportOpposeModalHasBeenShown = VoterStore.getInterfaceFlagState(VoterConstants.SUPPORT_OPPOSE_MODAL_SHOWN);
-    // const supportOpposeModalHasBeenShown = false; // For testing
+    // const supportOpposeModalHasBeenShown = VoterStore.getInterfaceFlagState(VoterConstants.SUPPORT_OPPOSE_MODAL_SHOWN);
+    const supportOpposeModalHasBeenShown = false; // For testing
     if (!supportOpposeModalHasBeenShown) {
       AppObservableStore.setShowChooseOrOpposeIntroModal(true, this.state.ballotItemType);
       VoterActions.voterUpdateInterfaceStatusFlags(VoterConstants.SUPPORT_OPPOSE_MODAL_SHOWN);
@@ -524,8 +523,8 @@ class ItemActionBar extends PureComponent {
       return;
     }
 
-    const supportOpposeModalHasBeenShown = VoterStore.getInterfaceFlagState(VoterConstants.SUPPORT_OPPOSE_MODAL_SHOWN);
-    // const supportOpposeModalHasBeenShown = false; // For testing
+    // const supportOpposeModalHasBeenShown = VoterStore.getInterfaceFlagState(VoterConstants.SUPPORT_OPPOSE_MODAL_SHOWN);
+    const supportOpposeModalHasBeenShown = false; // For testing
     if (!supportOpposeModalHasBeenShown) {
       AppObservableStore.setShowChooseOrOpposeIntroModal(true, this.state.ballotItemType);
       VoterActions.voterUpdateInterfaceStatusFlags(VoterConstants.SUPPORT_OPPOSE_MODAL_SHOWN);

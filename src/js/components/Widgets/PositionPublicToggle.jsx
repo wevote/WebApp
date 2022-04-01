@@ -248,7 +248,7 @@ class PositionPublicToggle extends Component {
             <div>
               <Suspense fallback={<></>}>
                 <SettingsAccount
-                  pleaseSignInTitle="Sign in to Make Your Endorsements Public"
+                  pleaseSignInTitle="Sign In to Make Your Endorsements Public"
                   pleaseSignInSubTitle=""
                   inModal
                 />
@@ -262,9 +262,9 @@ class PositionPublicToggle extends Component {
     );
 
     return (
-      <Wrapper className={this.props.className}>
+      <PositionPublicToggleOuterWrapper className={this.props.className}>
         { this.state.showPositionPublicHelpModal ? PositionPublicToggleHelpModal : null }
-        <PublicToggle onKeyDown={onKeyDown}>
+        <PositionPublicToggleInnerWrapper onKeyDown={onKeyDown}>
           <FormControl classes={{ root: classes.formControl }}>
             <RadioGroup
               onChange={this.handlePositionToggle}
@@ -308,8 +308,8 @@ class PositionPublicToggle extends Component {
               </RadioItem>
             </RadioGroup>
           </FormControl>
-        </PublicToggle>
-      </Wrapper>
+        </PositionPublicToggleInnerWrapper>
+      </PositionPublicToggleOuterWrapper>
     );
   }
 }
@@ -368,7 +368,7 @@ const styles = (theme) => ({
   },
   radioLabel: {
     fontSize: '14px',
-    bottom: '4px',
+    // bottom: '4px',
     position: 'relative',
     [theme.breakpoints.down('sm')]: {
       fontSize: '11px',
@@ -385,12 +385,12 @@ const styles = (theme) => ({
   },
 });
 
-const Wrapper = styled('div')`
-  margin-left: auto;
+const PositionPublicToggleOuterWrapper = styled('div')`
+  // margin-left: auto;
   width: fit-content;
 `;
 
-const PublicToggle = styled('div')(({ theme }) => (`
+const PositionPublicToggleInnerWrapper = styled('div')(({ theme }) => (`
   padding-left: 15px;
   ${theme.breakpoints.down('md')} {
     padding-top: 4px;
@@ -410,9 +410,9 @@ const RadioItem = styled('div', {
   shouldForwardProp: (prop) => !['preventStackedButtons'].includes(prop),
 })(({ preventStackedButtons, theme }) => (`
   ${!preventStackedButtons && theme.breakpoints.down('xs') ? (`
-      width: 100% !important;
-      min-width: 100% !important;
-      margin-bottom: -6px;
+      // width: 100% !important;
+      // min-width: 100% !important;
+      // margin-bottom: -6px;
   `) : ''}
 `));
 

@@ -15,18 +15,18 @@ class ReadyTaskFriends extends React.Component {
   constructor (props) {
     super(props);
     this.state = {
-      // numberOfFriendsReady: 0,
-      // numberOfFriendsRegistered: 0,
-      // numberOfFriendsWithBallot: 0,
-      // numberOfFriendsWithPlan: 0,
-      // numberOfFriendsYouWillRemind: 0,
-      // numberOfYourPositionsThisElection: 0,
-      numberOfFriendsReady: 5,
-      numberOfFriendsRegistered: 4,
-      numberOfFriendsWithBallot: 7,
-      numberOfFriendsWithPlan: 12,
-      numberOfFriendsYouWillRemind: 6,
-      numberOfYourPositionsThisElection: 9,
+      // numberOfContactsImported: 0,
+      // numberOfFriendsAdded: 0,
+      numberOfFriendsReady: 0,
+      numberOfFriendsRegistered: 0,
+      numberOfFriendsWithPlan: 0,
+      numberOfFriendsYouWillRemind: 0,
+      numberOfContactsImported: 770,
+      numberOfFriendsAdded: 7,
+      // numberOfFriendsReady: 5,
+      // numberOfFriendsRegistered: 4,
+      // numberOfFriendsWithPlan: 12,
+      // numberOfFriendsYouWillRemind: 6,
     };
   }
 
@@ -38,8 +38,8 @@ class ReadyTaskFriends extends React.Component {
     renderLog('ReadyTaskFriends');  // Set LOG_RENDER_EVENTS to log all renders
     const { classes } = this.props;
     const {
-      numberOfFriendsReady, numberOfFriendsRegistered, numberOfFriendsWithBallot,
-      numberOfFriendsWithPlan, numberOfFriendsYouWillRemind, numberOfYourPositionsThisElection,
+      numberOfFriendsReady, numberOfFriendsRegistered, numberOfFriendsAdded,
+      numberOfFriendsWithPlan, numberOfFriendsYouWillRemind, numberOfContactsImported,
     } = this.state;
 
     return (
@@ -50,45 +50,21 @@ class ReadyTaskFriends extends React.Component {
               src={normalizedImagePath(register100Percent)}
               width="50"
               height="50"
-              alt="Are your friends ready?"
+              alt="Find your friends"
             />
           ) : (
             <img
               src={normalizedImagePath(register0Percent)}
               width="50"
               height="50"
-              alt="Are your friends ready?"
+              alt="Find your friends"
             />
           )}
         </Icon>
         <div>
           <TitleRowWrapper>
             <Title>
-              {numberOfFriendsReady ? (
-                <>
-                  <span className="u-show-mobile-iphone5-or-smaller">
-                    Friends Ready?
-                  </span>
-                  <span className="u-show-mobile-bigger-than-iphone5">
-                    Friends Ready?
-                  </span>
-                  <span className="u-show-tablet">
-                    Are Your Friends Ready?
-                  </span>
-                  <span className="u-show-desktop">
-                    Are Your Friends Ready?
-                  </span>
-                </>
-              ) : (
-                <>
-                  <span className="u-show-mobile">
-                    Are Your Friends Ready?
-                  </span>
-                  <span className="u-show-desktop-tablet">
-                    Are Your Friends Ready?
-                  </span>
-                </>
-              )}
+              Find your friends
             </Title>
             <PercentComplete showprogresscolor={numberOfFriendsReady || undefined}>
               {!!(numberOfFriendsReady) && (
@@ -111,12 +87,100 @@ class ReadyTaskFriends extends React.Component {
             </PercentComplete>
           </TitleRowWrapper>
           <SubTitle>
-            {numberOfFriendsReady ? `Great work! ${numberOfFriendsReady} of your friends or followers are ready (or getting ready) to vote.` : 'Help your friends make sense of their ballot, so they can vote their values too.'}
+            {numberOfFriendsReady ? `Great work! You have added ${numberOfFriendsReady} friends.` : 'Find your friends they can help you vote your values.'}
           </SubTitle>
+          {/* ******************************* */}
+          {/* BUTTON: Add friends */}
+          {/* ******************************* */}
+          <StyledButton
+            classes={{ root: classes.toDoButton }}
+            className="u-cursor--pointer"
+            color="primary"
+            completed={numberOfFriendsAdded || undefined}
+            onClick={this.goToNextStep}
+            variant="outlined"
+            withoutsteps="1"
+          >
+            <ButtonLeft>
+              {numberOfFriendsAdded ? <StyledCheckboxCompleted><CheckCircle /></StyledCheckboxCompleted> : <StyledCheckbox /> }
+              <ButtonText>
+                {numberOfFriendsAdded ? (
+                  <>
+                    <span className="u-show-mobile">
+                      {numberOfFriendsAdded}
+                      {' '}
+                      friends added
+                    </span>
+                    <span className="u-show-desktop-tablet">
+                      {numberOfFriendsAdded}
+                      {' '}
+                      friends added
+                    </span>
+                  </>
+                ) : (
+                  <>
+                    <span className="u-show-mobile-iphone5-or-smaller">
+                      Add friends
+                    </span>
+                    <span className="u-show-mobile-bigger-than-iphone5">
+                      Add friends
+                    </span>
+                    <span className="u-show-desktop-tablet">
+                      Add friends
+                    </span>
+                    <ArrowForward classes={{ root: classes.arrowRoot }} />
+                  </>
+                )}
+              </ButtonText>
+            </ButtonLeft>
+          </StyledButton>
+          {/* ******************************************** */}
+          {/* BUTTON: Import contacts */}
+          {/* ******************************************** */}
+          <StyledButton
+            classes={{ root: classes.toDoButton }}
+            className="u-cursor--pointer"
+            color="primary"
+            completed={numberOfContactsImported || undefined}
+            onClick={this.goToNextStep}
+            variant="outlined"
+            withoutsteps="1"
+          >
+            <ButtonLeft>
+              {numberOfContactsImported ? <StyledCheckboxCompleted><CheckCircle /></StyledCheckboxCompleted> : <StyledCheckbox /> }
+              <ButtonText>
+                {numberOfContactsImported ? (
+                  <>
+                    <span className="u-show-mobile">
+                      {numberOfContactsImported}
+                      {' '}
+                      contacts imported
+                    </span>
+                    <span className="u-show-desktop-tablet">
+                      {numberOfContactsImported}
+                      {' '}
+                      contacts imported
+                    </span>
+                  </>
+                ) : (
+                  <>
+                    <span className="u-show-mobile">
+                      Import your contacts
+                    </span>
+                    <span className="u-show-desktop-tablet">
+                      Import your contacts
+                    </span>
+                    <ArrowForward classes={{ root: classes.arrowRoot }} />
+                  </>
+                )}
+              </ButtonText>
+            </ButtonLeft>
+          </StyledButton>
           {/* *************************************** */}
           {/* BUTTON: Ask friends to register to vote */}
           {/* *************************************** */}
           <StyledButton
+            classes={{ root: classes.toDoButton }}
             className="u-cursor--pointer"
             color="primary"
             completed={numberOfFriendsRegistered || undefined}
@@ -132,111 +196,26 @@ class ReadyTaskFriends extends React.Component {
                     <span className="u-show-mobile">
                       {numberOfFriendsRegistered}
                       {' '}
-                      Friends Registered
+                      friends registered
                     </span>
                     <span className="u-show-desktop-tablet">
                       {numberOfFriendsRegistered}
                       {' '}
-                      Friends have Verified Registration
+                      friends have verified registration
                     </span>
                   </>
                 ) : (
                   <>
                     <span className="u-show-mobile">
-                      Ask Friends to Register
+                      Ask friends to register
                       <span className="u-show-mobile-bigger-than-iphone5">
                         <ArrowForward classes={{ root: classes.arrowRoot }} />
                       </span>
                     </span>
                     <span className="u-show-desktop-tablet">
-                      Ask Friends to Verify Registration
+                      Ask friends to verify registration
                       <ArrowForward classes={{ root: classes.arrowRoot }} />
                     </span>
-                  </>
-                )}
-              </ButtonText>
-            </ButtonLeft>
-          </StyledButton>
-          {/* ******************************* */}
-          {/* BUTTON: Encourage friends to vote */}
-          {/* ******************************* */}
-          <StyledButton
-            className="u-cursor--pointer"
-            color="primary"
-            completed={numberOfFriendsWithBallot || undefined}
-            onClick={this.goToNextStep}
-            variant="outlined"
-            withoutsteps="1"
-          >
-            <ButtonLeft>
-              {numberOfFriendsWithBallot ? <StyledCheckboxCompleted><CheckCircle /></StyledCheckboxCompleted> : <StyledCheckbox /> }
-              <ButtonText>
-                {numberOfFriendsWithBallot ? (
-                  <>
-                    <span className="u-show-mobile">
-                      {numberOfFriendsWithBallot}
-                      {' '}
-                      Friends with Ballot
-                    </span>
-                    <span className="u-show-desktop-tablet">
-                      {numberOfFriendsWithBallot}
-                      {' '}
-                      Friends Looking at Ballot
-                    </span>
-                  </>
-                ) : (
-                  <>
-                    <span className="u-show-mobile-iphone5-or-smaller">
-                      Send Ballot
-                    </span>
-                    <span className="u-show-mobile-bigger-than-iphone5">
-                      Send Ballot to Friends
-                    </span>
-                    <span className="u-show-desktop-tablet">
-                      Encourage Friends to Look at Ballot
-                    </span>
-                    <ArrowForward classes={{ root: classes.arrowRoot }} />
-                  </>
-                )}
-              </ButtonText>
-            </ButtonLeft>
-          </StyledButton>
-          {/* ******************************************** */}
-          {/* BUTTON: Endorse candidates, change the world */}
-          {/* ******************************************** */}
-          <StyledButton
-            className="u-cursor--pointer"
-            color="primary"
-            completed={numberOfYourPositionsThisElection || undefined}
-            onClick={this.goToNextStep}
-            variant="outlined"
-            withoutsteps="1"
-          >
-            <ButtonLeft>
-              {numberOfYourPositionsThisElection ? <StyledCheckboxCompleted><CheckCircle /></StyledCheckboxCompleted> : <StyledCheckbox /> }
-              <ButtonText>
-                {numberOfYourPositionsThisElection ? (
-                  <>
-                    <span className="u-show-mobile">
-                      {numberOfYourPositionsThisElection}
-                      {' '}
-                      Ballot Items Endorsed
-                    </span>
-                    <span className="u-show-desktop-tablet">
-                      {numberOfYourPositionsThisElection}
-                      {' '}
-                      Ballot Items You Support or Oppose
-                    </span>
-                  </>
-                ) : (
-                  <>
-                    <span className="u-show-mobile">
-                      Endorse Candidates
-                    </span>
-                    <span className="u-show-desktop-tablet">
-                      Endorse Candidates, Change the World
-                    </span>
-                    <ArrowForward classes={{ root: classes.arrowRoot }} />
                   </>
                 )}
               </ButtonText>
@@ -246,6 +225,7 @@ class ReadyTaskFriends extends React.Component {
           {/* BUTTON: Ask friends to share their plan to vote */}
           {/* *********************************************** */}
           <StyledButton
+            classes={{ root: classes.toDoButton }}
             className="u-cursor--pointer"
             color="primary"
             completed={numberOfFriendsWithPlan || undefined}
@@ -287,6 +267,7 @@ class ReadyTaskFriends extends React.Component {
           {/* BUTTON: Commit to Remind 3 Friends to Vote */}
           {/* *********************************************** */}
           <StyledButton
+            classes={{ root: classes.toDoButton }}
             className="u-cursor--pointer"
             color="primary"
             completed={numberOfFriendsYouWillRemind || undefined}
@@ -341,6 +322,10 @@ const styles = (theme) => ({
     [theme.breakpoints.down('sm')]: {
       fontSize: 14,
     },
+  },
+  toDoButton: {
+    display: 'flex',
+    justifyContent: 'start',
   },
 });
 

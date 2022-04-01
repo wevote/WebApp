@@ -316,71 +316,77 @@ class News extends Component {
               <div className="row" style={unsetSomeRowStylesIfCordova}>
                 <div className="col-sm-12 col-md-8" style={unsetSomeRowStylesIfCordova}>
                   <>
-                    <ActivityPostAddWrapper style={reduceConstraintsIfCordova}>
-                      <ActivityPostAdd />
-                    </ActivityPostAddWrapper>
+                    {voterIsSignedIn && (
+                      <ActivityPostAddWrapper style={reduceConstraintsIfCordova}>
+                        <ActivityPostAdd />
+                      </ActivityPostAddWrapper>
+                    )}
                     {voterIsSignedIn && (
                       <Suspense fallback={<></>}>
                         <FirstAndLastNameRequiredAlert />
                       </Suspense>
                     )}
-                    {activityTidbitsList.map((oneActivityTidbit) => {
-                      // console.log('oneActivityTidbit:', oneActivityTidbit);
-                      // console.log('numberOfActivityTidbitsDisplayed:', numberOfActivityTidbitsDisplayed);
-                      const speakerNameNotValid = !oneActivityTidbit.speaker_name ||
-                        (oneActivityTidbit.speaker_name && oneActivityTidbit.speaker_name.startsWith('Voter-'));
-                      const isVotersPost = voterWeVoteId === oneActivityTidbit.speaker_voter_we_vote_id;
-                      if (!oneActivityTidbit || (speakerNameNotValid && !isVotersPost) || !oneActivityTidbit.we_vote_id) {
-                        // console.log('Missing oneActivityTidbit.we_vote_id:', oneActivityTidbit);
-                        return null;
-                      }
-                      if (numberOfActivityTidbitsDisplayed >= numberOfActivityTidbitsToDisplay) {
-                        return null;
-                      }
-                      numberOfActivityTidbitsDisplayed += 1;
-                      // console.log('numberOfActivityTidbitsDisplayed: ', numberOfActivityTidbitsDisplayed);
-                      activityTidbitWeVoteId = oneActivityTidbit.we_vote_id;
-                      return (
-                        <ActivityTidbitWrapper key={activityTidbitWeVoteId}>
-                          <a // eslint-disable-line jsx-a11y/anchor-has-content, jsx-a11y/control-has-associated-label
-                            href={`#${activityTidbitWeVoteId}`}
-                            name={activityTidbitWeVoteId}
-                          />
-                          <Card className="card" style={unsetSideMarginsIfCordova}>
-                            <CardNewsWrapper className="card-main" id="steveCardNewsWrapper-main" style={unsetMarginsIfCordova}>
-                              <ActivityTidbitItemWrapper>
-                                <Suspense fallback={<></>}>
-                                  <ActivityTidbitItem
-                                    activityTidbitWeVoteId={activityTidbitWeVoteId}
-                                  />
-                                </Suspense>
-                              </ActivityTidbitItemWrapper>
-                              <Suspense fallback={<></>}>
-                                <ActivityTidbitReactionsSummary
-                                  activityTidbitWeVoteId={activityTidbitWeVoteId}
-                                />
-                              </Suspense>
-                              <Suspense fallback={<></>}>
-                                <ActivityTidbitAddReaction
-                                  activityTidbitWeVoteId={activityTidbitWeVoteId}
-                                />
-                              </Suspense>
-                              <Suspense fallback={<></>}>
-                                <ActivityTidbitComments
-                                  activityTidbitWeVoteId={activityTidbitWeVoteId}
-                                  editingTurnedOff
-                                />
-                              </Suspense>
-                              <Suspense fallback={<></>}>
-                                <ActivityCommentAdd
-                                  activityTidbitWeVoteId={activityTidbitWeVoteId}
-                                />
-                              </Suspense>
-                            </CardNewsWrapper>
-                          </Card>
-                        </ActivityTidbitWrapper>
-                      );
-                    })}
+                    {voterIsSignedIn && (
+                      <>
+                        {activityTidbitsList.map((oneActivityTidbit) => {
+                          // console.log('oneActivityTidbit:', oneActivityTidbit);
+                          // console.log('numberOfActivityTidbitsDisplayed:', numberOfActivityTidbitsDisplayed);
+                          const speakerNameNotValid = !oneActivityTidbit.speaker_name ||
+                            (oneActivityTidbit.speaker_name && oneActivityTidbit.speaker_name.startsWith('Voter-'));
+                          const isVotersPost = voterWeVoteId === oneActivityTidbit.speaker_voter_we_vote_id;
+                          if (!oneActivityTidbit || (speakerNameNotValid && !isVotersPost) || !oneActivityTidbit.we_vote_id) {
+                            // console.log('Missing oneActivityTidbit.we_vote_id:', oneActivityTidbit);
+                            return null;
+                          }
+                          if (numberOfActivityTidbitsDisplayed >= numberOfActivityTidbitsToDisplay) {
+                            return null;
+                          }
+                          numberOfActivityTidbitsDisplayed += 1;
+                          // console.log('numberOfActivityTidbitsDisplayed: ', numberOfActivityTidbitsDisplayed);
+                          activityTidbitWeVoteId = oneActivityTidbit.we_vote_id;
+                          return (
+                            <ActivityTidbitWrapper key={activityTidbitWeVoteId}>
+                              <a // eslint-disable-line jsx-a11y/anchor-has-content, jsx-a11y/control-has-associated-label
+                                href={`#${activityTidbitWeVoteId}`}
+                                name={activityTidbitWeVoteId}
+                              />
+                              <Card className="card" style={unsetSideMarginsIfCordova}>
+                                <CardNewsWrapper className="card-main" id="steveCardNewsWrapper-main" style={unsetMarginsIfCordova}>
+                                  <ActivityTidbitItemWrapper>
+                                    <Suspense fallback={<></>}>
+                                      <ActivityTidbitItem
+                                        activityTidbitWeVoteId={activityTidbitWeVoteId}
+                                      />
+                                    </Suspense>
+                                  </ActivityTidbitItemWrapper>
+                                  <Suspense fallback={<></>}>
+                                    <ActivityTidbitReactionsSummary
+                                      activityTidbitWeVoteId={activityTidbitWeVoteId}
+                                    />
+                                  </Suspense>
+                                  <Suspense fallback={<></>}>
+                                    <ActivityTidbitAddReaction
+                                      activityTidbitWeVoteId={activityTidbitWeVoteId}
+                                    />
+                                  </Suspense>
+                                  <Suspense fallback={<></>}>
+                                    <ActivityTidbitComments
+                                      activityTidbitWeVoteId={activityTidbitWeVoteId}
+                                      editingTurnedOff
+                                    />
+                                  </Suspense>
+                                  <Suspense fallback={<></>}>
+                                    <ActivityCommentAdd
+                                      activityTidbitWeVoteId={activityTidbitWeVoteId}
+                                    />
+                                  </Suspense>
+                                </CardNewsWrapper>
+                              </Card>
+                            </ActivityTidbitWrapper>
+                          );
+                        })}
+                      </>
+                    )}
                   </>
                   {(voterIsSignedIn && dateVoterJoined) && (
                     // <DelayedLoad waitBeforeShow={1000}>
@@ -427,7 +433,7 @@ class News extends Component {
                     <Suspense fallback={<></>}>
                       <SettingsAccountWrapper style={expandSideMarginsIfCordova}>
                         <SettingsAccount
-                          pleaseSignInTitle="Sign in to Join the Discussion"
+                          pleaseSignInTitle="Sign In to Join the Discussion"
                           pleaseSignInSubTitle="We Vote is a community of friends who care about voting and democracy."
                         />
                       </SettingsAccountWrapper>

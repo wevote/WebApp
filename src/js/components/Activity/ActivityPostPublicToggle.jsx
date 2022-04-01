@@ -191,7 +191,7 @@ class ActivityPostPublicToggle extends Component {
             <div>
               <Suspense fallback={<></>}>
                 <SettingsAccount
-                  pleaseSignInTitle="Sign in to Make Your Posts Public"
+                  pleaseSignInTitle="Sign In to Make Your Posts Public"
                   pleaseSignInSubTitle=""
                   inModal
                 />

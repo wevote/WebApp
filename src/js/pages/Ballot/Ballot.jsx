@@ -23,6 +23,7 @@ import {
   isIPadGiantSize,
   isIPhone6p1in,
 } from '../../common/utils/cordovaUtils';
+import getBooleanValue from '../../common/utils/getBooleanValue';
 import historyPush from '../../common/utils/historyPush';
 import { isCordova, isWebApp } from '../../common/utils/isCordovaOrWebApp';
 import isMobileScreenSize from '../../common/utils/isMobileScreenSize';
@@ -55,7 +56,6 @@ import isMobile from '../../utils/isMobile';
 // eslint-disable-next-line import/no-cycle
 import lazyPreloadPages from '../../utils/lazyPreloadPages';
 import mapCategoryFilterType from '../../utils/map-category-filter-type';
-import { getBooleanValue } from '../../utils/textFormat';
 import showBallotDecisionsTabs from '../../utilsApi/showBallotDecisionsTabs';
 import BallotTitleHeader from './BallotTitleHeader';
 import { checkShouldUpdate, formatVoterBallotList } from './utils/ballotUtils';
@@ -1125,7 +1125,11 @@ class Ballot extends Component {
     } else if (isIPad()) {
       return '12px';
     } else if (isWebApp() && isMobileScreenSize()) {
-      return '24px';
+      if (scrolledDown) {
+        return '50px';
+      } else {
+        return '64px';
+      }
     } else if (isWebApp()) {
       if (scrolledDown) {
         return '64px';
@@ -1239,8 +1243,6 @@ class Ballot extends Component {
 
     // const ballot_caveat = BallotStore.ballotProperties.ballot_caveat; // ballotProperties might be undefined
     const ballotCaveat = BallotStore.getBallotCaveat() || '';
-    const electionName = BallotStore.currentBallotElectionName || '';
-    const electionDayText = BallotStore.currentBallotElectionDate;
     const sourcePollingLocationWeVoteId = BallotStore.currentBallotPollingLocationSource;
     const ballotReturnedAdminEditUrl = `${webAppConfig.WE_VOTE_SERVER_ROOT_URL}b/${sourcePollingLocationWeVoteId}/list_edit_by_polling_location/?google_civic_election_id=${VoterStore.electionId()}&state_code=`;
     // console.log('electionName: ', electionName, ', electionDayText: ', electionDayText);
@@ -1287,10 +1289,6 @@ class Ballot extends Component {
       </LoadingWrapper>
     ) : null;
 
-    const electionDayTextFormatted = electionDayText && window.moment ? window.moment(electionDayText).format('MMM Do, YYYY') : '';
-    const electionDayTextObject = electionDayText && window.moment ? <span>{electionDayTextFormatted}</span> : null;
-    // console.log('electionDayText: ', electionDayText, ', electionDayTextFormatted: ', electionDayTextFormatted, ', electionDayTextObject:', electionDayTextObject);
-
     const inRemainingDecisionsMode = completionLevelFilterType === 'filterRemaining';
     // console.log('inRemainingDecisionsMode: ', inRemainingDecisionsMode);
 
@@ -1324,10 +1322,7 @@ class Ballot extends Component {
                       <header className="ballot__header__group">
                         <BallotTitleHeaderWrapper marginTopOffset={this.marginTopOffset()}>
                           <BallotTitleHeader
-                            electionName={electionName}
-                            electionDayTextObject={electionDayTextObject}
                             toggleSelectBallotModal={this.toggleSelectBallotModal}
-                            scrolled={!!(scrolledDown) || false}
                           />
                         </BallotTitleHeaderWrapper>
                       </header>
@@ -1663,12 +1658,12 @@ Ballot.propTypes = {
 
 const BallotBottomWrapper = styled('div', {
   shouldForwardProp: (prop) => !['scrolledDown'].includes(prop),
-})(({ scrolledDown }) => (`
+})(({ scrolledDown, theme }) => (`
   ${scrolledDown ? 'margin-top: 18px;' : 'margin-top: 38px;'}
   transition: all 150ms ease-in;
   width: 100%;
-  @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
-    margin-top: 20px;
+  ${theme.breakpoints.down('sm')} {
+    ${scrolledDown ? 'margin-top: 10px;' : 'margin-top: 20px;'}
   }
 `));
 
@@ -1702,7 +1697,7 @@ const BallotTitleHeaderWrapper = styled('div', {
   shouldForwardProp: (prop) => !['marginTopOffset'].includes(prop),
 })(({ marginTopOffset }) => (`
   margin-top: ${marginTopOffset};
-  height: 80px; // Includes 35px for ballot address
+  // height: 80px; // Includes 35px for ballot address
   transition: all 150ms ease-in;
 `));
 
