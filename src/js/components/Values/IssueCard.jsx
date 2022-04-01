@@ -91,7 +91,6 @@ class IssueCard extends Component {
       issue, issueImageSize, issueWeVoteId,
       ballotItemWeVoteId, countOfOrganizationsUnderThisIssue,
     } = this.state;
-    console.log('issue:', issue);
 
     if (!issueWeVoteId.length) {
       return <div className="card-popover__width--minimum">{LoadingWheel}</div>;
@@ -224,13 +223,14 @@ class IssueCard extends Component {
                 {linkedOrganizationPreviewList.slice(0, NUMBER_OF_LINKED_ORGANIZATION_IMAGES_TO_SHOW).map((organization) => {
                   isFirst = organizationImageCount === 0;
                   organizationImageCount += 1;
-                  console.log('organization:', organization);
+                  // console.log('organization:', organization);
                   return (
                     <>
                       {(organization.we_vote_hosted_profile_image_url_tiny) && (
                         <OrganizationImage
                           alt={organization.organization_name}
                           isFirst={isFirst}
+                          key={`OrganizationImage-${organization.organization_we_vote_id}`}
                           organizationImageCount={organizationImageCount}
                           src={organization.we_vote_hosted_profile_image_url_tiny}
                           title={organization.organization_name}
