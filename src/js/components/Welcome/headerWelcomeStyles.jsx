@@ -1,5 +1,5 @@
 import { keyframes } from '@emotion/react';
-import styled from '@mui/material/styles/styled';
+import styled from 'styled-components';
 
 
 const Title = styled('h1')(({ theme }) => (`

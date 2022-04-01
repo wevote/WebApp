@@ -1,6 +1,6 @@
 import { Info } from '@mui/icons-material';
 import { Tooltip } from '@mui/material';
-import styled from '@mui/material/styles/styled';
+import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 

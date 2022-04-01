@@ -4,7 +4,7 @@ import { CheckCircle } from '@mui/icons-material';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { ReactSVG } from 'react-svg';
-import styled from '@mui/material/styles/styled';
+import styled from 'styled-components';
 import FriendStore from '../../stores/FriendStore';
 import IssueStore from '../../stores/IssueStore';
 import OrganizationStore from '../../stores/OrganizationStore';

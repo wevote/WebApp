@@ -1,4 +1,4 @@
-import styled from '@mui/material/styles/styled';
+import styled from 'styled-components';
 import { geoCentroid } from 'd3-geo';
 import React from 'react';
 import allStates from '../../../../json/allStates.json';

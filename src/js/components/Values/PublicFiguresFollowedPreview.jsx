@@ -1,4 +1,4 @@
-import styled from '@mui/material/styles/styled';
+import styled from 'styled-components';
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import OrganizationActions from '../../actions/OrganizationActions';

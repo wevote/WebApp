@@ -1,4 +1,4 @@
-import styled from '@mui/material/styles/styled';
+import styled from 'styled-components';
 import withStyles from '@mui/styles/withStyles';
 import React, { Component, Suspense } from 'react';
 import { Link } from 'react-router-dom';

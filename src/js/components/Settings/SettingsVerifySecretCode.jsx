@@ -1,6 +1,6 @@
 import { ArrowBack, ArrowBackIos } from '@mui/icons-material';
 import { Button, Dialog, OutlinedInput } from '@mui/material';
-import styled from '@mui/material/styles/styled';
+import styled from 'styled-components';
 import withStyles from '@mui/styles/withStyles';
 import withTheme from '@mui/styles/withTheme';
 import clsx from 'clsx';
