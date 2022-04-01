@@ -30,7 +30,7 @@ class SplitIconButton extends PureComponent {
       background: backgroundColor || '#2e3c5d',
       border: '1px solid rgba(46, 60, 93, .5)',
       color: fontColor || getTextColorFromBackground(backgroundColor || '#2e3c5d'),
-      fontSize: fontSize || '13px',
+      fontSize: fontSize || '16px',
     };
 
     let buttonStyles;

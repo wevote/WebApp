@@ -365,7 +365,6 @@ class Candidate extends Component {
           variant="primary"
           buttonText="Endorsements missing?"
           text={`Are there endorsements for ${candidateName} that you expected to see?`}
-          whiteOnBlue
         />
         <ThisIsMeAction
           kindOfOwner="POLITICIAN"

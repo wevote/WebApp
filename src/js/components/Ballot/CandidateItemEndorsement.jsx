@@ -6,11 +6,12 @@ import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
 import VoterGuidePossibilityActions from '../../actions/VoterGuidePossibilityActions';
 import ExternalLinkIcon from '../../common/components/Widgets/ExternalLinkIcon';
+import abbreviateNumber from '../../common/utils/abbreviateNumber';
 import historyPush from '../../common/utils/historyPush';
 import { renderLog } from '../../common/utils/logging';
+import numberWithCommas from '../../common/utils/numberWithCommas';
 import CandidateStore from '../../stores/CandidateStore';
 import VoterGuidePossibilityStore from '../../stores/VoterGuidePossibilityStore';
-import { abbreviateNumber, numberWithCommas } from '../../utils/textFormat';
 
 const ImageHandler = React.lazy(() => import(/* webpackChunkName: 'ImageHandler' */ '../ImageHandler'));
 const OfficeNameText = React.lazy(() => import(/* webpackChunkName: 'OfficeNameText' */ '../Widgets/OfficeNameText'));

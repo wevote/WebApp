@@ -1,10 +1,9 @@
 import { Settings } from '@mui/icons-material';
-import styled from '@mui/material/styles/styled';
 import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
+import styled from 'styled-components';
 import { renderLog } from '../../common/utils/logging';
-import BallotStore from '../../stores/BallotStore';
 import VoterStore from '../../stores/VoterStore';
 import { calculateBallotBaseUrl, shortenText } from '../../utils/textFormat';
 import AddressBox from '../AddressBox';
@@ -22,9 +21,7 @@ class EditAddressInPlace extends Component {
 
   componentDidMount () {
     // console.log('EditAddressInPlace componentDidMount');
-    this.ballotStoreListener = BallotStore.addListener(this.onBallotStoreChange.bind(this));
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
-    this.onBallotStoreChange();
     this.onVoterStoreChange();
     const { defaultIsEditingAddress } = this.props;
     this.setState({
@@ -33,15 +30,7 @@ class EditAddressInPlace extends Component {
   }
 
   componentWillUnmount () {
-    this.ballotStoreListener.remove();
     this.voterStoreListener.remove();
-  }
-
-  onBallotStoreChange () {
-    // console.log('AddressBox, onBallotStoreChange, this.state:', this.state);
-    this.setState({
-      ballotCaveat: BallotStore.getBallotCaveat(),
-    });
   }
 
   onVoterStoreChange () {
@@ -177,15 +166,15 @@ const AddressIntroductionWrapper = styled('div')(({ theme }) => (`
   font-weight: 500;
   margin-top: 8px;
   ${theme.breakpoints.down('lg')} {
-    margin-left: 15px;
-    margin-right: 15px;
+    // margin-left: 15px;
+    // margin-right: 15px;
   }
 `));
 
 const EditBlockWrapper = styled('div')(({ theme }) => (`
   ${theme.breakpoints.down('lg')} {
-    margin-left: 15px;
-    margin-right: 15px;
+    // margin-left: 15px;
+    // margin-right: 15px;
   }
 `));
 

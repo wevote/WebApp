@@ -6,8 +6,8 @@ import AppObservableStore, { messageService } from '../../stores/AppObservableSt
 import OrganizationStore from '../../stores/OrganizationStore';
 import VoterGuideStore from '../../stores/VoterGuideStore';
 import VoterStore from '../../stores/VoterStore';
+import abbreviateNumber from '../../common/utils/abbreviateNumber';
 import { renderLog } from '../../common/utils/logging';
-import { abbreviateNumber } from '../../utils/textFormat';
 import LoadingWheel from '../../common/components/Widgets/LoadingWheel';
 import VoterGuideChooseElectionWithPositionsModal from './VoterGuideChooseElectionWithPositionsModal';
 import VoterGuideEndorsements from './VoterGuideEndorsements';

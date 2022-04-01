@@ -1,10 +1,9 @@
-import { Twitter } from '@mui/icons-material';
+import { Recommend } from '@mui/icons-material';
 import styled from '@mui/material/styles/styled';
 import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
 import React, { PureComponent, Suspense } from 'react';
 import SplitIconButton from '../../common/components/Widgets/SplitIconButton';
-import SvgImage from '../../common/components/Widgets/SvgImage';
 import VoterStore from '../../stores/VoterStore';
 
 const OpenExternalWebSite = React.lazy(() => import(/* webpackChunkName: 'OpenExternalWebSite' */ '../../common/components/Widgets/OpenExternalWebSite'));
@@ -31,7 +30,7 @@ class EndorsementCard extends PureComponent {
   }
 
   render () {
-    const { classes, organizationWeVoteId, whiteOnBlue } = this.props;
+    const { classes, organizationWeVoteId, whiteTextOnDarkButton } = this.props;
     const { voter } = this.state;
     if (!voter) {
       return null;
@@ -43,15 +42,13 @@ class EndorsementCard extends PureComponent {
       return null;
     }
     // console.log('organizationWeVoteId:', organizationWeVoteId, ', linkedOrganizationWeVoteId:', linkedOrganizationWeVoteId);
-    let backgroundColor = '';
-    let fontColor = '';
-    let icon = (
-      <SvgImage imageName="positions-icon-24-x-24" width="20px" />
-    );
-    if (whiteOnBlue) {
-      backgroundColor = '#fff';
-      fontColor = '#2e3c5d';
-      icon = <Twitter classes={{ root: classes.twitterLogo }} />;
+    let backgroundColor = '#fff';
+    let fontColor = '#2e3c5d';
+    let recommendIcon = <Recommend classes={{ root: classes.recommendDarkTextOnWhite }} />;
+    if (whiteTextOnDarkButton) {
+      backgroundColor = '#2e3c5d';
+      fontColor = '#fff';
+      recommendIcon = <Recommend classes={{ root: classes.recommendWhiteTextOnDarkBackground }} />;
     }
     return (
       <div>
@@ -71,7 +68,7 @@ class EndorsementCard extends PureComponent {
                       buttonText={this.props.buttonText}
                       externalUniqueId="endorsementCardAddEndorsementsToWeVote"
                       fontColor={fontColor}
-                      icon={icon}
+                      icon={recommendIcon}
                       id="endorsementCardAddEndorsementsToWeVote"
                       title="Add endorsements to We Vote"
                     />
@@ -94,12 +91,15 @@ EndorsementCard.propTypes = {
   organizationWeVoteId: PropTypes.string,
   title: PropTypes.string,
   text: PropTypes.string,
-  whiteOnBlue: PropTypes.bool,
+  whiteTextOnDarkButton: PropTypes.bool,
 };
 
 const styles = () => ({
-  twitterLogo: {
-    color: '#1d9bf0',
+  recommendDarkTextOnWhite: {
+    color: '#2e3c5d',
+  },
+  recommendWhiteTextOnDarkBackground: {
+    color: '#fff',
   },
 });
 

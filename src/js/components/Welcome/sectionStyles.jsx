@@ -1,4 +1,4 @@
-import styled from '@mui/material/styles/styled';
+import styled from 'styled-components';
 
 const Section = styled('div', {
   shouldForwardProp: (prop) => !['noTopMargin', 'noSideMargins', 'variant', 'rounded'].includes(prop),
@@ -32,10 +32,10 @@ const SectionTitle = styled('h1')(({ theme }) => (`
   }
 `));
 
-const SectionTitleBold = styled('span')`
-  color: ${(props) => props.theme.colors.brandBlue};
+const SectionTitleBold = styled('span')(({ theme }) => (`
+  color: ${theme.colors.brandBlue};
   font-weight: bold;
-`;
+`));
 
 const Step = styled('div')(({ theme }) => (`
   display: flex;
@@ -55,7 +55,7 @@ const Step = styled('div')(({ theme }) => (`
 const StepNumber = styled('div')(({ theme }) => (`
   width: 24px;
   height: 24px;
-  background: ${(props) => props.theme.colors.brandBlue};
+  background: ${theme.colors.brandBlue};
   color: white;
   border-radius: 4px;
   ${theme.breakpoints.down('md')} {

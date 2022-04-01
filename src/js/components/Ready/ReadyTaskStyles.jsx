@@ -2,16 +2,36 @@ import { Button } from '@mui/material';
 import styled from 'styled-components';
 import { isCordova } from '../../common/utils/isCordovaOrWebApp';
 
+
+const BallotToDoTitle = styled('h3')(({ theme }) => (`
+  margin: 0;
+  font-size: 30px;
+  font-weight: 600;
+  margin-bottom: 6px;
+  margin-top: 12px;
+  ${theme.breakpoints.down('sm')} {
+    font-size: 24px;
+    margin-top: 0;
+  }
+  ${theme.breakpoints.down('xs')} {
+    font-size: 20px;
+    margin-top: 0;
+  }
+`));
+
 const ButtonLeft = styled('div')`
   display: flex !important;
   align-items: center !important;
   justify-content: flex-start !important;
 `;
 
-const ButtonText = styled('div')(({ theme }) => (`
-  font-size: 14px;
+const ButtonText = styled('div', {
+  shouldForwardProp: (prop) => !['fontColor'].includes(prop),
+})(({ fontColor, theme }) => (`
+  ${fontColor ? `color: ${fontColor};` : ''}
+  font-size: 18px;
   ${theme.breakpoints.down('sm')} {
-    font-size: 12px;
+    font-size: 16px;
   }
 `));
 
@@ -105,9 +125,9 @@ const SubTitle = styled('small')`
 `;
 
 const StyledButton = styled(Button, {
-  shouldForwardProp: (prop) => !['completed', 'withoutsteps'].includes(prop),
-})(({ completed, withoutsteps, theme }) => (`
-  border: 1.5px solid ${completed ? 'rgb(31,192,111)' : '#ddd'} !important;
+  shouldForwardProp: (prop) => !['completed', 'darkButton', 'withoutsteps'].includes(prop),
+})(({ completed, darkButton, withoutsteps, theme }) => (`
+  ${darkButton ? '' : `border: 1.5px solid ${completed ? 'rgb(31,192,111)' : '#ddd'} !important;`}
   padding: 8px 12px !important;
   margin-top: 12px !important;
   border-radius: 5px !important;
@@ -122,9 +142,8 @@ const StyledButton = styled(Button, {
     align-items: center !important;
     justify-content: ${withoutsteps ? 'flex-start' : 'space-between'} !important;
   }
-  :hover {
-    background: #f7f7f7 !important;
-  }
+  ${darkButton ? ':hover { background: #000 !important; }' : ':hover { background: #f7f7f7 !important; }'}
+
   ${theme.breakpoints.down('sm')} {
     padding: 8px 8px !important;
   }
@@ -156,6 +175,8 @@ const StyledCheckboxCompleted = styled('div')(({ theme }) => (`
 `));
 
 export {
-  ButtonLeft, ButtonText, Icon, PercentComplete, ReadyCard, StyledButton, StyledCheckbox, StyledCheckboxCompleted, SubTitle, Title, TitleRowWrapper,
+  BallotToDoTitle, ButtonLeft, ButtonText, Icon,
+  PercentComplete, ReadyCard, StyledButton, StyledCheckbox, StyledCheckboxCompleted,
+  SubTitle, Title, TitleRowWrapper,
 };
 

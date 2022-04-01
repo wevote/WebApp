@@ -1,12 +1,11 @@
 import { Close } from '@mui/icons-material';
-import { DialogContent, DialogTitle, IconButton } from '@mui/material';
-import styled from '@mui/material/styles/styled';
+import { Button, DialogContent, DialogTitle, IconButton } from '@mui/material';
 import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
+import styled from 'styled-components';
 import VoterStore from '../../../stores/VoterStore';
 import PositionPublicToggle from '../PositionPublicToggle';
-import Slides from './Slides';
 
 const SettingsAccount = React.lazy(() => import(/* webpackChunkName: 'SettingsAccount' */ '../../Settings/SettingsAccount'));
 
@@ -15,6 +14,7 @@ class ChooseOrOpposeIntroModal extends Component {
   constructor (props) {
     super(props);
     this.state = {
+      currentSlideKey: 'signIn',
       voterIsSignedIn: false,
     };
   }
@@ -23,6 +23,7 @@ class ChooseOrOpposeIntroModal extends Component {
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
     const voterIsSignedIn = VoterStore.getVoterIsSignedIn();
     this.setState({
+      currentSlideKey: voterIsSignedIn ? 'getStarted' : 'signIn',
       voterIsSignedIn,
     });
   }
@@ -39,58 +40,113 @@ class ChooseOrOpposeIntroModal extends Component {
   }
 
   getSlides = () => {
-    const { ballotItemType } = this.props;
+    const { ballotItemType, classes } = this.props;
     const { voterIsSignedIn } = this.state;
-    const slides = [
-      (
-        <>
-          <SubTitle>Your position is only visible to your We Vote friends.</SubTitle>
-          <PlainText>You can make your views public with the privacy toggle.</PlainText>
-          <Row>
-            <BoldText>Test the toggle here:</BoldText>
-            <PositionPublicToggle
-              inModal={this.props.inModal}
-              ballotItemWeVoteId="null"
-              className="null"
-              externalUniqueId={`practiceToggle-${this.props.externalUniqueId}`}
-              ballotItemType={ballotItemType}
-              inTestMode
-            />
-          </Row>
-        </>
-      ),
-      (
-        <>
-          <SubTitle>We Vote helps you get ready.</SubTitle>
-          <BoldText>BUT, you cannot use We Vote to cast your vote.</BoldText>
-          <PlainText>Make sure to return your official ballot to your polling location!</PlainText>
-        </>
-      ),
-      (
-        <>
-          {voterIsSignedIn ? (
-            <div>
-              Thank you for signing in!
-            </div>
-          ) : (
-            <Suspense fallback={<></>}>
-              <SettingsAccount
-                pleaseSignInTitle="Sign in to save your choices!"
-                pleaseSignInSubTitle=""
-                toggleSignInModal={this.props.onClose}
-                inModal
+    const slides = {
+      getReady:
+        (
+          <>
+            <SubTitle>We Vote helps you get ready.</SubTitle>
+            <BoldText>BUT, you cannot use We Vote to cast your vote.</BoldText>
+            <PlainText>Make sure to return your official ballot to your polling location!</PlainText>
+            <Options buttons="2">
+              {!voterIsSignedIn && (
+                <Button
+                  classes={{ root: classes.optionsButton }}
+                  variant="outlined"
+                  color="primary"
+                  onClick={() => this.changeCurrentSlideIndex('signIn')}
+                >
+                  Previous
+                </Button>
+              )}
+              <Button
+                classes={{ root: classes.optionsButton }}
+                variant="contained"
+                color="primary"
+                onClick={() => this.changeCurrentSlideIndex('toggle')}
+              >
+                Next
+              </Button>
+            </Options>
+          </>
+        ),
+      toggle:
+        (
+          <>
+            <SubTitle>Your position is only visible to your We Vote friends.</SubTitle>
+            <PlainText>You can make your views public with the privacy toggle.</PlainText>
+            <Row>
+              <BoldText>Test the toggle here:</BoldText>
+              <PositionPublicToggle
+                inModal={this.props.inModal}
+                ballotItemWeVoteId="null"
+                className="null"
+                externalUniqueId={`practiceToggle-${this.props.externalUniqueId}`}
+                ballotItemType={ballotItemType}
+                inTestMode
               />
-            </Suspense>
-          )}
-        </>
-      ),
-    ];
+            </Row>
+            <Options buttons="2">
+              <Button
+                classes={{ root: classes.optionsButton }}
+                variant="outlined"
+                color="primary"
+                onClick={() => this.changeCurrentSlideIndex('getReady')}
+              >
+                Previous
+              </Button>
+              <Button
+                classes={{ root: classes.optionsButton }}
+                variant="contained"
+                color="primary"
+                onClick={this.props.onClose}
+              >
+                Close
+              </Button>
+            </Options>
+          </>
+        ),
+    };
+    if (!voterIsSignedIn) {
+      slides.signIn = (
+        <Suspense fallback={<></>}>
+          <>
+            <SettingsAccount
+              pleaseSignInTitle="Sign in to save your choices!"
+              pleaseSignInSubTitle=""
+              toggleSignInModal={this.props.onClose}
+              inModal
+            />
+            <Options buttons="1">
+              <Button
+                classes={{ root: classes.button }}
+                variant="outlined"
+                color="primary"
+                onClick={() => this.changeCurrentSlideIndex('getReady')}
+              >
+                Sign In Later
+              </Button>
+            </Options>
+          </>
+        </Suspense>
+      );
+    }
     return slides;
+  }
+
+  changeCurrentSlideIndex = (newSlideIndex) => {
+    this.setState({
+      currentSlideKey: newSlideIndex,
+    });
+    return null;
   }
 
   render () {
     const { classes } = this.props;
-    const { voterIsSignedIn } = this.state;
+    const { currentSlideKey } = this.state;
+    console.log('currentSlideKey:', currentSlideKey);
+    const slides = this.getSlides();
     return (
       <>
         <DialogTitle classes={{ root: classes.dialogTitle }}>
@@ -107,11 +163,11 @@ class ChooseOrOpposeIntroModal extends Component {
         </DialogTitle>
         <HorizontalLine />
         <DialogContent classes={{ root: classes.dialogContent }}>
-          <Slides
-            onClose={this.props.onClose}
-            slides={this.getSlides()}
-            voterIsSignedIn={voterIsSignedIn}
-          />
+          <SlidesWrapper>
+            <SlidesContainer>
+              {slides[currentSlideKey]}
+            </SlidesContainer>
+          </SlidesWrapper>
         </DialogContent>
       </>
     );
@@ -129,15 +185,27 @@ const styles = (theme) => ({
   button: {
     width: '100%',
   },
+  closeButton: {
+    position: 'absolute',
+    right: theme.spacing(1),
+    top: theme.spacing(1),
+  },
   dialogTitle: {
     paddingTop: 22,
     paddingBottom: 5,
     display: 'flex',
   },
-  closeButton: {
-    position: 'absolute',
-    right: theme.spacing(1),
-    top: theme.spacing(1),
+  nextButton: {
+    width: '50%',
+    margin: 8,
+  },
+  optionsButton: {
+    minWidth: '40%',
+    width: '50%',
+    margin: 8,
+    [theme.breakpoints.down('md')]: {
+      width: '40%',
+    },
   },
 });
 
@@ -149,6 +217,13 @@ const HorizontalLine = styled('div')(({ theme }) => (`
   ${theme.breakpoints.down('md')} {
     margin: 0 0 8px 0;
   }
+`));
+
+const Options = styled('div')(({ buttons }) => (`
+  display: flex;
+  flex-flow: ${buttons > 1 ? 'row' : 'column'};
+  ${buttons > 1 ? 'justify-content: space-between;' : ''};
+  margin-top: 1em;
 `));
 
 const TitleText = styled('div')`
@@ -171,14 +246,30 @@ const PlainText = styled('div')`
   text-align: left;
 `;
 
-const BoldText = styled('span')`
+const BoldText = styled('div')`
   font-weight: bold;
 `;
 
 const Row = styled('div')`
-  display: flex;
+  // display: flex;
   margin: 16px 0;
   margin-top: 20px;
 `;
+
+const SlidesContainer = styled('div')`
+  display: block;
+`;
+
+const SlidesWrapper = styled('div')(({ theme }) => (`
+  display: flex;
+  flex-flow: column;
+  min-width: 508px;
+  min-height: 205px;
+  justify-content: space-between;
+  ${theme.breakpoints.down('md')} {
+    width: 100%;
+    min-width: 260px;
+  }
+`));
 
 export default withStyles(styles)(ChooseOrOpposeIntroModal);

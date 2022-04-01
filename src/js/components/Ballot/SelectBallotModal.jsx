@@ -1,14 +1,13 @@
 import { Close } from '@mui/icons-material';
 import { Button, Dialog, DialogContent, DialogTitle, FormControl, IconButton, InputLabel, Select } from '@mui/material';
-import styled from '@mui/material/styles/styled';
 import withStyles from '@mui/styles/withStyles';
 import withTheme from '@mui/styles/withTheme';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
+import styled from 'styled-components';
 import AnalyticsActions from '../../actions/AnalyticsActions';
 import { hasIPhoneNotch } from '../../common/utils/cordovaUtils';
 import { renderLog } from '../../common/utils/logging';
-import BallotStore from '../../stores/BallotStore';
 import VoterStore from '../../stores/VoterStore';
 import { calculateBallotBaseUrl } from '../../utils/textFormat';
 import BallotTitleHeader from '../../pages/Ballot/BallotTitleHeader';
@@ -34,6 +33,10 @@ class SelectBallotModal extends Component {
 
   componentDidMount () {
     AnalyticsActions.saveActionSelectBallotModal(VoterStore.electionId());
+    const voterStateCode = VoterStore.getVoterStateCode();
+    if (voterStateCode) {
+      this.setState({ selectedState: voterStateCode });
+    }
   }
 
   handleChooseStateChange (e) {
@@ -67,11 +70,6 @@ class SelectBallotModal extends Component {
       dialogTitleText = '';
     }
 
-    const electionName = BallotStore.currentBallotElectionName || '';
-    const electionDayText = BallotStore.currentBallotElectionDate;
-    const electionDayTextFormatted = electionDayText && window.moment ? window.moment(electionDayText).format('MMM Do, YYYY') : '';
-    const electionDayTextObject = electionDayText && window.moment ? <span>{electionDayTextFormatted}</span> : null;
-
     // console.log('SelectBallotModal render, voter_address_object: ', voter_address_object);
     return (
       <Dialog
@@ -80,7 +78,7 @@ class SelectBallotModal extends Component {
         onClose={() => { this.props.toggleFunction(pathname); }}
         id="SelectBallotModalId"
       >
-        <DialogTitle>
+        <DialogTitle classes={{ root: classes.dialogTitle }}>
           <Title id="SelectBallotModalTitleId">
             {dialogTitleText}
           </Title>
@@ -98,10 +96,7 @@ class SelectBallotModal extends Component {
           {!editingAddress && (
             <BallotTitleHeaderWrapper>
               <BallotTitleHeader
-                electionName={electionName}
-                electionDayTextObject={electionDayTextObject}
                 linksOff
-                showBallotCaveat
               />
             </BallotTitleHeaderWrapper>
           )}
@@ -250,6 +245,20 @@ SelectBallotModal.propTypes = {
 };
 
 const styles = (theme) => ({
+  closeButton: {
+    position: 'absolute',
+    right: 8,
+    top: 8,
+    [theme.breakpoints.down('sm')]: {
+      right: 0,
+      top: 0,
+    },
+  },
+  dialogContent: {
+    [theme.breakpoints.down('md')]: {
+      padding: '0 8px 8px',
+    },
+  },
   dialogPaper: {
     marginTop: hasIPhoneNotch() ? 68 : 48,
     minHeight: '80%',
@@ -268,15 +277,10 @@ const styles = (theme) => ({
       top: '20px',
     },
   },
-  dialogContent: {
+  dialogTitle: {
     [theme.breakpoints.down('md')]: {
-      padding: '0 8px 8px',
+      padding: '8px 8px',
     },
-  },
-  closeButton: {
-    position: 'absolute',
-    right: theme.spacing(1),
-    top: theme.spacing(1),
   },
   formControl: {
     width: '100%',
@@ -312,8 +316,8 @@ const Title = styled('div')`
 const Row = styled('div')`
   margin-top: -8px;
   margin-bottom: -8px;
-  margin-left: auto;
-  margin-right: auto;
+  // margin-left: auto;
+  // margin-right: auto;
   max-width: 1200px;
   @media(min-width: 860px) {
     display: flex;

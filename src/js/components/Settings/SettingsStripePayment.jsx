@@ -8,8 +8,8 @@ import DonateActions from '../../common/actions/DonateActions';
 import LoadingWheel from '../../common/components/Widgets/LoadingWheel';
 import DonateStore from '../../common/stores/DonateStore';
 import { renderLog } from '../../common/utils/logging';
+import numberWithCommas from '../../common/utils/numberWithCommas';
 import VoterStore from '../../stores/VoterStore';
-import { numberWithCommas } from '../../utils/textFormat';
 
 /*
 July 2021 TODO: Same named file in the WebApp and Campaigns -- PLEASE KEEP THEM IDENTICAL -- make symmetrical changes and test on both sides

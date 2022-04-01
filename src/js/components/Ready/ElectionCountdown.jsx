@@ -1,19 +1,26 @@
 import { Button } from '@mui/material';
 import PropTypes from 'prop-types';
-import React from 'react';
+import React, { Suspense } from 'react';
 import styled from 'styled-components';
 import BallotActions from '../../actions/BallotActions';
+import BallotTitleHeader from '../../pages/Ballot/BallotTitleHeader';
 import { formatDateToMonthDayYear } from '../../common/utils/dateFormat';
+import daysUntil from '../../common/utils/daysUntil';
+import getBooleanValue from '../../common/utils/getBooleanValue';
 import historyPush from '../../common/utils/historyPush';
 import initializeMoment from '../../common/utils/initializeMoment';
 import { renderLog } from '../../common/utils/logging';
 import BallotStore from '../../stores/BallotStore';
+import AppObservableStore from '../../stores/AppObservableStore';
 
+const DelayedLoad = React.lazy(() => import(/* webpackChunkName: 'DelayedLoad' */ '../../common/components/Widgets/DelayedLoad'));
 
 class ElectionCountdown extends React.Component {
   constructor (props) {
     super(props);
     this.state = {
+      daysUntilNextElection: 0,
+      daysUntilNextNationalElection: 0,
       electionDateMDY: '',
       electionIsToday: false,
       electionInPast: false,
@@ -21,7 +28,6 @@ class ElectionCountdown extends React.Component {
       t0: performance.now(),
       showButton: false,
     };
-    this.setNewTime = this.setNewTime.bind(this);
   }
 
   componentDidMount () {
@@ -67,24 +73,24 @@ class ElectionCountdown extends React.Component {
     // console.log('nextNationalElectionDayText:', nextNationalElectionDayText);
     initializeMoment(() => {
       const { moment } = window;
-      const nextNationalElectionDayMDYSlash = moment(nextNationalElectionDayText, ['YYYY-MM-DD', 'MM/DD/YY', 'MM-DD-YY']).format('MM/DD/YYYY');
-      const nextNationalElectionDateMDY = formatDateToMonthDayYear(nextNationalElectionDayMDYSlash);
+      this.setNextNationalElectionDateFromDayText(nextNationalElectionDayText);
+      const nextNationalElectionDayMDYSlash = moment(nextNationalElectionDayText, 'YYYY-MM-DD').format('MM/DD/YYYY');
+      const nextNationalElectionDate = new Date(nextNationalElectionDayMDYSlash);
+      const nextNationalElectionDateMDY = formatDateToMonthDayYear(nextNationalElectionDate);
       this.setState({
         nextNationalElectionDateMDY,
       });
-      const nextNationalElectionDate = new Date(nextNationalElectionDayMDYSlash);
-      this.setNextNationalElectionDate(nextNationalElectionDate);
       if (electionDayText) {
-        const electionDayMDYSlash = moment(electionDayText).format('MM/DD/YYYY');
-        const electionDateMDY = formatDateToMonthDayYear(electionDayMDYSlash);
+        this.setNextElectionDateFromDayText(electionDayText);
+        const electionDayMDYSlash = moment(electionDayText, 'YYYY-MM-DD').format('MM/DD/YYYY');
+        const electionDate = new Date(electionDayMDYSlash);
+        const electionDateMDY = formatDateToMonthDayYear(electionDate);
         this.setState({
           electionDateMDY,
         });
-        const electionDate = new Date(electionDayMDYSlash);
-        this.setNewTime(electionDate);
-        const refreshIntervalInMilliseconds = 3600000; // One hours worth of milliseconds
+        const refreshIntervalInMilliseconds = 3600000; // 1 hour of milliseconds
         clearInterval(this.timeInterval);
-        this.timeInterval = setInterval(() => this.setNewTime(electionDate), refreshIntervalInMilliseconds);
+        this.timeInterval = setInterval(() => this.setNextElectionDateFromDayText(electionDayText), refreshIntervalInMilliseconds);
       }
     });
   }
@@ -95,200 +101,201 @@ class ElectionCountdown extends React.Component {
     }
   }
 
-  setNewTime (electionDate) {
-    if (electionDate) {
-      // These are unixtime
-      const electionTime = new Date(electionDate).getTime();
-      const currentTime = new Date().getTime();
-      // console.log('electionTime: ', electionTime, ', currentTime: ', currentTime);
-      const distance = electionTime - currentTime;
-      // console.log('distance: ', distance);
-      if (distance >= 0) {
-        const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-
-        const daysMobile = `${days + 1}`;
-
-        this.setState({
-          daysMobile,
-        });
-      } else if (distance > -86400000) {  // 86400000 is one day of milliseconds
-        // Election is today
-        this.setState({
-          electionIsToday: true,
-          electionInPast: false,
-          daysMobile: 0,
-        });
-      } else {
-        // Election was yesterday or earlier
-        this.setState({
-          electionIsToday: false,
-          electionInPast: true,
-          daysMobile: 0,
-        });
-      }
+  setNextElectionDateFromDayText = (nextElectionDayText) => {
+    const daysUntilNextElection = daysUntil(nextElectionDayText);
+    if (daysUntilNextElection > 0) {
+      this.setState({
+        electionIsToday: false,
+        electionInPast: false,
+        daysUntilNextElection,
+      });
+    } else if (daysUntilNextElection === 0) {  // 86400000 is one day of milliseconds
+      // Election is today
+      this.setState({
+        electionIsToday: true,
+        electionInPast: false,
+        daysUntilNextElection: 0,
+      });
+    } else {
+      // Election was yesterday or earlier
+      this.setState({
+        electionIsToday: false,
+        electionInPast: true,
+        daysUntilNextElection: 0,
+      });
     }
   }
 
-  setNextNationalElectionDate (nextNationalElectionDate) {
-    if (nextNationalElectionDate) {
-      // These are unixtime
-      const electionTime = new Date(nextNationalElectionDate).getTime();
-      const currentTime = new Date().getTime();
-      // console.log('electionTime: ', electionTime, ', currentTime: ', currentTime);
-      const distance = electionTime - currentTime;
-      // console.log('distance: ', distance);
-      if (distance >= 0) {
-        const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-
-        const daysUntilNextNationalElection = `${days + 1}`;
-
-        this.setState({
-          daysUntilNextNationalElection,
-        });
-      } else if (distance > -86400000) {  // 86400000 is one day of milliseconds
-        // Election is today
-        this.setState({
-          daysUntilNextNationalElection: 0,
-        });
-      } else {
-        // Election was yesterday or earlier
-        this.setState({
-          daysUntilNextNationalElection: 0,
-        });
-      }
+  setNextNationalElectionDateFromDayText = (nextNationalElectionDayText) => {
+    const daysUntilNextNationalElection = daysUntil(nextNationalElectionDayText);
+    if (daysUntilNextNationalElection > 0) {
+      this.setState({
+        daysUntilNextNationalElection,
+      });
+    } else {
+      // Election was yesterday or earlier
+      this.setState({
+        daysUntilNextNationalElection: 0,
+      });
     }
+  }
+
+  // eslint-disable-next-line no-unused-vars
+  toggleSelectBallotModal (showSelectBallotModal, hideAddressEditIgnored = false, hideElectionsIgnored = false) {
+    const hideAddressEdit = false;
+    const hideElections = false;
+    AppObservableStore.setShowSelectBallotModal(!showSelectBallotModal, getBooleanValue(hideAddressEdit), getBooleanValue(hideElections));
   }
 
   render () {
     renderLog('ElectionCountdown');  // Set LOG_RENDER_EVENTS to log all renders
     const {
-      daysMobile, daysUntilNextNationalElection, electionIsToday, electionInPast,
+      daysUntilNextElection, daysUntilNextNationalElection, electionIsToday, electionInPast,
       electionDateMDY, nextNationalElectionDateMDY, showButton,
     } = this.state;
     const electionIsUpcomingHtml = (
-      <CardCountdown className="card u-cursor--pointer" onClick={() => this.onClickFunctionLocal()}>
-        <CardCountdownInternalWrapper>
-          <div>
-            <CardTitleUpcoming>
-              {daysMobile ? (
-                <>
-                  {daysMobile}
-                  <SpaceBetweenNumberAndWord />
-                  {daysMobile === '1' ? 'day' : 'days'}
-                </>
-              ) : (
-                <div style={{ margin: 26 }}>
-                  { showButton ? (
-                    <Button
-                      variant="outlined"
-                      color="primary"
-                      id="goToHeavyButton"
-                      onClick={() => historyPush('/ballot')}
-                    >
-                      Choose Election
-                    </Button>
-                  ) : (
-                    <DaysFindingText>
-                      Finding election...
-                    </DaysFindingText>
-                  )}
-                </div>
-              )}
-            </CardTitleUpcoming>
-          </div>
-          <div>
-            <CardSubTitle center>
-              {(electionDateMDY) ? (
-                <>
-                  until your next election on
-                  {' '}
-                  {electionDateMDY}
-                  .
-                </>
-              ) : (<></>)}
-            </CardSubTitle>
-          </div>
-        </CardCountdownInternalWrapper>
-      </CardCountdown>
+      <CardCountdownInternalWrapper>
+        <div>
+          <CardTitleUpcoming className="u-cursor--pointer" onClick={() => this.onClickFunctionLocal()}>
+            {daysUntilNextElection ? (
+              <>
+                {daysUntilNextElection}
+                <SpaceBetweenNumberAndWord />
+                {daysUntilNextElection === '1' ? 'day' : 'days'}
+              </>
+            ) : (
+              <div style={{ margin: 26 }}>
+                { showButton ? (
+                  <Button
+                    variant="outlined"
+                    color="primary"
+                    id="goToHeavyButton"
+                    onClick={() => historyPush('/ballot')}
+                  >
+                    Choose Election
+                  </Button>
+                ) : (
+                  <DaysFindingText>
+                    Finding election...
+                  </DaysFindingText>
+                )}
+              </div>
+            )}
+          </CardTitleUpcoming>
+        </div>
+        <div>
+          <CardSubTitle center className="u-cursor--pointer" onClick={() => this.onClickFunctionLocal()}>
+            {(electionDateMDY) ? (
+              <>
+                until your next election.
+              </>
+            ) : (<></>)}
+          </CardSubTitle>
+        </div>
+        <BallotTitleHeaderWrapper>
+          <BallotTitleHeader
+            centerText
+            electionDateBelow
+            toggleSelectBallotModal={this.toggleSelectBallotModal}
+          />
+        </BallotTitleHeaderWrapper>
+      </CardCountdownInternalWrapper>
     );
     const electionIsTodayHtml = (
-      <CardCountdown className="card u-cursor--pointer" onClick={() => this.onClickFunctionLocal()}>
-        <CardCountdownInternalWrapper>
+      <CardCountdownInternalWrapper>
+        <div>
           <div>
-            <div>
-              <CardTitleToday>
-                Vote Today!
-              </CardTitleToday>
-            </div>
-            <div>
-              <CardSubTitle center>
-                {(electionDateMDY) ? (
-                  <>
-                    Your election is today
-                    {' '}
-                    {electionDateMDY}
-                    .
-                  </>
-                ) : (
-                  <>
-                    &nbsp;
-                  </>
-                )}
-              </CardSubTitle>
-            </div>
+            <CardTitleToday className="u-cursor--pointer" onClick={() => this.onClickFunctionLocal()}>
+              Vote Today!
+            </CardTitleToday>
           </div>
-        </CardCountdownInternalWrapper>
-      </CardCountdown>
-    );
-    const nextNationalElectionHtml = (
-      <CardCountdown className="card">
-        <CardCountdownInternalWrapper>
           <div>
-            <CardTitleUpcoming>
-              {daysUntilNextNationalElection ? (
+            <CardSubTitle center className="u-cursor--pointer" onClick={() => this.onClickFunctionLocal()}>
+              {(electionDateMDY) ? (
                 <>
-                  {daysUntilNextNationalElection}
-                  <SpaceBetweenNumberAndWord />
-                  {daysUntilNextNationalElection === '1' ? 'day' : 'days'}
+                  Your election is today.
                 </>
               ) : (
-                <div style={{ margin: 26 }}>
-                  <DaysFindingText>
-                    Loading election...
-                  </DaysFindingText>
-                </div>
-              )}
-            </CardTitleUpcoming>
-          </div>
-          <div>
-            <CardSubTitle center>
-              {(nextNationalElectionDateMDY) ? (
                 <>
-                  until national election on
-                  {' '}
-                  {nextNationalElectionDateMDY}
-                  .
+                  &nbsp;
                 </>
-              ) : (<></>)}
+              )}
             </CardSubTitle>
           </div>
-        </CardCountdownInternalWrapper>
-      </CardCountdown>
+          <BallotTitleHeaderWrapper>
+            <BallotTitleHeader
+              centerText
+              electionDateBelow
+              toggleSelectBallotModal={this.toggleSelectBallotModal}
+            />
+          </BallotTitleHeaderWrapper>
+        </div>
+      </CardCountdownInternalWrapper>
+    );
+    const nextNationalElectionHtml = (
+      <CardCountdownInternalWrapper>
+        <div>
+          <CardTitleUpcoming>
+            {daysUntilNextNationalElection ? (
+              <>
+                {daysUntilNextNationalElection}
+                <SpaceBetweenNumberAndWord />
+                {daysUntilNextNationalElection === '1' ? 'day' : 'days'}
+              </>
+            ) : (
+              <div style={{ margin: 26 }}>
+                <DaysFindingText>
+                  Loading election...
+                </DaysFindingText>
+              </div>
+            )}
+          </CardTitleUpcoming>
+        </div>
+        <div>
+          <CardSubTitle center>
+            {(nextNationalElectionDateMDY) ? (
+              <>
+                until national election on
+                {' '}
+                {nextNationalElectionDateMDY}
+                .
+              </>
+            ) : (<></>)}
+          </CardSubTitle>
+        </div>
+      </CardCountdownInternalWrapper>
     );
 
+    let htmlToShow = <></>;
     if (electionIsToday) {
-      return electionIsTodayHtml;
-    } else if (electionInPast) {
-      return nextNationalElectionHtml;
+      htmlToShow = electionIsTodayHtml;
+    } else if (electionInPast || !daysUntilNextElection || daysUntilNextElection < 0) {
+      htmlToShow = nextNationalElectionHtml;
     } else {
-      return electionIsUpcomingHtml;
+      htmlToShow = electionIsUpcomingHtml;
     }
+    return (
+      <CardCountdown className="card">
+        <Suspense fallback={<></>}>
+          <DelayedLoad waitBeforeShow={250}>
+            {htmlToShow}
+          </DelayedLoad>
+        </Suspense>
+      </CardCountdown>
+    );
   }
 }
 ElectionCountdown.propTypes = {
   initialDelay: PropTypes.number,
   onClickFunction: PropTypes.func,
 };
+
+const BallotTitleHeaderWrapper = styled('div')(({ theme }) => (`
+  margin-top: 60px;
+  ${theme.breakpoints.down('sm')} {
+    margin-top: 42px;
+  }
+`));
 
 const CardCountdown = styled('div')(({ theme }) => (`
   align-items: center;
@@ -298,7 +305,7 @@ const CardCountdown = styled('div')(({ theme }) => (`
   padding-top: 4px;
   padding-bottom: 8px;
   ${theme.breakpoints.down('sm')} {
-    min-height: 10px;
+    min-height: 140px;
   }
 `));
 
@@ -331,22 +338,14 @@ const CardTitleToday = styled('h1')(({ theme }) => (`
 
 const CardSubTitle = styled('h3', {
   shouldForwardProp: (prop) => !['desktopMode', 'center'].includes(prop),
-})(({ desktopMode, center, theme }) => (`
+})(({ desktopMode, center }) => (`
   font-size: ${desktopMode ? '18px' : '22px'};
   font-weight: 700;
   color: #2E3C5D !important;
-  // width: fit-content;
   margin-bottom: 0 !important;
   margin-top: ${desktopMode ? '24px' : null};
   width: 100%;
   text-align: ${center ? 'center' : 'left'};
-  // border-bottom: 1px solid #2E3C5D;
-  ${theme.breakpoints.down('md')} {
-    font-size: 14px;
-  }
-  ${theme.breakpoints.down('xs')} {
-    font-size: 13px;
-  }
 `));
 
 const DaysFindingText = styled('div')`

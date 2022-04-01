@@ -1,26 +1,5 @@
 // textFormat.js
 
-export function abbreviateNumber (num) {
-  // =< 1,000,000 - round to hundred-thousand (1.4M)
-  if (num >= 1000000) {
-    return `${(num / 1000000).toFixed(1).replace(/\.0$/, '')}M`;
-  }
-  // 100,000 – 999,999 - round to nearest thousand (847K)
-  if (num >= 100000) {
-    return `${(num / 1000).toFixed(0).replace(/\.0$/, '')}K`;
-  }
-  // 10,000 – 99,999 - round to single decimal (45.8K)
-  if (num >= 10000) {
-    return `${(num / 1000).toFixed(1).replace(/\.0$/, '')}K`;
-  }
-  // < 10,000 - add comma for thousands (3,857)
-  if (num < 10000) {
-    const stringNum = num.toString();
-    return stringNum.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-  }
-  return num;
-}
-
 // We assume that arrayHaystack contains objects with one property with the name in needleProperty
 // When we find the first object in the arrayHaystack, replace it with the newObject
 export function arrayReplaceObjectMatchingPropertyValue (needleValue, needleProperty, arrayHaystack, newObject) {
@@ -35,17 +14,6 @@ export function arrayReplaceObjectMatchingPropertyValue (needleValue, needleProp
     objectWasReplaced,
     arrayHaystack,
   };
-}
-
-// Gives preference to the earlier entry in the incoming array
-export function arrayUnique (array) {
-  const a = array.concat();
-  for (let i = 0; i < a.length; ++i) {
-    for (let j = i + 1; j < a.length; ++j) {
-      if (a[i] === a[j]) a.splice(j--, 1);
-    }
-  }
-  return a;
 }
 
 export function calculateBallotBaseUrl (incomingBallotBaseUrl, incomingPathname) {
@@ -165,13 +133,6 @@ export function convertToInteger (incomingNumber) {
   return parseInt(incomingNumber, 10) || 0;
 }
 
-export function elipses (name, mobile) {
-  function cut (position) {
-    return name.length < position ? name : `${name.slice(0, position)}...`;
-  }
-  return mobile ? cut(3) : cut(8);
-}
-
 export function extractTwitterHandleFromTextString (incomingString) {
   if (!incomingString || incomingString === '') {
     return '';
@@ -224,16 +185,6 @@ export function mergeTwoObjectLists (obj1, obj2) {
   });
 
   return obj3;
-}
-
-export function numberWithCommas (rawNumber) {
-  if (rawNumber) {
-    const parts = rawNumber.toString().split('.');
-    parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-    return parts.join('.');
-  } else {
-    return '';
-  }
 }
 
 // If Display name is repeated in beginning of the description, remove the name from the description (along with trailing 'is') and capitalize next word to begin description.
@@ -335,16 +286,4 @@ export const vimeoRegX = /http(s)?:\/\/(www\.)?vimeo.com\/(\d+)(\/)?(#.*)?/;
 // This must be placed after declaration of stringContains
 export function isProperlyFormattedVoterGuideWeVoteId (voterGuideWeVoteId) {
   return voterGuideWeVoteId && stringContains('wv', voterGuideWeVoteId) && stringContains('vg', voterGuideWeVoteId);
-}
-
-export function getBooleanValue (thing) {
-  if (thing === undefined) {
-    return false;
-  } else if (typeof thing === 'boolean') {
-    return thing;
-  } else if (typeof thing === 'string') {
-    return thing === 'true';
-  } else {
-    return false;
-  }
 }

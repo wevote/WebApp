@@ -39,6 +39,7 @@ class FriendInvitationOnboardingIntro extends Component {
   }
 
   onBallotStoreChange () {
+    // DALE 2022-03-29 If we update this routing (as opposed to deprecate it) this should be updated to use /src/js/common/utils/daysUntil
     const electionDayText = BallotStore.currentBallotElectionDate;
     // console.log('electionDayText:', electionDayText);
     if (electionDayText) {

@@ -35,8 +35,10 @@ import FriendInvitationsSentToMe from './FriendInvitationsSentToMe';
 import FriendsCurrent from './FriendsCurrent';
 import InviteByEmail from './InviteByEmail';
 import SuggestedFriends from './SuggestedFriends';
+import { isCordova } from '../../common/utils/isCordovaOrWebApp';
 
 const FirstAndLastNameRequiredAlert = React.lazy(() => import(/* webpackChunkName: 'FirstAndLastNameRequiredAlert' */ '../../components/Widgets/FirstAndLastNameRequiredAlert'));
+const SettingsAccount = React.lazy(() => import(/* webpackChunkName: 'SettingsAccount' */ '../../components/Settings/SettingsAccount'));
 
 const testimonialPhoto = '../../../img/global/photos/Dale_McGrew-48x48.jpg';
 
@@ -250,6 +252,7 @@ class Friends extends Component {
       return LoadingWheel;
     }
 
+    const expandSideMarginsIfCordova = isCordova() ? { marginRight: 23, marginLeft: 23 } : {};
     let mobileContentToDisplay;
     let desktopContentToDisplay;
     // console.log('friendActivityExists:', friendActivityExists, ', voterIsSignedIn:', voterIsSignedIn);
@@ -556,20 +559,37 @@ class Friends extends Component {
     return (
       <PageContentContainer>
         <SnackNotifier />
-        {displayFriendsTabs() ? (
-          <FriendsHeading>
-            <div className="container-fluid debugStyleBottom">
-              <div className="Friends__Wrapper" style={cordovaFriendsWrapper()}>
-                {mobileContentToDisplay}
+        {voterIsSignedIn ? (
+          <>
+            {displayFriendsTabs() ? (
+              <FriendsHeading>
+                <div className="container-fluid debugStyleBottom">
+                  <div className="Friends__Wrapper" style={cordovaFriendsWrapper()}>
+                    {mobileContentToDisplay}
+                  </div>
+                </div>
+              </FriendsHeading>
+            ) : (
+              <div className="container-fluid">
+                <div className="container-main">
+                  {desktopContentToDisplay}
+                </div>
               </div>
-            </div>
-          </FriendsHeading>
+            )}
+          </>
         ) : (
-          <div className="container-fluid">
-            <div className="container-main">
-              {desktopContentToDisplay}
-            </div>
-          </div>
+          // <DelayedLoad waitBeforeShow={1000}>
+          <Suspense fallback={<></>}>
+            <OuterSettingsAccountWrapper>
+              <InnerSettingsAccountWrapper style={expandSideMarginsIfCordova}>
+                <SettingsAccount
+                  pleaseSignInTitle="Sign In to Find Your Friends"
+                  pleaseSignInSubTitle="We Vote is a community of friends who care about voting and democracy."
+                />
+              </InnerSettingsAccountWrapper>
+            </OuterSettingsAccountWrapper>
+          </Suspense>
+          // </DelayedLoad>
         )}
       </PageContentContainer>
     );
@@ -607,6 +627,11 @@ const FriendsHeading = styled('div')`
   // box-shadow: 0 2px 4px -1px rgba(0, 0, 0, 0.2), 0 4px 5px 0 rgba(0, 0, 0, 0.14), 0 1px 10px 0 rgba(0, 0, 0, 0.12);
 `;
 
+const OuterSettingsAccountWrapper = styled('div')`
+  display: flex;
+  justify-content: center;
+`;
+
 const SectionTitle = styled('h2')`
   width: fit-content;
   font-weight: bolder;
@@ -614,6 +639,13 @@ const SectionTitle = styled('h2')`
   margin-bottom: 4px;
   display: inline;
 `;
+
+const InnerSettingsAccountWrapper = styled('div')(({ theme }) => (`
+  max-width: 500px;
+  ${theme.breakpoints.down('sm')} {
+    margin: 0 12px;
+  }
+`));
 
 const SignInOptionsWrapper = styled('div')`
   display: flex;

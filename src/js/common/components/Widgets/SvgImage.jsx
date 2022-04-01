@@ -12,7 +12,7 @@ export default function SvgImage (props) {
   const passedAlt = (typeof alt === 'string') ? alt : '';
   let imageSrc;
   if (imageName.includes('/img/')) {
-    imageSrc = `${imageName}`;
+    imageSrc = normalizedImagePath(`${imageName}`);
   } else {
     imageSrc = normalizedImagePath(`../../img/global/svg-icons/issues/${imageName}.svg`);
   }
@@ -50,5 +50,5 @@ SvgImage.propTypes = {
   imageName: PropTypes.string,
   width: PropTypes.string,
   alt: PropTypes.string,
-  stylesTextIncoming: PropTypes.object,
+  stylesTextIncoming: PropTypes.string,
 };

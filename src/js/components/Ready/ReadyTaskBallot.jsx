@@ -13,7 +13,11 @@ import AppObservableStore from '../../stores/AppObservableStore';
 import BallotStore from '../../stores/BallotStore';
 import SupportStore from '../../stores/SupportStore';
 import VoterStore from '../../stores/VoterStore';
-import { ButtonLeft, ButtonText, Icon, PercentComplete, ReadyCard, StyledButton, StyledCheckbox, StyledCheckboxCompleted, TitleRowWrapper } from './ReadyTaskStyles';
+import {
+  BallotToDoTitle, ButtonLeft, ButtonText, Icon,
+  PercentComplete, ReadyCard, StyledButton, StyledCheckbox,
+  StyledCheckboxCompleted, TitleRowWrapper,
+} from './ReadyTaskStyles';
 import ShowMoreButtons from './ShowMoreButtons';
 
 const ballot0Percent = '../../../img/global/svg-icons/ready/ballot-0-percent.svg';
@@ -467,6 +471,7 @@ class ReadyTaskBallot extends React.Component {
           {(allCandidatesShowButton && allCandidatesButtonNeeded) && (
             <StyledButton
               id="decideOnCandidatesButton"
+              classes={{ root: classes.toDoButton }}
               className="u-cursor--pointer"
               color="primary"
               completed={allCandidatesAllCompleted ? 'true' : undefined}
@@ -515,6 +520,7 @@ class ReadyTaskBallot extends React.Component {
           {/* ************* */}
           {(federalShowButton && federalButtonNeeded) && (
             <StyledButton
+              classes={{ root: classes.toDoButton }}
               className="u-cursor--pointer"
               color="primary"
               completed={federalAllCompleted ? 'true' : undefined}
@@ -566,6 +572,7 @@ class ReadyTaskBallot extends React.Component {
           {/* ************* */}
           {(stateShowButton && stateButtonNeeded) && (
             <StyledButton
+              classes={{ root: classes.toDoButton }}
               className="u-cursor--pointer"
               color="primary"
               completed={stateAllCompleted ? 'true' : undefined}
@@ -618,6 +625,7 @@ class ReadyTaskBallot extends React.Component {
           {(measureShowButton && measureButtonNeeded) && (
             <StyledButton
               id="decideOnMeasuresButton"
+              classes={{ root: classes.toDoButton }}
               className="u-cursor--pointer"
               color="primary"
               completed={measureAllCompleted ? 'true' : undefined}
@@ -669,6 +677,7 @@ class ReadyTaskBallot extends React.Component {
           {/* *********** */}
           {(localShowButton && localButtonNeeded) && (
             <StyledButton
+              classes={{ root: classes.toDoButton }}
               className="u-cursor--pointer"
               color="primary"
               completed={localAllCompleted ? 'true' : undefined}
@@ -721,6 +730,7 @@ class ReadyTaskBallot extends React.Component {
           {howItWorksShowButton && (
             <StyledButton
               id="howItWorksButton"
+              classes={{ root: classes.toDoButton }}
               className="u-cursor--pointer"
               color="primary"
               completed={howItWorksCompleted ? 'true' : undefined}
@@ -775,6 +785,7 @@ class ReadyTaskBallot extends React.Component {
           {personalizedScoreIntroShowButton && (
             <StyledButton
               id="whatsAPersonalizedScoreButton"
+              classes={{ root: classes.toDoButton }}
               className="u-cursor--pointer"
               color="primary"
               completed={personalizedScoreIntroCompleted ? 'true' : undefined}
@@ -886,24 +897,12 @@ const styles = (theme) => ({
   paddingTop: 16,
   position: 'relative',
   textSizeAdjust: '100%',
+  toDoButton: {
+    display: 'flex',
+    justifyContent: 'start',
+  },
   width: 562,
 });
-
-const BallotToDoTitle = styled('h3')(({ theme }) => (`
-  margin: 0;
-  font-size: 30px;
-  font-weight: 600;
-  margin-bottom: 6px;
-  margin-top: 12px;
-  ${theme.breakpoints.down('sm')} {
-    font-size: 24px;
-    margin-top: 0;
-  }
-  ${theme.breakpoints.down('xs')} {
-    font-size: 20px;
-    margin-top: 0;
-  }
-`));
 
 const ButtonTextMobileFont = styled('span')`
   font-size: 16px;

@@ -87,6 +87,7 @@ class ReadyTaskRegister extends React.Component {
           </SubTitle>
           <StyledButton
             id="verifyRegisteredInStateButton"
+            classes={{ root: classes.toDoButton }}
             className="u-cursor--pointer"
             color="primary"
             completed={completed || undefined}
@@ -137,6 +138,10 @@ const styles = (theme) => ({
     [theme.breakpoints.down('sm')]: {
       fontSize: 14,
     },
+  },
+  toDoButton: {
+    display: 'flex',
+    justifyContent: 'start',
   },
 });
 

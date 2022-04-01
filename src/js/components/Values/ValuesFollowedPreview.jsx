@@ -1,6 +1,6 @@
-import styled from '@mui/material/styles/styled';
 import withTheme from '@mui/styles/withTheme';
 import React, { Component, Suspense } from 'react';
+import styled from 'styled-components';
 import IssueActions from '../../actions/IssueActions';
 import historyPush from '../../common/utils/historyPush';
 import { renderLog } from '../../common/utils/logging';

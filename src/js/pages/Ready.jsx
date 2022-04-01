@@ -10,22 +10,18 @@ import BallotActions from '../actions/BallotActions';
 import FriendActions from '../actions/FriendActions';
 import IssueActions from '../actions/IssueActions';
 import ReadyActions from '../actions/ReadyActions';
-import LoadingWheelComp from '../common/components/Widgets/LoadingWheelComp';
 import apiCalming from '../common/utils/apiCalming';
 import { isAndroid, isIOS } from '../common/utils/cordovaUtils';
+import daysUntil from '../common/utils/daysUntil';
 import historyPush from '../common/utils/historyPush';
 import { isWebApp } from '../common/utils/isCordovaOrWebApp';
-import Cookies from '../common/utils/js-cookie/Cookies';
 import { renderLog } from '../common/utils/logging';
-import EditAddressOneHorizontalRow from '../components/Ready/EditAddressOneHorizontalRow';
-import ElectionCountdown from '../components/Ready/ElectionCountdown';
+import ReadyIntroduction from '../components/Ready/ReadyIntroduction';
 import ReadyInformationDisclaimer from '../components/Ready/ReadyInformationDisclaimer';
 import ReadyTaskBallot from '../components/Ready/ReadyTaskBallot';
-import ReadyTaskFriends from '../components/Ready/ReadyTaskFriends';
 import ReadyTaskPlan from '../components/Ready/ReadyTaskPlan';
 import ReadyTaskRegister from '../components/Ready/ReadyTaskRegister';
 import { PageContentContainer } from '../components/Style/pageLayoutStyles';
-import ValuesToFollowPreview from '../components/Values/ValuesToFollowPreview';
 import BrowserPushMessage from '../components/Widgets/BrowserPushMessage';
 import SnackNotifier, { openSnackbar } from '../components/Widgets/SnackNotifier';
 import webAppConfig from '../config';
@@ -37,8 +33,12 @@ import VoterStore from '../stores/VoterStore';
 // eslint-disable-next-line import/no-cycle
 import lazyPreloadPages from '../utils/lazyPreloadPages';
 
-const ReadMore = React.lazy(() => import(/* webpackChunkName: 'ReadMore' */ '../common/components/Widgets/ReadMore'));
+const DelayedLoad = React.lazy(() => import(/* webpackChunkName: 'DelayedLoad' */ '../common/components/Widgets/DelayedLoad'));
+const ElectionCountdown = React.lazy(() => import(/* webpackChunkName: 'ElectionCountdown' */ '../components/Ready/ElectionCountdown'));
 const FirstAndLastNameRequiredAlert = React.lazy(() => import(/* webpackChunkName: 'FirstAndLastNameRequiredAlert' */ '../components/Widgets/FirstAndLastNameRequiredAlert'));
+const ReadMore = React.lazy(() => import(/* webpackChunkName: 'ReadMore' */ '../common/components/Widgets/ReadMore'));
+const ReadyPageValuesList = React.lazy(() => import(/* webpackChunkName: 'ReadyPageValuesList' */ '../components/Values/ReadyPageValuesList'));
+const ReadyTaskFriends = React.lazy(() => import(/* webpackChunkName: 'ReadyTaskFriends' */ '../components/Ready/ReadyTaskFriends'));
 // import PledgeToVote from '../components/Ready/PledgeToVote';
 
 const nextReleaseFeaturesEnabled = webAppConfig.ENABLE_NEXT_RELEASE_FEATURES === undefined ? false : webAppConfig.ENABLE_NEXT_RELEASE_FEATURES;
@@ -50,10 +50,9 @@ class Ready extends Component {
     this.state = {
       chosenReadyIntroductionText: '',
       chosenReadyIntroductionTitle: '',
+      electionDataExistsForUpcomingElection: false,
       issuesDisplayDecisionHasBeenMade: false,
       issuesQueriesMade: false,
-      issuesShouldBeDisplayed: false,
-      textForMapSearch: '',
       voterIsSignedIn: false,
     };
   }
@@ -111,11 +110,6 @@ class Ready extends Component {
       AnalyticsActions.saveActionReadyVisit(VoterStore.electionId());
     }, 8000);
 
-    this.setState({
-      locationGuessClosed: Cookies.get('location_guess_closed'),
-      textForMapSearch: VoterStore.getTextForMapSearch(),
-    });
-
     this.preloadTimer = setTimeout(() => lazyPreloadPages(), 2000);
     window.scrollTo(0, 0);
   }
@@ -148,15 +142,25 @@ class Ready extends Component {
     this.setState({
       chosenReadyIntroductionText: AppObservableStore.getChosenReadyIntroductionText(),
       chosenReadyIntroductionTitle: AppObservableStore.getChosenReadyIntroductionTitle(),
-      voterBallotItemsRetrieveHasBeenCalled: AppObservableStore.voterBallotItemsRetrieveHasBeenCalled(),
     });
   }
 
   onBallotStoreChange () {
     // console.log('Ready.jsx onBallotStoreChange');
-    this.setState({
-      voterBallotItemsRetrieveHasReturned: BallotStore.voterBallotItemsRetrieveHasReturned(),
-    });
+    const nextElectionDayText = BallotStore.currentBallotElectionDate;
+    if (nextElectionDayText) {
+      const daysUntilNextElection = daysUntil(nextElectionDayText);
+      if (daysUntilNextElection >= 0) {
+        this.setState({
+          electionDataExistsForUpcomingElection: true,
+        });
+      } else {
+        // Election was yesterday or earlier
+        this.setState({
+          electionDataExistsForUpcomingElection: false,
+        });
+      }
+    }
   }
 
   onIssueStoreChange () {
@@ -167,11 +171,8 @@ class Ready extends Component {
       const areIssuesFollowedLoadedFromAPIServer = IssueStore.areIssuesFollowedLoadedFromAPIServer();
       // console.log('areIssuesLoadedFromAPIServer: ', areIssuesLoadedFromAPIServer, ', areIssuesFollowedLoadedFromAPIServer:', areIssuesFollowedLoadedFromAPIServer);
       if (areIssuesLoadedFromAPIServer && areIssuesFollowedLoadedFromAPIServer) {
-        const issuesFollowedCount = IssueStore.getIssuesVoterIsFollowingLength();
-        // console.log('issuesFollowedCount: ', issuesFollowedCount);
         this.setState({
           issuesDisplayDecisionHasBeenMade: true,
-          issuesShouldBeDisplayed: (issuesFollowedCount < 3),
         });
       }
     }
@@ -179,7 +180,6 @@ class Ready extends Component {
 
   onVoterStoreChange () {
     // console.log('Ready, onVoterStoreChange voter: ', VoterStore.getVoter());
-    const textForMapSearch = VoterStore.getTextForMapSearch();
     const { issuesQueriesMade } = this.state;
     if (!issuesQueriesMade) {
       // this.delayIssuesTimer = setTimeout(() => {
@@ -190,7 +190,6 @@ class Ready extends Component {
       // }, 400);
     }
     this.setState({
-      textForMapSearch,
       voterIsSignedIn: VoterStore.getVoterIsSignedIn(),
       issuesQueriesMade: true,
     });
@@ -215,18 +214,14 @@ class Ready extends Component {
   render () {
     renderLog('Ready');  // Set LOG_RENDER_EVENTS to log all renders
     const {
-      chosenReadyIntroductionText, chosenReadyIntroductionTitle, issuesShouldBeDisplayed,
-      locationGuessClosed, textForMapSearch, voterBallotItemsRetrieveHasBeenCalled, voterBallotItemsRetrieveHasReturned, voterIsSignedIn,
+      chosenReadyIntroductionText, chosenReadyIntroductionTitle,
+      electionDataExistsForUpcomingElection, voterIsSignedIn,
     } = this.state;
-
-    // const showAddressVerificationForm = !locationGuessClosed || !textForMapSearch;
-    const showAddressVerificationForm =
-      (!locationGuessClosed && locationGuessClosed !== null) || !textForMapSearch;
 
     // console.log('locationGuessClosed:', locationGuessClosed, ', textForMapSearch:', textForMapSearch, ', showAddressVerificationForm:', showAddressVerificationForm);
     return (
       <PageContentContainer>
-        <Suspense fallback={<LoadingWheelComp />}>
+        <Suspense fallback={<></>}>
           <ReadyPageContainer className="container-fluid" style={this.getTopPadding()}>
             <SnackNotifier />
             <Helmet title="Ready to Vote? - We Vote" />
@@ -234,19 +229,11 @@ class Ready extends Component {
             <div className="row">
               <ElectionCountdownOuterWrapper className="col-12">
                 <ElectionCountdownInnerWrapper>
-                  <Suspense fallback={<SuspenseCard>&nbsp;</SuspenseCard>}>
+                  <Suspense fallback={<></>}>
                     <ElectionCountdown onClickFunction={this.goToBallot} initialDelay={4000} />
                   </Suspense>
                 </ElectionCountdownInnerWrapper>
               </ElectionCountdownOuterWrapper>
-
-              {(showAddressVerificationForm && (voterBallotItemsRetrieveHasReturned || !voterBallotItemsRetrieveHasBeenCalled)) && (
-                <EditAddressWrapper className="col-12">
-                  <EditAddressCard className="card">
-                    <EditAddressOneHorizontalRow saveUrl="/ready" />
-                  </EditAddressCard>
-                </EditAddressWrapper>
-              )}
 
               <div className="col-sm-12 col-lg-8">
                 {(chosenReadyIntroductionTitle || chosenReadyIntroductionText) && (
@@ -266,39 +253,59 @@ class Ready extends Component {
                     </div>
                   </Card>
                 )}
-                <ReadyInformationDisclaimer top />
-                <ReadyTaskBallot
-                  arrowsOn
-                />
-                {(nextReleaseFeaturesEnabled && !futureFeaturesDisabled) && (
-                  <ReadyTaskRegister
-                    arrowsOn
-                  />
-                )}
-                <ReadyInformationDisclaimer bottom />
+                <div className="u-show-mobile">
+                  <ReadyInformationDisclaimer top />
+                </div>
+                <Suspense fallback={<></>}>
+                  <DelayedLoad waitBeforeShow={500}>
+                    {!voterIsSignedIn && (
+                      <PrepareForElectionOuterWrapper>
+                        <ReadyPageValuesList sortByNumberOfAdvocates />
+                      </PrepareForElectionOuterWrapper>
+                    )}
+                  </DelayedLoad>
+                </Suspense>
+                <DelayedLoad waitBeforeShow={700}>
+                  <ReadyIntroductionMobileWrapper className="u-show-mobile">
+                    <ReadyIntroduction showStep3WhenCompressed />
+                  </ReadyIntroductionMobileWrapper>
+                </DelayedLoad>
+                <div className="u-show-mobile">
+                  <DelayedLoad waitBeforeShow={700}>
+                    <ReadyInformationDisclaimer bottom />
+                  </DelayedLoad>
+                </div>
                 {voterIsSignedIn && (
                   <Suspense fallback={<></>}>
                     <FirstAndLastNameRequiredAlert />
                   </Suspense>
                 )}
-                {nextReleaseFeaturesEnabled && (
-                  <ReadyTaskFriends
+                {(voterIsSignedIn && electionDataExistsForUpcomingElection) && (
+                  <DelayedLoad waitBeforeShow={700}>
+                    <ReadyTaskBallot
+                      arrowsOn
+                    />
+                  </DelayedLoad>
+                )}
+                {(nextReleaseFeaturesEnabled && !futureFeaturesDisabled) && (
+                  <ReadyTaskRegister
                     arrowsOn
                   />
                 )}
+                {(voterIsSignedIn && nextReleaseFeaturesEnabled) && (
+                  <Suspense fallback={<></>}>
+                    <DelayedLoad waitBeforeShow={500}>
+                      <ReadyTaskFriends
+                        arrowsOn
+                      />
+                    </DelayedLoad>
+                  </Suspense>
+                )}
+                {!futureFeaturesDisabled && (
                 <ReadyTaskPlan
                   arrowsOn
                 />
-                <div className="u-show-mobile-tablet">
-                  {(issuesShouldBeDisplayed) && (
-                    <ValuesListWrapper>
-                      <ValuesToFollowPreview
-                        followToggleOnItsOwnLine
-                        includeLinkToIssue
-                      />
-                    </ValuesListWrapper>
-                  )}
-                </div>
+                )}
               </div>
               <div className="col-lg-4 d-none d-lg-block">
                 {(chosenReadyIntroductionTitle || chosenReadyIntroductionText) && (
@@ -313,14 +320,10 @@ class Ready extends Component {
                     </div>
                   </Card>
                 )}
-                {(issuesShouldBeDisplayed) && (
-                  <ValuesListWrapper>
-                    <ValuesToFollowPreview
-                      followToggleOnItsOwnLine
-                      includeLinkToIssue
-                    />
-                  </ValuesListWrapper>
-                )}
+                <ReadyIntroductionDesktopWrapper>
+                  <ReadyIntroduction showStep3WhenCompressed />
+                </ReadyIntroductionDesktopWrapper>
+                <ReadyInformationDisclaimer bottom />
                 {/* nextReleaseFeaturesEnabled && <PledgeToVote /> */}
               </div>
             </div>
@@ -355,18 +358,6 @@ const Card = styled('div')`
   padding-bottom: 4px;
 `;
 
-const EditAddressCard = styled('div')`
-  margin-bottom: 32px;
-  padding: 12px 15px 0 15px;
-`;
-
-const EditAddressWrapper = styled('div')(({ theme }) => (`
-  ${theme.breakpoints.down('sm')} {
-    padding-left: 0 !important;
-    padding-right: 0 !important;
-  }
-`));
-
 const ElectionCountdownInnerWrapper = styled('div')`
   margin-top: -37px;
 `;
@@ -377,18 +368,25 @@ const ElectionCountdownOuterWrapper = styled('div')`
   z-index: 1;
 `;
 
-const ReadyPageContainer = styled('div')`
-`;
-
 const Paragraph = styled('div')`
 `;
 
-const SuspenseCard = styled('div')`
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  width: 290px;
-  height: 138px;
+const PrepareForElectionOuterWrapper = styled('div')`
+  min-height: 150px;
+  margin-bottom: 48px;
+`;
+
+const ReadyIntroductionDesktopWrapper = styled('div')`
+  margin-bottom: 48px;
+  margin-top: 31px;
+`;
+
+const ReadyIntroductionMobileWrapper = styled('div')`
+  margin-bottom: 48px;
+  margin-top: 31px;
+`;
+
+const ReadyPageContainer = styled('div')`
 `;
 
 const Title = styled('h2')(({ theme }) => (`
@@ -400,10 +398,5 @@ const Title = styled('h2')(({ theme }) => (`
     margin: 0 0 4px;
   }
 `));
-
-const ValuesListWrapper = styled('div')`
-  margin-top: 12px;
-  margin-bottom: 12px;
-`;
 
 export default withTheme(withStyles(styles)(Ready));

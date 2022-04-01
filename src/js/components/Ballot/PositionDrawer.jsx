@@ -23,9 +23,7 @@ import VoterStore from '../../stores/VoterStore';
 import { cordovaDrawerTopMargin } from '../../utils/cordovaOffsets';
 import { convertToInteger, stringContains } from '../../utils/textFormat';
 
-const CandidateItem = React.lazy(() => import(/* webpackChunkName: 'CandidateItem' */ './CandidateItem'));
 const DelayedLoad = React.lazy(() => import(/* webpackChunkName: 'DelayedLoad' */ '../../common/components/Widgets/DelayedLoad'));
-const MeasureItem = React.lazy(() => import(/* webpackChunkName: 'MeasureItem' */ './MeasureItem'));
 const PositionItem = React.lazy(() => import(/* webpackChunkName: 'PositionItem' */ './PositionItem'));
 
 
@@ -33,7 +31,6 @@ class PositionDrawer extends Component {
   constructor (props) {
     super(props);
     this.state = {
-      allCachedPositionsForThisBallotItem: [],
       featuredPosition: {},
       modalOpen: this.props.modalOpen,
       positionListFromFriendsHasBeenRetrievedOnce: {},
@@ -56,7 +53,7 @@ class PositionDrawer extends Component {
     const isCandidate = stringContains('cand', ballotItemWeVoteId);
     if (isCandidate) {
       const candidate = CandidateStore.getCandidate(ballotItemWeVoteId);
-      const { ballot_item_display_name: ballotItemDisplayName, contest_office_we_vote_id: officeWeVoteId } = candidate;
+      const { contest_office_we_vote_id: officeWeVoteId } = candidate;
       // console.log('candidate:', candidate);
       CandidateActions.candidateRetrieve(ballotItemWeVoteId);
       if (!this.localPositionListHasBeenRetrievedOnce(ballotItemWeVoteId) &&
@@ -81,23 +78,14 @@ class PositionDrawer extends Component {
           positionListFromFriendsHasBeenRetrievedOnce,
         });
       }
-      const allCachedPositionsForThisBallotItem = CandidateStore.getAllCachedPositionsByCandidateWeVoteId(ballotItemWeVoteId);
       const featuredPosition = CandidateStore.getPositionAboutCandidateFromOrganization(ballotItemWeVoteId, featuredOrganizationWeVoteId);
       this.setState({
-        allCachedPositionsForThisBallotItem,
-        ballotItemDisplayName,
         featuredPosition,
         isCandidate,
-        isMeasure,
       });
       AnalyticsActions.saveActionCandidate(VoterStore.electionId(), ballotItemWeVoteId);
     }
     if (isMeasure) {
-      const measure = MeasureStore.getMeasure(ballotItemWeVoteId);
-      let ballotItemDisplayName = '';
-      if (measure && measure.ballot_item_display_name) {
-        ballotItemDisplayName = measure.ballot_item_display_name;
-      }
       MeasureActions.measureRetrieve(ballotItemWeVoteId);
       if (!this.localPositionListHasBeenRetrievedOnce(ballotItemWeVoteId) &&
         !BallotStore.positionListHasBeenRetrievedOnce(ballotItemWeVoteId)
@@ -119,12 +107,8 @@ class PositionDrawer extends Component {
           positionListFromFriendsHasBeenRetrievedOnce,
         });
       }
-      const allCachedPositionsForThisBallotItem = MeasureStore.getAllCachedPositionsByMeasureWeVoteId(ballotItemWeVoteId);
       this.setState({
-        allCachedPositionsForThisBallotItem,
-        ballotItemDisplayName,
         isCandidate,
-        isMeasure,
       });
       AnalyticsActions.saveActionMeasure(VoterStore.electionId(), ballotItemWeVoteId);
     }
@@ -163,10 +147,8 @@ class PositionDrawer extends Component {
     const { isCandidate } = this.state;
     // console.log('Candidate onCandidateStoreChange, ballotItemWeVoteId:', ballotItemWeVoteId);
     if (isCandidate) {
-      const allCachedPositionsForThisBallotItem = CandidateStore.getAllCachedPositionsByCandidateWeVoteId(ballotItemWeVoteId);
-      // console.log('allCachedPositionsForThisBallotItem:', allCachedPositionsForThisBallotItem);
       const candidate = CandidateStore.getCandidate(ballotItemWeVoteId);
-      const { ballot_item_display_name: ballotItemDisplayName, google_civic_election_id: googleCivicElectionId } = candidate;
+      const { google_civic_election_id: googleCivicElectionId } = candidate;
       if (googleCivicElectionId &&
         !VoterGuideStore.voterGuidesUpcomingFromFriendsStopped(googleCivicElectionId) &&
         !this.localVoterGuidesFromFriendsUpcomingHasBeenRetrievedOnce(googleCivicElectionId)
@@ -181,29 +163,12 @@ class PositionDrawer extends Component {
       }
       const featuredPosition = CandidateStore.getPositionAboutCandidateFromOrganization(ballotItemWeVoteId, featuredOrganizationWeVoteId);
       this.setState({
-        allCachedPositionsForThisBallotItem,
-        ballotItemDisplayName,
         featuredPosition,
       });
     }
   }
 
   onMeasureStoreChange () {
-    const { ballotItemWeVoteId } = this.props;
-    const { isMeasure } = this.state;
-    // console.log('Measure, onMeasureStoreChange');
-    if (isMeasure) {
-      const measure = MeasureStore.getMeasure(ballotItemWeVoteId);
-      let ballotItemDisplayName = '';
-      if (measure && measure.ballot_item_display_name) {
-        ballotItemDisplayName = measure.ballot_item_display_name;
-      }
-      const allCachedPositionsForThisBallotItem = MeasureStore.getAllCachedPositionsByMeasureWeVoteId(ballotItemWeVoteId);
-      this.setState({
-        allCachedPositionsForThisBallotItem,
-        ballotItemDisplayName,
-      });
-    }
   }
 
   localPositionListHasBeenRetrievedOnce (ballotItemWeVoteId) {
@@ -241,8 +206,8 @@ class PositionDrawer extends Component {
   render () {
     // console.log(this.props.candidate_we_vote_id);
     renderLog('PositionDrawer');  // Set LOG_RENDER_EVENTS to log all renders
-    const { classes, organizationWeVoteId, ballotItemWeVoteId, params } = this.props;
-    const { featuredPosition, isCandidate, isMeasure, modalOpen } = this.state;
+    const { classes, params } = this.props;
+    const { featuredPosition, modalOpen } = this.state;
 
     return (
       <Drawer
@@ -270,7 +235,6 @@ class PositionDrawer extends Component {
               <>
                 <Suspense fallback={<></>}>
                   <PositionItem
-                    // ballotItemDisplayName={this.props.ballotItemDisplayName}
                     position={featuredPosition}
                     params={params}
                     showEntireStatementText
@@ -283,27 +247,6 @@ class PositionDrawer extends Component {
             </DelayedLoad>
           </Suspense>
         )}
-        {isCandidate && (
-          <Suspense fallback={<></>}>
-            <CandidateItem
-              candidateWeVoteId={ballotItemWeVoteId}
-              forMoreInformationTextOff
-              hideIssuesRelatedToCandidate
-              hideShowMoreFooter
-              inModal
-              linkToBallotItemPage
-              organizationWeVoteId={organizationWeVoteId}
-              showLargeImage
-              showOfficeName
-              showPositionStatementActionBar
-            />
-          </Suspense>
-        )}
-        {isMeasure && (
-          <Suspense fallback={<></>}>
-            <MeasureItem forMoreInformationTextOff measureWeVoteId={ballotItemWeVoteId} />
-          </Suspense>
-        )}
       </Drawer>
     );
   }
@@ -313,7 +256,6 @@ PositionDrawer.propTypes = {
   classes: PropTypes.object,
   featuredOrganizationWeVoteId: PropTypes.string,
   modalOpen: PropTypes.bool,
-  organizationWeVoteId: PropTypes.string,
   toggleFunction: PropTypes.func.isRequired,
   params: PropTypes.object,
 };

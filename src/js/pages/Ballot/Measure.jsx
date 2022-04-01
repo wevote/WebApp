@@ -363,7 +363,6 @@ class Measure extends Component {
               variant="primary"
               buttonText="Endorsements missing?"
               text={`Are there endorsements for ${measureName} that you expected to see?`}
-              whiteOnBlue
             />
             <br />
             {/* Show links to this candidate in the admin tools */}

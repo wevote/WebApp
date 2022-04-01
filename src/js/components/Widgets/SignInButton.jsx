@@ -22,7 +22,6 @@ export default function SignInButton (props) {
         style={{
           color: 'rgb(6, 95, 212)',
           cursor: 'pointer',
-          fontSize: '14px',
           fontWeight: 500,
           letterSpacing: '0.4px',
         }}
