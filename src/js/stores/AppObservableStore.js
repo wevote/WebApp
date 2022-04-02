@@ -30,6 +30,8 @@ const nonFluxState = {
   getVoterGuideSettingsDashboardEditMode: '',
   googleAnalyticsEnabled: false,
   googleAnalyticsPending: false,
+  hideOrganizationModalBallotItemInfo: false,
+  hideOrganizationModalPositions: false,
   hideWeVoteLogo: false,
   hostname: '',
   observableUpdateCounter: 0,
@@ -107,6 +109,16 @@ export default {
   setGetStartedMode (getStartedMode) {
     nonFluxState.getStartedMode = getStartedMode;
     messageService.sendMessage('state updated getStartedMode');
+  },
+
+  setHideOrganizationModalBallotItemInfo (hide) {
+    nonFluxState.hideOrganizationModalBallotItemInfo = hide;
+    messageService.sendMessage('state updated hideOrganizationModalBallotItemInfo');
+  },
+
+  setHideOrganizationModalPositions (hide) {
+    nonFluxState.hideOrganizationModalPositions = hide;
+    messageService.sendMessage('state updated hideOrganizationModalPositions');
   },
 
   setOrganizationModalBallotItemWeVoteId (ballotItemWeVoteId) {
@@ -389,6 +401,14 @@ export default {
 
   getVoterGuideSettingsDashboardEditMode () {
     return nonFluxState.getVoterGuideSettingsDashboardEditMode;
+  },
+
+  hideOrganizationModalBallotItemInfo () {
+    return nonFluxState.hideOrganizationModalBallotItemInfo;
+  },
+
+  hideOrganizationModalPositions () {
+    return nonFluxState.hideOrganizationModalPositions;
   },
 
   isSnackMessagePending () {

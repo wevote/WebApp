@@ -50,6 +50,7 @@ const islandFilters = [
 ];
 
 const STARTING_NUMBER_OF_POSITIONS_TO_DISPLAY = 6;
+const TURN_ON_FILTERS_WHEN_MORE_THAN_THIS_NUMBER_OF_ITEMS = 10;
 
 class PositionList extends Component {
   constructor (props) {
@@ -294,7 +295,7 @@ class PositionList extends Component {
       numberOfPositionItemsToDisplay, positionSearchResults, searchText,
       totalNumberOfPositionSearchResults,
     } = this.state;
-    const { positionListExistsTitle } = this.props;
+    const { incomingPositionList, positionListExistsTitle } = this.props;
     // console.log('PositionList render, positionListExistsTitle:', positionListExistsTitle);
     // console.log('this.state.filteredPositionList render: ', this.state.filteredPositionList);
     let showTitle = false;
@@ -306,6 +307,7 @@ class PositionList extends Component {
     const selectedFiltersDefault = ['endorsingGroup', 'newsOrganization', 'publicFigure', 'sortByMagic', 'yourFriends'];
     let numberOfPositionItemsDisplayed = 0;
     let searchTextString = '';
+    const incomingPositionListLength = (incomingPositionList) ? incomingPositionList.length : 0;
     return (
       <div>
         <FilterWrapper>
@@ -314,8 +316,8 @@ class PositionList extends Component {
           )}
           <FilterBase
             allItems={positionList}
-            groupedFilters={filteredPositionListLength > 10 ? groupedFilters : []}
-            islandFilters={filteredPositionListLength > 10 ? islandFilters : []}
+            groupedFilters={incomingPositionListLength > TURN_ON_FILTERS_WHEN_MORE_THAN_THIS_NUMBER_OF_ITEMS ? groupedFilters : []}
+            islandFilters={incomingPositionListLength > TURN_ON_FILTERS_WHEN_MORE_THAN_THIS_NUMBER_OF_ITEMS ? islandFilters : []}
             numberOfItemsFoundNode={(
               <NumberOfItemsFound
                 numberOfItemsTotal={isSearching ? totalNumberOfPositionSearchResults : filteredPositionListLength}

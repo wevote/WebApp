@@ -1,22 +1,16 @@
-import { Close } from '@mui/icons-material';
-import { Dialog, DialogContent, DialogTitle, FormControl, FormControlLabel, IconButton, Radio, Typography } from '@mui/material';
+import { FormControl, FormControlLabel, Radio } from '@mui/material';
 import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
-import React, { Component, Suspense } from 'react';
+import React, { Component } from 'react';
 import styled from 'styled-components';
 import SupportActions from '../../actions/SupportActions';
 import { isAndroidSizeMD } from '../../common/utils/cordovaUtils'; // hasIPhoneNotch,
-import { isCordova, isWebApp } from '../../common/utils/isCordovaOrWebApp';
 import isMobileScreenSize from '../../common/utils/isMobileScreenSize';
 import { renderLog } from '../../common/utils/logging';
 import SupportStore from '../../stores/SupportStore';
 import VoterStore from '../../stores/VoterStore';
 import { openSnackbar } from './SnackNotifier';
-
-const SettingsAccount = React.lazy(() => import(/* webpackChunkName: 'SettingsAccount' */ '../Settings/SettingsAccount'));
-
-// import VoterActions from '../../actions/VoterActions';
-// import VoterConstants from '../../constants/VoterConstants';
+import SignInModalSimple from '../Settings/SignInModalSimple';
 
 class PositionPublicToggle extends Component {
   constructor (props) {
@@ -77,10 +71,6 @@ class PositionPublicToggle extends Component {
     }
     if (this.state.voterPositionIsPublic !== nextState.voterPositionIsPublic) {
       // console.log('this.state.voterPositionIsPublic:', this.state.voterPositionIsPublic, ', nextState.voterPositionIsPublic: ', nextState.voterPositionIsPublic);
-      return true;
-    }
-    if (this.state.isSignedIn !== nextState.isSignedIn) {
-      // console.log('this.state.isSignedIn:', this.state.isSignedIn, ', nextState.isSignedIn: ', nextState.isSignedIn);
       return true;
     }
     if (this.state.showPositionPublicHelpModal !== nextState.showPositionPublicHelpModal) {
@@ -177,7 +167,7 @@ class PositionPublicToggle extends Component {
   render () {
     renderLog('PositionPublicToggle');  // Set LOG_RENDER_EVENTS to log all renders
     const { preventStackedButtons, classes } = this.props;
-    const { inTestMode, isSignedIn, voterWeVoteId } = this.state;
+    const { inTestMode, showPositionPublicHelpModal, voterWeVoteId } = this.state;
     let { voterPositionIsPublic } = this.state;
     if (!voterWeVoteId) {
       return <div className="undefined-props" />;
@@ -215,55 +205,23 @@ class PositionPublicToggle extends Component {
       }
     };
 
-    // This modal is shown when the user clicks on public position toggle either when not signed in
-    // or for the first time after being signed in.
-    const PositionPublicToggleHelpModal = (
-      <Dialog
-        classes={{ paper: classes.dialogPaper, root: classes.dialogRoot }}
-        open={this.state.showPositionPublicHelpModal}
-        onClose={() => { this.togglePositionPublicHelpModal(); }}
-      >
-        <DialogTitle>
-          <Typography component="span" variant="h6" className="text-center">
-            {isSignedIn ? 'Public' : 'Show to Public'}
-          </Typography>
-          <IconButton
-            aria-label="Close"
-            classes={{ root: classes.closeButton }}
-            onClick={() => { this.togglePositionPublicHelpModal(); }}
-            id="profileClosePositionPublicToggle"
-            size="large"
-          >
-            <Close />
-          </IconButton>
-        </DialogTitle>
-        <DialogContent classes={{ root: classes.dialogContent }}>
-          {isSignedIn ? (
-            <div className="text-center">
-              <div className="u-f3">Your endorsement is now visible to anyone.</div>
-              <br />
-              <div className="u-f6">Click the &quot;Friends&quot; toggle to show to We Vote friends only.</div>
-            </div>
-          ) : (
-            <div>
-              <Suspense fallback={<></>}>
-                <SettingsAccount
-                  pleaseSignInTitle="Sign In to Make Your Endorsements Public"
-                  pleaseSignInSubTitle=""
-                  inModal
-                />
-              </Suspense>
-            </div>
-          )}
-          <br />
-          <br />
-        </DialogContent>
-      </Dialog>
-    );
-
     return (
       <PositionPublicToggleOuterWrapper className={this.props.className}>
-        { this.state.showPositionPublicHelpModal ? PositionPublicToggleHelpModal : null }
+        { showPositionPublicHelpModal && (
+          <SignInModalSimple
+            settingsAccountIsSignedInSubTitle={<></>}
+            settingsAccountIsSignedInTitle={(
+              <>
+                Your endorsement is now visible to the public. Click the &quot;Friends&quot; toggle to show to We Vote friends only.
+              </>
+            )}
+            settingsAccountSignInTitle="Sign in to make your endorsements public."
+            settingsAccountSignInSubTitle=""
+            signedInTitle={<>Public</>}
+            signedOutTitle={<>Show to Public</>}
+            toggleOnClose={this.togglePositionPublicHelpModal}
+          />
+        )}
         <PositionPublicToggleInnerWrapper onKeyDown={onKeyDown}>
           <FormControl classes={{ root: classes.formControl }}>
             <RadioGroup
@@ -324,41 +282,6 @@ PositionPublicToggle.propTypes = {
 };
 
 const styles = (theme) => ({
-  dialogRoot: isCordova() ? {
-    height: '100%',
-    position: 'absolute !important',
-    top: '-15%',
-    left: '0% !important',
-    right: 'unset !important',
-    bottom: 'unset !important',
-    width: '100%',
-  } : {},
-  dialogPaper: isWebApp() ? {
-    [theme.breakpoints.down('sm')]: {
-      minWidth: '95%',
-      maxWidth: '95%',
-      width: '95%',
-      maxHeight: '90%',
-      margin: '0 auto',
-    },
-  } : {
-    margin: '0 !important',
-    width: '95%',
-    height: 'unset',
-    maxHeight: '90%',
-    offsetHeight: 'unset !important',
-    top: '50%',
-    left: '50%',
-    right: 'unset !important',
-    bottom: 'unset !important',
-    position: 'absolute',
-    transform: 'translate(-50%, -25%)',
-  },
-  dialogContent: {
-    [theme.breakpoints.down('md')]: {
-      padding: '0 8px 8px',
-    },
-  },
   radioPrimary: {
     padding: '.1rem',
     margin: '.1rem .1rem .6rem .6rem',
@@ -378,11 +301,6 @@ const styles = (theme) => ({
   formControl: {
     width: '100%',
   },
-  closeButton: {
-    position: 'absolute',
-    right: theme.spacing(1),
-    top: theme.spacing(1),
-  },
 });
 
 const PositionPublicToggleOuterWrapper = styled('div')`
@@ -397,14 +315,6 @@ const PositionPublicToggleInnerWrapper = styled('div')(({ theme }) => (`
     margin-bottom: 10px;
   }
 `));
-
-// const RadioItemStackedStyles(theme) = `
-//   ${theme.breakpoints.down('xs')} {
-//     width: 100% !important;
-//     min-width: 100% !important;
-//     margin-bottom: -6px;
-//   }
-// `;
 
 const RadioItem = styled('div', {
   shouldForwardProp: (prop) => !['preventStackedButtons'].includes(prop),

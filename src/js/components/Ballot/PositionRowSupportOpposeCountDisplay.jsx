@@ -1,7 +1,7 @@
 import withStyles from '@mui/styles/withStyles';
 import withTheme from '@mui/styles/withTheme';
 import PropTypes from 'prop-types';
-import React, { Component, Suspense } from 'react';
+import React, { Component } from 'react';
 import styled from 'styled-components';
 import SupportActions from '../../actions/SupportActions';
 import { renderLog } from '../../common/utils/logging';
@@ -11,13 +11,13 @@ import IssueStore from '../../stores/IssueStore';
 import MeasureStore from '../../stores/MeasureStore';
 import OrganizationStore from '../../stores/OrganizationStore';
 import SupportStore from '../../stores/SupportStore';
-import { getPositionListSummaryIncomingDataStats, getPositionSummaryListForBallotItem } from '../../utils/positionFunctions';
+import {
+  getPositionListSummaryIncomingDataStats,
+  getPositionSummaryListForBallotItem,
+} from '../../utils/positionFunctions';
 import { stringContains } from '../../utils/textFormat';
 import { openSnackbar } from '../Widgets/SnackNotifier';
-import StickyPopover from './StickyPopover';
-
-const ItemActionBar = React.lazy(() => import(/* webpackChunkName: 'ItemActionBar' */ '../Widgets/ItemActionBar/ItemActionBar'));
-const PositionSummaryListForPopover = React.lazy(() => import(/* webpackChunkName: 'PositionSummaryListForPopover' */ '../Widgets/PositionSummaryListForPopover'));
+import AppObservableStore from '../../stores/AppObservableStore';
 
 
 class PositionRowSupportOpposeCountDisplay extends Component {
@@ -31,17 +31,15 @@ class PositionRowSupportOpposeCountDisplay extends Component {
     this.state = {
       allCachedPositionsLength: 0,
       allIssuesVoterIsFollowingLength: 0,
-      ballotItemDisplayName: '',
       issueWeVoteIdsLinkedToByOrganizationDictLength: 0,
       organizationWeVoteIdsVoterIsFollowingLength: 0,
-      positionsOutOfNetworkSummaryList: [],
       voterOpposesListLength: 0,
       voterSupportsListLength: 0,
-      voterPersonalNetworkScore: 0,
       voterOpposesBallotItem: false,
       voterSupportsBallotItem: false,
     };
     this.goToBallotItemLinkLocal = this.goToBallotItemLinkLocal.bind(this);
+    this.onClickShowOrganizationModalWithPositions = this.onClickShowOrganizationModalWithPositions.bind(this);
     this.stopOpposingItem = this.stopOpposingItem.bind(this);
     this.stopSupportingItem = this.stopSupportingItem.bind(this);
   }
@@ -284,6 +282,14 @@ class PositionRowSupportOpposeCountDisplay extends Component {
     this.onCachedPositionsOrIssueStoreChange();
   }
 
+  onClickShowOrganizationModalWithPositions () {
+    const { ballotItemWeVoteId } = this.props;
+    // console.log('onClickShowOrganizationModalWithPositions, ballotItemWeVoteId:', ballotItemWeVoteId);
+    AppObservableStore.setOrganizationModalBallotItemWeVoteId(ballotItemWeVoteId);
+    AppObservableStore.setShowOrganizationModal(true);
+    AppObservableStore.setHideOrganizationModalBallotItemInfo(true);
+  }
+
   stopOpposingItem () {
     const { ballotItemWeVoteId } = this.props;
     const isMeasure = stringContains('meas', ballotItemWeVoteId);
@@ -317,82 +323,15 @@ class PositionRowSupportOpposeCountDisplay extends Component {
   render () {
     renderLog('PositionRowSupportOpposeCountDisplay');  // Set LOG_RENDER_EVENTS to log all renders
     const {
-      ballotItemWeVoteId, controlAdviserMaterialUIPopoverFromProp, inModal,
-      openAdviserMaterialUIPopover, showInfoOnly, showNoOpinions, showOppose, showSupport, uniqueExternalId,
+      ballotItemWeVoteId, showInfoOnly, showNoOpinions, showOppose, showSupport,
     } = this.props;
     // console.log('PositionRowSupportOpposeCountDisplay, controlAdviserMaterialUIPopoverFromProp: ', controlAdviserMaterialUIPopoverFromProp,  ', openAdviserMaterialUIPopover:', openAdviserMaterialUIPopover);
     const {
-      ballotItemDisplayName,
       numberOfAllSupportPositions, numberOfAllOpposePositions, numberOfAllInfoOnlyPositions,
-      positionsOutOfNetworkSummaryList,
-      voterPersonalNetworkScore,
-      voterPersonalNetworkScoreIsNegative,
-      voterPersonalNetworkScoreIsPositive,
-      voterPersonalNetworkScoreWithSign,
     } = this.state;
     // console.log('PositionRowSupportOpposeCountDisplay render, voterSupportsBallotItem/voterOpposesBallotItem:', voterSupportsBallotItem, voterOpposesBallotItem);
 
     if (!ballotItemWeVoteId) return null;
-
-    const endorsementsOverviewPopover = (
-      <PopoverWrapper>
-        <PopoverHeader>
-          <PopoverTitleText>
-            Opinions
-            {ballotItemDisplayName ? ` about ${ballotItemDisplayName}` : ''}
-            {' '}
-          </PopoverTitleText>
-        </PopoverHeader>
-        <PopoverBody>
-          <ItemActionBarWrapper>
-            <Suspense fallback={<></>}>
-              <ItemActionBar
-                inModal={inModal}
-                ballotItemWeVoteId={ballotItemWeVoteId}
-                commentButtonHide
-                externalUniqueId={`BallotItemSupportOrOpposeCountDisplay-ItemActionBar-${uniqueExternalId}-${ballotItemWeVoteId}`}
-                hidePositionPublicToggle
-                positionPublicToggleWrapAllowed
-                shareButtonHide
-              />
-            </Suspense>
-          </ItemActionBarWrapper>
-          <div>
-            Follow opinions to build your personalized score
-            {(ballotItemDisplayName) && (
-              <span>
-                {' '}
-                about
-                {' '}
-                <strong>
-                  {ballotItemDisplayName}
-                </strong>
-              </span>
-            )}
-            .
-          </div>
-          <div>
-            {positionsOutOfNetworkSummaryList && (
-              <RenderedOrganizationsWrapper>
-                <Suspense fallback={<></>}>
-                  <PositionSummaryListForPopover
-                    ballotItemWeVoteId={ballotItemWeVoteId}
-                    controlAdviserMaterialUIPopoverFromProp={controlAdviserMaterialUIPopoverFromProp}
-                    openAdviserMaterialUIPopover={openAdviserMaterialUIPopover}
-                    positionSummaryList={positionsOutOfNetworkSummaryList}
-                    showAllPositions={this.props.goToBallotItem}
-                    voterPersonalNetworkScore={voterPersonalNetworkScore}
-                    voterPersonalNetworkScoreIsNegative={voterPersonalNetworkScoreIsNegative}
-                    voterPersonalNetworkScoreIsPositive={voterPersonalNetworkScoreIsPositive}
-                    voterPersonalNetworkScoreWithSign={voterPersonalNetworkScoreWithSign}
-                  />
-                </Suspense>
-              </RenderedOrganizationsWrapper>
-            )}
-          </div>
-        </PopoverBody>
-      </PopoverWrapper>
-    );
 
     const commentCountExists = numberOfAllInfoOnlyPositions > 0;
     // const opposeCountExists = numberOfAllOpposePositions > 0;
@@ -412,93 +351,82 @@ class PositionRowSupportOpposeCountDisplay extends Component {
       <Wrapper>
         {/* Gray overview display. Show if no personalized score, or voter position */}
         <EndorsementsOverviewShowOrNotShow>
-          <StickyPopover
-            delay={{ show: 700, hide: 100 }}
-            popoverComponent={endorsementsOverviewPopover}
-            placement="bottom"
-            id="endorsements-overview-trigger-click-root-close"
-            openOnClick
-            // openPopoverByProp={openSupportOpposeCountDisplayModal}
-            // closePopoverByProp={closeSupportOpposeCountDisplayModal}
-            showCloseIcon
-          >
-            <EndorsementsContainer className="u-cursor--pointer u-no-break">
-              <EndorsementsOuterWrapper>
-                <EndorsementsInnerWrapper>
-                  {showSupport && (
-                    <EndorsementRow>
-                      <EndorsementCount>
-                        <ChooseWrapper>
-                          {numberOfAllSupportPositions > 1 ? (
-                            <>
-                              {numberOfAllSupportPositions}
-                              {' '}
-                              Choose
-                            </>
-                          ) : (
-                            <>Chooses</>
-                          )}
-                          {' '}
-                          {/* ballotItemDisplayName */}
-                        </ChooseWrapper>
-                      </EndorsementCount>
-                    </EndorsementRow>
-                  )}
-                  {showOppose && (
-                    <>
-                      { showOpposeCount && (
-                        <EndorsementRow>
-                          <EndorsementCount>
-                            <OpposeWrapper>
-                              {numberOfAllOpposePositions > 1 ? (
-                                <>
-                                  {numberOfAllOpposePositions}
-                                  {' '}
-                                  Oppose
-                                </>
-                              ) : (
-                                <>Oppose</>
-                              )}
-                            </OpposeWrapper>
-                          </EndorsementCount>
-                        </EndorsementRow>
-                      )}
-                    </>
-                  )}
-                  {showInfoOnly && (
-                    <>
-                      { showCommentCount && (
-                        <EndorsementRow>
-                          <EndorsementCount>
+          <EndorsementsContainer className="u-cursor--pointer u-no-break">
+            <EndorsementsOuterWrapper>
+              <EndorsementsInnerWrapper>
+                {showSupport && (
+                  <EndorsementRow onClick={this.onClickShowOrganizationModalWithPositions}>
+                    <EndorsementCount>
+                      <ChooseWrapper>
+                        {numberOfAllSupportPositions > 1 ? (
+                          <>
+                            {numberOfAllSupportPositions}
+                            {' '}
+                            Choose
+                          </>
+                        ) : (
+                          <>Chooses</>
+                        )}
+                        {' '}
+                        {/* ballotItemDisplayName */}
+                      </ChooseWrapper>
+                    </EndorsementCount>
+                  </EndorsementRow>
+                )}
+                {showOppose && (
+                  <>
+                    { showOpposeCount && (
+                      <EndorsementRow>
+                        <EndorsementCount>
+                          <OpposeWrapper>
                             {numberOfAllOpposePositions > 1 ? (
                               <>
                                 {numberOfAllOpposePositions}
                                 {' '}
-                                Info Only
+                                Oppose
                               </>
                             ) : (
-                              <>Info Only</>
+                              <>Oppose</>
                             )}
-                          </EndorsementCount>
-                        </EndorsementRow>
-                      )}
-                    </>
-                  )}
-                  {showNoOpinions && (
-                    <>
-                      { showCommentCount && (
-                        <EndorsementRow>
-                          <EndorsementCount>
-                            No Opinions
-                          </EndorsementCount>
-                        </EndorsementRow>
-                      )}
-                    </>
-                  )}
-                </EndorsementsInnerWrapper>
-              </EndorsementsOuterWrapper>
-            </EndorsementsContainer>
-          </StickyPopover>
+                          </OpposeWrapper>
+                        </EndorsementCount>
+                      </EndorsementRow>
+                    )}
+                  </>
+                )}
+                {showInfoOnly && (
+                  <>
+                    { showCommentCount && (
+                      <EndorsementRow>
+                        <EndorsementCount>
+                          {numberOfAllOpposePositions > 1 ? (
+                            <>
+                              {numberOfAllOpposePositions}
+                              {' '}
+                              Info Only
+                            </>
+                          ) : (
+                            <>Info Only</>
+                          )}
+                        </EndorsementCount>
+                      </EndorsementRow>
+                    )}
+                  </>
+                )}
+                {showNoOpinions && (
+                  <>
+                    { showCommentCount && (
+                      <EndorsementRow>
+                        <EndorsementCount>
+                          No Opinions
+                        </EndorsementCount>
+                      </EndorsementRow>
+                    )}
+                  </>
+                )}
+              </EndorsementsInnerWrapper>
+            </EndorsementsOuterWrapper>
+          </EndorsementsContainer>
         </EndorsementsOverviewShowOrNotShow>
         <EndorsementsOverviewSpacer />
       </Wrapper>
@@ -508,15 +436,11 @@ class PositionRowSupportOpposeCountDisplay extends Component {
 PositionRowSupportOpposeCountDisplay.propTypes = {
   ballotItemDisplayName: PropTypes.string,
   ballotItemWeVoteId: PropTypes.string.isRequired,
-  controlAdviserMaterialUIPopoverFromProp: PropTypes.bool,
   goToBallotItem: PropTypes.func, // We don't require this because sometimes we don't want the link to do anything
-  inModal: PropTypes.bool,
-  openAdviserMaterialUIPopover: PropTypes.bool,
   showInfoOnly: PropTypes.bool,
   showOppose: PropTypes.bool,
   showNoOpinions: PropTypes.bool,
   showSupport: PropTypes.bool,
-  uniqueExternalId: PropTypes.string,
 };
 
 const styles = () => ({
@@ -572,51 +496,9 @@ const EndorsementsOverviewSpacer = styled('div')`
   padding-right: 8px;
 `;
 
-const ItemActionBarWrapper = styled('div')`
-  margin-bottom: 8px;
-  width: 100%;
-`;
-
 const OpposeWrapper = styled('div')(({ theme }) => (`
   color: ${theme.colors.opposeRedRgb};
 `));
-
-const PopoverWrapper = styled('div')`
-  width: 100%;
-  height: 100%;
-`;
-
-const PopoverHeader = styled('div')(({ theme }) => (`
-  background: ${theme.colors.brandBlue};
-  padding: 4px 8px;
-  min-height: 35px;
-  color: white;
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
-  border-radius: 5px;
-  border-bottom-right-radius: 0;
-  border-bottom-left-radius: 0;
-`));
-
-const PopoverTitleText = styled('div')`
-  font-size: 14px;
-  font-weight: bold;
-  margin-right: 20px;
-`;
-
-const PopoverBody = styled('div')`
-  padding: 8px;
-  border-left: .5px solid #ddd;
-  border-right: .5px solid #ddd;
-  border-bottom: .5px solid #ddd;
-  border-bottom-left-radius: 5px;
-  border-bottom-right-radius: 5px;
-`;
-
-const RenderedOrganizationsWrapper = styled('div')`
-  margin-top: 6px;
-`;
 
 const Wrapper = styled('div')`
 `;

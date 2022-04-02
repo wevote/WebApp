@@ -103,7 +103,7 @@ export default class ReadyPageValuesList extends Component {
           <p>
             <Suspense fallback={<></>}>
               <ReadMore
-                textToDisplay="Follow values and issues to see opinions from groups and people who care about the same things you do."
+                textToDisplay="Follow to see endorsements from those who care about the same things you do."
                 numberOfLines={3}
               />
             </Suspense>

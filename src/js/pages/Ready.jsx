@@ -258,11 +258,9 @@ class Ready extends Component {
                 </div>
                 <Suspense fallback={<></>}>
                   <DelayedLoad waitBeforeShow={500}>
-                    {!voterIsSignedIn && (
-                      <PrepareForElectionOuterWrapper>
-                        <ReadyPageValuesList sortByNumberOfAdvocates />
-                      </PrepareForElectionOuterWrapper>
-                    )}
+                    <PrepareForElectionOuterWrapper>
+                      <ReadyPageValuesList sortByNumberOfAdvocates />
+                    </PrepareForElectionOuterWrapper>
                   </DelayedLoad>
                 </Suspense>
                 <DelayedLoad waitBeforeShow={700}>

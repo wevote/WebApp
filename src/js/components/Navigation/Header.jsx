@@ -34,6 +34,8 @@ export default class Header extends Component {
     super(props);
     this.state = {
       organizationModalBallotItemWeVoteId: '',
+      organizationModalHideBallotItemInfo: false,
+      organizationModalHidePositions: false,
       sharedItemCode: '',
       showHowItWorksModal: false,
       showVoterPlanModal: false,
@@ -126,6 +128,8 @@ export default class Header extends Component {
     this.setState({
       activityTidbitWeVoteIdForDrawer: AppObservableStore.getActivityTidbitWeVoteIdForDrawer(),
       organizationModalBallotItemWeVoteId: AppObservableStore.getOrganizationModalBallotItemWeVoteId(),
+      organizationModalHideBallotItemInfo: AppObservableStore.hideOrganizationModalBallotItemInfo(),
+      organizationModalHidePositions: AppObservableStore.hideOrganizationModalPositions(),
       positionDrawerBallotItemWeVoteId: AppObservableStore.getPositionDrawerBallotItemWeVoteId(),
       positionDrawerOrganizationWeVoteId: AppObservableStore.getPositionDrawerOrganizationWeVoteId(),
       sharedItemCode: AppObservableStore.getSharedItemCode(),
@@ -144,6 +148,8 @@ export default class Header extends Component {
 
   closeOrganizationModal = () => {
     AppObservableStore.setShowOrganizationModal(false);
+    AppObservableStore.setHideOrganizationModalBallotItemInfo(false);
+    AppObservableStore.setHideOrganizationModalPositions(false);
   }
 
   closeHowItWorksModal () {
@@ -195,7 +201,7 @@ export default class Header extends Component {
     // console.log('Header global.weVoteGlobalHistory', global.weVoteGlobalHistory);
     const pathname = normalizedHref();
     const {
-      activityTidbitWeVoteIdForDrawer, organizationModalBallotItemWeVoteId,
+      activityTidbitWeVoteIdForDrawer, organizationModalHideBallotItemInfo, organizationModalHidePositions, organizationModalBallotItemWeVoteId,
       positionDrawerBallotItemWeVoteId, positionDrawerOrganizationWeVoteId,
       sharedItemCode, showActivityTidbitDrawer,
       showHowItWorksModal, showOrganizationModal, showPositionDrawer, showVoterPlanModal, showSharedItemModal,
@@ -276,12 +282,14 @@ export default class Header extends Component {
           {showOrganizationModal && (
             <Suspense fallback={<></>}>
               <OrganizationModal
-                isSignedIn={voter.is_signed_in}
-                show={showOrganizationModal}
                 ballotItemWeVoteId={organizationModalBallotItemWeVoteId}
+                hideBallotItemInfo={organizationModalHideBallotItemInfo}
+                hidePositions={organizationModalHidePositions}
+                isSignedIn={voter.is_signed_in}
                 modalOpen={showOrganizationModal}
-                toggleFunction={this.closeOrganizationModal}
                 params={params}
+                show={showOrganizationModal}
+                toggleFunction={this.closeOrganizationModal}
               />
             </Suspense>
           )}
@@ -373,12 +381,14 @@ export default class Header extends Component {
           {showOrganizationModal && (
             <Suspense fallback={<></>}>
               <OrganizationModal
-                isSignedIn={voter.is_signed_in}
-                show={showOrganizationModal}
                 ballotItemWeVoteId={organizationModalBallotItemWeVoteId}
+                hideBallotItemInfo={organizationModalHideBallotItemInfo}
+                hidePositions={organizationModalHidePositions}
+                isSignedIn={voter.is_signed_in}
                 modalOpen={showOrganizationModal}
-                toggleFunction={this.closeOrganizationModal}
                 params={params}
+                show={showOrganizationModal}
+                toggleFunction={this.closeOrganizationModal}
               />
             </Suspense>
           )}
@@ -434,12 +444,14 @@ export default class Header extends Component {
           {showOrganizationModal && (
             <Suspense fallback={<></>}>
               <OrganizationModal
-                isSignedIn={voter.is_signed_in}
-                show={showOrganizationModal}
                 ballotItemWeVoteId={organizationModalBallotItemWeVoteId}
+                hideBallotItemInfo={organizationModalHideBallotItemInfo}
+                hidePositions={organizationModalHidePositions}
+                isSignedIn={voter.is_signed_in}
                 modalOpen={showOrganizationModal}
-                toggleFunction={this.closeOrganizationModal}
                 params={params}
+                show={showOrganizationModal}
+                toggleFunction={this.closeOrganizationModal}
               />
             </Suspense>
           )}
@@ -509,12 +521,14 @@ export default class Header extends Component {
           {showOrganizationModal && (
             <Suspense fallback={<></>}>
               <OrganizationModal
-                isSignedIn={voter.is_signed_in}
-                show={showOrganizationModal}
                 ballotItemWeVoteId={organizationModalBallotItemWeVoteId}
+                hideBallotItemInfo={organizationModalHideBallotItemInfo}
+                hidePositions={organizationModalHidePositions}
+                isSignedIn={voter.is_signed_in}
                 modalOpen={showOrganizationModal}
-                toggleFunction={this.closeOrganizationModal}
                 params={params}
+                show={showOrganizationModal}
+                toggleFunction={this.closeOrganizationModal}
               />
             </Suspense>
           )}

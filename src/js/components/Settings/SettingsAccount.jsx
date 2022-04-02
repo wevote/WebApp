@@ -300,9 +300,16 @@ export default class SettingsAccount extends Component {
   }
 
   localStoreSignInStartFullUrl () {
+    const { origin } = window.location;
+    const pathname = normalizedHref();
     // console.log('localStoreSignInStartFullUrl, pathname:', pathname);
-    if (normalizedHref() !== '/settings/account') {
-      AppObservableStore.setSignInStartFullUrl();
+    const signInStartFullUrl = `${origin}${pathname}`;
+    // console.log('localStoreSignInStartFullUrl, signInStartFullUrl:', signInStartFullUrl);
+    // AppObservableStore.setSignInStartFullUrl();
+    if (origin && stringContains('wevote.us', origin)) {
+      Cookies.set('sign_in_start_full_url', signInStartFullUrl, { expires: 1, path: '/', domain: 'wevote.us' });
+    } else {
+      Cookies.set('sign_in_start_full_url', signInStartFullUrl, { expires: 1, path: '/' });
     }
   }
 

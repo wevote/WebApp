@@ -40,11 +40,12 @@ class OfficeItemCompressed extends Component {
       positionListHasBeenRetrievedOnce: {},
     };
 
-    this.onClickShowOrganizationModal = this.onClickShowOrganizationModal.bind(this);
     this.getCandidateLink = this.getCandidateLink.bind(this);
     this.getOfficeLink = this.getOfficeLink.bind(this);
     this.goToCandidateLink = this.goToCandidateLink.bind(this);
     this.goToOfficeLink = this.goToOfficeLink.bind(this);
+    this.onClickShowOrganizationModalWithBallotItemInfo = this.onClickShowOrganizationModalWithBallotItemInfo.bind(this);
+    this.onClickShowOrganizationModalWithPositions = this.onClickShowOrganizationModalWithPositions.bind(this);
   }
 
   componentDidMount () {
@@ -195,9 +196,16 @@ class OfficeItemCompressed extends Component {
     this.setState({});
   }
 
-  onClickShowOrganizationModal (candidateWeVoteId) {
+  onClickShowOrganizationModalWithBallotItemInfo (candidateWeVoteId) {
     AppObservableStore.setOrganizationModalBallotItemWeVoteId(candidateWeVoteId);
     AppObservableStore.setShowOrganizationModal(true);
+    AppObservableStore.setHideOrganizationModalPositions(true);
+  }
+
+  onClickShowOrganizationModalWithPositions (candidateWeVoteId) {
+    AppObservableStore.setOrganizationModalBallotItemWeVoteId(candidateWeVoteId);
+    AppObservableStore.setShowOrganizationModal(true);
+    AppObservableStore.setHideOrganizationModalBallotItemInfo(true);
   }
 
   getCandidateLink (candidateWeVoteId) {
@@ -251,7 +259,7 @@ class OfficeItemCompressed extends Component {
                       <CandidateTopRow>
                         <Candidate
                           id={`officeItemCompressedCandidateImageAndName-${oneCandidate.we_vote_id}-${externalUniqueId}`}
-                          onClick={() => this.onClickShowOrganizationModal(oneCandidate.we_vote_id)}
+                          onClick={() => this.onClickShowOrganizationModalWithBallotItemInfo(oneCandidate.we_vote_id)}
                         >
                           {/* Candidate Image */}
                           <Suspense fallback={<></>}>
@@ -279,7 +287,7 @@ class OfficeItemCompressed extends Component {
                           <Suspense fallback={<></>}>
                             <BallotItemSupportOpposeCountDisplay
                               ballotItemWeVoteId={oneCandidate.we_vote_id}
-                              goToBallotItem={this.onClickShowOrganizationModal}
+                              goToBallotItem={this.onClickShowOrganizationModalWithPositions}
                             />
                           </Suspense>
                         </BallotItemSupportOpposeCountDisplayWrapper>
@@ -308,18 +316,20 @@ class OfficeItemCompressed extends Component {
                             </DelayedLoad>
                           </Suspense>
                         )}
-                        <ItemActionBarWrapper>
-                          <Suspense fallback={<></>}>
-                            <ItemActionBar
-                              ballotItemWeVoteId={oneCandidate.we_vote_id}
-                              commentButtonHide
-                              externalUniqueId={`OfficeItemCompressed-ItemActionBar-${oneCandidate.we_vote_id}-${externalUniqueId}`}
-                              // hidePositionPublicToggle
-                              positionPublicToggleWrapAllowed
-                              shareButtonHide
-                            />
-                          </Suspense>
-                        </ItemActionBarWrapper>
+                        {!hideCandidateDetails && (
+                          <ItemActionBarWrapper>
+                            <Suspense fallback={<></>}>
+                              <ItemActionBar
+                                ballotItemWeVoteId={oneCandidate.we_vote_id}
+                                commentButtonHide
+                                externalUniqueId={`OfficeItemCompressed-ItemActionBar-${oneCandidate.we_vote_id}-${externalUniqueId}`}
+                                hidePositionPublicToggle
+                                positionPublicToggleWrapAllowed
+                                shareButtonHide
+                              />
+                            </Suspense>
+                          </ItemActionBarWrapper>
+                        )}
                       </CandidateBottomRow>
                     </CandidateInfo>
                   </CandidateWrapper>
@@ -338,7 +348,7 @@ class OfficeItemCompressed extends Component {
                           <Suspense fallback={<></>}>
                             <BallotItemSupportOpposeCountDisplay
                               ballotItemWeVoteId={oneCandidate.we_vote_id}
-                              goToBallotItem={this.onClickShowOrganizationModal}
+                              goToBallotItem={this.onClickShowOrganizationModalWithPositions}
                               hideEndorsementsOverview
                               hideNumbersOfAllPositions
                             />
