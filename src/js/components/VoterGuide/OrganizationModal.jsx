@@ -237,7 +237,7 @@ class OrganizationModal extends Component {
   render () {
     // console.log(this.props.candidate_we_vote_id);
     renderLog('OrganizationModal');  // Set LOG_RENDER_EVENTS to log all renders
-    const { classes, organizationWeVoteId, ballotItemWeVoteId, params } = this.props;
+    const { ballotItemWeVoteId, classes, hideBallotItemInfo, hidePositions, organizationWeVoteId, params } = this.props;
     const { allCachedPositionsForThisBallotItem, ballotItemDisplayName, isCandidate, isMeasure, modalOpen } = this.state;
 
     return (
@@ -260,7 +260,7 @@ class OrganizationModal extends Component {
             <Close classes={{ root: classes.closeIcon }} />
           </span>
         </IconButton>
-        {isCandidate && (
+        {(isCandidate && !hideBallotItemInfo) && (
           <Suspense fallback={<></>}>
             <CandidateItem
               candidateWeVoteId={ballotItemWeVoteId}
@@ -268,6 +268,7 @@ class OrganizationModal extends Component {
               forMoreInformationTextOff
               hideShowMoreFooter
               inModal
+              linksOpenNewPage
               linkToBallotItemPage
               organizationWeVoteId={organizationWeVoteId}
               showLargeImage
@@ -277,12 +278,12 @@ class OrganizationModal extends Component {
             />
           </Suspense>
         )}
-        {isMeasure && (
+        {(isMeasure && !hideBallotItemInfo) && (
           <Suspense fallback={<></>}>
             <MeasureItem forMoreInformationTextOff measureWeVoteId={ballotItemWeVoteId} />
           </Suspense>
         )}
-        { !!(allCachedPositionsForThisBallotItem.length) && (
+        { (!!(allCachedPositionsForThisBallotItem.length) && !hidePositions) && (
           <Suspense fallback={<></>}>
             <DelayedLoad showLoadingText waitBeforeShow={500}>
               <>
@@ -291,7 +292,7 @@ class OrganizationModal extends Component {
                     ballotItemDisplayName={ballotItemDisplayName || ''}
                     incomingPositionList={allCachedPositionsForThisBallotItem}
                     params={params}
-                    positionListExistsTitle={(
+                    positionListExistsTitle={!hideBallotItemInfo && (
                       <PositionListIntroductionText>
                         <Info classes={{ root: classes.informationIcon }} />
                         Opinions about this ballot item are below. Use these filters to sort:
@@ -313,6 +314,8 @@ class OrganizationModal extends Component {
 OrganizationModal.propTypes = {
   ballotItemWeVoteId: PropTypes.string,
   classes: PropTypes.object,
+  hideBallotItemInfo: PropTypes.bool,
+  hidePositions: PropTypes.bool,
   modalOpen: PropTypes.bool,
   organizationWeVoteId: PropTypes.string,
   toggleFunction: PropTypes.func.isRequired,

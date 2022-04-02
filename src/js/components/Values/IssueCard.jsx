@@ -9,6 +9,7 @@ import { isCordova } from '../../common/utils/isCordovaOrWebApp';
 import { renderLog } from '../../common/utils/logging';
 import VoterGuideStore from '../../stores/VoterGuideStore';
 import { convertNameToSlug } from '../../utils/textFormat';
+import SignInModalSimple from '../Settings/SignInModalSimple';
 import IssueFollowToggleButton from './IssueFollowToggleButton';
 import IssueImageDisplay from './IssueImageDisplay';
 
@@ -28,6 +29,7 @@ class IssueCard extends Component {
       issueWeVoteId: '',
     };
     this.getIssueLink = this.getIssueLink.bind(this);
+    this.toggleShowSignInModal = this.toggleShowSignInModal.bind(this);
   }
 
   componentDidMount () {
@@ -80,6 +82,13 @@ class IssueCard extends Component {
     }
   }
 
+  toggleShowSignInModal () {
+    const { showSignInModal } = this.state;
+    this.setState({
+      showSignInModal: !showSignInModal,
+    });
+  }
+
   render () {
     renderLog('IssueCard');  // Set LOG_RENDER_EVENTS to log all renders
     const {
@@ -88,8 +97,9 @@ class IssueCard extends Component {
       turnOffIssueImage, urlWithoutHash,
     } = this.props;
     const {
-      issue, issueImageSize, issueWeVoteId,
       ballotItemWeVoteId, countOfOrganizationsUnderThisIssue,
+      issue, issueImageSize, issueWeVoteId,
+      showSignInModal,
     } = this.state;
 
     if (!issueWeVoteId.length) {
@@ -137,6 +147,11 @@ class IssueCard extends Component {
       );
     }
 
+    // This modal is shown when the user clicks to follow an issue when not signed in.
+    const signInModal = (
+      <></>
+    );
+
     let isFirst = true;
     let organizationImageCount = 0;
     return (
@@ -146,6 +161,17 @@ class IssueCard extends Component {
         condensed={!!this.props.condensed}
         style={isCordova() ? { margin: 'unset' } : {}}   // stops horizontal scrolling
       >
+        { showSignInModal && (
+          <SignInModalSimple
+            settingsAccountIsSignedInSubTitle={<></>}
+            settingsAccountIsSignedInTitle={<></>}
+            settingsAccountSignInTitle="Sign in to save your values."
+            settingsAccountSignInSubTitle=""
+            signedInTitle={<>Value saved</>}
+            signedOutTitle={<>Save your values</>}
+            toggleOnClose={this.toggleShowSignInModal}
+          />
+        )}
         <Flex condensed={!!this.props.condensed} followToggleOnItsOwnLine={!!followToggleOnItsOwnLine}>
           <FlexNameAndIcon condensed={!!this.props.condensed}>
             <IssueImage>
@@ -201,6 +227,7 @@ class IssueCard extends Component {
                 issueName={issue.issue_name}
                 issueWeVoteId={issueWeVoteId}
                 lightModeOn
+                onIssueFollowFunction={this.toggleShowSignInModal}
                 urlWithoutHash={urlWithoutHash}
               />
             </FollowIssueToggleContainer>

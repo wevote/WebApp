@@ -327,9 +327,11 @@ class CandidateItem extends Component {
         <CandidateWrapper className="card-main__media-object">
           <CandidateInfo
             isClickable={useLinkToCandidatePage === true}
-            onClick={useLinkToCandidatePage === true ? () => this.goToCandidateLink() : null}
           >
-            <div className="card-main__media-object-anchor">
+            <div
+              className="card-main__media-object-anchor"
+              onClick={useLinkToCandidatePage === true ? () => this.goToCandidateLink() : null}
+            >
               <ImageHandler
                 className="card-main__avatar"
                 sizeClassName="icon-office-child "
@@ -339,13 +341,18 @@ class CandidateItem extends Component {
               />
             </div>
             <Candidate>
-              <CandidateNameRow>
+              <CandidateNameRow
+                onClick={useLinkToCandidatePage === true ? () => this.goToCandidateLink() : null}
+              >
                 <div className={`card-main__display-name ${linkToBallotItemPage && largeAreaHoverColorOnNow && showHover ? 'card__blue' : ''}`}>
                   {ballotItemDisplayName}
                 </div>
               </CandidateNameRow>
               { contestOfficeName && (
-                <div className={linkToBallotItemPage && largeAreaHoverColorOnNow && showHover ? 'card__blue' : ''}>
+                <div
+                  className={linkToBallotItemPage && largeAreaHoverColorOnNow && showHover ? 'card__blue' : ''}
+                  onClick={useLinkToCandidatePage === true ? () => this.goToOfficeLink() : null}
+                >
                   <OfficeNameText
                     contestOfficeName={contestOfficeName}
                     officeLink={linkToOfficePage ? this.getOfficeLink() : ''}
@@ -357,36 +364,25 @@ class CandidateItem extends Component {
               <CandidateLinksWrapper>
                 {!!(twitterHandle && twitterFollowersCount) && (
                   <div>
-                    {linkToBallotItemPage ? (
-                      <TwitterWrapper className="u-cursor--pointer" onClick={this.goToCandidateLink}>
-                        <Twitter classes={{ root: classes.twitterLogo }} />
-                        <TwitterHandleWrapper>
-                          @
-                          {twitterHandle}
-                        </TwitterHandleWrapper>
-                        <span title={numberWithCommas(twitterFollowersCount)}>{abbreviateNumber(twitterFollowersCount)}</span>
-                      </TwitterWrapper>
-                    ) : (
-                      <TwitterWrapper>
-                        <Suspense fallback={<></>}>
-                          <OpenExternalWebSite
-                            linkIdAttribute="candidateTwitterDesktop"
-                            url={`https://twitter.com/${twitterHandle}`}
-                            target="_blank"
-                            body={(
-                              <TwitterInnerWrapper>
-                                <Twitter classes={{ root: classes.twitterLogo }} />
-                                <TwitterHandleWrapper>
-                                  @
-                                  {twitterHandle}
-                                </TwitterHandleWrapper>
-                                <TwitterFollowersWrapper title={numberWithCommas(twitterFollowersCount)}>{abbreviateNumber(twitterFollowersCount)}</TwitterFollowersWrapper>
-                              </TwitterInnerWrapper>
-                            )}
-                          />
-                        </Suspense>
-                      </TwitterWrapper>
-                    )}
+                    <TwitterWrapper className="u-cursor--pointer">
+                      <Suspense fallback={<></>}>
+                        <OpenExternalWebSite
+                          linkIdAttribute="candidateTwitterDesktop"
+                          url={`https://twitter.com/${twitterHandle}`}
+                          target="_blank"
+                          body={(
+                            <TwitterInnerWrapper>
+                              <Twitter classes={{ root: classes.twitterLogo }} />
+                              <TwitterHandleWrapper>
+                                @
+                                {twitterHandle}
+                              </TwitterHandleWrapper>
+                              <TwitterFollowersWrapper title={numberWithCommas(twitterFollowersCount)}>{abbreviateNumber(twitterFollowersCount)}</TwitterFollowersWrapper>
+                            </TwitterInnerWrapper>
+                          )}
+                        />
+                      </Suspense>
+                    </TwitterWrapper>
                   </div>
                 )}
                 {(!hideCandidateUrl && candidateUrl && forDesktop) && (
@@ -576,15 +572,25 @@ class CandidateItem extends Component {
   };
 
   goToCandidateLink () {
-    // In case we were in the OrganizationModal, close it
-    AppObservableStore.setShowOrganizationModal(false);
-    historyPush(this.getCandidateLink());
+    const { linksOpenNewPage } = this.props;
+    if (linksOpenNewPage) {
+      window.open(`https://WeVote.US${this.getCandidateLink()}`, '_blank');
+    } else {
+      // In case we were in the OrganizationModal, close it
+      AppObservableStore.setShowOrganizationModal(false);
+      historyPush(this.getCandidateLink());
+    }
   }
 
   goToOfficeLink () {
-    // In case we were in the OrganizationModal, close it
-    AppObservableStore.setShowOrganizationModal(false);
-    historyPush(this.getOfficeLink());
+    const { linksOpenNewPage } = this.props;
+    if (linksOpenNewPage) {
+      window.open(`https://WeVote.US${this.getOfficeLink()}`, '_blank');
+    } else {
+      // In case we were in the OrganizationModal, close it
+      AppObservableStore.setShowOrganizationModal(false);
+      historyPush(this.getOfficeLink());
+    }
   }
 
   render () {
@@ -665,6 +671,7 @@ CandidateItem.propTypes = {
   hideEndorsementsOverview: PropTypes.bool,
   hideIssuesRelatedToCandidate: PropTypes.bool,
   hideShowMoreFooter: PropTypes.bool,
+  linksOpenNewPage: PropTypes.bool,
   linkToBallotItemPage: PropTypes.bool,
   linkToOfficePage: PropTypes.bool,
   openAdviserMaterialUIPopover: PropTypes.bool,

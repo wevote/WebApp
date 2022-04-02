@@ -23,7 +23,7 @@ class ChooseOrOpposeIntroModal extends Component {
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
     const voterIsSignedIn = VoterStore.getVoterIsSignedIn();
     this.setState({
-      currentSlideKey: voterIsSignedIn ? 'getStarted' : 'signIn',
+      currentSlideKey: voterIsSignedIn ? 'getReady' : 'signIn',
       voterIsSignedIn,
     });
   }
@@ -34,6 +34,12 @@ class ChooseOrOpposeIntroModal extends Component {
 
   onVoterStoreChange () {
     const voterIsSignedIn = VoterStore.getVoterIsSignedIn();
+    const { currentSlideKey } = this.state;
+    if (voterIsSignedIn && (currentSlideKey === 'signIn')) {
+      this.setState({
+        currentSlideKey: 'getReady',
+      });
+    }
     this.setState({
       voterIsSignedIn,
     });
@@ -46,8 +52,7 @@ class ChooseOrOpposeIntroModal extends Component {
       getReady:
         (
           <>
-            <SubTitle>We Vote helps you get ready.</SubTitle>
-            <BoldText>BUT, you cannot use We Vote to cast your vote.</BoldText>
+            <SubTitle>We Vote helps you get ready to vote, BUT does not officially cast your vote.</SubTitle>
             <PlainText>Make sure to return your official ballot to your polling location!</PlainText>
             <Options buttons="2">
               {!voterIsSignedIn && (
@@ -61,12 +66,12 @@ class ChooseOrOpposeIntroModal extends Component {
                 </Button>
               )}
               <Button
-                classes={{ root: classes.optionsButton }}
+                classes={voterIsSignedIn ? { root: classes.button } : { root: classes.optionsButton }}
                 variant="contained"
                 color="primary"
-                onClick={() => this.changeCurrentSlideIndex('toggle')}
+                onClick={this.props.onClose}
               >
-                Next
+                Close
               </Button>
             </Options>
           </>
@@ -241,7 +246,6 @@ const SubTitle = styled('div')`
 `;
 
 const PlainText = styled('div')`
-  font-size: 14px;
   color: #666;
   text-align: left;
 `;

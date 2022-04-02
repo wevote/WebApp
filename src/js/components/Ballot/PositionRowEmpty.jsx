@@ -230,7 +230,7 @@ class PositionRowEmpty extends Component {
                 <OrganizationSupportSquare>
                   <AddScoreWrapper className="u-link-color-on-hover">
                     <ToScoreLabel1>
-                      No one has endorsed this candidate. Ask your friends how they are going to vote.
+                      No endorsements found for this candidate. Ask your friends how they are going to vote.
                     </ToScoreLabel1>
                     {/*
                     <ToScoreLabel2 className="u-no-break">

@@ -290,12 +290,11 @@ const styles = (theme) => ({
 const Wrapper = styled('div', {
   shouldForwardProp: (prop) => !['cursorPointerOn'].includes(prop),
 })(({ cursorPointerOn, theme }) => (`
-  cursor: pointer;
+  ${cursorPointerOn ? 'cursor: pointer;' : ''}
   font-size: 14px;
   ${theme.breakpoints.up('md')} {
     font-size: 16px;
   }
-  ${cursorPointerOn ? 'cursor: pointer;' : ''}
 `));
 
 const BallotItemEndorserName = styled('span')(({ theme }) => (`
