@@ -6,6 +6,7 @@ import Button from 'react-bootstrap/Button';
 import Helmet from 'react-helmet';
 import OrganizationActions from '../../actions/OrganizationActions';
 import VoterGuideActions from '../../actions/VoterGuideActions';
+import apiCalming from '../../common/utils/apiCalming';
 import LoadingWheel from '../../common/components/Widgets/LoadingWheel';
 import { renderLog } from '../../common/utils/logging';
 import OrganizationStore from '../../stores/OrganizationStore';
@@ -46,7 +47,9 @@ class VoterGuideFollowing extends Component {
       OrganizationActions.organizationRetrieve(organizationWeVoteId);
     }
     this.onVoterStoreChange();
-    OrganizationActions.organizationsFollowedRetrieve();
+    if (apiCalming('organizationsFollowedRetrieve', 60000)) {
+      OrganizationActions.organizationsFollowedRetrieve();
+    }
     VoterGuideActions.voterGuidesFollowedByOrganizationRetrieve(organizationWeVoteId);
     this.setState({
       voterGuideFollowedList: VoterGuideStore.getVoterGuidesFollowedByOrganization(organizationWeVoteId),
@@ -60,7 +63,9 @@ class VoterGuideFollowing extends Component {
     // When a new organization is passed in, update this component to show the new data
     this.onOrganizationStoreChange();
     if (organizationWeVoteId && nextOrganizationWeVoteId && organizationWeVoteId !== nextOrganizationWeVoteId) {
-      OrganizationActions.organizationsFollowedRetrieve();
+      if (apiCalming('organizationsFollowedRetrieve', 60000)) {
+        OrganizationActions.organizationsFollowedRetrieve();
+      }
       VoterGuideActions.voterGuidesFollowedByOrganizationRetrieve(nextOrganizationWeVoteId);
       this.setState({
         voterGuideFollowedList: VoterGuideStore.getVoterGuidesFollowedByOrganization(nextOrganizationWeVoteId),

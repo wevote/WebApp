@@ -8,6 +8,7 @@ import OrganizationActions from '../../actions/OrganizationActions';
 import VoterGuideActions from '../../actions/VoterGuideActions';
 import VoterSessionActions from '../../actions/VoterSessionActions';
 import LazyImage from '../../common/components/LazyImage';
+import apiCalming from '../../common/utils/apiCalming';
 import historyPush from '../../common/utils/historyPush';
 import Cookies from '../../common/utils/js-cookie/Cookies';
 import { renderLog } from '../../common/utils/logging';
@@ -179,7 +180,9 @@ class WelcomeAppbar extends Component {
 
     // Positions for this organization, NOT including for this voter / election
     OrganizationActions.positionListForOpinionMaker(linkedOrganizationWeVoteId, false, true);
-    OrganizationActions.organizationsFollowedRetrieve();
+    if (apiCalming('organizationsFollowedRetrieve', 60000)) {
+      OrganizationActions.organizationsFollowedRetrieve();
+    }
     VoterGuideActions.voterGuideFollowersRetrieve(linkedOrganizationWeVoteId);
     VoterGuideActions.voterGuidesFollowedByOrganizationRetrieve(linkedOrganizationWeVoteId);
     this.setState({ profilePopUpOpen: false });

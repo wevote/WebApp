@@ -11,6 +11,7 @@ import IssueActions from '../actions/IssueActions';
 import OrganizationActions from '../actions/OrganizationActions';
 import SupportActions from '../actions/SupportActions';
 import VoterActions from '../actions/VoterActions';
+import apiCalming from '../common/utils/apiCalming';
 import historyPush from '../common/utils/historyPush';
 import { isWebApp } from '../common/utils/isCordovaOrWebApp';
 import Cookies from '../common/utils/js-cookie/Cookies';
@@ -156,7 +157,9 @@ class Vote extends Component {
     IssueActions.issueDescriptionsRetrieve(VoterStore.getVoterWeVoteId());
     IssueActions.issuesFollowedRetrieve(VoterStore.getVoterWeVoteId());
     ElectionActions.electionsRetrieve();
-    OrganizationActions.organizationsFollowedRetrieve();
+    if (apiCalming('organizationsFollowedRetrieve', 60000)) {
+      OrganizationActions.organizationsFollowedRetrieve();
+    }
     VoterActions.voterRetrieve(); // This is needed to update the interface status settings
 
     // if (googleCivicElectionId && googleCivicElectionId !== 0) {

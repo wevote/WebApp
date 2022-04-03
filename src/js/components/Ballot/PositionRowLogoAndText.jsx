@@ -28,8 +28,8 @@ class PositionRowLogoAndText extends Component {
   }
 
   componentDidMount () {
-    const { position } = this.props;
-    const { ballot_item_we_vote_id: ballotItemWeVoteId, speaker_we_vote_id: organizationWeVoteId } = position;
+    // const { position } = this.props;
+    // const { ballot_item_we_vote_id: ballotItemWeVoteId, speaker_we_vote_id: organizationWeVoteId } = position;
     // console.log('PositionRowLogoAndText componentDidMount, position:', position);
     this.onOrganizationInVotersNetworkChange();
     this.friendStoreListener = FriendStore.addListener(this.onFriendStoreChange.bind(this));
@@ -37,21 +37,21 @@ class PositionRowLogoAndText extends Component {
     this.organizationStoreListener = OrganizationStore.addListener(this.onOrganizationStoreChange.bind(this));
     this.voterGuideStoreListener = VoterGuideStore.addListener(this.onVoterGuideStoreChange.bind(this));
 
-    // We want to make sure we have all the position information so that comments show up
-    if (ballotItemWeVoteId) {
-      const voterGuidesForThisBallotItem = VoterGuideStore.getVoterGuidesToFollowForBallotItemId(ballotItemWeVoteId);
-
-      if (voterGuidesForThisBallotItem) {
-        voterGuidesForThisBallotItem.forEach((oneVoterGuide) => {
-          // console.log('oneVoterGuide: ', oneVoterGuide);
-          if (organizationWeVoteId === oneVoterGuide.organization_we_vote_id) {  // Request position list for the organization of this position
-            if (!OrganizationStore.positionListForOpinionMakerHasBeenRetrievedOnce(oneVoterGuide.google_civic_election_id, oneVoterGuide.organization_we_vote_id)) {
-              OrganizationActions.positionListForOpinionMaker(oneVoterGuide.organization_we_vote_id, false, true, oneVoterGuide.google_civic_election_id);
-            }
-          }
-        });
-      }
-    }
+    // // We want to make sure we have all the position information so that comments show up
+    // if (ballotItemWeVoteId) {
+    //   const voterGuidesForThisBallotItem = VoterGuideStore.getVoterGuidesToFollowForBallotItemId(ballotItemWeVoteId);
+    //
+    //   if (voterGuidesForThisBallotItem) {
+    //     voterGuidesForThisBallotItem.forEach((oneVoterGuide) => {
+    //       // console.log('oneVoterGuide: ', oneVoterGuide);
+    //       if (organizationWeVoteId === oneVoterGuide.organization_we_vote_id) {  // Request position list for the organization of this position
+    //         if (!OrganizationStore.positionListForOpinionMakerHasBeenRetrievedOnce(oneVoterGuide.google_civic_election_id, oneVoterGuide.organization_we_vote_id)) {
+    //           OrganizationActions.positionListForOpinionMaker(oneVoterGuide.organization_we_vote_id, false, true, oneVoterGuide.google_civic_election_id);
+    //         }
+    //       }
+    //     });
+    //   }
+    // }
   }
 
   componentWillUnmount () {
@@ -91,24 +91,24 @@ class PositionRowLogoAndText extends Component {
   }
 
   onVoterGuideStoreChange () {
-    const { position } = this.props;
-    const { ballot_item_we_vote_id: ballotItemWeVoteId, speaker_we_vote_id: organizationWeVoteId } = position;
+    // const { position } = this.props;
+    // const { ballot_item_we_vote_id: ballotItemWeVoteId, speaker_we_vote_id: organizationWeVoteId } = position;
 
-    // We want to make sure we have all the position information so that comments show up
-    if (ballotItemWeVoteId) {
-      const voterGuidesForThisBallotItem = VoterGuideStore.getVoterGuidesToFollowForBallotItemId(ballotItemWeVoteId);
-
-      if (voterGuidesForThisBallotItem) {
-        voterGuidesForThisBallotItem.forEach((oneVoterGuide) => {
-          // console.log('oneVoterGuide: ', oneVoterGuide);
-          if (organizationWeVoteId === oneVoterGuide.organization_we_vote_id) {  // Request position list for the organization of this position
-            if (!OrganizationStore.positionListForOpinionMakerHasBeenRetrievedOnce(oneVoterGuide.google_civic_election_id, oneVoterGuide.organization_we_vote_id)) {
-              OrganizationActions.positionListForOpinionMaker(oneVoterGuide.organization_we_vote_id, false, true, oneVoterGuide.google_civic_election_id);
-            }
-          }
-        });
-      }
-    }
+    // // We want to make sure we have all the position information so that comments show up
+    // if (ballotItemWeVoteId) {
+    //   const voterGuidesForThisBallotItem = VoterGuideStore.getVoterGuidesToFollowForBallotItemId(ballotItemWeVoteId);
+    //
+    //   if (voterGuidesForThisBallotItem) {
+    //     voterGuidesForThisBallotItem.forEach((oneVoterGuide) => {
+    //       // console.log('oneVoterGuide: ', oneVoterGuide);
+    //       if (organizationWeVoteId === oneVoterGuide.organization_we_vote_id) {  // Request position list for the organization of this position
+    //         if (!OrganizationStore.positionListForOpinionMakerHasBeenRetrievedOnce(oneVoterGuide.google_civic_election_id, oneVoterGuide.organization_we_vote_id)) {
+    //           OrganizationActions.positionListForOpinionMaker(oneVoterGuide.organization_we_vote_id, false, true, oneVoterGuide.google_civic_election_id);
+    //         }
+    //       }
+    //     });
+    //   }
+    // }
   }
 
   onClickShowPositionDrawer (candidateWeVoteId, organizationWeVoteId) {

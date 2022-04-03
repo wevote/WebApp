@@ -121,7 +121,9 @@ class VoterGuidePositionList extends Component {
     });
     const positionListModified2Filtered = positionListModified2.filter((position) => position != null);
 
-    OrganizationActions.organizationsFollowedRetrieve();
+    if (apiCalming('organizationsFollowedRetrieve', 60000)) {
+      OrganizationActions.organizationsFollowedRetrieve();
+    }
     if (!organizationsVoterIsFriendsWith.length > 0) {
       if (apiCalming('friendList', 1500)) {
         FriendActions.currentFriends();

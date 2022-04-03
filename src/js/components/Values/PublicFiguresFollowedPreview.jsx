@@ -2,9 +2,9 @@ import styled from 'styled-components';
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import OrganizationActions from '../../actions/OrganizationActions';
+import apiCalming from '../../common/utils/apiCalming';
 import { renderLog } from '../../common/utils/logging';
 import OrganizationStore from '../../stores/OrganizationStore';
-// import OpenExternalWebSite from '../../utils/OpenExternalWebSite';
 import OpinionsFollowedListCompressed from '../Organization/OpinionsFollowedListCompressed';
 import EndorsementCard from '../Widgets/EndorsementCard';
 
@@ -20,7 +20,9 @@ export default class PublicFiguresFollowedPreview extends Component {
   componentDidMount () {
     this.organizationStoreListener = OrganizationStore.addListener(this.onOrganizationStoreChange.bind(this));
     this.onOrganizationStoreChange();
-    OrganizationActions.organizationsFollowedRetrieve();
+    if (apiCalming('organizationsFollowedRetrieve', 60000)) {
+      OrganizationActions.organizationsFollowedRetrieve();
+    }
   }
 
   componentWillUnmount () {

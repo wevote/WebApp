@@ -52,29 +52,22 @@ class PositionRowSupportOpposeCountDisplay extends Component {
     this.measureStoreListener = MeasureStore.addListener(this.onMeasureStoreChange.bind(this));
     this.organizationStoreListener = OrganizationStore.addListener(this.onOrganizationStoreChange.bind(this));
     this.supportStoreListener = SupportStore.addListener(this.onSupportStoreChange.bind(this));
-    let ballotItemDisplayName = '';
     const { ballotItemWeVoteId } = this.props;
     const isCandidate = stringContains('cand', ballotItemWeVoteId);
     const isMeasure = stringContains('meas', ballotItemWeVoteId);
     // console.log('isCandidate:', isCandidate, 'isMeasure:', isMeasure);
     if (isCandidate) {
-      const candidate = CandidateStore.getCandidate(ballotItemWeVoteId);
-      ballotItemDisplayName = candidate.ballot_item_display_name || this.props.ballotItemDisplayName;
       const countResults = CandidateStore.getNumberOfPositionsByCandidateWeVoteId(ballotItemWeVoteId);
       const { numberOfAllSupportPositions, numberOfAllOpposePositions, numberOfAllInfoOnlyPositions } = countResults;
       this.setState({
-        ballotItemDisplayName,
         numberOfAllSupportPositions,
         numberOfAllOpposePositions,
         numberOfAllInfoOnlyPositions,
       });
     } else if (isMeasure) {
-      const measure = MeasureStore.getMeasure(ballotItemWeVoteId);
-      ballotItemDisplayName = measure.ballot_item_display_name || this.props.ballotItemDisplayName;
       const countResults = MeasureStore.getNumberOfPositionsByMeasureWeVoteId(ballotItemWeVoteId);
       const { numberOfAllSupportPositions, numberOfAllOpposePositions, numberOfAllInfoOnlyPositions } = countResults;
       this.setState({
-        ballotItemDisplayName,
         numberOfAllSupportPositions,
         numberOfAllOpposePositions,
         numberOfAllInfoOnlyPositions,
@@ -225,11 +218,9 @@ class PositionRowSupportOpposeCountDisplay extends Component {
     const { isCandidate } = this.state;
     if (isCandidate) {
       const { ballotItemWeVoteId } = this.props;
-      const ballotItemDisplayName = CandidateStore.getCandidateName(ballotItemWeVoteId);
       const countResults = CandidateStore.getNumberOfPositionsByCandidateWeVoteId(ballotItemWeVoteId);
       const { numberOfAllSupportPositions, numberOfAllOpposePositions, numberOfAllInfoOnlyPositions } = countResults;
       this.setState({
-        ballotItemDisplayName,
         numberOfAllSupportPositions,
         numberOfAllOpposePositions,
         numberOfAllInfoOnlyPositions,
@@ -242,11 +233,9 @@ class PositionRowSupportOpposeCountDisplay extends Component {
     const { isMeasure } = this.state;
     if (isMeasure) {
       const { ballotItemWeVoteId } = this.props;
-      const ballotItemDisplayName = MeasureStore.getMeasureName(ballotItemWeVoteId);
       const countResults = MeasureStore.getNumberOfPositionsByMeasureWeVoteId(ballotItemWeVoteId);
       const { numberOfAllSupportPositions, numberOfAllOpposePositions, numberOfAllInfoOnlyPositions } = countResults;
       this.setState({
-        ballotItemDisplayName,
         numberOfAllSupportPositions,
         numberOfAllOpposePositions,
         numberOfAllInfoOnlyPositions,
@@ -337,10 +326,10 @@ class PositionRowSupportOpposeCountDisplay extends Component {
     // const opposeCountExists = numberOfAllOpposePositions > 0;
     // Default settings
     const showOpposeCount = true;
-    let showCommentCount = false;
+    let showInfoOnlyCount = false;
     if (commentCountExists) {
       // Override if comment count exists, and oppose count does not
-      showCommentCount = true;
+      showInfoOnlyCount = true;
     }
     // console.log('showVoterPersonalScore:', showVoterPersonalScore);
     // console.log('voterSupportsBallotItem:', voterSupportsBallotItem);
@@ -365,10 +354,8 @@ class PositionRowSupportOpposeCountDisplay extends Component {
                             Choose
                           </>
                         ) : (
-                          <>Chooses</>
+                          <>Choose</>
                         )}
-                        {' '}
-                        {/* ballotItemDisplayName */}
                       </ChooseWrapper>
                     </EndorsementCount>
                   </EndorsementRow>
@@ -396,12 +383,12 @@ class PositionRowSupportOpposeCountDisplay extends Component {
                 )}
                 {showInfoOnly && (
                   <>
-                    { showCommentCount && (
+                    { showInfoOnlyCount && (
                       <EndorsementRow>
                         <EndorsementCount>
-                          {numberOfAllOpposePositions > 1 ? (
+                          {numberOfAllInfoOnlyPositions > 1 ? (
                             <>
-                              {numberOfAllOpposePositions}
+                              {numberOfAllInfoOnlyPositions}
                               {' '}
                               Info Only
                             </>
@@ -414,15 +401,11 @@ class PositionRowSupportOpposeCountDisplay extends Component {
                   </>
                 )}
                 {showNoOpinions && (
-                  <>
-                    { showCommentCount && (
-                      <EndorsementRow>
-                        <EndorsementCount>
-                          No Opinions
-                        </EndorsementCount>
-                      </EndorsementRow>
-                    )}
-                  </>
+                  <EndorsementRow>
+                    <EndorsementCount>
+                      No Opinions
+                    </EndorsementCount>
+                  </EndorsementRow>
                 )}
               </EndorsementsInnerWrapper>
             </EndorsementsOuterWrapper>
@@ -434,7 +417,6 @@ class PositionRowSupportOpposeCountDisplay extends Component {
   }
 }
 PositionRowSupportOpposeCountDisplay.propTypes = {
-  ballotItemDisplayName: PropTypes.string,
   ballotItemWeVoteId: PropTypes.string.isRequired,
   goToBallotItem: PropTypes.func, // We don't require this because sometimes we don't want the link to do anything
   showInfoOnly: PropTypes.bool,

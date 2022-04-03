@@ -317,10 +317,11 @@ class OfficeItemCompressed extends Component {
                           </Suspense>
                         )}
                         {!hideCandidateDetails && (
-                          <ItemActionBarWrapper>
+                          <ItemActionBarOutsideWrapper>
                             <Suspense fallback={<></>}>
                               <ItemActionBar
                                 ballotItemWeVoteId={oneCandidate.we_vote_id}
+                                ballotItemDisplayName={oneCandidate.ballot_item_display_name}
                                 commentButtonHide
                                 externalUniqueId={`OfficeItemCompressed-ItemActionBar-${oneCandidate.we_vote_id}-${externalUniqueId}`}
                                 hidePositionPublicToggle
@@ -328,7 +329,7 @@ class OfficeItemCompressed extends Component {
                                 shareButtonHide
                               />
                             </Suspense>
-                          </ItemActionBarWrapper>
+                          </ItemActionBarOutsideWrapper>
                         )}
                       </CandidateBottomRow>
                     </CandidateInfo>
@@ -580,7 +581,7 @@ const HrSeparator = styled('hr')`
   width: 95%;
 `;
 
-const ItemActionBarWrapper = styled('div')`
+const ItemActionBarOutsideWrapper = styled('div')`
   display: flex;
   cursor: pointer;
   flex-direction: row;

@@ -119,7 +119,7 @@ function IgnoreLine (params) {
 }
 
 function NotFollowingFriendOrIgnoringFollowLine (params) {
-  const { addToScoreLabelOn, followInstantly, followFunction } = params;
+  const { addToScoreLabelFullWidth, addToScoreLabelOn, followInstantly, followFunction } = params;
   const {
     ballotItemWeVoteId, currentBallotIdInUrl,
     hideDropdownButtonUntilFollowing, lightModeOn, organizationWeVoteId, platformType,
@@ -133,14 +133,22 @@ function NotFollowingFriendOrIgnoringFollowLine (params) {
       onClick={() => followInstantly(followFunction, currentBallotIdInUrl, urlWithoutHash, ballotItemWeVoteId)}
     >
       {addToScoreLabelOn ? (
-        <AddToScoreWrapper>
-          <AddToScoreLabelTop>
-            Add
-          </AddToScoreLabelTop>
-          <AddToScoreLabelBottom>
-            to score
-          </AddToScoreLabelBottom>
-        </AddToScoreWrapper>
+        <>
+          {addToScoreLabelFullWidth ? (
+            <AddToScoreWrapper>
+              Add to score
+            </AddToScoreWrapper>
+          ) : (
+            <AddToScoreWrapper>
+              <AddToScoreLabelTop>
+                Add
+              </AddToScoreLabelTop>
+              <AddToScoreLabelBottom>
+                to score
+              </AddToScoreLabelBottom>
+            </AddToScoreWrapper>
+          )}
+        </>
       ) : (
         <>
           Follow
@@ -467,7 +475,8 @@ export default class FollowToggle extends Component {
   render () {
     renderLog('FollowToggle');  // Set LOG_RENDER_EVENTS to log all renders
     const {
-      addToScoreLabelOn, anchorLeft, ballotItemWeVoteId, currentBallotIdInUrl, hideDropdownButtonUntilFollowing,
+      addToScoreLabelFullWidth, addToScoreLabelOn,
+      anchorLeft, ballotItemWeVoteId, currentBallotIdInUrl, hideDropdownButtonUntilFollowing,
       hideStopFollowingButton, hideStopIgnoringButton, lightModeOn, organizationWeVoteId,
       showFollowingText, urlWithoutHash, platformType,
     } = this.props;
@@ -542,6 +551,7 @@ export default class FollowToggle extends Component {
           </>
         ) : (
           <NotFollowingFriendOrIgnoringFollowLine
+            addToScoreLabelFullWidth={addToScoreLabelFullWidth}
             addToScoreLabelOn={addToScoreLabelOn}
             followFunction={followFunction}
             followInstantly={this.followInstantly}
@@ -553,6 +563,7 @@ export default class FollowToggle extends Component {
   }
 }
 FollowToggle.propTypes = {
+  addToScoreLabelFullWidth: PropTypes.bool,
   addToScoreLabelOn: PropTypes.bool,
   currentBallotIdInUrl: PropTypes.string,
   handleIgnore: PropTypes.func,

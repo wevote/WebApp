@@ -42,13 +42,6 @@ class PositionRowEmpty extends Component {
     this.measureStoreListener = MeasureStore.addListener(this.onFriendStoreChange.bind(this));
     this.organizationStoreListener = OrganizationStore.addListener(this.onOrganizationStoreChange.bind(this));
 
-    // OrganizationActions.organizationsFollowedRetrieve();
-    // const organizationsVoterIsFriendsWith = FriendStore.currentFriendsOrganizationWeVoteIDList();
-    // if (!organizationsVoterIsFriendsWith.length > 0) {
-    //   if (apiCalming('friendList', 1500)) {
-    //     FriendActions.currentFriends();
-    //   }
-    // }
     if (allCachedPositionsForThisBallotItem) {
       const allCachedPositionsForThisBallotItemLength = Object.keys(allCachedPositionsForThisBallotItem).length;
       this.setState({

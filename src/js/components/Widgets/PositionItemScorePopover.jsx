@@ -315,7 +315,13 @@ class PositionItemScorePopover extends Component {
                   </FollowOrganizationText>
                   <FollowOrganizationToggleContainer>
                     <Suspense fallback={<></>}>
-                      <FollowToggle organizationWeVoteId={organizationWeVoteId} lightModeOn hideDropdownButtonUntilFollowing />
+                      <FollowToggle
+                        addToScoreLabelFullWidth
+                        addToScoreLabelOn
+                        hideDropdownButtonUntilFollowing
+                        lightModeOn
+                        organizationWeVoteId={organizationWeVoteId}
+                      />
                     </Suspense>
                   </FollowOrganizationToggleContainer>
                 </>

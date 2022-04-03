@@ -134,12 +134,12 @@ class PositionRowItem extends Component {
           <EndorsementWrapper>
             <Suspense fallback={<></>}>
               <StickyPopover
-                delay={{ show: 1000000, hide: 100 }}
+                delay={{ show: 100000, hide: 100 }}
                 popoverComponent={positionsPopover}
                 placement="auto"
                 id="position-row-logo-square-popover-trigger-click-root-close"
                 key={`positionRowLogoSquarePopover-${organizationWeVoteId}`}
-                openOnClick
+                // openOnClick
                 showCloseIcon
               >
                 <div>

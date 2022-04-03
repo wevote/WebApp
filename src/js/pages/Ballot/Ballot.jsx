@@ -283,7 +283,9 @@ class Ballot extends Component {
     Cookies.set('ballot_has_been_visited', '1', { expires: 10000, path: '/' });
 
     ElectionActions.electionsRetrieve();
-    OrganizationActions.organizationsFollowedRetrieve();
+    if (apiCalming('organizationsFollowedRetrieve', 60000)) {
+      OrganizationActions.organizationsFollowedRetrieve();
+    }
     if (apiCalming('voterRetrieve', 500)) {  // May 2021: This is not needed if Header.jsx is firing the same api almost simultaneously on first page load
       VoterActions.voterRetrieve();  // This is needed to update the interface status settings
     }

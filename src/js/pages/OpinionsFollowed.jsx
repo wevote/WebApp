@@ -4,6 +4,7 @@ import Helmet from 'react-helmet';
 import { Link } from 'react-router-dom';
 import OrganizationActions from '../actions/OrganizationActions';
 import OrganizationStore from '../stores/OrganizationStore';
+import apiCalming from '../common/utils/apiCalming';
 import { renderLog } from '../common/utils/logging';
 
 import OpinionsFollowedList from '../components/Organization/OpinionsFollowedList';
@@ -22,7 +23,9 @@ export default class OpinionsFollowed extends Component {
 
   componentDidMount () {
     this.organizationStoreListener = OrganizationStore.addListener(this.onOrganizationStoreChange.bind(this));
-    OrganizationActions.organizationsFollowedRetrieve();
+    if (apiCalming('organizationsFollowedRetrieve', 60000)) {
+      OrganizationActions.organizationsFollowedRetrieve();
+    }
     this.setState({
       organizationsFollowedList: OrganizationStore.getOrganizationsVoterIsFollowing(),
     });
