@@ -650,8 +650,16 @@ class ItemActionBar extends PureComponent {
       opposeButtonUnselectedPopOverText += '.';
     }
 
-    const supportButtonPopoverTooltip = <Tooltip id="supportButtonTooltip">{this.isSupportCalculated() ? supportButtonUnselectedPopOverText : supportButtonSelectedPopOverText }</Tooltip>;
-    const opposeButtonPopoverTooltip = <Tooltip id="opposeButtonTooltip">{this.isOpposeCalculated() ? opposeButtonUnselectedPopOverText : opposeButtonSelectedPopOverText}</Tooltip>;
+    const supportButtonPopoverTooltip = (
+      <Tooltip className="u-z-index-9020" id="supportButtonTooltip">
+        {this.isSupportCalculated() ? supportButtonUnselectedPopOverText : supportButtonSelectedPopOverText }
+      </Tooltip>
+    );
+    const opposeButtonPopoverTooltip = (
+      <Tooltip className="u-z-index-9020" id="opposeButtonTooltip">
+        {this.isOpposeCalculated() ? opposeButtonUnselectedPopOverText : opposeButtonSelectedPopOverText}
+      </Tooltip>
+    );
 
     // console.log('ItemActionBar buttonsOnly:', buttonsOnly);
     const showPositionPublicToggle = !this.props.hidePositionPublicToggle && this.isAnyEndorsementCalculated();

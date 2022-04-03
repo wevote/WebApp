@@ -8,6 +8,7 @@ import OrganizationActions from '../../actions/OrganizationActions';
 import VoterGuideActions from '../../actions/VoterGuideActions';
 import VoterSessionActions from '../../actions/VoterSessionActions';
 import LazyImage from '../../common/components/LazyImage';
+import apiCalming from '../../common/utils/apiCalming';
 import { isIOSAppOnMac, isIPad } from '../../common/utils/cordovaUtils';
 import historyPush from '../../common/utils/historyPush';
 import { normalizedHref } from '../../common/utils/hrefUtils';
@@ -175,7 +176,9 @@ class HeaderBackTo extends Component {
 
     // Positions for this organization, NOT including for this voter / election
     OrganizationActions.positionListForOpinionMaker(this.state.voter.linked_organization_we_vote_id, false, true);
-    OrganizationActions.organizationsFollowedRetrieve();
+    if (apiCalming('organizationsFollowedRetrieve', 60000)) {
+      OrganizationActions.organizationsFollowedRetrieve();
+    }
     VoterGuideActions.voterGuideFollowersRetrieve(this.state.voter.linked_organization_we_vote_id);
     VoterGuideActions.voterGuidesFollowedByOrganizationRetrieve(this.state.voter.linked_organization_we_vote_id);
     this.setState({ profilePopUpOpen: false });

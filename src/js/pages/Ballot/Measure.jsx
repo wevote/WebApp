@@ -85,7 +85,9 @@ class Measure extends Component {
 
     // VoterGuideActions.voterGuidesToFollowRetrieveByBallotItem(measureWeVoteId, 'MEASURE');
 
-    OrganizationActions.organizationsFollowedRetrieve();
+    if (apiCalming('organizationsFollowedRetrieve', 60000)) {
+      OrganizationActions.organizationsFollowedRetrieve();
+    }
 
     const measure = MeasureStore.getMeasure(measureWeVoteId);
     const { ballot_item_display_name: ballotItemDisplayName } = measure;

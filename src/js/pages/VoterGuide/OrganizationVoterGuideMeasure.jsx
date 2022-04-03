@@ -5,6 +5,7 @@ import MeasureActions from '../../actions/MeasureActions';
 import OrganizationActions from '../../actions/OrganizationActions';
 import VoterGuideActions from '../../actions/VoterGuideActions';
 import LoadingWheel from '../../common/components/Widgets/LoadingWheel';
+import apiCalming from '../../common/utils/apiCalming';
 import webAppConfig from '../../config';
 import MeasureStore from '../../stores/MeasureStore';
 import VoterGuideStore from '../../stores/VoterGuideStore';
@@ -41,7 +42,9 @@ export default class OrganizationVoterGuideMeasure extends Component {
     this.voterGuideStoreListener = VoterGuideStore.addListener(this.onVoterGuideStoreChange.bind(this));
     VoterGuideActions.voterGuidesToFollowRetrieveByBallotItem(params.measure_we_vote_id, 'MEASURE');
 
-    OrganizationActions.organizationsFollowedRetrieve();
+    if (apiCalming('organizationsFollowedRetrieve', 60000)) {
+      OrganizationActions.organizationsFollowedRetrieve();
+    }
 
     // TODO CREATE THIS
     // AnalyticsActions.saveActionMeasure(VoterStore.electionId(), params.measure_we_vote_id);

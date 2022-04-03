@@ -1,7 +1,8 @@
-import styled from 'styled-components';
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
+import styled from 'styled-components';
 import OrganizationActions from '../../actions/OrganizationActions';
+import apiCalming from '../../common/utils/apiCalming';
 import { renderLog } from '../../common/utils/logging';
 import OrganizationStore from '../../stores/OrganizationStore';
 import OpinionsFollowedListCompressed from '../Organization/OpinionsFollowedListCompressed';
@@ -19,7 +20,9 @@ export default class NetworkOpinionsFollowed extends Component {
   componentDidMount () {
     this.organizationStoreListener = OrganizationStore.addListener(this.onOrganizationStoreChange.bind(this));
     this.onOrganizationStoreChange();
-    OrganizationActions.organizationsFollowedRetrieve();
+    if (apiCalming('organizationsFollowedRetrieve', 60000)) {
+      OrganizationActions.organizationsFollowedRetrieve();
+    }
   }
 
   componentWillUnmount () {

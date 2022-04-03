@@ -123,7 +123,9 @@ class PositionList extends Component {
     // }
     // console.log('PositionList componentDidMount, organizationWeVoteIdsNeeded: ', organizationWeVoteIdsNeeded);
 
-    OrganizationActions.organizationsFollowedRetrieve();
+    if (apiCalming('organizationsFollowedRetrieve', 60000)) {
+      OrganizationActions.organizationsFollowedRetrieve();
+    }
     if (!organizationsVoterIsFriendsWith.length > 0) {
       if (apiCalming('friendList', 1500)) {
         FriendActions.currentFriends();

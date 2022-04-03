@@ -7,6 +7,7 @@ import OrganizationStore from '../../stores/OrganizationStore';
 import VoterGuideStore from '../../stores/VoterGuideStore';
 import VoterStore from '../../stores/VoterStore';
 import abbreviateNumber from '../../common/utils/abbreviateNumber';
+import apiCalming from '../../common/utils/apiCalming';
 import { renderLog } from '../../common/utils/logging';
 import LoadingWheel from '../../common/components/Widgets/LoadingWheel';
 import VoterGuideChooseElectionWithPositionsModal from './VoterGuideChooseElectionWithPositionsModal';
@@ -53,7 +54,9 @@ export default class OrganizationVoterGuideTabs extends Component {
     this.organizationStoreListener = OrganizationStore.addListener(this.onOrganizationStoreChange.bind(this));
     this.voterGuideStoreListener = VoterGuideStore.addListener(this.onVoterGuideStoreChange.bind(this));
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
-    OrganizationActions.organizationsFollowedRetrieve();
+    if (apiCalming('organizationsFollowedRetrieve', 60000)) {
+      OrganizationActions.organizationsFollowedRetrieve();
+    }
     VoterGuideActions.voterGuidesFollowedByOrganizationRetrieve(organizationWeVoteId);
     VoterGuideActions.voterGuideFollowersRetrieve(organizationWeVoteId);
     VoterGuideActions.voterGuidesRecommendedByOrganizationRetrieve(organizationWeVoteId, VoterStore.electionId());
@@ -92,7 +95,9 @@ export default class OrganizationVoterGuideTabs extends Component {
     const differentOrganization = organizationWeVoteId !== nextProps.organizationWeVoteId;
     if (differentOrganization) {
       // console.log('OrganizationVoterGuideTabs, componentWillReceiveProps differentOrganization');
-      OrganizationActions.organizationsFollowedRetrieve();
+      if (apiCalming('organizationsFollowedRetrieve', 60000)) {
+        OrganizationActions.organizationsFollowedRetrieve();
+      }
       VoterGuideActions.voterGuidesFollowedByOrganizationRetrieve(nextProps.organizationWeVoteId);
       VoterGuideActions.voterGuideFollowersRetrieve(nextProps.organizationWeVoteId);
       VoterGuideActions.voterGuidesRecommendedByOrganizationRetrieve(nextProps.organizationWeVoteId, VoterStore.electionId());

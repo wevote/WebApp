@@ -29,12 +29,16 @@ class IssueFollowToggleButton extends Component {
   }
 
   componentDidMount () {
-    const isFollowing = IssueStore.isVoterFollowingThisIssue(this.props.issueWeVoteId);
+    const { issueWeVoteId } = this.props;
+    const isFollowing = IssueStore.isVoterFollowingThisIssue(issueWeVoteId);
+    const voterIsSignedIn = VoterStore.getVoterIsSignedIn();
     this.setState({
       isFollowing,
       isFollowingLocalValue: isFollowing,
+      wasSignedIn: voterIsSignedIn,
     });
     this.issueStoreListener = IssueStore.addListener(this.onIssueStoreChange.bind(this));
+    this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
   }
 
   shouldComponentUpdate (nextProps, nextState) {
@@ -53,6 +57,7 @@ class IssueFollowToggleButton extends Component {
 
   componentWillUnmount () {
     this.issueStoreListener.remove();
+    this.voterStoreListener.remove();
   }
 
   // See https://reactjs.org/docs/error-boundaries.html
@@ -71,19 +76,36 @@ class IssueFollowToggleButton extends Component {
   }
 
   onIssueStoreChange () {
+    const { issueWeVoteId } = this.props;
     const { isFollowingLocalValue } = this.state;
-    const isFollowingApiValue = IssueStore.isVoterFollowingThisIssue(this.props.issueWeVoteId);
+    const isFollowingApiValue = IssueStore.isVoterFollowingThisIssue(issueWeVoteId);
     const apiServerHasCaughtUpWithLocalValue = isFollowingLocalValue === isFollowingApiValue;
     this.setState({
       isFollowing: apiServerHasCaughtUpWithLocalValue ? isFollowingApiValue : isFollowingLocalValue,
     });
   }
 
+  onVoterStoreChange () {
+    const { wasSignedIn } = this.state;
+    const voterIsSignedIn = VoterStore.getVoterIsSignedIn();
+    if (wasSignedIn && !voterIsSignedIn) {
+      // Unset when voter signs out
+      this.setState({
+        isFollowing: false,
+        isFollowingLocalValue: false,
+      });
+    }
+    this.setState({
+      wasSignedIn: voterIsSignedIn,
+    });
+  }
+
   onIssueFollow () {
+    const { issueWeVoteId } = this.props;
     // This check is necessary as we enable follow when user clicks on Issue text
-    IssueActions.issueFollow(this.props.issueWeVoteId, VoterStore.electionId());
+    IssueActions.issueFollow(issueWeVoteId, VoterStore.electionId());
     if (this.props.onIssueFollowFunction) {
-      this.props.onIssueFollowFunction(this.props.issueWeVoteId);
+      this.props.onIssueFollowFunction(issueWeVoteId);
     }
     openSnackbar({ message: `Now following ${this.props.issueName}!` });
 

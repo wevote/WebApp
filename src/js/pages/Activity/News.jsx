@@ -106,7 +106,9 @@ class News extends Component {
       if (!BallotStore.allBallotItemsRetrieveCalled()) {
         BallotActions.voterBallotItemsRetrieve(0, '', '');
       }
-      OrganizationActions.organizationsFollowedRetrieve();
+      if (apiCalming('organizationsFollowedRetrieve', 60000)) {
+        OrganizationActions.organizationsFollowedRetrieve();
+      }
       this.setState({
         componentDidMountFinished: true,
       }, () => this.openActivityTidbitDrawer(activityTidbitWeVoteIdForDrawer));

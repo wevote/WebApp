@@ -8,6 +8,7 @@ import CandidateActions from '../../actions/CandidateActions';
 import IssueActions from '../../actions/IssueActions';
 import OrganizationActions from '../../actions/OrganizationActions';
 import VoterGuidePossibilityActions from '../../actions/VoterGuidePossibilityActions';
+import apiCalming from '../../common/utils/apiCalming';
 import ExternalLinkIcon from '../../common/components/Widgets/ExternalLinkIcon';
 import Cookies from '../../common/utils/js-cookie/Cookies';
 import { renderLog } from '../../common/utils/logging';
@@ -66,8 +67,9 @@ class CandidateForExtension extends Component {
       CandidateActions.candidateRetrieve(candidateWeVoteId);
     }
 
-    OrganizationActions.organizationsFollowedRetrieve();
-
+    if (apiCalming('organizationsFollowedRetrieve', 60000)) {
+      OrganizationActions.organizationsFollowedRetrieve();
+    }
     // We want to make sure we have all of the position information so that comments show up
     const voterGuidesForThisBallotItem = VoterGuideStore.getVoterGuidesToFollowForBallotItemId(candidateWeVoteId);
 

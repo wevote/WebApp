@@ -147,11 +147,6 @@ class IssueCard extends Component {
       );
     }
 
-    // This modal is shown when the user clicks to follow an issue when not signed in.
-    const signInModal = (
-      <></>
-    );
-
     let isFirst = true;
     let organizationImageCount = 0;
     return (
@@ -163,11 +158,27 @@ class IssueCard extends Component {
       >
         { showSignInModal && (
           <SignInModalSimple
-            settingsAccountIsSignedInSubTitle={<></>}
-            settingsAccountIsSignedInTitle={<></>}
+            settingsAccountIsSignedInSubTitle={(
+              <>
+                The endorsements of the organizations and public figures who advocate for
+                {' '}
+                {issueDisplayName}
+                {' '}
+                will be added to your Personalized Scores on your ballot.
+              </>
+            )}
+            settingsAccountIsSignedInTitle={(
+              <>
+                You are now following
+                {' '}
+                <strong>
+                  {issueDisplayName}
+                </strong>
+              </>
+            )}
             settingsAccountSignInTitle="Sign in to save your values."
             settingsAccountSignInSubTitle=""
-            signedInTitle={<>Value saved</>}
+            signedInTitle={<></>}
             signedOutTitle={<>Save your values</>}
             toggleOnClose={this.toggleShowSignInModal}
           />

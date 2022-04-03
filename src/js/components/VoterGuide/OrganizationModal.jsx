@@ -11,6 +11,7 @@ import IssueActions from '../../actions/IssueActions';
 import MeasureActions from '../../actions/MeasureActions';
 import OrganizationActions from '../../actions/OrganizationActions';
 import VoterGuideActions from '../../actions/VoterGuideActions';
+import apiCalming from '../../common/utils/apiCalming';
 import { hasIPhoneNotch } from '../../common/utils/cordovaUtils';
 import { normalizedHref } from '../../common/utils/hrefUtils';
 import { renderLog } from '../../common/utils/logging';
@@ -126,7 +127,9 @@ class OrganizationModal extends Component {
       });
       AnalyticsActions.saveActionMeasure(VoterStore.electionId(), ballotItemWeVoteId);
     }
-    OrganizationActions.organizationsFollowedRetrieve();
+    if (apiCalming('organizationsFollowedRetrieve', 60000)) {
+      OrganizationActions.organizationsFollowedRetrieve();
+    }
 
     // We want to make sure we have all of the position information so that comments show up
     const voterGuidesForThisBallotItem = VoterGuideStore.getVoterGuidesToFollowForBallotItemId(ballotItemWeVoteId);

@@ -20,6 +20,7 @@ import MeasureStore from '../../stores/MeasureStore';
 import OrganizationStore from '../../stores/OrganizationStore';
 import VoterGuideStore from '../../stores/VoterGuideStore';
 import VoterStore from '../../stores/VoterStore';
+import apiCalming from '../../common/utils/apiCalming';
 import { cordovaDrawerTopMargin } from '../../utils/cordovaOffsets';
 import { convertToInteger, stringContains } from '../../utils/textFormat';
 
@@ -112,7 +113,9 @@ class PositionDrawer extends Component {
       });
       AnalyticsActions.saveActionMeasure(VoterStore.electionId(), ballotItemWeVoteId);
     }
-    OrganizationActions.organizationsFollowedRetrieve();
+    if (apiCalming('organizationsFollowedRetrieve', 60000)) {
+      OrganizationActions.organizationsFollowedRetrieve();
+    }
 
     // We want to make sure we have all of the position information so that comments show up
     const voterGuidesForThisBallotItem = VoterGuideStore.getVoterGuidesToFollowForBallotItemId(ballotItemWeVoteId);

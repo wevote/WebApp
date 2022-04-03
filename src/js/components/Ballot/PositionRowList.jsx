@@ -10,6 +10,7 @@ import apiCalming from '../../common/utils/apiCalming';
 import { renderLog } from '../../common/utils/logging';
 import CandidateStore from '../../stores/CandidateStore';
 import FriendStore from '../../stores/FriendStore';
+import IssueStore from '../../stores/IssueStore';
 import MeasureStore from '../../stores/MeasureStore';
 import OrganizationStore from '../../stores/OrganizationStore';
 import VoterStore from '../../stores/VoterStore';
@@ -47,7 +48,9 @@ class PositionRowList extends Component {
     this.measureStoreListener = MeasureStore.addListener(this.onFriendStoreChange.bind(this));
     this.organizationStoreListener = OrganizationStore.addListener(this.onOrganizationStoreChange.bind(this));
 
-    OrganizationActions.organizationsFollowedRetrieve();
+    if (apiCalming('organizationsFollowedRetrieve', 60000)) {
+      OrganizationActions.organizationsFollowedRetrieve();
+    }
     const organizationsVoterIsFriendsWith = FriendStore.currentFriendsOrganizationWeVoteIDList();
     if (!organizationsVoterIsFriendsWith.length > 0) {
       if (apiCalming('friendList', 1500)) {
@@ -127,6 +130,15 @@ class PositionRowList extends Component {
       });
     });
 
+    // eslint-disable-next-line arrow-body-style
+    filteredPositionList = filteredPositionList.map((position) => {
+      // console.log('PositionRowList componentDidMount, position: ', position);
+      return ({
+        ...position,
+        linkedToIssueVoterIsFollowing: IssueStore.isOrganizationLinkedToIssueVoterIsFollowing(position.speaker_we_vote_id),
+      });
+    });
+
     if (showInfoOnly) {
       filteredPositionList = this.limitToShowInfoOnly(filteredPositionList);
     } else if (showOppose) {
@@ -136,6 +148,7 @@ class PositionRowList extends Component {
     }
     filteredPositionList = filteredPositionList.sort(this.orderByTwitterFollowers);
     filteredPositionList = filteredPositionList.sort(this.orderByWrittenComment);
+    filteredPositionList = filteredPositionList.sort(this.orderByIssuesFollowedFirst);
     filteredPositionList = filteredPositionList.sort(this.orderByFollowedOrgsFirst);
     filteredPositionList = filteredPositionList.sort(this.orderByCurrentFriendsFirst);
     filteredPositionList = filteredPositionList.sort(this.orderByCurrentVoterFirst); // Always put current voter at top
@@ -182,6 +195,12 @@ class PositionRowList extends Component {
   };
 
   orderByFollowedOrgsFirst = (firstGuide, secondGuide) => secondGuide.followed - firstGuide.followed;
+
+  orderByIssuesFollowedFirst = (firstGuide, secondGuide) => {
+    const secondGuideIsLinkedToIssueVoterIsFollowing = secondGuide && secondGuide.linkedToIssueVoterIsFollowing === true ? 1 : 0;
+    const firstGuideIsLinkedToIssueVoterIsFollowing = firstGuide && firstGuide.linkedToIssueVoterIsFollowing === true ? 1 : 0;
+    return secondGuideIsLinkedToIssueVoterIsFollowing - firstGuideIsLinkedToIssueVoterIsFollowing;
+  };
 
   orderByTwitterFollowers = (firstGuide, secondGuide) => secondGuide.twitter_followers_count - firstGuide.twitter_followers_count;
 

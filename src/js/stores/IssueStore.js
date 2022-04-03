@@ -921,7 +921,7 @@ class IssueStore extends ReduceStore {
 
       case 'voterSignOut':
         // console.log('resetting IssueStore');
-        IssueActions.issuesFollowedRetrieve(VoterStore.getVoterWeVoteId());
+        // IssueActions.issuesFollowedRetrieve(VoterStore.getVoterWeVoteId());
         return this.resetState();
 
       default:
