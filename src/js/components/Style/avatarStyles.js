@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { isWebApp } from '../../common/utils/isCordovaOrWebApp';
+import { isCordova, isWebApp } from '../../common/utils/isCordovaOrWebApp';
 
 const AvatarInSideColumn = `
   max-width: 40px;
@@ -33,11 +33,13 @@ const AvatarCordovaStyles = `
   }
 `;
 
-const Avatar = isWebApp() ? styled('div', {
+const Avatar = styled('div', {
   shouldForwardProp: (prop) => !['inSideColumn'].includes(prop),
 })(({ inSideColumn }) => (`
-  margin-right: 8px;
-  ${inSideColumn ? AvatarInSideColumn : AvatarNotInColumn}
-`)) : AvatarCordovaStyles;
+    margin-right: 8px;
+    ${isWebApp() && inSideColumn && AvatarInSideColumn}
+    ${isWebApp() && !inSideColumn && AvatarNotInColumn}
+    ${isCordova() && AvatarCordovaStyles}
+`));
 
 export default Avatar;
