@@ -96,7 +96,7 @@
     "jquery": "^3.6.0",
     "keymirror": "~0.1.1",
     "lodash-es": "^4.17.21",
-    "moment": "~2.29.1",
+    "moment": "~2.29.2",
     "mui-file-dropzone": "^4.0.1",
     "object-assign": "~4.1.1",
     "prop-types": "~15.7.2",
