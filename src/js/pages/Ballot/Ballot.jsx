@@ -549,6 +549,7 @@ class Ballot extends Component {
     clearTimeout(this.modalOpenTimer);   // In componentDidMount
     clearTimeout(this.hashLinkTimer);
     clearTimeout(this.twitterSignInTimer);
+    clearTimeout(this.googleAutoCompleteDelayTimer);
     window.removeEventListener('scroll', this.onScroll);
   }
 
