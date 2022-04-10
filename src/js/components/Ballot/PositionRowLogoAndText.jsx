@@ -1,10 +1,8 @@
-import { Add, Check } from '@mui/icons-material';
 import withStyles from '@mui/styles/withStyles';
 import withTheme from '@mui/styles/withTheme';
 import React, { Component, Suspense } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import OrganizationActions from '../../actions/OrganizationActions';
 import AppObservableStore from '../../stores/AppObservableStore';
 import FriendStore from '../../stores/FriendStore';
 import IssueStore from '../../stores/IssueStore';
@@ -16,6 +14,7 @@ import { isSpeakerTypeOrganization } from '../../utils/organization-functions';
 import { isOrganizationInVotersNetwork } from '../../utils/positionFunctions';
 import SvgImage from '../../common/components/Widgets/SvgImage';
 
+const FollowToggleCheckPlus = React.lazy(() => import(/* webpackChunkName: 'FollowToggleCheckPlus' */ '../Widgets/FollowToggleCheckPlus'));
 const ImageHandler = React.lazy(() => import(/* webpackChunkName: 'ImageHandler' */ '../ImageHandler'));
 
 
@@ -188,90 +187,22 @@ class PositionRowLogoAndText extends Component {
           </OrganizationPhotoOuterWrapper>
           <HorizontalSpacer />
           <YesNoScoreTextWrapper>
-            {supportOpposeInfo === 'SupportAndPartOfScore' ? (
-              <OrganizationSupportWrapper>
-                <SupportAndPartOfScore>
-                  <ScoreWrapper>
-                    <ScoreNumberWrapper>
-                      <Check />
-                    </ScoreNumberWrapper>
-                    {/*
-                    <ToScoreLabel className="u-no-break">
-                      to score
-                    </ToScoreLabel>
-                    */}
-                  </ScoreWrapper>
-                </SupportAndPartOfScore>
-              </OrganizationSupportWrapper>
+            {supportOpposeInfo === 'InfoButNotPartOfScore' ? (
+              <OrganizationInformationOnlyWrapper>
+                <OrganizationInformationOnlySquare>
+                  <OrganizationInfoOnlyWordWrapper>
+                    Info
+                  </OrganizationInfoOnlyWordWrapper>
+                </OrganizationInformationOnlySquare>
+              </OrganizationInformationOnlyWrapper>
             ) : (
-              <>
-                {supportOpposeInfo === 'OpposeAndPartOfScore' ? (
-                  <OrganizationOpposeWrapper>
-                    <OpposeAndPartOfScore>
-                      <ScoreWrapper>
-                        <ScoreNumberWrapper className="u-no-break">
-                          <Check />
-                        </ScoreNumberWrapper>
-                        {/*
-                        <FromScoreLabel>
-                          from score
-                        </FromScoreLabel>
-                        */}
-                      </ScoreWrapper>
-                    </OpposeAndPartOfScore>
-                  </OrganizationOpposeWrapper>
-                ) : (
-                  <>
-                    {supportOpposeInfo === 'SupportButNotPartOfScore' ? (
-                      <OrganizationSupportWrapper>
-                        <OrganizationSupportSquare>
-                          <AddScoreWrapper>
-                            <ToScoreLabel1 className="u-no-break">
-                              <Add />
-                            </ToScoreLabel1>
-                            {/*
-                            <ToScoreLabel2 className="u-no-break">
-                              to score
-                            </ToScoreLabel2>
-                            */}
-                          </AddScoreWrapper>
-                        </OrganizationSupportSquare>
-                      </OrganizationSupportWrapper>
-                    ) : (
-                      <>
-                        {supportOpposeInfo === 'OpposeButNotPartOfScore' ? (
-                          <OrganizationOpposeWrapper>
-                            <OrganizationOpposeSquare>
-                              <AddScoreWrapper>
-                                <ToScoreLabel1 className="u-no-break">
-                                  <Add />
-                                </ToScoreLabel1>
-                                {/*
-                                <ToScoreLabel2 className="u-no-break">
-                                  from score
-                                </ToScoreLabel2>
-                                */}
-                              </AddScoreWrapper>
-                            </OrganizationOpposeSquare>
-                          </OrganizationOpposeWrapper>
-                        ) : (
-                          <>
-                            {supportOpposeInfo === 'InfoButNotPartOfScore' && (
-                              <OrganizationInformationOnlyWrapper>
-                                <OrganizationInformationOnlySquare>
-                                  <OrganizationInfoOnlyWordWrapper>
-                                    Info
-                                  </OrganizationInfoOnlyWordWrapper>
-                                </OrganizationInformationOnlySquare>
-                              </OrganizationInformationOnlyWrapper>
-                            )}
-                          </>
-                        )}
-                      </>
-                    )}
-                  </>
-                )}
-              </>
+              <FollowToggleWrapper>
+                <Suspense fallback={<></>}>
+                  <FollowToggleCheckPlus
+                    organizationWeVoteId={organizationWeVoteId}
+                  />
+                </Suspense>
+              </FollowToggleWrapper>
             )}
           </YesNoScoreTextWrapper>
         </Wrapper>
@@ -299,39 +230,14 @@ const styles = (theme) => ({
   },
 });
 
-const AddScoreWrapper = styled('div')`
-  align-items: center;
-  color: #ccc;
+const FollowToggleWrapper = styled('div')`
   display: flex;
-  flex-flow: column;
-  font-weight: normal;
-  justify-content: flex-start;
-  padding-top: 4px;
+  justify-content: center;
 `;
-
-// const FromScoreLabel = styled('div')`
-//   font-size: 10px;
-//   line-height: 11px;
-//   margin-top: -4px;
-//   text-align: center;
-// `;
 
 const HorizontalSpacer = styled('div')`
   border-bottom: 1px dotted #dcdcdc;
 `;
-
-const OpposeAndPartOfScore = styled('div')(({ theme }) => (`
-  align-items: center;
-  color: ${theme.colors.opposeRedRgb};
-  cursor: pointer;
-  display: flex;
-  flex-flow: column;
-  flex-wrap: wrap;
-  font-size: 16px;
-  font-weight: bold;
-  justify-content: flex-start;
-  width: 40px;
-`));
 
 const OrganizationInfoOnlyWordWrapper = styled('div')`
 `;
@@ -349,25 +255,6 @@ const OrganizationInformationOnlySquare = styled('div')(({ theme }) => (`
 `));
 
 const OrganizationInformationOnlyWrapper = styled('div')`
-  position: relative;
-  z-index: 1;
-`;
-
-const OrganizationOpposeSquare = styled('div')(({ theme }) => (`
-  align-items: center;
-  background: white;
-  color: ${theme.colors.opposeRedRgb};
-  cursor: pointer;
-  display: flex;
-  flex-flow: column;
-  flex-wrap: wrap;
-  font-size: 16px;
-  font-weight: bold;
-  justify-content: flex-start;
-  width: 40px;
-`));
-
-const OrganizationOpposeWrapper = styled('div')`
   position: relative;
   z-index: 1;
 `;
@@ -398,65 +285,6 @@ const OrganizationPhotoOuterWrapper = styled('div')`
 const OrganizationScoreSpacer = styled('div')`
   height: 0px;
 `;
-
-const OrganizationSupportSquare = styled('div')(({ theme }) => (`
-  align-items: center;
-  background: white;
-  color: ${theme.colors.supportGreenRgb};
-  cursor: pointer;
-  display: flex;
-  flex-flow: column;
-  flex-wrap: wrap;
-  font-size: 16px;
-  font-weight: bold;
-  justify-content: flex-start;
-  width: 40px;
-`));
-
-const OrganizationSupportWrapper = styled('div')`
-  position: relative;
-  z-index: 1;
-`;
-
-const ScoreNumberWrapper = styled('div')`
-`;
-
-const ScoreWrapper = styled('div')`
-  align-items: center;
-  display: flex;
-  flex-flow: column;
-  justify-content: flex-start;
-  padding-top: 4px;
-`;
-
-const SupportAndPartOfScore = styled('div')(({ theme }) => (`
-  align-items: center;
-  background: white;
-  color: ${theme.colors.supportGreenRgb};
-  cursor: pointer;
-  display: flex;
-  flex-flow: column;
-  flex-wrap: wrap;
-  font-size: 16px;
-  font-weight: bold;
-  justify-content: flex-start;
-  width: 40px;
-`));
-
-// const ToScoreLabel = styled('div')`
-//   font-size: 10px;
-//   margin-top: -6px;
-// `;
-
-const ToScoreLabel1 = styled('div')`
-  font-size: 14px;
-  margin-top: 0;
-`;
-
-// const ToScoreLabel2 = styled('div')`
-//   font-size: 10px;
-//   margin-top: -3px;
-// `;
 
 const Wrapper = styled('div')`
 `;

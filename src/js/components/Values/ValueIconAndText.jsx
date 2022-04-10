@@ -192,7 +192,7 @@ class ValueIconAndText extends Component {
           <Chip
             avatar={oneIssue.issue_icon_local_path ? (
               <IconWrapper>
-                <SvgImage imageName={oneIssue.issue_icon_local_path} stylesTextIncoming={`fill: ${svgFill} !important; padding-bottom: 1px;`} />
+                <SvgImage imageName={oneIssue.issue_icon_local_path} stylesTextIncoming={`fill: ${svgFill} !important; margin-left: 4px; padding-bottom: 1px;`} />
               </IconWrapper>
               // <ReactSVG
               //   src={normalizedImagePath(`/img/global/svg-icons/issues/${oneIssue.issue_icon_local_path}.svg`)}
@@ -221,9 +221,15 @@ ValueIconAndText.propTypes = {
 
 const styles = () => ({
   chipStyle: {
+    backgroundColor: '#dbdbdb',
+    border: '1px solid #ccc',
     color: '#555',
+    cursor: 'pointer',
     fontSize: '.7rem',
     height: 'auto',
+    '&:hover': {
+      backgroundColor: '#e8e8e8',
+    },
   },
 });
 

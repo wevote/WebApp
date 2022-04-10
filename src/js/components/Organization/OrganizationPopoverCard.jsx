@@ -85,7 +85,7 @@ class OrganizationPopoverCard extends Component {
     if (!this.state.organization) {
       return <div>{LoadingWheel}</div>;
     }
-    const { classes, organizationWeVoteId } = this.props;
+    const { classes, linksOpenExternalWebsite, organizationWeVoteId } = this.props;
     const { isVoterOwner } = this.state;
     const {
       organization_twitter_handle: organizationTwitterHandle, twitter_description: twitterDescriptionRaw,
@@ -100,6 +100,7 @@ class OrganizationPopoverCard extends Component {
     const twitterDescription = twitterDescriptionRaw || '';
     const twitterDescriptionMinusName = removeTwitterNameFromDescription(displayName, twitterDescription);
     const voterGuideLink = organizationTwitterHandle ? `/${organizationTwitterHandle}` : `/voterguide/${organizationWeVoteId}`;
+    const voterGuideLinkExternal = `https://WeVote.org${voterGuideLink}`;
 
     return (
       <Wrapper>
@@ -117,15 +118,33 @@ class OrganizationPopoverCard extends Component {
         <Container>
           <LogoFollowToggleContainer>
             { organizationPhotoUrlLarge && (
-              <Link
-                id="organizationPopoverCardImage"
-                to={voterGuideLink}
-                className="u-no-underline"
-              >
-                <ImageContainer>
-                  <img src={organizationPhotoUrlLarge} width="60" height="60" alt={`${displayName}`} />
-                </ImageContainer>
-              </Link>
+              <span>
+                {linksOpenExternalWebsite ? (
+                  <Suspense fallback={<></>}>
+                    <OpenExternalWebSite
+                      body={(
+                        <ImageContainer>
+                          <img src={organizationPhotoUrlLarge} width="60" height="60" alt={`${displayName}`} />
+                        </ImageContainer>
+                      )}
+                      className="u-no-underline"
+                      linkIdAttribute="organizationPopoverCardImage"
+                      url={voterGuideLinkExternal}
+                      target="_blank"
+                    />
+                  </Suspense>
+                ) : (
+                  <Link
+                    className="u-no-underline"
+                    id="organizationPopoverCardImage"
+                    to={voterGuideLink}
+                  >
+                    <ImageContainer>
+                      <img src={organizationPhotoUrlLarge} width="60" height="60" alt={`${displayName}`} />
+                    </ImageContainer>
+                  </Link>
+                )}
+              </span>
             )}
             { isVoterOwner ? (
               <Button variant="warning" size="small" bsPrefix="pull-right" onClick={this.onEdit}>
@@ -142,12 +161,27 @@ class OrganizationPopoverCard extends Component {
             )}
           </LogoFollowToggleContainer>
           <MainContent>
-            <Link
-              id="organizationPopoverCardName"
-              to={voterGuideLink}
-            >
-              <OrganizationName>{displayName}</OrganizationName>
-            </Link>
+            <span>
+              {linksOpenExternalWebsite ? (
+                <Suspense fallback={<></>}>
+                  <OpenExternalWebSite
+                    linkIdAttribute="organizationPopoverCardName"
+                    url={voterGuideLinkExternal}
+                    target="_blank"
+                    body={(
+                      <OrganizationName>{displayName}</OrganizationName>
+                    )}
+                  />
+                </Suspense>
+              ) : (
+                <Link
+                  id="organizationPopoverCardName"
+                  to={voterGuideLink}
+                >
+                  <OrganizationName>{displayName}</OrganizationName>
+                </Link>
+              )}
+            </span>
             { organizationTwitterHandle && (
               <TwitterWrapper>
                 <Twitter classes={{ root: classes.twitterLogo }} />
@@ -192,6 +226,7 @@ class OrganizationPopoverCard extends Component {
 }
 OrganizationPopoverCard.propTypes = {
   classes: PropTypes.object,
+  linksOpenExternalWebsite: PropTypes.bool,
   organizationWeVoteId: PropTypes.string.isRequired,
 };
 

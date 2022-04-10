@@ -55,7 +55,7 @@ class VoterGuideDisplayForList extends PureComponent {
     } else {
       // console.log('VoterGuideDisplayForList NO positionDescription');
     }
-    const organizationPopoverCard = (<OrganizationPopoverCard organizationWeVoteId={organizationWeVoteId} />);
+    const organizationPopoverCard = (<OrganizationPopoverCard linksOpenExternalWebsite organizationWeVoteId={organizationWeVoteId} />);
 
     return (
       <Wrapper id="voterGuideDisplayForList">

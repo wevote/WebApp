@@ -119,7 +119,7 @@ class voterGuideDisplayForListForOpinions extends Component {
       </Suspense>
     );
 
-    const organizationPopoverCard = organizationWeVoteId ? <OrganizationPopoverCard organizationWeVoteId={organizationWeVoteId} /> : <span />;
+    const organizationPopoverCard = organizationWeVoteId ? <OrganizationPopoverCard linksOpenExternalWebsite organizationWeVoteId={organizationWeVoteId} /> : <span />;
 
     return (
       <Card className="card">

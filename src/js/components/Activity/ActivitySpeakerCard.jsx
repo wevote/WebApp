@@ -99,7 +99,7 @@ class ActivitySpeakerCard extends Component {
     if (!speakerName && !speakerIsVoter) {
       return <div>{LoadingWheel}</div>;
     }
-    const organizationPopoverCard = (<OrganizationPopoverCard organizationWeVoteId={speakerOrganizationWeVoteId} />);
+    const organizationPopoverCard = (<OrganizationPopoverCard linksOpenExternalWebsite organizationWeVoteId={speakerOrganizationWeVoteId} />);
 
     // const voterGuideLink = speakerTwitterHandle ? `/${speakerTwitterHandle}` : `/voterguide/${speakerOrganizationWeVoteId}`;
 

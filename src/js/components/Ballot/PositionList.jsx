@@ -297,7 +297,7 @@ class PositionList extends Component {
       numberOfPositionItemsToDisplay, positionSearchResults, searchText,
       totalNumberOfPositionSearchResults,
     } = this.state;
-    const { incomingPositionList, positionListExistsTitle } = this.props;
+    const { incomingPositionList, linksOpenExternalWebsite, positionListExistsTitle } = this.props;
     // console.log('PositionList render, positionListExistsTitle:', positionListExistsTitle);
     // console.log('this.state.filteredPositionList render: ', this.state.filteredPositionList);
     let showTitle = false;
@@ -391,6 +391,7 @@ class PositionList extends Component {
                   <PositionItem
                     // ballotItemDisplayName={this.props.ballotItemDisplayName}
                     position={onePosition}
+                    linksOpenExternalWebsite={linksOpenExternalWebsite}
                     searchResultsNode={searchResultsNode}
                     params={this.props.params}
                   />
@@ -419,6 +420,7 @@ class PositionList extends Component {
 }
 PositionList.propTypes = {
   incomingPositionList: PropTypes.array.isRequired,
+  linksOpenExternalWebsite: PropTypes.bool,
   positionListExistsTitle: PropTypes.object,
   params: PropTypes.object,
 };

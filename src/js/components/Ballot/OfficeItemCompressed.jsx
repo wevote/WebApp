@@ -17,6 +17,7 @@ import { toTitleCase } from '../../utils/textFormat';
 import signInModalGlobalState from '../Widgets/signInModalGlobalState';
 import PositionRowEmpty from './PositionRowEmpty';
 import PositionRowList from './PositionRowList';
+import isMobileScreenSize from '../../common/utils/isMobileScreenSize';
 
 const BallotItemSupportOpposeCountDisplay = React.lazy(() => import(/* webpackChunkName: 'BallotItemSupportOpposeCountDisplay' */ '../Widgets/BallotItemSupportOpposeCountDisplay'));
 const DelayedLoad = React.lazy(() => import(/* webpackChunkName: 'DelayedLoad' */ '../../common/components/Widgets/DelayedLoad'));
@@ -44,6 +45,7 @@ class OfficeItemCompressed extends Component {
     this.getOfficeLink = this.getOfficeLink.bind(this);
     this.goToCandidateLink = this.goToCandidateLink.bind(this);
     this.goToOfficeLink = this.goToOfficeLink.bind(this);
+    this.onClickShowOrganizationModalWithAllInfo = this.onClickShowOrganizationModalWithAllInfo.bind(this);
     this.onClickShowOrganizationModalWithBallotItemInfo = this.onClickShowOrganizationModalWithBallotItemInfo.bind(this);
     this.onClickShowOrganizationModalWithPositions = this.onClickShowOrganizationModalWithPositions.bind(this);
   }
@@ -196,6 +198,11 @@ class OfficeItemCompressed extends Component {
     this.setState({});
   }
 
+  onClickShowOrganizationModalWithAllInfo (candidateWeVoteId) {
+    AppObservableStore.setOrganizationModalBallotItemWeVoteId(candidateWeVoteId);
+    AppObservableStore.setShowOrganizationModal(true);
+  }
+
   onClickShowOrganizationModalWithBallotItemInfo (candidateWeVoteId) {
     AppObservableStore.setOrganizationModalBallotItemWeVoteId(candidateWeVoteId);
     AppObservableStore.setShowOrganizationModal(true);
@@ -259,7 +266,7 @@ class OfficeItemCompressed extends Component {
                       <CandidateTopRow>
                         <Candidate
                           id={`officeItemCompressedCandidateImageAndName-${oneCandidate.we_vote_id}-${externalUniqueId}`}
-                          onClick={() => this.onClickShowOrganizationModalWithBallotItemInfo(oneCandidate.we_vote_id)}
+                          onClick={() => (isMobileScreenSize() ? this.onClickShowOrganizationModalWithAllInfo(oneCandidate.we_vote_id) : this.onClickShowOrganizationModalWithBallotItemInfo(oneCandidate.we_vote_id))}
                         >
                           {/* Candidate Image */}
                           <Suspense fallback={<></>}>
