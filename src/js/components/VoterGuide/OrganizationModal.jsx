@@ -294,6 +294,7 @@ class OrganizationModal extends Component {
                   <PositionList
                     ballotItemDisplayName={ballotItemDisplayName || ''}
                     incomingPositionList={allCachedPositionsForThisBallotItem}
+                    linksOpenExternalWebsite
                     params={params}
                     positionListExistsTitle={!hideBallotItemInfo && (
                       <PositionListIntroductionText>

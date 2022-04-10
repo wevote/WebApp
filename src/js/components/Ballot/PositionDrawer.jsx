@@ -238,6 +238,7 @@ class PositionDrawer extends Component {
               <>
                 <Suspense fallback={<></>}>
                   <PositionItem
+                    linksOpenExternalWebsite
                     position={featuredPosition}
                     params={params}
                     showEntireStatementText

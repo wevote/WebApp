@@ -179,7 +179,7 @@ class IssuesByOrganizationDisplayList extends Component {
         issueFollowedByVoter={issueFollowedByVoter}
       >
         <Chip
-          avatar={<SvgImage imageName={svg} stylesTextIncoming={`fill: ${svgFill} !important;`} />}
+          avatar={<SvgImage imageName={svg} stylesTextIncoming={`fill: ${svgFill} !important; margin-left: 4px;`} />}
           classes={{ root: classes.chipStyle }}
           label={oneIssue.issue_name}
           ref={this.valueSpan}
@@ -267,9 +267,15 @@ IssuesByOrganizationDisplayList.propTypes = {
 
 const styles = () => ({
   chipStyle: {
+    backgroundColor: '#dbdbdb',
+    border: '1px solid #ccc',
     color: '#555',
+    cursor: 'pointer',
     fontSize: '.7rem',
     height: 'auto',
+    '&:hover': {
+      backgroundColor: '#e8e8e8',
+    },
   },
 });
 

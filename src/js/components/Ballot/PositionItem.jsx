@@ -122,14 +122,15 @@ class PositionItem extends Component {
     }
   }
 
-  closeOrganizationModal () {
+  closeDrawer () {
     AppObservableStore.setShowOrganizationModal(false);
+    AppObservableStore.setShowPositionDrawer(false);
   }
 
   render () {
     renderLog('PositionItem');  // Set LOG_RENDER_EVENTS to log all renders
     let position;
-    const { classes, searchResultsNode, showEntireStatementText } = this.props;
+    const { classes, linksOpenExternalWebsite, searchResultsNode, showEntireStatementText } = this.props;
     ({ position } = this.props);
     const { updatedPosition } = this.state;
     if (updatedPosition && updatedPosition.speaker_we_vote_id) {
@@ -164,6 +165,7 @@ class PositionItem extends Component {
     //     }
     //   }
     // }
+    const speakerLinkExternal = `https://WeVote.org${speakerLink}`;
 
     let positionSpeakerDisplayName = position.speaker_display_name;
     // console.log('position:', position, ', VoterStore.getLinkedOrganizationWeVoteId():', VoterStore.getLinkedOrganizationWeVoteId());
@@ -208,7 +210,7 @@ class PositionItem extends Component {
     const nothingToDisplay = null;
 
     if (showPosition) {
-      const organizationPopoverCard = (<OrganizationPopoverCard organizationWeVoteId={organizationWeVoteId} />);
+      const organizationPopoverCard = (<OrganizationPopoverCard linksOpenExternalWebsite organizationWeVoteId={organizationWeVoteId} />);
       let moreInfoUrl = position.more_info_url;
       if (moreInfoUrl) {
         if (!moreInfoUrl.toLowerCase().startsWith('http')) {
@@ -237,21 +239,45 @@ class PositionItem extends Component {
                       id="positions-organization-popover-trigger-click-root-close"
                     >
                       <div>
-                        <Link
-                          to={speakerLink}
-                          className="u-no-underline"
-                        >
-                          { position.speaker_image_url_https_medium ? (
-                            <Suspense fallback={<></>}>
-                              <ImageHandler
-                                className="card-child__avatar"
-                                sizeClassName="icon-lg"
-                                imageUrl={position.speaker_image_url_https_medium}
-                              />
-                            </Suspense>
-                          ) :
-                            imagePlaceholder }
-                        </Link>
+                        {linksOpenExternalWebsite ? (
+                          <OpenExternalWebSite
+                            linkIdAttribute="desktopSpeakerImage"
+                            body={(
+                              <span>
+                                { position.speaker_image_url_https_medium ? (
+                                  <Suspense fallback={<></>}>
+                                    <ImageHandler
+                                      className="card-child__avatar"
+                                      sizeClassName="icon-lg"
+                                      imageUrl={position.speaker_image_url_https_medium}
+                                    />
+                                  </Suspense>
+                                ) :
+                                  imagePlaceholder }
+                              </span>
+                            )}
+                            className="u-no-underline"
+                            target="_blank"
+                            url={speakerLinkExternal}
+                          />
+                        ) : (
+                          <Link
+                            id="desktopSpeakerImage"
+                            to={speakerLink}
+                            className="u-no-underline"
+                          >
+                            { position.speaker_image_url_https_medium ? (
+                              <Suspense fallback={<></>}>
+                                <ImageHandler
+                                  className="card-child__avatar"
+                                  sizeClassName="icon-lg"
+                                  imageUrl={position.speaker_image_url_https_medium}
+                                />
+                              </Suspense>
+                            ) :
+                              imagePlaceholder }
+                          </Link>
+                        )}
                       </div>
                     </StickyPopover>
                   </Suspense>
@@ -295,13 +321,26 @@ class PositionItem extends Component {
                             id="positions-popover-trigger-click-root-close"
                           >
                             <div>
-                              <Link
-                                id={`desktop-LinkToEndorsingOrganization-${organizationWeVoteId}`}
-                                onClick={this.closeOrganizationModal}
-                                to={speakerLink}
-                              >
-                                { positionSpeakerDisplayName }
-                              </Link>
+                              {linksOpenExternalWebsite ? (
+                                <OpenExternalWebSite
+                                  linkIdAttribute={`desktop-LinkToEndorsingOrganization-${organizationWeVoteId}`}
+                                  body={(
+                                    <span>
+                                      { positionSpeakerDisplayName }
+                                    </span>
+                                  )}
+                                  target="_blank"
+                                  url={speakerLinkExternal}
+                                />
+                              ) : (
+                                <Link
+                                  id={`desktop-LinkToEndorsingOrganization-${organizationWeVoteId}`}
+                                  onClick={this.closeDrawer}
+                                  to={speakerLink}
+                                >
+                                  { positionSpeakerDisplayName }
+                                </Link>
+                              )}
                             </div>
                           </StickyPopover>
                         </Suspense>
@@ -403,30 +442,67 @@ class PositionItem extends Component {
               {searchResultsNode}
               <MobileItemHeader>
                 <MobileItemImage>
-                  <Link to={speakerLink} className="u-no-underline">
-                    { position.speaker_image_url_https_medium ? (
-                      <Suspense fallback={<></>}>
-                        <ImageHandler
-                          className="card-child__avatar"
-                          sizeClassName="icon-lg"
-                          imageUrl={position.speaker_image_url_https_medium}
-                        />
-                      </Suspense>
-                    ) :
-                      imagePlaceholder }
-                  </Link>
+                  {linksOpenExternalWebsite ? (
+                    <OpenExternalWebSite
+                      linkIdAttribute="mobileSpeakerImage"
+                      body={(
+                        <span>
+                          { position.speaker_image_url_https_medium ? (
+                            <Suspense fallback={<></>}>
+                              <ImageHandler
+                                className="card-child__avatar"
+                                sizeClassName="icon-lg"
+                                imageUrl={position.speaker_image_url_https_medium}
+                              />
+                            </Suspense>
+                          ) :
+                            imagePlaceholder }
+                        </span>
+                      )}
+                      className="u-no-underline"
+                      target="_blank"
+                      url={speakerLinkExternal}
+                    />
+                  ) : (
+                    <Link to={speakerLink} className="u-no-underline">
+                      { position.speaker_image_url_https_medium ? (
+                        <Suspense fallback={<></>}>
+                          <ImageHandler
+                            className="card-child__avatar"
+                            sizeClassName="icon-lg"
+                            imageUrl={position.speaker_image_url_https_medium}
+                          />
+                        </Suspense>
+                      ) :
+                        imagePlaceholder }
+                    </Link>
+                  )}
                 </MobileItemImage>
                 {/* Visible for most phones */}
                 <MobileItemNameIssuesContainer>
                   <MobileItemName>
-                    <Link
-                      className="u-break-word"
-                      id={`mobile-LinkToEndorsingOrganization-${organizationWeVoteId}`}
-                      onClick={this.closeOrganizationModal}
-                      to={speakerLink}
-                    >
-                      { positionSpeakerDisplayName }
-                    </Link>
+                    {linksOpenExternalWebsite ? (
+                      <OpenExternalWebSite
+                        linkIdAttribute={`desktop-LinkToEndorsingOrganization-${organizationWeVoteId}`}
+                        body={(
+                          <span>
+                            { positionSpeakerDisplayName }
+                          </span>
+                        )}
+                        className="u-break-word"
+                        target="_blank"
+                        url={speakerLinkExternal}
+                      />
+                    ) : (
+                      <Link
+                        className="u-break-word"
+                        id={`mobile-LinkToEndorsingOrganization-${organizationWeVoteId}`}
+                        onClick={this.closeDrawer}
+                        to={speakerLink}
+                      >
+                        { positionSpeakerDisplayName }
+                      </Link>
+                    )}
                   </MobileItemName>
                   <MobileItemIssues>
                     <IssuesByOrganizationDisplayList
@@ -439,9 +515,22 @@ class PositionItem extends Component {
                 {/* Visible on iPhone 5/se */}
                 <MobileSmallItemNameContainer>
                   <MobileItemName>
-                    <Link to={speakerLink} className="u-break-word">
-                      { positionSpeakerDisplayName }
-                    </Link>
+                    {linksOpenExternalWebsite ? (
+                      <OpenExternalWebSite
+                        body={(
+                          <span>
+                            { positionSpeakerDisplayName }
+                          </span>
+                        )}
+                        className="u-break-word"
+                        target="_blank"
+                        url={speakerLinkExternal}
+                      />
+                    ) : (
+                      <Link to={speakerLink} className="u-break-word">
+                        { positionSpeakerDisplayName }
+                      </Link>
+                    )}
                   </MobileItemName>
                 </MobileSmallItemNameContainer>
                 <MobileItemEndorsementContainer>
@@ -545,6 +634,7 @@ class PositionItem extends Component {
 }
 PositionItem.propTypes = {
   classes: PropTypes.object,
+  linksOpenExternalWebsite: PropTypes.bool,
   position: PropTypes.object.isRequired,
   searchResultsNode: PropTypes.object,
   showEntireStatementText: PropTypes.bool,
