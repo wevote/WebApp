@@ -161,7 +161,7 @@ class ElectionCountdown extends React.Component {
               <>
                 {daysUntilNextElection}
                 <SpaceBetweenNumberAndWord />
-                {daysUntilNextElection === '1' ? 'day' : 'days'}
+                {daysUntilNextElection === 1 ? 'day' : 'days'}
               </>
             ) : (
               <div style={{ margin: 26 }}>
@@ -240,7 +240,7 @@ class ElectionCountdown extends React.Component {
               <>
                 {daysUntilNextNationalElection}
                 <SpaceBetweenNumberAndWord />
-                {daysUntilNextNationalElection === '1' ? 'day' : 'days'}
+                {daysUntilNextNationalElection === 1 ? 'day' : 'days'}
               </>
             ) : (
               <div style={{ margin: 26 }}>

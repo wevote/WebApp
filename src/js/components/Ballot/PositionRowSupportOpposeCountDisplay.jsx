@@ -436,14 +436,12 @@ const styles = () => ({
   },
 });
 
-const ChooseWrapper = styled('div')(({ theme }) => (`
-  color: ${theme.colors.supportGreenRgb};
-`));
+const ChooseWrapper = styled('div')`
+`;
 
 const EndorsementCount = styled('div')`
-  color: #000;
-  line-height: 15px;
-  padding-top: 3px;
+  color: #ccc;
+  line-height: 20px;
 `;
 
 const EndorsementRow = styled('div')`
@@ -457,13 +455,13 @@ const EndorsementRow = styled('div')`
 const EndorsementsOuterWrapper = styled('div')`
   display: flex;
   justify-content: flex-start;
-  margin-top: 6px;
 `;
 
 const EndorsementsOverviewShowOrNotShow = styled('div')`
 `;
 
 const EndorsementsContainer = styled('div')`
+  border-bottom: 1px solid #dcdcdc;
   display: flex;
   justify-content: flex-start;
 `;
@@ -478,9 +476,8 @@ const EndorsementsOverviewSpacer = styled('div')`
   padding-right: 8px;
 `;
 
-const OpposeWrapper = styled('div')(({ theme }) => (`
-  color: ${theme.colors.opposeRedRgb};
-`));
+const OpposeWrapper = styled('div')`
+`;
 
 const Wrapper = styled('div')`
 `;

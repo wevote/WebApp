@@ -342,26 +342,23 @@ class OfficeItemCompressed extends Component {
                     </CandidateInfo>
                   </CandidateWrapper>
                   <PositionRowListOuterWrapper className="u-show-desktop-tablet">
-                    <SupportOpposeCountDisplayWrapper>
-                      <ScoreWrapper>
-                        Score
-                      </ScoreWrapper>
-                      <PositionWrapper>
-                        Endorsements
-                      </PositionWrapper>
-                    </SupportOpposeCountDisplayWrapper>
                     <OverflowContainer>
                       <PositionRowListInnerWrapper>
-                        <BallotItemSupportOpposeCountDisplayPositionWrapper>
-                          <Suspense fallback={<></>}>
-                            <BallotItemSupportOpposeCountDisplay
-                              ballotItemWeVoteId={oneCandidate.we_vote_id}
-                              goToBallotItem={this.onClickShowOrganizationModalWithPositions}
-                              hideEndorsementsOverview
-                              hideNumbersOfAllPositions
-                            />
-                          </Suspense>
-                        </BallotItemSupportOpposeCountDisplayPositionWrapper>
+                        <PositionRowListScoreColumn>
+                          <PositionRowListScoreHeader>
+                            Score
+                          </PositionRowListScoreHeader>
+                          <PositionRowListScoreSpacer>
+                            <Suspense fallback={<></>}>
+                              <BallotItemSupportOpposeCountDisplay
+                                ballotItemWeVoteId={oneCandidate.we_vote_id}
+                                goToBallotItem={this.onClickShowOrganizationModalWithPositions}
+                                hideEndorsementsOverview
+                                hideNumbersOfAllPositions
+                              />
+                            </Suspense>
+                          </PositionRowListScoreSpacer>
+                        </PositionRowListScoreColumn>
                         <PositionRowListOneWrapper>
                           <PositionRowList
                             ballotItemWeVoteId={oneCandidate.we_vote_id}
@@ -507,12 +504,6 @@ const styles = (theme) => ({
   },
 });
 
-const BallotItemSupportOpposeCountDisplayPositionWrapper = styled('div')`
-  cursor: pointer;
-  margin-top: 86px;
-  margin-right: 7px;
-`;
-
 const BallotItemSupportOpposeCountDisplayWrapper = styled('div')`
   cursor: pointer;
   float: right;
@@ -633,20 +624,21 @@ const PositionRowListOuterWrapper = styled('div')`
   margin-top: 10px;
 `;
 
-const PositionWrapper = styled('div')`
-  color: #ccc;
-  margin-left: 13px;
-  margin-right: 64px;
+const PositionRowListScoreColumn = styled('div')`
+  padding-right: 0;
 `;
 
-const ScoreWrapper = styled('div')`
-  color: #ccc;
-`;
-
-const SupportOpposeCountDisplayWrapper = styled('div')`
+const PositionRowListScoreHeader = styled('div')`
   border-bottom: 1px solid #dcdcdc;
-  display: flex;
-  justify-content: flex-start;
+  color: #ccc;
+  line-height: 20px;
+  margin-top: 0;
+`;
+
+const PositionRowListScoreSpacer = styled('div')`
+  cursor: pointer;
+  margin-top: 85px;
+  margin-right: 7px;
 `;
 
 const Title = styled('h2')(({ theme }) => (`
