@@ -318,8 +318,7 @@ const CandidateEndorsementsContainer = styled('div')`
 `;
 
 const CandidateEndorsementContainer = styled('div')(({ theme }) => (`
-  min-width: 50px;
-  width: 50px;
+  min-width: 58px;
   ${theme.breakpoints.down('xs')} {
     display: none;
   }
@@ -335,7 +334,6 @@ const CandidateEndorsementsWrapper = styled('div')`
 
 const ChooseOpposeInfoHeaderWrapper = styled('div')`
   border-left: 1px dotted #dcdcdc;
-  padding-bottom: 9px;
 `;
 
 const ShowMoreEndorsementsContainer = styled('div')(({ theme }) => (`

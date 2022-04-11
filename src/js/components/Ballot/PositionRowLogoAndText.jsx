@@ -185,13 +185,20 @@ class PositionRowLogoAndText extends Component {
                 imagePlaceholder }
             </OrganizationPhotoInnerWrapper>
           </OrganizationPhotoOuterWrapper>
+          <OrganizationNameWrapper
+            onClick={() => this.onClickShowPositionDrawer(ballotItemWeVoteId, organizationWeVoteId)}
+          >
+            <OrganizationName>
+              { position.speaker_display_name }
+            </OrganizationName>
+          </OrganizationNameWrapper>
           <HorizontalSpacer />
           <YesNoScoreTextWrapper>
             {supportOpposeInfo === 'InfoButNotPartOfScore' ? (
               <OrganizationInformationOnlyWrapper>
                 <OrganizationInformationOnlySquare>
                   <OrganizationInfoOnlyWordWrapper>
-                    Info
+                    &nbsp;
                   </OrganizationInfoOnlyWordWrapper>
                 </OrganizationInformationOnlySquare>
               </OrganizationInformationOnlyWrapper>
@@ -259,18 +266,35 @@ const OrganizationInformationOnlyWrapper = styled('div')`
   z-index: 1;
 `;
 
+const OrganizationName = styled('div')`
+  color: #ccc;
+  font-size: 12px;
+  line-height: 12px;
+  text-align: center;
+`;
+
+const OrganizationNameWrapper = styled('div')`
+  border-left: 1px dotted #dcdcdc;
+  cursor: pointer;
+  display: flex;
+  height: 25px;
+  justify-content: center;
+  overflow-x: hidden;
+  overflow-y: hidden;
+`;
+
 const OrganizationPhotoInnerWrapper = styled('div')`
   align-items: flex-start;
   display: flex;
-  height: 42px;
-  width: 42px;
+  height: 50px;
+  width: 50px;
   justify-content: center;
   & img, & svg, & path {
     border: 1px solid #ccc;
     border-radius: 29px;
-    width: 42px !important;
-    height: 42px !important;
-    max-width: 42px !important;
+    width: 48px !important;
+    height: 48px !important;
+    max-width: 48px !important;
     display: flex;
     align-items: flex-start;
   }
@@ -279,7 +303,9 @@ const OrganizationPhotoInnerWrapper = styled('div')`
 const OrganizationPhotoOuterWrapper = styled('div')`
   border-left: 1px dotted #dcdcdc;
   cursor: pointer;
-  padding: 4px 3px 6px 4px;
+  display: flex;
+  justify-content: center;
+  padding: 8px 3px 0 4px;
 `;
 
 const OrganizationScoreSpacer = styled('div')`

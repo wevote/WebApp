@@ -8,6 +8,7 @@ import withTheme from '@mui/styles/withTheme';
 import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
+import styled from 'styled-components';
 import OrganizationActions from '../../actions/OrganizationActions';
 import historyPush from '../../common/utils/historyPush';
 import { renderLog } from '../../common/utils/logging';
@@ -26,7 +27,7 @@ function AlreadyFollowingOrIgnoringButton (params) {
     <ButtonStyled
       aria-controls="simple-menu"
       aria-haspopup="true"
-      classes={{ root: classes.buttonRoot }}
+      classes={{ root: classes.followToggleCheckPlusRoot }}
       onClick={(event) => handleClick(event)}
     >
       <span>
@@ -79,10 +80,12 @@ function FollowButton (params) {
   } = params.params;
   return (
     <Button
-      classes={{ root: classes.buttonRoot }}
+      classes={{ root: classes.followToggleCheckPlusRoot }}
       id={`followToggleCheckPlush-${platformType}-${organizationWeVoteId}`}
-      type="button"
       onClick={() => followInstantly(followFunction, currentBallotIdInUrl, urlWithoutHash, ballotItemWeVoteId)}
+      size="small"
+      type="button"
+      variant="text"
     >
       <AddStyled />
     </Button>
@@ -356,7 +359,7 @@ class FollowToggleCheckPlus extends Component {
     };
 
     return (
-      <div>
+      <FollowToggleCheckPlusWrapper>
         {isFollowingFriendOrIgnoring ? (
           <>
             <AlreadyFollowingOrIgnoringButton handleClick={this.handleClick} params={lineParams} />
@@ -397,7 +400,7 @@ class FollowToggleCheckPlus extends Component {
             params={lineParams}
           />
         )}
-      </div>
+      </FollowToggleCheckPlusWrapper>
     );
   }
 }
@@ -420,8 +423,11 @@ FollowToggleCheckPlus.propTypes = {
 };
 
 const styles = () => ({
-  buttonRoot: {
+  followToggleCheckPlusRoot: {
     height: 40,
+    margin: '0 !important',
+    minWidth: 0,
+    padding: '0 !important',
     width: 32,
   },
 });
@@ -444,6 +450,9 @@ const ButtonStyled = muiStyled(Button)({
   height: 18,
   width: 18,
 });
+
+const FollowToggleCheckPlusWrapper = styled('div')`
+`;
 
 const NotInterestedStyled = muiStyled(NotInterested)({
   fill: 'rgb(13, 84, 111)',
