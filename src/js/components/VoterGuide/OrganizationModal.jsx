@@ -15,6 +15,7 @@ import apiCalming from '../../common/utils/apiCalming';
 import { hasIPhoneNotch } from '../../common/utils/cordovaUtils';
 import { normalizedHref } from '../../common/utils/hrefUtils';
 import { renderLog } from '../../common/utils/logging';
+import ShowMoreButtons from '../Ready/ShowMoreButtons';
 import BallotStore from '../../stores/BallotStore';
 import CandidateStore from '../../stores/CandidateStore';
 import IssueStore from '../../stores/IssueStore';
@@ -39,6 +40,7 @@ class OrganizationModal extends Component {
       modalOpen: this.props.modalOpen,
       positionListFromFriendsHasBeenRetrievedOnce: {},
       positionListHasBeenRetrievedOnce: {},
+      unFurlPositions: false,
       voterGuidesFromFriendsUpcomingHasBeenRetrievedOnce: {},
     };
 
@@ -205,6 +207,10 @@ class OrganizationModal extends Component {
     }
   }
 
+  showHiddenPositions = () => {
+    this.setState({ unFurlPositions: true });
+  }
+
   localPositionListHasBeenRetrievedOnce (ballotItemWeVoteId) {
     if (ballotItemWeVoteId) {
       const { positionListHasBeenRetrievedOnce } = this.state;
@@ -241,7 +247,7 @@ class OrganizationModal extends Component {
     // console.log(this.props.candidate_we_vote_id);
     renderLog('OrganizationModal');  // Set LOG_RENDER_EVENTS to log all renders
     const { ballotItemWeVoteId, classes, hideBallotItemInfo, hidePositions, organizationWeVoteId, params } = this.props;
-    const { allCachedPositionsForThisBallotItem, ballotItemDisplayName, isCandidate, isMeasure, modalOpen } = this.state;
+    const { allCachedPositionsForThisBallotItem, ballotItemDisplayName, isCandidate, isMeasure, modalOpen, unFurlPositions } = this.state;
 
     return (
       <Drawer
@@ -275,7 +281,6 @@ class OrganizationModal extends Component {
               linkToBallotItemPage
               organizationWeVoteId={organizationWeVoteId}
               showLargeImage
-              showTopCommentByBallotItem
               showOfficeName
               showPositionStatementActionBar
             />
@@ -286,30 +291,42 @@ class OrganizationModal extends Component {
             <MeasureItem forMoreInformationTextOff measureWeVoteId={ballotItemWeVoteId} />
           </Suspense>
         )}
-        { (!!(allCachedPositionsForThisBallotItem.length) && !hidePositions) && (
-          <Suspense fallback={<></>}>
-            <DelayedLoad showLoadingText waitBeforeShow={500}>
-              <>
-                <Suspense fallback={<></>}>
-                  <PositionList
-                    ballotItemDisplayName={ballotItemDisplayName || ''}
-                    incomingPositionList={allCachedPositionsForThisBallotItem}
-                    linksOpenExternalWebsite
-                    params={params}
-                    positionListExistsTitle={!hideBallotItemInfo && (
-                      <PositionListIntroductionText>
-                        <Info classes={{ root: classes.informationIcon }} />
-                        Opinions about this ballot item are below. Use these filters to sort:
-                      </PositionListIntroductionText>
-                    )}
-                  />
-                </Suspense>
-                <br />
-                <br />
-                <br />
-              </>
-            </DelayedLoad>
-          </Suspense>
+        { !!(allCachedPositionsForThisBallotItem.length) && (
+          <>
+            { !hidePositions || unFurlPositions ? (
+              <Suspense fallback={<></>}>
+                <DelayedLoad showLoadingText waitBeforeShow={500}>
+                  <>
+                    <Suspense fallback={<></>}>
+                      <PositionList
+                        ballotItemDisplayName={ballotItemDisplayName || ''}
+                        incomingPositionList={allCachedPositionsForThisBallotItem}
+                        linksOpenExternalWebsite
+                        params={params}
+                        positionListExistsTitle={!hideBallotItemInfo && (
+                          <PositionListIntroductionText>
+                            <Info classes={{ root: classes.informationIcon }} />
+                            Endorsements are below. Use these filters to sort:
+                          </PositionListIntroductionText>
+                        )}
+                      />
+                    </Suspense>
+                    <br />
+                    <br />
+                    <br />
+                  </>
+                </DelayedLoad>
+              </Suspense>
+            ) : (
+              <ShowMoreWrapper>
+                <ShowMoreButtons
+                  showMoreId="showMorePositions"
+                  showMoreButtonsLink={this.showHiddenPositions}
+                  showMoreCustomText="show endorsements"
+                />
+              </ShowMoreWrapper>
+            )}
+          </>
         )}
       </Drawer>
     );
@@ -410,6 +427,10 @@ const styles = () => ({
 
 const PositionListIntroductionText = styled('div')`
   color: #999;
+`;
+
+const ShowMoreWrapper = styled('div')`
+  margin-top: 64px;
 `;
 
 export default withTheme(withStyles(styles)(OrganizationModal));

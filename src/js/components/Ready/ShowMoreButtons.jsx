@@ -10,13 +10,13 @@ import { renderLog } from '../../common/utils/logging';
 class ShowMoreButtons extends React.Component {
   render () {
     renderLog('ShowMoreButtons');  // Set LOG_RENDER_EVENTS to log all renders
-    const { classes, showMoreId, showMoreButtonsLink, showMoreButtonWasClicked } = this.props;
+    const { classes, showLessCustomText, showMoreButtonsLink, showMoreButtonWasClicked, showMoreCustomText, showMoreId } = this.props;
     let showMoreText;
 
     if (showMoreButtonWasClicked) {
-      showMoreText = 'show less';
+      showMoreText = showLessCustomText || 'show less';
     } else {
-      showMoreText = 'show more';
+      showMoreText = showMoreCustomText || 'show more';
     }
 
     return (
@@ -40,9 +40,11 @@ class ShowMoreButtons extends React.Component {
 }
 ShowMoreButtons.propTypes = {
   classes: PropTypes.object,
+  showLessCustomText: PropTypes.string,
   showMoreId: PropTypes.string.isRequired,
   showMoreButtonsLink: PropTypes.func.isRequired,
   showMoreButtonWasClicked: PropTypes.bool,
+  showMoreCustomText: PropTypes.string,
 };
 
 const styles = (theme) => ({

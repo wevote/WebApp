@@ -1,7 +1,7 @@
 import withStyles from '@mui/styles/withStyles';
 import withTheme from '@mui/styles/withTheme';
 import PropTypes from 'prop-types';
-import React, { Component } from 'react';
+import React, { Component, Suspense } from 'react';
 import styled from 'styled-components';
 import CandidateStore from '../../stores/CandidateStore';
 import MeasureStore from '../../stores/MeasureStore';
@@ -9,13 +9,16 @@ import { renderLog } from '../../common/utils/logging';
 import normalizedImagePath from '../../common/utils/normalizedImagePath';
 import SvgImage from '../../common/components/Widgets/SvgImage';
 
+const SignInModalSimple = React.lazy(() => import(/* webpackChunkName: 'SignInModalSimple' */ '../Settings/SignInModalSimple'));
 
 class PositionRowEmpty extends Component {
   constructor (props) {
     super(props);
     this.state = {
       allCachedPositionsForThisBallotItemLength: 0,
+      showSignInModal: false,
     };
+    this.toggleShowSignInModal = this.toggleShowSignInModal.bind(this);
   }
 
   componentDidMount () {
@@ -74,23 +77,48 @@ class PositionRowEmpty extends Component {
     }
   }
 
+  toggleShowSignInModal () {
+    const { showSignInModal } = this.state;
+    this.setState({
+      showSignInModal: !showSignInModal,
+    });
+  }
+
   render () {
     renderLog('PositionRowEmpty');  // Set LOG_RENDER_EVENTS to log all renders
     const { ballotItemWeVoteId } = this.props;
-    const { allCachedPositionsForThisBallotItemLength } = this.state;
-    if (allCachedPositionsForThisBallotItemLength > 0) {
-      return null;
-    }
+    const { allCachedPositionsForThisBallotItemLength, showSignInModal } = this.state;
     const avatar = normalizedImagePath('../../img/global/svg-icons/avatar-generic.svg');
     const imagePlaceholder = (
       <SvgImage imageName={avatar} />
     );
     return (
       <OuterWrapper>
+        { showSignInModal && (
+          <Suspense fallback={<></>}>
+            <SignInModalSimple
+              settingsAccountIsSignedInSubTitle={(
+                <>
+                  Which friends would you like to ask?
+                </>
+              )}
+              settingsAccountIsSignedInTitle={(
+                <>
+                  Choose friends
+                </>
+              )}
+              settingsAccountSignInTitle="Sign in to ask your friends."
+              settingsAccountSignInSubTitle=""
+              signedInTitle={<></>}
+              signedOutTitle={<></>}
+              toggleOnClose={this.toggleShowSignInModal}
+            />
+          </Suspense>
+        )}
         <NoOneChoosesWrapper>
-          &nbsp;
+          Ask friends
         </NoOneChoosesWrapper>
-        <CandidateEndorsementsContainer key={`PositionRowEmpty-${ballotItemWeVoteId}`}>
+        <CandidateEndorsementsContainer id={`PositionRowEmpty-${ballotItemWeVoteId}`} onClick={this.toggleShowSignInModal}>
           <RowItemWrapper>
             <OrganizationPhotoOuterWrapper>
               <OrganizationPhotoInnerWrapper>
@@ -99,15 +127,17 @@ class PositionRowEmpty extends Component {
             </OrganizationPhotoOuterWrapper>
             <HorizontalSpacer />
             <YesNoScoreTextWrapper>
-              <OrganizationSupportWrapper>
-                <OrganizationSupportSquare>
-                  <AddScoreWrapper className="u-link-color-on-hover">
-                    <ToScoreLabel1>
-                      No endorsements found for this candidate. Ask your friends how they are going to vote.
-                    </ToScoreLabel1>
-                  </AddScoreWrapper>
-                </OrganizationSupportSquare>
-              </OrganizationSupportWrapper>
+              <AskFriendsText className="u-link-color-on-hover">
+                {allCachedPositionsForThisBallotItemLength === 0 ? (
+                  <>
+                    No endorsements found for this candidate. Ask friends how they are going to vote.
+                  </>
+                ) : (
+                  <>
+                    Ask your friends how they are going to vote.
+                  </>
+                )}
+              </AskFriendsText>
             </YesNoScoreTextWrapper>
           </RowItemWrapper>
         </CandidateEndorsementsContainer>
@@ -125,30 +155,23 @@ const styles = () => ({
   },
 });
 
-const AddScoreWrapper = styled('div')`
-  align-items: center;
-  color: #ccc;
-  display: flex;
-  flex-flow: column;
-  font-weight: normal;
-  justify-content: flex-start;
-  padding-top: 4px;
-`;
-
 const CandidateEndorsementsContainer = styled('div')`
+  cursor: pointer;
   display: flex;
   justify-content: flex-start;
 `;
 
 const NoOneChoosesWrapper = styled('div')`
   border-bottom: 1px solid #dcdcdc;
+  color: #ccc;
   line-height: 20px;
+  padding-left: 4px;
 `;
 
 const OuterWrapper = styled('div')`
   border-left: 1px dotted #dcdcdc;
   height: 100%;
-  width: 64px;
+  width: 124px;
 `;
 
 const HorizontalSpacer = styled('div')`
@@ -179,25 +202,6 @@ const OrganizationPhotoOuterWrapper = styled('div')`
   width: 128px;
 `;
 
-const OrganizationSupportSquare = styled('div')(({ theme }) => (`
-  align-items: center;
-  background: white;
-  color: ${theme.colors.supportGreenRgb};
-  cursor: pointer;
-  display: flex;
-  flex-flow: column;
-  flex-wrap: wrap;
-  font-size: 16px;
-  font-weight: bold;
-  justify-content: flex-start;
-  width: 40px;
-`));
-
-const OrganizationSupportWrapper = styled('div')`
-  position: relative;
-  z-index: 1;
-`;
-
 const RowItemWrapper = styled('div')`
   align-items: start;
   display: flex;
@@ -205,14 +209,20 @@ const RowItemWrapper = styled('div')`
   justify-content: center;
 `;
 
-const ToScoreLabel1 = styled('div')`
+const AskFriendsText = styled('div')`
   font-size: 14px;
+  font-weight: normal;
   margin-top: 0;
 `;
 
 const YesNoScoreTextWrapper = styled('div')`
+  align-items: center;
+  display: flex;
+  flex-flow: column;
+  flex-wrap: wrap;
+  justify-content: flex-start;
   padding: 3px 3px 4px 4px;
-  width: 64px;
+  width: 124px;
 `;
 
 export default withTheme(withStyles(styles)(PositionRowEmpty));

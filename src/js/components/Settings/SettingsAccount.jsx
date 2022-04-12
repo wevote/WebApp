@@ -378,7 +378,7 @@ export default class SettingsAccount extends Component {
         yourAccountExplanation = 'By adding your Twitter account to your We Vote profile, you get access to the voter guides of everyone you follow.';
       } else if (voterIsSignedInTwitter && !voterIsSignedInFacebook && isOnFacebookSupportedDomainUrl) {
         yourAccountTitle = 'Have Facebook Too?';
-        yourAccountExplanation = 'By adding Facebook to your We Vote profile, it is easier to invite friends.';
+        yourAccountExplanation = 'By adding Facebook to your We Vote profile, it is easier to find friends.';
       }
     }
 

@@ -256,6 +256,15 @@ class Ready extends Component {
                 <div className="u-show-mobile">
                   <ReadyInformationDisclaimer top />
                 </div>
+                {(voterIsSignedIn && electionDataExistsForUpcomingElection) && (
+                  <DelayedLoad waitBeforeShow={100}>
+                    <ReadyTaskBallotWrapper>
+                      <ReadyTaskBallot
+                        arrowsOn
+                      />
+                    </ReadyTaskBallotWrapper>
+                  </DelayedLoad>
+                )}
                 <Suspense fallback={<></>}>
                   <DelayedLoad waitBeforeShow={500}>
                     <PrepareForElectionOuterWrapper>
@@ -277,13 +286,6 @@ class Ready extends Component {
                   <Suspense fallback={<></>}>
                     <FirstAndLastNameRequiredAlert />
                   </Suspense>
-                )}
-                {(voterIsSignedIn && electionDataExistsForUpcomingElection) && (
-                  <DelayedLoad waitBeforeShow={700}>
-                    <ReadyTaskBallot
-                      arrowsOn
-                    />
-                  </DelayedLoad>
                 )}
                 {(nextReleaseFeaturesEnabled && !futureFeaturesDisabled) && (
                   <ReadyTaskRegister
@@ -385,6 +387,10 @@ const ReadyIntroductionMobileWrapper = styled('div')`
 `;
 
 const ReadyPageContainer = styled('div')`
+`;
+
+const ReadyTaskBallotWrapper = styled('div')`
+  margin-bottom: 68px;
 `;
 
 const Title = styled('h2')(({ theme }) => (`
