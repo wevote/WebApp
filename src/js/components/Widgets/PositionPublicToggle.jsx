@@ -1,7 +1,7 @@
 import { FormControl, FormControlLabel, Radio } from '@mui/material';
 import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
-import React, { Component } from 'react';
+import React, { Component, Suspense } from 'react';
 import styled from 'styled-components';
 import SupportActions from '../../actions/SupportActions';
 import { isAndroidSizeMD } from '../../common/utils/cordovaUtils'; // hasIPhoneNotch,
@@ -10,7 +10,8 @@ import { renderLog } from '../../common/utils/logging';
 import SupportStore from '../../stores/SupportStore';
 import VoterStore from '../../stores/VoterStore';
 import { openSnackbar } from './SnackNotifier';
-import SignInModalSimple from '../Settings/SignInModalSimple';
+
+const SignInModalSimple = React.lazy(() => import(/* webpackChunkName: 'SignInModalSimple' */ '../Settings/SignInModalSimple'));
 
 class PositionPublicToggle extends Component {
   constructor (props) {
@@ -208,19 +209,21 @@ class PositionPublicToggle extends Component {
     return (
       <PositionPublicToggleOuterWrapper className={this.props.className}>
         { showPositionPublicHelpModal && (
-          <SignInModalSimple
-            settingsAccountIsSignedInSubTitle={<></>}
-            settingsAccountIsSignedInTitle={(
-              <>
-                Your endorsement is now visible to the public. Click the &quot;Friends&quot; toggle to show to We Vote friends only.
-              </>
-            )}
-            settingsAccountSignInTitle="Sign in to make your endorsements public."
-            settingsAccountSignInSubTitle=""
-            signedInTitle={<>Public</>}
-            signedOutTitle={<>Show to Public</>}
-            toggleOnClose={this.togglePositionPublicHelpModal}
-          />
+          <Suspense fallback={<></>}>
+            <SignInModalSimple
+              settingsAccountIsSignedInSubTitle={<></>}
+              settingsAccountIsSignedInTitle={(
+                <>
+                  Your endorsement is now visible to the public. Click the &quot;Friends&quot; toggle to show to We Vote friends only.
+                </>
+              )}
+              settingsAccountSignInTitle="Sign in to make your endorsements public."
+              settingsAccountSignInSubTitle=""
+              signedInTitle={<>Public</>}
+              signedOutTitle={<>Show to Public</>}
+              toggleOnClose={this.togglePositionPublicHelpModal}
+            />
+          </Suspense>
         )}
         <PositionPublicToggleInnerWrapper onKeyDown={onKeyDown}>
           <FormControl classes={{ root: classes.formControl }}>

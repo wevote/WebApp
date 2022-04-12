@@ -245,6 +245,7 @@ export function sentenceCaseString (incomingString) {
   return finalString;
 }
 
+// TODO: Switch all uses of this function over to /src/js/common/utils/shortenText
 export function shortenText (incomingString, maximumLength) {
   if (!incomingString || incomingString === '') {
     return '';
@@ -261,6 +262,7 @@ export function shortenText (incomingString, maximumLength) {
   return incomingString.length < maximumLengthInteger ? incomingString.trim() : `${shortenedText.trim()}...`;
 }
 
+// TODO: Switch all uses of this function over to /src/js/common/utils/stringContains
 export function stringContains (needle, stringHaystack) {
   // console.log("stringContains, needle:", needle, ", haystack: ", stringHaystack);
   if (stringHaystack) {

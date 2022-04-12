@@ -546,7 +546,7 @@ class CandidateItem extends Component {
                   <Suspense fallback={<></>}>
                     <ReadMore
                       textToDisplay={candidateText}
-                      numberOfLines={2}
+                      numberOfLines={3}
                     />
                   </Suspense>
                 </CandidateTextWrapper>

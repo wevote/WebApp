@@ -224,6 +224,9 @@ class PositionItem extends Component {
         />
       );
 
+      const voterLinkedOrganizationWeVoteId = VoterStore.getLinkedOrganizationWeVoteId();
+      const lookingAtOwnPosition = (voterLinkedOrganizationWeVoteId === position.speaker_we_vote_id);
+
       return (
         <>
           {searchResultsNode}
@@ -364,7 +367,15 @@ class PositionItem extends Component {
                       <DesktopItemSupportOrOppose>
                         {position.is_support ? (
                           <>
-                            endorses
+                            {lookingAtOwnPosition ? (
+                              <>
+                                endorse
+                              </>
+                            ) : (
+                              <>
+                                endorses
+                              </>
+                            )}
                             {' '}
                             {position.ballot_item_display_name}
                           </>
@@ -372,7 +383,15 @@ class PositionItem extends Component {
                           <>
                             {position.is_oppose && (
                               <>
-                                opposes
+                                {lookingAtOwnPosition ? (
+                                  <>
+                                    oppose
+                                  </>
+                                ) : (
+                                  <>
+                                    opposes
+                                  </>
+                                )}
                                 {' '}
                                 {position.ballot_item_display_name}
                               </>

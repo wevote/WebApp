@@ -1369,7 +1369,7 @@ const ScoreNumberZeroAfterDecision = styled('div')`
 
 const ScoreLabelAfterDecisionNoScore = styled('div')`
   font-size: 8px;
-  margin-top: -5px;
+  margin-top: -7px;
 `;
 
 const ScoreNumberWrapper = styled('div')`

@@ -8,8 +8,11 @@ import FriendStore from '../../stores/FriendStore';
 import IssueStore from '../../stores/IssueStore';
 import OrganizationStore from '../../stores/OrganizationStore';
 import VoterGuideStore from '../../stores/VoterGuideStore';
+import VoterStore from '../../stores/VoterStore';
 import normalizedImagePath from '../../common/utils/normalizedImagePath';
 import { renderLog } from '../../common/utils/logging';
+import shortenText from '../../common/utils/shortenText';
+import stringContains from '../../common/utils/stringContains';
 import { isSpeakerTypeOrganization } from '../../utils/organization-functions';
 import { isOrganizationInVotersNetwork } from '../../utils/positionFunctions';
 import SvgImage from '../../common/components/Widgets/SvgImage';
@@ -35,22 +38,6 @@ class PositionRowLogoAndText extends Component {
     this.issueStoreListener = IssueStore.addListener(this.onIssueStoreChange.bind(this));
     this.organizationStoreListener = OrganizationStore.addListener(this.onOrganizationStoreChange.bind(this));
     this.voterGuideStoreListener = VoterGuideStore.addListener(this.onVoterGuideStoreChange.bind(this));
-
-    // // We want to make sure we have all the position information so that comments show up
-    // if (ballotItemWeVoteId) {
-    //   const voterGuidesForThisBallotItem = VoterGuideStore.getVoterGuidesToFollowForBallotItemId(ballotItemWeVoteId);
-    //
-    //   if (voterGuidesForThisBallotItem) {
-    //     voterGuidesForThisBallotItem.forEach((oneVoterGuide) => {
-    //       // console.log('oneVoterGuide: ', oneVoterGuide);
-    //       if (organizationWeVoteId === oneVoterGuide.organization_we_vote_id) {  // Request position list for the organization of this position
-    //         if (!OrganizationStore.positionListForOpinionMakerHasBeenRetrievedOnce(oneVoterGuide.google_civic_election_id, oneVoterGuide.organization_we_vote_id)) {
-    //           OrganizationActions.positionListForOpinionMaker(oneVoterGuide.organization_we_vote_id, false, true, oneVoterGuide.google_civic_election_id);
-    //         }
-    //       }
-    //     });
-    //   }
-    // }
   }
 
   componentWillUnmount () {
@@ -164,6 +151,15 @@ class PositionRowLogoAndText extends Component {
 
     const showPosition = true;
     const nothingToDisplay = null;
+    let speakerDisplayName = position.speaker_display_name;
+    const voterLinkedOrganizationWeVoteId = VoterStore.getLinkedOrganizationWeVoteId();
+    if (voterLinkedOrganizationWeVoteId === position.speaker_we_vote_id) {
+      speakerDisplayName = 'You';
+    } else if (stringContains('Voter-', speakerDisplayName)) {
+      speakerDisplayName = '';
+    } else {
+      speakerDisplayName = shortenText(speakerDisplayName, 18);
+    }
 
     if (showPosition) {
       return (
@@ -189,7 +185,7 @@ class PositionRowLogoAndText extends Component {
             onClick={() => this.onClickShowPositionDrawer(ballotItemWeVoteId, organizationWeVoteId)}
           >
             <OrganizationName>
-              { position.speaker_display_name }
+              { speakerDisplayName }
             </OrganizationName>
           </OrganizationNameWrapper>
           <HorizontalSpacer />

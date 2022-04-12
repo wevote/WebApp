@@ -9,11 +9,11 @@ import { isCordova } from '../../common/utils/isCordovaOrWebApp';
 import { renderLog } from '../../common/utils/logging';
 import VoterGuideStore from '../../stores/VoterGuideStore';
 import { convertNameToSlug } from '../../utils/textFormat';
-import SignInModalSimple from '../Settings/SignInModalSimple';
 import IssueFollowToggleButton from './IssueFollowToggleButton';
 import IssueImageDisplay from './IssueImageDisplay';
 
 const ReadMore = React.lazy(() => import(/* webpackChunkName: 'ReadMore' */ '../../common/components/Widgets/ReadMore'));
+const SignInModalSimple = React.lazy(() => import(/* webpackChunkName: 'SignInModalSimple' */ '../Settings/SignInModalSimple'));
 
 const NUMBER_OF_LINKED_ORGANIZATION_IMAGES_TO_SHOW = 3; // Maximum available coming from issueDescriptionsRetrieve is currently 5
 
@@ -157,31 +157,33 @@ class IssueCard extends Component {
         style={isCordova() ? { margin: 'unset' } : {}}   // stops horizontal scrolling
       >
         { showSignInModal && (
-          <SignInModalSimple
-            settingsAccountIsSignedInSubTitle={(
-              <>
-                The endorsements of the organizations and public figures who advocate for
-                {' '}
-                {issueDisplayName}
-                {' '}
-                will be added to your Personalized Scores on your ballot.
-              </>
-            )}
-            settingsAccountIsSignedInTitle={(
-              <>
-                You are now following
-                {' '}
-                <strong>
+          <Suspense fallback={<></>}>
+            <SignInModalSimple
+              settingsAccountIsSignedInSubTitle={(
+                <>
+                  The endorsements of the organizations and public figures who advocate for
+                  {' '}
                   {issueDisplayName}
-                </strong>
-              </>
-            )}
-            settingsAccountSignInTitle="Sign in to save your values."
-            settingsAccountSignInSubTitle=""
-            signedInTitle={<></>}
-            signedOutTitle={<>Save your values</>}
-            toggleOnClose={this.toggleShowSignInModal}
-          />
+                  {' '}
+                  will be added to your Personalized Scores on your ballot.
+                </>
+              )}
+              settingsAccountIsSignedInTitle={(
+                <>
+                  You are now following
+                  {' '}
+                  <strong>
+                    {issueDisplayName}
+                  </strong>
+                </>
+              )}
+              settingsAccountSignInTitle="Sign in to save your values."
+              settingsAccountSignInSubTitle=""
+              signedInTitle={<></>}
+              signedOutTitle={<></>}
+              toggleOnClose={this.toggleShowSignInModal}
+            />
+          </Suspense>
         )}
         <Flex condensed={!!this.props.condensed} followToggleOnItsOwnLine={!!followToggleOnItsOwnLine}>
           <FlexNameAndIcon condensed={!!this.props.condensed}>

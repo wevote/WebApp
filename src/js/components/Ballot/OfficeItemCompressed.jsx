@@ -377,7 +377,6 @@ class OfficeItemCompressed extends Component {
                             showInfoOnly
                           />
                         </PositionRowListOneWrapper>
-                        {/* Displays column if there aren't any public positions */}
                         <PositionRowListEmptyWrapper>
                           <PositionRowEmpty
                             ballotItemWeVoteId={oneCandidate.we_vote_id}
