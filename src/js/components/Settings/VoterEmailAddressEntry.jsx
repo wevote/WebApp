@@ -1,22 +1,24 @@
 import { Delete, Mail } from '@mui/icons-material';
 import { Button, InputBase, Paper } from '@mui/material';
-import styled from 'styled-components';
+import Alert from '@mui/material/Alert';
 import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
-import Alert from 'react-bootstrap/Alert';
+import styled from 'styled-components';
 import VoterActions from '../../actions/VoterActions';
 import LoadingWheel from '../../common/components/Widgets/LoadingWheel';
-import { blurTextFieldAndroid, focusTextFieldAndroid } from '../../common/utils/cordovaUtils';
+import {
+  blurTextFieldAndroid,
+  focusTextFieldAndroid,
+} from '../../common/utils/cordovaUtils';
 import { isCordova, isWebApp } from '../../common/utils/isCordovaOrWebApp';
 import isMobileScreenSize from '../../common/utils/isMobileScreenSize';
 import { renderLog } from '../../common/utils/logging';
 import VoterStore from '../../stores/VoterStore';
-import signInModalGlobalState from '../Widgets/signInModalGlobalState';
 import SettingsVerifySecretCode from './SettingsVerifySecretCode';
+import signInModalGlobalState from '../Widgets/signInModalGlobalState';
 
 const OpenExternalWebSite = React.lazy(() => import(/* webpackChunkName: 'OpenExternalWebSite' */ '../../common/components/Widgets/OpenExternalWebSite'));
-
 
 /* global $ */
 
@@ -328,7 +330,7 @@ class VoterEmailAddressEntry extends Component {
         (emailAddressStatus.email_address_already_owned_by_this_voter && !emailAddressStatus.email_address_deleted && !emailAddressStatus.make_primary_email && !secretCodeSystemLocked) ||
         (emailAddressStatus.email_address_already_owned_by_other_voter && !signInLinkOrCodeSent && !secretCodeSystemLocked) ||
         secretCodeSystemLocked ? (
-          <Alert variant="warning">
+          <Alert severity="warning">
             { emailAddressStatus.email_address_not_valid && (
               <div>Please enter a valid email address.</div>
             )}
@@ -363,7 +365,7 @@ class VoterEmailAddressEntry extends Component {
         emailAddressStatus.link_to_sign_in_email_sent ||
         (emailAddressStatus.make_primary_email && (emailAddressStatus.email_address_created || emailAddressStatus.email_address_found || emailAddressStatus.sign_in_code_email_sent) && !secretCodeSystemLocked) ||
         emailAddressStatus.sign_in_code_email_sent ? (
-          <Alert variant="success">
+          <Alert severity="success">
             { emailAddressStatus.email_address_created &&
             !emailAddressStatus.verification_email_sent ? <span>Your email address was saved. </span> : null }
             { emailAddressStatus.email_address_deleted ? <span>Your email address was deleted. </span> : null }
@@ -388,13 +390,11 @@ class VoterEmailAddressEntry extends Component {
 
     const enterEmailHtml = hideSignInWithEmailForm ? null : (
       <div>
-        <div className="u-stack--sm u-tl">
-          <strong>
-            {enterEmailTitle}
-          </strong>
+        <SignInSectionText>
+          {enterEmailTitle}
           {' '}
           {/* enterEmailExplanation */}
-        </div>
+        </SignInSectionText>
         <form className="form-inline">
           <Paper className={classes.root} elevation={1}>
             <Mail />
@@ -638,16 +638,23 @@ const CancelButtonContainer = styled('div')`
   width: fit-content;
 `;
 
-const Wrapper = styled('div', {
-  shouldForwardProp: (prop) => !['isWeb'].includes(prop),
-})(({ isWeb }) => (`
-  margin-top: ${isWeb ? '32px;' : '0'};
-`));
-
 const EmailSection = styled('div', {
   shouldForwardProp: (prop) => !['isWeb'].includes(prop),
 })(({ isWeb }) => (`
   margin-top: ${isWeb ? '18px;' : '0'};
+`));
+
+const SignInSectionText = styled('div')`
+  display: block;
+  text-align: left;
+  font-weight: 500;
+  margin-bottom: 6px;
+`;
+
+const Wrapper = styled('div', {
+  shouldForwardProp: (prop) => !['isWeb'].includes(prop),
+})(({ isWeb }) => (`
+  margin-top: ${isWeb ? '32px;' : '0'};
 `));
 
 export default withStyles(styles)(VoterEmailAddressEntry);

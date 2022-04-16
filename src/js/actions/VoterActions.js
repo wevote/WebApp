@@ -139,6 +139,18 @@ export default {
     });
   },
 
+  voterCompleteYourProfileSave (firstName = '', firstNameChanged = false, lastName = '', lastNameChanged = false, voterPhotoQueuedToSave = '', voterPhotoQueuedToSaveSet = false) {
+    Dispatcher.loadEndpoint('voterUpdate',
+      {
+        first_name: firstName,
+        first_name_changed: firstNameChanged,
+        last_name: lastName,
+        last_name_changed: lastNameChanged,
+        voter_photo_from_file_reader: voterPhotoQueuedToSave,
+        voter_photo_changed: voterPhotoQueuedToSaveSet,
+      });
+  },
+
   voterEmailAddressRetrieve () {
     Dispatcher.loadEndpoint('voterEmailAddressRetrieve', {});
   },
@@ -172,6 +184,10 @@ export default {
     });
   },
 
+  voterEmailQueuedToSave (voterEmail) {
+    Dispatcher.dispatch({ type: 'voterEmailQueuedToSave', payload: voterEmail });
+  },
+
   voterExternalIdSave (externalVoterId, membershipOrganizationWeVoteId) {
     Dispatcher.loadEndpoint('voterUpdate',
       {
@@ -183,6 +199,10 @@ export default {
   voterFacebookSaveToCurrentAccount () {
     Dispatcher.loadEndpoint('voterFacebookSaveToCurrentAccount', {
     });
+  },
+
+  voterFirstNameQueuedToSave (firstName) {
+    Dispatcher.dispatch({ type: 'voterFirstNameQueuedToSave', payload: firstName });
   },
 
   // Tell the server to only save this name if a name does not currently exist
@@ -197,6 +217,10 @@ export default {
         full_name_changed: fullName && fullName !== '',
         name_save_only_if_no_existing_names: true,
       });
+  },
+
+  voterLastNameQueuedToSave (lastName) {
+    Dispatcher.dispatch({ type: 'voterLastNameQueuedToSave', payload: lastName });
   },
 
   voterMergeTwoAccountsByEmailKey (emailSecretKey) {

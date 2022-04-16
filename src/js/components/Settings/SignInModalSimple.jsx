@@ -43,7 +43,13 @@ class SignInModalSimple extends Component {
     const { is_signed_in: isSignedIn } = voter;
     this.setState({
       isSignedIn,
-    });
+    }, () => this.uponSuccessfulSignInLocal(isSignedIn));
+  }
+
+  uponSuccessfulSignInLocal = (isSignedIn) => {
+    if (this.props.uponSuccessfulSignIn && isSignedIn) {
+      this.props.uponSuccessfulSignIn();
+    }
   }
 
   toggleSignInModalSimple () {
@@ -136,6 +142,7 @@ SignInModalSimple.propTypes = {
   signedInTitle: PropTypes.node,
   signedOutTitle: PropTypes.node,
   toggleOnClose: PropTypes.func,
+  uponSuccessfulSignIn: PropTypes.func,
 };
 
 const styles = (theme) => ({

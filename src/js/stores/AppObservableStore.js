@@ -66,7 +66,9 @@ const nonFluxState = {
   siteOwnerOrganizationWeVoteId: '',
   storeSignInStartFullUrl: false,
   viewingOrganizationVoterGuide: false,
+  voterBallotItemsRetrieveHasBeenCalled: false,
   voterExternalIdHasBeenSavedOnce: {}, // Dict with externalVoterId and membershipOrganizationWeVoteId as keys, and true/false as value
+  voterFirstRetrieveInitiated: false,
 };
 
 
@@ -256,6 +258,11 @@ export default {
     messageService.sendMessage('state updated showTwitterLandingPage');
   },
 
+  setShowValuesIntroModal (show) {
+    nonFluxState.showValuesIntroModal = show;
+    messageService.sendMessage('state updated showValuesIntroModal');
+  },
+
   setShowVoterPlanModal (show) {
     // The chosenPaidAccount values are: free, professional, enterprise
     nonFluxState.showVoterPlanModal = show;
@@ -267,9 +274,9 @@ export default {
     messageService.sendMessage('state updated signInStateChanged');
   },
 
-  setShowValuesIntroModal (show) {
-    nonFluxState.showValuesIntroModal = show;
-    messageService.sendMessage('state updated showValuesIntroModal');
+  setSignInStartFullUrl () {
+    nonFluxState.storeSignInStartFullUrl = true;
+    messageService.sendMessage('state updated storeSignInStartFullUrl');
   },
 
   setViewingOrganizationVoterGuide (isViewing) {
@@ -287,9 +294,9 @@ export default {
     messageService.sendMessage('state updated voterBallotItemsRetrieveHasBeenCalled');
   },
 
-  setSignInStartFullUrl () {
-    nonFluxState.storeSignInStartFullUrl = true;
-    messageService.sendMessage('state updated storeSignInStartFullUrl');
+  setVoterFirstRetrieveInitiated (voterFirstRetrieveInitiated) {
+    nonFluxState.voterFirstRetrieveInitiated = voterFirstRetrieveInitiated;
+    messageService.sendMessage('state updated voterFirstRetrieveInitiated');
   },
 
   unsetStoreSignInStartFullUrl () {
@@ -627,5 +634,9 @@ export default {
 
   voterBallotItemsRetrieveHasBeenCalled () {
     return nonFluxState.voterBallotItemsRetrieveHasBeenCalled;
+  },
+
+  voterFirstRetrieveInitiated () {
+    return nonFluxState.voterFirstRetrieveInitiated;
   },
 };

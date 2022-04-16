@@ -23,6 +23,7 @@ import RouterV5SendMatch from './js/utils/RouterV5SendMatch';
 
 const About = React.lazy(() => import(/* webpackChunkName: 'About' */ './js/pages/More/About'));
 const AbsenteeBallot = React.lazy(() => import(/* webpackChunkName: 'AbsenteeBallot' */ './js/pages/More/AbsenteeBallot'));
+const AccountSetupRoot = React.lazy(() => import(/* webpackChunkName: 'SetUpAccountRoot' */ './js/pages/SetUpAccount/SetUpAccountRoot'));
 const AddCandidateForExtension = React.lazy(() => import(/* webpackChunkName: 'AddCandidateForExtension' */ './js/pages/Ballot/AddCandidateForExtension'));
 const AppleSignInProcess = React.lazy(() => import(/* webpackChunkName: 'AppleSignInProcess' */ './js/pages/Process/AppleSignInProcess'));
 const Attributions = React.lazy(() => import(/* webpackChunkName: 'Attributions' */ './js/pages/More/Attributions'));
@@ -44,7 +45,6 @@ const FriendInvitationByEmailVerifyProcess = React.lazy(() => import(/* webpackC
 const FriendInvitationOnboarding = React.lazy(() => import(/* webpackChunkName: 'FriendInvitationOnboarding' */ './js/pages/Intro/FriendInvitationOnboarding'));
 const Friends = React.lazy(() => import(/* webpackChunkName: 'Friends' */ './js/pages/Friends/Friends'));
 const GetStarted2019 = React.lazy(() => import(/* webpackChunkName: 'GetStarted' */ './js/pages/Intro/GetStarted2019'));
-const Start = React.lazy(() => import(/* webpackChunkName: 'Start' */ './js/pages/Startup/GetStarted'));
 const HamburgerMenu = React.lazy(() => import(/* webpackChunkName: 'HamburgerMenu' */ './js/pages/Settings/HamburgerMenu'));
 const HowItWorks = React.lazy(() => import(/* webpackChunkName: 'HowItWorks' */ './js/pages/HowItWorks'));
 const HowWeVoteHelps = React.lazy(() => import(/* webpackChunkName: 'HowWeVoteHelps' */ './js/pages/More/HowWeVoteHelps'));
@@ -78,6 +78,7 @@ const SettingsMenuMobile = React.lazy(() => import(/* webpackChunkName: 'Setting
 const SharedItemLanding = React.lazy(() => import(/* webpackChunkName: 'SharedItemLanding' */ './js/pages/SharedItemLanding'));
 const SignInEmailProcess = React.lazy(() => import(/* webpackChunkName: 'SignInEmailProcess' */ './js/pages/Process/SignInEmailProcess'));
 const SignInJumpProcess = React.lazy(() => import(/* webpackChunkName: 'SignInJumpProcess' */ './js/pages/Process/SignInJumpProcess'));
+const Start = React.lazy(() => import(/* webpackChunkName: 'Start' */ './js/pages/Startup/GetStarted'));
 const TermsOfService = React.lazy(() => import(/* webpackChunkName: 'TermsOfService' */ './js/pages/More/TermsOfService'));
 const TwitterHandleLanding = React.lazy(() => import(/* webpackChunkName: 'TwitterHandleLanding' */ './js/pages/TwitterHandleLanding'));
 const TwitterSignInProcess = React.lazy(() => import(/* webpackChunkName: 'TwitterSignInProcess' */ './js/pages/Process/TwitterSignInProcess'));
@@ -281,7 +282,6 @@ class App extends Component {
                     <Route path="/for-organizations" component={isNotWeVoteMarketingSite ? ReadyRedirect : (props) => <WelcomeForOrganizations {...props} pathname="/for-organizations" />} />
                     <Route path="/how/:category_string" component={isNotWeVoteMarketingSite ? ReadyRedirect : HowItWorks} />
                     <Route path="/how" exact component={isNotWeVoteMarketingSite ? ReadyRedirect : HowItWorks} />
-                    <Route path="/start" exact><Start /></Route>
                     <Route path="/intro" exact component={Intro} />
                     <Route path="/intro/get_started" component={GetStarted2019} />
                     <Route path="/intro/sample_ballot" component={SampleBallot} />
@@ -345,6 +345,9 @@ class App extends Component {
                     <Route path="/ready/modal/:modal_to_show" exact render={(props) => (<RouterV5SendMatch componentName="Ready" {...props} />)} />
                     <Route path="/register" component={Register} />
                     <Route path="/sign_in_email/:email_secret_key" component={SignInEmailProcess} />
+                    <Route path="/setupaccount/:set_up_page" exact component={AccountSetupRoot} />
+                    <Route path="/setupaccount" exact><AccountSetupRoot /></Route>
+                    <Route path="/start" exact><Start /></Route>
                     <Route path="/terms" component={TermsOfService} />
                     <Route path="/twittersigninprocess/:sign_in_step" component={TwitterSignInProcess} />
                     <Route path="/values/list" component={ValuesList} />

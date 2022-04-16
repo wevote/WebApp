@@ -6,7 +6,12 @@ import clsx from 'clsx';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import SplitIconButton from '../../common/components/Widgets/SplitIconButton';
-import { isIPhone3p5in, isIPhone4in, isIPhone4p7in, restoreStylesAfterCordovaKeyboard } from '../../common/utils/cordovaUtils';
+import {
+  isIPhone3p5in,
+  isIPhone4in,
+  isIPhone4p7in,
+  restoreStylesAfterCordovaKeyboard,
+} from '../../common/utils/cordovaUtils';
 import { isCordova } from '../../common/utils/isCordovaOrWebApp';
 import { renderLog } from '../../common/utils/logging';
 import VoterEmailAddressEntry from './VoterEmailAddressEntry';
