@@ -90,7 +90,14 @@ class Credits extends Component {
                 <span>
                   {' '}
                   finding a role that excites you on our page at Idealist.org&nbsp;
-                  <ExternalLinkIcon />
+                  <Launch
+                    style={{
+                      height: 14,
+                      marginLeft: 2,
+                      marginTop: '-3px',
+                      width: 14,
+                    }}
+                  />
                 </span>
               )}
             />
