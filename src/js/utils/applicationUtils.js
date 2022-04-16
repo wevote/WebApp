@@ -183,6 +183,7 @@ export function getApplicationViewBooleans (pathname) {
       pathnameLowerCase.startsWith('/more/pricing') ||
       pathnameLowerCase.startsWith('/register') ||
       pathnameLowerCase.startsWith('/settings/voterguidelist') ||
+      pathnameLowerCase.startsWith('/setupaccount') ||
       pathnameLowerCase.startsWith('/settings/voterguidesmenu') ||
       pathnameLowerCase.startsWith('/twitter_sign_in') ||
       pathnameLowerCase.startsWith('/wevoteintro/') ||

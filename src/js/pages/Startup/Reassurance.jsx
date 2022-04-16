@@ -2,19 +2,26 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { AdviceBox, AdviceBoxText, AdviceBoxTitle, AdviceBoxWrapper } from '../../common/components/Style/adviceBoxStyles';
 import { renderLog } from '../../common/utils/logging';
-import { reassuranceText } from './reassuranceText';
 
 // React functional component example
 export default function Reassurance (props) {
-  const { displayState } = props;
+  const { displayState, reassuranceText } = props;
   renderLog('Reassurance functional component');
-  if (displayState > 3) return '';
+  // console.log('Reassurance displayState:', displayState);
+  let reassuranceTextExists = false;
+  reassuranceText.forEach((block) => {
+    if (block.page === displayState) {
+      reassuranceTextExists = true;
+    }
+  });
+  if (!reassuranceTextExists) return '';
   let i = 0;
   return (
     <AdviceBoxWrapper>
       <AdviceBox>
         { reassuranceText.map((block) => {
           if (block.page !== displayState) {
+            // console.log('block:', block);
             return null;
           } else {
             return (
@@ -35,4 +42,5 @@ export default function Reassurance (props) {
 }
 Reassurance.propTypes = {
   displayState: PropTypes.number.isRequired,
+  reassuranceText: PropTypes.array.isRequired,
 };
