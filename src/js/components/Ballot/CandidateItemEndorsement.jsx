@@ -1,3 +1,4 @@
+import { Launch } from '@mui/icons-material';
 import { Twitter } from '@mui/icons-material';
 import {  Button, TextField } from '@mui/material';
 import styled from 'styled-components';
@@ -5,7 +6,6 @@ import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
 import VoterGuidePossibilityActions from '../../actions/VoterGuidePossibilityActions';
-import ExternalLinkIcon from '../../common/components/Widgets/ExternalLinkIcon';
 import abbreviateNumber from '../../common/utils/abbreviateNumber';
 import historyPush from '../../common/utils/historyPush';
 import { renderLog } from '../../common/utils/logging';
@@ -405,7 +405,14 @@ class CandidateItemEndorsement extends Component {
                         <span>
                           candidate website
                           {' '}
-                          <ExternalLinkIcon />
+                          <Launch
+                            style={{
+                              height: 14,
+                              marginLeft: 2,
+                              marginTop: '-3px',
+                              width: 14,
+                            }}
+                          />
                         </span>
                       )}
                     />

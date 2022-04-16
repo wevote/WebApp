@@ -1,10 +1,11 @@
 import { Button } from '@mui/material';
+import { Launch } from '@mui/icons-material';
 import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
 import TextTruncate from 'react-text-truncate'; // Replace with: import TruncateMarkup from 'react-truncate-markup';
 import { renderLog } from '../../utils/logging';
-import ExternalLinkIcon from './ExternalLinkIcon';
+
 
 const OpenExternalWebSite = React.lazy(() => import(/* webpackChunkName: 'OpenExternalWebSite' */ './OpenExternalWebSite'));
 
@@ -117,9 +118,19 @@ class LearnMore extends Component {
           target="_blank"
           body={(
             <span>
+              hello
               {learnMoreText}
               &nbsp;
-              <ExternalLinkIcon />
+              {
+                <Launch
+                  style={{
+                    height: 14,
+                    marginLeft: 2,
+                    marginTop: '-3px',
+                    width: 14,
+                  }} 
+                />
+              }
             </span>
           )}
         />

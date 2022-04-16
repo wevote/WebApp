@@ -1,3 +1,4 @@
+import { Launch } from '@mui/icons-material';
 import { Twitter } from '@mui/icons-material';
 import { Button } from '@mui/material';
 import withStyles from '@mui/styles/withStyles';
@@ -7,7 +8,6 @@ import React, { Component, Suspense } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import OrganizationActions from '../../actions/OrganizationActions';
-import ExternalLinkIcon from '../../common/components/Widgets/ExternalLinkIcon';
 import SvgImage from '../../common/components/Widgets/SvgImage';
 import abbreviateNumber from '../../common/utils/abbreviateNumber';
 import { renderLog } from '../../common/utils/logging';
@@ -441,7 +441,14 @@ class PositionItem extends Component {
                               <span>
                                 view source
                                 {' '}
-                                <ExternalLinkIcon />
+                                <Launch
+                                  style={{
+                                    height: 14,
+                                    marginLeft: 2,
+                                    marginTop: '-3px',
+                                    width: 14,
+                                  }}
+                                />
                               </span>
                             )}
                             className="u-gray-mid"
@@ -630,7 +637,14 @@ class PositionItem extends Component {
                             <span>
                               source
                               {' '}
-                              <ExternalLinkIcon />
+                              <Launch
+                                  style={{
+                                    height: 14,
+                                    marginLeft: 2,
+                                    marginTop: '-3px',
+                                    width: 14,
+                                  }}
+                                />
                             </span>
                           )}
                           className="u-gray-mid"

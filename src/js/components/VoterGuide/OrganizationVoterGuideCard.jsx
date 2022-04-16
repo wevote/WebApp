@@ -1,3 +1,4 @@
+import { Launch } from '@mui/icons-material';
 import { Twitter } from '@mui/icons-material';
 import { Button } from '@mui/material';
 import styled from 'styled-components';
@@ -5,7 +6,6 @@ import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
 import { Link } from 'react-router-dom';
-import ExternalLinkIcon from '../../common/components/Widgets/ExternalLinkIcon';
 import LoadingWheel from '../../common/components/Widgets/LoadingWheel';
 import abbreviateNumber from '../../common/utils/abbreviateNumber';
 import historyPush from '../../common/utils/historyPush';
@@ -108,7 +108,14 @@ class OrganizationVoterGuideCard extends Component {
                     <span>
                       {organizationWebsite}
                       {' '}
-                      <ExternalLinkIcon />
+                      <Launch
+                        style={{
+                          height: 14,
+                          marginLeft: 2,
+                          marginTop: '-3px',
+                          width: 14,
+                        }} 
+                      />
                     </span>
                   )}
                 />
@@ -179,11 +186,6 @@ OrganizationVoterGuideCard.propTypes = {
 };
 
 const styles = () => ({
-  externalLinkIcon: {
-    color: '#999',
-    height: 14,
-    marginTop: '-3px',
-  },
   twitterLogo: {
     color: '#1d9bf0',
     height: 18,

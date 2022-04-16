@@ -1,3 +1,4 @@
+import { Launch } from '@mui/icons-material';
 import { Button, FormControl, FormControlLabel, FormLabel, InputAdornment, Radio, RadioGroup, TextField } from '@mui/material';
 import withStyles from '@mui/styles/withStyles';
 import { Elements } from '@stripe/react-stripe-js';
@@ -11,7 +12,6 @@ import AnalyticsActions from '../../actions/AnalyticsActions';
 import DonateActions from '../../common/actions/DonateActions';
 import DonationListForm from '../../common/components/Donation/DonationListForm';
 import InjectedCheckoutForm from '../../common/components/Donation/InjectedCheckoutForm';
-import ExternalLinkIcon from '../../common/components/Widgets/ExternalLinkIcon';
 import OpenExternalWebSite from '../../common/components/Widgets/OpenExternalWebSite';
 import DonateStore from '../../common/stores/DonateStore';
 import { renderLog } from '../../common/utils/logging';
@@ -125,7 +125,14 @@ class Donate extends Component {
           body={(
             <span>
               Our annual budgets are very small&nbsp;
-              <ExternalLinkIcon largeBlue />
+              <Launch
+                style={{
+                  height: 14,
+                  marginLeft: 2,
+                  marginTop: '-3px',
+                  width: 14,
+                }} 
+              />
             </span>
           )}
         />
@@ -145,7 +152,14 @@ class Donate extends Component {
         >
           tax deductible donations
           {' '}
-          <ExternalLinkIcon largeBlue />
+          <Launch
+            style={{
+              height: 14,
+              marginLeft: 2,
+              marginTop: '-3px',
+              width: 14,
+            }} 
+          />
           .
         </a>
       </DonateDescriptionContainer>

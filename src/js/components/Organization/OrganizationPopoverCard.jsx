@@ -210,7 +210,14 @@ class OrganizationPopoverCard extends Component {
                       <span>
                         {organizationWebsite}
                         {' '}
-                        <Launch classes={{ root: classes.externalLinkIcon }} />
+                        <Launch
+                          style={{
+                            height: 14,
+                            marginLeft: 2,
+                            marginTop: '-3px',
+                            width: 14,
+                          }}
+                        />
                       </span>
                     )}
                   />
@@ -231,11 +238,6 @@ OrganizationPopoverCard.propTypes = {
 };
 
 const styles = () => ({
-  externalLinkIcon: {
-    color: '#999',
-    height: 14,
-    marginTop: '-3px',
-  },
   twitterLogo: {
     color: '#1d9bf0',
     height: 18,

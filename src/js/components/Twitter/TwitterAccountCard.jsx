@@ -1,7 +1,7 @@
+import { Launch } from '@mui/icons-material';
 import { Twitter } from '@mui/icons-material';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
-import ExternalLinkIcon from '../../common/components/Widgets/ExternalLinkIcon';
 import abbreviateNumber from '../../common/utils/abbreviateNumber';
 import { renderLog } from '../../common/utils/logging';
 import numberWithCommas from '../../common/utils/numberWithCommas';
@@ -67,7 +67,14 @@ export default class TwitterAccountCard extends Component {
                       body={(
                         <span>
                           Website
-                          <ExternalLinkIcon />
+                          <Launch
+                            style={{
+                              height: 14,
+                              marginLeft: 2,
+                              marginTop: '-3px',
+                              width: 14,
+                            }}
+                          />
                         </span>
                       )}
                     />

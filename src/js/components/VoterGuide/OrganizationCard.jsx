@@ -1,10 +1,10 @@
+import { Launch } from '@mui/icons-material';
 import { Twitter } from '@mui/icons-material';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
 import { Link } from 'react-router-dom';
 import OrganizationActions from '../../actions/OrganizationActions';
-import ExternalLinkIcon from '../../common/components/Widgets/ExternalLinkIcon';
 import LoadingWheel from '../../common/components/Widgets/LoadingWheel';
 import { renderLog } from '../../common/utils/logging';
 import numberWithCommas from '../../common/utils/numberWithCommas';
@@ -246,7 +246,14 @@ export default class OrganizationCard extends Component {
                       <span className="u-no-break">
                         Website
                         {' '}
-                        <ExternalLinkIcon />
+                         <Launch
+                            style={{
+                              height: 14,
+                              marginLeft: 2,
+                              marginTop: '-3px',
+                              width: 14,
+                            }}
+                          />
                       </span>
                     )}
                   />

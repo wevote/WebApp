@@ -1,10 +1,10 @@
+import { Launch } from '@mui/icons-material';
 import withStyles from '@mui/styles/withStyles';
 import React, { Component, Suspense } from 'react';
 import Helmet from 'react-helmet';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import AnalyticsActions from '../../actions/AnalyticsActions';
-import ExternalLinkIcon from '../../common/components/Widgets/ExternalLinkIcon';
 import ToolBar from '../../common/components/Widgets/ToolBar';
 import { weVoteBoard, weVoteFounders, weVoteStaff } from '../../common/constants/people';
 import { renderLog } from '../../common/utils/logging';
@@ -167,7 +167,14 @@ class About extends Component {
                 body={(
                   <span>
                     Code for America&nbsp;
-                    <ExternalLinkIcon />
+                    <Launch
+                      style={{
+                        height: 14,
+                        marginLeft: 2,
+                        marginTop: '-3px',
+                        width: 14,
+                      }} 
+                    />
                   </span>
                 )}
               />
@@ -183,7 +190,14 @@ class About extends Component {
                 body={(
                   <span>
                     Mozilla Foundation&nbsp;
-                    <ExternalLinkIcon />
+                    <Launch
+                      style={{
+                        height: 14,
+                        marginLeft: 2,
+                        marginTop: '-3px',
+                        width: 14,
+                      }} 
+                    />
                   </span>
                 )}
               />
@@ -283,7 +297,14 @@ class About extends Component {
             <Link to="/more/credits">
               our volunteers, our board of directors, our funders, and the organizations
               &nbsp;
-              <ExternalLinkIcon />
+              <Launch
+                style={{
+                  height: 14,
+                  marginLeft: 2,
+                  marginTop: '-3px',
+                  width: 14,
+                }} 
+              />
             </Link>
             {' '}
             that are critical to our work.
