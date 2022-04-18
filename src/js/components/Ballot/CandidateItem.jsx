@@ -396,7 +396,14 @@ class CandidateItem extends Component {
                         body={(
                           <div>
                             candidate website
-                            <Launch classes={{ root: classes.externalLinkIcon }} />
+                            <Launch
+                              style={{
+                                height: 14,
+                                marginLeft: 2,
+                                marginTop: '-3px',
+                                width: 14,
+                              }}
+                            />
                           </div>
                         )}
                       />
@@ -692,11 +699,6 @@ CandidateItem.propTypes = {
 };
 
 const styles = () => ({
-  externalLinkIcon: {
-    color: '#999',
-    height: 14,
-    marginTop: '-3px',
-  },
   informationIcon: {
     color: '#999',
     width: 16,

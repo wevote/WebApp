@@ -1,9 +1,9 @@
+import { Launch } from '@mui/icons-material';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
 import normalizedImagePath from '../../common/utils/normalizedImagePath';
 import { renderLog } from '../../common/utils/logging';
 import { vimeoRegX, youTubeRegX } from '../../utils/textFormat';
-import ExternalLinkIcon from '../../common/components/Widgets/ExternalLinkIcon';
 
 const ReadMore = React.lazy(() => import(/* webpackChunkName: 'ReadMore' */ '../../common/components/Widgets/ReadMore'));
 const ReactPlayer = React.lazy(() => import(/* webpackChunkName: 'ReactPlayer' */ 'react-player'));
@@ -138,7 +138,14 @@ export default class PositionSupportOpposeSnippet extends Component {
                             <span>
                               view source
                               {' '}
-                              <ExternalLinkIcon />
+                              <Launch
+                                style={{
+                                  height: 14,
+                                  marginLeft: 2,
+                                  marginTop: '-3px',
+                                  width: 14,
+                                }}
+                              />
                             </span>
                           )}
                         />

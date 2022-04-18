@@ -1,9 +1,9 @@
+import { Launch } from '@mui/icons-material';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 import Tooltip from 'react-bootstrap/Tooltip';
-import ExternalLinkIcon from '../../common/components/Widgets/ExternalLinkIcon';
 import { renderLog } from '../../common/utils/logging';
 import normalizedImagePath from '../../common/utils/normalizedImagePath';
 import { vimeoRegX, youTubeRegX } from '../../utils/textFormat';
@@ -134,7 +134,14 @@ export default class PositionInformationOnlySnippet extends Component {
                         <span>
                           view source
                           {' '}
-                          <ExternalLinkIcon />
+                          <Launch
+                            style={{
+                              height: 14,
+                              marginLeft: 2,
+                              marginTop: '-3px',
+                              width: 14,
+                            }}
+                          />
                         </span>
                       )}
                     />

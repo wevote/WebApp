@@ -1,3 +1,4 @@
+import { Launch } from '@mui/icons-material';
 import withStyles from '@mui/styles/withStyles';
 import React, { Component, Suspense } from 'react';
 import { Link } from 'react-router-dom';
@@ -5,7 +6,6 @@ import styled from 'styled-components';
 import { organizationalDonors, teamOfVolunteers } from '../constants/people';
 import { isWebApp } from '../utils/isCordovaOrWebApp';
 import { renderLog } from '../utils/logging';
-import ExternalLinkIcon from './Widgets/ExternalLinkIcon';
 
 const OpenExternalWebSite = React.lazy(() => import(/* webpackChunkName: 'OpenExternalWebSite' */ './Widgets/OpenExternalWebSite'));
 
@@ -90,7 +90,14 @@ class Credits extends Component {
                 <span>
                   {' '}
                   finding a role that excites you on our page at Idealist.org&nbsp;
-                  <ExternalLinkIcon />
+                  <Launch
+                    style={{
+                      height: 14,
+                      marginLeft: 2,
+                      marginTop: '-3px',
+                      width: 14,
+                    }}
+                  />
                 </span>
               )}
             />

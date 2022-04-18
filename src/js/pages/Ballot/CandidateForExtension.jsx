@@ -1,4 +1,5 @@
 import { Box, Button, Tab, Tabs } from '@mui/material';
+import { Launch } from '@mui/icons-material';
 import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
@@ -9,7 +10,6 @@ import IssueActions from '../../actions/IssueActions';
 import OrganizationActions from '../../actions/OrganizationActions';
 import VoterGuidePossibilityActions from '../../actions/VoterGuidePossibilityActions';
 import apiCalming from '../../common/utils/apiCalming';
-import ExternalLinkIcon from '../../common/components/Widgets/ExternalLinkIcon';
 import Cookies from '../../common/utils/js-cookie/Cookies';
 import { renderLog } from '../../common/utils/logging';
 import CandidateItemEndorsement from '../../components/Ballot/CandidateItemEndorsement';
@@ -202,7 +202,14 @@ class CandidateForExtension extends Component {
                         <OriginalLinkStyle>
                           {candidateSpecificEndorsementUrl}
                           {' '}
-                          <ExternalLinkIcon />
+                          <Launch
+                            style={{
+                              height: 14,
+                              marginLeft: 2,
+                              marginTop: '-3px',
+                              width: 14,
+                            }}
+                          />
                         </OriginalLinkStyle>
                       )}
                       target="_blank"

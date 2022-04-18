@@ -1,4 +1,4 @@
-import { Twitter } from '@mui/icons-material';
+import { Launch, Twitter } from '@mui/icons-material';
 import styled from 'styled-components';
 import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
@@ -6,7 +6,6 @@ import React, { Component, Suspense } from 'react';
 import { ReactSVG } from 'react-svg';
 import CandidateActions from '../../actions/CandidateActions';
 import MeasureActions from '../../actions/MeasureActions';
-import ExternalLinkIcon from '../../common/components/Widgets/ExternalLinkIcon';
 import { renderLog } from '../../common/utils/logging';
 import normalizedImagePath from '../../common/utils/normalizedImagePath';
 import numberWithCommas from '../../common/utils/numberWithCommas';
@@ -357,7 +356,14 @@ class VoterGuidePositionItem extends Component {
                             <span>
                               view source
                               {' '}
-                              <ExternalLinkIcon />
+                              <Launch
+                                style={{
+                                  height: 14,
+                                  marginLeft: 2,
+                                  marginTop: '-3px',
+                                  width: 14,
+                                }}
+                              />
                             </span>
                           )}
                           className="u-gray-mid"
@@ -492,7 +498,14 @@ class VoterGuidePositionItem extends Component {
                           <span>
                             source
                             {' '}
-                            <ExternalLinkIcon />
+                            <Launch
+                              style={{
+                                height: 14,
+                                marginLeft: 2,
+                                marginTop: '-3px',
+                                width: 14,
+                              }}
+                            />
                           </span>
                         )}
                         className="u-gray-mid"
