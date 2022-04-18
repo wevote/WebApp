@@ -1,5 +1,4 @@
-import { Launch } from '@mui/icons-material';
-import { Twitter } from '@mui/icons-material';
+import { Launch, Twitter } from '@mui/icons-material';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
@@ -246,14 +245,14 @@ export default class OrganizationCard extends Component {
                       <span className="u-no-break">
                         Website
                         {' '}
-                         <Launch
-                            style={{
-                              height: 14,
-                              marginLeft: 2,
-                              marginTop: '-3px',
-                              width: 14,
-                            }}
-                          />
+                        <Launch
+                          style={{
+                            height: 14,
+                            marginLeft: 2,
+                            marginTop: '-3px',
+                            width: 14,
+                          }}
+                        />
                       </span>
                     )}
                   />

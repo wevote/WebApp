@@ -1,5 +1,4 @@
-import { Info } from '@mui/icons-material';
-import { Launch } from '@mui/icons-material';
+import { Info, Launch } from '@mui/icons-material';
 import withStyles from '@mui/styles/withStyles';
 import withTheme from '@mui/styles/withTheme';
 import PropTypes from 'prop-types';

@@ -173,7 +173,7 @@ class About extends Component {
                         marginLeft: 2,
                         marginTop: '-3px',
                         width: 14,
-                      }} 
+                      }}
                     />
                   </span>
                 )}
@@ -196,7 +196,7 @@ class About extends Component {
                         marginLeft: 2,
                         marginTop: '-3px',
                         width: 14,
-                      }} 
+                      }}
                     />
                   </span>
                 )}
@@ -303,7 +303,7 @@ class About extends Component {
                   marginLeft: 2,
                   marginTop: '-3px',
                   width: 14,
-                }} 
+                }}
               />
             </Link>
             {' '}

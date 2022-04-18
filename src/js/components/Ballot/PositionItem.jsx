@@ -1,5 +1,4 @@
-import { Launch } from '@mui/icons-material';
-import { Twitter } from '@mui/icons-material';
+import { Launch, Twitter } from '@mui/icons-material';
 import { Button } from '@mui/material';
 import withStyles from '@mui/styles/withStyles';
 import withTheme from '@mui/styles/withTheme';
@@ -638,13 +637,13 @@ class PositionItem extends Component {
                               source
                               {' '}
                               <Launch
-                                  style={{
-                                    height: 14,
-                                    marginLeft: 2,
-                                    marginTop: '-3px',
-                                    width: 14,
-                                  }}
-                                />
+                                style={{
+                                  height: 14,
+                                  marginLeft: 2,
+                                  marginTop: '-3px',
+                                  width: 14,
+                                }}
+                              />
                             </span>
                           )}
                           className="u-gray-mid"

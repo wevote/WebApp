@@ -144,7 +144,7 @@ export default class PositionSupportOpposeSnippet extends Component {
                                   marginLeft: 2,
                                   marginTop: '-3px',
                                   width: 14,
-                                }} 
+                                }}
                               />
                             </span>
                           )}

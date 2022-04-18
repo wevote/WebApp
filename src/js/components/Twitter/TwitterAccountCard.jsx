@@ -1,5 +1,4 @@
-import { Launch } from '@mui/icons-material';
-import { Twitter } from '@mui/icons-material';
+import { Launch, Twitter } from '@mui/icons-material';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
 import abbreviateNumber from '../../common/utils/abbreviateNumber';

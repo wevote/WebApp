@@ -1,5 +1,4 @@
-import { Launch } from '@mui/icons-material';
-import { Twitter } from '@mui/icons-material';
+import { Launch, Twitter } from '@mui/icons-material';
 import { Button } from '@mui/material';
 import styled from 'styled-components';
 import withStyles from '@mui/styles/withStyles';
@@ -114,7 +113,7 @@ class OrganizationVoterGuideCard extends Component {
                           marginLeft: 2,
                           marginTop: '-3px',
                           width: 14,
-                        }} 
+                        }}
                       />
                     </span>
                   )}

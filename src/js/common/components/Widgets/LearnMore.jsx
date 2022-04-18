@@ -120,14 +120,14 @@ class LearnMore extends Component {
             <span>
               {learnMoreText}
               &nbsp;
-                <Launch
-                  style={{
-                    height: 14,
-                    marginLeft: 2,
-                    marginTop: '-3px',
-                    width: 14,
-                  }} 
-                />
+              <Launch
+                style={{
+                  height: 14,
+                  marginLeft: 2,
+                  marginTop: '-3px',
+                  width: 14,
+                }}
+              />
             </span>
           )}
         />
