@@ -118,10 +118,8 @@ class LearnMore extends Component {
           target="_blank"
           body={(
             <span>
-              hello
               {learnMoreText}
               &nbsp;
-              {
                 <Launch
                   style={{
                     height: 14,
@@ -130,7 +128,6 @@ class LearnMore extends Component {
                     width: 14,
                   }} 
                 />
-              }
             </span>
           )}
         />
