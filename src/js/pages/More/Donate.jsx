@@ -222,6 +222,11 @@ class Donate extends Component {
                       <Button
                         classes={{ root: classes.buttonRoot }}
                         variant="contained"
+                        sx={{
+                          ':hover': {
+                            color: 'white',
+                          },
+                        }}
                         onClick={() => this.changeValue(`${price}.00`)}
                       >
                         {`$${price}`}
