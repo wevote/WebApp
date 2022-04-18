@@ -117,7 +117,7 @@ class PositionRowLogoAndText extends Component {
       return null;
     }
     // console.log('PositionRowLogoAndText position render, position:', position);
-    const { ballot_item_we_vote_id: ballotItemWeVoteId, speaker_we_vote_id: organizationWeVoteId } = position;
+    const { ballot_item_we_vote_id: ballotItemWeVoteId, position_we_vote_id: positionWeVoteId, speaker_we_vote_id: organizationWeVoteId } = position;
     const { organizationInVotersNetwork } = this.state;
 
     // console.log(position);
@@ -203,6 +203,7 @@ class PositionRowLogoAndText extends Component {
                 <Suspense fallback={<></>}>
                   <FollowToggleCheckPlus
                     organizationWeVoteId={organizationWeVoteId}
+                    positionWeVoteId={positionWeVoteId}
                   />
                 </Suspense>
               </FollowToggleWrapper>

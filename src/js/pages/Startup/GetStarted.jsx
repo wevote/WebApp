@@ -10,6 +10,7 @@ import ContactsTable from './ContactsTable';
 import ImportContactsButton from './ImportContactsButton';
 import { parseRawAppleContacts } from './parseRawAppleContacts';
 import Reassurance from './Reassurance';
+import { reassuranceText } from './reassuranceText';
 import SignIn from './SignIn';
 import StartedState, { startedStateMessageService } from './StartedState';
 import StartProgressIndicator from './StartProgressIndicator';
@@ -87,7 +88,7 @@ export default class GetStarted extends React.Component {
             <ContactsTable contacts={appleContacts} displayState={displayState} />
             <Congratulations displayState={displayState} />
           </Box>
-          <Reassurance displayState={displayState} />
+          <Reassurance displayState={displayState} reassuranceText={reassuranceText} />
         </GetStartedWrapper>
       </PageContentContainerGetStarted>
     );
@@ -95,6 +96,7 @@ export default class GetStarted extends React.Component {
 }
 const GetStartedWrapper = styled('div')`
   background-color: white;
+  max-width: 550px;
   padding: 80px 20px 150% 20px;
 `;
 

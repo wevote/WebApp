@@ -36,8 +36,14 @@ class VoterStore extends ReduceStore {
       },
       smsPhoneNumberStatus: {},
       smsPhoneNumberList: [],
+      voterEmailQueuedToSave: '',
+      voterEmailQueuedToSaveSet: false,
+      voterFirstNameQueuedToSave: '',
+      voterFirstNameQueuedToSaveSet: false,
       voterFound: false,
       voterExternalIdHasBeenSavedOnce: {}, // Dict with externalVoterId and membershipOrganizationWeVoteId as keys, and true/false as value
+      voterLastNameQueuedToSave: '',
+      voterLastNameQueuedToSaveSet: false,
       voterNotificationSettingsUpdateStatus: {
         apiResponseReceived: false,
         emailFound: false,
@@ -52,54 +58,12 @@ class VoterStore extends ReduceStore {
     };
   }
 
-  resetState () {
-    return this.getInitialState();
-  }
-
-  getVoter () {
-    return this.getState().voter;
-  }
-
-  getVoterWeVoteId () {
-    return this.getState().voter.we_vote_id || '';
-  }
-
   electionId () {
     return this.getState().latestGoogleCivicElectionId || 0;
   }
 
-  getTextForMapSearch () {
-    let textForMapSearch = this.getState().address.text_for_map_search;
-    if (textForMapSearch === undefined) {
-      // Attaching full address object to voterRetrieve, so we can phase this out
-      textForMapSearch = this.getState().voter.text_for_map_search;
-      if (textForMapSearch === undefined) return '';
-    }
-    if (Array.isArray(textForMapSearch)) return textForMapSearch[0] || '';
-    return textForMapSearch;
-  }
-
-  getVoterSavedAddress () {
-    // console.log('VoterStore, getVoterSavedAddress: ', this.getState().address.voter_entered_address);
-    return this.getState().address.voter_entered_address || false;
-  }
-
-  getVoterStateCode () {
-    // TODO in getVoterStateCode we check for normalized_state in the address object. We should be
-    //  capturing the state when we call Google address Auto Complete (search for _placeChanged)
-    //  and we should also figure out the state_code when we call API server voterAddressSave and put it in the "address"
-    //  return data.
-    // console.log('this.getState().address:', this.getState().address);
-    // console.log('this.getState().voter:', this.getState().voter);
-    if (this.getState().address && this.getState().address.normalized_state) {
-      // console.log('normalized_state:', this.getState().address.normalized_state);
-      return this.getState().address.normalized_state;
-    }
-    if (this.getState().voter && this.getState().voter.state_code_from_ip_address) {
-      // console.log('state_code_from_ip_address:', this.getState().voter.state_code_from_ip_address);
-      return this.getState().voter.state_code_from_ip_address;
-    }
-    return '';
+  resetState () {
+    return this.getInitialState();
   }
 
   getAddressObject () {
@@ -127,23 +91,6 @@ class VoterStore extends ReduceStore {
   getEmailAddressList () {
     const { emailAddressList } = this.getState();
     return emailAddressList;
-  }
-
-  getPrimaryEmailAddressDict () {
-    const { emailAddressList } = this.getState();
-    let oneEmail = {};
-    let primaryEmailAddress = {};
-    for (let i = 0; i < emailAddressList.length; ++i) {
-      oneEmail = emailAddressList[i];
-      // console.log('getPrimaryEmailAddressDict, oneEmail:', oneEmail);
-      if (oneEmail.primary_email_address === true &&
-          oneEmail.email_permanent_bounce === false &&
-          oneEmail.email_ownership_is_verified === true) {
-        primaryEmailAddress = oneEmail;
-      }
-    }
-    // console.log('getPrimaryEmailAddressDict, primaryEmailAddress:', primaryEmailAddress);
-    return primaryEmailAddress;
   }
 
   getEmailAddressesVerifiedCount () {
@@ -183,10 +130,6 @@ class VoterStore extends ReduceStore {
     return this.getState().voter.first_name || '';
   }
 
-  getLastName () {
-    return this.getState().voter.last_name || '';
-  }
-
   getFirstPlusLastName () {
     const storedFirstName = this.getFirstName();
     const storedLastName = this.getLastName();
@@ -207,8 +150,33 @@ class VoterStore extends ReduceStore {
     return this.getState().voter.full_name || '';
   }
 
+  getLastName () {
+    return this.getState().voter.last_name || '';
+  }
+
   getLinkedOrganizationWeVoteId () {
     return this.getState().voter.linked_organization_we_vote_id || '';
+  }
+
+  getPrimaryEmailAddressDict () {
+    const { emailAddressList } = this.getState();
+    let oneEmail = {};
+    let primaryEmailAddress = {};
+    for (let i = 0; i < emailAddressList.length; ++i) {
+      oneEmail = emailAddressList[i];
+      // console.log('getPrimaryEmailAddressDict, oneEmail:', oneEmail);
+      if (oneEmail.primary_email_address === true &&
+          oneEmail.email_permanent_bounce === false &&
+          oneEmail.email_ownership_is_verified === true) {
+        primaryEmailAddress = oneEmail;
+      }
+    }
+    // console.log('getPrimaryEmailAddressDict, primaryEmailAddress:', primaryEmailAddress);
+    return primaryEmailAddress;
+  }
+
+  getSecretCodeVerificationStatus () {
+    return this.getState().secretCodeVerificationStatus || {};
   }
 
   getSMSPhoneNumberStatus () {
@@ -237,6 +205,17 @@ class VoterStore extends ReduceStore {
     return this.getState().voter.state_code_from_ip_address || '';
   }
 
+  getTextForMapSearch () {
+    let textForMapSearch = this.getState().address.text_for_map_search;
+    if (textForMapSearch === undefined) {
+      // Attaching full address object to voterRetrieve, so we can phase this out
+      textForMapSearch = this.getState().voter.text_for_map_search;
+      if (textForMapSearch === undefined) return '';
+    }
+    if (Array.isArray(textForMapSearch)) return textForMapSearch[0] || '';
+    return textForMapSearch;
+  }
+
   getTwitterHandle () {
     return this.getState().voter.twitter_handle || '';
   }
@@ -245,8 +224,51 @@ class VoterStore extends ReduceStore {
     return this.getState().twitterSignInStatus || {};
   }
 
+  getVoter () {
+    return this.getState().voter;
+  }
+
+  getVoterEmail () {
+    return this.getState().voter.email || '';
+  }
+
+  getVoterEmailQueuedToSave () {
+    return this.getState().voterEmailQueuedToSave;
+  }
+
+  getVoterEmailQueuedToSaveSet () {
+    return this.getState().voterEmailQueuedToSaveSet;
+  }
+
+  getVoterFirstName () {
+    if (this.getState().voter) {
+      return this.getState().voter.first_name || '';
+    }
+    return '';
+  }
+
+  getVoterFirstNameQueuedToSave () {
+    return this.getState().voterFirstNameQueuedToSave;
+  }
+
+  getVoterFirstNameQueuedToSaveSet () {
+    return this.getState().voterFirstNameQueuedToSaveSet;
+  }
+
   getVoterIsSignedIn () {
     return this.getState().voter.is_signed_in || false;
+  }
+
+  getVoterIsSignedInWithEmail () {
+    return this.getState().voter.signed_in_with_email || false;
+  }
+
+  getVoterLastNameQueuedToSave () {
+    return this.getState().voterLastNameQueuedToSave;
+  }
+
+  getVoterLastNameQueuedToSaveSet () {
+    return this.getState().voterLastNameQueuedToSaveSet;
   }
 
   getVoterNotificationSettingsUpdateStatus () {
@@ -284,8 +306,31 @@ class VoterStore extends ReduceStore {
     return this.getState().voter.we_vote_hosted_profile_uploaded_image_url_large || '';
   }
 
-  getSecretCodeVerificationStatus () {
-    return this.getState().secretCodeVerificationStatus || {};
+  getVoterSavedAddress () {
+    // console.log('VoterStore, getVoterSavedAddress: ', this.getState().address.voter_entered_address);
+    return this.getState().address.voter_entered_address || false;
+  }
+
+  getVoterStateCode () {
+    // TODO in getVoterStateCode we check for normalized_state in the address object. We should be
+    //  capturing the state when we call Google address Auto Complete (search for _placeChanged)
+    //  and we should also figure out the state_code when we call API server voterAddressSave and put it in the "address"
+    //  return data.
+    // console.log('this.getState().address:', this.getState().address);
+    // console.log('this.getState().voter:', this.getState().voter);
+    if (this.getState().address && this.getState().address.normalized_state) {
+      // console.log('normalized_state:', this.getState().address.normalized_state);
+      return this.getState().address.normalized_state;
+    }
+    if (this.getState().voter && this.getState().voter.state_code_from_ip_address) {
+      // console.log('state_code_from_ip_address:', this.getState().voter.state_code_from_ip_address);
+      return this.getState().voter.state_code_from_ip_address;
+    }
+    return '';
+  }
+
+  getVoterWeVoteId () {
+    return this.getState().voter.we_vote_id || '';
   }
 
   voterDeviceId () {
@@ -366,6 +411,14 @@ class VoterStore extends ReduceStore {
     } else {
       return false;
     }
+  }
+
+  voterPhotoAndNameExist () {
+    const firstNameExists = !!(this.getState().voter.first_name && this.getState().voter.first_name !== '');
+    const lastNameExists = !!(this.getState().voter.last_name && this.getState().voter.last_name !== '');
+    const nameExists = firstNameExists || lastNameExists;
+    const photoExists = !!(this.getState().voter.voter_photo_url_large && this.getState().voter.voter_photo_url_large !== '');
+    return !!(nameExists && photoExists);
   }
 
   reduce (state, action) {
@@ -645,6 +698,22 @@ class VoterStore extends ReduceStore {
           },
         };
 
+      case 'voterEmailQueuedToSave':
+        // console.log('VoterStore voterEmailQueuedToSave: ', action.payload);
+        if (action.payload === undefined) {
+          return {
+            ...state,
+            voterEmailQueuedToSave: '',
+            voterEmailQueuedToSaveSet: false,
+          };
+        } else {
+          return {
+            ...state,
+            voterEmailQueuedToSave: action.payload,
+            voterEmailQueuedToSaveSet: true,
+          };
+        }
+
       case 'voterFacebookSaveToCurrentAccount':
         // console.log('VoterStore, voterFacebookSaveToCurrentAccount');
         VoterActions.voterRetrieve();
@@ -654,6 +723,38 @@ class VoterStore extends ReduceStore {
             facebook_account_created: action.res.facebook_account_created,
           },
         };
+
+      case 'voterFirstNameQueuedToSave':
+        // console.log('VoterStore voterFirstNameQueuedToSave: ', action.payload);
+        if (action.payload === undefined) {
+          return {
+            ...state,
+            voterFirstNameQueuedToSave: '',
+            voterFirstNameQueuedToSaveSet: false,
+          };
+        } else {
+          return {
+            ...state,
+            voterFirstNameQueuedToSave: action.payload,
+            voterFirstNameQueuedToSaveSet: true,
+          };
+        }
+
+      case 'voterLastNameQueuedToSave':
+        // console.log('VoterStore voterLastNameQueuedToSave: ', action.payload);
+        if (action.payload === undefined) {
+          return {
+            ...state,
+            voterLastNameQueuedToSave: '',
+            voterLastNameQueuedToSaveSet: false,
+          };
+        } else {
+          return {
+            ...state,
+            voterLastNameQueuedToSave: action.payload,
+            voterLastNameQueuedToSaveSet: true,
+          };
+        }
 
       case 'voterMergeTwoAccounts':
         // console.log('VoterStore, voterMergeTwoAccounts');

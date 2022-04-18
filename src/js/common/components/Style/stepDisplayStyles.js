@@ -86,7 +86,7 @@ export const StepNumber = styled('div', {
   color: ${inverseColor ? 'white' : theme.colors.brandBlue};
   font-size: 16px;
   font-weight: 600;
-  margin-top: -2px;
+  line-height: 16px;
   ${theme.breakpoints.down('sm')} {
     font-size: 14px;
   }

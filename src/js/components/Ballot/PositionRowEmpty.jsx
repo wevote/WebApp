@@ -4,7 +4,10 @@ import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
 import styled from 'styled-components';
 import CandidateStore from '../../stores/CandidateStore';
+import FriendStore from '../../stores/FriendStore';
 import MeasureStore from '../../stores/MeasureStore';
+import VoterStore from '../../stores/VoterStore';
+import historyPush from '../../common/utils/historyPush';
 import { renderLog } from '../../common/utils/logging';
 import normalizedImagePath from '../../common/utils/normalizedImagePath';
 import SvgImage from '../../common/components/Widgets/SvgImage';
@@ -18,6 +21,7 @@ class PositionRowEmpty extends Component {
       allCachedPositionsForThisBallotItemLength: 0,
       showSignInModal: false,
     };
+    this.onClickAskFriends = this.onClickAskFriends.bind(this);
     this.toggleShowSignInModal = this.toggleShowSignInModal.bind(this);
   }
 
@@ -33,6 +37,7 @@ class PositionRowEmpty extends Component {
     }
     this.candidateStoreListener = CandidateStore.addListener(this.onCandidateStoreChange.bind(this));
     this.measureStoreListener = MeasureStore.addListener(this.onMeasureStoreChange.bind(this));
+    this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
 
     if (allCachedPositionsForThisBallotItem) {
       const allCachedPositionsForThisBallotItemLength = Object.keys(allCachedPositionsForThisBallotItem).length;
@@ -40,11 +45,15 @@ class PositionRowEmpty extends Component {
         allCachedPositionsForThisBallotItemLength,
       });
     }
+    this.setState({
+      voterIsSignedIn: VoterStore.getVoterIsSignedIn(),
+    });
   }
 
   componentWillUnmount () {
     this.candidateStoreListener.remove();
     this.measureStoreListener.remove();
+    this.voterStoreListener.remove();
   }
 
   onCandidateStoreChange () {
@@ -75,6 +84,35 @@ class PositionRowEmpty extends Component {
         });
       }
     }
+  }
+
+  onVoterStoreChange () {
+    this.setState({
+      voterIsSignedIn: VoterStore.getVoterIsSignedIn(),
+    });
+  }
+
+  onClickAskFriends () {
+    const { voterIsSignedIn } = this.state;
+    if (voterIsSignedIn) {
+      // If profile not complete, start there
+      if (!VoterStore.voterPhotoAndNameExist()) {
+        console.log('Photo or name missing');
+        this.goToAccountSetup();
+      } else if (!FriendStore.currentFriendsExist()) {
+        // If no current friends, start import contacts/friends process
+        console.log('No currentFriendsExist');
+      } else {
+        // If one or more friends, open message interface
+        console.log('friendsExist');
+      }
+    } else {
+      this.toggleShowSignInModal();
+    }
+  }
+
+  goToAccountSetup () {
+    historyPush('/setupaccount');
   }
 
   toggleShowSignInModal () {
@@ -112,13 +150,14 @@ class PositionRowEmpty extends Component {
               signedInTitle={<></>}
               signedOutTitle={<></>}
               toggleOnClose={this.toggleShowSignInModal}
+              uponSuccessfulSignIn={this.goToAccountSetup}
             />
           </Suspense>
         )}
         <NoOneChoosesWrapper>
           Ask friends
         </NoOneChoosesWrapper>
-        <CandidateEndorsementsContainer id={`PositionRowEmpty-${ballotItemWeVoteId}`} onClick={this.toggleShowSignInModal}>
+        <CandidateEndorsementsContainer id={`PositionRowEmpty-${ballotItemWeVoteId}`} onClick={this.onClickAskFriends}>
           <RowItemWrapper>
             <OrganizationPhotoOuterWrapper>
               <OrganizationPhotoInnerWrapper>
