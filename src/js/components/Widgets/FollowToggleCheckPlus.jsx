@@ -7,17 +7,20 @@ import { styled as muiStyled } from '@mui/styles';
 import withTheme from '@mui/styles/withTheme';
 import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
-import React, { Component } from 'react';
+import React, { Component, Suspense } from 'react';
 import styled from 'styled-components';
 import OrganizationActions from '../../actions/OrganizationActions';
 import historyPush from '../../common/utils/historyPush';
 import { renderLog } from '../../common/utils/logging';
 import FriendStore from '../../stores/FriendStore';
+import IssueStore from '../../stores/IssueStore';
 import OrganizationStore from '../../stores/OrganizationStore';
 import VoterGuideStore from '../../stores/VoterGuideStore';
 import VoterStore from '../../stores/VoterStore';
 import { openSnackbar } from './SnackNotifier';
 
+const PositionItemScorePopover = React.lazy(() => import(/* webpackChunkName: 'PositionItemScorePopover' */ './PositionItemScorePopover'));
+const StickyPopover = React.lazy(() => import(/* webpackChunkName: 'StickyPopover' */ '../Ballot/StickyPopover'));
 
 function AlreadyFollowingOrIgnoringButton (params) {
   const { handleClick } = params;
@@ -98,10 +101,11 @@ class FollowToggleCheckPlus extends Component {
   constructor (props) {
     super(props);
     this.state = {
-      // componentDidMountFinished: false,
       isFollowing: false,
       isIgnoring: false,
-      otherVoterWeVoteId: '',
+      linkedToIssueVoterIsFollowing: false,
+      organizationName: '',
+      voterIsFriendsWithThisOrganization: false,
     };
 
     this.followInstantly = this.followInstantly.bind(this);
@@ -119,25 +123,19 @@ class FollowToggleCheckPlus extends Component {
     if (organizationWeVoteId) {
       const organization = OrganizationStore.getOrganizationByWeVoteId(organizationWeVoteId);
       let organizationName = '';
-      let otherVoterWeVoteId = '';
       if (organization) {
         ({
           organization_name: organizationName,
-          linked_voter_we_vote_id: otherVoterWeVoteId,
         } = organization);
       }
       this.setState({
         // componentDidMountFinished: true,
         isFollowing: OrganizationStore.isVoterFollowingThisOrganization(organizationWeVoteId),
         isIgnoring: OrganizationStore.isVoterIgnoringThisOrganization(organizationWeVoteId),
+        linkedToIssueVoterIsFollowing: IssueStore.isOrganizationLinkedToIssueVoterIsFollowing(organizationWeVoteId),
         organizationName,
+        voterIsFriendsWithThisOrganization: FriendStore.isVoterFriendsWithThisOrganization(organizationWeVoteId),
       });
-      if (otherVoterWeVoteId) {
-        this.setState({
-          isFriend: FriendStore.isFriend(otherVoterWeVoteId),
-          otherVoterWeVoteId,
-        });
-      }
     }
     this.onVoterStoreChange();
 
@@ -172,12 +170,10 @@ class FollowToggleCheckPlus extends Component {
   }
 
   onFriendStoreChange () {
-    const { otherVoterWeVoteId } = this.state;
-    if (otherVoterWeVoteId) {
-      this.setState({
-        isFriend: FriendStore.isFriend(otherVoterWeVoteId),
-      });
-    }
+    const { organizationWeVoteId } = this.props;
+    this.setState({
+      voterIsFriendsWithThisOrganization: FriendStore.isVoterFriendsWithThisOrganization(organizationWeVoteId),
+    });
   }
 
   onOrganizationStoreChange () {
@@ -185,36 +181,35 @@ class FollowToggleCheckPlus extends Component {
     // console.log('FollowToggleCheckPlus, onOrganizationStoreChange, organizationWeVoteId: ', organizationWeVoteId);
     if (organizationWeVoteId) {
       const organization = OrganizationStore.getOrganizationByWeVoteId(organizationWeVoteId);
+      // console.log('organization:', organization);
       let organizationName = '';
-      let otherVoterWeVoteId = '';
       if (organization) {
         ({
           organization_name: organizationName,
-          linked_voter_we_vote_id: otherVoterWeVoteId,
         } = organization);
       }
       // console.log('organizationName: ', organizationName);
       this.setState({
         isFollowing: OrganizationStore.isVoterFollowingThisOrganization(organizationWeVoteId),
         isIgnoring: OrganizationStore.isVoterIgnoringThisOrganization(organizationWeVoteId),
+        linkedToIssueVoterIsFollowing: IssueStore.isOrganizationLinkedToIssueVoterIsFollowing(organizationWeVoteId),
         organizationName,
+        voterIsFriendsWithThisOrganization: FriendStore.isVoterFriendsWithThisOrganization(organizationWeVoteId),
       });
-      if (otherVoterWeVoteId) {
-        this.setState({
-          isFriend: FriendStore.isFriend(otherVoterWeVoteId),
-          otherVoterWeVoteId,
-        });
-      }
     }
   }
 
   onVoterStoreChange () {
+    const { organizationWeVoteId } = this.props;
     const voter = VoterStore.getVoter();
     let voterLinkedOrganizationWeVoteId = '';
     if (voter && voter.linked_organization_we_vote_id) {
       voterLinkedOrganizationWeVoteId = voter.linked_organization_we_vote_id;
     }
-    this.setState({ voterLinkedOrganizationWeVoteId });
+    this.setState({
+      voterIsFriendsWithThisOrganization: FriendStore.isVoterFriendsWithThisOrganization(organizationWeVoteId),
+      voterLinkedOrganizationWeVoteId,
+    });
   }
 
   onVoterGuideStoreChange () {
@@ -229,7 +224,9 @@ class FollowToggleCheckPlus extends Component {
       this.setState({
         isFollowing: OrganizationStore.isVoterFollowingThisOrganization(organizationWeVoteId),
         isIgnoring: OrganizationStore.isVoterIgnoringThisOrganization(organizationWeVoteId),
+        linkedToIssueVoterIsFollowing: IssueStore.isOrganizationLinkedToIssueVoterIsFollowing(organizationWeVoteId),
         organizationName,
+        voterIsFriendsWithThisOrganization: FriendStore.isVoterFriendsWithThisOrganization(organizationWeVoteId),
       });
     }
   }
@@ -341,64 +338,101 @@ class FollowToggleCheckPlus extends Component {
       addToScoreLabelFullWidth, addToScoreLabelOn,
       anchorLeft, ballotItemWeVoteId, classes, currentBallotIdInUrl, hideDropdownButtonUntilFollowing,
       hideStopFollowingButton, hideStopIgnoringButton, lightModeOn, organizationWeVoteId,
-      showFollowingText, urlWithoutHash, platformType,
+      platformType, positionWeVoteId, showFollowingText, urlWithoutHash,
     } = this.props;
     if (!organizationWeVoteId) { return <div />; }
 
-    const { isFollowing, isFriend, isIgnoring, voterLinkedOrganizationWeVoteId, organizationName } = this.state;
+    const { isFollowing, isFriend, isIgnoring, linkedToIssueVoterIsFollowing, organizationName, voterIsFriendsWithThisOrganization, voterLinkedOrganizationWeVoteId } = this.state;
     const isLookingAtSelf = voterLinkedOrganizationWeVoteId === organizationWeVoteId;
     // You should not be able to follow yourself
-    if (isLookingAtSelf) { return <div />; }
+    if (isLookingAtSelf) { return <div><CheckStyled /></div>; }
+
+    const positionsPopover = (
+      <PositionItemScorePopover
+        positionWeVoteId={positionWeVoteId}
+        showPersonalScoreInformation
+      />
+    );
 
     const followFunction = () => OrganizationActions.organizationFollow(organizationWeVoteId);
     const stopFollowingFunc = () => OrganizationActions.organizationStopFollowing(organizationWeVoteId);
-    const isFollowingFriendOrIgnoring = isFollowing || isFriend || isIgnoring;
-    const lineParams = { ballotItemWeVoteId, classes, currentBallotIdInUrl, hideDropdownButtonUntilFollowing, hideStopFollowingButton,
-      isFollowing, isFriend, isIgnoring, organizationWeVoteId, platformType, showFollowingText, urlWithoutHash, organizationName,
-      lightModeOn, anchorLeft, hideStopIgnoringButton,
+    const isFollowingFriendOrIgnoring = isFollowing || isFriend || isIgnoring || voterIsFriendsWithThisOrganization;
+    const lineParams = {
+      ballotItemWeVoteId, classes, currentBallotIdInUrl, hideDropdownButtonUntilFollowing,
+      hideStopFollowingButton, isFollowing, isFriend, isIgnoring, lightModeOn,
+      organizationName, organizationWeVoteId, platformType,
+      showFollowingText, urlWithoutHash, anchorLeft, hideStopIgnoringButton,
     };
 
     return (
       <FollowToggleCheckPlusWrapper>
-        {isFollowingFriendOrIgnoring ? (
-          <>
-            <AlreadyFollowingOrIgnoringButton handleClick={this.handleClick} params={lineParams} />
-            <Menu
-              id="simple-menu"
-              anchorEl={this.state.anchorEl}
-              anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
-              transformOrigin={{ vertical: 'top', horizontal: 'left' }}
-              keepMounted
-              open={Boolean(this.state.anchorEl)}
-              onClose={this.handleClose}
-            >
-              <MenuItemStyled onClick={this.handleClose}>
-                {isFollowingFriendOrIgnoring ? (
-                  <UnfollowFollowLine
-                    followFunction={followFunction}
-                    followInstantly={this.followInstantly}
-                    stopFollowingFunc={stopFollowingFunc}
-                    stopFollowingInstantly={this.stopFollowingInstantly}
-                    params={lineParams}
-                  />
-                ) : (
-                  <FollowButton
-                    followFunction={followFunction}
-                    followInstantly={this.followInstantly}
-                    params={lineParams}
-                  />
-                )}
-              </MenuItemStyled>
-            </Menu>
-          </>
+        {(voterIsFriendsWithThisOrganization || linkedToIssueVoterIsFollowing) ? (
+          <FriendOrLinkedToIssue>
+            {positionWeVoteId ? (
+              <Suspense fallback={<></>}>
+                <StickyPopover
+                  delay={{ show: 700, hide: 100 }}
+                  popoverComponent={positionsPopover}
+                  placement="auto"
+                  id="follow-toggle-check-plus-popover-trigger-click-root-close"
+                  key={`positionItemScoreDesktopPopover-${organizationWeVoteId}`}
+                  openOnClick
+                  showCloseIcon
+                >
+                  <div>
+                    <CheckStyled />
+                  </div>
+                </StickyPopover>
+              </Suspense>
+            ) : (
+              <div>
+                <CheckStyled />
+              </div>
+            )}
+          </FriendOrLinkedToIssue>
         ) : (
-          <FollowButton
-            addToScoreLabelFullWidth={addToScoreLabelFullWidth}
-            addToScoreLabelOn={addToScoreLabelOn}
-            followFunction={followFunction}
-            followInstantly={this.followInstantly}
-            params={lineParams}
-          />
+          <>
+            {isFollowingFriendOrIgnoring ? (
+              <>
+                <AlreadyFollowingOrIgnoringButton handleClick={this.handleClick} params={lineParams} />
+                <Menu
+                  id="simple-menu"
+                  anchorEl={this.state.anchorEl}
+                  anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+                  transformOrigin={{ vertical: 'top', horizontal: 'left' }}
+                  keepMounted
+                  open={Boolean(this.state.anchorEl)}
+                  onClose={this.handleClose}
+                >
+                  <MenuItemStyled onClick={this.handleClose}>
+                    {isFollowingFriendOrIgnoring ? (
+                      <UnfollowFollowLine
+                        followFunction={followFunction}
+                        followInstantly={this.followInstantly}
+                        stopFollowingFunc={stopFollowingFunc}
+                        stopFollowingInstantly={this.stopFollowingInstantly}
+                        params={lineParams}
+                      />
+                    ) : (
+                      <FollowButton
+                        followFunction={followFunction}
+                        followInstantly={this.followInstantly}
+                        params={lineParams}
+                      />
+                    )}
+                  </MenuItemStyled>
+                </Menu>
+              </>
+            ) : (
+              <FollowButton
+                addToScoreLabelFullWidth={addToScoreLabelFullWidth}
+                addToScoreLabelOn={addToScoreLabelOn}
+                followFunction={followFunction}
+                followInstantly={this.followInstantly}
+                params={lineParams}
+              />
+            )}
+          </>
         )}
       </FollowToggleCheckPlusWrapper>
     );
@@ -407,19 +441,20 @@ class FollowToggleCheckPlus extends Component {
 FollowToggleCheckPlus.propTypes = {
   addToScoreLabelFullWidth: PropTypes.bool,
   addToScoreLabelOn: PropTypes.bool,
+  anchorLeft: PropTypes.bool,
+  ballotItemWeVoteId: PropTypes.string,
   classes: PropTypes.object,
   currentBallotIdInUrl: PropTypes.string,
   handleIgnore: PropTypes.func,
+  hideDropdownButtonUntilFollowing: PropTypes.bool,
   hideStopFollowingButton: PropTypes.bool,
   hideStopIgnoringButton: PropTypes.bool,
-  ballotItemWeVoteId: PropTypes.string,
+  lightModeOn: PropTypes.bool,
+  organizationWeVoteId: PropTypes.string,
+  platformType: PropTypes.string,
+  positionWeVoteId: PropTypes.string,
   showFollowingText: PropTypes.bool,
   urlWithoutHash: PropTypes.string,
-  organizationWeVoteId: PropTypes.string,
-  hideDropdownButtonUntilFollowing: PropTypes.bool,
-  lightModeOn: PropTypes.bool,
-  anchorLeft: PropTypes.bool,
-  platformType: PropTypes.string,
 };
 
 const styles = () => ({
@@ -452,6 +487,16 @@ const ButtonStyled = muiStyled(Button)({
 });
 
 const FollowToggleCheckPlusWrapper = styled('div')`
+`;
+
+const FriendOrLinkedToIssue = styled('div')`
+  align-items: center;
+  display: flex;
+  height: 40px;
+  margin: '0 !important';
+  min-width: 0;
+  padding: '0 !important';
+  width: 32px;
 `;
 
 const NotInterestedStyled = muiStyled(NotInterested)({

@@ -14,7 +14,7 @@ import { shortenText } from '../../utils/textFormat';
 class HeaderBackToButton extends Component {
   render () {
     renderLog('HeaderBackToButton');  // Set LOG_RENDER_EVENTS to log all renders
-    const { classes, className, backToLink, backToLinkText } = this.props;
+    const { classes, className, backToLink, backToLinkText, leftAligned } = this.props;
 
     return (
       <StyledButton
@@ -24,7 +24,7 @@ class HeaderBackToButton extends Component {
         className={`${className}`}
         id="backToLinkTabHeaderBackToButton"
         onClick={() => historyPush(backToLink)}
-        style={{ paddingLeft: `${isMobileScreenSize() ? '0' : ''}` }}
+        style={leftAligned ? { paddingLeft: `${isMobileScreenSize() ? '0' : ''}`, marginLeft: '0 !important', minWidth: 24, width: 24 } : { paddingLeft: `${isMobileScreenSize() ? '0' : ''}` }}
       >
         {isIOS() ? (
           <ArrowBackIos className="button-icon" />
@@ -43,6 +43,7 @@ HeaderBackToButton.propTypes = {
   backToLinkText: PropTypes.string,
   className: PropTypes.string,
   classes: PropTypes.object,
+  leftAligned: PropTypes.bool,
 };
 
 const styles = {

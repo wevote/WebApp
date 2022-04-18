@@ -263,30 +263,6 @@ class PositionRowList extends Component {
                   {filteredPositionListLength - numberOfPositionItemsDisplayed}
                   {' '}
                   more
-                  {/* showInfoOnly ? (
-                    <>
-                      {' '}
-                      info
-                    </>
-                  ) : (
-                    <>
-                      {showOppose ? (
-                        <>
-                          {' '}
-                          no
-                        </>
-                      ) : (
-                        <>
-                          {showSupport && (
-                            <>
-                              {' '}
-                              yes
-                            </>
-                          )}
-                        </>
-                      )}
-                    </>
-                  ) */}
                 </ShowMoreEndorsementsLink>
               </ShowMoreEndorsementsContainer>
             </div>

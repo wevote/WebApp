@@ -23,7 +23,7 @@ const AdviceBoxWrapper = styled('div')`
   background-color: #f8f8f8;
   border: 1px solid #ddd;
   border-radius: 5px;
-  margin-top: 20px;
+  margin-top: 40px;
 `;
 
 export {

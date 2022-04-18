@@ -25,6 +25,11 @@ class FriendStore extends ReduceStore {
     return currentFriendList || [];
   }
 
+  currentFriendsExist () {
+    const { currentFriendList } = this.getState();
+    return !!(currentFriendList && currentFriendList.length > 0);
+  }
+
   currentFriendsOrganizationWeVoteIDList () {
     // We track friendships through voter_we_vote_id (as opposed to organization_we_vote_id)
     const { currentFriendsOrganizationWeVoteIds } = this.getState();

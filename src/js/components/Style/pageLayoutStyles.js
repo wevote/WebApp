@@ -56,6 +56,8 @@ export const PageContentContainer = styled('div')(({ theme }) => (`
 
 export const PageContentContainerGetStarted = styled('div')`
   background-color: white;
+  display: flex;
+  justify-content: center;
 `;
 
 
