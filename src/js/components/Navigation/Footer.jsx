@@ -105,7 +105,7 @@ class Footer extends Component {
         {(showFooterMain) && (
           <FooterMainWrapper>
             <Suspense fallback={<span>&nbsp;</span>}>
-              <DelayedLoad waitBeforeShow={4000}>
+              <DelayedLoad waitBeforeShow={1000}>
                 <FooterMain />
               </DelayedLoad>
             </Suspense>

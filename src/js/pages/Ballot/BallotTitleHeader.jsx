@@ -6,6 +6,7 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 import daysUntil from '../../common/utils/daysUntil';
 import { renderLog } from '../../common/utils/logging';
+import stringContains from '../../common/utils/stringContains';
 import BallotStore from '../../stores/BallotStore';
 import VoterStore from '../../stores/VoterStore';
 
@@ -21,7 +22,7 @@ class BallotTitleHeader extends Component {
   render () {
     renderLog('BallotTitleHeader');  // Set LOG_RENDER_EVENTS to log all renders
     // const nextReleaseFeaturesEnabled = webAppConfig.ENABLE_NEXT_RELEASE_FEATURES === undefined ? false : webAppConfig.ENABLE_NEXT_RELEASE_FEATURES;
-    const { centerText, classes, electionDateBelow, linksOff, showBallotCaveat } = this.props;
+    const { centerText, classes, electionDateBelow, linksOff, showBallotCaveat, turnOffVoteByBelow } = this.props;
     const ballotCaveat = BallotStore.getBallotCaveat();
     const electionName = BallotStore.currentBallotElectionName || '';
     const originalTextAddress = BallotStore.getOriginalTextAddress();
@@ -33,6 +34,10 @@ class BallotTitleHeader extends Component {
     const electionDayTextFormatted = electionDayText && window.moment ? window.moment(electionDayText).format('MMM Do, YYYY') : '';
     const electionDayTextObject = electionDayText && window.moment ? <span>{electionDayTextFormatted}</span> : null;
     const daysUntilElection = daysUntil(electionDayText);
+
+    const electionNameContainsWordElection = stringContains('election', electionName.toLowerCase());
+    const stateTextUsed = substitutedState || originalTextState || '';
+    const electionNameContainsState = stringContains(stateTextUsed.toLowerCase(), electionName.toLowerCase());
 
     if (electionName) {
       return (
@@ -49,24 +54,35 @@ class BallotTitleHeader extends Component {
                     <ElectionNameBlock>
                       {(substitutedState && (substitutedState !== '')) ? (
                         <ElectionStateLabel centerText={centerText}>
-                          {substitutedState || ' '}
-                          {' '}
-                          Election
+                          {!electionNameContainsState && (
+                            <>
+                              {substitutedState || ' '}
+                            </>
+                          )}
+                          {!electionNameContainsWordElection && (
+                            <>
+                              {' '}
+                              Election
+                            </>
+                          )}
                         </ElectionStateLabel>
                       ) : (
                         <ElectionStateLabel centerText={centerText}>
-                          {originalTextState || ' '}
-                          {' '}
-                          Election
+                          {!electionNameContainsState && (
+                            <>
+                              {originalTextState || ' '}
+                            </>
+                          )}
+                          {!electionNameContainsWordElection && (
+                            <>
+                              {' '}
+                              Election
+                            </>
+                          )}
                         </ElectionStateLabel>
                       )}
                       <ElectionNameH1 centerText={centerText}>
                         {electionName}
-                        {/* !linksOff && (
-                          <SettingsIconWrapper>
-                            <Settings classes={{ root: classes.settingsIcon }} />
-                          </SettingsIconWrapper>
-                        ) */}
                       </ElectionNameH1>
                       {(showBallotCaveat && ballotCaveat) ? (
                         <BallotAddress centerText={centerText}>
@@ -99,7 +115,7 @@ class BallotTitleHeader extends Component {
                           )}
                         </>
                       )}
-                      {electionDayTextObject && (
+                      {(!turnOffVoteByBelow && electionDayTextObject) && (
                         <VoteByBelowWrapper centerText={centerText} electionDateBelow={electionDateBelow}>
                           <VoteByBelowLabel>
                             {daysUntilElection > 0 ? (
@@ -178,6 +194,7 @@ BallotTitleHeader.propTypes = {
   linksOff: PropTypes.bool,
   showBallotCaveat: PropTypes.bool,
   toggleSelectBallotModal: PropTypes.func,
+  turnOffVoteByBelow: PropTypes.bool,
 };
 
 const styles = {
@@ -253,10 +270,12 @@ const ElectionStateLabel = styled('div', {
   text-transform: uppercase;
 `));
 
-const OverflowContent = styled('div')(({ theme }) => (`
+const OverflowContent = styled('div', {
+  shouldForwardProp: (prop) => !['turnOffVoteByBelow'].includes(prop),
+})(({ theme, turnOffVoteByBelow }) => (`
   display: block;
   flex: 1;
-  height: 97px; // Includes 35px for ballot address
+  ${turnOffVoteByBelow ? 'height: 72px;' : 'height: 97px;'}
   ${theme.breakpoints.down('sm')} {
     height: unset;
   }
@@ -264,8 +283,6 @@ const OverflowContent = styled('div')(({ theme }) => (`
 
 const OverflowContainer = styled('div')`
   flex: 1;
-  // overflow-x: hidden;
-  // overflow-y: hidden;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;

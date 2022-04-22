@@ -52,11 +52,11 @@ class SettingsProfile extends Component {
 
     return (
       <HeaderContentContainer>
-        <Helmet title="General Settings - We Vote" />
+        <Helmet title="Name & Photo Settings - We Vote" />
         <BrowserPushMessage incomingProps={this.props} />
         <div className="card u-padding-bottom--lg">
           <div className="card-main">
-            <h1 className="h2">General Settings</h1>
+            <h1 className="h2">Name &amp; Photo Settings</h1>
             <IntroductionWrapper>
               <Info classes={{ root: classes.informationIcon }} />
               We are serious about protecting your information. We are a nonprofit, and will never sell your information.

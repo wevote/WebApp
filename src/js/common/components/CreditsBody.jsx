@@ -29,7 +29,7 @@ class Credits extends Component {
             {' '}
             Please also see the
             {' '}
-            <Link to="/more/attributions" id="attributions">
+            <Link to="/more/attributions" id="attributions" class="u-link-color">
               summary of open source software
             </Link>
             {' '}

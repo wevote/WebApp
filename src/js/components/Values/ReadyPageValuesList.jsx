@@ -10,7 +10,7 @@ import ShowMoreButtons from '../Ready/ShowMoreButtons';
 const ReadMore = React.lazy(() => import(/* webpackChunkName: 'ReadMore' */ '../../common/components/Widgets/ReadMore'));
 const IssueCard = React.lazy(() => import(/* webpackChunkName: 'IssueCard' */ './IssueCard'));
 
-const NUMBER_OF_ISSUES_TO_DISPLAY = 4;
+const NUMBER_OF_ISSUES_TO_DISPLAY = 6;
 
 
 export default class ReadyPageValuesList extends Component {
@@ -98,12 +98,12 @@ export default class ReadyPageValuesList extends Component {
       <ReadyPageValuesListWrapper>
         <div>
           <h1 className="h1">
-            Values to Follow
+            Popular Topics
           </h1>
           <p>
             <Suspense fallback={<></>}>
               <ReadMore
-                textToDisplay="Follow to see endorsements from those who care about the same things you do."
+                textToDisplay="Follow topics to see endorsements on your ballot for candidates from people and groups."
                 numberOfLines={3}
               />
             </Suspense>

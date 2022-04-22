@@ -1,14 +1,17 @@
 import React, { Component } from 'react';
 import Table from 'react-bootstrap/Table';
 import Helmet from 'react-helmet';
-import { Link } from 'react-router-dom';
+import VoterSessionActions from '../../actions/VoterSessionActions';
+import historyPush from '../../common/utils/historyPush';
 import LazyImage from '../../common/components/LazyImage';
 import LoadingWheel from '../../common/components/Widgets/LoadingWheel';
-import HamburgerMenuRow from '../../components/Navigation/HamburgerMenuRow';
+import HamburgerMenuRow from '../../components/Navigation/HamburgerMenuRowCentered';
+import SettingsSectionFooter from '../../components/Navigation/SettingsSectionFooter';
 import DeviceDialog from '../../components/Widgets/DeviceDialog';
 import VoterStore from '../../stores/VoterStore';
 import { avatarGeneric } from '../../utils/applicationUtils';
 import { isCordova, isWebApp } from '../../common/utils/isCordovaOrWebApp';
+import isMobileScreenSize from '../../common/utils/isMobileScreenSize';
 import { renderLog } from '../../common/utils/logging';
 import { PageContentContainer } from '../../components/Style/pageLayoutStyles';
 import voterPhoto from '../../common/utils/voterPhoto';
@@ -64,7 +67,7 @@ export default class HamburgerMenu extends Component {
       <span
         className="header-nav__avatar-wrapper u-cursor--pointer u-flex-none"
         id="profileAvatarHeaderBar"
-        onClick={this.toggleProfilePopUp}
+        onClick={this.goToSettings}
       >
         {voterPhotoUrlMedium ? (
           <div className={isWebApp() ? 'header-nav__avatar' : 'header-nav__avatar-cordova header-nav__cordova'}>
@@ -86,6 +89,18 @@ export default class HamburgerMenu extends Component {
     );
   }
 
+  voterSignOut = () => {
+    VoterSessionActions.voterSignOut();
+  }
+
+  goToSettings () {
+    if (isMobileScreenSize()) {
+      historyPush('/settings/hamburger');
+    } else {
+      historyPush('/settings/profile');
+    }
+  }
+
   deviceTableVisibilityOff () {
     const { showDeviceDialog } = this.state;
     if (showDeviceDialog === true) {
@@ -104,10 +119,19 @@ export default class HamburgerMenu extends Component {
       return LoadingWheel;
     }
 
-    let { is_signed_in: isSignedIn } = voter;
+    const {
+      linked_organization_we_vote_id: voterOrganizationWeVoteId,
+      twitter_screen_name: voterTwitterScreenName,
+    } = voter;
+    let {
+      is_signed_in: isSignedIn,
+    } = voter;
     const voterPhotoUrlMedium = voterPhoto(voter);
 
     isSignedIn = isSignedIn === undefined || isSignedIn === null ? false : isSignedIn;
+    const yourVoterGuideLink = voterTwitterScreenName ?
+      `/${voterTwitterScreenName}` :
+      `/voterguide/${voterOrganizationWeVoteId}`;
     const nextReleaseFeaturesEnabled = webAppConfig.ENABLE_NEXT_RELEASE_FEATURES === undefined ? false : webAppConfig.ENABLE_NEXT_RELEASE_FEATURES;
 
     // console.log("Hamburger menu this.state.showDeviceDialog " + this.state.showDeviceDialog);
@@ -119,7 +143,7 @@ export default class HamburgerMenu extends Component {
           <tbody>
             <tr className="hamburger-menu__tr">
               <td colSpan={3} style={{ padding: 15 }}>
-                <span className="we-vote-promise" style={{ fontSize: 15 }}>Our Promise: We&apos;ll never sell your email.</span>
+                <div className="we-vote-promise" style={{ fontSize: 15, textAlign: 'center' }}>Our Promise: We&apos;ll never sell your email.</div>
               </td>
             </tr>
 
@@ -136,7 +160,7 @@ export default class HamburgerMenu extends Component {
               <HamburgerMenuRow
                 icon="fa fa-address-card"
                 iconStyle={{ fontSize: 28, color: '#1c2f4b' }}
-                linkText="General"
+                linkText="Name & Photo"
                 onClickAction={null}
                 to="/settings/profile"
               />
@@ -161,13 +185,13 @@ export default class HamburgerMenu extends Component {
               />
             )}
 
-            <HamburgerMenuRow
-              icon="fa fa-users"
-              iconStyle={{ fontSize: 22, color: '#1c2f4b' }}
-              linkText="About We Vote"
-              onClickAction={null}
-              to="/more/about"
-            />
+            {isSignedIn && (
+              <HamburgerMenuRow
+                linkText="Your Endorsements"
+                onClickAction={null}
+                to={yourVoterGuideLink}
+              />
+            )}
 
             {isSignedIn && (
               <HamburgerMenuRow
@@ -234,57 +258,20 @@ export default class HamburgerMenu extends Component {
               />
             )}
 
-            {isWebApp() && (
+            {isSignedIn && (
               <HamburgerMenuRow
-                icon="fa fa-tools"
+                icon="fa fa-bullhorn"
                 iconStyle={{ fontSize: 24, color: '#1c2f4b' }}
-                linkText="Tools for Your Website"
-                onClickAction={null}
-                showProChip
-                to="/settings/tools"
+                linkText="Sign Out"
+                onClickAction={this.voterSignOut}
+                to=""
               />
             )}
 
             <tr className="hamburger-terms__tr-terms">
               <td className="hamburger-terms__td" colSpan={3}>
-                <div>
-                  <span className="hamburger-terms__text">
-                    <Link to="/more/faq" id="frequentlyAskedQuestions">
-                      <span className="u-no-break">Questions?</span>
-                    </Link>
-                  </span>
-                </div>
-              </td>
-            </tr>
-            <tr className="hamburger-terms__tr-terms">
-              <td className="hamburger-terms__td" colSpan={3}>
-                <div>
-                  <span className="hamburger-terms__text">
-                    <Link to="/more/terms" id="termsOfService">
-                      <span className="u-no-break">Terms of Service</span>
-                    </Link>
-                  </span>
-                </div>
-              </td>
-            </tr>
-            <tr className="hamburger-terms__tr-terms">
-              <td className="hamburger-terms__td" colSpan={3}>
-                <div>
-                  <span className="hamburger-terms__text">
-                    <Link to="/more/privacy">
-                      <span className="u-no-break">Privacy Policy</span>
-                    </Link>
-                  </span>
-                </div>
-              </td>
-            </tr>
-            <tr className="hamburger-terms__tr-terms">
-              <td className="hamburger-terms__td" colSpan={3}>
-                <div>
-                  <span className="hamburger-terms__text">
-                    <Link onClick={this.hideProfilePopUp} to="/more/attributions">Attributions</Link>
-                  </span>
-                </div>
+                <div style={{ marginTop: 15 }} />
+                <SettingsSectionFooter centered />
               </td>
             </tr>
             {isCordova() && (
