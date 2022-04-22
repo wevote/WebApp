@@ -21,7 +21,7 @@ const ReadMore = React.lazy(() => import(/* webpackChunkName: 'ReadMore' */ '../
 class VoterGuideDisplayForList extends PureComponent {
   render () {
     renderLog('VoterGuideDisplayForList');  // Set LOG_RENDER_EVENTS to log all renders
-    if (this.props.organization_we_vote_id === undefined) {
+    if (this.props.organizationWeVoteId === undefined) {
       // console.log('VoterGuideDisplayForList this.props.organization_we_vote_id === undefined');
       return null;
     }
@@ -30,28 +30,28 @@ class VoterGuideDisplayForList extends PureComponent {
     const position = this.props;
 
     const {
-      organization_we_vote_id: organizationWeVoteId,
-      voter_guide_image_url_large: voterGuideImageUrlLarge,
+      organizationWeVoteId,
+      voterGuideImageUrlLarge,
     } = this.props; // twitter_followers_count,
     const numOfLines = 2;
-    const voterGuideDisplayName = this.props.voter_guide_display_name ? this.props.voter_guide_display_name : '';
-    const twitterDescription = this.props.twitter_description ? this.props.twitter_description : '';
+    const voterGuideDisplayName = this.props.voterGuideDisplayName ? this.props.voterGuideDisplayName : '';
+    const twitterDescription = this.props.twitterDescription ? this.props.twitterDescription : '';
     // console.log('VoterGuideDisplayForList twitterDescription: ', twitterDescription);
 
     // If the voter_guide_display_name is in the twitter_description, remove it
     const twitterDescriptionMinusName = removeTwitterNameFromDescription(voterGuideDisplayName, twitterDescription);
 
     // TwitterHandle-based link
-    const voterGuideLink = this.props.twitter_handle ? `/${this.props.twitter_handle}` : `/voterguide/${organizationWeVoteId}`;
+    const voterGuideLink = this.props.twitterHandle ? `/${this.props.twitterHandle}` : `/voterguide/${organizationWeVoteId}`;
 
     let positionDescription = '';
     const isOnBallotItemPage = true; // From 'actor's' perspective: actorSupportsBallotItemLabel
-    if (position.vote_smart_rating) {
+    if (position.voteSmartRating) {
       positionDescription = <PositionRatingSnippet {...position} />;
-    } else if (position.is_support || position.is_oppose) {
+    } else if (position.isSupport || position.isOppose) {
       positionDescription = <PositionSupportOpposeSnippet {...position} isOnBallotItemPage={isOnBallotItemPage} />;
-    } else if (position.is_information_only) {
-      positionDescription = <PositionInformationOnlySnippet {...position} is_on_ballot_item_page={isOnBallotItemPage} />;
+    } else if (position.isInformationOnly) {
+      positionDescription = <PositionInformationOnlySnippet {...position} isOnBallotItemPage={isOnBallotItemPage} />;
     } else {
       // console.log('VoterGuideDisplayForList NO positionDescription');
     }
@@ -109,22 +109,22 @@ class VoterGuideDisplayForList extends PureComponent {
 }
 VoterGuideDisplayForList.propTypes = {
   children: PropTypes.object, // This is how we pass in the FollowToggle
-  organization_we_vote_id: PropTypes.string,
-  voter_guide_image_url_large: PropTypes.string,
-  voter_guide_display_name: PropTypes.string,
-  candidate_name: PropTypes.string,
-  speaker_display_name: PropTypes.string,
-  twitter_description: PropTypes.string,
-  twitter_followers_count: PropTypes.number,
-  twitter_handle: PropTypes.string,
-  is_support: PropTypes.bool,
-  is_positive_rating: PropTypes.bool,
-  is_oppose: PropTypes.bool,
-  is_negative_rating: PropTypes.bool,
-  is_information_only: PropTypes.bool,
-  vote_smart_rating: PropTypes.string,
-  speaker_text: PropTypes.string,
-  more_info_url: PropTypes.string,
+  organizationWeVoteId: PropTypes.string,
+  voterGuideImageUrlLarge: PropTypes.string,
+  voterGuideDisplayName: PropTypes.string,
+  candidateName: PropTypes.string,
+  speakerDisplayName: PropTypes.string,
+  twitterDescription: PropTypes.string,
+  twitterFollowersCount: PropTypes.number,
+  twitterHandle: PropTypes.string,
+  isSupport: PropTypes.bool,
+  isPositiveRating: PropTypes.bool,
+  isOppose: PropTypes.bool,
+  isNegativeRating: PropTypes.bool,
+  isInformationOnly: PropTypes.bool,
+  voteSmartRating: PropTypes.string,
+  speakerText: PropTypes.string,
+  moreInfoUrl: PropTypes.string,
 };
 
 const styles = (theme) => ({
