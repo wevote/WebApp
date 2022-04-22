@@ -87,7 +87,7 @@ export const weVoteBoard = [{
   image: `${photoPath}Jessica_St.John-201905-256x256.png`,
   title: [
     'Director',
-    'Advisor to businesses and non-profits. Believes in the power of the polis. Lover of nature.',
+    'Advisor to businesses and nonprofits. Believes in the power of the polis. Lover of nature.',
   ],
 }, {
   name: 'Billy Wimsatt',
@@ -360,8 +360,17 @@ export const teamOfVolunteers = [{
   name: 'Anisha Jain',
   title: 'San Jose, CA',
 }, {
+  name: 'Joe Evans',
+  title: 'Santa Cruz, CA',
+}, {
   name: 'Ahmed Elgamal',
   title: 'Berkeley, CA',
+}, {
+  name: 'Valerie Patel',
+  title: 'Oklahoma City, OK',
+}, {
+  name: 'Christine Pascual',
+  title: 'San Diego, CA',
 }, {
   name: 'Leon Li',
   title: 'Livermore, CA',
@@ -371,6 +380,9 @@ export const teamOfVolunteers = [{
 }, {
   name: 'Jeff French',
   title: 'Oakland, CA',
+}, {
+  name: 'Paige Saez',
+  title: 'Richmond, CA',
 }, {
   name: 'Neelam Joshi',
   title: 'Columbus, OH',
@@ -395,9 +407,6 @@ export const teamOfVolunteers = [{
 }, {
   name: 'Mansi Desai',
   title: 'San Francisco, CA',
-}, {
-  name: 'Joe Evans',
-  title: 'Santa Cruz, CA',
 }, {
   name: 'Bharath D N Reddy',
   title: 'Mountain View, CA',

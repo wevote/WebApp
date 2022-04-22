@@ -71,17 +71,23 @@ export default class SelectVoterGuidesSideBar extends Component {
       voterGuideLinksHtml = voterGuidesOwnedByVoter.map((voterGuide) => {
         const displaySubtitles = true;
         if (voterGuide && voterGuide.we_vote_id) {
-          return (
-            <Column key={`voter-guides-${voterGuide.we_vote_id}`}>
-              <SelectVoterGuidesSideBarLink
-                displaySubtitles={displaySubtitles}
-                electionId={voterGuide.google_civic_election_id}
-                label={ElectionStore.getElectionName(voterGuide.google_civic_election_id)}
-                subtitle={ElectionStore.getElectionDayText(voterGuide.google_civic_election_id)}
-                voterGuideWeVoteId={voterGuide.we_vote_id}
-              />
-            </Column>
-          );
+          const electionNameLabel = ElectionStore.getElectionName(voterGuide.google_civic_election_id);
+          const electionDayText = ElectionStore.getElectionDayText(voterGuide.google_civic_election_id);
+          if (electionNameLabel || electionDayText) {
+            return (
+              <Column key={`voter-guides-${voterGuide.we_vote_id}`}>
+                <SelectVoterGuidesSideBarLink
+                  displaySubtitles={displaySubtitles}
+                  electionId={voterGuide.google_civic_election_id}
+                  label={electionNameLabel}
+                  subtitle={electionDayText}
+                  voterGuideWeVoteId={voterGuide.we_vote_id}
+                />
+              </Column>
+            );
+          } else {
+            return null;
+          }
         } else {
           return null;
         }

@@ -6,13 +6,13 @@ import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
 import OrganizationActions from '../../actions/OrganizationActions';
 import VoterGuideActions from '../../actions/VoterGuideActions';
-import VoterSessionActions from '../../actions/VoterSessionActions';
 import LazyImage from '../../common/components/LazyImage';
 import apiCalming from '../../common/utils/apiCalming';
 import { isIOSAppOnMac, isIPadGiantSize } from '../../common/utils/cordovaUtils';
 import historyPush from '../../common/utils/historyPush';
 import { normalizedHref, normalizedHrefPage } from '../../common/utils/hrefUtils';
 import { isCordova, isWebApp } from '../../common/utils/isCordovaOrWebApp';
+import isMobileScreenSize from '../../common/utils/isMobileScreenSize';
 import { renderLog } from '../../common/utils/logging';
 import voterPhoto from '../../common/utils/voterPhoto';
 import AppObservableStore, { messageService } from '../../stores/AppObservableStore';
@@ -23,14 +23,13 @@ import OrganizationStore from '../../stores/OrganizationStore';
 import VoterStore from '../../stores/VoterStore';
 import { dumpCssFromId } from '../../utils/appleSiliconUtils';
 import { avatarGeneric } from '../../utils/applicationUtils';
-import { shortenText, stringContains } from '../../utils/textFormat';
+import { stringContains } from '../../utils/textFormat';
 import ShareButtonDesktopTablet from '../Share/ShareButtonDesktopTablet';
 import { AppBarForBackTo, OfficeShareWrapper, TopOfPageHeader, TopRowOneLeftContainer, TopRowOneMiddleContainer, TopRowOneRightContainer, TopRowTwoLeftContainer, TopRowTwoRightContainer } from '../Style/pageLayoutStyles';
 import SignInButton from '../Widgets/SignInButton';
 import HeaderBackToButton from './HeaderBackToButton';
 
 const HeaderNotificationMenu = React.lazy(() => import(/* webpackChunkName: 'HeaderNotificationMenu' */ './HeaderNotificationMenu'));
-const HeaderBarProfilePopUp = React.lazy(() => import(/* webpackChunkName: 'HeaderBarProfilePopUp' */ './HeaderBarProfilePopUp'));
 const ShareModal = React.lazy(() => import(/* webpackChunkName: 'ShareModal' */ '../Share/ShareModal'));
 const SignInModal = React.lazy(() => import(/* webpackChunkName: 'SignInModal' */ '../Widgets/SignInModal'));
 
@@ -53,19 +52,12 @@ class HeaderBackToBallot extends Component {
       organization: {},
       organizationHasBeenRetrievedOnce: {},
       organizationWeVoteId: '',
-      profilePopUpOpen: false,
       shareModalStep: '',
       showShareModal: false,
       showSignInModal: false,
       scrolledDown: false,
       voter: {},
-      voterFirstName: '',
     };
-    this.toggleAccountMenu = this.toggleAccountMenu.bind(this);
-    this.hideAccountMenu = this.hideAccountMenu.bind(this);
-    this.hideProfilePopUp = this.hideProfilePopUp.bind(this);
-    this.signOutAndHideProfilePopUp = this.signOutAndHideProfilePopUp.bind(this);
-    this.toggleProfilePopUp = this.toggleProfilePopUp.bind(this);
     this.toggleSignInModal = this.toggleSignInModal.bind(this);
     this.transitionToYourVoterGuide = this.transitionToYourVoterGuide.bind(this);
   }
@@ -182,7 +174,6 @@ class HeaderBackToBallot extends Component {
     // console.log('organizationWeVoteId: ', organizationWeVoteId);
 
     const voter = VoterStore.getVoter();
-    const voterFirstName = VoterStore.getFirstName();
     const voterIsSignedIn = voter.is_signed_in;
     const voterPhotoUrlMedium = voter.voter_photo_url_medium;
     this.setState({
@@ -191,7 +182,6 @@ class HeaderBackToBallot extends Component {
       showShareModal: AppObservableStore.showShareModal(),
       showSignInModal: AppObservableStore.showSignInModal(),
       voter,
-      voterFirstName,
       voterIsSignedIn,
       voterPhotoUrlMedium,
     });
@@ -302,14 +292,12 @@ class HeaderBackToBallot extends Component {
     // console.log('organizationWeVoteId: ', organizationWeVoteId);
 
     const voter = VoterStore.getVoter();
-    const voterFirstName = VoterStore.getFirstName();
     const voterIsSignedIn = voter.is_signed_in;
     const voterPhotoUrlMedium = voter.voter_photo_url_medium;
     this.setState({
       shareModalStep: AppObservableStore.getShareModalStep(),
       showShareModal: AppObservableStore.showShareModal(),
       voter,
-      voterFirstName,
       voterIsSignedIn,
       voterPhotoUrlMedium,
     });
@@ -354,10 +342,6 @@ class HeaderBackToBallot extends Component {
       // console.log('this.state.organizationWeVoteId: ', this.state.organizationWeVoteId, ', nextState.organizationWeVoteId', nextState.organizationWeVoteId);
       return true;
     }
-    if (this.state.profilePopUpOpen !== nextState.profilePopUpOpen) {
-      // console.log('this.state.profilePopUpOpen: ', this.state.profilePopUpOpen, ', nextState.profilePopUpOpen', nextState.profilePopUpOpen);
-      return true;
-    }
     if (this.state.scrolledDown !== nextState.scrolledDown) {
       // console.log('this.state.scrolledDown: ', this.state.scrolledDown, ', nextState.scrolledDown', nextState.scrolledDown);
       return true;
@@ -372,10 +356,6 @@ class HeaderBackToBallot extends Component {
     }
     if (this.state.showSignInModal !== nextState.showSignInModal) {
       // console.log('this.state.showSignInModal: ', this.state.showSignInModal, ', nextState.showSignInModal', nextState.showSignInModal);
-      return true;
-    }
-    if (this.state.voterFirstName !== nextState.voterFirstName) {
-      // console.log('this.state.voterFirstName: ', this.state.voterFirstName, ', nextState.voterFirstName', nextState.voterFirstName);
       return true;
     }
     const { voter, voterIsSignedIn, voterPhotoUrlMedium } = this.state;
@@ -526,7 +506,6 @@ class HeaderBackToBallot extends Component {
       candidateWeVoteId = candID;
     }
     const voter = VoterStore.getVoter();
-    const voterFirstName = VoterStore.getFirstName();
     const voterIsSignedIn = voter.is_signed_in;
     const voterPhotoUrlMedium = voter.voter_photo_url_medium;
     let googleCivicElectionId;
@@ -561,7 +540,6 @@ class HeaderBackToBallot extends Component {
     }
     this.setState({
       voter,
-      voterFirstName,
       voterIsSignedIn,
       voterPhotoUrlMedium,
     });
@@ -609,36 +587,19 @@ class HeaderBackToBallot extends Component {
     }
     VoterGuideActions.voterGuideFollowersRetrieve(voter.linked_organization_we_vote_id);
     VoterGuideActions.voterGuidesFollowedByOrganizationRetrieve(voter.linked_organization_we_vote_id);
-    this.setState({ profilePopUpOpen: false });
   }
 
-  hideAccountMenu () {
-    this.setState({ profilePopUpOpen: false });
-  }
-
-  toggleAccountMenu () {
-    const { profilePopUpOpen } = this.state;
-    this.setState({ profilePopUpOpen: !profilePopUpOpen });
-  }
-
-  toggleProfilePopUp () {
-    const { profilePopUpOpen } = this.state;
-    this.setState({ profilePopUpOpen: !profilePopUpOpen });
+  goToSettings () {
+    if (isMobileScreenSize()) {
+      historyPush('/settings/hamburger');
+    } else {
+      historyPush('/settings/profile');
+    }
   }
 
   toggleSignInModal () {
     const { showSignInModal } = this.state;
-    this.setState({ profilePopUpOpen: false });
     AppObservableStore.setShowSignInModal(!showSignInModal);
-  }
-
-  hideProfilePopUp () {
-    this.setState({ profilePopUpOpen: false });
-  }
-
-  signOutAndHideProfilePopUp () {
-    VoterSessionActions.voterSignOut();
-    this.setState({ profilePopUpOpen: false });
   }
 
   localOrganizationHasBeenRetrievedOnce (organizationWeVoteId) {
@@ -695,8 +656,8 @@ class HeaderBackToBallot extends Component {
     const {
       backToCandidateWeVoteId, backToMeasure, backToMeasureWeVoteId, backToVariable,
       candidate, measureName, officeName,
-      organization, page, profilePopUpOpen, showSignInModal,
-      shareModalStep, showShareModal, voter, voterFirstName, voterIsSignedIn,
+      organization, page, showSignInModal,
+      shareModalStep, showShareModal, voter, voterIsSignedIn,
     } = this.state;
     const voterPhotoUrlMedium = voterPhoto(voter);
     const { classes } = this.props;
@@ -795,12 +756,11 @@ class HeaderBackToBallot extends Component {
               </Suspense>
             )}
             {voterIsSignedIn ? (
-              <span onClick={this.toggleAccountMenu}>
+              <span onClick={this.goToSettings}>
                 {voterPhotoUrlMedium ? (
                   <span
                     id="profileAvatarHeaderBar"
                     className={`header-nav__avatar-container ${isCordova() ? 'header-nav__avatar-cordova' : undefined}`}
-                    onClick={this.toggleProfilePopUp}
                   >
                     <LazyImage
                       className="header-nav__avatar"
@@ -819,29 +779,11 @@ class HeaderBackToBallot extends Component {
                     <IconButton
                       classes={{ root: classes.iconButtonRoot }}
                       id="profileAvatarHeaderBar"
-                      onClick={this.toggleProfilePopUp}
                       size="large"
                     >
-                      <FirstNameWrapper>
-                        {shortenText(voterFirstName, 9)}
-                      </FirstNameWrapper>
                       <AccountCircle />
                     </IconButton>
                   </span>
-                )}
-                {profilePopUpOpen && (
-                  <Suspense fallback={<></>}>
-                    <HeaderBarProfilePopUp
-                      hideProfilePopUp={this.hideProfilePopUp}
-                      onClick={this.toggleProfilePopUp}
-                      profilePopUpOpen={profilePopUpOpen}
-                      signOutAndHideProfilePopUp={this.signOutAndHideProfilePopUp}
-                      toggleProfilePopUp={this.toggleProfilePopUp}
-                      toggleSignInModal={this.toggleSignInModal}
-                      transitionToYourVoterGuide={this.transitionToYourVoterGuide}
-                      voter={voter}
-                    />
-                  </Suspense>
                 )}
               </span>
             ) : (
@@ -925,11 +867,6 @@ const OfficeOrMeasureTitle = styled('div')`
   font-weight: 500;
   height: 19px;
   margin-left: ${() => (isIPadGiantSize() ? '42px' : '')};
-`;
-
-const FirstNameWrapper = styled('div')`
-  font-size: 14px;
-  padding-right: 4px;
 `;
 
 export default withStyles(styles)(HeaderBackToBallot);

@@ -32,14 +32,9 @@ import { renderLog } from '../../common/utils/logging';
 import AddressBox from '../../components/AddressBox';
 import BallotItemCompressed from '../../components/Ballot/BallotItemCompressed';
 import BallotStatusMessage from '../../components/Ballot/BallotStatusMessage';
-// import AddFriendsByEmail from '../../components/Friends/AddFriendsByEmail';
-// import SuggestedFriendsPreview from '../../components/Friends/SuggestedFriendsPreview';
 import BallotDecisionsTabs from '../../components/Navigation/BallotDecisionsTabs';
 import BallotShowAllItemsFooter from '../../components/Navigation/BallotShowAllItemsFooter';
-// import BallotSideBar from '../../components/Navigation/BallotSideBar';
-import EditAddressOneHorizontalRow from '../../components/Ready/EditAddressOneHorizontalRow';
 import { DualHeaderContainer, HeaderContentContainer, HeaderContentOuterContainer, PageContentContainer } from '../../components/Style/pageLayoutStyles';
-// import ValuesToFollowPreview from '../../components/Values/ValuesToFollowPreview';
 import SnackNotifier, { openSnackbar } from '../../components/Widgets/SnackNotifier';
 import webAppConfig from '../../config';
 import AppObservableStore, { messageService } from '../../stores/AppObservableStore';
@@ -96,7 +91,6 @@ class Ballot extends Component {
         position_list: [],
       },
       componentDidMountFinished: false,
-      enableEditAddressOneHorizontalRow: false,
       foundFirstRaceLevel: false,
       isSearching: false,
       lastHashUsedInLinkScroll: '',
@@ -112,7 +106,6 @@ class Ballot extends Component {
       raceLevelFilterItemsInThisBallot: undefined,
       raceLevelFilterType: '',
       scrolledDown: false,
-      showAddressVerificationForm: false,
       showFilterTabs: false,
       totalNumberOfBallotItems: 0,
       voterBallotItemsRetrieveHasReturned: false,
@@ -143,7 +136,6 @@ class Ballot extends Component {
     AppObservableStore.setShowSelectBallotModal(false, false, false);
     this.setState({
       componentDidMountFinished: true,
-      locationGuessClosed: Cookies.get('location_guess_closed'),
       mounted: true,
     });
 
@@ -341,18 +333,6 @@ class Ballot extends Component {
     }
 
     this.preloadTimer = setTimeout(() => lazyPreloadPages(), 2000);
-
-    const { google } = window;
-    if (google === undefined) {
-      this.googleAutoCompleteDelayTimer = setTimeout(() => {
-        // Don't load autocomplete until the Ballot page has had 3 seconds to load,
-        // this prevents the google autocomplete api from loading until it is needed
-        // following the click of "Address & Elections"
-        this.setState({ enableEditAddressOneHorizontalRow: true });
-      }, 3000);
-    } else {
-      this.setState({ enableEditAddressOneHorizontalRow: true });
-    }
 
     if (isWebApp() && webAppConfig.ENABLE_WORKBOX_SERVICE_WORKER &&
         window.serviceWorkerLoaded === undefined) {
@@ -613,21 +593,10 @@ class Ballot extends Component {
         }
       } else {
         // console.log('Ballot.jsx onVoterStoreChange VoterStore.getVoter: ', VoterStore.getVoter());
-        const locationGuessClosed = Cookies.get('location_guess_closed');
         const textForMapSearch = VoterStore.getTextForMapSearch();
-        const showAddressVerificationForm =
-          (!locationGuessClosed && locationGuessClosed !== null) || !textForMapSearch;
-        // 2021-11 From Dale: Automatically opening modals on first page load doesn't test well with voters
-        //  I made changes to EditAddressOneHorizontal to improve the interface.
-        // if (showAddressVerificationForm) {
-        //   // June 2021: Instead of showing the EditAddressOneHorizontal row on an otherwise blank ballot page, open the BallotSelectModal
-        //   AppObservableStore.setShowSelectBallotModal(true, false, false);
-        // }
 
         this.setState({
           googleCivicElectionId: parseInt(VoterStore.electionId(), 10),
-          locationGuessClosed,
-          showAddressVerificationForm,
           textForMapSearch,
           voter: VoterStore.getVoter(),
         });
@@ -755,7 +724,6 @@ class Ballot extends Component {
       ballotElectionList: BallotStore.ballotElectionList(),
       voterBallotItemsRetrieveHasReturned: BallotStore.voterBallotItemsRetrieveHasReturned(),
       completionLevelFilterType,
-      locationGuessClosed: Cookies.get('location_guess_closed'),
     });
 
     if (this.state.ballotLength !== BallotStore.ballotLength) {
@@ -783,7 +751,6 @@ class Ballot extends Component {
   onElectionStoreChange () {
     // console.log('Elections, onElectionStoreChange');
     this.setState({
-      locationGuessClosed: Cookies.get('location_guess_closed'),
       voterBallotList: formatVoterBallotList(ElectionStore.getElectionList()),
     });
   }
@@ -1164,10 +1131,9 @@ class Ballot extends Component {
 
     const {
       ballotSearchResults, ballotWithAllItems, ballotWithItemsFromCompletionFilterType,
-      completionLevelFilterType, doubleFilteredBallotItemsLength, enableEditAddressOneHorizontalRow,
-      isSearching, loadingMoreItems, locationGuessClosed, numberOfBallotItemsToDisplay,
+      completionLevelFilterType, doubleFilteredBallotItemsLength,
+      isSearching, loadingMoreItems, numberOfBallotItemsToDisplay,
       scrolledDown, searchText, showFilterTabs, totalNumberOfBallotItems,
-      voterBallotItemsRetrieveHasBeenCalled, voterBallotItemsRetrieveHasReturned,
     } = this.state;
     let { raceLevelFilterType } = this.state;
     if (!raceLevelFilterType) {
@@ -1249,7 +1215,6 @@ class Ballot extends Component {
     const sourcePollingLocationWeVoteId = BallotStore.currentBallotPollingLocationSource;
     const ballotReturnedAdminEditUrl = `${webAppConfig.WE_VOTE_SERVER_ROOT_URL}b/${sourcePollingLocationWeVoteId}/list_edit_by_polling_location/?google_civic_election_id=${VoterStore.electionId()}&state_code=`;
     // console.log('electionName: ', electionName, ', electionDayText: ', electionDayText);
-    const showAddressVerificationForm = !locationGuessClosed || !textForMapSearch;
 
     const emptyBallotButton = completionLevelFilterType !== 'none' && !voterAddressMissing ? (
       <EmptyBallotNotice>
@@ -1453,15 +1418,6 @@ class Ballot extends Component {
                 {/* eslint-disable-next-line no-nested-ternary */}
                 <div className={showBallotDecisionsTabs() ? 'row ballot__body' : isWebApp() || twoColumnDisplay ? 'row ballot__body__no-decision-tabs' : undefined}>
                   <div className="col-12">
-                    {(showAddressVerificationForm && (voterBallotItemsRetrieveHasReturned || !voterBallotItemsRetrieveHasBeenCalled)) && (
-                      <EditAddressWrapper>
-                        <EditAddressCard className="card">
-                          {enableEditAddressOneHorizontalRow && (
-                            <EditAddressOneHorizontalRow saveUrl="/ballot" onSave={this.onVoterAddressSave} />
-                          )}
-                        </EditAddressCard>
-                      </EditAddressWrapper>
-                    )}
                     {emptyBallot}
                   </div>
                   {ballotWithItemsFromCompletionFilterType.length > 0 ? (
@@ -1604,46 +1560,6 @@ class Ballot extends Component {
                       </span>
                     ) : null}
                   </div>
-
-                  {/*
-                  <div className={twoColumnDisplay ? '' : 'col-lg-3 d-none d-lg-block sidebar-menu'} style={rightTwoColumnDisplay} id="rightColumnSidebar">
-                    { ballotWithItemsFromCompletionFilterType.length > 5 && (
-                      <BallotSideBar
-                        activeRaceItem={raceLevelFilterType}
-                        displayTitle
-                        displaySubtitles
-                        rawUrlVariablesString={search}
-                        ballotWithAllItemsByFilterType={ballotWithItemsFromCompletionFilterType}
-                        ballotItemLinkHasBeenClicked={this.ballotItemLinkHasBeenClicked}
-                        raceLevelFilterItemsInThisBallot={raceLevelFilterItemsInThisBallot}
-                      />
-                    )}
-                    {((ballotWithAllItems.length > 0) && (issuesFollowedCount < 3)) && (
-                      <ValuesListWrapper>
-                        <ValuesToFollowPreview
-                          followToggleOnItsOwnLine
-                          includeLinkToIssue
-                        />
-                      </ValuesListWrapper>
-                    )}
-                    {(ballotWithAllItems.length > 0) && (
-                      <SuggestedFriendsPreview friendsToShowMaxIncoming={7} inSideColumn />
-                    )}
-                    {(ballotWithAllItems.length > 0) && (
-                      <div className="card">
-                        <div className="card-main">
-                          <SectionTitle>
-                            Voting Is Better with Friends
-                          </SectionTitle>
-                          <SectionDescription>
-                            Hear about upcoming elections and what you can do to get ready to vote. Add friends you feel comfortable talking politics with.
-                          </SectionDescription>
-                          <AddFriendsByEmail addAnotherButtonOff inSideColumn uniqueExternalId="sidebar" />
-                        </div>
-                      </div>
-                    )}
-                  </div>
-                  */}
                 </div>
               </BallotWrapper>
             </div>
@@ -1702,17 +1618,6 @@ const BallotTitleHeaderWrapper = styled('div', {
   margin-top: ${marginTopOffset};
   // height: 80px; // Includes 35px for ballot address
   transition: all 150ms ease-in;
-`));
-
-const EditAddressCard = styled('div')`
-  padding: 12px 15px 0 15px;
-`;
-
-const EditAddressWrapper = styled('div')(({ theme }) => (`
-  ${theme.breakpoints.down('sm')} {
-    padding-left: 0 !important;
-    padding-right: 0 !important;
-  }
 `));
 
 const EmptyBallotCard = styled('div')`

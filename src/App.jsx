@@ -23,7 +23,7 @@ import RouterV5SendMatch from './js/utils/RouterV5SendMatch';
 
 const About = React.lazy(() => import(/* webpackChunkName: 'About' */ './js/pages/More/About'));
 const AbsenteeBallot = React.lazy(() => import(/* webpackChunkName: 'AbsenteeBallot' */ './js/pages/More/AbsenteeBallot'));
-const AccountSetupRoot = React.lazy(() => import(/* webpackChunkName: 'SetUpAccountRoot' */ './js/pages/SetUpAccount/SetUpAccountRoot'));
+const SetUpAccountRoot = React.lazy(() => import(/* webpackChunkName: 'SetUpAccountRoot' */ './js/pages/SetUpAccount/SetUpAccountRoot'));
 const AddCandidateForExtension = React.lazy(() => import(/* webpackChunkName: 'AddCandidateForExtension' */ './js/pages/Ballot/AddCandidateForExtension'));
 const AppleSignInProcess = React.lazy(() => import(/* webpackChunkName: 'AppleSignInProcess' */ './js/pages/Process/AppleSignInProcess'));
 const Attributions = React.lazy(() => import(/* webpackChunkName: 'Attributions' */ './js/pages/More/Attributions'));
@@ -345,8 +345,8 @@ class App extends Component {
                     <Route path="/ready/modal/:modal_to_show" exact render={(props) => (<RouterV5SendMatch componentName="Ready" {...props} />)} />
                     <Route path="/register" component={Register} />
                     <Route path="/sign_in_email/:email_secret_key" component={SignInEmailProcess} />
-                    <Route path="/setupaccount/:set_up_page" exact component={AccountSetupRoot} />
-                    <Route path="/setupaccount" exact><AccountSetupRoot /></Route>
+                    <Route path="/setupaccount/:set_up_page" exact component={SetUpAccountRoot} />
+                    <Route path="/setupaccount" exact><SetUpAccountRoot /></Route>
                     <Route path="/start" exact><Start /></Route>
                     <Route path="/terms" component={TermsOfService} />
                     <Route path="/twittersigninprocess/:sign_in_step" component={TwitterSignInProcess} />

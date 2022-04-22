@@ -8,7 +8,6 @@ import BallotActions from '../../actions/BallotActions';
 import OrganizationActions from '../../actions/OrganizationActions';
 import VoterActions from '../../actions/VoterActions';
 import VoterGuideActions from '../../actions/VoterGuideActions';
-import VoterSessionActions from '../../actions/VoterSessionActions';
 import LazyImage from '../../common/components/LazyImage';
 import apiCalming from '../../common/utils/apiCalming';
 import { hasIPhoneNotch, historyPush, isDeviceZoomed, isIOS, isIOSAppOnMac } from '../../common/utils/cordovaUtils';
@@ -25,7 +24,7 @@ import FriendStore from '../../stores/FriendStore';
 import VoterStore from '../../stores/VoterStore';
 import { avatarGeneric, displayTopMenuShadow, weVoteBrandingOff } from '../../utils/applicationUtils';
 import getHeaderObjects from '../../utils/getHeaderObjects';
-import { shortenText, stringContains } from '../../utils/textFormat';
+import { stringContains } from '../../utils/textFormat';
 import { TopOfPageHeader, TopRowOneLeftContainer, TopRowOneMiddleContainer, TopRowOneRightContainer, TopRowTwoLeftContainer } from '../Style/pageLayoutStyles';
 import SignInButton from '../Widgets/SignInButton';
 import signInModalGlobalState from '../Widgets/signInModalGlobalState';
@@ -35,7 +34,6 @@ import HeaderBarModals from './HeaderBarModals';
 import TabWithPushHistory from './TabWithPushHistory';
 
 
-const HeaderBarProfilePopUp = React.lazy(() => import(/* webpackChunkName: 'HeaderBarProfilePopUp' */ './HeaderBarProfilePopUp'));
 const HeaderNotificationMenu = React.lazy(() => import(/* webpackChunkName: 'HeaderNotificationMenu' */ './HeaderNotificationMenu'));
 
 /* global $ */
@@ -55,7 +53,6 @@ class HeaderBar extends Component {
       hideWeVoteLogo: false,
       // paidAccountUpgradeMode: '',
       priorPath: '',
-      profilePopUpOpen: false,
       scrolledDown: false,
       showAdviserIntroModal: false,
       showChooseOrOpposeIntroModal: false,
@@ -85,9 +82,6 @@ class HeaderBar extends Component {
     this.closeShareModal = this.closeShareModal.bind(this);
     this.closeSignInModal = this.closeSignInModal.bind(this);
     this.debugLogging = this.debugLogging.bind(this);
-    this.hideProfilePopUp = this.hideProfilePopUp.bind(this);
-    this.signOutAndHideProfilePopUp = this.signOutAndHideProfilePopUp.bind(this);
-    this.toggleProfilePopUp = this.toggleProfilePopUp.bind(this);
     this.toggleSelectBallotModal = this.toggleSelectBallotModal.bind(this);
     this.toggleSignInModal = this.toggleSignInModal.bind(this);
     this.transitionToYourVoterGuide = this.transitionToYourVoterGuide.bind(this);
@@ -167,9 +161,6 @@ class HeaderBar extends Component {
       update = true;
     } else if (this.state.page !== normalizedHrefPage()) {
       // console.log('shouldComponentUpdate: this.state.page', this.state.page, ', normalizedHrefPage()', normalizedHrefPage());
-      update = true;
-    } else if (this.state.profilePopUpOpen !== nextState.profilePopUpOpen) {
-      // console.log('shouldComponentUpdate: this.state.profilePopUpOpen', this.state.profilePopUpOpen, ', nextState.profilePopUpOpen', nextState.profilePopUpOpen);
       update = true;
     } else if (this.state.aboutMenuOpen !== nextState.aboutMenuOpen) {
       // console.log('shouldComponentUpdate: this.state.aboutMenuOpen", this.state.aboutMenuOpen, ', nextState.aboutMenuOpen', nextState.aboutMenuOpen);
@@ -264,7 +255,6 @@ class HeaderBar extends Component {
     return update;
   }
 
-
   componentDidUpdate () {
     // console.log('HeaderBar componentDidUpdate');
     const { location: { pathname } } = window;
@@ -281,7 +271,6 @@ class HeaderBar extends Component {
       this.customHighlightSelector();
     }
   }
-
 
   componentDidCatch (error, info) {
     // We should get this information to Splunk!
@@ -388,12 +377,6 @@ class HeaderBar extends Component {
     }
   }
 
-  setShowAddressButtonIfMobile (newState) {
-    if (AppObservableStore.showEditAddressButton() !== newState) {
-      AppObservableStore.setShowEditAddressButton(newState);
-    }
-  }
-
   goToSearch = () => {
     historyPush('/opinions');
   }
@@ -438,11 +421,6 @@ class HeaderBar extends Component {
     }
   }
 
-  toggleProfilePopUp () {
-    const { profilePopUpOpen } = this.state;
-    this.setState({ profilePopUpOpen: !profilePopUpOpen });
-  }
-
   // December 2020: destinationUrlForHistoryPush is not defined in this class, so we never make the HistoryPush
   // eslint-disable-next-line no-unused-vars
   toggleSelectBallotModal (showSelectBallotModalHideAddress = false, showSelectBallotModalHideElections = false) {
@@ -474,15 +452,6 @@ class HeaderBar extends Component {
     });
   }
 
-  hideProfilePopUp () {
-    this.setState({ profilePopUpOpen: false });
-  }
-
-  signOutAndHideProfilePopUp () {
-    VoterSessionActions.voterSignOut();
-    this.setState({ profilePopUpOpen: false });
-  }
-
   transitionToYourVoterGuide () {
     // Positions for this organization, for this voter/election
     OrganizationActions.positionListForOpinionMaker(this.state.voter.linked_organization_we_vote_id, true);
@@ -497,7 +466,6 @@ class HeaderBar extends Component {
     }
     VoterGuideActions.voterGuideFollowersRetrieve(this.state.voter.linked_organization_we_vote_id);
     VoterGuideActions.voterGuidesFollowedByOrganizationRetrieve(this.state.voter.linked_organization_we_vote_id);
-    this.setState({ profilePopUpOpen: false });
   }
 
   debugLogging (text) {
@@ -552,6 +520,14 @@ class HeaderBar extends Component {
     this.setState({ page: normalizedHrefPage() });
   }
 
+  goToSettings () {
+    if (isMobileScreenSize()) {
+      historyPush('/settings/hamburger');
+    } else {
+      historyPush('/settings/profile');
+    }
+  }
+
   render () {
     renderLog('HeaderBar');  // Set LOG_RENDER_EVENTS to log all renders
     if (!this.state.componentDidMountFinished) {
@@ -565,7 +541,7 @@ class HeaderBar extends Component {
       showPaidAccountUpgradeModal, showPersonalizedScoreIntroModal,
       showSelectBallotModal, showSelectBallotModalHideAddress, showSelectBallotModalHideElections,
       showShareModal, showSignInModal, showValuesIntroModal, showImageUploadModal,
-      voter, voterFirstName, voterIsSignedIn, tabsValue,
+      voter, voterIsSignedIn, tabsValue,
     } = this.state;
     /* eslint object-property-newline: ["off"] */
     const shows = {
@@ -731,7 +707,7 @@ class HeaderBar extends Component {
                 <div id="profileAvatarHeaderBar"
                   className={`header-nav__avatar-container ${isCordova() ? 'header-nav__avatar-cordova' : undefined}`}
                   style={isCordova() ? { marginBottom: 2 } : {}}
-                  onClick={this.toggleProfilePopUp}
+                  onClick={this.goToSettings}
                 >
                   <LazyImage
                     className="header-nav__avatar"
@@ -745,20 +721,6 @@ class HeaderBar extends Component {
                     alt="Your Settings"
                   />
                 </div>
-                {this.state.profilePopUpOpen && voterIsSignedIn && (
-                  <Suspense fallback={<></>}>
-                    <HeaderBarProfilePopUp
-                      hideProfilePopUp={this.hideProfilePopUp}
-                      onClick={this.toggleProfilePopUp}
-                      profilePopUpOpen={this.state.profilePopUpOpen}
-                      signOutAndHideProfilePopUp={this.signOutAndHideProfilePopUp}
-                      toggleProfilePopUp={this.toggleProfilePopUp}
-                      toggleSignInModal={this.toggleSignInModal}
-                      transitionToYourVoterGuide={this.transitionToYourVoterGuide}
-                      voter={voter}
-                    />
-                  </Suspense>
-                )}
               </>
             ) : (voterIsSignedIn && (
               <>
@@ -774,28 +736,11 @@ class HeaderBar extends Component {
                 <IconButton
                   classes={{ root: classes.iconButtonRoot }}
                   id="profileAvatarHeaderBar"
-                  onClick={this.toggleProfilePopUp}
+                  onClick={this.goToSettings}
                   size="large"
                 >
-                  <FirstNameWrapper>
-                    {shortenText(voterFirstName, 9)}
-                  </FirstNameWrapper>
                   <AccountCircle />
                 </IconButton>
-                {this.state.profilePopUpOpen && voterIsSignedIn && (
-                  <Suspense fallback={<></>}>
-                    <HeaderBarProfilePopUp
-                      hideProfilePopUp={this.hideProfilePopUp}
-                      onClick={this.toggleProfilePopUp}
-                      profilePopUpOpen={this.state.profilePopUpOpen}
-                      signOutAndHideProfilePopUp={this.signOutAndHideProfilePopUp}
-                      toggleProfilePopUp={this.toggleProfilePopUp}
-                      toggleSignInModal={this.toggleSignInModal}
-                      transitionToYourVoterGuide={this.transitionToYourVoterGuide}
-                      voter={voter}
-                    />
-                  </Suspense>
-                )}
               </>
             ))}
             {!voterIsSignedIn && (
@@ -956,11 +901,6 @@ const AddressWrapperDesktop = styled('div')`
 
 const AddressWrapperMobile = styled('div')`
   margin-top: 9px;
-`;
-
-const FirstNameWrapper = styled('div')`
-  font-size: 14px;
-  padding-right: 4px;
 `;
 
 // TODO: March 22, 2022 Dale to work on this (it is half way converted to a new ui scheme)

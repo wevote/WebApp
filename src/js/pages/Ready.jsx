@@ -1,3 +1,4 @@
+import { Button } from '@mui/material';
 import withStyles from '@mui/styles/withStyles';
 import withTheme from '@mui/styles/withTheme';
 import PropTypes from 'prop-types';
@@ -16,9 +17,8 @@ import daysUntil from '../common/utils/daysUntil';
 import historyPush from '../common/utils/historyPush';
 import { isWebApp } from '../common/utils/isCordovaOrWebApp';
 import { renderLog } from '../common/utils/logging';
+import ReadyFinePrint from '../components/Ready/ReadyFinePrint';
 import ReadyIntroduction from '../components/Ready/ReadyIntroduction';
-import ReadyInformationDisclaimer from '../components/Ready/ReadyInformationDisclaimer';
-import ReadyTaskBallot from '../components/Ready/ReadyTaskBallot';
 import ReadyTaskPlan from '../components/Ready/ReadyTaskPlan';
 import ReadyTaskRegister from '../components/Ready/ReadyTaskRegister';
 import { PageContentContainer } from '../components/Style/pageLayoutStyles';
@@ -218,7 +218,6 @@ class Ready extends Component {
       electionDataExistsForUpcomingElection, voterIsSignedIn,
     } = this.state;
 
-    // console.log('locationGuessClosed:', locationGuessClosed, ', textForMapSearch:', textForMapSearch, ', showAddressVerificationForm:', showAddressVerificationForm);
     return (
       <PageContentContainer>
         <Suspense fallback={<></>}>
@@ -234,6 +233,22 @@ class Ready extends Component {
                   </Suspense>
                 </ElectionCountdownInnerWrapper>
               </ElectionCountdownOuterWrapper>
+              <ViewBallotButtonWrapper className="col-12">
+                {(voterIsSignedIn && electionDataExistsForUpcomingElection) && (
+                  <Button
+                    color="primary"
+                    onClick={this.goToBallot}
+                    style={{
+                      boxShadow: 'none !important',
+                      textTransform: 'none',
+                      width: 250,
+                    }}
+                    variant="contained"
+                  >
+                    View ballot
+                  </Button>
+                )}
+              </ViewBallotButtonWrapper>
 
               <div className="col-sm-12 col-lg-8">
                 {(chosenReadyIntroductionTitle || chosenReadyIntroductionText) && (
@@ -253,35 +268,32 @@ class Ready extends Component {
                     </div>
                   </Card>
                 )}
-                <div className="u-show-mobile">
-                  <ReadyInformationDisclaimer top />
-                </div>
-                {(voterIsSignedIn && electionDataExistsForUpcomingElection) && (
-                  <DelayedLoad waitBeforeShow={100}>
-                    <ReadyTaskBallotWrapper>
-                      <ReadyTaskBallot
-                        arrowsOn
-                      />
-                    </ReadyTaskBallotWrapper>
-                  </DelayedLoad>
-                )}
-                <Suspense fallback={<></>}>
-                  <DelayedLoad waitBeforeShow={500}>
-                    <PrepareForElectionOuterWrapper>
-                      <ReadyPageValuesList sortByNumberOfAdvocates />
-                    </PrepareForElectionOuterWrapper>
-                  </DelayedLoad>
-                </Suspense>
-                <DelayedLoad waitBeforeShow={700}>
+                {isAndroid() && (
                   <ReadyIntroductionMobileWrapper className="u-show-mobile">
-                    <ReadyIntroduction showStep3WhenCompressed />
+                    <DelayedLoad waitBeforeShow={10}>
+                      <ReadyFinePrint showStep3WhenCompressed />
+                    </DelayedLoad>
                   </ReadyIntroductionMobileWrapper>
-                </DelayedLoad>
-                <div className="u-show-mobile">
+                )}
+                <PrepareForElectionOuterWrapper>
+                  <Suspense fallback={<></>}>
+                    <DelayedLoad waitBeforeShow={10}>
+                      <ReadyPageValuesList sortByNumberOfAdvocates />
+                    </DelayedLoad>
+                  </Suspense>
+                </PrepareForElectionOuterWrapper>
+                <ReadyIntroductionMobileWrapper className="u-show-mobile">
                   <DelayedLoad waitBeforeShow={700}>
-                    <ReadyInformationDisclaimer bottom />
+                    <ReadyIntroduction showStep3WhenCompressed />
                   </DelayedLoad>
-                </div>
+                </ReadyIntroductionMobileWrapper>
+                {!isAndroid() && (
+                  <ReadyIntroductionMobileWrapper className="u-show-mobile">
+                    <DelayedLoad waitBeforeShow={700}>
+                      <ReadyFinePrint showStep3WhenCompressed />
+                    </DelayedLoad>
+                  </ReadyIntroductionMobileWrapper>
+                )}
                 {voterIsSignedIn && (
                   <Suspense fallback={<></>}>
                     <FirstAndLastNameRequiredAlert />
@@ -323,7 +335,9 @@ class Ready extends Component {
                 <ReadyIntroductionDesktopWrapper>
                   <ReadyIntroduction showStep3WhenCompressed />
                 </ReadyIntroductionDesktopWrapper>
-                <ReadyInformationDisclaimer bottom />
+                <ReadyIntroductionDesktopWrapper>
+                  <ReadyFinePrint showStep3WhenCompressed />
+                </ReadyIntroductionDesktopWrapper>
                 {/* nextReleaseFeaturesEnabled && <PledgeToVote /> */}
               </div>
             </div>
@@ -363,7 +377,7 @@ const ElectionCountdownInnerWrapper = styled('div')`
 `;
 
 const ElectionCountdownOuterWrapper = styled('div')`
-  margin-bottom: 32px;
+  height: 280px;
   position: relative;
   z-index: 1;
 `;
@@ -382,6 +396,8 @@ const ReadyIntroductionDesktopWrapper = styled('div')`
 `;
 
 const ReadyIntroductionMobileWrapper = styled('div')`
+  display: flex;
+  justify-content: start;
   margin-bottom: 48px;
   margin-top: 31px;
 `;
@@ -389,8 +405,11 @@ const ReadyIntroductionMobileWrapper = styled('div')`
 const ReadyPageContainer = styled('div')`
 `;
 
-const ReadyTaskBallotWrapper = styled('div')`
-  margin-bottom: 68px;
+const ViewBallotButtonWrapper = styled('div')`
+  display: flex;
+  height: 40px;
+  justify-content: center;
+  margin-bottom: 32px;
 `;
 
 const Title = styled('h2')(({ theme }) => (`

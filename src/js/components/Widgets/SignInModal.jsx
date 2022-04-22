@@ -179,7 +179,7 @@ class SignInModal extends Component {
       >
         <DialogTitle>
           <Typography className="text-center">
-            <span className="h2">Sign In</span>
+            <span className="h2">Sign In or Sign Up</span>
           </Typography>
           <IconButton
             aria-label="Close"

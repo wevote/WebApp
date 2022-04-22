@@ -17,8 +17,7 @@ import AppObservableStore, { messageService } from '../../stores/AppObservableSt
 import VoterStore from '../../stores/VoterStore';
 import { avatarGeneric } from '../../utils/applicationUtils';
 import { cordovaWelcomeAppToolbarTop, welcomeAppBarPaddingTop } from '../../utils/cordovaOffsets';
-import { shortenText } from '../../utils/textFormat';
-import { Divider, LogoContainer, MobileNavDivider, MobileNavigationMenu, Navigation, NavLink, NavRow } from '../Welcome/navigationStyles';
+import { Divider, LogoContainer, MobileNavDivider, MobileNavigationMenu, Navigation, NavLink, NavNonLink, NavRow } from '../Welcome/navigationStyles';
 import HeaderBarLogo from './HeaderBarLogo';
 
 const HeaderBarProfilePopUp = React.lazy(() => import(/* webpackChunkName: 'HeaderBarProfilePopUp' */ './HeaderBarProfilePopUp'));
@@ -37,7 +36,6 @@ class WelcomeAppbar extends Component {
       showMobileNavigationMenu: false,
       showPaidAccountUpgradeModal: false,
       showSignInModal: AppObservableStore.showSignInModal(),
-      voterFirstName: '',
     };
     this.closePaidAccountUpgradeModal = this.closePaidAccountUpgradeModal.bind(this);
   }
@@ -71,10 +69,6 @@ class WelcomeAppbar extends Component {
     }
     if (this.state.profilePopUpOpen !== nextState.profilePopUpOpen) {
       // console.log('this.state.profilePopUpOpen', this.state.profilePopUpOpen, ', nextState.profilePopUpOpen', nextState.profilePopUpOpen);
-      return true;
-    }
-    if (this.state.voterFirstName !== nextState.voterFirstName) {
-      // console.log('this.state.voterFirstName: ', this.state.voterFirstName, ', nextState.voterFirstName', nextState.voterFirstName);
       return true;
     }
     if (this.state.voterIsSignedIn !== nextState.voterIsSignedIn) {
@@ -116,12 +110,10 @@ class WelcomeAppbar extends Component {
 
   onVoterStoreChange () {
     const voter = VoterStore.getVoter();
-    const voterFirstName = VoterStore.getFirstName();
     const { linked_organization_we_vote_id: linkedOrganizationWeVoteId, is_signed_in: voterIsSignedIn, voter_photo_url_medium: voterPhotoUrlMedium } = voter;
     this.setState({
       linkedOrganizationWeVoteId,
       voter,
-      voterFirstName,
       voterIsSignedIn,
       voterPhotoUrlMedium,
     });
@@ -200,7 +192,7 @@ class WelcomeAppbar extends Component {
   render () {
     renderLog('WelcomeAppbar');  // Set LOG_RENDER_EVENTS to log all renders
     const { classes, pathname } = this.props;
-    const { /* paidAccountUpgradeMode, */ showMobileNavigationMenu, /* showPaidAccountUpgradeModal, */ showSignInModal, voterFirstName, voterIsSignedIn, voter } = this.state;
+    const { /* paidAccountUpgradeMode, */ showMobileNavigationMenu, /* showPaidAccountUpgradeModal, */ showSignInModal, voterIsSignedIn, voter } = this.state;
     const voterPhotoUrlMedium = voterPhoto(voter);
     let showWelcomeForVoters = false;
     let showWelcomeForOrganizations = false;
@@ -306,7 +298,7 @@ class WelcomeAppbar extends Component {
                 <Divider />}
               <NavLink id="welcomeYourBallot" to="/ready">Your Ballot</NavLink>
               <Divider />
-              {!voterIsSignedIn && <NavLink id="welcomeSignIn" to="" onClick={() => this.toggleSignInModal()}>Sign In</NavLink> }
+              {!voterIsSignedIn && <NavNonLink id="welcomeSignIn" onClick={() => this.toggleSignInModal()}>Sign In</NavNonLink> }
               {voterIsSignedIn && (
                 <div>
                   {voterPhotoUrlMedium ? (
@@ -332,9 +324,6 @@ class WelcomeAppbar extends Component {
                         onClick={this.toggleProfilePopUp}
                         size="large"
                       >
-                        <FirstNameWrapper>
-                          {shortenText(voterFirstName, 9)}
-                        </FirstNameWrapper>
                         <AccountCircle />
                       </IconButton>
                     </ProfileIconWrapper>
@@ -562,11 +551,6 @@ const DesktopView = styled('div')(({ theme }) => (`
     display: none;
   }
 `));
-
-const FirstNameWrapper = styled('div')`
-  font-size: 14px;
-  padding-right: 4px;
-`;
 
 const MobileTabletView = styled('div')(({ theme }) => (`
   display: inherit;

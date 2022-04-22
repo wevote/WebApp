@@ -8,7 +8,6 @@ import { validateEmail } from '../../utils/regex-checks';
 import {
   InputFieldsWrapper,
   OneInputFieldWrapper,
-  SetUpAccountIntroText,
   SetUpAccountTitle,
   StepCenteredWrapper,
 } from '../Style/SetUpAccountStyles';
@@ -55,16 +54,16 @@ class SetUpAccountEditName extends React.Component {
 
     const voter = VoterStore.getVoter();
     const { signed_in_with_email: voterIsSignedInWithEmail, we_vote_id: voterWeVoteId } = voter;
-    // console.log(`CompleteYourProfile onVoterStoreChange isSignedIn: ${isSignedIn}, voterIsSignedInWithEmail: ${voterIsSignedInWithEmail}`);
+    // console.log(`SetUpAccountEditName onVoterStoreChange voterIsSignedInWithEmail: ${voterIsSignedInWithEmail}`);
     if (secretCodeVerified) {
       // Mark that voter supports this campaign
-      // console.log('CompleteYourProfile secretCodeVerified');
+      // console.log('SetUpAccountEditName secretCodeVerified');
       VoterActions.voterRetrieve();
       this.functionToUseWhenProfileCompleteTimer = setTimeout(() => {
         this.props.functionToUseWhenProfileComplete();
       }, 500);
-    } else if (emailAddressStatus.sign_in_code_email_sent) {
-      // console.log('emailAddressStatus.sign_in_code_email_sent');
+    } else if (emailAddressStatus.verification_email_sent) {
+      // console.log('emailAddressStatus.verification_email_sent');
       this.setState({
         showVerifyModal: true,
         voterWeVoteId,
@@ -79,7 +78,7 @@ class SetUpAccountEditName extends React.Component {
         voterWeVoteId,
       });
     } else if (voterIsSignedInWithEmail) {
-      // console.log('CompleteYourProfile onVoterStoreChange voterIsSignedInWithEmail');
+      // console.log('SetUpAccountEditName onVoterStoreChange voterIsSignedInWithEmail');
       if (voterWeVoteId !== voterWeVoteIdPrevious) {
         this.setState({
           voterWeVoteId,
@@ -89,12 +88,12 @@ class SetUpAccountEditName extends React.Component {
   }
 
   closeVerifyModal = (verified = false) => {
-    // console.log('CompleteYourProfile closeVerifyModal, verified:', verified);
+    // console.log('SetUpAccountEditName closeVerifyModal, verified:', verified);
     VoterActions.clearEmailAddressStatus();
     VoterActions.clearSecretCodeVerificationStatus();
     VoterActions.voterRetrieve();
     if (verified && this.props.functionToUseWhenProfileComplete) {
-      // console.log('CompleteYourProfile closeVerifyModal, functionToUseWhenProfileComplete exists');
+      // console.log('SetUpAccountEditName closeVerifyModal, functionToUseWhenProfileComplete exists');
       this.props.functionToUseWhenProfileComplete();
     }
     const delayBeforeClosingVerifyModal = 400;
@@ -164,7 +163,6 @@ class SetUpAccountEditName extends React.Component {
     return (
       <StepCenteredWrapper>
         <SetUpAccountTitle>Set up your account</SetUpAccountTitle>
-        <SetUpAccountIntroText>Using your real name makes it easier for friends to find you.</SetUpAccountIntroText>
         <InputFieldsWrapper>
           <Suspense fallback={<></>}>
             <OneInputFieldWrapper>

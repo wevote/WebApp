@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
-import { Link } from 'react-router-dom';
+import styled from 'styled-components';
 import BallotActions from '../../actions/BallotActions';
 import OrganizationActions from '../../actions/OrganizationActions';
 import VoterActions from '../../actions/VoterActions';
@@ -10,6 +10,7 @@ import { isWebApp } from '../../common/utils/isCordovaOrWebApp';
 import { renderLog } from '../../common/utils/logging';
 import SelectVoterGuidesSideBar from '../../components/Navigation/SelectVoterGuidesSideBar';
 import SettingsPersonalSideBar from '../../components/Navigation/SettingsPersonalSideBar';
+import SettingsSectionFooter from '../../components/Navigation/SettingsSectionFooter';
 import SettingsAddress from '../../components/Settings/SettingsAddress';
 import SettingsAnalytics from '../../components/Settings/SettingsAnalytics';
 import SettingsDomain from '../../components/Settings/SettingsDomain';
@@ -272,28 +273,15 @@ export default class SettingsDashboard extends Component {
                     isSignedIn={this.state.voter.is_signed_in}
                     organizationType={this.state.organizationType}
                   />
-                  <SelectVoterGuidesSideBar
-                    voterGuideWeVoteIdSelected={this.state.voterGuideWeVoteId}
-                  />
 
                   <div className="h4 text-left" />
-                  <div className="u-padding-top--md">
-                    <span className="terms-and-privacy">
-                      <Link to="/more/terms">
-                        <span className="u-no-break">Terms of Service</span>
-                      </Link>
-                      <span style={{ paddingLeft: 20 }} />
-                      <Link to="/more/privacy">
-                        <span className="u-no-break">Privacy Policy</span>
-                      </Link>
-                    </span>
-                  </div>
-                  <div>
-                    <span className="terms-and-privacy">
-                      <Link to="/more/faq">Questions?</Link>
-                      <span style={{ paddingLeft: 20 }} />
-                      <Link to="/more/attributions">Attributions</Link>
-                    </span>
+                  <SettingsSectionFooterWrapper>
+                    <SettingsSectionFooter />
+                  </SettingsSectionFooterWrapper>
+                  <div className="u-padding-top--lg">
+                    <SelectVoterGuidesSideBar
+                      voterGuideWeVoteIdSelected={this.state.voterGuideWeVoteId}
+                    />
                   </div>
                 </div>
                 {/* Desktop mode content */}
@@ -332,3 +320,8 @@ export default class SettingsDashboard extends Component {
 SettingsDashboard.propTypes = {
   match: PropTypes.object,
 };
+
+const SettingsSectionFooterWrapper = styled('div')`
+  margin-top: 35px;
+  padding-left: 15px;
+`;

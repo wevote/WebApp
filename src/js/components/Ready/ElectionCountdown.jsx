@@ -187,7 +187,12 @@ class ElectionCountdown extends React.Component {
           <CardSubTitle center className="u-cursor--pointer" onClick={() => this.onClickFunctionLocal()}>
             {(electionDateMDY) ? (
               <>
-                until your next election.
+                until your next election on
+                {' '}
+                <span className="u-no-break">
+                  {electionDateMDY}
+                  .
+                </span>
               </>
             ) : (<></>)}
           </CardSubTitle>
@@ -197,6 +202,7 @@ class ElectionCountdown extends React.Component {
             centerText
             electionDateBelow
             toggleSelectBallotModal={this.toggleSelectBallotModal}
+            turnOffVoteByBelow
           />
         </BallotTitleHeaderWrapper>
       </CardCountdownInternalWrapper>
@@ -206,20 +212,12 @@ class ElectionCountdown extends React.Component {
         <div>
           <div>
             <CardTitleToday className="u-cursor--pointer" onClick={() => this.onClickFunctionLocal()}>
-              Vote Today!
+              Voting ends today!
             </CardTitleToday>
           </div>
           <div>
             <CardSubTitle center className="u-cursor--pointer" onClick={() => this.onClickFunctionLocal()}>
-              {(electionDateMDY) ? (
-                <>
-                  Your election is today.
-                </>
-              ) : (
-                <>
-                  &nbsp;
-                </>
-              )}
+              {electionDateMDY || ''}
             </CardSubTitle>
           </div>
           <BallotTitleHeaderWrapper>
@@ -275,7 +273,7 @@ class ElectionCountdown extends React.Component {
       htmlToShow = electionIsUpcomingHtml;
     }
     return (
-      <CardCountdown className="card">
+      <CardCountdown>
         <Suspense fallback={<></>}>
           <DelayedLoad waitBeforeShow={250}>
             {htmlToShow}

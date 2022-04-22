@@ -3,6 +3,7 @@ import { normalizedHrefPage } from '../common/utils/hrefUtils';
 import { isCordova, isWebApp } from '../common/utils/isCordovaOrWebApp';
 import normalizedImagePath from '../common/utils/normalizedImagePath';
 import Cookies from '../common/utils/js-cookie/Cookies';
+import VoterStore from '../stores/VoterStore';
 import { stringContains } from './textFormat';
 
 // We have to do all this, because we allow urls where the path starts with a twitter username (handle)
@@ -163,7 +164,6 @@ export function getApplicationViewBooleans (pathname) {
   }
 
   let showFooterBar;
-  let showFooterMain;
   // console.log('stringContains(\'/settings/positions\', pathnameLowerCase):', stringContains('/settings/positions', pathnameLowerCase), pathnameLowerCase);
   if (!pathnameLowerCase) {
     showFooterBar = isCordova();
@@ -193,7 +193,6 @@ export function getApplicationViewBooleans (pathname) {
       stringContains('/settings/positions', pathnameLowerCase)) {
     // We want to HIDE the footer bar on the above path patterns
     showFooterBar = false;
-    showFooterMain = false;
     // ///////// SHOW: The following are URLS where we want the footer to show
   } else if (pathnameLowerCase.startsWith('/ballot') ||
       pathnameLowerCase.startsWith('/candidate') || // Show Footer if back to not specified above
@@ -216,20 +215,21 @@ export function getApplicationViewBooleans (pathname) {
       pathnameLowerCase.startsWith('/settings')) {
     // We want to SHOW the footer bar on the above path patterns
     showFooterBar = isWebApp() || (!isIOSAppOnMac() && isSmallScreen);
-    // Even when showFooterBar is true, in some cases we want showFooterMain to be false
-    if (pathnameLowerCase.startsWith('/friends')) {
-      // hide it
-      showFooterMain = false;
-    } else {
-      showFooterMain = isWebApp();
-    }
   } else {
     // URLs like: https://WeVote.US/orlandosentinel  (The URL pathname consists of a Twitter Handle only)
     contentFullWidthMode = true;
     showFooterBar = isWebApp() || (!isIOSAppOnMac() && isSmallScreen);
-    showFooterMain = isWebApp();
   }
-  // showFooterMain = false;
+
+  // We are only showing the footer on the "Ready" landing page, and if not signed in
+  // Once the voter is signed in, we weave the footer links into the profile page
+  let showFooterMain = false;
+  if (VoterStore.getVoterIsSignedIn()) {
+    // We currently don't show footer once voter is signed in
+  } else if (pathnameLowerCase.startsWith('/ready') ||
+      (pathnameLowerCase === '/')) {
+    showFooterMain = true;
+  }
 
   let showShareButtonFooter = false;
   const onFollowSubPage = stringContains('/m/followers', pathnameLowerCase) || stringContains('/m/following', pathnameLowerCase);

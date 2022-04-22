@@ -458,12 +458,7 @@ class SettingsNotifications extends Component {
                           component="th"
                           scope="row"
                         >
-                          <span className="u-show-mobile">
-                            We Vote Newsletter
-                          </span>
-                          <span className="u-show-desktop-tablet">
-                            I would like to receive the We Vote newsletter
-                          </span>
+                          We Vote newsletter
                         </TableCell>
                         <TableCell align="center" classes={{ root: classes.tableCellColumn }}>
                           &nbsp;

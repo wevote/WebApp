@@ -6,13 +6,13 @@ import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
 import OrganizationActions from '../../actions/OrganizationActions';
 import VoterGuideActions from '../../actions/VoterGuideActions';
-import VoterSessionActions from '../../actions/VoterSessionActions';
 import LazyImage from '../../common/components/LazyImage';
 import apiCalming from '../../common/utils/apiCalming';
 import { hasIPhoneNotch } from '../../common/utils/cordovaUtils';
 import historyPush from '../../common/utils/historyPush';
 import { normalizedHref } from '../../common/utils/hrefUtils';
 import { isCordova, isWebApp } from '../../common/utils/isCordovaOrWebApp';
+import isMobileScreenSize from '../../common/utils/isMobileScreenSize';
 import { renderLog } from '../../common/utils/logging';
 import voterPhoto from '../../common/utils/voterPhoto';
 import AppObservableStore, { messageService } from '../../stores/AppObservableStore';
@@ -22,13 +22,12 @@ import VoterGuideStore from '../../stores/VoterGuideStore';
 import VoterStore from '../../stores/VoterStore';
 import { avatarGeneric } from '../../utils/applicationUtils';
 import isMobile from '../../utils/isMobile';
-import { isProperlyFormattedVoterGuideWeVoteId, shortenText, stringContains } from '../../utils/textFormat';
+import { isProperlyFormattedVoterGuideWeVoteId, stringContains } from '../../utils/textFormat';
 import VoterGuideChooseElectionModal from '../VoterGuide/VoterGuideChooseElectionModal';
 import SignInButton from '../Widgets/SignInButton';
 import EndorsementModeTabs from './EndorsementModeTabs';
 import HeaderBackToButton from './HeaderBackToButton';
 
-const HeaderBarProfilePopUp = React.lazy(() => import(/* webpackChunkName: 'HeaderBarProfilePopUp' */ './HeaderBarProfilePopUp'));
 const SignInModal = React.lazy(() => import(/* webpackChunkName: 'SignInModal' */ '../Widgets/SignInModal'));
 
 
@@ -36,18 +35,11 @@ class HeaderBackToVoterGuides extends Component {
   constructor (props) {
     super(props);
     this.state = {
-      profilePopUpOpen: false,
       showNewVoterGuideModal: false,
       showSignInModal: false,
       voter: {},
-      voterFirstName: '',
       voterIsSignedIn: false,
     };
-    this.toggleAccountMenu = this.toggleAccountMenu.bind(this);
-    this.hideAccountMenu = this.hideAccountMenu.bind(this);
-    this.hideProfilePopUp = this.hideProfilePopUp.bind(this);
-    this.signOutAndHideProfilePopUp = this.signOutAndHideProfilePopUp.bind(this);
-    this.toggleProfilePopUp = this.toggleProfilePopUp.bind(this);
     this.toggleSignInModal = this.toggleSignInModal.bind(this);
     this.toggleVoterGuideModal = this.toggleVoterGuideModal.bind(this);
     this.transitionToYourVoterGuide = this.transitionToYourVoterGuide.bind(this);
@@ -95,13 +87,11 @@ class HeaderBackToVoterGuides extends Component {
 
     // console.log('organizationWeVoteId: ', organizationWeVoteId);
     const voter = VoterStore.getVoter();
-    const voterFirstName = VoterStore.getFirstName();
     const voterIsSignedIn = voter.is_signed_in;
     this.setState({
       showNewVoterGuideModal: AppObservableStore.showNewVoterGuideModal(),
       showSignInModal: AppObservableStore.showSignInModal(),
       voter,
-      voterFirstName,
       voterIsSignedIn,
     });
   }
@@ -126,11 +116,9 @@ class HeaderBackToVoterGuides extends Component {
     // console.log('organizationWeVoteId: ', organizationWeVoteId);
 
     const voter = VoterStore.getVoter();
-    const voterFirstName = VoterStore.getFirstName();
     const voterIsSignedIn = voter.is_signed_in;
     this.setState({
       voter,
-      voterFirstName,
       voterIsSignedIn,
       voterGuideWeVoteId: nextParams ? nextParams.voter_guide_we_vote_id : undefined,
     });
@@ -182,11 +170,9 @@ class HeaderBackToVoterGuides extends Component {
 
   onVoterStoreChange () {
     const voter = VoterStore.getVoter();
-    const voterFirstName = VoterStore.getFirstName();
     const voterIsSignedIn = voter.is_signed_in;
     this.setState({
       voter,
-      voterFirstName,
       voterIsSignedIn,
     });
   }
@@ -197,6 +183,14 @@ class HeaderBackToVoterGuides extends Component {
       voterGuideDisplay = `/voterguide/${this.state.voterGuide.organization_we_vote_id}/ballot/election/${this.state.voterGuide.google_civic_election_id}/positions`;
     }
     historyPush(voterGuideDisplay);
+  }
+
+  goToSettings () {
+    if (isMobileScreenSize()) {
+      historyPush('/settings/hamburger');
+    } else {
+      historyPush('/settings/general');
+    }
   }
 
   transitionToYourVoterGuide () {
@@ -211,21 +205,6 @@ class HeaderBackToVoterGuides extends Component {
     }
     VoterGuideActions.voterGuideFollowersRetrieve(voter.linked_organization_we_vote_id);
     VoterGuideActions.voterGuidesFollowedByOrganizationRetrieve(voter.linked_organization_we_vote_id);
-    this.setState({ profilePopUpOpen: false });
-  }
-
-  hideAccountMenu () {
-    this.setState({ profilePopUpOpen: false });
-  }
-
-  toggleAccountMenu () {
-    const { profilePopUpOpen } = this.state;
-    this.setState({ profilePopUpOpen: !profilePopUpOpen });
-  }
-
-  toggleProfilePopUp () {
-    const { profilePopUpOpen } = this.state;
-    this.setState({ profilePopUpOpen: !profilePopUpOpen });
   }
 
   closeSignInModal () {
@@ -234,17 +213,7 @@ class HeaderBackToVoterGuides extends Component {
 
   toggleSignInModal () {
     const { showSignInModal } = this.state;
-    this.setState({ profilePopUpOpen: false });
     AppObservableStore.setShowSignInModal(!showSignInModal);
-  }
-
-  hideProfilePopUp () {
-    this.setState({ profilePopUpOpen: false });
-  }
-
-  signOutAndHideProfilePopUp () {
-    VoterSessionActions.voterSignOut();
-    this.setState({ profilePopUpOpen: false });
   }
 
   toggleVoterGuideModal () {
@@ -256,8 +225,8 @@ class HeaderBackToVoterGuides extends Component {
   render () {
     renderLog('HeaderBackToVoterGuides');  // Set LOG_RENDER_EVENTS to log all renders
     const {
-      profilePopUpOpen, showNewVoterGuideModal, showSignInModal,
-      voter, voterFirstName, voterIsSignedIn,
+      showNewVoterGuideModal, showSignInModal,
+      voter, voterIsSignedIn,
     } = this.state;
     const { classes } = this.props;
     const pathname = normalizedHref();
@@ -338,12 +307,11 @@ class HeaderBackToVoterGuides extends Component {
           <div className="header-nav__avatar-wrapper u-cursor--pointer u-flex">
             { changeElectionButtonHtml }
             {voterIsSignedIn ? (
-              <span>
+              <span onClick={this.goToSettings}>
                 {voterPhotoUrlMedium ? (
                   <div
                     id="profileAvatarHeaderBar"
                     className={`header-nav__avatar-container ${isCordova() ? 'header-nav__avatar-cordova' : undefined}`}
-                    onClick={this.toggleProfilePopUp}
                   >
                     <LazyImage
                       className="header-nav__avatar"
@@ -362,29 +330,11 @@ class HeaderBackToVoterGuides extends Component {
                     <IconButton
                       classes={{ root: classes.iconButtonRoot }}
                       id="profileAvatarHeaderBar"
-                      onClick={this.toggleProfilePopUp}
                       size="large"
                     >
-                      <FirstNameWrapper>
-                        {shortenText(voterFirstName, 9)}
-                      </FirstNameWrapper>
                       <AccountCircle />
                     </IconButton>
                   </div>
-                )}
-                {profilePopUpOpen && (
-                  <Suspense fallback={<></>}>
-                    <HeaderBarProfilePopUp
-                      hideProfilePopUp={this.hideProfilePopUp}
-                      onClick={this.toggleProfilePopUp}
-                      profilePopUpOpen={profilePopUpOpen}
-                      signOutAndHideProfilePopUp={this.signOutAndHideProfilePopUp}
-                      toggleProfilePopUp={this.toggleProfilePopUp}
-                      toggleSignInModal={this.toggleSignInModal}
-                      transitionToYourVoterGuide={this.transitionToYourVoterGuide}
-                      voter={voter}
-                    />
-                  </Suspense>
                 )}
               </span>
             ) : (
@@ -506,11 +456,6 @@ const styles = (theme) => ({
     alignItems: 'flex-start',
   },
 });
-
-const FirstNameWrapper = styled('div')`
-  font-size: 14px;
-  padding-right: 4px;
-`;
 
 const PreviewButtonWrapper = styled('div')`
   margin-right: 30px;

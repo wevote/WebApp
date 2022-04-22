@@ -20,7 +20,7 @@ import ShowMoreButtons from './ShowMoreButtons';
 
 const ReadMore = React.lazy(() => import(/* webpackChunkName: 'ReadMore' */ '../../common/components/Widgets/ReadMore'));
 
-class ReadyIntroduction extends Component {
+class ReadyFinePrint extends Component {
   constructor (props) {
     super(props);
     this.state = {
@@ -43,31 +43,31 @@ class ReadyIntroduction extends Component {
   }
 
   render () {
-    renderLog('ReadyIntroduction');  // Set LOG_RENDER_EVENTS to log all renders
+    renderLog('ReadyFinePrint');  // Set LOG_RENDER_EVENTS to log all renders
     const { contentUnfurled } = this.state;
     const { contentUnfurledOnLoad, showStep3WhenCompressed, titleCentered, titleLarge } = this.props;
     return (
       <OuterWrapper>
         <InnerWrapper>
           <IntroHeader titleCentered={titleCentered} titleLarge={titleLarge}>
-            We Vote helps you:
+            The fine print:
           </IntroHeader>
           <ListWrapper>
             <ListMaxWidth>
               <ListTitleRow>
-                <Dot><StepNumber>1</StepNumber></Dot>
-                <StepTitle>Be ready to vote</StepTitle>
+                <Dot><StepNumber>a</StepNumber></Dot>
+                <StepTitle>You cannot cast your vote electronically</StepTitle>
               </ListTitleRow>
               {contentUnfurled && (
                 <ListRow>
                   <Dot><StepNumberPlaceholder>&nbsp;</StepNumberPlaceholder></Dot>
-                  <StepText>When is the next election? What is on your ballot? Make a plan for casting your vote.</StepText>
+                  <StepText>We Vote will not submit your vote. You will need to vote in person or vote-by-mail to have your vote count.</StepText>
                 </ListRow>
               )}
 
               <ListTitleRow>
-                <Dot><StepNumber>2</StepNumber></Dot>
-                <StepTitle>Be confident in your choices</StepTitle>
+                <Dot><StepNumber>b</StepNumber></Dot>
+                <StepTitle>We Vote data comes from official and unofficial sources</StepTitle>
               </ListTitleRow>
               {contentUnfurled && (
                 <ListRow>
@@ -75,7 +75,11 @@ class ReadyIntroduction extends Component {
                   <StepText>
                     <Suspense fallback={<></>}>
                       <ReadMore
-                        textToDisplay="Who's running for office? We show you what will be on your actual ballot, based on your full address. What do your trusted friends think about what is on the ballot? We Vote helps you make sense of your options."
+                        textToDisplay="We Vote uses ballot data aggregated from government, nonpartisan, and partisan sources.
+                        We cannot guarantee 100% of the items on your official ballot will be shown on We Vote.
+                        We Vote strives to provide a balanced selection of clearly identified voting guides from newspapers and media.
+                        Partisan voter guides are also provided from a diversity of sources and points-of-view.
+                        These voting guides are captured and updated by volunteers."
                         numberOfLines={contentUnfurledOnLoad ? 7 : 3}
                       />
                     </Suspense>
@@ -85,26 +89,21 @@ class ReadyIntroduction extends Component {
 
               {(contentUnfurled || showStep3WhenCompressed) && (
                 <ListTitleRow>
-                  <Dot><StepNumber>3</StepNumber></Dot>
-                  <StepTitle>Help friends &amp; amplify your impact</StepTitle>
+                  <Dot><StepNumber>c</StepNumber></Dot>
+                  <StepTitle>Please make sure you are registered to vote</StepTitle>
                 </ListTitleRow>
               )}
               {contentUnfurled && (
                 <ListRow>
                   <Dot><StepNumberPlaceholder>&nbsp;</StepNumberPlaceholder></Dot>
                   <StepText>
-                    <Suspense fallback={<></>}>
-                      <ReadMore
-                        textToDisplay="Show your friends how to make sense of their decisions, so they can vote their values. The more of your friends who vote, the more impact you will have on the outcome of the election."
-                        numberOfLines={contentUnfurledOnLoad ? 7 : 3}
-                      />
-                    </Suspense>
+                    Many states require you to register weeks in advance of each election. Search the web for &quot;voter registration&quot; + your state to learn how to register in time.
                   </StepText>
                 </ListRow>
               )}
               {!contentUnfurledOnLoad && (
                 <ShowMoreButtons
-                  showMoreId="showMoreReadyIntroductionCompressed"
+                  showMoreId="showMoreReadyFinePrintCompressed"
                   showMoreButtonWasClicked={contentUnfurled}
                   showMoreButtonsLink={this.contentUnfurledLink}
                 />
@@ -116,11 +115,11 @@ class ReadyIntroduction extends Component {
     );
   }
 }
-ReadyIntroduction.propTypes = {
+ReadyFinePrint.propTypes = {
   contentUnfurledOnLoad: PropTypes.bool,
   showStep3WhenCompressed: PropTypes.bool,
   titleCentered: PropTypes.bool,
   titleLarge: PropTypes.bool,
 };
 
-export default withTheme(ReadyIntroduction);
+export default withTheme(ReadyFinePrint);

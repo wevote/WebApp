@@ -4,7 +4,6 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import OpenExternalWebSite from '../../common/components/Widgets/OpenExternalWebSite';
-import isMobileScreenSize from '../../common/utils/isMobileScreenSize';
 
 class FooterMainWeVote extends Component {
   render () {
@@ -14,47 +13,7 @@ class FooterMainWeVote extends Component {
       <Wrapper>
         <TopSectionOuterWrapper>
           <TopSectionInnerWrapper>
-            <Column>
-              <ColumnTitle>About We Vote</ColumnTitle>
-              <Link id="footerLinkWelcome" className={classes.link} to="/welcome">Welcome</Link>
-              <Link id="footerLinkAbout" className={classes.link} to="/more/about">About &amp; Team</Link>
-              <Link id="footerLinkCredits" className={classes.link} to="/more/credits">Credits &amp; Thanks</Link>
-              {/* <Link id="footerLinkImpact" className={classes.link} to="/impact">Impact</Link> */}
-              <OpenExternalWebSite
-                linkIdAttribute="footerLinkCareers"
-                url="https://www.idealist.org/en/nonprofit/f917ce3db61a46cb8ad2b0d4e335f0af-we-vote-oakland#volops"
-                target="_blank"
-                body={(
-                  <span>Careers</span>
-                )}
-                className={classes.link}
-              />
-            </Column>
-            <Column style={{ display: `${isMobileScreenSize() ? 'none' : ''}` }}>
-              <ColumnTitle>Community</ColumnTitle>
-              <OpenExternalWebSite
-                linkIdAttribute="footerLinkBlog"
-                url="https://blog.wevote.us/"
-                target="_blank"
-                body={(
-                  <span>Blog</span>
-                )}
-                className={classes.link}
-              />
-              <OpenExternalWebSite
-                linkIdAttribute="footerLinkMediaInquiries"
-                url="https://help.wevote.us/hc/en-us/requests/new"
-                target="_blank"
-                body={(
-                  <span>Media Inquiries</span>
-                )}
-                className={classes.link}
-              />
-              <Link id="footerLinkAttributions" className={classes.link} to="/more/attributions">Attributions</Link>
-            </Column>
-            <Column>
-              <ColumnTitle>Support</ColumnTitle>
-              <Link id="footerLinkFaq" className={classes.link} to="/more/faq">Frequent Questions</Link>
+            <OneRow>
               <OpenExternalWebSite
                 linkIdAttribute="footerLinkWeVoteHelp"
                 url="https://help.wevote.us/hc/en-us"
@@ -64,63 +23,52 @@ class FooterMainWeVote extends Component {
                 )}
                 className={classes.link}
               />
-              <Link id="footerLinkPrivacy" className={classes.link} to="/more/privacy">Privacy Policy</Link>
-              <Link id="footerLinkTermsOfUse" className={classes.link} to="/more/terms">Terms of Service</Link>
-            </Column>
-            <Column style={{ display: `${isMobileScreenSize() ? 'none' : ''}` }}>
-              <ColumnTitle>Connect</ColumnTitle>
+              <RowSpacer />
+              <Link id="footerLinkPrivacy" className={classes.link} to="/more/privacy">Privacy</Link>
+              <RowSpacer />
+              <Link id="footerLinkTermsOfUse" className={classes.link} to="/more/terms">Terms</Link>
+            </OneRow>
+            <OneRow>
               <OpenExternalWebSite
-                linkIdAttribute="footerLinkJoinOurNewsletter"
-                url="http://eepurl.com/cx_frP"
+                linkIdAttribute="footerLinkAbout"
+                url="https://wevote.us/more/about"
                 target="_blank"
                 body={(
-                  <span>Join Our Newsletter</span>
+                  <span>About</span>
                 )}
                 className={classes.link}
               />
+              <RowSpacer />
               <OpenExternalWebSite
-                linkIdAttribute="footerLinkFacebook"
-                url="https://www.facebook.com/WeVoteUSA/"
+                linkIdAttribute="footerLinkTeam"
+                url="https://wevote.us/more/about"
                 target="_blank"
                 body={(
-                  <span>Facebook&nbsp;-&nbsp;WeVoteUSA</span>
+                  <span>Team</span>
                 )}
                 className={classes.link}
               />
+              <RowSpacer />
               <OpenExternalWebSite
-                linkIdAttribute="footerLinkTwitter"
-                url="https://twitter.com/WeVote"
+                linkIdAttribute="footerLinkTeam"
+                url="https://wevote.us/more/credits"
                 target="_blank"
                 body={(
-                  <span>Twitter - @WeVote</span>
+                  <span>Credits &amp; Thanks</span>
                 )}
                 className={classes.link}
               />
+              <RowSpacer />
               <OpenExternalWebSite
-                linkIdAttribute="footerLinkInstagram"
-                url="https://instagram.com/WeVote"
+                linkIdAttribute="footerLinkCareers"
+                url="https://www.idealist.org/en/nonprofit/f917ce3db61a46cb8ad2b0d4e335f0af-we-vote-oakland#volops"
                 target="_blank"
                 body={(
-                  <span>Instagram - @WeVote</span>
+                  <span>Jobs</span>
                 )}
                 className={classes.link}
               />
-            </Column>
-            <Column>
-              <ColumnTitle>Products</ColumnTitle>
-              {/* <Link id="footerLinkFreeOnlineTools" className={classes.link} to="/settings/tools">Free Tools</Link> */}
-              {/* <Link id="footerLinkForPricing" className={classes.link} to="/pricing">Pricing</Link> */}
-              <OpenExternalWebSite
-                linkIdAttribute="footerLinkCampaigns"
-                url="https://campaigns.WeVote.US/"
-                target="_blank"
-                body={(
-                  <span>Campaigns</span>
-                )}
-                className={classes.link}
-              />
-              <Link id="footerLinkSupportedElections" className={classes.link} to="/more/elections">Elections</Link>
-            </Column>
+            </OneRow>
           </TopSectionInnerWrapper>
         </TopSectionOuterWrapper>
         <BottomSection>
@@ -129,7 +77,9 @@ class FooterMainWeVote extends Component {
               WeVote.US
             </WeVoteName>
             {' '}
-            is brought to you by a partnership between two registered nonprofit organizations, one 501(c)(3) and one 501(c)(4). We do not support or oppose any political candidate or party.
+            is brought to you by two registered nonprofit organizations, one 501(c)(3) and one 501(c)(4).
+            <br />
+            We do not support or oppose any political candidate or party.
           </Text>
           <Text>
             The software that powers We Vote is
@@ -153,18 +103,13 @@ FooterMainWeVote.propTypes = {
   classes: PropTypes.object,
 };
 
-const styles = (theme) => ({
+const styles = () => ({
   link: {
-    color: '#333',
-    fontSize: 14,
-    marginBottom: '1em',
+    color: '#808080',
     '&:hover': {
       color: '#4371cc',
     },
     textDecoration: 'none',
-    [theme.breakpoints.down('md')]: {
-      fontSize: 14,
-    },
   },
   bottomLink: {
     color: '#333',
@@ -176,53 +121,41 @@ const styles = (theme) => ({
 });
 
 const BottomSection = styled('div')`
-  border-top: 1px solid lightgray;
   display: flex;
   flex-flow: column;
   padding-top: 15px;
-  text-align: left;
+  align-items: center;
 `;
 
-const Column = styled('div')(({ theme }) => (`
-  display: flex;
-  flex-flow: column nowrap;
-  width: 150px;
-  ${theme.breakpoints.down('md')} {
-    width: 50%;
-  }
-  ${theme.breakpoints.down('xs')} {
-    width: 100%;
-  }
-`));
-
-const ColumnTitle = styled('div')`
+const OneRow = styled('div')`
   color: #808080;
+  display: flex;
   font-size: 13px;
-  font-weight: 700;
+  justify-content: center;
   margin-bottom: 15px;
-  margin-top: 15px;
-  text-transform: uppercase;
+`;
+
+const RowSpacer = styled('div')`
+  margin-right: 15px;
 `;
 
 const Text = styled('p')(({ theme }) => (`
   color: #808080;
   font-size: 14px;
   margin-right: 0.5em;
+  text-align: center;
   ${theme.breakpoints.down('md')} {
     font-size: 14px;
   }
 `));
 
-const TopSectionInnerWrapper = styled('div')(({ theme }) => (`
+const TopSectionInnerWrapper = styled('div')`
+  align-items: center;
   display: flex;
-  flex-direction: row;
-  flex-wrap: nowrap;
+  flex-direction: column;
+  justify-content: center;
   width: 100%;
-  justify-content: space-between;
-  ${theme.breakpoints.down('md')} {
-    flex-wrap: wrap;
-  }
-`));
+`;
 
 const TopSectionOuterWrapper = styled('div')`
   display: flex;

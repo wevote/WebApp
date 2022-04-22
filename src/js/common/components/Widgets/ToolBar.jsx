@@ -17,7 +17,7 @@ function ToolBar (params) {
 
   return (
     <div>
-      <ToolBarContainer className="btn-toolbar">
+      <ToolBarContainer>
         <Suspense fallback={<></>}>
           <OpenExternalWebSite
             linkIdAttribute="wevoteTwitter"

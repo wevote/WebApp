@@ -2,6 +2,7 @@ import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
 import { Link } from 'react-router-dom';
 import AppObservableStore from '../../stores/AppObservableStore';
+import VoterSessionActions from '../../actions/VoterSessionActions';
 import VoterStore from '../../stores/VoterStore';
 import { renderLog } from '../../common/utils/logging';
 
@@ -57,6 +58,10 @@ export default class SettingsPersonalSideBar extends Component {
     }
   }
 
+  voterSignOut = () => {
+    VoterSessionActions.voterSignOut();
+  }
+
   isOrganization (organizationType) {
     return organizationType === NONPROFIT_501C3 || organizationType === NONPROFIT_501C4 ||
         organizationType === POLITICAL_ACTION_COMMITTEE || organizationType === NONPROFIT ||
@@ -88,7 +93,7 @@ export default class SettingsPersonalSideBar extends Component {
                     'SettingsItem__summary__item__display-name SettingsItem__summary__item__display-name--selected' :
                     'SettingsItem__summary__item__display-name'}
                   >
-                    General
+                    Name &amp; Photo
                   </span>
                 </Link>
               </div>
@@ -291,6 +296,24 @@ export default class SettingsPersonalSideBar extends Component {
                   <Suspense fallback={<></>}>
                     <SettingsAccountLevelChip ignoreIfUpgraded onClickDisabled requiredFeaturePackage="PROFESSIONAL" />
                   </Suspense>
+                </Link>
+              </div>
+            </div>
+          )}
+
+          {isSignedIn && (
+            <div className={String(editMode) === 'text' ?
+              'SettingsItem__summary__item-container SettingsItem__summary__item-container--selected' :
+              'SettingsItem__summary__item-container '}
+            >
+              <div onClick={this.voterSignOut}>
+                <Link to="/ready" className="SettingsItem__summary__item" id="site text">
+                  <span className={String(editMode) === 'text' ?
+                    'SettingsItem__summary__item__display-name SettingsItem__summary__item__display-name--selected' :
+                    'SettingsItem__summary__item__display-name'}
+                  >
+                    Sign Out
+                  </span>
                 </Link>
               </div>
             </div>

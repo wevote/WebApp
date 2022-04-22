@@ -267,6 +267,7 @@ const OrganizationName = styled('div')`
   color: #ccc;
   font-size: 12px;
   line-height: 12px;
+  padding: 0 3px;
   text-align: center;
 `;
 
