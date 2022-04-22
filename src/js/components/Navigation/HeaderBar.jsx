@@ -8,7 +8,6 @@ import BallotActions from '../../actions/BallotActions';
 import OrganizationActions from '../../actions/OrganizationActions';
 import VoterActions from '../../actions/VoterActions';
 import VoterGuideActions from '../../actions/VoterGuideActions';
-import VoterSessionActions from '../../actions/VoterSessionActions';
 import LazyImage from '../../common/components/LazyImage';
 import apiCalming from '../../common/utils/apiCalming';
 import { hasIPhoneNotch, historyPush, isDeviceZoomed, isIOS, isIOSAppOnMac } from '../../common/utils/cordovaUtils';
@@ -83,7 +82,6 @@ class HeaderBar extends Component {
     this.closeShareModal = this.closeShareModal.bind(this);
     this.closeSignInModal = this.closeSignInModal.bind(this);
     this.debugLogging = this.debugLogging.bind(this);
-    this.signOutAndHideProfilePopUp = this.signOutAndHideProfilePopUp.bind(this);
     this.toggleSelectBallotModal = this.toggleSelectBallotModal.bind(this);
     this.toggleSignInModal = this.toggleSignInModal.bind(this);
     this.transitionToYourVoterGuide = this.transitionToYourVoterGuide.bind(this);
@@ -452,10 +450,6 @@ class HeaderBar extends Component {
     this.setState({
       showSignInModal: !showSignInModal,
     });
-  }
-
-  signOutAndHideProfilePopUp () {
-    VoterSessionActions.voterSignOut();
   }
 
   transitionToYourVoterGuide () {

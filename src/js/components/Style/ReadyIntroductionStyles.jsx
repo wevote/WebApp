@@ -47,7 +47,7 @@ const ListRow = styled('div')`
 `;
 
 const Dot = styled('div')`
-  padding-top: 2px;
+  padding-top: 1px;
   text-align: center;
   vertical-align: top;
 `;
@@ -59,7 +59,7 @@ const StepNumber = styled('div')(({ theme }) => (`
   font-size: 15px;
   width: 20px;
   height: 20px;
-  padding-top: 1px;
+  padding-top: 0;
 `));
 
 const StepTitle = styled('div')`

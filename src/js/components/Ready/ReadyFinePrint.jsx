@@ -55,7 +55,7 @@ class ReadyFinePrint extends Component {
           <ListWrapper>
             <ListMaxWidth>
               <ListTitleRow>
-                <Dot><StepNumber>1</StepNumber></Dot>
+                <Dot><StepNumber>a</StepNumber></Dot>
                 <StepTitle>You cannot cast your vote electronically</StepTitle>
               </ListTitleRow>
               {contentUnfurled && (
@@ -66,7 +66,7 @@ class ReadyFinePrint extends Component {
               )}
 
               <ListTitleRow>
-                <Dot><StepNumber>2</StepNumber></Dot>
+                <Dot><StepNumber>b</StepNumber></Dot>
                 <StepTitle>We Vote data comes from official and unofficial sources</StepTitle>
               </ListTitleRow>
               {contentUnfurled && (
@@ -89,7 +89,7 @@ class ReadyFinePrint extends Component {
 
               {(contentUnfurled || showStep3WhenCompressed) && (
                 <ListTitleRow>
-                  <Dot><StepNumber>3</StepNumber></Dot>
+                  <Dot><StepNumber>c</StepNumber></Dot>
                   <StepTitle>Please make sure you are registered to vote</StepTitle>
                 </ListTitleRow>
               )}

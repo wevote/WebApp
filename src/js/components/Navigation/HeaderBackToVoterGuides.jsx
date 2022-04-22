@@ -6,7 +6,6 @@ import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
 import OrganizationActions from '../../actions/OrganizationActions';
 import VoterGuideActions from '../../actions/VoterGuideActions';
-import VoterSessionActions from '../../actions/VoterSessionActions';
 import LazyImage from '../../common/components/LazyImage';
 import apiCalming from '../../common/utils/apiCalming';
 import { hasIPhoneNotch } from '../../common/utils/cordovaUtils';
@@ -41,7 +40,6 @@ class HeaderBackToVoterGuides extends Component {
       voter: {},
       voterIsSignedIn: false,
     };
-    this.signOutAndHideProfilePopUp = this.signOutAndHideProfilePopUp.bind(this);
     this.toggleSignInModal = this.toggleSignInModal.bind(this);
     this.toggleVoterGuideModal = this.toggleVoterGuideModal.bind(this);
     this.transitionToYourVoterGuide = this.transitionToYourVoterGuide.bind(this);
@@ -216,10 +214,6 @@ class HeaderBackToVoterGuides extends Component {
   toggleSignInModal () {
     const { showSignInModal } = this.state;
     AppObservableStore.setShowSignInModal(!showSignInModal);
-  }
-
-  signOutAndHideProfilePopUp () {
-    VoterSessionActions.voterSignOut();
   }
 
   toggleVoterGuideModal () {

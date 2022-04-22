@@ -5,7 +5,6 @@ import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
 import OrganizationActions from '../../actions/OrganizationActions';
 import VoterGuideActions from '../../actions/VoterGuideActions';
-import VoterSessionActions from '../../actions/VoterSessionActions';
 import LazyImage from '../../common/components/LazyImage';
 import apiCalming from '../../common/utils/apiCalming';
 import { isIOSAppOnMac, isIPad } from '../../common/utils/cordovaUtils';
@@ -41,7 +40,6 @@ class HeaderBackTo extends Component {
       voterFirstName: '',
       voterWeVoteId: '',
     };
-    this.signOutAndHideProfilePopUp = this.signOutAndHideProfilePopUp.bind(this);
     this.toggleSignInModal = this.toggleSignInModal.bind(this);
     this.transitionToYourVoterGuide = this.transitionToYourVoterGuide.bind(this);
   }
@@ -188,10 +186,6 @@ class HeaderBackTo extends Component {
   toggleSignInModal () {
     const { showSignInModal } = this.state;
     AppObservableStore.setShowSignInModal(!showSignInModal);
-  }
-
-  signOutAndHideProfilePopUp () {
-    VoterSessionActions.voterSignOut();
   }
 
   render () {
