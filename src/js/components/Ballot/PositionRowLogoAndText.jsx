@@ -1,3 +1,4 @@
+import { Chat } from '@mui/icons-material';
 import withStyles from '@mui/styles/withStyles';
 import withTheme from '@mui/styles/withTheme';
 import React, { Component, Suspense } from 'react';
@@ -7,7 +8,6 @@ import AppObservableStore from '../../stores/AppObservableStore';
 import FriendStore from '../../stores/FriendStore';
 import IssueStore from '../../stores/IssueStore';
 import OrganizationStore from '../../stores/OrganizationStore';
-import VoterGuideStore from '../../stores/VoterGuideStore';
 import VoterStore from '../../stores/VoterStore';
 import normalizedImagePath from '../../common/utils/normalizedImagePath';
 import { renderLog } from '../../common/utils/logging';
@@ -19,6 +19,8 @@ import SvgImage from '../../common/components/Widgets/SvgImage';
 
 const FollowToggleCheckPlus = React.lazy(() => import(/* webpackChunkName: 'FollowToggleCheckPlus' */ '../Widgets/FollowToggleCheckPlus'));
 const ImageHandler = React.lazy(() => import(/* webpackChunkName: 'ImageHandler' */ '../ImageHandler'));
+const PositionItemScorePopover = React.lazy(() => import(/* webpackChunkName: 'PositionItemScorePopover' */ '../Widgets/PositionItemScorePopover'));
+const StickyPopover = React.lazy(() => import(/* webpackChunkName: 'StickyPopover' */ './StickyPopover'));
 
 
 class PositionRowLogoAndText extends Component {
@@ -37,14 +39,12 @@ class PositionRowLogoAndText extends Component {
     this.friendStoreListener = FriendStore.addListener(this.onFriendStoreChange.bind(this));
     this.issueStoreListener = IssueStore.addListener(this.onIssueStoreChange.bind(this));
     this.organizationStoreListener = OrganizationStore.addListener(this.onOrganizationStoreChange.bind(this));
-    this.voterGuideStoreListener = VoterGuideStore.addListener(this.onVoterGuideStoreChange.bind(this));
   }
 
   componentWillUnmount () {
     this.friendStoreListener.remove();
     this.issueStoreListener.remove();
     this.organizationStoreListener.remove();
-    this.voterGuideStoreListener.remove();
   }
 
   onFriendStoreChange () {
@@ -76,33 +76,21 @@ class PositionRowLogoAndText extends Component {
     }
   }
 
-  onVoterGuideStoreChange () {
-    // const { position } = this.props;
-    // const { ballot_item_we_vote_id: ballotItemWeVoteId, speaker_we_vote_id: organizationWeVoteId } = position;
-
-    // // We want to make sure we have all the position information so that comments show up
-    // if (ballotItemWeVoteId) {
-    //   const voterGuidesForThisBallotItem = VoterGuideStore.getVoterGuidesToFollowForBallotItemId(ballotItemWeVoteId);
-    //
-    //   if (voterGuidesForThisBallotItem) {
-    //     voterGuidesForThisBallotItem.forEach((oneVoterGuide) => {
-    //       // console.log('oneVoterGuide: ', oneVoterGuide);
-    //       if (organizationWeVoteId === oneVoterGuide.organization_we_vote_id) {  // Request position list for the organization of this position
-    //         if (!OrganizationStore.positionListForOpinionMakerHasBeenRetrievedOnce(oneVoterGuide.google_civic_election_id, oneVoterGuide.organization_we_vote_id)) {
-    //           OrganizationActions.positionListForOpinionMaker(oneVoterGuide.organization_we_vote_id, false, true, oneVoterGuide.google_civic_election_id);
-    //         }
-    //       }
-    //     });
-    //   }
-    // }
-  }
-
   onClickShowPositionDrawer (candidateWeVoteId, organizationWeVoteId) {
     // AppObservableStore.setOrganizationModalBallotItemWeVoteId(candidateWeVoteId);
     AppObservableStore.setPositionDrawerBallotItemWeVoteId(candidateWeVoteId);
     AppObservableStore.setPositionDrawerOrganizationWeVoteId(organizationWeVoteId);
     // AppObservableStore.setShowOrganizationModal(true);
     AppObservableStore.setShowPositionDrawer(true);
+  }
+
+  onShowMoreAlternateFunction = () => {
+    const { position } = this.props;
+    const {
+      ballot_item_we_vote_id: ballotItemWeVoteId,
+      speaker_we_vote_id: organizationWeVoteId,
+    } = position;
+    this.onClickShowPositionDrawer(ballotItemWeVoteId, organizationWeVoteId);
   }
 
   render () {
@@ -117,7 +105,10 @@ class PositionRowLogoAndText extends Component {
       return null;
     }
     // console.log('PositionRowLogoAndText position render, position:', position);
-    const { ballot_item_we_vote_id: ballotItemWeVoteId, position_we_vote_id: positionWeVoteId, speaker_we_vote_id: organizationWeVoteId } = position;
+    const {
+      ballot_item_we_vote_id: ballotItemWeVoteId, position_we_vote_id: positionWeVoteId,
+      speaker_we_vote_id: organizationWeVoteId, statement_text: statementText,
+    } = position;
     const { organizationInVotersNetwork } = this.state;
 
     // console.log(position);
@@ -161,54 +152,88 @@ class PositionRowLogoAndText extends Component {
       speakerDisplayName = shortenText(speakerDisplayName, 18);
     }
 
+    const positionsPopover = (
+      <PositionItemScorePopover
+        onShowMoreAlternateFunction={this.onShowMoreAlternateFunction}
+        popoverHeaderOff
+        positionWeVoteId={positionWeVoteId}
+        showPersonalScoreInformation
+      />
+    );
+
     if (showPosition) {
       return (
         <Wrapper>
           <OrganizationScoreSpacer />
-          <OrganizationPhotoOuterWrapper
-            onClick={() => this.onClickShowPositionDrawer(ballotItemWeVoteId, organizationWeVoteId)}
-          >
-            <OrganizationPhotoInnerWrapper>
-              { position.speaker_image_url_https_medium ? (
-                <Suspense fallback={<></>}>
-                  <ImageHandler
-                    className="card-child__avatar"
-                    sizeClassName="icon-lg"
-                    imageUrl={position.speaker_image_url_https_medium}
-                  />
-                </Suspense>
-              ) :
-                imagePlaceholder }
-            </OrganizationPhotoInnerWrapper>
-          </OrganizationPhotoOuterWrapper>
-          <OrganizationNameWrapper
-            onClick={() => this.onClickShowPositionDrawer(ballotItemWeVoteId, organizationWeVoteId)}
-          >
-            <OrganizationName>
-              { speakerDisplayName }
-            </OrganizationName>
-          </OrganizationNameWrapper>
-          <HorizontalSpacer />
-          <YesNoScoreTextWrapper>
-            {supportOpposeInfo === 'InfoButNotPartOfScore' ? (
-              <OrganizationInformationOnlyWrapper>
-                <OrganizationInformationOnlySquare>
-                  <OrganizationInfoOnlyWordWrapper>
-                    &nbsp;
-                  </OrganizationInfoOnlyWordWrapper>
-                </OrganizationInformationOnlySquare>
-              </OrganizationInformationOnlyWrapper>
-            ) : (
-              <FollowToggleWrapper>
-                <Suspense fallback={<></>}>
-                  <FollowToggleCheckPlus
-                    organizationWeVoteId={organizationWeVoteId}
-                    positionWeVoteId={positionWeVoteId}
-                  />
-                </Suspense>
-              </FollowToggleWrapper>
-            )}
-          </YesNoScoreTextWrapper>
+          <Suspense fallback={<></>}>
+            <StickyPopover
+              delay={{ show: 700, hide: 100 }}
+              popoverComponent={positionsPopover}
+              placement="left"
+              id="follow-toggle-check-plus-popover-trigger-click-root-close"
+              key={`positionItemScoreDesktopPopover-${organizationWeVoteId}`}
+              // openOnClick
+              // showCloseIcon
+            >
+              <div>
+                <OrganizationOverlayOuterWrapper>
+                  <OrganizationPhotoOuterWrapper onClick={() => this.onClickShowPositionDrawer(ballotItemWeVoteId, organizationWeVoteId)}>
+                    <OrganizationPhotoInnerWrapper>
+                      { position.speaker_image_url_https_medium ? (
+                        <Suspense fallback={<></>}>
+                          <ImageHandler
+                            className="card-child__avatar"
+                            sizeClassName="icon-lg"
+                            imageUrl={position.speaker_image_url_https_medium}
+                          />
+                        </Suspense>
+                      ) :
+                        imagePlaceholder }
+                    </OrganizationPhotoInnerWrapper>
+                  </OrganizationPhotoOuterWrapper>
+                  {statementText && (
+                    <CommentOverlayImage onClick={() => this.onClickShowPositionDrawer(ballotItemWeVoteId, organizationWeVoteId)}>
+                      <Chat
+                        style={{
+                          color: '#999',
+                          height: 14,
+                          width: 14,
+                        }}
+                      />
+                    </CommentOverlayImage>
+                  )}
+                </OrganizationOverlayOuterWrapper>
+                <OrganizationNameWrapper
+                  onClick={() => this.onClickShowPositionDrawer(ballotItemWeVoteId, organizationWeVoteId)}
+                  overlayUsed={statementText}
+                >
+                  <OrganizationName>
+                    { speakerDisplayName }
+                  </OrganizationName>
+                </OrganizationNameWrapper>
+                <HorizontalSpacer />
+                <YesNoScoreTextWrapper>
+                  {supportOpposeInfo === 'InfoButNotPartOfScore' ? (
+                    <OrganizationInformationOnlyWrapper>
+                      <OrganizationInformationOnlySquare>
+                        <OrganizationInfoOnlyWordWrapper>
+                          &nbsp;
+                        </OrganizationInfoOnlyWordWrapper>
+                      </OrganizationInformationOnlySquare>
+                    </OrganizationInformationOnlyWrapper>
+                  ) : (
+                    <FollowToggleWrapper>
+                      <Suspense fallback={<></>}>
+                        <FollowToggleCheckPlus
+                          organizationWeVoteId={organizationWeVoteId}
+                        />
+                      </Suspense>
+                    </FollowToggleWrapper>
+                  )}
+                </YesNoScoreTextWrapper>
+              </div>
+            </StickyPopover>
+          </Suspense>
         </Wrapper>
       );
     } else {
@@ -233,6 +258,14 @@ const styles = (theme) => ({
     },
   },
 });
+
+const CommentOverlayImage = styled('div')`
+  display: flex;
+  margin-left: 44px;
+  margin-top: -57px;
+  position: relative;
+  z-index: 2;
+`;
 
 const FollowToggleWrapper = styled('div')`
   display: flex;
@@ -264,14 +297,16 @@ const OrganizationInformationOnlyWrapper = styled('div')`
 `;
 
 const OrganizationName = styled('div')`
-  color: #ccc;
+  color: #999;
   font-size: 12px;
   line-height: 12px;
   padding: 0 3px;
   text-align: center;
 `;
 
-const OrganizationNameWrapper = styled('div')`
+const OrganizationNameWrapper = styled('div', {
+  shouldForwardProp: (prop) => !['overlayUsed'].includes(prop),
+})(({ overlayUsed }) => (`
   border-left: 1px dotted #dcdcdc;
   cursor: pointer;
   display: flex;
@@ -279,6 +314,12 @@ const OrganizationNameWrapper = styled('div')`
   justify-content: center;
   overflow-x: hidden;
   overflow-y: hidden;
+  ${overlayUsed ? 'margin-top: 43px;' : ''}
+`));
+
+const OrganizationOverlayOuterWrapper = styled('div')`
+  position: relative;
+  z-index: 1;
 `;
 
 const OrganizationPhotoInnerWrapper = styled('div')`
@@ -298,19 +339,23 @@ const OrganizationPhotoInnerWrapper = styled('div')`
   }
 `;
 
-const OrganizationPhotoOuterWrapper = styled('div')`
+const OrganizationPhotoOuterWrapper = styled('div', {
+  shouldForwardProp: (prop) => !['overlayUsed'].includes(prop),
+})(({ overlayUsed }) => (`
   border-left: 1px dotted #dcdcdc;
   cursor: pointer;
   display: flex;
   justify-content: center;
+  ${overlayUsed ? 'margin-top: -19px;' : ''}
   padding: 8px 3px 0 4px;
-`;
+`));
 
 const OrganizationScoreSpacer = styled('div')`
   height: 0px;
 `;
 
 const Wrapper = styled('div')`
+  width: 60px;
 `;
 
 const YesNoScoreTextWrapper = styled('div')`

@@ -106,7 +106,7 @@ class HowItWorks extends Component {
           index: 2,
         },
         Decide: {
-          title: '4. Complete your ballot in under six minutes',
+          title: '4. Complete your ballot with confidence',
           description: 'We Vote is fast, mobile, and helps you decide on the go. Vote with confidence!',
           imgSrc: '/img/how-it-works/HowItWorksForVoters-Decide-20190401.gif?',
           index: 3,

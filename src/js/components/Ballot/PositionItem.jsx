@@ -164,7 +164,7 @@ class PositionItem extends Component {
     //     }
     //   }
     // }
-    const speakerLinkExternal = `https://WeVote.org${speakerLink}`;
+    const speakerLinkExternal = `https://wevote.us${speakerLink}`;
 
     let positionSpeakerDisplayName = position.speaker_display_name;
     // console.log('position:', position, ', VoterStore.getLinkedOrganizationWeVoteId():', VoterStore.getLinkedOrganizationWeVoteId());

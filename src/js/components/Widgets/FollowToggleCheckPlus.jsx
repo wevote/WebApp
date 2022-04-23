@@ -7,7 +7,7 @@ import { styled as muiStyled } from '@mui/styles';
 import withTheme from '@mui/styles/withTheme';
 import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
-import React, { Component, Suspense } from 'react';
+import React, { Component } from 'react';
 import styled from 'styled-components';
 import OrganizationActions from '../../actions/OrganizationActions';
 import historyPush from '../../common/utils/historyPush';
@@ -19,8 +19,6 @@ import VoterGuideStore from '../../stores/VoterGuideStore';
 import VoterStore from '../../stores/VoterStore';
 import { openSnackbar } from './SnackNotifier';
 
-const PositionItemScorePopover = React.lazy(() => import(/* webpackChunkName: 'PositionItemScorePopover' */ './PositionItemScorePopover'));
-const StickyPopover = React.lazy(() => import(/* webpackChunkName: 'StickyPopover' */ '../Ballot/StickyPopover'));
 
 function AlreadyFollowingOrIgnoringButton (params) {
   const { handleClick } = params;
@@ -338,7 +336,7 @@ class FollowToggleCheckPlus extends Component {
       addToScoreLabelFullWidth, addToScoreLabelOn,
       anchorLeft, ballotItemWeVoteId, classes, currentBallotIdInUrl, hideDropdownButtonUntilFollowing,
       hideStopFollowingButton, hideStopIgnoringButton, lightModeOn, organizationWeVoteId,
-      platformType, positionWeVoteId, showFollowingText, urlWithoutHash,
+      platformType, showFollowingText, urlWithoutHash,
     } = this.props;
     if (!organizationWeVoteId) { return <div />; }
 
@@ -346,13 +344,6 @@ class FollowToggleCheckPlus extends Component {
     const isLookingAtSelf = voterLinkedOrganizationWeVoteId === organizationWeVoteId;
     // You should not be able to follow yourself
     if (isLookingAtSelf) { return <div><CheckStyled /></div>; }
-
-    const positionsPopover = (
-      <PositionItemScorePopover
-        positionWeVoteId={positionWeVoteId}
-        showPersonalScoreInformation
-      />
-    );
 
     const followFunction = () => OrganizationActions.organizationFollow(organizationWeVoteId);
     const stopFollowingFunc = () => OrganizationActions.organizationStopFollowing(organizationWeVoteId);
@@ -368,27 +359,9 @@ class FollowToggleCheckPlus extends Component {
       <FollowToggleCheckPlusWrapper>
         {(voterIsFriendsWithThisOrganization || linkedToIssueVoterIsFollowing) ? (
           <FriendOrLinkedToIssue>
-            {positionWeVoteId ? (
-              <Suspense fallback={<></>}>
-                <StickyPopover
-                  delay={{ show: 700, hide: 100 }}
-                  popoverComponent={positionsPopover}
-                  placement="auto"
-                  id="follow-toggle-check-plus-popover-trigger-click-root-close"
-                  key={`positionItemScoreDesktopPopover-${organizationWeVoteId}`}
-                  openOnClick
-                  showCloseIcon
-                >
-                  <div>
-                    <CheckStyled />
-                  </div>
-                </StickyPopover>
-              </Suspense>
-            ) : (
-              <div>
-                <CheckStyled />
-              </div>
-            )}
+            <div>
+              <CheckStyled />
+            </div>
           </FriendOrLinkedToIssue>
         ) : (
           <>
@@ -452,7 +425,6 @@ FollowToggleCheckPlus.propTypes = {
   lightModeOn: PropTypes.bool,
   organizationWeVoteId: PropTypes.string,
   platformType: PropTypes.string,
-  positionWeVoteId: PropTypes.string,
   showFollowingText: PropTypes.bool,
   urlWithoutHash: PropTypes.string,
 };

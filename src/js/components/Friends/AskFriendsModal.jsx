@@ -4,61 +4,43 @@ import styled from 'styled-components';
 import withStyles from '@mui/styles/withStyles';
 import withTheme from '@mui/styles/withTheme';
 import PropTypes from 'prop-types';
-import React, { Component, Suspense } from 'react';
-import IssueActions from '../../actions/IssueActions';
-import VoterActions from '../../actions/VoterActions';
+import React, { Component } from 'react';
 import { hasIPhoneNotch } from '../../common/utils/cordovaUtils';
 import { renderLog } from '../../common/utils/logging';
-import { ContinueButtonType1Wrapper, ExplanationTextType1, ExplanationTextLighterType1, ModalTitleType1, ModalTitleAreaType1 } from '../Style/ModalType1Styles';
-import VoterConstants from '../../constants/VoterConstants';
-import IssueStore from '../../stores/IssueStore';
-import VoterStore from '../../stores/VoterStore';
+import {
+  ContinueButtonType1Wrapper,
+  ExplanationTextLighterType1,
+  ExplanationTextType1,
+  ModalTitleAreaType1,
+  ModalTitleType1,
+} from '../Style/ModalType1Styles';
 
-const FriendInvitationOnboardingValuesList = React.lazy(() => import(/* webpackChunkName: 'FriendInvitationOnboardingValuesList' */ '../Values/FriendInvitationOnboardingValuesList'));
-
-class ValuesIntroModal extends Component {
+class AskFriendsModal extends Component {
   constructor (props) {
     super(props);
     this.state = {
-      atLeastOneValueChosen: false,
     };
   }
 
   componentDidMount () {
-    this.issueStoreListener = IssueStore.addListener(this.onIssueStoreChange.bind(this));
-    IssueActions.issuesFollowedRetrieve(VoterStore.getVoterWeVoteId());
-
     this.setState({
     });
   }
 
   componentWillUnmount () {
-    this.issueStoreListener.remove();
-  }
-
-  onIssueStoreChange () {
-    const issueWeVoteIdsVoterIsFollowing = IssueStore.getIssueWeVoteIdsVoterIsFollowing() || [];
-    this.setState({
-      atLeastOneValueChosen: !!(issueWeVoteIdsVoterIsFollowing.length),
-    });
   }
 
   closeThisModal = () => {
-    const { location: { pathname } } = window;
-    this.props.toggleFunction(pathname);
+    this.props.toggleFunction();
   }
 
-  valuesIntroCompleted = () => {
-    // Mark this so we know to show 'How it Works' as completed
-    const { location: { pathname } } = window;
-    VoterActions.voterUpdateInterfaceStatusFlags(VoterConstants.VALUES_INTRO_COMPLETED);
-    this.props.toggleFunction(pathname);
+  submitAskFriends = () => {
+    // this.props.toggleFunction(pathname);
   }
 
   render () {
-    renderLog('ValuesIntroModal');  // Set LOG_RENDER_EVENTS to log all renders
+    renderLog('AskFriendsModal');  // Set LOG_RENDER_EVENTS to log all renders
     const { classes } = this.props;
-    const { atLeastOneValueChosen } = this.state;
     const { location: { pathname } } = window;
 
     return (
@@ -70,14 +52,14 @@ class ValuesIntroModal extends Component {
         <ModalTitleAreaType1>
           <div>
             <ModalTitleType1>
-              What do you care about?
+              &nbsp;
             </ModalTitleType1>
           </div>
           <IconButton
             aria-label="Close"
             className={classes.closeButton}
             onClick={this.closeThisModal}
-            id="closeValuesIntroModal"
+            id="closeAskFriendsModal"
             size="large"
           >
             <Close />
@@ -85,27 +67,25 @@ class ValuesIntroModal extends Component {
         </ModalTitleAreaType1>
         <DialogContent classes={{ root: classes.dialogContent }}>
           <div className="full-width">
-            <ExplanationTextLighterType1>
-              When you follow a value, the endorsements from all organizations categorized under that value are added to your personalized score.
-            </ExplanationTextLighterType1>
             <ExplanationTextType1>
-              Choose from some popular options:
+              Coming soon! We are working on a way for you to ask your friends.
             </ExplanationTextType1>
-            <ValuesListWrapper id="valuesIntroModalValueList">
-              <Suspense fallback={<></>}>
-                <FriendInvitationOnboardingValuesList />
-              </Suspense>
-            </ValuesListWrapper>
+            <ExplanationTextLighterType1>
+              For now you can add We Vote friends by going to &apos;Friends&apos;.
+            </ExplanationTextLighterType1>
+            <AskFriendsModalWrapper>
+              &nbsp;
+            </AskFriendsModalWrapper>
             <ContinueButtonType1Wrapper>
               <Button
                 classes={{ root: classes.continueButtonRoot }}
                 color="primary"
-                disabled={!atLeastOneValueChosen}
-                id="valuesIntroModalNext"
-                onClick={this.valuesIntroCompleted}
+                disabled
+                id="askFriendsModalNext"
+                onClick={this.submitAskFriends}
                 variant="contained"
               >
-                Got It!
+                Continue
               </Button>
             </ContinueButtonType1Wrapper>
           </div>
@@ -114,7 +94,7 @@ class ValuesIntroModal extends Component {
     );
   }
 }
-ValuesIntroModal.propTypes = {
+AskFriendsModal.propTypes = {
   classes: PropTypes.object,
   show: PropTypes.bool,
   toggleFunction: PropTypes.func.isRequired,
@@ -155,7 +135,7 @@ const styles = () => ({
   },
 });
 
-const ValuesListWrapper = styled('div')`
+const AskFriendsModalWrapper = styled('div')`
 `;
 
-export default withTheme(withStyles(styles)(ValuesIntroModal));
+export default withTheme(withStyles(styles)(AskFriendsModal));

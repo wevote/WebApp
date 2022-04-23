@@ -332,13 +332,15 @@ class CandidateItem extends Component {
               className="card-main__media-object-anchor"
               onClick={useLinkToCandidatePage === true ? () => this.goToCandidateLink() : null}
             >
-              <ImageHandler
-                className="card-main__avatar"
-                sizeClassName="icon-office-child "
-                imageUrl={candidatePhotoUrl}
-                alt="candidate-photo"
-                kind_of_ballot_item="CANDIDATE"
-              />
+              <Suspense fallback={<></>}>
+                <ImageHandler
+                  className="card-main__avatar"
+                  sizeClassName="icon-office-child "
+                  imageUrl={candidatePhotoUrl}
+                  alt="candidate-photo"
+                  kind_of_ballot_item="CANDIDATE"
+                />
+              </Suspense>
             </div>
             <Candidate>
               <CandidateNameRow

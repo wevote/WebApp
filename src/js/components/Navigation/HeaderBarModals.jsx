@@ -7,6 +7,7 @@ import VoterStore from '../../stores/VoterStore';
 import { normalizedHrefPage } from '../../common/utils/hrefUtils';
 
 const AdviserIntroModal = React.lazy(() => import(/* webpackChunkName: 'AdviserIntroModal' */ '../CompleteYourProfile/AdviserIntroModal'));
+const AskFriendsModal = React.lazy(() => import(/* webpackChunkName: 'AskFriendsModal' */ '../Friends/AskFriendsModal'));
 const ChooseOrOpposeIntroModal = React.lazy(() => import(/* webpackChunkName: 'ChooseOrOpposeIntroModal' */ '../Widgets/ItemActionBar/ChooseOrOpposeIntroModal'));
 const FirstPositionIntroModal = React.lazy(() => import(/* webpackChunkName: 'FirstPositionIntroModal' */ '../CompleteYourProfile/FirstPositionIntroModal'));
 const ImageUploadModal = React.lazy(() => import(/* webpackChunkName: 'ImageUploadModal' */ '../Settings/ImageUploadModal'));
@@ -19,14 +20,15 @@ const ValuesIntroModal = React.lazy(() => import(/* webpackChunkName: 'ValuesInt
 // A function component, for all the various modals that come out of the HeaderBar
 function HeaderBarModals (props) {
   const {
-    classes, closeAdviserIntroModal, closeChooseOrOpposeIntroModal,
+    classes, closeAdviserIntroModal, closeAskFriendsModal, closeChooseOrOpposeIntroModal,
     closeFirstPositionIntroModal, closeImageUploadModal,
     closePersonalizedScoreIntroModal, closeShareModal, closeSignInModal,
     closeValuesIntroModal, shows, toggleSelectBallotModal,
   } = props;
 
   const {
-    showAdviserIntroModal, showChooseOrOpposeIntroModal, showFirstPositionIntroModal,
+    showAdviserIntroModal, showAskFriendsModal, showChooseOrOpposeIntroModal,
+    showFirstPositionIntroModal,
     showPaidAccountUpgradeModal, showPersonalizedScoreIntroModal,
     showSelectBallotModal, showSelectBallotModalHideAddress, showSelectBallotModalHideElections,
     showShareModal, showSignInModal, showValuesIntroModal, showImageUploadModal,
@@ -36,57 +38,22 @@ function HeaderBarModals (props) {
   const voterIsSignedIn = voter && voter.is_signed_in;
   const shareModalStep = AppObservableStore.getShareModalStep();
 
-
   // renderLog(`HeaderBarModals`);
-
-  if (showSignInModal) {
-    return (
-      <Suspense fallback={<></>}>
-        <SignInModal
-          show={showSignInModal}
-          closeFunction={closeSignInModal}
-        />
-      </Suspense>
-    );
-  } else if (showSelectBallotModal) {
-    return (
-      <Suspense fallback={<></>}>
-        <SelectBallotModal
-          ballotBaseUrl={ballotBaseUrl}
-          hideAddressEdit={showSelectBallotModalHideAddress}
-          hideElections={showSelectBallotModalHideElections}
-          show
-          toggleFunction={toggleSelectBallotModal}
-        />
-      </Suspense>
-    );
-  } else if (showPaidAccountUpgradeModal) {
-    return null;
-    // TODO: Backport "@stripe/react-stripe-js" use from Campaigns
-    //   <Suspense fallback={<></>}>
-    //     <PaidAccountUpgradeModal
-    //       initialPricingPlan={paidAccountUpgradeMode}
-    //       show={showPaidAccountUpgradeModal}
-    //       toggleFunction={this.closePaidAccountUpgradeModal}
-    //     />
-    //   </Suspense>
-  } else if (showShareModal) {
-    return (
-      <Suspense fallback={<></>}>
-        <ShareModal
-          voterIsSignedIn={voterIsSignedIn}
-          show={showShareModal}
-          shareModalStep={shareModalStep}
-          closeShareModal={closeShareModal}
-        />
-      </Suspense>
-    );
-  } else if (showAdviserIntroModal) {
+  if (showAdviserIntroModal) {
     return (
       <Suspense fallback={<></>}>
         <AdviserIntroModal
           show={showAdviserIntroModal}
           toggleFunction={closeAdviserIntroModal}
+        />
+      </Suspense>
+    );
+  } else if (showAskFriendsModal) {
+    return (
+      <Suspense fallback={<></>}>
+        <AskFriendsModal
+          show={showAskFriendsModal}
+          toggleFunction={closeAskFriendsModal}
         />
       </Suspense>
     );
@@ -115,12 +82,63 @@ function HeaderBarModals (props) {
         />
       </Suspense>
     );
+  } else if (showImageUploadModal) {
+    return (
+      <Suspense fallback={<></>}>
+        <ImageUploadModal
+          show={showImageUploadModal}
+          toggleFunction={closeImageUploadModal}
+        />
+      </Suspense>
+    );
+  } else if (showPaidAccountUpgradeModal) {
+    return null;
+    // TODO: Backport "@stripe/react-stripe-js" use from Campaigns
+    //   <Suspense fallback={<></>}>
+    //     <PaidAccountUpgradeModal
+    //       initialPricingPlan={paidAccountUpgradeMode}
+    //       show={showPaidAccountUpgradeModal}
+    //       toggleFunction={this.closePaidAccountUpgradeModal}
+    //     />
+    //   </Suspense>
   } else if (showPersonalizedScoreIntroModal) {
     return (
       <Suspense fallback={<></>}>
         <PersonalizedScoreIntroModal
           show={showPersonalizedScoreIntroModal}
           toggleFunction={closePersonalizedScoreIntroModal}
+        />
+      </Suspense>
+    );
+  } else if (showSelectBallotModal) {
+    return (
+      <Suspense fallback={<></>}>
+        <SelectBallotModal
+          ballotBaseUrl={ballotBaseUrl}
+          hideAddressEdit={showSelectBallotModalHideAddress}
+          hideElections={showSelectBallotModalHideElections}
+          show
+          toggleFunction={toggleSelectBallotModal}
+        />
+      </Suspense>
+    );
+  } else if (showShareModal) {
+    return (
+      <Suspense fallback={<></>}>
+        <ShareModal
+          voterIsSignedIn={voterIsSignedIn}
+          show={showShareModal}
+          shareModalStep={shareModalStep}
+          closeShareModal={closeShareModal}
+        />
+      </Suspense>
+    );
+  } else if (showSignInModal) {
+    return (
+      <Suspense fallback={<></>}>
+        <SignInModal
+          show={showSignInModal}
+          closeFunction={closeSignInModal}
         />
       </Suspense>
     );
@@ -133,32 +151,24 @@ function HeaderBarModals (props) {
         />
       </Suspense>
     );
-  } else if (showImageUploadModal) {
-    return (
-      <Suspense fallback={<></>}>
-        <ImageUploadModal
-          show={showImageUploadModal}
-          toggleFunction={closeImageUploadModal}
-        />
-      </Suspense>
-    );
   }
   return null;
 }
 
 HeaderBarModals.propTypes = {
   classes: PropTypes.object,
-  shows: PropTypes.object,
-  closeSignInModal: PropTypes.func,
-  toggleSelectBallotModal: PropTypes.func,
   // closePaidAccountUpgradeModal: PropTypes.func,
   closeShareModal: PropTypes.func,
   closeAdviserIntroModal: PropTypes.func,
+  closeAskFriendsModal: PropTypes.func,
   closeChooseOrOpposeIntroModal: PropTypes.func,
   closeFirstPositionIntroModal: PropTypes.func,
   closePersonalizedScoreIntroModal: PropTypes.func,
+  closeSignInModal: PropTypes.func,
   closeValuesIntroModal: PropTypes.func,
   closeImageUploadModal: PropTypes.func,
+  shows: PropTypes.object,
+  toggleSelectBallotModal: PropTypes.func,
 };
 
 const styles = () => ({

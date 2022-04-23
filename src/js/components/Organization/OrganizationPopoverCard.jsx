@@ -100,7 +100,7 @@ class OrganizationPopoverCard extends Component {
     const twitterDescription = twitterDescriptionRaw || '';
     const twitterDescriptionMinusName = removeTwitterNameFromDescription(displayName, twitterDescription);
     const voterGuideLink = organizationTwitterHandle ? `/${organizationTwitterHandle}` : `/voterguide/${organizationWeVoteId}`;
-    const voterGuideLinkExternal = `https://WeVote.org${voterGuideLink}`;
+    const voterGuideLinkExternal = `https://wevote.us${voterGuideLink}`;
 
     return (
       <Wrapper>

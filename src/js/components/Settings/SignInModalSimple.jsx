@@ -95,8 +95,8 @@ class SignInModalSimple extends Component {
               <IconButton
                 aria-label="Close"
                 classes={{ root: classes.closeButton }}
-                onClick={() => { this.toggleSignInModalSimple(); }}
                 id="signInModalSimpleCloseIcon"
+                onClick={() => { this.toggleSignInModalSimple(); }}
                 size="large"
               >
                 <Close />
