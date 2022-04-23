@@ -107,6 +107,7 @@ class HeaderBar extends Component {
       hideWeVoteLogo: AppObservableStore.getHideWeVoteLogo(),
       scrolledDown: AppObservableStore.getScrolledDown(),
       showAdviserIntroModal: AppObservableStore.showAdviserIntroModal(),
+      showAskFriendsModal: AppObservableStore.showAskFriendsModal(),
       showChooseOrOpposeIntroModal: AppObservableStore.showChooseOrOpposeIntroModal(),
       showEditAddressButton: AppObservableStore.showEditAddressButton(),
       showFirstPositionIntroModal: AppObservableStore.showFirstPositionIntroModal(),
@@ -181,6 +182,8 @@ class HeaderBar extends Component {
     } else if (this.state.organizationModalBallotItemWeVoteId !== nextState.organizationModalBallotItemWeVoteId) {
       update = true;
     } else if (this.state.showAdviserIntroModal !== nextState.showAdviserIntroModal) {
+      update = true;
+    } else if (this.state.showAskFriendsModal !== nextState.showAskFriendsModal) {
       update = true;
     } else if (this.state.showChooseOrOpposeIntroModal !== nextState.showChooseOrOpposeIntroModal) {
       update = true;
@@ -307,6 +310,7 @@ class HeaderBar extends Component {
       scrolledDown: AppObservableStore.getScrolledDown(),
       shareModalStep: AppObservableStore.getShareModalStep(),
       showAdviserIntroModal: AppObservableStore.showAdviserIntroModal(),
+      showAskFriendsModal: AppObservableStore.showAskFriendsModal(),
       showChooseOrOpposeIntroModal: AppObservableStore.showChooseOrOpposeIntroModal(),
       // showEditAddressButton: AppObservableStore.showEditAddressButton(),
       showEditAddressButton: false, // 2022-03-30 Turned off now -- may be permanently off
@@ -383,6 +387,10 @@ class HeaderBar extends Component {
 
   closeAdviserIntroModal = () => {
     AppObservableStore.setShowAdviserIntroModal(false);
+  }
+
+  closeAskFriendsModal = () => {
+    AppObservableStore.setShowAskFriendsModal(false);
   }
 
   closeChooseOrOpposeIntroModal = () => {
@@ -537,7 +545,8 @@ class HeaderBar extends Component {
     const { classes } = this.props;
     const {
       chosenSiteLogoUrl, hideWeVoteLogo, /* paidAccountUpgradeMode, */ scrolledDown,
-      showAdviserIntroModal, showChooseOrOpposeIntroModal, showEditAddressButton, showFirstPositionIntroModal,
+      showAdviserIntroModal, showAskFriendsModal, showChooseOrOpposeIntroModal,
+      showEditAddressButton, showFirstPositionIntroModal,
       showPaidAccountUpgradeModal, showPersonalizedScoreIntroModal,
       showSelectBallotModal, showSelectBallotModalHideAddress, showSelectBallotModalHideElections,
       showShareModal, showSignInModal, showValuesIntroModal, showImageUploadModal,
@@ -545,7 +554,8 @@ class HeaderBar extends Component {
     } = this.state;
     /* eslint object-property-newline: ["off"] */
     const shows = {
-      showAdviserIntroModal, showChooseOrOpposeIntroModal, showEditAddressButton, showFirstPositionIntroModal,
+      showAdviserIntroModal, showAskFriendsModal, showChooseOrOpposeIntroModal,
+      showEditAddressButton, showFirstPositionIntroModal,
       showPaidAccountUpgradeModal, showPersonalizedScoreIntroModal,
       showSelectBallotModal, showSelectBallotModalHideAddress, showSelectBallotModalHideElections,
       showShareModal, showSignInModal, showValuesIntroModal, showImageUploadModal,
@@ -763,6 +773,7 @@ class HeaderBar extends Component {
         </TopOfPageHeader>
         <HeaderBarModals
           closeAdviserIntroModal={this.closeAdviserIntroModal}
+          closeAskFriendsModal={this.closeAskFriendsModal}
           closeChooseOrOpposeIntroModal={this.closeChooseOrOpposeIntroModal}
           closeFirstPositionIntroModal={this.closeFirstPositionIntroModal}
           closeImageUploadModal={this.closeImageUploadModal}

@@ -3,6 +3,7 @@ import withTheme from '@mui/styles/withTheme';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
 import styled from 'styled-components';
+import AppObservableStore from '../../stores/AppObservableStore';
 import CandidateStore from '../../stores/CandidateStore';
 import FriendStore from '../../stores/FriendStore';
 import MeasureStore from '../../stores/MeasureStore';
@@ -98,7 +99,7 @@ class PositionRowEmpty extends Component {
       // If profile not complete, start there
       if (!VoterStore.voterPhotoAndNameExist()) {
         console.log('Photo or name missing');
-        this.goToAccountSetup();
+        // this.goToAccountSetup();
       } else if (!FriendStore.currentFriendsExist()) {
         // If no current friends, start import contacts/friends process
         console.log('No currentFriendsExist');
@@ -106,6 +107,7 @@ class PositionRowEmpty extends Component {
         // If one or more friends, open message interface
         console.log('friendsExist');
       }
+      AppObservableStore.setShowAskFriendsModal(true);
     } else {
       this.toggleShowSignInModal();
     }
@@ -113,6 +115,18 @@ class PositionRowEmpty extends Component {
 
   goToAccountSetup () {
     historyPush('/setupaccount');
+  }
+
+  closeSignInModal () {
+    this.setState({
+      showSignInModal: false,
+    });
+  }
+
+  askFriendsSignInComplete () {
+    this.setState({
+      showSignInModal: false,
+    }, () => AppObservableStore.setShowAskFriendsModal(true));
   }
 
   toggleShowSignInModal () {
@@ -135,22 +149,14 @@ class PositionRowEmpty extends Component {
         { showSignInModal && (
           <Suspense fallback={<></>}>
             <SignInModalSimple
-              settingsAccountIsSignedInSubTitle={(
-                <>
-                  Which friends would you like to ask?
-                </>
-              )}
-              settingsAccountIsSignedInTitle={(
-                <>
-                  Choose friends
-                </>
-              )}
+              settingsAccountIsSignedInSubTitle={<></>}
+              settingsAccountIsSignedInTitle={<></>}
               settingsAccountSignInTitle="Sign in to ask your friends."
               settingsAccountSignInSubTitle=""
               signedInTitle={<></>}
               signedOutTitle={<></>}
-              toggleOnClose={this.toggleShowSignInModal}
-              uponSuccessfulSignIn={this.goToAccountSetup}
+              toggleOnClose={this.closeSignInModal}
+              uponSuccessfulSignIn={this.askFriendsSignInComplete}
             />
           </Suspense>
         )}

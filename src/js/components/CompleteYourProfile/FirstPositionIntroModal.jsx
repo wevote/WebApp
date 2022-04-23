@@ -9,6 +9,7 @@ import VoterActions from '../../actions/VoterActions';
 import { hasIPhoneNotch } from '../../common/utils/cordovaUtils';
 import { normalizedHref } from '../../common/utils/hrefUtils';
 import { renderLog } from '../../common/utils/logging';
+import { ContinueButtonType1Wrapper, ModalTitleType1, ModalTitleAreaType1 } from '../Style/ModalType1Styles';
 import VoterConstants from '../../constants/VoterConstants';
 
 const CandidateItem = React.lazy(() => import(/* webpackChunkName: 'CandidateItem' */ '../Ballot/CandidateItem'));
@@ -85,11 +86,11 @@ class FirstPositionIntroModal extends Component {
         open={this.props.show}
         onClose={() => { this.props.toggleFunction(normalizedHref()); }}
       >
-        <ModalTitleArea>
+        <ModalTitleAreaType1>
           <div>
-            <Title>
+            <ModalTitleType1>
               Choose Your First Candidate
-            </Title>
+            </ModalTitleType1>
           </div>
           <IconButton
             aria-label="Close"
@@ -100,7 +101,7 @@ class FirstPositionIntroModal extends Component {
           >
             <Close />
           </IconButton>
-        </ModalTitleArea>
+        </ModalTitleAreaType1>
         <DialogContent classes={{ root: classes.dialogContent }}>
           <div className="full-width">
             <ExplanationText>
@@ -128,7 +129,7 @@ class FirstPositionIntroModal extends Component {
             <ExplanationTextLighter>
               Your personalized score is the number of friends (or advisers you follow) who support a candidate, minus the number who oppose.
             </ExplanationTextLighter>
-            <ContinueButtonWrapper>
+            <ContinueButtonType1Wrapper>
               <Button
                 classes={{ root: classes.continueButtonRoot }}
                 color="primary"
@@ -139,7 +140,7 @@ class FirstPositionIntroModal extends Component {
               >
                 Continue
               </Button>
-            </ContinueButtonWrapper>
+            </ContinueButtonType1Wrapper>
           </div>
         </DialogContent>
       </Dialog>
@@ -189,30 +190,6 @@ const styles = () => ({
   },
 });
 
-/* eslint no-nested-ternary: ["off"] */
-const ModalTitleArea = styled('div')`
-  justify-content: flex-start;
-  align-items: center;
-  width: 100%;
-  padding: 10px 12px 0 24px;
-  z-index: 999;
-  @media (min-width: 769px) {
-    border-bottom: 2px solid #f7f7f7;
-  }
-  display: flex;
-`;
-
-const Title = styled('h3')`
-  font-size: 28px;
-  color: black;
-  margin-top: 0;
-  margin-bottom: 0;
-  font-weight: bold;
-  @media (max-width: 769px) {
-    font-size: 18px;
-  }
-`;
-
 const ExplanationText = styled('div')`
   color: #2e3c5d;
   font-size: 16px;
@@ -232,14 +209,6 @@ const ExplanationTextLighter = styled('div')`
     font-size: 14px;
   }
   margin-bottom: 12px;
-`;
-
-const ContinueButtonWrapper = styled('div')`
-  width: 100%;
-  padding-top: 12px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
 `;
 
 export default withTheme(withStyles(styles)(FirstPositionIntroModal));

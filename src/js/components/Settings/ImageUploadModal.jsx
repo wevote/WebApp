@@ -1,12 +1,12 @@
 import { Close } from '@mui/icons-material';
 import { Dialog, DialogContent, IconButton } from '@mui/material';
-import styled from 'styled-components';
 import withStyles from '@mui/styles/withStyles';
 import withTheme from '@mui/styles/withTheme';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { hasIPhoneNotch } from '../../common/utils/cordovaUtils';
 import { renderLog } from '../../common/utils/logging';
+import { ModalTitleType1, ModalTitleAreaType1 } from '../Style/ModalType1Styles';
 import DragAndDrop from './DragAndDrop';
 
 class ImageUploadModal extends Component {
@@ -44,11 +44,11 @@ class ImageUploadModal extends Component {
         open={this.props.show}
         onClose={() => { this.props.toggleFunction(pathname); }}
       >
-        <ModalTitleArea>
+        <ModalTitleAreaType1>
           <div>
-            <Title>
+            <ModalTitleType1>
               Upload Image
-            </Title>
+            </ModalTitleType1>
           </div>
           <IconButton
             aria-label="Close"
@@ -59,7 +59,7 @@ class ImageUploadModal extends Component {
           >
             <Close />
           </IconButton>
-        </ModalTitleArea>
+        </ModalTitleAreaType1>
         <DialogContent classes={{ root: classes.dialogContent }}>
           <div className="full-width">
             {this.state.files.length > 0 ? (
@@ -112,29 +112,5 @@ const styles = () => ({
     width: '100%',
   },
 });
-
-/* eslint no-nested-ternary: ["off"] */
-const ModalTitleArea = styled('div')`
-  justify-content: flex-start;
-  align-items: center;
-  width: 100%;
-  padding: 10px 12px 0 24px;
-  z-index: 999;
-  @media (min-width: 769px) {
-    border-bottom: 2px solid #f7f7f7;
-  }
-  display: flex;
-`;
-
-const Title = styled('h3')`
-  font-size: 24px;
-  color: black;
-  margin-top: 0;
-  margin-bottom: 0;
-  font-weight: bold;
-  @media (max-width: 769px) {
-    font-size: 18px;
-  }
-`;
 
 export default withTheme(withStyles(styles)(ImageUploadModal));

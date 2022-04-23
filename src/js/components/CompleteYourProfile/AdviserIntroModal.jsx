@@ -7,6 +7,7 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { hasIPhoneNotch } from '../../common/utils/cordovaUtils';
 import { renderLog } from '../../common/utils/logging';
+import { ModalTitleType1, ModalTitleAreaType1 } from '../Style/ModalType1Styles';
 
 class AdviserIntroModal extends Component {
   constructor (props) {
@@ -31,11 +32,11 @@ class AdviserIntroModal extends Component {
         open={this.props.show}
         onClose={() => { this.props.toggleFunction(pathname); }}
       >
-        <ModalTitleArea>
+        <ModalTitleAreaType1>
           <div>
-            <Title>
+            <ModalTitleType1>
               Choose Your First Adviser
-            </Title>
+            </ModalTitleType1>
           </div>
           <IconButton
             aria-label="Close"
@@ -46,7 +47,7 @@ class AdviserIntroModal extends Component {
           >
             <Close />
           </IconButton>
-        </ModalTitleArea>
+        </ModalTitleAreaType1>
         <DialogContent classes={{ root: classes.dialogContent }}>
           <div className="full-width">
             <ExplanationText>
@@ -95,29 +96,6 @@ const styles = () => ({
   },
 });
 
-/* eslint no-nested-ternary: ["off"] */
-const ModalTitleArea = styled('div')`
-  justify-content: flex-start;
-  align-items: center;
-  width: 100%;
-  padding: 10px 12px 0 24px;
-  z-index: 999;
-  @media (min-width: 769px) {
-    border-bottom: 2px solid #f7f7f7;
-  }
-  display: flex;
-`;
-
-const Title = styled('h3')`
-  font-size: 24px;
-  color: black;
-  margin-top: 0;
-  margin-bottom: 0;
-  font-weight: bold;
-  @media (max-width: 769px) {
-    font-size: 18px;
-  }
-`;
 
 const ExplanationText = styled('div')`
   color: #2e3c5d;

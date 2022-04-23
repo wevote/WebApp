@@ -205,9 +205,7 @@ class WelcomeForOrganizations extends Component {
                 friends and organizations.
               </Description>
               <Description>
-                Using We Vote, voters can now confidently plan out their whole ballot in
-                {' '}
-                six minutes or less.
+                Using We Vote, voters can now confidently plan out their whole ballot.
               </Description>
               <Description className="u_margin-center">
                 <Button

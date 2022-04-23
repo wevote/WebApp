@@ -12,6 +12,7 @@ import { isOrganizationInVotersNetwork } from '../../utils/positionFunctions';
 import FriendsIcon from './FriendsIcon';
 
 const FollowToggle = React.lazy(() => import(/* webpackChunkName: 'FollowToggle' */ './FollowToggle'));
+const ReadMore = React.lazy(() => import(/* webpackChunkName: 'ReadMore' */ '../../common/components/Widgets/ReadMore'));
 
 class PositionItemScorePopover extends Component {
   constructor (props) {
@@ -132,6 +133,7 @@ class PositionItemScorePopover extends Component {
       is_support: organizationSupportsBallotItem,
       speaker_display_name: speakerDisplayName,
       speaker_we_vote_id: organizationWeVoteId,
+      statement_text: statementText,
     } = positionItem;
     this.setState({
       ballotItemDisplayName,
@@ -140,6 +142,7 @@ class PositionItemScorePopover extends Component {
       organizationSupportsBallotItem,
       organizationWeVoteId,
       speakerDisplayName,
+      statementText,
     });
     const issuesInCommonBetweenOrganizationAndVoter = IssueStore.getIssuesInCommonBetweenOrganizationAndVoter(organizationWeVoteId) || [];
     const organizationInVotersNetwork = isOrganizationInVotersNetwork(organizationWeVoteId);
@@ -151,8 +154,14 @@ class PositionItemScorePopover extends Component {
     });
   }
 
+  onShowMoreAlternateFunctionLocal = () => {
+    if (this.props.onShowMoreAlternateFunction) {
+      this.props.onShowMoreAlternateFunction();
+    }
+  }
+
   render () {
-    const { classes, positionWeVoteId, showPersonalScoreInformation } = this.props;
+    const { classes, popoverHeaderOff, positionWeVoteId, showPersonalScoreInformation } = this.props;
     // console.log('PositionItemScorePopover render');
     if (!positionWeVoteId) {
       return null;
@@ -161,16 +170,18 @@ class PositionItemScorePopover extends Component {
       ballotItemDisplayName, issuesInCommonBetweenOrganizationAndVoter, organizationInVotersNetwork,
       organizationInformationOnlyBallotItem, organizationOpposesBallotItem,
       organizationSupportsBallotItem, organizationWeVoteId,
-      speakerDisplayName, voterFollowingThisOrganization, voterIsFriendsWithThisOrganization,
+      speakerDisplayName, statementText, voterFollowingThisOrganization, voterIsFriendsWithThisOrganization,
     } = this.state;
     return (
       <PopoverWrapper>
-        <PopoverHeader>
-          <PopoverTitleText>
-            {speakerDisplayName}
-            &rsquo;s Opinion
-          </PopoverTitleText>
-        </PopoverHeader>
+        {!popoverHeaderOff && (
+          <PopoverHeader>
+            <PopoverTitleText>
+              {speakerDisplayName}
+              &rsquo;s Opinion
+            </PopoverTitleText>
+          </PopoverHeader>
+        )}
         <PopoverDescriptionText>
           <PositionSummaryWrapper>
             {organizationSupportsBallotItem && !organizationInVotersNetwork && (
@@ -230,6 +241,17 @@ class PositionItemScorePopover extends Component {
               )}
             </OrganizationSupportsOrOpposesText>
           </PositionSummaryWrapper>
+          {statementText && (
+            <StatementText>
+              <Suspense fallback={<></>}>
+                <ReadMore
+                  textToDisplay={`"${statementText}"`}
+                  numberOfLines={10}
+                  onShowMoreAlternateFunction={this.onShowMoreAlternateFunctionLocal}
+                />
+              </Suspense>
+            </StatementText>
+          )}
           {showPersonalScoreInformation && (
             <>
               {organizationInVotersNetwork ? (
@@ -335,6 +357,8 @@ class PositionItemScorePopover extends Component {
 }
 PositionItemScorePopover.propTypes = {
   classes: PropTypes.object,
+  onShowMoreAlternateFunction: PropTypes.func,
+  popoverHeaderOff: PropTypes.bool,
   positionWeVoteId: PropTypes.string,
   showPersonalScoreInformation: PropTypes.bool,
 };
@@ -421,6 +445,10 @@ const ScoreExplanationWrapper = styled('div')`
 
 const ScoreExplanationText = styled('div')`
   margin-left: 4px;
+`;
+
+const StatementText = styled('div')`
+  color: #999;
 `;
 
 const SupportAndPartOfScore = styled('div')(({ theme }) => (`

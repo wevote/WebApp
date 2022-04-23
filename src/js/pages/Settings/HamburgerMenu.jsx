@@ -62,6 +62,10 @@ export default class HamburgerMenu extends Component {
     this.setState({ voter: VoterStore.getVoter() });
   }
 
+  voterSignOut = () => {
+    VoterSessionActions.voterSignOut();
+  }
+
   yourAccountIcon (voterPhotoUrlMedium) {
     return (
       <span
@@ -87,10 +91,6 @@ export default class HamburgerMenu extends Component {
         )}
       </span>
     );
-  }
-
-  voterSignOut = () => {
-    VoterSessionActions.voterSignOut();
   }
 
   goToSettings () {

@@ -43,6 +43,7 @@ const nonFluxState = {
   sharedItemCode: '',
   showActivityTidbitDrawer: false,
   showAdviserIntroModal: false,
+  showAskFriendsModal: false,
   showChooseOrOpposeIntroModal: false,
   showEditAddressButton: false,
   showElectionsWithOrganizationVoterGuidesModal: false,
@@ -162,6 +163,11 @@ export default {
   setShowAdviserIntroModal (show) {
     nonFluxState.showAdviserIntroModal = show;
     messageService.sendMessage('state updated showAdviserIntroModal');
+  },
+
+  setShowAskFriendsModal (show) {
+    nonFluxState.showAskFriendsModal = show;
+    messageService.sendMessage('state updated showAskFriendsModal');
   },
 
   setShowChooseOrOpposeIntroModal (show, ballotItemType = 'CANDIDATE') {
@@ -464,6 +470,10 @@ export default {
 
   showAdviserIntroModal () {
     return nonFluxState.showAdviserIntroModal;
+  },
+
+  showAskFriendsModal () {
+    return nonFluxState.showAskFriendsModal;
   },
 
   showChooseOrOpposeIntroModal () {

@@ -55,6 +55,7 @@ import showBallotDecisionsTabs from '../../utilsApi/showBallotDecisionsTabs';
 import BallotTitleHeader from './BallotTitleHeader';
 import { checkShouldUpdate, formatVoterBallotList } from './utils/ballotUtils';
 
+const CompleteYourProfile = React.lazy(() => import(/* webpackChunkName: 'CompleteYourProfile' */ '../../components/CompleteYourProfile/CompleteYourProfile'));
 const DelayedLoad = React.lazy(() => import(/* webpackChunkName: 'DelayedLoad' */ '../../common/components/Widgets/DelayedLoad'));
 const FilterBaseSearch = React.lazy(() => import(/* webpackChunkName: 'FilterBaseSearch' */ '../../components/Filter/FilterBaseSearch'));
 const OpenExternalWebSite = React.lazy(() => import(/* webpackChunkName: 'OpenExternalWebSite' */ '../../common/components/Widgets/OpenExternalWebSite'));
@@ -1434,9 +1435,11 @@ class Ballot extends Component {
                         &quot;
                       </SearchTitle>
                     )}
-                    {/* <span className="u-show-desktop-tablet"> */}
-                    {/*  <CompleteYourProfile /> */}
-                    {/* </span> */}
+                    <span>
+                      <Suspense fallback={<></>}>
+                        <CompleteYourProfile />
+                      </Suspense>
+                    </span>
                     <BallotListWrapper>
                       {/* The rest of the ballot items */}
                       <div className="BallotList" id="BallotListId">

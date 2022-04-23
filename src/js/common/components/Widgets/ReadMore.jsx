@@ -30,9 +30,13 @@ export default class ReadMore extends Component {
   toggleLines (event) {
     event.preventDefault();
     const { readMore } = this.state;
-    this.setState({
-      readMore: !readMore,
-    });
+    if (readMore && this.props.onShowMoreAlternateFunction) {
+      this.props.onShowMoreAlternateFunction();
+    } else {
+      this.setState({
+        readMore: !readMore,
+      });
+    }
   }
 
   render () {
@@ -153,9 +157,10 @@ export default class ReadMore extends Component {
   } // end render
 }
 ReadMore.propTypes = {
-  textToDisplay: PropTypes.node.isRequired,
-  linkText: PropTypes.node,
-  collapseText: PropTypes.node,
-  numberOfLines: PropTypes.number,
   className: PropTypes.string,
+  collapseText: PropTypes.node,
+  linkText: PropTypes.node,
+  numberOfLines: PropTypes.number,
+  onShowMoreAlternateFunction: PropTypes.func,
+  textToDisplay: PropTypes.node.isRequired,
 };
