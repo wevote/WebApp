@@ -5,11 +5,11 @@ import Alert from 'react-bootstrap/Alert';
 import FriendActions from '../../actions/FriendActions';
 import apiCalming from '../../common/utils/apiCalming';
 import { renderLog } from '../../common/utils/logging';
+import stringContains from '../../common/utils/stringContains';
 import FriendStore from '../../stores/FriendStore';
 import OrganizationStore from '../../stores/OrganizationStore';
 import VoterStore from '../../stores/VoterStore';
 import { isSpeakerTypeOrganization } from '../../utils/organization-functions';
-import { stringContains } from '../../utils/textFormat';
 import SettingsWidgetFirstLastName from '../Settings/SettingsWidgetFirstLastName';
 
 class FirstAndLastNameRequiredAlert extends Component {

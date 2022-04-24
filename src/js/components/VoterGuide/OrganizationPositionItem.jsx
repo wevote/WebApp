@@ -5,7 +5,7 @@ import OrganizationStore from '../../stores/OrganizationStore';
 import SupportStore from '../../stores/SupportStore';
 import VoterStore from '../../stores/VoterStore';
 import { renderLog } from '../../common/utils/logging';
-import { capitalizeString } from '../../utils/textFormat';
+import toTitleCase from '../../common/utils/toTitleCase';
 import FriendsOnlyIndicator from '../Widgets/FriendsOnlyIndicator';
 import ItemPositionStatementActionBar from '../Widgets/ItemPositionStatementActionBar';
 import PositionInformationOnlySnippet from '../Widgets/PositionInformationOnlySnippet';
@@ -308,7 +308,7 @@ export default class OrganizationPositionItem extends Component {
     }
     let positionDescription;
     const isCandidate = kindOfBallotItem === 'CANDIDATE';
-    const ballotItemDisplayNameCaps = ballotItemDisplayName ? capitalizeString(ballotItemDisplayName) : '';
+    const ballotItemDisplayNameCaps = ballotItemDisplayName ? toTitleCase(ballotItemDisplayName) : '';
 
     const isOnBallotItemPage = false;
     if (voteSmartRating) {

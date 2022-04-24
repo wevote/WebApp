@@ -9,9 +9,9 @@ import ShareActions from '../../common/actions/ShareActions';
 import historyPush from '../../common/utils/historyPush';
 import { isWebApp } from '../../common/utils/isCordovaOrWebApp';
 import { renderLog } from '../../common/utils/logging';
+import stringContains from '../../common/utils/stringContains';
 import AppObservableStore, { messageService } from '../../stores/AppObservableStore';
 import VoterStore from '../../stores/VoterStore';
-import { stringContains } from '../../utils/textFormat';
 
 class ShareButtonDesktopTablet extends Component {
   constructor (props) {

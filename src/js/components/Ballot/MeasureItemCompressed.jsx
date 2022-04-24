@@ -9,10 +9,12 @@ import MeasureActions from '../../actions/MeasureActions';
 import extractNumber from '../../common/utils/extractNumber';
 import historyPush from '../../common/utils/historyPush';
 import { renderLog } from '../../common/utils/logging';
+import shortenText from '../../common/utils/shortenText';
+import toTitleCase from '../../common/utils/toTitleCase';
 import BallotStore from '../../stores/BallotStore';
 import MeasureStore from '../../stores/MeasureStore';
 import SupportStore from '../../stores/SupportStore';
-import { capitalizeString, shortenText, stripHtmlFromString } from '../../utils/textFormat';
+import { stripHtmlFromString } from '../../utils/textFormat';
 
 const BallotItemSupportOpposeCountDisplay = React.lazy(() => import(/* webpackChunkName: 'BallotItemSupportOpposeCountDisplay' */ '../Widgets/BallotItemSupportOpposeCountDisplay'));
 const DelayedLoad = React.lazy(() => import(/* webpackChunkName: 'DelayedLoad' */ '../../common/components/Widgets/DelayedLoad'));
@@ -270,8 +272,8 @@ class MeasureItemCompressed extends Component {
     if (ballotItemDisplayName) {
       ballotDisplay = ballotItemDisplayName.split(':');
     }
-    const measureSubtitleCapitalized = capitalizeString(measureSubtitle);
-    ballotItemDisplayName = capitalizeString(ballotItemDisplayName);
+    const measureSubtitleCapitalized = toTitleCase(measureSubtitle);
+    ballotItemDisplayName = toTitleCase(ballotItemDisplayName);
 
     return (
       <Card classes={{ root: classes.cardRoot }}>

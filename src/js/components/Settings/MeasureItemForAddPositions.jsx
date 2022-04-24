@@ -5,8 +5,9 @@ import withTheme from '@mui/styles/withTheme';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
 import { renderLog } from '../../common/utils/logging';
+import shortenText from '../../common/utils/shortenText';
+import toTitleCase from '../../common/utils/toTitleCase';
 import SupportStore from '../../stores/SupportStore';
-import { capitalizeString, shortenText } from '../../utils/textFormat';
 import ItemPositionStatementActionBar from '../Widgets/ItemPositionStatementActionBar';
 
 const ItemActionBar = React.lazy(() => import(/* webpackChunkName: 'ItemActionBar' */ '../Widgets/ItemActionBar/ItemActionBar'));
@@ -170,8 +171,8 @@ class MeasureItemForAddPositions extends Component {
     if (ballotItemDisplayName) {
       ballotDisplay = ballotItemDisplayName.split(':');
     }
-    // measureSubtitle = capitalizeString(measureSubtitle);
-    ballotItemDisplayName = capitalizeString(ballotItemDisplayName);
+    // measureSubtitle = toTitleCase(measureSubtitle);
+    ballotItemDisplayName = toTitleCase(ballotItemDisplayName);
 
     const commentDisplayDesktop = voterSupportsBallotItem || voterOpposesBallotItem || voterTextStatement || showPositionStatement ? (
       <div className="d-none d-sm-block u-min-50 u-stack--sm u-push--xs">

@@ -11,11 +11,12 @@ import SupportActions from '../../actions/SupportActions';
 import VoterGuideActions from '../../actions/VoterGuideActions';
 import historyPush from '../../common/utils/historyPush';
 import { renderLog } from '../../common/utils/logging';
+import toTitleCase from '../../common/utils/toTitleCase';
 import BallotStore from '../../stores/BallotStore';
 import OrganizationStore from '../../stores/OrganizationStore';
 import SupportStore from '../../stores/SupportStore';
 import VoterStore from '../../stores/VoterStore';
-import { calculateBallotBaseUrl, capitalizeString } from '../../utils/textFormat';
+import { calculateBallotBaseUrl } from '../../utils/textFormat';
 import BallotSearchResults from '../Ballot/BallotSearchResults';
 import FooterDoneBar from '../Navigation/FooterDoneBar';
 import EndorsementCard from '../Widgets/EndorsementCard';
@@ -267,7 +268,7 @@ class VoterGuideEndorsements extends Component {
     }
 
     // console.log("lookingAtSelf: ", lookingAtSelf);
-    const organizationName = capitalizeString(organization.organization_name);
+    const organizationName = toTitleCase(organization.organization_name);
     const titleText = `${organizationName} - We Vote`;
     const descriptionText = `See endorsements and opinions from ${organizationName} for the November election`;
 

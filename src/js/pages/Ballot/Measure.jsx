@@ -13,6 +13,7 @@ import apiCalming from '../../common/utils/apiCalming';
 import { isAndroidSizeFold } from '../../common/utils/cordovaUtils';
 import isMobileScreenSize from '../../common/utils/isMobileScreenSize';
 import { renderLog } from '../../common/utils/logging';
+import toTitleCase from '../../common/utils/toTitleCase';
 import MeasureStickyHeader from '../../components/Ballot/MeasureStickyHeader';
 import { PageContentContainer } from '../../components/Style/pageLayoutStyles';
 import EndorsementCard from '../../components/Widgets/EndorsementCard';
@@ -26,7 +27,6 @@ import MeasureStore from '../../stores/MeasureStore';
 import VoterGuideStore from '../../stores/VoterGuideStore';
 import VoterStore from '../../stores/VoterStore';
 import { cordovaBallotFilterTopMargin } from '../../utils/cordovaOffsets';
-import { capitalizeString } from '../../utils/textFormat';
 
 const DelayedLoad = React.lazy(() => import(/* webpackChunkName: 'DelayedLoad' */ '../../common/components/Widgets/DelayedLoad'));
 const MeasureItem = React.lazy(() => import(/* webpackChunkName: 'MeasureItem' */ '../../components/Ballot/MeasureItem'));
@@ -291,7 +291,7 @@ class Measure extends Component {
       );
     }
 
-    const measureName = capitalizeString(ballotItemDisplayName);
+    const measureName = toTitleCase(ballotItemDisplayName);
     const titleText = `${measureName} - We Vote`;
     const descriptionText = `Information about ${measureName}`;
     const voter = VoterStore.getVoter();

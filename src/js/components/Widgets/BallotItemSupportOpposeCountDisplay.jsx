@@ -6,6 +6,7 @@ import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
 import SupportActions from '../../actions/SupportActions';
 import { renderLog } from '../../common/utils/logging';
+import stringContains from '../../common/utils/stringContains';
 import CandidateStore from '../../stores/CandidateStore';
 import FriendStore from '../../stores/FriendStore';
 import IssueStore from '../../stores/IssueStore';
@@ -13,7 +14,6 @@ import MeasureStore from '../../stores/MeasureStore';
 import OrganizationStore from '../../stores/OrganizationStore';
 import SupportStore from '../../stores/SupportStore';
 import { getPositionListSummaryIncomingDataStats, getPositionSummaryListForBallotItem } from '../../utils/positionFunctions';
-import { stringContains } from '../../utils/textFormat';
 import StickyPopover from '../Ballot/StickyPopover';
 import { openSnackbar } from './SnackNotifier';
 

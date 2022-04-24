@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
 import { Link } from 'react-router-dom';
-import { capitalizeString } from '../../utils/textFormat';
+import toTitleCase from '../../common/utils/toTitleCase';
 
 const ImageHandler = React.lazy(() => import(/* webpackChunkName: 'ImageHandler' */ '../ImageHandler'));
 
@@ -34,7 +34,7 @@ export default class SearchResultsDisplay extends Component {
 
     if (this.searchHasContent()) {
       searchResultsDisplay = searchResults.map((oneResult, idx) => {
-        const capitalizedTitle = capitalizeString(oneResult.result_title);
+        const capitalizedTitle = toTitleCase(oneResult.result_title);
         if (oneResult.kind_of_owner === 'ELECTION') {
           const searchResultClasses = classNames({
             'search-container__election_results': true,

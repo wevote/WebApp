@@ -14,6 +14,7 @@ import { normalizedHref, normalizedHrefPage } from '../../common/utils/hrefUtils
 import { isCordova, isWebApp } from '../../common/utils/isCordovaOrWebApp';
 import isMobileScreenSize from '../../common/utils/isMobileScreenSize';
 import { renderLog } from '../../common/utils/logging';
+import stringContains from '../../common/utils/stringContains';
 import voterPhoto from '../../common/utils/voterPhoto';
 import AppObservableStore, { messageService } from '../../stores/AppObservableStore';
 import CandidateStore from '../../stores/CandidateStore';
@@ -23,7 +24,6 @@ import OrganizationStore from '../../stores/OrganizationStore';
 import VoterStore from '../../stores/VoterStore';
 import { dumpCssFromId } from '../../utils/appleSiliconUtils';
 import { avatarGeneric } from '../../utils/applicationUtils';
-import { stringContains } from '../../utils/textFormat';
 import ShareButtonDesktopTablet from '../Share/ShareButtonDesktopTablet';
 import { AppBarForBackTo, OfficeShareWrapper, TopOfPageHeader, TopRowOneLeftContainer, TopRowOneMiddleContainer, TopRowOneRightContainer, TopRowTwoLeftContainer, TopRowTwoRightContainer } from '../Style/pageLayoutStyles';
 import SignInButton from '../Widgets/SignInButton';

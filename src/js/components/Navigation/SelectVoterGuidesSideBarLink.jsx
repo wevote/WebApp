@@ -4,8 +4,9 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import historyPush from '../../common/utils/historyPush';
 import { renderLog } from '../../common/utils/logging';
+import toTitleCase from '../../common/utils/toTitleCase';
 import VoterStore from '../../stores/VoterStore';
-import { capitalizeString, sentenceCaseString } from '../../utils/textFormat';
+import { sentenceCaseString } from '../../utils/textFormat';
 
 
 export default class SelectVoterGuidesSideBarLink extends Component {
@@ -41,7 +42,7 @@ export default class SelectVoterGuidesSideBarLink extends Component {
   render () {
     // console.log('voterGuideWeVoteId:', this.props.voterGuideWeVoteId);
     renderLog('SelectVoterGuidesSideBarLink');  // Set LOG_RENDER_EVENTS to log all renders
-    const labelInSentenceCase = capitalizeString(this.props.label);
+    const labelInSentenceCase = toTitleCase(this.props.label);
     const subtitleInSentenceCase = sentenceCaseString(this.props.subtitle);
 
     return (

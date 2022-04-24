@@ -14,7 +14,7 @@ import extractNumber from '../../common/utils/extractNumber';
 import { normalizedHref } from '../../common/utils/hrefUtils';
 import { renderLog } from '../../common/utils/logging';
 import numberWithCommas from '../../common/utils/numberWithCommas';
-import { stringContains } from '../../utils/textFormat';
+import stringContains from '../../common/utils/stringContains';
 // TODO 5/11/21: import SettingsStripePayment from './SettingsStripePayment';
 
 

@@ -11,6 +11,7 @@ import VoterGuideActions from '../../actions/VoterGuideActions';
 import LoadingWheel from '../../common/components/Widgets/LoadingWheel';
 import apiCalming from '../../common/utils/apiCalming';
 import { renderLog } from '../../common/utils/logging';
+import toTitleCase from '../../common/utils/toTitleCase';
 import OrganizationVoterGuideCandidateItem from '../../components/VoterGuide/OrganizationVoterGuideCandidateItem';
 import EndorsementCard from '../../components/Widgets/EndorsementCard';
 import ThisIsMeAction from '../../components/Widgets/ThisIsMeAction';
@@ -18,7 +19,6 @@ import webAppConfig from '../../config';
 import CandidateStore from '../../stores/CandidateStore';
 import VoterGuideStore from '../../stores/VoterGuideStore';
 import VoterStore from '../../stores/VoterStore';
-import { capitalizeString } from '../../utils/textFormat';
 
 const OpenExternalWebSite = React.lazy(() => import(/* webpackChunkName: 'OpenExternalWebSite' */ '../../common/components/Widgets/OpenExternalWebSite'));
 const PositionList = React.lazy(() => import(/* webpackChunkName: 'PositionList' */ '../../components/Ballot/PositionList'));
@@ -133,7 +133,7 @@ class OrganizationVoterGuideCandidate extends Component {
       );
     }
 
-    const candidateName = capitalizeString(candidate.ballot_item_display_name);
+    const candidateName = toTitleCase(candidate.ballot_item_display_name);
     const titleText = `${candidateName} - We Vote`;
     const descriptionText = `Information about ${candidateName}, candidate for ${candidate.contest_office_name}`;
     const voter = VoterStore.getVoter();

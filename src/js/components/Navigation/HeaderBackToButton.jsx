@@ -9,7 +9,7 @@ import historyPush from '../../common/utils/historyPush';
 import { isCordova } from '../../common/utils/isCordovaOrWebApp';
 import isMobileScreenSize from '../../common/utils/isMobileScreenSize';
 import { renderLog } from '../../common/utils/logging';
-import { shortenText } from '../../utils/textFormat';
+import shortenText from '../../common/utils/shortenText';
 
 class HeaderBackToButton extends Component {
   render () {

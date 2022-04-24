@@ -1,4 +1,4 @@
-import { stringContains } from './textFormat';
+import stringContains from '../common/utils/stringContains';
 import { isCordova } from '../common/utils/isCordovaOrWebApp';
 
 export default function displayFriendsTabs () {

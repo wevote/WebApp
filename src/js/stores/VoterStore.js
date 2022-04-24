@@ -6,10 +6,10 @@ import OrganizationActions from '../actions/OrganizationActions';
 import VoterActions from '../actions/VoterActions'; // eslint-disable-line import/no-cycle
 import VoterGuideActions from '../actions/VoterGuideActions';
 import Dispatcher from '../common/dispatcher/Dispatcher';
+import stringContains from '../common/utils/stringContains';
 import signInModalGlobalState from '../components/Widgets/signInModalGlobalState';
 import { dumpObjProps } from '../utils/appleSiliconUtils';
 import Cookies from '../common/utils/js-cookie/Cookies';
-import { stringContains } from '../utils/textFormat';
 import AppObservableStore from './AppObservableStore';
 
 class VoterStore extends ReduceStore {

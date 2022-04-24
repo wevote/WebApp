@@ -14,6 +14,7 @@ import SvgImage from '../common/components/Widgets/SvgImage';
 import apiCalming from '../common/utils/apiCalming';
 import { renderLog } from '../common/utils/logging';
 import normalizedImagePath from '../common/utils/normalizedImagePath';
+import stringContains from '../common/utils/stringContains';
 import FilterBase from '../components/Filter/FilterBase';
 import OpinionsAndBallotItemsFilter from '../components/Filter/OpinionsAndBallotItemsFilter';
 import BallotItemForOpinions from '../components/OpinionsAndBallotItems/BallotItemForOpinions';
@@ -26,7 +27,6 @@ import BallotStore from '../stores/BallotStore';
 import OrganizationStore from '../stores/OrganizationStore';
 import VoterGuideStore from '../stores/VoterGuideStore';
 import VoterStore from '../stores/VoterStore';
-import { stringContains } from '../utils/textFormat';
 
 const ShowMoreItems = React.lazy(() => import(/* webpackChunkName: 'ShowMoreItems' */ '../components/Widgets/ShowMoreItems'));
 

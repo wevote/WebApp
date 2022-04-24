@@ -16,6 +16,7 @@ import { normalizedHref, normalizedHrefPage } from '../../common/utils/hrefUtils
 import { isCordova, isWebApp } from '../../common/utils/isCordovaOrWebApp';
 import isMobileScreenSize from '../../common/utils/isMobileScreenSize';
 import { renderLog } from '../../common/utils/logging';
+import stringContains from '../../common/utils/stringContains';
 import voterPhoto from '../../common/utils/voterPhoto';
 import AnalyticsStore from '../../stores/AnalyticsStore';
 import AppObservableStore, { messageService } from '../../stores/AppObservableStore';
@@ -24,7 +25,6 @@ import FriendStore from '../../stores/FriendStore';
 import VoterStore from '../../stores/VoterStore';
 import { avatarGeneric, displayTopMenuShadow, weVoteBrandingOff } from '../../utils/applicationUtils';
 import getHeaderObjects from '../../utils/getHeaderObjects';
-import { stringContains } from '../../utils/textFormat';
 import { TopOfPageHeader, TopRowOneLeftContainer, TopRowOneMiddleContainer, TopRowOneRightContainer, TopRowTwoLeftContainer } from '../Style/pageLayoutStyles';
 import SignInButton from '../Widgets/SignInButton';
 import signInModalGlobalState from '../Widgets/signInModalGlobalState';
