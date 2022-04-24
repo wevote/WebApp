@@ -6,8 +6,8 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import historyPush from '../../common/utils/historyPush';
 import { renderLog } from '../../common/utils/logging';
-import CandidateStore from '../../stores/CandidateStore';
 import toTitleCase from '../../common/utils/toTitleCase';
+import CandidateStore from '../../stores/CandidateStore';
 import CandidateItemForAddPositions from './CandidateItemForAddPositions';
 
 class OfficeItemForAddPositions extends Component {
