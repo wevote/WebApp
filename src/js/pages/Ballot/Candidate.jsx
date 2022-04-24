@@ -15,6 +15,7 @@ import apiCalming from '../../common/utils/apiCalming';
 import { isAndroidSizeFold } from '../../common/utils/cordovaUtils';
 import { isWebApp } from '../../common/utils/isCordovaOrWebApp';
 import { renderLog } from '../../common/utils/logging';
+import toTitleCase from '../../common/utils/toTitleCase';
 import CandidateStickyHeader from '../../components/Ballot/CandidateStickyHeader';
 import ShareButtonDesktopTablet from '../../components/Share/ShareButtonDesktopTablet';
 import { PageContentContainer } from '../../components/Style/pageLayoutStyles';
@@ -31,7 +32,6 @@ import IssueStore from '../../stores/IssueStore';
 import VoterGuideStore from '../../stores/VoterGuideStore';
 import VoterStore from '../../stores/VoterStore';
 import { convertToInteger } from '../../utils/textFormat';
-import toTitleCase from '../../common/utils/toTitleCase';
 
 const CandidateItem = React.lazy(() => import(/* webpackChunkName: 'CandidateItem' */ '../../components/Ballot/CandidateItem'));
 const DelayedLoad = React.lazy(() => import(/* webpackChunkName: 'DelayedLoad' */ '../../common/components/Widgets/DelayedLoad'));

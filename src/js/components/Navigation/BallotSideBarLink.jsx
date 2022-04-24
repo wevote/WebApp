@@ -4,8 +4,8 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { renderLog } from '../../common/utils/logging';
-import { sentenceCaseString } from '../../utils/textFormat';
 import toTitleCase from '../../common/utils/toTitleCase';
+import { sentenceCaseString } from '../../utils/textFormat';
 
 class BallotSideBarLink extends Component {
   constructor (props) {

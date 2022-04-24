@@ -4,9 +4,9 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import historyPush from '../../common/utils/historyPush';
 import { renderLog } from '../../common/utils/logging';
+import toTitleCase from '../../common/utils/toTitleCase';
 import VoterStore from '../../stores/VoterStore';
 import { sentenceCaseString } from '../../utils/textFormat';
-import toTitleCase from '../../common/utils/toTitleCase';
 
 
 export default class SelectVoterGuidesSideBarLink extends Component {

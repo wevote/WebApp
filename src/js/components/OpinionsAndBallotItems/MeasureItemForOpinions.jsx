@@ -7,8 +7,8 @@ import React, { Component, Suspense } from 'react';
 import historyPush from '../../common/utils/historyPush';
 import { renderLog } from '../../common/utils/logging';
 import shortenText from '../../common/utils/shortenText';
-import SupportStore from '../../stores/SupportStore';
 import toTitleCase from '../../common/utils/toTitleCase';
+import SupportStore from '../../stores/SupportStore';
 import ItemPositionStatementActionBar from '../Widgets/ItemPositionStatementActionBar';
 
 const ItemActionBar = React.lazy(() => import(/* webpackChunkName: 'ItemActionBar' */ '../Widgets/ItemActionBar/ItemActionBar'));

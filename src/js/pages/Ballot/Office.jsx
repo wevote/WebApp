@@ -8,6 +8,7 @@ import IssueActions from '../../actions/IssueActions';
 import OfficeActions from '../../actions/OfficeActions';
 import CandidateList from '../../components/Ballot/CandidateList';
 import LoadingWheel from '../../common/components/Widgets/LoadingWheel';
+import toTitleCase from '../../common/utils/toTitleCase';
 import { PageContentContainer } from '../../components/Style/pageLayoutStyles';
 import Testimonial from '../../components/Widgets/Testimonial';
 import AppObservableStore from '../../stores/AppObservableStore';
@@ -20,7 +21,6 @@ import normalizedImagePath from '../../common/utils/normalizedImagePath';
 import { renderLog } from '../../common/utils/logging';
 import apiCalming from '../../common/utils/apiCalming';
 import { sortCandidateList } from '../../utils/positionFunctions';
-import toTitleCase from '../../common/utils/toTitleCase';
 
 const testimonialPhoto = '../../../img/global/photos/Dale_McGrew-48x48.jpg';
 
