@@ -8,7 +8,7 @@ import OrganizationVoterGuideCandidateList from '../../components/VoterGuide/Org
 import OfficeStore from '../../stores/OfficeStore';
 import VoterStore from '../../stores/VoterStore';
 import { renderLog } from '../../common/utils/logging';
-import { capitalizeString } from '../../utils/textFormat';
+import toTitleCase from '../../common/utils/toTitleCase';
 
 // This is based on pages/Ballot/Office
 export default class OrganizationVoterGuideOffice extends Component {
@@ -76,7 +76,7 @@ export default class OrganizationVoterGuideOffice extends Component {
         </div>
       );
     }
-    const officeName = capitalizeString(office.ballot_item_display_name);
+    const officeName = toTitleCase(office.ballot_item_display_name);
     const titleText = `${officeName} - We Vote`;
     const descriptionText = `Choose who you support for ${officeName}in the November Election`;
 

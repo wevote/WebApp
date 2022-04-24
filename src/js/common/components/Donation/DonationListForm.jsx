@@ -1,8 +1,8 @@
 import { AppBar, Tab, Tabs } from '@mui/material';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import { stringContains } from '../../../utils/textFormat';
 import DonateActions from '../../actions/DonateActions';
+import stringContains from '../../utils/stringContains';
 import DonateStore from '../../stores/DonateStore';
 import { normalizedHref } from '../../utils/hrefUtils';
 import { renderLog } from '../../utils/logging';

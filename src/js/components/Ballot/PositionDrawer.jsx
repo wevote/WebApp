@@ -21,8 +21,9 @@ import OrganizationStore from '../../stores/OrganizationStore';
 import VoterGuideStore from '../../stores/VoterGuideStore';
 import VoterStore from '../../stores/VoterStore';
 import apiCalming from '../../common/utils/apiCalming';
+import stringContains from '../../common/utils/stringContains';
 import { cordovaDrawerTopMargin } from '../../utils/cordovaOffsets';
-import { convertToInteger, stringContains } from '../../utils/textFormat';
+import { convertToInteger } from '../../utils/textFormat';
 
 const DelayedLoad = React.lazy(() => import(/* webpackChunkName: 'DelayedLoad' */ '../../common/components/Widgets/DelayedLoad'));
 const PositionItem = React.lazy(() => import(/* webpackChunkName: 'PositionItem' */ './PositionItem'));

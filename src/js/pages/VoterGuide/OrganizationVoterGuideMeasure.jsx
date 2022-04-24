@@ -11,7 +11,7 @@ import MeasureStore from '../../stores/MeasureStore';
 import VoterGuideStore from '../../stores/VoterGuideStore';
 import VoterStore from '../../stores/VoterStore';
 import { renderLog } from '../../common/utils/logging';
-import { capitalizeString } from '../../utils/textFormat';
+import toTitleCase from '../../common/utils/toTitleCase';
 
 const MeasureItem = React.lazy(() => import(/* webpackChunkName: 'MeasureItem' */ '../../components/Ballot/MeasureItem'));
 const OpenExternalWebSite = React.lazy(() => import(/* webpackChunkName: 'OpenExternalWebSite' */ '../../common/components/Widgets/OpenExternalWebSite'));
@@ -115,7 +115,7 @@ export default class OrganizationVoterGuideMeasure extends Component {
       );
     }
 
-    const measureName = capitalizeString(this.state.measure.ballot_item_display_name);
+    const measureName = toTitleCase(this.state.measure.ballot_item_display_name);
     const titleText = `${measureName} - We Vote`;
     const descriptionText = `Information about ${measureName}`;
     const voter = VoterStore.getVoter();

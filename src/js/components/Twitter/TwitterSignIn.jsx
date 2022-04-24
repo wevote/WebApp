@@ -8,9 +8,9 @@ import historyPush from '../../common/utils/historyPush';
 import { isWebApp } from '../../common/utils/isCordovaOrWebApp';
 import Cookies from '../../common/utils/js-cookie/Cookies';
 import { oAuthLog, renderLog } from '../../common/utils/logging';
+import shortenText from '../../common/utils/shortenText';
 import webAppConfig from '../../config';
 import $ajax from '../../utils/service';
-import { shortenText } from '../../utils/textFormat';
 
 const returnURL = `${webAppConfig.WE_VOTE_URL_PROTOCOL + webAppConfig.WE_VOTE_HOSTNAME}/twitter_sign_in`;
 

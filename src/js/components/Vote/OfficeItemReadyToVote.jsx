@@ -7,7 +7,7 @@ import { isCordova } from '../../common/utils/isCordovaOrWebApp';
 import { renderLog } from '../../common/utils/logging';
 import SupportStore from '../../stores/SupportStore';
 import VoterGuideStore from '../../stores/VoterGuideStore';
-import { toTitleCase } from '../../utils/textFormat';
+import toTitleCase from '../../common/utils/toTitleCase';
 
 const ImageHandler = React.lazy(() => import(/* webpackChunkName: 'ImageHandler' */ '../ImageHandler'));
 const BallotItemSupportOpposeCountDisplay = React.lazy(() => import(/* webpackChunkName: 'BallotItemSupportOpposeCountDisplay' */ '../Widgets/BallotItemSupportOpposeCountDisplay'));

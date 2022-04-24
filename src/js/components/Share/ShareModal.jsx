@@ -15,11 +15,11 @@ import { cordovaLinkToBeSharedFixes, hasIPhoneNotch, isAndroid } from '../../com
 import { isCordova, isWebApp } from '../../common/utils/isCordovaOrWebApp';
 import { renderLog } from '../../common/utils/logging';
 import normalizedImagePath from '../../common/utils/normalizedImagePath';
+import stringContains from '../../common/utils/stringContains';
 import AppObservableStore, { messageService } from '../../stores/AppObservableStore';
 import FriendStore from '../../stores/FriendStore';
 import VoterStore from '../../stores/VoterStore';
 import sortFriendListByMutualFriends from '../../utils/friendFunctions';
-import { stringContains } from '../../utils/textFormat';
 import FriendsShareList from '../Friends/FriendsShareList';
 import InfoCircleIcon from '../Widgets/InfoCircleIcon';
 import MessageCard from '../Widgets/MessageCard';

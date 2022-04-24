@@ -9,13 +9,13 @@ import { normalizedHref } from '../../common/utils/hrefUtils';
 import { isWebApp } from '../../common/utils/isCordovaOrWebApp';
 import Cookies from '../../common/utils/js-cookie/Cookies';
 import { oAuthLog, renderLog } from '../../common/utils/logging';
+import stringContains from '../../common/utils/stringContains';
 import { PageContentContainer } from '../../components/Style/pageLayoutStyles';
 import IPhoneSpacer from '../../components/Widgets/IPhoneSpacer';
 import SnackNotifier from '../../components/Widgets/SnackNotifier';
 import AppObservableStore, { messageService } from '../../stores/AppObservableStore';
 import TwitterStore from '../../stores/TwitterStore';
 import VoterStore from '../../stores/VoterStore';
-import { stringContains } from '../../utils/textFormat';
 
 export default class TwitterSignInProcess extends Component {
   constructor (props) {

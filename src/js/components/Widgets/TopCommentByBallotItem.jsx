@@ -5,11 +5,12 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { renderLog } from '../../common/utils/logging';
+import shortenText from '../../common/utils/shortenText';
+import stringContains from '../../common/utils/stringContains';
 import CandidateStore from '../../stores/CandidateStore';
 import MeasureStore from '../../stores/MeasureStore';
 import VoterGuideStore from '../../stores/VoterGuideStore';
 import { extractFirstEndorsementFromPositionList } from '../../utils/positionFunctions';
-import { shortenText, stringContains } from '../../utils/textFormat';
 
 class TopCommentByBallotItem extends Component {
   constructor (props) {

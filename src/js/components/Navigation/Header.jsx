@@ -9,11 +9,11 @@ import { renderLog } from '../../common/utils/logging';
 import AppObservableStore, { messageService } from '../../stores/AppObservableStore';
 import VoterStore from '../../stores/VoterStore';
 import apiCalming from '../../common/utils/apiCalming';
+import stringContains from '../../common/utils/stringContains';
 import { dumpCssFromId } from '../../utils/appleSiliconUtils';
 import { getApplicationViewBooleans, weVoteBrandingOff } from '../../utils/applicationUtils';
 import cordovaTopHeaderTopMargin from '../../utils/cordovaTopHeaderTopMargin';
 import { HeadroomWrapper } from '../Style/pageLayoutStyles';
-import { stringContains } from '../../utils/textFormat';
 import IPhoneSpacer from '../Widgets/IPhoneSpacer';
 import HeaderBar from './HeaderBar';
 

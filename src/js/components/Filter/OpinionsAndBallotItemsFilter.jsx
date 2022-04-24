@@ -6,9 +6,9 @@ import React, { Component } from 'react';
 import BallotActions from '../../actions/BallotActions';
 import { convertStateCodeToStateText, convertStateTextToStateCode, stateCodeMap } from '../../common/utils/addressFunctions';
 import { renderLog } from '../../common/utils/logging';
+import removeValueFromArray from '../../common/utils/removeValueFromArray';
 import BallotStore from '../../stores/BallotStore';
 import { isSpeakerTypeIndividual, isSpeakerTypeOrganization, isSpeakerTypePublicFigure } from '../../utils/organization-functions';
-import { removeValueFromArray } from '../../utils/textFormat';
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;

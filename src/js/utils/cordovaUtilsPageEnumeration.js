@@ -2,7 +2,7 @@ import CordovaPageConstants from '../constants/CordovaPageConstants';
 import AppObservableStore from '../stores/AppObservableStore';
 import showBallotDecisionsTabs from '../utilsApi/showBallotDecisionsTabs';
 import { normalizedHref } from '../common/utils/hrefUtils';
-import { stringContains } from './textFormat';
+import stringContains from '../common/utils/stringContains';
 
 
 // eslint-disable-next-line import/prefer-default-export

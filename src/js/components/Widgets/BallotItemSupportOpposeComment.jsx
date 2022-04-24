@@ -4,9 +4,9 @@ import styled from 'styled-components';
 import { isAndroidSizeMD } from '../../common/utils/cordovaUtils';
 import { isCordova } from '../../common/utils/isCordovaOrWebApp';
 import { renderLog } from '../../common/utils/logging';
+import stringContains from '../../common/utils/stringContains';
 import CandidateStore from '../../stores/CandidateStore';
 import MeasureStore from '../../stores/MeasureStore';
-import { stringContains } from '../../utils/textFormat';
 
 const ItemActionBar = React.lazy(() => import(/* webpackChunkName: 'ItemActionBar' */ './ItemActionBar/ItemActionBar'));
 const ItemPositionStatementActionBar = React.lazy(() => import(/* webpackChunkName: 'ItemPositionStatementActionBar' */ './ItemPositionStatementActionBar2020'));

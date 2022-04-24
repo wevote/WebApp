@@ -4,8 +4,8 @@ import CandidateActions from '../actions/CandidateActions';
 import MeasureActions from '../actions/MeasureActions';
 import SupportActions from '../actions/SupportActions';
 import Dispatcher from '../common/dispatcher/Dispatcher';
+import stringContains from '../common/utils/stringContains';
 import { extractScoreFromNetworkFromPositionList } from '../utils/positionFunctions'; // eslint-disable-line import/no-cycle
-import { stringContains } from '../utils/textFormat';
 import CandidateStore from './CandidateStore'; // eslint-disable-line import/no-cycle
 import MeasureStore from './MeasureStore'; // eslint-disable-line import/no-cycle
 

@@ -13,7 +13,7 @@ import BallotStore from '../../stores/BallotStore';
 import CandidateStore from '../../stores/CandidateStore';
 import SupportStore from '../../stores/SupportStore';
 import { sortCandidateList } from '../../utils/positionFunctions';
-import { toTitleCase } from '../../utils/textFormat';
+import toTitleCase from '../../common/utils/toTitleCase';
 import signInModalGlobalState from '../Widgets/signInModalGlobalState';
 import PositionRowEmpty from './PositionRowEmpty';
 import PositionRowList from './PositionRowList';

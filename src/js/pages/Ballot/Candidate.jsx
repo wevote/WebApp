@@ -30,7 +30,8 @@ import CandidateStore from '../../stores/CandidateStore';
 import IssueStore from '../../stores/IssueStore';
 import VoterGuideStore from '../../stores/VoterGuideStore';
 import VoterStore from '../../stores/VoterStore';
-import { capitalizeString, convertToInteger } from '../../utils/textFormat';
+import { convertToInteger } from '../../utils/textFormat';
+import toTitleCase from '../../common/utils/toTitleCase';
 
 const CandidateItem = React.lazy(() => import(/* webpackChunkName: 'CandidateItem' */ '../../components/Ballot/CandidateItem'));
 const DelayedLoad = React.lazy(() => import(/* webpackChunkName: 'DelayedLoad' */ '../../common/components/Widgets/DelayedLoad'));
@@ -293,7 +294,7 @@ class Candidate extends Component {
     }
     // console.log('Candidate render');
 
-    const candidateName = capitalizeString(candidate.ballot_item_display_name);
+    const candidateName = toTitleCase(candidate.ballot_item_display_name);
     const titleText = `${candidateName} - We Vote`;
     const descriptionText = `Information about ${candidateName}, candidate for ${candidate.contest_office_name}`;
     const voter = VoterStore.getVoter();

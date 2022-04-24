@@ -15,6 +15,7 @@ import apiCalming from '../../common/utils/apiCalming';
 import { hasIPhoneNotch } from '../../common/utils/cordovaUtils';
 import { normalizedHref } from '../../common/utils/hrefUtils';
 import { renderLog } from '../../common/utils/logging';
+import stringContains from '../../common/utils/stringContains';
 import ShowMoreButtons from '../Ready/ShowMoreButtons';
 import BallotStore from '../../stores/BallotStore';
 import CandidateStore from '../../stores/CandidateStore';
@@ -24,7 +25,7 @@ import OrganizationStore from '../../stores/OrganizationStore';
 import VoterGuideStore from '../../stores/VoterGuideStore';
 import VoterStore from '../../stores/VoterStore';
 import { cordovaDrawerTopMargin } from '../../utils/cordovaOffsets';
-import { convertToInteger, stringContains } from '../../utils/textFormat';
+import { convertToInteger } from '../../utils/textFormat';
 
 const CandidateItem = React.lazy(() => import(/* webpackChunkName: 'CandidateItem' */ '../Ballot/CandidateItem'));
 const DelayedLoad = React.lazy(() => import(/* webpackChunkName: 'DelayedLoad' */ '../../common/components/Widgets/DelayedLoad'));

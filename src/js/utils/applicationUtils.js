@@ -3,8 +3,8 @@ import { normalizedHrefPage } from '../common/utils/hrefUtils';
 import { isCordova, isWebApp } from '../common/utils/isCordovaOrWebApp';
 import normalizedImagePath from '../common/utils/normalizedImagePath';
 import Cookies from '../common/utils/js-cookie/Cookies';
+import stringContains from '../common/utils/stringContains';
 import VoterStore from '../stores/VoterStore';
-import { stringContains } from './textFormat';
 
 // We have to do all this, because we allow urls where the path starts with a twitter username (handle)
 // as a result every path has to be evaluated for an exact routable match, and what is left is a twitter handle path.

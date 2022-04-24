@@ -12,12 +12,12 @@ import { isAndroid, isAndroidSizeFold, isIOS, isIOsSmallerThanPlus, isIPhone5p5i
 import historyPush from '../../common/utils/historyPush';
 import { isCordova, isWebApp } from '../../common/utils/isCordovaOrWebApp';
 import { renderLog } from '../../common/utils/logging';
+import stringContains from '../../common/utils/stringContains';
 import webAppConfig from '../../config';
 import DeviceURLField from '../../pages/Startup/DeviceURLField';
 import VoterStore from '../../stores/VoterStore';
 import initializeAppleSDK from '../../utils/initializeAppleSDK';
 import initializeFacebookSDK from '../../utils/initializeFacebookSDK';
-import { stringContains } from '../../utils/textFormat';
 import signInModalGlobalState from './signInModalGlobalState';
 
 const SettingsAccount = React.lazy(() => import(/* webpackChunkName: 'SettingsAccount' */ '../Settings/SettingsAccount'));

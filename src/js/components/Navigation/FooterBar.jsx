@@ -7,11 +7,11 @@ import historyPush from '../../common/utils/historyPush';
 import { normalizedHref } from '../../common/utils/hrefUtils';
 import { isCordova } from '../../common/utils/isCordovaOrWebApp';
 import { renderLog } from '../../common/utils/logging';
+import stringContains from '../../common/utils/stringContains';
 import AppObservableStore, { messageService } from '../../stores/AppObservableStore';
 import FriendStore from '../../stores/FriendStore';
 import VoterStore from '../../stores/VoterStore';
 import { cordovaFooterHeight } from '../../utils/cordovaOffsets';
-import { stringContains } from '../../utils/textFormat';
 import signInModalGlobalState from '../Widgets/signInModalGlobalState';
 
 

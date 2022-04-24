@@ -4,8 +4,8 @@ import Dispatcher from '../common/dispatcher/Dispatcher';
 
 import { mostLikelyOfficeDictFromList } from '../utils/candidateFunctions';
 import normalizedImagePath from '../common/utils/normalizedImagePath'; // eslint-disable-line import/no-cycle
+import stringContains from '../common/utils/stringContains';
 import { extractNumberOfPositionsFromPositionList } from '../utils/positionFunctions'; // eslint-disable-line import/no-cycle
-import { stringContains } from '../utils/textFormat';
 import OfficeStore from './OfficeStore';
 
 class CandidateStore extends ReduceStore {

@@ -8,7 +8,7 @@ import { hasIPhoneNotch } from '../../common/utils/cordovaUtils';
 import historyPush from '../../common/utils/historyPush';
 import { isCordova } from '../../common/utils/isCordovaOrWebApp';
 import { renderLog } from '../../common/utils/logging';
-import { capitalizeString } from '../../utils/textFormat';
+import toTitleCase from '../../common/utils/toTitleCase';
 
 class OfficeItem extends Component {
   render () {
@@ -18,7 +18,7 @@ class OfficeItem extends Component {
     const officeLink = `/office/${weVoteId}`;
     const goToOfficeLink = () => { historyPush(officeLink); };
 
-    ballotItemDisplayName = capitalizeString(ballotItemDisplayName);
+    ballotItemDisplayName = toTitleCase(ballotItemDisplayName);
     const candidatesHtml = <span />; // For a preview of the candidates
 
     return (

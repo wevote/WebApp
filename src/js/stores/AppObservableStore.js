@@ -1,9 +1,9 @@
 import { Subject } from 'rxjs';
 import VoterActions from '../actions/VoterActions';   // eslint-disable-line import/no-cycle
+import stringContains from '../common/utils/stringContains';
 import webAppConfig from '../config';
 import { dumpObjProps } from '../utils/appleSiliconUtils';
 import $ajax from '../utils/service';
-import { stringContains } from '../utils/textFormat';
 
 const subject = new Subject();
 

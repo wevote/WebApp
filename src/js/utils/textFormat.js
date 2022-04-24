@@ -1,4 +1,5 @@
 // textFormat.js
+import stringContains from '../common/utils/stringContains';
 
 // We assume that arrayHaystack contains objects with one property with the name in needleProperty
 // When we find the first object in the arrayHaystack, replace it with the newObject
@@ -60,63 +61,6 @@ export function convertNameToSlug (incomingString) {
   convertedString = convertedString.split('/_').join('_');
   // console.log('convertedString: ', convertedString);
   return convertedString;
-}
-
-export function toTitleCase (incomingString) {
-  if (!incomingString || incomingString === '') {
-    return '';
-  }
-  let count;
-  let arrayLength;
-  let str;
-  str = incomingString.replace(/([^\W_]+[^\s-]*) */g, (txt) => txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase());
-
-  // Certain minor words should be left lowercase unless
-  // they are the first or last words in the string
-  const lowers = ['A', 'An', 'The', 'And', 'But', 'Or', 'For', 'Nor', 'As', 'At',
-    'By', 'For', 'From', 'In', 'Into', 'Near', 'Of', 'On', 'Onto', 'To', 'With'];
-  for (count = 0, arrayLength = lowers.length; count < arrayLength; count++) {
-    str = str.replace(new RegExp(`\\s${lowers[count]}\\s`, 'g'),
-      (txt) => txt.toLowerCase());
-  }
-
-  // Leave state codes, measure names and 'VP' upper case
-  // AC Transit
-  const uppers = ['Ac',
-    'Us', 'Ak', 'Al', 'Ar', 'Az', 'Ca', 'Co', 'Ct', 'Dc', 'De', 'Fl', 'Ga', 'Gu', 'Hi', 'Ia', 'Id',
-    'Il', 'In', 'Ks', 'La', 'Ma', 'Md', 'Me', 'Mi', 'Mn', 'Mo', 'Mp', 'Ms', 'Mt', 'Na', 'Nc', 'Nd', 'Ne',
-    'Nh', 'Nj', 'Nm', 'Nv', 'Ny', 'Oh', 'Ok', 'Pa', 'Pr', 'Ri', 'Sc', 'Sd', 'Tn', 'Tx', 'Ut', 'Va', 'Vi',
-    'Vt', 'Wa', 'Wi', 'Wv', 'Wy',
-    'Aa', 'Bb', 'Cc', 'Dd', 'Ee', 'Ff', 'Gg', 'Hh', 'Ii', 'Jj', 'Kk', 'Ll', 'Mm', 'Nn', 'Oo', 'Pp',
-    'Qq', 'Rr', 'Ss', 'Tt', 'Uu', 'Vv', 'Ww', 'Xx', 'Yy', 'Zz',
-    'Vp'];
-  for (count = 0, arrayLength = uppers.length; count < arrayLength; count++) {
-    str = str.replace(new RegExp(`\\b${uppers[count]}\\b`, 'g'),
-      uppers[count].toUpperCase());
-  }
-
-  // Finally, search and replace for pesky abbreviations
-  str = str.replace('U.s.', 'U.S.');
-  str = str.replace('u.s.', 'U.S.');
-
-  return str;
-}
-
-// March 24, 2018:  Poorly named and DOESN'T seem to work.
-// It seems like it is supposed to do what the new "toTitleCase" (above) does,
-// but send this function "Now is the time" and it returns "Now is the time"
-export function capitalizeString (incomingString) {
-  // TODO Update everywhere we use capitalizeString to use toTitleCase
-  return toTitleCase(incomingString);
-  // if (incomingString === undefined) {
-  //   return "";
-  // }
-  // if (incomingString === incomingString.toUpperCase()) {
-  //   var lowercase = incomingString.toLowerCase();
-  //   return lowercase.replace( /(^|\s)([a-z])/g, function (m, p1, p2) { return p1 + p2.toUpperCase(); } );
-  // } else {
-  //   return incomingString;
-  // }
 }
 
 export function cleanArray (actual) {
@@ -211,17 +155,6 @@ export function removeTwitterNameFromDescription (displayName, twitterDescriptio
   return twitterDescriptionMinusName;
 }
 
-// TODO: Switch all uses of this function over to /src/js/common/utils/removeValueFromArray
-export function removeValueFromArray (valueToRemove, listArray) {
-  if (listArray && listArray.constructor === Array) {
-    const index = listArray.indexOf(valueToRemove);
-    if (index !== -1) {
-      listArray.splice(index, 1);
-    }
-  }
-  return listArray;
-}
-
 export function sentenceCaseString (incomingString) {
   if (!incomingString || incomingString === '') {
     return '';
@@ -243,33 +176,6 @@ export function sentenceCaseString (incomingString) {
   }
   finalString = finalString.substring(0, finalString.length - 1);
   return finalString;
-}
-
-// TODO: Switch all uses of this function over to /src/js/common/utils/shortenText
-export function shortenText (incomingString, maximumLength) {
-  if (!incomingString || incomingString === '') {
-    return '';
-  }
-  const maximumLengthInteger = parseInt(maximumLength, 10);
-  if (maximumLengthInteger < 1) {
-    return '';
-  }
-  let cropLengthToMakeRoomForEllipses = maximumLengthInteger - 2;
-  // Don't allow the string to use less than 3 characters
-  const minimumCharactersToDisplay = 3;
-  cropLengthToMakeRoomForEllipses = cropLengthToMakeRoomForEllipses > 2 ? cropLengthToMakeRoomForEllipses : minimumCharactersToDisplay;
-  const shortenedText = incomingString.length < maximumLengthInteger ? incomingString : incomingString.slice(0, cropLengthToMakeRoomForEllipses);
-  return incomingString.length < maximumLengthInteger ? incomingString.trim() : `${shortenedText.trim()}...`;
-}
-
-// TODO: Switch all uses of this function over to /src/js/common/utils/stringContains
-export function stringContains (needle, stringHaystack) {
-  // console.log("stringContains, needle:", needle, ", haystack: ", stringHaystack);
-  if (stringHaystack) {
-    return stringHaystack.indexOf(needle) !== -1;
-  } else {
-    return false;
-  }
 }
 
 export function stripHtmlFromString (incomingString) {

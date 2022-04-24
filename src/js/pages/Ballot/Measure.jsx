@@ -26,7 +26,7 @@ import MeasureStore from '../../stores/MeasureStore';
 import VoterGuideStore from '../../stores/VoterGuideStore';
 import VoterStore from '../../stores/VoterStore';
 import { cordovaBallotFilterTopMargin } from '../../utils/cordovaOffsets';
-import { capitalizeString } from '../../utils/textFormat';
+import toTitleCase from '../../common/utils/toTitleCase';
 
 const DelayedLoad = React.lazy(() => import(/* webpackChunkName: 'DelayedLoad' */ '../../common/components/Widgets/DelayedLoad'));
 const MeasureItem = React.lazy(() => import(/* webpackChunkName: 'MeasureItem' */ '../../components/Ballot/MeasureItem'));
@@ -291,7 +291,7 @@ class Measure extends Component {
       );
     }
 
-    const measureName = capitalizeString(ballotItemDisplayName);
+    const measureName = toTitleCase(ballotItemDisplayName);
     const titleText = `${measureName} - We Vote`;
     const descriptionText = `Information about ${measureName}`;
     const voter = VoterStore.getVoter();

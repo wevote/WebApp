@@ -18,7 +18,7 @@ import webAppConfig from '../../config';
 import CandidateStore from '../../stores/CandidateStore';
 import VoterGuideStore from '../../stores/VoterGuideStore';
 import VoterStore from '../../stores/VoterStore';
-import { capitalizeString } from '../../utils/textFormat';
+import toTitleCase from '../../common/utils/toTitleCase';
 
 const OpenExternalWebSite = React.lazy(() => import(/* webpackChunkName: 'OpenExternalWebSite' */ '../../common/components/Widgets/OpenExternalWebSite'));
 const PositionList = React.lazy(() => import(/* webpackChunkName: 'PositionList' */ '../../components/Ballot/PositionList'));
@@ -133,7 +133,7 @@ class OrganizationVoterGuideCandidate extends Component {
       );
     }
 
-    const candidateName = capitalizeString(candidate.ballot_item_display_name);
+    const candidateName = toTitleCase(candidate.ballot_item_display_name);
     const titleText = `${candidateName} - We Vote`;
     const descriptionText = `Information about ${candidateName}, candidate for ${candidate.contest_office_name}`;
     const voter = VoterStore.getVoter();

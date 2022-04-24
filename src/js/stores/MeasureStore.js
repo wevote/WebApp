@@ -1,7 +1,8 @@
 import { ReduceStore } from 'flux/utils';
 import Dispatcher from '../common/dispatcher/Dispatcher';
+import stringContains from '../common/utils/stringContains';
 import { extractNumberOfPositionsFromPositionList } from '../utils/positionFunctions'; // eslint-disable-line import/no-cycle
-import { stringContains, stripHtmlFromString } from '../utils/textFormat';
+import { stripHtmlFromString } from '../utils/textFormat';
 
 class MeasureStore extends ReduceStore {
   getInitialState () {

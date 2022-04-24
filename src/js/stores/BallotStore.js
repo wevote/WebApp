@@ -6,7 +6,8 @@ import CandidateActions from '../actions/CandidateActions';
 import MeasureActions from '../actions/MeasureActions'; // eslint-disable-line import/no-cycle
 import Dispatcher from '../common/dispatcher/Dispatcher';
 import { formatStateName } from '../common/utils/formatStateName';
-import { stringContains, toTitleCase } from '../utils/textFormat';
+import stringContains from '../common/utils/stringContains';
+import toTitleCase from '../common/utils/toTitleCase';
 import convertVoterGuideToElection from '../utils/voterGuideFunctions';
 import SupportStore from './SupportStore'; // eslint-disable-line import/no-cycle
 import VoterStore from './VoterStore';

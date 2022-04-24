@@ -4,7 +4,8 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { renderLog } from '../../common/utils/logging';
-import { capitalizeString, sentenceCaseString } from '../../utils/textFormat';
+import { sentenceCaseString } from '../../utils/textFormat';
+import toTitleCase from '../../common/utils/toTitleCase';
 
 class BallotSideBarLink extends Component {
   constructor (props) {
@@ -15,7 +16,7 @@ class BallotSideBarLink extends Component {
   render () {
     renderLog('BallotSideBarLink');  // Set LOG_RENDER_EVENTS to log all renders
     const { classes } = this.props;
-    const labelInSentenceCase = capitalizeString(this.props.label);
+    const labelInSentenceCase = toTitleCase(this.props.label);
     const subtitleInSentenceCase = sentenceCaseString(this.props.subtitle);
 
     return (

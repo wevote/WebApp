@@ -20,7 +20,7 @@ import normalizedImagePath from '../../common/utils/normalizedImagePath';
 import { renderLog } from '../../common/utils/logging';
 import apiCalming from '../../common/utils/apiCalming';
 import { sortCandidateList } from '../../utils/positionFunctions';
-import { capitalizeString } from '../../utils/textFormat';
+import toTitleCase from '../../common/utils/toTitleCase';
 
 const testimonialPhoto = '../../../img/global/photos/Dale_McGrew-48x48.jpg';
 
@@ -294,7 +294,7 @@ class Office extends Component {
       );
     }
 
-    const officeName = capitalizeString(office.ballot_item_display_name);
+    const officeName = toTitleCase(office.ballot_item_display_name);
     const titleText = `${officeName} - We Vote`;
     const descriptionText = `Choose who you support for ${officeName} in this election`;
 

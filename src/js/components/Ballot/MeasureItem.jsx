@@ -8,7 +8,7 @@ import historyPush from '../../common/utils/historyPush';
 import { renderLog } from '../../common/utils/logging';
 import { messageService } from '../../stores/AppObservableStore';
 import MeasureStore from '../../stores/MeasureStore';
-import { capitalizeString } from '../../utils/textFormat';
+import toTitleCase from '../../common/utils/toTitleCase';
 
 const ReadMore = React.lazy(() => import(/* webpackChunkName: 'ReadMore' */ '../../common/components/Widgets/ReadMore'));
 const BallotItemSupportOpposeComment = React.lazy(() => import(/* webpackChunkName: 'BallotItemSupportOpposeComment' */ '../Widgets/BallotItemSupportOpposeComment'));
@@ -105,8 +105,8 @@ class MeasureItem extends Component {
     }
 
     const numberOfLines = 2;
-    const measureSubtitleCapitalized = capitalizeString(measureSubtitle);
-    ballotItemDisplayName = capitalizeString(ballotItemDisplayName);
+    const measureSubtitleCapitalized = toTitleCase(measureSubtitle);
+    ballotItemDisplayName = toTitleCase(ballotItemDisplayName);
 
     return (
       <MeasureItemWrapper className="card-main">

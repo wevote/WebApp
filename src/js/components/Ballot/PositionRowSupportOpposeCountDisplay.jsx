@@ -5,6 +5,7 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 import SupportActions from '../../actions/SupportActions';
 import { renderLog } from '../../common/utils/logging';
+import stringContains from '../../common/utils/stringContains';
 import CandidateStore from '../../stores/CandidateStore';
 import FriendStore from '../../stores/FriendStore';
 import IssueStore from '../../stores/IssueStore';
@@ -15,7 +16,6 @@ import {
   getPositionListSummaryIncomingDataStats,
   getPositionSummaryListForBallotItem,
 } from '../../utils/positionFunctions';
-import { stringContains } from '../../utils/textFormat';
 import { openSnackbar } from '../Widgets/SnackNotifier';
 import AppObservableStore from '../../stores/AppObservableStore';
 
