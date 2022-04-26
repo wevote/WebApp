@@ -273,6 +273,7 @@ class OrganizationModal extends Component {
         {(isCandidate && !hideBallotItemInfo) && (
           <Suspense fallback={<></>}>
             <CandidateItem
+              blockOnClickShowOrganizationModalWithPositions
               candidateWeVoteId={ballotItemWeVoteId}
               expandIssuesByDefault
               forMoreInformationTextOff
@@ -289,7 +290,7 @@ class OrganizationModal extends Component {
         )}
         {(isMeasure && !hideBallotItemInfo) && (
           <Suspense fallback={<></>}>
-            <MeasureItem forMoreInformationTextOff measureWeVoteId={ballotItemWeVoteId} />
+            <MeasureItem blockOnClickShowOrganizationModalWithPositions forMoreInformationTextOff measureWeVoteId={ballotItemWeVoteId} />
           </Suspense>
         )}
         { !!(allCachedPositionsForThisBallotItem.length) && (
@@ -304,7 +305,7 @@ class OrganizationModal extends Component {
                         incomingPositionList={allCachedPositionsForThisBallotItem}
                         linksOpenExternalWebsite
                         params={params}
-                        positionListExistsTitle={!hideBallotItemInfo && (
+                        positionListExistsTitle={hideBallotItemInfo ? <></> : (
                           <PositionListIntroductionText>
                             <Info classes={{ root: classes.informationIcon }} />
                             Endorsements are below. Use these filters to sort:

@@ -1,5 +1,3 @@
-import { ArrowForward } from '@mui/icons-material';
-import { Card } from '@mui/material';
 import withStyles from '@mui/styles/withStyles';
 import withTheme from '@mui/styles/withTheme';
 import PropTypes from 'prop-types';
@@ -11,15 +9,27 @@ import historyPush from '../../common/utils/historyPush';
 import { renderLog } from '../../common/utils/logging';
 import shortenText from '../../common/utils/shortenText';
 import toTitleCase from '../../common/utils/toTitleCase';
+import AppObservableStore from '../../stores/AppObservableStore';
 import BallotStore from '../../stores/BallotStore';
 import MeasureStore from '../../stores/MeasureStore';
 import SupportStore from '../../stores/SupportStore';
 import { stripHtmlFromString } from '../../utils/textFormat';
+// import {
+//   OverflowContainer,
+//   PositionRowListEmptyWrapper,
+//   PositionRowListInnerWrapper,
+//   PositionRowListOneWrapper,
+//   PositionRowListOuterWrapper,
+//   PositionRowListScoreColumn,
+//   PositionRowListScoreHeader,
+//   PositionRowListScoreSpacer,
+// } from '../Style/PositionRowListStyles';
+// import PositionRowList from './PositionRowList';
+// import PositionRowEmpty from './PositionRowEmpty';
 
 const BallotItemSupportOpposeCountDisplay = React.lazy(() => import(/* webpackChunkName: 'BallotItemSupportOpposeCountDisplay' */ '../Widgets/BallotItemSupportOpposeCountDisplay'));
 const DelayedLoad = React.lazy(() => import(/* webpackChunkName: 'DelayedLoad' */ '../../common/components/Widgets/DelayedLoad'));
 const ItemActionBar = React.lazy(() => import(/* webpackChunkName: 'ItemActionBar' */ '../Widgets/ItemActionBar/ItemActionBar'));
-const ShowMoreFooter = React.lazy(() => import(/* webpackChunkName: 'ShowMoreFooter' */ '../Navigation/ShowMoreFooter'));
 const TopCommentByBallotItem = React.lazy(() => import(/* webpackChunkName: 'TopCommentByBallotItem' */ '../Widgets/TopCommentByBallotItem'));
 
 class MeasureItemCompressed extends Component {
@@ -44,6 +54,8 @@ class MeasureItemCompressed extends Component {
     };
     this.getMeasureLink = this.getMeasureLink.bind(this);
     this.goToMeasureLink = this.goToMeasureLink.bind(this);
+    this.onClickShowOrganizationModalWithBallotItemInfo = this.onClickShowOrganizationModalWithBallotItemInfo.bind(this);
+    this.onClickShowOrganizationModalWithPositions = this.onClickShowOrganizationModalWithPositions.bind(this);
     this.togglePositionStatement = this.togglePositionStatement.bind(this);
   }
 
@@ -110,52 +122,6 @@ class MeasureItemCompressed extends Component {
     this.supportStoreListener = SupportStore.addListener(this.onSupportStoreChange.bind(this));
   }
 
-  // shouldComponentUpdate (nextProps, nextState) {
-  //   // This lifecycle method tells the component to NOT render if componentWillReceiveProps didn't see any changes
-  //   if (this.state.componentDidMountFinished === false) {
-  //     // console.log('shouldComponentUpdate: componentDidMountFinished === false');
-  //     return true;
-  //   }
-  //   if (this.state.organizationWeVoteId !== nextState.organizationWeVoteId) {
-  //     // console.log('this.state.organizationWeVoteId:', this.state.organizationWeVoteId, ', nextState.organizationWeVoteId:', nextState.organizationWeVoteId);
-  //     return true;
-  //   }
-  //   if (this.state.ballotItemDisplayName !== nextState.ballotItemDisplayName) {
-  //     // console.log('this.state.ballotItemDisplayName:', this.state.ballotItemDisplayName, ', nextState.ballotItemDisplayName:', nextState.ballotItemDisplayName);
-  //     return true;
-  //   }
-  //   if (JSON.stringify(this.state.measure) !== JSON.stringify(nextState.measure)) {
-  //     // console.log('this.state.measure:', this.state.measure, ', nextState.measure:', nextState.measure);
-  //     return true;
-  //   }
-  //   if (this.props.showPositionStatementActionBar !== nextProps.showPositionStatementActionBar) {
-  //     // console.log('this.props.showPositionStatementActionBar change');
-  //     return true;
-  //   }
-  //   if (this.state.showPositionStatement !== nextState.showPositionStatement) {
-  //     // console.log('this.state.showPositionStatement change');
-  //     return true;
-  //   }
-  //   if (this.state.numberOfOpposePositionsForScore !== nextState.numberOfOpposePositionsForScore) {
-  //     // console.log('this.state.showPositionStatement change');
-  //     return true;
-  //   }
-  //   if (this.state.numberOfSupportPositionsForScore !== nextState.numberOfSupportPositionsForScore) {
-  //     // console.log('this.state.showPositionStatement change');
-  //     return true;
-  //   }
-  //   if (this.state.voterOpposesBallotItem !== nextState.voterOpposesBallotItem) {
-  //     // console.log('this.state.showPositionStatement change');
-  //     return true;
-  //   }
-  //   if (this.state.voterSupportsBallotItem !== nextState.voterSupportsBallotItem) {
-  //     // console.log('this.state.showPositionStatement change');
-  //     return true;
-  //   }
-  //   // console.log('shouldComponentUpdate no change');
-  //   return false;
-  // }
-
   componentWillUnmount () {
     this.measureStoreListener.remove();
     this.supportStoreListener.remove();
@@ -218,6 +184,20 @@ class MeasureItemCompressed extends Component {
     }
   }
 
+  onClickShowOrganizationModalWithBallotItemInfo () {
+    const { measureWeVoteId } = this.props;
+    AppObservableStore.setOrganizationModalBallotItemWeVoteId(measureWeVoteId);
+    AppObservableStore.setShowOrganizationModal(true);
+    AppObservableStore.setHideOrganizationModalPositions(true);
+  }
+
+  onClickShowOrganizationModalWithPositions () {
+    const { measureWeVoteId } = this.props;
+    AppObservableStore.setOrganizationModalBallotItemWeVoteId(measureWeVoteId);
+    AppObservableStore.setShowOrganizationModal(true);
+    AppObservableStore.setHideOrganizationModalBallotItemInfo(true);
+  }
+
   getMeasureLink (oneMeasureWeVoteId) {
     if (this.state.organizationWeVoteId) {
       // If there is an organizationWeVoteId, signal that we want to link back to voter_guide for that organization
@@ -267,7 +247,6 @@ class MeasureItemCompressed extends Component {
     if (!measureWeVoteId) {
       return null;
     }
-    const { classes } = this.props;
     let ballotDisplay = [];
     if (ballotItemDisplayName) {
       ballotDisplay = ballotItemDisplayName.split(':');
@@ -276,38 +255,32 @@ class MeasureItemCompressed extends Component {
     ballotItemDisplayName = toTitleCase(ballotItemDisplayName);
 
     return (
-      <Card classes={{ root: classes.cardRoot }}>
+      <MeasureContainer>
         <InfoRow>
-          <MeasureInfoWrapper onClick={() => { this.goToMeasureLink(measureWeVoteId); }}>
+          <MeasureInfoWrapper>
             <Title>
               {ballotDisplay[0]}
-              <ArrowForward
-                className="u-show-desktop"
-                classes={{ root: classes.cardHeaderIconRoot }}
-              />
             </Title>
           </MeasureInfoWrapper>
           <BallotItemSupportOpposeCountDisplayWrapper>
             <Suspense fallback={<></>}>
               <BallotItemSupportOpposeCountDisplay
                 ballotItemWeVoteId={measureWeVoteId}
-                goToBallotItem={this.goToMeasureLink}
+                goToBallotItem={this.onClickShowOrganizationModalWithPositions}
               />
             </Suspense>
           </BallotItemSupportOpposeCountDisplayWrapper>
         </InfoRow>
-        <InfoDetailsRow onClick={() => { this.goToMeasureLink(measureWeVoteId); }}>
+        <InfoDetailsRow>
           <SubTitle>{measureSubtitleCapitalized}</SubTitle>
           <MeasureText>{shortenText(measureText, 200)}</MeasureText>
         </InfoDetailsRow>
-        {(!voterOpposesBallotItem && !voterSupportsBallotItem) && (
-          <ChoicesRow>
-            <Choice
+        {(!voterOpposesBallotItem) && (
+          <ChoiceSpecificsAndPositionsRow>
+            <ChoiceSpecifics
               id={`measureItemCompressedChoiceYes-${measureWeVoteId}`}
             >
-              <ChoiceTitle
-                onClick={() => { this.goToMeasureLink(measureWeVoteId); }}
-              >
+              <ChoiceTitle onClick={this.onClickShowOrganizationModalWithBallotItemInfo}>
                 {`Yes On ${extractNumber(ballotItemDisplayName)}`}
               </ChoiceTitle>
               <ChoiceInfo>
@@ -341,13 +314,61 @@ class MeasureItemCompressed extends Component {
                   </DelayedLoad>
                 </Suspense>
               </ChoiceInfo>
-            </Choice>
-            <Choice
+            </ChoiceSpecifics>
+            {/*
+            <PositionRowListOuterWrapper className="u-show-desktop-tablet">
+              <OverflowContainer>
+                <PositionRowListInnerWrapper>
+                  <PositionRowListScoreColumn>
+                    <PositionRowListScoreHeader>
+                      Score
+                    </PositionRowListScoreHeader>
+                    <PositionRowListScoreSpacer>
+                      <Suspense fallback={<></>}>
+                        <BallotItemSupportOpposeCountDisplay
+                          ballotItemWeVoteId={measureWeVoteId}
+                          goToBallotItem={this.onClickShowOrganizationModalWithPositions}
+                          hideEndorsementsOverview
+                          hideNumbersOfAllPositions
+                        />
+                      </Suspense>
+                    </PositionRowListScoreSpacer>
+                  </PositionRowListScoreColumn>
+                  <PositionRowListOneWrapper>
+                    <PositionRowList
+                      ballotItemWeVoteId={measureWeVoteId}
+                      showSupport
+                    />
+                  </PositionRowListOneWrapper>
+                  <PositionRowListOneWrapper>
+                    <PositionRowList
+                      ballotItemWeVoteId={measureWeVoteId}
+                      showOppose
+                    />
+                  </PositionRowListOneWrapper>
+                  <PositionRowListOneWrapper>
+                    <PositionRowList
+                      ballotItemWeVoteId={measureWeVoteId}
+                      showInfoOnly
+                    />
+                  </PositionRowListOneWrapper>
+                  <PositionRowListEmptyWrapper>
+                    <PositionRowEmpty
+                      ballotItemWeVoteId={measureWeVoteId}
+                    />
+                  </PositionRowListEmptyWrapper>
+                </PositionRowListInnerWrapper>
+              </OverflowContainer>
+            </PositionRowListOuterWrapper>
+            */}
+          </ChoiceSpecificsAndPositionsRow>
+        )}
+        {(!voterSupportsBallotItem) && (
+          <ChoiceSpecificsAndPositionsRow>
+            <ChoiceSpecifics
               id={`measureItemCompressedChoiceNo-${measureWeVoteId}`}
             >
-              <ChoiceTitle
-                onClick={() => { this.goToMeasureLink(measureWeVoteId); }}
-              >
+              <ChoiceTitle onClick={this.onClickShowOrganizationModalWithBallotItemInfo}>
                 {`No On ${extractNumber(ballotItemDisplayName)}`}
               </ChoiceTitle>
               <ChoiceInfo>
@@ -381,20 +402,14 @@ class MeasureItemCompressed extends Component {
                   </DelayedLoad>
                 </Suspense>
               </ChoiceInfo>
-            </Choice>
-          </ChoicesRow>
+            </ChoiceSpecifics>
+          </ChoiceSpecificsAndPositionsRow>
         )}
-        {(!voterOpposesBallotItem && !voterSupportsBallotItem) && (
-          <Suspense fallback={<></>}>
-            <ShowMoreFooter showMoreId="measureItemCompressedShowMoreFooter" showMoreLink={() => this.goToMeasureLink(measureWeVoteId)} showMoreText="Learn more" />
-          </Suspense>
-        )}
-      </Card>
+      </MeasureContainer>
     );
   }
 }
 MeasureItemCompressed.propTypes = {
-  classes: PropTypes.object,
   externalUniqueId: PropTypes.string,
   measureWeVoteId: PropTypes.string.isRequired,
   organization: PropTypes.object,
@@ -448,45 +463,34 @@ const BallotItemSupportOpposeCountDisplayWrapper = styled('div')`
 `;
 
 const InfoRow = styled('div')`
-  cursor: pointer;
   display: flex;
   flex-flow: row nowrap;
   justify-content: space-between;
 `;
 
 const InfoDetailsRow = styled('div')`
-  cursor: pointer;
 `;
 
-const ChoicesRow = styled('div')`
+const ChoiceSpecificsAndPositionsRow = styled('div')`
   display: flex;
   flex-flow: row wrap;
+  justify-content: flex-start;
 `;
 
-const Choice = styled('div')(({ theme }) => (`
-  cursor: pointer;
+const ChoiceSpecifics = styled('div')(({ theme }) => (`
   display: flex;
   flex-flow: column;
   min-width: 47%;
   padding-right: 8px;
-  transition: all 200ms ease-in;
-  @media (min-width: 768px) {
+  ${theme.breakpoints.up('md')} {
     max-width: 47%;
-    border: 1px solid #eee;
-    border-radius: 4px;
-    padding: 0 16px;
-    margin-right: 10px;
-    margin-bottom: 16px;
-    &:hover {
-      border: 1px solid ${theme.palette.primary.main};
-      box-shadow: 0 1px 3px 0 rgba(0,0,0,.2), 0 1px 1px 0 rgba(0,0,0,.14), 0 2px 1px -1px rgba(0,0,0,.12);
-    }
   }
 `));
 
 const ChoiceTitle = styled('h1')`
-  font-weight: bold;
   color: #4371cc;
+  cursor: pointer;
+  font-weight: bold;
 `;
 
 const ChoiceInfo = styled('span')(({ theme }) => (`
@@ -497,11 +501,17 @@ const ChoiceInfo = styled('span')(({ theme }) => (`
   }
 `));
 
+const MeasureContainer = styled('div')`
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  padding: 10px 5px;
+`;
+
 const MeasureInfoWrapper = styled('div')(({ theme }) => (`
   display: flex;
   flex-flow: column;
   max-width: 75%;
-  cursor: pointer;
   user-select: none;
   padding-right: 8px;
   ${theme.breakpoints.down('md')} {

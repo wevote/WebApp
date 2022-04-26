@@ -1,4 +1,5 @@
 import withStyles from '@mui/styles/withStyles';
+import withTheme from '@mui/styles/withTheme';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
 import Helmet from 'react-helmet';
@@ -11,21 +12,22 @@ import { isAndroid, isIOS } from '../common/utils/cordovaUtils';
 import historyPush from '../common/utils/historyPush';
 import { isWebApp } from '../common/utils/isCordovaOrWebApp';
 import { renderLog } from '../common/utils/logging';
-import ReadyInformationDisclaimer from '../components/Ready/ReadyInformationDisclaimer';
-import ReadyTaskBallot from '../components/Ready/ReadyTaskBallot';
-import ReadyTaskFriends from '../components/Ready/ReadyTaskFriends';
+import ReadyFinePrint from '../components/Ready/ReadyFinePrint';
+import ReadyIntroduction from '../components/Ready/ReadyIntroduction';
 import ReadyTaskPlan from '../components/Ready/ReadyTaskPlan';
 import ReadyTaskRegister from '../components/Ready/ReadyTaskRegister';
 import { PageContentContainer } from '../components/Style/pageLayoutStyles';
 import BrowserPushMessage from '../components/Widgets/BrowserPushMessage';
 import webAppConfig from '../config';
-import AppObservableStore from '../stores/AppObservableStore';
+import AppObservableStore, { messageService } from '../stores/AppObservableStore';
 import VoterStore from '../stores/VoterStore';
 import lazyPreloadPages from '../utils/lazyPreloadPages';
 
+const DelayedLoad = React.lazy(() => import(/* webpackChunkName: 'DelayedLoad' */ '../common/components/Widgets/DelayedLoad'));
 const ElectionCountdown = React.lazy(() => import(/* webpackChunkName: 'ElectionCountdown' */ '../components/Ready/ElectionCountdown'));
 const FirstAndLastNameRequiredAlert = React.lazy(() => import(/* webpackChunkName: 'FirstAndLastNameRequiredAlert' */ '../components/Widgets/FirstAndLastNameRequiredAlert'));
 const ReadMore = React.lazy(() => import(/* webpackChunkName: 'ReadMore' */ '../common/components/Widgets/ReadMore'));
+const ReadyPageValuesList = React.lazy(() => import(/* webpackChunkName: 'ReadyPageValuesList' */ '../components/Values/ReadyPageValuesList'));
 
 const nextReleaseFeaturesEnabled = webAppConfig.ENABLE_NEXT_RELEASE_FEATURES === undefined ? false : webAppConfig.ENABLE_NEXT_RELEASE_FEATURES;
 const futureFeaturesDisabled = true;
@@ -41,6 +43,8 @@ class ReadyLight extends Component {
   }
 
   componentDidMount () {
+    this.appStateSubscription = messageService.getMessage().subscribe((msg) => this.onAppObservableStoreChange(msg));
+    this.onAppObservableStoreChange();
     ReadyActions.voterPlansForVoterRetrieve();
     if (apiCalming('activityNoticeListRetrieve', 10000)) {
       ActivityActions.activityNoticeListRetrieve();
@@ -52,11 +56,6 @@ class ReadyLight extends Component {
     }, 8000);
 
     this.preloadTimer = setTimeout(() => lazyPreloadPages(), 3000);
-
-    this.setState({
-      chosenReadyIntroductionText: AppObservableStore.getChosenReadyIntroductionText(),
-      chosenReadyIntroductionTitle: AppObservableStore.getChosenReadyIntroductionTitle(),
-    });
   }
 
   componentDidCatch (error, info) {
@@ -64,6 +63,7 @@ class ReadyLight extends Component {
   }
 
   componentWillUnmount () {
+    this.appStateSubscription.unsubscribe();
     clearTimeout(this.analyticsTimer);
     clearTimeout(this.preloadTimer);
 
@@ -74,6 +74,13 @@ class ReadyLight extends Component {
   static getDerivedStateFromError (error) {       // eslint-disable-line no-unused-vars
     console.log('Error in ReadyLight: ', error);
     return { hasError: true };
+  }
+
+  onAppObservableStoreChange () {
+    this.setState({
+      chosenReadyIntroductionText: AppObservableStore.getChosenReadyIntroductionText(),
+      chosenReadyIntroductionTitle: AppObservableStore.getChosenReadyIntroductionTitle(),
+    });
   }
 
   goToBallot = () => {
@@ -101,19 +108,17 @@ class ReadyLight extends Component {
 
     return (
       <PageContentContainer>
-        <PageContainer className="container-fluid" style={this.getTopPadding()}>
+        <ReadyPageContainer className="container-fluid" style={this.getTopPadding()}>
           <Helmet title="Ready to Vote? - We Vote" />
           <BrowserPushMessage incomingProps={this.props} />
           <div className="row">
-            <Suspense fallback={<SuspenseCard>&nbsp;</SuspenseCard>}>
-              <ElectionCountdownOuterWrapper className="col-12">
-                <ElectionCountdownInnerWrapper>
-                  <Suspense fallback={<SuspenseCard>&nbsp;</SuspenseCard>}>
-                    <ElectionCountdown onClickFunction={this.goToBallot} initialDelay={4000} />
-                  </Suspense>
-                </ElectionCountdownInnerWrapper>
-              </ElectionCountdownOuterWrapper>
-            </Suspense>
+            <ElectionCountdownOuterWrapper className="col-12">
+              <ElectionCountdownInnerWrapper>
+                <Suspense fallback={<></>}>
+                  <ElectionCountdown onClickFunction={this.goToBallot} initialDelay={4000} />
+                </Suspense>
+              </ElectionCountdownInnerWrapper>
+            </ElectionCountdownOuterWrapper>
 
             <div className="col-sm-12 col-lg-8">
               {(chosenReadyIntroductionTitle || chosenReadyIntroductionText) && (
@@ -133,32 +138,56 @@ class ReadyLight extends Component {
                   </div>
                 </Card>
               )}
-              <ReadyInformationDisclaimer top />
-              <ReadyTaskBallot
-                arrowsOn
-              />
+              {isAndroid() && (
+                <ReadyIntroductionMobileWrapper className="u-show-mobile">
+                  <Suspense fallback={<></>}>
+                    <DelayedLoad waitBeforeShow={10}>
+                      <ReadyFinePrint showStep3WhenCompressed />
+                    </DelayedLoad>
+                  </Suspense>
+                </ReadyIntroductionMobileWrapper>
+              )}
+              <PrepareForElectionOuterWrapper>
+                <Suspense fallback={<></>}>
+                  <DelayedLoad waitBeforeShow={10}>
+                    <ReadyPageValuesList sortByNumberOfAdvocates />
+                  </DelayedLoad>
+                </Suspense>
+              </PrepareForElectionOuterWrapper>
+              <ReadyIntroductionMobileWrapper className="u-show-mobile">
+                <Suspense fallback={<></>}>
+                  <DelayedLoad waitBeforeShow={700}>
+                    <ReadyIntroduction showStep3WhenCompressed />
+                  </DelayedLoad>
+                </Suspense>
+              </ReadyIntroductionMobileWrapper>
+              {!isAndroid() && (
+                <ReadyIntroductionMobileWrapper className="u-show-mobile">
+                  <Suspense fallback={<></>}>
+                    <DelayedLoad waitBeforeShow={700}>
+                      <ReadyFinePrint showStep3WhenCompressed />
+                    </DelayedLoad>
+                  </Suspense>
+                </ReadyIntroductionMobileWrapper>
+              )}
               <IntroAndFindTabletWrapper className="u-show-tablet">
                 <IntroAndFindTabletSpacer />
               </IntroAndFindTabletWrapper>
-              {(nextReleaseFeaturesEnabled && !futureFeaturesDisabled) && (
-                <ReadyTaskRegister
-                  arrowsOn
-                />
-              )}
-              <ReadyInformationDisclaimer bottom />
               {voterIsSignedIn && (
                 <Suspense fallback={<></>}>
                   <FirstAndLastNameRequiredAlert />
                 </Suspense>
               )}
-              {nextReleaseFeaturesEnabled && (
-                <ReadyTaskFriends
+              {(nextReleaseFeaturesEnabled && !futureFeaturesDisabled) && (
+                <ReadyTaskRegister
                   arrowsOn
                 />
               )}
+              {!futureFeaturesDisabled && (
               <ReadyTaskPlan
                 arrowsOn
               />
+              )}
             </div>
             <div className="col-lg-4 d-none d-lg-block">
               {(chosenReadyIntroductionTitle || chosenReadyIntroductionText) && (
@@ -173,9 +202,16 @@ class ReadyLight extends Component {
                   </div>
                 </Card>
               )}
+              <ReadyIntroductionDesktopWrapper>
+                <ReadyIntroduction showStep3WhenCompressed />
+              </ReadyIntroductionDesktopWrapper>
+              <ReadyIntroductionDesktopWrapper>
+                <ReadyFinePrint showStep3WhenCompressed />
+              </ReadyIntroductionDesktopWrapper>
+              {/* nextReleaseFeaturesEnabled && <PledgeToVote /> */}
             </div>
           </div>
-        </PageContainer>
+        </ReadyPageContainer>
       </PageContentContainer>
     );
   }
@@ -207,11 +243,11 @@ const Card = styled('div')`
 `;
 
 const ElectionCountdownInnerWrapper = styled('div')`
-  margin-top: -37px; // 29px for height of ShareButtonDesktopTablet - 8px for margin-top
+  margin-top: -37px;
 `;
 
 const ElectionCountdownOuterWrapper = styled('div')`
-  margin-bottom: 32px;
+  height: 180px;
   position: relative;
   z-index: 1;
 `;
@@ -225,19 +261,27 @@ const IntroAndFindTabletSpacer = styled('div')`
   width: 20px;
 `;
 
-const PageContainer = styled('div')`
-// This is a bad place to set a top padding for the scrollable pane, it should be in Application__Wrapper
-`;
-
 const Paragraph = styled('div')`
 `;
 
-const SuspenseCard = styled('div')`
-  position: relative;
+const PrepareForElectionOuterWrapper = styled('div')`
+  min-height: 150px;
+  margin-bottom: 48px;
+`;
+
+const ReadyIntroductionDesktopWrapper = styled('div')`
+  margin-bottom: 48px;
+  margin-top: 31px;
+`;
+
+const ReadyIntroductionMobileWrapper = styled('div')`
   display: flex;
-  flex-direction: column;
-  width: 290px;
-  height: 138px;
+  justify-content: start;
+  margin-bottom: 48px;
+  margin-top: 31px;
+`;
+
+const ReadyPageContainer = styled('div')`
 `;
 
 const Title = styled('h2')(({ theme }) => (`
@@ -250,4 +294,4 @@ const Title = styled('h2')(({ theme }) => (`
   }
 `));
 
-export default withStyles(styles)(ReadyLight);
+export default withTheme(withStyles(styles)(ReadyLight));

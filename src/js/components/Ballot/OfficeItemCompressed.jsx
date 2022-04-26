@@ -14,10 +14,19 @@ import BallotStore from '../../stores/BallotStore';
 import CandidateStore from '../../stores/CandidateStore';
 import SupportStore from '../../stores/SupportStore';
 import { sortCandidateList } from '../../utils/positionFunctions';
+import {
+  OverflowContainer,
+  PositionRowListEmptyWrapper,
+  PositionRowListInnerWrapper,
+  PositionRowListOneWrapper,
+  PositionRowListOuterWrapper,
+  PositionRowListScoreColumn,
+  PositionRowListScoreHeader,
+  PositionRowListScoreSpacer,
+} from '../Style/PositionRowListStyles';
 import signInModalGlobalState from '../Widgets/signInModalGlobalState';
 import PositionRowEmpty from './PositionRowEmpty';
 import PositionRowList from './PositionRowList';
-import isMobileScreenSize from '../../common/utils/isMobileScreenSize';
 
 const BallotItemSupportOpposeCountDisplay = React.lazy(() => import(/* webpackChunkName: 'BallotItemSupportOpposeCountDisplay' */ '../Widgets/BallotItemSupportOpposeCountDisplay'));
 const DelayedLoad = React.lazy(() => import(/* webpackChunkName: 'DelayedLoad' */ '../../common/components/Widgets/DelayedLoad'));
@@ -45,7 +54,7 @@ class OfficeItemCompressed extends Component {
     this.getOfficeLink = this.getOfficeLink.bind(this);
     this.goToCandidateLink = this.goToCandidateLink.bind(this);
     this.goToOfficeLink = this.goToOfficeLink.bind(this);
-    this.onClickShowOrganizationModalWithAllInfo = this.onClickShowOrganizationModalWithAllInfo.bind(this);
+    // this.onClickShowOrganizationModalWithAllInfo = this.onClickShowOrganizationModalWithAllInfo.bind(this);
     this.onClickShowOrganizationModalWithBallotItemInfo = this.onClickShowOrganizationModalWithBallotItemInfo.bind(this);
     this.onClickShowOrganizationModalWithPositions = this.onClickShowOrganizationModalWithPositions.bind(this);
   }
@@ -198,10 +207,10 @@ class OfficeItemCompressed extends Component {
     this.setState({});
   }
 
-  onClickShowOrganizationModalWithAllInfo (candidateWeVoteId) {
-    AppObservableStore.setOrganizationModalBallotItemWeVoteId(candidateWeVoteId);
-    AppObservableStore.setShowOrganizationModal(true);
-  }
+  // onClickShowOrganizationModalWithAllInfo (candidateWeVoteId) {
+  //   AppObservableStore.setOrganizationModalBallotItemWeVoteId(candidateWeVoteId);
+  //   AppObservableStore.setShowOrganizationModal(true);
+  // }
 
   onClickShowOrganizationModalWithBallotItemInfo (candidateWeVoteId) {
     AppObservableStore.setOrganizationModalBallotItemWeVoteId(candidateWeVoteId);
@@ -266,7 +275,7 @@ class OfficeItemCompressed extends Component {
                       <CandidateTopRow>
                         <Candidate
                           id={`officeItemCompressedCandidateImageAndName-${oneCandidate.we_vote_id}-${externalUniqueId}`}
-                          onClick={() => (isMobileScreenSize() ? this.onClickShowOrganizationModalWithAllInfo(oneCandidate.we_vote_id) : this.onClickShowOrganizationModalWithBallotItemInfo(oneCandidate.we_vote_id))}
+                          onClick={() => this.onClickShowOrganizationModalWithBallotItemInfo(oneCandidate.we_vote_id)}
                         >
                           {/* Candidate Image */}
                           <Suspense fallback={<></>}>
@@ -520,7 +529,7 @@ const CandidateBottomRow = styled('div')`
 const CandidateContainer = styled('div')`
   display: flex;
   justify-content: flex-start;
-  padding: 10px;
+  padding: 10px 5px;
 `;
 
 const CandidateInfo = styled('div')(({ theme }) => (`
@@ -597,47 +606,6 @@ const OfficeItemCompressedWrapper = styled('div')`
     border-top: 1px solid #999;
     padding: 16px 0 0 0;
   }
-`;
-
-const OverflowContainer = styled('div')`
-  flex: 1;
-  overflow-x: auto;
-  overflow-y: hidden;
-`;
-
-const PositionRowListInnerWrapper = styled('div')`
-  align-items: flex-start;
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-start;
-`;
-
-const PositionRowListEmptyWrapper = styled('div')`
-`;
-
-const PositionRowListOneWrapper = styled('div')`
-`;
-
-const PositionRowListOuterWrapper = styled('div')`
-  margin-left: 48px;
-  margin-top: 10px;
-`;
-
-const PositionRowListScoreColumn = styled('div')`
-  padding-right: 0;
-`;
-
-const PositionRowListScoreHeader = styled('div')`
-  border-bottom: 1px solid #dcdcdc;
-  color: #ccc;
-  line-height: 20px;
-  margin-top: 0;
-`;
-
-const PositionRowListScoreSpacer = styled('div')`
-  cursor: pointer;
-  margin-top: 85px;
-  margin-right: 7px;
 `;
 
 const Title = styled('h2')(({ theme }) => (`

@@ -304,6 +304,7 @@ class CandidateItem extends Component {
 
   candidateRenderBlock = (candidateWeVoteId, useLinkToCandidatePage = false, forDesktop = false, openSupportOpposeCountDisplayModal = false) => {
     const {
+      blockOnClickShowOrganizationModalWithPositions,
       classes, controlAdviserMaterialUIPopoverFromProp, closeSupportOpposeCountDisplayModal,
       hideCandidateUrl, linkToBallotItemPage, linkToOfficePage,
       openAdviserMaterialUIPopover,
@@ -415,10 +416,11 @@ class CandidateItem extends Component {
               </CandidateLinksWrapper>
             </Candidate>
           </CandidateInfo>
-          <BallotItemSupportOpposeCountDisplayWrapper>
+          <BallotItemSupportOpposeCountDisplayWrapper isClickable={!blockOnClickShowOrganizationModalWithPositions}>
             <Suspense fallback={<></>}>
               <BallotItemSupportOpposeCountDisplay
                 ballotItemWeVoteId={candidateWeVoteId}
+                blockOnClickShowOrganizationModalWithPositions={blockOnClickShowOrganizationModalWithPositions}
                 closeSupportOpposeCountDisplayModal={closeSupportOpposeCountDisplayModal}
                 controlAdviserMaterialUIPopoverFromProp={controlAdviserMaterialUIPopoverFromProp}
                 goToBallotItem={this.props.goToBallotItem}
@@ -667,6 +669,7 @@ class CandidateItem extends Component {
   }
 }
 CandidateItem.propTypes = {
+  blockOnClickShowOrganizationModalWithPositions: PropTypes.bool,
   candidateWeVoteId: PropTypes.string.isRequired,
   classes: PropTypes.object,
   closeSupportOpposeCountDisplayModal: PropTypes.bool,
@@ -716,10 +719,12 @@ const styles = () => ({
   },
 });
 
-const BallotItemSupportOpposeCountDisplayWrapper = styled('div')`
-  cursor: pointer;
+const BallotItemSupportOpposeCountDisplayWrapper = styled('div', {
+  shouldForwardProp: (prop) => !['isClickable'].includes(prop),
+})(({ isClickable }) => (`
+  ${isClickable ? 'cursor: pointer;' : ''}
   float: right;
-`;
+`));
 
 const CandidateInfo = styled('div', {
   shouldForwardProp: (prop) => !['isClickable'].includes(prop),

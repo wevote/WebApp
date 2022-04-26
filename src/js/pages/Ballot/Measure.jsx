@@ -323,7 +323,7 @@ class Measure extends Component {
               <TwoColumns>
                 <LeftColumnWrapper>
                   <Suspense fallback={<></>}>
-                    <MeasureItem measureWeVoteId={measureWeVoteId} />
+                    <MeasureItem blockOnClickShowOrganizationModalWithPositions measureWeVoteId={measureWeVoteId} />
                   </Suspense>
                 </LeftColumnWrapper>
                 <RightColumnWrapper className="u-show-desktop-tablet">
