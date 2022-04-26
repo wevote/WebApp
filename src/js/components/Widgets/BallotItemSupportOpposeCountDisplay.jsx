@@ -7,6 +7,7 @@ import React, { Component, Suspense } from 'react';
 import SupportActions from '../../actions/SupportActions';
 import { renderLog } from '../../common/utils/logging';
 import stringContains from '../../common/utils/stringContains';
+import AppObservableStore from '../../stores/AppObservableStore';
 import CandidateStore from '../../stores/CandidateStore';
 import FriendStore from '../../stores/FriendStore';
 import IssueStore from '../../stores/IssueStore';
@@ -49,6 +50,7 @@ class BallotItemSupportOpposeCountDisplay extends Component {
       voterSupportsBallotItem: false,
     };
     this.goToBallotItemLinkLocal = this.goToBallotItemLinkLocal.bind(this);
+    this.onClickShowOrganizationModalWithPositions = this.onClickShowOrganizationModalWithPositions.bind(this);
     this.stopOpposingItem = this.stopOpposingItem.bind(this);
     this.stopSupportingItem = this.stopSupportingItem.bind(this);
   }
@@ -383,6 +385,16 @@ class BallotItemSupportOpposeCountDisplay extends Component {
       this.props.handleEnterCandidateCard();
     }
   };
+
+  onClickShowOrganizationModalWithPositions () {
+    const { ballotItemWeVoteId, blockOnClickShowOrganizationModalWithPositions } = this.props;
+    // console.log('onClickShowOrganizationModalWithPositions, ballotItemWeVoteId:', ballotItemWeVoteId);
+    if (!blockOnClickShowOrganizationModalWithPositions) {
+      AppObservableStore.setOrganizationModalBallotItemWeVoteId(ballotItemWeVoteId);
+      AppObservableStore.setShowOrganizationModal(true);
+      AppObservableStore.setHideOrganizationModalBallotItemInfo(true);
+    }
+  }
 
   stopOpposingItem () {
     const { ballotItemWeVoteId } = this.props;
@@ -907,50 +919,38 @@ class BallotItemSupportOpposeCountDisplay extends Component {
         {/* Gray overview display. Show if no personalized score, or voter position */}
         {(!hideEndorsementsOverview && !hideNumbersOfAllPositions) && (
           <>
-            {/*  className={(!showVoterPersonalScore && !voterSupportsBallotItem && !voterOpposesBallotItem) ? '' : 'u-show-desktop-tablet'} */}
             <EndorsementsOverviewShowOrNotShow>
-              <StickyPopover
-                delay={{ show: 700, hide: 100 }}
-                popoverComponent={endorsementsOverviewPopover}
-                placement="bottom"
-                id="endorsements-overview-trigger-click-root-close"
-                openOnClick
-                // openPopoverByProp={openSupportOpposeCountDisplayModal}
-                // closePopoverByProp={closeSupportOpposeCountDisplayModal}
-                showCloseIcon
-              >
-                <EndorsementsContainer>
-                  <EndorsementsTitle>
-                    Opinions
-                  </EndorsementsTitle>
-                  <EndorsementsOuterWrapper>
-                    <EndorsementsInnerWrapper>
+              <EndorsementsContainer onClick={this.onClickShowOrganizationModalWithPositions}>
+                <EndorsementsTitle>
+                  Opinions
+                </EndorsementsTitle>
+                <EndorsementsOuterWrapper>
+                  <EndorsementsInnerWrapper>
+                    <EndorsementRow>
+                      <ThumbUp classes={{ root: classes.endorsementIconRoot }} />
+                      <EndorsementCount>
+                        {numberOfAllSupportPositions}
+                      </EndorsementCount>
+                    </EndorsementRow>
+                    { showOpposeCount && (
                       <EndorsementRow>
-                        <ThumbUp classes={{ root: classes.endorsementIconRoot }} />
+                        <ThumbDown classes={{ root: classes.endorsementIconRoot }} />
                         <EndorsementCount>
-                          {numberOfAllSupportPositions}
+                          {numberOfAllOpposePositions}
                         </EndorsementCount>
                       </EndorsementRow>
-                      { showOpposeCount && (
-                        <EndorsementRow>
-                          <ThumbDown classes={{ root: classes.endorsementIconRoot }} />
-                          <EndorsementCount>
-                            {numberOfAllOpposePositions}
-                          </EndorsementCount>
-                        </EndorsementRow>
-                      )}
-                      { showCommentCount && (
-                        <EndorsementRow>
-                          <Comment classes={{ root: classes.endorsementIconRoot }} />
-                          <EndorsementCount>
-                            {numberOfAllInfoOnlyPositions}
-                          </EndorsementCount>
-                        </EndorsementRow>
-                      )}
-                    </EndorsementsInnerWrapper>
-                  </EndorsementsOuterWrapper>
-                </EndorsementsContainer>
-              </StickyPopover>
+                    )}
+                    { showCommentCount && (
+                      <EndorsementRow>
+                        <Comment classes={{ root: classes.endorsementIconRoot }} />
+                        <EndorsementCount>
+                          {numberOfAllInfoOnlyPositions}
+                        </EndorsementCount>
+                      </EndorsementRow>
+                    )}
+                  </EndorsementsInnerWrapper>
+                </EndorsementsOuterWrapper>
+              </EndorsementsContainer>
             </EndorsementsOverviewShowOrNotShow>
 
             <EndorsementsOverviewSpacer />
@@ -1100,11 +1100,9 @@ class BallotItemSupportOpposeCountDisplay extends Component {
             <StickyPopover
               delay={{ show: 700, hide: 100 }}
               popoverComponent={endorsementsOverviewPopover}
-              placement="bottom"
+              placement="auto"
               id="endorsements-overview-trigger-click-root-close"
               openOnClick
-              // openPopoverByProp={openSupportOpposeCountDisplayModal}
-              // closePopoverByProp={closeSupportOpposeCountDisplayModal}
               showCloseIcon
             >
               <NetworkScore
@@ -1130,6 +1128,7 @@ class BallotItemSupportOpposeCountDisplay extends Component {
 BallotItemSupportOpposeCountDisplay.propTypes = {
   ballotItemDisplayName: PropTypes.string,
   ballotItemWeVoteId: PropTypes.string.isRequired,
+  blockOnClickShowOrganizationModalWithPositions: PropTypes.bool,
   classes: PropTypes.object,
   closeSupportOpposeCountDisplayModal: PropTypes.bool,
   controlAdviserMaterialUIPopoverFromProp: PropTypes.bool,

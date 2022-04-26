@@ -363,7 +363,7 @@ class PositionRowSupportOpposeCountDisplay extends Component {
                 {showOppose && (
                   <>
                     { showOpposeCount && (
-                      <EndorsementRow>
+                      <EndorsementRow onClick={this.onClickShowOrganizationModalWithPositions}>
                         <EndorsementCount>
                           <OpposeWrapper>
                             {numberOfAllOpposePositions > 1 ? (
@@ -384,7 +384,7 @@ class PositionRowSupportOpposeCountDisplay extends Component {
                 {showInfoOnly && (
                   <>
                     { showInfoOnlyCount && (
-                      <EndorsementRow>
+                      <EndorsementRow onClick={this.onClickShowOrganizationModalWithPositions}>
                         <EndorsementCount>
                           {numberOfAllInfoOnlyPositions > 1 ? (
                             <>

@@ -114,7 +114,9 @@ class Footer extends Component {
         {showShareButtonFooter && (
           <ShareButtonFooterWrapper>
             <Suspense fallback={<span>&nbsp;</span>}>
-              <ShareButtonFooter />
+              <DelayedLoad waitBeforeShow={3000}>
+                <ShareButtonFooter />
+              </DelayedLoad>
             </Suspense>
           </ShareButtonFooterWrapper>
         )}

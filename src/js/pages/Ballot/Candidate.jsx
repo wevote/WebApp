@@ -320,6 +320,7 @@ class Candidate extends Component {
             <LeftColumnWrapper>
               <Suspense fallback={<></>}>
                 <CandidateItem
+                  blockOnClickShowOrganizationModalWithPositions
                   candidateWeVoteId={candidate.we_vote_id}
                   expandIssuesByDefault
                   hideShowMoreFooter

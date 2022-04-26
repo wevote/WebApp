@@ -50,7 +50,7 @@ class CandidateStickyHeader extends Component {
             </ColumnOne>
             <ColumnTwo>
               <Suspense fallback={<></>}>
-                <BallotItemSupportOpposeCountDisplay ballotItemWeVoteId={candidateWeVoteId} />
+                <BallotItemSupportOpposeCountDisplay ballotItemWeVoteId={candidateWeVoteId} blockOnClickShowOrganizationModalWithPositions />
               </Suspense>
             </ColumnTwo>
           </Flex>

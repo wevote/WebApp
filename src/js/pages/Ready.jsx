@@ -27,7 +27,6 @@ import SnackNotifier, { openSnackbar } from '../components/Widgets/SnackNotifier
 import webAppConfig from '../config';
 import AppObservableStore, { messageService } from '../stores/AppObservableStore';
 import BallotStore from '../stores/BallotStore';
-import IssueStore from '../stores/IssueStore';
 import VoterStore from '../stores/VoterStore';
 // Lint is not smart enough to know that lazyPreloadPages will not attempt to preload/reload this page
 // eslint-disable-next-line import/no-cycle
@@ -51,7 +50,6 @@ class Ready extends Component {
       chosenReadyIntroductionText: '',
       chosenReadyIntroductionTitle: '',
       electionDataExistsForUpcomingElection: false,
-      issuesDisplayDecisionHasBeenMade: false,
       issuesQueriesMade: false,
       voterIsSignedIn: false,
     };
@@ -60,11 +58,9 @@ class Ready extends Component {
   componentDidMount () {
     this.appStateSubscription = messageService.getMessage().subscribe((msg) => this.onAppObservableStoreChange(msg));
     this.ballotStoreListener = BallotStore.addListener(this.onBallotStoreChange.bind(this));
-    this.issueStoreListener = IssueStore.addListener(this.onIssueStoreChange.bind(this));
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
     this.onAppObservableStoreChange();
     this.onBallotStoreChange();
-    this.onIssueStoreChange();
     this.onVoterStoreChange();
     this.positionItemTimer = setTimeout(() => {
       // This is a performance killer, so let's delay it for a few seconds
@@ -125,7 +121,6 @@ class Ready extends Component {
   componentWillUnmount () {
     this.appStateSubscription.unsubscribe();
     this.ballotStoreListener.remove();
-    this.issueStoreListener.remove();
     this.voterStoreListener.remove();
     clearTimeout(this.analyticsTimer);
     clearTimeout(this.modalOpenTimer);
@@ -158,21 +153,6 @@ class Ready extends Component {
         // Election was yesterday or earlier
         this.setState({
           electionDataExistsForUpcomingElection: false,
-        });
-      }
-    }
-  }
-
-  onIssueStoreChange () {
-    const { issuesDisplayDecisionHasBeenMade } = this.state;
-    // console.log('Ready, onIssueStoreChange, issuesDisplayDecisionHasBeenMade: ', issuesDisplayDecisionHasBeenMade);
-    if (!issuesDisplayDecisionHasBeenMade) {
-      const areIssuesLoadedFromAPIServer = IssueStore.areIssuesLoadedFromAPIServer();
-      const areIssuesFollowedLoadedFromAPIServer = IssueStore.areIssuesFollowedLoadedFromAPIServer();
-      // console.log('areIssuesLoadedFromAPIServer: ', areIssuesLoadedFromAPIServer, ', areIssuesFollowedLoadedFromAPIServer:', areIssuesFollowedLoadedFromAPIServer);
-      if (areIssuesLoadedFromAPIServer && areIssuesFollowedLoadedFromAPIServer) {
-        this.setState({
-          issuesDisplayDecisionHasBeenMade: true,
         });
       }
     }
@@ -220,129 +200,133 @@ class Ready extends Component {
 
     return (
       <PageContentContainer>
-        <Suspense fallback={<></>}>
-          <ReadyPageContainer className="container-fluid" style={this.getTopPadding()}>
-            <SnackNotifier />
-            <Helmet title="Ready to Vote? - We Vote" />
-            <BrowserPushMessage incomingProps={this.props} />
-            <div className="row">
-              <ElectionCountdownOuterWrapper className="col-12">
-                <ElectionCountdownInnerWrapper>
-                  <Suspense fallback={<></>}>
-                    <ElectionCountdown onClickFunction={this.goToBallot} initialDelay={4000} />
-                  </Suspense>
-                </ElectionCountdownInnerWrapper>
-              </ElectionCountdownOuterWrapper>
-              <ViewBallotButtonWrapper className="col-12">
-                {(voterIsSignedIn && electionDataExistsForUpcomingElection) && (
-                  <Button
-                    color="primary"
-                    onClick={this.goToBallot}
-                    style={{
-                      boxShadow: 'none !important',
-                      textTransform: 'none',
-                      width: 250,
-                    }}
-                    variant="contained"
-                  >
-                    View ballot
-                  </Button>
-                )}
-              </ViewBallotButtonWrapper>
+        <ReadyPageContainer className="container-fluid" style={this.getTopPadding()}>
+          <SnackNotifier />
+          <Helmet title="Ready to Vote? - We Vote" />
+          <BrowserPushMessage incomingProps={this.props} />
+          <div className="row">
+            <ElectionCountdownOuterWrapper className="col-12">
+              <ElectionCountdownInnerWrapper>
+                <Suspense fallback={<></>}>
+                  <ElectionCountdown onClickFunction={this.goToBallot} initialDelay={4000} />
+                </Suspense>
+              </ElectionCountdownInnerWrapper>
+            </ElectionCountdownOuterWrapper>
+            <ViewBallotButtonWrapper className="col-12">
+              {(voterIsSignedIn && electionDataExistsForUpcomingElection) && (
+                <Button
+                  color="primary"
+                  onClick={this.goToBallot}
+                  style={{
+                    boxShadow: 'none !important',
+                    textTransform: 'none',
+                    width: 250,
+                  }}
+                  variant="contained"
+                >
+                  View ballot
+                </Button>
+              )}
+            </ViewBallotButtonWrapper>
 
-              <div className="col-sm-12 col-lg-8">
-                {(chosenReadyIntroductionTitle || chosenReadyIntroductionText) && (
-                  <Card className="card u-show-mobile-tablet">
-                    <div className="card-main">
-                      <Title>
-                        {chosenReadyIntroductionTitle}
-                      </Title>
-                      <Paragraph>
-                        <Suspense fallback={<></>}>
-                          <ReadMore
-                            textToDisplay={chosenReadyIntroductionText}
-                            numberOfLines={3}
-                          />
-                        </Suspense>
-                      </Paragraph>
-                    </div>
-                  </Card>
-                )}
-                {isAndroid() && (
-                  <ReadyIntroductionMobileWrapper className="u-show-mobile">
+            <div className="col-sm-12 col-lg-8">
+              {(chosenReadyIntroductionTitle || chosenReadyIntroductionText) && (
+                <Card className="card u-show-mobile-tablet">
+                  <div className="card-main">
+                    <Title>
+                      {chosenReadyIntroductionTitle}
+                    </Title>
+                    <Paragraph>
+                      <Suspense fallback={<></>}>
+                        <ReadMore
+                          textToDisplay={chosenReadyIntroductionText}
+                          numberOfLines={3}
+                        />
+                      </Suspense>
+                    </Paragraph>
+                  </div>
+                </Card>
+              )}
+              {isAndroid() && (
+                <ReadyIntroductionMobileWrapper className="u-show-mobile">
+                  <Suspense fallback={<></>}>
                     <DelayedLoad waitBeforeShow={10}>
                       <ReadyFinePrint showStep3WhenCompressed />
                     </DelayedLoad>
-                  </ReadyIntroductionMobileWrapper>
-                )}
-                <PrepareForElectionOuterWrapper>
-                  <Suspense fallback={<></>}>
-                    <DelayedLoad waitBeforeShow={10}>
-                      <ReadyPageValuesList sortByNumberOfAdvocates />
-                    </DelayedLoad>
                   </Suspense>
-                </PrepareForElectionOuterWrapper>
-                <ReadyIntroductionMobileWrapper className="u-show-mobile">
+                </ReadyIntroductionMobileWrapper>
+              )}
+              <PrepareForElectionOuterWrapper>
+                <Suspense fallback={<></>}>
+                  <DelayedLoad waitBeforeShow={10}>
+                    <ReadyPageValuesList sortByNumberOfAdvocates />
+                  </DelayedLoad>
+                </Suspense>
+              </PrepareForElectionOuterWrapper>
+              <ReadyIntroductionMobileWrapper className="u-show-mobile">
+                <Suspense fallback={<></>}>
                   <DelayedLoad waitBeforeShow={700}>
                     <ReadyIntroduction showStep3WhenCompressed />
                   </DelayedLoad>
-                </ReadyIntroductionMobileWrapper>
-                {!isAndroid() && (
-                  <ReadyIntroductionMobileWrapper className="u-show-mobile">
+                </Suspense>
+              </ReadyIntroductionMobileWrapper>
+              {!isAndroid() && (
+                <ReadyIntroductionMobileWrapper className="u-show-mobile">
+                  <Suspense fallback={<></>}>
                     <DelayedLoad waitBeforeShow={700}>
                       <ReadyFinePrint showStep3WhenCompressed />
                     </DelayedLoad>
-                  </ReadyIntroductionMobileWrapper>
-                )}
-                {voterIsSignedIn && (
-                  <Suspense fallback={<></>}>
-                    <FirstAndLastNameRequiredAlert />
                   </Suspense>
-                )}
-                {(nextReleaseFeaturesEnabled && !futureFeaturesDisabled) && (
-                  <ReadyTaskRegister
-                    arrowsOn
-                  />
-                )}
-                {(voterIsSignedIn && nextReleaseFeaturesEnabled) && (
-                  <Suspense fallback={<></>}>
-                    <DelayedLoad waitBeforeShow={500}>
-                      <ReadyTaskFriends
-                        arrowsOn
-                      />
-                    </DelayedLoad>
-                  </Suspense>
-                )}
-                {!futureFeaturesDisabled && (
-                <ReadyTaskPlan
+                </ReadyIntroductionMobileWrapper>
+              )}
+              {voterIsSignedIn && (
+                <Suspense fallback={<></>}>
+                  <FirstAndLastNameRequiredAlert />
+                </Suspense>
+              )}
+              {(nextReleaseFeaturesEnabled && !futureFeaturesDisabled) && (
+                <ReadyTaskRegister
                   arrowsOn
                 />
-                )}
-              </div>
-              <div className="col-lg-4 d-none d-lg-block">
-                {(chosenReadyIntroductionTitle || chosenReadyIntroductionText) && (
-                  <Card className="card">
-                    <div className="card-main">
-                      <Title>
-                        {chosenReadyIntroductionTitle}
-                      </Title>
-                      <Paragraph>
-                        {chosenReadyIntroductionText}
-                      </Paragraph>
-                    </div>
-                  </Card>
-                )}
-                <ReadyIntroductionDesktopWrapper>
-                  <ReadyIntroduction showStep3WhenCompressed />
-                </ReadyIntroductionDesktopWrapper>
-                <ReadyIntroductionDesktopWrapper>
-                  <ReadyFinePrint showStep3WhenCompressed />
-                </ReadyIntroductionDesktopWrapper>
-                {/* nextReleaseFeaturesEnabled && <PledgeToVote /> */}
-              </div>
+              )}
+              {(voterIsSignedIn && nextReleaseFeaturesEnabled) && (
+                <Suspense fallback={<></>}>
+                  <DelayedLoad waitBeforeShow={500}>
+                    <ReadyTaskFriends
+                      arrowsOn
+                    />
+                  </DelayedLoad>
+                </Suspense>
+              )}
+              {!futureFeaturesDisabled && (
+              <ReadyTaskPlan
+                arrowsOn
+              />
+              )}
             </div>
-          </ReadyPageContainer>
-        </Suspense>
+            <div className="col-lg-4 d-none d-lg-block">
+              {(chosenReadyIntroductionTitle || chosenReadyIntroductionText) && (
+                <Card className="card">
+                  <div className="card-main">
+                    <Title>
+                      {chosenReadyIntroductionTitle}
+                    </Title>
+                    <Paragraph>
+                      {chosenReadyIntroductionText}
+                    </Paragraph>
+                  </div>
+                </Card>
+              )}
+              <ReadyIntroductionDesktopWrapper>
+                <ReadyIntroduction showStep3WhenCompressed />
+              </ReadyIntroductionDesktopWrapper>
+              <ReadyIntroductionDesktopWrapper>
+                <ReadyFinePrint showStep3WhenCompressed />
+              </ReadyIntroductionDesktopWrapper>
+              {/* nextReleaseFeaturesEnabled && <PledgeToVote /> */}
+            </div>
+          </div>
+        </ReadyPageContainer>
       </PageContentContainer>
     );
   }

@@ -244,7 +244,7 @@ class PositionSummaryListForPopover extends Component {
             <ShowMoreFooter
               showMoreId={`onePositionForPopoverShowAllPositions-${ballotItemWeVoteId}`}
               showMoreLink={() => this.showAllPositions()}
-              showMoreText="Show All Positions"
+              showMoreText="Show all positions"
             />
           </Suspense>
         </ShowMoreFooterWrapper>,

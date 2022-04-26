@@ -155,6 +155,7 @@ class CandidateForExtension extends Component {
             <Box classes={{ root: classes.Box }} p={3}>
               <Suspense fallback={<></>}>
                 <CandidateItem
+                  blockOnClickShowOrganizationModalWithPositions
                   inModal
                   candidateWeVoteId={candidateWeVoteId}
                   organizationWeVoteId={organizationWeVoteId}

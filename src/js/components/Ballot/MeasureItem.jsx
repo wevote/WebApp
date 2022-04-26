@@ -92,7 +92,7 @@ class MeasureItem extends Component {
 
   render () {
     renderLog('MeasureItem');  // Set LOG_RENDER_EVENTS to log all renders
-    const { classes, forMoreInformationTextOff, measureWeVoteId } = this.props;
+    const { blockOnClickShowOrganizationModalWithPositions, classes, forMoreInformationTextOff, measureWeVoteId } = this.props;
     const { measureSubtitle } = this.state;
     let {
       ballotItemDisplayName, stateDisplayName,
@@ -142,9 +142,12 @@ class MeasureItem extends Component {
               </ExternalWebSiteWrapper>
             )}
           </MeasureInfoWrapper>
-          <BallotItemSupportOpposeCountDisplayWrapper>
+          <BallotItemSupportOpposeCountDisplayWrapper isClickable={!blockOnClickShowOrganizationModalWithPositions}>
             <Suspense fallback={<></>}>
-              <BallotItemSupportOpposeCountDisplay ballotItemWeVoteId={measureWeVoteId} />
+              <BallotItemSupportOpposeCountDisplay
+                ballotItemWeVoteId={measureWeVoteId}
+                blockOnClickShowOrganizationModalWithPositions={blockOnClickShowOrganizationModalWithPositions}
+              />
             </Suspense>
           </BallotItemSupportOpposeCountDisplayWrapper>
         </InfoRow>
@@ -194,6 +197,7 @@ class MeasureItem extends Component {
   }
 }
 MeasureItem.propTypes = {
+  blockOnClickShowOrganizationModalWithPositions: PropTypes.bool,
   classes: PropTypes.object,
   forMoreInformationTextOff: PropTypes.bool,
   measureWeVoteId: PropTypes.string.isRequired,
@@ -228,10 +232,12 @@ const styles = (theme) => ({
   },
 });
 
-const BallotItemSupportOpposeCountDisplayWrapper = styled('div')`
-  cursor: pointer;
+const BallotItemSupportOpposeCountDisplayWrapper = styled('div', {
+  shouldForwardProp: (prop) => !['isClickable'].includes(prop),
+})(({ isClickable }) => (`
+  ${isClickable ? 'cursor: pointer;' : ''}
   float: right;
-`;
+`));
 
 const ExternalWebSiteWrapper = styled('span')`
   padding-left: 15px;
