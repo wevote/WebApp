@@ -247,7 +247,7 @@ const ElectionCountdownInnerWrapper = styled('div')`
 `;
 
 const ElectionCountdownOuterWrapper = styled('div')`
-  height: 180px;
+  height: 254px;
   position: relative;
   z-index: 1;
 `;
