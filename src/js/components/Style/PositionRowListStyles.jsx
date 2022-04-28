@@ -2,7 +2,7 @@ import styled from 'styled-components';
 
 const OverflowContainer = styled('div')`
   flex: 1;
-  overflow-x: auto;
+  overflow-x: hidden;
   overflow-y: hidden;
 `;
 

@@ -76,9 +76,9 @@ class PositionRowLogoAndText extends Component {
     }
   }
 
-  onClickShowPositionDrawer (candidateWeVoteId, organizationWeVoteId) {
-    // AppObservableStore.setOrganizationModalBallotItemWeVoteId(candidateWeVoteId);
-    AppObservableStore.setPositionDrawerBallotItemWeVoteId(candidateWeVoteId);
+  onClickShowPositionDrawer (ballotItemWeVoteId, organizationWeVoteId) {
+    // AppObservableStore.setOrganizationModalBallotItemWeVoteId(ballotItemWeVoteId);
+    AppObservableStore.setPositionDrawerBallotItemWeVoteId(ballotItemWeVoteId);
     AppObservableStore.setPositionDrawerOrganizationWeVoteId(organizationWeVoteId);
     // AppObservableStore.setShowOrganizationModal(true);
     AppObservableStore.setShowPositionDrawer(true);

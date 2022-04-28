@@ -1,4 +1,23 @@
 const muiStyleOverrides = {
+  MuiAppBar: {
+    styleOverrides: {
+      colorDefault: {
+        backgroundColor: '#fff',
+        color: '#333',
+      },
+      root: {
+        padding: 0,
+        flexDirection: 'unset',
+      },
+    },
+  },
+  MuiBottomNavigationAction: {
+    styleOverrides: {
+      root: {
+        minWidth: '60px',
+      },
+    },
+  },
   MuiButton: {
     styleOverrides: {
       root: {
@@ -21,13 +40,6 @@ const muiStyleOverrides = {
       },
     },
   },
-  MuiTooltip: {
-    styleOverrides: {
-      tooltip: {
-        fontSize: '14px',
-      },
-    },
-  },
   MuiFormControlLabel: {
     styleOverrides: {
       root: {
@@ -35,15 +47,21 @@ const muiStyleOverrides = {
       },
     },
   },
-  MuiAppBar: {
+  MuiInputBase: {
     styleOverrides: {
-      colorDefault: {
-        backgroundColor: '#fff',
-        color: '#333',
-      },
       root: {
-        padding: 0,
-        flexDirection: 'unset',
+        fontFamily: '"Nunito Sans", "Helvetica Neue Light", "Helvetica Neue", "Helvetica", "Arial", sans-serif',
+        fontSize: 16,
+      },
+    },
+  },
+  MuiTab: {
+    styleOverrides: {
+      root: {
+        fontFamily: '"Nunito Sans", "Helvetica Neue Light", "Helvetica Neue", "Helvetica", "Arial", sans-serif',
+        fontSize: 16,
+        outline: 'none !important',
+        textTransform: 'none',
       },
     },
   },
@@ -58,20 +76,10 @@ const muiStyleOverrides = {
       },
     },
   },
-  MuiTab: {
+  MuiTooltip: {
     styleOverrides: {
-      root: {
-        fontFamily: '"Nunito Sans", "Helvetica Neue Light", "Helvetica Neue", "Helvetica", "Arial", sans-serif',
-        fontSize: 16,
-        outline: 'none !important',
-        textTransform: 'none',
-      },
-    },
-  },
-  MuiBottomNavigationAction: {
-    styleOverrides: {
-      root: {
-        minWidth: '60px',
+      tooltip: {
+        fontSize: '14px',
       },
     },
   },

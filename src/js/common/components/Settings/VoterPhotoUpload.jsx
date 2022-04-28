@@ -78,7 +78,7 @@ class VoterPhotoUpload extends Component {
                     className="u-link-color u-link-underline u-cursor--pointer"
                     onClick={this.submitDeleteYourPhoto}
                   >
-                    delete
+                    remove photo
                   </DeleteLink>
                 </VoterPhotoWrapper>
               ) : (

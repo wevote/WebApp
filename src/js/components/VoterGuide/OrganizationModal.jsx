@@ -58,6 +58,10 @@ class OrganizationModal extends Component {
     // console.log('ballotItemWeVoteId:', ballotItemWeVoteId);
     const isMeasure = stringContains('meas', ballotItemWeVoteId);
     const isCandidate = stringContains('cand', ballotItemWeVoteId);
+    this.setState({
+      isCandidate,
+      isMeasure,
+    });
     if (isCandidate) {
       const candidate = CandidateStore.getCandidate(ballotItemWeVoteId);
       const { ballot_item_display_name: ballotItemDisplayName, contest_office_we_vote_id: officeWeVoteId } = candidate;
@@ -89,8 +93,6 @@ class OrganizationModal extends Component {
       this.setState({
         allCachedPositionsForThisBallotItem,
         ballotItemDisplayName,
-        isCandidate,
-        isMeasure,
       });
       AnalyticsActions.saveActionCandidate(VoterStore.electionId(), ballotItemWeVoteId);
     }
@@ -125,8 +127,6 @@ class OrganizationModal extends Component {
       this.setState({
         allCachedPositionsForThisBallotItem,
         ballotItemDisplayName,
-        isCandidate,
-        isMeasure,
       });
       AnalyticsActions.saveActionMeasure(VoterStore.electionId(), ballotItemWeVoteId);
     }

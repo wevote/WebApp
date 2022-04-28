@@ -1277,6 +1277,7 @@ class Ballot extends Component {
     let numberOfBallotItemsDisplayed = 0;
     let showLoadingText = true;
     let searchTextString = '';
+    const showCompleteYourProfile = true;
     return (
       <div className="ballot_root">
         <Suspense fallback={<LoadingWheelComp />}>
@@ -1435,11 +1436,13 @@ class Ballot extends Component {
                         &quot;
                       </SearchTitle>
                     )}
-                    <span>
-                      <Suspense fallback={<></>}>
-                        <CompleteYourProfile />
-                      </Suspense>
-                    </span>
+                    {showCompleteYourProfile && (
+                      <span>
+                        <Suspense fallback={<></>}>
+                          <CompleteYourProfile />
+                        </Suspense>
+                      </span>
+                    )}
                     <BallotListWrapper>
                       {/* The rest of the ballot items */}
                       <div className="BallotList" id="BallotListId">

@@ -14,18 +14,18 @@ import BallotStore from '../../stores/BallotStore';
 import MeasureStore from '../../stores/MeasureStore';
 import SupportStore from '../../stores/SupportStore';
 import { stripHtmlFromString } from '../../utils/textFormat';
-// import {
-//   OverflowContainer,
-//   PositionRowListEmptyWrapper,
-//   PositionRowListInnerWrapper,
-//   PositionRowListOneWrapper,
-//   PositionRowListOuterWrapper,
-//   PositionRowListScoreColumn,
-//   PositionRowListScoreHeader,
-//   PositionRowListScoreSpacer,
-// } from '../Style/PositionRowListStyles';
-// import PositionRowList from './PositionRowList';
-// import PositionRowEmpty from './PositionRowEmpty';
+import {
+  OverflowContainer,
+  PositionRowListEmptyWrapper,
+  PositionRowListInnerWrapper,
+  PositionRowListOneWrapper,
+  PositionRowListOuterWrapper,
+  PositionRowListScoreColumn,
+  PositionRowListScoreHeader,
+  PositionRowListScoreSpacer,
+} from '../Style/PositionRowListStyles';
+import PositionRowList from './PositionRowList';
+import PositionRowEmpty from './PositionRowEmpty';
 
 const BallotItemSupportOpposeCountDisplay = React.lazy(() => import(/* webpackChunkName: 'BallotItemSupportOpposeCountDisplay' */ '../Widgets/BallotItemSupportOpposeCountDisplay'));
 const DelayedLoad = React.lazy(() => import(/* webpackChunkName: 'DelayedLoad' */ '../../common/components/Widgets/DelayedLoad'));
@@ -254,28 +254,34 @@ class MeasureItemCompressed extends Component {
     const measureSubtitleCapitalized = toTitleCase(measureSubtitle);
     ballotItemDisplayName = toTitleCase(ballotItemDisplayName);
 
+    const showNoChoicePositionsRow = !voterSupportsBallotItem;
+    const showYesChoicePositionsRow = !voterOpposesBallotItem;
+    const pigsCanFly = false;
+
     return (
       <MeasureContainer>
-        <InfoRow>
-          <MeasureInfoWrapper>
-            <Title>
-              {ballotDisplay[0]}
-            </Title>
-          </MeasureInfoWrapper>
-          <BallotItemSupportOpposeCountDisplayWrapper>
-            <Suspense fallback={<></>}>
-              <BallotItemSupportOpposeCountDisplay
-                ballotItemWeVoteId={measureWeVoteId}
-                goToBallotItem={this.onClickShowOrganizationModalWithPositions}
-              />
-            </Suspense>
-          </BallotItemSupportOpposeCountDisplayWrapper>
-        </InfoRow>
-        <InfoDetailsRow>
-          <SubTitle>{measureSubtitleCapitalized}</SubTitle>
-          <MeasureText>{shortenText(measureText, 200)}</MeasureText>
-        </InfoDetailsRow>
-        {(!voterOpposesBallotItem) && (
+        <MeasureWrapper>
+          <InfoRow>
+            <MeasureInfoWrapper>
+              <Title>
+                {ballotDisplay[0]}
+              </Title>
+            </MeasureInfoWrapper>
+            <BallotItemSupportOpposeCountDisplayWrapper>
+              <Suspense fallback={<></>}>
+                <BallotItemSupportOpposeCountDisplay
+                  ballotItemWeVoteId={measureWeVoteId}
+                  goToBallotItem={this.onClickShowOrganizationModalWithPositions}
+                />
+              </Suspense>
+            </BallotItemSupportOpposeCountDisplayWrapper>
+          </InfoRow>
+          <InfoDetailsRow>
+            <SubTitle>{measureSubtitleCapitalized}</SubTitle>
+            <MeasureText>{shortenText(measureText, 200)}</MeasureText>
+          </InfoDetailsRow>
+        </MeasureWrapper>
+        {showYesChoicePositionsRow && (
           <ChoiceSpecificsAndPositionsRow>
             <ChoiceSpecifics
               id={`measureItemCompressedChoiceYes-${measureWeVoteId}`}
@@ -315,37 +321,40 @@ class MeasureItemCompressed extends Component {
                 </Suspense>
               </ChoiceInfo>
             </ChoiceSpecifics>
-            {/*
             <PositionRowListOuterWrapper className="u-show-desktop-tablet">
               <OverflowContainer>
                 <PositionRowListInnerWrapper>
-                  <PositionRowListScoreColumn>
-                    <PositionRowListScoreHeader>
-                      Score
-                    </PositionRowListScoreHeader>
-                    <PositionRowListScoreSpacer>
-                      <Suspense fallback={<></>}>
-                        <BallotItemSupportOpposeCountDisplay
-                          ballotItemWeVoteId={measureWeVoteId}
-                          goToBallotItem={this.onClickShowOrganizationModalWithPositions}
-                          hideEndorsementsOverview
-                          hideNumbersOfAllPositions
-                        />
-                      </Suspense>
-                    </PositionRowListScoreSpacer>
-                  </PositionRowListScoreColumn>
+                  {pigsCanFly && (
+                    <PositionRowListScoreColumn>
+                      <PositionRowListScoreHeader>
+                        Score
+                      </PositionRowListScoreHeader>
+                      <PositionRowListScoreSpacer>
+                        <Suspense fallback={<></>}>
+                          <BallotItemSupportOpposeCountDisplay
+                            ballotItemWeVoteId={measureWeVoteId}
+                            goToBallotItem={this.onClickShowOrganizationModalWithPositions}
+                            hideEndorsementsOverview
+                            hideNumbersOfAllPositions
+                          />
+                        </Suspense>
+                      </PositionRowListScoreSpacer>
+                    </PositionRowListScoreColumn>
+                  )}
                   <PositionRowListOneWrapper>
                     <PositionRowList
                       ballotItemWeVoteId={measureWeVoteId}
                       showSupport
                     />
                   </PositionRowListOneWrapper>
-                  <PositionRowListOneWrapper>
-                    <PositionRowList
-                      ballotItemWeVoteId={measureWeVoteId}
-                      showOppose
-                    />
-                  </PositionRowListOneWrapper>
+                  {voterSupportsBallotItem && (
+                    <PositionRowListOneWrapper>
+                      <PositionRowList
+                        ballotItemWeVoteId={measureWeVoteId}
+                        showOppose
+                      />
+                    </PositionRowListOneWrapper>
+                  )}
                   <PositionRowListOneWrapper>
                     <PositionRowList
                       ballotItemWeVoteId={measureWeVoteId}
@@ -360,10 +369,9 @@ class MeasureItemCompressed extends Component {
                 </PositionRowListInnerWrapper>
               </OverflowContainer>
             </PositionRowListOuterWrapper>
-            */}
           </ChoiceSpecificsAndPositionsRow>
         )}
-        {(!voterSupportsBallotItem) && (
+        {showNoChoicePositionsRow && (
           <ChoiceSpecificsAndPositionsRow>
             <ChoiceSpecifics
               id={`measureItemCompressedChoiceNo-${measureWeVoteId}`}
@@ -403,6 +411,58 @@ class MeasureItemCompressed extends Component {
                 </Suspense>
               </ChoiceInfo>
             </ChoiceSpecifics>
+            <PositionRowListOuterWrapper className="u-show-desktop-tablet">
+              <OverflowContainer>
+                <PositionRowListInnerWrapper>
+                  {pigsCanFly && (
+                    <PositionRowListScoreColumn>
+                      <PositionRowListScoreHeader>
+                        Score
+                      </PositionRowListScoreHeader>
+                      <PositionRowListScoreSpacer>
+                        <Suspense fallback={<></>}>
+                          <BallotItemSupportOpposeCountDisplay
+                            ballotItemWeVoteId={measureWeVoteId}
+                            goToBallotItem={this.onClickShowOrganizationModalWithPositions}
+                            hideEndorsementsOverview
+                            hideNumbersOfAllPositions
+                          />
+                        </Suspense>
+                      </PositionRowListScoreSpacer>
+                    </PositionRowListScoreColumn>
+                  )}
+                  {voterOpposesBallotItem && (
+                    <PositionRowListOneWrapper>
+                      <PositionRowList
+                        ballotItemWeVoteId={measureWeVoteId}
+                        showSupport
+                      />
+                    </PositionRowListOneWrapper>
+                  )}
+                  <PositionRowListOneWrapper>
+                    <PositionRowList
+                      ballotItemWeVoteId={measureWeVoteId}
+                      showOppose
+                    />
+                  </PositionRowListOneWrapper>
+                  {voterOpposesBallotItem && (
+                    <PositionRowListOneWrapper>
+                      <PositionRowList
+                        ballotItemWeVoteId={measureWeVoteId}
+                        showInfoOnly
+                      />
+                    </PositionRowListOneWrapper>
+                  )}
+                  {voterOpposesBallotItem && (
+                    <PositionRowListEmptyWrapper>
+                      <PositionRowEmpty
+                        ballotItemWeVoteId={measureWeVoteId}
+                      />
+                    </PositionRowListEmptyWrapper>
+                  )}
+                </PositionRowListInnerWrapper>
+              </OverflowContainer>
+            </PositionRowListOuterWrapper>
           </ChoiceSpecificsAndPositionsRow>
         )}
       </MeasureContainer>
@@ -473,7 +533,7 @@ const InfoDetailsRow = styled('div')`
 
 const ChoiceSpecificsAndPositionsRow = styled('div')`
   display: flex;
-  flex-flow: row wrap;
+  flex-flow: row nowrap;
   justify-content: flex-start;
 `;
 
@@ -516,6 +576,16 @@ const MeasureInfoWrapper = styled('div')(({ theme }) => (`
   padding-right: 8px;
   ${theme.breakpoints.down('md')} {
     max-width: 70%;
+  }
+`));
+
+const MeasureWrapper = styled('div')(({ theme }) => (`
+  width: 480px;
+  ${theme.breakpoints.down('sm')} {
+    width: 100%;
+  }
+  ${theme.breakpoints.up('sm')} {
+    min-width: 320px;
   }
 `));
 
