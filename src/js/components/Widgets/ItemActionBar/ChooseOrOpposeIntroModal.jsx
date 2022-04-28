@@ -150,7 +150,7 @@ class ChooseOrOpposeIntroModal extends Component {
   render () {
     const { classes } = this.props;
     const { currentSlideKey } = this.state;
-    console.log('currentSlideKey:', currentSlideKey);
+    // console.log('currentSlideKey:', currentSlideKey);
     const slides = this.getSlides();
     return (
       <>

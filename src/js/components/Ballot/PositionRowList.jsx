@@ -41,7 +41,7 @@ class PositionRowList extends Component {
     if (ballotItemWeVoteId.includes('cand')) {
       allCachedPositionsForThisBallotItem = CandidateStore.getAllCachedPositionsByCandidateWeVoteId(ballotItemWeVoteId);
     } else if (ballotItemWeVoteId.includes('meas')) {
-      allCachedPositionsForThisBallotItem = MeasureStore.getAllCachedPositionsByCandidateWeVoteId(ballotItemWeVoteId);
+      allCachedPositionsForThisBallotItem = MeasureStore.getAllCachedPositionsByMeasureWeVoteId(ballotItemWeVoteId);
     }
     this.candidateStoreListener = CandidateStore.addListener(this.onCandidateStoreChange.bind(this));
     this.friendStoreListener = FriendStore.addListener(this.onFriendStoreChange.bind(this));
@@ -95,7 +95,7 @@ class PositionRowList extends Component {
     // console.log('PositionRowList onMeasureStoreChange, ballotItemWeVoteId:', ballotItemWeVoteId);
     let allCachedPositionsForThisBallotItem;
     if (ballotItemWeVoteId.includes('meas')) {
-      allCachedPositionsForThisBallotItem = MeasureStore.getAllCachedPositionsByCandidateWeVoteId(ballotItemWeVoteId);
+      allCachedPositionsForThisBallotItem = MeasureStore.getAllCachedPositionsByMeasureWeVoteId(ballotItemWeVoteId);
       this.setState({ allCachedPositionsForThisBallotItem });
       this.onPositionListUpdate(allCachedPositionsForThisBallotItem);
     }
@@ -218,12 +218,13 @@ class PositionRowList extends Component {
       filteredPositionList, filteredPositionListLength, numberOfPositionItemsToDisplay,
     } = this.state;
     renderLog('PositionRowList');  // Set LOG_RENDER_EVENTS to log all renders
+    // console.log('PositionRowList render, filteredPositionList:', filteredPositionList, ', filteredPositionListLength:', filteredPositionListLength);
+    // console.log('PositionRowList, ballotItemWeVoteId:', ballotItemWeVoteId);
     if (!filteredPositionList) {
       // console.log('PositionRowList Loading...');
       return LoadingWheel;
     }
-    // console.log('PositionRowList render, positionListExistsTitle:', positionListExistsTitle);
-    // console.log('this.state.filteredPositionList render: ', this.state.filteredPositionList);
+    // console.log('TRYING TO RENDER, filteredPositionListLength: ', filteredPositionListLength);
     let numberOfPositionItemsDisplayed = 0;
     return (
       <CandidateEndorsementsWrapper>
@@ -242,7 +243,7 @@ class PositionRowList extends Component {
         )}
         <CandidateEndorsementsContainer>
           {filteredPositionList.map((onePosition) => {
-            // console.log('numberOfPositionItemsDisplayed:', numberOfPositionItemsDisplayed);
+            // console.log('numberOfPositionItemsDisplayed:', numberOfPositionItemsDisplayed, ', numberOfPositionItemsToDisplay:', numberOfPositionItemsToDisplay);
             if (numberOfPositionItemsDisplayed >= numberOfPositionItemsToDisplay) {
               return null;
             }

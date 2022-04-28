@@ -321,6 +321,7 @@ SetUpAccountRoot.propTypes = {
 const styles = () => ({
   desktopSimpleLink: {
     boxShadow: 'none !important',
+    color: '#999',
     marginTop: 10,
     padding: '0 20px',
     textTransform: 'none',

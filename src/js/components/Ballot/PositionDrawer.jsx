@@ -51,8 +51,12 @@ class PositionDrawer extends Component {
     this.measureStoreListener = MeasureStore.addListener(this.onMeasureStoreChange.bind(this));
     const { ballotItemWeVoteId, featuredOrganizationWeVoteId } = this.props;
     // console.log('ballotItemWeVoteId:', ballotItemWeVoteId);
-    const isMeasure = stringContains('meas', ballotItemWeVoteId);
     const isCandidate = stringContains('cand', ballotItemWeVoteId);
+    const isMeasure = stringContains('meas', ballotItemWeVoteId);
+    this.setState({
+      isCandidate,
+      isMeasure,
+    });
     if (isCandidate) {
       const candidate = CandidateStore.getCandidate(ballotItemWeVoteId);
       const { contest_office_we_vote_id: officeWeVoteId } = candidate;
@@ -83,7 +87,6 @@ class PositionDrawer extends Component {
       const featuredPosition = CandidateStore.getPositionAboutCandidateFromOrganization(ballotItemWeVoteId, featuredOrganizationWeVoteId);
       this.setState({
         featuredPosition,
-        isCandidate,
       });
       AnalyticsActions.saveActionCandidate(VoterStore.electionId(), ballotItemWeVoteId);
     }
@@ -109,9 +112,6 @@ class PositionDrawer extends Component {
           positionListFromFriendsHasBeenRetrievedOnce,
         });
       }
-      this.setState({
-        isCandidate,
-      });
       AnalyticsActions.saveActionMeasure(VoterStore.electionId(), ballotItemWeVoteId);
     }
     if (apiCalming('organizationsFollowedRetrieve', 60000)) {
@@ -173,6 +173,29 @@ class PositionDrawer extends Component {
   }
 
   onMeasureStoreChange () {
+    const { ballotItemWeVoteId, featuredOrganizationWeVoteId } = this.props;
+    const { isMeasure } = this.state;
+    // console.log('PositionDrawer onMeasureStoreChange, ballotItemWeVoteId:', ballotItemWeVoteId);
+    if (isMeasure) {
+      const measure = MeasureStore.getMeasure(ballotItemWeVoteId);
+      const { google_civic_election_id: googleCivicElectionId } = measure;
+      if (googleCivicElectionId &&
+        !VoterGuideStore.voterGuidesUpcomingFromFriendsStopped(googleCivicElectionId) &&
+        !this.localVoterGuidesFromFriendsUpcomingHasBeenRetrievedOnce(googleCivicElectionId)
+      ) {
+        VoterGuideActions.voterGuidesFromFriendsUpcomingRetrieve(googleCivicElectionId);
+        const { voterGuidesFromFriendsUpcomingHasBeenRetrievedOnce } = this.state;
+        const googleCivicElectionIdInteger = convertToInteger(googleCivicElectionId);
+        voterGuidesFromFriendsUpcomingHasBeenRetrievedOnce[googleCivicElectionIdInteger] = true;
+        this.setState({
+          voterGuidesFromFriendsUpcomingHasBeenRetrievedOnce,
+        });
+      }
+      const featuredPosition = MeasureStore.getPositionAboutMeasureFromOrganization(ballotItemWeVoteId, featuredOrganizationWeVoteId);
+      this.setState({
+        featuredPosition,
+      });
+    }
   }
 
   localPositionListHasBeenRetrievedOnce (ballotItemWeVoteId) {
@@ -208,7 +231,6 @@ class PositionDrawer extends Component {
   }
 
   render () {
-    // console.log(this.props.candidate_we_vote_id);
     renderLog('PositionDrawer');  // Set LOG_RENDER_EVENTS to log all renders
     const { classes, params } = this.props;
     const { featuredPosition, modalOpen } = this.state;
