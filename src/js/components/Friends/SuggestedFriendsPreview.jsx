@@ -62,8 +62,8 @@ export default class SuggestedFriendsPreview extends Component {
 
     return (!!(suggestedFriendListLimited && suggestedFriendListLimited.length > 0) && (
       <div className="opinion-view">
-        <section className="card">
-          <div className="card-main">
+        <section>
+          <div>
             <SectionTitle className="u-cursor--pointer" onClick={this.goToSuggestedFriends}>
               People You May Know
               {' '}

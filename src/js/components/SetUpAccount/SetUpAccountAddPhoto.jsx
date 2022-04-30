@@ -93,7 +93,6 @@ class SetUpAccountAddPhoto extends React.Component {
         {voterProfileUploadedImageUrlLarge ? (
           <>
             <SetUpAccountTitle>Looking good!</SetUpAccountTitle>
-            <SetUpAccountIntroText>You can always edit this later on.</SetUpAccountIntroText>
           </>
         ) : (
           <>

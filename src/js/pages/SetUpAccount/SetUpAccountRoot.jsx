@@ -19,16 +19,21 @@ import { reassuranceText } from '../../components/SetUpAccount/reassuranceText';
 
 const logoColorOnWhite = '../../../img/global/svg-icons/we-vote-icon-square-color-dark.svg';
 
-const SetUpAccountEditName = React.lazy(() => import(/* webpackChunkName: 'SetUpAccountEditName' */ '../../components/SetUpAccount/SetUpAccountEditName'));
+const AddContactsFromGoogleButton = React.lazy(() => import(/* webpackChunkName: 'AddContactsFromGoogleButton' */ '../../components/SetUpAccount/AddContactsFromGoogleButton'));
 const SetUpAccountAddPhoto = React.lazy(() => import(/* webpackChunkName: 'SetUpAccountAddPhoto' */ '../../components/SetUpAccount/SetUpAccountAddPhoto'));
+const SetUpAccountEditName = React.lazy(() => import(/* webpackChunkName: 'SetUpAccountEditName' */ '../../components/SetUpAccount/SetUpAccountEditName'));
+const SetUpAccountImportContacts = React.lazy(() => import(/* webpackChunkName: 'SetUpAccountImportContacts' */ '../../components/SetUpAccount/SetUpAccountImportContacts'));
 
 class SetUpAccountRoot extends React.Component {
   constructor (props) {
     super(props);
     this.state = {
-      displayStep: 1, // editName
+      addPhotoNextButtonDisabled: true,
+      displayStep: 1, // editname
       editNameNextButtonDisabled: true,
       nextButtonClicked: false,
+      voterContactEmailListCount: 0,
+      voterContactEmailGoogleCount: 0,
     };
   }
 
@@ -52,7 +57,7 @@ class SetUpAccountRoot extends React.Component {
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
   }
 
-  componentDidUpdate (prevProps) {
+  componentDidUpdate (prevProps, prevState) {
     let prevParams = {};
     let prevSetUpPagePath = '';
     const { match: prevMatch } = prevProps;
@@ -71,6 +76,8 @@ class SetUpAccountRoot extends React.Component {
         ({ set_up_page: setUpPagePath } = params);
       }
     }
+    const { voterContactEmailGoogleCount: voterContactEmailGoogleCountPrevious } = prevState;
+    const { voterContactEmailGoogleCount } = this.state;
     // console.log('SetUpAccountEditName componentDidUpdate prevProps.nextButtonClicked:', prevProps.nextButtonClicked, ', this.props.nextButtonClicked:', this.props.nextButtonClicked);
     if (prevSetUpPagePath !== setUpPagePath) {
       const displayStep = this.convertSetUpPagePathToDisplayStep(setUpPagePath);
@@ -80,6 +87,9 @@ class SetUpAccountRoot extends React.Component {
         displayStep,
         setUpPagePath,
       });
+    } else if ((setUpPagePath === 'importcontacts') && (voterContactEmailGoogleCountPrevious !== voterContactEmailGoogleCount)) {
+      console.log('Leaving importcontacts step');
+      this.goToNextStep();
     }
   }
 
@@ -92,18 +102,20 @@ class SetUpAccountRoot extends React.Component {
     this.shouldNextButtonBeDisabled();
     const { setUpPagePath } = this.state;
     const displayStep = this.convertSetUpPagePathToDisplayStep(setUpPagePath);
+    const voterContactEmailList = VoterStore.getVoterContactEmailList();
+    const voterContactEmailListCount = voterContactEmailList.length;
+    const voterContactEmailGoogleCount = VoterStore.getVoterContactEmailGoogleCount();
+    console.log('onVoterStoreChange setUpPagePath:', setUpPagePath, ', voterContactEmailListCount:', voterContactEmailListCount);
     this.setState({
       displayStep,
+      voterContactEmailGoogleCount,
+      voterContactEmailListCount,
     });
   }
 
   convertSetUpPagePathToDisplayStep = (setUpPagePath) => {
     let displayStep;
     switch (setUpPagePath) {
-      default:
-      case 'editname':
-        displayStep = 1;
-        break;
       case 'addphoto':
         if (VoterStore.getVoterProfileUploadedImageUrlLarge()) {
           // This turns off the reassurance text
@@ -111,6 +123,13 @@ class SetUpAccountRoot extends React.Component {
         } else {
           displayStep = 2;
         }
+        break;
+      default:
+      case 'editname':
+        displayStep = 1;
+        break;
+      case 'importcontacts':
+        displayStep = 4;
         break;
     }
     return displayStep;
@@ -127,31 +146,90 @@ class SetUpAccountRoot extends React.Component {
     let backToLink = '';
     switch (displayStep) {
       default:
-      case 1:
+      case 1: // editname
         backToLink = '';
         break;
-      case 2: // 'addPhoto'
+      case 2: // addphoto
       case 3:
         backToLink = '/setupaccount/editname';
+        break;
+      case 4: // importcontacts
+        backToLink = '/setupaccount/addphoto';
         break;
     }
     // console.log('SetUpAccountRoot getBackToLink:', backToLink);
     return backToLink;
   }
 
-  goToNextStep = () => {
-    this.resetNextButtonClicked();
+  getNextButtonText = () => {
     const { displayStep } = this.state;
+    let nextButtonText = '';
     switch (displayStep) {
       default:
-      case 1: // 'editName'
+      case 1: // editname
+      case 2: // addphoto
+      case 3:
+        nextButtonText = 'Next';
+        break;
+      case 4: // importcontacts
+        nextButtonText = 'Import contacts from Gmail';
+        break;
+    }
+    // console.log('SetUpAccountRoot getNextButtonText:', nextButtonText);
+    return nextButtonText;
+  }
+
+  goToNextStep = () => {
+    this.resetNextButtonClicked();
+    const { displayStep, voterContactEmailListCount } = this.state;
+    switch (displayStep) {
+      case 2: // 'addphoto'
+      case 3:
+        if (voterContactEmailListCount === 0) {
+          historyPush('/setupaccount/importcontacts');
+        } else {
+          historyPush('/setupaccount/invitecontacts');
+        }
+        break;
+      default:
+      case 1: // 'editname'
         historyPush('/setupaccount/addphoto');
+        break;
+      case 4: // importcontacts
+        if (voterContactEmailListCount > 0) {
+          historyPush('/setupaccount/invitecontacts');
+        } else {
+          // We will want to add a switch between friend requests and suggestions here
+          historyPush('/setupaccount/friends');
+        }
         break;
     }
   }
 
   goToSkipForNow = () => {
-    console.log('goToSkipForNow');
+    const { displayStep, voterContactEmailListCount } = this.state;
+    switch (displayStep) {
+      case 2: // 'addphoto'
+      case 3:
+        if (voterContactEmailListCount === 0) {
+          historyPush('/setupaccount/importcontacts');
+        } else {
+          historyPush('/setupaccount/invitecontacts');
+        }
+        break;
+      default:
+      case 1: // 'editname'
+        historyPush('/setupaccount/addphoto');
+        break;
+      case 4: // importcontacts
+        if (voterContactEmailListCount > 0) {
+          historyPush('/setupaccount/invitecontacts');
+        } else {
+          // We will want to add a switch between friend requests and suggestions here
+          historyPush('/setupaccount/friends');
+        }
+        break;
+    }
   }
 
   resetNextButtonClicked = () => {
@@ -190,11 +268,13 @@ class SetUpAccountRoot extends React.Component {
     // console.log('SetUpAccountRoot displayState', displayStep);
 
     let backButtonOn;
+    let desktopNextButtonHtml;
+    let mobileNextButtonHtml;
     let nextButtonDisabled = true;
     let stepHtml;
     switch (displayStep) {
       default:
-      case 1:
+      case 1: // editname
         backButtonOn = false;
         nextButtonDisabled = editNameNextButtonDisabled;
         stepHtml = (
@@ -207,7 +287,7 @@ class SetUpAccountRoot extends React.Component {
           </Suspense>
         );
         break;
-      case 2:
+      case 2: // addphoto
       case 3:
         backButtonOn = true;
         nextButtonDisabled = addPhotoNextButtonDisabled;
@@ -221,23 +301,74 @@ class SetUpAccountRoot extends React.Component {
           </Suspense>
         );
         break;
+      case 4: // importcontacts
+        backButtonOn = true;
+        nextButtonDisabled = false;
+        stepHtml = (
+          <Suspense fallback={<></>}>
+            <SetUpAccountImportContacts
+              // functionToUseWhenProfileComplete={this.goToNextStep}
+              // functionToUseWhenProfileNotComplete={this.resetNextButtonClicked}
+              nextButtonClicked={nextButtonClicked}
+            />
+          </Suspense>
+        );
+        break;
     }
 
-    const desktopButtonHtml = (
+    switch (displayStep) {
+      default:
+      case 1: // editname
+      case 2: // addphoto
+      case 3:
+        desktopNextButtonHtml = (
+          <Button
+            color="primary"
+            disabled={nextButtonDisabled}
+            onClick={this.onClickNextButton}
+            style={{
+              boxShadow: 'none !important',
+              textTransform: 'none',
+              width: 250,
+            }}
+            variant="contained"
+          >
+            Next
+          </Button>
+        );
+        mobileNextButtonHtml = (
+          <Button
+            color="primary"
+            disabled={nextButtonDisabled}
+            onClick={this.onClickNextButton}
+            style={{
+              boxShadow: 'none !important',
+              textTransform: 'none',
+              width: '100%',
+            }}
+            variant="contained"
+          >
+            Next
+          </Button>
+        );
+        break;
+      case 4: // importcontacts
+        desktopNextButtonHtml = (
+          <Suspense fallback={<></>}>
+            <AddContactsFromGoogleButton darkButton />
+          </Suspense>
+        );
+        mobileNextButtonHtml = (
+          <Suspense fallback={<></>}>
+            <AddContactsFromGoogleButton darkButton mobileMode />
+          </Suspense>
+        );
+        break;
+    }
+
+    const desktopButtonsHtml = (
       <>
-        <Button
-          color="primary"
-          disabled={nextButtonDisabled}
-          onClick={this.onClickNextButton}
-          style={{
-            boxShadow: 'none !important',
-            textTransform: 'none',
-            width: 150,
-          }}
-          variant="contained"
-        >
-          Next
-        </Button>
+        {desktopNextButtonHtml}
         <Button
           classes={{ root: classes.desktopSimpleLink }}
           color="primary"
@@ -248,21 +379,9 @@ class SetUpAccountRoot extends React.Component {
       </>
     );
 
-    const mobileButtonHtml = (
+    const mobileButtonsHtml = (
       <>
-        <Button
-          color="primary"
-          disabled={nextButtonDisabled}
-          onClick={this.onClickNextButton}
-          style={{
-            boxShadow: 'none !important',
-            textTransform: 'none',
-            width: '100%',
-          }}
-          variant="contained"
-        >
-          Next
-        </Button>
+        {mobileNextButtonHtml}
         <Button
           classes={{ root: classes.mobileSimpleLink }}
           color="primary"
@@ -299,14 +418,14 @@ class SetUpAccountRoot extends React.Component {
           </StepHtmlWrapper>
           <DesktopNextButtonsOuterWrapper className="u-show-desktop-tablet">
             <DesktopNextButtonsInnerWrapper>
-              {desktopButtonHtml}
+              {desktopButtonsHtml}
             </DesktopNextButtonsInnerWrapper>
           </DesktopNextButtonsOuterWrapper>
           <Reassurance displayState={displayStep} reassuranceText={reassuranceText} />
         </AccountSetUpRootWrapper>
         <MobileStaticNextButtonsOuterWrapper className="u-show-mobile">
           <MobileStaticNextButtonsInnerWrapper>
-            {mobileButtonHtml}
+            {mobileButtonsHtml}
           </MobileStaticNextButtonsInnerWrapper>
         </MobileStaticNextButtonsOuterWrapper>
       </PageContentContainerAccountSetUp>

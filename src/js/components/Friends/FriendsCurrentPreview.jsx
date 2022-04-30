@@ -52,8 +52,8 @@ export default class FriendsCurrentPreview extends Component {
 
     return ((currentFriendListLimited && currentFriendListLimited.length > 0) && (
       <div className="opinion-view">
-        <section className="card">
-          <div className="card-main">
+        <section>
+          <div>
             <SectionTitle className="u-cursor--pointer" onClick={this.goToCurrentFriends}>
               Your Friends
               {' '}

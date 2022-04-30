@@ -13,8 +13,8 @@ class FacebookSignInCard extends Component {
   render () {
     renderLog('FacebookSignInCard');  // Set LOG_RENDER_EVENTS to log all renders
     return (
-      <div className="card">
-        <div className="card-main">
+      <div>
+        <div>
           <div className="network-btn">
             <FacebookSignIn
               buttonText="Sign In to Find Friends"

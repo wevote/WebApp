@@ -151,6 +151,24 @@ export default {
       });
   },
 
+  voterContactListDelete (deleteFromGooglePeopleApi = false) {
+    Dispatcher.loadEndpoint('voterContactListSave', {
+      delete_from_google_people_api: deleteFromGooglePeopleApi,
+    });
+  },
+
+  voterContactListRetrieve () {
+    Dispatcher.loadEndpoint('voterContactListRetrieve', {});
+  },
+
+  voterContactListSave (contacts, fromGooglePeopleApi = false) {
+    const contactsString = JSON.stringify(contacts);
+    Dispatcher.loadEndpoint('voterContactListSave', {
+      contacts: contactsString,
+      from_google_people_api: fromGooglePeopleApi,
+    });
+  },
+
   voterEmailAddressRetrieve () {
     Dispatcher.loadEndpoint('voterEmailAddressRetrieve', {});
   },

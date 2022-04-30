@@ -407,8 +407,8 @@ class Friends extends Component {
               )}
             </>
             {!!(voterIsSignedIn && friendActivityExists) && (
-              <div className="card">
-                <div className="card-main">
+              <div>
+                <div>
                   <SectionTitle>
                     Invite Friends
                   </SectionTitle>
@@ -522,8 +522,8 @@ class Friends extends Component {
               </div>
               <div className="col-md-12 col-lg-4">
                 {!!(voterIsSignedIn && friendActivityExists) && (
-                  <div className="card">
-                    <div className="card-main">
+                  <div>
+                    <div>
                       <SectionTitle>
                         Invite Friends
                       </SectionTitle>
@@ -608,6 +608,7 @@ const styles = () => ({
 
 const FacebookSignInWrapper = styled('div')`
   flex: 1;
+  margin-top: 25px;
   @media (min-width: 614px) and (max-width: 991px) {
     padding-left: 8px;
   }
@@ -656,6 +657,7 @@ const SignInOptionsWrapper = styled('div')`
 
 const TwitterSignInWrapper = styled('div')`
   flex: 1;
+  margin-top: 25px;
   @media (min-width: 614px) and (max-width: 991px) {
     padding-right: 8px;
   }

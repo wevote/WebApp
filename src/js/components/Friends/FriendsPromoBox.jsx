@@ -99,8 +99,8 @@ const styles = (theme) => ({
     backgroundColor: 'white',
   },
   testimonialMobile: {
-    paddingLeft: '15px',
-    paddingRight: '15px',
+    // paddingLeft: '15px',
+    // paddingRight: '15px',
   },
 });
 

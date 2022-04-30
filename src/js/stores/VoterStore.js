@@ -36,6 +36,8 @@ class VoterStore extends ReduceStore {
       },
       smsPhoneNumberStatus: {},
       smsPhoneNumberList: [],
+      voterContactEmailGoogleCount: 0,
+      voterContactEmailList: [],
       voterEmailQueuedToSave: '',
       voterEmailQueuedToSaveSet: false,
       voterFirstNameQueuedToSave: '',
@@ -226,6 +228,14 @@ class VoterStore extends ReduceStore {
 
   getVoter () {
     return this.getState().voter;
+  }
+
+  getVoterContactEmailGoogleCount () {
+    return this.getState().voterContactEmailGoogleCount || 0;
+  }
+
+  getVoterContactEmailList () {
+    return this.getState().voterContactEmailList || [];
   }
 
   getVoterEmail () {
@@ -632,8 +642,45 @@ class VoterStore extends ReduceStore {
             latestGoogleCivicElectionId: googleCivicElectionId,
           };
         }
-
         return state;
+
+      case 'voterContactListRetrieve':
+        // console.log('VoterStore voterContactListRetrieve action:', action);
+        if (action.res.success) {
+          const {
+            voter_contact_email_google_count: voterContactEmailGoogleCount,
+            voter_contact_email_list: voterContactEmailList,
+          } = action.res;
+          return {
+            ...state,
+            voterContactEmailGoogleCount,
+            voterContactEmailList,
+          };
+        } else {
+          console.log('response voterContactListRetrieve was not successful');
+          return state;
+        }
+
+      case 'voterContactListSave':
+        console.log('VoterStore voterContactListSave action:', action);
+        if (action.res.success) {
+          const {
+            we_vote_id_for_google_contacts: weVoteIdForGoogleContacts,
+            contacts_stored: googleContactsStored,
+            voter_contact_email_google_count: voterContactEmailGoogleCount,
+            voter_contact_email_list: voterContactEmailList,
+          } = action.res;
+          return {
+            ...state,
+            weVoteIdForGoogleContacts,
+            googleContactsStored,
+            voterContactEmailGoogleCount,
+            voterContactEmailList,
+          };
+        } else {
+          console.log('response voterContactListSave was not successful');
+          return state;
+        }
 
       case 'voterEmailAddressRetrieve':
         // console.log("VoterStore  voterEmailAddressRetrieve: ", action.res.email_address_list);

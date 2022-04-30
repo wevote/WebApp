@@ -146,7 +146,7 @@ class SetUpAccountEditName extends React.Component {
       // All required fields were found
       VoterActions.sendSignInCodeEmail(voterEmailQueuedToSave);
     } else {
-      VoterActions.voterRetrieve();
+      // VoterActions.voterRetrieve(); // This might set up a race condition with voterUpdate, and not allow a new name to show up
       this.functionToUseWhenProfileCompleteTimer = setTimeout(() => {
         this.props.functionToUseWhenProfileComplete();
       }, 500);

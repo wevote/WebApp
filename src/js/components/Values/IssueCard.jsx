@@ -3,11 +3,11 @@ import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
-import LoadingWheel from '../../common/components/Widgets/LoadingWheel';
 import abbreviateNumber from '../../common/utils/abbreviateNumber';
 import { isCordova } from '../../common/utils/isCordovaOrWebApp';
 import { renderLog } from '../../common/utils/logging';
 import VoterGuideStore from '../../stores/VoterGuideStore';
+import VoterStore from '../../stores/VoterStore';
 import { convertNameToSlug } from '../../utils/textFormat';
 import IssueFollowToggleButton from './IssueFollowToggleButton';
 import IssueImageDisplay from './IssueImageDisplay';
@@ -102,8 +102,8 @@ class IssueCard extends Component {
       showSignInModal,
     } = this.state;
 
-    if (!issueWeVoteId.length) {
-      return <div className="card-popover__width--minimum">{LoadingWheel}</div>;
+    if (!issueWeVoteId) {
+      return null;
     }
 
     const {
@@ -156,27 +156,11 @@ class IssueCard extends Component {
         condensed={!!this.props.condensed}
         style={isCordova() ? { margin: 'unset' } : {}}   // stops horizontal scrolling
       >
-        { showSignInModal && (
+        {(showSignInModal && !VoterStore.getVoterIsSignedIn()) && (
           <Suspense fallback={<></>}>
             <SignInModalSimple
-              settingsAccountIsSignedInSubTitle={(
-                <>
-                  The endorsements of the organizations and public figures who advocate for
-                  {' '}
-                  {issueDisplayName}
-                  {' '}
-                  will be added to your Personalized Scores on your ballot.
-                </>
-              )}
-              settingsAccountIsSignedInTitle={(
-                <>
-                  You are now following
-                  {' '}
-                  <strong>
-                    {issueDisplayName}
-                  </strong>
-                </>
-              )}
+              settingsAccountIsSignedInSubTitle={<></>}
+              settingsAccountIsSignedInTitle={<></>}
               settingsAccountSignInTitle="Sign in to save your values."
               settingsAccountSignInSubTitle=""
               signedInTitle={<></>}
@@ -264,20 +248,20 @@ class IssueCard extends Component {
                   isFirst = organizationImageCount === 0;
                   organizationImageCount += 1;
                   // console.log('organization:', organization);
-                  return (
-                    <>
-                      {(organization.we_vote_hosted_profile_image_url_tiny) && (
-                        <OrganizationImage
-                          alt={organization.organization_name}
-                          isFirst={isFirst}
-                          key={`OrganizationImage-${organization.organization_we_vote_id}`}
-                          organizationImageCount={organizationImageCount}
-                          src={organization.we_vote_hosted_profile_image_url_tiny}
-                          title={organization.organization_name}
-                        />
-                      )}
-                    </>
-                  );
+                  if (organization.we_vote_hosted_profile_image_url_tiny) {
+                    return (
+                      <OrganizationImage
+                        alt={organization.organization_name}
+                        isFirst={isFirst}
+                        key={`OrganizationImage-${organization.organization_we_vote_id}`}
+                        organizationImageCount={organizationImageCount}
+                        src={organization.we_vote_hosted_profile_image_url_tiny}
+                        title={organization.organization_name}
+                      />
+                    );
+                  } else {
+                    return null;
+                  }
                 })}
               </IssueAdvocatesImages>
             )}
