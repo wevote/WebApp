@@ -235,7 +235,7 @@ class Ballot extends Component {
     } else if (BallotStore.ballotProperties && BallotStore.ballotProperties.ballot_found === false) { // No ballot found
       // console.log('if (BallotStore.ballotProperties && BallotStore.ballotProperties.ballot_found === false');
       historyPush('/settings/location');
-    } else if (ballotWithItemsFromCompletionFilterType === undefined) {
+    } else { // } else if (ballotWithItemsFromCompletionFilterType === undefined) {
       // console.log('WebApp doesn\'t know the election or have ballot data, so ask the API server to return best guess');
       BallotActions.voterBallotItemsRetrieve(0, '', '');
     }
