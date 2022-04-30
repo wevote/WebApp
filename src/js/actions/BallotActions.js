@@ -1,7 +1,7 @@
 import AppObservableStore from '../stores/AppObservableStore';
 import Dispatcher from '../common/dispatcher/Dispatcher';
 
-let voterBallotItemRetrievedWithZeroCivicId = false;
+// let voterBallotItemRetrievedWithZeroCivicId = false;
 
 export default {
   allBallotItemsRetrieve (googleCivicElectionId, stateCode = '') {
@@ -58,19 +58,27 @@ export default {
   },
 
   voterBallotItemsRetrieve (googleCivicElectionId = 0, ballot_returned_we_vote_id = '', ballot_location_shortcut = '') {
-    if (googleCivicElectionId === 0 && voterBallotItemRetrievedWithZeroCivicId) {
-      // console.log('We only allow voterBallotItemsRetrieve with googleCivicElectionId === 0, once per session');
-    } else {
-      // console.log('BallotActions voterBallotItemsRetrieve with googleCivicElectionId: ', googleCivicElectionId);
-      if (googleCivicElectionId === 0) voterBallotItemRetrievedWithZeroCivicId = true;
-      AppObservableStore.voterBallotItemsRetrieveHasBeenCalled(true);
-      Dispatcher.loadEndpoint('voterBallotItemsRetrieve', {
-        use_test_election: false,
-        google_civic_election_id: googleCivicElectionId,
-        ballot_returned_we_vote_id,
-        ballot_location_shortcut,
-      });
-    }
+    // 2022-04-30 We want to allow this API to be called more than once per session
+    // if (googleCivicElectionId === 0 && voterBallotItemRetrievedWithZeroCivicId) {
+    //   // console.log('We only allow voterBallotItemsRetrieve with googleCivicElectionId === 0, once per session');
+    // } else {
+    //   // console.log('BallotActions voterBallotItemsRetrieve with googleCivicElectionId: ', googleCivicElectionId);
+    //   if (googleCivicElectionId === 0) voterBallotItemRetrievedWithZeroCivicId = true;
+    //   AppObservableStore.voterBallotItemsRetrieveHasBeenCalled(true);
+    //   Dispatcher.loadEndpoint('voterBallotItemsRetrieve', {
+    //     use_test_election: false,
+    //     google_civic_election_id: googleCivicElectionId,
+    //     ballot_returned_we_vote_id,
+    //     ballot_location_shortcut,
+    //   });
+    // }
+    AppObservableStore.voterBallotItemsRetrieveHasBeenCalled(true);
+    Dispatcher.loadEndpoint('voterBallotItemsRetrieve', {
+      use_test_election: false,
+      google_civic_election_id: googleCivicElectionId,
+      ballot_returned_we_vote_id,
+      ballot_location_shortcut,
+    });
   },
 
   voterBallotListRetrieve () {
