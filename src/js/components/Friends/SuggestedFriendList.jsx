@@ -32,8 +32,8 @@ export default class SuggestedFriendList extends Component {
     const { inSideColumn, previewMode } = this.props;
 
     return (
-      <div className={!previewMode ? 'card' : null}>
-        <div className={!previewMode ? 'card-main' : null}>
+      <div>
+        <div>
           {this.state.suggestedFriendList.map((friend, index) => (
             <div key={friend.voter_we_vote_id}>
               <SuggestedFriendDisplayForList

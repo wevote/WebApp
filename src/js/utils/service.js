@@ -49,6 +49,7 @@ function innerAjax (options) {
   // console.log('service.js, options.endpoint: ', options.endpoint);
   if (options.endpoint === 'organizationPhotosSave' ||
       options.endpoint === 'reactionLikeStatusRetrieve' ||
+      options.endpoint === 'voterContactListSave' ||
       options.endpoint === 'voterUpdate') {
     options.method = 'POST';
   } else {

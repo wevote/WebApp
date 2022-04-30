@@ -18,12 +18,27 @@ export const reassuranceText = [
     text: 'You are the only one who will be able to initiate messages to your friends, until your friends opt-in.',
   },
   {
-    page: 2,
-    headline: 'Delete all the contact information you shared with us at any time.',
-    text: 'You can wipe clean any information you import, any time you would like.  We keep the contact info you import in a quarantined data vault, prive to you.',
+    page: 4,
+    headline: '',
+    text: 'Info about your contacts in your address book, including names, emails and phone numbers will be sent to We Vote to help you find friends faster.',
   },
   {
     page: 4,
+    headline: 'Your friendships are precious.',
+    text: 'WeVote.US is a nonpartisan nonprofit and will always protect and keep private your friends\' contact information. We will never share or sell their contact information.',
+  },
+  {
+    page: 4,
+    headline: 'You are in control.',
+    text: 'You are the only one who will be able to initiate messages to your friends, until your friends opt-in.',
+  },
+  {
+    page: 4,
+    headline: 'Delete your contact info at any time.',
+    text: 'Wipe clean any information you import, any time you would like. We keep the contact info you import in a quarantined data vault, private to you.',
+  },
+  {
+    page: 99,
     headline: 'You are in control.',
     text: 'You can turn off notifications at any time.',
   },

@@ -13,8 +13,8 @@ class TwitterSignInCard extends Component {
   render () {
     renderLog('TwitterSignInCard');  // Set LOG_RENDER_EVENTS to log all renders
     return (
-      <div className="card">
-        <div className="card-main">
+      <div>
+        <div>
           <div className="network-btn">
             <TwitterSignIn
               buttonText="Find Public Opinions"

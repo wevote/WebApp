@@ -25,7 +25,7 @@ export const reassuranceText = [
   {
     page: 2,
     headline: 'Delete all the contact information you shared with us at any time.',
-    text: 'You can wipe clean any information you import, any time you would like.  We keep the contact info you import in a quarantined data vault, prive to you.',
+    text: 'You can wipe clean any information you import, any time you would like.  We keep the contact info you import in a quarantined data vault, private to you.',
   },
   {
     page: 3,

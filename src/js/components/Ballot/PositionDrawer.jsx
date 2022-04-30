@@ -17,7 +17,7 @@ import BallotStore from '../../stores/BallotStore';
 import CandidateStore from '../../stores/CandidateStore';
 import IssueStore from '../../stores/IssueStore';
 import MeasureStore from '../../stores/MeasureStore';
-import OrganizationStore from '../../stores/OrganizationStore';
+// import OrganizationStore from '../../stores/OrganizationStore';
 import VoterGuideStore from '../../stores/VoterGuideStore';
 import VoterStore from '../../stores/VoterStore';
 import apiCalming from '../../common/utils/apiCalming';
@@ -118,17 +118,18 @@ class PositionDrawer extends Component {
       OrganizationActions.organizationsFollowedRetrieve();
     }
 
-    // We want to make sure we have all of the position information so that comments show up
-    const voterGuidesForThisBallotItem = VoterGuideStore.getVoterGuidesToFollowForBallotItemId(ballotItemWeVoteId);
-
-    if (voterGuidesForThisBallotItem) {
-      voterGuidesForThisBallotItem.forEach((oneVoterGuide) => {
-        // console.log('oneVoterGuide: ', oneVoterGuide);
-        if (!OrganizationStore.positionListForOpinionMakerHasBeenRetrievedOnce(oneVoterGuide.google_civic_election_id, oneVoterGuide.organization_we_vote_id)) {
-          OrganizationActions.positionListForOpinionMaker(oneVoterGuide.organization_we_vote_id, false, true, oneVoterGuide.google_civic_election_id);
-        }
-      });
-    }
+    // 2022-04-28 This slows down rendering too much
+    // // We want to make sure we have all of the position information so that comments show up
+    // const voterGuidesForThisBallotItem = VoterGuideStore.getVoterGuidesToFollowForBallotItemId(ballotItemWeVoteId);
+    //
+    // if (voterGuidesForThisBallotItem) {
+    //   voterGuidesForThisBallotItem.forEach((oneVoterGuide) => {
+    //     // console.log('oneVoterGuide: ', oneVoterGuide);
+    //     if (!OrganizationStore.positionListForOpinionMakerHasBeenRetrievedOnce(oneVoterGuide.google_civic_election_id, oneVoterGuide.organization_we_vote_id)) {
+    //       OrganizationActions.positionListForOpinionMaker(oneVoterGuide.organization_we_vote_id, false, true, oneVoterGuide.google_civic_election_id);
+    //     }
+    //   });
+    // }
 
     IssueActions.issueDescriptionsRetrieve(VoterStore.getVoterWeVoteId());
     IssueActions.issuesFollowedRetrieve(VoterStore.getVoterWeVoteId());
