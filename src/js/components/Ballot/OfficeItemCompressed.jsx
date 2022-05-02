@@ -608,14 +608,10 @@ const OfficeItemCompressedWrapper = styled('div')`
   }
 `;
 
-const Title = styled('h2')(({ theme }) => (`
+const Title = styled('h2')`
   font-size: 32px;
   margin-bottom: 6px;
   width: fit-content;
-  ${theme.breakpoints.down('lg')} {
-    font-size: 24px;
-    margin-bottom: 2px;
-  }
-`));
+`;
 
 export default withTheme(withStyles(styles)(OfficeItemCompressed));
