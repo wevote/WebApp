@@ -223,7 +223,6 @@ class VoterGuideFollowers extends Component {
             <span>
               <GuideList
                 incomingVoterGuideList={searchTerm ? voterGuideFollowersListFilteredBySearch : voterGuideFollowersList}
-                instantRefreshOn
               />
             </span>
           </ul>

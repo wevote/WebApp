@@ -245,23 +245,16 @@ class GuideList extends Component {
               };
               return (
                 <VoterGuideDisplayForList
+                  isInformationOnly={organization.is_information_only}
+                  isOppose={organization.is_oppose}
+                  isSupport={organization.is_support}
                   key={organization.organization_we_vote_id}
                   organizationWeVoteId={organization.organization_we_vote_id}
-                  voterGuideImageUrlLarge={organization.voter_guide_image_url_large}
-                  voterGuideDisplayName={organization.voter_guide_display_name}
-                  candidateName={organization.candidate_name}
-                  speakerDisplayName={organization.speaker_display_name}
                   twitterDescription={organization.twitter_description}
-                  twitterFollowersCount={organization.twitter_followers_count}
                   twitterHandle={organization.twitter_handle}
-                  isSupport={organization.is_support}
-                  isPositiveRating={organization.is_positive_rating}
-                  isOppose={organization.is_oppose}
-                  isNegativeRating={organization.is_negative_rating}
-                  isInformationOnly={organization.is_information_only}
+                  voterGuideDisplayName={organization.voter_guide_display_name}
+                  voterGuideImageUrlLarge={organization.voter_guide_image_url_large}
                   voteSmartRating={organization.vote_smart_rating}
-                  speakerText={organization.speaker_text}
-                  moreInfoUrl={organization.more_info_url}
                 >
                   <Suspense fallback={<></>}>
                     <FollowToggle
@@ -293,7 +286,6 @@ GuideList.propTypes = {
   ballotItemWeVoteId: PropTypes.string,
   hideShowMoreItems: PropTypes.bool,
   incomingVoterGuideList: PropTypes.array,
-  instantRefreshOn: PropTypes.bool,
 };
 
 const ShowMoreItemsWrapper = styled('div')`

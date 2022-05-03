@@ -195,7 +195,7 @@ class OrganizationPopoverCard extends Component {
             {twitterDescriptionMinusName && (
               <Description>
                 <ParsedTwitterDescription
-                  twitter_description={twitterDescriptionMinusName}
+                  twitterDescription={twitterDescriptionMinusName}
                 />
               </Description>
             )}

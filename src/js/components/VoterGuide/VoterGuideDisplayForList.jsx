@@ -21,18 +21,19 @@ const ReadMore = React.lazy(() => import(/* webpackChunkName: 'ReadMore' */ '../
 class VoterGuideDisplayForList extends PureComponent {
   render () {
     renderLog('VoterGuideDisplayForList');  // Set LOG_RENDER_EVENTS to log all renders
-    if (this.props.organizationWeVoteId === undefined) {
+    const {
+      children,
+      organizationWeVoteId,
+      position,
+      voterGuideImageUrlLarge,
+    } = this.props;
+
+    if (organizationWeVoteId === undefined) {
       // console.log('VoterGuideDisplayForList this.props.organization_we_vote_id === undefined');
       return null;
     }
 
     // We package up the above variables to mimic a position
-    const position = this.props;
-
-    const {
-      organizationWeVoteId,
-      voterGuideImageUrlLarge,
-    } = this.props; // twitter_followers_count,
     const numOfLines = 2;
     const voterGuideDisplayName = this.props.voterGuideDisplayName ? this.props.voterGuideDisplayName : '';
     const twitterDescription = this.props.twitterDescription ? this.props.twitterDescription : '';
@@ -47,11 +48,45 @@ class VoterGuideDisplayForList extends PureComponent {
     let positionDescription = '';
     const isOnBallotItemPage = true; // From 'actor's' perspective: actorSupportsBallotItemLabel
     if (position.voteSmartRating) {
-      positionDescription = <PositionRatingSnippet {...position} />;
+      positionDescription = (
+        <PositionRatingSnippet
+          // ...position
+          ballotItemDisplayName={position.ballot_item_display_name}
+          showRatingDescription={position.show_rating_description}
+          voteSmartRating={position.vote_smart_rating}
+          voteSmartTimeSpan={position.vote_smart_time_span}
+        />
+      );
     } else if (position.isSupport || position.isOppose) {
-      positionDescription = <PositionSupportOpposeSnippet {...position} isOnBallotItemPage={isOnBallotItemPage} />;
+      positionDescription = (
+        <PositionSupportOpposeSnippet
+          // ...position
+          ballotItemDisplayName={position.ballot_item_display_name}
+          commentTextOff={position.comment_text_off}
+          isLookingAtSelf={position.is_looking_at_self}
+          isOnBallotItemPage={isOnBallotItemPage}
+          isOppose={position.is_oppose}
+          isSupport={position.is_support}
+          moreInfoUrl={position.more_info_url}
+          speakerDisplayName={position.speaker_display_name}
+          stanceDisplayOff={position.stance_display_off}
+          statementText={position.statement_text}
+        />
+      );
     } else if (position.isInformationOnly) {
-      positionDescription = <PositionInformationOnlySnippet {...position} isOnBallotItemPage={isOnBallotItemPage} />;
+      positionDescription = (
+        <PositionInformationOnlySnippet
+          // ...position
+          ballotItemDisplayName={position.ballot_item_display_name}
+          commentTextOff={position.comment_text_off}
+          isLookingAtSelf={position.is_looking_at_self}
+          isOnBallotItemPage={isOnBallotItemPage}
+          moreInfoUrl={position.more_info_url}
+          speakerDisplayName={position.speaker_display_name}
+          stanceDisplayOff={position.stance_display_off}
+          statementText={position.statement_text}
+        />
+      );
     } else {
       // console.log('VoterGuideDisplayForList NO positionDescription');
     }
@@ -99,7 +134,7 @@ class VoterGuideDisplayForList extends PureComponent {
           </div>
           <div className="card-child__additional">
             <div className="card-child__follow-buttons">
-              {this.props.children}
+              {children}
             </div>
           </div>
         </div>
@@ -109,22 +144,16 @@ class VoterGuideDisplayForList extends PureComponent {
 }
 VoterGuideDisplayForList.propTypes = {
   children: PropTypes.object, // This is how we pass in the FollowToggle
+  isInformationOnly: PropTypes.bool,
+  isOppose: PropTypes.bool,
+  isSupport: PropTypes.bool,
   organizationWeVoteId: PropTypes.string,
+  position: PropTypes.string,
+  twitterDescription: PropTypes.string,
+  twitterHandle: PropTypes.string,
   voterGuideImageUrlLarge: PropTypes.string,
   voterGuideDisplayName: PropTypes.string,
-  candidateName: PropTypes.string,
-  speakerDisplayName: PropTypes.string,
-  twitterDescription: PropTypes.string,
-  twitterFollowersCount: PropTypes.number,
-  twitterHandle: PropTypes.string,
-  isSupport: PropTypes.bool,
-  isPositiveRating: PropTypes.bool,
-  isOppose: PropTypes.bool,
-  isNegativeRating: PropTypes.bool,
-  isInformationOnly: PropTypes.bool,
   voteSmartRating: PropTypes.string,
-  speakerText: PropTypes.string,
-  moreInfoUrl: PropTypes.string,
 };
 
 const styles = (theme) => ({

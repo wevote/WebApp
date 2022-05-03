@@ -261,7 +261,6 @@ class VoterGuideFollowing extends Component {
             <span>
               <GuideList
                 incomingVoterGuideList={searchTerm ? voterGuideFollowedListFilteredBySearch : voterGuideFollowedList}
-                instantRefreshOn
               />
             </span>
           </ul>

@@ -14,19 +14,16 @@ export default class OrganizationVoterGuideCandidateList extends Component {
         { this.props.children.map((child) => (
           <div key={child.we_vote_id} className="card">
             <OrganizationVoterGuideCandidateItem
-              key={child.we_vote_id}
-              contest_office_name={this.props.contest_office_name}
-              link_to_ballot_item_page
-              organization_we_vote_id={this.props.organization_we_vote_id}
               ballotItemDisplayName={child.ballot_item_display_name}
               candidatePhotoUrlLarge={child.candidate_photo_url_large}
               candidatePhotoUrlMedium={child.candidate_photo_url_medium}
-              contestOfficeName={this.props.contest_office_name}
-              showLargeImage={child.showLargeImage}
-              linkToBallotItemPage={child.link_to_ballot_item_page}
-              linkToOfficePage={child.linkToOfficePage}
-              organizationWeVoteId={child.organization_we_vote_id}
+              contestOfficeName={this.props.contestOfficeName}
+              key={child.we_vote_id}
+              linkToBallotItemPage
+              linkToOfficePage
+              organizationWeVoteId={this.props.organizationWeVoteId}
               party={child.party}
+              showLargeImage
               twitterDescription={child.twitter_description}
               twitterFollowersCount={child.twitter_followers_count}
               weVoteId={child.we_vote_id}
@@ -39,6 +36,6 @@ export default class OrganizationVoterGuideCandidateList extends Component {
 }
 OrganizationVoterGuideCandidateList.propTypes = {
   children: PropTypes.array.isRequired,
-  contest_office_name: PropTypes.string,
-  organization_we_vote_id: PropTypes.string.isRequired,
+  contestOfficeName: PropTypes.string,
+  organizationWeVoteId: PropTypes.string.isRequired,
 };

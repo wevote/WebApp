@@ -51,7 +51,6 @@ export default class OpinionsIgnored extends Component {
                 { this.state.voter_guide_ignored_list && this.state.voter_guide_ignored_list.length ? (
                   <OpinionsIgnoredList
                     organizationsIgnored={this.state.voter_guide_ignored_list}
-                    instantRefreshOn
                   />
                 ) : null}
               </div>
