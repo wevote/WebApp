@@ -43,9 +43,9 @@ export default class FriendInvitationsSentByMePreview extends Component {
     const friendInvitationsSentByMeLimited = friendInvitationsSentByMe.slice(0, FRIENDS_TO_SHOW);
 
     return (!!(friendInvitationsSentByMeLimited && friendInvitationsSentByMeLimited.length > 0) && (
-      <div className="opinion-view">
-        <section className="card">
-          <div className="card-main">
+      <FriendInvitationsSentByMePreviewWrapper>
+        <section>
+          <div>
             <SectionTitle>
               Friend Requests Sent
               {' '}
@@ -63,7 +63,7 @@ export default class FriendInvitationsSentByMePreview extends Component {
             </div>
           </div>
         </section>
-      </div>
+      </FriendInvitationsSentByMePreviewWrapper>
     ));
   }
 }
@@ -73,4 +73,8 @@ const SectionTitle = styled('h2')`
   font-weight: bold;
   font-size: 18px;
   margin-bottom: 16px;
+`;
+
+const FriendInvitationsSentByMePreviewWrapper = styled('div')`
+  margin-bottom: 48px;
 `;

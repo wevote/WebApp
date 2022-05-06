@@ -172,19 +172,21 @@ const CustomColumns = styled('div', {
 `));
 
 const ProfilePictureOption = styled('div')`
+  align-items: flex-start;
   border: 2px solid #e8e8e8;
   border-radius: 3px;
-  padding: 4px 12px 12px 12px;
   display: flex !important;
   flex-direction: column;
-  align-items: flex-start;
+  min-height: 250px;
+  padding: 4px 12px 12px 12px;
   width: 100%;
   margin-bottom: 3px;
 `;
 
 const ProfilePicture = styled('img')`
-  border-radius: 50px;
+  border-radius: 100px;
   margin: 0 auto;
+  max-height: 100px;
   max-width: 100px;
 `;
 

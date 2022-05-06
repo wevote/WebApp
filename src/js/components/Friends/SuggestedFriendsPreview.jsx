@@ -61,7 +61,7 @@ export default class SuggestedFriendsPreview extends Component {
     const suggestedFriendListLimited = suggestedFriendList.slice(0, friendsToShowMax);
 
     return (!!(suggestedFriendListLimited && suggestedFriendListLimited.length > 0) && (
-      <div className="opinion-view">
+      <SuggestedFriendsPreviewWrapper>
         <section>
           <div>
             <SectionTitle className="u-cursor--pointer" onClick={this.goToSuggestedFriends}>
@@ -84,7 +84,7 @@ export default class SuggestedFriendsPreview extends Component {
             </div>
           </div>
         </section>
-      </div>
+      </SuggestedFriendsPreviewWrapper>
     ));
   }
 }
@@ -103,4 +103,8 @@ const SectionTitle = styled('h2')`
   font-size: 18px;
   margin-bottom: 4px;
   width: fit-content;
+`;
+
+const SuggestedFriendsPreviewWrapper = styled('div')`
+  margin-bottom: 48px;
 `;

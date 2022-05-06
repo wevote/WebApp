@@ -10,6 +10,7 @@ const OneInputFieldWrapper = styled('div')`
 `;
 
 const SetUpAccountIntroText = styled('div')`
+  color: #999;
   padding: 0 20px;
   text-align: center;
 `;

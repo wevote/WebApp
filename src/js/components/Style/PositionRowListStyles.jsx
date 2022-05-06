@@ -30,7 +30,7 @@ const PositionRowListScoreColumn = styled('div')`
 
 const PositionRowListScoreHeader = styled('div')`
   border-bottom: 1px solid #dcdcdc;
-  color: #ccc;
+  color: #999;
   line-height: 20px;
   margin-top: 0;
 `;

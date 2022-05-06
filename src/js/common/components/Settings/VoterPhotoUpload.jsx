@@ -154,7 +154,7 @@ const VoterPhotoWrapper = styled('div')`
   align-items: center;
   display: flex;
   flex-direction: column;
-  height: 222px;
+  height: 130px;
   justify-content: flex-end;
   margin-bottom: 0;
   width: 100%;

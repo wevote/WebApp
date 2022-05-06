@@ -161,7 +161,7 @@ class PositionRowEmpty extends Component {
           </Suspense>
         )}
         <NoOneChoosesWrapper>
-          Ask friends
+          Undecided
         </NoOneChoosesWrapper>
         <CandidateEndorsementsContainer id={`PositionRowEmpty-${ballotItemWeVoteId}`} onClick={this.onClickAskFriends}>
           <RowItemWrapper>
@@ -208,7 +208,7 @@ const CandidateEndorsementsContainer = styled('div')`
 
 const NoOneChoosesWrapper = styled('div')`
   border-bottom: 1px solid #dcdcdc;
-  color: #ccc;
+  color: #999;
   line-height: 20px;
   padding-left: 4px;
 `;
