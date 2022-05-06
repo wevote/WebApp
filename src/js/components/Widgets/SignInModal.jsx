@@ -35,6 +35,7 @@ class SignInModal extends Component {
   }
 
   componentDidMount () {
+    window.scrollTo(0, 0);
     this.onVoterStoreChange();
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
     const { FB, AppleID } = window;
@@ -47,6 +48,7 @@ class SignInModal extends Component {
   }
 
   componentDidUpdate () {
+    window.scrollTo(0, 0);
     if (isIOS()) {
       // Cordova really has trouble with animations on dialogs, while the visible area is being compressed to fit the software keyboard
       // eslint-disable-next-line func-names
@@ -294,9 +296,7 @@ const styles = (theme) => ({
   },
   focusedOnSingleInput: isWebApp() ? {
     [theme.breakpoints.down('sm')]: {
-      position: 'absolute',
-      top: '75%',
-      left: '73%',
+      transform: 'translate(0, -50%)',
     },
   } : {},
   emailInputWebApp0to568: {
