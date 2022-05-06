@@ -129,7 +129,7 @@ class ActivityTidbitItem extends Component {
     if (!activityTidbitWeVoteId) {
       return null;
     }
-    const startingNumberOfPositionsToDisplayLocal = startingNumberOfPositionsToDisplay || 1;
+    const startingNumberOfPositionsToDisplayLocal = startingNumberOfPositionsToDisplay || 5;
     return (
       <Wrapper>
         <ActivitySpeakerCardWrapper>

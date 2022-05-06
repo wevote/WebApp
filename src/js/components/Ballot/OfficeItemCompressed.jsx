@@ -457,9 +457,9 @@ class OfficeItemCompressed extends Component {
           className="anchor-under-header"
           name={officeWeVoteId}
         />
-        <Title>
+        <OfficeNameH2>
           {ballotItemDisplayName}
-        </Title>
+        </OfficeNameH2>
         {/* *************************
           Display either a) the candidates the voter supports, or b) the first several candidates running for this office
           ************************* */}
@@ -608,7 +608,7 @@ const OfficeItemCompressedWrapper = styled('div')`
   }
 `;
 
-const Title = styled('h2')`
+const OfficeNameH2 = styled('h2')`
   font-size: 32px;
   margin-bottom: 6px;
   width: fit-content;

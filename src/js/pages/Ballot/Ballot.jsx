@@ -1277,7 +1277,7 @@ class Ballot extends Component {
     let numberOfBallotItemsDisplayed = 0;
     let showLoadingText = true;
     let searchTextString = '';
-    const showCompleteYourProfile = true;
+    const showCompleteYourProfile = false;
     return (
       <div className="ballot_root">
         <Suspense fallback={<LoadingWheelComp />}>

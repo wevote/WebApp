@@ -349,7 +349,7 @@ class PositionRowSupportOpposeCountDisplay extends Component {
                       <ChooseWrapper>
                         {numberOfAllSupportPositions > 1 ? (
                           <>
-                            {numberOfAllSupportPositions}
+                            {/* numberOfAllSupportPositions */}
                             {' '}
                             Choose
                           </>
@@ -368,7 +368,7 @@ class PositionRowSupportOpposeCountDisplay extends Component {
                           <OpposeWrapper>
                             {numberOfAllOpposePositions > 1 ? (
                               <>
-                                {numberOfAllOpposePositions}
+                                {/* numberOfAllOpposePositions */}
                                 {' '}
                                 Oppose
                               </>
@@ -388,12 +388,12 @@ class PositionRowSupportOpposeCountDisplay extends Component {
                         <EndorsementCount>
                           {numberOfAllInfoOnlyPositions > 1 ? (
                             <>
-                              {numberOfAllInfoOnlyPositions}
+                              {/* {numberOfAllInfoOnlyPositions} */}
                               {' '}
-                              Info Only
+                              Info
                             </>
                           ) : (
-                            <>Info Only</>
+                            <>Info</>
                           )}
                         </EndorsementCount>
                       </EndorsementRow>
@@ -440,7 +440,7 @@ const ChooseWrapper = styled('div')`
 `;
 
 const EndorsementCount = styled('div')`
-  color: #ccc;
+  color: #999;
   line-height: 20px;
 `;
 

@@ -51,7 +51,7 @@ export default class FriendsCurrentPreview extends Component {
     const currentFriendListLimited = currentFriendList.slice(0, FRIENDS_TO_SHOW);
 
     return ((currentFriendListLimited && currentFriendListLimited.length > 0) && (
-      <div className="opinion-view">
+      <YourFriendsPreviewWrapper>
         <section>
           <div>
             <SectionTitle className="u-cursor--pointer" onClick={this.goToCurrentFriends}>
@@ -70,7 +70,7 @@ export default class FriendsCurrentPreview extends Component {
             </div>
           </div>
         </section>
-      </div>
+      </YourFriendsPreviewWrapper>
     ));
   }
 }
@@ -79,4 +79,8 @@ const SectionTitle = styled('h2')`
   width: fit-content;  font-weight: bolder;
   font-size: 18px;
   margin-bottom: 16px;
+`;
+
+const YourFriendsPreviewWrapper = styled('div')`
+  margin-bottom: 48px;
 `;

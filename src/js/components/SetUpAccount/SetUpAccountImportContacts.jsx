@@ -86,7 +86,9 @@ class SetUpAccountImportContacts extends React.Component {
         {voterProfileUploadedImageUrlLarge ? (
           <>
             <SetUpAccountTitle>Invite your friends</SetUpAccountTitle>
-            <SetUpAccountIntroText>Don&apos;t be alone when you are deciding how to vote.</SetUpAccountIntroText>
+            <SetUpAccountIntroText>
+              See how your friends are voting on We Vote.
+            </SetUpAccountIntroText>
           </>
         ) : (
           <>
