@@ -33,7 +33,7 @@ const DelayedLoad = React.lazy(() => import(/* webpackChunkName: 'DelayedLoad' *
 const ImageHandler = React.lazy(() => import(/* webpackChunkName: 'ImageHandler' */ '../ImageHandler'));
 const IssuesByBallotItemDisplayList = React.lazy(() => import(/* webpackChunkName: 'IssuesByBallotItemDisplayList' */ '../Values/IssuesByBallotItemDisplayList'));
 const ItemActionBar = React.lazy(() => import(/* webpackChunkName: 'ItemActionBar' */ '../Widgets/ItemActionBar/ItemActionBar'));
-const ShowMoreFooter = React.lazy(() => import(/* webpackChunkName: 'ShowMoreFooter' */ '../Navigation/ShowMoreFooter'));
+const ShowMoreButtons = React.lazy(() => import(/* webpackChunkName: 'ShowMoreButtons' */ '../Widgets/ShowMoreButtons'));
 const TopCommentByBallotItem = React.lazy(() => import(/* webpackChunkName: 'TopCommentByBallotItem' */ '../Widgets/TopCommentByBallotItem'));
 
 const SHOW_ALL_CANDIDATES_IF_FEWER_THAN_THIS_NUMBER_OF_BALLOT_ITEMS = 5;
@@ -41,6 +41,8 @@ const NUMBER_OF_CANDIDATES_TO_DISPLAY = 3;
 
 // This is related to components/VoterGuide/VoterGuideOfficeItemCompressed
 class OfficeItemCompressed extends Component {
+  targetRef = React.createRef();
+
   constructor (props) {
     super(props);
     this.state = {
@@ -59,6 +61,8 @@ class OfficeItemCompressed extends Component {
     // this.onClickShowOrganizationModalWithAllInfo = this.onClickShowOrganizationModalWithAllInfo.bind(this);
     this.onClickShowOrganizationModalWithBallotItemInfo = this.onClickShowOrganizationModalWithBallotItemInfo.bind(this);
     this.onClickShowOrganizationModalWithPositions = this.onClickShowOrganizationModalWithPositions.bind(this);
+    this.showAllCandidates = this.showAllCandidates.bind(this);
+    this.showLessCandidates = this.showLessCandidates.bind(this);
   }
 
   componentDidMount () {
@@ -117,7 +121,8 @@ class OfficeItemCompressed extends Component {
 
   // See https://reactjs.org/docs/error-boundaries.html
   static getDerivedStateFromError (error) { // eslint-disable-line no-unused-vars
-    // Update state so the next render will show the fallback UI, We should have a "Oh snap" page
+    // Update state so the next render will show the fallback UI, We should have "Oh snap" page
+    console.log('OfficeItemCompressed error:', error);
     return { hasError: true };
   }
 
@@ -205,7 +210,7 @@ class OfficeItemCompressed extends Component {
   }
 
   onSupportStoreChange () {
-    // Trigger a re-render so we show/hide candidates as voter support changes
+    // Trigger re-render, so we show/hide candidates as voter support changes
     this.setState({});
   }
 
@@ -420,6 +425,10 @@ class OfficeItemCompressed extends Component {
     this.setState({
       limitNumberOfCandidatesShownToThisNumber: NUMBER_OF_CANDIDATES_TO_DISPLAY,
       showAllCandidates: false,
+    }, () => {
+      this.targetRef.scrollIntoView({
+        behavior: 'smooth',
+      });
     });
   }
 
@@ -453,7 +462,7 @@ class OfficeItemCompressed extends Component {
     renderLog('OfficeItemCompressed');  // Set LOG_RENDER_EVENTS to log all renders
     // console.log('OfficeItemCompressed render');
     let { ballotItemDisplayName } = this.props;
-    const { officeWeVoteId } = this.props; // classes
+    const { isFirstBallotItem, officeWeVoteId } = this.props; // classes
     const { limitNumberOfCandidatesShownToThisNumber, showAllCandidates } = this.state;
     ballotItemDisplayName = toTitleCase(ballotItemDisplayName);
     // If voter has chosen 1+ candidates, hide the "Show more" link
@@ -468,6 +477,11 @@ class OfficeItemCompressed extends Component {
           className="anchor-under-header"
           name={officeWeVoteId}
         />
+        <div
+          id={`anchor-${officeWeVoteId}`}
+          ref={(ref) => { this.targetRef = ref; }}
+          style={isFirstBallotItem ? { position: 'absolute', top: '-325px', left: 0 } : { position: 'absolute', top: '-260px', left: 0 }}
+        />
         <OfficeNameH2>
           {ballotItemDisplayName}
         </OfficeNameH2>
@@ -478,24 +492,21 @@ class OfficeItemCompressed extends Component {
 
         {(moreCandidatesToDisplay) ? (
           <Suspense fallback={<></>}>
-            <ShowMoreFooter
-              hideArrow
+            <ShowMoreButtons
               showMoreId={`officeItemCompressedShowMoreFooter-${officeWeVoteId}`}
-              showMoreLink={() => this.showAllCandidates()}
-              showMoreText={`Show all ${candidateListLength} candidates`}
-              textAlign="left"
+              showMoreButtonsLink={() => this.showAllCandidates()}
+              showMoreCustomText={`show all ${candidateListLength} candidates`}
             />
           </Suspense>
         ) : (
           <>
             {(showAllCandidates && candidateListLength > NUMBER_OF_CANDIDATES_TO_DISPLAY) && (
               <Suspense fallback={<></>}>
-                <ShowMoreFooter
-                  hideArrow
+                <ShowMoreButtons
                   showMoreId={`officeItemCompressedShowLessFooter-${officeWeVoteId}`}
-                  showMoreLink={() => this.showLessCandidates()}
-                  showMoreText="Only show chosen or opposed candidates"
-                  textAlign="left"
+                  showMoreButtonsLink={() => this.showLessCandidates()}
+                  showMoreButtonWasClicked
+                  showLessCustomText="show fewer candidates"
                 />
               </Suspense>
             )}
@@ -512,6 +523,7 @@ OfficeItemCompressed.propTypes = {
   candidatesToShowForSearchResults: PropTypes.array,
   // classes: PropTypes.object,
   externalUniqueId: PropTypes.string,
+  isFirstBallotItem: PropTypes.bool,
   organization: PropTypes.object,
   organizationWeVoteId: PropTypes.string,
   totalNumberOfBallotItems: PropTypes.number,

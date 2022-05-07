@@ -16,7 +16,7 @@ import { hasIPhoneNotch } from '../../common/utils/cordovaUtils';
 import { normalizedHref } from '../../common/utils/hrefUtils';
 import { renderLog } from '../../common/utils/logging';
 import stringContains from '../../common/utils/stringContains';
-import ShowMoreButtons from '../Ready/ShowMoreButtons';
+import ShowMoreButtons from '../Widgets/ShowMoreButtons';
 import BallotStore from '../../stores/BallotStore';
 import CandidateStore from '../../stores/CandidateStore';
 import IssueStore from '../../stores/IssueStore';

@@ -8,13 +8,15 @@ export default class BallotItemCompressed extends PureComponent {
   render () {
     renderLog('BallotItemCompressed');  // Set LOG_RENDER_EVENTS to log all renders
     const {
-      isMeasure, weVoteId, ballotItemDisplayName, candidateList, candidatesToShowForSearchResults,
-      totalNumberOfBallotItems,
+      ballotItemDisplayName, candidateList, candidatesToShowForSearchResults,
+      isFirstBallotItem, isMeasure,
+      totalNumberOfBallotItems, weVoteId,
     } = this.props;
     return (
       <div id={weVoteId}>
         { isMeasure ? (
           <MeasureItemCompressed
+            isFirstBallotItem={isFirstBallotItem}
             measureWeVoteId={weVoteId}
           />
         ) : (
@@ -23,6 +25,7 @@ export default class BallotItemCompressed extends PureComponent {
             ballotItemDisplayName={ballotItemDisplayName}
             candidateList={candidateList}
             candidatesToShowForSearchResults={candidatesToShowForSearchResults}
+            isFirstBallotItem={isFirstBallotItem}
             totalNumberOfBallotItems={totalNumberOfBallotItems}
           />
         )}
@@ -34,6 +37,7 @@ BallotItemCompressed.propTypes = {
   ballotItemDisplayName: PropTypes.string.isRequired,
   candidateList: PropTypes.array,
   candidatesToShowForSearchResults: PropTypes.array,
+  isFirstBallotItem: PropTypes.bool,
   isMeasure: PropTypes.bool,
   totalNumberOfBallotItems: PropTypes.number,
   weVoteId: PropTypes.string.isRequired,

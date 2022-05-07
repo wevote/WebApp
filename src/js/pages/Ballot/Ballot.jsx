@@ -1274,6 +1274,7 @@ class Ballot extends Component {
       widthOverride = { width: 'unset' };
     }
 
+    let isFirstBallotItem = false;
     let numberOfBallotItemsDisplayed = 0;
     let showLoadingText = true;
     let searchTextString = '';
@@ -1478,6 +1479,7 @@ class Ballot extends Component {
                                 return foundInStringItem;
                               });
                             }
+                            isFirstBallotItem = numberOfBallotItemsDisplayed === 1;
                             return (
                               <Suspense fallback={<></>} key={key}>
                                 <DelayedLoad
@@ -1504,11 +1506,12 @@ class Ballot extends Component {
                                       </SearchResultsFoundInExplanation>
                                     )}
                                     <BallotItemCompressed
-                                      isMeasure={item.kind_of_ballot_item === TYPES.MEASURE}
                                       ballotItemDisplayName={item.ballot_item_display_name}
-                                      id={chipLabelText(item.ballot_item_display_name)}
                                       candidateList={item.candidate_list}
                                       candidatesToShowForSearchResults={item.candidatesToShowForSearchResults}
+                                      id={chipLabelText(item.ballot_item_display_name)}
+                                      isFirstBallotItem={isFirstBallotItem}
+                                      isMeasure={item.kind_of_ballot_item === TYPES.MEASURE}
                                       totalNumberOfBallotItems={totalNumberOfBallotItems}
                                       weVoteId={item.we_vote_id}
                                     />

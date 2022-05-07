@@ -18,7 +18,7 @@ import {
   PercentComplete, ReadyCard, StyledButton, StyledCheckbox,
   StyledCheckboxCompleted, TitleRowWrapper,
 } from './ReadyTaskStyles';
-import ShowMoreButtons from './ShowMoreButtons';
+import ShowMoreButtons from '../Widgets/ShowMoreButtons';
 
 const ballot0Percent = '../../../img/global/svg-icons/ready/ballot-0-percent.svg';
 const ballot50Percent = '../../../img/global/svg-icons/ready/ballot-50-percent.svg';
