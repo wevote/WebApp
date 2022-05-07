@@ -2,12 +2,15 @@
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 ## Contents
 
-- [Working with WebApp Day-to-Day](#working-with-webapp-day-to-day)
-  - [](#)
+- [Working with ngrok](#Working with ngrok)
+  - [Installing and starting ngrok](#Installing and starting ngrok)
+  - [Using the Safari debugger to debug the WebApp including the Virtual Keyboard](#Using the Safari debugger to debug the WebApp including the Virtual Keyboard)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
 # Working with ngrok
+
+## Installing and starting ngrok
 
 If you are looking for instructions about testing the Donation System using your local machine, visit [this page on WeVoteServer](https://github.com/wevote/WeVoteServer/blob/develop/docs/README_DONATION_SETUP.md).
 
@@ -67,5 +70,28 @@ Node server's port 3000.
     ![ScreenShot](../images/NgrokWarningScreen.png)
 
     * Note that the with the free ngrok account, the Forwarding address will change every time you start the local process.
+
+
+## Using ngrok and the Safari debugger to debug the WebApp including the Virtual Keyboard
+
+To debug styling that only is in effect when the virtual keyboard is display, you need to use Safari.  (The Chrome DevTools debugger does not display a simulated virtual keyboard when in responsive or device dimensions modes.)
+
+An example of a bug that is only visible with the virtual keyboard opened.
+![ScreenShot](../images/VirtualKeyboardStyleBug.png)
+
+1) Startup ngrok
+2) Get the https ngrok tunnel address URL to your iPhone by AirDrop or Messages, etc.
+3) Start that in Safari (not in Chrome for iOS)
+4) Start Safari on your Mac
+5) On the Develop menu, under the name of your phone, open the menu and select the ngroc.io tab, and a debugger opens on your Mac, that is similar to DevTools.
+
+![ScreenShot](../images/InspectionSelection.png)
+
+
+Hint: To select an element for style analysis on your phones Safari tab, click on target icon on the far left
+of the Safari Debuger menu, then with you finger click on the element on your phone that you would like to 
+examine.
+
+
 
 [Go back to Readme Home](../../README.md)
