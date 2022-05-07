@@ -36,6 +36,7 @@ const ItemActionBar = React.lazy(() => import(/* webpackChunkName: 'ItemActionBa
 const ShowMoreFooter = React.lazy(() => import(/* webpackChunkName: 'ShowMoreFooter' */ '../Navigation/ShowMoreFooter'));
 const TopCommentByBallotItem = React.lazy(() => import(/* webpackChunkName: 'TopCommentByBallotItem' */ '../Widgets/TopCommentByBallotItem'));
 
+const SHOW_ALL_CANDIDATES_IF_FEWER_THAN_THIS_NUMBER_OF_BALLOT_ITEMS = 5;
 const NUMBER_OF_CANDIDATES_TO_DISPLAY = 3;
 
 // This is related to components/VoterGuide/VoterGuideOfficeItemCompressed
@@ -43,11 +44,12 @@ class OfficeItemCompressed extends Component {
   constructor (props) {
     super(props);
     this.state = {
-      candidateList: [],
+      candidateListForDisplay: [],
       limitNumberOfCandidatesShownToThisNumber: NUMBER_OF_CANDIDATES_TO_DISPLAY,
       organizationWeVoteId: '',
       positionListFromFriendsHasBeenRetrievedOnce: {},
       positionListHasBeenRetrievedOnce: {},
+      showAllCandidates: false,
     };
 
     this.getCandidateLink = this.getCandidateLink.bind(this);
@@ -155,16 +157,16 @@ class OfficeItemCompressed extends Component {
             positionListFromFriendsHasBeenRetrievedOnce,
           });
         }
-        const newCandidateList = [];
+        const candidateListForDisplay = [];
         let newCandidate = {};
         if (candidateList) {
           candidateList.forEach((candidate) => {
             if (candidate && candidate.we_vote_id) {
               newCandidate = CandidateStore.getCandidate(candidate.we_vote_id);
               if (newCandidate && newCandidate.we_vote_id) {
-                newCandidateList.push(newCandidate);
+                candidateListForDisplay.push(newCandidate);
               } else {
-                newCandidateList.push(candidate);
+                candidateListForDisplay.push(candidate);
               }
               if (!changeFound) {
                 if (candidate.ballot_item_display_name !== newCandidate.ballot_item_display_name) {
@@ -178,24 +180,24 @@ class OfficeItemCompressed extends Component {
                 }
               }
             } else {
-              newCandidateList.push(candidate);
+              candidateListForDisplay.push(candidate);
             }
           });
         }
         let sortedCandidateList = {};
-        if (newCandidateList && newCandidateList.length) {
-          sortedCandidateList = sortCandidateList(newCandidateList);
+        if (candidateListForDisplay && candidateListForDisplay.length) {
+          sortedCandidateList = sortCandidateList(candidateListForDisplay);
           const { totalNumberOfBallotItems } = this.props;
-          const limitCandidatesShownBecauseMoreThanFourBallotItems = (totalNumberOfBallotItems && totalNumberOfBallotItems > 4);
-          if (!limitCandidatesShownBecauseMoreThanFourBallotItems) {
+          const limitCandidatesShownBecauseMoreThanDefaultNumberOfBallotItems = (totalNumberOfBallotItems && totalNumberOfBallotItems > SHOW_ALL_CANDIDATES_IF_FEWER_THAN_THIS_NUMBER_OF_BALLOT_ITEMS);
+          if (!limitCandidatesShownBecauseMoreThanDefaultNumberOfBallotItems) {
             // If the ballot is only show 5 ballot items, then don't limit the number of candidates we show
             this.setState({
-              limitNumberOfCandidatesShownToThisNumber: newCandidateList.length,
+              limitNumberOfCandidatesShownToThisNumber: candidateList.length,
             });
           }
         }
         this.setState({
-          candidateList: sortedCandidateList,
+          candidateListForDisplay: sortedCandidateList,
           // changeFound,
         });
       }
@@ -245,15 +247,15 @@ class OfficeItemCompressed extends Component {
   }
 
   generateCandidates = () => {
-    const { externalUniqueId } = this.props;
+    const { candidateList, externalUniqueId } = this.props;
     let { candidatesToShowForSearchResults } = this.props;
     candidatesToShowForSearchResults = candidatesToShowForSearchResults || [];
-    const { candidateList, limitNumberOfCandidatesShownToThisNumber } = this.state;
+    const { candidateListForDisplay, limitNumberOfCandidatesShownToThisNumber, showAllCandidates } = this.state;
     // If voter has chosen 1+ candidates, only show those
-    const supportedCandidatesList = candidateList.filter((candidate) => candidatesToShowForSearchResults.includes(candidate.we_vote_id) || (SupportStore.getVoterSupportsByBallotItemWeVoteId(candidate.we_vote_id) && !candidate.withdrawn_from_election));
-    const candidatesToRender = supportedCandidatesList.length ? supportedCandidatesList : candidateList;
+    const supportedCandidatesList = candidateList.filter((candidate) => candidatesToShowForSearchResults.includes(candidate.we_vote_id) || ((SupportStore.getVoterOpposesByBallotItemWeVoteId(candidate.we_vote_id) || SupportStore.getVoterSupportsByBallotItemWeVoteId(candidate.we_vote_id)) && !candidate.withdrawn_from_election));
+    const candidatesToRender = (supportedCandidatesList.length && !showAllCandidates) ? supportedCandidatesList : candidateListForDisplay;
     const candidatesToRenderLength = candidatesToRender.length;
-    const hideCandidateDetails = supportedCandidatesList.length;
+    const hideCandidateDetails = false; // supportedCandidatesList.length;
     let candidateCount = 0;
     return (
       <CandidatesContainer>
@@ -410,6 +412,14 @@ class OfficeItemCompressed extends Component {
   showAllCandidates () {
     this.setState({
       limitNumberOfCandidatesShownToThisNumber: 99,
+      showAllCandidates: true,
+    });
+  }
+
+  showLessCandidates () {
+    this.setState({
+      limitNumberOfCandidatesShownToThisNumber: NUMBER_OF_CANDIDATES_TO_DISPLAY,
+      showAllCandidates: false,
     });
   }
 
@@ -444,12 +454,13 @@ class OfficeItemCompressed extends Component {
     // console.log('OfficeItemCompressed render');
     let { ballotItemDisplayName } = this.props;
     const { officeWeVoteId } = this.props; // classes
-    const { limitNumberOfCandidatesShownToThisNumber } = this.state;
+    const { limitNumberOfCandidatesShownToThisNumber, showAllCandidates } = this.state;
     ballotItemDisplayName = toTitleCase(ballotItemDisplayName);
     // If voter has chosen 1+ candidates, hide the "Show more" link
-    const { candidateList, candidateListLength } = this.state;
-    const supportedCandidatesList = candidateList.filter((candidate) => (SupportStore.getVoterSupportsByBallotItemWeVoteId(candidate.we_vote_id) && !candidate.withdrawn_from_election));
-    const thereIsAtLeastOneSupportedCandidate = supportedCandidatesList.length > 0;
+    const { candidateListLength } = this.state; // candidateList
+    // const supportedCandidatesList = candidateList.filter((candidate) => (SupportStore.getVoterSupportsByBallotItemWeVoteId(candidate.we_vote_id) && !candidate.withdrawn_from_election));
+    // const thereIsAtLeastOneSupportedCandidate = supportedCandidatesList.length > 0;
+    // console.log('limitNumberOfCandidatesShownToThisNumber:', limitNumberOfCandidatesShownToThisNumber, ', candidateListLength:', candidateListLength);
     const moreCandidatesToDisplay = limitNumberOfCandidatesShownToThisNumber < candidateListLength;
     return (
       <OfficeItemCompressedWrapper>
@@ -465,7 +476,7 @@ class OfficeItemCompressed extends Component {
           ************************* */}
         {this.generateCandidates()}
 
-        {(moreCandidatesToDisplay && !thereIsAtLeastOneSupportedCandidate) && (
+        {(moreCandidatesToDisplay) ? (
           <Suspense fallback={<></>}>
             <ShowMoreFooter
               hideArrow
@@ -475,6 +486,20 @@ class OfficeItemCompressed extends Component {
               textAlign="left"
             />
           </Suspense>
+        ) : (
+          <>
+            {(showAllCandidates && candidateListLength > NUMBER_OF_CANDIDATES_TO_DISPLAY) && (
+              <Suspense fallback={<></>}>
+                <ShowMoreFooter
+                  hideArrow
+                  showMoreId={`officeItemCompressedShowLessFooter-${officeWeVoteId}`}
+                  showMoreLink={() => this.showLessCandidates()}
+                  showMoreText="Only show chosen or opposed candidates"
+                  textAlign="left"
+                />
+              </Suspense>
+            )}
+          </>
         )}
       </OfficeItemCompressedWrapper>
     );
@@ -596,22 +621,19 @@ const ItemActionBarOutsideWrapper = styled('div')`
   width: 100%;
 `;
 
+const OfficeNameH2 = styled('div')`
+  // For some reason if styled('h2') it breaks down
+  font-size: 32px;
+  margin-bottom: 6px;
+  width: fit-content;
+`;
+
 const OfficeItemCompressedWrapper = styled('div')`
   display: flex;
   border: 1px solid #fff;
   flex-direction: column;
-  height: 100%;
+  margin-bottom: 60px;
   position: relative;
-  @include print {
-    border-top: 1px solid #999;
-    padding: 16px 0 0 0;
-  }
-`;
-
-const OfficeNameH2 = styled('h2')`
-  font-size: 32px;
-  margin-bottom: 6px;
-  width: fit-content;
 `;
 
 export default withTheme(withStyles(styles)(OfficeItemCompressed));
