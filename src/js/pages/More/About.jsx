@@ -10,7 +10,7 @@ import { weVoteBoard, weVoteFounders, weVoteStaff } from '../../common/constants
 import { renderLog } from '../../common/utils/logging';
 import normalizedImagePath from '../../common/utils/normalizedImagePath';
 import TeamMemberDisplayForList from '../../components/More/TeamMemberDisplayForList';
-import ShowMoreButtons from '../../components/Ready/ShowMoreButtons';
+import ShowMoreButtons from '../../components/Widgets/ShowMoreButtons';
 import { Title } from '../../components/Welcome/headerWelcomeStyles';
 import { Bold, DescriptionContainer, MemberListContainer, Section, SectionTitle } from '../../components/Welcome/sectionStyles';
 import VoterStore from '../../stores/VoterStore';

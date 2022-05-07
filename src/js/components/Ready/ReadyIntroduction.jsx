@@ -16,7 +16,7 @@ import {
   StepText,
   StepTitle,
 } from '../Style/ReadyIntroductionStyles';
-import ShowMoreButtons from './ShowMoreButtons';
+import ShowMoreButtons from '../Widgets/ShowMoreButtons';
 
 const ReadMore = React.lazy(() => import(/* webpackChunkName: 'ReadMore' */ '../../common/components/Widgets/ReadMore'));
 

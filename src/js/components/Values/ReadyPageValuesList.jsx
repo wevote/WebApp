@@ -5,7 +5,7 @@ import IssueActions from '../../actions/IssueActions';
 import { renderLog } from '../../common/utils/logging';
 import IssueStore from '../../stores/IssueStore';
 import VoterStore from '../../stores/VoterStore';
-import ShowMoreButtons from '../Ready/ShowMoreButtons';
+import ShowMoreButtons from '../Widgets/ShowMoreButtons';
 
 const ReadMore = React.lazy(() => import(/* webpackChunkName: 'ReadMore' */ '../../common/components/Widgets/ReadMore'));
 const IssueCard = React.lazy(() => import(/* webpackChunkName: 'IssueCard' */ './IssueCard'));
