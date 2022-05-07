@@ -19,7 +19,7 @@ class ShowMoreFooter extends React.Component {
     const cleanTextAlign = (textAlign !== undefined && (typeof textAlign === 'string' || textAlign instanceof String)) ? textAlign : '';
 
     return (
-      <ShowMoreFooterStyled id={showMoreId} onClick={showMoreLink} textalign={cleanTextAlign}>
+      <ShowMoreFooterStyled id={showMoreId} onClick={showMoreLink} textAlign={cleanTextAlign}>
         <ShowMoreFooterText textAlign={cleanTextAlign}>
           { showMoreText }
           {!hideArrow && (

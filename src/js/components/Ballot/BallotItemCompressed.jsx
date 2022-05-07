@@ -12,7 +12,7 @@ export default class BallotItemCompressed extends PureComponent {
       totalNumberOfBallotItems,
     } = this.props;
     return (
-      <div className="BallotItem card" id={weVoteId}>
+      <div id={weVoteId}>
         { isMeasure ? (
           <MeasureItemCompressed
             measureWeVoteId={weVoteId}
