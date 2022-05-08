@@ -5,7 +5,6 @@ import React, { Component, Suspense } from 'react';
 import Helmet from 'react-helmet';
 import styled from 'styled-components';
 import VoterActions from '../actions/VoterActions';
-import historyPush from '../common/utils/historyPush';
 import { isCordova } from '../common/utils/isCordovaOrWebApp';
 import { renderLog } from '../common/utils/logging';
 import Header, { Container, Title } from '../components/Welcome/howItWorksHeaderStyles';
@@ -138,21 +137,21 @@ class HowItWorks extends Component {
       if (params.category_string === 'for-campaigns') {
         this.setState({
           getStartedMode: 'getStartedForCampaigns',
-          getStartedUrl: '/settings/profile',
+          // getStartedUrl: '/settings/profile',
           selectedCategoryIndex: 2,
           selectedStepIndex: 0,
         });
       } else if (params.category_string === 'for-organizations') {
         this.setState({
           getStartedMode: 'getStartedForOrganizations',
-          getStartedUrl: '/settings/profile',
+          // getStartedUrl: '/settings/profile',
           selectedCategoryIndex: 1,
           selectedStepIndex: 0,
         });
       } else {
         this.setState({
           getStartedMode: 'getStartedForVoters',
-          getStartedUrl: '/ballot',
+          // getStartedUrl: '/ballot',
           selectedCategoryIndex: 0,
           selectedStepIndex: 0,
         });
@@ -161,7 +160,7 @@ class HowItWorks extends Component {
     } else {
       this.setState({
         getStartedMode: 'getStartedForVoters',
-        getStartedUrl: '/ballot',
+        // getStartedUrl: '/ballot',
         selectedCategoryIndex: 0,
         selectedStepIndex: 0,
       });
@@ -180,21 +179,21 @@ class HowItWorks extends Component {
       if (nextParams.category_string === 'for-campaigns') {
         this.setState({
           getStartedMode: 'getStartedForCampaigns',
-          getStartedUrl: '/settings/profile',
+          // getStartedUrl: '/settings/profile',
           selectedCategoryIndex: 2,
           selectedStepIndex: 0,
         });
       } else if (nextParams.category_string === 'for-organizations') {
         this.setState({
           getStartedMode: 'getStartedForOrganizations',
-          getStartedUrl: '/settings/profile',
+          // getStartedUrl: '/settings/profile',
           selectedCategoryIndex: 1,
           selectedStepIndex: 0,
         });
       } else {
         this.setState({
           getStartedMode: 'getStartedForVoters',
-          getStartedUrl: '/ballot',
+          // getStartedUrl: '/ballot',
           selectedCategoryIndex: 0,
           selectedStepIndex: 0,
         });
@@ -203,7 +202,7 @@ class HowItWorks extends Component {
     } else {
       this.setState({
         getStartedMode: 'getStartedForVoters',
-        getStartedUrl: '/ballot',
+        // getStartedUrl: '/ballot',
         selectedCategoryIndex: 0,
         selectedStepIndex: 0,
       });
@@ -228,7 +227,7 @@ class HowItWorks extends Component {
     const { howItWorksWatched } = this.state;
     const minimumStepIndexForCompletion = 2;
     if (!howItWorksWatched && selectedStepIndex >= minimumStepIndexForCompletion) {
-      // Mark this so we know to show 'How it Works' as completed
+      // Mark this, so we know to show 'How it Works' as completed
       VoterActions.voterUpdateInterfaceStatusFlags(VoterConstants.HOW_IT_WORKS_WATCHED);
       this.setState({ howItWorksWatched: true });
     }
@@ -242,35 +241,35 @@ class HowItWorks extends Component {
 
   switchToDifferentCategoryFunction = (selectedCategoryIndex) => {
     let getStartedMode = 'getStartedForVoters';
-    let getStartedUrl = '/ballot';
+    // let getStartedUrl = '/ballot';
     if (selectedCategoryIndex === 1) {
       getStartedMode = 'getStartedForOrganizations';
-      getStartedUrl = '/settings/profile';
+      // getStartedUrl = '/settings/profile';
     } else if (selectedCategoryIndex === 2) {
       getStartedMode = 'getStartedForCampaigns';
-      getStartedUrl = '/settings/profile';
+      // getStartedUrl = '/settings/profile';
     }
     this.setState({
       getStartedMode,
-      getStartedUrl,
+      // getStartedUrl,
       selectedCategoryIndex: selectedCategoryIndex || 0,
       selectedStepIndex: 0,
     });
   };
 
   howItWorksGetStarted () {
-    const { getStartedMode, getStartedUrl, howItWorksWatched, voter } = this.state;
+    const { getStartedMode, howItWorksWatched, voter } = this.state;
     let isSignedIn = false;
     if (voter) {
       ({ is_signed_in: isSignedIn } = voter);
       isSignedIn = isSignedIn === undefined || isSignedIn === null ? false : isSignedIn;
     }
     if (!howItWorksWatched) {
-      // Mark this so we know to show 'How it Works' as completed
+      // Mark this, so we know to show 'How it Works' as completed
       VoterActions.voterUpdateInterfaceStatusFlags(VoterConstants.HOW_IT_WORKS_WATCHED);
     }
     if (isSignedIn) {
-      historyPush(getStartedUrl);
+      // historyPush(getStartedUrl); // Not redirecting at this time. For user testing.
       AppObservableStore.setShowHowItWorksModal(false);
     } else {
       AppObservableStore.setGetStartedMode(getStartedMode);
@@ -289,7 +288,7 @@ class HowItWorks extends Component {
     const { selectedStepIndex } = this.state;
     let currentSlides;
     let helmetTitle;
-    let simulatedPathname = '/how';
+    let simulatedPathname;
     let stepLabels;
     if (selectedCategoryIndex === 2) {
       currentSlides = forCampaignsSteps;

@@ -2,8 +2,8 @@ import React from 'react';
 import Helmet from 'react-helmet';
 import { Link } from 'react-router-dom';
 import attributions from '../../common/constants/attributionText';
-import compileDate from '../../compileDate';
 import { renderLog } from '../../common/utils/logging';
+import compileDate from '../../compileDate';
 import { PageContentContainer } from '../../components/Style/pageLayoutStyles';
 
 export default class Attributions extends React.Component {

@@ -15,6 +15,7 @@ import webAppConfig from '../../../config';
 import VoterConstants from '../../../constants/VoterConstants';
 import AppObservableStore from '../../../stores/AppObservableStore';
 import SupportStore from '../../../stores/SupportStore';
+import VoterStore from '../../../stores/VoterStore';
 import PositionPublicToggle from '../PositionPublicToggle';
 import ShareButtonDropDown from '../ShareButtonDropdown';
 import { openSnackbar } from '../SnackNotifier';
@@ -468,8 +469,8 @@ class ItemActionBar extends PureComponent {
       return;
     }
 
-    // const supportOpposeModalHasBeenShown = VoterStore.getInterfaceFlagState(VoterConstants.SUPPORT_OPPOSE_MODAL_SHOWN);
-    const supportOpposeModalHasBeenShown = false; // For testing
+    const supportOpposeModalHasBeenShown = VoterStore.getInterfaceFlagState(VoterConstants.SUPPORT_OPPOSE_MODAL_SHOWN);
+    // const supportOpposeModalHasBeenShown = false; // For testing
     if (!supportOpposeModalHasBeenShown) {
       AppObservableStore.setShowChooseOrOpposeIntroModal(true, this.state.ballotItemType);
       VoterActions.voterUpdateInterfaceStatusFlags(VoterConstants.SUPPORT_OPPOSE_MODAL_SHOWN);
@@ -523,8 +524,8 @@ class ItemActionBar extends PureComponent {
       return;
     }
 
-    // const supportOpposeModalHasBeenShown = VoterStore.getInterfaceFlagState(VoterConstants.SUPPORT_OPPOSE_MODAL_SHOWN);
-    const supportOpposeModalHasBeenShown = false; // For testing
+    const supportOpposeModalHasBeenShown = VoterStore.getInterfaceFlagState(VoterConstants.SUPPORT_OPPOSE_MODAL_SHOWN);
+    // const supportOpposeModalHasBeenShown = false; // For testing
     if (!supportOpposeModalHasBeenShown) {
       AppObservableStore.setShowChooseOrOpposeIntroModal(true, this.state.ballotItemType);
       VoterActions.voterUpdateInterfaceStatusFlags(VoterConstants.SUPPORT_OPPOSE_MODAL_SHOWN);

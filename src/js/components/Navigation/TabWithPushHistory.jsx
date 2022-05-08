@@ -16,7 +16,9 @@ export default function TabWithPushHistory (props) {
   const history = useHistory();
 
   function handleClick () {
-    history.push(to);
+    if (to) {
+      history.push(to);
+    }
     handleTabChange(value);
   }
 
@@ -29,7 +31,7 @@ TabWithPushHistory.propTypes = {
   classes: PropTypes.object.isRequired,
   id: PropTypes.string.isRequired,
   label: PropTypes.string.isRequired,
-  to: PropTypes.string.isRequired,
+  to: PropTypes.string,
   value: PropTypes.number.isRequired,
   change: PropTypes.func.isRequired,
 };

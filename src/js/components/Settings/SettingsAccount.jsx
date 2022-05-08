@@ -55,7 +55,7 @@ export default class SettingsAccount extends Component {
       pleaseSignInTitle: '',
       pleaseSignInSubTitle: '',
       showTwitterDisconnect: false,
-      showRecommendedText: true,
+      showRecommendedText: false,
     };
     this.toggleTwitterDisconnectClose = this.toggleTwitterDisconnectClose.bind(this);
     this.toggleTwitterDisconnectOpen = this.toggleTwitterDisconnectOpen.bind(this);
@@ -537,6 +537,13 @@ export default class SettingsAccount extends Component {
                 hideDialogForCordova={this.hideDialogForCordovaLocal}
               />
             )}
+            {(!hideVoterPhoneEntry && !hideVoterEmailAddressEntry) && (
+              <OrWrapper>
+                &mdash;
+                or
+                &mdash;
+              </OrWrapper>
+            )}
             {!hideVoterEmailAddressEntry && (
               <VoterEmailAddressEntry
                 closeSignInModal={this.localCloseSignInModal}
@@ -605,6 +612,16 @@ SettingsAccount.propTypes = {
   closeSignInModal: PropTypes.func,
   focusedOnSingleInputToggle: PropTypes.func,
 };
+
+const OrWrapper = styled('div')(({ theme }) => (`
+  color: #999;
+  margin-bottom: 30px;
+  margin-top: 0;
+  ${theme.breakpoints.down('sm')} {
+    margin-bottom: -2px;
+    margin-top: 0;
+  }
+`));
 
 const Main = styled('div', {
   shouldForwardProp: (prop) => !['inModal'].includes(prop),

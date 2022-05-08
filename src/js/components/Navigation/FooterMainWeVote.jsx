@@ -4,8 +4,14 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import OpenExternalWebSite from '../../common/components/Widgets/OpenExternalWebSite';
+import AppObservableStore from '../../stores/AppObservableStore';
 
 class FooterMainWeVote extends Component {
+  openHowItWorksModal = () => {
+    // console.log('Opening modal');
+    AppObservableStore.setShowHowItWorksModal(true);
+  }
+
   render () {
     const { classes } = this.props;
 
@@ -14,6 +20,8 @@ class FooterMainWeVote extends Component {
         <TopSectionOuterWrapper>
           <TopSectionInnerWrapper>
             <OneRow>
+              <div id="footerLinkHowItWorks" className={classes.onClickDiv} onClick={this.openHowItWorksModal}>How It Works</div>
+              <RowSpacer />
               <OpenExternalWebSite
                 linkIdAttribute="footerLinkWeVoteHelp"
                 url="https://help.wevote.us/hc/en-us"
@@ -117,6 +125,14 @@ const styles = () => ({
     '&:hover': {
       color: '#4371cc',
     },
+  },
+  onClickDiv: {
+    color: '#808080',
+    cursor: 'pointer',
+    '&:hover': {
+      color: '#4371cc',
+    },
+    textDecoration: 'none',
   },
 });
 

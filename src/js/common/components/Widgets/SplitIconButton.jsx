@@ -163,6 +163,7 @@ const SplitButtonText = styled('span')`
   padding: 8px 8px 8px;
   text-align: center;
   flex: 1 1 0;
+  font-size: 18px;
   font-weight: 500;
 `;
 
