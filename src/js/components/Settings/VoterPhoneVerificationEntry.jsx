@@ -396,7 +396,7 @@ class VoterPhoneVerificationEntry extends Component {
     // console.log('VoterPhoneVerificationEntry render, smsPhoneNumberStatusHtml: ', smsPhoneNumberStatusHtml, ', smsPhoneNumberStatus:', smsPhoneNumberStatus);
 
     // "SMS" is techno jargon
-    let enterSMSPhoneNumberTitle = isWebApp() ? 'Sign in with SMS Phone Number' : 'Text the sign in code to';
+    let enterSMSPhoneNumberTitle = isWebApp() ? 'SMS Phone Number' : 'Text the sign in code to';
     if (this.state.voter && this.state.voter.is_signed_in) {
       enterSMSPhoneNumberTitle = 'Add New Phone Number';
     }
@@ -404,9 +404,7 @@ class VoterPhoneVerificationEntry extends Component {
     const enterSMSPhoneNumberHtml = hideSignInWithPhoneForm ? null : (
       <div>
         <div className="u-stack--sm u-tl">
-          <strong>
-            {enterSMSPhoneNumberTitle}
-          </strong>
+          {enterSMSPhoneNumberTitle}
           {showError ? (
             <Error>
               Please enter a valid phone number.
@@ -415,7 +413,7 @@ class VoterPhoneVerificationEntry extends Component {
           {' '}
         </div>
         <form className="form-inline">
-          <Paper className={classes.root} elevation={1} id="paperWrapperPhone">
+          <Paper className={classes.paperRoot} elevation={1} id="paperWrapperPhone">
             <Phone />
             <InputBase
               className={classes.input}
@@ -469,6 +467,9 @@ class VoterPhoneVerificationEntry extends Component {
             </ButtonWrapper>
           )}
         </form>
+        {!(displayPhoneVerificationButton || lockOpenPhoneVerificationButton) && (
+          <ButtonsHiddenSpacer className="u-show-desktop-tablet" />
+        )}
       </div>
     );
 
@@ -625,7 +626,9 @@ VoterPhoneVerificationEntry.propTypes = {
 };
 
 const styles = {
-  root: {
+  paperRoot: {
+    border: '1px solid #ccc',
+    boxShadow: 'none',
     display: 'flex',
     justifyContent: 'space-between',
     alignItems: 'center',
@@ -646,6 +649,15 @@ const styles = {
   },
 };
 
+const ButtonContainer = styled('div')`
+  width: fit-content;
+  margin-left: 8px;
+`;
+
+const ButtonsHiddenSpacer = styled('div')`
+  height: 44px;
+`;
+
 const ButtonWrapper = styled('div')`
   width: 100%;
   margin: 4px 0 0 0;
@@ -654,20 +666,14 @@ const ButtonWrapper = styled('div')`
   justify-content: flex-end;
 `;
 
-const ButtonContainer = styled('div')`
-  width: fit-content;
-  margin-left: 8px;
-`;
-
 const CancelButtonContainer = styled('div')`
   width: fit-content;
 `;
 
-const Wrapper = styled('div', {
-  shouldForwardProp: (prop) => !['isWeb'].includes(prop),
-})(({ isWeb }) => (`
-  margin-top: ${isWeb ? '32px;' : '0'};
-`));
+const Error = styled('div')`
+  color: rgb(255, 73, 34);
+  font-size: 14px;
+`;
 
 const PhoneNumberSection = styled('div', {
   shouldForwardProp: (prop) => !['isWeb'].includes(prop),
@@ -675,9 +681,10 @@ const PhoneNumberSection = styled('div', {
   margin-top: ${isWeb ? '18px;' : '0'};
 `));
 
-const Error = styled('div')`
-  color: rgb(255, 73, 34);
-  font-size: 14px;
-`;
+const Wrapper = styled('div', {
+  shouldForwardProp: (prop) => !['isWeb'].includes(prop),
+})(({ isWeb }) => (`
+  margin-top: ${isWeb ? '32px;' : '0'};
+`));
 
 export default withStyles(styles)(VoterPhoneVerificationEntry);

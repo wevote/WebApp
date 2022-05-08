@@ -1,5 +1,5 @@
-import { AccountCircle, Place, Search } from '@mui/icons-material';
-import { Button, IconButton, Tabs, Tooltip } from '@mui/material';
+import { AccountCircle, Search } from '@mui/icons-material';
+import { IconButton, Tabs, Tooltip } from '@mui/material';
 import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
@@ -260,15 +260,6 @@ class HeaderBar extends Component {
 
   componentDidUpdate () {
     // console.log('HeaderBar componentDidUpdate');
-    const { location: { pathname } } = window;
-    if (stringContains('/ballot', pathname.toLowerCase().slice(0, 7)) ||
-      stringContains('/ready', pathname.toLowerCase().slice(0, 7))) {
-      if (!AppObservableStore.showEditAddressButton()) {
-        AppObservableStore.setShowEditAddressButton(true);
-      }
-    } else if (AppObservableStore.showEditAddressButton()) {
-      AppObservableStore.setShowEditAddressButton(false);
-    }
     const { page } = this.state;
     if (page !== normalizedHrefPage()) {
       this.customHighlightSelector();
@@ -383,6 +374,11 @@ class HeaderBar extends Component {
 
   goToSearch = () => {
     historyPush('/opinions');
+  }
+
+  openHowItWorksModal = () => {
+    // console.log('Opening modal');
+    AppObservableStore.setShowHowItWorksModal(true);
   }
 
   closeAdviserIntroModal = () => {
@@ -560,47 +556,46 @@ class HeaderBar extends Component {
       showSelectBallotModal, showSelectBallotModalHideAddress, showSelectBallotModalHideElections,
       showShareModal, showSignInModal, showValuesIntroModal, showImageUploadModal,
     };
-    const showFullNavigation = true;
     // const showingBallot = pathname.startsWith('/ballot');
     // const showingFriendsTabs = displayFriendsTabs();
     const voterPhotoUrlMedium = voterPhoto(voter);
-    const hideAddressWrapper = false; // isAndroid() && getAndroidSize() === '--xl';
-    const editAddressButtonHtml = (
-      <Tooltip title="Change my location or election" aria-label="Change Address or Election" classes={{ tooltipPlacementBottom: classes.tooltipPlacementBottom }}>
-        <>
-          <AddressWrapperDesktop className="u-show-desktop-tablet">
-            <IconButton
-              classes={{ root: classes.addressIconButtonRoot }}
-              id="changeAddressOrElectionHeaderBarElection"
-              onClick={() => this.toggleSelectBallotModal(false, false)}
-              size="large"
-            >
-              <Place />
-            </IconButton>
-            <Button
-              color="primary"
-              classes={{ root: classes.addressButtonRoot }}
-              id="changeAddressOrElectionHeaderBarText"
-              onClick={() => this.toggleSelectBallotModal(false, false)}
-            >
-              Address & Elections
-            </Button>
-          </AddressWrapperDesktop>
-          <AddressWrapperMobile className="u-show-mobile"
-                                style={hideAddressWrapper ? { display: 'none' } : {}}
-          >
-            <IconButton
-              classes={{ root: classes.addressIconButtonRoot }}
-              id="changeAddressOnlyHeaderBar"
-              onClick={() => this.toggleSelectBallotModal(false, true)}
-              size="large"
-            >
-              <Place />
-            </IconButton>
-          </AddressWrapperMobile>
-        </>
-      </Tooltip>
-    );
+    // const hideAddressWrapper = false; // isAndroid() && getAndroidSize() === '--xl';
+    // const editAddressButtonHtml = (
+    //   <Tooltip title="Change my location or election" aria-label="Change Address or Election" classes={{ tooltipPlacementBottom: classes.tooltipPlacementBottom }}>
+    //     <>
+    //       <AddressWrapperDesktop className="u-show-desktop-tablet">
+    //         <IconButton
+    //           classes={{ root: classes.addressIconButtonRoot }}
+    //           id="changeAddressOrElectionHeaderBarElection"
+    //           onClick={() => this.toggleSelectBallotModal(false, false)}
+    //           size="large"
+    //         >
+    //           <Place />
+    //         </IconButton>
+    //         <Button
+    //           color="primary"
+    //           classes={{ root: classes.addressButtonRoot }}
+    //           id="changeAddressOrElectionHeaderBarText"
+    //           onClick={() => this.toggleSelectBallotModal(false, false)}
+    //         >
+    //           Address & Elections
+    //         </Button>
+    //       </AddressWrapperDesktop>
+    //       <AddressWrapperMobile className="u-show-mobile"
+    //                             style={hideAddressWrapper ? { display: 'none' } : {}}
+    //       >
+    //         <IconButton
+    //           classes={{ root: classes.addressIconButtonRoot }}
+    //           id="changeAddressOnlyHeaderBar"
+    //           onClick={() => this.toggleSelectBallotModal(false, true)}
+    //           size="large"
+    //         >
+    //           <Place />
+    //         </IconButton>
+    //       </AddressWrapperMobile>
+    //     </>
+    //   </Tooltip>
+    // );
     const searchButtonHtml = (
       <Tooltip title="Search" aria-label="Search" classes={{ tooltipPlacementBottom: classes.tooltipPlacementBottom }}>
         <>
@@ -659,7 +654,6 @@ class HeaderBar extends Component {
             {(showWeVoteLogo || chosenSiteLogoUrl) && (
               <HeaderBarLogo
                 chosenSiteLogoUrl={chosenSiteLogoUrl}
-                showFullNavigation={!!showFullNavigation}
                 // isBeta={showWeVoteLogo && !chosenSiteLogoUrl}
               />
             )}
@@ -670,34 +664,37 @@ class HeaderBar extends Component {
                 indicatorColor="primary"
                 classes={{ indicator: classes.indicator }}
               >
-                {showFullNavigation && (
-                  <TabWithPushHistory
-                    classes={{ root: classes.tabRootBallot }}
-                    value={1}
-                    change={this.handleTabChange}
-                    id="ballotTabHeaderBar"
-                    label="Ballot"
-                    to="/ballot"
-                  />
-                )}
                 <TabWithPushHistory
-                  classes={{ root: classes.tabRootValues }}
+                  classes={{ root: classes.tabRootBallot }}
+                  value={1}
+                  change={this.handleTabChange}
+                  id="ballotTabHeaderBar"
+                  label="Ballot"
+                  to="/ballot"
+                />
+                <TabWithPushHistory
+                  classes={{ root: classes.tabRootFriends }}
                   value={2}
                   change={this.handleTabChange}
                   id="friendsTabHeaderBar"
                   label="Friends"
                   to="/friends"
                 />
-                {(showFullNavigation) && (
-                  <TabWithPushHistory
-                    classes={{ root: classes.tabRootNews }}
-                    value={3}
-                    change={this.handleTabChange}
-                    id="discussTabHeaderBar"
-                    label="Discuss"
-                    to="/news"
-                  />
-                )}
+                <TabWithPushHistory
+                  classes={{ root: classes.tabRootNews }}
+                  value={3}
+                  change={this.handleTabChange}
+                  id="discussTabHeaderBar"
+                  label="Discuss"
+                  to="/news"
+                />
+                <TabWithPushHistory
+                  classes={{ root: classes.tabRootHowItWorks }}
+                  value={4}
+                  change={this.openHowItWorksModal}
+                  id="howItWorksTabHeaderBar"
+                  label="How It Works"
+                />
               </Tabs>
             </div>
           </TopRowOneLeftContainer>
@@ -705,9 +702,11 @@ class HeaderBar extends Component {
           <TopRowOneRightContainer className="u-cursor--pointer">
             {voterIsSignedIn && voterPhotoUrlMedium ? (
               <>
+                {/*
                 <div>
                   {showEditAddressButton && editAddressButtonHtml}
                 </div>
+                */}
                 <div>
                   {searchButtonHtml}
                 </div>
@@ -734,9 +733,11 @@ class HeaderBar extends Component {
               </>
             ) : (voterIsSignedIn && (
               <>
+                {/*
                 <div>
                   {showEditAddressButton && editAddressButtonHtml}
                 </div>
+                */}
                 <div>
                   {searchButtonHtml}
                 </div>
@@ -755,9 +756,11 @@ class HeaderBar extends Component {
             ))}
             {!voterIsSignedIn && (
               <>
+                {/*
                 <div>
                   {showEditAddressButton && editAddressButtonHtml}
                 </div>
+                */}
                 <div>
                   {searchButtonHtml}
                 </div>
@@ -794,10 +797,6 @@ HeaderBar.propTypes = {
 };
 
 const styles = (theme) => ({
-  headerBadge: {
-    right: -15,
-    top: 9,
-  },
   padding: {
     padding: `0 ${theme.spacing(2)}px`,
   },
@@ -831,20 +830,6 @@ const styles = (theme) => ({
       paddingRight: 2,
     },
   },
-  headerButtonRoot: {
-    paddingTop: 2,
-    paddingBottom: 2,
-    '&:hover': {
-      backgroundColor: 'transparent',
-    },
-    color: 'rgb(6, 95, 212)',
-    marginLeft: '1rem',
-    outline: 'none !important',
-    [theme.breakpoints.down('sm')]: {
-      marginLeft: 12,
-      paddingLeft: 0,
-    },
-  },
   iconButtonRoot: {
     paddingTop: 1,
     paddingRight: 0,
@@ -875,21 +860,14 @@ const styles = (theme) => ({
   tooltipPlacementBottom: {
     marginTop: 0,
   },
-  outlinedPrimary: {
-    minWidth: 36,
-    marginRight: '.5rem',
-    [theme.breakpoints.down('md')]: {
-      padding: 2,
-    },
-  },
   tabRootBallot: {
     minWidth: 90,
   },
   tabRootFriends: {
     minWidth: 90,
   },
-  tabRootIncomingFriendRequests: {
-    minWidth: 110,
+  tabRootHowItWorks: {
+    minWidth: 70,
   },
   tabRootReady: {
     minWidth: 90,
@@ -897,24 +875,20 @@ const styles = (theme) => ({
   tabRootNews: {
     minWidth: 70,
   },
-  tabRootValues: {
-    minWidth: 90,
-  },
   indicator: {
     display: 'none',
   },
 });
 
-const AddressWrapperDesktop = styled('div')`
-  margin-top: 5px;
-  width: 212px;
-`;
+// const AddressWrapperDesktop = styled('div')`
+//   margin-top: 5px;
+//   width: 212px;
+// `;
+//
+// const AddressWrapperMobile = styled('div')`
+//   margin-top: 9px;
+// `;
 
-const AddressWrapperMobile = styled('div')`
-  margin-top: 9px;
-`;
-
-// TODO: March 22, 2022 Dale to work on this (it is half way converted to a new ui scheme)
 const HeaderBarWrapper = styled('div', {
   shouldForwardProp: (prop) => !['hasNotch', 'scrolledDown', 'hasSubmenu'].includes(prop),
 })(({ hasNotch, scrolledDown, hasSubmenu }) => (`

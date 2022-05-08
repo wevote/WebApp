@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import Helmet from 'react-helmet';
 import PrivacyBody from '../../common/components/PrivacyBody';
 import { renderLog } from '../../common/utils/logging';
+import compileDate from '../../compileDate';
 import { PageContentContainer } from '../../components/Style/pageLayoutStyles';
 
 export default class Privacy extends Component {
@@ -20,6 +21,10 @@ export default class Privacy extends Component {
         <Helmet title="Privacy Policy - We Vote" />
         <div className="container-fluid well">
           <PrivacyBody />
+        </div>
+        <div style={{ padding: '16px' }}>
+          Compile date:&nbsp;&nbsp;
+          { compileDate }
         </div>
       </PageContentContainer>
     );

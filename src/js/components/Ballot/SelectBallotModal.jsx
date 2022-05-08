@@ -151,7 +151,7 @@ class SelectBallotModal extends Component {
                       native
                       value={this.state.selectedState}
                       onChange={this.handleChooseStateChange}
-                      label=""
+                      label="Which State?"
                       inputProps={{
                         name: 'age',
                         id: 'outlined-age-native-simple',

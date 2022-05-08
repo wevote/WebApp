@@ -342,7 +342,9 @@ class VoterEmailAddressEntry extends Component {
                 Please click &quot;Send Login Code in an Email&quot; below to sign into that account.
               </div>
             )}
-            { emailAddressStatus.email_address_already_owned_by_this_voter && !emailAddressStatus.email_address_deleted && !emailAddressStatus.make_primary_email && !secretCodeSystemLocked ? <div>That email address was already verified by you. </div> : null }
+            { emailAddressStatus.email_address_already_owned_by_this_voter && !emailAddressStatus.email_address_deleted && !emailAddressStatus.make_primary_email && !secretCodeSystemLocked ? (
+              <div>That email address was already verified by you. </div>
+            ) : null }
             { secretCodeSystemLocked && (
               <div>
                 Your account is locked. Please
@@ -379,7 +381,7 @@ class VoterEmailAddressEntry extends Component {
       </span>
     );
 
-    let enterEmailTitle = isWebApp() ? 'Sign in with Email' : 'Email the Sign In code to';
+    let enterEmailTitle = isWebApp() ? 'Email' : 'Email the Sign In code to';
     // let enterEmailExplanation = isWebApp() ? "You'll receive a magic link in your email. Click that link to be signed into your We Vote account." :
     //   "You'll receive a magic link in the email on this phone. Click that link to be signed into your We Vote account.";
     if (voter && voter.is_signed_in) {
@@ -392,11 +394,9 @@ class VoterEmailAddressEntry extends Component {
       <div>
         <SignInSectionText>
           {enterEmailTitle}
-          {' '}
-          {/* enterEmailExplanation */}
         </SignInSectionText>
         <form className="form-inline">
-          <Paper className={classes.root} elevation={1}>
+          <Paper className={classes.paperRoot} elevation={1}>
             <Mail />
             <InputBase
               className={classes.input}
@@ -450,6 +450,9 @@ class VoterEmailAddressEntry extends Component {
             </ButtonWrapper>
           )}
         </form>
+        {!(displayEmailVerificationButton || lockOpenEmailVerificationButton) && (
+          <ButtonsHiddenSpacer className="u-show-desktop-tablet" />
+        )}
       </div>
     );
 
@@ -606,7 +609,9 @@ VoterEmailAddressEntry.propTypes = {
 };
 
 const styles = {
-  root: {
+  paperRoot: {
+    border: '1px solid #ccc',
+    boxShadow: 'none',
     display: 'flex',
     justifyContent: 'space-between',
     alignItems: 'center',
@@ -621,17 +626,21 @@ const styles = {
   },
 };
 
+const ButtonContainer = styled('div')`
+  width: fit-content;
+  margin-left: 8px;
+`;
+
+const ButtonsHiddenSpacer = styled('div')`
+  height: 44px;
+`;
+
 const ButtonWrapper = styled('div')`
   width: 100%;
   margin: 4px 0 0 0;
   display: flex;
   align-items: center;
   justify-content: flex-end;
-`;
-
-const ButtonContainer = styled('div')`
-  width: fit-content;
-  margin-left: 8px;
 `;
 
 const CancelButtonContainer = styled('div')`
@@ -641,7 +650,7 @@ const CancelButtonContainer = styled('div')`
 const EmailSection = styled('div', {
   shouldForwardProp: (prop) => !['isWeb'].includes(prop),
 })(({ isWeb }) => (`
-  margin-top: ${isWeb ? '18px;' : '0'};
+  margin-top: ${isWeb ? '0' : '0'};
 `));
 
 const SignInSectionText = styled('div')`
@@ -654,7 +663,7 @@ const SignInSectionText = styled('div')`
 const Wrapper = styled('div', {
   shouldForwardProp: (prop) => !['isWeb'].includes(prop),
 })(({ isWeb }) => (`
-  margin-top: ${isWeb ? '32px;' : '0'};
+  margin-top: ${isWeb ? '0' : '0'};
 `));
 
 export default withStyles(styles)(VoterEmailAddressEntry);

@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import OpenExternalWebSite from '../../common/components/Widgets/OpenExternalWebSite';
 import { renderLog } from '../../common/utils/logging';
+import AppObservableStore from '../../stores/AppObservableStore';
 
 
 class SettingsSectionFooter extends Component {
@@ -11,6 +12,11 @@ class SettingsSectionFooter extends Component {
     super(props);
     this.state = {
     };
+  }
+
+  openHowItWorksModal = () => {
+    // console.log('Opening modal');
+    AppObservableStore.setShowHowItWorksModal(true);
   }
 
   render () {
@@ -21,6 +27,8 @@ class SettingsSectionFooter extends Component {
       <Wrapper>
         <OneRow centered={centered}>
           <TermsAndPrivacyText>
+            <span onClick={this.openHowItWorksModal}>How It Works</span>
+            <span style={{ paddingLeft: 15 }} />
             <OpenExternalWebSite
               linkIdAttribute="footerLinkWeVoteHelp"
               url="https://help.wevote.us/hc/en-us"
