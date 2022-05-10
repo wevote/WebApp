@@ -11,7 +11,7 @@ import SupportStore from '../../stores/SupportStore';
 import VoterStore from '../../stores/VoterStore';
 import { openSnackbar } from './SnackNotifier';
 
-const SignInModalSimple = React.lazy(() => import(/* webpackChunkName: 'SignInModalSimple' */ '../Settings/SignInModalSimple'));
+const SignInModal = React.lazy(() => import(/* webpackChunkName: 'SignInModal' */ '../SignIn/SignInModal'));
 
 class PositionPublicToggle extends Component {
   constructor (props) {
@@ -210,15 +210,15 @@ class PositionPublicToggle extends Component {
       <PositionPublicToggleOuterWrapper className={this.props.className}>
         { showPositionPublicHelpModal && (
           <Suspense fallback={<></>}>
-            <SignInModalSimple
-              settingsAccountIsSignedInSubTitle={<></>}
-              settingsAccountIsSignedInTitle={(
+            <SignInModal
+              isSignedInSubTitle={<></>}
+              isSignedInTitle={(
                 <>
                   Your endorsement is now visible to the public. Click the &quot;Friends&quot; toggle to show to We Vote friends only.
                 </>
               )}
-              settingsAccountSignInTitle="Sign in to make your endorsements public."
-              settingsAccountSignInSubTitle=""
+              signInTitle="Sign in to make your endorsements public."
+              signInSubTitle=""
               signedInTitle={<>Public</>}
               signedOutTitle={<>Show to Public</>}
               toggleOnClose={this.togglePositionPublicHelpModal}

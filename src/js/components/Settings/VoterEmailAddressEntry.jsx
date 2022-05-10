@@ -256,7 +256,7 @@ class VoterEmailAddressEntry extends Component {
     if (cancelShouldCloseModal) {
       this.closeSignInModal();
     } else {
-      // There are Modal display problems that don't seem to be resolvable that prevents us from returning to the full SettingsAccount modal
+      // There are Modal display problems that don't seem to be resolvable that prevents us from returning to the full SignInOptionsPanel modal
       this.hideEmailVerificationButton();
       this.localToggleOtherSignInOptions();
     }

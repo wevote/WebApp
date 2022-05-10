@@ -14,7 +14,7 @@ const ImageUploadModal = React.lazy(() => import(/* webpackChunkName: 'ImageUplo
 const PersonalizedScoreIntroModal = React.lazy(() => import(/* webpackChunkName: 'PersonalizedScoreIntroModal' */ '../CompleteYourProfile/PersonalizedScoreIntroModal'));
 const SelectBallotModal = React.lazy(() => import(/* webpackChunkName: 'SelectBallotModal' */ '../Ballot/SelectBallotModal'));
 const ShareModal = React.lazy(() => import(/* webpackChunkName: 'ShareModal' */ '../Share/ShareModal'));
-const SignInModal = React.lazy(() => import(/* webpackChunkName: 'SignInModal' */ '../Widgets/SignInModal'));
+const SignInModal = React.lazy(() => import(/* webpackChunkName: 'SignInModal' */ '../SignIn/SignInModal'));
 const ValuesIntroModal = React.lazy(() => import(/* webpackChunkName: 'ValuesIntroModal' */ '../CompleteYourProfile/ValuesIntroModal'));
 
 // A function component, for all the various modals that come out of the HeaderBar
@@ -137,8 +137,10 @@ function HeaderBarModals (props) {
     return (
       <Suspense fallback={<></>}>
         <SignInModal
-          show={showSignInModal}
-          closeFunction={closeSignInModal}
+          isSignedInTitle={<div style={{ marginLeft: '10px' }}>Successfully signed in</div>}
+          signInTitle="Sign In Or Sign Up"
+          signInSubTitle="Don't worry, we won't post anything automatically."
+          toggleOnClose={closeSignInModal}
         />
       </Suspense>
     );

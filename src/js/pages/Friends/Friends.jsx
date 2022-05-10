@@ -38,7 +38,7 @@ import SuggestedFriends from './SuggestedFriends';
 import { isCordova } from '../../common/utils/isCordovaOrWebApp';
 
 const FirstAndLastNameRequiredAlert = React.lazy(() => import(/* webpackChunkName: 'FirstAndLastNameRequiredAlert' */ '../../components/Widgets/FirstAndLastNameRequiredAlert'));
-const SettingsAccount = React.lazy(() => import(/* webpackChunkName: 'SettingsAccount' */ '../../components/Settings/SettingsAccount'));
+const SignInOptionsPanel = React.lazy(() => import(/* webpackChunkName: 'SignInOptionsPanel' */ '../../components/SignIn/SignInOptionsPanel'));
 
 const testimonialPhoto = '../../../img/global/photos/Dale_McGrew-48x48.jpg';
 
@@ -580,14 +580,14 @@ class Friends extends Component {
         ) : (
           // <DelayedLoad waitBeforeShow={1000}>
           <Suspense fallback={<></>}>
-            <OuterSettingsAccountWrapper>
-              <InnerSettingsAccountWrapper style={expandSideMarginsIfCordova}>
-                <SettingsAccount
+            <OuterSignInOptionsWrapper>
+              <InnerSignInOptionsWrapper style={expandSideMarginsIfCordova}>
+                <SignInOptionsPanel
                   pleaseSignInTitle="Sign In to Find Your Friends"
                   pleaseSignInSubTitle="We Vote is a community of friends who care about voting and democracy."
                 />
-              </InnerSettingsAccountWrapper>
-            </OuterSettingsAccountWrapper>
+              </InnerSignInOptionsWrapper>
+            </OuterSignInOptionsWrapper>
           </Suspense>
           // </DelayedLoad>
         )}
@@ -628,7 +628,7 @@ const FriendsHeading = styled('div')`
   // box-shadow: 0 2px 4px -1px rgba(0, 0, 0, 0.2), 0 4px 5px 0 rgba(0, 0, 0, 0.14), 0 1px 10px 0 rgba(0, 0, 0, 0.12);
 `;
 
-const OuterSettingsAccountWrapper = styled('div')`
+const OuterSignInOptionsWrapper = styled('div')`
   display: flex;
   justify-content: center;
 `;
@@ -641,7 +641,7 @@ const SectionTitle = styled('h2')`
   display: inline;
 `;
 
-const InnerSettingsAccountWrapper = styled('div')(({ theme }) => (`
+const InnerSignInOptionsWrapper = styled('div')(({ theme }) => (`
   max-width: 500px;
   ${theme.breakpoints.down('sm')} {
     margin: 0 12px;

@@ -44,7 +44,7 @@ const ActivityTidbitItem = React.lazy(() => import(/* webpackChunkName: 'Activit
 const ActivityTidbitReactionsSummary = React.lazy(() => import(/* webpackChunkName: 'ActivityTidbitReactionsSummary' */ '../../components/Activity/ActivityTidbitReactionsSummary'));
 // const DelayedLoad = React.lazy(() => import(/* webpackChunkName: 'DelayedLoad' */ '../../components/Widgets/DelayedLoad'));
 const FirstAndLastNameRequiredAlert = React.lazy(() => import(/* webpackChunkName: 'FirstAndLastNameRequiredAlert' */ '../../components/Widgets/FirstAndLastNameRequiredAlert'));
-const SettingsAccount = React.lazy(() => import(/* webpackChunkName: 'SettingsAccount' */ '../../components/Settings/SettingsAccount'));
+const SignInOptionsPanel = React.lazy(() => import(/* webpackChunkName: 'SignInOptionsPanel' */ '../../components/SignIn/SignInOptionsPanel'));
 const ShowMoreItems = React.lazy(() => import(/* webpackChunkName: 'ShowMoreItems' */ '../../components/Widgets/ShowMoreItems'));
 
 const STARTING_NUMBER_OF_ACTIVITY_TIDBITS_TO_DISPLAY = 10;
@@ -433,12 +433,12 @@ class News extends Component {
                   {!voterIsSignedIn && (
                     // <DelayedLoad waitBeforeShow={1000}>
                     <Suspense fallback={<></>}>
-                      <SettingsAccountWrapper style={expandSideMarginsIfCordova}>
-                        <SettingsAccount
+                      <SignInOptionsWrapper style={expandSideMarginsIfCordova}>
+                        <SignInOptionsPanel
                           pleaseSignInTitle="Sign In to Join the Discussion"
                           pleaseSignInSubTitle="We Vote is a community of friends who care about voting and democracy."
                         />
-                      </SettingsAccountWrapper>
+                      </SignInOptionsWrapper>
                     </Suspense>
                     // </DelayedLoad>
                   )}
@@ -465,7 +465,7 @@ class News extends Component {
                       />
                     </div>
                   </div>
-                  <SignInOptionsWrapper className="u-show-desktop">
+                  <SignInSmallOptionsWrapper className="u-show-desktop">
                     {!voterSignedInTwitter && (
                       <TwitterSignInWrapper>
                         <TwitterSignInCard />
@@ -476,7 +476,7 @@ class News extends Component {
                         <FacebookSignInCard />
                       </FacebookSignInWrapper>
                     )}
-                  </SignInOptionsWrapper>
+                  </SignInSmallOptionsWrapper>
                 </div>
               </div>
               <ShowMoreItemsWrapper
@@ -570,7 +570,7 @@ const SectionTitle = styled('h2')`
   display: inline;
 `;
 
-const SettingsAccountWrapper = styled('div')(({ theme }) => (`
+const SignInOptionsWrapper = styled('div')(({ theme }) => (`
   ${theme.breakpoints.down('sm')} {
     margin: 0 12px;
   }
@@ -588,7 +588,7 @@ const ShowMoreItemsWrapper = styled('div')(({ theme }) => (`
   }
 `));
 
-const SignInOptionsWrapper = styled('div')`
+const SignInSmallOptionsWrapper = styled('div')`
   display: flex;
   flex-direction: row;
   justify-content: space-between;

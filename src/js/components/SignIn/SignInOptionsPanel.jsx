@@ -27,16 +27,16 @@ import TwitterSignIn from '../Twitter/TwitterSignIn';
 import BrowserPushMessage from '../Widgets/BrowserPushMessage';
 import signInModalGlobalState from '../Widgets/signInModalGlobalState';
 import SnackNotifier, { openSnackbar } from '../Widgets/SnackNotifier';
-import VoterEmailAddressEntry from './VoterEmailAddressEntry';
-import VoterPhoneEmailCordovaEntryModal from './VoterPhoneEmailCordovaEntryModal';
-import VoterPhoneVerificationEntry from './VoterPhoneVerificationEntry';
+import VoterEmailAddressEntry from '../Settings/VoterEmailAddressEntry';
+import VoterPhoneEmailCordovaEntryModal from '../Settings/VoterPhoneEmailCordovaEntryModal';
+import VoterPhoneVerificationEntry from '../Settings/VoterPhoneVerificationEntry';
 
 
 /* global $ */
 
 const debugMode = false;
 
-export default class SettingsAccount extends Component {
+export default class SignInOptionsPanel extends Component {
   constructor (props) {
     super(props);
     this.state = {
@@ -72,7 +72,7 @@ export default class SettingsAccount extends Component {
   // Set up this component upon first entry
   // componentWillMount is used in WebApp
   componentDidMount () {
-    // console.log("SettingsAccount componentDidMount");
+    // console.log("SignInOptionsPanel componentDidMount");
     initializeAppleSDK(null);
     this.onVoterStoreChange();
     this.appStateSubscription = messageService.getMessage().subscribe(() => this.onAppObservableStoreChange());
@@ -105,14 +105,14 @@ export default class SettingsAccount extends Component {
       });
       pathname = '/settings/profile';
       signInStartFullUrl = `${origin}${pathname}`;
-      // console.log('SettingsAccount getStartedForCampaigns, new origin: ', origin, ', pathname: ', pathname, ', signInStartFullUrl: ', signInStartFullUrl);
+      // console.log('SignInOptionsPanel getStartedForCampaigns, new origin: ', origin, ', pathname: ', pathname, ', signInStartFullUrl: ', signInStartFullUrl);
       if (origin && stringContains('wevote.us', origin)) {
         Cookies.set('sign_in_start_full_url', signInStartFullUrl, { expires: 31, path: '/', domain: 'wevote.us' });
       }
     } else if (getStartedMode && getStartedMode === 'getStartedForCampaigns') {
       pathname = '/settings/profile';
       signInStartFullUrl = `${origin}${pathname}`;
-      // console.log('SettingsAccount getStartedForCampaigns, new origin: ', origin, ', pathname: ', pathname, ', signInStartFullUrl: ', signInStartFullUrl);
+      // console.log('SignInOptionsPanel getStartedForCampaigns, new origin: ', origin, ', pathname: ', pathname, ', signInStartFullUrl: ', signInStartFullUrl);
       if (origin && stringContains('wevote.us', origin)) {
         Cookies.set('sign_in_start_full_url', signInStartFullUrl, { expires: 31, path: '/', domain: 'wevote.us' });
       } else {
@@ -125,7 +125,7 @@ export default class SettingsAccount extends Component {
     } else if (getStartedMode && getStartedMode === 'getStartedForOrganizations') {
       pathname = '/settings/profile';
       signInStartFullUrl = `${origin}${pathname}`;
-      // console.log('SettingsAccount getStartedForCampaigns, new origin: ', origin, ', pathname: ', pathname, ', signInStartFullUrl: ', signInStartFullUrl);
+      // console.log('SignInOptionsPanel getStartedForCampaigns, new origin: ', origin, ', pathname: ', pathname, ', signInStartFullUrl: ', signInStartFullUrl);
       if (origin && stringContains('wevote.us', origin)) {
         Cookies.set('sign_in_start_full_url', signInStartFullUrl, { expires: 1, path: '/', domain: 'wevote.us' });
       } else {
@@ -138,7 +138,7 @@ export default class SettingsAccount extends Component {
     } else if (getStartedMode && getStartedMode === 'getStartedForVoters') {
       pathname = '/settings/profile';
       signInStartFullUrl = `${origin}${pathname}`;
-      // console.log('SettingsAccount getStartedForCampaigns, new origin: ', origin, ', pathname: ', pathname, ', signInStartFullUrl: ', signInStartFullUrl);
+      // console.log('SignInOptionsPanel getStartedForCampaigns, new origin: ', origin, ', pathname: ', pathname, ', signInStartFullUrl: ', signInStartFullUrl);
       if (origin && stringContains('wevote.us', origin)) {
         Cookies.set('sign_in_start_full_url', signInStartFullUrl, { expires: 1, path: '/', domain: 'wevote.us' });
       } else {
@@ -186,16 +186,16 @@ export default class SettingsAccount extends Component {
       // so we wait for it to be rendered, then move it into place
 
       if (sendButtonSMS.length) {
-        console.log('SettingsAccount componentDidUpdate SEND CODE was rendered. sendButtonSMS:', sendButtonSMS);
+        console.log('SignInOptionsPanel componentDidUpdate SEND CODE was rendered. sendButtonSMS:', sendButtonSMS);
       } else if ((sendButtonSMS.length)) {
-        console.log('SettingsAccount componentDidUpdate SEND CODE was rendered. sendButtonEmail:', sendButtonEmail);
+        console.log('SignInOptionsPanel componentDidUpdate SEND CODE was rendered. sendButtonEmail:', sendButtonEmail);
       }
       if (sendButtonSMS.length || sendButtonSMS.length) {
         if (styleWorking && !stringContains(translate, styleWorking)) {
           $(cont).attr('style', `${styleWorking} ${translate}`);
-          console.log(`SettingsAccount componentDidUpdate was rendered. NEW style: ${$(cont).attr('style')}`);
+          console.log(`SignInOptionsPanel componentDidUpdate was rendered. NEW style: ${$(cont).attr('style')}`);
         } else {
-          console.log(`SettingsAccount componentDidUpdate was rendered. transform was already there. style: ${$(cont).attr('style')}`);
+          console.log(`SignInOptionsPanel componentDidUpdate was rendered. transform was already there. style: ${$(cont).attr('style')}`);
         }
       }
     }
@@ -208,13 +208,13 @@ export default class SettingsAccount extends Component {
   }
 
   componentWillUnmount () {
-    // console.log("SettingsAccount componentWillUnmount");
+    // console.log("SignInOptionsPanel componentWillUnmount");
     signInModalGlobalState.set('textOrEmailSignInInProcess', false);
     this.appStateSubscription.unsubscribe();
     this.facebookStoreListener.remove();
     this.voterStoreListener.remove();
     if (this.timer) clearTimeout(this.timer);
-    restoreStylesAfterCordovaKeyboard('SettingsAccount');
+    restoreStylesAfterCordovaKeyboard('SignInOptionsPanel');
   }
 
   onAppObservableStoreChange () {
@@ -239,14 +239,14 @@ export default class SettingsAccount extends Component {
   }
 
   focusedOnSingleInputToggle = (focusedInputName) => {
-    // console.log('SettingsAccount focusedOnSingleInput');
+    // console.log('SignInOptionsPanel focusedOnSingleInput');
     if (this.props.focusedOnSingleInputToggle) {
       this.props.focusedOnSingleInputToggle(focusedInputName);
     }
   };
 
   localCloseSignInModal = () => {
-    // console.log('SettingsAccount localCloseSignInModal');
+    // console.log('SignInOptionsPanel localCloseSignInModal');
     if (this.props.closeSignInModal) {
       this.props.closeSignInModal();
     }
@@ -265,7 +265,7 @@ export default class SettingsAccount extends Component {
       hideTwitterSignInButton: !hideTwitterSignInButton,
       hideVoterPhoneEntry: !hideVoterPhoneEntry,
     });
-    // console.log('SettingsAccount toggleNonEmailSignInOptions');
+    // console.log('SignInOptionsPanel toggleNonEmailSignInOptions');
     this.focusedOnSingleInputToggle('email');
   };
 
@@ -282,7 +282,7 @@ export default class SettingsAccount extends Component {
       hideTwitterSignInButton: !hideTwitterSignInButton,
       hideVoterEmailAddressEntry: !hideVoterEmailAddressEntry,
     });
-    // console.log('SettingsAccount toggleNonPhoneSignInOptions');
+    // console.log('SignInOptionsPanel toggleNonPhoneSignInOptions');
     this.focusedOnSingleInputToggle('phone');
   };
 
@@ -335,13 +335,13 @@ export default class SettingsAccount extends Component {
   }
 
   signOut () {
-    // console.log('SettingsAccount.jsx signOut');
+    // console.log('SignInOptionsPanel.jsx signOut');
     VoterSessionActions.voterSignOut();
     historyPush('/ballot');
   }
 
   render () {
-    renderLog('SettingsAccount');  // Set LOG_RENDER_EVENTS to log all renders
+    renderLog('SignInOptionsPanel');  // Set LOG_RENDER_EVENTS to log all renders
     const { inModal, externalUniqueId } = this.props;
     const {
       facebookAuthResponse, hideCurrentlySignedInHeader,
@@ -358,13 +358,13 @@ export default class SettingsAccount extends Component {
       signed_in_twitter: voterIsSignedInTwitter, signed_in_with_email: voterIsSignedInWithEmail,
       twitter_screen_name: twitterScreenName, signed_in_with_apple: voterIsSignedInWithApple,
     } = voter;
-    // console.log("SettingsAccount.jsx facebookAuthResponse:", facebookAuthResponse);
-    // console.log("SettingsAccount.jsx voter:", voter);
-    // console.log('SettingsAccount.jsx hideDialogForCordova:', hideDialogForCordova);
+    // console.log("SignInOptionsPanel.jsx facebookAuthResponse:", facebookAuthResponse);
+    // console.log("SignInOptionsPanel.jsx voter:", voter);
+    // console.log('SignInOptionsPanel.jsx hideDialogForCordova:', hideDialogForCordova);
     if (!voterIsSignedInFacebook && facebookAuthResponse && facebookAuthResponse.length && facebookAuthResponse.facebook_retrieve_attempted) {
-      // console.log('SettingsAccount.jsx facebook_retrieve_attempted');
-      oAuthLog('SettingsAccount facebook_retrieve_attempted');
-      // return <span>SettingsAccount.jsx facebook_retrieve_attempted</span>;
+      // console.log('SignInOptionsPanel.jsx facebook_retrieve_attempted');
+      oAuthLog('SignInOptionsPanel facebook_retrieve_attempted');
+      // return <span>SignInOptionsPanel.jsx facebook_retrieve_attempted</span>;
       return LoadingWheel;
     }
 
@@ -382,7 +382,7 @@ export default class SettingsAccount extends Component {
       }
     }
 
-    // console.log('SettingsAccount voterIsSignedIn', voterIsSignedIn, '\nsignedInTwitter', voterIsSignedInTwitter, 'signedInFacebook', voterIsSignedInFacebook,
+    // console.log('SignInOptionsPanel voterIsSignedIn', voterIsSignedIn, '\nsignedInTwitter', voterIsSignedInTwitter, 'signedInFacebook', voterIsSignedInFacebook,
     //   'signedInWithApple', voterIsSignedInWithApple, '\nhideDialogForCordova', hideDialogForCordova, 'hideCurrentlySignedInHeader', hideCurrentlySignedInHeader,
     //   'hideTwitterSignInButton', hideTwitterSignInButton,
     //   'hideFacebookSignInButton', hideFacebookSignInButton, 'hideDialogForCordova', hideDialogForCordova,
@@ -395,7 +395,7 @@ export default class SettingsAccount extends Component {
         {!hideDialogForCordova &&
           <BrowserPushMessage incomingProps={this.props} />}
         <div className={inModal ? 'card-main full-width' : 'card'} style={{ display: `${hideDialogForCordova ? ' none' : 'undefined'}` }}>
-          <Main inModal={inModal} id={`settingsAccountMain-${externalUniqueId}`}>
+          <Main inModal={inModal} id={`SignInOptionsMain-${externalUniqueId}`}>
             {voterIsSignedInTwitter && voterIsSignedInFacebook ?
               null :
               <h1 className="h3">{!hideTwitterSignInButton && !hideFacebookSignInButton && voterIsSignedIn ? <span>{yourAccountTitle}</span> : null}</h1>}
@@ -603,7 +603,7 @@ export default class SettingsAccount extends Component {
     );
   }
 }
-SettingsAccount.propTypes = {
+SignInOptionsPanel.propTypes = {
   externalUniqueId: PropTypes.string,
   inModal: PropTypes.bool,
   pleaseSignInTextOff: PropTypes.bool,

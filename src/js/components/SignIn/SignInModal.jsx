@@ -1,11 +1,5 @@
 import { Close } from '@mui/icons-material';
-import {
-  Dialog,
-  DialogContent,
-  DialogTitle,
-  IconButton,
-  Typography,
-} from '@mui/material';
+import { Dialog, DialogContent, DialogTitle, IconButton, Typography } from '@mui/material';
 import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
@@ -15,9 +9,9 @@ import { isCordova, isWebApp } from '../../common/utils/isCordovaOrWebApp';
 import { renderLog } from '../../common/utils/logging';
 import VoterStore from '../../stores/VoterStore';
 
-const SettingsAccount = React.lazy(() => import(/* webpackChunkName: 'SettingsAccount' */ './SettingsAccount'));
+const SignInOptionsPanel = React.lazy(() => import(/* webpackChunkName: 'SignInOptionsPanel' */ './SignInOptionsPanel'));
 
-class SignInModalSimple extends Component {
+class SignInModal extends Component {
   constructor (props) {
     super(props);
     this.state = {
@@ -63,12 +57,15 @@ class SignInModalSimple extends Component {
   }
 
   render () {
-    renderLog('SignInModalSimple');  // Set LOG_RENDER_EVENTS to log all renders
+    renderLog('SignInModal');  // Set LOG_RENDER_EVENTS to log all renders
     const {
       classes,
-      settingsAccountIsSignedInTitle, settingsAccountIsSignedInSubTitle,
-      settingsAccountSignInSubTitle, settingsAccountSignInTitle,
-      signedInTitle, signedOutTitle,
+      isSignedInSubTitle = (<></>),
+      isSignedInTitle = (<></>),
+      signInSubTitle = '',
+      signInTitle = '',
+      signedInTitle = (<></>),
+      signedOutTitle = (<></>),
     } = this.props;
     const { isSignedIn, showSignInModalSimple } = this.state;
 
@@ -106,19 +103,19 @@ class SignInModalSimple extends Component {
               {isSignedIn ? (
                 <div className="text-center">
                   <div className="u-f3">
-                    {settingsAccountIsSignedInTitle}
+                    {isSignedInTitle}
                   </div>
                   <br />
                   <div className="u-f6">
-                    {settingsAccountIsSignedInSubTitle}
+                    {isSignedInSubTitle}
                   </div>
                 </div>
               ) : (
                 <div>
                   <Suspense fallback={<></>}>
-                    <SettingsAccount
-                      pleaseSignInTitle={settingsAccountSignInTitle}
-                      pleaseSignInSubTitle={settingsAccountSignInSubTitle}
+                    <SignInOptionsPanel
+                      pleaseSignInTitle={signInTitle}
+                      pleaseSignInSubTitle={signInSubTitle}
                       inModal
                     />
                   </Suspense>
@@ -133,12 +130,12 @@ class SignInModalSimple extends Component {
     );
   }
 }
-SignInModalSimple.propTypes = {
+SignInModal.propTypes = {
   classes: PropTypes.object,
-  settingsAccountIsSignedInSubTitle: PropTypes.node,
-  settingsAccountIsSignedInTitle: PropTypes.node,
-  settingsAccountSignInTitle: PropTypes.string,
-  settingsAccountSignInSubTitle: PropTypes.string,
+  isSignedInSubTitle: PropTypes.node,
+  isSignedInTitle: PropTypes.node,
+  signInSubTitle: PropTypes.string,
+  signInTitle: PropTypes.string,
   signedInTitle: PropTypes.node,
   signedOutTitle: PropTypes.node,
   toggleOnClose: PropTypes.func,
@@ -211,4 +208,4 @@ const SignInModalWrapper = styled('div')`
   width: fit-content;
 `;
 
-export default withStyles(styles)(SignInModalSimple);
+export default withStyles(styles)(SignInModal);

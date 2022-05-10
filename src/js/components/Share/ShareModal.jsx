@@ -540,7 +540,7 @@ class ShareModal extends Component {
       //       </IconButton>
       //     </ModalTitleArea>
       //     <DialogContent classes={{ root: classes.dialogContent }}>
-      //       <SettingsAccount inShareModal inModal pleaseSignInTitle="Sign in to share with your friends" />
+      //       <SignInOptionsPanel inShareModal inModal pleaseSignInTitle="Sign in to share with your friends" />
       //     </DialogContent>
       //   </Dialog>
       // );

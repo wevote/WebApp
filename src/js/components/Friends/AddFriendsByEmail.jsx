@@ -16,7 +16,7 @@ import VoterStore from '../../stores/VoterStore';
 import { validatePhoneOrEmail } from '../../utils/regex-checks';
 
 const DelayedLoad = React.lazy(() => import(/* webpackChunkName: 'DelayedLoad' */ '../../common/components/Widgets/DelayedLoad'));
-const SettingsAccount = React.lazy(() => import(/* webpackChunkName: 'SettingsAccount' */ '../Settings/SettingsAccount'));
+const SignInOptionsPanel = React.lazy(() => import(/* webpackChunkName: 'SignInOptionsPanel' */ '../SignIn/SignInOptionsPanel'));
 
 
 class AddFriendsByEmail extends Component {
@@ -296,7 +296,7 @@ class AddFriendsByEmail extends Component {
                   </ul>
                 </Alert>
                 <Suspense fallback={<></>}>
-                  <SettingsAccount
+                  <SignInOptionsPanel
                     pleaseSignInTitle="Sign In to Send Your Friend Requests"
                     pleaseSignInSubTitle=""
                   />

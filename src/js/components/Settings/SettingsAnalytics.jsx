@@ -15,7 +15,7 @@ import CreateConfiguredVersion from './CreateConfiguredVersion';
 import SeeTheseSettingsInAction from './SeeTheseSettingsInAction';
 
 const DelayedLoad = React.lazy(() => import(/* webpackChunkName: 'DelayedLoad' */ '../../common/components/Widgets/DelayedLoad'));
-const SettingsAccount = React.lazy(() => import(/* webpackChunkName: 'SettingsAccount' */ './SettingsAccount'));
+const SignInOptionsPanel = React.lazy(() => import(/* webpackChunkName: 'SignInOptionsPanel' */ '../SignIn/SignInOptionsPanel'));
 const SettingsAccountLevelChip = React.lazy(() => import(/* webpackChunkName: 'SettingsAccountLeveLChip' */ './SettingsAccountLevelChip'));
 
 
@@ -285,7 +285,7 @@ class SettingsAnalytics extends Component {
       return (
         <Suspense fallback={<></>}>
           <DelayedLoad waitBeforeShow={1000}>
-            <SettingsAccount />
+            <SignInOptionsPanel />
           </DelayedLoad>
         </Suspense>
       );

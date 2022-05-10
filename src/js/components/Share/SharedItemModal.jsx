@@ -30,7 +30,7 @@ import SharedItemIntroduction from './SharedItemIntroduction';
 
 const FollowToggle = React.lazy(() => import(/* webpackChunkName: 'FollowToggle' */ '../Widgets/FollowToggle'));
 const ImageHandler = React.lazy(() => import(/* webpackChunkName: 'ImageHandler' */ '../ImageHandler'));
-const SettingsAccount = React.lazy(() => import(/* webpackChunkName: 'SettingsAccount' */ '../Settings/SettingsAccount'));
+const SignInOptionsPanel = React.lazy(() => import(/* webpackChunkName: 'SignInOptionsPanel' */ '../SignIn/SignInOptionsPanel'));
 
 class SharedItemModal extends Component {
   constructor (props) {
@@ -257,7 +257,7 @@ class SharedItemModal extends Component {
             </IntroHeaderOptional>
           </IntroHeader>
           <Suspense fallback={<></>}>
-            <SettingsAccount
+            <SignInOptionsPanel
               pleaseSignInTextOff
               inModal
             />

@@ -7,7 +7,7 @@ import OrganizationStore from '../../stores/OrganizationStore';
 import VoterStore from '../../stores/VoterStore';
 
 const OpenExternalWebSite = React.lazy(() => import(/* webpackChunkName: 'OpenExternalWebSite' */ '../../common/components/Widgets/OpenExternalWebSite'));
-const SettingsAccount = React.lazy(() => import(/* webpackChunkName: 'SettingsAccount' */ './SettingsAccount'));
+const SignInOptionsPanel = React.lazy(() => import(/* webpackChunkName: 'SignInOptionsPanel' */ '../SignIn/SignInOptionsPanel'));
 
 
 class SeeTheseSettingsInAction extends Component {
@@ -76,7 +76,7 @@ class SeeTheseSettingsInAction extends Component {
       // console.log('voterIsSignedIn is false');
       return (
         <Suspense fallback={<></>}>
-          <SettingsAccount />
+          <SignInOptionsPanel />
         </Suspense>
       );
     } else if (!voter || !organizationWeVoteId) {
