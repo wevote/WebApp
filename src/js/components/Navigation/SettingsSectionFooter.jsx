@@ -71,15 +71,6 @@ class SettingsSectionFooter extends Component {
                 <span className="u-no-break">Credits &amp; Thanks</span>
               )}
             />
-            <span style={{ paddingLeft: 15 }} />
-            <OpenExternalWebSite
-              linkIdAttribute="footerLinkCareers"
-              url="https://www.idealist.org/en/nonprofit/f917ce3db61a46cb8ad2b0d4e335f0af-we-vote-oakland#volops"
-              target="_blank"
-              body={(
-                <span>Jobs</span>
-              )}
-            />
           </TermsAndPrivacyText>
         </OneRow>
         <DoesNotSupport centered={centered}>

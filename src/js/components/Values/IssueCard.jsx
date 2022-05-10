@@ -117,7 +117,7 @@ class IssueCard extends Component {
     issueDescription = issueDescription || '';
 
     let issueImage;
-    const numberOfLines = 3;
+    const numberOfLines = 2;
     if (issueImageSize === 'SMALL') {
       issueImage = (
         <IssueImageDisplay
@@ -231,14 +231,14 @@ class IssueCard extends Component {
           )}
         </Flex>
         { !turnOffDescription && (
-          <Description>
+          <IssueCardDescription>
             <Suspense fallback={<></>}>
               <ReadMore
                 textToDisplay={issueDescription}
                 numberOfLines={numberOfLines}
               />
             </Suspense>
-          </Description>
+          </IssueCardDescription>
         )}
         <IssueAdvocatesAndFollowersWrapper>
           <IssueAdvocatesWrapper>
@@ -382,7 +382,7 @@ const FlexNameAndIcon = styled('div', {
   width: ${condensed ? '100%' : null};
 `));
 
-const Description = styled('div')`
+const IssueCardDescription = styled('div')`
   margin-top: 8px;
   color: #333;
 `;

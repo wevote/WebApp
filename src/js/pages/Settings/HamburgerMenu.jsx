@@ -119,19 +119,19 @@ export default class HamburgerMenu extends Component {
       return LoadingWheel;
     }
 
-    const {
-      linked_organization_we_vote_id: voterOrganizationWeVoteId,
-      twitter_screen_name: voterTwitterScreenName,
-    } = voter;
+    // const {
+    //   linked_organization_we_vote_id: voterOrganizationWeVoteId,
+    //   twitter_screen_name: voterTwitterScreenName,
+    // } = voter;
     let {
       is_signed_in: isSignedIn,
     } = voter;
     const voterPhotoUrlMedium = voterPhoto(voter);
 
     isSignedIn = isSignedIn === undefined || isSignedIn === null ? false : isSignedIn;
-    const yourVoterGuideLink = voterTwitterScreenName ?
-      `/${voterTwitterScreenName}` :
-      `/voterguide/${voterOrganizationWeVoteId}`;
+    // const yourVoterGuideLink = voterTwitterScreenName ?
+    //   `/${voterTwitterScreenName}` :
+    //   `/voterguide/${voterOrganizationWeVoteId}`;
     const nextReleaseFeaturesEnabled = webAppConfig.ENABLE_NEXT_RELEASE_FEATURES === undefined ? false : webAppConfig.ENABLE_NEXT_RELEASE_FEATURES;
 
     // console.log("Hamburger menu this.state.showDeviceDialog " + this.state.showDeviceDialog);
@@ -185,13 +185,13 @@ export default class HamburgerMenu extends Component {
               />
             )}
 
-            {isSignedIn && (
+            {/* isSignedIn && (
               <HamburgerMenuRow
                 linkText="Your Endorsements"
                 onClickAction={null}
                 to={yourVoterGuideLink}
               />
-            )}
+            ) */}
 
             {isSignedIn && (
               <HamburgerMenuRow

@@ -416,20 +416,24 @@ class News extends Component {
                     </Card>
                     // </DelayedLoad>
                   )}
-                  <AddFriendsMobileWrapper className="u-show-mobile" style={unsetSideMarginsIfCordova}>
-                    <SuggestedFriendsPreview inSideColumn />
-                  </AddFriendsMobileWrapper>
-                  <div className="card u-show-mobile" style={unsetSideMarginsIfCordova}>
-                    <AddFriendsMobileWrapper className="card-main" style={unsetMarginsIfCordova}>
-                      <SectionTitle>
-                        Voting Is Better with Friends
-                      </SectionTitle>
-                      <SectionDescription>
-                        Add friends you feel comfortable talking politics with. Hear about upcoming elections and what you can do to get ready to vote.
-                      </SectionDescription>
-                      <AddFriendsByEmail inSideColumn uniqueExternalId="mobile" />
+                  {voterIsSignedIn && (
+                    <AddFriendsMobileWrapper className="u-show-mobile" style={unsetSideMarginsIfCordova}>
+                      <SuggestedFriendsPreview inSideColumn />
                     </AddFriendsMobileWrapper>
-                  </div>
+                  )}
+                  {voterIsSignedIn && (
+                    <div className="card u-show-mobile" style={unsetSideMarginsIfCordova}>
+                      <AddFriendsMobileWrapper className="card-main" style={unsetMarginsIfCordova}>
+                        <SectionTitle>
+                          Voting Is Better with Friends
+                        </SectionTitle>
+                        <SectionDescription>
+                          Add friends you feel comfortable talking politics with. Hear about upcoming elections and what you can do to get ready to vote.
+                        </SectionDescription>
+                        <AddFriendsByEmail inSideColumn uniqueExternalId="mobile" />
+                      </AddFriendsMobileWrapper>
+                    </div>
+                  )}
                   {!voterIsSignedIn && (
                     // <DelayedLoad waitBeforeShow={1000}>
                     <Suspense fallback={<></>}>
@@ -444,18 +448,22 @@ class News extends Component {
                   )}
                 </div>
                 <div className="col-md-4 d-none d-md-block" style={unsetSomeRowStylesIfCordovaMdBlock}>
-                  <SuggestedFriendsPreview inSideColumn />
-                  <div className="card">
-                    <div className="card-main" style={unsetMarginsIfCordova}>
-                      <SectionTitle>
-                        Voting Is Better with Friends
-                      </SectionTitle>
-                      <SectionDescription>
-                        Hear about upcoming elections and what you can do to get ready to vote. Add friends you feel comfortable talking politics with.
-                      </SectionDescription>
-                      <AddFriendsByEmail inSideColumn uniqueExternalId="sidebar" />
+                  {voterIsSignedIn && (
+                    <SuggestedFriendsPreview inSideColumn />
+                  )}
+                  {voterIsSignedIn && (
+                    <div className="card">
+                      <div className="card-main" style={unsetMarginsIfCordova}>
+                        <SectionTitle>
+                          Voting Is Better with Friends
+                        </SectionTitle>
+                        <SectionDescription>
+                          Hear about upcoming elections and what you can do to get ready to vote. Add friends you feel comfortable talking politics with.
+                        </SectionDescription>
+                        <AddFriendsByEmail inSideColumn uniqueExternalId="sidebar" />
+                      </div>
                     </div>
-                  </div>
+                  )}
                   <div className="card">
                     <div className="card-main" style={unsetMarginsIfCordova}>
                       <Testimonial
@@ -465,18 +473,20 @@ class News extends Component {
                       />
                     </div>
                   </div>
-                  <SignInSmallOptionsWrapper className="u-show-desktop">
-                    {!voterSignedInTwitter && (
-                      <TwitterSignInWrapper>
-                        <TwitterSignInCard />
-                      </TwitterSignInWrapper>
-                    )}
-                    {!voterSignedInFacebook && (
-                      <FacebookSignInWrapper>
-                        <FacebookSignInCard />
-                      </FacebookSignInWrapper>
-                    )}
-                  </SignInSmallOptionsWrapper>
+                  {voterIsSignedIn && (
+                    <SignInSmallOptionsWrapper className="u-show-desktop">
+                      {!voterSignedInTwitter && (
+                        <TwitterSignInWrapper>
+                          <TwitterSignInCard />
+                        </TwitterSignInWrapper>
+                      )}
+                      {!voterSignedInFacebook && (
+                        <FacebookSignInWrapper>
+                          <FacebookSignInCard />
+                        </FacebookSignInWrapper>
+                      )}
+                    </SignInSmallOptionsWrapper>
+                  )}
                 </div>
               </div>
               <ShowMoreItemsWrapper

@@ -12,6 +12,15 @@ import historyPush from '../../common/utils/historyPush';
 import { renderLog } from '../../common/utils/logging';
 import normalizedImagePath from '../../common/utils/normalizedImagePath';
 import SvgImage from '../../common/components/Widgets/SvgImage';
+import {
+  CandidateEndorsementsContainer,
+  EmptyPhotoOuterWrapper,
+  EmptyText,
+  EmptyTextWrapper,
+  HorizontalSpacer,
+  OrganizationPhotoInnerWrapper,
+  PositionRowItemEmptyWrapper,
+} from '../Style/PositionRowListStyles';
 
 const SignInModal = React.lazy(() => import(/* webpackChunkName: 'SignInModal' */ '../SignIn/SignInModal'));
 
@@ -140,6 +149,9 @@ class PositionRowEmpty extends Component {
     renderLog('PositionRowEmpty');  // Set LOG_RENDER_EVENTS to log all renders
     const { ballotItemWeVoteId } = this.props;
     const { allCachedPositionsForThisBallotItemLength, showSignInModal } = this.state;
+    if (allCachedPositionsForThisBallotItemLength > 0) {
+      return null;
+    }
     const avatar = normalizedImagePath('../../img/global/svg-icons/avatar-generic.svg');
     const imagePlaceholder = (
       <SvgImage imageName={avatar} />
@@ -151,7 +163,7 @@ class PositionRowEmpty extends Component {
             <SignInModal
               isSignedInSubTitle={<></>}
               isSignedInTitle={<></>}
-              signInTitle="Sign in to ask your friends."
+              signInTitle="Sign in to ask your friends"
               signInSubTitle=""
               signedInTitle={<></>}
               signedOutTitle={<></>}
@@ -164,27 +176,19 @@ class PositionRowEmpty extends Component {
           Undecided
         </NoOneChoosesWrapper>
         <CandidateEndorsementsContainer id={`PositionRowEmpty-${ballotItemWeVoteId}`} onClick={this.onClickAskFriends}>
-          <RowItemWrapper>
-            <OrganizationPhotoOuterWrapper>
+          <PositionRowItemEmptyWrapper>
+            <EmptyPhotoOuterWrapper>
               <OrganizationPhotoInnerWrapper>
                 { imagePlaceholder }
               </OrganizationPhotoInnerWrapper>
-            </OrganizationPhotoOuterWrapper>
+            </EmptyPhotoOuterWrapper>
             <HorizontalSpacer />
-            <YesNoScoreTextWrapper>
-              <AskFriendsText className="u-link-color-on-hover">
-                {allCachedPositionsForThisBallotItemLength === 0 ? (
-                  <>
-                    No endorsements found for this candidate. Ask friends how they are going to vote.
-                  </>
-                ) : (
-                  <>
-                    Ask your friends how they are going to vote.
-                  </>
-                )}
-              </AskFriendsText>
-            </YesNoScoreTextWrapper>
-          </RowItemWrapper>
+            <EmptyTextWrapper>
+              <EmptyText className="u-cursor--pointer u-link-color-on-hover">
+                Ask your friends how they are going to vote.
+              </EmptyText>
+            </EmptyTextWrapper>
+          </PositionRowItemEmptyWrapper>
         </CandidateEndorsementsContainer>
       </OuterWrapper>
     );
@@ -200,12 +204,6 @@ const styles = () => ({
   },
 });
 
-const CandidateEndorsementsContainer = styled('div')`
-  cursor: pointer;
-  display: flex;
-  justify-content: flex-start;
-`;
-
 const NoOneChoosesWrapper = styled('div')`
   border-bottom: 1px solid #dcdcdc;
   color: #999;
@@ -214,59 +212,7 @@ const NoOneChoosesWrapper = styled('div')`
 `;
 
 const OuterWrapper = styled('div')`
-  border-left: 1px dotted #dcdcdc;
   height: 100%;
-  width: 124px;
-`;
-
-const HorizontalSpacer = styled('div')`
-  border-bottom: 1px dotted #dcdcdc;
-`;
-
-const OrganizationPhotoInnerWrapper = styled('div')`
-  align-items: flex-start;
-  display: flex;
-  height: 50px;
-  width: 50px;
-  justify-content: center;
-  & img, & svg, & path {
-    border: 1px solid #ccc;
-    border-radius: 48px;
-    width: 48px !important;
-    height: 48px !important;
-    max-width: 48px !important;
-    display: flex;
-    align-items: flex-start;
-  }
-`;
-
-const OrganizationPhotoOuterWrapper = styled('div')`
-  display: flex;
-  justify-content: start;
-  padding: 8px 3px 6px 4px;
-  width: 128px;
-`;
-
-const RowItemWrapper = styled('div')`
-  align-items: start;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-`;
-
-const AskFriendsText = styled('div')`
-  font-size: 14px;
-  font-weight: normal;
-  margin-top: 0;
-`;
-
-const YesNoScoreTextWrapper = styled('div')`
-  align-items: center;
-  display: flex;
-  flex-flow: column;
-  flex-wrap: wrap;
-  justify-content: flex-start;
-  padding: 3px 3px 4px 4px;
   width: 124px;
 `;
 
