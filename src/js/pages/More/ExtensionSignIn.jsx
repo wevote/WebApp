@@ -7,7 +7,7 @@ import { renderLog } from '../../common/utils/logging';
 import VoterStore from '../../stores/VoterStore';
 
 const DelayedLoad = React.lazy(() => import(/* webpackChunkName: 'DelayedLoad' */ '../../common/components/Widgets/DelayedLoad'));
-const SettingsAccount = React.lazy(() => import(/* webpackChunkName: 'SettingsAccount' */ '../../components/Settings/SettingsAccount'));
+const SignInOptionsPanel = React.lazy(() => import(/* webpackChunkName: 'SignInOptionsPanel' */ '../../components/SignIn/SignInOptionsPanel'));
 
 
 class ExtensionSignIn extends Component {
@@ -64,7 +64,7 @@ class ExtensionSignIn extends Component {
                 <SignInIntro>
                   Please sign in here:
                 </SignInIntro>
-                <SettingsAccount />
+                <SignInOptionsPanel />
               </SignInInnerWrapper>
             </SignInOuterWrapper>
           </DelayedLoad>

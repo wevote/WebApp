@@ -31,7 +31,7 @@ import HeaderBackToButton from './HeaderBackToButton';
 
 const HeaderNotificationMenu = React.lazy(() => import(/* webpackChunkName: 'HeaderNotificationMenu' */ './HeaderNotificationMenu'));
 const ShareModal = React.lazy(() => import(/* webpackChunkName: 'ShareModal' */ '../Share/ShareModal'));
-const SignInModal = React.lazy(() => import(/* webpackChunkName: 'SignInModal' */ '../Widgets/SignInModal'));
+const SignInModal = React.lazy(() => import(/* webpackChunkName: 'SignInModal' */ '../SignIn/SignInModal'));
 
 const appleSiliconDebug = false;
 
@@ -805,8 +805,10 @@ class HeaderBackToBallot extends Component {
           {showSignInModal && (
             <Suspense fallback={<></>}>
               <SignInModal
-                show={showSignInModal}
-                closeFunction={this.closeSignInModal}
+                isSignedInTitle={<div style={{ marginLeft: '10px' }}>Successfully signed in</div>}
+                signInTitle="Sign In Or Sign Up"
+                signInSubTitle="Don't worry, we won't post anything automatically."
+                toggleOnClose={this.closeSignInModal}
               />
             </Suspense>
           )}

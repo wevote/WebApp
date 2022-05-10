@@ -10,7 +10,7 @@ import IssueLinkToggle from '../Values/IssueLinkToggle';
 import BrowserPushMessage from '../Widgets/BrowserPushMessage';
 
 const DelayedLoad = React.lazy(() => import(/* webpackChunkName: 'DelayedLoad' */ '../../common/components/Widgets/DelayedLoad'));
-const SettingsAccount = React.lazy(() => import(/* webpackChunkName: 'SettingsAccount' */ './SettingsAccount'));
+const SignInOptionsPanel = React.lazy(() => import(/* webpackChunkName: 'SignInOptionsPanel' */ '../SignIn/SignInOptionsPanel'));
 
 
 const PROCHOICE = 'wv02issue63';
@@ -154,7 +154,7 @@ export default class SettingsIssueLinks extends Component {
       return (
         <Suspense fallback={<></>}>
           <DelayedLoad waitBeforeShow={1000}>
-            <SettingsAccount />
+            <SignInOptionsPanel />
           </DelayedLoad>
         </Suspense>
       );

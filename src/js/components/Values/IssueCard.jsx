@@ -13,7 +13,7 @@ import IssueFollowToggleButton from './IssueFollowToggleButton';
 import IssueImageDisplay from './IssueImageDisplay';
 
 const ReadMore = React.lazy(() => import(/* webpackChunkName: 'ReadMore' */ '../../common/components/Widgets/ReadMore'));
-const SignInModalSimple = React.lazy(() => import(/* webpackChunkName: 'SignInModalSimple' */ '../Settings/SignInModalSimple'));
+const SignInModal = React.lazy(() => import(/* webpackChunkName: 'SignInModal' */ '../SignIn/SignInModal'));
 
 const NUMBER_OF_LINKED_ORGANIZATION_IMAGES_TO_SHOW = 3; // Maximum available coming from issueDescriptionsRetrieve is currently 5
 
@@ -158,11 +158,11 @@ class IssueCard extends Component {
       >
         {(showSignInModal && !VoterStore.getVoterIsSignedIn()) && (
           <Suspense fallback={<></>}>
-            <SignInModalSimple
-              settingsAccountIsSignedInSubTitle={<></>}
-              settingsAccountIsSignedInTitle={<></>}
-              settingsAccountSignInTitle="Sign in to save your values."
-              settingsAccountSignInSubTitle=""
+            <SignInModal
+              isSignedInSubTitle={<></>}
+              isSignedInTitle={<></>}
+              signInTitle="Sign in to save your values."
+              signInSubTitle=""
               signedInTitle={<></>}
               signedOutTitle={<></>}
               toggleOnClose={this.toggleShowSignInModal}

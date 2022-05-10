@@ -7,7 +7,7 @@ import styled from 'styled-components';
 import VoterStore from '../../../stores/VoterStore';
 import PositionPublicToggle from '../PositionPublicToggle';
 
-const SettingsAccount = React.lazy(() => import(/* webpackChunkName: 'SettingsAccount' */ '../../Settings/SettingsAccount'));
+const SignInOptionsPanel = React.lazy(() => import(/* webpackChunkName: 'SignInOptionsPanel' */ '../../SignIn/SignInOptionsPanel'));
 
 
 class ChooseOrOpposeIntroModal extends Component {
@@ -117,7 +117,7 @@ class ChooseOrOpposeIntroModal extends Component {
       slides.signIn = (
         <Suspense fallback={<></>}>
           <>
-            <SettingsAccount
+            <SignInOptionsPanel
               pleaseSignInTitle="Sign in to save your choices!"
               pleaseSignInSubTitle=""
               toggleSignInModal={this.props.onClose}

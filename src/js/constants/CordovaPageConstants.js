@@ -23,7 +23,7 @@ const CordovaPageConstants = {
   opinions: null,
   opinionsFiltered: null,
   ready: null,
-  settingsAccount: null,
+  signInOptions: null,
   settingsHamburger: null,
   settingsNotifications: null,
   settingsProfile: null,

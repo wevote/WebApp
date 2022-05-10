@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import styled from 'styled-components';
 import { renderLog } from '../../common/utils/logging';
-import SettingsAccount from '../../components/Settings/SettingsAccount';
+import SignInOptionsPanel from '../../components/SignIn/SignInOptionsPanel';
 import AppObservableStore from '../../stores/AppObservableStore';
 import VoterStore from '../../stores/VoterStore';
 
@@ -21,12 +21,12 @@ export default function SignIn (props) {
       return <div style={{ padding: '20px', fontWeight: 600 }}>You are already signed in!</div>;
     } else {
       return (
-        <SettingsAccountWrapper>
-          <SettingsAccount
+        <SignInOptionsWrapper>
+          <SignInOptionsPanel
             inModal={false}
             closeSignInModal={() => console.log('do we need a close callback here?')}
           />
-        </SettingsAccountWrapper>
+        </SignInOptionsWrapper>
       );
     }
   } catch (e) {
@@ -38,6 +38,6 @@ SignIn.propTypes = {
   displayState: PropTypes.number.isRequired,
 };
 
-const SettingsAccountWrapper = styled('div')`
+const SignInOptionsWrapper = styled('div')`
   padding-top: 25px
 `;

@@ -17,7 +17,7 @@ import PremiumableButton from '../Widgets/PremiumableButton';
 
 const DelayedLoad = React.lazy(() => import(/* webpackChunkName: 'DelayedLoad' */ '../../common/components/Widgets/DelayedLoad'));
 const OpenExternalWebSite = React.lazy(() => import(/* webpackChunkName: 'OpenExternalWebSite' */ '../../common/components/Widgets/OpenExternalWebSite'));
-const SettingsAccount = React.lazy(() => import(/* webpackChunkName: 'SettingsAccount' */ './SettingsAccount'));
+const SignInOptionsPanel = React.lazy(() => import(/* webpackChunkName: 'SignInOptionsPanel' */ '../SignIn/SignInOptionsPanel'));
 const SettingsAccountLevelChip = React.lazy(() => import(/* webpackChunkName: 'SettingsAccountLeveLChip' */ './SettingsAccountLevelChip'));
 
 
@@ -360,7 +360,7 @@ class SettingsDomain extends Component {
       return (
         <Suspense fallback={<></>}>
           <DelayedLoad waitBeforeShow={1000}>
-            <SettingsAccount />
+            <SignInOptionsPanel />
           </DelayedLoad>
         </Suspense>
       );

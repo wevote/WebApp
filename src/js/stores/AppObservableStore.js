@@ -430,7 +430,7 @@ export default {
 
   isOnWeVoteRootUrl () {
     const weVoteURL = nonFluxState.onWeVoteRootUrl || false;
-    return weVoteURL || isCordovaLocal() || stringContains('localhost:', window.location.href);
+    return weVoteURL || isCordovaLocal() || stringContains('localhost:', window.location.href) || stringContains('ngrok.io', window.location.href);
   },
 
   isOnWeVoteSubdomainUrl () {

@@ -15,7 +15,7 @@ import VoterGuideEndorsements from './VoterGuideEndorsements';
 import VoterGuideFollowers from './VoterGuideFollowers';
 import VoterGuideFollowing from './VoterGuideFollowing';
 
-const SettingsAccount = React.lazy(() => import(/* webpackChunkName: 'SettingsAccount' */ '../Settings/SettingsAccount'));
+const SettingsAccount = React.lazy(() => import(/* webpackChunkName: 'SignInOptionsPanel' */ '../SignIn/SignInOptionsPanel'));
 
 export default class OrganizationVoterGuideTabs extends Component {
   // static getDerivedStateFromProps (props, state) {

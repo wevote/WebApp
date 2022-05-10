@@ -13,7 +13,7 @@ import { renderLog } from '../../common/utils/logging';
 import normalizedImagePath from '../../common/utils/normalizedImagePath';
 import SvgImage from '../../common/components/Widgets/SvgImage';
 
-const SignInModalSimple = React.lazy(() => import(/* webpackChunkName: 'SignInModalSimple' */ '../Settings/SignInModalSimple'));
+const SignInModal = React.lazy(() => import(/* webpackChunkName: 'SignInModal' */ '../SignIn/SignInModal'));
 
 class PositionRowEmpty extends Component {
   constructor (props) {
@@ -148,11 +148,11 @@ class PositionRowEmpty extends Component {
       <OuterWrapper>
         { showSignInModal && (
           <Suspense fallback={<></>}>
-            <SignInModalSimple
-              settingsAccountIsSignedInSubTitle={<></>}
-              settingsAccountIsSignedInTitle={<></>}
-              settingsAccountSignInTitle="Sign in to ask your friends."
-              settingsAccountSignInSubTitle=""
+            <SignInModal
+              isSignedInSubTitle={<></>}
+              isSignedInTitle={<></>}
+              signInTitle="Sign in to ask your friends."
+              signInSubTitle=""
               signedInTitle={<></>}
               signedOutTitle={<></>}
               toggleOnClose={this.closeSignInModal}

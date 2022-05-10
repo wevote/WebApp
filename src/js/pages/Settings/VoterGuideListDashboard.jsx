@@ -13,7 +13,7 @@ import VoterGuideStore from '../../stores/VoterGuideStore';
 import VoterStore from '../../stores/VoterStore';
 
 const DelayedLoad = React.lazy(() => import(/* webpackChunkName: 'DelayedLoad' */ '../../common/components/Widgets/DelayedLoad'));
-const SettingsAccount = React.lazy(() => import(/* webpackChunkName: 'SettingsAccount' */ '../../components/Settings/SettingsAccount'));
+const SignInOptionsPanel = React.lazy(() => import(/* webpackChunkName: 'SignInOptionsPanel' */ '../../components/SignIn/SignInOptionsPanel'));
 
 
 class VoterGuideListDashboard extends Component {
@@ -173,7 +173,7 @@ class VoterGuideListDashboard extends Component {
                 { !voterIsSignedIn && (
                   <Suspense fallback={<></>}>
                     <DelayedLoad waitBeforeShow={1000}>
-                      <SettingsAccount />
+                      <SignInOptionsPanel />
                     </DelayedLoad>
                   </Suspense>
                 )}

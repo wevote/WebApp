@@ -10,7 +10,7 @@ import ActivityStore from '../../stores/ActivityStore';
 import VoterStore from '../../stores/VoterStore';
 import { openSnackbar } from '../Widgets/SnackNotifier';
 
-const SettingsAccount = React.lazy(() => import(/* webpackChunkName: 'SettingsAccount' */ '../Settings/SettingsAccount'));
+const SignInOptionsPanel = React.lazy(() => import(/* webpackChunkName: 'SignInOptionsPanel' */ '../SignIn/SignInOptionsPanel'));
 
 
 class ActivityPostPublicToggle extends Component {
@@ -190,7 +190,7 @@ class ActivityPostPublicToggle extends Component {
           ) : (
             <div>
               <Suspense fallback={<></>}>
-                <SettingsAccount
+                <SignInOptionsPanel
                   pleaseSignInTitle="Sign In to Make Your Posts Public"
                   pleaseSignInSubTitle=""
                   inModal

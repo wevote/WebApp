@@ -18,14 +18,14 @@ import DeviceURLField from '../../pages/Startup/DeviceURLField';
 import VoterStore from '../../stores/VoterStore';
 import initializeAppleSDK from '../../utils/initializeAppleSDK';
 import initializeFacebookSDK from '../../utils/initializeFacebookSDK';
-import signInModalGlobalState from './signInModalGlobalState';
+import signInModalGlobalState from '../Widgets/signInModalGlobalState';
 
-const SettingsAccount = React.lazy(() => import(/* webpackChunkName: 'SettingsAccount' */ '../Settings/SettingsAccount'));
+const SignInOptionsPanel = React.lazy(() => import(/* webpackChunkName: 'SignInOptionsPanel' */ './SignInOptionsPanel'));
 
 
 /* global $ */
 
-class SignInModal extends Component {
+class SignInModalOriginal extends Component {
   constructor (props) {
     super(props);
     this.state = {
@@ -65,11 +65,11 @@ class SignInModal extends Component {
 
   componentDidCatch (error, info) {
     // We should get this information to Splunk!
-    console.error('SignInModal caught error: ', `${error} with info: `, info);
+    console.error('SignInModalOriginal caught error: ', `${error} with info: `, info);
   }
 
   componentWillUnmount () {
-    // console.log('SignInModal componentWillUnmount');
+    // console.log('SignInModalOriginal componentWillUnmount');
     signInModalGlobalState.set('textOrEmailSignInInProcess', false);
     // April 2021: Firing off the verification action, also fires off a number of just in case actions,
     // that causes problems here.  So remove the listener before the "changed state while dispatching" trouble happens.
@@ -111,7 +111,7 @@ class SignInModal extends Component {
   };
 
   closeFunction = () => {
-    // console.log('SignInModal closeFunction');
+    // console.log('SignInModalOriginal closeFunction');
     signInModalGlobalState.set('textOrEmailSignInInProcess', false);
 
     if (this.props.closeFunction) {
@@ -119,8 +119,8 @@ class SignInModal extends Component {
     }
 
     if (isCordova()) {
-      // console.log('closeFunction in SignInModal doing restoreStylesAfterCordovaKeyboard and historyPush');
-      restoreStylesAfterCordovaKeyboard('SignInModal');
+      // console.log('closeFunction in SignInModalOriginal doing restoreStylesAfterCordovaKeyboard and historyPush');
+      restoreStylesAfterCordovaKeyboard('SignInModalOriginal');
       if (webAppConfig.SHOW_CORDOVA_URL_FIELD) {   // TODO This is a hack, need to pass back the new path from DeviceURLField
         historyPush('/start');
       } else {
@@ -139,15 +139,15 @@ class SignInModal extends Component {
   };
 
   render () {
-    renderLog('SignInModal');  // Set LOG_RENDER_EVENTS to log all renders
+    renderLog('SignInModalOriginal');  // Set LOG_RENDER_EVENTS to log all renders
     const { classes } = this.props;
     const { focusedInputName, focusedOnSingleInputToggle, voter, voterIsSignedIn } = this.state;
 
     if (!voter) {
-      // console.log('SignInModal render voter NOT found');
+      // console.log('SignInModalOriginal render voter NOT found');
       return <div className="undefined-props" />;
     }
-    // console.log('SignInModal render voter found');
+    // console.log('SignInModalOriginal render voter found');
 
     if (voter && voterIsSignedIn && isCordova()) {
       return false;
@@ -203,7 +203,7 @@ class SignInModal extends Component {
               ) : (
                 <div>
                   <Suspense fallback={<></>}>
-                    <SettingsAccount
+                    <SignInOptionsPanel
                       closeSignInModal={this.closeFunction}
                       focusedOnSingleInputToggle={this.focusedOnSingleInputToggle}
                       inModal
@@ -237,7 +237,7 @@ class SignInModal extends Component {
     );
   }
 }
-SignInModal.propTypes = {
+SignInModalOriginal.propTypes = {
   classes: PropTypes.object,
   show: PropTypes.bool,
   closeFunction: PropTypes.func.isRequired,
@@ -356,4 +356,4 @@ const styles = (theme) => ({
 });
 
 
-export default withTheme(withStyles(styles)(SignInModal));
+export default withTheme(withStyles(styles)(SignInModalOriginal));

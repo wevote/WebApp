@@ -32,7 +32,7 @@ import VoterGuideStore from '../../stores/VoterGuideStore';
 import VoterStore from '../../stores/VoterStore';
 import { isProperlyFormattedVoterGuideWeVoteId } from '../../utils/textFormat';
 
-const SettingsAccount = React.lazy(() => import(/* webpackChunkName: 'SettingsAccount' */ '../../components/Settings/SettingsAccount'));
+const SignInOptionsPanel = React.lazy(() => import(/* webpackChunkName: 'SignInOptionsPanel' */ '../../components/SignIn/SignInOptionsPanel'));
 
 
 export default class SettingsDashboard extends Component {
@@ -196,8 +196,8 @@ export default class SettingsDashboard extends Component {
     const { editMode } = this.state;
     switch (editMode) {
       case 'account':
-        settingsComponentToDisplayDesktop = <SettingsAccount externalUniqueId="domainDesktop" />;
-        settingsComponentToDisplayMobile = <SettingsAccount externalUniqueId="domainMobile" />;
+        settingsComponentToDisplayDesktop = <SignInOptionsPanel externalUniqueId="domainDesktop" />;
+        settingsComponentToDisplayMobile = <SignInOptionsPanel externalUniqueId="domainMobile" />;
         break;
       case 'address':
         settingsComponentToDisplayDesktop = <SettingsAddress externalUniqueId="domainDesktop" />;
