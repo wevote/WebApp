@@ -66,16 +66,6 @@ class FooterMainWeVote extends Component {
                 )}
                 className={classes.link}
               />
-              <RowSpacer />
-              <OpenExternalWebSite
-                linkIdAttribute="footerLinkCareers"
-                url="https://www.idealist.org/en/nonprofit/f917ce3db61a46cb8ad2b0d4e335f0af-we-vote-oakland#volops"
-                target="_blank"
-                body={(
-                  <span>Jobs</span>
-                )}
-                className={classes.link}
-              />
             </OneRow>
           </TopSectionInnerWrapper>
         </TopSectionOuterWrapper>
@@ -85,22 +75,9 @@ class FooterMainWeVote extends Component {
               WeVote.US
             </WeVoteName>
             {' '}
-            is brought to you by two registered nonprofit organizations, one 501(c)(3) and one 501(c)(4).
+            is a nonpartisan nonprofit.
             <br />
-            We do not support or oppose any political candidate or party.
-          </Text>
-          <Text>
-            The software that powers We Vote is
-            {' '}
-            <OpenExternalWebSite
-              linkIdAttribute="footerLinkOpenSource"
-              url="https://github.com/WeVote"
-              target="_blank"
-              body={(
-                <span>open source.</span>
-              )}
-              className={classes.bottomLink}
-            />
+            We do not support or oppose any political party or candidate.
           </Text>
         </BottomSection>
       </Wrapper>

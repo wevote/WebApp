@@ -309,7 +309,7 @@ export default class Header extends Component {
       // console.log('Header in settingsMode, showBackToSettingsDesktop:', showBackToSettingsDesktop, ', showBackToSettingsMobile:', showBackToSettingsMobile);
       const backToSettingsLinkDesktop = '/settings/profile';
       const backToSettingsLinkMobile = '/settings/hamburger';
-      const backToSettingsLinkText = 'Settings';
+      const backToSettingsLinkText = '';
 
       return (
         <div id="app-header">

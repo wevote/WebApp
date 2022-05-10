@@ -97,17 +97,17 @@ export default class ReadyPageValuesList extends Component {
     return (
       <ReadyPageValuesListWrapper>
         <div>
-          <h1 className="h1">
+          <PopularTopicsH1>
             Popular Topics
-          </h1>
-          <p>
+          </PopularTopicsH1>
+          <PopularTopicsDescription>
             <Suspense fallback={<></>}>
               <ReadMore
                 textToDisplay="Follow topics to see endorsements on your ballot for candidates from people and groups."
-                numberOfLines={3}
+                numberOfLines={2}
               />
             </Suspense>
-          </p>
+          </PopularTopicsDescription>
           <div>
             {allIssues && allIssues.length ? (
               <Row>
@@ -134,6 +134,20 @@ ReadyPageValuesList.propTypes = {
 const Column = styled('div')(({ theme }) => (`
   ${theme.breakpoints.up('sm')} {
     width: 50%;
+  }
+`));
+
+const PopularTopicsH1 = styled('h1')`
+  font-size: 22px;
+  font-weight: 500;
+  margin-bottom: 8px;
+  margin-top: 0px;
+`;
+
+const PopularTopicsDescription = styled('p')(({ theme }) => (`
+  margin-bottom: 0;
+  ${theme.breakpoints.up('sm')} {
+    margin-bottom: 0;
   }
 `));
 

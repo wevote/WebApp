@@ -1,5 +1,5 @@
-import { AccountCircle, Search } from '@mui/icons-material';
-import { IconButton, Tabs, Tooltip } from '@mui/material';
+import { AccountCircle } from '@mui/icons-material';
+import { IconButton, Tabs } from '@mui/material';
 import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
@@ -372,9 +372,9 @@ class HeaderBar extends Component {
     }
   }
 
-  goToSearch = () => {
-    historyPush('/opinions');
-  }
+  // goToSearch = () => {
+  //   historyPush('/opinions');
+  // }
 
   openHowItWorksModal = () => {
     // console.log('Opening modal');
@@ -596,32 +596,32 @@ class HeaderBar extends Component {
     //     </>
     //   </Tooltip>
     // );
-    const searchButtonHtml = (
-      <Tooltip title="Search" aria-label="Search" classes={{ tooltipPlacementBottom: classes.tooltipPlacementBottom }}>
-        <>
-          <SearchWrapper className="u-show-desktop-tablet">
-            <IconButton
-              classes={{ root: classes.searchButtonRoot }}
-              id="searchHeaderBarDesktop"
-              onClick={this.goToSearch}
-              size="large"
-            >
-              <Search />
-            </IconButton>
-          </SearchWrapper>
-          <SearchWrapper className="u-show-mobile-bigger-than-iphone5">
-            <IconButton
-              classes={{ root: classes.searchButtonRoot }}
-              id="searchHeaderBarMobile"
-              onClick={this.goToSearch}
-              size="large"
-            >
-              <Search />
-            </IconButton>
-          </SearchWrapper>
-        </>
-      </Tooltip>
-    );
+    // const searchButtonHtml = (
+    //   <Tooltip title="Search" aria-label="Search" classes={{ tooltipPlacementBottom: classes.tooltipPlacementBottom }}>
+    //     <>
+    //       <SearchWrapper className="u-show-desktop-tablet">
+    //         <IconButton
+    //           classes={{ root: classes.searchButtonRoot }}
+    //           id="searchHeaderBarDesktop"
+    //           onClick={this.goToSearch}
+    //           size="large"
+    //         >
+    //           <Search />
+    //         </IconButton>
+    //       </SearchWrapper>
+    //       <SearchWrapper className="u-show-mobile-bigger-than-iphone5">
+    //         <IconButton
+    //           classes={{ root: classes.searchButtonRoot }}
+    //           id="searchHeaderBarMobile"
+    //           onClick={this.goToSearch}
+    //           size="large"
+    //         >
+    //           <Search />
+    //         </IconButton>
+    //       </SearchWrapper>
+    //     </>
+    //   </Tooltip>
+    // );
 
     const doNotShowWeVoteLogo = weVoteBrandingOff() || hideWeVoteLogo;
     const showWeVoteLogo = !doNotShowWeVoteLogo;
@@ -707,9 +707,11 @@ class HeaderBar extends Component {
                   {showEditAddressButton && editAddressButtonHtml}
                 </div>
                 */}
+                {/*
                 <div>
                   {searchButtonHtml}
                 </div>
+                */}
                 <Suspense fallback={<></>}>
                   <HeaderNotificationMenu />
                 </Suspense>
@@ -738,9 +740,11 @@ class HeaderBar extends Component {
                   {showEditAddressButton && editAddressButtonHtml}
                 </div>
                 */}
+                {/*
                 <div>
                   {searchButtonHtml}
                 </div>
+                */}
                 <Suspense fallback={<></>}>
                   <HeaderNotificationMenu />
                 </Suspense>
@@ -761,9 +765,11 @@ class HeaderBar extends Component {
                   {showEditAddressButton && editAddressButtonHtml}
                 </div>
                 */}
+                {/*
                 <div>
                   {searchButtonHtml}
                 </div>
+                */}
                 <SignInButton toggleSignInModal={this.toggleSignInModal} />
               </>
             )}
@@ -897,8 +903,8 @@ const HeaderBarWrapper = styled('div', {
   border-bottom: ${(!scrolledDown || !hasSubmenu) ? '' : '1px solid #aaa'};
 `));
 
-const SearchWrapper = styled('div')`
-  margin-top: 11px;
-`;
+// const SearchWrapper = styled('div')`
+//   margin-top: 11px;
+// `;
 
 export default withStyles(styles)(HeaderBar);

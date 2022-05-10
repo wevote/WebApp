@@ -16,6 +16,10 @@ import stringContains from '../../common/utils/stringContains';
 import { isSpeakerTypeOrganization } from '../../utils/organization-functions';
 import { isOrganizationInVotersNetwork } from '../../utils/positionFunctions';
 import SvgImage from '../../common/components/Widgets/SvgImage';
+import {
+  HorizontalSpacer,
+  OrganizationPhotoInnerWrapper,
+} from '../Style/PositionRowListStyles';
 
 const FollowToggleCheckPlus = React.lazy(() => import(/* webpackChunkName: 'FollowToggleCheckPlus' */ '../Widgets/FollowToggleCheckPlus'));
 const ImageHandler = React.lazy(() => import(/* webpackChunkName: 'ImageHandler' */ '../ImageHandler'));
@@ -272,10 +276,6 @@ const FollowToggleWrapper = styled('div')`
   justify-content: center;
 `;
 
-const HorizontalSpacer = styled('div')`
-  border-bottom: 1px dotted #dcdcdc;
-`;
-
 const OrganizationInfoOnlyWordWrapper = styled('div')`
 `;
 
@@ -320,23 +320,6 @@ const OrganizationNameWrapper = styled('div', {
 const OrganizationOverlayOuterWrapper = styled('div')`
   position: relative;
   z-index: 1;
-`;
-
-const OrganizationPhotoInnerWrapper = styled('div')`
-  align-items: flex-start;
-  display: flex;
-  height: 50px;
-  width: 50px;
-  justify-content: center;
-  & img, & svg, & path {
-    border: 1px solid #ccc;
-    border-radius: 29px;
-    width: 48px !important;
-    height: 48px !important;
-    max-width: 48px !important;
-    display: flex;
-    align-items: flex-start;
-  }
 `;
 
 const OrganizationPhotoOuterWrapper = styled('div', {
