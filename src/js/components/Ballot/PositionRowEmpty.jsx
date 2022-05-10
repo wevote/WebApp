@@ -184,7 +184,7 @@ class PositionRowEmpty extends Component {
             </EmptyPhotoOuterWrapper>
             <HorizontalSpacer />
             <EmptyTextWrapper>
-              <EmptyText className="u-link-color-on-hover">
+              <EmptyText className="u-cursor--pointer u-link-color-on-hover">
                 Ask your friends how they are going to vote.
               </EmptyText>
             </EmptyTextWrapper>
