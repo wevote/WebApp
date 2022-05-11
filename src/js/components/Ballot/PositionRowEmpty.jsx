@@ -31,6 +31,8 @@ class PositionRowEmpty extends Component {
       allCachedPositionsForThisBallotItemLength: 0,
       showSignInModal: false,
     };
+    this.askFriendsSignInComplete = this.askFriendsSignInComplete.bind(this);
+    this.closeSignInModal = this.closeSignInModal.bind(this);
     this.onClickAskFriends = this.onClickAskFriends.bind(this);
     this.toggleShowSignInModal = this.toggleShowSignInModal.bind(this);
   }
@@ -161,12 +163,8 @@ class PositionRowEmpty extends Component {
         { showSignInModal && (
           <Suspense fallback={<></>}>
             <SignInModal
-              isSignedInSubTitle={<></>}
-              isSignedInTitle={<></>}
               signInTitle="Sign in to ask your friends"
               signInSubTitle=""
-              signedInTitle={<></>}
-              signedOutTitle={<></>}
               toggleOnClose={this.closeSignInModal}
               uponSuccessfulSignIn={this.askFriendsSignInComplete}
             />

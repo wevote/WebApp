@@ -159,13 +159,10 @@ class IssueCard extends Component {
         {(showSignInModal && !VoterStore.getVoterIsSignedIn()) && (
           <Suspense fallback={<></>}>
             <SignInModal
-              isSignedInSubTitle={<></>}
-              isSignedInTitle={<></>}
               signInTitle="Sign in to save your values."
               signInSubTitle=""
-              signedInTitle={<></>}
-              signedOutTitle={<></>}
               toggleOnClose={this.toggleShowSignInModal}
+              uponSuccessfulSignIn={this.toggleShowSignInModal}
             />
           </Suspense>
         )}

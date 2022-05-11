@@ -805,10 +805,10 @@ class HeaderBackToBallot extends Component {
           {showSignInModal && (
             <Suspense fallback={<></>}>
               <SignInModal
-                isSignedInTitle={<div style={{ marginLeft: '10px' }}>Successfully signed in</div>}
                 signInTitle="Sign In Or Sign Up"
                 signInSubTitle="Don't worry, we won't post anything automatically."
                 toggleOnClose={this.closeSignInModal}
+                uponSuccessfulSignIn={this.closeSignInModal}
               />
             </Suspense>
           )}

@@ -211,8 +211,7 @@ class PositionPublicToggle extends Component {
         { showPositionPublicHelpModal && (
           <Suspense fallback={<></>}>
             <SignInModal
-              isSignedInSubTitle={<></>}
-              isSignedInTitle={(
+              signedInContentHeader={(
                 <>
                   Your endorsement is now visible to the public. Click the &quot;Friends&quot; toggle to show to We Vote friends only.
                 </>
@@ -222,6 +221,7 @@ class PositionPublicToggle extends Component {
               signedInTitle={<>Public</>}
               signedOutTitle={<>Show to Public</>}
               toggleOnClose={this.togglePositionPublicHelpModal}
+              // uponSuccessfulSignIn <= Not in this case
             />
           </Suspense>
         )}

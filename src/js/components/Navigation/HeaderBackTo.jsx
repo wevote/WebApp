@@ -24,7 +24,7 @@ import SignInButton from '../Widgets/SignInButton';
 import HeaderBackToButton from './HeaderBackToButton';
 
 const HeaderNotificationMenu = React.lazy(() => import(/* webpackChunkName: 'HeaderNotificationMenu' */ './HeaderNotificationMenu'));
-const SignInModal = React.lazy(() => import(/* webpackChunkName: 'SignInModal' */ '../SignIn/SignInModalOriginal'));
+const SignInModal = React.lazy(() => import(/* webpackChunkName: 'SignInModal' */ '../SignIn/SignInModal'));
 
 const appleSiliconDebug = false;
 
@@ -278,10 +278,10 @@ class HeaderBackTo extends Component {
         {showSignInModal && (
           <Suspense fallback={<></>}>
             <SignInModal
-              isSignedInTitle={<div style={{ marginLeft: '10px' }}>Successfully signed in</div>}
               signInTitle="Sign In Or Sign Up"
               signInSubTitle="Don't worry, we won't post anything automatically."
               toggleOnClose={this.closeSignInModal}
+              uponSuccessfulSignIn={this.closeSignInModal}
             />
           </Suspense>
         )}
