@@ -10,6 +10,7 @@ import SvgImage from '../../common/components/Widgets/SvgImage';
 import apiCalming from '../../common/utils/apiCalming';
 import { renderLog } from '../../common/utils/logging';
 import normalizedImagePath from '../../common/utils/normalizedImagePath';
+import AppObservableStore from '../../stores/AppObservableStore';
 import CandidateStore from '../../stores/CandidateStore';
 import FriendStore from '../../stores/FriendStore';
 import IssueStore from '../../stores/IssueStore';
@@ -120,6 +121,14 @@ class PositionRowList extends Component {
     this.onPositionListUpdate(allCachedPositionsForThisBallotItem);
   }
 
+  onClickShowOrganizationModalWithPositions () {
+    const { ballotItemWeVoteId } = this.props;
+    // console.log('onClickShowOrganizationModalWithPositions, ballotItemWeVoteId:', ballotItemWeVoteId);
+    AppObservableStore.setOrganizationModalBallotItemWeVoteId(ballotItemWeVoteId);
+    AppObservableStore.setShowOrganizationModal(true);
+    AppObservableStore.setHideOrganizationModalBallotItemInfo(true);
+  }
+
   onPositionListUpdate = (allCachedPositionsForThisBallotItem) => {
     const { showInfoOnly, showOppose, showSupport } = this.props;
     const organizationsVoterIsFollowing = OrganizationStore.getOrganizationsVoterIsFollowing();
@@ -173,20 +182,20 @@ class PositionRowList extends Component {
     });
   }
 
-  increaseNumberOfPositionItemsToDisplay = () => {
-    let { numberOfPositionItemsToDisplay } = this.state;
-    // console.log('Number of position items before increment: ', numberOfPositionItemsToDisplay);
-
-    numberOfPositionItemsToDisplay += 5;
-    // console.log('Number of position items after increment: ', numberOfPositionItemsToDisplay);
-
-    if (this.positionItemTimer) clearTimeout(this.positionItemTimer);
-    this.positionItemTimer = setTimeout(() => {
-      this.setState({
-        numberOfPositionItemsToDisplay,
-      });
-    }, 500);
-  }
+  // increaseNumberOfPositionItemsToDisplay = () => {
+  //   let { numberOfPositionItemsToDisplay } = this.state;
+  //   // console.log('Number of position items before increment: ', numberOfPositionItemsToDisplay);
+  //
+  //   numberOfPositionItemsToDisplay += 5;
+  //   // console.log('Number of position items after increment: ', numberOfPositionItemsToDisplay);
+  //
+  //   if (this.positionItemTimer) clearTimeout(this.positionItemTimer);
+  //   this.positionItemTimer = setTimeout(() => {
+  //     this.setState({
+  //       numberOfPositionItemsToDisplay,
+  //     });
+  //   }, 500);
+  // }
 
   limitToShowInfoOnly = (filteredPositionList) => filteredPositionList.filter((item) => (item && item.is_information_only));
 
@@ -308,7 +317,7 @@ class PositionRowList extends Component {
               <div>
                 <TopSpacer />
                 <ShowMoreEndorsementsContainer
-                  onClick={() => this.increaseNumberOfPositionItemsToDisplay()}
+                  onClick={() => this.onClickShowOrganizationModalWithPositions()}
                 >
                   <ShowMoreEndorsementsLink className="u-link-color">
                     {filteredPositionListLength - numberOfPositionItemsDisplayed}

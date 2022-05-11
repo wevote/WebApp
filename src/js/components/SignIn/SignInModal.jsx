@@ -33,8 +33,7 @@ class SignInModal extends Component {
   }
 
   onVoterStoreChange () {
-    const voter = VoterStore.getVoter();
-    const { is_signed_in: isSignedIn } = voter;
+    const isSignedIn = VoterStore.getVoterIsSignedIn();
     this.setState({
       isSignedIn,
     }, () => this.uponSuccessfulSignInLocal(isSignedIn));
@@ -60,8 +59,8 @@ class SignInModal extends Component {
     renderLog('SignInModal');  // Set LOG_RENDER_EVENTS to log all renders
     const {
       classes,
-      isSignedInSubTitle = (<></>),
-      isSignedInTitle = (<></>),
+      signedInContentHeader = (<></>),
+      signedInContentSubHeader = (<></>),
       signInSubTitle = '',
       signInTitle = '',
       signedInTitle = (<></>),
@@ -77,7 +76,7 @@ class SignInModal extends Component {
             open={showSignInModalSimple}
             onClose={() => { this.toggleSignInModalSimple(); }}
           >
-            <DialogTitle>
+            <DialogTitle classes={{ root: classes.dialogTitle }}>
               <Typography component="span" variant="h6" className="text-center">
                 {isSignedIn ? (
                   <>
@@ -103,11 +102,11 @@ class SignInModal extends Component {
               {isSignedIn ? (
                 <div className="text-center">
                   <div className="u-f3">
-                    {isSignedInTitle}
+                    {signedInContentHeader}
                   </div>
                   <br />
                   <div className="u-f6">
-                    {isSignedInSubTitle}
+                    {signedInContentSubHeader}
                   </div>
                 </div>
               ) : (
@@ -132,8 +131,8 @@ class SignInModal extends Component {
 }
 SignInModal.propTypes = {
   classes: PropTypes.object,
-  isSignedInSubTitle: PropTypes.node,
-  isSignedInTitle: PropTypes.node,
+  signedInContentHeader: PropTypes.node,
+  signedInContentSubHeader: PropTypes.node,
   signInSubTitle: PropTypes.string,
   signInTitle: PropTypes.string,
   signedInTitle: PropTypes.node,
@@ -182,6 +181,9 @@ const styles = (theme) => ({
     [theme.breakpoints.down('md')]: {
       padding: '0 8px 8px',
     },
+  },
+  dialogTitle: {
+    minHeight: '55px',
   },
   radioPrimary: {
     padding: '.1rem',
