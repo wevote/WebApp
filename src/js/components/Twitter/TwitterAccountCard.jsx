@@ -37,7 +37,7 @@ export default class TwitterAccountCard extends Component {
               <div className="card-main__display-name">{nameDisplay}</div>
               { twitterDescriptionMinusName ? (
                 <ParsedTwitterDescription
-                  twitter_description={twitterDescriptionMinusName}
+                  twitterDescription={twitterDescriptionMinusName}
                 />
               ) :
                 null}
@@ -89,10 +89,10 @@ export default class TwitterAccountCard extends Component {
   }
 }
 TwitterAccountCard.propTypes = {
-  twitterHandle: PropTypes.string,
   twitterDescription: PropTypes.string,
   twitterFollowersCount: PropTypes.number,
+  twitterHandle: PropTypes.string,
+  twitterName: PropTypes.string,
   twitterPhotoUrl: PropTypes.string,
   twitterUserWebsite: PropTypes.string,
-  twitterName: PropTypes.string,
 };

@@ -161,7 +161,7 @@ class OrganizationVoterGuideCard extends Component {
         { twitterDescriptionMinusName && !this.props.turnOffDescription ? (
           <TwitterDescription>
             <ParsedTwitterDescription
-              twitter_description={twitterDescriptionMinusName}
+              twitterDescription={twitterDescriptionMinusName}
             />
           </TwitterDescription>
         ) :
@@ -179,8 +179,8 @@ class OrganizationVoterGuideCard extends Component {
 }
 OrganizationVoterGuideCard.propTypes = {
   classes: PropTypes.object,
-  organization: PropTypes.object.isRequired,
   isVoterOwner: PropTypes.bool,
+  organization: PropTypes.object.isRequired,
   turnOffDescription: PropTypes.bool,
 };
 

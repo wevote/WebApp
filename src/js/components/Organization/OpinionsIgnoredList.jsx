@@ -39,7 +39,18 @@ export default class OpinionsIgnoredList extends Component {
     return (
       <div className="guidelist card-child__list-group">
         {this.state.organizationsIgnored.map((oneOrganization) => (
-          <VoterGuideDisplayForList key={oneOrganization.organization_we_vote_id} {...oneOrganization}>
+          <VoterGuideDisplayForList
+            isInformationOnly={oneOrganization.is_information_only}
+            isOppose={oneOrganization.is_oppose}
+            isSupport={oneOrganization.is_support}
+            key={oneOrganization.organization_we_vote_id}
+            organizationWeVoteId={oneOrganization.organization_we_vote_id}
+            twitterDescription={oneOrganization.twitter_description}
+            twitterHandle={oneOrganization.twitter_handle}
+            voterGuideImageUrlLarge={oneOrganization.voter_guide_image_url_large}
+            voterGuideDisplayName={oneOrganization.voter_guide_display_name}
+            voteSmartRating={oneOrganization.vote_smart_rating}
+          >
             <Suspense fallback={<></>}>
               <FollowToggle organizationWeVoteId={oneOrganization.organization_we_vote_id} />
             </Suspense>
@@ -50,7 +61,5 @@ export default class OpinionsIgnoredList extends Component {
   }
 }
 OpinionsIgnoredList.propTypes = {
-  ballotItemWeVoteId: PropTypes.string,
   organizationsIgnored: PropTypes.array,
-  instantRefreshOn: PropTypes.bool,
 };

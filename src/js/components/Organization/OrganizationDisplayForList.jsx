@@ -77,13 +77,45 @@ export default class OrganizationDisplayForList extends Component {
     const isOnBallotItemPage = true;
     if (position) {
       if (position.vote_smart_rating) {
-        positionDescription =
-          <PositionRatingSnippet {...position} />;
+        positionDescription = (
+          <PositionRatingSnippet
+            // {...position}
+            ballotItemDisplayName={position.ballot_item_display_name}
+            showRatingDescription={position.show_rating_description}
+            voteSmartRating={position.vote_smart_rating}
+            voteSmartTimeSpan={position.vote_smart_time_span}
+          />
+        );
       } else if (position.is_support || position.is_oppose) {
-        positionDescription = <PositionSupportOpposeSnippet {...position} is_on_ballot_item_page={isOnBallotItemPage} />;
+        positionDescription = (
+          <PositionSupportOpposeSnippet
+          // {...position}
+          ballotItemDisplayName={position.ballot_item_display_name}
+          commentTextOff={position.comment_text_off}
+          isLookingAtSelf={position.is_looking_at_self}
+          isOnBallotItemPage={isOnBallotItemPage}
+          isOppose={position.is_oppose}
+          isSupport={position.is_support}
+          moreInfoUrl={position.more_info_url}
+          speakerDisplayName={position.speaker_display_name}
+          stanceDisplayOff={position.stance_display_off}
+          statementText={position.statement_text}
+          />
+        );
       } else if (position.is_information_only) {
-        positionDescription =
-          <PositionInformationOnlySnippet {...position} is_on_ballot_item_page={isOnBallotItemPage} />;
+        positionDescription = (
+          <PositionInformationOnlySnippet
+            // ...position
+            ballotItemDisplayName={position.ballotItemDisplayName}
+            commentTextOff={position.commentTextOff}
+            isLookingAtSelf={position.isLookingAtSelf}
+            isOnBallotItemPage={isOnBallotItemPage}
+            moreInfoUrl={position.moreInfoUrl}
+            speakerDisplayName={position.speakerDisplayName}
+            stanceDisplayOff={position.stanceDisplayOff}
+            statementText={position.statementText}
+          />
+        );
       }
     }
 
@@ -131,7 +163,7 @@ export default class OrganizationDisplayForList extends Component {
   }
 }
 OrganizationDisplayForList.propTypes = {
-  organizationWeVoteId: PropTypes.string,
   children: PropTypes.array, // Typically the FollowToggle
+  organizationWeVoteId: PropTypes.string,
   position: PropTypes.object,
 };

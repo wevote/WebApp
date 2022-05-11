@@ -89,8 +89,8 @@ export default class OrganizationVoterGuideOffice extends Component {
         { office.candidate_list ? (
           <div>
             <OrganizationVoterGuideCandidateList
-              contest_office_name={office.ballot_item_display_name}
-              organization_we_vote_id={this.state.organization_we_vote_id}
+              contestOfficeName={office.ballot_item_display_name}
+              organizationWeVoteId={this.state.organization_we_vote_id}
             >
               {office.candidate_list}
             </OrganizationVoterGuideCandidateList>

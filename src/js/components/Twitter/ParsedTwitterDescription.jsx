@@ -43,7 +43,7 @@ const ParsedTwitterDescription = (props) => {
     return parsedLocations;
   };
 
-  const parsedTwitterDescription = parseTextForTwitterLinks(props.twitter_description);
+  const parsedTwitterDescription = parseTextForTwitterLinks(props.twitterDescription);
 
   return (
     <span className="card-main__description">
@@ -53,16 +53,16 @@ const ParsedTwitterDescription = (props) => {
             <span
               key={snippet.toString() + index} // eslint-disable-line
             >
-              {props.twitter_description.slice(snippet.location[0], snippet.location[1])}
+              {props.twitterDescription.slice(snippet.location[0], snippet.location[1])}
               &nbsp;
             </span>
           ) : (
             <span key={snippet.toString() + index.toString()}>
               <a
-                href={props.twitter_description.slice(snippet.location[0], snippet.location[1])}
-                target={props.twitter_description.slice(snippet.location[0] + 8, snippet.location[1])}
+                href={props.twitterDescription.slice(snippet.location[0], snippet.location[1])}
+                target={props.twitterDescription.slice(snippet.location[0] + 8, snippet.location[1])}
               >
-                {props.twitter_description.slice(snippet.location[0], snippet.location[1])}
+                {props.twitterDescription.slice(snippet.location[0], snippet.location[1])}
               </a>
               &nbsp;
             </span>
@@ -73,7 +73,7 @@ const ParsedTwitterDescription = (props) => {
 };
 
 ParsedTwitterDescription.propTypes = {
-  twitter_description: PropTypes.string,
+  twitterDescription: PropTypes.string,
 };
 
 export default ParsedTwitterDescription;

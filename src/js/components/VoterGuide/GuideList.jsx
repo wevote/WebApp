@@ -245,8 +245,16 @@ class GuideList extends Component {
               };
               return (
                 <VoterGuideDisplayForList
+                  isInformationOnly={organization.is_information_only}
+                  isOppose={organization.is_oppose}
+                  isSupport={organization.is_support}
                   key={organization.organization_we_vote_id}
-                  {...organization}
+                  organizationWeVoteId={organization.organization_we_vote_id}
+                  twitterDescription={organization.twitter_description}
+                  twitterHandle={organization.twitter_handle}
+                  voterGuideDisplayName={organization.voter_guide_display_name}
+                  voterGuideImageUrlLarge={organization.voter_guide_image_url_large}
+                  voteSmartRating={organization.vote_smart_rating}
                 >
                   <Suspense fallback={<></>}>
                     <FollowToggle
@@ -278,7 +286,6 @@ GuideList.propTypes = {
   ballotItemWeVoteId: PropTypes.string,
   hideShowMoreItems: PropTypes.bool,
   incomingVoterGuideList: PropTypes.array,
-  instantRefreshOn: PropTypes.bool,
 };
 
 const ShowMoreItemsWrapper = styled('div')`

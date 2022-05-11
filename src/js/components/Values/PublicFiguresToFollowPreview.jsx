@@ -59,7 +59,6 @@ export default class PublicFiguresToFollowPreview extends Component {
               <GuideList
                 hideShowMoreItems
                 incomingVoterGuideList={voterGuidesToFollow}
-                instantRefreshOn
               />
             </Suspense>
             <Suspense fallback={<></>}>

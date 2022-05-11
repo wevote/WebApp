@@ -69,6 +69,7 @@ export default class OrganizationCard extends Component {
 
   // eslint-disable-next-line camelcase,react/sort-comp
   UNSAFE_componentWillReceiveProps (nextProps) {
+    const { organizationPositionsRequested } = this.state;
     // console.log('OrganizationCard, componentWillReceiveProps, nextProps:', nextProps);
     if (nextProps.organization && nextProps.organization.organization_we_vote_id) {
       this.setState({
@@ -85,7 +86,7 @@ export default class OrganizationCard extends Component {
         this.setState({
           organizationPosition,
         });
-      } else if (!this.state.organizationPositionsRequested) {
+      } else if (!organizationPositionsRequested) {
         OrganizationActions.positionListForOpinionMaker(nextProps.organization.organization_we_vote_id, true);
         this.setState({
           organizationPositionsRequested: true,
@@ -112,42 +113,74 @@ export default class OrganizationCard extends Component {
 
   render () {
     renderLog('OrganizationCard');  // Set LOG_RENDER_EVENTS to log all renders
-    if (!this.state.organizationWeVoteId.length) {
-      return <div className="card-popover__width--minimum">{LoadingWheel}</div>;
-    }
 
-    const { currentBallotIdInUrl, followToggleOn, turnOffDescription, turnOffLogo, turnOffTwitterHandle, urlWithoutHash, useReadMoreForTwitterDescription } = this.props;
+    const {
+      currentBallotIdInUrl, followToggleOn, turnOffDescription, turnOffLogo, turnOffTwitterHandle,
+      urlWithoutHash, useReadMoreForTwitterDescription,
+    } = this.props;
     const {
       organization_twitter_handle: organizationTwitterHandle, twitter_description: twitterDescriptionRaw,
       twitter_followers_count: twitterFollowersCount,
       organization_photo_url_large: organizationPhotoUrlLarge, organization_website: organizationWebsiteRaw,
       organization_name: organizationName,
     } = this.props.organization;
+    const {
+      organizationPosition, organizationWeVoteId, showRatingDescription,
+    } = this.state;
+    if (!organizationWeVoteId.length) {
+      return <div className="card-popover__width--minimum">{LoadingWheel}</div>;
+    }
     const organizationWebsite = organizationWebsiteRaw && organizationWebsiteRaw.slice(0, 4) !== 'http' ? `http://${organizationWebsiteRaw}` : organizationWebsiteRaw;
 
     // If the displayName is in the twitterDescription, remove it from twitterDescription
     const displayName = organizationName || '';
     const twitterDescription = twitterDescriptionRaw || '';
     const twitterDescriptionMinusName = removeTwitterNameFromDescription(displayName, twitterDescription);
-    const voterGuideLink = organizationTwitterHandle ? `/${organizationTwitterHandle}` : `/voterguide/${this.state.organizationWeVoteId}`;
+    const voterGuideLink = organizationTwitterHandle ? `/${organizationTwitterHandle}` : `/voterguide/${organizationWeVoteId}`;
 
     let positionDescription = '';
-    if (this.state.organizationPosition) {
+    if (organizationPosition) {
       const isOnBallotItemPage = true; // From "actor's" perspective: actorSupportsBallotItemLabel
-      // console.log("this.state.organizationPosition: ", this.state.organizationPosition);
-      if (this.state.organizationPosition.vote_smart_rating) {
+      // console.log("organizationPosition: ", organizationPosition);
+      if (organizationPosition.vote_smart_rating) {
         positionDescription = (
           <PositionRatingSnippet
-            {...this.state.organizationPosition}
-            show_rating_description={this.toggleRatingDescription}
+            ballotItemDisplayName={organizationPosition.ballot_item_display_name}
+            showRatingDescription={organizationPosition.show_rating_description}
+            voteSmartRating={organizationPosition.vote_smart_rating}
+            voteSmartTimeSpan={organizationPosition.vote_smart_time_span}
           />
         );
-      } else if (this.state.organizationPosition.is_support || this.state.organizationPosition.is_oppose) {
+      } else if (organizationPosition.is_support || organizationPosition.is_oppose) {
         positionDescription =
-          <PositionSupportOpposeSnippet {...this.state.organizationPosition} is_on_ballot_item_page={isOnBallotItemPage} />;
-      } else if (this.state.organizationPosition.is_information_only) {
+        (
+          <PositionSupportOpposeSnippet
+            ballotItemDisplayName={organizationPosition.ballot_item_display_name}
+            commentTextOff={organizationPosition.comment_text_off}
+            isLookingAtSelf={organizationPosition.is_looking_at_self}
+            isOnBallotItemPage={organizationPosition.is_on_ballot_item_page}
+            isOppose={organizationPosition.is_oppose}
+            isSupport={organizationPosition.is_support}
+            moreInfoUrl={organizationPosition.more_info_url}
+            speakerDisplayName={organizationPosition.speaker_display_name}
+            stanceDisplayOff={organizationPosition.stance_display_off}
+            statementText={organizationPosition.statement_text}
+          />
+        );
+      } else if (organizationPosition.is_information_only) {
         positionDescription =
-          <PositionInformationOnlySnippet {...this.state.organizationPosition} is_on_ballot_item_page={isOnBallotItemPage} />;
+        (
+          <PositionInformationOnlySnippet
+            ballotItemDisplayName={organizationPosition.ballot_item_display_name}
+            commentTextOff={organizationPosition.comment_text_off}
+            isLookingAtSelf={organizationPosition.is_looking_at_self}
+            isOnBallotItemPage={isOnBallotItemPage}
+            moreInfoUrl={organizationPosition.more_info_url}
+            speakerDisplayName={organizationPosition.speaker_display_name}
+            stanceDisplayOff={organizationPosition.stance_display_off}
+            statementText={organizationPosition.statement_text}
+          />
+        );
       }
     }
 
@@ -172,9 +205,9 @@ export default class OrganizationCard extends Component {
               <Suspense fallback={<></>}>
                 <FollowToggle
                   currentBallotIdInUrl={currentBallotIdInUrl}
-                  ballotItemWeVoteId={this.props.we_vote_id}
+                  ballotItemWeVoteId={this.props.weVoteId}
                   urlWithoutHash={urlWithoutHash}
-                  organizationWeVoteId={this.state.organizationWeVoteId}
+                  organizationWeVoteId={organizationWeVoteId}
                 />
               </Suspense>
             </div>
@@ -191,7 +224,7 @@ export default class OrganizationCard extends Component {
             <>
               {stringContains('https://t.co/', twitterDescriptionMinusName) ? (
                 <ParsedTwitterDescription
-                  twitter_description={twitterDescriptionMinusName}
+                  twitterDescription={twitterDescriptionMinusName}
                 />
               ) : (
                 <>
@@ -260,15 +293,15 @@ export default class OrganizationCard extends Component {
                 </WebsiteWrapper>
               )}
               <IssuesByOrganizationDisplayList
-                organizationWeVoteId={this.state.organizationWeVoteId}
+                organizationWeVoteId={organizationWeVoteId}
                 placement="bottom"
               />
               {/* 5 of your friends follow Organization Name<br /> */}
             </Suspense>
           ) : null}
-          { this.state.organizationPosition.vote_smart_rating ? (
+          { organizationPosition.vote_smart_rating ? (
             <RatingPopover
-              showDescription={this.state.showRatingDescription}
+              showDescription={showRatingDescription}
               toggleDescription={this.toggleRatingDescription}
             />
           ) : null}
@@ -285,9 +318,9 @@ OrganizationCard.propTypes = {
   turnOffDescription: PropTypes.bool,
   turnOffLogo: PropTypes.bool,
   turnOffTwitterHandle: PropTypes.bool,
-  useReadMoreForTwitterDescription: PropTypes.bool,
   urlWithoutHash: PropTypes.string,
-  we_vote_id: PropTypes.string,
+  useReadMoreForTwitterDescription: PropTypes.bool,
+  weVoteId: PropTypes.string,
 };
 
 const OrganizationCardWrapper = styled('div')`

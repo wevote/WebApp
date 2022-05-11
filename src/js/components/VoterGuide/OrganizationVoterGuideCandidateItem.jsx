@@ -31,22 +31,23 @@ export default class OrganizationVoterGuideCandidateItem extends Component {
   }
 
   componentDidMount () {
+    const { weVoteId } = this.props;
     this.voterGuideStoreListener = VoterGuideStore.addListener(this.onVoterGuideStoreChange.bind(this));
     this.onVoterGuideStoreChange();
 
     // console.log("OrganizationVoterGuideCandidateItem, this.props:", this.props);
-    if (this.props.we_vote_id) {
+    if (weVoteId) {
       // If here we want to get the candidate so we can get the officeWeVoteId
-      const candidate = CandidateStore.getCandidate(this.props.we_vote_id);
+      const candidate = CandidateStore.getCandidate(weVoteId);
       this.setState({
-        candidateWeVoteId: this.props.we_vote_id,
+        candidateWeVoteId: weVoteId,
         officeWeVoteId: candidate.contest_office_we_vote_id,
       });
     }
 
-    if (this.props.organization_we_vote_id) {
+    if (this.props.organizationWeVoteId) {
       this.setState({
-        organizationWeVoteId: this.props.organization_we_vote_id,
+        organizationWeVoteId: this.props.organizationWeVoteId,
       });
     }
   }
@@ -89,21 +90,26 @@ export default class OrganizationVoterGuideCandidateItem extends Component {
   render () {
     renderLog('OrganizationVoterGuideCandidateItem');  // Set LOG_RENDER_EVENTS to log all renders
     const {
-      ballot_item_display_name: ballotItemDisplayName,
+      ballotItemDisplayName,
+      candidatePhotoUrlMedium,
+      candidatePhotoUrlLarge,
+      contestOfficeName,
+      linkToBallotItemPage,
+      linkToOfficePage,
       party,
-      we_vote_id: candidateWeVoteId,
-      twitter_description: twitterDescription,
-      twitter_followers_count: twitterFollowersCount,
-      contest_office_name: contestOfficeName,
+      showLargeImage,
+      twitterDescription,
+      twitterFollowersCount,
+      weVoteId: candidateWeVoteId,
     } = this.props;
 
     let candidatePhotoUrl;
-    if (this.props.showLargeImage) {
-      if (this.props.candidate_photo_url_large) {
-        candidatePhotoUrl = this.props.candidate_photo_url_large;
+    if (showLargeImage) {
+      if (candidatePhotoUrlLarge) {
+        candidatePhotoUrl = candidatePhotoUrlLarge;
       }
-    } else if (this.props.candidate_photo_url_medium) {
-      candidatePhotoUrl = this.props.candidate_photo_url_medium;
+    } else if (candidatePhotoUrlMedium) {
+      candidatePhotoUrl = candidatePhotoUrlMedium;
     }
     let candidatePhotoUrlHtml;
     if (candidatePhotoUrl) {
@@ -126,15 +132,15 @@ export default class OrganizationVoterGuideCandidateItem extends Component {
       <div className="card-main candidate-card">
         <div className="card-main__media-object">
           <div className="card-main__media-object-anchor">
-            {this.props.link_to_ballot_item_page ?
+            {linkToBallotItemPage ?
               <Link to={this.getCandidateLink} className="u-no-underline">{candidatePhotoUrlHtml}</Link> :
               candidatePhotoUrlHtml}
             {twitterFollowersCount ? (
               <span
-                className={this.props.link_to_ballot_item_page ?
+                className={linkToBallotItemPage ?
                   'twitter-followers__badge u-cursor--pointer' :
                   'twitter-followers__badge'}
-                onClick={this.props.link_to_ballot_item_page ? this.goToCandidateLink : null}
+                onClick={linkToBallotItemPage ? this.goToCandidateLink : null}
               >
                 <Twitter />
                 <span title={numberWithCommas(twitterFollowersCount)}>{abbreviateNumber(twitterFollowersCount)}</span>
@@ -144,13 +150,13 @@ export default class OrganizationVoterGuideCandidateItem extends Component {
 
           <div className="card-main__media-object-content">
             <h2 className="card-main__display-name">
-              { this.props.link_to_ballot_item_page ?
+              { linkToBallotItemPage ?
                 <Link to={this.getCandidateLink}>{ballotItemDisplayName}</Link> :
                 ballotItemDisplayName}
             </h2>
-            <span onClick={this.props.link_to_ballot_item_page ? this.goToCandidateLink : null}>
+            <span onClick={linkToBallotItemPage ? this.goToCandidateLink : null}>
               <p
-                className={this.props.link_to_ballot_item_page ?
+                className={linkToBallotItemPage ?
                   'u-gray-darker u-cursor--pointer' :
                   'u-gray-darker'}
               >
@@ -159,23 +165,23 @@ export default class OrganizationVoterGuideCandidateItem extends Component {
                     <OfficeNameText
                       politicalParty={party}
                       contestOfficeName={contestOfficeName}
-                      officeLink={this.props.linkToOfficePage ? this.getOfficeLink() : ''}
+                      officeLink={linkToOfficePage ? this.getOfficeLink() : ''}
                     />
                   </Suspense>
                 ) : null}
               </p>
             </span>
             { twitterDescription ? (
-              <div className={`u-stack--xs ${this.props.link_to_ballot_item_page ? ' card-main__description-container--truncated' : ' card-main__description-container'}`}>
+              <div className={`u-stack--xs ${linkToBallotItemPage ? ' card-main__description-container--truncated' : ' card-main__description-container'}`}>
                 <div>
                   <ParsedTwitterDescription
-                    twitter_description={twitterDescription}
+                    twitterDescription={twitterDescription}
                   />
                 </div>
                 <Link to={this.getCandidateLink}>
-                  { this.props.link_to_ballot_item_page ? <span className="card-main__read-more-pseudo" /> : null }
+                  { linkToBallotItemPage ? <span className="card-main__read-more-pseudo" /> : null }
                 </Link>
-                { this.props.link_to_ballot_item_page ?
+                { linkToBallotItemPage ?
                   <Link to={this.getCandidateLink} className="card-main__read-more-link">&nbsp;Read more</Link> :
                   null}
               </div>
@@ -204,16 +210,16 @@ export default class OrganizationVoterGuideCandidateItem extends Component {
   }
 }
 OrganizationVoterGuideCandidateItem.propTypes = {
-  ballot_item_display_name: PropTypes.string.isRequired,
-  candidate_photo_url_large: PropTypes.string.isRequired,
-  candidate_photo_url_medium: PropTypes.string,
-  contest_office_name: PropTypes.string,
-  showLargeImage: PropTypes.bool,
-  link_to_ballot_item_page: PropTypes.bool,
+  ballotItemDisplayName: PropTypes.string.isRequired,
+  candidatePhotoUrlLarge: PropTypes.string.isRequired,
+  candidatePhotoUrlMedium: PropTypes.string,
+  contestOfficeName: PropTypes.string,
+  linkToBallotItemPage: PropTypes.bool,
   linkToOfficePage: PropTypes.bool,
-  organization_we_vote_id: PropTypes.string.isRequired,
+  organizationWeVoteId: PropTypes.string.isRequired,
   party: PropTypes.string,
-  twitter_description: PropTypes.string,
-  twitter_followers_count: PropTypes.number,
-  we_vote_id: PropTypes.string.isRequired, // This is the candidateWeVoteId
+  showLargeImage: PropTypes.bool,
+  twitterDescription: PropTypes.string,
+  twitterFollowersCount: PropTypes.number,
+  weVoteId: PropTypes.string.isRequired, // This is the candidateWeVoteId
 };

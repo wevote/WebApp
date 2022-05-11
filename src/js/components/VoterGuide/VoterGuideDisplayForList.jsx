@@ -21,37 +21,72 @@ const ReadMore = React.lazy(() => import(/* webpackChunkName: 'ReadMore' */ '../
 class VoterGuideDisplayForList extends PureComponent {
   render () {
     renderLog('VoterGuideDisplayForList');  // Set LOG_RENDER_EVENTS to log all renders
-    if (this.props.organization_we_vote_id === undefined) {
+    const {
+      children,
+      organizationWeVoteId,
+      position,
+      voterGuideImageUrlLarge,
+    } = this.props;
+
+    if (organizationWeVoteId === undefined) {
       // console.log('VoterGuideDisplayForList this.props.organization_we_vote_id === undefined');
       return null;
     }
 
     // We package up the above variables to mimic a position
-    const position = this.props;
-
-    const {
-      organization_we_vote_id: organizationWeVoteId,
-      voter_guide_image_url_large: voterGuideImageUrlLarge,
-    } = this.props; // twitter_followers_count,
     const numOfLines = 2;
-    const voterGuideDisplayName = this.props.voter_guide_display_name ? this.props.voter_guide_display_name : '';
-    const twitterDescription = this.props.twitter_description ? this.props.twitter_description : '';
+    const voterGuideDisplayName = this.props.voterGuideDisplayName ? this.props.voterGuideDisplayName : '';
+    const twitterDescription = this.props.twitterDescription ? this.props.twitterDescription : '';
     // console.log('VoterGuideDisplayForList twitterDescription: ', twitterDescription);
 
     // If the voter_guide_display_name is in the twitter_description, remove it
     const twitterDescriptionMinusName = removeTwitterNameFromDescription(voterGuideDisplayName, twitterDescription);
 
     // TwitterHandle-based link
-    const voterGuideLink = this.props.twitter_handle ? `/${this.props.twitter_handle}` : `/voterguide/${organizationWeVoteId}`;
+    const voterGuideLink = this.props.twitterHandle ? `/${this.props.twitterHandle}` : `/voterguide/${organizationWeVoteId}`;
 
     let positionDescription = '';
     const isOnBallotItemPage = true; // From 'actor's' perspective: actorSupportsBallotItemLabel
-    if (position.vote_smart_rating) {
-      positionDescription = <PositionRatingSnippet {...position} />;
-    } else if (position.is_support || position.is_oppose) {
-      positionDescription = <PositionSupportOpposeSnippet {...position} isOnBallotItemPage={isOnBallotItemPage} />;
-    } else if (position.is_information_only) {
-      positionDescription = <PositionInformationOnlySnippet {...position} is_on_ballot_item_page={isOnBallotItemPage} />;
+    if (position.voteSmartRating) {
+      positionDescription = (
+        <PositionRatingSnippet
+          // ...position
+          ballotItemDisplayName={position.ballot_item_display_name}
+          showRatingDescription={position.show_rating_description}
+          voteSmartRating={position.vote_smart_rating}
+          voteSmartTimeSpan={position.vote_smart_time_span}
+        />
+      );
+    } else if (position.isSupport || position.isOppose) {
+      positionDescription = (
+        <PositionSupportOpposeSnippet
+          // ...position
+          ballotItemDisplayName={position.ballot_item_display_name}
+          commentTextOff={position.comment_text_off}
+          isLookingAtSelf={position.is_looking_at_self}
+          isOnBallotItemPage={isOnBallotItemPage}
+          isOppose={position.is_oppose}
+          isSupport={position.is_support}
+          moreInfoUrl={position.more_info_url}
+          speakerDisplayName={position.speaker_display_name}
+          stanceDisplayOff={position.stance_display_off}
+          statementText={position.statement_text}
+        />
+      );
+    } else if (position.isInformationOnly) {
+      positionDescription = (
+        <PositionInformationOnlySnippet
+          // ...position
+          ballotItemDisplayName={position.ballot_item_display_name}
+          commentTextOff={position.comment_text_off}
+          isLookingAtSelf={position.is_looking_at_self}
+          isOnBallotItemPage={isOnBallotItemPage}
+          moreInfoUrl={position.more_info_url}
+          speakerDisplayName={position.speaker_display_name}
+          stanceDisplayOff={position.stance_display_off}
+          statementText={position.statement_text}
+        />
+      );
     } else {
       // console.log('VoterGuideDisplayForList NO positionDescription');
     }
@@ -99,7 +134,7 @@ class VoterGuideDisplayForList extends PureComponent {
           </div>
           <div className="card-child__additional">
             <div className="card-child__follow-buttons">
-              {this.props.children}
+              {children}
             </div>
           </div>
         </div>
@@ -109,22 +144,16 @@ class VoterGuideDisplayForList extends PureComponent {
 }
 VoterGuideDisplayForList.propTypes = {
   children: PropTypes.object, // This is how we pass in the FollowToggle
-  organization_we_vote_id: PropTypes.string,
-  voter_guide_image_url_large: PropTypes.string,
-  voter_guide_display_name: PropTypes.string,
-  candidate_name: PropTypes.string,
-  speaker_display_name: PropTypes.string,
-  twitter_description: PropTypes.string,
-  twitter_followers_count: PropTypes.number,
-  twitter_handle: PropTypes.string,
-  is_support: PropTypes.bool,
-  is_positive_rating: PropTypes.bool,
-  is_oppose: PropTypes.bool,
-  is_negative_rating: PropTypes.bool,
-  is_information_only: PropTypes.bool,
-  vote_smart_rating: PropTypes.string,
-  speaker_text: PropTypes.string,
-  more_info_url: PropTypes.string,
+  isInformationOnly: PropTypes.bool,
+  isOppose: PropTypes.bool,
+  isSupport: PropTypes.bool,
+  organizationWeVoteId: PropTypes.string,
+  position: PropTypes.string,
+  twitterDescription: PropTypes.string,
+  twitterHandle: PropTypes.string,
+  voterGuideImageUrlLarge: PropTypes.string,
+  voterGuideDisplayName: PropTypes.string,
+  voteSmartRating: PropTypes.string,
 };
 
 const styles = (theme) => ({

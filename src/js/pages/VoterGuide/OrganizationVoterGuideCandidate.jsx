@@ -147,20 +147,27 @@ class OrganizationVoterGuideCandidate extends Component {
         />
         <section className="card">
           <OrganizationVoterGuideCandidateItem
-            {...candidate}
-            contest_office_name={candidate.contest_office_name}
+            ballotItemDisplayName={candidate.ballot_item_display_name}
+            candidatePhotoUrlLarge={candidate.candidate_photo_url_large}
+            candidatePhotoUrlMedium={candidate.candidate_photo_url_medium}
+            contestOfficeName={candidate.contest_office_name}
+            key={candidate.we_vote_id}
+            linkToBallotItemPage
             linkToOfficePage
-            organization_we_vote_id={organizationWeVoteId}
+            organizationWeVoteId={organizationWeVoteId}
+            party={candidate.party}
             showLargeImage
-            showPositionStatementActionBar
+            twitterDescription={candidate.twitter_description}
+            twitterFollowersCount={candidate.twitter_followers_count}
+            weVoteId={candidate.we_vote_id}
           />
           <div className="card__additional">
             { allCachedPositionsForThisCandidate ? (
               <div>
                 <Suspense fallback={<></>}>
                   <PositionList
-                    incomingPositionList={allCachedPositionsForThisCandidate}
                     ballotItemDisplayName={candidate.ballot_item_display_name}
+                    incomingPositionList={allCachedPositionsForThisCandidate}
                     params={params}
                     positionListExistsTitle={(
                       <PositionListIntroductionText>
