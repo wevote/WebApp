@@ -6,7 +6,7 @@ import { renderLog } from '../../common/utils/logging';
 import SupportStore from '../../stores/SupportStore';
 import VoterGuideStore from '../../stores/VoterGuideStore';
 
-const BallotItemSupportOpposeCountDisplay = React.lazy(() => import(/* webpackChunkName: 'BallotItemSupportOpposeCountDisplay' */ '../Widgets/BallotItemSupportOpposeCountDisplay'));
+const BallotItemSupportOpposeScoreDisplay = React.lazy(() => import(/* webpackChunkName: 'BallotItemSupportOpposeScoreDisplay' */ '../Widgets/ScoreDisplay/BallotItemSupportOpposeScoreDisplay'));
 
 
 class MeasureItemReadyToVote extends Component {
@@ -73,7 +73,7 @@ class MeasureItemReadyToVote extends Component {
               </BioColumn>
               <OfficeColumn>
                 <Suspense fallback={<></>}>
-                  <BallotItemSupportOpposeCountDisplay ballotItemWeVoteId={measureWeVoteId} />
+                  <BallotItemSupportOpposeScoreDisplay ballotItemWeVoteId={measureWeVoteId} />
                 </Suspense>
               </OfficeColumn>
             </InnerWrapper>

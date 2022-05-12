@@ -23,7 +23,7 @@ import {
 
 const FollowToggleCheckPlus = React.lazy(() => import(/* webpackChunkName: 'FollowToggleCheckPlus' */ '../Widgets/FollowToggleCheckPlus'));
 const ImageHandler = React.lazy(() => import(/* webpackChunkName: 'ImageHandler' */ '../ImageHandler'));
-const PositionItemScorePopover = React.lazy(() => import(/* webpackChunkName: 'PositionItemScorePopover' */ '../Widgets/PositionItemScorePopover'));
+const PositionItemScorePopover = React.lazy(() => import(/* webpackChunkName: 'PositionItemScorePopover' */ '../Widgets/ScoreDisplay/PositionItemScorePopover'));
 const StickyPopover = React.lazy(() => import(/* webpackChunkName: 'StickyPopover' */ './StickyPopover'));
 
 

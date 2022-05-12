@@ -16,9 +16,9 @@ import BallotStore from '../../stores/BallotStore';
 import CandidateStore from '../../stores/CandidateStore';
 import MeasureStore from '../../stores/MeasureStore';
 import OrganizationStore from '../../stores/OrganizationStore';
-import BallotItemVoterGuideSupportOpposeDisplay from '../Widgets/BallotItemVoterGuideSupportOpposeDisplay';
+import BallotItemVoterGuideSupportOpposeDisplay from '../Widgets/ScoreDisplay/BallotItemVoterGuideSupportOpposeDisplay';
 
-const BallotItemSupportOpposeCountDisplay = React.lazy(() => import(/* webpackChunkName: 'BallotItemSupportOpposeCountDisplay' */ '../Widgets/BallotItemSupportOpposeCountDisplay'));
+const BallotItemSupportOpposeScoreDisplay = React.lazy(() => import(/* webpackChunkName: 'BallotItemSupportOpposeScoreDisplay' */ '../Widgets/ScoreDisplay/BallotItemSupportOpposeScoreDisplay'));
 const ImageHandler = React.lazy(() => import(/* webpackChunkName: 'ImageHandler' */ '../ImageHandler'));
 const OfficeNameText = React.lazy(() => import(/* webpackChunkName: 'OfficeNameText' */ '../Widgets/OfficeNameText'));
 const OpenExternalWebSite = React.lazy(() => import(/* webpackChunkName: 'OpenExternalWebSite' */ '../../common/components/Widgets/OpenExternalWebSite'));
@@ -318,7 +318,7 @@ class VoterGuidePositionItem extends Component {
                 </DesktopItemNameAndOfficeContainer>
                 <BallotItemSupportOpposeCountDisplayWrapper>
                   <Suspense fallback={<></>}>
-                    <BallotItemSupportOpposeCountDisplay
+                    <BallotItemSupportOpposeScoreDisplay
                       ballotItemDisplayName={ballotItemDisplayName}
                       ballotItemWeVoteId={ballotItemWeVoteId}
                       // hideEndorsementsOverview
@@ -435,7 +435,7 @@ class VoterGuidePositionItem extends Component {
                 <MobileItemEndorsementDisplay>
                   <BallotItemSupportOpposeCountDisplayWrapper>
                     <Suspense fallback={<></>}>
-                      <BallotItemSupportOpposeCountDisplay
+                      <BallotItemSupportOpposeScoreDisplay
                         ballotItemDisplayName={ballotItemDisplayName}
                         ballotItemWeVoteId={ballotItemWeVoteId}
                         // hideEndorsementsOverview

@@ -4,14 +4,17 @@ import withStyles from '@mui/styles/withStyles';
 import withTheme from '@mui/styles/withTheme';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
-import { isCordova } from '../../common/utils/isCordovaOrWebApp';
-import { renderLog } from '../../common/utils/logging';
-import OrganizationStore from '../../stores/OrganizationStore';
-import StickyPopover from '../Ballot/StickyPopover';
-import FriendsOnlyIndicator from './FriendsOnlyIndicator';
+import { isCordova } from '../../../common/utils/isCordovaOrWebApp';
+import { renderLog } from '../../../common/utils/logging';
+import {
+  NetworkScore,
+} from '../../Style/ScoreDisplayStyles';
+import OrganizationStore from '../../../stores/OrganizationStore';
+import StickyPopover from '../../Ballot/StickyPopover';
+import FriendsOnlyIndicator from '../FriendsOnlyIndicator';
 import PositionItemScorePopover from './PositionItemScorePopover';
 
-const ImageHandler = React.lazy(() => import(/* webpackChunkName: 'ImageHandler' */ '../ImageHandler'));
+const ImageHandler = React.lazy(() => import(/* webpackChunkName: 'ImageHandler' */ '../../ImageHandler'));
 
 class BallotItemVoterGuideSupportOpposeDisplay extends Component {
   static closePositionsPopover () {
@@ -110,7 +113,7 @@ class BallotItemVoterGuideSupportOpposeDisplay extends Component {
             popoverComponent={positionsPopover}
             placement="bottom"
             id="ballot-support-oppose-count-trigger-click-root-close"
-            openOnClick
+            openOnClick={!this.props.onClickFunction}
             showCloseIcon
           >
             <OrganizationSupportWrapper>
@@ -146,7 +149,7 @@ class BallotItemVoterGuideSupportOpposeDisplay extends Component {
             popoverComponent={positionsPopover}
             placement="bottom"
             id="ballot-support-oppose-count-trigger-click-root-close"
-            openOnClick
+            openOnClick={!this.props.onClickFunction}
             showCloseIcon
           >
             <OrganizationOpposeWrapper>
@@ -182,7 +185,7 @@ class BallotItemVoterGuideSupportOpposeDisplay extends Component {
             popoverComponent={positionsPopover}
             placement="bottom"
             id="ballot-support-oppose-count-trigger-click-root-close"
-            openOnClick
+            openOnClick={!this.props.onClickFunction}
             showCloseIcon
           >
             <OrganizationInformationOnlyWrapper>
@@ -219,7 +222,7 @@ class BallotItemVoterGuideSupportOpposeDisplay extends Component {
             popoverComponent={positionsPopover}
             placement="bottom"
             id="ballot-support-oppose-count-trigger-click-root-close"
-            openOnClick
+            openOnClick={!this.props.onClickFunction}
             showCloseIcon
           >
             <NetworkScore
@@ -236,6 +239,7 @@ class BallotItemVoterGuideSupportOpposeDisplay extends Component {
 BallotItemVoterGuideSupportOpposeDisplay.propTypes = {
   handleLeaveCandidateCard: PropTypes.func,
   handleEnterCandidateCard: PropTypes.func,
+  onClickFunction: PropTypes.func,
   positionWeVoteId: PropTypes.string,
 };
 
@@ -261,29 +265,6 @@ const Wrapper = styled('div')`
   margin-top: .1rem;
   width: 100%;
 `;
-
-// TODO:  This is almost identical to BallotItemSupportOpposeDisplay, it should be a reused component
-const NetworkScore = styled('div', {
-  shouldForwardProp: (prop) => !['hideNumbersOfAllPositions', 'voterPersonalNetworkScoreIsNegative', 'voterPersonalNetworkScoreIsPositive'].includes(prop),
-})(({ hideNumbersOfAllPositions, voterPersonalNetworkScoreIsNegative, voterPersonalNetworkScoreIsPositive }) => (`
-
-  background: ${(voterPersonalNetworkScoreIsNegative && 'rgb(255, 73, 34)') || (voterPersonalNetworkScoreIsPositive && 'rgb(31, 192, 111)') || (hideNumbersOfAllPositions && 'rgb(240, 240, 240)') || '#888'};
-  border-radius: 5px;
-  box-shadow: 0 1px 3px 0 rgba(0,0,0,.2), 0 1px 1px 0 rgba(0,0,0,.14), 0 2px 1px -1px rgba(0,0,0,.12);
-  color: white;
-  cursor: pointer;
-  display: flex;
-  font-size: 16px;
-  font-weight: bold;
-  height: 40px;
-  justify-content: center;
-  width: 40px;
-  @media print{
-    border-width: 1px;
-    border-style: solid;
-    border-color: ${(voterPersonalNetworkScoreIsNegative && 'rgb(255, 73, 34)') || (voterPersonalNetworkScoreIsPositive && 'rgb(31, 192, 111)') || (hideNumbersOfAllPositions && 'rgb(240, 240, 240)') || '#888'};
-  }
-`));
 
 const OrganizationSupportWrapper = styled('div')`
   position: relative;

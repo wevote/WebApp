@@ -45,19 +45,17 @@ class BallotShowAllItemsFooter extends Component {
     const { classes } = this.props;
     if (ballot && ballot.length > 0) {
       return (
-        <div className={classes.card}>
-          <div className={classes.cardBody}>
+        <BallotShowAllItemsFooterWrapper>
+          <ContentBody>
             <Typography id="ballotSummaryFooter-showMoreBallotItems" variant="h2" classes={{ root: classes.typography }}>
               <Ballot className={classes.icon} location={window.location} />
               Show All Ballot Items
             </Typography>
-            <Row className="row">
-              <Button onClick={() => this.jumpToNewSection()} variant="outlined" classes={{ root: classes.button }}>
-                Show all Ballot Items
-              </Button>
-            </Row>
-          </div>
-        </div>
+            <Button onClick={() => this.jumpToNewSection()} variant="outlined" classes={{ root: classes.button }}>
+              Show all
+            </Button>
+          </ContentBody>
+        </BallotShowAllItemsFooterWrapper>
       );
     } else {
       return <div />;
@@ -81,21 +79,6 @@ const styles = (theme) => ({
     display: 'flex',
     alignItems: 'center',
   },
-  card: {
-    backgroundColor: '#fff',
-    borderRadius: '0px',
-    boxShadow: '0 1px 3px 0 rgba(0, 0, 0, 0.2), 0 1px 1px 0 rgba(0, 0, 0, 0.14), 0 2px 1px -1px rgba(0, 0, 0, 0.12)',
-    marginBottom: '16px',
-    [theme.breakpoints.down('md')]: {
-      marginLeft: '-16px',
-      marginRight: '-16px',
-    },
-    overflowY: 'none',
-    border: 'none',
-  },
-  cardBody: {
-    padding: '20px',
-  },
   icon: {
     marginRight: 12,
     color: '#2E3C5D',
@@ -103,8 +86,24 @@ const styles = (theme) => ({
   },
 });
 
-const Row = styled('div')`
-  margin: 0 !important;
+const BallotShowAllItemsFooterWrapper = styled('div')(({ theme }) => (`
+  background-color: #fff;
+  border: none;
+  display: flex;
+  justify-content: center;
+  margin-bottom: 16px;
+  overflow-y: none;
+  ${theme.breakpoints.down('md')} {
+      margin-left: -16px;
+      margin-right: -16px;
+  }
+`));
+
+const ContentBody = styled('div')`
+  align-items: center;
+  flex-direction: column;
+  display: flex;
+  justify-content: center;
 `;
 
 export default withStyles(styles)(BallotShowAllItemsFooter);

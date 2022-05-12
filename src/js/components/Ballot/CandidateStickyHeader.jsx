@@ -8,7 +8,7 @@ import { renderLog } from '../../common/utils/logging';
 import { cordovaStickyHeaderPaddingTop } from '../../utils/cordovaOffsets';
 
 const BallotItemSupportOpposeComment = React.lazy(() => import(/* webpackChunkName: 'BallotItemSupportOpposeComment' */ '../Widgets/BallotItemSupportOpposeComment'));
-const BallotItemSupportOpposeCountDisplay = React.lazy(() => import(/* webpackChunkName: 'BallotItemSupportOpposeCountDisplay' */ '../Widgets/BallotItemSupportOpposeCountDisplay'));
+const BallotItemSupportOpposeScoreDisplay = React.lazy(() => import(/* webpackChunkName: 'BallotItemSupportOpposeScoreDisplay' */ '../Widgets/ScoreDisplay/BallotItemSupportOpposeScoreDisplay'));
 
 
 class CandidateStickyHeader extends Component {
@@ -50,7 +50,7 @@ class CandidateStickyHeader extends Component {
             </ColumnOne>
             <ColumnTwo>
               <Suspense fallback={<></>}>
-                <BallotItemSupportOpposeCountDisplay ballotItemWeVoteId={candidateWeVoteId} blockOnClickShowOrganizationModalWithPositions />
+                <BallotItemSupportOpposeScoreDisplay ballotItemWeVoteId={candidateWeVoteId} blockOnClickShowOrganizationModalWithPositions />
               </Suspense>
             </ColumnTwo>
           </Flex>

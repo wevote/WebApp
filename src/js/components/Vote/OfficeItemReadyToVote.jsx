@@ -10,7 +10,7 @@ import SupportStore from '../../stores/SupportStore';
 import VoterGuideStore from '../../stores/VoterGuideStore';
 
 const ImageHandler = React.lazy(() => import(/* webpackChunkName: 'ImageHandler' */ '../ImageHandler'));
-const BallotItemSupportOpposeCountDisplay = React.lazy(() => import(/* webpackChunkName: 'BallotItemSupportOpposeCountDisplay' */ '../Widgets/BallotItemSupportOpposeCountDisplay'));
+const BallotItemSupportOpposeScoreDisplay = React.lazy(() => import(/* webpackChunkName: 'BallotItemSupportOpposeScoreDisplay' */ '../Widgets/ScoreDisplay/BallotItemSupportOpposeScoreDisplay'));
 
 
 class OfficeItemReadyToVote extends Component {
@@ -126,7 +126,7 @@ class OfficeItemReadyToVote extends Component {
                       </DesktopTabletView>
                       <BallotItemSupportOpposeCountDisplayWrapper>
                         <Suspense fallback={<></>}>
-                          <BallotItemSupportOpposeCountDisplay ballotItemWeVoteId={oneCandidate.we_vote_id} />
+                          <BallotItemSupportOpposeScoreDisplay ballotItemWeVoteId={oneCandidate.we_vote_id} />
                         </Suspense>
                       </BallotItemSupportOpposeCountDisplayWrapper>
                     </OfficeColumn>

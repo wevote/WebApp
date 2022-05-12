@@ -449,15 +449,7 @@ const EndorsementRow = styled('div')`
   flex-flow: row nowrap;
   justify-content: space-between;
   margin-left: 6px;
-  margin-right: 24px;
-`;
-
-const EndorsementsOuterWrapper = styled('div')`
-  display: flex;
-  justify-content: flex-start;
-`;
-
-const EndorsementsOverviewShowOrNotShow = styled('div')`
+  min-width: 70px;
 `;
 
 const EndorsementsContainer = styled('div')`
@@ -470,6 +462,14 @@ const EndorsementsInnerWrapper = styled('div')`
   display: flex;
   justify-content: flex-start;
   user-select: none;
+`;
+
+const EndorsementsOuterWrapper = styled('div')`
+  display: flex;
+  justify-content: flex-start;
+`;
+
+const EndorsementsOverviewShowOrNotShow = styled('div')`
 `;
 
 const EndorsementsOverviewSpacer = styled('div')`

@@ -6,7 +6,6 @@ import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
-import OrganizationActions from '../../actions/OrganizationActions';
 import SvgImage from '../../common/components/Widgets/SvgImage';
 import abbreviateNumber from '../../common/utils/abbreviateNumber';
 import { renderLog } from '../../common/utils/logging';
@@ -25,7 +24,7 @@ import PositionItemSquare from './PositionItemSquare';
 const FollowToggle = React.lazy(() => import(/* webpackChunkName: 'FollowToggle' */ '../Widgets/FollowToggle'));
 const ImageHandler = React.lazy(() => import(/* webpackChunkName: 'ImageHandler' */ '../ImageHandler'));
 const OpenExternalWebSite = React.lazy(() => import(/* webpackChunkName: 'OpenExternalWebSite' */ '../../common/components/Widgets/OpenExternalWebSite'));
-const PositionItemScorePopover = React.lazy(() => import(/* webpackChunkName: 'PositionItemScorePopover' */ '../Widgets/PositionItemScorePopover'));
+const PositionItemScorePopover = React.lazy(() => import(/* webpackChunkName: 'PositionItemScorePopover' */ '../Widgets/ScoreDisplay/PositionItemScorePopover'));
 const ReadMore = React.lazy(() => import(/* webpackChunkName: 'ReadMore' */ '../../common/components/Widgets/ReadMore'));
 const StickyPopover = React.lazy(() => import(/* webpackChunkName: 'StickyPopover' */ './StickyPopover'));
 
@@ -102,24 +101,25 @@ class PositionItem extends Component {
   }
 
   onVoterGuideStoreChange () {
-    const { position } = this.props;
-    const { ballot_item_we_vote_id: ballotItemWeVoteId, speaker_we_vote_id: organizationWeVoteId } = position;
+    // const { position } = this.props;
+    // const { ballot_item_we_vote_id: ballotItemWeVoteId, speaker_we_vote_id: organizationWeVoteId } = position;
 
-    // We want to make sure we have all of the position information so that comments show up
-    if (ballotItemWeVoteId) {
-      const voterGuidesForThisBallotItem = VoterGuideStore.getVoterGuidesToFollowForBallotItemId(ballotItemWeVoteId);
-
-      if (voterGuidesForThisBallotItem) {
-        voterGuidesForThisBallotItem.forEach((oneVoterGuide) => {
-          // console.log('oneVoterGuide: ', oneVoterGuide);
-          if (organizationWeVoteId === oneVoterGuide.organization_we_vote_id) {  // Request position list for the organization of this position
-            if (!OrganizationStore.positionListForOpinionMakerHasBeenRetrievedOnce(oneVoterGuide.google_civic_election_id, oneVoterGuide.organization_we_vote_id)) {
-              OrganizationActions.positionListForOpinionMaker(oneVoterGuide.organization_we_vote_id, false, true, oneVoterGuide.google_civic_election_id);
-            }
-          }
-        });
-      }
-    }
+    // This puts too much strain on the browser since PositionItems are in a list
+    // // We want to make sure we have all of the position information so that comments show up
+    // if (ballotItemWeVoteId) {
+    //   const voterGuidesForThisBallotItem = VoterGuideStore.getVoterGuidesToFollowForBallotItemId(ballotItemWeVoteId);
+    //
+    //   if (voterGuidesForThisBallotItem) {
+    //     voterGuidesForThisBallotItem.forEach((oneVoterGuide) => {
+    //       // console.log('oneVoterGuide: ', oneVoterGuide);
+    //       if (organizationWeVoteId === oneVoterGuide.organization_we_vote_id) {  // Request position list for the organization of this position
+    //         if (!OrganizationStore.positionListForOpinionMakerHasBeenRetrievedOnce(oneVoterGuide.google_civic_election_id, oneVoterGuide.organization_we_vote_id)) {
+    //           OrganizationActions.positionListForOpinionMaker(oneVoterGuide.organization_we_vote_id, false, true, oneVoterGuide.google_civic_election_id);
+    //         }
+    //       }
+    //     });
+    //   }
+    // }
   }
 
   closeDrawer () {
