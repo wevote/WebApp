@@ -58,10 +58,11 @@ export default class OrganizationCard extends Component {
           organizationPosition,
         });
       } else {
-        OrganizationActions.positionListForOpinionMaker(this.props.organization.organization_we_vote_id, true);
-        this.setState({
-          organizationPositionsRequested: true,
-        });
+        // OrganizationCard is used in lists, and this puts strain on the browser
+        // OrganizationActions.positionListForOpinionMaker(this.props.organization.organization_we_vote_id, true);
+        // this.setState({
+        //   organizationPositionsRequested: true,
+        // });
       }
     }
     // If no position, we need to call positionListForOpinionMaker here

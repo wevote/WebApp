@@ -5,14 +5,14 @@ import withTheme from '@mui/styles/withTheme';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
 import { ReactSVG } from 'react-svg';
-import normalizedImagePath from '../../common/utils/normalizedImagePath';
-import { cleanArray } from '../../utils/textFormat';
-import FriendsIcon from './FriendsIcon';
+import normalizedImagePath from '../../../common/utils/normalizedImagePath';
+import { cleanArray } from '../../../utils/textFormat';
+import FriendsIcon from '../FriendsIcon';
 import PositionItemScorePopoverTextOnly from './PositionItemScorePopoverTextOnly';
 
-const FollowToggle = React.lazy(() => import(/* webpackChunkName: 'FollowToggle' */ './FollowToggle'));
-const MaterialUIPopover = React.lazy(() => import(/* webpackChunkName: 'MaterialUIPopover' */ './MaterialUIPopover'));
-const ShowMoreFooter = React.lazy(() => import(/* webpackChunkName: 'ShowMoreFooter' */ '../Navigation/ShowMoreFooter'));
+const FollowToggle = React.lazy(() => import(/* webpackChunkName: 'FollowToggle' */ '../FollowToggle'));
+const MaterialUIPopover = React.lazy(() => import(/* webpackChunkName: 'MaterialUIPopover' */ '../MaterialUIPopover'));
+const ShowMoreFooter = React.lazy(() => import(/* webpackChunkName: 'ShowMoreFooter' */ '../../Navigation/ShowMoreFooter'));
 
 class PositionSummaryListForPopover extends Component {
   constructor (props) {

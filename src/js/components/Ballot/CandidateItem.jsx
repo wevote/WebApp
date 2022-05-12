@@ -19,7 +19,7 @@ import isMobileAndTabletScreenSize from '../../utils/isMobileAndTabletScreenSize
 import { stripHtmlFromString } from '../../utils/textFormat';
 
 const BallotItemSupportOpposeComment = React.lazy(() => import(/* webpackChunkName: 'BallotItemSupportOpposeComment' */ '../Widgets/BallotItemSupportOpposeComment'));
-const BallotItemSupportOpposeCountDisplay = React.lazy(() => import(/* webpackChunkName: 'BallotItemSupportOpposeCountDisplay' */ '../Widgets/BallotItemSupportOpposeCountDisplay'));
+const BallotItemSupportOpposeScoreDisplay = React.lazy(() => import(/* webpackChunkName: 'BallotItemSupportOpposeScoreDisplay' */ '../Widgets/ScoreDisplay/BallotItemSupportOpposeScoreDisplay'));
 const ImageHandler = React.lazy(() => import(/* webpackChunkName: 'ImageHandler' */ '../ImageHandler'));
 const IssuesByBallotItemDisplayList = React.lazy(() => import(/* webpackChunkName: 'IssuesByBallotItemDisplayList' */ '../Values/IssuesByBallotItemDisplayList'));
 const ItemActionBar = React.lazy(() => import(/* webpackChunkName: 'ItemActionBar' */ '../Widgets/ItemActionBar/ItemActionBar'));
@@ -418,12 +418,12 @@ class CandidateItem extends Component {
           </CandidateInfo>
           <BallotItemSupportOpposeCountDisplayWrapper isClickable={!blockOnClickShowOrganizationModalWithPositions}>
             <Suspense fallback={<></>}>
-              <BallotItemSupportOpposeCountDisplay
+              <BallotItemSupportOpposeScoreDisplay
                 ballotItemWeVoteId={candidateWeVoteId}
                 blockOnClickShowOrganizationModalWithPositions={blockOnClickShowOrganizationModalWithPositions}
                 closeSupportOpposeCountDisplayModal={closeSupportOpposeCountDisplayModal}
                 controlAdviserMaterialUIPopoverFromProp={controlAdviserMaterialUIPopoverFromProp}
-                goToBallotItem={this.props.goToBallotItem}
+                showAllPositions={this.props.goToBallotItem}
                 handleLeaveCandidateCard={forDesktop ? this.handleLeave : null}
                 handleEnterCandidateCard={forDesktop ? this.handleEnter : null}
                 hideEndorsementsOverview={this.props.hideEndorsementsOverview}
@@ -432,7 +432,6 @@ class CandidateItem extends Component {
                 openSupportOpposeCountDisplayModal={openSupportOpposeCountDisplayModal}
                 supportOpposeCountDisplayModalTutorialOn={supportOpposeCountDisplayModalTutorialOn}
                 supportOpposeCountDisplayModalTutorialText={supportOpposeCountDisplayModalTutorialText}
-                uniqueExternalId={forDesktop ? 'CandidateItem-Desktop' : 'CandidateItem-MobileTablet'}
                 showDownArrow={showDownArrow}
                 showUpArrow={showUpArrow}
               />

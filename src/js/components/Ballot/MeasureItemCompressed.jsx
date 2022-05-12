@@ -27,7 +27,7 @@ import {
 import PositionRowList from './PositionRowList';
 import PositionRowEmpty from './PositionRowEmpty';
 
-const BallotItemSupportOpposeCountDisplay = React.lazy(() => import(/* webpackChunkName: 'BallotItemSupportOpposeCountDisplay' */ '../Widgets/BallotItemSupportOpposeCountDisplay'));
+const BallotItemSupportOpposeScoreDisplay = React.lazy(() => import(/* webpackChunkName: 'BallotItemSupportOpposeScoreDisplay' */ '../Widgets/ScoreDisplay/BallotItemSupportOpposeScoreDisplay'));
 const DelayedLoad = React.lazy(() => import(/* webpackChunkName: 'DelayedLoad' */ '../../common/components/Widgets/DelayedLoad'));
 const ItemActionBar = React.lazy(() => import(/* webpackChunkName: 'ItemActionBar' */ '../Widgets/ItemActionBar/ItemActionBar'));
 const TopCommentByBallotItem = React.lazy(() => import(/* webpackChunkName: 'TopCommentByBallotItem' */ '../Widgets/TopCommentByBallotItem'));
@@ -269,9 +269,9 @@ class MeasureItemCompressed extends Component {
             </MeasureInfoWrapper>
             <BallotItemSupportOpposeCountDisplayWrapper>
               <Suspense fallback={<></>}>
-                <BallotItemSupportOpposeCountDisplay
+                <BallotItemSupportOpposeScoreDisplay
                   ballotItemWeVoteId={measureWeVoteId}
-                  goToBallotItem={this.onClickShowOrganizationModalWithPositions}
+                  onClickFunction={this.onClickShowOrganizationModalWithPositions}
                 />
               </Suspense>
             </BallotItemSupportOpposeCountDisplayWrapper>
@@ -331,9 +331,9 @@ class MeasureItemCompressed extends Component {
                       </PositionRowListScoreHeader>
                       <PositionRowListScoreSpacer>
                         <Suspense fallback={<></>}>
-                          <BallotItemSupportOpposeCountDisplay
+                          <BallotItemSupportOpposeScoreDisplay
                             ballotItemWeVoteId={measureWeVoteId}
-                            goToBallotItem={this.onClickShowOrganizationModalWithPositions}
+                            onClickFunction={this.onClickShowOrganizationModalWithPositions}
                             hideEndorsementsOverview
                             hideNumbersOfAllPositions
                           />
@@ -421,9 +421,9 @@ class MeasureItemCompressed extends Component {
                       </PositionRowListScoreHeader>
                       <PositionRowListScoreSpacer>
                         <Suspense fallback={<></>}>
-                          <BallotItemSupportOpposeCountDisplay
+                          <BallotItemSupportOpposeScoreDisplay
                             ballotItemWeVoteId={measureWeVoteId}
-                            goToBallotItem={this.onClickShowOrganizationModalWithPositions}
+                            onClickFunction={this.onClickShowOrganizationModalWithPositions}
                             hideEndorsementsOverview
                             hideNumbersOfAllPositions
                           />

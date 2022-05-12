@@ -12,7 +12,7 @@ import MeasureStore from '../../stores/MeasureStore';
 
 const ReadMore = React.lazy(() => import(/* webpackChunkName: 'ReadMore' */ '../../common/components/Widgets/ReadMore'));
 const BallotItemSupportOpposeComment = React.lazy(() => import(/* webpackChunkName: 'BallotItemSupportOpposeComment' */ '../Widgets/BallotItemSupportOpposeComment'));
-const BallotItemSupportOpposeCountDisplay = React.lazy(() => import(/* webpackChunkName: 'BallotItemSupportOpposeCountDisplay' */ '../Widgets/BallotItemSupportOpposeCountDisplay'));
+const BallotItemSupportOpposeScoreDisplay = React.lazy(() => import(/* webpackChunkName: 'BallotItemSupportOpposeScoreDisplay' */ '../Widgets/ScoreDisplay/BallotItemSupportOpposeScoreDisplay'));
 const OpenExternalWebSite = React.lazy(() => import(/* webpackChunkName: 'OpenExternalWebSite' */ '../../common/components/Widgets/OpenExternalWebSite'));
 
 
@@ -144,7 +144,7 @@ class MeasureItem extends Component {
           </MeasureInfoWrapper>
           <BallotItemSupportOpposeCountDisplayWrapper isClickable={!blockOnClickShowOrganizationModalWithPositions}>
             <Suspense fallback={<></>}>
-              <BallotItemSupportOpposeCountDisplay
+              <BallotItemSupportOpposeScoreDisplay
                 ballotItemWeVoteId={measureWeVoteId}
                 blockOnClickShowOrganizationModalWithPositions={blockOnClickShowOrganizationModalWithPositions}
               />

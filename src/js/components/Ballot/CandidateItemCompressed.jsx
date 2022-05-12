@@ -12,7 +12,7 @@ import historyPush from '../../common/utils/historyPush';
 import { renderLog } from '../../common/utils/logging';
 
 const ImageHandler = React.lazy(() => import(/* webpackChunkName: 'ImageHandler' */ '../ImageHandler'));
-const BallotItemSupportOpposeCountDisplay = React.lazy(() => import(/* webpackChunkName: 'BallotItemSupportOpposeCountDisplay' */ '../Widgets/BallotItemSupportOpposeCountDisplay'));
+const BallotItemSupportOpposeScoreDisplay = React.lazy(() => import(/* webpackChunkName: 'BallotItemSupportOpposeScoreDisplay' */ '../Widgets/ScoreDisplay/BallotItemSupportOpposeScoreDisplay'));
 const LearnMore = React.lazy(() => import(/* webpackChunkName: 'LearnMore' */ '../../common/components/Widgets/LearnMore'));
 
 export default class CandidateItemCompressed extends Component {
@@ -120,7 +120,7 @@ export default class CandidateItemCompressed extends Component {
       <div key={oneCandidateWeVoteId} className="u-stack--md">
         <div className="u-float-right">
           <Suspense fallback={<></>}>
-            <BallotItemSupportOpposeCountDisplay ballotItemWeVoteId={oneCandidateWeVoteId} />
+            <BallotItemSupportOpposeScoreDisplay ballotItemWeVoteId={oneCandidateWeVoteId} />
           </Suspense>
         </div>
         <div className="o-media-object u-flex-auto u-min-50 u-push--sm u-stack--sm">

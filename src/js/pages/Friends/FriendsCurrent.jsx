@@ -85,7 +85,7 @@ export default class FriendsCurrent extends Component {
     }
 
     return (
-      <div className="opinion-view">
+      <FriendsCurrentWrapper>
         <Helmet title="Your Friends - We Vote" />
         <SectionTitle>
           Your Friends
@@ -121,10 +121,13 @@ export default class FriendsCurrent extends Component {
             />
           </span>
         </div>
-      </div>
+      </FriendsCurrentWrapper>
     );
   }
 }
+
+const FriendsCurrentWrapper = styled('div')`
+`;
 
 const SectionTitle = styled('h2')`
   width: fit-content;  font-weight: bold;

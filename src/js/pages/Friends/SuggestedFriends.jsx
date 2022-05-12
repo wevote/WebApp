@@ -42,7 +42,7 @@ export default class SuggestedFriends extends Component {
     const { suggestedFriendList } = this.state;
 
     return (
-      <div className="opinion-view">
+      <SuggestedFriendsWrapper>
         <Helmet title="People You May Know - We Vote" />
         <SectionTitle>
           People You May Know
@@ -71,7 +71,7 @@ export default class SuggestedFriends extends Component {
             />
           )}
         </div>
-      </div>
+      </SuggestedFriendsWrapper>
     );
   }
 }
@@ -80,4 +80,7 @@ const SectionTitle = styled('h2')`
   width: fit-content;  font-weight: bold;
   font-size: 18px;
   margin-bottom: 16px;
+`;
+
+const SuggestedFriendsWrapper = styled('div')`
 `;

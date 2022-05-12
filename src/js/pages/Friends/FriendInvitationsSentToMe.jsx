@@ -40,9 +40,9 @@ class FriendInvitationsSentToMe extends Component {
     const { friendInvitationsSentToMe } = this.state;
     // console.log(this.state.suggestedFriends);
     return (
-      <div className="opinion-view">
+      <div>
         <Helmet title="Friend Requests - We Vote" />
-        <div>
+        <FriendInvitationsWrapper>
           { friendInvitationsSentToMe && friendInvitationsSentToMe.length > 0 ? (
             <span>
               <SectionTitle>
@@ -74,11 +74,14 @@ class FriendInvitationsSentToMe extends Component {
               </p>
             </>
           )}
-        </div>
+        </FriendInvitationsWrapper>
       </div>
     );
   }
 }
+
+const FriendInvitationsWrapper = styled('div')`
+`;
 
 const SectionTitle = styled('h2')`
   font-weight: bold;

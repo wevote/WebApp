@@ -28,7 +28,7 @@ import signInModalGlobalState from '../Widgets/signInModalGlobalState';
 import PositionRowEmpty from './PositionRowEmpty';
 import PositionRowList from './PositionRowList';
 
-const BallotItemSupportOpposeCountDisplay = React.lazy(() => import(/* webpackChunkName: 'BallotItemSupportOpposeCountDisplay' */ '../Widgets/BallotItemSupportOpposeCountDisplay'));
+const BallotItemSupportOpposeScoreDisplay = React.lazy(() => import(/* webpackChunkName: 'BallotItemSupportOpposeScoreDisplay' */ '../Widgets/ScoreDisplay/BallotItemSupportOpposeScoreDisplay'));
 const DelayedLoad = React.lazy(() => import(/* webpackChunkName: 'DelayedLoad' */ '../../common/components/Widgets/DelayedLoad'));
 const ImageHandler = React.lazy(() => import(/* webpackChunkName: 'ImageHandler' */ '../ImageHandler'));
 const IssuesByBallotItemDisplayList = React.lazy(() => import(/* webpackChunkName: 'IssuesByBallotItemDisplayList' */ '../Values/IssuesByBallotItemDisplayList'));
@@ -277,50 +277,6 @@ class OfficeItemCompressed extends Component {
             return (
               <div key={`candidate_preview-${oneCandidate.we_vote_id}-${externalUniqueId}`}>
                 <CandidateContainer>
-                  <PositionRowListOuterWrapper className="u-show-desktop-tablet">
-                    <OverflowContainer>
-                      <PositionRowListInnerWrapper>
-                        <PositionRowListOneWrapper>
-                          <PositionRowList
-                            ballotItemWeVoteId={oneCandidate.we_vote_id}
-                            showSupport
-                          />
-                        </PositionRowListOneWrapper>
-                        <PositionRowListOneWrapper>
-                          <PositionRowList
-                            ballotItemWeVoteId={oneCandidate.we_vote_id}
-                            showOppose
-                          />
-                        </PositionRowListOneWrapper>
-                        <PositionRowListOneWrapper>
-                          <PositionRowList
-                            ballotItemWeVoteId={oneCandidate.we_vote_id}
-                            showInfoOnly
-                          />
-                        </PositionRowListOneWrapper>
-                        <PositionRowListEmptyWrapper>
-                          <PositionRowEmpty
-                            ballotItemWeVoteId={oneCandidate.we_vote_id}
-                          />
-                        </PositionRowListEmptyWrapper>
-                        <PositionRowListScoreColumn>
-                          <PositionRowListScoreHeader>
-                            Score
-                          </PositionRowListScoreHeader>
-                          <PositionRowListScoreSpacer>
-                            <Suspense fallback={<></>}>
-                              <BallotItemSupportOpposeCountDisplay
-                                ballotItemWeVoteId={oneCandidate.we_vote_id}
-                                goToBallotItem={this.onClickShowOrganizationModalWithPositions}
-                                hideEndorsementsOverview
-                                hideNumbersOfAllPositions
-                              />
-                            </Suspense>
-                          </PositionRowListScoreSpacer>
-                        </PositionRowListScoreColumn>
-                      </PositionRowListInnerWrapper>
-                    </OverflowContainer>
-                  </PositionRowListOuterWrapper>
                   <CandidateWrapper>
                     <CandidateInfo>
                       <CandidateTopRow>
@@ -352,9 +308,9 @@ class OfficeItemCompressed extends Component {
                         {/*  /!* Show check mark or score *!/ */}
                         <BallotItemSupportOpposeCountDisplayWrapper className="u-show-mobile">
                           <Suspense fallback={<></>}>
-                            <BallotItemSupportOpposeCountDisplay
+                            <BallotItemSupportOpposeScoreDisplay
                               ballotItemWeVoteId={oneCandidate.we_vote_id}
-                              goToBallotItem={this.onClickShowOrganizationModalWithPositions}
+                              onClickFunction={this.onClickShowOrganizationModalWithPositions}
                             />
                           </Suspense>
                         </BallotItemSupportOpposeCountDisplayWrapper>
@@ -401,6 +357,50 @@ class OfficeItemCompressed extends Component {
                       </CandidateBottomRow>
                     </CandidateInfo>
                   </CandidateWrapper>
+                  <PositionRowListOuterWrapper className="u-show-desktop-tablet">
+                    <OverflowContainer>
+                      <PositionRowListInnerWrapper>
+                        <PositionRowListOneWrapper>
+                          <PositionRowList
+                            ballotItemWeVoteId={oneCandidate.we_vote_id}
+                            showSupport
+                          />
+                        </PositionRowListOneWrapper>
+                        <PositionRowListOneWrapper>
+                          <PositionRowList
+                            ballotItemWeVoteId={oneCandidate.we_vote_id}
+                            showOppose
+                          />
+                        </PositionRowListOneWrapper>
+                        <PositionRowListOneWrapper>
+                          <PositionRowList
+                            ballotItemWeVoteId={oneCandidate.we_vote_id}
+                            showInfoOnly
+                          />
+                        </PositionRowListOneWrapper>
+                        <PositionRowListEmptyWrapper>
+                          <PositionRowEmpty
+                            ballotItemWeVoteId={oneCandidate.we_vote_id}
+                          />
+                        </PositionRowListEmptyWrapper>
+                        <PositionRowListScoreColumn>
+                          <PositionRowListScoreHeader>
+                            Score
+                          </PositionRowListScoreHeader>
+                          <PositionRowListScoreSpacer>
+                            <Suspense fallback={<></>}>
+                              <BallotItemSupportOpposeScoreDisplay
+                                ballotItemWeVoteId={oneCandidate.we_vote_id}
+                                onClickFunction={this.onClickShowOrganizationModalWithPositions}
+                                hideEndorsementsOverview
+                                hideNumbersOfAllPositions
+                              />
+                            </Suspense>
+                          </PositionRowListScoreSpacer>
+                        </PositionRowListScoreColumn>
+                      </PositionRowListInnerWrapper>
+                    </OverflowContainer>
+                  </PositionRowListOuterWrapper>
                 </CandidateContainer>
                 {((candidateCount < candidatesToRenderLength) && (candidateCount < limitNumberOfCandidatesShownToThisNumber)) && (
                   <div>
@@ -565,6 +565,7 @@ const CandidateBottomRow = styled('div')`
 
 const CandidateContainer = styled('div')`
   display: flex;
+  // flex-direction: row-reverse;
   justify-content: space-between;
   padding: 10px 5px;
 `;
@@ -616,7 +617,7 @@ const CandidateWrapper = styled('div')(({ theme }) => (`
     width: 100%;
   }
   ${theme.breakpoints.up('sm')} {
-    margin-left: 48px;
+    // margin-left: 48px;
     min-width: 320px;
   }
 `));

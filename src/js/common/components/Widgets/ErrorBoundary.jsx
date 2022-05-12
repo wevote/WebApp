@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { isAndroidSizeFold } from '../../utils/cordovaUtils';
+import { isWebApp } from '../../utils/isCordovaOrWebApp';
 
 class ErrorBoundary extends Component {
   constructor (props) {
@@ -34,11 +35,19 @@ class ErrorBoundary extends Component {
         }}
         >
           <h1 style={{ margin: '20px', color: 'black', fontSize: '20px' }}>Whoops! Something went wrong.</h1>
-          <h1 style={{ margin: '20px', color: 'black' }}>
-            Try&nbsp;
-            <a style={{ color: 'blue' }} href="/">restarting</a>
-            &nbsp;the app.
-          </h1>
+          {isWebApp() ? (
+            <h1 style={{ margin: '20px', color: 'black' }}>
+              Try&nbsp;
+              <span style={{ color: 'blue', cursor: 'pointer' }} onClick={() => document.location.reload()}>refreshing</span>
+              &nbsp;your browser.
+            </h1>
+          ) : (
+            <h1 style={{ margin: '20px', color: 'black' }}>
+              Try&nbsp;
+              <a style={{ color: 'blue' }} href="/ready">restarting</a>
+              &nbsp;the app.
+            </h1>
+          )}
           <h1 style={{ margin: '20px', color: 'black' }}>
             Please send us an email at &nbsp;
             <a

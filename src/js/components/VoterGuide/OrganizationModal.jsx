@@ -21,7 +21,6 @@ import BallotStore from '../../stores/BallotStore';
 import CandidateStore from '../../stores/CandidateStore';
 import IssueStore from '../../stores/IssueStore';
 import MeasureStore from '../../stores/MeasureStore';
-import OrganizationStore from '../../stores/OrganizationStore';
 import VoterGuideStore from '../../stores/VoterGuideStore';
 import VoterStore from '../../stores/VoterStore';
 import { cordovaDrawerTopMargin } from '../../utils/cordovaOffsets';
@@ -31,6 +30,7 @@ const CandidateItem = React.lazy(() => import(/* webpackChunkName: 'CandidateIte
 const DelayedLoad = React.lazy(() => import(/* webpackChunkName: 'DelayedLoad' */ '../../common/components/Widgets/DelayedLoad'));
 const MeasureItem = React.lazy(() => import(/* webpackChunkName: 'MeasureItem' */ '../Ballot/MeasureItem'));
 const PositionList = React.lazy(() => import(/* webpackChunkName: 'PositionList' */ '../Ballot/PositionList'));
+const ScoreSummaryListController = React.lazy(() => import(/* webpackChunkName: 'ScoreSummaryListController' */ '../Widgets/ScoreDisplay/ScoreSummaryListController'));
 
 
 class OrganizationModal extends Component {
@@ -134,17 +134,18 @@ class OrganizationModal extends Component {
       OrganizationActions.organizationsFollowedRetrieve();
     }
 
-    // We want to make sure we have all of the position information so that comments show up
-    const voterGuidesForThisBallotItem = VoterGuideStore.getVoterGuidesToFollowForBallotItemId(ballotItemWeVoteId);
-
-    if (voterGuidesForThisBallotItem) {
-      voterGuidesForThisBallotItem.forEach((oneVoterGuide) => {
-        // console.log('oneVoterGuide: ', oneVoterGuide);
-        if (!OrganizationStore.positionListForOpinionMakerHasBeenRetrievedOnce(oneVoterGuide.google_civic_election_id, oneVoterGuide.organization_we_vote_id)) {
-          OrganizationActions.positionListForOpinionMaker(oneVoterGuide.organization_we_vote_id, false, true, oneVoterGuide.google_civic_election_id);
-        }
-      });
-    }
+    // This puts too much strain on the browser
+    // // We want to make sure we have all of the position information so that comments show up
+    // const voterGuidesForThisBallotItem = VoterGuideStore.getVoterGuidesToFollowForBallotItemId(ballotItemWeVoteId);
+    //
+    // if (voterGuidesForThisBallotItem) {
+    //   voterGuidesForThisBallotItem.forEach((oneVoterGuide) => {
+    //     // console.log('oneVoterGuide: ', oneVoterGuide);
+    //     if (!OrganizationStore.positionListForOpinionMakerHasBeenRetrievedOnce(oneVoterGuide.google_civic_election_id, oneVoterGuide.organization_we_vote_id)) {
+    //       OrganizationActions.positionListForOpinionMaker(oneVoterGuide.organization_we_vote_id, false, true, oneVoterGuide.google_civic_election_id);
+    //     }
+    //   });
+    // }
 
     IssueActions.issueDescriptionsRetrieve(VoterStore.getVoterWeVoteId());
     IssueActions.issuesFollowedRetrieve(VoterStore.getVoterWeVoteId());
@@ -272,26 +273,43 @@ class OrganizationModal extends Component {
         </IconButton>
         {(isCandidate && !hideBallotItemInfo) && (
           <Suspense fallback={<></>}>
-            <CandidateItem
-              blockOnClickShowOrganizationModalWithPositions
-              candidateWeVoteId={ballotItemWeVoteId}
-              expandIssuesByDefault
-              forMoreInformationTextOff
-              hideShowMoreFooter
-              inModal
-              linksOpenNewPage
-              linkToBallotItemPage
-              organizationWeVoteId={organizationWeVoteId}
-              showLargeImage
-              showOfficeName
-              showPositionStatementActionBar
-            />
+            <>
+              <CandidateItem
+                blockOnClickShowOrganizationModalWithPositions
+                candidateWeVoteId={ballotItemWeVoteId}
+                expandIssuesByDefault
+                forMoreInformationTextOff
+                hideShowMoreFooter
+                inModal
+                linksOpenNewPage
+                linkToBallotItemPage
+                organizationWeVoteId={organizationWeVoteId}
+                showLargeImage
+                showOfficeName
+                showPositionStatementActionBar
+              />
+              <BallotItemBottomSpacer />
+            </>
           </Suspense>
         )}
         {(isMeasure && !hideBallotItemInfo) && (
           <Suspense fallback={<></>}>
-            <MeasureItem blockOnClickShowOrganizationModalWithPositions forMoreInformationTextOff measureWeVoteId={ballotItemWeVoteId} />
+            <>
+              <MeasureItem blockOnClickShowOrganizationModalWithPositions forMoreInformationTextOff measureWeVoteId={ballotItemWeVoteId} />
+              <BallotItemBottomSpacer />
+            </>
           </Suspense>
+        )}
+        { (!hidePositions || unFurlPositions) && (
+          <>
+            <Suspense fallback={<></>}>
+              <ScoreSummaryListController
+                ballotItemDisplayName={ballotItemDisplayName || ''}
+                ballotItemWeVoteId={ballotItemWeVoteId}
+              />
+            </Suspense>
+            <ScoreSummaryListControllerBottomSpacer />
+          </>
         )}
         { !!(allCachedPositionsForThisBallotItem.length) && (
           <>
@@ -427,8 +445,16 @@ const styles = () => ({
   },
 });
 
+const BallotItemBottomSpacer = styled('div')`
+  margin-bottom: 32px;
+`;
+
 const PositionListIntroductionText = styled('div')`
   color: #999;
+`;
+
+const ScoreSummaryListControllerBottomSpacer = styled('div')`
+  margin-bottom: 42px;
 `;
 
 const ShowMoreWrapper = styled('div')`

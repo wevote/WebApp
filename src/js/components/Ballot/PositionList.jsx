@@ -49,7 +49,7 @@ const islandFilters = [
   },
 ];
 
-const STARTING_NUMBER_OF_POSITIONS_TO_DISPLAY = 6;
+const STARTING_NUMBER_OF_POSITIONS_TO_DISPLAY = 10;
 const TURN_ON_FILTERS_WHEN_MORE_THAN_THIS_NUMBER_OF_ITEMS = 10;
 
 class PositionList extends Component {

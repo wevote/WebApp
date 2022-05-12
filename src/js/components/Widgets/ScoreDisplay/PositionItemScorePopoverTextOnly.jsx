@@ -5,12 +5,12 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { ReactSVG } from 'react-svg';
 import styled from 'styled-components';
-import FriendStore from '../../stores/FriendStore';
-import IssueStore from '../../stores/IssueStore';
-import OrganizationStore from '../../stores/OrganizationStore';
-import normalizedImagePath from '../../common/utils/normalizedImagePath';
-import { isOrganizationInVotersNetwork } from '../../utils/positionFunctions';
-import FriendsIcon from './FriendsIcon';
+import FriendStore from '../../../stores/FriendStore';
+import IssueStore from '../../../stores/IssueStore';
+import OrganizationStore from '../../../stores/OrganizationStore';
+import normalizedImagePath from '../../../common/utils/normalizedImagePath';
+import { isOrganizationInVotersNetwork } from '../../../utils/positionFunctions';
+import FriendsIcon from '../FriendsIcon';
 
 class PositionItemScorePopoverTextOnly extends Component {
   constructor (props) {

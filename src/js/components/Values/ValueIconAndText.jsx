@@ -13,7 +13,7 @@ import StickyPopover from '../Ballot/StickyPopover';
 import IssueFollowToggleButton from './IssueFollowToggleButton';
 
 const ReadMore = React.lazy(() => import(/* webpackChunkName: 'ReadMore' */ '../../common/components/Widgets/ReadMore'));
-const PositionSummaryListForPopover = React.lazy(() => import(/* webpackChunkName: 'PositionSummaryListForPopover' */ '../Widgets/PositionSummaryListForPopover'));
+const PositionSummaryListForPopover = React.lazy(() => import(/* webpackChunkName: 'PositionSummaryListForPopover' */ '../Widgets/ScoreDisplay/PositionSummaryListForPopover'));
 
 
 class ValueIconAndText extends Component {
