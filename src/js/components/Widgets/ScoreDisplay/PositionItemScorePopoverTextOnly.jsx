@@ -225,7 +225,7 @@ class PositionItemScorePopoverTextOnly extends Component {
                 <PopoverTitleIcon>
                   <ReactSVG
                     src={normalizedImagePath(`/img/global/svg-icons/issues/${issue.issue_icon_local_path}.svg`)}
-                    beforeInjection={(svg) => svg.setAttribute('style', { fill: '#555', padding: '1px 1px 1px 0px' })}
+                    beforeInjection={(svg) => svg.setAttribute('style', { fill: '#555', padding: '1px 1px 1px 0px', width: '24px' })}
                   />
                 </PopoverTitleIcon>
                 <ScoreExplanationText>
@@ -289,6 +289,7 @@ const OrganizationAddsToYourPersonalScoreExplanation = styled('div')`
 const PopoverTitleIcon = styled('span')`
   font-weight: bold;
   font-size: 16px;
+  width: 24px;
 `;
 
 const PopoverDescriptionText = styled('div')`
