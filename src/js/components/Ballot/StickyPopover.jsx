@@ -6,6 +6,7 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import Overlay from 'react-bootstrap/Overlay';
 import Popover from 'react-bootstrap/Popover';
+import isMobileScreenSize from '../../common/utils/isMobileScreenSize';
 import { renderLog } from '../../common/utils/logging';
 
 
@@ -22,7 +23,8 @@ class StickyPopover extends Component {
   }
 
   componentDidMount () {
-    if (this.props.openPopoverByProp) {
+    const { openPopoverByProp } = this.props;
+    if (openPopoverByProp) {
       this.setState({ showPopover: true });
     }
   }
@@ -42,8 +44,12 @@ class StickyPopover extends Component {
   }
 
   onMouseEnterTarget () {
-    const { delay, openPopoverByProp } = this.props;
-    if (openPopoverByProp) {
+    const { delay, onMouseEnterMobileOff, openPopoverByProp } = this.props;
+    const onMouseEnterOff = !!(isMobileScreenSize() && onMouseEnterMobileOff);
+    if (onMouseEnterOff) {
+      // First mobile touch is treated as onMouseEnter. This turns off that onMouseEnter in mobile.
+      this.setState({ showPopover: false });
+    } else if (openPopoverByProp) {
       // When manually opening Popover, turn off the mouse hover features
     } else if (delay) {
       if (this.enterTimeoutId) clearTimeout(this.enterTimeoutId);
@@ -52,13 +58,18 @@ class StickyPopover extends Component {
   }
 
   onClickTarget () {
-    const currentState = this.state.showPopover;
+    const { showPopover: currentState } = this.state;
     this.setState({ showPopover: !currentState });
   }
 
   onMouseEnterPopover () {
-    if (this.leaveTimeoutId) clearTimeout(this.leaveTimeoutId);
-    this.setState({ showPopover: true });
+    const { onMouseEnterMobileOff } = this.props;
+    const onMouseEnterOff = !!(isMobileScreenSize() && onMouseEnterMobileOff);
+    if (onMouseEnterOff) {
+      // First mobile touch is treated as onMouseEnter. This turns off that onMouseEnter in mobile.
+      this.setState({ showPopover: false });
+    } else if (this.leaveTimeoutId) clearTimeout(this.leaveTimeoutId);
+    // this.setState({ showPopover: true });
   }
 
   onMouseLeave () {
@@ -131,6 +142,7 @@ StickyPopover.propTypes = {
     show: PropTypes.number,
     hide: PropTypes.number,
   }),
+  onMouseEnterMobileOff: PropTypes.bool, // First mobile touch is treated as onMouseEnter. This turns off that onMouseEnter in mobile.
   openOnClick: PropTypes.bool,
   openPopoverByProp: PropTypes.bool,
   placement: PropTypes.string,

@@ -458,7 +458,8 @@ const ScoreSummaryListControllerBottomSpacer = styled('div')`
 `;
 
 const ShowMoreWrapper = styled('div')`
-  margin-top: 64px;
+  margin-bottom: 32px;
+  margin-top: 32px;
 `;
 
 export default withTheme(withStyles(styles)(OrganizationModal));

@@ -117,7 +117,7 @@ class IssuesByOrganizationDisplayList extends Component {
       <PopoverWrapper>
         <PopoverHeader>
           <PopoverTitleIcon>
-            <SvgImage imageName={oneIssue.issue_icon_local_path} />
+            <SvgImage imageName={oneIssue.issue_icon_local_path} stylesTextIncoming="fill: #fff !important; width: 24px;" />
           </PopoverTitleIcon>
           <PopoverTitleText>
             {oneIssue.issue_name}
@@ -179,7 +179,7 @@ class IssuesByOrganizationDisplayList extends Component {
         issueFollowedByVoter={issueFollowedByVoter}
       >
         <Chip
-          avatar={<SvgImage imageName={svg} stylesTextIncoming={`fill: ${svgFill} !important; margin-left: 4px;`} />}
+          avatar={<SvgImage imageName={svg} stylesTextIncoming={`fill: ${svgFill} !important; margin-left: 4px; width: 24px;`} />}
           classes={{ root: classes.chipStyle }}
           label={oneIssue.issue_name}
           ref={this.valueSpan}

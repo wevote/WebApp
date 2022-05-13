@@ -19,7 +19,7 @@ export default function SvgImage (props) {
   let stylesText = `
     fill: #2e3c5d;
     padding: 1px 1px 1px 0px;
-    width: ${localWidth || ''};
+    ${localWidth ? `width: ${localWidth};` : ''};
   `;
   if (stylesTextIncoming) {
     stylesText = stylesTextIncoming;
@@ -41,7 +41,7 @@ export default function SvgImage (props) {
       <img
         alt={passedAlt}
         src={imageSrc}
-        style={{ width: `${localWidth || '20px'}` }}
+        style={localWidth ? { width: `${localWidth}` } : { width: '20px' }}
       />
     );
   }

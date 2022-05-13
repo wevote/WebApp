@@ -18,15 +18,15 @@ import VoterGuideStore from '../../stores/VoterGuideStore';
 import VoterStore from '../../stores/VoterStore';
 import { isSpeakerTypeIndividual, isSpeakerTypeOrganization } from '../../utils/organization-functions';
 import OrganizationPopoverCard from '../Organization/OrganizationPopoverCard';
+import PositionItemScorePopover from '../Widgets/ScoreDisplay/PositionItemScorePopover';
 import IssuesByOrganizationDisplayList from '../Values/IssuesByOrganizationDisplayList';
 import PositionItemSquare from './PositionItemSquare';
+import StickyPopover from './StickyPopover';
 
 const FollowToggle = React.lazy(() => import(/* webpackChunkName: 'FollowToggle' */ '../Widgets/FollowToggle'));
 const ImageHandler = React.lazy(() => import(/* webpackChunkName: 'ImageHandler' */ '../ImageHandler'));
 const OpenExternalWebSite = React.lazy(() => import(/* webpackChunkName: 'OpenExternalWebSite' */ '../../common/components/Widgets/OpenExternalWebSite'));
-const PositionItemScorePopover = React.lazy(() => import(/* webpackChunkName: 'PositionItemScorePopover' */ '../Widgets/ScoreDisplay/PositionItemScorePopover'));
 const ReadMore = React.lazy(() => import(/* webpackChunkName: 'ReadMore' */ '../../common/components/Widgets/ReadMore'));
-const StickyPopover = React.lazy(() => import(/* webpackChunkName: 'StickyPopover' */ './StickyPopover'));
 
 
 class PositionItem extends Component {
@@ -321,7 +321,7 @@ class PositionItem extends Component {
                             delay={{ show: 700, hide: 100 }}
                             popoverComponent={organizationPopoverCard}
                             placement="auto"
-                            id="positions-popover-trigger-click-root-close"
+                            id={`positions-popover-trigger-click-root-close-${organizationWeVoteId}`}
                           >
                             <div>
                               {linksOpenExternalWebsite ? (
@@ -413,7 +413,7 @@ class PositionItem extends Component {
                         delay={{ show: 700, hide: 100 }}
                         popoverComponent={positionsPopover}
                         placement="auto"
-                        id="position-item-score-desktop-popover-trigger-click-root-close"
+                        id={`position-item-score-desktop-popover-trigger-click-root-close-${organizationWeVoteId}`}
                         key={`positionItemScoreDesktopPopover-${organizationWeVoteId}`}
                         openOnClick
                         showCloseIcon
@@ -566,7 +566,7 @@ class PositionItem extends Component {
                         delay={{ show: 1000000, hide: 100 }}
                         popoverComponent={positionsPopover}
                         placement="auto"
-                        id="position-item-score-mobile-popover-trigger-click-root-close"
+                        id={`position-item-score-mobile-popover-trigger-click-root-close-${organizationWeVoteId}`}
                         key={`positionItemScoreMobilePopover-${organizationWeVoteId}`}
                         openOnClick
                         showCloseIcon
