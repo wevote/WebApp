@@ -294,7 +294,7 @@ class PositionItemScorePopover extends Component {
                   {issuesInCommonBetweenOrganizationAndVoter.map((issue) => (
                     <ScoreExplanationWrapper key={`issueInScore-${issue.issue_we_vote_id}`}>
                       <PopoverTitleIcon>
-                        <SvgImage imageName={issue.issue_icon_local_path} />
+                        <SvgImage imageName={issue.issue_icon_local_path} stylesTextIncoming="width: 24px;" />
                       </PopoverTitleIcon>
                       <ScoreExplanationText>
                         You both care about
@@ -423,6 +423,7 @@ const PopoverHeader = styled('div')(({ theme }) => (`
 const PopoverTitleIcon = styled('span')`
   font-weight: bold;
   font-size: 16px;
+  width: 24px;
 `;
 
 const PopoverTitleText = styled('div')`

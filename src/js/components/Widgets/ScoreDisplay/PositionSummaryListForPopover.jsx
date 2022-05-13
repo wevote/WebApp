@@ -155,47 +155,49 @@ class PositionSummaryListForPopover extends Component {
             </FollowToggleWrapper>
           )}
           {!!(positionSummary.organizationInVotersNetwork) && (
-            <Suspense fallback={<></>}>
-              <MaterialUIPopover
-                popoverDisplayObject={(
-                  <PositionItemScorePopoverTextOnly
-                    positionItem={positionSummary.positionObject}
-                  />
-                )}
-              >
-                <OrganizationPopoverWrapper>
-                  {!!(positionSummary.issuesInCommonBetweenOrganizationAndVoter && positionSummary.issuesInCommonBetweenOrganizationAndVoter.length) && (
-                    // Limits the number of displayed Issue icons
-                    // The popover isn't big enough to accommodate more than 4 icons without making them too small!
-                    <VoterAndOrganizationShareTheseIssuesWrapper>
-                      {issuesInCommonForIconDisplayArray.map((issue) => (
-                        <IssueIcon key={`issueInScore-${issue.issue_we_vote_id}`}>
-                          <ReactSVG
-                            src={normalizedImagePath(`/img/global/svg-icons/issues/${issue.issue_icon_local_path}.svg`)}
-                            beforeInjection={(svg) => svg.setAttribute('style', { fill: '#555', padding: '1px 1px 1px 0px' })}
-                          />
-                        </IssueIcon>
-                      ))}
-                    </VoterAndOrganizationShareTheseIssuesWrapper>
+            <IconsOuterWrapper>
+              <Suspense fallback={<></>}>
+                <MaterialUIPopover
+                  popoverDisplayObject={(
+                    <PositionItemScorePopoverTextOnly
+                      positionItem={positionSummary.positionObject}
+                    />
                   )}
-                  {(positionSummary.issuesInCommonBetweenOrganizationAndVoter.length > 4) ? ('...') : null}
-                  {positionSummary.voterIsFriendsWithThisOrganization ? (
-                    <FollowingWrapper>
-                      {/* <CheckCircle className="friends-icon" /> */}
-                      <FriendsIcon />
-                    </FollowingWrapper>
-                  ) : (
-                    <>
-                      {positionSummary.voterIsFollowingOrganization && (
-                        <FollowingWrapper>
-                          <CheckCircle className="following-icon" />
-                        </FollowingWrapper>
-                      )}
-                    </>
-                  )}
-                </OrganizationPopoverWrapper>
-              </MaterialUIPopover>
-            </Suspense>
+                >
+                  <OrganizationPopoverWrapper>
+                    {!!(positionSummary.issuesInCommonBetweenOrganizationAndVoter && positionSummary.issuesInCommonBetweenOrganizationAndVoter.length) && (
+                      // Limits the number of displayed Issue icons
+                      // The popover isn't big enough to accommodate more than 4 icons without making them too small!
+                      <VoterAndOrganizationShareTheseIssuesWrapper>
+                        {issuesInCommonForIconDisplayArray.map((issue) => (
+                          <IssueIcon key={`issueInScore-${issue.issue_we_vote_id}`}>
+                            <ReactSVG
+                              src={normalizedImagePath(`/img/global/svg-icons/issues/${issue.issue_icon_local_path}.svg`)}
+                              beforeInjection={(svg) => svg.setAttribute('style', { fill: '#555', padding: '1px 1px 1px 0px', width: '24px' })}
+                            />
+                          </IssueIcon>
+                        ))}
+                      </VoterAndOrganizationShareTheseIssuesWrapper>
+                    )}
+                    {(positionSummary.issuesInCommonBetweenOrganizationAndVoter.length > 4) ? ('...') : null}
+                    {positionSummary.voterIsFriendsWithThisOrganization ? (
+                      <FollowingWrapper>
+                        {/* <CheckCircle className="friends-icon" /> */}
+                        <FriendsIcon />
+                      </FollowingWrapper>
+                    ) : (
+                      <>
+                        {positionSummary.voterIsFollowingOrganization && (
+                          <FollowingWrapper>
+                            <CheckCircle className="following-icon" />
+                          </FollowingWrapper>
+                        )}
+                      </>
+                    )}
+                  </OrganizationPopoverWrapper>
+                </MaterialUIPopover>
+              </Suspense>
+            </IconsOuterWrapper>
           )}
         </PositionSummaryWrapper>
       );
@@ -283,9 +285,13 @@ const FollowingWrapper = styled('div')`
   color: #0d546f !important;
 `;
 
+const IconsOuterWrapper = styled('div')`
+`;
+
 const IssueIcon = styled('div')`
   font-weight: bold;
   font-size: 16px;
+  width: 24px;
 `;
 
 const NetworkScoreDescriptionText = styled('div')`
