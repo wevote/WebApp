@@ -878,6 +878,7 @@ class BallotItemSupportOpposeScoreDisplay extends Component {
             popoverComponent={positionsPopover}
             placement="bottom"
             id="ballot-support-oppose-count-trigger-click-root-close"
+            onMouseEnterMobileOff
             openOnClick={!this.props.onClickFunction}
             openPopoverByProp={openSupportOpposeCountDisplayModal}
             closePopoverByProp={closeSupportOpposeCountDisplayModal}
@@ -923,6 +924,7 @@ class BallotItemSupportOpposeScoreDisplay extends Component {
             popoverComponent={positionsPopover}
             placement="bottom"
             id="ballot-support-oppose-count-trigger-click-root-close"
+            onMouseEnterMobileOff
             openOnClick={!this.props.onClickFunction}
             openPopoverByProp={openSupportOpposeCountDisplayModal}
             closePopoverByProp={closeSupportOpposeCountDisplayModal}
@@ -968,6 +970,7 @@ class BallotItemSupportOpposeScoreDisplay extends Component {
             popoverComponent={positionsPopover}
             placement="bottom"
             id="ballot-support-oppose-count-trigger-click-root-close"
+            onMouseEnterMobileOff
             openOnClick={!this.props.onClickFunction}
             openPopoverByProp={openSupportOpposeCountDisplayModal}
             closePopoverByProp={closeSupportOpposeCountDisplayModal}
@@ -1023,6 +1026,7 @@ class BallotItemSupportOpposeScoreDisplay extends Component {
               popoverComponent={endorsementsOverviewPopover}
               placement="auto"
               id="endorsements-overview-trigger-click-root-close"
+              onMouseEnterMobileOff
               openOnClick={!this.props.onClickFunction}
               showCloseIcon
             >
