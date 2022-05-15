@@ -25,7 +25,7 @@ import FriendStore from '../../stores/FriendStore';
 import VoterStore from '../../stores/VoterStore';
 import { avatarGeneric, displayTopMenuShadow, weVoteBrandingOff } from '../../utils/applicationUtils';
 import getHeaderObjects from '../../utils/getHeaderObjects';
-import { TopOfPageHeader, TopRowOneLeftContainer, TopRowOneMiddleContainer, TopRowOneRightContainer, TopRowTwoLeftContainer } from '../Style/pageLayoutStyles';
+import { standardBoxShadow, TopOfPageHeader, TopRowOneLeftContainer, TopRowOneMiddleContainer, TopRowOneRightContainer, TopRowTwoLeftContainer } from '../Style/pageLayoutStyles';
 import SignInButton from '../Widgets/SignInButton';
 import signInModalGlobalState from '../Widgets/signInModalGlobalState';
 import FriendsTabs from './FriendsTabs';
@@ -899,7 +899,7 @@ const HeaderBarWrapper = styled('div', {
   shouldForwardProp: (prop) => !['hasNotch', 'scrolledDown', 'hasSubmenu'].includes(prop),
 })(({ hasNotch, scrolledDown, hasSubmenu }) => (`
   margin-top: ${hasNotch ? '1.5rem' : ''};
-  box-shadow: ${(!scrolledDown || !hasSubmenu)  ? '' : '0 2px 4px -1px rgba(0, 0, 0, 0.2), 0 4px 5px 0 rgba(0, 0, 0, 0.14), 0 1px 10px 0 rgba(0, 0, 0, 0.12)'};
+  box-shadow: ${(!scrolledDown || !hasSubmenu)  ? '' : standardBoxShadow('wide')};
   border-bottom: ${(!scrolledDown || !hasSubmenu) ? '' : '1px solid #aaa'};
 `));
 

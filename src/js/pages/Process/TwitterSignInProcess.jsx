@@ -10,7 +10,7 @@ import { isWebApp } from '../../common/utils/isCordovaOrWebApp';
 import Cookies from '../../common/utils/js-cookie/Cookies';
 import { oAuthLog, renderLog } from '../../common/utils/logging';
 import stringContains from '../../common/utils/stringContains';
-import { PageContentContainer } from '../../components/Style/pageLayoutStyles';
+import { PageContentContainer, standardBoxShadow } from '../../components/Style/pageLayoutStyles';
 import IPhoneSpacer from '../../components/Widgets/IPhoneSpacer';
 import SnackNotifier from '../../components/Widgets/SnackNotifier';
 import AppObservableStore, { messageService } from '../../stores/AppObservableStore';
@@ -279,5 +279,5 @@ const LoadingDiv = styled('div')`
   padding: 10px;
   background-color: white;
   border: 1px solid #333;
-  box-shadow: 0 2px 4px -1px rgba(0,0,0,0.2), 0 4px 5px 0 rgba(0,0,0,0.14), 0 1px 10px 0 rgba(0,0,0,0.12);
+  box-shadow: ${standardBoxShadow('wide')};
 `;

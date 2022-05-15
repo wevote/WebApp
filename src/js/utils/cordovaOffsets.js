@@ -1,11 +1,11 @@
+import { getAndroidSize, hasIPhoneNotch, isAndroid, isIOS, isIOSAppOnMac, isIPad, isIPadGiantSize, isIPhone4in, isIPhone4p7in, isIPhone5p5inEarly, isIPhone5p5inMini, isIPhone5p8in, isIPhone6p1in, isIPhone6p5in, isSimulator } from '../common/utils/cordovaUtils';
+import { normalizedHref } from '../common/utils/hrefUtils';
+import { isCordova, isWebApp } from '../common/utils/isCordovaOrWebApp';
+import isMobileScreenSize from '../common/utils/isMobileScreenSize';
+import { cordovaOffsetLog } from '../common/utils/logging';
 import CordovaPageConstants from '../constants/CordovaPageConstants';
 import { getApplicationViewBooleans } from './applicationUtils';
-import { getAndroidSize, hasIPhoneNotch, isAndroid, isIOS, isIOSAppOnMac, isIPad, isIPadGiantSize, isIPhone4in, isIPhone4p7in, isIPhone5p5inEarly, isIPhone5p5inMini, isIPhone5p8in, isIPhone6p1in, isIPhone6p5in, isSimulator } from '../common/utils/cordovaUtils';
-import { isWebApp } from '../common/utils/isCordovaOrWebApp';
 import { pageEnumeration } from './cordovaUtilsPageEnumeration';
-import isMobileScreenSize from '../common/utils/isMobileScreenSize';
-import { normalizedHref } from '../common/utils/hrefUtils';
-import { cordovaOffsetLog } from '../common/utils/logging';
 
 
 //  <PageContentContainer>
@@ -451,6 +451,7 @@ export function cordovaDrawerTopMargin () {
 export function cordovaDualHeaderContainerPadding () {
   if (isIPhone5p5inMini()) return '18px';
   if (hasIPhoneNotch()) return '0px';
+  if (isCordova()) return '80px';
   return '8px';
 }
 

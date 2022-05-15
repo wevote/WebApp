@@ -11,7 +11,7 @@ import ReadyActions from '../actions/ReadyActions';
 import LoadingWheel from '../common/components/Widgets/LoadingWheel';
 import { formatDateToMonthDayYear } from '../common/utils/dateFormat';
 import { renderLog } from '../common/utils/logging';
-import { PageContentContainer } from '../components/Style/pageLayoutStyles';
+import { PageContentContainer, standardBoxShadow } from '../components/Style/pageLayoutStyles';
 import BrowserPushMessage from '../components/Widgets/BrowserPushMessage';
 import { messageService } from '../stores/AppObservableStore';
 import BallotStore from '../stores/BallotStore';
@@ -684,7 +684,7 @@ const StickyFooter = styled('div')`
   display: flex;
   align-items: center;
   padding: 0 32px;
-  box-shadow: 0px -2px 4px -1px rgba(0,0,0,0.2), 0px -4px 5px 0px rgba(0,0,0,0.14), 0px -1px 10px 0px rgba(0,0,0,0.12);
+  box-shadow: ${standardBoxShadow('wide')};
 `;
 
 const Row = styled('div')`

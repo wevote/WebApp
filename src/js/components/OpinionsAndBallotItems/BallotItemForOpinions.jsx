@@ -4,6 +4,7 @@ import withTheme from '@mui/styles/withTheme';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
 import { renderLog } from '../../common/utils/logging';
+import { standardBoxShadow } from '../Style/pageLayoutStyles';
 import MeasureItemForOpinions from './MeasureItemForOpinions';
 import OfficeItemForOpinions from './OfficeItemForOpinions';
 
@@ -136,7 +137,7 @@ const BallotItemCard = styled('div')(({ theme }) => (`
   $item-padding: 16px;
   background-color: #fff;
   border-radius: 4px;
-  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, .2), 0 1px 1px 0 rgba(0, 0, 0, .14), 0 2px 1px -1px rgba(0, 0, 0, .12);
+  box-shadow: ${standardBoxShadow()};
   margin-bottom: 16px;
   overflow-y: none;
   border: none;

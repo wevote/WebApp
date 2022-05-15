@@ -1,7 +1,7 @@
 import React from 'react';
 import webAppConfig from '../../config';
-import { cordovaOffsetLog, oAuthLog } from './logging';
 import { isCordova, isWebApp } from './isCordovaOrWebApp';
+import { cordovaOffsetLog, oAuthLog } from './logging';
 
 /* global $  */
 

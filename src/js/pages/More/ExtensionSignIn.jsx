@@ -4,6 +4,7 @@ import React, { Component, Suspense } from 'react';
 import styled from 'styled-components';
 import LoadingWheel from '../../common/components/Widgets/LoadingWheel';
 import { renderLog } from '../../common/utils/logging';
+import { standardBoxShadow } from '../../components/Style/pageLayoutStyles';
 import VoterStore from '../../stores/VoterStore';
 
 const DelayedLoad = React.lazy(() => import(/* webpackChunkName: 'DelayedLoad' */ '../../common/components/Widgets/DelayedLoad'));
@@ -83,7 +84,7 @@ class ExtensionSignIn extends Component {
                 transition: 'none',
                 color: '#fff',
                 backgroundColor: '#1976d2',
-                boxShadow: '0px 3px 1px -2px rgba(0,0,0,0.2), 0px 2px 2px 0px rgba(0,0,0,0.14), 0px 1px 5px 0px rgba(0,0,0,0.12)',
+                boxShadow: standardBoxShadow('medium'),
                 transitionTimingFunction: 'none !important',
               }}
               >
