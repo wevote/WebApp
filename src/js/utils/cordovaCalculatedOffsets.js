@@ -13,7 +13,7 @@ const defaultPageData = {
   preAdjustDatumMin: 50,
 };
 
-const DEBUG_LOGGING = true;
+const DEBUG_LOGGING = false;
 function debugLogging (string) {
   if (DEBUG_LOGGING) {
     console.log(string);
