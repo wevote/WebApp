@@ -15,6 +15,7 @@ import InjectedCheckoutForm from '../../common/components/Donation/InjectedCheck
 import OpenExternalWebSite from '../../common/components/Widgets/OpenExternalWebSite';
 import DonateStore from '../../common/stores/DonateStore';
 import { renderLog } from '../../common/utils/logging';
+import { standardBoxShadow } from '../../components/Style/pageLayoutStyles';
 import { Section } from '../../components/Welcome/sectionStyles';
 import webAppConfig from '../../config';
 import VoterStore from '../../stores/VoterStore';
@@ -329,7 +330,7 @@ const styles = (theme) => ({
     fontSize: 18,
     color: 'black',
     backgroundColor: 'white',
-    boxShadow: '0 3px 1px -2px rgb(0 0 0 / 20%), 0 2px 2px 0px rgb(0 0 0 / 14%), 0 1px 5px 0 rgb(0 0 0 / 12%)',
+    boxShadow: standardBoxShadow('medium'),
   },
   textFieldInputRoot: {
     fontSize: 18,
@@ -445,7 +446,7 @@ const PaymentCenteredWrapper  = styled('div')(({ theme }) => (`
   }
   display: inline-block;
   background-color: rgb(246, 244,246);
-  box-shadow: 0 3px 1px -2px rgb(0 0 0 / 20%), 0 2px 2px 0px rgb(0 0 0 / 14%), 0 1px 5px 0 rgb(0 0 0 / 12%);
+  box-shadow: ${standardBoxShadow('medium')};
   border: 2px solid darkgrey;
   border-radius: 3px;
   padding: 8px;

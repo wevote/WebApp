@@ -6,6 +6,7 @@ import { isIOSAppOnMac, isIPad } from '../../common/utils/cordovaUtils';
 import { isWebApp } from '../../common/utils/isCordovaOrWebApp';
 import { renderLog } from '../../common/utils/logging';
 import { cordovaStickyHeaderPaddingTop } from '../../utils/cordovaOffsets';
+import { standardBoxShadow } from '../Style/pageLayoutStyles';
 
 const BallotItemSupportOpposeComment = React.lazy(() => import(/* webpackChunkName: 'BallotItemSupportOpposeComment' */ '../Widgets/BallotItemSupportOpposeComment'));
 const BallotItemSupportOpposeScoreDisplay = React.lazy(() => import(/* webpackChunkName: 'BallotItemSupportOpposeScoreDisplay' */ '../Widgets/ScoreDisplay/BallotItemSupportOpposeScoreDisplay'));
@@ -95,7 +96,7 @@ const Wrapper = styled('div', {
   background: white;
   z-index: 2;
   width: 100vw;
-  box-shadow: 0 2px 4px -1px rgba(0,0,0,0.2), 0 4px 5px 0 rgba(0,0,0,0.14), 0 1px 10px 0 rgba(0,0,0,0.12);
+  box-shadow: ${standardBoxShadow('wide')};
   animation: ${slideDown} 150ms ease-in;
   ${() => (isWebApp() ? 'margin-top: -16px;' : '')};
   ${theme.breakpoints.up('sm')} {

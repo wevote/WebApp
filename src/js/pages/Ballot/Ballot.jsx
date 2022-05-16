@@ -15,14 +15,7 @@ import SupportActions from '../../actions/SupportActions';
 import VoterActions from '../../actions/VoterActions';
 import LoadingWheelComp from '../../common/components/Widgets/LoadingWheelComp';
 import apiCalming from '../../common/utils/apiCalming';
-import {
-  chipLabelText, isAndroid,
-  isAndroidSizeFold,
-  isIOSAppOnMac,
-  isIPad,
-  isIPadGiantSize,
-  isIPhone6p1in,
-} from '../../common/utils/cordovaUtils';
+import { chipLabelText, isAndroid, isAndroidSizeFold, isIOSAppOnMac, isIPad, isIPadGiantSize, isIPhone6p1in } from '../../common/utils/cordovaUtils';
 import getBooleanValue from '../../common/utils/getBooleanValue';
 import historyPush from '../../common/utils/historyPush';
 import { isCordova, isWebApp } from '../../common/utils/isCordovaOrWebApp';
@@ -46,6 +39,7 @@ import TwitterStore from '../../stores/TwitterStore';
 import VoterGuideStore from '../../stores/VoterGuideStore';
 import VoterStore from '../../stores/VoterStore';
 import { dumpCssFromId } from '../../utils/appleSiliconUtils';
+import { setBallotDualHeaderContentContainerTopOffset } from '../../utils/cordovaCalculatedOffsets';
 import isMobile from '../../utils/isMobile';
 // Lint is not smart enough to know that lazyPreloadPages will not attempt to preload/reload this page
 // eslint-disable-next-line import/no-cycle
@@ -122,6 +116,7 @@ class Ballot extends Component {
   }
 
   componentDidMount () {
+    setBallotDualHeaderContentContainerTopOffset(VoterStore.getVoterIsSignedIn());
     const { location: { pathname: currentPathname } } = window;
     // console.log('Ballot componentDidMount, Current pathname:', currentPathname);
     const ballotBaseUrl = '/ballot';
@@ -1413,6 +1408,7 @@ class Ballot extends Component {
                 </div>
               </HeaderContentContainer>
             </HeaderContentOuterContainer>
+            <div id="cordovaHeaderBottomDatum" />
           </DualHeaderContainer>
 
           <PageContentContainer>
@@ -1584,14 +1580,15 @@ Ballot.propTypes = {
   match: PropTypes.object,
 };
 
+/* eslint-disable no-nested-ternary */
 const BallotBottomWrapper = styled('div', {
   shouldForwardProp: (prop) => !['scrolledDown'].includes(prop),
 })(({ scrolledDown, theme }) => (`
-  ${scrolledDown ? 'margin-top: 18px;' : 'margin-top: 38px;'}
-  transition: all 150ms ease-in;
+  ${scrolledDown || isCordova() ? 'margin-top: 18px;' : 'margin-top: 38px;'}
+  ${isWebApp() ? 'transition: all 150ms ease-in;' : ''}
   width: 100%;
-  ${theme.breakpoints.down('sm')} {
-    ${scrolledDown ? 'margin-top: 10px;' : 'margin-top: 20px;'}
+  ${theme.breakpoints.down('sm') && isWebApp()} {
+    ${isWebApp() ? (scrolledDown ? 'margin-top: 10px;' : 'margin-top: 20px;') : ''}
   }
 `));
 
@@ -1624,9 +1621,8 @@ const BallotFilterRow = styled('div')`
 const BallotTitleHeaderWrapper = styled('div', {
   shouldForwardProp: (prop) => !['marginTopOffset'].includes(prop),
 })(({ marginTopOffset }) => (`
-  margin-top: ${marginTopOffset};
-  // height: 80px; // Includes 35px for ballot address
-  transition: all 150ms ease-in;
+  margin-top: ${isWebApp() ? marginTopOffset : ''};
+  transition: ${isWebApp() ? 'all 150ms ease-in' : ''};
 `));
 
 const EmptyBallotCard = styled('div')`

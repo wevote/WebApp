@@ -25,6 +25,7 @@ import { isSpeakerTypeOrganization, isSpeakerTypePublicFigure } from '../../util
 import { convertToInteger } from '../../utils/textFormat';
 import PersonalizedScoreIntroBody from '../CompleteYourProfile/PersonalizedScoreIntroBody';
 import FriendToggle from '../Friends/FriendToggle';
+import { standardBoxShadow } from '../Style/pageLayoutStyles';
 import StepsChips from '../Widgets/StepsChips';
 import SharedItemIntroduction from './SharedItemIntroduction';
 
@@ -694,7 +695,7 @@ const FooterBarWrapper = styled('div')(({ theme }) => (`
   position: absolute;
   width: 100%;
   ${theme.breakpoints.down('md')} {
-    box-shadow: 0 -4px 4px -1px rgba(0, 0, 0, .2), 0 -4px 5px 0 rgba(0, 0, 0, .14), 0 -1px 10px 0 rgba(0, 0, 0, .12);
+    box-shadow: ${standardBoxShadow('wide')};
   }
   @media print{
     display: none;

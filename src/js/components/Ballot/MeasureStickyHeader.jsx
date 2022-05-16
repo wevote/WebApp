@@ -6,6 +6,7 @@ import { isCordova, isWebApp } from '../../common/utils/isCordovaOrWebApp';
 import { renderLog } from '../../common/utils/logging';
 import MeasureStore from '../../stores/MeasureStore';
 import { cordovaStickyHeaderPaddingTop } from '../../utils/cordovaOffsets';
+import { standardBoxShadow } from '../Style/pageLayoutStyles';
 
 const ReadMore = React.lazy(() => import(/* webpackChunkName: 'ReadMore' */ '../../common/components/Widgets/ReadMore'));
 const BallotItemSupportOpposeComment = React.lazy(() => import(/* webpackChunkName: 'BallotItemSupportOpposeComment' */ '../Widgets/BallotItemSupportOpposeComment'));
@@ -107,7 +108,7 @@ const MeasureStickyHeaderWrapper = styled('div')`
   background: white;
   z-index: 2;
   width: 100vw;
-  box-shadow: 0 2px 4px -1px rgba(0,0,0,0.2), 0px 4px 5px 0px rgba(0,0,0,0.14), 0px 1px 10px 0px rgba(0,0,0,0.12);
+  box-shadow: ${standardBoxShadow('wide')};
   //animation: ${slideDown} 150ms ease-in;
   `;
 

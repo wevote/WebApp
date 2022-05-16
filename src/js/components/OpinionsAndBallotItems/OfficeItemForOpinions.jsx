@@ -7,6 +7,7 @@ import historyPush from '../../common/utils/historyPush';
 import { renderLog } from '../../common/utils/logging';
 import toTitleCase from '../../common/utils/toTitleCase';
 import CandidateStore from '../../stores/CandidateStore';
+import { standardBoxShadow } from '../Style/pageLayoutStyles';
 import CandidateItemForOpinions from './CandidateItemForOpinions';
 
 class OfficeItemForOpinions extends Component {
@@ -218,7 +219,7 @@ const CandidateInfo = styled('div', {
   cursor: pointer;
   &:hover {
     border: 1px solid ${theme.colors.linkHoverBorder};
-    box-shadow: 0 1px 3px 0 rgba(0,0,0,.2), 0 1px 1px 0 rgba(0,0,0,.14), 0 2px 1px -1px rgba(0,0,0,.12);
+    box-shadow: ${standardBoxShadow()};
   }
   ${theme.breakpoints.down('md')} {
     flex-flow: column;

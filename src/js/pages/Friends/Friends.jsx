@@ -9,6 +9,7 @@ import FriendActions from '../../actions/FriendActions';
 import LoadingWheel from '../../common/components/Widgets/LoadingWheel';
 import apiCalming from '../../common/utils/apiCalming';
 import historyPush from '../../common/utils/historyPush';
+import { isCordova } from '../../common/utils/isCordovaOrWebApp';
 import { renderLog } from '../../common/utils/logging';
 import normalizedImagePath from '../../common/utils/normalizedImagePath';
 import FacebookSignInCard from '../../components/Facebook/FacebookSignInCard';
@@ -35,7 +36,6 @@ import FriendInvitationsSentToMe from './FriendInvitationsSentToMe';
 import FriendsCurrent from './FriendsCurrent';
 import InviteByEmail from './InviteByEmail';
 import SuggestedFriends from './SuggestedFriends';
-import { isCordova } from '../../common/utils/isCordovaOrWebApp';
 
 const FirstAndLastNameRequiredAlert = React.lazy(() => import(/* webpackChunkName: 'FirstAndLastNameRequiredAlert' */ '../../components/Widgets/FirstAndLastNameRequiredAlert'));
 const SignInOptionsPanel = React.lazy(() => import(/* webpackChunkName: 'SignInOptionsPanel' */ '../../components/SignIn/SignInOptionsPanel'));
@@ -625,7 +625,7 @@ const FriendsHeading = styled('div')`
   // padding-top: 50px;
   // // transform: translate3d(0, -53px, 0);
   // // transition: all 100ms ease-in-out 0s;
-  // box-shadow: 0 2px 4px -1px rgba(0, 0, 0, 0.2), 0 4px 5px 0 rgba(0, 0, 0, 0.14), 0 1px 10px 0 rgba(0, 0, 0, 0.12);
+  // box-shadow: {standardBoxShadow('wide')};
 `;
 
 const OuterSignInOptionsWrapper = styled('div')`

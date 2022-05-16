@@ -1,10 +1,9 @@
-import { Button } from '@mui/material';
+import { Button, Card } from '@mui/material';
 import withStyles from '@mui/styles/withStyles';
 import withTheme from '@mui/styles/withTheme';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
 import Helmet from 'react-helmet';
-import styled from 'styled-components';
 import ActivityActions from '../actions/ActivityActions';
 import AnalyticsActions from '../actions/AnalyticsActions';
 import BallotActions from '../actions/BallotActions';
@@ -12,7 +11,7 @@ import FriendActions from '../actions/FriendActions';
 import IssueActions from '../actions/IssueActions';
 import ReadyActions from '../actions/ReadyActions';
 import apiCalming from '../common/utils/apiCalming';
-import { isAndroid, isIOS } from '../common/utils/cordovaUtils';
+import { isAndroid } from '../common/utils/cordovaUtils';
 import daysUntil from '../common/utils/daysUntil';
 import historyPush from '../common/utils/historyPush';
 import { isWebApp } from '../common/utils/isCordovaOrWebApp';
@@ -21,13 +20,16 @@ import ReadyFinePrint from '../components/Ready/ReadyFinePrint';
 import ReadyIntroduction from '../components/Ready/ReadyIntroduction';
 import ReadyTaskPlan from '../components/Ready/ReadyTaskPlan';
 import ReadyTaskRegister from '../components/Ready/ReadyTaskRegister';
+import { ReadyCard } from '../components/Ready/ReadyTaskStyles';
 import { PageContentContainer } from '../components/Style/pageLayoutStyles';
+import { ElectionCountdownInnerWrapper, ElectionCountdownOuterWrapper, PrepareForElectionOuterWrapper, ReadyIntroductionDesktopWrapper, ReadyIntroductionMobileWrapper, ReadyPageContainer, ReadyParagraph, ReadyTitle, ViewBallotButtonWrapper } from '../components/Style/ReadyPageCommonStyles';
 import BrowserPushMessage from '../components/Widgets/BrowserPushMessage';
 import SnackNotifier, { openSnackbar } from '../components/Widgets/SnackNotifier';
 import webAppConfig from '../config';
 import AppObservableStore, { messageService } from '../stores/AppObservableStore';
 import BallotStore from '../stores/BallotStore';
 import VoterStore from '../stores/VoterStore';
+import { cordovaSimplePageContainerTopOffset } from '../utils/cordovaCalculatedOffsets';
 // Lint is not smart enough to know that lazyPreloadPages will not attempt to preload/reload this page
 // eslint-disable-next-line import/no-cycle
 import lazyPreloadPages from '../utils/lazyPreloadPages';
@@ -56,6 +58,7 @@ class Ready extends Component {
   }
 
   componentDidMount () {
+    window.scrollTo(0, 0);
     this.appStateSubscription = messageService.getMessage().subscribe((msg) => this.onAppObservableStoreChange(msg));
     this.ballotStoreListener = BallotStore.addListener(this.onBallotStoreChange.bind(this));
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
@@ -112,6 +115,9 @@ class Ready extends Component {
 
   componentDidUpdate () {
     if (AppObservableStore.isSnackMessagePending()) openSnackbar({});
+    // if (cordovaCheckForZeroPageContentContainerPaddingTop()) {
+    //   this.setState();
+    // }
   }
 
   componentDidCatch (error, info) {
@@ -182,12 +188,8 @@ class Ready extends Component {
   getTopPadding = () => {
     if (isWebApp()) {
       return { paddingTop: '0 !important' };
-    } else if (isIOS()) {
-      // TODO: This is a bad place to set a top padding: Move it to Application__Wrapper on the next iOS pass
-      return { paddingTop: '56px !important' };  // SE2: 56px, 11 Pro Max: 56px
-    } else if (isAndroid()) {
-      return { paddingTop: 'unset' };
     }
+    cordovaSimplePageContainerTopOffset(VoterStore.getVoterIsSignedIn());
     return {};
   }
 
@@ -231,21 +233,21 @@ class Ready extends Component {
 
             <div className="col-sm-12 col-lg-8">
               {(chosenReadyIntroductionTitle || chosenReadyIntroductionText) && (
-                <Card className="card u-show-mobile-tablet">
+                <ReadyCard className="card u-show-mobile-tablet">
                   <div className="card-main">
-                    <Title>
+                    <ReadyTitle>
                       {chosenReadyIntroductionTitle}
-                    </Title>
-                    <Paragraph>
+                    </ReadyTitle>
+                    <ReadyParagraph>
                       <Suspense fallback={<></>}>
                         <ReadMore
                           textToDisplay={chosenReadyIntroductionText}
                           numberOfLines={3}
                         />
                       </Suspense>
-                    </Paragraph>
+                    </ReadyParagraph>
                   </div>
-                </Card>
+                </ReadyCard>
               )}
               {isAndroid() && (
                 <ReadyIntroductionMobileWrapper className="u-show-mobile">
@@ -308,12 +310,12 @@ class Ready extends Component {
               {(chosenReadyIntroductionTitle || chosenReadyIntroductionText) && (
                 <Card className="card">
                   <div className="card-main">
-                    <Title>
+                    <ReadyTitle>
                       {chosenReadyIntroductionTitle}
-                    </Title>
-                    <Paragraph>
+                    </ReadyTitle>
+                    <ReadyParagraph>
                       {chosenReadyIntroductionText}
-                    </Paragraph>
+                    </ReadyParagraph>
                   </div>
                 </Card>
               )}
@@ -352,58 +354,5 @@ const styles = (theme) => ({
   },
 });
 
-const Card = styled('div')`
-  padding-bottom: 4px;
-`;
-
-const ElectionCountdownInnerWrapper = styled('div')`
-  margin-top: -37px;
-`;
-
-const ElectionCountdownOuterWrapper = styled('div')`
-  height: 280px;
-  position: relative;
-  z-index: 1;
-`;
-
-const Paragraph = styled('div')`
-`;
-
-const PrepareForElectionOuterWrapper = styled('div')`
-  min-height: 150px;
-  margin-bottom: 48px;
-`;
-
-const ReadyIntroductionDesktopWrapper = styled('div')`
-  margin-bottom: 48px;
-  margin-top: 31px;
-`;
-
-const ReadyIntroductionMobileWrapper = styled('div')`
-  display: flex;
-  justify-content: start;
-  margin-bottom: 48px;
-  margin-top: 31px;
-`;
-
-const ReadyPageContainer = styled('div')`
-`;
-
-const ViewBallotButtonWrapper = styled('div')`
-  display: flex;
-  height: 40px;
-  justify-content: center;
-  margin-bottom: 32px;
-`;
-
-const Title = styled('h2')(({ theme }) => (`
-  font-size: 26px;
-  font-weight: 800;
-  margin: 0 0 12px;
-  ${theme.breakpoints.down('sm')} {
-    font-size: 14px;
-    margin: 0 0 4px;
-  }
-`));
 
 export default withTheme(withStyles(styles)(Ready));

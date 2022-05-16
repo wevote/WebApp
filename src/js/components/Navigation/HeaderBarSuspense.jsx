@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { renderLog } from '../../common/utils/logging';
 import getHeaderObjects from '../../utils/getHeaderObjects';
+import { standardBoxShadow } from '../Style/pageLayoutStyles';
 
 function SmallCloud (params) {
   const styleObj = {
@@ -53,7 +54,7 @@ export default function HeaderBarSuspense () {
       backgroundColor: 'white',
       fontFamily: '"Nunito Sans", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, sans-serif',
       height: '48px',
-      boxShadow: 'rgba(0, 0, 0, 0.2) 0 2px 4px -1px, rgba(0, 0, 0, 0.14) 0 4px 5px 0, rgba(0, 0, 0, 0.12) 0 1px 10px 0',
+      boxShadow: standardBoxShadow('wide'),
     }}
     >
       {headerObjects.logo ?

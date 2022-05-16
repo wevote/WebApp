@@ -13,6 +13,7 @@ import AppObservableStore from '../../stores/AppObservableStore';
 import BallotStore from '../../stores/BallotStore';
 import SupportStore from '../../stores/SupportStore';
 import VoterStore from '../../stores/VoterStore';
+import { standardBoxShadow } from '../Style/pageLayoutStyles';
 import {
   BallotToDoTitle, ButtonLeft, ButtonText, Icon,
   PercentComplete, ReadyCard, StyledButton, StyledCheckbox,
@@ -879,7 +880,7 @@ const styles = (theme) => ({
   borderTopRightRadius: 4,
   borderTopStyle: 'none',
   borderTopWidth: 0,
-  boxShadow: 'rgba(0, 0, 0, 0.2) 0px 1px 3px 0px, rgba(0, 0, 0, 0.14) 0px 1px 1px 0px, rgba(0, 0, 0, 0.12) 0px 2px 1px -1px',
+  boxShadow: standardBoxShadow(),
   boxSizing: 'content-box',
   color: 'rgb(51, 51, 51)',
   display: 'flex',

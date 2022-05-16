@@ -34,6 +34,7 @@ import AppObservableStore from '../../stores/AppObservableStore';
 import BallotStore from '../../stores/BallotStore';
 import OrganizationStore from '../../stores/OrganizationStore';
 import VoterStore from '../../stores/VoterStore';
+import { cordovaSimplePageContainerTopOffset } from '../../utils/cordovaCalculatedOffsets';
 // Lint is not smart enough to know that lazyPreloadPages will not attempt to preload/reload this page
 // eslint-disable-next-line import/no-cycle
 import lazyPreloadPages from '../../utils/lazyPreloadPages';
@@ -71,6 +72,7 @@ class News extends Component {
   }
 
   componentDidMount () {
+    cordovaSimplePageContainerTopOffset(VoterStore.getVoterIsSignedIn());
     const { match: { params } } = this.props;
     const activityTidbitWeVoteIdForDrawer = params.activity_tidbit_we_vote_id || '';
     let redirectInProgress = false;
