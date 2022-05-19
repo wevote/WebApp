@@ -151,7 +151,7 @@ class VoterGuideListDashboard extends Component {
         <PageContentContainer>
           <div className="container-fluid">
             <div className="row">
-              {/* Mobile and Desktop mode */}
+              {/* Mobile and Desktop mode, these bootstrap breakpoints don't work well in Cordova, please don't add more of them */}
               <div className="col-12 col-md-4 sidebar-menu">
                 <div className="u-show-mobile">
                   <VoterGuideListSearchResults

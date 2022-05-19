@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import TwitterActions from '../../actions/TwitterActions';
 import VoterActions from '../../actions/VoterActions';
 import LoadingWheel from '../../common/components/Widgets/LoadingWheel';
-import { isAndroidSizeFold, isIPad } from '../../common/utils/cordovaUtils';
+import { isCordovaWide } from '../../common/utils/cordovaUtils';
 import historyPush from '../../common/utils/historyPush';
 import { normalizedHref } from '../../common/utils/hrefUtils';
 import { isWebApp } from '../../common/utils/isCordovaOrWebApp';
@@ -271,7 +271,7 @@ export default class TwitterSignInProcess extends Component {
 const LoadingDiv = styled('div')`
   font-size: 18px;
   margin-top: 50px;
-  ${() => (isIPad() || isAndroidSizeFold() ? {
+  ${() => (isCordovaWide() ? {
     marginLeft: '80px',
     marginRight: '80px',
   } : {})};

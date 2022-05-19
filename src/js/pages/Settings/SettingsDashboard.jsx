@@ -6,6 +6,7 @@ import OrganizationActions from '../../actions/OrganizationActions';
 import VoterActions from '../../actions/VoterActions';
 import VoterGuideActions from '../../actions/VoterGuideActions';
 import apiCalming from '../../common/utils/apiCalming';
+import { isCordovaWide } from '../../common/utils/cordovaUtils';
 import { isWebApp } from '../../common/utils/isCordovaOrWebApp';
 import { renderLog } from '../../common/utils/logging';
 import SelectVoterGuidesSideBar from '../../components/Navigation/SelectVoterGuidesSideBar';
@@ -256,21 +257,25 @@ export default class SettingsDashboard extends Component {
         break;
     }
 
+    let innerDivClass = '';   // prior to May 2022, was isWebApp()  ? 'settings-dashboard u-stack--xl' : 'settings-dashboard SettingsCardBottomCordova'
+    innerDivClass += (isWebApp() || isCordovaWide()) ? 'u-stack--xl ' : '';
+    innerDivClass += isCordovaWide() ? 'SettingsCardBottomCordova ' : '';
+
     return (
       <PageContentContainer>
         <SnackNotifier />
-        <div className={isWebApp() ? 'settings-dashboard u-stack--xl' : 'settings-dashboard SettingsCardBottomCordova'}>
+        <div className={innerDivClass}>
           {/* Desktop left navigation + Settings content.
             WebApp only, since the dashboard doesn't go well with the HamburgerMenu on iPad */}
-          { isWebApp() && (
-          <div className="d-none d-md-block">
+          { (isWebApp() || isCordovaWide()) && (
+          <div className={isWebApp() ? 'd-none d-md-block' : ''}>
             <div className="container-fluid">
               <div className="row">
-                {/* Desktop mode left navigation */}
-                <div className="col-md-4 sidebar-menu">
+                {/* Desktop mode (and cordova wide) left navigation, the bootstrap breakpoints don't work well in Cordova, please don't add more of them */}
+                <SettingsSidebarMenu breakValue={isCordovaWide() ? 1 : 678}>
                   <SettingsPersonalSideBar
                     editMode={editMode}
-                    isSignedIn={this.state.voter.is_signed_in}
+                    isSignedIn={VoterStore.getVoterIsSignedIn()}
                     organizationType={this.state.organizationType}
                   />
 
@@ -283,35 +288,27 @@ export default class SettingsDashboard extends Component {
                       voterGuideWeVoteIdSelected={this.state.voterGuideWeVoteId}
                     />
                   </div>
-                </div>
+                </SettingsSidebarMenu>
                 {/* Desktop mode content */}
-                <div className="col-md-8">
+                <SettingsDesktopRightPane breakValue={isCordovaWide() ? 1 : 678}>
                   <Suspense fallback={<></>}>
                     {settingsComponentToDisplayDesktop}
                   </Suspense>
-                </div>
+                </SettingsDesktopRightPane>
               </div>
             </div>
           </div>
           )}
 
-          {/* Mobile Settings content */}
-          { isWebApp() ? (
-            <div className="d-block d-md-none">
-              {/* Mobile mode content */}
-              <div className="col-12">
-                <Suspense fallback={<></>}>
-                  {settingsComponentToDisplayMobile}
-                </Suspense>
-              </div>
-            </div>
-          ) : (
+          {/* Mobile and not cordovaWide Settings content */}
+          <div className={isWebApp() || isCordovaWide() ? 'd-block d-md-none' : ''}>
+            {/* Mobile mode content */}
             <div className="col-12">
               <Suspense fallback={<></>}>
                 {settingsComponentToDisplayMobile}
               </Suspense>
             </div>
-          )}
+          </div>
         </div>
       </PageContentContainer>
     );
@@ -325,3 +322,33 @@ const SettingsSectionFooterWrapper = styled('div')`
   margin-top: 35px;
   padding-left: 15px;
 `;
+
+// Same as bootstrap 'col-md-4 sidebar-menu' which uses a min 768px breakpoint, that doesn't work for cordova
+export const SettingsSidebarMenu = styled('div', {
+  shouldForwardProp: (prop) => !['breakValue'].includes(prop),
+})(({ breakValue, theme }) => ({
+  [theme.breakpoints.up(breakValue)]: {
+    flex: '0 0 33.333333%',
+    maxWidth: '33.333333%',
+    position: 'relative',
+    width: '100%',
+    paddingRight: '15px',
+    paddingLeft: '15px',
+  },
+}));
+
+// May 2022: Same as 'col-md-8 sidebar-menu' min 768px for Webapp, but needs about 850px for Cordova,
+// so instead we just pass in a very low value if isCordovaWide, so it basically always trips the breakpoint
+export const SettingsDesktopRightPane = styled('div', {
+  shouldForwardProp: (prop) => !['breakValue'].includes(prop),
+})(({ breakValue, theme }) => ({
+  [theme.breakpoints.up(breakValue)]: {
+    flex: '0 0 66.666667%',
+    maxWidth: '0 0 66.666667%',
+    position: 'relative',
+    width: '100%',
+    paddingRight: '15px',
+    paddingLeft: '15px',
+  },
+}));
+

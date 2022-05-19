@@ -3,19 +3,16 @@ import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
 import React, { Suspense } from 'react';
 import styled from 'styled-components';
+import { isCordovaWide } from '../../common/utils/cordovaUtils';
 import historyPush from '../../common/utils/historyPush';
 import { renderLog } from '../../common/utils/logging';
 import normalizedImagePath from '../../common/utils/normalizedImagePath';
+import HeaderBackToButton from '../../components/Navigation/HeaderBackToButton';
+import { reassuranceText } from '../../components/SetUpAccount/reassuranceText';
+import { DesktopNextButtonsInnerWrapper, DesktopNextButtonsOuterWrapperUShowDesktopTablet,
+  MobileStaticNextButtonsInnerWrapper, MobileStaticNextButtonsOuterWrapperUShowMobile } from '../../components/Style/NextButtonStyles';
 import VoterStore from '../../stores/VoterStore';
 import Reassurance from '../Startup/Reassurance';
-import HeaderBackToButton from '../../components/Navigation/HeaderBackToButton';
-import {
-  DesktopNextButtonsInnerWrapper,
-  DesktopNextButtonsOuterWrapper,
-  MobileStaticNextButtonsInnerWrapper,
-  MobileStaticNextButtonsOuterWrapper,
-} from '../../components/Style/NextButtonStyles';
-import { reassuranceText } from '../../components/SetUpAccount/reassuranceText';
 
 const logoColorOnWhite = '../../../img/global/svg-icons/we-vote-icon-square-color-dark.svg';
 
@@ -416,18 +413,18 @@ class SetUpAccountRoot extends React.Component {
           <StepHtmlWrapper>
             {stepHtml}
           </StepHtmlWrapper>
-          <DesktopNextButtonsOuterWrapper className="u-show-desktop-tablet">
+          <DesktopNextButtonsOuterWrapperUShowDesktopTablet breakValue={isCordovaWide() ? 1000 : 768}>
             <DesktopNextButtonsInnerWrapper>
               {desktopButtonsHtml}
             </DesktopNextButtonsInnerWrapper>
-          </DesktopNextButtonsOuterWrapper>
+          </DesktopNextButtonsOuterWrapperUShowDesktopTablet>
           <Reassurance displayState={displayStep} reassuranceText={reassuranceText} />
         </AccountSetUpRootWrapper>
-        <MobileStaticNextButtonsOuterWrapper className="u-show-mobile">
+        <MobileStaticNextButtonsOuterWrapperUShowMobile breakValue={isCordovaWide() ? 1000 : 576}>
           <MobileStaticNextButtonsInnerWrapper>
             {mobileButtonsHtml}
           </MobileStaticNextButtonsInnerWrapper>
-        </MobileStaticNextButtonsOuterWrapper>
+        </MobileStaticNextButtonsOuterWrapperUShowMobile>
       </PageContentContainerAccountSetUp>
     );
   }
