@@ -268,7 +268,7 @@ export default class SettingsDashboard extends Component {
           {/* Desktop left navigation + Settings content.
             WebApp only, since the dashboard doesn't go well with the HamburgerMenu on iPad */}
           { (isWebApp() || isCordovaWide()) && (
-          <div className={isWebApp() ? "d-none d-md-block" : ''}>
+          <div className={isWebApp() ? 'd-none d-md-block' : ''}>
             <div className="container-fluid">
               <div className="row">
                 {/* Desktop mode (and cordova wide) left navigation, the bootstrap breakpoints don't work well in Cordova, please don't add more of them */}
