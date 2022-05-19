@@ -389,12 +389,11 @@ export function cordovaFriendsWrapper () {
     if (isIPhone6p5in()) {
       if (window.location.href.indexOf('/index.html#/friends/invite') > 0) {
         return {
-          // paddingTop: '20%',
           paddingBottom: '625px',
         };
       }
       return {
-        paddingTop: '81px',
+        paddingTop: '20px',
         paddingBottom: '90px',
       };
     }

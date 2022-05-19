@@ -755,6 +755,10 @@ export function polyfillFixes (file) {
   }
 }
 
+export function isCordovaWide () {
+  return isIPad() || isAndroidSizeFold();
+}
+
 export function cordovaLinkToBeSharedFixes (link) {
   let linkToBeShared = link;
   linkToBeShared = linkToBeShared.replace('https://file:/', 'https://wevote.us/');  // Cordova

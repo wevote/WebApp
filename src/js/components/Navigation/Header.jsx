@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
 import VoterActions from '../../actions/VoterActions';
-import { isIOSAppOnMac, isIPad } from '../../common/utils/cordovaUtils';
+import { isIOSAppOnMac, isIPad, isCordovaWide } from '../../common/utils/cordovaUtils';
 import historyPush from '../../common/utils/historyPush';
 import { normalizedHref } from '../../common/utils/hrefUtils';
 import { isCordova, isWebApp } from '../../common/utils/isCordovaOrWebApp';
@@ -334,7 +334,7 @@ export default class Header extends Component {
               )}
               { showBackToSettingsMobile && (
                 <span>
-                  <span className={isWebApp() ? 'u-show-mobile' : ''}>
+                  <span className={isWebApp() || isCordovaWide() ? 'u-show-mobile' : ''}>
                     <Suspense fallback={<></>}>
                       <HeaderBackTo
                         backToLink={backToSettingsLinkMobile}
