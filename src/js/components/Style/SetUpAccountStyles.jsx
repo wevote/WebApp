@@ -19,10 +19,14 @@ const SetUpAccountTitle = styled('div')`
   font-size: 24px;
 `;
 
+const SetUpAccountTop = styled('div')`
+`;
+
 const StepCenteredWrapper = styled('div')`
+  align-items: center;
   display: flex;
   flex-direction: column;
-  align-items: center;
+  justify-content: flex-start;
 `;
 
 const VoterNameWrapper = styled('div')`
@@ -35,6 +39,7 @@ export {
   OneInputFieldWrapper,
   SetUpAccountIntroText,
   SetUpAccountTitle,
+  SetUpAccountTop,
   StepCenteredWrapper,
   VoterNameWrapper,
 };

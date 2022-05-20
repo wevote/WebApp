@@ -122,7 +122,7 @@ class ShareButtonFooter extends Component {
     const chosenPreventSharingOpinions = AppObservableStore.getChosenPreventSharingOpinions();
     const scrolledDown = AppObservableStore.getScrolledDown();
     const hideShareButtonFooter = scrolledDown && !openShareButtonDrawer;
-    // console.log('scrolledDown:', scrolledDown, ', hideShareButtonFooter:', hideShareButtonFooter);
+    // console.log('onAppObservableStoreChange scrolledDown:', scrolledDown, ', hideShareButtonFooter:', hideShareButtonFooter);
     const showingOneCompleteYourProfileModal = AppObservableStore.showingOneCompleteYourProfileModal();
     const showShareModal = AppObservableStore.showShareModal();
     const showSignInModal = AppObservableStore.showSignInModal();
@@ -243,7 +243,7 @@ class ShareButtonFooter extends Component {
       readyShare,
       shareFooterStep: '',
       showShareButton: false,
-    });
+    }, () => this.openShareOptions(true)); // openShareOptions advances directly to share
   }
 
   handleCloseShareButtonDrawer = () => {
@@ -419,8 +419,8 @@ class ShareButtonFooter extends Component {
     const { showFooterBar } = getApplicationViewBooleans(pathname);
 
     // Hide if scrolled down the page
-    // console.log('ShareButtonFooter hideShareButtonFooter:', hideShareButtonFooter, ', showFooterBar:', showFooterBar);
     if (hideShareButtonFooter) {
+      // console.log('hideShareButtonFooter is TRUE. ShareButtonFooter HIDDEN');
       return null;
     }
 
@@ -502,14 +502,14 @@ class ShareButtonFooter extends Component {
       shareMenuTextAllOpinions = 'Ballot + Your Opinions';
     }
     linkToBeShared = cordovaLinkToBeSharedFixes(linkToBeShared);
-    // console.log('ShareButtonFooter showShareButton: ', showShareButton, ', linkToBeShared:', linkToBeShared);
 
     const hideFooterBehindModal = showingOneCompleteYourProfileModal || showShareModal || showSignInModal || showVoterPlanModal;
+    // console.log('ShareButtonFooter render showShareButton: ', showShareButton, ', linkToBeShared:', linkToBeShared, ', showFooterBar:', showFooterBar, ', hideFooterBehindModal:', hideFooterBehindModal);
     const developmentFeatureTurnedOn = false;
     return (
       <Wrapper
         className={hideFooterBehindModal ? 'u-z-index-1000' : 'u-z-index-9000'}
-        shareBottomValue={() => shareBottomOffset(!showFooterBar)}
+        shareBottomValue={shareBottomOffset(!showFooterBar)}
       >
         {showShareButton && (
           <Button
@@ -691,6 +691,16 @@ class ShareButtonFooter extends Component {
                     </Flex>
                   ) : (
                     <Flex>
+                      {developmentFeatureTurnedOn && (
+                        <ShareModalOption
+                          backgroundColor="#2e3c5d"
+                          icon={<img src="../../../img/global/svg-icons/we-vote-icon-square-color.svg" alt="" />}
+                          link={linkToBeShared}
+                          onClickFunction={() => this.openShareModal('friends')}
+                          title="We Vote Friends"
+                          uniqueExternalId="shareButtonFooter-Friends"
+                        />
+                      )}
                       <ShareWrapper>
                         <div id="androidFacebook"
                              onClick={() => isAndroid() &&
@@ -1071,7 +1081,7 @@ const Wrapper = styled('div', {
 })(({ shareBottomValue }) => (`
   position: fixed;
   width: 100%;
-  bottom:  ${shareBottomValue};
+  ${shareBottomValue ? `bottom: ${shareBottomValue}` : ''};
   display: block;
   @media (min-width: 576px) {
     display: none;

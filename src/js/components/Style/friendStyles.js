@@ -9,7 +9,7 @@ const CancelButtonWrapper = styled('div')`
 
 const FriendButtonsWrapper = styled('div')`
   width: 100%;
-  margin: 12px 0 0;
+  margin: 4px 0 0;
   display: flex;
   align-items: center;
   justify-content: flex-end;
@@ -23,9 +23,6 @@ const FriendColumnWithoutButtons = styled('div')`
 `;
 
 const FriendDetailsLine = styled('div')`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
   width: 100%;
   @media (min-width: 400px){
     display: block;
@@ -51,9 +48,11 @@ const FriendDetailsWrapper = isWebApp() ? styled('div', {
   shouldForwardProp: (prop) => !['inSideColumn'].includes(prop),
 })(({ inSideColumn }) => (`
   margin: 0 auto;
+  width: 100%;
   ${inSideColumn ? '' : FriendDetailsWrapperNotInColumn}
 `)) : styled('div')`
   margin: 0 auto;
+  width: 100%;
 `;
 
 const FriendDisplayOuterWrapperShowButtonsOnRight = `
@@ -79,7 +78,7 @@ const FriendDisplayOuterWrapper = styled('div', {
   flex-direction: column;
   flex-wrap: wrap;
   justify-content: space-between;
-  margin: 12px 0;
+  margin: 12px 0 18px 0;
   position: relative;
   width: 100%;
   ${inSideColumn ? '' : FriendDisplayOuterWrapperShowButtonsOnRight}
@@ -92,26 +91,7 @@ const FriendNameInSideColumn = `
 `;
 
 const FriendNameNotInSideColumn = `
-  font-size: 20px;
-  max-width: 32ch;
-  @media(max-width: 321px) {
-    font-size: 16px;
-    max-width: 14ch;
-  }
-  @media (min-width: 322px) and (max-width: 400px) {
-    font-size: 18px;
-    max-width: 14ch;
-  }
-  @media (min-width: 601px) and (max-width: 787px) {
-    max-width: 18ch;
-  }
-  @media (min-width: 788px) and (max-width: 991px) {
-    max-width: 30ch;
-  }
-  @media(min-width: 400px) {
-    font-size: 22px;
-    width: fit-content;
-  }
+  font-size: 18px;
 `;
 
 const FriendName = styled('h3', {

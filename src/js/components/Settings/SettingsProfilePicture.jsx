@@ -85,7 +85,7 @@ class SettingsProfilePicture extends Component {
                   label="Custom photo"
                 />
                 <Separator />
-                <VoterPhotoUpload maxWidth={100} />
+                <VoterPhotoUpload limitPhotoHeight maxWidth={100} />
               </ProfilePictureOption>
             </CustomColumns>
             {voterFacebookImageUrlLarge && (

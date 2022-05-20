@@ -13,6 +13,8 @@ class FriendStore extends ReduceStore {
       friendInvitationsSentByMe: [],
       friendInvitationsSentToMe: [],
       friendInvitationsWaitingForVerification: [],
+      messageToFriendQueuedToSave: '',
+      messageToFriendQueuedToSaveSet: false,
     };
   }
 
@@ -81,6 +83,14 @@ class FriendStore extends ReduceStore {
     return this.getState().facebookInvitationStatus;
   }
 
+  getMessageToFriendQueuedToSave () {
+    return this.getState().messageToFriendQueuedToSave;
+  }
+
+  getMessageToFriendQueuedToSaveSet () {
+    return this.getState().messageToFriendQueuedToSaveSet;
+  }
+
   isFriend (voterWeVoteId) {
     const { currentFriendsByVoterWeVoteIdDict } = this.getState();
     if (currentFriendsByVoterWeVoteIdDict) {
@@ -117,12 +127,28 @@ class FriendStore extends ReduceStore {
 
   reduce (state, action) {
     // Exit if we don't receive a response
-    if (!action.res) return state;  //  || !action.res.success // We deal with failures below
+    if (!action.res && !action.type) return state;  //  || !action.res.success // We deal with failures below
     let { currentFriendsByVoterWeVoteIdDict } = state;
     let count = 0;
     let currentFriendsOrganizationWeVoteIds = [];
 
     switch (action.type) {
+      case 'messageToFriendQueuedToSave':
+        // console.log('FriendStore messageToFriendQueuedToSave: ', action.payload);
+        if (action.payload === undefined) {
+          return {
+            ...state,
+            messageToFriendQueuedToSave: '',
+            messageToFriendQueuedToSaveSet: false,
+          };
+        } else {
+          return {
+            ...state,
+            messageToFriendQueuedToSave: action.payload,
+            messageToFriendQueuedToSaveSet: true,
+          };
+        }
+
       case 'clearErrorMessageToShowVoter':
         // console.log('FriendStore clearErrorMessageToShowVoter');
         return { ...state, errorMessageToShowVoter: '' };

@@ -366,6 +366,8 @@ export function shareBottomOffset (pinToBottom) {
     }
   } else if (isAndroid()) {
     return showFooterBar ? '57px' : '0px';
+  } else if (showFooterBar) {
+    return '57px';
   }
 
   // Default for all other devices, including desktop and mobile browsers

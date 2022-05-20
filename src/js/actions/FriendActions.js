@@ -169,6 +169,21 @@ export default {
     });
   },
 
+  messageToFriendQueuedToSave (messageToFriend) {
+    Dispatcher.dispatch({ type: 'messageToFriendQueuedToSave', payload: messageToFriend });
+  },
+
+  messageToFriendSend (otherVoterWeVoteId, messageToFriend, electionDateInFutureFormatted, electionDateIsToday) {
+    Dispatcher.loadEndpoint('messageToFriendSend',
+      {
+        election_date_in_future_formatted: electionDateInFutureFormatted,
+        election_date_is_today: electionDateIsToday,
+        hostname: AppObservableStore.getHostname(),
+        message_to_friend: messageToFriend,
+        other_voter_we_vote_id: otherVoterWeVoteId,
+      });
+  },
+
   suggestedFriendList () {
     Dispatcher.loadEndpoint('friendList',
       {

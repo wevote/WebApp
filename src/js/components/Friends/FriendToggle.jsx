@@ -158,11 +158,12 @@ const ButtonContainer = styled('div', {
 `));
 
 const InnerButtonContainer = styled('div')`
-  margin-left: auto;
-  position: relative;
   display: flex;
-  justify-content: center;
   height: 32px !important;
+  justify-content: center;
+  margin-left: auto;
+  min-width: 136px;
+  position: relative;
   width: 100%;
 `;
 
