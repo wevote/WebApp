@@ -132,7 +132,7 @@ class HeaderNotificationMenu extends Component {
     let activityDescription = '';
     let activityTimeFromDate = '';
     const maxNumberOfActivityPostWordsToShow = 5;
-    const maxNumberToShow = 10;
+    const maxNumberToShow = 8;
     const menuItemListActivities = allActivityNotices.map((activityNotice) => {
       // console.log('activityNotice:', activityNotice);
       if (!activityNotice.speaker_name || activityNotice.speaker_name.startsWith('Voter-')) {

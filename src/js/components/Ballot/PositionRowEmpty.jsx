@@ -5,10 +5,8 @@ import React, { Component, Suspense } from 'react';
 import styled from 'styled-components';
 import AppObservableStore from '../../stores/AppObservableStore';
 import CandidateStore from '../../stores/CandidateStore';
-import FriendStore from '../../stores/FriendStore';
 import MeasureStore from '../../stores/MeasureStore';
 import VoterStore from '../../stores/VoterStore';
-import historyPush from '../../common/utils/historyPush';
 import { renderLog } from '../../common/utils/logging';
 import normalizedImagePath from '../../common/utils/normalizedImagePath';
 import SvgImage from '../../common/components/Widgets/SvgImage';
@@ -107,26 +105,15 @@ class PositionRowEmpty extends Component {
   onClickAskFriends () {
     const { voterIsSignedIn } = this.state;
     if (voterIsSignedIn) {
-      // If profile not complete, start there
-      if (!VoterStore.voterPhotoAndNameExist()) {
-        console.log('Photo or name missing');
-        // this.goToAccountSetup();
-      } else if (!FriendStore.currentFriendsExist()) {
-        // If no current friends, start import contacts/friends process
-        console.log('No currentFriendsExist');
-      } else {
-        // If one or more friends, open message interface
-        console.log('friendsExist');
-      }
       AppObservableStore.setShowAskFriendsModal(true);
     } else {
       this.toggleShowSignInModal();
     }
   }
 
-  goToAccountSetup () {
-    historyPush('/setupaccount');
-  }
+  // goToAccountSetup () {
+  //   historyPush('/setupaccount');
+  // }
 
   closeSignInModal () {
     this.setState({

@@ -34,8 +34,9 @@ export default class SuggestedFriendToggle extends Component {
   }
 
   onFriendStoreChange () {
+    const { otherVoterWeVoteId } = this.props;
     this.setState({
-      isFriend: FriendStore.isFriend(this.props.otherVoterWeVoteId),
+      isFriend: FriendStore.isFriend(otherVoterWeVoteId),
     });
   }
 
@@ -75,7 +76,7 @@ export default class SuggestedFriendToggle extends Component {
     }
 
     return (
-      <ButtonContainer displayFullWidth={displayFullWidth}>
+      <SuggestedFriendToggleWrapper displayFullWidth={displayFullWidth}>
         <Button
           // className={`issues-follow-btn issues-follow-btn__main issues-follow-btn__main--radius ${lightModeOn ? ' issues-follow-btn--white' : ' issues-follow-btn--blue'}`}
           color="primary"
@@ -98,7 +99,7 @@ export default class SuggestedFriendToggle extends Component {
             </>
           )}
         </Button>
-      </ButtonContainer>
+      </SuggestedFriendToggleWrapper>
     );
   }
 }
@@ -109,7 +110,7 @@ SuggestedFriendToggle.propTypes = {
   otherVoterWeVoteId: PropTypes.string.isRequired,
 };
 
-const ButtonContainer = styled('div', {
+const SuggestedFriendToggleWrapper = styled('div', {
   shouldForwardProp: (prop) => !['displayFullWidth'].includes(prop),
 })(({ displayFullWidth }) => (`
   white-space: nowrap;

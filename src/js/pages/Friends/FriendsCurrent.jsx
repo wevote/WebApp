@@ -79,9 +79,10 @@ export default class FriendsCurrent extends Component {
 
   render () {
     renderLog('FriendsCurrent');  // Set LOG_RENDER_EVENTS to log all renders
+    const { currentFriendListFilteredBySearch, searchFilterOn, searchTerm } = this.state;
     let { currentFriendList } = this.state;
-    if (this.state.searchFilterOn) {
-      currentFriendList = this.state.currentFriendListFilteredBySearch;
+    if (searchFilterOn) {
+      currentFriendList = currentFriendListFilteredBySearch;
     }
 
     return (
@@ -99,27 +100,25 @@ export default class FriendsCurrent extends Component {
           )}
         </SectionTitle>
         <div>
-          <span>
-            <SearchBar
-              clearButton
-              searchButton
-              placeholder="Search by name"
-              searchFunction={this.searchFriends}
-              clearFunction={this.clearSearch}
-              searchUpdateDelayTime={0}
-            />
-            <br />
-            { (this.state.searchFilterOn && currentFriendList.length === 0) && (
-              <p>
-                &quot;
-                {this.state.searchTerm}
-                &quot; not found
-              </p>
-            )}
-            <FriendList
-              friendList={currentFriendList}
-            />
-          </span>
+          <SearchBar
+            clearButton
+            searchButton
+            placeholder="Search by name"
+            searchFunction={this.searchFriends}
+            clearFunction={this.clearSearch}
+            searchUpdateDelayTime={0}
+          />
+          <br />
+          { (searchFilterOn && currentFriendList.length === 0) && (
+            <p>
+              &quot;
+              {searchTerm}
+              &quot; not found
+            </p>
+          )}
+          <FriendList
+            friendList={currentFriendList}
+          />
         </div>
       </FriendsCurrentWrapper>
     );

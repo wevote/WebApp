@@ -157,11 +157,19 @@ const styles = (theme) => ({
     width: '100%',
   } : {},
   dialogPaper: isWebApp() ? {
+    minWidth: '55%',
+    [theme.breakpoints.down('lg')]: {
+      minWidth: '65%',
+    },
+    [theme.breakpoints.down('md')]: {
+      minWidth: '75%',
+    },
     [theme.breakpoints.down('sm')]: {
       minWidth: '95%',
       maxWidth: '95%',
       width: '95%',
       maxHeight: '90%',
+      height: 'unset',
       margin: '0 auto',
     },
   } : {

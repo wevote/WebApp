@@ -12,6 +12,55 @@ import VoterStore from '../../stores/VoterStore';
 
 
 class BallotTitleHeader extends Component {
+  constructor (props) {
+    super(props);
+    this.state = {
+      ballotCaveat: '',
+      daysUntilElection: 0,
+      electionDayTextObject: undefined,
+      electionName: '',
+      originalTextAddress: '',
+      originalTextState: '',
+      substitutedAddress: '',
+      substitutedState: '',
+      textForMapSearch: '',
+    };
+  }
+
+  componentDidMount () {
+    this.onBallotStoreChange();
+    this.onVoterStoreChange();
+    this.ballotStoreListener = BallotStore.addListener(this.onBallotStoreChange.bind(this));
+    this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
+  }
+
+  componentWillUnmount () {
+    this.ballotStoreListener.remove();
+    this.voterStoreListener.remove();
+  }
+
+  onBallotStoreChange () {
+    const electionDayText = BallotStore.currentBallotElectionDate;
+    const electionDayTextFormatted = electionDayText && window.moment ? window.moment(electionDayText).format('MMM Do, YYYY') : '';
+    const electionDayTextObject = electionDayText && window.moment ? <span>{electionDayTextFormatted}</span> : null;
+    this.setState({
+      ballotCaveat: BallotStore.getBallotCaveat(),
+      daysUntilElection: daysUntil(electionDayText),
+      electionDayTextObject,
+      electionName: BallotStore.currentBallotElectionName || '',
+      originalTextAddress: BallotStore.getOriginalTextAddress(),
+      originalTextState: BallotStore.getOriginalTextState(),
+      substitutedAddress: BallotStore.getSubstitutedAddress(),
+      substitutedState: BallotStore.getSubstitutedState(),
+    });
+  }
+
+  onVoterStoreChange () {
+    this.setState({
+      textForMapSearch: VoterStore.getTextForMapSearch(),
+    });
+  }
+
   onClickLocal = () => {
     const { linksOff } = this.props;
     if (this.props.toggleSelectBallotModal && !linksOff) {
@@ -23,17 +72,11 @@ class BallotTitleHeader extends Component {
     renderLog('BallotTitleHeader');  // Set LOG_RENDER_EVENTS to log all renders
     // const nextReleaseFeaturesEnabled = webAppConfig.ENABLE_NEXT_RELEASE_FEATURES === undefined ? false : webAppConfig.ENABLE_NEXT_RELEASE_FEATURES;
     const { centerText, classes, electionDateBelow, linksOff, showBallotCaveat, turnOffVoteByBelow } = this.props;
-    const ballotCaveat = BallotStore.getBallotCaveat();
-    const electionName = BallotStore.currentBallotElectionName || '';
-    const originalTextAddress = BallotStore.getOriginalTextAddress();
-    const originalTextState = BallotStore.getOriginalTextState();
-    const textForMapSearch = VoterStore.getTextForMapSearch();
-    const substitutedAddress = BallotStore.getSubstitutedAddress();
-    const substitutedState = BallotStore.getSubstitutedState();
-    const electionDayText = BallotStore.currentBallotElectionDate;
-    const electionDayTextFormatted = electionDayText && window.moment ? window.moment(electionDayText).format('MMM Do, YYYY') : '';
-    const electionDayTextObject = electionDayText && window.moment ? <span>{electionDayTextFormatted}</span> : null;
-    const daysUntilElection = daysUntil(electionDayText);
+    const {
+      ballotCaveat, daysUntilElection, electionDayTextObject,
+      electionName, originalTextAddress, originalTextState,
+      substitutedAddress, substitutedState, textForMapSearch,
+    } = this.state;
 
     const electionNameContainsWordElection = stringContains('election', electionName.toLowerCase());
     const stateTextUsed = substitutedState || originalTextState || '';

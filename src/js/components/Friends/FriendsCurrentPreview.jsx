@@ -64,6 +64,7 @@ export default class FriendsCurrentPreview extends Component {
             <div>
               <FriendList
                 friendList={currentFriendListLimited}
+                friendToggleOff
                 previewMode
               />
               {currentFriendList.length > FRIENDS_TO_SHOW && <Link to="/friends/current">See All</Link>}

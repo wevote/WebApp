@@ -43,6 +43,7 @@ const muiStyleOverrides = {
   MuiFormControlLabel: {
     styleOverrides: {
       root: {
+        fontFamily: '"Nunito Sans", "Helvetica Neue Light", "Helvetica Neue", "Helvetica", "Arial", sans-serif',
         marginBottom: '-.5rem',
       },
     },

@@ -98,7 +98,7 @@ class ShareModalOption extends Component {
           <div>
             {noLink ? (
               <div id={`shareModalOption-${uniqueExternalId}`} onClick={() => this.onClick}>
-                <Icon background={backgroundColor}>
+                <Icon backgroundColor={backgroundColor}>
                   {icon}
                 </Icon>
                 <Text>
@@ -114,7 +114,7 @@ class ShareModalOption extends Component {
                   target="_blank"
                   body={(
                     <div id={`shareModalOption-${uniqueExternalId}`} onClick={() => this.onClick}>
-                      <Icon background={backgroundColor}>
+                      <Icon backgroundColor={backgroundColor}>
                         {icon}
                       </Icon>
                       <Text>

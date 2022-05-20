@@ -365,7 +365,7 @@ const OrganizationImageWrapper = styled('span')`
 `;
 
 const StepNumber = styled('div')(({ theme }) => (`
-  background: ${theme.colors.values.brandBlue};
+  background: ${theme.colors.brandBlue};
   border-radius: 4px;
   color: white;
   font-size: 16px;

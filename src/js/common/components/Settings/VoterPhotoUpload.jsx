@@ -60,7 +60,7 @@ class VoterPhotoUpload extends Component {
   render () {
     renderLog('VoterPhotoUpload');  // Set LOG_RENDER_EVENTS to log all renders
 
-    const { classes, maxWidth } = this.props;
+    const { classes, limitPhotoHeight, maxWidth } = this.props;
     const { voterProfileUploadedImageUrlLarge } = this.state;
     let dropzoneText = isMobileScreenSize() ? 'Upload profile photo' : 'Drag your profile photo here (or click to find file)';
     if (voterProfileUploadedImageUrlLarge) {
@@ -72,7 +72,7 @@ class VoterPhotoUpload extends Component {
           <Wrapper>
             <ColumnFullWidth>
               {voterProfileUploadedImageUrlLarge ? (
-                <VoterPhotoWrapper>
+                <VoterPhotoWrapper limitPhotoHeight={limitPhotoHeight}>
                   <VoterPhotoImage maxWidth={maxWidth} src={voterProfileUploadedImageUrlLarge} alt="Profile Photo" />
                   <DeleteLink
                     className="u-link-color u-link-underline u-cursor--pointer"
@@ -106,6 +106,7 @@ class VoterPhotoUpload extends Component {
 }
 VoterPhotoUpload.propTypes = {
   classes: PropTypes.object,
+  limitPhotoHeight: PropTypes.bool,
   maxWidth: PropTypes.number,
 };
 
@@ -150,15 +151,17 @@ const VoterPhotoImage = styled('img', {
   ${maxWidth ? `max-width: ${maxWidth}px;` : 'max-width: 200px;'}
 `));
 
-const VoterPhotoWrapper = styled('div')`
+const VoterPhotoWrapper = styled('div', {
+  shouldForwardProp: (prop) => !['limitPhotoHeight'].includes(prop),
+})(({ limitPhotoHeight }) => (`
   align-items: center;
   display: flex;
   flex-direction: column;
-  height: 130px;
+  ${limitPhotoHeight ? 'height: 130px;' : ''}
   justify-content: flex-end;
   margin-bottom: 0;
   width: 100%;
-`;
+`));
 
 const Wrapper = styled('div')`
   display: flex;

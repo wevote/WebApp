@@ -3,6 +3,7 @@ import withStyles from '@mui/styles/withStyles';
 import React, { Component, Suspense } from 'react';
 import { normalizedHref } from '../../common/utils/hrefUtils';
 import { isWebApp } from '../../common/utils/isCordovaOrWebApp';
+import webAppConfig from '../../config';
 import AppObservableStore, { messageService } from '../../stores/AppObservableStore';
 import { getApplicationViewBooleans } from '../../utils/applicationUtils';
 // importRemoveCordovaListenersToken2  -- Do not remove this line!
@@ -12,6 +13,8 @@ const DelayedLoad = React.lazy(() => import(/* webpackChunkName: 'DelayedLoad' *
 const FooterBar = React.lazy(() => import(/* webpackChunkName: 'FooterBar' */ './FooterBar'));
 const FooterMain = React.lazy(() => import(/* webpackChunkName: 'FooterMain' */ './FooterMain'));
 const ShareButtonFooter = React.lazy(() => import(/* webpackChunkName: 'ShareButtonFooter' */ '../Share/ShareButtonFooter'));
+
+const nextReleaseFeaturesEnabled = webAppConfig.ENABLE_NEXT_RELEASE_FEATURES === undefined ? false : webAppConfig.ENABLE_NEXT_RELEASE_FEATURES;
 
 
 // Wrapper component for all footers
@@ -49,6 +52,7 @@ class Footer extends Component {
   onAppObservableStoreChange () {
     // console.log('Footer onAppObservableStoreChange');
     const siteVars = getApplicationViewBooleans(normalizedHref());
+    // console.log('onAppObservableStoreChange siteVars:', siteVars);
     const {
       showFooterBar,
       showFooterMain,
@@ -99,7 +103,7 @@ class Footer extends Component {
 
   render () {
     const { /* doShowHeader, doShowFooter, */ showFooterBar, showFooterMain, showShareButtonFooter } = this.state;
-
+    // console.log('Footer showShareButtonFooter:', showShareButtonFooter);
     return (
       <FooterWrapper>
         {(showFooterMain) && (
@@ -111,7 +115,7 @@ class Footer extends Component {
             </Suspense>
           </FooterMainWrapper>
         )}
-        {showShareButtonFooter && (
+        {(showShareButtonFooter && nextReleaseFeaturesEnabled) && (
           <ShareButtonFooterWrapper>
             <Suspense fallback={<span>&nbsp;</span>}>
               <DelayedLoad waitBeforeShow={3000}>

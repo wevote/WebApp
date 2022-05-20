@@ -9,6 +9,7 @@ import {
   InputFieldsWrapper,
   SetUpAccountIntroText,
   SetUpAccountTitle,
+  SetUpAccountTop,
   StepCenteredWrapper,
   VoterNameWrapper,
 } from '../Style/SetUpAccountStyles';
@@ -91,14 +92,14 @@ class SetUpAccountAddPhoto extends React.Component {
     return (
       <StepCenteredWrapper>
         {voterProfileUploadedImageUrlLarge ? (
-          <>
+          <SetUpAccountTop>
             <SetUpAccountTitle>Looking good!</SetUpAccountTitle>
-          </>
+          </SetUpAccountTop>
         ) : (
-          <>
+          <SetUpAccountTop>
             <SetUpAccountTitle>Add your photo</SetUpAccountTitle>
             <SetUpAccountIntroText>Profile pictures help your friends find you.</SetUpAccountIntroText>
-          </>
+          </SetUpAccountTop>
         )}
         <InputFieldsWrapper>
           {voterPhotoMissing && (
@@ -132,6 +133,5 @@ const VoterPhotoMissing = styled('div')`
   font-size: 18px;
   color: red;
 `;
-
 
 export default withStyles(styles)(SetUpAccountAddPhoto);
