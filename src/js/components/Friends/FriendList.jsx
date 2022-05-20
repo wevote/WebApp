@@ -14,15 +14,6 @@ export default class FriendList extends Component {
     };
   }
 
-  componentDidMount () {
-    // window.addEventListener('scroll', this.onScroll);
-  }
-
-  componentWillUnmount () {
-    // window.removeEventListener('scroll', this.onScroll);
-    clearTimeout(this.friendListLoadTimer);
-  }
-
   render () {
     renderLog('FriendList');  // Set LOG_RENDER_EVENTS to log all renders
     const {

@@ -90,29 +90,6 @@ const FriendNameInSideColumn = `
   text-align: left;
 `;
 
-// const FriendNameNotInSideColumn = `
-//   font-size: 20px;
-//   max-width: 32ch;
-//   @media(max-width: 321px) {
-//     font-size: 16px;
-//     max-width: 14ch;
-//   }
-//   @media (min-width: 322px) and (max-width: 400px) {
-//     font-size: 18px;
-//     max-width: 14ch;
-//   }
-//   @media (min-width: 601px) and (max-width: 787px) {
-//     max-width: 18ch;
-//   }
-//   @media (min-width: 788px) and (max-width: 991px) {
-//     max-width: 30ch;
-//   }
-//   @media(min-width: 400px) {
-//     font-size: 22px;
-//     width: fit-content;
-//   }
-// `;
-
 const FriendNameNotInSideColumn = `
   font-size: 18px;
 `;
