@@ -7,16 +7,19 @@ const CancelButtonWrapper = styled('div')`
   margin-left: 8px;
 `;
 
-const FriendButtonsWrapper = styled('div')`
-  width: 100%;
-  margin: 4px 0 0;
-  display: flex;
+const FriendButtonsWrapper = styled('div')(({ theme }) => (`
   align-items: center;
+  display: flex;
   justify-content: flex-end;
-`;
+  // margin-left: 24px;
+  ${theme.breakpoints.down('sm')} {
+    margin: 4px 0 0;
+  }
+  width: fit-content;
+`));
 
 const FriendColumnWithoutButtons = styled('div')`
-  align-items: center;
+  align-items: flex-start;
   display: flex;
   justify-content: flex-start;
   width: 100%;
@@ -55,25 +58,18 @@ const FriendDetailsWrapper = isWebApp() ? styled('div', {
   width: 100%;
 `;
 
-const FriendDisplayOuterWrapperShowButtonsOnRight = `
-  @media(min-width: 601px) {
-    align-items: center;
-    flex-direction: row;
-    flex-flow: row nowrap;
-    height: 68px;
-    justify-content: flex-start;
-    margin-right: 20px;
-  }
+const FriendDisplayDesktopButtonsWrapper = styled('div')`
+  margin-left: 24px;
 `;
 
-// When wider than 601px, show Buttons to the right
+// When wider than sm, show Buttons to the right
 // Otherwise, show Buttons under FriendColumnWithoutButtons
 // If inSideColumn is true, force buttons under FriendColumnWithoutButtons regardless of screen width
 const FriendDisplayOuterWrapper = styled('div', {
   shouldForwardProp: (prop) => !['inSideColumn'].includes(prop),
-})(({ inSideColumn }) => (`
+})(({ inSideColumn, theme }) => (`
   // In this default, fill up the full width with both Friend info & buttons
-  align-items: center;
+  align-items: flex-start;
   display: flex;
   flex-direction: column;
   flex-wrap: wrap;
@@ -81,7 +77,16 @@ const FriendDisplayOuterWrapper = styled('div', {
   margin: 12px 0 18px 0;
   position: relative;
   width: 100%;
-  ${inSideColumn ? '' : FriendDisplayOuterWrapperShowButtonsOnRight}
+  ${inSideColumn ? '' : (`
+    ${theme.breakpoints.up('sm')} {
+      align-items: flex-start;
+      flex-direction: row;
+      flex-flow: row nowrap;
+      height: 68px;
+      justify-content: flex-start;
+      margin-right: 20px;
+    }
+  `)}
 `));
 
 const FriendNameInSideColumn = `
@@ -108,12 +113,22 @@ const FriendName = styled('h3', {
   ${inSideColumn ? FriendNameInSideColumn : FriendNameNotInSideColumn}
 `));
 
+const ToRightOfPhoto = styled('div')`
+  align-items: flex-start;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 100%;
+`;
+
 export {
   CancelButtonWrapper,
   FriendButtonsWrapper,
   FriendColumnWithoutButtons,
   FriendDetailsLine,
   FriendDetailsWrapper,
+  FriendDisplayDesktopButtonsWrapper,
   FriendDisplayOuterWrapper,
   FriendName,
+  ToRightOfPhoto,
 };

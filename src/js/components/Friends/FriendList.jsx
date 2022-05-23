@@ -54,6 +54,7 @@ export default class FriendList extends Component {
               mutualFriends={friend.mutual_friends}
               positionsTaken={friend.positions_taken}
               previewMode={previewMode}
+              stateCodeForDisplay={friend.state_code_for_display}
               voterDisplayName={friend.voter_display_name}
               voterEmailAddress={friend.voter_email_address}
               voterPhotoUrlLarge={friend.voter_photo_url_large}
