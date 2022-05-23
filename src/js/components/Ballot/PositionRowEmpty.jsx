@@ -20,6 +20,7 @@ import {
   PositionRowItemEmptyWrapper,
 } from '../Style/PositionRowListStyles';
 
+const NUMBER_OF_POSITIONS_REQUIRED_TO_TURN_OFF = 5;
 const SignInModal = React.lazy(() => import(/* webpackChunkName: 'SignInModal' */ '../SignIn/SignInModal'));
 
 class PositionRowEmpty extends Component {
@@ -138,7 +139,7 @@ class PositionRowEmpty extends Component {
     renderLog('PositionRowEmpty');  // Set LOG_RENDER_EVENTS to log all renders
     const { ballotItemWeVoteId } = this.props;
     const { allCachedPositionsForThisBallotItemLength, showSignInModal } = this.state;
-    if (allCachedPositionsForThisBallotItemLength > 0) {
+    if (allCachedPositionsForThisBallotItemLength >= NUMBER_OF_POSITIONS_REQUIRED_TO_TURN_OFF) {
       return null;
     }
     const avatar = normalizedImagePath('../../img/global/svg-icons/avatar-generic.svg');
