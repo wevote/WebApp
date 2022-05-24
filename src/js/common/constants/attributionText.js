@@ -192,4 +192,6 @@ module.exports = [
   // May 2021
   'External_link_font_awesome.svg \n' +
   'Font Awesome by Dave Gandy - https://fortawesome.github.com/Font-Awesome, CC BY-SA 3.0 <https://creativecommons.org/licenses/by-sa/3.0>, via Wikimedia Commons',
+  'Voting graphics by Mere Hunter\n' +
+  'licensed under Extended Commercial License, Copyright (c) https://creativemarket.com/mere_hunter',
 ];

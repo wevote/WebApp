@@ -39,6 +39,7 @@ const nonFluxState = {
   pendingSnackMessage: '',
   pendingSnackSeverity: '',
   scrolledDown: false,
+  setUpAccountBackLinkPath: '',
   shareModalStep: '',
   sharedItemCode: '',
   showActivityTidbitDrawer: false,
@@ -147,6 +148,12 @@ export default {
   setScrolled (scrolledDown) {
     nonFluxState.scrolledDown = scrolledDown;
     messageService.sendMessage('state updated scrolledDown');
+  },
+
+  setSetUpAccountBackLinkPath (backLinkPath) {
+    // console.log('setShareModalStep, step:', step);
+    nonFluxState.setUpAccountBackLinkPath = backLinkPath;
+    messageService.sendMessage('state updated setUpAccountBackLinkPath');
   },
 
   setShareModalStep (step) {
@@ -380,6 +387,10 @@ export default {
 
   getScrolledDown () {
     return nonFluxState.scrolledDown;
+  },
+
+  getSetUpAccountBackLinkPath () {
+    return nonFluxState.setUpAccountBackLinkPath;
   },
 
   getSharedItemCode () {

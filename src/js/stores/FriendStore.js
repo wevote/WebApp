@@ -248,6 +248,7 @@ class FriendStore extends ReduceStore {
           friendInvitationInformation: {
             friendFirstName: action.res.friend_first_name,
             friendLastName: action.res.friend_last_name,
+            friendImageUrlHttpsLarge: action.res.friend_image_url_https_large,
             friendImageUrlHttpsTiny: action.res.friend_image_url_https_tiny,
             friendIssueWeVoteIdList: action.res.friend_issue_we_vote_id_list,
             friendOrganizationWeVoteId: action.res.friend_organization_we_vote_id,

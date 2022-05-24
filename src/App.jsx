@@ -41,8 +41,9 @@ const FacebookInvitableFriends = React.lazy(() => import(/* webpackChunkName: 'F
 const FacebookLandingProcess = React.lazy(() => import(/* webpackChunkName: 'FacebookLandingProcess' */ './js/pages/Process/FacebookLandingProcess'));
 const FacebookRedirectToWeVote = React.lazy(() => import(/* webpackChunkName: 'FacebookRedirectToWeVote' */ './js/pages/More/FacebookRedirectToWeVote'));
 const Footer = React.lazy(() => import(/* webpackChunkName: 'Footer' */ './js/components/Navigation/Footer'));
+const FriendIntroLanding = React.lazy(() => import(/* webpackChunkName: 'FriendIntroLanding' */ './js/pages/FriendIntro/FriendIntroLanding'));
 const FriendInvitationByEmailVerifyProcess = React.lazy(() => import(/* webpackChunkName: 'FriendInvitationByEmailVerifyProcess' */ './js/pages/Process/FriendInvitationByEmailVerifyProcess'));
-const FriendInvitationOnboarding = React.lazy(() => import(/* webpackChunkName: 'FriendInvitationOnboarding' */ './js/pages/Intro/FriendInvitationOnboarding'));
+// const FriendInvitationOnboarding = React.lazy(() => import(/* webpackChunkName: 'FriendInvitationOnboarding' */ './js/pages/Intro/FriendInvitationOnboarding'));
 const Friends = React.lazy(() => import(/* webpackChunkName: 'Friends' */ './js/pages/Friends/Friends'));
 const GetStarted2019 = React.lazy(() => import(/* webpackChunkName: 'GetStarted' */ './js/pages/Intro/GetStarted2019'));
 const HamburgerMenu = React.lazy(() => import(/* webpackChunkName: 'HamburgerMenu' */ './js/pages/Settings/HamburgerMenu'));
@@ -420,7 +421,7 @@ class App extends Component {
                     <Route path="/voterguideedit/:organization_we_vote_id" exact render={(props) => (<RouterV5SendMatch componentName="OrganizationVoterGuideEdit" {...props} />)} />
                     <Route path="/welcome" component={isNotWeVoteMarketingSite ? ReadyRedirect : (props) => <WelcomeForVoters {...props} pathname="/welcome" />} />
                     <Route path="/wevoteintro/network" component={IntroNetwork} />
-                    <Route path="/wevoteintro/newfriend/:invitationSecretKey" component={FriendInvitationOnboarding} />
+                    <Route path="/wevoteintro/newfriend/:invitationSecretKey" component={FriendIntroLanding} />
                     <Route path="/yourpage" component={YourPage} />
                     <Route path="/:twitter_handle/ballot/election/:google_civic_election_id" component={TwitterHandleLanding} />
                     <Route path="/:twitter_handle/ballot/election/:google_civic_election_id/:view_mode" component={TwitterHandleLanding} />
