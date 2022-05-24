@@ -9,13 +9,6 @@ const DesktopNextButtonsInnerWrapper = styled('div')`
   padding: 10px 0;
 `;
 
-const DesktopNextButtonsOuterWrapper = styled('div')`
-  display: flex;
-  justify-content: center;
-  margin: 20px 0 0 0;
-  width: 100%;
-`;
-
 const DesktopNextButtonsOuterWrapperUShowDesktopTablet  = styled('div', {
   shouldForwardProp: (prop) => !['breakValue'].includes(prop),
 })(({ breakValue, theme }) => ({
@@ -38,13 +31,6 @@ const MobileStaticNextButtonsInnerWrapper = styled('div')`
   padding: 10px 20px;
 `;
 
-const MobileStaticNextButtonsOuterWrapper = styled('div')`
-  position: fixed;
-  width: 100%;
-  bottom: 0;
-  display: block;
-`;
-
 const MobileStaticNextButtonsOuterWrapperUShowMobile   = styled('div', {
   shouldForwardProp: (prop) => !['breakValue'].includes(prop),
 })(({ breakValue, theme }) => ({
@@ -52,16 +38,14 @@ const MobileStaticNextButtonsOuterWrapperUShowMobile   = styled('div', {
   width: '100%',
   bottom: 0,
   display: 'block',
-  [theme.breakpoints.down(breakValue)]: {
+  [theme.breakpoints.up(breakValue)]: {
     display: 'none !important',
   },
 }));
 
 export {
   DesktopNextButtonsInnerWrapper,
-  DesktopNextButtonsOuterWrapper,
   DesktopNextButtonsOuterWrapperUShowDesktopTablet,
   MobileStaticNextButtonsInnerWrapper,
-  MobileStaticNextButtonsOuterWrapper,
   MobileStaticNextButtonsOuterWrapperUShowMobile,
 };

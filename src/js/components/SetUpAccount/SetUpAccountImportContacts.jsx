@@ -42,10 +42,10 @@ class SetUpAccountImportContacts extends React.Component {
   }
 
   onVoterStoreChange () {
-    const voterProfileUploadedImageUrlLarge = VoterStore.getVoterProfileUploadedImageUrlLarge();
-    this.setState({
-      voterProfileUploadedImageUrlLarge,
-    });
+    // const voterProfileUploadedImageUrlLarge = VoterStore.getVoterProfileUploadedImageUrlLarge();
+    // this.setState({
+    //   voterProfileUploadedImageUrlLarge,
+    // });
   }
 
   submitImportContacts = () => {
@@ -76,26 +76,21 @@ class SetUpAccountImportContacts extends React.Component {
 
   render () {
     renderLog('SetUpAccountImportContacts');  // Set LOG_RENDER_EVENTS to log all renders
-    const {
-      voterProfileUploadedImageUrlLarge,
-    } = this.state;
+    // const {
+    //   voterProfileUploadedImageUrlLarge,
+    // } = this.state;
     const inviteYourFriendsSrc = normalizedImagePath(inviteYourFriendsGif);
 
     return (
       <StepCenteredWrapper>
-        {voterProfileUploadedImageUrlLarge ? (
-          <>
-            <SetUpAccountTitle>Invite your friends</SetUpAccountTitle>
-            <SetUpAccountIntroText>
-              See how your friends are voting on We Vote.
-            </SetUpAccountIntroText>
-          </>
-        ) : (
-          <>
-            <SetUpAccountTitle>Invite your friends</SetUpAccountTitle>
-            <SetUpAccountIntroText>Don&apos;t be alone when you are deciding how to vote.</SetUpAccountIntroText>
-          </>
-        )}
+        <>
+          <SetUpAccountTitle>
+            Invite your friends
+          </SetUpAccountTitle>
+          <SetUpAccountIntroText>
+            See how your friends are voting on We Vote.
+          </SetUpAccountIntroText>
+        </>
         <InputFieldsWrapper>
           <InviteYourFriendsWrapper>
             <div>

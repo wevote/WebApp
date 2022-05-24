@@ -9,8 +9,11 @@ import { renderLog } from '../../common/utils/logging';
 import normalizedImagePath from '../../common/utils/normalizedImagePath';
 import HeaderBackToButton from '../../components/Navigation/HeaderBackToButton';
 import { reassuranceText } from '../../components/SetUpAccount/reassuranceText';
-import { DesktopNextButtonsInnerWrapper, DesktopNextButtonsOuterWrapperUShowDesktopTablet,
-  MobileStaticNextButtonsInnerWrapper, MobileStaticNextButtonsOuterWrapperUShowMobile } from '../../components/Style/NextButtonStyles';
+import {
+  DesktopNextButtonsInnerWrapper, DesktopNextButtonsOuterWrapperUShowDesktopTablet,
+  MobileStaticNextButtonsInnerWrapper, MobileStaticNextButtonsOuterWrapperUShowMobile,
+} from '../../components/Style/NextButtonStyles';
+import AppObservableStore from '../../stores/AppObservableStore';
 import VoterStore from '../../stores/VoterStore';
 import Reassurance from '../Startup/Reassurance';
 
@@ -19,13 +22,16 @@ const logoColorOnWhite = '../../../img/global/svg-icons/we-vote-icon-square-colo
 const AddContactsFromGoogleButton = React.lazy(() => import(/* webpackChunkName: 'AddContactsFromGoogleButton' */ '../../components/SetUpAccount/AddContactsFromGoogleButton'));
 const SetUpAccountAddPhoto = React.lazy(() => import(/* webpackChunkName: 'SetUpAccountAddPhoto' */ '../../components/SetUpAccount/SetUpAccountAddPhoto'));
 const SetUpAccountEditName = React.lazy(() => import(/* webpackChunkName: 'SetUpAccountEditName' */ '../../components/SetUpAccount/SetUpAccountEditName'));
+const SetUpAccountFriendRequests = React.lazy(() => import(/* webpackChunkName: 'SetUpAccountFriendRequests' */ '../../components/SetUpAccount/SetUpAccountFriendRequests'));
 const SetUpAccountImportContacts = React.lazy(() => import(/* webpackChunkName: 'SetUpAccountImportContacts' */ '../../components/SetUpAccount/SetUpAccountImportContacts'));
+const SetUpAccountInviteContacts = React.lazy(() => import(/* webpackChunkName: 'SetUpAccountInviteContacts' */ '../../components/SetUpAccount/SetUpAccountInviteContacts'));
 
 class SetUpAccountRoot extends React.Component {
   constructor (props) {
     super(props);
     this.state = {
       addPhotoNextButtonDisabled: true,
+      step1BackLinkPath: '',
       displayStep: 1, // editname
       editNameNextButtonDisabled: true,
       nextButtonClicked: false,
@@ -48,6 +54,7 @@ class SetUpAccountRoot extends React.Component {
     const displayStep = this.convertSetUpPagePathToDisplayStep(setUpPagePath);
     this.shouldNextButtonBeDisabled();
     this.setState({
+      step1BackLinkPath: AppObservableStore.getSetUpAccountBackLinkPath(),
       displayStep,
       setUpPagePath,
     });
@@ -75,7 +82,7 @@ class SetUpAccountRoot extends React.Component {
     }
     const { voterContactEmailGoogleCount: voterContactEmailGoogleCountPrevious } = prevState;
     const { voterContactEmailGoogleCount } = this.state;
-    // console.log('SetUpAccountEditName componentDidUpdate prevProps.nextButtonClicked:', prevProps.nextButtonClicked, ', this.props.nextButtonClicked:', this.props.nextButtonClicked);
+    // console.log('SetUpAccountRoot componentDidUpdate prevProps.nextButtonClicked:', prevProps.nextButtonClicked, ', this.props.nextButtonClicked:', this.props.nextButtonClicked);
     if (prevSetUpPagePath !== setUpPagePath) {
       const displayStep = this.convertSetUpPagePathToDisplayStep(setUpPagePath);
       console.log('SetUpAccountRoot componentDidUpdate displayStep:', displayStep);
@@ -128,6 +135,12 @@ class SetUpAccountRoot extends React.Component {
       case 'importcontacts':
         displayStep = 4;
         break;
+      case 'invitecontacts':
+        displayStep = 5;
+        break;
+      case 'friendrequests':
+        displayStep = 6;
+        break;
     }
     return displayStep;
   }
@@ -139,12 +152,12 @@ class SetUpAccountRoot extends React.Component {
   }
 
   getBackToLink = () => {
-    const { displayStep } = this.state;
+    const { displayStep, step1BackLinkPath } = this.state;
     let backToLink = '';
     switch (displayStep) {
       default:
       case 1: // editname
-        backToLink = '';
+        backToLink = step1BackLinkPath;
         break;
       case 2: // addphoto
       case 3:
@@ -152,6 +165,12 @@ class SetUpAccountRoot extends React.Component {
         break;
       case 4: // importcontacts
         backToLink = '/setupaccount/addphoto';
+        break;
+      case 5: // invitecontacts
+        backToLink = '/setupaccount/importcontacts';
+        break;
+      case 6: // friendrequests
+        backToLink = '/setupaccount/invitecontacts';
         break;
     }
     // console.log('SetUpAccountRoot getBackToLink:', backToLink);
@@ -197,8 +216,14 @@ class SetUpAccountRoot extends React.Component {
           historyPush('/setupaccount/invitecontacts');
         } else {
           // We will want to add a switch between friend requests and suggestions here
-          historyPush('/setupaccount/friends');
+          historyPush('/setupaccount/friendrequests');
         }
+        break;
+      case 5: // invitecontacts
+        historyPush('/setupaccount/friendrequests');
+        break;
+      case 6: // friendrequests
+        historyPush('/ballot');
         break;
     }
   }
@@ -223,8 +248,14 @@ class SetUpAccountRoot extends React.Component {
           historyPush('/setupaccount/invitecontacts');
         } else {
           // We will want to add a switch between friend requests and suggestions here
-          historyPush('/setupaccount/friends');
+          historyPush('/setupaccount/friendrequests');
         }
+        break;
+      case 5: // invitecontacts
+        historyPush('/setupaccount/friendrequests');
+        break;
+      case 6: // friendrequests
+        historyPush('/ballot');
         break;
     }
   }
@@ -261,7 +292,7 @@ class SetUpAccountRoot extends React.Component {
   render () {
     renderLog('SetUpAccountRoot');  // Set LOG_RENDER_EVENTS to log all renders
     const { classes } = this.props;
-    const { addPhotoNextButtonDisabled, displayStep, editNameNextButtonDisabled, nextButtonClicked } = this.state;
+    const { addPhotoNextButtonDisabled, displayStep, editNameNextButtonDisabled, nextButtonClicked, step1BackLinkPath } = this.state;
     // console.log('SetUpAccountRoot displayState', displayStep);
 
     let backButtonOn;
@@ -272,7 +303,7 @@ class SetUpAccountRoot extends React.Component {
     switch (displayStep) {
       default:
       case 1: // editname
-        backButtonOn = false;
+        backButtonOn = !!(step1BackLinkPath);
         nextButtonDisabled = editNameNextButtonDisabled;
         stepHtml = (
           <Suspense fallback={<></>}>
@@ -304,8 +335,31 @@ class SetUpAccountRoot extends React.Component {
         stepHtml = (
           <Suspense fallback={<></>}>
             <SetUpAccountImportContacts
-              // functionToUseWhenProfileComplete={this.goToNextStep}
-              // functionToUseWhenProfileNotComplete={this.resetNextButtonClicked}
+              goToNextStep={this.goToNextStep}
+              nextButtonClicked={nextButtonClicked}
+            />
+          </Suspense>
+        );
+        break;
+      case 5: // invitecontacts
+        backButtonOn = true;
+        nextButtonDisabled = false;
+        stepHtml = (
+          <Suspense fallback={<></>}>
+            <SetUpAccountInviteContacts
+              goToNextStep={this.goToNextStep}
+              nextButtonClicked={nextButtonClicked}
+            />
+          </Suspense>
+        );
+        break;
+      case 6: // friendrequests
+        backButtonOn = true;
+        nextButtonDisabled = false;
+        stepHtml = (
+          <Suspense fallback={<></>}>
+            <SetUpAccountFriendRequests
+              goToNextStep={this.goToNextStep}
               nextButtonClicked={nextButtonClicked}
             />
           </Suspense>
@@ -413,14 +467,14 @@ class SetUpAccountRoot extends React.Component {
           <StepHtmlWrapper>
             {stepHtml}
           </StepHtmlWrapper>
-          <DesktopNextButtonsOuterWrapperUShowDesktopTablet breakValue={isCordovaWide() ? 1000 : 768}>
+          <DesktopNextButtonsOuterWrapperUShowDesktopTablet breakValue={isCordovaWide() ? 1000 : 'sm'}>
             <DesktopNextButtonsInnerWrapper>
               {desktopButtonsHtml}
             </DesktopNextButtonsInnerWrapper>
           </DesktopNextButtonsOuterWrapperUShowDesktopTablet>
           <Reassurance displayState={displayStep} reassuranceText={reassuranceText} />
         </AccountSetUpRootWrapper>
-        <MobileStaticNextButtonsOuterWrapperUShowMobile breakValue={isCordovaWide() ? 1000 : 576}>
+        <MobileStaticNextButtonsOuterWrapperUShowMobile breakValue={isCordovaWide() ? 1000 : 'sm'}>
           <MobileStaticNextButtonsInnerWrapper>
             {mobileButtonsHtml}
           </MobileStaticNextButtonsInnerWrapper>
@@ -464,6 +518,7 @@ const AccountSetUpRootWrapper = styled('div')`
   background-color: white;
   max-width: 550px;
   padding: 40px 20px 110% 20px;
+  width: 100%;
 `;
 
 const BackWrapper = styled('div')`

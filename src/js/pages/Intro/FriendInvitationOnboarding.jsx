@@ -73,11 +73,13 @@ class FriendInvitationOnboarding extends Component {
     document.body.className = '';
     this.friendStoreListener.remove();
     this.voterStoreListener.remove();
+    if (this.friendInvitationTimer) clearTimeout(this.friendInvitationTimer);
   }
 
   onFriendStoreChange () {
     const { match: { params: { invitationSecretKey }  } } = this.props;
     const { friendInvitationInformationCalled } = this.state;
+    // console.log('onFriendStoreChange friendInvitationInformationCalled:', friendInvitationInformationCalled);
     const voterDeviceId = VoterStore.voterDeviceId();
     if (voterDeviceId && invitationSecretKey && !friendInvitationInformationCalled) {
       FriendActions.friendInvitationInformation(invitationSecretKey);
@@ -97,11 +99,24 @@ class FriendInvitationOnboarding extends Component {
         } = friendInvitationInformation;
         if (!invitationSecretKeyBelongsToThisVoter) {
           // We have a response, but voterMergeTwoAccounts hasn't finished
+          // console.log('onFriendStoreChange !invitationSecretKeyBelongsToThisVoter');
           if (voterDeviceId && invitationSecretKey) {
-            FriendActions.friendInvitationInformation(invitationSecretKey);
-            this.setState({
-              friendInvitationInformationCalled: true,
-            });
+            if (friendInvitationInformationCalled) {
+              this.setState({
+                friendInvitationInformationCalled: false,
+              }, () => {
+                // console.log('onFriendStoreChange !invitationSecretKeyBelongsToThisVoter !friendInvitationInformationCalled RESET');
+                this.friendInvitationTimer = setTimeout(() => {
+                  FriendActions.friendInvitationInformation(invitationSecretKey);
+                  // console.log('onFriendStoreChange !invitationSecretKeyBelongsToThisVoter friendInvitationInformation called');
+                  this.setState({
+                    friendInvitationInformationCalled: true,
+                  });
+                }, 3000);
+              });
+            } else {
+              // console.log('onFriendStoreChange !invitationSecretKeyBelongsToThisVoter !friendInvitationInformationCalled');
+            }
           }
         } else {
           this.setState({
@@ -117,6 +132,7 @@ class FriendInvitationOnboarding extends Component {
   }
 
   onVoterStoreChange () {
+    // console.log('onVoterStoreChange');
     this.onFriendStoreChange();
     const personalizedScoreIntroCompleted = VoterStore.getInterfaceFlagState(VoterConstants.PERSONALIZED_SCORE_INTRO_COMPLETED);
     this.setState({
