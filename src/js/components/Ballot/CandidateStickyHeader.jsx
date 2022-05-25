@@ -36,7 +36,7 @@ class CandidateStickyHeader extends Component {
           <Flex>
             <ColumnOne>
               <Profile>
-                {candidatePhotoUrl && <Avatar src={candidatePhotoUrl} alt="candidate-photo" />}
+                {candidatePhotoUrl && <Avatar src={candidatePhotoUrl} alt="" />}
                 <div>
                   <CandidateName>{displayName}</CandidateName>
                   <CandidateDescription>

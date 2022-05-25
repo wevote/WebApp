@@ -24,6 +24,9 @@ class FriendIntroLanding extends Component {
     this.state = {
       friendInvitationInformationCalled: false,
       showWhatIsWeVote: false,
+      skipForNowOff: false,
+      voterContactEmailListCount: 0,
+      voterContactEmailGoogleCount: 0,
     };
   }
 
@@ -105,13 +108,18 @@ class FriendIntroLanding extends Component {
   onVoterStoreChange () {
     // console.log('onVoterStoreChange');
     this.onFriendStoreChange();
+    const voterContactEmailList = VoterStore.getVoterContactEmailList();
     const voter = VoterStore.getVoter();
     const {
       signed_in_apple: voterSignedInApple,
       signed_in_facebook: voterSignedInFacebook,
       signed_in_twitter: voterSignedInTwitter,
     } = voter;
+    const voterContactEmailGoogleCount = VoterStore.getVoterContactEmailGoogleCount();
+    const voterContactEmailListCount = voterContactEmailList.length;
     this.setState({
+      voterContactEmailGoogleCount,
+      voterContactEmailListCount,
       voterFirstName: VoterStore.getFirstName(),
       voterPhotoUrlLarge: VoterStore.getVoterPhotoUrlLarge(),
       voterSignedInApple,
@@ -124,7 +132,7 @@ class FriendIntroLanding extends Component {
     const { location: { pathname: currentPathname } } = window;
     AppObservableStore.setSetUpAccountBackLinkPath(currentPathname);
     const { setUpAccountEntryPath } = this.state;
-    // AppObservableStore.setSetUpAccountEntryPath(entryPath);
+    AppObservableStore.setSetUpAccountEntryPath(setUpAccountEntryPath);
     historyPush(setUpAccountEntryPath);
   }
 
@@ -137,8 +145,7 @@ class FriendIntroLanding extends Component {
       voterFirstName, voterPhotoUrlLarge,
       voterSignedInApple, voterSignedInFacebook, voterSignedInTwitter,
     } = this.state;
-    const contactsImported = false;
-    let socialSignInOffered = true;
+    let socialSignInOffered = false; // Temporarily false until Twitter/Facebook sign in offered
     const voterSignedInWithSocialSite = voterSignedInApple || voterSignedInFacebook || voterSignedInTwitter;
     if (voterFirstName && voterPhotoUrlLarge) {
       socialSignInOffered = false;
@@ -146,26 +153,32 @@ class FriendIntroLanding extends Component {
       socialSignInOffered = false;
     }
 
-    let nextStepButtonText;
+    let nextStepButtonText = 'Next';
     let setUpAccountEntryPath;
+    let skipForNowOff = false;
     if (voterFirstName && voterPhotoUrlLarge) {
-      if (contactsImported) {
-        setUpAccountEntryPath = '/setupaccount/invitecontacts';
-        nextStepButtonText = 'Find other friends';
-      } else {
-        setUpAccountEntryPath = '/setupaccount/importcontacts';
-        nextStepButtonText = 'Find other friends';
-      }
+      setUpAccountEntryPath = '/ballot'; // Temporary redirection
+      nextStepButtonText = 'View your ballot';
+      skipForNowOff = true;
+      // if (voterContactEmailGoogleCount) {
+      //   setUpAccountEntryPath = '/setupaccount/invitecontacts';
+      //   nextStepButtonText = 'Find other friends';
+      // } else {
+      //   setUpAccountEntryPath = '/setupaccount/importcontacts';
+      //   nextStepButtonText = 'Find other friends';
+      // }
     } else if (voterPhotoUrlLarge) {
       setUpAccountEntryPath = '/setupaccount/editname';
     } else if (voterFirstName) {
       setUpAccountEntryPath = '/setupaccount/addphoto';
     } else {
-      setUpAccountEntryPath = '/setupaccount';
+      setUpAccountEntryPath = '/ballot'; // Temporary redirection
+      // setUpAccountEntryPath = '/setupaccount';
     }
     this.setState({
       nextStepButtonText,
       setUpAccountEntryPath,
+      skipForNowOff,
       socialSignInOffered,
     });
   }
@@ -182,7 +195,7 @@ class FriendIntroLanding extends Component {
     const { classes } = this.props;
     const {
       friendFirstName, friendLastName, friendImageUrlHttpsLarge, nextStepButtonText,
-      showWhatIsWeVote, socialSignInOffered, voterFirstName,
+      showWhatIsWeVote, skipForNowOff, socialSignInOffered, voterFirstName,
     } = this.state;
 
     return (
@@ -285,6 +298,7 @@ class FriendIntroLanding extends Component {
                               goToSkipForNow={this.goToSkipForNow}
                               nextStepButtonText={nextStepButtonText}
                               onClickNextButton={this.goToNextStep}
+                              skipForNowOff={skipForNowOff}
                             />
                           </DesktopNextButtonsInnerWrapper>
                         </DesktopNextButtonsOuterWrapperUShowDesktopTablet>
@@ -309,6 +323,7 @@ class FriendIntroLanding extends Component {
                     goToSkipForNow={this.goToSkipForNow}
                     nextStepButtonText={nextStepButtonText}
                     onClickNextButton={this.goToNextStep}
+                    skipForNowOff={skipForNowOff}
                   />
                 </MobileStaticNextButtonsInnerWrapper>
               </MobileStaticNextButtonsOuterWrapperUShowMobile>
@@ -344,13 +359,15 @@ function NextStepButtons (props) {
       >
         {props.nextStepButtonText}
       </Button>
-      <Button
-        classes={props.desktopMode ? { root: props.classes.desktopSimpleLink } : { root: props.classes.mobileSimpleLink }}
-        color="primary"
-        onClick={props.goToSkipForNow}
-      >
-        Skip for now
-      </Button>
+      {!props.skipForNowOff && (
+        <Button
+          classes={props.desktopMode ? { root: props.classes.desktopSimpleLink } : { root: props.classes.mobileSimpleLink }}
+          color="primary"
+          onClick={props.goToSkipForNow}
+        >
+          Skip for now
+        </Button>
+      )}
     </>
   );
 }
@@ -360,6 +377,7 @@ NextStepButtons.propTypes = {
   goToSkipForNow: PropTypes.func,
   nextStepButtonText: PropTypes.string,
   onClickNextButton: PropTypes.func,
+  skipForNowOff: PropTypes.bool,
 };
 
 const styles = () => ({

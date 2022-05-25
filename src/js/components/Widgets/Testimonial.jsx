@@ -31,7 +31,7 @@ class Testimonial extends React.Component {
           <ImageHandler
             className="card-main__avatar__testimonial"
             imageUrl={imageUrl}
-            alt="candidate-photo"
+            alt=""
             kind_of_ballot_item="CANDIDATE"
           />
         </Suspense>

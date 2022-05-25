@@ -6,6 +6,7 @@ import styled from 'styled-components';
 import { isCordovaWide } from '../../common/utils/cordovaUtils';
 import historyPush from '../../common/utils/historyPush';
 import { renderLog } from '../../common/utils/logging';
+import stringContains from '../../common/utils/stringContains';
 import normalizedImagePath from '../../common/utils/normalizedImagePath';
 import HeaderBackToButton from '../../components/Navigation/HeaderBackToButton';
 import { reassuranceText } from '../../components/SetUpAccount/reassuranceText';
@@ -31,7 +32,8 @@ class SetUpAccountRoot extends React.Component {
     super(props);
     this.state = {
       addPhotoNextButtonDisabled: true,
-      step1BackLinkPath: '',
+      setUpAccountBackLinkPath: '',
+      setUpAccountEntryPath: '',
       displayStep: 1, // editname
       editNameNextButtonDisabled: true,
       nextButtonClicked: false,
@@ -54,7 +56,8 @@ class SetUpAccountRoot extends React.Component {
     const displayStep = this.convertSetUpPagePathToDisplayStep(setUpPagePath);
     this.shouldNextButtonBeDisabled();
     this.setState({
-      step1BackLinkPath: AppObservableStore.getSetUpAccountBackLinkPath(),
+      setUpAccountBackLinkPath: AppObservableStore.getSetUpAccountBackLinkPath(),
+      setUpAccountEntryPath: AppObservableStore.getSetUpAccountEntryPath(),
       displayStep,
       setUpPagePath,
     });
@@ -152,25 +155,41 @@ class SetUpAccountRoot extends React.Component {
   }
 
   getBackToLink = () => {
-    const { displayStep, step1BackLinkPath } = this.state;
+    const { displayStep, setUpAccountBackLinkPath, setUpAccountEntryPath } = this.state;
     let backToLink = '';
     switch (displayStep) {
       default:
       case 1: // editname
-        backToLink = step1BackLinkPath;
+        backToLink = setUpAccountBackLinkPath;
         break;
       case 2: // addphoto
       case 3:
-        backToLink = '/setupaccount/editname';
+        if (stringContains('addphoto', setUpAccountEntryPath)) {
+          backToLink = setUpAccountBackLinkPath;
+        } else {
+          backToLink = '/setupaccount/editname';
+        }
         break;
       case 4: // importcontacts
-        backToLink = '/setupaccount/addphoto';
+        if (stringContains('importcontacts', setUpAccountEntryPath)) {
+          backToLink = setUpAccountBackLinkPath;
+        } else {
+          backToLink = '/setupaccount/addphoto';
+        }
         break;
       case 5: // invitecontacts
-        backToLink = '/setupaccount/importcontacts';
+        if (stringContains('invitecontacts', setUpAccountEntryPath)) {
+          backToLink = setUpAccountBackLinkPath;
+        } else {
+          backToLink = '/setupaccount/importcontacts';
+        }
         break;
       case 6: // friendrequests
-        backToLink = '/setupaccount/invitecontacts';
+        if (stringContains('friendrequests', setUpAccountEntryPath)) {
+          backToLink = setUpAccountBackLinkPath;
+        } else {
+          backToLink = '/setupaccount/invitecontacts';
+        }
         break;
     }
     // console.log('SetUpAccountRoot getBackToLink:', backToLink);
@@ -183,9 +202,12 @@ class SetUpAccountRoot extends React.Component {
     switch (displayStep) {
       default:
       case 1: // editname
+        nextButtonText = 'Next';
+        break;
       case 2: // addphoto
       case 3:
-        nextButtonText = 'Next';
+        nextButtonText = 'View your ballot'; // Temporary change
+        // nextButtonText = 'Find your friends';
         break;
       case 4: // importcontacts
         nextButtonText = 'Import contacts from Gmail';
@@ -199,17 +221,18 @@ class SetUpAccountRoot extends React.Component {
     this.resetNextButtonClicked();
     const { displayStep, voterContactEmailListCount } = this.state;
     switch (displayStep) {
-      case 2: // 'addphoto'
-      case 3:
-        if (voterContactEmailListCount === 0) {
-          historyPush('/setupaccount/importcontacts');
-        } else {
-          historyPush('/setupaccount/invitecontacts');
-        }
-        break;
       default:
       case 1: // 'editname'
         historyPush('/setupaccount/addphoto');
+        break;
+      case 2: // 'addphoto'
+      case 3:
+        historyPush('/ballot'); // Temporary redirection
+        // if (voterContactEmailListCount === 0) {
+        //   historyPush('/setupaccount/importcontacts');
+        // } else {
+        //   historyPush('/setupaccount/invitecontacts');
+        // }
         break;
       case 4: // importcontacts
         if (voterContactEmailListCount > 0) {
@@ -231,17 +254,18 @@ class SetUpAccountRoot extends React.Component {
   goToSkipForNow = () => {
     const { displayStep, voterContactEmailListCount } = this.state;
     switch (displayStep) {
-      case 2: // 'addphoto'
-      case 3:
-        if (voterContactEmailListCount === 0) {
-          historyPush('/setupaccount/importcontacts');
-        } else {
-          historyPush('/setupaccount/invitecontacts');
-        }
-        break;
       default:
       case 1: // 'editname'
         historyPush('/setupaccount/addphoto');
+        break;
+      case 2: // 'addphoto'
+      case 3:
+        historyPush('/ballot'); // Temporary redirection
+        // if (voterContactEmailListCount === 0) {
+        //   historyPush('/setupaccount/importcontacts');
+        // } else {
+        //   historyPush('/setupaccount/invitecontacts');
+        // }
         break;
       case 4: // importcontacts
         if (voterContactEmailListCount > 0) {
@@ -292,7 +316,7 @@ class SetUpAccountRoot extends React.Component {
   render () {
     renderLog('SetUpAccountRoot');  // Set LOG_RENDER_EVENTS to log all renders
     const { classes } = this.props;
-    const { addPhotoNextButtonDisabled, displayStep, editNameNextButtonDisabled, nextButtonClicked, step1BackLinkPath } = this.state;
+    const { addPhotoNextButtonDisabled, displayStep, editNameNextButtonDisabled, nextButtonClicked, setUpAccountBackLinkPath } = this.state;
     // console.log('SetUpAccountRoot displayState', displayStep);
 
     let backButtonOn;
@@ -303,7 +327,7 @@ class SetUpAccountRoot extends React.Component {
     switch (displayStep) {
       default:
       case 1: // editname
-        backButtonOn = !!(step1BackLinkPath);
+        backButtonOn = !!(setUpAccountBackLinkPath);
         nextButtonDisabled = editNameNextButtonDisabled;
         stepHtml = (
           <Suspense fallback={<></>}>
@@ -367,11 +391,14 @@ class SetUpAccountRoot extends React.Component {
         break;
     }
 
+    const nextButtonText = this.getNextButtonText();
     switch (displayStep) {
       default:
       case 1: // editname
       case 2: // addphoto
       case 3:
+      case 5: // invitecontacts
+      case 6: // friendrequests
         desktopNextButtonHtml = (
           <Button
             color="primary"
@@ -384,7 +411,7 @@ class SetUpAccountRoot extends React.Component {
             }}
             variant="contained"
           >
-            Next
+            {nextButtonText}
           </Button>
         );
         mobileNextButtonHtml = (
@@ -399,7 +426,7 @@ class SetUpAccountRoot extends React.Component {
             }}
             variant="contained"
           >
-            Next
+            {nextButtonText}
           </Button>
         );
         break;

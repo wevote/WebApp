@@ -373,7 +373,7 @@ export default class OrganizationPositionItem extends Component {
                   className="card-child__avatar--round"
                   sizeClassName="icon-lg "
                   imageUrl={position.ballot_item_image_url_https_large}
-                  alt="candidate-photo"
+                  alt=""
                   kind_of_ballot_item={kindOfBallotItem}
                 />
               </Suspense>
