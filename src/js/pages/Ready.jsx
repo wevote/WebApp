@@ -12,7 +12,6 @@ import IssueActions from '../actions/IssueActions';
 import ReadyActions from '../actions/ReadyActions';
 import apiCalming from '../common/utils/apiCalming';
 import { isAndroid } from '../common/utils/cordovaUtils';
-import daysUntil from '../common/utils/daysUntil';
 import historyPush from '../common/utils/historyPush';
 import { isWebApp } from '../common/utils/isCordovaOrWebApp';
 import { renderLog } from '../common/utils/logging';

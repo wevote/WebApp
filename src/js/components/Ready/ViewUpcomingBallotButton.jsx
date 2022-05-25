@@ -3,10 +3,8 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import styled from 'styled-components';
 import daysUntil from '../../common/utils/daysUntil';
-import getBooleanValue from '../../common/utils/getBooleanValue';
 import { renderLog } from '../../common/utils/logging';
 import BallotStore from '../../stores/BallotStore';
-import AppObservableStore from '../../stores/AppObservableStore';
 
 class ViewUpcomingBallotButton extends React.Component {
   constructor (props) {
@@ -23,9 +21,6 @@ class ViewUpcomingBallotButton extends React.Component {
 
   componentWillUnmount () {
     this.ballotStoreListener.remove();
-    if (this.addressSuggestiontimer) clearTimeout(this.addressSuggestiontimer);
-    clearInterval(this.timeInterval);
-    if (this.loadDelay) clearTimeout(this.loadDelay);
   }
 
   onBallotStoreChange () {
@@ -50,13 +45,6 @@ class ViewUpcomingBallotButton extends React.Component {
     if (this.props.onClickFunction) {
       this.props.onClickFunction();
     }
-  }
-
-  // eslint-disable-next-line no-unused-vars
-  toggleSelectBallotModal (showSelectBallotModal, hideAddressEditIgnored = false, hideElectionsIgnored = false) {
-    const hideAddressEdit = false;
-    const hideElections = false;
-    AppObservableStore.setShowSelectBallotModal(!showSelectBallotModal, getBooleanValue(hideAddressEdit), getBooleanValue(hideElections));
   }
 
   render () {
@@ -88,10 +76,10 @@ ViewUpcomingBallotButton.propTypes = {
   onClickFunction: PropTypes.func,
 };
 
-const ViewUpcomingBallotButtonWrapper = styled('div')(({ theme }) => (`
+const ViewUpcomingBallotButtonWrapper = styled('div')`
   align-items: center;
   flex-direction: row;
   justify-content: center;
-`));
+`;
 
 export default ViewUpcomingBallotButton;

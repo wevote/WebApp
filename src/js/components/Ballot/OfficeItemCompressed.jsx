@@ -358,7 +358,8 @@ class OfficeItemCompressed extends Component {
                       </CandidateBottomRow>
                     </CandidateInfo>
                   </CandidateWrapper>
-                  <PositionRowListOuterWrapper>{/*  className="u-show-desktop-tablet" */}
+                  <PositionRowListOuterWrapper>
+                    {/*  className="u-show-desktop-tablet" */}
                     <OverflowContainer>
                       <PositionRowListInnerWrapper>
                         <PositionRowListOneWrapper>
