@@ -17,7 +17,19 @@ import ReadyTaskPlan from '../components/Ready/ReadyTaskPlan';
 import ReadyTaskRegister from '../components/Ready/ReadyTaskRegister';
 import { ReadyCard } from '../components/Ready/ReadyTaskStyles';
 import { PageContentContainer } from '../components/Style/pageLayoutStyles';
-import { ElectionCountdownInnerWrapper, ElectionCountdownOuterWrapper, IntroAndFindTabletSpacer, IntroAndFindTabletWrapper, PrepareForElectionOuterWrapper, ReadyIntroductionDesktopWrapper, ReadyIntroductionMobileWrapper, ReadyPageContainer, ReadyParagraph, ReadyTitle } from '../components/Style/ReadyPageCommonStyles';
+import {
+  ElectionCountdownInnerWrapper,
+  ElectionCountdownOuterWrapper,
+  IntroAndFindTabletSpacer,
+  IntroAndFindTabletWrapper,
+  PrepareForElectionOuterWrapper,
+  ReadyIntroductionDesktopWrapper,
+  ReadyIntroductionMobileWrapper,
+  ReadyPageContainer,
+  ReadyParagraph,
+  ReadyTitle,
+  ViewBallotButtonWrapper,
+} from '../components/Style/ReadyPageCommonStyles';
 import BrowserPushMessage from '../components/Widgets/BrowserPushMessage';
 import webAppConfig from '../config';
 import AppObservableStore, { messageService } from '../stores/AppObservableStore';
@@ -30,6 +42,7 @@ const ElectionCountdown = React.lazy(() => import(/* webpackChunkName: 'Election
 const FirstAndLastNameRequiredAlert = React.lazy(() => import(/* webpackChunkName: 'FirstAndLastNameRequiredAlert' */ '../components/Widgets/FirstAndLastNameRequiredAlert'));
 const ReadMore = React.lazy(() => import(/* webpackChunkName: 'ReadMore' */ '../common/components/Widgets/ReadMore'));
 const ReadyPageValuesList = React.lazy(() => import(/* webpackChunkName: 'ReadyPageValuesList' */ '../components/Values/ReadyPageValuesList'));
+const ViewUpcomingBallotButton = React.lazy(() => import(/* webpackChunkName: 'ViewUpcomingBallotButton' */ '../components/Ready/ViewUpcomingBallotButton'));
 
 const nextReleaseFeaturesEnabled = webAppConfig.ENABLE_NEXT_RELEASE_FEATURES === undefined ? false : webAppConfig.ENABLE_NEXT_RELEASE_FEATURES;
 const futureFeaturesDisabled = true;
@@ -118,6 +131,11 @@ class ReadyLight extends Component {
                 </Suspense>
               </ElectionCountdownInnerWrapper>
             </ElectionCountdownOuterWrapper>
+            <ViewBallotButtonWrapper className="col-12">
+              <Suspense fallback={<></>}>
+                <ViewUpcomingBallotButton onClickFunction={this.goToBallot} />
+              </Suspense>
+            </ViewBallotButtonWrapper>
 
             <div className="col-sm-12 col-lg-8">
               {(chosenReadyIntroductionTitle || chosenReadyIntroductionText) && (
@@ -187,6 +205,11 @@ class ReadyLight extends Component {
                 arrowsOn
               />
               )}
+              <ViewBallotButtonWrapper className="col-12 u-show-mobile">
+                <Suspense fallback={<></>}>
+                  <ViewUpcomingBallotButton onClickFunction={this.goToBallot} />
+                </Suspense>
+              </ViewBallotButtonWrapper>
             </div>
             <div className="col-lg-4 d-none d-lg-block">
               {(chosenReadyIntroductionTitle || chosenReadyIntroductionText) && (

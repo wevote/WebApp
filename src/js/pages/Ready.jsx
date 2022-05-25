@@ -1,4 +1,4 @@
-import { Button, Card } from '@mui/material';
+import { Card } from '@mui/material';
 import withStyles from '@mui/styles/withStyles';
 import withTheme from '@mui/styles/withTheme';
 import PropTypes from 'prop-types';
@@ -40,6 +40,7 @@ const FirstAndLastNameRequiredAlert = React.lazy(() => import(/* webpackChunkNam
 const ReadMore = React.lazy(() => import(/* webpackChunkName: 'ReadMore' */ '../common/components/Widgets/ReadMore'));
 const ReadyPageValuesList = React.lazy(() => import(/* webpackChunkName: 'ReadyPageValuesList' */ '../components/Values/ReadyPageValuesList'));
 const ReadyTaskFriends = React.lazy(() => import(/* webpackChunkName: 'ReadyTaskFriends' */ '../components/Ready/ReadyTaskFriends'));
+const ViewUpcomingBallotButton = React.lazy(() => import(/* webpackChunkName: 'ViewUpcomingBallotButton' */ '../components/Ready/ViewUpcomingBallotButton'));
 // import PledgeToVote from '../components/Ready/PledgeToVote';
 
 const nextReleaseFeaturesEnabled = webAppConfig.ENABLE_NEXT_RELEASE_FEATURES === undefined ? false : webAppConfig.ENABLE_NEXT_RELEASE_FEATURES;
@@ -51,7 +52,6 @@ class Ready extends Component {
     this.state = {
       chosenReadyIntroductionText: '',
       chosenReadyIntroductionTitle: '',
-      electionDataExistsForUpcomingElection: false,
       issuesQueriesMade: false,
       voterIsSignedIn: false,
     };
@@ -60,10 +60,8 @@ class Ready extends Component {
   componentDidMount () {
     window.scrollTo(0, 0);
     this.appStateSubscription = messageService.getMessage().subscribe((msg) => this.onAppObservableStoreChange(msg));
-    this.ballotStoreListener = BallotStore.addListener(this.onBallotStoreChange.bind(this));
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
     this.onAppObservableStoreChange();
-    this.onBallotStoreChange();
     this.onVoterStoreChange();
     this.positionItemTimer = setTimeout(() => {
       // This is a performance killer, so let's delay it for a few seconds
@@ -126,7 +124,6 @@ class Ready extends Component {
 
   componentWillUnmount () {
     this.appStateSubscription.unsubscribe();
-    this.ballotStoreListener.remove();
     this.voterStoreListener.remove();
     clearTimeout(this.analyticsTimer);
     clearTimeout(this.modalOpenTimer);
@@ -144,24 +141,6 @@ class Ready extends Component {
       chosenReadyIntroductionText: AppObservableStore.getChosenReadyIntroductionText(),
       chosenReadyIntroductionTitle: AppObservableStore.getChosenReadyIntroductionTitle(),
     });
-  }
-
-  onBallotStoreChange () {
-    // console.log('Ready.jsx onBallotStoreChange');
-    const nextElectionDayText = BallotStore.currentBallotElectionDate;
-    if (nextElectionDayText) {
-      const daysUntilNextElection = daysUntil(nextElectionDayText);
-      if (daysUntilNextElection >= 0) {
-        this.setState({
-          electionDataExistsForUpcomingElection: true,
-        });
-      } else {
-        // Election was yesterday or earlier
-        this.setState({
-          electionDataExistsForUpcomingElection: false,
-        });
-      }
-    }
   }
 
   onVoterStoreChange () {
@@ -197,7 +176,7 @@ class Ready extends Component {
     renderLog('Ready');  // Set LOG_RENDER_EVENTS to log all renders
     const {
       chosenReadyIntroductionText, chosenReadyIntroductionTitle,
-      electionDataExistsForUpcomingElection, voterIsSignedIn,
+      voterIsSignedIn,
     } = this.state;
 
     return (
@@ -215,20 +194,9 @@ class Ready extends Component {
               </ElectionCountdownInnerWrapper>
             </ElectionCountdownOuterWrapper>
             <ViewBallotButtonWrapper className="col-12">
-              {electionDataExistsForUpcomingElection && (
-                <Button
-                  color="primary"
-                  onClick={this.goToBallot}
-                  style={{
-                    boxShadow: 'none !important',
-                    textTransform: 'none',
-                    width: 250,
-                  }}
-                  variant="contained"
-                >
-                  View your ballot
-                </Button>
-              )}
+              <Suspense fallback={<></>}>
+                <ViewUpcomingBallotButton onClickFunction={this.goToBallot} />
+              </Suspense>
             </ViewBallotButtonWrapper>
 
             <div className="col-sm-12 col-lg-8">
@@ -305,22 +273,11 @@ class Ready extends Component {
                 arrowsOn
               />
               )}
-              <div className="u-show-mobile">
-                {electionDataExistsForUpcomingElection && (
-                  <Button
-                    color="primary"
-                    onClick={this.goToBallot}
-                    style={{
-                      boxShadow: 'none !important',
-                      textTransform: 'none',
-                      width: 250,
-                    }}
-                    variant="contained"
-                  >
-                    View your ballot
-                  </Button>
-                )}
-              </div>
+              <ViewBallotButtonWrapper className="col-12 u-show-mobile">
+                <Suspense fallback={<></>}>
+                  <ViewUpcomingBallotButton onClickFunction={this.goToBallot} />
+                </Suspense>
+              </ViewBallotButtonWrapper>
             </div>
             <div className="col-lg-4 d-none d-lg-block">
               {(chosenReadyIntroductionTitle || chosenReadyIntroductionText) && (
