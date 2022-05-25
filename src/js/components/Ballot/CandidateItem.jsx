@@ -338,7 +338,7 @@ class CandidateItem extends Component {
                   className="card-main__avatar"
                   sizeClassName="icon-office-child "
                   imageUrl={candidatePhotoUrl}
-                  alt="candidate-photo"
+                  alt=""
                   kind_of_ballot_item="CANDIDATE"
                 />
               </Suspense>

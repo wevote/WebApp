@@ -40,6 +40,7 @@ const nonFluxState = {
   pendingSnackSeverity: '',
   scrolledDown: false,
   setUpAccountBackLinkPath: '',
+  setUpAccountEntryPath: '',
   shareModalStep: '',
   sharedItemCode: '',
   showActivityTidbitDrawer: false,
@@ -154,6 +155,12 @@ export default {
     // console.log('setShareModalStep, step:', step);
     nonFluxState.setUpAccountBackLinkPath = backLinkPath;
     messageService.sendMessage('state updated setUpAccountBackLinkPath');
+  },
+
+  setSetUpAccountEntryPath (entryPath) {
+    // console.log('setShareModalStep, step:', step);
+    nonFluxState.setUpAccountEntryPath = entryPath;
+    messageService.sendMessage('state updated setSetUpAccountEntryPath');
   },
 
   setShareModalStep (step) {
@@ -391,6 +398,10 @@ export default {
 
   getSetUpAccountBackLinkPath () {
     return nonFluxState.setUpAccountBackLinkPath;
+  },
+
+  getSetUpAccountEntryPath () {
+    return nonFluxState.setUpAccountEntryPath;
   },
 
   getSharedItemCode () {

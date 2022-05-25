@@ -215,7 +215,7 @@ class Ready extends Component {
               </ElectionCountdownInnerWrapper>
             </ElectionCountdownOuterWrapper>
             <ViewBallotButtonWrapper className="col-12">
-              {(voterIsSignedIn && electionDataExistsForUpcomingElection) && (
+              {electionDataExistsForUpcomingElection && (
                 <Button
                   color="primary"
                   onClick={this.goToBallot}
@@ -226,7 +226,7 @@ class Ready extends Component {
                   }}
                   variant="contained"
                 >
-                  View ballot
+                  View your ballot
                 </Button>
               )}
             </ViewBallotButtonWrapper>
@@ -305,6 +305,22 @@ class Ready extends Component {
                 arrowsOn
               />
               )}
+              <div className="u-show-mobile">
+                {electionDataExistsForUpcomingElection && (
+                  <Button
+                    color="primary"
+                    onClick={this.goToBallot}
+                    style={{
+                      boxShadow: 'none !important',
+                      textTransform: 'none',
+                      width: 250,
+                    }}
+                    variant="contained"
+                  >
+                    View your ballot
+                  </Button>
+                )}
+              </div>
             </div>
             <div className="col-lg-4 d-none d-lg-block">
               {(chosenReadyIntroductionTitle || chosenReadyIntroductionText) && (
