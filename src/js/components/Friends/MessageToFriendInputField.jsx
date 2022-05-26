@@ -75,13 +75,12 @@ class MessageToFriendInputField extends Component {
                 <TextField
                   // classes={{ root: classes.textField }} // Not working yet
                   id={`messageToFriendTextArea-${externalUniqueId}`}
-                  label="Ask your friends how they're going to vote"
+                  label="Enter message to send to your friends when you click Ask button."
                   name="messageToFriend"
                   margin="dense"
                   multiline
                   rows={3}
                   variant="outlined"
-                  // placeholder="Ask your friends how they're going to vote"
                   value={messageToFriend}
                   onKeyDown={this.handleKeyPress}
                   onChange={this.updateMessageToFriend}

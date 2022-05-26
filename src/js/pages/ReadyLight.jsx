@@ -100,7 +100,6 @@ class ReadyLight extends Component {
   }
 
   goToBallot = () => {
-    console.log('goToBallot ENTRY from ready light');
     historyPush('/ballot');
   }
 
@@ -178,6 +177,11 @@ class ReadyLight extends Component {
                   </DelayedLoad>
                 </Suspense>
               </ReadyIntroductionMobileWrapper>
+              <ViewBallotButtonWrapper className="col-12 u-show-mobile">
+                <Suspense fallback={<></>}>
+                  <ViewUpcomingBallotButton onClickFunction={this.goToBallot} />
+                </Suspense>
+              </ViewBallotButtonWrapper>
               {!isAndroid() && (
                 <ReadyIntroductionMobileWrapper className="u-show-mobile">
                   <Suspense fallback={<></>}>
@@ -205,11 +209,6 @@ class ReadyLight extends Component {
                 arrowsOn
               />
               )}
-              <ViewBallotButtonWrapper className="col-12 u-show-mobile">
-                <Suspense fallback={<></>}>
-                  <ViewUpcomingBallotButton onClickFunction={this.goToBallot} />
-                </Suspense>
-              </ViewBallotButtonWrapper>
             </div>
             <div className="col-lg-4 d-none d-lg-block">
               {(chosenReadyIntroductionTitle || chosenReadyIntroductionText) && (

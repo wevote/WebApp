@@ -171,6 +171,12 @@ class PositionRowEmpty extends Component {
             <HorizontalSpacer />
             <EmptyTextWrapper>
               <EmptyText className="u-cursor--pointer u-link-color-on-hover">
+                {allCachedPositionsForThisBallotItemLength === 0 && (
+                  <>
+                    No endorsements found for this candidate.
+                    {' '}
+                  </>
+                )}
                 Ask your friends how they are going to vote.
               </EmptyText>
             </EmptyTextWrapper>

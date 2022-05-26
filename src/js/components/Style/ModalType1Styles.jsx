@@ -40,14 +40,8 @@ const ModalContentHeaderType1 = styled('div')`
 `;
 
 const ModalTitleType1 = styled('h3')`
-  font-size: 24px;
+  font-size: 28px;
   color: black;
-  margin-top: 0;
-  margin-bottom: 0;
-  font-weight: bold;
-  @media (max-width: 769px) {
-    font-size: 18px;
-  }
 `;
 
 const ModalTitleAreaType1 = styled('div')`

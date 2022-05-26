@@ -54,20 +54,22 @@ class ViewUpcomingBallotButton extends React.Component {
     } = this.state;
     return (
       <ViewUpcomingBallotButtonWrapper>
-        {!!(electionDataExistsForUpcomingElection) && (
-          <Button
-            color="primary"
-            onClick={this.onClickFunctionLocal}
-            style={{
-              boxShadow: 'none !important',
-              textTransform: 'none',
-              width: 250,
-            }}
-            variant="contained"
-          >
-            View your ballot
-          </Button>
-        )}
+        <Button
+          color="primary"
+          onClick={this.onClickFunctionLocal}
+          style={{
+            boxShadow: 'none !important',
+            textTransform: 'none',
+            width: 250,
+          }}
+          variant="contained"
+        >
+          {!!(electionDataExistsForUpcomingElection) ? (
+            <>View your ballot</>
+          ) : (
+            <>View your ballot</>
+          )}
+        </Button>
       </ViewUpcomingBallotButtonWrapper>
     );
   }

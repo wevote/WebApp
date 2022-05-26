@@ -567,8 +567,7 @@ const CandidateBottomRow = styled('div')`
 
 const CandidateContainer = styled('div')`
   display: flex;
-  // flex-direction: row-reverse;
-  justify-content: space-between;
+  justify-content: flex-start;
   padding: 10px 5px;
 `;
 

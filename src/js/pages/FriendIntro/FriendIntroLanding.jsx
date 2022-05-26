@@ -459,7 +459,7 @@ const WhatIsWeVoteWrapper = styled('div')`
 `;
 
 const WeVoteLogoSpacer = styled('div')`
-  margin-bottom: 158px;
+  margin-bottom: 100px;
 `;
 
 export default withTheme(withStyles(styles)(FriendIntroLanding));
