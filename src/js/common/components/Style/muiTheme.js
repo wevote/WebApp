@@ -5,7 +5,7 @@ import muiStyleOverrides from '../../../components/Style/muiStyleOverrides';
 const muiTheme = createTheme({
   palette: {
     primary: {
-      main: '#2E3C5D', // brandBlue
+      main: '#0834CD', // brandBlue #2E3C5D
     },
     secondary: {
       main: '#ffffff',

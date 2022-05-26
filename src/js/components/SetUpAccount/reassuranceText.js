@@ -2,6 +2,11 @@
 export const reassuranceText = [
   {
     page: 1,
+    headline: '',
+    text: 'WeVote.US is a nonpartisan nonprofit. We will never share or sell your contact information, and we will always protect and keep your contact information private.',
+  },
+  {
+    page: 1111,
     headline: 'We keep your info secure and confidential.',
     text: 'We will never share or sell your contact information.  WeVote.US is a nonpartisan nonprofit ' +
       'and will always protect and keep private your contact information.',

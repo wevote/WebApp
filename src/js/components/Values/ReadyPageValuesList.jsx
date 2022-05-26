@@ -7,7 +7,6 @@ import IssueStore from '../../stores/IssueStore';
 import VoterStore from '../../stores/VoterStore';
 import ShowMoreButtons from '../Widgets/ShowMoreButtons';
 
-const ReadMore = React.lazy(() => import(/* webpackChunkName: 'ReadMore' */ '../../common/components/Widgets/ReadMore'));
 const IssueCard = React.lazy(() => import(/* webpackChunkName: 'IssueCard' */ './IssueCard'));
 
 const NUMBER_OF_ISSUES_TO_DISPLAY = 6;
@@ -101,12 +100,7 @@ export default class ReadyPageValuesList extends Component {
             Popular Topics
           </PopularTopicsH1>
           <PopularTopicsDescription>
-            <Suspense fallback={<></>}>
-              <ReadMore
-                textToDisplay="Follow topics to see endorsements on your ballot for candidates from people and groups."
-                numberOfLines={2}
-              />
-            </Suspense>
+            Follow topics to see endorsements on your ballot for candidates from people and groups.
           </PopularTopicsDescription>
           <div>
             {allIssues && allIssues.length ? (
