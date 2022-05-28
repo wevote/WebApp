@@ -525,7 +525,7 @@ const WeVoteLogoImage = styled('img')`
 `;
 
 const WeVoteLogoSpacer = styled('div')`
-  margin-bottom: 158px;
+  margin-bottom: 100px;
 `;
 
 const WeVoteLogoWrapper = styled('div')`

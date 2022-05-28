@@ -306,7 +306,8 @@ class OfficeItemCompressed extends Component {
                           </div>
                         </Candidate>
                         {/*  /!* Show check mark or score *!/ */}
-                        <BallotItemSupportOpposeCountDisplayWrapper className="u-show-mobile">
+                        <BallotItemSupportOpposeCountDisplayWrapper style={{ display: 'none' }}>
+                          {/* u-show-mobile */}
                           <Suspense fallback={<></>}>
                             <BallotItemSupportOpposeScoreDisplay
                               ballotItemWeVoteId={oneCandidate.we_vote_id}
@@ -357,7 +358,8 @@ class OfficeItemCompressed extends Component {
                       </CandidateBottomRow>
                     </CandidateInfo>
                   </CandidateWrapper>
-                  <PositionRowListOuterWrapper className="u-show-desktop-tablet">
+                  <PositionRowListOuterWrapper>
+                    {/*  className="u-show-desktop-tablet" */}
                     <OverflowContainer>
                       <PositionRowListInnerWrapper>
                         <PositionRowListOneWrapper>
@@ -565,8 +567,7 @@ const CandidateBottomRow = styled('div')`
 
 const CandidateContainer = styled('div')`
   display: flex;
-  // flex-direction: row-reverse;
-  justify-content: space-between;
+  justify-content: flex-start;
   padding: 10px 5px;
 `;
 
@@ -635,12 +636,15 @@ const ItemActionBarOutsideWrapper = styled('div')`
   width: 100%;
 `;
 
-const OfficeNameH2 = styled('div')`
+const OfficeNameH2 = styled('div')(({ theme }) => (`
   // For some reason if styled('h2') it breaks down
   font-size: 32px;
   margin-bottom: 6px;
   width: fit-content;
-`;
+  ${theme.breakpoints.down('sm')} {
+    font-size: 28px;
+  }
+`));
 
 const OfficeItemCompressedWrapper = styled('div')`
   display: flex;

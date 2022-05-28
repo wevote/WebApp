@@ -16,11 +16,7 @@ import { formatDateMMMDoYYYY } from '../../common/utils/dateFormat';
 import { hasIPhoneNotch } from '../../common/utils/cordovaUtils';
 import daysUntil from '../../common/utils/daysUntil';
 import { renderLog } from '../../common/utils/logging';
-import {
-  ModalContentHeaderType1,
-  ModalTitleAreaType1,
-  ModalTitleType1,
-} from '../Style/ModalType1Styles';
+import { ModalContentHeaderType1, ModalTitleType1 } from '../Style/ModalType1Styles';
 import BallotStore from '../../stores/BallotStore';
 import FriendStore from '../../stores/FriendStore';
 import sortFriendListByMutualFriends from '../../utils/friendFunctions';
@@ -49,6 +45,8 @@ class AskFriendsModal extends Component {
     if (apiCalming('friendList', 5000)) {
       FriendActions.currentFriends();
     }
+    this.onBallotStoreChange();
+    this.onFriendStoreChange();
     const currentFriendListUnsorted = FriendStore.currentFriends();
     // console.log('componentDidMount currentFriendListUnsorted:', currentFriendListUnsorted);
     const currentFriendList = sortFriendListByMutualFriends(currentFriendListUnsorted);
@@ -217,22 +215,7 @@ class AskFriendsModal extends Component {
         open={this.props.show}
         onClose={() => { this.props.toggleFunction(pathname); }}
       >
-        <ModalTitleAreaType1>
-          <div className="full-width">
-            <ModalTitleType1>
-              {/*
-              <span className="u-show-mobile">
-                Ask friends how they&apos;re voting
-              </span>
-              <span className="u-show-desktop-tablet">
-                Ask your friends how they&apos;re going to vote
-              </span>
-               */}
-            </ModalTitleType1>
-            {totalCurrentFriendListCount > 0 && (
-              <MessageToFriendInputField messageToFriendDefault={messageToFriendDefault} />
-            )}
-          </div>
+        <ModalTitleAreaAskFriendsCloseX>
           <IconButton
             aria-label="Close"
             className={classes.closeButton}
@@ -242,7 +225,26 @@ class AskFriendsModal extends Component {
           >
             <Close />
           </IconButton>
-        </ModalTitleAreaType1>
+        </ModalTitleAreaAskFriendsCloseX>
+        <ModalTitleAreaAskFriendsTop>
+          <div className="full-width">
+            <ModalTitleType1>
+              <span className="u-show-mobile">
+                Ask your friends how they&apos;re voting
+              </span>
+              <span className="u-show-desktop-tablet">
+                Ask your friends how they&apos;re going to vote
+              </span>
+            </ModalTitleType1>
+          </div>
+        </ModalTitleAreaAskFriendsTop>
+        <ModalTitleAreaAskFriendsBottom>
+          <div className="full-width">
+            {totalCurrentFriendListCount > 0 && (
+              <MessageToFriendInputField messageToFriendDefault={messageToFriendDefault} />
+            )}
+          </div>
+        </ModalTitleAreaAskFriendsBottom>
         <DialogContent classes={{ root: classes.dialogContent }} onScroll={this.onScroll}>
           <div className="full-width">
             {/*
@@ -350,5 +352,35 @@ const FriendListExternalWrapper = styled('div')`
 //   align-items: center;
 //   justify-content: center;
 // `;
+
+const ModalTitleAreaAskFriendsCloseX = styled('div')`
+  justify-content: flex-end;
+  align-items: center;
+  width: 100%;
+  padding: 10px 12px 0 12px;
+  z-index: 999;
+  display: flex;
+`;
+
+const ModalTitleAreaAskFriendsTop = styled('div')`
+  justify-content: flex-start;
+  align-items: flex-start;
+  width: 100%;
+  padding: 10px 24px 0 24px;
+  z-index: 999;
+  display: flex;
+`;
+
+const ModalTitleAreaAskFriendsBottom = styled('div')`
+  justify-content: flex-start;
+  align-items: flex-start;
+  width: 100%;
+  padding: 10px 24px 0 24px;
+  z-index: 999;
+  @media (min-width: 769px) {
+    border-bottom: 2px solid #f7f7f7;
+  }
+  display: flex;
+`;
 
 export default withTheme(withStyles(styles)(AskFriendsModal));
