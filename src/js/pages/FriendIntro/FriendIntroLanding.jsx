@@ -8,6 +8,7 @@ import Helmet from 'react-helmet';
 import { Link } from 'react-router-dom'
 import styled from 'styled-components';
 import FriendActions from '../../actions/FriendActions';
+import VoterActions from '../../actions/VoterActions';
 import SvgImage from '../../common/components/Widgets/SvgImage';
 import { isCordovaWide } from '../../common/utils/cordovaUtils';
 import historyPush from '../../common/utils/historyPush';
@@ -25,6 +26,9 @@ const logoColorOnWhite = '../../../img/global/svg-icons/we-vote-icon-square-colo
 const logoGrey = '../../../img/global/svg-icons/we-vote-icon-square-color-grey.svg';
 const voteFlag = '../../../img/get-started/your-vote-counts-tilted15-200x200.gif';
 // const svgFill = '#999';
+
+const inDevelopmentMode = false;
+
 class FriendIntroLanding extends Component {
   constructor (props) {
     super(props);
@@ -33,12 +37,12 @@ class FriendIntroLanding extends Component {
       showWhatIsWeVote: false,
       skipForNowOff: false,
       voterContactEmailListCount: 0,
-      voterContactEmailGoogleCount: 0,
     };
   }
 
   componentDidMount () {
     // this.appStateSubscription = messageService.getMessage().subscribe(() => this.onAppObservableStoreChange());
+    VoterActions.voterContactListRetrieve();
     this.friendStoreListener = FriendStore.addListener(this.onFriendStoreChange.bind(this));
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
     const { match: { params: { invitationSecretKey }  } } = this.props;
@@ -115,18 +119,14 @@ class FriendIntroLanding extends Component {
   onVoterStoreChange () {
     // console.log('onVoterStoreChange');
     this.onFriendStoreChange();
-    const voterContactEmailList = VoterStore.getVoterContactEmailList();
     const voter = VoterStore.getVoter();
     const {
       signed_in_apple: voterSignedInApple,
       signed_in_facebook: voterSignedInFacebook,
       signed_in_twitter: voterSignedInTwitter,
     } = voter;
-    const voterContactEmailGoogleCount = VoterStore.getVoterContactEmailGoogleCount();
-    const voterContactEmailListCount = voterContactEmailList.length;
     this.setState({
-      voterContactEmailGoogleCount,
-      voterContactEmailListCount,
+      voterContactEmailListCount: VoterStore.getVoterContactEmailListCount(),
       voterFirstName: VoterStore.getFirstName(),
       voterPhotoUrlLarge: VoterStore.getVoterPhotoUrlLarge(),
       voterSignedInApple,
@@ -149,9 +149,10 @@ class FriendIntroLanding extends Component {
 
   setNextStepVariables = () => {
     const {
-      voterFirstName, voterPhotoUrlLarge,
+      voterContactEmailListCount, voterFirstName, voterPhotoUrlLarge,
       voterSignedInApple, voterSignedInFacebook, voterSignedInTwitter,
     } = this.state;
+    // console.log('FriendIntroLanding setNextStepVariables, voterContactEmailListCount: ', voterContactEmailListCount);
     let socialSignInOffered = false; // Temporarily false until Twitter/Facebook sign in offered
     const voterSignedInWithSocialSite = voterSignedInApple || voterSignedInFacebook || voterSignedInTwitter;
     if (voterFirstName && voterPhotoUrlLarge) {
@@ -164,23 +165,25 @@ class FriendIntroLanding extends Component {
     let setUpAccountEntryPath;
     let skipForNowOff = false;
     if (voterFirstName && voterPhotoUrlLarge) {
-      setUpAccountEntryPath = '/ballot'; // Temporary redirection
-      nextStepButtonText = 'View your ballot';
-      skipForNowOff = true;
-      // if (voterContactEmailGoogleCount) {
-      //   setUpAccountEntryPath = '/setupaccount/invitecontacts';
-      //   nextStepButtonText = 'Find other friends';
-      // } else {
-      //   setUpAccountEntryPath = '/setupaccount/importcontacts';
-      //   nextStepButtonText = 'Find other friends';
-      // }
+      if (inDevelopmentMode) {
+        if (voterContactEmailListCount) {
+          setUpAccountEntryPath = '/setupaccount/invitecontacts';
+          nextStepButtonText = 'Find other friends';
+        } else {
+          setUpAccountEntryPath = '/setupaccount/importcontacts';
+          nextStepButtonText = 'Find other friends';
+        }
+      } else {
+        setUpAccountEntryPath = '/ballot';
+        nextStepButtonText = 'View your ballot';
+        skipForNowOff = true;
+      }
     } else if (voterPhotoUrlLarge) {
       setUpAccountEntryPath = '/setupaccount/editname';
     } else if (voterFirstName) {
       setUpAccountEntryPath = '/setupaccount/addphoto';
     } else {
-      setUpAccountEntryPath = '/ballot'; // Temporary redirection
-      // setUpAccountEntryPath = '/setupaccount';
+      setUpAccountEntryPath = '/ballot';
     }
     this.setState({
       nextStepButtonText,
@@ -244,7 +247,7 @@ class FriendIntroLanding extends Component {
                 </WeVoteLogoWrapper>
                 <LinkToFAQ>
                     <Link to={"/more/faq"} style={{ color: '#999' }} >Read our FAQ</Link>
-                </LinkToFAQ>                       
+                </LinkToFAQ>
               </BodyWrapperWhatIs>
             </WhatIsWeVoteWrapper>
           ) : (
@@ -482,10 +485,12 @@ const FriendIntroTitle = styled('div')`
   text-align: center;
   margin-bottom: 10px;
 `;
+
 const FriendIntroBody = styled('div')`
   font-size: 16px;
   text-align: center;
 `;
+
 const FriendPhotoInnerWrapper = styled('div')`
   min-height: 100px;
   text-align: center

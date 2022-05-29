@@ -9,13 +9,26 @@ const DesktopNextButtonsInnerWrapper = styled('div')`
   padding: 10px 0;
 `;
 
-const DesktopNextButtonsOuterWrapperUShowDesktopTablet  = styled('div', {
+const DesktopNextButtonsOuterWrapperUShowDesktopTablet = styled('div', {
   shouldForwardProp: (prop) => !['breakValue'].includes(prop),
 })(({ breakValue, theme }) => ({
   display: 'flex',
   justifyContent: 'center',
   margin: '20px 0 0 0',
   width: '100%',
+  [theme.breakpoints.down(breakValue)]: {
+    display: 'none !important',
+  },
+}));
+
+const DesktopStaticNextButtonsOuterWrapper = styled('div', {
+  shouldForwardProp: (prop) => !['breakValue'].includes(prop),
+})(({ breakValue, theme }) => ({
+  borderTop: '1px solid #ddd',
+  position: 'fixed',
+  width: '100%',
+  bottom: 0,
+  display: 'block',
   [theme.breakpoints.down(breakValue)]: {
     display: 'none !important',
   },
@@ -31,7 +44,7 @@ const MobileStaticNextButtonsInnerWrapper = styled('div')`
   padding: 10px 20px;
 `;
 
-const MobileStaticNextButtonsOuterWrapperUShowMobile   = styled('div', {
+const MobileStaticNextButtonsOuterWrapperUShowMobile = styled('div', {
   shouldForwardProp: (prop) => !['breakValue'].includes(prop),
 })(({ breakValue, theme }) => ({
   position: 'fixed',
@@ -46,6 +59,7 @@ const MobileStaticNextButtonsOuterWrapperUShowMobile   = styled('div', {
 export {
   DesktopNextButtonsInnerWrapper,
   DesktopNextButtonsOuterWrapperUShowDesktopTablet,
+  DesktopStaticNextButtonsOuterWrapper,
   MobileStaticNextButtonsInnerWrapper,
   MobileStaticNextButtonsOuterWrapperUShowMobile,
 };

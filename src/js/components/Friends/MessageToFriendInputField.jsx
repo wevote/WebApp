@@ -75,7 +75,7 @@ class MessageToFriendInputField extends Component {
                 <TextField
                   // classes={{ root: classes.textField }} // Not working yet
                   id={`messageToFriendTextArea-${externalUniqueId}`}
-                  label="Enter message to send to your friends when you click Ask button."
+                  label="Message to be sent"
                   name="messageToFriend"
                   margin="dense"
                   multiline

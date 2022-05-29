@@ -238,6 +238,11 @@ class VoterStore extends ReduceStore {
     return this.getState().voterContactEmailList || [];
   }
 
+  getVoterContactEmailListCount () {
+    const voterContactEmailList = this.getState().voterContactEmailList || [];
+    return voterContactEmailList.length;
+  }
+
   getVoterEmail () {
     return this.getState().voter.email || '';
   }

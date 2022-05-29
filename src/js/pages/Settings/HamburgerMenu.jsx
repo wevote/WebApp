@@ -41,6 +41,7 @@ export default class HamburgerMenu extends Component {
     this.state = {
       voter: undefined,
       showDeviceDialog: false,
+      showPremiumFeatures: false,
     };
     this.deviceTableVisibilityOn = this.deviceTableVisibilityOn.bind(this);
     this.deviceTableVisibilityOff = this.deviceTableVisibilityOff.bind(this);
@@ -112,9 +113,14 @@ export default class HamburgerMenu extends Component {
     this.setState({ showDeviceDialog: true });
   }
 
+  // togglePremiumFeatures () {
+  //   const { showPremiumFeatures } = this.state;
+  //   this.setState({ showPremiumFeatures: !showPremiumFeatures });
+  // }
+
   render () {
     renderLog('HamburgerMenu');  // Set LOG_RENDER_EVENTS to log all renders
-    const { voter } = this.state;
+    const { showPremiumFeatures, voter } = this.state;
     if (voter === undefined) {
       return LoadingWheel;
     }
@@ -133,7 +139,6 @@ export default class HamburgerMenu extends Component {
     //   `/${voterTwitterScreenName}` :
     //   `/voterguide/${voterOrganizationWeVoteId}`;
     const nextReleaseFeaturesEnabled = webAppConfig.ENABLE_NEXT_RELEASE_FEATURES === undefined ? false : webAppConfig.ENABLE_NEXT_RELEASE_FEATURES;
-
     // console.log("Hamburger menu this.state.showDeviceDialog " + this.state.showDeviceDialog);
 
     return (
@@ -193,7 +198,7 @@ export default class HamburgerMenu extends Component {
               />
             ) */}
 
-            {isSignedIn && (
+            {(isSignedIn && showPremiumFeatures) && (
               <HamburgerMenuRow
                 icon="fa fa-globe-americas"
                 iconStyle={{ fontSize: 24, color: '#1c2f4b' }}
@@ -204,7 +209,7 @@ export default class HamburgerMenu extends Component {
               />
             )}
 
-            {isSignedIn && (
+            {(isSignedIn && showPremiumFeatures) && (
               <HamburgerMenuRow
                 icon="fa fa-file-alt"
                 iconStyle={{ fontSize: 24, color: '#1c2f4b' }}
@@ -214,7 +219,7 @@ export default class HamburgerMenu extends Component {
               />
             )}
 
-            {isSignedIn && (
+            {(isSignedIn && showPremiumFeatures) && (
               <HamburgerMenuRow
                 icon="fa fa-share"
                 iconStyle={{ fontSize: 24, color: '#1c2f4b' }}
@@ -225,7 +230,7 @@ export default class HamburgerMenu extends Component {
               />
             )}
 
-            {isSignedIn && (
+            {(isSignedIn && showPremiumFeatures) && (
               <HamburgerMenuRow
                 icon="fa fa-shopping-cart"
                 iconStyle={{ fontSize: 24, color: '#1c2f4b' }}
@@ -236,7 +241,7 @@ export default class HamburgerMenu extends Component {
               />
             )}
 
-            {isSignedIn && (
+            {(isSignedIn && showPremiumFeatures) && (
               <HamburgerMenuRow
                 icon="fa fa-chart-line"
                 iconStyle={{ fontSize: 24, color: '#1c2f4b' }}

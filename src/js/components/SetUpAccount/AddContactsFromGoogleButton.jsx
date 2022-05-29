@@ -17,10 +17,12 @@ class AddContactsFromGoogleButton extends Component {
     this.state = {
       addContactsState: AddContactConsts.uninitialized,
       setOfContacts: new Set(),
+      voterContactEmailGoogleCount: 0,
     };
   }
 
   componentDidMount () {
+    this.onVoterStoreChange();
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
     loadGapiInsideDOM().then(() => {
       console.log('loadGapiInsideDOM onload');
@@ -53,7 +55,8 @@ class AddContactsFromGoogleButton extends Component {
   }
 
   onVoterStoreChange () {
-    const { googleContactsStored, voterContactEmailGoogleCount } = VoterStore.getState();
+    const { googleContactsStored } = VoterStore.getState();
+    const voterContactEmailGoogleCount = VoterStore.getVoterContactEmailGoogleCount();
     this.setState({ voterContactEmailGoogleCount });
     const { addContactsState } = this.state;
     console.log('onVoterStoreChange, addContactsState:', addContactsState);

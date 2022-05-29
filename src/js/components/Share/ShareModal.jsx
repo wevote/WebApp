@@ -614,7 +614,7 @@ class ShareModal extends Component {
               buttonURL="/friends/invite"
               noCard
               fullWidthButton
-              secondaryText="By adding friends who you enjoy discussing politics with to We Vote, you can help eachother get ready for elections."
+              secondaryText="By adding friends you enjoy discussing politics with to We Vote, you can help each other get ready for elections."
               inShareModal
               icon={<People />}
               onClickFunc={this.closeShareModal}

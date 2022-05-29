@@ -8,12 +8,17 @@ import { renderLog } from '../../common/utils/logging';
 // React functional component example
 export default function FriendLocationDisplay (props) {
   renderLog('FriendLocationDisplay functional component');
-  const { stateCodeForDisplay } = props;
+  const { cityForDisplay, stateCodeForDisplay } = props;
   if (!stateCodeForDisplay) return null;
   return (
     <FriendLocationDisplayOuterWrapper>
       <FriendLocationDisplayInnerWrapper>
         <PlaceOutlined style={{ color: '#999' }} />
+        {cityForDisplay && (
+          <CityWrapper>
+            {cityForDisplay}
+          </CityWrapper>
+        )}
         <StateCode>
           {stateCodeForDisplay.toUpperCase()}
         </StateCode>
@@ -22,8 +27,15 @@ export default function FriendLocationDisplay (props) {
   );
 }
 FriendLocationDisplay.propTypes = {
+  cityForDisplay: PropTypes.string,
   stateCodeForDisplay: PropTypes.string,
 };
+
+const CityWrapper = styled('div')`
+  color: #999;
+  font-size: 14px;
+  text-align: center;
+`;
 
 const FriendLocationDisplayInnerWrapper = styled('div')`
   align-items: center;

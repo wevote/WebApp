@@ -132,7 +132,9 @@ class FriendInvitationEmailLinkDisplayForList extends Component {
               onClick={() => this.cancelFriendInviteEmail(voterEmailAddress)}
               variant="outlined"
             >
-              {cancelFriendInviteEmailSubmitted ? 'Canceling...' : 'Cancel Invite'}
+              <span className="u-no-break">
+                {cancelFriendInviteEmailSubmitted ? 'Canceling...' : 'Cancel Invite'}
+              </span>
             </Button>
           </CancelButtonWrapper>
         </FriendButtonsWrapper>

@@ -41,12 +41,13 @@ class PositionSummaryListForPopover extends Component {
 
     let numberDisplayedSoFar = 0;
     let numberNotDisplayed = 0;
+    const maximumNumberOfScoreToShow = 25;
     let openAdviserMaterialUIPopoverNow = false;
     let controlAdviserMaterialUIPopoverFromPropNow = false;
     const renderedList = positionSummaryList.map((positionSummary) => {
       numberDisplayedSoFar += 1;
-      // Only show the first 5
-      if (numberDisplayedSoFar > 5) {
+      // Only show the first 25
+      if (numberDisplayedSoFar > maximumNumberOfScoreToShow) {
         numberNotDisplayed += 1;
         return null;
       }

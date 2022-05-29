@@ -151,9 +151,17 @@ export default {
       });
   },
 
-  voterContactListDelete (deleteFromGooglePeopleApi = false) {
+  voterContactIgnore (emailAddressText, otherVoterWeVoteId = '') {
+    Dispatcher.loadEndpoint('voterContactSave', {
+      email_address_text: emailAddressText,
+      ignore_voter_contact: true,
+      other_voter_we_vote_id: otherVoterWeVoteId,
+    });
+  },
+
+  voterContactListDelete (deleteAllVoterContactEmails = false) {
     Dispatcher.loadEndpoint('voterContactListSave', {
-      delete_from_google_people_api: deleteFromGooglePeopleApi,
+      delete_all_voter_contact_emails: deleteAllVoterContactEmails,
     });
   },
 
@@ -166,6 +174,7 @@ export default {
     Dispatcher.loadEndpoint('voterContactListSave', {
       contacts: contactsString,
       from_google_people_api: fromGooglePeopleApi,
+      google_api_key_type: 'ballot',
     });
   },
 
