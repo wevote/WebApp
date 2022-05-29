@@ -7,13 +7,14 @@ export default class SuggestedFriendList extends Component {
   constructor (props) {
     super(props);
     this.state = {
-      suggestedFriendList: this.props.friendList,
+      suggestedFriendList: [],
     };
   }
 
   componentDidMount () {
+    const { friendList: suggestedFriendList } = this.props;
     this.setState({
-      suggestedFriendList: this.props.friendList,
+      suggestedFriendList,
     });
   }
 
@@ -26,15 +27,16 @@ export default class SuggestedFriendList extends Component {
 
   render () {
     renderLog('SuggestedFriendList');  // Set LOG_RENDER_EVENTS to log all renders
-    if (this.state.suggestedFriendList === undefined) {
+    const { inSideColumn, previewMode } = this.props;
+    const { suggestedFriendList } = this.state;
+    if (suggestedFriendList === undefined) {
       return null;
     }
-    const { inSideColumn, previewMode } = this.props;
 
     return (
       <div>
         <div>
-          {this.state.suggestedFriendList.map((friend, index) => (
+          {suggestedFriendList.map((friend, index) => (
             <div key={friend.voter_we_vote_id}>
               <SuggestedFriendDisplayForList
                 inSideColumn={inSideColumn}
@@ -50,7 +52,7 @@ export default class SuggestedFriendList extends Component {
                 voterTwitterHandle={friend.voter_twitter_handle}
                 voterWeVoteId={friend.voter_we_vote_id}
               />
-              {index !== this.state.suggestedFriendList.length - 1 ? (
+              {index !== suggestedFriendList.length - 1 ? (
                 <hr />
               ) : null}
             </div>

@@ -20,7 +20,7 @@ const SetUpAccountIntroText = styled('div')`
 const SetUpAccountTitle = styled('div')`
   font-size: 24px;
   text-align: center;
-  width: fit-content;
+  width: 100%;
 `;
 
 const SetUpAccountTop = styled('div')`

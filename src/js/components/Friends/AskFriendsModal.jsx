@@ -9,7 +9,7 @@ import styled from 'styled-components';
 import withStyles from '@mui/styles/withStyles';
 import withTheme from '@mui/styles/withTheme';
 import PropTypes from 'prop-types';
-import React, { Component } from 'react';
+import React, { Component, Suspense } from 'react';
 import FriendActions from '../../actions/FriendActions';
 import apiCalming from '../../common/utils/apiCalming';
 import { formatDateMMMDoYYYY } from '../../common/utils/dateFormat';
@@ -23,6 +23,7 @@ import sortFriendListByMutualFriends from '../../utils/friendFunctions';
 import SearchBar from '../Search/SearchBar';
 import FriendList from './FriendList';
 
+const DelayedLoad = React.lazy(() => import(/* webpackChunkName: 'DelayedLoad' */ '../../common/components/Widgets/DelayedLoad'));
 const MessageToFriendInputField = React.lazy(() => import(/* webpackChunkName: 'MessageToFriendInputField' */ './MessageToFriendInputField'));
 
 class AskFriendsModal extends Component {
@@ -135,7 +136,7 @@ class AskFriendsModal extends Component {
     if (!electionDateFound) {
       messageToFriendDefault += "I'm getting ready to vote.";
     }
-    messageToFriendDefault += ' Who are you voting for?';
+    messageToFriendDefault += ' Would you like to compare notes about how to vote?';
     this.setState({
       messageToFriendDefault,
     });
@@ -218,7 +219,6 @@ class AskFriendsModal extends Component {
         <ModalTitleAreaAskFriendsCloseX>
           <IconButton
             aria-label="Close"
-            className={classes.closeButton}
             onClick={this.closeThisModal}
             id="closeAskFriendsModal"
             size="large"
@@ -241,7 +241,9 @@ class AskFriendsModal extends Component {
         <ModalTitleAreaAskFriendsBottom>
           <div className="full-width">
             {totalCurrentFriendListCount > 0 && (
-              <MessageToFriendInputField messageToFriendDefault={messageToFriendDefault} />
+              <Suspense fallback={<></>}>
+                <MessageToFriendInputField messageToFriendDefault={messageToFriendDefault} />
+              </Suspense>
             )}
           </div>
         </ModalTitleAreaAskFriendsBottom>
@@ -289,9 +291,13 @@ class AskFriendsModal extends Component {
                 </LoadingItemsWheel>
               ) */}
               {totalCurrentFriendListCount === 0 && (
-                <ModalContentHeaderType1>
-                  COMING SOON: We are adding a way to add friends quickly here. In the meantime, you can add friends in the &apos;Friends&apos; area.
-                </ModalContentHeaderType1>
+                <Suspense fallback={<></>}>
+                  <DelayedLoad waitBeforeShow={1000}>
+                    <ModalContentHeaderType1>
+                      COMING SOON: We are adding a way to add friends quickly here. In the meantime, you can add friends in the &apos;Friends&apos; area.
+                    </ModalContentHeaderType1>
+                  </DelayedLoad>
+                </Suspense>
               )}
             </FriendListExternalWrapper>
           </div>
@@ -334,9 +340,6 @@ const styles = () => ({
     display: 'flex',
     justifyContent: 'center',
   },
-  closeButton: {
-    marginLeft: 'auto',
-  },
   continueButtonRoot: {
     width: '100%',
   },
@@ -354,12 +357,12 @@ const FriendListExternalWrapper = styled('div')`
 // `;
 
 const ModalTitleAreaAskFriendsCloseX = styled('div')`
-  justify-content: flex-end;
   align-items: center;
+  display: flex;
+  justify-content: flex-end;
   width: 100%;
   padding: 10px 12px 0 12px;
   z-index: 999;
-  display: flex;
 `;
 
 const ModalTitleAreaAskFriendsTop = styled('div')`

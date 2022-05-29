@@ -1,11 +1,13 @@
 import { Button } from '@mui/material';
-import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import FriendActions from '../../actions/FriendActions';
+import VoterActions from '../../actions/VoterActions';
 import { renderLog } from '../../common/utils/logging';
+import FriendStore from '../../stores/FriendStore';
+import VoterStore from '../../stores/VoterStore';
 import { removeTwitterNameFromDescription } from '../../utils/textFormat';
 import Avatar from '../Style/avatarStyles';
 import {
@@ -23,8 +25,22 @@ class SuggestedFriendDisplayForList extends Component {
   constructor (props) {
     super(props);
     this.state = {
+      friendInvitationByEmailSent: false,
       ignoreSuggestedFriendSent: false,
+      ignoreVoterContactSent: false,
     };
+  }
+
+  friendInvitationByEmailSend (emailAddresses) {
+    const emailAddressArray = '';
+    const firstNameArray = '';
+    const lastNameArray = '';
+    const invitationMessage = FriendStore.getMessageToFriendQueuedToSave();
+    const senderEmailAddress = VoterStore.getVoterEmail();
+    FriendActions.friendInvitationByEmailSend(emailAddressArray, firstNameArray, lastNameArray, emailAddresses, invitationMessage, senderEmailAddress);
+    this.setState({
+      friendInvitationByEmailSent: true,
+    });
   }
 
   ignoreSuggestedFriend (voterWeVoteId) {
@@ -34,10 +50,19 @@ class SuggestedFriendDisplayForList extends Component {
     });
   }
 
+  ignoreVoterContact (emailAddressText, voterWeVoteId = '') {
+    VoterActions.voterContactIgnore(emailAddressText, voterWeVoteId);
+    this.setState({
+      ignoreVoterContactSent: true,
+    });
+  }
+
   render () {
     renderLog('SuggestedFriendDisplayForList');  // Set LOG_RENDER_EVENTS to log all renders
     const {
-      classes,
+      cityForDisplay,
+      emailAddressForDisplay,
+      indicateIfAlreadyOnWeVote,
       inSideColumn,
       linkedOrganizationWeVoteId,
       mutualFriends,
@@ -51,7 +76,7 @@ class SuggestedFriendDisplayForList extends Component {
       voterTwitterDescription,
       voterTwitterHandle,
     } = this.props;
-    const { ignoreSuggestedFriendSent } = this.state;
+    const { friendInvitationByEmailSent, ignoreSuggestedFriendSent, ignoreVoterContactSent } = this.state;
 
     const twitterDescription = voterTwitterDescription || '';
     // If the voterDisplayName is in the voterTwitterDescription, remove it
@@ -64,6 +89,8 @@ class SuggestedFriendDisplayForList extends Component {
     const voterImage = <ImageHandler sizeClassName="icon-lg " imageUrl={voterPhotoUrlLarge} kind_of_ballot_item="CANDIDATE" />;
     const detailsHTML = (
       <FriendDetails
+        emailAddressForDisplay={emailAddressForDisplay}
+        indicateIfAlreadyOnWeVote={indicateIfAlreadyOnWeVote}
         inSideColumn={inSideColumn}
         mutualFriends={mutualFriends}
         positionsTaken={positionsTaken}
@@ -71,26 +98,54 @@ class SuggestedFriendDisplayForList extends Component {
         voterDisplayName={voterDisplayName}
         voterEmailAddress={voterEmailAddress}
         voterTwitterHandle={voterTwitterHandle}
+        voterWeVoteId={otherVoterWeVoteId}
       />
     );
     const friendButtonsExist = true;
     const friendButtonsWrapperHtml = (
       <FriendButtonsWrapper inSideColumn={inSideColumn}>
         <FriendSettingsWrapper>
-          <SuggestedFriendToggle inSideColumn={inSideColumn} otherVoterWeVoteId={otherVoterWeVoteId} />
+          {otherVoterWeVoteId ? (
+            <SuggestedFriendToggle inSideColumn={inSideColumn} otherVoterWeVoteId={otherVoterWeVoteId} />
+          ) : (
+            <Button
+              color="primary"
+              disabled={friendInvitationByEmailSent}
+              fullWidth
+              onClick={() => this.friendInvitationByEmailSend(emailAddressForDisplay)}
+              type="button"
+              variant="contained"
+            >
+              <span className="u-no-break">
+                {ignoreSuggestedFriendSent ? 'Invite sent' : 'Send invite'}
+              </span>
+            </Button>
+          )}
         </FriendSettingsWrapper>
         <CancelButtonWrapper inSideColumn={inSideColumn}>
-          <Button
-            classes={{ root: classes.ignoreButton }}
-            color="primary"
-            disabled={ignoreSuggestedFriendSent}
-            fullWidth
-            onClick={() => this.ignoreSuggestedFriend(otherVoterWeVoteId)}
-            type="button"
-            variant="outlined"
-          >
-            {ignoreSuggestedFriendSent ? 'Ignoring...' : 'Ignore'}
-          </Button>
+          {otherVoterWeVoteId ? (
+            <Button
+              color="primary"
+              disabled={ignoreSuggestedFriendSent}
+              fullWidth
+              onClick={() => this.ignoreSuggestedFriend(otherVoterWeVoteId)}
+              type="button"
+              variant="outlined"
+            >
+              {ignoreSuggestedFriendSent ? 'Ignored' : 'Ignore'}
+            </Button>
+          ) : (
+            <Button
+              color="primary"
+              disabled={ignoreVoterContactSent}
+              fullWidth
+              onClick={() => this.ignoreVoterContact(emailAddressForDisplay, otherVoterWeVoteId)}
+              type="button"
+              variant="outlined"
+            >
+              {ignoreVoterContactSent ? 'Ignored' : 'Ignore'}
+            </Button>
+          )}
         </CancelButtonWrapper>
       </FriendButtonsWrapper>
     );
@@ -131,7 +186,7 @@ class SuggestedFriendDisplayForList extends Component {
               </div>
             )}
           </ToRightOfPhoto>
-          <FriendLocationDisplay stateCodeForDisplay={stateCodeForDisplay} />
+          <FriendLocationDisplay cityForDisplay={cityForDisplay} stateCodeForDisplay={stateCodeForDisplay} />
         </FriendColumnWithoutButtons>
         {friendButtonsExist && (
           <FriendDisplayDesktopButtonsWrapper className="u-show-desktop-tablet">
@@ -153,7 +208,9 @@ class SuggestedFriendDisplayForList extends Component {
   }
 }
 SuggestedFriendDisplayForList.propTypes = {
-  classes: PropTypes.object,
+  cityForDisplay: PropTypes.string,
+  indicateIfAlreadyOnWeVote: PropTypes.bool,
+  emailAddressForDisplay: PropTypes.string,
   inSideColumn: PropTypes.bool,
   linkedOrganizationWeVoteId: PropTypes.string,
   mutualFriends: PropTypes.number,
@@ -168,17 +225,12 @@ SuggestedFriendDisplayForList.propTypes = {
   voterWeVoteId: PropTypes.string,
 };
 
-const styles = () => ({
-  ignoreButton: {
-    // fontSize: '12.5px',
-  },
-});
-
 const SuggestedFriendDisplayForListWrapper = styled('div')`
+  width: 100%;
 `;
 
 const FriendSettingsWrapper = styled('div')`
   width: fit-content;
 `;
 
-export default withStyles(styles)(SuggestedFriendDisplayForList);
+export default SuggestedFriendDisplayForList;

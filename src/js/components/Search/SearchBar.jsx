@@ -1,3 +1,4 @@
+import { Search } from '@mui/icons-material';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { blurTextFieldAndroid, focusTextFieldAndroid } from '../../common/utils/cordovaUtils';
@@ -68,21 +69,23 @@ export default class SearchBar extends Component {
 
   render () {
     renderLog('SearchBar');  // Set LOG_RENDER_EVENTS to log all renders
+    const { clearButton, placeholder, searchButton } = this.props;
+    const { searchString } = this.state;
     return (
       <div className="search-bar clearfix">
         <input
           id="search_input"
           type="text"
           className="form-control"
-          placeholder={this.props.placeholder}
-          value={this.state.searchString}
+          placeholder={placeholder}
+          value={searchString}
           onKeyDown={this.handleKeyPress}
           onChange={this.updateResults}
           onFocus={focusTextFieldAndroid}
           onBlur={blurTextFieldAndroid}
         />
         <div className="search-bar-options">
-          {(this.props.clearButton && this.state.searchString && this.state.searchString.length > 0) && (
+          {(clearButton && searchString && searchString.length > 0) && (
             <button
               className="search-clear-btn"
               onClick={this.clearQuery}
@@ -92,13 +95,13 @@ export default class SearchBar extends Component {
               <img src={normalizedImagePath(removeCircleIcon)} width="26" height="26" color="#ccc" alt="clear query" />
             </button>
           )}
-          {(this.props.searchButton) && (
+          {(searchButton) && (
             <button
               className="search-options-btn"
               type="button"
               id="search"
             >
-              <i className="fas fa-search" />
+              <Search />
             </button>
           )}
         </div>

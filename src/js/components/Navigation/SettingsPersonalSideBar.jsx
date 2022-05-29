@@ -25,6 +25,7 @@ export default class SettingsPersonalSideBar extends Component {
       isOnPartnerUrl: false,
       isOrganization: false,
       isSignedIn: false,
+      showPremiumFeatures: false,
       voterIsAdminForThisUrl: false,
     };
   }
@@ -73,7 +74,7 @@ export default class SettingsPersonalSideBar extends Component {
     renderLog('SettingsPersonalSideBar');  // Set LOG_RENDER_EVENTS to log all renders
     // console.log("SettingsPersonalSideBar, isOrganization: ", this.state.isOrganization);
     const { editMode } = this.props;
-    const { isOnPartnerUrl, isSignedIn, isOrganization, voterIsAdminForThisUrl } = this.state;
+    const { isOnPartnerUrl, isSignedIn, isOrganization, showPremiumFeatures, voterIsAdminForThisUrl } = this.state;
     const showSettingsInDevelopment = false; // If developing any of the new settings, change this to true
     const isOnPartnerUrlAndNotAdmin = isOnPartnerUrl && !voterIsAdminForThisUrl;
 
@@ -136,7 +137,7 @@ export default class SettingsPersonalSideBar extends Component {
             </div>
           )}
 
-          {isSignedIn && !isOnPartnerUrlAndNotAdmin && (
+          {(isSignedIn && showPremiumFeatures && !isOnPartnerUrlAndNotAdmin) && (
             <div className={String(editMode) === 'domain' ?
               'SettingsItem__summary__item-container SettingsItem__summary__item-container--selected' :
               'SettingsItem__summary__item-container '}
@@ -157,7 +158,7 @@ export default class SettingsPersonalSideBar extends Component {
             </div>
           )}
 
-          {isSignedIn && !isOnPartnerUrlAndNotAdmin && (
+          {(isSignedIn && showPremiumFeatures && !isOnPartnerUrlAndNotAdmin) && (
             <div className={String(editMode) === 'text' ?
               'SettingsItem__summary__item-container SettingsItem__summary__item-container--selected' :
               'SettingsItem__summary__item-container '}
@@ -175,7 +176,7 @@ export default class SettingsPersonalSideBar extends Component {
             </div>
           )}
 
-          {isSignedIn && !isOnPartnerUrlAndNotAdmin && (
+          {(isSignedIn && showPremiumFeatures && !isOnPartnerUrlAndNotAdmin) && (
             <div className={String(editMode) === 'sharing' ?
               'SettingsItem__summary__item-container SettingsItem__summary__item-container--selected' :
               'SettingsItem__summary__item-container '}
@@ -196,7 +197,7 @@ export default class SettingsPersonalSideBar extends Component {
             </div>
           )}
 
-          {isSignedIn && !isOnPartnerUrlAndNotAdmin && (
+          {(isSignedIn && showPremiumFeatures && !isOnPartnerUrlAndNotAdmin) && (
             <div className={String(editMode) === 'subscription' ?
               'SettingsItem__summary__item-container SettingsItem__summary__item-container--selected' :
               'SettingsItem__summary__item-container '}
@@ -217,7 +218,7 @@ export default class SettingsPersonalSideBar extends Component {
             </div>
           )}
 
-          {isSignedIn && !isOnPartnerUrlAndNotAdmin && (
+          {(isSignedIn && showPremiumFeatures && !isOnPartnerUrlAndNotAdmin) && (
             <div className={String(editMode) === 'analytics' ?
               'SettingsItem__summary__item-container SettingsItem__summary__item-container--selected' :
               'SettingsItem__summary__item-container '}
@@ -238,7 +239,7 @@ export default class SettingsPersonalSideBar extends Component {
             </div>
           )}
 
-          {isSignedIn && isOrganization && !isOnPartnerUrlAndNotAdmin && (
+          {(isSignedIn && isOrganization && showPremiumFeatures && !isOnPartnerUrlAndNotAdmin) && (
             <div className={String(editMode) === 'issues' || String(editMode) === 'issues_to_link' || String(editMode) === 'issues_linked' ?
               'SettingsItem__summary__item-container SettingsItem__summary__item-container--selected' :
               'SettingsItem__summary__item-container '}
@@ -259,7 +260,7 @@ export default class SettingsPersonalSideBar extends Component {
             </div>
           )}
 
-          {isSignedIn && showSettingsInDevelopment && !isOnPartnerUrlAndNotAdmin && (
+          {(isSignedIn && showPremiumFeatures && showSettingsInDevelopment && !isOnPartnerUrlAndNotAdmin) && (
             <div className={String(editMode) === 'promoted' ?
               'SettingsItem__summary__item-container SettingsItem__summary__item-container--selected' :
               'SettingsItem__summary__item-container '}
@@ -280,7 +281,7 @@ export default class SettingsPersonalSideBar extends Component {
             </div>
           )}
 
-          { !isOnPartnerUrlAndNotAdmin && (
+          {(showPremiumFeatures && !isOnPartnerUrlAndNotAdmin) && (
             <div className={String(editMode) === 'tools' ?
               'SettingsItem__summary__item-container SettingsItem__summary__item-container--selected' :
               'SettingsItem__summary__item-container '}
