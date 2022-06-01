@@ -5,7 +5,6 @@ import withTheme from '@mui/styles/withTheme';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
 import Helmet from 'react-helmet';
-// import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import FriendActions from '../../actions/FriendActions';
 import VoterActions from '../../actions/VoterActions';
@@ -24,12 +23,10 @@ import VoterStore from '../../stores/VoterStore';
 
 
 const FAQModal = React.lazy(() => import(/* webpackChunkName: 'FAQModal' */ '../../components/FriendIntro/FAQModal'));
-// const HowItWorksModal = React.lazy(() => import(/* webpackChunkName: 'HowItWorksModal' */ '../CompleteYourProfile/HowItWorksModal'));
 
 // const logoColorOnWhite = '../../../img/global/svg-icons/we-vote-icon-square-color-dark.svg';
 const logoGrey = '../../../img/global/svg-icons/we-vote-icon-square-color-grey.svg';
-const voteFlag = '../../../img/get-started/your-vote-counts-tilted15-198x155.gif';
-
+const voteFlag = '../../../img/get-started/your-vote-counts-cropped-200x200.gif';
 const inDevelopmentMode = false;
 
 class FriendIntroLanding extends Component {
@@ -253,40 +250,25 @@ class FriendIntroLanding extends Component {
                 </WeVoteTextBody>
                 <WeVoteLogoWrapper>
                   <div onClick={this.toggleFAQModal}>
-                    {showFAQModal && (
-                      <Suspense fallback={<></>}>
-                        <FAQModal
-                          show={showFAQModal}
-                          toggleFunction={this.closeFAQModal}
-                        />
-                      </Suspense>
-                    )}
                     <SvgImage
                       imageName={logoGrey}
                       stylesTextIncoming="fill: #999 !important; width:48px; height: 48px;"
                     />
                   </div>
-                  {/* <WeVoteLogoImage
-                  alt=""
-                  src={normalizedImagePath(logoColorOnWhite)}
-                  height='48px'
-                  width='48px'
-                  /> */}
                 </WeVoteLogoWrapper>
                 <LinkToFAQ>
                   <div onClick={this.toggleFAQModal}>
                     Read Our FAQ
-                    {showFAQModal && (
-                      <Suspense fallback={<></>}>
-                        <FAQModal
-                          show={showFAQModal}
-                          toggleFunction={this.closeFAQModal}
-                        />
-                      </Suspense>
-                    )}
                   </div>
-                  {/* <Link to="/more/faq" style={{ color: '#999' }}>Read our FAQ</Link> */}
                 </LinkToFAQ>
+                {showFAQModal && (
+                  <Suspense fallback={<></>}>
+                    <FAQModal
+                      show={showFAQModal}
+                      toggleFunction={this.closeFAQModal}
+                    />
+                  </Suspense>
+                )}
               </BodyWrapperWhatIs>
             </WhatIsWeVoteWrapper>
           ) : (
@@ -548,8 +530,9 @@ const FriendPhotoOuterWrapper = styled('div')`
 `;
 
 const LinkToFAQ = styled('div')`
+  display: flex;
+  justify-content: center;
   font-size: 16px;
-  text-align: center;
   color: #999;
 `;
 
@@ -559,14 +542,10 @@ const PageContentContainerFriendIntro = styled('div')`
 `;
 
 const VoterPhotoImage = styled('img')`
-  border-radius: 100px;
+  border-radius: 50px;
   max-width: 200px;
   align-items:center;
 `;
-
-// const WeVoteLogoImage = styled('img')`
-//   color: #999;
-// `;
 
 const WeVoteLogoSpacer = styled('div')`
   margin-bottom: 100px;

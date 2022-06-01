@@ -95,23 +95,8 @@ const styles = () => ({
     display: 'flex',
     justifyContent: 'center',
   },
-  backButton: {
-    // marginBottom: 6,
-    // marginLeft: -8,
-    paddingTop: 0,
-    paddingBottom: 0,
-  },
-  backButtonIcon: {
-    fontSize: 14,
-    fontWeight: 'bold',
-  },
   closeButton: {
     marginLeft: 'auto',
-  },
-  closeButtonAbsolute: {
-    position: 'absolute',
-    right: 14,
-    top: 14,
   },
 });
 
