@@ -1,11 +1,10 @@
-import { Close, Info } from '@mui/icons-material';
+import { Close } from '@mui/icons-material';
 import { Button, IconButton } from '@mui/material';
 import withStyles from '@mui/styles/withStyles';
 import withTheme from '@mui/styles/withTheme';
 import PropTypes from 'prop-types';
-import React, { Component } from 'react';
+import React, { Component, Suspense } from 'react';
 import Helmet from 'react-helmet';
-import { Link } from 'react-router-dom'
 import styled from 'styled-components';
 import FriendActions from '../../actions/FriendActions';
 import VoterActions from '../../actions/VoterActions';
@@ -22,11 +21,12 @@ import AppObservableStore from '../../stores/AppObservableStore';
 import FriendStore from '../../stores/FriendStore';
 import VoterStore from '../../stores/VoterStore';
 
-const logoColorOnWhite = '../../../img/global/svg-icons/we-vote-icon-square-color-dark.svg';
-const logoGrey = '../../../img/global/svg-icons/we-vote-icon-square-color-grey.svg';
-const voteFlag = '../../../img/get-started/your-vote-counts-tilted15-200x200.gif';
-// const svgFill = '#999';
 
+const FAQModal = React.lazy(() => import(/* webpackChunkName: 'FAQModal' */ '../../components/FriendIntro/FAQModal'));
+
+// const logoColorOnWhite = '../../../img/global/svg-icons/we-vote-icon-square-color-dark.svg';
+const logoGrey = '../../../img/global/svg-icons/we-vote-icon-square-color-grey.svg';
+const voteFlag = '../../../img/get-started/your-vote-counts-cropped-200x200.gif';
 const inDevelopmentMode = false;
 
 class FriendIntroLanding extends Component {
@@ -34,6 +34,7 @@ class FriendIntroLanding extends Component {
     super(props);
     this.state = {
       friendInvitationInformationCalled: false,
+      showFAQModal: false,
       showWhatIsWeVote: false,
       skipForNowOff: false,
       voterContactEmailListCount: 0,
@@ -135,6 +136,13 @@ class FriendIntroLanding extends Component {
     }, () => this.setNextStepVariables());
   }
 
+  closeFAQModal = () => {
+    this.setState({
+      showFAQModal: false,
+      showWhatIsWeVote: true,
+    });
+  }
+
   goToNextStep = () => {
     const { location: { pathname: currentPathname } } = window;
     AppObservableStore.setSetUpAccountBackLinkPath(currentPathname);
@@ -193,6 +201,13 @@ class FriendIntroLanding extends Component {
     });
   }
 
+  toggleFAQModal = () => {
+    const { showFAQModal } = this.state;
+    this.setState({
+      showFAQModal: !showFAQModal,
+    });
+  }
+
   toggleWhatIsWeVote = () => {
     const { showWhatIsWeVote } = this.state;
     this.setState({
@@ -205,7 +220,7 @@ class FriendIntroLanding extends Component {
     const { classes } = this.props;
     const {
       friendFirstName, friendLastName, friendImageUrlHttpsLarge, nextStepButtonText,
-      showWhatIsWeVote, skipForNowOff, socialSignInOffered, voterFirstName,
+      showFAQModal, showWhatIsWeVote, skipForNowOff, socialSignInOffered, voterFirstName,
     } = this.state;
 
     return (
@@ -227,27 +242,33 @@ class FriendIntroLanding extends Component {
                 <FlagImageWrapper>
                   <VoterPhotoImage src={normalizedImagePath(voteFlag)} alt="WeVoteFlag Photo" />
                 </FlagImageWrapper>
-                <FriendIntroTitle>What is We Vote?</FriendIntroTitle>
-                <FriendIntroBody>
+                <WeVoteTextTitle>What is We Vote?</WeVoteTextTitle>
+                <WeVoteTextBody>
                   We Vote shows you information about the next election, side-by-side with your
                   friend’s opinions. Use We Vote to track your ballot, see endorsements from your
                   network for candidates and measures, and collaborate with folks who share your values.
-                </FriendIntroBody>
+                </WeVoteTextBody>
                 <WeVoteLogoWrapper>
-                  <SvgImage
-                    imageName={logoGrey}
-                    stylesTextIncoming={"fill: #999 !important; width:48px; height: 48px;"}
-                  />
-                  {/* <WeVoteLogoImage
-                  alt=""
-                  src={normalizedImagePath(logoColorOnWhite)}
-                  height='48px'
-                  width='48px'
-                  /> */}
+                  <div onClick={this.toggleFAQModal}>
+                    <SvgImage
+                      imageName={logoGrey}
+                      stylesTextIncoming="fill: #999 !important; width:48px; height: 48px;"
+                    />
+                  </div>
                 </WeVoteLogoWrapper>
                 <LinkToFAQ>
-                    <Link to={"/more/faq"} style={{ color: '#999' }} >Read our FAQ</Link>
+                  <div onClick={this.toggleFAQModal}>
+                    Read Our FAQ
+                  </div>
                 </LinkToFAQ>
+                {showFAQModal && (
+                  <Suspense fallback={<></>}>
+                    <FAQModal
+                      show={showFAQModal}
+                      toggleFunction={this.closeFAQModal}
+                    />
+                  </Suspense>
+                )}
               </BodyWrapperWhatIs>
             </WhatIsWeVoteWrapper>
           ) : (
@@ -486,10 +507,10 @@ const FriendIntroTitle = styled('div')`
   margin-bottom: 10px;
 `;
 
-const FriendIntroBody = styled('div')`
-  font-size: 16px;
-  text-align: center;
-`;
+// const FriendIntroBody = styled('div')`
+//   font-size: 16px;
+//   text-align: center;
+// `;
 
 const FriendPhotoInnerWrapper = styled('div')`
   min-height: 100px;
@@ -509,8 +530,9 @@ const FriendPhotoOuterWrapper = styled('div')`
 `;
 
 const LinkToFAQ = styled('div')`
+  display: flex;
+  justify-content: center;
   font-size: 16px;
-  text-align: center;
   color: #999;
 `;
 
@@ -520,13 +542,9 @@ const PageContentContainerFriendIntro = styled('div')`
 `;
 
 const VoterPhotoImage = styled('img')`
-  border-radius: 100px;
+  border-radius: 50px;
   max-width: 200px;
   align-items:center;
-`;
-
-const WeVoteLogoImage = styled('img')`
-  color: #999;
 `;
 
 const WeVoteLogoSpacer = styled('div')`
@@ -537,7 +555,21 @@ const WeVoteLogoWrapper = styled('div')`
   display: flex;
   justify-content: center;
   color: '#999';
-  margin-top: 20px;
+  margin-top: 40px;
+`;
+
+const WeVoteTextBody = styled('div')`
+  color: #555;
+  font-size: 16px;
+  text-align: center;
+`;
+
+const WeVoteTextTitle = styled('div')`
+  color: #555;
+  font-size: 24px;
+  text-align: center;
+  margin-top: 10px;
+  margin-bottom: 10px;
 `;
 
 const WhatIsWeVoteLinkWrapper = styled('div')`
@@ -545,7 +577,7 @@ const WhatIsWeVoteLinkWrapper = styled('div')`
 `;
 
 const WhatIsWeVoteWrapper = styled('div')`
-
+  max-width: 550px;
 `;
 
 
