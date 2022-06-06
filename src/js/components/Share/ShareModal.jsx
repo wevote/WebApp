@@ -610,7 +610,7 @@ class ShareModal extends Component {
           <DialogContent classes={{ root: classes.dialogContent }}>
             <MessageCard
               mainText="You haven't added any friends yet."
-              buttonText="Add Friends"
+              buttonText="Add friends"
               buttonURL="/friends/invite"
               noCard
               fullWidthButton

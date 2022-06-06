@@ -409,9 +409,9 @@ class SharedItemModal extends Component {
     if (isFriend) {
       textNextToInfoIcon = `${nameForNextToInfoIcon}'s opinions will be added to your personalized scores. `;
     } else if (isFollowing) {
-      textNextToInfoIcon = `${nameForNextToInfoIcon}'s opinions will be added to your scores. Add Friend to see friend's-only opinions.`;
+      textNextToInfoIcon = `${nameForNextToInfoIcon}'s opinions will be added to your scores. Add friend to see friend's-only opinions.`;
     } else {
-      textNextToInfoIcon = `Click Add Friend or Follow to see ${nameForNextToInfoIconMidSentence}'s opinions. (Friends also see friend's-only opinions.)`;
+      textNextToInfoIcon = `Click Add friend, or Follow to see ${nameForNextToInfoIconMidSentence}'s opinions. (Friends also see friend's-only opinions.)`;
     }
     return (
       <Dialog

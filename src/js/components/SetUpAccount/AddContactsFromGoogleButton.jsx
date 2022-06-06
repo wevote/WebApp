@@ -41,7 +41,7 @@ class AddContactsFromGoogleButton extends Component {
     // const { gapi } = window;
     const { addContactsState } = this.state;
     // const signedIn = gapi.auth2.getAuthInstance().isSignedIn.get();
-    console.log('onGoogleSignIn 1 >>>>>>>> addContactsState:', addContactsState);
+    // console.log('onGoogleSignIn 1 >>>>>>>> addContactsState:', addContactsState);
     if (addContactsState === AddContactConsts.requestingSignIn && signedIn) {
       this.setState({ addContactsState: AddContactConsts.requestingContacts });
       // console.log('Getting contacts from Google after signIn');
@@ -59,10 +59,10 @@ class AddContactsFromGoogleButton extends Component {
     const voterContactEmailGoogleCount = VoterStore.getVoterContactEmailGoogleCount();
     this.setState({ voterContactEmailGoogleCount });
     const { addContactsState } = this.state;
-    console.log('onVoterStoreChange, addContactsState:', addContactsState);
+    // console.log('onVoterStoreChange, addContactsState:', addContactsState);
     if (addContactsState === AddContactConsts.sendingContacts) {
       if (googleContactsStored && googleContactsStored > 0) {
-        console.log('onVoterStoreChange googleContactsStored:', googleContactsStored);
+        // console.log('onVoterStoreChange googleContactsStored:', googleContactsStored);
         this.setState({ addContactsState: AddContactConsts.savedContacts });
       } else {
         console.log('onVoterStoreChange voterContactListSave failed');
@@ -76,17 +76,17 @@ class AddContactsFromGoogleButton extends Component {
     const { gapi } = window;
     const isSignedIn = gapi.auth2.getAuthInstance().isSignedIn.get();
     if (isSignedIn) {
-      console.log('Getting contacts from Google on button click, since we were logged into Google');
+      // console.log('Getting contacts from Google on button click, since we were logged into Google');
       this.getOtherConnections();
       this.setState({ addContactsState: AddContactConsts.requestingContacts });
     } else {
-      console.log('Getting Auth from Google on button click, since we were not logged into Google');
+      // console.log('Getting Auth from Google on button click, since we were not logged into Google');
       gapi.auth2.getAuthInstance().signIn();
       this.setState({ addContactsState: AddContactConsts.requestingSignIn });
     }
 
     if (addContactsState === AddContactConsts.receivedContacts) {
-      console.log('Sending contacts from Google to the API Server on button click');
+      // console.log('Sending contacts from Google to the API Server on button click');
       const arrayOfSelectedContacts = [];
       setOfContacts.forEach((contact) => {
         if (contact.selected) {
@@ -190,8 +190,8 @@ class AddContactsFromGoogleButton extends Component {
     renderLog('AddContactsFromGoogleButton');  // Set LOG_RENDER_EVENTS to log all renders
     const { classes, darkButton, mobileMode } = this.props;
     const { addContactsState, voterContactEmailGoogleCount } = this.state;
-    console.log('render in AddContactsFromGoogleButton, addContactsState: ', addContactsState);
-    const disableButton = (addContactsState === AddContactConsts.requestingContacts) || (addContactsState === AddContactConsts.sendingContacts);
+    // console.log('render in AddContactsFromGoogleButton, addContactsState: ', addContactsState);
+    const disableButton = (addContactsState === AddContactConsts.requestingContacts) || (addContactsState === AddContactConsts.sendingContacts) || (addContactsState === AddContactConsts.receivedContacts);
 
     return (
       <Button
@@ -234,25 +234,16 @@ AddContactsFromGoogleButton.propTypes = {
 const styles = () => ({
   buttonMobile: {
     boxShadow: 'none !important',
-    // fontSize: '18px',
-    // height: '45px !important',
-    // padding: '0 12px',
     textTransform: 'none',
     width: '100%',
   },
   buttonMobileCordova: {
     boxShadow: 'none !important',
-    // fontSize: '18px',
-    // height: '35px !important',
-    // padding: '0 12px',
     textTransform: 'none',
     width: '100%',
   },
   buttonDesktop: {
     boxShadow: 'none !important',
-    // fontSize: '18px',
-    // height: '45px !important',
-    // padding: '0 12px',
     textTransform: 'none',
     minWidth: 300,
   },

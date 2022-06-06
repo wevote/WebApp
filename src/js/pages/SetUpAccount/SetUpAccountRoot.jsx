@@ -3,7 +3,9 @@ import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
 import React, { Suspense } from 'react';
 import styled from 'styled-components';
+import BallotActions from '../../actions/BallotActions';
 import VoterActions from '../../actions/VoterActions';
+import apiCalming from '../../common/utils/apiCalming';
 import { isCordovaWide } from '../../common/utils/cordovaUtils';
 import historyPush from '../../common/utils/historyPush';
 import { renderLog } from '../../common/utils/logging';
@@ -44,9 +46,9 @@ function NextButton (props) {
       } : {
         boxShadow: 'none !important',
         textTransform: 'none',
-        width: 250,
+        width: 300,
       }}
-      variant="contained"
+      variant={props.nextButtonAsOutline ? 'outlined' : 'contained'}
     >
       {props.nextButtonText}
     </Button>
@@ -54,6 +56,7 @@ function NextButton (props) {
 }
 NextButton.propTypes = {
   isMobile: PropTypes.bool,
+  nextButtonAsOutline: PropTypes.bool,
   nextButtonDisabled: PropTypes.bool,
   nextButtonText: PropTypes.string,
   onClickNextButton: PropTypes.func,
@@ -96,6 +99,9 @@ class SetUpAccountRoot extends React.Component {
     });
     VoterActions.voterContactListRetrieve();
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
+    if (apiCalming('voterBallotItemsRetrieve', 10000)) {
+      BallotActions.voterBallotItemsRetrieve();
+    }
   }
 
   componentDidUpdate (prevProps, prevState) {
@@ -145,12 +151,14 @@ class SetUpAccountRoot extends React.Component {
     const { setUpPagePath } = this.state;
     const displayStep = this.convertSetUpPagePathToDisplayStep(setUpPagePath);
     const voterContactEmailListCount = VoterStore.getVoterContactEmailListCount();
+    const voterPhotoUrlLarge = VoterStore.getVoterPhotoUrlLarge();
     // const voterContactEmailGoogleCount = VoterStore.getVoterContactEmailGoogleCount();
     // console.log('onVoterStoreChange voterContactEmailGoogleCount:', voterContactEmailGoogleCount, ', voterContactEmailListCount:', voterContactEmailListCount);
     this.setState({
       displayStep,
       // voterContactEmailGoogleCount,
       voterContactEmailListCount,
+      voterPhotoUrlLarge,
     }, () => this.setNextStepVariables());
   }
 
@@ -206,13 +214,14 @@ class SetUpAccountRoot extends React.Component {
   }
 
   setNextStepVariables = () => {
-    const { displayStep, setUpAccountBackLinkPath, setUpAccountEntryPath, voterContactEmailListCount } = this.state;
+    const { displayStep, setUpAccountBackLinkPath, setUpAccountEntryPath, voterContactEmailListCount, voterPhotoUrlLarge } = this.state;
     let backToLinkPath = '';
+    const nextButtonAsOutline = false;
     let nextButtonText = '';
     let nextStepPath;
     let reassuranceTextOff;
     let skipForNowOff;
-    let skipForNowPath;
+    let skipForNowPath = '';
     switch (displayStep) {
       default:
       case 1: // 'editname'
@@ -221,7 +230,24 @@ class SetUpAccountRoot extends React.Component {
         nextStepPath = '/setupaccount/addphoto';
         reassuranceTextOff = false;
         skipForNowOff = false;
-        skipForNowPath = '/setupaccount/addphoto';
+        if (voterPhotoUrlLarge) {
+          if (inDevelopmentMode) {
+            if (voterContactEmailListCount > 0) {
+              nextStepPath = '/setupaccount/invitecontacts';
+              skipForNowOff = false;
+              skipForNowPath = '/ballot';
+            } else {
+              nextStepPath = '/setupaccount/importcontacts';
+              skipForNowOff = false;
+              skipForNowPath = '/ballot';
+            }
+          } else {
+            nextStepPath = '/ballot';
+            skipForNowOff = true;
+          }
+        } else {
+          skipForNowPath = '/setupaccount/addphoto';
+        }
         break;
       case 2: // 'addphoto'
       case 3:
@@ -233,19 +259,18 @@ class SetUpAccountRoot extends React.Component {
         nextButtonText = (inDevelopmentMode) ? 'Find your friends' : 'View your ballot';
         reassuranceTextOff = false;
         if (inDevelopmentMode) {
-          if (voterContactEmailListCount === 0) {
-            nextStepPath = '/setupaccount/importcontacts';
-            skipForNowOff = false;
-            skipForNowPath = '/setupaccount/importcontacts';
-          } else {
+          if (voterContactEmailListCount > 0) {
             nextStepPath = '/setupaccount/invitecontacts';
             skipForNowOff = false;
             skipForNowPath = '/setupaccount/invitecontacts';
+          } else {
+            nextStepPath = '/setupaccount/importcontacts';
+            skipForNowOff = false;
+            skipForNowPath = '/setupaccount/importcontacts';
           }
         } else {
           nextStepPath = '/ballot';
           skipForNowOff = true;
-          skipForNowPath = '/ballot';
         }
         break;
       case 4: // importcontacts
@@ -255,7 +280,7 @@ class SetUpAccountRoot extends React.Component {
           backToLinkPath = '/setupaccount/addphoto';
         }
         if (voterContactEmailListCount > 0) {
-          nextButtonText = 'Choose contacts to invite';
+          nextButtonText = 'Choose contacts to add as friends';
         } else {
           nextButtonText = 'Import contacts from Gmail';
         }
@@ -277,9 +302,23 @@ class SetUpAccountRoot extends React.Component {
         } else {
           backToLinkPath = '/setupaccount/importcontacts';
         }
+        // if (voterContactEmailListCount > 0) {
+        //   nextButtonAsOutline = true;
+        //   nextButtonText = 'Done';
+        //   nextStepPath = '/ballot';
+        //   reassuranceTextOff = true;
+        //   skipForNowOff = true;
+        // } else {
+        //   nextButtonText = 'Next';
+        //   nextStepPath = '/setupaccount/friendrequests';
+        //   reassuranceTextOff = true;
+        //   skipForNowOff = false;
+        //   skipForNowPath = '/ballot';
+        // }
+        // nextButtonAsOutline = true;
         nextButtonText = 'Next';
         nextStepPath = '/setupaccount/friendrequests';
-        reassuranceTextOff = false;
+        reassuranceTextOff = true;
         skipForNowOff = false;
         skipForNowPath = '/ballot';
         break;
@@ -295,11 +334,11 @@ class SetUpAccountRoot extends React.Component {
         nextStepPath = '/ballot';
         reassuranceTextOff = false;
         skipForNowOff = true;
-        skipForNowPath = '/ballot';
         break;
     }
     this.setState({
       backToLinkPath,
+      nextButtonAsOutline,
       nextButtonText,
       nextStepPath,
       reassuranceTextOff,
@@ -336,7 +375,7 @@ class SetUpAccountRoot extends React.Component {
     const { classes } = this.props;
     const {
       addPhotoNextButtonDisabled, backToLinkPath, displayStep,
-      editNameNextButtonDisabled, nextButtonClicked, nextButtonText,
+      editNameNextButtonDisabled, nextButtonAsOutline, nextButtonClicked, nextButtonText,
       reassuranceTextOff, setUpAccountBackLinkPath, skipForNowOff,
       voterContactEmailListCount,
     } = this.state;
@@ -346,7 +385,7 @@ class SetUpAccountRoot extends React.Component {
     let desktopFixedButtonsOn;
     let desktopNextButtonHtml;
     let mobileNextButtonHtml;
-    let nextButtonDisabled = true;
+    let nextButtonDisabled = false;
     let stepHtml;
     switch (displayStep) {
       default:
@@ -382,7 +421,6 @@ class SetUpAccountRoot extends React.Component {
       case 4: // importcontacts
         backButtonOn = true;
         desktopFixedButtonsOn = false;
-        nextButtonDisabled = false;
         stepHtml = (
           <Suspense fallback={<></>}>
             <SetUpAccountImportContacts
@@ -396,7 +434,6 @@ class SetUpAccountRoot extends React.Component {
       case 5: // invitecontacts
         backButtonOn = true;
         desktopFixedButtonsOn = true;
-        nextButtonDisabled = false;
         stepHtml = (
           <Suspense fallback={<></>}>
             <SetUpAccountInviteContacts
@@ -409,7 +446,6 @@ class SetUpAccountRoot extends React.Component {
       case 6: // friendrequests
         backButtonOn = true;
         desktopFixedButtonsOn = true;
-        nextButtonDisabled = false;
         stepHtml = (
           <Suspense fallback={<></>}>
             <SetUpAccountFriendRequests
@@ -430,6 +466,7 @@ class SetUpAccountRoot extends React.Component {
       case 6: // friendrequests
         desktopNextButtonHtml = (
           <NextButton
+            nextButtonAsOutline={nextButtonAsOutline}
             nextButtonDisabled={nextButtonDisabled}
             nextButtonText={nextButtonText}
             onClickNextButton={this.onClickNextButton}
@@ -438,6 +475,7 @@ class SetUpAccountRoot extends React.Component {
         mobileNextButtonHtml = (
           <NextButton
             isMobile
+            nextButtonAsOutline={nextButtonAsOutline}
             nextButtonDisabled={nextButtonDisabled}
             nextButtonText={nextButtonText}
             onClickNextButton={this.onClickNextButton}
@@ -448,7 +486,6 @@ class SetUpAccountRoot extends React.Component {
         if (voterContactEmailListCount > 0) {
           desktopNextButtonHtml = (
             <NextButton
-              nextButtonDisabled={nextButtonDisabled}
               nextButtonText={nextButtonText}
               onClickNextButton={this.onClickNextButton}
             />
@@ -590,7 +627,7 @@ const styles = () => ({
 const AccountSetUpRootWrapper = styled('div')`
   background-color: white;
   max-width: 600px;
-  padding: 40px 20px 110% 20px;
+  padding: 40px 30px 110% 30px;
   width: 100%;
 `;
 

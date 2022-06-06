@@ -64,7 +64,7 @@ class ViewUpcomingBallotButton extends React.Component {
           }}
           variant="contained"
         >
-          {!!(electionDataExistsForUpcomingElection) ? (
+          {electionDataExistsForUpcomingElection ? (
             <>View your ballot</>
           ) : (
             <>View your ballot</>

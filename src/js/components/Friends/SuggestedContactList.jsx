@@ -55,6 +55,7 @@ export default class SuggestedContactList extends Component {
                   previewMode={previewMode}
                   cityForDisplay={contact.city}
                   stateCodeForDisplay={contact.state_code}
+                  voterContactIgnored={contact.ignore_contact}
                   voterDisplayName={contact.display_name}
                   emailAddressForDisplay={contact.email_address_text}
                   voterPhotoUrlLarge={contact.we_vote_hosted_profile_image_url_medium}

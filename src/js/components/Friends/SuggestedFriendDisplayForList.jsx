@@ -69,6 +69,7 @@ class SuggestedFriendDisplayForList extends Component {
       positionsTaken,
       previewMode,
       stateCodeForDisplay,
+      voterContactIgnored,
       voterDisplayName,
       voterEmailAddress,
       voterWeVoteId: otherVoterWeVoteId,
@@ -117,7 +118,7 @@ class SuggestedFriendDisplayForList extends Component {
               variant="contained"
             >
               <span className="u-no-break">
-                {ignoreSuggestedFriendSent ? 'Invite sent' : 'Send invite'}
+                {ignoreSuggestedFriendSent ? 'Invite sent' : 'Add friend'}
               </span>
             </Button>
           )}
@@ -137,13 +138,13 @@ class SuggestedFriendDisplayForList extends Component {
           ) : (
             <Button
               color="primary"
-              disabled={ignoreVoterContactSent}
+              disabled={ignoreVoterContactSent || voterContactIgnored}
               fullWidth
               onClick={() => this.ignoreVoterContact(emailAddressForDisplay, otherVoterWeVoteId)}
               type="button"
               variant="outlined"
             >
-              {ignoreVoterContactSent ? 'Ignored' : 'Ignore'}
+              {(ignoreVoterContactSent || voterContactIgnored) ? 'Ignored' : 'Ignore'}
             </Button>
           )}
         </CancelButtonWrapper>
@@ -217,6 +218,7 @@ SuggestedFriendDisplayForList.propTypes = {
   positionsTaken: PropTypes.number,
   previewMode: PropTypes.bool,
   stateCodeForDisplay: PropTypes.string,
+  voterContactIgnored: PropTypes.bool,
   voterDisplayName: PropTypes.string,
   voterEmailAddress: PropTypes.string,
   voterPhotoUrlLarge: PropTypes.string,

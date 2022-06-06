@@ -6,10 +6,8 @@ import styled from 'styled-components';
 import FriendActions from '../../actions/FriendActions';
 import OrganizationActions from '../../actions/OrganizationActions';
 import LoadingWheel from '../../common/components/Widgets/LoadingWheel';
-import SvgImage from '../../common/components/Widgets/SvgImage';
 import apiCalming from '../../common/utils/apiCalming';
 import { renderLog } from '../../common/utils/logging';
-import normalizedImagePath from '../../common/utils/normalizedImagePath';
 import AppObservableStore from '../../stores/AppObservableStore';
 import CandidateStore from '../../stores/CandidateStore';
 import FriendStore from '../../stores/FriendStore';
@@ -20,11 +18,6 @@ import VoterStore from '../../stores/VoterStore';
 import PositionRowItem from './PositionRowItem';
 import {
   CandidateEndorsementsContainer,
-  EmptyPhotoOuterWrapper, EmptyText,
-  EmptyTextWrapper,
-  HorizontalSpacer,
-  OrganizationPhotoInnerWrapper,
-  PositionRowItemEmptyWrapper,
 } from '../Style/PositionRowListStyles';
 
 const PositionRowSupportOpposeCountDisplay = React.lazy(() => import(/* webpackChunkName: 'PositionRowSupportOpposeCountDisplay' */ './PositionRowSupportOpposeCountDisplay'));
@@ -36,7 +29,6 @@ class PositionRowList extends Component {
     super(props);
     this.state = {
       allCachedPositionsForThisBallotItem: [],
-      allCachedPositionsForThisBallotItemLength: 0,
       filteredPositionList: [],
       filteredPositionListLength: 0,
       numberOfPositionItemsToDisplay: STARTING_NUMBER_OF_POSITIONS_TO_DISPLAY,
@@ -73,7 +65,6 @@ class PositionRowList extends Component {
     this.onPositionListUpdate(allCachedPositionsForThisBallotItem);
     this.setState({
       allCachedPositionsForThisBallotItem,
-      allCachedPositionsForThisBallotItemLength: allCachedPositionsForThisBallotItem.length,
     });
   }
 
@@ -94,7 +85,6 @@ class PositionRowList extends Component {
       this.setState({
         // positionList: incomingPositionList,
         allCachedPositionsForThisBallotItem,
-        allCachedPositionsForThisBallotItemLength: allCachedPositionsForThisBallotItem.length,
       });
     }
   }
@@ -237,7 +227,6 @@ class PositionRowList extends Component {
       ballotItemWeVoteId, showInfoOnly, showOppose, showSupport,
     } = this.props;
     const {
-      allCachedPositionsForThisBallotItemLength,
       filteredPositionList, filteredPositionListLength, numberOfPositionItemsToDisplay,
     } = this.state;
     renderLog('PositionRowList');  // Set LOG_RENDER_EVENTS to log all renders
@@ -329,17 +318,6 @@ const CandidateEndorsementsRightSpacer = styled('div')`
 
 const CandidateEndorsementsWrapper = styled('div')`
   height: 100%;
-`;
-
-const ChooseEmptyHeaderText = styled('div')`
-  color: #999;
-  line-height: 20px;
-  margin-left: 6px;
-  margin-right: 24px;
-`;
-
-const ChooseEmptyHeaderWrapper = styled('div')`
-  border-bottom: 1px solid #dcdcdc;
 `;
 
 const ChooseOpposeInfoHeaderWrapper = styled('div')`

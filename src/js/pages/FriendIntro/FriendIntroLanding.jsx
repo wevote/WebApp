@@ -507,11 +507,6 @@ const FriendIntroTitle = styled('div')`
   margin-bottom: 10px;
 `;
 
-// const FriendIntroBody = styled('div')`
-//   font-size: 16px;
-//   text-align: center;
-// `;
-
 const FriendPhotoInnerWrapper = styled('div')`
   min-height: 100px;
   text-align: center
