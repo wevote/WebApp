@@ -25,6 +25,11 @@ export const reassuranceText = [
   {
     page: 4,
     headline: '',
+    text: 'Info about your contacts in your address book, including names, phone numbers and nicknames will be sent to We Vote to help you find your friends. You can delete contact information any time.',
+  },
+  {
+    page: 44,
+    headline: '',
     text: 'You\'re the only one who\'ll be able to send messages to your contacts. Wipe clean any contact information you import, any time you\'d like. We keep the contact info you import in a quarantined data vault, private to you.',
   },
   {

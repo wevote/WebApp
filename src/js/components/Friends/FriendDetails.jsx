@@ -40,7 +40,7 @@ class FriendDetails extends Component {
         )}
         {!!(indicateIfAlreadyOnWeVote && voterWeVoteId) && (
           <FriendDetailsLine inSideColumn={inSideColumn}>
-            <span style={{ color: '#3CB371', fontWeight: 600 }}>Found on We Vote!</span>
+            <span style={{ fontWeight: 600 }}>Found on We Vote!</span>
           </FriendDetailsLine>
         )}
         {!!(positionsTaken) && (

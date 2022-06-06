@@ -93,7 +93,7 @@ export default class SuggestedFriendToggle extends Component {
                 </>
               ) : (
                 <>
-                  {addSuggestedFriendSent ? 'Invite Sent' : 'Add Friend'}
+                  {addSuggestedFriendSent ? 'Invite sent' : 'Add friend'}
                 </>
               )}
             </>

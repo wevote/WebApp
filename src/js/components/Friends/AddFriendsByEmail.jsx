@@ -309,7 +309,7 @@ class AddFriendsByEmail extends Component {
             {onEnterEmailAddressesStep && (
               <>
                 {friendsToInvite.length !== 0 ? (
-                  <SectionTitle>Add Friend</SectionTitle>
+                  <SectionTitle>Add friend</SectionTitle>
                 ) : null}
                 <FormWrapper>
                   <div>

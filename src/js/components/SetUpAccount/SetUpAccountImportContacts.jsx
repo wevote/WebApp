@@ -12,14 +12,16 @@ import { reassuranceText } from './reassuranceText';
 import VoterStore from '../../stores/VoterStore';
 import Reassurance from '../../pages/Startup/Reassurance';
 import {
-  SetUpAccountIntroText,
+  SetUpAccountContactsText,
+  SetUpAccountContactsTextWrapper,
   SetUpAccountTitle,
+  SetUpAccountTop,
   StepCenteredWrapper,
 } from '../Style/SetUpAccountStyles';
 
 const AddContactsFromGoogleButton = React.lazy(() => import(/* webpackChunkName: 'AddContactsFromGoogleButton' */ './AddContactsFromGoogleButton'));
 
-const makeYourVoiceHeard = '../../../img/get-started/make-your-voice-heard-500x500.png';
+const addressBookSVG = '../../../img/get-started/address-book.svg';
 
 class SetUpAccountImportContacts extends React.Component {
   constructor (props) {
@@ -81,41 +83,63 @@ class SetUpAccountImportContacts extends React.Component {
     renderLog('SetUpAccountImportContacts');  // Set LOG_RENDER_EVENTS to log all renders
     const { classes, displayStep } = this.props;
     const { contactsWithAccountCount, deleteAllContactsConfirm, voterContactEmailListCount } = this.state;
-    const makeYourVoiceHeardSrc = normalizedImagePath(makeYourVoiceHeard);
+    const addressBookSVGSrc = normalizedImagePath(addressBookSVG);
 
     return (
       <StepCenteredWrapper>
         <>
           {voterContactEmailListCount ? (
-            <>
+            <SetUpAccountTop>
               <SetUpAccountTitle>
-                {voterContactEmailListCount}
-                {' '}
-                contacts found
+                {contactsWithAccountCount ? (
+                  <>
+                    {contactsWithAccountCount}
+                    {' '}
+                    found on We Vote!
+                    {' '}
+                  </>
+                ) : (
+                  <>
+                    {voterContactEmailListCount}
+                    {' '}
+                    total contacts
+                  </>
+                )}
               </SetUpAccountTitle>
-              {contactsWithAccountCount && (
-                <SetUpAccountIntroText>
-                  {contactsWithAccountCount}
-                  {' '}
-                  already have accounts on We Vote!
-                </SetUpAccountIntroText>
-              )}
-            </>
+              <SetUpAccountContactsTextWrapper>
+                <SetUpAccountContactsText>
+                  {!!(contactsWithAccountCount) && (
+                    <>
+                      {voterContactEmailListCount}
+                      {' '}
+                      total contacts
+                      <br />
+                    </>
+                  )}
+                </SetUpAccountContactsText>
+              </SetUpAccountContactsTextWrapper>
+            </SetUpAccountTop>
           ) : (
             <>
               <SetUpAccountTitle>
-                Find your friends
+                Find your contacts on
+                {' '}
+                <span className="u-no-break">We Vote</span>
               </SetUpAccountTitle>
-              <SetUpAccountIntroText>
-                See how your friends are voting on We Vote.
-              </SetUpAccountIntroText>
+              <SetUpAccountImportText>
+                Importing your contacts helps
+                {' '}
+                <span className="u-no-break">We Vote</span>
+                {' '}
+                find your friends and suggest connections.
+              </SetUpAccountImportText>
             </>
           )}
         </>
         <ImageAndButtonsWrapper>
           <MainImageWrapper>
             <div>
-              <MainImageImg src={makeYourVoiceHeardSrc} alt="" />
+              <MainImageImg src={addressBookSVGSrc} alt="" />
             </div>
           </MainImageWrapper>
           {(voterContactEmailListCount > 0) && (
@@ -250,6 +274,17 @@ const MainImageWrapper = styled('div')(({ theme }) => (`
   margin-bottom: 36px;
   ${theme.breakpoints.down('sm')} {
     margin-bottom: 24px;
+  }
+`));
+
+const SetUpAccountImportText = styled('div')(({ theme }) => (`
+  color: #999;
+  font-size: 16px;
+  padding: 0 20px;
+  text-align: center;
+  width: 275px;
+  ${theme.breakpoints.up('sm')} {
+    width: 350px;
   }
 `));
 

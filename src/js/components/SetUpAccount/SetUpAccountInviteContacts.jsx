@@ -8,7 +8,8 @@ import VoterActions from '../../actions/VoterActions';
 import { renderLog } from '../../common/utils/logging';
 import VoterStore from '../../stores/VoterStore';
 import {
-  SetUpAccountIntroText,
+  SetUpAccountContactsText,
+  SetUpAccountContactsTextWrapper,
   SetUpAccountTitle,
   SetUpAccountTop,
   StepCenteredWrapper,
@@ -53,8 +54,11 @@ class SetUpAccountInviteContacts extends React.Component {
     const voterContactEmailListRaw = VoterStore.getVoterContactEmailList();
     const voterContactEmailListCount = VoterStore.getVoterContactEmailListCount();
 
-    let voterContactEmailList = voterContactEmailListRaw.sort(this.orderByStateCode);
+    let voterContactEmailList = voterContactEmailListRaw;
+    voterContactEmailList = voterContactEmailList.sort(this.orderByCity);
+    voterContactEmailList = voterContactEmailList.sort(this.orderByStateCode);
     voterContactEmailList = voterContactEmailList.sort(this.orderByExistingAccountExists);
+    voterContactEmailList = voterContactEmailList.sort(this.orderByIgnored);
     const contactsWithAccountList = filter(voterContactEmailList, (contact) => contact.voter_we_vote_id);
     const contactsWithAccountCount = contactsWithAccountList.length;
 
@@ -66,14 +70,24 @@ class SetUpAccountInviteContacts extends React.Component {
     });
   }
 
+  orderByCity = (firstItem, secondItem) => {
+    if (firstItem && firstItem.city && secondItem && secondItem.city && (firstItem.city.length > 0 && secondItem.city.length > 0)) {
+      return firstItem.city.localeCompare(secondItem.city);
+    } else if (firstItem && firstItem.city && firstItem.city.length > 0) {
+      return -1;
+    } else if (secondItem && secondItem.city && secondItem.city.length > 0) {
+      return 1;
+    } else {
+      return 0;
+    }
+  }
+
   orderByStateCode = (firstItem, secondItem) => {
     if (firstItem && firstItem.state_code && secondItem && secondItem.state_code && (firstItem.state_code.length > 0 && secondItem.state_code.length > 0)) {
       return firstItem.state_code.localeCompare(secondItem.state_code);
     } else if (firstItem && firstItem.state_code && firstItem.state_code.length > 0) {
-      // return 0;
       return -1;
     } else if (secondItem && secondItem.state_code && secondItem.state_code.length > 0) {
-      // return 0;
       return 1;
     } else {
       return 0;
@@ -85,6 +99,18 @@ class SetUpAccountInviteContacts extends React.Component {
     const firstContactHasAccount = firstContact && firstContact.voter_we_vote_id && firstContact.voter_we_vote_id.length ? 1 : 0;
     return secondContactHasAccount - firstContactHasAccount;
   };
+
+  orderByIgnored = (firstItem, secondItem) => {
+    if (firstItem && firstItem.ignore_contact && secondItem && secondItem.ignore_contact) {
+      return 0;
+    } else if (firstItem && firstItem.ignore_contact) {
+      return 1;
+    } else if (secondItem && secondItem.ignore_contact) {
+      return -1;
+    } else {
+      return 0;
+    }
+  }
 
   increaseNumberOfItemsToDisplay = () => {
     let { numberOfIncreases, numberOfItemsToDisplay } = this.state;
@@ -163,21 +189,13 @@ class SetUpAccountInviteContacts extends React.Component {
       <StepCenteredWrapper>
         <SetUpAccountTop>
           <SetUpAccountTitle>
-            {voterContactEmailListCount}
-            {' '}
-            contacts found
+            Add friends from contacts
           </SetUpAccountTitle>
-          <SetUpAccountIntroText>
-            {!!(contactsWithAccountCount) && (
-              <>
-                {contactsWithAccountCount}
-                {' '}
-                already have accounts!
-                {' '}
-              </>
-            )}
-            Add friends you feel comfortable discussing politics with.
-          </SetUpAccountIntroText>
+          <SetUpAccountContactsTextWrapper>
+            <SetUpAccountContactsText>
+              Add friends you feel comfortable discussing politics with.
+            </SetUpAccountContactsText>
+          </SetUpAccountContactsTextWrapper>
         </SetUpAccountTop>
         <MessageToSendWrapper>
           {(voterContactEmailListCount > 0 && pigsCanFly) && (
@@ -187,6 +205,19 @@ class SetUpAccountInviteContacts extends React.Component {
           )}
         </MessageToSendWrapper>
         <ContactListWrapper>
+          <ContactsFoundText>
+            {voterContactEmailListCount}
+            {' '}
+            contacts,
+            {!!(contactsWithAccountCount) && (
+              <>
+                {' '}
+                {contactsWithAccountCount}
+                {' '}
+                found on We Vote
+              </>
+            )}
+          </ContactsFoundText>
           {voterContactEmailListCount > 10 && (
             <>
               <SearchBar
@@ -224,6 +255,12 @@ SetUpAccountInviteContacts.propTypes = {
 
 const ContactListWrapper = styled('div')`
   width: 100%;
+`;
+
+const ContactsFoundText = styled('div')`
+  color: #999;
+  font-size: 16px;
+  padding: 0 13px;
 `;
 
 const MessageToSendWrapper = styled('div')`
