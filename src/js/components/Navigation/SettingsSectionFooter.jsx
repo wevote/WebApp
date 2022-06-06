@@ -27,7 +27,7 @@ class SettingsSectionFooter extends Component {
       <Wrapper>
         <OneRow centered={centered}>
           <TermsAndPrivacyText>
-            <span onClick={this.openHowItWorksModal}>How It Works</span>
+            <span className="u-cursor--pointer" onClick={this.openHowItWorksModal}>How It Works</span>
             <span style={{ paddingLeft: 15 }} />
             <OpenExternalWebSite
               linkIdAttribute="footerLinkWeVoteHelp"

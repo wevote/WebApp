@@ -13,6 +13,7 @@ import VoterGuideActions from '../../actions/VoterGuideActions';
 import LoadingWheel from '../../common/components/Widgets/LoadingWheel';
 import apiCalming from '../../common/utils/apiCalming';
 import { isAndroidSizeFold } from '../../common/utils/cordovaUtils';
+import historyPush from '../../common/utils/historyPush';
 import { isWebApp } from '../../common/utils/isCordovaOrWebApp';
 import { renderLog } from '../../common/utils/logging';
 import toTitleCase from '../../common/utils/toTitleCase';
@@ -37,6 +38,7 @@ const CandidateItem = React.lazy(() => import(/* webpackChunkName: 'CandidateIte
 const DelayedLoad = React.lazy(() => import(/* webpackChunkName: 'DelayedLoad' */ '../../common/components/Widgets/DelayedLoad'));
 const OpenExternalWebSite = React.lazy(() => import(/* webpackChunkName: 'OpenExternalWebSite' */ '../../common/components/Widgets/OpenExternalWebSite'));
 const PositionList = React.lazy(() => import(/* webpackChunkName: 'PositionList' */ '../../components/Ballot/PositionList'));
+const ViewUpcomingBallotButton = React.lazy(() => import(/* webpackChunkName: 'ViewUpcomingBallotButton' */ '../../components/Ready/ViewUpcomingBallotButton'));
 
 // const nextReleaseFeaturesEnabled = webAppConfig.ENABLE_NEXT_RELEASE_FEATURES === undefined ? false : webAppConfig.ENABLE_NEXT_RELEASE_FEATURES;
 
@@ -253,6 +255,10 @@ class Candidate extends Component {
     // CandidateActions.positionListForBallotItemPublic(this.state.candidateWeVoteId);
   }
 
+  goToBallot = () => {
+    historyPush('/ballot');
+  }
+
   localPositionListHasBeenRetrievedOnce (candidateWeVoteId) {
     if (candidateWeVoteId) {
       const { positionListHasBeenRetrievedOnce } = this.state;
@@ -276,6 +282,11 @@ class Candidate extends Component {
       return voterGuidesFromFriendsUpcomingHasBeenRetrievedOnce[googleCivicElectionIdInteger];
     }
     return false;
+  }
+
+  openHowItWorksModal = () => {
+    // console.log('Opening modal');
+    AppObservableStore.setShowHowItWorksModal(true);
   }
 
   render () {
@@ -364,17 +375,29 @@ class Candidate extends Component {
             </Suspense>
           </section>
         )}
-        <EndorsementCard
-          bsPrefix="u-margin-top--sm u-stack--xs"
-          variant="primary"
-          buttonText="Endorsements missing?"
-          text={`Are there endorsements for ${candidateName} that you expected to see?`}
-        />
-        <ThisIsMeAction
-          kindOfOwner="POLITICIAN"
-          nameBeingViewed={candidate.ballot_item_display_name}
-          twitterHandleBeingViewed={candidate.twitter_handle}
-        />
+        {!!(allCachedPositionsForThisCandidate.length < 3) && (
+          <PromoteFurtherAction>
+            <Suspense fallback={<></>}>
+              <ViewUpcomingBallotButton onClickFunction={this.goToBallot} />
+            </Suspense>
+            <HowItWorksLink onClick={this.openHowItWorksModal}>
+              How It Works
+            </HowItWorksLink>
+          </PromoteFurtherAction>
+        )}
+        <div className="u-show-desktop">
+          <EndorsementCard
+            bsPrefix="u-margin-top--sm u-stack--xs"
+            variant="primary"
+            buttonText="Endorsements missing?"
+            text={`Are there endorsements for ${candidateName} that you expected to see?`}
+          />
+          <ThisIsMeAction
+            kindOfOwner="POLITICIAN"
+            nameBeingViewed={candidate.ballot_item_display_name}
+            twitterHandleBeingViewed={candidate.twitter_handle}
+          />
+        </div>
         <br />
         {/* Show links to this candidate in the admin tools */}
         { (voter.is_admin || voter.is_verified_volunteer) && (
@@ -425,8 +448,25 @@ const LeftColumnWrapper = styled('div')`
   flex: 1 1 0;
 `;
 
+const HowItWorksLink = styled('div')`
+  color: #065FD4;
+  cursor: pointer;
+  margin-top: 48px;
+  &:hover {
+    color: #4371cc;
+  }
+`;
+
 const PositionListIntroductionText = styled('div')`
   color: #999;
+`;
+
+const PromoteFurtherAction = styled('div')`
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 48px;
+  margin-top: 48px;
 `;
 
 const RightColumnWrapper = styled('div')`
