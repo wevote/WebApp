@@ -50,8 +50,8 @@ class ValuesToFollowPreview extends Component {
         if (apiCalming('voterGuidesFromFriendsUpcomingRetrieve', 500)) {
           VoterGuideActions.voterGuidesFromFriendsUpcomingRetrieve(googleCivicId);
         }
-      } else {
-        BallotActions.voterBallotItemsRetrieve(0, '', '');  // Will need to
+      } else if (apiCalming('voterBallotItemsRetrieve', 30000)) {
+        BallotActions.voterBallotItemsRetrieve(0, '', '');
       }
     }
   }

@@ -9,6 +9,7 @@ import AnalyticsActions from '../actions/AnalyticsActions';
 import BallotActions from '../actions/BallotActions';
 import ReadyActions from '../actions/ReadyActions';
 import LoadingWheel from '../common/components/Widgets/LoadingWheel';
+import apiCalming from '../common/utils/apiCalming';
 import { formatDateToMonthDayYear } from '../common/utils/dateFormat';
 import { renderLog } from '../common/utils/logging';
 import { PageContentContainer, standardBoxShadow } from '../components/Style/pageLayoutStyles';
@@ -42,7 +43,9 @@ class Register extends Component {
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
     if (!BallotStore.ballotFound) {
       // console.log('WebApp doesn't know the election or have ballot data, so ask the API server to return best guess');
-      BallotActions.voterBallotItemsRetrieve(0, '', '');
+      if (apiCalming('voterBallotItemsRetrieve', 30000)) {
+        BallotActions.voterBallotItemsRetrieve(0, '', '');
+      }
     }
     ReadyActions.voterPlansForVoterRetrieve();
     AnalyticsActions.saveActionReadyVisit(VoterStore.electionId());

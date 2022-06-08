@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import apiCalming from '../../common/utils/apiCalming';
 import historyPush from '../../common/utils/historyPush';
 import LoadingWheel from '../../common/components/Widgets/LoadingWheel';
 import { renderLog } from '../../common/utils/logging';
@@ -141,7 +142,7 @@ export default class OrganizationVoterGuideEdit extends Component {
         VoterGuideActions.voterGuideSave(googleCivicElectionId);
         // console.log('onVoterStoreChange New googleCivicElectionId found: ', googleCivicElectionId);
         // When the result comes back from voterGuideSave, onVoterGuideStoreChange triggers a call to goToVoterGuideForDifferentElection
-      } else {
+      } else if (apiCalming('voterBallotItemsRetrieve', 30000)) {
         BallotActions.voterBallotItemsRetrieve();
       }
     }

@@ -28,6 +28,7 @@ import FriendToggle from '../Friends/FriendToggle';
 import { standardBoxShadow } from '../Style/pageLayoutStyles';
 import StepsChips from '../Widgets/StepsChips';
 import SharedItemIntroduction from './SharedItemIntroduction';
+import apiCalming from '../../common/utils/apiCalming';
 
 const FollowToggle = React.lazy(() => import(/* webpackChunkName: 'FollowToggle' */ '../Widgets/FollowToggle'));
 const ImageHandler = React.lazy(() => import(/* webpackChunkName: 'ImageHandler' */ '../ImageHandler'));
@@ -99,7 +100,9 @@ class SharedItemModal extends Component {
     // console.log('sharedItemCode:', sharedItemCode);
     const electionDayText = BallotStore.currentBallotElectionDate;
     if (!electionDayText) {
-      BallotActions.voterBallotItemsRetrieve(0, '', '');
+      if (apiCalming('voterBallotItemsRetrieve', 30000)) {
+        BallotActions.voterBallotItemsRetrieve(0, '', '');
+      }
     }
     this.setState({
       sharedItemCode,

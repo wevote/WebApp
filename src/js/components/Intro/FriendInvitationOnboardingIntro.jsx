@@ -9,6 +9,7 @@ import { renderLog } from '../../common/utils/logging';
 import normalizedImagePath from '../../common/utils/normalizedImagePath';
 import BallotStore from '../../stores/BallotStore';
 import { convertToInteger } from '../../utils/textFormat';
+import apiCalming from "../../common/utils/apiCalming";
 
 const ImageHandler = React.lazy(() => import(/* webpackChunkName: 'ImageHandler' */ '../ImageHandler'));
 const ReadMore = React.lazy(() => import(/* webpackChunkName: 'ReadMore' */ '../../common/components/Widgets/ReadMore'));
@@ -30,7 +31,9 @@ class FriendInvitationOnboardingIntro extends Component {
     this.ballotStoreListener = BallotStore.addListener(this.onBallotStoreChange.bind(this));
     const electionDayText = BallotStore.currentBallotElectionDate;
     if (!electionDayText) {
-      BallotActions.voterBallotItemsRetrieve(0, '', '');
+      if (apiCalming('voterBallotItemsRetrieve', 30000)) {
+        BallotActions.voterBallotItemsRetrieve(0, '', '');
+      }
     }
   }
 

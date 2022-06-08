@@ -5,6 +5,7 @@ import styled from 'styled-components';
 import BallotActions from '../../actions/BallotActions';
 import OrganizationActions from '../../actions/OrganizationActions';
 import VoterGuideActions from '../../actions/VoterGuideActions';
+import apiCalming from '../../common/utils/apiCalming';
 import { renderLog } from '../../common/utils/logging';
 import VoterGuideSettingsAddPositions from '../../components/Settings/VoterGuideSettingsAddPositions';
 import { PageContentContainer } from '../../components/Style/pageLayoutStyles';
@@ -169,7 +170,9 @@ class VoterGuideSettingsDashboard extends Component {
         // console.log('BallotStore.currentBallotGoogleCivicElectionId:', BallotStore.currentBallotGoogleCivicElectionId);
         if (!doNotRetrieveBallotItems) {
           // console.log('VoterGuideSettingsDashboard onVoterGuideStoreChange retrieving ballot for: ', voterGuide.google_civic_election_id);
-          BallotActions.voterBallotItemsRetrieve(voterGuide.google_civic_election_id, '', '');
+          if (apiCalming('voterBallotItemsRetrieve', 10000)) {
+            BallotActions.voterBallotItemsRetrieve(voterGuide.google_civic_election_id, '', '');
+          }
         } else {
           // console.log('VoterGuideSettingsDashboard onVoterGuideStoreChange NOT retrieving ballot for: ', voterGuide.google_civic_election_id);
         }

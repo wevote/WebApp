@@ -391,7 +391,9 @@ class VoterGuideStore extends ReduceStore {
             revisedState = { ...revisedState, voterGuidesFollowedRetrieveStopped: true };
           }
         }
-        VoterGuideActions.voterGuidesIgnoredRetrieve();
+        if (apiCalming('voterGuidesIgnoredRetrieve', 60000)) {
+          VoterGuideActions.voterGuidesIgnoredRetrieve();
+        }
         return revisedState;
 
       case 'voterFollowAllOrganizationsFollowedByOrganization':

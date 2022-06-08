@@ -5,6 +5,7 @@ import styled from 'styled-components';
 import BallotActions from '../../actions/BallotActions';
 import BallotTitleHeader from '../../pages/Ballot/BallotTitleHeader';
 import { formatDateToMonthDayYear } from '../../common/utils/dateFormat';
+import apiCalming from '../../common/utils/apiCalming';
 import daysUntil from '../../common/utils/daysUntil';
 import getBooleanValue from '../../common/utils/getBooleanValue';
 import historyPush from '../../common/utils/historyPush';
@@ -54,18 +55,22 @@ class ElectionCountdown extends React.Component {
 
   onBallotStoreChange () {
     const electionDayText = BallotStore.currentBallotElectionDate;
-    // console.log('electionDayText:', electionDayText);
+    // console.log('ElectionCountdown onBallotStoreChange electionDayText:', electionDayText);
     if (electionDayText === undefined) {
       const { t0 } = this.state;
       let { initialDelay } = this.props;
       initialDelay = initialDelay || 0;
       if (initialDelay === 0) {
-        BallotActions.voterBallotItemsRetrieve();
+        if (apiCalming('voterBallotItemsRetrieve', 30000)) {
+          BallotActions.voterBallotItemsRetrieve();
+        }
       } else {
         const delay = initialDelay - performance.now() - t0;
         if (this.loadDelay) clearTimeout(this.loadDelay);
         this.loadDelay = setTimeout(() => {
-          BallotActions.voterBallotItemsRetrieve();
+          if (apiCalming('voterBallotItemsRetrieve', 30000)) {
+            BallotActions.voterBallotItemsRetrieve();
+          }
         }, delay);
       }
     }
@@ -103,6 +108,7 @@ class ElectionCountdown extends React.Component {
 
   setNextElectionDateFromDayText = (nextElectionDayText) => {
     const daysUntilNextElection = daysUntil(nextElectionDayText);
+    // console.log('setNextElectionDateFromDayText nextElectionDayText:', nextElectionDayText, ', daysUntilNextElection:', daysUntilNextElection);
     if (daysUntilNextElection > 0) {
       this.setState({
         electionIsToday: false,
@@ -128,6 +134,7 @@ class ElectionCountdown extends React.Component {
 
   setNextNationalElectionDateFromDayText = (nextNationalElectionDayText) => {
     const daysUntilNextNationalElection = daysUntil(nextNationalElectionDayText);
+    // console.log('setNextNationalElectionDateFromDayText nextNationalElectionDayText:', nextNationalElectionDayText, ', daysUntilNextNationalElection:', daysUntilNextNationalElection);
     if (daysUntilNextNationalElection > 0) {
       this.setState({
         daysUntilNextNationalElection,
