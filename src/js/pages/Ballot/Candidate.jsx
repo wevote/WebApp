@@ -375,7 +375,7 @@ class Candidate extends Component {
             </Suspense>
           </section>
         )}
-        {!!(allCachedPositionsForThisCandidate.length < 3) && (
+        {(allCachedPositionsForThisCandidate.length < 3) && (
           <PromoteFurtherAction>
             <Suspense fallback={<></>}>
               <ViewUpcomingBallotButton onClickFunction={this.goToBallot} />

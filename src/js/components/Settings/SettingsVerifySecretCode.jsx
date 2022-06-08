@@ -497,6 +497,9 @@ class SettingsVerifySecretCode extends Component {
             <Title condensed={condensed}>Code Verification</Title>
             <Subtitle>A 6-digit code has been sent to</Subtitle>
             <PhoneSubtitle>{voterPhoneNumber || voterEmailAddress}</PhoneSubtitle>
+            {(voterEmailAddress) && (
+              <Subtitle>If you haven&apos;t received the code in 30 seconds, please check your spam folder.</Subtitle>
+            )}
             <InputContainer condensed={condensed}>
               <OutlinedInput
                 classes={{ root: classes.inputBase, input: classes.input }}
