@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
 import styled from 'styled-components';
 import BallotActions from '../../actions/BallotActions';
+import apiCalming from '../../common/utils/apiCalming';
 import { formatDateToMonthDayYear } from '../../common/utils/dateFormat';
 import { renderLog } from '../../common/utils/logging';
 import normalizedImagePath from '../../common/utils/normalizedImagePath';
@@ -30,7 +31,9 @@ class FriendInvitationOnboardingIntro extends Component {
     this.ballotStoreListener = BallotStore.addListener(this.onBallotStoreChange.bind(this));
     const electionDayText = BallotStore.currentBallotElectionDate;
     if (!electionDayText) {
-      BallotActions.voterBallotItemsRetrieve(0, '', '');
+      if (apiCalming('voterBallotItemsRetrieve', 30000)) {
+        BallotActions.voterBallotItemsRetrieve(0, '', '');
+      }
     }
   }
 

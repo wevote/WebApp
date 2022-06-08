@@ -151,7 +151,9 @@ class Opinions2020 extends Component {
 
     if (!BallotStore.ballotFound) {
       // console.log('WebApp doesn't know the election or have ballot data, so ask the API server to return best guess');
-      BallotActions.voterBallotItemsRetrieve(0, '', '');
+      if (apiCalming('voterBallotItemsRetrieve', 30000)) {
+        BallotActions.voterBallotItemsRetrieve(0, '', '');
+      }
     }
     if (apiCalming('organizationsFollowedRetrieve', 60000)) {
       OrganizationActions.organizationsFollowedRetrieve();

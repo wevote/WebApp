@@ -57,6 +57,7 @@ class Ready extends Component {
   }
 
   componentDidMount () {
+    // console.log('Ready componentDidMount');
     window.scrollTo(0, 0);
     this.appStateSubscription = messageService.getMessage().subscribe((msg) => this.onAppObservableStoreChange(msg));
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
@@ -66,7 +67,9 @@ class Ready extends Component {
       // This is a performance killer, so let's delay it for a few seconds
       if (!BallotStore.ballotFound) {
         // console.log('WebApp doesn't know the election or have ballot data, so ask the API server to return best guess');
-        BallotActions.voterBallotItemsRetrieve(0, '', '');
+        if (apiCalming('voterBallotItemsRetrieve', 3000)) {
+          BallotActions.voterBallotItemsRetrieve(0, '', '');
+        }
       }
     }, 5000);  // April 19, 2021: Tuned to keep performance above 83.  LCP at 597ms
 
