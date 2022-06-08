@@ -10,22 +10,28 @@ import OrganizationActions from '../../actions/OrganizationActions';
 import VoterGuideActions from '../../actions/VoterGuideActions';
 import LoadingWheel from '../../common/components/Widgets/LoadingWheel';
 import apiCalming from '../../common/utils/apiCalming';
+import historyPush from '../../common/utils/historyPush';
 import { renderLog } from '../../common/utils/logging';
 import toTitleCase from '../../common/utils/toTitleCase';
 import OrganizationVoterGuideCandidateItem from '../../components/VoterGuide/OrganizationVoterGuideCandidateItem';
+import { PageContentContainer } from '../../components/Style/pageLayoutStyles';
 import EndorsementCard from '../../components/Widgets/EndorsementCard';
+import SnackNotifier from '../../components/Widgets/SnackNotifier';
 import ThisIsMeAction from '../../components/Widgets/ThisIsMeAction';
 import webAppConfig from '../../config';
+import AppObservableStore from '../../stores/AppObservableStore';
 import CandidateStore from '../../stores/CandidateStore';
 import VoterGuideStore from '../../stores/VoterGuideStore';
 import VoterStore from '../../stores/VoterStore';
 
 const OpenExternalWebSite = React.lazy(() => import(/* webpackChunkName: 'OpenExternalWebSite' */ '../../common/components/Widgets/OpenExternalWebSite'));
 const PositionList = React.lazy(() => import(/* webpackChunkName: 'PositionList' */ '../../components/Ballot/PositionList'));
+const ViewUpcomingBallotButton = React.lazy(() => import(/* webpackChunkName: 'ViewUpcomingBallotButton' */ '../../components/Ready/ViewUpcomingBallotButton'));
 
 
-// This is based on pages/Ballot/Candidate - TO BE DEPRECATED?
-// TODO: Not called anywhere Dec 2020, delete when Dale agrees
+// This is based on pages/Ballot/Candidate
+// 2022-June-7: This is called from pages like this: https://localhost:3000/candidate/wv02cand30726/bto/wv02org14
+//   This needs to be refactored with the new designs, but is picking up a lot of traffic from Google, so we need to keep supporting.
 class OrganizationVoterGuideCandidate extends Component {
   constructor (props) {
     super(props);
@@ -43,6 +49,7 @@ class OrganizationVoterGuideCandidate extends Component {
 
   componentDidMount () {
     // console.log('Candidate componentDidMount');
+    window.scrollTo(0, 0);
     const { match: { params } } = this.props;
     const { candidate_we_vote_id: candidateWeVoteId, organization_we_vote_id: organizationWeVoteId } = params;
     this.candidateStoreListener = CandidateStore.addListener(this.onCandidateStoreChange.bind(this));
@@ -118,6 +125,15 @@ class OrganizationVoterGuideCandidate extends Component {
     });
   }
 
+  goToBallot = () => {
+    historyPush('/ballot');
+  }
+
+  openHowItWorksModal = () => {
+    // console.log('Opening modal');
+    AppObservableStore.setShowHowItWorksModal(true);
+  }
+
   render () {
     renderLog('OrganizationVoterGuideCandidate');  // Set LOG_RENDER_EVENTS to log all renders
     const NO_VOTER_GUIDES_TEXT = 'We could not find any more voter guides to follow related to this candidate.';
@@ -140,7 +156,8 @@ class OrganizationVoterGuideCandidate extends Component {
     const candidateAdminEditUrl = `${webAppConfig.WE_VOTE_SERVER_ROOT_URL}c/${candidate.id}/edit/?google_civic_election_id=${VoterStore.electionId()}&state_code=`;
 
     return (
-      <span>
+      <PageContentContainer>
+        <SnackNotifier />
         <Helmet
           title={titleText}
           meta={[{ name: 'description', content: descriptionText }]}
@@ -192,26 +209,34 @@ class OrganizationVoterGuideCandidate extends Component {
               )}
           </div>
         </section>
-        <EndorsementCard
-          bsPrefix="u-margin-top--sm u-stack--xs"
-          variant="primary"
-          buttonText="Endorsements missing?"
-          text={`Are there endorsements for
-          ${candidateName}
-          that you expected to see?`}
-        />
-        <br />
-        <ThisIsMeAction
-          bsPrefix="u-margin-top--sm u-stack--xs"
-          twitterHandleBeingViewed={candidate.twitter_handle}
-          nameBeingViewed={candidate.ballot_item_display_name}
-          kindOfOwner="POLITICIAN"
-        />
+        {(allCachedPositionsForThisCandidate.length < 3) && (
+          <PromoteFurtherAction>
+            <Suspense fallback={<></>}>
+              <ViewUpcomingBallotButton onClickFunction={this.goToBallot} />
+            </Suspense>
+            <HowItWorksLink onClick={this.openHowItWorksModal}>
+              How It Works
+            </HowItWorksLink>
+          </PromoteFurtherAction>
+        )}
+        <div className="u-show-desktop">
+          <EndorsementCard
+            bsPrefix="u-margin-top--sm u-stack--xs"
+            variant="primary"
+            buttonText="Endorsements missing?"
+            text={`Are there endorsements for ${candidateName} that you expected to see?`}
+          />
+          <ThisIsMeAction
+            kindOfOwner="POLITICIAN"
+            nameBeingViewed={candidate.ballot_item_display_name}
+            twitterHandleBeingViewed={candidate.twitter_handle}
+          />
+        </div>
         <br />
         {/* Show links to this candidate in the admin tools */}
-        { voter.is_admin || voter.is_verified_volunteer ? (
+        { (voter.is_admin || voter.is_verified_volunteer) && (
           <span className="u-wrap-links d-print-none">
-            Admin:
+            Admin only:
             <Suspense fallback={<></>}>
               <OpenExternalWebSite
                 linkIdAttribute="candidateAdminEdit"
@@ -221,14 +246,15 @@ class OrganizationVoterGuideCandidate extends Component {
                 body={(
                   <span>
                     edit
+                    {' '}
                     {candidateName}
                   </span>
                 )}
               />
             </Suspense>
           </span>
-        ) : null}
-      </span>
+        )}
+      </PageContentContainer>
     );
   }
 }
@@ -247,8 +273,25 @@ const styles = () => ({
   },
 });
 
+const HowItWorksLink = styled('div')`
+  color: #065FD4;
+  cursor: pointer;
+  margin-top: 48px;
+  &:hover {
+    color: #4371cc;
+  }
+`;
+
 const PositionListIntroductionText = styled('div')`
   color: #999;
+`;
+
+const PromoteFurtherAction = styled('div')`
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 48px;
+  margin-top: 48px;
 `;
 
 export default withStyles(styles)(OrganizationVoterGuideCandidate);
