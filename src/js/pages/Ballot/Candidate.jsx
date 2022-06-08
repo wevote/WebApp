@@ -259,6 +259,11 @@ class Candidate extends Component {
     historyPush('/ballot');
   }
 
+  openHowItWorksModal = () => {
+    // console.log('Opening modal');
+    AppObservableStore.setShowHowItWorksModal(true);
+  }
+
   localPositionListHasBeenRetrievedOnce (candidateWeVoteId) {
     if (candidateWeVoteId) {
       const { positionListHasBeenRetrievedOnce } = this.state;
@@ -282,11 +287,6 @@ class Candidate extends Component {
       return voterGuidesFromFriendsUpcomingHasBeenRetrievedOnce[googleCivicElectionIdInteger];
     }
     return false;
-  }
-
-  openHowItWorksModal = () => {
-    // console.log('Opening modal');
-    AppObservableStore.setShowHowItWorksModal(true);
   }
 
   render () {
