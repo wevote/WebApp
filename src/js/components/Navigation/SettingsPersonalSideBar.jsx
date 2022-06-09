@@ -119,6 +119,24 @@ export default class SettingsPersonalSideBar extends Component {
             </div>
           </div>
 
+          {(isSignedIn) && (
+            <div className={String(editMode) === 'yourdata' ?
+              'SettingsItem__summary__item-container SettingsItem__summary__item-container--selected' :
+              'SettingsItem__summary__item-container'}
+            >
+              <div>
+                <Link to="/settings/yourdata" className="SettingsItem__summary__item" id="yourData">
+                  <span className={String(editMode) === 'yourdata' ?
+                    'SettingsItem__summary__item__display-name SettingsItem__summary__item__display-name--selected' :
+                    'SettingsItem__summary__item__display-name'}
+                  >
+                    <span>Your Privacy &amp; Data</span>
+                  </span>
+                </Link>
+              </div>
+            </div>
+          )}
+
           {!isOnPartnerUrl && (
             <div className={String(editMode) === 'notifications' ?
               'SettingsItem__summary__item-container SettingsItem__summary__item-container--selected' :

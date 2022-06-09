@@ -107,9 +107,11 @@ class SetUpAccountAddPhoto extends React.Component {
               Please upload a photo, or click `Skip for now`.
             </VoterPhotoMissing>
           )}
-          <Suspense fallback={<></>}>
-            <VoterPhotoUpload showLabel />
-          </Suspense>
+          <VoterPhotoOuterWrapper>
+            <Suspense fallback={<></>}>
+              <VoterPhotoUpload showLabel />
+            </Suspense>
+          </VoterPhotoOuterWrapper>
         </InputFieldsWrapper>
         <VoterNameWrapper>
           {voterFirstName}
@@ -132,6 +134,10 @@ const styles = () => ({
 const VoterPhotoMissing = styled('div')`
   font-size: 18px;
   color: red;
+`;
+
+const VoterPhotoOuterWrapper = styled('div')`
+  height: 240px;
 `;
 
 export default withStyles(styles)(SetUpAccountAddPhoto);

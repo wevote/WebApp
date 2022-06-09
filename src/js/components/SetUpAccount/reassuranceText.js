@@ -12,13 +12,13 @@ export const reassuranceText = [
       'and will always protect and keep private your contact information.',
   },
   {
-    page: 2,
+    page: 222,
     headline: 'We keep your friends\' email and phone number secure and confidential.',
     text: 'WeVote.US is a nonpartisan nonprofit and will always protect and keep private your friends\' contact information. ' +
       'We will always protect and keep private their contact information',
   },
   {
-    page: 2,
+    page: 222,
     headline: 'You are in control.',
     text: 'You are the only one who will be able to initiate messages to your friends, until your friends opt-in.',
   },

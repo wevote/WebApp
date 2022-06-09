@@ -1,16 +1,13 @@
-import { Button } from '@mui/material';
 import withStyles from '@mui/styles/withStyles';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import React, { Suspense } from 'react';
 import { filter } from 'lodash-es';
-import VoterActions from '../../actions/VoterActions';
+import DeleteAllContactsButton from './DeleteAllContactsButton';
 import historyPush from '../../common/utils/historyPush';
 import normalizedImagePath from '../../common/utils/normalizedImagePath';
 import { renderLog } from '../../common/utils/logging';
-import { reassuranceText } from './reassuranceText';
 import VoterStore from '../../stores/VoterStore';
-import Reassurance from '../../pages/Startup/Reassurance';
 import {
   SetUpAccountContactsText,
   SetUpAccountContactsTextWrapper,
@@ -28,7 +25,6 @@ class SetUpAccountImportContacts extends React.Component {
     super(props);
     this.state = {
       contactsWithAccountCount: 0,
-      deleteAllContactsConfirm: false,
     };
   }
 
@@ -63,26 +59,13 @@ class SetUpAccountImportContacts extends React.Component {
     });
   }
 
-  deleteAllContacts = () => {
-    const deleteAllVoterContactEmails = true;
-    VoterActions.voterContactListDelete(deleteAllVoterContactEmails);
-  }
-
-  deleteAllContactsConfirmToggle = () => {
-    const { deleteAllContactsConfirm } = this.state;
-    this.setState({
-      deleteAllContactsConfirm: !deleteAllContactsConfirm,
-    });
-  }
-
   goToInviteContacts = () => {
     historyPush('/setupaccount/invitecontacts');
   }
 
   render () {
     renderLog('SetUpAccountImportContacts');  // Set LOG_RENDER_EVENTS to log all renders
-    const { classes, displayStep } = this.props;
-    const { contactsWithAccountCount, deleteAllContactsConfirm, voterContactEmailListCount } = this.state;
+    const { contactsWithAccountCount, voterContactEmailListCount } = this.state;
     const addressBookSVGSrc = normalizedImagePath(addressBookSVG);
 
     return (
@@ -149,44 +132,10 @@ class SetUpAccountImportContacts extends React.Component {
               </Suspense>
             </AddContactsButtonWrapper>
           )}
-          <Reassurance displayState={displayStep} reassuranceText={reassuranceText} />
           {voterContactEmailListCount > 0 && (
-            <DeleteContactsButtonOuterWrapper>
-              {deleteAllContactsConfirm ? (
-                <div className="full-width">
-                  <DeleteContactsButtonInnerWrapper>
-                    <Button
-                      color="primary"
-                      onClick={this.deleteAllContacts}
-                      style={{
-                        backgroundColor: 'red',
-                        boxShadow: 'none !important',
-                        textTransform: 'none',
-                        width: 350,
-                      }}
-                      variant="contained"
-                    >
-                      Permanently delete all contacts
-                    </Button>
-                  </DeleteContactsButtonInnerWrapper>
-                  <DeleteContactsButtonInnerCancelWrapper>
-                    <Button
-                      classes={{ root: classes.deleteAllContactsCancelLink }}
-                      onClick={this.deleteAllContactsConfirmToggle}
-                    >
-                      Cancel
-                    </Button>
-                  </DeleteContactsButtonInnerCancelWrapper>
-                </div>
-              ) : (
-                <Button
-                  classes={{ root: classes.deleteAllContactsLink }}
-                  onClick={this.deleteAllContactsConfirmToggle}
-                >
-                  Delete all contacts
-                </Button>
-              )}
-            </DeleteContactsButtonOuterWrapper>
+            <DeleteAllContactsWrapper>
+              <DeleteAllContactsButton />
+            </DeleteAllContactsWrapper>
           )}
         </ImageAndButtonsWrapper>
       </StepCenteredWrapper>
@@ -194,38 +143,12 @@ class SetUpAccountImportContacts extends React.Component {
   }
 }
 SetUpAccountImportContacts.propTypes = {
-  classes: PropTypes.object,
-  displayStep: PropTypes.number,
   // functionToUseWhenProfileComplete: PropTypes.func.isRequired,
   // functionToUseWhenProfileNotComplete: PropTypes.func.isRequired,
   nextButtonClicked: PropTypes.bool,
 };
 
 const styles = () => ({
-  deleteAllContactsCancelLink: {
-    boxShadow: 'none !important',
-    color: '#999',
-    marginTop: 10,
-    padding: '0 20px',
-    textTransform: 'none',
-    width: 250,
-    '&:hover': {
-      color: '#4371cc',
-      textDecoration: 'underline',
-    },
-  },
-  deleteAllContactsLink: {
-    boxShadow: 'none !important',
-    color: '#999',
-    marginTop: 10,
-    padding: '0 20px',
-    textTransform: 'none',
-    width: 250,
-    '&:hover': {
-      color: '#4371cc',
-      textDecoration: 'underline',
-    },
-  },
 });
 
 const AddContactsButtonWrapper = styled('div')`
@@ -234,24 +157,8 @@ const AddContactsButtonWrapper = styled('div')`
   margin-top: 12px;
 `;
 
-const DeleteContactsButtonInnerCancelWrapper = styled('div')`
-  display: flex;
-  justify-content: center;
-  margin-bottom: 8px;
-  width: 100%;
-`;
-
-const DeleteContactsButtonInnerWrapper = styled('div')`
-  display: flex;
-  justify-content: center;
-  width: 100%;
-`;
-
-const DeleteContactsButtonOuterWrapper = styled('div')`
-  display: flex;
-  justify-content: center;
+const DeleteAllContactsWrapper = styled('div')`
   margin-top: 8px;
-  width: 100%;
 `;
 
 const ImageAndButtonsWrapper = styled('div')`
