@@ -182,6 +182,15 @@ export default class HamburgerMenu extends Component {
 
             {isSignedIn && (
               <HamburgerMenuRow
+                fullIcon={this.yourAccountIcon(voterPhotoUrlMedium)}
+                linkText="Your Privacy & Data"
+                onClickAction={null}
+                to="/settings/yourdata"
+              />
+            )}
+
+            {isSignedIn && (
+              <HamburgerMenuRow
                 icon="fa fa-bell"
                 iconStyle={{ fontSize: 26, color: '#1c2f4b' }}
                 linkText="Notifications"

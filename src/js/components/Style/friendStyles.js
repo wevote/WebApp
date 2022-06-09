@@ -105,10 +105,11 @@ const FriendName = styled('h3', {
   color: black !important;
   font-weight: bold;
   margin-bottom: 4px;
-  text-align: left;
-  white-space: nowrap;
+  max-width: 18ch;
   overflow: hidden;
+  text-align: left;
   text-overflow: ellipsis;
+  white-space: nowrap;
   width: 100%;
   ${inSideColumn ? FriendNameInSideColumn : FriendNameNotInSideColumn}
 `));

@@ -77,8 +77,11 @@ FriendDetails.propTypes = {
   voterWeVoteId: PropTypes.string,
 };
 
-const EmailSmaller = styled('span')`
+const EmailSmaller = styled('div')`
   font-size: 14px;
+  max-width: 21ch;
+  overflow: hidden;
+  text-overflow: ellipsis;
 `;
 
 export default FriendDetails;

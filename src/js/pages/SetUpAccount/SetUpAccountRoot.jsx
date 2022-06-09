@@ -128,7 +128,7 @@ class SetUpAccountRoot extends React.Component {
     // console.log('SetUpAccountRoot componentDidUpdate prevProps.nextButtonClicked:', prevProps.nextButtonClicked, ', this.props.nextButtonClicked:', this.props.nextButtonClicked);
     if (prevSetUpPagePath !== setUpPagePath) {
       const displayStep = this.convertSetUpPagePathToDisplayStep(setUpPagePath);
-      // console.log('SetUpAccountRoot componentDidUpdate setUpPagePath: ', setUpPagePath, ', displayStep:', displayStep);
+      console.log('SetUpAccountRoot componentDidUpdate setUpPagePath: ', setUpPagePath, ', displayStep:', displayStep);
       this.shouldNextButtonBeDisabled();
       this.setState({
         displayStep,
@@ -256,7 +256,11 @@ class SetUpAccountRoot extends React.Component {
         } else {
           backToLinkPath = '/setupaccount/editname';
         }
-        nextButtonText = (inDevelopmentMode) ? 'Find your friends' : 'View your ballot';
+        if (voterPhotoUrlLarge) {
+          nextButtonText = (inDevelopmentMode) ? 'Find your friends' : 'View your ballot';
+        } else {
+          nextButtonText = 'Save your photo';
+        }
         reassuranceTextOff = false;
         if (inDevelopmentMode) {
           if (voterContactEmailListCount > 0) {
@@ -284,7 +288,7 @@ class SetUpAccountRoot extends React.Component {
         } else {
           nextButtonText = 'Import contacts from Gmail';
         }
-        reassuranceTextOff = true;
+        reassuranceTextOff = false;
         if (voterContactEmailListCount > 0) {
           nextStepPath = '/setupaccount/invitecontacts';
           skipForNowOff = false;
@@ -382,8 +386,10 @@ class SetUpAccountRoot extends React.Component {
     // console.log('SetUpAccountRoot displayState', displayStep);
 
     let backButtonOn;
+    let desktopInlineButtonsOnInMobile;
     let desktopFixedButtonsOn;
     let desktopNextButtonHtml;
+    let mobileFixedButtonsOff;
     let mobileNextButtonHtml;
     let nextButtonDisabled = false;
     let stepHtml;
@@ -421,6 +427,8 @@ class SetUpAccountRoot extends React.Component {
       case 4: // importcontacts
         backButtonOn = true;
         desktopFixedButtonsOn = false;
+        desktopInlineButtonsOnInMobile = true;
+        mobileFixedButtonsOff = true;
         stepHtml = (
           <Suspense fallback={<></>}>
             <SetUpAccountImportContacts
@@ -541,6 +549,12 @@ class SetUpAccountRoot extends React.Component {
       </>
     );
 
+    let desktopInlineButtonsOnBreakValue;
+    if (desktopInlineButtonsOnInMobile) {
+      desktopInlineButtonsOnBreakValue = 1;
+    } else {
+      desktopInlineButtonsOnBreakValue = isCordovaWide() ? 1000 : 'sm';
+    }
     return (
       <PageContentContainerAccountSetUp>
         <AccountSetUpRootWrapper>
@@ -566,7 +580,7 @@ class SetUpAccountRoot extends React.Component {
             {stepHtml}
           </StepHtmlWrapper>
           {!desktopFixedButtonsOn && (
-            <DesktopNextButtonsOuterWrapperUShowDesktopTablet breakValue={isCordovaWide() ? 1000 : 'sm'}>
+            <DesktopNextButtonsOuterWrapperUShowDesktopTablet breakValue={desktopInlineButtonsOnBreakValue}>
               <DesktopNextButtonsInnerWrapper>
                 {desktopButtonsHtml}
               </DesktopNextButtonsInnerWrapper>
@@ -576,11 +590,13 @@ class SetUpAccountRoot extends React.Component {
             <Reassurance displayState={displayStep} reassuranceText={reassuranceText} />
           )}
         </AccountSetUpRootWrapper>
-        <MobileStaticNextButtonsOuterWrapperUShowMobile breakValue={isCordovaWide() ? 1000 : 'sm'}>
-          <MobileStaticNextButtonsInnerWrapper>
-            {mobileButtonsHtml}
-          </MobileStaticNextButtonsInnerWrapper>
-        </MobileStaticNextButtonsOuterWrapperUShowMobile>
+        {!mobileFixedButtonsOff && (
+          <MobileStaticNextButtonsOuterWrapperUShowMobile breakValue={isCordovaWide() ? 1000 : 'sm'}>
+            <MobileStaticNextButtonsInnerWrapper>
+              {mobileButtonsHtml}
+            </MobileStaticNextButtonsInnerWrapper>
+          </MobileStaticNextButtonsOuterWrapperUShowMobile>
+        )}
         {desktopFixedButtonsOn && (
           <DesktopStaticNextButtonsOuterWrapper breakValue={isCordovaWide() ? 1000 : 'sm'}>
             <DesktopNextButtonsInnerWrapper>
@@ -626,7 +642,7 @@ const styles = () => ({
 
 const AccountSetUpRootWrapper = styled('div')`
   background-color: white;
-  max-width: 600px;
+  max-width: 700px;
   padding: 40px 30px 110% 30px;
   width: 100%;
 `;

@@ -23,6 +23,7 @@ import SettingsPromotedOrganizations from '../../components/Settings/SettingsPro
 import SettingsSharing from '../../components/Settings/SettingsSharing';
 import SettingsSiteText from '../../components/Settings/SettingsSiteText';
 import SettingsSubscriptionPlan from '../../components/Settings/SettingsSubscriptionPlan';
+import SettingsYourData from '../../components/Settings/SettingsYourData';
 import ToolsToShareOnOtherWebsites from '../../components/Settings/ToolsToShareOnOtherWebsites';
 import { PageContentContainer } from '../../components/Style/pageLayoutStyles';
 import SnackNotifier, { openSnackbar } from '../../components/Widgets/SnackNotifier';
@@ -254,6 +255,10 @@ export default class SettingsDashboard extends Component {
       case 'tools':
         settingsComponentToDisplayDesktop = <ToolsToShareOnOtherWebsites externalUniqueId="domainDesktop" />;
         settingsComponentToDisplayMobile = <ToolsToShareOnOtherWebsites externalUniqueId="domainMobile" />;
+        break;
+      case 'yourdata':
+        settingsComponentToDisplayDesktop = <SettingsYourData externalUniqueId="domainDesktop" />;
+        settingsComponentToDisplayMobile = <SettingsYourData externalUniqueId="domainMobile" />;
         break;
     }
 

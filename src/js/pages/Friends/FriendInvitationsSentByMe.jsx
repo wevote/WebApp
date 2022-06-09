@@ -128,7 +128,7 @@ export default class FriendInvitationsSentByMe extends Component {
                 buttonURL="/friends/invite"
               />
               <p>
-                <Link to="/friends/sent-requests">See invitations you have sent to friends.</Link>
+                <Link to="/friends/requests">See invitations sent to you.</Link>
               </p>
             </>
           )}

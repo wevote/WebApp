@@ -240,7 +240,7 @@ class FriendIntroLanding extends Component {
               </CloseButtonDiv>
               <BodyWrapperWhatIs>
                 <FlagImageWrapper>
-                  <VoterPhotoImage src={normalizedImagePath(voteFlag)} alt="WeVoteFlag Photo" />
+                  <FlagImage src={normalizedImagePath(voteFlag)} alt="Your vote counts" />
                 </FlagImageWrapper>
                 <WeVoteTextTitle>What is We Vote?</WeVoteTextTitle>
                 <WeVoteTextBody>
@@ -249,7 +249,7 @@ class FriendIntroLanding extends Component {
                   network for candidates and measures, and collaborate with folks who share your values.
                 </WeVoteTextBody>
                 <WeVoteLogoWrapper>
-                  <div onClick={this.toggleFAQModal}>
+                  <div style={{ cursor: 'pointer', width: 'fit-content' }} onClick={this.toggleFAQModal}>
                     <SvgImage
                       imageName={logoGrey}
                       stylesTextIncoming="fill: #999 !important; width:48px; height: 48px;"
@@ -257,7 +257,7 @@ class FriendIntroLanding extends Component {
                   </div>
                 </WeVoteLogoWrapper>
                 <LinkToFAQ>
-                  <div onClick={this.toggleFAQModal}>
+                  <div style={{ cursor: 'pointer', width: 'fit-content' }} onClick={this.toggleFAQModal}>
                     Read Our FAQ
                   </div>
                 </LinkToFAQ>
@@ -310,28 +310,30 @@ class FriendIntroLanding extends Component {
                       </>
                     )}
                   </FriendIntroTitle>
-                  {friendImageUrlHttpsLarge && (
-                    <FriendPhotoOuterWrapper>
-                      <FriendPhotoInnerWrapper>
-                        <VoterPhotoImage src={friendImageUrlHttpsLarge} alt="Profile Photo" />
-                      </FriendPhotoInnerWrapper>
-                      {(friendFirstName && friendLastName) && (
-                        <FriendPhotoName>
-                          {friendFirstName && (
-                            <>
-                              {friendFirstName}
-                              {friendLastName && (
-                                <>
-                                  {' '}
-                                  {friendLastName}
-                                </>
-                              )}
-                            </>
-                          )}
-                        </FriendPhotoName>
-                      )}
-                    </FriendPhotoOuterWrapper>
-                  )}
+                  <FriendPhotoOuterWrapper>
+                    {friendImageUrlHttpsLarge && (
+                      <>
+                        <FriendPhotoInnerWrapper>
+                          <VoterPhotoImage src={friendImageUrlHttpsLarge} alt="Profile Photo" />
+                        </FriendPhotoInnerWrapper>
+                        {(friendFirstName && friendLastName) && (
+                          <FriendPhotoName>
+                            {friendFirstName && (
+                              <>
+                                {friendFirstName}
+                                {friendLastName && (
+                                  <>
+                                    {' '}
+                                    {friendLastName}
+                                  </>
+                                )}
+                              </>
+                            )}
+                          </FriendPhotoName>
+                        )}
+                      </>
+                    )}
+                  </FriendPhotoOuterWrapper>
                   <ActionButtonsWrapper>
                     {socialSignInOffered ? (
                       <EnterInfoManuallyWrapper>
@@ -491,10 +493,14 @@ const EnterInfoManuallyWrapper = styled('div')`
   margin-top: 48px;
 `;
 
+const FlagImage = styled('img')`
+  max-width: 200px;
+  align-items:center;
+`;
+
 const FlagImageWrapper = styled('div')`
   display: flex;
   justify-content: center;
-  // margin-top: 95px;
 `;
 
 const FriendIntroRootWrapper = styled('div')`
@@ -508,7 +514,7 @@ const FriendIntroTitle = styled('div')`
 `;
 
 const FriendPhotoInnerWrapper = styled('div')`
-  min-height: 100px;
+  min-height: 200px;
   text-align: center
 `;
 
@@ -522,13 +528,14 @@ const FriendPhotoOuterWrapper = styled('div')`
   display: flex;
   flex-direction: column;
   margin-top: 24px;
+  min-height: 240px;
 `;
 
 const LinkToFAQ = styled('div')`
-  display: flex;
-  justify-content: center;
-  font-size: 16px;
   color: #999;
+  display: flex;
+  font-size: 16px;
+  justify-content: center;
 `;
 
 const PageContentContainerFriendIntro = styled('div')`
@@ -537,7 +544,7 @@ const PageContentContainerFriendIntro = styled('div')`
 `;
 
 const VoterPhotoImage = styled('img')`
-  border-radius: 50px;
+  border-radius: 100px;
   max-width: 200px;
   align-items:center;
 `;
@@ -547,9 +554,9 @@ const WeVoteLogoSpacer = styled('div')`
 `;
 
 const WeVoteLogoWrapper = styled('div')`
+  color: '#999';
   display: flex;
   justify-content: center;
-  color: '#999';
   margin-top: 40px;
 `;
 
