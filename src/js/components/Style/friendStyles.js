@@ -114,6 +114,13 @@ const FriendName = styled('h3', {
   ${inSideColumn ? FriendNameInSideColumn : FriendNameNotInSideColumn}
 `));
 
+const SectionTitle = styled('h2')`
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 16px;
+  width: fit-content;
+`;
+
 const ToRightOfPhoto = styled('div')`
   align-items: flex-start;
   display: flex;
@@ -131,5 +138,6 @@ export {
   FriendDisplayDesktopButtonsWrapper,
   FriendDisplayOuterWrapper,
   FriendName,
+  SectionTitle,
   ToRightOfPhoto,
 };

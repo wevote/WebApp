@@ -24,10 +24,9 @@ import VoterStore from '../../stores/VoterStore';
 
 const FAQModal = React.lazy(() => import(/* webpackChunkName: 'FAQModal' */ '../../components/FriendIntro/FAQModal'));
 
-// const logoColorOnWhite = '../../../img/global/svg-icons/we-vote-icon-square-color-dark.svg';
 const logoGrey = '../../../img/global/svg-icons/we-vote-icon-square-color-grey.svg';
 const voteFlag = '../../../img/get-started/your-vote-counts-cropped-200x200.gif';
-const inDevelopmentMode = false;
+const inDevelopmentMode = true;
 
 class FriendIntroLanding extends Component {
   constructor (props) {
