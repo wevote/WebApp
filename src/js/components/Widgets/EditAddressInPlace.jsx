@@ -84,12 +84,15 @@ class EditAddressInPlace extends Component {
             Please enter your full street address with house number for your correct ballot.
           </div>
           <AddressBox
+            classes={this.props.classes}
             editingAddress
+            externalUniqueId={this.props.externalUniqueId}
             returnNewTextForMapSearch={this.localTextForMapSearchUpdate}
             saveUrl={ballotBaseUrl}
             showCancelEditAddressButton
             toggleEditingAddress={this.toggleEditingAddress}
             toggleSelectAddressModal={this.incomingToggleFunction}
+            waitingMessage={this.props.waitingMessage}
           />
         </span>
       );
@@ -131,9 +134,12 @@ EditAddressInPlace.propTypes = {
   ballotBaseUrl: PropTypes.string,
   classes: PropTypes.object,
   defaultIsEditingAddress: PropTypes.bool,
+  externalUniqueId: PropTypes.string,
   noAddressMessage: PropTypes.string,
+  returnNewTextForMapSearch: PropTypes.func,
   toggleEditingAddress: PropTypes.func,
   toggleFunction: PropTypes.func,
+  waitingMessage: PropTypes.string,
 };
 
 const styles = {

@@ -472,6 +472,7 @@ export default class OrganizationVoterGuide extends Component {
 OrganizationVoterGuide.propTypes = {
   activeRoute: PropTypes.string,
   match: PropTypes.object.isRequired,
+  params: PropTypes.object,
 };
 
 const WrapperFlex = styled('div')`

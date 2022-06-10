@@ -86,7 +86,18 @@ export default class Location extends Component {
             Enter address where you are registered to vote
           </h3>
           <div>
-            <AddressBox location={this.props.location} saveUrl="/ballot" />
+            {/* ask about location */}
+            <AddressBox
+              classes={this.props.classes}
+              externalUniqueId={this.props.externalUniqueId}
+              location={this.props.location}
+              returnNewTextForMapSearch={this.props.returnNewTextForMapSearch}
+              saveUrl="/ballot"
+              showCancelEditAddressButton={this.props.showCancelEditAddressButton}
+              toggleEditingAddress={this.props.toggleEditingAddress}
+              toggleSelectAddressModal={this.props.toggleSelectAddressModal}
+              waitingMessage={this.props.waitingMessage}
+            />
           </div>
         </div>
         <div className="elections-list-container container-fluid well u-stack--md u-inset--md">
@@ -97,5 +108,13 @@ export default class Location extends Component {
   }
 }
 Location.propTypes = {
+  classes: PropTypes.object,
+  externalUniqueId: PropTypes.string,
   location: PropTypes.object,
+  returnNewTextForMapSearch: PropTypes.func,
+  saveUrl: PropTypes.string.isRequired,
+  showCancelEditAddressButton: PropTypes.bool,
+  toggleEditingAddress: PropTypes.func,
+  toggleSelectAddressModal: PropTypes.func,
+  waitingMessage: PropTypes.string,
 };

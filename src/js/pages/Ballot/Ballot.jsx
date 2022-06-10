@@ -1233,7 +1233,16 @@ class Ballot extends Component {
           Enter address where you are registered to vote
         </h3>
         <div>
-          <AddressBox classes={this.props.classes} saveUrl={ballotBaseUrl} />
+          <AddressBox
+            classes={this.props.classes}
+            externalUniqueId={this.props.externalUniqueId}
+            returnNewTextForMapSearch={this.props.returnNewTextForMapSearch}
+            saveUrl={ballotBaseUrl}
+            showCancelEditAddressButton={this.props.showCancelEditAddressButton}
+            toggleEditingAddress={this.props.toggleEditingAddress}
+            toggleSelectAddressModal={this.props.toggleSelectAddressModal}
+            waitingMessage={this.props.waitingMessage}
+          />
         </div>
       </div>
     );
@@ -1578,6 +1587,14 @@ Ballot.propTypes = {
   classes: PropTypes.object,
   location: PropTypes.object,
   match: PropTypes.object,
+  externalUniqueId: PropTypes.string,
+  returnNewTextForMapSearch: PropTypes.func,
+  saveUrl: PropTypes.string.isRequired,
+  showCancelEditAddressButton: PropTypes.bool,
+  toggleEditingAddress: PropTypes.func,
+  toggleSelectAddressModal: PropTypes.func,
+  waitingMessage: PropTypes.string,
+
 };
 
 /* eslint-disable no-nested-ternary */

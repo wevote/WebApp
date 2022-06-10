@@ -128,7 +128,7 @@ class VerifyThisIsMe extends Component {
     renderLog('VerifyThisIsMe');  // Set LOG_RENDER_EVENTS to log all renders
 
     // Manage the control over this organization voter guide
-    const { candidate, organization, twitterHandle, voter } = this.state;
+    const { candidate, organization, twitterDescription, twitterFollowersCount, twitterHandle, twitterName, twitterPhotoUrl, twitterUserWebsite, voter } = this.state;
 
     if (twitterHandle === undefined) {
       // December 16, 2020
@@ -286,7 +286,9 @@ class VerifyThisIsMe extends Component {
       return (
         <PageContentContainer>
           <Helmet title={`Claim @${twitterHandle} - We Vote`} />
-          <TwitterAccountCard {...this.state} />
+          <TwitterAccountCard
+            // {...this.state}
+          />
           <div>
             <br />
             <h1 className="h1">Please verify that this is you by signing into this Twitter account:</h1>

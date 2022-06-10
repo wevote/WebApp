@@ -74,7 +74,6 @@ export default class Intro extends Component {
       orgCount,
       voterCount,
     } = this.state;
-
     return (
       <div>
         <Helmet title="Welcome to We Vote" />
@@ -89,7 +88,17 @@ export default class Intro extends Component {
           <span className="medium">
             This is our best guess - feel free to change.
           </span>
-          <AddressBox {...this.props} saveUrl="/ballot" />
+          <AddressBox
+          /* {...this.props} */
+            classes={this.props.classes}
+            externalUniqueId={this.props.externalUniqueId}
+            returnNewTextForMapSearch={this.props.returnNewTextForMapSearch}
+            saveUrl="/ballot"
+            showCancelEditAddressButton={this.props.showCancelEditAddressButton}
+            toggleEditingAddress={this.props.toggleEditingAddress}
+            toggleSelectAddressModal={this.props.toggleSelectAddressModal}
+            waitingMessage={this.props.waitingMessage}
+          />
           <br />
           <ul className="list-group">
             <li className="list-group-item">Research ballot items</li>
@@ -132,4 +141,11 @@ export default class Intro extends Component {
 }
 Intro.propTypes = {
   children: PropTypes.object,
+  classes: PropTypes.object,
+  externalUniqueId: PropTypes.string,
+  returnNewTextForMapSearch: PropTypes.func,
+  showCancelEditAddressButton: PropTypes.bool,
+  toggleEditingAddress: PropTypes.func,
+  toggleSelectAddressModal: PropTypes.func,
+  waitingMessage: PropTypes.string,
 };
