@@ -1,14 +1,18 @@
 import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
 import React from 'react';
+import styled from 'styled-components';
 import { renderLog } from '../../common/utils/logging';
-import VoterStore from '../../stores/VoterStore';
+import SuggestedFriendList from '../Friends/SuggestedFriendList';
+import FriendStore from '../../stores/FriendStore';
+import { SectionTitle } from '../Style/friendStyles';
 import {
   SetUpAccountIntroText,
   SetUpAccountTitle,
   SetUpAccountTop,
   StepCenteredWrapper,
 } from '../Style/SetUpAccountStyles';
+import sortFriendListByMutualFriends from '../../utils/friendFunctions';
 
 
 class SetUpAccountFriendRequests extends React.Component {
@@ -19,9 +23,13 @@ class SetUpAccountFriendRequests extends React.Component {
   }
 
   componentDidMount () {
-    window.scrollTo(0, 0);
-    this.onVoterStoreChange();
-    this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
+    const suggestedFriendListUnsorted = FriendStore.suggestedFriendList();
+    const suggestedFriendList = sortFriendListByMutualFriends(suggestedFriendListUnsorted);
+    this.setState({
+      suggestedFriendList,
+    });
+
+    this.friendStoreListener = FriendStore.addListener(this.onFriendStoreChange.bind(this));
   }
 
   componentDidUpdate (prevProps) {
@@ -32,14 +40,20 @@ class SetUpAccountFriendRequests extends React.Component {
   }
 
   componentWillUnmount () {
-    this.voterStoreListener.remove();
+    this.friendStoreListener.remove();
   }
 
-  onVoterStoreChange () {
+  onFriendStoreChange () {
+    const suggestedFriendListUnsorted = FriendStore.suggestedFriendList();
+    const suggestedFriendList = sortFriendListByMutualFriends(suggestedFriendListUnsorted);
+    this.setState({
+      suggestedFriendList,
+    });
   }
 
   render () {
     renderLog('SetUpAccountFriendRequests');  // Set LOG_RENDER_EVENTS to log all renders
+    const { suggestedFriendList } = this.state;
 
     return (
       <StepCenteredWrapper>
@@ -47,6 +61,16 @@ class SetUpAccountFriendRequests extends React.Component {
           <SetUpAccountTitle>Friends</SetUpAccountTitle>
           <SetUpAccountIntroText>&nbsp;</SetUpAccountIntroText>
         </SetUpAccountTop>
+        {/* Chip filters here */}
+        <SetUpAccountSubTitleWrapper>
+          <SectionTitle>
+            People you may know
+          </SectionTitle>
+        </SetUpAccountSubTitleWrapper>
+        <SuggestedFriendList
+          friendList={suggestedFriendList}
+          editMode
+        />
       </StepCenteredWrapper>
     );
   }
@@ -58,5 +82,10 @@ SetUpAccountFriendRequests.propTypes = {
 
 const styles = () => ({
 });
+
+const SetUpAccountSubTitleWrapper = styled('div')`
+  max-width: 538px;
+  width: 100%;
+`;
 
 export default withStyles(styles)(SetUpAccountFriendRequests);

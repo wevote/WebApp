@@ -5,6 +5,7 @@ import { renderLog } from '../../common/utils/logging';
 import SuggestedFriendList from '../../components/Friends/SuggestedFriendList';
 import MessageCard from '../../components/Widgets/MessageCard';
 import FriendStore from '../../stores/FriendStore';
+import { SectionTitle } from '../../components/Style/friendStyles';
 import sortFriendListByMutualFriends from '../../utils/friendFunctions';
 
 export default class SuggestedFriends extends Component {
@@ -75,12 +76,6 @@ export default class SuggestedFriends extends Component {
     );
   }
 }
-
-const SectionTitle = styled('h2')`
-  width: fit-content;  font-weight: bold;
-  font-size: 18px;
-  margin-bottom: 16px;
-`;
 
 const SuggestedFriendsWrapper = styled('div')`
 `;
