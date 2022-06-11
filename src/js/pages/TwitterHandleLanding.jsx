@@ -109,13 +109,13 @@ export default class TwitterHandleLanding extends Component {
     this.setState({
       kindOfOwner,
       ownerWeVoteId,
+      status,
       twitterHandle,
       twitterDescription,
       twitterFollowersCount,
       twitterName,
       twitterPhotoUrl,
       twitterUserWebsite,
-      status,
     });
   }
 
@@ -138,7 +138,11 @@ export default class TwitterHandleLanding extends Component {
     }
 
     const {
-      activeRoute, voter, kindOfOwner, ownerWeVoteId, twitterHandle: twitterHandleBeingViewed,
+      activeRoute,
+      voter,
+      kindOfOwner,
+      ownerWeVoteId,
+      twitterHandle: twitterHandleBeingViewed,
     } = this.state;
     let displayableTwitterHandleBeingViewed = twitterHandleBeingViewed;
     if (isCordova() && activeRoute && activeRoute.length > 2) {
@@ -174,11 +178,10 @@ export default class TwitterHandleLanding extends Component {
     // }
 
     if (kindOfOwner === 'CANDIDATE') {
+      // Is this supposed to be this.props.param.candidate_we_vote_id
       params.candidate_we_vote_id = ownerWeVoteId;
       return (
         <Candidate candidate_we_vote_id
-          /* ...this.props */
-          classes={this.props.classes}
           match={this.props.match}
         />
       );
@@ -189,7 +192,6 @@ export default class TwitterHandleLanding extends Component {
       } else {
         return (
           <OrganizationVoterGuide
-            // {...this.props}
             activeRoute={this.props.activeRoute}
             match={this.props.match}
             params={params}
@@ -200,7 +202,6 @@ export default class TwitterHandleLanding extends Component {
       // console.log('TwitterHandleLanding TWITTER_HANDLE_NOT_FOUND_IN_WE_VOTE calling UnknownTwitterAccount');
       return (
         <UnknownTwitterAccount
-        // {...this.state}
         twiterHandle={this.state.twitterHandle}
         twitterName={this.state.twitterName}
         />
@@ -258,7 +259,6 @@ export default class TwitterHandleLanding extends Component {
 }
 TwitterHandleLanding.propTypes = {
   activeRoute: PropTypes.string,
-  classes: PropTypes.object,
   match: PropTypes.object,
   params: PropTypes.object,
 };

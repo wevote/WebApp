@@ -1,4 +1,3 @@
-import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import Helmet from 'react-helmet';
 import AnalyticsActions from '../../actions/AnalyticsActions';
@@ -86,17 +85,8 @@ export default class Location extends Component {
             Enter address where you are registered to vote
           </h3>
           <div>
-            {/* ask about location */}
             <AddressBox
-              classes={this.props.classes}
-              externalUniqueId={this.props.externalUniqueId}
-              location={this.props.location}
-              returnNewTextForMapSearch={this.props.returnNewTextForMapSearch}
               saveUrl="/ballot"
-              showCancelEditAddressButton={this.props.showCancelEditAddressButton}
-              toggleEditingAddress={this.props.toggleEditingAddress}
-              toggleSelectAddressModal={this.props.toggleSelectAddressModal}
-              waitingMessage={this.props.waitingMessage}
             />
           </div>
         </div>
@@ -107,14 +97,3 @@ export default class Location extends Component {
     );
   }
 }
-Location.propTypes = {
-  classes: PropTypes.object,
-  externalUniqueId: PropTypes.string,
-  location: PropTypes.object,
-  returnNewTextForMapSearch: PropTypes.func,
-  saveUrl: PropTypes.string.isRequired,
-  showCancelEditAddressButton: PropTypes.bool,
-  toggleEditingAddress: PropTypes.func,
-  toggleSelectAddressModal: PropTypes.func,
-  waitingMessage: PropTypes.string,
-};

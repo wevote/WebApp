@@ -1,4 +1,3 @@
-import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import Helmet from 'react-helmet';
 import AnalyticsActions from '../../actions/AnalyticsActions';
@@ -37,14 +36,7 @@ export default class SettingsAddress extends Component {
               </h3>
               <div className={isWebApp() ? 'u-padding-bottom--md' : 'SettingsCardBottomCordova'}>
                 <AddressBox
-                  classes={this.props.classes}
-                  externalUniqueId={this.props.externalUniqueId}
-                  returnNewTextForMapSearch={this.props.returnNewTextForMapSearch}
                   saveUrl="/ballot"
-                  showCancelEditAddressButton={this.props.showCancelEditAddressButton}
-                  toggleEditingAddress={this.props.toggleEditingAddress}
-                  toggleSelectAddressModal={this.props.toggleSelectAddressModal}
-                  waitingMessage={this.props.waitingMessage}
                 />
               </div>
             </div>
@@ -54,13 +46,3 @@ export default class SettingsAddress extends Component {
     );
   }
 }
-SettingsAddress.propTypes = {
-  classes: PropTypes.object,
-  externalUniqueId: PropTypes.string,
-  returnNewTextForMapSearch: PropTypes.func,
-  saveUrl: PropTypes.string.isRequired,
-  showCancelEditAddressButton: PropTypes.bool,
-  toggleEditingAddress: PropTypes.func,
-  toggleSelectAddressModal: PropTypes.func,
-  waitingMessage: PropTypes.string,
-};

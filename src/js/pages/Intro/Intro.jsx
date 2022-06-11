@@ -77,7 +77,6 @@ export default class Intro extends Component {
     return (
       <div>
         <Helmet title="Welcome to We Vote" />
-        { this.props.children || (
         <div className="container-fluid well u-stack--md u-inset--md">
           <h2 className="text-center">We Vote</h2>
           <label // eslint-disable-line
@@ -89,8 +88,6 @@ export default class Intro extends Component {
             This is our best guess - feel free to change.
           </span>
           <AddressBox
-          /* {...this.props} */
-            classes={this.props.classes}
             externalUniqueId={this.props.externalUniqueId}
             returnNewTextForMapSearch={this.props.returnNewTextForMapSearch}
             saveUrl="/ballot"
@@ -134,14 +131,12 @@ export default class Intro extends Component {
             </li>
           </ul>
         </div>
-        )}
+        )
       </div>
     );
   }
 }
 Intro.propTypes = {
-  children: PropTypes.object,
-  classes: PropTypes.object,
   externalUniqueId: PropTypes.string,
   returnNewTextForMapSearch: PropTypes.func,
   showCancelEditAddressButton: PropTypes.bool,

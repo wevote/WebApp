@@ -87,9 +87,14 @@ class VerifyThisIsMe extends Component {
 
   onTwitterStoreChange () {
     const {
-      kind_of_owner: kindOfOwner, owner_we_vote_id: ownerWeVoteId, twitter_handle: twitterHandle,
-      twitter_description: twitterDescription, twitter_followers_count: twitterFollowersCount,
-      twitter_name: twitterName, twitter_photo_url: twitterPhotoUrl, twitter_user_website: twitterUserWebsite,
+      kind_of_owner: kindOfOwner,
+      owner_we_vote_id: ownerWeVoteId,
+      twitter_handle: twitterHandle,
+      twitter_description: twitterDescription,
+      twitter_followers_count: twitterFollowersCount,
+      twitter_name: twitterName,
+      twitter_photo_url: twitterPhotoUrl,
+      twitter_user_website: twitterUserWebsite,
       status,
     } = TwitterStore.get();
 
@@ -287,7 +292,12 @@ class VerifyThisIsMe extends Component {
         <PageContentContainer>
           <Helmet title={`Claim @${twitterHandle} - We Vote`} />
           <TwitterAccountCard
-            // {...this.state}
+            twitterDescription={twitterDescription}
+            twitterHandle={twitterHandle}
+            twitterFollowersCount={twitterFollowersCount}
+            twitterPhotoUrl={twitterPhotoUrl}
+            twitterName={twitterName}
+            twitterUserWebsite={twitterUserWebsite}
           />
           <div>
             <br />
