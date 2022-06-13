@@ -12,7 +12,7 @@ const TYPES = require('keymirror')({
 
 class BallotItemReadyToVote extends Component {
   isMeasure () {
-    return this.props.kind_of_ballot_item === TYPES.MEASURE;
+    return this.props.kindOfBallotItem === TYPES.MEASURE;
   }
 
   render () {
@@ -21,12 +21,12 @@ class BallotItemReadyToVote extends Component {
       <>
         { this.isMeasure() ? (
           <MeasureItemReadyToVote
-            ballotItemDisplayName={this.props.ballot_item_display_name}
-            measureWeVoteId={this.props.we_vote_id}
+            ballotItemDisplayName={this.props.ballotItemDisplayName}
+            measureWeVoteId={this.props.weVoteId}
           />
         ) : (
           <OfficeItemReadyToVote
-            candidateList={this.props.candidate_list}
+            candidateList={this.props.candidateList}
           />
         )}
       </>
@@ -34,10 +34,10 @@ class BallotItemReadyToVote extends Component {
   }
 }
 BallotItemReadyToVote.propTypes = {
-  kind_of_ballot_item: PropTypes.string.isRequired,
-  we_vote_id: PropTypes.string.isRequired,
-  ballot_item_display_name: PropTypes.string.isRequired,
-  candidate_list: PropTypes.array,
+  ballotItemDisplayName: PropTypes.string.isRequired,
+  candidateList: PropTypes.array,
+  kindOfBallotItem: PropTypes.string.isRequired,
+  weVoteId: PropTypes.string.isRequired,
 };
 
 export default withTheme(BallotItemReadyToVote);

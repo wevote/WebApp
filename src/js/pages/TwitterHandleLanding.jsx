@@ -109,13 +109,13 @@ export default class TwitterHandleLanding extends Component {
     this.setState({
       kindOfOwner,
       ownerWeVoteId,
+      status,
       twitterHandle,
       twitterDescription,
       twitterFollowersCount,
       twitterName,
       twitterPhotoUrl,
       twitterUserWebsite,
-      status,
     });
   }
 
@@ -138,7 +138,11 @@ export default class TwitterHandleLanding extends Component {
     }
 
     const {
-      activeRoute, voter, kindOfOwner, ownerWeVoteId, twitterHandle: twitterHandleBeingViewed,
+      activeRoute,
+      voter,
+      kindOfOwner,
+      ownerWeVoteId,
+      twitterHandle: twitterHandleBeingViewed,
     } = this.state;
     let displayableTwitterHandleBeingViewed = twitterHandleBeingViewed;
     if (isCordova() && activeRoute && activeRoute.length > 2) {
@@ -174,8 +178,14 @@ export default class TwitterHandleLanding extends Component {
     // }
 
     if (kindOfOwner === 'CANDIDATE') {
+      // Is this supposed to be this.props.param.candidate_we_vote_id
       params.candidate_we_vote_id = ownerWeVoteId;
-      return <Candidate candidate_we_vote_id {...this.props} />;
+      return (
+        <Candidate
+          candidate_we_vote_id
+          match={this.props.match}
+        />
+      );
     } else if (kindOfOwner === 'ORGANIZATION') {
       params.organization_we_vote_id = ownerWeVoteId;
       if (lookingAtPositionsForFriendsOnly) {
@@ -183,15 +193,20 @@ export default class TwitterHandleLanding extends Component {
       } else {
         return (
           <OrganizationVoterGuide
-            {...this.props}
+            activeRoute={this.props.activeRoute}
+            match={this.props.match}
             params={params}
-            activeRoute={activeRoute}
           />
         );
       }
     } else if (kindOfOwner === 'TWITTER_HANDLE_NOT_FOUND_IN_WE_VOTE') {
       // console.log('TwitterHandleLanding TWITTER_HANDLE_NOT_FOUND_IN_WE_VOTE calling UnknownTwitterAccount');
-      return <UnknownTwitterAccount {...this.state} />;
+      return (
+        <UnknownTwitterAccount
+          twiterHandle={this.state.twitterHandle}
+          twitterName={this.state.twitterName}
+        />
+      );
     } else {
       // console.log('render in TwitterHandleLanding  else, kindOfOwner');
       return (

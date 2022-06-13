@@ -14,9 +14,12 @@ export default class TwitterAccountCard extends Component {
   render () {
     renderLog('TwitterAccountCard');  // Set LOG_RENDER_EVENTS to log all renders
     const {
-      twitterHandle, twitterDescription, twitterFollowersCount,
-      twitterPhotoUrl, twitterUserWebsite,
+      twitterDescription,
+      twitterHandle,
+      twitterFollowersCount,
+      twitterPhotoUrl,
       twitterName,
+      twitterUserWebsite,
     } = this.props;
 
     // If the nameDisplay is in the twitterDescription, remove it from twitterDescription

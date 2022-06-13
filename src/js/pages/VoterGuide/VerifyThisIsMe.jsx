@@ -87,9 +87,14 @@ class VerifyThisIsMe extends Component {
 
   onTwitterStoreChange () {
     const {
-      kind_of_owner: kindOfOwner, owner_we_vote_id: ownerWeVoteId, twitter_handle: twitterHandle,
-      twitter_description: twitterDescription, twitter_followers_count: twitterFollowersCount,
-      twitter_name: twitterName, twitter_photo_url: twitterPhotoUrl, twitter_user_website: twitterUserWebsite,
+      kind_of_owner: kindOfOwner,
+      owner_we_vote_id: ownerWeVoteId,
+      twitter_handle: twitterHandle,
+      twitter_description: twitterDescription,
+      twitter_followers_count: twitterFollowersCount,
+      twitter_name: twitterName,
+      twitter_photo_url: twitterPhotoUrl,
+      twitter_user_website: twitterUserWebsite,
       status,
     } = TwitterStore.get();
 
@@ -128,7 +133,7 @@ class VerifyThisIsMe extends Component {
     renderLog('VerifyThisIsMe');  // Set LOG_RENDER_EVENTS to log all renders
 
     // Manage the control over this organization voter guide
-    const { candidate, organization, twitterHandle, voter } = this.state;
+    const { candidate, organization, twitterDescription, twitterFollowersCount, twitterHandle, twitterName, twitterPhotoUrl, twitterUserWebsite, voter } = this.state;
 
     if (twitterHandle === undefined) {
       // December 16, 2020
@@ -286,7 +291,14 @@ class VerifyThisIsMe extends Component {
       return (
         <PageContentContainer>
           <Helmet title={`Claim @${twitterHandle} - We Vote`} />
-          <TwitterAccountCard {...this.state} />
+          <TwitterAccountCard
+            twitterDescription={twitterDescription}
+            twitterHandle={twitterHandle}
+            twitterFollowersCount={twitterFollowersCount}
+            twitterPhotoUrl={twitterPhotoUrl}
+            twitterName={twitterName}
+            twitterUserWebsite={twitterUserWebsite}
+          />
           <div>
             <br />
             <h1 className="h1">Please verify that this is you by signing into this Twitter account:</h1>

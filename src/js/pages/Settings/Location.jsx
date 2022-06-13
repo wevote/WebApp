@@ -1,4 +1,3 @@
-import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import Helmet from 'react-helmet';
 import AnalyticsActions from '../../actions/AnalyticsActions';
@@ -86,7 +85,9 @@ export default class Location extends Component {
             Enter address where you are registered to vote
           </h3>
           <div>
-            <AddressBox location={this.props.location} saveUrl="/ballot" />
+            <AddressBox
+              saveUrl="/ballot"
+            />
           </div>
         </div>
         <div className="elections-list-container container-fluid well u-stack--md u-inset--md">
@@ -96,6 +97,3 @@ export default class Location extends Component {
     );
   }
 }
-Location.propTypes = {
-  location: PropTypes.object,
-};

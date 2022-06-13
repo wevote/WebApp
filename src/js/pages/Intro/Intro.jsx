@@ -1,5 +1,4 @@
 import { Check } from '@mui/icons-material';
-import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import Helmet from 'react-helmet';
 import { renderLog } from '../../common/utils/logging';
@@ -74,11 +73,9 @@ export default class Intro extends Component {
       orgCount,
       voterCount,
     } = this.state;
-
     return (
       <div>
         <Helmet title="Welcome to We Vote" />
-        { this.props.children || (
         <div className="container-fluid well u-stack--md u-inset--md">
           <h2 className="text-center">We Vote</h2>
           <label // eslint-disable-line
@@ -89,7 +86,9 @@ export default class Intro extends Component {
           <span className="medium">
             This is our best guess - feel free to change.
           </span>
-          <AddressBox {...this.props} saveUrl="/ballot" />
+          <AddressBox
+            saveUrl="/ballot"
+          />
           <br />
           <ul className="list-group">
             <li className="list-group-item">Research ballot items</li>
@@ -125,11 +124,8 @@ export default class Intro extends Component {
             </li>
           </ul>
         </div>
-        )}
+        )
       </div>
     );
   }
 }
-Intro.propTypes = {
-  children: PropTypes.object,
-};

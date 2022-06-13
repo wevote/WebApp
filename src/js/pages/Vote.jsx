@@ -408,7 +408,6 @@ class Vote extends Component {
     } else if (isWebApp()) {
       votePaddingClass = 'row ballot__body__ready-to-vote--empty';
     }
-
     return (
       <VoteContainer>
         <DualHeaderContainer className={`ballot__heading-vote-section ${ballotHeaderUnpinned && isWebApp() ? 'ballot__heading__unpinned' : ''}`} style={cordovaVoteMiniHeader()}>
@@ -427,11 +426,11 @@ class Vote extends Component {
                           <>
                             <Suspense fallback={<></>}>
                               <FilterBaseSearch
-                                isSearching={isSearching}
-                                onToggleSearch={this.handleToggleSearchBallot}
                                 allItems={ballotWithItemsFromCompletionFilterType}
-                                onFilterBaseSearch={this.handleSearch}
                                 alwaysOpen={!showFilterTabs}
+                                isSearching={isSearching}
+                                onFilterBaseSearch={this.handleSearch}
+                                onToggleSearch={this.handleToggleSearchBallot}
                               />
                             </Suspense>
                           </>
@@ -464,7 +463,16 @@ class Vote extends Component {
                       <ReturnOfficialBallotContainer>
                         <ReturnOfficialBallot />
                       </ReturnOfficialBallotContainer>
-                      {(isSearching && ballotSearchResults.length ? ballotSearchResults : ballotWithItemsFromCompletionFilterType).map((item) => <BallotItemReadyToVote key={item.we_vote_id} {...item} />)}
+                      {(isSearching && ballotSearchResults.length ?
+                        ballotSearchResults : ballotWithItemsFromCompletionFilterType).map((item) => (
+                          <BallotItemReadyToVote
+                            ballotItemDisplayName={item.ballotItemDisplayName}
+                            candidateList={item.candidateList}
+                            key={item.weVoteId}
+                            kindOfBallotItem={item.kindOfBallotItem}
+                            weVoteId={item.weVoteId}
+                          />
+                      ))}
                     </Card>
                   ) : /* No items decided */ (
                     <div>
@@ -512,8 +520,12 @@ class Vote extends Component {
   }
 }
 Vote.propTypes = {
-  match: PropTypes.object,
+  // ballotItemDisplayName: PropTypes.string.isRequired,
+  // candidateList: PropTypes.array,
   classes: PropTypes.object,
+  // kindOfBallotItem: PropTypes.string.isRequired,
+  match: PropTypes.object,
+  // weVoteId: PropTypes.string.isRequired,
 };
 
 const VoteContainer = styled('div')(({ theme }) => (`
