@@ -1,5 +1,4 @@
 import { Check } from '@mui/icons-material';
-import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import Helmet from 'react-helmet';
 import { renderLog } from '../../common/utils/logging';
@@ -88,13 +87,7 @@ export default class Intro extends Component {
             This is our best guess - feel free to change.
           </span>
           <AddressBox
-            externalUniqueId={this.props.externalUniqueId}
-            returnNewTextForMapSearch={this.props.returnNewTextForMapSearch}
             saveUrl="/ballot"
-            showCancelEditAddressButton={this.props.showCancelEditAddressButton}
-            toggleEditingAddress={this.props.toggleEditingAddress}
-            toggleSelectAddressModal={this.props.toggleSelectAddressModal}
-            waitingMessage={this.props.waitingMessage}
           />
           <br />
           <ul className="list-group">
@@ -136,11 +129,3 @@ export default class Intro extends Component {
     );
   }
 }
-Intro.propTypes = {
-  externalUniqueId: PropTypes.string,
-  returnNewTextForMapSearch: PropTypes.func,
-  showCancelEditAddressButton: PropTypes.bool,
-  toggleEditingAddress: PropTypes.func,
-  toggleSelectAddressModal: PropTypes.func,
-  waitingMessage: PropTypes.string,
-};

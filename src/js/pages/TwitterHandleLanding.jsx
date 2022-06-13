@@ -181,7 +181,8 @@ export default class TwitterHandleLanding extends Component {
       // Is this supposed to be this.props.param.candidate_we_vote_id
       params.candidate_we_vote_id = ownerWeVoteId;
       return (
-        <Candidate candidate_we_vote_id
+        <Candidate
+          candidate_we_vote_id
           match={this.props.match}
         />
       );
@@ -202,8 +203,8 @@ export default class TwitterHandleLanding extends Component {
       // console.log('TwitterHandleLanding TWITTER_HANDLE_NOT_FOUND_IN_WE_VOTE calling UnknownTwitterAccount');
       return (
         <UnknownTwitterAccount
-        twiterHandle={this.state.twitterHandle}
-        twitterName={this.state.twitterName}
+          twiterHandle={this.state.twitterHandle}
+          twitterName={this.state.twitterName}
         />
       );
     } else {
