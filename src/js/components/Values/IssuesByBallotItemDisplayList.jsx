@@ -18,8 +18,6 @@ class IssuesByBallotItemDisplayList extends Component {
     this.state = {
       defaultNumberOfIssuesToDisplay: 4,
       expandIssues: false,
-      totalWidth: null,
-      totalRemainingWidth: null,
       issuesToRender: [],
       currentNumberOfIssuesToDisplay: 4,
       totalLengthOfIssuesToRenderList: 0,
@@ -94,31 +92,13 @@ class IssuesByBallotItemDisplayList extends Component {
       // console.log('this.state.issuesSupportingThisBallotItemVoterIsNotFollowingLength: ', this.state.issuesSupportingThisBallotItemVoterIsNotFollowingLength, ', nextState.issuesSupportingThisBallotItemVoterIsNotFollowingLength', nextState.issuesSupportingThisBallotItemVoterIsNotFollowingLength);
       return true;
     }
-    if (this.state.totalWidth !== nextState.totalWidth) {
-      return true;
-    }
-    if (this.state.totalRemainingWidth !== nextState.totalRemainingWidth) {
-      return true;
-    }
     if (this.state.issuesToRender !== nextState.issuesToRender) {
       return true;
     }
     return false;
   }
 
-  componentDidUpdate () {
-    // console.log('IssuesByBallotItemDisplayList componentDidUpdate');
-    if (this.issuesList.current && this.state.totalWidth === null && this.state.totalRemainingWidth === null) {
-      this.setState({
-        totalWidth: this.issuesList.current.offsetWidth,
-        totalRemainingWidth: this.issuesList.current.offsetWidth,
-      });
-    }
-  }
-
   componentWillUnmount () {
-    if (this.timer) clearTimeout(this.timer);
-    if (this.timer2) clearTimeout(this.timer2);
     this.issueStoreListener.remove();
     this.voterGuideStoreListener.remove();
   }
