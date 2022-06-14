@@ -10,7 +10,7 @@ import { hasIPhoneNotch } from '../../common/utils/cordovaUtils';
 import { renderLog } from '../../common/utils/logging';
 import VoterStore from '../../stores/VoterStore';
 import { calculateBallotBaseUrl } from '../../utils/textFormat';
-import BallotTitleHeader from '../../pages/Ballot/BallotTitleHeader';
+import BallotTitleHeader from './BallotTitleHeader';
 import EditAddressInPlace from '../Widgets/EditAddressInPlace';
 
 const MapChart = React.lazy(() => import(/* webpackChunkName: 'MapChart' */ '../Widgets/MapChart/MapChart'));

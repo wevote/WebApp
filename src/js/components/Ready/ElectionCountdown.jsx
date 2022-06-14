@@ -3,7 +3,8 @@ import PropTypes from 'prop-types';
 import React, { Suspense } from 'react';
 import styled from 'styled-components';
 import BallotActions from '../../actions/BallotActions';
-import BallotTitleHeader from '../../pages/Ballot/BallotTitleHeader';
+import BallotTitleHeader from '../Ballot/BallotTitleHeader';
+import BallotTitleHeaderNationalPlaceholder from '../Ballot/BallotTitleHeaderNationalPlaceholder';
 import { formatDateToMonthDayYear } from '../../common/utils/dateFormat';
 import apiCalming from '../../common/utils/apiCalming';
 import daysUntil from '../../common/utils/daysUntil';
@@ -160,6 +161,7 @@ class ElectionCountdown extends React.Component {
       daysUntilNextElection, daysUntilNextNationalElection, electionIsToday, electionInPast,
       electionDateMDY, nextNationalElectionDateMDY, showButton,
     } = this.state;
+    // console.log('nextNationalElectionDateMDY:', nextNationalElectionDateMDY);
     const electionIsUpcomingHtml = (
       <CardCountdownInternalWrapper>
         <div>
@@ -268,6 +270,16 @@ class ElectionCountdown extends React.Component {
             ) : (<></>)}
           </CardSubTitle>
         </div>
+        <BallotTitleHeaderWrapper>
+          <BallotTitleHeaderNationalPlaceholder
+            centerText
+            electionDateBelow
+            electionDateMDY={nextNationalElectionDateMDY}
+            electionName="General Election"
+            toggleSelectBallotModal={this.toggleSelectBallotModal}
+            turnOffVoteByBelow
+          />
+        </BallotTitleHeaderWrapper>
       </CardCountdownInternalWrapper>
     );
 

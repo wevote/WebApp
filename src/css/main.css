@@ -12313,6 +12313,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .card-main__avatar-compressed {
+  border: 1px solid #ccc;
   border-radius: 36px;
   width: 72px;
   height: 72px;
