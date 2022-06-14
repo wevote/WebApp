@@ -23,7 +23,6 @@ import RouterV5SendMatch from './js/utils/RouterV5SendMatch';
 
 const About = React.lazy(() => import(/* webpackChunkName: 'About' */ './js/pages/More/About'));
 const AbsenteeBallot = React.lazy(() => import(/* webpackChunkName: 'AbsenteeBallot' */ './js/pages/More/AbsenteeBallot'));
-const SetUpAccountRoot = React.lazy(() => import(/* webpackChunkName: 'SetUpAccountRoot' */ './js/pages/SetUpAccount/SetUpAccountRoot'));
 const AddCandidateForExtension = React.lazy(() => import(/* webpackChunkName: 'AddCandidateForExtension' */ './js/pages/Ballot/AddCandidateForExtension'));
 const AppleSignInProcess = React.lazy(() => import(/* webpackChunkName: 'AppleSignInProcess' */ './js/pages/Process/AppleSignInProcess'));
 const Attributions = React.lazy(() => import(/* webpackChunkName: 'Attributions' */ './js/pages/More/Attributions'));
@@ -41,6 +40,7 @@ const FacebookInvitableFriends = React.lazy(() => import(/* webpackChunkName: 'F
 const FacebookLandingProcess = React.lazy(() => import(/* webpackChunkName: 'FacebookLandingProcess' */ './js/pages/Process/FacebookLandingProcess'));
 const FacebookRedirectToWeVote = React.lazy(() => import(/* webpackChunkName: 'FacebookRedirectToWeVote' */ './js/pages/More/FacebookRedirectToWeVote'));
 const Footer = React.lazy(() => import(/* webpackChunkName: 'Footer' */ './js/components/Navigation/Footer'));
+const FindFriendsRoot = React.lazy(() => import(/* webpackChunkName: 'FindFriendsRoot' */ './js/pages/Friends/FindFriendsRoot'));
 const FriendIntroLanding = React.lazy(() => import(/* webpackChunkName: 'FriendIntroLanding' */ './js/pages/FriendIntro/FriendIntroLanding'));
 const FriendInvitationByEmailVerifyProcess = React.lazy(() => import(/* webpackChunkName: 'FriendInvitationByEmailVerifyProcess' */ './js/pages/Process/FriendInvitationByEmailVerifyProcess'));
 // const FriendInvitationOnboarding = React.lazy(() => import(/* webpackChunkName: 'FriendInvitationOnboarding' */ './js/pages/Intro/FriendInvitationOnboarding'));
@@ -76,6 +76,7 @@ const SampleBallot = React.lazy(() => import(/* webpackChunkName: 'SampleBallot'
 const SearchPage = React.lazy(() => import(/* webpackChunkName: 'SearchPage' */ './js/pages/More/SearchPage'));
 const SettingsDashboard = React.lazy(() => import(/* webpackChunkName: 'SettingsDashboard' */ './js/pages/Settings/SettingsDashboard'));
 const SettingsMenuMobile = React.lazy(() => import(/* webpackChunkName: 'SettingsMenuMobile' */ './js/pages/Settings/SettingsMenuMobile'));
+const SetUpAccountRoot = React.lazy(() => import(/* webpackChunkName: 'SetUpAccountRoot' */ './js/pages/SetUpAccount/SetUpAccountRoot'));
 const SharedItemLanding = React.lazy(() => import(/* webpackChunkName: 'SharedItemLanding' */ './js/pages/SharedItemLanding'));
 const SignInEmailProcess = React.lazy(() => import(/* webpackChunkName: 'SignInEmailProcess' */ './js/pages/Process/SignInEmailProcess'));
 const SignInJumpProcess = React.lazy(() => import(/* webpackChunkName: 'SignInJumpProcess' */ './js/pages/Process/SignInJumpProcess'));
@@ -227,6 +228,8 @@ class App extends Component {
                   <Switch>
                     <Route path="/about" exact><About /></Route>
                     <Route path="/ballot" exact component={Ballot} />
+                    <Route path="/findfriends/:set_up_page" exact component={FindFriendsRoot} />
+                    <Route path="/findfriends" exact><FindFriendsRoot /></Route>
                     <Route path="/friends" exact component={Friends} />
                     <Route path="/friends/:tabItem" exact component={Friends} />
                     <Route path="/" exact>

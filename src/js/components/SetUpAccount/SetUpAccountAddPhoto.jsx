@@ -44,6 +44,9 @@ class SetUpAccountAddPhoto extends React.Component {
     if (this.functionToUseWhenProfileCompleteTimer) {
       clearTimeout(this.functionToUseWhenProfileCompleteTimer);
     }
+    if (this.goToNextStepTimer) {
+      clearTimeout(this.goToNextStepTimer);
+    }
   }
 
   onVoterStoreChange () {
@@ -55,6 +58,24 @@ class SetUpAccountAddPhoto extends React.Component {
       voterLastName,
       voterProfileUploadedImageUrlLarge,
     });
+  }
+
+  functionToUseWhenProfileCompleteLocal = () => {
+    if (this.props.functionToUseWhenProfileComplete) {
+      this.props.functionToUseWhenProfileComplete();
+    }
+  }
+
+  functionToUseWhenProfileNotCompleteLocal = () => {
+    if (this.props.functionToUseWhenProfileNotComplete) {
+      this.props.functionToUseWhenProfileNotComplete();
+    }
+  }
+
+  goToNextStepLocal = () => {
+    if (this.props.goToNextStep) {
+      this.props.goToNextStep();
+    }
   }
 
   submitSavePhoto = () => {
@@ -74,11 +95,14 @@ class SetUpAccountAddPhoto extends React.Component {
     if (voterPhotoMissing) {
       this.setState({
         voterPhotoMissing,
-      }, () => this.props.functionToUseWhenProfileNotComplete());
+      }, () => this.functionToUseWhenProfileNotCompleteLocal());
     } else {
       VoterActions.voterRetrieve();
       this.functionToUseWhenProfileCompleteTimer = setTimeout(() => {
-        this.props.functionToUseWhenProfileComplete();
+        this.functionToUseWhenProfileCompleteLocal();
+      }, 500);
+      this.goToNextStepTimer = setTimeout(() => {
+        this.goToNextStepLocal();
       }, 500);
     }
   }
@@ -123,8 +147,9 @@ class SetUpAccountAddPhoto extends React.Component {
   }
 }
 SetUpAccountAddPhoto.propTypes = {
-  functionToUseWhenProfileComplete: PropTypes.func.isRequired,
-  functionToUseWhenProfileNotComplete: PropTypes.func.isRequired,
+  functionToUseWhenProfileComplete: PropTypes.func,
+  functionToUseWhenProfileNotComplete: PropTypes.func,
+  goToNextStep: PropTypes.func,
   nextButtonClicked: PropTypes.bool,
 };
 

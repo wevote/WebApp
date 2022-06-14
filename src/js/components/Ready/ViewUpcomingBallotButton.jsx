@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import styled from 'styled-components';
 import daysUntil from '../../common/utils/daysUntil';
+import historyPush from '../../common/utils/historyPush';
 import { renderLog } from '../../common/utils/logging';
 import BallotStore from '../../stores/BallotStore';
 
@@ -47,6 +48,10 @@ class ViewUpcomingBallotButton extends React.Component {
     }
   }
 
+  goToFindFriends = () => {
+    historyPush('/findfriends/importcontacts');
+  }
+
   render () {
     renderLog('ViewUpcomingBallotButton');  // Set LOG_RENDER_EVENTS to log all renders
     const {
@@ -56,7 +61,7 @@ class ViewUpcomingBallotButton extends React.Component {
       <ViewUpcomingBallotButtonWrapper>
         <Button
           color="primary"
-          onClick={this.onClickFunctionLocal}
+          onClick={electionDataExistsForUpcomingElection ? this.onClickFunctionLocal : this.goToFindFriends}
           style={{
             boxShadow: 'none !important',
             textTransform: 'none',
@@ -67,7 +72,7 @@ class ViewUpcomingBallotButton extends React.Component {
           {electionDataExistsForUpcomingElection ? (
             <>View your ballot</>
           ) : (
-            <>View your ballot</>
+            <>Find your friends</>
           )}
         </Button>
       </ViewUpcomingBallotButtonWrapper>

@@ -177,6 +177,7 @@ export default class Header extends Component {
     const path = normalizedHref();
     return (
       path.startsWith('/about') ||
+      path.startsWith('/findfriends') ||
       path.startsWith('/for-campaigns') ||
       path.startsWith('/how/for-campaigns') ||
       path.startsWith('/more/about') ||

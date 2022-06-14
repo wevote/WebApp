@@ -16,7 +16,7 @@ import stringContains from '../../common/utils/stringContains';
 import normalizedImagePath from '../../common/utils/normalizedImagePath';
 import HeaderBackToButton from '../../components/Navigation/HeaderBackToButton';
 import SetUpAccountNextButton from '../../components/SetUpAccount/SetUpAccountNextButton';
-import { reassuranceText } from '../../components/SetUpAccount/reassuranceText';
+import { reassuranceTextFindFriends } from '../../components/SetUpAccount/reassuranceTextFindFriends';
 import {
   DesktopNextButtonsInnerWrapper, DesktopNextButtonsOuterWrapperUShowDesktopTablet,
   DesktopStaticNextButtonsOuterWrapper,
@@ -34,22 +34,30 @@ const SetUpAccountEditName = React.lazy(() => import(/* webpackChunkName: 'SetUp
 const SetUpAccountFriendRequests = React.lazy(() => import(/* webpackChunkName: 'SetUpAccountFriendRequests' */ '../../components/SetUpAccount/SetUpAccountFriendRequests'));
 const SetUpAccountImportContacts = React.lazy(() => import(/* webpackChunkName: 'SetUpAccountImportContacts' */ '../../components/SetUpAccount/SetUpAccountImportContacts'));
 const SetUpAccountInviteContacts = React.lazy(() => import(/* webpackChunkName: 'SetUpAccountInviteContacts' */ '../../components/SetUpAccount/SetUpAccountInviteContacts'));
+const SignInOptionsPanel = React.lazy(() => import(/* webpackChunkName: 'SignInOptionsPanel' */ '../../components/SignIn/SignInOptionsPanel'));
 
 const inDevelopmentMode = true;
 const logoColorOnWhite = '../../../img/global/svg-icons/we-vote-icon-square-color-dark.svg';
 
 
-class SetUpAccountRoot extends React.Component {
+class FindFriendsRoot extends React.Component {
   constructor (props) {
     super(props);
     this.state = {
       addPhotoNextButtonDisabled: true,
+      addPhotoStepVisited: false,
+      backButtonOn: false,
       backToLinkPath: '',
-      displayStep: 1, // editname
+      desktopFixedButtonsOn: false,
+      desktopInlineButtonsOnInMobile: false,
+      displayStep: 1, // importcontacts
       editNameNextButtonDisabled: true,
+      editNameStepVisited: false,
       electionDataExistsForUpcomingElection: false,
       friendConnectionActionAvailable: false,
+      mobileFixedButtonsOff: false,
       nextButtonClicked: false,
+      nextButtonDisabled: false,
       setUpAccountBackLinkPath: '',
       setUpAccountEntryPath: '',
       voterContactEmailListCount: 0,
@@ -89,7 +97,7 @@ class SetUpAccountRoot extends React.Component {
     }
   }
 
-  componentDidUpdate (prevProps, prevState) {
+  componentDidUpdate (prevProps) {
     let prevParams = {};
     let prevSetUpPagePath = '';
     const { match: prevMatch } = prevProps;
@@ -108,21 +116,20 @@ class SetUpAccountRoot extends React.Component {
         ({ set_up_page: setUpPagePath } = params);
       }
     }
-    const { voterContactEmailListCount: voterContactEmailListCountPrevious } = prevState;
-    const { voterContactEmailListCount } = this.state;
-    // console.log('SetUpAccountRoot componentDidUpdate prevProps.nextButtonClicked:', prevProps.nextButtonClicked, ', this.props.nextButtonClicked:', this.props.nextButtonClicked);
+    const displayStep = this.convertSetUpPagePathToDisplayStep(setUpPagePath);
+    const voterIsSignedIn = VoterStore.getVoterIsSignedIn();
+    // console.log('FindFriendsRoot componentDidUpdate setUpPagePath:', setUpPagePath);
     if (prevSetUpPagePath !== setUpPagePath) {
-      const displayStep = this.convertSetUpPagePathToDisplayStep(setUpPagePath);
-      console.log('SetUpAccountRoot componentDidUpdate setUpPagePath: ', setUpPagePath, ', displayStep:', displayStep);
+      // console.log('FindFriendsRoot componentDidUpdate setUpPagePath: ', setUpPagePath, ', displayStep:', displayStep);
       this.shouldNextButtonBeDisabled();
       this.setState({
         displayStep,
         setUpPagePath,
       }, () => this.setNextStepVariables());
-    } else if ((setUpPagePath === 'importcontacts') && (voterContactEmailListCount > 0 && (voterContactEmailListCountPrevious !== voterContactEmailListCount))) {
-      // console.log('Leaving importcontacts step');
+    } else if (voterIsSignedIn && ((setUpPagePath === 'signin') || (displayStep === 2))) {
+      // console.log('On signin step and need to advance to editname');
       this.resetNextButtonClicked();
-      historyPush('/setupaccount/invitecontacts');
+      historyPush('/findfriends/editname');
     }
   }
 
@@ -167,6 +174,7 @@ class SetUpAccountRoot extends React.Component {
     const { setUpPagePath } = this.state;
     const displayStep = this.convertSetUpPagePathToDisplayStep(setUpPagePath);
     const voterContactEmailListCount = VoterStore.getVoterContactEmailListCount();
+    const voterFirstName = VoterStore.getFirstName();
     const voterPhotoUrlLarge = VoterStore.getVoterPhotoUrlLarge();
     // const voterContactEmailGoogleCount = VoterStore.getVoterContactEmailGoogleCount();
     // console.log('onVoterStoreChange voterContactEmailGoogleCount:', voterContactEmailGoogleCount, ', voterContactEmailListCount:', voterContactEmailListCount);
@@ -174,6 +182,8 @@ class SetUpAccountRoot extends React.Component {
       displayStep,
       // voterContactEmailGoogleCount,
       voterContactEmailListCount,
+      voterFirstName,
+      // voterIsSignedIn: VoterStore.getVoterIsSignedIn(),
       voterPhotoUrlLarge,
     }, () => this.setNextStepVariables());
   }
@@ -181,26 +191,29 @@ class SetUpAccountRoot extends React.Component {
   convertSetUpPagePathToDisplayStep = (setUpPagePath) => {
     let displayStep;
     switch (setUpPagePath) {
-      case 'editname':
+      default:
+      case 'importcontacts':
         displayStep = 1;
+        break;
+      case 'signin':
+        displayStep = 2;
+        break;
+      case 'editname':
+        displayStep = 3;
         break;
       case 'addphoto':
         if (VoterStore.getVoterProfileUploadedImageUrlLarge()) {
           // This turns off the reassurance text
-          displayStep = 3;
+          displayStep = 5;
         } else {
-          displayStep = 2;
+          displayStep = 4;
         }
         break;
-      default:
-      case 'importcontacts':
-        displayStep = 4;
-        break;
       case 'invitecontacts':
-        displayStep = 5;
+        displayStep = 6;
         break;
       case 'friendrequests':
-        displayStep = 6;
+        displayStep = 7;
         break;
     }
     return displayStep;
@@ -215,12 +228,18 @@ class SetUpAccountRoot extends React.Component {
   goToNextStep = () => {
     this.resetNextButtonClicked();
     const { nextStepPath } = this.state;
-    historyPush(nextStepPath);
+    console.log('FindFriendsRoot goToNextStep nextStepPath:', nextStepPath);
+    if (nextStepPath) {
+      historyPush(nextStepPath);
+    }
   }
 
   goToSkipForNow = () => {
     const { skipForNowPath } = this.state;
-    historyPush(skipForNowPath);
+    // console.log('FindFriendsRoot goToSkipForNow skipForNowPath:', skipForNowPath);
+    if (skipForNowPath) {
+      historyPush(skipForNowPath);
+    }
   }
 
   resetNextButtonClicked = () => {
@@ -231,28 +250,95 @@ class SetUpAccountRoot extends React.Component {
 
   setNextStepVariables = () => {
     const {
-      displayStep, electionDataExistsForUpcomingElection, friendConnectionActionAvailable,
+      addPhotoNextButtonDisabled, displayStep, editNameNextButtonDisabled,
+      electionDataExistsForUpcomingElection, friendConnectionActionAvailable,
       setUpAccountBackLinkPath, setUpAccountEntryPath,
-      voterContactEmailListCount, voterPhotoUrlLarge,
+      signInNextButtonDisabled,
+      voterContactEmailListCount, voterFirstName, voterPhotoUrlLarge,
     } = this.state;
+    let { addPhotoStepVisited, editNameStepVisited } = this.state;
+    let backButtonOn;
+    let desktopFixedButtonsOn = true;
+    let desktopInlineButtonsOnInMobile = false;
     let backToLinkPath = '';
+    let mobileFixedButtonsOff = false;
     const nextButtonAsOutline = false;
+    let nextButtonDisabled = false;
     let nextButtonText = '';
     let nextStepPath;
     let reassuranceTextOff;
     let skipForNowOff;
     let skipForNowPath = '';
+    const voterIsSignedIn = VoterStore.getVoterIsSignedIn();
     switch (displayStep) {
       default:
-      case 1: // 'editname'
-        backToLinkPath = setUpAccountBackLinkPath;
+      case 1: // importcontacts
+        backToLinkPath = '';
+        backButtonOn = true;
+        desktopFixedButtonsOn = false;
+        desktopInlineButtonsOnInMobile = true;
+        mobileFixedButtonsOff = true;
+        reassuranceTextOff = false;
+        if (!voterIsSignedIn) {
+          nextButtonText = 'Next';
+          nextStepPath = '/findfriends/signin';
+          skipForNowOff = false;
+          skipForNowPath = '/findfriends/signin';
+        } else if (!voterFirstName) {
+          nextButtonText = 'Next';
+          nextStepPath = '/findfriends/editname';
+          skipForNowOff = false;
+          skipForNowPath = '/findfriends/signin';
+        } else if (!voterPhotoUrlLarge) {
+          nextButtonText = 'Next';
+          nextStepPath = '/findfriends/addphoto';
+          skipForNowOff = false;
+          skipForNowPath = '/findfriends/signin';
+        } else if (voterContactEmailListCount > 0) {
+          nextButtonText = 'Choose contacts to add as friends';
+          nextStepPath = '/findfriends/invitecontacts';
+          skipForNowOff = false;
+          skipForNowPath = '/findfriends/friendrequests';
+        } else {
+          nextButtonText = 'Import contacts from Gmail';
+          // We will want to add a switch between friend requests and suggestions here
+          nextStepPath = '/findfriends/friendrequests';
+          skipForNowOff = false;
+          skipForNowPath = '/findfriends/friendrequests';
+        }
+        break;
+      case 2: // signin
+        backButtonOn = true;
+        backToLinkPath = '/findfriends/importcontacts';
+        desktopFixedButtonsOn = false;
+        desktopInlineButtonsOnInMobile = true;
+        mobileFixedButtonsOff = true;
+        nextButtonDisabled = signInNextButtonDisabled;
         nextButtonText = 'Next';
+        reassuranceTextOff = false;
+        if (voterContactEmailListCount > 0) {
+          nextStepPath = '/findfriends/invitecontacts';
+          skipForNowOff = false;
+          skipForNowPath = '/ready';
+        } else {
+          // We will want to add a switch between friend requests and suggestions here
+          nextStepPath = '/findfriends/friendrequests';
+          skipForNowOff = false;
+          skipForNowPath = '/ready';
+        }
+        break;
+      case 3: // 'editname'
+        backButtonOn = true;
+        backToLinkPath = '/findfriends/importcontacts';
+        desktopFixedButtonsOn = false;
+        nextButtonDisabled = editNameNextButtonDisabled;
+        nextButtonText = 'Save';
         reassuranceTextOff = false;
         skipForNowOff = false;
         if (voterPhotoUrlLarge) {
           if (inDevelopmentMode) {
             if (voterContactEmailListCount > 0) {
-              nextStepPath = '/setupaccount/invitecontacts';
+              nextStepPath = '/findfriends/invitecontacts';
               skipForNowOff = false;
               if (electionDataExistsForUpcomingElection) {
                 skipForNowPath = '/ballot';
@@ -260,7 +346,7 @@ class SetUpAccountRoot extends React.Component {
                 skipForNowPath = '/ready';
               }
             } else {
-              nextStepPath = '/setupaccount/importcontacts';
+              nextStepPath = '/findfriends/friendrequests';
               skipForNowOff = false;
               if (electionDataExistsForUpcomingElection) {
                 skipForNowPath = '/ballot';
@@ -277,16 +363,20 @@ class SetUpAccountRoot extends React.Component {
             skipForNowOff = true;
           }
         } else {
-          nextStepPath = '/setupaccount/addphoto';
-          skipForNowPath = '/setupaccount/addphoto';
+          nextStepPath = '/findfriends/addphoto';
+          skipForNowPath = '/findfriends/addphoto';
         }
+        editNameStepVisited = true;
         break;
-      case 2: // 'addphoto'
-      case 3:
+      case 4: // 'addphoto'
+      case 5:
+        backButtonOn = true;
+        desktopFixedButtonsOn = false;
+        nextButtonDisabled = addPhotoNextButtonDisabled;
         if (stringContains('addphoto', setUpAccountEntryPath)) {
           backToLinkPath = setUpAccountBackLinkPath;
         } else {
-          backToLinkPath = '/setupaccount/editname';
+          backToLinkPath = '/findfriends/editname';
         }
         reassuranceTextOff = false;
         if (inDevelopmentMode) {
@@ -298,17 +388,28 @@ class SetUpAccountRoot extends React.Component {
             nextButtonText = 'Find your friends';
             nextStepPath = '/setupaccount/invitecontacts';
             skipForNowOff = false;
-            skipForNowPath = '/setupaccount/invitecontacts';
+            if (electionDataExistsForUpcomingElection) {
+              skipForNowPath = '/ballot';
+            } else {
+              skipForNowPath = '/ready';
+            }
+          } else if (friendConnectionActionAvailable) {
+            nextButtonText = 'Next';
+            nextStepPath = '/setupaccount/friendrequests';
+            if (electionDataExistsForUpcomingElection) {
+              skipForNowPath = '/ballot';
+            } else {
+              skipForNowPath = '/ready';
+            }
+          } else if (electionDataExistsForUpcomingElection) {
+            nextButtonText = 'View your ballot';
+            nextStepPath = '/ballot';
+            skipForNowOff = true;
           } else {
-            nextButtonText = 'Find your friends';
-            nextStepPath = '/setupaccount/importcontacts';
-            skipForNowOff = false;
-            skipForNowPath = '/setupaccount/importcontacts';
+            nextButtonText = 'Get ready to vote';
+            nextStepPath = '/ready';
+            skipForNowOff = true;
           }
-        } else if (!voterPhotoUrlLarge) {
-          nextButtonText = 'Save your photo';
-          skipForNowOff = false;
-          skipForNowPath = '/setupaccount/invitecontacts';
         } else if (electionDataExistsForUpcomingElection) {
           nextButtonText = 'View your ballot';
           nextStepPath = '/ballot';
@@ -318,43 +419,17 @@ class SetUpAccountRoot extends React.Component {
           nextStepPath = '/ready';
           skipForNowOff = true;
         }
+        addPhotoStepVisited = true;
         break;
-      case 4: // importcontacts
-        if (stringContains('importcontacts', setUpAccountEntryPath)) {
-          backToLinkPath = setUpAccountBackLinkPath;
+      case 6: // invitecontacts
+        backButtonOn = true;
+        desktopFixedButtonsOn = true;
+        if (addPhotoStepVisited) {
+          backToLinkPath = '/findfriends/addphoto';
+        } else if (editNameStepVisited) {
+          backToLinkPath = '/findfriends/editname';
         } else {
-          backToLinkPath = '/setupaccount/addphoto';
-        }
-        reassuranceTextOff = false;
-        if (voterContactEmailListCount > 0) {
-          nextButtonText = 'Choose contacts to add as friends';
-          nextStepPath = '/setupaccount/invitecontacts';
-          skipForNowOff = false;
-          if (electionDataExistsForUpcomingElection) {
-            skipForNowPath = '/ballot';
-          } else {
-            skipForNowPath = '/ready';
-          }
-        } else {
-          nextButtonText = 'Import contacts from Gmail';
-          skipForNowOff = false;
-          if (friendConnectionActionAvailable) {
-            nextStepPath = '/setupaccount/friendrequests';
-            skipForNowPath = '/setupaccount/friendrequests';
-          } else if (electionDataExistsForUpcomingElection) {
-            nextStepPath = '/ballot';
-            skipForNowPath = '/ballot';
-          } else {
-            nextStepPath = '/ready';
-            skipForNowPath = '/ready';
-          }
-        }
-        break;
-      case 5: // invitecontacts
-        if (stringContains('invitecontacts', setUpAccountEntryPath)) {
-          backToLinkPath = setUpAccountBackLinkPath;
-        } else {
-          backToLinkPath = '/setupaccount/importcontacts';
+          backToLinkPath = '/findfriends/importcontacts';
         }
         reassuranceTextOff = true;
         skipForNowOff = false;
@@ -374,13 +449,15 @@ class SetUpAccountRoot extends React.Component {
           skipForNowPath = '/ready';
         }
         break;
-      case 6: // friendrequests
+      case 7: // friendrequests
+        backButtonOn = true;
+        desktopFixedButtonsOn = true;
         if (stringContains('friendrequests', setUpAccountEntryPath)) {
           backToLinkPath = setUpAccountBackLinkPath;
         } else if (voterContactEmailListCount > 0) {
-          backToLinkPath = '/setupaccount/invitecontacts';
+          backToLinkPath = '/findfriends/invitecontacts';
         } else {
-          backToLinkPath = '/setupaccount/importcontacts';
+          backToLinkPath = '/findfriends/importcontacts';
         }
         if (electionDataExistsForUpcomingElection) {
           nextButtonText = 'View your ballot';
@@ -394,8 +471,15 @@ class SetUpAccountRoot extends React.Component {
         break;
     }
     this.setState({
+      addPhotoStepVisited,
+      backButtonOn,
       backToLinkPath,
+      desktopFixedButtonsOn,
+      desktopInlineButtonsOnInMobile,
+      editNameStepVisited,
+      mobileFixedButtonsOff,
       nextButtonAsOutline,
+      nextButtonDisabled,
       nextButtonText,
       nextStepPath,
       reassuranceTextOff,
@@ -409,6 +493,7 @@ class SetUpAccountRoot extends React.Component {
     let voterFirstNameMissing = false;
     let voterPhotoMissing = false;
     const voterFirstNameQueuedToSave = VoterStore.getVoterFirstNameQueuedToSave();
+    const voterIsSignedIn = VoterStore.getVoterIsSignedIn();
     const voterIsSignedInWithEmail = VoterStore.getVoterIsSignedInWithEmail();
     const voterEmailQueuedToSave = VoterStore.getVoterEmailQueuedToSave();
     const voterPhotoQueuedToSave = VoterStore.getVoterPhotoQueuedToSave();
@@ -424,64 +509,29 @@ class SetUpAccountRoot extends React.Component {
     this.setState({
       addPhotoNextButtonDisabled: voterPhotoMissing,
       editNameNextButtonDisabled: voterEmailMissing || voterFirstNameMissing,
+      signInNextButtonDisabled: !voterIsSignedIn,
     });
   }
 
   render () {
-    renderLog('SetUpAccountRoot');  // Set LOG_RENDER_EVENTS to log all renders
+    renderLog('FindFriendsRoot');  // Set LOG_RENDER_EVENTS to log all renders
     const { classes } = this.props;
     const {
-      addPhotoNextButtonDisabled, backToLinkPath, displayStep,
-      editNameNextButtonDisabled, nextButtonAsOutline, nextButtonClicked, nextButtonText,
-      reassuranceTextOff, setUpAccountBackLinkPath, skipForNowOff,
+      backButtonOn, backToLinkPath,
+      desktopFixedButtonsOn, desktopInlineButtonsOnInMobile, displayStep,
+      mobileFixedButtonsOff,
+      nextButtonAsOutline, nextButtonClicked, nextButtonDisabled, nextButtonText,
+      reassuranceTextOff, skipForNowOff,
       voterContactEmailListCount,
     } = this.state;
-    // console.log('SetUpAccountRoot displayState', displayStep);
+    // console.log('FindFriendsRoot displayState', displayStep);
 
-    let backButtonOn;
-    let desktopInlineButtonsOnInMobile;
-    let desktopFixedButtonsOn;
     let desktopNextButtonHtml;
-    let mobileFixedButtonsOff;
     let mobileNextButtonHtml;
-    let nextButtonDisabled = false;
     let stepHtml;
     switch (displayStep) {
       default:
-      case 1: // editname
-        backButtonOn = !!(setUpAccountBackLinkPath);
-        desktopFixedButtonsOn = false;
-        nextButtonDisabled = editNameNextButtonDisabled;
-        stepHtml = (
-          <Suspense fallback={<></>}>
-            <SetUpAccountEditName
-              functionToUseWhenProfileComplete={this.goToNextStep}
-              functionToUseWhenProfileNotComplete={this.resetNextButtonClicked}
-              nextButtonClicked={nextButtonClicked}
-            />
-          </Suspense>
-        );
-        break;
-      case 2: // addphoto
-      case 3:
-        backButtonOn = true;
-        desktopFixedButtonsOn = false;
-        nextButtonDisabled = addPhotoNextButtonDisabled;
-        stepHtml = (
-          <Suspense fallback={<></>}>
-            <SetUpAccountAddPhoto
-              goToNextStep={this.goToNextStep}
-              functionToUseWhenProfileNotComplete={this.resetNextButtonClicked}
-              nextButtonClicked={nextButtonClicked}
-            />
-          </Suspense>
-        );
-        break;
-      case 4: // importcontacts
-        backButtonOn = true;
-        desktopFixedButtonsOn = false;
-        desktopInlineButtonsOnInMobile = true;
-        mobileFixedButtonsOff = true;
+      case 1: // importcontacts
         stepHtml = (
           <Suspense fallback={<></>}>
             <SetUpAccountImportContacts
@@ -492,9 +542,41 @@ class SetUpAccountRoot extends React.Component {
           </Suspense>
         );
         break;
-      case 5: // invitecontacts
-        backButtonOn = true;
-        desktopFixedButtonsOn = true;
+      case 2: // signin
+        stepHtml = (
+          <Suspense fallback={<></>}>
+            <SignInOptionsPanel
+              pleaseSignInTitle="Sign in to connect with friends"
+              pleaseSignInSubTitle="&nbsp;"
+            />
+          </Suspense>
+        );
+        break;
+      case 3: // editname
+        stepHtml = (
+          <Suspense fallback={<></>}>
+            <SetUpAccountEditName
+              // functionToUseWhenProfileComplete={this.editNameNextStepPossible}
+              functionToUseWhenProfileNotComplete={this.resetNextButtonClicked}
+              goToNextStep={this.goToNextStep}
+              nextButtonClicked={nextButtonClicked}
+            />
+          </Suspense>
+        );
+        break;
+      case 4: // addphoto
+      case 5:
+        stepHtml = (
+          <Suspense fallback={<></>}>
+            <SetUpAccountAddPhoto
+              functionToUseWhenProfileNotComplete={this.resetNextButtonClicked}
+              goToNextStep={this.goToNextStep}
+              nextButtonClicked={nextButtonClicked}
+            />
+          </Suspense>
+        );
+        break;
+      case 6: // invitecontacts
         stepHtml = (
           <Suspense fallback={<></>}>
             <SetUpAccountInviteContacts
@@ -504,9 +586,7 @@ class SetUpAccountRoot extends React.Component {
           </Suspense>
         );
         break;
-      case 6: // friendrequests
-        backButtonOn = true;
-        desktopFixedButtonsOn = true;
+      case 7: // friendrequests
         stepHtml = (
           <Suspense fallback={<></>}>
             <SetUpAccountFriendRequests
@@ -520,30 +600,7 @@ class SetUpAccountRoot extends React.Component {
 
     switch (displayStep) {
       default:
-      case 1: // editname
-      case 2: // addphoto
-      case 3:
-      case 5: // invitecontacts
-      case 6: // friendrequests
-        desktopNextButtonHtml = (
-          <SetUpAccountNextButton
-            nextButtonAsOutline={nextButtonAsOutline}
-            nextButtonDisabled={nextButtonDisabled}
-            nextButtonText={nextButtonText}
-            onClickNextButton={this.onClickNextButton}
-          />
-        );
-        mobileNextButtonHtml = (
-          <SetUpAccountNextButton
-            isMobile
-            nextButtonAsOutline={nextButtonAsOutline}
-            nextButtonDisabled={nextButtonDisabled}
-            nextButtonText={nextButtonText}
-            onClickNextButton={this.onClickNextButton}
-          />
-        );
-        break;
-      case 4: // importcontacts
+      case 1: // importcontacts
         if (voterContactEmailListCount > 0) {
           desktopNextButtonHtml = (
             <SetUpAccountNextButton
@@ -571,6 +628,30 @@ class SetUpAccountRoot extends React.Component {
             </Suspense>
           );
         }
+        break;
+      case 2: // signin
+      case 3: // invitecontacts
+      case 4: // editname
+      case 5: // addphoto
+      case 6:
+      case 7: // friendrequests
+        desktopNextButtonHtml = (
+          <SetUpAccountNextButton
+            nextButtonAsOutline={nextButtonAsOutline}
+            nextButtonDisabled={nextButtonDisabled}
+            nextButtonText={nextButtonText}
+            onClickNextButton={this.onClickNextButton}
+          />
+        );
+        mobileNextButtonHtml = (
+          <SetUpAccountNextButton
+            isMobile
+            nextButtonAsOutline={nextButtonAsOutline}
+            nextButtonDisabled={nextButtonDisabled}
+            nextButtonText={nextButtonText}
+            onClickNextButton={this.onClickNextButton}
+          />
+        );
         break;
     }
 
@@ -610,7 +691,7 @@ class SetUpAccountRoot extends React.Component {
     }
     return (
       <PageContentContainerAccountSetUp>
-        <Helmet title="Set Up Account - We Vote" />
+        <Helmet title="Find Your Friends - We Vote" />
         <AccountSetUpRootWrapper>
           <WeVoteLogoWrapper>
             <WeVoteLogo
@@ -641,7 +722,7 @@ class SetUpAccountRoot extends React.Component {
             </DesktopNextButtonsOuterWrapperUShowDesktopTablet>
           )}
           {!reassuranceTextOff && (
-            <Reassurance displayState={displayStep} reassuranceText={reassuranceText} />
+            <Reassurance displayState={displayStep} reassuranceText={reassuranceTextFindFriends} />
           )}
         </AccountSetUpRootWrapper>
         {!mobileFixedButtonsOff && (
@@ -662,7 +743,7 @@ class SetUpAccountRoot extends React.Component {
     );
   }
 }
-SetUpAccountRoot.propTypes = {
+FindFriendsRoot.propTypes = {
   classes: PropTypes.object,
   match: PropTypes.object,
 };
@@ -731,4 +812,4 @@ const WeVoteLogoWrapper = styled('div')`
   margin-bottom: 35px;
 `;
 
-export default withStyles(styles)(SetUpAccountRoot);
+export default withStyles(styles)(FindFriendsRoot);

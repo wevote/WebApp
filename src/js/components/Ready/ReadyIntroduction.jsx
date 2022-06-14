@@ -1,6 +1,7 @@
 import withTheme from '@mui/styles/withTheme';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
+import { Link } from 'react-router-dom';
 import { renderLog } from '../../common/utils/logging';
 import {
   Dot,
@@ -61,7 +62,13 @@ class ReadyIntroduction extends Component {
               {contentUnfurled && (
                 <ListRow>
                   <Dot><StepNumberPlaceholder>&nbsp;</StepNumberPlaceholder></Dot>
-                  <StepText>When is the next election? What is on your ballot? Make a plan for casting your vote.</StepText>
+                  <StepText>
+                    When is the next election? What is on your ballot? How are
+                    {' '}
+                    <Link to="/findfriends/importcontacts" className="u-link-color">your friends</Link>
+                    {' '}
+                    planning to vote?
+                  </StepText>
                 </ListRow>
               )}
 

@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import styled from 'styled-components';
 import { renderLog } from '../../common/utils/logging';
+import FriendInvitationList from '../Friends/FriendInvitationList';
 import SuggestedFriendList from '../Friends/SuggestedFriendList';
 import FriendStore from '../../stores/FriendStore';
 import { SectionTitle } from '../Style/friendStyles';
@@ -19,16 +20,13 @@ class SetUpAccountFriendRequests extends React.Component {
   constructor (props) {
     super(props);
     this.state = {
+      friendInvitationsSentToMe: [],
+      suggestedFriendList: [],
     };
   }
 
   componentDidMount () {
-    const suggestedFriendListUnsorted = FriendStore.suggestedFriendList();
-    const suggestedFriendList = sortFriendListByMutualFriends(suggestedFriendListUnsorted);
-    this.setState({
-      suggestedFriendList,
-    });
-
+    this.onFriendStoreChange();
     this.friendStoreListener = FriendStore.addListener(this.onFriendStoreChange.bind(this));
   }
 
@@ -44,17 +42,21 @@ class SetUpAccountFriendRequests extends React.Component {
   }
 
   onFriendStoreChange () {
+    const friendInvitationsSentToMeUnsorted = FriendStore.friendInvitationsSentToMe();
+    const friendInvitationsSentToMe = friendInvitationsSentToMeUnsorted;
     const suggestedFriendListUnsorted = FriendStore.suggestedFriendList();
     const suggestedFriendList = sortFriendListByMutualFriends(suggestedFriendListUnsorted);
     this.setState({
+      friendInvitationsSentToMe,
       suggestedFriendList,
     });
   }
 
   render () {
     renderLog('SetUpAccountFriendRequests');  // Set LOG_RENDER_EVENTS to log all renders
-    const { suggestedFriendList } = this.state;
-
+    const { friendInvitationsSentToMe, suggestedFriendList } = this.state;
+    const friendInvitationsSentToMeLength = (friendInvitationsSentToMe) ? friendInvitationsSentToMe.length : 0;
+    const suggestedFriendListLength = (suggestedFriendList) ? suggestedFriendList.length : 0;
     return (
       <StepCenteredWrapper>
         <SetUpAccountTop>
@@ -62,15 +64,35 @@ class SetUpAccountFriendRequests extends React.Component {
           <SetUpAccountIntroText>&nbsp;</SetUpAccountIntroText>
         </SetUpAccountTop>
         {/* Chip filters here */}
-        <SetUpAccountSubTitleWrapper>
-          <SectionTitle>
-            People you may know
-          </SectionTitle>
-        </SetUpAccountSubTitleWrapper>
-        <SuggestedFriendList
-          friendList={suggestedFriendList}
-          editMode
-        />
+        {friendInvitationsSentToMeLength > 0 && (
+          <>
+            <SetUpAccountSubTitleWrapper>
+              <SectionTitle>
+                Invitations sent to me
+              </SectionTitle>
+            </SetUpAccountSubTitleWrapper>
+            <FriendInvitationList
+              editMode
+              friendList={friendInvitationsSentToMe}
+            />
+          </>
+        )}
+        {suggestedFriendListLength > 0 && (
+          <>
+            <SetUpAccountSubTitleWrapper>
+              <SectionTitle>
+                People you may know
+              </SectionTitle>
+            </SetUpAccountSubTitleWrapper>
+            <SuggestedFriendList
+              friendList={suggestedFriendList}
+              editMode
+            />
+          </>
+        )}
+        {(!(suggestedFriendListLength > 0) && !(friendInvitationsSentToMeLength > 0)) && (
+          <>Suggested friends not found yet.</>
+        )}
       </StepCenteredWrapper>
     );
   }
