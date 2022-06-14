@@ -21,6 +21,7 @@ class SetUpAccountEditName extends React.Component {
   constructor (props) {
     super(props);
     this.state = {
+      secretCodeVerificationProcessed: false,
       voterEmailQueuedToSaveLocal: '',
     };
   }
@@ -42,10 +43,13 @@ class SetUpAccountEditName extends React.Component {
     if (this.functionToUseWhenProfileCompleteTimer) {
       clearTimeout(this.functionToUseWhenProfileCompleteTimer);
     }
+    if (this.goToNextStepTimer) {
+      clearTimeout(this.goToNextStepTimer);
+    }
   }
 
   onVoterStoreChange () {
-    const { voterWeVoteId: voterWeVoteIdPrevious } = this.state;
+    const { voterWeVoteId: voterWeVoteIdPrevious, secretCodeVerificationProcessed } = this.state;
     const emailAddressStatus = VoterStore.getEmailAddressStatus();
     // const { secret_code_system_locked_for_this_voter_device_id: secretCodeSystemLocked } = emailAddressStatus;
     const secretCodeVerificationStatus = VoterStore.getSecretCodeVerificationStatus();
@@ -58,10 +62,15 @@ class SetUpAccountEditName extends React.Component {
     if (secretCodeVerified) {
       // Mark that voter supports this campaign
       // console.log('SetUpAccountEditName secretCodeVerified');
-      VoterActions.voterRetrieve();
-      this.functionToUseWhenProfileCompleteTimer = setTimeout(() => {
-        this.props.functionToUseWhenProfileComplete();
-      }, 500);
+      if (!secretCodeVerificationProcessed) {
+        VoterActions.voterRetrieve();
+        this.functionToUseWhenProfileCompleteTimer = setTimeout(() => {
+          this.functionToUseWhenProfileCompleteLocal();
+        }, 500);
+        this.setState({
+          secretCodeVerificationProcessed: true,
+        });
+      }
     } else if (emailAddressStatus.verification_email_sent) {
       // console.log('emailAddressStatus.verification_email_sent');
       this.setState({
@@ -92,9 +101,9 @@ class SetUpAccountEditName extends React.Component {
     VoterActions.clearEmailAddressStatus();
     VoterActions.clearSecretCodeVerificationStatus();
     VoterActions.voterRetrieve();
-    if (verified && this.props.functionToUseWhenProfileComplete) {
-      // console.log('SetUpAccountEditName closeVerifyModal, functionToUseWhenProfileComplete exists');
-      this.props.functionToUseWhenProfileComplete();
+    if (verified) {
+      // console.log('SetUpAccountEditName closeVerifyModal');
+      this.functionToUseWhenProfileCompleteLocal();
     }
     const delayBeforeClosingVerifyModal = 400;
     this.closeVerifyModalTimer = setTimeout(() => {
@@ -103,6 +112,24 @@ class SetUpAccountEditName extends React.Component {
       });
     }, delayBeforeClosingVerifyModal);
   };
+
+  functionToUseWhenProfileCompleteLocal = () => {
+    if (this.props.functionToUseWhenProfileComplete) {
+      this.props.functionToUseWhenProfileComplete();
+    }
+  }
+
+  functionToUseWhenProfileNotCompleteLocal = () => {
+    if (this.props.functionToUseWhenProfileNotComplete) {
+      this.props.functionToUseWhenProfileNotComplete();
+    }
+  }
+
+  goToNextStepLocal = () => {
+    if (this.props.goToNextStep) {
+      this.props.goToNextStep();
+    }
+  }
 
   submitSaveNameAndEmail = () => {
     console.log('SetUpAccountEditName submitSaveNameAndEmail');
@@ -141,14 +168,14 @@ class SetUpAccountEditName extends React.Component {
         voterEmailMissing,
         voterFirstNameMissing,
         voterLastNameMissing,
-      }, () => this.props.functionToUseWhenProfileNotComplete());
+      }, () => this.functionToUseWhenProfileNotCompleteLocal());
     } else if (!voterIsSignedInWithEmail || validAlternateEmail) {
       // All required fields were found
       VoterActions.sendSignInCodeEmail(voterEmailQueuedToSave);
     } else {
       // VoterActions.voterRetrieve(); // This might set up a race condition with voterUpdate, and not allow a new name to show up
-      this.functionToUseWhenProfileCompleteTimer = setTimeout(() => {
-        this.props.functionToUseWhenProfileComplete();
+      this.goToNextStepTimer = setTimeout(() => {
+        this.goToNextStepLocal();
       }, 500);
     }
   }
@@ -190,8 +217,9 @@ class SetUpAccountEditName extends React.Component {
   }
 }
 SetUpAccountEditName.propTypes = {
-  functionToUseWhenProfileComplete: PropTypes.func.isRequired,
-  functionToUseWhenProfileNotComplete: PropTypes.func.isRequired,
+  functionToUseWhenProfileComplete: PropTypes.func,
+  functionToUseWhenProfileNotComplete: PropTypes.func,
+  goToNextStep: PropTypes.func,
   nextButtonClicked: PropTypes.bool,
 };
 

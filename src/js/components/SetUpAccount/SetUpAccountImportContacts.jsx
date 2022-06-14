@@ -4,7 +4,6 @@ import PropTypes from 'prop-types';
 import React, { Suspense } from 'react';
 import { filter } from 'lodash-es';
 import DeleteAllContactsButton from './DeleteAllContactsButton';
-import historyPush from '../../common/utils/historyPush';
 import normalizedImagePath from '../../common/utils/normalizedImagePath';
 import { renderLog } from '../../common/utils/logging';
 import VoterStore from '../../stores/VoterStore';
@@ -37,7 +36,9 @@ class SetUpAccountImportContacts extends React.Component {
   componentDidUpdate (prevProps) {
     // console.log('SetUpAccountImportContacts componentDidUpdate prevProps.nextButtonClicked:', prevProps.nextButtonClicked, ', this.props.nextButtonClicked:', this.props.nextButtonClicked);
     if (prevProps.nextButtonClicked === false && this.props.nextButtonClicked === true) {
-      this.goToInviteContacts();
+      if (this.props.goToNextStep) {
+        this.props.goToNextStep();
+      }
     }
   }
 
@@ -57,10 +58,6 @@ class SetUpAccountImportContacts extends React.Component {
       contactsWithAccountCount,
       voterContactEmailListCount,
     });
-  }
-
-  goToInviteContacts = () => {
-    historyPush('/setupaccount/invitecontacts');
   }
 
   render () {
@@ -143,9 +140,8 @@ class SetUpAccountImportContacts extends React.Component {
   }
 }
 SetUpAccountImportContacts.propTypes = {
-  // functionToUseWhenProfileComplete: PropTypes.func.isRequired,
-  // functionToUseWhenProfileNotComplete: PropTypes.func.isRequired,
   nextButtonClicked: PropTypes.bool,
+  goToNextStep: PropTypes.func,
 };
 
 const styles = () => ({

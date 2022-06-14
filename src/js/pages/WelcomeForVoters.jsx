@@ -1,5 +1,5 @@
 import { Email, LocationOn, Person } from '@mui/icons-material';
-import { Button, Link } from '@mui/material';
+import { Button, Link } from '@mui/material'; // Be aware that this "Link" is the Material UI Component, and not the react-router-dom router
 import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
 import React, { PureComponent, Suspense } from 'react';

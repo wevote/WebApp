@@ -87,7 +87,9 @@ export function pageEnumeration () {
     return CordovaPageConstants.friendsCurrent;
   } else if (path.startsWith('/friends/sent-requests') || path.startsWith('/friends/requests')) {
     return CordovaPageConstants.friendsSentRequest;
-  } else if (path.startsWith('/start') || path.startsWith('/setupaccount')) {
+  } else if (path.startsWith('/findfriends') ||
+             path.startsWith('/start') ||
+             path.startsWith('/setupaccount')) {
     return CordovaPageConstants.start;
   } else if (path.startsWith('/friends')) {
     return CordovaPageConstants.friends;

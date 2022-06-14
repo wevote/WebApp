@@ -1,6 +1,7 @@
 import withTheme from '@mui/styles/withTheme';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
+import { Link } from 'react-router-dom';
 import { renderLog } from '../../common/utils/logging';
 import {
   Dot,
@@ -98,6 +99,25 @@ class ReadyFinePrint extends Component {
                   <Dot><StepNumberPlaceholder>&nbsp;</StepNumberPlaceholder></Dot>
                   <StepText>
                     Many states require you to register weeks in advance of each election. Search the web for &quot;voter registration&quot; + your state to learn how to register in time.
+                  </StepText>
+                </ListRow>
+              )}
+
+              {(contentUnfurled || showStep3WhenCompressed) && (
+                <ListTitleRow>
+                  <Dot><StepNumber>d</StepNumber></Dot>
+                  <StepTitle>How your data is used &amp; protected</StepTitle>
+                </ListTitleRow>
+              )}
+              {contentUnfurled && (
+                <ListRow>
+                  <Dot><StepNumberPlaceholder>&nbsp;</StepNumberPlaceholder></Dot>
+                  <StepText>
+                    We Vote will never share or sell your contact information.
+                    {' '}
+                    <Link to="/more/privacy" className="u-link-color">See full privacy policy here</Link>
+                    {' '}
+                    which includes description of how we use and protect your data.
                   </StepText>
                 </ListRow>
               )}

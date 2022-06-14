@@ -1,4 +1,5 @@
 import React, { Component, Suspense } from 'react';
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { renderLog } from '../utils/logging';
 
@@ -14,7 +15,7 @@ export default class PrivacyBody extends Component {
     return (
       <div>
         <ContentTitle>WeVote.US Privacy Policy</ContentTitle>
-        <p><strong>Last updated: November 25th, 2021</strong></p>
+        <p><strong>Last updated: June 10th, 2022</strong></p>
         <p>
           <span>We Vote USA has created this privacy policy to explain how We Vote (or “we”) uses information that we collect from you while you visit We Vote, currently located at </span>
           <span>
@@ -90,82 +91,111 @@ export default class PrivacyBody extends Component {
           </span>
         </p>
         <p>
-          <span>Some information on our mailing lists, such as names, email addresses, and addresses, may be exchanged with named partners and other organizations with principles and/or missions that overlap with those of We Vote. Subscribers may opt out of such mailing list exchanges at any time. Our purpose is to protect your information while making sure you have what you need to make an informed decision on Election Day.</span>
+          <span>If you have opted-into the We Vote mailing list, your email address and name may be exchanged with named partners and other organizations with principles and/or missions that overlap with those of We Vote. Subscribers may opt out of such mailing list exchanges at any time. Our purpose is to protect your information while making sure you have what you need to make an informed decision on Election Day.</span>
         </p>
-        <p className="u-show-desktop-tablet">These are some ways your information is used or shown:</p>
-        <table className="u-show-desktop-tablet" style={{ height: 166, width: 631 }} border="1">
+        <p>These are some ways your information is used or shown:</p>
+        <table style={{ height: 166, width: 631 }} border="1">
           <tbody>
             <tr>
-              <td style={{ padding: 4, width: 170 }}><strong>Your Personal Information</strong></td>
-              <td style={{ padding: 4, width: 349 }}><strong>How We Vote Uses or Displays</strong></td>
-              <td style={{ padding: 4, width: 106 }}><strong>Public?</strong></td>
-              <td style={{ padding: 4, width: 106 }}><strong>Can Be Hidden?</strong></td>
+              <TdColumn1><strong>Your Personal Information</strong></TdColumn1>
+              <TdColumn2><strong>How We Vote Uses or Displays</strong></TdColumn2>
+              <TdColumn3><strong>Public?</strong></TdColumn3>
+              <TdColumn4><strong>Can Be Hidden?</strong></TdColumn4>
             </tr>
             <tr>
-              <td style={{ padding: 4, width: 170 }}>Your Name</td>
-              <td style={{ padding: 4, width: 349 }}>Displayed on your profile</td>
-              <td style={{ padding: 4, width: 106 }}>Yes</td>
-              <td style={{ padding: 4, width: 106 }}>No</td>
+              <TdColumn1>Your Name</TdColumn1>
+              <TdColumn2>Displayed on your profile</TdColumn2>
+              <TdColumn3>Yes</TdColumn3>
+              <TdColumn4>No</TdColumn4>
             </tr>
             <tr>
-              <td style={{ padding: 4, width: 170 }}>Your Email Address</td>
-              <td style={{ padding: 4, width: 349 }}>Used to contact you for sign in, or notifications which you control. We will never sell your email address.</td>
-              <td style={{ padding: 4, width: 106 }}>No</td>
-              <td style={{ padding: 4, width: 106 }}>Is Hidden</td>
+              <TdColumn1>Your Mailing List Email Address and Name</TdColumn1>
+              <TdColumn2>We Vote&apos;s opt-in mailing list uses your email address and name to update you a variety of topic related to voting.</TdColumn2>
+              <TdColumn3>No.</TdColumn3>
+              <TdColumn4>Is hidden</TdColumn4>
             </tr>
             <tr>
-              <td style={{ padding: 4, width: 170 }}>Values You Follow</td>
-              <td style={{ padding: 4, width: 349 }}>Displayed on your profile</td>
-              <td style={{ padding: 4, width: 106 }}>Yes</td>
-              <td style={{ padding: 4, width: 106 }}>No</td>
+              <TdColumn1>Your We Vote Account Email Address(es)</TdColumn1>
+              <TdColumn2>Used to contact you for sign in, or notifications which you control. When a friend imports contacts which include your email address, we show your friend that you are already on We Vote so they can request to be connected with you. We will never sell your email address.</TdColumn2>
+              <TdColumn3>No. Discoverable by friends importing their contact lists.</TdColumn3>
+              <TdColumn4>Is hidden from view. Cannot prevent discoverability by friends.</TdColumn4>
             </tr>
             <tr>
-              <td style={{ padding: 4, width: 170 }}>Your Profile Photos</td>
-              <td style={{ padding: 4, width: 349 }}>Displayed on your profile</td>
-              <td style={{ padding: 4, width: 106 }}>Yes</td>
-              <td style={{ padding: 4, width: 106 }}>No</td>
+              <TdColumn1>Your Phone Number</TdColumn1>
+              <TdColumn2>Used to contact you for sign in, or notifications which you control. When a friend imports contacts which include your phone number, we show your friend that you are already on We Vote so they can request to be connected with you. We will never sell your phone number.</TdColumn2>
+              <TdColumn3>No. Discoverable by friends importing their contact lists.</TdColumn3>
+              <TdColumn4>Is hidden from view. Cannot prevent discoverability by friends.</TdColumn4>
             </tr>
             <tr>
-              <td style={{ padding: 4, width: 170 }}>Address</td>
-              <td style={{ padding: 4, width: 349 }}>Used to identify correct ballot for you</td>
-              <td style={{ padding: 4, width: 106 }}>No</td>
-              <td style={{ padding: 4, width: 106 }}>Is Hidden</td>
+              <TdColumn1>Values You Follow</TdColumn1>
+              <TdColumn2>Displayed on your profile</TdColumn2>
+              <TdColumn3>Yes</TdColumn3>
+              <TdColumn4>No</TdColumn4>
             </tr>
             <tr>
-              <td style={{ padding: 4, width: 170 }}>Candidates you Support or Oppose</td>
-              <td style={{ padding: 4, width: 349 }}>If marked &apos;Public&apos; by you, your endorsement is displayed on your profile, or under candidate. Otherwise, your endorsement is only visible to friends you add to We Vote.</td>
-              <td style={{ padding: 4, width: 106 }}>No by Default</td>
-              <td style={{ padding: 4, width: 106 }}>Yes</td>
+              <TdColumn1>Your Profile Photos</TdColumn1>
+              <TdColumn2>Displayed on your profile</TdColumn2>
+              <TdColumn3>Yes</TdColumn3>
+              <TdColumn4>No</TdColumn4>
             </tr>
             <tr>
-              <td style={{ padding: 4, width: 170 }}>Measures you Support or Oppose</td>
-              <td style={{ padding: 4, width: 349 }}>If marked &apos;Public&apos; by you, your endorsement is displayed on your profile, or under measure.&nbsp;Otherwise, your endorsement is only visible to friends you add to We Vote.</td>
-              <td style={{ padding: 4, width: 106 }}>&nbsp;No by Default</td>
-              <td style={{ padding: 4, width: 106 }}>Yes&nbsp;</td>
+              <TdColumn1>Address</TdColumn1>
+              <TdColumn2>Used to identify correct ballot for you</TdColumn2>
+              <TdColumn3>No</TdColumn3>
+              <TdColumn4>Is hidden</TdColumn4>
             </tr>
             <tr>
-              <td style={{ padding: 4, width: 170 }}>Organizations, Public Figures, and Private Individuals you Follow on We Vote</td>
-              <td style={{ padding: 4, width: 349 }}>Displayed on your profile</td>
-              <td style={{ padding: 4, width: 106 }}>Yes</td>
-              <td style={{ padding: 4, width: 106 }}>No</td>
+              <TdColumn1>State Code of Your Ballot</TdColumn1>
+              <TdColumn2>Shown to your friends and people connected to your friends, when you appear in lists of &apos;suggested friends&apos;</TdColumn2>
+              <TdColumn3>Yes</TdColumn3>
+              <TdColumn4>Yes</TdColumn4>
             </tr>
             <tr>
-              <td style={{ padding: 4, width: 170 }}>Who you Follow on Twitter</td>
-              <td style={{ padding: 4, width: 349 }}>When you sign in with Twitter, all of the Twitter accounts you follow on Twitter which have endorsements stored in We Vote, are displayed on your profile</td>
-              <td style={{ padding: 4, width: 106 }}>Yes</td>
-              <td style={{ padding: 4, width: 106 }}>No</td>
+              <TdColumn1>Candidates you Support or Oppose</TdColumn1>
+              <TdColumn2>If marked &apos;Public&apos; by you, your endorsement is displayed on your profile, or under candidate. Otherwise, your endorsement is only visible to friends you add to We Vote.</TdColumn2>
+              <TdColumn3>No by Default</TdColumn3>
+              <TdColumn4>Yes</TdColumn4>
             </tr>
             <tr>
-              <td style={{ padding: 4, width: 170 }}>Friends you invite to We Vote</td>
-              <td style={{ padding: 4, width: 349 }}>Not displayed</td>
-              <td style={{ padding: 4, width: 106 }}>No</td>
-              <td style={{ padding: 4, width: 106 }}>Is Hidden</td>
+              <TdColumn1>Measures you Support or Oppose</TdColumn1>
+              <TdColumn2>If marked &apos;Public&apos; by you, your endorsement is displayed on your profile, or under measure.&nbsp;Otherwise, your endorsement is only visible to friends you add to We Vote.</TdColumn2>
+              <TdColumn3>&nbsp;No by Default</TdColumn3>
+              <TdColumn4>Yes&nbsp;</TdColumn4>
             </tr>
             <tr>
-              <td style={{ padding: 4, width: 170 }}>The fact that you have an account</td>
-              <td style={{ padding: 4, width: 349 }}>Any We Vote voters who look at the Friends section can see you as a &apos;Suggested Friend&apos; if they are connected to one of your current friends</td>
-              <td style={{ padding: 4, width: 106 }}>Only to friends of friends</td>
-              <td style={{ padding: 4, width: 106 }}>Yes, if you don&apos;t add any of your friends</td>
+              <TdColumn1>Organizations, Public Figures, and Private Individuals you Follow on We Vote</TdColumn1>
+              <TdColumn2>Displayed on your profile</TdColumn2>
+              <TdColumn3>Yes</TdColumn3>
+              <TdColumn4>No</TdColumn4>
+            </tr>
+            <tr>
+              <TdColumn1>Who you Follow on Twitter</TdColumn1>
+              <TdColumn2>When you sign in with Twitter, all of the Twitter accounts you follow on Twitter which have endorsements stored in We Vote, are displayed on your profile</TdColumn2>
+              <TdColumn3>Yes</TdColumn3>
+              <TdColumn4>No</TdColumn4>
+            </tr>
+            <tr>
+              <TdColumn1>Friends you invite to We Vote</TdColumn1>
+              <TdColumn2>Not displayed</TdColumn2>
+              <TdColumn3>No</TdColumn3>
+              <TdColumn4>Is hidden</TdColumn4>
+            </tr>
+            <tr>
+              <TdColumn1>Contacts imported from Google/Gmail</TdColumn1>
+              <TdColumn2>
+                Your list of contacts is only shown to you for the purposes of finding friends who are already using We Vote,
+                and inviting friends to connect with you on We Vote. This data is stored in quarantined database tables,
+                and subject to Limited Use requirements (see below). Contacts are not added to the We Vote mailing list.
+                You have 100% control over initiating messages to individuals in your contact list.
+              </TdColumn2>
+              <TdColumn3>No</TdColumn3>
+              <TdColumn4>Is hidden, and can be deleted by you from profile section</TdColumn4>
+            </tr>
+            <tr>
+              <TdColumn1>The fact that you have an account</TdColumn1>
+              <TdColumn2>Any We Vote voters who look at the Friends section can see you as a &apos;Suggested Friend&apos; if they are connected to one of your current friends</TdColumn2>
+              <TdColumn3>Only to friends of friends</TdColumn3>
+              <TdColumn4>Yes, if you don&apos;t add any of your friends</TdColumn4>
             </tr>
           </tbody>
         </table>
@@ -184,14 +214,63 @@ export default class PrivacyBody extends Component {
             </Suspense>
           </span>
         </p>
+        <p>
+          If you have imported your contacts from Google/Gmail, you can delete this data from
+          {' '}
+          <Link to="/settings/yourdata" className="u-link-color">Your Privacy &amp; Data</Link>
+          {' '}
+          profile page.
+        </p>
         <h2><b>Donations and credit card information</b></h2>
         <p>
-          <span>When you contribute to We Vote online, we collect credit card information from you. That information is used solely for processing your contribution; it is not maintained by We Vote; and is never disclosed to anyone, for any other purpose other than for processing your contribution.</span>
+          <span>When you give money to We Vote online, we collect credit card information from you. That information is used solely for processing your contribution; it is not maintained by We Vote; and is never disclosed to anyone, for any other purpose other than for processing your contribution.</span>
         </p>
         <h2><b>Security</b></h2>
         <p>
           <span>We Vote uses industry standard security measures to protect the information collected by this Site, but we cannot guarantee complete security.</span>
         </p>
+        <h2><b>Limited Use Disclosure</b></h2>
+        <p>
+          <span>
+            We Vote&apos;s use and transfer to any other app of information received from Google APIs adhere to the
+            {' '}
+            <Suspense fallback={<></>}>
+              <OpenExternalWebSite
+                linkIdAttribute="googleLimitedUse"
+                url="https://developers.google.com/terms/api-services-user-data-policy#additional_requirements_for_specific_api_scopes"
+                target="_blank"
+                body={<span>Google API Services User Data Policy</span>}
+              />
+            </Suspense>
+            , including the Limited Use requirements.
+          </span>
+        </p>
+        <h2><b>Limited Use additional explanation</b></h2>
+        <div>
+          While the full description of Google API Services User Data Policy is linked to above, we want to share four elements from the Limited Use requirements from Google:
+          <ol>
+            <li>
+              <strong>Allowed Use:</strong>
+              {' '}
+              Developers are only allowed to use restricted scope data to provide or improve user-facing features that are prominent from the requesting app&apos;s user interface. It should be clear to your users why and how you use the restricted scope data they&apos;ve chosen to share with you.
+            </li>
+            <li>
+              <strong>Allowed Transfer:</strong>
+              {' '}
+              Developers are only allowed to transfer restricted scope data to others if that transfer is (a) necessary to provide or improve user-facing features that are prominent from the requesting app&apos;s user interface, (b) to comply with applicable laws, or (c) a part of a merger, acquisition or sale of assets of the developer. All other transfers or sales of user data are completely prohibited.
+            </li>
+            <li>
+              <strong>Prohibited Advertising:</strong>
+              {' '}
+              Developers are never allowed to use or transfer restricted scope data to serve users advertisements. This includes personalized, re-targeted and interest-based advertising.
+            </li>
+            <li>
+              <strong>Prohibited Human Interaction:</strong>
+              {' '}
+              Developers cannot allow humans to read restricted scope user data. For example, a developer with access to a user&apos;s data is not allowed to have one of its employees read through a user&apos;s email addresses. There are four limited exceptions to this rule: (a) the developer obtains a user&apos;s consent to read specific email addresses (for example, for tech support), (b) it&apos;s necessary for security purposes (for example, investigating abuse), (c) to comply with applicable laws, and (d) the developer aggregates and anonymizes the data and only uses it for internal operations (for example, reporting aggregate statistics in an internal dashboard).
+            </li>
+          </ol>
+        </div>
         <h2><b>Use of services by minors</b></h2>
         <p>
           <span>We Vote does not knowingly solicit personally identifying information from children under 13 years of age.  We will promptly remove any personal information from children under 13 upon notice to us.</span>
@@ -291,3 +370,23 @@ const ContentTitle = styled('h1')(({ theme }) => (`
     font-size: 20px;
   }
 `));
+
+const TdColumn1 = styled('td')`
+  padding: 4px;
+  width: 170px;
+`;
+
+const TdColumn2 = styled('td')`
+  padding: 4px;
+  width: 349px;
+`;
+
+const TdColumn3 = styled('td')`
+  padding: 4px;
+  width: 106px;
+`;
+
+const TdColumn4 = styled('td')`
+  padding: 4px;
+  width: 106px;
+`;

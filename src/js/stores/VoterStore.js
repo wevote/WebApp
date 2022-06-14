@@ -667,7 +667,7 @@ class VoterStore extends ReduceStore {
         }
 
       case 'voterContactListSave':
-        console.log('VoterStore voterContactListSave action:', action);
+        // console.log('VoterStore voterContactListSave action:', action);
         if (action.res.success) {
           const {
             we_vote_id_for_google_contacts: weVoteIdForGoogleContacts,

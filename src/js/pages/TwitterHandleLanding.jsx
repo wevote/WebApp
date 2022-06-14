@@ -45,7 +45,7 @@ export default class TwitterHandleLanding extends Component {
     // console.log(`TwitterHandleLanding componentDidMount, twitterHandle: ${twitterHandle}`);
     this.setState({
       activeRoute,
-      twitterHandle2,
+      // twitterHandle: twitterHandle2, // This might be needed, but might not
     });
     TwitterActions.twitterIdentityRetrieve(twitterHandle2);
     this.onVoterStoreChange();
@@ -95,27 +95,32 @@ export default class TwitterHandleLanding extends Component {
 
   onTwitterStoreChange () {
     // console.log('TwitterHandleLanding onTwitterStoreChange');
-    let { twitter_followers_count: twitterFollowersCount } = TwitterStore.get();
+    // let { twitter_followers_count: twitterFollowersCount } = TwitterStore.get();
     const {
-      kind_of_owner: kindOfOwner, owner_we_vote_id: ownerWeVoteId, twitter_handle: twitterHandle,
-      twitter_description: twitterDescription,  twitter_name: twitterName,
-      twitter_photo_url: twitterPhotoUrl, twitter_user_website: twitterUserWebsite, status,
+      kind_of_owner: kindOfOwner,
+      owner_we_vote_id: ownerWeVoteId,
+      twitter_handle: twitterHandle,
+      // twitter_description: twitterDescription,
+      twitter_name: twitterName,
+      // twitter_photo_url: twitterPhotoUrl,
+      // twitter_user_website: twitterUserWebsite,
+      status,
     } = TwitterStore.get();
 
-    if (typeof twitterFollowersCount !== 'number') {
-      twitterFollowersCount = 0;
-    }
+    // if (typeof twitterFollowersCount !== 'number') {
+    //   twitterFollowersCount = 0;
+    // }
 
     this.setState({
       kindOfOwner,
       ownerWeVoteId,
       status,
       twitterHandle,
-      twitterDescription,
-      twitterFollowersCount,
+      // twitterDescription,
+      // twitterFollowersCount,
       twitterName,
-      twitterPhotoUrl,
-      twitterUserWebsite,
+      // twitterPhotoUrl,
+      // twitterUserWebsite,
     });
   }
 
