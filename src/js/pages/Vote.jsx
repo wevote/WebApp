@@ -29,7 +29,7 @@ import VoterGuideStore from '../stores/VoterGuideStore';
 import VoterStore from '../stores/VoterStore';
 import { cordovaVoteMiniHeader } from '../utils/cordovaOffsets';
 import cordovaScrollablePaneTopPadding from '../utils/cordovaScrollablePaneTopPadding';
-import BallotTitleHeader from './Ballot/BallotTitleHeader';
+import BallotTitleHeader from '../components/Ballot/BallotTitleHeader';
 
 const FilterBaseSearch = React.lazy(() => import(/* webpackChunkName: 'FilterBaseSearch' */ '../components/Filter/FilterBaseSearch'));
 

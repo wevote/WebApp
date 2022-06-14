@@ -570,7 +570,6 @@ class CandidateItem extends Component {
               ballotItemWeVoteId={candidateWeVoteId}
               expandIssuesByDefault={expandIssuesByDefault}
               externalUniqueId={`candidateItem-${candidateWeVoteId}`}
-              placement="bottom"
             />
           )}
         </div>

@@ -1,4 +1,3 @@
-import { Chip } from '@mui/material';
 import styled from 'styled-components';
 import withStyles from '@mui/styles/withStyles';
 import withTheme from '@mui/styles/withTheme';
@@ -15,8 +14,8 @@ import IssueFollowToggleButton from './IssueFollowToggleButton';
 const ReadMore = React.lazy(() => import(/* webpackChunkName: 'ReadMore' */ '../../common/components/Widgets/ReadMore'));
 const PositionSummaryListForPopover = React.lazy(() => import(/* webpackChunkName: 'PositionSummaryListForPopover' */ '../Widgets/ScoreDisplay/PositionSummaryListForPopover'));
 
-// Dale 2022-06-14 We will be deprecating this and replacing with ValueNameWithPopoverDisplay
-class ValueIconAndText extends Component {
+
+class ValueNameWithPopoverDisplay extends Component {
   constructor (props) {
     super(props);
     this.state = {
@@ -42,19 +41,6 @@ class ValueIconAndText extends Component {
       return true;
     }
     return false;
-  }
-
-  componentDidUpdate (prevProps) {
-    // console.log('ValueIconAndText componentDidUpdate');
-    const { oneIssue } = this.props;
-    if (!prevProps.issueWidths[oneIssue.issue_we_vote_id]) {
-      if (this.valueSpan && this.valueSpan.current) {
-        const width = this.valueSpan.current.offsetWidth;
-        if (width > 0) {
-          this.props.subtractTotalWidth(this.props.oneIssue.issue_we_vote_id, width + 25);
-        }
-      }
-    }
   }
 
   componentWillUnmount () {
@@ -99,10 +85,6 @@ class ValueIconAndText extends Component {
             <PopoverIconWrapper>
               <SvgImage imageName={oneIssue.issue_icon_local_path} stylesTextIncoming="fill: #fff !important;" />
             </PopoverIconWrapper>
-            {/* <ReactSVG */}
-            {/*  src={normalizedImagePath(`/img/global/svg-icons/issues/${oneIssue.issue_icon_local_path}.svg`)} */}
-            {/*  beforeInjection={(svg) => svg.setAttribute('style', { fill: '#fff', padding: '1px 1px 1px 0px' })} */}
-            {/* /> */}
           </PopoverTitleIcon>
           <PopoverTitleText>
             {oneIssue.issue_name}
@@ -169,54 +151,52 @@ class ValueIconAndText extends Component {
   }
 
   render () {
-    renderLog('ValueIconAndText');  // Set LOG_RENDER_EVENTS to log all renders
-    // console.log('ValueIconAndText render');
-    const { ballotItemWeVoteId, classes, externalUniqueId, issueFollowedByVoter, oneIssue } = this.props;
-    const svgFill = issueFollowedByVoter ? '#555' : '#999';
+    renderLog('ValueNameWithPopoverDisplay');  // Set LOG_RENDER_EVENTS to log all renders
+    const { addComma, ballotItemWeVoteId, externalUniqueId, issueFollowedByVoter, oneIssue, showEllipses } = this.props;
+    // console.log('ValueNameWithPopoverDisplay render, oneIssue.issue_name:', oneIssue.issue_name, ', showEllipses:', showEllipses);
     return (
       <StickyPopover
         delay={{ show: 1000000, hide: 100 }}
         popoverComponent={this.valuePopover()}
         placement="auto"
         id="issues-popover-trigger-click-root-close"
-        key={`issueByBallotItemPopover-${ballotItemWeVoteId}-${oneIssue.issue_we_vote_id}`}
+        key={`issueByBallotItemPopover-${ballotItemWeVoteId}-${oneIssue.issue_we_vote_id}-${showEllipses}`}
         openOnClick
         showCloseIcon
       >
-        <ValueIconAndTextSpan
+        <ValueNameWithPopoverDisplaySpan
           id={`${externalUniqueId}-valueIconAndText-${oneIssue.issue_we_vote_id}`}
           issueFollowedByVoter={issueFollowedByVoter}
           key={`${externalUniqueId}-valueIconAndTextKey-${oneIssue.issue_we_vote_id}`}
-          className="u-no-break u-cursor--pointer"
+          className="u-cursor--pointer"
         >
-          <Chip
-            avatar={oneIssue.issue_icon_local_path ? (
-              <IconWrapper>
-                <SvgImage imageName={oneIssue.issue_icon_local_path} stylesTextIncoming={`fill: ${svgFill} !important; margin-left: 4px; padding-bottom: 1px;`} />
-              </IconWrapper>
-              // <ReactSVG
-              //   src={normalizedImagePath(`/img/global/svg-icons/issues/${oneIssue.issue_icon_local_path}.svg`)}
-              //   beforeInjection={(svg) => svg.setAttribute('style', { fill: svgFill, padding: '1px 1px 1px 0px' })}
-              // />
-            ) : <span />}
-            classes={{ root: classes.chipStyle }}
-            label={oneIssue.issue_name}
-            ref={this.valueSpan}
-          />
-        </ValueIconAndTextSpan>
+          <WordWrapper>
+            {oneIssue.issue_name}
+          </WordWrapper>
+          {showEllipses ? (
+            <>
+              ...
+              &nbsp;
+            </>
+          ) : (
+            <>
+              {addComma ? ',' : ''}
+              &nbsp;
+            </>
+          )}
+        </ValueNameWithPopoverDisplaySpan>
       </StickyPopover>
     );
   }
 }
-ValueIconAndText.propTypes = {
+ValueNameWithPopoverDisplay.propTypes = {
+  addComma: PropTypes.bool,
   ballotItemWeVoteId: PropTypes.string,
   ballotItemDisplayName: PropTypes.string,
-  classes: PropTypes.object,
   externalUniqueId: PropTypes.string,
   issueFollowedByVoter: PropTypes.bool,
-  issueWidths: PropTypes.object,
   oneIssue: PropTypes.object,
-  subtractTotalWidth: PropTypes.func,
+  showEllipses: PropTypes.bool,
 };
 
 const styles = () => ({
@@ -237,11 +217,6 @@ const FollowIssueToggleContainer = styled('div')`
   margin-top: 24px;
 `;
 
-const IconWrapper = styled('div')`
-  height: 24px;
-  width: 24px;
-`;
-
 const PopoverIconWrapper = styled('div')`
   height: 24px;
   margin-top: -3px;
@@ -260,16 +235,14 @@ const PopoverWrapper = styled('div')`
   margin-top: 8px;
 `;
 
-const ValueIconAndTextSpan = styled('span', {
+const ValueNameWithPopoverDisplaySpan = styled('span', {
   shouldForwardProp: (prop) => !['issueFollowedByVoter'].includes(prop),
 })(({ issueFollowedByVoter }) => (`
   align-items: start;
   display: flex;
   flex: none;
-  ${issueFollowedByVoter ? 'font-weight: 800;' : ''}
-  padding: 4px;
+  ${issueFollowedByVoter ? 'font-weight: 600;' : ''}
   position: relative;
-  width: fit-content;
 `));
 
 const FollowIfYouCare = styled('div')`
@@ -314,4 +287,10 @@ const RenderedOrganizationsWrapper = styled('div')`
   margin-top: 6px;
 `;
 
-export default withTheme(withStyles(styles)(ValueIconAndText));
+const WordWrapper = styled('span')`
+  &:hover {
+    text-decoration: underline;
+  }
+`;
+
+export default withTheme(withStyles(styles)(ValueNameWithPopoverDisplay));

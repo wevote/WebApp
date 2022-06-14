@@ -79,7 +79,7 @@ class SetUpAccountAddPhoto extends React.Component {
   }
 
   submitSavePhoto = () => {
-    console.log('SetUpAccountAddPhoto submitSavePhoto');
+    // console.log('SetUpAccountAddPhoto submitSavePhoto');
     let voterPhotoMissing = false;
     const voterPhotoQueuedToSave = VoterStore.getVoterPhotoQueuedToSave();
     const voterPhotoQueuedToSaveSet = VoterStore.getVoterPhotoQueuedToSaveSet();

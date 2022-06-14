@@ -34,7 +34,6 @@ const ImageHandler = React.lazy(() => import(/* webpackChunkName: 'ImageHandler'
 const IssuesByBallotItemDisplayList = React.lazy(() => import(/* webpackChunkName: 'IssuesByBallotItemDisplayList' */ '../Values/IssuesByBallotItemDisplayList'));
 const ItemActionBar = React.lazy(() => import(/* webpackChunkName: 'ItemActionBar' */ '../Widgets/ItemActionBar/ItemActionBar'));
 const ShowMoreButtons = React.lazy(() => import(/* webpackChunkName: 'ShowMoreButtons' */ '../Widgets/ShowMoreButtons'));
-const TopCommentByBallotItem = React.lazy(() => import(/* webpackChunkName: 'TopCommentByBallotItem' */ '../Widgets/TopCommentByBallotItem'));
 
 const SHOW_ALL_CANDIDATES_IF_FEWER_THAN_THIS_NUMBER_OF_BALLOT_ITEMS = 5;
 const NUMBER_OF_CANDIDATES_TO_DISPLAY = 3;
@@ -321,22 +320,11 @@ class OfficeItemCompressed extends Component {
                           <Suspense fallback={<></>}>
                             {/* If there is a quote about the candidate, show that. If not, show issues related to candidate */}
                             <DelayedLoad showLoadingText waitBeforeShow={500}>
-                              <TopCommentByBallotItem
+                              <IssuesByBallotItemDisplayList
+                                ballotItemDisplayName={oneCandidate.ballot_item_display_name}
                                 ballotItemWeVoteId={oneCandidate.we_vote_id}
-                                // learnMoreUrl={this.getCandidateLink(oneCandidate.we_vote_id)}
-                                // onClickFunction={this.onClickShowOrganizationModal}
-                              >
-                                <span>
-                                  <Suspense fallback={<></>}>
-                                    <IssuesByBallotItemDisplayList
-                                      ballotItemDisplayName={oneCandidate.ballot_item_display_name}
-                                      ballotItemWeVoteId={oneCandidate.we_vote_id}
-                                      disableMoreWrapper
-                                      externalUniqueId={`officeItemCompressed-${oneCandidate.we_vote_id}-${externalUniqueId}`}
-                                    />
-                                  </Suspense>
-                                </span>
-                              </TopCommentByBallotItem>
+                                externalUniqueId={`officeItemCompressed-${oneCandidate.we_vote_id}-${externalUniqueId}`}
+                              />
                             </DelayedLoad>
                           </Suspense>
                         )}
