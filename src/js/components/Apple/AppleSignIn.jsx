@@ -126,7 +126,7 @@ class AppleSignIn extends Component {
       auth.signIn();
     } catch (error) {
       this.localInitializeSDK(true);
-      oAuthLog('signInToAppleWebApp API Not yet loaded:');
+      oAuthLog('signInToAppleWebApp API Not yet loaded: ', error.message);
     }
   }
 

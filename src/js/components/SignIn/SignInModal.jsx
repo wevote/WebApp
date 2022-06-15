@@ -8,6 +8,8 @@ import { isAndroidSizeMD } from '../../common/utils/cordovaUtils';
 import { isCordova, isWebApp } from '../../common/utils/isCordovaOrWebApp';
 import { renderLog } from '../../common/utils/logging';
 import VoterStore from '../../stores/VoterStore';
+import initializeAppleSDK from '../../utils/initializeAppleSDK';
+import initializeFacebookSDK from '../../utils/initializeFacebookSDK';
 
 const SignInOptionsPanel = React.lazy(() => import(/* webpackChunkName: 'SignInOptionsPanel' */ './SignInOptionsPanel'));
 
@@ -26,6 +28,13 @@ class SignInModal extends Component {
     this.setState({
       showSignInModalSimple: true,
     });
+    const { FB, AppleID } = window;
+    if (!FB) {
+      initializeFacebookSDK();
+    }
+    if (!AppleID) {
+      initializeAppleSDK();
+    }
   }
 
   componentWillUnmount () {
