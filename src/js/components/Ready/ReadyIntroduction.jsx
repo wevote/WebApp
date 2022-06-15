@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
 import { Link } from 'react-router-dom';
 import { renderLog } from '../../common/utils/logging';
+import AppObservableStore from '../../stores/AppObservableStore';
 import {
   Dot,
   InnerWrapper,
@@ -43,6 +44,12 @@ class ReadyIntroduction extends Component {
     });
   }
 
+  showSelectBallotModalEditAddress = () => {
+    const showEditAddress = true;
+    const showSelectBallotModal = true;
+    AppObservableStore.setShowSelectBallotModal(showSelectBallotModal, showEditAddress);
+  }
+
   render () {
     renderLog('ReadyIntroduction');  // Set LOG_RENDER_EVENTS to log all renders
     const { contentUnfurled } = this.state;
@@ -63,7 +70,16 @@ class ReadyIntroduction extends Component {
                 <ListRow>
                   <Dot><StepNumberPlaceholder>&nbsp;</StepNumberPlaceholder></Dot>
                   <StepText>
-                    When is the next election? What is on your ballot? How are
+                    <span className="u-link-color u-link-color-on-hover u-cursor--pointer" onClick={this.showSelectBallotModalEditAddress}>
+                      Enter your address
+                    </span>
+                    {' '}
+                    to find out when your next election is, and
+                    {' '}
+                    <Link to="/ballot" className="u-link-color">preview your ballot</Link>
+                    .
+                    {' '}
+                    How are
                     {' '}
                     <Link to="/findfriends/importcontacts" className="u-link-color">your friends</Link>
                     {' '}

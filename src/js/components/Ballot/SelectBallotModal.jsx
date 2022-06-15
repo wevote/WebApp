@@ -8,6 +8,7 @@ import styled from 'styled-components';
 import AnalyticsActions from '../../actions/AnalyticsActions';
 import { hasIPhoneNotch } from '../../common/utils/cordovaUtils';
 import { renderLog } from '../../common/utils/logging';
+import AppObservableStore, { messageService } from '../../stores/AppObservableStore';
 import VoterStore from '../../stores/VoterStore';
 import { calculateBallotBaseUrl } from '../../utils/textFormat';
 import BallotTitleHeader from './BallotTitleHeader';
@@ -33,15 +34,29 @@ class SelectBallotModal extends Component {
 
   componentDidMount () {
     AnalyticsActions.saveActionSelectBallotModal(VoterStore.electionId());
+    this.onAppObservableStoreChange();
+    this.appStateSubscription = messageService.getMessage().subscribe(() => this.onAppObservableStoreChange());
     const voterStateCode = VoterStore.getVoterStateCode();
     if (voterStateCode) {
       this.setState({ selectedState: voterStateCode });
     }
   }
 
+  componentWillUnmount () {
+    this.appStateSubscription.unsubscribe();
+  }
+
   handleChooseStateChange (e) {
     this.setState({ selectedState: e.target.value });
     // console.log(e.target.value);
+  }
+
+  onAppObservableStoreChange () {
+    const editingAddress = AppObservableStore.showSelectBallotModalEditAddress();
+    // console.log('SelectBallotModal onAppObservableStoreChange, editingAddress:', editingAddress);
+    this.setState({
+      editingAddress,
+    });
   }
 
   mapHandler = (stateAbbrFromMap) => {
@@ -58,15 +73,15 @@ class SelectBallotModal extends Component {
 
   render () {
     renderLog('SelectBallotModal');  // Set LOG_RENDER_EVENTS to log all renders
-    const { classes, hideAddressEdit, hideElections, show } = this.props;
+    const { classes, showEditAddress, show } = this.props;
     const { location: { pathname } } = window;
     const { editingAddress } = this.state;
     const ballotBaseUrl = calculateBallotBaseUrl(this.props.ballotBaseUrl, pathname);
 
     let dialogTitleText = 'Election You Are Viewing';
     if (editingAddress) {
-      dialogTitleText = 'Edit Your Address';
-    } else if (hideAddressEdit || hideElections) {
+      dialogTitleText = 'Enter Your Address';
+    } else if (!showEditAddress) {
       dialogTitleText = '';
     }
 
@@ -75,7 +90,7 @@ class SelectBallotModal extends Component {
       <Dialog
         classes={{ paper: classes.dialogPaper }}
         open={show}
-        onClose={() => { this.props.toggleFunction(pathname); }}
+        onClose={() => { this.props.closeSelectBallotModal(); }}
         id="SelectBallotModalId"
       >
         <DialogTitle classes={{ root: classes.dialogTitle }}>
@@ -85,7 +100,7 @@ class SelectBallotModal extends Component {
           <IconButton
             aria-label="Close"
             classes={{ root: classes.closeButton }}
-            onClick={() => { this.props.toggleFunction(); }}
+            onClick={() => { this.props.closeSelectBallotModal(); }}
             id="profileCloseSelectBallotModal"
             size="large"
           >
@@ -102,16 +117,13 @@ class SelectBallotModal extends Component {
           )}
           <Row>
             <div className="u-show-mobile-tablet">
-              {!hideAddressEdit && (
-                <EditAddressInPlaceWrapperMobile>
-                  <EditAddressInPlace
-                    ballotBaseUrl={ballotBaseUrl}
-                    defaultIsEditingAddress={editingAddress}
-                    // toggleFunction={this.props.toggleFunction}
-                    toggleEditingAddress={this.toggleEditingAddress}
-                  />
-                </EditAddressInPlaceWrapperMobile>
-              )}
+              <EditAddressInPlaceWrapperMobile>
+                <EditAddressInPlace
+                  ballotBaseUrl={ballotBaseUrl}
+                  defaultIsEditingAddress={editingAddress}
+                  toggleEditingAddress={this.toggleEditingAddress}
+                />
+              </EditAddressInPlaceWrapperMobile>
               {!editingAddress && (
                 <MapChartWrapper>
                   <Suspense fallback={<></>}>
@@ -129,14 +141,11 @@ class SelectBallotModal extends Component {
             )}
             <SidebarWrapper>
               <div className="u-show-desktop">
-                {!hideAddressEdit && (
-                  <EditAddressInPlace
-                    ballotBaseUrl={ballotBaseUrl}
-                    defaultIsEditingAddress={editingAddress}
-                    // toggleFunction={this.props.toggleFunction}
-                    toggleEditingAddress={this.toggleEditingAddress}
-                  />
-                )}
+                <EditAddressInPlace
+                  ballotBaseUrl={ballotBaseUrl}
+                  defaultIsEditingAddress={editingAddress}
+                  toggleEditingAddress={this.toggleEditingAddress}
+                />
               </div>
               {!editingAddress && (
                 <ElectionChoiceWrapper>
@@ -211,16 +220,16 @@ class SelectBallotModal extends Component {
                       <option value="WY">Wyoming</option>
                     </Select>
                   </FormControl>
-                  <BallotElectionListWrapper addTopMargin={!hideAddressEdit}>
+                  <BallotElectionListWrapper addTopMargin={showEditAddress}>
                     <Suspense fallback={<></>}>
                       <BallotElectionListWithFilters
-                          ballotBaseUrl={ballotBaseUrl}
-                          organizationWeVoteId={this.props.organization_we_vote_id}
-                          showPriorElectionsList={this.state.prior}
-                          hideUpcomingElectionsList={this.state.prior}
-                          stateToShow={this.state.selectedState}
-                          toggleFunction={this.props.toggleFunction}
-                          mode={this.state.upcoming ? 'upcoming' : 'prior'}
+                        ballotBaseUrl={ballotBaseUrl}
+                        organizationWeVoteId={this.props.organization_we_vote_id}
+                        showPriorElectionsList={this.state.prior}
+                        hideUpcomingElectionsList={this.state.prior}
+                        stateToShow={this.state.selectedState}
+                        toggleFunction={this.props.closeSelectBallotModal}
+                        mode={this.state.upcoming ? 'upcoming' : 'prior'}
                       />
                     </Suspense>
                   </BallotElectionListWrapper>
@@ -237,11 +246,10 @@ class SelectBallotModal extends Component {
 SelectBallotModal.propTypes = {
   ballotBaseUrl: PropTypes.string,
   classes: PropTypes.object,
-  hideAddressEdit: PropTypes.bool,
-  hideElections: PropTypes.bool,
+  closeSelectBallotModal: PropTypes.func.isRequired,
+  showEditAddress: PropTypes.bool,
   organization_we_vote_id: PropTypes.string, // If looking at voter guide, we pass in the parent organization_we_vote_id
   show: PropTypes.bool,
-  toggleFunction: PropTypes.func.isRequired,
 };
 
 const styles = (theme) => ({

@@ -7,6 +7,9 @@ const BallotAddress = styled('div', {
   ${centerText ? 'text-align: center;' : ''}
 `));
 
+const ClickBlockWrapper = styled('div')`
+`;
+
 const ComponentWrapper = styled('div')`
 `;
 
@@ -15,12 +18,6 @@ const ContentWrapper = styled('div')`
   flex: 1;
   min-height: 0px;
 `;
-
-const ElectionClickBlock = styled('div', {
-  shouldForwardProp: (prop) => !['linksOff'].includes(prop),
-})(({ linksOff }) => (`
-  ${linksOff ? '' : 'cursor: pointer;'}
-`));
 
 const ElectionDateBelow = styled('div')`
 `;
@@ -113,9 +110,9 @@ const VoteByRightWrapper = styled('div', {
 
 export {
   BallotAddress,
+  ClickBlockWrapper,
   ComponentWrapper,
   ContentWrapper,
-  ElectionClickBlock,
   ElectionDateBelow,
   ElectionDateRight,
   ElectionNameBlock,

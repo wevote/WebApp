@@ -59,8 +59,7 @@ class HeaderBar extends Component {
       showEditAddressButton: false,
       showFirstPositionIntroModal: false,
       showSelectBallotModal: false,
-      showSelectBallotModalHideAddress: false,
-      showSelectBallotModalHideElections: false,
+      showSelectBallotModalEditAddress: false,
       showShareModal: false,
       showOrganizationModal: false,
       showSignInModal: false,
@@ -82,7 +81,7 @@ class HeaderBar extends Component {
     this.closeShareModal = this.closeShareModal.bind(this);
     this.closeSignInModal = this.closeSignInModal.bind(this);
     this.debugLogging = this.debugLogging.bind(this);
-    this.toggleSelectBallotModal = this.toggleSelectBallotModal.bind(this);
+    this.closeSelectBallotModal = this.closeSelectBallotModal.bind(this);
     this.toggleSignInModal = this.toggleSignInModal.bind(this);
     this.transitionToYourVoterGuide = this.transitionToYourVoterGuide.bind(this);
     this.handleTabChange = this.handleTabChange.bind(this);
@@ -114,8 +113,7 @@ class HeaderBar extends Component {
       showPaidAccountUpgradeModal: false, // June 2021 , TODO: Add back in paid upgrade modal
       showPersonalizedScoreIntroModal: AppObservableStore.showPersonalizedScoreIntroModal(),
       showSelectBallotModal: AppObservableStore.showSelectBallotModal(),
-      showSelectBallotModalHideAddress: getBooleanValue(AppObservableStore.showSelectBallotModalHideAddress()),
-      showSelectBallotModalHideElections: getBooleanValue(AppObservableStore.showSelectBallotModalHideElections()),
+      showSelectBallotModalEditAddress: getBooleanValue(AppObservableStore.showSelectBallotModalEditAddress()),
       // showSignInModal: AppObservableStore.showSignInModal(),
       showValuesIntroModal: AppObservableStore.showValuesIntroModal(),
       showImageUploadModal: AppObservableStore.showImageUploadModal(),
@@ -215,9 +213,7 @@ class HeaderBar extends Component {
       update = true;
     } else if (this.state.showSelectBallotModal !== nextState.showSelectBallotModal) {
       update = true;
-    } else if (this.state.showSelectBallotModalHideAddress !== nextState.showSelectBallotModalHideAddress) {
-      update = true;
-    } else if (this.state.showSelectBallotModalHideElections !== nextState.showSelectBallotModalHideElections) {
+    } else if (this.state.showSelectBallotModalEditAddress !== nextState.showSelectBallotModalEditAddress) {
       update = true;
     }
     const thisVoterExists = this.state.voter !== undefined;
@@ -310,8 +306,7 @@ class HeaderBar extends Component {
       showShareModal: AppObservableStore.showShareModal(),
       showPersonalizedScoreIntroModal: AppObservableStore.showPersonalizedScoreIntroModal(),
       showSelectBallotModal: AppObservableStore.showSelectBallotModal(),
-      showSelectBallotModalHideAddress: AppObservableStore.showSelectBallotModalHideAddress(),
-      showSelectBallotModalHideElections: AppObservableStore.showSelectBallotModalHideElections(),
+      showSelectBallotModalEditAddress: AppObservableStore.showSelectBallotModalEditAddress(),
       // showSignInModal: AppObservableStore.showSignInModal(),
       showValuesIntroModal: AppObservableStore.showValuesIntroModal(),
       showImageUploadModal: AppObservableStore.showImageUploadModal(),
@@ -427,16 +422,15 @@ class HeaderBar extends Component {
 
   // December 2020: destinationUrlForHistoryPush is not defined in this class, so we never make the HistoryPush
   // eslint-disable-next-line no-unused-vars
-  toggleSelectBallotModal (showSelectBallotModalHideAddress = false, showSelectBallotModalHideElections = false) {
+  closeSelectBallotModal () {
     const { showSelectBallotModal } = this.state;
     if (!showSelectBallotModal) {
       BallotActions.voterBallotListRetrieve(); // Retrieve a list of ballots for the voter from other elections
     }
-    AppObservableStore.setShowSelectBallotModal(!showSelectBallotModal, showSelectBallotModalHideAddress, showSelectBallotModalHideElections);
+    AppObservableStore.setShowSelectBallotModal(false);
 
     this.setState({
-      showSelectBallotModal: !showSelectBallotModal,
-      // firstVisitToBallot: false,
+      showSelectBallotModal: false,
     });
   }
 
@@ -544,7 +538,7 @@ class HeaderBar extends Component {
       showAdviserIntroModal, showAskFriendsModal, showChooseOrOpposeIntroModal,
       showEditAddressButton, showFirstPositionIntroModal,
       showPaidAccountUpgradeModal, showPersonalizedScoreIntroModal,
-      showSelectBallotModal, showSelectBallotModalHideAddress, showSelectBallotModalHideElections,
+      showSelectBallotModal, showSelectBallotModalEditAddress,
       showShareModal, showSignInModal, showValuesIntroModal, showImageUploadModal,
       voter, voterIsSignedIn, tabsValue,
     } = this.state;
@@ -553,7 +547,7 @@ class HeaderBar extends Component {
       showAdviserIntroModal, showAskFriendsModal, showChooseOrOpposeIntroModal,
       showEditAddressButton, showFirstPositionIntroModal,
       showPaidAccountUpgradeModal, showPersonalizedScoreIntroModal,
-      showSelectBallotModal, showSelectBallotModalHideAddress, showSelectBallotModalHideElections,
+      showSelectBallotModal, showSelectBallotModalEditAddress,
       showShareModal, showSignInModal, showValuesIntroModal, showImageUploadModal,
     };
     // const showingBallot = pathname.startsWith('/ballot');
@@ -567,7 +561,7 @@ class HeaderBar extends Component {
     //         <IconButton
     //           classes={{ root: classes.addressIconButtonRoot }}
     //           id="changeAddressOrElectionHeaderBarElection"
-    //           onClick={() => this.toggleSelectBallotModal(false, false)}
+    //           onClick={() => this.closeSelectBallotModal(false)}
     //           size="large"
     //         >
     //           <Place />
@@ -576,7 +570,7 @@ class HeaderBar extends Component {
     //           color="primary"
     //           classes={{ root: classes.addressButtonRoot }}
     //           id="changeAddressOrElectionHeaderBarText"
-    //           onClick={() => this.toggleSelectBallotModal(false, false)}
+    //           onClick={() => this.closeSelectBallotModal(false)}
     //         >
     //           Address & Elections
     //         </Button>
@@ -587,7 +581,7 @@ class HeaderBar extends Component {
     //         <IconButton
     //           classes={{ root: classes.addressIconButtonRoot }}
     //           id="changeAddressOnlyHeaderBar"
-    //           onClick={() => this.toggleSelectBallotModal(false, true)}
+    //           onClick={() => this.closeSelectBallotModal(false)}
     //           size="large"
     //         >
     //           <Place />
@@ -790,9 +784,9 @@ class HeaderBar extends Component {
           closePaidAccountUpgradeModal={this.closePaidAccountUpgradeModal}
           closePersonalizedScoreIntroModal={this.closePersonalizedScoreIntroModal}
           closeShareModal={this.closeShareModal}
+          closeSelectBallotModal={this.closeSelectBallotModal}
           closeValuesIntroModal={this.closeValuesIntroModal}
           shows={shows}
-          toggleSelectBallotModal={this.toggleSelectBallotModal}
         />
       </HeaderBarWrapper>
     );

@@ -1,8 +1,9 @@
-import { Button } from '@mui/material';
+import { Button, CircularProgress } from '@mui/material';
 import withStyles from '@mui/styles/withStyles';
 import { loadGapiInsideDOM } from 'gapi-script';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
+import styled from 'styled-components';
 import VoterActions from '../../actions/VoterActions';
 import { renderLog } from '../../common/utils/logging';
 import webAppConfig from '../../config'; // eslint-disable-line import/no-cycle
@@ -192,7 +193,6 @@ class AddContactsFromGoogleButton extends Component {
     const { addContactsState, voterContactEmailGoogleCount } = this.state;
     // console.log('render in AddContactsFromGoogleButton, addContactsState: ', addContactsState);
     const disableButton = (addContactsState === AddContactConsts.requestingContacts) || (addContactsState === AddContactConsts.sendingContacts) || (addContactsState === AddContactConsts.receivedContacts);
-
     return (
       <Button
         classes={mobileMode ? { root: classes.buttonMobile } : { root: classes.buttonDesktop }}
@@ -204,9 +204,12 @@ class AddContactsFromGoogleButton extends Component {
       >
         <span>
           {disableButton ? (
-            <span>
-              Importing contacts...
-            </span>
+            <ImportingContacts>
+              <div style={{ marginRight: '8px' }}>
+                Importing contacts...
+              </div>
+              <CircularProgress style={{ height: '20px', width: '20px' }} />
+            </ImportingContacts>
           ) : (
             <span>
               {voterContactEmailGoogleCount > 0 ? (
@@ -248,5 +251,11 @@ const styles = () => ({
     minWidth: 300,
   },
 });
+
+const ImportingContacts = styled('div')`
+  align-items: center;
+  display: flex;
+  justify-content: center;
+`;
 
 export default withStyles(styles)(AddContactsFromGoogleButton);

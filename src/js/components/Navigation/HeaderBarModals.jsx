@@ -23,14 +23,14 @@ function HeaderBarModals (props) {
     classes, closeAdviserIntroModal, closeAskFriendsModal, closeChooseOrOpposeIntroModal,
     closeFirstPositionIntroModal, closeImageUploadModal,
     closePersonalizedScoreIntroModal, closeShareModal, closeSignInModal,
-    closeValuesIntroModal, shows, toggleSelectBallotModal,
+    closeValuesIntroModal, shows, closeSelectBallotModal,
   } = props;
 
   const {
     showAdviserIntroModal, showAskFriendsModal, showChooseOrOpposeIntroModal,
     showFirstPositionIntroModal,
     showPaidAccountUpgradeModal, showPersonalizedScoreIntroModal,
-    showSelectBallotModal, showSelectBallotModalHideAddress, showSelectBallotModalHideElections,
+    showSelectBallotModal, showSelectBallotModalEditAddress,
     showShareModal, showSignInModal, showValuesIntroModal, showImageUploadModal,
   } = shows;
   const ballotBaseUrl = ['ready'].includes(normalizedHrefPage()) ? '/ready' : '/ballot';
@@ -115,10 +115,9 @@ function HeaderBarModals (props) {
       <Suspense fallback={<></>}>
         <SelectBallotModal
           ballotBaseUrl={ballotBaseUrl}
-          hideAddressEdit={showSelectBallotModalHideAddress}
-          hideElections={showSelectBallotModalHideElections}
+          closeSelectBallotModal={closeSelectBallotModal}
+          showEditAddress={showSelectBallotModalEditAddress}
           show
-          toggleFunction={toggleSelectBallotModal}
         />
       </Suspense>
     );
@@ -166,11 +165,11 @@ HeaderBarModals.propTypes = {
   closeChooseOrOpposeIntroModal: PropTypes.func,
   closeFirstPositionIntroModal: PropTypes.func,
   closePersonalizedScoreIntroModal: PropTypes.func,
+  closeSelectBallotModal: PropTypes.func,
   closeSignInModal: PropTypes.func,
   closeValuesIntroModal: PropTypes.func,
   closeImageUploadModal: PropTypes.func,
   shows: PropTypes.object,
-  toggleSelectBallotModal: PropTypes.func,
 };
 
 const styles = () => ({
