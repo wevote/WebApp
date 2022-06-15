@@ -1,12 +1,26 @@
 import styled from 'styled-components';
 
-const OuterWrapper = styled('div')`
+const Dot = styled('div')`
+  padding-top: 1px;
+  text-align: center;
+  vertical-align: top;
+`;
+
+const OuterWrapper = styled('div')(({ theme }) => (`
   display: flex;
   justify-content: center;
   padding: 0 !important;
-`;
+  ${theme.breakpoints.down('lg')} {
+    min-width: 450px;
+  }
+  ${theme.breakpoints.down('sm')} {
+    min-width: 0;
+    min-width: unset;
+  }
+`));
 
 const InnerWrapper = styled('div')`
+  width: 100%;
 `;
 
 const IntroHeader = styled('div', {
@@ -24,13 +38,9 @@ const IntroHeader = styled('div', {
   }
 `));
 
-const ListWrapper = styled('div')`
-  display: flex;
-  justify-content: center;
-`;
-
 const ListMaxWidth = styled('div')`
   max-width: 450px;
+  width: 100%;
 `;
 
 const ListTitleRow = styled('div')`
@@ -46,10 +56,9 @@ const ListRow = styled('div')`
   justify-content: flex-start;
 `;
 
-const Dot = styled('div')`
-  padding-top: 1px;
-  text-align: center;
-  vertical-align: top;
+const ListWrapper = styled('div')`
+  display: flex;
+  justify-content: center;
 `;
 
 const StepNumber = styled('div')(({ theme }) => (`

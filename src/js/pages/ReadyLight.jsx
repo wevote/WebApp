@@ -155,7 +155,7 @@ class ReadyLight extends Component {
                 </ReadyCard>
               )}
               {isAndroid() && (
-                <ReadyIntroductionMobileWrapper className="u-show-mobile">
+                <ReadyIntroductionMobileWrapper className="u-show-mobile-tablet">
                   <Suspense fallback={<></>}>
                     <DelayedLoad waitBeforeShow={10}>
                       <ReadyFinePrint showStep3WhenCompressed />
@@ -170,20 +170,20 @@ class ReadyLight extends Component {
                   </DelayedLoad>
                 </Suspense>
               </PrepareForElectionOuterWrapper>
-              <ReadyIntroductionMobileWrapper className="u-show-mobile">
+              <ReadyIntroductionMobileWrapper className="u-show-mobile-tablet">
                 <Suspense fallback={<></>}>
                   <DelayedLoad waitBeforeShow={700}>
                     <ReadyIntroduction showStep3WhenCompressed />
                   </DelayedLoad>
                 </Suspense>
               </ReadyIntroductionMobileWrapper>
-              <ViewBallotButtonWrapper className="col-12 u-show-mobile">
+              <ViewBallotButtonWrapper className="col-12 u-show-mobile-tablet">
                 <Suspense fallback={<></>}>
                   <ViewUpcomingBallotButton onClickFunction={this.goToBallot} />
                 </Suspense>
               </ViewBallotButtonWrapper>
               {!isAndroid() && (
-                <ReadyIntroductionMobileWrapper className="u-show-mobile">
+                <ReadyIntroductionMobileWrapper className="u-show-mobile-tablet">
                   <Suspense fallback={<></>}>
                     <DelayedLoad waitBeforeShow={700}>
                       <ReadyFinePrint showStep3WhenCompressed />

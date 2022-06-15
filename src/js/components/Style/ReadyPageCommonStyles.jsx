@@ -26,12 +26,15 @@ export const PrepareForElectionOuterWrapper = styled('div')`
   margin-bottom: 48px;
 `;
 
-export const ReadyIntroductionMobileWrapper = styled('div')`
+export const ReadyIntroductionMobileWrapper = styled('div')(({ theme }) => (`
   display: flex;
-  justify-content: start;
+  justify-content: flex-start;
   margin-bottom: 48px;
   margin-top: 31px;
-`;
+  ${theme.breakpoints.up('sm')} {
+    justify-content: center;
+  }
+`));
 
 export const ElectionCountdownOuterWrapper = styled('div')`
   height: 280px;
