@@ -57,8 +57,7 @@ const nonFluxState = {
   showPersonalizedScoreIntroModal: false,
   showPositionDrawer: false,
   showSelectBallotModal: false,
-  showSelectBallotModalHideAddress: false,
-  showSelectBallotModalHideElections: false,
+  showSelectBallotModalEditAddress: false,
   showShareModal: false,
   showSharedItemModal: false,
   showSignInModal: false,
@@ -244,11 +243,11 @@ export default {
     messageService.sendMessage('state updated showPositionDrawer');
   },
 
-  setShowSelectBallotModal (showSelectBallotModal, showSelectBallotModalHideAddress = false, showSelectBallotModalHideElections = false) {
+  setShowSelectBallotModal (showSelectBallotModal, showSelectBallotModalEditAddress = false) {
+    nonFluxState.showSelectBallotModalEditAddress = showSelectBallotModalEditAddress;
     nonFluxState.showSelectBallotModal = showSelectBallotModal;
-    nonFluxState.showSelectBallotModalHideAddress = showSelectBallotModalHideAddress;
-    nonFluxState.showSelectBallotModalHideElections = showSelectBallotModalHideElections;
-    messageService.sendMessage('state updated showSelectBallotModal, showSelectBallotModalHideAddress, & showSelectBallotModalHideElections');
+    // console.log('setShowSelectBallotModal showSelectBallotModalEditAddress:', showSelectBallotModalEditAddress);
+    messageService.sendMessage('state updated showSelectBallotModal, showSelectBallotModalEditAddress');
   },
 
   setShowSelectBallotModalOnly (showSelectBallotModal) {
@@ -551,12 +550,8 @@ export default {
     return nonFluxState.showSelectBallotModal;
   },
 
-  showSelectBallotModalHideAddress () {
-    return nonFluxState.showSelectBallotModalHideAddress;
-  },
-
-  showSelectBallotModalHideElections () {
-    return nonFluxState.showSelectBallotModalHideElections;
+  showSelectBallotModalEditAddress () {
+    return nonFluxState.showSelectBallotModalEditAddress;
   },
 
   showSignInModal () {

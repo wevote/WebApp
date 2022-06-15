@@ -142,7 +142,7 @@ export default class BallotElectionListWithFilters extends Component {
         updatedElectionId: BallotStore.ballotProperties.google_civic_election_id,
       });
       // console.log('onBallotStoreChange--------- this.props.toggleFunction()');
-      this.incomingToggleFunction(this.state.destinationUrlForHistoryPush);
+      this.incomingToggleFunction();
     }
     let ballotElectionList;
     let ballotElectionListCount;
@@ -203,14 +203,14 @@ export default class BallotElectionListWithFilters extends Component {
           updatedElectionId: VoterStore.electionId(),
         });
         // console.log('onVoterStoreChange--------- this.props.toggleFunction()');
-        this.incomingToggleFunction(this.state.destinationUrlForHistoryPush);
+        this.incomingToggleFunction();
       }
     }
   }
 
-  incomingToggleFunction = (destinationUrlForHistoryPush) => {
+  incomingToggleFunction = () => {
     if (this.props.toggleFunction) {
-      this.props.toggleFunction(destinationUrlForHistoryPush);
+      this.props.toggleFunction();
     }
   }
 

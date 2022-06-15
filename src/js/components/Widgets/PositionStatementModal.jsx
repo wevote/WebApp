@@ -178,7 +178,7 @@ class PositionStatementModal extends Component {
   render () {
     renderLog('PositionStatementModal');  // Set LOG_RENDER_EVENTS to log all renders
     const {
-      ballotItemWeVoteId, classes, externalUniqueId, hideAddressEdit, hideElections,
+      ballotItemWeVoteId, classes, externalUniqueId, showEditAddress,
     } = this.props;
     const {
       ballotItemDisplayName, voterIsSignedIn, voterPhotoUrlMedium,
@@ -187,7 +187,7 @@ class PositionStatementModal extends Component {
     } = this.state;
 
     let dialogTitleText = 'Enter Your Opinion';
-    if (hideAddressEdit || hideElections) {
+    if (showEditAddress) {
       dialogTitleText = '';
     }
 
@@ -333,8 +333,7 @@ PositionStatementModal.propTypes = {
   ballotItemWeVoteId: PropTypes.string.isRequired,
   classes: PropTypes.object,
   externalUniqueId: PropTypes.string,
-  hideAddressEdit: PropTypes.bool,
-  hideElections: PropTypes.bool,
+  showEditAddress: PropTypes.bool,
   show: PropTypes.bool,
   togglePositionStatementModal: PropTypes.func.isRequired,
 };

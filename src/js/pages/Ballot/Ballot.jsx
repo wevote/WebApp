@@ -1011,10 +1011,11 @@ class Ballot extends Component {
     }, 500);
   }
 
-  toggleSelectBallotModal (destinationUrlForHistoryPush = '', hideAddressEdit = false, hideElections = false) {
+  toggleSelectBallotModal (destinationUrlForHistoryPush = '', showEditAddress = false) {
     console.log('Ballot toggleSelectBallotModal');
     const showSelectBallotModal = AppObservableStore.showSelectBallotModal();
     // console.log('Ballot toggleSelectBallotModal, destinationUrlForHistoryPush:', destinationUrlForHistoryPush, ', showSelectBallotModal:', showSelectBallotModal);
+    AppObservableStore.setShowSelectBallotModal(!showSelectBallotModal, getBooleanValue(showEditAddress));
     if (showSelectBallotModal && destinationUrlForHistoryPush && destinationUrlForHistoryPush !== '') {
       // console.log('toggleSelectBallotModal destinationUrlForHistoryPush:', destinationUrlForHistoryPush);
       historyPush(destinationUrlForHistoryPush);
@@ -1022,8 +1023,6 @@ class Ballot extends Component {
       // console.log('Ballot toggleSelectBallotModal, BallotActions.voterBallotListRetrieve()');
       BallotActions.voterBallotListRetrieve(); // Retrieve a list of ballots for the voter from other elections
     }
-
-    AppObservableStore.setShowSelectBallotModal(!showSelectBallotModal, getBooleanValue(hideAddressEdit), getBooleanValue(hideElections));
   }
 
   // Needed to scroll to anchor tags based on hash in url (as done for bookmarks)

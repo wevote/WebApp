@@ -149,10 +149,8 @@ class ElectionCountdown extends React.Component {
   }
 
   // eslint-disable-next-line no-unused-vars
-  toggleSelectBallotModal (showSelectBallotModal, hideAddressEditIgnored = false, hideElectionsIgnored = false) {
-    const hideAddressEdit = false;
-    const hideElections = false;
-    AppObservableStore.setShowSelectBallotModal(!showSelectBallotModal, getBooleanValue(hideAddressEdit), getBooleanValue(hideElections));
+  toggleSelectBallotModal (showSelectBallotModal, showEditAddress = true) {
+    AppObservableStore.setShowSelectBallotModal(!showSelectBallotModal, getBooleanValue(showEditAddress));
   }
 
   render () {
@@ -276,7 +274,7 @@ class ElectionCountdown extends React.Component {
             electionDateBelow
             electionDateMDY={nextNationalElectionDateMDY}
             electionName="General Election"
-            toggleSelectBallotModal={this.toggleSelectBallotModal}
+            // toggleSelectBallotModal={this.toggleSelectBallotModal}
             turnOffVoteByBelow
           />
         </BallotTitleHeaderWrapper>

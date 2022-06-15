@@ -7,13 +7,14 @@ import styled from 'styled-components';
 import daysUntil from '../../common/utils/daysUntil';
 import { renderLog } from '../../common/utils/logging';
 import stringContains from '../../common/utils/stringContains';
+import AppObservableStore from '../../stores/AppObservableStore';
 import BallotStore from '../../stores/BallotStore';
 import VoterStore from '../../stores/VoterStore';
 import {
   BallotAddress,
+  ClickBlockWrapper,
   ComponentWrapper,
   ContentWrapper,
-  ElectionClickBlock,
   ElectionDateBelow,
   ElectionDateRight,
   ElectionNameBlock,
@@ -79,10 +80,25 @@ class BallotTitleHeader extends Component {
     });
   }
 
-  onClickLocal = () => {
+  showSelectBallotModalChooseElection = () => {
     const { linksOff } = this.props;
-    if (this.props.toggleSelectBallotModal && !linksOff) {
-      this.props.toggleSelectBallotModal('', false, false);
+    // console.log('BallotTitleHeader showSelectBallotModalChooseElection linksOff:', linksOff);
+    if (!linksOff) {
+      const showEditAddress = false;
+      const showSelectBallotModal = true;
+      // this.props.toggleSelectBallotModal('', showEditAddress, false);
+      AppObservableStore.setShowSelectBallotModal(showSelectBallotModal, showEditAddress);
+    }
+  }
+
+  showSelectBallotModalEditAddress = () => {
+    const { linksOff } = this.props;
+    // console.log('BallotTitleHeader showSelectBallotModalEditAddress linksOff:', linksOff);
+    if (!linksOff) {
+      const showEditAddress = true;
+      const showSelectBallotModal = true;
+      // this.props.toggleSelectBallotModal('', showEditAddress, false);
+      AppObservableStore.setShowSelectBallotModal(showSelectBallotModal, showEditAddress);
     }
   }
 
@@ -107,14 +123,17 @@ class BallotTitleHeader extends Component {
             <OverflowContainer>
               <OverflowContent>
                 <ElectionNameScrollContent>
-                  <ElectionClickBlock
+                  <ClickBlockWrapper
                     id="ballotTitleHeaderSelectBallotModal"
                     linksOff={linksOff}
-                    onClick={this.onClickLocal}
                   >
                     <ElectionNameBlock>
                       {(substitutedState && (substitutedState !== '')) ? (
-                        <ElectionStateLabel centerText={centerText}>
+                        <ElectionStateLabel
+                          centerText={centerText}
+                          className="u-cursor--pointer"
+                          onClick={this.showSelectBallotModalChooseElection}
+                        >
                           {!electionNameContainsState && (
                             <>
                               {substitutedState || ' '}
@@ -128,7 +147,11 @@ class BallotTitleHeader extends Component {
                           )}
                         </ElectionStateLabel>
                       ) : (
-                        <ElectionStateLabel centerText={centerText}>
+                        <ElectionStateLabel
+                          centerText={centerText}
+                          className="u-cursor--pointer"
+                          onClick={this.showSelectBallotModalChooseElection}
+                        >
                           {!electionNameContainsState && (
                             <>
                               {originalTextState || ' '}
@@ -142,11 +165,19 @@ class BallotTitleHeader extends Component {
                           )}
                         </ElectionStateLabel>
                       )}
-                      <ElectionNameH1 centerText={centerText}>
+                      <ElectionNameH1
+                        centerText={centerText}
+                        className="u-cursor--pointer"
+                        onClick={this.showSelectBallotModalChooseElection}
+                      >
                         {electionName}
                       </ElectionNameH1>
                       {(showBallotCaveat && ballotCaveat) ? (
-                        <BallotAddress centerText={centerText}>
+                        <BallotAddress
+                          centerText={centerText}
+                          className="u-cursor--pointer"
+                          onClick={this.showSelectBallotModalEditAddress}
+                        >
                           {ballotCaveat && (
                             <div>{ballotCaveat}</div>
                           )}
@@ -154,7 +185,11 @@ class BallotTitleHeader extends Component {
                       ) : (
                         <>
                           {(substitutedAddress && substitutedAddress !== '') ? (
-                            <BallotAddress centerText={centerText}>
+                            <BallotAddress
+                              centerText={centerText}
+                              className="u-cursor--pointer"
+                              onClick={this.showSelectBallotModalEditAddress}
+                            >
                               Ballot for
                               {' '}
                               <span className={linksOff ? '' : 'u-link-color'}>
@@ -164,7 +199,11 @@ class BallotTitleHeader extends Component {
                           ) : (
                             <>
                               {(originalTextAddress && originalTextAddress !== '') && (
-                                <BallotAddress centerText={centerText}>
+                                <BallotAddress
+                                  centerText={centerText}
+                                  className="u-cursor--pointer"
+                                  onClick={this.showSelectBallotModalEditAddress}
+                                >
                                   Ballot for
                                   {' '}
                                   <span className={linksOff ? '' : 'u-link-color'}>
@@ -197,7 +236,7 @@ class BallotTitleHeader extends Component {
                         </VoteByBelowWrapper>
                       )}
                     </ElectionNameBlock>
-                  </ElectionClickBlock>
+                  </ClickBlockWrapper>
                 </ElectionNameScrollContent>
               </OverflowContent>
             </OverflowContainer>
@@ -228,7 +267,7 @@ class BallotTitleHeader extends Component {
       return (
         <span
           className="u-push--sm"
-          onClick={this.onClickLocal}
+          onClick={this.showSelectBallotModalChooseElection}
           id="ballotTitleHeaderSelectBallotModalLoadingElection"
         >
           {linksOff ? (
@@ -254,7 +293,7 @@ BallotTitleHeader.propTypes = {
   electionDateBelow: PropTypes.bool,
   linksOff: PropTypes.bool,
   showBallotCaveat: PropTypes.bool,
-  toggleSelectBallotModal: PropTypes.func,
+  // toggleSelectBallotModal: PropTypes.func,
   turnOffVoteByBelow: PropTypes.bool,
 };
 
