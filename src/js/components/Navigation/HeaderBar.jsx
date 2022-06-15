@@ -78,10 +78,10 @@ class HeaderBar extends Component {
       // firstVisitToBallot: true,
     };
     this.closePaidAccountUpgradeModal = this.closePaidAccountUpgradeModal.bind(this);
+    this.closeSelectBallotModal = this.closeSelectBallotModal.bind(this);
     this.closeShareModal = this.closeShareModal.bind(this);
     this.closeSignInModal = this.closeSignInModal.bind(this);
     this.debugLogging = this.debugLogging.bind(this);
-    this.closeSelectBallotModal = this.closeSelectBallotModal.bind(this);
     this.toggleSignInModal = this.toggleSignInModal.bind(this);
     this.transitionToYourVoterGuide = this.transitionToYourVoterGuide.bind(this);
     this.handleTabChange = this.handleTabChange.bind(this);
@@ -307,7 +307,7 @@ class HeaderBar extends Component {
       showPersonalizedScoreIntroModal: AppObservableStore.showPersonalizedScoreIntroModal(),
       showSelectBallotModal: AppObservableStore.showSelectBallotModal(),
       showSelectBallotModalEditAddress: AppObservableStore.showSelectBallotModalEditAddress(),
-      // showSignInModal: AppObservableStore.showSignInModal(),
+      showSignInModal: AppObservableStore.showSignInModal(),
       showValuesIntroModal: AppObservableStore.showValuesIntroModal(),
       showImageUploadModal: AppObservableStore.showImageUploadModal(),
     });
@@ -420,8 +420,6 @@ class HeaderBar extends Component {
     }
   }
 
-  // December 2020: destinationUrlForHistoryPush is not defined in this class, so we never make the HistoryPush
-  // eslint-disable-next-line no-unused-vars
   closeSelectBallotModal () {
     const { showSelectBallotModal } = this.state;
     if (!showSelectBallotModal) {
@@ -436,14 +434,15 @@ class HeaderBar extends Component {
 
   closeSignInModal () {
     // console.log('HeaderBar closeSignInModal');
+    AppObservableStore.setShowSignInModal(false);
     this.setState({ showSignInModal: false });
     VoterActions.voterRetrieve();
     VoterActions.voterEmailAddressRetrieve();
   }
 
   toggleSignInModal () {
-    // console.log('HeaderBar toggleSignInModal');
     const { showSignInModal } = this.state;
+    // console.log('HeaderBar toggleSignInModal showSignInModal:', showSignInModal);
     AppObservableStore.setShowSignInModal(!showSignInModal);
     this.setState({
       showSignInModal: !showSignInModal,

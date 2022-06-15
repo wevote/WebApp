@@ -39,6 +39,7 @@ function HeaderBarModals (props) {
   const shareModalStep = AppObservableStore.getShareModalStep();
 
   // renderLog(`HeaderBarModals`);
+  // console.log('HeaderBarModals showSignInModal:', showSignInModal);
   if (showAdviserIntroModal) {
     return (
       <Suspense fallback={<></>}>
@@ -63,7 +64,7 @@ function HeaderBarModals (props) {
       <Suspense fallback={<></>}>
         <Dialog
           classes={{ paper: classes.dialogPaper }}
-          open
+          open={showChooseOrOpposeIntroModal}
           onClose={closeChooseOrOpposeIntroModal}
         >
           <ChooseOrOpposeIntroModal

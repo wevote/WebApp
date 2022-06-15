@@ -116,6 +116,7 @@ class BallotTitleHeader extends Component {
     const stateTextUsed = substitutedState || originalTextState || '';
     const electionNameContainsState = stringContains(stateTextUsed.toLowerCase(), electionName.toLowerCase());
 
+    // console.log('BallotTitleHeader daysUntilElection:', daysUntilElection);
     if (electionName) {
       return (
         <ComponentWrapper>
@@ -125,7 +126,6 @@ class BallotTitleHeader extends Component {
                 <ElectionNameScrollContent>
                   <ClickBlockWrapper
                     id="ballotTitleHeaderSelectBallotModal"
-                    linksOff={linksOff}
                   >
                     <ElectionNameBlock>
                       {(substitutedState && (substitutedState !== '')) ? (
