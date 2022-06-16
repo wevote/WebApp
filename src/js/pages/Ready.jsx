@@ -266,7 +266,7 @@ class Ready extends Component {
                   arrowsOn
                 />
               )}
-              {(voterIsSignedIn && nextReleaseFeaturesEnabled) && (
+              {(voterIsSignedIn && nextReleaseFeaturesEnabled && !futureFeaturesDisabled) && (
                 <Suspense fallback={<></>}>
                   <DelayedLoad waitBeforeShow={500}>
                     <ReadyTaskFriends

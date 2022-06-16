@@ -10988,12 +10988,14 @@ button:focus {
 }
 
 .icon-lg {
+  border: 1px solid #ccc;
   border-radius: 100px;
   font-size: 5rem;
 }
 
 @media all and (max-width: 479px) {
   .icon-lg {
+    border: 1px solid #ccc;
     border-radius: 100px;
     font-size: 2rem;
   }
@@ -12369,12 +12371,14 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .card-main .icon-lg {
+  border: 1px solid #ccc;
   border-radius: 100px;
   font-size: 50px;
 }
 
 @media all and (min-width: 480px) {
   .card-main .icon-lg {
+    border: 1px solid #ccc;
     border-radius: 100px;
     font-size: 80px;
   }

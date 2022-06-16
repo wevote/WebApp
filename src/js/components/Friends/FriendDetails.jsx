@@ -38,9 +38,9 @@ class FriendDetails extends Component {
             </EmailSmaller>
           </FriendDetailsLine>
         )}
-        {!!(indicateIfAlreadyOnWeVote && voterWeVoteId) && (
+        {!!(indicateIfAlreadyOnWeVote && !voterWeVoteId) && (
           <FriendDetailsLine inSideColumn={inSideColumn}>
-            <span style={{ fontWeight: 600 }}>Found on We Vote!</span>
+            <span style={{ }}>Invite to We Vote</span>
           </FriendDetailsLine>
         )}
         {!!(positionsTaken) && (
@@ -78,7 +78,7 @@ FriendDetails.propTypes = {
 };
 
 const EmailSmaller = styled('div')`
-  font-size: 14px;
+  font-size: 16px;
   max-width: 21ch;
   overflow: hidden;
   text-overflow: ellipsis;
