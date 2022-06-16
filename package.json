@@ -130,6 +130,6 @@
     "wdio": "^6.0.1"
   },
   "optionalDependencies": {
-    "snyk": "^1.381.1"
+    "snyk": "^1.952.0"
   }
 }

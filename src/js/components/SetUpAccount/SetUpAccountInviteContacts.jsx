@@ -189,7 +189,7 @@ class SetUpAccountInviteContacts extends React.Component {
       <StepCenteredWrapper>
         <SetUpAccountTop>
           <SetUpAccountTitle>
-            Add friends from contacts
+            Add friends from your contacts
           </SetUpAccountTitle>
           <SetUpAccountContactsTextWrapper>
             <SetUpAccountContactsText>
