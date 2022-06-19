@@ -11,7 +11,6 @@ const NUMBER_OF_MUTUAL_FRIEND_NAMES_TO_SHOW = 10; // Maximum available coming fr
 const NUMBER_OF_MUTUAL_FRIEND_IMAGES_TO_SHOW = 3; // Maximum available coming from API server is currently 5
 
 class FriendDetails extends Component {
-
   orderByPhotoExists = (firstMutualFriend, secondMutualFriend) => {
     const secondMutualFriendHasPhoto = secondMutualFriend && secondMutualFriend.friend_photo_url_medium && secondMutualFriend.friend_photo_url_medium.length ? 1 : 0;
     const firstMutualFriendHasPhoto = firstMutualFriend && firstMutualFriend.friend_photo_url_medium && firstMutualFriend.friend_photo_url_medium.length ? 1 : 0;
