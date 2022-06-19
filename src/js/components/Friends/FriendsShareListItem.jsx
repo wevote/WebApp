@@ -14,7 +14,8 @@ class FriendsShareListItem extends Component {
     renderLog('FriendsShareListItem');  // Set LOG_RENDER_EVENTS to log all renders
     const {
       linkedOrganizationWeVoteId,
-      mutualFriends,
+      mutualFriendCount,
+      mutualFriendPreviewList,
       positionsTaken,
       voterDisplayName,
       voterEmailAddress,
@@ -29,7 +30,8 @@ class FriendsShareListItem extends Component {
     const voterImage = <ImageHandler sizeClassName="icon-lg " imageUrl={voterPhotoUrlLarge} kind_of_ballot_item="CANDIDATE" />;
     const detailsHTML = (
       <FriendDetails
-        mutualFriends={mutualFriends}
+        mutualFriendCount={mutualFriendCount}
+        mutualFriendPreviewList={mutualFriendPreviewList}
         positionsTaken={positionsTaken}
         voterDisplayName={voterDisplayName}
         voterEmailAddress={voterEmailAddress}
@@ -77,7 +79,8 @@ class FriendsShareListItem extends Component {
 }
 FriendsShareListItem.propTypes = {
   linkedOrganizationWeVoteId: PropTypes.string,
-  mutualFriends: PropTypes.number,
+  mutualFriendCount: PropTypes.number,
+  mutualFriendPreviewList: PropTypes.array,
   positionsTaken: PropTypes.number,
   voterDisplayName: PropTypes.string,
   voterEmailAddress: PropTypes.string,

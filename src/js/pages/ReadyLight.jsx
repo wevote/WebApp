@@ -204,10 +204,10 @@ class ReadyLight extends Component {
                   arrowsOn
                 />
               )}
-              {!futureFeaturesDisabled && (
-              <ReadyTaskPlan
-                arrowsOn
-              />
+              {nextReleaseFeaturesEnabled && (
+                <ReadyTaskPlan
+                  arrowsOn
+                />
               )}
             </div>
             <div className="col-lg-4 d-none d-lg-block">

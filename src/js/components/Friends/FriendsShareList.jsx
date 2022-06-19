@@ -51,7 +51,8 @@ class FriendShareList extends Component {
                 label={(
                   <FriendsShareListItem
                     linkedOrganizationWeVoteId={friend.linked_organization_we_vote_id}
-                    mutualFriends={friend.mutual_friends}
+                    mutualFriendCount={friend.mutual_friend_count}
+                    mutualFriendPreviewList={friend.mutual_friend_preview_list}
                     positionsTaken={friend.positions_taken}
                     voterDisplayName={friend.voter_display_name}
                     voterEmailAddress={friend.voter_email_address}

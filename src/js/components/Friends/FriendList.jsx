@@ -21,6 +21,7 @@ export default class FriendList extends Component {
       friendToggleOff, messageToFriendButtonOn, messageToFriendDefault,
       numberOfItemsToDisplay, previewMode,
     } = this.props;
+    // console.log('friendList:', friendList);
     const {
       loadingMoreItems,
     } = this.state;
@@ -51,7 +52,8 @@ export default class FriendList extends Component {
               linkedOrganizationWeVoteId={friend.linked_organization_we_vote_id}
               messageToFriendButtonOn={messageToFriendButtonOn}
               messageToFriendDefault={messageToFriendDefault}
-              mutualFriends={friend.mutual_friends}
+              mutualFriendCount={friend.mutual_friend_count}
+              mutualFriendPreviewList={friend.mutual_friend_preview_list}
               positionsTaken={friend.positions_taken}
               previewMode={previewMode}
               stateCodeForDisplay={friend.state_code_for_display}

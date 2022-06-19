@@ -65,7 +65,8 @@ class SuggestedFriendDisplayForList extends Component {
       indicateIfAlreadyOnWeVote,
       inSideColumn,
       linkedOrganizationWeVoteId,
-      mutualFriends,
+      mutualFriendCount,
+      mutualFriendPreviewList,
       positionsTaken,
       previewMode,
       stateCodeForDisplay,
@@ -93,7 +94,8 @@ class SuggestedFriendDisplayForList extends Component {
         emailAddressForDisplay={emailAddressForDisplay}
         indicateIfAlreadyOnWeVote={indicateIfAlreadyOnWeVote}
         inSideColumn={inSideColumn}
-        mutualFriends={mutualFriends}
+        mutualFriendCount={mutualFriendCount}
+        mutualFriendPreviewList={mutualFriendPreviewList}
         positionsTaken={positionsTaken}
         twitterDescriptionMinusName={twitterDescriptionMinusName}
         voterDisplayName={voterDisplayName}
@@ -214,7 +216,8 @@ SuggestedFriendDisplayForList.propTypes = {
   emailAddressForDisplay: PropTypes.string,
   inSideColumn: PropTypes.bool,
   linkedOrganizationWeVoteId: PropTypes.string,
-  mutualFriends: PropTypes.number,
+  mutualFriendCount: PropTypes.number,
+  mutualFriendPreviewList: PropTypes.array,
   positionsTaken: PropTypes.number,
   previewMode: PropTypes.bool,
   stateCodeForDisplay: PropTypes.string,

@@ -275,10 +275,10 @@ class Ready extends Component {
                   </DelayedLoad>
                 </Suspense>
               )}
-              {!futureFeaturesDisabled && (
-              <ReadyTaskPlan
-                arrowsOn
-              />
+              {nextReleaseFeaturesEnabled && (
+                <ReadyTaskPlan
+                  arrowsOn
+                />
               )}
             </div>
             <div className="col-lg-4 d-none d-lg-block">
