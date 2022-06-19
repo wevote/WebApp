@@ -29,7 +29,8 @@ export default class FriendInvitationList extends Component {
                       id={`invite-id-${friend.voter_we_vote_id}`}
                       invitationsSentByMe={invitationsSentByMe}
                       linkedOrganizationWeVoteId={friend.linked_organization_we_vote_id}
-                      mutualFriends={friend.mutual_friends}
+                      mutualFriendCount={friend.mutual_friend_count}
+                      mutualFriendPreviewList={friend.mutual_friend_preview_list}
                       previewMode={previewMode}
                       voterDisplayName={friend.voter_display_name}
                       voterEmailAddress={friend.voter_email_address}
@@ -51,7 +52,8 @@ export default class FriendInvitationList extends Component {
                       id={`invite-id-${simpleKeyCounter}`}
                       invitationState={friend.invitation_status}
                       linkedOrganizationWeVoteId={friend.linked_organization_we_vote_id}
-                      mutualFriends={friend.mutual_friends}
+                      mutualFriendCount={friend.mutual_friend_count}
+                      mutualFriendPreviewList={friend.mutual_friend_preview_list}
                       previewMode={previewMode}
                       voterDisplayName={friend.voter_display_name}
                       voterEmailAddress={friend.voter_email_address}

@@ -41,7 +41,8 @@ export default class SuggestedFriendList extends Component {
               <SuggestedFriendDisplayForList
                 inSideColumn={inSideColumn}
                 linkedOrganizationWeVoteId={friend.linked_organization_we_vote_id}
-                mutualFriends={friend.mutual_friends}
+                mutualFriendCount={friend.mutual_friend_count}
+                mutualFriendPreviewList={friend.mutual_friend_preview_list}
                 positionsTaken={friend.positions_taken}
                 previewMode={previewMode}
                 stateCodeForDisplay={friend.state_code_for_display}

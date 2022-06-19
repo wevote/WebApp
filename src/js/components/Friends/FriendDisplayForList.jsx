@@ -27,7 +27,8 @@ class FriendDisplayForList extends Component {
       friendToggleOff,
       messageToFriendButtonOn,
       messageToFriendDefault,
-      mutualFriends,
+      mutualFriendCount,
+      mutualFriendPreviewList,
       positionsTaken,
       previewMode,
       stateCodeForDisplay,
@@ -46,7 +47,8 @@ class FriendDisplayForList extends Component {
     const voterImage = <ImageHandler sizeClassName="icon-lg " imageUrl={voterPhotoUrlLarge} kind_of_ballot_item="CANDIDATE" />;
     const detailsHTML = (
       <FriendDetails
-        mutualFriends={mutualFriends}
+        mutualFriendCount={mutualFriendCount}
+        mutualFriendPreviewList={mutualFriendPreviewList}
         positionsTaken={positionsTaken}
         voterDisplayName={voterDisplayName}
         voterEmailAddress={voterEmailAddress}
@@ -141,7 +143,8 @@ FriendDisplayForList.propTypes = {
   linkedOrganizationWeVoteId: PropTypes.string,
   messageToFriendButtonOn: PropTypes.bool,
   messageToFriendDefault: PropTypes.string,
-  mutualFriends: PropTypes.number,
+  mutualFriendCount: PropTypes.number,
+  mutualFriendPreviewList: PropTypes.array,
   positionsTaken: PropTypes.number,
   previewMode: PropTypes.bool,
   stateCodeForDisplay: PropTypes.string,

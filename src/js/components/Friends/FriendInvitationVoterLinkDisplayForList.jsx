@@ -68,7 +68,8 @@ class FriendInvitationVoterLinkDisplayForList extends Component {
       classes,
       invitationsSentByMe,
       linkedOrganizationWeVoteId,
-      mutualFriends,
+      mutualFriendCount,
+      mutualFriendPreviewList,
       positionsTaken,
       previewMode,
       voterDisplayName,
@@ -91,7 +92,8 @@ class FriendInvitationVoterLinkDisplayForList extends Component {
     const voterImage = <ImageHandler sizeClassName="icon-lg " imageUrl={voterPhotoUrlLarge} kind_of_ballot_item="CANDIDATE" />;
     const detailsHTML = (
       <FriendDetails
-        mutualFriends={mutualFriends}
+        mutualFriendCount={mutualFriendCount}
+        mutualFriendPreviewList={mutualFriendPreviewList}
         positionsTaken={positionsTaken}
         twitterDescriptionMinusName={twitterDescriptionMinusName}
         voterDisplayName={voterDisplayName}
@@ -184,7 +186,8 @@ FriendInvitationVoterLinkDisplayForList.propTypes = {
   classes: PropTypes.object,
   invitationsSentByMe: PropTypes.bool,
   linkedOrganizationWeVoteId: PropTypes.string,
-  mutualFriends: PropTypes.number,
+  mutualFriendCount: PropTypes.number,
+  mutualFriendPreviewList: PropTypes.array,
   positionsTaken: PropTypes.number,
   voterWeVoteId: PropTypes.string,
   voterPhotoUrlLarge: PropTypes.string,

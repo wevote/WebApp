@@ -1,10 +1,11 @@
-import { Settings } from '@mui/icons-material';
 import withStyles from '@mui/styles/withStyles';
 import withTheme from '@mui/styles/withTheme';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import styled from 'styled-components';
+import BallotTitleHeaderNationalPlaceholder from './BallotTitleHeaderNationalPlaceholder';
+import { formatDateToMonthDayYear } from '../../common/utils/dateFormat';
 import daysUntil from '../../common/utils/daysUntil';
+import initializeMoment from '../../common/utils/initializeMoment';
 import { renderLog } from '../../common/utils/logging';
 import stringContains from '../../common/utils/stringContains';
 import AppObservableStore from '../../stores/AppObservableStore';
@@ -38,6 +39,7 @@ class BallotTitleHeader extends Component {
       daysUntilElection: 0,
       electionDayTextObject: undefined,
       electionName: '',
+      nextNationalElectionDateMDY: '',
       originalTextAddress: '',
       originalTextState: '',
       substitutedAddress: '',
@@ -62,6 +64,18 @@ class BallotTitleHeader extends Component {
     const electionDayText = BallotStore.currentBallotElectionDate;
     const electionDayTextFormatted = electionDayText && window.moment ? window.moment(electionDayText).format('MMM Do, YYYY') : '';
     const electionDayTextObject = electionDayText && window.moment ? <span>{electionDayTextFormatted}</span> : null;
+    const nextNationalElectionDayText = `${BallotStore.nextNationalElectionDayText || '2022-11-08'}`;
+    console.log('nextNationalElectionDayText:', nextNationalElectionDayText);
+    initializeMoment(() => {
+      const { moment } = window;
+      // this.setNextNationalElectionDateFromDayText(nextNationalElectionDayText);
+      const nextNationalElectionDayMDYSlash = moment(nextNationalElectionDayText, 'YYYY-MM-DD').format('MM/DD/YYYY');
+      const nextNationalElectionDate = new Date(nextNationalElectionDayMDYSlash);
+      const nextNationalElectionDateMDY = formatDateToMonthDayYear(nextNationalElectionDate);
+      this.setState({
+        nextNationalElectionDateMDY,
+      });
+    });
     this.setState({
       ballotCaveat: BallotStore.getBallotCaveat(),
       daysUntilElection: daysUntil(electionDayText),
@@ -105,10 +119,10 @@ class BallotTitleHeader extends Component {
   render () {
     renderLog('BallotTitleHeader');  // Set LOG_RENDER_EVENTS to log all renders
     // const nextReleaseFeaturesEnabled = webAppConfig.ENABLE_NEXT_RELEASE_FEATURES === undefined ? false : webAppConfig.ENABLE_NEXT_RELEASE_FEATURES;
-    const { centerText, classes, electionDateBelow, linksOff, showBallotCaveat, turnOffVoteByBelow } = this.props;
+    const { centerText, electionDateBelow, linksOff, showBallotCaveat, turnOffVoteByBelow } = this.props;
     const {
       ballotCaveat, daysUntilElection, electionDayTextObject,
-      electionName, originalTextAddress, originalTextState,
+      electionName, nextNationalElectionDateMDY, originalTextAddress, originalTextState,
       substitutedAddress, substitutedState, textForMapSearch,
     } = this.state;
 
@@ -275,12 +289,12 @@ class BallotTitleHeader extends Component {
               Choose election below.
             </>
           ) : (
-            <div className="u-link-color u-cursor--pointer">
-              Choose Election
-              <SettingsIconWrapper>
-                <Settings classes={{ root: classes.settingsIcon }} />
-              </SettingsIconWrapper>
-            </div>
+            <BallotTitleHeaderNationalPlaceholder
+              centerText
+              electionDateBelow
+              electionDateMDY={nextNationalElectionDateMDY}
+              electionName="General Election"
+            />
           )}
         </span>
       );
@@ -289,7 +303,6 @@ class BallotTitleHeader extends Component {
 }
 BallotTitleHeader.propTypes = {
   centerText: PropTypes.bool,
-  classes: PropTypes.object,
   electionDateBelow: PropTypes.bool,
   linksOff: PropTypes.bool,
   showBallotCaveat: PropTypes.bool,
@@ -309,8 +322,5 @@ const styles = {
     marginTop: 0,
   },
 };
-
-const SettingsIconWrapper = styled('span')`
-`;
 
 export default withTheme(withStyles(styles)(BallotTitleHeader));

@@ -276,6 +276,7 @@ class VoterPlanModal extends Component {
     const getPollingLocationUrl = 'https://gttp.votinginfoproject.org/';
     const voterPlanText = this.generateVoterPlanText();
     const showSaveButton = voterPlanChangedLocally || !savedVoterPlanFound;
+    const pigsCanFly = false;
     return (
       <Dialog
         classes={{ paper: classes.dialogPaper }}
@@ -397,11 +398,12 @@ class VoterPlanModal extends Component {
               >
                 {/* <option value="select-location" className="emphasize">select location</option> */}
                 <option value="polling place">polling place</option>
+                <option value="ballot drop box">ballot drop box</option>
                 <option value="voting center">voting center</option>
                 <option value="mailbox">mailbox</option>
                 <option value="post office">post office</option>
               </Select>
-              {((locationToDeliverBallot === 'polling place') || (locationToDeliverBallot === 'voting center')) ? (
+              {(pigsCanFly && ((locationToDeliverBallot === 'polling place') || (locationToDeliverBallot === 'voting center'))) ? (
                 <span>
                   {' '}
                   at:

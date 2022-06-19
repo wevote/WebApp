@@ -55,6 +55,7 @@ const DelayedLoad = React.lazy(() => import(/* webpackChunkName: 'DelayedLoad' *
 const FilterBaseSearch = React.lazy(() => import(/* webpackChunkName: 'FilterBaseSearch' */ '../../components/Filter/FilterBaseSearch'));
 const OpenExternalWebSite = React.lazy(() => import(/* webpackChunkName: 'OpenExternalWebSite' */ '../../common/components/Widgets/OpenExternalWebSite'));
 const ShowMoreItems = React.lazy(() => import(/* webpackChunkName: 'ShowMoreItems' */ '../../components/Widgets/ShowMoreItems'));
+const ViewUpcomingBallotButton = React.lazy(() => import(/* webpackChunkName: 'ViewUpcomingBallotButton' */ '../../components/Ready/ViewUpcomingBallotButton'));
 
 const TYPES = require('keymirror')({
   OFFICE: null,
@@ -1188,7 +1189,7 @@ class Ballot extends Component {
                     // since we use a button as the component, we can disable that es-lint rule
                     component="button"
                     id="ballotIfBallotDoesNotAppear"
-                    onClick={() => this.toggleSelectBallotModal('', false, true)}
+                    onClick={() => this.toggleSelectBallotModal('', true, true)}
                     style={{ color: 'rgb(6, 95, 212)' }}
                     underline="hover"
                   >
@@ -1207,24 +1208,45 @@ class Ballot extends Component {
     const voterAddressMissing = this.state.location === null;
 
     // const ballot_caveat = BallotStore.ballotProperties.ballot_caveat; // ballotProperties might be undefined
-    const ballotCaveat = BallotStore.getBallotCaveat() || '';
+    // const ballotCaveat = BallotStore.getBallotCaveat() || '';
     const sourcePollingLocationWeVoteId = BallotStore.currentBallotPollingLocationSource;
     const ballotReturnedAdminEditUrl = `${webAppConfig.WE_VOTE_SERVER_ROOT_URL}b/${sourcePollingLocationWeVoteId}/list_edit_by_polling_location/?google_civic_election_id=${VoterStore.electionId()}&state_code=`;
     // console.log('electionName: ', electionName, ', electionDayText: ', electionDayText);
 
     const emptyBallotButton = completionLevelFilterType !== 'none' && !voterAddressMissing ? (
       <EmptyBallotNotice>
-        <EmptyBallotCard>
-          {ballotCaveat ? (
-            <BallotCaveatWrapper>
-              {ballotCaveat}
-            </BallotCaveatWrapper>
-          ) : (
+        <BallotEmptyTitle>
+          Ballot Not Released Yet
+        </BallotEmptyTitle>
+        <BallotEmptyExplanation>
+          Your next ballot isn&apos;t ready yet. Ballot data is usually available 45 days before each election.
+          You can also
+          {' '}
+          <span
+            className="u-cursor--pointer u-link-color u-link-color-on-hover"
+            onClick={() => AppObservableStore.setShowSelectBallotModalOnly(true)}
+          >
+            see what is on the ballot in other states
+          </span>
+          .
+          {!VoterStore.getVoterIsSignedIn() && (
             <>
-              Your next ballot isn&apos;t available yet. Please try again later.
+              {' '}
+              Please sign in so we can notify you when your election data is available.
             </>
           )}
-        </EmptyBallotCard>
+          <br />
+          <br />
+          We Vote uses ballot data aggregated from government, nonpartisan, and partisan sources. We Vote strives to provide a balanced selection of clearly identified voting guides from newspapers and media. Partisan voter guides are also provided from a diversity of sources and points-of-view.
+          <br />
+          <br />
+          While you are waiting, connect with your friends who are already using We Vote.
+        </BallotEmptyExplanation>
+        <FindYourFriendsWrapper>
+          <Suspense fallback={<></>}>
+            <ViewUpcomingBallotButton />
+          </Suspense>
+        </FindYourFriendsWrapper>
       </EmptyBallotNotice>
     ) : (
       <div className="container-fluid well u-stack--md u-inset--md">
@@ -1246,7 +1268,22 @@ class Ballot extends Component {
     const emptyBallot = ballotWithAllItems.length === 0 ? (
       <LoadingWrapper>
         <Suspense fallback={<></>}>
-          <DelayedLoad showLoadingText waitBeforeShow={5000}>
+          <DelayedLoad waitBeforeShow={1000}>
+            <div>
+              Connecting with our data providers...
+            </div>
+          </DelayedLoad>
+          <DelayedLoad waitBeforeShow={2000}>
+            <div>
+              Requesting what is on your ballot...
+            </div>
+          </DelayedLoad>
+          <DelayedLoad waitBeforeShow={3000}>
+            <div>
+              Waiting for response...
+            </div>
+          </DelayedLoad>
+          <DelayedLoad waitBeforeShow={4000}>
             <div>
               <h3 className="text-center">{this.getEmptyMessageByFilterType(completionLevelFilterType)}</h3>
               {emptyBallotButton}
@@ -1583,96 +1620,6 @@ Ballot.propTypes = {
   match: PropTypes.object,
 };
 
-/* eslint-disable no-nested-ternary */
-const BallotBottomWrapper = styled('div', {
-  shouldForwardProp: (prop) => !['scrolledDown'].includes(prop),
-})(({ scrolledDown, theme }) => (`
-  ${scrolledDown || isCordova() ? 'margin-top: 18px;' : 'margin-top: 38px;'}
-  ${isWebApp() ? 'transition: all 150ms ease-in;' : ''}
-  width: 100%;
-  ${theme.breakpoints.down('sm') && isWebApp()} {
-    ${isWebApp() ? (scrolledDown ? 'margin-top: 10px;' : 'margin-top: 20px;') : ''}
-  }
-`));
-
-const BallotCaveatWrapper = styled('div')(({ theme }) => (`
-  margin-bottom: 22px;
-  ${theme.breakpoints.down('sm')} {
-    margin-left: -15px !important;
-    margin-right: -15px !important;
-  }
-`));
-
-const BallotListWrapper = styled('div')`
-  padding-bottom: 40px;
-`;
-
-const BallotLoadingWrapper = styled('div')`
-  font-size: 20px;
-  margin-top: 50px;
-  padding-top: 20px;
-  text-align: center;
-  margin-bottom: ${() => (isIPhone6p1in() ? '800px' : '625px')};
-`;
-
-// If we want to turn off filter tabs navigation bar:  {({ showFilterTabs }) => !showFilterTabs && 'height: 0;'}
-const BallotFilterRow = styled('div')`
-  // TODO: 10/4/21 Steve, this is temporary and needs to be more responsive
-  // margin-left: {() => (isWebApp() && !isMobileScreenSize() ? 'calc((100vw - 975px)/2)' : '')};
-`;
-
-const BallotTitleHeaderWrapper = styled('div', {
-  shouldForwardProp: (prop) => !['marginTopOffset'].includes(prop),
-})(({ marginTopOffset }) => (`
-  margin-top: ${isWebApp() ? marginTopOffset : ''};
-  transition: ${isWebApp() ? 'all 150ms ease-in' : ''};
-`));
-
-const EmptyBallotCard = styled('div')`
-  padding: 12px 15px;
-`;
-
-const EmptyBallotNotice = styled('div')`
-  margin-top: 40px;
-`;
-
-const SearchResultsFoundInExplanation = styled('div')`
-  background-color: #C2DCE8;
-  color: #0E759F;
-  padding: 12px !important;
-`;
-
-const LoadingItemsWheel = styled('div')`
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-`;
-
-const LoadingWrapper = styled('div')`
-`;
-
-const ShowMoreItemsWrapper = styled('div')`
-  margin-bottom: 16px;
-`;
-
-const SearchResultsEmpty = styled('div')`
-  font-size: 20px;
-`;
-
-const SearchTitle = styled('div')`
-  font-size: 24px;
-  margin-top: 12px;
-  margin-bottom: 12px;
-`;
-
-const BallotWrapper = styled('div', {
-  shouldForwardProp: (prop) => !['padTop', 'padBottom'].includes(prop),
-})(({ padTop, padBottom }) => (`
-  padding-top: ${padTop};
-  padding-bottom: ${padBottom};
-`));
-
 const styles = (theme) => ({
   badge: {
     top: 13,
@@ -1740,5 +1687,110 @@ const styles = (theme) => ({
     },
   },
 });
+
+/* eslint-disable no-nested-ternary */
+const BallotBottomWrapper = styled('div', {
+  shouldForwardProp: (prop) => !['scrolledDown'].includes(prop),
+})(({ scrolledDown, theme }) => (`
+  ${scrolledDown || isCordova() ? 'margin-top: 18px;' : 'margin-top: 38px;'}
+  ${isWebApp() ? 'transition: all 150ms ease-in;' : ''}
+  width: 100%;
+  ${theme.breakpoints.down('sm') && isWebApp()} {
+    ${isWebApp() ? (scrolledDown ? 'margin-top: 10px;' : 'margin-top: 20px;') : ''}
+  }
+`));
+
+const BallotEmptyExplanation = styled('div')(({ theme }) => (`
+  ${theme.breakpoints.down('sm')} {
+    margin-left: -15px !important;
+    margin-right: -15px !important;
+  }
+`));
+
+const BallotEmptyTitle = styled('h3')`
+  font-size: 24px;
+`;
+
+const BallotListWrapper = styled('div')`
+  padding-bottom: 40px;
+`;
+
+const BallotLoadingWrapper = styled('div')`
+  font-size: 20px;
+  margin-top: 50px;
+  padding-top: 20px;
+  text-align: center;
+  margin-bottom: ${() => (isIPhone6p1in() ? '800px' : '625px')};
+`;
+
+// If we want to turn off filter tabs navigation bar:  {({ showFilterTabs }) => !showFilterTabs && 'height: 0;'}
+const BallotFilterRow = styled('div')`
+  // TODO: 10/4/21 Steve, this is temporary and needs to be more responsive
+  // margin-left: {() => (isWebApp() && !isMobileScreenSize() ? 'calc((100vw - 975px)/2)' : '')};
+`;
+
+const BallotTitleHeaderWrapper = styled('div', {
+  shouldForwardProp: (prop) => !['marginTopOffset'].includes(prop),
+})(({ marginTopOffset }) => (`
+  margin-top: ${isWebApp() ? marginTopOffset : ''};
+  transition: ${isWebApp() ? 'all 150ms ease-in' : ''};
+`));
+
+const EmptyBallotNotice = styled('div')`
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin-bottom: 22px;
+  margin-top: 24px;
+  padding: 12px 15px;
+  width: 100%;
+`;
+
+const FindYourFriendsWrapper = styled('div')`
+  margin-top: 24px;
+`;
+
+const SearchResultsFoundInExplanation = styled('div')`
+  background-color: #C2DCE8;
+  color: #0E759F;
+  padding: 12px !important;
+`;
+
+const LoadingItemsWheel = styled('div')`
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
+const LoadingWrapper = styled('div')`
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 100%;
+`;
+
+const ShowMoreItemsWrapper = styled('div')`
+  margin-bottom: 16px;
+`;
+
+const SearchResultsEmpty = styled('div')`
+  font-size: 20px;
+`;
+
+const SearchTitle = styled('div')`
+  font-size: 24px;
+  margin-top: 12px;
+  margin-bottom: 12px;
+`;
+
+const BallotWrapper = styled('div', {
+  shouldForwardProp: (prop) => !['padTop', 'padBottom'].includes(prop),
+})(({ padTop, padBottom }) => (`
+  padding-top: ${padTop};
+  padding-bottom: ${padBottom};
+`));
 
 export default withTheme(withStyles(styles)(Ballot));

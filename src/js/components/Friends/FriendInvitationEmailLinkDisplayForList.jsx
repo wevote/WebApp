@@ -50,7 +50,8 @@ class FriendInvitationEmailLinkDisplayForList extends Component {
       classes,
       invitationState,
       linkedOrganizationWeVoteId,
-      mutualFriends,
+      mutualFriendCount,
+      mutualFriendPreviewList,
       positionsTaken,
       previewMode,
       voterDisplayName,
@@ -75,7 +76,8 @@ class FriendInvitationEmailLinkDisplayForList extends Component {
     const detailsHTML = (
       <FriendDetails
         invitationStateText={invitationStateText}
-        mutualFriends={mutualFriends}
+        mutualFriendCount={mutualFriendCount}
+        mutualFriendPreviewList={mutualFriendPreviewList}
         positionsTaken={positionsTaken}
         voterDisplayName={voterDisplayName}
         voterEmailAddress={voterEmailAddress}
@@ -156,7 +158,8 @@ FriendInvitationEmailLinkDisplayForList.propTypes = {
   classes: PropTypes.object,
   invitationState: PropTypes.string, // Comes friend data object from API server
   linkedOrganizationWeVoteId: PropTypes.string,
-  mutualFriends: PropTypes.number,
+  mutualFriendCount: PropTypes.number,
+  mutualFriendPreviewList: PropTypes.array,
   positionsTaken: PropTypes.number,
   previewMode: PropTypes.bool,
   voterDisplayName: PropTypes.string,
