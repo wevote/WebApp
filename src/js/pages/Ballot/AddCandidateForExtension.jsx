@@ -19,7 +19,7 @@ class AddCandidateForExtension extends Component {
 
   componentWillUnmount () {
     // console.log('Candidate componentWillUnmount');
-    this.candidateStoreListener.remove();
+    // this.candidateStoreListener.remove();
   }
 
   render () {
@@ -27,15 +27,17 @@ class AddCandidateForExtension extends Component {
     const {
       candidate_name: candidateName, endorsement_page_url: endorsementPageUrl, candidate_specific_endorsement_url: candidateSpecificEndorsementUrl,
       show_data: showDevelopmentData,
-    } = this.props.location.query;
+    } = Object.fromEntries(new URLSearchParams(document.location.search));
+
     // const { organizationWeVoteId, candidateWeVoteId, value } = this.state;
     // const { allCachedPositionsForThisCandidate, candidate, organizationWeVoteId, scrolledDown, candidateWeVoteId, value } = this.state;
-    // console.log('AddCandidateForExtension render');
+    console.log('AddCandidateForExtension render');
 
+    const showDevStuff = showDevelopmentData || true;
     return (
       <Wrapper>
         Coming Soon
-        {showDevelopmentData && (
+        {showDevStuff && (
           <div style={{ margin: '20px' }}>
             <div>
               <strong>candidateName:</strong>

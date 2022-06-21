@@ -21,7 +21,7 @@ class ExtensionSignIn extends Component {
   }
 
   componentDidMount () {
-    const { title } = this.props.location.query;  // https://localhost:3000/more/extensionsignin?title=2020%20Endorsements%20%7C%20Sierra%20Club&
+    const { search: title } = this.props.location;  // https://localhost:3000/more/extensionsignin?title=2020%20Endorsements%20%7C%20Sierra%20Club&
     console.log(`SettingsDomain ExtensionSignIn title: ${title}`);
     this.onVoterStoreChange();
     // this.onOrganizationStoreChange();

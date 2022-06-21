@@ -87,6 +87,9 @@ export function getApplicationViewBooleans (pathname) {
     pathnameLowerCase.startsWith('/add-candidate-for-extension') ||
     pathnameLowerCase.startsWith('/more/extensionsignin')) {
     extensionPageMode = true;
+    // Don't even load Stripe, Google Analytics, Google Maps, FontAwesome and Zen, they make startup very slow and are not needed for the Chrome Extension
+    window.leanLoadForChromeExtension = true;
+    console.log('applicationUtils for Chrome Extension window.leanLoadForChromeExtension set to true');
   } else if (pathnameLowerCase.startsWith('/-')) {
     sharedItemLandingPage = true;
   } else if (pathnameLowerCase.startsWith('/twitter_sign_in')) {
@@ -108,7 +111,9 @@ export function getApplicationViewBooleans (pathname) {
   let showBackToValues = false;
   let showBackToVoterGuide = false;
   let showBackToVoterGuides = false;
-  if (stringContains('/m/', pathnameLowerCase)) {
+  if (extensionPageMode) {
+    // No headers or footers
+  } else if (stringContains('/m/', pathnameLowerCase)) {
     // Even though we might have a back-to-default... variable in the URL, we want to go back to a voter guide first
     showBackToVoterGuide = true;
   } else if (stringContains('/btdb/', pathnameLowerCase) || // back-to-default-ballot
@@ -167,6 +172,8 @@ export function getApplicationViewBooleans (pathname) {
   // console.log('stringContains(\'/settings/positions\', pathnameLowerCase):', stringContains('/settings/positions', pathnameLowerCase), pathnameLowerCase);
   if (!pathnameLowerCase) {
     showFooterBar = isCordova();
+  } else if (extensionPageMode) {
+    showFooterBar = false;
   // ///////// EXCLUDE: The following are URLS we want to specifically exclude (because otherwise they will be picked up in a broader pattern in the next branch
   } else if (stringContains('/b/btdb', pathnameLowerCase) ||
       (pathnameLowerCase === '/about') ||
@@ -234,7 +241,9 @@ export function getApplicationViewBooleans (pathname) {
 
   let showShareButtonFooter = false;
   const onFollowSubPage = stringContains('/m/followers', pathnameLowerCase) || stringContains('/m/following', pathnameLowerCase);
-  if (pathnameLowerCase.startsWith('/ballot') ||
+  if (extensionPageMode) {
+    // No headers or footers
+  } else if (pathnameLowerCase.startsWith('/ballot') ||
     pathnameLowerCase.startsWith('/candidate') ||
     pathnameLowerCase.startsWith('/measure') ||
     pathnameLowerCase.startsWith('/office') ||
