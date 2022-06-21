@@ -56,6 +56,15 @@ const muiStyleOverrides = {
       },
     },
   },
+  MuiMenuItem: {
+    styleOverrides: {
+      root: {
+        fontFamily: '"Nunito Sans", "Helvetica Neue Light", "Helvetica Neue", "Helvetica", "Arial", sans-serif',
+        marginTop: '-6px',
+        minHeight: 34,
+      },
+    },
+  },
   MuiTab: {
     styleOverrides: {
       root: {

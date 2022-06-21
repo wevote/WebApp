@@ -157,12 +157,14 @@ class PositionRowLogoAndText extends Component {
     }
 
     const positionsPopover = (
-      <PositionItemScorePopover
-        onShowMoreAlternateFunction={this.onShowMoreAlternateFunction}
-        popoverHeaderOff
-        positionWeVoteId={positionWeVoteId}
-        showPersonalScoreInformation
-      />
+      <Suspense fallback={<></>}>
+        <PositionItemScorePopover
+          onShowMoreAlternateFunction={this.onShowMoreAlternateFunction}
+          popoverHeaderOff
+          positionWeVoteId={positionWeVoteId}
+          showPersonalScoreInformation
+        />
+      </Suspense>
     );
 
     if (showPosition) {

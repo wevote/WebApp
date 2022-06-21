@@ -34,7 +34,7 @@ const SetUpAccountEditName = React.lazy(() => import(/* webpackChunkName: 'SetUp
 const SetUpAccountFriendRequests = React.lazy(() => import(/* webpackChunkName: 'SetUpAccountFriendRequests' */ '../../components/SetUpAccount/SetUpAccountFriendRequests'));
 const SetUpAccountImportContacts = React.lazy(() => import(/* webpackChunkName: 'SetUpAccountImportContacts' */ '../../components/SetUpAccount/SetUpAccountImportContacts'));
 const SetUpAccountInviteContacts = React.lazy(() => import(/* webpackChunkName: 'SetUpAccountInviteContacts' */ '../../components/SetUpAccount/SetUpAccountInviteContacts'));
-const SignInOptionsPanel = React.lazy(() => import(/* webpackChunkName: 'SignInOptionsPanel' */ '../../components/SignIn/SignInOptionsPanel'));
+const SetUpAccountInviteContactsSignIn = React.lazy(() => import(/* webpackChunkName: 'SetUpAccountInviteContactsSignIn' */ '../../components/SetUpAccount/SetUpAccountInviteContactsSignIn'));
 
 const inDevelopmentMode = true;
 const logoColorOnWhite = '../../../img/global/svg-icons/we-vote-icon-square-color-dark.svg';
@@ -97,7 +97,7 @@ class FindFriendsRoot extends React.Component {
     }
   }
 
-  componentDidUpdate (prevProps) {
+  componentDidUpdate (prevProps, prevState) {
     let prevParams = {};
     let prevSetUpPagePath = '';
     const { match: prevMatch } = prevProps;
@@ -116,6 +116,8 @@ class FindFriendsRoot extends React.Component {
         ({ set_up_page: setUpPagePath } = params);
       }
     }
+    const { voterContactEmailListCount: voterContactEmailListCountPrevious } = prevState;
+    const { electionDataExistsForUpcomingElection, friendConnectionActionAvailable, voterContactEmailListCount, voterFirstName, voterPhotoUrlLarge } = this.state;
     const displayStep = this.convertSetUpPagePathToDisplayStep(setUpPagePath);
     const voterIsSignedIn = VoterStore.getVoterIsSignedIn();
     // console.log('FindFriendsRoot componentDidUpdate setUpPagePath:', setUpPagePath);
@@ -126,10 +128,30 @@ class FindFriendsRoot extends React.Component {
         displayStep,
         setUpPagePath,
       }, () => this.setNextStepVariables());
+    } else if ((setUpPagePath === 'importcontacts') && (voterContactEmailListCount > 0 && (voterContactEmailListCountPrevious !== voterContactEmailListCount))) {
+      // console.log('Leaving importcontacts step');
+      this.resetNextButtonClicked();
+      if (VoterStore.getVoterIsSignedIn() === true) {
+        historyPush('/findfriends/invitecontacts');
+      } else {
+        historyPush('/findfriends/signin');
+      }
     } else if (voterIsSignedIn && ((setUpPagePath === 'signin') || (displayStep === 2))) {
       // console.log('On signin step and need to advance to editname');
       this.resetNextButtonClicked();
-      historyPush('/findfriends/editname');
+      if (!voterFirstName) {
+        historyPush('/findfriends/editname');
+      } else if (!voterPhotoUrlLarge) {
+        historyPush('/findfriends/addphoto');
+      } else if (voterContactEmailListCount > 0) {
+        historyPush('/findfriends/invitecontacts');
+      } else if (friendConnectionActionAvailable) {
+        historyPush('/findfriends/friendrequests');
+      } else if (electionDataExistsForUpcomingElection) {
+        historyPush('/ballot');
+      } else {
+        historyPush('/ready');
+      }
     }
   }
 
@@ -228,7 +250,7 @@ class FindFriendsRoot extends React.Component {
   goToNextStep = () => {
     this.resetNextButtonClicked();
     const { nextStepPath } = this.state;
-    console.log('FindFriendsRoot goToNextStep nextStepPath:', nextStepPath);
+    // console.log('FindFriendsRoot goToNextStep nextStepPath:', nextStepPath);
     if (nextStepPath) {
       historyPush(nextStepPath);
     }
@@ -383,10 +405,10 @@ class FindFriendsRoot extends React.Component {
           if (!voterPhotoUrlLarge) {
             nextButtonText = 'Save your photo';
             skipForNowOff = false;
-            skipForNowPath = '/setupaccount/invitecontacts';
+            skipForNowPath = '/findfriends/importcontacts';
           } else if (voterContactEmailListCount > 0) {
             nextButtonText = 'Find your friends';
-            nextStepPath = '/setupaccount/invitecontacts';
+            nextStepPath = '/findfriends/invitecontacts';
             skipForNowOff = false;
             if (electionDataExistsForUpcomingElection) {
               skipForNowPath = '/ballot';
@@ -395,7 +417,7 @@ class FindFriendsRoot extends React.Component {
             }
           } else if (friendConnectionActionAvailable) {
             nextButtonText = 'Next';
-            nextStepPath = '/setupaccount/friendrequests';
+            nextStepPath = '/findfriends/friendrequests';
             if (electionDataExistsForUpcomingElection) {
               skipForNowPath = '/ballot';
             } else {
@@ -435,17 +457,15 @@ class FindFriendsRoot extends React.Component {
         skipForNowOff = false;
         if (friendConnectionActionAvailable) {
           nextButtonText = 'Next';
-          nextStepPath = '/setupaccount/friendrequests';
+          nextStepPath = '/findfriends/friendrequests';
+          skipForNowPath = '/findfriends/friendrequests';
         } else if (electionDataExistsForUpcomingElection) {
           nextButtonText = 'Next';
           nextStepPath = '/ballot';
+          skipForNowPath = '/ballot';
         } else {
           nextButtonText = 'Next';
           nextStepPath = '/ready';
-        }
-        if (electionDataExistsForUpcomingElection) {
-          skipForNowPath = '/ballot';
-        } else {
           skipForNowPath = '/ready';
         }
         break;
@@ -545,9 +565,9 @@ class FindFriendsRoot extends React.Component {
       case 2: // signin
         stepHtml = (
           <Suspense fallback={<></>}>
-            <SignInOptionsPanel
-              pleaseSignInTitle="Sign in to connect with friends"
-              pleaseSignInSubTitle="&nbsp;"
+            <SetUpAccountInviteContactsSignIn
+              goToNextStep={this.goToNextStep}
+              nextButtonClicked={nextButtonClicked}
             />
           </Suspense>
         );

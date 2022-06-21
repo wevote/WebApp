@@ -610,13 +610,13 @@ export default class BallotElectionListWithFilters extends Component {
                 <>
                   {stateToShow === 'all' ? upcomingElectionList :
                     upcomingElectionListByState.length > 0 ? upcomingElectionListByState :
-                      'There are no upcoming elections for this state.'}
+                      'We don\'t have data for any more upcoming elections for this state.'}
                 </>
               ) : (
                 <Suspense fallback={<></>}>
                   <DelayedLoad showLoadingText waitBeforeShow={2000}>
                     <div>
-                      {stateToShow !== 'all' ? 'There are no upcoming elections at this time for this state.' : 'There are no upcoming elections at this time.'}
+                      {stateToShow !== 'all' ? 'We don\'t have data yet for any more upcoming elections for this state.' : 'We don\'t have data yet for any more upcoming elections.'}
                     </div>
                   </DelayedLoad>
                 </Suspense>

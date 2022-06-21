@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 import Tooltip from 'react-bootstrap/Tooltip';
 import styled from 'styled-components';
-import { FriendDetailsLine, FriendDetailsWrapper, FriendName } from '../Style/friendStyles';
+import { FriendDetailsLine, FriendDetailsWrapper, FriendName, InviteToWeVoteLine } from '../Style/friendStyles';
 import abbreviateNumber from '../../common/utils/abbreviateNumber';
 import { renderLog } from '../../common/utils/logging';
 
@@ -11,6 +11,12 @@ const NUMBER_OF_MUTUAL_FRIEND_NAMES_TO_SHOW = 10; // Maximum available coming fr
 const NUMBER_OF_MUTUAL_FRIEND_IMAGES_TO_SHOW = 3; // Maximum available coming from API server is currently 5
 
 class FriendDetails extends Component {
+  constructor (props) {
+    super(props);
+    this.state = {
+    };
+  }
+
   orderByPhotoExists = (firstMutualFriend, secondMutualFriend) => {
     const secondMutualFriendHasPhoto = secondMutualFriend && secondMutualFriend.friend_photo_url_medium && secondMutualFriend.friend_photo_url_medium.length ? 1 : 0;
     const firstMutualFriendHasPhoto = firstMutualFriend && firstMutualFriend.friend_photo_url_medium && firstMutualFriend.friend_photo_url_medium.length ? 1 : 0;
@@ -77,7 +83,7 @@ class FriendDetails extends Component {
                 alt=""
                 isFirst={isFirst}
                 key={`MutualFriendImage-${voterWeVoteId}-${mutualFriendImageCount}`}
-                mutualFriendImageCount={mutualFriendCount}
+                mutualFriendImageCount={mutualFriendImageCount}
                 src={mutualFriend.friend_photo_url_medium}
                 title={mutualFriend.friend_display_name}
               />
@@ -105,11 +111,6 @@ class FriendDetails extends Component {
             </EmailSmaller>
           </FriendDetailsLine>
         )}
-        {!!(indicateIfAlreadyOnWeVote && !voterWeVoteId) && (
-          <FriendDetailsLine inSideColumn={inSideColumn}>
-            <span style={{ }}>Invite to We Vote</span>
-          </FriendDetailsLine>
-        )}
         {!!(positionsTaken) && (
           <FriendDetailsLine inSideColumn={inSideColumn}>
             Opinions:
@@ -119,8 +120,8 @@ class FriendDetails extends Component {
         )}
         {!!(mutualFriendCount) && (
           <FriendDetailsLine inSideColumn={inSideColumn}>
-            <OverlayTrigger placement="top" overlay={mutualFriendsTooltip}>
-              <MutualFriendsBlockWrapper>
+            <OverlayTrigger overlay={mutualFriendsTooltip} placement="top" trigger="click">
+              <MutualFriendsBlockWrapper className="u-cursor--pointer">
                 {mutualFriendPreviewList && (
                   <MutualFriendPreviewListImages>
                     {mutualFriendImageHtmlArray.map((mutualFriendImageHtml) => mutualFriendImageHtml)}
@@ -132,10 +133,10 @@ class FriendDetails extends Component {
                     {' '}
                   </span>
                   <span className="u-show-desktop-tablet">
-                    {mutualFriendCount === 1 ? 'Mutual Friend' : 'Mutual Friends'}
+                    {mutualFriendCount === 1 ? 'mutual friend' : 'mutual friends'}
                   </span>
                   <span className="u-show-mobile">
-                    Mutual
+                    mutual
                   </span>
                 </MutualFriendCountWrapper>
               </MutualFriendsBlockWrapper>
@@ -144,6 +145,11 @@ class FriendDetails extends Component {
         )}
         { invitationStateText ? <p>{invitationStateText}</p> : null }
         { twitterDescriptionMinusName ? <p>{twitterDescriptionMinusName}</p> : null }
+        {!!(indicateIfAlreadyOnWeVote && !voterWeVoteId) && (
+          <InviteToWeVoteLine inSideColumn={inSideColumn}>
+            <span style={{ }}>Invite to We Vote</span>
+          </InviteToWeVoteLine>
+        )}
       </FriendDetailsWrapper>
     );
   }
@@ -183,7 +189,7 @@ const MutualFriendsBlockWrapper = styled('div')`
   display: flex;
   font-size: 14px;
   justify-content: flex-start;
-  // overflow-x: hidden;
+  margin-top: -3px;
 `;
 
 const MutualFriendCountWrapper = styled('div')`
@@ -200,7 +206,7 @@ const MutualFriendImage = styled('img', {
   margin-top: 3px;
   ${!isFirst ? 'margin-left: -8px;' : ''}
   width: 32px;
-  z-index: ${200 - mutualFriendImageCount};
+  z-index: ${0 - mutualFriendImageCount};
 `));
 
 const OneFriendName = styled('span')`

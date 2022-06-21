@@ -177,7 +177,7 @@ const StyledMenuList = styled(MenuList)`
 
 const StyledMenuItem = styled(MenuItem)`
   height: 30px;
-  border: 1px solid;
+  border: 1px solid #ccc;
   background-color: white;
 `;
 
