@@ -192,40 +192,42 @@ class AddContactsFromGoogleButton extends Component {
     const { classes, darkButton, mobileMode } = this.props;
     const { addContactsState, voterContactEmailGoogleCount } = this.state;
     // console.log('render in AddContactsFromGoogleButton, addContactsState: ', addContactsState);
-    const disableButton = (addContactsState === AddContactConsts.requestingContacts) || (addContactsState === AddContactConsts.sendingContacts) || (addContactsState === AddContactConsts.receivedContacts);
-    return (
-      <Button
-        classes={mobileMode ? { root: classes.buttonMobile } : { root: classes.buttonDesktop }}
-        color="primary"
-        disabled={disableButton}
-        id="addContactsFromGoogle"
-        variant={darkButton ? 'contained' : 'outlined'}
-        onClick={this.onButtonClick}
-      >
-        <span>
-          {disableButton ? (
-            <ImportingContacts>
-              <div style={{ marginRight: '8px' }}>
-                Importing contacts...
-              </div>
-              <CircularProgress style={{ height: '20px', width: '20px' }} />
-            </ImportingContacts>
-          ) : (
-            <span>
-              {voterContactEmailGoogleCount > 0 ? (
-                <span>
-                  Update contacts from Gmail
-                </span>
-              ) : (
-                <span>
-                  Import contacts from Gmail
-                </span>
-              )}
-            </span>
-          )}
-        </span>
-      </Button>
-    );
+    const waitingForImportsActionToFinish = (addContactsState === AddContactConsts.requestingContacts) || (addContactsState === AddContactConsts.sendingContacts) || (addContactsState === AddContactConsts.receivedContacts);
+    // const waitingForImportsActionToFinish = true;
+    if (waitingForImportsActionToFinish) {
+      return (
+        <ButtonWrapper>
+          <ImportingContacts>
+            <CircularProgress />
+            <div style={{ marginRight: '8px', marginTop: '12px' }}>
+              Importing contacts...
+            </div>
+          </ImportingContacts>
+        </ButtonWrapper>
+      );
+    } else {
+      return (
+        <Button
+          classes={mobileMode ? { root: classes.buttonMobile } : { root: classes.buttonDesktop }}
+          color="primary"
+          id="addContactsFromGoogle"
+          variant={darkButton ? 'contained' : 'outlined'}
+          onClick={this.onButtonClick}
+        >
+          <span>
+            {voterContactEmailGoogleCount > 0 ? (
+              <span>
+                Update contacts from Gmail
+              </span>
+            ) : (
+              <span>
+                Import contacts from Gmail
+              </span>
+            )}
+          </span>
+        </Button>
+      );
+    }
   }
 }
 AddContactsFromGoogleButton.propTypes = {
@@ -252,10 +254,16 @@ const styles = () => ({
   },
 });
 
+const ButtonWrapper = styled('div')`
+  margin-bottom: 24px;
+`;
+
 const ImportingContacts = styled('div')`
   align-items: center;
   display: flex;
+  flex-direction: column;
   justify-content: center;
+  margin-bottom: 24px;
 `;
 
 export default withStyles(styles)(AddContactsFromGoogleButton);

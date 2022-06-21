@@ -1,6 +1,8 @@
 import styled from 'styled-components';
 
 const AdviceBox = styled('div')`
+  max-width: 300px;
+  text-align: center;
 `;
 
 const AdviceBoxText = styled('div')`
@@ -18,6 +20,8 @@ const AdviceBoxTitle = styled('div')`
 `;
 
 const AdviceBoxWrapper = styled('div')`
+  display: flex;
+  justify-content: center;
   margin-top: 36px;
 `;
 

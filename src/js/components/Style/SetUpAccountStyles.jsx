@@ -2,6 +2,7 @@ import styled from 'styled-components';
 
 const InputFieldsWrapper = styled('div')`
   margin-top: 42px;
+  max-width: 300px;
   width: 100%;
 `;
 
@@ -31,8 +32,10 @@ const SetUpAccountIntroText = styled('div')`
 `;
 
 const SetUpAccountTitle = styled('div')`
+  color: #2E3C5D;
+  font-size: 28px;
+  font-weight: 600;
   padding: 0 36px;
-  font-size: 24px;
   text-align: center;
   width: 100%;
 `;

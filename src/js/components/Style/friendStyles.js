@@ -26,6 +26,7 @@ const FriendColumnWithoutButtons = styled('div')`
 `;
 
 const FriendDetailsLine = styled('div')`
+  // margin-top: -3px;
   width: 100%;
   @media (min-width: 400px){
     display: block;
@@ -104,7 +105,7 @@ const FriendName = styled('h3', {
 })(({ inSideColumn }) => (`
   color: black !important;
   font-weight: bold;
-  margin-bottom: 4px;
+  margin-bottom: 0;
   max-width: 18ch;
   overflow: hidden;
   text-align: left;
@@ -113,6 +114,15 @@ const FriendName = styled('h3', {
   width: 100%;
   ${inSideColumn ? FriendNameInSideColumn : FriendNameNotInSideColumn}
 `));
+
+const InviteToWeVoteLine = styled('div')`
+  margin-top: 4px;
+  width: 100%;
+  @media (min-width: 400px){
+    display: block;
+    width: fit-content;
+  }
+`;
 
 const SectionTitle = styled('h2')`
   font-size: 18px;
@@ -138,6 +148,7 @@ export {
   FriendDisplayDesktopButtonsWrapper,
   FriendDisplayOuterWrapper,
   FriendName,
+  InviteToWeVoteLine,
   SectionTitle,
   ToRightOfPhoto,
 };

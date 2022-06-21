@@ -75,24 +75,24 @@ class SetUpAccountImportContacts extends React.Component {
                   <>
                     {contactsWithAccountCount}
                     {' '}
-                    found on We Vote!
+                    of your friends are already on We Vote
                     {' '}
                   </>
                 ) : (
                   <>
-                    {voterContactEmailListCount}
-                    {' '}
-                    total contacts
+                    We couldn&apos;t find any of your contacts on We Vote
                   </>
                 )}
               </SetUpAccountTitle>
               <SetUpAccountContactsTextWrapper>
                 <SetUpAccountContactsText>
-                  {!!(contactsWithAccountCount) && (
+                  {!!(!contactsWithAccountCount && voterContactEmailListCount) && (
                     <>
-                      {voterContactEmailListCount}
+                      Be the first in your network of
                       {' '}
-                      total contacts
+                      { voterContactEmailListCount }
+                      {' '}
+                      contacts to join We Vote.
                       <br />
                     </>
                   )}
@@ -181,8 +181,8 @@ const MainImageWrapper = styled('div')(({ theme }) => (`
 `));
 
 const SetUpAccountImportText = styled('div')(({ theme }) => (`
-  color: #999;
-  font-size: 16px;
+  color: #6c757d;
+  font-size: 18px;
   padding: 0 20px;
   text-align: center;
   width: 275px;

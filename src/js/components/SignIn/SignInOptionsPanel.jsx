@@ -394,7 +394,10 @@ export default class SignInOptionsPanel extends Component {
         <SnackNotifier />
         {!hideDialogForCordova &&
           <BrowserPushMessage incomingProps={this.props} />}
-        <div className={inModal ? 'card-main full-width' : 'card'} style={{ display: `${hideDialogForCordova ? ' none' : 'undefined'}` }}>
+        <SignInOptionsPanelWrapper
+          // className={inModal ? 'card-main full-width' : 'card'}
+          style={{ display: `${hideDialogForCordova ? ' none' : 'undefined'}` }}
+        >
           <Main inModal={inModal} id={`SignInOptionsMain-${externalUniqueId}`}>
             {voterIsSignedInTwitter && voterIsSignedInFacebook ?
               null :
@@ -598,7 +601,7 @@ export default class SignInOptionsPanel extends Component {
             </div>
             )}
           </Main>
-        </div>
+        </SignInOptionsPanelWrapper>
       </>
     );
   }
@@ -627,11 +630,18 @@ const Main = styled('div', {
   shouldForwardProp: (prop) => !['inModal'].includes(prop),
 })(({ inModal }) => (`
   margin-top: ${inModal ? '-16px' : '0'};
+  max-width: 500px;
   padding: ${inModal ? '0' : '16px'};
   text-align: center;
   padding-top: 0;
   width: 100%;
 `));
+
+const SignInOptionsPanelWrapper = styled('div')`
+  display: flex;
+  justify-content: center;
+  width: 100%;
+`;
 
 const SignInSubtitle = styled('p')`
   font-weight: 500;

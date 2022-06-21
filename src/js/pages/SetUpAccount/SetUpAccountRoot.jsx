@@ -215,12 +215,18 @@ class SetUpAccountRoot extends React.Component {
   goToNextStep = () => {
     this.resetNextButtonClicked();
     const { nextStepPath } = this.state;
-    historyPush(nextStepPath);
+    // console.log('SetUpAccountRoot goToNextStep nextStepPath:', nextStepPath);
+    if (nextStepPath) {
+      historyPush(nextStepPath);
+    }
   }
 
   goToSkipForNow = () => {
     const { skipForNowPath } = this.state;
-    historyPush(skipForNowPath);
+    // console.log('SetUpAccountRoot goToSkipForNow skipForNowPath:', skipForNowPath);
+    if (skipForNowPath) {
+      historyPush(skipForNowPath);
+    }
   }
 
   resetNextButtonClicked = () => {
@@ -231,7 +237,8 @@ class SetUpAccountRoot extends React.Component {
 
   setNextStepVariables = () => {
     const {
-      displayStep, electionDataExistsForUpcomingElection, friendConnectionActionAvailable,
+      displayStep, electionDataExistsForUpcomingElection,
+      friendConnectionActionAvailable,
       setUpAccountBackLinkPath, setUpAccountEntryPath,
       voterContactEmailListCount, voterPhotoUrlLarge,
     } = this.state;
@@ -293,17 +300,29 @@ class SetUpAccountRoot extends React.Component {
           if (!voterPhotoUrlLarge) {
             nextButtonText = 'Save your photo';
             skipForNowOff = false;
-            skipForNowPath = '/setupaccount/invitecontacts';
+            skipForNowPath = '/setupaccount/importcontacts';
           } else if (voterContactEmailListCount > 0) {
             nextButtonText = 'Find your friends';
             nextStepPath = '/setupaccount/invitecontacts';
             skipForNowOff = false;
-            skipForNowPath = '/setupaccount/invitecontacts';
+            if (friendConnectionActionAvailable) {
+              skipForNowPath = '/setupaccount/friendrequests';
+            } else if (electionDataExistsForUpcomingElection) {
+              skipForNowPath = '/ballot';
+            } else {
+              skipForNowPath = '/ready';
+            }
           } else {
             nextButtonText = 'Find your friends';
             nextStepPath = '/setupaccount/importcontacts';
             skipForNowOff = false;
-            skipForNowPath = '/setupaccount/importcontacts';
+            if (friendConnectionActionAvailable) {
+              skipForNowPath = '/setupaccount/friendrequests';
+            } else if (electionDataExistsForUpcomingElection) {
+              skipForNowPath = '/ballot';
+            } else {
+              skipForNowPath = '/ready';
+            }
           }
         } else if (!voterPhotoUrlLarge) {
           nextButtonText = 'Save your photo';
