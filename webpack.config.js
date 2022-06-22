@@ -108,6 +108,7 @@ module.exports = (env, argv) => ({
           '/**/global/svg-icons/',
           '/*.test.js',
           '/**/config*.*',
+          'extension.html',
           '/sass/',
           '/robots.txt',
           'srcDeprecated',
@@ -120,6 +121,7 @@ module.exports = (env, argv) => ({
       patterns: [
         { from: `${source}/robots.txt`,  to: '.' },
         { from: `${source}/css/`,        to: 'css/' },
+        { from: `${source}/extension.html`, to: '.' },
         {
           from: `${source}/img`,
           to: 'img/',

@@ -40,14 +40,18 @@ class CandidateForExtension extends Component {
   componentDidMount () {
     // console.log('Candidate componentDidMount');
 
-    // Don't even load Stripe, Google Analytics, Google Maps, FontAwesome and Zen, they make startup very slow and are not needed for the Chrome Extension
-    window.leanLoadForChromeExtension = true;
-
     this.candidateStoreListener = CandidateStore.addListener(this.onCandidateStoreChange.bind(this));
     this.voterGuidePossibilityStoreListener = VoterGuidePossibilityStore.addListener(this.onVoterGuidePossibilityStoreChange.bind(this));
-    const { organization_we_vote_id: organizationWeVoteId } = this.props.location.query;
-    let { candidate_we_vote_id: candidateWeVoteId, endorsement_page_url: endorsementPageUrl } = this.props.location.query;
-    // console.log('candidateWeVoteId:', candidateWeVoteId);
+
+    // TODO: TEST STUB HACK
+    // const { organization_we_vote_id: organizationWeVoteId } = this.props.location.query;
+    const organizationWeVoteId = '';
+    console.log('HACK Candidate ForExtension organizationWeVoteId stubbed off');
+    // TODO: END TEST STUB HACK
+    let {
+      endorsement_page_url: endorsementPageUrl, candidate_we_vote_id: candidateWeVoteId,
+    } = Object.fromEntries(new URLSearchParams(document.location.search));
+    console.log('candidateWeVoteId:', candidateWeVoteId);
 
     if (candidateWeVoteId) {
       const expires = new Date(new Date().getTime() + 300 * 1000);// 300 seconds
@@ -132,17 +136,17 @@ class CandidateForExtension extends Component {
     const { classes } = this.props;
     const {
       candidate_name: candidateName, endorsement_page_url: endorsementPageUrl, candidate_specific_endorsement_url: candidateSpecificEndorsementUrl,
-      show_data: showDevelopmentData,
-    } = this.props.location.query;
+      show_data: showDevelopmentData, candidate_we_vote_id: candidateWeVoteId,
+    } = Object.fromEntries(new URLSearchParams(document.location.search));
     const {
-      ballotItemName, candidateWeVoteId, organizationWeVoteId, possibleOrganizationName, activeTabIndex, voterGuidePossibilityId,
+      ballotItemName, organizationWeVoteId, possibleOrganizationName, activeTabIndex, voterGuidePossibilityId,
     } = this.state;
 
     return (
       <Wrapper>
         <Tabs variant="fullWidth" classes={{ indicator: classes.indicator }} value={activeTabIndex} onChange={this.handleChange}>
-          <Tab classes={{ root: classes.tab }} variant="fullWidth" color="primary" label="Your Opinion" />
           <Tab classes={{ root: classes.tab }} variant="fullWidth" color="primary" label="Official Endorsement" />
+          <Tab classes={{ root: classes.tab }} variant="fullWidth" color="primary" label="Your Opinion" />
         </Tabs>
         <div
           role="tabpanel"
@@ -150,6 +154,50 @@ class CandidateForExtension extends Component {
           id={`simple-tabpanel-${0}`}
           aria-labelledby={`simple-tab-${0}`}
           value={0}
+        >
+          {activeTabIndex === 0 && (
+            <Box classes={{ root: classes.Box }} p={3}>
+              <OrganizationNameHeader>
+                Official Endorsement from
+                {' '}
+                {possibleOrganizationName}
+              </OrganizationNameHeader>
+              <ExplanationContainer>
+                <ExplanationTextStyled>
+                  {(possibleOrganizationName && ballotItemName) && (
+                    <>
+                      Help us capture this official endorsement so other voters can see what
+                      {' '}
+                      <strong>
+                        {possibleOrganizationName}
+                      </strong>
+                      {' '}
+                      thinks about
+                      {' '}
+                      <strong>
+                        {ballotItemName}
+                      </strong>
+                      .
+                    </>
+                  )}
+                </ExplanationTextStyled>
+              </ExplanationContainer>
+              <CandidateItemEndorsement
+                candidateSpecificEndorsementUrlIncoming={candidateSpecificEndorsementUrl}
+                candidateWeVoteId={candidateWeVoteId}
+                showLargeImage
+                showOfficeName
+                voterGuidePossibilityId={voterGuidePossibilityId}
+              />
+            </Box>
+          )}
+        </div>
+        <div
+          role="tabpanel"
+          hidden={activeTabIndex !== 0}
+          id={`simple-tabpanel-${0}`}
+          aria-labelledby={`simple-tab-${0}`}
+          value={1}
         >
           {activeTabIndex === 0 && (
             <Box classes={{ root: classes.Box }} p={3}>
@@ -219,50 +267,6 @@ class CandidateForExtension extends Component {
                   </Suspense>
                 </OriginalLinkWrapper>
               )}
-            </Box>
-          )}
-        </div>
-        <div
-          role="tabpanel"
-          hidden={activeTabIndex !== 1}
-          id={`simple-tabpanel-${1}`}
-          aria-labelledby={`simple-tab-${1}`}
-          value={1}
-        >
-          {activeTabIndex === 1 && (
-            <Box classes={{ root: classes.Box }} p={3}>
-              <OrganizationNameHeader>
-                Official Endorsement from
-                {' '}
-                {possibleOrganizationName}
-              </OrganizationNameHeader>
-              <ExplanationContainer>
-                <ExplanationTextStyled>
-                  {(possibleOrganizationName && ballotItemName) && (
-                    <>
-                      Help us capture this official endorsement so other voters can see what
-                      {' '}
-                      <strong>
-                        {possibleOrganizationName}
-                      </strong>
-                      {' '}
-                      thinks about
-                      {' '}
-                      <strong>
-                        {ballotItemName}
-                      </strong>
-                      .
-                    </>
-                  )}
-                </ExplanationTextStyled>
-              </ExplanationContainer>
-              <CandidateItemEndorsement
-                candidateSpecificEndorsementUrlIncoming={candidateSpecificEndorsementUrl}
-                candidateWeVoteId={candidateWeVoteId}
-                showLargeImage
-                showOfficeName
-                voterGuidePossibilityId={voterGuidePossibilityId}
-              />
             </Box>
           )}
         </div>
