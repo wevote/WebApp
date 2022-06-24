@@ -25,7 +25,7 @@ export const reassuranceText = [
   {
     page: 4,
     headline: '',
-    text: 'Info about your contacts in your address book, including names, phone numbers and nicknames will be sent to We Vote to help you find your friends. You can delete contact information any time.',
+    text: 'Info about your contacts in your address book, including names, phone numbers and nicknames will be sent to We Vote to help you find your friends.',
   },
   {
     page: 44,

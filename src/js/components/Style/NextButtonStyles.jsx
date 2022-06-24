@@ -16,6 +16,7 @@ const DesktopNextButtonsOuterWrapperUShowDesktopTablet = styled('div', {
   justifyContent: 'center',
   margin: '20px 0 0 0',
   width: '100%',
+  zIndex: 1000,
   [theme.breakpoints.down(breakValue)]: {
     display: 'none !important',
   },
@@ -25,10 +26,11 @@ const DesktopStaticNextButtonsOuterWrapper = styled('div', {
   shouldForwardProp: (prop) => !['breakValue'].includes(prop),
 })(({ breakValue, theme }) => ({
   borderTop: '1px solid #ddd',
-  position: 'fixed',
-  width: '100%',
   bottom: 0,
   display: 'block',
+  position: 'fixed',
+  width: '100%',
+  zIndex: 1000,
   [theme.breakpoints.down(breakValue)]: {
     display: 'none !important',
   },
@@ -47,10 +49,11 @@ const MobileStaticNextButtonsInnerWrapper = styled('div')`
 const MobileStaticNextButtonsOuterWrapperUShowMobile = styled('div', {
   shouldForwardProp: (prop) => !['breakValue'].includes(prop),
 })(({ breakValue, theme }) => ({
-  position: 'fixed',
-  width: '100%',
   bottom: 0,
   display: 'block',
+  position: 'fixed',
+  width: '100%',
+  zIndex: 1000,
   [theme.breakpoints.up(breakValue)]: {
     display: 'none !important',
   },

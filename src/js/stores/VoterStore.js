@@ -413,6 +413,18 @@ class VoterStore extends ReduceStore {
     return notificationSettingsFlags & flag; // eslint-disable-line no-bitwise
   }
 
+  getVoterContactEmailAugmentSequenceComplete () {
+    return this.getState().voterContactEmailAugmentSequenceComplete || false;
+  }
+
+  getVoterContactEmailAugmentSequenceHasNextStep () {
+    return this.getState().voterContactEmailAugmentSequenceHasNextStep || false;
+  } // voterContactEmailAugmentWithWeVoteDataComplete
+
+  getVoterContactEmailAugmentWithWeVoteDataComplete () {
+    return this.getState().voterContactEmailAugmentWithWeVoteDataComplete || false;
+  }
+
   isVoterFound () {
     return this.getState().voterFound;
   }
@@ -450,6 +462,7 @@ class VoterStore extends ReduceStore {
     let revisedState;
     let secretCodeVerified;
     let voterDeviceId;
+    let voterContactEmailAugmentWithWeVoteDataComplete;
     let voterExternalIdHasBeenSavedOnce;
     let voterMustRequestNewCode;
     let voterSecretCodeRequestsLocked;
@@ -476,6 +489,13 @@ class VoterStore extends ReduceStore {
       case 'clearVoterElectionId':
         // console.log('VoterStore clearVoterElectionId');
         return { ...state, latestGoogleCivicElectionId: 0 };
+      case 'clearVoterContactEmailImportVariables':
+        return {
+          ...state,
+          voterContactEmailAugmentWithWeVoteDataComplete: false,
+          voterContactEmailAugmentSequenceComplete: false,
+          voterContactEmailAugmentSequenceHasNextStep: false,
+        };
       case 'organizationSave':
         // console.log('VoterStore organizationSave');
         // If an organization saves, we want to check to see if it is tied to this voter. If so,
@@ -669,16 +689,40 @@ class VoterStore extends ReduceStore {
       case 'voterContactListSave':
         // console.log('VoterStore voterContactListSave action:', action);
         if (action.res.success) {
+          ({ voterContactEmailAugmentWithWeVoteDataComplete } = state);
           const {
-            we_vote_id_for_google_contacts: weVoteIdForGoogleContacts,
+            augment_voter_contact_emails_with_location: justAugmentedWithLocation,
+            augment_voter_contact_emails_with_we_vote_data: justAugmentedWithWeVoteData,
             contacts_stored: googleContactsStored,
+            delete_all_voter_contact_emails: voterContactEmailsJustDeleted,
+            voter_contact_email_augment_sequence_complete: voterContactEmailAugmentSequenceComplete,
+            voter_contact_email_augment_sequence_has_next_step: voterContactEmailAugmentSequenceHasNextStep,
             voter_contact_email_google_count: voterContactEmailGoogleCount,
             voter_contact_email_list: voterContactEmailList,
+            we_vote_id_for_google_contacts: weVoteIdForGoogleContacts,
           } = action.res;
+          // console.log('googleContactsStored:', googleContactsStored, ', justAugmentedWithWeVoteData:', justAugmentedWithWeVoteData, ',justAugmentedWithLocation:', justAugmentedWithLocation);
+          if (voterContactEmailsJustDeleted || justAugmentedWithLocation) {
+            // Never call again
+          } else if (googleContactsStored && (googleContactsStored > 0)) {
+            // console.log('Calling VoterActions.voterContactListAugmentWithWeVoteData');
+            VoterActions.voterContactListAugmentWithWeVoteData(true);
+          } else if (justAugmentedWithWeVoteData) {
+            // console.log('Calling VoterActions.voterContactListAugmentWithLocation');
+            VoterActions.voterContactListAugmentWithLocation(true);
+          }
+          if (googleContactsStored) {
+            voterContactEmailAugmentWithWeVoteDataComplete = false;
+          } else if (justAugmentedWithWeVoteData) {
+            voterContactEmailAugmentWithWeVoteDataComplete = true;
+          }
           return {
             ...state,
             weVoteIdForGoogleContacts,
             googleContactsStored,
+            voterContactEmailAugmentWithWeVoteDataComplete,
+            voterContactEmailAugmentSequenceComplete,
+            voterContactEmailAugmentSequenceHasNextStep,
             voterContactEmailGoogleCount,
             voterContactEmailList,
           };

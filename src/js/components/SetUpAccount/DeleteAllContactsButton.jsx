@@ -67,7 +67,15 @@ class DeleteAllContactsButton extends React.Component {
             classes={{ root: classes.deleteAllContactsLink }}
             onClick={this.deleteAllContactsConfirmToggle}
           >
-            Delete all contacts
+            <div className="u-no-break">
+              You can
+              {' '}
+              <span className="u-link-color u-link-color-on-hover">
+                delete contact information
+              </span>
+              {' '}
+              at any time.
+            </div>
           </Button>
         )}
       </DeleteContactsButtonOuterWrapper>
@@ -94,14 +102,11 @@ const styles = () => ({
   deleteAllContactsLink: {
     boxShadow: 'none !important',
     color: '#999',
-    marginTop: 10,
-    padding: '0 20px',
+    fontSize: 14,
+    marginTop: 0,
+    padding: 0,
     textTransform: 'none',
     width: 250,
-    '&:hover': {
-      color: '#4371cc',
-      textDecoration: 'underline',
-    },
   },
 });
 

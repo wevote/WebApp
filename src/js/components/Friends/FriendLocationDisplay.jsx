@@ -45,7 +45,7 @@ const FriendLocationDisplayInnerWrapper = styled('div')`
 `;
 
 const FriendLocationDisplayOuterWrapper = styled('div')`
-  align-items: flex-end;
+  align-items: center;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;

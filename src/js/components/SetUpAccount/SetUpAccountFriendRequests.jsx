@@ -65,7 +65,7 @@ class SetUpAccountFriendRequests extends React.Component {
         </SetUpAccountTop>
         {/* Chip filters here */}
         {friendInvitationsSentToMeLength > 0 && (
-          <>
+          <FriendInvitationsSentToMeWrapper>
             <SetUpAccountSubTitleWrapper>
               <SectionTitle>
                 Invitations sent to me
@@ -75,10 +75,10 @@ class SetUpAccountFriendRequests extends React.Component {
               editMode
               friendList={friendInvitationsSentToMe}
             />
-          </>
+          </FriendInvitationsSentToMeWrapper>
         )}
         {suggestedFriendListLength > 0 && (
-          <>
+          <SuggestedFriendListWrapper>
             <SetUpAccountSubTitleWrapper>
               <SectionTitle>
                 People you may know
@@ -88,7 +88,7 @@ class SetUpAccountFriendRequests extends React.Component {
               friendList={suggestedFriendList}
               editMode
             />
-          </>
+          </SuggestedFriendListWrapper>
         )}
         {(!(suggestedFriendListLength > 0) && !(friendInvitationsSentToMeLength > 0)) && (
           <>Suggested friends not found yet.</>
@@ -105,7 +105,18 @@ SetUpAccountFriendRequests.propTypes = {
 const styles = () => ({
 });
 
+const FriendInvitationsSentToMeWrapper = styled('div')`
+  max-width: 538px;
+  width: 100%;
+`;
+
 const SetUpAccountSubTitleWrapper = styled('div')`
+  max-width: 538px;
+  width: 100%;
+`;
+
+const SuggestedFriendListWrapper = styled('div')`
+  margin-top: 32px;
   max-width: 538px;
   width: 100%;
 `;

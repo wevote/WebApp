@@ -56,19 +56,20 @@ class SetUpAccountImportContacts extends React.Component {
     const contactsWithAccountCount = contactsWithAccountList.length;
     this.setState({
       contactsWithAccountCount,
+      voterContactEmailAugmentSequenceHasNextStep: VoterStore.getVoterContactEmailAugmentSequenceHasNextStep(),
       voterContactEmailListCount,
     });
   }
 
   render () {
     renderLog('SetUpAccountImportContacts');  // Set LOG_RENDER_EVENTS to log all renders
-    const { contactsWithAccountCount, voterContactEmailListCount } = this.state;
+    const { contactsWithAccountCount, voterContactEmailAugmentSequenceHasNextStep, voterContactEmailListCount } = this.state;
     const addressBookSVGSrc = normalizedImagePath(addressBookSVG);
 
     return (
       <StepCenteredWrapper>
         <>
-          {voterContactEmailListCount ? (
+          {voterContactEmailListCount > 0 ? (
             <SetUpAccountTop>
               <SetUpAccountTitle>
                 {contactsWithAccountCount ? (
@@ -80,7 +81,19 @@ class SetUpAccountImportContacts extends React.Component {
                   </>
                 ) : (
                   <>
-                    We couldn&apos;t find any of your contacts on We Vote
+                    {voterContactEmailAugmentSequenceHasNextStep ? (
+                      <>
+                        Checking for your friends in
+                        {' '}
+                        <span className="u-no-break">We Vote...</span>
+                      </>
+                    ) : (
+                      <>
+                        We couldn&apos;t find any of your contacts
+                        {' '}
+                        <span className="u-no-break">We Vote</span>
+                      </>
+                    )}
                   </>
                 )}
               </SetUpAccountTitle>
@@ -122,18 +135,6 @@ class SetUpAccountImportContacts extends React.Component {
               <MainImageImg src={addressBookSVGSrc} alt="" />
             </div>
           </MainImageWrapper>
-          {(voterContactEmailListCount > 0) && (
-            <AddContactsButtonWrapper>
-              <Suspense fallback={<></>}>
-                <AddContactsFromGoogleButton />
-              </Suspense>
-            </AddContactsButtonWrapper>
-          )}
-          {voterContactEmailListCount > 0 && (
-            <DeleteAllContactsWrapper>
-              <DeleteAllContactsButton />
-            </DeleteAllContactsWrapper>
-          )}
         </ImageAndButtonsWrapper>
       </StepCenteredWrapper>
     );
@@ -174,10 +175,6 @@ const MainImageImg = styled('img')(({ theme }) => (`
 const MainImageWrapper = styled('div')(({ theme }) => (`
   display: flex;
   justify-content: center;
-  margin-bottom: 36px;
-  ${theme.breakpoints.down('sm')} {
-    margin-bottom: 24px;
-  }
 `));
 
 const SetUpAccountImportText = styled('div')(({ theme }) => (`

@@ -73,6 +73,7 @@ class SuggestedFriendDisplayForList extends Component {
       voterContactIgnored,
       voterDisplayName,
       voterEmailAddress,
+      voterGuideLinkOn,
       voterWeVoteId: otherVoterWeVoteId,
       voterPhotoUrlLarge,
       voterTwitterDescription,
@@ -157,7 +158,7 @@ class SuggestedFriendDisplayForList extends Component {
       <FriendDisplayOuterWrapper inSideColumn={inSideColumn}/* previewMode={previewMode} */>
         <FriendColumnWithoutButtons>
           <Avatar inSideColumn={inSideColumn}>
-            { voterGuideLink ? (
+            {(voterGuideLinkOn && voterGuideLink) ? (
               <Link to={voterGuideLink} className="u-no-underline">
                 <Suspense fallback={<></>}>
                   {voterImage}
@@ -173,7 +174,7 @@ class SuggestedFriendDisplayForList extends Component {
           </Avatar>
           <ToRightOfPhoto>
             <div className="full-width">
-              { voterGuideLink ? (
+              {(voterGuideLinkOn && voterGuideLink) ? (
                 <Link to={voterGuideLink} className="u-no-underline">
                   {detailsHTML}
                 </Link>
@@ -224,6 +225,7 @@ SuggestedFriendDisplayForList.propTypes = {
   voterContactIgnored: PropTypes.bool,
   voterDisplayName: PropTypes.string,
   voterEmailAddress: PropTypes.string,
+  voterGuideLinkOn: PropTypes.bool,
   voterPhotoUrlLarge: PropTypes.string,
   voterTwitterDescription: PropTypes.string,
   voterTwitterHandle: PropTypes.string,

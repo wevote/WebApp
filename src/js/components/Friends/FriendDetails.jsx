@@ -174,6 +174,7 @@ const EmailSmaller = styled('div')`
   max-width: 21ch;
   overflow: hidden;
   text-overflow: ellipsis;
+  white-space: nowrap;
 `;
 
 const MutualFriendPreviewListImages = styled('div')`
@@ -206,7 +207,7 @@ const MutualFriendImage = styled('img', {
   margin-top: 3px;
   ${!isFirst ? 'margin-left: -8px;' : ''}
   width: 32px;
-  z-index: ${0 - mutualFriendImageCount};
+  z-index: ${5 - mutualFriendImageCount};
 `));
 
 const OneFriendName = styled('span')`

@@ -1,3 +1,4 @@
+import { CircularProgress } from '@mui/material';
 import { filter } from 'lodash-es';
 import PropTypes from 'prop-types';
 import React, { Suspense } from 'react';
@@ -59,6 +60,8 @@ class SetUpAccountInviteContactsSignIn extends React.Component {
     this.setState({
       contactsWithAccountCount,
       contactsWithAccountList,
+      // voterContactEmailAugmentSequenceComplete: VoterStore.getVoterContactEmailAugmentSequenceComplete(),
+      voterContactEmailAugmentSequenceHasNextStep: VoterStore.getVoterContactEmailAugmentSequenceHasNextStep(),
       voterContactEmailListCount,
     });
   }
@@ -71,7 +74,10 @@ class SetUpAccountInviteContactsSignIn extends React.Component {
 
   render () {
     renderLog('SetUpAccountInviteContactsSignIn');  // Set LOG_RENDER_EVENTS to log all renders
-    const { contactsWithAccountCount, contactsWithAccountList, voterContactEmailListCount } = this.state;
+    const {
+      contactsWithAccountCount, contactsWithAccountList,
+      voterContactEmailAugmentSequenceHasNextStep, voterContactEmailListCount,
+    } = this.state;
     // console.log('contactsWithAccountList:', contactsWithAccountList);
 
     let isFirst;
@@ -151,36 +157,66 @@ class SetUpAccountInviteContactsSignIn extends React.Component {
     return (
       <StepCenteredWrapper>
         <SetUpAccountTop>
-          <SetUpAccountTitle>
-            {contactsWithAccountCount ? (
-              <>
-                {contactsWithAccountCount}
-                {' '}
-                of your friends are already on We Vote
-                {' '}
-              </>
-            ) : (
-              <>
-                We couldn&apos;t find any of your contacts on We Vote
-              </>
-            )}
-          </SetUpAccountTitle>
-          <SetUpAccountContactsTextWrapper>
-            <SetUpAccountContactsText>
-              {!!(!contactsWithAccountCount && voterContactEmailListCount) && (
+          {(voterContactEmailListCount > 0) ? (
+            <SetUpAccountTitle>
+              {(contactsWithAccountCount > 0) ? (
                 <>
-                  Be the first in your network of
+                  {contactsWithAccountCount}
                   {' '}
-                  { voterContactEmailListCount }
+                  of your friends are already on
                   {' '}
-                  contacts to join We Vote.
-                  <br />
+                  <span className="u-no-break">We Vote</span>
+                </>
+              ) : (
+                <>
+                  {voterContactEmailAugmentSequenceHasNextStep ? (
+                    <>
+                      <div>
+                        {voterContactEmailListCount}
+                        {' '}
+                        contacts saved. Searching
+                        {' '}
+                        <span className="u-no-break">We Vote for your friends...</span>
+                      </div>
+                      <CircularProgressWrapper>
+                        <CircularProgress />
+                      </CircularProgressWrapper>
+                    </>
+                  ) : (
+                    <>
+                      We couldn&apos;t find any of your contacts
+                      {' '}
+                      <span className="u-no-break">We Vote</span>
+                    </>
+                  )}
                 </>
               )}
-            </SetUpAccountContactsText>
-          </SetUpAccountContactsTextWrapper>
+            </SetUpAccountTitle>
+          ) : (
+            <SetUpAccountTitle>
+              Be the first of your friends to join
+              {' '}
+              <span className="u-no-break">We Vote</span>
+            </SetUpAccountTitle>
+          )}
+          {(voterContactEmailListCount > 0) && (
+            <SetUpAccountContactsTextWrapper>
+              <SetUpAccountContactsText>
+                {!!((contactsWithAccountCount === 0) && (voterContactEmailListCount > 0) && !voterContactEmailAugmentSequenceHasNextStep) && (
+                  <>
+                    Be the first in your network of
+                    {' '}
+                    {voterContactEmailListCount}
+                    {' '}
+                    contacts to join We Vote.
+                    <br />
+                  </>
+                )}
+              </SetUpAccountContactsText>
+            </SetUpAccountContactsTextWrapper>
+          )}
         </SetUpAccountTop>
-        {contactsWithAccountCount && (
+        {(contactsWithAccountCount > 0) && (
           <ContactsWithAccountWrapper>
             <ContactWithAccountsBlockWrapper>
               {(contactWithAccountImageCount > 0) && (
@@ -195,7 +231,7 @@ class SetUpAccountInviteContactsSignIn extends React.Component {
         <SignInOptionsPanelWrapper>
           <Suspense fallback={<></>}>
             <SignInOptionsPanel
-              pleaseSignInTitle={contactsWithAccountCount ? 'Sign in to connect with your friends' : ''}
+              pleaseSignInTitle={(contactsWithAccountCount > 0) ? 'Sign in to connect with your friends' : ''}
               pleaseSignInSubTitle="&nbsp;"
             />
           </Suspense>
@@ -208,6 +244,10 @@ SetUpAccountInviteContactsSignIn.propTypes = {
   goToNextStep: PropTypes.func.isRequired,
   nextButtonClicked: PropTypes.bool,
 };
+
+const CircularProgressWrapper = styled('div')`
+  margin-top: 12px;
+`;
 
 const ContactsWithAccountWrapper = styled('div')`
 `;
