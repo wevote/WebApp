@@ -9,9 +9,13 @@ import { renderLog } from '../../common/utils/logging';
 import FriendStore from '../../stores/FriendStore';
 import { removeTwitterNameFromDescription } from '../../utils/textFormat';
 import Avatar from '../Style/avatarStyles';
-import { CancelButtonWrapper, FriendButtonsWrapper, FriendColumnWithoutButtons, FriendDisplayOuterWrapper } from '../Style/friendStyles';
+import {
+  CancelButtonWrapper, FriendButtonsWrapper, FriendColumnWithoutButtons,
+  FriendDisplayDesktopButtonsWrapper, FriendDisplayOuterWrapper, ToRightOfPhoto,
+} from '../Style/friendStyles';
 import FriendDetails from './FriendDetails';
 import FriendInvitationToggle from './FriendInvitationToggle';
+import FriendLocationDisplay from './FriendLocationDisplay';
 
 const ImageHandler = React.lazy(() => import(/* webpackChunkName: 'ImageHandler' */ '../ImageHandler'));
 
@@ -65,6 +69,7 @@ class FriendInvitationVoterLinkDisplayForList extends Component {
     }
 
     const {
+      cityForDisplay,
       classes,
       invitationsSentByMe,
       linkedOrganizationWeVoteId,
@@ -72,13 +77,16 @@ class FriendInvitationVoterLinkDisplayForList extends Component {
       mutualFriendPreviewList,
       positionsTaken,
       previewMode,
+      stateCodeForDisplay,
       voterDisplayName,
       voterEmailAddress,
+      voterGuideLinkOn,
       voterTwitterDescription,
       voterTwitterHandle,
       voterWeVoteId: otherVoterWeVoteId,
       voterPhotoUrlLarge,
     } = this.props;
+    // console.log('FriendInvitationVoterLinkDisplayForList, stateCodeForDisplay:', stateCodeForDisplay);
 
     const voterDisplayNameFiltered = voterDisplayName || voterEmailAddress;
     const twitterDescription = voterTwitterDescription || '';
@@ -101,12 +109,49 @@ class FriendInvitationVoterLinkDisplayForList extends Component {
         voterTwitterHandle={voterTwitterHandle}
       />
     );
+    const friendButtonsExist = true;
+    const friendButtonsWrapperHtml = invitationsSentByMe ? (
+      <FriendButtonsWrapper>
+        <CancelButtonWrapper>
+          <Button
+            classes={{ root: classes.ignoreButton }}
+            color="primary"
+            disabled={cancelFriendInviteVoterSubmitted}
+            fullWidth
+            onClick={() => this.cancelFriendInviteVoter(otherVoterWeVoteId)}
+            variant="outlined"
+          >
+            {cancelFriendInviteVoterSubmitted ? 'Canceling...' : (
+              <span className="u-no-break">
+                Cancel Invite
+              </span>
+            )}
+          </Button>
+        </CancelButtonWrapper>
+      </FriendButtonsWrapper>
+    ) : (
+      <FriendButtonsWrapper>
+        <FriendInvitationToggle otherVoterWeVoteId={otherVoterWeVoteId} />
+        <IgnoreButtonWrapper>
+          <Button
+            classes={{ root: classes.ignoreButton }}
+            color="primary"
+            fullWidth
+            onClick={() => this.ignoreFriendInvite(otherVoterWeVoteId)}
+            type="button"
+            variant="outlined"
+          >
+            Ignore
+          </Button>
+        </IgnoreButtonWrapper>
+      </FriendButtonsWrapper>
+    );
 
     const friendInvitationHtml = (
       <FriendDisplayOuterWrapper/* previewMode={previewMode} */>
         <FriendColumnWithoutButtons>
           <Avatar>
-            { voterGuideLink ? (
+            {(voterGuideLinkOn && voterGuideLink) ? (
               <Link to={voterGuideLink} className="u-no-underline">
                 <Suspense fallback={<></>}>
                   {voterImage}
@@ -120,53 +165,30 @@ class FriendInvitationVoterLinkDisplayForList extends Component {
               </span>
             )}
           </Avatar>
-          <div>
-            { voterGuideLink ? (
-              <Link to={voterGuideLink} className="u-no-underline">
-                {detailsHTML}
-              </Link>
-            ) : (
-              <>
-                {detailsHTML}
-              </>
+          <ToRightOfPhoto>
+            <div className="full-width">
+              {(voterGuideLinkOn && voterGuideLink) ? (
+                <Link to={voterGuideLink} className="u-no-underline">
+                  {detailsHTML}
+                </Link>
+              ) : (
+                <>
+                  {detailsHTML}
+                </>
+              )}
+            </div>
+            {friendButtonsExist && (
+              <div className="u-show-mobile">
+                {friendButtonsWrapperHtml}
+              </div>
             )}
-          </div>
+          </ToRightOfPhoto>
+          <FriendLocationDisplay cityForDisplay={cityForDisplay} stateCodeForDisplay={stateCodeForDisplay} />
         </FriendColumnWithoutButtons>
-        { invitationsSentByMe ? (
-          <FriendButtonsWrapper>
-            <CancelButtonWrapper>
-              <Button
-                classes={{ root: classes.ignoreButton }}
-                color="primary"
-                disabled={cancelFriendInviteVoterSubmitted}
-                fullWidth
-                onClick={() => this.cancelFriendInviteVoter(otherVoterWeVoteId)}
-                variant="outlined"
-              >
-                {cancelFriendInviteVoterSubmitted ? 'Canceling...' : (
-                  <>
-                    Cancel Invite
-                  </>
-                )}
-              </Button>
-            </CancelButtonWrapper>
-          </FriendButtonsWrapper>
-        ) : (
-          <FriendButtonsWrapper>
-            <FriendInvitationToggle otherVoterWeVoteId={otherVoterWeVoteId} />
-            <IgnoreButtonWrapper>
-              <Button
-                classes={{ root: classes.ignoreButton }}
-                color="primary"
-                fullWidth
-                onClick={() => this.ignoreFriendInvite(otherVoterWeVoteId)}
-                type="button"
-                variant="outlined"
-              >
-                Ignore
-              </Button>
-            </IgnoreButtonWrapper>
-          </FriendButtonsWrapper>
+        {friendButtonsExist && (
+          <FriendDisplayDesktopButtonsWrapper className="u-show-desktop-tablet">
+            {friendButtonsWrapperHtml}
+          </FriendDisplayDesktopButtonsWrapper>
         )}
       </FriendDisplayOuterWrapper>
     );
@@ -183,15 +205,18 @@ class FriendInvitationVoterLinkDisplayForList extends Component {
   }
 }
 FriendInvitationVoterLinkDisplayForList.propTypes = {
+  cityForDisplay: PropTypes.string,
   classes: PropTypes.object,
   invitationsSentByMe: PropTypes.bool,
   linkedOrganizationWeVoteId: PropTypes.string,
   mutualFriendCount: PropTypes.number,
   mutualFriendPreviewList: PropTypes.array,
   positionsTaken: PropTypes.number,
+  stateCodeForDisplay: PropTypes.string,
   voterWeVoteId: PropTypes.string,
   voterPhotoUrlLarge: PropTypes.string,
   voterDisplayName: PropTypes.string,
+  voterGuideLinkOn: PropTypes.bool,
   voterTwitterHandle: PropTypes.string,
   voterTwitterDescription: PropTypes.string,
   voterEmailAddress: PropTypes.string,

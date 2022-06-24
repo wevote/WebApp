@@ -355,7 +355,6 @@ const Geography = function Geography (_ref) {
   }
 
   return React.createElement('path', _extends({
-    tabIndex: '0',
     className: `rsm-geography ${isFocused ? 'hovered' : ''} ${className}`,
     d: geography.svgPath,
     onMouseOver: handleMouseEnter,

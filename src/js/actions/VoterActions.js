@@ -20,6 +20,10 @@ export default {
     Dispatcher.dispatch({ type: 'clearVoterElectionId', payload: true });
   },
 
+  clearVoterContactEmailImportVariables () {
+    Dispatcher.dispatch({ type: 'clearVoterContactEmailImportVariables', payload: true });
+  },
+
   organizationSuggestionTasks (kindOfSuggestionTask, kindOfFollowTask) {
     Dispatcher.loadEndpoint('organizationSuggestionTasks',
       {
@@ -156,6 +160,18 @@ export default {
       email_address_text: emailAddressText,
       ignore_voter_contact: true,
       other_voter_we_vote_id: otherVoterWeVoteId,
+    });
+  },
+
+  voterContactListAugmentWithLocation (augmentWithLocation = false) {
+    Dispatcher.loadEndpoint('voterContactListSave', {
+      augment_voter_contact_emails_with_location: augmentWithLocation,
+    });
+  },
+
+  voterContactListAugmentWithWeVoteData (augmentWithWeVoteData = false) {
+    Dispatcher.loadEndpoint('voterContactListSave', {
+      augment_voter_contact_emails_with_we_vote_data: augmentWithWeVoteData,
     });
   },
 

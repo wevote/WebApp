@@ -12,9 +12,9 @@ import { isCordovaWide } from '../../common/utils/cordovaUtils';
 import daysUntil from '../../common/utils/daysUntil';
 import historyPush from '../../common/utils/historyPush';
 import { renderLog } from '../../common/utils/logging';
-import stringContains from '../../common/utils/stringContains';
 import normalizedImagePath from '../../common/utils/normalizedImagePath';
 import HeaderBackToButton from '../../components/Navigation/HeaderBackToButton';
+import DeleteAllContactsButton from '../../components/SetUpAccount/DeleteAllContactsButton';
 import SetUpAccountNextButton from '../../components/SetUpAccount/SetUpAccountNextButton';
 import { reassuranceTextFindFriends } from '../../components/SetUpAccount/reassuranceTextFindFriends';
 import {
@@ -22,7 +22,6 @@ import {
   DesktopStaticNextButtonsOuterWrapper,
   MobileStaticNextButtonsInnerWrapper, MobileStaticNextButtonsOuterWrapperUShowMobile,
 } from '../../components/Style/NextButtonStyles';
-import AppObservableStore from '../../stores/AppObservableStore';
 import BallotStore from '../../stores/BallotStore';
 import FriendStore from '../../stores/FriendStore';
 import VoterStore from '../../stores/VoterStore';
@@ -36,7 +35,6 @@ const SetUpAccountImportContacts = React.lazy(() => import(/* webpackChunkName: 
 const SetUpAccountInviteContacts = React.lazy(() => import(/* webpackChunkName: 'SetUpAccountInviteContacts' */ '../../components/SetUpAccount/SetUpAccountInviteContacts'));
 const SetUpAccountInviteContactsSignIn = React.lazy(() => import(/* webpackChunkName: 'SetUpAccountInviteContactsSignIn' */ '../../components/SetUpAccount/SetUpAccountInviteContactsSignIn'));
 
-const inDevelopmentMode = true;
 const logoColorOnWhite = '../../../img/global/svg-icons/we-vote-icon-square-color-dark.svg';
 
 
@@ -58,9 +56,9 @@ class FindFriendsRoot extends React.Component {
       mobileFixedButtonsOff: false,
       nextButtonClicked: false,
       nextButtonDisabled: false,
-      setUpAccountBackLinkPath: '',
-      setUpAccountEntryPath: '',
       voterContactEmailListCount: 0,
+      voterFirstName: '',
+      voterPhotoUrlLarge: '',
     };
   }
 
@@ -78,8 +76,6 @@ class FindFriendsRoot extends React.Component {
     const displayStep = this.convertSetUpPagePathToDisplayStep(setUpPagePath);
     this.shouldNextButtonBeDisabled();
     this.setState({
-      setUpAccountBackLinkPath: AppObservableStore.getSetUpAccountBackLinkPath(),
-      setUpAccountEntryPath: AppObservableStore.getSetUpAccountEntryPath(),
       displayStep,
       setUpPagePath,
     });
@@ -274,7 +270,6 @@ class FindFriendsRoot extends React.Component {
     const {
       addPhotoNextButtonDisabled, displayStep, editNameNextButtonDisabled,
       electionDataExistsForUpcomingElection, friendConnectionActionAvailable,
-      setUpAccountBackLinkPath, setUpAccountEntryPath,
       signInNextButtonDisabled,
       voterContactEmailListCount, voterFirstName, voterPhotoUrlLarge,
     } = this.state;
@@ -289,6 +284,7 @@ class FindFriendsRoot extends React.Component {
     let nextButtonText = '';
     let nextStepPath;
     let reassuranceTextOff;
+    let showDeleteAllContactsOption = false;
     let skipForNowOff;
     let skipForNowPath = '';
     const voterIsSignedIn = VoterStore.getVoterIsSignedIn();
@@ -301,6 +297,7 @@ class FindFriendsRoot extends React.Component {
         desktopInlineButtonsOnInMobile = true;
         mobileFixedButtonsOff = true;
         reassuranceTextOff = false;
+        showDeleteAllContactsOption = true;
         if (!voterIsSignedIn) {
           nextButtonText = 'Next';
           nextStepPath = '/findfriends/signin';
@@ -310,23 +307,35 @@ class FindFriendsRoot extends React.Component {
           nextButtonText = 'Next';
           nextStepPath = '/findfriends/editname';
           skipForNowOff = false;
-          skipForNowPath = '/findfriends/signin';
+          skipForNowPath = '/findfriends/editname';
         } else if (!voterPhotoUrlLarge) {
           nextButtonText = 'Next';
           nextStepPath = '/findfriends/addphoto';
           skipForNowOff = false;
-          skipForNowPath = '/findfriends/signin';
+          skipForNowPath = '/findfriends/addphoto';
         } else if (voterContactEmailListCount > 0) {
           nextButtonText = 'Choose contacts to add as friends';
           nextStepPath = '/findfriends/invitecontacts';
           skipForNowOff = false;
-          skipForNowPath = '/findfriends/friendrequests';
-        } else {
-          nextButtonText = 'Import contacts from Gmail';
-          // We will want to add a switch between friend requests and suggestions here
+          if (friendConnectionActionAvailable) {
+            skipForNowPath = '/findfriends/friendrequests';
+          } else if (electionDataExistsForUpcomingElection) {
+            skipForNowPath = '/ballot';
+          } else {
+            skipForNowPath = '/ready';
+          }
+        } else if (friendConnectionActionAvailable) {
+          nextButtonText = 'Next';
           nextStepPath = '/findfriends/friendrequests';
-          skipForNowOff = false;
           skipForNowPath = '/findfriends/friendrequests';
+        } else if (electionDataExistsForUpcomingElection) {
+          nextButtonText = 'Next';
+          nextStepPath = '/ballot';
+          skipForNowPath = '/ballot';
+        } else {
+          nextButtonText = 'Next';
+          nextStepPath = '/ready';
+          skipForNowPath = '/ready';
         }
         break;
       case 2: // signin
@@ -338,55 +347,54 @@ class FindFriendsRoot extends React.Component {
         nextButtonDisabled = signInNextButtonDisabled;
         nextButtonText = 'Next';
         reassuranceTextOff = false;
+        skipForNowOff = false;
         if (voterContactEmailListCount > 0) {
           nextStepPath = '/findfriends/invitecontacts';
-          skipForNowOff = false;
-          skipForNowPath = '/ready';
+          if (electionDataExistsForUpcomingElection) {
+            skipForNowPath = '/ballot';
+          } else {
+            skipForNowPath = '/ready';
+          }
+        } else if (electionDataExistsForUpcomingElection) {
+          nextButtonText = 'Next';
+          nextStepPath = '/ballot';
+          skipForNowPath = '/ballot';
         } else {
-          // We will want to add a switch between friend requests and suggestions here
-          nextStepPath = '/findfriends/friendrequests';
-          skipForNowOff = false;
+          nextButtonText = 'Next';
+          nextStepPath = '/ready';
           skipForNowPath = '/ready';
         }
         break;
       case 3: // 'editname'
         backButtonOn = true;
-        backToLinkPath = '/findfriends/importcontacts';
+        if (!voterIsSignedIn) {
+          backToLinkPath = '/findfriends/signin';
+        } else {
+          backToLinkPath = '/findfriends/importcontacts';
+        }
         desktopFixedButtonsOn = false;
         nextButtonDisabled = editNameNextButtonDisabled;
         nextButtonText = 'Save';
         reassuranceTextOff = false;
         skipForNowOff = false;
-        if (voterPhotoUrlLarge) {
-          if (inDevelopmentMode) {
-            if (voterContactEmailListCount > 0) {
-              nextStepPath = '/findfriends/invitecontacts';
-              skipForNowOff = false;
-              if (electionDataExistsForUpcomingElection) {
-                skipForNowPath = '/ballot';
-              } else {
-                skipForNowPath = '/ready';
-              }
-            } else {
-              nextStepPath = '/findfriends/friendrequests';
-              skipForNowOff = false;
-              if (electionDataExistsForUpcomingElection) {
-                skipForNowPath = '/ballot';
-              } else {
-                skipForNowPath = '/ready';
-              }
-            }
-          } else {
-            if (electionDataExistsForUpcomingElection) {
-              nextStepPath = '/ballot';
-            } else {
-              nextStepPath = '/ready';
-            }
-            skipForNowOff = true;
-          }
-        } else {
+        if (!voterIsSignedIn) {
+          nextStepPath = '/findfriends/signin';
+          skipForNowPath = '/findfriends/signin';
+        } else if (!voterPhotoUrlLarge) {
           nextStepPath = '/findfriends/addphoto';
           skipForNowPath = '/findfriends/addphoto';
+        } else if (voterContactEmailListCount > 0) {
+          nextStepPath = '/findfriends/invitecontacts';
+          skipForNowPath = '/findfriends/invitecontacts';
+        } else if (friendConnectionActionAvailable) {
+          nextStepPath = '/findfriends/friendrequests';
+          skipForNowPath = '/findfriends/friendrequests';
+        } else if (electionDataExistsForUpcomingElection) {
+          nextStepPath = '/ballot';
+          skipForNowPath = '/ballot';
+        } else {
+          nextStepPath = '/ready';
+          skipForNowPath = '/ready';
         }
         editNameStepVisited = true;
         break;
@@ -395,43 +403,44 @@ class FindFriendsRoot extends React.Component {
         backButtonOn = true;
         desktopFixedButtonsOn = false;
         nextButtonDisabled = addPhotoNextButtonDisabled;
-        if (stringContains('addphoto', setUpAccountEntryPath)) {
-          backToLinkPath = setUpAccountBackLinkPath;
-        } else {
+        if (!voterIsSignedIn) {
+          backToLinkPath = '/findfriends/signin';
+        } else if (editNameStepVisited) {
           backToLinkPath = '/findfriends/editname';
+        } else {
+          backToLinkPath = '/findfriends/importcontacts';
         }
         reassuranceTextOff = false;
-        if (inDevelopmentMode) {
-          if (!voterPhotoUrlLarge) {
-            nextButtonText = 'Save your photo';
-            skipForNowOff = false;
-            skipForNowPath = '/findfriends/importcontacts';
-          } else if (voterContactEmailListCount > 0) {
-            nextButtonText = 'Find your friends';
-            nextStepPath = '/findfriends/invitecontacts';
-            skipForNowOff = false;
-            if (electionDataExistsForUpcomingElection) {
-              skipForNowPath = '/ballot';
-            } else {
-              skipForNowPath = '/ready';
-            }
+        skipForNowOff = false;
+        if (!voterIsSignedIn) {
+          nextButtonText = 'Save your photo';
+          nextStepPath = '/findfriends/signin';
+          skipForNowPath = '/findfriends/signin';
+        } else if (!voterPhotoUrlLarge) {
+          nextButtonText = 'Save your photo';
+          if (voterContactEmailListCount > 0) {
+            skipForNowPath = '/findfriends/invitecontacts';
           } else if (friendConnectionActionAvailable) {
-            nextButtonText = 'Next';
-            nextStepPath = '/findfriends/friendrequests';
-            if (electionDataExistsForUpcomingElection) {
-              skipForNowPath = '/ballot';
-            } else {
-              skipForNowPath = '/ready';
-            }
+            skipForNowPath = '/findfriends/friendrequests';
           } else if (electionDataExistsForUpcomingElection) {
-            nextButtonText = 'View your ballot';
-            nextStepPath = '/ballot';
-            skipForNowOff = true;
+            skipForNowPath = '/ballot';
           } else {
-            nextButtonText = 'Get ready to vote';
-            nextStepPath = '/ready';
-            skipForNowOff = true;
+            skipForNowPath = '/ready';
           }
+        } else if (voterContactEmailListCount > 0) {
+          nextButtonText = 'Find your friends';
+          nextStepPath = '/findfriends/invitecontacts';
+          if (friendConnectionActionAvailable) {
+            skipForNowPath = '/findfriends/friendrequests';
+          } else if (electionDataExistsForUpcomingElection) {
+            skipForNowPath = '/ballot';
+          } else {
+            skipForNowPath = '/ready';
+          }
+        } else if (friendConnectionActionAvailable) {
+          nextButtonText = 'Next';
+          nextStepPath = '/findfriends/friendrequests';
+          skipForNowPath = '/findfriends/friendrequests';
         } else if (electionDataExistsForUpcomingElection) {
           nextButtonText = 'View your ballot';
           nextStepPath = '/ballot';
@@ -446,7 +455,9 @@ class FindFriendsRoot extends React.Component {
       case 6: // invitecontacts
         backButtonOn = true;
         desktopFixedButtonsOn = true;
-        if (addPhotoStepVisited) {
+        if (!voterIsSignedIn) {
+          backToLinkPath = '/findfriends/signin';
+        } else if (addPhotoStepVisited) {
           backToLinkPath = '/findfriends/addphoto';
         } else if (editNameStepVisited) {
           backToLinkPath = '/findfriends/editname';
@@ -472,10 +483,14 @@ class FindFriendsRoot extends React.Component {
       case 7: // friendrequests
         backButtonOn = true;
         desktopFixedButtonsOn = true;
-        if (stringContains('friendrequests', setUpAccountEntryPath)) {
-          backToLinkPath = setUpAccountBackLinkPath;
+        if (!voterIsSignedIn) {
+          backToLinkPath = '/findfriends/signin';
         } else if (voterContactEmailListCount > 0) {
           backToLinkPath = '/findfriends/invitecontacts';
+        } else if (addPhotoStepVisited) {
+          backToLinkPath = '/findfriends/addphoto';
+        } else if (editNameStepVisited) {
+          backToLinkPath = '/findfriends/editname';
         } else {
           backToLinkPath = '/findfriends/importcontacts';
         }
@@ -503,6 +518,7 @@ class FindFriendsRoot extends React.Component {
       nextButtonText,
       nextStepPath,
       reassuranceTextOff,
+      showDeleteAllContactsOption,
       skipForNowOff,
       skipForNowPath,
     });
@@ -541,7 +557,7 @@ class FindFriendsRoot extends React.Component {
       desktopFixedButtonsOn, desktopInlineButtonsOnInMobile, displayStep,
       mobileFixedButtonsOff,
       nextButtonAsOutline, nextButtonClicked, nextButtonDisabled, nextButtonText,
-      reassuranceTextOff, skipForNowOff,
+      reassuranceTextOff, showDeleteAllContactsOption, skipForNowOff,
       voterContactEmailListCount,
     } = this.state;
     // console.log('FindFriendsRoot displayState', displayStep);
@@ -623,10 +639,17 @@ class FindFriendsRoot extends React.Component {
       case 1: // importcontacts
         if (voterContactEmailListCount > 0) {
           desktopNextButtonHtml = (
-            <SetUpAccountNextButton
-              nextButtonText={nextButtonText}
-              onClickNextButton={this.onClickNextButton}
-            />
+            <>
+              {/*
+              <Suspense fallback={<></>}>
+                <AddContactsFromGoogleButton darkButton labelText="Import contacts from another Gmail account:" />
+              </Suspense>
+              */}
+              <SetUpAccountNextButton
+                nextButtonText={nextButtonText}
+                onClickNextButton={this.onClickNextButton}
+              />
+            </>
           );
           mobileNextButtonHtml = (
             <SetUpAccountNextButton
@@ -744,6 +767,19 @@ class FindFriendsRoot extends React.Component {
           {!reassuranceTextOff && (
             <Reassurance displayState={displayStep} reassuranceText={reassuranceTextFindFriends} />
           )}
+          {showDeleteAllContactsOption && (
+            <>
+              {(voterContactEmailListCount > 0) ? (
+                <DeleteAllContactsWrapper>
+                  <DeleteAllContactsButton />
+                </DeleteAllContactsWrapper>
+              ) : (
+                <DeleteAllContactsAtAnyTimeWrapper>
+                  You can delete contact information at any time.
+                </DeleteAllContactsAtAnyTimeWrapper>
+              )}
+            </>
+          )}
         </AccountSetUpRootWrapper>
         {!mobileFixedButtonsOff && (
           <MobileStaticNextButtonsOuterWrapperUShowMobile breakValue={isCordovaWide() ? 1000 : 'sm'}>
@@ -811,6 +847,17 @@ const BackWrapper = styled('div')`
 
 const BackToButtonSpacer = styled('div')`
   margin-bottom: 36px;
+`;
+
+const DeleteAllContactsAtAnyTimeWrapper = styled('div')`
+  text-align: center;
+  color: #999;
+  font-size: 14px;
+  margin-top: 0;
+`;
+
+const DeleteAllContactsWrapper = styled('div')`
+  margin-top: 0;
 `;
 
 export const PageContentContainerAccountSetUp = styled('div')`

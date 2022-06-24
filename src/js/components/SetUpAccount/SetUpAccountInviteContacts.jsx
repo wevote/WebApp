@@ -1,11 +1,13 @@
 import { filter } from 'lodash-es';
 import PropTypes from 'prop-types';
 import React, { Suspense } from 'react';
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import SuggestedContactList from '../Friends/SuggestedContactList';
 import SearchBar from '../Search/SearchBar';
 import VoterActions from '../../actions/VoterActions';
 import { renderLog } from '../../common/utils/logging';
+import stringContains from '../../common/utils/stringContains';
 import VoterStore from '../../stores/VoterStore';
 import {
   SetUpAccountContactsText,
@@ -36,6 +38,9 @@ class SetUpAccountInviteContacts extends React.Component {
     VoterActions.voterContactListRetrieve();
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
     window.addEventListener('scroll', this.onScroll);
+    this.timer = setTimeout(() => {
+      VoterActions.clearVoterContactEmailImportVariables();
+    }, 500);
   }
 
   componentDidUpdate (prevProps) {
@@ -46,6 +51,7 @@ class SetUpAccountInviteContacts extends React.Component {
   }
 
   componentWillUnmount () {
+    if (this.timer) clearTimeout(this.timer);
     this.voterStoreListener.remove();
     window.removeEventListener('scroll', this.onScroll);
   }
@@ -68,6 +74,15 @@ class SetUpAccountInviteContacts extends React.Component {
       voterContactEmailList,
       voterContactEmailListCount,
     });
+  }
+
+  getImportContactsLink = () => {
+    const { location: { pathname } } = window;
+    if (stringContains('setupaccount', pathname)) {
+      return '/setupaccount/importcontacts';
+    } else {
+      return '/findfriends/importcontacts';
+    }
   }
 
   orderByCity = (firstItem, secondItem) => {
@@ -155,8 +170,9 @@ class SetUpAccountInviteContacts extends React.Component {
     } else {
       const searchTermLowercase = searchTerm.toLowerCase();
       const { voterContactEmailList } = this.state;
+      // console.log('voterContactEmailList:', voterContactEmailList);
       const searchedFriendList = filter(voterContactEmailList,
-        (contact) => contact.display_name.toLowerCase().includes(searchTermLowercase));
+        (contact) => (contact.display_name && contact.display_name.toLowerCase().includes(searchTermLowercase)) || (contact.email_address_text && contact.email_address_text.toLowerCase().includes(searchTermLowercase)) || (contact.city && contact.city.toLowerCase().includes(searchTermLowercase)) || (contact.state_code && contact.state_code.toLowerCase().includes(searchTermLowercase)));
 
       this.setState({
         currentFriendListFilteredBySearch: searchedFriendList,
@@ -204,45 +220,63 @@ class SetUpAccountInviteContacts extends React.Component {
             </Suspense>
           )}
         </MessageToSendWrapper>
-        <ContactListWrapper>
-          <ContactsFoundText>
-            {voterContactEmailListCount}
-            {' '}
-            contacts,
-            {!!(contactsWithAccountCount) && (
+        {voterContactEmailListCount > 0 ? (
+          <ContactListWrapper>
+            <ContactsFoundText>
+              {voterContactEmailListCount}
+              {' '}
+              contacts
+              {!(contactsWithAccountCount) && (
+                <>
+                  {' '}
+                  found
+                </>
+              )}
+              {!!(contactsWithAccountCount) && (
+                <>
+                  ,
+                  {' '}
+                  {contactsWithAccountCount}
+                  {' '}
+                  found on We Vote
+                </>
+              )}
+            </ContactsFoundText>
+            {voterContactEmailListCount > 10 && (
               <>
-                {' '}
-                {contactsWithAccountCount}
-                {' '}
-                found on We Vote
+                <SearchBar
+                  clearButton
+                  searchButton
+                  placeholder="Search by name, email, city or state code"
+                  searchFunction={this.searchFriends}
+                  clearFunction={this.clearSearch}
+                  searchUpdateDelayTime={0}
+                />
+                <br />
               </>
             )}
-          </ContactsFoundText>
-          {voterContactEmailListCount > 10 && (
-            <>
-              <SearchBar
-                clearButton
-                searchButton
-                placeholder="Search your contacts by name"
-                searchFunction={this.searchFriends}
-                clearFunction={this.clearSearch}
-                searchUpdateDelayTime={0}
-              />
-              <br />
-            </>
-          )}
-          { (searchFilterOn && voterContactEmailList.length === 0) && (
-            <p>
-              &quot;
-              {searchTerm}
-              &quot; not found
-            </p>
-          )}
-          <SuggestedContactList
-            numberOfItemsToDisplay={numberOfItemsToDisplay}
-            voterContactEmailList={voterContactEmailList}
-          />
-        </ContactListWrapper>
+            { (searchFilterOn && voterContactEmailList.length === 0) && (
+              <p>
+                &quot;
+                {searchTerm}
+                &quot; not found
+              </p>
+            )}
+            <SuggestedContactList
+              numberOfItemsToDisplay={numberOfItemsToDisplay}
+              voterContactEmailList={voterContactEmailList}
+            />
+          </ContactListWrapper>
+        ) : (
+          <ContactListEmptyWrapper>
+            <div>
+              No contacts found. Would you like to
+              {' '}
+              <Link className="u-link-color" to={this.getImportContactsLink()}>import contacts</Link>
+              ?
+            </div>
+          </ContactListEmptyWrapper>
+        )}
         <div id="showMoreItemsId" />
       </StepCenteredWrapper>
     );
@@ -252,6 +286,12 @@ SetUpAccountInviteContacts.propTypes = {
   goToNextStep: PropTypes.func.isRequired,
   nextButtonClicked: PropTypes.bool,
 };
+
+const ContactListEmptyWrapper = styled('div')`
+  display: flex;
+  justify-content: center;
+  width: 100%;
+`;
 
 const ContactListWrapper = styled('div')`
   width: 100%;

@@ -52,7 +52,7 @@ export default class SignInOptionsPanel extends Component {
       isOnWeVoteRootUrl: true,
       isOnWeVoteSubdomainUrl: false,
       isOnFacebookSupportedDomainUrl: false,
-      pleaseSignInTitle: '',
+      pleaseSignInTitleFromState: '',
       pleaseSignInSubTitle: '',
       showTwitterDisconnect: false,
       showRecommendedText: false,
@@ -93,13 +93,13 @@ export default class SignInOptionsPanel extends Component {
 
     if (this.props.pleaseSignInTitle || this.props.pleaseSignInSubTitle || this.props.pleaseSignInTextOff) {
       this.setState({
-        pleaseSignInTitle: this.props.pleaseSignInTitle || '',
+        pleaseSignInTitleFromState: this.props.pleaseSignInTitle || '',
         pleaseSignInSubTitle: this.props.pleaseSignInSubTitle || '',
       }, () => this.localStoreSignInStartFullUrl());
     } else if (getStartedMode && getStartedMode === 'startup') {
       // js/pages/Startup
       this.setState({
-        pleaseSignInTitle: '',
+        pleaseSignInTitleFromState: '',
         pleaseSignInSubTitle: '',
         showRecommendedText: false,
       });
@@ -119,7 +119,7 @@ export default class SignInOptionsPanel extends Component {
         Cookies.set('sign_in_start_full_url', signInStartFullUrl, { expires: 31, path: '/' });
       }
       this.setState({
-        pleaseSignInTitle: 'Please sign in to get started.',
+        pleaseSignInTitleFromState: 'Please sign in to get started.',
         pleaseSignInSubTitle: 'Use Twitter to verify your account most quickly.',
       });
     } else if (getStartedMode && getStartedMode === 'getStartedForOrganizations') {
@@ -132,7 +132,7 @@ export default class SignInOptionsPanel extends Component {
         Cookies.set('sign_in_start_full_url', signInStartFullUrl, { expires: 1, path: '/' });
       }
       this.setState({
-        pleaseSignInTitle: 'Please sign in to get started.',
+        pleaseSignInTitleFromState: 'Please sign in to get started.',
         pleaseSignInSubTitle: 'Use Twitter to verify your account most quickly.',
       });
     } else if (getStartedMode && getStartedMode === 'getStartedForVoters') {
@@ -145,7 +145,7 @@ export default class SignInOptionsPanel extends Component {
         Cookies.set('sign_in_start_full_url', signInStartFullUrl, { expires: 1, path: '/' });
       }
       this.setState({
-        pleaseSignInTitle: 'Please sign in to get started.',
+        pleaseSignInTitleFromState: 'Please sign in to get started.',
         pleaseSignInSubTitle: 'Don\'t worry, we won\'t post anything automatically.',
       });
     } else {
@@ -157,7 +157,7 @@ export default class SignInOptionsPanel extends Component {
         pleaseSignInSubTitle = 'Don\'t worry, we won\'t post anything automatically.';
       }
       this.setState({
-        pleaseSignInTitle: '',
+        pleaseSignInTitleFromState: '',
         pleaseSignInSubTitle,
       }, () => this.localStoreSignInStartFullUrl());
     }
@@ -342,12 +342,12 @@ export default class SignInOptionsPanel extends Component {
 
   render () {
     renderLog('SignInOptionsPanel');  // Set LOG_RENDER_EVENTS to log all renders
-    const { inModal, externalUniqueId } = this.props;
+    const { inModal, externalUniqueId, pleaseSignInTitle } = this.props;
     const {
       facebookAuthResponse, hideCurrentlySignedInHeader,
       hideAppleSignInButton, hideFacebookSignInButton, hideTwitterSignInButton,
       hideVoterEmailAddressEntry, hideVoterPhoneEntry, isOnWeVoteRootUrl, isOnWeVoteSubdomainUrl,
-      isOnFacebookSupportedDomainUrl, pleaseSignInTitle, pleaseSignInSubTitle, showRecommendedText, voter, hideDialogForCordova,
+      isOnFacebookSupportedDomainUrl, pleaseSignInTitleFromState, pleaseSignInSubTitle, showRecommendedText, voter, hideDialogForCordova,
     } = this.state;
     if (!voter) {
       return LoadingWheel;
@@ -408,11 +408,11 @@ export default class SignInOptionsPanel extends Component {
                   <div className="u-stack--sm">{yourAccountExplanation}</div> : (
                     <>
                       <div className="u-show-mobile-bigger-than-iphone5">
-                        <div className="u-f3">{pleaseSignInTitle}</div>
+                        <div className="u-f3">{pleaseSignInTitle || pleaseSignInTitleFromState}</div>
                         <SignInSubtitle className="u-stack--sm">{pleaseSignInSubTitle}</SignInSubtitle>
                       </div>
                       <div className="u-show-desktop-tablet">
-                        <div className="u-f3">{pleaseSignInTitle}</div>
+                        <div className="u-f3">{pleaseSignInTitle || pleaseSignInTitleFromState}</div>
                         <SignInSubtitle className="u-stack--sm">{pleaseSignInSubTitle}</SignInSubtitle>
                       </div>
                     </>

@@ -26,17 +26,21 @@ const FAQModal = React.lazy(() => import(/* webpackChunkName: 'FAQModal' */ '../
 
 const logoGrey = '../../../img/global/svg-icons/we-vote-icon-square-color-grey.svg';
 const voteFlag = '../../../img/get-started/your-vote-counts-cropped-200x200.gif';
-const inDevelopmentMode = true;
 
 class FriendIntroLanding extends Component {
   constructor (props) {
     super(props);
     this.state = {
       friendInvitationInformationCalled: false,
+      friendInvitationInformationCalledCount: 0,
       showFAQModal: false,
       showWhatIsWeVote: false,
       skipForNowOff: false,
       voterContactEmailListCount: 0,
+      voterSignedIn: false,
+      voterSignedInApple: false,
+      voterSignedInFacebook: false,
+      voterSignedInTwitter: false,
     };
   }
 
@@ -46,12 +50,15 @@ class FriendIntroLanding extends Component {
     this.friendStoreListener = FriendStore.addListener(this.onFriendStoreChange.bind(this));
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
     const { match: { params: { invitationSecretKey }  } } = this.props;
+    let friendInvitationInformationCalledCount = 0;
     const voterDeviceId = VoterStore.voterDeviceId();
     // console.log('FriendIntroLanding, componentDidMount, invitation_secret_key: ', invitationSecretKey);
     if (voterDeviceId && invitationSecretKey) {
       FriendActions.friendInvitationInformation(invitationSecretKey);
+      friendInvitationInformationCalledCount += 1;
       this.setState({
         friendInvitationInformationCalled: true,
+        friendInvitationInformationCalledCount,
       });
     }
     this.onVoterStoreChange();
@@ -68,12 +75,15 @@ class FriendIntroLanding extends Component {
   onFriendStoreChange () {
     const { match: { params: { invitationSecretKey }  } } = this.props;
     const { friendInvitationInformationCalled } = this.state;
-    // console.log('onFriendStoreChange friendInvitationInformationCalled:', friendInvitationInformationCalled);
+    let { friendInvitationInformationCalledCount } = this.state;
+    // console.log('onFriendStoreChange friendInvitationInformationCalledCount:', friendInvitationInformationCalledCount);
     const voterDeviceId = VoterStore.voterDeviceId();
-    if (voterDeviceId && invitationSecretKey && !friendInvitationInformationCalled) {
+    if (voterDeviceId && invitationSecretKey && !friendInvitationInformationCalled && (friendInvitationInformationCalledCount < 10)) {
       FriendActions.friendInvitationInformation(invitationSecretKey);
+      friendInvitationInformationCalledCount += 1;
       this.setState({
         friendInvitationInformationCalled: true,
+        friendInvitationInformationCalledCount,
       });
     } else {
       const friendInvitationInformation = FriendStore.getFriendInvitationInformation();
@@ -93,13 +103,17 @@ class FriendIntroLanding extends Component {
                 friendInvitationInformationCalled: false,
               }, () => {
                 // console.log('onFriendStoreChange !invitationSecretKeyBelongsToThisVoter !friendInvitationInformationCalled RESET');
-                this.friendInvitationTimer = setTimeout(() => {
-                  FriendActions.friendInvitationInformation(invitationSecretKey);
-                  // console.log('onFriendStoreChange !invitationSecretKeyBelongsToThisVoter friendInvitationInformation called');
-                  this.setState({
-                    friendInvitationInformationCalled: true,
-                  });
-                }, 3000);
+                if (friendInvitationInformationCalledCount < 10) {
+                  this.friendInvitationTimer = setTimeout(() => {
+                    FriendActions.friendInvitationInformation(invitationSecretKey);
+                    friendInvitationInformationCalledCount += 1;
+                    // console.log('onFriendStoreChange !invitationSecretKeyBelongsToThisVoter friendInvitationInformation called');
+                    this.setState({
+                      friendInvitationInformationCalled: true,
+                      friendInvitationInformationCalledCount,
+                    });
+                  }, 3000);
+                }
               });
             } else {
               // console.log('onFriendStoreChange !invitationSecretKeyBelongsToThisVoter !friendInvitationInformationCalled');
@@ -121,6 +135,7 @@ class FriendIntroLanding extends Component {
     this.onFriendStoreChange();
     const voter = VoterStore.getVoter();
     const {
+      is_signed_in: voterSignedIn,
       signed_in_apple: voterSignedInApple,
       signed_in_facebook: voterSignedInFacebook,
       signed_in_twitter: voterSignedInTwitter,
@@ -129,6 +144,7 @@ class FriendIntroLanding extends Component {
       voterContactEmailListCount: VoterStore.getVoterContactEmailListCount(),
       voterFirstName: VoterStore.getFirstName(),
       voterPhotoUrlLarge: VoterStore.getVoterPhotoUrlLarge(),
+      voterSignedIn,
       voterSignedInApple,
       voterSignedInFacebook,
       voterSignedInTwitter,
@@ -157,7 +173,7 @@ class FriendIntroLanding extends Component {
   setNextStepVariables = () => {
     const {
       voterContactEmailListCount, voterFirstName, voterPhotoUrlLarge,
-      voterSignedInApple, voterSignedInFacebook, voterSignedInTwitter,
+      voterSignedIn, voterSignedInApple, voterSignedInFacebook, voterSignedInTwitter,
     } = this.state;
     // console.log('FriendIntroLanding setNextStepVariables, voterContactEmailListCount: ', voterContactEmailListCount);
     let socialSignInOffered = false; // Temporarily false until Twitter/Facebook sign in offered
@@ -168,29 +184,21 @@ class FriendIntroLanding extends Component {
       socialSignInOffered = false;
     }
 
-    let nextStepButtonText = 'Next';
+    const nextStepButtonText = 'Next';
     let setUpAccountEntryPath;
-    let skipForNowOff = false;
-    if (voterFirstName && voterPhotoUrlLarge) {
-      if (inDevelopmentMode) {
-        if (voterContactEmailListCount) {
-          setUpAccountEntryPath = '/setupaccount/invitecontacts';
-          nextStepButtonText = 'Find other friends';
-        } else {
-          setUpAccountEntryPath = '/setupaccount/importcontacts';
-          nextStepButtonText = 'Find other friends';
-        }
-      } else {
-        setUpAccountEntryPath = '/ballot';
-        nextStepButtonText = 'View your ballot';
-        skipForNowOff = true;
-      }
-    } else if (voterPhotoUrlLarge) {
+    const skipForNowOff = false;
+    if (!voterSignedIn) {
+      // If not signed in, then the voter is returning to this link
+      //  re-route to the findfriends process, which doesn't assume sign in
+      setUpAccountEntryPath = '/findfriends/importcontacts';
+    } else if (!voterFirstName) {
       setUpAccountEntryPath = '/setupaccount/editname';
-    } else if (voterFirstName) {
+    } else if (!voterPhotoUrlLarge) {
       setUpAccountEntryPath = '/setupaccount/addphoto';
+    } else if (voterContactEmailListCount > 0) {
+      setUpAccountEntryPath = '/setupaccount/invitecontacts';
     } else {
-      setUpAccountEntryPath = '/ballot';
+      setUpAccountEntryPath = '/setupaccount/importcontacts';
     }
     this.setState({
       nextStepButtonText,
