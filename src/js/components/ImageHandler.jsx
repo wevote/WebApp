@@ -22,7 +22,7 @@ export default class ImageHandler extends Component {
     renderLog('ImageHandler');  // Set LOG_RENDER_EVENTS to log all renders
     // debugger;
     const incomingClassName = this.props.className || '';
-    const alt = this.props.alt || 'icon';
+    const alt = this.props.alt || '';
     let replacementClass = '';
     const sizeClassName = this.props.sizeClassName || '';
     const showPlaceholderIfImageMissing = this.props.hidePlaceholder === undefined || !this.props.hidePlaceholder;

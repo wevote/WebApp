@@ -11,12 +11,12 @@ const IssueCard = React.lazy(() => import(/* webpackChunkName: 'IssueCard' */ '.
 
 const NUMBER_OF_ISSUES_TO_DISPLAY = 6;
 
-
 export default class ReadyPageValuesList extends Component {
   constructor (props) {
     super(props);
     this.state = {
       allIssues: [],
+      allIssuesCount: 0,
       limitNumberOfIssuesShownToThisNumber: NUMBER_OF_ISSUES_TO_DISPLAY,
     };
   }
@@ -26,8 +26,10 @@ export default class ReadyPageValuesList extends Component {
     IssueActions.issueDescriptionsRetrieve(VoterStore.getVoterWeVoteId());
     IssueActions.issuesFollowedRetrieve(VoterStore.getVoterWeVoteId());
     const allIssues = IssueStore.getAllIssues();
+    const allIssuesCount = allIssues.length || 0;
     this.setState({
       allIssues,
+      allIssuesCount,
     });
   }
 
@@ -37,8 +39,10 @@ export default class ReadyPageValuesList extends Component {
 
   onIssueStoreChange () {
     const allIssues = IssueStore.getAllIssues();
+    const allIssuesCount = allIssues.length || 0;
     this.setState({
       allIssues,
+      allIssuesCount,
     });
   }
 
@@ -50,9 +54,9 @@ export default class ReadyPageValuesList extends Component {
   orderByNotLeftOrRight = (firstIssue, secondIssue) => ((!secondIssue.considered_left && !secondIssue.considered_right) ? 1 : 0) - ((!firstIssue.considered_left && !firstIssue.considered_right) ? 1 : 0);
 
   showMoreIssues = () => {
-    const { limitNumberOfIssuesShownToThisNumber: previousCount } = this.state;
+    const { allIssuesCount } = this.state;
     this.setState({
-      limitNumberOfIssuesShownToThisNumber: previousCount + 6,
+      limitNumberOfIssuesShownToThisNumber: allIssuesCount,
     });
   }
 

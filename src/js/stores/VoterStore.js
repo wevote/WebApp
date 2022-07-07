@@ -278,6 +278,14 @@ class VoterStore extends ReduceStore {
     return this.getState().voter.signed_in_with_email || false;
   }
 
+  getVoterIsSignedInWithFacebook () {
+    return this.getState().voter.signed_in_facebook || false;
+  }
+
+  getVoterIsSignedInWithTwitter () {
+    return this.getState().voter.signed_in_twitter || false;
+  }
+
   getVoterLastNameQueuedToSave () {
     return this.getState().voterLastNameQueuedToSave;
   }
