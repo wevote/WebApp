@@ -17,12 +17,6 @@ export default class IssueImageDisplay extends Component {
     }
 
     const oneIssue = IssueStore.getIssueByWeVoteId(this.props.issueWeVoteId);
-    let issueName;
-    if (oneIssue.issue_name) {
-      issueName = oneIssue.issue_name;
-    } else {
-      issueName = '';
-    }
 
     let issueIconLocalPath = '';
     if (oneIssue.issue_icon_local_path) {
@@ -58,31 +52,31 @@ export default class IssueImageDisplay extends Component {
     if (issueImageSize === 'SMALL') {
       issueImage = (
         <ImageHandler
-        alt={issueName}
-        className={`card-main__org-avatar ${supportOrOpposeClass}${voterIsNotFollowingThisIssueClass}`}
-        hidePlaceholder={hidePlaceholder}
-        imageUrl={issueIconImageUrl}
-        sizeClassName="issue__image--small "
+          alt=""
+          className={`card-main__org-avatar ${supportOrOpposeClass}${voterIsNotFollowingThisIssueClass}`}
+          hidePlaceholder={hidePlaceholder}
+          imageUrl={issueIconImageUrl}
+          sizeClassName="issue__image--small "
         />
       );
     } else if (issueImageSize === 'MEDIUM') {
       issueImage = (
         <ImageHandler
-        alt={issueName}
-        className={`card-main__org-avatar ${supportOrOpposeClass}${voterIsNotFollowingThisIssueClass}`}
-        hidePlaceholder={hidePlaceholder}
-        imageUrl={issueIconImageUrl}
-        sizeClassName="issue__image--medium "
+          alt=""
+          className={`card-main__org-avatar ${supportOrOpposeClass}${voterIsNotFollowingThisIssueClass}`}
+          hidePlaceholder={hidePlaceholder}
+          imageUrl={issueIconImageUrl}
+          sizeClassName="issue__image--medium "
         />
       );
     } else if (issueImageSize === 'LARGE') {
       issueImage = (
         <ImageHandler
-        alt={issueName}
-        className={`card-main__org-avatar ${supportOrOpposeClass}${voterIsNotFollowingThisIssueClass}`}
-        hidePlaceholder={hidePlaceholder}
-        imageUrl={issueIconImageUrl}
-        sizeClassName="issue__image--large "
+          alt=""
+          className={`card-main__org-avatar ${supportOrOpposeClass}${voterIsNotFollowingThisIssueClass}`}
+          hidePlaceholder={hidePlaceholder}
+          imageUrl={issueIconImageUrl}
+          sizeClassName="issue__image--large "
         />
       );
     }

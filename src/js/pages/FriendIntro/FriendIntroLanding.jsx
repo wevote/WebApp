@@ -87,6 +87,7 @@ class FriendIntroLanding extends Component {
       });
     } else {
       const friendInvitationInformation = FriendStore.getFriendInvitationInformation();
+      // console.log('onFriendStoreChange friendInvitationInformation:', friendInvitationInformation);
       if (friendInvitationInformation) {
         const {
           friendFirstName,

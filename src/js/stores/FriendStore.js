@@ -265,7 +265,11 @@ class FriendStore extends ReduceStore {
           // console.log('FriendStore, friendInvitationByEmailVerify, voter_device_id missing, invitation_secret_key:', action.res.invitation_secret_key);
           FriendActions.friendInvitationByEmailVerify(action.res.invitation_secret_key);
         } else {
-          // console.log('FriendStore, voterDeviceId present');
+          // console.log('FriendStore, friendInvitationByEmailVerify voterDeviceId present');
+          if (action.res.acceptance_email_should_be_sent) {
+            const acceptanceEmailShouldBeSent = true;
+            FriendActions.friendInvitationByEmailVerify(action.res.invitation_secret_key, acceptanceEmailShouldBeSent);
+          }
           FriendActions.friendInvitationsSentToMe();
           VoterActions.voterRetrieve(); // We need to update the indicator that the person has a verified email
         }

@@ -137,8 +137,9 @@ export default {
     });
   },
 
-  friendInvitationByEmailVerify (invitationSecretKey) {
+  friendInvitationByEmailVerify (invitationSecretKey, acceptanceEmailShouldBeSent = false) {
     Dispatcher.loadEndpoint('friendInvitationByEmailVerify', {
+      acceptance_email_should_be_sent: acceptanceEmailShouldBeSent,
       invitation_secret_key: invitationSecretKey,
       hostname: AppObservableStore.getHostname(),
     });

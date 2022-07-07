@@ -2,8 +2,10 @@ import withTheme from '@mui/styles/withTheme';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
+import historyPush from '../../common/utils/historyPush';
 import { renderLog } from '../../common/utils/logging';
 import AppObservableStore from '../../stores/AppObservableStore';
+import VoterStore from '../../stores/VoterStore';
 import {
   Dot,
   InnerWrapper,
@@ -29,9 +31,26 @@ class ReadyIntroduction extends Component {
   }
 
   componentDidMount () {
+    this.onVoterStoreChange();
+    this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
     const { contentUnfurledOnLoad } = this.props;
     this.setState({
       contentUnfurled: contentUnfurledOnLoad,
+    });
+  }
+
+  componentWillUnmount () {
+    this.voterStoreListener.remove();
+  }
+
+  onVoterStoreChange () {
+    const voterIsSignedIn = VoterStore.getVoterIsSignedIn();
+    const voterIsSignedInWithFacebook = VoterStore.getVoterIsSignedInWithFacebook();
+    const voterIsSignedInWithTwitter = VoterStore.getVoterIsSignedInWithTwitter();
+    this.setState({
+      voterIsSignedIn,
+      voterIsSignedInWithFacebook,
+      voterIsSignedInWithTwitter,
     });
   }
 
@@ -48,14 +67,20 @@ class ReadyIntroduction extends Component {
     AppObservableStore.setShowSelectBallotModal(showSelectBallotModal, showEditAddress);
   }
 
-  showSignInModal = () => {
-    AppObservableStore.setShowSignInModal(true);
-    return false;
+  onSignInClick = () => {
+    const { voterIsSignedIn } = this.state;
+    if (voterIsSignedIn) {
+      historyPush('/settings/account');
+      return true;
+    } else {
+      AppObservableStore.setShowSignInModal(true);
+      return true;
+    }
   }
 
   render () {
     renderLog('ReadyIntroduction');  // Set LOG_RENDER_EVENTS to log all renders
-    const { contentUnfurled } = this.state;
+    const { contentUnfurled, voterIsSignedInWithFacebook, voterIsSignedInWithTwitter } = this.state;
     const { contentUnfurledOnLoad, showStep3WhenCompressed, titleCentered, titleLarge } = this.props;
     return (
       <OuterWrapper>
@@ -101,11 +126,19 @@ class ReadyIntroduction extends Component {
                   <StepText>
                     Tell us what topics are important to you and we&apos;ll recommend people and organizations to follow as well as make ballot recommendations.
                     {' '}
-                    <span className="u-link-color u-link-color-on-hover u-cursor--pointer" onClick={this.showSignInModal}>
-                      Link to your Twitter account
-                    </span>
-                    {' '}
-                    and see endorsements of everyone you follow on Twitter.
+                    {voterIsSignedInWithTwitter ? (
+                      <>
+                        Since you are signed in with Twitter, you will see endorsements of everyone you follow on Twitter.
+                      </>
+                    ) : (
+                      <>
+                        <span className="u-link-color u-link-color-on-hover u-cursor--pointer" onClick={this.onSignInClick}>
+                          Link to your Twitter account
+                        </span>
+                        {' '}
+                        and see endorsements of everyone you follow on Twitter.
+                      </>
+                    )}
                   </StepText>
                 </ListRow>
               )}
@@ -124,12 +157,16 @@ class ReadyIntroduction extends Component {
                     {' '}
                     to join WeVote to encourage them to vote, share your ballot and endorsements, engage in discussions and more!
                     {' '}
-                    <span className="u-link-color u-link-color-on-hover u-cursor--pointer" onClick={this.showSignInModal}>
-                      Link to your Facebook account
-                    </span>
-                    {' '}
-                    so your friends can find you.
-                    {' '}
+                    {!voterIsSignedInWithFacebook && (
+                      <>
+                        <span className="u-link-color u-link-color-on-hover u-cursor--pointer" onClick={this.onSignInClick}>
+                          Link to your Facebook account
+                        </span>
+                        {' '}
+                        so your friends can find you.
+                        {' '}
+                      </>
+                    )}
                     Studies show people are more likely to vote if they see their friends voting.
                   </StepText>
                 </ListRow>
