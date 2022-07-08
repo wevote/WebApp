@@ -267,6 +267,11 @@ export default class SignInOptionsPanel extends Component {
     });
     // console.log('SignInOptionsPanel toggleNonEmailSignInOptions');
     this.focusedOnSingleInputToggle('email');
+    const delayBeforeScrolling = 250;
+    if (this.timer) clearTimeout(this.timer);
+    this.timer = setTimeout(() => {
+      window.scrollTo(0, 0);
+    }, delayBeforeScrolling);
   };
 
   toggleNonPhoneSignInOptions = () => {
@@ -284,6 +289,11 @@ export default class SignInOptionsPanel extends Component {
     });
     // console.log('SignInOptionsPanel toggleNonPhoneSignInOptions');
     this.focusedOnSingleInputToggle('phone');
+    const delayBeforeScrolling = 250;
+    if (this.timer) clearTimeout(this.timer);
+    this.timer = setTimeout(() => {
+      window.scrollTo(0, 0);
+    }, delayBeforeScrolling);
   };
 
   toggleTwitterDisconnectOpen () {

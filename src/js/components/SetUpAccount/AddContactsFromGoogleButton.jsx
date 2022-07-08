@@ -184,8 +184,16 @@ class AddContactsFromGoogleButton extends Component {
             addContactsState: AddContactConsts.sendingContacts,
           });
         }
+        // We don't want to stay signed in, in case the person wants to import from another gmail account
+        gapi.auth2.getAuthInstance().signOut();
+      } else if (contacts.size === 0) {
+        // console.log('noContactsFound, contacts.size === 0');
+        this.setState({
+          addContactsState: AddContactConsts.noContactsFound,
+        });
+        // Since no contacts were found with this gmail account, sign out so the voter can choose another account
+        gapi.auth2.getAuthInstance().signOut();
       }
-      // this.setState({ setOfContacts: contacts });
     });
   }
 
@@ -239,8 +247,13 @@ class AddContactsFromGoogleButton extends Component {
     } else {
       return (
         <AddContactsFromGoogleWrapper>
+          {(addContactsState === AddContactConsts.noContactsFound) && (
+            <NoContactsFoundText>
+              No contacts found for that account. Please try signing into another Gmail account.
+            </NoContactsFoundText>
+          )}
           <ImportContactsLabelText>
-            {labelText || 'Import contacts from Gmail:'}
+            {labelText || 'Check Gmail to see if you have contacts to import:'}
           </ImportContactsLabelText>
           <GoogleButton
             id="addContactsFromGoogle"
@@ -281,6 +294,13 @@ const ImportingContacts = styled('div')`
 `;
 
 const ImportContactsLabelText = styled('div')`
+  font-weight: 600;
+  margin-bottom: 4px;
+  text-align: center;
+`;
+
+const NoContactsFoundText = styled('div')`
+  color: red;
   font-weight: 600;
   margin-bottom: 4px;
   text-align: center;

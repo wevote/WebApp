@@ -675,7 +675,7 @@ class SetUpAccountRoot extends React.Component {
             <>
               {(voterContactEmailListCount > 0) ? (
                 <DeleteAllContactsWrapper>
-                  <DeleteAllContactsButton />
+                  <DeleteAllContactsButton textSizeSmall />
                 </DeleteAllContactsWrapper>
               ) : (
                 <DeleteAllContactsAtAnyTimeWrapper>

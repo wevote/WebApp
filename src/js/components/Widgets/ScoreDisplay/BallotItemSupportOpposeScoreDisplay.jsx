@@ -729,11 +729,15 @@ class BallotItemSupportOpposeScoreDisplay extends Component {
           </PopoverHeader>
           <PopoverBody>
             <div>
-              Follow opinions to build your personalized score
+              <strong>
+                Add to score
+              </strong>
+              {' '}
+              any opinion. This builds your score
               {(ballotItemDisplayName) && (
                 <span>
                   {' '}
-                  about
+                  for
                   {' '}
                   <strong>
                     {ballotItemDisplayName}
@@ -776,11 +780,15 @@ class BallotItemSupportOpposeScoreDisplay extends Component {
         </PopoverHeader>
         <PopoverBody>
           <div>
-            Follow opinions to build your personalized score
+            <strong>
+              Add to score
+            </strong>
+            {' '}
+            any opinion. This builds your score
             {(ballotItemDisplayName) && (
               <span>
                 {' '}
-                about
+                for
                 {' '}
                 <strong>
                   {ballotItemDisplayName}

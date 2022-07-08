@@ -26,6 +26,7 @@ class SetUpAccountFriendRequests extends React.Component {
   }
 
   componentDidMount () {
+    window.scrollTo(0, 0);
     this.onFriendStoreChange();
     this.friendStoreListener = FriendStore.addListener(this.onFriendStoreChange.bind(this));
   }

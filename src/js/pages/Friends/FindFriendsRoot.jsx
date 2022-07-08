@@ -640,11 +640,6 @@ class FindFriendsRoot extends React.Component {
         if (voterContactEmailListCount > 0) {
           desktopNextButtonHtml = (
             <>
-              {/*
-              <Suspense fallback={<></>}>
-                <AddContactsFromGoogleButton darkButton labelText="Import contacts from another Gmail account:" />
-              </Suspense>
-              */}
               <SetUpAccountNextButton
                 nextButtonText={nextButtonText}
                 onClickNextButton={this.onClickNextButton}
@@ -771,7 +766,7 @@ class FindFriendsRoot extends React.Component {
             <>
               {(voterContactEmailListCount > 0) ? (
                 <DeleteAllContactsWrapper>
-                  <DeleteAllContactsButton />
+                  <DeleteAllContactsButton textSizeSmall />
                 </DeleteAllContactsWrapper>
               ) : (
                 <DeleteAllContactsAtAnyTimeWrapper>
