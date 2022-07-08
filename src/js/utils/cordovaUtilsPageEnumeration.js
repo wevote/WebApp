@@ -39,7 +39,7 @@ export function pageEnumeration () {
     return CordovaPageConstants.moreTools;
   } else if (path.startsWith('/settings/notifications')) {
     return CordovaPageConstants.settingsNotifications;
-  } else if (path.startsWith('/settings/profile')) {
+  } else if (path.startsWith('/settings/profile') || path.startsWith('/settings/yourdata')) {
     return CordovaPageConstants.settingsProfile;
   } else if (path.startsWith('/settings/share')) {
     return CordovaPageConstants.settingsShare;

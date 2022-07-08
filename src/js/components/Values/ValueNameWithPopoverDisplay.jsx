@@ -138,7 +138,7 @@ class ValueNameWithPopoverDisplay extends Component {
               <FollowIfYouCare>
                 <Suspense fallback={<></>}>
                   <ReadMore
-                    textToDisplay={issueFollowedByVoter ? oneIssue.issue_description : `Follow if you care about ${oneIssue.issue_name}: "${oneIssue.issue_description}"`}
+                    textToDisplay={issueFollowedByVoter ? `You follow ${oneIssue.issue_name}: "${oneIssue.issue_description}"` : `Follow if you care about ${oneIssue.issue_name}: "${oneIssue.issue_description}"`}
                     numberOfLines={4}
                   />
                 </Suspense>

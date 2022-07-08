@@ -24,6 +24,7 @@ export default class FriendsCurrent extends Component {
   }
 
   componentDidMount () {
+    window.scrollTo(0, 0);
     if (apiCalming('friendList', 1500)) {
       FriendActions.currentFriends();
     }

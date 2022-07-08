@@ -120,6 +120,12 @@ export default {
     Dispatcher.loadEndpoint('twitterRetrieveIdsIFollow', {});
   },
 
+  voterAccountDelete (deleteVoterAccount = false) {
+    Dispatcher.loadEndpoint('voterUpdate', {
+      delete_voter_account: deleteVoterAccount,
+    });
+  },
+
   voterAddressRetrieve (id) {
     // console.log("VoterActions, voterAddressRetrieve");
     Dispatcher.loadEndpoint('voterAddressRetrieve', { voter_device_id: id });

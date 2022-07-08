@@ -14,6 +14,7 @@ export default class InviteByEmail extends Component {
   }
 
   componentDidMount () {
+    window.scrollTo(0, 0);
     AnalyticsActions.saveActionInviteByEmail(VoterStore.electionId());
   }
 

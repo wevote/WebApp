@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
 import Helmet from 'react-helmet';
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import VoterActions from '../../actions/VoterActions';
 import { renderLog } from '../../common/utils/logging';
+import DeleteYourAccountButton from '../Settings/DeleteYourAccountButton';
 import DeleteAllContactsButton from '../SetUpAccount/DeleteAllContactsButton';
 import VoterStore from '../../stores/VoterStore';
 import BrowserPushMessage from '../Widgets/BrowserPushMessage';
@@ -42,16 +44,34 @@ export default class SettingsYourData extends Component {
           <BrowserPushMessage incomingProps={this.props} />
           <div className="card">
             <div className="card-main">
-              <h3 className="h3">
+              <h1 className="h2">
                 Your Privacy &amp; Data
-              </h3>
-              {voterContactEmailListCount > 0 ? (
+              </h1>
+              <DataSettingSection>
+                <h4 className="h4">
+                  Your Address Book Contact Data
+                </h4>
+                {voterContactEmailListCount > 0 ? (
+                  <DeleteAllContactsWrapper>
+                    <DeleteAllContactsButton leftAlign />
+                  </DeleteAllContactsWrapper>
+                ) : (
+                  <DataSettingText>
+                    We Vote is not storing any of your contact data. If contacts from your address book were previously stored in We Vote, they have been completely removed.
+                    {' '}
+                    <Link to="/findfriends/importcontacts" className="u-link-color">Import your contacts to find your friends</Link>
+                    .
+                  </DataSettingText>
+                )}
+              </DataSettingSection>
+              <DataSettingSection>
+                <h4 className="h4">
+                  Delete Your Account
+                </h4>
                 <DeleteAllContactsWrapper>
-                  <DeleteAllContactsButton />
+                  <DeleteYourAccountButton leftAlign />
                 </DeleteAllContactsWrapper>
-              ) : (
-                <div>You have no contact data to delete. Any contacts from your address book, which may have previously been stored, have been completely removed.</div>
-              )}
+              </DataSettingSection>
             </div>
           </div>
         </div>
@@ -60,6 +80,15 @@ export default class SettingsYourData extends Component {
   }
 }
 
+const DataSettingSection = styled('div')`
+  margin-top: 24px;
+`;
+
+const DataSettingText = styled('div')`
+  color: #999;
+`;
+
 const DeleteAllContactsWrapper = styled('div')`
   margin-top: 8px;
+  width: 100%;
 `;

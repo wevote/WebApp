@@ -9,6 +9,7 @@ const AddContactConsts = {
   receivedContacts: null,
   sendingContacts: null,
   savedContacts: null,
+  noContactsFound: null,
   defaultVal: null,
 };
 

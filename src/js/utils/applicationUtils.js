@@ -143,7 +143,8 @@ export function getApplicationViewBooleans (pathname) {
     pathnameLowerCase === '/settings/sharing' ||
     pathnameLowerCase === '/settings/subscription' ||
     pathnameLowerCase === '/settings/text' ||
-    pathnameLowerCase === '/settings/tools') {
+    pathnameLowerCase === '/settings/tools' ||
+    pathnameLowerCase === '/settings/yourdata') {
     showBackToSettingsMobile = true;
   } else if (pathnameLowerCase.startsWith('/value/') ||
     pathnameLowerCase === '/values/list' ||
@@ -220,6 +221,7 @@ export function getApplicationViewBooleans (pathname) {
       pathnameLowerCase.startsWith('/settings/subscription') ||
       pathnameLowerCase.startsWith('/settings/text') ||
       pathnameLowerCase.startsWith('/settings/tools') ||
+      pathnameLowerCase.startsWith('/settings/yourdata') ||
       pathnameLowerCase.startsWith('/settings')) {
     // We want to SHOW the footer bar on the above path patterns
     showFooterBar = isWebApp() || (!isIOSAppOnMac() && isSmallScreen);
