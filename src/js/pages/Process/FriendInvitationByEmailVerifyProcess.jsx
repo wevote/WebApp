@@ -5,6 +5,7 @@ import styled from 'styled-components';
 import FriendActions from '../../actions/FriendActions';
 import VoterActions from '../../actions/VoterActions';
 import LoadingWheel from '../../common/components/Widgets/LoadingWheel';
+import apiCalming from '../../common/utils/apiCalming';
 import historyPush from '../../common/utils/historyPush';
 import { renderLog } from '../../common/utils/logging';
 import AppObservableStore, { messageService } from '../../stores/AppObservableStore';
@@ -45,6 +46,9 @@ export default class FriendInvitationByEmailVerifyProcess extends Component {
         friendInvitationByEmailVerifyCalled: true,
         hostname,
       });
+    } else if (apiCalming('voterRetrieve', 500)) {
+      // Make sure we generate a voterDeviceId
+      VoterActions.voterRetrieve();
     }
   }
 
@@ -113,16 +117,6 @@ export default class FriendInvitationByEmailVerifyProcess extends Component {
     this.onAppObservableStoreChange();
   }
 
-  cancelMergeFunction = () => {
-    historyPush({
-      pathname: '/ready',  // SnackNotifier that handles this is in Ready
-      state: {
-      },
-    });
-    // message: 'You have chosen to NOT merge your two accounts.',
-    // severity: 'success'
-  }
-
   setYesPleaseMergeAccounts = () => {
     this.setState({ yesPleaseMergeAccounts: true });
   }
@@ -187,9 +181,11 @@ export default class FriendInvitationByEmailVerifyProcess extends Component {
                 </div>
               </DelayedLoad>
             </CenteredText>
-            {LoadingWheel}
             <CenteredText>
-              <DelayedLoad waitBeforeShow={8000}>
+              <DelayedLoad loading waitBeforeShow={8000}>
+                <div>
+                  Ready to begin!
+                </div>
                 <Button
                   color="primary"
                   id="setYesPleaseMergeAccounts"
@@ -197,7 +193,7 @@ export default class FriendInvitationByEmailVerifyProcess extends Component {
                   variant="contained"
                   // classes={showCancelEditAddressButton ? { root: classes.saveButton } : { root: classes.fullWidthSaveButton }}
                 >
-                  Continue
+                  Next
                 </Button>
               </DelayedLoad>
             </CenteredText>
@@ -262,22 +258,37 @@ export default class FriendInvitationByEmailVerifyProcess extends Component {
             <CenteredText>
               <DelayedLoad waitBeforeShow={1000}>
                 <div>
-                  Verifying invitation code.
+                  Verifying invitation code...
                   {' '}
                 </div>
               </DelayedLoad>
               <DelayedLoad waitBeforeShow={3000}>
                 <div>
-                  Setting up your account.
+                  Setting up your account...
                 </div>
               </DelayedLoad>
               <DelayedLoad waitBeforeShow={5000}>
                 <div>
-                  Preparing your ballot based on our best guess of your location.
+                  Preparing your ballot based on your location...
                 </div>
               </DelayedLoad>
             </CenteredText>
-            {LoadingWheel}
+            <CenteredText>
+              <DelayedLoad loading waitBeforeShow={8000}>
+                <div>
+                  Ready to begin!
+                </div>
+                <Button
+                  color="primary"
+                  id="setYesPleaseMergeAccounts"
+                  onClick={this.setYesPleaseMergeAccounts}
+                  variant="contained"
+                  // classes={showCancelEditAddressButton ? { root: classes.saveButton } : { root: classes.fullWidthSaveButton }}
+                >
+                  Continue
+                </Button>
+              </DelayedLoad>
+            </CenteredText>
           </div>
         </Suspense>
       );

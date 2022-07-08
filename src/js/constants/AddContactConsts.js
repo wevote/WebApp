@@ -10,6 +10,7 @@ const AddContactConsts = {
   sendingContacts: null,
   savedContacts: null,
   noContactsFound: null,
+  permissionDenied: null,
   defaultVal: null,
 };
 

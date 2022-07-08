@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import VoterActions from '../../actions/VoterActions';
 import { renderLog } from '../../common/utils/logging';
-import DeleteYourAccountButton from '../Settings/DeleteYourAccountButton';
+import DeleteYourAccountButton from './DeleteYourAccountButton';
 import DeleteAllContactsButton from '../SetUpAccount/DeleteAllContactsButton';
 import VoterStore from '../../stores/VoterStore';
 import BrowserPushMessage from '../Widgets/BrowserPushMessage';

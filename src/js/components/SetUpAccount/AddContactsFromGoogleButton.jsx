@@ -42,7 +42,7 @@ class AddContactsFromGoogleButton extends Component {
     // const { gapi } = window;
     const { addContactsState } = this.state;
     // const signedIn = gapi.auth2.getAuthInstance().isSignedIn.get();
-    console.log('onGoogleSignIn 1 >>>>>>>> addContactsState:', addContactsState);
+    // console.log('onGoogleSignIn 1 >>>>>>>> addContactsState:', addContactsState);
     if (addContactsState === AddContactConsts.requestingSignIn) {
       if (signedIn) {
         this.setState({ addContactsState: AddContactConsts.requestingContacts });
@@ -194,6 +194,13 @@ class AddContactsFromGoogleButton extends Component {
         // Since no contacts were found with this gmail account, sign out so the voter can choose another account
         gapi.auth2.getAuthInstance().signOut();
       }
+    }, (error) => {
+      console.error('getOtherConnections error trapping');
+      console.error(JSON.stringify(error, null, 2));
+      this.setState({
+        addContactsState: AddContactConsts.permissionDenied,
+      });
+      gapi.auth2.getAuthInstance().signOut();
     });
   }
 
@@ -222,7 +229,9 @@ class AddContactsFromGoogleButton extends Component {
         this.setState({ addContactsState: AddContactConsts.initializedSignedOut });
       }
     }, (error) => {
+      console.error('initClient error trapping');
       console.error(JSON.stringify(error, null, 2));
+      gapi.auth2.getAuthInstance().signOut();
     });
   }
 
@@ -247,13 +256,29 @@ class AddContactsFromGoogleButton extends Component {
     } else {
       return (
         <AddContactsFromGoogleWrapper>
+          {(addContactsState === AddContactConsts.permissionDenied) && (
+            <>
+              <PermissionDeniedTitle>
+                Please Grant Permission
+              </PermissionDeniedTitle>
+              <PermissionDeniedText>
+                To allow importing, approve this question in the Google popup:
+                <br />
+                <strong>
+                  &quot;See and download contact info...&quot;
+                </strong>
+                <br />
+                (You may need to check the box on the right.)
+              </PermissionDeniedText>
+            </>
+          )}
           {(addContactsState === AddContactConsts.noContactsFound) && (
             <NoContactsFoundText>
               No contacts found for that account. Please try signing into another Gmail account.
             </NoContactsFoundText>
           )}
           <ImportContactsLabelText>
-            {labelText || 'Check Gmail to see if you have contacts to import:'}
+            {labelText || 'Check Gmail for contacts to import:'}
           </ImportContactsLabelText>
           <GoogleButton
             id="addContactsFromGoogle"
@@ -300,6 +325,18 @@ const ImportContactsLabelText = styled('div')`
 `;
 
 const NoContactsFoundText = styled('div')`
+  color: red;
+  font-weight: 600;
+  margin-bottom: 4px;
+  text-align: center;
+`;
+
+const PermissionDeniedText = styled('div')`
+  margin-bottom: 12px;
+  text-align: center;
+`;
+
+const PermissionDeniedTitle = styled('div')`
   color: red;
   font-weight: 600;
   margin-bottom: 4px;
