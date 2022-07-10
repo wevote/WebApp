@@ -56,6 +56,10 @@ export default class FriendInvitationByEmailVerifyProcess extends Component {
     this.appStateSubscription.unsubscribe();
     this.friendStoreListener.remove();
     this.voterStoreListener.remove();
+    if (this.timer) {
+      clearTimeout(this.timer);
+      this.timer = null;
+    }
   }
 
   onAppObservableStoreChange () {
@@ -66,11 +70,16 @@ export default class FriendInvitationByEmailVerifyProcess extends Component {
     // console.log('FriendInvitationByEmailVerifyProcess, onAppObservableStoreChange, hostname: ', hostname, 'voterDeviceId:', voterDeviceId);
     if (voterDeviceId && !friendInvitationByEmailVerifyCalled && invitationSecretKey && hostname && hostname !== '') {
       // console.log('onAppObservableStoreChange, calling friendInvitationByEmailVerify');
-      this.friendInvitationByEmailVerify(invitationSecretKey);
       this.setState({
         friendInvitationByEmailVerifyCalled: true,
         hostname,
       });
+      // Prevent multiple unnecessary calls
+      if (this.timer) clearTimeout(this.timer);
+      const friendInvitationDelayTime = 250;
+      this.timer = setTimeout(() => {
+        this.friendInvitationByEmailVerify(invitationSecretKey);
+      }, friendInvitationDelayTime);
     }
     // If we know the verification API call has been called...
     if (voterDeviceId && friendInvitationByEmailVerifyCalled && !friendInvitationInformationCalled && invitationSecretKey && hostname && hostname !== '') {
@@ -214,7 +223,7 @@ export default class FriendInvitationByEmailVerifyProcess extends Component {
 
     // This process starts when we return from attempting friendInvitationByEmailVerify
     if (!invitationStatus.voterDeviceId) {
-      console.log('voterDeviceId Missing');
+      // console.log('voterDeviceId Missing');
       return LoadingWheel;
     } else if (invitationStatus.attemptedToApproveOwnInvitation) {
       console.log('You are not allowed to approve your own invitation.');
