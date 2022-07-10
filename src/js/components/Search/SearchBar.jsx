@@ -43,7 +43,7 @@ export default class SearchBar extends Component {
 
   componentWillUnmount () {
     if (this.timer) {
-      if (this.timer) clearTimeout(this.timer);
+      clearTimeout(this.timer);
       this.timer = null;
     }
   }

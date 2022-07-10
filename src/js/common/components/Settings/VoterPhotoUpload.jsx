@@ -56,7 +56,7 @@ class VoterPhotoUpload extends Component {
         VoterActions.voterPhotoQueuedToSave(photoFromFileReader);
       });
       fileReader.readAsDataURL(fileFromDropzone);
-      const dropzoneText = isMobileScreenSize() ? 'This is a preview of your photo. Save this photo below, or click to upload different photo.' : 'This is a preview of your photo. Save this photo below, or drag a new version here (or click to find file).';
+      const dropzoneText = isMobileScreenSize() ? 'A small preview of your photo is shown below. You can 1) Click \'Save photo\' below to continue, or 2) click here to upload different photo.' : 'A small preview of your photo is shown below. You can 1) click \'Save photo\' below to continue, 2) delete it (hover over photo to see trash can), or 3) drag a NEW version here (or click here to find file).';
       this.setState({
         dropzoneText,
         showDropzoneIcon: false,
@@ -110,14 +110,18 @@ class VoterPhotoUpload extends Component {
               ) : (
                 <DropzoneArea
                   acceptedFiles={['image/*']}
-                  classes={{
+                  classes={showDropzoneIcon ? {
                     icon: classes.dropzoneIcon,
+                    root: classes.dropzoneRoot,
+                    text: classes.dropzoneText,
+                  } : {
+                    icon: classes.dropzoneIconHidden,
                     root: classes.dropzoneRoot,
                     text: classes.dropzoneText,
                   }}
                   dropzoneText={dropzoneText}
                   filesLimit={1}
-                  Icon={showDropzoneIcon ? AccountCircle : null}
+                  Icon={AccountCircle}
                   initialFiles={voterProfileUploadedImageUrlLarge ? [voterProfileUploadedImageUrlLarge] : undefined}
                   maxFileSize={6000000}
                   onChange={this.handleDrop}
@@ -139,6 +143,9 @@ VoterPhotoUpload.propTypes = {
 const styles = (theme) => ({
   dropzoneIcon: {
     color: '#999',
+  },
+  dropzoneIconHidden: {
+    display: 'none',
   },
   dropzoneRoot: {
     color: '#999',

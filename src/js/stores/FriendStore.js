@@ -261,9 +261,8 @@ class FriendStore extends ReduceStore {
 
       case 'friendInvitationByEmailVerify':
         if (action.res.voter_device_id === '') {
-          // The first time it was called there was no voter_device_id, so we want to call it again
+          // If there was no voter_device_id, we want to cancel forward motion
           // console.log('FriendStore, friendInvitationByEmailVerify, voter_device_id missing, invitation_secret_key:', action.res.invitation_secret_key);
-          FriendActions.friendInvitationByEmailVerify(action.res.invitation_secret_key);
         } else {
           // console.log('FriendStore, friendInvitationByEmailVerify voterDeviceId present');
           if (action.res.acceptance_email_should_be_sent) {

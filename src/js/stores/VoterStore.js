@@ -38,6 +38,7 @@ class VoterStore extends ReduceStore {
       smsPhoneNumberList: [],
       voterContactEmailGoogleCount: 0,
       voterContactEmailList: [],
+      voterDeleted: false,
       voterEmailQueuedToSave: '',
       voterEmailQueuedToSaveSet: false,
       voterFirstNameQueuedToSave: '',
@@ -241,6 +242,10 @@ class VoterStore extends ReduceStore {
   getVoterContactEmailListCount () {
     const voterContactEmailList = this.getState().voterContactEmailList || [];
     return voterContactEmailList.length;
+  }
+
+  getVoterDeleted () {
+    return this.getState().voterDeleted;
   }
 
   getVoterEmail () {
@@ -1085,7 +1090,20 @@ class VoterStore extends ReduceStore {
 
       case 'voterUpdate':
         // console.log('VoterStore  voterUpdate ');
-        if (action.res.success) {
+        if (action.res.success && action.res.voter_deleted) {
+          revisedState = state;
+          revisedState = { ...revisedState, ...this.getInitialState() };
+          revisedState = { ...revisedState,
+            voterDeleted: true,
+          };
+          return revisedState;
+        } else if (action.res.success && action.res.voter_not_deleted) {
+          revisedState = state;
+          revisedState = { ...revisedState,
+            voterNotDeleted: true,
+          };
+          return revisedState;
+        } else if (action.res.success) {
           let interfaceStatusFlags = action.res.interface_status_flags;
           if (interfaceStatusFlags === undefined) {
             interfaceStatusFlags = state.voter.interface_status_flags;

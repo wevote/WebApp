@@ -4,6 +4,8 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import styled from 'styled-components';
 import VoterActions from '../../actions/VoterActions';
+import historyPush from '../../common/utils/historyPush';
+import VoterStore from '../../stores/VoterStore';
 import { renderLog } from '../../common/utils/logging';
 
 
@@ -16,11 +18,33 @@ class DeleteYourAccountButton extends React.Component {
   }
 
   componentDidMount () {
+    this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
+  }
+
+  componentWillUnmount () {
+    this.voterStoreListener.remove();
+  }
+
+  onVoterStoreChange () {
+    // console.log('ReadyTaskBallot, onVoterStoreChange voter: ', VoterStore.getVoter());
+    const voterDeleted = VoterStore.getVoterDeleted();
+    if (voterDeleted) {
+      historyPush({
+        pathname: '/ready',   // SnackNotifier that SHOULD handle this is in Friends or Values
+        state: {
+          message: 'All profile information deleted.',
+          severity: 'success',
+        },
+      });
+    }
   }
 
   deleteAllData = () => {
     const deleteVoterAccount = true;
     VoterActions.voterAccountDelete(deleteVoterAccount);
+    this.setState({
+      deletingAllDataNow: true,
+    });
   }
 
   deleteAllDataConfirmToggle = () => {
@@ -33,13 +57,13 @@ class DeleteYourAccountButton extends React.Component {
   render () {
     renderLog('DeleteYourAccountButton');  // Set LOG_RENDER_EVENTS to log all renders
     const { classes, leftAlign, textSizeSmall } = this.props;
-    const { deleteAllDataConfirm } = this.state;
+    const { deleteAllDataConfirm, deletingAllDataNow } = this.state;
     return (
       <>
         {deleteAllDataConfirm && (
           <DeleteAllConfirmText>
             Are you 100% sure you want to delete your account, and all of your data?
-            Once you click this button there is no way to recover any of the following information:
+            Once you click this button there is no way to cancel or recover any of the following information:
             <ul>
               <li>How you plan to vote</li>
               <li>How you have voted in the past</li>
@@ -54,6 +78,7 @@ class DeleteYourAccountButton extends React.Component {
               <DeleteYourAccountButtonInnerWrapper leftAlign={leftAlign}>
                 <Button
                   color="primary"
+                  disabled={deletingAllDataNow}
                   onClick={this.deleteAllData}
                   style={{
                     backgroundColor: 'red',
@@ -62,17 +87,19 @@ class DeleteYourAccountButton extends React.Component {
                   }}
                   variant="contained"
                 >
-                  Permanently delete all of your data
+                  {deletingAllDataNow ? 'Deleting all of your data now...' : 'Permanently delete all of your data'}
                 </Button>
               </DeleteYourAccountButtonInnerWrapper>
-              <DeleteYourAccountButtonInnerCancelWrapper>
-                <Button
-                  classes={{ root: classes.deleteAllDataCancelLink }}
-                  onClick={this.deleteAllDataConfirmToggle}
-                >
-                  Cancel
-                </Button>
-              </DeleteYourAccountButtonInnerCancelWrapper>
+              {!deletingAllDataNow && (
+                <DeleteYourAccountButtonInnerCancelWrapper>
+                  <Button
+                    classes={{ root: classes.deleteAllDataCancelLink }}
+                    onClick={this.deleteAllDataConfirmToggle}
+                  >
+                    Cancel
+                  </Button>
+                </DeleteYourAccountButtonInnerCancelWrapper>
+              )}
             </div>
           ) : (
             <Button
