@@ -154,19 +154,19 @@ class FooterBar extends React.Component {
               id="friendsTabFooterBar"
               label="Friends"
               showLabel
-              // icon={<People />}
-              icon={friendInvitationsSentToMe && friendInvitationsSentToMe.length > 0 ? (
-                <Badge
-                  badgeContent={friendInvitationsSentToMe}
-                  className={classes.headerBadge}
-                  color="primary"
-                  max={9}
-                >
-                  <People />
-                </Badge>
-              ) : (
-                <People />
-              )}
+              icon={<People />}
+              // icon={friendInvitationsSentToMe && friendInvitationsSentToMe.length > 0 ? (
+              //   <Badge
+              //     badgeContent={<span>{friendInvitationsSentToMe}</span>}
+              //     className={classes.headerBadge}
+              //     color="primary"
+              //     max={9}
+              //   >
+              //     <People />
+              //   </Badge>
+              // ) : (
+              //   <People />
+              // )}
             />
             <BottomNavigationAction className="no-outline" id="newsTabFooterBar" label="Discuss" showLabel icon={<QuestionAnswer />} />
             <BottomNavigationAction className="no-outline u-no-break" id="howItWorksFooterBar" label="How It Works" showLabel icon={<QuestionMark />} />
