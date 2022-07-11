@@ -162,7 +162,7 @@ const VoterPhotoMissing = styled('div')`
 `;
 
 const VoterPhotoOuterWrapper = styled('div')`
-  height: 240px;
+  min-height: 240px;
 `;
 
 export default withStyles(styles)(SetUpAccountAddPhoto);

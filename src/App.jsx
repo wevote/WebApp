@@ -43,7 +43,7 @@ const Footer = React.lazy(() => import(/* webpackChunkName: 'Footer' */ './js/co
 const FindFriendsRoot = React.lazy(() => import(/* webpackChunkName: 'FindFriendsRoot' */ './js/pages/Friends/FindFriendsRoot'));
 const FriendIntroLanding = React.lazy(() => import(/* webpackChunkName: 'FriendIntroLanding' */ './js/pages/FriendIntro/FriendIntroLanding'));
 const FriendInvitationByEmailVerifyProcess = React.lazy(() => import(/* webpackChunkName: 'FriendInvitationByEmailVerifyProcess' */ './js/pages/Process/FriendInvitationByEmailVerifyProcess'));
-// const FriendInvitationOnboarding = React.lazy(() => import(/* webpackChunkName: 'FriendInvitationOnboarding' */ './js/pages/Intro/FriendInvitationOnboarding'));
+const FriendInvitationOnboarding = React.lazy(() => import(/* webpackChunkName: 'FriendInvitationOnboarding' */ './js/pages/Intro/FriendInvitationOnboarding'));
 const Friends = React.lazy(() => import(/* webpackChunkName: 'Friends' */ './js/pages/Friends/Friends'));
 const GetStarted2019 = React.lazy(() => import(/* webpackChunkName: 'GetStarted' */ './js/pages/Intro/GetStarted2019'));
 const HamburgerMenu = React.lazy(() => import(/* webpackChunkName: 'HamburgerMenu' */ './js/pages/Settings/HamburgerMenu'));
@@ -342,6 +342,7 @@ class App extends Component {
                     <Route path="/opinions_ignored" component={OpinionsIgnored} />
                     <Route path="/opinions" exact component={Opinions2020} />
                     <Route path="/privacy" component={Privacy} />
+                    <Route path="/personalized_score" component={FriendInvitationOnboarding} />
                     {/* <Route exact path="/ready"><Redirect to="/" /></Route> */}
                     <Route path="/ready" exact><Ready /></Route>
                     <Route path="/ready/election/:google_civic_election_id" component={Ready} />

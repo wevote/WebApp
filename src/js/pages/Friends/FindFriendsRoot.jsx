@@ -413,11 +413,11 @@ class FindFriendsRoot extends React.Component {
         reassuranceTextOff = false;
         skipForNowOff = false;
         if (!voterIsSignedIn) {
-          nextButtonText = 'Save your photo';
+          nextButtonText = 'Save photo';
           nextStepPath = '/findfriends/signin';
           skipForNowPath = '/findfriends/signin';
         } else if (!voterPhotoUrlLarge) {
-          nextButtonText = 'Save your photo';
+          nextButtonText = 'Save photo';
           if (voterContactEmailListCount > 0) {
             skipForNowPath = '/findfriends/invitecontacts';
           } else if (friendConnectionActionAvailable) {

@@ -50,19 +50,21 @@ class AnnotatedSlideshow extends PureComponent {
         {
           selectedStepIndex < (length - 1) && (
             <TwoButtonsWrapper>
-              <BackButtonWrapper>
-                <Button
-                  classes={{ root: inModal ? classes.nextButtonRootModal : classes.nextButtonRoot }}
-                  id={`annotatedSlideShowStep${selectedStepIndex + 1}Back`}
-                  color="primary"
-                  disabled={selectedStepIndex === 0}
-                  fullWidth
-                  onClick={() => this.handleChangeSlide(false)}
-                  variant="outlined"
-                >
-                  Back
-                </Button>
-              </BackButtonWrapper>
+              {!(selectedStepIndex === 0) && (
+                <BackButtonWrapper>
+                  <Button
+                    classes={{ root: inModal ? classes.nextButtonRootModal : classes.nextButtonRoot }}
+                    id={`annotatedSlideShowStep${selectedStepIndex + 1}Back`}
+                    color="primary"
+                    disabled={selectedStepIndex === 0}
+                    fullWidth
+                    onClick={() => this.handleChangeSlide(false)}
+                    variant="outlined"
+                  >
+                    Back
+                  </Button>
+                </BackButtonWrapper>
+              )}
               <NextButtonWrapper>
                 <Button
                   color="primary"

@@ -56,9 +56,13 @@ export default class FriendInvitationByEmailVerifyProcess extends Component {
     this.appStateSubscription.unsubscribe();
     this.friendStoreListener.remove();
     this.voterStoreListener.remove();
-    if (this.timer) {
-      clearTimeout(this.timer);
-      this.timer = null;
+    if (this.informationTimer) {
+      clearTimeout(this.informationTimer);
+      this.informationTimer = null;
+    }
+    if (this.verifyTimer) {
+      clearTimeout(this.verifyTimer);
+      this.verifyTimer = null;
     }
   }
 
@@ -75,16 +79,21 @@ export default class FriendInvitationByEmailVerifyProcess extends Component {
         hostname,
       });
       // Prevent multiple unnecessary calls
-      if (this.timer) clearTimeout(this.timer);
-      const friendInvitationDelayTime = 250;
-      this.timer = setTimeout(() => {
+      if (this.verifyTimer) clearTimeout(this.verifyTimer);
+      const friendInvitationVerifyDelayTime = 250;
+      this.verifyTimer = setTimeout(() => {
         this.friendInvitationByEmailVerify(invitationSecretKey);
-      }, friendInvitationDelayTime);
+      }, friendInvitationVerifyDelayTime);
     }
     // If we know the verification API call has been called...
     if (voterDeviceId && friendInvitationByEmailVerifyCalled && !friendInvitationInformationCalled && invitationSecretKey && hostname && hostname !== '') {
       // console.log('onAppObservableStoreChange, calling friendInvitationInformation');
-      FriendActions.friendInvitationInformation(invitationSecretKey);
+      // Prevent multiple unnecessary calls
+      if (this.informationTimer) clearTimeout(this.informationTimer);
+      const friendInvitationInformationDelayTime = 250;
+      this.informationTimer = setTimeout(() => {
+        FriendActions.friendInvitationInformation(invitationSecretKey);
+      }, friendInvitationInformationDelayTime);
       this.setState({
         friendInvitationInformationCalled: true,
         hostname,
@@ -100,7 +109,11 @@ export default class FriendInvitationByEmailVerifyProcess extends Component {
     // console.log('FriendInvitationByEmailVerifyProcess, onFriendStoreChange, hostname: ', hostname, 'voterDeviceId:', voterDeviceId);
     if (voterDeviceId && friendInvitationByEmailVerifyCalled && !friendInvitationInformationCalled && invitationSecretKey && hostname && hostname !== '') {
       // console.log('onFriendStoreChange, calling friendInvitationInformation');
-      FriendActions.friendInvitationInformation(invitationSecretKey);
+      if (this.informationTimer) clearTimeout(this.informationTimer);
+      const friendInvitationInformationDelayTime = 250;
+      this.informationTimer = setTimeout(() => {
+        FriendActions.friendInvitationInformation(invitationSecretKey);
+      }, friendInvitationInformationDelayTime);
       this.setState({
         friendInvitationInformationCalled: true,
         hostname,
