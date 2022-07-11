@@ -305,7 +305,7 @@ class SetUpAccountRoot extends React.Component {
         }
         reassuranceTextOff = false;
         if (!voterPhotoUrlLarge) {
-          nextButtonText = 'Save your photo';
+          nextButtonText = 'Save photo';
           skipForNowOff = false;
           skipForNowPath = '/setupaccount/importcontacts';
         } else if (!voterIsSignedIn) {

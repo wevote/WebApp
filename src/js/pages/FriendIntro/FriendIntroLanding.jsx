@@ -79,7 +79,11 @@ class FriendIntroLanding extends Component {
     // console.log('onFriendStoreChange friendInvitationInformationCalledCount:', friendInvitationInformationCalledCount);
     const voterDeviceId = VoterStore.voterDeviceId();
     if (voterDeviceId && invitationSecretKey && !friendInvitationInformationCalled && (friendInvitationInformationCalledCount < 10)) {
-      FriendActions.friendInvitationInformation(invitationSecretKey);
+      if (this.friendInvitationTimer) clearTimeout(this.friendInvitationTimer);
+      const friendInvitationInformationDelayTime = 250;
+      this.friendInvitationTimer = setTimeout(() => {
+        FriendActions.friendInvitationInformation(invitationSecretKey);
+      }, friendInvitationInformationDelayTime);
       friendInvitationInformationCalledCount += 1;
       this.setState({
         friendInvitationInformationCalled: true,

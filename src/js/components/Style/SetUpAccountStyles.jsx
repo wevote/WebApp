@@ -41,6 +41,9 @@ const SetUpAccountTitle = styled('div')`
 `;
 
 const SetUpAccountTop = styled('div')`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 `;
 
 const StepCenteredWrapper = styled('div')`
