@@ -152,8 +152,6 @@ class PositionRowLogoAndText extends Component {
       speakerDisplayName = 'You';
     } else if (stringContains('Voter-', speakerDisplayName)) {
       speakerDisplayName = '';
-    } else {
-      speakerDisplayName = shortenText(speakerDisplayName, 18);
     }
 
     const positionsPopover = (
@@ -214,31 +212,32 @@ class PositionRowLogoAndText extends Component {
                   overlayUsed={statementText}
                 >
                   <OrganizationName>
-                    { speakerDisplayName }
+                    {shortenText(speakerDisplayName, 18)}
                   </OrganizationName>
                 </OrganizationNameWrapper>
-                <HorizontalSpacer />
-                <YesNoScoreTextWrapper>
-                  {supportOpposeInfo === 'InfoButNotPartOfScore' ? (
-                    <OrganizationInformationOnlyWrapper>
-                      <OrganizationInformationOnlySquare>
-                        <OrganizationInfoOnlyWordWrapper>
-                          &nbsp;
-                        </OrganizationInfoOnlyWordWrapper>
-                      </OrganizationInformationOnlySquare>
-                    </OrganizationInformationOnlyWrapper>
-                  ) : (
-                    <FollowToggleWrapper>
-                      <Suspense fallback={<></>}>
-                        <FollowToggleCheckPlus
-                          organizationWeVoteId={organizationWeVoteId}
-                        />
-                      </Suspense>
-                    </FollowToggleWrapper>
-                  )}
-                </YesNoScoreTextWrapper>
               </div>
             </StickyPopover>
+            <HorizontalSpacer />
+            <YesNoScoreTextWrapper>
+              {supportOpposeInfo === 'InfoButNotPartOfScore' ? (
+                <OrganizationInformationOnlyWrapper>
+                  <OrganizationInformationOnlySquare>
+                    <OrganizationInfoOnlyWordWrapper>
+                      &nbsp;
+                    </OrganizationInfoOnlyWordWrapper>
+                  </OrganizationInformationOnlySquare>
+                </OrganizationInformationOnlyWrapper>
+              ) : (
+                <FollowToggleWrapper>
+                  <Suspense fallback={<></>}>
+                    <FollowToggleCheckPlus
+                      organizationWeVoteId={organizationWeVoteId}
+                      speakerDisplayName={speakerDisplayName}
+                    />
+                  </Suspense>
+                </FollowToggleWrapper>
+              )}
+            </YesNoScoreTextWrapper>
           </Suspense>
         </Wrapper>
       );

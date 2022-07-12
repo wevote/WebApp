@@ -2,6 +2,8 @@ import withStyles from '@mui/styles/withStyles';
 import withTheme from '@mui/styles/withTheme';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
+import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
+import Tooltip from 'react-bootstrap/Tooltip';
 import styled from 'styled-components';
 import OfficeActions from '../../actions/OfficeActions';
 import historyPush from '../../common/utils/historyPush';
@@ -9,6 +11,7 @@ import { isCordova } from '../../common/utils/isCordovaOrWebApp';
 import { renderLog } from '../../common/utils/logging';
 import normalizedImagePath from '../../common/utils/normalizedImagePath';
 import toTitleCase from '../../common/utils/toTitleCase';
+import InfoCircleIcon from '../Widgets/InfoCircleIcon';
 import AppObservableStore from '../../stores/AppObservableStore';
 import BallotStore from '../../stores/BallotStore';
 import CandidateStore from '../../stores/CandidateStore';
@@ -272,7 +275,21 @@ class OfficeItemCompressed extends Component {
             const candidatePartyText = oneCandidate.party && oneCandidate.party.length ? `${oneCandidate.party}` : '';
             const avatarCompressed = `card-main__avatar-compressed${isCordova() ? '-cordova' : ''}`;
             const avatarBackgroundImage = normalizedImagePath('../img/global/svg-icons/avatar-generic.svg');
-
+            const scoreExplanationTooltip = (
+              <Tooltip className="u-z-index-9020" id={`scoreDescription-${oneCandidate.we_vote_id}`}>
+                Your personalized score
+                {oneCandidate.ballot_item_display_name && (
+                  <>
+                    {' '}
+                    for
+                    {' '}
+                    {oneCandidate.ballot_item_display_name}
+                  </>
+                )}
+                {' '}
+                is the number of people who support this candidate, from among the people you trust. Trust by clicking the plus sign.
+              </Tooltip>
+            );
             return (
               <div key={`candidate_preview-${oneCandidate.we_vote_id}-${externalUniqueId}`}>
                 <CandidateContainer>
@@ -360,6 +377,7 @@ class OfficeItemCompressed extends Component {
                           <PositionRowList
                             ballotItemWeVoteId={oneCandidate.we_vote_id}
                             showOppose
+                            showOpposeDisplayNameIfNoSupport
                           />
                         </PositionRowListOneWrapper>
                         <PositionRowListOneWrapper>
@@ -375,7 +393,19 @@ class OfficeItemCompressed extends Component {
                         </PositionRowListEmptyWrapper>
                         <PositionRowListScoreColumn>
                           <PositionRowListScoreHeader>
-                            Score
+                            <OverlayTrigger
+                              placement="bottom"
+                              overlay={scoreExplanationTooltip}
+                            >
+                              <ScoreWrapper>
+                                <div>
+                                  Score
+                                </div>
+                                <InfoCircleIconWrapper>
+                                  <InfoCircleIcon />
+                                </InfoCircleIconWrapper>
+                              </ScoreWrapper>
+                            </OverlayTrigger>
                           </PositionRowListScoreHeader>
                           <PositionRowListScoreSpacer>
                             <Suspense fallback={<></>}>
@@ -615,6 +645,11 @@ const HrSeparator = styled('hr')`
   width: 95%;
 `;
 
+const InfoCircleIconWrapper = styled('div')`
+  margin-bottom: -4px;
+  margin-left: 3px;
+`;
+
 const ItemActionBarOutsideWrapper = styled('div')`
   display: flex;
   cursor: pointer;
@@ -640,6 +675,10 @@ const OfficeItemCompressedWrapper = styled('div')`
   flex-direction: column;
   margin-bottom: 60px;
   position: relative;
+`;
+
+const ScoreWrapper = styled('div')`
+  display: flex;
 `;
 
 export default withTheme(withStyles(styles)(OfficeItemCompressed));

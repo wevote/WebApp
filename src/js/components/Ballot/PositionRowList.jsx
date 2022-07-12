@@ -32,6 +32,7 @@ class PositionRowList extends Component {
       filteredPositionList: [],
       filteredPositionListLength: 0,
       numberOfPositionItemsToDisplay: STARTING_NUMBER_OF_POSITIONS_TO_DISPLAY,
+      supportPositionListLength: 0,
     };
   }
 
@@ -120,7 +121,7 @@ class PositionRowList extends Component {
   }
 
   onPositionListUpdate = (allCachedPositionsForThisBallotItem) => {
-    const { showInfoOnly, showOppose, showSupport } = this.props;
+    const { showInfoOnly, showOppose, showOpposeDisplayNameIfNoSupport, showSupport } = this.props;
     const organizationsVoterIsFollowing = OrganizationStore.getOrganizationsVoterIsFollowing();
     // eslint-disable-next-line arrow-body-style
     let filteredPositionList = allCachedPositionsForThisBallotItem.map((position) => {
@@ -150,6 +151,14 @@ class PositionRowList extends Component {
         linkedToIssueVoterIsFollowing: IssueStore.isOrganizationLinkedToIssueVoterIsFollowing(position.speaker_we_vote_id),
       });
     });
+
+    if (showOpposeDisplayNameIfNoSupport) {
+      let supportPositionList = JSON.parse(JSON.stringify(filteredPositionList));
+      supportPositionList = this.limitToShowSupport(supportPositionList);
+      this.setState({
+        supportPositionListLength: supportPositionList.length,
+      });
+    }
 
     if (showInfoOnly) {
       filteredPositionList = this.limitToShowInfoOnly(filteredPositionList);
@@ -224,10 +233,10 @@ class PositionRowList extends Component {
 
   render () {
     const {
-      ballotItemWeVoteId, showInfoOnly, showOppose, showSupport,
+      ballotItemWeVoteId, showInfoOnly, showOppose, showOpposeDisplayName, showOpposeDisplayNameIfNoSupport, showSupport,
     } = this.props;
     const {
-      filteredPositionList, filteredPositionListLength, numberOfPositionItemsToDisplay,
+      filteredPositionList, filteredPositionListLength, numberOfPositionItemsToDisplay, supportPositionListLength,
     } = this.state;
     renderLog('PositionRowList');  // Set LOG_RENDER_EVENTS to log all renders
     // console.log('PositionRowList render, filteredPositionList:', filteredPositionList, ', filteredPositionListLength:', filteredPositionListLength);
@@ -238,6 +247,10 @@ class PositionRowList extends Component {
     }
     // console.log('TRYING TO RENDER, filteredPositionListLength: ', filteredPositionListLength);
     let numberOfPositionItemsDisplayed = 0;
+    let showOpposeDisplayNameBecauseNoSupport = false;
+    if (showOpposeDisplayNameIfNoSupport && supportPositionListLength === 0) {
+      showOpposeDisplayNameBecauseNoSupport = true;
+    }
     return (
       <CandidateEndorsementsWrapper>
         {filteredPositionListLength > 0 && (
@@ -248,6 +261,7 @@ class PositionRowList extends Component {
                 // goToBallotItem={this.onClickShowOrganizationModal}
                 showInfoOnly={showInfoOnly}
                 showOppose={showOppose}
+                showOpposeDisplayName={showOpposeDisplayName || showOpposeDisplayNameBecauseNoSupport}
                 showSupport={showSupport}
               />
             </Suspense>
@@ -296,6 +310,8 @@ PositionRowList.propTypes = {
   ballotItemWeVoteId: PropTypes.string.isRequired,
   showInfoOnly: PropTypes.bool,
   showOppose: PropTypes.bool,
+  showOpposeDisplayName: PropTypes.bool,
+  showOpposeDisplayNameIfNoSupport: PropTypes.bool,
   showSupport: PropTypes.bool,
 };
 

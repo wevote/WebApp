@@ -6,6 +6,8 @@ import MenuItem from '@mui/material/MenuItem';
 import { styled as muiStyled } from '@mui/styles';
 import withTheme from '@mui/styles/withTheme';
 import withStyles from '@mui/styles/withStyles';
+import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
+import Tooltip from 'react-bootstrap/Tooltip';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import styled from 'styled-components';
@@ -76,20 +78,36 @@ function FollowButton (params) {
   const { followInstantly, followFunction } = params;
   const {
     ballotItemWeVoteId, classes, currentBallotIdInUrl,
-    organizationWeVoteId, platformType,
+    speakerDisplayName, organizationWeVoteId, platformType,
     urlWithoutHash,
   } = params.params;
+
+  let followOrganizationCheckPlusPopOverText = 'Click to trust';
+  if (speakerDisplayName) {
+    followOrganizationCheckPlusPopOverText += ` ${speakerDisplayName},`;
+  }
+  followOrganizationCheckPlusPopOverText += ' and add opinion to your score.';
+  // console.log('followOrganizationCheckPlusPopOverText:', followOrganizationCheckPlusPopOverText);
+  const followOrganizationCheckPlusPopOverTooltip = (
+    <Tooltip className="u-z-index-9020" id={`followOrganizationCheckPlusPopOver-${ballotItemWeVoteId}-${organizationWeVoteId}`}>
+      {followOrganizationCheckPlusPopOverText}
+    </Tooltip>
+  );
   return (
-    <Button
-      classes={{ root: classes.followToggleCheckPlusRoot }}
-      id={`followToggleCheckPlush-${platformType}-${organizationWeVoteId}`}
-      onClick={() => followInstantly(followFunction, currentBallotIdInUrl, urlWithoutHash, ballotItemWeVoteId)}
-      size="small"
-      type="button"
-      variant="text"
-    >
-      <AddStyled />
-    </Button>
+    <div>
+      <OverlayTrigger placement="bottom" overlay={followOrganizationCheckPlusPopOverTooltip}>
+        <Button
+          classes={{ root: classes.followToggleCheckPlusRoot }}
+          id={`followToggleCheckPlush-${platformType}-${organizationWeVoteId}`}
+          onClick={() => followInstantly(followFunction, currentBallotIdInUrl, urlWithoutHash, ballotItemWeVoteId)}
+          size="small"
+          type="button"
+          variant="text"
+        >
+          <AddStyled />
+        </Button>
+      </OverlayTrigger>
+    </div>
   );
 }
 
@@ -336,7 +354,7 @@ class FollowToggleCheckPlus extends Component {
       addToScoreLabelFullWidth, addToScoreLabelOn,
       anchorLeft, ballotItemWeVoteId, classes, currentBallotIdInUrl, hideDropdownButtonUntilFollowing,
       hideStopFollowingButton, hideStopIgnoringButton, lightModeOn, organizationWeVoteId,
-      platformType, showFollowingText, urlWithoutHash,
+      platformType, showFollowingText, speakerDisplayName, urlWithoutHash,
     } = this.props;
     if (!organizationWeVoteId) { return <div />; }
 
@@ -349,10 +367,10 @@ class FollowToggleCheckPlus extends Component {
     const stopFollowingFunc = () => OrganizationActions.organizationStopFollowing(organizationWeVoteId);
     const isFollowingFriendOrIgnoring = isFollowing || isFriend || isIgnoring || voterIsFriendsWithThisOrganization;
     const lineParams = {
-      ballotItemWeVoteId, classes, currentBallotIdInUrl, hideDropdownButtonUntilFollowing,
-      hideStopFollowingButton, isFollowing, isFriend, isIgnoring, lightModeOn,
+      anchorLeft, ballotItemWeVoteId, classes, currentBallotIdInUrl, hideDropdownButtonUntilFollowing,
+      hideStopFollowingButton, hideStopIgnoringButton, isFollowing, isFriend, isIgnoring, lightModeOn,
       organizationName, organizationWeVoteId, platformType,
-      showFollowingText, urlWithoutHash, anchorLeft, hideStopIgnoringButton,
+      showFollowingText, speakerDisplayName, urlWithoutHash,
     };
 
     return (
@@ -378,21 +396,13 @@ class FollowToggleCheckPlus extends Component {
                   onClose={this.handleClose}
                 >
                   <MenuItemStyled onClick={this.handleClose}>
-                    {isFollowingFriendOrIgnoring ? (
-                      <UnfollowFollowLine
-                        followFunction={followFunction}
-                        followInstantly={this.followInstantly}
-                        stopFollowingFunc={stopFollowingFunc}
-                        stopFollowingInstantly={this.stopFollowingInstantly}
-                        params={lineParams}
-                      />
-                    ) : (
-                      <FollowButton
-                        followFunction={followFunction}
-                        followInstantly={this.followInstantly}
-                        params={lineParams}
-                      />
-                    )}
+                    <UnfollowFollowLine
+                      followFunction={followFunction}
+                      followInstantly={this.followInstantly}
+                      stopFollowingFunc={stopFollowingFunc}
+                      stopFollowingInstantly={this.stopFollowingInstantly}
+                      params={lineParams}
+                    />
                   </MenuItemStyled>
                 </Menu>
               </>
@@ -426,6 +436,7 @@ FollowToggleCheckPlus.propTypes = {
   organizationWeVoteId: PropTypes.string,
   platformType: PropTypes.string,
   showFollowingText: PropTypes.bool,
+  speakerDisplayName: PropTypes.string,
   urlWithoutHash: PropTypes.string,
 };
 
