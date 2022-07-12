@@ -314,13 +314,13 @@ class AddFriendsByEmail extends Component {
                 <FormWrapper>
                   <div>
                     <form>
-                      <Label>Email of One Friend</Label>
                       <TextField
                         variant="outlined"
                         margin="dense"
                         classes={{ root: classes.textField }}
                         type="text"
                         id={uniqueExternalId ? `EmailAddress-${uniqueExternalId}` : 'EmailAddress'}
+                        label="Email of One Friend"
                         name="friendContactInfo"
                         value={friendContactInfo}
                         onChange={this.cacheFriendData}
@@ -331,15 +331,13 @@ class AddFriendsByEmail extends Component {
                       {friendContactInfo && (
                         <div className="row">
                           <div className={inSideColumn ? 'col col-12' : 'col col-6'}>
-                            <Label>
-                              Friend&apos;s First Name
-                            </Label>
                             <TextField
                               variant="outlined"
                               margin="dense"
                               classes={{ root: classes.textField }}
                               type="text"
                               id={uniqueExternalId ? `friendFirstName-${uniqueExternalId}` : 'friendFirstName'}
+                              label="Friend&apos;s First Name"
                               name="friendFirstName"
                               value={friendFirstName}
                               onChange={this.cacheFriendData}
@@ -349,15 +347,13 @@ class AddFriendsByEmail extends Component {
                             />
                           </div>
                           <div className={inSideColumn ? 'col col-12' : 'col col-6'}>
-                            <Label>
-                              Friend&apos;s Last Name
-                            </Label>
                             <TextField
                               variant="outlined"
                               margin="dense"
                               classes={{ root: classes.textField }}
                               type="text"
                               id={uniqueExternalId ? `friendLastName-${uniqueExternalId}` : 'friendLastName'}
+                              label="Friend&apos;s Last Name"
                               name="friendLastName"
                               value={friendLastName}
                               onChange={this.cacheFriendData}
@@ -370,7 +366,6 @@ class AddFriendsByEmail extends Component {
                       )}
                       {atLeastOneValidated ? (
                         <>
-                          <Label>Add Personal Message</Label>
                           <span className="small">(Optional)</span>
                           <TextField
                             variant="outlined"
@@ -378,6 +373,7 @@ class AddFriendsByEmail extends Component {
                             classes={{ root: classes.textField }}
                             type="text"
                             id={uniqueExternalId ? `addFriendsMessage-${uniqueExternalId}` : 'addFriendsMessage'}
+                            label="Add Personal Message"
                             name="addFriendsMessage"
                             onChange={this.cacheAddFriendsByEmailMessage}
                             fullWidth
@@ -484,11 +480,6 @@ const SectionTitle = styled('h2')`
 
 const FormWrapper = styled('div')`
   margin-bottom: 8px;
-`;
-
-const Label = styled('div')`
-  margin-bottom: -4px;
-  white-space: nowrap;
 `;
 
 const ButtonContainer = styled('div')(({ theme }) => (`

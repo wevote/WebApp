@@ -57,17 +57,21 @@ class PositionRowSupportOpposeCountDisplay extends Component {
     const isMeasure = stringContains('meas', ballotItemWeVoteId);
     // console.log('isCandidate:', isCandidate, 'isMeasure:', isMeasure);
     if (isCandidate) {
+      const ballotItemDisplayName = CandidateStore.getCandidateName(ballotItemWeVoteId);
       const countResults = CandidateStore.getNumberOfPositionsByCandidateWeVoteId(ballotItemWeVoteId);
       const { numberOfAllSupportPositions, numberOfAllOpposePositions, numberOfAllInfoOnlyPositions } = countResults;
       this.setState({
+        ballotItemDisplayName,
         numberOfAllSupportPositions,
         numberOfAllOpposePositions,
         numberOfAllInfoOnlyPositions,
       });
     } else if (isMeasure) {
+      const ballotItemDisplayName = MeasureStore.getMeasureName(ballotItemWeVoteId);
       const countResults = MeasureStore.getNumberOfPositionsByMeasureWeVoteId(ballotItemWeVoteId);
       const { numberOfAllSupportPositions, numberOfAllOpposePositions, numberOfAllInfoOnlyPositions } = countResults;
       this.setState({
+        ballotItemDisplayName,
         numberOfAllSupportPositions,
         numberOfAllOpposePositions,
         numberOfAllInfoOnlyPositions,
@@ -218,9 +222,11 @@ class PositionRowSupportOpposeCountDisplay extends Component {
     const { isCandidate } = this.state;
     if (isCandidate) {
       const { ballotItemWeVoteId } = this.props;
+      const ballotItemDisplayName = CandidateStore.getCandidateName(ballotItemWeVoteId);
       const countResults = CandidateStore.getNumberOfPositionsByCandidateWeVoteId(ballotItemWeVoteId);
       const { numberOfAllSupportPositions, numberOfAllOpposePositions, numberOfAllInfoOnlyPositions } = countResults;
       this.setState({
+        ballotItemDisplayName,
         numberOfAllSupportPositions,
         numberOfAllOpposePositions,
         numberOfAllInfoOnlyPositions,
@@ -233,9 +239,11 @@ class PositionRowSupportOpposeCountDisplay extends Component {
     const { isMeasure } = this.state;
     if (isMeasure) {
       const { ballotItemWeVoteId } = this.props;
+      const ballotItemDisplayName = MeasureStore.getMeasureName(ballotItemWeVoteId);
       const countResults = MeasureStore.getNumberOfPositionsByMeasureWeVoteId(ballotItemWeVoteId);
       const { numberOfAllSupportPositions, numberOfAllOpposePositions, numberOfAllInfoOnlyPositions } = countResults;
       this.setState({
+        ballotItemDisplayName,
         numberOfAllSupportPositions,
         numberOfAllOpposePositions,
         numberOfAllInfoOnlyPositions,
@@ -312,10 +320,11 @@ class PositionRowSupportOpposeCountDisplay extends Component {
   render () {
     renderLog('PositionRowSupportOpposeCountDisplay');  // Set LOG_RENDER_EVENTS to log all renders
     const {
-      ballotItemWeVoteId, showInfoOnly, showNoOpinions, showOppose, showSupport,
+      ballotItemWeVoteId, showInfoOnly, showNoOpinions, showOppose, showOpposeDisplayName, showSupport,
     } = this.props;
     // console.log('PositionRowSupportOpposeCountDisplay, controlAdviserMaterialUIPopoverFromProp: ', controlAdviserMaterialUIPopoverFromProp,  ', openAdviserMaterialUIPopover:', openAdviserMaterialUIPopover);
     const {
+      ballotItemDisplayName,
       numberOfAllSupportPositions, numberOfAllOpposePositions, numberOfAllInfoOnlyPositions,
     } = this.state;
     // console.log('PositionRowSupportOpposeCountDisplay render, voterSupportsBallotItem/voterOpposesBallotItem:', voterSupportsBallotItem, voterOpposesBallotItem);
@@ -348,14 +357,29 @@ class PositionRowSupportOpposeCountDisplay extends Component {
                     <EndorsementCount>
                       <ChooseWrapper>
                         {numberOfAllSupportPositions > 1 ? (
-                          <>
-                            {/* numberOfAllSupportPositions */}
+                          <div>
+                            {numberOfAllSupportPositions}
                             {' '}
                             Choose
-                          </>
+                          </div>
                         ) : (
-                          <>Choose</>
+                          <div>
+                            {numberOfAllSupportPositions}
+                            {' '}
+                            Chooses
+                          </div>
                         )}
+                        {ballotItemDisplayName && (
+                          <BallotItemDisplayNameWrapper>
+                            &nbsp;
+                            <BallotItemDisplayName>
+                              {ballotItemDisplayName}
+                            </BallotItemDisplayName>
+                          </BallotItemDisplayNameWrapper>
+                        )}
+                        <div>
+                          &nbsp;&nbsp;&nbsp;
+                        </div>
                       </ChooseWrapper>
                     </EndorsementCount>
                   </EndorsementRow>
@@ -367,14 +391,29 @@ class PositionRowSupportOpposeCountDisplay extends Component {
                         <EndorsementCount>
                           <OpposeWrapper>
                             {numberOfAllOpposePositions > 1 ? (
-                              <>
-                                {/* numberOfAllOpposePositions */}
+                              <div>
+                                {numberOfAllOpposePositions}
                                 {' '}
                                 Oppose
-                              </>
+                              </div>
                             ) : (
-                              <>Oppose</>
+                              <div>
+                                {numberOfAllOpposePositions}
+                                {' '}
+                                Opposes
+                              </div>
                             )}
+                            {(ballotItemDisplayName && showOpposeDisplayName) && (
+                              <BallotItemDisplayNameWrapper>
+                                &nbsp;
+                                <BallotItemDisplayName>
+                                  {ballotItemDisplayName}
+                                </BallotItemDisplayName>
+                              </BallotItemDisplayNameWrapper>
+                            )}
+                            <div>
+                              &nbsp;&nbsp;&nbsp;
+                            </div>
                           </OpposeWrapper>
                         </EndorsementCount>
                       </EndorsementRow>
@@ -421,6 +460,7 @@ PositionRowSupportOpposeCountDisplay.propTypes = {
   goToBallotItem: PropTypes.func, // We don't require this because sometimes we don't want the link to do anything
   showInfoOnly: PropTypes.bool,
   showOppose: PropTypes.bool,
+  showOpposeDisplayName: PropTypes.bool,
   showNoOpinions: PropTypes.bool,
   showSupport: PropTypes.bool,
 };
@@ -436,7 +476,22 @@ const styles = () => ({
   },
 });
 
+const BallotItemDisplayName = styled('div')`
+  max-width: 25ch;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+`;
+
+const BallotItemDisplayNameWrapper = styled('div')`
+  align-items: flex-start;
+  display: flex;
+  justify-content: flex-start;
+`;
+
 const ChooseWrapper = styled('div')`
+  display: flex;
+  justify-content: flex-start;
 `;
 
 const EndorsementCount = styled('div')`
@@ -477,6 +532,8 @@ const EndorsementsOverviewSpacer = styled('div')`
 `;
 
 const OpposeWrapper = styled('div')`
+  display: flex;
+  justify-content: flex-start;
 `;
 
 const Wrapper = styled('div')`
