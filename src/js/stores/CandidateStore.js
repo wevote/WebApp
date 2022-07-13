@@ -283,7 +283,7 @@ class CandidateStore extends ReduceStore {
         // candidateListsByOfficeWeVoteId[contestOfficeWeVoteId].forEach((two) => {
         //   console.log('two:', two);
         // });
-        if (contestOfficeWeVoteId.length) {
+        if (contestOfficeWeVoteId) {
           numberOfCandidatesRetrievedByOffice[contestOfficeWeVoteId] = incomingCandidateCount;
         }
 
@@ -296,20 +296,29 @@ class CandidateStore extends ReduceStore {
 
       case 'voterAddressSave':
       case 'voterBallotItemsRetrieve':
+        // console.log(action.type, ': in CandidateStore');
         googleCivicElectionId = action.res.google_civic_election_id || 0;
         if (googleCivicElectionId !== 0) {
           action.res.ballot_item_list.forEach((ballotItem) => {
             if (ballotItem.kind_of_ballot_item === 'OFFICE' && ballotItem.candidate_list) {
+              contestOfficeWeVoteId = ballotItem.we_vote_id;
               candidateList = ballotItem.candidate_list;
+              incomingCandidateCount = 0;
               candidateList.forEach((one) => {
                 allCachedCandidates[one.we_vote_id] = one;
+                incomingCandidateCount += 1;
               });
+              // console.log(action.type, ' contestOfficeWeVoteId:', contestOfficeWeVoteId, ', incomingCandidateCount:', incomingCandidateCount);
+              if (contestOfficeWeVoteId) {
+                numberOfCandidatesRetrievedByOffice[contestOfficeWeVoteId] = incomingCandidateCount;
+              }
             }
           });
 
           return {
             ...state,
             allCachedCandidates,
+            numberOfCandidatesRetrievedByOffice,
           };
         }
         return state;

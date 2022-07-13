@@ -146,7 +146,7 @@ export default class SignInOptionsPanel extends Component {
       }
       this.setState({
         pleaseSignInTitleFromState: 'Please sign in to get started.',
-        pleaseSignInSubTitle: 'Don\'t worry, we won\'t post anything automatically.',
+        pleaseSignInSubTitle: '',
       });
     } else {
       const isOnWeVoteRootUrl = AppObservableStore.isOnWeVoteRootUrl();
@@ -154,7 +154,7 @@ export default class SignInOptionsPanel extends Component {
       // No need to query an api to get this answer.  Creates an unneeded dependency:  const isOnFacebookSupportedDomainUrl = AppObservableStore.isOnFacebookSupportedDomainUrl() || window.location.href.includes('ngrok');
       let pleaseSignInSubTitle = '';
       if (isOnWeVoteRootUrl || isOnWeVoteSubdomainUrl || isOnFacebookSupportedDomainUrl) {
-        pleaseSignInSubTitle = 'Don\'t worry, we won\'t post anything automatically.';
+        pleaseSignInSubTitle = '';
       }
       this.setState({
         pleaseSignInTitleFromState: '',

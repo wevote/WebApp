@@ -228,14 +228,14 @@ class PositionRowLogoAndText extends Component {
                   </OrganizationInformationOnlySquare>
                 </OrganizationInformationOnlyWrapper>
               ) : (
-                <FollowToggleWrapper>
+                <PositionRowFollowToggleWrapper>
                   <Suspense fallback={<></>}>
                     <FollowToggleCheckPlus
                       organizationWeVoteId={organizationWeVoteId}
                       speakerDisplayName={speakerDisplayName}
                     />
                   </Suspense>
-                </FollowToggleWrapper>
+                </PositionRowFollowToggleWrapper>
               )}
             </YesNoScoreTextWrapper>
           </Suspense>
@@ -272,7 +272,7 @@ const CommentOverlayImage = styled('div')`
   z-index: 2;
 `;
 
-const FollowToggleWrapper = styled('div')`
+const PositionRowFollowToggleWrapper = styled('div')`
   display: flex;
   justify-content: center;
 `;

@@ -20,24 +20,40 @@ import OrganizationStore from '../../stores/OrganizationStore';
 import VoterGuideStore from '../../stores/VoterGuideStore';
 import VoterStore from '../../stores/VoterStore';
 import { openSnackbar } from './SnackNotifier';
+import { createSharedIssuesText } from '../../utils/issueUtils';
 
 
 function AlreadyFollowingOrIgnoringButton (params) {
   const { handleClick } = params;
-  const { classes, isFollowing, isFriend, isIgnoring } = params.params;
+  const { ballotItemWeVoteId, classes, isFollowing, isFriend, isIgnoring, speakerDisplayName, organizationWeVoteId } = params.params;
+
+  let alreadyFollowingOrIgnoringPopOverText = 'Because you trust';
+  if (speakerDisplayName) {
+    alreadyFollowingOrIgnoringPopOverText += ` ${speakerDisplayName},`;
+  }
+  alreadyFollowingOrIgnoringPopOverText += ' their opinion is added to your score. Click to stop following.';
+  const alreadyFollowingOrIgnoringPopOverTooltip = (
+    <Tooltip className="u-z-index-9020" id={`alreadyFollowingOrIgnoringButtonPopOver-${ballotItemWeVoteId}-${organizationWeVoteId}`}>
+      {alreadyFollowingOrIgnoringPopOverText}
+    </Tooltip>
+  );
 
   return (
-    <ButtonStyled
-      aria-controls="simple-menu"
-      aria-haspopup="true"
-      classes={{ root: classes.followToggleCheckPlusRoot }}
-      onClick={(event) => handleClick(event)}
-    >
-      <span>
-        { (isFollowing || isFriend) && <CheckStyled /> }
-        { isIgnoring && <NotInterestedStyled /> }
-      </span>
-    </ButtonStyled>
+    <div>
+      <OverlayTrigger placement="bottom" overlay={alreadyFollowingOrIgnoringPopOverTooltip}>
+        <ButtonStyled
+          aria-controls="simple-menu"
+          aria-haspopup="true"
+          classes={{ root: classes.followToggleCheckPlusRoot }}
+          onClick={(event) => handleClick(event)}
+        >
+          <span>
+            { (isFollowing || isFriend) && <CheckStyled /> }
+            { isIgnoring && <NotInterestedStyled /> }
+          </span>
+        </ButtonStyled>
+      </OverlayTrigger>
+    </div>
   );
 }
 
@@ -86,8 +102,7 @@ function FollowButton (params) {
   if (speakerDisplayName) {
     followOrganizationCheckPlusPopOverText += ` ${speakerDisplayName},`;
   }
-  followOrganizationCheckPlusPopOverText += ' and add opinion to your score.';
-  // console.log('followOrganizationCheckPlusPopOverText:', followOrganizationCheckPlusPopOverText);
+  followOrganizationCheckPlusPopOverText += ' and add their opinion to your score.';
   const followOrganizationCheckPlusPopOverTooltip = (
     <Tooltip className="u-z-index-9020" id={`followOrganizationCheckPlusPopOver-${ballotItemWeVoteId}-${organizationWeVoteId}`}>
       {followOrganizationCheckPlusPopOverText}
@@ -119,6 +134,7 @@ class FollowToggleCheckPlus extends Component {
     this.state = {
       isFollowing: false,
       isIgnoring: false,
+      issuesInCommonBetweenOrganizationAndVoter: [],
       linkedToIssueVoterIsFollowing: false,
       organizationName: '',
       voterIsFriendsWithThisOrganization: false,
@@ -144,10 +160,12 @@ class FollowToggleCheckPlus extends Component {
           organization_name: organizationName,
         } = organization);
       }
+      const issuesInCommonBetweenOrganizationAndVoter = IssueStore.getIssuesInCommonBetweenOrganizationAndVoter(organizationWeVoteId) || [];
       this.setState({
         // componentDidMountFinished: true,
         isFollowing: OrganizationStore.isVoterFollowingThisOrganization(organizationWeVoteId),
         isIgnoring: OrganizationStore.isVoterIgnoringThisOrganization(organizationWeVoteId),
+        issuesInCommonBetweenOrganizationAndVoter,
         linkedToIssueVoterIsFollowing: IssueStore.isOrganizationLinkedToIssueVoterIsFollowing(organizationWeVoteId),
         organizationName,
         voterIsFriendsWithThisOrganization: FriendStore.isVoterFriendsWithThisOrganization(organizationWeVoteId),
@@ -156,6 +174,7 @@ class FollowToggleCheckPlus extends Component {
     this.onVoterStoreChange();
 
     this.friendStoreListener = FriendStore.addListener(this.onFriendStoreChange.bind(this));
+    this.issueStoreListener = IssueStore.addListener(this.onOrganizationStoreChange.bind(this));
     this.organizationStoreListener = OrganizationStore.addListener(this.onOrganizationStoreChange.bind(this));
     // We need the voterGuideStoreListener until we take the follow functions out of OrganizationActions and VoterGuideStore
     this.voterGuideStoreListener = VoterGuideStore.addListener(this.onVoterGuideStoreChange.bind(this));
@@ -165,6 +184,7 @@ class FollowToggleCheckPlus extends Component {
   componentWillUnmount () {
     // console.log('componentWillUnmount, this.props.organizationWeVoteId: ', this.props.organizationWeVoteId);
     this.friendStoreListener.remove();
+    this.issueStoreListener.remove();
     this.organizationStoreListener.remove();
     this.voterGuideStoreListener.remove();
     this.voterStoreListener.remove();
@@ -204,10 +224,12 @@ class FollowToggleCheckPlus extends Component {
           organization_name: organizationName,
         } = organization);
       }
+      const issuesInCommonBetweenOrganizationAndVoter = IssueStore.getIssuesInCommonBetweenOrganizationAndVoter(organizationWeVoteId) || [];
       // console.log('organizationName: ', organizationName);
       this.setState({
         isFollowing: OrganizationStore.isVoterFollowingThisOrganization(organizationWeVoteId),
         isIgnoring: OrganizationStore.isVoterIgnoringThisOrganization(organizationWeVoteId),
+        issuesInCommonBetweenOrganizationAndVoter,
         linkedToIssueVoterIsFollowing: IssueStore.isOrganizationLinkedToIssueVoterIsFollowing(organizationWeVoteId),
         organizationName,
         voterIsFriendsWithThisOrganization: FriendStore.isVoterFriendsWithThisOrganization(organizationWeVoteId),
@@ -358,7 +380,11 @@ class FollowToggleCheckPlus extends Component {
     } = this.props;
     if (!organizationWeVoteId) { return <div />; }
 
-    const { isFollowing, isFriend, isIgnoring, linkedToIssueVoterIsFollowing, organizationName, voterIsFriendsWithThisOrganization, voterLinkedOrganizationWeVoteId } = this.state;
+    const {
+      isFollowing, isFriend, isIgnoring, issuesInCommonBetweenOrganizationAndVoter,
+      linkedToIssueVoterIsFollowing, organizationName,
+      voterIsFriendsWithThisOrganization, voterLinkedOrganizationWeVoteId,
+    } = this.state;
     const isLookingAtSelf = voterLinkedOrganizationWeVoteId === organizationWeVoteId;
     // You should not be able to follow yourself
     if (isLookingAtSelf) { return <div><CheckStyled /></div>; }
@@ -373,13 +399,36 @@ class FollowToggleCheckPlus extends Component {
       showFollowingText, speakerDisplayName, urlWithoutHash,
     };
 
+    let friendOrLinkedToIssuePopOverText = '';
+    if (speakerDisplayName) {
+      friendOrLinkedToIssuePopOverText += `${speakerDisplayName}`;
+    } else {
+      friendOrLinkedToIssuePopOverText += 'This endorser';
+    }
+    if (issuesInCommonBetweenOrganizationAndVoter && issuesInCommonBetweenOrganizationAndVoter.length) {
+      friendOrLinkedToIssuePopOverText += ' cares about ';
+      friendOrLinkedToIssuePopOverText += createSharedIssuesText(issuesInCommonBetweenOrganizationAndVoter);
+      friendOrLinkedToIssuePopOverText += '.';
+      friendOrLinkedToIssuePopOverText += ' Since you do too, their opinion is added to your score.';
+    } else {
+      friendOrLinkedToIssuePopOverText += ' cares about the same values as you.';
+      friendOrLinkedToIssuePopOverText += ' Because of this, their opinion is added to your score.';
+    }
+    const friendOrLinkedToIssuePopOverTooltip = (
+      <Tooltip className="u-z-index-9020" id={`friendOrLinkedToIssueButtonPopOver-${ballotItemWeVoteId}-${organizationWeVoteId}`}>
+        {friendOrLinkedToIssuePopOverText}
+      </Tooltip>
+    );
+
     return (
       <FollowToggleCheckPlusWrapper>
         {(voterIsFriendsWithThisOrganization || linkedToIssueVoterIsFollowing) ? (
           <FriendOrLinkedToIssue>
-            <div>
-              <CheckStyled />
-            </div>
+            <OverlayTrigger placement="bottom" overlay={friendOrLinkedToIssuePopOverTooltip}>
+              <div>
+                <CheckStyled />
+              </div>
+            </OverlayTrigger>
           </FriendOrLinkedToIssue>
         ) : (
           <>

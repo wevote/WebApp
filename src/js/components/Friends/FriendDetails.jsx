@@ -120,7 +120,7 @@ class FriendDetails extends Component {
         )}
         {!!(mutualFriendCount) && (
           <FriendDetailsLine inSideColumn={inSideColumn}>
-            <OverlayTrigger overlay={mutualFriendsTooltip} placement="top" trigger="click">
+            <OverlayTrigger overlay={mutualFriendsTooltip} placement="top">
               <MutualFriendsBlockWrapper className="u-cursor--pointer">
                 {mutualFriendPreviewList && (
                   <MutualFriendPreviewListImages>
