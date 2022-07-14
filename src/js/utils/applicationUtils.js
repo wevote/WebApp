@@ -59,7 +59,7 @@ export function getApplicationViewBooleans (pathname) {
     pathnameLowerCase === '/more/terms' ||
     pathnameLowerCase === '/more/verify' ||
     pathnameLowerCase.startsWith('/verifythisisme/') ||
-    pathnameLowerCase === '/welcome') {
+    pathnameLowerCase === '/welcomehome') {
     contentFullWidthMode = true;
   } else if (pathnameLowerCase.startsWith('/ballot/vote')) {
     contentFullWidthMode = false; // I set this to false to fix the header padding issues in /ballot/vote
@@ -71,7 +71,9 @@ export function getApplicationViewBooleans (pathname) {
   } else if (stringContains('/settings/positions', pathnameLowerCase)) {
     // contentFullWidthMode = true;
     voterGuideCreatorMode = true;
-  } else if (pathnameLowerCase.startsWith('/ready')) {
+  } else if (pathnameLowerCase.startsWith('/ready') ||
+    (pathnameLowerCase === '/welcome') ||
+    (pathnameLowerCase === '/')) {
     contentFullWidthMode = true;
     readyMode = true;
   } else if (stringContains('/settings', pathnameLowerCase) ||
@@ -185,7 +187,7 @@ export function getApplicationViewBooleans (pathname) {
       (pathnameLowerCase === '/more/myballot') ||
       (pathnameLowerCase === '/start') ||
       (pathnameLowerCase === '/values/list') ||
-      (pathnameLowerCase === '/welcome') ||
+      (pathnameLowerCase === '/welcomehome') ||
       pathnameLowerCase.startsWith('/findfriends') ||
       pathnameLowerCase.startsWith('/how') ||
       pathnameLowerCase.startsWith('/more/donate') ||
@@ -237,6 +239,7 @@ export function getApplicationViewBooleans (pathname) {
   if (VoterStore.getVoterIsSignedIn()) {
     // We currently don't show footer once voter is signed in
   } else if (pathnameLowerCase.startsWith('/ready') ||
+      (pathnameLowerCase === '/welcome') ||
       (pathnameLowerCase === '/')) {
     showFooterMain = true;
   }

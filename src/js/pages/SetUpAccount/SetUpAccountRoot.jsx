@@ -281,19 +281,21 @@ class SetUpAccountRoot extends React.Component {
         } else if (voterContactEmailListCount > 0) {
           nextStepPath = '/setupaccount/invitecontacts';
           skipForNowOff = false;
-          if (electionDataExistsForUpcomingElection) {
-            skipForNowPath = '/ballot';
-          } else {
-            skipForNowPath = '/ready';
-          }
+          // if (electionDataExistsForUpcomingElection) {
+          //   skipForNowPath = '/ballot';
+          // } else {
+          //   skipForNowPath = '/ready';
+          // }
+          skipForNowPath = '/ready';
         } else {
           nextStepPath = '/setupaccount/importcontacts';
           skipForNowOff = false;
-          if (electionDataExistsForUpcomingElection) {
-            skipForNowPath = '/ballot';
-          } else {
-            skipForNowPath = '/ready';
-          }
+          // if (electionDataExistsForUpcomingElection) {
+          //   skipForNowPath = '/ballot';
+          // } else {
+          //   skipForNowPath = '/ready';
+          // }
+          skipForNowPath = '/ready';
         }
         break;
       case 2: // 'addphoto'
@@ -320,8 +322,8 @@ class SetUpAccountRoot extends React.Component {
           skipForNowOff = false;
           if (friendConnectionActionAvailable) {
             skipForNowPath = '/setupaccount/friendrequests';
-          } else if (electionDataExistsForUpcomingElection) {
-            skipForNowPath = '/ballot';
+          // } else if (electionDataExistsForUpcomingElection) {
+          //   skipForNowPath = '/ballot';
           } else {
             skipForNowPath = '/ready';
           }
@@ -331,8 +333,8 @@ class SetUpAccountRoot extends React.Component {
           skipForNowOff = false;
           if (friendConnectionActionAvailable) {
             skipForNowPath = '/setupaccount/friendrequests';
-          } else if (electionDataExistsForUpcomingElection) {
-            skipForNowPath = '/ballot';
+          // } else if (electionDataExistsForUpcomingElection) {
+          //   skipForNowPath = '/ballot';
           } else {
             skipForNowPath = '/ready';
           }
@@ -358,8 +360,8 @@ class SetUpAccountRoot extends React.Component {
           nextStepPath = '/setupaccount/invitecontacts';
           if (friendConnectionActionAvailable) {
             skipForNowPath = '/setupaccount/friendrequests';
-          } else if (electionDataExistsForUpcomingElection) {
-            skipForNowPath = '/ballot';
+          // } else if (electionDataExistsForUpcomingElection) {
+          //   skipForNowPath = '/ballot';
           } else {
             skipForNowPath = '/ready';
           }
@@ -369,9 +371,9 @@ class SetUpAccountRoot extends React.Component {
           if (friendConnectionActionAvailable) {
             nextStepPath = '/setupaccount/friendrequests';
             skipForNowPath = '/setupaccount/friendrequests';
-          } else if (electionDataExistsForUpcomingElection) {
-            nextStepPath = '/ballot';
-            skipForNowPath = '/ballot';
+          // } else if (electionDataExistsForUpcomingElection) {
+          //   nextStepPath = '/ballot';
+          //   skipForNowPath = '/ballot';
           } else {
             nextStepPath = '/ready';
             skipForNowPath = '/ready';
@@ -390,10 +392,10 @@ class SetUpAccountRoot extends React.Component {
           nextButtonText = 'Next';
           nextStepPath = '/setupaccount/friendrequests';
           skipForNowPath = '/setupaccount/friendrequests';
-        } else if (electionDataExistsForUpcomingElection) {
-          nextButtonText = 'Next';
-          nextStepPath = '/ballot';
-          skipForNowPath = '/ballot';
+        // } else if (electionDataExistsForUpcomingElection) {
+        //   nextButtonText = 'Next';
+        //   nextStepPath = '/ballot';
+        //   skipForNowPath = '/ballot';
         } else {
           nextButtonText = 'Next';
           nextStepPath = '/ready';
@@ -408,15 +410,17 @@ class SetUpAccountRoot extends React.Component {
         } else {
           backToLinkPath = '/setupaccount/importcontacts';
         }
-        if (electionDataExistsForUpcomingElection) {
-          nextButtonText = 'View your ballot';
-          nextStepPath = '/ballot';
-        } else {
-          nextButtonText = 'Get ready to vote';
-          nextStepPath = '/ready';
-        }
+        // if (electionDataExistsForUpcomingElection) {
+        //   nextButtonText = 'View your ballot';
+        //   nextStepPath = '/ballot';
+        // } else {
+        //   nextButtonText = 'Get ready to vote';
+        //   nextStepPath = '/ready';
+        // }
+        nextButtonText = 'Next';
+        nextStepPath = '/ready';
+        skipForNowPath = '/ready';
         reassuranceTextOff = true;
-        skipForNowOff = true;
         break;
     }
     this.setState({

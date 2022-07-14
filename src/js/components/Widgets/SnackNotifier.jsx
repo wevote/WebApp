@@ -48,7 +48,7 @@ class SnackNotifier extends Component {
       // eslint-disable-next-line no-param-reassign
       severity = AppObservableStore.getPendingSnackSeverity();
       if (!['error', 'info', 'success', 'warning'].includes(severity)) {
-        console.log('SnackNotifier received invalid severity: ', severity);
+        // console.log('SnackNotifier received invalid severity: ', severity, ', message:', message);
         // eslint-disable-next-line no-param-reassign
         severity = 'success';
       }
@@ -74,8 +74,8 @@ class SnackNotifier extends Component {
           color: 'white',
           backgroundColor: '#313131',
         };
-      case 'success':
       default:
+      case 'success':
         return {
           color: 'white',
           backgroundColor: '#313131',

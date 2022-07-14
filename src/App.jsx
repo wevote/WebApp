@@ -242,7 +242,6 @@ class App extends Component {
                       }}
                     </Route>
                     <Route path="/ready" exact><Ready /></Route>
-                    {/* <Route exact path="/ready"><Redirect to="/" /></Route> */}
                     <Route path="/settings" exact component={SettingsDashboard} />
                     <Route path="/settings/claim" exact component={ClaimYourPage} />
                     <Route path="/settings/hamburger" exact component={HamburgerMenu} />
@@ -343,7 +342,6 @@ class App extends Component {
                     <Route path="/opinions" exact component={Opinions2020} />
                     <Route path="/privacy" component={Privacy} />
                     <Route path="/personalized_score" component={FriendInvitationOnboarding} />
-                    {/* <Route exact path="/ready"><Redirect to="/" /></Route> */}
                     <Route path="/ready" exact><Ready /></Route>
                     <Route path="/ready/election/:google_civic_election_id" component={Ready} />
                     <Route path="/ready/modal/:modal_to_show/:shared_item_code" exact render={(props) => (<RouterV5SendMatch componentName="Ready" {...props} />)} />
@@ -423,7 +421,8 @@ class App extends Component {
                     <Route path="/voterguide/:organization_we_vote_id" exact component={(props) => <OrganizationVoterGuide {...props} activeRoute="positions" />} />
                     <Route path="/voterguideedit/:organization_we_vote_id/:google_civic_election_id" exact render={(props) => (<RouterV5SendMatch componentName="OrganizationVoterGuideEdit" {...props} />)} />
                     <Route path="/voterguideedit/:organization_we_vote_id" exact render={(props) => (<RouterV5SendMatch componentName="OrganizationVoterGuideEdit" {...props} />)} />
-                    <Route path="/welcome" component={isNotWeVoteMarketingSite ? ReadyRedirect : (props) => <WelcomeForVoters {...props} pathname="/welcome" />} />
+                    <Route path="/welcome" exact><Ready /></Route>
+                    <Route path="/welcomehome" component={isNotWeVoteMarketingSite ? ReadyRedirect : (props) => <WelcomeForVoters {...props} pathname="/welcomehome" />} />
                     <Route path="/wevoteintro/network" component={IntroNetwork} />
                     <Route path="/wevoteintro/newfriend/:invitationSecretKey" component={FriendIntroLanding} />
                     <Route path="/yourpage" component={YourPage} />

@@ -47,7 +47,7 @@ export function pageEnumeration () {
     return CordovaPageConstants.settingsSubscription;
   } else if (path.startsWith('/settings/voterguidelist')) {
     return CordovaPageConstants.settingsVoterGuideLst;
-  } else if (path.startsWith('/ready') || path === '/') {
+  } else if (path.startsWith('/ready') || path === '/welcome' || path === '/') {
     return CordovaPageConstants.ready;
   } else if (path.startsWith('/values/list')) {
     return CordovaPageConstants.valuesList;
@@ -99,7 +99,7 @@ export function pageEnumeration () {
     return CordovaPageConstants.values; // Use /value setting
   } else if (path.startsWith('/values')) {
     return CordovaPageConstants.values;
-  } else if (path.startsWith('/welcome') ||
+  } else if (path.startsWith('/welcomehome') ||
              path.startsWith('/for-organizations') ||
              path.startsWith('/for-campaigns') ||
              path.startsWith('/more/pricing') ||

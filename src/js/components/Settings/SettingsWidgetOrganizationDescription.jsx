@@ -113,6 +113,7 @@ class SettingsWidgetOrganizationDescription extends Component {
     }
 
     const { classes, externalUniqueId } = this.props;
+    const { isOrganization, organizationDescription, organizationDescriptionSavedStatus } = this.state;
 
     return (
       <div className="">
@@ -120,17 +121,17 @@ class SettingsWidgetOrganizationDescription extends Component {
           <Row>
             <Column>
               <FormControl classes={{ root: classes.formControl }}>
-                <Label htmlFor="organizationDescriptionTextArea">{ this.state.isOrganization ? 'Description Shown with Endorsements' : 'Description Shown with Endorsements'}</Label>
                 <TextField
                   id={`organizationDescriptionTextArea-${externalUniqueId}`}
+                  label={ isOrganization ? 'Description Shown with Endorsements' : 'Description Shown with Endorsements'}
                   name="organizationDescription"
                   rows={4}
                   multiline
                   fullWidth
                   margin="dense"
                   variant="outlined"
-                  placeholder={this.state.isOrganization ? 'Type Organization Description...' : 'Type Description of Yourself...'}
-                  value={this.state.organizationDescription}
+                  placeholder={isOrganization ? 'Type Organization Description...' : 'Type Description of Yourself...'}
+                  value={organizationDescription}
                   onKeyDown={this.handleKeyPress}
                   onChange={this.updateOrganizationDescription}
                 />
@@ -138,7 +139,7 @@ class SettingsWidgetOrganizationDescription extends Component {
             </Column>
           </Row>
         </form>
-        <div className="u-gray-mid">{this.state.organizationDescriptionSavedStatus}</div>
+        <div className="u-gray-mid">{organizationDescriptionSavedStatus}</div>
       </div>
     );
   }

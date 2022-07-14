@@ -211,12 +211,12 @@ class WelcomeAppbar extends Component {
     } else if (String(pathname) === '/how/for-campaigns') {
       showWelcomeForCampaigns = true;
     }
-    if (String(pathname) === '/welcome') {
+    if (String(pathname) === '/welcomehome') {
       showForOrganizations = true;
     }
     if (typeof pathname !== 'undefined' && pathname &&
       !pathname.startsWith('/how') &&
-      String(pathname) !== '/welcome' &&
+      String(pathname) !== '/welcomehome' &&
       String(pathname) !== '/more/credits' &&
       !pathname.startsWith('/more/donate') &&
       !pathname.startsWith('/more/pricing')) {
@@ -234,7 +234,7 @@ class WelcomeAppbar extends Component {
     }
     if (typeof pathname !== 'undefined' && pathname &&
       !pathname.startsWith('/how') &&
-      (String(pathname) === '/welcome' ||
+      (String(pathname) === '/welcomehome' ||
         String(pathname) === '/for-organizations' ||
         String(pathname) === '/more/credits' ||
         pathname.startsWith('/more/donate') ||
@@ -252,7 +252,7 @@ class WelcomeAppbar extends Component {
     if (typeof pathname !== 'undefined' && pathname &&
       (String(pathname) === '/about' ||
         String(pathname) === '/more/about' ||
-        String(pathname) === '/welcome')
+        String(pathname) === '/welcomehome')
     ) {
       showHowItWorksForVoters = true;
     }
@@ -265,7 +265,7 @@ class WelcomeAppbar extends Component {
           <Navigation>
             <DesktopView>
               {showWelcomeForVoters &&
-                <NavLink id="welcomePageLink" to="/welcome">Welcome</NavLink>}
+                <NavLink id="welcomePageLink" to="/welcomehome">Welcome</NavLink>}
               {showWelcomeForOrganizations &&
                 <NavLink id="welcomePageLink" to="/for-organizations">Welcome</NavLink>}
               {showWelcomeForCampaigns &&
@@ -274,7 +274,7 @@ class WelcomeAppbar extends Component {
               {showForOrganizations &&
                 <NavLink id="welcomeForOrganizations" to="/for-organizations">For Organizations</NavLink>}
               {showForVoters &&
-                <NavLink id="welcomeForVoters" to="/welcome">For Voters</NavLink>}
+                <NavLink id="welcomeForVoters" to="/welcomehome">For Voters</NavLink>}
               {/* Don't show 'For Organizations' or 'For Campaigns' when on How It Works page */}
               { (showWelcomeForVoters || showWelcomeForOrganizations || showWelcomeForCampaigns || showForOrganizations || showForVoters) &&
                 <Divider />}
@@ -411,7 +411,7 @@ class WelcomeAppbar extends Component {
                     </NavRow>
                     <MobileNavDivider />
                     <NavRow>
-                      <NavLink id="welcomeForVotersMobile" onClick={() => this.handleShowMobileNavigation(false)} to="/welcome">For Voters</NavLink>
+                      <NavLink id="welcomeForVotersMobile" onClick={() => this.handleShowMobileNavigation(false)} to="/welcomehome">For Voters</NavLink>
                     </NavRow>
                     <MobileNavDivider />
                     <NavRow>
