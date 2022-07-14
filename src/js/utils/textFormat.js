@@ -21,7 +21,7 @@ export function calculateBallotBaseUrl (incomingBallotBaseUrl, incomingPathname)
   const incomingPathnameExists = incomingPathname && incomingPathname !== '';
   const ballotBaseUrlEmpty = !incomingBallotBaseUrl || incomingBallotBaseUrl === '';
   let ballotBaseUrl = '';
-  if (incomingBallotBaseUrl === '/ready') {
+  if ((incomingBallotBaseUrl === '/ready') || (incomingBallotBaseUrl === '/welcome')) {
     ballotBaseUrl = '/ready';
   } else if (incomingPathnameExists && ballotBaseUrlEmpty) {
     // console.log("incomingPathname:", incomingPathname);

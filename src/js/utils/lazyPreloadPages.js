@@ -30,7 +30,7 @@ export default function lazyPreloadPages () {
   const pathname = normalizedHref();
   let loadedOne = false;
 
-  if (!pathname.startsWith('/ready') && !loaded.ready) {
+  if (!pathname.startsWith('/ready') && (pathname !== '/welcome') && !loaded.ready) {
     loaded.ready = true;
     loadedOne = true;
     // The no-cycle linter is not smart enough to detect that we are conditioning these lazyWithPreload() calls to make sure that they do not attempt to load the pages they are called from
@@ -59,7 +59,7 @@ export default function lazyPreloadPages () {
     lazyWithPreload(() => import(/* webpackChunkName: 'News' */ '../pages/Activity/News'));
   }
 
-  if (pathname.startsWith('/ready') || pathname === '/') {
+  if (pathname.startsWith('/ready') || (pathname === '/welcome') || (pathname === '/')) {
     loaded.ready = true;
   } else if (pathname.startsWith('/ballot')) {
     loaded.ballot = true;

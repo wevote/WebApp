@@ -311,10 +311,10 @@ class SettingsWidgetFirstLastName extends Component {
                       <Row>
                         <ColumnHalfWidth>
                           <FormControl classes={{ root: classes.formControl }}>
-                            <Label>First Name</Label>
                             <StyledTextField
                               type="text"
                               // className={classes.input}
+                              label="First Name"
                               margin="dense"
                               variant="outlined"
                               autoComplete="given-name"
@@ -329,9 +329,9 @@ class SettingsWidgetFirstLastName extends Component {
                         </ColumnHalfWidth>
                         <ColumnHalfWidth>
                           <FormControl classes={{ root: classes.formControl }}>
-                            <Label>Last Name</Label>
                             <StyledTextField
                               type="text"
+                              label="Last Name"
                               margin="dense"
                               variant="outlined"
                               autoComplete="family-name"
@@ -352,11 +352,9 @@ class SettingsWidgetFirstLastName extends Component {
                     <Row>
                       <ColumnFullWidth>
                         <FormControl classes={{ root: classes.formControl }}>
-                          <Label htmlFor="organization-name">
-                            Name Shown with Endorsements
-                          </Label>
                           <StyledTextField
                             type="text"
+                            label="Name Shown with Endorsements"
                             margin="dense"
                             autoComplete="organization"
                             variant="outlined"
@@ -430,11 +428,6 @@ const ColumnFullWidth = styled('div')`
 const ColumnHalfWidth = styled('div')`
   padding: 6px 12px;
   width: 50%;
-`;
-
-const Label = styled('label')`
-  margin-bottom: 4px;
-  display: block;
 `;
 
 const StyledTextField = styled(TextField)`

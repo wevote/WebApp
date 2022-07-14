@@ -205,18 +205,25 @@ export default class FriendInvitationByEmailVerifyProcess extends Component {
             </CenteredText>
             <CenteredText>
               <DelayedLoad loading waitBeforeShow={8000}>
-                <div>
-                  Ready to begin!
-                </div>
-                <Button
-                  color="primary"
-                  id="setYesPleaseMergeAccounts"
-                  onClick={this.setYesPleaseMergeAccounts}
-                  variant="contained"
-                  // classes={showCancelEditAddressButton ? { root: classes.saveButton } : { root: classes.fullWidthSaveButton }}
-                >
-                  Next
-                </Button>
+                <CenteredTextSimple>
+                  <div>
+                    Ready to begin!
+                    <br />
+                    <br />
+                    <br />
+                  </div>
+                  <div>
+                    <Button
+                      color="primary"
+                      id="setYesPleaseMergeAccounts"
+                      onClick={this.setYesPleaseMergeAccounts}
+                      variant="contained"
+                      // classes={showCancelEditAddressButton ? { root: classes.saveButton } : { root: classes.fullWidthSaveButton }}
+                    >
+                      Next
+                    </Button>
+                  </div>
+                </CenteredTextSimple>
               </DelayedLoad>
             </CenteredText>
           </div>
@@ -297,18 +304,25 @@ export default class FriendInvitationByEmailVerifyProcess extends Component {
             </CenteredText>
             <CenteredText>
               <DelayedLoad loading waitBeforeShow={8000}>
-                <div>
-                  Ready to begin!
-                </div>
-                <Button
-                  color="primary"
-                  id="setYesPleaseMergeAccounts"
-                  onClick={this.setYesPleaseMergeAccounts}
-                  variant="contained"
-                  // classes={showCancelEditAddressButton ? { root: classes.saveButton } : { root: classes.fullWidthSaveButton }}
-                >
-                  Continue
-                </Button>
+                <CenteredTextSimple>
+                  <div>
+                    Ready to begin!
+                    <br />
+                    <br />
+                    <br />
+                  </div>
+                  <div>
+                    <Button
+                      color="primary"
+                      id="setYesPleaseMergeAccounts"
+                      onClick={this.setYesPleaseMergeAccounts}
+                      variant="contained"
+                      // classes={showCancelEditAddressButton ? { root: classes.saveButton } : { root: classes.fullWidthSaveButton }}
+                    >
+                      Continue
+                    </Button>
+                  </div>
+                </CenteredTextSimple>
               </DelayedLoad>
             </CenteredText>
           </div>
@@ -328,4 +342,11 @@ const CenteredText = styled('div')`
   justify-content: center;
   margin-top: 70px;
   padding: 15px;
+`;
+
+const CenteredTextSimple = styled('div')`
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 `;

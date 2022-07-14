@@ -186,7 +186,7 @@ export default class Header extends Component {
       path.startsWith('/start') ||
       path.startsWith('/twitter_sign_in') ||
       path.startsWith('/wevoteintro') ||
-      path.startsWith('/welcome')
+      path.startsWith('/welcomehome')
     );
   }
 
@@ -477,7 +477,7 @@ export default class Header extends Component {
       pathname === '/more/credits' ||
       pathname.startsWith('/more/donate') ||
       pathname.startsWith('/more/pricing') ||
-      pathname === '/welcome')) {
+      pathname === '/welcomehome')) {
       return null;
     } else {
       // console.log('Header not in any mode');

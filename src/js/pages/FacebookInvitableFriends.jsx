@@ -30,7 +30,7 @@ import { oAuthLog, renderLog } from '../common/utils/logging';
        "SOCIAL_AUTH_FACEBOOK_KEY" in the environment_variables.json file.  The environment_variables.json file also
        requires a SOCIAL_AUTH_FACEBOOK_SECRET" value to be set that Dale will give you.
     2) Go to your facebook home page, go to settings then apps.  Delete the WeVote app if it exists.
-    3) Go to the live server at https://wevote.us/welcome
+    3) Go to the live server at https://wevote.us/welcomehome
     4) Logout if you are logged in
     5) Login with facebook (and note that within the login pop-up you are agreeing to "We Vote will receive:
         your public profile, friend list and email address")
