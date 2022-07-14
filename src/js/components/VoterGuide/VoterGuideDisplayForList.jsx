@@ -47,7 +47,9 @@ class VoterGuideDisplayForList extends PureComponent {
 
     let positionDescription = '';
     const isOnBallotItemPage = true; // From 'actor's' perspective: actorSupportsBallotItemLabel
-    if (position.voteSmartRating) {
+    if (!position) {
+      positionDescription = <></>;
+    } else if (position.vote_smart_rating) {
       positionDescription = (
         <PositionRatingSnippet
           // ...position
@@ -57,7 +59,7 @@ class VoterGuideDisplayForList extends PureComponent {
           voteSmartTimeSpan={position.vote_smart_time_span}
         />
       );
-    } else if (position.isSupport || position.isOppose) {
+    } else if (position.is_support || position.is_oppose) {
       positionDescription = (
         <PositionSupportOpposeSnippet
           // ...position
@@ -73,7 +75,7 @@ class VoterGuideDisplayForList extends PureComponent {
           statementText={position.statement_text}
         />
       );
-    } else if (position.isInformationOnly) {
+    } else if (position.is_information_only) {
       positionDescription = (
         <PositionInformationOnlySnippet
           // ...position
@@ -144,16 +146,12 @@ class VoterGuideDisplayForList extends PureComponent {
 }
 VoterGuideDisplayForList.propTypes = {
   children: PropTypes.object, // This is how we pass in the FollowToggle
-  isInformationOnly: PropTypes.bool,
-  isOppose: PropTypes.bool,
-  isSupport: PropTypes.bool,
   organizationWeVoteId: PropTypes.string,
   position: PropTypes.string,
   twitterDescription: PropTypes.string,
   twitterHandle: PropTypes.string,
   voterGuideImageUrlLarge: PropTypes.string,
   voterGuideDisplayName: PropTypes.string,
-  voteSmartRating: PropTypes.string,
 };
 
 const styles = (theme) => ({

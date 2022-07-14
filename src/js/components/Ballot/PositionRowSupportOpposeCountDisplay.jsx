@@ -184,7 +184,7 @@ class PositionRowSupportOpposeCountDisplay extends Component {
         // console.log('numberOfOpposePositionsForScore:', numberOfOpposePositionsForScore);
         voterPersonalNetworkScore = numberOfSupportPositionsForScore - numberOfOpposePositionsForScore;
         if (voterPersonalNetworkScore > 0) {
-          voterPersonalNetworkScoreWithSign = `+${voterPersonalNetworkScore}`;
+          voterPersonalNetworkScoreWithSign = `${voterPersonalNetworkScore}`; // We no longer want to add '+' sign for positive numbers
           voterPersonalNetworkScoreIsPositive = true;
         } else if (voterPersonalNetworkScore < 0) {
           voterPersonalNetworkScoreWithSign = `${voterPersonalNetworkScore}`; // Minus sign '-' is already built into the number

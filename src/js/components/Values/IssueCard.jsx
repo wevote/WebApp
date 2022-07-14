@@ -1,6 +1,8 @@
 import { Check } from '@mui/icons-material';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
+import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
+import Tooltip from 'react-bootstrap/Tooltip';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import abbreviateNumber from '../../common/utils/abbreviateNumber';
@@ -16,7 +18,7 @@ const ReadMore = React.lazy(() => import(/* webpackChunkName: 'ReadMore' */ '../
 const SignInModal = React.lazy(() => import(/* webpackChunkName: 'SignInModal' */ '../SignIn/SignInModal'));
 
 const NUMBER_OF_LINKED_ORGANIZATION_IMAGES_TO_SHOW = 3; // Maximum available coming from issueDescriptionsRetrieve is currently 5
-
+const NUMBER_OF_LINKED_ORGANIZATION_NAMES_TO_SHOW = 10;
 
 class IssueCard extends Component {
   constructor (props) {
@@ -117,7 +119,7 @@ class IssueCard extends Component {
     issueDescription = issueDescription || '';
 
     let issueImage;
-    const numberOfLines = 2;
+    const numberOfLines = 5;
     if (issueImageSize === 'SMALL') {
       issueImage = (
         <IssueImageDisplay
@@ -144,6 +146,36 @@ class IssueCard extends Component {
           showPlaceholderImage
           turnOffIssueFade
         />
+      );
+    }
+    let linkedOrganizationsTooltip = <></>;
+    let linkedOrganizationNameCount = 0;
+    if (linkedOrganizationPreviewList) {
+      linkedOrganizationsTooltip = (
+        <Tooltip className="u-z-index-9020" id="linkedOrganizationsTooltip">
+          <div>
+            {linkedOrganizationPreviewList.map((linkedOrganization) => {
+              // console.log('linkedOrganization:', linkedOrganization);
+              if (linkedOrganization.organization_name) {
+                linkedOrganizationNameCount += 1;
+                if (linkedOrganizationNameCount <= NUMBER_OF_LINKED_ORGANIZATION_NAMES_TO_SHOW) {
+                  return (
+                    <OneOrganizationName
+                      key={`LinkedOrganizationName-${linkedOrganization.organization_we_vote_id}-${linkedOrganizationNameCount}`}
+                    >
+                      {linkedOrganization.organization_name}
+                      <br />
+                    </OneOrganizationName>
+                  );
+                } else {
+                  return null;
+                }
+              } else {
+                return null;
+              }
+            })}
+          </div>
+        </Tooltip>
       );
     }
 
@@ -240,27 +272,29 @@ class IssueCard extends Component {
         <IssueAdvocatesAndFollowersWrapper>
           <IssueAdvocatesWrapper>
             {linkedOrganizationPreviewList && (
-              <IssueAdvocatesImages>
-                {linkedOrganizationPreviewList.slice(0, NUMBER_OF_LINKED_ORGANIZATION_IMAGES_TO_SHOW).map((organization) => {
-                  isFirst = organizationImageCount === 0;
-                  organizationImageCount += 1;
-                  // console.log('organization:', organization);
-                  if (organization.we_vote_hosted_profile_image_url_tiny) {
-                    return (
-                      <OrganizationImage
-                        alt={organization.organization_name}
-                        isFirst={isFirst}
-                        key={`OrganizationImage-${organization.organization_we_vote_id}`}
-                        organizationImageCount={organizationImageCount}
-                        src={organization.we_vote_hosted_profile_image_url_tiny}
-                        title={organization.organization_name}
-                      />
-                    );
-                  } else {
-                    return null;
-                  }
-                })}
-              </IssueAdvocatesImages>
+              <OverlayTrigger overlay={linkedOrganizationsTooltip} placement="top">
+                <IssueAdvocatesImages>
+                  {linkedOrganizationPreviewList.slice(0, NUMBER_OF_LINKED_ORGANIZATION_IMAGES_TO_SHOW).map((organization) => {
+                    isFirst = organizationImageCount === 0;
+                    organizationImageCount += 1;
+                    // console.log('organization:', organization);
+                    if (organization.we_vote_hosted_profile_image_url_tiny) {
+                      return (
+                        <OrganizationImage
+                          alt={organization.organization_name}
+                          isFirst={isFirst}
+                          key={`OrganizationImage-${organization.organization_we_vote_id}`}
+                          organizationImageCount={organizationImageCount}
+                          src={organization.we_vote_hosted_profile_image_url_tiny}
+                          title={organization.organization_name}
+                        />
+                      );
+                    } else {
+                      return null;
+                    }
+                  })}
+                </IssueAdvocatesImages>
+              </OverlayTrigger>
             )}
             {linkedOrganizationCount && (
               <LinkedOrganizationCountWrapper>
@@ -395,6 +429,9 @@ const LinkedOrganizationCountWrapper = styled('div')`
   display: flex;
   justify-content: start;
   margin-top: 4px;
+`;
+
+const OneOrganizationName = styled('span')`
 `;
 
 const OrganizationImage = styled('img', {
