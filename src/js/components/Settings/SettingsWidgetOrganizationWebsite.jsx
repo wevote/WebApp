@@ -123,7 +123,7 @@ class SettingsWidgetOrganizationWebsite extends Component {
               <FormControl classes={{ root: classes.formControl }}>
                 <TextField
                   id={`organizationWebsiteTextArea-${externalUniqueId}`}
-                  label={ isOrganization ? 'Organization Website' : 'Your Website'}
+                  label={isOrganization ? 'Organization Website' : 'Your Website'}
                   name="organizationWebsite"
                   margin="dense"
                   variant="outlined"
@@ -169,11 +169,6 @@ const Row = styled('div')`
 const ColumnFullWidth = styled('div')`
   padding: 8px 12px;
   width: 100%;
-`;
-
-const Label = styled('label')`
-  margin-bottom: 4px;
-  display: block;
 `;
 
 export default withStyles(styles)(SettingsWidgetOrganizationWebsite);

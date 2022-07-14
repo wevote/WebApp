@@ -123,7 +123,7 @@ class SettingsWidgetOrganizationDescription extends Component {
               <FormControl classes={{ root: classes.formControl }}>
                 <TextField
                   id={`organizationDescriptionTextArea-${externalUniqueId}`}
-                  label={ isOrganization ? 'Description Shown with Endorsements' : 'Description Shown with Endorsements'}
+                  label={isOrganization ? 'Description Shown with Endorsements' : 'Description Shown with Endorsements'}
                   name="organizationDescription"
                   rows={4}
                   multiline
@@ -172,11 +172,6 @@ const Row = styled('div')`
 const Column = styled('div')`
   padding: 8px 12px;
   width: 100%;
-`;
-
-const Label = styled('label')`
-  margin-bottom: 4px;
-  display: block;
 `;
 
 export default withStyles(styles)(SettingsWidgetOrganizationDescription);

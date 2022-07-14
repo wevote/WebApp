@@ -430,11 +430,6 @@ const ColumnHalfWidth = styled('div')`
   width: 50%;
 `;
 
-const Label = styled('label')`
-  margin-bottom: 4px;
-  display: block;
-`;
-
 const StyledTextField = styled(TextField)`
   * {
     margin: 0 !important;

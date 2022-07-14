@@ -9,7 +9,7 @@ import FriendActions from '../../actions/FriendActions';
 import VoterActions from '../../actions/VoterActions';
 import apiCalming from '../../common/utils/apiCalming';
 import { isCordovaWide } from '../../common/utils/cordovaUtils';
-import daysUntil from '../../common/utils/daysUntil';
+// import daysUntil from '../../common/utils/daysUntil';
 import historyPush from '../../common/utils/historyPush';
 import { renderLog } from '../../common/utils/logging';
 import stringContains from '../../common/utils/stringContains';
@@ -47,7 +47,7 @@ class SetUpAccountRoot extends React.Component {
       backToLinkPath: '',
       displayStep: 1, // editname
       editNameNextButtonDisabled: true,
-      electionDataExistsForUpcomingElection: false,
+      // electionDataExistsForUpcomingElection: false,
       friendConnectionActionAvailable: false,
       nextButtonAsOutline: false,
       nextButtonClicked: false,
@@ -144,21 +144,21 @@ class SetUpAccountRoot extends React.Component {
   }
 
   onBallotStoreChange () {
-    const nextElectionDayText = BallotStore.currentBallotElectionDate;
-    // console.log('nextElectionDayText:', nextElectionDayText);
-    if (nextElectionDayText) {
-      const daysUntilNextElection = daysUntil(nextElectionDayText);
-      if (daysUntilNextElection >= 0) {
-        this.setState({
-          electionDataExistsForUpcomingElection: true,
-        });
-      } else {
-        // Election was yesterday or earlier
-        this.setState({
-          electionDataExistsForUpcomingElection: false,
-        });
-      }
-    }
+    // const nextElectionDayText = BallotStore.currentBallotElectionDate;
+    // // console.log('nextElectionDayText:', nextElectionDayText);
+    // if (nextElectionDayText) {
+    //   const daysUntilNextElection = daysUntil(nextElectionDayText);
+    //   if (daysUntilNextElection >= 0) {
+    //     this.setState({
+    //       electionDataExistsForUpcomingElection: true,
+    //     });
+    //   } else {
+    //     // Election was yesterday or earlier
+    //     this.setState({
+    //       electionDataExistsForUpcomingElection: false,
+    //     });
+    //   }
+    // }
   }
 
   onFriendStoreChange () {
@@ -248,7 +248,7 @@ class SetUpAccountRoot extends React.Component {
 
   setNextStepVariables = () => {
     const {
-      displayStep, electionDataExistsForUpcomingElection,
+      displayStep,
       friendConnectionActionAvailable,
       setUpAccountBackLinkPath, setUpAccountEntryPath,
       voterContactEmailListCount, voterPhotoUrlLarge,
