@@ -26,10 +26,10 @@ export default function AddCandidateExtensionForm (props) {
     }));
   };
 
-
   const handleSubmit = (event) => {
     event.preventDefault();
     // alert(JSON.stringify(candidate, null, 2));
+    console.log(JSON.stringify(candidate, null, 2));
     // passing endorsementPageUrl into the retrieve function to check if the database has an ID for it already.
     VoterGuidePossibilityActions.voterGuidePossibilityRetrieve(candidate.endorsementPageUrl);
     // TODO: put this setLoading call and this setFinished call into the call to the API to set loading to true while waiting for a response
@@ -38,46 +38,61 @@ export default function AddCandidateExtensionForm (props) {
   };
 
   renderLog('AddCandidateExtensionForm');  // Set LOG_RENDER_EVENTS to log all renders
-
   console.log('AddCandidateExtensionForm render');
 
   return (
     <form onSubmit={handleSubmit}>
       <CandidateForm>
-        <CandidateTextField required
-                            variant="outlined"
-                            fullWidth
-                            color="primary"
-                            label="Candidate Name"
-                            name="Candidate Name"
-                            id="candidateName"
-                            value={candidate.candidateName}
-                            InputLabelProps={{ style: { fontFamily: 'Nunito Sans' } }}
-                            InputProps={{ style: { fontFamily: 'Nunito Sans' } }}
-                            onBlur={handleBlur}
+        <CandidateTextField
+          required
+          variant="outlined"
+          fullWidth
+          color="primary"
+          label="Candidate Name"
+          name="Candidate Name"
+          id="candidateName"
+          value={candidate.candidateName}
+          InputLabelProps={{ style: { fontFamily: 'Nunito Sans' } }}
+          InputProps={{ style: { fontFamily: 'Nunito Sans' } }}
+          onBlur={handleBlur}
         />
-        <CandidateTextField required
-                            variant="outlined"
-                            fullWidth
-                            color="primary"
-                            label="Endorsement URL"
-                            name="Endorsement URL"
-                            id="endorsementURL"
-                            value={candidate.endorsementPageUrl}
-                            InputLabelProps={{ style: { fontFamily: 'Nunito Sans' } }}
-                            InputProps={{ style: { fontFamily: 'Nunito Sans' } }}
-                            onBlur={handleBlur}
+        <CandidateTextField
+          required
+          variant="outlined"
+          fullWidth
+          color="primary"
+          label="Endorsement URL"
+          name="Endorsement URL"
+          id="endorsementURL"
+          value={candidate.endorsementPageUrl}
+          InputLabelProps={{ style: { fontFamily: 'Nunito Sans' } }}
+          InputProps={{ style: { fontFamily: 'Nunito Sans' } }}
+          onBlur={handleBlur}
         />
-        <CandidateTextField variant="outlined"
-                            fullWidth
-                            color="primary"
-                            label="Candidate Website"
-                            name="Candidate URL"
-                            id="candidateURL"
-                            value={candidate.candidateSpecificEndorsementUrl}
-                            InputLabelProps={{ style: { fontFamily: 'Nunito Sans' } }}
-                            InputProps={{ style: { fontFamily: 'Nunito Sans' } }}
-                            onBlur={handleBlur}
+        <CandidateTextField
+          variant="outlined"
+          fullWidth
+          color="primary"
+          label="Candidate Website"
+          name="Candidate URL"
+          id="candidateURL"
+          value={candidate.candidateSpecificEndorsementUrl}
+          InputLabelProps={{ style: { fontFamily: 'Nunito Sans' } }}
+          InputProps={{ style: { fontFamily: 'Nunito Sans' } }}
+          onBlur={handleBlur}
+        />
+        <CandidateTextField
+          variant="outlined"
+          fullWidth
+          multiline
+          color="primary"
+          label="Endorsement Text"
+          name="Endorsement Text"
+          // id="candidateURL"
+          value={candidate.endorsementText}
+          InputLabelProps={{ style: { fontFamily: 'Nunito Sans' } }}
+          InputProps={{ style: { fontFamily: 'Nunito Sans' } }}
+          onBlur={handleBlur}
         />
       </CandidateForm>
       <ButtonWrapper>
@@ -86,8 +101,6 @@ export default function AddCandidateExtensionForm (props) {
     </form>
   );
 }
-
-
 AddCandidateExtensionForm.propTypes = {
   candidate: PropTypes.object,
   setCandidate: PropTypes.func,

@@ -11,33 +11,36 @@ export default function AddCandidateLoadingButton (props) {
 
   if (finished) {
     return (
-      <Button disabled
-              variant="contained"
-              color="primary"
-              type="submit"
-              endIcon={<CheckIcon />}
+      <Button
+        disabled
+        variant="contained"
+        color="primary"
+        type="submit"
+        endIcon={<CheckIcon />}
       >
         Success
       </Button>
     );
   } else if (loading) {
     return (
-      <LoadingButton loading
-                     loadingPosition="end"
-                     variant="contained"
-                     color="primary"
-                     endIcon={<SendIcon />}
-                     type="submit"
+      <LoadingButton
+        loading
+        loadingPosition="end"
+        variant="contained"
+        color="primary"
+        endIcon={<SendIcon />}
+        type="submit"
       >
         Submit
       </LoadingButton>
     );
   } else {
     return (
-      <Button variant="contained"
-              color="primary"
-              endIcon={<SendIcon />}
-              type="submit"
+      <Button
+        variant="contained"
+        color="primary"
+        endIcon={<SendIcon />}
+        type="submit"
       >
         Submit
       </Button>

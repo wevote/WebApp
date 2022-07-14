@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import AddCandidateExtensionForm from './AddCandidateExtensionForm';
+import normalizedImagePath from '../../../common/utils/normalizedImagePath';
 import { renderLog } from '../../../common/utils/logging';
 import voterGuidePossibilityStore from '../../../stores/VoterGuidePossibilityStore';
 
@@ -9,7 +10,7 @@ import voterGuidePossibilityStore from '../../../stores/VoterGuidePossibilitySto
 // https://quality.wevote.us/candidate-for-extension?candidate_name=DOYLE%20CANNING&candidate_we_vote_id=wv02cand63228&endorsement_page_url=http%3A%2F%2Fclimatehawksvote.com%2Fendorsements%2Fendorsements-2020%2F&candidate_specific_endorsement_url=&voter_guide_possibility_id=
 
 const {
-  candidate_name: candidateName, endorsement_page_url: endorsementPageUrl, candidate_specific_endorsement_url: candidateSpecificEndorsementUrl,
+  candidate_name: candidateName, candidate_specific_endorsement_url: candidateSpecificEndorsementUrl, endorsement_page_url: endorsementPageUrl, endorsement_text: endorsementText,
   show_data: showDevelopmentData,
 } = Object.fromEntries(new URLSearchParams(document.location.search));
 
@@ -18,7 +19,7 @@ const {
  * @returns {JSX.Element}
  */
 export default function AddCandidateForExtension () {
-  const [candidate, setCandidate] = useState({ candidateName, endorsementPageUrl, candidateSpecificEndorsementUrl });
+  const [candidate, setCandidate] = useState({ candidateName, endorsementPageUrl, candidateSpecificEndorsementUrl, endorsementText });
   // const [voterGuidePossibilityIdValue, setVoterGuidePossibilityIdValue] = useState(voterGuidePossibilityStore.getVoterGuidePossibilityId());
 
   const getIDFunc = voterGuidePossibilityStore.getVoterGuidePossibilityId();
@@ -35,7 +36,6 @@ export default function AddCandidateForExtension () {
     return () => voterGuidePossibilityStore.addListener(handleIdChange).remove;
   }, [getIDFunc]);
 
-
   renderLog('AddCandidateForExtension');  // Set LOG_RENDER_EVENTS to log all renders
 
   // const { allCachedPositionsForThisCandidate, candidate, organizationWeVoteId, scrolledDown, candidateWeVoteId, value } = this.state;
@@ -45,11 +45,11 @@ export default function AddCandidateForExtension () {
   return (
     <Wrapper style={{ margin: '20px' }}>
       <a href="https://wevote.us">
-        <AddCandidateLogo src="../../../../img/global/logos/we-vote-logo-wordmark-vertical-color-on-white-256x256.png" />
+        <AddCandidateLogo src={normalizedImagePath('/img/global/logos/we-vote-logo-wordmark-vertical-color-on-white-256x256.png')} />
       </a>
       <AddCandidateHeader>Add Candidate</AddCandidateHeader>
       <IntroText>
-        Please check that the following inputs contain the correct information, and fill out the candidate website box if possible.
+        Please check that the following inputs contain the correct information, and fill out the candidate website and endorsement text boxes if possible.
       </IntroText>
       {showDevStuff && (
         <AddCandidateExtensionForm candidate={candidate} setCandidate={setCandidate} />
@@ -65,20 +65,20 @@ const Wrapper = styled('div')`
 `;
 
 const IntroText = styled('div')`
-  margin-bottom: 20px;
+  margin-bottom: 15px;
 `;
-
 
 const AddCandidateLogo = styled('img')`
   display: block;
   vertical-align: center;
   margin: 20px auto;
-  height: 100px;
-  width: 100px;
+  height: 80px;
+  width: 80px;
   //margin-top: 20px;
 `;
 
 const AddCandidateHeader = styled('h1')`
   font-size: 32px;
   font-weight: 500;
+  margin: 15px 0;
 `;
