@@ -38,7 +38,7 @@ export default function AddCandidateExtensionForm (props) {
   };
 
   renderLog('AddCandidateExtensionForm');  // Set LOG_RENDER_EVENTS to log all renders
-  console.log('AddCandidateExtensionForm render');
+  // console.log('AddCandidateExtensionForm render');
 
   return (
     <form onSubmit={handleSubmit}>
@@ -112,8 +112,8 @@ const CandidateForm = styled('div')`
 
 const CandidateTextField = styled(TextField)`
   display: block;
-  margin-bottom: 10px;
   font-family: "Nunito Sans", "Helvetica Neue Light", "Helvetica Neue", "Helvetica", "Arial", sans-serif;
+  margin-bottom: 10px;
 `;
 
 const ButtonWrapper = styled('div')`

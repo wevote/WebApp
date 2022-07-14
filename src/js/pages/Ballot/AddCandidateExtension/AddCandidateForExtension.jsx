@@ -39,12 +39,12 @@ export default function AddCandidateForExtension () {
   renderLog('AddCandidateForExtension');  // Set LOG_RENDER_EVENTS to log all renders
 
   // const { allCachedPositionsForThisCandidate, candidate, organizationWeVoteId, scrolledDown, candidateWeVoteId, value } = this.state;
-  console.log('AddCandidateForExtension render');
+  // console.log('AddCandidateForExtension render');
 
   const showDevStuff = showDevelopmentData || true;
   return (
-    <Wrapper style={{ margin: '20px' }}>
-      <a href="https://wevote.us">
+    <AddCandidateForExtensionWrapper>
+      <a href="https://wevote.us" target="_blank" rel="noreferrer">
         <AddCandidateLogo src={normalizedImagePath('/img/global/logos/we-vote-logo-wordmark-vertical-color-on-white-256x256.png')} />
       </a>
       <AddCandidateHeader>Add Candidate</AddCandidateHeader>
@@ -54,31 +54,32 @@ export default function AddCandidateForExtension () {
       {showDevStuff && (
         <AddCandidateExtensionForm candidate={candidate} setCandidate={setCandidate} />
       )}
-    </Wrapper>
+    </AddCandidateForExtensionWrapper>
   );
 }
 
-const Wrapper = styled('div')`
-  height: 100vh;
+const AddCandidateForExtensionWrapper = styled('div')`
   background: white;
+  height: 100vh;
+  margin: 20px;
   width: 410px;
-`;
-
-const IntroText = styled('div')`
-  margin-bottom: 15px;
-`;
-
-const AddCandidateLogo = styled('img')`
-  display: block;
-  vertical-align: center;
-  margin: 20px auto;
-  height: 80px;
-  width: 80px;
-  //margin-top: 20px;
 `;
 
 const AddCandidateHeader = styled('h1')`
   font-size: 32px;
   font-weight: 500;
   margin: 15px 0;
+`;
+
+const AddCandidateLogo = styled('img')`
+  display: block;
+  height: 80px;
+  margin: 20px auto;
+  vertical-align: center;
+  width: 80px;
+  //margin-top: 20px;
+`;
+
+const IntroText = styled('div')`
+  margin-bottom: 15px;
 `;
