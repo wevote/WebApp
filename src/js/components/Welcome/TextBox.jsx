@@ -8,7 +8,7 @@ import { renderLog } from '../../common/utils/logging';
 class TextBox extends Component {
   render () {
     renderLog('TextBox');  // Set LOG_RENDER_EVENTS to log all renders
-    const { classes, placeholder, inputProps, icon } = this.props;
+    const { classes, placeholder, inputProps, icon, value, inputRef } = this.props;
     return (
       <Container>
         <IconContainer>{icon}</IconContainer>
@@ -16,7 +16,9 @@ class TextBox extends Component {
           classes={{ root: classes.root, input: classes.input }}
           placeholder={placeholder}
           inputProps={inputProps}
-          {...this.props}
+          value={value}
+          icon={icon}
+          inputRef={inputRef}
         />
       </Container>
     );
@@ -27,6 +29,8 @@ TextBox.propTypes = {
   icon: PropTypes.node,
   placeholder: PropTypes.string,
   inputProps: PropTypes.object,
+  value: PropTypes.string,
+  inputRef: PropTypes.func,
 };
 
 const styles = (theme) => ({
