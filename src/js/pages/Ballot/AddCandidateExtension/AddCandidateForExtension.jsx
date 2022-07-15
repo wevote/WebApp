@@ -45,7 +45,7 @@ export default function AddCandidateForExtension () {
   return (
     <AddCandidateForExtensionWrapper>
       <a href="https://wevote.us" target="_blank" rel="noreferrer">
-        <AddCandidateLogo src={normalizedImagePath('/img/global/logos/we-vote-logo-wordmark-vertical-color-on-white-256x256.png')} />
+        <AddCandidateLogo src={normalizedImagePath('/img/global/svg-icons/we-vote-icon-square-color-dark.svg')} />
       </a>
       <AddCandidateHeader>Add Candidate</AddCandidateHeader>
       <IntroText>
@@ -61,22 +61,22 @@ export default function AddCandidateForExtension () {
 const AddCandidateForExtensionWrapper = styled('div')`
   background: white;
   height: 100vh;
-  margin: 20px;
+  margin: 0 20px 20px 20px;
   width: 410px;
 `;
 
 const AddCandidateHeader = styled('h1')`
   font-size: 32px;
   font-weight: 500;
-  margin: 15px 0;
+  margin-bottom: 5px;
+  margin-top: 0;
 `;
 
 const AddCandidateLogo = styled('img')`
   display: block;
-  height: 80px;
-  margin: 20px auto;
+  margin: 0 auto;
+  max-height: 11%;
   vertical-align: center;
-  width: 80px;
   //margin-top: 20px;
 `;
 

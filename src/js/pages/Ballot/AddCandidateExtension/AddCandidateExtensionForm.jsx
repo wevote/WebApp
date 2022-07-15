@@ -34,7 +34,10 @@ export default function AddCandidateExtensionForm (props) {
     VoterGuidePossibilityActions.voterGuidePossibilityRetrieve(candidate.endorsementPageUrl);
     // TODO: put this setLoading call and this setFinished call into the call to the API to set loading to true while waiting for a response
     setLoading(true);
-    setTimeout(() => { setFinished(true); }, 5000);
+    setTimeout(() => {
+      setFinished(true);
+      setTimeout(() => { window.close(); }, 1000);
+    }, 5000);
   };
 
   renderLog('AddCandidateExtensionForm');  // Set LOG_RENDER_EVENTS to log all renders
@@ -93,6 +96,8 @@ export default function AddCandidateExtensionForm (props) {
           InputLabelProps={{ style: { fontFamily: 'Nunito Sans' } }}
           InputProps={{ style: { fontFamily: 'Nunito Sans' } }}
           onBlur={handleBlur}
+          rows="5"
+          // maxRows="5"
         />
       </CandidateForm>
       <ButtonWrapper>
