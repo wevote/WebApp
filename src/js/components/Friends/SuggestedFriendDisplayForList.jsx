@@ -32,6 +32,7 @@ class SuggestedFriendDisplayForList extends Component {
   }
 
   friendInvitationByEmailSend (emailAddresses) {
+    // console.log('SuggestedFriendDisplayForList friendInvitationByEmailSend');
     const emailAddressArray = '';
     const firstNameArray = '';
     const lastNameArray = '';

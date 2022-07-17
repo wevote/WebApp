@@ -63,8 +63,8 @@ export default {
       });
   },
 
-  friendInvitationByEmailSend (emailAddressArray, firstNameArray, lastNameArray, emailAddresses,
-    invitationMessage, senderEmailAddress) {
+  friendInvitationByEmailSend (emailAddressArray, firstNameArray, lastNameArray, emailAddresses, invitationMessage, senderEmailAddress) {
+    // console.log('friendInvitationByEmailSend emailAddressArray:', emailAddressArray);
     Dispatcher.loadEndpoint('friendInvitationByEmailSend',
       {
         email_address_array: emailAddressArray,
@@ -78,7 +78,7 @@ export default {
   },
 
   friendInvitationByFacebookSend (data) {
-    console.log('FacebookActions friendInvitationByFacebookSend', data);
+    // console.log('FacebookActions friendInvitationByFacebookSend', data);
     Dispatcher.loadEndpoint('friendInvitationByFacebookSend', {
       facebook_request_id: data.request_id || false,
       recipients_facebook_id_array: data.recipients_facebook_id_array || false,

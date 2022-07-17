@@ -101,10 +101,16 @@ export default class ReadyPageValuesList extends Component {
       <ReadyPageValuesListWrapper>
         <div>
           <PopularTopicsH1>
-            Popular Topics
+            Follow Popular Topics
           </PopularTopicsH1>
           <PopularTopicsDescription>
-            Follow topics to see endorsements on your ballot for candidates from people and groups.
+            Follow topics
+            {' '}
+            <strong>
+              to see endorsements
+            </strong>
+            {' '}
+            for candidates from people who share your values.
           </PopularTopicsDescription>
           <div>
             {allIssues && allIssues.length ? (
