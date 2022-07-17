@@ -58,6 +58,7 @@ class SetUpAccountRoot extends React.Component {
       setUpAccountEntryPath: '',
       setUpPagePath: '',
       showDeleteAllContactsOption: false,
+      showHowItWorksModal: false,
       skipForNowOff: false,
       skipForNowPath: '',
       voterContactEmailAugmentWithWeVoteDataComplete: false,
@@ -225,8 +226,11 @@ class SetUpAccountRoot extends React.Component {
 
   goToNextStep = () => {
     this.resetNextButtonClicked();
-    const { nextStepPath } = this.state;
+    const { nextStepPath, showHowItWorksModal } = this.state;
     // console.log('SetUpAccountRoot goToNextStep nextStepPath:', nextStepPath);
+    if (showHowItWorksModal) {
+      AppObservableStore.setShowHowItWorksModal(true);
+    }
     if (nextStepPath) {
       historyPush(nextStepPath);
     }
@@ -259,6 +263,7 @@ class SetUpAccountRoot extends React.Component {
     let nextStepPath;
     let reassuranceTextOff;
     let showDeleteAllContactsOption = false;
+    let showHowItWorksModal = false;
     let skipForNowOff;
     let skipForNowPath = '';
     const voterIsSignedIn = VoterStore.getVoterIsSignedIn();
@@ -397,7 +402,8 @@ class SetUpAccountRoot extends React.Component {
         //   nextStepPath = '/ballot';
         //   skipForNowPath = '/ballot';
         } else {
-          nextButtonText = 'Next';
+          nextButtonText = 'How It Works';
+          showHowItWorksModal = true;
           nextStepPath = '/ready';
           skipForNowPath = '/ready';
         }
@@ -417,7 +423,8 @@ class SetUpAccountRoot extends React.Component {
         //   nextButtonText = 'Get ready to vote';
         //   nextStepPath = '/ready';
         // }
-        nextButtonText = 'Next';
+        nextButtonText = 'How it works';
+        showHowItWorksModal = true;
         nextStepPath = '/ready';
         skipForNowPath = '/ready';
         reassuranceTextOff = true;
@@ -430,6 +437,7 @@ class SetUpAccountRoot extends React.Component {
       nextStepPath,
       reassuranceTextOff,
       showDeleteAllContactsOption,
+      showHowItWorksModal,
       skipForNowOff,
       skipForNowPath,
     });
