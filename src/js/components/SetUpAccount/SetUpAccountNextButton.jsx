@@ -15,7 +15,7 @@ export default function SetUpAccountNextButton (props) {
       } : {
         boxShadow: 'none !important',
         textTransform: 'none',
-        width: 300,
+        width: 330,
       }}
       variant={props.nextButtonAsOutline ? 'outlined' : 'contained'}
     >

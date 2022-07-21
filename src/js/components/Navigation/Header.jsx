@@ -185,6 +185,7 @@ export default class Header extends Component {
       path.startsWith('/setupaccount') ||
       path.startsWith('/start') ||
       path.startsWith('/twitter_sign_in') ||
+      path.startsWith('/unsubscribe') ||
       path.startsWith('/wevoteintro') ||
       path.startsWith('/welcomehome')
     );
@@ -319,13 +320,13 @@ export default class Header extends Component {
             <div className={pageHeaderClasses} style={cordovaTopHeaderTopMargin()} id="header-container">
               { showBackToSettingsDesktop && (
                 <span>
-                  <span className="u-show-desktop-tablet">
+                  <span className="BackToSettingsDesktopSpan u-show-desktop">
                     <Suspense fallback={<></>}>
                       <HeaderBackTo backToLink={backToSettingsLinkDesktop} backToLinkText={backToSettingsLinkText} />
                     </Suspense>
                   </span>
                   { !showBackToVoterGuides && !showBackToSettingsMobile && (
-                    <span className="u-show-mobile">
+                    <span className="BackToSettingsDesktopMobileSpan u-show-mobile-tablet">
                       <Suspense fallback={<></>}>
                         <HeaderBar />
                       </Suspense>
@@ -335,7 +336,7 @@ export default class Header extends Component {
               )}
               { showBackToSettingsMobile && (
                 <span>
-                  <span className={isWebApp() || isCordovaWide() ? 'u-show-mobile' : ''}>
+                  <span className={isWebApp() || isCordovaWide() ? 'BackToSettingsMobileSpan u-show-mobile-tablet' : ''}>
                     <Suspense fallback={<></>}>
                       <HeaderBackTo
                         backToLink={backToSettingsLinkMobile}
@@ -344,7 +345,7 @@ export default class Header extends Component {
                     </Suspense>
                   </span>
                   { isWebApp() && !showBackToVoterGuides && !showBackToSettingsDesktop && (
-                    <span className="u-show-desktop-tablet">
+                    <span className="BackToSettingsMobileDesktopSpan u-show-desktop">
                       <Suspense fallback={<></>}>
                         <HeaderBar />
                       </Suspense>

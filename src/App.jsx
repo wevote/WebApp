@@ -84,6 +84,7 @@ const Start = React.lazy(() => import(/* webpackChunkName: 'Start' */ './js/page
 const TermsOfService = React.lazy(() => import(/* webpackChunkName: 'TermsOfService' */ './js/pages/More/TermsOfService'));
 const TwitterHandleLanding = React.lazy(() => import(/* webpackChunkName: 'TwitterHandleLanding' */ './js/pages/TwitterHandleLanding'));
 const TwitterSignInProcess = React.lazy(() => import(/* webpackChunkName: 'TwitterSignInProcess' */ './js/pages/Process/TwitterSignInProcess'));
+const UnsubscribeRoot = React.lazy(() => import(/* webpackChunkName: 'UnsubscribeRoot' */ './js/pages/Settings/UnsubscribeRoot'));
 const Values = React.lazy(() => import(/* webpackChunkName: 'Values' */ './js/pages/Values'));
 const ValuesList = React.lazy(() => import(/* webpackChunkName: 'ValuesList' */ './js/pages/Values/ValuesList'));
 const VerifyEmailProcess = React.lazy(() => import(/* webpackChunkName: 'VerifyEmailProcess' */ './js/pages/Process/VerifyEmailProcess'));
@@ -226,12 +227,6 @@ class App extends Component {
                 </Suspense>
                 <Suspense fallback={<LoadingWheelComp />}>
                   <Switch>
-                    <Route path="/about" exact><About /></Route>
-                    <Route path="/ballot" exact component={Ballot} />
-                    <Route path="/findfriends/:set_up_page" exact component={FindFriendsRoot} />
-                    <Route path="/findfriends" exact><FindFriendsRoot /></Route>
-                    <Route path="/friends" exact component={Friends} />
-                    <Route path="/friends/:tabItem" exact component={Friends} />
                     <Route path="/" exact>
                       {() => {
                         if (showReadyLight) {
@@ -241,22 +236,12 @@ class App extends Component {
                         }
                       }}
                     </Route>
-                    <Route path="/ready" exact><Ready /></Route>
-                    <Route path="/settings" exact component={SettingsDashboard} />
-                    <Route path="/settings/claim" exact component={ClaimYourPage} />
-                    <Route path="/settings/hamburger" exact component={HamburgerMenu} />
-                    <Route path="/settings/location" exact component={Location} />
-                    <Route path="/settings/menu" exact component={SettingsMenuMobile} />
-                    <Route path="/settings/voterguidelist" exact component={VoterGuideListDashboard} />
-                    <Route path="/settings/voterguidesmenu" exact component={VoterGuidesMenuMobile} />
-                    <Route path="/settings/issues/:edit_mode" render={(props) => (<RouterV5SendMatch componentName="SettingsDashboard" {...props} />)} />
-                    <Route path="/settings/:edit_mode/:voter_guide_we_vote_id" render={(props) => (<RouterV5SendMatch componentName="SettingsDashboard" {...props} />)} />
-                    <Route path="/settings/:edit_mode" exact render={(props) => (<RouterV5SendMatch componentName="SettingsDashboard" {...props} />)} />
-                    <Route path="/twitter_sign_in" exact><TwitterSignInProcess /></Route>
                     <Route path="/-/:custom_link_string" exact component={SharedItemLanding} />
                     <Route path="/-:shared_item_code" exact component={SharedItemLanding} />
+                    <Route path="/about" exact><About /></Route>
                     <Route path="/add-candidate-for-extension" component={AddCandidateForExtension} />
                     <Route path="/applesigninprocess" component={AppleSignInProcess} />
+                    <Route path="/ballot" exact component={Ballot} />
                     <Route path="/ballot/election/:google_civic_election_id" exact component={Ballot} />
                     <Route path="/ballot/election/:google_civic_election_id/modal/:modal_to_show" exact component={Ballot} />
                     <Route path="/ballot/election/:google_civic_election_id/modal/:modal_to_show/:shared_item_code" component={Ballot} />
@@ -281,6 +266,10 @@ class App extends Component {
                     <Route path="/candidate/:candidate_we_vote_id/:organization_we_vote_id" exact component={OrganizationVoterGuideCandidate} />
                     <Route path="/candidate/:candidate_we_vote_id" exact component={Candidate} />
                     <Route path="/facebook_invitable_friends" component={FacebookInvitableFriends} />
+                    <Route path="/findfriends/:set_up_page" exact component={FindFriendsRoot} />
+                    <Route path="/findfriends" exact><FindFriendsRoot /></Route>
+                    <Route path="/friends" exact component={Friends} />
+                    <Route path="/friends/:tabItem" exact component={Friends} />
                     <Route path="/for-campaigns" component={isNotWeVoteMarketingSite ? ReadyRedirect : (props) => <WelcomeForCampaigns {...props} pathname="/for-campaigns" />} />
                     <Route path="/for-organizations" component={isNotWeVoteMarketingSite ? ReadyRedirect : (props) => <WelcomeForOrganizations {...props} pathname="/for-organizations" />} />
                     <Route path="/how/:category_string" component={isNotWeVoteMarketingSite ? ReadyRedirect : HowItWorks} />
@@ -347,12 +336,26 @@ class App extends Component {
                     <Route path="/ready/modal/:modal_to_show/:shared_item_code" exact render={(props) => (<RouterV5SendMatch componentName="Ready" {...props} />)} />
                     <Route path="/ready/modal/:modal_to_show" exact render={(props) => (<RouterV5SendMatch componentName="Ready" {...props} />)} />
                     <Route path="/register" component={Register} />
+                    <Route path="/settings" exact component={SettingsDashboard} />
+                    <Route path="/settings/claim" exact component={ClaimYourPage} />
+                    <Route path="/settings/hamburger" exact component={HamburgerMenu} />
+                    <Route path="/settings/location" exact component={Location} />
+                    <Route path="/settings/menu" exact component={SettingsMenuMobile} />
+                    <Route path="/settings/voterguidelist" exact component={VoterGuideListDashboard} />
+                    <Route path="/settings/voterguidesmenu" exact component={VoterGuidesMenuMobile} />
+                    <Route path="/settings/issues/:edit_mode" render={(props) => (<RouterV5SendMatch componentName="SettingsDashboard" {...props} />)} />
+                    <Route path="/settings/:edit_mode/:voter_guide_we_vote_id" render={(props) => (<RouterV5SendMatch componentName="SettingsDashboard" {...props} />)} />
+                    <Route path="/settings/:edit_mode" exact render={(props) => (<RouterV5SendMatch componentName="SettingsDashboard" {...props} />)} />
                     <Route path="/sign_in_email/:email_secret_key" component={SignInEmailProcess} />
                     <Route path="/setupaccount/:set_up_page" exact component={SetUpAccountRoot} />
                     <Route path="/setupaccount" exact><SetUpAccountRoot /></Route>
                     <Route path="/start" exact><Start /></Route>
                     <Route path="/terms" component={TermsOfService} />
+                    <Route path="/twitter_sign_in" exact><TwitterSignInProcess /></Route>
                     <Route path="/twittersigninprocess/:sign_in_step" component={TwitterSignInProcess} />
+                    <Route path="/unsubscribe/:subscription_secret_key/:unsubscribe_modifier/instant" exact component={(props) => <UnsubscribeRoot {...props} instantUnsubscribe />} />
+                    <Route path="/unsubscribe/:subscription_secret_key/:unsubscribe_modifier" exact component={UnsubscribeRoot} />
+                    <Route path="/unsubscribe/:subscription_secret_key" exact component={UnsubscribeRoot} />
                     <Route path="/values/list" component={ValuesList} />
                     <Route path="/values" exact component={Values} />
                     <Route path="/value/:value_slug" component={VoterGuidesUnderOneValue} />

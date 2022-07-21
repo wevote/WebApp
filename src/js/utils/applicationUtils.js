@@ -197,6 +197,7 @@ export function getApplicationViewBooleans (pathname) {
       pathnameLowerCase.startsWith('/setupaccount') ||
       pathnameLowerCase.startsWith('/settings/voterguidesmenu') ||
       pathnameLowerCase.startsWith('/twitter_sign_in') ||
+      pathnameLowerCase.startsWith('/unsubscribe') ||
       pathnameLowerCase.startsWith('/wevoteintro/') ||
       pathnameLowerCase.startsWith('/value/') ||
       stringContains('/b/btdo', pathnameLowerCase) ||
