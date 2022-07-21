@@ -106,7 +106,15 @@ const TermsAndPrivacyText = styled('span')`
   color: #999;
   font-size: .9em;
   font-weight: 400;
+  .u-cursor--pointer:hover {
+    color: #0156b3;
+    text-decoration: underline;
+  }
   * {
+    span:hover {
+      color: #0156b3;
+      text-decoration: underline;
+    }
     color: #999;
     font-weight: 400;
   }
