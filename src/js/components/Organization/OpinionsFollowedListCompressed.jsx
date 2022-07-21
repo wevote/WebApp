@@ -48,7 +48,7 @@ export default class OpinionsFollowedListCompressed extends Component {
     const organizationsList = this.state.organizationsFollowed.map((oneOrganization) => {
       if (this.props.editMode) {
         return (
-          <OrganizationDisplayForListCompressed key={oneOrganization.organization_we_vote_id} {...oneOrganization}>
+          <OrganizationDisplayForListCompressed key={oneOrganization.organization_we_vote_id} organization_we_vote_id={oneOrganization.organization_we_vote_id} organization_photo_url_medium={oneOrganization.organization_photo_url_medium} organization_twitter_handle={oneOrganization.organization_twitter_handle} organization_name={oneOrganization.organization_name} ballotItemWeVoteId={this.props.ballotItemWeVoteId} instantRefreshOn={this.props.instantRefreshOn}>
             <Suspense fallback={<></>}>
               <FollowToggle organizationWeVoteId={oneOrganization.organization_we_vote_id} />
             </Suspense>
@@ -57,7 +57,7 @@ export default class OpinionsFollowedListCompressed extends Component {
         );
       } else {
         return (
-          <OrganizationDisplayForListCompressed key={oneOrganization.organization_we_vote_id} {...oneOrganization}>
+          <OrganizationDisplayForListCompressed key={oneOrganization.organization_we_vote_id} organization_we_vote_id={oneOrganization.organization_we_vote_id} organization_photo_url_medium={oneOrganization.organization_photo_url_medium} organization_twitter_handle={oneOrganization.organization_twitter_handle} organization_name={oneOrganization.organization_name} ballotItemWeVoteId={this.props.ballotItemWeVoteId} instantRefreshOn={this.props.instantRefreshOn}>
             <span />
             <span />
           </OrganizationDisplayForListCompressed>
