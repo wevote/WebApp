@@ -73,7 +73,6 @@ export default {
     Dispatcher.loadEndpoint('voterEmailAddressSave', {
       text_for_email_address: voterEmailAddress,
       send_sign_in_code_email: true,
-      make_primary_email: true,
       hostname: AppObservableStore.getHostname(),
     });
   },
@@ -422,13 +421,15 @@ export default {
       });
   },
 
-  voterNotificationSettingsUpdateFromSecretKey (emailSubscriptionSecretKey = '', smsSubscriptionSecretKey = '', flagIntegerToSet = 0, flagIntegerToUnset = 0) {
+  voterNotificationSettingsUpdateFromSecretKey (emailSubscriptionSecretKey = '', smsSubscriptionSecretKey = '', flagIntegerToSet = 0, flagIntegerToSetChanged = false, flagIntegerToUnset = 0, flagIntegerToUnsetChanged = false) {
     Dispatcher.loadEndpoint('voterNotificationSettingsUpdate',
       {
         email_subscription_secret_key: emailSubscriptionSecretKey,
         sms_subscription_secret_key: smsSubscriptionSecretKey,
         notification_flag_integer_to_set: flagIntegerToSet,
+        notification_flag_integer_to_set_changed: flagIntegerToSetChanged,
         notification_flag_integer_to_unset: flagIntegerToUnset,
+        notification_flag_integer_to_unset_changed: flagIntegerToUnsetChanged,
       });
   },
 

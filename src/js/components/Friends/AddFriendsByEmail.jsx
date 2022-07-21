@@ -1,10 +1,9 @@
-import { Alert, Button, TextField } from '@mui/material';
+import { Alert, Box, Button, CircularProgress, TextField } from '@mui/material';
 import styled from 'styled-components';
 import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
 import FriendActions from '../../actions/FriendActions';
-import LoadingWheel from '../../common/components/Widgets/LoadingWheel';
 import apiCalming from '../../common/utils/apiCalming';
 import { blurTextFieldAndroid, focusTextFieldAndroid } from '../../common/utils/cordovaUtils';
 import isMobileScreenSize from '../../common/utils/isMobileScreenSize';
@@ -215,7 +214,14 @@ class AddFriendsByEmail extends Component {
     } = this.state;
 
     if (loading) {
-      return LoadingWheel;
+      return (
+        <Box style={{ display: 'flex', justifyContent: 'center', flexDirection: 'column', alignItems: 'center' }}>
+          <div style={{ padding: '30px' }}>
+            <CircularProgress />
+          </div>
+          <div>Sending...</div>
+        </Box>
+      );
     }
     return (
       <div>
