@@ -5,13 +5,17 @@ import React, { PureComponent } from 'react';
 
 class PremiumableButton extends PureComponent {
   render () {
-    const { premium, children, classes } = this.props;
+    const { premium, children, classes, id, onClick, disabled } = this.props;
+
     return (
       <>
         {premium ?
           (
             <Button
-              {...this.props}
+              id={id}
+              onClick={onClick}
+              disabled={disabled}
+              classes={{ root: classes.root }}
               color="primary"
               variant="contained"
             >
@@ -20,7 +24,9 @@ class PremiumableButton extends PureComponent {
           ) :
           (
             <Button
-              {...this.props}
+              id={id}
+              onClick={onClick}
+              disabled={disabled}
               classes={{ root: classes.containedSecondary }}
               variant="contained"
             >
@@ -35,6 +41,9 @@ PremiumableButton.propTypes = {
   premium: PropTypes.number, // This can't be a bool or else there'll be a warning.
   children: PropTypes.node,
   classes: PropTypes.object,
+  id: PropTypes.string,
+  onClick: PropTypes.func,
+  disabled: PropTypes.bool,
 };
 
 const styles = ({
