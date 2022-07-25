@@ -25,7 +25,9 @@ export default class VoterGuideBallotItemCompressed extends Component {
           />
         ) : (
           <VoterGuideOfficeItemCompressed
-            {...this.props}
+            we_vote_id={this.props.we_vote_id}
+            ballot_item_display_name={this.props.ballot_item_display_name}
+            candidate_list={this.props.candidate_list}
             organizationWeVoteId={this.props.organizationWeVoteId}
           />
         )}

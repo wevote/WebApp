@@ -106,9 +106,9 @@ class AddressBoxWelcome extends PureComponent {
           onChange: this.updateVoterAddress,
           onKeyDown: this.handleKeyPress,
         }}
-        {...this.props}
+        icon={this.props.icon}
       />
-    );
+      );
   }
 }
 AddressBoxWelcome.propTypes = {
