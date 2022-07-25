@@ -8,6 +8,7 @@ import apiCalming from '../../common/utils/apiCalming';
 import historyPush from '../../common/utils/historyPush';
 import sortFriendListByMutualFriends from '../../utils/friendFunctions';
 import { renderLog } from '../../common/utils/logging';
+import { SectionTitle } from '../Style/friendStyles';
 import SuggestedFriendList from './SuggestedFriendList';
 
 export default class SuggestedFriendsPreview extends Component {
@@ -23,8 +24,8 @@ export default class SuggestedFriendsPreview extends Component {
     const { friendsToShowMaxIncoming } = this.props;
     this.friendStoreListener = FriendStore.addListener(this.onFriendStoreChange.bind(this));
     this.onFriendStoreChange();
-    if (apiCalming('friendList', 1500)) {
-      FriendActions.suggestedFriendList();
+    if (apiCalming('friendListsAll', 1500)) {
+      FriendActions.friendListsAll();
     }
     const FRIENDS_TO_SHOW_MAX_DEFAULT = 3;
     const friendsToShowMax = friendsToShowMaxIncoming || FRIENDS_TO_SHOW_MAX_DEFAULT;
@@ -66,10 +67,6 @@ export default class SuggestedFriendsPreview extends Component {
           <div>
             <SectionTitle className="u-cursor--pointer" onClick={this.goToSuggestedFriends}>
               People You May Know
-              {' '}
-              (
-              {suggestedFriendList.length}
-              )
             </SectionTitle>
             <SectionDescription>
               Add friends you feel comfortable talking politics with.
@@ -95,13 +92,6 @@ SuggestedFriendsPreview.propTypes = {
 
 const SectionDescription = styled('div')`
   margin-bottom: 16px;
-  width: fit-content;
-`;
-
-const SectionTitle = styled('h2')`
-  font-weight: bold;
-  font-size: 18px;
-  margin-bottom: 4px;
   width: fit-content;
 `;
 

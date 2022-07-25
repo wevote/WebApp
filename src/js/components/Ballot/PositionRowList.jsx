@@ -58,8 +58,8 @@ class PositionRowList extends Component {
     }
     const organizationsVoterIsFriendsWith = FriendStore.currentFriendsOrganizationWeVoteIDList();
     if (!organizationsVoterIsFriendsWith.length > 0) {
-      if (apiCalming('friendList', 1500)) {
-        FriendActions.currentFriends();
+      if (apiCalming('friendListsAll', 3000)) {
+        FriendActions.friendListsAll();
       }
     }
 

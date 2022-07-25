@@ -126,8 +126,8 @@ export default class OrganizationVoterGuide extends Component {
       organizationWeVoteId,
       voter,
     });
-    if (apiCalming('friendList', 1500)) {
-      FriendActions.currentFriends(); // We need this so we can identify if the voter is friends with this organization/person
+    if (apiCalming('friendListsAll', 10000)) {
+      FriendActions.friendListsAll(); // We need this so we can identify if the voter is friends with this organization/person
     }
   }
 

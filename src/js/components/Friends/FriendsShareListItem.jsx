@@ -27,7 +27,6 @@ class FriendsShareListItem extends Component {
     const twitterVoterGuideLink = voterTwitterHandle ? `/${voterTwitterHandle}` : null;
     const weVoteIdVoterGuideLink = linkedOrganizationWeVoteId ? `/voterguide/${linkedOrganizationWeVoteId}` : null;
     const voterGuideLink = twitterVoterGuideLink || weVoteIdVoterGuideLink;
-    const voterImage = <ImageHandler sizeClassName="icon-lg " imageUrl={voterPhotoUrlLarge} kind_of_ballot_item="CANDIDATE" />;
     const detailsHTML = (
       <FriendDetails
         mutualFriendCount={mutualFriendCount}
@@ -46,13 +45,13 @@ class FriendsShareListItem extends Component {
             { voterGuideLink ? (
               <Link to={voterGuideLink} className="u-no-underline">
                 <Suspense fallback={<></>}>
-                  {voterImage}
+                  <ImageHandler sizeClassName="icon-lg " imageUrl={voterPhotoUrlLarge} kind_of_ballot_item="CANDIDATE" />
                 </Suspense>
               </Link>
             ) : (
               <span>
                 <Suspense fallback={<></>}>
-                  {voterImage}
+                  <ImageHandler sizeClassName="icon-lg " imageUrl={voterPhotoUrlLarge} kind_of_ballot_item="CANDIDATE" />
                 </Suspense>
               </span>
             )}

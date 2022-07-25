@@ -7,6 +7,7 @@ import { Link } from 'react-router-dom';
 import FriendActions from '../../actions/FriendActions';
 import { renderLog } from '../../common/utils/logging';
 import FriendStore from '../../stores/FriendStore';
+import VoterStore from '../../stores/VoterStore';
 import { removeTwitterNameFromDescription } from '../../utils/textFormat';
 import Avatar from '../Style/avatarStyles';
 import {
@@ -16,6 +17,7 @@ import {
 import FriendDetails from './FriendDetails';
 import FriendInvitationToggle from './FriendInvitationToggle';
 import FriendLocationDisplay from './FriendLocationDisplay';
+import SuggestedFriendToggle from './SuggestedFriendToggle';
 
 const ImageHandler = React.lazy(() => import(/* webpackChunkName: 'ImageHandler' */ '../ImageHandler'));
 
@@ -55,6 +57,19 @@ class FriendInvitationVoterLinkDisplayForList extends Component {
     });
   }
 
+  friendInvitationByEmailSend (emailAddresses) {
+    // console.log('FriendInvitationVoterLinkDisplayForList friendInvitationByEmailSend');
+    const emailAddressArray = '';
+    const firstNameArray = '';
+    const lastNameArray = '';
+    const invitationMessage = FriendStore.getMessageToFriendQueuedToSave();
+    const senderEmailAddress = VoterStore.getVoterEmail();
+    FriendActions.friendInvitationByEmailSend(emailAddressArray, firstNameArray, lastNameArray, emailAddresses, invitationMessage, senderEmailAddress);
+    this.setState({
+      friendInvitationByEmailSent: true,
+    });
+  }
+
   ignoreFriendInvite (otherVoterWeVoteId) {
     FriendActions.ignoreFriendInvite(otherVoterWeVoteId);
   }
@@ -63,7 +78,7 @@ class FriendInvitationVoterLinkDisplayForList extends Component {
     renderLog('FriendInvitationVoterLinkDisplayForList');  // Set LOG_RENDER_EVENTS to log all renders
 
     // Do not render if already a friend
-    const { cancelFriendInviteVoterSubmitted, isFriend } = this.state;
+    const { cancelFriendInviteVoterSubmitted, friendInvitationByEmailSent, isFriend } = this.state;
     if (isFriend) {
       // We still want to show the invite
     }
@@ -97,9 +112,9 @@ class FriendInvitationVoterLinkDisplayForList extends Component {
     const twitterVoterGuideLink = voterTwitterHandle ? `/${voterTwitterHandle}` : null;
     const weVoteIdVoterGuideLink = linkedOrganizationWeVoteId ? `/voterguide/${linkedOrganizationWeVoteId}` : null;
     const voterGuideLink = twitterVoterGuideLink || weVoteIdVoterGuideLink;
-    const voterImage = <ImageHandler sizeClassName="icon-lg " imageUrl={voterPhotoUrlLarge} kind_of_ballot_item="CANDIDATE" />;
     const detailsHTML = (
       <FriendDetails
+        emailAddressForDisplay={voterEmailAddress}
         mutualFriendCount={mutualFriendCount}
         mutualFriendPreviewList={mutualFriendPreviewList}
         positionsTaken={positionsTaken}
@@ -112,6 +127,24 @@ class FriendInvitationVoterLinkDisplayForList extends Component {
     const friendButtonsExist = true;
     const friendButtonsWrapperHtml = invitationsSentByMe ? (
       <FriendButtonsWrapper>
+        <SentByMeResendButtonWrapper>
+          {otherVoterWeVoteId ? (
+            <SuggestedFriendToggle inviteAgain otherVoterWeVoteId={otherVoterWeVoteId} />
+          ) : (
+            <Button
+              color="primary"
+              disabled={friendInvitationByEmailSent}
+              fullWidth
+              onClick={() => this.friendInvitationByEmailSend(voterEmailAddress)}
+              type="button"
+              variant="contained"
+            >
+              <span className="u-no-break">
+                {friendInvitationByEmailSent ? 'Invite sent' : 'Invite again'}
+              </span>
+            </Button>
+          )}
+        </SentByMeResendButtonWrapper>
         <CancelButtonWrapper>
           <Button
             classes={{ root: classes.ignoreButton }}
@@ -154,13 +187,13 @@ class FriendInvitationVoterLinkDisplayForList extends Component {
             {(voterGuideLinkOn && voterGuideLink) ? (
               <Link to={voterGuideLink} className="u-no-underline">
                 <Suspense fallback={<></>}>
-                  {voterImage}
+                  <ImageHandler sizeClassName="icon-lg " imageUrl={voterPhotoUrlLarge} kind_of_ballot_item="CANDIDATE" />
                 </Suspense>
               </Link>
             ) : (
               <span>
                 <Suspense fallback={<></>}>
-                  {voterImage}
+                  <ImageHandler sizeClassName="icon-lg " imageUrl={voterPhotoUrlLarge} kind_of_ballot_item="CANDIDATE" />
                 </Suspense>
               </span>
             )}
@@ -251,5 +284,9 @@ const IgnoreButtonWrapper = styled('div', {
   width: fit-content;
   ${inSideColumn ? '' : IgnoreButtonWrapperNotInColumn}
 `));
+
+const SentByMeResendButtonWrapper = styled('div')`
+  width: fit-content;
+`;
 
 export default withStyles(styles)(FriendInvitationVoterLinkDisplayForList);

@@ -2,6 +2,7 @@ import styled from 'styled-components';
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import FriendActions from '../../actions/FriendActions';
+import apiCalming from '../../common/utils/apiCalming';
 import { renderLog } from '../../common/utils/logging';
 import FriendStore from '../../stores/FriendStore';
 import FriendInvitationList from './FriendInvitationList';
@@ -15,11 +16,13 @@ export default class FriendInvitationsSentByMePreview extends Component {
   }
 
   componentDidMount () {
-    FriendActions.friendInvitationsSentByMe();
     this.setState({
       friendInvitationsSentByMe: FriendStore.friendInvitationsSentByMe(),
     });
     this.friendStoreListener = FriendStore.addListener(this.onFriendStoreChange.bind(this));
+    if (apiCalming('friendListsAll', 5000)) {
+      FriendActions.friendListsAll();
+    }
   }
 
   componentWillUnmount () {
@@ -38,6 +41,7 @@ export default class FriendInvitationsSentByMePreview extends Component {
     if (!friendInvitationsSentByMe || !(friendInvitationsSentByMe.length > 0)) {
       return null;
     }
+    // console.log('friendInvitationsSentByMe:', friendInvitationsSentByMe);
 
     const FRIENDS_TO_SHOW = 1;
     const friendInvitationsSentByMeLimited = friendInvitationsSentByMe.slice(0, FRIENDS_TO_SHOW);

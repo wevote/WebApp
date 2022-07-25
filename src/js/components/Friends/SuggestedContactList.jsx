@@ -8,36 +8,21 @@ export default class SuggestedContactList extends Component {
   constructor (props) {
     super(props);
     this.state = {
-      suggestedContactList: [],
+      // suggestedContactList: [],
     };
-  }
-
-  componentDidMount () {
-    const { voterContactEmailList: suggestedContactList } = this.props;
-    this.setState({
-      suggestedContactList,
-    });
-  }
-
-  // eslint-disable-next-line camelcase,react/sort-comp
-  UNSAFE_componentWillReceiveProps (nextProps) {
-    this.setState({
-      suggestedContactList: nextProps.voterContactEmailList,
-    });
   }
 
   render () {
     renderLog('SuggestedContactList');  // Set LOG_RENDER_EVENTS to log all renders
-    const { numberOfItemsToDisplay } = this.props;
-    const { suggestedContactList } = this.state;
-    if (suggestedContactList === undefined) {
+    const { askMode, numberOfItemsToDisplay, voterContactEmailList } = this.props;
+    if (voterContactEmailList === undefined) {
       return null;
     }
     const { previewMode } = this.props;
     let numberOfItemsDisplayed = 0;
     return (
       <SuggestedContactListWrapper>
-        {suggestedContactList.map((contact, index) => {
+        {voterContactEmailList.map((contact, index) => {
           // console.log('numberOfItemsDisplayed: ', numberOfItemsDisplayed);
           if (numberOfItemsDisplayed >= numberOfItemsToDisplay) {
             return null;
@@ -47,6 +32,7 @@ export default class SuggestedContactList extends Component {
           return (
             <div key={`${contact.email_address_text}-${contact.google_contact_id}-${contact.id}`}>
               <SuggestedFriendDisplayForList
+                askMode={askMode}
                 indicateIfAlreadyOnWeVote
                 // linkedOrganizationWeVoteId={contact.linked_organization_we_vote_id}
                 // mutualFriends={contact.mutual_friends}
@@ -60,7 +46,7 @@ export default class SuggestedContactList extends Component {
                 voterPhotoUrlLarge={contact.we_vote_hosted_profile_image_url_medium}
                 voterWeVoteId={contact.voter_we_vote_id}
               />
-              {index !== suggestedContactList.length - 1 ? (
+              {index !== voterContactEmailList.length - 1 ? (
                 <hr />
               ) : null}
             </div>
@@ -71,6 +57,7 @@ export default class SuggestedContactList extends Component {
   }
 }
 SuggestedContactList.propTypes = {
+  askMode: PropTypes.bool,
   numberOfItemsToDisplay: PropTypes.number,
   previewMode: PropTypes.bool,
   voterContactEmailList: PropTypes.array,

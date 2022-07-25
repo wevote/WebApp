@@ -25,16 +25,15 @@ export default class FriendsCurrent extends Component {
 
   componentDidMount () {
     window.scrollTo(0, 0);
-    if (apiCalming('friendList', 1500)) {
-      FriendActions.currentFriends();
+    this.friendStoreListener = FriendStore.addListener(this.onFriendStoreChange.bind(this));
+    if (apiCalming('friendListsAll', 3000)) {
+      FriendActions.friendListsAll();
     }
     const currentFriendListUnsorted = FriendStore.currentFriends();
     const currentFriendList = sortFriendListByMutualFriends(currentFriendListUnsorted);
     this.setState({
       currentFriendList,
     });
-
-    this.friendStoreListener = FriendStore.addListener(this.onFriendStoreChange.bind(this));
   }
 
   componentWillUnmount () {

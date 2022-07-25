@@ -762,8 +762,7 @@ const Title = styled('h3', {
 `));
 
 const Subtitle = styled('h4')`
-  color: #ccc;
-  font-weight: bold;
+  color: #424242;
   text-align: center;
 `;
 

@@ -16,14 +16,14 @@ import { formatDateMMMDoYYYY } from '../../common/utils/dateFormat';
 import { hasIPhoneNotch } from '../../common/utils/cordovaUtils';
 import daysUntil from '../../common/utils/daysUntil';
 import { renderLog } from '../../common/utils/logging';
-import { ModalContentHeaderType1, ModalTitleType1 } from '../Style/ModalType1Styles';
+import SuggestedContacts from './SuggestedContacts';
+import { ModalTitleType1 } from '../Style/ModalType1Styles';
 import BallotStore from '../../stores/BallotStore';
 import FriendStore from '../../stores/FriendStore';
 import sortFriendListByMutualFriends from '../../utils/friendFunctions';
 import SearchBar from '../Search/SearchBar';
 import FriendList from './FriendList';
 
-const DelayedLoad = React.lazy(() => import(/* webpackChunkName: 'DelayedLoad' */ '../../common/components/Widgets/DelayedLoad'));
 const MessageToFriendInputField = React.lazy(() => import(/* webpackChunkName: 'MessageToFriendInputField' */ './MessageToFriendInputField'));
 
 class AskFriendsModal extends Component {
@@ -43,10 +43,10 @@ class AskFriendsModal extends Component {
   }
 
   componentDidMount () {
-    if (apiCalming('friendList', 5000)) {
-      FriendActions.currentFriends();
+    if (apiCalming('friendListsAll', 5000)) {
+      FriendActions.friendListsAll();
     }
-    this.onBallotStoreChange();
+    this.setElectionDateInformation();
     this.onFriendStoreChange();
     const currentFriendListUnsorted = FriendStore.currentFriends();
     // console.log('componentDidMount currentFriendListUnsorted:', currentFriendListUnsorted);
@@ -54,13 +54,13 @@ class AskFriendsModal extends Component {
     this.setState({
       currentFriendList,
     });
-    this.setElectionDateInformation();
     this.ballotStoreListener = BallotStore.addListener(this.onBallotStoreChange.bind(this));
     this.friendStoreListener = FriendStore.addListener(this.onFriendStoreChange.bind(this));
     // window.addEventListener('scroll', this.onScroll);
   }
 
   componentWillUnmount () {
+    if (this.setMessageTimer) clearTimeout(this.setMessageTimer);
     this.ballotStoreListener.remove();
     this.friendStoreListener.remove();
   }
@@ -117,7 +117,7 @@ class AskFriendsModal extends Component {
     }, 250);
   }
 
-  setMessageToFriendDefault = () => {
+  createMessageToFriendDefault = () => {
     const { electionDateInFutureFormatted } = this.state;
     let messageToFriendDefault = '';
     // const electionDayText = ElectionStore.getElectionDayText(VoterStore.electionId());
@@ -139,7 +139,19 @@ class AskFriendsModal extends Component {
     messageToFriendDefault += ' Would you like to compare notes about how to vote?';
     this.setState({
       messageToFriendDefault,
-    });
+    }, () => this.setMessageToFriendQueuedToSave());
+  }
+
+  setMessageToFriendQueuedToSave = () => {
+    if (this.setMessageTimer) clearTimeout(this.setMessageTimer);
+    this.setMessageTimer = setTimeout(() => {
+      const { messageToFriendDefault } = this.state;
+      const messageToFriendQueuedToSave = FriendStore.getMessageToFriendQueuedToSave();
+      if (messageToFriendDefault !== messageToFriendQueuedToSave) {
+        // If voter hasn't changed this, update this.
+        FriendActions.messageToFriendQueuedToSave(messageToFriendDefault);
+      }
+    }, 500);
   }
 
   setElectionDateInformation = () => {
@@ -160,7 +172,7 @@ class AskFriendsModal extends Component {
     this.setState({
       electionDateInFutureFormatted,
       electionDateIsToday,
-    }, () => this.setMessageToFriendDefault());
+    }, () => this.createMessageToFriendDefault());
   }
 
   searchFriends = (searchTerm) => {
@@ -202,13 +214,14 @@ class AskFriendsModal extends Component {
     const { location: { pathname } } = window;
     const {
       currentFriendListFilteredBySearch, electionDateInFutureFormatted,
-      electionDateIsToday, messageToFriendDefault, numberOfItemsToDisplay, searchFilterOn, searchTerm,
+      electionDateIsToday, numberOfItemsToDisplay, searchFilterOn, searchTerm,
       totalCurrentFriendListCount,
     } = this.state;
     let { currentFriendList } = this.state;
     if (searchFilterOn) {
       currentFriendList = currentFriendListFilteredBySearch;
     }
+    const messageToFriend = FriendStore.getMessageToFriendQueuedToSave();
 
     return (
       <Dialog
@@ -242,18 +255,13 @@ class AskFriendsModal extends Component {
           <div className="full-width">
             {totalCurrentFriendListCount > 0 && (
               <Suspense fallback={<></>}>
-                <MessageToFriendInputField messageToFriendDefault={messageToFriendDefault} />
+                <MessageToFriendInputField />
               </Suspense>
             )}
           </div>
         </ModalTitleAreaAskFriendsBottom>
         <DialogContent classes={{ root: classes.dialogContent }} onScroll={this.onScroll}>
           <div className="full-width">
-            {/*
-            <ModalContentHeaderType1>
-              How are you going to vote?
-            </ModalContentHeaderType1>
-            */}
             {totalCurrentFriendListCount > 10 && (
               <>
                 <SearchBar
@@ -282,23 +290,12 @@ class AskFriendsModal extends Component {
                 friendToggleOff
                 increaseNumberOfItemsToDisplay={this.increaseNumberOfItemsToDisplay}
                 messageToFriendButtonOn
-                messageToFriendDefault={messageToFriendDefault}
+                messageToFriendDefault={messageToFriend}
                 numberOfItemsToDisplay={numberOfItemsToDisplay}
               />
-              {/* !!(loadingMoreItems && totalCurrentFriendListCount && (numberOfItemsToDisplay < totalCurrentFriendListCount)) && (
-                <LoadingItemsWheel>
-                  <CircularProgress />
-                </LoadingItemsWheel>
-              ) */}
-              {totalCurrentFriendListCount === 0 && (
-                <Suspense fallback={<></>}>
-                  <DelayedLoad waitBeforeShow={1000}>
-                    <ModalContentHeaderType1>
-                      COMING SOON: We are adding a way to add friends quickly here. In the meantime, you can add friends in the &apos;Friends&apos; area.
-                    </ModalContentHeaderType1>
-                  </DelayedLoad>
-                </Suspense>
-              )}
+            </FriendListExternalWrapper>
+            <FriendListExternalWrapper>
+              <SuggestedContacts askMode messageToFriendsInputOff />
             </FriendListExternalWrapper>
           </div>
           <div id="showMoreItemsId" />
@@ -348,13 +345,6 @@ const styles = () => ({
 const FriendListExternalWrapper = styled('div')`
   margin-bottom: 64px;
 `;
-
-// const LoadingItemsWheel = styled('div')`
-//   width: 100%;
-//   display: flex;
-//   align-items: center;
-//   justify-content: center;
-// `;
 
 const ModalTitleAreaAskFriendsCloseX = styled('div')`
   align-items: center;

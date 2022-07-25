@@ -19,8 +19,8 @@ export default class SettingsYourData extends Component {
   componentDidMount () {
     window.scrollTo(0, 0);
     this.onVoterStoreChange();
-    VoterActions.voterContactListRetrieve();
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
+    VoterActions.voterContactListRetrieve();
   }
 
   componentWillUnmount () {

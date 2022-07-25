@@ -3,9 +3,13 @@ import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
 import Helmet from 'react-helmet';
 import styled from 'styled-components';
+import FriendsCurrent from './FriendsCurrent';
+import FriendInvitationsSentByMe from './FriendInvitationsSentByMe';
+import InviteByEmail from './InviteByEmail';
 import ActivityActions from '../../actions/ActivityActions';
 import AnalyticsActions from '../../actions/AnalyticsActions';
 import FriendActions from '../../actions/FriendActions';
+import VoterActions from '../../actions/VoterActions';
 import LoadingWheel from '../../common/components/Widgets/LoadingWheel';
 import apiCalming from '../../common/utils/apiCalming';
 import historyPush from '../../common/utils/historyPush';
@@ -15,9 +19,10 @@ import normalizedImagePath from '../../common/utils/normalizedImagePath';
 import FacebookSignInCard from '../../components/Facebook/FacebookSignInCard';
 import AddFriendsByEmail from '../../components/Friends/AddFriendsByEmail';
 import FriendInvitationsSentByMePreview from '../../components/Friends/FriendInvitationsSentByMePreview';
-import FriendInvitationsSentToMePreview from '../../components/Friends/FriendInvitationsSentToMePreview';
-import FriendsCurrentPreview from '../../components/Friends/FriendsCurrentPreview';
+import SuggestedContacts from '../../components/Friends/SuggestedContacts';
+import FriendInvitationsSentToMe from '../../components/Friends/FriendInvitationsSentToMe';
 import FriendsPromoBox from '../../components/Friends/FriendsPromoBox';
+import SuggestedFriends from '../../components/Friends/SuggestedFriends';
 import SuggestedFriendsPreview from '../../components/Friends/SuggestedFriendsPreview';
 import { PageContentContainer } from '../../components/Style/pageLayoutStyles';
 import TwitterSignInCard from '../../components/Twitter/TwitterSignInCard';
@@ -31,12 +36,9 @@ import VoterStore from '../../stores/VoterStore';
 import { cordovaFriendsWrapper } from '../../utils/cordovaOffsets';
 import displayFriendsTabs from '../../utils/displayFriendsTabs';
 import sortFriendListByMutualFriends from '../../utils/friendFunctions';
-import FriendInvitationsSentByMe from './FriendInvitationsSentByMe';
-import FriendInvitationsSentToMe from './FriendInvitationsSentToMe';
-import FriendsCurrent from './FriendsCurrent';
-import InviteByEmail from './InviteByEmail';
-import SuggestedFriends from './SuggestedFriends';
+import { SectionDescription } from '../../components/Style/friendStyles';
 
+const AddContactsFromGoogleButton = React.lazy(() => import(/* webpackChunkName: 'AddContactsFromGoogleButton' */ '../../components/SetUpAccount/AddContactsFromGoogleButton'));
 const FirstAndLastNameRequiredAlert = React.lazy(() => import(/* webpackChunkName: 'FirstAndLastNameRequiredAlert' */ '../../components/Widgets/FirstAndLastNameRequiredAlert'));
 const SignInOptionsPanel = React.lazy(() => import(/* webpackChunkName: 'SignInOptionsPanel' */ '../../components/SignIn/SignInOptionsPanel'));
 
@@ -78,32 +80,20 @@ class Friends extends Component {
     window.scrollTo(0, 0);
 
     // this.appStateSubscription = messageService.getMessage().subscribe(() => this.onAppObservableStoreChange());
+    this.onFriendStoreChange();
+    this.onVoterStoreChange();
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
     this.friendStoreListener = FriendStore.addListener(this.onFriendStoreChange.bind(this));
     if (apiCalming('friendListsAll', 30000)) {
-      FriendActions.getAllFriendLists();
+      FriendActions.friendListsAll();
     }
-    const friendInvitationsSentByMe = FriendStore.friendInvitationsSentByMe();
-    const friendInvitationsSentToMe = FriendStore.friendInvitationsSentToMe();
-    const suggestedFriendListUnsorted = FriendStore.suggestedFriendList();
-    const suggestedFriendList = sortFriendListByMutualFriends(suggestedFriendListUnsorted);
-    const voter = VoterStore.getVoter();
-    let voterIsSignedIn = false;
-    if (voter && voter.is_signed_in) {
-      voterIsSignedIn = voter.is_signed_in;
+    if (apiCalming('voterContactListRetrieve', 20000)) {
+      VoterActions.voterContactListRetrieve();
     }
-
-    const currentFriendListUnsorted = FriendStore.currentFriends();
-    const currentFriendList = sortFriendListByMutualFriends(currentFriendListUnsorted);
-    this.setState({
-      currentFriendList,
-      friendInvitationsSentToMe,
-      friendInvitationsSentByMe,
-      suggestedFriendList,
-      voter,
-      voterIsSignedIn,
-    });
-    this.resetDefaultTabForMobile(friendInvitationsSentToMe, suggestedFriendList, friendInvitationsSentByMe);
+    if (apiCalming('voterContactListSave', 60000)) {
+      VoterActions.voterContactListAugmentWithWeVoteData(true);
+    }
+    this.resetDefaultTabForMobile(FriendStore.friendInvitationsSentToMe(), FriendStore.suggestedFriendList(), FriendStore.friendInvitationsSentByMe());
     if (apiCalming('activityNoticeListRetrieve', 10000)) {
       ActivityActions.activityNoticeListRetrieve();
     }
@@ -140,77 +130,28 @@ class Friends extends Component {
   }
 
   onFriendStoreChange () {
-    let {
+    // let resetDefaultTab = false;
+    const currentFriendListUnsorted = FriendStore.currentFriends();
+    const currentFriendList = sortFriendListByMutualFriends(currentFriendListUnsorted);
+    const friendInvitationsSentByMe = FriendStore.friendInvitationsSentByMe();
+    const friendInvitationsSentToMe = FriendStore.friendInvitationsSentToMe();
+    const suggestedFriendListUnsorted = FriendStore.suggestedFriendList();
+    const suggestedFriendList = sortFriendListByMutualFriends(suggestedFriendListUnsorted);
+    this.setState({
       currentFriendList,
-      friendInvitationsSentByMe, friendInvitationsSentToMe, suggestedFriendList,
-    } = this.state;
-    let resetDefaultTab = false;
-    if (currentFriendList && currentFriendList.length !== FriendStore.currentFriends().length) {
-      const currentFriendListUnsorted = FriendStore.currentFriends();
-      currentFriendList = sortFriendListByMutualFriends(currentFriendListUnsorted);
-      this.setState({ currentFriendList });
-      // console.log('currentFriendList has changed, currentFriendList:', currentFriendList);
-    }
-    if (friendInvitationsSentByMe && friendInvitationsSentByMe.length !== FriendStore.friendInvitationsSentByMe().length) {
-      friendInvitationsSentByMe = FriendStore.friendInvitationsSentByMe();
-      this.setState({ friendInvitationsSentByMe });
-      // console.log('friendInvitationsSentByMe has changed, friendInvitationsSentByMe:', friendInvitationsSentByMe);
-      resetDefaultTab = true;
-    }
-    if (friendInvitationsSentToMe && friendInvitationsSentToMe.length !== FriendStore.friendInvitationsSentToMe().length) {
-      friendInvitationsSentToMe = FriendStore.friendInvitationsSentToMe();
-      this.setState({ friendInvitationsSentToMe });
-      // console.log('friendInvitationsSentToMe has changed, friendInvitationsSentToMe:', friendInvitationsSentToMe);
-      resetDefaultTab = true;
-    }
-    if (suggestedFriendList && suggestedFriendList.length !== FriendStore.suggestedFriendList().length) {
-      const suggestedFriendListUnsorted = FriendStore.suggestedFriendList();
-      suggestedFriendList = sortFriendListByMutualFriends(suggestedFriendListUnsorted);
-      this.setState({ suggestedFriendList });
-      // console.log('suggestedFriends has changed, suggestedFriendList:', suggestedFriendList);
-      resetDefaultTab = true;
-    }
-    if (resetDefaultTab) {
-      this.resetDefaultTabForMobile(FriendStore.friendInvitationsSentToMe(), FriendStore.suggestedFriendList(), FriendStore.friendInvitationsSentByMe());
-    }
+      friendInvitationsSentByMe,
+      friendInvitationsSentToMe,
+      suggestedFriendList,
+    });
+    // if (resetDefaultTab) {
+    //   this.resetDefaultTabForMobile(FriendStore.friendInvitationsSentToMe(), FriendStore.suggestedFriendList(), FriendStore.friendInvitationsSentByMe());
+    // }
     const friendActivityExists = Boolean((currentFriendList && currentFriendList.length) || (friendInvitationsSentByMe && friendInvitationsSentByMe.length) || (friendInvitationsSentToMe && friendInvitationsSentToMe.length) || (suggestedFriendList && suggestedFriendList.length));
     // console.log('friendActivityExists:', friendActivityExists);
     if (friendActivityExists) {
       // Only set to true -- never false in order to avoid a weird loop
       this.setState({ friendActivityExists });
     }
-  }
-
-  // onAppObservableStoreChange () {
-  //   this.setState({
-  //     friendsHeaderUnpinned: AppObservableStore.getScrolledDown(),
-  //   });
-  // }
-
-  getSelectedTab () {
-    const { match: { params: { tabItem } } } = this.props;
-    const { currentFriendList, defaultTabItem, friendInvitationsSentByMe, friendInvitationsSentToMe, suggestedFriendList } = this.state;
-    // console.log('getSelectedTab tabItem:', tabItem, ', defaultTabItem:', defaultTabItem);
-    let selectedTab = tabItem || defaultTabItem;
-    // Don't return a selected tab if the tab isn't available
-    if (String(selectedTab) === 'requests') {
-      if (friendInvitationsSentToMe.length < 1) {
-        selectedTab = 'all';
-      }
-    } else if (String(selectedTab) === 'suggested') {
-      if (suggestedFriendList.length < 1) {
-        selectedTab = 'all';
-      }
-    } else if (String(selectedTab) === 'friends') {
-      if (currentFriendList.length < 1) {
-        selectedTab = 'all';
-      }
-    } else if (String(selectedTab) === 'sent-requests') {
-      if (friendInvitationsSentByMe.length < 1) {
-        selectedTab = 'all';
-      }
-    }
-    return selectedTab;
   }
 
   handleNavigation = (to) => historyPush(to);
@@ -228,7 +169,7 @@ class Friends extends Component {
     } else if (friendInvitationsSentByMe && friendInvitationsSentByMe.length > 0) {
       defaultTabItem = 'sent-requests';
     } else {
-      defaultTabItem = 'all';
+      defaultTabItem = 'requests';
     }
     this.setState({ defaultTabItem });
     // console.log('resetDefaultTabForMobile defaultTabItem:', defaultTabItem, ', tabItem:', tabItem);
@@ -257,34 +198,12 @@ class Friends extends Component {
     let desktopContentToDisplay;
     // console.log('friendActivityExists:', friendActivityExists, ', voterIsSignedIn:', voterIsSignedIn);
 
-    // Generate mobileContentToDisplay
+    // Generate ContentToDisplay
     switch (tabItem) {
-      case 'requests':
-        mobileContentToDisplay = (
-          <>
-            {friendInvitationsSentToMe.length > 0 ? (
-              <FriendInvitationsSentToMe />
-            ) : (
-              <>
-                {suggestedFriendList.length > 0 ? (
-                  <MessageCard
-                    mainText="You have no incoming friend requests. Check out people you may know."
-                    buttonText="View Suggested Friends"
-                    buttonURL="/friends/suggested"
-                  />
-                ) : (
-                  <MessageCard
-                    mainText="Invite your friends to connect!"
-                    buttonText="Invite Friends"
-                    buttonURL="/friends/invite"
-                  />
-                )}
-              </>
-            )}
-          </>
-        );
-        break;
       case 'suggested':
+        desktopContentToDisplay = (
+          <SuggestedFriends displayedOnDedicatedPage />
+        );
         mobileContentToDisplay = (
           <>
             {suggestedFriendList.length > 0 ? (
@@ -317,6 +236,52 @@ class Friends extends Component {
         );
         break;
       case 'invite':
+        desktopContentToDisplay = (
+          <div className="row">
+            <div className="col-sm-12 col-md-8">
+              <>
+                {voterIsSignedIn && (
+                  <Suspense fallback={<></>}>
+                    <FirstAndLastNameRequiredAlert />
+                  </Suspense>
+                )}
+                <FindYourContactsWrapper>
+                  <SectionTitle>
+                    Find Your Friends on We Vote
+                  </SectionTitle>
+                  <SectionDescription>
+                    Importing your contacts helps you find your friends on We Vote. You can delete your contact information at any time.
+                  </SectionDescription>
+                  <div>
+                    <Suspense fallback={<></>}>
+                      <AddContactsFromGoogleButton darkButton />
+                    </Suspense>
+                  </div>
+                </FindYourContactsWrapper>
+                <InviteByEmail />
+              </>
+            </div>
+            <div className="col-sm-12 col-md-4">
+              <SignInOptionsWrapper>
+                {voter.signed_in_twitter ? null : (
+                  <TwitterSignInWrapper>
+                    <TwitterSignInCard />
+                  </TwitterSignInWrapper>
+                )}
+                {voter.signed_in_facebook ? null : (
+                  <FacebookSignInWrapper>
+                    <FacebookSignInCard />
+                  </FacebookSignInWrapper>
+                )}
+              </SignInOptionsWrapper>
+              <FriendsPromoBox
+                imageUrl={imageUrl}
+                testimonialAuthor={testimonialAuthor}
+                testimonial={testimonial}
+              />
+            </div>
+          </div>
+        );
         mobileContentToDisplay = (
           <>
             {voterIsSignedIn && (
@@ -324,6 +289,19 @@ class Friends extends Component {
                 <FirstAndLastNameRequiredAlert />
               </Suspense>
             )}
+            <FindYourContactsWrapper>
+              <SectionTitle>
+                Find Your Friends on We Vote
+              </SectionTitle>
+              <SectionDescription>
+                Importing your contacts helps you find your friends on We Vote. You can delete your contact information at any time.
+              </SectionDescription>
+              <div>
+                <Suspense fallback={<></>}>
+                  <AddContactsFromGoogleButton darkButton />
+                </Suspense>
+              </div>
+            </FindYourContactsWrapper>
             <InviteByEmail />
             <SignInOptionsWrapper>
               {voter.signed_in_twitter ? null : (
@@ -347,10 +325,19 @@ class Friends extends Component {
         );
         break;
       case 'current':
+        desktopContentToDisplay = (
+          <>
+            <FriendsCurrent />
+            <FriendInvitationsSentByMePreview />
+          </>
+        );
         mobileContentToDisplay = (
           <>
             {currentFriendList.length > 0 ? (
-              <FriendsCurrent />
+              <>
+                <FriendsCurrent />
+                <FriendInvitationsSentByMePreview />
+              </>
             ) : (
               <>
                 {friendInvitationsSentToMe.length > 0 ? (
@@ -372,6 +359,9 @@ class Friends extends Component {
         );
         break;
       case 'sent-requests':
+        desktopContentToDisplay = (
+          <FriendInvitationsSentByMe />
+        );
         mobileContentToDisplay = (
           <>
             {friendInvitationsSentByMe.length > 0 ? (
@@ -387,122 +377,14 @@ class Friends extends Component {
         );
         break;
       case 'all':
-      default:
-        mobileContentToDisplay = (
-          <>
-            <>
-              {voterIsSignedIn && (
-                <Suspense fallback={<></>}>
-                  <FirstAndLastNameRequiredAlert />
-                </Suspense>
-              )}
-              {!!(!voterIsSignedIn || !friendActivityExists) && (
-                <InviteByEmail />
-              )}
-              <FriendInvitationsSentToMePreview />
-              <SuggestedFriendsPreview />
-              <FriendsCurrentPreview />
-              {voterIsSignedIn && (
-                <FriendInvitationsSentByMePreview />
-              )}
-            </>
-            {!!(voterIsSignedIn && friendActivityExists) && (
-              <div>
-                <div>
-                  <SectionTitle>
-                    Invite Friends
-                  </SectionTitle>
-                  <TooltipIcon title="These friends will see what you support and oppose." />
-                  <AddFriendsByEmail inSideColumn />
-                </div>
-              </div>
-            )}
-            <SignInOptionsWrapper>
-              {voter.signed_in_twitter ? null : (
-                <TwitterSignInWrapper>
-                  <TwitterSignInCard />
-                </TwitterSignInWrapper>
-              )}
-              {voter.signed_in_facebook ? null : (
-                <FacebookSignInWrapper>
-                  <FacebookSignInCard />
-                </FacebookSignInWrapper>
-              )}
-            </SignInOptionsWrapper>
-            <FriendsPromoBox
-              imageUrl={imageUrl}
-              testimonialAuthor={testimonialAuthor}
-              testimonial={testimonial}
-            />
-          </>
-        );
-    }
-
-    // Generate desktopContentToDisplay
-    switch (tabItem) {
       case 'requests':
-        desktopContentToDisplay = (
-          <FriendInvitationsSentToMe />
-        );
-        break;
-      case 'suggested':
-        desktopContentToDisplay = (
-          <SuggestedFriends />
-        );
-        break;
-      case 'invite':
-        desktopContentToDisplay = (
-          <div className="row">
-            <div className="col-sm-12 col-lg-8">
-              <>
-                {voterIsSignedIn && (
-                  <Suspense fallback={<></>}>
-                    <FirstAndLastNameRequiredAlert />
-                  </Suspense>
-                )}
-                <InviteByEmail />
-              </>
-            </div>
-            <div className="col-md-12 col-lg-4">
-              <SignInOptionsWrapper>
-                {voter.signed_in_twitter ? null : (
-                  <TwitterSignInWrapper>
-                    <TwitterSignInCard />
-                  </TwitterSignInWrapper>
-                )}
-                {voter.signed_in_facebook ? null : (
-                  <FacebookSignInWrapper>
-                    <FacebookSignInCard />
-                  </FacebookSignInWrapper>
-                )}
-              </SignInOptionsWrapper>
-              <FriendsPromoBox
-                imageUrl={imageUrl}
-                testimonialAuthor={testimonialAuthor}
-                testimonial={testimonial}
-              />
-            </div>
-          </div>
-        );
-        break;
-      case 'current':
-        desktopContentToDisplay = (
-          <FriendsCurrent />
-        );
-        break;
-      case 'sent-requests':
-        desktopContentToDisplay = (
-          <FriendInvitationsSentByMe />
-        );
-        break;
-      case 'all':
       default:
         desktopContentToDisplay = (
           <>
             <Helmet title="Friends - We Vote" />
             <BrowserPushMessage incomingProps={this.props} />
             <div className="row">
-              <div className="col-sm-12 col-lg-8">
+              <div className="col-sm-12 col-md-8">
                 <>
                   {voterIsSignedIn && (
                     <Suspense fallback={<></>}>
@@ -512,15 +394,12 @@ class Friends extends Component {
                   {!!(!voterIsSignedIn || !friendActivityExists) && (
                     <InviteByEmail />
                   )}
-                  <FriendInvitationsSentToMePreview />
+                  <FriendInvitationsSentToMe />
                   <SuggestedFriendsPreview />
-                  <FriendsCurrentPreview />
-                  {voterIsSignedIn && (
-                    <FriendInvitationsSentByMePreview />
-                  )}
+                  <SuggestedContacts />
                 </>
               </div>
-              <div className="col-md-12 col-lg-4">
+              <div className="col-sm-12 col-md-4">
                 {!!(voterIsSignedIn && friendActivityExists) && (
                   <div>
                     <div>
@@ -553,8 +432,53 @@ class Friends extends Component {
             </div>
           </>
         );
+        mobileContentToDisplay = (
+          <>
+            <>
+              {voterIsSignedIn && (
+                <Suspense fallback={<></>}>
+                  <FirstAndLastNameRequiredAlert />
+                </Suspense>
+              )}
+              {!!(!voterIsSignedIn || !friendActivityExists) && (
+                <InviteByEmail />
+              )}
+              <FriendInvitationsSentToMe />
+              <SuggestedFriends />
+              <SuggestedContacts />
+            </>
+            {!!(voterIsSignedIn && friendActivityExists) && (
+              <div>
+                <div>
+                  <SectionTitle>
+                    Invite Friends
+                  </SectionTitle>
+                  <TooltipIcon title="These friends will see what you support and oppose." />
+                  <AddFriendsByEmail inSideColumn />
+                </div>
+              </div>
+            )}
+            <SignInOptionsWrapper>
+              {voter.signed_in_twitter ? null : (
+                <TwitterSignInWrapper>
+                  <TwitterSignInCard />
+                </TwitterSignInWrapper>
+              )}
+              {voter.signed_in_facebook ? null : (
+                <FacebookSignInWrapper>
+                  <FacebookSignInCard />
+                </FacebookSignInWrapper>
+              )}
+            </SignInOptionsWrapper>
+            <FriendsPromoBox
+              imageUrl={imageUrl}
+              testimonialAuthor={testimonialAuthor}
+              testimonial={testimonial}
+            />
+          </>
+        );
+        break;
     }
-
 
     return (
       <PageContentContainer>
@@ -579,16 +503,16 @@ class Friends extends Component {
           </>
         ) : (
           // <DelayedLoad waitBeforeShow={1000}>
-          <Suspense fallback={<></>}>
-            <OuterSignInOptionsWrapper>
-              <InnerSignInOptionsWrapper style={expandSideMarginsIfCordova}>
+          <OuterSignInOptionsWrapper>
+            <InnerSignInOptionsWrapper style={expandSideMarginsIfCordova}>
+              <Suspense fallback={<></>}>
                 <SignInOptionsPanel
                   pleaseSignInTitle="Sign In to Find Your Friends"
                   pleaseSignInSubTitle="We Vote is a community of friends who care about voting and democracy."
                 />
-              </InnerSignInOptionsWrapper>
-            </OuterSignInOptionsWrapper>
-          </Suspense>
+              </Suspense>
+            </InnerSignInOptionsWrapper>
+          </OuterSignInOptionsWrapper>
           // </DelayedLoad>
         )}
       </PageContentContainer>
@@ -612,6 +536,10 @@ const FacebookSignInWrapper = styled('div')`
   @media (min-width: 614px) and (max-width: 991px) {
     padding-left: 8px;
   }
+`;
+
+const FindYourContactsWrapper = styled('div')`
+  margin-bottom: 48px;
 `;
 
 const FriendsHeading = styled('div')`

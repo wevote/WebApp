@@ -103,7 +103,7 @@ class News extends Component {
         ActivityActions.activityListRetrieve();
       }
       if (apiCalming('friendListsAll', 30000)) {
-        FriendActions.getAllFriendLists(); // We need this so we can identify if the voter is friends with this organization/person
+        FriendActions.friendListsAll(); // We need this so we can identify if the voter is friends with this organization/person
       }
       if (!BallotStore.allBallotItemsRetrieveCalled()) {
         if (apiCalming('voterBallotItemsRetrieve', 30000)) {

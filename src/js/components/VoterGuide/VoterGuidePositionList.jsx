@@ -125,8 +125,8 @@ class VoterGuidePositionList extends Component {
       OrganizationActions.organizationsFollowedRetrieve();
     }
     if (!organizationsVoterIsFriendsWith.length > 0) {
-      if (apiCalming('friendList', 1500)) {
-        FriendActions.currentFriends();
+      if (apiCalming('friendListsAll', 3000)) {
+        FriendActions.friendListsAll();
       }
     }
 

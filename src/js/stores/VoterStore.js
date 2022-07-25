@@ -401,8 +401,10 @@ class VoterStore extends ReduceStore {
   }
 
   getNotificationSettingConstantFromUnsubscribeModifier (unsubscribeModifier) {
+    // New unsubscribe modifiers also need to be added in WeVoteServer
     let notificationSettingConstant = 0;
     // dailyfriendactivity, friendaccept, friendinvite, friendopinions, friendopinionsall, friendmessage, login, newsletter
+    // NOT IMPLEMENTED YET: suggestedfriend == NOTIFICATION_SUGGESTED_FRIENDS_EMAIL
     if (unsubscribeModifier === 'dailyfriendactivity') {
       notificationSettingConstant = VoterConstants.NOTIFICATION_VOTER_DAILY_SUMMARY_EMAIL;
     } else if (unsubscribeModifier === 'friendaccept' || unsubscribeModifier === 'friendinvite') {
@@ -728,7 +730,7 @@ class VoterStore extends ReduceStore {
             voterContactEmailList,
           };
         } else {
-          console.log('response voterContactListRetrieve was not successful');
+          // console.log('response voterContactListRetrieve was not successful');
           return state;
         }
 
@@ -911,7 +913,7 @@ class VoterStore extends ReduceStore {
         VoterActions.voterSMSPhoneNumberRetrieve();
         if (!signInModalGlobalState.get('textOrEmailSignInInProcess')) {
           // Cascading actions like this causes serious problems when you have a dialog with components that change stores.
-          FriendActions.getAllFriendLists();
+          FriendActions.friendListsAll();
           BallotActions.voterBallotItemsRetrieve();
         }
         return {

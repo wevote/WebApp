@@ -78,7 +78,7 @@ class Ready extends Component {
       ActivityActions.activityNoticeListRetrieve();
     }
     if (apiCalming('friendListsAll', 30000)) {
-      FriendActions.getAllFriendLists();
+      FriendActions.friendListsAll();
     }
     let modalToShow = '';
     let sharedItemCode = '';

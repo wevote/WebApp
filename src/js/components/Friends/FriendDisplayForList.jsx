@@ -44,7 +44,6 @@ class FriendDisplayForList extends Component {
     const twitterVoterGuideLink = this.props.voterTwitterHandle ? `/${this.props.voterTwitterHandle}` : null;
     const weVoteIdVoterGuideLink = this.props.linkedOrganizationWeVoteId ? `/voterguide/${this.props.linkedOrganizationWeVoteId}` : null;
     const voterGuideLink = twitterVoterGuideLink || weVoteIdVoterGuideLink;
-    const voterImage = <ImageHandler sizeClassName="icon-lg " imageUrl={voterPhotoUrlLarge} kind_of_ballot_item="CANDIDATE" />;
     const detailsHTML = (
       <FriendDetails
         mutualFriendCount={mutualFriendCount}
@@ -53,6 +52,7 @@ class FriendDisplayForList extends Component {
         voterDisplayName={voterDisplayName}
         voterEmailAddress={voterEmailAddress}
         voterTwitterHandle={voterTwitterHandle}
+        voterWeVoteId={voterWeVoteId}
       />
     );
     const friendButtonsExist = !friendToggleOff || messageToFriendButtonOn;
@@ -86,13 +86,13 @@ class FriendDisplayForList extends Component {
             { (voterGuideLink && voterGuideLinkOn) ? (
               <Link to={voterGuideLink} className="u-no-underline">
                 <Suspense fallback={<></>}>
-                  {voterImage}
+                  <ImageHandler sizeClassName="icon-lg " imageUrl={voterPhotoUrlLarge} kind_of_ballot_item="CANDIDATE" />
                 </Suspense>
               </Link>
             ) : (
               <span>
                 <Suspense fallback={<></>}>
-                  {voterImage}
+                  <ImageHandler sizeClassName="icon-lg " imageUrl={voterPhotoUrlLarge} kind_of_ballot_item="CANDIDATE" />
                 </Suspense>
               </span>
             )}
