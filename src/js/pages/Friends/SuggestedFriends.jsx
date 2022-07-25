@@ -17,6 +17,7 @@ export default class SuggestedFriends extends Component {
   }
 
   componentDidMount () {
+    window.scrollTo(0, 0);
     const suggestedFriendListUnsorted = FriendStore.suggestedFriendList();
     const suggestedFriendList = sortFriendListByMutualFriends(suggestedFriendListUnsorted);
     this.setState({

@@ -32,13 +32,13 @@ class DeleteAllContactsButton extends React.Component {
 
   render () {
     renderLog('DeleteAllContactsButton');  // Set LOG_RENDER_EVENTS to log all renders
-    const { classes } = this.props;
+    const { classes, leftAlign, textSizeSmall } = this.props;
     const { deleteAllContactsConfirm } = this.state;
     return (
-      <DeleteContactsButtonOuterWrapper>
+      <DeleteContactsButtonOuterWrapper leftAlign={leftAlign}>
         {deleteAllContactsConfirm ? (
-          <div className="full-width">
-            <DeleteContactsButtonInnerWrapper>
+          <div className={leftAlign ? '' : 'full-width'}>
+            <DeleteContactsButtonInnerWrapper leftAlign={leftAlign}>
               <Button
                 color="primary"
                 onClick={this.deleteAllContacts}
@@ -65,9 +65,14 @@ class DeleteAllContactsButton extends React.Component {
         ) : (
           <Button
             classes={{ root: classes.deleteAllContactsLink }}
+            style={textSizeSmall ? {
+              fontSize: 14,
+            } : {
+              fontSize: 16,
+            }}
             onClick={this.deleteAllContactsConfirmToggle}
           >
-            <div className="u-no-break">
+            <div className={leftAlign ? '' : 'u-no-break'}>
               You can
               {' '}
               <span className="u-link-color u-link-color-on-hover">
@@ -84,6 +89,8 @@ class DeleteAllContactsButton extends React.Component {
 }
 DeleteAllContactsButton.propTypes = {
   classes: PropTypes.object,
+  leftAlign: PropTypes.bool,
+  textSizeSmall: PropTypes.bool,
 };
 
 const styles = () => ({
@@ -102,31 +109,33 @@ const styles = () => ({
   deleteAllContactsLink: {
     boxShadow: 'none !important',
     color: '#999',
-    fontSize: 14,
     marginTop: 0,
     padding: 0,
     textTransform: 'none',
-    width: 250,
   },
 });
 
 const DeleteContactsButtonInnerCancelWrapper = styled('div')`
   display: flex;
-  justify-content: center;
+  justify-content:center;
   margin-bottom: 8px;
   width: 100%;
 `;
 
-const DeleteContactsButtonInnerWrapper = styled('div')`
+const DeleteContactsButtonInnerWrapper = styled('div', {
+  shouldForwardProp: (prop) => !['leftAlign'].includes(prop),
+})(({ leftAlign }) => (`
   display: flex;
-  justify-content: center;
+  justify-content: ${leftAlign ? 'flex-start' : 'center'};
   width: 100%;
-`;
+`));
 
-const DeleteContactsButtonOuterWrapper = styled('div')`
+const DeleteContactsButtonOuterWrapper = styled('div', {
+  shouldForwardProp: (prop) => !['leftAlign'].includes(prop),
+})(({ leftAlign }) => (`
   display: flex;
-  justify-content: center;
+  justify-content: ${leftAlign ? 'flex-start' : 'center'};
   width: 100%;
-`;
+`));
 
 export default withStyles(styles)(DeleteAllContactsButton);

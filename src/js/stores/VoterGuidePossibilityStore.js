@@ -90,6 +90,7 @@ class VoterGuidePossibilityStore extends ReduceStore {
         // console.log('VoterGuidePossibilityStore voterGuidePossibilityRetrieve, action.res:', action.res);
         voterGuidePossibility = action.res || {};
         voterGuidePossibilityId = action.res.voter_guide_possibility_id || 0;
+        // if the voter guide possibility exists, call this action
         if (voterGuidePossibilityId) {
           VoterGuidePossibilityActions.voterGuidePossibilityPositionsRetrieve(voterGuidePossibilityId);
         }

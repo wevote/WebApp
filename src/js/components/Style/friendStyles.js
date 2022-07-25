@@ -111,7 +111,6 @@ const FriendName = styled('h3', {
   text-align: left;
   text-overflow: ellipsis;
   white-space: nowrap;
-  width: 100%;
   ${inSideColumn ? FriendNameInSideColumn : FriendNameNotInSideColumn}
 `));
 

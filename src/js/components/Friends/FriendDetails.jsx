@@ -1,11 +1,14 @@
+import { Launch } from '@mui/icons-material';
 import PropTypes from 'prop-types';
-import React, { Component } from 'react';
+import React, { Component, Suspense } from 'react';
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 import Tooltip from 'react-bootstrap/Tooltip';
 import styled from 'styled-components';
 import { FriendDetailsLine, FriendDetailsWrapper, FriendName, InviteToWeVoteLine } from '../Style/friendStyles';
 import abbreviateNumber from '../../common/utils/abbreviateNumber';
 import { renderLog } from '../../common/utils/logging';
+
+const OpenExternalWebSite = React.lazy(() => import(/* webpackChunkName: 'OpenExternalWebSite' */ '../../common/components/Widgets/OpenExternalWebSite'));
 
 const NUMBER_OF_MUTUAL_FRIEND_NAMES_TO_SHOW = 10; // Maximum available coming from API server is currently 5
 const NUMBER_OF_MUTUAL_FRIEND_IMAGES_TO_SHOW = 3; // Maximum available coming from API server is currently 5
@@ -15,6 +18,11 @@ class FriendDetails extends Component {
     super(props);
     this.state = {
     };
+  }
+
+  generateSearchURL (item) {
+    const temp = item.replace(/ /g, '+');
+    return `https://www.google.com/search?q=${temp}&oq=${temp}`;
   }
 
   orderByPhotoExists = (firstMutualFriend, secondMutualFriend) => {
@@ -101,9 +109,35 @@ class FriendDetails extends Component {
     const voterDisplayNameFormatted = <span className="card-child__display-name">{voterDisplayName}</span>;
     return (
       <FriendDetailsWrapper inSideColumn={inSideColumn}>
-        <FriendName inSideColumn={inSideColumn}>
-          {voterDisplayNameFormatted}
-        </FriendName>
+        <FriendNameOuterWrapper>
+          <FriendName inSideColumn={inSideColumn}>
+            {voterDisplayNameFormatted}
+          </FriendName>
+          {(emailAddressForDisplay && !voterWeVoteId) && (
+            <ExternalWebSiteWrapper>
+              <Suspense fallback={<></>}>
+                <OpenExternalWebSite
+                  linkIdAttribute="googleSearch"
+                  url={this.generateSearchURL(`${voterDisplayName} ${emailAddressForDisplay}`)}
+                  target="_blank"
+                  className="u-gray-mid"
+                  body={(
+                    <div>
+                      <Launch
+                        style={{
+                          height: 14,
+                          marginLeft: 2,
+                          marginTop: '-3px',
+                          width: 14,
+                        }}
+                      />
+                    </div>
+                  )}
+                />
+              </Suspense>
+            </ExternalWebSiteWrapper>
+          )}
+        </FriendNameOuterWrapper>
         {!!(emailAddressForDisplay) && (
           <FriendDetailsLine inSideColumn={inSideColumn}>
             <EmailSmaller>
@@ -120,7 +154,7 @@ class FriendDetails extends Component {
         )}
         {!!(mutualFriendCount) && (
           <FriendDetailsLine inSideColumn={inSideColumn}>
-            <OverlayTrigger overlay={mutualFriendsTooltip} placement="top" trigger="click">
+            <OverlayTrigger overlay={mutualFriendsTooltip} placement="top">
               <MutualFriendsBlockWrapper className="u-cursor--pointer">
                 {mutualFriendPreviewList && (
                   <MutualFriendPreviewListImages>
@@ -175,6 +209,17 @@ const EmailSmaller = styled('div')`
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+`;
+
+const ExternalWebSiteWrapper = styled('div')`
+  margin-left: 2px;
+  white-space: nowrap;
+`;
+
+const FriendNameOuterWrapper = styled('div')`
+  align-items: flex-start;
+  display: flex;
+  justify-content: start;
 `;
 
 const MutualFriendPreviewListImages = styled('div')`

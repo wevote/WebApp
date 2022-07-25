@@ -94,13 +94,13 @@ class HowItWorks extends Component {
         },
         Follow: {
           title: '2. Follow organizations and people you trust',
-          description: 'Their recommendations are highlighted on your ballot.',
+          description: 'Learn from the people you trust. Their recommendations are highlighted on your ballot.',
           imgSrc: '/img/how-it-works/HowItWorksForVoters-Follow-20190507.gif?',
           index: 1,
         },
         Review: {
           title: '3. See who endorsed each choice on your ballot',
-          description: 'Learn from the people you trust.',
+          description: 'Your personalized score for a candidate is the number of people who support the candidate, from among the people you follow.',
           imgSrc: '/img/how-it-works/HowItWorksForVoters-Review-20190401.gif?',
           index: 2,
         },
@@ -480,10 +480,9 @@ const BackButtonWrapper = styled('div')(({ theme }) => (`
 
 const NextButtonWrapper = styled('div')(({ theme }) => (`
   margin: 0;
-  width: 50%;
+  width: 100%;
   ${theme.breakpoints.down('lg')} {
     margin-right: 8px;
-    width: 100%;
   }
 `));
 

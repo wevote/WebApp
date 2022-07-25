@@ -146,7 +146,7 @@ export default class SignInOptionsPanel extends Component {
       }
       this.setState({
         pleaseSignInTitleFromState: 'Please sign in to get started.',
-        pleaseSignInSubTitle: 'Don\'t worry, we won\'t post anything automatically.',
+        pleaseSignInSubTitle: '',
       });
     } else {
       const isOnWeVoteRootUrl = AppObservableStore.isOnWeVoteRootUrl();
@@ -154,7 +154,7 @@ export default class SignInOptionsPanel extends Component {
       // No need to query an api to get this answer.  Creates an unneeded dependency:  const isOnFacebookSupportedDomainUrl = AppObservableStore.isOnFacebookSupportedDomainUrl() || window.location.href.includes('ngrok');
       let pleaseSignInSubTitle = '';
       if (isOnWeVoteRootUrl || isOnWeVoteSubdomainUrl || isOnFacebookSupportedDomainUrl) {
-        pleaseSignInSubTitle = 'Don\'t worry, we won\'t post anything automatically.';
+        pleaseSignInSubTitle = '';
       }
       this.setState({
         pleaseSignInTitleFromState: '',
@@ -267,6 +267,11 @@ export default class SignInOptionsPanel extends Component {
     });
     // console.log('SignInOptionsPanel toggleNonEmailSignInOptions');
     this.focusedOnSingleInputToggle('email');
+    const delayBeforeScrolling = 250;
+    if (this.timer) clearTimeout(this.timer);
+    this.timer = setTimeout(() => {
+      window.scrollTo(0, 0);
+    }, delayBeforeScrolling);
   };
 
   toggleNonPhoneSignInOptions = () => {
@@ -284,6 +289,11 @@ export default class SignInOptionsPanel extends Component {
     });
     // console.log('SignInOptionsPanel toggleNonPhoneSignInOptions');
     this.focusedOnSingleInputToggle('phone');
+    const delayBeforeScrolling = 250;
+    if (this.timer) clearTimeout(this.timer);
+    this.timer = setTimeout(() => {
+      window.scrollTo(0, 0);
+    }, delayBeforeScrolling);
   };
 
   toggleTwitterDisconnectOpen () {

@@ -14,6 +14,7 @@ class VoterPhotoUpload extends Component {
   constructor (props) {
     super(props);
     this.state = {
+      showDropzoneIcon: true,
       voterProfileUploadedImageUrlLarge: '',
     };
 
@@ -24,6 +25,18 @@ class VoterPhotoUpload extends Component {
     // console.log('VoterPhotoUpload, componentDidMount');
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
     this.onVoterStoreChange();
+
+    const voterProfileUploadedImageUrlLarge = VoterStore.getVoterProfileUploadedImageUrlLarge();
+    let dropzoneText = isMobileScreenSize() ? 'Upload profile photo' : 'Drag your profile photo here (or click to find file)';
+    let showDropzoneIcon = true;
+    if (voterProfileUploadedImageUrlLarge) {
+      dropzoneText = isMobileScreenSize() ? 'Upload new photo' : 'Drag new profile photo here (or click to find file)';
+      showDropzoneIcon = false;
+    }
+    this.setState({
+      dropzoneText,
+      showDropzoneIcon,
+    });
   }
 
   componentWillUnmount () {
@@ -32,6 +45,7 @@ class VoterPhotoUpload extends Component {
   }
 
   handleDrop (files) {
+    const { voterProfileUploadedImageUrlLarge } = this.state;
     if (files && files[0]) {
       const fileFromDropzone = files[0];
       if (!fileFromDropzone) return;
@@ -42,6 +56,22 @@ class VoterPhotoUpload extends Component {
         VoterActions.voterPhotoQueuedToSave(photoFromFileReader);
       });
       fileReader.readAsDataURL(fileFromDropzone);
+      const dropzoneText = isMobileScreenSize() ? 'A small preview of your photo is shown below. You can 1) Click \'Save photo\' below to continue, or 2) click here to upload different photo.' : 'A small preview of your photo is shown below. You can 1) click \'Save photo\' below to continue, 2) delete it (hover over photo to see trash can), or 3) drag a NEW version here (or click here to find file).';
+      this.setState({
+        dropzoneText,
+        showDropzoneIcon: false,
+      });
+    } else {
+      let dropzoneText = isMobileScreenSize() ? 'Upload profile photo' : 'Drag your profile photo here (or click to find file)';
+      let showDropzoneIcon = true;
+      if (voterProfileUploadedImageUrlLarge) {
+        dropzoneText = isMobileScreenSize() ? 'Upload new photo' : 'Drag new profile photo here (or click to find file)';
+        showDropzoneIcon = false;
+      }
+      this.setState({
+        dropzoneText,
+        showDropzoneIcon,
+      });
     }
   }
 
@@ -61,11 +91,7 @@ class VoterPhotoUpload extends Component {
     renderLog('VoterPhotoUpload');  // Set LOG_RENDER_EVENTS to log all renders
 
     const { classes, limitPhotoHeight, maxWidth } = this.props;
-    const { voterProfileUploadedImageUrlLarge } = this.state;
-    let dropzoneText = isMobileScreenSize() ? 'Upload profile photo' : 'Drag your profile photo here (or click to find file)';
-    if (voterProfileUploadedImageUrlLarge) {
-      dropzoneText = isMobileScreenSize() ? 'Upload new photo' : 'Drag new profile photo here (or click to find file)';
-    }
+    const { dropzoneText, showDropzoneIcon, voterProfileUploadedImageUrlLarge } = this.state;
     return (
       <OuterWrapper>
         <form onSubmit={(e) => { e.preventDefault(); }}>
@@ -84,8 +110,12 @@ class VoterPhotoUpload extends Component {
               ) : (
                 <DropzoneArea
                   acceptedFiles={['image/*']}
-                  classes={{
+                  classes={showDropzoneIcon ? {
                     icon: classes.dropzoneIcon,
+                    root: classes.dropzoneRoot,
+                    text: classes.dropzoneText,
+                  } : {
+                    icon: classes.dropzoneIconHidden,
                     root: classes.dropzoneRoot,
                     text: classes.dropzoneText,
                   }}
@@ -113,6 +143,9 @@ VoterPhotoUpload.propTypes = {
 const styles = (theme) => ({
   dropzoneIcon: {
     color: '#999',
+  },
+  dropzoneIconHidden: {
+    display: 'none',
   },
   dropzoneRoot: {
     color: '#999',

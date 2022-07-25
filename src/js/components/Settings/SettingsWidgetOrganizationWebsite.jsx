@@ -113,6 +113,7 @@ class SettingsWidgetOrganizationWebsite extends Component {
     }
 
     const { classes, externalUniqueId } = this.props;
+    const { isOrganization, organizationWebsite, organizationWebsiteSavedStatus } = this.state;
 
     return (
       <div className="">
@@ -120,14 +121,14 @@ class SettingsWidgetOrganizationWebsite extends Component {
           <Row>
             <ColumnFullWidth>
               <FormControl classes={{ root: classes.formControl }}>
-                <Label htmlFor="organizationWebsiteTextArea">{ this.state.isOrganization ? 'Organization Website' : 'Your Website'}</Label>
                 <TextField
                   id={`organizationWebsiteTextArea-${externalUniqueId}`}
+                  label={isOrganization ? 'Organization Website' : 'Your Website'}
                   name="organizationWebsite"
                   margin="dense"
                   variant="outlined"
-                  placeholder={this.state.isOrganization ? 'Type Organization\'s Website, www...' : 'Type Your Website Address, www...'}
-                  value={this.state.organizationWebsite}
+                  placeholder={isOrganization ? 'Type Organization\'s Website, www...' : 'Type Your Website Address, www...'}
+                  value={organizationWebsite}
                   onKeyDown={this.handleKeyPress}
                   onChange={this.updateOrganizationWebsite}
                 />
@@ -135,7 +136,7 @@ class SettingsWidgetOrganizationWebsite extends Component {
             </ColumnFullWidth>
           </Row>
         </form>
-        <div className="u-gray-mid">{this.state.organizationWebsiteSavedStatus}</div>
+        <div className="u-gray-mid">{organizationWebsiteSavedStatus}</div>
       </div>
     );
   }
@@ -168,11 +169,6 @@ const Row = styled('div')`
 const ColumnFullWidth = styled('div')`
   padding: 8px 12px;
   width: 100%;
-`;
-
-const Label = styled('label')`
-  margin-bottom: 4px;
-  display: block;
 `;
 
 export default withStyles(styles)(SettingsWidgetOrganizationWebsite);

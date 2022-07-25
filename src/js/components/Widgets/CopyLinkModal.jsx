@@ -34,7 +34,7 @@ export default class CopyLinkModal extends Component {
 
   render () {
     renderLog('CopyLinkModal');  // Set LOG_RENDER_EVENTS to log all renders
-    const { urlBeingShared } = this.props;
+    const { urlBeingShared, show, onHide } = this.props;
     const browserSupportsCopyToClipboard = false; // latest iOS update supports CopyToClipboard, check for users version and let them copy if latest, perhaps with npm pckg "mobile-detect"
     let copyBtnClassName;
     if (browserSupportsCopyToClipboard) {
@@ -44,7 +44,7 @@ export default class CopyLinkModal extends Component {
     }
 
     return (
-      <Modal {...this.props} size="large" aria-labelledby="contained-modal-title-lg">
+      <Modal size="large" aria-labelledby="contained-modal-title-lg" show={show} onHide={onHide}>
         <Modal.Header closeButton>
           <Modal.Title id="contained-modal-title-lg">Copy link to clipboard</Modal.Title>
         </Modal.Header>
@@ -73,4 +73,6 @@ export default class CopyLinkModal extends Component {
 }
 CopyLinkModal.propTypes = {
   urlBeingShared: PropTypes.string,
+  show: PropTypes.bool,
+  onHide: PropTypes.func,
 };

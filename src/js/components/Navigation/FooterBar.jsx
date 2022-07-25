@@ -1,6 +1,7 @@
-import { Ballot, HowToVote, People, QuestionAnswer } from '@mui/icons-material';
-import { BottomNavigation, BottomNavigationAction } from '@mui/material';
+import { Home, HowToVote, People, QuestionAnswer, QuestionMark } from '@mui/icons-material';
+import { Badge, BottomNavigation, BottomNavigationAction } from '@mui/material';
 import withStyles from '@mui/styles/withStyles';
+import PropTypes from 'prop-types';
 import React from 'react';
 import styled from 'styled-components';
 import historyPush from '../../common/utils/historyPush';
@@ -19,7 +20,7 @@ class FooterBar extends React.Component {
   constructor (props) {
     super(props);
     this.state = {
-      // friendInvitationsSentToMe: 0,
+      friendInvitationsSentToMeCount: 0,
       showingOneCompleteYourProfileModal: false,
       showSignInModal: false,
       // voterIsSignedIn: false,
@@ -36,8 +37,10 @@ class FooterBar extends React.Component {
     const showSharedItemModal = AppObservableStore.showSharedItemModal();
     const showSignInModal = AppObservableStore.showSignInModal();
     const showVoterPlanModal = AppObservableStore.showVoterPlanModal();
+    const friendInvitationsSentToMe = FriendStore.friendInvitationsSentToMe();
+    const friendInvitationsSentToMeCount = (friendInvitationsSentToMe) ? friendInvitationsSentToMe.length : 0;
     this.setState({
-      // friendInvitationsSentToMe: FriendStore.friendInvitationsSentToMe(),
+      friendInvitationsSentToMeCount,
       showingOneCompleteYourProfileModal,
       showShareModal,
       showSharedItemModal,
@@ -72,8 +75,10 @@ class FooterBar extends React.Component {
   onFriendStoreChange () {
     if (!signInModalGlobalState.get('textOrEmailSignInInProcess')) {
       // console.log('FooterBar, onFriendStoreChange');
+      const friendInvitationsSentToMe = FriendStore.friendInvitationsSentToMe();
+      const friendInvitationsSentToMeCount = (friendInvitationsSentToMe) ? friendInvitationsSentToMe.length : 0;
       this.setState({
-        // friendInvitationsSentToMe: FriendStore.friendInvitationsSentToMe(),
+        friendInvitationsSentToMeCount,
       });
     }
   }
@@ -102,6 +107,8 @@ class FooterBar extends React.Component {
         return historyPush('/friends');
       case 3:
         return historyPush('/news');
+      case 4:
+        return this.openHowItWorksModal();
       default:
         return null;
     }
@@ -116,17 +123,16 @@ class FooterBar extends React.Component {
     return -1;
   };
 
-  // goToHelpUrl = () => {
-  //   window.open('https://help.wevote.us');
-  // }
-
-  // handleNavigation = (to) => historyPush(to);
+  openHowItWorksModal = () => {
+    // console.log('Opening modal');
+    AppObservableStore.setShowHowItWorksModal(true);
+  }
 
   render () {
     renderLog('FooterBar');  // Set LOG_RENDER_EVENTS to log all renders
-    // const { classes } = this.props;
+    const { classes } = this.props;
     const {
-      // friendInvitationsSentToMe,
+      friendInvitationsSentToMeCount,
       showActivityTidbitDrawer, showingOneCompleteYourProfileModal, showShareModal,
       showSharedItemModal, showSignInModal, showVoterPlanModal,
     } = this.state;
@@ -134,6 +140,7 @@ class FooterBar extends React.Component {
     //   display: 'inline-block',
     // };
     const hideFooterBehindModal = showActivityTidbitDrawer || showingOneCompleteYourProfileModal || showShareModal || showSharedItemModal || showSignInModal || showVoterPlanModal;
+    // console.log('friendInvitationsSentToMeCount:', friendInvitationsSentToMeCount);
     return (
       <FooterBarWrapper>
         <div
@@ -145,49 +152,36 @@ class FooterBar extends React.Component {
             onChange={this.handleChange}
             showLabels
           >
-            <BottomNavigationAction className="no-outline" id="readyTabFooterBar" label="Ready?" showLabel icon={<HowToVote />} />
-            <BottomNavigationAction className="no-outline" id="ballotTabFooterBar" label="Ballot" showLabel icon={<Ballot />} />
+            <BottomNavigationAction className="no-outline" id="readyTabFooterBar" label="Home" showLabel icon={<Home />} />
+            <BottomNavigationAction className="no-outline" id="ballotTabFooterBar" label="Ballot" showLabel icon={<HowToVote />} />
             <BottomNavigationAction
               className="no-outline"
               id="friendsTabFooterBar"
               label="Friends"
               showLabel
-              icon={<People />}
-              // icon={friendInvitationsSentToMe && friendInvitationsSentToMe.length > 0 ? (
-              //   <Badge
-              //     badgeContent={friendInvitationsSentToMe}
-              //     className={classes.headerBadge}
-              //     color="primary"
-              //     max={9}
-              //   >
-              //     <People />
-              //   </Badge>
-              // ) : (
-              //   <People />
-              // )}
+              // icon={<People />}
+              icon={friendInvitationsSentToMeCount > 0 ? (
+                <Badge
+                  badgeContent={<BadgeCountWrapper>{friendInvitationsSentToMeCount}</BadgeCountWrapper>}
+                  classes={{
+                    badge: classes.footerFriendsNotificationBadge,
+                  }}
+                  color="primary"
+                  max={9}
+                  style={{
+                    fontSize: 10,
+                    right: 0,
+                    top: 4,
+                  }}
+                >
+                  <People />
+                </Badge>
+              ) : (
+                <People />
+              )}
             />
             <BottomNavigationAction className="no-outline" id="newsTabFooterBar" label="Discuss" showLabel icon={<QuestionAnswer />} />
-            {/*
-            {isCordova() ? (
-              <BottomNavigationAction
-                className="no-outline"
-                id="helpTabFooterBar"
-                icon={<HelpOutline style={{ color: 'rgba(0, 0, 0, 0.541176)' }} />}
-                label="Help"
-                onClick={() => cordovaOpenSafariView('https://help.wevote.us', null, 50)}
-                showLabel
-              />
-            ) : (
-              <BottomNavigationAction
-                className="no-outline"
-                id="helpTabFooterBar"
-                icon={<HelpOutline style={{ color: 'rgba(0, 0, 0, 0.541176)' }} />}
-                label="Help"
-                onClick={() => this.goToHelpUrl()}
-                showLabel
-              />
-            )}
-            */}
+            <BottomNavigationAction className="no-outline u-no-break" id="howItWorksFooterBar" label="How It Works" showLabel icon={<QuestionMark />} />
           </BottomNavigation>
         </div>
       </FooterBarWrapper>
@@ -195,15 +189,29 @@ class FooterBar extends React.Component {
   }
 }
 FooterBar.propTypes = {
+  classes: PropTypes.object,
 };
 
 const styles = () => ({
-  headerBadge: {
+  footerFriendsNotificationBadge: {
+    backgroundColor: 'rgba(250, 62, 62)',
     fontSize: 10,
-    right: 0,
-    top: 11,
+    height: 15,
+    marginRight: 0,
+    marginTop: 0,
+    minWidth: 15,
+    width: 15,
   },
 });
+
+const BadgeCountWrapper = styled('span')(({ theme }) => (`
+  display: flex;
+  justify-content: center;
+  padding-top: 0;
+  ${theme.breakpoints.down('md')} {
+    padding-top: 1px;
+  }
+`));
 
 const FooterBarWrapper = styled('div')`
   @media print{

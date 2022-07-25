@@ -6,10 +6,12 @@ import OrganizationActions from '../actions/OrganizationActions';
 import VoterActions from '../actions/VoterActions'; // eslint-disable-line import/no-cycle
 import VoterGuideActions from '../actions/VoterGuideActions';
 import Dispatcher from '../common/dispatcher/Dispatcher';
+import apiCalming from '../common/utils/apiCalming';
+import Cookies from '../common/utils/js-cookie/Cookies';
 import stringContains from '../common/utils/stringContains';
 import signInModalGlobalState from '../components/Widgets/signInModalGlobalState';
+import VoterConstants from '../constants/VoterConstants';
 import { dumpObjProps } from '../utils/appleSiliconUtils';
-import Cookies from '../common/utils/js-cookie/Cookies';
 import AppObservableStore from './AppObservableStore';
 
 class VoterStore extends ReduceStore {
@@ -38,6 +40,7 @@ class VoterStore extends ReduceStore {
       smsPhoneNumberList: [],
       voterContactEmailGoogleCount: 0,
       voterContactEmailList: [],
+      voterDeleted: false,
       voterEmailQueuedToSave: '',
       voterEmailQueuedToSaveSet: false,
       voterFirstNameQueuedToSave: '',
@@ -243,6 +246,10 @@ class VoterStore extends ReduceStore {
     return voterContactEmailList.length;
   }
 
+  getVoterDeleted () {
+    return this.getState().voterDeleted;
+  }
+
   getVoterEmail () {
     return this.getState().voter.email || '';
   }
@@ -276,6 +283,14 @@ class VoterStore extends ReduceStore {
 
   getVoterIsSignedInWithEmail () {
     return this.getState().voter.signed_in_with_email || false;
+  }
+
+  getVoterIsSignedInWithFacebook () {
+    return this.getState().voter.signed_in_facebook || false;
+  }
+
+  getVoterIsSignedInWithTwitter () {
+    return this.getState().voter.signed_in_twitter || false;
   }
 
   getVoterLastNameQueuedToSave () {
@@ -385,10 +400,35 @@ class VoterStore extends ReduceStore {
     return interfaceStatusFlags & flag;  // eslint-disable-line no-bitwise
   }
 
+  getNotificationSettingConstantFromUnsubscribeModifier (unsubscribeModifier) {
+    let notificationSettingConstant = 0;
+    // dailyfriendactivity, friendaccept, friendinvite, friendopinions, friendopinionsall, friendmessage, login, newsletter
+    if (unsubscribeModifier === 'dailyfriendactivity') {
+      notificationSettingConstant = VoterConstants.NOTIFICATION_VOTER_DAILY_SUMMARY_EMAIL;
+    } else if (unsubscribeModifier === 'friendaccept' || unsubscribeModifier === 'friendinvite') {
+      notificationSettingConstant = VoterConstants.NOTIFICATION_FRIEND_REQUESTS_EMAIL; // friendaccept: NOTIFICATION_FRIEND_REQUEST_RESPONSES_EMAIL
+    } else if (unsubscribeModifier === 'friendopinions' || unsubscribeModifier === 'friendopinionsall') {
+      notificationSettingConstant = VoterConstants.NOTIFICATION_FRIEND_OPINIONS_YOUR_BALLOT_EMAIL; // friendopinionsall: NOTIFICATION_FRIEND_OPINIONS_OTHER_REGIONS_EMAIL
+    } else if (unsubscribeModifier === 'friendmessage') {
+      notificationSettingConstant = VoterConstants.NOTIFICATION_FRIEND_MESSAGES_EMAIL;
+    } else if (unsubscribeModifier === 'login') {
+      notificationSettingConstant = VoterConstants.NOTIFICATION_LOGIN_EMAIL;
+    } else if (unsubscribeModifier === 'newsletter') {
+      notificationSettingConstant = VoterConstants.NOTIFICATION_NEWSLETTER_OPT_IN;
+    }
+    return notificationSettingConstant;
+  }
+
   getNotificationSettingsFlagState (flag) {
     // Look in js/Constants/VoterConstants.js for list of flag constant definitions
     if (!this.getState().voter) {
       return false;
+    }
+    // Notification settings we haven't implemented yet which we show as still turned on
+    if ((flag === VoterConstants.NOTIFICATION_FRIEND_MESSAGES_EMAIL) ||
+        (flag === VoterConstants.NOTIFICATION_FRIEND_OPINIONS_OTHER_REGIONS_EMAIL) ||
+        (flag === VoterConstants.NOTIFICATION_LOGIN_EMAIL)) {
+      return true;
     }
     const notificationSettingsFlags = this.getState().voter.notification_settings_flags || 0;
     // return True if bit specified by the flag is also set
@@ -403,6 +443,12 @@ class VoterStore extends ReduceStore {
     // Look in js/Constants/VoterConstants.js for list of flag constant definitions
     if (!this.getState().voterNotificationSettingsUpdateStatus) {
       return false;
+    }
+    // Notification settings we haven't implemented yet which we show as still turned on
+    if ((flag === VoterConstants.NOTIFICATION_FRIEND_MESSAGES_EMAIL) ||
+        (flag === VoterConstants.NOTIFICATION_FRIEND_OPINIONS_OTHER_REGIONS_EMAIL) ||
+        (flag === VoterConstants.NOTIFICATION_LOGIN_EMAIL)) {
+      return true;
     }
     const { notificationSettingsFlags } = this.getState().voterNotificationSettingsUpdateStatus;
     // return True if bit specified by the flag is also set
@@ -964,7 +1010,7 @@ class VoterStore extends ReduceStore {
 
           // ...and then ask for a new voter. When it returns a voter with a new voter_device_id, we will set new cookie
           if (!Cookies.get('voter_device_id')) {
-            // console.log("voter_device_id gone -- calling voterRetrieve");
+            console.log('voter_device_id gone -- calling voterRetrieve');
             VoterActions.voterRetrieve();
           } else {
             // console.log("voter_device_id still exists -- did not call voterRetrieve");
@@ -995,9 +1041,12 @@ class VoterStore extends ReduceStore {
         // because this fires on the initial page load and takes almost a full second to return, blocking one of six available http channels
         // Firing actions from stores should be avoided
         // The following (new) condition blocks a organizationRetrieve on the first voterRetrieve
-        if (this.getState().voter.we_vote_id) {
+        if (this.getState().voter.we_vote_id && currentVoterDeviceId) {
           if (incomingVoter.linked_organization_we_vote_id) {
-            OrganizationActions.organizationRetrieve(incomingVoter.linked_organization_we_vote_id);
+            if (apiCalming('organizationRetrieve', 2000)) {
+              console.log('Following voterRetrieve call -- calling organizationRetrieve');
+              OrganizationActions.organizationRetrieve(incomingVoter.linked_organization_we_vote_id);
+            }
           }
         }
         // if (incomingVoter.signed_in_with_apple) {
@@ -1077,7 +1126,20 @@ class VoterStore extends ReduceStore {
 
       case 'voterUpdate':
         // console.log('VoterStore  voterUpdate ');
-        if (action.res.success) {
+        if (action.res.success && action.res.voter_deleted) {
+          revisedState = state;
+          revisedState = { ...revisedState, ...this.getInitialState() };
+          revisedState = { ...revisedState,
+            voterDeleted: true,
+          };
+          return revisedState;
+        } else if (action.res.success && action.res.voter_not_deleted) {
+          revisedState = state;
+          revisedState = { ...revisedState,
+            voterNotDeleted: true,
+          };
+          return revisedState;
+        } else if (action.res.success) {
           let interfaceStatusFlags = action.res.interface_status_flags;
           if (interfaceStatusFlags === undefined) {
             interfaceStatusFlags = state.voter.interface_status_flags;

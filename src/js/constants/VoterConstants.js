@@ -16,22 +16,31 @@ const VoterConstants = {
 
   // Used for notification_settings bits. Which notification options has the voter chosen?
   NOTIFICATION_ZERO: 0,
-  NOTIFICATION_NEWSLETTER_OPT_IN: 1, // Email: "I would like to receive the We Vote newsletter"
-  // NOTIFICATION_FRIEND_REQUESTS: n/a, // In App: "New friend requests, and responses to your requests"
-  NOTIFICATION_FRIEND_REQUESTS_EMAIL: 2, // Email: "New friend requests, and responses to your requests"
-  NOTIFICATION_FRIEND_REQUESTS_SMS: 4, // SMS: "New friend requests, and responses to your requests"
+  NOTIFICATION_NEWSLETTER_OPT_IN: 1, // Email: "I would like to receive We Vote newsletter"
+  // NOTIFICATION_FRIEND_REQUESTS: n/a, // In App: "Show new friend requests sent to me"
+  NOTIFICATION_FRIEND_REQUESTS_EMAIL: 2, // Email: "Show new friend requests sent to me" - friendinvite & friendaccept (for now)
+  NOTIFICATION_FRIEND_REQUESTS_SMS: 4, // SMS: "Show new friend requests sent to me"
+  // See also: NOTIFICATION_FRIEND_REQUEST_RESPONSES, NOTIFICATION_FRIEND_REQUEST_RESPONSES_EMAIL, NOTIFICATION_FRIEND_REQUEST_RESPONSES_SMS
   // NOTIFICATION_SUGGESTED_FRIENDS: n/a, // In App: "Suggestions of people you may know"
   NOTIFICATION_SUGGESTED_FRIENDS_EMAIL: 8, // Email: "Suggestions of people you may know"
   NOTIFICATION_SUGGESTED_FRIENDS_SMS: 16, // SMS: "Suggestions of people you may know"
   // NOTIFICATION_FRIEND_OPINIONS_YOUR_BALLOT: n/a, // In App: "Friends' opinions (on your ballot)"
-  NOTIFICATION_FRIEND_OPINIONS_YOUR_BALLOT_EMAIL: 32, // Email: "Friends' opinions (on your ballot)"
+  NOTIFICATION_FRIEND_OPINIONS_YOUR_BALLOT_EMAIL: 32, // Email: "Friends' opinions (on your ballot)" - friendopinions
   NOTIFICATION_FRIEND_OPINIONS_YOUR_BALLOT_SMS: 64, // SMS: "Friends' opinions (on your ballot)"
   NOTIFICATION_FRIEND_OPINIONS_OTHER_REGIONS: 128, // In App: "Friends' opinions (other regions)"
-  NOTIFICATION_FRIEND_OPINIONS_OTHER_REGIONS_EMAIL: 256, // Email: "Friends' opinions (other regions)"
+  NOTIFICATION_FRIEND_OPINIONS_OTHER_REGIONS_EMAIL: 256, // Email: "Friends' opinions (other regions)" - friendopinionsall
   NOTIFICATION_FRIEND_OPINIONS_OTHER_REGIONS_SMS: 512, // SMS: "Friends' opinions (other regions)"
   // NOTIFICATION_VOTER_DAILY_SUMMARY = n/a  # In App: When a friend posts something, or reacts to another post
-  NOTIFICATION_VOTER_DAILY_SUMMARY_EMAIL: 1024,  // Email: When a friend posts something, or reacts to another post
+  NOTIFICATION_VOTER_DAILY_SUMMARY_EMAIL: 1024,  // Email: When a friend posts something, or reacts to another post - dailyfriendactivity
   NOTIFICATION_VOTER_DAILY_SUMMARY_SMS: 2048,  // SMS: When a friend posts something, or reacts to another post
+  // NOTIFICATION_FRIEND_REQUEST_RESPONSES: n/a, // In App: "Show me responses to my friend requests"
+  NOTIFICATION_FRIEND_REQUEST_RESPONSES_EMAIL: 4096, // Email: "Show me responses to my friend requests" - friendaccept
+  NOTIFICATION_FRIEND_REQUEST_RESPONSES_SMS: 8192, // SMS: "Show me responses to my friend requests"
+  NOTIFICATION_LOGIN_EMAIL: 16384, // Email: "Show me responses to my friend requests"
+  NOTIFICATION_LOGIN_SMS: 32768, // SMS: "Show me responses to my friend requests"
+  // NOTIFICATION_FRIEND_MESSAGES: n/a, // In App: "Show me responses to my friend requests"
+  NOTIFICATION_FRIEND_MESSAGES_EMAIL: 65536, // Email: "Show me responses to my friend requests" - friendaccept
+  NOTIFICATION_FRIEND_MESSAGES_SMS: 131072, // SMS: "Show me responses to my friend requests"
 
   // Used for converting features_provided_bitmap into which features this voter can choose to use
   // Mirrored in WeVoteServer/organization/models.py

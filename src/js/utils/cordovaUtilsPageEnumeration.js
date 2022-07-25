@@ -39,7 +39,7 @@ export function pageEnumeration () {
     return CordovaPageConstants.moreTools;
   } else if (path.startsWith('/settings/notifications')) {
     return CordovaPageConstants.settingsNotifications;
-  } else if (path.startsWith('/settings/profile')) {
+  } else if (path.startsWith('/settings/profile') || path.startsWith('/settings/yourdata')) {
     return CordovaPageConstants.settingsProfile;
   } else if (path.startsWith('/settings/share')) {
     return CordovaPageConstants.settingsShare;
@@ -47,7 +47,7 @@ export function pageEnumeration () {
     return CordovaPageConstants.settingsSubscription;
   } else if (path.startsWith('/settings/voterguidelist')) {
     return CordovaPageConstants.settingsVoterGuideLst;
-  } else if (path.startsWith('/ready') || path === '/') {
+  } else if (path.startsWith('/ready') || path === '/welcome' || path === '/') {
     return CordovaPageConstants.ready;
   } else if (path.startsWith('/values/list')) {
     return CordovaPageConstants.valuesList;
@@ -89,7 +89,8 @@ export function pageEnumeration () {
     return CordovaPageConstants.friendsSentRequest;
   } else if (path.startsWith('/findfriends') ||
              path.startsWith('/start') ||
-             path.startsWith('/setupaccount')) {
+             path.startsWith('/setupaccount') ||
+             path.startsWith('/unsubscribe')) {
     return CordovaPageConstants.start;
   } else if (path.startsWith('/friends')) {
     return CordovaPageConstants.friends;
@@ -99,7 +100,7 @@ export function pageEnumeration () {
     return CordovaPageConstants.values; // Use /value setting
   } else if (path.startsWith('/values')) {
     return CordovaPageConstants.values;
-  } else if (path.startsWith('/welcome') ||
+  } else if (path.startsWith('/welcomehome') ||
              path.startsWith('/for-organizations') ||
              path.startsWith('/for-campaigns') ||
              path.startsWith('/more/pricing') ||

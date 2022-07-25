@@ -59,7 +59,7 @@ export function getApplicationViewBooleans (pathname) {
     pathnameLowerCase === '/more/terms' ||
     pathnameLowerCase === '/more/verify' ||
     pathnameLowerCase.startsWith('/verifythisisme/') ||
-    pathnameLowerCase === '/welcome') {
+    pathnameLowerCase === '/welcomehome') {
     contentFullWidthMode = true;
   } else if (pathnameLowerCase.startsWith('/ballot/vote')) {
     contentFullWidthMode = false; // I set this to false to fix the header padding issues in /ballot/vote
@@ -71,7 +71,9 @@ export function getApplicationViewBooleans (pathname) {
   } else if (stringContains('/settings/positions', pathnameLowerCase)) {
     // contentFullWidthMode = true;
     voterGuideCreatorMode = true;
-  } else if (pathnameLowerCase.startsWith('/ready')) {
+  } else if (pathnameLowerCase.startsWith('/ready') ||
+    (pathnameLowerCase === '/welcome') ||
+    (pathnameLowerCase === '/')) {
     contentFullWidthMode = true;
     readyMode = true;
   } else if (stringContains('/settings', pathnameLowerCase) ||
@@ -143,7 +145,8 @@ export function getApplicationViewBooleans (pathname) {
     pathnameLowerCase === '/settings/sharing' ||
     pathnameLowerCase === '/settings/subscription' ||
     pathnameLowerCase === '/settings/text' ||
-    pathnameLowerCase === '/settings/tools') {
+    pathnameLowerCase === '/settings/tools' ||
+    pathnameLowerCase === '/settings/yourdata') {
     showBackToSettingsMobile = true;
   } else if (pathnameLowerCase.startsWith('/value/') ||
     pathnameLowerCase === '/values/list' ||
@@ -184,7 +187,7 @@ export function getApplicationViewBooleans (pathname) {
       (pathnameLowerCase === '/more/myballot') ||
       (pathnameLowerCase === '/start') ||
       (pathnameLowerCase === '/values/list') ||
-      (pathnameLowerCase === '/welcome') ||
+      (pathnameLowerCase === '/welcomehome') ||
       pathnameLowerCase.startsWith('/findfriends') ||
       pathnameLowerCase.startsWith('/how') ||
       pathnameLowerCase.startsWith('/more/donate') ||
@@ -194,6 +197,7 @@ export function getApplicationViewBooleans (pathname) {
       pathnameLowerCase.startsWith('/setupaccount') ||
       pathnameLowerCase.startsWith('/settings/voterguidesmenu') ||
       pathnameLowerCase.startsWith('/twitter_sign_in') ||
+      pathnameLowerCase.startsWith('/unsubscribe') ||
       pathnameLowerCase.startsWith('/wevoteintro/') ||
       pathnameLowerCase.startsWith('/value/') ||
       stringContains('/b/btdo', pathnameLowerCase) ||
@@ -220,6 +224,7 @@ export function getApplicationViewBooleans (pathname) {
       pathnameLowerCase.startsWith('/settings/subscription') ||
       pathnameLowerCase.startsWith('/settings/text') ||
       pathnameLowerCase.startsWith('/settings/tools') ||
+      pathnameLowerCase.startsWith('/settings/yourdata') ||
       pathnameLowerCase.startsWith('/settings')) {
     // We want to SHOW the footer bar on the above path patterns
     showFooterBar = isWebApp() || (!isIOSAppOnMac() && isSmallScreen);
@@ -235,6 +240,7 @@ export function getApplicationViewBooleans (pathname) {
   if (VoterStore.getVoterIsSignedIn()) {
     // We currently don't show footer once voter is signed in
   } else if (pathnameLowerCase.startsWith('/ready') ||
+      (pathnameLowerCase === '/welcome') ||
       (pathnameLowerCase === '/')) {
     showFooterMain = true;
   }

@@ -138,14 +138,14 @@ class OrganizationVoterGuideCard extends Component {
           )}
           { !isVoterOwner && (
             <Suspense fallback={<></>}>
-              <FollowToggleWrapper>
+              <OrganizationVoterGuideFollowToggleWrapper>
                 <FollowToggle
                   platformType="desktop"
                   organizationWeVoteId={organizationWeVoteId}
                   // otherVoterWeVoteId={organizationLinkedVoterWeVoteId}
                   showFollowingText
                 />
-              </FollowToggleWrapper>
+              </OrganizationVoterGuideFollowToggleWrapper>
               { (isSpeakerTypePrivateCitizen(organizationType) && organizationLinkedVoterWeVoteId) && (
                 <FriendToggleWrapper>
                   <FriendToggle
@@ -208,7 +208,7 @@ const EditOrFollow = styled('div')`
 const EditYourEndorsementsCardWrapper = styled('div')`
 `;
 
-const FollowToggleWrapper = styled('div')`
+const OrganizationVoterGuideFollowToggleWrapper = styled('div')`
   margin-top: 10px;
 `;
 

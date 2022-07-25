@@ -443,6 +443,7 @@ class MeasureItemCompressed extends Component {
                     <PositionRowList
                       ballotItemWeVoteId={measureWeVoteId}
                       showOppose
+                      showOpposeDisplayName
                     />
                   </PositionRowListOneWrapper>
                   {voterOpposesBallotItem && (

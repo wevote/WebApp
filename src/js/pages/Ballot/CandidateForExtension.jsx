@@ -153,7 +153,7 @@ class CandidateForExtension extends Component {
           hidden={activeTabIndex !== 0}
           id={`simple-tabpanel-${0}`}
           aria-labelledby={`simple-tab-${0}`}
-          value={0}
+          // value={0}
         >
           {activeTabIndex === 0 && (
             <Box classes={{ root: classes.Box }} p={3}>
@@ -197,7 +197,7 @@ class CandidateForExtension extends Component {
           hidden={activeTabIndex !== 0}
           id={`simple-tabpanel-${0}`}
           aria-labelledby={`simple-tab-${0}`}
-          value={1}
+          // value={1}
         >
           {activeTabIndex === 0 && (
             <Box classes={{ root: classes.Box }} p={3}>
@@ -296,7 +296,7 @@ class CandidateForExtension extends Component {
 }
 CandidateForExtension.propTypes = {
   classes: PropTypes.object,
-  location: PropTypes.object,
+  // location: PropTypes.object,
 };
 
 const styles = (theme) => ({

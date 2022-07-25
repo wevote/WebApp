@@ -4,6 +4,7 @@ import withStyles from '@mui/styles/withStyles';
 import withTheme from '@mui/styles/withTheme';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
+import PositionScoreIntroForBallotItem from './PositionScoreIntroForBallotItem';
 import { renderLog } from '../../../common/utils/logging';
 import stringContains from '../../../common/utils/stringContains';
 import {
@@ -198,7 +199,7 @@ class ScoreSummaryListController extends Component {
         // console.log('numberOfOpposePositionsForScore:', numberOfOpposePositionsForScore);
         voterPersonalNetworkScore = numberOfSupportPositionsForScore - numberOfOpposePositionsForScore;
         if (voterPersonalNetworkScore > 0) {
-          voterPersonalNetworkScoreWithSign = `+${voterPersonalNetworkScore}`;
+          voterPersonalNetworkScoreWithSign = `${voterPersonalNetworkScore}`; // We no longer want to add '+' sign for positive numbers
           voterPersonalNetworkScoreIsPositive = true;
         } else if (voterPersonalNetworkScore < 0) {
           voterPersonalNetworkScoreWithSign = `${voterPersonalNetworkScore}`; // Minus sign '-' is already built into the number
@@ -422,13 +423,12 @@ class ScoreSummaryListController extends Component {
         );
       } else {
         const positionsInNetworkVoterNotDecidedIntro = (
-          <div>
-            Your personalized score about
-            {' '}
-            <strong>{ballotItemDisplayName}</strong>
-            {' '}
-            is calculated from opinions in your personal network:
-          </div>
+          <ScoreSummaryIntroductionText>
+            <PositionScoreIntroForBallotItem
+              ballotItemDisplayName={ballotItemDisplayName}
+              organizationsToFollowExist={Boolean(numberOfAllPositions)}
+            />
+          </ScoreSummaryIntroductionText>
         );
         scoreSummaryHtml = (
           <ScoreSummaryHtmlWrapper>
@@ -523,20 +523,12 @@ class ScoreSummaryListController extends Component {
     } else {
       scoreSummaryHtml = (
         <ScoreSummaryHtmlWrapper>
-          <div>
-            Follow opinions to build your personalized score
-            {(ballotItemDisplayName) && (
-              <span>
-                {' '}
-                about
-                {' '}
-                <strong>
-                  {ballotItemDisplayName}
-                </strong>
-              </span>
-            )}
-            .
-          </div>
+          <ScoreSummaryIntroductionText>
+            <PositionScoreIntroForBallotItem
+              ballotItemDisplayName={ballotItemDisplayName}
+              organizationsToFollowExist={Boolean(numberOfAllPositions)}
+            />
+          </ScoreSummaryIntroductionText>
           <div>
             {positionsOutOfNetworkSummaryList && (
               <RenderedOrganizationsWrapper>
@@ -590,6 +582,10 @@ const ScoreSummaryListControllerWrapper = styled('div')`
 `;
 
 const ScoreSummaryHtmlWrapper = styled('div')`
+`;
+
+const ScoreSummaryIntroductionText = styled('div')`
+  margin-bottom: 24px;
 `;
 
 export default withTheme(withStyles(styles)(ScoreSummaryListController));

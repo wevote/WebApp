@@ -132,7 +132,7 @@ class IssueFollowToggleButton extends Component {
     if (this.props.onIssueStopFollowingFunction) {
       this.props.onIssueStopFollowingFunction(issueWeVoteId);
     }
-    openSnackbar({ message: `You've stopped following ${issueName}.` });
+    openSnackbar({ message: `You've stopped following ${issueName}.`, severity: 'success' });
     if (currentBallotIdInUrl !== ballotItemWeVoteId) {
       historyPush(`${urlWithoutHash}#${ballotItemWeVoteId}`);
     }

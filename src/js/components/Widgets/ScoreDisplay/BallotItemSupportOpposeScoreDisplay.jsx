@@ -4,6 +4,7 @@ import withStyles from '@mui/styles/withStyles';
 import withTheme from '@mui/styles/withTheme';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
+import PositionScoreIntroForBallotItem from './PositionScoreIntroForBallotItem';
 import SupportActions from '../../../actions/SupportActions';
 import { renderLog } from '../../../common/utils/logging';
 import stringContains from '../../../common/utils/stringContains';
@@ -286,7 +287,7 @@ class BallotItemSupportOpposeScoreDisplay extends Component {
         // console.log('numberOfOpposePositionsForScore:', numberOfOpposePositionsForScore);
         voterPersonalNetworkScore = numberOfSupportPositionsForScore - numberOfOpposePositionsForScore;
         if (voterPersonalNetworkScore > 0) {
-          voterPersonalNetworkScoreWithSign = `+${voterPersonalNetworkScore}`;
+          voterPersonalNetworkScoreWithSign = `${voterPersonalNetworkScore}`; // We no longer want to add '+' sign for positive numbers
           voterPersonalNetworkScoreIsPositive = true;
         } else if (voterPersonalNetworkScore < 0) {
           voterPersonalNetworkScoreWithSign = `${voterPersonalNetworkScore}`; // Minus sign '-' is already built into the number
@@ -579,13 +580,12 @@ class BallotItemSupportOpposeScoreDisplay extends Component {
         );
       } else {
         const positionsInNetworkVoterNotDecidedIntro = (
-          <div>
-            Your personalized score about
-            {' '}
-            <strong>{ballotItemDisplayName}</strong>
-            {' '}
-            is calculated from opinions in your personal network:
-          </div>
+          <ScoreSummaryIntroductionText>
+            <PositionScoreIntroForBallotItem
+              ballotItemDisplayName={ballotItemDisplayName}
+              organizationsToFollowExist={Boolean(numberOfAllPositions)}
+            />
+          </ScoreSummaryIntroductionText>
         );
         positionsPopover = (
           <PopoverWrapper>
@@ -728,20 +728,12 @@ class BallotItemSupportOpposeScoreDisplay extends Component {
             </PopoverTitleText>
           </PopoverHeader>
           <PopoverBody>
-            <div>
-              Follow opinions to build your personalized score
-              {(ballotItemDisplayName) && (
-                <span>
-                  {' '}
-                  about
-                  {' '}
-                  <strong>
-                    {ballotItemDisplayName}
-                  </strong>
-                </span>
-              )}
-              .
-            </div>
+            <ScoreSummaryIntroductionText>
+              <PositionScoreIntroForBallotItem
+                ballotItemDisplayName={ballotItemDisplayName}
+                organizationsToFollowExist={Boolean(numberOfAllPositions)}
+              />
+            </ScoreSummaryIntroductionText>
             <div>
               {positionsOutOfNetworkSummaryList && (
                 <RenderedOrganizationsWrapper>
@@ -775,20 +767,12 @@ class BallotItemSupportOpposeScoreDisplay extends Component {
           </PopoverTitleText>
         </PopoverHeader>
         <PopoverBody>
-          <div>
-            Follow opinions to build your personalized score
-            {(ballotItemDisplayName) && (
-              <span>
-                {' '}
-                about
-                {' '}
-                <strong>
-                  {ballotItemDisplayName}
-                </strong>
-              </span>
-            )}
-            .
-          </div>
+          <ScoreSummaryIntroductionText>
+            <PositionScoreIntroForBallotItem
+              ballotItemDisplayName={ballotItemDisplayName}
+              organizationsToFollowExist={Boolean(numberOfAllPositions)}
+            />
+          </ScoreSummaryIntroductionText>
           <div>
             {positionsOutOfNetworkSummaryList && (
               <RenderedOrganizationsWrapper>
@@ -1122,6 +1106,12 @@ const BallotItemSupportOpposeScoreDisplayWrapper = styled('div')`
   margin-top: .1rem;
 `;
 
+const DownArrow = styled('div')`
+  margin-left: 9px;
+  margin-top: -70px;
+  z-index: 2;
+`;
+
 const EndorsementRow = styled('div')`
   display: flex;
   flex-flow: row nowrap;
@@ -1217,6 +1207,11 @@ const ScoreLabel = styled('div')`
   margin-top: -4px;
 `;
 
+const ScoreLabelAfterDecisionNoScore = styled('div')`
+  font-size: 8px;
+  margin-top: -7px;
+`;
+
 const ScoreNumberAfterDecision = styled('div')`
   font-size: 12px;
   margin-top: -5px;
@@ -1227,14 +1222,19 @@ const ScoreNumberZeroAfterDecision = styled('div')`
   margin-top: -5px;
 `;
 
-const ScoreLabelAfterDecisionNoScore = styled('div')`
-  font-size: 8px;
-  margin-top: -7px;
-`;
-
 const ScoreNumberWrapper = styled('div')`
   font-size: 18px;
   margin-top: -8px;
+`;
+
+const ScoreSummaryIntroductionText = styled('div')`
+  margin-bottom: 24px;
+`;
+
+const UpArrow = styled('div')`
+  margin-left: 9px;
+  margin-top: 10px;
+  z-index: 2;
 `;
 
 const VoterChoiceWrapper = styled('div')`
@@ -1254,18 +1254,6 @@ const YourScoreWrapper = styled('div')`
   text-align: center;
   width: 40px;
   height: 40px;
-`;
-
-const DownArrow = styled('div')`
-  margin-left: 9px;
-  margin-top: -70px;
-  z-index: 2;
-`;
-
-const UpArrow = styled('div')`
-  margin-left: 9px;
-  margin-top: 10px;
-  z-index: 2;
 `;
 
 export default withTheme(withStyles(styles)(BallotItemSupportOpposeScoreDisplay));

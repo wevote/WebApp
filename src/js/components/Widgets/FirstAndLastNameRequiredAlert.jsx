@@ -48,7 +48,10 @@ class FirstAndLastNameRequiredAlert extends Component {
   }
 
   componentWillUnmount () {
-    if (this.timer > 0) {
+    const { displayThisComponent } = this.state;
+    // console.log('FirstAndLastNameRequiredAlert componentWillUnmount displayThisComponent:', displayThisComponent);
+    if (displayThisComponent && this.timer > 0) {
+      // If leaving this component, call friendInvitationByEmailSend so we can trigger any invitations currently held back
       FriendActions.friendInvitationByEmailSend();
     }
     if (this.timer) clearTimeout(this.timer);

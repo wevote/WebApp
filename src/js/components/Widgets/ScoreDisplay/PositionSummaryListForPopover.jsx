@@ -144,7 +144,7 @@ class PositionSummaryListForPopover extends Component {
             </OrganizationNameWrapper>
           )}
           {(positionSummary.voterCanFollowOrganization && !positionSummary.organizationInVotersNetwork) && (
-            <FollowToggleWrapper>
+            <PositionFollowToggleWrapper>
               <Suspense fallback={<></>}>
                 <FollowToggle
                   addToScoreLabelOn
@@ -153,7 +153,7 @@ class PositionSummaryListForPopover extends Component {
                   hideDropdownButtonUntilFollowing
                 />
               </Suspense>
-            </FollowToggleWrapper>
+            </PositionFollowToggleWrapper>
           )}
           {!!(positionSummary.organizationInVotersNetwork) && (
             <IconsOuterWrapper>
@@ -279,7 +279,7 @@ const styles = () => ({
   },
 });
 
-const FollowToggleWrapper = styled('div')`
+const PositionFollowToggleWrapper = styled('div')`
 `;
 
 const FollowingWrapper = styled('div')`

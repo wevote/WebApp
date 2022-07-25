@@ -1,9 +1,8 @@
 import withStyles from '@mui/styles/withStyles';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
-import React, { Suspense } from 'react';
+import React from 'react';
 import { filter } from 'lodash-es';
-import DeleteAllContactsButton from './DeleteAllContactsButton';
 import normalizedImagePath from '../../common/utils/normalizedImagePath';
 import { renderLog } from '../../common/utils/logging';
 import VoterStore from '../../stores/VoterStore';
@@ -14,8 +13,6 @@ import {
   SetUpAccountTop,
   StepCenteredWrapper,
 } from '../Style/SetUpAccountStyles';
-
-const AddContactsFromGoogleButton = React.lazy(() => import(/* webpackChunkName: 'AddContactsFromGoogleButton' */ './AddContactsFromGoogleButton'));
 
 const addressBookSVG = '../../../img/get-started/address-book.svg';
 
@@ -148,16 +145,6 @@ SetUpAccountImportContacts.propTypes = {
 const styles = () => ({
 });
 
-const AddContactsButtonWrapper = styled('div')`
-  display: flex;
-  justify-content: center;
-  margin-top: 12px;
-`;
-
-const DeleteAllContactsWrapper = styled('div')`
-  margin-top: 8px;
-`;
-
 const ImageAndButtonsWrapper = styled('div')`
   margin-top: 24px;
   width: 100%;
@@ -172,10 +159,10 @@ const MainImageImg = styled('img')(({ theme }) => (`
   }
 `));
 
-const MainImageWrapper = styled('div')(({ theme }) => (`
+const MainImageWrapper = styled('div')`
   display: flex;
   justify-content: center;
-`));
+`;
 
 const SetUpAccountImportText = styled('div')(({ theme }) => (`
   color: #6c757d;

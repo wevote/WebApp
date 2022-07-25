@@ -132,7 +132,7 @@ class SetUpAccountEditName extends React.Component {
   }
 
   submitSaveNameAndEmail = () => {
-    console.log('SetUpAccountEditName submitSaveNameAndEmail');
+    // console.log('SetUpAccountEditName submitSaveNameAndEmail');
     let voterEmailMissing = false;
     let voterFirstNameMissing = false;
     let voterLastNameMissing = false;

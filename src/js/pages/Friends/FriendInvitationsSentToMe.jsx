@@ -17,6 +17,7 @@ class FriendInvitationsSentToMe extends Component {
   }
 
   componentDidMount () {
+    window.scrollTo(0, 0);
     FriendActions.friendInvitationsSentToMe();
     this.setState({
       friendInvitationsSentToMe: FriendStore.friendInvitationsSentToMe(),

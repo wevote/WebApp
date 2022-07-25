@@ -5,6 +5,7 @@ import styled from 'styled-components';
 import FriendActions from '../../actions/FriendActions';
 import VoterActions from '../../actions/VoterActions';
 import LoadingWheel from '../../common/components/Widgets/LoadingWheel';
+import apiCalming from '../../common/utils/apiCalming';
 import historyPush from '../../common/utils/historyPush';
 import { renderLog } from '../../common/utils/logging';
 import AppObservableStore, { messageService } from '../../stores/AppObservableStore';
@@ -45,6 +46,9 @@ export default class FriendInvitationByEmailVerifyProcess extends Component {
         friendInvitationByEmailVerifyCalled: true,
         hostname,
       });
+    } else if (apiCalming('voterRetrieve', 500)) {
+      // Make sure we generate a voterDeviceId
+      VoterActions.voterRetrieve();
     }
   }
 
@@ -52,6 +56,14 @@ export default class FriendInvitationByEmailVerifyProcess extends Component {
     this.appStateSubscription.unsubscribe();
     this.friendStoreListener.remove();
     this.voterStoreListener.remove();
+    if (this.informationTimer) {
+      clearTimeout(this.informationTimer);
+      this.informationTimer = null;
+    }
+    if (this.verifyTimer) {
+      clearTimeout(this.verifyTimer);
+      this.verifyTimer = null;
+    }
   }
 
   onAppObservableStoreChange () {
@@ -62,16 +74,26 @@ export default class FriendInvitationByEmailVerifyProcess extends Component {
     // console.log('FriendInvitationByEmailVerifyProcess, onAppObservableStoreChange, hostname: ', hostname, 'voterDeviceId:', voterDeviceId);
     if (voterDeviceId && !friendInvitationByEmailVerifyCalled && invitationSecretKey && hostname && hostname !== '') {
       // console.log('onAppObservableStoreChange, calling friendInvitationByEmailVerify');
-      this.friendInvitationByEmailVerify(invitationSecretKey);
       this.setState({
         friendInvitationByEmailVerifyCalled: true,
         hostname,
       });
+      // Prevent multiple unnecessary calls
+      if (this.verifyTimer) clearTimeout(this.verifyTimer);
+      const friendInvitationVerifyDelayTime = 250;
+      this.verifyTimer = setTimeout(() => {
+        this.friendInvitationByEmailVerify(invitationSecretKey);
+      }, friendInvitationVerifyDelayTime);
     }
     // If we know the verification API call has been called...
     if (voterDeviceId && friendInvitationByEmailVerifyCalled && !friendInvitationInformationCalled && invitationSecretKey && hostname && hostname !== '') {
       // console.log('onAppObservableStoreChange, calling friendInvitationInformation');
-      FriendActions.friendInvitationInformation(invitationSecretKey);
+      // Prevent multiple unnecessary calls
+      if (this.informationTimer) clearTimeout(this.informationTimer);
+      const friendInvitationInformationDelayTime = 250;
+      this.informationTimer = setTimeout(() => {
+        FriendActions.friendInvitationInformation(invitationSecretKey);
+      }, friendInvitationInformationDelayTime);
       this.setState({
         friendInvitationInformationCalled: true,
         hostname,
@@ -87,7 +109,11 @@ export default class FriendInvitationByEmailVerifyProcess extends Component {
     // console.log('FriendInvitationByEmailVerifyProcess, onFriendStoreChange, hostname: ', hostname, 'voterDeviceId:', voterDeviceId);
     if (voterDeviceId && friendInvitationByEmailVerifyCalled && !friendInvitationInformationCalled && invitationSecretKey && hostname && hostname !== '') {
       // console.log('onFriendStoreChange, calling friendInvitationInformation');
-      FriendActions.friendInvitationInformation(invitationSecretKey);
+      if (this.informationTimer) clearTimeout(this.informationTimer);
+      const friendInvitationInformationDelayTime = 250;
+      this.informationTimer = setTimeout(() => {
+        FriendActions.friendInvitationInformation(invitationSecretKey);
+      }, friendInvitationInformationDelayTime);
       this.setState({
         friendInvitationInformationCalled: true,
         hostname,
@@ -111,16 +137,6 @@ export default class FriendInvitationByEmailVerifyProcess extends Component {
   onVoterStoreChange () {
     // console.log('onVoterStoreChange');
     this.onAppObservableStoreChange();
-  }
-
-  cancelMergeFunction = () => {
-    historyPush({
-      pathname: '/ready',  // SnackNotifier that handles this is in Ready
-      state: {
-      },
-    });
-    // message: 'You have chosen to NOT merge your two accounts.',
-    // severity: 'success'
   }
 
   setYesPleaseMergeAccounts = () => {
@@ -187,18 +203,27 @@ export default class FriendInvitationByEmailVerifyProcess extends Component {
                 </div>
               </DelayedLoad>
             </CenteredText>
-            {LoadingWheel}
             <CenteredText>
-              <DelayedLoad waitBeforeShow={8000}>
-                <Button
-                  color="primary"
-                  id="setYesPleaseMergeAccounts"
-                  onClick={this.setYesPleaseMergeAccounts}
-                  variant="contained"
-                  // classes={showCancelEditAddressButton ? { root: classes.saveButton } : { root: classes.fullWidthSaveButton }}
-                >
-                  Continue
-                </Button>
+              <DelayedLoad loading waitBeforeShow={8000}>
+                <CenteredTextSimple>
+                  <div>
+                    Ready to begin!
+                    <br />
+                    <br />
+                    <br />
+                  </div>
+                  <div>
+                    <Button
+                      color="primary"
+                      id="setYesPleaseMergeAccounts"
+                      onClick={this.setYesPleaseMergeAccounts}
+                      variant="contained"
+                      // classes={showCancelEditAddressButton ? { root: classes.saveButton } : { root: classes.fullWidthSaveButton }}
+                    >
+                      Next
+                    </Button>
+                  </div>
+                </CenteredTextSimple>
               </DelayedLoad>
             </CenteredText>
           </div>
@@ -218,7 +243,7 @@ export default class FriendInvitationByEmailVerifyProcess extends Component {
 
     // This process starts when we return from attempting friendInvitationByEmailVerify
     if (!invitationStatus.voterDeviceId) {
-      console.log('voterDeviceId Missing');
+      // console.log('voterDeviceId Missing');
       return LoadingWheel;
     } else if (invitationStatus.attemptedToApproveOwnInvitation) {
       console.log('You are not allowed to approve your own invitation.');
@@ -262,22 +287,44 @@ export default class FriendInvitationByEmailVerifyProcess extends Component {
             <CenteredText>
               <DelayedLoad waitBeforeShow={1000}>
                 <div>
-                  Verifying invitation code.
+                  Verifying invitation code...
                   {' '}
                 </div>
               </DelayedLoad>
               <DelayedLoad waitBeforeShow={3000}>
                 <div>
-                  Setting up your account.
+                  Setting up your account...
                 </div>
               </DelayedLoad>
               <DelayedLoad waitBeforeShow={5000}>
                 <div>
-                  Preparing your ballot based on our best guess of your location.
+                  Preparing your ballot based on your location...
                 </div>
               </DelayedLoad>
             </CenteredText>
-            {LoadingWheel}
+            <CenteredText>
+              <DelayedLoad loading waitBeforeShow={8000}>
+                <CenteredTextSimple>
+                  <div>
+                    Ready to begin!
+                    <br />
+                    <br />
+                    <br />
+                  </div>
+                  <div>
+                    <Button
+                      color="primary"
+                      id="setYesPleaseMergeAccounts"
+                      onClick={this.setYesPleaseMergeAccounts}
+                      variant="contained"
+                      // classes={showCancelEditAddressButton ? { root: classes.saveButton } : { root: classes.fullWidthSaveButton }}
+                    >
+                      Continue
+                    </Button>
+                  </div>
+                </CenteredTextSimple>
+              </DelayedLoad>
+            </CenteredText>
           </div>
         </Suspense>
       );
@@ -295,4 +342,11 @@ const CenteredText = styled('div')`
   justify-content: center;
   margin-top: 70px;
   padding: 15px;
+`;
+
+const CenteredTextSimple = styled('div')`
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 `;

@@ -10,11 +10,14 @@ class FriendStore extends ReduceStore {
       currentFriendList: [],
       currentFriendsByVoterWeVoteIdDict: {},  // key == voterWeVoteId, value = friend data dict
       currentFriendsOrganizationWeVoteIds: [],
+      errorMessageToShowVoter: '',
       friendInvitationsSentByMe: [],
       friendInvitationsSentToMe: [],
       friendInvitationsWaitingForVerification: [],
       messageToFriendQueuedToSave: '',
       messageToFriendQueuedToSaveSet: false,
+      numberOfMessagesSent: 0,
+      successMessageToShowVoter: '',
     };
   }
 
@@ -91,6 +94,16 @@ class FriendStore extends ReduceStore {
     return this.getState().messageToFriendQueuedToSaveSet;
   }
 
+  getNumberOfMessagesSent () {
+    const { numberOfMessagesSent } = this.getState();
+    return numberOfMessagesSent;
+  }
+
+  getSuccessMessageToShowVoter () {
+    const { successMessageToShowVoter } = this.getState();
+    return successMessageToShowVoter;
+  }
+
   isFriend (voterWeVoteId) {
     const { currentFriendsByVoterWeVoteIdDict } = this.getState();
     if (currentFriendsByVoterWeVoteIdDict) {
@@ -151,7 +164,11 @@ class FriendStore extends ReduceStore {
 
       case 'clearErrorMessageToShowVoter':
         // console.log('FriendStore clearErrorMessageToShowVoter');
-        return { ...state, errorMessageToShowVoter: '' };
+        return { ...state,
+          errorMessageToShowVoter: '',
+          numberOfMessagesSent: 0,
+          successMessageToShowVoter: '',
+        };
       case 'friendInviteResponse':
         if (!action.res.success) {
           // There was a problem
@@ -212,6 +229,8 @@ class FriendStore extends ReduceStore {
         return {
           ...state,
           errorMessageToShowVoter: action.res.error_message_to_show_voter,
+          numberOfMessagesSent: action.res.number_of_messages_sent,
+          successMessageToShowVoter: action.res.success_message_to_show_voter,
         };
 
       case 'emailBallotData':
@@ -261,11 +280,14 @@ class FriendStore extends ReduceStore {
 
       case 'friendInvitationByEmailVerify':
         if (action.res.voter_device_id === '') {
-          // The first time it was called there was no voter_device_id, so we want to call it again
+          // If there was no voter_device_id, we want to cancel forward motion
           // console.log('FriendStore, friendInvitationByEmailVerify, voter_device_id missing, invitation_secret_key:', action.res.invitation_secret_key);
-          FriendActions.friendInvitationByEmailVerify(action.res.invitation_secret_key);
         } else {
-          // console.log('FriendStore, voterDeviceId present');
+          // console.log('FriendStore, friendInvitationByEmailVerify voterDeviceId present');
+          if (action.res.acceptance_email_should_be_sent) {
+            const acceptanceEmailShouldBeSent = true;
+            FriendActions.friendInvitationByEmailVerify(action.res.invitation_secret_key, acceptanceEmailShouldBeSent);
+          }
           FriendActions.friendInvitationsSentToMe();
           VoterActions.voterRetrieve(); // We need to update the indicator that the person has a verified email
         }

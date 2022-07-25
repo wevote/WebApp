@@ -193,6 +193,7 @@ export default class OrganizationCard extends Component {
               <Link to={voterGuideLink} className="u-no-underline">
                 <Suspense fallback={<></>}>
                   <ImageHandler
+                    alt=""
                     imageUrl={organizationPhotoUrlLarge}
                     className="card-main__org-avatar"
                     hidePlaceholder

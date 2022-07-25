@@ -505,7 +505,7 @@ class SharedItemModal extends Component {
                           />
                         </FriendToggleWrapper>
                       )}
-                      <FollowToggleWrapper>
+                      <SharedItemFollowToggleWrapper>
                         <Suspense fallback={<></>}>
                           <FollowToggle
                             lightModeOn
@@ -514,7 +514,7 @@ class SharedItemModal extends Component {
                             showFollowingText
                           />
                         </Suspense>
-                      </FollowToggleWrapper>
+                      </SharedItemFollowToggleWrapper>
                     </ActionButtonsRow>
                   </SharedByOrganizationBottomRow>
                 </SharedByOrganizationInnerWrapper>
@@ -705,7 +705,7 @@ const FooterBarWrapper = styled('div')(({ theme }) => (`
   }
 `));
 
-const FollowToggleWrapper = styled('div')`
+const SharedItemFollowToggleWrapper = styled('div')`
 `;
 
 const FriendToggleWrapper = styled('div')`
