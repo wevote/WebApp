@@ -31,6 +31,11 @@ export default {
     Dispatcher.loadEndpoint('voterGuidePossibilityPositionSave', dispatchDictionary);
   },
 
+  /**
+   * a Voter Guide Position
+   * @param urlToScan website that the endorsement comes from
+   * @param voterGuidePossibilityId id of the guide possibility
+   */
   voterGuidePossibilityRetrieve (urlToScan = '', voterGuidePossibilityId = '') {
     Dispatcher.loadEndpoint('voterGuidePossibilityRetrieve', {
       url_to_scan: urlToScan,
@@ -38,6 +43,11 @@ export default {
     });
   },
 
+  /**
+   * Save a Voter Guide Possibility
+   * @param voterGuidePossibilityId id of the guide possibility
+   * @param dictionaryToSave dictionary of the data to be saved
+   */
   voterGuidePossibilitySave (voterGuidePossibilityId, dictionaryToSave = {}) {
     let dispatchDictionary = {
       voter_guide_possibility_id: voterGuidePossibilityId,
