@@ -108,7 +108,7 @@ class AddressBoxWelcome extends PureComponent {
         }}
         icon={this.props.icon}
       />
-      );
+    );
   }
 }
 AddressBoxWelcome.propTypes = {
