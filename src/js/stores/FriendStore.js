@@ -172,39 +172,39 @@ class FriendStore extends ReduceStore {
       case 'friendInviteResponse':
         if (!action.res.success) {
           // There was a problem
-          // FriendActions.friendInvitationsSentToMe();
+          // FriendActions.friendListInvitationsSentToMe();
           // console.log('FriendStore friendInviteResponse incoming data NO SUCCESS, action.res:', action.res);
           return {
             ...state,
           };
         } else if (action.res.kind_of_invite_response === 'ACCEPT_INVITATION') {
           // console.log('FriendStore friendInviteResponse incoming data ACCEPT_INVITATION, action.res:', action.res);
-          FriendActions.friendInvitationsSentToMe();
-          FriendActions.currentFriends();
+          FriendActions.friendListInvitationsSentToMe();
+          FriendActions.friendListCurrentFriends();
           return {
             ...state,
           };
         } else if (action.res.kind_of_invite_response === 'IGNORE_INVITATION') {
-          FriendActions.friendInvitationsSentToMe();
+          FriendActions.friendListInvitationsSentToMe();
           // console.log('FriendStore friendInviteResponse incoming data IGNORE_INVITATION, action.res:', action.res);
           return {
             ...state,
           };
         } else if (action.res.kind_of_invite_response === 'IGNORE_SUGGESTION') {
-          FriendActions.suggestedFriendList();
+          FriendActions.friendListSuggested();
           // console.log('FriendStore friendInviteResponse incoming data IGNORE_SUGGESTION, action.res:', action.res);
           return {
             ...state,
           };
         } else if (action.res.kind_of_invite_response === 'DELETE_INVITATION_VOTER_SENT_BY_ME') {
-          FriendActions.friendInvitationsSentByMe();
-          FriendActions.suggestedFriendList();
+          FriendActions.friendListInvitationsSentByMe();
+          FriendActions.friendListSuggested();
           // console.log('FriendStore friendInviteResponse incoming data DELETE_INVITATION_VOTER_SENT_BY_ME, action.res:', action.res);
           return {
             ...state,
           };
         } else if (action.res.kind_of_invite_response === 'DELETE_INVITATION_EMAIL_SENT_BY_ME') {
-          FriendActions.friendInvitationsSentByMe();
+          FriendActions.friendListInvitationsSentByMe();
           // console.log('FriendStore friendInviteResponse incoming data DELETE_INVITATION_EMAIL_SENT_BY_ME, action.res:', action.res);
           return {
             ...state,
@@ -212,7 +212,7 @@ class FriendStore extends ReduceStore {
         } else if (action.res.kind_of_invite_response === 'UNFRIEND_CURRENT_FRIEND') {
           // Because of the potential size of the friend list, it would be better NOT to request the entire list
           // after un-friending, but we do it for now until we can refactor this
-          FriendActions.currentFriends();
+          FriendActions.friendListCurrentFriends();
           // console.log('FriendStore friendInviteResponse incoming data UNFRIEND_CURRENT_FRIEND, action.res:', action.res);
           return {
             ...state,
@@ -224,8 +224,8 @@ class FriendStore extends ReduceStore {
 
       case 'friendInvitationByEmailSend':
         // console.log('FriendStore friendInvitationByEmailSend, action.res:', action.res);
-        FriendActions.friendInvitationsSentByMe();
-        FriendActions.friendInvitationsWaitingForVerification();
+        FriendActions.friendListInvitationsSentByMe();
+        FriendActions.friendListInvitationsWaitingForVerification();
         return {
           ...state,
           errorMessageToShowVoter: action.res.error_message_to_show_voter,
@@ -249,34 +249,38 @@ class FriendStore extends ReduceStore {
         };
 
       case 'friendInvitationByTwitterHandleSend':
-        FriendActions.friendInvitationsSentByMe();
+        FriendActions.friendListInvitationsSentByMe();
         return {
           ...state,
         };
 
       case 'friendInvitationByWeVoteIdSend':
-        FriendActions.suggestedFriendList();
-        FriendActions.friendInvitationsSentByMe();
+        FriendActions.friendListSuggested();
+        FriendActions.friendListInvitationsSentByMe();
         return {
           ...state,
         };
 
       case 'friendInvitationInformation':
-        return {
-          ...state,
-          friendInvitationInformation: {
-            friendFirstName: action.res.friend_first_name,
-            friendLastName: action.res.friend_last_name,
-            friendImageUrlHttpsLarge: action.res.friend_image_url_https_large,
-            friendImageUrlHttpsTiny: action.res.friend_image_url_https_tiny,
-            friendIssueWeVoteIdList: action.res.friend_issue_we_vote_id_list,
-            friendOrganizationWeVoteId: action.res.friend_organization_we_vote_id,
-            friendWeVoteId: action.res.friend_we_vote_id,
-            invitationSecretKeyBelongsToThisVoter: action.res.invitation_secret_key_belongs_to_this_voter,
-            invitationFound: action.res.invitation_found,
-            invitationMessage: action.res.invitation_message,
-          },
-        };
+        if (!action.res.success) {
+          return state;
+        } else {
+          return {
+            ...state,
+            friendInvitationInformation: {
+              friendFirstName: action.res.friend_first_name,
+              friendLastName: action.res.friend_last_name,
+              friendImageUrlHttpsLarge: action.res.friend_image_url_https_large,
+              friendImageUrlHttpsTiny: action.res.friend_image_url_https_tiny,
+              friendIssueWeVoteIdList: action.res.friend_issue_we_vote_id_list,
+              friendOrganizationWeVoteId: action.res.friend_organization_we_vote_id,
+              friendWeVoteId: action.res.friend_we_vote_id,
+              invitationSecretKeyBelongsToThisVoter: action.res.invitation_secret_key_belongs_to_this_voter,
+              invitationFound: action.res.invitation_found,
+              invitationMessage: action.res.invitation_message,
+            },
+          };
+        }
 
       case 'friendInvitationByEmailVerify':
         if (action.res.voter_device_id === '') {
@@ -288,7 +292,7 @@ class FriendStore extends ReduceStore {
             const acceptanceEmailShouldBeSent = true;
             FriendActions.friendInvitationByEmailVerify(action.res.invitation_secret_key, acceptanceEmailShouldBeSent);
           }
-          FriendActions.friendInvitationsSentToMe();
+          FriendActions.friendListInvitationsSentToMe();
           VoterActions.voterRetrieve(); // We need to update the indicator that the person has a verified email
         }
         return {
@@ -302,40 +306,48 @@ class FriendStore extends ReduceStore {
         };
 
       case 'friendInvitationByFacebookVerify':
-        return {
-          ...state,
-          facebookInvitationStatus: {
-            attemptedToApproveOwnInvitation: action.res.attempted_to_approve_own_invitation,
-            facebookRequestId: action.res.facebook_request_id,
-            invitationThatCanBeAcceptedFound: action.res.invitation_found,
-            voterDeviceId: action.res.voter_device_id,
-            voterHasDataToPreserve: action.res.voter_has_data_to_preserve,
-          },
-        };
-
-      case 'friendListsAll':
-        currentFriendsOrganizationWeVoteIds = [];
-        if (action.res.current_friends) {
-          // Reset currentFriendsByVoterWeVoteIdDict so we don't leave in place old friends
-          currentFriendsByVoterWeVoteIdDict = {};
-          for (count = 0; count < action.res.current_friends.length; count++) {
-            // console.log('action.res.current_friends[count]:', action.res.current_friends[count]);
-            currentFriendsByVoterWeVoteIdDict[action.res.current_friends[count].voter_we_vote_id] = action.res.current_friends[count];
-            currentFriendsOrganizationWeVoteIds.push(action.res.current_friends[count].linked_organization_we_vote_id);
-          }
+        if (!action.res.success) {
+          return state;
+        } else {
+          return {
+            ...state,
+            facebookInvitationStatus: {
+              attemptedToApproveOwnInvitation: action.res.attempted_to_approve_own_invitation,
+              facebookRequestId: action.res.facebook_request_id,
+              invitationThatCanBeAcceptedFound: action.res.invitation_found,
+              voterDeviceId: action.res.voter_device_id,
+              voterHasDataToPreserve: action.res.voter_has_data_to_preserve,
+            },
+          };
         }
 
-        return {
-          ...state,
-          currentFriendList: action.res.current_friends,
-          currentFriendsByVoterWeVoteIdDict,
-          currentFriendsOrganizationWeVoteIds,
-          friendInvitationsSentByMe: action.res.invitations_sent_by_me,
-          friendInvitationsSentToMe: action.res.invitations_sent_to_me,
-          friendInvitationsProcessed: action.res.invitations_processed,
-          friendInvitationsWaitingForVerification: action.res.invitations_waiting_for_verify,
-          suggestedFriendList: action.res.suggested_friends,
-        };
+      case 'friendListsAll':
+        if (!action.res.success) {
+          return state;
+        } else {
+          currentFriendsOrganizationWeVoteIds = [];
+          if (action.res.current_friends) {
+            // Reset currentFriendsByVoterWeVoteIdDict, we don't leave in place old friends
+            currentFriendsByVoterWeVoteIdDict = {};
+            for (count = 0; count < action.res.current_friends.length; count++) {
+              // console.log('action.res.current_friends[count]:', action.res.current_friends[count]);
+              currentFriendsByVoterWeVoteIdDict[action.res.current_friends[count].voter_we_vote_id] = action.res.current_friends[count];
+              currentFriendsOrganizationWeVoteIds.push(action.res.current_friends[count].linked_organization_we_vote_id);
+            }
+          }
+
+          return {
+            ...state,
+            currentFriendList: action.res.current_friends,
+            currentFriendsByVoterWeVoteIdDict,
+            currentFriendsOrganizationWeVoteIds,
+            friendInvitationsSentByMe: action.res.invitations_sent_by_me,
+            friendInvitationsSentToMe: action.res.invitations_sent_to_me,
+            friendInvitationsProcessed: action.res.invitations_processed,
+            friendInvitationsWaitingForVerification: action.res.invitations_waiting_for_verify,
+            suggestedFriendList: action.res.suggested_friends,
+          };
+        }
 
       case 'friendList':
         switch (action.res.kind_of_list) {
@@ -419,20 +431,28 @@ class FriendStore extends ReduceStore {
       case 'voterFacebookSignInRetrieve':
       case 'voterMergeTwoAccounts':
       case 'voterVerifySecretCode':
-        // console.log('resetting FriendStore from sign in process');
-        // July 2021: This also trips on first load of the news page if you are signed in
-        if (apiCalming('friendListsAll', 1500)) {
-          FriendActions.getAllFriendLists();
+        if (!action.res.success) {
+          return state;
+        } else {
+          // console.log('resetting FriendStore from sign in process');
+          // July 2021: This also trips on first load of the news page if you are signed in
+          if (apiCalming('friendListsAll', 1500)) {
+            FriendActions.friendListsAll();
+          }
+          return this.resetState();
         }
-        return this.resetState();
 
       case 'voterSignOut':
-        // Firing all of these "just in case" api queries is slow, and firing queries from Stores should bed avoidd
-        // console.log('resetting FriendStore from voterSignOut');
-        if (apiCalming('friendListsAll', 1500)) {
-          FriendActions.getAllFriendLists();
+        if (!action.res.success) {
+          return state;
+        } else {
+          // Firing all of these "just in case" api queries is slow, and firing queries from Stores should bed avoidd
+          // console.log('resetting FriendStore from voterSignOut');
+          if (apiCalming('friendListsAll', 1500)) {
+            FriendActions.friendListsAll();
+          }
+          return this.resetState();
         }
-        return this.resetState();
 
       default:
         return state;

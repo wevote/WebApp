@@ -7,6 +7,7 @@ import Helmet from 'react-helmet';
 import styled from 'styled-components';
 import FriendActions from '../../actions/FriendActions';
 import VoterActions from '../../actions/VoterActions';
+import apiCalming from '../../common/utils/apiCalming';
 import { isCordovaWide } from '../../common/utils/cordovaUtils';
 import historyPush from '../../common/utils/historyPush';
 import { renderLog } from '../../common/utils/logging';
@@ -39,9 +40,11 @@ class FriendIntroLanding extends Component {
 
   componentDidMount () {
     // this.appStateSubscription = messageService.getMessage().subscribe(() => this.onAppObservableStoreChange());
-    VoterActions.voterContactListRetrieve();
     this.friendStoreListener = FriendStore.addListener(this.onFriendStoreChange.bind(this));
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
+    if (apiCalming('voterContactListRetrieve', 20000)) {
+      VoterActions.voterContactListRetrieve();
+    }
     const { match: { params: { invitationSecretKey }  } } = this.props;
     let friendInvitationInformationCalledCount = 0;
     const voterDeviceId = VoterStore.voterDeviceId();

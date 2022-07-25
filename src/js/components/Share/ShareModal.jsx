@@ -55,8 +55,8 @@ class ShareModal extends Component {
 
     this.appStateSubscription = messageService.getMessage().subscribe(() => this.onAppObservableStoreChange());
     this.friendStoreListener = FriendStore.addListener(this.onFriendStoreChange.bind(this));
-    if (apiCalming('friendList', 1500)) {
-      FriendActions.currentFriends();
+    if (apiCalming('friendListsAll', 3000)) {
+      FriendActions.friendListsAll();
     }
     this.shareStoreListener = ShareStore.addListener(this.onShareStoreChange.bind(this));
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));

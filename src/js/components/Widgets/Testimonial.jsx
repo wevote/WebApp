@@ -42,7 +42,7 @@ class Testimonial extends React.Component {
           style={textStyle}
         >
           <FormatQuote style={{
-            transform: 'rotate(180deg)',
+            transform: 'scaleX(-1)',
             verticalAlign: 'text-bottom',
             position: 'relative',
             top: '3px',
@@ -50,6 +50,16 @@ class Testimonial extends React.Component {
           }}
           />
           {testimonial}
+          <span className="u-no-break">
+            &nbsp;
+            <FormatQuote style={{
+              verticalAlign: 'text-bottom',
+              position: 'relative',
+              top: '3px',
+              marginLeft: '-4px',
+            }}
+            />
+          </span>
         </TextStyled>
       </TestimonialContainer>
     );

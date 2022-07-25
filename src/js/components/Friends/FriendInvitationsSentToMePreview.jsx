@@ -2,6 +2,7 @@ import styled from 'styled-components';
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import FriendActions from '../../actions/FriendActions';
+import apiCalming from '../../common/utils/apiCalming';
 import { renderLog } from '../../common/utils/logging';
 import FriendStore from '../../stores/FriendStore';
 import FriendInvitationList from './FriendInvitationList';
@@ -15,11 +16,13 @@ export default class FriendInvitationsSentToMePreview extends Component {
   }
 
   componentDidMount () {
-    FriendActions.friendInvitationsSentToMe();
     this.setState({
       friendInvitationsSentToMe: FriendStore.friendInvitationsSentToMe(),
     });
     this.friendStoreListener = FriendStore.addListener(this.onFriendStoreChange.bind(this));
+    if (apiCalming('friendListsAll', 5000)) {
+      FriendActions.friendListsAll();
+    }
   }
 
   componentWillUnmount () {

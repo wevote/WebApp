@@ -53,7 +53,8 @@ export default class SuggestedFriendToggle extends Component {
     const { voterIsSignedIn } = this.state;
     // console.log('addSuggestedFriend');
     if (voterIsSignedIn) {
-      FriendActions.friendInvitationByWeVoteIdSend(otherVoterWeVoteId);
+      const invitationMessage = FriendStore.getMessageToFriendQueuedToSave();
+      FriendActions.friendInvitationByWeVoteIdSend(otherVoterWeVoteId, invitationMessage);
       this.setState({
         addSuggestedFriendSent: true,
       });
@@ -65,7 +66,7 @@ export default class SuggestedFriendToggle extends Component {
   render () {
     renderLog('SuggestedFriendToggle');  // Set LOG_RENDER_EVENTS to log all renders
     if (!this.state) { return <div />; }
-    const { displayFullWidth, inSideColumn, lightModeOn, otherVoterWeVoteId } = this.props;
+    const { askMode, displayFullWidth, inSideColumn, inviteAgain, lightModeOn, otherVoterWeVoteId } = this.props;
     const { addSuggestedFriendSent, isFriend, voter } = this.state;
     // console.log('SuggestedFriendToggle, otherVoterWeVoteId:', otherVoterWeVoteId, ', isFriend:', isFriend);
     const isLookingAtSelf = voter.we_vote_id === otherVoterWeVoteId;
@@ -75,6 +76,21 @@ export default class SuggestedFriendToggle extends Component {
       return <div />;
     }
 
+    let sendInviteText = 'Add friend';
+    let inviteSentText = 'Invite sent';
+    if (isFriend) {
+      sendInviteText = 'Is friend';
+      inviteSentText = 'Is friend';
+    } else if (askMode) {
+      sendInviteText = 'Ask';
+      inviteSentText = 'Sent';
+    } else if (inviteAgain) {
+      sendInviteText = 'Invite again';
+      inviteSentText = 'Invite sent';
+    } else if (inSideColumn) {
+      sendInviteText = 'Add';
+      inviteSentText = 'Sent';
+    }
     return (
       <SuggestedFriendToggleWrapper displayFullWidth={displayFullWidth}>
         <Button
@@ -85,27 +101,17 @@ export default class SuggestedFriendToggle extends Component {
           onClick={this.addSuggestedFriend}
           variant={`${lightModeOn ? 'outlined' : 'contained'}`}
         >
-          {isFriend ? 'Already Friends' : (
-            <>
-              {inSideColumn ? (
-                <>
-                  {addSuggestedFriendSent ? 'Sent' : 'Add'}
-                </>
-              ) : (
-                <>
-                  {addSuggestedFriendSent ? 'Invite sent' : 'Add friend'}
-                </>
-              )}
-            </>
-          )}
+          {addSuggestedFriendSent ? inviteSentText : sendInviteText}
         </Button>
       </SuggestedFriendToggleWrapper>
     );
   }
 }
 SuggestedFriendToggle.propTypes = {
+  askMode: PropTypes.bool,
   displayFullWidth: PropTypes.bool,
   inSideColumn: PropTypes.bool,
+  inviteAgain: PropTypes.bool,
   lightModeOn: PropTypes.bool,
   otherVoterWeVoteId: PropTypes.string.isRequired,
 };

@@ -99,13 +99,15 @@ class SetUpAccountRoot extends React.Component {
     this.ballotStoreListener = BallotStore.addListener(this.onBallotStoreChange.bind(this));
     this.onFriendStoreChange();
     this.friendStoreListener = FriendStore.addListener(this.onFriendStoreChange.bind(this));
-    VoterActions.voterContactListRetrieve();
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
+    if (apiCalming('friendListsAll', 30000)) {
+      FriendActions.friendListsAll();
+    }
     if (apiCalming('voterBallotItemsRetrieve', 10000)) {
       BallotActions.voterBallotItemsRetrieve();
     }
-    if (apiCalming('friendListsAll', 30000)) {
-      FriendActions.getAllFriendLists();
+    if (apiCalming('voterContactListRetrieve', 20000)) {
+      VoterActions.voterContactListRetrieve();
     }
   }
 

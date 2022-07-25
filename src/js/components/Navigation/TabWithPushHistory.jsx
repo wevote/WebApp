@@ -19,7 +19,9 @@ export default function TabWithPushHistory (props) {
     if (to) {
       history.push(to);
     }
-    handleTabChange(value);
+    if (handleTabChange) {
+      handleTabChange(value);
+    }
   }
 
   // console.log(`TabWithPushHistory label:${label}`);

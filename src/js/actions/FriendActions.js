@@ -14,7 +14,7 @@ export default {
     Dispatcher.dispatch({ type: 'clearErrorMessageToShowVoter', payload: true });
   },
 
-  currentFriends () {
+  friendListCurrentFriends () {
     Dispatcher.loadEndpoint('friendList',
       {
         kind_of_list: 'CURRENT_FRIENDS',
@@ -25,7 +25,7 @@ export default {
   // They tied up all 6 http channels in the browser for 1.26 seconds -- this new API combines them all into one call.
   // 'CURRENT_FRIENDS' 'FRIEND_INVITATIONS_PROCESSED' 'FRIEND_INVITATIONS_WAITING_FOR_VERIFICATION'
   // 'FRIEND_INVITATIONS_SENT_BY_ME' 'FRIEND_INVITATIONS_SENT_TO_ME' 'SUGGESTED_FRIEND_LIST'
-  getAllFriendLists () {
+  friendListsAll () {
     Dispatcher.loadEndpoint('friendListsAll',
       {});
   },
@@ -86,11 +86,12 @@ export default {
     });
   },
 
-  friendInvitationByWeVoteIdSend (otherVoterWeVoteId) {
+  friendInvitationByWeVoteIdSend (otherVoterWeVoteId, invitationMessage) {
     Dispatcher.loadEndpoint('friendInvitationByWeVoteIdSend',
       {
         other_voter_we_vote_id: otherVoterWeVoteId,
         hostname: AppObservableStore.getHostname(),
+        invitation_message: invitationMessage,
       });
   },
 
@@ -103,28 +104,28 @@ export default {
       });
   },
 
-  friendInvitationsProcessed () {
+  friendListInvitationsProcessed () {
     Dispatcher.loadEndpoint('friendList',
       {
         kind_of_list: 'FRIEND_INVITATIONS_PROCESSED',
       });
   },
 
-  friendInvitationsWaitingForVerification () {
+  friendListInvitationsWaitingForVerification () {
     Dispatcher.loadEndpoint('friendList',
       {
         kind_of_list: 'FRIEND_INVITATIONS_WAITING_FOR_VERIFICATION',
       });
   },
 
-  friendInvitationsSentByMe () {
+  friendListInvitationsSentByMe () {
     Dispatcher.loadEndpoint('friendList',
       {
         kind_of_list: 'FRIEND_INVITATIONS_SENT_BY_ME',
       });
   },
 
-  friendInvitationsSentToMe () {
+  friendListInvitationsSentToMe () {
     Dispatcher.loadEndpoint('friendList',
       {
         kind_of_list: 'FRIEND_INVITATIONS_SENT_TO_ME',
@@ -185,7 +186,7 @@ export default {
       });
   },
 
-  suggestedFriendList () {
+  friendListSuggested () {
     Dispatcher.loadEndpoint('friendList',
       {
         kind_of_list: 'SUGGESTED_FRIEND_LIST',

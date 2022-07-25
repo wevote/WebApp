@@ -20,16 +20,16 @@ class FriendDetails extends Component {
     };
   }
 
-  generateSearchURL (item) {
-    const temp = item.replace(/ /g, '+');
-    return `https://www.google.com/search?q=${temp}&oq=${temp}`;
-  }
-
   orderByPhotoExists = (firstMutualFriend, secondMutualFriend) => {
     const secondMutualFriendHasPhoto = secondMutualFriend && secondMutualFriend.friend_photo_url_medium && secondMutualFriend.friend_photo_url_medium.length ? 1 : 0;
     const firstMutualFriendHasPhoto = firstMutualFriend && firstMutualFriend.friend_photo_url_medium && firstMutualFriend.friend_photo_url_medium.length ? 1 : 0;
     return secondMutualFriendHasPhoto - firstMutualFriendHasPhoto;
   };
+
+  generateSearchURL (item) {
+    const temp = item.replace(/ /g, '+');
+    return `https://www.google.com/search?q=${temp}&oq=${temp}`;
+  }
 
   render () {
     renderLog('FriendDetails');  // Set LOG_RENDER_EVENTS to log all renders

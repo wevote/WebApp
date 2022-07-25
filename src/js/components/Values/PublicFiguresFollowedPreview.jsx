@@ -85,7 +85,6 @@ export default class PublicFiguresFollowedPreview extends Component {
                     <OpinionsFollowedListCompressed
                       organizationsFollowed={this.state.organizationsFollowedList}
                       editMode={this.state.editMode}
-                      instantRefreshOn
                     />
                     <Link to="/opinions_followed">See All</Link>
                   </span>

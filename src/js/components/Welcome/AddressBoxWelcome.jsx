@@ -112,6 +112,7 @@ class AddressBoxWelcome extends PureComponent {
   }
 }
 AddressBoxWelcome.propTypes = {
+  icon: PropTypes.object,
   inputProps: PropTypes.object,
 };
 

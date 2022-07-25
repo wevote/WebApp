@@ -1,4 +1,5 @@
 import { Button } from '@mui/material';
+import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
 import { Link } from 'react-router-dom';
@@ -61,7 +62,9 @@ class SuggestedFriendDisplayForList extends Component {
   render () {
     renderLog('SuggestedFriendDisplayForList');  // Set LOG_RENDER_EVENTS to log all renders
     const {
+      askMode,
       cityForDisplay,
+      classes,
       emailAddressForDisplay,
       indicateIfAlreadyOnWeVote,
       inSideColumn,
@@ -90,7 +93,6 @@ class SuggestedFriendDisplayForList extends Component {
     const twitterVoterGuideLink = voterTwitterHandle ? `/${voterTwitterHandle}` : null;
     const weVoteIdVoterGuideLink = linkedOrganizationWeVoteId ? `/voterguide/${linkedOrganizationWeVoteId}` : null;
     const voterGuideLink = twitterVoterGuideLink || weVoteIdVoterGuideLink;
-    const voterImage = <ImageHandler sizeClassName="icon-lg " imageUrl={voterPhotoUrlLarge} kind_of_ballot_item="CANDIDATE" />;
     const detailsHTML = (
       <FriendDetails
         emailAddressForDisplay={emailAddressForDisplay}
@@ -109,9 +111,9 @@ class SuggestedFriendDisplayForList extends Component {
     const friendButtonsExist = true;
     const friendButtonsWrapperHtml = (
       <FriendButtonsWrapper inSideColumn={inSideColumn}>
-        <FriendSettingsWrapper>
+        <SuggestedFriendSettingsWrapper>
           {otherVoterWeVoteId ? (
-            <SuggestedFriendToggle inSideColumn={inSideColumn} otherVoterWeVoteId={otherVoterWeVoteId} />
+            <SuggestedFriendToggle askMode={askMode} inSideColumn={inSideColumn} otherVoterWeVoteId={otherVoterWeVoteId} />
           ) : (
             <Button
               color="primary"
@@ -121,15 +123,22 @@ class SuggestedFriendDisplayForList extends Component {
               type="button"
               variant="contained"
             >
-              <span className="u-no-break">
-                {ignoreSuggestedFriendSent ? 'Invite sent' : 'Add friend'}
-              </span>
+              {askMode ? (
+                <span className="u-no-break">
+                  {friendInvitationByEmailSent ? 'Sent' : 'Ask'}
+                </span>
+              ) : (
+                <span className="u-no-break">
+                  {friendInvitationByEmailSent ? 'Invite sent' : 'Add friend'}
+                </span>
+              )}
             </Button>
           )}
-        </FriendSettingsWrapper>
+        </SuggestedFriendSettingsWrapper>
         <CancelButtonWrapper inSideColumn={inSideColumn}>
           {otherVoterWeVoteId ? (
             <Button
+              classes={{ root: classes.ignoreButton }}
               color="primary"
               disabled={ignoreSuggestedFriendSent}
               fullWidth
@@ -141,6 +150,7 @@ class SuggestedFriendDisplayForList extends Component {
             </Button>
           ) : (
             <Button
+              classes={{ root: classes.ignoreButton }}
               color="primary"
               disabled={ignoreVoterContactSent || voterContactIgnored}
               fullWidth
@@ -162,13 +172,13 @@ class SuggestedFriendDisplayForList extends Component {
             {(voterGuideLinkOn && voterGuideLink) ? (
               <Link to={voterGuideLink} className="u-no-underline">
                 <Suspense fallback={<></>}>
-                  {voterImage}
+                  <ImageHandler sizeClassName="icon-lg " imageUrl={voterPhotoUrlLarge} kind_of_ballot_item="CANDIDATE" />
                 </Suspense>
               </Link>
             ) : (
               <span>
                 <Suspense fallback={<></>}>
-                  {voterImage}
+                  <ImageHandler sizeClassName="icon-lg " imageUrl={voterPhotoUrlLarge} kind_of_ballot_item="CANDIDATE" />
                 </Suspense>
               </span>
             )}
@@ -213,7 +223,9 @@ class SuggestedFriendDisplayForList extends Component {
   }
 }
 SuggestedFriendDisplayForList.propTypes = {
+  askMode: PropTypes.bool,
   cityForDisplay: PropTypes.string,
+  classes: PropTypes.object,
   indicateIfAlreadyOnWeVote: PropTypes.bool,
   emailAddressForDisplay: PropTypes.string,
   inSideColumn: PropTypes.bool,
@@ -233,12 +245,18 @@ SuggestedFriendDisplayForList.propTypes = {
   voterWeVoteId: PropTypes.string,
 };
 
+const styles = {
+  ignoreButton: {
+    minWidth: 92,
+  },
+};
+
 const SuggestedFriendDisplayForListWrapper = styled('div')`
   width: 100%;
 `;
 
-const FriendSettingsWrapper = styled('div')`
+const SuggestedFriendSettingsWrapper = styled('div')`
   width: fit-content;
 `;
 
-export default SuggestedFriendDisplayForList;
+export default withStyles(styles)(SuggestedFriendDisplayForList);

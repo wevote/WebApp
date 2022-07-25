@@ -123,10 +123,14 @@ const InviteToWeVoteLine = styled('div')`
   }
 `;
 
+const SectionDescription = styled('div')`
+  margin-bottom: 16px;
+  width: fit-content;
+`;
+
 const SectionTitle = styled('h2')`
   font-size: 18px;
   font-weight: bold;
-  margin-bottom: 16px;
   width: fit-content;
 `;
 
@@ -148,6 +152,7 @@ export {
   FriendDisplayOuterWrapper,
   FriendName,
   InviteToWeVoteLine,
+  SectionDescription,
   SectionTitle,
   ToRightOfPhoto,
 };

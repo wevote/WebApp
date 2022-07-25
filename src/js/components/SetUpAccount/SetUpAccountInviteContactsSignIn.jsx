@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import React, { Suspense } from 'react';
 import styled from 'styled-components';
 import VoterActions from '../../actions/VoterActions';
+import apiCalming from '../../common/utils/apiCalming';
 import { renderLog } from '../../common/utils/logging';
 import VoterStore from '../../stores/VoterStore';
 import {
@@ -30,8 +31,10 @@ class SetUpAccountInviteContactsSignIn extends React.Component {
   componentDidMount () {
     window.scrollTo(0, 0);
     this.onVoterStoreChange();
-    VoterActions.voterContactListRetrieve();
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
+    if (apiCalming('voterContactListRetrieve', 20000)) {
+      VoterActions.voterContactListRetrieve();
+    }
   }
 
   componentDidUpdate (prevProps) {

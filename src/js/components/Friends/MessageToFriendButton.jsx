@@ -100,7 +100,7 @@ export default class MessageToFriendButton extends Component {
             </>
           ) : (
             <>
-              {messageToFriendSent ? 'Message sent' : 'Ask'}
+              {messageToFriendSent ? 'Sent' : 'Ask'}
             </>
           )}
         </Button>

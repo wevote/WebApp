@@ -41,7 +41,7 @@ class MessageToFriendInputField extends Component {
     if (messageToFriendQueuedToSaveSet) {
       messageToFriendAdjusted = messageToFriendQueuedToSave;
     }
-    // console.log('onFriendStoreChange messageToFriend: ', messageToFriend, ', messageToFriendQueuedToSave: ', messageToFriendQueuedToSave, ', messageToFriendAdjusted:', messageToFriendAdjusted);
+    // console.log('onFriendStoreChange messageToFriendDefault: ', messageToFriendDefault, ', messageToFriendQueuedToSave: ', messageToFriendQueuedToSave, ', messageToFriendQueuedToSaveSet: ', messageToFriendQueuedToSaveSet, ', messageToFriendAdjusted:', messageToFriendAdjusted);
     this.setState({
       messageToFriend: messageToFriendAdjusted,
     });
@@ -76,14 +76,14 @@ class MessageToFriendInputField extends Component {
                   // classes={{ root: classes.textField }} // Not working yet
                   id={`messageToFriendTextArea-${externalUniqueId}`}
                   label="Message to be sent"
-                  name="messageToFriend"
                   margin="dense"
+                  maxRows={3}
                   multiline
-                  rows={3}
-                  variant="outlined"
-                  value={messageToFriend}
-                  onKeyDown={this.handleKeyPress}
+                  name="messageToFriend"
                   onChange={this.updateMessageToFriend}
+                  onKeyDown={this.handleKeyPress}
+                  value={messageToFriend}
+                  variant="outlined"
                 />
               </FormControl>
             </ColumnFullWidth>

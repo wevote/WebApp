@@ -83,8 +83,6 @@ export default class OpinionsFollowedListCompressed extends Component {
   }
 }
 OpinionsFollowedListCompressed.propTypes = {
-  ballotItemWeVoteId: PropTypes.string,
   organizationsFollowed: PropTypes.array,
-  instantRefreshOn: PropTypes.bool,
   editMode: PropTypes.bool,
 };

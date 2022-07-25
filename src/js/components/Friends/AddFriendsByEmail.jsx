@@ -20,7 +20,7 @@ class AddFriendsByEmail extends Component {
   constructor (props) {
     super(props);
     this.state = {
-      addFriendsMessage: 'I\'m using We Vote to get ready to vote. Join me!',
+      addFriendsMessage: 'I\'m getting ready to vote. Would you like to join me in deciding how to vote?',
       emailAddressesError: false,
       emailsOrPhonesBrokenString: '',
       friendContactInfoArray: [],
@@ -48,8 +48,8 @@ class AddFriendsByEmail extends Component {
     this.friendStoreListener = FriendStore.addListener(this.onFriendStoreChange.bind(this));
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
     if (apiCalming('friendListsAll', 30000)) {
-      FriendActions.getAllFriendLists();
-      FriendActions.friendInvitationsWaitingForVerification();
+      FriendActions.friendListsAll();
+      FriendActions.friendListInvitationsWaitingForVerification();
     }
   }
 
@@ -362,7 +362,7 @@ class AddFriendsByEmail extends Component {
                             onChange={this.cacheAddFriendsByEmailMessage}
                             onFocus={focusTextFieldAndroid}
                             onBlur={blurTextFieldAndroid}
-                            placeholder="I'm using We Vote to get ready to vote. Join me!"
+                            placeholder={addFriendsMessage}
                             type="text"
                             value={addFriendsMessage}
                             variant="outlined"

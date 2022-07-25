@@ -42,7 +42,7 @@ export default class FriendList extends Component {
             return null;
           }
           numberOfItemsDisplayed += 1;
-          // console.log('numberOfItemsDisplayed: ', numberOfItemsDisplayed);
+          // console.log('friend: ', friend);
           return (
             <FriendDisplayForList
               electionDateInFutureFormatted={electionDateInFutureFormatted}

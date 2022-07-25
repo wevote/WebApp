@@ -68,7 +68,7 @@ class SettingsWidgetFirstLastName extends Component {
     }
     if (apiCalming('friendInvitationsWaitingForVerification')) {
       // console.log('SettingsWidgetFirstAndLastName friendInvitationsWaitingForVerification');
-      FriendActions.friendInvitationsWaitingForVerification();
+      FriendActions.friendListInvitationsWaitingForVerification();
     }
   }
 

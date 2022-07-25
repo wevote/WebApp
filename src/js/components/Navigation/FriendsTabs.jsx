@@ -3,7 +3,6 @@ import { styled as muiStyled } from '@mui/styles';
 import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import Helmet from 'react-helmet';
 import ActivityActions from '../../actions/ActivityActions';
 import AnalyticsActions from '../../actions/AnalyticsActions';
 import FriendActions from '../../actions/FriendActions';
@@ -23,7 +22,7 @@ class FriendsTabs extends Component {
     super(props);
     this.state = {
       currentFriendList: [],
-      defaultTabItem: '',
+      defaultTabItem: 'requests',
       friendInvitationsSentByMe: [],
       friendInvitationsSentToMe: [],
       suggestedFriendList: [],
@@ -34,7 +33,7 @@ class FriendsTabs extends Component {
     // console.log('FriendsTabs componentDidMount');
     this.friendStoreListener = FriendStore.addListener(this.onFriendStoreChange.bind(this));
     if (apiCalming('friendListsAll', 30000)) {
-      FriendActions.getAllFriendLists();
+      FriendActions.friendListsAll();
     }
     const friendInvitationsSentByMe = FriendStore.friendInvitationsSentByMe();
     const friendInvitationsSentToMe = FriendStore.friendInvitationsSentToMe();
@@ -99,12 +98,13 @@ class FriendsTabs extends Component {
   getSelectedTab () {
     const tabItem = this.getPageFromUrl();
     const { defaultTabItem } = this.state;
-    // console.log('getSelectedTab tabItem:', tabItem, ', defaultTabItem:', defaultTabItem);
     let selectedTab = tabItem || defaultTabItem;
 
     if (selectedTab === 'request') selectedTab = 'sent-requests';   /// Hack Oct 17, 2021
     if (selectedTab === 'sent-requests') selectedTab = 'requests';
+    if (selectedTab === 'all') selectedTab = 'requests';
 
+    // console.log('getSelectedTab tabItem:', tabItem, ', defaultTabItem:', defaultTabItem, ', selectedTab:', selectedTab);
     return selectedTab;
   }
 
@@ -115,7 +115,7 @@ class FriendsTabs extends Component {
     // console.log('------------ in FriendsTabs getPageFromUrl', href);
     if (href === '/friends') {
       // console.log('------------ in FriendsTabs tabItem: invite');
-      return 'all';
+      return 'requests';
     }
     return href.replace('/friends/', '');
   }
@@ -128,7 +128,7 @@ class FriendsTabs extends Component {
       // If the voter is directed to a friends tab, make that the default
       defaultTabItem = tabItem;
     } else {
-      defaultTabItem = 'all';
+      defaultTabItem = 'requests';
     }
     this.setState({ defaultTabItem });
     // console.log('resetDefaultTabForMobile defaultTabItem:', defaultTabItem, ', tabItem:', tabItem);
@@ -146,7 +146,6 @@ class FriendsTabs extends Component {
     return (
       <div className="row" id="friendsHorizontalMenu">
         <div className="col-md-12">
-          <Helmet title="Friends - We Vote" />
           <Tabs
             value={this.getSelectedTab()}
             // onChange={handleChange}
@@ -156,13 +155,6 @@ class FriendsTabs extends Component {
             scrollButtons="auto"
             aria-label="scrollable auto tabs example"
           >
-            <FriendsNavTab
-              value="all"
-              label="All"
-              onClick={() => {
-                this.handleNavigation('/friends/all');
-              }}
-            />
             <FriendsNavTab
               value="requests"
               label={(

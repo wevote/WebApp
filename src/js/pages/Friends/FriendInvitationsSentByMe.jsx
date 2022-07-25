@@ -4,6 +4,7 @@ import Helmet from 'react-helmet';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import FriendActions from '../../actions/FriendActions';
+import apiCalming from '../../common/utils/apiCalming';
 import { renderLog } from '../../common/utils/logging';
 import FriendInvitationList from '../../components/Friends/FriendInvitationList';
 import SearchBar from '../../components/Search/SearchBar';
@@ -25,12 +26,13 @@ export default class FriendInvitationsSentByMe extends Component {
 
   componentDidMount () {
     window.scrollTo(0, 0);
-    FriendActions.friendInvitationsSentByMe();
     this.setState({
       friendInvitationsSentByMe: FriendStore.friendInvitationsSentByMe(),
     });
-
     this.friendStoreListener = FriendStore.addListener(this.onFriendStoreChange.bind(this));
+    if (apiCalming('friendListsAll', 5000)) {
+      FriendActions.friendListsAll();
+    }
   }
 
   componentWillUnmount () {
@@ -96,9 +98,9 @@ export default class FriendInvitationsSentByMe extends Component {
                   </>
                 )}
               </SectionTitle>
-              <p>
-                <Link className="u-link-color" to="/friends/requests">See friend requests you have received.</Link>
-              </p>
+              <AlignRight>
+                <Link className="u-link-color" to="/friends/requests">See friend requests you&apos;ve received</Link>
+              </AlignRight>
               <SearchBar
                 clearButton
                 searchButton
@@ -128,9 +130,9 @@ export default class FriendInvitationsSentByMe extends Component {
                 buttonText="Invite Friends"
                 buttonURL="/friends/invite"
               />
-              <p>
-                <Link to="/friends/requests">See invitations sent to you.</Link>
-              </p>
+              <AlignRight>
+                <Link className="u-link-color" to="/friends/requests">See invitations sent to you</Link>
+              </AlignRight>
             </>
           )}
         </div>
@@ -138,6 +140,11 @@ export default class FriendInvitationsSentByMe extends Component {
     );
   }
 }
+
+const AlignRight = styled('div')`
+  display: flex;
+  justify-content: flex-end;
+`;
 
 const SectionTitle = styled('h2')`
   font-weight: bold;
