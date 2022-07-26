@@ -337,16 +337,6 @@ class OfficeItemCompressed extends Component {
                             </CandidateParty>
                           </div>
                         </Candidate>
-                        {/*  /!* Show check mark or score *!/ */}
-                        <BallotItemSupportOpposeCountDisplayWrapper style={{ display: 'none' }}>
-                          {/* u-show-mobile */}
-                          <Suspense fallback={<></>}>
-                            <BallotItemSupportOpposeScoreDisplay
-                              ballotItemWeVoteId={oneCandidate.we_vote_id}
-                              onClickFunction={this.onClickShowOrganizationModalWithPositions}
-                            />
-                          </Suspense>
-                        </BallotItemSupportOpposeCountDisplayWrapper>
                       </CandidateTopRow>
                       <CandidateBottomRow>
                         {!hideCandidateDetails && (
@@ -584,11 +574,6 @@ const styles = (theme) => ({
     },
   },
 });
-
-const BallotItemSupportOpposeCountDisplayWrapper = styled('div')`
-  cursor: pointer;
-  float: right;
-`;
 
 const Candidate = styled('div')`
   display: flex;
