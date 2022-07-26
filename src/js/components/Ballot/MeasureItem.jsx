@@ -104,7 +104,7 @@ class MeasureItem extends Component {
       stateDisplayName = stateCode.toUpperCase();
     }
 
-    const numberOfLines = 2;
+    const numberOfLines = 7;
     const measureSubtitleCapitalized = toTitleCase(measureSubtitle);
     ballotItemDisplayName = toTitleCase(ballotItemDisplayName);
 

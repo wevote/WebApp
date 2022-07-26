@@ -48,7 +48,6 @@ class MeasureItemCompressed extends Component {
       showPositionStatement: false,
       // numberOfOpposePositionsForScore: 0,
       // numberOfSupportPositionsForScore: 0,
-      voterOpposesBallotItem: false,
       voterSupportsBallotItem: false,
       yesVoteDescription: '',
     };
@@ -109,12 +108,11 @@ class MeasureItemCompressed extends Component {
     if (ballotItemStatSheet) {
       const {
         // numberOfOpposePositionsForScore, numberOfSupportPositionsForScore,
-        voterOpposesBallotItem, voterSupportsBallotItem,
+        voterSupportsBallotItem,
       } = ballotItemStatSheet;
       this.setState({
         // numberOfOpposePositionsForScore,
         // numberOfSupportPositionsForScore,
-        voterOpposesBallotItem,
         voterSupportsBallotItem,
       });
     }
@@ -173,12 +171,11 @@ class MeasureItemCompressed extends Component {
     if (ballotItemStatSheet) {
       const {
         // numberOfOpposePositionsForScore, numberOfSupportPositionsForScore,
-        voterOpposesBallotItem, voterSupportsBallotItem,
+        voterSupportsBallotItem,
       } = ballotItemStatSheet;
       this.setState({
         // numberOfOpposePositionsForScore,
         // numberOfSupportPositionsForScore,
-        voterOpposesBallotItem,
         voterSupportsBallotItem,
       });
     }
@@ -240,7 +237,7 @@ class MeasureItemCompressed extends Component {
     renderLog('MeasureItemCompressed');  // Set LOG_RENDER_EVENTS to log all renders
     const {
       externalUniqueId, localUniqueId, measureSubtitle, measureText,
-      measureWeVoteId, noVoteDescription, voterOpposesBallotItem,
+      measureWeVoteId, noVoteDescription,
       voterSupportsBallotItem, yesVoteDescription,
     } = this.state;
     let { ballotItemDisplayName } = this.state;
@@ -254,219 +251,150 @@ class MeasureItemCompressed extends Component {
     const measureSubtitleCapitalized = toTitleCase(measureSubtitle);
     ballotItemDisplayName = toTitleCase(ballotItemDisplayName);
 
-    const showNoChoicePositionsRow = !voterSupportsBallotItem;
-    const showYesChoicePositionsRow = !voterOpposesBallotItem;
-    const pigsCanFly = false;
-
     return (
-      <MeasureContainer>
-        <MeasureWrapper>
-          <InfoRow>
-            <MeasureInfoWrapper>
-              <Title>
-                {ballotDisplay[0]}
-              </Title>
-            </MeasureInfoWrapper>
-            <BallotItemSupportOpposeCountDisplayWrapper>
-              <Suspense fallback={<></>}>
-                <BallotItemSupportOpposeScoreDisplay
-                  ballotItemWeVoteId={measureWeVoteId}
-                  onClickFunction={this.onClickShowOrganizationModalWithPositions}
-                />
-              </Suspense>
-            </BallotItemSupportOpposeCountDisplayWrapper>
-          </InfoRow>
-          <InfoDetailsRow>
-            <SubTitle>{measureSubtitleCapitalized}</SubTitle>
-            <MeasureText>{shortenText(measureText, 200)}</MeasureText>
-          </InfoDetailsRow>
-        </MeasureWrapper>
-        {showYesChoicePositionsRow && (
-          <ChoiceSpecificsAndPositionsRow>
-            <ChoiceSpecifics
-              id={`measureItemCompressedChoiceYes-${measureWeVoteId}`}
-            >
-              <ChoiceTitle onClick={this.onClickShowOrganizationModalWithBallotItemInfo}>
-                {`Yes On ${extractNumber(ballotItemDisplayName)}`}
-              </ChoiceTitle>
-              <ChoiceInfo>
-                {/* If there is a "yes vote" quote about the measure, show that. If not, show the yesVoteDescription */}
-                <Suspense fallback={<></>}>
-                  <DelayedLoad showLoadingText waitBeforeShow={500}>
-                    <>
-                      <Suspense fallback={<></>}>
-                        <ItemActionBar
-                          ballotItemDisplayName={ballotItemDisplayName}
-                          ballotItemWeVoteId={measureWeVoteId}
-                          commentButtonHide
-                          commentButtonHideInMobile
-                          externalUniqueId={`${externalUniqueId}-${localUniqueId}-MeasureItemCompressedVoteYes-${measureWeVoteId}`}
-                          hideOpposeNo
-                          shareButtonHide
-                          hidePositionPublicToggle
-                        />
-                      </Suspense>
-                      <TopCommentByBallotItem
-                        ballotItemWeVoteId={measureWeVoteId}
-                        childChangeIndicator={yesVoteDescription}
-                        // learnMoreUrl={this.getMeasureLink(measureWeVoteId)}
-                        limitToYes
-                      >
-                        <span>
-                          {shortenText(yesVoteDescription, 200)}
-                        </span>
-                      </TopCommentByBallotItem>
-                    </>
-                  </DelayedLoad>
-                </Suspense>
-              </ChoiceInfo>
-            </ChoiceSpecifics>
-            <PositionRowListOuterWrapper className="u-show-desktop-tablet">
-              <OverflowContainer>
-                <PositionRowListInnerWrapper>
-                  {pigsCanFly && (
-                    <PositionRowListScoreColumn>
-                      <PositionRowListScoreHeader>
-                        Score
-                      </PositionRowListScoreHeader>
-                      <PositionRowListScoreSpacer>
+      <MeasureItemCompressedWrapper>
+        <MeasureTitle onClick={this.onClickShowOrganizationModalWithBallotItemInfo}>
+          {ballotDisplay[0]}
+        </MeasureTitle>
+        <MeasureContainer>
+          <MeasureWrapper>
+            <InfoDetailsRow className="u-cursor--pointer" onClick={this.onClickShowOrganizationModalWithBallotItemInfo}>
+              <SubTitle>{measureSubtitleCapitalized}</SubTitle>
+              <MeasureText>
+                {shortenText(measureText, 200)}
+                &nbsp;
+                <span className="u-link-color">
+                  more
+                </span>
+              </MeasureText>
+            </InfoDetailsRow>
+            <ChoiceSpecificsColumns>
+              <ChoiceSpecifics
+                id={`measureItemCompressedChoiceYes-${measureWeVoteId}`}
+              >
+                <ChoiceTitle onClick={this.onClickShowOrganizationModalWithBallotItemInfo}>
+                  {`Yes On ${extractNumber(ballotItemDisplayName)}`}
+                </ChoiceTitle>
+                <ChoiceInfo>
+                  {/* If there is a "yes vote" quote about the measure, show that. If not, show the yesVoteDescription */}
+                  <Suspense fallback={<></>}>
+                    <DelayedLoad showLoadingText waitBeforeShow={500}>
+                      <>
                         <Suspense fallback={<></>}>
-                          <BallotItemSupportOpposeScoreDisplay
+                          <ItemActionBar
+                            ballotItemDisplayName={ballotItemDisplayName}
                             ballotItemWeVoteId={measureWeVoteId}
-                            onClickFunction={this.onClickShowOrganizationModalWithPositions}
-                            hideEndorsementsOverview
-                            hideNumbersOfAllPositions
+                            commentButtonHide
+                            commentButtonHideInMobile
+                            externalUniqueId={`${externalUniqueId}-${localUniqueId}-MeasureItemCompressedVoteYes-${measureWeVoteId}`}
+                            hideOpposeNo
+                            shareButtonHide
+                            hidePositionPublicToggle
                           />
                         </Suspense>
-                      </PositionRowListScoreSpacer>
-                    </PositionRowListScoreColumn>
-                  )}
-                  <PositionRowListOneWrapper>
-                    <PositionRowList
-                      ballotItemWeVoteId={measureWeVoteId}
-                      showSupport
-                    />
-                  </PositionRowListOneWrapper>
-                  {voterSupportsBallotItem && (
-                    <PositionRowListOneWrapper>
-                      <PositionRowList
-                        ballotItemWeVoteId={measureWeVoteId}
-                        showOppose
-                      />
-                    </PositionRowListOneWrapper>
-                  )}
-                  <PositionRowListOneWrapper>
-                    <PositionRowList
-                      ballotItemWeVoteId={measureWeVoteId}
-                      showInfoOnly
-                    />
-                  </PositionRowListOneWrapper>
-                  <PositionRowListEmptyWrapper>
-                    <PositionRowEmpty
-                      ballotItemWeVoteId={measureWeVoteId}
-                    />
-                  </PositionRowListEmptyWrapper>
-                </PositionRowListInnerWrapper>
-              </OverflowContainer>
-            </PositionRowListOuterWrapper>
-          </ChoiceSpecificsAndPositionsRow>
-        )}
-        {showNoChoicePositionsRow && (
-          <ChoiceSpecificsAndPositionsRow>
-            <ChoiceSpecifics
-              id={`measureItemCompressedChoiceNo-${measureWeVoteId}`}
-            >
-              <ChoiceTitle onClick={this.onClickShowOrganizationModalWithBallotItemInfo}>
-                {`No On ${extractNumber(ballotItemDisplayName)}`}
-              </ChoiceTitle>
-              <ChoiceInfo>
-                {/* If there is a "yes vote" quote about the measure, show that. If not, show the yesVoteDescription */}
-                <Suspense fallback={<></>}>
-                  <DelayedLoad showLoadingText waitBeforeShow={500}>
-                    <>
-                      <Suspense fallback={<></>}>
-                        <ItemActionBar
-                          ballotItemDisplayName={ballotItemDisplayName}
+                        <TopCommentByBallotItem
                           ballotItemWeVoteId={measureWeVoteId}
-                          commentButtonHide
-                          commentButtonHideInMobile
-                          externalUniqueId={`${externalUniqueId}-${localUniqueId}-MeasureItemCompressedVoteNo-${measureWeVoteId}`}
-                          hideSupportYes
-                          shareButtonHide
-                          hidePositionPublicToggle
-                        />
-                      </Suspense>
-                      <TopCommentByBallotItem
-                        ballotItemWeVoteId={measureWeVoteId}
-                        childChangeIndicator={noVoteDescription}
-                        // learnMoreUrl={this.getMeasureLink(measureWeVoteId)}
-                        limitToNo
-                      >
-                        <span>
-                          {shortenText(noVoteDescription, 200)}
-                        </span>
-                      </TopCommentByBallotItem>
-                    </>
-                  </DelayedLoad>
-                </Suspense>
-              </ChoiceInfo>
-            </ChoiceSpecifics>
-            <PositionRowListOuterWrapper className="u-show-desktop-tablet">
-              <OverflowContainer>
-                <PositionRowListInnerWrapper>
-                  {pigsCanFly && (
-                    <PositionRowListScoreColumn>
-                      <PositionRowListScoreHeader>
-                        Score
-                      </PositionRowListScoreHeader>
-                      <PositionRowListScoreSpacer>
+                          childChangeIndicator={yesVoteDescription}
+                          // learnMoreUrl={this.getMeasureLink(measureWeVoteId)}
+                          limitToYes
+                        >
+                          <span>
+                            {shortenText(yesVoteDescription, 200)}
+                          </span>
+                        </TopCommentByBallotItem>
+                      </>
+                    </DelayedLoad>
+                  </Suspense>
+                </ChoiceInfo>
+              </ChoiceSpecifics>
+              <ChoiceSpecifics
+                id={`measureItemCompressedChoiceNo-${measureWeVoteId}`}
+              >
+                <ChoiceTitle onClick={this.onClickShowOrganizationModalWithBallotItemInfo}>
+                  {`No On ${extractNumber(ballotItemDisplayName)}`}
+                </ChoiceTitle>
+                <ChoiceInfo>
+                  {/* If there is a "no vote" quote about the measure, show that. If not, show the noVoteDescription */}
+                  <Suspense fallback={<></>}>
+                    <DelayedLoad showLoadingText waitBeforeShow={500}>
+                      <>
                         <Suspense fallback={<></>}>
-                          <BallotItemSupportOpposeScoreDisplay
+                          <ItemActionBar
+                            ballotItemDisplayName={ballotItemDisplayName}
                             ballotItemWeVoteId={measureWeVoteId}
-                            onClickFunction={this.onClickShowOrganizationModalWithPositions}
-                            hideEndorsementsOverview
-                            hideNumbersOfAllPositions
+                            commentButtonHide
+                            commentButtonHideInMobile
+                            externalUniqueId={`${externalUniqueId}-${localUniqueId}-MeasureItemCompressedVoteNo-${measureWeVoteId}`}
+                            hideSupportYes
+                            shareButtonHide
+                            hidePositionPublicToggle
                           />
                         </Suspense>
-                      </PositionRowListScoreSpacer>
-                    </PositionRowListScoreColumn>
-                  )}
-                  {voterOpposesBallotItem && (
-                    <PositionRowListOneWrapper>
-                      <PositionRowList
-                        ballotItemWeVoteId={measureWeVoteId}
-                        showSupport
-                      />
-                    </PositionRowListOneWrapper>
-                  )}
+                        <TopCommentByBallotItem
+                          ballotItemWeVoteId={measureWeVoteId}
+                          childChangeIndicator={noVoteDescription}
+                          // learnMoreUrl={this.getMeasureLink(measureWeVoteId)}
+                          limitToNo
+                        >
+                          <span>
+                            {shortenText(noVoteDescription, 200)}
+                          </span>
+                        </TopCommentByBallotItem>
+                      </>
+                    </DelayedLoad>
+                  </Suspense>
+                </ChoiceInfo>
+              </ChoiceSpecifics>
+            </ChoiceSpecificsColumns>
+          </MeasureWrapper>
+          <PositionRowListOuterWrapper>
+            <OverflowContainer>
+              <PositionRowListInnerWrapper>
+                <PositionRowListOneWrapper>
+                  <PositionRowList
+                    ballotItemWeVoteId={measureWeVoteId}
+                    showSupport
+                  />
+                </PositionRowListOneWrapper>
+                {voterSupportsBallotItem && (
                   <PositionRowListOneWrapper>
                     <PositionRowList
                       ballotItemWeVoteId={measureWeVoteId}
                       showOppose
-                      showOpposeDisplayName
                     />
                   </PositionRowListOneWrapper>
-                  {voterOpposesBallotItem && (
-                    <PositionRowListOneWrapper>
-                      <PositionRowList
+                )}
+                <PositionRowListOneWrapper>
+                  <PositionRowList
+                    ballotItemWeVoteId={measureWeVoteId}
+                    showInfoOnly
+                  />
+                </PositionRowListOneWrapper>
+                <PositionRowListEmptyWrapper>
+                  <PositionRowEmpty
+                    ballotItemWeVoteId={measureWeVoteId}
+                  />
+                </PositionRowListEmptyWrapper>
+                <PositionRowListScoreColumn>
+                  <PositionRowListScoreHeader>
+                    Score
+                  </PositionRowListScoreHeader>
+                  <PositionRowListScoreSpacer>
+                    <Suspense fallback={<></>}>
+                      <BallotItemSupportOpposeScoreDisplay
                         ballotItemWeVoteId={measureWeVoteId}
-                        showInfoOnly
+                        onClickFunction={this.onClickShowOrganizationModalWithPositions}
+                        hideEndorsementsOverview
+                        hideNumbersOfAllPositions
                       />
-                    </PositionRowListOneWrapper>
-                  )}
-                  {voterOpposesBallotItem && (
-                    <PositionRowListEmptyWrapper>
-                      <PositionRowEmpty
-                        ballotItemWeVoteId={measureWeVoteId}
-                      />
-                    </PositionRowListEmptyWrapper>
-                  )}
-                </PositionRowListInnerWrapper>
-              </OverflowContainer>
-            </PositionRowListOuterWrapper>
-          </ChoiceSpecificsAndPositionsRow>
-        )}
-      </MeasureContainer>
+                    </Suspense>
+                  </PositionRowListScoreSpacer>
+                </PositionRowListScoreColumn>
+              </PositionRowListInnerWrapper>
+            </OverflowContainer>
+          </PositionRowListOuterWrapper>
+        </MeasureContainer>
+      </MeasureItemCompressedWrapper>
     );
   }
 }
@@ -518,21 +446,10 @@ const styles = (theme) => ({
   },
 });
 
-const BallotItemSupportOpposeCountDisplayWrapper = styled('div')`
-  cursor: pointer;
-  float: right;
-`;
-
-const InfoRow = styled('div')`
-  display: flex;
-  flex-flow: row nowrap;
-  justify-content: space-between;
-`;
-
 const InfoDetailsRow = styled('div')`
 `;
 
-const ChoiceSpecificsAndPositionsRow = styled('div')`
+const ChoiceSpecificsColumns = styled('div')`
   display: flex;
   flex-flow: row nowrap;
   justify-content: flex-start;
@@ -541,7 +458,7 @@ const ChoiceSpecificsAndPositionsRow = styled('div')`
 const ChoiceSpecifics = styled('div')(({ theme }) => (`
   display: flex;
   flex-flow: column;
-  min-width: 47%;
+  // min-width: 47%;
   padding-right: 8px;
   ${theme.breakpoints.up('md')} {
     max-width: 47%;
@@ -564,50 +481,47 @@ const ChoiceInfo = styled('span')(({ theme }) => (`
 
 const MeasureContainer = styled('div')`
   display: flex;
-  flex-direction: column;
   justify-content: flex-start;
-  padding: 10px 5px;
+  // padding: 10px 5px 0 10px;
 `;
 
-const MeasureInfoWrapper = styled('div')(({ theme }) => (`
+const MeasureItemCompressedWrapper = styled('div')`
   display: flex;
-  flex-flow: column;
-  max-width: 75%;
-  user-select: none;
-  padding-right: 8px;
-  ${theme.breakpoints.down('md')} {
-    max-width: 70%;
-  }
-`));
+  border: 1px solid #fff;
+  flex-direction: column;
+  margin-bottom: 60px;
+  position: relative;
+`;
+
+const MeasureTitle = styled('h1')`
+  color: #4371cc;
+  cursor: pointer;
+  font-weight: 400;
+  font-size: 32px;
+  margin-bottom: 0;
+  margin-top: 0;
+  white-space: nowrap;
+  width: 100%;
+`;
 
 const MeasureWrapper = styled('div')(({ theme }) => (`
-  width: 480px;
-  ${theme.breakpoints.down('sm')} {
-    width: 100%;
-  }
-  ${theme.breakpoints.up('sm')} {
-    min-width: 320px;
-  }
-`));
-
-const Title = styled('h1')(({ theme }) => (`
-  font-size: 18px;
-  font-weight: bold;
-  margin: .1rem 0;
-  ${theme.breakpoints.down('lg')} {
-    font-size: 16px;
-  }
+  width: 320px;
+  // ${theme.breakpoints.down('sm')} {
+  //   width: 100%;
+  // }
+  // ${theme.breakpoints.up('sm')} {
+  //   min-width: 320px;
+  // }
 `));
 
 const SubTitle = styled('h3')(({ theme }) => (`
-  font-size: 16px;
-  font-weight: 300;
-  color: #555;
-  margin-top: .6rem;
-  width: 135%;
-  ${theme.breakpoints.down('lg')} {
-    font-size: 13px;
-  }
+  font-size: 20px;
+  // font-weight: 300;
+  // color: #555;
+  margin-top: 9px;
+  // ${theme.breakpoints.down('lg')} {
+  //   font-size: 13px;
+  // }
 `));
 
 const MeasureText = styled('div')`
