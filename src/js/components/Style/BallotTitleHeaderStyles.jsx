@@ -4,6 +4,9 @@ const BallotAddress = styled('div', {
   shouldForwardProp: (prop) => !['centerText'].includes(prop),
 })(({ centerText }) => (`
   margin-left: 2px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
   ${centerText ? 'text-align: center;' : ''}
 `));
 
