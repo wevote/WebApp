@@ -62,6 +62,8 @@ export default class TwitterSignInProcess extends Component {
           severity: 'warning',
         },
       });
+    } else if (twitterAuthResponse.twitter_retrieve_attempted === undefined && twitterAuthResponse.twitter_sign_in_failed === undefined) {
+      oAuthLog('TwitterStore listener tripped before receiving a relevant reduce action, ignoring the event');
     } else if (!twitterAuthResponse.twitter_sign_in_found) {
       // This process starts when we return from attempting voterTwitterSignInRetrieve
       // If twitter_sign_in_found NOT True, go back to the sign in page to try again

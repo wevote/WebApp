@@ -406,7 +406,7 @@ class SharedItemModal extends Component {
     let textNextToInfoIcon = null;
     const nameForNextToInfoIcon = organizationName || 'This person';
     const nameForNextToInfoIconMidSentence = organizationName || 'this person';
-    const avatarCompressed = `card-main__avatar-compressed${isCordova() ? '-cordova' : ''}`;
+    const avatarCompressed = 'card-main__avatar-compressed';
     const avatarBackgroundImage = normalizedImagePath('../img/global/svg-icons/avatar-generic.svg');
 
     if (isFriend) {

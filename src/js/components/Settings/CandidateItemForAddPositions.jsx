@@ -1,9 +1,8 @@
-import styled from 'styled-components';
 import withStyles from '@mui/styles/withStyles';
 import withTheme from '@mui/styles/withTheme';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
-import { isCordova } from '../../common/utils/isCordovaOrWebApp';
+import styled from 'styled-components';
 import { renderLog } from '../../common/utils/logging';
 import normalizedImagePath from '../../common/utils/normalizedImagePath';
 import CandidateStore from '../../stores/CandidateStore';
@@ -178,7 +177,7 @@ class CandidateItemForAddPositions extends Component {
     ) :
       null;
 
-    const avatarCompressed = `card-main__avatar-compressed${isCordova() ? '-cordova' : ''}`;
+    const avatarCompressed = 'card-main__avatar-compressed';
     const avatarBackgroundImage = normalizedImagePath('../img/global/svg-icons/avatar-generic.svg');
     const candidatePartyText = oneCandidate.party && oneCandidate.party.length ? `${oneCandidate.party}` : '';
     return (

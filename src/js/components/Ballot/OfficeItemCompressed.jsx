@@ -7,26 +7,16 @@ import Tooltip from 'react-bootstrap/Tooltip';
 import styled from 'styled-components';
 import OfficeActions from '../../actions/OfficeActions';
 import historyPush from '../../common/utils/historyPush';
-import { isCordova } from '../../common/utils/isCordovaOrWebApp';
 import { renderLog } from '../../common/utils/logging';
 import normalizedImagePath from '../../common/utils/normalizedImagePath';
 import toTitleCase from '../../common/utils/toTitleCase';
-import InfoCircleIcon from '../Widgets/InfoCircleIcon';
 import AppObservableStore from '../../stores/AppObservableStore';
 import BallotStore from '../../stores/BallotStore';
 import CandidateStore from '../../stores/CandidateStore';
 import SupportStore from '../../stores/SupportStore';
 import { sortCandidateList } from '../../utils/positionFunctions';
-import {
-  OverflowContainer,
-  PositionRowListEmptyWrapper,
-  PositionRowListInnerWrapper,
-  PositionRowListOneWrapper,
-  PositionRowListOuterWrapper,
-  PositionRowListScoreColumn,
-  PositionRowListScoreHeader,
-  PositionRowListScoreSpacer,
-} from '../Style/PositionRowListStyles';
+import { OverflowContainer, PositionRowListEmptyWrapper, PositionRowListInnerWrapper, PositionRowListOneWrapper, PositionRowListOuterWrapper, PositionRowListScoreColumn, PositionRowListScoreHeader, PositionRowListScoreSpacer, } from '../Style/PositionRowListStyles';
+import InfoCircleIcon from '../Widgets/InfoCircleIcon';
 import signInModalGlobalState from '../Widgets/signInModalGlobalState';
 import PositionRowEmpty from './PositionRowEmpty';
 import PositionRowList from './PositionRowList';
@@ -289,7 +279,7 @@ class OfficeItemCompressed extends Component {
             }
             candidateCount += 1;
             const candidatePartyText = oneCandidate.party && oneCandidate.party.length ? `${oneCandidate.party}` : '';
-            const avatarCompressed = `card-main__avatar-compressed${isCordova() ? '-cordova' : ''}`;
+            const avatarCompressed = 'card-main__avatar-compressed';
             const avatarBackgroundImage = normalizedImagePath('../img/global/svg-icons/avatar-generic.svg');
             const scoreExplanationTooltip = (
               <Tooltip className="u-z-index-9020" id={`scoreDescription-${oneCandidate.we_vote_id}`}>

@@ -7,9 +7,9 @@ import Dispatcher from '../common/dispatcher/Dispatcher';
 
 class TwitterStore extends ReduceStore {
   getInitialState () {
-    return {
-      success: true,
-    };
+  //   return {
+  //     success: true,
+  //   };
   }
 
   get () {

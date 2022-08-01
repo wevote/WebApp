@@ -20,8 +20,10 @@ import {
   PositionRowItemEmptyWrapper,
 } from '../Style/PositionRowListStyles';
 
-const NUMBER_OF_POSITIONS_REQUIRED_TO_TURN_OFF = 5;
 const SignInModal = React.lazy(() => import(/* webpackChunkName: 'SignInModal' */ '../SignIn/SignInModal'));
+
+const NUMBER_OF_POSITIONS_REQUIRED_TO_TURN_OFF = 5;
+
 
 class PositionRowEmpty extends Component {
   constructor (props) {

@@ -292,7 +292,7 @@ export default class HamburgerMenu extends Component {
             <tr className="hamburger-terms__tr-terms">
               <td className="hamburger-terms__td" colSpan={3}>
                 <div>
-                  <span className="hamburger-terms__text" onClick={() => this.deviceTableVisibilityOn()} style={{ color: 'black' }}>
+                  <span className="hamburger-terms__text" onClick={() => this.deviceTableVisibilityOn()} style={{ color: 'black', opacity: '0.7', fontSize: '10px' }}>
                     Device Information
                   </span>
                   <DeviceDialog visibilityOffFunction={this.deviceTableVisibilityOff} show={this.state.showDeviceDialog} />
@@ -304,7 +304,7 @@ export default class HamburgerMenu extends Component {
             <tr className="hamburger-terms__tr-terms">
               <td className="hamburger-terms__td" colSpan={3}>
                 <div>
-                  <span className="hamburger-terms__text" style={{ color: 'black', opacity: '0.7' }}>
+                  <span className="hamburger-terms__text" style={{ color: 'black', opacity: '0.7', fontSize: '10px' }}>
                     Version:&nbsp;&nbsp;
                     {window.weVoteAppVersion}
                   </span>
