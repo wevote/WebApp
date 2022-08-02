@@ -7,7 +7,7 @@ import CheckIcon from '@mui/icons-material/Check';
 
 
 export default function AddCandidateLoadingButton (props) {
-  const { loading, finished } = props;
+  const { loading, finished, text } = props;
 
   if (finished) {
     return (
@@ -31,7 +31,7 @@ export default function AddCandidateLoadingButton (props) {
         endIcon={<SendIcon />}
         type="submit"
       >
-        Submit
+        {text}
       </LoadingButton>
     );
   } else {
@@ -42,7 +42,7 @@ export default function AddCandidateLoadingButton (props) {
         endIcon={<SendIcon />}
         type="submit"
       >
-        Submit
+        {text}
       </Button>
     );
   }
@@ -50,4 +50,5 @@ export default function AddCandidateLoadingButton (props) {
 AddCandidateLoadingButton.propTypes = {
   loading: PropTypes.bool,
   finished: PropTypes.bool,
+  text: PropTypes.string,
 };

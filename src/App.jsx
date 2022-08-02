@@ -28,7 +28,7 @@ const AppleSignInProcess = React.lazy(() => import(/* webpackChunkName: 'AppleSi
 const Attributions = React.lazy(() => import(/* webpackChunkName: 'Attributions' */ './js/pages/More/Attributions'));
 const Ballot = React.lazy(() => import(/* webpackChunkName: 'Ballot' */ './js/pages/Ballot/Ballot'));
 const Candidate = React.lazy(() => import(/* webpackChunkName: 'Candidate' */ './js/pages/Ballot/Candidate'));
-const CandidateForExtension = React.lazy(() => import(/* webpackChunkName: 'CandidateForExtension' */ './js/pages/Ballot/CandidateForExtension'));
+const CandidateForExtension = React.lazy(() => import(/* webpackChunkName: 'EditCandidateForExtension' */ './js/pages/Ballot/EditCandidateForExtension/EditCandidateForExtension'));
 const ClaimYourPage = React.lazy(() => import(/* webpackChunkName: 'ClaimYourPage' */ './js/pages/Settings/ClaimYourPage'));
 const Credits = React.lazy(() => import(/* webpackChunkName: 'Credits' */ './js/pages/More/Credits'));
 const Donate = React.lazy(() => import(/* webpackChunkName: 'Donate' */ './js/pages/More/Donate'));

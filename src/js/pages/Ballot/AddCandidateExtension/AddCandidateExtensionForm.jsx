@@ -47,7 +47,7 @@ export default function AddCandidateExtensionForm (props) {
     if (voterGuidePossibilityIdValue !== 0) {
       // if the organization does exist, check if the candidate does
       console.log(candidate);
-      const voterGuidePossibilityPositionId = voterGuidePossibilityPositionStore.getVoterGuidePossibilityPositionByCandidateName(candidateName, stateRef.current.endorsementPageUrl);
+      const voterGuidePossibilityPositionId = voterGuidePossibilityPositionStore.getVoterGuidePossibilityPositionByCandidateName(candidateName);
       console.log(stateRef.current);
       // if the candidate already exists in the voter guide in the database
       if (voterGuidePossibilityPositionId === 0) {
@@ -131,6 +131,18 @@ export default function AddCandidateExtensionForm (props) {
           onBlur={handleBlur}
         />
         <CandidateTextField
+          variant="outlined"
+          fullWidth
+          color="primary"
+          label="Candidate Campaign Url"
+          name="candidateSpecificEndorsementUrl"
+          id="candidateSpecificEndorsementUrl"
+          defaultValue={candidate.candidateSpecificEndorsementUrl}
+          InputLabelProps={{ style: { fontFamily: 'Nunito Sans' } }}
+          InputProps={{ style: { fontFamily: 'Nunito Sans' } }}
+          onBlur={handleBlur}
+        />
+        <CandidateTextField
           required
           variant="outlined"
           fullWidth
@@ -146,25 +158,16 @@ export default function AddCandidateExtensionForm (props) {
         <CandidateTextField
           variant="outlined"
           fullWidth
-          color="primary"
-          label="Candidate-Specific Endorsement Url"
-          name="candidateSpecificEndorsementUrl"
-          id="candidateSpecificEndorsementUrl"
-          defaultValue={candidate.candidateSpecificEndorsementUrl}
-          InputLabelProps={{ style: { fontFamily: 'Nunito Sans' } }}
-          InputProps={{ style: { fontFamily: 'Nunito Sans' } }}
-          onBlur={handleBlur}
-        />
-        <CandidateTextField
-          variant="outlined"
-          fullWidth
           multiline
           color="primary"
           label="Endorsement Text"
           name="endorsementText"
           // id="candidateURL"
           defaultValue={candidate.endorsementText}
-          InputLabelProps={{ style: { fontFamily: 'Nunito Sans' } }}
+          InputLabelProps={{
+            style: { fontFamily: 'Nunito Sans' },
+            shrink: true,
+          }}
           InputProps={{ style: { fontFamily: 'Nunito Sans' } }}
           onBlur={handleBlur}
           rows="5"
@@ -172,7 +175,7 @@ export default function AddCandidateExtensionForm (props) {
         />
       </CandidateForm>
       <ButtonWrapper>
-        <AddCandidateLoadingButton loading={loading} finished={finished} />
+        <AddCandidateLoadingButton loading={loading} finished={finished} text="Submit" />
       </ButtonWrapper>
     </form>
   );
