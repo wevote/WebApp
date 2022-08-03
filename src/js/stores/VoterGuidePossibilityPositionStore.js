@@ -25,12 +25,11 @@ class VoterGuidePossibilityPositionStore extends ReduceStore {
   }
 
   /**
-   * Get a voterGuidePossibilityPosition. Returns 0 if the voter guide does not contain a position for that candidate.
+   * Get a voterGuidePossibilityPositionID. Returns 0 if the voter guide does not contain a position for that candidate.
    * @param candidateName
-   * @param endorsementPageUrl
    * @returns {number|*}
    */
-  getVoterGuidePossibilityPositionByCandidateName (candidateName, endorsementPageUrl) {
+  getVoterGuidePossibilityPositionByCandidateName (candidateName) {
     // const test = this.getState();
     const allCachedVoterGuidePossibilityPositions = this.getState().allCachedVoterGuidePossibilityPositions || [];
     // const currentVoterGuidePossibilityID = this.getState().voterGuidePossibilityId;
@@ -38,7 +37,7 @@ class VoterGuidePossibilityPositionStore extends ReduceStore {
     for (let i = 0; i < allCachedVoterGuidePossibilityPositions.length; i++) {
       const position = allCachedVoterGuidePossibilityPositions[i];
       // console.log('getVoterGuidePossibilityPositionByCandidateName');
-      if (candidateName === position.ballot_item_name && endorsementPageUrl === position.more_info_url) {
+      if (candidateName === position.ballot_item_name) {
         // console.log('getVoterGuidePossibilityPositionByCandidateName', position.possibility_position_id);
         const { possibility_position_id: possibilityPositionId } = position;
         return possibilityPositionId;
@@ -48,6 +47,11 @@ class VoterGuidePossibilityPositionStore extends ReduceStore {
     return 0;
   }
 
+  /**
+   * Get a voterGuidePossibilityPosition. Returns an object that contains all the information for that position.
+   * @param candidateWeVoteId
+   * @returns {*|{}}
+   */
   getVoterGuidePossibilityPositionByCandidateId (candidateWeVoteId) {
     // For now, we assume that all values in the store relate to the same organization
     const allCachedVoterGuidePossibilityPositionsByCandidate = this.getState().allCachedVoterGuidePossibilityPositionsByCandidate || {};
@@ -63,7 +67,10 @@ class VoterGuidePossibilityPositionStore extends ReduceStore {
     //   voterGuidePossibilityId,
     // } = state;
     let possiblePosition = {};
-    const { possible_position_list: possiblePositionList } = action.res;
+    let possiblePositionList = [];
+    if ('res' in action && 'possible_position_list' in action.res) {
+      ({ res: { possible_position_list: possiblePositionList } } = action);
+    }
 
     switch (action.type) {
       case 'voterGuidePossibilityPositionsRetrieve':

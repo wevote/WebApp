@@ -11,6 +11,7 @@ import { renderLog } from '../../common/utils/logging';
 import numberWithCommas from '../../common/utils/numberWithCommas';
 import CandidateStore from '../../stores/CandidateStore';
 import VoterGuidePossibilityStore from '../../stores/VoterGuidePossibilityStore';
+import VoterGuidePossibilityPositionStore from '../../stores/VoterGuidePossibilityPositionStore';
 
 const ImageHandler = React.lazy(() => import(/* webpackChunkName: 'ImageHandler' */ '../ImageHandler'));
 const OfficeNameText = React.lazy(() => import(/* webpackChunkName: 'OfficeNameText' */ '../Widgets/OfficeNameText'));
@@ -105,7 +106,7 @@ class CandidateItemEndorsement extends Component {
 
   onVoterGuidePossibilityStoreChange () {
     const { candidateWeVoteId } = this.props;
-    const voterGuidePossibilityPosition = VoterGuidePossibilityStore.getVoterGuidePossibilityPositionByCandidateId(candidateWeVoteId);
+    const voterGuidePossibilityPosition = VoterGuidePossibilityPositionStore.getVoterGuidePossibilityPositionByCandidateId(candidateWeVoteId);
     const possibilityMoreInfoUrl = voterGuidePossibilityPosition.more_info_url || false;
     const possibilityOrganizationName = voterGuidePossibilityPosition.organization_name || '';
     const possibilityPositionIsInfoOnly = (voterGuidePossibilityPosition && voterGuidePossibilityPosition.position_stance === 'NO_STANCE');
