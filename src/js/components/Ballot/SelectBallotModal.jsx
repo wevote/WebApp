@@ -109,11 +109,11 @@ class SelectBallotModal extends Component {
         </DialogTitle>
         <DialogContent classes={{ root: classes.dialogContent }}>
           {!editingAddress && (
-            <BallotTitleHeaderWrapper>
+            <SelectBallotTitleHeaderWrapper>
               <BallotTitleHeader
                 linksOff
               />
-            </BallotTitleHeaderWrapper>
+            </SelectBallotTitleHeaderWrapper>
           )}
           <Row>
             <div className="u-show-mobile-tablet">
@@ -300,7 +300,7 @@ const styles = (theme) => ({
   },
 });
 
-const BallotTitleHeaderWrapper = styled('div')`
+const SelectBallotTitleHeaderWrapper = styled('div')`
   margin-bottom: 32px;
 `;
 

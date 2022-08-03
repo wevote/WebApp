@@ -204,14 +204,14 @@ class ElectionCountdown extends React.Component {
             ) : (<></>)}
           </CardSubTitle>
         </div>
-        <BallotTitleHeaderWrapper>
+        <CountdownTitleHeaderWrapper>
           <BallotTitleHeader
             centerText
             electionDateBelow
             toggleSelectBallotModal={this.toggleSelectBallotModal}
             turnOffVoteByBelow
           />
-        </BallotTitleHeaderWrapper>
+        </CountdownTitleHeaderWrapper>
       </CardCountdownInternalWrapper>
     );
     const electionIsTodayHtml = (
@@ -227,13 +227,13 @@ class ElectionCountdown extends React.Component {
               {electionDateMDY || ''}
             </CardSubTitle>
           </div>
-          <BallotTitleHeaderWrapper>
+          <CountdownTitleHeaderWrapper>
             <BallotTitleHeader
               centerText
               electionDateBelow
               toggleSelectBallotModal={this.toggleSelectBallotModal}
             />
-          </BallotTitleHeaderWrapper>
+          </CountdownTitleHeaderWrapper>
         </div>
       </CardCountdownInternalWrapper>
     );
@@ -268,7 +268,7 @@ class ElectionCountdown extends React.Component {
             ) : (<></>)}
           </CardSubTitle>
         </div>
-        <BallotTitleHeaderWrapper>
+        <CountdownTitleHeaderWrapper>
           <BallotTitleHeaderNationalPlaceholder
             centerText
             electionDateBelow
@@ -277,7 +277,7 @@ class ElectionCountdown extends React.Component {
             // toggleSelectBallotModal={this.toggleSelectBallotModal}
             turnOffVoteByBelow
           />
-        </BallotTitleHeaderWrapper>
+        </CountdownTitleHeaderWrapper>
       </CardCountdownInternalWrapper>
     );
 
@@ -305,7 +305,7 @@ ElectionCountdown.propTypes = {
   onClickFunction: PropTypes.func,
 };
 
-const BallotTitleHeaderWrapper = styled('div')(({ theme }) => (`
+const CountdownTitleHeaderWrapper = styled('div')(({ theme }) => (`
   margin-top: 60px;
   ${theme.breakpoints.down('sm')} {
     margin-top: 42px;

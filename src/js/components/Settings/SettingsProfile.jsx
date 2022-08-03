@@ -1,10 +1,10 @@
 import { Info } from '@mui/icons-material';
-import styled from 'styled-components';
 import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import Helmet from 'react-helmet';
 import { Link } from 'react-router-dom';
+import styled from 'styled-components';
 import AnalyticsActions from '../../actions/AnalyticsActions';
 import LoadingWheel from '../../common/components/Widgets/LoadingWheel';
 import { renderLog } from '../../common/utils/logging';

@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import OpenExternalWebSite from '../../common/components/Widgets/OpenExternalWebSite';
+import { isWebApp } from '../../common/utils/isCordovaOrWebApp';
 import { renderLog } from '../../common/utils/logging';
 import AppObservableStore from '../../stores/AppObservableStore';
 
@@ -26,52 +27,61 @@ class SettingsSectionFooter extends Component {
     return (
       <Wrapper>
         <OneRow centered={centered}>
-          <TermsAndPrivacyText>
-            <span className="u-cursor--pointer" onClick={this.openHowItWorksModal}>How It Works</span>
-            <span style={{ paddingLeft: 15 }} />
-            <OpenExternalWebSite
-              linkIdAttribute="footerLinkWeVoteHelp"
-              url="https://help.wevote.us/hc/en-us"
-              target="_blank"
-              body={(
-                <span>Help</span>
-              )}
-            />
-            <span style={{ paddingLeft: 15 }} />
-            <Link to="/more/privacy">Privacy</Link>
-            <span style={{ paddingLeft: 15 }} />
-            <Link to="/more/terms">Terms</Link>
-          </TermsAndPrivacyText>
+          <span className="u-cursor--pointer" onClick={this.openHowItWorksModal}><TermsAndPrivacyText>How It Works</TermsAndPrivacyText></span>
+          <span style={{ paddingLeft: 15 }} />
+          <OpenExternalWebSite
+            linkIdAttribute="footerLinkWeVoteHelp"
+            url="https://help.wevote.us/hc/en-us"
+            target="_blank"
+            body={(
+              <TermsAndPrivacyText>Help</TermsAndPrivacyText>
+            )}
+            color="#0156b3"
+          />
+          <span style={{ paddingLeft: 15 }} />
+          <Link to="/more/privacy"><TermsAndPrivacyText>Privacy</TermsAndPrivacyText></Link>
+          <span style={{ paddingLeft: 15 }} />
+          <Link to="/more/terms"><TermsAndPrivacyText>Terms</TermsAndPrivacyText></Link>
         </OneRow>
         <OneRow centered={centered}>
-          <TermsAndPrivacyText>
-            <OpenExternalWebSite
-              linkIdAttribute="footerLinkAbout"
-              url="https://wevote.us/more/about"
-              target="_blank"
-              body={(
-                <span>About</span>
-              )}
-            />
-            <span style={{ paddingLeft: 15 }} />
-            <OpenExternalWebSite
-              linkIdAttribute="footerLinkTeam"
-              url="https://wevote.us/more/about"
-              target="_blank"
-              body={(
-                <span>Team</span>
-              )}
-            />
-            <span style={{ paddingLeft: 15 }} />
-            <OpenExternalWebSite
-              linkIdAttribute="footerLinkTeam"
-              url="https://wevote.us/more/credits"
-              target="_blank"
-              body={(
-                <span className="u-no-break">Credits &amp; Thanks</span>
-              )}
-            />
-          </TermsAndPrivacyText>
+          { isWebApp() ? (
+            <>
+              <OpenExternalWebSite
+                linkIdAttribute="footerLinkAbout"
+                url="https://wevote.us/more/about"
+                target="_blank"
+                body={(
+                  <TermsAndPrivacyText>About</TermsAndPrivacyText>
+                 )}
+              />
+              <span style={{ paddingLeft: 15 }} />
+              <OpenExternalWebSite
+                linkIdAttribute="footerLinkTeam"
+                url="https://wevote.us/more/about"
+                target="_blank"
+                body={(
+                  <TermsAndPrivacyText>Team</TermsAndPrivacyText>
+                )}
+              />
+              <span style={{ paddingLeft: 15 }} />
+              <OpenExternalWebSite
+                linkIdAttribute="footerLinkTeam"
+                url="https://wevote.us/more/credits"
+                target="_blank"
+                body={(
+                  <TermsAndPrivacyText className="u-no-break">Credits &amp; Thanks</TermsAndPrivacyText>
+                )}
+              />
+            </>
+          ) : (
+            <>
+              <Link to="/more/about"><TermsAndPrivacyText>About</TermsAndPrivacyText></Link>
+              <span style={{ paddingLeft: 15 }} />
+              <Link to="/more/about"><TermsAndPrivacyText>Team</TermsAndPrivacyText></Link>
+              <span style={{ paddingLeft: 15 }} />
+              <Link to="/more/credits"><TermsAndPrivacyText>Credits &amp; Thanks</TermsAndPrivacyText></Link>
+            </>
+          )}
         </OneRow>
         <DoesNotSupport centered={centered}>
           We Vote does not support or oppose any political candidate or party.

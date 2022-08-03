@@ -50,8 +50,18 @@ function getPaddingTop () {
   return cordovaScrollablePaneTopPadding();  // 5/14/22 TODO: Refactor this...  Funny that this is no longer used for Cordova, only for the WebApp
 }
 
+function getPaddingBottom () {
+  if (isCordova()) {
+    if (normalizedHrefPage() === 'settings') {
+      return '50px';
+    }
+  }
+  return '';
+}
+
 export const PageContentContainer = styled('div')(({ theme }) => (`
   padding-top: ${getPaddingTop()};
+  padding-bottom: ${getPaddingBottom()};
   position: relative;
   max-width: 960px;
   z-index: 0;

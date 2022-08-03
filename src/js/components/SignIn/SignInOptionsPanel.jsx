@@ -13,7 +13,7 @@ import LoadingWheel from '../../common/components/Widgets/LoadingWheel';
 import { isIPhone4in, isIPhone4p7in, restoreStylesAfterCordovaKeyboard } from '../../common/utils/cordovaUtils';
 import historyPush from '../../common/utils/historyPush';
 import { normalizedHref } from '../../common/utils/hrefUtils';
-import { isCordova } from '../../common/utils/isCordovaOrWebApp';
+import { isCordova, isWebApp } from '../../common/utils/isCordovaOrWebApp';
 import Cookies from '../../common/utils/js-cookie/Cookies';
 import { oAuthLog, renderLog } from '../../common/utils/logging';
 import stringContains from '../../common/utils/stringContains';
@@ -550,7 +550,7 @@ export default class SignInOptionsPanel extends Component {
                 hideDialogForCordova={this.hideDialogForCordovaLocal}
               />
             )}
-            {(!hideVoterPhoneEntry && !hideVoterEmailAddressEntry) && (
+            {(!hideVoterPhoneEntry && !hideVoterEmailAddressEntry && isWebApp()) && (
               <OrWrapper>
                 &mdash;
                 or
