@@ -5,6 +5,9 @@ export function normalizedHref () {
 }
 
 export function normalizedHrefPage () {
-  const [, page] = normalizedHref().split('/');
+  const [, page, second] = normalizedHref().split('/');
+  if (second && page === 'more') {
+    return `${page}/${second}`;
+  }
   return page;
 }

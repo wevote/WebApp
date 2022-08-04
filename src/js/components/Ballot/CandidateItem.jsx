@@ -5,9 +5,10 @@ import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
 import TextTruncate from 'react-text-truncate'; // Replace with: import TruncateMarkup from 'react-truncate-markup';
 import styled from 'styled-components';
-import { isAndroidSizeMD } from '../../common/utils/cordovaUtils';
 import abbreviateNumber from '../../common/utils/abbreviateNumber';
+import { isAndroidSizeMD } from '../../common/utils/cordovaUtils';
 import historyPush from '../../common/utils/historyPush';
+import { isWebApp } from '../../common/utils/isCordovaOrWebApp';
 import { renderLog } from '../../common/utils/logging';
 import numberWithCommas from '../../common/utils/numberWithCommas';
 import AppObservableStore from '../../stores/AppObservableStore';
@@ -582,10 +583,12 @@ class CandidateItem extends Component {
 
   goToCandidateLink () {
     const { linksOpenNewPage } = this.props;
-    if (linksOpenNewPage) {
+    if (linksOpenNewPage && isWebApp()) {
+      // August 2022: In Cordova this opens a new completely seperate session in a web browser (very bad),
+      // in WebApp it is a hard link to ONLY WeVote.us (bad for branded versions)
       window.open(`https://WeVote.US${this.getCandidateLink()}`, '_blank');
     } else {
-      // In case we were in the OrganizationModal, close it
+      // In case we were in the OrganizationModal (which was reused in 2022 for the Candidate drawer), close it
       AppObservableStore.setShowOrganizationModal(false);
       historyPush(this.getCandidateLink());
     }

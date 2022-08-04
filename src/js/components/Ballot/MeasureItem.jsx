@@ -5,9 +5,10 @@ import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
 import styled from 'styled-components';
 import historyPush from '../../common/utils/historyPush';
+import { isCordova } from '../../common/utils/isCordovaOrWebApp';
 import { renderLog } from '../../common/utils/logging';
 import toTitleCase from '../../common/utils/toTitleCase';
-import { messageService } from '../../stores/AppObservableStore';
+import AppObservableStore, { messageService } from '../../stores/AppObservableStore';
 import MeasureStore from '../../stores/MeasureStore';
 
 const ReadMore = React.lazy(() => import(/* webpackChunkName: 'ReadMore' */ '../../common/components/Widgets/ReadMore'));
@@ -87,6 +88,9 @@ class MeasureItem extends Component {
 
   goToMeasureLink (oneMeasureWeVoteId) {
     const measureLink = this.getMeasureLink(oneMeasureWeVoteId);
+    if (isCordova()) {
+      AppObservableStore.setShowOrganizationModal(false);
+    }
     historyPush(measureLink);
   }
 

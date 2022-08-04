@@ -8,6 +8,7 @@ import FriendActions from '../../actions/FriendActions';
 import OrganizationActions from '../../actions/OrganizationActions';
 import LoadingWheel from '../../common/components/Widgets/LoadingWheel';
 import apiCalming from '../../common/utils/apiCalming';
+import { isWebApp } from '../../common/utils/isCordovaOrWebApp';
 import { renderLog } from '../../common/utils/logging';
 import FriendStore from '../../stores/FriendStore';
 import OrganizationStore from '../../stores/OrganizationStore';
@@ -391,7 +392,7 @@ class PositionList extends Component {
                   <PositionItem
                     // ballotItemDisplayName={this.props.ballotItemDisplayName}
                     position={onePosition}
-                    linksOpenExternalWebsite={linksOpenExternalWebsite}
+                    linksOpenExternalWebsite={linksOpenExternalWebsite && isWebApp()}
                     searchResultsNode={searchResultsNode}
                     params={this.props.params}
                   />

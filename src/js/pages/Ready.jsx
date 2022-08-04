@@ -115,9 +115,6 @@ class Ready extends Component {
 
   componentDidUpdate () {
     if (AppObservableStore.isSnackMessagePending()) openSnackbar({});
-    // if (cordovaCheckForZeroPageContentContainerPaddingTop()) {
-    //   this.setState();
-    // }
   }
 
   componentDidCatch (error, info) {

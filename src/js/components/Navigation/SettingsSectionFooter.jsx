@@ -36,7 +36,6 @@ class SettingsSectionFooter extends Component {
             body={(
               <TermsAndPrivacyText>Help</TermsAndPrivacyText>
             )}
-            color="#0156b3"
           />
           <span style={{ paddingLeft: 15 }} />
           <Link to="/more/privacy"><TermsAndPrivacyText>Privacy</TermsAndPrivacyText></Link>
@@ -65,7 +64,7 @@ class SettingsSectionFooter extends Component {
               />
               <span style={{ paddingLeft: 15 }} />
               <OpenExternalWebSite
-                linkIdAttribute="footerLinkTeam"
+                linkIdAttribute="footerLinkCredit"
                 url="https://wevote.us/more/credits"
                 target="_blank"
                 body={(

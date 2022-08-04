@@ -375,6 +375,7 @@ export function shareBottomOffset (pinToBottom) {
 }
 
 export function cordovaFriendsWrapper () {
+  // TODO: August 2022, This one could be calculated too!
   if (isIOS()) {
     if (isIPhone5p8in()) {
       return {
@@ -396,6 +397,12 @@ export function cordovaFriendsWrapper () {
       }
       return {
         paddingTop: '20px',
+        paddingBottom: '90px',
+      };
+    }
+    if (isIPad()) {
+      return {
+        paddingTop: '145px',
         paddingBottom: '90px',
       };
     }

@@ -7,7 +7,6 @@ import React, { Component } from 'react';
 import FriendActions from '../../actions/FriendActions';
 import apiCalming from '../../common/utils/apiCalming';
 import { formatDateMMMDoYYYY } from '../../common/utils/dateFormat';
-import { hasIPhoneNotch } from '../../common/utils/cordovaUtils';
 import daysUntil from '../../common/utils/daysUntil';
 import { renderLog } from '../../common/utils/logging';
 import SuggestedContacts from './SuggestedContacts';
