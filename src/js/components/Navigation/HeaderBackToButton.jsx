@@ -1,10 +1,9 @@
-import { ArrowBack, ArrowBackIos } from '@mui/icons-material';
+import { ArrowBack } from '@mui/icons-material';
 import { Button } from '@mui/material';
 import styled from 'styled-components';
 import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import { isIOS } from '../../common/utils/cordovaUtils';
 import historyPush from '../../common/utils/historyPush';
 import { isCordova } from '../../common/utils/isCordovaOrWebApp';
 import isMobileScreenSize from '../../common/utils/isMobileScreenSize';
@@ -24,13 +23,9 @@ class HeaderBackToButton extends Component {
         className={`${className}`}
         id="backToLinkTabHeaderBackToButton"
         onClick={() => historyPush(backToLink)}
-        style={leftAligned ? { paddingLeft: `${isMobileScreenSize() ? '0' : ''}`, marginLeft: '0 !important', minWidth: 24, width: 24 } : { paddingLeft: `${isMobileScreenSize() ? '0' : ''}` }}
+        style={leftAligned ? { paddingLeft: `${isMobileScreenSize() || isCordova() ? '20px' : ''}`, marginLeft: '0 !important', minWidth: 24, width: 24 } : { paddingLeft: `${isMobileScreenSize() || isCordova() ? '20px' : ''}` }}
       >
-        {isIOS() ? (
-          <ArrowBackIos className="button-icon" />
-        ) : (
-          <ArrowBack className="button-icon" />
-        )}
+        <ArrowBack className="button-icon" />
         <span className="u-show-desktop-tablet u-no-break">{shortenText(backToLinkText, 60)}</span>
         <span className="u-show-mobile-bigger-than-iphone5 u-no-break">{shortenText(backToLinkText, 23)}</span>
         <span className="u-show-mobile-iphone5-or-smaller u-no-break">{shortenText(backToLinkText, 18)}</span>

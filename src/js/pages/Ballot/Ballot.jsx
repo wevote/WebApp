@@ -16,7 +16,7 @@ import SupportActions from '../../actions/SupportActions';
 import VoterActions from '../../actions/VoterActions';
 import LoadingWheelComp from '../../common/components/Widgets/LoadingWheelComp';
 import apiCalming from '../../common/utils/apiCalming';
-import { chipLabelText, isAndroid, isAndroidSizeFold, isIOSAppOnMac, isIPad, isIPadGiantSize, isIPhone6p1in } from '../../common/utils/cordovaUtils';
+import { chipLabelText, isAndroid, isAndroidSizeFold, isIOS, isIOSAppOnMac, isIPad, isIPadGiantSize, isIPhone6p1in } from '../../common/utils/cordovaUtils';
 import getBooleanValue from '../../common/utils/getBooleanValue';
 import historyPush from '../../common/utils/historyPush';
 import { isCordova, isWebApp } from '../../common/utils/isCordovaOrWebApp';
@@ -26,6 +26,7 @@ import { renderLog } from '../../common/utils/logging';
 import AddressBox from '../../components/AddressBox';
 import BallotItemCompressed from '../../components/Ballot/BallotItemCompressed';
 import BallotStatusMessage from '../../components/Ballot/BallotStatusMessage';
+import BallotTitleHeader from '../../components/Ballot/BallotTitleHeader';
 import BallotDecisionsTabs from '../../components/Navigation/BallotDecisionsTabs';
 import BallotShowAllItemsFooter from '../../components/Navigation/BallotShowAllItemsFooter';
 import { DualHeaderContainer, HeaderContentContainer, HeaderContentOuterContainer, PageContentContainer } from '../../components/Style/pageLayoutStyles';
@@ -47,7 +48,6 @@ import isMobile from '../../utils/isMobile';
 import lazyPreloadPages from '../../utils/lazyPreloadPages';
 import mapCategoryFilterType from '../../utils/map-category-filter-type';
 import showBallotDecisionsTabs from '../../utilsApi/showBallotDecisionsTabs';
-import BallotTitleHeader from '../../components/Ballot/BallotTitleHeader';
 import { checkShouldUpdate, formatVoterBallotList } from './utils/ballotUtils';
 
 const CompleteYourProfile = React.lazy(() => import(/* webpackChunkName: 'CompleteYourProfile' */ '../../components/CompleteYourProfile/CompleteYourProfile'));
@@ -1091,6 +1091,8 @@ class Ballot extends Component {
       return '44px';
     } else if (isIPad()) {
       return '12px';
+    } else if (isIOS()) {
+      return '85px';
     } else if (isWebApp() && isMobileScreenSize()) {
       if (scrolledDown) {
         return '50px';
@@ -1732,7 +1734,7 @@ const BallotFilterRow = styled('div')`
 const BallotTitleHeaderWrapper = styled('div', {
   shouldForwardProp: (prop) => !['marginTopOffset'].includes(prop),
 })(({ marginTopOffset }) => (`
-  margin-top: ${isWebApp() ? marginTopOffset : ''};
+  margin-top: ${marginTopOffset};
   transition: ${isWebApp() ? 'all 150ms ease-in' : ''};
 `));
 

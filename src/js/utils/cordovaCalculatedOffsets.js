@@ -1,4 +1,4 @@
-import { isIPad } from '../common/utils/cordovaUtils';
+import { isIPad, hasIPhoneNotch } from '../common/utils/cordovaUtils';
 import { normalizedHref, normalizedHrefPage } from '../common/utils/hrefUtils';
 import { isWebApp } from '../common/utils/isCordovaOrWebApp';
 
@@ -104,13 +104,23 @@ export function setBallotDualHeaderContentContainerTopOffset (isSignedIn) {
 
 export function cordovaComplexHeaderPageContainerTopOffset () {
   if (isWebApp()) return '';
+  const iOSNotchedSpacer = $('div[class*=\'IOSNotchedSpacer\']');
   const headroomWrapper = $('div[class*=\'HeadroomWrapper\']');
-  const hrHeight = getPageKey() === 'ballot' && isIPad() ? 0 : headroomWrapper.height();
-  const dhc = $('div[class*=\'DualHeaderContainer\']');  // none
-  const dhcHeight = dhc.height() || 0;   // No dhc for Friends when signed in
-  const nonDhcHeight = getPageKey() === 'friends' ? 20 : 0;
+  const dualHeaderCont = $('div[class*=\'DualHeaderContainer\']');
+  let hrHeight = 0;
+  if (hasIPhoneNotch()) {
+    if (getPageKey() === 'friends') {
+      hrHeight = headroomWrapper.height();
+    } else if (getPageKey() === 'ballot' && isIPad()) {
+      hrHeight = 0;
+    } else {
+      hrHeight = iOSNotchedSpacer.height();
+    }
+  }
 
-  const topOffsetValue = hrHeight + dhcHeight + nonDhcHeight;
+  const dhcHeight = dualHeaderCont.height() || 0;   // No dualHeaderCont for Friends when signed in
+  const topOffsetValue = hrHeight + dhcHeight;
+
   if ($.isNumeric(topOffsetValue)) {
     pageData.previousPage = getPageKey();
     debugLogging(`cordovaComplexHeaderPageContainer topOffset success ${topOffsetValue}`);
@@ -144,12 +154,15 @@ export function cordovaSimplePageContainerTopOffset (isSignedIn) {
   } else {
     setTimeout(() => {
       const headroomWrapper = $('div[class*=\'HeadroomWrapper\']');
+      const iosSpacerElem = $('div[class*=\'IOSNotchedSpacer\']');
+      const notchHeight = iosSpacerElem.length > 0 ? iosSpacerElem.height() : 0;
+
       const height = headroomWrapper.height();
       debugLogging(`cordovaSimplePageContainerTopOffset HeadRoomWrapper height ${height}, ${getPageKey()}`);
 
       if (height !== undefined && height > 0 && getCordovaSimplePageContainerTopOffsetValue() === 0) {
         const decorativeUiWhitespaceSimple = 20;
-        const topOffsetValue = height + decorativeUiWhitespaceSimple;
+        const topOffsetValue = height + decorativeUiWhitespaceSimple + notchHeight;
         setCordovaSimplePageContainerTopOffsetValue(topOffsetValue);
 
         debugLogging(`cordovaSimplePageContainerTopOffset setting padding-top in PageContentContainer: ${topOffsetValue}`);

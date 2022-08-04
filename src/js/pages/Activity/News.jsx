@@ -81,7 +81,7 @@ class News extends Component {
       const { pathname: pathnameRaw, href: hrefRaw } = window.location;
       let pathname = pathnameRaw;
       if (isCordova()) {
-        pathname = hrefRaw.replace(/file:\/\/.*?Vote.app\/www\/index.html#\//, '');
+        pathname = hrefRaw.replace(/.*?index.html#/, '');
       }
       // console.log('pathname:', pathname, ', destinationLocalUrlWithModal:', destinationLocalUrlWithModal, ', activityTidbitWeVoteIdForDrawer:', activityTidbitWeVoteIdForDrawer);
       if (pathname && pathname !== destinationLocalUrlWithModal) {

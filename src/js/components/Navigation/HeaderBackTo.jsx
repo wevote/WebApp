@@ -208,7 +208,7 @@ class HeaderBackTo extends Component {
 
     const pathname = normalizedHref();
     const shareButtonInHeader = pathname && stringContains('/office', pathname.toLowerCase());
-    const cordovaOverrides = isWebApp() ? {} : { marginLeft: 0, paddingLeft: '15px', right: 'unset' };
+    const cordovaOverrides = isWebApp() ? {} : { marginLeft: 0, padding: '34px 15px 0 0', right: 'unset' };
     if (isIOSAppOnMac() || isIPad()) {
       cordovaOverrides.height = shareButtonInHeader ? '87px !important' : '68px';
     }
@@ -229,7 +229,6 @@ class HeaderBackTo extends Component {
             id="backToLinkTabHeaderBackTo"
           />
 
-          {isWebApp() && (
           <TopRowOneRightContainer
             className="u-cursor--pointer"
             style={{ paddingLeft: `${isCordova() ? '0 !important' : ''}` }}
@@ -273,7 +272,6 @@ class HeaderBackTo extends Component {
               <SignInButton toggleSignInModal={this.toggleSignInModal} />
             )}
           </TopRowOneRightContainer>
-          )}
         </Toolbar>
         {showSignInModal && (
           <Suspense fallback={<></>}>

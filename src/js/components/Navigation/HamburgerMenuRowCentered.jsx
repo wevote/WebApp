@@ -3,6 +3,7 @@ import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
+import { isWebApp } from '../../common/utils/isCordovaOrWebApp';
 import { renderLog } from '../../common/utils/logging';
 
 const SettingsAccountLevelChip = React.lazy(() => import(/* webpackChunkName: 'SettingsAccountLeveLChip' */ '../Settings/SettingsAccountLevelChip'));
@@ -47,7 +48,7 @@ const styles = () => ({
 });
 
 const CenteredTD = styled('td')`
-  text-align: center;
+  text-align: ${isWebApp() ? 'center' : 'unset'};
   vertical-align: middle !important;
 `;
 
