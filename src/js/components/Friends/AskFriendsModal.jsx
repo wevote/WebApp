@@ -43,6 +43,7 @@ class AskFriendsModal extends Component {
   }
 
   componentDidMount () {
+    // console.log('AskFriendsModal componentDidMount');
     if (apiCalming('friendListsAll', 5000)) {
       FriendActions.friendListsAll();
     }
@@ -246,7 +247,7 @@ class AskFriendsModal extends Component {
                 Ask your friends how they&apos;re voting
               </span>
               <span className="u-show-desktop-tablet">
-                Ask your friends how they&apos;re going to vote
+                Ask your friends how they&apos;re voting
               </span>
             </ModalTitleType1>
           </div>

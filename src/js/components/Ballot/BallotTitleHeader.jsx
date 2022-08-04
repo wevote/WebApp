@@ -1,13 +1,17 @@
+import { Edit } from '@mui/icons-material';
 import withStyles from '@mui/styles/withStyles';
 import withTheme from '@mui/styles/withTheme';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
+import styled from 'styled-components';
 import BallotTitleHeaderNationalPlaceholder from './BallotTitleHeaderNationalPlaceholder';
 import { formatDateToMonthDayYear } from '../../common/utils/dateFormat';
 import daysUntil from '../../common/utils/daysUntil';
 import initializeMoment from '../../common/utils/initializeMoment';
 import { renderLog } from '../../common/utils/logging';
 import stringContains from '../../common/utils/stringContains';
+import webAppConfig from '../../config';
+import ShareButtonDesktopTablet from '../Share/ShareButtonDesktopTablet';
 import AppObservableStore from '../../stores/AppObservableStore';
 import BallotStore from '../../stores/BallotStore';
 import VoterStore from '../../stores/VoterStore';
@@ -118,8 +122,8 @@ class BallotTitleHeader extends Component {
 
   render () {
     renderLog('BallotTitleHeader');  // Set LOG_RENDER_EVENTS to log all renders
-    // const nextReleaseFeaturesEnabled = webAppConfig.ENABLE_NEXT_RELEASE_FEATURES === undefined ? false : webAppConfig.ENABLE_NEXT_RELEASE_FEATURES;
-    const { centerText, electionDateBelow, linksOff, showBallotCaveat, turnOffVoteByBelow } = this.props;
+    const nextReleaseFeaturesEnabled = webAppConfig.ENABLE_NEXT_RELEASE_FEATURES === undefined ? false : webAppConfig.ENABLE_NEXT_RELEASE_FEATURES;
+    const { centerText, electionDateBelow, linksOff, showBallotCaveat, showShareButton, turnOffVoteByBelow } = this.props;
     const {
       ballotCaveat, daysUntilElection, electionDayTextObject,
       electionName, nextNationalElectionDateMDY, originalTextAddress, originalTextState,
@@ -130,11 +134,12 @@ class BallotTitleHeader extends Component {
     const stateTextUsed = substitutedState || originalTextState || '';
     const electionNameContainsState = stringContains(stateTextUsed.toLowerCase(), electionName.toLowerCase());
 
+    const editIconStyled = <Edit style={{ fontSize: 16, margin: '-6px 0 0 2px', color: '#69A7FF' }} />;
     // console.log('BallotTitleHeader daysUntilElection:', daysUntilElection);
     if (electionName) {
       return (
         <ComponentWrapper>
-          <ContentWrapper>
+          <ContentWrapper spaceBetween={(electionDayTextObject || showShareButton) && !centerText}>
             <OverflowContainer>
               <OverflowContent>
                 <ElectionNameScrollContent>
@@ -209,6 +214,7 @@ class BallotTitleHeader extends Component {
                               <span className={linksOff ? '' : 'u-link-color'}>
                                 {substitutedAddress}
                               </span>
+                              {editIconStyled}
                             </BallotAddress>
                           ) : (
                             <>
@@ -223,6 +229,7 @@ class BallotTitleHeader extends Component {
                                   <span className={linksOff ? '' : 'u-link-color'}>
                                     {(textForMapSearch && textForMapSearch !== '') ? textForMapSearch : originalTextAddress}
                                   </span>
+                                  {editIconStyled}
                                 </BallotAddress>
                               )}
                             </>
@@ -274,6 +281,11 @@ class BallotTitleHeader extends Component {
                 </ElectionDateRight>
               </VoteByRightWrapper>
             )}
+            {(showShareButton && nextReleaseFeaturesEnabled) && (
+              <BallotShareWrapper className="u-show-desktop-tablet">
+                <ShareButtonDesktopTablet />
+              </BallotShareWrapper>
+            )}
           </ContentWrapper>
         </ComponentWrapper>
       );
@@ -306,6 +318,7 @@ BallotTitleHeader.propTypes = {
   electionDateBelow: PropTypes.bool,
   linksOff: PropTypes.bool,
   showBallotCaveat: PropTypes.bool,
+  showShareButton: PropTypes.bool,
   // toggleSelectBallotModal: PropTypes.func,
   turnOffVoteByBelow: PropTypes.bool,
 };
@@ -322,5 +335,10 @@ const styles = {
     marginTop: 0,
   },
 };
+
+const BallotShareWrapper = styled('div')`
+  margin-bottom: 12px;
+  padding-left: 2px;
+`;
 
 export default withTheme(withStyles(styles)(BallotTitleHeader));

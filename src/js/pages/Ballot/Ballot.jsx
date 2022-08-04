@@ -1330,6 +1330,7 @@ class Ballot extends Component {
                       <header className="ballot__header__group">
                         <BallotTitleHeaderWrapper marginTopOffset={this.marginTopOffset()}>
                           <BallotTitleHeader
+                            showShareButton
                             toggleSelectBallotModal={this.toggleSelectBallotModal}
                           />
                         </BallotTitleHeaderWrapper>

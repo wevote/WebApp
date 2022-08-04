@@ -17,9 +17,6 @@ class ShareModalOption extends Component {
       copyLinkCopied: false,
       shareModalStep: '',
     };
-
-    this.copyLink = this.copyLink.bind(this);
-    this.onClick = this.onClick.bind(this);
   }
 
   componentDidMount () {
@@ -62,7 +59,7 @@ class ShareModalOption extends Component {
   // }
   //  onClick={this.onCopyToClipboardClick}
 
-  copyLink () {
+  copyLink = () => {
     // console.log('ShareModalOption copyLink');
     openSnackbar({ message: 'Copied!' });
     this.setState({
@@ -75,14 +72,17 @@ class ShareModalOption extends Component {
 
   render () {
     renderLog('ShareModalOption');  // Set LOG_RENDER_EVENTS to log all renders
-    const { backgroundColor, classes, copyLink, icon, link, noLink, title, uniqueExternalId } = this.props;
+    const { backgroundColor, classes, copyLink, icon, urlToShare, noLink, title, uniqueExternalId } = this.props;
     const { copyLinkCopied } = this.state;
-    const linkToBeShared = link.replace(/https:\/\/file:.*?\/|https:\/\/localhost.*?\//, 'https://wevote.us/');
-    // console.log('ShareModalOption copyLink:', copyLink, ', noLink:', noLink, 'link:', link, ', linkToBeShared:', linkToBeShared);
+    let urlToBeShared = '';
+    if (urlToShare) {
+      urlToBeShared = urlToShare.replace(/https:\/\/file:.*?\/|https:\/\/localhost.*?\//, 'https://wevote.us/');
+    }
+    // console.log('ShareModalOption copyLink:', copyLink, ', noLink:', noLink, 'urlToShare:', urlToShare, ', urlToBeShared:', urlToBeShared);
     return (
       <Wrapper>
-        {copyLink ? (
-          <CopyToClipboard text={linkToBeShared} onCopy={this.copyLink}>
+        {(copyLink && urlToBeShared) ? (
+          <CopyToClipboard text={urlToBeShared} onCopy={this.copyLink}>
             <div id={`shareModalOption-${uniqueExternalId}`}>
               <Icon
                 className={copyLinkCopied ? classes.copyLinkIconCopied : classes.copyLinkIcon}
@@ -97,7 +97,7 @@ class ShareModalOption extends Component {
         ) : (
           <div>
             {noLink ? (
-              <div id={`shareModalOption-${uniqueExternalId}`} onClick={() => this.onClick}>
+              <div id={`shareModalOption-${uniqueExternalId}`} onClick={this.onClick}>
                 <Icon backgroundColor={backgroundColor}>
                   {icon}
                 </Icon>
@@ -106,24 +106,30 @@ class ShareModalOption extends Component {
                 </Text>
               </div>
             ) : (
-              <Suspense fallback={<></>}>
-                <OpenExternalWebSite
-                  linkIdAttribute="linkToShare"
-                  className="no-decoration"
-                  url={linkToBeShared}
-                  target="_blank"
-                  body={(
-                    <div id={`shareModalOption-${uniqueExternalId}`} onClick={() => this.onClick}>
-                      <Icon backgroundColor={backgroundColor}>
-                        {icon}
-                      </Icon>
-                      <Text>
-                        {title}
-                      </Text>
-                    </div>
-                  )}
-                />
-              </Suspense>
+              <>
+                {(urlToBeShared) && (
+                  <>
+                    <Suspense fallback={<></>}>
+                      <OpenExternalWebSite
+                        linkIdAttribute="linkToShare"
+                        className="no-decoration"
+                        url={urlToBeShared}
+                        target="_blank"
+                        body={(
+                          <div id={`shareModalOption-${uniqueExternalId}`} onClick={() => this.onClick}>
+                            <Icon backgroundColor={backgroundColor}>
+                              {icon}
+                            </Icon>
+                            <Text>
+                              {title}
+                            </Text>
+                          </div>
+                        )}
+                      />
+                    </Suspense>
+                  </>
+                )}
+              </>
             )}
           </div>
         )}
@@ -136,7 +142,7 @@ ShareModalOption.propTypes = {
   classes: PropTypes.object,
   copyLink: PropTypes.bool,
   icon: PropTypes.object,
-  link: PropTypes.string,
+  urlToShare: PropTypes.string,
   noLink: PropTypes.bool,
   onClickFunction: PropTypes.func,
   title: PropTypes.string,
@@ -169,12 +175,6 @@ const Wrapper = styled('div')`
     color: black !important;
     transform: scale(1.05);
     transition-duration: .25s;
-  }
-  @media (max-width: 600px) {
-    width: 33.333%;
-  }
-  @media (max-width: 476px) {
-    width: 50%;
   }
 `;
 
