@@ -218,35 +218,6 @@ ShareWithFriendsModalBodyWithController.propTypes = {
 };
 
 const styles = () => ({
-  dialogPaper: {
-    marginTop: hasIPhoneNotch() ? 68 : 48,
-    '@media (min-width: 576px)': {
-      maxWidth: '600px',
-      width: '90%',
-      height: '90%',
-      margin: '0 auto',
-      minWidth: 0,
-      minHeight: 0,
-      transitionDuration: '.25s',
-    },
-    minWidth: '100%',
-    maxWidth: '100%',
-    width: '100%',
-    minHeight: '90%',
-    maxHeight: '90%',
-    height: '90%',
-    margin: '0 0 64px 0',
-  },
-  dialogContent: {
-    paddingBottom: 24,
-    paddingTop: 8,
-    background: 'white',
-    display: 'flex',
-    justifyContent: 'center',
-  },
-  continueButtonRoot: {
-    width: '100%',
-  },
 });
 
 const FriendListExternalWrapper = styled('div')`

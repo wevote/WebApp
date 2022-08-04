@@ -479,10 +479,14 @@ class SettingsVerifySecretCode extends Component {
         open={this.props.show}
         onClose={this.closeVerifyModalLocal}
         className="u-z-index-9030"
+        // Leaving classes.dialogRoot in place with a zIndex value of 9030
+        // until 2023 to prevent problems with main.css caching,
+        // since this is such a critical modal
         classes={{
           paper: clsx(classes.dialogPaper, {
             [classes.codeVerifyCordova]: isCordova(),
           }),
+          root: classes.dialogRoot,
         }}
       >
         <ModalTitleArea condensed={condensed}>
@@ -661,6 +665,9 @@ const styles = (theme) => ({
       height: '90%',
       margin: '0 auto',
     },
+  },
+  dialogRoot: {
+    zIndex: '9030 !important',
   },
   codeVerifyCordova: {
     top: '9%',
