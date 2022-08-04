@@ -16,11 +16,14 @@ const ClickBlockWrapper = styled('div')`
 const ComponentWrapper = styled('div')`
 `;
 
-const ContentWrapper = styled('div')`
+const ContentWrapper = styled('div', {
+  shouldForwardProp: (prop) => !['spaceBetween'].includes(prop),
+})(({ spaceBetween }) => (`
   display: flex;
   flex: 1;
   min-height: 0px;
-`;
+  ${spaceBetween ? 'justify-content: space-between;' : 'justify-content: center;'}
+`));
 
 const ElectionDateBelow = styled('div')`
 `;
@@ -72,7 +75,7 @@ const OverflowContent = styled('div', {
 `));
 
 const OverflowContainer = styled('div')`
-  flex: 1;
+  max-width: fit-content;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -88,7 +91,7 @@ const VoteByBelowWrapper = styled('div', {
   display: flex;
   ${centerText ? 'justify-content: center;' : 'justify-content: start;'}
   margin: -2px 0 0 2px;
-  ${theme.breakpoints.up('sm')} {
+  ${theme.breakpoints.up('md')} {
     ${electionDateBelow ? '' : 'display: none;'}
   }
 `));
@@ -106,7 +109,7 @@ const VoteByRightWrapper = styled('div', {
   ${electionDateBelow ? 'display: none;' : 'display: block;'}
   margin-left: 8px;
   margin-top: 4px;
-  ${theme.breakpoints.down('sm')} {
+  ${theme.breakpoints.down('md')} {
     display: none;
   }
 `));

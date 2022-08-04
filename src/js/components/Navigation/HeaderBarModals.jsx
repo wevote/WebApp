@@ -40,8 +40,9 @@ function HeaderBarModals (props) {
 
   // renderLog(`HeaderBarModals`);
   // console.log('HeaderBarModals showSignInModal:', showSignInModal);
+  let advisorIntroModalHtml = <></>;
   if (showAdviserIntroModal) {
-    return (
+    advisorIntroModalHtml = (
       <Suspense fallback={<></>}>
         <AdviserIntroModal
           show={showAdviserIntroModal}
@@ -49,8 +50,10 @@ function HeaderBarModals (props) {
         />
       </Suspense>
     );
-  } else if (showAskFriendsModal) {
-    return (
+  }
+  let askFriendsModal = <></>;
+  if (showAskFriendsModal) {
+    askFriendsModal = (
       <Suspense fallback={<></>}>
         <AskFriendsModal
           show={showAskFriendsModal}
@@ -58,9 +61,11 @@ function HeaderBarModals (props) {
         />
       </Suspense>
     );
-  } else if (showChooseOrOpposeIntroModal) {
+  }
+  let chooseOrOpposeIntroModal = <></>;
+  if (showChooseOrOpposeIntroModal) {
     const ballotItemType = 'CANDIDATE';
-    return (
+    chooseOrOpposeIntroModal = (
       <Suspense fallback={<></>}>
         <Dialog
           classes={{ paper: classes.dialogPaper }}
@@ -74,8 +79,10 @@ function HeaderBarModals (props) {
         </Dialog>
       </Suspense>
     );
-  } else if (showFirstPositionIntroModal) {
-    return (
+  }
+  let firstPositionIntroModal = <></>;
+  if (showFirstPositionIntroModal) {
+    firstPositionIntroModal = (
       <Suspense fallback={<></>}>
         <FirstPositionIntroModal
           show={showFirstPositionIntroModal}
@@ -83,8 +90,10 @@ function HeaderBarModals (props) {
         />
       </Suspense>
     );
-  } else if (showImageUploadModal) {
-    return (
+  }
+  let imageUploadModal = <></>;
+  if (showImageUploadModal) {
+    imageUploadModal = (
       <Suspense fallback={<></>}>
         <ImageUploadModal
           show={showImageUploadModal}
@@ -92,8 +101,10 @@ function HeaderBarModals (props) {
         />
       </Suspense>
     );
-  } else if (showPaidAccountUpgradeModal) {
-    return null;
+  }
+  let paidAccountUpgradeModal = <></>;
+  if (showPaidAccountUpgradeModal) {
+    paidAccountUpgradeModal = <></>;
     // TODO: Backport "@stripe/react-stripe-js" use from Campaigns
     //   <Suspense fallback={<></>}>
     //     <PaidAccountUpgradeModal
@@ -102,8 +113,10 @@ function HeaderBarModals (props) {
     //       toggleFunction={this.closePaidAccountUpgradeModal}
     //     />
     //   </Suspense>
-  } else if (showPersonalizedScoreIntroModal) {
-    return (
+  }
+  let personalizedScoreIntroModal = <></>;
+  if (showPersonalizedScoreIntroModal) {
+    personalizedScoreIntroModal = (
       <Suspense fallback={<></>}>
         <PersonalizedScoreIntroModal
           show={showPersonalizedScoreIntroModal}
@@ -111,8 +124,10 @@ function HeaderBarModals (props) {
         />
       </Suspense>
     );
-  } else if (showSelectBallotModal) {
-    return (
+  }
+  let selectBallotModal = <></>;
+  if (showSelectBallotModal) {
+    selectBallotModal = (
       <Suspense fallback={<></>}>
         <SelectBallotModal
           ballotBaseUrl={ballotBaseUrl}
@@ -122,8 +137,10 @@ function HeaderBarModals (props) {
         />
       </Suspense>
     );
-  } else if (showShareModal) {
-    return (
+  }
+  let shareModalHtml = <></>;
+  if (showShareModal) {
+    shareModalHtml = (
       <Suspense fallback={<></>}>
         <ShareModal
           voterIsSignedIn={voterIsSignedIn}
@@ -133,8 +150,10 @@ function HeaderBarModals (props) {
         />
       </Suspense>
     );
-  } else if (showSignInModal) {
-    return (
+  }
+  let signInModalHtml = <></>;
+  if (showSignInModal) {
+    signInModalHtml = (
       <Suspense fallback={<></>}>
         <SignInModal
           signInTitle="Sign In Or Sign Up"
@@ -144,8 +163,10 @@ function HeaderBarModals (props) {
         />
       </Suspense>
     );
-  } else if (showValuesIntroModal) {
-    return (
+  }
+  let valuesIntroModalHtml = <></>;
+  if (showValuesIntroModal) {
+    valuesIntroModalHtml = (
       <Suspense fallback={<></>}>
         <ValuesIntroModal
           show={showValuesIntroModal}
@@ -154,7 +175,21 @@ function HeaderBarModals (props) {
       </Suspense>
     );
   }
-  return null;
+  return (
+    <>
+      {advisorIntroModalHtml}
+      {askFriendsModal}
+      {chooseOrOpposeIntroModal}
+      {firstPositionIntroModal}
+      {imageUploadModal}
+      {paidAccountUpgradeModal}
+      {personalizedScoreIntroModal}
+      {selectBallotModal}
+      {shareModalHtml}
+      {signInModalHtml}
+      {valuesIntroModalHtml}
+    </>
+  );
 }
 
 HeaderBarModals.propTypes = {

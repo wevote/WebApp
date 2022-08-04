@@ -81,6 +81,7 @@ class SignInModal extends Component {
       <SignInModalWrapper>
         { showSignInModalSimple && (
           <Dialog
+            className="u-z-index-9020"
             classes={{ paper: classes.dialogPaper, root: classes.dialogRoot }}
             open={showSignInModalSimple}
             onClose={() => { this.toggleSignInModalSimple(); }}

@@ -478,11 +478,11 @@ class SettingsVerifySecretCode extends Component {
         id="codeVerificationDialog"
         open={this.props.show}
         onClose={this.closeVerifyModalLocal}
+        className="u-z-index-9030"
         classes={{
           paper: clsx(classes.dialogPaper, {
             [classes.codeVerifyCordova]: isCordova(),
           }),
-          root: classes.dialogRoot,
         }}
       >
         <ModalTitleArea condensed={condensed}>
@@ -661,9 +661,6 @@ const styles = (theme) => ({
       height: '90%',
       margin: '0 auto',
     },
-  },
-  dialogRoot: {
-    zIndex: '9010 !important',
   },
   codeVerifyCordova: {
     top: '9%',

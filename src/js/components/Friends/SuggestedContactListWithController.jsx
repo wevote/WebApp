@@ -199,28 +199,31 @@ class SuggestedContactListWithController extends React.Component {
   }
 
   createMessageToFriendDefault = () => {
-    const { electionDateInFutureFormatted } = this.state;
-    let messageToFriendDefault = '';
-    // const electionDayText = ElectionStore.getElectionDayText(VoterStore.electionId());
-    const electionDayText = BallotStore.currentBallotElectionDate;
-    let electionDateFound = false;
-    if (electionDayText !== undefined && electionDateInFutureFormatted) {
-      const daysUntilElection = daysUntil(electionDayText);
-      if (daysUntilElection === 0) {
-        messageToFriendDefault += "I'm getting ready to vote today.";
-        electionDateFound = true;
-      } else if (daysUntilElection > 0) {
-        messageToFriendDefault += `I'm getting ready for the election on ${electionDateInFutureFormatted}.`;
-        electionDateFound = true;
+    const { messageToFriendsInputOff } = this.props;
+    if (!messageToFriendsInputOff) {
+      const { electionDateInFutureFormatted } = this.state;
+      let messageToFriendDefault = '';
+      // const electionDayText = ElectionStore.getElectionDayText(VoterStore.electionId());
+      const electionDayText = BallotStore.currentBallotElectionDate;
+      let electionDateFound = false;
+      if (electionDayText !== undefined && electionDateInFutureFormatted) {
+        const daysUntilElection = daysUntil(electionDayText);
+        if (daysUntilElection === 0) {
+          messageToFriendDefault += "I'm getting ready to vote today.";
+          electionDateFound = true;
+        } else if (daysUntilElection > 0) {
+          messageToFriendDefault += `I'm getting ready for the election on ${electionDateInFutureFormatted}.`;
+          electionDateFound = true;
+        }
       }
+      if (!electionDateFound) {
+        messageToFriendDefault += "I'm getting ready to vote.";
+      }
+      messageToFriendDefault += ' Would you like to join me in deciding how to vote?';
+      this.setState({
+        messageToFriendDefault,
+      }, () => this.setMessageToFriendQueuedToSave());
     }
-    if (!electionDateFound) {
-      messageToFriendDefault += "I'm getting ready to vote.";
-    }
-    messageToFriendDefault += ' Would you like to join me in deciding how to vote?';
-    this.setState({
-      messageToFriendDefault,
-    }, () => this.setMessageToFriendQueuedToSave());
   }
 
   setMessageToFriendQueuedToSave = () => {
