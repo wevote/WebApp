@@ -1,9 +1,10 @@
-import styled from 'styled-components';
 import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
+import styled from 'styled-components';
 import OpenExternalWebSite from '../../common/components/Widgets/OpenExternalWebSite';
+import { isWebApp } from '../../common/utils/isCordovaOrWebApp';
 import AppObservableStore from '../../stores/AppObservableStore';
 
 class FooterMainWeVote extends Component {
@@ -37,35 +38,47 @@ class FooterMainWeVote extends Component {
               <Link id="footerLinkTermsOfUse" className={classes.link} to="/more/terms">Terms</Link>
             </OneRow>
             <OneRow>
-              <OpenExternalWebSite
-                linkIdAttribute="footerLinkAbout"
-                url="https://wevote.us/more/about"
-                target="_blank"
-                body={(
-                  <span>About</span>
-                )}
-                className={classes.link}
-              />
+              { isWebApp() ? (
+                <OpenExternalWebSite
+                  linkIdAttribute="footerLinkAbout"
+                  url="https://wevote.us/more/about"
+                  target="_blank"
+                  body={(
+                    <span>About</span>
+                  )}
+                  className={classes.link}
+                />
+              ) : (
+                <Link id="footerLinkAbout" className={classes.link} to="/more/about">About</Link>
+              )}
               <RowSpacer />
-              <OpenExternalWebSite
-                linkIdAttribute="footerLinkTeam"
-                url="https://wevote.us/more/about"
-                target="_blank"
-                body={(
-                  <span>Team</span>
-                )}
-                className={classes.link}
-              />
+              { isWebApp() ? (
+                <OpenExternalWebSite
+                  linkIdAttribute="footerLinkTeam"
+                  url="https://wevote.us/more/about"
+                  target="_blank"
+                  body={(
+                    <span>Team</span>
+                  )}
+                  className={classes.link}
+                />
+              ) : (
+                <Link id="footerLinkTeam" className={classes.link} to="/more/about">Team</Link>
+              )}
               <RowSpacer />
-              <OpenExternalWebSite
-                linkIdAttribute="footerLinkTeam"
-                url="https://wevote.us/more/credits"
-                target="_blank"
-                body={(
-                  <span>Credits &amp; Thanks</span>
-                )}
-                className={classes.link}
-              />
+              { isWebApp() ? (
+                <OpenExternalWebSite
+                  linkIdAttribute="footerLinkCredits"
+                  url="https://wevote.us/more/credits"
+                  target="_blank"
+                  body={(
+                    <span>Credits &amp; Thanks</span>
+                  )}
+                  className={classes.link}
+                />
+              ) : (
+                <Link id="footerLinkCredits" className={classes.link} to="/more/credits">Credits &amp; Thanks</Link>
+              )}
             </OneRow>
           </TopSectionInnerWrapper>
         </TopSectionOuterWrapper>

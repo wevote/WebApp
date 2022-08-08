@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import React, { Component } from 'react';
 import { standardBoxShadow } from '../../../components/Style/pageLayoutStyles';
 import { isAndroidSizeFold } from '../../utils/cordovaUtils';
 import { isWebApp } from '../../utils/isCordovaOrWebApp';

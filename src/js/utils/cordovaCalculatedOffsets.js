@@ -155,10 +155,16 @@ export function cordovaSimplePageContainerTopOffset (isSignedIn) {
     setTimeout(() => {
       const headroomWrapper = $('div[class*=\'HeadroomWrapper\']');
       const iosSpacerElem = $('div[class*=\'IOSNotchedSpacer\']');
-      const notchHeight = iosSpacerElem.length > 0 ? iosSpacerElem.height() : 0;
+      const iosNoNotchSpacerElem = $('div[class*=\'IOSNoNotchSpacer\']');
+      let notchHeight = 0;
+      if (iosSpacerElem.length > 0) {
+        notchHeight = iosSpacerElem.height();
+      } else if (iosNoNotchSpacerElem.length > 0) {
+        notchHeight = iosNoNotchSpacerElem.height();
+      }
 
       const height = headroomWrapper.height();
-      debugLogging(`cordovaSimplePageContainerTopOffset HeadRoomWrapper height ${height}, ${getPageKey()}`);
+      debugLogging(`cordovaSimplePageContainerTopOffset isSignedIn: ${isSignedIn}, HeadRoomWrapper height: ${height}, page: ${getPageKey()}`);
 
       if (height !== undefined && height > 0 && getCordovaSimplePageContainerTopOffsetValue() === 0) {
         const decorativeUiWhitespaceSimple = 20;

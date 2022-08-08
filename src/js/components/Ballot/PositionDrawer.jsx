@@ -10,9 +10,12 @@ import IssueActions from '../../actions/IssueActions';
 import MeasureActions from '../../actions/MeasureActions';
 import OrganizationActions from '../../actions/OrganizationActions';
 import VoterGuideActions from '../../actions/VoterGuideActions';
+import apiCalming from '../../common/utils/apiCalming';
 import { hasIPhoneNotch } from '../../common/utils/cordovaUtils';
 import { normalizedHref } from '../../common/utils/hrefUtils';
+import { isWebApp } from '../../common/utils/isCordovaOrWebApp';
 import { renderLog } from '../../common/utils/logging';
+import stringContains from '../../common/utils/stringContains';
 import BallotStore from '../../stores/BallotStore';
 import CandidateStore from '../../stores/CandidateStore';
 import IssueStore from '../../stores/IssueStore';
@@ -20,8 +23,6 @@ import MeasureStore from '../../stores/MeasureStore';
 // import OrganizationStore from '../../stores/OrganizationStore';
 import VoterGuideStore from '../../stores/VoterGuideStore';
 import VoterStore from '../../stores/VoterStore';
-import apiCalming from '../../common/utils/apiCalming';
-import stringContains from '../../common/utils/stringContains';
 import { cordovaDrawerTopMargin } from '../../utils/cordovaOffsets';
 import { convertToInteger } from '../../utils/textFormat';
 
@@ -262,7 +263,7 @@ class PositionDrawer extends Component {
               <>
                 <Suspense fallback={<></>}>
                   <PositionItem
-                    linksOpenExternalWebsite
+                    linksOpenExternalWebsite={isWebApp()}
                     position={featuredPosition}
                     params={params}
                     showEntireStatementText

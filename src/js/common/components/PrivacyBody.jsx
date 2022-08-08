@@ -94,111 +94,113 @@ export default class PrivacyBody extends Component {
           <span>If you have opted-into the We Vote mailing list, your email address and name may be exchanged with named partners and other organizations with principles and/or missions that overlap with those of We Vote. Subscribers may opt out of such mailing list exchanges at any time. Our purpose is to protect your information while making sure you have what you need to make an informed decision on Election Day.</span>
         </p>
         <p>These are some ways your information is used or shown:</p>
-        <table style={{ height: 166, width: 631 }} border="1">
-          <tbody>
-            <tr>
-              <TdColumn1><strong>Your Personal Information</strong></TdColumn1>
-              <TdColumn2><strong>How We Vote Uses or Displays</strong></TdColumn2>
-              <TdColumn3><strong>Public?</strong></TdColumn3>
-              <TdColumn4><strong>Can Be Hidden?</strong></TdColumn4>
-            </tr>
-            <tr>
-              <TdColumn1>Your Name</TdColumn1>
-              <TdColumn2>Displayed on your profile</TdColumn2>
-              <TdColumn3>Yes</TdColumn3>
-              <TdColumn4>No</TdColumn4>
-            </tr>
-            <tr>
-              <TdColumn1>Your Mailing List Email Address and Name</TdColumn1>
-              <TdColumn2>We Vote&apos;s opt-in mailing list uses your email address and name to update you a variety of topic related to voting.</TdColumn2>
-              <TdColumn3>No.</TdColumn3>
-              <TdColumn4>Is hidden</TdColumn4>
-            </tr>
-            <tr>
-              <TdColumn1>Your We Vote Account Email Address(es)</TdColumn1>
-              <TdColumn2>Used to contact you for sign in, or notifications which you control. When a friend imports contacts which include your email address, we show your friend that you are already on We Vote so they can request to be connected with you. We will never sell your email address.</TdColumn2>
-              <TdColumn3>No. Discoverable by friends importing their contact lists.</TdColumn3>
-              <TdColumn4>Is hidden from view. Cannot prevent discoverability by friends.</TdColumn4>
-            </tr>
-            <tr>
-              <TdColumn1>Your Phone Number</TdColumn1>
-              <TdColumn2>Used to contact you for sign in, or notifications which you control. When a friend imports contacts which include your phone number, we show your friend that you are already on We Vote so they can request to be connected with you. We will never sell your phone number.</TdColumn2>
-              <TdColumn3>No. Discoverable by friends importing their contact lists.</TdColumn3>
-              <TdColumn4>Is hidden from view. Cannot prevent discoverability by friends.</TdColumn4>
-            </tr>
-            <tr>
-              <TdColumn1>Values You Follow</TdColumn1>
-              <TdColumn2>Displayed on your profile</TdColumn2>
-              <TdColumn3>Yes</TdColumn3>
-              <TdColumn4>No</TdColumn4>
-            </tr>
-            <tr>
-              <TdColumn1>Your Profile Photos</TdColumn1>
-              <TdColumn2>Displayed on your profile</TdColumn2>
-              <TdColumn3>Yes</TdColumn3>
-              <TdColumn4>No</TdColumn4>
-            </tr>
-            <tr>
-              <TdColumn1>Address</TdColumn1>
-              <TdColumn2>Used to identify correct ballot for you</TdColumn2>
-              <TdColumn3>No</TdColumn3>
-              <TdColumn4>Is hidden</TdColumn4>
-            </tr>
-            <tr>
-              <TdColumn1>State Code of Your Ballot</TdColumn1>
-              <TdColumn2>Shown to your friends and people connected to your friends, when you appear in lists of &apos;suggested friends&apos;</TdColumn2>
-              <TdColumn3>Yes</TdColumn3>
-              <TdColumn4>Yes</TdColumn4>
-            </tr>
-            <tr>
-              <TdColumn1>Candidates you Support or Oppose</TdColumn1>
-              <TdColumn2>If marked &apos;Public&apos; by you, your endorsement is displayed on your profile, or under candidate. Otherwise, your endorsement is only visible to friends you add to We Vote.</TdColumn2>
-              <TdColumn3>No by Default</TdColumn3>
-              <TdColumn4>Yes</TdColumn4>
-            </tr>
-            <tr>
-              <TdColumn1>Measures you Support or Oppose</TdColumn1>
-              <TdColumn2>If marked &apos;Public&apos; by you, your endorsement is displayed on your profile, or under measure.&nbsp;Otherwise, your endorsement is only visible to friends you add to We Vote.</TdColumn2>
-              <TdColumn3>&nbsp;No by Default</TdColumn3>
-              <TdColumn4>Yes&nbsp;</TdColumn4>
-            </tr>
-            <tr>
-              <TdColumn1>Organizations, Public Figures, and Private Individuals you Follow on We Vote</TdColumn1>
-              <TdColumn2>Displayed on your profile</TdColumn2>
-              <TdColumn3>Yes</TdColumn3>
-              <TdColumn4>No</TdColumn4>
-            </tr>
-            <tr>
-              <TdColumn1>Who you Follow on Twitter</TdColumn1>
-              <TdColumn2>When you sign in with Twitter, all of the Twitter accounts you follow on Twitter which have endorsements stored in We Vote, are displayed on your profile</TdColumn2>
-              <TdColumn3>Yes</TdColumn3>
-              <TdColumn4>No</TdColumn4>
-            </tr>
-            <tr>
-              <TdColumn1>Friends you invite to We Vote</TdColumn1>
-              <TdColumn2>Not displayed</TdColumn2>
-              <TdColumn3>No</TdColumn3>
-              <TdColumn4>Is hidden</TdColumn4>
-            </tr>
-            <tr>
-              <TdColumn1>Contacts imported from Google/Gmail</TdColumn1>
-              <TdColumn2>
-                Your list of contacts is only shown to you for the purposes of finding friends who are already using We Vote,
-                and inviting friends to connect with you on We Vote. This data is stored in quarantined database tables,
-                and subject to Limited Use requirements (see below). Contacts are not added to the We Vote mailing list.
-                You have 100% control over initiating messages to individuals in your contact list.
-              </TdColumn2>
-              <TdColumn3>No</TdColumn3>
-              <TdColumn4>Is hidden, and can be deleted by you from profile section</TdColumn4>
-            </tr>
-            <tr>
-              <TdColumn1>The fact that you have an account</TdColumn1>
-              <TdColumn2>Any We Vote voters who look at the Friends section can see you as a &apos;Suggested Friend&apos; if they are connected to one of your current friends</TdColumn2>
-              <TdColumn3>Only to friends of friends</TdColumn3>
-              <TdColumn4>Yes, if you don&apos;t add any of your friends</TdColumn4>
-            </tr>
-          </tbody>
-        </table>
+        <HorizontallyScrollingDiv>
+          <table style={{ height: 166, width: 631 }} border="1">
+            <tbody>
+              <tr>
+                <TdColumn1><strong>Your Personal Information</strong></TdColumn1>
+                <TdColumn2><strong>How We Vote Uses or Displays</strong></TdColumn2>
+                <TdColumn3><strong>Public?</strong></TdColumn3>
+                <TdColumn4><strong>Can Be Hidden?</strong></TdColumn4>
+              </tr>
+              <tr>
+                <TdColumn1>Your Name</TdColumn1>
+                <TdColumn2>Displayed on your profile</TdColumn2>
+                <TdColumn3>Yes</TdColumn3>
+                <TdColumn4>No</TdColumn4>
+              </tr>
+              <tr>
+                <TdColumn1>Your Mailing List Email Address and Name</TdColumn1>
+                <TdColumn2>We Vote&apos;s opt-in mailing list uses your email address and name to update you a variety of topic related to voting.</TdColumn2>
+                <TdColumn3>No.</TdColumn3>
+                <TdColumn4>Is hidden</TdColumn4>
+              </tr>
+              <tr>
+                <TdColumn1>Your We Vote Account Email Address(es)</TdColumn1>
+                <TdColumn2>Used to contact you for sign in, or notifications which you control. When a friend imports contacts which include your email address, we show your friend that you are already on We Vote so they can request to be connected with you. We will never sell your email address.</TdColumn2>
+                <TdColumn3>No. Discoverable by friends importing their contact lists.</TdColumn3>
+                <TdColumn4>Is hidden from view. Cannot prevent discoverability by friends.</TdColumn4>
+              </tr>
+              <tr>
+                <TdColumn1>Your Phone Number</TdColumn1>
+                <TdColumn2>Used to contact you for sign in, or notifications which you control. When a friend imports contacts which include your phone number, we show your friend that you are already on We Vote so they can request to be connected with you. We will never sell your phone number.</TdColumn2>
+                <TdColumn3>No. Discoverable by friends importing their contact lists.</TdColumn3>
+                <TdColumn4>Is hidden from view. Cannot prevent discoverability by friends.</TdColumn4>
+              </tr>
+              <tr>
+                <TdColumn1>Values You Follow</TdColumn1>
+                <TdColumn2>Displayed on your profile</TdColumn2>
+                <TdColumn3>Yes</TdColumn3>
+                <TdColumn4>No</TdColumn4>
+              </tr>
+              <tr>
+                <TdColumn1>Your Profile Photos</TdColumn1>
+                <TdColumn2>Displayed on your profile</TdColumn2>
+                <TdColumn3>Yes</TdColumn3>
+                <TdColumn4>No</TdColumn4>
+              </tr>
+              <tr>
+                <TdColumn1>Address</TdColumn1>
+                <TdColumn2>Used to identify correct ballot for you</TdColumn2>
+                <TdColumn3>No</TdColumn3>
+                <TdColumn4>Is hidden</TdColumn4>
+              </tr>
+              <tr>
+                <TdColumn1>State Code of Your Ballot</TdColumn1>
+                <TdColumn2>Shown to your friends and people connected to your friends, when you appear in lists of &apos;suggested friends&apos;</TdColumn2>
+                <TdColumn3>Yes</TdColumn3>
+                <TdColumn4>Yes</TdColumn4>
+              </tr>
+              <tr>
+                <TdColumn1>Candidates you Support or Oppose</TdColumn1>
+                <TdColumn2>If marked &apos;Public&apos; by you, your endorsement is displayed on your profile, or under candidate. Otherwise, your endorsement is only visible to friends you add to We Vote.</TdColumn2>
+                <TdColumn3>No by Default</TdColumn3>
+                <TdColumn4>Yes</TdColumn4>
+              </tr>
+              <tr>
+                <TdColumn1>Measures you Support or Oppose</TdColumn1>
+                <TdColumn2>If marked &apos;Public&apos; by you, your endorsement is displayed on your profile, or under measure.&nbsp;Otherwise, your endorsement is only visible to friends you add to We Vote.</TdColumn2>
+                <TdColumn3>&nbsp;No by Default</TdColumn3>
+                <TdColumn4>Yes&nbsp;</TdColumn4>
+              </tr>
+              <tr>
+                <TdColumn1>Organizations, Public Figures, and Private Individuals you Follow on We Vote</TdColumn1>
+                <TdColumn2>Displayed on your profile</TdColumn2>
+                <TdColumn3>Yes</TdColumn3>
+                <TdColumn4>No</TdColumn4>
+              </tr>
+              <tr>
+                <TdColumn1>Who you Follow on Twitter</TdColumn1>
+                <TdColumn2>When you sign in with Twitter, all of the Twitter accounts you follow on Twitter which have endorsements stored in We Vote, are displayed on your profile</TdColumn2>
+                <TdColumn3>Yes</TdColumn3>
+                <TdColumn4>No</TdColumn4>
+              </tr>
+              <tr>
+                <TdColumn1>Friends you invite to We Vote</TdColumn1>
+                <TdColumn2>Not displayed</TdColumn2>
+                <TdColumn3>No</TdColumn3>
+                <TdColumn4>Is hidden</TdColumn4>
+              </tr>
+              <tr>
+                <TdColumn1>Contacts imported from Google/Gmail</TdColumn1>
+                <TdColumn2>
+                  Your list of contacts is only shown to you for the purposes of finding friends who are already using We Vote,
+                  and inviting friends to connect with you on We Vote. This data is stored in quarantined database tables,
+                  and subject to Limited Use requirements (see below). Contacts are not added to the We Vote mailing list.
+                  You have 100% control over initiating messages to individuals in your contact list.
+                </TdColumn2>
+                <TdColumn3>No</TdColumn3>
+                <TdColumn4>Is hidden, and can be deleted by you from profile section</TdColumn4>
+              </tr>
+              <tr>
+                <TdColumn1>The fact that you have an account</TdColumn1>
+                <TdColumn2>Any We Vote voters who look at the Friends section can see you as a &apos;Suggested Friend&apos; if they are connected to one of your current friends</TdColumn2>
+                <TdColumn3>Only to friends of friends</TdColumn3>
+                <TdColumn4>Yes, if you don&apos;t add any of your friends</TdColumn4>
+              </tr>
+            </tbody>
+          </table>
+        </HorizontallyScrollingDiv>
         <p className="u-show-desktop-tablet">&nbsp;</p>
         <h2><b>How to request the deletion of your data</b></h2>
         <p>
@@ -368,6 +370,13 @@ const ContentTitle = styled('h1')(({ theme }) => (`
   text-align: center !important;
   ${theme.breakpoints.down('sm')} {
     font-size: 20px;
+  }
+`));
+
+const HorizontallyScrollingDiv = styled('div')(({ theme }) => (`
+  ${theme.breakpoints.down('md')} {
+    border: 3px solid lightgrey;
+    overflow-x: auto;
   }
 `));
 

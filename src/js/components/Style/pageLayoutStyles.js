@@ -52,15 +52,17 @@ function getPaddingTop () {
 
 function getPaddingBottom () {
   if (isCordova()) {
-    if (normalizedHrefPage() === 'settings') {
-      return '50px';
+    const pages = ['settings', 'more/attributions'];
+    const page = normalizedHrefPage();
+    if (pages.includes(page)) {
+      return '75px';
     }
   }
   return '';
 }
 
 export const PageContentContainer = styled('div')(({ theme }) => (`
-  padding-top: ${getPaddingTop()};
+  padding-top: ${getPaddingTop()} !important;
   padding-bottom: ${getPaddingBottom()};
   position: relative;
   max-width: 960px;
@@ -78,7 +80,6 @@ export const PageContentContainerGetStarted = styled('div')`
   display: flex;
   justify-content: center;
 `;
-
 
 export const HeaderContentContainer = styled('div')(({ theme }) => (`
   margin: ${() => cordovaBallotFilterTopMargin()} auto 0 auto;
@@ -223,35 +224,38 @@ export const TopRowTwoRightContainer = styled('div')`
   }};
 `;
 
+function getBackToTop () {
+  // IMPORTANT: This is a last chance way to adjust the height, to be used only if cordovaScrollablePaneTopPadding can't do it!
+  if ([CordovaPageConstants.candidateWild,
+    CordovaPageConstants.officeWild,
+    CordovaPageConstants.settingsProfile,
+    CordovaPageConstants.settingsAccount,
+    CordovaPageConstants.settingsNotifications,
+    CordovaPageConstants.settingsSubscription,
+    CordovaPageConstants.settingsWild,
+    CordovaPageConstants.measureWild,
+    CordovaPageConstants.valuesList,
+    CordovaPageConstants.valuesWild].includes(pageEnumeration())) {
+    if (isIPhone4p7in())      return '20px';
+    if (isIPhone5p5inEarly()) return '20px';
+    if (isIPhone5p5inMini())  return '39px';
+    if (isIPhone6p1in())      return '34px';
+    if (isIPhone6p5in())      return '34px';
+    if (hasIPhoneNotch())     return '34px';
+    if (isIPad())             return '24px';
+  }
+  return '0px';
+}
+
 export const AppBarForBackTo = styled(AppBar)(({ theme }) => (`
   border-top: none;
   border-right: none;
   border-left: none;
   border-image: initial;
+  padding-top: ${getBackToTop()};
   display: flex;
   justify-content: center;
-  padding-top: ${() => {
-    // IMPORTANT: This is a last chance way to adjust the height, to be used only if cordovaScrollablePaneTopPadding can't do it!
-    if ([CordovaPageConstants.candidateWild,
-      CordovaPageConstants.officeWild,
-      CordovaPageConstants.settingsProfile,
-      CordovaPageConstants.settingsAccount,
-      CordovaPageConstants.settingsNotifications,
-      CordovaPageConstants.settingsSubscription,
-      CordovaPageConstants.settingsWild,
-      CordovaPageConstants.measureWild,
-      CordovaPageConstants.valuesList,
-      CordovaPageConstants.valuesWild].includes(pageEnumeration())) {
-      if (isIPhone4p7in())      return '20px';
-      if (isIPhone5p5inEarly()) return '20px';
-      if (isIPhone5p5inMini())  return '39px';
-      if (isIPhone6p1in())      return '34px';
-      if (isIPhone6p5in())      return '34px';
-      if (hasIPhoneNotch())     return '34px';
-      if (isIPad())             return '24px';
-    }
-    return '0px';
-  }};
+
   ${() => {
     if (AppObservableStore.getScrolledDown() && ![
       CordovaPageConstants.officeWild,

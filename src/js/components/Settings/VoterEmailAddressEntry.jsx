@@ -7,16 +7,14 @@ import React, { Component, Suspense } from 'react';
 import styled from 'styled-components';
 import VoterActions from '../../actions/VoterActions';
 import LoadingWheel from '../../common/components/Widgets/LoadingWheel';
-import {
-  blurTextFieldAndroid,
-  focusTextFieldAndroid,
-} from '../../common/utils/cordovaUtils';
+import { blurTextFieldAndroid, focusTextFieldAndroid, isIPad } from '../../common/utils/cordovaUtils';
 import { isCordova, isWebApp } from '../../common/utils/isCordovaOrWebApp';
 import isMobileScreenSize from '../../common/utils/isMobileScreenSize';
 import { renderLog } from '../../common/utils/logging';
 import VoterStore from '../../stores/VoterStore';
-import SettingsVerifySecretCode from './SettingsVerifySecretCode';
+import { ButtonContainer } from '../Welcome/sectionStyles';
 import signInModalGlobalState from '../Widgets/signInModalGlobalState';
+import SettingsVerifySecretCode from './SettingsVerifySecretCode';
 
 const OpenExternalWebSite = React.lazy(() => import(/* webpackChunkName: 'OpenExternalWebSite' */ '../../common/components/Widgets/OpenExternalWebSite'));
 
@@ -473,37 +471,37 @@ class VoterEmailAddressEntry extends Component {
 
         return (
           <div key={voterEmailAddressFromList.email_we_vote_id}>
-            <span className="u-no-break">{voterEmailAddressFromList.normalized_email_address}</span>
-
-            {isPrimaryEmailAddress && (
-              <span>
-                <span>&nbsp;&nbsp;&nbsp;</span>
-                Primary
-              </span>
-            )}
-            {!isPrimaryEmailAddress && (
-              <span>
-                <span>&nbsp;&nbsp;&nbsp;</span>
+            <FirstRow>
+              <span className="u-no-break">{voterEmailAddressFromList.normalized_email_address}</span>
+            </FirstRow>
+            <SecondRow>
+              {isPrimaryEmailAddress && (
                 <span>
+                  Primary
+                </span>
+              )}
+              {!isPrimaryEmailAddress && (
+                <>
                   <span
                     className="u-link-color u-cursor--pointer u-no-break"
                     onClick={this.setAsPrimaryEmailAddress.bind(this, voterEmailAddressFromList.email_we_vote_id)}
                   >
                     Make Primary
+                    <span style={{ paddingRight: '65px' }}>&nbsp;</span>
                   </span>
-                  &nbsp;&nbsp;&nbsp;
-                </span>
-                <span>&nbsp;&nbsp;&nbsp;</span>
-                {allowRemoveEmail && (
-                  <span
-                    className="u-link-color u-cursor--pointer"
-                    onClick={this.removeVoterEmailAddress.bind(this, voterEmailAddressFromList.email_we_vote_id)}
-                  >
-                    <Delete />
-                  </span>
-                )}
-              </span>
-            )}
+                  {allowRemoveEmail && (
+                    <TrashCan>
+                      <span
+                        className="u-link-color u-cursor--pointer"
+                        onClick={this.removeVoterEmailAddress.bind(this, voterEmailAddressFromList.email_we_vote_id)}
+                      >
+                        <Delete />
+                      </span>
+                    </TrashCan>
+                  )}
+                </>
+              )}
+            </SecondRow>
           </div>
         );
       } else {
@@ -523,27 +521,26 @@ class VoterEmailAddressEntry extends Component {
         return (
           <div key={voterEmailAddressFromList.email_we_vote_id}>
             <div>
-              <span className="u-no-break">{voterEmailAddressFromList.normalized_email_address}</span>
-              <span>&nbsp;&nbsp;&nbsp;</span>
+              <FirstRow>{voterEmailAddressFromList.normalized_email_address}</FirstRow>
               {voterEmailAddressFromList.email_ownership_is_verified ?
                 null : (
-                  <span
-                    className="u-link-color u-cursor--pointer u-no-break"
-                    onClick={() => this.reSendSignInCodeEmail(voterEmailAddressFromList.normalized_email_address)}
-                  >
-                    Send Verification Again
-                  </span>
+                  <SecondRow className="u-link-color u-cursor--pointer">
+                    <span
+                      className="u-link-color u-cursor--pointer u-no-break"
+                      onClick={() => this.reSendSignInCodeEmail(voterEmailAddressFromList.normalized_email_address)}
+                    >
+                      Send Verification Again
+                    </span>
+                    {allowRemoveEmail && (
+                      <TrashCan
+                        className="u-link-color u-cursor--pointer"
+                        onClick={this.removeVoterEmailAddress.bind(this, voterEmailAddressFromList.email_we_vote_id)}
+                      >
+                        <Delete />
+                      </TrashCan>
+                    )}
+                  </SecondRow>
                 )}
-
-              <span>&nbsp;&nbsp;&nbsp;</span>
-              {allowRemoveEmail && (
-                <span
-                  className="u-link-color u-cursor--pointer"
-                  onClick={this.removeVoterEmailAddress.bind(this, voterEmailAddressFromList.email_we_vote_id)}
-                >
-                  <Delete />
-                </span>
-              )}
             </div>
           </div>
         );
@@ -626,9 +623,16 @@ const styles = {
   },
 };
 
-const ButtonContainer = styled('div')`
-  width: fit-content;
-  margin-left: 8px;
+const FirstRow = styled('div')`
+  margin: 5px 5px 2px 15px;
+`;
+
+const SecondRow = styled('div')`
+  margin: 0 0 4px 50px;
+`;
+
+const TrashCan = styled('span')`
+  margin-left: 30px;
 `;
 
 const ButtonsHiddenSpacer = styled('div')`
@@ -664,6 +668,8 @@ const Wrapper = styled('div', {
   shouldForwardProp: (prop) => !['isWeb'].includes(prop),
 })(({ isWeb }) => (`
   margin-top: ${isWeb ? '0' : '0'};
+  ${isIPad() ? 'text-align: left; padding-left: 110px;' : ''};
+)}
 `));
 
 export default withStyles(styles)(VoterEmailAddressEntry);
