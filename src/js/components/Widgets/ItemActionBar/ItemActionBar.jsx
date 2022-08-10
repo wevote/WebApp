@@ -868,7 +868,7 @@ const styles = (theme) => ({
 
 const ItemActionBarWrapper = styled('div', {
   shouldForwardProp: (prop) => !['positionPublicToggleWrapAllowed', 'displayInline'].includes(prop),
-})(({ positionPublicToggleWrapAllowed, displayInline }) => (`
+})(({ positionPublicToggleWrapAllowed, displayInline, theme }) => (`
   display: ${positionPublicToggleWrapAllowed ? '' :  'flex'};
   justify-content: ${positionPublicToggleWrapAllowed ? '' :  'flex-start'};
   width: ${positionPublicToggleWrapAllowed ? '' :  '100%'};
@@ -879,6 +879,8 @@ const ItemActionBarWrapper = styled('div', {
   margin-left: 0;
   margin-bottom: 0;
   padding-top: ${displayInline ? '0' : '8px'};
+  ${theme.breakpoints.down('sm')} {
+    flex-wrap: wrap;
 `));
 
 const ButtonGroup = styled('div', {

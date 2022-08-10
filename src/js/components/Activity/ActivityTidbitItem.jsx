@@ -216,6 +216,7 @@ const ActivityPostEditWrapper = styled('div')`
 
 const ActivityPostWrapper = styled('div')`
   font-size: 18px;
+  overflow-wrap: break-word;
 `;
 
 const ActivitySpeakerCardWrapper = styled('div')`

@@ -328,7 +328,7 @@ class CandidateItem extends Component {
       <div>
         <CandidateWrapper className="card-main__media-object">
           <CandidateInfo
-            isClickable={useLinkToCandidatePage === true}
+            isClickable={useLinkToCandidatePage === true ? () => this.goToCandidateLink() : null}
           >
             <div
               className="card-main__media-object-anchor"
@@ -584,7 +584,7 @@ class CandidateItem extends Component {
   goToCandidateLink () {
     const { linksOpenNewPage } = this.props;
     if (linksOpenNewPage && isWebApp()) {
-      // August 2022: In Cordova this opens a new completely seperate session in a web browser (very bad),
+      // August 2022: In Cordova this opens a new completely separate session in a web browser (very bad),
       // in WebApp it is a hard link to ONLY WeVote.us (bad for branded versions)
       window.open(`https://WeVote.US${this.getCandidateLink()}`, '_blank');
     } else {
@@ -596,7 +596,7 @@ class CandidateItem extends Component {
 
   goToOfficeLink () {
     const { linksOpenNewPage } = this.props;
-    if (linksOpenNewPage) {
+    if (linksOpenNewPage && isWebApp()) {
       window.open(`https://WeVote.US${this.getOfficeLink()}`, '_blank');
     } else {
       // In case we were in the OrganizationModal, close it

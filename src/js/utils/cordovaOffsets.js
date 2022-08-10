@@ -161,11 +161,14 @@ export function cordovaContainerMainOverride () {
   return undefined;
 }
 
-// <div className="footer-container u-show-mobile-tablet" style={{ height: `${cordovaFooterHeight()}` }}>
+// <div className="footer-container u-show-mobile-tablet" style={cordovaFooterHeight()}>
 export function cordovaFooterHeight () {
   if (isIOS()) {
     if (hasIPhoneNotch()) {
-      return '67px';
+      return {
+        height: '95px',
+        paddingTop: '10px',
+      };
     }
   }
 
@@ -386,7 +389,7 @@ export function cordovaFriendsWrapper () {
     if (isIPhone6p1in()) {
       return {
         // paddingTop: '69px',
-        // paddingBottom: '0',
+        paddingBottom: '90px',
       };
     }
     if (isIPhone6p5in()) {

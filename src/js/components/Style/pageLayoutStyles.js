@@ -41,8 +41,9 @@ function getPaddingTop () {
   if (isCordova()) {
     if ((normalizedHrefPage() === 'ballot') ||
         (normalizedHrefPage() === 'friends' && VoterStore.getVoterIsSignedIn())) {
-      return cordovaComplexHeaderPageContainerTopOffset();
+      return `${cordovaComplexHeaderPageContainerTopOffset()} !important`;
     } else {
+      // The following line sets the value directly (non-ideal)
       cordovaSimplePageContainerTopOffset();
       return '';
     }
@@ -52,17 +53,17 @@ function getPaddingTop () {
 
 function getPaddingBottom () {
   if (isCordova()) {
-    const pages = ['settings', 'more/attributions'];
-    const page = normalizedHrefPage();
+    const pages = ['ready', 'settings', 'more/attributions', 'more/privacy', 'more/terms', 'more/faq'];
+    const page = normalizedHrefPage() || 'ready';  // readyLight has path '/'
     if (pages.includes(page)) {
-      return '75px';
+      return '120px';
     }
   }
   return '';
 }
 
 export const PageContentContainer = styled('div')(({ theme }) => (`
-  padding-top: ${getPaddingTop()} !important;
+  padding-top: ${getPaddingTop()};
   padding-bottom: ${getPaddingBottom()};
   position: relative;
   max-width: 960px;
@@ -127,7 +128,6 @@ export const DualHeaderContainer = styled('div', {
 `));
 
 export const HeadroomWrapper = styled('div')`
-  // margin-top: ${() => ((isWebApp()) ? '48px' : '')};  // headroom-wrapper-webapp   // headroom-wrapper-webapp__default was 54px
   position: fixed;
   top: 0;
   left: 0;
@@ -224,7 +224,7 @@ export const TopRowTwoRightContainer = styled('div')`
   }};
 `;
 
-function getBackToTop () {
+function getBackToPaddingTop () {
   // IMPORTANT: This is a last chance way to adjust the height, to be used only if cordovaScrollablePaneTopPadding can't do it!
   if ([CordovaPageConstants.candidateWild,
     CordovaPageConstants.officeWild,
@@ -252,10 +252,9 @@ export const AppBarForBackTo = styled(AppBar)(({ theme }) => (`
   border-right: none;
   border-left: none;
   border-image: initial;
-  padding-top: ${getBackToTop()};
   display: flex;
   justify-content: center;
-
+  padding-top: ${getBackToPaddingTop()};
   ${() => {
     if (AppObservableStore.getScrolledDown() && ![
       CordovaPageConstants.officeWild,
@@ -270,9 +269,9 @@ export const AppBarForBackTo = styled(AppBar)(({ theme }) => (`
       boxShadow: standardBoxShadow('wide'),
     };
   }};
-${theme.breakpoints.down('sm')} {
-  display: inherit;
-}
+  ${theme.breakpoints.down('sm')} {
+    display: inherit;
+  };
 `));
 
 export const OfficeShareWrapper = styled('div')`
@@ -280,82 +279,31 @@ export const OfficeShareWrapper = styled('div')`
   margin-right: ${(isIPad() || isIOSAppOnMac()) ? '19px' : ''};
 `;
 
+export const FirstRowPhoneOrEmail = styled('div')`
+  margin: 5px 5px 2px 36px;
+  text-align: left;
+`;
 
-// export function pageLayoutStyles () {
-//   const styles = {                // from main.css .page-header
-//     border: 'none',
-//     paddingTop: 0,
-//     paddingRight: '15px',
-//     paddingBottom: 0,
-//     paddingLeft: '15px',
-//     margin: '0 auto',
-//     justifyContent: 'space-between',
-//     alignItems: 'center',
-//     height: '48px',
-//   };
-//
-//   const page = normalizedHrefPage();
-//
-//   if (['candidate', 'friends', 'office', 'measure'].includes(page)) {
-//     styles.borderBottom = '1px solid #aaa';
-//     styles.boxShadow = standardBoxShadow();
-//   }
-//
-//   if (['candidate', 'office', 'measure'].includes(page)) {
-//     if (isWebApp()) {
-//       if (isMobileScreenSize()) {
-//         styles.height  = ['measure'].includes(page) ? '96px' : 'fit-content';
-//       } else {
-//         styles.padding = 0;
-//         styles.height  = ['office', 'measure'].includes(page) ? '96px' : '41px';
-//         if (['candidate'].includes(page)) {
-//           // styles.width = '960px';
-//           styles.flexDirection = 'column';
-//         }
-//         if (['measure'].includes(page)) {
-//           styles.height  = '67px';
-//         }
-//       }
-//       // styles.height = isMobileScreenSize() ? 'fit-content' : '96px';
-//       // styles.display = 'contents';
-//     }
-//     if (isCordova()) {            // from main.css .page-header__cordova
-//       switch (page) {
-//         case 'candidate': styles.height = '41px'; break;
-//         case 'measure':   styles.height = '94px'; break;
-//         default:          styles.height = '71px'; break;
-//       }
-//       styles.margin = '0 15px 0 15px';
-//       styles.paddingBottom = '4px';
-//     }
-//     if (hasIPhoneNotch()) {       // from .page-header__cordova-iphonex
-//       styles.margin = 0;
-//       styles.paddingTop = '0 !important';
-//     }
-//     if (isIOSAppOnMac() || isIPad() || isAndroid()) {
-//       styles.height = ['office'].includes(page) ? '87px' : '50px';
-//     }
-//   }
-//
-//   // console.log('headerStyles: ', styles);
-//   return styles;
-// }
+export const SecondRowPhoneOrEmail = styled('div')`
+  margin: 0 0 4px 50px;
+  text-align: left;
+`;
 
+export const TrashCan = styled('span')`
+  margin-left: 30px;
+`;
 
-// export function headerToolbarStyles () {
-//   const styles = {                // from main.css .header-toolbar
-//     width: '100%',
-//     maxWidth: '960px',
-//     justifyContent: 'space-between',  // .header-backto-toolbar
-//     display: 'grid',   // hack
-//     gridTemplateColumns: 'auto auto auto',
-//   };
-//
-//   // if (isWebApp() && !isMobileScreenSize()) {
-//   //   styles.width = '-webkit-fill-available';
-//   //   // console.log('header styles ------------- ', normalizedHrefPage());
-//   //   styles.transform = normalizedHrefPage() === 'measure' ? 'translate(43%, -21%)' : null;
-//   // }
-//
-//   return styles;
-// }
+export const TermsAndPrivacyText = styled('span')`
+  color: #999;
+  font-size: .9em;
+  font-weight: 400;
+  .u-cursor--pointer:hover {
+    color: #0156b3;
+    text-decoration: underline;
+  }
+  * {
+    span:hover {
+      color: #0156b3;
+      text-decoration: underline;
+    }
+`;

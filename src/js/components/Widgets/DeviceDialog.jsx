@@ -7,6 +7,8 @@ import { Link } from 'react-router-dom';
 import { hasIPhoneNotch } from '../../common/utils/cordovaUtils';
 import { renderLog } from '../../common/utils/logging';
 import VoterStore from '../../stores/VoterStore';
+import { TermsAndPrivacyText } from '../Style/pageLayoutStyles';
+
 
 const webAppConfig = require('../../config');
 
@@ -58,7 +60,7 @@ class DeviceDialog extends Component {
         open={this.props.show}
       >
         <DialogTitle>
-          <div className="text-center">Device Information</div>
+          <div className="text-center"><TermsAndPrivacyText>Device Information</TermsAndPrivacyText></div>
         </DialogTitle>
         <DialogContent classes={{ root: classes.dialogContent }}>
           This dialog contains technical information about your device, that might be requested by We Vote&apos;s support engineers.
@@ -126,8 +128,10 @@ class DeviceDialog extends Component {
             {VoterStore.getVoter().we_vote_id}
           </div>
           <div className="card-child__fine_print" style={{ marginTop: '0.5rem', fontSize: '0.75rem' }}>
-            Version: &nbsp;
-            {window.weVoteAppVersion}
+            <TermsAndPrivacyText>
+              Version: &nbsp;
+              {window.weVoteAppVersion}
+            </TermsAndPrivacyText>
           </div>
         </DialogContent>
         <DialogActions>

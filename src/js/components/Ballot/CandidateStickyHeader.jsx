@@ -31,7 +31,7 @@ class CandidateStickyHeader extends Component {
     // console.log('CandidateStickyHeader, displayName/candidateWeVoteId:', displayName, candidateWeVoteId);
 
     return (
-      <Wrapper ipad={isIPad() || isIOSAppOnMac()} isWebApp={isWebApp()}>
+      <CandidateStickyHeaderWrapper ipad={isIPad() || isIOSAppOnMac()} isWebApp={isWebApp()}>
         <Container>
           <Flex>
             <ColumnOne>
@@ -65,7 +65,7 @@ class CandidateStickyHeader extends Component {
             </Suspense>
           </BallotCommentContainer>
         </Container>
-      </Wrapper>
+      </CandidateStickyHeaderWrapper>
     );
   }
 }
@@ -83,7 +83,7 @@ const slideDown = keyframes`
   }
 `;
 
-const Wrapper = styled('div', {
+const CandidateStickyHeaderWrapper = styled('div', {
   shouldForwardProp: (prop) => !['ipad'].includes(prop),
 })(({ ipad, theme }) => (`
   max-width: 100%;
@@ -91,7 +91,7 @@ const Wrapper = styled('div', {
   padding-right: 16px;
   padding-bottom: 0;
   padding-left: 16px;
-  top: ${() => cordovaStickyHeaderPaddingTop()};
+  top: ${cordovaStickyHeaderPaddingTop()};
   left: 0;
   background: white;
   z-index: 2;

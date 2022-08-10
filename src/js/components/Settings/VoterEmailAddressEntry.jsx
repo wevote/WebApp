@@ -12,6 +12,7 @@ import { isCordova, isWebApp } from '../../common/utils/isCordovaOrWebApp';
 import isMobileScreenSize from '../../common/utils/isMobileScreenSize';
 import { renderLog } from '../../common/utils/logging';
 import VoterStore from '../../stores/VoterStore';
+import { FirstRowPhoneOrEmail, SecondRowPhoneOrEmail, TrashCan } from '../Style/pageLayoutStyles';
 import { ButtonContainer } from '../Welcome/sectionStyles';
 import signInModalGlobalState from '../Widgets/signInModalGlobalState';
 import SettingsVerifySecretCode from './SettingsVerifySecretCode';
@@ -471,17 +472,17 @@ class VoterEmailAddressEntry extends Component {
 
         return (
           <div key={voterEmailAddressFromList.email_we_vote_id}>
-            <FirstRow>
+            <FirstRowPhoneOrEmail>
               <span className="u-no-break">{voterEmailAddressFromList.normalized_email_address}</span>
-            </FirstRow>
-            <SecondRow>
+            </FirstRowPhoneOrEmail>
+            <SecondRowPhoneOrEmail>
               {isPrimaryEmailAddress && (
                 <span>
                   Primary
                 </span>
               )}
               {!isPrimaryEmailAddress && (
-                <>
+                <div key={voterEmailAddressFromList.email_we_vote_id}>
                   <span
                     className="u-link-color u-cursor--pointer u-no-break"
                     onClick={this.setAsPrimaryEmailAddress.bind(this, voterEmailAddressFromList.email_we_vote_id)}
@@ -499,9 +500,9 @@ class VoterEmailAddressEntry extends Component {
                       </span>
                     </TrashCan>
                   )}
-                </>
+                </div>
               )}
-            </SecondRow>
+            </SecondRowPhoneOrEmail>
           </div>
         );
       } else {
@@ -521,10 +522,10 @@ class VoterEmailAddressEntry extends Component {
         return (
           <div key={voterEmailAddressFromList.email_we_vote_id}>
             <div>
-              <FirstRow>{voterEmailAddressFromList.normalized_email_address}</FirstRow>
+              <FirstRowPhoneOrEmail>{voterEmailAddressFromList.normalized_email_address}</FirstRowPhoneOrEmail>
               {voterEmailAddressFromList.email_ownership_is_verified ?
                 null : (
-                  <SecondRow className="u-link-color u-cursor--pointer">
+                  <SecondRowPhoneOrEmail className="u-link-color u-cursor--pointer">
                     <span
                       className="u-link-color u-cursor--pointer u-no-break"
                       onClick={() => this.reSendSignInCodeEmail(voterEmailAddressFromList.normalized_email_address)}
@@ -539,7 +540,7 @@ class VoterEmailAddressEntry extends Component {
                         <Delete />
                       </TrashCan>
                     )}
-                  </SecondRow>
+                  </SecondRowPhoneOrEmail>
                 )}
             </div>
           </div>
@@ -622,18 +623,6 @@ const styles = {
     padding: 8,
   },
 };
-
-const FirstRow = styled('div')`
-  margin: 5px 5px 2px 15px;
-`;
-
-const SecondRow = styled('div')`
-  margin: 0 0 4px 50px;
-`;
-
-const TrashCan = styled('span')`
-  margin-left: 30px;
-`;
 
 const ButtonsHiddenSpacer = styled('div')`
   height: 44px;

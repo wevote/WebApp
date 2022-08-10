@@ -477,67 +477,65 @@ export default class SignInOptionsPanel extends Component {
                     </span>
                   </div>
                 )}
-                <div className="u-stack--sm">
-                  {!hideTwitterSignInButton && voterIsSignedInTwitter && (
-                    <div>
-                      <TwitterContainer className="btn btn-social btn-md btn-twitter" href="#">
-                        <Twitter />
+                {!hideTwitterSignInButton && voterIsSignedInTwitter && (
+                  <div>
+                    <TwitterContainer className="btn btn-md btn-twitter" href="#">
+                      <Twitter style={{ transform: 'translateX(-100%)' }} />
+                      <span style={{ borderLeft: '1px solid rgba(0,0,0,0.2)', paddingLeft: '20px' }}>
                         @
                         {twitterScreenName}
-                      </TwitterContainer>
-                      <span className="u-margin-left--sm" />
-                    </div>
-                  )}
-                  {!hideTwitterSignInButton && voterIsSignedInTwitter && (voterIsSignedInFacebook || voterIsSignedInWithEmail) ? (
-                    <div className="u-margin-top--xs">
-                      {this.state.showTwitterDisconnect ? (
-                        <div>
-                          <Button
-                            className="btn-sm"
-                            id={`voterSplitIntoTwoAccounts-${externalUniqueId}`}
-                            onClick={this.voterSplitIntoTwoAccounts}
-                            type="submit"
-                            variant="danger"
-                          >
-                            Are you sure you want to un-link?
-                          </Button>
-                          <span
-                            className="u-margin-left--sm"
-                            id={`toggleTwitterDisconnectClose-${externalUniqueId}`}
-                            onClick={this.toggleTwitterDisconnectClose}
-                          >
-                            cancel
-                          </span>
-                        </div>
-                      ) : (
-                        <div>
-                          <span
-                            id={`toggleTwitterDisconnectOpen-${externalUniqueId}`}
-                            onClick={this.toggleTwitterDisconnectOpen}
-                          >
-                            un-link @
-                            {twitterScreenName}
-                            {' '}
-                            twitter account
-                          </span>
-                        </div>
-                      )}
-                    </div>
-                  ) : null}
-                  <div className="u-margin-top--sm">
-                    {!hideFacebookSignInButton && voterIsSignedInFacebook && (
-                    <span>
-                      <FacebookContainer className="btn btn-social-icon btn-lg btn-facebook">
-                        <Facebook />
-                      </FacebookContainer>
-                      <span className="u-margin-left--sm" />
-                    </span>
+                      </span>
+                    </TwitterContainer>
+                    <span className="u-margin-left--sm" />
+                  </div>
+                )}
+                {!hideTwitterSignInButton && voterIsSignedInTwitter && (voterIsSignedInFacebook || voterIsSignedInWithEmail) ? (
+                  <div className="u-margin-top--xs">
+                    {this.state.showTwitterDisconnect ? (
+                      <div>
+                        <Button
+                          className="btn-sm"
+                          id={`voterSplitIntoTwoAccounts-${externalUniqueId}`}
+                          onClick={this.voterSplitIntoTwoAccounts}
+                          type="submit"
+                          variant="danger"
+                        >
+                          Are you sure you want to un-link?
+                        </Button>
+                        <span
+                          className="u-margin-left--sm"
+                          id={`toggleTwitterDisconnectClose-${externalUniqueId}`}
+                          onClick={this.toggleTwitterDisconnectClose}
+                        >
+                          cancel
+                        </span>
+                      </div>
+                    ) : (
+                      <div style={{ paddingBottom: 8 }}>
+                        <span
+                          id={`toggleTwitterDisconnectOpen-${externalUniqueId}`}
+                          onClick={this.toggleTwitterDisconnectOpen}
+                        >
+                          un-link @
+                          {twitterScreenName}
+                          {' '}
+                          twitter account
+                        </span>
+                      </div>
                     )}
                   </div>
+                ) : null}
+                {!hideFacebookSignInButton && voterIsSignedInFacebook && (
+                <div>
+                  <FacebookContainer>
+                    <Facebook fontSize="large" style={{ transform: 'translateY(-3px)' }} />
+                  </FacebookContainer>
+                  <span className="u-margin-left--sm" />
                 </div>
+                )}
               </div>
             ) : null}
-            {!hideVoterPhoneEntry && (
+            {!hideVoterPhoneEntry && isWebApp() && (
               <VoterPhoneVerificationEntry
                 closeSignInModal={this.localCloseSignInModal}
                 hideSignInWithPhoneForm={isCordova()}
@@ -557,7 +555,7 @@ export default class SignInOptionsPanel extends Component {
                 &mdash;
               </OrWrapper>
             )}
-            {!hideVoterEmailAddressEntry && (
+            {!hideVoterEmailAddressEntry && isWebApp() && (
               <VoterEmailAddressEntry
                 closeSignInModal={this.localCloseSignInModal}
                 hideSignInWithEmailForm={isCordova()}
@@ -676,13 +674,18 @@ const TwitterContainer = styled('span')`
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  width: 225px;
 `;
 
-const FacebookContainer = styled('span')`
-  color: #fff;
+const FacebookContainer = styled('div')`
   background-color: #3b5998 !important;
   border-color: rgba(0,0,0,0.2);
-  font-size: 1.25rem;
-  line-height: 1.5;
   border-radius: 0.3rem;
+  color: #fff;
+  display: inline-block;
+  height: 40px;
+  line-height: 1.5;
+  padding: 0.375rem 0.75rem;
+  text-align: center;
+  width: 225px;
 `;

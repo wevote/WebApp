@@ -12,6 +12,7 @@ import { isCordova, isWebApp } from '../../common/utils/isCordovaOrWebApp';
 import isMobileScreenSize from '../../common/utils/isMobileScreenSize';
 import { renderLog } from '../../common/utils/logging';
 import VoterStore from '../../stores/VoterStore';
+import { FirstRowPhoneOrEmail, SecondRowPhoneOrEmail, TrashCan } from '../Style/pageLayoutStyles';
 import signInModalGlobalState from '../Widgets/signInModalGlobalState';
 import SettingsVerifySecretCode from './SettingsVerifySecretCode';
 
@@ -44,6 +45,8 @@ class VoterPhoneVerificationEntry extends Component {
     this.onPhoneNumberChange = this.onPhoneNumberChange.bind(this);
     this.sendSignInCodeSMS = this.sendSignInCodeSMS.bind(this);
     this.closeVerifyModal = this.closeVerifyModal.bind(this);
+    this.removeVoterSMSPhoneNumber = this.removeVoterSMSPhoneNumber.bind(this);
+
     if (isCordova()) {
       signInModalGlobalState.set('textOrEmailSignInInProcess', true);
     }
@@ -454,10 +457,10 @@ class VoterPhoneVerificationEntry extends Component {
                 >
                   {signInCodeSMSSentAndWaitingForResponse ? 'Sending...' : (
                     <>
-                      <span className="u-show-mobile">
+                      <span id="mobileSmsSendCode" className="u-show-mobile">
                         Send Code
                       </span>
-                      <span className="u-show-desktop-tablet">
+                      <span id="desktopSmsSendCode" className="u-show-desktop-tablet">
                         Send Verification Code
                       </span>
                     </>
@@ -487,41 +490,30 @@ class VoterPhoneVerificationEntry extends Component {
         verifiedSMSFound = true;
         allowRemoveSMSPhoneNumber = voterSMSPhoneNumberFromList.primary_sms_phone_number !== true;
         isPrimarySMSPhoneNumber = voterSMSPhoneNumberFromList.primary_sms_phone_number === true;
-
         return (
-          <div key={voterSMSPhoneNumberFromList.sms_we_vote_id}>
-            <span className="u-no-break">{voterSMSPhoneNumberFromList.normalized_sms_phone_number}</span>
-
-            {isPrimarySMSPhoneNumber && (
-              <span>
-                <span>&nbsp;&nbsp;&nbsp;</span>
-                Primary
-              </span>
-            )}
-            {!isPrimarySMSPhoneNumber && (
-              <span>
-                <span>&nbsp;&nbsp;&nbsp;</span>
-                <span>
-                  <span
-                    className="u-link-color u-cursor--pointer u-no-break"
-                    onClick={this.setAsPrimarySMSPhoneNumber.bind(this, voterSMSPhoneNumberFromList.sms_we_vote_id)}
-                  >
-                    Make Primary
-                  </span>
-                  &nbsp;&nbsp;&nbsp;
+          <span key={voterSMSPhoneNumberFromList.sms_we_vote_id}>
+            <FirstRowPhoneOrEmail>
+              {voterSMSPhoneNumberFromList.normalized_sms_phone_number}
+            </FirstRowPhoneOrEmail>
+            <SecondRowPhoneOrEmail>
+              {!isPrimarySMSPhoneNumber && (
+                <span
+                   className="u-link-color u-cursor--pointer"
+                   onClick={this.setAsPrimarySMSPhoneNumber.bind(this, voterSMSPhoneNumberFromList.sms_we_vote_id)}
+                >
+                  Make Primary
                 </span>
-                <span>&nbsp;&nbsp;&nbsp;</span>
-                {allowRemoveSMSPhoneNumber && (
-                  <span
-                    className="u-link-color u-cursor--pointer"
-                    onClick={this.removeVoterSMSPhoneNumber.bind(this, voterSMSPhoneNumberFromList.sms_we_vote_id)}
-                  >
-                    <Delete />
-                  </span>
-                )}
-              </span>
-            )}
-          </div>
+              )}
+              {allowRemoveSMSPhoneNumber && (
+                <TrashCan
+                  className="u-link-color u-cursor--pointer"
+                  onClick={() => this.removeVoterSMSPhoneNumber(voterSMSPhoneNumberFromList.sms_we_vote_id)}
+                >
+                  <Delete />
+                </TrashCan>
+              )}
+            </SecondRowPhoneOrEmail>
+          </span>
         );
       } else {
         return null;
@@ -538,31 +530,31 @@ class VoterPhoneVerificationEntry extends Component {
         allowRemoveSMSPhoneNumber = !voterSMSPhoneNumberFromList.primary_sms_phone_number;
         isPrimarySMSPhoneNumber = !!voterSMSPhoneNumberFromList.primary_sms_phone_number;
         return (
-          <div key={voterSMSPhoneNumberFromList.sms_we_vote_id}>
-            <div>
-              <span className="u-no-break">{voterSMSPhoneNumberFromList.normalized_sms_phone_number}</span>
-              <span>&nbsp;&nbsp;&nbsp;</span>
+          <span key={voterSMSPhoneNumberFromList.sms_we_vote_id}>
+            <FirstRowPhoneOrEmail>
+              {voterSMSPhoneNumberFromList.normalized_sms_phone_number.trim()}
+            </FirstRowPhoneOrEmail>
+            <SecondRowPhoneOrEmail>
               {voterSMSPhoneNumberFromList.sms_ownership_is_verified ?
                 null : (
                   <span
-                    className="u-link-color u-cursor--pointer u-no-break"
+                    className="u-link-color u-cursor--pointer"
                     onClick={() => this.reSendSignInCodeSMS(voterSMSPhoneNumberFromList.normalized_sms_phone_number)}
                   >
                     Send Verification Again
                   </span>
                 )}
 
-              <span>&nbsp;&nbsp;&nbsp;</span>
               {allowRemoveSMSPhoneNumber && (
-                <span
+                <TrashCan
                   className="u-link-color u-cursor--pointer"
-                  onClick={this.removeVoterSMSPhoneNumber.bind(this, voterSMSPhoneNumberFromList.sms_we_vote_id)}
+                  onClick={() => this.removeVoterSMSPhoneNumber(voterSMSPhoneNumberFromList.sms_we_vote_id)}
                 >
                   <Delete />
-                </span>
+                </TrashCan>
               )}
-            </div>
-          </div>
+            </SecondRowPhoneOrEmail>
+          </span>
         );
       } else {
         return null;
@@ -570,7 +562,7 @@ class VoterPhoneVerificationEntry extends Component {
     });
 
     return (
-      <Wrapper isWeb={isWebApp()} id="voterPhoneEntryWrapper">
+      <VoterPhoneVerificationWrapper isWeb={isWebApp()} id="voterPhoneEntryVoterPhoneVerificationWrapper">
         {(hideEverythingButSignInWithPhoneForm || hideExistingPhoneNumbers) ? (
           <span>
             {smsPhoneNumberStatusHtml}
@@ -611,7 +603,7 @@ class VoterPhoneVerificationEntry extends Component {
             voterPhoneNumber={voterSMSPhoneNumber}
           />
         )}
-      </Wrapper>
+      </VoterPhoneVerificationWrapper>
     );
   }
 }
@@ -681,7 +673,7 @@ const PhoneNumberSection = styled('div', {
   margin-top: ${isWeb ? '18px;' : '0'};
 `));
 
-const Wrapper = styled('div', {
+const VoterPhoneVerificationWrapper = styled('div', {
   shouldForwardProp: (prop) => !['isWeb'].includes(prop),
 })(({ isWeb }) => (`
   margin-top: ${isWeb ? '32px;' : '0'};

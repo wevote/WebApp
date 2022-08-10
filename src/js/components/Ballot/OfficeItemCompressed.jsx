@@ -331,7 +331,7 @@ class OfficeItemCompressed extends Component {
                       <CandidateBottomRow>
                         {!hideCandidateDetails && (
                           <Suspense fallback={<></>}>
-                            {/* If there is a quote about the candidate, show that. If not, show issues related to candidate */}
+                            {/* If there if (pages.includes(page)) {is a quote about the candidate, show that. If not, show issues related to candidate */}
                             <DelayedLoad showLoadingText waitBeforeShow={500}>
                               <IssuesByBallotItemDisplayList
                                 ballotItemDisplayName={oneCandidate.ballot_item_display_name}

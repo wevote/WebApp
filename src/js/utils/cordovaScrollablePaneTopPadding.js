@@ -7,6 +7,7 @@ import isMobileScreenSize from '../common/utils/isMobileScreenSize';
 import { cordovaOffsetLog } from '../common/utils/logging';
 
 
+// TODO: August 2022, There are still a few places that use it, but over time we want to replace these with calculated values
 export default function cordovaScrollablePaneTopPadding (pageEnumerationOverride = false) {
   const voter = VoterStore.getVoter();
   const { is_signed_in: isSignedIn } = voter;

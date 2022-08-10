@@ -88,9 +88,7 @@ class MeasureItem extends Component {
 
   goToMeasureLink (oneMeasureWeVoteId) {
     const measureLink = this.getMeasureLink(oneMeasureWeVoteId);
-    if (isCordova()) {
-      AppObservableStore.setShowOrganizationModal(false);
-    }
+    AppObservableStore.setShowOrganizationModal(false);
     historyPush(measureLink);
   }
 
