@@ -93,8 +93,12 @@ class BallotTitleHeader extends Component {
   }
 
   onVoterStoreChange () {
+    let text = VoterStore.getTextForMapSearch();
+    if (text && text.length > 0) {
+      text = text.replace(', USA', '');
+    }
     this.setState({
-      textForMapSearch: VoterStore.getTextForMapSearch(),
+      textForMapSearch: text,
     });
   }
 

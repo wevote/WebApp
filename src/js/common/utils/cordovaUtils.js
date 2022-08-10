@@ -320,7 +320,7 @@ export function isIPhone6p1in () {
 export function isIPhone6p5in () {
   if (isIOS()) {
     if (getIOSSizeString() === 'isIPhone6p5in') {
-      logMatch('isIPhone6p5in: iPhone XsMax or 11/12 Pro Max (6.5")', true);
+      logMatch('isIPhone6p5in: iPhone XsMax or 11/12 Pro Max (6.7"),', true);
       return true;
     }
   }
@@ -567,7 +567,7 @@ export function isCordovaButNotATablet () {
 }
 
 export function isIOsSimulator () {
-  return window.location.href.startsWith('file:///Users');
+  return window.location.href.startsWith('file:///Users') || window.location.href.startsWith('app://localhost');
 }
 
 export function isSimulator () {
@@ -607,13 +607,14 @@ export function prepareForCordovaKeyboard (callerString) {
     let fileName = '';
     try {
       fileName = callerString.substr(callerString.lastIndexOf('/') + 1);
-      // eslint-disable-next-line no-empty
-    } catch (e) {}
-    console.log(`prepareForCordovaKeyboard ^^^^^^^^^^ ${fileName}`);
+    } catch (e) {
+      console.log('error in prepareForCordovaKeyboard', e);
+    }
     cordovaOffsetLog(`prepareForCordovaKeyboard ^^^^^^^^^^ ${fileName}`);
+
     $('#app').removeClass('app-wrapper').addClass('app-wrapper__cordova');
     $('body').css('height', '');
-    $('.footroom-wrapper').css('display', 'none');
+    $("div[class^='FooterWrapper-']").css('display', 'none');
   }
 }
 
@@ -622,12 +623,16 @@ export function restoreStylesAfterCordovaKeyboard (callerString) {
     let fileName = '';
     try {
       fileName = callerString.substr(callerString.lastIndexOf('/') + 1);
+      window.Keyboard.disableScroll(false);
       // eslint-disable-next-line no-empty
-    } catch (e) {}
+    } catch (e) {
+      console.log('error in restoreStylesAfterCordovaKeyboard', e);
+    }
     cordovaOffsetLog(`restoreStylesAfterCordovaKeyboard vvvvvvvvvv ${fileName}`);
+
     $('#app').removeClass('app-wrapper__cordova').addClass('app-wrapper');
     $('body').css('height', getCordovaScreenHeight());
-    $('.footroom-wrapper').css('display', '');
+    $("div[class^='FooterWrapper-']").css('display', '');
   }
 }
 
@@ -708,15 +713,16 @@ export function polyfillFixes (file) {
   // November 2, 2018:  Polyfill for "Object.entries"
   //   react-bootstrap 1.0 (bootstrap 4) relies on Object.entries in splitComponentProps.js
   //   https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/entries#Polyfill
-  if (!Object.entries) {
-    Object.entries = function poly (obj) {
-      const localProps = Object.keys(obj);
-      let i = localProps.length;
-      const resArray = new Array(i); // preallocate the Array
-      while (i--) resArray[i] = [localProps[i], obj[localProps[i]]];
-      return resArray;
-    };
-  }
+  // removed Aug 6, 2022:
+  // if (!Object.entries) {
+  //   Object.entries = function poly (obj) {
+  //     const localProps = Object.keys(obj);
+  //     let i = localProps.length;
+  //     const resArray = new Array(i); // preallocate the Array
+  //     while (i--) resArray[i] = [localProps[i], obj[localProps[i]]];
+  //     return resArray;
+  //   };
+  // }
 
   // And another for ObjectAssign
   if (!Object.assign) {

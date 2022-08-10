@@ -1,6 +1,7 @@
-import { isIPad, hasIPhoneNotch } from '../common/utils/cordovaUtils';
+import { hasIPhoneNotch, isIOSAppOnMac, isIPad } from '../common/utils/cordovaUtils';
 import { normalizedHref, normalizedHrefPage } from '../common/utils/hrefUtils';
 import { isWebApp } from '../common/utils/isCordovaOrWebApp';
+import AppObservableStore from '../stores/AppObservableStore';
 
 /* global $ */
 
@@ -163,11 +164,21 @@ export function cordovaSimplePageContainerTopOffset (isSignedIn) {
         notchHeight = iosNoNotchSpacerElem.height();
       }
 
-      const height = headroomWrapper.height();
+      let height = headroomWrapper.height();
+      if (!height) {
+        const appBar = $('#backToBallotAppBar');
+        if (appBar.length) {
+          height = appBar.height();
+        }
+      }
+
       debugLogging(`cordovaSimplePageContainerTopOffset isSignedIn: ${isSignedIn}, HeadRoomWrapper height: ${height}, page: ${getPageKey()}`);
 
       if (height !== undefined && height > 0 && getCordovaSimplePageContainerTopOffsetValue() === 0) {
-        const decorativeUiWhitespaceSimple = 20;
+        const page = getPageKey();
+        const superSimplePage = (AppObservableStore.getShowTwitterLandingPage() ||
+          (['measure', 'more/faq'].includes(page) && !isIPad() && !isIOSAppOnMac()));
+        const decorativeUiWhitespaceSimple = superSimplePage ? -30 : 20;
         const topOffsetValue = height + decorativeUiWhitespaceSimple + notchHeight;
         setCordovaSimplePageContainerTopOffsetValue(topOffsetValue);
 

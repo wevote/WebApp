@@ -1,11 +1,12 @@
 import { AccountCircle, Send } from '@mui/icons-material';
 import { FormControl, IconButton, InputAdornment, TextField } from '@mui/material';
-import styled from 'styled-components';
 import withStyles from '@mui/styles/withStyles';
 import withTheme from '@mui/styles/withTheme';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
+import styled from 'styled-components';
 import ActivityActions from '../../actions/ActivityActions';
+import { prepareForCordovaKeyboard, restoreStylesAfterCordovaKeyboard } from '../../common/utils/cordovaUtils';
 import { renderLog } from '../../common/utils/logging';
 import ActivityStore from '../../stores/ActivityStore';
 import AppObservableStore from '../../stores/AppObservableStore';
@@ -115,6 +116,8 @@ class ActivityCommentAdd extends Component {
               maxRows={4}
               value={statementText}
               variant="outlined"
+              onFocus={() => prepareForCordovaKeyboard('ActivityCommentAdd', `activityCommentAdd-${activityTidbitWeVoteId}-${activityCommentWeVoteId}`)}
+              onBlur={() => restoreStylesAfterCordovaKeyboard('ActivityCommentAdd')}
               InputProps={{
                 classes: { root: classes.textFieldClasses },
                 startAdornment: hidePhotoFromTextField ? null : (

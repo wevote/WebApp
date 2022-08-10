@@ -1,11 +1,12 @@
 import VoterActions from './actions/VoterActions';
-import TwitterSignIn from './components/Twitter/TwitterSignIn';
-import webAppConfig from './config';
-import VoterStore from './stores/VoterStore';
 import { getCordovaScreenHeight, getProcessorArchitecture, isIOS, isIOSAppOnMac, isIPad, isSimulator, prepareForCordovaKeyboard, restoreStylesAfterCordovaKeyboard } from './common/utils/cordovaUtils';
 import { isCordova } from './common/utils/isCordovaOrWebApp';
 import Cookies from './common/utils/js-cookie/Cookies';
 import { httpLog } from './common/utils/logging';
+import TwitterSignIn from './components/Twitter/TwitterSignIn';
+import webAppConfig from './config';
+import VoterStore from './stores/VoterStore';
+import { dumpObjProps } from './utils/appleSiliconUtils';
 
 function localPrepareForCordovaKeyboard () {
   prepareForCordovaKeyboard('ballot');
@@ -73,7 +74,7 @@ export function initializationForCordova (startReact) {
     const { plugins: { screensize } } = window;
     console.log('Cordova:  Startup sequence 2: Wait for pbakondy screensize');
     screensize.get((result) => {
-      console.log('Cordova:  screensize.get: ', result);
+      console.log('Cordova:  screensize.get: ', JSON.stringify(result));
       // dumpObjProps('window.device', window.device);
       window.pbakondyScreenSize = result;
       if (isIPad()) {
@@ -149,6 +150,7 @@ export function initializationForCordova (startReact) {
     }, (result) => {
       console.log('Cordova: pbakondy/cordova-plugin-screensize FAILURE result: ', result);
     });
+    window.Keyboard.disableScroll(false);  // Aug 2022, need to set initial state
   }, false);
 }
 

@@ -51,6 +51,9 @@ class SignInModal extends Component {
   uponSuccessfulSignInLocal = (isSignedIn) => {
     if (this.props.uponSuccessfulSignIn && isSignedIn) {
       this.props.uponSuccessfulSignIn();
+      this.setState({
+        showSignInModalSimple: false,
+      });
     }
   }
 
@@ -165,6 +168,7 @@ const styles = (theme) => ({
     right: 'unset !important',
     bottom: 'unset !important',
     width: '100%',
+    zIndex: '1300 !important',          // Added August 7, 2022, dialog was behind the Backdrop
   } : {},
   dialogPaper: isWebApp() ? {
     minWidth: '55%',

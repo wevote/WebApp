@@ -170,7 +170,7 @@ class AppleSignIn extends Component {
     if (signedIn) {
       return (
         <AppleSignedInContainer>
-          <AppleLogo signedIn={signedIn} enabled={enabled} />
+          <AppleLogo signedIn={signedIn} enabled={enabled} style={{ left: 'unset' }} />
         </AppleSignedInContainer>
       );
     } else {
@@ -208,6 +208,7 @@ export function AppleLogo (parameters) {
                   id="appleLogo"
                   signedIn={parameters.signedIn}
                   enabled={parameters.enabled}
+                  style={parameters.style}
     >
       <title>Apple Logo</title>
       <path
@@ -300,10 +301,10 @@ const AppleSignedInContainer  = styled('div')`
   border-color: #000;
   color: #fff;
   margin: 0 auto 11px;
-  height: 46px;
+  height: 41px;
   border-radius: 4px;
   max-width: 408px;
   overflow: hidden;
   position: relative;
-  width: 46px;
+  width: 220px;
 `;

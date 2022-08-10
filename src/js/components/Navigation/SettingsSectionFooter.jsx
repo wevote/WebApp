@@ -6,6 +6,7 @@ import OpenExternalWebSite from '../../common/components/Widgets/OpenExternalWeb
 import { isWebApp } from '../../common/utils/isCordovaOrWebApp';
 import { renderLog } from '../../common/utils/logging';
 import AppObservableStore from '../../stores/AppObservableStore';
+import { TermsAndPrivacyText } from '../Style/pageLayoutStyles';
 
 
 class SettingsSectionFooter extends Component {
@@ -74,11 +75,21 @@ class SettingsSectionFooter extends Component {
             </>
           ) : (
             <>
-              <Link to="/more/about"><TermsAndPrivacyText>About</TermsAndPrivacyText></Link>
-              <span style={{ paddingLeft: 15 }} />
-              <Link to="/more/about"><TermsAndPrivacyText>Team</TermsAndPrivacyText></Link>
-              <span style={{ paddingLeft: 15 }} />
-              <Link to="/more/credits"><TermsAndPrivacyText>Credits &amp; Thanks</TermsAndPrivacyText></Link>
+              { isWebApp() ? (
+                <>
+                  {/* August 2022: The about header is very old and needs a fair amount of work to avoid a big white section at top in Cordova */}
+                  <Link to="/more/about"><TermsAndPrivacyText>About</TermsAndPrivacyText></Link>
+                  <span style={{ paddingLeft: 15 }} />
+                  <Link to="/more/about"><TermsAndPrivacyText>Team</TermsAndPrivacyText></Link>
+                  <span style={{ paddingLeft: 15 }} />
+                  <Link to="/more/credits"><TermsAndPrivacyText>Credits &amp; Thanks</TermsAndPrivacyText></Link>
+                </>
+              ) : (
+                <>
+                  <Link to="/more/faq"><TermsAndPrivacyText>Frequently Asked Questions</TermsAndPrivacyText></Link>
+                  <span style={{ paddingLeft: 15 }} />
+                </>
+              )}
             </>
           )}
         </OneRow>
@@ -110,21 +121,6 @@ const OneRow = styled('div', {
   ${centered ? 'justify-content: center;' : ''}
   margin-bottom: 8px;
 `));
-
-const TermsAndPrivacyText = styled('span')`
-  color: #999;
-  font-size: .9em;
-  font-weight: 400;
-  .u-cursor--pointer:hover {
-    color: #0156b3;
-    text-decoration: underline;
-  }
-  * {
-    span:hover {
-      color: #0156b3;
-      text-decoration: underline;
-    }
-`;
 
 const Wrapper = styled('div')`
 `;
