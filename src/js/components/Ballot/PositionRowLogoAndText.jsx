@@ -86,6 +86,7 @@ class PositionRowLogoAndText extends Component {
     AppObservableStore.setPositionDrawerOrganizationWeVoteId(organizationWeVoteId);
     // AppObservableStore.setShowOrganizationModal(true);
     AppObservableStore.setShowPositionDrawer(true);
+    this.StickyPopover.closePopover();
   }
 
   onShowMoreAlternateFunction = () => {
@@ -178,6 +179,7 @@ class PositionRowLogoAndText extends Component {
               key={`positionItemScoreDesktopPopover-${organizationWeVoteId}`}
               // openOnClick
               // showCloseIcon
+              ref={(instance) => { this.StickyPopover = instance; }}
             >
               <div>
                 <OrganizationOverlayOuterWrapper>
