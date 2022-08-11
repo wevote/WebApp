@@ -9,11 +9,13 @@ import LoadingWheel from '../../common/components/Widgets/LoadingWheel';
 import apiCalming from '../../common/utils/apiCalming';
 import { renderLog } from '../../common/utils/logging';
 import AppObservableStore from '../../stores/AppObservableStore';
+import BallotStore from '../../stores/BallotStore';
 import CandidateStore from '../../stores/CandidateStore';
 import FriendStore from '../../stores/FriendStore';
 import IssueStore from '../../stores/IssueStore';
 import MeasureStore from '../../stores/MeasureStore';
 import OrganizationStore from '../../stores/OrganizationStore';
+import VoterGuideStore from '../../stores/VoterGuideStore';
 import VoterStore from '../../stores/VoterStore';
 import PositionRowItem from './PositionRowItem';
 import {
@@ -28,7 +30,6 @@ class PositionRowList extends Component {
   constructor (props) {
     super(props);
     this.state = {
-      allCachedPositionsForThisBallotItem: [],
       filteredPositionList: [],
       filteredPositionListLength: 0,
       numberOfPositionItemsToDisplay: STARTING_NUMBER_OF_POSITIONS_TO_DISPLAY,
@@ -45,13 +46,17 @@ class PositionRowList extends Component {
     let allCachedPositionsForThisBallotItem;
     if (ballotItemWeVoteId.includes('cand')) {
       allCachedPositionsForThisBallotItem = CandidateStore.getAllCachedPositionsByCandidateWeVoteId(ballotItemWeVoteId);
+      this.onPositionListUpdate(allCachedPositionsForThisBallotItem);
     } else if (ballotItemWeVoteId.includes('meas')) {
       allCachedPositionsForThisBallotItem = MeasureStore.getAllCachedPositionsByMeasureWeVoteId(ballotItemWeVoteId);
+      this.onPositionListUpdate(allCachedPositionsForThisBallotItem);
     }
+    this.ballotStoreListener = BallotStore.addListener(this.onCandidateStoreChange.bind(this));
     this.candidateStoreListener = CandidateStore.addListener(this.onCandidateStoreChange.bind(this));
     this.friendStoreListener = FriendStore.addListener(this.onFriendStoreChange.bind(this));
     this.measureStoreListener = MeasureStore.addListener(this.onFriendStoreChange.bind(this));
     this.organizationStoreListener = OrganizationStore.addListener(this.onOrganizationStoreChange.bind(this));
+    this.voterGuideStoreListener = VoterGuideStore.addListener(this.onVoterGuideStoreChange.bind(this));
 
     if (apiCalming('organizationsFollowedRetrieve', 60000)) {
       OrganizationActions.organizationsFollowedRetrieve();
@@ -62,19 +67,21 @@ class PositionRowList extends Component {
         FriendActions.friendListsAll();
       }
     }
-
-    this.onPositionListUpdate(allCachedPositionsForThisBallotItem);
-    this.setState({
-      allCachedPositionsForThisBallotItem,
-    });
   }
 
   componentWillUnmount () {
+    this.ballotStoreListener.remove();
     this.candidateStoreListener.remove();
     this.friendStoreListener.remove();
     this.measureStoreListener.remove();
     this.organizationStoreListener.remove();
+    this.voterGuideStoreListener.remove();
     if (this.positionItemTimer) clearTimeout(this.positionItemTimer);
+  }
+
+  onBallotStoreChange () {
+    // console.log('PositionRowList onBallotStoreChange');
+    this.onCachedPositionsChange();
   }
 
   onCandidateStoreChange () {
@@ -83,16 +90,25 @@ class PositionRowList extends Component {
     let allCachedPositionsForThisBallotItem;
     if (ballotItemWeVoteId.includes('cand')) {
       allCachedPositionsForThisBallotItem = CandidateStore.getAllCachedPositionsByCandidateWeVoteId(ballotItemWeVoteId);
-      this.setState({
-        // positionList: incomingPositionList,
-        allCachedPositionsForThisBallotItem,
-      });
+      this.onPositionListUpdate(allCachedPositionsForThisBallotItem);
+    }
+  }
+
+  onCachedPositionsChange () {
+    const { ballotItemWeVoteId } = this.props;
+    let allCachedPositionsForThisBallotItem;
+    if (ballotItemWeVoteId.includes('cand')) {
+      allCachedPositionsForThisBallotItem = CandidateStore.getAllCachedPositionsByCandidateWeVoteId(ballotItemWeVoteId);
+      this.onPositionListUpdate(allCachedPositionsForThisBallotItem);
+    } else if (ballotItemWeVoteId.includes('meas')) {
+      allCachedPositionsForThisBallotItem = MeasureStore.getAllCachedPositionsByMeasureWeVoteId(ballotItemWeVoteId);
+      this.onPositionListUpdate(allCachedPositionsForThisBallotItem);
     }
   }
 
   onFriendStoreChange () {
-    const { allCachedPositionsForThisBallotItem } = this.state;
-    this.onPositionListUpdate(allCachedPositionsForThisBallotItem);
+    // console.log('PositionRowList onOrganizationStoreChange');
+    this.onCachedPositionsChange();
   }
 
   onMeasureStoreChange () {
@@ -101,15 +117,18 @@ class PositionRowList extends Component {
     let allCachedPositionsForThisBallotItem;
     if (ballotItemWeVoteId.includes('meas')) {
       allCachedPositionsForThisBallotItem = MeasureStore.getAllCachedPositionsByMeasureWeVoteId(ballotItemWeVoteId);
-      this.setState({ allCachedPositionsForThisBallotItem });
       this.onPositionListUpdate(allCachedPositionsForThisBallotItem);
     }
   }
 
   onOrganizationStoreChange () {
     // console.log('PositionRowList onOrganizationStoreChange');
-    const { allCachedPositionsForThisBallotItem } = this.state;
-    this.onPositionListUpdate(allCachedPositionsForThisBallotItem);
+    this.onCachedPositionsChange();
+  }
+
+  onVoterGuideStoreChange () {
+    // console.log('PositionRowList onVoterGuideStoreChange');
+    this.onCachedPositionsChange();
   }
 
   onClickShowOrganizationModalWithPositions () {

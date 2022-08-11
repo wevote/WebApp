@@ -91,10 +91,10 @@ class PositionRowItem extends Component {
     if (updatedPosition && updatedPosition.speaker_we_vote_id) {
       position = updatedPosition;
     }
+    // console.log('PositionRowItem position render, position:', position);
     if (!position || !position.speaker_we_vote_id) {
       return null;
     }
-    // console.log('PositionRowItem position render, position:', position);
 
     const showPosition = true;
     const nothingToDisplay = null;

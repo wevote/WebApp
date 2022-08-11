@@ -168,7 +168,7 @@ class PositionRowLogoAndText extends Component {
 
     if (showPosition) {
       return (
-        <Wrapper>
+        <PositionRowLogoAndTextWrapper>
           <OrganizationScoreSpacer />
           <Suspense fallback={<></>}>
             <StickyPopover
@@ -193,8 +193,9 @@ class PositionRowLogoAndText extends Component {
                             imageUrl={position.speaker_image_url_https_medium}
                           />
                         </Suspense>
-                      ) :
-                        imagePlaceholder }
+                      ) : (
+                        <div>{imagePlaceholder}</div>
+                      )}
                     </OrganizationPhotoInnerWrapper>
                   </OrganizationPhotoOuterWrapper>
                   {statementText && (
@@ -241,7 +242,7 @@ class PositionRowLogoAndText extends Component {
               )}
             </YesNoScoreTextWrapper>
           </Suspense>
-        </Wrapper>
+        </PositionRowLogoAndTextWrapper>
       );
     } else {
       return nothingToDisplay;
@@ -340,7 +341,7 @@ const OrganizationScoreSpacer = styled('div')`
   height: 0px;
 `;
 
-const Wrapper = styled('div')`
+const PositionRowLogoAndTextWrapper = styled('div')`
   width: 60px;
 `;
 

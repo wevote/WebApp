@@ -2,6 +2,8 @@ import withStyles from '@mui/styles/withStyles';
 import withTheme from '@mui/styles/withTheme';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
+import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
+import Tooltip from 'react-bootstrap/Tooltip';
 import styled from 'styled-components';
 import MeasureActions from '../../actions/MeasureActions';
 import extractNumber from '../../common/utils/extractNumber';
@@ -12,7 +14,6 @@ import toTitleCase from '../../common/utils/toTitleCase';
 import AppObservableStore from '../../stores/AppObservableStore';
 import BallotStore from '../../stores/BallotStore';
 import MeasureStore from '../../stores/MeasureStore';
-import SupportStore from '../../stores/SupportStore';
 import { stripHtmlFromString } from '../../utils/textFormat';
 import {
   OverflowContainer,
@@ -24,6 +25,7 @@ import {
   PositionRowListScoreHeader,
   PositionRowListScoreSpacer,
 } from '../Style/PositionRowListStyles';
+import InfoCircleIcon from '../Widgets/InfoCircleIcon';
 import PositionRowList from './PositionRowList';
 import PositionRowEmpty from './PositionRowEmpty';
 
@@ -48,7 +50,6 @@ class MeasureItemCompressed extends Component {
       showPositionStatement: false,
       // numberOfOpposePositionsForScore: 0,
       // numberOfSupportPositionsForScore: 0,
-      voterSupportsBallotItem: false,
       yesVoteDescription: '',
     };
     this.getMeasureLink = this.getMeasureLink.bind(this);
@@ -70,7 +71,7 @@ class MeasureItemCompressed extends Component {
       !this.localPositionListHasBeenRetrievedOnce(measureWeVoteId) &&
       !BallotStore.positionListHasBeenRetrievedOnce(measureWeVoteId)
     ) {
-      // console.log('componentDidMount positionListForBallotItemPublic', measureWeVoteId);
+      // console.log('componentDidMount positionListForBallotItemPublic:', measureWeVoteId);
       MeasureActions.positionListForBallotItemPublic(measureWeVoteId);
       const { positionListHasBeenRetrievedOnce } = this.state;
       positionListHasBeenRetrievedOnce[measureWeVoteId] = true;
@@ -104,25 +105,11 @@ class MeasureItemCompressed extends Component {
       yesVoteDescription: stripHtmlFromString(measure.yes_vote_description),
       organizationWeVoteId,
     });
-    const ballotItemStatSheet = SupportStore.getBallotItemStatSheet(measureWeVoteId);
-    if (ballotItemStatSheet) {
-      const {
-        // numberOfOpposePositionsForScore, numberOfSupportPositionsForScore,
-        voterSupportsBallotItem,
-      } = ballotItemStatSheet;
-      this.setState({
-        // numberOfOpposePositionsForScore,
-        // numberOfSupportPositionsForScore,
-        voterSupportsBallotItem,
-      });
-    }
     this.measureStoreListener = MeasureStore.addListener(this.onMeasureStoreChange.bind(this));
-    this.supportStoreListener = SupportStore.addListener(this.onSupportStoreChange.bind(this));
   }
 
   componentWillUnmount () {
     this.measureStoreListener.remove();
-    this.supportStoreListener.remove();
   }
 
   onMeasureStoreChange () {
@@ -161,24 +148,6 @@ class MeasureItemCompressed extends Component {
       noVoteDescription: stripHtmlFromString(measure.no_vote_description),
       yesVoteDescription: stripHtmlFromString(measure.yes_vote_description),
     });
-  }
-
-  onSupportStoreChange () {
-    const { measureWeVoteId } = this.state;
-    // Whenever positions change, we want to make sure to get the latest organization, because it has
-    //  position_list_for_one_election and position_list_for_all_except_one_election attached to it
-    const ballotItemStatSheet = SupportStore.getBallotItemStatSheet(measureWeVoteId);
-    if (ballotItemStatSheet) {
-      const {
-        // numberOfOpposePositionsForScore, numberOfSupportPositionsForScore,
-        voterSupportsBallotItem,
-      } = ballotItemStatSheet;
-      this.setState({
-        // numberOfOpposePositionsForScore,
-        // numberOfSupportPositionsForScore,
-        voterSupportsBallotItem,
-      });
-    }
   }
 
   onClickShowOrganizationModalWithBallotItemInfo () {
@@ -238,7 +207,7 @@ class MeasureItemCompressed extends Component {
     const {
       externalUniqueId, localUniqueId, measureSubtitle, measureText,
       measureWeVoteId, noVoteDescription,
-      voterSupportsBallotItem, yesVoteDescription,
+      yesVoteDescription,
     } = this.state;
     let { ballotItemDisplayName } = this.state;
     if (!measureWeVoteId) {
@@ -250,16 +219,31 @@ class MeasureItemCompressed extends Component {
     }
     const measureSubtitleCapitalized = toTitleCase(measureSubtitle);
     ballotItemDisplayName = toTitleCase(ballotItemDisplayName);
+    const scoreExplanationTooltip = (
+      <Tooltip className="u-z-index-9020" id={`scoreDescription-${measureWeVoteId}`}>
+        A positive personalized score
+        {ballotDisplay[0] && (
+          <>
+            {' '}
+            for
+            {' '}
+            {ballotDisplay[0]}
+          </>
+        )}
+        {' '}
+        from the people you trust = vote Yes. Negative = vote No. Trust by clicking the plus sign.
+      </Tooltip>
+    );
 
     return (
       <MeasureItemCompressedWrapper>
         <MeasureTitle onClick={this.onClickShowOrganizationModalWithBallotItemInfo}>
           {ballotDisplay[0]}
         </MeasureTitle>
+        <SubTitle>{measureSubtitleCapitalized}</SubTitle>
         <MeasureContainer>
           <MeasureWrapper>
             <InfoDetailsRow className="u-cursor--pointer" onClick={this.onClickShowOrganizationModalWithBallotItemInfo}>
-              <SubTitle>{measureSubtitleCapitalized}</SubTitle>
               <MeasureText>
                 {shortenText(measureText, 200)}
                 &nbsp;
@@ -268,84 +252,6 @@ class MeasureItemCompressed extends Component {
                 </span>
               </MeasureText>
             </InfoDetailsRow>
-            <ChoiceSpecificsColumns>
-              <ChoiceSpecifics
-                id={`measureItemCompressedChoiceYes-${measureWeVoteId}`}
-              >
-                <ChoiceTitle onClick={this.onClickShowOrganizationModalWithBallotItemInfo}>
-                  {`Yes On ${extractNumber(ballotItemDisplayName)}`}
-                </ChoiceTitle>
-                <ChoiceInfo>
-                  {/* If there is a "yes vote" quote about the measure, show that. If not, show the yesVoteDescription */}
-                  <Suspense fallback={<></>}>
-                    <DelayedLoad showLoadingText waitBeforeShow={500}>
-                      <>
-                        <Suspense fallback={<></>}>
-                          <ItemActionBar
-                            ballotItemDisplayName={ballotItemDisplayName}
-                            ballotItemWeVoteId={measureWeVoteId}
-                            commentButtonHide
-                            commentButtonHideInMobile
-                            externalUniqueId={`${externalUniqueId}-${localUniqueId}-MeasureItemCompressedVoteYes-${measureWeVoteId}`}
-                            hideOpposeNo
-                            shareButtonHide
-                            hidePositionPublicToggle
-                          />
-                        </Suspense>
-                        <TopCommentByBallotItem
-                          ballotItemWeVoteId={measureWeVoteId}
-                          childChangeIndicator={yesVoteDescription}
-                          // learnMoreUrl={this.getMeasureLink(measureWeVoteId)}
-                          limitToYes
-                        >
-                          <span>
-                            {shortenText(yesVoteDescription, 200)}
-                          </span>
-                        </TopCommentByBallotItem>
-                      </>
-                    </DelayedLoad>
-                  </Suspense>
-                </ChoiceInfo>
-              </ChoiceSpecifics>
-              <ChoiceSpecifics
-                id={`measureItemCompressedChoiceNo-${measureWeVoteId}`}
-              >
-                <ChoiceTitle onClick={this.onClickShowOrganizationModalWithBallotItemInfo}>
-                  {`No On ${extractNumber(ballotItemDisplayName)}`}
-                </ChoiceTitle>
-                <ChoiceInfo>
-                  {/* If there is a "no vote" quote about the measure, show that. If not, show the noVoteDescription */}
-                  <Suspense fallback={<></>}>
-                    <DelayedLoad showLoadingText waitBeforeShow={500}>
-                      <>
-                        <Suspense fallback={<></>}>
-                          <ItemActionBar
-                            ballotItemDisplayName={ballotItemDisplayName}
-                            ballotItemWeVoteId={measureWeVoteId}
-                            commentButtonHide
-                            commentButtonHideInMobile
-                            externalUniqueId={`${externalUniqueId}-${localUniqueId}-MeasureItemCompressedVoteNo-${measureWeVoteId}`}
-                            hideSupportYes
-                            shareButtonHide
-                            hidePositionPublicToggle
-                          />
-                        </Suspense>
-                        <TopCommentByBallotItem
-                          ballotItemWeVoteId={measureWeVoteId}
-                          childChangeIndicator={noVoteDescription}
-                          // learnMoreUrl={this.getMeasureLink(measureWeVoteId)}
-                          limitToNo
-                        >
-                          <span>
-                            {shortenText(noVoteDescription, 200)}
-                          </span>
-                        </TopCommentByBallotItem>
-                      </>
-                    </DelayedLoad>
-                  </Suspense>
-                </ChoiceInfo>
-              </ChoiceSpecifics>
-            </ChoiceSpecificsColumns>
           </MeasureWrapper>
           <PositionRowListOuterWrapper>
             <OverflowContainer>
@@ -356,14 +262,12 @@ class MeasureItemCompressed extends Component {
                     showSupport
                   />
                 </PositionRowListOneWrapper>
-                {voterSupportsBallotItem && (
-                  <PositionRowListOneWrapper>
-                    <PositionRowList
-                      ballotItemWeVoteId={measureWeVoteId}
-                      showOppose
-                    />
-                  </PositionRowListOneWrapper>
-                )}
+                <PositionRowListOneWrapper>
+                  <PositionRowList
+                    ballotItemWeVoteId={measureWeVoteId}
+                    showOppose
+                  />
+                </PositionRowListOneWrapper>
                 <PositionRowListOneWrapper>
                   <PositionRowList
                     ballotItemWeVoteId={measureWeVoteId}
@@ -377,7 +281,17 @@ class MeasureItemCompressed extends Component {
                 </PositionRowListEmptyWrapper>
                 <PositionRowListScoreColumn>
                   <PositionRowListScoreHeader>
-                    Score
+                    <OverlayTrigger
+                      placement="bottom"
+                      overlay={scoreExplanationTooltip}
+                    >
+                      <ScoreWrapper>
+                        <div>Score</div>
+                        <InfoCircleIconWrapper>
+                          <InfoCircleIcon />
+                        </InfoCircleIconWrapper>
+                      </ScoreWrapper>
+                    </OverlayTrigger>
                   </PositionRowListScoreHeader>
                   <PositionRowListScoreSpacer>
                     <Suspense fallback={<></>}>
@@ -393,6 +307,86 @@ class MeasureItemCompressed extends Component {
               </PositionRowListInnerWrapper>
             </OverflowContainer>
           </PositionRowListOuterWrapper>
+        </MeasureContainer>
+        <MeasureContainer>
+          <ChoiceSpecificsColumns>
+            <ChoiceSpecifics
+              id={`measureItemCompressedChoiceYes-${measureWeVoteId}`}
+            >
+              <ChoiceTitle onClick={this.onClickShowOrganizationModalWithBallotItemInfo}>
+                {`Yes On ${extractNumber(ballotItemDisplayName)}`}
+              </ChoiceTitle>
+              <ChoiceInfo>
+                {/* If there is a "yes vote" quote about the measure, show that. If not, show the yesVoteDescription */}
+                <Suspense fallback={<></>}>
+                  <DelayedLoad showLoadingText waitBeforeShow={500}>
+                    <>
+                      <Suspense fallback={<></>}>
+                        <ItemActionBar
+                          ballotItemDisplayName={ballotItemDisplayName}
+                          ballotItemWeVoteId={measureWeVoteId}
+                          commentButtonHide
+                          commentButtonHideInMobile
+                          externalUniqueId={`${externalUniqueId}-${localUniqueId}-MeasureItemCompressedVoteYes-${measureWeVoteId}`}
+                          hideOpposeNo
+                          shareButtonHide
+                          hidePositionPublicToggle
+                        />
+                      </Suspense>
+                      <TopCommentByBallotItem
+                        ballotItemWeVoteId={measureWeVoteId}
+                        childChangeIndicator={yesVoteDescription}
+                        // learnMoreUrl={this.getMeasureLink(measureWeVoteId)}
+                        limitToYes
+                      >
+                        <span>
+                          {shortenText(yesVoteDescription, 200)}
+                        </span>
+                      </TopCommentByBallotItem>
+                    </>
+                  </DelayedLoad>
+                </Suspense>
+              </ChoiceInfo>
+            </ChoiceSpecifics>
+            <ChoiceSpecifics
+              id={`measureItemCompressedChoiceNo-${measureWeVoteId}`}
+            >
+              <ChoiceTitle onClick={this.onClickShowOrganizationModalWithBallotItemInfo}>
+                {`No On ${extractNumber(ballotItemDisplayName)}`}
+              </ChoiceTitle>
+              <ChoiceInfo>
+                {/* If there is a "no vote" quote about the measure, show that. If not, show the noVoteDescription */}
+                <Suspense fallback={<></>}>
+                  <DelayedLoad showLoadingText waitBeforeShow={500}>
+                    <>
+                      <Suspense fallback={<></>}>
+                        <ItemActionBar
+                          ballotItemDisplayName={ballotItemDisplayName}
+                          ballotItemWeVoteId={measureWeVoteId}
+                          commentButtonHide
+                          commentButtonHideInMobile
+                          externalUniqueId={`${externalUniqueId}-${localUniqueId}-MeasureItemCompressedVoteNo-${measureWeVoteId}`}
+                          hideSupportYes
+                          shareButtonHide
+                          hidePositionPublicToggle
+                        />
+                      </Suspense>
+                      <TopCommentByBallotItem
+                        ballotItemWeVoteId={measureWeVoteId}
+                        childChangeIndicator={noVoteDescription}
+                        // learnMoreUrl={this.getMeasureLink(measureWeVoteId)}
+                        limitToNo
+                      >
+                        <span>
+                          {shortenText(noVoteDescription, 200)}
+                        </span>
+                      </TopCommentByBallotItem>
+                    </>
+                  </DelayedLoad>
+                </Suspense>
+              </ChoiceInfo>
+            </ChoiceSpecifics>
+          </ChoiceSpecificsColumns>
         </MeasureContainer>
       </MeasureItemCompressedWrapper>
     );
@@ -458,10 +452,10 @@ const ChoiceSpecificsColumns = styled('div')`
 const ChoiceSpecifics = styled('div')(({ theme }) => (`
   display: flex;
   flex-flow: column;
-  // min-width: 47%;
   padding-right: 8px;
   ${theme.breakpoints.up('md')} {
     max-width: 47%;
+    min-width: 47%;
   }
 `));
 
@@ -479,6 +473,11 @@ const ChoiceInfo = styled('span')(({ theme }) => (`
   }
 `));
 
+const InfoCircleIconWrapper = styled('div')`
+  margin-bottom: -4px;
+  margin-left: 3px;
+`;
+
 const MeasureContainer = styled('div')`
   display: flex;
   justify-content: flex-start;
@@ -491,6 +490,13 @@ const MeasureItemCompressedWrapper = styled('div')`
   flex-direction: column;
   margin-bottom: 60px;
   position: relative;
+`;
+
+const MeasureText = styled('div')`
+  font-weight: 300;
+  color: #777;
+  min-width: 320px;
+  width: 100%;
 `;
 
 const MeasureTitle = styled('h1')`
@@ -514,6 +520,10 @@ const MeasureWrapper = styled('div')(({ theme }) => (`
   // }
 `));
 
+const ScoreWrapper = styled('div')`
+  display: flex;
+`;
+
 const SubTitle = styled('h3')(({ theme }) => (`
   font-size: 20px;
   // font-weight: 300;
@@ -523,12 +533,5 @@ const SubTitle = styled('h3')(({ theme }) => (`
   //   font-size: 13px;
   // }
 `));
-
-const MeasureText = styled('div')`
-  font-size: 13px;
-  font-weight: 300;
-  color: #777;
-  width: 100%;
-`;
 
 export default withTheme(withStyles(styles)(MeasureItemCompressed));
