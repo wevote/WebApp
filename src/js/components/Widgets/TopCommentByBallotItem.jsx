@@ -204,7 +204,7 @@ class TopCommentByBallotItem extends Component {
     // console.log('GuideList organizationsToFollow: ', this.state.organizationsToFollow);
     //       on_click={this.goToCandidateLink(this.state.oneCandidate.we_vote_id)}
     return (
-      <Wrapper onClick={() => this.onClickFunction()} cursorPointerOn={this.onClickFunctionExists()}>
+      <TopCommentWrapper onClick={() => this.onClickFunction()} cursorPointerOn={this.onClickFunctionExists()}>
         <BallotItemEndorserName>
           {endorsementOrganization}
           .
@@ -240,7 +240,7 @@ class TopCommentByBallotItem extends Component {
             )}
           </LearnMoreWrapper>
         )}
-      </Wrapper>
+      </TopCommentWrapper>
     );
   }
 }
@@ -288,16 +288,6 @@ const styles = (theme) => ({
   },
 });
 
-const Wrapper = styled('div', {
-  shouldForwardProp: (prop) => !['cursorPointerOn'].includes(prop),
-})(({ cursorPointerOn, theme }) => (`
-  ${cursorPointerOn ? 'cursor: pointer;' : ''}
-  font-size: 14px;
-  ${theme.breakpoints.up('md')} {
-    font-size: 16px;
-  }
-`));
-
 const BallotItemEndorserName = styled('span')(({ theme }) => (`
   color: #999;
   font-weight: 400;
@@ -320,6 +310,17 @@ const LearnMoreWrapper = styled('div', {
   margin-left: auto;
   display: ${isButton ? 'flex' : 'inline'};
   justify-content: flex-end;
+`));
+
+const TopCommentWrapper = styled('div', {
+  shouldForwardProp: (prop) => !['cursorPointerOn'].includes(prop),
+})(({ cursorPointerOn, theme }) => (`
+  ${cursorPointerOn ? 'cursor: pointer;' : ''}
+  font-size: 14px;
+  margin-top: 8px;
+  ${theme.breakpoints.up('md')} {
+    font-size: 16px;
+  }
 `));
 
 export default withStyles(styles)(TopCommentByBallotItem);
