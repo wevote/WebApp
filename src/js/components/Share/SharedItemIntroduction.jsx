@@ -43,7 +43,7 @@ class SharedItemIntroduction extends Component {
           </IntroHeader>
           <ListWrapper>
             <ListMaxWidth>
-              <ListTitleRow>
+              <ListTitleRow onClick={this.onClickShowAllStepOne}>
                 <Dot><StepNumber>1</StepNumber></Dot>
                 <StepTitle>Be ready to vote in 6 minutes</StepTitle>
               </ListTitleRow>
@@ -66,7 +66,7 @@ class SharedItemIntroduction extends Component {
                 )}
               </ListRow>
 
-              <ListTitleRow>
+              <ListTitleRow onClick={this.onClickShowAllStepTwo}>
                 <Dot><StepNumber>2</StepNumber></Dot>
                 <StepTitle>Be confident in your choices</StepTitle>
               </ListTitleRow>
@@ -89,7 +89,7 @@ class SharedItemIntroduction extends Component {
                 )}
               </ListRow>
 
-              <ListTitleRow>
+              <ListTitleRow onClick={this.onClickShowAllStepThree}>
                 <Dot><StepNumber>3</StepNumber></Dot>
                 <StepTitle>Help your friends &amp; amplify your impact</StepTitle>
               </ListTitleRow>

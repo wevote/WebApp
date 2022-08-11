@@ -344,7 +344,7 @@ class ShareModal extends Component {
                       disabled={!voterIsSignedIn}
                       id="shareModalAllOpinionsRadioButton"
                       value="AllOpinions"
-                      label={voterIsSignedIn ? 'Share ballot with my choices' : 'Sign in to share ballot with your choices'}
+                      label={voterIsSignedIn ? 'Share my voter guide' : 'Sign in to share my voter guide'}
                       labelPlacement="end"
                       control={
                         (
@@ -363,7 +363,7 @@ class ShareModal extends Component {
                       id="shareModalBallotOnlyRadioButton"
                       classes={{ label: classes.radioLabel }}
                       value="BallotOnly"
-                      label="Share ballot only"
+                      label="Ballot only"
                       labelPlacement="end"
                       control={
                         (

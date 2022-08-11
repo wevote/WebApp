@@ -1,12 +1,12 @@
 import styled from 'styled-components';
 
 const BallotAddress = styled('div', {
-  shouldForwardProp: (prop) => !['centerText'].includes(prop),
-})(({ centerText }) => (`
+  shouldForwardProp: (prop) => !['centerText', 'allowTextWrap'].includes(prop),
+})(({ allowTextWrap, centerText }) => (`
   margin-left: 2px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  ${allowTextWrap ? '' : 'overflow: hidden;'}
+  ${allowTextWrap ? '' : 'text-overflow: ellipsis;'}
+  ${allowTextWrap ? '' : 'white-space: nowrap;'}
   ${centerText ? 'text-align: center;' : ''}
 `));
 
@@ -32,11 +32,13 @@ const ElectionDateRight = styled('div')`
     font-size: 18px;
 `;
 
-const ElectionNameBlock = styled('div')`
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-`;
+const ElectionNameBlock = styled('div', {
+  shouldForwardProp: (prop) => !['allowTextWrap'].includes(prop),
+})(({ allowTextWrap }) => (`
+  ${allowTextWrap ? '' : 'overflow: hidden;'}
+  ${allowTextWrap ? '' : 'text-overflow: ellipsis;'}
+  ${allowTextWrap ? '' : 'white-space: nowrap;'}
+`));
 
 const ElectionNameH1 = styled('h1', {
   shouldForwardProp: (prop) => !['centerText'].includes(prop),
@@ -45,6 +47,7 @@ const ElectionNameH1 = styled('h1', {
   ${theme.breakpoints.down('sm')} {
     font-size: 28px;
   }
+  line-height: 1;
   margin: 0px;
   ${centerText ? 'text-align: center;' : ''}
 `));
@@ -74,12 +77,14 @@ const OverflowContent = styled('div', {
   }
 `));
 
-const OverflowContainer = styled('div')`
-  max-width: fit-content;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-`;
+const OverflowContainer = styled('div', {
+  shouldForwardProp: (prop) => !['allowTextWrap'].includes(prop),
+})(({ allowTextWrap }) => (`
+  ${allowTextWrap ? '' : 'max-width: fit-content;'}
+  ${allowTextWrap ? '' : 'overflow: hidden;'}
+  ${allowTextWrap ? '' : 'text-overflow: ellipsis;'}
+  ${allowTextWrap ? '' : 'white-space: nowrap;'}
+`));
 
 const VoteByBelowLabel = styled('div')`
   margin-right: 4px;

@@ -183,8 +183,7 @@ class FirstAndLastNameRequiredAlert extends Component {
                 {' '}
                 &apos;
                 {voterDisplayName}
-                &apos;
-                .
+                &apos;.
               </Alert>
             )}
             {(organizationNameRelevantAndMissing || voterNameRelevantAndMissing) && (

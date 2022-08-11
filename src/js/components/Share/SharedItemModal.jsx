@@ -541,7 +541,7 @@ class SharedItemModal extends Component {
               <StepsChips onSelectStep={this.goToSpecificSlide} selected={currentSlideIndex} chips={stepLabels} mobile />
             </StepsWrapper>
           </StepsOuterWrapper>
-          <TwoButtonsWrapper>
+          <SharedItemTwoButtonsWrapper>
             <BackButtonWrapper>
               <Button
                 classes={{ root: classes.nextButtonRoot }}
@@ -576,7 +576,7 @@ class SharedItemModal extends Component {
                 ) : 'Next'}
               </Button>
             </NextButtonWrapper>
-          </TwoButtonsWrapper>
+          </SharedItemTwoButtonsWrapper>
         </FooterBarWrapper>
       </Dialog>
     );
@@ -926,7 +926,7 @@ const StepsWrapper = styled('div', {
   width: ${`${width}px`};
 `));
 
-const TwoButtonsWrapper = styled('div')`
+const SharedItemTwoButtonsWrapper = styled('div')`
   width: 100%;
   padding: 4px 8px 12px 8px;
   display: flex;

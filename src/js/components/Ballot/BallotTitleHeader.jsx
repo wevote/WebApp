@@ -127,7 +127,7 @@ class BallotTitleHeader extends Component {
   render () {
     renderLog('BallotTitleHeader');  // Set LOG_RENDER_EVENTS to log all renders
     const nextReleaseFeaturesEnabled = webAppConfig.ENABLE_NEXT_RELEASE_FEATURES === undefined ? false : webAppConfig.ENABLE_NEXT_RELEASE_FEATURES;
-    const { centerText, electionDateBelow, linksOff, showBallotCaveat, showShareButton, turnOffVoteByBelow } = this.props;
+    const { allowTextWrap, centerText, electionDateBelow, linksOff, showBallotCaveat, showShareButton, turnOffVoteByBelow } = this.props;
     const {
       ballotCaveat, daysUntilElection, electionDayTextObject,
       electionName, nextNationalElectionDateMDY, originalTextAddress, originalTextState,
@@ -139,18 +139,18 @@ class BallotTitleHeader extends Component {
     const electionNameContainsState = stringContains(stateTextUsed.toLowerCase(), electionName.toLowerCase());
 
     const editIconStyled = <Edit style={{ fontSize: 16, margin: '-6px 0 0 2px', color: '#69A7FF' }} />;
-    // console.log('BallotTitleHeader daysUntilElection:', daysUntilElection);
+    // console.log('BallotTitleHeader allowTextWrap:', allowTextWrap);
     if (electionName) {
       return (
         <ComponentWrapper>
           <ContentWrapper spaceBetween={(electionDayTextObject || showShareButton) && !centerText}>
-            <OverflowContainer>
+            <OverflowContainer allowTextWrap={allowTextWrap}>
               <OverflowContent>
                 <ElectionNameScrollContent>
                   <ClickBlockWrapper
                     id="ballotTitleHeaderSelectBallotModal"
                   >
-                    <ElectionNameBlock>
+                    <ElectionNameBlock allowTextWrap={allowTextWrap}>
                       {(substitutedState && (substitutedState !== '')) ? (
                         <ElectionStateLabel
                           centerText={centerText}
@@ -197,6 +197,7 @@ class BallotTitleHeader extends Component {
                       </ElectionNameH1>
                       {(showBallotCaveat && ballotCaveat) ? (
                         <BallotAddress
+                          allowTextWrap={allowTextWrap}
                           centerText={centerText}
                           className="u-cursor--pointer"
                           onClick={this.showSelectBallotModalEditAddress}
@@ -209,6 +210,7 @@ class BallotTitleHeader extends Component {
                         <>
                           {(substitutedAddress && substitutedAddress !== '') ? (
                             <BallotAddress
+                              allowTextWrap={allowTextWrap}
                               centerText={centerText}
                               className="u-cursor--pointer"
                               onClick={this.showSelectBallotModalEditAddress}
@@ -224,6 +226,7 @@ class BallotTitleHeader extends Component {
                             <>
                               {(originalTextAddress && originalTextAddress !== '') && (
                                 <BallotAddress
+                                  allowTextWrap={allowTextWrap}
                                   centerText={centerText}
                                   className="u-cursor--pointer"
                                   onClick={this.showSelectBallotModalEditAddress}
@@ -318,6 +321,7 @@ class BallotTitleHeader extends Component {
   }
 }
 BallotTitleHeader.propTypes = {
+  allowTextWrap: PropTypes.bool,
   centerText: PropTypes.bool,
   electionDateBelow: PropTypes.bool,
   linksOff: PropTypes.bool,

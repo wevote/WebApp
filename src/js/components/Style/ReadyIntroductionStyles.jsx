@@ -44,6 +44,7 @@ const ListMaxWidth = styled('div')`
 `;
 
 const ListTitleRow = styled('div')`
+  cursor: pointer;
   display: flex;
   flex-flow: row nowrap;
   justify-content: flex-start;
@@ -59,6 +60,10 @@ const ListRow = styled('div')`
 const ListWrapper = styled('div')`
   display: flex;
   justify-content: center;
+`;
+
+const ShowMoreWrapper = styled('div')`
+  margin-left: 20px;
 `;
 
 const StepNumber = styled('div')(({ theme }) => (`
@@ -102,6 +107,7 @@ export {
   ListTitleRow,
   ListWrapper,
   OuterWrapper,
+  ShowMoreWrapper,
   StepNumber,
   StepNumberPlaceholder,
   StepText,

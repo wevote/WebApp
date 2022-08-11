@@ -5,7 +5,6 @@ import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
 import styled from 'styled-components';
 import historyPush from '../../common/utils/historyPush';
-import { isCordova } from '../../common/utils/isCordovaOrWebApp';
 import { renderLog } from '../../common/utils/logging';
 import toTitleCase from '../../common/utils/toTitleCase';
 import AppObservableStore, { messageService } from '../../stores/AppObservableStore';

@@ -59,7 +59,7 @@ const styles = (theme) => ({
 
 const ShowMoreButtonsStyled = styled('div')(({ theme }) => (`
   border: 0 !important;
-  color: #999;
+  color: #4371CC;
   cursor: pointer;
   display: block !important;
   background: #fff !important;
@@ -69,6 +69,7 @@ const ShowMoreButtonsStyled = styled('div')(({ theme }) => (`
   padding: 0 !important;
   text-align: center !important;
   user-select: none;
+  width: fit-content;
   ${theme.breakpoints.up('md')} {
     font-size: 16px;
   }
@@ -82,7 +83,7 @@ const ShowMoreButtonsStyled = styled('div')(({ theme }) => (`
 `));
 
 const ShowMoreButtonsText = styled('div')`
-  margin-top: 8px !important;
+  margin: 8px 0 0 8px !important;
   padding: 0 !important;
   text-align: center !important;
   &:hover {

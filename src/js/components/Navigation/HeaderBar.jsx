@@ -4,19 +4,16 @@ import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
 import styled from 'styled-components';
-import BallotActions from '../../actions/BallotActions';
 import OrganizationActions from '../../actions/OrganizationActions';
 import VoterActions from '../../actions/VoterActions';
 import VoterGuideActions from '../../actions/VoterGuideActions';
 import LazyImage from '../../common/components/LazyImage';
 import apiCalming from '../../common/utils/apiCalming';
 import { hasIPhoneNotch, historyPush, isDeviceZoomed, isIOS, isIOSAppOnMac } from '../../common/utils/cordovaUtils';
-import getBooleanValue from '../../common/utils/getBooleanValue';
 import { normalizedHref, normalizedHrefPage } from '../../common/utils/hrefUtils';
 import { isCordova, isWebApp } from '../../common/utils/isCordovaOrWebApp';
 import isMobileScreenSize from '../../common/utils/isMobileScreenSize';
 import { renderLog } from '../../common/utils/logging';
-import stringContains from '../../common/utils/stringContains';
 import voterPhoto from '../../common/utils/voterPhoto';
 import AnalyticsStore from '../../stores/AnalyticsStore';
 import AppObservableStore, { messageService } from '../../stores/AppObservableStore';
@@ -51,23 +48,11 @@ class HeaderBar extends Component {
       componentDidMountFinished: false,
       friendInvitationsSentToMe: 0,
       hideWeVoteLogo: false,
-      // paidAccountUpgradeMode: '',
       priorPath: '',
       scrolledDown: false,
-      showAdviserIntroModal: false,
-      showChooseOrOpposeIntroModal: false,
-      showEditAddressButton: false,
-      showFirstPositionIntroModal: false,
-      showSelectBallotModal: false,
-      showSelectBallotModalEditAddress: false,
-      showShareModal: false,
       showOrganizationModal: false,
       showSignInModal: false,
-      showPaidAccountUpgradeModal: false,
-      showPersonalizedScoreIntroModal: false,
       showPositionDrawer: false,
-      showValuesIntroModal: false,
-      showImageUploadModal: false,
       shareModalStep: '',
       tabsValue: 1,
       organizationModalBallotItemWeVoteId: '',
@@ -75,12 +60,7 @@ class HeaderBar extends Component {
       voter: {},
       voterFirstName: '',
       voterIsSignedIn: false,
-      // firstVisitToBallot: true,
     };
-    this.closePaidAccountUpgradeModal = this.closePaidAccountUpgradeModal.bind(this);
-    this.closeSelectBallotModal = this.closeSelectBallotModal.bind(this);
-    this.closeShareModal = this.closeShareModal.bind(this);
-    this.closeSignInModal = this.closeSignInModal.bind(this);
     this.debugLogging = this.debugLogging.bind(this);
     this.toggleSignInModal = this.toggleSignInModal.bind(this);
     this.transitionToYourVoterGuide = this.transitionToYourVoterGuide.bind(this);
@@ -105,18 +85,7 @@ class HeaderBar extends Component {
       friendInvitationsSentToMe: FriendStore.friendInvitationsSentToMe(),
       hideWeVoteLogo: AppObservableStore.getHideWeVoteLogo(),
       scrolledDown: AppObservableStore.getScrolledDown(),
-      showAdviserIntroModal: AppObservableStore.showAdviserIntroModal(),
-      showAskFriendsModal: AppObservableStore.showAskFriendsModal(),
-      showChooseOrOpposeIntroModal: AppObservableStore.showChooseOrOpposeIntroModal(),
-      showEditAddressButton: AppObservableStore.showEditAddressButton(),
-      showFirstPositionIntroModal: AppObservableStore.showFirstPositionIntroModal(),
-      showPaidAccountUpgradeModal: false, // June 2021 , TODO: Add back in paid upgrade modal
-      showPersonalizedScoreIntroModal: AppObservableStore.showPersonalizedScoreIntroModal(),
-      showSelectBallotModal: AppObservableStore.showSelectBallotModal(),
-      showSelectBallotModalEditAddress: getBooleanValue(AppObservableStore.showSelectBallotModalEditAddress()),
-      // showSignInModal: AppObservableStore.showSignInModal(),
-      showValuesIntroModal: AppObservableStore.showValuesIntroModal(),
-      showImageUploadModal: AppObservableStore.showImageUploadModal(),
+      showSignInModal: AppObservableStore.showSignInModal(),
       voter,
       voterFirstName,
       voterIsSignedIn,
@@ -179,41 +148,19 @@ class HeaderBar extends Component {
       update = true;
     } else if (this.state.organizationModalBallotItemWeVoteId !== nextState.organizationModalBallotItemWeVoteId) {
       update = true;
-    } else if (this.state.showAdviserIntroModal !== nextState.showAdviserIntroModal) {
-      update = true;
-    } else if (this.state.showAskFriendsModal !== nextState.showAskFriendsModal) {
-      update = true;
-    } else if (this.state.showChooseOrOpposeIntroModal !== nextState.showChooseOrOpposeIntroModal) {
-      update = true;
-    } if (this.state.showEditAddressButton !== nextState.showEditAddressButton) {
-      update = true;
-    } else if (this.state.showFirstPositionIntroModal !== nextState.showFirstPositionIntroModal) {
-      update = true;
-    } else if (this.state.showPaidAccountUpgradeModal !== nextState.showPaidAccountUpgradeModal) {
-      update = true;
-    } else if (this.state.showPersonalizedScoreIntroModal !== nextState.showPersonalizedScoreIntroModal) {
-      update = true;
-    } else if (this.state.showShareModal !== nextState.showShareModal) {
-      update = true;
+    // } if (this.state.showEditAddressButton !== nextState.showEditAddressButton) {
+    //   update = true;
     } else if (this.state.showOrganizationModal !== nextState.showOrganizationModal) {
       update = true;
     } else if (this.state.showPositionDrawer !== nextState.showPositionDrawer) {
       update = true;
     } else if (this.state.showSignInModal !== nextState.showSignInModal) {
       update = true;
-    } else if (this.state.showValuesIntroModal !== nextState.showValuesIntroModal) {
-      update = true;
-    } else if (this.state.showImageUploadModal !== nextState.showImageUploadModal) {
-      update = true;
     } else if (this.state.voterFirstName !== nextState.voterFirstName) {
       // console.log('this.state.voterFirstName: ', this.state.voterFirstName, ', nextState.voterFirstName', nextState.voterFirstName);
       update = true;
     } else if (this.state.voterIsSignedIn !== nextState.voterIsSignedIn) {
       // console.log('HeaderBar voter.isSignedIn shouldComponentUpdate true');
-      update = true;
-    } else if (this.state.showSelectBallotModal !== nextState.showSelectBallotModal) {
-      update = true;
-    } else if (this.state.showSelectBallotModalEditAddress !== nextState.showSelectBallotModalEditAddress) {
       update = true;
     }
     const thisVoterExists = this.state.voter !== undefined;
@@ -273,7 +220,6 @@ class HeaderBar extends Component {
     this.voterStoreListener.remove();
     this.analyticsStoreListener.remove();
     if (this.setStyleTimeout) clearTimeout(this.setStyleTimeout);
-    if (this.showBallotModalTimeout) clearTimeout(this.showBallotModalTimeout);
   }
 
   handleTabChange (newValue) {
@@ -285,31 +231,13 @@ class HeaderBar extends Component {
   // eslint-disable-next-line no-unused-vars
   onAppObservableStoreChange (msg) {
     // console.log('------ HeaderBar, onAppObservableStoreChange received: ', msg);
-    const paidAccountUpgradeMode = AppObservableStore.showPaidAccountUpgradeModal() || '';
-    // console.log('HeaderBar paidAccountUpgradeMode:', paidAccountUpgradeMode);
-    const showPaidAccountUpgradeModal = paidAccountUpgradeMode && paidAccountUpgradeMode !== '';
-    // console.log('HeaderBar onAppObservableStoreChange showPaidAccountUpgradeModal:', showPaidAccountUpgradeModal);
     this.setState({
       chosenSiteLogoUrl: AppObservableStore.getChosenSiteLogoUrl(),
       hideWeVoteLogo: AppObservableStore.getHideWeVoteLogo(),
       organizationModalBallotItemWeVoteId: AppObservableStore.getOrganizationModalBallotItemWeVoteId(),
-      // paidAccountUpgradeMode,
       scrolledDown: AppObservableStore.getScrolledDown(),
       shareModalStep: AppObservableStore.getShareModalStep(),
-      showAdviserIntroModal: AppObservableStore.showAdviserIntroModal(),
-      showAskFriendsModal: AppObservableStore.showAskFriendsModal(),
-      showChooseOrOpposeIntroModal: AppObservableStore.showChooseOrOpposeIntroModal(),
-      // showEditAddressButton: AppObservableStore.showEditAddressButton(),
-      showEditAddressButton: false, // 2022-03-30 Turned off now -- may be permanently off
-      showFirstPositionIntroModal: AppObservableStore.showFirstPositionIntroModal(),
-      showPaidAccountUpgradeModal,
-      showShareModal: AppObservableStore.showShareModal(),
-      showPersonalizedScoreIntroModal: AppObservableStore.showPersonalizedScoreIntroModal(),
-      showSelectBallotModal: AppObservableStore.showSelectBallotModal(),
-      showSelectBallotModalEditAddress: AppObservableStore.showSelectBallotModalEditAddress(),
       showSignInModal: AppObservableStore.showSignInModal(),
-      showValuesIntroModal: AppObservableStore.showValuesIntroModal(),
-      showImageUploadModal: AppObservableStore.showImageUploadModal(),
     });
   }
 
@@ -346,10 +274,8 @@ class HeaderBar extends Component {
         voter,
         voterFirstName,
         voterIsSignedIn,
-        // showSignInModal: AppObservableStore.showSignInModal(),
-        showShareModal: AppObservableStore.showShareModal(),
+        showSignInModal: AppObservableStore.showSignInModal(),
         showOrganizationModal: AppObservableStore.showOrganizationModal(),
-        showPersonalizedScoreIntroModal: AppObservableStore.showPersonalizedScoreIntroModal(),
         showPositionDrawer: AppObservableStore.showPositionDrawer(),
       });
     }
@@ -374,79 +300,6 @@ class HeaderBar extends Component {
   openHowItWorksModal = () => {
     // console.log('Opening modal');
     AppObservableStore.setShowHowItWorksModal(true);
-  }
-
-  closeAdviserIntroModal = () => {
-    AppObservableStore.setShowAdviserIntroModal(false);
-  }
-
-  closeAskFriendsModal = () => {
-    AppObservableStore.setShowAskFriendsModal(false);
-  }
-
-  closeChooseOrOpposeIntroModal = () => {
-    AppObservableStore.setShowChooseOrOpposeIntroModal(false);
-  }
-
-  closeFirstPositionIntroModal = () => {
-    AppObservableStore.setShowFirstPositionIntroModal(false);
-  }
-
-  closeImageUploadModal = () => {
-    AppObservableStore.setShowImageUploadModal(false);
-  }
-
-  closeValuesIntroModal = () => {
-    AppObservableStore.setShowValuesIntroModal(false);
-  }
-
-  closePersonalizedScoreIntroModal = () => {
-    AppObservableStore.setShowPersonalizedScoreIntroModal(false);
-  }
-
-  closePaidAccountUpgradeModal () {
-    AppObservableStore.setShowPaidAccountUpgradeModal(false);
-  }
-
-  closeShareModal () {
-    AppObservableStore.setShowShareModal(false);
-    AppObservableStore.setShareModalStep('');
-    const pathname = normalizedHref();
-    // console.log('HeaderBar closeShareModal pathname:', pathname);
-    if (stringContains('/modal/share', pathname) && isWebApp()) {
-      const pathnameWithoutModalShare = pathname.replace('/modal/share', '');  // Cordova
-      // console.log('Navigation closeShareModal pathnameWithoutModalShare:', pathnameWithoutModalShare);
-      historyPush(pathnameWithoutModalShare);
-    }
-  }
-
-  closeSelectBallotModal () {
-    const { showSelectBallotModal } = this.state;
-    if (!showSelectBallotModal) {
-      BallotActions.voterBallotListRetrieve(); // Retrieve a list of ballots for the voter from other elections
-    }
-    AppObservableStore.setShowSelectBallotModal(false);
-
-    this.setState({
-      showSelectBallotModal: false,
-    });
-  }
-
-  closeSignInModal () {
-    // console.log('HeaderBar closeSignInModal');
-    AppObservableStore.setShowSignInModal(false);
-    this.setState({ showSignInModal: false });
-    VoterActions.voterRetrieve();
-    VoterActions.voterEmailAddressRetrieve();
-  }
-
-  toggleSignInModal () {
-    const { showSignInModal } = this.state;
-    // console.log('HeaderBar toggleSignInModal showSignInModal:', showSignInModal);
-    AppObservableStore.setShowSignInModal(!showSignInModal);
-    this.setState({
-      showSignInModal: !showSignInModal,
-    });
   }
 
   transitionToYourVoterGuide () {
@@ -525,6 +378,15 @@ class HeaderBar extends Component {
     }
   }
 
+  toggleSignInModal () {
+    const { showSignInModal } = this.state;
+    // console.log('HeaderBar toggleSignInModal showSignInModal:', showSignInModal);
+    AppObservableStore.setShowSignInModal(!showSignInModal);
+    this.setState({
+      showSignInModal: !showSignInModal,
+    });
+  }
+
   render () {
     renderLog('HeaderBar');  // Set LOG_RENDER_EVENTS to log all renders
     if (!this.state.componentDidMountFinished) {
@@ -538,22 +400,9 @@ class HeaderBar extends Component {
 
     const { classes } = this.props;
     const {
-      chosenSiteLogoUrl, hideWeVoteLogo, /* paidAccountUpgradeMode, */ scrolledDown,
-      showAdviserIntroModal, showAskFriendsModal, showChooseOrOpposeIntroModal,
-      showEditAddressButton, showFirstPositionIntroModal,
-      showPaidAccountUpgradeModal, showPersonalizedScoreIntroModal,
-      showSelectBallotModal, showSelectBallotModalEditAddress,
-      showShareModal, showSignInModal, showValuesIntroModal, showImageUploadModal,
+      chosenSiteLogoUrl, hideWeVoteLogo, scrolledDown,
       voter, voterIsSignedIn, tabsValue,
     } = this.state;
-    /* eslint object-property-newline: ["off"] */
-    const shows = {
-      showAdviserIntroModal, showAskFriendsModal, showChooseOrOpposeIntroModal,
-      showEditAddressButton, showFirstPositionIntroModal,
-      showPaidAccountUpgradeModal, showPersonalizedScoreIntroModal,
-      showSelectBallotModal, showSelectBallotModalEditAddress,
-      showShareModal, showSignInModal, showValuesIntroModal, showImageUploadModal,
-    };
     // const showingBallot = pathname.startsWith('/ballot');
     // const showingFriendsTabs = displayFriendsTabs();
     const voterPhotoUrlMedium = voterPhoto(voter);
@@ -778,20 +627,7 @@ class HeaderBar extends Component {
             )}
           </TopRowTwoLeftContainer>
         </TopOfPageHeader>
-        <HeaderBarModals
-          closeAdviserIntroModal={this.closeAdviserIntroModal}
-          closeAskFriendsModal={this.closeAskFriendsModal}
-          closeChooseOrOpposeIntroModal={this.closeChooseOrOpposeIntroModal}
-          closeFirstPositionIntroModal={this.closeFirstPositionIntroModal}
-          closeImageUploadModal={this.closeImageUploadModal}
-          closeSignInModal={this.closeSignInModal}
-          closePaidAccountUpgradeModal={this.closePaidAccountUpgradeModal}
-          closePersonalizedScoreIntroModal={this.closePersonalizedScoreIntroModal}
-          closeShareModal={this.closeShareModal}
-          closeSelectBallotModal={this.closeSelectBallotModal}
-          closeValuesIntroModal={this.closeValuesIntroModal}
-          shows={shows}
-        />
+        <HeaderBarModals />
       </HeaderBarWrapper>
     );
   }

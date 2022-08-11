@@ -121,10 +121,12 @@ export default class ReadyPageValuesList extends Component {
               null}
           </div>
           {(limitNumberOfIssuesShownToThisNumber < allIssues.length) && (
-            <ShowMoreButtons
-              showMoreId="showMoreReadyPageValuesList"
-              showMoreButtonsLink={this.showMoreIssues}
-            />
+            <ShowMoreWrapperCentered>
+              <ShowMoreButtons
+                showMoreId="showMoreReadyPageValuesList"
+                showMoreButtonsLink={this.showMoreIssues}
+              />
+            </ShowMoreWrapperCentered>
           )}
         </div>
       </ReadyPageValuesListWrapper>
@@ -164,4 +166,9 @@ const Row = styled('div')(({ theme }) => (`
 `));
 
 const ReadyPageValuesListWrapper = styled('div')`
+`;
+
+const ShowMoreWrapperCentered = styled('div')`
+  display: flex;
+  justify-content: center;
 `;

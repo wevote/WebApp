@@ -127,7 +127,7 @@ class AddFriendsByEmail extends Component {
     }
   };
 
-  cacheFriendData = (event) => {
+  cacheIncomingEmailsOrPhones = (event) => {
     const incomingEmailsOrPhonesString = event.target.value;
     const friendContactInfoArray = [];
     let emailsOrPhonesBrokenString = '';
@@ -153,6 +153,22 @@ class AddFriendsByEmail extends Component {
       incomingEmailsOrPhonesString,
       emailsOrPhonesBrokenString,
       friendContactInfoArray,
+    });
+  }
+
+  cacheFirstName = (event) => {
+    const friendFirstName = event.target.value;
+    // this.setState({ [event.target.name]: event.target.value });
+    this.setState({
+      friendFirstName,
+    });
+  }
+
+  cacheLastName = (event) => {
+    const friendLastName = event.target.value;
+    // this.setState({ [event.target.name]: event.target.value });
+    this.setState({
+      friendLastName,
     });
   }
 
@@ -294,7 +310,7 @@ class AddFriendsByEmail extends Component {
                         maxRows={3}
                         multiline
                         name="incomingEmailsOrPhonesString"
-                        onChange={this.cacheFriendData}
+                        onChange={this.cacheIncomingEmailsOrPhones}
                         onFocus={focusTextFieldAndroid}
                         onBlur={blurTextFieldAndroid}
                         placeholder="For example: name@domain.com"
@@ -323,7 +339,7 @@ class AddFriendsByEmail extends Component {
                               label="Enter Friend&apos;s First Name"
                               name="friendFirstName"
                               value={friendFirstName}
-                              onChange={this.cacheFriendData}
+                              onChange={this.cacheFirstName}
                               onFocus={focusTextFieldAndroid}
                               onBlur={blurTextFieldAndroid}
                               placeholder={isMobileScreenSize() || inSideColumn ? 'Optional' : 'Optional, but helpful!'}
@@ -339,7 +355,7 @@ class AddFriendsByEmail extends Component {
                               label="Enter Friend&apos;s Last Name"
                               name="friendLastName"
                               value={friendLastName}
-                              onChange={this.cacheFriendData}
+                              onChange={this.cacheLastName}
                               onFocus={focusTextFieldAndroid}
                               onBlur={blurTextFieldAndroid}
                               placeholder="Optional"

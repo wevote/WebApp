@@ -318,7 +318,7 @@ class HowItWorks extends Component {
         />
         {
           selectedStepIndex === (stepLabels.length - 1) && (
-            <TwoButtonsWrapper>
+            <HowItWorksTwoButtonsWrapper>
               <BackButtonWrapper>
                 <Button
                   classes={{ root: classes.nextButtonRoot }}
@@ -342,7 +342,7 @@ class HowItWorks extends Component {
                   Get Started
                 </Button>
               </NextButtonWrapper>
-            </TwoButtonsWrapper>
+            </HowItWorksTwoButtonsWrapper>
           )
         }
       </>
@@ -379,7 +379,7 @@ class HowItWorks extends Component {
           />
           {
             selectedStepIndex === stepLabels.length - 1 && (
-              <TwoButtonsWrapper>
+              <HowItWorksTwoButtonsWrapper>
                 <BackButtonWrapper className="u-show-mobile-tablet">
                   <Button
                     classes={{ root: classes.nextButtonRoot }}
@@ -403,7 +403,7 @@ class HowItWorks extends Component {
                     Get Started
                   </Button>
                 </NextButtonWrapper>
-              </TwoButtonsWrapper>
+              </HowItWorksTwoButtonsWrapper>
             )
           }
         </Section>
@@ -459,11 +459,11 @@ const MobileTabletView = styled('div')(({ theme }) => (`
   }
 `));
 
-const TwoButtonsWrapper = styled('div')(({ theme }) => (`
+const HowItWorksTwoButtonsWrapper = styled('div')(({ theme }) => (`
   display: flex;
   align-items: center;
   justify-content: center;
-  margin: 0;
+  margin: 12px 0 0 0;
   width: 100%;
   ${theme.breakpoints.down('lg')} {
     justify-content: space-between;
@@ -473,17 +473,17 @@ const TwoButtonsWrapper = styled('div')(({ theme }) => (`
 const BackButtonWrapper = styled('div')(({ theme }) => (`
   margin: 0 12px 0 0;
   width: 100%;
-  ${theme.breakpoints.down('lg')} {
-    margin-right: 8px;
-  }
+  // ${theme.breakpoints.down('lg')} {
+  //   margin-right: 8px;
+  // }
 `));
 
 const NextButtonWrapper = styled('div')(({ theme }) => (`
   margin: 0;
   width: 100%;
-  ${theme.breakpoints.down('lg')} {
-    margin-right: 8px;
-  }
+  // ${theme.breakpoints.down('lg')} {
+  //   margin-right: 8px;
+  // }
 `));
 
 export default withStyles(styles)(HowItWorks);

@@ -8,6 +8,7 @@ import styled from 'styled-components';
 import abbreviateNumber from '../../common/utils/abbreviateNumber';
 import { isCordova } from '../../common/utils/isCordovaOrWebApp';
 import { renderLog } from '../../common/utils/logging';
+import IssueStore from '../../stores/IssueStore';
 import VoterGuideStore from '../../stores/VoterGuideStore';
 import VoterStore from '../../stores/VoterStore';
 import { convertNameToSlug } from '../../utils/textFormat';
@@ -37,6 +38,8 @@ class IssueCard extends Component {
   componentDidMount () {
     // console.log("IssueCard, componentDidMount, this.props:", this.props);
     const { issue } = this.props;
+    this.issueStoreListener = IssueStore.addListener(this.onIssueStoreChange.bind(this));
+    this.voterGuideStoreListener = VoterGuideStore.addListener(this.onIssueStoreChange.bind(this));
     if (issue && issue.issue_we_vote_id) {
       const { issue_we_vote_id: issueWeVoteId } = issue;
       const imageSizes = new Set(['SMALL', 'MEDIUM', 'LARGE']);
@@ -50,7 +53,7 @@ class IssueCard extends Component {
         issue,
         issueImageSize,
         issueWeVoteId,
-      });
+      }, () => this.onIssueStoreChange());
     }
   }
 
@@ -70,8 +73,37 @@ class IssueCard extends Component {
         issue: nextProps.issue,
         issueImageSize,
         issueWeVoteId,
-      });
+      }, () => this.onIssueStoreChange());
     }
+  }
+
+  componentWillUnmount () {
+    this.issueStoreListener.remove();
+    this.voterGuideStoreListener.remove();
+  }
+
+  onIssueStoreChange () {
+    const { issue } = this.props;
+    const {
+      issue_followers_count: issueFollowersCount,
+      issue_we_vote_id: issueWeVoteId,
+      linked_organization_count: linkedOrganizationCount,
+      linked_organization_preview_list: linkedOrganizationPreviewList,
+    } = issue;
+
+    this.setState({
+      issueFollowersCount,
+      issueWeVoteId,
+      linkedOrganizationPreviewList,
+      linkedOrganizationCount,
+    }, () => this.onVoterGuideStoreChange());
+  }
+
+  onVoterGuideStoreChange () {
+    const { issueWeVoteId } = this.state;
+    this.setState({
+      countOfOrganizationsUnderThisIssue: VoterGuideStore.getVoterGuidesForValue(issueWeVoteId).length,
+    });
   }
 
   getIssueLink () {
@@ -100,7 +132,8 @@ class IssueCard extends Component {
     } = this.props;
     const {
       ballotItemWeVoteId, countOfOrganizationsUnderThisIssue,
-      issue, issueImageSize, issueWeVoteId,
+      issue, issueFollowersCount, issueImageSize, issueWeVoteId,
+      linkedOrganizationCount, linkedOrganizationPreviewList,
       showSignInModal,
     } = this.state;
 
@@ -108,11 +141,6 @@ class IssueCard extends Component {
       return null;
     }
 
-    const {
-      issue_followers_count: issueFollowersCount,
-      linked_organization_count: linkedOrganizationCount,
-      linked_organization_preview_list: linkedOrganizationPreviewList,
-    } = issue;
     let { issue_description: issueDescription, issue_name: issueDisplayName } = issue;
 
     issueDisplayName = issueDisplayName || '';
@@ -148,12 +176,38 @@ class IssueCard extends Component {
         />
       );
     }
+    const issueTooltip = (
+      <Tooltip className="u-z-index-9020" id="issueTooltip">
+        <div>
+          Follow
+          {' '}
+          {issueDisplayName}
+          {' '}
+          to improve your personalized score, up-and-down your ballot.
+        </div>
+      </Tooltip>
+    );
     let linkedOrganizationsTooltip = <></>;
     let linkedOrganizationNameCount = 0;
     if (linkedOrganizationPreviewList) {
       linkedOrganizationsTooltip = (
         <Tooltip className="u-z-index-9020" id="linkedOrganizationsTooltip">
           <div>
+            See endorsements from
+            {linkedOrganizationCount ? (
+              <>
+                {' '}
+                {linkedOrganizationCount}
+                {' '}
+                advocates, like:
+              </>
+            ) : (
+              <>
+                :
+              </>
+            )}
+
+            <br />
             {linkedOrganizationPreviewList.map((linkedOrganization) => {
               // console.log('linkedOrganization:', linkedOrganization);
               if (linkedOrganization.organization_name) {
@@ -178,6 +232,19 @@ class IssueCard extends Component {
         </Tooltip>
       );
     }
+    const followersTooltip = (
+      <Tooltip className="u-z-index-9020" id="followersTooltip">
+        <div>
+          {abbreviateNumber(issueFollowersCount)}
+          {' '}
+          people have followed
+          {' '}
+          <span className="u-no-break">{issueDisplayName}</span>
+          {' '}
+          <span className="u-no-break">on We Vote</span>
+        </div>
+      </Tooltip>
+    );
 
     let isFirst = true;
     let organizationImageCount = 0;
@@ -199,30 +266,41 @@ class IssueCard extends Component {
           </Suspense>
         )}
         <Flex condensed={!!this.props.condensed} followToggleOnItsOwnLine={!!followToggleOnItsOwnLine}>
-          <FlexNameAndIcon condensed={!!this.props.condensed}>
-            <IssueImage>
-              {!turnOffIssueImage && (
-                <span>
-                  {includeLinkToIssue ? (
-                    <Link to={this.getIssueLink}
-                          className="u-no-underline"
-                    >
-                      {issueImage}
-                    </Link>
-                  ) : (
-                    <span>
-                      {issueImage}
-                    </span>
-                  )}
-                </span>
-              )}
-            </IssueImage>
-            <>
-              {includeLinkToIssue ? (
-                <Link id="valueListLink"
-                      to={this.getIssueLink}
-                      className="u-no-underline"
-                >
+          <OverlayTrigger overlay={issueTooltip} placement="top">
+            <FlexNameAndIcon condensed={!!this.props.condensed}>
+              <IssueImage>
+                {!turnOffIssueImage && (
+                  <span>
+                    {includeLinkToIssue ? (
+                      <Link to={this.getIssueLink}
+                            className="u-no-underline"
+                      >
+                        {issueImage}
+                      </Link>
+                    ) : (
+                      <span>
+                        {issueImage}
+                      </span>
+                    )}
+                  </span>
+                )}
+              </IssueImage>
+              <>
+                {includeLinkToIssue ? (
+                  <Link id="valueListLink"
+                        to={this.getIssueLink}
+                        className="u-no-underline"
+                  >
+                    <IssueName>
+                      {`${issueDisplayName} `}
+                      {!hideAdvocatesCount && (
+                        <IssueAdvocatesCount>
+                          {`(${countOfOrganizationsUnderThisIssue}${countOfOrganizationsUnderThisIssue === 1 ? ' Advocate' : ''}${countOfOrganizationsUnderThisIssue > 1 ? ' Advocates' : ''})`}
+                        </IssueAdvocatesCount>
+                      )}
+                    </IssueName>
+                  </Link>
+                ) : (
                   <IssueName>
                     {`${issueDisplayName} `}
                     {!hideAdvocatesCount && (
@@ -231,19 +309,10 @@ class IssueCard extends Component {
                       </IssueAdvocatesCount>
                     )}
                   </IssueName>
-                </Link>
-              ) : (
-                <IssueName>
-                  {`${issueDisplayName} `}
-                  {!hideAdvocatesCount && (
-                    <IssueAdvocatesCount>
-                      {`(${countOfOrganizationsUnderThisIssue}${countOfOrganizationsUnderThisIssue === 1 ? ' Advocate' : ''}${countOfOrganizationsUnderThisIssue > 1 ? ' Advocates' : ''})`}
-                    </IssueAdvocatesCount>
-                  )}
-                </IssueName>
-              )}
-            </>
-          </FlexNameAndIcon>
+                )}
+              </>
+            </FlexNameAndIcon>
+          </OverlayTrigger>
           {(followToggleOn && issueWeVoteId) && (
             <FollowIssueToggleContainer>
               <IssueFollowToggleButton
@@ -270,9 +339,9 @@ class IssueCard extends Component {
           </IssueCardDescription>
         )}
         <IssueAdvocatesAndFollowersWrapper>
-          <IssueAdvocatesWrapper>
-            {linkedOrganizationPreviewList && (
-              <OverlayTrigger overlay={linkedOrganizationsTooltip} placement="top">
+          <OverlayTrigger overlay={linkedOrganizationsTooltip} placement="top">
+            <IssueAdvocatesWrapper>
+              {linkedOrganizationPreviewList && (
                 <IssueAdvocatesImages>
                   {linkedOrganizationPreviewList.slice(0, NUMBER_OF_LINKED_ORGANIZATION_IMAGES_TO_SHOW).map((organization) => {
                     isFirst = organizationImageCount === 0;
@@ -294,26 +363,28 @@ class IssueCard extends Component {
                     }
                   })}
                 </IssueAdvocatesImages>
-              </OverlayTrigger>
-            )}
-            {linkedOrganizationCount && (
-              <LinkedOrganizationCountWrapper>
-                {abbreviateNumber(linkedOrganizationCount)}
-                <CheckWrapper>
-                  <Check />
-                </CheckWrapper>
-              </LinkedOrganizationCountWrapper>
-            )}
-          </IssueAdvocatesWrapper>
-          <FollowersWrapper>
-            {issueFollowersCount && (
-              <>
-                {abbreviateNumber(issueFollowersCount)}
-                {' '}
-                followers
-              </>
-            )}
-          </FollowersWrapper>
+              )}
+              {linkedOrganizationCount && (
+                <LinkedOrganizationCountWrapper>
+                  {abbreviateNumber(linkedOrganizationCount)}
+                  <CheckWrapper>
+                    <Check />
+                  </CheckWrapper>
+                </LinkedOrganizationCountWrapper>
+              )}
+            </IssueAdvocatesWrapper>
+          </OverlayTrigger>
+          <OverlayTrigger overlay={followersTooltip} placement="top">
+            <FollowersWrapper>
+              {issueFollowersCount && (
+                <>
+                  {abbreviateNumber(issueFollowersCount)}
+                  {' '}
+                  followers
+                </>
+              )}
+            </FollowersWrapper>
+          </OverlayTrigger>
         </IssueAdvocatesAndFollowersWrapper>
       </Wrapper>
     );
