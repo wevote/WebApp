@@ -19,8 +19,8 @@ import { Candidate, CandidateBottomRow, CandidateContainer, CandidateInfo, Candi
 import { OverflowContainer, PositionRowListEmptyWrapper, PositionRowListInnerWrapper, PositionRowListOneWrapper, PositionRowListOuterWrapper, PositionRowListScoreColumn, PositionRowListScoreHeader, PositionRowListScoreSpacer } from '../Style/PositionRowListStyles';
 import InfoCircleIcon from '../Widgets/InfoCircleIcon';
 import signInModalGlobalState from '../Widgets/signInModalGlobalState';
-import PositionRowEmpty from './PositionRowEmpty';
-import PositionRowList from './PositionRowList';
+import PositionRowEmpty from '../Ballot/PositionRowEmpty';
+import PositionRowList from '../Ballot/PositionRowList';
 
 const BallotItemSupportOpposeScoreDisplay = React.lazy(() => import(/* webpackChunkName: 'BallotItemSupportOpposeScoreDisplay' */ '../Widgets/ScoreDisplay/BallotItemSupportOpposeScoreDisplay'));
 const DelayedLoad = React.lazy(() => import(/* webpackChunkName: 'DelayedLoad' */ '../../common/components/Widgets/DelayedLoad'));
@@ -32,8 +32,7 @@ const ShowMoreButtons = React.lazy(() => import(/* webpackChunkName: 'ShowMoreBu
 const SHOW_ALL_CANDIDATES_IF_FEWER_THAN_THIS_NUMBER_OF_BALLOT_ITEMS = 5;
 const NUMBER_OF_CANDIDATES_TO_DISPLAY = 3;
 
-// This is related to components/VoterGuide/VoterGuideOfficeItemCompressed
-class OfficeItemCompressed extends Component {
+class BallotSharedOfficeItem extends Component {
   targetRef = React.createRef();
 
   constructor (props) {
@@ -77,7 +76,7 @@ class OfficeItemCompressed extends Component {
       totalNumberOfCandidates,
     });
     const organizationWeVoteId = (this.props.organization && this.props.organization.organization_we_vote_id) ? this.props.organization.organization_we_vote_id : this.props.organizationWeVoteId;
-    // console.log('OfficeItemCompressed componentDidMount, organizationWeVoteId:', organizationWeVoteId);
+    // console.log('BallotSharedOfficeItem componentDidMount, organizationWeVoteId:', organizationWeVoteId);
     this.setState({
       organizationWeVoteId,
       // componentDidMount: true,
@@ -110,7 +109,7 @@ class OfficeItemCompressed extends Component {
 
   componentDidCatch (error, info) {
     // We should get this information to Splunk!
-    console.error('OfficeItemCompressed caught error: ', `${error} with info: `, info);
+    console.error('BallotSharedOfficeItem caught error: ', `${error} with info: `, info);
   }
 
   componentWillUnmount () {
@@ -121,13 +120,13 @@ class OfficeItemCompressed extends Component {
   // See https://reactjs.org/docs/error-boundaries.html
   static getDerivedStateFromError (error) { // eslint-disable-line no-unused-vars
     // Update state so the next render will show the fallback UI, We should have "Oh snap" page
-    console.log('OfficeItemCompressed error:', error);
+    console.log('BallotSharedOfficeItem error:', error);
     return { hasError: true };
   }
 
   onCandidateStoreChange () {
     if (!signInModalGlobalState.get('textOrEmailSignInInProcess')) {
-      // console.log('OfficeItemCompressed, onCandidateStoreChange');
+      // console.log('BallotSharedOfficeItem, onCandidateStoreChange');
       const { candidateList, officeWeVoteId } = this.props;
       let candidateListLength = 0;
       if (candidateList && candidateList.length > 0) {
@@ -141,7 +140,7 @@ class OfficeItemCompressed extends Component {
         candidateListLength,
         totalNumberOfCandidates,
       });
-      // console.log('OfficeItemCompressed onCandidateStoreChange', officeWeVoteId);
+      // console.log('BallotSharedOfficeItem onCandidateStoreChange', officeWeVoteId);
       let changeFound = false;
       if (candidateListLength && officeWeVoteId) {
         if (officeWeVoteId &&
@@ -332,7 +331,7 @@ class OfficeItemCompressed extends Component {
                       <CandidateBottomRow>
                         {!hideCandidateDetails && (
                           <Suspense fallback={<></>}>
-                            {/* If there if (pages.includes(page)) {is a quote about the candidate, show that. If not, show issues related to candidate */}
+                            {/* If there is a quote about the candidate, show that. If not, show issues related to candidate */}
                             <DelayedLoad showLoadingText waitBeforeShow={500}>
                               <IssuesByBallotItemDisplayList
                                 ballotItemDisplayName={oneCandidate.ballot_item_display_name}
@@ -349,7 +348,7 @@ class OfficeItemCompressed extends Component {
                                 ballotItemWeVoteId={oneCandidate.we_vote_id}
                                 ballotItemDisplayName={oneCandidate.ballot_item_display_name}
                                 commentButtonHide
-                                externalUniqueId={`OfficeItemCompressed-ItemActionBar-${oneCandidate.we_vote_id}-${externalUniqueId}`}
+                                externalUniqueId={`BallotSharedOfficeItem-ItemActionBar-${oneCandidate.we_vote_id}-${externalUniqueId}`}
                                 hidePositionPublicToggle
                                 positionPublicToggleWrapAllowed
                                 shareButtonHide
@@ -476,8 +475,8 @@ class OfficeItemCompressed extends Component {
   }
 
   render () {
-    renderLog('OfficeItemCompressed');  // Set LOG_RENDER_EVENTS to log all renders
-    // console.log('OfficeItemCompressed render');
+    renderLog('BallotSharedOfficeItem');  // Set LOG_RENDER_EVENTS to log all renders
+    // console.log('BallotSharedOfficeItem render');
     let { ballotItemDisplayName } = this.props;
     const { isFirstBallotItem, officeWeVoteId } = this.props; // classes
     const { candidateListLength, showAllCandidates, totalNumberOfCandidates } = this.state;
@@ -533,7 +532,7 @@ class OfficeItemCompressed extends Component {
     );
   }
 }
-OfficeItemCompressed.propTypes = {
+BallotSharedOfficeItem.propTypes = {
   officeWeVoteId: PropTypes.string.isRequired,
   ballotItemDisplayName: PropTypes.string.isRequired,
   candidateList: PropTypes.array,
@@ -595,4 +594,4 @@ const ScoreWrapper = styled('div')`
   display: flex;
 `;
 
-export default withTheme(withStyles(styles)(OfficeItemCompressed));
+export default withTheme(withStyles(styles)(BallotSharedOfficeItem));

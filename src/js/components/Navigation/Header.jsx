@@ -21,6 +21,7 @@ const ActivityTidbitDrawer = React.lazy(() => import(/* webpackChunkName: 'Activ
 const HeaderBackTo = React.lazy(() => import(/* webpackChunkName: 'HeaderBackTo' */ './HeaderBackTo'));
 const HeaderBackToBallot = React.lazy(() => import(/* webpackChunkName: 'HeaderBackToBallot' */ './HeaderBackToBallot'));
 const HeaderBackToVoterGuides = React.lazy(() => import(/* webpackChunkName: 'HeaderBackToVoterGuides' */ './HeaderBackToVoterGuides'));
+const HeaderBarModals = React.lazy(() => import(/* webpackChunkName: 'HeaderBarModals' */ './HeaderBarModals'));
 const HowItWorksModal = React.lazy(() => import(/* webpackChunkName: 'HowItWorksModal' */ '../CompleteYourProfile/HowItWorksModal'));
 const OrganizationModal = React.lazy(() => import(/* webpackChunkName: 'OrganizationModal' */ '../VoterGuide/OrganizationModal'));
 const PositionDrawer = React.lazy(() => import(/* webpackChunkName: 'PositionDrawer' */ '../Ballot/PositionDrawer'));
@@ -176,6 +177,7 @@ export default class Header extends Component {
   hideHeader () {
     const path = normalizedHref();
     return (
+      // path.startsWith('/-') || // Shared item
       path.startsWith('/about') ||
       path.startsWith('/findfriends') ||
       path.startsWith('/for-campaigns') ||
@@ -210,7 +212,7 @@ export default class Header extends Component {
       showHowItWorksModal, showOrganizationModal, showPositionDrawer, showVoterPlanModal, showSharedItemModal,
     } = this.state;
     const {
-      settingsMode, valuesMode, voterGuideCreatorMode, voterGuideMode,
+      headerNotVisible, settingsMode, valuesMode, voterGuideCreatorMode, voterGuideMode,
       showBackToBallotHeader, showBackToSettingsDesktop,
       showBackToSettingsMobile, showBackToValues, showBackToVoterGuide, showBackToVoterGuides,
     } = getApplicationViewBooleans(pathname);
@@ -481,18 +483,28 @@ export default class Header extends Component {
       pathname === '/welcomehome')) {
       return null;
     } else {
-      // console.log('Header not in any mode');
       // This handles other pages, like the Ballot display
+      // console.log('Header not in any mode');
       return (
         <div id="app-header">
           <IPhoneSpacer />
           <HeadroomWrapper>
             <div className={pageHeaderClasses} style={cordovaTopHeaderTopMargin()} id="header-container">
-              <Suspense fallback={<></>}>
-                { showBackToBallotHeader ?
-                  <HeaderBackToBallot params={params} /> :
-                  <HeaderBar />}
-              </Suspense>
+              {headerNotVisible ? (
+                <>
+                  <Suspense fallback={<></>}>
+                    <HeaderBarModals />
+                  </Suspense>
+                </>
+              ) : (
+                <>
+                  <Suspense fallback={<></>}>
+                    { showBackToBallotHeader ?
+                      <HeaderBackToBallot params={params} /> :
+                      <HeaderBar />}
+                  </Suspense>
+                </>
+              )}
             </div>
           </HeadroomWrapper>
           {showActivityTidbitDrawer && (

@@ -15,6 +15,7 @@ import {
   ListTitleRow,
   ListWrapper,
   OuterWrapper,
+  ShowMoreWrapper,
   StepNumber,
   StepNumberPlaceholder,
   StepText,
@@ -90,7 +91,7 @@ class ReadyIntroduction extends Component {
           </IntroHeader>
           <ListWrapper>
             <ListMaxWidth>
-              <ListTitleRow>
+              <ListTitleRow onClick={this.contentUnfurledLink}>
                 <Dot><StepNumber>1</StepNumber></Dot>
                 <StepTitle>Be ready to vote</StepTitle>
               </ListTitleRow>
@@ -116,7 +117,7 @@ class ReadyIntroduction extends Component {
                 </ListRow>
               )}
 
-              <ListTitleRow>
+              <ListTitleRow onClick={this.contentUnfurledLink}>
                 <Dot><StepNumber>2</StepNumber></Dot>
                 <StepTitle>Be confident in your choices</StepTitle>
               </ListTitleRow>
@@ -144,7 +145,7 @@ class ReadyIntroduction extends Component {
               )}
 
               {(contentUnfurled || showStep3WhenCompressed) && (
-                <ListTitleRow>
+                <ListTitleRow onClick={this.contentUnfurledLink}>
                   <Dot><StepNumber>3</StepNumber></Dot>
                   <StepTitle>Help friends &amp; amplify your impact</StepTitle>
                 </ListTitleRow>
@@ -172,11 +173,13 @@ class ReadyIntroduction extends Component {
                 </ListRow>
               )}
               {!contentUnfurledOnLoad && (
-                <ShowMoreButtons
-                  showMoreId="showMoreReadyIntroductionCompressed"
-                  showMoreButtonWasClicked={contentUnfurled}
-                  showMoreButtonsLink={this.contentUnfurledLink}
-                />
+                <ShowMoreWrapper>
+                  <ShowMoreButtons
+                    showMoreId="showMoreReadyIntroductionCompressed"
+                    showMoreButtonWasClicked={contentUnfurled}
+                    showMoreButtonsLink={this.contentUnfurledLink}
+                  />
+                </ShowMoreWrapper>
               )}
             </ListMaxWidth>
           </ListWrapper>

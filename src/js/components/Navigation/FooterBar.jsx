@@ -8,6 +8,7 @@ import { isIOS } from '../../common/utils/cordovaUtils';
 import historyPush from '../../common/utils/historyPush';
 import { normalizedHref } from '../../common/utils/hrefUtils';
 import { isCordova } from '../../common/utils/isCordovaOrWebApp';
+import isMobileScreenSize from '../../common/utils/isMobileScreenSize';
 import { renderLog } from '../../common/utils/logging';
 import stringContains from '../../common/utils/stringContains';
 import AppObservableStore, { messageService } from '../../stores/AppObservableStore';
@@ -202,11 +203,11 @@ class FooterBar extends React.Component {
             <BottomNavigationAction
               className="no-outline u-no-break"
               id="howItWorksFooterBar"
-              label="How It Works"
+              label={isMobileScreenSize() ? 'Intro' : 'How It Works'}
               showLabel
               icon={<QuestionMark />}
               sx={bigIcons}
-              style={window.innerWidth > 400 ? { paddingLeft: 20 } : { paddingLeft: 28 }}
+              // style={window.innerWidth > 400 ? { paddingLeft: 20 } : { paddingLeft: 28 }}
             />
           </BottomNavigation>
         </div>
@@ -224,7 +225,7 @@ const styles = () => ({
     fontSize: 10,
     height: 15,
     marginRight: 0,
-    marginTop: 0,
+    marginTop: 5,
     minWidth: 15,
     width: 15,
   },
@@ -233,6 +234,7 @@ const styles = () => ({
 const BadgeCountWrapper = styled('span')(({ theme }) => (`
   display: flex;
   justify-content: center;
+  margin-bottom: 3px;
   padding-top: 0;
   ${theme.breakpoints.down('md')} {
     padding-top: 1px;

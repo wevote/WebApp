@@ -1,9 +1,9 @@
 
 export function returnFriendsModalTitle (shareModalStep) {
   if (shareModalStep === 'ballotShareOptions') {
-    return 'Share Ballot';
+    return 'Share';
   } else if (shareModalStep === 'ballotShareOptionsAllOpinions') {
-    return 'Share Ballot';
+    return 'Share';
   } else if (shareModalStep === 'candidateShareOptions') {
     return 'Share Candidate';
   } else if (shareModalStep === 'candidateShareOptionsAllOpinions') {
@@ -30,9 +30,9 @@ export function returnFriendsModalTitle (shareModalStep) {
 
 export function returnShareModalTitle (shareModalStep) {
   if (shareModalStep === 'ballotShareOptions') {
-    return 'Share Ballot';
+    return 'Share';
   } else if (shareModalStep === 'ballotShareOptionsAllOpinions') {
-    return 'Share Ballot';
+    return 'Share';
   } else if (shareModalStep === 'candidateShareOptions') {
     return 'Share Candidate';
   } else if (shareModalStep === 'candidateShareOptionsAllOpinions') {

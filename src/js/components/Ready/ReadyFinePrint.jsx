@@ -12,6 +12,7 @@ import {
   ListTitleRow,
   ListWrapper,
   OuterWrapper,
+  ShowMoreWrapper,
   StepNumber,
   StepNumberPlaceholder,
   StepText,
@@ -55,7 +56,7 @@ class ReadyFinePrint extends Component {
           </IntroHeader>
           <ListWrapper>
             <ListMaxWidth>
-              <ListTitleRow>
+              <ListTitleRow onClick={this.contentUnfurledLink}>
                 <Dot><StepNumber>a</StepNumber></Dot>
                 <StepTitle>You cannot cast your vote electronically</StepTitle>
               </ListTitleRow>
@@ -66,7 +67,7 @@ class ReadyFinePrint extends Component {
                 </ListRow>
               )}
 
-              <ListTitleRow>
+              <ListTitleRow onClick={this.contentUnfurledLink}>
                 <Dot><StepNumber>b</StepNumber></Dot>
                 <StepTitle>We Vote data comes from official and unofficial sources</StepTitle>
               </ListTitleRow>
@@ -89,7 +90,7 @@ class ReadyFinePrint extends Component {
               )}
 
               {(contentUnfurled || showStep3WhenCompressed) && (
-                <ListTitleRow>
+                <ListTitleRow onClick={this.contentUnfurledLink}>
                   <Dot><StepNumber>c</StepNumber></Dot>
                   <StepTitle>Please make sure you are registered to vote</StepTitle>
                 </ListTitleRow>
@@ -104,7 +105,7 @@ class ReadyFinePrint extends Component {
               )}
 
               {(contentUnfurled || showStep3WhenCompressed) && (
-                <ListTitleRow>
+                <ListTitleRow onClick={this.contentUnfurledLink}>
                   <Dot><StepNumber>d</StepNumber></Dot>
                   <StepTitle>How your data is used &amp; protected</StepTitle>
                 </ListTitleRow>
@@ -122,11 +123,13 @@ class ReadyFinePrint extends Component {
                 </ListRow>
               )}
               {!contentUnfurledOnLoad && (
-                <ShowMoreButtons
-                  showMoreId="showMoreReadyFinePrintCompressed"
-                  showMoreButtonWasClicked={contentUnfurled}
-                  showMoreButtonsLink={this.contentUnfurledLink}
-                />
+                <ShowMoreWrapper>
+                  <ShowMoreButtons
+                    showMoreId="showMoreReadyFinePrintCompressed"
+                    showMoreButtonWasClicked={contentUnfurled}
+                    showMoreButtonsLink={this.contentUnfurledLink}
+                  />
+                </ShowMoreWrapper>
               )}
             </ListMaxWidth>
           </ListWrapper>

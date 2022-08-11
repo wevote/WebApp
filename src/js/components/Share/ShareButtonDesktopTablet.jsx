@@ -155,7 +155,7 @@ class ShareButtonDesktopTablet extends Component {
               classes={{ root: classes.shareIcon }}
             />
           </Icon>
-          <span className="u-no-break">{shareButtonText || 'Share Page'}</span>
+          <span className="u-no-break">{shareButtonText || 'Share'}</span>
         </Button>
       </>
     );

@@ -303,6 +303,7 @@ class VoterEmailAddressEntry extends Component {
 
   removeVoterEmailAddress (emailWeVoteId) {
     VoterActions.removeVoterEmailAddress(emailWeVoteId);
+    return null;
   }
 
   render () {
@@ -535,7 +536,7 @@ class VoterEmailAddressEntry extends Component {
                     {allowRemoveEmail && (
                       <TrashCan
                         className="u-link-color u-cursor--pointer"
-                        onClick={this.removeVoterEmailAddress.bind(this, voterEmailAddressFromList.email_we_vote_id)}
+                        onClick={this.removeVoterEmailAddress(voterEmailAddressFromList.email_we_vote_id)}
                       >
                         <Delete />
                       </TrashCan>

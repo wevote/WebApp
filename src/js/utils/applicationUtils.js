@@ -16,6 +16,7 @@ export function getApplicationViewBooleans (pathname) {
   let contentFullWidthMode = false;
   let extensionPageMode = false;
   let friendsMode = false;
+  let headerNotVisible = false;
   const pathnameLowerCase = pathname.toLowerCase() || '';
   // console.log('getApplicationViewBooleans, pathnameLowerCase:', pathnameLowerCase);
   let readyMode = false;
@@ -26,7 +27,8 @@ export function getApplicationViewBooleans (pathname) {
   let valuesMode = false;
   let voterGuideMode = false;
   let voterGuideCreatorMode = false;
-  if (pathnameLowerCase === '/intro/story' ||
+  if (pathnameLowerCase.startsWith('/-') || // Shared item
+    pathnameLowerCase === '/intro/story' ||
     pathnameLowerCase === '/intro/sample_ballot' ||
     pathnameLowerCase === '/intro/get_started' ||
     pathnameLowerCase === '/more/myballot' ||
@@ -167,6 +169,10 @@ export function getApplicationViewBooleans (pathname) {
     showBackToVoterGuides = true; // DALE 2019-02-19 Soon we should be able to delete the interim voter guides page
   }
 
+  if (pathnameLowerCase.startsWith('/-')) { // Shared item
+    headerNotVisible = true;
+  }
+
   if (pathnameLowerCase.startsWith('/measure') && isCordova()) {
     showBackToBallotHeader = true;
   }
@@ -178,7 +184,8 @@ export function getApplicationViewBooleans (pathname) {
   } else if (extensionPageMode) {
     showFooterBar = false;
   // ///////// EXCLUDE: The following are URLS we want to specifically exclude (because otherwise they will be picked up in a broader pattern in the next branch
-  } else if (stringContains('/b/btdb', pathnameLowerCase) ||
+  } else if (pathnameLowerCase.startsWith('/-') || // Shared item
+      stringContains('/b/btdb', pathnameLowerCase) ||
       (pathnameLowerCase === '/about') ||
       (pathnameLowerCase === '/for-campaigns') ||
       (pathnameLowerCase === '/for-organizations') ||
@@ -259,6 +266,7 @@ export function getApplicationViewBooleans (pathname) {
   // console.log('getApplicationViewBooleans, showBackToBallotHeader: ', showBackToBallotHeader, ' showFooterBar: ', showFooterBar, ', pathnameLowerCase:', pathnameLowerCase, ', showBackToSettingsMobile:', showBackToSettingsMobile);
 
   return {
+    headerNotVisible,
     inTheaterMode,
     contentFullWidthMode,
     extensionPageMode,

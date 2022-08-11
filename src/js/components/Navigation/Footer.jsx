@@ -23,6 +23,9 @@ class Footer extends Component {
     super(props);
     this.state = {
       previousPathname: '',
+      showFooterBar: false,
+      showFooterMain: false,
+      showShareButtonFooter: false,
     };
   }
 
@@ -32,7 +35,7 @@ class Footer extends Component {
     this.appStateSubscription = messageService.getMessage().subscribe((msg) => this.onAppObservableStoreChange(msg));
     window.addEventListener('scroll', this.handleWindowScroll);
     const siteVars = getApplicationViewBooleans(normalizedHref());
-    // console.log('siteVars:', siteVars);
+    // console.log('Footer componentDidMount siteVars:', siteVars);
     const { showFooterBar, showFooterMain, showShareButtonFooter } = siteVars;
     const pathname = normalizedHref();
     this.setState({
@@ -52,7 +55,7 @@ class Footer extends Component {
   onAppObservableStoreChange () {
     // console.log('Footer onAppObservableStoreChange');
     const siteVars = getApplicationViewBooleans(normalizedHref());
-    // console.log('onAppObservableStoreChange siteVars:', siteVars);
+    // console.log('Footer onAppObservableStoreChange siteVars:', siteVars);
     const {
       showFooterBar,
       showFooterMain,
@@ -103,7 +106,7 @@ class Footer extends Component {
 
   render () {
     const { /* doShowHeader, doShowFooter, */ showFooterBar, showFooterMain, showShareButtonFooter } = this.state;
-    // console.log('Footer showShareButtonFooter:', showShareButtonFooter);
+    // console.log('Footer render showFooterMain:', showFooterMain);
     return (
       <FooterWrapper>
         {(showFooterMain) && (

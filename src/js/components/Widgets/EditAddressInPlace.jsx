@@ -118,7 +118,7 @@ class EditAddressInPlace extends Component {
             <Suspense fallback={<></>}>
               <ReadMore
                 textToDisplay={addressIntroduction}
-                numberOfLines={4}
+                numberOfLines={2}
               />
             </Suspense>
           </AddressIntroductionWrapper>

@@ -32,24 +32,26 @@ class AnnotatedSlideshow extends PureComponent {
     // console.log('AnnotatedSlideshow selectedStepIndex:', selectedStepIndex, 'length:', length);
     return (
       <Wrapper inModal={inModal}>
-        <SlideShowTitle inModal={inModal}>{title}</SlideShowTitle>
-        <Description>{description}</Description>
-        <Slide>
-          {!inModal && (
-            <Nav disabled={selectedStepIndex === 0} id="howItWorksLeftArrow" onClick={() => this.handleChangeSlide(false)}>
-              <ArrowLeft classes={{ root: classes.navIconRoot }} />
-            </Nav>
-          )}
-          <Image inModal={inModal} src={normalizedImagePath(imgSrc)} />
-          {!inModal && (
-            <Nav disabled={selectedStepIndex === length - 1} id="howItWorksRightArrow" onClick={() => this.handleChangeSlide(true)}>
-              <ArrowRight classes={{ root: classes.navIconRoot }} />
-            </Nav>
-          )}
-        </Slide>
+        <InnerWrapperAboveButtons>
+          <SlideShowTitle inModal={inModal}>{title}</SlideShowTitle>
+          <Description>{description}</Description>
+          <Slide>
+            {!inModal && (
+              <Nav disabled={selectedStepIndex === 0} id="howItWorksLeftArrow" onClick={() => this.handleChangeSlide(false)}>
+                <ArrowLeft classes={{ root: classes.navIconRoot }} />
+              </Nav>
+            )}
+            <Image inModal={inModal} src={normalizedImagePath(imgSrc)} />
+            {!inModal && (
+              <Nav disabled={selectedStepIndex === length - 1} id="howItWorksRightArrow" onClick={() => this.handleChangeSlide(true)}>
+                <ArrowRight classes={{ root: classes.navIconRoot }} />
+              </Nav>
+            )}
+          </Slide>
+        </InnerWrapperAboveButtons>
         {
           selectedStepIndex < (length - 1) && (
-            <TwoButtonsWrapper>
+            <SlideshowTwoButtonsWrapper>
               {!(selectedStepIndex === 0) && (
                 <BackButtonWrapper>
                   <Button
@@ -76,7 +78,7 @@ class AnnotatedSlideshow extends PureComponent {
                   Next
                 </Button>
               </NextButtonWrapper>
-            </TwoButtonsWrapper>
+            </SlideshowTwoButtonsWrapper>
           )
         }
       </Wrapper>
@@ -120,6 +122,10 @@ const Wrapper = styled('div', {
   }
 `));
 
+const InnerWrapperAboveButtons = styled('div')`
+  min-height: 400px;
+`;
+
 const SlideShowTitle = styled('h3', {
   shouldForwardProp: (prop) => !['inModal'].includes(prop),
 })(({ inModal, theme }) => (`
@@ -132,28 +138,25 @@ const SlideShowTitle = styled('h3', {
   }
 `));
 
-const TwoButtonsWrapper = styled('div')`
-  width: 100%;
-  margin: 12px 0 0;
-  display: flex;
+const SlideshowTwoButtonsWrapper = styled('div')`
   align-items: center;
+  margin: 12px 0 0 0;
+  display: flex;
   justify-content: space-between;
+  width: 100%;
 `;
 
 const BackButtonWrapper = styled('div')`
   margin: 0 12px 0 0;
   width: 100%;
-  @media(min-width: 520px) {
-    margin-right: 8px;
-  }
+  // @media(min-width: 520px) {
+  //   margin-right: 8px;
+  // }
 `;
 
 const NextButtonWrapper = styled('div')`
   margin: 0;
   width: 100%;
-  @media(min-width: 520px) {
-    margin-right: 8px;
-  }
 `;
 
 const Description = styled('p')`
@@ -163,7 +166,8 @@ const Description = styled('p')`
 const Slide = styled('div')`
   display: flex;
   flex-flow: row;
-  margin: 1em 0 3em 0;
+  margin: 1em 0 0 0;
+  // min-height: 275px;
   width: 100%;
   justify-content: space-between;
 `;

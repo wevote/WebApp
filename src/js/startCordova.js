@@ -6,7 +6,7 @@ import { httpLog } from './common/utils/logging';
 import TwitterSignIn from './components/Twitter/TwitterSignIn';
 import webAppConfig from './config';
 import VoterStore from './stores/VoterStore';
-import { dumpObjProps } from './utils/appleSiliconUtils';
+// import { dumpObjProps } from './utils/appleSiliconUtils';
 
 function localPrepareForCordovaKeyboard () {
   prepareForCordovaKeyboard('ballot');

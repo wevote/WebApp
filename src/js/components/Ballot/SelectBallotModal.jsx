@@ -125,7 +125,7 @@ class SelectBallotModal extends Component {
                 />
               </EditAddressInPlaceWrapperMobile>
               {!editingAddress && (
-                <MapChartWrapper>
+                <MapChartWrapper className="u-show-tablet">
                   <Suspense fallback={<></>}>
                     <MapChart onClickFunction={this.mapHandler} />
                   </Suspense>

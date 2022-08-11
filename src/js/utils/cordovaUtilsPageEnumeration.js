@@ -66,7 +66,8 @@ export function pageEnumeration () {
   } else if (stringContains('/voterguide/') && (
     path.includes('btcand') || path.includes('btmeas') || path.includes('/btdb'))) {
     return CordovaPageConstants.voterGuideWild;
-  } else if (path.startsWith('/wevoteintro/')) {
+  } else if (path.startsWith('/-') || // Shared item
+    path.startsWith('/wevoteintro/')) {
     return CordovaPageConstants.wevoteintroWild;
   } else if (path.startsWith('/ballot')) {
     if (showBallotDecisionsTabs()) {

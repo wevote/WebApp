@@ -2,6 +2,7 @@ import { Button } from '@mui/material';
 import styled from 'styled-components';
 import React, { Component } from 'react';
 import { renderLog } from '../../common/utils/logging';
+import webAppConfig from '../../config';
 import AppObservableStore, { messageService } from '../../stores/AppObservableStore';
 import ElectionStore from '../../stores/ElectionStore';
 import VoterGuideStore from '../../stores/VoterGuideStore';
@@ -9,7 +10,10 @@ import VoterStore from '../../stores/VoterStore';
 import VoterGuideChooseElectionModal from '../VoterGuide/VoterGuideChooseElectionModal';
 import SelectVoterGuidesSideBarLink from './SelectVoterGuidesSideBarLink';
 
+const nextReleaseFeaturesEnabled = webAppConfig.ENABLE_NEXT_RELEASE_FEATURES === undefined ? false : webAppConfig.ENABLE_NEXT_RELEASE_FEATURES;
 
+// 2022-08-11 Dale: The section this component takes you to has some broken pages,
+//  and is turned off until we can fix the bugs.
 export default class SelectVoterGuidesSideBar extends Component {
   constructor (props) {
     super(props);
@@ -64,6 +68,13 @@ export default class SelectVoterGuidesSideBar extends Component {
 
   render () {
     renderLog('SelectVoterGuidesSideBar');  // Set LOG_RENDER_EVENTS to log all renders
+
+    // 2022-08-11 Dale: The section this component takes you to has some broken pages,
+    //  and is turned off until we can fix the bugs.
+    if (!nextReleaseFeaturesEnabled) {
+      return null;
+    }
+
     const { showNewVoterGuideModal, voterGuidesOwnedByVoter } = this.state;
     const { location: { pathname } } = window;
     let voterGuideLinksHtml = <span />;
