@@ -1,4 +1,4 @@
-import { Home, HowToVote, People, QuestionAnswer, QuestionMark } from '@mui/icons-material';
+import { Home, HowToVote, Info, People, QuestionAnswer } from '@mui/icons-material';
 import { Badge, BottomNavigation, BottomNavigationAction } from '@mui/material';
 import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
@@ -205,7 +205,7 @@ class FooterBar extends React.Component {
               id="howItWorksFooterBar"
               label={isMobileScreenSize() ? 'Intro' : 'How It Works'}
               showLabel
-              icon={<QuestionMark />}
+              icon={<Info />}
               sx={bigIcons}
               // style={window.innerWidth > 400 ? { paddingLeft: 20 } : { paddingLeft: 28 }}
             />

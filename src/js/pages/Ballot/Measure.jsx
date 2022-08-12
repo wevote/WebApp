@@ -34,6 +34,8 @@ const OpenExternalWebSite = React.lazy(() => import(/* webpackChunkName: 'OpenEx
 const PositionList = React.lazy(() => import(/* webpackChunkName: 'PositionList' */ '../../components/Ballot/PositionList'));
 const ShareButtonDesktopTablet = React.lazy(() => import(/* webpackChunkName: 'ShareButtonDesktopTablet' */ '../../components/Share/ShareButtonDesktopTablet'));
 
+const nextReleaseFeaturesEnabled = webAppConfig.ENABLE_NEXT_RELEASE_FEATURES === undefined ? false : webAppConfig.ENABLE_NEXT_RELEASE_FEATURES;
+
 // The component /pages/VoterGuide/OrganizationVoterGuideMeasure is based on this component
 class Measure extends Component {
   constructor (props) {
@@ -327,11 +329,13 @@ class Measure extends Component {
                   </Suspense>
                 </LeftColumnWrapper>
                 <RightColumnWrapper className="u-show-desktop-tablet">
-                  <MeasureShareWrapper>
-                    <Suspense fallback={<></>}>
-                      <ShareButtonDesktopTablet measureShare />
-                    </Suspense>
-                  </MeasureShareWrapper>
+                  {nextReleaseFeaturesEnabled && (
+                    <MeasureShareWrapper>
+                      <Suspense fallback={<></>}>
+                        <ShareButtonDesktopTablet measureShare />
+                      </Suspense>
+                    </MeasureShareWrapper>
+                  )}
                   {ballotpediaMeasureURL && (
                     <ViewOnBallotpedia externalLinkUrl={ballotpediaMeasureURL} />
                   )}

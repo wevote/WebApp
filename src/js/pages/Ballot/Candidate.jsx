@@ -40,7 +40,7 @@ const OpenExternalWebSite = React.lazy(() => import(/* webpackChunkName: 'OpenEx
 const PositionList = React.lazy(() => import(/* webpackChunkName: 'PositionList' */ '../../components/Ballot/PositionList'));
 const ViewUpcomingBallotButton = React.lazy(() => import(/* webpackChunkName: 'ViewUpcomingBallotButton' */ '../../components/Ready/ViewUpcomingBallotButton'));
 
-// const nextReleaseFeaturesEnabled = webAppConfig.ENABLE_NEXT_RELEASE_FEATURES === undefined ? false : webAppConfig.ENABLE_NEXT_RELEASE_FEATURES;
+const nextReleaseFeaturesEnabled = webAppConfig.ENABLE_NEXT_RELEASE_FEATURES === undefined ? false : webAppConfig.ENABLE_NEXT_RELEASE_FEATURES;
 
 // The component /pages/VoterGuide/OrganizationVoterGuideCandidate is based on this component
 class Candidate extends Component {
@@ -344,9 +344,11 @@ class Candidate extends Component {
               </Suspense>
             </LeftColumnWrapper>
             <RightColumnWrapper className="u-show-desktop-tablet">
-              <CandidateShareWrapper>
-                <ShareButtonDesktopTablet candidateShare />
-              </CandidateShareWrapper>
+              {nextReleaseFeaturesEnabled && (
+                <CandidateShareWrapper>
+                  <ShareButtonDesktopTablet candidateShare />
+                </CandidateShareWrapper>
+              )}
               {candidate.ballotpedia_candidate_url && (
                 <ViewOnBallotpedia externalLinkUrl={candidate.ballotpedia_candidate_url} />
               )}
