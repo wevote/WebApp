@@ -5,8 +5,10 @@ import React from 'react';
 import styled from 'styled-components';
 import VoterActions from '../../actions/VoterActions';
 import historyPush from '../../common/utils/historyPush';
-import VoterStore from '../../stores/VoterStore';
+import { isCordova } from '../../common/utils/isCordovaOrWebApp';
+import isMobileScreenSize from '../../common/utils/isMobileScreenSize';
 import { renderLog } from '../../common/utils/logging';
+import VoterStore from '../../stores/VoterStore';
 
 
 class DeleteYourAccountButton extends React.Component {
@@ -111,7 +113,7 @@ class DeleteYourAccountButton extends React.Component {
               }}
               onClick={this.deleteAllDataConfirmToggle}
             >
-              <div className={leftAlign ? '' : 'u-no-break'}>
+              <div className={leftAlign ? '' : 'u-no-break'} style={isCordova() || isMobileScreenSize() ? { paddingLeft: 11 } : {}}>
                 You can
                 {' '}
                 <span className="u-link-color u-link-color-on-hover">

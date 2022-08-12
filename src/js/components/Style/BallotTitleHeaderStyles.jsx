@@ -45,7 +45,7 @@ const ElectionNameH1 = styled('h1', {
 })(({ centerText, theme }) => (`
   font-size: 32px;
   ${theme.breakpoints.down('sm')} {
-    font-size: 28px;
+    font-size: 26px;
   }
   line-height: 1;
   margin: 0px;

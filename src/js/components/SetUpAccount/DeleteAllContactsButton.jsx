@@ -4,6 +4,8 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import styled from 'styled-components';
 import VoterActions from '../../actions/VoterActions';
+import { isCordova } from '../../common/utils/isCordovaOrWebApp';
+import isMobileScreenSize from '../../common/utils/isMobileScreenSize';
 import { renderLog } from '../../common/utils/logging';
 
 
@@ -72,7 +74,7 @@ class DeleteAllContactsButton extends React.Component {
             }}
             onClick={this.deleteAllContactsConfirmToggle}
           >
-            <div className={leftAlign ? '' : 'u-no-break'}>
+            <div className={leftAlign ? '' : 'u-no-break'} style={isCordova() || isMobileScreenSize() ? { paddingLeft: 15 } : {}}>
               You can
               {' '}
               <span className="u-link-color u-link-color-on-hover">

@@ -425,6 +425,7 @@ const Title = styled('div')`
   margin: 0;
   margin-top: 2px;
   text-align: left;
+  padding-left: 16px;
 `;
 
 export default withTheme(withStyles(styles)(PositionStatementModal));
