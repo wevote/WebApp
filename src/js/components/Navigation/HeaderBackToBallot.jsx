@@ -16,6 +16,7 @@ import isMobileScreenSize from '../../common/utils/isMobileScreenSize';
 import { renderLog } from '../../common/utils/logging';
 import stringContains from '../../common/utils/stringContains';
 import voterPhoto from '../../common/utils/voterPhoto';
+import webAppConfig from '../../config';
 import AppObservableStore, { messageService } from '../../stores/AppObservableStore';
 import CandidateStore from '../../stores/CandidateStore';
 import MeasureStore from '../../stores/MeasureStore';
@@ -34,6 +35,7 @@ const ShareModal = React.lazy(() => import(/* webpackChunkName: 'ShareModal' */ 
 const SignInModal = React.lazy(() => import(/* webpackChunkName: 'SignInModal' */ '../SignIn/SignInModal'));
 
 const appleSiliconDebug = false;
+const nextReleaseFeaturesEnabled = webAppConfig.ENABLE_NEXT_RELEASE_FEATURES === undefined ? false : webAppConfig.ENABLE_NEXT_RELEASE_FEATURES;
 
 
 class HeaderBackToBallot extends Component {
@@ -795,7 +797,7 @@ class HeaderBackToBallot extends Component {
             <OfficeOrMeasureTitle>{officeName || measureName}</OfficeOrMeasureTitle>
           </TopRowTwoLeftContainer>
           )}
-          {shareButtonInHeader && (
+          {(nextReleaseFeaturesEnabled && shareButtonInHeader) && (
           <TopRowTwoRightContainer>
             <OfficeShareWrapper className="u-show-desktop-tablet">
               <ShareButtonDesktopTablet officeShare />

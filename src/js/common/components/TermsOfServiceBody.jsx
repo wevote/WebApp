@@ -13,7 +13,7 @@ export default class TermsOfServiceBody extends Component {
     return (
       <div>
         <ContentTitle>Terms of Service</ContentTitle>
-        <p><strong>Last updated: November 25th, 2021</strong></p>
+        <p><strong>Last updated: August 12th, 2022</strong></p>
 
         <h2>Overview</h2>
         <p>This website (also packaged in mobile apps) is operated by We Vote USA. Throughout the site, the terms “We Vote”, “we”, “us” and “our” refer to We Vote USA. We Vote USA offers this website, including all information, tools and services available from this site to you, the user, conditioned upon your acceptance of all terms, conditions, policies and notices stated here.</p>

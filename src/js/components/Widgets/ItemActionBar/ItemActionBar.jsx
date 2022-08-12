@@ -298,7 +298,7 @@ class ItemActionBar extends PureComponent {
         variant={this.isSupportCalculated() ? 'contained' : 'outlined'}
         color="primary"
         onClick={() => this.supportItem()}
-        classes={{ root: classes.buttonRoot, outlinedPrimary: classes.buttonOutlinedPrimary }}
+        classes={{ root: classes.buttonMeasureRoot, outlinedPrimary: classes.buttonOutlinedPrimary }}
       >
         <Done classes={{ root: classes.buttonIconDone }} />
         { this.isSupportCalculated() ? (
@@ -343,7 +343,7 @@ class ItemActionBar extends PureComponent {
         variant={this.isOpposeCalculated() ? 'contained' : 'outlined'}
         color="primary"
         onClick={() => this.opposeItem()}
-        classes={{ root: classes.buttonRoot, outlinedPrimary: classes.buttonOutlinedPrimary }}
+        classes={{ root: classes.buttonMeasureRoot, outlinedPrimary: classes.buttonOutlinedPrimary }}
       >
         <NotInterested classes={{ root: classes.buttonIconNotInterested }} />
         { this.isOpposeCalculated() ? (
@@ -816,6 +816,17 @@ const styles = (theme) => ({
   dialogPaper: {
     minHeight: 282,
     margin: '0 8px',
+  },
+  buttonMeasureRoot: {
+    padding: 4,
+    width: 130,
+    height: 32,
+    [theme.breakpoints.down('sm')]: {
+      width: 'fit-content',
+      minWidth: 80,
+      height: 28,
+      padding: '0 8px',
+    },
   },
   buttonRoot: {
     padding: 4,

@@ -15,7 +15,7 @@ export default class PrivacyBody extends Component {
     return (
       <div>
         <ContentTitle>WeVote.US Privacy Policy</ContentTitle>
-        <p><strong>Last updated: June 10th, 2022</strong></p>
+        <p><strong>Last updated: August 12th, 2022</strong></p>
         <p>
           <span>We Vote USA has created this privacy policy to explain how We Vote (or “we”) uses information that we collect from you while you visit We Vote, currently located at </span>
           <span>

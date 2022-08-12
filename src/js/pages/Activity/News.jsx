@@ -453,9 +453,6 @@ class News extends Component {
                 </div>
                 <div className="col-md-4 d-none d-md-block" style={unsetSomeRowStylesIfCordovaMdBlock}>
                   {voterIsSignedIn && (
-                    <SuggestedFriendsPreview inSideColumn />
-                  )}
-                  {voterIsSignedIn && (
                     <div className="card">
                       <div className="card-main" style={unsetMarginsIfCordova}>
                         <SectionTitle>
@@ -467,6 +464,9 @@ class News extends Component {
                         <AddFriendsByEmail inSideColumn uniqueExternalId="sidebar" />
                       </div>
                     </div>
+                  )}
+                  {voterIsSignedIn && (
+                    <SuggestedFriendsPreview inSideColumn />
                   )}
                   <div className="card">
                     <div className="card-main" style={unsetMarginsIfCordova}>
