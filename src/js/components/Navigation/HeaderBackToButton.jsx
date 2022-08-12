@@ -1,12 +1,11 @@
 import { ArrowBack } from '@mui/icons-material';
 import { Button } from '@mui/material';
-import styled from 'styled-components';
 import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
+import styled from 'styled-components';
 import historyPush from '../../common/utils/historyPush';
 import { isCordova } from '../../common/utils/isCordovaOrWebApp';
-import isMobileScreenSize from '../../common/utils/isMobileScreenSize';
 import { renderLog } from '../../common/utils/logging';
 import shortenText from '../../common/utils/shortenText';
 
@@ -23,7 +22,7 @@ class HeaderBackToButton extends Component {
         className={`${className}`}
         id="backToLinkTabHeaderBackToButton"
         onClick={() => historyPush(backToLink)}
-        style={leftAligned ? { paddingLeft: `${isMobileScreenSize() || isCordova() ? '20px' : ''}`, marginLeft: '0 !important', minWidth: 24, width: 24 } : { paddingLeft: `${isMobileScreenSize() || isCordova() ? '20px' : ''}` }}
+        style={leftAligned ? { marginLeft: '0 !important', minWidth: 24, width: 24 } : {}}
       >
         <ArrowBack className="button-icon" />
         <span className="u-show-desktop-tablet u-no-break">{shortenText(backToLinkText, 60)}</span>
