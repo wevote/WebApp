@@ -1,11 +1,11 @@
 import { ArrowBack, ArrowBackIos } from '@mui/icons-material';
 import { Button, Dialog, OutlinedInput } from '@mui/material';
-import styled from 'styled-components';
 import withStyles from '@mui/styles/withStyles';
 import withTheme from '@mui/styles/withTheme';
 import clsx from 'clsx';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
+import styled from 'styled-components';
 import VoterActions from '../../actions/VoterActions';
 import { hasIPhoneNotch, isIOS, isIPhone4in } from '../../common/utils/cordovaUtils';
 import { isCordova, isWebApp } from '../../common/utils/isCordovaOrWebApp';
@@ -63,6 +63,7 @@ class SettingsVerifySecretCode extends Component {
     });
     const delayBeforeClearingVerificationStatus = 200;
     this.clearSecretCodeVerificationStatusTimer = setTimeout(() => {
+      // console.log('SettingsVerifySecretCode -- VoterActions.clearSecretCodeVerificationStatus()');
       VoterActions.clearSecretCodeVerificationStatus();
     }, delayBeforeClearingVerificationStatus);
 
@@ -96,7 +97,7 @@ class SettingsVerifySecretCode extends Component {
   componentWillUnmount () {
     // console.log('SettingsVerifySecretCode componentWillUnmount');
     if (isCordova()) {
-      $('#textOrEmailEntryDialog').css('display', 'unset');  // Reveal the entry dialog
+      this.closeVerifyModalLocal();
     }
     this.voterStoreListener.remove();
     if (this.closeVerifyModalLocalTimer) {
@@ -185,7 +186,7 @@ class SettingsVerifySecretCode extends Component {
     const { incorrectSecretCodeEntered, numberOfTriesRemaining, secretCodeVerified, voterMustRequestNewCode, voterSecretCodeRequestsLocked } = secretCodeVerificationStatus;
     // console.log(`onVoterStoreChange secretCodeVerified: ${secretCodeVerified}`);
     if (secretCodeVerified) {
-      // console.log('onVoterStoreChange secretCodeVerified: yes');
+      // console.log('SettingsVerifySecretCode -- onVoterStoreChange secretCodeVerified: yes');
       this.closeVerifyModalLocal();
     } else {
       let errorMessageToDisplay = '';

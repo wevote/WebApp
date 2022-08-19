@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import FriendActions from '../../actions/FriendActions';
+import { isCordova } from '../../common/utils/isCordovaOrWebApp';
 import FriendStore from '../../stores/FriendStore';
 import apiCalming from '../../common/utils/apiCalming';
 import historyPush from '../../common/utils/historyPush';
@@ -60,28 +61,31 @@ export default class SuggestedFriendsPreview extends Component {
     }
 
     const suggestedFriendListLimited = suggestedFriendList.slice(0, friendsToShowMax);
+    const unsetMarginsIfCordova = isCordova() ? { margin: 'unset' } : {};
 
     return (!!(suggestedFriendListLimited && suggestedFriendListLimited.length > 0) && (
-      <SuggestedFriendsPreviewWrapper>
-        <section>
-          <div>
-            <SectionTitle className="u-cursor--pointer" onClick={this.goToSuggestedFriends}>
-              People You May Know
-            </SectionTitle>
-            <SectionDescription>
-              Add friends you feel comfortable talking politics with.
-            </SectionDescription>
+      <div className="card-main" style={unsetMarginsIfCordova}>
+        <SuggestedFriendsPreviewWrapper>
+          <section>
             <div>
-              <SuggestedFriendList
-                friendList={suggestedFriendListLimited}
-                inSideColumn={inSideColumn}
-                previewMode
-              />
-              {suggestedFriendList.length > friendsToShowMax && <Link to="/friends/suggested">See All</Link>}
+              <SectionTitle className="u-cursor--pointer" onClick={this.goToSuggestedFriends}>
+                People You May Know
+              </SectionTitle>
+              <SectionDescription>
+                Add friends you feel comfortable talking politics with.
+              </SectionDescription>
+              <div>
+                <SuggestedFriendList
+                  friendList={suggestedFriendListLimited}
+                  inSideColumn={inSideColumn}
+                  previewMode
+                />
+                {suggestedFriendList.length > friendsToShowMax && <Link to="/friends/suggested">See All</Link>}
+              </div>
             </div>
-          </div>
-        </section>
-      </SuggestedFriendsPreviewWrapper>
+          </section>
+        </SuggestedFriendsPreviewWrapper>
+      </div>
     ));
   }
 }

@@ -1,4 +1,4 @@
-import { hasIPhoneNotch, isIOSAppOnMac, isIPad } from '../common/utils/cordovaUtils';
+import { hasIPhoneNotch, isAndroid, isAndroidSizeMD, isAndroidSizeWide, isAndroidSizeXL, isIOSAppOnMac, isIPad } from '../common/utils/cordovaUtils';
 import { normalizedHref, normalizedHrefPage } from '../common/utils/hrefUtils';
 import { isWebApp } from '../common/utils/isCordovaOrWebApp';
 import AppObservableStore from '../stores/AppObservableStore';
@@ -119,6 +119,21 @@ export function cordovaComplexHeaderPageContainerTopOffset () {
     }
   }
 
+  if (isAndroid()) {
+    hrHeight = headroomWrapper.height();
+    if (isAndroidSizeMD() || isAndroidSizeXL() || isAndroidSizeWide()) {
+      try {
+        const rowBallotBody = $('div[class*=\'row ballot__body\']');
+        if (rowBallotBody.length) {
+          const padDigits = rowBallotBody.css('padding-top').replace('px', '');
+          hrHeight -= parseInt(padDigits);
+        }
+      } catch (e) {
+        console.error('It looks like the layout of the ballot has changed');
+      }
+    }
+  }
+
   const dhcHeight = dualHeaderCont.height() || 0;   // No dualHeaderCont for Friends when signed in
   const topOffsetValue = hrHeight + dhcHeight;
 
@@ -166,7 +181,9 @@ export function cordovaSimplePageContainerTopOffset (isSignedIn) {
 
       let height = headroomWrapper.height();
       if (!height) {
-        const appBar = $('#backToBallotAppBar');
+        let                 appBar = $('#headerBackToBallotAppBar');
+        if (!appBar.length) appBar = $('#headerBackToAppBar');
+        if (!appBar.length) appBar = $('#headerBackToVoterGuidesAppBar');
         if (appBar.length) {
           height = appBar.height();
         }
@@ -174,17 +191,21 @@ export function cordovaSimplePageContainerTopOffset (isSignedIn) {
 
       debugLogging(`cordovaSimplePageContainerTopOffset isSignedIn: ${isSignedIn}, HeadRoomWrapper height: ${height}, page: ${getPageKey()}`);
 
+      const pageContentContainer = $('div[class*=\'PageContentContainer\']');
+      if (isAndroid() && AppObservableStore.getShowTwitterLandingPage()) {
+        pageContentContainer.css('padding-top', `${height}px`);
+      }
+
       if (height !== undefined && height > 0 && getCordovaSimplePageContainerTopOffsetValue() === 0) {
         const page = getPageKey();
         const superSimplePage = (AppObservableStore.getShowTwitterLandingPage() ||
-          (['measure', 'more/faq'].includes(page) && !isIPad() && !isIOSAppOnMac()));
-        const decorativeUiWhitespaceSimple = superSimplePage ? -30 : 20;
+          (['measure', 'more/faq'].includes(page) && !isIPad() && !isIOSAppOnMac() && !isAndroid()));
+        const decorativeUiWhitespaceSimple = superSimplePage && !isAndroid() ? -30 : 20;
         const topOffsetValue = height + decorativeUiWhitespaceSimple + notchHeight;
         setCordovaSimplePageContainerTopOffsetValue(topOffsetValue);
 
         debugLogging(`cordovaSimplePageContainerTopOffset setting padding-top in PageContentContainer: ${topOffsetValue}`);
 
-        const pageContentContainer = $('div[class*=\'PageContentContainer\']');
         pageContentContainer.css('padding-top', `${topOffsetValue}px`);
       } else {
         debugLogging('cordovaSimplePageContainerTopOffset getCordovaSimplePageContainerTopOffsetValue > 0 or height === 0');

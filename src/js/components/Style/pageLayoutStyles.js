@@ -1,6 +1,6 @@
 import { AppBar } from '@mui/material';
 import styled from 'styled-components';
-import { hasIPhoneNotch, isAndroidSizeFold, isAndroidSizeMD, isAndroidSizeXL, isIOSAppOnMac, isIPad, isIPad11in, isIPhone4p7in, isIPhone5p5inEarly, isIPhone5p5inMini, isIPhone6p1in, isIPhone6p5in } from '../../common/utils/cordovaUtils';
+import { hasIPhoneNotch, isAndroid, isAndroidSizeMD, isAndroidSizeWide, isAndroidSizeXL, isIOSAppOnMac, isIPad, isIPad11in, isIPhone4p7in, isIPhone5p5inEarly, isIPhone5p5inMini, isIPhone6p1in, isIPhone6p5in } from '../../common/utils/cordovaUtils';
 import { normalizedHrefPage } from '../../common/utils/hrefUtils';
 import { isCordova, isWebApp } from '../../common/utils/isCordovaOrWebApp';
 import isMobileScreenSize from '../../common/utils/isMobileScreenSize';
@@ -17,9 +17,9 @@ export const IOSNotchedSpacer = styled('div')`
   height: ${() => ((isIPhone5p5inMini()) ? '40px' : '36px')};
   top: 0;
   position: fixed;
-  background: #2e3c5d;
+  //background: white;
   width: 100%;
-  opacity: 1;
+  opacity: 0;
   z-index: 1300;
 `;
 
@@ -31,9 +31,9 @@ export const IOSNoNotchSpacer = styled('div')`
   }};
   top: ${() => ((isIPhone4p7in() ? '-1px' : '0px'))};
   position: fixed;
-  background: #2e3c5d;
+  //background: white;
   width: 100%;
-  opacity: 1;
+  opacity: 0;
   z-index: 3;
 `;
 
@@ -174,8 +174,8 @@ export const TopRowOneRightContainer = styled('div')`
   // padding-right: 0px;
   // {() => (((isMobileScreenSize() && !isIPhone5p5inMini()) || isIPadGiantSize()) ? '15px' : '0px')}; // Can this always be 0px?
   padding-right: ${() => {
-    // if (isAndroidSizeFold()) return '55px';
-    if (isAndroidSizeMD() || isAndroidSizeXL()) return '15px';
+    // if (isAndroidSizeWide()) return '55px';
+    if (isAndroidSizeMD() || isAndroidSizeXL() || isAndroidSizeWide()) return '15px';
     return '0px';
   }};
   display: flex;
@@ -194,7 +194,7 @@ export const TopRowTwoLeftContainer = styled('div')`
   grid-column: ${() => (['measure', 'friends', 'office'].includes(normalizedHrefPage()) ? '1 / 4' : '1 / 3')};
   padding-bottom: ${() => {
     if (normalizedHrefPage() === 'measure') {
-      return '28px';
+      return isAndroid() ? '0px' : '28px';
     }
     return '7px';
   }};
@@ -214,7 +214,7 @@ export const TopRowTwoRightContainer = styled('div')`
         gridColumn: '3 /3',
         paddingRight: '13px',
       };
-    } else if (isAndroidSizeXL() || isAndroidSizeFold()) {
+    } else if (isAndroidSizeXL() || isAndroidSizeWide()) {
       return {
         gridRow: '2 / 2',
         gridColumn: '3 /3',

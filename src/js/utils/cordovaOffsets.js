@@ -410,7 +410,12 @@ export function cordovaFriendsWrapper () {
       };
     }
   }
-
+  if (isAndroid()) {
+    return {
+      paddingTop: '10px',
+      paddingBottom: '10px',
+    };
+  }
   // Default for all other devices, including desktop and mobile browsers
   return {
     paddingTop: '60px',

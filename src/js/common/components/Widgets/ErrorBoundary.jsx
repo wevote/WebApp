@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { standardBoxShadow } from '../../../components/Style/pageLayoutStyles';
-import { isAndroidSizeFold } from '../../utils/cordovaUtils';
+import { isAndroidSizeWide } from '../../utils/cordovaUtils';
 import { isWebApp } from '../../utils/isCordovaOrWebApp';
 
 class ErrorBoundary extends Component {
@@ -27,7 +27,7 @@ class ErrorBoundary extends Component {
       // You could render any custom fallback UI here
       return (
         <div style={{
-          margin: isAndroidSizeFold() ? '50px' : '10px',
+          margin: isAndroidSizeWide() ? '50px' : '10px',
           padding: '10px',
           top: '60px',
           position: 'fixed',

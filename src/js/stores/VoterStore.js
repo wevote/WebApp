@@ -496,6 +496,24 @@ class VoterStore extends ReduceStore {
     return !!(nameExists && photoExists);
   }
 
+  // Function that is the equivalent of the dispatchable action, to avoid "Cannot dispatch in the middle of a dispatch" error
+  clearEmailAddressStatus () {
+    // console.log('VoterStore clearEmailAddressStatus function');
+    this.getState().emailAddressStatus = {};
+  }
+
+  // Function that is the equivalent of the dispatchable action, to avoid "Cannot dispatch in the middle of a dispatch" error
+  clearSecretCodeVerificationStatus () {
+    // console.log('VoterStore clearSecretCodeVerificationStatus function');
+    this.getState().secretCodeVerificationStatus = {
+      incorrectSecretCodeEntered: false,
+      numberOfTriesRemaining: 5,
+      secretCodeVerified: false,
+      voterMustRequestNewCode: false,
+      voterSecretCodeRequestsLocked: false,
+    };
+  }
+
   reduce (state, action) {
     let facebookPhotoRetrieveLoopCount;
     let address;

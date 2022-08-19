@@ -44,6 +44,7 @@ export default function EditCandidateForExtension ()  {
     VoterGuidePossibilityActions.voterGuidePossibilityRetrieve(endorsementPageUrl);
     possibilityListener = VoterGuidePossibilityStore.addListener(handlePossibilityRetrieve);
     return () => possibilityListener.remove;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (

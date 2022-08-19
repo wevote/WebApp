@@ -15,19 +15,11 @@ import AppObservableStore from '../../stores/AppObservableStore';
 import BallotStore from '../../stores/BallotStore';
 import MeasureStore from '../../stores/MeasureStore';
 import { stripHtmlFromString } from '../../utils/textFormat';
-import {
-  OverflowContainer,
-  PositionRowListEmptyWrapper,
-  PositionRowListInnerWrapper,
-  PositionRowListOneWrapper,
-  PositionRowListOuterWrapper,
-  PositionRowListScoreColumn,
-  PositionRowListScoreHeader,
-  PositionRowListScoreSpacer,
-} from '../Style/PositionRowListStyles';
+import { constrainedTextMobileStyles } from '../Style/BallotStyles';
+import { OverflowContainer, PositionRowListEmptyWrapper, PositionRowListInnerWrapper, PositionRowListOneWrapper, PositionRowListOuterWrapper, PositionRowListScoreColumn, PositionRowListScoreHeader, PositionRowListScoreSpacer } from '../Style/PositionRowListStyles';
 import InfoCircleIcon from '../Widgets/InfoCircleIcon';
-import PositionRowList from './PositionRowList';
 import PositionRowEmpty from './PositionRowEmpty';
+import PositionRowList from './PositionRowList';
 
 const BallotItemSupportOpposeScoreDisplay = React.lazy(() => import(/* webpackChunkName: 'BallotItemSupportOpposeScoreDisplay' */ '../Widgets/ScoreDisplay/BallotItemSupportOpposeScoreDisplay'));
 const DelayedLoad = React.lazy(() => import(/* webpackChunkName: 'DelayedLoad' */ '../../common/components/Widgets/DelayedLoad'));
@@ -497,6 +489,7 @@ const MeasureText = styled('div')`
   color: #777;
   min-width: 320px;
   width: 100%;
+  ${constrainedTextMobileStyles}
 `;
 
 const MeasureTitle = styled('h1')`
@@ -524,14 +517,10 @@ const ScoreWrapper = styled('div')`
   display: flex;
 `;
 
-const SubTitle = styled('h3')(({ theme }) => (`
+const SubTitle = styled('h3')`
   font-size: 20px;
-  // font-weight: 300;
-  // color: #555;
   margin-top: 9px;
-  // ${theme.breakpoints.down('lg')} {
-  //   font-size: 13px;
-  // }
-`));
+  ${constrainedTextMobileStyles}
+`;
 
 export default withTheme(withStyles(styles)(MeasureItemCompressed));

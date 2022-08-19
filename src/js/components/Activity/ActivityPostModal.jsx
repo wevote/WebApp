@@ -6,7 +6,7 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import styled from 'styled-components';
 import ActivityActions from '../../actions/ActivityActions';
-import { hasIPhoneNotch, isAndroid, isAndroidSizeLG, isAndroidSizeMD, isAndroidTablet, prepareForCordovaKeyboard, restoreStylesAfterCordovaKeyboard } from '../../common/utils/cordovaUtils';
+import { hasIPhoneNotch, isAndroid, isAndroidSizeLG, isAndroidSizeMD, isAndroidSizeWide, prepareForCordovaKeyboard, restoreStylesAfterCordovaKeyboard } from '../../common/utils/cordovaUtils';
 import { renderLog } from '../../common/utils/logging';
 import ActivityStore from '../../stores/ActivityStore';
 import VoterStore from '../../stores/VoterStore';
@@ -165,7 +165,7 @@ class ActivityPostModal extends Component {
                   alignItems: 'flex-start',
                   border: '1px solid #e8e8e8',
                   borderRadius: 3,
-                  padding: isAndroidTablet() ? '12px 12px 0 12px' : '12px',
+                  padding: isAndroidSizeWide() ? '12px 12px 0 12px' : '12px',
                   marginBottom: 0,
                 }}
               >

@@ -15,7 +15,7 @@ import BallotStore from '../../stores/BallotStore';
 import CandidateStore from '../../stores/CandidateStore';
 import SupportStore from '../../stores/SupportStore';
 import { sortCandidateList } from '../../utils/positionFunctions';
-import { Candidate, CandidateBottomRow, CandidateContainer, CandidateInfo, CandidateName, CandidateParty, CandidateWrapper, CandidateTopRow, OfficeNameH2, OfficeItemCompressedWrapper } from '../Style/BallotStyles';
+import { Candidate, CandidateBottomRow, CandidateContainer, CandidateInfo, CandidateNameH4, CandidateParty, CandidateWrapper, CandidateTopRow, OfficeNameH2, OfficeItemCompressedWrapper } from '../Style/BallotStyles';
 import { OverflowContainer, PositionRowListEmptyWrapper, PositionRowListInnerWrapper, PositionRowListOneWrapper, PositionRowListOuterWrapper, PositionRowListScoreColumn, PositionRowListScoreHeader, PositionRowListScoreSpacer } from '../Style/PositionRowListStyles';
 import InfoCircleIcon from '../Widgets/InfoCircleIcon';
 import signInModalGlobalState from '../Widgets/signInModalGlobalState';
@@ -319,9 +319,9 @@ class BallotSharedOfficeItem extends Component {
                           </Suspense>
                           {/* Candidate Name */}
                           <div>
-                            <CandidateName>
+                            <CandidateNameH4>
                               {oneCandidate.ballot_item_display_name}
-                            </CandidateName>
+                            </CandidateNameH4>
                             <CandidateParty>
                               {candidatePartyText}
                             </CandidateParty>

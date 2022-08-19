@@ -93,7 +93,7 @@ class WelcomeFooter extends Component {
               <Suspense fallback={<></>}>
                 <OpenExternalWebSite
                   linkIdAttribute="footerLinkJoinOurNewsletter"
-                  url="http://eepurl.com/cx_frP"
+                  url="https://eepurl.com/cx_frP"
                   target="_blank"
                   body={(
                     <span>Join Our Newsletter</span>

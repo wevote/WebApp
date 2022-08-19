@@ -1,11 +1,11 @@
 import { Delete, Phone } from '@mui/icons-material';
 import { Button, InputBase, Paper } from '@mui/material';
-import styled from 'styled-components';
 import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
 import Alert from 'react-bootstrap/Alert';
 import { isValidPhoneNumber } from 'react-phone-number-input';
+import styled from 'styled-components';
 import VoterActions from '../../actions/VoterActions';
 import LoadingWheel from '../../common/components/Widgets/LoadingWheel';
 import { isCordova, isWebApp } from '../../common/utils/isCordovaOrWebApp';
@@ -13,6 +13,7 @@ import isMobileScreenSize from '../../common/utils/isMobileScreenSize';
 import { renderLog } from '../../common/utils/logging';
 import VoterStore from '../../stores/VoterStore';
 import { FirstRowPhoneOrEmail, SecondRowPhoneOrEmail, TrashCan } from '../Style/pageLayoutStyles';
+import { ButtonContainerHorizontal } from '../Welcome/sectionStyles';
 import signInModalGlobalState from '../Widgets/signInModalGlobalState';
 import SettingsVerifySecretCode from './SettingsVerifySecretCode';
 
@@ -445,7 +446,7 @@ class VoterPhoneVerificationEntry extends Component {
                   Cancel
                 </Button>
               </CancelButtonContainer>
-              <ButtonContainer>
+              <ButtonContainerHorizontal>
                 <Button
                   // className={classes.button}
                   color="primary"
@@ -466,7 +467,7 @@ class VoterPhoneVerificationEntry extends Component {
                     </>
                   )}
                 </Button>
-              </ButtonContainer>
+              </ButtonContainerHorizontal>
             </ButtonWrapper>
           )}
         </form>
@@ -640,11 +641,6 @@ const styles = {
     width: '100%',
   },
 };
-
-const ButtonContainer = styled('div')`
-  width: fit-content;
-  margin-left: 8px;
-`;
 
 const ButtonsHiddenSpacer = styled('div')`
   height: 44px;

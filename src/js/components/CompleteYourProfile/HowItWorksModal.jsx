@@ -1,11 +1,12 @@
+import { Close } from '@mui/icons-material';
 import { Dialog, DialogContent, IconButton } from '@mui/material';
 import withStyles from '@mui/styles/withStyles';
 import withTheme from '@mui/styles/withTheme';
-import { Close } from '@mui/icons-material';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
 import styled from 'styled-components';
 import { hasIPhoneNotch } from '../../common/utils/cordovaUtils';
+import isMobileScreenSize from '../../common/utils/isMobileScreenSize';
 import { renderLog } from '../../common/utils/logging';
 
 const HowItWorks = React.lazy(() => import(/* webpackChunkName: 'HowItWorks' */ '../../pages/HowItWorks'));
@@ -34,6 +35,7 @@ class HowItWorksModal extends Component {
         classes={{ paper: classes.dialogPaper }}
         open={this.props.show}
         onClose={() => { this.props.toggleFunction(pathname); }}
+        sx={isMobileScreenSize() ? { bottom: 'unset' } : {}}
       >
         <ModalTitleArea>
           <div>

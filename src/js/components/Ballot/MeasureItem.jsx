@@ -117,30 +117,32 @@ class MeasureItem extends Component {
               {ballotItemDisplayName}
             </Title>
             {measureUrl && (
-              <ExternalWebSiteWrapper className="u-show-desktop">
-                <Suspense fallback={<></>}>
-                  <OpenExternalWebSite
-                    linkIdAttribute="measureUrlDesktop"
-                    url={measureUrl}
-                    target="_blank"
-                    className="u-gray-mid"
-                    body={(
-                      <span>
-                        measure website
-                        {' '}
-                        <Launch
-                          style={{
-                            height: 14,
-                            marginLeft: 2,
-                            marginTop: '-3px',
-                            width: 14,
-                          }}
-                        />
-                      </span>
-                    )}
-                  />
-                </Suspense>
-              </ExternalWebSiteWrapper>
+              <div className="noClickZone" style={{ padding: '5px 0' }}>
+                <ExternalWebSiteWrapper className="u-show-desktop">
+                  <Suspense fallback={<></>}>
+                    <OpenExternalWebSite
+                      linkIdAttribute="measureUrlDesktop"
+                      url={measureUrl}
+                      target="_blank"
+                      className="u-gray-mid"
+                      body={(
+                        <span>
+                          measure website
+                          {' '}
+                          <Launch
+                            style={{
+                              height: 14,
+                              marginLeft: 2,
+                              marginTop: '-3px',
+                              width: 14,
+                            }}
+                          />
+                        </span>
+                      )}
+                    />
+                  </Suspense>
+                </ExternalWebSiteWrapper>
+              </div>
             )}
           </MeasureInfoWrapper>
           <BallotItemSupportOpposeCountDisplayWrapper isClickable={!blockOnClickShowOrganizationModalWithPositions}>

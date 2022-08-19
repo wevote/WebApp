@@ -8,7 +8,7 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import BallotActions from '../../actions/BallotActions';
 import OrganizationActions from '../../actions/OrganizationActions';
-import { blurTextFieldAndroid, focusTextFieldAndroid, isAndroidSizeFold } from '../../common/utils/cordovaUtils';
+import { blurTextFieldAndroid, focusTextFieldAndroid, isAndroidSizeWide } from '../../common/utils/cordovaUtils';
 import BallotStore from '../../stores/BallotStore';
 import OrganizationStore from '../../stores/OrganizationStore';
 import ballotSearchPriority from '../../utils/ballotSearchPriority';
@@ -206,7 +206,7 @@ class FilterBaseSearch extends Component {
     const searchIconClasses = searchTextLarge ? classes.iconRootLarge : classes.iconRoot;
     if (isSearching) {
       inputBaseInputClasses = searchTextLarge ? classes.inputSearchingLarge : classes.inputSearching;
-      inputBaseInputClasses = isAndroidSizeFold() ? classes.inputDefaultFold : inputBaseInputClasses;
+      inputBaseInputClasses = isAndroidSizeWide() ? classes.inputDefaultFold : inputBaseInputClasses;
     } else if (alwaysOpen) {
       inputBaseInputClasses = searchTextLarge ? classes.inputDefaultLarge : classes.inputDefault;
     } else {

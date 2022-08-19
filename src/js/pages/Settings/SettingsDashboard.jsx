@@ -6,7 +6,7 @@ import OrganizationActions from '../../actions/OrganizationActions';
 import VoterActions from '../../actions/VoterActions';
 import VoterGuideActions from '../../actions/VoterGuideActions';
 import apiCalming from '../../common/utils/apiCalming';
-import { isCordovaWide } from '../../common/utils/cordovaUtils';
+import { isAndroidSizeWide, isCordovaWide } from '../../common/utils/cordovaUtils';
 import { isWebApp } from '../../common/utils/isCordovaOrWebApp';
 import { renderLog } from '../../common/utils/logging';
 import SelectVoterGuidesSideBar from '../../components/Navigation/SelectVoterGuidesSideBar';
@@ -272,7 +272,7 @@ export default class SettingsDashboard extends Component {
         <div className={innerDivClass}>
           {/* Desktop left navigation + Settings content.
             WebApp only, since the dashboard doesn't go well with the HamburgerMenu on iPad */}
-          { (isWebApp() || isCordovaWide()) && (
+          { (isWebApp() || isCordovaWide() || isAndroidSizeWide()) && (
           <div className={isWebApp() ? 'd-none d-md-block' : ''}>
             <div className="container-fluid">
               <div className="row">
@@ -305,8 +305,8 @@ export default class SettingsDashboard extends Component {
           </div>
           )}
 
-          {/* Mobile and not cordovaWide Settings content */}
-          <div className={isWebApp() || isCordovaWide() ? 'd-block d-md-none' : ''}>
+          {/* Mobile and not cordovaWide and not androidSizeTab Settings content */}
+          <div className={isWebApp() || isCordovaWide() ? 'd-block d-md-none' : ''} style={isAndroidSizeWide() ? { display: 'none' } : {}}>
             {/* Mobile mode content */}
             <div className="col-12">
               <Suspense fallback={<></>}>

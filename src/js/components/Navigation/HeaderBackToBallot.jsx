@@ -189,7 +189,7 @@ class HeaderBackToBallot extends Component {
     });
 
     if (isIOSAppOnMac() && appleSiliconDebug) {
-      dumpCssFromId('backToBallotAppBar');
+      dumpCssFromId('headerBackToBallotAppBar');
     }
   }
 
@@ -736,7 +736,7 @@ class HeaderBackToBallot extends Component {
 
     return (
       <AppBarForBackTo
-        id="backToBallotAppBar"
+        id="headerBackToBallotAppBar"
         // className={headerClassName}
         color="default"
         // classes={appBarClasses}

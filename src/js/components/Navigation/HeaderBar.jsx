@@ -505,44 +505,46 @@ class HeaderBar extends Component {
               />
             )}
             <div className="header-nav" style={isMobileScreenSize() ? { display: 'none' } : {}}>
-              <Tabs
-                className={isIOSAppOnMac() ? '' : 'u-show-desktop'}
-                value={tabsValue}
-                indicatorColor="primary"
-                classes={{ indicator: classes.indicator }}
-              >
-                <TabWithPushHistory
-                  classes={{ root: classes.tabRootBallot }}
-                  value={1}
-                  change={this.handleTabChange}
-                  id="ballotTabHeaderBar"
-                  label="Ballot"
-                  to="/ballot"
-                />
-                <TabWithPushHistory
-                  classes={{ root: classes.tabRootFriends }}
-                  value={2}
-                  change={this.handleTabChange}
-                  id="friendsTabHeaderBar"
-                  label="Friends"
-                  to="/friends"
-                />
-                <TabWithPushHistory
-                  classes={{ root: classes.tabRootNews }}
-                  value={3}
-                  change={this.handleTabChange}
-                  id="discussTabHeaderBar"
-                  label="Discuss"
-                  to="/news"
-                />
-                <TabWithPushHistory
-                  classes={{ root: classes.tabRootHowItWorks }}
-                  value={4}
-                  change={this.openHowItWorksModal}
-                  id="howItWorksTabHeaderBar"
-                  label="How It Works"
-                />
-              </Tabs>
+              { !isMobileScreenSize()  && (
+                <Tabs
+                  className={isIOSAppOnMac() ? '' : 'u-show-desktop'}
+                  value={tabsValue}
+                  indicatorColor="primary"
+                  classes={{ indicator: classes.indicator }}
+                >
+                  <TabWithPushHistory
+                    classes={{ root: classes.tabRootBallot }}
+                    value={1}
+                    change={this.handleTabChange}
+                    id="ballotTabHeaderBar"
+                    label="Ballot"
+                    to="/ballot"
+                  />
+                  <TabWithPushHistory
+                    classes={{ root: classes.tabRootFriends }}
+                    value={2}
+                    change={this.handleTabChange}
+                    id="friendsTabHeaderBar"
+                    label="Friends"
+                    to="/friends"
+                  />
+                  <TabWithPushHistory
+                    classes={{ root: classes.tabRootNews }}
+                    value={3}
+                    change={this.handleTabChange}
+                    id="discussTabHeaderBar"
+                    label="Discuss"
+                    to="/news"
+                  />
+                  <TabWithPushHistory
+                    classes={{ root: classes.tabRootHowItWorks }}
+                    value={4}
+                    change={this.openHowItWorksModal}
+                    id="howItWorksTabHeaderBar"
+                    label="How It Works"
+                  />
+                </Tabs>
+              )}
             </div>
           </TopRowOneLeftContainer>
           <TopRowOneMiddleContainer />

@@ -6,6 +6,7 @@ import { isIOSAppOnMac, isIPad } from '../../common/utils/cordovaUtils';
 import { isWebApp } from '../../common/utils/isCordovaOrWebApp';
 import { renderLog } from '../../common/utils/logging';
 import { cordovaStickyHeaderPaddingTop } from '../../utils/cordovaOffsets';
+import { CandidateNameH1 } from '../Style/BallotStyles';
 import { standardBoxShadow } from '../Style/pageLayoutStyles';
 
 const BallotItemSupportOpposeComment = React.lazy(() => import(/* webpackChunkName: 'BallotItemSupportOpposeComment' */ '../Widgets/BallotItemSupportOpposeComment'));
@@ -38,7 +39,7 @@ class CandidateStickyHeader extends Component {
               <Profile>
                 {candidatePhotoUrl && <Avatar src={candidatePhotoUrl} alt="" />}
                 <div>
-                  <CandidateName>{displayName}</CandidateName>
+                  <CandidateNameH1>{displayName}</CandidateNameH1>
                   <CandidateDescription>
                     <Bold>{party}</Bold>
                     {' '}
@@ -128,18 +129,6 @@ const ColumnTwo = styled('div')(({ theme }) => (`
   ${theme.breakpoints.up('sm')} {
     display: block;
     width: fit-content;
-  }
-`));
-
-// Defaults to style in mobile
-const CandidateName = styled('h1')(({ theme }) => (`
-  font-size: 14px;
-  margin-bottom: 2px;
-  margin-top: 8px;
-  font-weight: bold;
-  ${theme.breakpoints.up('md')} {
-    margin-top: 0;
-    font-size: 16px;
   }
 `));
 
