@@ -135,7 +135,7 @@ export function deviceTypeString () {
   return deviceString;
 }
 
-let matchedDevice = true;
+let matchedDevice = false;
 export function logMatch (device, byModel) {
   if (!matchedDevice) {
     cordovaOffsetLog(`Matched ------------ ${device} by ${byModel ? 'window.device.model' : 'pbakondyScreenSize'}${isIOSAppOnMac() ? ', but AppleSilicon detected' : ''}`);
