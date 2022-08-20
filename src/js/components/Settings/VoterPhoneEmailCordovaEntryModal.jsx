@@ -37,7 +37,7 @@ class VoterPhoneEmailCordovaEntryModal extends Component {
     });
     // This is a hack that handles a dialog calling a dialog, there probably is a better way, but...
     const { $ } = window;
-    $("div[class*='SignInModal-dialogRoot']").remove();  // Shouldn't be needed, but this clears the background outside the dialog
+    $("div[class*='MuiBackdrop-root']").remove();  // Shouldn't be needed, but this clears the background outside the dialog
   }
 
   render () {

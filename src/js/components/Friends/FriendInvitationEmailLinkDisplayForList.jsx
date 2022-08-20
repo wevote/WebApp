@@ -1,16 +1,16 @@
 import { Button } from '@mui/material';
-import styled from 'styled-components';
 import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
 import { Link } from 'react-router-dom';
-import FriendDetails from './FriendDetails';
+import styled from 'styled-components';
 import FriendActions from '../../actions/FriendActions';
 import { renderLog } from '../../common/utils/logging';
 import FriendStore from '../../stores/FriendStore';
 import VoterStore from '../../stores/VoterStore';
 import Avatar from '../Style/avatarStyles';
-import { CancelButtonWrapper, FriendButtonsWrapper, FriendColumnWithoutButtons, FriendDisplayOuterWrapper } from '../Style/friendStyles';
+import { CancelButtonWrapper, FriendButtonsWrapper, FriendColumnWithoutButtons, FriendDisplayOuterWrapper, smallButtonIfNeeded } from '../Style/friendStyles';
+import FriendDetails from './FriendDetails';
 
 const ImageHandler = React.lazy(() => import(/* webpackChunkName: 'ImageHandler' */ '../ImageHandler'));
 
@@ -148,7 +148,7 @@ class FriendInvitationEmailLinkDisplayForList extends Component {
               type="button"
               variant="contained"
             >
-              <span className="u-no-break">
+              <span className="u-no-break" style={smallButtonIfNeeded()}>
                 {friendInvitationByEmailSent ? 'Invite sent' : 'Invite again'}
               </span>
             </Button>
@@ -162,7 +162,7 @@ class FriendInvitationEmailLinkDisplayForList extends Component {
               onClick={() => this.cancelFriendInviteEmail(voterEmailAddress)}
               variant="outlined"
             >
-              <span className="u-no-break">
+              <span className="u-no-break" style={smallButtonIfNeeded()}>
                 {cancelFriendInviteEmailSubmitted ? 'Canceling...' : 'Cancel Invite'}
               </span>
             </Button>

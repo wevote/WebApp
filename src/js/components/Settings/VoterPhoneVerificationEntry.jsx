@@ -78,7 +78,7 @@ class VoterPhoneVerificationEntry extends Component {
       VoterActions.voterRetrieve();
       // New Nov 5, 2021: this should be the end of the line for this dialog, we have fired off a voterRetrieve that should
       // return is_signed_in true and signed_in_with_sms_phone_number true
-      this.closeSignInModal();
+      this.closeSignInModal();  // Nov 2022, don't think we ever get there, I think the closeVerifyModal() is doing the job
     }
     // console.log(`VoterEmailAddressEntry onVoterStoreChange isSignedIn: ${isSignedIn}, signedInWithSmsPhoneNumber: ${signedInWithSmsPhoneNumber}`);
     if (secretCodeVerified) {
@@ -176,8 +176,8 @@ class VoterPhoneVerificationEntry extends Component {
 
   closeVerifyModal = () => {
     // console.log('VoterPhoneVerificationEntry closeVerifyModal');
-    VoterActions.clearSMSPhoneNumberStatus();
-    VoterActions.clearSecretCodeVerificationStatus();
+    VoterStore.clearSMSPhoneNumberStatus();
+    VoterStore.clearSecretCodeVerificationStatus();
     this.setState({
       smsPhoneNumberStatus: {
         sign_in_code_sms_sent: false,
@@ -185,6 +185,9 @@ class VoterPhoneVerificationEntry extends Component {
       showVerifyModal: false,
       signInCodeSMSSentAndWaitingForResponse: false,
     });
+    if (this.props.closeSignInModal) {
+      this.props.closeSignInModal();
+    }
   };
 
   hidePhoneVerificationButton = () => {

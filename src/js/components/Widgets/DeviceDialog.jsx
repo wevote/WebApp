@@ -4,8 +4,10 @@ import withTheme from '@mui/styles/withTheme';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import { hasIPhoneNotch } from '../../common/utils/cordovaUtils';
+import styled from 'styled-components';
+import { getAndroidSize, hasIPhoneNotch, isAndroid } from '../../common/utils/cordovaUtils';
 import { renderLog } from '../../common/utils/logging';
+import compileDate from '../../compileDate';
 import VoterStore from '../../stores/VoterStore';
 import { TermsAndPrivacyText } from '../Style/pageLayoutStyles';
 
@@ -13,7 +15,6 @@ import { TermsAndPrivacyText } from '../Style/pageLayoutStyles';
 const webAppConfig = require('../../config');
 
 class DeviceDialog extends Component {
-  // This can only be called by a developer running Cordova in an Simulator.  Voters will never see it.
   static clearAllCookies () {
     // 11/6/21  need to reimplement for new Cookies... if it is even needed
     // const cookies = document.cookie.split(';');
@@ -85,6 +86,12 @@ class DeviceDialog extends Component {
                 <TableCell>Usable Screen Size</TableCell>
                 <TableCell>{diameter}</TableCell>
               </TableRow>
+              {isAndroid() && (
+                <TableRow>
+                  <TableCell>Android Size Code</TableCell>
+                  <TableCell>{getAndroidSize()}</TableCell>
+                </TableRow>
+              )}
               <TableRow>
                 <TableCell>window.screen.width</TableCell>
                 <TableCell>{window.screen.width}</TableCell>
@@ -128,16 +135,29 @@ class DeviceDialog extends Component {
                 </div>
               </div>
             )}
-          <div className="card-child__fine_print" style={{ marginTop: '0.5rem', fontSize: '0.75rem' }}>
-            Your internal We Vote id: &nbsp;
-            {VoterStore.getVoter().we_vote_id}
-          </div>
-          <div className="card-child__fine_print" style={{ marginTop: '0.5rem', fontSize: '0.75rem' }}>
+          <DeviceFinePrint>
+            <TermsAndPrivacyText>
+              Your internal We Vote id: &nbsp;
+              {VoterStore.getVoter().we_vote_id}
+            </TermsAndPrivacyText>
+          </DeviceFinePrint>
+          <DeviceFinePrint>
             <TermsAndPrivacyText>
               Version: &nbsp;
               {window.weVoteAppVersion}
             </TermsAndPrivacyText>
-          </div>
+          </DeviceFinePrint>
+          <DeviceFinePrint>
+            <TermsAndPrivacyText>
+              Compile date:&nbsp;
+              {compileDate}
+            </TermsAndPrivacyText>
+          </DeviceFinePrint>
+          <DeviceFinePrint>
+            <Link to="/more/faq">Attributions:</Link>
+            <span style={{ paddingLeft: 20 }} />
+            <Link to="/more/attributions">Attributions</Link>
+          </DeviceFinePrint>
         </DialogContent>
         <DialogActions>
           <Button onClick={this.props.visibilityOffFunction} color="primary">
@@ -175,5 +195,11 @@ const styles = (theme) => ({
     padding: '8px 8px 8px',
   },
 });
+
+const DeviceFinePrint = styled('div')`
+  color: #555;
+  font-size: .75rem;
+  margin-top: 0.5rem;
+`;
 
 export default withTheme(withStyles(styles)(DeviceDialog));

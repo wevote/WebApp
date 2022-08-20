@@ -491,11 +491,13 @@ class SettingsVerifySecretCode extends Component {
         }}
       >
         <ModalTitleArea condensed={condensed}>
-          <Button onClick={this.closeVerifyModalLocal} id="emailVerificationBackButton">
-            {isIOS() ? <ArrowBackIos /> : <ArrowBack />}
-            {' '}
-            Back
-          </Button>
+          {isWebApp() && (
+            <Button onClick={this.closeVerifyModalLocal} id="emailVerificationBackButton">
+              {isIOS() ? <ArrowBackIos /> : <ArrowBack />}
+              {' '}
+              Back
+            </Button>
+          )}
         </ModalTitleArea>
         <ModalContent condensed={condensed} style={{ padding: `${isWebApp() ? 'undefined' : '37px 0 2px 0'}` }}>
           <TextContainer>

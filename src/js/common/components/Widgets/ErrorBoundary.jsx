@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 import { standardBoxShadow } from '../../../components/Style/pageLayoutStyles';
 import { isAndroidSizeWide } from '../../utils/cordovaUtils';
 import { isWebApp } from '../../utils/isCordovaOrWebApp';
@@ -45,7 +46,7 @@ class ErrorBoundary extends Component {
           ) : (
             <h1 style={{ margin: '20px', color: 'black' }}>
               Try&nbsp;
-              <a style={{ color: 'blue' }} href="/ready">restarting</a>
+              <Link to="/ready" style={{ color: 'blue' }}>restarting</Link>
               &nbsp;the app.
             </h1>
           )}

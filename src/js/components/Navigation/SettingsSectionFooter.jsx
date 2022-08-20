@@ -7,18 +7,33 @@ import { isWebApp } from '../../common/utils/isCordovaOrWebApp';
 import { renderLog } from '../../common/utils/logging';
 import AppObservableStore from '../../stores/AppObservableStore';
 import { TermsAndPrivacyText } from '../Style/pageLayoutStyles';
+import DeviceDialog from '../Widgets/DeviceDialog';
 
 
 class SettingsSectionFooter extends Component {
   constructor (props) {
     super(props);
     this.state = {
+      showDeviceDialog: false,
     };
+    this.deviceTableVisibilityOn = this.deviceTableVisibilityOn.bind(this);
+    this.deviceTableVisibilityOff = this.deviceTableVisibilityOff.bind(this);
   }
 
   openHowItWorksModal = () => {
     // console.log('Opening modal');
     AppObservableStore.setShowHowItWorksModal(true);
+  }
+
+  deviceTableVisibilityOff () {
+    const { showDeviceDialog } = this.state;
+    if (showDeviceDialog === true) {
+      this.setState({ showDeviceDialog: false });
+    }
+  }
+
+  deviceTableVisibilityOn () {
+    this.setState({ showDeviceDialog: true });
   }
 
   render () {
@@ -95,6 +110,12 @@ class SettingsSectionFooter extends Component {
         </OneRow>
         <DoesNotSupport centered={centered}>
           We Vote does not support or oppose any political candidate or party.
+        </DoesNotSupport>
+        <DoesNotSupport centered={centered}>
+          <span className="hamburger-terms__text" onClick={() => this.deviceTableVisibilityOn()} style={{ color: 'black', opacity: '0.7', fontSize: '10px' }}>
+            Device Information
+          </span>
+          <DeviceDialog visibilityOffFunction={this.deviceTableVisibilityOff} show={this.state.showDeviceDialog} />
         </DoesNotSupport>
       </Wrapper>
     );

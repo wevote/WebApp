@@ -11533,6 +11533,7 @@ h1, h2, h3, h4, h5, h6 {
   }
 }
 
+{/* If the width is greater than 992, then don't show the component */}
 @media all and (min-width: 992px) {
   .u-show-mobile-tablet {
     display: none !important;

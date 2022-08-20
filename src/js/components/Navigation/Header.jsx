@@ -321,7 +321,7 @@ export default class Header extends Component {
           <HeadroomWrapper>
             <div className={pageHeaderClasses} style={cordovaTopHeaderTopMargin()} id="header-container">
               { showBackToSettingsDesktop && (
-                <span>
+                <span id="inner_for_showBackToSettingsDesktop">
                   {/* 991 is u-show-desktop */}
                   { (!isAndroidSizeWide() && window.innerWidth < 991) && (
                     <span className="BackToSettingsDesktopSpan">
@@ -341,8 +341,8 @@ export default class Header extends Component {
               )}
               { showBackToSettingsMobile && (
                 <span>
-                  {/*  window.innerWidth > 991 is u-show-mobile-tablet */}
-                  { (!isCordovaWide() && window.innerWidth > 991) && (
+                  {/*  window.innerWidth < 992 is u-show-mobile-tablet */}
+                  { (!isCordovaWide() && window.innerWidth < 992) && (
                     <span className="BackToSettingsMobileSpan">
                       <Suspense fallback={<></>}>
                         <HeaderBackTo

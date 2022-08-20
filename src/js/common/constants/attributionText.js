@@ -25,6 +25,9 @@ module.exports = [
   'Copyright (c) 2014 Call-Em-All\n',
   // Jan 2021, https://github.com/mui-org/material-ui/tree/master/packages/material-ui-icons
   // No license cited
+  // https://github.com/emotion-js/emotion/blob/main/LICENSE
+  'emotion-js/emotion\n is licensed under the MIT License\n' +
+  'Copyright (c) Emotion team and other contributors',
   // https://github.com/Yuvaleros/material-ui-dropzone/blob/master/LICENSE
   'Yuvaleros/material-ui-dropzone is licensed under the MIT License\n' +
   'Copyright (c) 2017 Yuvaleros',
@@ -126,6 +129,18 @@ module.exports = [
   // Jan 2019, https://github.com/facebook/react/blob/master/LICENSE
   'facebook/react (and facebook/react-dom) is licensed under the MIT License (MIT)\n' +
   'Copyright (c) Facebook, Inc. and its affiliates.\n',
+  // https://github.com/cereallarceny/react-fullstory/blob/master/LICENSE
+  'cereallarceny/react-fullstory is licensed under the MIT License (MIT)\n' +
+  'Copyright (c) 2019 Moonshot\n',
+  // https://github.com/react-ga/react-ga/blob/master/LICENSE
+  'react-ga/react-ga is licensed under the Apache License, Version 2.0\n' +
+  'No copyright cited\n',
+  // https://github.com/ErrorPro/react-google-autocomplete/blob/master/LICENSE.md
+  'ErrorPro/react-google-autocomplete is licensed under the MIT License (MIT)\n' +
+  'Copyright (c) 2016 Ven Korolev\n',
+  // https://github.com/prescottprue/react-google-button/blob/master/LICENSE.md
+  'prescottprue/react-google-button is licensed under the MIT License (MIT)\n' +
+  'Copyright (c) 2018-present Prescott Prue\n',
   // https://github.com/gregberge/loadable-components/blob/main/LICENSE
   'gregberge/loadable-components is licensed under the MIT License (MIT)\n' +
   'Copyright 2019 Greg Bergé.\n',
@@ -145,7 +160,7 @@ module.exports = [
   'catamphetamine/react-phone-number-input is licensed under the MIT License (MIT)\n' +
   'Copyright (c) 2016 @catamphetamine <purecatamphetamine@gmail.com>\n',
   // Jan 2019, https://github.com/CookPete/react-player/blob/master/LICENSE.md
-  'CookPete/react-player is licensed under the  MIT License (MIT)\n' +
+  'CookPete/react-player is licensed under the MIT License (MIT)\n' +
   'Copyright (c) 2017 Pete Cook http://cookpete.com\n',
   // Jan 2019, https://github.com/ReactTraining/react-router/blob/master/LICENSE
   'ReactTraining/react-router (and react-router-dom) is licensed under the MIT License (MIT)\n' +
@@ -166,11 +181,14 @@ module.exports = [
   'stripe/react-stripe-js is licensed under the MIT License  (MIT)\n' +
   'Copyright (c) 2017 Stripe',
   // Jan 2019, https://github.com/tanem/react-svg/blob/master/LICENSE
-  'tanem/react-svg is licensed under the  MIT License (MIT)\n' +
+  'tanem/react-svg is licensed under the MIT License (MIT)\n' +
   'Copyright (c) 2014-present Tane Morgan <tane.morgan@gmail.com>\n',
   // Jan 2021, https://github.com/ShinyChang/React-Text-Truncate/blob/master/LICENSE
-  'ShinyChang/React-Text-Truncate s licensed under the  MIT License (MIT)\n' +
+  'ShinyChang/React-Text-Truncate is licensed under the MIT License (MIT)\n' +
   'Copyright (c) 2014-present Tane Morgan <tane.morgan@gmail.com>\n',
+  // https://github.com/ReactiveX/rxjs/blob/master/LICENSE.txt
+  'ReactiveX/rxjs is licensed under the Apache License 2.0\n' +
+  'Copyright (c) 2015-2018 Google, Inc., Netflix, Inc., Microsoft Corp. and contributors\n',
   // Jan 2019, https://github.com/fkhadra/react-toastify/blob/master/LICENSE
   'fkhadra/react-toastify is licensed under the MIT License (MIT)\n' +
   'Copyright (c) 2017 Fadi Khadra\n',

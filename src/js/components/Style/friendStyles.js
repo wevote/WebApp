@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { isAndroidSizeMD, isAndroidSizeSM } from '../../common/utils/cordovaUtils';
 import { isWebApp } from '../../common/utils/isCordovaOrWebApp';
 
 const CancelButtonWrapper = styled('div')`
@@ -142,6 +143,10 @@ const ToRightOfPhoto = styled('div')`
   width: 100%;
 `;
 
+function smallButtonIfNeeded () {
+  return isAndroidSizeSM() || isAndroidSizeMD() ? { fontSize: '13px' } : {};
+}
+
 export {
   CancelButtonWrapper,
   FriendButtonsWrapper,
@@ -155,4 +160,5 @@ export {
   SectionDescription,
   SectionTitle,
   ToRightOfPhoto,
+  smallButtonIfNeeded,
 };
