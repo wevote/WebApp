@@ -12,7 +12,7 @@ import OrganizationActions from '../../actions/OrganizationActions';
 import VoterGuideActions from '../../actions/VoterGuideActions';
 import LoadingWheel from '../../common/components/Widgets/LoadingWheel';
 import apiCalming from '../../common/utils/apiCalming';
-import { isAndroidSizeFold } from '../../common/utils/cordovaUtils';
+import { isAndroidSizeWide } from '../../common/utils/cordovaUtils';
 import historyPush from '../../common/utils/historyPush';
 import { isWebApp } from '../../common/utils/isCordovaOrWebApp';
 import { renderLog } from '../../common/utils/logging';
@@ -478,7 +478,7 @@ const RightColumnWrapper = styled('div')`
 
 const TwoColumns = styled('div')`
   display: flex;
-  margin: ${isAndroidSizeFold() ?  0  :  '0 -8px 0 -8px'};
+  margin: ${isAndroidSizeWide() ?  0  :  '0 -8px 0 -8px'};
 `;
 
 export default withStyles(styles)(Candidate);

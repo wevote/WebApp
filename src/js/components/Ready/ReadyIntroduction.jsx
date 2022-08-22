@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import historyPush from '../../common/utils/historyPush';
+import { isWebApp } from '../../common/utils/isCordovaOrWebApp';
 import { renderLog } from '../../common/utils/logging';
 import AppObservableStore from '../../stores/AppObservableStore';
 import VoterStore from '../../stores/VoterStore';
@@ -107,12 +108,16 @@ class ReadyIntroduction extends Component {
                     {' '}
                     <Link to="/ballot" className="u-link-color">preview your ballot</Link>
                     .
-                    {' '}
-                    How are
-                    {' '}
-                    <Link to="/findfriends/importcontacts" className="u-link-color">your friends</Link>
-                    {' '}
-                    planning to vote?
+                    {isWebApp() && (
+                      <>
+                        {' '}
+                        How are
+                        {' '}
+                        <Link to="/findfriends/importcontacts" className="u-link-color">your friends</Link>
+                        {' '}
+                        planning to vote?
+                      </>
+                    )}
                   </StepText>
                 </ListRow>
               )}
@@ -154,7 +159,11 @@ class ReadyIntroduction extends Component {
                 <ListRow>
                   <Dot><StepNumberPlaceholder>&nbsp;</StepNumberPlaceholder></Dot>
                   <StepText>
-                    <Link to="/findfriends/importcontacts" className="u-link-color">Invite your friends</Link>
+                    {isWebApp() ? (
+                      <Link to="/findfriends/importcontacts" className="u-link-color">Invite your friends</Link>
+                    ) : (
+                      <>Invite your friends</>
+                    )}
                     {' '}
                     to join WeVote to encourage them to vote, share your ballot and endorsements, engage in discussions and more!
                     {' '}

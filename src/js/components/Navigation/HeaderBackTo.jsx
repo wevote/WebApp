@@ -7,7 +7,7 @@ import OrganizationActions from '../../actions/OrganizationActions';
 import VoterGuideActions from '../../actions/VoterGuideActions';
 import LazyImage from '../../common/components/LazyImage';
 import apiCalming from '../../common/utils/apiCalming';
-import { isIOSAppOnMac, isIPad } from '../../common/utils/cordovaUtils';
+import { isIOS, isIOSAppOnMac, isIPad } from '../../common/utils/cordovaUtils';
 import historyPush from '../../common/utils/historyPush';
 import { normalizedHref } from '../../common/utils/hrefUtils';
 import { isCordova, isWebApp } from '../../common/utils/isCordovaOrWebApp';
@@ -208,7 +208,10 @@ class HeaderBackTo extends Component {
 
     const pathname = normalizedHref();
     const shareButtonInHeader = pathname && stringContains('/office', pathname.toLowerCase());
-    const cordovaOverrides = isWebApp() ? {} : { marginLeft: 0, padding: '34px 15px 0 0', right: 'unset' };
+    const cordovaStyles = isIOS() ?
+      { marginLeft: 0, padding: '34px 15px 0 0', right: 'unset' } :
+      { marginLeft: 0, padding: '0 15px 0 0', right: 'unset' };
+    const cordovaOverrides = isWebApp() ? {} : cordovaStyles;
     if (isIOSAppOnMac() || isIPad()) {
       cordovaOverrides.height = shareButtonInHeader ? '87px !important' : '68px';
     }

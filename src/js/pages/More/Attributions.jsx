@@ -2,6 +2,7 @@ import React from 'react';
 import Helmet from 'react-helmet';
 import { Link } from 'react-router-dom';
 import attributions from '../../common/constants/attributionText';
+import { isWebApp } from '../../common/utils/isCordovaOrWebApp';
 import { renderLog } from '../../common/utils/logging';
 import compileDate from '../../compileDate';
 import { PageContentContainer } from '../../components/Style/pageLayoutStyles';
@@ -47,14 +48,16 @@ export default class Attributions extends React.Component {
         <div className="container-fluid well">
           <br />
           <h1 className="text-center">WeVote.US Open Source Software Licenses</h1>
-          <div>
-            Please also see
-            {' '}
-            <Link to="/more/credits" className="u-link-color">
-              Credits & Thanks
-            </Link>
-            .
-          </div>
+          {isWebApp() && (
+            <div>
+              Please also see
+              {' '}
+              <Link to="/more/credits" className="u-link-color">
+                Credits & Thanks
+              </Link>
+              .
+            </div>
+          )}
           { attributions.map((oneLicense) => (
             Attributions.parseLicense(oneLicense)
           ))}

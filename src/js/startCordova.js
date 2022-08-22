@@ -150,7 +150,9 @@ export function initializationForCordova (startReact) {
     }, (result) => {
       console.log('Cordova: pbakondy/cordova-plugin-screensize FAILURE result: ', result);
     });
-    window.Keyboard.disableScroll(false);  // Aug 2022, need to set initial state
+    if (isIOS()) {
+      window.Keyboard.disableScroll(false);  // Aug 2022, need to set the initial state
+    }
   }, false);
 }
 

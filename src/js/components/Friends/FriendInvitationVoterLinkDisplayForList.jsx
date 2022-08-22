@@ -12,7 +12,7 @@ import { removeTwitterNameFromDescription } from '../../utils/textFormat';
 import Avatar from '../Style/avatarStyles';
 import {
   CancelButtonWrapper, FriendButtonsWrapper, FriendColumnWithoutButtons,
-  FriendDisplayDesktopButtonsWrapper, FriendDisplayOuterWrapper, ToRightOfPhoto,
+  FriendDisplayDesktopButtonsWrapper, FriendDisplayOuterWrapper, smallButtonIfNeeded, ToRightOfPhoto,
 } from '../Style/friendStyles';
 import FriendDetails from './FriendDetails';
 import FriendInvitationToggle from './FriendInvitationToggle';
@@ -139,7 +139,7 @@ class FriendInvitationVoterLinkDisplayForList extends Component {
               type="button"
               variant="contained"
             >
-              <span className="u-no-break">
+              <span className="u-no-break" style={smallButtonIfNeeded()}>
                 {friendInvitationByEmailSent ? 'Invite sent' : 'Invite again'}
               </span>
             </Button>
@@ -155,7 +155,7 @@ class FriendInvitationVoterLinkDisplayForList extends Component {
             variant="outlined"
           >
             {cancelFriendInviteVoterSubmitted ? 'Canceling...' : (
-              <span className="u-no-break">
+              <span className="u-no-break" style={smallButtonIfNeeded()}>
                 Cancel Invite
               </span>
             )}

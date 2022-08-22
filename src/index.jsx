@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './App';
+import { isAndroid } from './js/common/utils/cordovaUtils';
 // importStartCordovaToken -- Do not remove this line!
 
 // The following line is rewritten to true by the buildSrcCordova.js node script
@@ -14,7 +15,7 @@ function startReact () {
 
   try {
     const { hostname } = window.location;
-    if (hostname && hostname === 'localhost') {
+    if (hostname && hostname === 'localhost' && !isAndroid()) {
       module.hot.accept();   // For Webpack
     }
   } catch (e) {

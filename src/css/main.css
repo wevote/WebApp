@@ -11533,6 +11533,7 @@ h1, h2, h3, h4, h5, h6 {
   }
 }
 
+{/* If the width is greater than 992, then don't show the component */}
 @media all and (min-width: 992px) {
   .u-show-mobile-tablet {
     display: none !important;
@@ -14797,6 +14798,7 @@ a {
   bottom: 0;
   box-shadow: 0 -4px 4px -1px rgba(0, 0, 0, 0.2), 0 -4px 5px 0 rgba(0, 0, 0, 0.14), 0 -1px 10px 0 rgba(0, 0, 0, 0.12);
   padding-bottom: env(safe-area-inset-bottom);
+  padding-left: 15px;
   position: fixed;
   width: 100%;
 }

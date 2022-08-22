@@ -1,12 +1,13 @@
 import { Button } from '@mui/material';
-import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
+import styled from 'styled-components';
 import FriendActions from '../../actions/FriendActions';
 import { renderLog } from '../../common/utils/logging';
 import AppObservableStore from '../../stores/AppObservableStore';
 import FriendStore from '../../stores/FriendStore';
 import VoterStore from '../../stores/VoterStore';
+import { smallButtonIfNeeded } from '../Style/friendStyles';
 
 
 export default class SuggestedFriendToggle extends Component {
@@ -100,6 +101,7 @@ export default class SuggestedFriendToggle extends Component {
           fullWidth
           onClick={this.addSuggestedFriend}
           variant={`${lightModeOn ? 'outlined' : 'contained'}`}
+          style={smallButtonIfNeeded()}
         >
           {addSuggestedFriendSent ? inviteSentText : sendInviteText}
         </Button>

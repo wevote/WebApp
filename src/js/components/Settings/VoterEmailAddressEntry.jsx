@@ -13,7 +13,7 @@ import isMobileScreenSize from '../../common/utils/isMobileScreenSize';
 import { renderLog } from '../../common/utils/logging';
 import VoterStore from '../../stores/VoterStore';
 import { FirstRowPhoneOrEmail, SecondRowPhoneOrEmail, TrashCan } from '../Style/pageLayoutStyles';
-import { ButtonContainer } from '../Welcome/sectionStyles';
+import { ButtonContainerHorizontal } from '../Welcome/sectionStyles';
 import signInModalGlobalState from '../Widgets/signInModalGlobalState';
 import SettingsVerifySecretCode from './SettingsVerifySecretCode';
 
@@ -222,8 +222,8 @@ class VoterEmailAddressEntry extends Component {
 
   closeVerifyModal = () => {
     // console.log('VoterEmailAddressEntry closeVerifyModal');
-    VoterActions.clearEmailAddressStatus();
-    VoterActions.clearSecretCodeVerificationStatus();
+    VoterStore.clearEmailAddressStatus();
+    VoterStore.clearSecretCodeVerificationStatus();
     this.setState({
       displayEmailVerificationButton: false,
       emailAddressStatus: {
@@ -232,6 +232,9 @@ class VoterEmailAddressEntry extends Component {
       showVerifyModal: false,
       signInCodeEmailSentAndWaitingForResponse: false,
     });
+    if (this.props.closeSignInModal) {
+      this.props.closeSignInModal();
+    }
   };
 
   updateVoterEmailAddress = (event) => {
@@ -391,7 +394,7 @@ class VoterEmailAddressEntry extends Component {
     }
 
     const enterEmailHtml = hideSignInWithEmailForm ? null : (
-      <div>
+      <div style={{ paddingTop: 10 }}>
         <SignInSectionText>
           {enterEmailTitle}
         </SignInSectionText>
@@ -426,7 +429,7 @@ class VoterEmailAddressEntry extends Component {
                   Cancel
                 </Button>
               </CancelButtonContainer>
-              <ButtonContainer>
+              <ButtonContainerHorizontal>
                 <Button
                   color="primary"
                   disabled={disableEmailVerificationButton || signInCodeEmailSentAndWaitingForResponse}
@@ -446,7 +449,7 @@ class VoterEmailAddressEntry extends Component {
                     </>
                   )}
                 </Button>
-              </ButtonContainer>
+              </ButtonContainerHorizontal>
             </ButtonWrapper>
           )}
         </form>

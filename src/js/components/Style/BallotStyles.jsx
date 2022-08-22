@@ -1,4 +1,6 @@
 import styled from 'styled-components';
+import { isCordova } from '../../common/utils/isCordovaOrWebApp';
+import isMobileScreenSize from '../../common/utils/isMobileScreenSize';
 
 const Candidate = styled('div')`
   display: flex;
@@ -27,7 +29,24 @@ const CandidateInfo = styled('div')(({ theme }) => (`
   }
 `));
 
-const CandidateName = styled('h4')`
+const constrainedTextMobileStyles = isMobileScreenSize() || isCordova() ? `
+  height: auto;
+  white-space: initial;
+` : '';
+
+// Defaults to style in mobile
+const CandidateNameH1 = styled('h1')(({ theme }) => (`
+  font-size: 14px;
+  margin-bottom: 2px;
+  margin-top: 8px;
+  font-weight: bold;
+  ${theme.breakpoints.up('md')} {
+    margin-top: 0;
+    font-size: 16px;
+  }
+`));
+
+const CandidateNameH4 = styled('h4')`
   color: #4371cc;
   font-weight: 400;
   font-size: 20px;
@@ -36,6 +55,7 @@ const CandidateName = styled('h4')`
   &:hover {
     text-decoration: underline;
   }
+  ${constrainedTextMobileStyles}
 `;
 
 const CandidateParty = styled('div')`
@@ -80,7 +100,7 @@ const OfficeItemCompressedWrapper = styled('div')`
 
 export {
   Candidate, CandidateBottomRow,
-  CandidateContainer, CandidateInfo, CandidateName, CandidateParty,
+  CandidateContainer, CandidateInfo, CandidateNameH1, CandidateNameH4, CandidateParty,
   CandidateWrapper, CandidateTopRow,
-  OfficeNameH2, OfficeItemCompressedWrapper,
+  OfficeNameH2, OfficeItemCompressedWrapper, constrainedTextMobileStyles,
 };

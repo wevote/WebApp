@@ -39,45 +39,41 @@ class FooterMainWeVote extends Component {
             </OneRow>
             <OneRow>
               { isWebApp() ? (
-                <OpenExternalWebSite
-                  linkIdAttribute="footerLinkAbout"
-                  url="https://wevote.us/more/about"
-                  target="_blank"
-                  body={(
-                    <span>About</span>
-                  )}
-                  className={classes.link}
-                />
+                <>
+                  <OpenExternalWebSite
+                    linkIdAttribute="footerLinkAbout"
+                    url="https://wevote.us/more/about"
+                    target="_blank"
+                    body={(
+                      <span>About</span>
+                    )}
+                    className={classes.link}
+                  />
+                  <RowSpacer />
+                  <OpenExternalWebSite
+                    linkIdAttribute="footerLinkTeam"
+                    url="https://wevote.us/more/about"
+                    target="_blank"
+                    body={(
+                      <span>Team</span>
+                    )}
+                    className={classes.link}
+                  />
+                  <RowSpacer />
+                  <OpenExternalWebSite
+                    linkIdAttribute="footerLinkCredits"
+                    url="https://wevote.us/more/credits"
+                    target="_blank"
+                    body={(
+                      <span>Credits &amp; Thanks</span>
+                    )}
+                    className={classes.link}
+                  />
+                </>
               ) : (
-                <Link id="footerLinkAbout" className={classes.link} to="/more/about">About</Link>
-              )}
-              <RowSpacer />
-              { isWebApp() ? (
-                <OpenExternalWebSite
-                  linkIdAttribute="footerLinkTeam"
-                  url="https://wevote.us/more/about"
-                  target="_blank"
-                  body={(
-                    <span>Team</span>
-                  )}
-                  className={classes.link}
-                />
-              ) : (
-                <Link id="footerLinkTeam" className={classes.link} to="/more/about">Team</Link>
-              )}
-              <RowSpacer />
-              { isWebApp() ? (
-                <OpenExternalWebSite
-                  linkIdAttribute="footerLinkCredits"
-                  url="https://wevote.us/more/credits"
-                  target="_blank"
-                  body={(
-                    <span>Credits &amp; Thanks</span>
-                  )}
-                  className={classes.link}
-                />
-              ) : (
-                <Link id="footerLinkCredits" className={classes.link} to="/more/credits">Credits &amp; Thanks</Link>
+                <>
+                  <Link to="/more/faq" className={classes.link}>Frequently Asked Questions</Link>
+                </>
               )}
             </OneRow>
           </TopSectionInnerWrapper>

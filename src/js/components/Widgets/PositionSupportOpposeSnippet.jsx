@@ -80,7 +80,7 @@ export default class PositionSupportOpposeSnippet extends Component {
 
     if (moreInfoUrl) {
       if (!moreInfoUrl.toLowerCase().startsWith('http')) {
-        moreInfoUrl = `http://${moreInfoUrl}`;
+        moreInfoUrl = `https://${moreInfoUrl}`;
       }
     }
 

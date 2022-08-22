@@ -1,10 +1,10 @@
 import { Button } from '@mui/material';
-import styled from 'styled-components';
 import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import { isAndroidSizeXL, restoreStylesAfterCordovaKeyboard } from '../../common/utils/cordovaUtils';
+import styled from 'styled-components';
+import { isAndroidSizeWide, isAndroidSizeXL, restoreStylesAfterCordovaKeyboard } from '../../common/utils/cordovaUtils';
 import { isCordova, isWebApp } from '../../common/utils/isCordovaOrWebApp';
 import { renderLog } from '../../common/utils/logging';
 import webAppConfig from '../../config';
@@ -213,7 +213,7 @@ const ProfileMenu = styled('div')`
   @media (max-width: 965px) {
     right: 15px;
   }
-  ${() => (isAndroidSizeXL() ? {
+  ${() => (isAndroidSizeXL() || isAndroidSizeWide() ? {
     left: '55%',
     top: '42px',
     width: '30%',

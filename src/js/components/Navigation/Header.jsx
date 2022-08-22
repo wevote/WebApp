@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
 import VoterActions from '../../actions/VoterActions';
-import { isIOSAppOnMac, isIPad, isCordovaWide } from '../../common/utils/cordovaUtils';
+import { isIOSAppOnMac, isIPad, isCordovaWide, isAndroidSizeWide } from '../../common/utils/cordovaUtils';
 import historyPush from '../../common/utils/historyPush';
 import { normalizedHref } from '../../common/utils/hrefUtils';
 import { isCordova, isWebApp } from '../../common/utils/isCordovaOrWebApp';
@@ -321,13 +321,16 @@ export default class Header extends Component {
           <HeadroomWrapper>
             <div className={pageHeaderClasses} style={cordovaTopHeaderTopMargin()} id="header-container">
               { showBackToSettingsDesktop && (
-                <span>
-                  <span className="BackToSettingsDesktopSpan u-show-desktop">
-                    <Suspense fallback={<></>}>
-                      <HeaderBackTo backToLink={backToSettingsLinkDesktop} backToLinkText={backToSettingsLinkText} />
-                    </Suspense>
-                  </span>
-                  { !showBackToVoterGuides && !showBackToSettingsMobile && (
+                <span id="inner_for_showBackToSettingsDesktop">
+                  {/* 991 is u-show-desktop */}
+                  { (!isAndroidSizeWide() && window.innerWidth < 991) && (
+                    <span className="BackToSettingsDesktopSpan">
+                      <Suspense fallback={<></>}>
+                        <HeaderBackTo backToLink={backToSettingsLinkDesktop} backToLinkText={backToSettingsLinkText} />
+                      </Suspense>
+                    </span>
+                  )}
+                  { (isAndroidSizeWide() || (!showBackToVoterGuides && !showBackToSettingsMobile)) && (
                     <span className="BackToSettingsDesktopMobileSpan u-show-mobile-tablet">
                       <Suspense fallback={<></>}>
                         <HeaderBar />
@@ -338,15 +341,18 @@ export default class Header extends Component {
               )}
               { showBackToSettingsMobile && (
                 <span>
-                  <span className={isWebApp() || isCordovaWide() ? 'BackToSettingsMobileSpan u-show-mobile-tablet' : ''}>
-                    <Suspense fallback={<></>}>
-                      <HeaderBackTo
-                        backToLink={backToSettingsLinkMobile}
-                        backToLinkText={backToSettingsLinkText}
-                      />
-                    </Suspense>
-                  </span>
-                  { isWebApp() && !showBackToVoterGuides && !showBackToSettingsDesktop && (
+                  {/*  window.innerWidth < 992 is u-show-mobile-tablet */}
+                  { (!isCordovaWide() && window.innerWidth < 992) && (
+                    <span className="BackToSettingsMobileSpan">
+                      <Suspense fallback={<></>}>
+                        <HeaderBackTo
+                          backToLink={backToSettingsLinkMobile}
+                          backToLinkText={backToSettingsLinkText}
+                        />
+                      </Suspense>
+                    </span>
+                  )}
+                  { (isCordovaWide() || (isWebApp() && !showBackToVoterGuides && !showBackToSettingsDesktop)) && (
                     <span className="BackToSettingsMobileDesktopSpan u-show-desktop">
                       <Suspense fallback={<></>}>
                         <HeaderBar />

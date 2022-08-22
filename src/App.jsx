@@ -184,7 +184,6 @@ class App extends Component {
     this.setState({ showReadyLight: false });
   }
 
-  // From index.js (4/20/21)
   localIsCordova () {
     const { cordova } = window;
     window.isCordovaGlobal = cordova !== undefined;    // So now we set a global

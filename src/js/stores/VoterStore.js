@@ -496,6 +496,30 @@ class VoterStore extends ReduceStore {
     return !!(nameExists && photoExists);
   }
 
+  // Function that is the equivalent of the dispatchable action, to avoid "Cannot dispatch in the middle of a dispatch" error
+  clearEmailAddressStatus () {
+    // console.log('VoterStore clearEmailAddressStatus function');
+    this.getState().emailAddressStatus = {};
+  }
+
+  // Function that is the equivalent of the dispatchable action, to avoid "Cannot dispatch in the middle of a dispatch" error
+  clearSecretCodeVerificationStatus () {
+    // console.log('VoterStore clearSecretCodeVerificationStatus function');
+    this.getState().secretCodeVerificationStatus = {
+      incorrectSecretCodeEntered: false,
+      numberOfTriesRemaining: 5,
+      secretCodeVerified: false,
+      voterMustRequestNewCode: false,
+      voterSecretCodeRequestsLocked: false,
+    };
+  }
+
+  // Function that is the equivalent of the dispatchable action, to avoid "Cannot dispatch in the middle of a dispatch" error
+  clearSMSPhoneNumberStatus () {
+    // console.log('VoterStore clearSMSPhoneNumberStatus function');
+    this.getState().smsPhoneNumberStatus = {};
+  }
+
   reduce (state, action) {
     let facebookPhotoRetrieveLoopCount;
     let address;
@@ -1046,7 +1070,7 @@ class VoterStore extends ReduceStore {
         if (this.getState().voter.we_vote_id && currentVoterDeviceId) {
           if (incomingVoter.linked_organization_we_vote_id) {
             if (apiCalming('organizationRetrieve', 2000)) {
-              console.log('Following voterRetrieve call -- calling organizationRetrieve');
+              // console.log('Following voterRetrieve call -- calling organizationRetrieve');
               OrganizationActions.organizationRetrieve(incomingVoter.linked_organization_we_vote_id);
             }
           }

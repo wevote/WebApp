@@ -207,7 +207,6 @@ class FooterBar extends React.Component {
               showLabel
               icon={<Info />}
               sx={bigIcons}
-              // style={window.innerWidth > 400 ? { paddingLeft: 20 } : { paddingLeft: 28 }}
             />
           </BottomNavigation>
         </div>

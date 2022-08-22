@@ -10,7 +10,7 @@ import MeasureActions from '../../actions/MeasureActions';
 import OrganizationActions from '../../actions/OrganizationActions';
 import LoadingWheelComp from '../../common/components/Widgets/LoadingWheelComp';
 import apiCalming from '../../common/utils/apiCalming';
-import { isAndroidSizeFold } from '../../common/utils/cordovaUtils';
+import { isAndroidSizeWide } from '../../common/utils/cordovaUtils';
 import isMobileScreenSize from '../../common/utils/isMobileScreenSize';
 import { renderLog } from '../../common/utils/logging';
 import toTitleCase from '../../common/utils/toTitleCase';
@@ -433,7 +433,7 @@ const RightColumnWrapper = styled('div')`
 
 const TwoColumns = styled('div')(({ theme }) => (`
   display: flex;
-  ${() => (isAndroidSizeFold() ? { margin: 0 } : { margin: '0 -8px 0 -8px' })};
+  ${() => (isAndroidSizeWide() ? { margin: 0 } : { margin: '0 -8px 0 -8px' })};
   ${theme.breakpoints.down('sm')} {
     margin: 0 3px;
   }

@@ -1,9 +1,10 @@
 import Dispatcher from '../common/dispatcher/Dispatcher';
+import { isWebApp } from '../common/utils/isCordovaOrWebApp'; // eslint-disable-line import/no-cycle
+import { oAuthLog } from '../common/utils/logging';
 import signInModalGlobalState from '../components/Widgets/signInModalGlobalState';
 import webAppConfig from '../config';
 import FacebookConstants from '../constants/FacebookConstants';
-import { isWebApp } from '../common/utils/isCordovaOrWebApp'; // eslint-disable-line import/no-cycle
-import { oAuthLog } from '../common/utils/logging';
+import { dumpObjProps } from '../utils/appleSiliconUtils';
 import FriendActions from './FriendActions'; // eslint-disable-line import/no-cycle
 import VoterActions from './VoterActions'; // eslint-disable-line import/no-cycle
 import VoterSessionActions from './VoterSessionActions'; // eslint-disable-line import/no-cycle
@@ -285,7 +286,7 @@ export default {
       this.facebookApi().getLoginStatus(
         (response) => {
           oAuthLog('FacebookActions this.facebookApi().getLoginStatus response: ', response);
-          // dumpObjProps('facebookApi().getLoginStatus()', response);
+          dumpObjProps('facebookApi().getLoginStatus()', response);
           if (response.status === 'connected') {
             Dispatcher.dispatch({
               type: FacebookConstants.FACEBOOK_LOGGED_IN,

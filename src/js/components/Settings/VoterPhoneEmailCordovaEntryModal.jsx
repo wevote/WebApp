@@ -6,12 +6,7 @@ import clsx from 'clsx';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import SplitIconButton from '../../common/components/Widgets/SplitIconButton';
-import {
-  isIPhone3p5in,
-  isIPhone4in,
-  isIPhone4p7in,
-  restoreStylesAfterCordovaKeyboard,
-} from '../../common/utils/cordovaUtils';
+import { isIPhone3p5in, isIPhone4in, isIPhone4p7in } from '../../common/utils/cordovaUtils';
 import { isCordova } from '../../common/utils/isCordovaOrWebApp';
 import { renderLog } from '../../common/utils/logging';
 import VoterEmailAddressEntry from './VoterEmailAddressEntry';
@@ -36,15 +31,13 @@ class VoterPhoneEmailCordovaEntryModal extends Component {
   }
 
   closeSignInModalLocal = () => {
-    console.log('VoterPhoneEmailCordovaEntryModal closeSignInModalLocal showDialog false ======================================');
-    // Because there are multiple listeners on the voterStore, some dispatching will occur for the underlying ballot page,
-    // which totally messes us up here, and leaves this modal on the screen after it should've been dismissed, especially on the iPhone 5.
-    // So as a workaround we close this modal when we detect that they have signed in successfully with the email,
-    // which requires this further hack, Which is sensitive to checking whether the modal actually still exists.
-    restoreStylesAfterCordovaKeyboard('VoterPhoneEmailCordovaEntryModal');
+    // console.log('VoterPhoneEmailCordovaEntryModal closeSignInModalLocal');
     this.setState({
       showDialog: false,
     });
+    // This is a hack that handles a dialog calling a dialog, there probably is a better way, but...
+    const { $ } = window;
+    $("div[class*='MuiBackdrop-root']").remove();  // Shouldn't be needed, but this clears the background outside the dialog
   }
 
   render () {
@@ -55,7 +48,7 @@ class VoterPhoneEmailCordovaEntryModal extends Component {
 
     return (
       <>
-        <div className="u-stack--md">
+        <div id="signInPhoneEmailModal" className="u-stack--md">
           <SplitIconButton
             backgroundColor="#2E3C5D"
             buttonText={isPhone ? 'Sign in with a text' : 'Sign in with an Email'}

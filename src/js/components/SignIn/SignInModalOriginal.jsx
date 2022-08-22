@@ -6,7 +6,7 @@ import clsx from 'clsx';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
 import { Link } from 'react-router-dom';
-import { isAndroid, isAndroidSizeFold, isIOS, isIOsSmallerThanPlus, isIPhone5p5inEarly, isIPhone5p5inMini, isIPhone5p8in,
+import { isAndroid, isAndroidSizeWide, isIOS, isIOsSmallerThanPlus, isIPhone5p5inEarly, isIPhone5p5inMini, isIPhone5p8in,
   isIPhone6p1in, isIPhone6p5in, isWebAppHeight0to568, isWebAppHeight569to667, isWebAppHeight668to736, isWebAppHeight737to896,
   restoreStylesAfterCordovaKeyboard } from '../../common/utils/cordovaUtils';
 import historyPush from '../../common/utils/historyPush';
@@ -294,7 +294,7 @@ const styles = (theme) => ({
     maxHeight: '90%',
     offsetHeight: 'unset !important',
     top: () => {
-      if (isAndroidSizeFold()) return '15%';
+      if (isAndroidSizeWide()) return '15%';
       if (isCordova()) return '7%';
       return '50%';
     },

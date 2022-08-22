@@ -63,7 +63,7 @@ export default class PositionInformationOnlySnippet extends Component {
     let moreInfoUrlFull = moreInfoUrl;
     if (moreInfoUrlFull) {
       if (!moreInfoUrlFull.toLowerCase().startsWith('http')) {
-        moreInfoUrlFull = `http://${moreInfoUrlFull}`;
+        moreInfoUrlFull = `https://${moreInfoUrlFull}`;
       }
     }
 

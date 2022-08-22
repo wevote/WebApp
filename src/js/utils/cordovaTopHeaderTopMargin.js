@@ -128,7 +128,7 @@ export default function cordovaTopHeaderTopMargin () {
         style.marginTop = '20px';
       }
     } else {  // Android
-      style.marginTop = '-2px';
+      style.marginTop = '0px';
     }
     return style;
   }

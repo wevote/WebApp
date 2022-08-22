@@ -102,9 +102,11 @@ const ButtonContainer = styled('div')`
   margin-left: -132px;
 `;
 
-// ${theme.breakpoints.down('md')} {
-//   flex-flow: column-reverse;
-// }
+const ButtonContainerHorizontal = styled('div')`
+  width: fit-content;
+  margin-left: 8px;
+`;
+
 const DescriptionContainer = styled('div')`
   display: flex;
   margin: 1em 3em;
@@ -199,6 +201,7 @@ const SignUpMessage = styled('div')(({ theme }) => (`
 export {
   Bold,
   ButtonContainer,
+  ButtonContainerHorizontal,
   Description,
   DescriptionContainer,
   DescriptionImageColumn,

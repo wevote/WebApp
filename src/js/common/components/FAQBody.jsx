@@ -1,6 +1,7 @@
 import React, { Component, Suspense } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
+import { isCordova, isWebApp } from '../utils/isCordovaOrWebApp';
 import { renderLog } from '../utils/logging';
 import ToolBar from './Widgets/ToolBar';
 
@@ -49,22 +50,31 @@ export default class FAQBody extends Component {
         <Suspense fallback={<></>}>
           <OpenExternalWebSite
             linkIdAttribute="weVoteEducationWebsite"
-            url="http://WeVoteEducation.org"
+            url="https://www.WeVoteEducation.org"
             target="_blank"
             body="www.WeVoteEducation.org"
           />
         </Suspense>
-        - 501(c)(3) FEIN 47-2691544 and
-        <Suspense fallback={<></>}>
-          <OpenExternalWebSite
-            linkIdAttribute="weVoteUSAWebsite"
-            url="http://WeVoteUSA.org"
-            target="_blank"
-            body="www.WeVoteUSA.org"
-          />
-        </Suspense>
-        - 501(c)(4) FEIN 81-1052585)
-        based in Oakland, CA. We do not support or oppose any political candidate or party.
+        - 501(c)(3) FEIN 47-2691544 and&nbsp;
+        {/* August 2022, TODO: Re-enable this once the SSL cert is renewed */}
+        {isCordova() ? (
+          <>
+            WeVoteUSA.org - 501(c)(4) FEIN 81-1052585),&nbsp;
+          </>
+        ) : (
+          <>
+            <Suspense fallback={<></>}>
+              <OpenExternalWebSite
+                linkIdAttribute="weVoteUSAWebsite"
+                url="https://www.WeVoteUSA.org"
+                target="_blank"
+                body="WeVoteUSA.org"
+              />
+            </Suspense>
+            - 501(c)(4) FEIN 81-1052585),&nbsp;
+          </>
+        )}
+        both based in Oakland, CA. We do not support or oppose any political candidate or party.
         We are not affiliated with WeVoteProject.org or WeVoteUSA.com.
         <br />
         <br />
@@ -141,7 +151,7 @@ export default class FAQBody extends Component {
           />
         </Suspense>
         apps.
-        We are free and open source:
+        We are free and open source:&nbsp;
         <Suspense fallback={<></>}>
           <OpenExternalWebSite
             linkIdAttribute="wevoteGithub"
@@ -182,15 +192,19 @@ export default class FAQBody extends Component {
         <br />
         <br />
 
-        <strong>What does We Vote cost?</strong>
-        <br />
-        It&apos;s free! If you like We Vote,
-        {' '}
-        <Link to="/more/donate" className="u-cursor--pointer u-link-color">please donate</Link>
-        {' '}
-        so we can do more to help voters.
-        <br />
-        <br />
+        {isWebApp() && (
+          <>
+            <strong>What does We Vote cost?</strong>
+            <br />
+            It&apos;s free! If you like We Vote,
+            {' '}
+            <Link to="/more/donate" className="u-cursor--pointer u-link-color">please donate</Link>
+            {' '}
+            so we can do more to help voters.
+            <br />
+            <br />
+          </>
+        )}
 
         <strong>How do you make money?</strong>
         <br />

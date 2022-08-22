@@ -111,6 +111,7 @@ module.exports = (env, argv) => ({
           'extension.html',
           '/sass/',
           '/robots.txt',
+          '/app-ads.txt',
           'srcDeprecated',
         ],
         root: __dirname,
@@ -120,6 +121,7 @@ module.exports = (env, argv) => ({
     new CopyPlugin({
       patterns: [
         { from: `${source}/robots.txt`,  to: '.' },
+        { from: `${source}/app-ads.txt`,  to: '.' },
         { from: `${source}/css/`,        to: 'css/' },
         { from: `${source}/extension.html`, to: '.' },
         {

@@ -405,54 +405,66 @@ export function getAndroidSize () {
   if (androidSizeString !== undefined) {
     return androidSizeString;
   }
-  const ratio = window.devicePixelRatio || 1;
-  const aspectRatio = window.screen.height / window.screen.width;
-  const screen = {
-    width: window.screen.width * ratio,
-    height: window.screen.height * ratio,
-  };
+  // https://developer.samsung.com/galaxy-emulator-skin/galaxy-z.html
+  // https://www.gsmarena.com
+  // {"width":2208,"height":1768,"diameter":8.84,"xdpi":320,"ydpi":320,"densityValue":2,"densityBucket":"xhdpi"} Galaxy Z Fold3 -- fold 7.6"  ~19.305 cm
+  // {"width":1440,"height":2956,"diameter":5.87,"xdpi":560,"ydpi":560,"densityValue":3.5,"densityBucket":"xxhdpi"} Pixel 4XL --lg  6.3"
+  // see AndroidSizes criteria at https://docs.google.com/spreadsheets/d/1-_0jthH0coeWqs3KZh4TxSToSgscL-UP64wV7nwkIsI/edit?usp=sharing
 
-  androidPixels = screen.width * screen.height;
-  androidSizeString = 'default';
-  // const ratioString = parseFloat(ratio).toFixed(2);
-
-  /* sm   = 480*800   =   384,000     Nexus One
-     md   = 1080*1920 = 2,073,600     PixelXL, Nexus5X, Moto G5
-     lg   = 1440*2560 = 3,686,400     Nexus6P
-     xl   = 2560*1600 = 4,240,000     Nexus10 Tablet ratio = 1.656
-     xl   = 1200*1920 = 2,306,705     Galaxy Tab A 10.1", ratio = 1.3312500715255737
-     xl with AndroidNotch                 (for camera)
-          = 1440*3201 = 4,609,440,    Samsung Galaxy S20 Ultra, ratio = 3
-     fold = 1536*2152 = 3,305,372     Galaxy Fold 7.3", ratio = 2, aspectRatio ~= 1.401
-         && 1170*2208 = 3,908,160     'Galaxy Z Fold 3' 7.6" ratioString = '3.00' aspectRatio ~= 1.247
-     June 2019: detecting the Galaxy Tab A by ratio, is a bit of a hack, and could bite us someday if there was an android phone with a 1.33 ratio
-  */
-
-  if (window.device.model === 'Moto G (5) Plus') {
-    logMatch('Moto G (5) Plus', true);
-    androidSizeString = '--md';
-  } else if (androidPixels > 3.7E6 && aspectRatio < 1.0) {
-    androidSizeString = '--xl';
-  } else if (androidPixels > 3.3E6 && aspectRatio < 1.4 && aspectRatio > 1.2) {
-    androidSizeString = '--fold';
-  } else if (androidPixels > 3E6) {
-    androidSizeString = '--lg';
-  } else if (androidPixels > 1E6) {
-    androidSizeString = '--md';
-  } else {
-    androidSizeString = '--sm';
+  if (!window.isDeviceReady) {
+    return 'device not ready';
   }
-  cordovaOffsetLog(`getAndroidSize(): ${androidSizeString}`);
+  androidSizeString = 'default';
+  const { width, height, diameter } = window.pbakondyScreenSize;
+
+  androidPixels = width * height;
+  // const screenSize = Math.sqrt(((width / xdpi) ** 2) + ((height / ydpi) ** 2));
+  const aspectRatio = height / width;
+  if (aspectRatio < 1) {
+    androidSizeString = '--wide';
+  } else if (diameter < 4.9) {
+    androidSizeString = '--sm';
+  } else if (diameter < 6) {
+    androidSizeString = '--md';
+  } else if (diameter < 6.6) {
+    androidSizeString = '--lg';
+  } else {
+    androidSizeString = '--xl';
+  }
+
+  console.log(`Cordova:  getAndroidSize(): ${androidSizeString}, reported diagonal: ${diameter} `);
 
   return androidSizeString;
 }
 
 export function hasAndroidNotch () {
-  if (androidPixels === 4609440) {
+  // https://deviceatlas.com/blog/list-of-user-agent-strings  (last letter U, like SM-G988U, is a country code ... USA)
+  const ua = navigator.userAgent.toLowerCase();
+  if (ua.includes('SM-S908') ||       // Samsung Galaxy S22 Ultra
+      ua.includes('SM-S906') ||       // Samsung Galaxy S22+
+      ua.includes('SM-S901') ||       // Samsung Galaxy S22
+      ua.includes('SM-G996') ||       // Samsung Galaxy S21
+      ua.includes('SM-G980') ||       // Samsung Galaxy S20
+      ua.includes('SM-G973')) {       // Samsung Galaxy S10
+    return true;
+  }
+
+  // window.device.model: "sdk_gphone64_arm64"
+
+  if (androidPixels === 4446720) {
+    logMatch('Android Samsung Galaxy S22 Ultra (or S22+) detected by pixel size');
+    return true;
+  } else if (androidPixels === 2527200) {
+    logMatch('Android Samsung Galaxy S22 detected by pixel size');  // 1440 x 3040
+    return true;
+  } else if (androidPixels === 2562000) {
+    logMatch('Android Samsung Galaxy S21 detected by pixel size');  // 1080 x 2400
+    return true;
+  } else if (androidPixels === 4608000) {
     logMatch('Android Samsung Galaxy S20 Ultra detected by pixel size');
     return true;
-  } else if (androidPixels === 4380480) {
-    logMatch('Android Samsung Galaxy S10 plus detected by pixel size');
+  } else if (androidPixels === 4377600) {
+    logMatch('Android Samsung Galaxy S10 detected by pixel size');  // 1080x2340
     return true;
   }
   return false;
@@ -488,30 +500,20 @@ export function isAndroidSizeLG () {
   return false;
 }
 
+export function isAndroidSizeWide () {
+  if (isAndroid()) {
+    if (getAndroidSize() === '--wide') {
+      logMatch('isAndroidSizeWide: based on aspect ratio, could be a foldable wide screen, or a tablet', true);
+      return true;
+    }
+  }
+  return false;
+}
+
 export function isAndroidSizeXL () {
   if (isAndroid()) {
     if (getAndroidSize() === '--xl') {
-      logMatch('isAndroidSizeXL: xl = 2560*1600 = 4,420,000  Nexus10 Tablet', true);
-      return true;
-    }
-  }
-  return false;
-}
-
-export function isAndroidSizeFold () {
-  if (isAndroid()) {
-    if (getAndroidSize() === '--fold') {
-      logMatch('isAndroidSizeFold: based on aspect ratio, probably a Galaxy Fold 7.3"', true);
-      return true;
-    }
-  }
-  return false;
-}
-
-export function isAndroidTablet () {
-  if (isAndroid()) {
-    if (window.innerWidth > 768) {
-      logMatch('isAndroidTablet: based on width"', true);
+      logMatch('isAndroidSizeXL: xl = Pixel Pro or S22 Ultra, or a Note20 with a pen', true);
       return true;
     }
   }
@@ -623,7 +625,9 @@ export function restoreStylesAfterCordovaKeyboard (callerString) {
     let fileName = '';
     try {
       fileName = callerString.substr(callerString.lastIndexOf('/') + 1);
-      window.Keyboard.disableScroll(false);
+      if (isIOS()) {
+        window.Keyboard.disableScroll(false);
+      }
       // eslint-disable-next-line no-empty
     } catch (e) {
       console.log('error in restoreStylesAfterCordovaKeyboard', e);
@@ -762,7 +766,7 @@ export function polyfillFixes (file) {
 }
 
 export function isCordovaWide () {
-  return isIPad() || isAndroidSizeFold();
+  return isIPad() || isAndroidSizeWide();
 }
 
 export function cordovaLinkToBeSharedFixes (link) {

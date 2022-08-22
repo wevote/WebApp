@@ -162,7 +162,7 @@ class About extends Component {
             <Suspense fallback={<></>}>
               <OpenExternalWebSite
                 linkIdAttribute="codeForSF"
-                url="http://codeforsanfrancisco.org/"
+                url="https://codeforsanfrancisco.org/"
                 target="_blank"
                 body={(
                   <span>

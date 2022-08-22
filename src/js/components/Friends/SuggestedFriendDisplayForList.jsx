@@ -13,7 +13,7 @@ import { removeTwitterNameFromDescription } from '../../utils/textFormat';
 import Avatar from '../Style/avatarStyles';
 import {
   CancelButtonWrapper, FriendButtonsWrapper, FriendColumnWithoutButtons,
-  FriendDisplayDesktopButtonsWrapper, FriendDisplayOuterWrapper, ToRightOfPhoto,
+  FriendDisplayDesktopButtonsWrapper, FriendDisplayOuterWrapper, smallButtonIfNeeded, ToRightOfPhoto,
 } from '../Style/friendStyles';
 import FriendDetails from './FriendDetails';
 import FriendLocationDisplay from './FriendLocationDisplay';
@@ -145,6 +145,7 @@ class SuggestedFriendDisplayForList extends Component {
               onClick={() => this.ignoreSuggestedFriend(otherVoterWeVoteId)}
               type="button"
               variant="outlined"
+              style={smallButtonIfNeeded()}
             >
               {ignoreSuggestedFriendSent ? 'Ignored' : 'Ignore'}
             </Button>
@@ -157,6 +158,7 @@ class SuggestedFriendDisplayForList extends Component {
               onClick={() => this.ignoreVoterContact(emailAddressForDisplay, otherVoterWeVoteId)}
               type="button"
               variant="outlined"
+              style={smallButtonIfNeeded()}
             >
               {(ignoreVoterContactSent || voterContactIgnored) ? 'Ignored' : 'Ignore'}
             </Button>

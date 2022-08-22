@@ -308,7 +308,6 @@ export default class HamburgerMenu extends Component {
                     Version:&nbsp;&nbsp;
                     {window.weVoteAppVersion}
                   </span>
-                  <DeviceDialog visibilityOffFunction={this.deviceTableVisibilityOff} show={this.state.showDeviceDialog} />
                 </div>
               </td>
             </tr>
