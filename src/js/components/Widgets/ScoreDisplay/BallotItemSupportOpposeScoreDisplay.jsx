@@ -1246,14 +1246,15 @@ const VoterChoiceWrapper = styled('div')`
 `;
 
 const YourScoreWrapper = styled('div')`
+  align-items: center;
   color: #999;
   display: flex;
-  align-items: center;
-  justify-content: center;
   font-size: 12px;
-  text-align: center;
-  width: 40px;
   height: 40px;
+  justify-content: center;
+  text-align: center;
+  white-space: normal;
+  width: 40px;
 `;
 
 export default withTheme(withStyles(styles)(BallotItemSupportOpposeScoreDisplay));

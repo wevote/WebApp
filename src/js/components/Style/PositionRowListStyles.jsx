@@ -17,6 +17,7 @@ const EmptyText = styled('div')`
   font-size: 14px;
   font-weight: normal;
   margin-top: 0;
+  white-space: normal;
 `;
 
 const EmptyTextWrapper = styled('div')`
@@ -51,9 +52,6 @@ const OrganizationPhotoInnerWrapper = styled('div')`
 `;
 
 const OverflowContainer = styled('div')`
-  flex: 1;
-  overflow-x: hidden;
-  overflow-y: hidden;
 `;
 
 const PositionRowItemEmptyWrapper = styled('div')`

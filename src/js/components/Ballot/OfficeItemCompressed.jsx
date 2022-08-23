@@ -15,8 +15,8 @@ import BallotStore from '../../stores/BallotStore';
 import CandidateStore from '../../stores/CandidateStore';
 import SupportStore from '../../stores/SupportStore';
 import { sortCandidateList } from '../../utils/positionFunctions';
-import { Candidate, CandidateBottomRow, CandidateContainer, CandidateInfo, CandidateNameH4, CandidateParty, CandidateWrapper, CandidateTopRow, OfficeNameH2, OfficeItemCompressedWrapper } from '../Style/BallotStyles';
-import { OverflowContainer, PositionRowListEmptyWrapper, PositionRowListInnerWrapper, PositionRowListOneWrapper, PositionRowListOuterWrapper, PositionRowListScoreColumn, PositionRowListScoreHeader, PositionRowListScoreSpacer } from '../Style/PositionRowListStyles';
+import { Candidate, CandidateBottomRow, CandidateContainer, CandidateInfo, CandidateNameH4, CandidateParty, CandidateWrapper, CandidateTopRow, HorizontallyScrollingContainer, OfficeNameH2, OfficeItemCompressedWrapper } from '../Style/BallotStyles';
+import { PositionRowListEmptyWrapper, PositionRowListInnerWrapper, PositionRowListOneWrapper, PositionRowListOuterWrapper, PositionRowListScoreColumn, PositionRowListScoreHeader, PositionRowListScoreSpacer } from '../Style/PositionRowListStyles';
 import InfoCircleIcon from '../Widgets/InfoCircleIcon';
 import signInModalGlobalState from '../Widgets/signInModalGlobalState';
 import PositionRowEmpty from './PositionRowEmpty';
@@ -298,71 +298,70 @@ class OfficeItemCompressed extends Component {
               </Tooltip>
             );
             return (
-              <div key={`candidate_preview-${oneCandidate.we_vote_id}-${externalUniqueId}`}>
-                <CandidateContainer>
-                  <CandidateWrapper>
-                    <CandidateInfo>
-                      <CandidateTopRow>
-                        <Candidate
-                          id={`officeItemCompressedCandidateImageAndName-${oneCandidate.we_vote_id}-${externalUniqueId}`}
-                          onClick={() => this.onClickShowOrganizationModalWithBallotItemInfo(oneCandidate.we_vote_id)}
-                        >
-                          {/* Candidate Image */}
-                          <Suspense fallback={<></>}>
-                            <ImageHandler
-                              className={avatarCompressed}
-                              sizeClassName="icon-candidate-small u-push--sm "
-                              imageUrl={oneCandidate.candidate_photo_url_medium}
-                              alt=""
-                              kind_of_ballot_item="CANDIDATE"
-                              style={{ backgroundImage: { avatarBackgroundImage } }}
-                            />
-                          </Suspense>
-                          {/* Candidate Name */}
-                          <div>
-                            <CandidateNameH4>
-                              {oneCandidate.ballot_item_display_name}
-                            </CandidateNameH4>
-                            <CandidateParty>
-                              {candidatePartyText}
-                            </CandidateParty>
-                          </div>
-                        </Candidate>
-                      </CandidateTopRow>
-                      <CandidateBottomRow>
-                        {!hideCandidateDetails && (
-                          <Suspense fallback={<></>}>
-                            {/* If there if (pages.includes(page)) {is a quote about the candidate, show that. If not, show issues related to candidate */}
-                            <DelayedLoad showLoadingText waitBeforeShow={500}>
-                              <IssuesByBallotItemDisplayList
-                                ballotItemDisplayName={oneCandidate.ballot_item_display_name}
-                                ballotItemWeVoteId={oneCandidate.we_vote_id}
-                                externalUniqueId={`officeItemCompressed-${oneCandidate.we_vote_id}-${externalUniqueId}`}
-                              />
-                            </DelayedLoad>
-                          </Suspense>
-                        )}
-                        {!hideCandidateDetails && (
-                          <ItemActionBarOutsideWrapper>
+              <ScrollingOuterContainer key={`candidate_preview-${oneCandidate.we_vote_id}-${externalUniqueId}`}>
+                <HorizontallyScrollingContainer>
+                  <CandidateContainer>
+                    <CandidateWrapper>
+                      <CandidateInfo>
+                        <CandidateTopRow>
+                          <Candidate
+                            id={`officeItemCompressedCandidateImageAndName-${oneCandidate.we_vote_id}-${externalUniqueId}`}
+                            onClick={() => this.onClickShowOrganizationModalWithBallotItemInfo(oneCandidate.we_vote_id)}
+                          >
+                            {/* Candidate Image */}
                             <Suspense fallback={<></>}>
-                              <ItemActionBar
-                                ballotItemWeVoteId={oneCandidate.we_vote_id}
-                                ballotItemDisplayName={oneCandidate.ballot_item_display_name}
-                                commentButtonHide
-                                externalUniqueId={`OfficeItemCompressed-ItemActionBar-${oneCandidate.we_vote_id}-${externalUniqueId}`}
-                                hidePositionPublicToggle
-                                positionPublicToggleWrapAllowed
-                                shareButtonHide
+                              <ImageHandler
+                                className={avatarCompressed}
+                                sizeClassName="icon-candidate-small u-push--sm "
+                                imageUrl={oneCandidate.candidate_photo_url_medium}
+                                alt=""
+                                kind_of_ballot_item="CANDIDATE"
+                                style={{ backgroundImage: { avatarBackgroundImage } }}
                               />
                             </Suspense>
-                          </ItemActionBarOutsideWrapper>
-                        )}
-                      </CandidateBottomRow>
-                    </CandidateInfo>
-                  </CandidateWrapper>
-                  <PositionRowListOuterWrapper>
-                    {/*  className="u-show-desktop-tablet" */}
-                    <OverflowContainer>
+                            {/* Candidate Name */}
+                            <div>
+                              <CandidateNameH4>
+                                {oneCandidate.ballot_item_display_name}
+                              </CandidateNameH4>
+                              <CandidateParty>
+                                {candidatePartyText}
+                              </CandidateParty>
+                            </div>
+                          </Candidate>
+                        </CandidateTopRow>
+                        <CandidateBottomRow>
+                          {!hideCandidateDetails && (
+                            <Suspense fallback={<></>}>
+                              {/* If there if (pages.includes(page)) {is a quote about the candidate, show that. If not, show issues related to candidate */}
+                              <DelayedLoad showLoadingText waitBeforeShow={500}>
+                                <IssuesByBallotItemDisplayList
+                                  ballotItemDisplayName={oneCandidate.ballot_item_display_name}
+                                  ballotItemWeVoteId={oneCandidate.we_vote_id}
+                                  externalUniqueId={`officeItemCompressed-${oneCandidate.we_vote_id}-${externalUniqueId}`}
+                                />
+                              </DelayedLoad>
+                            </Suspense>
+                          )}
+                          {!hideCandidateDetails && (
+                            <ItemActionBarOutsideWrapper>
+                              <Suspense fallback={<></>}>
+                                <ItemActionBar
+                                  ballotItemWeVoteId={oneCandidate.we_vote_id}
+                                  ballotItemDisplayName={oneCandidate.ballot_item_display_name}
+                                  commentButtonHide
+                                  externalUniqueId={`OfficeItemCompressed-ItemActionBar-${oneCandidate.we_vote_id}-${externalUniqueId}`}
+                                  hidePositionPublicToggle
+                                  positionPublicToggleWrapAllowed
+                                  shareButtonHide
+                                />
+                              </Suspense>
+                            </ItemActionBarOutsideWrapper>
+                          )}
+                        </CandidateBottomRow>
+                      </CandidateInfo>
+                    </CandidateWrapper>
+                    <PositionRowListOuterWrapper>
                       <PositionRowListInnerWrapper>
                         <PositionRowListOneWrapper>
                           <PositionRowList
@@ -416,15 +415,15 @@ class OfficeItemCompressed extends Component {
                           </PositionRowListScoreSpacer>
                         </PositionRowListScoreColumn>
                       </PositionRowListInnerWrapper>
-                    </OverflowContainer>
-                  </PositionRowListOuterWrapper>
-                </CandidateContainer>
+                    </PositionRowListOuterWrapper>
+                  </CandidateContainer>
+                </HorizontallyScrollingContainer>
                 {((candidateCount < candidatesToRenderLength) && (candidateCount < limitNumberOfCandidatesShownToThisNumber)) && (
                   <div>
                     <HrSeparator />
                   </div>
                 )}
-              </div>
+              </ScrollingOuterContainer>
             );
           })}
       </CandidatesContainer>
@@ -568,7 +567,7 @@ const styles = (theme) => ({
 
 const CandidatesContainer = styled('div')`
   height: 100%;
-  margin: 0px -10px;
+  // margin: 0 0 0 -10px;
   min-width: 0;
   width: 100%;
 `;
@@ -593,6 +592,11 @@ const ItemActionBarOutsideWrapper = styled('div')`
 
 const ScoreWrapper = styled('div')`
   display: flex;
+`;
+
+const ScrollingOuterContainer = styled('div')`
+  overflow-x: hidden;
+  overflow-y: hidden;
 `;
 
 export default withTheme(withStyles(styles)(OfficeItemCompressed));

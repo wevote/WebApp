@@ -14,7 +14,7 @@ const CandidateBottomRow = styled('div')`
 const CandidateContainer = styled('div')`
   display: flex;
   justify-content: flex-start;
-  padding: 10px 5px;
+  // padding: 10px 5px;
 `;
 
 const CandidateInfo = styled('div')(({ theme }) => (`
@@ -52,6 +52,7 @@ const CandidateNameH4 = styled('h4')`
   font-size: 20px;
   margin-bottom: 0 !important;
   min-width: 124px;
+  white-space: normal;
   &:hover {
     text-decoration: underline;
   }
@@ -80,6 +81,22 @@ const CandidateWrapper = styled('div')(({ theme }) => (`
   }
 `));
 
+const HorizontallyScrollingContainer = styled('div')`
+  /* Fade out, right side */
+  -webkit-mask-image: linear-gradient(to right, rgba(0, 0, 0, 1) 98%, rgba(0, 0, 0, 0));
+  mask-image: linear-gradient(to right, rgba(0, 0, 0, 1) 98%, rgba(0, 0, 0, 0));
+
+  overflow-x: auto;
+  white-space: nowrap;
+
+  /* Make the scrollbar not be visible */
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+  ::-webkit-scrollbar {  /* Chrome, Safari and Opera */
+    display: none;
+  }
+`;
+
 const OfficeNameH2 = styled('div')(({ theme }) => (`
   // For some reason if styled('h2') it breaks down
   font-size: 32px;
@@ -95,12 +112,13 @@ const OfficeItemCompressedWrapper = styled('div')`
   border: 1px solid #fff;
   flex-direction: column;
   margin-bottom: 60px;
+  padding: 0 !important;
   position: relative;
 `;
 
 export {
   Candidate, CandidateBottomRow,
   CandidateContainer, CandidateInfo, CandidateNameH1, CandidateNameH4, CandidateParty,
-  CandidateWrapper, CandidateTopRow,
+  CandidateWrapper, CandidateTopRow, HorizontallyScrollingContainer,
   OfficeNameH2, OfficeItemCompressedWrapper, constrainedTextMobileStyles,
 };
