@@ -16,7 +16,7 @@ import BallotStore from '../../stores/BallotStore';
 import MeasureStore from '../../stores/MeasureStore';
 import { stripHtmlFromString } from '../../utils/textFormat';
 import { constrainedTextMobileStyles } from '../Style/BallotStyles';
-import { OverflowContainer, PositionRowListEmptyWrapper, PositionRowListInnerWrapper, PositionRowListOneWrapper, PositionRowListOuterWrapper, PositionRowListScoreColumn, PositionRowListScoreHeader, PositionRowListScoreSpacer } from '../Style/PositionRowListStyles';
+import { PositionRowListEmptyWrapper, PositionRowListInnerWrapper, PositionRowListOneWrapper, PositionRowListOuterWrapper, PositionRowListScoreColumn, PositionRowListScoreHeader, PositionRowListScoreSpacer } from '../Style/PositionRowListStyles';
 import InfoCircleIcon from '../Widgets/InfoCircleIcon';
 import PositionRowEmpty from './PositionRowEmpty';
 import PositionRowList from './PositionRowList';
@@ -245,8 +245,10 @@ class MeasureItemCompressed extends Component {
               </MeasureText>
             </InfoDetailsRow>
           </MeasureWrapper>
-          <PositionRowListOuterWrapper>
-            <OverflowContainer>
+        </MeasureContainer>
+        <MeasureContainer>
+          <MeasureScrollingContainer>
+            <PositionRowListOuterWrapper>
               <PositionRowListInnerWrapper>
                 <PositionRowListOneWrapper>
                   <PositionRowList
@@ -297,8 +299,8 @@ class MeasureItemCompressed extends Component {
                   </PositionRowListScoreSpacer>
                 </PositionRowListScoreColumn>
               </PositionRowListInnerWrapper>
-            </OverflowContainer>
-          </PositionRowListOuterWrapper>
+            </PositionRowListOuterWrapper>
+          </MeasureScrollingContainer>
         </MeasureContainer>
         <MeasureContainer>
           <ChoiceSpecificsColumns>
@@ -484,6 +486,18 @@ const MeasureItemCompressedWrapper = styled('div')`
   position: relative;
 `;
 
+
+const MeasureScrollingContainer = styled('div')`
+  overflow-x: auto;
+  white-space: nowrap;
+  /* Make the scrollbar not be visible */
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+  ::-webkit-scrollbar {  /* Chrome, Safari and Opera */
+    display: none;
+  }
+`;
+
 const MeasureText = styled('div')`
   font-weight: 300;
   color: #777;
@@ -503,15 +517,8 @@ const MeasureTitle = styled('h1')`
   width: 100%;
 `;
 
-const MeasureWrapper = styled('div')(({ theme }) => (`
-  width: 320px;
-  // ${theme.breakpoints.down('sm')} {
-  //   width: 100%;
-  // }
-  // ${theme.breakpoints.up('sm')} {
-  //   min-width: 320px;
-  // }
-`));
+const MeasureWrapper = styled('div')`
+`;
 
 const ScoreWrapper = styled('div')`
   display: flex;

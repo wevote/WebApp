@@ -1352,7 +1352,7 @@ class Ballot extends Component {
                               </>
                             )}
                             <BallotFilterRow/* showFilterTabs={showFilterTabs} */>
-                              <div className="ballot__item-filter-tabs" ref={(chips) => { this.chipContainer = chips; }}>
+                              <BallotFilterTabs ref={(chips) => { this.chipContainer = chips; }}>
                                 { ballotWithItemsFromCompletionFilterType.length ? (
                                   <>
                                     <Suspense fallback={<></>}>
@@ -1441,7 +1441,7 @@ class Ballot extends Component {
                                     )}
                                   </>
                                 ) : null}
-                              </div>
+                              </BallotFilterTabs>
                             </BallotFilterRow>
                           </div>
                         ) : null}
@@ -1457,160 +1457,158 @@ class Ballot extends Component {
           <PageContentContainer>
             <div className="container-fluid">
               <BallotWrapper padBottom={padBallotWindowBottomForCordova} id="ballotWrapper">
-                <HorizontallyScrollingContainer>
-                  {/* eslint-disable-next-line no-nested-ternary */}
-                  <div className={showBallotDecisionsTabs() ? 'row ballot__body' : isWebApp() || twoColumnDisplay ? 'row ballot__body__no-decision-tabs' : undefined}>
-                    <div className="col-12">
-                      {emptyBallot}
-                    </div>
-                    {ballotWithItemsFromCompletionFilterType.length > 0 ? (
-                      <BallotStatusMessage
-                        ballotLocationChosen
-                        googleCivicElectionId={this.state.googleCivicElectionId}
-                      />
-                    ) : null}
-                    <div className="col-12" id="ballotRoute-topOfBallot">
-                      {(isSearching && searchText) && (
-                        <SearchTitle>
-                          Searching for &quot;
-                          {searchText}
-                          &quot;
-                        </SearchTitle>
-                      )}
-                      {showCompleteYourProfile && (
-                        <span>
-                          <Suspense fallback={<></>}>
-                            <CompleteYourProfile />
-                          </Suspense>
-                        </span>
-                      )}
-                      <BallotListWrapper>
-                        {/* The rest of the ballot items */}
-                        <div className="BallotList" id="BallotListId">
-                          {(isSearching && ballotSearchResults && ballotSearchResults.length === 0) && (
-                            <SearchResultsEmpty>
-                              Please enter new search terms to find results.
-                            </SearchResultsEmpty>
-                          )}
-                          {(isSearching ? ballotSearchResults : ballotWithItemsFromCompletionFilterType).map((item) => {
-                            // Ballot limited by items by race_office_level = (Federal, State, Local) or kind_of_ballot_item = (Measure)
-                            // console.log('raceLevelFilterType:', raceLevelFilterType, ', item:', item);
-                            if ((raceLevelFilterType === 'All' || isSearching ||
-                              (item.kind_of_ballot_item === raceLevelFilterType.toUpperCase()) ||
-                              raceLevelFilterType === item.race_office_level)) {
-                              // console.log('Ballot item for BallotItemCompressed:', item);
-                              // {...item}
-                              const key = item.we_vote_id;
-                              // console.log('numberOfBallotItemsDisplayed:', numberOfBallotItemsDisplayed, ', numberOfBallotItemsToDisplay:', numberOfBallotItemsToDisplay);
-                              if (numberOfBallotItemsDisplayed >= numberOfBallotItemsToDisplay) {
-                                return null;
-                              }
-                              numberOfBallotItemsDisplayed += 1;
-                              // console.log('numberOfBallotItemsDisplayed: ', numberOfBallotItemsDisplayed);
-                              showLoadingText = numberOfBallotItemsDisplayed === 1;
-                              // console.log('foundInArray:', item.foundInArray);
-                              let foundInItemsAlreadyShown = 0;
-                              let searchWordAlreadyShown = 0;
-                              if (searchText) {
-                                const wordsArray = searchText.split(' ');
-                                searchTextString = wordsArray.map((oneItem) => {
-                                  const foundInStringItem = `${searchWordAlreadyShown ? ' or ' : ''}"${oneItem}"`;
-                                  searchWordAlreadyShown += 1;
-                                  return foundInStringItem;
-                                });
-                              }
-                              isFirstBallotItem = numberOfBallotItemsDisplayed === 1;
-                              return (
-                                <Suspense fallback={<></>} key={key}>
-                                  <DelayedLoad
-                                    showLoadingText={showLoadingText}
-                                    waitBeforeShow={500}
-                                  >
-                                    <>
-                                      {!!(isSearching && searchTextString && item.foundInArray && item.foundInArray.length) && (
-                                        <SearchResultsFoundInExplanation>
-                                          {searchTextString}
-                                          {' '}
-                                          found in
-                                          {' '}
-                                          {item.foundInArray.map((oneItem) => {
-                                            const foundInStringItem = (
-                                              <span key={foundInItemsAlreadyShown}>
-                                                {foundInItemsAlreadyShown ? ', ' : ''}
-                                                {oneItem}
-                                              </span>
-                                            );
-                                            foundInItemsAlreadyShown += 1;
-                                            return foundInStringItem;
-                                          })}
-                                        </SearchResultsFoundInExplanation>
-                                      )}
-                                      <BallotItemCompressed
-                                        ballotItemDisplayName={item.ballot_item_display_name}
-                                        candidateList={item.candidate_list}
-                                        candidatesToShowForSearchResults={item.candidatesToShowForSearchResults}
-                                        id={chipLabelText(item.ballot_item_display_name)}
-                                        isFirstBallotItem={isFirstBallotItem}
-                                        isMeasure={item.kind_of_ballot_item === TYPES.MEASURE}
-                                        totalNumberOfBallotItems={totalNumberOfBallotItems}
-                                        weVoteId={item.we_vote_id}
-                                      />
-                                    </>
-                                  </DelayedLoad>
-                                </Suspense>
-                              );
-                            } else {
+                {/* eslint-disable-next-line no-nested-ternary */}
+                <div className={showBallotDecisionsTabs() ? 'row ballot__body' : isWebApp() || twoColumnDisplay ? 'row ballot__body__no-decision-tabs' : undefined}>
+                  <div className="col-12">
+                    {emptyBallot}
+                  </div>
+                  {ballotWithItemsFromCompletionFilterType.length > 0 ? (
+                    <BallotStatusMessage
+                      ballotLocationChosen
+                      googleCivicElectionId={this.state.googleCivicElectionId}
+                    />
+                  ) : null}
+                  <BallotOverflowWrapper className="col-12" id="ballotRoute-topOfBallot">
+                    {(isSearching && searchText) && (
+                      <SearchTitle>
+                        Searching for &quot;
+                        {searchText}
+                        &quot;
+                      </SearchTitle>
+                    )}
+                    {showCompleteYourProfile && (
+                      <span>
+                        <Suspense fallback={<></>}>
+                          <CompleteYourProfile />
+                        </Suspense>
+                      </span>
+                    )}
+                    <BallotListWrapper>
+                      {/* The rest of the ballot items */}
+                      <div className="BallotList" id="BallotListId">
+                        {(isSearching && ballotSearchResults && ballotSearchResults.length === 0) && (
+                          <SearchResultsEmpty>
+                            Please enter new search terms to find results.
+                          </SearchResultsEmpty>
+                        )}
+                        {(isSearching ? ballotSearchResults : ballotWithItemsFromCompletionFilterType).map((item) => {
+                          // Ballot limited by items by race_office_level = (Federal, State, Local) or kind_of_ballot_item = (Measure)
+                          // console.log('raceLevelFilterType:', raceLevelFilterType, ', item:', item);
+                          if ((raceLevelFilterType === 'All' || isSearching ||
+                            (item.kind_of_ballot_item === raceLevelFilterType.toUpperCase()) ||
+                            raceLevelFilterType === item.race_office_level)) {
+                            // console.log('Ballot item for BallotItemCompressed:', item);
+                            // {...item}
+                            const key = item.we_vote_id;
+                            // console.log('numberOfBallotItemsDisplayed:', numberOfBallotItemsDisplayed, ', numberOfBallotItemsToDisplay:', numberOfBallotItemsToDisplay);
+                            if (numberOfBallotItemsDisplayed >= numberOfBallotItemsToDisplay) {
                               return null;
                             }
-                          })}
-                          {doubleFilteredBallotItemsLength === 0 &&
-                            this.showUserEmptyOptions()}
-                          {!!(totalNumberOfBallotItems) && (
-                            <ShowMoreItemsWrapper id="showMoreItemsId" onClick={() => this.increaseNumberOfBallotItemsToDisplay()}>
-                              <Suspense fallback={<></>}>
-                                <ShowMoreItems
-                                  loadingMoreItemsNow={loadingMoreItems}
-                                  numberOfItemsDisplayed={numberOfBallotItemsDisplayed}
-                                  numberOfItemsTotal={totalNumberOfBallotItems}
-                                />
+                            numberOfBallotItemsDisplayed += 1;
+                            // console.log('numberOfBallotItemsDisplayed: ', numberOfBallotItemsDisplayed);
+                            showLoadingText = numberOfBallotItemsDisplayed === 1;
+                            // console.log('foundInArray:', item.foundInArray);
+                            let foundInItemsAlreadyShown = 0;
+                            let searchWordAlreadyShown = 0;
+                            if (searchText) {
+                              const wordsArray = searchText.split(' ');
+                              searchTextString = wordsArray.map((oneItem) => {
+                                const foundInStringItem = `${searchWordAlreadyShown ? ' or ' : ''}"${oneItem}"`;
+                                searchWordAlreadyShown += 1;
+                                return foundInStringItem;
+                              });
+                            }
+                            isFirstBallotItem = numberOfBallotItemsDisplayed === 1;
+                            return (
+                              <Suspense fallback={<></>} key={key}>
+                                <DelayedLoad
+                                  showLoadingText={showLoadingText}
+                                  waitBeforeShow={500}
+                                >
+                                  <>
+                                    {!!(isSearching && searchTextString && item.foundInArray && item.foundInArray.length) && (
+                                      <SearchResultsFoundInExplanation>
+                                        {searchTextString}
+                                        {' '}
+                                        found in
+                                        {' '}
+                                        {item.foundInArray.map((oneItem) => {
+                                          const foundInStringItem = (
+                                            <span key={foundInItemsAlreadyShown}>
+                                              {foundInItemsAlreadyShown ? ', ' : ''}
+                                              {oneItem}
+                                            </span>
+                                          );
+                                          foundInItemsAlreadyShown += 1;
+                                          return foundInStringItem;
+                                        })}
+                                      </SearchResultsFoundInExplanation>
+                                    )}
+                                    <BallotItemCompressed
+                                      ballotItemDisplayName={item.ballot_item_display_name}
+                                      candidateList={item.candidate_list}
+                                      candidatesToShowForSearchResults={item.candidatesToShowForSearchResults}
+                                      id={chipLabelText(item.ballot_item_display_name)}
+                                      isFirstBallotItem={isFirstBallotItem}
+                                      isMeasure={item.kind_of_ballot_item === TYPES.MEASURE}
+                                      totalNumberOfBallotItems={totalNumberOfBallotItems}
+                                      weVoteId={item.we_vote_id}
+                                    />
+                                  </>
+                                </DelayedLoad>
                               </Suspense>
-                            </ShowMoreItemsWrapper>
-                          )}
-                          {!!(loadingMoreItems && totalNumberOfBallotItems && (numberOfBallotItemsToDisplay < totalNumberOfBallotItems)) && (
-                            <LoadingItemsWheel>
-                              <CircularProgress />
-                            </LoadingItemsWheel>
-                          )}
-                          {(!isSearching && raceLevelFilterType !== 'All') && (
-                            <BallotShowAllItemsFooter
-                              setActiveRaceItem={this.showAllBallotItems}
-                            />
-                          )}
-                        </div>
-                      </BallotListWrapper>
-                      {/* Show links to this candidate in the admin tools */}
-                      { (!twoColumnDisplay) && (this.state.voter && sourcePollingLocationWeVoteId) && (this.state.voter.is_admin || this.state.voter.is_verified_volunteer) ? (
-                        <span className="u-wrap-links d-print-none">
-                          <span>Admin:</span>
-                          <Suspense fallback={<></>}>
-                            <OpenExternalWebSite
-                              linkIdAttribute="ballotReturnedAdminEdit"
-                              url={ballotReturnedAdminEditUrl}
-                              target="_blank"
-                              body={(
-                                <span>
-                                  Ballot copied from polling location &quot;
-                                  {sourcePollingLocationWeVoteId}
-                                  &quot;
-                                </span>
-                              )}
-                            />
-                          </Suspense>
-                        </span>
-                      ) : null}
-                    </div>
-                  </div>
-                </HorizontallyScrollingContainer>
+                            );
+                          } else {
+                            return null;
+                          }
+                        })}
+                        {doubleFilteredBallotItemsLength === 0 &&
+                          this.showUserEmptyOptions()}
+                        {!!(totalNumberOfBallotItems) && (
+                          <ShowMoreItemsWrapper id="showMoreItemsId" onClick={() => this.increaseNumberOfBallotItemsToDisplay()}>
+                            <Suspense fallback={<></>}>
+                              <ShowMoreItems
+                                loadingMoreItemsNow={loadingMoreItems}
+                                numberOfItemsDisplayed={numberOfBallotItemsDisplayed}
+                                numberOfItemsTotal={totalNumberOfBallotItems}
+                              />
+                            </Suspense>
+                          </ShowMoreItemsWrapper>
+                        )}
+                        {!!(loadingMoreItems && totalNumberOfBallotItems && (numberOfBallotItemsToDisplay < totalNumberOfBallotItems)) && (
+                          <LoadingItemsWheel>
+                            <CircularProgress />
+                          </LoadingItemsWheel>
+                        )}
+                        {(!isSearching && raceLevelFilterType !== 'All') && (
+                          <BallotShowAllItemsFooter
+                            setActiveRaceItem={this.showAllBallotItems}
+                          />
+                        )}
+                      </div>
+                    </BallotListWrapper>
+                    {/* Show links to this candidate in the admin tools */}
+                    { (!twoColumnDisplay) && (this.state.voter && sourcePollingLocationWeVoteId) && (this.state.voter.is_admin || this.state.voter.is_verified_volunteer) ? (
+                      <span className="u-wrap-links d-print-none">
+                        <span>Admin:</span>
+                        <Suspense fallback={<></>}>
+                          <OpenExternalWebSite
+                            linkIdAttribute="ballotReturnedAdminEdit"
+                            url={ballotReturnedAdminEditUrl}
+                            target="_blank"
+                            body={(
+                              <span>
+                                Ballot copied from polling location &quot;
+                                {sourcePollingLocationWeVoteId}
+                                &quot;
+                              </span>
+                            )}
+                          />
+                        </Suspense>
+                      </span>
+                    ) : null}
+                  </BallotOverflowWrapper>
+                </div>
               </BallotWrapper>
             </div>
           </PageContentContainer>
@@ -1705,6 +1703,10 @@ const BallotBottomWrapper = styled('div', {
   }
 `));
 
+const BallotOverflowWrapper = styled('div')`
+  overflow-x: hidden;
+`;
+
 const BallotEmptyExplanation = styled('div')(({ theme }) => (`
   ${theme.breakpoints.down('sm')} {
     margin-left: -15px !important;
@@ -1726,6 +1728,20 @@ const BallotLoadingWrapper = styled('div')`
   padding-top: 20px;
   text-align: center;
   margin-bottom: ${() => (isIPhone6p1in() ? '800px' : '625px')};
+`;
+
+const BallotFilterTabs = styled('div')`
+  display: flex;
+  overflow-y: hidden;
+  overflow-x: auto;
+  justify-content: flex-start;
+  margin-top: 8px;
+  /* Make the scrollbar not be visible */
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+  ::-webkit-scrollbar {  /* Chrome, Safari and Opera */
+    display: none;
+  }
 `;
 
 // If we want to turn off filter tabs navigation bar:  {({ showFilterTabs }) => !showFilterTabs && 'height: 0;'}
@@ -1797,11 +1813,5 @@ const BallotWrapper = styled('div', {
   padding-top: ${padTop};
   padding-bottom: ${padBottom};
 `));
-
-// This is a workaround for Android (August 2022), the better solution is having Candidates scroll individually
-const HorizontallyScrollingContainer = styled('div')`
-  overflow-x: scroll;
-  white-space: nowrap;
-`;
 
 export default withTheme(withStyles(styles)(Ballot));

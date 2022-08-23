@@ -15,7 +15,6 @@ import MeasureStore from '../../stores/MeasureStore';
 import SupportStore from '../../stores/SupportStore';
 import { stripHtmlFromString } from '../../utils/textFormat';
 import {
-  OverflowContainer,
   PositionRowListEmptyWrapper,
   PositionRowListInnerWrapper,
   PositionRowListOneWrapper,
@@ -348,50 +347,48 @@ class BallotSharedMeasureItem extends Component {
             </ChoiceSpecificsColumns>
           </MeasureWrapper>
           <PositionRowListOuterWrapper>
-            <OverflowContainer>
-              <PositionRowListInnerWrapper>
+            <PositionRowListInnerWrapper>
+              <PositionRowListOneWrapper>
+                <PositionRowList
+                  ballotItemWeVoteId={measureWeVoteId}
+                  showSupport
+                />
+              </PositionRowListOneWrapper>
+              {voterSupportsBallotItem && (
                 <PositionRowListOneWrapper>
                   <PositionRowList
                     ballotItemWeVoteId={measureWeVoteId}
-                    showSupport
+                    showOppose
                   />
                 </PositionRowListOneWrapper>
-                {voterSupportsBallotItem && (
-                  <PositionRowListOneWrapper>
-                    <PositionRowList
+              )}
+              <PositionRowListOneWrapper>
+                <PositionRowList
+                  ballotItemWeVoteId={measureWeVoteId}
+                  showInfoOnly
+                />
+              </PositionRowListOneWrapper>
+              <PositionRowListEmptyWrapper>
+                <PositionRowEmpty
+                  ballotItemWeVoteId={measureWeVoteId}
+                />
+              </PositionRowListEmptyWrapper>
+              <PositionRowListScoreColumn>
+                <PositionRowListScoreHeader>
+                  Score
+                </PositionRowListScoreHeader>
+                <PositionRowListScoreSpacer>
+                  <Suspense fallback={<></>}>
+                    <BallotItemSupportOpposeScoreDisplay
                       ballotItemWeVoteId={measureWeVoteId}
-                      showOppose
+                      onClickFunction={this.onClickShowOrganizationModalWithPositions}
+                      hideEndorsementsOverview
+                      hideNumbersOfAllPositions
                     />
-                  </PositionRowListOneWrapper>
-                )}
-                <PositionRowListOneWrapper>
-                  <PositionRowList
-                    ballotItemWeVoteId={measureWeVoteId}
-                    showInfoOnly
-                  />
-                </PositionRowListOneWrapper>
-                <PositionRowListEmptyWrapper>
-                  <PositionRowEmpty
-                    ballotItemWeVoteId={measureWeVoteId}
-                  />
-                </PositionRowListEmptyWrapper>
-                <PositionRowListScoreColumn>
-                  <PositionRowListScoreHeader>
-                    Score
-                  </PositionRowListScoreHeader>
-                  <PositionRowListScoreSpacer>
-                    <Suspense fallback={<></>}>
-                      <BallotItemSupportOpposeScoreDisplay
-                        ballotItemWeVoteId={measureWeVoteId}
-                        onClickFunction={this.onClickShowOrganizationModalWithPositions}
-                        hideEndorsementsOverview
-                        hideNumbersOfAllPositions
-                      />
-                    </Suspense>
-                  </PositionRowListScoreSpacer>
-                </PositionRowListScoreColumn>
-              </PositionRowListInnerWrapper>
-            </OverflowContainer>
+                  </Suspense>
+                </PositionRowListScoreSpacer>
+              </PositionRowListScoreColumn>
+            </PositionRowListInnerWrapper>
           </PositionRowListOuterWrapper>
         </MeasureContainer>
       </BallotSharedMeasureItemWrapper>

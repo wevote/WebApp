@@ -16,7 +16,7 @@ import CandidateStore from '../../stores/CandidateStore';
 import SupportStore from '../../stores/SupportStore';
 import { sortCandidateList } from '../../utils/positionFunctions';
 import { Candidate, CandidateBottomRow, CandidateContainer, CandidateInfo, CandidateNameH4, CandidateParty, CandidateWrapper, CandidateTopRow, OfficeNameH2, OfficeItemCompressedWrapper } from '../Style/BallotStyles';
-import { OverflowContainer, PositionRowListEmptyWrapper, PositionRowListInnerWrapper, PositionRowListOneWrapper, PositionRowListOuterWrapper, PositionRowListScoreColumn, PositionRowListScoreHeader, PositionRowListScoreSpacer } from '../Style/PositionRowListStyles';
+import { PositionRowListEmptyWrapper, PositionRowListInnerWrapper, PositionRowListOneWrapper, PositionRowListOuterWrapper, PositionRowListScoreColumn, PositionRowListScoreHeader, PositionRowListScoreSpacer } from '../Style/PositionRowListStyles';
 import InfoCircleIcon from '../Widgets/InfoCircleIcon';
 import signInModalGlobalState from '../Widgets/signInModalGlobalState';
 import PositionRowEmpty from '../Ballot/PositionRowEmpty';
@@ -360,62 +360,59 @@ class BallotSharedOfficeItem extends Component {
                     </CandidateInfo>
                   </CandidateWrapper>
                   <PositionRowListOuterWrapper>
-                    {/*  className="u-show-desktop-tablet" */}
-                    <OverflowContainer>
-                      <PositionRowListInnerWrapper>
-                        <PositionRowListOneWrapper>
-                          <PositionRowList
-                            ballotItemWeVoteId={oneCandidate.we_vote_id}
-                            showSupport
-                          />
-                        </PositionRowListOneWrapper>
-                        <PositionRowListOneWrapper>
-                          <PositionRowList
-                            ballotItemWeVoteId={oneCandidate.we_vote_id}
-                            showOppose
-                            showOpposeDisplayNameIfNoSupport
-                          />
-                        </PositionRowListOneWrapper>
-                        <PositionRowListOneWrapper>
-                          <PositionRowList
-                            ballotItemWeVoteId={oneCandidate.we_vote_id}
-                            showInfoOnly
-                          />
-                        </PositionRowListOneWrapper>
-                        <PositionRowListEmptyWrapper>
-                          <PositionRowEmpty
-                            ballotItemWeVoteId={oneCandidate.we_vote_id}
-                          />
-                        </PositionRowListEmptyWrapper>
-                        <PositionRowListScoreColumn>
-                          <PositionRowListScoreHeader>
-                            <OverlayTrigger
-                              placement="bottom"
-                              overlay={scoreExplanationTooltip}
-                            >
-                              <ScoreWrapper>
-                                <div>
-                                  Score
-                                </div>
-                                <InfoCircleIconWrapper>
-                                  <InfoCircleIcon />
-                                </InfoCircleIconWrapper>
-                              </ScoreWrapper>
-                            </OverlayTrigger>
-                          </PositionRowListScoreHeader>
-                          <PositionRowListScoreSpacer>
-                            <Suspense fallback={<></>}>
-                              <BallotItemSupportOpposeScoreDisplay
-                                ballotItemWeVoteId={oneCandidate.we_vote_id}
-                                onClickFunction={this.onClickShowOrganizationModalWithPositions}
-                                hideEndorsementsOverview
-                                hideNumbersOfAllPositions
-                              />
-                            </Suspense>
-                          </PositionRowListScoreSpacer>
-                        </PositionRowListScoreColumn>
-                      </PositionRowListInnerWrapper>
-                    </OverflowContainer>
+                    <PositionRowListInnerWrapper>
+                      <PositionRowListOneWrapper>
+                        <PositionRowList
+                          ballotItemWeVoteId={oneCandidate.we_vote_id}
+                          showSupport
+                        />
+                      </PositionRowListOneWrapper>
+                      <PositionRowListOneWrapper>
+                        <PositionRowList
+                          ballotItemWeVoteId={oneCandidate.we_vote_id}
+                          showOppose
+                          showOpposeDisplayNameIfNoSupport
+                        />
+                      </PositionRowListOneWrapper>
+                      <PositionRowListOneWrapper>
+                        <PositionRowList
+                          ballotItemWeVoteId={oneCandidate.we_vote_id}
+                          showInfoOnly
+                        />
+                      </PositionRowListOneWrapper>
+                      <PositionRowListEmptyWrapper>
+                        <PositionRowEmpty
+                          ballotItemWeVoteId={oneCandidate.we_vote_id}
+                        />
+                      </PositionRowListEmptyWrapper>
+                      <PositionRowListScoreColumn>
+                        <PositionRowListScoreHeader>
+                          <OverlayTrigger
+                            placement="bottom"
+                            overlay={scoreExplanationTooltip}
+                          >
+                            <ScoreWrapper>
+                              <div>
+                                Score
+                              </div>
+                              <InfoCircleIconWrapper>
+                                <InfoCircleIcon />
+                              </InfoCircleIconWrapper>
+                            </ScoreWrapper>
+                          </OverlayTrigger>
+                        </PositionRowListScoreHeader>
+                        <PositionRowListScoreSpacer>
+                          <Suspense fallback={<></>}>
+                            <BallotItemSupportOpposeScoreDisplay
+                              ballotItemWeVoteId={oneCandidate.we_vote_id}
+                              onClickFunction={this.onClickShowOrganizationModalWithPositions}
+                              hideEndorsementsOverview
+                              hideNumbersOfAllPositions
+                            />
+                          </Suspense>
+                        </PositionRowListScoreSpacer>
+                      </PositionRowListScoreColumn>
+                    </PositionRowListInnerWrapper>
                   </PositionRowListOuterWrapper>
                 </CandidateContainer>
                 {((candidateCount < candidatesToRenderLength) && (candidateCount < limitNumberOfCandidatesShownToThisNumber)) && (

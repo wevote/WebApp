@@ -304,8 +304,10 @@ const OrganizationName = styled('div')`
   color: #999;
   font-size: 12px;
   line-height: 12px;
+  overflow-wrap: normal;
   padding: 0 3px;
   text-align: center;
+  white-space: normal;
 `;
 
 const OrganizationNameWrapper = styled('div', {

@@ -19,7 +19,6 @@ import VoterStore from '../../../stores/VoterStore';
 import PositionPublicToggle from '../PositionPublicToggle';
 import ShareButtonDropDown from '../ShareButtonDropdown';
 import { openSnackbar } from '../SnackNotifier';
-// import ChooseOrOppose from './ChooseOrOpposeIntroModal';
 
 const shareIconSvg = '../../../../img/global/svg-icons/share-icon.svg';
 
@@ -42,6 +41,7 @@ class ItemActionBar extends PureComponent {
     };
     this.isOpposeCalculated = this.isOpposeCalculated.bind(this);
     this.isSupportCalculated = this.isSupportCalculated.bind(this);
+    // this.onScroll = this.onScroll.bind(this);
     this.opposeItem = this.opposeItem.bind(this);
     this.supportItem = this.supportItem.bind(this);
     this.opposeButton = this.opposeButton.bind(this);
@@ -80,6 +80,7 @@ class ItemActionBar extends PureComponent {
       numberOfSupportPositionsForScore,
       voterTextStatement,
     }, this.onNewBallotItemWeVoteId);
+    // window.addEventListener('scroll', this.onScroll);
     this.supportStoreListener = SupportStore.addListener(this.onSupportStoreChange.bind(this));
   }
 
@@ -101,6 +102,7 @@ class ItemActionBar extends PureComponent {
   }
 
   componentWillUnmount () {
+    // window.removeEventListener('scroll', this.onScroll);
     this.supportStoreListener.remove();
   }
 
@@ -108,6 +110,18 @@ class ItemActionBar extends PureComponent {
     // After updating the ballotItemWeVoteId, refresh this data
     this.onSupportStoreChange();
   }
+
+  // onScroll () {
+  //   console.log('onScroll');
+  //   if (this.opposeButtonPopover) {
+  //     console.log('opposeButtonPopover.hide');
+  //     this.opposeButtonPopover.hide();
+  //   }
+  //   if (this.supportButtonPopover) {
+  //     console.log('supportButtonPopover.hide');
+  //     this.supportButtonPopover.hide();
+  //   }
+  // }
 
   onSupportStoreChange () {
     const { ballotItemWeVoteId, isOpposeAPIState, isSupportAPIState, isOpposeLocalState, isSupportLocalState } = this.state;
@@ -682,13 +696,15 @@ class ItemActionBar extends PureComponent {
                 {/* Visible on desktop screens */}
                 {buttonsOnly ? (
                   <StackedButton className="d-none d-lg-block" onlyTwoButtons={commentButtonHide}>
-                    {/* <OverlayTrigger placement="top" overlay={supportButtonPopoverTooltip}>
-                    </OverlayTrigger> */}
                     {ballotItemType === 'CANDIDATE' ? this.supportButtonNoText(`desktopVersion-${ballotItemWeVoteId}`) : this.measureYesButtonNoText(`desktopVersion-${ballotItemWeVoteId}`)}
                   </StackedButton>
                 ) : (
                   <ButtonWrapper className="u-push--xs d-none d-lg-block">
-                    <OverlayTrigger placement="top" overlay={supportButtonPopoverTooltip}>
+                    <OverlayTrigger
+                      overlay={supportButtonPopoverTooltip}
+                      placement="top"
+                      rootClose
+                    >
                       {ballotItemType === 'CANDIDATE' ? this.supportButton(`desktopVersion-${ballotItemWeVoteId}`) : this.measureYesButton(`desktopVersion-${ballotItemWeVoteId}`)}
                     </OverlayTrigger>
                   </ButtonWrapper>
@@ -716,7 +732,11 @@ class ItemActionBar extends PureComponent {
                   </StackedButton>
                 ) : (
                   <ButtonWrapperRight className="d-none d-lg-block">
-                    <OverlayTrigger placement="top" overlay={opposeButtonPopoverTooltip}>
+                    <OverlayTrigger
+                      overlay={opposeButtonPopoverTooltip}
+                      placement="top"
+                      rootClose
+                    >
                       {ballotItemType === 'CANDIDATE' ? this.opposeButton(`desktopVersion-${ballotItemWeVoteId}`) : this.measureNoButton(`desktopVersion-${ballotItemWeVoteId}`)}
                     </OverlayTrigger>
                   </ButtonWrapperRight>
