@@ -20,6 +20,7 @@ class SignInModal extends Component {
       isSignedIn: null,
       showSignInModalSimple: false,
     };
+    this.toggleSignInModalSimple = this.toggleSignInModalSimple.bind(this);
   }
 
   componentDidMount () {
@@ -128,6 +129,7 @@ class SignInModal extends Component {
                     <SignInOptionsPanel
                       pleaseSignInTitle={signInTitle}
                       pleaseSignInSubTitle={signInSubTitle}
+                      closeSignInModal={this.toggleSignInModalSimple}
                       inModal
                     />
                   </Suspense>

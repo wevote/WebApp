@@ -96,9 +96,7 @@ class SettingsVerifySecretCode extends Component {
 
   componentWillUnmount () {
     // console.log('SettingsVerifySecretCode componentWillUnmount');
-    if (isCordova()) {
-      this.closeVerifyModalLocal();
-    }
+    this.closeVerifyModalLocal();
     this.voterStoreListener.remove();
     if (this.closeVerifyModalLocalTimer) {
       clearTimeout(this.closeVerifyModalLocalTimer);

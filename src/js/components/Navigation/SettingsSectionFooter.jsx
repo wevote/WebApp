@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import OpenExternalWebSite from '../../common/components/Widgets/OpenExternalWebSite';
-import { isWebApp } from '../../common/utils/isCordovaOrWebApp';
+import { isCordova, isWebApp } from '../../common/utils/isCordovaOrWebApp';
 import { renderLog } from '../../common/utils/logging';
 import AppObservableStore from '../../stores/AppObservableStore';
 import { TermsAndPrivacyText } from '../Style/pageLayoutStyles';
@@ -111,12 +111,14 @@ class SettingsSectionFooter extends Component {
         <DoesNotSupport centered={centered}>
           We Vote does not support or oppose any political candidate or party.
         </DoesNotSupport>
-        <DoesNotSupport centered={centered}>
-          <span className="hamburger-terms__text" onClick={() => this.deviceTableVisibilityOn()} style={{ color: 'black', opacity: '0.7', fontSize: '10px' }}>
-            Device Information
-          </span>
-          <DeviceDialog visibilityOffFunction={this.deviceTableVisibilityOff} show={this.state.showDeviceDialog} />
-        </DoesNotSupport>
+        { isCordova() && (
+          <DoesNotSupport centered={centered}>
+            <span className="hamburger-terms__text" onClick={() => this.deviceTableVisibilityOn()} style={{ color: 'black', opacity: '0.7', fontSize: '10px' }}>
+              Device Information
+            </span>
+            <DeviceDialog visibilityOffFunction={this.deviceTableVisibilityOff} show={this.state.showDeviceDialog} />
+          </DoesNotSupport>
+        )}
       </Wrapper>
     );
   }
