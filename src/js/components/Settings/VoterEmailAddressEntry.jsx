@@ -222,6 +222,7 @@ class VoterEmailAddressEntry extends Component {
 
   closeVerifyModal = () => {
     // console.log('VoterEmailAddressEntry closeVerifyModal');
+    // Why going through VoterStore instead of VoterActions?
     VoterStore.clearEmailAddressStatus();
     VoterStore.clearSecretCodeVerificationStatus();
     this.setState({
@@ -232,9 +233,10 @@ class VoterEmailAddressEntry extends Component {
       showVerifyModal: false,
       signInCodeEmailSentAndWaitingForResponse: false,
     });
-    if (this.props.closeSignInModal) {
-      this.props.closeSignInModal();
-    }
+    // TODO Discuss this
+    // if (this.props.closeSignInModal) {
+    //   this.props.closeSignInModal();
+    // }
   };
 
   updateVoterEmailAddress = (event) => {
@@ -489,7 +491,7 @@ class VoterEmailAddressEntry extends Component {
                 <div key={voterEmailAddressFromList.email_we_vote_id}>
                   <span
                     className="u-link-color u-cursor--pointer u-no-break"
-                    onClick={this.setAsPrimaryEmailAddress.bind(this, voterEmailAddressFromList.email_we_vote_id)}
+                    onClick={() => this.setAsPrimaryEmailAddress.bind(this, voterEmailAddressFromList.email_we_vote_id)}
                   >
                     Make Primary
                     <span style={{ paddingRight: '65px' }}>&nbsp;</span>
@@ -498,7 +500,7 @@ class VoterEmailAddressEntry extends Component {
                     <TrashCan>
                       <span
                         className="u-link-color u-cursor--pointer"
-                        onClick={this.removeVoterEmailAddress.bind(this, voterEmailAddressFromList.email_we_vote_id)}
+                        onClick={() => this.removeVoterEmailAddress.bind(this, voterEmailAddressFromList.email_we_vote_id)}
                       >
                         <Delete />
                       </span>
@@ -539,7 +541,7 @@ class VoterEmailAddressEntry extends Component {
                     {allowRemoveEmail && (
                       <TrashCan
                         className="u-link-color u-cursor--pointer"
-                        onClick={this.removeVoterEmailAddress(voterEmailAddressFromList.email_we_vote_id)}
+                        onClick={() => this.removeVoterEmailAddress(voterEmailAddressFromList.email_we_vote_id)}
                       >
                         <Delete />
                       </TrashCan>

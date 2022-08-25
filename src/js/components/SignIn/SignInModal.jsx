@@ -52,9 +52,10 @@ class SignInModal extends Component {
   uponSuccessfulSignInLocal = (isSignedIn) => {
     if (this.props.uponSuccessfulSignIn && isSignedIn) {
       this.props.uponSuccessfulSignIn();
-      this.setState({
-        showSignInModalSimple: false,
-      });
+      // TODO Discuss this
+      // this.setState({
+      //   showSignInModalSimple: false,
+      // });
     }
   }
 
