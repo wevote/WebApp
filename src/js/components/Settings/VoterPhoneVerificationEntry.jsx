@@ -176,6 +176,7 @@ class VoterPhoneVerificationEntry extends Component {
 
   closeVerifyModal = () => {
     // console.log('VoterPhoneVerificationEntry closeVerifyModal');
+    // Why going through VoterStore instead of VoterActions?
     VoterStore.clearSMSPhoneNumberStatus();
     VoterStore.clearSecretCodeVerificationStatus();
     this.setState({
@@ -185,9 +186,10 @@ class VoterPhoneVerificationEntry extends Component {
       showVerifyModal: false,
       signInCodeSMSSentAndWaitingForResponse: false,
     });
-    if (this.props.closeSignInModal) {
-      this.props.closeSignInModal();
-    }
+    // TODO Discuss this
+    // if (this.props.closeSignInModal) {
+    //   this.props.closeSignInModal();
+    // }
   };
 
   hidePhoneVerificationButton = () => {
@@ -503,7 +505,7 @@ class VoterPhoneVerificationEntry extends Component {
               {!isPrimarySMSPhoneNumber && (
                 <span
                    className="u-link-color u-cursor--pointer"
-                   onClick={this.setAsPrimarySMSPhoneNumber.bind(this, voterSMSPhoneNumberFromList.sms_we_vote_id)}
+                   onClick={() => this.setAsPrimarySMSPhoneNumber.bind(this, voterSMSPhoneNumberFromList.sms_we_vote_id)}
                 >
                   Make Primary
                 </span>
