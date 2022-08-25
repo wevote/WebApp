@@ -233,10 +233,9 @@ class VoterEmailAddressEntry extends Component {
       showVerifyModal: false,
       signInCodeEmailSentAndWaitingForResponse: false,
     });
-    // TODO Discuss this
-    // if (this.props.closeSignInModal) {
-    //   this.props.closeSignInModal();
-    // }
+    if (isCordova()) {
+      this.closeSignInModal();
+    }
   };
 
   updateVoterEmailAddress = (event) => {
