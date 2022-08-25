@@ -186,10 +186,9 @@ class VoterPhoneVerificationEntry extends Component {
       showVerifyModal: false,
       signInCodeSMSSentAndWaitingForResponse: false,
     });
-    // TODO Discuss this
-    // if (this.props.closeSignInModal) {
-    //   this.props.closeSignInModal();
-    // }
+    if (isCordova()) {
+      this.closeSignInModal();
+    }
   };
 
   hidePhoneVerificationButton = () => {
