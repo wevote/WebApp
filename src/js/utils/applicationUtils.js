@@ -1,6 +1,7 @@
 import { isIOSAppOnMac } from '../common/utils/cordovaUtils';
 import { normalizedHrefPage } from '../common/utils/hrefUtils';
 import { isCordova, isWebApp } from '../common/utils/isCordovaOrWebApp';
+import { isSmallerThanTablet } from '../common/utils/isMobileScreenSize';
 import normalizedImagePath from '../common/utils/normalizedImagePath';
 import Cookies from '../common/utils/js-cookie/Cookies';
 import stringContains from '../common/utils/stringContains';
@@ -11,7 +12,7 @@ import VoterStore from '../stores/VoterStore';
 // Based on the pathname parameter, decide if we want theaterMode, contentFullWidthMode, or voterGuideMode
 export function getApplicationViewBooleans (pathname) {
   // We don't want to do all the work to create the footer, fire off api queries, etc., only to then set "display: none" based on a breakpoint!
-  const isSmallScreen = window.screen.width < 992;
+  const isSmallScreen = isSmallerThanTablet(); // was ... window.screen.width < 992;
   let inTheaterMode = false;
   let contentFullWidthMode = false;
   let extensionPageMode = false;
@@ -180,7 +181,7 @@ export function getApplicationViewBooleans (pathname) {
   let showFooterBar;
   // console.log('stringContains(\'/settings/positions\', pathnameLowerCase):', stringContains('/settings/positions', pathnameLowerCase), pathnameLowerCase);
   if (!pathnameLowerCase) {
-    showFooterBar = isCordova();
+    showFooterBar = isCordova() && isSmallerThanTablet();
   } else if (extensionPageMode) {
     showFooterBar = false;
   // ///////// EXCLUDE: The following are URLS we want to specifically exclude (because otherwise they will be picked up in a broader pattern in the next branch

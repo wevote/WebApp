@@ -274,7 +274,7 @@ const styles = (theme) => ({
     height: '80%',
     width: '90%',
     maxWidth: '1200px',
-    [theme.breakpoints.down('xs')]: {
+    [theme.breakpoints.down('md')]: {
       minWidth: '95%',
       maxWidth: '95%',
       width: '95%',

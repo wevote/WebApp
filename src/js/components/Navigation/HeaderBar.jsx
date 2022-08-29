@@ -12,7 +12,7 @@ import apiCalming from '../../common/utils/apiCalming';
 import { hasIPhoneNotch, historyPush, isDeviceZoomed, isIOS, isIOSAppOnMac } from '../../common/utils/cordovaUtils';
 import { normalizedHref, normalizedHrefPage } from '../../common/utils/hrefUtils';
 import { isCordova, isWebApp } from '../../common/utils/isCordovaOrWebApp';
-import isMobileScreenSize from '../../common/utils/isMobileScreenSize';
+import isMobileScreenSize, { isSmallTablet, isTablet } from '../../common/utils/isMobileScreenSize';
 import { renderLog } from '../../common/utils/logging';
 import voterPhoto from '../../common/utils/voterPhoto';
 import AnalyticsStore from '../../stores/AnalyticsStore';
@@ -480,7 +480,13 @@ class HeaderBar extends Component {
     // }
 
     const isFriends = normalizedHrefPage() === 'friends';  // The URL '/friends/request' yields 'friends'
-
+    let avatarStyle = {};
+    if (isCordova()) {
+      avatarStyle = { marginBottom: 2 };
+    }
+    if (isSmallTablet()) {
+      avatarStyle = { ...avatarStyle, paddingRight: 10 };
+    }
     // console.log('HeaderBar hasNotch, scrolledDown, hasSubmenu', hasIPhoneNotch(), scrolledDown, displayTopMenuShadow());
     return (
       <HeaderBarWrapper
@@ -504,8 +510,10 @@ class HeaderBar extends Component {
                 // isBeta={showWeVoteLogo && !chosenSiteLogoUrl}
               />
             )}
-            <div className="header-nav" style={isMobileScreenSize() ? { display: 'none' } : {}}>
-              { !isMobileScreenSize()  && (
+          </TopRowOneLeftContainer>
+          <TopRowOneMiddleContainer>
+            <div className="header-nav" style={isMobileScreenSize() || !isTablet() ? { display: 'none' } : {}}>
+              { (!isMobileScreenSize() || isTablet()) && (
                 <Tabs
                   className={isIOSAppOnMac() ? '' : 'u-show-desktop'}
                   value={tabsValue}
@@ -546,8 +554,7 @@ class HeaderBar extends Component {
                 </Tabs>
               )}
             </div>
-          </TopRowOneLeftContainer>
-          <TopRowOneMiddleContainer />
+          </TopRowOneMiddleContainer>
           <TopRowOneRightContainer className="u-cursor--pointer">
             {voterIsSignedIn && voterPhotoUrlMedium ? (
               <>
@@ -566,7 +573,7 @@ class HeaderBar extends Component {
                 </Suspense>
                 <div id="profileAvatarHeaderBar"
                   className={`header-nav__avatar-container ${isCordova() ? 'header-nav__avatar-cordova' : undefined}`}
-                  style={isCordova() ? { marginBottom: 2 } : {}}
+                  style={avatarStyle}
                   onClick={this.goToSettings}
                 >
                   <LazyImage
@@ -704,18 +711,63 @@ const styles = (theme) => ({
   },
   tabRootBallot: {
     minWidth: 90,
+    [theme.breakpoints.between('tabMin', 'tabMdMin')]: { // Small Tablets
+      minWidth: 0,
+      fontSize: 20,
+      padding: '16px 8px 10px 8px',
+    },
+    [theme.breakpoints.between('tabMdMin', 'tabLgMin')]: { // Medium Tablets
+      fontSize: 20,
+      padding: '16px 16px 10px 16px',
+    },
+    [theme.breakpoints.between('tabLgMin', 'tabMax')]: { // Larger Tablets
+      fontSize: 24,
+    },
   },
   tabRootFriends: {
     minWidth: 90,
-  },
-  tabRootHowItWorks: {
-    minWidth: 70,
-  },
-  tabRootReady: {
-    minWidth: 90,
+    [theme.breakpoints.between('tabMin', 'tabMdMin')]: { // Small Tablets
+      minWidth: 0,
+      fontSize: 20,
+      padding: '16px 8px 10px 8px',
+    },
+    [theme.breakpoints.between('tabMdMin', 'tabLgMin')]: { // Medium Tablets
+      fontSize: 20,
+      padding: '16px 16px 10px 16px',
+    },
+    [theme.breakpoints.between('tabLgMin', 'tabMax')]: { // Larger Tablets
+      fontSize: 24,
+    },
   },
   tabRootNews: {
     minWidth: 70,
+    [theme.breakpoints.between('tabMin', 'tabMdMin')]: { // Small Tablets
+      minWidth: 0,
+      fontSize: 20,
+      padding: '16px 8px 10px 8px',
+    },
+    [theme.breakpoints.between('tabMdMin', 'tabLgMin')]: { // Medium Tablets
+      fontSize: 20,
+      padding: '16px 16px 10px 16px',
+    },
+    [theme.breakpoints.between('tabLgMin', 'tabMax')]: { // Larger Tablets
+      fontSize: 24,
+    },
+  },
+  tabRootHowItWorks: {
+    minWidth: 70,
+    [theme.breakpoints.between('tabMin', 'tabMdMin')]: { // Small Tablets
+      minWidth: 0,
+      fontSize: 20,
+      padding: '16px 8px 10px 8px',
+    },
+    [theme.breakpoints.between('tabMdMin', 'tabLgMin')]: { // Medium Tablets
+      fontSize: 20,
+      padding: '16px 16px 10px 16px',
+    },
+    [theme.breakpoints.between('tabLgMin', 'tabMax')]: { // Larger Tablets
+      fontSize: 24,
+    },
   },
   indicator: {
     display: 'none',

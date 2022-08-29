@@ -17,9 +17,9 @@ export const IOSNotchedSpacer = styled('div')`
   height: ${() => ((isIPhone5p5inMini()) ? '40px' : '36px')};
   top: 0;
   position: fixed;
-  //background: white;
+  background: white;
   width: 100%;
-  opacity: 0;
+  opacity: 1;
   z-index: 1300;
 `;
 
@@ -156,18 +156,17 @@ export const TopOfPageHeader = styled('div')(({ theme }) => (`
 `));
 
 export const TopRowOneLeftContainer = styled('div')`
-  // grid-row-start: 1;
-  // grid-row-end: 1;
-  // grid-column: 1 / 2;
-  display: flex;
-  justify-content: flex-start;
+   grid-row-start: 1;
+   grid-row-end: 1;
+   grid-column: 1 / 2;
+  //display: flex;
+  //justify-content: flex-start;
 `;
 
 export const TopRowOneMiddleContainer = styled('div')`
   grid-row-start: 1;
   grid-row-end: 1;
   grid-column: 2 / 3;
-  //display: ${() => ((isMobileScreenSize()) ? 'none' : null)};
 `;
 
 export const TopRowOneRightContainer = styled('div')`

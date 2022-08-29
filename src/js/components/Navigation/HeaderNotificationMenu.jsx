@@ -1,5 +1,5 @@
 import { Notifications } from '@mui/icons-material';
-import { Badge, IconButton, Menu, MenuItem } from '@mui/material';
+import { Badge, Button, IconButton, Menu, MenuItem } from '@mui/material';
 import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
@@ -10,6 +10,7 @@ import { isIOSAppOnMac, setIconBadgeMessageCount } from '../../common/utils/cord
 import { timeFromDate } from '../../common/utils/dateFormat';
 import historyPush from '../../common/utils/historyPush';
 import { isWebApp } from '../../common/utils/isCordovaOrWebApp';
+import { isTablet } from '../../common/utils/isMobileScreenSize';
 import { renderLog } from '../../common/utils/logging';
 import returnFirstXWords from '../../common/utils/returnFirstXWords';
 import ActivityStore from '../../stores/ActivityStore';
@@ -254,6 +255,7 @@ class HeaderNotificationMenu extends Component {
     });
   }
 
+
   render () {
     renderLog('HeaderNotificationMenu');  // Set LOG_RENDER_EVENTS to log all renders
     // console.log('HeaderNotificationMenu render');
@@ -269,6 +271,7 @@ class HeaderNotificationMenu extends Component {
           id="headerNotificationMenuIcon"
           onClick={this.handleClick}
           size="large"
+          sx={isTablet() && { marginTop: '5px', marginRight: '12px' }}
         >
           {allActivityNoticesNotSeenCount ? (
             <Badge
@@ -283,10 +286,10 @@ class HeaderNotificationMenu extends Component {
                 height: 40,
               }}
             >
-              <Notifications />
+              <StyledNotifications />
             </Badge>
           ) : (
-            <Notifications />
+            <StyledNotifications />
           )}
         </IconButton>
         <Menu
@@ -399,6 +402,15 @@ const ActivityTime = styled('div')`
   font-size: 11px;
   font-weight: 400;
 `;
+
+const StyledNotifications = styled(Notifications)(({ theme }) => (`
+  ${[theme.breakpoints.between('tabMin', 'tabLgMin')]}: {     // iPad mini (744), 9.7" (768), 11" (834)
+      font-size: '25px';
+  }
+  ${[theme.breakpoints.between('tabMin', 'tabLgMin')]}: {     // iPad Pro 12.9" (1024)
+      font-size: '32px';
+  }
+`));
 
 const BadgeCountWrapper = styled('span')`
   margin-top: -3px;

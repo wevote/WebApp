@@ -11540,7 +11540,8 @@ h1, h2, h3, h4, h5, h6 {
   }
 }
 
-@media all and (max-width: 991px) {
+{/* Keep synchronized with the size of isSmallerThanTablet(). If the width is less than 740, then don't show the component */}
+@media all and (max-width: 740px) {
   .u-show-desktop {
     display: none !important;
   }
@@ -14543,6 +14544,15 @@ a {
   }
 }
 
+{/* Tablets */}
+@media all and (min-width: 760px) and (max-width: 1030px) {
+  .header-logo-img {
+    max-width: 165px;
+    max-height: 62px;
+    height: 54px;
+  }
+}
+
 @media all and (max-width: 319px) {
   .header-logo-img {
     max-width: 100px;
@@ -16478,6 +16488,13 @@ a {
   }
 }
 
+/* iPadMini is 744 */
+@media all and (min-width: 740px) and (max-width: 840px) {
+  .header-nav {
+    margin-left: 0px;
+  }
+}
+
 .header-nav__label {
   display: block;
   font-size: 10px;
@@ -16561,6 +16578,27 @@ a {
   min-width: 24px;
   max-width: 34px;
 }
+
+{/* Medium Tablets, https://yesviz.com/devices.php */}
+@media all and (min-width: 760px) and (max-width: 840px) {
+  .header-nav__avatar {
+    width: 40px;
+    max-width: 40px;
+    height: 40px;
+    border-radius: 20px;
+  }
+}
+
+{/* Larger Tablets */}
+@media all and (min-width: 840px) and (max-width: 1030px) {
+  .header-nav__avatar {
+    width: 44px;
+    max-width: 44px;
+    height: 44px;
+    border-radius: 22px;
+  }
+}
+
 
 @media all and (max-width: 479px) {
   .header-nav__avatar {

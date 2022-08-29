@@ -5,6 +5,7 @@ import { isIOSAppOnMac, isIPad, isCordovaWide, isAndroidSizeWide } from '../../c
 import historyPush from '../../common/utils/historyPush';
 import { normalizedHref } from '../../common/utils/hrefUtils';
 import { isCordova, isWebApp } from '../../common/utils/isCordovaOrWebApp';
+import { isTablet } from '../../common/utils/isMobileScreenSize';
 import { renderLog } from '../../common/utils/logging';
 import AppObservableStore, { messageService } from '../../stores/AppObservableStore';
 import VoterStore from '../../stores/VoterStore';
@@ -352,7 +353,7 @@ export default class Header extends Component {
                       </Suspense>
                     </span>
                   )}
-                  { (isCordovaWide() || (isWebApp() && !showBackToVoterGuides && !showBackToSettingsDesktop)) && (
+                  { (isCordovaWide() || isTablet() || (isWebApp() && !showBackToVoterGuides && !showBackToSettingsDesktop)) && (
                     <span className="BackToSettingsMobileDesktopSpan u-show-desktop">
                       <Suspense fallback={<></>}>
                         <HeaderBar />

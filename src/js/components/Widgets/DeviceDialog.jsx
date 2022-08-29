@@ -54,7 +54,6 @@ class DeviceDialog extends Component {
     if (!this.props.show) {
       return null;
     }
-    const { diameter } = window.pbakondyScreenSize;
 
     return (
       <Dialog
@@ -84,7 +83,7 @@ class DeviceDialog extends Component {
               </TableRow>
               <TableRow>
                 <TableCell>Usable Screen Size</TableCell>
-                <TableCell>{diameter}</TableCell>
+                <TableCell>{window.devicePixelRatio || 'n/a'}</TableCell>
               </TableRow>
               {isAndroid() && (
                 <TableRow>
