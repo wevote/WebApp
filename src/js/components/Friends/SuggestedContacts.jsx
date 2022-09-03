@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
 import styled from 'styled-components';
+import { isCordova } from '../../common/utils/isCordovaOrWebApp';
 import { renderLog } from '../../common/utils/logging';
 import VoterStore from '../../stores/VoterStore';
 import { SectionDescription, SectionTitle } from '../Style/friendStyles';
@@ -49,7 +50,7 @@ export default class SuggestedContacts extends Component {
             </div>
           </SuggestedContactsWrapper>
         ) : (
-          <SuggestedContactsWrapper>
+          <SuggestedContactsWrapper style={isCordova() ? { display: 'none' } : {}}>
             <SectionTitle>
               Find Your Contacts on We Vote
             </SectionTitle>

@@ -3,11 +3,9 @@ import withStyles from '@mui/styles/withStyles';
 import { loadGapiInsideDOM } from 'gapi-script';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import GoogleButton from 'react-google-button';
-import Helmet from 'react-helmet';
 import styled from 'styled-components';
+import GoogleButton from 'react-google-button';
 import VoterActions from '../../actions/VoterActions';
-import { isWebApp } from '../../common/utils/isCordovaOrWebApp';
 import { renderLog } from '../../common/utils/logging';
 import webAppConfig from '../../config'; // eslint-disable-line import/no-cycle
 import AddContactConsts from '../../constants/AddContactConsts';
@@ -27,13 +25,10 @@ class AddContactsFromGoogleButton extends Component {
   componentDidMount () {
     this.onVoterStoreChange();
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
-    if (isWebApp()) {
-      loadGapiInsideDOM().then(() => {
-        console.log('AddContactsFromGoogleButton loadGapiInsideDOM onload:');
-        window.gapi.load('client:auth2', this.initClient.bind(this));
-        console.log('AddContactsFromGoogleButton loadGapiInsideDOM after onload window.gapi:', window.gapi);
-      });
-    }
+    loadGapiInsideDOM().then(() => {
+      console.log('loadGapiInsideDOM onload');
+      window.gapi.load('client:auth2', this.initClient.bind(this));
+    });
   }
 
   componentWillUnmount () {
@@ -95,7 +90,7 @@ class AddContactsFromGoogleButton extends Component {
     const { gapi } = window;
     // 2022-06-23 We always want to give the voter a chance to choose another account to import from
     const isSignedIn = gapi.auth2.getAuthInstance().isSignedIn.get();
-    console.log('onButtonClick isSignedIn:', isSignedIn);
+    // console.log('onButtonClick isSignedIn:', isSignedIn);
     if (isSignedIn) {
       // console.log('Getting contacts from Google on button click, since we were logged into Google');
       this.getOtherConnections();
@@ -216,15 +211,12 @@ class AddContactsFromGoogleButton extends Component {
     const GOOGLE_PEOPLE_API_KEY = webAppConfig.GOOGLE_PEOPLE_API_KEY || '';
     const DISCOVERY_DOCS = ['https://www.googleapis.com/discovery/v1/apis/people/v1/rest'];
     const SCOPES = 'https://www.googleapis.com/auth/contacts.other.readonly';
-    // const REDIRECT_URI = isWebApp() ? window.location.href : 'https://wevote.us/';
 
     gapi.client.init({
       apiKey: GOOGLE_PEOPLE_API_KEY,
       clientId: GOOGLE_PEOPLE_API_CLIENT_ID,
       discoveryDocs: DISCOVERY_DOCS,
       scope: SCOPES,
-      cookie_policy: 'https://wevote.us',
-      plugin_name: 'WeVoteDummy',
     }).then(() => {
       // Listen for sign-in state changes.
       this.googleSignInListener = gapi.auth2.getAuthInstance().isSignedIn.listen(this.onGoogleSignIn);
@@ -242,25 +234,6 @@ class AddContactsFromGoogleButton extends Component {
       gapi.auth2.getAuthInstance().signOut();
     });
   }
-
-  cordovaSignOn () {
-    const GOOGLE_PEOPLE_API_CLIENT_ID = webAppConfig.GOOGLE_PEOPLE_API_CLIENT_ID || '';
-    // const GOOGLE_PEOPLE_API_KEY = webAppConfig.GOOGLE_PEOPLE_API_KEY || '';
-    // const DISCOVERY_DOCS = ['https://www.googleapis.com/discovery/v1/apis/people/v1/rest'];
-    const SCOPES = 'https://www.googleapis.com/auth/contacts.other.readonly';
-    window.plugins.googleplus.login({
-      scopes: SCOPES,
-      webClientId: GOOGLE_PEOPLE_API_CLIENT_ID,
-      offline: false, // optional, but requires the webClientId - if set to true the plugin will also return a serverAuthCode, which can be used to grant offline access to a non-Google server
-    },
-    (obj) => {
-      alert(`Sign in Successful${JSON.stringify(obj)}`); // do something useful instead of alerting
-    },
-    (msg) => {
-      alert(`Sign in error: ${msg}`);
-    });
-  }
-
 
   render () {
     renderLog('AddContactsFromGoogleButton');  // Set LOG_RENDER_EVENTS to log all renders
@@ -283,9 +256,6 @@ class AddContactsFromGoogleButton extends Component {
     } else {
       return (
         <AddContactsFromGoogleWrapper>
-          <Helmet>
-            <meta property="Content-Security-Policy" content="frame-src https://content.googleapis.com/*; " />
-          </Helmet>
           {(addContactsState === AddContactConsts.permissionDenied) && (
             <>
               <PermissionDeniedTitle>
@@ -313,7 +283,7 @@ class AddContactsFromGoogleButton extends Component {
           <GoogleButton
             id="addContactsFromGoogle"
             label="Sign in with Google"
-            onClick={isWebApp() ? this.onButtonClick : this.cordovaSignOn}
+            onClick={this.onButtonClick}
             type={darkButton ? 'dark' : 'light'}
           />
         </AddContactsFromGoogleWrapper>
