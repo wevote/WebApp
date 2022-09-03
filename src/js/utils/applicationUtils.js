@@ -1,7 +1,7 @@
 import { isIOSAppOnMac } from '../common/utils/cordovaUtils';
 import { normalizedHrefPage } from '../common/utils/hrefUtils';
 import { isCordova, isWebApp } from '../common/utils/isCordovaOrWebApp';
-import { isSmallerThanTablet } from '../common/utils/isMobileScreenSize';
+import { isSmallerThanTablet, isTablet } from '../common/utils/isMobileScreenSize';
 import normalizedImagePath from '../common/utils/normalizedImagePath';
 import Cookies from '../common/utils/js-cookie/Cookies';
 import stringContains from '../common/utils/stringContains';
@@ -235,7 +235,7 @@ export function getApplicationViewBooleans (pathname) {
       pathnameLowerCase.startsWith('/settings/yourdata') ||
       pathnameLowerCase.startsWith('/settings')) {
     // We want to SHOW the footer bar on the above path patterns
-    showFooterBar = isWebApp() || (!isIOSAppOnMac() && isSmallScreen);
+    showFooterBar = !isTablet() && (isWebApp() || (!isIOSAppOnMac() && isSmallScreen));
   } else {
     // URLs like: https://WeVote.US/orlandosentinel  (The URL pathname consists of a Twitter Handle only)
     contentFullWidthMode = true;

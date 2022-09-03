@@ -1,11 +1,12 @@
-import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Table, TableBody, TableCell, TableHead, TableRow } from '@mui/material';
+import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Table, TableBody, TableCell, TableHead, TableRow, TextField } from '@mui/material';
 import withStyles from '@mui/styles/withStyles';
 import withTheme from '@mui/styles/withTheme';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
-import { getAndroidSize, hasIPhoneNotch, isAndroid } from '../../common/utils/cordovaUtils';
+import { getAndroidSize, hasIPhoneNotch, isAndroid, isSimulator } from '../../common/utils/cordovaUtils';
+import historyPush from '../../common/utils/historyPush';
 import { renderLog } from '../../common/utils/logging';
 import compileDate from '../../compileDate';
 import VoterStore from '../../stores/VoterStore';
@@ -45,6 +46,13 @@ class DeviceDialog extends Component {
   handleClose () {
     console.log('Cordova device handleClose() was called');
     this.props.show = false;
+  }
+
+  jumpTo () {    // /findfriends/set_up_page
+    const { $ } = window;
+    const val = $('#outlinedJump').val();  // none
+    console.log('DeviceDialog jumpTo historyPush', val);
+    historyPush(val);
   }
 
 
@@ -157,6 +165,27 @@ class DeviceDialog extends Component {
             <span style={{ paddingLeft: 20 }} />
             <Link to="/more/attributions">Attributions</Link>
           </DeviceFinePrint>
+          { isSimulator() && (
+            <div style={{ padding: 10 }}>
+              <TextField
+                id="outlinedJump"
+                label="relative url"
+                defaultValue={window.location.hash.replace('#', '')}
+                variant="outlined"
+                className={classes.root}
+                autoFocus
+              />
+              <Button
+                classes={{ root: classes.saveButton }}
+                color="primary"
+                id="editAddressOneHorizontalRowSaveButton"
+                onClick={() => this.jumpTo()}
+              variant="contained"
+              >
+                Jump
+              </Button>
+            </div>
+          )}
         </DialogContent>
         <DialogActions>
           <Button onClick={this.props.visibilityOffFunction} color="primary">

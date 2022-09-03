@@ -23,7 +23,7 @@ const muiTheme = createTheme({
       tabMin: 740,    // Tablet minimum Size
       tabMdMin: 770,  // Medium Tablet minimum Size
       tabLgMin: 840,  // Large Tablet minimum Size
-      tabMax: 1030,   // Large Tablet maximum Size, anything larger is a desktop
+      tabMax: 1100,   // Large Tablet maximum Size, anything larger is a desktop, Galaxy Tab S8+  is 1067
 
     },
   },

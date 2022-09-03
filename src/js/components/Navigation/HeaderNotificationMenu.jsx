@@ -1,5 +1,5 @@
 import { Notifications } from '@mui/icons-material';
-import { Badge, Button, IconButton, Menu, MenuItem } from '@mui/material';
+import { Badge, IconButton, Menu, MenuItem } from '@mui/material';
 import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
@@ -271,7 +271,7 @@ class HeaderNotificationMenu extends Component {
           id="headerNotificationMenuIcon"
           onClick={this.handleClick}
           size="large"
-          sx={isTablet() && { marginTop: '5px', marginRight: '12px' }}
+          sx={isTablet() ? { marginTop: '5px', marginRight: '12px' } : {}}
         >
           {allActivityNoticesNotSeenCount ? (
             <Badge
