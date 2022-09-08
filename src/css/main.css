@@ -11533,16 +11533,9 @@ h1, h2, h3, h4, h5, h6 {
   }
 }
 
-{/* If the width is greater than 992, then don't show the component */}
+{/* If the width is greater than 992, then don't show the component, in Cordova this is overwritten to 741px in MuiTheme.js */}
 @media all and (min-width: 992px) {
   .u-show-mobile-tablet {
-    display: none !important;
-  }
-}
-
-{/* Keep synchronized with the size of isSmallerThanTablet(). If the width is less than 740, then don't show the component */}
-@media all and (max-width: 740px) {
-  .u-show-desktop {
     display: none !important;
   }
 }
@@ -14532,11 +14525,6 @@ a {
   justify-content: space-between;
 }
 
-.header-logo-img {
-  max-width: 132px;
-  max-height: 42px;
-}
-
 @media all and (min-width: 320px) and (max-width: 479px) {
   .header-logo-img {
     max-width: 110px;
@@ -16566,17 +16554,6 @@ a {
 
 .header-nav__icon--ballot {
   justify-content: center;
-}
-
-.header-nav__avatar {
-  border-radius: 18px;
-  background: #fff;
-  overflow: hidden;
-  display: inline;
-  margin-top: 7px;
-  margin-bottom: 7px;
-  min-width: 24px;
-  max-width: 34px;
 }
 
 {/* Medium Tablets, https://yesviz.com/devices.php */}

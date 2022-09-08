@@ -11,6 +11,7 @@ import VoterGuideActions from '../../actions/VoterGuideActions';
 import LoadingWheel from '../../common/components/Widgets/LoadingWheel';
 import apiCalming from '../../common/utils/apiCalming';
 import historyPush from '../../common/utils/historyPush';
+import { doNotDisplayIfSmallerThanDesktopThreshold } from '../../common/utils/isMobileScreenSize';
 import { renderLog } from '../../common/utils/logging';
 import toTitleCase from '../../common/utils/toTitleCase';
 import OrganizationVoterGuideCandidateItem from '../../components/VoterGuide/OrganizationVoterGuideCandidateItem';
@@ -219,7 +220,7 @@ class OrganizationVoterGuideCandidate extends Component {
             </HowItWorksLink>
           </PromoteFurtherAction>
         )}
-        <div className="u-show-desktop">
+        <EndorsementCardWrapper>
           <EndorsementCard
             bsPrefix="u-margin-top--sm u-stack--xs"
             variant="primary"
@@ -231,7 +232,7 @@ class OrganizationVoterGuideCandidate extends Component {
             nameBeingViewed={candidate.ballot_item_display_name}
             twitterHandleBeingViewed={candidate.twitter_handle}
           />
-        </div>
+        </EndorsementCardWrapper>
         <br />
         {/* Show links to this candidate in the admin tools */}
         { (voter.is_admin || voter.is_verified_volunteer) && (
@@ -292,6 +293,10 @@ const PromoteFurtherAction = styled('div')`
   flex-direction: column;
   margin-bottom: 48px;
   margin-top: 48px;
+`;
+
+const EndorsementCardWrapper = styled('div')`
+  ${() => doNotDisplayIfSmallerThanDesktopThreshold()};
 `;
 
 export default withStyles(styles)(OrganizationVoterGuideCandidate);

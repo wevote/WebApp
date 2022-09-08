@@ -308,7 +308,7 @@ class WelcomeAppbar extends Component {
                       onClick={this.toggleProfilePopUp}
                     >
                       <LazyImage
-                        className="header-nav__avatar"
+                        isAvatar
                         src={voterPhotoUrlMedium}
                         placeholder={avatarGeneric()}
                         height={34}
@@ -355,7 +355,7 @@ class WelcomeAppbar extends Component {
                       onClick={this.toggleProfilePopUp}
                     >
                       <LazyImage
-                        className="header-nav__avatar"
+                        isAvatar
                         src={voterPhotoUrlMedium}
                         placeholder={avatarGeneric()}
                         height={24}

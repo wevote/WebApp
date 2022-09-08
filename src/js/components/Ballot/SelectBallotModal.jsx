@@ -7,6 +7,7 @@ import React, { Component, Suspense } from 'react';
 import styled from 'styled-components';
 import AnalyticsActions from '../../actions/AnalyticsActions';
 import { hasIPhoneNotch } from '../../common/utils/cordovaUtils';
+import { doNotDisplayIfSmallerThanDesktopThreshold } from '../../common/utils/isMobileScreenSize';
 import { renderLog } from '../../common/utils/logging';
 import AppObservableStore, { messageService } from '../../stores/AppObservableStore';
 import VoterStore from '../../stores/VoterStore';
@@ -133,20 +134,20 @@ class SelectBallotModal extends Component {
               )}
             </div>
             {!editingAddress && (
-              <MapChartWrapperDesktop className="u-show-desktop">
+              <MapChartWrapperDesktop>
                 <Suspense fallback={<></>}>
                   <MapChart onClickFunction={this.mapHandler} />
                 </Suspense>
               </MapChartWrapperDesktop>
             )}
             <SidebarWrapper>
-              <div className="u-show-desktop">
+              <EditContainer>
                 <EditAddressInPlace
                   ballotBaseUrl={ballotBaseUrl}
                   defaultIsEditingAddress={editingAddress}
                   toggleEditingAddress={this.toggleEditingAddress}
                 />
-              </div>
+              </EditContainer>
               {!editingAddress && (
                 <ElectionChoiceWrapper>
                   <ToggleGroup>
@@ -382,7 +383,13 @@ const MapChartWrapperDesktop = styled('div')`
       margin-top: -36px;
     }
   }
+  ${() => doNotDisplayIfSmallerThanDesktopThreshold()};
 `;
+
+const EditContainer = styled('div')`
+  ${() => doNotDisplayIfSmallerThanDesktopThreshold()};
+`;
+
 
 const SidebarWrapper = styled('div')`
   padding: 16px;

@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 import React from 'react';
+import styled from 'styled-components';
 
 export default class LazyImage extends React.Component {
   constructor (props) {
@@ -36,10 +37,10 @@ export default class LazyImage extends React.Component {
   }
 
   render () {
-    const { placeholder, className, height, width, alt } = this.props;
+    const { placeholder, className, height, width, alt, isAvatar } = this.props;
     const { src } = this.state;
     return (
-      <img src={src || placeholder} className={className} height={height} width={width} alt={alt} />
+      <StyledImage isAvatar={isAvatar} src={src || placeholder} className={className} height={height} width={width} alt={alt} />
     );
   }
 }
@@ -51,4 +52,23 @@ LazyImage.propTypes = {
   height: PropTypes.number,
   width: PropTypes.number,
   alt: PropTypes.string,
+  isAvatar: PropTypes.bool,
 };
+
+
+// was .header-nav__avatar
+const StyledImage = styled('img', {
+  shouldForwardProp: (prop) => !['isAvatar'].includes(prop),
+})(({ isAvatar }) => (`
+  ${isAvatar ?
+    'border-radius: 18px;' +
+    'background: #fff;' +
+    'overflow: hidden;' +
+    'display: inline;' +
+    'margin-top: 7px;' +
+    'margin-bottom: 7px;' +
+    'min-width: 24px;' +
+    'max-width: 34px;' :
+    ''}
+`));
+

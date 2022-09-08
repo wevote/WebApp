@@ -21,10 +21,9 @@ const muiTheme = createTheme({
       lg: 960,        // Matches medium iPads: iPad 9.7" is 768, iPad 10.2 is 810, iPad Air 10.9 is 820, iPad (pro) 11" and Air 10.5  is 834
       xl: 1280,       // Matches iPad Pro 12.9" at 1024
       tabMin: 740,    // Tablet minimum Size
-      tabMdMin: 770,  // Medium Tablet minimum Size
+      tabMdMin: 770,  // Medium Tablet minimum Size  (iPad 9.6" is a weird edge case at 768px wide, it is rare, don't worry about it if it is a bit off)
       tabLgMin: 840,  // Large Tablet minimum Size
       tabMax: 1100,   // Large Tablet maximum Size, anything larger is a desktop, Galaxy Tab S8+  is 1067
-
     },
   },
   components: muiStyleOverrides,

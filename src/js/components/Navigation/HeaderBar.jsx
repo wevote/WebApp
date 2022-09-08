@@ -577,7 +577,7 @@ class HeaderBar extends Component {
                   onClick={this.goToSettings}
                 >
                   <LazyImage
-                    className="header-nav__avatar"
+                    isAvatar
                     src={voterPhotoUrlMedium}
                     placeholder={avatarGeneric()}
                     style={{

@@ -197,21 +197,12 @@ class HeaderBackTo extends Component {
       voter, voterIsSignedIn,
     } = this.state;
     const voterPhotoUrlMedium = voterPhoto(voter);
-
-    // const headerClassName = (function header () {
-    //   if (isWebApp()) {
-    //     return 'page-header';
-    //   } else {
-    //     return hasIPhoneNotch() ? 'page-header page-header__cordova-iphonex' : 'page-header page-header__cordova';
-    //   }
-    // }());
-
     const pathname = normalizedHref();
     const shareButtonInHeader = pathname && stringContains('/office', pathname.toLowerCase());
     const cordovaStyles = isIOS() ?
       { marginLeft: 0, padding: '34px 15px 0 0', right: 'unset' } :
       { marginLeft: 0, padding: '0 15px 0 0', right: 'unset' };
-    const cordovaOverrides = isWebApp() ? {} : cordovaStyles;
+    const cordovaOverrides = isWebApp() ? { paddingRight: 15 } : cordovaStyles;
     if (isIOSAppOnMac() || isIPad()) {
       cordovaOverrides.height = shareButtonInHeader ? '87px !important' : '68px';
     }
@@ -247,10 +238,9 @@ class HeaderBackTo extends Component {
                   <span>
                     <div
                       id="profileAvatarHeaderBar"
-                      className={`header-nav__avatar-container ${isCordova() ? 'header-nav__avatar-cordova' : undefined}`}
                     >
                       <LazyImage
-                        className="header-nav__avatar"
+                        isAvatar
                         src={voterPhotoUrlMedium}
                         placeholder={avatarGeneric()}
                         height={34}

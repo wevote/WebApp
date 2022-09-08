@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import AnalyticsActions from '../actions/AnalyticsActions';
 import IssueActions from '../actions/IssueActions';
 import LoadingWheelComp from '../common/components/Widgets/LoadingWheelComp';
+import { doNotDisplayIfSmallerThanDesktopThreshold } from '../common/utils/isMobileScreenSize';
 import { renderLog } from '../common/utils/logging';
 import normalizedImagePath from '../common/utils/normalizedImagePath';
 import AddFriendsByEmail from '../components/Friends/AddFriendsByEmail';
@@ -186,7 +187,7 @@ export default class Values extends Component {
                 </div>
               </div>
               <div className="col-md-4 d-none d-md-block">
-                <div className="card u-show-desktop">
+                <ValuesCard>
                   <div className="card-main">
                     <FindOpinionsForm
                       headerText="Find Opinions / Endorsements"
@@ -194,7 +195,7 @@ export default class Values extends Component {
                       uniqueExternalId="showDesktop"
                     />
                   </div>
-                </div>
+                </ValuesCard>
                 {this.state.voter.signed_in_twitter ? null : (
                   <TwitterSignInCard />
                 )}
@@ -222,6 +223,19 @@ export default class Values extends Component {
 }
 Values.propTypes = {
 };
+
+const ValuesCard = styled('div')`
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  word-wrap: break-word;
+  background-color: #fff;
+  background-clip: border-box;
+  border: 1px solid rgba(0, 0, 0, 0.125);
+  border-radius: 0.25rem;
+  ${() => doNotDisplayIfSmallerThanDesktopThreshold()};
+`;
 
 const SectionDescription = styled('div')`
   color: #999;

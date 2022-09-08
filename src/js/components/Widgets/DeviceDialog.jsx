@@ -5,8 +5,9 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
-import { getAndroidSize, hasIPhoneNotch, isAndroid, isSimulator } from '../../common/utils/cordovaUtils';
+import { getAndroidSize, getIOSSizeString, hasIPhoneNotch, isAndroid, isIOS, isSimulator } from '../../common/utils/cordovaUtils';
 import historyPush from '../../common/utils/historyPush';
+import { getTabletSize } from '../../common/utils/isMobileScreenSize';
 import { renderLog } from '../../common/utils/logging';
 import compileDate from '../../compileDate';
 import VoterStore from '../../stores/VoterStore';
@@ -62,6 +63,7 @@ class DeviceDialog extends Component {
     if (!this.props.show) {
       return null;
     }
+    const { diameter } = window.pbakondyScreenSize;
 
     return (
       <Dialog
@@ -76,48 +78,70 @@ class DeviceDialog extends Component {
           <Table className={classes.table}>
             <TableHead>
               <TableRow>
-                <TableCell>Param</TableCell>
-                <TableCell>Value</TableCell>
+                <StyledTableCell>Param</StyledTableCell>
+                <StyledTableCell>Value</StyledTableCell>
               </TableRow>
             </TableHead>
             <TableBody>
               <TableRow>
-                <TableCell>window.device.model</TableCell>
-                <TableCell>{window.device.model}</TableCell>
+                <StyledTableCell>window.device.model</StyledTableCell>
+                <StyledTableCell>{window.device.model}</StyledTableCell>
               </TableRow>
               <TableRow>
-                <TableCell>device OS version</TableCell>
-                <TableCell>{`${window.device.platform} ${window.device.version}`}</TableCell>
+                <StyledTableCell>device OS version</StyledTableCell>
+                <StyledTableCell>{`${window.device.platform} ${window.device.version}`}</StyledTableCell>
               </TableRow>
               <TableRow>
-                <TableCell>Usable Screen Size</TableCell>
-                <TableCell>{window.devicePixelRatio || 'n/a'}</TableCell>
+                <StyledTableCell>Diagonal Screen Size</StyledTableCell>
+                <StyledTableCell>{diameter || 'n/a'}</StyledTableCell>
               </TableRow>
               {isAndroid() && (
                 <TableRow>
-                  <TableCell>Android Size Code</TableCell>
-                  <TableCell>{getAndroidSize()}</TableCell>
+                  <StyledTableCell>Android Size Code</StyledTableCell>
+                  <StyledTableCell>{getAndroidSize()}</StyledTableCell>
+                </TableRow>
+              )}
+              {isIOS() && (
+                <TableRow>
+                  <StyledTableCell>iPhone Size Code</StyledTableCell>
+                  <StyledTableCell>{getIOSSizeString()}</StyledTableCell>
                 </TableRow>
               )}
               <TableRow>
-                <TableCell>window.screen.width</TableCell>
-                <TableCell>{window.screen.width}</TableCell>
+                <StyledTableCell>Cordova Tablet Size</StyledTableCell>
+                <StyledTableCell>{getTabletSize()}</StyledTableCell>
               </TableRow>
               <TableRow>
-                <TableCell>window.screen.height</TableCell>
-                <TableCell>{window.screen.height}</TableCell>
+                <StyledTableCell>window.screen.width</StyledTableCell>
+                <StyledTableCell>{window.screen.width}</StyledTableCell>
               </TableRow>
               <TableRow>
-                <TableCell>window.devicePixelRatio</TableCell>
-                <TableCell>{window.devicePixelRatio}</TableCell>
+                <StyledTableCell>window.screen.height</StyledTableCell>
+                <StyledTableCell>{window.screen.height}</StyledTableCell>
               </TableRow>
               <TableRow>
-                <TableCell>width</TableCell>
-                <TableCell>{window.screen.width * window.devicePixelRatio}</TableCell>
+                <StyledTableCell>window.devicePixelRatio</StyledTableCell>
+                <StyledTableCell>{window.devicePixelRatio}</StyledTableCell>
               </TableRow>
               <TableRow>
-                <TableCell>height</TableCell>
-                <TableCell>{window.screen.height * window.devicePixelRatio}</TableCell>
+                <StyledTableCell>width</StyledTableCell>
+                <StyledTableCell>{window.screen.width * window.devicePixelRatio}</StyledTableCell>
+              </TableRow>
+              <TableRow>
+                <StyledTableCell>height</StyledTableCell>
+                <StyledTableCell>{window.screen.height * window.devicePixelRatio}</StyledTableCell>
+              </TableRow>
+              <TableRow>
+                <StyledTableCell>Version</StyledTableCell>
+                <StyledTableCell>{window.weVoteAppVersion}</StyledTableCell>
+              </TableRow>
+              <TableRow>
+                <StyledTableCell>Compile date</StyledTableCell>
+                <StyledTableCell>{compileDate}</StyledTableCell>
+              </TableRow>
+              <TableRow>
+                <StyledTableCell>Your internal We Vote id</StyledTableCell>
+                <StyledTableCell>{VoterStore.getVoter().we_vote_id}</StyledTableCell>
               </TableRow>
             </TableBody>
           </Table>
@@ -143,27 +167,8 @@ class DeviceDialog extends Component {
               </div>
             )}
           <DeviceFinePrint>
-            <TermsAndPrivacyText>
-              Your internal We Vote id: &nbsp;
-              {VoterStore.getVoter().we_vote_id}
-            </TermsAndPrivacyText>
-          </DeviceFinePrint>
-          <DeviceFinePrint>
-            <TermsAndPrivacyText>
-              Version: &nbsp;
-              {window.weVoteAppVersion}
-            </TermsAndPrivacyText>
-          </DeviceFinePrint>
-          <DeviceFinePrint>
-            <TermsAndPrivacyText>
-              Compile date:&nbsp;
-              {compileDate}
-            </TermsAndPrivacyText>
-          </DeviceFinePrint>
-          <DeviceFinePrint>
-            <Link to="/more/faq">Attributions:</Link>
-            <span style={{ paddingLeft: 20 }} />
-            <Link to="/more/attributions">Attributions</Link>
+            <span style={{ padding: '10px 25px 10px 0px' }}>Attributions:</span>
+            <Link to="/more/attributions" style={{ color: 'blue', textDecoration: 'underline' }}>Attributions</Link>
           </DeviceFinePrint>
           { isSimulator() && (
             <div style={{ padding: 10 }}>
@@ -180,7 +185,8 @@ class DeviceDialog extends Component {
                 color="primary"
                 id="editAddressOneHorizontalRowSaveButton"
                 onClick={() => this.jumpTo()}
-              variant="contained"
+                variant="contained"
+                style={{ margin: 10 }}
               >
                 Jump
               </Button>
@@ -226,8 +232,13 @@ const styles = (theme) => ({
 
 const DeviceFinePrint = styled('div')`
   color: #555;
-  font-size: .75rem;
-  margin-top: 0.5rem;
+  font-size: 1rem;
+  margin: 1rem;
 `;
+
+const StyledTableCell = styled(TableCell)`
+  padding: 8px 16px;
+`;
+
 
 export default withTheme(withStyles(styles)(DeviceDialog));

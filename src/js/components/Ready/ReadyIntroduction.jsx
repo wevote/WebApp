@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import historyPush from '../../common/utils/historyPush';
-import { isWebApp } from '../../common/utils/isCordovaOrWebApp';
+import { isCordova, isWebApp } from '../../common/utils/isCordovaOrWebApp';
 import { renderLog } from '../../common/utils/logging';
 import AppObservableStore from '../../stores/AppObservableStore';
 import VoterStore from '../../stores/VoterStore';
@@ -159,7 +159,7 @@ class ReadyIntroduction extends Component {
                 <ListRow>
                   <Dot><StepNumberPlaceholder>&nbsp;</StepNumberPlaceholder></Dot>
                   <StepText>
-                    {isWebApp() ? (
+                    {isWebApp() || isCordova() ? (
                       <Link to="/findfriends/importcontacts" className="u-link-color">Invite your friends</Link>
                     ) : (
                       <>Invite your friends</>

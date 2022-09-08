@@ -7,6 +7,7 @@ import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import abbreviateNumber from '../../common/utils/abbreviateNumber';
 import historyPush from '../../common/utils/historyPush';
+import { doNotDisplayIfSmallerThanDesktopThreshold } from '../../common/utils/isMobileScreenSize';
 import { renderLog } from '../../common/utils/logging';
 import normalizedImagePath from '../../common/utils/normalizedImagePath';
 import numberWithCommas from '../../common/utils/numberWithCommas';
@@ -234,13 +235,13 @@ class CandidateItemForOpinions extends Component {
               </h4>
             </Link>
             {!!(oneCandidate.twitter_followers_count) && (
-              <TwitterWrapper
-                className="u-show-desktop twitter-followers__badge u-cursor--pointer"
+              <TwitterWrapperDesktop
+                className="twitter-followers__badge u-cursor--pointer"
                 onClick={() => this.goToCandidateLink}
               >
                 <Twitter />
                 <span title={numberWithCommas(oneCandidate.twitter_followers_count)}>{abbreviateNumber(oneCandidate.twitter_followers_count)}</span>
-              </TwitterWrapper>
+              </TwitterWrapperDesktop>
             )}
           </Candidate>
         </CandidateTopRow>
@@ -311,8 +312,9 @@ const ItemPositionStatementActionBarMobileWrapper = styled('div')`
   margin-bottom: 4px;
 `;
 
-const TwitterWrapper = styled('div')`
+const TwitterWrapperDesktop = styled('div')`
   margin-left: 15px;
+  ${() => doNotDisplayIfSmallerThanDesktopThreshold()};
 `;
 
 const Wrapper = styled('div')`

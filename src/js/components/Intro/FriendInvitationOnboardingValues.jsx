@@ -5,6 +5,7 @@ import React, { Component, Suspense } from 'react';
 import styled from 'styled-components';
 import { renderLog } from '../../common/utils/logging';
 import normalizedImagePath from '../../common/utils/normalizedImagePath';
+import HeaderLogoImage from '../Navigation/HeaderLogoImage';
 import InfoCircleIcon from '../Widgets/InfoCircleIcon';
 
 const FriendInvitationOnboardingFriendValuesList = React.lazy(() => import(/* webpackChunkName: 'FriendInvitationOnboardingFriendValuesList' */ '../Values/FriendInvitationOnboardingFriendValuesList'));
@@ -34,11 +35,7 @@ class FriendInvitationOnboardingValues extends Component {
     return (
       <Wrapper>
         <WeVoteLogoWrapper>
-          <img
-            className="header-logo-img"
-            alt="We Vote logo"
-            src={normalizedImagePath(logoDark)}
-          />
+          <HeaderLogoImage src={normalizedImagePath(logoDark)} />
         </WeVoteLogoWrapper>
         <FriendInvitationTopHeader>
           <div className="FriendInvitationTopHeader">
