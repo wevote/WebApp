@@ -6,7 +6,7 @@ import { isIOSAppOnMac, isIPad, isCordovaWide, isAndroidSizeWide } from '../../c
 import historyPush from '../../common/utils/historyPush';
 import { normalizedHref } from '../../common/utils/hrefUtils';
 import { isCordova, isWebApp } from '../../common/utils/isCordovaOrWebApp';
-import { isTablet, doNotDisplayIfSmallerThanDesktopThreshold } from '../../common/utils/isMobileScreenSize';
+import { isTablet, displayNoneIfSmallerThanDesktop } from '../../common/utils/isMobileScreenSize';
 import { renderLog } from '../../common/utils/logging';
 import AppObservableStore, { messageService } from '../../stores/AppObservableStore';
 import VoterStore from '../../stores/VoterStore';
@@ -325,7 +325,7 @@ export default class Header extends Component {
             <div className={pageHeaderClasses} style={cordovaTopHeaderTopMargin()} id="header-container">
               { showBackToSettingsDesktop && (
                 <span id="inner_for_showBackToSettingsDesktop">
-                  { (!isAndroidSizeWide() && doNotDisplayIfSmallerThanDesktopThreshold().length > 0) && (
+                  { (!isAndroidSizeWide() && displayNoneIfSmallerThanDesktop().length > 0) && (
                     <span className="BackToSettingsDesktopSpan">
                       <Suspense fallback={<></>}>
                         <HeaderBackTo backToLink={backToSettingsLinkDesktop} backToLinkText={backToSettingsLinkText} />
@@ -587,6 +587,6 @@ Header.propTypes = {
 };
 
 const BackToSettingsMobileDesktopSpan = styled('div')`
-  ${() => doNotDisplayIfSmallerThanDesktopThreshold()};
+  ${() => displayNoneIfSmallerThanDesktop()};
 `;
 

@@ -11,7 +11,7 @@ import VoterGuideActions from '../../actions/VoterGuideActions';
 import LoadingWheel from '../../common/components/Widgets/LoadingWheel';
 import apiCalming from '../../common/utils/apiCalming';
 import historyPush from '../../common/utils/historyPush';
-import { doNotDisplayIfSmallerThanDesktopThreshold } from '../../common/utils/isMobileScreenSize';
+import { displayNoneIfSmallerThanDesktop } from '../../common/utils/isMobileScreenSize';
 import { renderLog } from '../../common/utils/logging';
 import toTitleCase from '../../common/utils/toTitleCase';
 import OrganizationVoterGuideCandidateItem from '../../components/VoterGuide/OrganizationVoterGuideCandidateItem';
@@ -296,7 +296,7 @@ const PromoteFurtherAction = styled('div')`
 `;
 
 const EndorsementCardWrapper = styled('div')`
-  ${() => doNotDisplayIfSmallerThanDesktopThreshold()};
+  ${() => displayNoneIfSmallerThanDesktop()};
 `;
 
 export default withStyles(styles)(OrganizationVoterGuideCandidate);

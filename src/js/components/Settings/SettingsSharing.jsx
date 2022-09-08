@@ -8,7 +8,7 @@ import OrganizationActions from '../../actions/OrganizationActions';
 import LoadingWheel from '../../common/components/Widgets/LoadingWheel';
 import { cordovaOpenSafariView } from '../../common/utils/cordovaUtils';
 import { isCordova, isWebApp } from '../../common/utils/isCordovaOrWebApp';
-import { doNotDisplayIfSmallerThanDesktopThreshold } from '../../common/utils/isMobileScreenSize';
+import { displayNoneIfSmallerThanDesktop } from '../../common/utils/isMobileScreenSize';
 import { renderLog } from '../../common/utils/logging';
 import normalizedImagePath from '../../common/utils/normalizedImagePath';
 import AppObservableStore from '../../stores/AppObservableStore';
@@ -596,7 +596,7 @@ const InputBoxLabel = styled('h4')`
 
 const DesktopView = styled('div')`
   display: inherit;
-  ${() => doNotDisplayIfSmallerThanDesktopThreshold()};
+  ${() => displayNoneIfSmallerThanDesktop()};
 `;
 
 const MobileTabletView = styled('div')`

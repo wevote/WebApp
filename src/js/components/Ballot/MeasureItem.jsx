@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
 import styled from 'styled-components';
 import historyPush from '../../common/utils/historyPush';
-import { doNotDisplayIfSmallerThanDesktopThreshold } from '../../common/utils/isMobileScreenSize';
+import { displayNoneIfSmallerThanDesktop } from '../../common/utils/isMobileScreenSize';
 import { renderLog } from '../../common/utils/logging';
 import toTitleCase from '../../common/utils/toTitleCase';
 import AppObservableStore, { messageService } from '../../stores/AppObservableStore';
@@ -246,7 +246,7 @@ const BallotItemSupportOpposeCountDisplayWrapper = styled('div', {
 const ExternalWebSiteWrapper = styled('span')`
   padding-left: 15px;
   white-space: nowrap;
-  ${() => doNotDisplayIfSmallerThanDesktopThreshold()};
+  ${() => displayNoneIfSmallerThanDesktop()};
 `;
 
 const ForMoreInformationInfoText = styled('div')`

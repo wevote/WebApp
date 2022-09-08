@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import AnalyticsActions from '../actions/AnalyticsActions';
 import IssueActions from '../actions/IssueActions';
 import LoadingWheelComp from '../common/components/Widgets/LoadingWheelComp';
-import { doNotDisplayIfSmallerThanDesktopThreshold } from '../common/utils/isMobileScreenSize';
+import { displayNoneIfSmallerThanDesktop } from '../common/utils/isMobileScreenSize';
 import { renderLog } from '../common/utils/logging';
 import normalizedImagePath from '../common/utils/normalizedImagePath';
 import AddFriendsByEmail from '../components/Friends/AddFriendsByEmail';
@@ -234,7 +234,7 @@ const ValuesCard = styled('div')`
   background-clip: border-box;
   border: 1px solid rgba(0, 0, 0, 0.125);
   border-radius: 0.25rem;
-  ${() => doNotDisplayIfSmallerThanDesktopThreshold()};
+  ${() => displayNoneIfSmallerThanDesktop()};
 `;
 
 const SectionDescription = styled('div')`

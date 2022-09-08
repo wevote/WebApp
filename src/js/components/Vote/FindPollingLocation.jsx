@@ -4,7 +4,7 @@ import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
 import styled from 'styled-components';
-import { doNotDisplayIfSmallerThanDesktopThreshold } from '../../common/utils/isMobileScreenSize';
+import { displayNoneIfSmallerThanDesktop } from '../../common/utils/isMobileScreenSize';
 import InfoCircleIcon from '../Widgets/InfoCircleIcon';
 
 const OpenExternalWebSite = React.lazy(() => import(/* webpackChunkName: 'OpenExternalWebSite' */ '../../common/components/Widgets/OpenExternalWebSite'));
@@ -88,7 +88,7 @@ const InformationTextWrapper = styled('div')`
   text-align: left;
   color: #555;
   font-size: 14px;
-  ${() => doNotDisplayIfSmallerThanDesktopThreshold()};
+  ${() => displayNoneIfSmallerThanDesktop()};
 `;
 
 export default withStyles(styles)(FindPollingLocation);

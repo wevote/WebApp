@@ -9,7 +9,7 @@ import abbreviateNumber from '../../common/utils/abbreviateNumber';
 import { isAndroidSizeMD } from '../../common/utils/cordovaUtils';
 import historyPush from '../../common/utils/historyPush';
 import { isWebApp } from '../../common/utils/isCordovaOrWebApp';
-import { doNotDisplayIfSmallerThanDesktopThreshold } from '../../common/utils/isMobileScreenSize';
+import { displayNoneIfSmallerThanDesktop } from '../../common/utils/isMobileScreenSize';
 import { renderLog } from '../../common/utils/logging';
 import numberWithCommas from '../../common/utils/numberWithCommas';
 import AppObservableStore from '../../stores/AppObservableStore';
@@ -740,7 +740,7 @@ const Candidate = styled('div')`
 `;
 
 const CandidateQuote = styled('div')`
-  ${() => doNotDisplayIfSmallerThanDesktopThreshold()};
+  ${() => displayNoneIfSmallerThanDesktop()};
 `;
 
 const CandidateItemWrapper = styled('div')`
@@ -772,14 +772,14 @@ const CandidateLinksWrapper = styled('div')`
 `;
 
 const DesktopWrapper = styled('div')`
-  ${() => doNotDisplayIfSmallerThanDesktopThreshold()};
+  ${() => displayNoneIfSmallerThanDesktop()};
 `;
 
 const ExternalWebSiteWrapper = styled('div')`
   margin-top: 3px;
   padding-left: 15px;
   white-space: nowrap;
-  ${() => doNotDisplayIfSmallerThanDesktopThreshold()};
+  ${() => displayNoneIfSmallerThanDesktop()};
 `;
 
 const ForMoreInformationInfoText = styled('div')`

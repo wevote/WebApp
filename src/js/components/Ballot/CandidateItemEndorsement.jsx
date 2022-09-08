@@ -7,7 +7,7 @@ import React, { Component, Suspense } from 'react';
 import VoterGuidePossibilityActions from '../../actions/VoterGuidePossibilityActions';
 import abbreviateNumber from '../../common/utils/abbreviateNumber';
 import historyPush from '../../common/utils/historyPush';
-import { doNotDisplayIfSmallerThanDesktopThreshold } from '../../common/utils/isMobileScreenSize';
+import { displayNoneIfSmallerThanDesktop } from '../../common/utils/isMobileScreenSize';
 import { renderLog } from '../../common/utils/logging';
 import numberWithCommas from '../../common/utils/numberWithCommas';
 import CandidateStore from '../../stores/CandidateStore';
@@ -609,7 +609,7 @@ const CandidateWrapper = styled('div')(({ theme }) => (`
 const ExternalWebSiteWrapper = styled('span')`
   padding-left: 15px;
   white-space: nowrap;
-  ${() => doNotDisplayIfSmallerThanDesktopThreshold()};
+  ${() => displayNoneIfSmallerThanDesktop()};
 `;
 
 const TextArea = styled(TextField)`

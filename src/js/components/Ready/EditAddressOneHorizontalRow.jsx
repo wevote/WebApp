@@ -7,7 +7,7 @@ import BallotActions from '../../actions/BallotActions';
 import VoterActions from '../../actions/VoterActions';
 import { isIPhoneMiniOrSmaller, restoreStylesAfterCordovaKeyboard } from '../../common/utils/cordovaUtils';
 import historyPush from '../../common/utils/historyPush';
-import { doNotDisplayIfSmallerThanDesktopThreshold } from '../../common/utils/isMobileScreenSize';
+import { displayNoneIfSmallerThanDesktop } from '../../common/utils/isMobileScreenSize';
 import Cookies from '../../common/utils/js-cookie/Cookies';
 import { renderLog } from '../../common/utils/logging';
 import AppObservableStore from '../../stores/AppObservableStore';
@@ -241,7 +241,7 @@ const AddressLabel = styled('div')`
   font-weight: 600;
   margin-right: 12px;
   ${() => (isIPhoneMiniOrSmaller() ? { display: 'flex' } : {})}
-  ${() => doNotDisplayIfSmallerThanDesktopThreshold()};
+  ${() => displayNoneIfSmallerThanDesktop()};
 `;
 
 const AddressLabelMobile = styled('div')`

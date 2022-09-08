@@ -15,7 +15,7 @@ import apiCalming from '../../common/utils/apiCalming';
 import { isAndroidSizeWide } from '../../common/utils/cordovaUtils';
 import historyPush from '../../common/utils/historyPush';
 import { isWebApp } from '../../common/utils/isCordovaOrWebApp';
-import { doNotDisplayIfSmallerThanDesktopThreshold } from '../../common/utils/isMobileScreenSize';
+import { displayNoneIfSmallerThanDesktop } from '../../common/utils/isMobileScreenSize';
 import { renderLog } from '../../common/utils/logging';
 import toTitleCase from '../../common/utils/toTitleCase';
 import CandidateStickyHeader from '../../components/Ballot/CandidateStickyHeader';
@@ -484,7 +484,7 @@ const TwoColumns = styled('div')`
 
 
 const EndorsementCardWrapper = styled('div')`
-  ${() => doNotDisplayIfSmallerThanDesktopThreshold()};
+  ${() => displayNoneIfSmallerThanDesktop()};
 `;
 
 export default withStyles(styles)(Candidate);

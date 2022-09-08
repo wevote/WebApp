@@ -67,7 +67,7 @@ In Cordova, the comparison is to 740px for small tablets, from muiTheme.js
 }
 was .u-show-desktop then this function was uShowDesktop
  */
-export function doNotDisplayIfSmallerThanDesktopThreshold () {
+export function displayNoneIfSmallerThanDesktop () {
   const { innerWidth, muiThemeGlobal: { breakpoints: { values: { tabMax } } } } = window;
   if ((isWebApp() && innerWidth > 991) || (!isWebApp() && innerWidth > tabMax)) {
     return 'display: none !important;';

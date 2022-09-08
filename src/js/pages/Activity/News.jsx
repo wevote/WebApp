@@ -17,7 +17,7 @@ import { isIPad } from '../../common/utils/cordovaUtils';
 import { formatDateToMonthDayYear, timeFromDate } from '../../common/utils/dateFormat';
 import historyPush from '../../common/utils/historyPush';
 import { isCordova } from '../../common/utils/isCordovaOrWebApp';
-import { doNotDisplayIfSmallerThanDesktopThreshold } from '../../common/utils/isMobileScreenSize';
+import { displayNoneIfSmallerThanDesktop } from '../../common/utils/isMobileScreenSize';
 import { renderLog } from '../../common/utils/logging';
 import normalizedImagePath from '../../common/utils/normalizedImagePath';
 import ActivityCommentAdd from '../../components/Activity/ActivityCommentAdd';
@@ -608,7 +608,7 @@ const SignInSmallOptionsWrapper = styled('div')`
   flex-direction: row;
   justify-content: space-between;
   flex-wrap: wrap;
-  ${() => doNotDisplayIfSmallerThanDesktopThreshold()};
+  ${() => displayNoneIfSmallerThanDesktop()};
 `;
 
 const TwitterSignInWrapper = styled('div')`

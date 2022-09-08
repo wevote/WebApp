@@ -7,7 +7,7 @@ import React, { Component, Suspense } from 'react';
 import styled from 'styled-components';
 import AnalyticsActions from '../../actions/AnalyticsActions';
 import { hasIPhoneNotch } from '../../common/utils/cordovaUtils';
-import { doNotDisplayIfSmallerThanDesktopThreshold } from '../../common/utils/isMobileScreenSize';
+import { displayNoneIfSmallerThanDesktop } from '../../common/utils/isMobileScreenSize';
 import { renderLog } from '../../common/utils/logging';
 import AppObservableStore, { messageService } from '../../stores/AppObservableStore';
 import VoterStore from '../../stores/VoterStore';
@@ -383,11 +383,11 @@ const MapChartWrapperDesktop = styled('div')`
       margin-top: -36px;
     }
   }
-  ${() => doNotDisplayIfSmallerThanDesktopThreshold()};
+  ${() => displayNoneIfSmallerThanDesktop()};
 `;
 
 const EditContainer = styled('div')`
-  ${() => doNotDisplayIfSmallerThanDesktopThreshold()};
+  ${() => displayNoneIfSmallerThanDesktop()};
 `;
 
 

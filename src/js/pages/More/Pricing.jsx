@@ -4,7 +4,7 @@ import React, { Component, Suspense } from 'react';
 import Helmet from 'react-helmet';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
-import { doNotDisplayIfSmallerThanDesktopThreshold } from '../../common/utils/isMobileScreenSize';
+import { displayNoneIfSmallerThanDesktop } from '../../common/utils/isMobileScreenSize';
 import { renderLog } from '../../common/utils/logging';
 import PricingCard from '../../components/More/PricingCard';
 import { Section } from '../../components/Welcome/sectionStyles';
@@ -713,7 +713,7 @@ const PricingRow = styled('div')`
   flex-wrap: wrap;
   margin-right: -15px;
   margin-left: -15px;
-  ${() => doNotDisplayIfSmallerThanDesktopThreshold()};
+  ${() => displayNoneIfSmallerThanDesktop()};
 `;
 
 const PricingTitle = styled('h1')(({ theme }) => (`
@@ -734,7 +734,7 @@ const PricingTitle = styled('h1')(({ theme }) => (`
 `));
 
 const PricingSubTitleDesktop = styled('div')`
-  ${() => doNotDisplayIfSmallerThanDesktopThreshold()};
+  ${() => displayNoneIfSmallerThanDesktop()};
 `;
 
 const PricingSubTitleMobile = styled('div')`
