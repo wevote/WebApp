@@ -167,12 +167,14 @@ class AddressBox extends Component {
 
     return (
       <div className="container">
-        <div className="row">
+        <div className="row" style={{ paddingTop: 10 }}>
           <GoogleAutoComplete
             id="entryBox"
             updateTextForMapSearchInParent={this.updateTextForMapSearch}
             updateTextForMapSearchInParentFromGoogle={this.updateTextForMapSearchFromGoogle}
           />
+        </div>
+        <div className="row" style={{ paddingTop: 10 }}>
           {showCancelEditAddressButton ? (
             <Button
               color="primary"

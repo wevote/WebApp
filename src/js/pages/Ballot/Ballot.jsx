@@ -1405,6 +1405,7 @@ class Ballot extends Component {
                                               id={chipLabelText(oneTypeOfBallotItem)}
                                               label={chipLabelText(oneTypeOfBallotItem)}
                                               style={widthOverride}
+                                              key={chipLabelText(oneTypeOfBallotItem)}
                                             />
                                           );
                                           return (
@@ -1553,6 +1554,7 @@ class Ballot extends Component {
                                       isMeasure={item.kind_of_ballot_item === TYPES.MEASURE}
                                       totalNumberOfBallotItems={totalNumberOfBallotItems}
                                       weVoteId={item.we_vote_id}
+                                      key={item.we_vote_id}
                                     />
                                   </>
                                 </DelayedLoad>

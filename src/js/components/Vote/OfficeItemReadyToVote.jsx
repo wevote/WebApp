@@ -101,6 +101,7 @@ class OfficeItemReadyToVote extends Component {
                   imageUrl={candidatePhotoUrl}
                   alt=""
                   kind_of_ballot_item="CANDIDATE"
+                  key={oneCandidate.we_vote_id}
                 />
               </Suspense>
             );

@@ -15,6 +15,7 @@ import apiCalming from '../../common/utils/apiCalming';
 import { isAndroidSizeWide } from '../../common/utils/cordovaUtils';
 import historyPush from '../../common/utils/historyPush';
 import { isWebApp } from '../../common/utils/isCordovaOrWebApp';
+import { displayNoneIfSmallerThanDesktop } from '../../common/utils/isMobileScreenSize';
 import { renderLog } from '../../common/utils/logging';
 import toTitleCase from '../../common/utils/toTitleCase';
 import CandidateStickyHeader from '../../components/Ballot/CandidateStickyHeader';
@@ -387,7 +388,7 @@ class Candidate extends Component {
             </HowItWorksLink>
           </PromoteFurtherAction>
         )}
-        <div className="u-show-desktop">
+        <EndorsementCardWrapper>
           <EndorsementCard
             bsPrefix="u-margin-top--sm u-stack--xs"
             variant="primary"
@@ -399,7 +400,7 @@ class Candidate extends Component {
             nameBeingViewed={candidate.ballot_item_display_name}
             twitterHandleBeingViewed={candidate.twitter_handle}
           />
-        </div>
+        </EndorsementCardWrapper>
         <br />
         {/* Show links to this candidate in the admin tools */}
         { (voter.is_admin || voter.is_verified_volunteer) && (
@@ -479,6 +480,11 @@ const RightColumnWrapper = styled('div')`
 const TwoColumns = styled('div')`
   display: flex;
   margin: ${isAndroidSizeWide() ?  0  :  '0 -8px 0 -8px'};
+`;
+
+
+const EndorsementCardWrapper = styled('div')`
+  ${() => displayNoneIfSmallerThanDesktop()};
 `;
 
 export default withStyles(styles)(Candidate);

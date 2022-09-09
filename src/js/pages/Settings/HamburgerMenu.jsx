@@ -75,20 +75,17 @@ export default class HamburgerMenu extends Component {
         onClick={this.goToSettings}
       >
         {voterPhotoUrlMedium ? (
-          <div className={isWebApp() ? 'header-nav__avatar' : 'header-nav__avatar-cordova header-nav__cordova'}>
-            <LazyImage
-              alt="Signed in voter"
-              src={voterPhotoUrlMedium}
-              placeholder={avatarGeneric()}
-              height={34}
-              width={34}
-              style={{ maxWidth: 'unset' }}
-            />
-          </div>
+          <LazyImage
+            isAvatar
+            alt="Signed in voter"
+            src={voterPhotoUrlMedium}
+            placeholder={avatarGeneric()}
+            height={34}
+            width={34}
+            style={{ maxWidth: 'unset' }}
+          />
         ) : (
-          <div id="anonIcon" className={isWebApp() ? 'header-nav__avatar' : 'header-nav__avatar-cordova header-nav__cordova'}>
-            <img src={avatarGeneric()} width="34" height="34" color="#c0c0c0" alt="generic voter" />
-          </div>
+          <img src={avatarGeneric()} width="34" height="34" color="#c0c0c0" alt="generic voter" />
         )}
       </span>
     );

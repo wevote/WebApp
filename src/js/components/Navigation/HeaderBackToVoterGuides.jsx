@@ -315,7 +315,7 @@ class HeaderBackToVoterGuides extends Component {
                     className={`header-nav__avatar-container ${isCordova() ? 'header-nav__avatar-cordova' : undefined}`}
                   >
                     <LazyImage
-                      className="header-nav__avatar"
+                      isAvatar
                       src={voterPhotoUrlMedium}
                       placeholder={avatarGeneric()}
                       style={{

@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
 import styled from 'styled-components';
 import historyPush from '../../common/utils/historyPush';
+import { displayNoneIfSmallerThanDesktop } from '../../common/utils/isMobileScreenSize';
 import { renderLog } from '../../common/utils/logging';
 import toTitleCase from '../../common/utils/toTitleCase';
 import AppObservableStore, { messageService } from '../../stores/AppObservableStore';
@@ -118,7 +119,7 @@ class MeasureItem extends Component {
             </Title>
             {measureUrl && (
               <div className="noClickZone" style={{ padding: '5px 0' }}>
-                <ExternalWebSiteWrapper className="u-show-desktop">
+                <ExternalWebSiteWrapper>
                   <Suspense fallback={<></>}>
                     <OpenExternalWebSite
                       linkIdAttribute="measureUrlDesktop"
@@ -245,6 +246,7 @@ const BallotItemSupportOpposeCountDisplayWrapper = styled('div', {
 const ExternalWebSiteWrapper = styled('span')`
   padding-left: 15px;
   white-space: nowrap;
+  ${() => displayNoneIfSmallerThanDesktop()};
 `;
 
 const ForMoreInformationInfoText = styled('div')`

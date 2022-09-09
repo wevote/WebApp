@@ -1,10 +1,12 @@
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
+import styled from 'styled-components';
 import VoterActions from '../../actions/VoterActions';
 import { isIOSAppOnMac, isIPad, isCordovaWide, isAndroidSizeWide } from '../../common/utils/cordovaUtils';
 import historyPush from '../../common/utils/historyPush';
 import { normalizedHref } from '../../common/utils/hrefUtils';
 import { isCordova, isWebApp } from '../../common/utils/isCordovaOrWebApp';
+import { isTablet, displayNoneIfSmallerThanDesktop } from '../../common/utils/isMobileScreenSize';
 import { renderLog } from '../../common/utils/logging';
 import AppObservableStore, { messageService } from '../../stores/AppObservableStore';
 import VoterStore from '../../stores/VoterStore';
@@ -310,10 +312,11 @@ export default class Header extends Component {
         </div>
       );
     } else if (settingsMode) {
-      // console.log('Header in settingsMode, showBackToSettingsDesktop:', showBackToSettingsDesktop, ', showBackToSettingsMobile:', showBackToSettingsMobile);
+      console.log('Header in settingsMode, showBackToSettingsDesktop:', showBackToSettingsDesktop, ', showBackToSettingsMobile:', showBackToSettingsMobile);
       const backToSettingsLinkDesktop = '/settings/profile';
       const backToSettingsLinkMobile = '/settings/hamburger';
       const backToSettingsLinkText = '';
+      const { innerWidth, muiThemeGlobal: { breakpoints: { values: { tabMin } } } } = window;
 
       return (
         <div id="app-header">
@@ -322,16 +325,15 @@ export default class Header extends Component {
             <div className={pageHeaderClasses} style={cordovaTopHeaderTopMargin()} id="header-container">
               { showBackToSettingsDesktop && (
                 <span id="inner_for_showBackToSettingsDesktop">
-                  {/* 991 is u-show-desktop */}
-                  { (!isAndroidSizeWide() && window.innerWidth < 991) && (
+                  { (!isAndroidSizeWide() && displayNoneIfSmallerThanDesktop().length > 0) && (
                     <span className="BackToSettingsDesktopSpan">
                       <Suspense fallback={<></>}>
                         <HeaderBackTo backToLink={backToSettingsLinkDesktop} backToLinkText={backToSettingsLinkText} />
                       </Suspense>
                     </span>
                   )}
-                  { (isAndroidSizeWide() || (!showBackToVoterGuides && !showBackToSettingsMobile)) && (
-                    <span className="BackToSettingsDesktopMobileSpan u-show-mobile-tablet">
+                  { (isAndroidSizeWide() || isTablet() || (!showBackToVoterGuides && !showBackToSettingsMobile)) && (
+                    <span className="BackToSettingsDesktopMobileSpan">
                       <Suspense fallback={<></>}>
                         <HeaderBar />
                       </Suspense>
@@ -341,8 +343,7 @@ export default class Header extends Component {
               )}
               { showBackToSettingsMobile && (
                 <span>
-                  {/*  window.innerWidth < 992 is u-show-mobile-tablet */}
-                  { (!isCordovaWide() && window.innerWidth < 992) && (
+                  { (!isCordovaWide() && innerWidth < tabMin) && (
                     <span className="BackToSettingsMobileSpan">
                       <Suspense fallback={<></>}>
                         <HeaderBackTo
@@ -352,12 +353,12 @@ export default class Header extends Component {
                       </Suspense>
                     </span>
                   )}
-                  { (isCordovaWide() || (isWebApp() && !showBackToVoterGuides && !showBackToSettingsDesktop)) && (
-                    <span className="BackToSettingsMobileDesktopSpan u-show-desktop">
+                  { (isCordovaWide() || isTablet() || (isWebApp() && !showBackToVoterGuides && !showBackToSettingsDesktop)) && (
+                    <BackToSettingsMobileDesktopSpan>
                       <Suspense fallback={<></>}>
                         <HeaderBar />
                       </Suspense>
-                    </span>
+                    </BackToSettingsMobileDesktopSpan>
                   )}
                 </span>
               )}
@@ -584,3 +585,8 @@ Header.propTypes = {
   params: PropTypes.object,
   // pathname: PropTypes.string,
 };
+
+const BackToSettingsMobileDesktopSpan = styled('span')`
+  ${() => displayNoneIfSmallerThanDesktop()};
+`;
+

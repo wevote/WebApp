@@ -16,6 +16,7 @@ import normalizedImagePath from '../../common/utils/normalizedImagePath';
 import PersonalizedScoreIntroBody from '../../components/CompleteYourProfile/PersonalizedScoreIntroBody';
 import FriendInvitationOnboardingIntro from '../../components/Intro/FriendInvitationOnboardingIntro';
 import FriendInvitationOnboardingValues from '../../components/Intro/FriendInvitationOnboardingValues';
+import HeaderLogoImage from '../../components/Navigation/HeaderLogoImage';
 import StepsChips from '../../components/Widgets/StepsChips';
 import VoterConstants from '../../constants/VoterConstants';
 import FriendStore from '../../stores/FriendStore';
@@ -213,11 +214,7 @@ class FriendInvitationOnboarding extends Component {
       slideHtmlContentDict[2] = (
         <HowItWorksWrapper>
           <WeVoteLogoWrapper>
-            <img
-              className="header-logo-img"
-              alt="We Vote logo"
-              src={normalizedImagePath(logoDark)}
-            />
+            <HeaderLogoImage src={normalizedImagePath(logoDark)} />
           </WeVoteLogoWrapper>
           <SlideShowTitle>
             What&apos;s a Personalized Score?

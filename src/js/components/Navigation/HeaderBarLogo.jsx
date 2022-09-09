@@ -1,9 +1,10 @@
-import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import React, { Suspense } from 'react';
 import { Link } from 'react-router-dom';
+import styled from 'styled-components';
 import { isCordova } from '../../common/utils/isCordovaOrWebApp';
 import normalizedImagePath from '../../common/utils/normalizedImagePath';
+import HeaderLogoImage from './HeaderLogoImage';
 
 const DelayedLoad = React.lazy(() => import(/* webpackChunkName: 'DelayedLoad' */ '../../common/components/Widgets/DelayedLoad'));
 
@@ -13,19 +14,11 @@ const logoDark = '../../../img/global/svg-icons/we-vote-logo-horizontal-color-da
 const HeaderBarLogo = ({ chosenSiteLogoUrl, isBeta, light }) => (
   <HeaderBarLogoWrapper id="HeaderBarLogoWrapper">
     {chosenSiteLogoUrl ? (
-      <img
-        className="header-logo-img"
-        alt="Logo"
-        src={chosenSiteLogoUrl}
-      />
+      <HeaderLogoImage src={chosenSiteLogoUrl} />
     ) : (
       <WeVoteLogoWrapper>
         <Link to="/ready" className="page-logo page-logo-full-size" id="logoHeaderBar">
-          <img
-            className="header-logo-img"
-            alt="We Vote logo"
-            src={light ? normalizedImagePath(logoLight) : normalizedImagePath(logoDark)}
-          />
+          <HeaderLogoImage src={light ? normalizedImagePath(logoLight) : normalizedImagePath(logoDark)} />
           {(isBeta && !isCordova()) && (
             <span className="beta-marker">
               <Suspense fallback={<></>}>

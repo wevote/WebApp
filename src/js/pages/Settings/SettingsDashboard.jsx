@@ -8,6 +8,7 @@ import VoterGuideActions from '../../actions/VoterGuideActions';
 import apiCalming from '../../common/utils/apiCalming';
 import { isAndroidSizeWide, isCordovaWide } from '../../common/utils/cordovaUtils';
 import { isWebApp } from '../../common/utils/isCordovaOrWebApp';
+import { isTablet } from '../../common/utils/isMobileScreenSize';
 import { renderLog } from '../../common/utils/logging';
 import SelectVoterGuidesSideBar from '../../components/Navigation/SelectVoterGuidesSideBar';
 import SettingsPersonalSideBar from '../../components/Navigation/SettingsPersonalSideBar';
@@ -272,7 +273,7 @@ export default class SettingsDashboard extends Component {
         <div className={innerDivClass}>
           {/* Desktop left navigation + Settings content.
             WebApp only, since the dashboard doesn't go well with the HamburgerMenu on iPad */}
-          { (isWebApp() || isCordovaWide() || isAndroidSizeWide()) && (
+          { (isWebApp() || isCordovaWide() || isAndroidSizeWide() || isTablet()) && (
           <div className={isWebApp() ? 'd-none d-md-block' : ''}>
             <div className="container-fluid">
               <div className="row">

@@ -8,6 +8,7 @@ import OrganizationActions from '../../actions/OrganizationActions';
 import LoadingWheel from '../../common/components/Widgets/LoadingWheel';
 import { cordovaOpenSafariView } from '../../common/utils/cordovaUtils';
 import { isCordova, isWebApp } from '../../common/utils/isCordovaOrWebApp';
+import { displayNoneIfSmallerThanDesktop } from '../../common/utils/isMobileScreenSize';
 import { renderLog } from '../../common/utils/logging';
 import normalizedImagePath from '../../common/utils/normalizedImagePath';
 import AppObservableStore from '../../stores/AppObservableStore';
@@ -405,7 +406,7 @@ class SettingsSharing extends Component {
                     'Upload'
                   ) : (
                     <>
-                      <DesktopView className="u-show-desktop">
+                      <DesktopView>
                         Upgrade to Enterprise
                       </DesktopView>
                       <MobileTabletView className="u-show-mobile-tablet">
@@ -457,7 +458,7 @@ class SettingsSharing extends Component {
                     'Upload'
                   ) : (
                     <>
-                      <DesktopView className="u-show-desktop">
+                      <DesktopView>
                         Upgrade to Enterprise
                       </DesktopView>
                       <MobileTabletView className="u-show-mobile-tablet">
@@ -517,7 +518,7 @@ class SettingsSharing extends Component {
                       'Save'
                     ) : (
                       <>
-                        <DesktopView className="u-show-desktop">
+                        <DesktopView>
                           Upgrade to Enterprise
                         </DesktopView>
                         <MobileTabletView className="u-show-mobile-tablet">
@@ -595,6 +596,7 @@ const InputBoxLabel = styled('h4')`
 
 const DesktopView = styled('div')`
   display: inherit;
+  ${() => displayNoneIfSmallerThanDesktop()};
 `;
 
 const MobileTabletView = styled('div')`

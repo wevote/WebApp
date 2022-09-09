@@ -11533,15 +11533,9 @@ h1, h2, h3, h4, h5, h6 {
   }
 }
 
-{/* If the width is greater than 992, then don't show the component */}
+{/* If the width is greater than 992, then don't show the component, in Cordova this is overwritten to 741px in MuiTheme.js */}
 @media all and (min-width: 992px) {
   .u-show-mobile-tablet {
-    display: none !important;
-  }
-}
-
-@media all and (max-width: 991px) {
-  .u-show-desktop {
     display: none !important;
   }
 }
@@ -14531,15 +14525,19 @@ a {
   justify-content: space-between;
 }
 
-.header-logo-img {
-  max-width: 132px;
-  max-height: 42px;
-}
-
 @media all and (min-width: 320px) and (max-width: 479px) {
   .header-logo-img {
     max-width: 110px;
     max-height: 36px;
+  }
+}
+
+{/* Tablets */}
+@media all and (min-width: 760px) and (max-width: 1030px) {
+  .header-logo-img {
+    max-width: 165px;
+    max-height: 62px;
+    height: 54px;
   }
 }
 
@@ -16478,6 +16476,13 @@ a {
   }
 }
 
+/* iPadMini is 744 */
+@media all and (min-width: 740px) and (max-width: 840px) {
+  .header-nav {
+    margin-left: 0px;
+  }
+}
+
 .header-nav__label {
   display: block;
   font-size: 10px;
@@ -16551,16 +16556,26 @@ a {
   justify-content: center;
 }
 
-.header-nav__avatar {
-  border-radius: 18px;
-  background: #fff;
-  overflow: hidden;
-  display: inline;
-  margin-top: 7px;
-  margin-bottom: 7px;
-  min-width: 24px;
-  max-width: 34px;
+{/* Medium Tablets, https://yesviz.com/devices.php */}
+@media all and (min-width: 760px) and (max-width: 840px) {
+  .header-nav__avatar {
+    width: 40px;
+    max-width: 40px;
+    height: 40px;
+    border-radius: 20px;
+  }
 }
+
+{/* Larger Tablets */}
+@media all and (min-width: 840px) and (max-width: 1030px) {
+  .header-nav__avatar {
+    width: 44px;
+    max-width: 44px;
+    height: 44px;
+    border-radius: 22px;
+  }
+}
+
 
 @media all and (max-width: 479px) {
   .header-nav__avatar {

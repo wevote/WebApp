@@ -3,6 +3,7 @@ import withStyles from '@mui/styles/withStyles';
 import React, { Component, Suspense } from 'react';
 import { normalizedHref } from '../../common/utils/hrefUtils';
 import { isWebApp } from '../../common/utils/isCordovaOrWebApp';
+import isMobileScreenSize from '../../common/utils/isMobileScreenSize';
 import webAppConfig from '../../config';
 import AppObservableStore, { messageService } from '../../stores/AppObservableStore';
 import { getApplicationViewBooleans } from '../../utils/applicationUtils';
@@ -149,6 +150,7 @@ const FooterMainWrapper = styled('div')`
 `;
 
 const FooterWrapper = styled('div')`
+  display: ${!isMobileScreenSize() ? 'none' : ''};
 `;
 
 const ShareButtonFooterWrapper = styled('div')`

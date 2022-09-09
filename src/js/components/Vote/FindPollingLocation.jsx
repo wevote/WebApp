@@ -4,6 +4,7 @@ import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
 import styled from 'styled-components';
+import { displayNoneIfSmallerThanDesktop } from '../../common/utils/isMobileScreenSize';
 import InfoCircleIcon from '../Widgets/InfoCircleIcon';
 
 const OpenExternalWebSite = React.lazy(() => import(/* webpackChunkName: 'OpenExternalWebSite' */ '../../common/components/Widgets/OpenExternalWebSite'));
@@ -38,7 +39,7 @@ class FindPollingLocation extends Component {
             )}
           />
         </Suspense>
-        <InformationTextWrapper className="u-show-desktop">
+        <InformationTextWrapper>
           <InfoCircleIcon />
           Find the location where you can hand deliver your official ballot before the end of election day.
         </InformationTextWrapper>
@@ -87,6 +88,7 @@ const InformationTextWrapper = styled('div')`
   text-align: left;
   color: #555;
   font-size: 14px;
+  ${() => displayNoneIfSmallerThanDesktop()};
 `;
 
 export default withStyles(styles)(FindPollingLocation);

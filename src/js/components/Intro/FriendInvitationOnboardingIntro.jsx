@@ -10,6 +10,7 @@ import { renderLog } from '../../common/utils/logging';
 import normalizedImagePath from '../../common/utils/normalizedImagePath';
 import BallotStore from '../../stores/BallotStore';
 import { convertToInteger } from '../../utils/textFormat';
+import HeaderLogoImage from '../Navigation/HeaderLogoImage';
 
 const ImageHandler = React.lazy(() => import(/* webpackChunkName: 'ImageHandler' */ '../ImageHandler'));
 const ReadMore = React.lazy(() => import(/* webpackChunkName: 'ReadMore' */ '../../common/components/Widgets/ReadMore'));
@@ -94,11 +95,7 @@ class FriendInvitationOnboardingIntro extends Component {
     return (
       <Wrapper>
         <WeVoteLogoWrapper>
-          <img
-            className="header-logo-img"
-            alt="We Vote logo"
-            src={normalizedImagePath(logoDark)}
-          />
+          <HeaderLogoImage src={normalizedImagePath(logoDark)} />
         </WeVoteLogoWrapper>
         <FriendInvitationTopHeader className="FriendInvitationTopHeader">
           Welcome to We Vote.

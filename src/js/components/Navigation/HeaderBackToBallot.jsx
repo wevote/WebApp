@@ -762,10 +762,9 @@ class HeaderBackToBallot extends Component {
                 {voterPhotoUrlMedium ? (
                   <span
                     id="profileAvatarHeaderBar"
-                    className={`header-nav__avatar-container ${isCordova() ? 'header-nav__avatar-cordova' : undefined}`}
                   >
                     <LazyImage
-                      className="header-nav__avatar"
+                      isAvatar
                       src={voterPhotoUrlMedium}
                       placeholder={avatarGeneric()}
                       style={{

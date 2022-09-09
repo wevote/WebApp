@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { hasIPhoneNotch, isAndroid, isAndroidSizeMD, isAndroidSizeWide, isAndroidSizeXL, isIOSAppOnMac, isIPad, isIPad11in, isIPhone4p7in, isIPhone5p5inEarly, isIPhone5p5inMini, isIPhone6p1in, isIPhone6p5in } from '../../common/utils/cordovaUtils';
 import { normalizedHrefPage } from '../../common/utils/hrefUtils';
 import { isCordova, isWebApp } from '../../common/utils/isCordovaOrWebApp';
-import isMobileScreenSize from '../../common/utils/isMobileScreenSize';
+import isMobileScreenSize, { isTablet } from '../../common/utils/isMobileScreenSize';
 import CordovaPageConstants from '../../constants/CordovaPageConstants';
 import AppObservableStore from '../../stores/AppObservableStore';
 import VoterStore from '../../stores/VoterStore';
@@ -17,9 +17,9 @@ export const IOSNotchedSpacer = styled('div')`
   height: ${() => ((isIPhone5p5inMini()) ? '40px' : '36px')};
   top: 0;
   position: fixed;
-  //background: white;
+  background: white;
   width: 100%;
-  opacity: 0;
+  opacity: 1;
   z-index: 1300;
 `;
 
@@ -156,18 +156,17 @@ export const TopOfPageHeader = styled('div')(({ theme }) => (`
 `));
 
 export const TopRowOneLeftContainer = styled('div')`
-  // grid-row-start: 1;
-  // grid-row-end: 1;
-  // grid-column: 1 / 2;
-  display: flex;
-  justify-content: flex-start;
+   grid-row-start: 1;
+   grid-row-end: 1;
+   grid-column: 1 / 2;
+  //display: flex;
+  //justify-content: flex-start;
 `;
 
 export const TopRowOneMiddleContainer = styled('div')`
   grid-row-start: 1;
   grid-row-end: 1;
   grid-column: 2 / 3;
-  //display: ${() => ((isMobileScreenSize()) ? 'none' : null)};
 `;
 
 export const TopRowOneRightContainer = styled('div')`
@@ -175,7 +174,7 @@ export const TopRowOneRightContainer = styled('div')`
   // {() => (((isMobileScreenSize() && !isIPhone5p5inMini()) || isIPadGiantSize()) ? '15px' : '0px')}; // Can this always be 0px?
   padding-right: ${() => {
     // if (isAndroidSizeWide()) return '55px';
-    if (isAndroidSizeMD() || isAndroidSizeXL() || isAndroidSizeWide()) return '15px';
+    if (isAndroidSizeMD() || isAndroidSizeXL() || isAndroidSizeWide() || isTablet()) return '15px';
     return '0px';
   }};
   display: flex;

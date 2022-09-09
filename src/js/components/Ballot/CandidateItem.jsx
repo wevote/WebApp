@@ -9,6 +9,7 @@ import abbreviateNumber from '../../common/utils/abbreviateNumber';
 import { isAndroidSizeMD } from '../../common/utils/cordovaUtils';
 import historyPush from '../../common/utils/historyPush';
 import { isWebApp } from '../../common/utils/isCordovaOrWebApp';
+import { displayNoneIfSmallerThanDesktop } from '../../common/utils/isMobileScreenSize';
 import { renderLog } from '../../common/utils/logging';
 import numberWithCommas from '../../common/utils/numberWithCommas';
 import AppObservableStore from '../../stores/AppObservableStore';
@@ -390,7 +391,7 @@ class CandidateItem extends Component {
                   </div>
                 )}
                 {(!hideCandidateUrl && candidateUrl && forDesktop) && (
-                  <ExternalWebSiteWrapper className="u-show-desktop">
+                  <ExternalWebSiteWrapper>
                     <Suspense fallback={<></>}>
                       <OpenExternalWebSite
                         linkIdAttribute="candidateDesktop"
@@ -497,7 +498,7 @@ class CandidateItem extends Component {
           {/* If there is a quote about the candidate, show that here. */}
           {showTopCommentByBallotItem ? (
             <>
-              <div className="u-show-desktop">
+              <CandidateQuote>
                 {linkToBallotItemPage && largeAreaHoverLinkOnNow && showHover ?
                   (
                     <div className="row">
@@ -533,7 +534,7 @@ class CandidateItem extends Component {
                       {this.topCommentByBallotItem(candidateWeVoteId, candidateText)}
                     </div>
                   )}
-              </div>
+              </CandidateQuote>
               <div className="u-show-mobile-tablet">
                 {linkToBallotItemPage ? (
                   <div onClick={this.goToCandidateLink} className="card-main__no-underline">
@@ -626,7 +627,7 @@ class CandidateItem extends Component {
     return (
       <CandidateItemWrapper>
         <DesktopWrapper
-          className={`u-show-desktop card-main u-overflow-hidden candidate-card ${linkToBallotItemPage && largeAreaHoverColorOnNow && showHover ? ' card-main--outline' : ''}`}
+          className={`card-main u-overflow-hidden candidate-card ${linkToBallotItemPage && largeAreaHoverColorOnNow && showHover ? ' card-main--outline' : ''}`}
           onMouseEnter={this.handleEnter}
           onMouseLeave={this.handleLeave}
         >
@@ -738,6 +739,10 @@ const CandidateInfo = styled('div', {
 const Candidate = styled('div')`
 `;
 
+const CandidateQuote = styled('div')`
+  ${() => displayNoneIfSmallerThanDesktop()};
+`;
+
 const CandidateItemWrapper = styled('div')`
 `;
 
@@ -767,12 +772,14 @@ const CandidateLinksWrapper = styled('div')`
 `;
 
 const DesktopWrapper = styled('div')`
+  ${() => displayNoneIfSmallerThanDesktop()};
 `;
 
 const ExternalWebSiteWrapper = styled('div')`
   margin-top: 3px;
   padding-left: 15px;
   white-space: nowrap;
+  ${() => displayNoneIfSmallerThanDesktop()};
 `;
 
 const ForMoreInformationInfoText = styled('div')`

@@ -4,6 +4,7 @@ import React, { Component, Suspense } from 'react';
 import Helmet from 'react-helmet';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
+import { displayNoneIfSmallerThanDesktop } from '../../common/utils/isMobileScreenSize';
 import { renderLog } from '../../common/utils/logging';
 import PricingCard from '../../components/More/PricingCard';
 import { Section } from '../../components/Welcome/sectionStyles';
@@ -474,7 +475,7 @@ class Pricing extends Component {
     const htmlForStandaloneHeader = (
       <HeaderForPricing>
         <PricingTitle>{currentPricingDict.pageTitle}</PricingTitle>
-        <PricingSubTitleDesktop className="u-show-desktop">
+        <PricingSubTitleDesktop>
           <Link to={currentPricingDict.alternateLinkPath} className={classes.pricingChoiceLink}>
             {currentPricingDict.alternateLinkText}
           </Link>
@@ -575,7 +576,7 @@ class Pricing extends Component {
                 )}
               </Row>
             </div>
-            <div className="row u-show-desktop">
+            <PricingRow>
               <PricingCard
                 featurePackage="FREE"
                 planName={currentPricingDict.Free.planName}
@@ -615,7 +616,7 @@ class Pricing extends Component {
                 buttonOnClickFunction={currentPricingDict.Enterprise.buttonOnClickFunction}
                 pricingCardFeatures={currentPricingDict.Enterprise.pricingCardFeatures}
               />
-            </div>
+            </PricingRow>
           </PricingDescriptionContainer>
         </Section>
         {this.props.modalDisplayMode ? null : (
@@ -707,6 +708,14 @@ const HeaderForPricingModal = styled('div')`
   text-align: center;
 `;
 
+const PricingRow = styled('div')`
+  display: flex;
+  flex-wrap: wrap;
+  margin-right: -15px;
+  margin-left: -15px;
+  ${() => displayNoneIfSmallerThanDesktop()};
+`;
+
 const PricingTitle = styled('h1')(({ theme }) => (`
   font-weight: bold;
   font-size: 36px;
@@ -725,6 +734,7 @@ const PricingTitle = styled('h1')(({ theme }) => (`
 `));
 
 const PricingSubTitleDesktop = styled('div')`
+  ${() => displayNoneIfSmallerThanDesktop()};
 `;
 
 const PricingSubTitleMobile = styled('div')`

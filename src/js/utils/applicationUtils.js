@@ -1,6 +1,7 @@
 import { isIOSAppOnMac } from '../common/utils/cordovaUtils';
 import { normalizedHrefPage } from '../common/utils/hrefUtils';
 import { isCordova, isWebApp } from '../common/utils/isCordovaOrWebApp';
+import { isSmallerThanTablet, isTablet } from '../common/utils/isMobileScreenSize';
 import normalizedImagePath from '../common/utils/normalizedImagePath';
 import Cookies from '../common/utils/js-cookie/Cookies';
 import stringContains from '../common/utils/stringContains';
@@ -11,7 +12,7 @@ import VoterStore from '../stores/VoterStore';
 // Based on the pathname parameter, decide if we want theaterMode, contentFullWidthMode, or voterGuideMode
 export function getApplicationViewBooleans (pathname) {
   // We don't want to do all the work to create the footer, fire off api queries, etc., only to then set "display: none" based on a breakpoint!
-  const isSmallScreen = window.screen.width < 992;
+  const isSmallScreen = isSmallerThanTablet(); // was ... window.screen.width < 992;
   let inTheaterMode = false;
   let contentFullWidthMode = false;
   let extensionPageMode = false;
@@ -180,7 +181,7 @@ export function getApplicationViewBooleans (pathname) {
   let showFooterBar;
   // console.log('stringContains(\'/settings/positions\', pathnameLowerCase):', stringContains('/settings/positions', pathnameLowerCase), pathnameLowerCase);
   if (!pathnameLowerCase) {
-    showFooterBar = isCordova();
+    showFooterBar = isCordova() && isSmallerThanTablet();
   } else if (extensionPageMode) {
     showFooterBar = false;
   // ///////// EXCLUDE: The following are URLS we want to specifically exclude (because otherwise they will be picked up in a broader pattern in the next branch
@@ -234,7 +235,7 @@ export function getApplicationViewBooleans (pathname) {
       pathnameLowerCase.startsWith('/settings/yourdata') ||
       pathnameLowerCase.startsWith('/settings')) {
     // We want to SHOW the footer bar on the above path patterns
-    showFooterBar = isWebApp() || (!isIOSAppOnMac() && isSmallScreen);
+    showFooterBar = !isTablet() && (isWebApp() || (!isIOSAppOnMac() && isSmallScreen));
   } else {
     // URLs like: https://WeVote.US/orlandosentinel  (The URL pathname consists of a Twitter Handle only)
     contentFullWidthMode = true;

@@ -1,6 +1,7 @@
 import { Button } from '@mui/material';
 import PropTypes from 'prop-types';
 import React from 'react';
+import styled from 'styled-components';
 import { renderLog } from '../../common/utils/logging';
 
 
@@ -9,7 +10,7 @@ export default function SignInButton (props) {
   renderLog('SignInButton');  // Set LOG_RENDER_EVENTS to log all renders
 
   return (
-    <Button
+    <StyledButton
       className="header-sign-in"
       color="primary"
       id="signInHeaderBar"
@@ -47,9 +48,26 @@ export default function SignInButton (props) {
           Sign Up
         </span>
       </span>
-    </Button>
+    </StyledButton>
   );
 }
 SignInButton.propTypes = {
   toggleSignInModal: PropTypes.func,
 };
+
+const StyledButton = styled(Button)(({ theme }) => (`
+  padding: 8px 8px 4px 8px;
+  ${theme.breakpoints.between('tabMin', 'tabMdMin')} { // Small Tablets
+    font-size: 20px;
+    padding: 4px 8px 2px 8px;
+  }
+  ${theme.breakpoints.between('tabMdMin', 'tabLgMin')} { // Medium Tablets
+    font-size: 20px;
+    padding: 6px 8px 2px 8px;
+
+  }
+  ${theme.breakpoints.between('tabLgMin', 'tabMax')} { { // Larger Tablets
+    font-size: 24px;
+    padding: 2px 8px 4px 8px;
+  },
+`));

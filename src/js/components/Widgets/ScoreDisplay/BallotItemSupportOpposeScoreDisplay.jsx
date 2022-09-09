@@ -1057,7 +1057,7 @@ BallotItemSupportOpposeScoreDisplay.propTypes = {
   showUpArrow: PropTypes.bool,
 };
 
-// ${theme.colors.opposeRedRgb}  // Why doesn't this pull from WebApp/src/js/styled-theme.js ?
+// ${theme.colors.opposeRedRgb}  // Why doesn't this pull from WebApp/src/js/styled-theme.js ?  Answer: Because it has been replaced with common muiTheme.js
 const styles = (theme) => ({
   arrowRightAltIconDown: {
     transform: 'rotate(90deg) scale(2, 2)',

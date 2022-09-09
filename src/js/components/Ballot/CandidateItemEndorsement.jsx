@@ -7,6 +7,7 @@ import React, { Component, Suspense } from 'react';
 import VoterGuidePossibilityActions from '../../actions/VoterGuidePossibilityActions';
 import abbreviateNumber from '../../common/utils/abbreviateNumber';
 import historyPush from '../../common/utils/historyPush';
+import { displayNoneIfSmallerThanDesktop } from '../../common/utils/isMobileScreenSize';
 import { renderLog } from '../../common/utils/logging';
 import numberWithCommas from '../../common/utils/numberWithCommas';
 import CandidateStore from '../../stores/CandidateStore';
@@ -394,7 +395,7 @@ class CandidateItemEndorsement extends Component {
                 </span>
               )}
               {(!hideCandidateUrl && candidateUrl) && (
-                <ExternalWebSiteWrapper className="u-show-desktop">
+                <ExternalWebSiteWrapper>
                   <Suspense fallback={<></>}>
                     <OpenExternalWebSite
                       linkIdAttribute="candidateMobile"
@@ -608,6 +609,7 @@ const CandidateWrapper = styled('div')(({ theme }) => (`
 const ExternalWebSiteWrapper = styled('span')`
   padding-left: 15px;
   white-space: nowrap;
+  ${() => displayNoneIfSmallerThanDesktop()};
 `;
 
 const TextArea = styled(TextField)`
