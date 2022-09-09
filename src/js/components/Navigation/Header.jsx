@@ -586,7 +586,7 @@ Header.propTypes = {
   // pathname: PropTypes.string,
 };
 
-const BackToSettingsMobileDesktopSpan = styled('div')`
+const BackToSettingsMobileDesktopSpan = styled('span')`
   ${() => displayNoneIfSmallerThanDesktop()};
 `;
 

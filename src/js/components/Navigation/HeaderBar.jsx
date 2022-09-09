@@ -12,7 +12,7 @@ import apiCalming from '../../common/utils/apiCalming';
 import { hasIPhoneNotch, historyPush, isDeviceZoomed, isIOS, isIOSAppOnMac } from '../../common/utils/cordovaUtils';
 import { normalizedHref, normalizedHrefPage } from '../../common/utils/hrefUtils';
 import { isCordova, isWebApp } from '../../common/utils/isCordovaOrWebApp';
-import isMobileScreenSize, { isSmallTablet, isTablet } from '../../common/utils/isMobileScreenSize';
+import isMobileScreenSize, { displayNoneIfSmallerThanDesktop, isSmallTablet, isTablet } from '../../common/utils/isMobileScreenSize';
 import { renderLog } from '../../common/utils/logging';
 import voterPhoto from '../../common/utils/voterPhoto';
 import AnalyticsStore from '../../stores/AnalyticsStore';
@@ -514,8 +514,7 @@ class HeaderBar extends Component {
           <TopRowOneMiddleContainer>
             <div className="header-nav" style={isMobileScreenSize() || !isTablet() ? { display: 'none' } : {}}>
               { (!isMobileScreenSize() || isTablet()) && (
-                <Tabs
-                  className={isIOSAppOnMac() ? '' : 'u-show-desktop'}
+                <StyledTabs
                   value={tabsValue}
                   indicatorColor="primary"
                   classes={{ indicator: classes.indicator }}
@@ -551,7 +550,7 @@ class HeaderBar extends Component {
                     id="howItWorksTabHeaderBar"
                     label="How It Works"
                   />
-                </Tabs>
+                </StyledTabs>
               )}
             </div>
           </TopRowOneMiddleContainer>
@@ -790,6 +789,10 @@ const HeaderBarWrapper = styled('div', {
   box-shadow: ${(!scrolledDown || !hasSubmenu)  ? '' : standardBoxShadow('wide')};
   border-bottom: ${(!scrolledDown || !hasSubmenu) ? '' : '1px solid #aaa'};
 `));
+
+const StyledTabs = styled(Tabs)`
+  ${() => (isIOSAppOnMac() ? '' : displayNoneIfSmallerThanDesktop())};
+`;
 
 // const SearchWrapper = styled('div')`
 //   margin-top: 11px;
