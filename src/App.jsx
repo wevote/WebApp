@@ -80,7 +80,6 @@ const SetUpAccountRoot = React.lazy(() => import(/* webpackChunkName: 'SetUpAcco
 const SharedItemLanding = React.lazy(() => import(/* webpackChunkName: 'SharedItemLanding' */ './js/pages/SharedItemLanding'));
 const SignInEmailProcess = React.lazy(() => import(/* webpackChunkName: 'SignInEmailProcess' */ './js/pages/Process/SignInEmailProcess'));
 const SignInJumpProcess = React.lazy(() => import(/* webpackChunkName: 'SignInJumpProcess' */ './js/pages/Process/SignInJumpProcess'));
-const Start = React.lazy(() => import(/* webpackChunkName: 'Start' */ './js/pages/Startup/GetStarted'));
 const TermsOfService = React.lazy(() => import(/* webpackChunkName: 'TermsOfService' */ './js/pages/More/TermsOfService'));
 const TwitterHandleLanding = React.lazy(() => import(/* webpackChunkName: 'TwitterHandleLanding' */ './js/pages/TwitterHandleLanding'));
 const TwitterSignInProcess = React.lazy(() => import(/* webpackChunkName: 'TwitterSignInProcess' */ './js/pages/Process/TwitterSignInProcess'));
@@ -348,7 +347,6 @@ class App extends Component {
                     <Route path="/sign_in_email/:email_secret_key" component={SignInEmailProcess} />
                     <Route path="/setupaccount/:set_up_page" exact component={SetUpAccountRoot} />
                     <Route path="/setupaccount" exact><SetUpAccountRoot /></Route>
-                    <Route path="/start" exact><Start /></Route>
                     <Route path="/terms" component={TermsOfService} />
                     <Route path="/twitter_sign_in" exact><TwitterSignInProcess /></Route>
                     <Route path="/twittersigninprocess/:sign_in_step" component={TwitterSignInProcess} />

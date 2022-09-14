@@ -100,7 +100,7 @@ class SetUpAccountImportContacts extends React.Component {
                     <>
                       Be the first in your network of
                       {' '}
-                      { voterContactEmailListCount }
+                      {voterContactEmailListCount}
                       {' '}
                       contacts to join We Vote.
                       <br />

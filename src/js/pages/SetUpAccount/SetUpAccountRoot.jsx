@@ -12,31 +12,19 @@ import { isCordovaWide } from '../../common/utils/cordovaUtils';
 // import daysUntil from '../../common/utils/daysUntil';
 import historyPush from '../../common/utils/historyPush';
 import { renderLog } from '../../common/utils/logging';
-import stringContains from '../../common/utils/stringContains';
 import normalizedImagePath from '../../common/utils/normalizedImagePath';
+import stringContains from '../../common/utils/stringContains';
 import HeaderBackToButton from '../../components/Navigation/HeaderBackToButton';
 import DeleteAllContactsButton from '../../components/SetUpAccount/DeleteAllContactsButton';
-import SetUpAccountNextButton from '../../components/SetUpAccount/SetUpAccountNextButton';
+import Reassurance from '../../components/SetUpAccount/Reassurance';
 import { reassuranceText } from '../../components/SetUpAccount/reassuranceText';
-import {
-  DesktopNextButtonsInnerWrapper, DesktopNextButtonsOuterWrapperUShowDesktopTablet,
-  DesktopStaticNextButtonsOuterWrapper,
-  MobileStaticNextButtonsInnerWrapper, MobileStaticNextButtonsOuterWrapperUShowMobile,
-} from '../../components/Style/NextButtonStyles';
-import {
-  AccountSetUpRootWrapper,
-  BackWrapper,
-  BackToButtonSpacer,
-  PageContentContainerAccountSetUp,
-  StepHtmlWrapper,
-  WeVoteLogo,
-  WeVoteLogoWrapper,
-} from '../../components/Style/SimpleProcessStyles';
+import SetUpAccountNextButton from '../../components/SetUpAccount/SetUpAccountNextButton';
+import { DesktopNextButtonsInnerWrapper, DesktopNextButtonsOuterWrapperUShowDesktopTablet, DesktopStaticNextButtonsOuterWrapper, MobileStaticNextButtonsInnerWrapper, MobileStaticNextButtonsOuterWrapperUShowMobile } from '../../components/Style/NextButtonStyles';
+import { AccountSetUpRootWrapper, BackToButtonSpacer, BackWrapper, PageContentContainerAccountSetUp, StepHtmlWrapper, WeVoteLogo, WeVoteLogoWrapper } from '../../components/Style/SimpleProcessStyles';
 import AppObservableStore from '../../stores/AppObservableStore';
 import BallotStore from '../../stores/BallotStore';
 import FriendStore from '../../stores/FriendStore';
 import VoterStore from '../../stores/VoterStore';
-import Reassurance from '../Startup/Reassurance';
 
 const AddContactsFromGoogleButton = React.lazy(() => import(/* webpackChunkName: 'AddContactsFromGoogleButton' */ '../../components/SetUpAccount/AddContactsFromGoogleButton'));
 const SetUpAccountAddPhoto = React.lazy(() => import(/* webpackChunkName: 'SetUpAccountAddPhoto' */ '../../components/SetUpAccount/SetUpAccountAddPhoto'));
