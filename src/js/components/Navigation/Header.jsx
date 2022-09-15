@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
 import styled from 'styled-components';
 import VoterActions from '../../actions/VoterActions';
-import { isIOSAppOnMac, isIPad, isCordovaWide, isAndroidSizeWide } from '../../common/utils/cordovaUtils';
+import { isIOSAppOnMac, isIPad, isCordovaWide, isAndroidSizeWide, hasiPhone14SizeHeader } from '../../common/utils/cordovaUtils';
 import historyPush from '../../common/utils/historyPush';
 import { normalizedHref } from '../../common/utils/hrefUtils';
 import { isCordova, isWebApp } from '../../common/utils/isCordovaOrWebApp';
@@ -202,6 +202,11 @@ export default class Header extends Component {
     if (this.hideHeader()) {
       renderLog('Header hidden');
       return null;
+    }
+
+    if (isCordova()) {
+      console.log('Header, cordova device model', window.device.model);
+      console.log('Header, hasiPhone14SizeHeader', hasiPhone14SizeHeader());
     }
 
     const { params } = this.props;

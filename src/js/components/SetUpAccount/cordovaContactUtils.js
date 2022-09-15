@@ -1,15 +1,23 @@
 // https://github.com/EinfachHans/cordova-plugin-contacts-x
 // eslint-disable-next-line import/no-extraneous-dependencies
 import ContactsX from 'cordova-plugin-contacts-x';
-import StartedState from './StartedState';
+
 
 const getDeviceContacts = async (callBack) => {
   ContactsX.find((deviceContactList) => {
+    window.contactPermissionIos = 'success';
     callBack(deviceContactList);
-    StartedState.setImportButtonPressed();
     return deviceContactList;
   }, (error) => {
-    console.error('contact find error:', JSON.stringify(error));
+    if (error.error !== 3) {    // suppress spurious error with blank message and number 3, while the system dialog is being displayed
+      console.error('contact find error:', JSON.stringify(error));
+    }
+    if (window.contactPermissionIos === 'ask') {
+      window.contactPermissionIos = 'cancelled';
+    }
+    if (window.contactPermissionIos === undefined) {
+      window.contactPermissionIos = 'ask';
+    }
   }, {
     fields: {
       phoneNumbers: true,
@@ -19,10 +27,11 @@ const getDeviceContacts = async (callBack) => {
 };
 
 const requestPermissionContacts = async () => {
-  ContactsX.requestPermission((success) => {
-    console.log(success);
+  ContactsX.requestPermission((status) => {
+    console.log('requestPermissionContacts', JSON.stringify(status));
     getDeviceContacts();
   }, (error) => {
+    window.contactPermissionIos = 'wtf';
     console.error('requestPermission error:', JSON.stringify(error));
   });
 };
@@ -30,9 +39,11 @@ const requestPermissionContacts = async () => {
 // eslint-disable-next-line import/prefer-default-export
 export const checkPermissionContacts = async (callBack) => {
   ContactsX.hasPermission((success) => {
-    console.log(success);
+    console.log('Results of hasPermission check:', JSON.stringify(success));
     if (success?.read === false) {
       requestPermissionContacts(callBack);
+    } else {
+      window.contactPermissionIos = 'accepted';
     }
     getDeviceContacts(callBack);
   }, (error) => {

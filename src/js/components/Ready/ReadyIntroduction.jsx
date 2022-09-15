@@ -108,16 +108,12 @@ class ReadyIntroduction extends Component {
                     {' '}
                     <Link to="/ballot" className="u-link-color">preview your ballot</Link>
                     .
-                    {isWebApp() && (
-                      <>
-                        {' '}
-                        How are
-                        {' '}
-                        <Link to="/findfriends/importcontacts" className="u-link-color">your friends</Link>
-                        {' '}
-                        planning to vote?
-                      </>
-                    )}
+                    {' '}
+                    How are
+                    {' '}
+                    <Link to="/findfriends/importcontacts" className="u-link-color">your friends</Link>
+                    {' '}
+                    planning to vote?
                   </StepText>
                 </ListRow>
               )}

@@ -6,19 +6,17 @@ import clsx from 'clsx';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
 import { Link } from 'react-router-dom';
-import { isAndroid, isAndroidSizeWide, isIOS, isIOsSmallerThanPlus, isIPhone5p5inEarly, isIPhone5p5inMini, isIPhone5p8in,
-  isIPhone6p1in, isIPhone6p5in, isWebAppHeight0to568, isWebAppHeight569to667, isWebAppHeight668to736, isWebAppHeight737to896,
-  restoreStylesAfterCordovaKeyboard } from '../../common/utils/cordovaUtils';
+import { isAndroid, isAndroidSizeWide, isIOS, isIOsSmallerThanPlus, isIPhone5p5inEarly, isIPhone5p5inMini, isIPhone5p8in, isIPhone6p1in, isIPhone6p5in, isWebAppHeight0to568, isWebAppHeight569to667, isWebAppHeight668to736, isWebAppHeight737to896, restoreStylesAfterCordovaKeyboard } from '../../common/utils/cordovaUtils';
 import historyPush from '../../common/utils/historyPush';
 import { isCordova, isWebApp } from '../../common/utils/isCordovaOrWebApp';
 import { renderLog } from '../../common/utils/logging';
 import stringContains from '../../common/utils/stringContains';
 import webAppConfig from '../../config';
-import DeviceURLField from '../../pages/Startup/DeviceURLField';
 import VoterStore from '../../stores/VoterStore';
 import initializeAppleSDK from '../../utils/initializeAppleSDK';
 import initializeFacebookSDK from '../../utils/initializeFacebookSDK';
 import signInModalGlobalState from '../Widgets/signInModalGlobalState';
+import DeviceURLField from './DeviceURLField';
 
 const SignInOptionsPanel = React.lazy(() => import(/* webpackChunkName: 'SignInOptionsPanel' */ './SignInOptionsPanel'));
 

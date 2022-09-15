@@ -1,17 +1,18 @@
-import { CircularProgress } from '@mui/material';
+import { Button, CircularProgress } from '@mui/material';
 import withStyles from '@mui/styles/withStyles';
 import { loadGapiInsideDOM } from 'gapi-script';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import GoogleButton from 'react-google-button';
-import Helmet from 'react-helmet';
 import styled from 'styled-components';
 import VoterActions from '../../actions/VoterActions';
-import { isWebApp } from '../../common/utils/isCordovaOrWebApp';
+import { isCordova, isWebApp } from '../../common/utils/isCordovaOrWebApp';
 import { renderLog } from '../../common/utils/logging';
 import webAppConfig from '../../config'; // eslint-disable-line import/no-cycle
 import AddContactConsts from '../../constants/AddContactConsts';
 import VoterStore from '../../stores/VoterStore';
+import { checkPermissionContacts } from './cordovaContactUtils';
+import { parseRawAppleContacts } from './parseRawAppleContacts';
 
 
 class AddContactsFromGoogleButton extends Component {
@@ -41,6 +42,18 @@ class AddContactsFromGoogleButton extends Component {
     if (this.googleSignInListener) {
       this.googleSignInListener.remove();
     }
+  }
+
+  handleRawAppleContacts (conslist) {
+    // TODO Dec 7, 2021:  plugin does not ask for address, but I could modify the swift code and try:  https://github.com/EinfachHans/cordova-plugin-contacts-x/blob/master/src/ios/ContactsX.swift
+    // https://developer.apple.com/forums/thread/131417
+    console.log('entry to handleRawAppleContacts');
+    const cleanedAppleContacts = parseRawAppleContacts(conslist);
+    console.log('cleaned contacts from handleRawAppleContacts', cleanedAppleContacts);
+    VoterActions.voterContactListSave(cleanedAppleContacts, true);  // won't save on the serve without a true here...
+    this.setState({
+      addContactsState: AddContactConsts.sendingContacts,
+    });
   }
 
   onGoogleSignIn = (signedIn) => {
@@ -90,12 +103,12 @@ class AddContactsFromGoogleButton extends Component {
     }
   }
 
-  onButtonClick = () => {
+  onButtonClickWebApp = () => {
     // const { addContactsState, setOfContacts } = this.state;
     const { gapi } = window;
     // 2022-06-23 We always want to give the voter a chance to choose another account to import from
     const isSignedIn = gapi.auth2.getAuthInstance().isSignedIn.get();
-    console.log('onButtonClick isSignedIn:', isSignedIn);
+    // console.log('onButtonClickWebApp isSignedIn:', isSignedIn);
     if (isSignedIn) {
       // console.log('Getting contacts from Google on button click, since we were logged into Google');
       this.getOtherConnections();
@@ -105,25 +118,15 @@ class AddContactsFromGoogleButton extends Component {
       gapi.auth2.getAuthInstance().signIn();
       this.setState({ addContactsState: AddContactConsts.requestingSignIn });
     }
+  }
 
-    // 2022-06-23 I think this creates duplicate voterContactListSave
-    // if (addContactsState === AddContactConsts.receivedContacts) {
-    //   // console.log('Sending contacts from Google to the API Server on button click');
-    //   const arrayOfSelectedContacts = [];
-    //   setOfContacts.forEach((contact) => {
-    //     if (contact.selected) {
-    //       arrayOfSelectedContacts.push(contact);
-    //     }
-    //   });
-    //
-    //   const fromGooglePeopleApi = true;
-    //   if (arrayOfSelectedContacts.length > 0) {
-    //     VoterActions.voterContactListSave(arrayOfSelectedContacts, fromGooglePeopleApi);
-    //   }
-    //   this.setState({
-    //     addContactsState: AddContactConsts.sendingContacts,
-    //   });
-    // }
+  onButtonClickIos = () => {
+    if (window.contactPermissionIos === 'cancelled') {
+      this.setState({ addContactsState: AddContactConsts.permissionDenied });
+      console.error('Permissions were cancelled');
+    } else {
+      checkPermissionContacts(this.handleRawAppleContacts);
+    }
   }
 
   getOtherConnections = () => {
@@ -147,6 +150,7 @@ class AddContactsFromGoogleButton extends Component {
           email: '',
           update_time: '',
           type: '',
+          api_type: 'google',
         };
         if (other.emailAddresses && other.emailAddresses.length > 0) {
           const possible = other.emailAddresses[0].value.replace('<', '').replace('>', '');
@@ -216,15 +220,12 @@ class AddContactsFromGoogleButton extends Component {
     const GOOGLE_PEOPLE_API_KEY = webAppConfig.GOOGLE_PEOPLE_API_KEY || '';
     const DISCOVERY_DOCS = ['https://www.googleapis.com/discovery/v1/apis/people/v1/rest'];
     const SCOPES = 'https://www.googleapis.com/auth/contacts.other.readonly';
-    // const REDIRECT_URI = isWebApp() ? window.location.href : 'https://wevote.us/';
 
     gapi.client.init({
       apiKey: GOOGLE_PEOPLE_API_KEY,
       clientId: GOOGLE_PEOPLE_API_CLIENT_ID,
       discoveryDocs: DISCOVERY_DOCS,
       scope: SCOPES,
-      cookie_policy: 'https://wevote.us',
-      plugin_name: 'WeVoteDummy',
     }).then(() => {
       // Listen for sign-in state changes.
       this.googleSignInListener = gapi.auth2.getAuthInstance().isSignedIn.listen(this.onGoogleSignIn);
@@ -243,28 +244,10 @@ class AddContactsFromGoogleButton extends Component {
     });
   }
 
-  cordovaSignOn () {
-    const GOOGLE_PEOPLE_API_CLIENT_ID = webAppConfig.GOOGLE_PEOPLE_API_CLIENT_ID || '';
-    // const GOOGLE_PEOPLE_API_KEY = webAppConfig.GOOGLE_PEOPLE_API_KEY || '';
-    // const DISCOVERY_DOCS = ['https://www.googleapis.com/discovery/v1/apis/people/v1/rest'];
-    const SCOPES = 'https://www.googleapis.com/auth/contacts.other.readonly';
-    window.plugins.googleplus.login({
-      scopes: SCOPES,
-      webClientId: GOOGLE_PEOPLE_API_CLIENT_ID,
-      offline: false, // optional, but requires the webClientId - if set to true the plugin will also return a serverAuthCode, which can be used to grant offline access to a non-Google server
-    },
-    (obj) => {
-      alert(`Sign in Successful${JSON.stringify(obj)}`); // do something useful instead of alerting
-    },
-    (msg) => {
-      alert(`Sign in error: ${msg}`);
-    });
-  }
-
-
   render () {
     renderLog('AddContactsFromGoogleButton');  // Set LOG_RENDER_EVENTS to log all renders
     const { darkButton, labelText } = this.props;
+    const label = labelText || isWebApp() ? 'Check Gmail for contacts to import:' : 'Check for contacts to import from this phone:';
     const { addContactsState } = this.state;
     // console.log('render in AddContactsFromGoogleButton, addContactsState: ', addContactsState);
     const waitingForImportsActionToFinish = (addContactsState === AddContactConsts.requestingContacts) || (addContactsState === AddContactConsts.sendingContacts) || (addContactsState === AddContactConsts.receivedContacts);
@@ -283,10 +266,7 @@ class AddContactsFromGoogleButton extends Component {
     } else {
       return (
         <AddContactsFromGoogleWrapper>
-          <Helmet>
-            <meta property="Content-Security-Policy" content="frame-src https://content.googleapis.com/*; " />
-          </Helmet>
-          {(addContactsState === AddContactConsts.permissionDenied) && (
+          {(addContactsState === AddContactConsts.permissionDenied && isWebApp()) && (
             <>
               <PermissionDeniedTitle>
                 Please Grant Permission
@@ -302,20 +282,49 @@ class AddContactsFromGoogleButton extends Component {
               </PermissionDeniedText>
             </>
           )}
+          {(addContactsState === AddContactConsts.permissionDenied && isCordova()) && (
+            <>
+              <PermissionDeniedTitle>
+                Sadly you clicked &quot;Don&apos;t Allow&quot;
+              </PermissionDeniedTitle>
+              <PermissionDeniedText>
+                iOS only gives you once chance to approve contacts access per installation of an app.
+                <br />
+                To import your contacts, delete the We Vote app then download it again from the App Store.
+                <br />
+                Be sure to press the
+                <strong> OK </strong>
+                button in the
+                <strong> &quot;We Vote Would Like to Access Your Contacts&quot; </strong>
+                dialog.
+              </PermissionDeniedText>
+            </>
+          )}
           {(addContactsState === AddContactConsts.noContactsFound) && (
             <NoContactsFoundText>
               No contacts found for that account. Please try signing into another Gmail account.
             </NoContactsFoundText>
           )}
           <ImportContactsLabelText>
-            {labelText || 'Check Gmail for contacts to import:'}
+            {label}
           </ImportContactsLabelText>
-          <GoogleButton
-            id="addContactsFromGoogle"
-            label="Sign in with Google"
-            onClick={isWebApp() ? this.onButtonClick : this.cordovaSignOn}
-            type={darkButton ? 'dark' : 'light'}
-          />
+          {isWebApp() ? (
+            <GoogleButton
+              id="addContactsFromGoogle"
+              label="Sign in with Google"
+              onClick={this.onButtonClickWebApp}
+              type={darkButton ? 'dark' : 'light'}
+            />
+          ) : (
+            <Button
+              color="primary"
+              onClick={this.onButtonClickIos}
+              variant="outlined"
+              hidden={false}
+            >
+              Import Apple Contacts
+            </Button>
+          )}
         </AddContactsFromGoogleWrapper>
       );
     }
@@ -350,7 +359,7 @@ const ImportingContacts = styled('div')`
 
 const ImportContactsLabelText = styled('div')`
   font-weight: 600;
-  margin-bottom: 4px;
+  margin-bottom: ${isCordova() ? '6px' : '4px'};
   text-align: center;
 `;
 

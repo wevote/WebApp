@@ -8,7 +8,7 @@ import { isAndroidSizeWide, isAndroidSizeXL, restoreStylesAfterCordovaKeyboard }
 import { isCordova, isWebApp } from '../../common/utils/isCordovaOrWebApp';
 import { renderLog } from '../../common/utils/logging';
 import webAppConfig from '../../config';
-import DeviceURLField from '../../pages/Startup/DeviceURLField';
+import DeviceURLField from '../SignIn/DeviceURLField';
 
 class HeaderBarProfilePopUp extends Component {
   constructor (props) {

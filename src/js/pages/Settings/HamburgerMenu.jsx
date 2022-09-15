@@ -2,19 +2,19 @@ import React, { Component } from 'react';
 import Table from 'react-bootstrap/Table';
 import Helmet from 'react-helmet';
 import VoterSessionActions from '../../actions/VoterSessionActions';
-import historyPush from '../../common/utils/historyPush';
 import LazyImage from '../../common/components/LazyImage';
 import LoadingWheel from '../../common/components/Widgets/LoadingWheel';
+import historyPush from '../../common/utils/historyPush';
+import { isCordova } from '../../common/utils/isCordovaOrWebApp';
+import isMobileScreenSize from '../../common/utils/isMobileScreenSize';
+import { renderLog } from '../../common/utils/logging';
+import voterPhoto from '../../common/utils/voterPhoto';
 import HamburgerMenuRow from '../../components/Navigation/HamburgerMenuRowCentered';
 import SettingsSectionFooter from '../../components/Navigation/SettingsSectionFooter';
+import { PageContentContainer } from '../../components/Style/pageLayoutStyles';
 import DeviceDialog from '../../components/Widgets/DeviceDialog';
 import VoterStore from '../../stores/VoterStore';
 import { avatarGeneric } from '../../utils/applicationUtils';
-import { isCordova, isWebApp } from '../../common/utils/isCordovaOrWebApp';
-import isMobileScreenSize from '../../common/utils/isMobileScreenSize';
-import { renderLog } from '../../common/utils/logging';
-import { PageContentContainer } from '../../components/Style/pageLayoutStyles';
-import voterPhoto from '../../common/utils/voterPhoto';
 
 const webAppConfig = require('../../config');
 

@@ -187,9 +187,13 @@ class SetUpAccountInviteContactsSignIn extends React.Component {
                     </>
                   ) : (
                     <>
-                      We couldn&apos;t find any of your contacts
+                      Imported
                       {' '}
-                      <span className="u-no-break">We Vote</span>
+                      {voterContactEmailListCount}
+                      {' '}
+                      contacts, but they did not match any existing
+                      <span className="u-no-break"> We Vote </span>
+                      voters.
                     </>
                   )}
                 </>

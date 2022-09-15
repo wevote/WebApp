@@ -87,6 +87,9 @@ function innerAjax (options) {
 
   httpLog(`AJAX URL: ${options.url}`);
   httpLog('----------- AJAX voter_device_id: ', Cookies.get('voter_device_id'));
+  if (options.method === 'POST') {
+    httpLog(JSON.stringify(options.data));
+  }
   if (['voterRetrieve', 'deviceStoreFirebaseCloudMessagingToken', 'siteConfigurationRetrieve'].includes(options.endpoint)) {
     httpLog('AJAX voter_device_id: ', Cookies.get('voter_device_id'));
   }

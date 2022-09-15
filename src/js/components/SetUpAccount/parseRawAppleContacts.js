@@ -70,13 +70,6 @@ function stateForAreaCode (phoneNumber) {
   return '---';
 }
 
-// don't delete Dec 2021
-// function extractEmail (text) {
-//   if (!text || text.length === 0) return '';
-//   const m = text.match(/([a-zA-Z0-9._-]+@[a-zA-Z0-9._-]+\.[a-zA-Z0-9_-]+)/gi);
-//   if (!m || m.length !== 1) return '';
-//   return m[0];
-// }
 
 function getBestPhoneNumberOrEmail (chunk) {
   const types = ['home', 'mobile', 'work', 'other'];
@@ -95,12 +88,13 @@ export function parseRawAppleContacts (contacts) {
   const results = [];
   for (let i = 0; i < contacts.length; i++) {
     const contact = contacts[i];
-    const { firstName, middleName, familyName, phoneNumbers, emails, id } = contact;
+    const { firstName, middleName, familyName, phoneNumbers, emails } = contact;
     if (firstName === '' && familyName === '') continue;
     if (emails.length === 0) continue;
     const voterEmail = getBestPhoneNumberOrEmail(emails);
     if (voterEmail.length === 0) continue;  // No need to proceed with this one, if no email address
     const phoneNumber = getBestPhoneNumberOrEmail(phoneNumbers);
+    const stateCode = stateForAreaCode(phoneNumber);
     let displayName = firstName.trim();
     if (middleName.trim().length > 0) {
       displayName += ` ${middleName.trim()}`;
@@ -110,14 +104,17 @@ export function parseRawAppleContacts (contacts) {
     }
 
     results.push({
-      apple_contact_id: id,
-      apple_contacts_api: true,
-      google_people_api: false,
       display_name: displayName,
-      email_address_text: voterEmail,
       family_name: familyName,
       given_name: firstName,
-      state: stateForAreaCode(phoneNumber),
+      email: voterEmail,
+      id: voterEmail.replace('@', '-').replace('.', '-'),
+      selected: false,
+      type: '',
+      phone_number: phoneNumber,
+      api_type: 'apple',
+      update_time: new Date().toISOString(),
+      state_code: stateCode,
     });
   }
   return results;
