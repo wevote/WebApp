@@ -19,7 +19,7 @@ It creates an environment that has its own installation directories, that doesn'
 * [node-sass](https://github.com/sass/node-sass): "Node-sass is a library that provides binding for Node.js to LibSass, the C version of the popular stylesheet preprocessor, Sass."  We write styles in Sass (scss files), and the node-sass pre-processor compiles them to css on the fly, before the excution of the WebApp begins.
 * [Ruby](https://www.ruby-lang.org/en/): "A dynamic, open source programming language with a focus on simplicity and productivity."  Ruby is yet another interpreted language, that comes pre-installed on the Mac.  We use it to install Homebrew.
 
-## Install nodeenv ("Node Env") - Macintosh (see below for Windows)
+## Install nodeenv ("Node Env") - Macintosh <!--(see below for Windows)-->
 
 Install [Homebrew](https://brew.sh/), and then install Python:
 
@@ -91,7 +91,7 @@ Export your path to the local environment (append the `/usr/local/bin` path segm
 
 **Mac users are now done with this page,** go on to the next section: [Bringing Code to Your Machine](CLONING_CODE.md)
 
-
+<!--
 ## Install Node.js - Windows
 
 The following instructions were modified from this [blog post](http://blog.teamtreehouse.com/install-node-js-npm-windows).
@@ -102,17 +102,31 @@ The following instructions were modified from this [blog post](http://blog.teamt
      
 2. Run the installer (the .msi file you downloaded in the previous step).
 
-3. Follow the prompts in the Node installer (Accept the license agreement, click the NEXT button a bunch of times and accept the default installation settings).
+3. Follow the prompts in the Node installer.
+   1. Accept the license agreement, click the NEXT button a bunch of times and accept the default installation settings, until you get to the "Tools for Native Modules" page.  On this page click the "Automatically install the necessary tools" button, and then continue with the "Next" button.
+   2. Then "Install"
+   3. Allow Node to make changes on your local computer.
+   4. Ok, the "Install tool for Node.js Native Modules Installation Script" that opens in a terminal window.
+   5. Allow "Windows Power Shell" to make changes to your device.  (Installs Chocolatey, Python, Visual Studio, and other tools.)
+   6. Then patiently wait a few minutes for "Press enter" message to appear in the window, and press "Enter".
 
 4. Restart your computer. You won’t be able to run Node.js® until you restart your computer.
 
-5. Test the installation (instructions below).
+5. Install 64 bit Git and Git Bash
+   1. https://git-scm.com/download/win
+   2. Download 64 bit Git for Windows
+   3. Run the executable, and allow it to make changes to your device.  Accept all default settings during the install.
+
+
+7. Test the installation (instructions below).
 
 Make sure you have Node and npm installed by running simple commands to see what version of each is installed and to run a simple test program:
 
-*Test Node:* To see if Node is installed, open the Windows Command Prompt, Powershell or a similar command line tool, and type `node -v`. This should print a version number, so you’ll see something like this v0.10.35.
+*Test Node:* To see if Node is installed, open the Windows Command Prompt, Powershell or a similar command line tool, and type `node -v`. This should print a version number, so you’ll see something like this v16.17.0.
 
-*Test NPM:* To see if NPM is installed, type `npm -v` in Terminal. This should print NPM’s version number so you’ll see something like this 1.4.28
+*Test NPM:* To see if NPM is installed, type `npm -v` in Terminal. This should print NPM’s version number so you’ll see something like this 8.15.0
+
+**TODO: THis is BS, load bash first!!!!!**
 
 Create a test file and run it. A simple way to test that Node.js works is to create a JavaScript file. For example, name a file `hello.js`, and just add the code `console.log('Node is installed!');`. To run the code simply open your command line program, navigate to the folder where you saved the file, and type `node hello.js`. This will start Node and run the code in the `hello.js` file. You should see the output `Node is installed!`.
 
@@ -120,10 +134,10 @@ Create a test file and run it. A simple way to test that Node.js works is to cre
 Make sure to run `npm install -g gulp-cli` 
 
 If you are still getting errors with gulp this is a [helpful link](https://stackoverflow.com/questions/24027551/gulp-command-not-found-error-after-installing-gulp)
-
+-->
 ## Set up your environment
 
-If you are running Windows, we recommend installing [Git Bash](https://git-scm.com/downloads).
+<!-- If you are running Windows, we recommend installing [Git Bash](https://git-scm.com/downloads). -->
 
 Create a place to put all of the code from Github:
 

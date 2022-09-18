@@ -1,6 +1,14 @@
 # Automated Installation
 [Go back to Readme Home](../../README.md)
 
+
+
+
+**September 2022: This feature is not maintained, do not use**
+
+
+
+
 ## For Mac Users
 
 Copy the contents of [installmac.sh](https://github.com/wevote/WebApp/blob/develop/installmac.sh) to a file and run it (Note: this script requires the root password)
