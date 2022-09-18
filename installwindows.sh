@@ -1,6 +1,4 @@
-# Sept 2022:  This file has not been maintained in years, and probably no longer works
-
-!/usr/bin/env bash
+#!/usr/bin/env bash
 
 function error() { echo -e "\e[1;31m$1\e[0m"; exit 1; }
 function success() { echo -e "\e[1;32m$1\e[0m"; }
