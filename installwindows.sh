@@ -1,4 +1,4 @@
-# Sept 2022:  This file has not been maintained in years, and probably no longer work
+# Sept 2022:  This file has not been maintained in years, and probably no longer works
 
 #!s/usr/bin/env bash
 
