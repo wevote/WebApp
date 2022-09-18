@@ -1,7 +1,6 @@
-# This file has not been tested in years, and probably is no longer working
+# Sept 2022:  This file has not been maintained in years, and probably no longer works
 
-
-#!/usr/bin/env bash
+!/usr/bin/env bash
 
 function error() { echo -e "\e[1;31m$1\e[0m"; exit 1; }
 function success() { echo -e "\e[1;32m$1\e[0m"; }
@@ -12,19 +11,19 @@ minNodeVersion="v10.12.0"
 minNpmVersion="6.4.1"
 
 echo "[*] Updating..." && sudo apt update -y && success "[+] Updated successfully" || error "[-] Failed to update"
-
+ 
 echo "[*] Upgrading..." && sudo apt upgrade -y && success "[+] Upgraded successfully" || error "[-] Failed to upgrade"
-
+ 
 echo "[*] Installing xclip..."
 which xclip >/dev/null && success "[+] Xclip already installed" || (sudo apt install xclip >/dev/null 2>&1  && success "[+] Installed xclip" || error "[-] Failed to install xclip")
 
 echo "[*] Installing git..."
 which git >/dev/null && success "[+] Git already installed" || (sudo apt install git >/dev/null 2>&1  && success "[+] Installed git" || error "[-] Failed to install git")
 
-echo "[*] Installing pip..."
+echo "[*] Installing pip..." 
 which pip3 >/dev/null && success "[+] Pip already installed" || (sudo apt install python3-pip >/dev/null 2>&1 && success "[+] Installed pip" || error "[-] Failed to install pip")
 
-echo "[*] Installing nodeenv..."
+echo "[*] Installing nodeenv..." 
 which nodeenv >/dev/null && success "[+] Nodeenv already installed" || (sudo -H pip install nodeenv >/dev/null 2>&1 && success "[+] Installed nodeenv" || error "[-] Failed to install nodeenv")
 
 echo "[*] Installing node..."
@@ -58,8 +57,8 @@ echo "[*] Adding browserstack.config.js..."
 
 echo "[*] Installing npm packages..."
 {
-npm install fsevents
-npm install
+npm install fsevents 
+npm install 
 } >/dev/null 2>&1 && success "[+] Installed npm packages" || error "[-] Failed to install npm packages"
 
 echo "[*] Adding ssh key..."
