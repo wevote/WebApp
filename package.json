@@ -19,6 +19,7 @@
     "prod": "node node/buildDateFile.js && MINIMIZED=1 webpack --mode production",
     "run-prod-local": "node server-prod-local.js",
     "start": "node node/buildDateFile.js && PROTOCOL=HTTP webpack serve --mode development",
+    "start-win": "node node/buildDateFile.js && webpack serve --mode development",
     "start-https": "node node/buildDateFile.js && PROTOCOL=HTTPS webpack serve --mode development",
     "start-https-analysis": "node node/buildDateFile.js && PROTOCOL=HTTPS && ANALYSIS=1 webpack serve --mode development",
     "start-minified-libs": "webpack serve --mode production",
