@@ -17,16 +17,19 @@ Our current Beta version is here [https://WeVote.US](https://WeVote.US) and we a
 Our installation process is built to allow engineers all over America to contribute to We Vote.
 It may seem complicated, but it allows anyone to be in a position to make suggestions, and get involved.
 
-Manual Installation
-1. [Preparing the Environment on Your Machine](docs/installing/ENVIRONMENT.md)
+Installation on MacOs and Linux
+1. [Preparing the Environment on Your Machine (MacOS and Linux)](docs/installing/ENVIRONMENT.md)
+2. [Bringing Code to Your Machine (MacOS and Linux)](docs/installing/CLONING_CODE.md)
+3. [Running WebApp for the First Time (MacOS and Linux)](docs/installing/RUNNING_FIRST_TIME.md)
 
-2. [Bringing Code to Your Machine](docs/installing/CLONING_CODE.md)
+Installation on Windows
 
-3. [Running WebApp for the First Time](docs/installing/RUNNING_FIRST_TIME.md)
+1. [Windows Simplified setup for the WebApp](docs/WindowsSimplifiedInstall.md)
 
+<!-- Not up to date
 Automated Installation
 1. [Run automated scripts](docs/installing/AUTOMATED_INSTALLATION.md)
-
+-->
 ## Working with WebApp
 1. [Working with WebApp Day-to-Day](docs/working/README_WORKING_WITH_WEB_APP.md)
 
