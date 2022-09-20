@@ -5,11 +5,11 @@
 function stateForAreaCode (phoneNumber) {
   // https://www.allareacodes.com/area_code_listings_by_state.htm
   const matches = phoneNumber.match(/[2-9][0-9][0-9]/);
-  if (!matches || matches.length === 0)  return '---';
+  if (!matches || matches.length === 0)  return '';
   const areaString = matches[0];
-  if (!areaString || areaString.length === 0) return '---';
+  if (!areaString || areaString.length === 0) return '';
   const area = parseInt(areaString);
-  if (area.isNaN) return '---';
+  if (area.isNaN) return '';
   const short = true;
 
   if ([205, 251, 256, 334, 938].includes(area)) return short ? 'AL' : 'Alabama';
@@ -67,7 +67,7 @@ function stateForAreaCode (phoneNumber) {
   if ([670].includes(area)) return short ? 'NI' : 'Northern Mariana Islands';
   if ([787, 939].includes(area)) return short ? 'PR' : 'Puerto Rico';
   if ([340].includes(area)) return short ? 'VI' : 'Virgin Islands';
-  return '---';
+  return '';
 }
 
 
