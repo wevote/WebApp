@@ -7,7 +7,7 @@ import OrganizationActions from '../../actions/OrganizationActions';
 import VoterGuideActions from '../../actions/VoterGuideActions';
 import LazyImage from '../../common/components/LazyImage';
 import apiCalming from '../../common/utils/apiCalming';
-import { isIOS, isIOSAppOnMac, isIPad } from '../../common/utils/cordovaUtils';
+import { hasiPhone14SizeHeader, isIOS, isIOSAppOnMac, isIPad } from '../../common/utils/cordovaUtils';
 import historyPush from '../../common/utils/historyPush';
 import { normalizedHref } from '../../common/utils/hrefUtils';
 import { isCordova, isWebApp } from '../../common/utils/isCordovaOrWebApp';
@@ -199,9 +199,15 @@ class HeaderBackTo extends Component {
     const voterPhotoUrlMedium = voterPhoto(voter);
     const pathname = normalizedHref();
     const shareButtonInHeader = pathname && stringContains('/office', pathname.toLowerCase());
-    const cordovaStyles = isIOS() ?
-      { marginLeft: 0, padding: '34px 15px 0 0', right: 'unset' } :
-      { marginLeft: 0, padding: '0 15px 0 0', right: 'unset' };
+    let pad = isIOS() ? '34px 15px 0 0' : '0 15px 0 0';
+    if (hasiPhone14SizeHeader()) {
+      pad = '56px 15px 0 0';
+    }
+    const cordovaStyles = {
+      marginLeft: 0,
+      padding: pad,
+      right: 'unset',
+    };
     const cordovaOverrides = isWebApp() ? { paddingRight: 15 } : cordovaStyles;
     if (isIOSAppOnMac() || isIPad()) {
       cordovaOverrides.height = shareButtonInHeader ? '87px !important' : '68px';

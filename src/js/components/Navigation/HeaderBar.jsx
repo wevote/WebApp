@@ -488,6 +488,8 @@ class HeaderBar extends Component {
       avatarStyle = { ...avatarStyle, paddingRight: 10 };
     }
     // console.log('HeaderBar hasNotch, scrolledDown, hasSubmenu', hasIPhoneNotch(), scrolledDown, displayTopMenuShadow());
+    const displayMenu = !isMobileScreenSize() || isTablet();
+    // console.log('HeaderBar !isMobileScreenSize() || isTablet()', displayMenu);
     return (
       <HeaderBarWrapper
         hasNotch={hasIPhoneNotch()}
@@ -512,8 +514,8 @@ class HeaderBar extends Component {
             )}
           </TopRowOneLeftContainer>
           <TopRowOneMiddleContainer>
-            <div className="header-nav" style={isMobileScreenSize() || !isTablet() ? { display: 'none' } : {}}>
-              { (!isMobileScreenSize() || isTablet()) && (
+            <div className="header-nav">
+              { displayMenu && (
                 <StyledTabs
                   value={tabsValue}
                   indicatorColor="primary"
@@ -791,11 +793,7 @@ const HeaderBarWrapper = styled('div', {
 `));
 
 const StyledTabs = styled(Tabs)`
-  ${() => (isIOSAppOnMac() ? '' : displayNoneIfSmallerThanDesktop())};
+  // {() => (isIOSAppOnMac() ? '' : displayNoneIfSmallerThanDesktop())};
 `;
-
-// const SearchWrapper = styled('div')`
-//   margin-top: 11px;
-// `;
 
 export default withStyles(styles)(HeaderBar);
