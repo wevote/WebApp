@@ -2,16 +2,16 @@ import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
 import styled from 'styled-components';
 import VoterActions from '../../actions/VoterActions';
-import { isIOSAppOnMac, isIPad, isCordovaWide, isAndroidSizeWide, hasiPhone14SizeHeader } from '../../common/utils/cordovaUtils';
+import apiCalming from '../../common/utils/apiCalming';
+import { hasiPhone14SizeHeader, isAndroidSizeWide, isCordovaWide, isIOSAppOnMac, isIPad } from '../../common/utils/cordovaUtils';
 import historyPush from '../../common/utils/historyPush';
 import { normalizedHref } from '../../common/utils/hrefUtils';
 import { isCordova, isWebApp } from '../../common/utils/isCordovaOrWebApp';
-import { isTablet, displayNoneIfSmallerThanDesktop } from '../../common/utils/isMobileScreenSize';
+import isMobileScreenSize, { displayNoneIfSmallerThanDesktop, isTablet } from '../../common/utils/isMobileScreenSize';
 import { renderLog } from '../../common/utils/logging';
+import stringContains from '../../common/utils/stringContains';
 import AppObservableStore, { messageService } from '../../stores/AppObservableStore';
 import VoterStore from '../../stores/VoterStore';
-import apiCalming from '../../common/utils/apiCalming';
-import stringContains from '../../common/utils/stringContains';
 import { dumpCssFromId } from '../../utils/appleSiliconUtils';
 import { getApplicationViewBooleans, weVoteBrandingOff } from '../../utils/applicationUtils';
 import cordovaTopHeaderTopMargin from '../../utils/cordovaTopHeaderTopMargin';
@@ -592,6 +592,6 @@ Header.propTypes = {
 };
 
 const BackToSettingsMobileDesktopSpan = styled('span')`
-  ${() => displayNoneIfSmallerThanDesktop()};
+  ${() => (!isMobileScreenSize() || isTablet() ? '' : 'display: none;')};
 `;
 

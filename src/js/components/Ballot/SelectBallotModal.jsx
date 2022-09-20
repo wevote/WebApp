@@ -118,13 +118,6 @@ class SelectBallotModal extends Component {
           )}
           <Row>
             <div className="u-show-mobile-tablet">
-              <EditAddressInPlaceWrapperMobile>
-                <EditAddressInPlace
-                  ballotBaseUrl={ballotBaseUrl}
-                  defaultIsEditingAddress={editingAddress}
-                  toggleEditingAddress={this.toggleEditingAddress}
-                />
-              </EditAddressInPlaceWrapperMobile>
               {!editingAddress && (
                 <MapChartWrapper className="u-show-tablet">
                   <Suspense fallback={<></>}>
@@ -305,11 +298,6 @@ const SelectBallotTitleHeaderWrapper = styled('div')`
   margin-bottom: 32px;
 `;
 
-const EditAddressInPlaceWrapperMobile = styled('div')`
-  margin-top: 18px;
-  width: 100%;
-`;
-
 const ElectionChoiceWrapper = styled('div')`
   margin-top: 12px;
 `;
@@ -348,16 +336,6 @@ const MapChartWrapper = styled('div')`
     width: auto;
     flex: 1 1 0;
   }
-  // @media (min-width: 860px) {
-  //   display: block;
-  //   width: 50%;
-  //   padding: 16px;
-  //   position: sticky;
-  //   top: 0;
-  //   svg {
-  //     margin-top: -36px;
-  //   }
-  // }
   & svg, & path {
     max-height: 300px;
   }
@@ -387,7 +365,7 @@ const MapChartWrapperDesktop = styled('div')`
 `;
 
 const EditContainer = styled('div')`
-  ${() => displayNoneIfSmallerThanDesktop()};
+  margin-top: 12px;
 `;
 
 
