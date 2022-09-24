@@ -76,7 +76,7 @@ export function displayNoneIfSmallerThanDesktop () {
 }
 
 export function handleResize (componentName) {
-  const { priorHeaderWidth, priorHeaderBarWidth, priorFooterWidth, innerWidth: current, muiThemeGlobal: { breakpoints: { values: { tabMin: thresh } } } } = window;
+  const { priorHeaderWidth, priorHeaderBarWidth, priorFooterWidth, innerWidth: current, muiThemeGlobal: { breakpoints: { values: { tabMin: threshold } } } } = window;
 
   let prior = '';
   if (componentName === 'Footer') {
@@ -92,16 +92,16 @@ export function handleResize (componentName) {
   // console.log(`----------- ${componentName} handleResize entry`);
 
   if (prior === undefined) {
-    // console.log(`----------- ${componentName} handleResize FORCE RENDER prior is undefined, set to: `, current, thresh);
+    // console.log(`----------- ${componentName} handleResize FORCE RENDER prior is undefined, set to: `, current, threshold);
     if (componentName === 'Footer') window.priorFooterWidth = current;
     if (componentName === 'Header') window.priorHeaderWidth = current;
     if (componentName === 'HeaderBar') window.priorHeaderBarWidth = current;
     return false;
-  } else if ((prior < thresh && current < thresh) || (prior > thresh && current > thresh)) {
-    // console.log(`----------- ${componentName} handleResize both prior and current are on the same side of thresh: `, prior, current, thresh);
+  } else if ((prior < threshold && current < threshold) || (prior > threshold && current > threshold)) {
+    // console.log(`----------- ${componentName} handleResize both prior and current are on the same side of threshold: `, prior, current, threshold);
     return false;
   } else {
-    // console.log(`----------- ${componentName} handleResize FORCE RENDER prior and current are on either side of thresh: `, prior, current, thresh);
+    // console.log(`----------- ${componentName} handleResize FORCE RENDER prior and current are on either side of threshold: `, prior, current, threshold);
     if (componentName === 'Footer') window.priorFooterWidth = current;
     if (componentName === 'Header') window.priorHeaderWidth = current;
     if (componentName === 'HeaderBar') window.priorHeaderBarWidth = current;
