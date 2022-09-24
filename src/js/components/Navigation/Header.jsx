@@ -7,7 +7,7 @@ import { hasiPhone14SizeHeader, isAndroidSizeWide, isCordovaWide, isIOSAppOnMac,
 import historyPush from '../../common/utils/historyPush';
 import { normalizedHref } from '../../common/utils/hrefUtils';
 import { isCordova, isWebApp } from '../../common/utils/isCordovaOrWebApp';
-import isMobileScreenSize, { displayNoneIfSmallerThanDesktop, isTablet } from '../../common/utils/isMobileScreenSize';
+import isMobileScreenSize, { displayNoneIfSmallerThanDesktop, handleResize, isTablet } from '../../common/utils/isMobileScreenSize';
 import { renderLog } from '../../common/utils/logging';
 import stringContains from '../../common/utils/stringContains';
 import AppObservableStore, { messageService } from '../../stores/AppObservableStore';
@@ -51,14 +51,14 @@ export default class Header extends Component {
     this.closeHowItWorksModal = this.closeHowItWorksModal.bind(this);
     this.closeVoterPlanModal = this.closeVoterPlanModal.bind(this);
     this.closeSharedItemModal = this.closeSharedItemModal.bind(this);
-    this.handleResize = this.handleResize.bind(this);
+    this.handleResizeLocal = this.handleResizeLocal.bind(this);
     // this.storeSub = null;
   }
 
   componentDidMount () {
     // console.log('-----------HEADER componentDidMount');
     this.appStateSubscription = messageService.getMessage().subscribe((msg) => this.onAppObservableStoreChange(msg));
-    window.addEventListener('resize', this.handleResize);
+    window.addEventListener('resize', this.handleResizeLocal);
     if (isIOSAppOnMac() && appleSiliconDebug) {
       dumpCssFromId('header-container');
     }
@@ -108,7 +108,7 @@ export default class Header extends Component {
   componentWillUnmount () {
     // console.log('-----------HEADER componentWillUnmount');
     this.appStateSubscription.unsubscribe();
-    window.removeEventListener('resize', this.handleResize);
+    window.removeEventListener('resize', this.handleResizeLocal);
   }
 
   static getDerivedStateFromError (error) {       // eslint-disable-line no-unused-vars
@@ -116,12 +116,9 @@ export default class Header extends Component {
     return { hasError: true };
   }
 
-  handleResize (event) {
-    // console.log('-----------HEADER handleResize entry');
-    const { currentTarget, target } = event;
-    if (currentTarget.innerWidth !== target.innerWidth) {
-      // console.log('-----------HEADER handleResize RESIZE');
-      // console.log('handleResize in Header detected resizing');
+  handleResizeLocal () {
+    if (handleResize('Header')) {
+      this.setState({});
     }
   }
 
@@ -317,7 +314,7 @@ export default class Header extends Component {
         </div>
       );
     } else if (settingsMode) {
-      console.log('Header in settingsMode, showBackToSettingsDesktop:', showBackToSettingsDesktop, ', showBackToSettingsMobile:', showBackToSettingsMobile);
+      // console.log('Header in settingsMode, showBackToSettingsDesktop:', showBackToSettingsDesktop, ', showBackToSettingsMobile:', showBackToSettingsMobile);
       const backToSettingsLinkDesktop = '/settings/profile';
       const backToSettingsLinkMobile = '/settings/hamburger';
       const backToSettingsLinkText = '';
@@ -496,7 +493,7 @@ export default class Header extends Component {
       return null;
     } else {
       // This handles other pages, like the Ballot display
-      // console.log('Header not in any mode');
+      // console.log('Header not in any mode, headerNotVisible:', headerNotVisible);
       return (
         <div id="app-header">
           <IPhoneSpacer />

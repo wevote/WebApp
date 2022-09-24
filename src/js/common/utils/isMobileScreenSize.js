@@ -74,3 +74,38 @@ export function displayNoneIfSmallerThanDesktop () {
   }
   return '';
 }
+
+export function handleResize (componentName) {
+  const { priorHeaderWidth, priorHeaderBarWidth, priorFooterWidth, innerWidth: current, muiThemeGlobal: { breakpoints: { values: { tabMin: thresh } } } } = window;
+
+  let prior = '';
+  if (componentName === 'Footer') {
+    prior = priorFooterWidth;
+  } else if (componentName === 'Header') {
+    prior = priorHeaderWidth;
+  } else if (componentName === 'HeaderBar') {
+    prior = priorHeaderBarWidth;
+  } else {
+    console.error(`handleResize called with invalid componentName ${componentName}`);
+    return true;
+  }
+  // console.log(`----------- ${componentName} handleResize entry`);
+
+  if (prior === undefined) {
+    // console.log(`----------- ${componentName} handleResize FORCE RENDER prior is undefined, set to: `, current, thresh);
+    if (componentName === 'Footer') window.priorFooterWidth = current;
+    if (componentName === 'Header') window.priorHeaderWidth = current;
+    if (componentName === 'HeaderBar') window.priorHeaderBarWidth = current;
+    return false;
+  } else if ((prior < thresh && current < thresh) || (prior > thresh && current > thresh)) {
+    // console.log(`----------- ${componentName} handleResize both prior and current are on the same side of thresh: `, prior, current, thresh);
+    return false;
+  } else {
+    // console.log(`----------- ${componentName} handleResize FORCE RENDER prior and current are on either side of thresh: `, prior, current, thresh);
+    if (componentName === 'Footer') window.priorFooterWidth = current;
+    if (componentName === 'Header') window.priorHeaderWidth = current;
+    if (componentName === 'HeaderBar') window.priorHeaderBarWidth = current;
+    return true;
+  }
+}
+

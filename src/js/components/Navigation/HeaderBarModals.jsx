@@ -159,7 +159,7 @@ class HeaderBarModals extends Component {
   }
 
   render () {
-    renderLog('HeaderBar');  // Set LOG_RENDER_EVENTS to log all renders
+    renderLog('HeaderBarModals');  // Set LOG_RENDER_EVENTS to log all renders
 
     const { classes } = this.props;
     const {

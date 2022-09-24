@@ -3,7 +3,7 @@ import React, { Component, Suspense } from 'react';
 import styled from 'styled-components';
 import { normalizedHref } from '../../common/utils/hrefUtils';
 import { isWebApp } from '../../common/utils/isCordovaOrWebApp';
-import isMobileScreenSize, { isTablet } from '../../common/utils/isMobileScreenSize';
+import { handleResize } from '../../common/utils/isMobileScreenSize';
 import webAppConfig from '../../config';
 import AppObservableStore, { messageService } from '../../stores/AppObservableStore';
 import { getApplicationViewBooleans } from '../../utils/applicationUtils';
@@ -28,6 +28,7 @@ class Footer extends Component {
       showFooterMain: false,
       showShareButtonFooter: false,
     };
+    this.handleResizeLocal = this.handleResizeLocal.bind(this);
   }
 
   componentDidMount () {
@@ -35,22 +36,32 @@ class Footer extends Component {
     this.onAppObservableStoreChange();
     this.appStateSubscription = messageService.getMessage().subscribe((msg) => this.onAppObservableStoreChange(msg));
     window.addEventListener('scroll', this.handleWindowScroll);
-    const siteVars = getApplicationViewBooleans(normalizedHref());
-    // console.log('Footer componentDidMount siteVars:', siteVars);
-    const { showFooterBar, showFooterMain, showShareButtonFooter } = siteVars;
-    const pathname = normalizedHref();
-    this.setState({
-      previousPathname: pathname,
-      showFooterBar,
-      showFooterMain,
-      showShareButtonFooter,
-    });
+    window.addEventListener('resize', this.handleResizeLocal);
+    this.updateCachedSiteVars();
   }
 
   componentWillUnmount () {
     this.appStateSubscription.unsubscribe();
     window.removeEventListener('scroll', this.handleWindowScroll);
+    window.removeEventListener('resize', this.handleResizeLocal);
     // removeCordovaListenersToken -- Do not remove this line!
+  }
+
+  handleWindowScroll = (evt) => {
+    const { scrollTop } = evt.target.scrollingElement;
+    if (scrollTop > 60 && !AppObservableStore.getScrolledDown()) {
+      AppObservableStore.setScrolled(true);
+    }
+    if (scrollTop < 60 && AppObservableStore.getScrolledDown()) {
+      AppObservableStore.setScrolled(false);
+    }
+  };
+
+  handleResizeLocal () {
+    if (handleResize('Footer')) {
+      // console.log('Footer handleResizeEntry update');
+      this.updateCachedSiteVars();
+    }
   }
 
   onAppObservableStoreChange () {
@@ -95,15 +106,18 @@ class Footer extends Component {
     }
   }
 
-  handleWindowScroll = (evt) => {
-    const { scrollTop } = evt.target.scrollingElement;
-    if (scrollTop > 60 && !AppObservableStore.getScrolledDown()) {
-      AppObservableStore.setScrolled(true);
-    }
-    if (scrollTop < 60 && AppObservableStore.getScrolledDown()) {
-      AppObservableStore.setScrolled(false);
-    }
-  };
+  updateCachedSiteVars () {
+    const siteVars = getApplicationViewBooleans(normalizedHref());
+    // console.log('Footer componentDidMount siteVars:', siteVars);
+    const { showFooterBar, showFooterMain, showShareButtonFooter } = siteVars;
+    const pathname = normalizedHref();
+    this.setState({
+      previousPathname: pathname,
+      showFooterBar,
+      showFooterMain,
+      showShareButtonFooter,
+    });
+  }
 
   render () {
     const { /* doShowHeader, doShowFooter, */ showFooterBar, showFooterMain, showShareButtonFooter } = this.state;
@@ -150,7 +164,6 @@ const FooterMainWrapper = styled('div')`
 `;
 
 const FooterWrapper = styled('div')`
-  ${!isMobileScreenSize() || isTablet() ? 'display: none;' : ''}
 `;
 
 const ShareButtonFooterWrapper = styled('div')`
