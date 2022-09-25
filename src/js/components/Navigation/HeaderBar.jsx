@@ -9,10 +9,10 @@ import VoterActions from '../../actions/VoterActions';
 import VoterGuideActions from '../../actions/VoterGuideActions';
 import LazyImage from '../../common/components/LazyImage';
 import apiCalming from '../../common/utils/apiCalming';
-import { hasIPhoneNotch, historyPush, isDeviceZoomed, isIOS, isIOSAppOnMac } from '../../common/utils/cordovaUtils';
-import { normalizedHref, normalizedHrefPage } from '../../common/utils/hrefUtils';
+import { hasIPhoneNotch, historyPush, isDeviceZoomed, isIOS } from '../../common/utils/cordovaUtils';
+import { normalizedHrefPage } from '../../common/utils/hrefUtils';
 import { isCordova, isWebApp } from '../../common/utils/isCordovaOrWebApp';
-import isMobileScreenSize, { displayNoneIfSmallerThanDesktop, isSmallTablet, isTablet } from '../../common/utils/isMobileScreenSize';
+import isMobileScreenSize, { handleResize, isSmallTablet } from '../../common/utils/isMobileScreenSize';
 import { renderLog } from '../../common/utils/logging';
 import voterPhoto from '../../common/utils/voterPhoto';
 import AnalyticsStore from '../../stores/AnalyticsStore';
@@ -46,25 +46,26 @@ class HeaderBar extends Component {
       // aboutMenuOpen: false,
       chosenSiteLogoUrl: '',
       componentDidMountFinished: false,
-      friendInvitationsSentToMe: 0,
+      // friendInvitationsSentToMe: 0,
       hideWeVoteLogo: false,
-      priorPath: '',
+      // priorPath: '',
       scrolledDown: false,
-      showOrganizationModal: false,
+      // showOrganizationModal: false,
       showSignInModal: false,
-      showPositionDrawer: false,
-      shareModalStep: '',
+      // showPositionDrawer: false,
+      // shareModalStep: '',
       tabsValue: 1,
-      organizationModalBallotItemWeVoteId: '',
+      // organizationModalBallotItemWeVoteId: '',
       page: 'non-blank-default-value',
       voter: {},
-      voterFirstName: '',
+      // voterFirstName: '',
       voterIsSignedIn: false,
     };
     this.debugLogging = this.debugLogging.bind(this);
     this.toggleSignInModal = this.toggleSignInModal.bind(this);
     this.transitionToYourVoterGuide = this.transitionToYourVoterGuide.bind(this);
     this.handleTabChange = this.handleTabChange.bind(this);
+    this.handleResizeLocal = this.handleResizeLocal.bind(this);
   }
 
   componentDidMount () {
@@ -72,9 +73,10 @@ class HeaderBar extends Component {
     this.friendStoreListener = FriendStore.addListener(this.onFriendStoreChange.bind(this));
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
     this.analyticsStoreListener = AnalyticsStore.addListener(this.onAnalyticsStoreChange.bind(this));
+    window.addEventListener('resize', this.handleResizeLocal);
 
     const voter = VoterStore.getVoter();
-    const voterFirstName = VoterStore.getFirstName();
+    // const voterFirstName = VoterStore.getFirstName();
     const voterIsSignedIn = voter && voter.is_signed_in;
     // if (voterIsSignedIn === undefined) {
     //   VoterActions.voterRetrieve();
@@ -82,12 +84,12 @@ class HeaderBar extends Component {
     this.setState({
       componentDidMountFinished: true,
       chosenSiteLogoUrl: AppObservableStore.getChosenSiteLogoUrl(),
-      friendInvitationsSentToMe: FriendStore.friendInvitationsSentToMe(),
+      // friendInvitationsSentToMe: FriendStore.friendInvitationsSentToMe(),
       hideWeVoteLogo: AppObservableStore.getHideWeVoteLogo(),
       scrolledDown: AppObservableStore.getScrolledDown(),
       showSignInModal: AppObservableStore.showSignInModal(),
       voter,
-      voterFirstName,
+      // voterFirstName,
       voterIsSignedIn,
     });
     if (isWebApp()) {
@@ -115,91 +117,91 @@ class HeaderBar extends Component {
     }
   }
 
-  shouldComponentUpdate (nextProps, nextState) {
-    const pathname = normalizedHref();
-    // console.log('HeaderBar shouldComponentUpdate: pathname === ', pathname);
-    let update = false;
-    if (pathname !== this.state.priorPath) {
-      // Re-render the HeaderBar if the path has changed
-      // console.log('HeaderBar shouldComponentUpdate: this.state.priorPath === ', this.state.priorPath);
-      this.setState({ priorPath: pathname });
-      update = true;
-    } else if (this.state.componentDidMountFinished === false) {
-      // console.log('shouldComponentUpdate: componentDidMountFinished === false');
-      update = true;
-    } else if (this.state.page !== normalizedHrefPage()) {
-      // console.log('shouldComponentUpdate: this.state.page', this.state.page, ', normalizedHrefPage()', normalizedHrefPage());
-      update = true;
-    } else if (this.state.aboutMenuOpen !== nextState.aboutMenuOpen) {
-      // console.log('shouldComponentUpdate: this.state.aboutMenuOpen", this.state.aboutMenuOpen, ', nextState.aboutMenuOpen', nextState.aboutMenuOpen);
-      update = true;
-    } else if (this.state.chosenSiteLogoUrl !== nextState.chosenSiteLogoUrl) {
-      // console.log('shouldComponentUpdate: this.state.chosenSiteLogoUrl', this.state.chosenSiteLogoUrl, ', nextState.chosenSiteLogoUrl', nextState.chosenSiteLogoUrl);
-      update = true;
-    } else if (this.state.hideWeVoteLogo !== nextState.hideWeVoteLogo) {
-      // console.log('shouldComponentUpdate: this.state.hideWeVoteLogo', this.state.hideWeVoteLogo, ', nextState.hideWeVoteLogo', nextState.hideWeVoteLogo);
-      update = true;
-    } else if (this.state.friendInvitationsSentToMe !== nextState.friendInvitationsSentToMe) {
-      // console.log('shouldComponentUpdate: this.state.friendInvitationsSentToMe', this.state.friendInvitationsSentToMe, ', nextState.friendInvitationsSentToMe', nextState.friendInvitationsSentToMe);
-      update = true;
-    } else if (this.state.scrolledDown !== nextState.scrolledDown) {
-      update = true;
-    } else if (this.state.shareModalStep !== nextState.shareModalStep) {
-      update = true;
-    } else if (this.state.organizationModalBallotItemWeVoteId !== nextState.organizationModalBallotItemWeVoteId) {
-      update = true;
-    // } if (this.state.showEditAddressButton !== nextState.showEditAddressButton) {
-    //   update = true;
-    } else if (this.state.showOrganizationModal !== nextState.showOrganizationModal) {
-      update = true;
-    } else if (this.state.showPositionDrawer !== nextState.showPositionDrawer) {
-      update = true;
-    } else if (this.state.showSignInModal !== nextState.showSignInModal) {
-      update = true;
-    } else if (this.state.voterFirstName !== nextState.voterFirstName) {
-      // console.log('this.state.voterFirstName: ', this.state.voterFirstName, ', nextState.voterFirstName', nextState.voterFirstName);
-      update = true;
-    } else if (this.state.voterIsSignedIn !== nextState.voterIsSignedIn) {
-      // console.log('HeaderBar voter.isSignedIn shouldComponentUpdate true');
-      update = true;
-    }
-    const thisVoterExists = this.state.voter !== undefined;
-    const nextVoterExists = nextState.voter !== undefined;
-    if (nextVoterExists && !thisVoterExists) {
-      // console.log('HeaderBar shouldComponentUpdate: thisVoterExists", thisVoterExists, ", nextVoterExists", nextVoterExists);
-      update = true;
-    }
-    if (thisVoterExists && nextVoterExists) {
-      if (this.state.voter.voter_photo_url_medium !== nextState.voter.voter_photo_url_medium) {
-        // console.log('HeaderBar shouldComponentUpdate: this.state.voter.voter_photo_url_medium', this.state.voter.voter_photo_url_medium, ', nextState.voter.voter_photo_url_medium', nextState.voter.voter_photo_url_medium);
-        update = true;
-      }
-      if (this.state.voter.signed_in_twitter !== nextState.voter.signed_in_twitter) {
-        // console.log('HeaderBar shouldComponentUpdate: this.state.voter.signed_in_twitter", this.state.voter.signed_in_twitter, ", nextState.voter.signed_in_twitter", nextState.voter.signed_in_twitter);
-        update = true;
-      }
-      if (this.state.voter.signed_in_facebook !== nextState.voter.signed_in_facebook) {
-        // console.log('HeaderBar shouldComponentUpdate: this.state.voter.signed_in_facebook', this.state.voter.signed_in_facebook, ', nextState.voter.signed_in_facebook', nextState.voter.signed_in_facebook);
-        update = true;
-      }
-      if (this.state.voter.signed_in_with_email !== nextState.voter.signed_in_with_email) {
-        update = true;
-      }
-    }
-    // We need to update if the SelectBallotModal is displayed or the BallotList is empty
-    const element = document.getElementById('BallotListId');
-    if (element) {
-      const textForMapSearch = VoterStore.getTextForMapSearch();
-      const titleElement = document.getElementById('SelectBallotModalTitleId');
-      const isTitleElementDisplayed = (titleElement && !(titleElement.offsetParent === null)) || false;
-      if (isTitleElementDisplayed || (element.innerHTML.trim().length < 1 && textForMapSearch)) {
-        update = true;
-      }
-    }
-
-    // console.log('HeaderBar shouldComponentUpdate: update === ', update);
-    return update;
-  }
+  // shouldComponentUpdate (nextProps, nextState) {
+  //   const pathname = normalizedHref();
+  //   // console.log('HeaderBar shouldComponentUpdate: pathname === ', pathname);
+  //   let update = false;
+  //   if (pathname !== this.state.priorPath) {
+  //     // Re-render the HeaderBar if the path has changed
+  //     // console.log('HeaderBar shouldComponentUpdate: this.state.priorPath === ', this.state.priorPath);
+  //     this.setState({ priorPath: pathname });
+  //     update = true;
+  //   } else if (this.state.componentDidMountFinished === false) {
+  //     // console.log('shouldComponentUpdate: componentDidMountFinished === false');
+  //     update = true;
+  //   } else if (this.state.page !== normalizedHrefPage()) {
+  //     // console.log('shouldComponentUpdate: this.state.page', this.state.page, ', normalizedHrefPage()', normalizedHrefPage());
+  //     update = true;
+  //   } else if (this.state.aboutMenuOpen !== nextState.aboutMenuOpen) {
+  //     // console.log('shouldComponentUpdate: this.state.aboutMenuOpen", this.state.aboutMenuOpen, ', nextState.aboutMenuOpen', nextState.aboutMenuOpen);
+  //     update = true;
+  //   } else if (this.state.chosenSiteLogoUrl !== nextState.chosenSiteLogoUrl) {
+  //     // console.log('shouldComponentUpdate: this.state.chosenSiteLogoUrl', this.state.chosenSiteLogoUrl, ', nextState.chosenSiteLogoUrl', nextState.chosenSiteLogoUrl);
+  //     update = true;
+  //   } else if (this.state.hideWeVoteLogo !== nextState.hideWeVoteLogo) {
+  //     // console.log('shouldComponentUpdate: this.state.hideWeVoteLogo', this.state.hideWeVoteLogo, ', nextState.hideWeVoteLogo', nextState.hideWeVoteLogo);
+  //     update = true;
+  //   } else if (this.state.friendInvitationsSentToMe !== nextState.friendInvitationsSentToMe) {
+  //     // console.log('shouldComponentUpdate: this.state.friendInvitationsSentToMe', this.state.friendInvitationsSentToMe, ', nextState.friendInvitationsSentToMe', nextState.friendInvitationsSentToMe);
+  //     update = true;
+  //   } else if (this.state.scrolledDown !== nextState.scrolledDown) {
+  //     update = true;
+  //   } else if (this.state.shareModalStep !== nextState.shareModalStep) {
+  //     update = true;
+  //   } else if (this.state.organizationModalBallotItemWeVoteId !== nextState.organizationModalBallotItemWeVoteId) {
+  //     update = true;
+  //   // } if (this.state.showEditAddressButton !== nextState.showEditAddressButton) {
+  //   //   update = true;
+  //   } else if (this.state.showOrganizationModal !== nextState.showOrganizationModal) {
+  //     update = true;
+  //   } else if (this.state.showPositionDrawer !== nextState.showPositionDrawer) {
+  //     update = true;
+  //   } else if (this.state.showSignInModal !== nextState.showSignInModal) {
+  //     update = true;
+  //   } else if (this.state.voterFirstName !== nextState.voterFirstName) {
+  //     // console.log('this.state.voterFirstName: ', this.state.voterFirstName, ', nextState.voterFirstName', nextState.voterFirstName);
+  //     update = true;
+  //   } else if (this.state.voterIsSignedIn !== nextState.voterIsSignedIn) {
+  //     // console.log('HeaderBar voter.isSignedIn shouldComponentUpdate true');
+  //     update = true;
+  //   }
+  //   const thisVoterExists = this.state.voter !== undefined;
+  //   const nextVoterExists = nextState.voter !== undefined;
+  //   if (nextVoterExists && !thisVoterExists) {
+  //     // console.log('HeaderBar shouldComponentUpdate: thisVoterExists", thisVoterExists, ", nextVoterExists", nextVoterExists);
+  //     update = true;
+  //   }
+  //   if (thisVoterExists && nextVoterExists) {
+  //     if (this.state.voter.voter_photo_url_medium !== nextState.voter.voter_photo_url_medium) {
+  //       // console.log('HeaderBar shouldComponentUpdate: this.state.voter.voter_photo_url_medium', this.state.voter.voter_photo_url_medium, ', nextState.voter.voter_photo_url_medium', nextState.voter.voter_photo_url_medium);
+  //       update = true;
+  //     }
+  //     if (this.state.voter.signed_in_twitter !== nextState.voter.signed_in_twitter) {
+  //       // console.log('HeaderBar shouldComponentUpdate: this.state.voter.signed_in_twitter", this.state.voter.signed_in_twitter, ", nextState.voter.signed_in_twitter", nextState.voter.signed_in_twitter);
+  //       update = true;
+  //     }
+  //     if (this.state.voter.signed_in_facebook !== nextState.voter.signed_in_facebook) {
+  //       // console.log('HeaderBar shouldComponentUpdate: this.state.voter.signed_in_facebook', this.state.voter.signed_in_facebook, ', nextState.voter.signed_in_facebook', nextState.voter.signed_in_facebook);
+  //       update = true;
+  //     }
+  //     if (this.state.voter.signed_in_with_email !== nextState.voter.signed_in_with_email) {
+  //       update = true;
+  //     }
+  //   }
+  //   // We need to update if the SelectBallotModal is displayed or the BallotList is empty
+  //   const element = document.getElementById('BallotListId');
+  //   if (element) {
+  //     const textForMapSearch = VoterStore.getTextForMapSearch();
+  //     const titleElement = document.getElementById('SelectBallotModalTitleId');
+  //     const isTitleElementDisplayed = (titleElement && !(titleElement.offsetParent === null)) || false;
+  //     if (isTitleElementDisplayed || (element.innerHTML.trim().length < 1 && textForMapSearch)) {
+  //       update = true;
+  //     }
+  //   }
+  //
+  //   // console.log('HeaderBar shouldComponentUpdate: update === ', update);
+  //   return update;
+  // }
 
   componentDidUpdate () {
     // console.log('HeaderBar componentDidUpdate');
@@ -219,6 +221,7 @@ class HeaderBar extends Component {
     this.friendStoreListener.remove();
     this.voterStoreListener.remove();
     this.analyticsStoreListener.remove();
+    window.removeEventListener('resize', this.handleResizeLocal);
     if (this.setStyleTimeout) clearTimeout(this.setStyleTimeout);
   }
 
@@ -228,17 +231,10 @@ class HeaderBar extends Component {
     this.setState({ tabsValue: newValue });
   }
 
-  // eslint-disable-next-line no-unused-vars
-  onAppObservableStoreChange (msg) {
-    // console.log('------ HeaderBar, onAppObservableStoreChange received: ', msg);
-    this.setState({
-      chosenSiteLogoUrl: AppObservableStore.getChosenSiteLogoUrl(),
-      hideWeVoteLogo: AppObservableStore.getHideWeVoteLogo(),
-      organizationModalBallotItemWeVoteId: AppObservableStore.getOrganizationModalBallotItemWeVoteId(),
-      scrolledDown: AppObservableStore.getScrolledDown(),
-      shareModalStep: AppObservableStore.getShareModalStep(),
-      showSignInModal: AppObservableStore.showSignInModal(),
-    });
+  handleResizeLocal () {
+    if (handleResize('HeaderBar')) {
+      this.setState({});
+    }
   }
 
   onFriendStoreChange () {
@@ -246,7 +242,7 @@ class HeaderBar extends Component {
     if (!signInModalGlobalState.get('textOrEmailSignInInProcess')) {
       // console.log('HeaderBar, onFriendStoreChange');
       this.setState({
-        friendInvitationsSentToMe: FriendStore.friendInvitationsSentToMe(),
+        // friendInvitationsSentToMe: FriendStore.friendInvitationsSentToMe(),
       });
     }
   }
@@ -268,17 +264,30 @@ class HeaderBar extends Component {
     if (!signInModalGlobalState.get('textOrEmailSignInInProcess')) {
       // console.log('HeaderBar, onVoterStoreChange ', VoterStore.getFirstName(), VoterStore.getFullName());
       const voter = VoterStore.getVoter();
-      const voterFirstName = VoterStore.getFirstName();
+      // const voterFirstName = VoterStore.getFirstName();
       const voterIsSignedIn = voter.is_signed_in || false;
       this.setState({
         voter,
-        voterFirstName,
+        // voterFirstName,
         voterIsSignedIn,
         showSignInModal: AppObservableStore.showSignInModal(),
-        showOrganizationModal: AppObservableStore.showOrganizationModal(),
-        showPositionDrawer: AppObservableStore.showPositionDrawer(),
+        // showOrganizationModal: AppObservableStore.showOrganizationModal(),
+        // showPositionDrawer: AppObservableStore.showPositionDrawer(),
       });
     }
+  }
+
+  // eslint-disable-next-line no-unused-vars
+  onAppObservableStoreChange (msg) {
+    // console.log('------ HeaderBar, onAppObservableStoreChange received: ', msg);
+    this.setState({
+      chosenSiteLogoUrl: AppObservableStore.getChosenSiteLogoUrl(),
+      hideWeVoteLogo: AppObservableStore.getHideWeVoteLogo(),
+      // organizationModalBallotItemWeVoteId: AppObservableStore.getOrganizationModalBallotItemWeVoteId(),
+      scrolledDown: AppObservableStore.getScrolledDown(),
+      // shareModalStep: AppObservableStore.getShareModalStep(),
+      showSignInModal: AppObservableStore.showSignInModal(),
+    });
   }
 
   onAnalyticsStoreChange () {
@@ -403,81 +412,10 @@ class HeaderBar extends Component {
       chosenSiteLogoUrl, hideWeVoteLogo, scrolledDown,
       voter, voterIsSignedIn, tabsValue,
     } = this.state;
-    // const showingBallot = pathname.startsWith('/ballot');
-    // const showingFriendsTabs = displayFriendsTabs();
     const voterPhotoUrlMedium = voterPhoto(voter);
-    // const hideAddressWrapper = false; // isAndroid() && getAndroidSize() === '--xl';
-    // const editAddressButtonHtml = (
-    //   <Tooltip title="Change my location or election" aria-label="Change Address or Election" classes={{ tooltipPlacementBottom: classes.tooltipPlacementBottom }}>
-    //     <>
-    //       <AddressWrapperDesktop className="u-show-desktop-tablet">
-    //         <IconButton
-    //           classes={{ root: classes.addressIconButtonRoot }}
-    //           id="changeAddressOrElectionHeaderBarElection"
-    //           onClick={() => this.closeSelectBallotModal(false)}
-    //           size="large"
-    //         >
-    //           <Place />
-    //         </IconButton>
-    //         <Button
-    //           color="primary"
-    //           classes={{ root: classes.addressButtonRoot }}
-    //           id="changeAddressOrElectionHeaderBarText"
-    //           onClick={() => this.closeSelectBallotModal(false)}
-    //         >
-    //           Address & Elections
-    //         </Button>
-    //       </AddressWrapperDesktop>
-    //       <AddressWrapperMobile className="u-show-mobile"
-    //                             style={hideAddressWrapper ? { display: 'none' } : {}}
-    //       >
-    //         <IconButton
-    //           classes={{ root: classes.addressIconButtonRoot }}
-    //           id="changeAddressOnlyHeaderBar"
-    //           onClick={() => this.closeSelectBallotModal(false)}
-    //           size="large"
-    //         >
-    //           <Place />
-    //         </IconButton>
-    //       </AddressWrapperMobile>
-    //     </>
-    //   </Tooltip>
-    // );
-    // const searchButtonHtml = (
-    //   <Tooltip title="Search" aria-label="Search" classes={{ tooltipPlacementBottom: classes.tooltipPlacementBottom }}>
-    //     <>
-    //       <SearchWrapper className="u-show-desktop-tablet">
-    //         <IconButton
-    //           classes={{ root: classes.searchButtonRoot }}
-    //           id="searchHeaderBarDesktop"
-    //           onClick={this.goToSearch}
-    //           size="large"
-    //         >
-    //           <Search />
-    //         </IconButton>
-    //       </SearchWrapper>
-    //       <SearchWrapper className="u-show-mobile-bigger-than-iphone5">
-    //         <IconButton
-    //           classes={{ root: classes.searchButtonRoot }}
-    //           id="searchHeaderBarMobile"
-    //           onClick={this.goToSearch}
-    //           size="large"
-    //         >
-    //           <Search />
-    //         </IconButton>
-    //       </SearchWrapper>
-    //     </>
-    //   </Tooltip>
-    // );
 
     const doNotShowWeVoteLogo = weVoteBrandingOff() || hideWeVoteLogo;
     const showWeVoteLogo = !doNotShowWeVoteLogo;
-    // let appBarCname = 'page-header ';
-    // if (hasIPhoneNotch()) {
-    //   appBarCname += ' page-header__cordova-iphonex';
-    // } else if (isCordova()) {
-    //   appBarCname += ' page-header__cordova';
-    // }
 
     const isFriends = normalizedHrefPage() === 'friends';  // The URL '/friends/request' yields 'friends'
     let avatarStyle = {};
@@ -488,8 +426,8 @@ class HeaderBar extends Component {
       avatarStyle = { ...avatarStyle, paddingRight: 10 };
     }
     // console.log('HeaderBar hasNotch, scrolledDown, hasSubmenu', hasIPhoneNotch(), scrolledDown, displayTopMenuShadow());
-    const displayMenu = !isMobileScreenSize() || isTablet();
-    // console.log('HeaderBar !isMobileScreenSize() || isTablet()', displayMenu);
+    const displayMenu = !isMobileScreenSize();
+    // console.log('HeaderBar !isMobileScreenSize()', displayMenu);
     return (
       <HeaderBarWrapper
         hasNotch={hasIPhoneNotch()}
@@ -516,7 +454,7 @@ class HeaderBar extends Component {
           <TopRowOneMiddleContainer>
             <div className="header-nav">
               { displayMenu && (
-                <StyledTabs
+                <StyledHeaderMenuTabs
                   value={tabsValue}
                   indicatorColor="primary"
                   classes={{ indicator: classes.indicator }}
@@ -552,7 +490,7 @@ class HeaderBar extends Component {
                     id="howItWorksTabHeaderBar"
                     label="How It Works"
                   />
-                </StyledTabs>
+                </StyledHeaderMenuTabs>
               )}
             </div>
           </TopRowOneMiddleContainer>
@@ -721,7 +659,7 @@ const styles = (theme) => ({
       fontSize: 20,
       padding: '16px 16px 10px 16px',
     },
-    [theme.breakpoints.between('tabLgMin', 'tabMax')]: { // Larger Tablets
+    [theme.breakpoints.up('tabLgMin')]: { // Larger Tablets, and desktops
       fontSize: 24,
     },
   },
@@ -736,7 +674,7 @@ const styles = (theme) => ({
       fontSize: 20,
       padding: '16px 16px 10px 16px',
     },
-    [theme.breakpoints.between('tabLgMin', 'tabMax')]: { // Larger Tablets
+    [theme.breakpoints.up('tabLgMin')]: { // Larger Tablets, and desktop
       fontSize: 24,
     },
   },
@@ -751,7 +689,7 @@ const styles = (theme) => ({
       fontSize: 20,
       padding: '16px 16px 10px 16px',
     },
-    [theme.breakpoints.between('tabLgMin', 'tabMax')]: { // Larger Tablets
+    [theme.breakpoints.up('tabLgMin')]: { // Larger Tablets, and desktop
       fontSize: 24,
     },
   },
@@ -766,7 +704,7 @@ const styles = (theme) => ({
       fontSize: 20,
       padding: '16px 16px 10px 16px',
     },
-    [theme.breakpoints.between('tabLgMin', 'tabMax')]: { // Larger Tablets
+    [theme.breakpoints.up('tabLgMin')]: { // Larger Tablets, and desktop
       fontSize: 24,
     },
   },
@@ -792,7 +730,7 @@ const HeaderBarWrapper = styled('div', {
   border-bottom: ${(!scrolledDown || !hasSubmenu) ? '' : '1px solid #aaa'};
 `));
 
-const StyledTabs = styled(Tabs)`
+const StyledHeaderMenuTabs = styled(Tabs)`
   // {() => (isIOSAppOnMac() ? '' : displayNoneIfSmallerThanDesktop())};
 `;
 

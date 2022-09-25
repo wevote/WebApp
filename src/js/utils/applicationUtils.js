@@ -1,9 +1,9 @@
 import { isIOSAppOnMac } from '../common/utils/cordovaUtils';
 import { normalizedHrefPage } from '../common/utils/hrefUtils';
 import { isCordova, isWebApp } from '../common/utils/isCordovaOrWebApp';
-import { isSmallerThanTablet, isTablet } from '../common/utils/isMobileScreenSize';
-import normalizedImagePath from '../common/utils/normalizedImagePath';
+import isMobileScreenSize, { isSmallerThanTablet } from '../common/utils/isMobileScreenSize';
 import Cookies from '../common/utils/js-cookie/Cookies';
+import normalizedImagePath from '../common/utils/normalizedImagePath';
 import stringContains from '../common/utils/stringContains';
 import VoterStore from '../stores/VoterStore';
 
@@ -178,11 +178,9 @@ export function getApplicationViewBooleans (pathname) {
     showBackToBallotHeader = true;
   }
 
-  let showFooterBar;
+  let showFooterBar = isSmallerThanTablet();
   // console.log('stringContains(\'/settings/positions\', pathnameLowerCase):', stringContains('/settings/positions', pathnameLowerCase), pathnameLowerCase);
-  if (!pathnameLowerCase) {
-    showFooterBar = isCordova() && isSmallerThanTablet();
-  } else if (extensionPageMode) {
+  if (extensionPageMode) {
     showFooterBar = false;
   // ///////// EXCLUDE: The following are URLS we want to specifically exclude (because otherwise they will be picked up in a broader pattern in the next branch
   } else if (pathnameLowerCase.startsWith('/-') || // Shared item
@@ -235,11 +233,11 @@ export function getApplicationViewBooleans (pathname) {
       pathnameLowerCase.startsWith('/settings/yourdata') ||
       pathnameLowerCase.startsWith('/settings')) {
     // We want to SHOW the footer bar on the above path patterns
-    showFooterBar = !isTablet() && (isWebApp() || (!isIOSAppOnMac() && isSmallScreen));
+    showFooterBar = isMobileScreenSize();
   } else {
     // URLs like: https://WeVote.US/orlandosentinel  (The URL pathname consists of a Twitter Handle only)
     contentFullWidthMode = true;
-    showFooterBar = isWebApp() || (!isIOSAppOnMac() && isSmallScreen);
+    showFooterBar = isMobileScreenSize();
   }
 
   // We are only showing the purpleish bottom of the scrollable page footer
