@@ -19,6 +19,12 @@ export function isTablet () {
   return innerWidth > tabMin && innerWidth < tabMax;
 }
 
+export function isLargerThanTablet () {
+  const { innerWidth, muiThemeGlobal: { breakpoints: { values: { tabMax } } } } = window;
+  // console.log('isLargerThanTablet isCordova, innerWidth, tabMin, tabMax return value:', isCordova(), innerWidth, tabMin, tabMax,  innerWidth > tabMin && innerWidth < tabMax);
+  return innerWidth > tabMax;
+}
+
 export function isSmallTablet () {
   const { innerWidth, muiThemeGlobal: { breakpoints: { values: { tabMin, tabMdMin } } } } = window;
   return innerWidth > tabMin && innerWidth < tabMdMin;

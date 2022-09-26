@@ -86,7 +86,7 @@ class SetUpAccountImportContacts extends React.Component {
                       </>
                     ) : (
                       <>
-                        We couldn&apos;t find any of your contacts
+                        We couldn&apos;t match any of your contacts with other members of
                         {' '}
                         <span className="u-no-break">We Vote</span>
                       </>
