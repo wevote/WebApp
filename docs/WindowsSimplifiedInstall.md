@@ -1,14 +1,14 @@
 # Simplified Installation with PyCharm on Windows
-[Back to root README](../README.md)
+[Back to root README](README.md)
 
 
 **Caveats**
 1. Operating Systems, IDEs, tools, packages, dependencies, and languages are constantly changing.
 We do our best to keep this procedure current with the external changes.  Tell us if you run into troubles.
 
-2. This is a simplified install.  It does not setup the WebApp on your PC to run in SSL (HTTPS mode), so some sign-in features will not be available.
+2. This is a simplified install.  It does not set up the WebApp on your PC to run in SSL (HTTPS mode), so some sign-in features will not be available.  Sign in by Text and Email work perfectly well.
 
-    A lot of productive development can be done on Windows with this install proceedure, but with these current limitations:
+    A lot of productive development can be done on Windows with this install procedure, but with these current limitations:
     * Sign in with Apple, Google, Facebook, and Twitter will not work without SSL.
     * Donations with Stripe will not work without SSL.
 
@@ -39,58 +39,58 @@ The install for procedure using WebStorm is the same as what you see here. WebSt
 
 6. Download and install the Community version of PyCharm, it's free!  (If you are a student, you can get WebStorm JavaScript IDE for free.  WebStorm is nice, but not necessary.)
     [https://www.jetbrains.com/pycharm/download/#section=windows](https://www.jetbrains.com/pycharm/download/#section=windows)
-   1. Accept all the defaults until you get to the "Installation Options" tab select "Pycharm Community Edition" and "Add bin folder to the PATH"
+   1. Accept all the defaults until you get to the "Installation Options" tab.  Then check "Pycharm Community Edition" and "Add bin folder to the PATH".
       ![ScreenShot](images/WindowsInstallationOptions.png)
    2. Continue through the tabs, accepting the defaults, then finally press the "Install" button. When asked, Reboot now.  Then "Finish".
-7. After the reboot there should be a PyCharm link on the desktop.  Double-click it to StartPyCharm, and press the 'Get from VCS' button.
+7. After the reboot there should be a PyCharm link on the desktop.  Double-click it to start PyCharm, and press the 'Get from VCS' button.
 
-    <img width="800" src="https://raw.githubusercontent.com/wevote/WeVoteServer/develop/docs/images/PyCharmStartScreen2021.png"> 
+    <img width="800" src="https://raw.githubusercontent.com/wevote/WeVoteServer/develop/docs/images/PyCharmStartScreen2021.png" alt=""> 
 
-8. If you see a red "Git is not installed", "Download and Install" button, click it.
+8. If you see a red "Git is not installed", "Download and Install" button, click it, and wait for the install to complete.
    ![ScreenShot](images/WindowsInstallGit.png)
-9. The next step is to clone the fork of your repository
+9. (Explanation only step:) The step after this one clones the fork of your repository.
 
-   What this means is that in GitHub that you have created a copy of the WebApp code in your account. Cloning from your account, downloads
-   a copy of your copy to your PC.  
-10. Clone your fork of the git repository, by copying the URL to your repository into the URL field, then press the Clone button.  (These screenshots reference the developer SailingSteve, but your URL will have your github account name in it.)
+   What this means, is that in GitHub you have created a copy of the WebApp code in your account. Cloning from your account, downloads
+   a copy of that copy to your PC.  This will be a working copy of the latest code in the repository.
+10. Clone your fork of the git repository, by copying the URL to your repository into the URL field, then press the Clone button.  (These screenshots reference the developer SailingSteve, but your URL will have your GitHub account name in it.)
 
     It will take a minute or two, to clone, then say yes to "Trust Project"
     ![ScreenShot](images/WindowsPreGit.png)
 
-11. When the cloning is complete, press Ok to close the dialog.  The screen will look something like this. A copy of the latest WebApp source coded files are now on your PC.
+11. When the cloning is complete, press Ok to close the dialog.  The screen will look something like this. A copy of the latest WebApp source code files are now on your PC.
 
     ![ScreenShot](images/WindowsCloningComplete.png)
     At this instant, the 'develop' branch of wevote/WebApp matches
     your branch in your account on GitHub, and also matches the code on your Mac.
 
-12. The PyCharm IDE appears in 'Dracula' mode, with the repository loaded to your disk, and ready to edit.
+12. The PyCharm IDE appears initially in 'Dracula' mode, with the repository loaded to your disk, and ready to edit.
 
-    <img width="800" src="https://raw.githubusercontent.com/wevote/WeVoteServer/develop/docs/images/PyCharmDracula.png"> 
+    <img width="800" src="https://raw.githubusercontent.com/wevote/WeVoteServer/develop/docs/images/PyCharmDracula.png" alt=""> 
 
 13. If you like 'Dracula' (dark background) mode, you can skip this step.  Open the File/Settings menu and the Appearance sub list, menu and press the
     'Sync with OS' button to match the display mode of your PC.
 
-    <img src="https://raw.githubusercontent.com/wevote/WeVoteServer/develop/docs/images/transparent8x8.png"> 
-    <img width="800" src="https://raw.githubusercontent.com/wevote/WeVoteServer/develop/docs/images/PyCharm2021OutOfDracula.png"> 
+    <img src="https://raw.githubusercontent.com/wevote/WeVoteServer/develop/docs/images/transparent8x8.png" alt=""> 
+    <img width="800" src="https://raw.githubusercontent.com/wevote/WeVoteServer/develop/docs/images/PyCharm2021OutOfDracula.png" alt=""> 
 
 
-14. Download version 7.2 or higher of the Microsoft Power Shell terminal emulator.
-   Navigate to https://github.com/PowerShell/PowerShell to get Version7.2 or higher.  As of Sept 2022, that was the "stable" release, but might be the "LTS" version bythe time you are reading this.  Either should be fine as long as it is 7.2 or higher.
+14. Download version 7.2 or higher of the Microsoft PowerShell terminal emulator.
+   Navigate to https://github.com/PowerShell/PowerShell to get Version7.2 or higher.  As of Sept 2022, 7.2 was the "stable" release, but might be the "LTS" version by the time you are reading this.  Either should be fine as long as it is 7.2 or higher.
    ![ScreenShot](images/WindowsPowerShell7-2.png)
 
-15. Double click on the downloaded MSI and accept all the default settings.
+15. Double-click on the downloaded MSI and accept all the default settings.
     ![ScreenShot](images/WindowsInstallMSI.png)
-16. When it completes, close PyCharm then reopen PyCharm, and go to File/Settings/Tools/Terminal and in the "Shell Path" pulldown, Select "C:\Program Files\PowerShell\7\pwsh.exe" so that you will be using this updated PowerShell.
+16. When the PowerShell installation completes, close PyCharm.  Wait for it to close, then reopen PyCharm, and go to File/Settings/Tools/Terminal and in the "Shell Path" pull down, Select "C:\Program Files\PowerShell\7\pwsh.exe" so that you will be using this updated PowerShell.
     ![ScreenShot](images/WindowsSetShellPath.png)
 17. Press "Apply" and "OK"
 18. If there are any open terminal windows at the bottom of the screen, close them.
 19. Open the terminal, by clicking on the Terminal icon near the bottom of the screen.
 
-    **Background info:** For Windows, the terminal program configured in PyCharm is Microsoft's "Windows Power Shell", it performs many of the same functions that a Unix/Linux/MacOS terminal, but has built in access rights
-    to the underlying Windows operating system.  PowerShell also understands both old MS-DOS style paths (C:\Users\steve\PycharmProjects\WebApp) and Unix/Linux/MacOS style paths (~/PycharmProjects/WebApp), but it does not fully implement all the Linux commands from a MacOS terminal shell.  Oh well.
+    **Background info:** For Windows, the terminal program configured in PyCharm is Microsoft's "Windows PowerShell", it performs many of the same functions that a Unix/Linux/macOS terminal, but has built in access rights
+    to the underlying Windows operating system.  PowerShell also understands both old MS-DOS style paths (C:\Users\steve\PycharmProjects\WebApp) and Unix/Linux/macOS style paths (~/PycharmProjects/WebApp), but it does not fully implement all the Linux commands that you would have in macOS or Linux terminal shell.  Oh, well.
     ![ScreenShot](images/WindowsPowerShell7-2Confirm.png)
     **Note that the version of the PowerShell is 7.2 or greater.**
-20. Set the line endings to "LF" in git so that your checkins will be converted from Windows "CRLF" end of line codes to the Unix/Linux/MacOS "LF" end of line code.
+20. Set the line endings to "LF" in git so that your checkins will be converted from Windows style "CRLF" end of line codes, to the Unix/Linux/macOS "LF" end of line code.
     ```
     PS C:\Users\steve\PycharmProjects\WebApp> git config --global core.autocrlf false
     PS C:\Users\steve\PycharmProjects\WebApp> git config --global core.eol lf
@@ -98,20 +98,20 @@ The install for procedure using WebStorm is the same as what you see here. WebSt
     The Terminal window on the screen should look pretty much like this:
     ![ScreenShot](images/WindowsGitConfig.png)
 
-21. Create a .gitattributes file to handle the different line endings in Windows.
+21. Create a .gitattributes file to handle the different line endings in Windows.  With the command line command `"text=auto" > .gitattributes` as shown below.
     ```
         PS C:\Users\steve\PycharmProjects\WebApp> "text=auto" > .gitattributes
     ```
 
-22. Set PyCharm to use Unix and MacOs line separators
+22. Set PyCharm to use Unix and macOS line separators
  
-    In File/Settings/Editor/Code Style, set the "Line separator" pulldown to "Unix and macOS(\n)", and press "OK" 
+    In File/Settings/Editor/Code Style, set the "Line separator" pull down to "Unix and macOS(\n)", and press "OK" 
     ![ScreenShot](images/WindowsConfigLineSeparator.png)
-23. In PyCharm set your git remotes. 
+23. In PyCharm set up your git remotes. 
     1. Navigate to the Git/'Manage Remotes...' dialog  
 
     The We Vote projects defines upstream and origin differently than most other projects, so we need to manually reverse them here.
-    3. Click the edit (pencil) icon, and change the name field for the URL to your copy of the repository from "origin" to "upstream".
+    3. Click the edit (pencil) icon, and change the name field for the URL to your copy of the repository from "upstream" to "origin".  (The following picture shows the dialog before you make the Name change.)
 
     ![ScreenShot](images/WindowsGitUpstream.png)
     5. Then add a remote for your We Vote's public branch by pressing the '+' button on the Git Remotes dialog. In the dialog that appears, set the name field to "upstream", and the URL to "https://github.com/wevote/WebApp.git".  Press OK and the remotes should look like this:  
@@ -119,14 +119,14 @@ The install for procedure using WebStorm is the same as what you see here. WebSt
     ![ScreenShot](images/WindowsManageRemotes.png)
     Press OK to close the dialog.
 
-24. Do a manual reload of the project files from git, this is needed to make the file end of line codes consistent
+24. Do a manual reload of the project files from git, this is needed to force the file end-of-line codes consistent, with the configuration changes you just made.
  
     Type these three commands into a terminal window:
     1. `git reset --hard HEAD`
     2. `git fetch --all`
     3. `git reset --hard upstream/develop`
 
-    The screen output will look something like this (all the numbers and branch names will be different)...
+    The screen output will look something like this (but all the numbers and branch names will be different)...
     ```
     PS C:\Users\steve\PycharmProjects\WebApp> git reset --hard HEAD
     HEAD is now at 7b7e7a859 Merge pull request #3512 from SailingSteve/steveWebAppSept13-1pm
@@ -152,34 +152,35 @@ The install for procedure using WebStorm is the same as what you see here. WebSt
     PS C:\Users\steve\PycharmProjects\WebApp>
     ```
 
-25. In PyCharm, in the Project tab, find `WebApp/src/js/config_template.js` and copy it to `WebApp/src/js/config.js`
+25. In PyCharm, in the Project tab, find the file `WebApp/src/js/config_template.js` and copy it to `WebApp/src/js/config.js`
 
      ![ScreenShot](images/WindowsSelectCopyConfig.png)
 
-     To do this copy: Right click on `config_template.js` and select 'Copy', then right click on the `js` 
-     directory and select 'Paste' in the pop-up, and then in the copy dialog that opens up, and change the "new name:" to 
-     `config.js`.
+     To do this copy: Right click on `config_template.js` and select 'Copy', then right-click on the `js` 
+     directory and select 'Paste' in the pop-up, and then in the copy dialog that opens up, and change the "New name:" to 
+     `config.js` as shown below.
 
     ![ScreenShot](images/WindowsCopyConfig.png)
-26. The `config.js` file contains configuration setting for your setup, on your PC.  There are a number of secret values in `config.js` that are not in source control.  You will need to check in with Dale, if you find that you need them.
+26. The `config.js` file contains configuration setting for this new setup on your PC.  There are a number of secret values in `config.js` that are not stored in source control.  You will need to check in with Dale, if you find that you need them.
 
     The default settings, copied from `config_template.js`, are enough to get you started.
 
-27. Install Node.js - Windows
+27. Install Node.js - Windows.  Node allows JavaScript to be run natively on the command line -- without something like Node, JavaScript only runs in browsers.
+
     The following instructions were modified from this [blog post](http://blog.teamtreehouse.com/install-node-js-npm-windows).
 
     1. Open Chrome and download the Windows installer from the Node.js website:  https://nodejs.org/en/download/
 
        Choose the "LTS" version for Windows (The big green button!) 
 
-    2. Run the installer (the .msi file you downloaded in the previous step).
+    2. Run the installer (which is the .msi file you just downloaded).
 
     3. Follow the prompts in the Node installer.
-       1. Accept the license agreement, click the NEXT button a few of times and accept the default installation settings, until you get to the "Tools for Native Modules" page.  On this page click the "Automatically install the necessary tools" button, and then continue with the "Next" button
+       1. Accept the license agreement, click the NEXT button a few of times and accepting the default installation settings, until you get to the "Tools for Native Modules" page.  On this page click the "Automatically install the necessary tools" button, and then continue with the "Next" button
        3. Then "Install"
        4. Allow Node to make changes on your local computer.
-       5. Ok, the "Install tool for Node.js Native Modules Installation Script" that opens in a detached PowerShell window.  This window is making a PC-wide upgrade of PowerShell.
-       6. Allow "Windows Power Shell" to make changes to your device.
+       5. Ok, the "Install tool for Node.js Native Modules Installation Script" that opens in a detached PowerShell window.  This window is making a PC-wide upgrade or installation of Node.
+       6. Allow "Windows PowerShell" to make changes to your device.
        7. FYI: This installs Node, Chocolatey, Python, Visual Studio, and more.
        8. Then patiently wait a 5 or 10 minutes for "Press enter" message to appear in the window, and then press "Enter".
    
@@ -187,7 +188,7 @@ The install for procedure using WebStorm is the same as what you see here. WebSt
 
 28. If at any time you see a "download prebuilt indexes" dialog popping up in PyCharm, you can allow it with "Always download".
 
-    This option really only matters for Python developers (WeVoteServer), but we don't currently have a set of installation instructions for the WeVoteServer for Windows.
+    This option really only matters for Python developers (WeVoteServer), but we don't currently have a set of installation instructions for the WeVoteServer running on Windows.
 
 29. Test the Node, NPM, and Python installations in the terminal
 
@@ -206,7 +207,7 @@ The install for procedure using WebStorm is the same as what you see here. WebSt
 30. Install gulp
    In the terminal `npm install -g gulp-cli`
 
-31. Install (the approximately 1600 open source packages, libraries or "node_modules" that We Vote uses to build our React based WebApp)
+31. Install (the approximately 1600 open source packages, libraries or "node_modules" that We Vote uses as a foundation for our WebApp)
 
     In the terminal `npm install`
 
@@ -224,7 +225,7 @@ The install for procedure using WebStorm is the same as what you see here. WebSt
 
 32. Make this configuration change, to allow the WebApp to be compiled under Windows. 
 
-    Background: MS-DOS and subsequently Windows chose to end each line in a text file with a carriage-return followed by a line-feed (CRLF), but UNIX, Linux and MacOS simply uses a line-feed (LF).  All WeVote source code files use LF when advancing to the next line, so configuation is necessary to allow files on Window to be able to be submitted to We Votes git repositories.
+    Background: MS-DOS and subsequently Windows chose to end each line in a text file with a carriage-return followed by a line-feed (CRLF), but UNIX, Linux and macOS simply uses a line-feed (LF).  All WeVote source code files use LF when advancing to the next line, so this configuration is necessary to allow files on Windows to be able to be submitted to We Vote's git repositories.
 
     **This "fix" is a bit hacky, and you have to be sure not to commit this '.eslintrc' file to Git if you check in changes.**
 
@@ -232,10 +233,9 @@ The install for procedure using WebStorm is the same as what you see here. WebSt
     ```
     linebreak-style: 0,
     ```
-    It is good practice to put confiuration lines like this in alphabetical order.
+    Putting configuration lines like this in alphabetical order is a good practice.  (Peek at the first screen shot in the next section to see what the edited file looks like.)
 
-    This configuration line, disables Windows vs Linux line break checking, and allows you to run the WebApp you compile on your Windows PC.
-    ![ScreenShot](images/WindowsEslintrc.png)
+    This configuration line, disables Windows vs Linux "lint" line break checking, and allows you to run the WebApp you compile on your Windows PC.
 
 
 ## Run the We Vote WebApp
