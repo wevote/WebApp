@@ -42,6 +42,7 @@ class AddContactsFromGoogleButton extends Component {
     if (this.googleSignInListener) {
       this.googleSignInListener.remove();
     }
+    if (this.timer) clearTimeout(this.timer);
   }
 
   handleRawAppleContacts (conslist) {
@@ -49,11 +50,14 @@ class AddContactsFromGoogleButton extends Component {
     // https://developer.apple.com/forums/thread/131417
     console.log('entry to handleRawAppleContacts');
     const cleanedAppleContacts = parseRawAppleContacts(conslist);
-    console.log('cleaned contacts from handleRawAppleContacts', cleanedAppleContacts);
-    VoterActions.voterContactListSave(cleanedAppleContacts, true);  // won't save on the serve without a true here...
-    this.setState({
-      addContactsState: AddContactConsts.sendingContacts,
-    });
+    if (cleanedAppleContacts.length) {
+      console.log('cleaned contacts from handleRawAppleContacts', cleanedAppleContacts);
+      VoterActions.voterContactListSave(cleanedAppleContacts, true);  // won't save on the serve without a true here...
+      window.deferredSetStateWithinNativeCallback = AddContactConsts.sendingContacts;
+    } else {
+      console.log('cleaned contacts from handleRawAppleContacts response was EMPTY');
+      window.deferredSetStateWithinNativeCallback = AddContactConsts.noContactsFound;
+    }
   }
 
   onGoogleSignIn = (signedIn) => {
@@ -126,6 +130,12 @@ class AddContactsFromGoogleButton extends Component {
       console.error('Permissions were cancelled');
     } else {
       checkPermissionContacts(this.handleRawAppleContacts);
+      this.timer = setTimeout(() => {
+        if (window.deferredSetStateWithinNativeCallback) {
+          this.setState({ addContactsState: window.deferredSetStateWithinNativeCallback });
+          window.deferredSetStateWithinNativeCallback = null;
+        }
+      }, 500);
     }
   }
 
@@ -302,7 +312,9 @@ class AddContactsFromGoogleButton extends Component {
           )}
           {(addContactsState === AddContactConsts.noContactsFound) && (
             <NoContactsFoundText>
-              No contacts found for that account. Please try signing into another Gmail account.
+              {isWebApp() ?
+                <span>No contacts found for that account. Please try signing into another Gmail account.</span> :
+                <span>No contacts found for your AppleId. Press the &quot;Skip for now&quot; button below.</span>}
             </NoContactsFoundText>
           )}
           <ImportContactsLabelText>

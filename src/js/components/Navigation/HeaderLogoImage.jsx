@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import styled from 'styled-components';
-import isMobileScreenSize from '../../common/utils/isMobileScreenSize';
+import { isLargerThanTablet, isTablet } from '../../common/utils/isMobileScreenSize';
 
 const HeaderLogoImage = ({ src }) => (
   <LogoImg id="HeaderLogoImage" alt="We Vote Logo" src={src} />
@@ -18,7 +18,8 @@ HeaderLogoImage.propTypes = {
 }
 */
 const LogoImg = styled('img')`
-  ${isMobileScreenSize() ? 'padding: 3px;' : 'padding: 4px;'}
+  ${isTablet() ? 'padding: 4px;' : ''}
+  ${isLargerThanTablet() ? 'padding: 2px;' : ''}
 `;
 
 export default HeaderLogoImage;
