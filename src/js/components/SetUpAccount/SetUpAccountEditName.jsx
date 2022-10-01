@@ -46,6 +46,9 @@ class SetUpAccountEditName extends React.Component {
     if (this.goToNextStepTimer) {
       clearTimeout(this.goToNextStepTimer);
     }
+    if (this.voterTimer) {
+      clearTimeout(this.voterTimer);
+    }
   }
 
   onVoterStoreChange () {
@@ -98,9 +101,11 @@ class SetUpAccountEditName extends React.Component {
 
   closeVerifyModal = (verified = false) => {
     // console.log('SetUpAccountEditName closeVerifyModal, verified:', verified);
-    VoterActions.clearEmailAddressStatus();
-    VoterActions.clearSecretCodeVerificationStatus();
-    VoterActions.voterRetrieve();
+    VoterActions.clearSecretCodeVerificationStatusAndEmail();
+    const delayBeforeVoterRetrieve = 250;
+    this.voterTimer = setTimeout(() => {
+      VoterActions.voterRetrieve();
+    }, delayBeforeVoterRetrieve);
     if (verified) {
       // console.log('SetUpAccountEditName closeVerifyModal');
       this.functionToUseWhenProfileCompleteLocal();

@@ -76,8 +76,7 @@ class WelcomeForVoters extends PureComponent {
     // console.log('WelcomeForVoters closeVerifyModalStep2');
     if (this.closeVerifyModalTimer) clearTimeout(this.closeVerifyModalTimer);
     this.closeVerifyModalTimer = setTimeout(() => {
-      VoterActions.clearEmailAddressStatus();
-      VoterActions.clearSecretCodeVerificationStatus();
+      VoterActions.clearSecretCodeVerificationStatusAndEmail();
     }, 1000);
   };
 

@@ -12,6 +12,14 @@ export default {
     Dispatcher.dispatch({ type: 'clearSecretCodeVerificationStatus', payload: true });
   },
 
+  clearSecretCodeVerificationStatusAndEmail () {
+    Dispatcher.dispatch({ type: 'clearSecretCodeVerificationStatusAndEmail', payload: true });
+  },
+
+  clearSecretCodeVerificationStatusAndPhone () {
+    Dispatcher.dispatch({ type: 'clearSecretCodeVerificationStatusAndPhone', payload: true });
+  },
+
   clearSMSPhoneNumberStatus () {
     Dispatcher.dispatch({ type: 'clearSMSPhoneNumberStatus', payload: true });
   },

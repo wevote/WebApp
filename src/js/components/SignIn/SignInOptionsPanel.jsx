@@ -167,11 +167,14 @@ export default class SignInOptionsPanel extends Component {
       isOnFacebookSupportedDomainUrl,
     });
 
-    const delayBeforeClearingStatus = 500;
-    this.timer = setTimeout(() => {
-      VoterActions.clearEmailAddressStatus();
-      VoterActions.clearSecretCodeVerificationStatus();
-    }, delayBeforeClearingStatus);
+    const delayBeforeClearingEmailStatus = 500;
+    this.clearEmailTimer = setTimeout(() => {
+      VoterActions.clearSecretCodeVerificationStatusAndEmail();
+    }, delayBeforeClearingEmailStatus);
+    const delayBeforeClearingPhoneStatus = 750;
+    this.clearPhoneTimer = setTimeout(() => {
+      VoterActions.clearSecretCodeVerificationStatusAndPhone();
+    }, delayBeforeClearingPhoneStatus);
   }
 
   componentDidUpdate () {
@@ -214,6 +217,9 @@ export default class SignInOptionsPanel extends Component {
     this.facebookStoreListener.remove();
     this.voterStoreListener.remove();
     if (this.timer) clearTimeout(this.timer);
+    if (this.clearEmailTimer) clearTimeout(this.clearEmailTimer);
+    if (this.clearPhoneTimer) clearTimeout(this.clearPhoneTimer);
+    if (this.scrollTimer) clearTimeout(this.scrollTimer);
     restoreStylesAfterCordovaKeyboard('SignInOptionsPanel');
   }
 
@@ -239,59 +245,84 @@ export default class SignInOptionsPanel extends Component {
   }
 
   focusedOnSingleInputToggle = (focusedInputName) => {
+    // 2022-09-28 This is only used in SignInModalOriginal, which is no longer in use
     // console.log('SignInOptionsPanel focusedOnSingleInput');
     if (this.props.focusedOnSingleInputToggle) {
       this.props.focusedOnSingleInputToggle(focusedInputName);
     }
   };
 
-  localCloseSignInModal = () => {
-    // console.log('SignInOptionsPanel localCloseSignInModal');
+  closeSignInModalLocal = () => {
+    // console.log('SignInOptionsPanel closeSignInModalLocal');
     if (this.props.closeSignInModal) {
       this.props.closeSignInModal();
     }
   };
 
-  toggleNonEmailSignInOptions = () => {
-    const {
-      hideAppleSignInButton, hideCurrentlySignedInHeader, hideFacebookSignInButton,
-      hideTwitterSignInButton, hideVoterPhoneEntry, isInternetExplorer,
-    } = this.state;
+  closeSignInModalLocalFromEmailOrPhone = () => {
+    // console.log('SignInOptionsPanel closeSignInModalLocalFromEmailOrPhone');
+    this.showAllSignInOptions();
+    if (this.props.closeSignInModal) {
+      this.props.closeSignInModal();
+    }
+  };
 
+  closeVerifyModalLocal = () => {
+    // console.log('SignInOptionsPanel closeVerifyModalLocal');
+    this.showAllSignInOptions();
+  };
+
+  showAllSignInOptions = () => {
+    // console.log('SignInOptionsPanel showAllSignInOptions');
+    const {
+      isInternetExplorer,
+    } = this.state;
     this.setState({
-      hideAppleSignInButton: !hideAppleSignInButton || isInternetExplorer,
-      hideCurrentlySignedInHeader: !hideCurrentlySignedInHeader,
-      hideFacebookSignInButton: !hideFacebookSignInButton,
-      hideTwitterSignInButton: !hideTwitterSignInButton,
-      hideVoterPhoneEntry: !hideVoterPhoneEntry,
+      hideAppleSignInButton: isInternetExplorer,
+      hideFacebookSignInButton: false,
+      hideTwitterSignInButton: false,
+      hideVoterEmailAddressEntry: false,
+      hideVoterPhoneEntry: false,
     });
-    // console.log('SignInOptionsPanel toggleNonEmailSignInOptions');
-    this.focusedOnSingleInputToggle('email');
     const delayBeforeScrolling = 250;
-    if (this.timer) clearTimeout(this.timer);
-    this.timer = setTimeout(() => {
+    if (this.scrollTimer) clearTimeout(this.scrollTimer);
+    this.scrollTimer = setTimeout(() => {
       window.scrollTo(0, 0);
     }, delayBeforeScrolling);
   };
 
-  toggleNonPhoneSignInOptions = () => {
-    const {
-      hideAppleSignInButton, hideCurrentlySignedInHeader, hideFacebookSignInButton,
-      hideTwitterSignInButton, hideVoterEmailAddressEntry, isInternetExplorer,
-    } = this.state;
+  showEmailOnlySignIn = () => {
+    // console.log('SignInOptionsPanel showEmailOnlySignIn');
     this.setState({
-      hideAppleSignInButton: !hideAppleSignInButton || isInternetExplorer,
-
-      hideCurrentlySignedInHeader: !hideCurrentlySignedInHeader,
-      hideFacebookSignInButton: !hideFacebookSignInButton,
-      hideTwitterSignInButton: !hideTwitterSignInButton,
-      hideVoterEmailAddressEntry: !hideVoterEmailAddressEntry,
+      hideAppleSignInButton: true,
+      hideCurrentlySignedInHeader: true,
+      hideVoterEmailAddressEntry: false,
+      hideFacebookSignInButton: true,
+      hideTwitterSignInButton: true,
+      hideVoterPhoneEntry: true,
     });
-    // console.log('SignInOptionsPanel toggleNonPhoneSignInOptions');
+    this.focusedOnSingleInputToggle('email');
+    const delayBeforeScrolling = 250;
+    if (this.scrollTimer) clearTimeout(this.scrollTimer);
+    this.scrollTimer = setTimeout(() => {
+      window.scrollTo(0, 0);
+    }, delayBeforeScrolling);
+  };
+
+  showPhoneOnlySignIn = () => {
+    // console.log('SignInOptionsPanel showPhoneOnlySignIn');
+    this.setState({
+      hideAppleSignInButton: true,
+      hideCurrentlySignedInHeader: true,
+      hideFacebookSignInButton: true,
+      hideTwitterSignInButton: true,
+      hideVoterEmailAddressEntry: true,
+      hideVoterPhoneEntry: false,
+    });
     this.focusedOnSingleInputToggle('phone');
     const delayBeforeScrolling = 250;
-    if (this.timer) clearTimeout(this.timer);
-    this.timer = setTimeout(() => {
+    if (this.scrollTimer) clearTimeout(this.scrollTimer);
+    this.scrollTimer = setTimeout(() => {
       window.scrollTo(0, 0);
     }, delayBeforeScrolling);
   };
@@ -364,9 +395,12 @@ export default class SignInOptionsPanel extends Component {
     }
 
     const {
-      is_signed_in: voterIsSignedIn, signed_in_facebook: voterIsSignedInFacebook,
-      signed_in_twitter: voterIsSignedInTwitter, signed_in_with_email: voterIsSignedInWithEmail,
-      twitter_screen_name: twitterScreenName, signed_in_with_apple: voterIsSignedInWithApple,
+      is_signed_in: voterIsSignedIn,
+      signed_in_facebook: voterIsSignedInFacebook,
+      signed_in_twitter: voterIsSignedInTwitter,
+      signed_in_with_apple: voterIsSignedInWithApple,
+      signed_in_with_email: voterIsSignedInWithEmail,
+      twitter_screen_name: twitterScreenName,
     } = voter;
     // console.log("SignInOptionsPanel.jsx facebookAuthResponse:", facebookAuthResponse);
     // console.log("SignInOptionsPanel.jsx voter:", voter);
@@ -440,7 +474,7 @@ export default class SignInOptionsPanel extends Component {
                         buttonText="Sign in with Twitter"
                         buttonSubmittedText="Signing in..."
                         inModal={inModal}
-                        closeSignInModal={this.localCloseSignInModal}
+                        closeSignInModal={this.closeSignInModalLocal}
                       />
                     </span>
                   )}
@@ -449,7 +483,7 @@ export default class SignInOptionsPanel extends Component {
                   { !hideFacebookSignInButton && !voterIsSignedInFacebook && isOnFacebookSupportedDomainUrl && (
                     <span>
                       <FacebookSignIn
-                        closeSignInModal={this.localCloseSignInModal}
+                        closeSignInModal={this.closeSignInModalLocal}
                         buttonSubmittedText="Signing in..."
                         buttonText="Sign in with Facebook"
                       />
@@ -459,7 +493,7 @@ export default class SignInOptionsPanel extends Component {
               </>
             ) : null}
             {!hideAppleSignInButton && (
-              <AppleSignIn signedIn={voterIsSignedInWithApple} closeSignInModal={this.localCloseSignInModal} />
+              <AppleSignIn signedIn={voterIsSignedInWithApple} closeSignInModal={this.closeSignInModalLocal} />
             )}
             {voterIsSignedIn && !hideDialogForCordova ? (
               <div className="u-stack--md">
@@ -537,9 +571,11 @@ export default class SignInOptionsPanel extends Component {
             ) : null}
             {!hideVoterPhoneEntry && isWebApp() && (
               <VoterPhoneVerificationEntry
-                closeSignInModal={this.localCloseSignInModal}
+                closeSignInModal={this.closeSignInModalLocalFromEmailOrPhone}
+                closeVerifyModal={this.closeVerifyModalLocal}
                 hideSignInWithPhoneForm={isCordova()}
-                toggleOtherSignInOptions={this.toggleNonPhoneSignInOptions}
+                showAllSignInOptions={this.showAllSignInOptions}
+                showPhoneOnlySignIn={this.showPhoneOnlySignIn}
               />
             )}
             {!hideVoterPhoneEntry && isCordova() && (
@@ -557,9 +593,12 @@ export default class SignInOptionsPanel extends Component {
             )}
             {!hideVoterEmailAddressEntry && isWebApp() && (
               <VoterEmailAddressEntry
-                closeSignInModal={this.localCloseSignInModal}
+                closeSignInModal={this.closeSignInModalLocalFromEmailOrPhone}
+                closeVerifyModal={this.closeVerifyModalLocal}
                 hideSignInWithEmailForm={isCordova()}
-                toggleOtherSignInOptions={this.toggleNonEmailSignInOptions}
+                showAllSignInOptions={this.showAllSignInOptions}
+                // toggleOtherSignInOptions={this.toggleNonEmailSignInOptions}
+                showEmailOnlySignIn={this.showEmailOnlySignIn}
               />
             )}
             {!hideVoterEmailAddressEntry && isCordova() && (

@@ -30,9 +30,9 @@ class AddContactsFromGoogleButton extends Component {
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
     if (isWebApp()) {
       loadGapiInsideDOM().then(() => {
-        console.log('AddContactsFromGoogleButton loadGapiInsideDOM onload:');
+        // console.log('AddContactsFromGoogleButton loadGapiInsideDOM onload:');
         window.gapi.load('client:auth2', this.initClient.bind(this));
-        console.log('AddContactsFromGoogleButton loadGapiInsideDOM after onload window.gapi:', window.gapi);
+        // console.log('AddContactsFromGoogleButton loadGapiInsideDOM after onload window.gapi:', window.gapi);
       });
     }
   }
@@ -144,13 +144,27 @@ class AddContactsFromGoogleButton extends Component {
     const { gapi } = window;
     const setEmail = new Set();
     const contacts = new Set();
+    // Get current voter's name and email - Work in progress 2022-09
+    /*
+    gapi.client.people.people.get({
+      resourceName: 'people/me',
+      personFields: 'metadata,names,emailAddresses',
+    }).then((response) => {
+      // const others = response.result.otherContacts;
+      console.log(response);
+    }, (error) => {
+      console.error('people.me error');
+      console.error(JSON.stringify(error, null, 2));
+    });
+    */
+    // Get "Other Contacts" list
     gapi.client.people.otherContacts.list({
       pageSize: 1000,
       readMask: 'metadata,names,emailAddresses',
     }).then((response) => {
       this.setState({ addContactsState: AddContactConsts.receivedContacts  });
       const others = response.result.otherContacts;
-      // console.log(others);
+      // console.log(response);
       for (let i = 0; i < others.length; i++) {
         const other = others[i];
         const person = {
@@ -203,15 +217,11 @@ class AddContactsFromGoogleButton extends Component {
             addContactsState: AddContactConsts.sendingContacts,
           });
         }
-        // We don't want to stay signed in, in case the person wants to import from another gmail account
-        gapi.auth2.getAuthInstance().signOut();
       } else if (contacts.size === 0) {
         // console.log('noContactsFound, contacts.size === 0');
         this.setState({
           addContactsState: AddContactConsts.noContactsFound,
         });
-        // Since no contacts were found with this gmail account, sign out so the voter can choose another account
-        gapi.auth2.getAuthInstance().signOut();
       }
     }, (error) => {
       console.error('getOtherConnections error trapping');
@@ -219,8 +229,9 @@ class AddContactsFromGoogleButton extends Component {
       this.setState({
         addContactsState: AddContactConsts.permissionDenied,
       });
-      gapi.auth2.getAuthInstance().signOut();
     });
+    // Sign out so the voter has the option to choose another account
+    gapi.auth2.getAuthInstance().signOut();
   }
 
   initClient () {

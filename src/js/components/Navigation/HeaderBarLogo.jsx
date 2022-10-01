@@ -14,7 +14,9 @@ const logoDark = '../../../img/global/svg-icons/we-vote-logo-horizontal-color-da
 const HeaderBarLogo = ({ chosenSiteLogoUrl, isBeta, light }) => (
   <HeaderBarLogoWrapper id="HeaderBarLogoWrapper">
     {chosenSiteLogoUrl ? (
-      <HeaderLogoImage src={chosenSiteLogoUrl} />
+      <Link to="/ready" id="logoHeaderBar">
+        <HeaderLogoImage src={chosenSiteLogoUrl} />
+      </Link>
     ) : (
       <WeVoteLogoWrapper>
         <Link to="/ready" className="page-logo page-logo-full-size" id="logoHeaderBar">
@@ -59,11 +61,7 @@ const HeaderBarLogoWrapper = styled('div')(({ theme }) => (`
   }
 `));
 
-const WeVoteLogoWrapper = styled('div')(({ theme }) => (`
-  // margin-left: -12px;
-  // ${theme.breakpoints.down('sm')} {
-  //   margin-left: 278px;
-  // }
-`));
+const WeVoteLogoWrapper = styled('div')`
+`;
 
 export default HeaderBarLogo;

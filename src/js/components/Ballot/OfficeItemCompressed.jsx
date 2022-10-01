@@ -255,8 +255,10 @@ class OfficeItemCompressed extends Component {
     let { candidatesToShowForSearchResults } = this.props;
     candidatesToShowForSearchResults = candidatesToShowForSearchResults || [];
     const { candidateListForDisplay, showAllCandidates } = this.state;
-    const supportedCandidatesList = candidateList.filter((candidate) => candidatesToShowForSearchResults.includes(candidate.we_vote_id) || ((SupportStore.getVoterOpposesByBallotItemWeVoteId(candidate.we_vote_id) || SupportStore.getVoterSupportsByBallotItemWeVoteId(candidate.we_vote_id)) && !candidate.withdrawn_from_election));
-    const candidatesToRender = (supportedCandidatesList.length && !showAllCandidates) ? supportedCandidatesList : candidateListForDisplay;
+    const supportedCandidatesList = candidateList.filter((candidate) => candidatesToShowForSearchResults.includes(candidate.we_vote_id) || (SupportStore.getVoterSupportsByBallotItemWeVoteId(candidate.we_vote_id) && !candidate.withdrawn_from_election));
+    const opposedCandidatesList = candidateList.filter((candidate) => candidatesToShowForSearchResults.includes(candidate.we_vote_id) || (SupportStore.getVoterOpposesByBallotItemWeVoteId(candidate.we_vote_id) && !candidate.withdrawn_from_election));
+    const supportedAndOpposedCandidatesList = supportedCandidatesList.concat(opposedCandidatesList);
+    const candidatesToRender = (supportedCandidatesList.length && !showAllCandidates) ? supportedAndOpposedCandidatesList : candidateListForDisplay;
     return candidatesToRender.length;
   }
 
@@ -265,9 +267,12 @@ class OfficeItemCompressed extends Component {
     let { candidatesToShowForSearchResults } = this.props;
     candidatesToShowForSearchResults = candidatesToShowForSearchResults || [];
     const { candidateListForDisplay, limitNumberOfCandidatesShownToThisNumber, showAllCandidates } = this.state;
-    // If voter has chosen or opposed 1+ candidates, only show those
-    const supportedCandidatesList = candidateList.filter((candidate) => candidatesToShowForSearchResults.includes(candidate.we_vote_id) || ((SupportStore.getVoterOpposesByBallotItemWeVoteId(candidate.we_vote_id) || SupportStore.getVoterSupportsByBallotItemWeVoteId(candidate.we_vote_id)) && !candidate.withdrawn_from_election));
-    const candidatesToRender = (supportedCandidatesList.length && !showAllCandidates) ? supportedCandidatesList : candidateListForDisplay;
+    // If voter has chosen 1+ candidates, only show those
+    const supportedCandidatesList = candidateList.filter((candidate) => candidatesToShowForSearchResults.includes(candidate.we_vote_id) || (SupportStore.getVoterSupportsByBallotItemWeVoteId(candidate.we_vote_id) && !candidate.withdrawn_from_election));
+    const opposedCandidatesList = candidateList.filter((candidate) => candidatesToShowForSearchResults.includes(candidate.we_vote_id) || (SupportStore.getVoterOpposesByBallotItemWeVoteId(candidate.we_vote_id) && !candidate.withdrawn_from_election));
+    const supportedAndOpposedCandidatesList = supportedCandidatesList.concat(opposedCandidatesList);
+    // If there are supported candidates, then limit what we show to supported and opposed candidates
+    const candidatesToRender = (supportedCandidatesList.length && !showAllCandidates) ? supportedAndOpposedCandidatesList : candidateListForDisplay;
     const candidatesToRenderLength = candidatesToRender.length;
     const hideCandidateDetails = false; // supportedCandidatesList.length;
     let candidateCount = 0;

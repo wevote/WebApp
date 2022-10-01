@@ -80,6 +80,8 @@ class TwitterSignIn extends Component {
     super(props);
     this.state = {
       buttonSubmittedText: '',
+      twitterSignInCrash: false,
+      twitterSignInDisabled: false,
       twitterSignInStartSubmitted: false,
     };
   }
@@ -152,7 +154,12 @@ class TwitterSignIn extends Component {
 
           // When we visit this page and delete the voter_device_id cookie, we can get an error that requires
           // reloading the browser page. This is how we do it:
-          window.location.assign('');
+          // window.location.assign('');
+          this.setState({
+            twitterSignInCrash: true,
+            twitterSignInDisabled: true,
+            twitterSignInStartSubmitted: false,
+          });
         }
       },
 
@@ -165,9 +172,15 @@ class TwitterSignIn extends Component {
     });
   }
 
+  reloadApp = () => {
+    // When we visit this page and delete the voter_device_id cookie, we can get an error that requires
+    // reloading the browser page. This is how we do it:
+    window.location.assign('');
+  }
+
   render () {
     let { buttonText } = this.props;
-    const { buttonSubmittedText, twitterSignInStartSubmitted } = this.state;
+    const { buttonSubmittedText, twitterSignInCrash, twitterSignInDisabled, twitterSignInStartSubmitted } = this.state;
     let disabled = twitterSignInStartSubmitted;
     if (isIOS()) {
       const { device: { version } } = window;
@@ -183,18 +196,29 @@ class TwitterSignIn extends Component {
 
     renderLog('TwitterSignIn');  // Set LOG_RENDER_EVENTS to log all renders
     return (
-      <SplitIconButton
-        backgroundColor="#55acee"
-        fontColor={disabled ? 'gray' : 'white'}
-        buttonText={twitterSignInStartSubmitted ? shortenText(buttonSubmittedText, 32) : shortenText(buttonText, 32)}
-        disabled={disabled}
-        externalUniqueId="twitterSignIn"
-        icon={<Twitter />}
-        id="twitterSignIn"
-        onClick={isWebApp() ? this.twitterSignInWebApp : this.twitterSignInWebAppCordova}
-        separatorColor="rgba(250, 250, 250, .6)"
-        title="Sign in to find voter guides"
-      />
+      <>
+        <SplitIconButton
+          backgroundColor="#55acee"
+          fontColor={disabled || twitterSignInDisabled ? 'gray' : 'white'}
+          buttonText={twitterSignInStartSubmitted ? shortenText(buttonSubmittedText, 32) : shortenText(buttonText, 32)}
+          disabled={disabled || twitterSignInDisabled}
+          externalUniqueId="twitterSignIn"
+          icon={<Twitter />}
+          id="twitterSignIn"
+          onClick={isWebApp() ? this.twitterSignInWebApp : this.twitterSignInWebAppCordova}
+          separatorColor="rgba(250, 250, 250, .6)"
+          title="Sign in to find voter guides"
+        />
+        {twitterSignInCrash && (
+          <div>
+            Twitter sign in failed.
+            {' '}
+            <span className="u-link-color" onClick={this.reloadApp}>
+              Reset to try again.
+            </span>
+          </div>
+        )}
+      </>
     );
   }
 }

@@ -440,24 +440,16 @@ class Friends extends Component {
                   <FirstAndLastNameRequiredAlert />
                 </Suspense>
               )}
-              {!!(!voterIsSignedIn || !friendActivityExists) && (
-                <InviteByEmail />
-              )}
               <FriendInvitationsSentToMe />
               <SuggestedFriends />
-              <SuggestedContacts />
+              <InviteFriendsMobileWrapper>
+                <SectionTitle>
+                  Invite Friends
+                </SectionTitle>
+                <TooltipIcon title="These friends will see what you support and oppose." />
+                <AddFriendsByEmail inSideColumn />
+              </InviteFriendsMobileWrapper>
             </>
-            {!!(voterIsSignedIn && friendActivityExists) && (
-              <div>
-                <div>
-                  <SectionTitle>
-                    Invite Friends
-                  </SectionTitle>
-                  <TooltipIcon title="These friends will see what you support and oppose." />
-                  <AddFriendsByEmail inSideColumn />
-                </div>
-              </div>
-            )}
             <SignInOptionsWrapper>
               {voter.signed_in_twitter ? null : (
                 <TwitterSignInWrapper>
@@ -475,6 +467,7 @@ class Friends extends Component {
               testimonialAuthor={testimonialAuthor}
               testimonial={testimonial}
             />
+            <SuggestedContacts />
           </>
         );
         break;
@@ -554,6 +547,10 @@ const FriendsHeading = styled('div')`
   // // transform: translate3d(0, -53px, 0);
   // // transition: all 100ms ease-in-out 0s;
   // box-shadow: {standardBoxShadow('wide')};
+`;
+
+const InviteFriendsMobileWrapper = styled('div')`
+  margin-bottom: 42px;
 `;
 
 const OuterSignInOptionsWrapper = styled('div')`

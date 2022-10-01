@@ -18,13 +18,14 @@ class SettingsVerifySecretCode extends Component {
   constructor (props) {
     super(props);
     this.state = {
+      cancelingVerifyModal: false,
+      condensed: false,
       digit1: '',
       digit2: '',
       digit3: '',
       digit4: '',
       digit5: '',
       digit6: '',
-      condensed: false,
       errorToDisplay: false,
       errorMessageToDisplay: '',
       incorrectSecretCodeEntered: false,
@@ -83,6 +84,7 @@ class SettingsVerifySecretCode extends Component {
     if (this.state.voterPhoneNumber !== nextState.voterPhoneNumber) return true;
     if (this.state.voterSecretCodeRequestsLocked !== nextState.voterSecretCodeRequestsLocked) return true;
     if (this.state.voterVerifySecretCodeSubmitted !== nextState.voterVerifySecretCodeSubmitted) return true;
+    if (this.state.cancelingVerifyModal !== nextState.cancelingVerifyModal) return true;
     if (this.state.condensed !== nextState.condensed) return true;
     if (this.state.digit1 !== nextState.digit1) return true;
     if (this.state.digit2 !== nextState.digit2) return true;
@@ -108,13 +110,20 @@ class SettingsVerifySecretCode extends Component {
   }
 
   handleDigit6Blur = () => {
-    const { digit1, digit2, digit3, digit4, digit5, digit6, voterPhoneNumber, voterVerifySecretCodeSubmitted } = this.state;
+    // 2022-09-29 NOTE: Submitting the code on blur can cause some weird behavior.
+    // One case is this: clicking "Try a different number" after you have entered a full and correct
+    //  verification code, signs you in. But attempts to change/remove
+    //  this "handleDigit6Blur" function caused other, worse problems.
+    const {
+      cancelingVerifyModal, digit1, digit2, digit3, digit4, digit5, digit6,
+      voterPhoneNumber, voterVerifySecretCodeSubmitted,
+    } = this.state;
     this.setState({ condensed: false });
     if (digit6) {
       // Jan 2020 this comment looks wrong, but might still contain a clue:  When there is a voterEmailAddress value and the keyboard closes, submit
       const secretCode = `${digit1}${digit2}${digit3}${digit4}${digit5}${digit6}`;
       const codeSentToSMSPhoneNumber = !!voterPhoneNumber;
-      if (!voterVerifySecretCodeSubmitted) {
+      if (!voterVerifySecretCodeSubmitted && !cancelingVerifyModal) {
         VoterActions.voterVerifySecretCode(secretCode, codeSentToSMSPhoneNumber);
         this.setState({ voterVerifySecretCodeSubmitted: true });
       }
@@ -185,7 +194,7 @@ class SettingsVerifySecretCode extends Component {
     // console.log(`onVoterStoreChange secretCodeVerified: ${secretCodeVerified}`);
     if (secretCodeVerified) {
       // console.log('SettingsVerifySecretCode -- onVoterStoreChange secretCodeVerified: yes');
-      this.closeVerifyModalLocal();
+      this.closeSignInModalLocal();
     } else {
       let errorMessageToDisplay = '';
       let errorToDisplay = false;
@@ -450,8 +459,16 @@ class SettingsVerifySecretCode extends Component {
     }
   };
 
+  closeSignInModalLocal = () => {
+    // console.log('voterVerifySecretCode this.props.closeVerifyModal:', this.props.closeVerifyModal);
+    if (this.props.closeSignInModal) {
+      this.props.closeSignInModal();
+    }
+  };
+
   closeVerifyModalLocal = () => {
     // console.log('voterVerifySecretCode this.props.closeVerifyModal:', this.props.closeVerifyModal);
+    this.setState({ cancelingVerifyModal: true });
     if (this.props.closeVerifyModal) {
       this.props.closeVerifyModal();
     }
@@ -623,14 +640,14 @@ class SettingsVerifySecretCode extends Component {
             </Button>
             */}
             <Button
-              id="changeEmailAddressButton"
+              id="tryADifferentEmailOrNumber"
               classes={{ root: classes.button }}
               color="primary"
               disabled={voterVerifySecretCodeSubmitted}
               onClick={this.closeVerifyModalLocal}
               variant={voterMustRequestNewCode ? 'contained' : 'outlined'}
             >
-              {voterPhoneNumber ? 'Change Phone Number' : 'Change Email Address'}
+              {voterPhoneNumber ? 'Try a different number' : 'Try a different email'}
             </Button>
           </ButtonsContainer>
         </ModalContent>
@@ -641,6 +658,7 @@ class SettingsVerifySecretCode extends Component {
 SettingsVerifySecretCode.propTypes = {
   classes: PropTypes.object,
   show: PropTypes.bool,
+  closeSignInModal: PropTypes.func,
   closeVerifyModal: PropTypes.func,
   voterEmailAddress: PropTypes.string,
   voterPhoneNumber: PropTypes.string,
