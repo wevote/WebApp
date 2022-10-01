@@ -138,7 +138,7 @@ class FriendInvitationEmailLinkDisplayForList extends Component {
             variant="outlined"
           >
             <span className="u-no-break" style={smallButtonIfNeeded()}>
-              {cancelFriendInviteEmailSubmitted ? 'Canceling...' : 'Cancel Invite'}
+              {cancelFriendInviteEmailSubmitted ? 'Canceled' : 'Cancel Invite'}
             </span>
           </Button>
         </CancelButtonWrapper>
