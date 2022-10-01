@@ -41,7 +41,7 @@ class VoterEmailAddressEntry extends Component {
       },
       hideExistingEmailAddresses: false,
       loading: false,
-      otherSignInOptionsOff: false,
+      movedInitialFocus: false,
       secretCodeSystemLocked: false,
       showVerifyModal: false,
       voter: VoterStore.getVoter(),
@@ -57,6 +57,7 @@ class VoterEmailAddressEntry extends Component {
   }
 
   componentDidMount () {
+    this.onVoterStoreChange();
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
     VoterActions.voterEmailAddressRetrieve();
   }
@@ -74,7 +75,6 @@ class VoterEmailAddressEntry extends Component {
   }
 
   componentWillUnmount () {
-    // console.log('VoterEmailAddressEntry componentWillUnmount');
     this.voterStoreListener.remove();
   }
 
@@ -85,13 +85,7 @@ class VoterEmailAddressEntry extends Component {
     const { secretCodeVerified } = secretCodeVerificationStatus;
     // console.log('onVoterStoreChange emailAddressStatus:', emailAddressStatus);
 
-    const voter = VoterStore.getVoter();
-    const { signed_in_with_email: signedInWithEmail } = voter;
-    // console.log(`VoterEmailAddressEntry onVoterStoreChange isSignedIn: ${isSignedIn}, signedInWithEmail: ${signedInWithEmail}`);
-    if (signedInWithEmail) {
-      // console.log('VoterEmailAddressEntry onVoterStoreChange signedInWithEmail so doing a hacky fallback close');
-      this.closeSignInModal();
-    } else if (secretCodeVerified) {
+    if (secretCodeVerified) {
       this.setState({
         displayEmailVerificationButton: false,
         showVerifyModal: false,
@@ -138,93 +132,36 @@ class VoterEmailAddressEntry extends Component {
     const { voterEmailAddress } = this.state;
     event.preventDefault();
     const sendLinkToSignIn = true;
-    VoterActions.voterEmailAddressSave(voterEmailAddress, sendLinkToSignIn);
-    this.setState({ loading: true });
-  };
-
-  sendSignInCodeEmail = (event) => {
-    if (event) {
-      event.preventDefault();
-    }
-    const { displayEmailVerificationButton, voterEmailAddress, voterEmailAddressIsValid } = this.state;
-    if (voterEmailAddressIsValid && displayEmailVerificationButton) {
-      VoterActions.sendSignInCodeEmail(voterEmailAddress);
-      this.setState({
-        emailAddressStatus: {
-          email_address_already_owned_by_other_voter: false,
-        },
-        signInCodeEmailSentAndWaitingForResponse: true,
-      });
-    }
-  };
-
-  reSendSignInCodeEmail = (voterEmailAddress) => {
-    // console.log('VoterEmailAddressEntry voterEmailAddress:', voterEmailAddress);
-    if (voterEmailAddress) {
-      VoterActions.sendSignInCodeEmail(voterEmailAddress);
-      this.setState({
-        emailAddressStatus: {
-          email_address_already_owned_by_other_voter: false,
-        },
-        loading: true,
-        voterEmailAddress,
-      });
-    }
-  };
-
-  displayEmailVerificationButton = () => {
     this.setState({
-      displayEmailVerificationButton: true,
-    });
+      loading: true,
+    }, () => VoterActions.voterEmailAddressSave(voterEmailAddress, sendLinkToSignIn));
   };
 
-  hideEmailVerificationButton = () => {
+  showEmailOnlySignInLocal = () => {
     this.setState({
-      displayEmailVerificationButton: false,
+      hideExistingEmailAddresses: true,
+      signInCodeEmailSentAndWaitingForResponse: false,
     });
-  };
-
-  localToggleOtherSignInOptions = () => {
-    if (isCordova() || isMobileScreenSize()) {
-      const { hideExistingEmailAddresses, otherSignInOptionsOff } = this.state;
-      this.setState({
-        hideExistingEmailAddresses: !hideExistingEmailAddresses,
-        otherSignInOptionsOff: !otherSignInOptionsOff,
-      });
-      if (this.props.toggleOtherSignInOptions) {
-        this.props.toggleOtherSignInOptions();
-      }
+    if (this.props.showEmailOnlySignIn) {
+      this.props.showEmailOnlySignIn();
     }
   };
 
-  turnOtherSignInOptionsOff = () => {
-    if (isCordova() || isMobileScreenSize()) {
-      const { otherSignInOptionsOff } = this.state;
-      this.setState({
-        hideExistingEmailAddresses: true,
-        otherSignInOptionsOff: true,
-        signInCodeEmailSentAndWaitingForResponse: false,
-      });
-      if (!otherSignInOptionsOff) {
-        if (this.props.toggleOtherSignInOptions) {
-          this.props.toggleOtherSignInOptions();
-        }
-      }
-    }
-  };
-
-  closeSignInModal = () => {
-    // console.log('VoterEmailAddressEntry closeSignInModal');
+  closeSignInModalLocal = () => {
+    // console.log('VoterEmailAddressEntry closeSignInModalLocal');
     if (this.props.closeSignInModal) {
       this.props.closeSignInModal();
     }
   };
 
-  closeVerifyModal = () => {
-    // console.log('VoterEmailAddressEntry closeVerifyModal');
-    // Why going through VoterStore instead of VoterActions?
-    VoterStore.clearEmailAddressStatus();
-    VoterStore.clearSecretCodeVerificationStatus();
+  closeSignInModalFromVerifySecretCode = () => {
+    // console.log('VoterEmailAddressEntry closeSignInModalFromVerifySecretCode');
+    VoterActions.clearSecretCodeVerificationStatusAndEmail();
+    this.closeSignInModalLocal();
+  }
+
+  closeVerifyModalFromVerifySecretCode = () => {
+    // console.log('VoterEmailAddressEntry closeVerifyModalFromVerifySecretCode');
     this.setState({
       displayEmailVerificationButton: false,
       emailAddressStatus: {
@@ -232,46 +169,59 @@ class VoterEmailAddressEntry extends Component {
       },
       showVerifyModal: false,
       signInCodeEmailSentAndWaitingForResponse: false,
-    });
+    }, () => VoterActions.clearSecretCodeVerificationStatusAndEmail());
     if (isCordova()) {
-      this.closeSignInModal();
+      this.closeSignInModalLocal();
+    }
+    if (this.props.closeVerifyModal) {
+      this.props.closeVerifyModal();
     }
   };
 
-  updateVoterEmailAddress = (event) => {
+  onVoterEmailAddressChange = (event) => {
     const voterEmailAddress = event.target.value;
     const voterEmailAddressIsValid = (voterEmailAddress && voterEmailAddress.length > 6);
     const disableEmailVerificationButton = !voterEmailAddressIsValid;
+    const displayEmailVerificationButton = (voterEmailAddress && voterEmailAddress.length > 0);
     this.setState({
       disableEmailVerificationButton,
+      displayEmailVerificationButton,
       voterEmailAddress,
       voterEmailAddressIsValid,
     });
   };
 
+  onBlur = () => {
+    blurTextFieldAndroid();
+  };
+
   onCancel = () => {
     // console.log('VoterEmailAddressEntry onCancel');
     this.setState({
-      disableEmailVerificationButton: false,
+      disableEmailVerificationButton: true,
+      displayEmailVerificationButton: false,
       signInCodeEmailSentAndWaitingForResponse: false,
-    });
+      voterEmailAddress: '', // Clearing voterEmailAddress variable does not always clear email in form
+    }, () => VoterActions.clearSecretCodeVerificationStatusAndEmail());
     const { cancelShouldCloseModal } = this.props;
+    // console.log('cancelShouldCloseModal:', cancelShouldCloseModal);
     if (cancelShouldCloseModal) {
-      this.closeSignInModal();
-    } else {
-      // There are Modal display problems that don't seem to be resolvable that prevents us from returning to the full SignInOptionsPanel modal
-      this.hideEmailVerificationButton();
-      this.localToggleOtherSignInOptions();
+      this.closeSignInModalLocal();
+    } else if (isCordova() || isMobileScreenSize()) {
+      if (this.props.showAllSignInOptions) {
+        this.props.showAllSignInOptions();
+      }
     }
   };
 
   onFocus = () => {
-    const { displayEmailVerificationButton } = this.state;
-    if (!displayEmailVerificationButton) {
-      this.displayEmailVerificationButton();
-      this.turnOtherSignInOptionsOff();
+    this.setState({
+      displayEmailVerificationButton: true,
+    });
+    if (isCordova() || isMobileScreenSize()) {
+      this.showEmailOnlySignInLocal();
     }
-    focusTextFieldAndroid();
+    focusTextFieldAndroid(); // This refers to caller string AddFriendsByEmail. Correct?
   };
 
   onAnimationEndCancel = () => {
@@ -300,22 +250,47 @@ class VoterEmailAddressEntry extends Component {
     }
   };
 
-  // sendVerificationEmail (emailWeVoteId) {
-  //   VoterActions.sendVerificationEmail(emailWeVoteId);
-  //   this.setState({ loading: true });
-  // }
-
+  // eslint-disable-next-line react/sort-comp
   removeVoterEmailAddress (emailWeVoteId) {
     VoterActions.removeVoterEmailAddress(emailWeVoteId);
     return null;
   }
 
+  sendSignInCodeEmail = (event) => {
+    const { displayEmailVerificationButton, voterEmailAddress, voterEmailAddressIsValid } = this.state;
+    // console.log('displayEmailVerificationButton:', displayEmailVerificationButton, ', voterEmailAddress:', voterEmailAddress, ', voterEmailAddressIsValid:', voterEmailAddressIsValid);
+    if (event) {
+      event.preventDefault();
+    }
+    if (voterEmailAddressIsValid && displayEmailVerificationButton) {
+      VoterActions.sendSignInCodeEmail(voterEmailAddress);
+      this.setState({
+        emailAddressStatus: {
+          email_address_already_owned_by_other_voter: false,
+        },
+        signInCodeEmailSentAndWaitingForResponse: true,
+      });
+    }
+  };
+
+  reSendSignInCodeEmail = (voterEmailAddress) => {
+    // console.log('VoterEmailAddressEntry voterEmailAddress:', voterEmailAddress);
+    if (voterEmailAddress) {
+      VoterActions.sendSignInCodeEmail(voterEmailAddress);
+      this.setState({
+        emailAddressStatus: {
+          email_address_already_owned_by_other_voter: false,
+        },
+        loading: true,
+        voterEmailAddress,
+      });
+    }
+  };
+
   render () {
     renderLog('VoterEmailAddressEntry');  // Set LOG_RENDER_EVENTS true to log all renders
     const { loading } = this.state;
-    // console.log('VoterEmailAddressEntry loading: ', loading);
     if (loading) {
-      // console.log('VoterEmailAddressEntry loading: ', loading);
       return LoadingWheel;
     }
 
@@ -331,56 +306,56 @@ class VoterEmailAddressEntry extends Component {
     const emailAddressStatusHtml = (
       <span>
         { emailAddressStatus.email_address_not_valid ||
-        (emailAddressStatus.email_address_already_owned_by_this_voter && !emailAddressStatus.email_address_deleted && !emailAddressStatus.make_primary_email && !secretCodeSystemLocked) ||
-        (emailAddressStatus.email_address_already_owned_by_other_voter && !signInLinkOrCodeSent && !secretCodeSystemLocked) ||
-        secretCodeSystemLocked ? (
-          <Alert severity="warning">
-            { emailAddressStatus.email_address_not_valid && (
-              <div>Please enter a valid email address.</div>
-            )}
-            { emailAddressStatus.email_address_already_owned_by_other_voter && !signInLinkOrCodeSent && !secretCodeSystemLocked && (
-              <div>
-                That email is already being used by another account.
-                <br />
-                <br />
-                Please click &quot;Send Login Code in an Email&quot; below to sign into that account.
-              </div>
-            )}
-            { emailAddressStatus.email_address_already_owned_by_this_voter && !emailAddressStatus.email_address_deleted && !emailAddressStatus.make_primary_email && !secretCodeSystemLocked ? (
-              <div>That email address was already verified by you. </div>
-            ) : null }
-            { secretCodeSystemLocked && (
-              <div>
-                Your account is locked. Please
-                <Suspense fallback={<></>}>
-                  <OpenExternalWebSite
-                    linkIdAttribute="weVoteSupportVoterEmailAddressEntry"
-                    url="https://help.wevote.us/hc/en-us/requests/new"
-                    target="_blank"
-                    body={<span>contact We Vote support for help.</span>}
-                  />
-                </Suspense>
-              </div>
-            )}
-          </Alert>
+          (emailAddressStatus.email_address_already_owned_by_this_voter && !emailAddressStatus.email_address_deleted && !emailAddressStatus.make_primary_email && !secretCodeSystemLocked) ||
+          (emailAddressStatus.email_address_already_owned_by_other_voter && !signInLinkOrCodeSent && !secretCodeSystemLocked) ||
+          secretCodeSystemLocked ? (
+            <Alert severity="warning">
+              { emailAddressStatus.email_address_not_valid && (
+                <div>Please enter a valid email address.</div>
+              )}
+              { emailAddressStatus.email_address_already_owned_by_other_voter && !signInLinkOrCodeSent && !secretCodeSystemLocked && (
+                <div>
+                  That email is already being used by another account.
+                  <br />
+                  <br />
+                  Please click &quot;Send Login Code in an Email&quot; below to sign into that account.
+                </div>
+              )}
+              { emailAddressStatus.email_address_already_owned_by_this_voter && !emailAddressStatus.email_address_deleted && !emailAddressStatus.make_primary_email && !secretCodeSystemLocked ? (
+                <div>That email address was already verified by you. </div>
+              ) : null }
+              { secretCodeSystemLocked && (
+                <div>
+                  Your account is locked. Please
+                  <Suspense fallback={<></>}>
+                    <OpenExternalWebSite
+                      linkIdAttribute="weVoteSupportVoterEmailAddressEntry"
+                      url="https://help.wevote.us/hc/en-us/requests/new"
+                      target="_blank"
+                      body={<span>contact We Vote support for help.</span>}
+                    />
+                  </Suspense>
+                </div>
+              )}
+            </Alert>
           ) : null}
         { emailAddressStatus.email_address_created ||
-        emailAddressStatus.email_address_deleted ||
-        emailAddressStatus.email_ownership_is_verified ||
-        emailAddressStatus.verification_email_sent ||
-        emailAddressStatus.link_to_sign_in_email_sent ||
-        (emailAddressStatus.make_primary_email && (emailAddressStatus.email_address_created || emailAddressStatus.email_address_found || emailAddressStatus.sign_in_code_email_sent) && !secretCodeSystemLocked) ||
-        emailAddressStatus.sign_in_code_email_sent ? (
-          <Alert severity="success">
-            { emailAddressStatus.email_address_created &&
-            !emailAddressStatus.verification_email_sent ? <span>Your email address was saved. </span> : null }
-            { emailAddressStatus.email_address_deleted ? <span>Your email address was deleted. </span> : null }
-            { emailAddressStatus.email_ownership_is_verified ? <span>Your email address was verified. </span> : null }
-            { emailAddressStatus.verification_email_sent ? <span>Please check your email. A verification email was sent. </span> : null }
-            { emailAddressStatus.link_to_sign_in_email_sent ? <span>Please check your email. A sign in link was sent. </span> : null }
-            { emailAddressStatus.make_primary_email && (emailAddressStatus.email_address_created || emailAddressStatus.email_address_found || emailAddressStatus.sign_in_code_email_sent) && !secretCodeSystemLocked ? <span>Your have chosen a new primary email. </span> : null }
-            { emailAddressStatus.sign_in_code_email_sent ? <span>Please check your email. A sign in verification code was sent. </span> : null }
-          </Alert>
+          emailAddressStatus.email_address_deleted ||
+          emailAddressStatus.email_ownership_is_verified ||
+          emailAddressStatus.verification_email_sent ||
+          emailAddressStatus.link_to_sign_in_email_sent ||
+          (emailAddressStatus.make_primary_email && (emailAddressStatus.email_address_created || emailAddressStatus.email_address_found || emailAddressStatus.sign_in_code_email_sent) && !secretCodeSystemLocked) ||
+          emailAddressStatus.sign_in_code_email_sent ? (
+            <Alert severity="success">
+              { emailAddressStatus.email_address_created &&
+              !emailAddressStatus.verification_email_sent ? <span>Your email address was saved. </span> : null }
+              { emailAddressStatus.email_address_deleted ? <span>Your email address was deleted. </span> : null }
+              { emailAddressStatus.email_ownership_is_verified ? <span>Your email address was verified. </span> : null }
+              { emailAddressStatus.verification_email_sent ? <span>Please check your email. A verification email was sent. </span> : null }
+              { emailAddressStatus.link_to_sign_in_email_sent ? <span>Please check your email. A sign in link was sent. </span> : null }
+              { emailAddressStatus.make_primary_email && (emailAddressStatus.email_address_created || emailAddressStatus.email_address_found || emailAddressStatus.sign_in_code_email_sent) && !secretCodeSystemLocked ? <span>Your have chosen a new primary email. </span> : null }
+              { emailAddressStatus.sign_in_code_email_sent ? <span>Please check your email. A sign in verification code was sent. </span> : null }
+            </Alert>
           ) : null}
       </span>
     );
@@ -407,12 +382,12 @@ class VoterEmailAddressEntry extends Component {
               type="email"
               name="voter_email_address"
               id="enterVoterEmailAddress"
-              value={voterEmailAddress}
-              onChange={this.updateVoterEmailAddress}
+              onBlur={this.onBlur}
+              onChange={this.onVoterEmailAddressChange}
               onFocus={this.onFocus}
-              onBlur={blurTextFieldAndroid}
               onKeyDown={this.onKeyDown}
               placeholder="Type email here..."
+              value={voterEmailAddress}
             />
           </Paper>
           {(displayEmailVerificationButton || lockOpenEmailVerificationButton) && (
@@ -442,10 +417,10 @@ class VoterEmailAddressEntry extends Component {
                   {signInCodeEmailSentAndWaitingForResponse ? 'Sending...' : (
                     <>
                       <span className="u-show-mobile">
-                        Send Code
+                        Send code
                       </span>
                       <span className="u-show-desktop-tablet">
-                        Send Verification Code
+                        Send verification code
                       </span>
                     </>
                   )}
@@ -481,13 +456,12 @@ class VoterEmailAddressEntry extends Component {
               <span className="u-no-break">{voterEmailAddressFromList.normalized_email_address}</span>
             </FirstRowPhoneOrEmail>
             <SecondRowPhoneOrEmail>
-              {isPrimaryEmailAddress && (
+              {isPrimaryEmailAddress ? (
                 <span>
                   Primary
                 </span>
-              )}
-              {!isPrimaryEmailAddress && (
-                <div key={voterEmailAddressFromList.email_we_vote_id}>
+              ) : (
+                <div key={`${voterEmailAddressFromList.email_we_vote_id}-internal`}>
                   <span
                     className="u-link-color u-cursor--pointer u-no-break"
                     onClick={() => this.setAsPrimaryEmailAddress.bind(this, voterEmailAddressFromList.email_we_vote_id)}
@@ -527,20 +501,22 @@ class VoterEmailAddressEntry extends Component {
         return (
           <div key={voterEmailAddressFromList.email_we_vote_id}>
             <div>
-              <FirstRowPhoneOrEmail>{voterEmailAddressFromList.normalized_email_address}</FirstRowPhoneOrEmail>
+              <FirstRowPhoneOrEmail>
+                {voterEmailAddressFromList.normalized_email_address}
+              </FirstRowPhoneOrEmail>
               {voterEmailAddressFromList.email_ownership_is_verified ?
                 null : (
-                  <SecondRowPhoneOrEmail className="u-link-color u-cursor--pointer">
+                  <SecondRowPhoneOrEmail>
                     <span
                       className="u-link-color u-cursor--pointer u-no-break"
                       onClick={() => this.reSendSignInCodeEmail(voterEmailAddressFromList.normalized_email_address)}
                     >
-                      Send Verification Again
+                      Send verification again
                     </span>
                     {allowRemoveEmail && (
                       <TrashCan
                         className="u-link-color u-cursor--pointer"
-                        onClick={() => this.removeVoterEmailAddress(voterEmailAddressFromList.email_we_vote_id)}
+                        onClick={() => this.removeVoterEmailAddress.bind(this, voterEmailAddressFromList.email_we_vote_id)}
                       >
                         <Delete />
                       </TrashCan>
@@ -593,7 +569,8 @@ class VoterEmailAddressEntry extends Component {
         {showVerifyModal && (
           <SettingsVerifySecretCode
             show={showVerifyModal}
-            closeVerifyModal={this.closeVerifyModal}
+            closeSignInModal={this.closeSignInModalFromVerifySecretCode}
+            closeVerifyModal={this.closeVerifyModalFromVerifySecretCode}
             voterEmailAddress={voterEmailAddress}
           />
         )}
@@ -605,10 +582,12 @@ VoterEmailAddressEntry.propTypes = {
   cancelShouldCloseModal: PropTypes.bool,
   classes: PropTypes.object,
   closeSignInModal: PropTypes.func,
+  closeVerifyModal: PropTypes.func,
   hideEverythingButSignInWithEmailForm: PropTypes.bool,
   hideSignInWithEmailForm: PropTypes.bool,
   lockOpenEmailVerificationButton: PropTypes.bool,
-  toggleOtherSignInOptions: PropTypes.func,
+  showAllSignInOptions: PropTypes.func,
+  showEmailOnlySignIn: PropTypes.func,
 };
 
 const styles = {

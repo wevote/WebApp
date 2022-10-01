@@ -8,7 +8,7 @@ import { renderLog } from '../../common/utils/logging';
 import Avatar from '../Style/avatarStyles';
 import {
   FriendButtonsWrapper, FriendColumnWithoutButtons, FriendDisplayDesktopButtonsWrapper,
-  FriendDisplayOuterWrapper, ToRightOfPhoto,
+  FriendDisplayOuterWrapper, ToRightOfPhotoContentBlock, ToRightOfPhotoTopRow, ToRightOfPhotoWrapper,
 } from '../Style/friendStyles';
 import FriendDetails from './FriendDetails';
 import FriendLocationDisplay from './FriendLocationDisplay';
@@ -97,25 +97,29 @@ class FriendDisplayForList extends Component {
               </span>
             )}
           </Avatar>
-          <ToRightOfPhoto>
-            <div className="full-width">
-              { (voterGuideLink && voterGuideLinkOn) ? (
-                <Link to={voterGuideLink} className="u-no-underline">
-                  {detailsHTML}
-                </Link>
-              ) : (
-                <>
-                  {detailsHTML}
-                </>
-              )}
-            </div>
+          <ToRightOfPhotoWrapper>
+            <ToRightOfPhotoTopRow>
+              <ToRightOfPhotoContentBlock>
+                <div className="full-width">
+                  { (voterGuideLink && voterGuideLinkOn) ? (
+                    <Link to={voterGuideLink} className="u-no-underline">
+                      {detailsHTML}
+                    </Link>
+                  ) : (
+                    <>
+                      {detailsHTML}
+                    </>
+                  )}
+                </div>
+              </ToRightOfPhotoContentBlock>
+              <FriendLocationDisplay stateCodeForDisplay={stateCodeForDisplay} />
+            </ToRightOfPhotoTopRow>
             {friendButtonsExist && (
               <div className="u-show-mobile">
                 {friendButtonsWrapperHtml}
               </div>
             )}
-          </ToRightOfPhoto>
-          <FriendLocationDisplay stateCodeForDisplay={stateCodeForDisplay} />
+          </ToRightOfPhotoWrapper>
         </FriendColumnWithoutButtons>
         {friendButtonsExist && (
           <FriendDisplayDesktopButtonsWrapper className="u-show-desktop-tablet">

@@ -13,7 +13,8 @@ import { removeTwitterNameFromDescription } from '../../utils/textFormat';
 import Avatar from '../Style/avatarStyles';
 import {
   CancelButtonWrapper, FriendButtonsWrapper, FriendColumnWithoutButtons,
-  FriendDisplayDesktopButtonsWrapper, FriendDisplayOuterWrapper, smallButtonIfNeeded, ToRightOfPhoto,
+  FriendDisplayDesktopButtonsWrapper, FriendDisplayOuterWrapper, smallButtonIfNeeded,
+  ToRightOfPhotoContentBlock, ToRightOfPhotoTopRow, ToRightOfPhotoWrapper,
 } from '../Style/friendStyles';
 import FriendDetails from './FriendDetails';
 import FriendLocationDisplay from './FriendLocationDisplay';
@@ -185,25 +186,29 @@ class SuggestedFriendDisplayForList extends Component {
               </span>
             )}
           </Avatar>
-          <ToRightOfPhoto>
-            <div className="full-width">
-              {(voterGuideLinkOn && voterGuideLink) ? (
-                <Link to={voterGuideLink} className="u-no-underline">
-                  {detailsHTML}
-                </Link>
-              ) : (
-                <>
-                  {detailsHTML}
-                </>
-              )}
-            </div>
+          <ToRightOfPhotoWrapper>
+            <ToRightOfPhotoTopRow>
+              <ToRightOfPhotoContentBlock>
+                <div className="full-width">
+                  {(voterGuideLinkOn && voterGuideLink) ? (
+                    <Link to={voterGuideLink} className="u-no-underline">
+                      {detailsHTML}
+                    </Link>
+                  ) : (
+                    <>
+                      {detailsHTML}
+                    </>
+                  )}
+                </div>
+              </ToRightOfPhotoContentBlock>
+              <FriendLocationDisplay cityForDisplay={cityForDisplay} stateCodeForDisplay={stateCodeForDisplay} />
+            </ToRightOfPhotoTopRow>
             {friendButtonsExist && (
               <div className="u-show-mobile">
                 {friendButtonsWrapperHtml}
               </div>
             )}
-          </ToRightOfPhoto>
-          <FriendLocationDisplay cityForDisplay={cityForDisplay} stateCodeForDisplay={stateCodeForDisplay} />
+          </ToRightOfPhotoWrapper>
         </FriendColumnWithoutButtons>
         {friendButtonsExist && (
           <FriendDisplayDesktopButtonsWrapper className="u-show-desktop-tablet">

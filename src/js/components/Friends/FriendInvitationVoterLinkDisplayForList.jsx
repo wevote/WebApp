@@ -1,9 +1,9 @@
 import { Button } from '@mui/material';
-import styled from 'styled-components';
 import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
 import { Link } from 'react-router-dom';
+import styled from 'styled-components';
 import FriendActions from '../../actions/FriendActions';
 import { renderLog } from '../../common/utils/logging';
 import FriendStore from '../../stores/FriendStore';
@@ -12,7 +12,8 @@ import { removeTwitterNameFromDescription } from '../../utils/textFormat';
 import Avatar from '../Style/avatarStyles';
 import {
   CancelButtonWrapper, FriendButtonsWrapper, FriendColumnWithoutButtons,
-  FriendDisplayDesktopButtonsWrapper, FriendDisplayOuterWrapper, smallButtonIfNeeded, ToRightOfPhoto,
+  FriendDisplayDesktopButtonsWrapper, FriendDisplayOuterWrapper, smallButtonIfNeeded,
+  ToRightOfPhotoContentBlock, ToRightOfPhotoTopRow, ToRightOfPhotoWrapper,
 } from '../Style/friendStyles';
 import FriendDetails from './FriendDetails';
 import FriendInvitationToggle from './FriendInvitationToggle';
@@ -154,11 +155,9 @@ class FriendInvitationVoterLinkDisplayForList extends Component {
             onClick={() => this.cancelFriendInviteVoter(otherVoterWeVoteId)}
             variant="outlined"
           >
-            {cancelFriendInviteVoterSubmitted ? 'Canceling...' : (
-              <span className="u-no-break" style={smallButtonIfNeeded()}>
-                Cancel Invite
-              </span>
-            )}
+            <span className="u-no-break" style={smallButtonIfNeeded()}>
+              {cancelFriendInviteVoterSubmitted ? 'Canceled' : 'Cancel Invite'}
+            </span>
           </Button>
         </CancelButtonWrapper>
       </FriendButtonsWrapper>
@@ -198,25 +197,29 @@ class FriendInvitationVoterLinkDisplayForList extends Component {
               </span>
             )}
           </Avatar>
-          <ToRightOfPhoto>
-            <div className="full-width">
-              {(voterGuideLinkOn && voterGuideLink) ? (
-                <Link to={voterGuideLink} className="u-no-underline">
-                  {detailsHTML}
-                </Link>
-              ) : (
-                <>
-                  {detailsHTML}
-                </>
-              )}
-            </div>
+          <ToRightOfPhotoWrapper>
+            <ToRightOfPhotoTopRow>
+              <ToRightOfPhotoContentBlock>
+                <div className="full-width">
+                  {(voterGuideLinkOn && voterGuideLink) ? (
+                    <Link to={voterGuideLink} className="u-no-underline">
+                      {detailsHTML}
+                    </Link>
+                  ) : (
+                    <>
+                      {detailsHTML}
+                    </>
+                  )}
+                </div>
+              </ToRightOfPhotoContentBlock>
+              <FriendLocationDisplay cityForDisplay={cityForDisplay} stateCodeForDisplay={stateCodeForDisplay} />
+            </ToRightOfPhotoTopRow>
             {friendButtonsExist && (
               <div className="u-show-mobile">
                 {friendButtonsWrapperHtml}
               </div>
             )}
-          </ToRightOfPhoto>
-          <FriendLocationDisplay cityForDisplay={cityForDisplay} stateCodeForDisplay={stateCodeForDisplay} />
+          </ToRightOfPhotoWrapper>
         </FriendColumnWithoutButtons>
         {friendButtonsExist && (
           <FriendDisplayDesktopButtonsWrapper className="u-show-desktop-tablet">

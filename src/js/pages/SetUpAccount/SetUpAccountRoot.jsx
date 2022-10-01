@@ -606,7 +606,7 @@ class SetUpAccountRoot extends React.Component {
           );
           mobileNextButtonHtml = (
             <Suspense fallback={<></>}>
-              <AddContactsFromGoogleButton darkButton mobileMode />
+              <AddContactsFromGoogleButton darkButton />
             </Suspense>
           );
         }

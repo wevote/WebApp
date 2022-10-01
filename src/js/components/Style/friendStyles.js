@@ -135,7 +135,22 @@ const SectionTitle = styled('h2')`
   width: fit-content;
 `;
 
-const ToRightOfPhoto = styled('div')`
+const ToRightOfPhotoContentBlock = styled('div')`
+  align-items: flex-start;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 100%;
+`;
+
+const ToRightOfPhotoTopRow = styled('div')`
+  align-items: flex-start;
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+`;
+
+const ToRightOfPhotoWrapper = styled('div')`
   align-items: flex-start;
   display: flex;
   flex-direction: column;
@@ -159,6 +174,8 @@ export {
   InviteToWeVoteLine,
   SectionDescription,
   SectionTitle,
-  ToRightOfPhoto,
+  ToRightOfPhotoContentBlock,
+  ToRightOfPhotoTopRow,
+  ToRightOfPhotoWrapper,
   smallButtonIfNeeded,
 };

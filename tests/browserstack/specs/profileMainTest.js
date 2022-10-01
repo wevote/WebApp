@@ -53,7 +53,7 @@ describe('Cross browser automated testing', async () => {
         await simpleTextInput('digit5', '4');
         await simpleTextInput('digit6', '5');
         await simpleClick('emailVerifyButton'); // Click Verify
-        await simpleClick('changeEmailAddressButton');
+        await simpleClick('tryADifferentEmailOrNumber');
         //await simpleClick('emailVerificationBackButton'); // Click back
         await simpleTextInput('enterVoterEmailAddress', xssTest); // Type input
         if (isMojave) {
@@ -95,7 +95,7 @@ describe('Cross browser automated testing', async () => {
     await simpleTextInput("digit5", "1");
     await simpleTextInput("digit6", "5");
     await simpleClick('emailVerifyButton'); // Click verify
-    await simpleClick('changeEmailAddressButton'); // Click change email address
+    await simpleClick('tryADifferentEmailOrNumber'); // Click change email address
     await simpleClick('enterVoterEmailAddress'); // Click text box
     await simpleClick('cancelEmailButton'); // Cancel
     await selectClick('=Send Verification Again'); // Send verification again
@@ -186,7 +186,7 @@ describe('Cross browser automated testing', async () => {
 //    await simpleTextInput("digit6", "5");
 //    await simpleClick("emailVerifyButton");
 //    await simpleClick('codeVerificationDialog');
-//    await simpleClick('changeEmailAddressButton');
+//    await simpleClick('tryADifferentEmailOrNumber');
 //    await selectClick('=Send Verification Again');
 //    await simpleClick('emailVerificationBackButton');
 //    await simpleClick('notifications');

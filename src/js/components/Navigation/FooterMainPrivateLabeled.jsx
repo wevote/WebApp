@@ -1,8 +1,8 @@
-import styled from 'styled-components';
 import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
+import styled from 'styled-components';
 import OpenExternalWebSite from '../../common/components/Widgets/OpenExternalWebSite';
 import AppObservableStore, { messageService } from '../../stores/AppObservableStore';
 
@@ -42,18 +42,9 @@ class FooterMainPrivateLabeled extends Component {
       <Wrapper>
         <TopSectionOuterWrapper>
           <TopSectionInnerWrapper>
-            <Column>
-              <OpenExternalWebSite
-                linkIdAttribute="footerLinkAbout"
-                url={chosenAboutOrganizationExternalUrl || 'https://wevote.us/more/about'}
-                target="_blank"
-                body={(
-                  <span>About Us</span>
-                )}
-                className={classes.link}
-              />
-            </Column>
-            <Column>
+            <OneRow>
+              <div id="footerLinkHowItWorks" className={classes.onClickDiv} onClick={this.openHowItWorksModal}>How It Works</div>
+              <RowSpacer />
               <OpenExternalWebSite
                 linkIdAttribute="footerLinkWeVoteHelp"
                 url="https://help.wevote.us/hc/en-us"
@@ -63,13 +54,24 @@ class FooterMainPrivateLabeled extends Component {
                 )}
                 className={classes.link}
               />
-            </Column>
-            <Column>
-              <Link id="footerLinkPrivacy" className={classes.link} to="/privacy">Privacy Policy</Link>
-            </Column>
-            <Column>
-              <Link id="footerLinkTermsOfUse" className={classes.link} to="/terms">Terms of Service</Link>
-            </Column>
+              <RowSpacer />
+              <Link id="footerLinkPrivacy" className={classes.link} to="/more/privacy">Privacy</Link>
+              <RowSpacer />
+              <Link id="footerLinkTermsOfUse" className={classes.link} to="/more/terms">Terms</Link>
+            </OneRow>
+            {chosenAboutOrganizationExternalUrl && (
+              <OneRow>
+                <OpenExternalWebSite
+                  linkIdAttribute="footerLinkAbout"
+                  url={chosenAboutOrganizationExternalUrl}
+                  target="_blank"
+                  body={(
+                    <span>About</span>
+                  )}
+                  className={classes.link}
+                />
+              </OneRow>
+            )}
           </TopSectionInnerWrapper>
         </TopSectionOuterWrapper>
       </Wrapper>
@@ -80,18 +82,13 @@ FooterMainPrivateLabeled.propTypes = {
   classes: PropTypes.object,
 };
 
-const styles = (theme) => ({
+const styles = () => ({
   link: {
-    color: '#333',
-    fontSize: 14,
-    marginBottom: '1em',
+    color: '#808080',
     '&:hover': {
       color: '#4371cc',
     },
     textDecoration: 'none',
-    [theme.breakpoints.down('md')]: {
-      fontSize: 14,
-    },
   },
   bottomLink: {
     color: '#333',
@@ -100,30 +97,36 @@ const styles = (theme) => ({
       color: '#4371cc',
     },
   },
+  onClickDiv: {
+    color: '#808080',
+    cursor: 'pointer',
+    textDecoration: 'none',
+    '&:hover': {
+      color: '#4371cc',
+      textDecoration: 'underline',
+    },
+  },
 });
 
-const Column = styled('div')(({ theme }) => (`
+const OneRow = styled('div')`
+  color: #808080;
   display: flex;
-  flex-flow: column nowrap;
-  width: 150px;
-  ${theme.breakpoints.down('md')} {
-    width: 50%;
-  }
-  ${theme.breakpoints.down('xs')} {
-    width: 100%;
-  }
-`));
+  font-size: 13px;
+  justify-content: center;
+  margin-bottom: 15px;
+`;
 
-const TopSectionInnerWrapper = styled('div')(({ theme }) => (`
+const RowSpacer = styled('div')`
+  margin-right: 15px;
+`;
+
+const TopSectionInnerWrapper = styled('div')`
+  align-items: center;
   display: flex;
-  flex-direction: row;
-  flex-wrap: nowrap;
+  flex-direction: column;
+  justify-content: center;
   width: 100%;
-  justify-content: space-between;
-  ${theme.breakpoints.down('md')} {
-    flex-wrap: wrap;
-  }
-`));
+`;
 
 const TopSectionOuterWrapper = styled('div')`
   display: flex;

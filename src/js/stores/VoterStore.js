@@ -36,7 +36,18 @@ class VoterStore extends ReduceStore {
         voterMustRequestNewCode: false,
         voterSecretCodeRequestsLocked: false,
       },
-      smsPhoneNumberStatus: {},
+      smsPhoneNumberStatus: {
+        sms_verify_attempted: false,
+        sms_phone_number_already_owned_by_other_voter: false,
+        sms_phone_number_already_owned_by_this_voter: false,
+        sms_phone_number_created: false,
+        sms_phone_number: '',
+        sms_phone_number_found: false,
+        sms_phone_number_deleted: false,
+        make_primary_sms: false,
+        sign_in_code_sms_sent: false,
+        verification_sms_sent: false,
+      },
       smsPhoneNumberList: [],
       voterContactEmailGoogleCount: 0,
       voterContactEmailList: [],
@@ -496,30 +507,6 @@ class VoterStore extends ReduceStore {
     return !!(nameExists && photoExists);
   }
 
-  // Function that is the equivalent of the dispatchable action, to avoid "Cannot dispatch in the middle of a dispatch" error
-  clearEmailAddressStatus () {
-    // console.log('VoterStore clearEmailAddressStatus function');
-    this.getState().emailAddressStatus = {};
-  }
-
-  // Function that is the equivalent of the dispatchable action, to avoid "Cannot dispatch in the middle of a dispatch" error
-  clearSecretCodeVerificationStatus () {
-    // console.log('VoterStore clearSecretCodeVerificationStatus function');
-    this.getState().secretCodeVerificationStatus = {
-      incorrectSecretCodeEntered: false,
-      numberOfTriesRemaining: 5,
-      secretCodeVerified: false,
-      voterMustRequestNewCode: false,
-      voterSecretCodeRequestsLocked: false,
-    };
-  }
-
-  // Function that is the equivalent of the dispatchable action, to avoid "Cannot dispatch in the middle of a dispatch" error
-  clearSMSPhoneNumberStatus () {
-    // console.log('VoterStore clearSMSPhoneNumberStatus function');
-    this.getState().smsPhoneNumberStatus = {};
-  }
-
   reduce (state, action) {
     let facebookPhotoRetrieveLoopCount;
     let address;
@@ -555,9 +542,61 @@ class VoterStore extends ReduceStore {
             voterSecretCodeRequestsLocked: false,
           },
         };
+      case 'clearSecretCodeVerificationStatusAndEmail':
+        // Does both of the above steps in one call
+        // console.log('VoterStore clearSecretCodeVerificationStatusAndEmail');
+        return {
+          ...state,
+          emailAddressStatus: {},
+          secretCodeVerificationStatus: {
+            incorrectSecretCodeEntered: false,
+            numberOfTriesRemaining: 5,
+            secretCodeVerified: false,
+            voterMustRequestNewCode: false,
+            voterSecretCodeRequestsLocked: false,
+          },
+        };
       case 'clearSMSPhoneNumberStatus':
         // console.log('VoterStore clearSMSPhoneNumberStatus');
-        return { ...state, smsPhoneNumberStatus: {} };
+        return {
+          ...state,
+          smsPhoneNumberStatus: {
+            sms_verify_attempted: false,
+            sms_phone_number_already_owned_by_other_voter: false,
+            sms_phone_number_already_owned_by_this_voter: false,
+            sms_phone_number_created: false,
+            sms_phone_number: '',
+            sms_phone_number_found: false,
+            sms_phone_number_deleted: false,
+            make_primary_sms: false,
+            sign_in_code_sms_sent: false,
+            verification_sms_sent: false,
+          },
+        };
+      case 'clearSecretCodeVerificationStatusAndPhone':
+        // console.log('VoterStore clearSecretCodeVerificationStatusAndPhone');
+        return {
+          ...state,
+          secretCodeVerificationStatus: {
+            incorrectSecretCodeEntered: false,
+            numberOfTriesRemaining: 5,
+            secretCodeVerified: false,
+            voterMustRequestNewCode: false,
+            voterSecretCodeRequestsLocked: false,
+          },
+          smsPhoneNumberStatus: {
+            sms_verify_attempted: false,
+            sms_phone_number_already_owned_by_other_voter: false,
+            sms_phone_number_already_owned_by_this_voter: false,
+            sms_phone_number_created: false,
+            sms_phone_number: '',
+            sms_phone_number_found: false,
+            sms_phone_number_deleted: false,
+            make_primary_sms: false,
+            sign_in_code_sms_sent: false,
+            verification_sms_sent: false,
+          },
+        };
       case 'clearVoterElectionId':
         // console.log('VoterStore clearVoterElectionId');
         return { ...state, latestGoogleCivicElectionId: 0 };
@@ -1114,7 +1153,7 @@ class VoterStore extends ReduceStore {
         };
 
       case 'voterSMSPhoneNumberSave':
-        // console.log('VoterStore  voterSMSPhoneNumberSave ');
+        // console.log('VoterStore  voterSMSPhoneNumberSave action.res:', action.res);
         VoterActions.voterRetrieve();
         VoterActions.voterSMSPhoneNumberRetrieve();
         return {

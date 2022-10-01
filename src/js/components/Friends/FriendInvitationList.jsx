@@ -13,8 +13,6 @@ export default class FriendInvitationList extends Component {
       return null;
     }
 
-    let simpleKeyCounter = 0;
-
     return (
       <FriendInvitationListWrapper>
         {friendList.map((friend, index) => {
@@ -45,11 +43,10 @@ export default class FriendInvitationList extends Component {
               </div>
             );
           } else if (friend.invitation_table && friend.invitation_table === 'EMAIL') {
-            simpleKeyCounter++;
             return (
-              <div key={`invite-key-${simpleKeyCounter}`}>
+              <div key={`invite-key-${friend.voter_email_address}`}>
                 <FriendInvitationEmailLinkDisplayForList
-                  id={`invite-id-${simpleKeyCounter}`}
+                  id={`invite-id-${friend.voter_email_address}`}
                   invitationState={friend.invitation_status}
                   linkedOrganizationWeVoteId={friend.linked_organization_we_vote_id}
                   mutualFriendCount={friend.mutual_friend_count}

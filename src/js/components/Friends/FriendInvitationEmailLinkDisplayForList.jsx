@@ -9,7 +9,11 @@ import { renderLog } from '../../common/utils/logging';
 import FriendStore from '../../stores/FriendStore';
 import VoterStore from '../../stores/VoterStore';
 import Avatar from '../Style/avatarStyles';
-import { CancelButtonWrapper, FriendButtonsWrapper, FriendColumnWithoutButtons, FriendDisplayOuterWrapper, smallButtonIfNeeded } from '../Style/friendStyles';
+import {
+  CancelButtonWrapper, FriendButtonsWrapper, FriendColumnWithoutButtons,
+  FriendDisplayDesktopButtonsWrapper, FriendDisplayOuterWrapper, smallButtonIfNeeded,
+  ToRightOfPhotoContentBlock, ToRightOfPhotoTopRow, ToRightOfPhotoWrapper,
+} from '../Style/friendStyles';
 import FriendDetails from './FriendDetails';
 
 const ImageHandler = React.lazy(() => import(/* webpackChunkName: 'ImageHandler' */ '../ImageHandler'));
@@ -98,7 +102,48 @@ class FriendInvitationEmailLinkDisplayForList extends Component {
         voterTwitterHandle={voterTwitterHandle}
       />
     );
-
+    const friendButtonsExist = true;
+    const friendButtonsWrapperHtml = (
+      <FriendButtonsWrapper>
+        {invitationState === 'PENDING_EMAIL_VERIFICATION' && !voter.signed_in_with_email ? (
+          <Link to="/settings/account">
+            <ButtonContainer>
+              <Button variant="outlined" color="primary">
+                Verify Your Email
+              </Button>
+            </ButtonContainer>
+          </Link>
+        ) : null}
+        <SentByMeResendEmailButtonWrapper>
+          <Button
+            color="primary"
+            disabled={friendInvitationByEmailSent}
+            fullWidth
+            onClick={() => this.friendInvitationByEmailSend(voterEmailAddress)}
+            type="button"
+            variant="contained"
+          >
+            <span className="u-no-break" style={smallButtonIfNeeded()}>
+              {friendInvitationByEmailSent ? 'Invite sent' : 'Invite again'}
+            </span>
+          </Button>
+        </SentByMeResendEmailButtonWrapper>
+        <CancelButtonWrapper>
+          <Button
+            classes={{ root: classes.ignoreButton }}
+            color="primary"
+            disabled={cancelFriendInviteEmailSubmitted}
+            fullWidth
+            onClick={() => this.cancelFriendInviteEmail(voterEmailAddress)}
+            variant="outlined"
+          >
+            <span className="u-no-break" style={smallButtonIfNeeded()}>
+              {cancelFriendInviteEmailSubmitted ? 'Canceling...' : 'Cancel Invite'}
+            </span>
+          </Button>
+        </CancelButtonWrapper>
+      </FriendButtonsWrapper>
+    );
     const friendInvitationHtml = (
       <FriendDisplayOuterWrapper/* previewMode={previewMode} */>
         <FriendColumnWithoutButtons>
@@ -117,57 +162,34 @@ class FriendInvitationEmailLinkDisplayForList extends Component {
               </>
             )}
           </Avatar>
-          <div>
-            { voterGuideLink ? (
-              <Link to={voterGuideLink} className="u-no-underline">
-                {detailsHTML}
-              </Link>
-            ) : (
-              <>
-                {detailsHTML}
-              </>
+          <ToRightOfPhotoWrapper>
+            <ToRightOfPhotoTopRow>
+              <ToRightOfPhotoContentBlock>
+                <div className="full-width">
+                  { voterGuideLink ? (
+                    <Link to={voterGuideLink} className="u-no-underline">
+                      {detailsHTML}
+                    </Link>
+                  ) : (
+                    <>
+                      {detailsHTML}
+                    </>
+                  )}
+                </div>
+              </ToRightOfPhotoContentBlock>
+            </ToRightOfPhotoTopRow>
+            {friendButtonsExist && (
+              <div className="u-show-mobile">
+                {friendButtonsWrapperHtml}
+              </div>
             )}
-          </div>
+          </ToRightOfPhotoWrapper>
         </FriendColumnWithoutButtons>
-        <FriendButtonsWrapper>
-          {invitationState === 'PENDING_EMAIL_VERIFICATION' && !voter.signed_in_with_email ? (
-            <Link to="/settings/account">
-              <ButtonContainer>
-                <Button variant="outlined" color="primary">
-                  Verify Your Email
-                </Button>
-              </ButtonContainer>
-            </Link>
-          ) : null}
-          <SentByMeResendEmailButtonWrapper>
-            <Button
-              color="primary"
-              disabled={friendInvitationByEmailSent}
-              fullWidth
-              onClick={() => this.friendInvitationByEmailSend(voterEmailAddress)}
-              type="button"
-              variant="contained"
-            >
-              <span className="u-no-break" style={smallButtonIfNeeded()}>
-                {friendInvitationByEmailSent ? 'Invite sent' : 'Invite again'}
-              </span>
-            </Button>
-          </SentByMeResendEmailButtonWrapper>
-          <CancelButtonWrapper>
-            <Button
-              classes={{ root: classes.ignoreButton }}
-              color="primary"
-              disabled={cancelFriendInviteEmailSubmitted}
-              fullWidth
-              onClick={() => this.cancelFriendInviteEmail(voterEmailAddress)}
-              variant="outlined"
-            >
-              <span className="u-no-break" style={smallButtonIfNeeded()}>
-                {cancelFriendInviteEmailSubmitted ? 'Canceling...' : 'Cancel Invite'}
-              </span>
-            </Button>
-          </CancelButtonWrapper>
-        </FriendButtonsWrapper>
+        {friendButtonsExist && (
+          <FriendDisplayDesktopButtonsWrapper className="u-show-desktop-tablet">
+            {friendButtonsWrapperHtml}
+          </FriendDisplayDesktopButtonsWrapper>
+        )}
       </FriendDisplayOuterWrapper>
     );
 

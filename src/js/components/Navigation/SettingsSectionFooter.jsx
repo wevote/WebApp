@@ -6,7 +6,7 @@ import OpenExternalWebSite from '../../common/components/Widgets/OpenExternalWeb
 import { isCordova, isWebApp } from '../../common/utils/isCordovaOrWebApp';
 import { isTablet } from '../../common/utils/isMobileScreenSize';
 import { renderLog } from '../../common/utils/logging';
-import AppObservableStore from '../../stores/AppObservableStore';
+import AppObservableStore, { messageService } from '../../stores/AppObservableStore';
 import { TermsAndPrivacyText } from '../Style/pageLayoutStyles';
 import DeviceDialog from '../Widgets/DeviceDialog';
 
@@ -15,10 +15,33 @@ class SettingsSectionFooter extends Component {
   constructor (props) {
     super(props);
     this.state = {
+      inPrivateLabelMode: false,
       showDeviceDialog: false,
+      siteConfigurationHasBeenRetrieved: false,
     };
     this.deviceTableVisibilityOn = this.deviceTableVisibilityOn.bind(this);
     this.deviceTableVisibilityOff = this.deviceTableVisibilityOff.bind(this);
+  }
+
+  componentDidMount () {
+    // console.log('SettingsSectionFooter componentDidMount');
+    this.onAppObservableStoreChange();
+    this.appStateSubscription = messageService.getMessage().subscribe((msg) => this.onAppObservableStoreChange(msg));
+  }
+
+  componentWillUnmount () {
+    this.appStateSubscription.unsubscribe();
+  }
+
+  // eslint-disable-next-line no-unused-vars
+  onAppObservableStoreChange () {
+    // console.log('------ SettingsSectionFooter, onAppObservableStoreChange received: ', msg);
+    const inPrivateLabelMode = AppObservableStore.getHideWeVoteLogo(); // Using this setting temporarily
+    const siteConfigurationHasBeenRetrieved = AppObservableStore.siteConfigurationHasBeenRetrieved();
+    this.setState({
+      inPrivateLabelMode,
+      siteConfigurationHasBeenRetrieved,
+    });
   }
 
   openHowItWorksModal = () => {
@@ -40,11 +63,15 @@ class SettingsSectionFooter extends Component {
   render () {
     renderLog('SettingsSectionFooter');  // Set LOG_RENDER_EVENTS to log all renders
     const { centered } = this.props;
+    const { inPrivateLabelMode, siteConfigurationHasBeenRetrieved } = this.state;
+    if (!siteConfigurationHasBeenRetrieved) {
+      return null;
+    }
 
     return (
       <Wrapper>
         <OneRow centered={centered}>
-          <span className="u-cursor--pointer" onClick={this.openHowItWorksModal}><TermsAndPrivacyText>How It Works</TermsAndPrivacyText></span>
+          <span className="u-cursor--pointer u-link-color-on-hover" onClick={this.openHowItWorksModal}><TermsAndPrivacyText>How It Works</TermsAndPrivacyText></span>
           <span style={{ paddingLeft: 15 }} />
           <OpenExternalWebSite
             linkIdAttribute="footerLinkWeVoteHelp"
@@ -60,7 +87,7 @@ class SettingsSectionFooter extends Component {
           <Link to="/more/terms"><TermsAndPrivacyText>Terms</TermsAndPrivacyText></Link>
         </OneRow>
         <OneRow centered={centered}>
-          { isWebApp() ? (
+          {(isWebApp() && !inPrivateLabelMode) && (
             <>
               <OpenExternalWebSite
                 linkIdAttribute="footerLinkAbout"
@@ -89,29 +116,19 @@ class SettingsSectionFooter extends Component {
                 )}
               />
             </>
-          ) : (
+          )}
+          {isCordova() && (
             <>
-              { isWebApp() ? (
-                <>
-                  {/* August 2022: The about header is very old and needs a fair amount of work to avoid a big white section at top in Cordova */}
-                  <Link to="/more/about"><TermsAndPrivacyText>About</TermsAndPrivacyText></Link>
-                  <span style={{ paddingLeft: 15 }} />
-                  <Link to="/more/about"><TermsAndPrivacyText>Team</TermsAndPrivacyText></Link>
-                  <span style={{ paddingLeft: 15 }} />
-                  <Link to="/more/credits"><TermsAndPrivacyText>Credits &amp; Thanks</TermsAndPrivacyText></Link>
-                </>
-              ) : (
-                <>
-                  <Link to="/more/faq"><TermsAndPrivacyText>Frequently Asked Questions</TermsAndPrivacyText></Link>
-                  <span style={{ paddingLeft: 15 }} />
-                </>
-              )}
+              <Link to="/more/faq"><TermsAndPrivacyText>Frequently Asked Questions</TermsAndPrivacyText></Link>
+              <span style={{ paddingLeft: 15 }} />
             </>
           )}
         </OneRow>
-        <DoesNotSupport centered={centered}>
-          We Vote does not support or oppose any political candidate or party.
-        </DoesNotSupport>
+        {(isCordova() || !inPrivateLabelMode) && (
+          <DoesNotSupport centered={centered}>
+            We Vote does not support or oppose any political candidate or party.
+          </DoesNotSupport>
+        )}
         { isCordova() && isTablet() && (
           <DoesNotSupport centered={centered}>
             <span className="hamburger-terms__text" onClick={() => this.deviceTableVisibilityOn()} style={{ color: 'black', opacity: '0.6', fontSize: '14px' }}>

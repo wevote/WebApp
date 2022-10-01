@@ -1095,7 +1095,7 @@ class Ballot extends Component {
       return '85px';
     } else if (isWebApp() && isMobileScreenSize()) {
       if (scrolledDown) {
-        return '50px';
+        return '54px';
       } else {
         return '64px';
       }
@@ -1697,7 +1697,9 @@ const styles = (theme) => ({
 const BallotBottomWrapper = styled('div', {
   shouldForwardProp: (prop) => !['scrolledDown'].includes(prop),
 })(({ scrolledDown, theme }) => (`
-  ${scrolledDown || isCordova() ? 'margin-top: 18px;' : 'margin-top: 38px;'}
+  ${isCordova() ? 'margin-top: 18px;' : ''}
+  ${isWebApp() ? (scrolledDown || showBallotDecisionsTabs() ? 'margin-top: 4px;' : 'margin-top: 38px;') : ''}
+  ${showBallotDecisionsTabs() ? '' : ''}
   ${isWebApp() ? 'transition: all 150ms ease-in;' : ''}
   width: 100%;
   ${theme.breakpoints.down('sm') && isWebApp()} {

@@ -81,7 +81,7 @@ class FooterMainWeVote extends Component {
         <BottomSection>
           <Text>
             <WeVoteName>
-              WeVote.US
+              We Vote
             </WeVoteName>
             {' '}
             is a nonpartisan nonprofit.
@@ -117,8 +117,8 @@ const styles = () => ({
     cursor: 'pointer',
     '&:hover': {
       color: '#4371cc',
+      textDecoration: 'underline',
     },
-    textDecoration: 'none',
   },
 });
 
