@@ -2,6 +2,7 @@ import { Button } from '@mui/material';
 import PropTypes from 'prop-types';
 import React from 'react';
 import styled from 'styled-components';
+import { isCordova } from '../../common/utils/isCordovaOrWebApp';
 import { renderLog } from '../../common/utils/logging';
 
 
@@ -56,17 +57,17 @@ SignInButton.propTypes = {
 };
 
 const StyledButton = styled(Button)(({ theme }) => (`
+  font-size: 18px;
   padding: 8px 8px 4px 8px;
-  ${theme.breakpoints.between('tabMin', 'tabMdMin')} { // Small Tablets
+  ${theme.breakpoints.between('tabMin', 'tabMdMin') && isCordova()} { // Small Tablets
     font-size: 20px;
     padding: 4px 8px 2px 8px;
   }
-  ${theme.breakpoints.between('tabMdMin', 'tabLgMin')} { // Medium Tablets
+  ${theme.breakpoints.between('tabMdMin', 'tabLgMin') && isCordova()} { // Medium Tablets
     font-size: 20px;
     padding: 6px 8px 2px 8px;
-
   }
-  ${theme.breakpoints.between('tabLgMin', 'tabMax')} { { // Larger Tablets
+  ${theme.breakpoints.between('tabLgMin', 'tabMax') && isCordova()} { { // Larger Tablets
     font-size: 24px;
     padding: 2px 8px 4px 8px;
   },

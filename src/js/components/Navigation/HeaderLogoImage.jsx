@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import styled from 'styled-components';
+import { isWebApp } from '../../common/utils/isCordovaOrWebApp';
 import { isLargerThanTablet, isTablet } from '../../common/utils/isMobileScreenSize';
 
 const HeaderLogoImage = ({ src }) => (
@@ -18,6 +19,7 @@ HeaderLogoImage.propTypes = {
 }
 */
 const LogoImg = styled('img')`
+  ${isWebApp() ? 'min-width: 141px;' : ''}
   ${isTablet() ? 'padding: 4px;' : ''}
   ${isLargerThanTablet() ? 'padding: 2px;' : ''}
 `;

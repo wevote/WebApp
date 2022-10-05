@@ -460,7 +460,7 @@ class HeaderBar extends Component {
                   classes={{ indicator: classes.indicator }}
                 >
                   <TabWithPushHistory
-                    classes={{ root: classes.tabRootBallot }}
+                    classes={isWebApp() ? { root: classes.tabRootBallotDesktop } : { root: classes.tabRootBallot }}
                     value={1}
                     change={this.handleTabChange}
                     id="ballotTabHeaderBar"
@@ -468,7 +468,7 @@ class HeaderBar extends Component {
                     to="/ballot"
                   />
                   <TabWithPushHistory
-                    classes={{ root: classes.tabRootFriends }}
+                    classes={isWebApp() ? { root: classes.tabRootFriendsDesktop } : { root: classes.tabRootFriends }}
                     value={2}
                     change={this.handleTabChange}
                     id="friendsTabHeaderBar"
@@ -476,7 +476,7 @@ class HeaderBar extends Component {
                     to="/friends"
                   />
                   <TabWithPushHistory
-                    classes={{ root: classes.tabRootNews }}
+                    classes={isWebApp() ? { root: classes.tabRootNewsDesktop } : { root: classes.tabRootNews }}
                     value={3}
                     change={this.handleTabChange}
                     id="discussTabHeaderBar"
@@ -484,7 +484,7 @@ class HeaderBar extends Component {
                     to="/news"
                   />
                   <TabWithPushHistory
-                    classes={{ root: classes.tabRootHowItWorks }}
+                    classes={isWebApp() ? { root: classes.tabRootHowItWorksDesktop } : { root: classes.tabRootHowItWorks }}
                     value={4}
                     change={this.openHowItWorksModal}
                     id="howItWorksTabHeaderBar"
@@ -663,6 +663,11 @@ const styles = (theme) => ({
       fontSize: 24,
     },
   },
+  tabRootBallotDesktop: {
+    fontSize: 18,
+    minWidth: 90,
+    paddingTop: 17,
+  },
   tabRootFriends: {
     minWidth: 90,
     [theme.breakpoints.between('tabMin', 'tabMdMin')]: { // Small Tablets
@@ -677,6 +682,11 @@ const styles = (theme) => ({
     [theme.breakpoints.up('tabLgMin')]: { // Larger Tablets, and desktop
       fontSize: 24,
     },
+  },
+  tabRootFriendsDesktop: {
+    fontSize: 18,
+    minWidth: 90,
+    paddingTop: 17,
   },
   tabRootNews: {
     minWidth: 70,
@@ -693,6 +703,11 @@ const styles = (theme) => ({
       fontSize: 24,
     },
   },
+  tabRootNewsDesktop: {
+    fontSize: 18,
+    minWidth: 70,
+    paddingTop: 17,
+  },
   tabRootHowItWorks: {
     minWidth: 70,
     [theme.breakpoints.between('tabMin', 'tabMdMin')]: { // Small Tablets
@@ -707,6 +722,11 @@ const styles = (theme) => ({
     [theme.breakpoints.up('tabLgMin')]: { // Larger Tablets, and desktop
       fontSize: 24,
     },
+  },
+  tabRootHowItWorksDesktop: {
+    fontSize: 18,
+    minWidth: 70,
+    paddingTop: 17,
   },
   indicator: {
     display: 'none',
