@@ -143,7 +143,7 @@ class ValueIconAndText extends Component {
           )}
           {oneIssue.issue_we_vote_id && (
             <>
-              <FollowIssueToggleContainer>
+              <FollowValueIconAndTextContainer>
                 <IssueFollowToggleButton
                   classNameOverride="pull-left"
                   issueName={oneIssue.issue_name}
@@ -152,7 +152,7 @@ class ValueIconAndText extends Component {
                   showIssueNameOnFollowButton
                   lightModeOn
                 />
-              </FollowIssueToggleContainer>
+              </FollowValueIconAndTextContainer>
               <FollowIfYouCare>
                 <Suspense fallback={<></>}>
                   <ReadMore
@@ -233,7 +233,7 @@ const styles = () => ({
   },
 });
 
-const FollowIssueToggleContainer = styled('div')`
+const FollowValueIconAndTextContainer = styled('div')`
   margin-top: 24px;
 `;
 

@@ -7,6 +7,7 @@ import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import abbreviateNumber from '../../common/utils/abbreviateNumber';
 import { isCordova } from '../../common/utils/isCordovaOrWebApp';
+import Cookies from '../../common/utils/js-cookie/Cookies';
 import { renderLog } from '../../common/utils/logging';
 import IssueStore from '../../stores/IssueStore';
 import VoterGuideStore from '../../stores/VoterGuideStore';
@@ -113,6 +114,14 @@ class IssueCard extends Component {
       return `/value/${issueSlug}`;
     } else {
       return '';
+    }
+  }
+
+  onIssueFollowClick = () => {
+    const signInOpenedFromPreviousIssueFollow = Cookies.get('sign_in_opened_from_issue_follow') || 0;
+    if (!signInOpenedFromPreviousIssueFollow) {
+      Cookies.set('sign_in_opened_from_issue_follow', '1', { expires: 1, path: '/' });
+      this.toggleShowSignInModal();
     }
   }
 
@@ -314,7 +323,7 @@ class IssueCard extends Component {
             </FlexNameAndIcon>
           </OverlayTrigger>
           {(followToggleOn && issueWeVoteId) && (
-            <FollowIssueToggleContainer>
+            <FollowIssueCardToggleContainer>
               <IssueFollowToggleButton
                 ballotItemWeVoteId={ballotItemWeVoteId}
                 classNameOverride="pull-left"
@@ -322,10 +331,10 @@ class IssueCard extends Component {
                 issueName={issue.issue_name}
                 issueWeVoteId={issueWeVoteId}
                 lightModeOn
-                onIssueFollowFunction={this.toggleShowSignInModal}
+                onIssueFollowFunction={this.onIssueFollowClick}
                 urlWithoutHash={urlWithoutHash}
               />
-            </FollowIssueToggleContainer>
+            </FollowIssueCardToggleContainer>
           )}
         </Flex>
         { !turnOffDescription && (
@@ -461,7 +470,7 @@ const IssueAdvocatesWrapper = styled('div')`
   justify-content: flex-start;
 `;
 
-const FollowIssueToggleContainer = styled('div')`
+const FollowIssueCardToggleContainer = styled('div')`
   margin-left: auto;
 `;
 

@@ -125,7 +125,7 @@ class ValueNameWithPopoverDisplay extends Component {
           )}
           {oneIssue.issue_we_vote_id && (
             <>
-              <FollowIssueToggleContainer>
+              <FollowValueNameToggleContainer>
                 <IssueFollowToggleButton
                   classNameOverride="pull-left"
                   issueName={oneIssue.issue_name}
@@ -134,7 +134,7 @@ class ValueNameWithPopoverDisplay extends Component {
                   showIssueNameOnFollowButton
                   lightModeOn
                 />
-              </FollowIssueToggleContainer>
+              </FollowValueNameToggleContainer>
               <FollowIfYouCare>
                 <Suspense fallback={<></>}>
                   <ReadMore
@@ -213,7 +213,7 @@ const styles = () => ({
   },
 });
 
-const FollowIssueToggleContainer = styled('div')`
+const FollowValueNameToggleContainer = styled('div')`
   margin-top: 24px;
 `;
 
