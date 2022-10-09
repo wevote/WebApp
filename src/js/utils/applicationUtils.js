@@ -196,7 +196,6 @@ export function getApplicationViewBooleans (pathname) {
       (pathnameLowerCase === '/welcomehome') ||
       pathnameLowerCase.startsWith('/findfriends') ||
       pathnameLowerCase.startsWith('/how') ||
-      pathnameLowerCase.startsWith('/more/donate') ||
       pathnameLowerCase.startsWith('/more/pricing') ||
       pathnameLowerCase.startsWith('/register') ||
       pathnameLowerCase.startsWith('/settings/voterguidelist') ||
@@ -216,6 +215,7 @@ export function getApplicationViewBooleans (pathname) {
       pathnameLowerCase.startsWith('/candidate') || // Show Footer if back to not specified above
       pathnameLowerCase.startsWith('/friends') ||
       pathnameLowerCase.startsWith('/measure') || // Show Footer if back to not specified above
+      pathnameLowerCase.startsWith('/more/donate') ||
       (pathnameLowerCase === '/more/attributions') ||
       (pathnameLowerCase === '/more/privacy') ||
       (pathnameLowerCase === '/more/terms') ||
@@ -246,7 +246,8 @@ export function getApplicationViewBooleans (pathname) {
   let showFooterMain = false;
   if (VoterStore.getVoterIsSignedIn()) {
     // We currently don't show footer once voter is signed in
-  } else if (pathnameLowerCase.startsWith('/ready') ||
+  } else if (pathnameLowerCase.startsWith('/more/donate') ||
+      pathnameLowerCase.startsWith('/ready') ||
       (pathnameLowerCase === '/welcome') ||
       (pathnameLowerCase === '/')) {
     showFooterMain = true;

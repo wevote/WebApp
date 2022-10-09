@@ -288,7 +288,7 @@ class App extends Component {
                     <Route path="/more/alerts" component={ElectionReminder} />
                     <Route path="/more/attributions" component={Attributions} />
                     <Route path="/more/credits" component={Credits} />
-                    <Route path="/more/donate" component={isNotWeVoteMarketingSite ? ReadyRedirect : Donate} />
+                    <Route path="/more/donate" component={(isNotWeVoteMarketingSite || this.localIsCordova()) ? ReadyRedirect : Donate} />
                     <Route path="/more/elections" component={Elections} />
                     <Route path="/more/extensionsignin" component={ExtensionSignIn} />
                     <Route path="/more/facebooklandingprocess" component={FacebookLandingProcess} />

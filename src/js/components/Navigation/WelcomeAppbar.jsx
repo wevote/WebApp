@@ -218,7 +218,6 @@ class WelcomeAppbar extends Component {
       !pathname.startsWith('/how') &&
       String(pathname) !== '/welcomehome' &&
       String(pathname) !== '/more/credits' &&
-      !pathname.startsWith('/more/donate') &&
       !pathname.startsWith('/more/pricing')) {
       showForVoters = true;
     }
@@ -228,7 +227,6 @@ class WelcomeAppbar extends Component {
         String(pathname) === '/for-campaigns' ||
         String(pathname) === '/more/about' ||
         String(pathname) === '/more/credits' ||
-        pathname.startsWith('/more/donate') ||
         pathname.startsWith('/more/pricing'))) {
       showForOrganizationsDesktop = true;
     }
@@ -237,7 +235,6 @@ class WelcomeAppbar extends Component {
       (String(pathname) === '/welcomehome' ||
         String(pathname) === '/for-organizations' ||
         String(pathname) === '/more/credits' ||
-        pathname.startsWith('/more/donate') ||
         pathname.startsWith('/more/pricing'))) {
       showForCampaignsDesktop = true;
     }

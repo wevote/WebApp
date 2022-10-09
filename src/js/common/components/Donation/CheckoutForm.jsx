@@ -16,7 +16,7 @@ import SplitIconButton from '../Widgets/SplitIconButton';
 
 
 const iconButtonStyles = {
-  width: window.innerWidth < 1280 ? 220 : 300,
+  width: window.innerWidth < 1280 ? 250 : 300,
   margin: '16px',
 };
 
@@ -273,9 +273,9 @@ class CheckoutForm extends React.Component {
     const paymentErrorText = stripeErrorMessageForVoter  || 'Please verify your information.';
     const error = emailFieldError || stripePaymentError;
     const errorText = emailFieldError ? emailValidationErrorText : paymentErrorText;
-    let buttonText = 'Become a member';
+    let buttonText = campaignXWeVoteId && campaignXWeVoteId.length ? 'Become a member' : 'Donate monthly';
     if (!isMonthly) {
-      buttonText = campaignXWeVoteId && campaignXWeVoteId.length ? 'Chip In Today' : 'Donate Today';
+      buttonText = campaignXWeVoteId && campaignXWeVoteId.length ? 'Chip in now' : 'Donate now';
     }
 
     return (
@@ -289,12 +289,12 @@ class CheckoutForm extends React.Component {
           <TextFieldContainer>
             <TextField
               id="outlined-basic-email"
-              label="email"
+              label="Email"
               variant="outlined"
               className={classes.root}
               error={emailFieldError}
               onChange={this.emailChange}
-              autoFocus
+              // autoFocus // If this is on it causes Jira bug WV-2
             />
           </TextFieldContainer>
         ) : null}
@@ -373,6 +373,7 @@ const styles = () => ({
     '& .MuiOutlinedInput-input': {
       backgroundColor: 'white',
     },
+    width: 250,
   },
   stripeAlertError: {
     background: 'rgb(255, 177, 160)',

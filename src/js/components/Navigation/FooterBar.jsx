@@ -1,4 +1,4 @@
-import { Home, HowToVote, Info, People, QuestionAnswer } from '@mui/icons-material';
+import { Home, HowToVote, Info, People, QuestionAnswer, VerifiedUser } from '@mui/icons-material';
 import { Badge, BottomNavigation, BottomNavigationAction } from '@mui/material';
 import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
@@ -23,9 +23,10 @@ class FooterBar extends React.Component {
     super(props);
     this.state = {
       friendInvitationsSentToMeCount: 0,
+      // inPrivateLabelMode: false, // setState onAppObservableStoreChange is not working sometimes for some reason
       showingOneCompleteYourProfileModal: false,
       showSignInModal: false,
-      // voterIsSignedIn: false,
+      voterIsSignedIn: false,
     };
   }
 
@@ -43,6 +44,8 @@ class FooterBar extends React.Component {
     const friendInvitationsSentToMeCount = (friendInvitationsSentToMe) ? friendInvitationsSentToMe.length : 0;
     this.setState({
       friendInvitationsSentToMeCount,
+      // inPrivateLabelMode: AppObservableStore.getHideWeVoteLogo(), // Using this setting temporarily // setState onAppObservableStoreChange is not working sometimes for some reason
+
       showingOneCompleteYourProfileModal,
       showShareModal,
       showSharedItemModal,
@@ -65,6 +68,7 @@ class FooterBar extends React.Component {
     const showSignInModal = AppObservableStore.showSignInModal();
     const showVoterPlanModal = AppObservableStore.showVoterPlanModal();
     this.setState({
+      // inPrivateLabelMode: AppObservableStore.getHideWeVoteLogo(), // Using this setting temporarily // setState onAppObservableStoreChange is not working sometimes for some reason
       showActivityTidbitDrawer,
       showingOneCompleteYourProfileModal,
       showShareModal,
@@ -86,19 +90,42 @@ class FooterBar extends React.Component {
   }
 
   onVoterStoreChange () {
-    // const voter = VoterStore.getVoter();
-    // const voterIsSignedIn = voter.is_signed_in || false;
-    // this.setState({
-    //   voterIsSignedIn,
-    // });
+    const voter = VoterStore.getVoter();
+    const voterIsSignedIn = voter.is_signed_in || false;
+    this.setState({
+      voterIsSignedIn,
+    });
   }
 
   handleChange = (event, value) => {
+    const { voterIsSignedIn } = this.state;
+    const inPrivateLabelMode = AppObservableStore.getHideWeVoteLogo(); // setState onAppObservableStoreChange is not working sometimes for some reason
     if (isCordova()) {
       const { impact } = window.TapticEngine;
       impact({
         style: 'heavy', // light | medium | heavy
       });
+    }
+    // In browser mobile, we can offer donate footer link
+    // In Cordova, we cannot currently offer donate footer link
+    // If NOT signed in, turn Discuss off and How It Works on
+    let discussValue;
+    let donateValue;
+    let howItWorksValue;
+    if (isCordova() || inPrivateLabelMode) {
+      discussValue = 3;
+      donateValue = 99; // Donate not used in Cordova
+      howItWorksValue = 4;
+    } else if (voterIsSignedIn) {
+      // If not Cordova and signed in, turn Donate & Discuss on, and How It Works off
+      discussValue = 3;
+      donateValue = 4;
+      howItWorksValue = 99;
+    } else {
+      // If not Cordova, and NOT signed in, turn Discuss off, Donate on & How It Works on
+      discussValue = 99; // Not offered prior to sign in
+      donateValue = 3;
+      howItWorksValue = 4;
     }
     switch (value) {
       case 0:
@@ -107,9 +134,12 @@ class FooterBar extends React.Component {
         return historyPush('/ballot');
       case 2:
         return historyPush('/friends');
-      case 3:
+      case discussValue:
         return historyPush('/news');
-      case 4:
+      case donateValue:
+        return historyPush('/more/donate');
+      case howItWorksValue:
+      case 5: // It is unclear why "5" is returned for "Intro"
         return this.openHowItWorksModal();
       default:
         return null;
@@ -117,12 +147,24 @@ class FooterBar extends React.Component {
   };
 
   getSelectedTab = () => {
-    const pathname = normalizedHref();
+    const { voterIsSignedIn } = this.state;
+    let discussValue;
+    let donateValue;
+    if (voterIsSignedIn) {
+      // If not Cordova and signed in, turn Donate & Discuss on, and How It Works off
+      discussValue = 3;
+      donateValue = 4;
+    } else {
+      // If not Cordova, and NOT signed in, turn Discuss off, Donate on & How It Works on
+      discussValue = 99; // Not offered prior to sign in
+      donateValue = 3;
+    }    const pathname = normalizedHref();
     if (pathname === '/') return 0;  // readyLight has no path
     if (stringContains('/ready', pathname.toLowerCase())) return 0;
     if (stringContains('/ballot', pathname.toLowerCase())) return 1;
     if (stringContains('/friends', pathname.toLowerCase())) return 2;
-    if (stringContains('/news', pathname.toLowerCase())) return 3;
+    if (stringContains('/more/donate', pathname.toLowerCase())) return donateValue;
+    if (stringContains('/news', pathname.toLowerCase())) return discussValue;
     return -1;
   };
 
@@ -137,8 +179,9 @@ class FooterBar extends React.Component {
     const {
       friendInvitationsSentToMeCount,
       showActivityTidbitDrawer, showingOneCompleteYourProfileModal, showShareModal,
-      showSharedItemModal, showSignInModal, showVoterPlanModal,
+      showSharedItemModal, showSignInModal, showVoterPlanModal, voterIsSignedIn,
     } = this.state;
+    const inPrivateLabelMode = AppObservableStore.getHideWeVoteLogo(); // setState onAppObservableStoreChange is not working sometimes for some reason
     // const badgeStyle = {
     //   display: 'inline-block',
     // };
@@ -159,6 +202,24 @@ class FooterBar extends React.Component {
     };
 
     // console.log('friendInvitationsSentToMeCount:', friendInvitationsSentToMeCount);
+    // If NOT signed in, turn Discuss off and How It Works on
+    let discussVisible;
+    let donateVisible;
+    let howItWorksVisible;
+    if (isCordova() || inPrivateLabelMode) {
+      discussVisible = true;
+      donateVisible = false;
+      howItWorksVisible = true;
+    } else if (voterIsSignedIn) {
+      // If signed in, turn Discuss on, and How It Works off
+      discussVisible = true;
+      donateVisible = true;
+      howItWorksVisible = false;
+    } else {
+      discussVisible = false;
+      donateVisible = true;
+      howItWorksVisible = true;
+    }
     return (
       <FooterBarWrapper>
         <div
@@ -199,15 +260,22 @@ class FooterBar extends React.Component {
                 <People />
               )}
             />
-            <BottomNavigationAction className="no-outline" id="newsTabFooterBar" label="Discuss" showLabel icon={<QuestionAnswer />} sx={bigIcons} />
-            <BottomNavigationAction
-              className="no-outline u-no-break"
-              id="howItWorksFooterBar"
-              label={isMobileScreenSize() ? 'Intro' : 'How It Works'}
-              showLabel
-              icon={<Info />}
-              sx={bigIcons}
-            />
+            {discussVisible && (
+              <BottomNavigationAction className="no-outline" id="newsTabFooterBar" label="Discuss" showLabel icon={<QuestionAnswer />} sx={bigIcons} />
+            )}
+            {donateVisible && (
+              <BottomNavigationAction className="no-outline" id="donateTabFooterBar" label="Donate" showLabel icon={<VerifiedUser />} sx={bigIcons} />
+            )}
+            {howItWorksVisible && (
+              <BottomNavigationAction
+                className="no-outline u-no-break"
+                id="howItWorksFooterBar"
+                label={isMobileScreenSize() ? 'Intro' : 'How It Works'}
+                showLabel
+                icon={<Info />}
+                sx={bigIcons}
+              />
+            )}
           </BottomNavigation>
         </div>
       </FooterBarWrapper>

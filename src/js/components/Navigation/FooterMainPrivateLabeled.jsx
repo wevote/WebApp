@@ -34,6 +34,10 @@ class FooterMainPrivateLabeled extends Component {
     });
   }
 
+  openHowItWorksModal = () => {
+    AppObservableStore.setShowHowItWorksModal(true);
+  }
+
   render () {
     const { classes } = this.props;
     const { chosenAboutOrganizationExternalUrl } = this.state;
