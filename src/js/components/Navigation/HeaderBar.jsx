@@ -48,6 +48,7 @@ class HeaderBar extends Component {
       componentDidMountFinished: false,
       // friendInvitationsSentToMe: 0,
       hideWeVoteLogo: false,
+      // inPrivateLabelMode: false,
       // priorPath: '',
       scrolledDown: false,
       // showOrganizationModal: false,
@@ -86,6 +87,7 @@ class HeaderBar extends Component {
       chosenSiteLogoUrl: AppObservableStore.getChosenSiteLogoUrl(),
       // friendInvitationsSentToMe: FriendStore.friendInvitationsSentToMe(),
       hideWeVoteLogo: AppObservableStore.getHideWeVoteLogo(),
+      // inPrivateLabelMode: AppObservableStore.getHideWeVoteLogo(), // Using this setting temporarily // setState onAppObservableStoreChange is not working for some reason
       scrolledDown: AppObservableStore.getScrolledDown(),
       showSignInModal: AppObservableStore.showSignInModal(),
       voter,
@@ -106,6 +108,9 @@ class HeaderBar extends Component {
         }
         if (document.getElementById('discussTabHeaderBar')) {
           headerObjects.discuss = document.getElementById('discussTabHeaderBar').innerHTML;
+        }
+        if (document.getElementById('donateTabHeaderBar')) {
+          headerObjects.donate = document.getElementById('donateTabHeaderBar').innerHTML;
         }
         if (document.getElementById('HeaderNotificationMenuWrapper')) {
           headerObjects.bell = document.getElementById('HeaderNotificationMenuWrapper').innerHTML;
@@ -283,6 +288,7 @@ class HeaderBar extends Component {
     this.setState({
       chosenSiteLogoUrl: AppObservableStore.getChosenSiteLogoUrl(),
       hideWeVoteLogo: AppObservableStore.getHideWeVoteLogo(),
+      // inPrivateLabelMode: AppObservableStore.getHideWeVoteLogo(), // Using this setting temporarily // setState onAppObservableStoreChange is not working for some reason
       // organizationModalBallotItemWeVoteId: AppObservableStore.getOrganizationModalBallotItemWeVoteId(),
       scrolledDown: AppObservableStore.getScrolledDown(),
       // shareModalStep: AppObservableStore.getShareModalStep(),
@@ -353,9 +359,11 @@ class HeaderBar extends Component {
       const ballot = $('#ballotTabHeaderBar');
       const friends = $('#friendsTabHeaderBar');
       const news = $('#discussTabHeaderBar');
+      const donate = $('#donateTabHeaderBar');
       ballot.css(normal);
-      friends.css(normal);       // Opinions
+      friends.css(normal);      // Friends
       news.css(normal);         // Discuss
+      donate.css(normal);       // Donate
 
       switch (normalizedHrefPage()) {
         case 'ballot':
@@ -366,6 +374,9 @@ class HeaderBar extends Component {
           break;
         case 'news':
           news.css(highlight);
+          break;
+        case 'more/donate':
+          donate.css(highlight);
           break;
         default:
           break;
@@ -399,6 +410,7 @@ class HeaderBar extends Component {
   render () {
     renderLog('HeaderBar');  // Set LOG_RENDER_EVENTS to log all renders
     if (!this.state.componentDidMountFinished) {
+      // console.log('HeaderBar suppressed for !componentDidMountFinished');
       return null;
     }
 
@@ -412,6 +424,8 @@ class HeaderBar extends Component {
       chosenSiteLogoUrl, hideWeVoteLogo, scrolledDown,
       voter, voterIsSignedIn, tabsValue,
     } = this.state;
+    const inPrivateLabelMode = AppObservableStore.getHideWeVoteLogo();  // setState onAppObservableStoreChange is not working for some reason
+    // console.log('HeaderBar inPrivateLabelMode:', inPrivateLabelMode);
     const voterPhotoUrlMedium = voterPhoto(voter);
 
     const doNotShowWeVoteLogo = weVoteBrandingOff() || hideWeVoteLogo;
@@ -427,6 +441,37 @@ class HeaderBar extends Component {
     }
     // console.log('HeaderBar hasNotch, scrolledDown, hasSubmenu', hasIPhoneNotch(), scrolledDown, displayTopMenuShadow());
     const displayMenu = !isMobileScreenSize();
+    // If NOT signed in, turn Discuss off and How It Works on
+    let discussValue;
+    let discussVisible;
+    let donateValue;
+    let donateVisible;
+    let howItWorksValue;
+    let howItWorksVisible;
+    if (isCordova() || inPrivateLabelMode) {
+      discussValue = 3;
+      discussVisible = true;
+      donateValue = 99; // Donate not used in Cordova
+      donateVisible = false;
+      howItWorksValue = 4;
+      howItWorksVisible = true;
+    } else if (voterIsSignedIn) {
+      // If not Cordova and signed in, turn Donate & Discuss on, and How It Works off
+      discussValue = 3;
+      discussVisible = true;
+      donateValue = 4;
+      donateVisible = true;
+      howItWorksValue = 99;
+      howItWorksVisible = false;
+    } else {
+      // If not Cordova, and NOT signed in, turn Discuss off, Donate on & How It Works on
+      discussValue = 99; // Not offered prior to sign in
+      discussVisible = false;
+      donateValue = 3;
+      donateVisible = true;
+      howItWorksValue = 4;
+      howItWorksVisible = true;
+    }
     // console.log('HeaderBar !isMobileScreenSize()', displayMenu);
     return (
       <HeaderBarWrapper
@@ -475,21 +520,35 @@ class HeaderBar extends Component {
                     label="Friends"
                     to="/friends"
                   />
-                  <TabWithPushHistory
-                    classes={isWebApp() ? { root: classes.tabRootNewsDesktop } : { root: classes.tabRootNews }}
-                    value={3}
-                    change={this.handleTabChange}
-                    id="discussTabHeaderBar"
-                    label="Discuss"
-                    to="/news"
-                  />
-                  <TabWithPushHistory
-                    classes={isWebApp() ? { root: classes.tabRootHowItWorksDesktop } : { root: classes.tabRootHowItWorks }}
-                    value={4}
-                    change={this.openHowItWorksModal}
-                    id="howItWorksTabHeaderBar"
-                    label="How It Works"
-                  />
+                  {discussVisible && (
+                    <TabWithPushHistory
+                      classes={isWebApp() ? { root: classes.tabRootNewsDesktop } : { root: classes.tabRootNews }}
+                      value={discussValue}
+                      change={this.handleTabChange}
+                      id="discussTabHeaderBar"
+                      label="Discuss"
+                      to="/news"
+                    />
+                  )}
+                  {donateVisible && (
+                    <TabWithPushHistory
+                      classes={isWebApp() ? { root: classes.tabRootDonateDesktop } : { root: classes.tabRootDonate }}
+                      value={donateValue}
+                      change={this.handleTabChange}
+                      id="donateTabHeaderBar"
+                      label="Donate"
+                      to="/more/donate"
+                    />
+                  )}
+                  {howItWorksVisible && (
+                    <TabWithPushHistory
+                      classes={isWebApp() ? { root: classes.tabRootHowItWorksDesktop } : { root: classes.tabRootHowItWorks }}
+                      value={howItWorksValue}
+                      change={this.openHowItWorksModal}
+                      id="howItWorksTabHeaderBar"
+                      label="How It Works"
+                    />
+                  )}
                 </StyledHeaderMenuTabs>
               )}
             </div>
@@ -668,6 +727,26 @@ const styles = (theme) => ({
     minWidth: 90,
     paddingTop: 17,
   },
+  tabRootDonate: {
+    minWidth: 70,
+    [theme.breakpoints.between('tabMin', 'tabMdMin')]: { // Small Tablets
+      minWidth: 0,
+      fontSize: 20,
+      padding: '16px 8px 10px 8px',
+    },
+    [theme.breakpoints.between('tabMdMin', 'tabLgMin')]: { // Medium Tablets
+      fontSize: 20,
+      padding: '16px 16px 10px 16px',
+    },
+    [theme.breakpoints.up('tabLgMin')]: { // Larger Tablets, and desktop
+      fontSize: 24,
+    },
+  },
+  tabRootDonateDesktop: {
+    fontSize: 18,
+    minWidth: 70,
+    paddingTop: 17,
+  },
   tabRootFriends: {
     minWidth: 90,
     [theme.breakpoints.between('tabMin', 'tabMdMin')]: { // Small Tablets
@@ -732,15 +811,6 @@ const styles = (theme) => ({
     display: 'none',
   },
 });
-
-// const AddressWrapperDesktop = styled('div')`
-//   margin-top: 5px;
-//   width: 212px;
-// `;
-//
-// const AddressWrapperMobile = styled('div')`
-//   margin-top: 9px;
-// `;
 
 const HeaderBarWrapper = styled('div', {
   shouldForwardProp: (prop) => !['hasNotch', 'scrolledDown', 'hasSubmenu'].includes(prop),

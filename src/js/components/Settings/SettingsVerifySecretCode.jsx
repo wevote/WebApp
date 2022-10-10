@@ -520,7 +520,7 @@ class SettingsVerifySecretCode extends Component {
             <Subtitle>A 6-digit code has been sent to</Subtitle>
             <PhoneSubtitle>{voterPhoneNumber || voterEmailAddress}</PhoneSubtitle>
             {(voterEmailAddress) && (
-              <Subtitle>If you haven&apos;t received the code in 30 seconds, please check your spam folder.</Subtitle>
+              <Subtitle>If you haven&apos;t received the code in 30 seconds, please check your spam folder and mark the email as &apos;Not Spam&apos;.</Subtitle>
             )}
             <InputContainer condensed={condensed}>
               <OutlinedInput

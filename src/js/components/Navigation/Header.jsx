@@ -487,7 +487,6 @@ export default class Header extends Component {
       pathname.startsWith('/how') ||
       pathname === '/more/about' ||
       pathname === '/more/credits' ||
-      pathname.startsWith('/more/donate') ||
       pathname.startsWith('/more/pricing') ||
       pathname === '/welcomehome')) {
       return null;

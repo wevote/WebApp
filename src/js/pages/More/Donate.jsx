@@ -4,7 +4,7 @@ import withStyles from '@mui/styles/withStyles';
 import { Elements } from '@stripe/react-stripe-js';
 import { loadStripe } from '@stripe/stripe-js';
 import PropTypes from 'prop-types';
-import React, { Component, Suspense } from 'react';
+import React, { Component } from 'react';
 import Helmet from 'react-helmet';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
@@ -15,13 +15,10 @@ import InjectedCheckoutForm from '../../common/components/Donation/InjectedCheck
 import OpenExternalWebSite from '../../common/components/Widgets/OpenExternalWebSite';
 import DonateStore from '../../common/stores/DonateStore';
 import { renderLog } from '../../common/utils/logging';
-import { standardBoxShadow } from '../../components/Style/pageLayoutStyles';
+import { PageContentContainer, standardBoxShadow } from '../../components/Style/pageLayoutStyles';
 import { Section } from '../../components/Welcome/sectionStyles';
 import webAppConfig from '../../config';
 import VoterStore from '../../stores/VoterStore';
-
-const WelcomeAppbar = React.lazy(() => import(/* webpackChunkName: 'WelcomeAppbar' */ '../../components/Navigation/WelcomeAppbar'));
-const WelcomeFooter = React.lazy(() => import(/* webpackChunkName: 'WelcomeFooter' */ '../../components/Welcome/WelcomeFooter'));
 
 const stripePromise = loadStripe(webAppConfig.STRIPE_API_KEY);
 
@@ -35,11 +32,11 @@ class Donate extends Component {
     super(props);
 
     this.state = {
-      isMonthly: false,
+      isMonthly: true,
       joining: true,
       preDonation: true,
       showWaiting: false,
-      value: '10.00',
+      value: '7.00',
     };
 
     this.handleChange = this.handleChange.bind(this);
@@ -117,7 +114,7 @@ class Donate extends Component {
           built by volunteers
         </Link>
         {' '}
-        to strengthen American democracy.
+        to strengthen American democracy. Please join us with a monthly donation!
         {' '}
         <OpenExternalWebSite
           linkIdAttribute="annualBudget"
@@ -125,7 +122,7 @@ class Donate extends Component {
           target="_blank"
           body={(
             <span>
-              Our annual budgets are very small&nbsp;
+              Our budgets are small&nbsp;
               <Launch
                 style={{
                   height: 14,
@@ -137,32 +134,7 @@ class Donate extends Component {
             </span>
           )}
         />
-        , so every donation helps us pay for critical services. Over 50 awesome people like yourself have donated to make We Vote possible.
-        {' '}
-      </DonateDescriptionContainer>
-      <DonateDescriptionContainer style={{ paddingBottom: 12 }}>
-        Contributions or gifts made on this page are not tax deductible, and fund We Vote USA, a 501(c)(4) nonprofit.
-        We Vote also has a 501(c)(3) nonprofit that welcomes
-        {' '}
-        {/* This is a mailto! Shouldn't be visible in iPhone or Android apps. */}
-        <a href={"mailto:donate@WeVoteEducation.org?subject=Donate to We Vote's 501(c)(3)&body=I am interested in making at tax deductible donating to We Vote's 501(c)(3)."}
-           title="I would like to donate to We Vote's 501(c)(3)"
-           rel="noopener noreferrer"
-           target="_blank"
-           style={{ color: '#4371cc' }}
-        >
-          tax deductible donations
-          {' '}
-          <Launch
-            style={{
-              height: 14,
-              marginLeft: 2,
-              marginTop: '-3px',
-              width: 14,
-            }}
-          />
-          .
-        </a>
+        , so every donation helps us pay for critical services, like servers and data fees.
       </DonateDescriptionContainer>
     </Section>
   );
@@ -185,124 +157,146 @@ class Donate extends Component {
     const { joining, showWaiting, value, isMonthly, preDonation } = this.state;
 
     return (
-      <Wrapper>
-        <Helmet title="Donate - We Vote" />
-        <Suspense fallback={<></>}>
-          <WelcomeAppbar pathname="/more/pricing" />
-        </Suspense>
-        <HeaderForDonate>
-          <DonateTitle>{preDonation ? 'Donate' : 'Thank you for your donation!'}</DonateTitle>
-        </HeaderForDonate>
-        <InnerWrapper>
-          {preDonation ? this.preDonateDescription() : this.postDonationDescription()}
-          {preDonation ? (
-            <>
-              <ContributeGridWrapper>
-                <ContributeMonthlyText>
-                  <FormControl component="fieldset"
-                               className={classes.formControl}
-                  >
-                    <FormLabel component="legend">
-                      Make a donation by credit card
-                    </FormLabel>
-                    <RadioGroup row>
-                      <FormControlLabel
-                        control={<Radio checked={!isMonthly} onChange={this.handleChange} name="oneTime" style={{ color: 'black' }} />}
-                        label="One time Donation"
-                      />
-                      <FormControlLabel
-                        control={<Radio checked={isMonthly} onChange={this.handleChange} name="isMonthly" style={{ color: 'black' }} />}
-                        label="Donate monthly"
-                      />
-                    </RadioGroup>
-                  </FormControl>
-                </ContributeMonthlyText>
-                <ContributeGridSection>
-                  {['5', '10', '20', '50'].map((price) => (
-                    <ContributeGridItem key={`gridItem-${price}`}>
-                      <Button
-                        classes={{ root: classes.buttonRoot }}
-                        variant="contained"
-                        sx={{
-                          ':hover': {
+      <PageContentContainer>
+        <Wrapper>
+          <Helmet title="Donate - We Vote" />
+          <ContentTitle>
+            {preDonation ? 'Donate to Support We Vote' : 'Thank you for your donation!'}
+          </ContentTitle>
+          <InnerWrapper>
+            {preDonation ? this.preDonateDescription() : this.postDonationDescription()}
+            {preDonation ? (
+              <>
+                <ContributeGridWrapper>
+                  <ContributeMonthlyText>
+                    <FormControl component="fieldset"
+                                 className={classes.formControl}
+                    >
+                      <RadioGroup row>
+                        <FormControlLabel
+                          control={<Radio checked={isMonthly} onChange={this.handleChange} name="isMonthly" style={{ color: 'black' }} />}
+                          label="Donate monthly"
+                        />
+                        <FormControlLabel
+                          control={<Radio checked={!isMonthly} onChange={this.handleChange} name="oneTime" style={{ color: 'black' }} />}
+                          label="One time donation"
+                        />
+                      </RadioGroup>
+                    </FormControl>
+                  </ContributeMonthlyText>
+                  <ContributeGridSection>
+                    {['7', '12', '36', '150'].map((price) => (
+                      <ContributeGridItem key={`gridItem-${price}`}>
+                        <Button
+                          classes={{ root: classes.buttonRoot }}
+                          variant="contained"
+                          sx={{
+                            ':hover': {
+                              color: 'white',
+                            },
+                          }}
+                          onClick={() => this.changeValue(`${price}.00`)}
+                        >
+                          {`$${price}`}
+                        </Button>
+                      </ContributeGridItem>
+                    ))}
+                    <ContributeGridItemJoin joining={joining}>
+                      {!joining ? (
+                        <Button
+                          classes={{ root: classes.buttonRoot }}
+                          color="primary"
+                          variant="contained"
+                          style={{
+                            width: '100%',
+                            backgroundColor: 'darkblue',
                             color: 'white',
-                          },
-                        }}
-                        onClick={() => this.changeValue(`${price}.00`)}
-                      >
-                        {`$${price}`}
-                      </Button>
-                    </ContributeGridItem>
-                  ))}
-                  <ContributeGridItemJoin joining={joining}>
-                    {!joining ? (
-                      <Button
-                        classes={{ root: classes.buttonRoot }}
-                        color="primary"
-                        variant="contained"
-                        style={{
-                          width: '100%',
-                          backgroundColor: 'darkblue',
-                          color: 'white',
-                        }}
-                        onClick={() => this.changeValue('5.00')}
-                      >
-                        Join
-                      </Button>
-                    ) : (
-                      <TextField
-                        id="currency-input"
-                        label="Amount"
-                        variant="outlined"
+                          }}
+                          onClick={() => this.changeValue('5.00')}
+                        >
+                          Join
+                        </Button>
+                      ) : (
+                        <TextField
+                          id="currency-input"
+                          label="Amount"
+                          variant="outlined"
+                          value={value}
+                          onChange={this.onAmountFieldChange}
+                          InputLabelProps={{
+                            classes: {
+                              root: classes.textFieldInputRoot,
+                              focused: classes.textFieldInputRoot,
+                            },
+                            shrink: true,
+                          }}
+                          InputProps={{
+                            classes: {
+                              root: classes.textFieldInputRoot,
+                              focused: classes.textFieldInputRoot,
+                            },
+                            startAdornment: <InputAdornment position="start">$</InputAdornment>,
+                          }}
+                          style={{
+                            marginTop: 6,
+                            textAlign: 'center',
+                            width: 150,
+                          }}
+                        />
+                      )}
+                    </ContributeGridItemJoin>
+                  </ContributeGridSection>
+                </ContributeGridWrapper>
+                <PaymentWrapper joining={joining}>
+                  <PaymentCenteredWrapper>
+                    <Elements stripe={stripePromise}>
+                      <InjectedCheckoutForm
                         value={value}
-                        onChange={this.onAmountFieldChange}
-                        InputLabelProps={{
-                          classes: {
-                            root: classes.textFieldInputRoot,
-                            focused: classes.textFieldInputRoot,
-                          },
-                          shrink: true,
-                        }}
-                        InputProps={{
-                          classes: {
-                            root: classes.textFieldInputRoot,
-                            focused: classes.textFieldInputRoot,
-                          },
-                          startAdornment: <InputAdornment position="start">$</InputAdornment>,
-                        }}
-                        style={{
-                          marginTop: 6,
-                          textAlign: 'center',
-                          width: 100,
-                        }}
+                        classes={{}}
+                        isMonthly={isMonthly}
+                        showWaiting={showWaiting}
                       />
-                    )}
-                  </ContributeGridItemJoin>
-                </ContributeGridSection>
-              </ContributeGridWrapper>
-              <PaymentWrapper joining={joining}>
-                <PaymentCenteredWrapper>
-                  <Elements stripe={stripePromise}>
-                    <InjectedCheckoutForm
-                      value={value}
-                      classes={{}}
-                      isMonthly={isMonthly}
-                      showWaiting={showWaiting}
+                    </Elements>
+                  </PaymentCenteredWrapper>
+                </PaymentWrapper>
+              </>
+            ) : null}
+            <DonationListForm
+              isCampaign={false}
+              leftTabIsMembership={false}
+            />
+            {preDonation && (
+              <Section>
+                <DonateDescriptionContainer>
+                  Contributions or gifts made on this page are not tax deductible, and fund We Vote USA, a 501(c)(4) nonprofit. Over 50 awesome people like yourself have donated to make We Vote possible.
+                  {' '}
+                  We Vote also has a 501(c)(3) nonprofit that welcomes
+                  {' '}
+                  {/* This is a mailto! Shouldn't be visible in iPhone or Android apps. */}
+                  <a href={"mailto:donate@WeVoteEducation.org?subject=Donate to We Vote's 501(c)(3)&body=I am interested in making at tax deductible donating to We Vote's 501(c)(3)."}
+                     title="I would like to donate to We Vote's 501(c)(3)"
+                     rel="noopener noreferrer"
+                     target="_blank"
+                     style={{ color: '#4371cc' }}
+                  >
+                    tax deductible donations
+                    {' '}
+                    <Launch
+                      style={{
+                        height: 14,
+                        marginLeft: 2,
+                        marginTop: '-3px',
+                        width: 14,
+                      }}
                     />
-                  </Elements>
-                </PaymentCenteredWrapper>
-              </PaymentWrapper>
-            </>
-          ) : null}
-          <DonationListForm
-            isCampaign={false}
-            leftTabIsMembership={false}
-          />
-        </InnerWrapper>
-        <Suspense fallback={<></>}>
-          <WelcomeFooter />
-        </Suspense>
-      </Wrapper>
+                    .
+                  </a>
+                </DonateDescriptionContainer>
+              </Section>
+            )}
+          </InnerWrapper>
+        </Wrapper>
+      </PageContentContainer>
     );
   }
 }
@@ -333,9 +327,9 @@ const styles = (theme) => ({
     boxShadow: standardBoxShadow('medium'),
   },
   textFieldInputRoot: {
-    fontSize: 18,
-    color: 'black',
     backgroundColor: 'white',
+    color: 'black',
+    fontSize: 18,
   },
   stripeAlertError: {
     background: 'rgb(255, 177, 160)',
@@ -359,6 +353,16 @@ const styles = (theme) => ({
   },
 });
 
+const ContentTitle = styled('h1')(({ theme }) => (`
+  font-size: 22px;
+  font-weight: 600;
+  margin: 20px 0;
+  text-align: center !important;
+  ${theme.breakpoints.down('sm')} {
+    font-size: 20px;
+  }
+`));
+
 const Wrapper = styled('div')`
   display: flex;
   flex-flow: column nowrap;
@@ -371,45 +375,9 @@ const InnerWrapper = styled('div')`
   margin-bottom: 16px;
 `;
 
-const HeaderForDonate = styled('div')(({ theme }) => (`
-  position: relative;
-  height: 190px;
-  width: 110%;
-  color: white;
-  background-image: linear-gradient(to bottom, #415a99, #2d3b5e);
-  border-bottom-left-radius: 50% 25%;
-  border-bottom-right-radius: 50% 25%;
-  padding: 0 2em;
-  margin-top: -72px;
-  text-align: center;
-  ${theme.breakpoints.down('lg')} {
-    height: 190px;
-  }
-  ${theme.breakpoints.down('xs')} {
-    height: 150px;
-  }
-`));
-
-const DonateTitle = styled('h1')(({ theme }) => (`
-  font-weight: bold;
-  font-size: 36px;
-  text-align: center;
-  margin-top: 3em;
-  margin-bottom: 0;
-  padding-bottom: 0;
-  ${theme.breakpoints.down('md')} {
-    font-size: 28px;
-    margin-top: 3em;
-  }
-  ${theme.breakpoints.down('xs')} {
-    font-size: 18px;
-    margin-top: 5em;
-  }
-`));
-
 const DonateDescriptionContainer = styled('div')`
-  margin: 1em auto;
-  margin-bottom: 0;
+  // margin: 1em auto;
+  margin-bottom: 12px;
   width: 960px;
   max-width: 90vw;
   text-align: left;

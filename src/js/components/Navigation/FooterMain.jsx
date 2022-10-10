@@ -29,11 +29,9 @@ class FooterMain extends Component {
   // eslint-disable-next-line no-unused-vars
   onAppObservableStoreChange () {
     // console.log('------ FooterMain, onAppObservableStoreChange received: ', msg);
-    const inPrivateLabelMode = AppObservableStore.getHideWeVoteLogo(); // Using this setting temporarily
-    const siteConfigurationHasBeenRetrieved = AppObservableStore.siteConfigurationHasBeenRetrieved();
     this.setState({
-      inPrivateLabelMode,
-      siteConfigurationHasBeenRetrieved,
+      inPrivateLabelMode: AppObservableStore.getHideWeVoteLogo(),
+      siteConfigurationHasBeenRetrieved: AppObservableStore.siteConfigurationHasBeenRetrieved(),
     });
   }
 

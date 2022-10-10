@@ -169,12 +169,15 @@ class HowItWorks extends Component {
     this.setState({
       howItWorksWatched,
     });
-    window.scrollTo(0, 0);
   }
 
   // eslint-disable-next-line camelcase,react/sort-comp
   UNSAFE_componentWillReceiveProps (nextProps) {
-    const { match: { params: nextParams } } = nextProps;
+    let nextParams = {};
+    if (nextProps.match) {
+      const { match: { params: passedParams } } = nextProps;
+      nextParams = passedParams || nextParams;
+    }
     if (!this.props.inModal) {
       if (nextParams.category_string === 'for-campaigns') {
         this.setState({
