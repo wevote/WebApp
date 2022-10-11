@@ -98,8 +98,6 @@ class FooterBar extends React.Component {
   }
 
   handleChange = (event, value) => {
-    const { voterIsSignedIn } = this.state;
-    const inPrivateLabelMode = AppObservableStore.getHideWeVoteLogo(); // setState onAppObservableStoreChange is not working sometimes for some reason
     if (isCordova()) {
       const { impact } = window.TapticEngine;
       impact({
@@ -109,24 +107,7 @@ class FooterBar extends React.Component {
     // In browser mobile, we can offer donate footer link
     // In Cordova, we cannot currently offer donate footer link
     // If NOT signed in, turn Discuss off and How It Works on
-    let discussValue;
-    let donateValue;
-    let howItWorksValue;
-    if (isCordova() || inPrivateLabelMode) {
-      discussValue = 3;
-      donateValue = 99; // Donate not used in Cordova
-      howItWorksValue = 4;
-    } else if (voterIsSignedIn) {
-      // If not Cordova and signed in, turn Donate & Discuss on, and How It Works off
-      discussValue = 3;
-      donateValue = 4;
-      howItWorksValue = 99;
-    } else {
-      // If not Cordova, and NOT signed in, turn Discuss off, Donate on & How It Works on
-      discussValue = 99; // Not offered prior to sign in
-      donateValue = 3;
-      howItWorksValue = 4;
-    }
+    // Regardless of whether visible or not the option's numerical position remains the same
     switch (value) {
       case 0:
         return historyPush('/ready');
@@ -134,12 +115,11 @@ class FooterBar extends React.Component {
         return historyPush('/ballot');
       case 2:
         return historyPush('/friends');
-      case discussValue:
+      case 3:
         return historyPush('/news');
-      case donateValue:
+      case 4:
         return historyPush('/more/donate');
-      case howItWorksValue:
-      case 5: // It is unclear why "5" is returned for "Intro"
+      case 5:
         return this.openHowItWorksModal();
       default:
         return null;
@@ -147,24 +127,13 @@ class FooterBar extends React.Component {
   };
 
   getSelectedTab = () => {
-    const { voterIsSignedIn } = this.state;
-    let discussValue;
-    let donateValue;
-    if (voterIsSignedIn) {
-      // If not Cordova and signed in, turn Donate & Discuss on, and How It Works off
-      discussValue = 3;
-      donateValue = 4;
-    } else {
-      // If not Cordova, and NOT signed in, turn Discuss off, Donate on & How It Works on
-      discussValue = 99; // Not offered prior to sign in
-      donateValue = 3;
-    }    const pathname = normalizedHref();
+    const pathname = normalizedHref();
     if (pathname === '/') return 0;  // readyLight has no path
     if (stringContains('/ready', pathname.toLowerCase())) return 0;
     if (stringContains('/ballot', pathname.toLowerCase())) return 1;
     if (stringContains('/friends', pathname.toLowerCase())) return 2;
-    if (stringContains('/more/donate', pathname.toLowerCase())) return donateValue;
-    if (stringContains('/news', pathname.toLowerCase())) return discussValue;
+    if (stringContains('/news', pathname.toLowerCase())) return 3;
+    if (stringContains('/more/donate', pathname.toLowerCase())) return 4;
     return -1;
   };
 
