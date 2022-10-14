@@ -224,7 +224,7 @@ class BallotTitleHeader extends Component {
                             </BallotAddress>
                           ) : (
                             <>
-                              {(originalTextAddress && originalTextAddress !== '') && (
+                              {(originalTextAddress && originalTextAddress !== '') ? (
                                 <BallotAddress
                                   allowTextWrap={allowTextWrap}
                                   centerText={centerText}
@@ -235,6 +235,18 @@ class BallotTitleHeader extends Component {
                                   {' '}
                                   <span className={linksOff ? '' : 'u-link-color'}>
                                     {(textForMapSearch && textForMapSearch !== '') ? textForMapSearch : originalTextAddress}
+                                  </span>
+                                  {editIconStyled}
+                                </BallotAddress>
+                              ) : (
+                                <BallotAddress
+                                  allowTextWrap={allowTextWrap}
+                                  centerText={centerText}
+                                  className="u-cursor--pointer"
+                                  onClick={this.showSelectBallotModalEditAddress}
+                                >
+                                  <span className={linksOff ? '' : 'u-link-color'}>
+                                    Click to enter your address
                                   </span>
                                   {editIconStyled}
                                 </BallotAddress>
