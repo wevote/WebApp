@@ -304,12 +304,12 @@ export default class BallotElectionListWithFilters extends Component {
     let firstEntryName;
     let secondEntryName = 'z';
     if (firstEntry && firstEntry.state_code) {
-      firstEntryName = firstEntry.state_code;
+      firstEntryName = convertStateCodeToStateText(firstEntry.state_code);
     } else if (firstEntry && firstEntry.election_description_text) {
       firstEntryName = firstEntry.election_description_text;
     }
     if (secondEntry && secondEntry.state_code) {
-      secondEntryName = secondEntry.state_code;
+      secondEntryName = convertStateCodeToStateText(secondEntry.state_code);
     } else if (secondEntry && secondEntry.election_description_text) {
       secondEntryName = secondEntry.election_description_text;
     }
