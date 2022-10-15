@@ -16,7 +16,7 @@ const SetUpAccountContactsTextWrapper = styled('div')`
 `;
 
 const SetUpAccountContactsText = styled('div')`
-  color: #999;
+  color: #6c757d;
   font-size: 16px;
   padding: 0 20px;
   text-align: center;
@@ -24,7 +24,7 @@ const SetUpAccountContactsText = styled('div')`
 `;
 
 const SetUpAccountIntroText = styled('div')`
-  color: #999;
+  color: #6c757d;
   font-size: 16px;
   padding: 0 20px;
   text-align: center;
@@ -35,6 +35,8 @@ const SetUpAccountTitle = styled('div')`
   color: #2E3C5D;
   font-size: 28px;
   font-weight: 600;
+  line-height: 100%;
+  margin-bottom: 12px;
   padding: 0 36px;
   text-align: center;
   width: 100%;

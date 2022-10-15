@@ -16,7 +16,6 @@ import { formatDateMMMDoYYYY } from '../../common/utils/dateFormat';
 import { hasIPhoneNotch } from '../../common/utils/cordovaUtils';
 import daysUntil from '../../common/utils/daysUntil';
 import { renderLog } from '../../common/utils/logging';
-import SuggestedContacts from './SuggestedContacts';
 import { ModalTitleType1 } from '../Style/ModalType1Styles';
 import BallotStore from '../../stores/BallotStore';
 import FriendStore from '../../stores/FriendStore';
@@ -25,6 +24,7 @@ import SearchBar from '../Search/SearchBar';
 import FriendList from './FriendList';
 
 const MessageToFriendInputField = React.lazy(() => import(/* webpackChunkName: 'MessageToFriendInputField' */ './MessageToFriendInputField'));
+const SuggestedContacts = React.lazy(() => import(/* webpackChunkName: 'SuggestedContacts' */ './SuggestedContacts'));
 
 class AskFriendsModal extends Component {
   constructor (props) {
@@ -296,7 +296,9 @@ class AskFriendsModal extends Component {
               />
             </FriendListExternalWrapper>
             <FriendListExternalWrapper>
-              <SuggestedContacts askMode messageToFriendsInputOff />
+              <Suspense fallback={<></>}>
+                <SuggestedContacts askMode messageToFriendsInputOff />
+              </Suspense>
             </FriendListExternalWrapper>
           </div>
           <div id="showMoreItemsId" />

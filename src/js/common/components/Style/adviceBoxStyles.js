@@ -8,7 +8,7 @@ const AdviceBox = styled('div')`
 const AdviceBoxText = styled('div')`
   color: #999;
   font-size: 14px;
-  line-height: 1.4;
+  line-height: 1.2;
   margin-bottom: 4px;
 `;
 

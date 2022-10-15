@@ -62,10 +62,12 @@ export const stateCodeMap = {
 
 export function convertStateCodeToStateText (stateCode) {
   // console.log('Incoming stateCode:', stateCode);
-  const stateCodeUpper = stateCode.toUpperCase();
-  if (stateCodeUpper in stateCodeMap) {
-    // console.log('stateCodeMap.stateCode:', stateCodeMap[stateCode]);
-    return stateCodeMap[stateCodeUpper];
+  if (stateCode) {
+    const stateCodeUpper = stateCode.toUpperCase();
+    if (stateCodeUpper in stateCodeMap) {
+      // console.log('stateCodeMap.stateCode:', stateCodeMap[stateCode]);
+      return stateCodeMap[stateCodeUpper];
+    }
   }
   return '';
 }

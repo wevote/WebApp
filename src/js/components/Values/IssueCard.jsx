@@ -494,6 +494,7 @@ const FlexNameAndIcon = styled('div', {
 `));
 
 const IssueCardDescription = styled('div')`
+  line-height: 115%;
   margin-top: 8px;
   color: #333;
 `;
