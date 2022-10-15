@@ -3,18 +3,19 @@ import styled from 'styled-components';
 import withStyles from '@mui/styles/withStyles';
 import withTheme from '@mui/styles/withTheme';
 // import PropTypes from 'prop-types';
-import React, { Component } from 'react';
+import React, { Component, Suspense } from 'react';
 import FriendActions from '../../actions/FriendActions';
 import apiCalming from '../../common/utils/apiCalming';
 import { formatDateMMMDoYYYY } from '../../common/utils/dateFormat';
 import daysUntil from '../../common/utils/daysUntil';
 import { renderLog } from '../../common/utils/logging';
-import SuggestedContacts from './SuggestedContacts';
 import BallotStore from '../../stores/BallotStore';
 import FriendStore from '../../stores/FriendStore';
 import sortFriendListByMutualFriends from '../../utils/friendFunctions';
 import SearchBar from '../Search/SearchBar';
 import FriendList from './FriendList';
+
+const SuggestedContacts = React.lazy(() => import(/* webpackChunkName: 'SuggestedContacts' */ './SuggestedContacts'));
 
 class ShareWithFriendsModalBodyWithController extends Component {
   constructor (props) {
@@ -205,7 +206,9 @@ class ShareWithFriendsModalBodyWithController extends Component {
             />
           </FriendListExternalWrapper>
           <FriendListExternalWrapper>
-            <SuggestedContacts askMode messageToFriendsInputOff />
+            <Suspense fallback={<></>}>
+              <SuggestedContacts askMode messageToFriendsInputOff />
+            </Suspense>
           </FriendListExternalWrapper>
         </div>
         <div id="showMoreItemsId" />

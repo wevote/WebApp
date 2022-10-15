@@ -3,7 +3,6 @@ import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import Button from 'react-bootstrap/Button';
-import Helmet from 'react-helmet';
 import AnalyticsActions from '../../actions/AnalyticsActions';
 import FacebookActions from '../../actions/FacebookActions';
 import TwitterActions from '../../actions/TwitterActions';
@@ -412,11 +411,9 @@ export default class SignInOptionsPanel extends Component {
       return LoadingWheel;
     }
 
-    let pageTitle = 'Sign In - We Vote';
     let yourAccountTitle = 'Security & Sign In';
     let yourAccountExplanation = '';
     if (voterIsSignedIn) {
-      pageTitle = 'Security & Sign In - We Vote';
       if (voterIsSignedInFacebook && !voterIsSignedInTwitter && (isOnWeVoteRootUrl || isOnWeVoteSubdomainUrl)) {
         yourAccountTitle = 'Have Twitter Too?';
         yourAccountExplanation = 'By adding your Twitter account to your We Vote profile, you get access to the voter guides of everyone you follow.';
@@ -434,7 +431,6 @@ export default class SignInOptionsPanel extends Component {
 
     return (
       <>
-        <Helmet title={pageTitle} />
         <SnackNotifier />
         {!hideDialogForCordova &&
           <BrowserPushMessage incomingProps={this.props} />}

@@ -1,11 +1,13 @@
 import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
-import React, { Component } from 'react';
+import React, { Component, Suspense } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import OpenExternalWebSite from '../../common/components/Widgets/OpenExternalWebSite';
 import { isWebApp } from '../../common/utils/isCordovaOrWebApp';
 import AppObservableStore from '../../stores/AppObservableStore';
+
+const BallotElectionListWithFilters = React.lazy(() => import(/* webpackChunkName: 'BallotElectionListWithFilters' */ '../Ballot/BallotElectionListWithFilters'));
 
 class FooterMainWeVote extends Component {
   openHowItWorksModal = () => {
@@ -89,6 +91,16 @@ class FooterMainWeVote extends Component {
             We do not support or oppose any political party or candidate.
           </Text>
         </BottomSection>
+        <SearchEngineOptimizationSection>
+          <Suspense fallback={<></>}>
+            <BallotElectionListWithFilters
+              ballotBaseUrl="/ballot"
+              hideUpcomingElectionTitle
+              showSimpleDisplay
+              stateToShow="all"
+            />
+          </Suspense>
+        </SearchEngineOptimizationSection>
       </Wrapper>
     );
   }
@@ -139,6 +151,13 @@ const OneRow = styled('div')`
 
 const RowSpacer = styled('div')`
   margin-right: 15px;
+`;
+
+const SearchEngineOptimizationSection = styled('div')`
+  display: flex;
+  flex-flow: column;
+  padding-top: 15px;
+  align-items: center;
 `;
 
 const Text = styled('p')(({ theme }) => (`

@@ -8,6 +8,7 @@ import OrganizationActions from '../../actions/OrganizationActions';
 import VoterActions from '../../actions/VoterActions';
 import VoterGuideActions from '../../actions/VoterGuideActions';
 import LoadingWheel from '../../common/components/Widgets/LoadingWheel';
+import { convertStateCodeToStateText } from '../../common/utils/addressFunctions';
 import { electionDateTomorrowFormatted, formatDateMMMDoYYYY } from '../../common/utils/dateFormat';
 import historyPush from '../../common/utils/historyPush';
 import initializeMoment from '../../common/utils/initializeMoment';
@@ -299,6 +300,24 @@ export default class BallotElectionListWithFilters extends Component {
     }
   }
 
+  orderByAlphabetical = (firstEntry, secondEntry) => {
+    let firstEntryName;
+    let secondEntryName = 'z';
+    if (firstEntry && firstEntry.state_code) {
+      firstEntryName = firstEntry.state_code;
+    } else if (firstEntry && firstEntry.election_description_text) {
+      firstEntryName = firstEntry.election_description_text;
+    }
+    if (secondEntry && secondEntry.state_code) {
+      secondEntryName = secondEntry.state_code;
+    } else if (secondEntry && secondEntry.election_description_text) {
+      secondEntryName = secondEntry.election_description_text;
+    }
+    if (firstEntryName < secondEntryName) { return -1; }
+    if (firstEntryName > secondEntryName) { return 1; }
+    return 0;
+  };
+
   executeDifferentElection (election) {
     if (election) {
       const { ballotBaseUrl, displayElectionsForOrganizationVoterGuidesMode } = this.props;
@@ -314,9 +333,11 @@ export default class BallotElectionListWithFilters extends Component {
   }
 
   renderUpcomingElectionList (list, currentDate) {
+    const { showSimpleDisplay } = this.props;
     if (!list || !Array.isArray(list)) {
       return null;
     }
+    let stateName;
     const renderedList = list.map((election) => {
       // console.log('election: ', election);
       if (!election.election_description_text || election.election_description_text === '') return null;
@@ -326,41 +347,54 @@ export default class BallotElectionListWithFilters extends Component {
         electionStateCodeList = election.state_code_list || [];
       }
       const electionId = election.google_civic_election_id || 0;
+      stateName = convertStateCodeToStateText(election.state_code) || election.state_code;
       return (electionDateTomorrow > currentDate) && (
         <div key={`upcoming-election-${election.google_civic_election_id}`}>
-          <div className="list-unstyled">
-            <ElectionButton
-              color="primary"
-              fullWidth
-              href=""
-              id={`ballotElectionListWithFiltersButton-${election.google_civic_election_id}`}
-              onClick={() => this.executeDifferentElection(election)}
-              variant="contained"
-            >
-              <ButtonContentsWrapper>
-                <ElectionTitle>
-                  {formatDateMMMDoYYYY(election.election_day_text)}
-                  {' - '}
-                  {election.election_description_text.split(' in')[0]}
-                </ElectionTitle>
-                <ElectionStates>
-                  {electionStateCodeList.map((stateAbbrev, index) => {
-                    if (index < 5) {
-                      return (
-                        <ElectionState key={`upcomingElection-${electionId}-${stateAbbrev}`}>{stateAbbrev}</ElectionState>
-                      );
-                    } else if (index === 6) {
-                      return (
-                        <span key="upcomingElectionPlus">{`+${electionStateCodeList.length - 6}`}</span>
-                      );
-                    } else {
-                      return null;
-                    }
-                  })}
-                </ElectionStates>
-              </ButtonContentsWrapper>
-            </ElectionButton>
-          </div>
+          {showSimpleDisplay ? (
+            <>
+              {stateName && (
+                <OneSimpleElectionWrapper className="u-link-color-on-hover" onClick={() => this.executeDifferentElection(election)}>
+                  {stateName}
+                  {' '}
+                  Sample Ballot
+                </OneSimpleElectionWrapper>
+              )}
+            </>
+          ) : (
+            <div className="list-unstyled">
+              <ElectionButton
+                color="primary"
+                fullWidth
+                href=""
+                id={`ballotElectionListWithFiltersButton-${election.google_civic_election_id}`}
+                onClick={() => this.executeDifferentElection(election)}
+                variant="contained"
+              >
+                <ButtonContentsWrapper>
+                  <ElectionTitle>
+                    {formatDateMMMDoYYYY(election.election_day_text)}
+                    {' - '}
+                    {election.election_description_text.split(' in')[0]}
+                  </ElectionTitle>
+                  <ElectionStates>
+                    {electionStateCodeList.map((stateAbbrev, index) => {
+                      if (index < 5) {
+                        return (
+                          <ElectionState key={`upcomingElection-${electionId}-${stateAbbrev}`}>{stateAbbrev}</ElectionState>
+                        );
+                      } else if (index === 6) {
+                        return (
+                          <span key="upcomingElectionPlus">{`+${electionStateCodeList.length - 6}`}</span>
+                        );
+                      } else {
+                        return null;
+                      }
+                    })}
+                  </ElectionStates>
+                </ButtonContentsWrapper>
+              </ElectionButton>
+            </div>
+          )}
         </div>
       );
     });
@@ -547,9 +581,11 @@ export default class BallotElectionListWithFilters extends Component {
     let { showPriorElectionsList, hideUpcomingElectionsList } = this.props;
     // console.log('this.state.ballotElectionList:', this.state.ballotElectionList);
 
-    const ballotElectionListUpcomingSorted = this.state.ballotElectionList.concat();
+    let ballotElectionListUpcomingSorted = this.state.ballotElectionList.concat();
+    // First put them in alphabetical order
+    ballotElectionListUpcomingSorted = ballotElectionListUpcomingSorted.sort(this.orderByAlphabetical);
     // We want to sort ascending so the next upcoming election is first
-    ballotElectionListUpcomingSorted.sort((a, b) => {
+    ballotElectionListUpcomingSorted = ballotElectionListUpcomingSorted.sort((a, b) => {
       const electionDayTextA = a.election_day_text.toLowerCase();
       const electionDayTextB = b.election_day_text.toLowerCase();
       if (electionDayTextA < electionDayTextB) { // sort string ascending
@@ -563,10 +599,10 @@ export default class BallotElectionListWithFilters extends Component {
     const upcomingElectionListByState = this.renderUpcomingElectionListByState(ballotElectionListUpcomingSorted, currentDate);
 
     let priorElectionList = [];
-    const ballotElectionListPastSorted = this.state.ballotElectionList.concat();
+    let ballotElectionListPastSorted = this.state.ballotElectionList.concat();
     if (showPriorElectionsList) {
       // We want to sort descending so the most recent election is first
-      ballotElectionListPastSorted.sort((a, b) => {
+      ballotElectionListPastSorted = ballotElectionListPastSorted.sort((a, b) => {
         const electionDayTextA = a.election_day_text.toLowerCase();
         const electionDayTextB = b.election_day_text.toLowerCase();
         if (electionDayTextA < electionDayTextB) { // sort string descending
@@ -660,6 +696,7 @@ BallotElectionListWithFilters.propTypes = {
   hideUpcomingElectionTitle: PropTypes.bool,
   organizationWeVoteId: PropTypes.string, // If looking at voter guide, we pass in the parent organizationWeVoteId
   showPriorElectionsList: PropTypes.bool,
+  showSimpleDisplay: PropTypes.bool,
   stateToShow: PropTypes.string,
   toggleFunction: PropTypes.func,
 };
@@ -706,6 +743,11 @@ const ElectionState = styled('div')`
   display: flex;
   align-items: center;
   margin: 0 2px;
+`;
+
+const OneSimpleElectionWrapper = styled('div')`
+  cursor: pointer;
+  margin-top: 12px;
 `;
 
 const PriorOrUpcomingElectionsWrapper = styled('div')`
