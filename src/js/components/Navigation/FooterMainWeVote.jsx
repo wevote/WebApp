@@ -40,7 +40,7 @@ class FooterMainWeVote extends Component {
               <Link id="footerLinkTermsOfUse" className={classes.link} to="/more/terms">Terms</Link>
             </OneRow>
             <OneRow>
-              { isWebApp() ? (
+              {isWebApp() ? (
                 <>
                   <OpenExternalWebSite
                     linkIdAttribute="footerLinkAbout"
@@ -91,16 +91,19 @@ class FooterMainWeVote extends Component {
             We do not support or oppose any political party or candidate.
           </Text>
         </BottomSection>
-        <SearchEngineOptimizationSection>
-          <Suspense fallback={<></>}>
-            <BallotElectionListWithFilters
-              ballotBaseUrl="/ballot"
-              hideUpcomingElectionTitle
-              showSimpleDisplay
-              stateToShow="all"
-            />
-          </Suspense>
-        </SearchEngineOptimizationSection>
+        {isWebApp() && (
+          <SearchEngineOptimizationSection>
+            <Suspense fallback={<></>}>
+              <BallotElectionListWithFilters
+                ballotBaseUrl="/ballot"
+                hideUpcomingElectionTitle
+                showSimpleDisplay
+                showWhatIsOnBallotTitle
+                stateToShow="all"
+              />
+            </Suspense>
+          </SearchEngineOptimizationSection>
+        )}
       </Wrapper>
     );
   }
@@ -156,7 +159,7 @@ const RowSpacer = styled('div')`
 const SearchEngineOptimizationSection = styled('div')`
   display: flex;
   flex-flow: column;
-  padding-top: 15px;
+  margin-top: 42px;
   align-items: center;
 `;
 

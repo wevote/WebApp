@@ -577,7 +577,7 @@ export default class BallotElectionListWithFilters extends Component {
       );
     }
     const currentDate = window.moment ? window.moment().format('YYYY-MM-DD') : '';
-    const { hideUpcomingElectionTitle, stateToShow } = this.props;
+    const { hideUpcomingElectionTitle, showWhatIsOnBallotTitle, stateToShow } = this.props;
     let { showPriorElectionsList, hideUpcomingElectionsList } = this.props;
     // console.log('this.state.ballotElectionList:', this.state.ballotElectionList);
 
@@ -641,6 +641,11 @@ export default class BallotElectionListWithFilters extends Component {
                 </strong>
               </PriorOrUpcomingElectionsWrapper>
             )}
+            {(showWhatIsOnBallotTitle && upcomingElectionList && upcomingElectionList.length ) && (
+              <WhatIsOnTheBallotTitle>
+                What&apos;s on the ballot?
+              </WhatIsOnTheBallotTitle>
+            )}
             { upcomingElectionList && upcomingElectionList.length ?
               (
                 <>
@@ -697,6 +702,7 @@ BallotElectionListWithFilters.propTypes = {
   organizationWeVoteId: PropTypes.string, // If looking at voter guide, we pass in the parent organizationWeVoteId
   showPriorElectionsList: PropTypes.bool,
   showSimpleDisplay: PropTypes.bool,
+  showWhatIsOnBallotTitle: PropTypes.bool,
   stateToShow: PropTypes.string,
   toggleFunction: PropTypes.func,
 };
@@ -756,4 +762,12 @@ const PriorOrUpcomingElectionsWrapper = styled('div')`
 
 const SpaceBetweenElections = styled('div')`
   margin-bottom: 20px;
+`;
+
+const WhatIsOnTheBallotTitle = styled('h2')`
+  margin: 0 !important;
+  font-size: 18px;
+  font-weight: 600;
+  text-align: left !important;
+  margin-bottom: 6px !important;
 `;
