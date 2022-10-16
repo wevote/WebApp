@@ -129,12 +129,14 @@ class VoterEmailAddressEntry extends Component {
 
   voterEmailAddressSave = (event) => {
     // console.log('VoterEmailAddressEntry this.voterEmailAddressSave');
-    const { voterEmailAddress } = this.state;
     event.preventDefault();
-    const sendLinkToSignIn = true;
-    this.setState({
-      loading: true,
-    }, () => VoterActions.voterEmailAddressSave(voterEmailAddress, sendLinkToSignIn));
+    const { displayEmailVerificationButton, voterEmailAddress } = this.state;
+    if (displayEmailVerificationButton && voterEmailAddress) {
+      const sendLinkToSignIn = true;
+      this.setState({
+        loading: true,
+      }, () => VoterActions.voterEmailAddressSave(voterEmailAddress, sendLinkToSignIn));
+    }
   };
 
   showEmailOnlySignInLocal = () => {
@@ -289,6 +291,10 @@ class VoterEmailAddressEntry extends Component {
 
   render () {
     renderLog('VoterEmailAddressEntry');  // Set LOG_RENDER_EVENTS true to log all renders
+    const { doNotRender } = this.props;
+    if (doNotRender) {
+      return null;
+    }
     const { loading } = this.state;
     if (loading) {
       return LoadingWheel;
@@ -583,6 +589,7 @@ VoterEmailAddressEntry.propTypes = {
   classes: PropTypes.object,
   closeSignInModal: PropTypes.func,
   closeVerifyModal: PropTypes.func,
+  doNotRender: PropTypes.bool,
   hideEverythingButSignInWithEmailForm: PropTypes.bool,
   hideSignInWithEmailForm: PropTypes.bool,
   lockOpenEmailVerificationButton: PropTypes.bool,
