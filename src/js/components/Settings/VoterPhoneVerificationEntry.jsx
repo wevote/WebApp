@@ -89,7 +89,8 @@ class VoterPhoneVerificationEntry extends Component {
     const voter = VoterStore.getVoter();
     const { is_signed_in: isSignedIn, signed_in_with_sms_phone_number: signedInWithSmsPhoneNumber } = voter;
     if (secretCodeVerified && !isSignedIn) {
-      VoterActions.voterRetrieve();
+      // VoterActions.voterRetrieve(); // Dale 2022-10-16 I think this was causing problems -- monitor to make sure bugs aren't introduced by commenting this out
+      console.log('onVoterStoreChange secretCodeVerified && !isSignedIn, VoterActions.voterRetrieve() commented out');
       // New Nov 5, 2021: this should be the end of the line for this dialog, we have fired off a voterRetrieve that should
       // return is_signed_in true and signed_in_with_sms_phone_number true
       this.closeSignInModalLocal();  // Nov 2022, don't think we ever get there, I think the closeVerifyModal() is doing the job
@@ -159,8 +160,9 @@ class VoterPhoneVerificationEntry extends Component {
     event.preventDefault();
     const { displayPhoneVerificationButton, voterSMSPhoneNumber } = this.state;
     if (voterSMSPhoneNumber && displayPhoneVerificationButton) {
-      VoterActions.voterSMSPhoneNumberSave(voterSMSPhoneNumber);
-      this.setState({ loading: true });
+      this.setState({
+        loading: true,
+      }, () => VoterActions.voterSMSPhoneNumberSave(voterSMSPhoneNumber));
     }
   };
 
@@ -336,6 +338,10 @@ class VoterPhoneVerificationEntry extends Component {
 
   render () {
     renderLog('VoterPhoneVerificationEntry');  // Set LOG_RENDER_EVENTS to log all renders
+    const { doNotRender } = this.props;
+    if (doNotRender) {
+      return null;
+    }
     const { loading } = this.state;
     if (loading) {
       return LoadingWheel;
@@ -633,6 +639,7 @@ VoterPhoneVerificationEntry.propTypes = {
   classes: PropTypes.object,
   closeSignInModal: PropTypes.func,
   closeVerifyModal: PropTypes.func,
+  doNotRender: PropTypes.bool,
   hideEverythingButSignInWithPhoneForm: PropTypes.bool,
   hideSignInWithPhoneForm: PropTypes.bool,
   lockOpenPhoneVerificationButton: PropTypes.bool,

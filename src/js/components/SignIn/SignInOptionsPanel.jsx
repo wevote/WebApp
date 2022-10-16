@@ -565,17 +565,19 @@ export default class SignInOptionsPanel extends Component {
                 )}
               </div>
             ) : null}
-            {!hideVoterPhoneEntry && isWebApp() && (
+            {isWebApp() && (
               <VoterPhoneVerificationEntry
                 closeSignInModal={this.closeSignInModalLocalFromEmailOrPhone}
                 closeVerifyModal={this.closeVerifyModalLocal}
+                doNotRender={hideVoterPhoneEntry}
                 hideSignInWithPhoneForm={isCordova()}
                 showAllSignInOptions={this.showAllSignInOptions}
                 showPhoneOnlySignIn={this.showPhoneOnlySignIn}
               />
             )}
-            {!hideVoterPhoneEntry && isCordova() && (
+            {isCordova() && (
               <VoterPhoneEmailCordovaEntryModal
+                doNotRender={hideVoterPhoneEntry}
                 isPhone
                 hideDialogForCordova={this.hideDialogForCordovaLocal}
               />
@@ -587,18 +589,20 @@ export default class SignInOptionsPanel extends Component {
                 &mdash;
               </OrWrapper>
             )}
-            {!hideVoterEmailAddressEntry && isWebApp() && (
+            {isWebApp() && (
               <VoterEmailAddressEntry
                 closeSignInModal={this.closeSignInModalLocalFromEmailOrPhone}
                 closeVerifyModal={this.closeVerifyModalLocal}
+                doNotRender={hideVoterEmailAddressEntry}
                 hideSignInWithEmailForm={isCordova()}
                 showAllSignInOptions={this.showAllSignInOptions}
                 // toggleOtherSignInOptions={this.toggleNonEmailSignInOptions}
                 showEmailOnlySignIn={this.showEmailOnlySignIn}
               />
             )}
-            {!hideVoterEmailAddressEntry && isCordova() && (
+            {isCordova() && (
               <VoterPhoneEmailCordovaEntryModal
+                doNotRender={hideVoterEmailAddressEntry}
                 isPhone={false}
                 hideDialogForCordova={this.hideDialogForCordovaLocal}
               />

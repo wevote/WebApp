@@ -42,6 +42,10 @@ class VoterPhoneEmailCordovaEntryModal extends Component {
 
   render () {
     renderLog('VoterPhoneEmailCordovaEntryModal');  // Set LOG_RENDER_EVENTS to log all renders
+    const { doNotRender } = this.props;
+    if (doNotRender) {
+      return null;
+    }
     const { showDialog } = this.state;
     const { classes, isPhone } = this.props;
     const isSmallApple = isIPhone3p5in() || isIPhone4in() || isIPhone4p7in();
@@ -100,6 +104,7 @@ class VoterPhoneEmailCordovaEntryModal extends Component {
 }
 VoterPhoneEmailCordovaEntryModal.propTypes = {
   classes: PropTypes.object,
+  doNotRender: PropTypes.bool,
   isPhone: PropTypes.bool,
   hideDialogForCordova: PropTypes.func,
 };
