@@ -530,6 +530,7 @@ class SettingsVerifySecretCode extends Component {
                 id="digit1"
                 label={false}
                 maxLength={1}
+                notched={false}
                 onBlur={this.handleBlur}
                 onFocus={this.handleFocus}
                 onChange={this.onDigit1Change}

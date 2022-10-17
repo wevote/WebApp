@@ -136,7 +136,7 @@ export default class HamburgerMenu extends Component {
     //   `/${voterTwitterScreenName}` :
     //   `/voterguide/${voterOrganizationWeVoteId}`;
     const nextReleaseFeaturesEnabled = webAppConfig.ENABLE_NEXT_RELEASE_FEATURES === undefined ? false : webAppConfig.ENABLE_NEXT_RELEASE_FEATURES;
-    // console.log("Hamburger menu this.state.showDeviceDialog " + this.state.showDeviceDialog);
+    // console.log(`Hamburger menu this.state.showDeviceDialog ${this.state.showDeviceDialog}`);
 
     return (
       <PageContentContainer>

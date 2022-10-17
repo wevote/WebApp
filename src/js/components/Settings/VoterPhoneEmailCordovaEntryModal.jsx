@@ -5,6 +5,7 @@ import withTheme from '@mui/styles/withTheme';
 import clsx from 'clsx';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
+import VoterActions from '../../actions/VoterActions';
 import SplitIconButton from '../../common/components/Widgets/SplitIconButton';
 import { isIPhone3p5in, isIPhone4in, isIPhone4p7in } from '../../common/utils/cordovaUtils';
 import { isCordova } from '../../common/utils/isCordovaOrWebApp';
@@ -36,8 +37,10 @@ class VoterPhoneEmailCordovaEntryModal extends Component {
       showDialog: false,
     });
     // This is a hack that handles a dialog calling a dialog, there probably is a better way, but...
+    // It is also a hack that prevents "Cannot dispatch in the middle of a dispatch" and "React state update on an unmounted component"
     const { $ } = window;
     $("div[class*='MuiBackdrop-root']").remove();  // Shouldn't be needed, but this clears the background outside the dialog
+    VoterActions.voterRetrieve();  // Shouldn't be necessary, but encourages a refresh of the header, to update the Avatar.  Just for Cordova.
   }
 
   render () {
