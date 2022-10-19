@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { isWebApp } from '../../common/utils/isCordovaOrWebApp';
 
 const BallotAddress = styled('div', {
   shouldForwardProp: (prop) => !['centerText', 'allowTextWrap'].includes(prop),
@@ -66,12 +67,13 @@ const ElectionStateLabel = styled('div', {
   text-transform: uppercase;
 `));
 
+/* eslint-disable no-nested-ternary */
 const OverflowContent = styled('div', {
   shouldForwardProp: (prop) => !['turnOffVoteByBelow'].includes(prop),
 })(({ theme, turnOffVoteByBelow }) => (`
   display: block;
   flex: 1;
-  ${turnOffVoteByBelow ? 'height: 72px;' : 'height: 97px;'}
+  ${isWebApp() ? (turnOffVoteByBelow ? 'height: 72px;' : 'height: 97px;') : ''}
   ${theme.breakpoints.down('sm')} {
     height: unset;
   }

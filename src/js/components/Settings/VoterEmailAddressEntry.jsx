@@ -158,7 +158,9 @@ class VoterEmailAddressEntry extends Component {
 
   closeSignInModalFromVerifySecretCode = () => {
     // console.log('VoterEmailAddressEntry closeSignInModalFromVerifySecretCode');
-    VoterActions.clearSecretCodeVerificationStatusAndEmail();
+    setTimeout(() => {
+      VoterActions.clearSecretCodeVerificationStatusAndEmail();
+    }, 1000);
     this.closeSignInModalLocal();
   }
 
@@ -171,10 +173,14 @@ class VoterEmailAddressEntry extends Component {
       },
       showVerifyModal: false,
       signInCodeEmailSentAndWaitingForResponse: false,
-    }, () => VoterActions.clearSecretCodeVerificationStatusAndEmail());
-    if (isCordova()) {
-      this.closeSignInModalLocal();
-    }
+    });
+    setTimeout(() => {
+      // A timer hack to prevent a "React state update on an unmounted component"
+      VoterActions.clearSecretCodeVerificationStatusAndEmail();
+      if (isCordova()) {
+        this.closeSignInModalLocal();
+      }
+    }, 1000);
     if (this.props.closeVerifyModal) {
       this.props.closeVerifyModal();
     }
@@ -204,7 +210,10 @@ class VoterEmailAddressEntry extends Component {
       displayEmailVerificationButton: false,
       signInCodeEmailSentAndWaitingForResponse: false,
       voterEmailAddress: '', // Clearing voterEmailAddress variable does not always clear email in form
-    }, () => VoterActions.clearSecretCodeVerificationStatusAndEmail());
+    });
+
+    // console.log('before clearSecretCodeVerificationStatusAndEmail in onCancel');
+    VoterActions.clearSecretCodeVerificationStatusAndEmail();
     const { cancelShouldCloseModal } = this.props;
     // console.log('cancelShouldCloseModal:', cancelShouldCloseModal);
     if (cancelShouldCloseModal) {

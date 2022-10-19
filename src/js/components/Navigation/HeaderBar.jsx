@@ -12,7 +12,7 @@ import apiCalming from '../../common/utils/apiCalming';
 import { hasIPhoneNotch, historyPush, isDeviceZoomed, isIOS } from '../../common/utils/cordovaUtils';
 import { normalizedHrefPage } from '../../common/utils/hrefUtils';
 import { isCordova, isWebApp } from '../../common/utils/isCordovaOrWebApp';
-import isMobileScreenSize, { handleResize, isSmallTablet } from '../../common/utils/isMobileScreenSize';
+import isMobileScreenSize, { handleResize, isSmallTablet, isTablet } from '../../common/utils/isMobileScreenSize';
 import { renderLog } from '../../common/utils/logging';
 import voterPhoto from '../../common/utils/voterPhoto';
 import AnalyticsStore from '../../stores/AnalyticsStore';
@@ -440,7 +440,8 @@ class HeaderBar extends Component {
       avatarStyle = { ...avatarStyle, paddingRight: 10 };
     }
     // console.log('HeaderBar hasNotch, scrolledDown, hasSubmenu', hasIPhoneNotch(), scrolledDown, displayTopMenuShadow());
-    const displayMenu = !isMobileScreenSize();
+    const displayMenu = !isMobileScreenSize() || isTablet();
+    // console.log('HeaderBar isMobileScreenSize(), isTablet()', isMobileScreenSize(), isTablet());
     // If NOT signed in, turn Discuss off and How It Works on
     let discussValue;
     let discussVisible;

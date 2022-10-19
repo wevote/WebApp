@@ -60,6 +60,7 @@ class SignInModal extends Component {
   }
 
   toggleSignInModalSimple () {
+    // console.log('SignInModal  toggleSignInModalSimple');
     const { showSignInModalSimple } = this.state;
     this.setState({
       showSignInModalSimple: !showSignInModalSimple,
