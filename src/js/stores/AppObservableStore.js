@@ -110,6 +110,11 @@ export default {
     messageService.sendMessage('state updated googleAnalyticsPending');
   },
 
+  setOpenReplayPending (enabled) {
+    nonFluxState.openReplayPending = enabled;
+    messageService.sendMessage('state updated openReplayPending');
+  },
+
   setGetStartedMode (getStartedMode) {
     nonFluxState.getStartedMode = getStartedMode;
     messageService.sendMessage('state updated getStartedMode');
@@ -369,6 +374,14 @@ export default {
 
   getGoogleAnalyticsPending () {
     return nonFluxState.googleAnalyticsPending;
+  },
+
+  getOpenReplayEnabled () {
+    return nonFluxState.openReplayEnabled;
+  },
+
+  getOpenReplayPending () {
+    return nonFluxState.openReplayPending;
   },
 
   getHideWeVoteLogo () {

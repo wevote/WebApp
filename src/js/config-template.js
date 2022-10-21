@@ -42,6 +42,8 @@ module.exports = {
   GOOGLE_MAPS_API_KEY: '',
   GOOGLE_PEOPLE_API_KEY: '',
   GOOGLE_PEOPLE_API_CLIENT_ID: '',
+  OPEN_REPLAY_PROJECT_KEY: '',
+
 
   STRIPE_API_KEY: 'pk_test_bWuWGC3jrMIFH3wvRvHR6Z5H',  // This is the publishable key (not secret)
 };

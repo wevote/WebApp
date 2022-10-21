@@ -1,4 +1,5 @@
 import { StyledEngineProvider, ThemeProvider } from '@mui/material/styles';
+import Tracker from '@openreplay/tracker';
 import React, { Component, Suspense } from 'react';
 import FullStory from 'react-fullstory';
 import ReactGA from 'react-ga';
@@ -173,6 +174,26 @@ class App extends Component {
           AppObservableStore.setGoogleAnalyticsPending(false);
         } else {
           console.log('Google Analytics did not receive a trackingID, NOT ENABLED');
+        }
+      }, 3000);
+    }
+    if (!AppObservableStore.getOpenReplayEnabled() && !AppObservableStore.getOpenReplayPending()) {
+      AppObservableStore.setOpenReplayPending(true);
+      setTimeout(() => {
+        // const storedTrackingID = AppObservableStore.getChosenOpenReplayTrackingID();
+        const weVoteOpenReplayProjectKey = webAppConfig.OPEN_REPLAY_PROJECT_KEY;
+        // const trackingID = storedTrackingID || weVoteOpenReplayProjectKey;
+        const openReplayProjectKey = weVoteOpenReplayProjectKey;
+        if (openReplayProjectKey) {
+          console.log('OpenReplay ENABLED');
+          const tracker = new Tracker({
+            projectKey: openReplayProjectKey,
+          });
+          tracker.start();
+          AppObservableStore.setOpenReplayEnabled(true);
+          AppObservableStore.setOpenReplayPending(false);
+        } else {
+          console.log('OpenReplay did not receive a projectKey, NOT ENABLED');
         }
       }, 3000);
     }
