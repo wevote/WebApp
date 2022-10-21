@@ -47,7 +47,9 @@ Node server's port 3000.
 
    * Gives the response: ```Authtoken saved to configuration file: /Users/dalemcgrew/.ngrok2/ngrok.yml```
     
-   * Start up the local process on your machine with: ```~/PycharmProjects/ngrok http https://localhost:3000 -host-header="localhost:3000"```
+   * Start up the local process on your machine with: ```~/PycharmProjects/ngrok http http://localhost:3000 --host-header="localhost:3000"```
+
+   * OR this if you have 'https' locally: ```~/PycharmProjects/ngrok http https://localhost:3000 --host-header="localhost:3000"```
 
 
 ```
