@@ -180,16 +180,26 @@ class App extends Component {
     if (!AppObservableStore.getOpenReplayEnabled() && !AppObservableStore.getOpenReplayPending()) {
       AppObservableStore.setOpenReplayPending(true);
       setTimeout(() => {
-        // const storedTrackingID = AppObservableStore.getChosenOpenReplayTrackingID();
+        // const chosenProjectKey = AppObservableStore.getChosenOpenReplayTrackingID();
         const weVoteOpenReplayProjectKey = webAppConfig.OPEN_REPLAY_PROJECT_KEY;
-        // const trackingID = storedTrackingID || weVoteOpenReplayProjectKey;
-        const openReplayProjectKey = weVoteOpenReplayProjectKey;
+        const weVoteOpenReplayIngestPoint = webAppConfig.OPEN_REPLAY_INGEST_POINT;
+        // const openReplayProjectKey = chosenProjectKey || weVoteOpenReplayProjectKey;
+        const openReplayProjectKey = weVoteOpenReplayProjectKey || '';
+        const openReplayIngestPoint = weVoteOpenReplayIngestPoint || false;
         if (openReplayProjectKey) {
           console.log('OpenReplay ENABLED');
-          const tracker = new Tracker({
-            projectKey: openReplayProjectKey,
-          });
-          tracker.start();
+          if (openReplayIngestPoint) {
+            const tracker1 = new Tracker({
+              projectKey: openReplayProjectKey,
+              ingestPoint: openReplayIngestPoint,
+            });
+            tracker1.start();
+          } else {
+            const tracker2 = new Tracker({
+              projectKey: openReplayProjectKey,
+            });
+            tracker2.start();
+          }
           AppObservableStore.setOpenReplayEnabled(true);
           AppObservableStore.setOpenReplayPending(false);
         } else {

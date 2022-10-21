@@ -54,7 +54,7 @@ export default class BallotElectionListWithFilters extends Component {
     }
     const { voterBallotListHasBeenRetrievedOnce, voterGuideHasBeenRetrievedOnce } = this.state;
     let ballotElectionList;
-    let ballotElectionListCount = 0;
+    let ballotElectionListCount;
     const { displayElectionsForOrganizationVoterGuidesMode, organizationWeVoteId } = this.props;
     if (displayElectionsForOrganizationVoterGuidesMode) {
       ballotElectionList = VoterGuideStore.getVoterGuideElectionList(organizationWeVoteId);
@@ -248,6 +248,24 @@ export default class BallotElectionListWithFilters extends Component {
     }
   }
 
+  orderByAlphabetical = (firstEntry, secondEntry) => {
+    let firstEntryName;
+    let secondEntryName = 'z';
+    if (firstEntry && firstEntry.state_code) {
+      firstEntryName = convertStateCodeToStateText(firstEntry.state_code);
+    } else if (firstEntry && firstEntry.election_description_text) {
+      firstEntryName = firstEntry.election_description_text;
+    }
+    if (secondEntry && secondEntry.state_code) {
+      secondEntryName = convertStateCodeToStateText(secondEntry.state_code);
+    } else if (secondEntry && secondEntry.election_description_text) {
+      secondEntryName = secondEntry.election_description_text;
+    }
+    if (firstEntryName < secondEntryName) { return -1; }
+    if (firstEntryName > secondEntryName) { return 1; }
+    return 0;
+  };
+
   goToBallotForDifferentElection (originalTextForMapSearch, googleCivicElectionId, ballotLocationShortcut = '', ballotReturnedWeVoteId = '') {
     // console.log('BallotElectionListWithFilters, goToBallotForDifferentElection');
     const ballotBaseUrlClean = this.props.ballotBaseUrl || '/ballot';
@@ -299,24 +317,6 @@ export default class BallotElectionListWithFilters extends Component {
       historyPush(destinationUrlForHistoryPush);
     }
   }
-
-  orderByAlphabetical = (firstEntry, secondEntry) => {
-    let firstEntryName;
-    let secondEntryName = 'z';
-    if (firstEntry && firstEntry.state_code) {
-      firstEntryName = convertStateCodeToStateText(firstEntry.state_code);
-    } else if (firstEntry && firstEntry.election_description_text) {
-      firstEntryName = firstEntry.election_description_text;
-    }
-    if (secondEntry && secondEntry.state_code) {
-      secondEntryName = convertStateCodeToStateText(secondEntry.state_code);
-    } else if (secondEntry && secondEntry.election_description_text) {
-      secondEntryName = secondEntry.election_description_text;
-    }
-    if (firstEntryName < secondEntryName) { return -1; }
-    if (firstEntryName > secondEntryName) { return 1; }
-    return 0;
-  };
 
   executeDifferentElection (election) {
     if (election) {
@@ -641,7 +641,7 @@ export default class BallotElectionListWithFilters extends Component {
                 </strong>
               </PriorOrUpcomingElectionsWrapper>
             )}
-            {(showWhatIsOnBallotTitle && upcomingElectionList && upcomingElectionList.length ) && (
+            {(showWhatIsOnBallotTitle && upcomingElectionList && upcomingElectionList.length) && (
               <WhatIsOnTheBallotTitle>
                 What&apos;s on the ballot?
               </WhatIsOnTheBallotTitle>
