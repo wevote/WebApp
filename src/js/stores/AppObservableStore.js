@@ -110,6 +110,11 @@ export default {
     messageService.sendMessage('state updated googleAnalyticsPending');
   },
 
+  setOpenReplayEnabled (enabled) {
+    nonFluxState.openReplayEnabled = enabled;
+    messageService.sendMessage('state updated openReplayEnabled');
+  },
+
   setOpenReplayPending (enabled) {
     nonFluxState.openReplayPending = enabled;
     messageService.sendMessage('state updated openReplayPending');
