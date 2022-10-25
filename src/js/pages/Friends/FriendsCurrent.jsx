@@ -80,44 +80,45 @@ export default class FriendsCurrent extends Component {
   render () {
     renderLog('FriendsCurrent');  // Set LOG_RENDER_EVENTS to log all renders
     const { currentFriendListFilteredBySearch, searchFilterOn, searchTerm } = this.state;
-    let { currentFriendList } = this.state;
+    const { currentFriendList } = this.state;
+    let { currentFriendList: friendListForDisplay } = this.state;
     if (searchFilterOn) {
-      currentFriendList = currentFriendListFilteredBySearch;
+      friendListForDisplay = currentFriendListFilteredBySearch;
     }
 
     return (
       <FriendsCurrentWrapper>
         <Helmet title="Your Friends - We Vote" />
-        <SectionTitle>
-          Your Friends
-          { currentFriendList && currentFriendList.length > 0 && (
-            <>
+        {(currentFriendList && currentFriendList.length > 0) && (
+          <>
+            <SectionTitle>
+              Your Friends
               {' '}
               (
               {currentFriendList.length}
               )
-            </>
-          )}
-        </SectionTitle>
+            </SectionTitle>
+            <SearchBar
+              clearButton
+              searchButton
+              placeholder="Search by name"
+              searchFunction={this.searchFriends}
+              clearFunction={this.clearSearch}
+              searchUpdateDelayTime={0}
+            />
+            <br />
+            { (searchFilterOn && friendListForDisplay.length === 0) && (
+              <p>
+                &quot;
+                {searchTerm}
+                &quot; not found
+              </p>
+            )}
+          </>
+        )}
         <div>
-          <SearchBar
-            clearButton
-            searchButton
-            placeholder="Search by name"
-            searchFunction={this.searchFriends}
-            clearFunction={this.clearSearch}
-            searchUpdateDelayTime={0}
-          />
-          <br />
-          { (searchFilterOn && currentFriendList.length === 0) && (
-            <p>
-              &quot;
-              {searchTerm}
-              &quot; not found
-            </p>
-          )}
           <FriendList
-            friendList={currentFriendList}
+            friendList={friendListForDisplay}
           />
         </div>
       </FriendsCurrentWrapper>

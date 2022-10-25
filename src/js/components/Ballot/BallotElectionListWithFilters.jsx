@@ -333,11 +333,17 @@ export default class BallotElectionListWithFilters extends Component {
   }
 
   renderUpcomingElectionList (list, currentDate) {
-    const { showSimpleDisplay } = this.props;
+    const { candidatesMode, showSimpleDisplay, voterGuidesMode } = this.props;
     if (!list || !Array.isArray(list)) {
       return null;
     }
     let stateName;
+    let simpleModeItemPhrase = <>sample ballot</>;
+    if (candidatesMode) {
+      simpleModeItemPhrase = <>candidates</>;
+    } else if (voterGuidesMode) {
+      simpleModeItemPhrase = <>voter guides</>;
+    }
     const renderedList = list.map((election) => {
       // console.log('election: ', election);
       if (!election.election_description_text || election.election_description_text === '') return null;
@@ -352,12 +358,12 @@ export default class BallotElectionListWithFilters extends Component {
         <div key={`upcoming-election-${election.google_civic_election_id}`}>
           {showSimpleDisplay ? (
             <>
-              {stateName && (
-                <OneSimpleElectionWrapper className="u-link-color-on-hover" onClick={() => this.executeDifferentElection(election)}>
+              {!!(stateName) && (
+                <SimpleModeItemWrapper className="u-link-color-on-hover" onClick={() => this.executeDifferentElection(election)}>
                   {stateName}
                   {' '}
-                  Sample Ballot
-                </OneSimpleElectionWrapper>
+                  {simpleModeItemPhrase}
+                </SimpleModeItemWrapper>
               )}
             </>
           ) : (
@@ -577,15 +583,15 @@ export default class BallotElectionListWithFilters extends Component {
       );
     }
     const currentDate = window.moment ? window.moment().format('YYYY-MM-DD') : '';
-    const { hideUpcomingElectionTitle, showWhatIsOnBallotTitle, stateToShow } = this.props;
+    const { candidatesMode, hideUpcomingElectionTitle, showSimpleDisplay, showSimpleModeTitle, stateToShow, voterGuidesMode } = this.props;
     let { showPriorElectionsList, hideUpcomingElectionsList } = this.props;
     // console.log('this.state.ballotElectionList:', this.state.ballotElectionList);
 
-    let ballotElectionListUpcomingSorted = this.state.ballotElectionList.concat();
+    const ballotElectionListRaw = this.state.ballotElectionList.concat();
     // First put them in alphabetical order
-    ballotElectionListUpcomingSorted = ballotElectionListUpcomingSorted.sort(this.orderByAlphabetical);
+    let ballotElectionListSorted = ballotElectionListRaw.sort(this.orderByAlphabetical);
     // We want to sort ascending so the next upcoming election is first
-    ballotElectionListUpcomingSorted = ballotElectionListUpcomingSorted.sort((a, b) => {
+    ballotElectionListSorted = ballotElectionListSorted.sort((a, b) => {
       const electionDayTextA = a.election_day_text.toLowerCase();
       const electionDayTextB = b.election_day_text.toLowerCase();
       if (electionDayTextA < electionDayTextB) { // sort string ascending
@@ -594,15 +600,14 @@ export default class BallotElectionListWithFilters extends Component {
       if (electionDayTextA > electionDayTextB) return 1;
       return 0; // default return value (no sorting)
     });
-    const upcomingElectionList = this.renderUpcomingElectionList(ballotElectionListUpcomingSorted, currentDate);
-
-    const upcomingElectionListByState = this.renderUpcomingElectionListByState(ballotElectionListUpcomingSorted, currentDate);
+    const upcomingElectionList = this.renderUpcomingElectionList(ballotElectionListSorted, currentDate);
+    const upcomingElectionListByState = this.renderUpcomingElectionListByState(ballotElectionListSorted, currentDate);
 
     let priorElectionList = [];
-    let ballotElectionListPastSorted = this.state.ballotElectionList.concat();
+    ballotElectionListSorted = ballotElectionListRaw;
     if (showPriorElectionsList) {
       // We want to sort descending so the most recent election is first
-      ballotElectionListPastSorted = ballotElectionListPastSorted.sort((a, b) => {
+      ballotElectionListSorted = ballotElectionListSorted.sort((a, b) => {
         const electionDayTextA = a.election_day_text.toLowerCase();
         const electionDayTextB = b.election_day_text.toLowerCase();
         if (electionDayTextA < electionDayTextB) { // sort string descending
@@ -611,11 +616,9 @@ export default class BallotElectionListWithFilters extends Component {
         if (electionDayTextA > electionDayTextB) return -1;
         return 0; // default return value (no sorting)
       });
-      priorElectionList = this.renderPriorElectionList(ballotElectionListPastSorted, currentDate);
+      priorElectionList = this.renderPriorElectionList(ballotElectionListSorted, currentDate);
     }
-
-    const priorElectionListByState = this.renderPriorElectionListByState(ballotElectionListPastSorted, currentDate);
-
+    const priorElectionListByState = this.renderPriorElectionListByState(ballotElectionListSorted, currentDate);
 
     if (priorElectionList && !priorElectionList.length) {
       showPriorElectionsList = false; // Override to hide
@@ -626,7 +629,13 @@ export default class BallotElectionListWithFilters extends Component {
     }
 
     // console.log('hideUpcomingElectionsList: ', hideUpcomingElectionsList, ', showPriorElectionsList: ', showPriorElectionsList);
-
+    let simpleModeTitle = <>What&apos;s on your ballot?</>;
+    if (candidatesMode) {
+      simpleModeTitle = <>Who&apos;s running for office?</>;
+    } else if (voterGuidesMode) {
+      simpleModeTitle = <>Voting recommendations?</>;
+    }
+    // console.log('upcomingElectionList:', upcomingElectionList);
     return (
       <div className="ballot-election-list__list">
         { !hideUpcomingElectionsList && (
@@ -641,27 +650,32 @@ export default class BallotElectionListWithFilters extends Component {
                 </strong>
               </PriorOrUpcomingElectionsWrapper>
             )}
-            {(showWhatIsOnBallotTitle && upcomingElectionList && upcomingElectionList.length) && (
-              <WhatIsOnTheBallotTitle>
-                What&apos;s on the ballot?
-              </WhatIsOnTheBallotTitle>
+            {!!(showSimpleModeTitle && upcomingElectionList && upcomingElectionList.length > 0) && (
+              <SimpleModeTitle>
+                {simpleModeTitle}
+              </SimpleModeTitle>
             )}
-            { upcomingElectionList && upcomingElectionList.length ?
-              (
-                <>
-                  {stateToShow === 'all' ? upcomingElectionList :
-                    upcomingElectionListByState.length > 0 ? upcomingElectionListByState :
-                      'We don\'t have data for any more upcoming elections for this state.'}
-                </>
-              ) : (
-                <Suspense fallback={<></>}>
-                  <DelayedLoad showLoadingText waitBeforeShow={2000}>
-                    <div>
-                      {stateToShow !== 'all' ? 'We don\'t have data yet for any more upcoming elections for this state.' : 'We don\'t have data yet for any more upcoming elections.'}
-                    </div>
-                  </DelayedLoad>
-                </Suspense>
-              )}
+            <>
+              {stateToShow === 'all' ? upcomingElectionList : (upcomingElectionListByState.length > 0) && upcomingElectionListByState}
+            </>
+            {!showSimpleDisplay && (
+              <>
+                {(upcomingElectionList && upcomingElectionList.length > 0) ?
+                  (
+                    <>
+                      {stateToShow === 'all' ? <></> : (upcomingElectionListByState.length > 0) ? <></> : 'We don\'t have data for any more upcoming elections for this state.'}
+                    </>
+                  ) : (
+                    <Suspense fallback={<></>}>
+                      <DelayedLoad showLoadingText waitBeforeShow={2000}>
+                        <div>
+                          {stateToShow !== 'all' ? 'We don\'t have data yet for any more upcoming elections for this state.' : 'We don\'t have data yet for any more upcoming elections.'}
+                        </div>
+                      </DelayedLoad>
+                    </Suspense>
+                  )}
+              </>
+            )}
           </div>
         )}
         {(!hideUpcomingElectionsList && showPriorElectionsList) && (
@@ -669,7 +683,7 @@ export default class BallotElectionListWithFilters extends Component {
             &nbsp;
           </SpaceBetweenElections>
         )}
-        { showPriorElectionsList && (
+        {showPriorElectionsList && (
           <div>
             { priorElectionList && priorElectionList.length ?
               (
@@ -696,15 +710,17 @@ export default class BallotElectionListWithFilters extends Component {
 }
 BallotElectionListWithFilters.propTypes = {
   ballotBaseUrl: PropTypes.string,
+  candidatesMode: PropTypes.bool,
   displayElectionsForOrganizationVoterGuidesMode: PropTypes.bool,
   hideUpcomingElectionsList: PropTypes.bool,
   hideUpcomingElectionTitle: PropTypes.bool,
   organizationWeVoteId: PropTypes.string, // If looking at voter guide, we pass in the parent organizationWeVoteId
   showPriorElectionsList: PropTypes.bool,
   showSimpleDisplay: PropTypes.bool,
-  showWhatIsOnBallotTitle: PropTypes.bool,
+  showSimpleModeTitle: PropTypes.bool,
   stateToShow: PropTypes.string,
   toggleFunction: PropTypes.func,
+  voterGuidesMode: PropTypes.bool,
 };
 
 const ElectionButton = styled(Button)`
@@ -751,7 +767,7 @@ const ElectionState = styled('div')`
   margin: 0 2px;
 `;
 
-const OneSimpleElectionWrapper = styled('div')`
+const SimpleModeItemWrapper = styled('div')`
   cursor: pointer;
   margin-top: 12px;
 `;
@@ -760,14 +776,14 @@ const PriorOrUpcomingElectionsWrapper = styled('div')`
   margin-top: 20px;
 `;
 
-const SpaceBetweenElections = styled('div')`
-  margin-bottom: 20px;
-`;
-
-const WhatIsOnTheBallotTitle = styled('h2')`
+const SimpleModeTitle = styled('h2')`
   margin: 0 !important;
   font-size: 18px;
   font-weight: 600;
   text-align: left !important;
   margin-bottom: 6px !important;
+`;
+
+const SpaceBetweenElections = styled('div')`
+  margin-bottom: 20px;
 `;

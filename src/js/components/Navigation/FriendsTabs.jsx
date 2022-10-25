@@ -22,7 +22,7 @@ class FriendsTabs extends Component {
     super(props);
     this.state = {
       currentFriendList: [],
-      defaultTabItem: 'requests',
+      defaultTabItem: 'remind',
       friendInvitationsSentByMe: [],
       friendInvitationsSentToMe: [],
       suggestedFriendList: [],
@@ -102,7 +102,7 @@ class FriendsTabs extends Component {
 
     if (selectedTab === 'request') selectedTab = 'sent-requests';   /// Hack Oct 17, 2021
     if (selectedTab === 'sent-requests') selectedTab = 'requests';
-    if (selectedTab === 'all') selectedTab = 'requests';
+    if (selectedTab === 'all') selectedTab = 'remind';
 
     // console.log('getSelectedTab tabItem:', tabItem, ', defaultTabItem:', defaultTabItem, ', selectedTab:', selectedTab);
     return selectedTab;
@@ -115,7 +115,7 @@ class FriendsTabs extends Component {
     // console.log('------------ in FriendsTabs getPageFromUrl', href);
     if (href === '/friends') {
       // console.log('------------ in FriendsTabs tabItem: invite');
-      return 'requests';
+      return 'remind';
     }
     return href.replace('/friends/', '');
   }
@@ -128,7 +128,7 @@ class FriendsTabs extends Component {
       // If the voter is directed to a friends tab, make that the default
       defaultTabItem = tabItem;
     } else {
-      defaultTabItem = 'requests';
+      defaultTabItem = 'remind';
     }
     this.setState({ defaultTabItem });
     // console.log('resetDefaultTabForMobile defaultTabItem:', defaultTabItem, ', tabItem:', tabItem);
@@ -156,6 +156,21 @@ class FriendsTabs extends Component {
             aria-label="scrollable auto tabs example"
           >
             <FriendsNavTab
+              value="remind"
+              label={isMobileScreenSize() ? (
+                <>
+                  Remind
+                </>
+              ) : (
+                <span className="u-no-break">
+                  Remind Contacts
+                </span>
+              )}
+              onClick={() => {
+                this.handleNavigation('/friends/remind');
+              }}
+            />
+            <RequestsNavTab
               value="requests"
               label={(
                 <>
@@ -221,7 +236,19 @@ const styles = () => ({
 });
 
 // Styled Mui Component, Tab example:
-const FriendsNavTab = muiStyled(Tab)({
+const FriendsNavTab = muiStyled(Tab)(isMobileScreenSize() ? {
+  minWidth: '0px !important',
+  width: '90px !important',
+  height: '40px !important',
+  maxHeight: '40px !important',
+} : {
+  minWidth: '0px !important',
+  width: 'fit-content !important',
+  height: '40px !important',
+  maxHeight: '40px !important',
+});
+
+const RequestsNavTab = muiStyled(Tab)({
   minWidth: '0px !important',
   width: 'fit-content !important',
   height: '40px !important',

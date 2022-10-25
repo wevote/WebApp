@@ -199,27 +199,43 @@ class SuggestedContactListWithController extends React.Component {
   }
 
   createMessageToFriendDefault = () => {
-    const { messageToFriendsInputOff } = this.props;
+    const { askMode, messageToFriendsInputOff, remindMode } = this.props;
     if (!messageToFriendsInputOff) {
       const { electionDateInFutureFormatted } = this.state;
       let messageToFriendDefault = '';
+      let messageToFriendDefaultAsk = '';
+      let messageToFriendDefaultInviteFriend = '';
+      let messageToFriendDefaultRemind = '';
       // const electionDayText = ElectionStore.getElectionDayText(VoterStore.electionId());
       const electionDayText = BallotStore.currentBallotElectionDate;
       let electionDateFound = false;
       if (electionDayText !== undefined && electionDateInFutureFormatted) {
         const daysUntilElection = daysUntil(electionDayText);
         if (daysUntilElection === 0) {
-          messageToFriendDefault += "I'm getting ready to vote today.";
+          messageToFriendDefaultAsk += "I'm getting ready to vote today.";
+          messageToFriendDefaultInviteFriend += "I'm getting ready to vote today.";
+          messageToFriendDefaultRemind += 'I hope you join me and vote today.';
           electionDateFound = true;
         } else if (daysUntilElection > 0) {
-          messageToFriendDefault += `I'm getting ready for the election on ${electionDateInFutureFormatted}.`;
+          messageToFriendDefaultAsk += `I'm getting ready for the election on ${electionDateInFutureFormatted}.`;
+          messageToFriendDefaultInviteFriend += `I'm getting ready for the election on ${electionDateInFutureFormatted}.`;
+          messageToFriendDefaultRemind += `I'm planning to vote by ${electionDateInFutureFormatted}. I hope you join me.`;
           electionDateFound = true;
         }
       }
       if (!electionDateFound) {
-        messageToFriendDefault += "I'm getting ready to vote.";
+        messageToFriendDefaultAsk += "I'm getting ready to vote.";
+        messageToFriendDefaultInviteFriend += "I'm getting ready to vote.";
       }
-      messageToFriendDefault += ' Would you like to join me in deciding how to vote?';
+      messageToFriendDefaultAsk += ' Would you like to join me in deciding how to vote?';
+      messageToFriendDefaultInviteFriend += ' Would you like to join me in deciding how to vote?';
+      if (askMode) {
+        messageToFriendDefault = messageToFriendDefaultAsk;
+      } else if (remindMode) {
+        messageToFriendDefault = messageToFriendDefaultRemind;
+      } else {
+        messageToFriendDefault = messageToFriendDefaultInviteFriend;
+      }
       this.setState({
         messageToFriendDefault,
       }, () => this.setMessageToFriendQueuedToSave());
@@ -269,7 +285,7 @@ class SuggestedContactListWithController extends React.Component {
 
   render () {
     renderLog('SuggestedContactListWithController');  // Set LOG_RENDER_EVENTS to log all renders
-    const { askMode, messageToFriendsInputOff } = this.props;
+    const { askMode, messageToFriendsInputOff, remindMode } = this.props;
     const {
       contactsWithAccountCount, currentFriendListFilteredBySearch, // messageToFriendDefault,
       numberOfItemsToDisplay, searchFilterOn, searchTerm,
@@ -280,14 +296,28 @@ class SuggestedContactListWithController extends React.Component {
     if (searchFilterOn) {
       voterContactEmailList = currentFriendListFilteredBySearch;
     }
+    let sectionDescription;
+    if (askMode) {
+      sectionDescription = 'Asking a contact will send the message above and an invitation to be your friend on We Vote.';
+    } else if (remindMode) {
+      sectionDescription = (
+        <>
+          {/*
+          {voterContactEmailListCount}
+          {' '}
+          friends found. Your reminder could help your friend use their vote!
+          */}
+        </>
+      );
+    }
     // console.log('voterContactEmailList:', voterContactEmailList);
     return (
       <SuggestedContactListControllerWrapper>
         {voterContactEmailListCount > 0 ? (
           <ContactListWrapper>
-            {askMode ? (
+            {(askMode || remindMode) ? (
               <SectionDescription>
-                Asking a contact will send the message above and an invitation to be your friend on We Vote.
+                {sectionDescription}
               </SectionDescription>
             ) : (
               <ContactsFoundText>
@@ -351,6 +381,7 @@ class SuggestedContactListWithController extends React.Component {
               <SuggestedContactList
                 askMode={askMode}
                 numberOfItemsToDisplay={numberOfItemsToDisplay}
+                remindMode={remindMode}
                 voterContactEmailList={voterContactEmailList}
               />
             </SuggestedContactListOuterWrapper>
@@ -373,6 +404,7 @@ class SuggestedContactListWithController extends React.Component {
 SuggestedContactListWithController.propTypes = {
   askMode: PropTypes.bool,
   messageToFriendsInputOff: PropTypes.bool,
+  remindMode: PropTypes.bool,
 };
 
 const ContactListEmptyWrapper = styled('div')`

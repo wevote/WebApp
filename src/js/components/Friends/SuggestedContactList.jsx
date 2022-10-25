@@ -14,7 +14,7 @@ export default class SuggestedContactList extends Component {
 
   render () {
     renderLog('SuggestedContactList');  // Set LOG_RENDER_EVENTS to log all renders
-    const { askMode, numberOfItemsToDisplay, voterContactEmailList } = this.props;
+    const { askMode, numberOfItemsToDisplay, remindMode, voterContactEmailList } = this.props;
     if (voterContactEmailList === undefined) {
       return null;
     }
@@ -28,21 +28,24 @@ export default class SuggestedContactList extends Component {
             return null;
           }
           numberOfItemsDisplayed += 1;
-          // console.log('numberOfItemsDisplayed: ', numberOfItemsDisplayed);
+          // console.log('numberOfItemsDisplayed: ', numberOfItemsDisplayed, 'contact:', contact);
           return (
             <div key={`${contact.email_address_text}-${contact.google_contact_id}-${contact.id}`}>
               <SuggestedFriendDisplayForList
                 askMode={askMode}
+                cityForDisplay={contact.city}
+                emailAddressForDisplay={contact.email_address_text}
                 indicateIfAlreadyOnWeVote
                 // linkedOrganizationWeVoteId={contact.linked_organization_we_vote_id}
                 // mutualFriends={contact.mutual_friends}
                 // positionsTaken={contact.positions_taken}
                 previewMode={previewMode}
-                cityForDisplay={contact.city}
+                remindMode={remindMode}
                 stateCodeForDisplay={contact.state_code}
                 voterContactIgnored={contact.ignore_contact}
                 voterDisplayName={contact.display_name}
-                emailAddressForDisplay={contact.email_address_text}
+                voterFirstName={contact.first_name}
+                voterLastName={contact.last_name}
                 voterPhotoUrlLarge={contact.we_vote_hosted_profile_image_url_medium}
                 voterWeVoteId={contact.voter_we_vote_id}
               />
@@ -60,6 +63,7 @@ SuggestedContactList.propTypes = {
   askMode: PropTypes.bool,
   numberOfItemsToDisplay: PropTypes.number,
   previewMode: PropTypes.bool,
+  remindMode: PropTypes.bool,
   voterContactEmailList: PropTypes.array,
 };
 

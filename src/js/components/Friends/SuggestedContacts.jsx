@@ -42,7 +42,15 @@ export default class SuggestedContacts extends Component {
         {(voterContactEmailListCount > 0) ? (
           <SuggestedContactsWrapper>
             <SectionTitle>
-              Your Contacts
+              {askMode ? (
+                <>
+                  Your Contacts
+                </>
+              ) : (
+                <>
+                  Add friends from your contacts
+                </>
+              )}
             </SectionTitle>
             <div>
               <SuggestedContactListWithController askMode={askMode} messageToFriendsInputOff={messageToFriendsInputOff} />

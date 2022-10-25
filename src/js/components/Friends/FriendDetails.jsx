@@ -41,6 +41,7 @@ class FriendDetails extends Component {
       mutualFriendCount,
       mutualFriendPreviewList,
       positionsTaken,
+      remindMode,
       twitterDescriptionMinusName,
       voterEmailAddress,
       voterTwitterHandle,
@@ -179,7 +180,7 @@ class FriendDetails extends Component {
         )}
         { invitationStateText ? <p>{invitationStateText}</p> : null }
         { twitterDescriptionMinusName ? <p>{twitterDescriptionMinusName}</p> : null }
-        {!!(indicateIfAlreadyOnWeVote && !voterWeVoteId) && (
+        {!!(indicateIfAlreadyOnWeVote && !voterWeVoteId && !remindMode) && (
           <InviteToWeVoteLine inSideColumn={inSideColumn}>
             <span style={{ }}>Invite to We Vote</span>
           </InviteToWeVoteLine>
@@ -196,6 +197,7 @@ FriendDetails.propTypes = {
   mutualFriendCount: PropTypes.number,
   mutualFriendPreviewList: PropTypes.array,
   positionsTaken: PropTypes.number,
+  remindMode: PropTypes.bool,
   twitterDescriptionMinusName: PropTypes.string,
   voterDisplayName: PropTypes.string,
   voterEmailAddress: PropTypes.string,

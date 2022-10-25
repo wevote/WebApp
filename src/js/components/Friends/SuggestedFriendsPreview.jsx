@@ -69,7 +69,7 @@ export default class SuggestedFriendsPreview extends Component {
           <section>
             <div>
               <SectionTitle className="u-cursor--pointer" onClick={this.goToSuggestedFriends}>
-                People You May Know
+                People you may know
               </SectionTitle>
               <SectionDescription>
                 Add friends you feel comfortable talking politics with.

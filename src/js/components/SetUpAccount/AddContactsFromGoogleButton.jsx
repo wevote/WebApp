@@ -68,7 +68,7 @@ class AddContactsFromGoogleButton extends Component {
     if (addContactsState === AddContactConsts.requestingSignIn) {
       if (signedIn) {
         this.setState({ addContactsState: AddContactConsts.requestingContacts });
-        console.log('Getting contacts from Google after signIn');
+        console.log('requestingContacts from Google after requestingSignIn');
         this.getOtherConnections();
       } else {
         console.log('Google signIn failed');
@@ -139,24 +139,37 @@ class AddContactsFromGoogleButton extends Component {
     }
   }
 
+  processGooglePeopleMeResponse = (result) => {
+    // If we got a name back from Google, and the current voter doesn't have a name stored yet, save it
+    // This way, if a voter who isn't fully signed in is reminding friends to vote, at least we can show their name.
+    // console.log('processGooglePeopleMeResponse');
+    if (result && result.names && result.names[0]) {
+      const { displayName: fullName, familyName: lastName, givenName: firstName } = result.names[0];
+      // console.log('firstName:', firstName, ', lastName:', lastName, ', fullName:', fullName);
+      VoterActions.voterFullNameSoftSave(firstName, lastName, fullName);
+    }
+  }
+
   getOtherConnections = () => {
     // console.log('AddContactsFromGoogleButton getOtherConnections');
     const { gapi } = window;
     const setEmail = new Set();
     const contacts = new Set();
+    // console.log('gapi:', gapi);
+
     // Get current voter's name and email - Work in progress 2022-09
-    /*
     gapi.client.people.people.get({
       resourceName: 'people/me',
       personFields: 'metadata,names,emailAddresses',
     }).then((response) => {
       // const others = response.result.otherContacts;
-      console.log(response);
+      // console.log('people/me response:', response);
+      this.processGooglePeopleMeResponse(response.result);
     }, (error) => {
       console.error('people.me error');
       console.error(JSON.stringify(error, null, 2));
     });
-    */
+
     // Get "Other Contacts" list
     gapi.client.people.otherContacts.list({
       pageSize: 1000,
@@ -164,7 +177,7 @@ class AddContactsFromGoogleButton extends Component {
     }).then((response) => {
       this.setState({ addContactsState: AddContactConsts.receivedContacts  });
       const others = response.result.otherContacts;
-      // console.log(response);
+      // console.log('otherContacts:', response);
       for (let i = 0; i < others.length; i++) {
         const other = others[i];
         const person = {
@@ -267,8 +280,9 @@ class AddContactsFromGoogleButton extends Component {
 
   render () {
     renderLog('AddContactsFromGoogleButton');  // Set LOG_RENDER_EVENTS to log all renders
-    const { darkButton, labelText } = this.props;
-    const label = labelText || isWebApp() ? 'Check Gmail for contacts to import:' : 'Check for contacts to import from this phone:';
+    const { darkButton } = this.props; // labelText
+    // const label = labelText || isWebApp() ? 'Check Gmail for contacts to import' : 'Check for contacts to import from this phone';
+    const label = '';
     const { addContactsState } = this.state;
     // console.log('render in AddContactsFromGoogleButton, addContactsState: ', addContactsState);
     const waitingForImportsActionToFinish = (addContactsState === AddContactConsts.requestingContacts) || (addContactsState === AddContactConsts.sendingContacts) || (addContactsState === AddContactConsts.receivedContacts);
@@ -355,7 +369,7 @@ class AddContactsFromGoogleButton extends Component {
 }
 AddContactsFromGoogleButton.propTypes = {
   darkButton: PropTypes.bool,
-  labelText: PropTypes.string,
+  // labelText: PropTypes.string,
 };
 
 const styles = () => ({

@@ -198,6 +198,7 @@ export function getApplicationViewBooleans (pathname) {
       pathnameLowerCase.startsWith('/how') ||
       pathnameLowerCase.startsWith('/more/pricing') ||
       pathnameLowerCase.startsWith('/register') ||
+      pathnameLowerCase.startsWith('/remind') ||
       pathnameLowerCase.startsWith('/settings/voterguidelist') ||
       pathnameLowerCase.startsWith('/setupaccount') ||
       pathnameLowerCase.startsWith('/settings/voterguidesmenu') ||
