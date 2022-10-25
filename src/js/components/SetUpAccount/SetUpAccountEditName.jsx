@@ -187,14 +187,21 @@ class SetUpAccountEditName extends React.Component {
 
   render () {
     renderLog('SetUpAccountEditName');  // Set LOG_RENDER_EVENTS to log all renders
+    const { remindMode } = this.props;
     const {
       showVerifyModal, voterEmailMissing,
       voterFirstNameMissing, voterLastNameMissing, voterEmailQueuedToSaveLocal,
     } = this.state;
 
+    let pageTitle = 'Set up your account';
+    if (remindMode) {
+      pageTitle = 'Add your name so your friends know its you';
+    }
     return (
       <StepCenteredWrapper>
-        <SetUpAccountTitle>Set up your account</SetUpAccountTitle>
+        <SetUpAccountTitle>
+          {pageTitle}
+        </SetUpAccountTitle>
         <InputFieldsWrapper>
           <Suspense fallback={<></>}>
             <OneInputFieldWrapper>
@@ -226,6 +233,7 @@ SetUpAccountEditName.propTypes = {
   functionToUseWhenProfileNotComplete: PropTypes.func,
   goToNextStep: PropTypes.func,
   nextButtonClicked: PropTypes.bool,
+  remindMode: PropTypes.bool,
 };
 
 const styles = () => ({

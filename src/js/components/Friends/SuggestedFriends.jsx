@@ -1,9 +1,7 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { renderLog } from '../../common/utils/logging';
 import SuggestedFriendList from './SuggestedFriendList';
-import MessageCard from '../Widgets/MessageCard';
 import FriendStore from '../../stores/FriendStore';
 import { SectionDescription, SectionTitle } from '../Style/friendStyles';
 import sortFriendListByMutualFriends from '../../utils/friendFunctions';
@@ -36,29 +34,14 @@ export default class SuggestedFriends extends Component {
 
   render () {
     renderLog('SuggestedFriends');  // Set LOG_RENDER_EVENTS to log all renders
-    const { displayedOnDedicatedPage } = this.props;
     const { suggestedFriendList } = this.state;
-    if (displayedOnDedicatedPage && (!suggestedFriendList || suggestedFriendList.length === 0)) {
-      return (
-        <>
-          <SectionTitle>
-            People You May Know
-          </SectionTitle>
-          <MessageCard
-            mainText="You currently have no suggested friends. Invite your friends to connect!"
-            buttonText="Invite Friends"
-            buttonURL="/friends/invite"
-          />
-        </>
-      );
-    }
 
     return (
       <>
         {(suggestedFriendList && suggestedFriendList.length > 0) && (
           <SuggestedFriendsWrapper>
             <SectionTitle>
-              People You May Know
+              People you may know
             </SectionTitle>
             <SectionDescription>
               Add friends you feel comfortable talking politics with.
@@ -74,7 +57,6 @@ export default class SuggestedFriends extends Component {
   }
 }
 SuggestedFriends.propTypes = {
-  displayedOnDedicatedPage: PropTypes.bool,
 };
 
 const SuggestedFriendsWrapper = styled('div')`

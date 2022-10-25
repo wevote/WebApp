@@ -121,6 +121,7 @@ class News extends Component {
     }
     AppObservableStore.setShowSelectBallotModal(false, false, false);
     this.preloadTimer = setTimeout(() => lazyPreloadPages(), 2000);
+    window.scrollTo(0, 0);
   }
 
   componentDidCatch (error, info) {

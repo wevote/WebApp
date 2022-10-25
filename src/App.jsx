@@ -73,6 +73,7 @@ const ReadyLight = React.lazy(() => import(/* webpackChunkName: 'ReadyLight' */ 
 const ReadyRedirect = React.lazy(() => import(/* webpackChunkName: 'ReadyRedirect' */ './js/pages/ReadyRedirect'));
 const Register = React.lazy(() => import(/* webpackChunkName: 'Register' */ './js/pages/Register'));
 const RegisterToVote = React.lazy(() => import(/* webpackChunkName: 'RegisterToVote' */ './js/pages/More/RegisterToVote'));
+const RemindContactsRoot = React.lazy(() => import(/* webpackChunkName: 'RemindContactsRoot' */ './js/pages/Remind/RemindContactsRoot'));
 const SampleBallot = React.lazy(() => import(/* webpackChunkName: 'SampleBallot' */ './js/pages/Intro/SampleBallot'));
 const SearchPage = React.lazy(() => import(/* webpackChunkName: 'SearchPage' */ './js/pages/More/SearchPage'));
 const SettingsDashboard = React.lazy(() => import(/* webpackChunkName: 'SettingsDashboard' */ './js/pages/Settings/SettingsDashboard'));
@@ -365,6 +366,8 @@ class App extends Component {
                     <Route path="/ready/modal/:modal_to_show/:shared_item_code" exact render={(props) => (<RouterV5SendMatch componentName="Ready" {...props} />)} />
                     <Route path="/ready/modal/:modal_to_show" exact render={(props) => (<RouterV5SendMatch componentName="Ready" {...props} />)} />
                     <Route path="/register" component={Register} />
+                    <Route path="/remind/:set_up_page" exact component={RemindContactsRoot} />
+                    <Route path="/remind" exact><RemindContactsRoot /></Route>
                     <Route path="/settings" exact component={SettingsDashboard} />
                     <Route path="/settings/claim" exact component={ClaimYourPage} />
                     <Route path="/settings/hamburger" exact component={HamburgerMenu} />

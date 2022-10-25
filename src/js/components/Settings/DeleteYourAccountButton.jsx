@@ -150,7 +150,7 @@ const styles = () => ({
   },
   deleteAllDataLink: {
     boxShadow: 'none !important',
-    color: '#999',
+    color: '#808080',
     marginTop: 0,
     padding: 0,
     textTransform: 'none',

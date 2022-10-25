@@ -90,6 +90,7 @@ export function pageEnumeration () {
   } else if (path.startsWith('/friends/sent-requests') || path.startsWith('/friends/requests')) {
     return CordovaPageConstants.friendsSentRequest;
   } else if (path.startsWith('/findfriends') ||
+             path.startsWith('/remind') ||
              path.startsWith('/start') ||
              path.startsWith('/setupaccount') ||
              path.startsWith('/unsubscribe')) {

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import Helmet from 'react-helmet';
+import styled from 'styled-components';
 import AnalyticsActions from '../../actions/AnalyticsActions';
 import { renderLog } from '../../common/utils/logging';
 import AddFriendsByEmail from '../../components/Friends/AddFriendsByEmail';
@@ -21,11 +21,14 @@ export default class InviteByEmail extends Component {
   render () {
     renderLog('InviteByEmail');  // Set LOG_RENDER_EVENTS to log all renders
     return (
-      <div>
-        <Helmet title="Invite Friends" />
+      <InviteByEmailWrapper>
         <SectionTitle>Invite Friends by Email</SectionTitle>
         <AddFriendsByEmail />
-      </div>
+      </InviteByEmailWrapper>
     );
   }
 }
+
+const InviteByEmailWrapper = styled('div')`
+  margin-bottom: 48px;
+`;

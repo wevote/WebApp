@@ -98,7 +98,6 @@ class SettingsVerifySecretCode extends Component {
 
   componentWillUnmount () {
     // console.log('SettingsVerifySecretCode componentWillUnmount');
-    this.closeVerifyModalLocal();
     this.voterStoreListener.remove();
     if (this.closeVerifyModalLocalTimer) {
       clearTimeout(this.closeVerifyModalLocalTimer);
@@ -107,6 +106,7 @@ class SettingsVerifySecretCode extends Component {
       clearTimeout(this.clearSecretCodeVerificationStatusTimer);
     }
     window.removeEventListener('paste', this.onPaste);
+    this.closeVerifyModalLocal();
   }
 
   handleDigit6Blur = () => {
