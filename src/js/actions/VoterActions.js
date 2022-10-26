@@ -176,6 +176,14 @@ export default {
     });
   },
 
+  voterContactStopIgnoring (emailAddressText, otherVoterWeVoteId = '') {
+    Dispatcher.loadEndpoint('voterContactSave', {
+      email_address_text: emailAddressText,
+      stop_ignoring_voter_contact: true,
+      other_voter_we_vote_id: otherVoterWeVoteId,
+    });
+  },
+
   voterContactListAugmentWithLocation (augmentWithLocation = false) {
     Dispatcher.loadEndpoint('voterContactListSave', {
       augment_voter_contact_emails_with_location: augmentWithLocation,

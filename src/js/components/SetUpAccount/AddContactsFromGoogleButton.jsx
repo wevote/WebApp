@@ -280,9 +280,8 @@ class AddContactsFromGoogleButton extends Component {
 
   render () {
     renderLog('AddContactsFromGoogleButton');  // Set LOG_RENDER_EVENTS to log all renders
-    const { darkButton } = this.props; // labelText
-    // const label = labelText || isWebApp() ? 'Check Gmail for contacts to import' : 'Check for contacts to import from this phone';
-    const label = '';
+    const { darkButton, labelText } = this.props; // labelText
+    const label = labelText || isWebApp() ? 'Import contacts from Gmail' : 'Import contacts from this phone';
     const { addContactsState } = this.state;
     // console.log('render in AddContactsFromGoogleButton, addContactsState: ', addContactsState);
     const waitingForImportsActionToFinish = (addContactsState === AddContactConsts.requestingContacts) || (addContactsState === AddContactConsts.sendingContacts) || (addContactsState === AddContactConsts.receivedContacts);
@@ -369,7 +368,7 @@ class AddContactsFromGoogleButton extends Component {
 }
 AddContactsFromGoogleButton.propTypes = {
   darkButton: PropTypes.bool,
-  // labelText: PropTypes.string,
+  labelText: PropTypes.string,
 };
 
 const styles = () => ({

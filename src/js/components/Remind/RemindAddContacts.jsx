@@ -11,7 +11,7 @@ import {
   StepCenteredWrapper,
 } from '../Style/SetUpAccountStyles';
 
-class RemindInviteContacts extends React.Component {
+class RemindAddContacts extends React.Component {
   constructor (props) {
     super(props);
     this.state = {
@@ -23,38 +23,36 @@ class RemindInviteContacts extends React.Component {
   }
 
   componentDidUpdate (prevProps) {
-    // console.log('RemindInviteContacts componentDidUpdate prevProps.nextButtonClicked:', prevProps.nextButtonClicked, ', this.props.nextButtonClicked:', this.props.nextButtonClicked);
+    // console.log('RemindAddContacts componentDidUpdate prevProps.nextButtonClicked:', prevProps.nextButtonClicked, ', this.props.nextButtonClicked:', this.props.nextButtonClicked);
     if (prevProps.nextButtonClicked === false && this.props.nextButtonClicked === true) {
       this.props.goToNextStep();
     }
   }
 
   render () {
-    renderLog('RemindInviteContacts');  // Set LOG_RENDER_EVENTS to log all renders
+    renderLog('RemindAddContacts');  // Set LOG_RENDER_EVENTS to log all renders
     return (
       <StepCenteredWrapper>
         <SetUpAccountTop>
           <SetUpAccountTitle>
-            Remind your friends to vote today
+            Remind 5 of your friends to vote today
           </SetUpAccountTitle>
           <SetUpAccountContactsTextWrapper>
             <SetUpAccountContactsText>
-              Polls predict fewer than 50% of eligible Americans will vote in the next election.
-              {' '}
-              <span className="u-no-break">
-                Let&apos;s change that!
-              </span>
+              We expect to have this feature ready in the next few days. Please come back!
             </SetUpAccountContactsText>
           </SetUpAccountContactsTextWrapper>
         </SetUpAccountTop>
+        {/*
         <SuggestedContactListWithControllerOuterWrapper>
           <SuggestedContactListWithController remindMode />
         </SuggestedContactListWithControllerOuterWrapper>
+        */}
       </StepCenteredWrapper>
     );
   }
 }
-RemindInviteContacts.propTypes = {
+RemindAddContacts.propTypes = {
   goToNextStep: PropTypes.func.isRequired,
   nextButtonClicked: PropTypes.bool,
 };
@@ -63,4 +61,4 @@ const SuggestedContactListWithControllerOuterWrapper = styled('div')`
   margin-top: 64px;
 `;
 
-export default RemindInviteContacts;
+export default RemindAddContacts;

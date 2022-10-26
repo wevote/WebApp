@@ -1,10 +1,13 @@
 import withStyles from '@mui/styles/withStyles';
+import { Button } from '@mui/material';
+import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
 import styled from 'styled-components';
 import FriendActions from '../../actions/FriendActions';
 import BallotActions from '../../actions/BallotActions';
 import VoterActions from '../../actions/VoterActions';
 import apiCalming from '../../common/utils/apiCalming';
+import { isCordovaWide } from '../../common/utils/cordovaUtils';
 import { isWebApp } from '../../common/utils/isCordovaOrWebApp';
 import { renderLog } from '../../common/utils/logging';
 import normalizedImagePath from '../../common/utils/normalizedImagePath';
@@ -12,12 +15,17 @@ import DownloadAppsButtons from './DownloadAppsButtons';
 import Reassurance from '../SetUpAccount/Reassurance';
 import { reassuranceTextRemindContacts } from './reassuranceTextRemindContacts';
 import VoterStore from '../../stores/VoterStore';
+import {
+  DesktopNextButtonsInnerWrapper, DesktopNextButtonsOuterWrapperUShowDesktopTablet,
+  MobileStaticNextButtonsInnerWrapper, MobileStaticNextButtonsOuterWrapperUShowMobile,
+} from '../Style/NextButtonStyles';
 import { RemindContactsImportText, RemindMainImageImg } from '../Style/RemindStyles';
 import {
   SetUpAccountContactsTextWrapper,
   SetUpAccountTitle,
 } from '../Style/SetUpAccountStyles';
 import SuggestedContactListWithController from '../Friends/SuggestedContactListWithController';
+import historyPush from "../../common/utils/historyPush";
 
 const AddContactsFromGoogleButton = React.lazy(() => import(/* webpackChunkName: 'AddContactsFromGoogleButton' */ '../SetUpAccount/AddContactsFromGoogleButton'));
 
@@ -57,17 +65,30 @@ class RemindContactsStart extends Component {
     });
   }
 
+  goToSkipForNow = () => {
+    historyPush('/remind/addcontacts');
+  }
+
   render () {
     renderLog('RemindContactsStart');  // Set LOG_RENDER_EVENTS to log all renders
+    const { classes } = this.props;
     const { voterContactEmailListCount } = this.state;
     const addressBookSVGSrc = normalizedImagePath(addressBookSVG);
+
+    const desktopInlineButtonsOnInMobile = true;
+    let desktopInlineButtonsOnBreakValue;
+    if (desktopInlineButtonsOnInMobile) {
+      desktopInlineButtonsOnBreakValue = 1;
+    } else {
+      desktopInlineButtonsOnBreakValue = isCordovaWide() ? 1000 : 'sm';
+    }
     const pigsCanFly = false;
     return (
       <>
         {(voterContactEmailListCount > 0) ? (
           <RemindContactsStartWithContactsWrapper>
             <SetUpAccountTitle>
-              Remind five of your contacts
+              Remind 5 of your friends
               {' '}
               <span className="u-no-break">
                 to vote today
@@ -80,7 +101,7 @@ class RemindContactsStart extends Component {
         ) : (
           <RemindContactsStartWrapper>
             <SetUpAccountTitle>
-              Remind five of your friends
+              Remind 5 of your friends
               {' '}
               <span className="u-no-break">
                 to vote today
@@ -88,7 +109,11 @@ class RemindContactsStart extends Component {
             </SetUpAccountTitle>
             <SetUpAccountContactsTextWrapper>
               <RemindContactsImportText>
-                Unless we do something, less than 50% of eligible Americans will vote in the next election.
+                Polls predict fewer than 50% of eligible Americans will vote in the next election.
+                {' '}
+                <span className="u-no-break">
+                  Let&apos;s change that!
+                </span>
               </RemindContactsImportText>
             </SetUpAccountContactsTextWrapper>
             <ImageOuterWrapper>
@@ -104,6 +129,16 @@ class RemindContactsStart extends Component {
               </Suspense>
             </div>
             <Reassurance displayState={1} reassuranceText={reassuranceTextRemindContacts} />
+            <DesktopNextButtonsOuterWrapperUShowDesktopTablet breakValue={desktopInlineButtonsOnBreakValue}>
+              <DesktopNextButtonsInnerWrapper>
+                <Button
+                  classes={{ root: classes.addFriendsManuallyLink }}
+                  onClick={this.goToSkipForNow}
+                >
+                  Or, add friends manually
+                </Button>
+              </DesktopNextButtonsInnerWrapper>
+            </DesktopNextButtonsOuterWrapperUShowDesktopTablet>
             {(isWebApp() && pigsCanFly) && (
               <DownloadAppsButtons />
             )}
@@ -114,9 +149,22 @@ class RemindContactsStart extends Component {
   }
 }
 RemindContactsStart.propTypes = {
+  classes: PropTypes.object,
 };
 
 const styles = () => ({
+  addFriendsManuallyLink: {
+    boxShadow: 'none !important',
+    color: '#065FD4',
+    marginTop: 10,
+    padding: '0 20px',
+    textTransform: 'none',
+    width: 250,
+    '&:hover': {
+      color: '#4371cc',
+      textDecoration: 'underline',
+    },
+  },
 });
 
 const MainImageWrapper = styled('div')`

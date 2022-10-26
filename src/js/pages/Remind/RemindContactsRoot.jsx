@@ -38,6 +38,7 @@ import FriendStore from '../../stores/FriendStore';
 import VoterStore from '../../stores/VoterStore';
 
 const AddContactsFromGoogleButton = React.lazy(() => import(/* webpackChunkName: 'AddContactsFromGoogleButton' */ '../../components/SetUpAccount/AddContactsFromGoogleButton'));
+const RemindAddContacts = React.lazy(() => import(/* webpackChunkName: 'RemindAddContacts' */ '../../components/Remind/RemindAddContacts'));
 const RemindContactsImport = React.lazy(() => import(/* webpackChunkName: 'RemindContactsImport' */ '../../components/Remind/RemindContactsImport'));
 const RemindContactsPreview = React.lazy(() => import(/* webpackChunkName: 'RemindContactsPreview' */ '../../components/Remind/RemindContactsPreview'));
 const RemindDownloadApp = React.lazy(() => import(/* webpackChunkName: 'RemindDownloadApp' */ '../../components/Remind/RemindDownloadApp'));
@@ -61,7 +62,7 @@ class RemindContactsRoot extends React.Component {
       backToLinkPath: '',
       desktopFixedButtonsOn: false,
       desktopInlineButtonsOnInMobile: false,
-      displayStep: 1, // importcontacts
+      displayStep: 10, // addcontacts 1, // importcontacts
       editNameNextButtonDisabled: true,
       editNameStepVisited: false,
       electionDataExistsForUpcomingElection: false,
@@ -233,6 +234,9 @@ class RemindContactsRoot extends React.Component {
       case 'preview':
         displayStep = 2;
         break;
+      case 'addcontacts':
+        displayStep = 10;
+        break;
       case 'downloadapp':
         displayStep = 11;
         break;
@@ -387,6 +391,16 @@ class RemindContactsRoot extends React.Component {
         } else {
           skipForNowPath = '/ready';
         }
+        break;
+      case 10: // addcontacts
+        backToLinkPath = '/friends/remind';
+        backButtonOn = true;
+        desktopFixedButtonsOn = false;
+        desktopInlineButtonsOnInMobile = true;
+        mobileFixedButtonsOff = true;
+        reassuranceTextOff = false;
+        showDeleteAllContactsOption = false;
+        skipForNowOff = true;
         break;
       case 11: // downloadapp
         backButtonOn = true;
@@ -640,6 +654,17 @@ class RemindContactsRoot extends React.Component {
           </Suspense>
         );
         break;
+      case 10: // addcontacts
+        stepHtml = (
+          <Suspense fallback={<></>}>
+            <RemindAddContacts
+              displayStep={displayStep}
+              goToNextStep={this.goToNextStep}
+              nextButtonClicked={nextButtonClicked}
+            />
+          </Suspense>
+        );
+        break;
       case 11: // downloadapp
         stepHtml = (
           <Suspense fallback={<></>}>
@@ -764,6 +789,14 @@ class RemindContactsRoot extends React.Component {
             nextButtonText={nextButtonText}
             onClickNextButton={this.onClickNextButton}
           />
+        );
+        break;
+      case 10: // addcontacts
+        desktopNextButtonHtml = (
+          <></>
+        );
+        mobileNextButtonHtml = (
+          <></>
         );
         break;
     }
