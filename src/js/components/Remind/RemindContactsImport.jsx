@@ -113,12 +113,16 @@ class RemindContactsImport extends React.Component {
           ) : (
             <SetUpAccountTop>
               <SetUpAccountTitle>
-                Remind five of your friends
+                Remind 5 of your friends
                 {' '}
                 <span className="u-no-break">to vote today</span>
               </SetUpAccountTitle>
               <RemindContactsImportText>
-                Unless we do something, less than 50% of eligible Americans will vote in the next election.
+                Polls predict fewer than 50% of eligible Americans will vote in the next election.
+                {' '}
+                <span className="u-no-break">
+                  Let&apos;s change that!
+                </span>
               </RemindContactsImportText>
             </SetUpAccountTop>
           )}

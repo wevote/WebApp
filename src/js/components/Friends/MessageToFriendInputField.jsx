@@ -77,7 +77,7 @@ class MessageToFriendInputField extends Component {
                   id={`messageToFriendTextArea-${externalUniqueId}`}
                   label="Message"
                   margin="dense"
-                  maxRows={3}
+                  maxRows={8}
                   multiline
                   name="messageToFriend"
                   onChange={this.updateMessageToFriend}

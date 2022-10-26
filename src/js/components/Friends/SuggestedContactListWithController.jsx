@@ -219,7 +219,7 @@ class SuggestedContactListWithController extends React.Component {
         } else if (daysUntilElection > 0) {
           messageToFriendDefaultAsk += `I'm getting ready for the election on ${electionDateInFutureFormatted}.`;
           messageToFriendDefaultInviteFriend += `I'm getting ready for the election on ${electionDateInFutureFormatted}.`;
-          messageToFriendDefaultRemind += `I'm planning to vote by ${electionDateInFutureFormatted}. I hope you join me.`;
+          messageToFriendDefaultRemind += `I'm planning to vote by ${electionDateInFutureFormatted}. I hope you join me!`;
           electionDateFound = true;
         }
       }
