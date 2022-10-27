@@ -64,7 +64,7 @@ class RemindContactsStart extends Component {
     });
   }
 
-  goToSkipForNow = () => {
+  goToAddContactsManually = () => {
     historyPush('/remind/addcontacts');
   }
 
@@ -87,7 +87,7 @@ class RemindContactsStart extends Component {
         {(voterContactEmailListCount > 0) ? (
           <RemindContactsStartWithContactsWrapper>
             <SetUpAccountTitle>
-              Remind 5 of your friends
+              Remind 3 of your friends
               {' '}
               <span className="u-no-break">
                 to vote today
@@ -100,7 +100,7 @@ class RemindContactsStart extends Component {
         ) : (
           <RemindContactsStartWrapper>
             <SetUpAccountTitle>
-              Remind 5 of your friends
+              Remind 3 of your friends
               {' '}
               <span className="u-no-break">
                 to vote today
@@ -127,17 +127,17 @@ class RemindContactsStart extends Component {
                 <AddContactsFromGoogleButton darkButton />
               </Suspense>
             </div>
-            <Reassurance displayState={1} reassuranceText={reassuranceTextRemindContacts} />
             <DesktopNextButtonsOuterWrapperUShowDesktopTablet breakValue={desktopInlineButtonsOnBreakValue}>
               <DesktopNextButtonsInnerWrapper>
                 <Button
-                  classes={{ root: classes.addFriendsManuallyLink }}
-                  onClick={this.goToSkipForNow}
+                  classes={{ root: classes.addContactsManuallyLink }}
+                  onClick={this.goToAddContactsManually}
                 >
-                  Or remind friends manually
+                  Or add contacts manually
                 </Button>
               </DesktopNextButtonsInnerWrapper>
             </DesktopNextButtonsOuterWrapperUShowDesktopTablet>
+            <Reassurance displayState={1} reassuranceText={reassuranceTextRemindContacts} />
             {(isWebApp() && pigsCanFly) && (
               <DownloadAppsButtons />
             )}
@@ -152,7 +152,7 @@ RemindContactsStart.propTypes = {
 };
 
 const styles = () => ({
-  addFriendsManuallyLink: {
+  addContactsManuallyLink: {
     boxShadow: 'none !important',
     color: '#065FD4',
     marginTop: 10,
