@@ -202,6 +202,12 @@ class ShareStore extends ReduceStore {
         if (action.res.shared_item_code_all_opinions) {
           allCachedSharedItemsBySharedItemCode[action.res.shared_item_code_all_opinions] = sharedItem;
         }
+        if (action.res.shared_item_code_ready) {
+          allCachedSharedItemsBySharedItemCode[action.res.shared_item_code_ready] = sharedItem;
+        }
+        if (action.res.shared_item_code_remind_contacts) {
+          allCachedSharedItemsBySharedItemCode[action.res.shared_item_code_remind_contacts] = sharedItem;
+        }
         return {
           ...state,
           allCachedSharedItemsByFullUrl,

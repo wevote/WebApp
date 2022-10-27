@@ -1,7 +1,9 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import styled from 'styled-components';
-import SuggestedContactListWithController from '../Friends/SuggestedContactListWithController';
+// import styled from 'styled-components';
+import DownloadAppsButtons from './DownloadAppsButtons';
+// import SuggestedContactListWithController from '../Friends/SuggestedContactListWithController';
+import { isWebApp } from '../../common/utils/isCordovaOrWebApp';
 import { renderLog } from '../../common/utils/logging';
 import {
   SetUpAccountContactsText,
@@ -40,6 +42,29 @@ class RemindAddContacts extends React.Component {
           <SetUpAccountContactsTextWrapper>
             <SetUpAccountContactsText>
               We expect to have this feature ready in the next few days. Please come back!
+              {isWebApp() && (
+                <>
+                  <br />
+                  <br />
+                  Did you know there is a
+                  {' '}
+                  <span className="u-no-break">
+                    We Vote App
+                  </span>
+                  {' '}
+                  in the
+                  {' '}
+                  <span className="u-no-break">
+                    Google Play Store
+                  </span>
+                  {' '}
+                  and the
+                  {' '}
+                  <span className="u-no-break">
+                    Apple App Store?
+                  </span>
+                </>
+              )}
             </SetUpAccountContactsText>
           </SetUpAccountContactsTextWrapper>
         </SetUpAccountTop>
@@ -48,6 +73,9 @@ class RemindAddContacts extends React.Component {
           <SuggestedContactListWithController remindMode />
         </SuggestedContactListWithControllerOuterWrapper>
         */}
+        {isWebApp() && (
+          <DownloadAppsButtons />
+        )}
       </StepCenteredWrapper>
     );
   }
@@ -57,8 +85,8 @@ RemindAddContacts.propTypes = {
   nextButtonClicked: PropTypes.bool,
 };
 
-const SuggestedContactListWithControllerOuterWrapper = styled('div')`
-  margin-top: 64px;
-`;
+// const SuggestedContactListWithControllerOuterWrapper = styled('div')`
+//   margin-top: 64px;
+// `;
 
 export default RemindAddContacts;

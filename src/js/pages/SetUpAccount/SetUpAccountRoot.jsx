@@ -181,12 +181,18 @@ class SetUpAccountRoot extends React.Component {
     const voterPhotoUrlLarge = VoterStore.getVoterPhotoUrlLarge();
     // const voterContactEmailGoogleCount = VoterStore.getVoterContactEmailGoogleCount();
     // console.log('onVoterStoreChange voterContactEmailGoogleCount:', voterContactEmailGoogleCount, ', voterContactEmailListCount:', voterContactEmailListCount);
-    this.setState({
-      displayStep,
+    let revisedState = {
       voterContactEmailAugmentWithWeVoteDataComplete: VoterStore.getVoterContactEmailAugmentWithWeVoteDataComplete(),
       voterContactEmailListCount,
       voterPhotoUrlLarge,
-    }, () => this.setNextStepVariables());
+    };
+    if (setUpPagePath) {
+      revisedState = {
+        ...revisedState,
+        displayStep,
+      };
+    }
+    this.setState(revisedState, () => this.setNextStepVariables());
   }
 
   convertSetUpPagePathToDisplayStep = (setUpPagePath) => {

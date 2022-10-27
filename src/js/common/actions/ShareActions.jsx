@@ -69,7 +69,7 @@ export default {
 
   sharedItemSaveRemindContact (destinationFullUrl, emailAddressText = '', otherVoterWeVoteId = '', sharedMessage = '', otherVoterDisplayName = '', otherVoterFirstName = '', otherVoterLastName = '') {
     return Dispatcher.loadEndpoint('sharedItemSave', {
-      destination_full_url: destinationFullUrl,
+      destination_full_url: destinationFullUrl, // We must provide a destinationFullUrl, so we know what hostname to use in sharedItemRetrieve
       is_remind_contact_share: true,
       other_voter_display_name: otherVoterDisplayName,
       other_voter_first_name: otherVoterFirstName,

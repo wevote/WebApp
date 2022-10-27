@@ -62,7 +62,7 @@ class RemindContactsRoot extends React.Component {
       backToLinkPath: '',
       desktopFixedButtonsOn: false,
       desktopInlineButtonsOnInMobile: false,
-      displayStep: 10, // addcontacts 1, // importcontacts
+      displayStep: 10, // addcontacts   1, // importcontacts
       editNameNextButtonDisabled: true,
       editNameStepVisited: false,
       electionDataExistsForUpcomingElection: false,
@@ -88,6 +88,7 @@ class RemindContactsRoot extends React.Component {
       }
     }
     const displayStep = this.convertSetUpPagePathToDisplayStep(setUpPagePath);
+    // console.log('componentDidMount setUpPagePath:', setUpPagePath, ', displayStep:', displayStep);
     this.shouldNextButtonBeDisabled();
     this.setState({
       displayStep,
@@ -213,15 +214,21 @@ class RemindContactsRoot extends React.Component {
     const voterFirstName = VoterStore.getFirstName();
     const voterPhotoUrlLarge = VoterStore.getVoterPhotoUrlLarge();
     // const voterContactEmailGoogleCount = VoterStore.getVoterContactEmailGoogleCount();
-    // console.log('onVoterStoreChange voterContactEmailGoogleCount:', voterContactEmailGoogleCount, ', voterContactEmailListCount:', voterContactEmailListCount);
-    this.setState({
-      displayStep,
+    // console.log('onVoterStoreChange setUpPagePath:', setUpPagePath, ', displayStep:', displayStep);
+    let revisedState = {
       // voterContactEmailGoogleCount,
       voterContactEmailListCount,
       voterFirstName,
       // voterIsSignedIn: VoterStore.getVoterIsSignedIn(),
       voterPhotoUrlLarge,
-    }, () => this.setNextStepVariables());
+    };
+    if (setUpPagePath) {
+      revisedState = {
+        ...revisedState,
+        displayStep,
+      };
+    }
+    this.setState(revisedState, () => this.setNextStepVariables());
   }
 
   convertSetUpPagePathToDisplayStep = (setUpPagePath) => {
@@ -314,6 +321,7 @@ class RemindContactsRoot extends React.Component {
     let skipForNowOff;
     let skipForNowPath = '';
     const voterIsSignedIn = VoterStore.getVoterIsSignedIn();
+    // console.log('setNextStepVariables displayStep:', displayStep);
     switch (displayStep) {
       default:
       case 1: // importcontacts
@@ -626,7 +634,7 @@ class RemindContactsRoot extends React.Component {
       reassuranceTextOff, showDeleteAllContactsOption, skipForNowOff,
       voterContactEmailListCount,
     } = this.state;
-    // console.log('RemindContactsRoot displayState', displayStep);
+    // console.log('RemindContactsRoot displayStep:', displayStep);
 
     let desktopNextButtonHtml;
     let mobileNextButtonHtml;

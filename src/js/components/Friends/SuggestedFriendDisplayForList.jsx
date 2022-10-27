@@ -67,7 +67,7 @@ class SuggestedFriendDisplayForList extends Component {
       voterWeVoteId: otherVoterWeVoteId,
     } = this.props;
     const hostname = AppObservableStore.getHostname();
-    const destinationFullUrl = `https://${hostname}/ready`;
+    const destinationFullUrl = `https://${hostname}/`; // We must provide a destinationFullUrl, so we know what hostname to use in sharedItemRetrieve
     const sharedMessage = FriendStore.getMessageToFriendQueuedToSave();
     ShareActions.sharedItemSaveRemindContact(destinationFullUrl, emailAddressText, otherVoterWeVoteId, sharedMessage, otherVoterDisplayName, otherVoterFirstName, otherVoterLastName);
     this.setState({
