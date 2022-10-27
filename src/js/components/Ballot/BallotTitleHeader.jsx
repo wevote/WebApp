@@ -18,7 +18,6 @@ import VoterStore from '../../stores/VoterStore';
 import {
   BallotAddress,
   ClickBlockWrapper,
-  ComponentWrapper,
   ContentWrapper,
   ElectionDateBelow,
   ElectionDateRight,
@@ -142,7 +141,7 @@ class BallotTitleHeader extends Component {
     // console.log('BallotTitleHeader allowTextWrap:', allowTextWrap);
     if (electionName) {
       return (
-        <ComponentWrapper>
+        <BallotTitleHeaderWrapper>
           <ContentWrapper spaceBetween={(electionDayTextObject || showShareButton) && !centerText}>
             <OverflowContainer allowTextWrap={allowTextWrap}>
               <OverflowContent>
@@ -208,7 +207,7 @@ class BallotTitleHeader extends Component {
                         </BallotAddress>
                       ) : (
                         <>
-                          {(substitutedAddress && substitutedAddress !== '') ? (
+                          {(substitutedAddress && substitutedAddress !== '' && substitutedAddress.length >= 2) ? (
                             <BallotAddress
                               allowTextWrap={allowTextWrap}
                               centerText={centerText}
@@ -224,7 +223,7 @@ class BallotTitleHeader extends Component {
                             </BallotAddress>
                           ) : (
                             <>
-                              {(originalTextAddress && originalTextAddress !== '') ? (
+                              {(originalTextAddress && originalTextAddress !== '' && originalTextAddress.length >= 2) ? (
                                 <BallotAddress
                                   allowTextWrap={allowTextWrap}
                                   centerText={centerText}
@@ -306,7 +305,7 @@ class BallotTitleHeader extends Component {
               </BallotShareWrapper>
             )}
           </ContentWrapper>
-        </ComponentWrapper>
+        </BallotTitleHeaderWrapper>
       );
     } else {
       return (
@@ -359,6 +358,9 @@ const styles = {
 const BallotShareWrapper = styled('div')`
   margin-bottom: 12px;
   padding-left: 2px;
+`;
+
+const BallotTitleHeaderWrapper = styled('div')`
 `;
 
 export default withTheme(withStyles(styles)(BallotTitleHeader));

@@ -1,5 +1,7 @@
+import { Edit } from '@mui/icons-material';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
+import styled from 'styled-components';
 import daysUntil from '../../common/utils/daysUntil';
 import { renderLog } from '../../common/utils/logging';
 import stringContains from '../../common/utils/stringContains';
@@ -9,7 +11,6 @@ import VoterStore from '../../stores/VoterStore';
 import {
   BallotAddress,
   ClickBlockWrapper,
-  ComponentWrapper,
   ContentWrapper,
   ElectionDateBelow,
   ElectionDateRight,
@@ -95,15 +96,16 @@ class BallotTitleHeaderNationalPlaceholder extends Component {
       originalTextState,
       substitutedState, textForMapSearch,
     } = this.state;
-
+    const allowTextWrap = true;
     const electionNameContainsWordElection = stringContains('election', electionName.toLowerCase());
     const stateTextUsed = substitutedState || originalTextState || '';
     const electionNameContainsState = stringContains(stateTextUsed.toLowerCase(), electionName.toLowerCase());
 
+    const editIconStyled = <Edit style={{ fontSize: 16, margin: '-6px 0 0 2px', color: '#69A7FF' }} />;
     // console.log('BallotTitleHeaderNationalPlaceholder daysUntilElection:', daysUntilElection);
     if (electionName) {
       return (
-        <ComponentWrapper>
+        <BallotTitleHeaderNationalPlaceholderWrapper>
           <ContentWrapper>
             <OverflowContainer>
               <OverflowContent>
@@ -156,7 +158,7 @@ class BallotTitleHeaderNationalPlaceholder extends Component {
                       >
                         {electionName}
                       </ElectionNameH1>
-                      {(textForMapSearch && textForMapSearch !== '') && (
+                      {(textForMapSearch && textForMapSearch !== '' && textForMapSearch.length > 1) ? (
                         <BallotAddress
                           centerText={centerText}
                           className="u-cursor--pointer"
@@ -167,6 +169,18 @@ class BallotTitleHeaderNationalPlaceholder extends Component {
                           <span className={linksOff ? '' : 'u-link-color'}>
                             {textForMapSearch}
                           </span>
+                        </BallotAddress>
+                      ) : (
+                        <BallotAddress
+                          allowTextWrap={allowTextWrap}
+                          centerText={centerText}
+                          className="u-cursor--pointer"
+                          onClick={this.showSelectBallotModalEditAddress}
+                        >
+                          <span className={linksOff ? '' : 'u-link-color'}>
+                            Click to enter your address
+                          </span>
+                          {editIconStyled}
                         </BallotAddress>
                       )}
                       {(!turnOffVoteByBelow && !!(electionDateMDY)) && (
@@ -208,7 +222,7 @@ class BallotTitleHeaderNationalPlaceholder extends Component {
               </VoteByRightWrapper>
             )}
           </ContentWrapper>
-        </ComponentWrapper>
+        </BallotTitleHeaderNationalPlaceholderWrapper>
       );
     } else {
       return null;
@@ -223,5 +237,8 @@ BallotTitleHeaderNationalPlaceholder.propTypes = {
   linksOff: PropTypes.bool,
   turnOffVoteByBelow: PropTypes.bool,
 };
+
+const BallotTitleHeaderNationalPlaceholderWrapper = styled('div')`
+`;
 
 export default BallotTitleHeaderNationalPlaceholder;
