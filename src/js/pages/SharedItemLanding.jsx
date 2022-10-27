@@ -17,6 +17,7 @@ export default class SharedItemLanding extends Component {
       componentDidMount: false,
       customLinkString: '',
       destinationFullUrl: '',
+      destinationFullUrlOverride: '',
       sharedItemCodeIncoming: '',
       sharedItemCodeRetrieved: false,
       waitForVoterDeviceId: false,
@@ -63,6 +64,7 @@ export default class SharedItemLanding extends Component {
       // console.log('sharedItem:', sharedItem);
       const {
         destination_full_url: destinationFullUrl,
+        destination_full_url_override: destinationFullUrlOverride,
         email_secret_key: emailSecretKey,
         is_ballot_share: isBallotShare,
         shared_item_code_all_opinions: sharedItemCodeAllOpinions,
@@ -86,6 +88,7 @@ export default class SharedItemLanding extends Component {
       }
       this.setState({
         destinationFullUrl,
+        destinationFullUrlOverride,
         isBallotShare,
         sharedItemCodeAllOpinions,
         sharedItemCodeRetrieved: true,
@@ -107,8 +110,13 @@ export default class SharedItemLanding extends Component {
 
   render () {
     renderLog('SharedItemLanding');  // Set LOG_RENDER_EVENTS to log all renders
-    const { componentDidMount, destinationFullUrl, isBallotShare, sharedItemCodeAllOpinions, sharedItemCodeIncoming, sharedItemCodeRetrieved } = this.state;
+    const { componentDidMount, isBallotShare, destinationFullUrlOverride, sharedItemCodeAllOpinions, sharedItemCodeIncoming, sharedItemCodeRetrieved } = this.state;
+    let { destinationFullUrl } = this.state;
     // console.log('sharedItemCodeIncoming:', sharedItemCodeIncoming, 'sharedItemCodeAllOpinions:', sharedItemCodeAllOpinions);
+    // console.log('destinationFullUrl:', destinationFullUrl, 'destinationFullUrlOverride:', destinationFullUrlOverride);
+    if (destinationFullUrlOverride) {
+      destinationFullUrl = destinationFullUrlOverride;
+    }
     if (!componentDidMount) {
       // console.log('SharedItemLanding componentDidMount not true yet');
       return LoadingWheel;

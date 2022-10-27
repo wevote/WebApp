@@ -8,6 +8,7 @@ import BallotActions from '../../actions/BallotActions';
 import VoterActions from '../../actions/VoterActions';
 import apiCalming from '../../common/utils/apiCalming';
 import { isCordovaWide } from '../../common/utils/cordovaUtils';
+import historyPush from '../../common/utils/historyPush';
 import { isWebApp } from '../../common/utils/isCordovaOrWebApp';
 import { renderLog } from '../../common/utils/logging';
 import normalizedImagePath from '../../common/utils/normalizedImagePath';
@@ -17,7 +18,6 @@ import { reassuranceTextRemindContacts } from './reassuranceTextRemindContacts';
 import VoterStore from '../../stores/VoterStore';
 import {
   DesktopNextButtonsInnerWrapper, DesktopNextButtonsOuterWrapperUShowDesktopTablet,
-  MobileStaticNextButtonsInnerWrapper, MobileStaticNextButtonsOuterWrapperUShowMobile,
 } from '../Style/NextButtonStyles';
 import { RemindContactsImportText, RemindMainImageImg } from '../Style/RemindStyles';
 import {
@@ -25,7 +25,6 @@ import {
   SetUpAccountTitle,
 } from '../Style/SetUpAccountStyles';
 import SuggestedContactListWithController from '../Friends/SuggestedContactListWithController';
-import historyPush from "../../common/utils/historyPush";
 
 const AddContactsFromGoogleButton = React.lazy(() => import(/* webpackChunkName: 'AddContactsFromGoogleButton' */ '../SetUpAccount/AddContactsFromGoogleButton'));
 
@@ -135,7 +134,7 @@ class RemindContactsStart extends Component {
                   classes={{ root: classes.addFriendsManuallyLink }}
                   onClick={this.goToSkipForNow}
                 >
-                  Or, add friends manually
+                  Or remind friends manually
                 </Button>
               </DesktopNextButtonsInnerWrapper>
             </DesktopNextButtonsOuterWrapperUShowDesktopTablet>
