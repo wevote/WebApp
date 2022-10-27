@@ -37,7 +37,7 @@ class RemindAddContacts extends React.Component {
       <StepCenteredWrapper>
         <SetUpAccountTop>
           <SetUpAccountTitle>
-            Remind 5 of your friends to vote today
+            Remind 3 of your friends to vote today
           </SetUpAccountTitle>
           <SetUpAccountContactsTextWrapper>
             <SetUpAccountContactsText>
