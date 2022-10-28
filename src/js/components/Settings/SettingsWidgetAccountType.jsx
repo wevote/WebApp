@@ -189,7 +189,8 @@ export default class SettingsWidgetAccountType extends Component {
           className="form-check-label create-voter-guide__radio-label"
           htmlFor={organizationTypeId}
         >
-          &nbsp;{organizationTypeLabel}
+          &nbsp;
+          {organizationTypeLabel}
         </label>
       </div>
     );

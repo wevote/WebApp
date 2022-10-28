@@ -4,7 +4,7 @@ import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
 import styled from 'styled-components';
-import { isAndroidSizeMD } from '../../common/utils/cordovaUtils';
+import { isAndroid, isAndroidSizeMD, isAndroidSizeWide } from '../../common/utils/cordovaUtils';
 import { isCordova, isWebApp } from '../../common/utils/isCordovaOrWebApp';
 import { renderLog } from '../../common/utils/logging';
 import VoterStore from '../../stores/VoterStore';
@@ -167,7 +167,7 @@ const styles = (theme) => ({
   dialogRoot: isCordova() ? {
     height: '100%',
     position: 'absolute !important',
-    top: '-15%',
+    top: isAndroid() && !isAndroidSizeWide() ? '-26%' : '-15%',
     left: '0% !important',
     right: 'unset !important',
     bottom: 'unset !important',
@@ -234,6 +234,7 @@ const styles = (theme) => ({
 
 const SignInModalWrapper = styled('div')`
   width: fit-content;
+  ${() => (isAndroidSizeMD() ? 'overflow-y: scroll' : '')};
 `;
 
 export default withStyles(styles)(SignInModal);

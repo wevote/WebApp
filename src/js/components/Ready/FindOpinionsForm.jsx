@@ -90,7 +90,7 @@ class FindOpinionsForm extends Component {
 
   inputFieldReceivesFocus = () => {
     if (isAndroid()) {
-      focusTextFieldAndroid();
+      focusTextFieldAndroid('FindOpinionsForm');
     } else if (isIOS()) {
       const { $ } = window;
       $("div[class^='Ready__EditAddressWrapper']").hide();

@@ -15,7 +15,7 @@ export default function isMobileScreenSize () {
 // iPad Mini is 744px wide, iPad 9.7" is 768, iPad 11" is 834, iPad 12.9" is 1024
 export function isTablet () {
   const { innerWidth, muiThemeGlobal: { breakpoints: { values: { tabMin, tabMax } } } } = window;
-  console.log('isTablet isCordova, innerWidth, tabMin, tabMax, return value:', isCordova(), innerWidth, tabMin, tabMax,  innerWidth > tabMin && innerWidth < tabMax);
+  // console.log('isTablet isCordova, innerWidth, tabMin, tabMax, return value:', isCordova(), innerWidth, tabMin, tabMax,  innerWidth > tabMin && innerWidth < tabMax);
   return innerWidth > tabMin && innerWidth < tabMax;
 }
 

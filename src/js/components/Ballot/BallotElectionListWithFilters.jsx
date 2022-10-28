@@ -641,7 +641,7 @@ export default class BallotElectionListWithFilters extends Component {
                 </strong>
               </PriorOrUpcomingElectionsWrapper>
             )}
-            {(showWhatIsOnBallotTitle && upcomingElectionList && upcomingElectionList.length ) && (
+            {(showWhatIsOnBallotTitle && upcomingElectionList && upcomingElectionList.length) && (
               <WhatIsOnTheBallotTitle>
                 What&apos;s on the ballot?
               </WhatIsOnTheBallotTitle>

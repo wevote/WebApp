@@ -23,7 +23,7 @@ const muiTheme = createTheme({
       tabMin: 740,    // Tablet minimum Size
       tabMdMin: 770,  // Medium Tablet minimum Size  (iPad 9.6" is a weird edge case at 768px wide, it is rare, don't worry about it if it is a bit off)
       tabLgMin: 840,  // Large Tablet minimum Size
-      tabMax: 1100,   // Large Tablet maximum Size, anything larger is a desktop, Galaxy Tab S8+  is 1067
+      tabMax: 1110,   // Large Tablet maximum Size, anything larger is a desktop, Galaxy Tab S8+  is 1067, Galaxy Z Fold 3 is 1104
     },
   },
   components: muiStyleOverrides,

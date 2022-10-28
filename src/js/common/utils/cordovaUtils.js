@@ -654,9 +654,9 @@ export function setGlobalScreenSize (result) {
   window.pbakondyScreenSize = result;
 }
 
-export function focusTextFieldAndroid () {
+export function focusTextFieldAndroid (clue) {
   if (isAndroid()) {
-    prepareForCordovaKeyboard('AddFriendsByEmail');
+    prepareForCordovaKeyboard(clue);
   }
 }
 
