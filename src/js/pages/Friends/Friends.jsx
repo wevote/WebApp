@@ -83,6 +83,10 @@ class Friends extends Component {
     this.onVoterStoreChange();
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
     this.friendStoreListener = FriendStore.addListener(this.onFriendStoreChange.bind(this));
+    const { location: { pathname: currentPathname } } = window;
+    AppObservableStore.setSetUpAccountBackLinkPath(currentPathname);
+    const { setUpAccountEntryPath } = this.state;
+    AppObservableStore.setSetUpAccountEntryPath(setUpAccountEntryPath);
     if (apiCalming('friendListsAll', 30000)) {
       FriendActions.friendListsAll();
     }

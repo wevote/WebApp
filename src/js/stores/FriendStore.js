@@ -14,8 +14,20 @@ class FriendStore extends ReduceStore {
       friendInvitationsSentByMe: [],
       friendInvitationsSentToMe: [],
       friendInvitationsWaitingForVerification: [],
-      messageToFriendQueuedToSave: '',
-      messageToFriendQueuedToSaveSet: false,
+      messageToFriendQueuedToSaveDict: {
+        askFriend: '',
+        inviteFriend: '',
+        remindContacts: '',
+        shareWithFriend: '',
+        shareWithFriendAllOpinions: '',
+      },
+      messageToFriendQueuedToSaveSetDict: {
+        askFriend: false,
+        inviteFriend: false,
+        remindContacts: false,
+        shareWithFriend: false,
+        shareWithFriendAllOpinions: false,
+      },
       numberOfMessagesSent: 0,
       successMessageToShowVoter: '',
     };
@@ -86,12 +98,12 @@ class FriendStore extends ReduceStore {
     return this.getState().facebookInvitationStatus;
   }
 
-  getMessageToFriendQueuedToSave () {
-    return this.getState().messageToFriendQueuedToSave;
+  getMessageToFriendQueuedToSave (messageToFriendType = 'inviteFriend') {
+    return this.getState().messageToFriendQueuedToSaveDict[messageToFriendType];
   }
 
-  getMessageToFriendQueuedToSaveSet () {
-    return this.getState().messageToFriendQueuedToSaveSet;
+  getMessageToFriendQueuedToSaveSet (messageToFriendType = 'inviteFriend') {
+    return this.getState().messageToFriendQueuedToSaveSetDict[messageToFriendType];
   }
 
   getNumberOfMessagesSent () {
@@ -141,26 +153,28 @@ class FriendStore extends ReduceStore {
   reduce (state, action) {
     // Exit if we don't receive a response
     if (!action.res && !action.type) return state;  //  || !action.res.success // We deal with failures below
+    const { messageToFriendQueuedToSaveDict, messageToFriendQueuedToSaveSetDict } = state;
     let { currentFriendsByVoterWeVoteIdDict } = state;
     let count = 0;
     let currentFriendsOrganizationWeVoteIds = [];
+    let messageToFriendType = '';
 
     switch (action.type) {
       case 'messageToFriendQueuedToSave':
-        // console.log('FriendStore messageToFriendQueuedToSave: ', action.payload);
-        if (action.payload === undefined) {
-          return {
-            ...state,
-            messageToFriendQueuedToSave: '',
-            messageToFriendQueuedToSaveSet: false,
-          };
+        // console.log('FriendStore messageToFriend: ', action.messageToFriend, ', messageToFriendType:', action.messageToFriendType);
+        messageToFriendType = action.messageToFriendType;
+        if (action.messageToFriend === undefined) {
+          messageToFriendQueuedToSaveDict[messageToFriendType] = '';
+          messageToFriendQueuedToSaveSetDict[messageToFriendType] = false;
         } else {
-          return {
-            ...state,
-            messageToFriendQueuedToSave: action.payload,
-            messageToFriendQueuedToSaveSet: true,
-          };
+          messageToFriendQueuedToSaveDict[messageToFriendType] = action.messageToFriend;
+          messageToFriendQueuedToSaveSetDict[messageToFriendType] = true;
         }
+        return {
+          ...state,
+          messageToFriendQueuedToSaveDict,
+          messageToFriendQueuedToSaveSetDict,
+        };
 
       case 'clearErrorMessageToShowVoter':
         // console.log('FriendStore clearErrorMessageToShowVoter');

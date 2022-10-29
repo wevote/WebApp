@@ -15,6 +15,8 @@ import normalizedImagePath from '../../common/utils/normalizedImagePath';
 import DownloadAppsButtons from './DownloadAppsButtons';
 import Reassurance from '../SetUpAccount/Reassurance';
 import { reassuranceTextRemindContacts } from './reassuranceTextRemindContacts';
+import NextStepButtons from '../FriendIntro/NextStepButtons';
+import AppObservableStore from '../../stores/AppObservableStore';
 import VoterStore from '../../stores/VoterStore';
 import {
   DesktopNextButtonsInnerWrapper, DesktopNextButtonsOuterWrapperUShowDesktopTablet,
@@ -27,6 +29,7 @@ import {
 import SuggestedContactListWithController from '../Friends/SuggestedContactListWithController';
 
 const AddContactsFromGoogleButton = React.lazy(() => import(/* webpackChunkName: 'AddContactsFromGoogleButton' */ '../SetUpAccount/AddContactsFromGoogleButton'));
+const MessageToFriendInputField = React.lazy(() => import(/* webpackChunkName: 'MessageToFriendInputField' */ '../Friends/MessageToFriendInputField'));
 
 const addressBookSVG = '../../../img/get-started/address-book.svg';
 
@@ -68,6 +71,14 @@ class RemindContactsStart extends Component {
     historyPush('/remind/addcontacts');
   }
 
+  goToNextStep = () => {
+    const { location: { pathname: currentPathname } } = window;
+    AppObservableStore.setSetUpAccountBackLinkPath(currentPathname);
+    const setUpAccountEntryPath = '/remind/importcontacts';
+    AppObservableStore.setSetUpAccountEntryPath(setUpAccountEntryPath);
+    historyPush(setUpAccountEntryPath);
+  }
+
   render () {
     renderLog('RemindContactsStart');  // Set LOG_RENDER_EVENTS to log all renders
     const { classes } = this.props;
@@ -82,6 +93,7 @@ class RemindContactsStart extends Component {
       desktopInlineButtonsOnBreakValue = isCordovaWide() ? 1000 : 'sm';
     }
     const pigsCanFly = false;
+    const startWithImportContacts = false;
     return (
       <>
         {(voterContactEmailListCount > 0) ? (
@@ -113,33 +125,62 @@ class RemindContactsStart extends Component {
                 <span className="u-no-break">
                   Let&apos;s change that!
                 </span>
+                {!startWithImportContacts && (
+                  <>
+                    <br />
+                    What do you want to say to your friends?
+                  </>
+                )}
               </RemindContactsImportText>
             </SetUpAccountContactsTextWrapper>
-            <ImageOuterWrapper>
-              <MainImageWrapper>
+            {startWithImportContacts ? (
+              <>
+                <ImageOuterWrapper>
+                  <MainImageWrapper>
+                    <div>
+                      <RemindMainImageImg src={addressBookSVGSrc} alt="" />
+                    </div>
+                  </MainImageWrapper>
+                </ImageOuterWrapper>
                 <div>
-                  <RemindMainImageImg src={addressBookSVGSrc} alt="" />
+                  <Suspense fallback={<></>}>
+                    <AddContactsFromGoogleButton darkButton />
+                  </Suspense>
                 </div>
-              </MainImageWrapper>
-            </ImageOuterWrapper>
-            <div>
-              <Suspense fallback={<></>}>
-                <AddContactsFromGoogleButton darkButton />
-              </Suspense>
-            </div>
-            <DesktopNextButtonsOuterWrapperUShowDesktopTablet breakValue={desktopInlineButtonsOnBreakValue}>
-              <DesktopNextButtonsInnerWrapper>
-                <Button
-                  classes={{ root: classes.addContactsManuallyLink }}
-                  onClick={this.goToAddContactsManually}
-                >
-                  Or add contacts manually
-                </Button>
-              </DesktopNextButtonsInnerWrapper>
-            </DesktopNextButtonsOuterWrapperUShowDesktopTablet>
-            <Reassurance displayState={1} reassuranceText={reassuranceTextRemindContacts} />
-            {(isWebApp() && pigsCanFly) && (
-              <DownloadAppsButtons />
+                <DesktopNextButtonsOuterWrapperUShowDesktopTablet breakValue={desktopInlineButtonsOnBreakValue}>
+                  <DesktopNextButtonsInnerWrapper>
+                    <Button
+                      classes={{ root: classes.addContactsManuallyLink }}
+                      onClick={this.goToAddContactsManually}
+                    >
+                      Or add contacts manually
+                    </Button>
+                  </DesktopNextButtonsInnerWrapper>
+                </DesktopNextButtonsOuterWrapperUShowDesktopTablet>
+                <Reassurance displayState={1} reassuranceText={reassuranceTextRemindContacts} />
+                {(isWebApp() && pigsCanFly) && (
+                  <DownloadAppsButtons />
+                )}
+              </>
+            ) : (
+              <>
+                <MessageToSendWrapper>
+                  <Suspense fallback={<></>}>
+                    <MessageToFriendInputField messageToFriendType="remindContacts" />
+                  </Suspense>
+                </MessageToSendWrapper>
+                <DesktopNextButtonsOuterWrapperUShowDesktopTablet>
+                  <DesktopNextButtonsInnerWrapper>
+                    <NextStepButtons
+                      classes={classes}
+                      desktopMode
+                      nextStepButtonText="Choose who to remind"
+                      onClickNextButton={this.goToNextStep}
+                      skipForNowOff
+                    />
+                  </DesktopNextButtonsInnerWrapper>
+                </DesktopNextButtonsOuterWrapperUShowDesktopTablet>
+              </>
             )}
           </RemindContactsStartWrapper>
         )}
@@ -174,6 +215,12 @@ const MainImageWrapper = styled('div')`
 const ImageOuterWrapper = styled('div')`
   margin-bottom: 24px;
   margin-top: 24px;
+  width: 100%;
+`;
+
+const MessageToSendWrapper = styled('div')`
+  margin-top: 24px;
+  margin-bottom: 24px;
   width: 100%;
 `;
 

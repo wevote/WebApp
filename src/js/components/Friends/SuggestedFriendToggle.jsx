@@ -50,11 +50,15 @@ export default class SuggestedFriendToggle extends Component {
   }
 
   addSuggestedFriend = () => {
-    const { otherVoterWeVoteId } = this.props;
+    const { askMode, otherVoterWeVoteId } = this.props;
     const { voterIsSignedIn } = this.state;
+    let messageToFriendType = 'inviteFriend'; // default
+    if (askMode) {
+      messageToFriendType = 'askFriend';
+    }
     // console.log('addSuggestedFriend');
     if (voterIsSignedIn) {
-      const invitationMessage = FriendStore.getMessageToFriendQueuedToSave();
+      const invitationMessage = FriendStore.getMessageToFriendQueuedToSave(messageToFriendType);
       FriendActions.friendInvitationByWeVoteIdSend(otherVoterWeVoteId, invitationMessage);
       this.setState({
         addSuggestedFriendSent: true,

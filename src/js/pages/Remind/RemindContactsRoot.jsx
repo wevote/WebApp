@@ -14,6 +14,7 @@ import historyPush from '../../common/utils/historyPush';
 import { isWebApp } from '../../common/utils/isCordovaOrWebApp';
 import { renderLog } from '../../common/utils/logging';
 import normalizedImagePath from '../../common/utils/normalizedImagePath';
+import stringContains from '../../common/utils/stringContains';
 import HeaderBackToButton from '../../components/Navigation/HeaderBackToButton';
 import DeleteAllContactsButton from '../../components/SetUpAccount/DeleteAllContactsButton';
 import SetUpAccountNextButton from '../../components/SetUpAccount/SetUpAccountNextButton';
@@ -33,6 +34,7 @@ import {
   WeVoteLogo,
   WeVoteLogoWrapper,
 } from '../../components/Style/SimpleProcessStyles';
+import AppObservableStore from '../../stores/AppObservableStore';
 import BallotStore from '../../stores/BallotStore';
 import FriendStore from '../../stores/FriendStore';
 import VoterStore from '../../stores/VoterStore';
@@ -42,6 +44,7 @@ const RemindAddContacts = React.lazy(() => import(/* webpackChunkName: 'RemindAd
 const RemindContactsImport = React.lazy(() => import(/* webpackChunkName: 'RemindContactsImport' */ '../../components/Remind/RemindContactsImport'));
 const RemindContactsPreview = React.lazy(() => import(/* webpackChunkName: 'RemindContactsPreview' */ '../../components/Remind/RemindContactsPreview'));
 const RemindDownloadApp = React.lazy(() => import(/* webpackChunkName: 'RemindDownloadApp' */ '../../components/Remind/RemindDownloadApp'));
+const RemindEditMessage = React.lazy(() => import(/* webpackChunkName: 'RemindEditMessage' */ '../../components/Remind/RemindEditMessage'));
 const RemindInviteContacts = React.lazy(() => import(/* webpackChunkName: 'RemindInviteContacts' */ '../../components/Remind/RemindInviteContacts'));
 const SetUpAccountAddPhoto = React.lazy(() => import(/* webpackChunkName: 'SetUpAccountAddPhoto' */ '../../components/SetUpAccount/SetUpAccountAddPhoto'));
 const SetUpAccountEditName = React.lazy(() => import(/* webpackChunkName: 'SetUpAccountEditName' */ '../../components/SetUpAccount/SetUpAccountEditName'));
@@ -62,7 +65,7 @@ class RemindContactsRoot extends React.Component {
       backToLinkPath: '',
       desktopFixedButtonsOn: false,
       desktopInlineButtonsOnInMobile: false,
-      displayStep: 10, // addcontacts   1, // importcontacts
+      displayStep: 111, // message   1, // importcontacts
       editNameNextButtonDisabled: true,
       editNameStepVisited: false,
       electionDataExistsForUpcomingElection: false,
@@ -70,6 +73,7 @@ class RemindContactsRoot extends React.Component {
       mobileFixedButtonsOff: false,
       nextButtonClicked: false,
       nextButtonDisabled: false,
+      setUpAccountBackLinkPath: '',
       voterContactEmailListCount: 0,
       voterFirstName: '',
       voterPhotoUrlLarge: '',
@@ -91,6 +95,8 @@ class RemindContactsRoot extends React.Component {
     // console.log('componentDidMount setUpPagePath:', setUpPagePath, ', displayStep:', displayStep);
     this.shouldNextButtonBeDisabled();
     this.setState({
+      setUpAccountBackLinkPath: AppObservableStore.getSetUpAccountBackLinkPath(),
+      setUpAccountEntryPath: AppObservableStore.getSetUpAccountEntryPath(),
       displayStep,
       setUpPagePath,
     });
@@ -235,6 +241,12 @@ class RemindContactsRoot extends React.Component {
     let displayStep;
     switch (setUpPagePath) {
       default:
+      case 'message':
+        displayStep = 111;
+        break;
+      case 'testsend':
+        displayStep = 112;
+        break;
       case 'importcontacts':
         displayStep = 1;
         break;
@@ -304,7 +316,8 @@ class RemindContactsRoot extends React.Component {
     const {
       addPhotoNextButtonDisabled, displayStep, editNameNextButtonDisabled,
       electionDataExistsForUpcomingElection, friendConnectionActionAvailable,
-      voterContactEmailListCount, voterFirstName, voterPhotoUrlLarge,
+      setUpAccountBackLinkPath, setUpAccountEntryPath,
+      voterContactEmailListCount, voterPhotoUrlLarge, // voterFirstName
     } = this.state;
     let { addPhotoStepVisited, editNameStepVisited } = this.state;
     let backButtonOn;
@@ -324,26 +337,100 @@ class RemindContactsRoot extends React.Component {
     // console.log('setNextStepVariables displayStep:', displayStep);
     switch (displayStep) {
       default:
-      case 1: // importcontacts
-        backToLinkPath = '/ready';
+      case 111: // message
+        backToLinkPath = setUpAccountBackLinkPath || '/friends';
+        backButtonOn = !!(setUpAccountBackLinkPath);
+        desktopFixedButtonsOn = false;
+        desktopInlineButtonsOnInMobile = true;
+        mobileFixedButtonsOff = true;
+        reassuranceTextOff = false;
+        showDeleteAllContactsOption = false;
+        skipForNowOff = false;
+        // if (!voterFirstName) {
+        //   nextButtonText = 'Next';
+        //   nextStepPath = '/remind/editname';
+        //   skipForNowOff = false;
+        //   skipForNowPath = '/remind/editname';
+        // } else if (!voterPhotoUrlLarge) {
+        //   nextButtonText = 'Next';
+        //   nextStepPath = '/remind/addphoto';
+        //   skipForNowOff = false;
+        //   skipForNowPath = '/remind/addphoto';
+        // } else
+        if (voterContactEmailListCount > 0) {
+          nextButtonText = 'Remind your friends';
+          nextStepPath = '/remind/invitecontacts';
+          skipForNowOff = true;
+        } else {
+          nextButtonText = 'Next';
+          nextStepPath = '/remind/importcontacts'; // testsend
+          skipForNowPath = '/remind/importcontacts'; // testsend
+        }
+        break;
+      case 112: // testsend
+        backToLinkPath = '/remind/message';
         backButtonOn = true;
         desktopFixedButtonsOn = false;
         desktopInlineButtonsOnInMobile = true;
         mobileFixedButtonsOff = true;
         reassuranceTextOff = false;
-        showDeleteAllContactsOption = true;
+        showDeleteAllContactsOption = false;
         skipForNowOff = false;
-        if (!voterFirstName) {
+        // if (!voterFirstName) {
+        //   nextButtonText = 'Next';
+        //   nextStepPath = '/remind/editname';
+        //   skipForNowOff = false;
+        //   skipForNowPath = '/remind/editname';
+        // } else if (!voterPhotoUrlLarge) {
+        //   nextButtonText = 'Next';
+        //   nextStepPath = '/remind/addphoto';
+        //   skipForNowOff = false;
+        //   skipForNowPath = '/remind/addphoto';
+        // } else
+        if (voterContactEmailListCount > 0) {
           nextButtonText = 'Next';
-          nextStepPath = '/remind/editname';
-          skipForNowOff = false;
-          skipForNowPath = '/remind/editname';
-        } else if (!voterPhotoUrlLarge) {
+          nextStepPath = '/remind/invitecontacts';
+          skipForNowOff = true;
+        } else {
           nextButtonText = 'Next';
-          nextStepPath = '/remind/addphoto';
-          skipForNowOff = false;
-          skipForNowPath = '/remind/addphoto';
-        } else if (voterContactEmailListCount > 0) {
+          if (isWebApp()) {
+            nextStepPath = '/remind/downloadapp';
+            // If no contacts, skip should take you to downloadapp
+            skipForNowPath = '/remind/downloadapp';
+          } else if (copyPageTurnedOn) {
+            nextStepPath = '/remind/copy';
+            skipForNowPath = '/remind/copy';
+          } else {
+            nextStepPath = '/friends';
+            skipForNowPath = '/friends';
+          }
+        }
+        break;
+      case 1: // importcontacts
+        if (stringContains('importcontacts', setUpAccountEntryPath)) {
+          backToLinkPath = setUpAccountBackLinkPath;
+        } else {
+          backToLinkPath = '/remind/message';
+        }
+        backButtonOn = true;
+        desktopFixedButtonsOn = false;
+        desktopInlineButtonsOnInMobile = true;
+        mobileFixedButtonsOff = true;
+        reassuranceTextOff = false;
+        showDeleteAllContactsOption = false;
+        skipForNowOff = false;
+        // if (!voterFirstName) {
+        //   nextButtonText = 'Next';
+        //   nextStepPath = '/remind/editname';
+        //   skipForNowOff = false;
+        //   skipForNowPath = '/remind/editname';
+        // } else if (!voterPhotoUrlLarge) {
+        //   nextButtonText = 'Next';
+        //   nextStepPath = '/remind/addphoto';
+        //   skipForNowOff = false;
+        //   skipForNowPath = '/remind/addphoto';
+        // } else
+        if (voterContactEmailListCount > 0) {
           nextButtonText = 'Remind your friends';
           nextStepPath = '/remind/invitecontacts';
           skipForNowOff = true;
@@ -401,7 +488,7 @@ class RemindContactsRoot extends React.Component {
         }
         break;
       case 10: // addcontacts
-        backToLinkPath = '/friends/remind';
+        backToLinkPath = '/ready';
         backButtonOn = true;
         desktopFixedButtonsOn = false;
         desktopInlineButtonsOnInMobile = true;
@@ -419,6 +506,7 @@ class RemindContactsRoot extends React.Component {
         nextButtonDisabled = false;
         nextButtonText = 'Next';
         reassuranceTextOff = false;
+        showDeleteAllContactsOption = false;
         skipForNowOff = false;
         if (voterContactEmailListCount > 0) {
           nextStepPath = '/remind/invitecontacts';
@@ -641,6 +729,28 @@ class RemindContactsRoot extends React.Component {
     let stepHtml;
     switch (displayStep) {
       default:
+      case 111: // message
+        stepHtml = (
+          <Suspense fallback={<></>}>
+            <RemindEditMessage
+              displayStep={displayStep}
+              goToNextStep={this.goToNextStep}
+              nextButtonClicked={nextButtonClicked}
+            />
+          </Suspense>
+        );
+        break;
+      case 112: // testsend
+        stepHtml = (
+          <Suspense fallback={<></>}>
+            <RemindEditMessage
+              displayStep={displayStep}
+              goToNextStep={this.goToNextStep}
+              nextButtonClicked={nextButtonClicked}
+            />
+          </Suspense>
+        );
+        break;
       case 1: // importcontacts
         stepHtml = (
           <Suspense fallback={<></>}>
@@ -742,6 +852,34 @@ class RemindContactsRoot extends React.Component {
 
     switch (displayStep) {
       default:
+      case 111: // message
+      case 112: // testsend
+      case 2: // preview
+      case 11: // downloadapp
+      case 12: // copy
+      case 3: // invitecontacts
+      case 4: // editname
+      case 5: // addphoto
+      case 6:
+      case 7: // friendrequests
+        desktopNextButtonHtml = (
+          <SetUpAccountNextButton
+            nextButtonAsOutline={nextButtonAsOutline}
+            nextButtonDisabled={nextButtonDisabled}
+            nextButtonText={nextButtonText}
+            onClickNextButton={this.onClickNextButton}
+          />
+        );
+        mobileNextButtonHtml = (
+          <SetUpAccountNextButton
+            isMobile
+            nextButtonAsOutline={nextButtonAsOutline}
+            nextButtonDisabled={nextButtonDisabled}
+            nextButtonText={nextButtonText}
+            onClickNextButton={this.onClickNextButton}
+          />
+        );
+        break;
       case 1: // importcontacts
         if (voterContactEmailListCount > 0) {
           desktopNextButtonHtml = (
@@ -772,32 +910,6 @@ class RemindContactsRoot extends React.Component {
             </Suspense>
           );
         }
-        break;
-      case 2: // preview
-      case 11: // downloadapp
-      case 12: // copy
-      case 3: // invitecontacts
-      case 4: // editname
-      case 5: // addphoto
-      case 6:
-      case 7: // friendrequests
-        desktopNextButtonHtml = (
-          <SetUpAccountNextButton
-            nextButtonAsOutline={nextButtonAsOutline}
-            nextButtonDisabled={nextButtonDisabled}
-            nextButtonText={nextButtonText}
-            onClickNextButton={this.onClickNextButton}
-          />
-        );
-        mobileNextButtonHtml = (
-          <SetUpAccountNextButton
-            isMobile
-            nextButtonAsOutline={nextButtonAsOutline}
-            nextButtonDisabled={nextButtonDisabled}
-            nextButtonText={nextButtonText}
-            onClickNextButton={this.onClickNextButton}
-          />
-        );
         break;
       case 10: // addcontacts
         desktopNextButtonHtml = (

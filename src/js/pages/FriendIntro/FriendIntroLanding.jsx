@@ -15,6 +15,7 @@ import {
   DesktopNextButtonsInnerWrapper, DesktopNextButtonsOuterWrapperUShowDesktopTablet,
   MobileStaticNextButtonsInnerWrapper, MobileStaticNextButtonsOuterWrapperUShowMobile,
 } from '../../components/Style/NextButtonStyles';
+import NextStepButtons from '../../components/FriendIntro/NextStepButtons';
 import AppObservableStore from '../../stores/AppObservableStore';
 import FriendStore from '../../stores/FriendStore';
 import VoterStore from '../../stores/VoterStore';
@@ -348,47 +349,6 @@ class FriendIntroLanding extends Component {
 FriendIntroLanding.propTypes = {
   classes: PropTypes.object,
   match: PropTypes.object,
-};
-
-function NextStepButtons (props) {
-  renderLog('NextStepButtons functional component');
-  return (
-    <>
-      <Button
-        color="primary"
-        onClick={props.onClickNextButton}
-        style={props.desktopMode ? {
-          boxShadow: 'none !important',
-          textTransform: 'none',
-          width: 250,
-        } : {
-          boxShadow: 'none !important',
-          textTransform: 'none',
-          width: '100%',
-        }}
-        variant="contained"
-      >
-        {props.nextStepButtonText}
-      </Button>
-      {!props.skipForNowOff && (
-        <Button
-          classes={props.desktopMode ? { root: props.classes.desktopSimpleLink } : { root: props.classes.mobileSimpleLink }}
-          color="primary"
-          onClick={props.goToSkipForNow}
-        >
-          Skip for now
-        </Button>
-      )}
-    </>
-  );
-}
-NextStepButtons.propTypes = {
-  classes: PropTypes.object,
-  desktopMode: PropTypes.bool,
-  goToSkipForNow: PropTypes.func,
-  nextStepButtonText: PropTypes.string,
-  onClickNextButton: PropTypes.func,
-  skipForNowOff: PropTypes.bool,
 };
 
 const styles = () => ({

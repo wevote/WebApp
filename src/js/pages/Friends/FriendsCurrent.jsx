@@ -85,7 +85,7 @@ export default class FriendsCurrent extends Component {
     if (searchFilterOn) {
       friendListForDisplay = currentFriendListFilteredBySearch;
     }
-
+    const messageToFriendType = 'remindContacts';
     return (
       <FriendsCurrentWrapper>
         <Helmet title="Your Friends - We Vote" />
@@ -119,6 +119,7 @@ export default class FriendsCurrent extends Component {
         <div>
           <FriendList
             friendList={friendListForDisplay}
+            messageToFriendType={messageToFriendType}
           />
         </div>
       </FriendsCurrentWrapper>
