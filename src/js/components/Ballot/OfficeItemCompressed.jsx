@@ -55,6 +55,7 @@ class OfficeItemCompressed extends Component {
     this.goToOfficeLink = this.goToOfficeLink.bind(this);
     this.onClickShowOrganizationModalWithBallotItemInfo = this.onClickShowOrganizationModalWithBallotItemInfo.bind(this);
     this.onClickShowOrganizationModalWithPositions = this.onClickShowOrganizationModalWithPositions.bind(this);
+    this.onClickShowOrganizationModalWithBallotItemInfoAndPositions = this.onClickShowOrganizationModalWithBallotItemInfoAndPositions.bind(this);
     this.showAllCandidates = this.showAllCandidates.bind(this);
     this.showLessCandidates = this.showLessCandidates.bind(this);
   }
@@ -229,6 +230,11 @@ class OfficeItemCompressed extends Component {
     AppObservableStore.setHideOrganizationModalBallotItemInfo(true);
   }
 
+  onClickShowOrganizationModalWithBallotItemInfoAndPositions (candidateWeVoteId) {
+    AppObservableStore.setOrganizationModalBallotItemWeVoteId(candidateWeVoteId);
+    AppObservableStore.setShowOrganizationModal(true);
+  }
+
   getCandidateLink (candidateWeVoteId) {
     if (this.state.organizationWeVoteId) {
       // If there is an organizationWeVoteId, signal that we want to link back to voter_guide for that organization
@@ -311,7 +317,7 @@ class OfficeItemCompressed extends Component {
                         <CandidateTopRow>
                           <Candidate
                             id={`officeItemCompressedCandidateImageAndName-${oneCandidate.we_vote_id}-${externalUniqueId}`}
-                            onClick={() => this.onClickShowOrganizationModalWithBallotItemInfo(oneCandidate.we_vote_id)}
+                            onClick={() => this.onClickShowOrganizationModalWithBallotItemInfoAndPositions(oneCandidate.we_vote_id)}
                           >
                             {/* Candidate Image */}
                             <Suspense fallback={<></>}>

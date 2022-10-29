@@ -711,6 +711,10 @@ class RemindContactsRoot extends React.Component {
     });
   }
 
+  goToAddContactsManually = () => {
+    historyPush('/remind/addcontacts');
+  }
+
   render () {
     renderLog('RemindContactsRoot');  // Set LOG_RENDER_EVENTS to log all renders
     const { classes } = this.props;
@@ -899,16 +903,30 @@ class RemindContactsRoot extends React.Component {
             />
           );
         } else {
+          let desktopInlineButtonsOnBreakValue;
+          if (desktopInlineButtonsOnInMobile) {
+            desktopInlineButtonsOnBreakValue = 1;
+          } else {
+            desktopInlineButtonsOnBreakValue = isCordovaWide() ? 1000 : 'sm';
+          }
           desktopNextButtonHtml = (
-            <Suspense fallback={<></>}>
-              <AddContactsFromGoogleButton darkButton />
-            </Suspense>
+            <>
+              <Suspense fallback={<></>}>
+                <AddContactsFromGoogleButton darkButton />
+              </Suspense>
+              <DesktopNextButtonsOuterWrapperUShowDesktopTablet breakValue={desktopInlineButtonsOnBreakValue}>
+                <DesktopNextButtonsInnerWrapper>
+                  <Button
+                    classes={{ root: classes.addContactsManuallyLink }}
+                    onClick={this.goToAddContactsManually}
+                  >
+                    Or add contacts manually
+                  </Button>
+                </DesktopNextButtonsInnerWrapper>
+              </DesktopNextButtonsOuterWrapperUShowDesktopTablet>
+            </>
           );
-          mobileNextButtonHtml = (
-            <Suspense fallback={<></>}>
-              <AddContactsFromGoogleButton darkButton />
-            </Suspense>
-          );
+          mobileNextButtonHtml = desktopNextButtonHtml;
         }
         break;
       case 10: // addcontacts
