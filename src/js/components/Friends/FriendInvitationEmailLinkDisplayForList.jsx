@@ -54,7 +54,7 @@ class FriendInvitationEmailLinkDisplayForList extends Component {
     const emailAddressArray = '';
     const firstNameArray = '';
     const lastNameArray = '';
-    const invitationMessage = FriendStore.getMessageToFriendQueuedToSave();
+    const invitationMessage = FriendStore.getMessageToFriendQueuedToSave('inviteFriend');
     const senderEmailAddress = VoterStore.getVoterEmail();
     FriendActions.friendInvitationByEmailSend(emailAddressArray, firstNameArray, lastNameArray, emailAddresses, invitationMessage, senderEmailAddress);
     this.setState({

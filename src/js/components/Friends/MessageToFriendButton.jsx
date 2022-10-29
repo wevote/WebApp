@@ -5,8 +5,10 @@ import React, { Component } from 'react';
 import FriendActions from '../../actions/FriendActions';
 import { renderLog } from '../../common/utils/logging';
 import AppObservableStore from '../../stores/AppObservableStore';
+import BallotStore from '../../stores/BallotStore';
 import FriendStore from '../../stores/FriendStore';
 import VoterStore from '../../stores/VoterStore';
+import createMessageToFriendDefaults from '../../utils/createMessageToFriendDefaults';
 
 
 export default class MessageToFriendButton extends Component {
@@ -14,6 +16,7 @@ export default class MessageToFriendButton extends Component {
     super(props);
     this.state = {
       isFriend: false,
+      messageToFriendDefault: '',
       messageToFriendSent: false,
       voterIsSignedIn: false,
       voterWeVoteId: '',
@@ -21,15 +24,23 @@ export default class MessageToFriendButton extends Component {
   }
 
   componentDidMount () {
-    this.friendStoreListener = FriendStore.addListener(this.onFriendStoreChange.bind(this));
-    this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
     this.onFriendStoreChange();
     this.onVoterStoreChange();
+    // this.createMessageToFriendDefault(); // This is done in onFriendStoreChange above, so we don't need to call again
+    this.ballotStoreListener = BallotStore.addListener(this.onBallotStoreChange.bind(this));
+    this.friendStoreListener = FriendStore.addListener(this.onFriendStoreChange.bind(this));
+    this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
   }
 
   componentWillUnmount () {
     this.friendStoreListener.remove();
+    if (this.setMessageTimer) clearTimeout(this.setMessageTimer);
+    this.ballotStoreListener.remove();
     this.voterStoreListener.remove();
+  }
+
+  onBallotStoreChange () {
+    this.createMessageToFriendDefault();
   }
 
   onFriendStoreChange () {
@@ -40,6 +51,7 @@ export default class MessageToFriendButton extends Component {
         isFriend: FriendStore.isFriend(otherVoterWeVoteId),
       });
     }
+    this.createMessageToFriendDefault();
   }
 
   onVoterStoreChange () {
@@ -52,14 +64,48 @@ export default class MessageToFriendButton extends Component {
     }
   }
 
+  createMessageToFriendDefault = () => {
+    const { messageToFriendType } = this.props;
+    const results = createMessageToFriendDefaults(messageToFriendType);
+    const { messageToFriendDefault } = results;
+    // const { messageToFriendDefaultAsk, messageToFriendDefaultRemind, messageToFriendDefaultInviteFriend } = results;
+    this.setState({
+      messageToFriendDefault,
+    }, () => this.setMessageToFriendQueuedToSave());
+  }
+
+  setMessageToFriendQueuedToSave = () => {
+    const { messageToFriendType } = this.props;
+    const messageToFriendQueuedToSaveSetPreviously = FriendStore.getMessageToFriendQueuedToSaveSet(messageToFriendType);
+    if (!messageToFriendQueuedToSaveSetPreviously) {
+      // Only proceed if it hasn't already been set
+      if (this.setMessageTimer) clearTimeout(this.setMessageTimer);
+      this.setMessageTimer = setTimeout(() => {
+        const { messageToFriendDefault } = this.state;
+        const messageToFriendQueuedToSave = FriendStore.getMessageToFriendQueuedToSave(messageToFriendType);
+        if (messageToFriendDefault !== messageToFriendQueuedToSave) {
+          // If voter hasn't changed this, update this.
+          FriendActions.messageToFriendQueuedToSave(messageToFriendDefault, messageToFriendType);
+        }
+      }, 500);
+    }
+  }
+
   sendMessageToFriend = () => {
-    const { electionDateInFutureFormatted, electionDateIsToday, messageToFriendDefault, otherVoterWeVoteId } = this.props;
-    const { voterIsSignedIn } = this.state;
+    const { electionDateInFutureFormatted, electionDateIsToday, messageToFriendIncoming, otherVoterWeVoteId } = this.props;
+    let { messageToFriendType } = this.props;
+    messageToFriendType = messageToFriendType || 'inviteMessage';
+    const { messageToFriendDefault, voterIsSignedIn } = this.state;
     // console.log('sendMessageToFriend');
+
     if (voterIsSignedIn) {
       let messageToSend;
-      if (FriendStore.getMessageToFriendQueuedToSaveSet()) {
-        messageToSend = FriendStore.getMessageToFriendQueuedToSave();
+      if (messageToFriendIncoming) {
+        // If an override was passed in, use that
+        messageToSend = messageToFriendIncoming;
+      } else if (messageToFriendType && FriendStore.getMessageToFriendQueuedToSaveSet(messageToFriendType)) {
+        // If the voter made a change to the message, use that
+        messageToSend = FriendStore.getMessageToFriendQueuedToSave(messageToFriendType);
       } else {
         messageToSend = messageToFriendDefault;
       }
@@ -112,7 +158,8 @@ MessageToFriendButton.propTypes = {
   displayFullWidth: PropTypes.bool,
   electionDateInFutureFormatted: PropTypes.string,
   electionDateIsToday: PropTypes.bool,
-  messageToFriendDefault: PropTypes.string,
+  messageToFriendIncoming: PropTypes.string,
+  messageToFriendType: PropTypes.string,
   lightModeOn: PropTypes.bool,
   otherVoterWeVoteId: PropTypes.string.isRequired,
   voterEmailAddressMissing: PropTypes.bool,

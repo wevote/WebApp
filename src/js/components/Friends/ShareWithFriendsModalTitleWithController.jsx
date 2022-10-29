@@ -24,6 +24,7 @@ class ShareWithFriendsModalTitleWithController extends Component {
       copyLinkCopied: false,
       electionDateInFutureFormatted: '',
       messageToFriendDefault: '',
+      messageToFriendType: 'shareWithFriend', // Alternate is shareWithFriendAllOpinions
     };
   }
 
@@ -84,6 +85,7 @@ class ShareWithFriendsModalTitleWithController extends Component {
     shareBallotOnlyMessage += 'Check out the ballot for ';
 
     let messageToFriendDefault = '';
+    const messageToFriendType = includingAllOpinions ? 'shareWithFriendAllOpinions' : 'shareWithFriend';
     // const electionDayText = ElectionStore.getElectionDayText(VoterStore.electionId());
     const electionDayText = BallotStore.currentBallotElectionDate;
     let electionDateFound = false;
@@ -118,22 +120,28 @@ class ShareWithFriendsModalTitleWithController extends Component {
     } else {
       messageToFriendDefault = shareBallotOnlyMessage;
     }
-    console.log('ShareWithFriendsModalTitleWithController createMessageToFriendDefault:', messageToFriendDefault);
+    // console.log('ShareWithFriendsModalTitleWithController createMessageToFriendDefault:', messageToFriendDefault);
     this.setState({
       messageToFriendDefault,
+      messageToFriendType,
     }, () => this.setMessageToFriendQueuedToSave());
   }
 
   setMessageToFriendQueuedToSave = () => {
-    if (this.setMessageTimer) clearTimeout(this.setMessageTimer);
-    this.setMessageTimer = setTimeout(() => {
-      const { messageToFriendDefault } = this.state;
-      const messageToFriendQueuedToSave = FriendStore.getMessageToFriendQueuedToSave();
-      if (messageToFriendDefault !== messageToFriendQueuedToSave) {
-        // If voter hasn't changed this, update this.
-        FriendActions.messageToFriendQueuedToSave(messageToFriendDefault);
-      }
-    }, 500);
+    const { messageToFriendType } = this.state;
+    const messageToFriendQueuedToSaveSetPreviously = FriendStore.getMessageToFriendQueuedToSaveSet(messageToFriendType);
+    if (!messageToFriendQueuedToSaveSetPreviously) {
+      // Only proceed if it hasn't already been set
+      if (this.setMessageTimer) clearTimeout(this.setMessageTimer);
+      this.setMessageTimer = setTimeout(() => {
+        const { messageToFriendDefault } = this.state;
+        const messageToFriendQueuedToSave = FriendStore.getMessageToFriendQueuedToSave(messageToFriendType);
+        if (messageToFriendDefault !== messageToFriendQueuedToSave) {
+          // If voter hasn't changed this, update this.
+          FriendActions.messageToFriendQueuedToSave(messageToFriendDefault, messageToFriendType);
+        }
+      }, 500);
+    }
   }
 
   setElectionDateInformation = () => {
@@ -158,7 +166,7 @@ class ShareWithFriendsModalTitleWithController extends Component {
   render () {
     renderLog('ShareWithFriendsModalTitleWithController');  // Set LOG_RENDER_EVENTS to log all renders
     const { friendsModalTitle, urlToShare } = this.props;
-    const { copyLinkCopied, totalCurrentFriendListCount } = this.state;
+    const { copyLinkCopied, messageToFriendType, totalCurrentFriendListCount } = this.state;
 
     return (
       <ShareWithFriendsModalTitle>
@@ -173,7 +181,7 @@ class ShareWithFriendsModalTitleWithController extends Component {
           <div className="full-width">
             {totalCurrentFriendListCount > 0 && (
               <Suspense fallback={<></>}>
-                <MessageToFriendInputField />
+                <MessageToFriendInputField messageToFriendType={messageToFriendType} />
               </Suspense>
             )}
             {(urlToShare) && (

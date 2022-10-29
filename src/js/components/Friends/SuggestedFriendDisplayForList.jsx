@@ -36,12 +36,18 @@ class SuggestedFriendDisplayForList extends Component {
   }
 
   friendInvitationByEmailSend = () => {
-    const { emailAddressForDisplay } = this.props;
+    const { askMode, emailAddressForDisplay, remindMode } = this.props;
+    let messageToFriendType = 'inviteFriend'; // default
+    if (askMode) {
+      messageToFriendType = 'askFriend';
+    } else if (remindMode) {
+      messageToFriendType = 'remindContacts';
+    }
     // console.log('SuggestedFriendDisplayForList friendInvitationByEmailSend');
     const emailAddressArray = '';
     const firstNameArray = '';
     const lastNameArray = '';
-    const invitationMessage = FriendStore.getMessageToFriendQueuedToSave();
+    const invitationMessage = FriendStore.getMessageToFriendQueuedToSave(messageToFriendType);
     const senderEmailAddress = VoterStore.getVoterEmail();
     FriendActions.friendInvitationByEmailSend(emailAddressArray, firstNameArray, lastNameArray, emailAddressForDisplay, invitationMessage, senderEmailAddress);
     this.setState({
@@ -68,7 +74,7 @@ class SuggestedFriendDisplayForList extends Component {
     } = this.props;
     const hostname = AppObservableStore.getHostname();
     const destinationFullUrl = `https://${hostname}/`; // We must provide a destinationFullUrl, so we know what hostname to use in sharedItemRetrieve
-    const sharedMessage = FriendStore.getMessageToFriendQueuedToSave();
+    const sharedMessage = FriendStore.getMessageToFriendQueuedToSave('remindContacts');
     ShareActions.sharedItemSaveRemindContact(destinationFullUrl, emailAddressText, otherVoterWeVoteId, sharedMessage, otherVoterDisplayName, otherVoterFirstName, otherVoterLastName);
     this.setState({
       friendInvitationByEmailSent: true,

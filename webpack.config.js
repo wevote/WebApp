@@ -92,7 +92,8 @@ module.exports = (env, argv) => ({
     filename: isWebApp ? '[name].[contenthash].js' : 'bundle.js',
     publicPath: isWebApp ? '/' : undefined,
   },
-  devtool: false,
+  // source-map is for OpenReplay
+  devtool: 'source-map',
   plugins: [
     new CleanWebpackPlugin(),
     new ESLintPlugin({ failOnError: false, failOnWarning: false  }),
