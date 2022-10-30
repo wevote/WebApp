@@ -152,10 +152,9 @@ class VoterPhoneVerificationEntry extends Component {
       voter: VoterStore.getVoter(),
       // voterSMSPhoneNumbersVerifiedCount,
     });
-    console.log('VoterEmailAddressEntry onVoterStoreChange before remaining setstate');
-    console.log(newState);
+    // console.log('VoterEmailAddressEntry onVoterStoreChange before remaining setstate');
     if (this._isMounted) {
-      console.log('VoterEmailAddressEntry onVoterStoreChange before remaining setstate AND _isMounted');
+      // console.log('VoterEmailAddressEntry onVoterStoreChange before remaining setstate AND _isMounted');
       this.setState(newState, () => console.log(this.state));
     }
   }
@@ -248,7 +247,7 @@ class VoterPhoneVerificationEntry extends Component {
   };
 
   onCancel = () => {
-    console.log('VoterPhoneVerificationEntry onCancel');
+    // console.log('VoterPhoneVerificationEntry onCancel');
     this.setState({
       disablePhoneVerificationButton: false,
       displayPhoneVerificationButton: false,

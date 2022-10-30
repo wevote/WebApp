@@ -183,6 +183,7 @@ export default class Header extends Component {
       path.startsWith('/how/for-campaigns') ||
       path.startsWith('/more/about') ||
       path.startsWith('/more/credits') ||
+      path.startsWith('/remind') ||
       path.startsWith('/setupaccount') ||
       path.startsWith('/start') ||
       path.startsWith('/twitter_sign_in') ||
