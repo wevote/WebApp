@@ -6,6 +6,7 @@ import styled from 'styled-components';
 import FriendActions from '../../actions/FriendActions';
 import BallotActions from '../../actions/BallotActions';
 import VoterActions from '../../actions/VoterActions';
+import { publicFigureQuotes } from '../../common/constants/whyVoteQuotes';
 import apiCalming from '../../common/utils/apiCalming';
 import { isCordovaWide } from '../../common/utils/cordovaUtils';
 import historyPush from '../../common/utils/historyPush';
@@ -13,6 +14,7 @@ import { isWebApp } from '../../common/utils/isCordovaOrWebApp';
 import { renderLog } from '../../common/utils/logging';
 import normalizedImagePath from '../../common/utils/normalizedImagePath';
 import DownloadAppsButtons from './DownloadAppsButtons';
+import WhyVoteQuote from './WhyVoteQuote';
 import Reassurance from '../SetUpAccount/Reassurance';
 import { reassuranceTextRemindContacts } from './reassuranceTextRemindContacts';
 import NextStepButtons from '../FriendIntro/NextStepButtons';
@@ -71,10 +73,18 @@ class RemindContactsStart extends Component {
     historyPush('/remind/addcontacts');
   }
 
-  goToNextStep = () => {
+  goToImportContacts = () => {
     const { location: { pathname: currentPathname } } = window;
     AppObservableStore.setSetUpAccountBackLinkPath(currentPathname);
     const setUpAccountEntryPath = '/remind/importcontacts';
+    AppObservableStore.setSetUpAccountEntryPath(setUpAccountEntryPath);
+    historyPush(setUpAccountEntryPath);
+  }
+
+  goToEditMessage = () => {
+    const { location: { pathname: currentPathname } } = window;
+    AppObservableStore.setSetUpAccountBackLinkPath(currentPathname);
+    const setUpAccountEntryPath = '/remind/message';
     AppObservableStore.setSetUpAccountEntryPath(setUpAccountEntryPath);
     historyPush(setUpAccountEntryPath);
   }
@@ -94,6 +104,7 @@ class RemindContactsStart extends Component {
     }
     const pigsCanFly = false;
     const startWithImportContacts = false;
+    const testQuotes = true;
     return (
       <>
         {(voterContactEmailListCount > 0) ? (
@@ -110,79 +121,126 @@ class RemindContactsStart extends Component {
             </div>
           </RemindContactsStartWithContactsWrapper>
         ) : (
-          <RemindContactsStartWrapper>
-            <SetUpAccountTitle>
-              Remind 3 of your friends
-              {' '}
-              <span className="u-no-break">
-                to vote today
-              </span>
-            </SetUpAccountTitle>
-            <SetUpAccountContactsTextWrapper>
-              <RemindContactsImportText>
-                Polls predict fewer than 50% of eligible Americans will vote in the next election.
-                {' '}
-                <span className="u-no-break">
-                  Let&apos;s change that!
-                </span>
-                {!startWithImportContacts && (
-                  <>
-                    <br />
-                    What do you want to say to your friends?
-                  </>
-                )}
-              </RemindContactsImportText>
-            </SetUpAccountContactsTextWrapper>
-            {startWithImportContacts ? (
-              <>
-                <ImageOuterWrapper>
-                  <MainImageWrapper>
-                    <div>
-                      <RemindMainImageImg src={addressBookSVGSrc} alt="" />
-                    </div>
-                  </MainImageWrapper>
-                </ImageOuterWrapper>
-                <div>
-                  <Suspense fallback={<></>}>
-                    <AddContactsFromGoogleButton darkButton />
-                  </Suspense>
-                </div>
-                <DesktopNextButtonsOuterWrapperUShowDesktopTablet breakValue={desktopInlineButtonsOnBreakValue}>
-                  <DesktopNextButtonsInnerWrapper>
-                    <Button
-                      classes={{ root: classes.addContactsManuallyLink }}
-                      onClick={this.goToAddContactsManually}
-                    >
-                      Or add contacts manually
-                    </Button>
-                  </DesktopNextButtonsInnerWrapper>
-                </DesktopNextButtonsOuterWrapperUShowDesktopTablet>
-                <Reassurance displayState={1} reassuranceText={reassuranceTextRemindContacts} />
-                {(isWebApp() && pigsCanFly) && (
-                  <DownloadAppsButtons />
-                )}
-              </>
-            ) : (
-              <>
-                <MessageToSendWrapper>
-                  <Suspense fallback={<></>}>
-                    <MessageToFriendInputField messageToFriendType="remindContacts" />
-                  </Suspense>
-                </MessageToSendWrapper>
+          <>
+            {testQuotes ? (
+              <RemindContactsStartWrapper>
+                <SetUpAccountTitle>
+                  Remind 3 of your friends
+                  {' '}
+                  <span className="u-no-break">
+                    to vote today
+                  </span>
+                </SetUpAccountTitle>
+                <SetUpAccountContactsTextWrapper>
+                  <RemindContactsImportText>
+                    Polls predict fewer than 50% of eligible Americans will vote in the next election.
+                    {' '}
+                    <span className="u-no-break">
+                      Let&apos;s change that!
+                    </span>
+                  </RemindContactsImportText>
+                </SetUpAccountContactsTextWrapper>
                 <DesktopNextButtonsOuterWrapperUShowDesktopTablet>
                   <DesktopNextButtonsInnerWrapper>
                     <NextStepButtons
                       classes={classes}
                       desktopMode
-                      nextStepButtonText="Choose who to remind"
-                      onClickNextButton={this.goToNextStep}
+                      nextStepButtonText="Get started" // Choose friends to remind
+                      onClickNextButton={this.goToEditMessage}
                       skipForNowOff
                     />
                   </DesktopNextButtonsInnerWrapper>
                 </DesktopNextButtonsOuterWrapperUShowDesktopTablet>
-              </>
+                <WhyVoteQuoteBlockOuterWrapper>
+                  <WhyVoteQuoteBlock>
+                    {publicFigureQuotes.map((oneQuote) => (
+                      <WhyVoteQuote
+                        key={`whyVoteQuote-${oneQuote.testimonialAuthor}`}
+                        imageUrl={oneQuote.imageUrl}
+                        testimonial={oneQuote.testimonial}
+                        testimonialAuthor={oneQuote.testimonialAuthor}
+                      />
+                    ))}
+                  </WhyVoteQuoteBlock>
+                </WhyVoteQuoteBlockOuterWrapper>
+              </RemindContactsStartWrapper>
+            ) : (
+              <RemindContactsStartWrapper>
+                <SetUpAccountTitle>
+                  Remind 3 of your friends
+                  {' '}
+                  <span className="u-no-break">
+                    to vote today
+                  </span>
+                </SetUpAccountTitle>
+                <SetUpAccountContactsTextWrapper>
+                  <RemindContactsImportText>
+                    Polls predict fewer than 50% of eligible Americans will vote in the next election.
+                    {' '}
+                    <span className="u-no-break">
+                      Let&apos;s change that!
+                    </span>
+                    {!startWithImportContacts && (
+                      <>
+                        <br />
+                        <br />
+                        Personalized messages work best.
+                      </>
+                    )}
+                  </RemindContactsImportText>
+                </SetUpAccountContactsTextWrapper>
+                {startWithImportContacts ? (
+                  <>
+                    <ImageOuterWrapper>
+                      <MainImageWrapper>
+                        <div>
+                          <RemindMainImageImg src={addressBookSVGSrc} alt="" />
+                        </div>
+                      </MainImageWrapper>
+                    </ImageOuterWrapper>
+                    <div>
+                      <Suspense fallback={<></>}>
+                        <AddContactsFromGoogleButton darkButton />
+                      </Suspense>
+                    </div>
+                    <DesktopNextButtonsOuterWrapperUShowDesktopTablet breakValue={desktopInlineButtonsOnBreakValue}>
+                      <DesktopNextButtonsInnerWrapper>
+                        <Button
+                          classes={{ root: classes.addContactsManuallyLink }}
+                          onClick={this.goToAddContactsManually}
+                        >
+                          Or add contacts manually
+                        </Button>
+                      </DesktopNextButtonsInnerWrapper>
+                    </DesktopNextButtonsOuterWrapperUShowDesktopTablet>
+                    <Reassurance displayState={1} reassuranceText={reassuranceTextRemindContacts} />
+                    {(isWebApp() && pigsCanFly) && (
+                      <DownloadAppsButtons />
+                    )}
+                  </>
+                ) : (
+                  <>
+                    <MessageToSendWrapper>
+                      <Suspense fallback={<></>}>
+                        <MessageToFriendInputField messageToFriendType="remindContacts" />
+                      </Suspense>
+                    </MessageToSendWrapper>
+                    <DesktopNextButtonsOuterWrapperUShowDesktopTablet>
+                      <DesktopNextButtonsInnerWrapper>
+                        <NextStepButtons
+                          classes={classes}
+                          desktopMode
+                          nextStepButtonText="Choose who to remind"
+                          onClickNextButton={this.goToImportContacts}
+                          skipForNowOff
+                        />
+                      </DesktopNextButtonsInnerWrapper>
+                    </DesktopNextButtonsOuterWrapperUShowDesktopTablet>
+                  </>
+                )}
+              </RemindContactsStartWrapper>
             )}
-          </RemindContactsStartWrapper>
+          </>
         )}
       </>
     );
@@ -232,6 +290,18 @@ const RemindContactsStartWithContactsWrapper = styled('div')`
 const RemindContactsStartWrapper = styled('div')`
   margin-bottom: 48px;
   margin-top: 36px;
+`;
+
+const WhyVoteQuoteBlock = styled('div')`
+  max-width: 450px;
+`;
+
+const WhyVoteQuoteBlockOuterWrapper = styled('div')`
+  display: flex;
+  justify-content: center;
+  margin-bottom: 48px;
+  margin-top: 36px;
+  width: 100%;
 `;
 
 export default withStyles(styles)(RemindContactsStart);

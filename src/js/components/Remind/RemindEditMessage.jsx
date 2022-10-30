@@ -10,6 +10,7 @@ import {
   StepCenteredWrapper,
 } from '../Style/SetUpAccountStyles';
 
+const ContactFriendsByMessageType = React.lazy(() => import(/* webpackChunkName: 'ContactFriendsByMessageType' */ '../Friends/ContactFriendsByMessageType'));
 const MessageToFriendInputField = React.lazy(() => import(/* webpackChunkName: 'MessageToFriendInputField' */ '../Friends/MessageToFriendInputField'));
 
 class RemindEditMessage extends React.Component {
@@ -32,6 +33,7 @@ class RemindEditMessage extends React.Component {
 
   render () {
     renderLog('RemindEditMessage');  // Set LOG_RENDER_EVENTS to log all renders
+    const pigsCanFly = false;
     return (
       <StepCenteredWrapper>
         <SetUpAccountTop>
@@ -40,7 +42,7 @@ class RemindEditMessage extends React.Component {
           </SetUpAccountTitle>
           <SetUpAccountContactsTextWrapper>
             <SetUpAccountContactsText>
-              What do you want to say to your friends?
+              Personalized messages work best.
             </SetUpAccountContactsText>
           </SetUpAccountContactsTextWrapper>
         </SetUpAccountTop>
@@ -49,6 +51,13 @@ class RemindEditMessage extends React.Component {
             <MessageToFriendInputField messageToFriendType="remindContacts" />
           </Suspense>
         </MessageToSendWrapper>
+        {pigsCanFly && (
+          <EnterEmailsWrapper>
+            <Suspense fallback={<></>}>
+              <ContactFriendsByMessageType messageToFriendType="remindContacts" />
+            </Suspense>
+          </EnterEmailsWrapper>
+        )}
       </StepCenteredWrapper>
     );
   }
@@ -58,9 +67,13 @@ RemindEditMessage.propTypes = {
   nextButtonClicked: PropTypes.bool,
 };
 
+const EnterEmailsWrapper = styled('div')`
+  margin-bottom: 24px;
+  width: 100%;
+`;
+
 const MessageToSendWrapper = styled('div')`
   margin-top: 24px;
-  margin-bottom: 24px;
   width: 100%;
 `;
 

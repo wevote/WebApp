@@ -357,15 +357,9 @@ class RemindContactsRoot extends React.Component {
         //   skipForNowOff = false;
         //   skipForNowPath = '/remind/addphoto';
         // } else
-        if (voterContactEmailListCount > 0) {
-          nextButtonText = 'Remind your friends';
-          nextStepPath = '/remind/invitecontacts';
-          skipForNowOff = true;
-        } else {
-          nextButtonText = 'Next';
-          nextStepPath = '/remind/importcontacts'; // testsend
-          skipForNowPath = '/remind/importcontacts'; // testsend
-        }
+        nextButtonText = 'Choose friends to remind'; // 'Send my friends reminders to vote';
+        nextStepPath = '/remind/addcontacts';
+        skipForNowPath = '/remind/addcontacts';
         break;
       case 112: // testsend
         backToLinkPath = '/remind/message';
@@ -488,7 +482,7 @@ class RemindContactsRoot extends React.Component {
         }
         break;
       case 10: // addcontacts
-        backToLinkPath = '/ready';
+        backToLinkPath = '/remind/importcontacts';
         backButtonOn = true;
         desktopFixedButtonsOn = false;
         desktopInlineButtonsOnInMobile = true;
@@ -715,6 +709,10 @@ class RemindContactsRoot extends React.Component {
     historyPush('/remind/addcontacts');
   }
 
+  goToImportContacts = () => {
+    historyPush('/remind/importcontacts');
+  }
+
   render () {
     renderLog('RemindContactsRoot');  // Set LOG_RENDER_EVENTS to log all renders
     const { classes } = this.props;
@@ -731,6 +729,12 @@ class RemindContactsRoot extends React.Component {
     let desktopNextButtonHtml;
     let mobileNextButtonHtml;
     let stepHtml;
+    let desktopInlineButtonsOnBreakValue;
+    if (desktopInlineButtonsOnInMobile) {
+      desktopInlineButtonsOnBreakValue = 1;
+    } else {
+      desktopInlineButtonsOnBreakValue = isCordovaWide() ? 1000 : 'sm';
+    }
     switch (displayStep) {
       default:
       case 111: // message
@@ -857,6 +861,28 @@ class RemindContactsRoot extends React.Component {
     switch (displayStep) {
       default:
       case 111: // message
+        desktopNextButtonHtml = (
+          <>
+            <SetUpAccountNextButton
+              nextButtonAsOutline={nextButtonAsOutline}
+              nextButtonDisabled={nextButtonDisabled}
+              nextButtonText={nextButtonText}
+              onClickNextButton={this.onClickNextButton}
+            />
+            <DesktopNextButtonsOuterWrapperUShowDesktopTablet breakValue={desktopInlineButtonsOnBreakValue}>
+              <DesktopNextButtonsInnerWrapper>
+                <Button
+                  classes={{ root: classes.addContactsManuallyLink }}
+                  onClick={this.goToImportContacts}
+                >
+                  Or import contacts from Gmail
+                </Button>
+              </DesktopNextButtonsInnerWrapper>
+            </DesktopNextButtonsOuterWrapperUShowDesktopTablet>
+          </>
+        );
+        mobileNextButtonHtml = desktopNextButtonHtml;
+        break;
       case 112: // testsend
       case 2: // preview
       case 11: // downloadapp
@@ -903,12 +929,6 @@ class RemindContactsRoot extends React.Component {
             />
           );
         } else {
-          let desktopInlineButtonsOnBreakValue;
-          if (desktopInlineButtonsOnInMobile) {
-            desktopInlineButtonsOnBreakValue = 1;
-          } else {
-            desktopInlineButtonsOnBreakValue = isCordovaWide() ? 1000 : 'sm';
-          }
           desktopNextButtonHtml = (
             <>
               <Suspense fallback={<></>}>
@@ -967,12 +987,6 @@ class RemindContactsRoot extends React.Component {
       </>
     );
 
-    let desktopInlineButtonsOnBreakValue;
-    if (desktopInlineButtonsOnInMobile) {
-      desktopInlineButtonsOnBreakValue = 1;
-    } else {
-      desktopInlineButtonsOnBreakValue = isCordovaWide() ? 1000 : 'sm';
-    }
     return (
       <PageContentContainerAccountSetUp>
         <Helmet title="Find Your Friends - We Vote" />
