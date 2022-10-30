@@ -30,7 +30,7 @@ class VoterPhoneVerificationEntry extends Component {
       displayPhoneVerificationButton: false,
       hideExistingPhoneNumbers: false,
       loading: false,
-      movedInitialFocus: false,
+      // movedInitialFocus: false,
       secretCodeSystemLocked: false,
       showVerifyModal: false,
       showError: false,
@@ -155,7 +155,7 @@ class VoterPhoneVerificationEntry extends Component {
     // console.log('VoterEmailAddressEntry onVoterStoreChange before remaining setstate');
     if (this._isMounted) {
       // console.log('VoterEmailAddressEntry onVoterStoreChange before remaining setstate AND _isMounted');
-      this.setState(newState, () => console.log(this.state));
+      this.setState(newState);
     }
   }
 
