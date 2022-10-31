@@ -18,6 +18,7 @@
     "lintCordova": "eslint --format stylish --ext .jsx --ext .js srcCordova/js",
     "prod": "node node/buildDateFile.js && MINIMIZED=1 webpack --mode production",
     "run-prod-local": "node server-prod-local.js",
+    "selenium-sample": "node tests/my_setup/sampleTest.js",
     "start": "node node/buildDateFile.js && PROTOCOL=HTTP webpack serve --mode development",
     "start-win": "node node/buildDateFile.js && webpack serve --mode development",
     "start-https": "node node/buildDateFile.js && PROTOCOL=HTTPS webpack serve --mode development",
@@ -128,7 +129,7 @@
     "react-text-truncate": "^0.17.0",
     "react-toastify": "^7.0.4",
     "rxjs": "^6.6.7",
-    "selenium-webdriver": "^4.1.2",
+    "selenium-webdriver": "^4.5.0",
     "styled-components": "~5.3.3",
     "topojson-client": "^3.1.0",
     "wdio": "^6.0.1"
