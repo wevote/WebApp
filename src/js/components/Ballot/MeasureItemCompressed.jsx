@@ -48,6 +48,7 @@ class MeasureItemCompressed extends Component {
     this.goToMeasureLink = this.goToMeasureLink.bind(this);
     this.onClickShowOrganizationModalWithBallotItemInfo = this.onClickShowOrganizationModalWithBallotItemInfo.bind(this);
     this.onClickShowOrganizationModalWithPositions = this.onClickShowOrganizationModalWithPositions.bind(this);
+    this.onClickShowOrganizationModalWithBallotItemInfoAndPositions = this.onClickShowOrganizationModalWithBallotItemInfoAndPositions.bind(this);
     this.togglePositionStatement = this.togglePositionStatement.bind(this);
   }
 
@@ -156,6 +157,12 @@ class MeasureItemCompressed extends Component {
     AppObservableStore.setHideOrganizationModalBallotItemInfo(true);
   }
 
+  onClickShowOrganizationModalWithBallotItemInfoAndPositions () {
+    const { measureWeVoteId } = this.props;
+    AppObservableStore.setOrganizationModalBallotItemWeVoteId(measureWeVoteId);
+    AppObservableStore.setShowOrganizationModal(true);
+  }
+
   getMeasureLink (oneMeasureWeVoteId) {
     if (this.state.organizationWeVoteId) {
       // If there is an organizationWeVoteId, signal that we want to link back to voter_guide for that organization
@@ -229,13 +236,13 @@ class MeasureItemCompressed extends Component {
 
     return (
       <MeasureItemCompressedWrapper>
-        <MeasureTitle onClick={this.onClickShowOrganizationModalWithBallotItemInfo}>
+        <MeasureTitle onClick={this.onClickShowOrganizationModalWithBallotItemInfoAndPositions}>
           {ballotDisplay[0]}
         </MeasureTitle>
         <SubTitle>{measureSubtitleCapitalized}</SubTitle>
         <MeasureContainer>
           <MeasureWrapper>
-            <InfoDetailsRow className="u-cursor--pointer" onClick={this.onClickShowOrganizationModalWithBallotItemInfo}>
+            <InfoDetailsRow className="u-cursor--pointer" onClick={this.onClickShowOrganizationModalWithBallotItemInfoAndPositions}>
               <MeasureText>
                 {shortenText(measureText, 200)}
                 &nbsp;
@@ -307,7 +314,7 @@ class MeasureItemCompressed extends Component {
             <ChoiceSpecifics
               id={`measureItemCompressedChoiceYes-${measureWeVoteId}`}
             >
-              <ChoiceTitle onClick={this.onClickShowOrganizationModalWithBallotItemInfo}>
+              <ChoiceTitle onClick={this.onClickShowOrganizationModalWithBallotItemInfoAndPositions}>
                 {`Yes On ${extractNumber(ballotItemDisplayName)}`}
               </ChoiceTitle>
               <ChoiceInfo>
@@ -345,7 +352,7 @@ class MeasureItemCompressed extends Component {
             <ChoiceSpecifics
               id={`measureItemCompressedChoiceNo-${measureWeVoteId}`}
             >
-              <ChoiceTitle onClick={this.onClickShowOrganizationModalWithBallotItemInfo}>
+              <ChoiceTitle onClick={this.onClickShowOrganizationModalWithBallotItemInfoAndPositions}>
                 {`No On ${extractNumber(ballotItemDisplayName)}`}
               </ChoiceTitle>
               <ChoiceInfo>
