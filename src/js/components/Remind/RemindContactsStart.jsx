@@ -163,6 +163,17 @@ class RemindContactsStart extends Component {
                     ))}
                   </WhyVoteQuoteBlock>
                 </WhyVoteQuoteBlockOuterWrapper>
+                <DesktopNextButtonsOuterWrapperUShowDesktopTablet>
+                  <DesktopNextButtonsInnerWrapper>
+                    <NextStepButtons
+                      classes={classes}
+                      desktopMode
+                      nextStepButtonText="Get started" // Choose friends to remind
+                      onClickNextButton={this.goToEditMessage}
+                      skipForNowOff
+                    />
+                  </DesktopNextButtonsInnerWrapper>
+                </DesktopNextButtonsOuterWrapperUShowDesktopTablet>
               </RemindContactsStartWrapper>
             ) : (
               <RemindContactsStartWrapper>

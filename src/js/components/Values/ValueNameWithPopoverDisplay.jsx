@@ -132,7 +132,7 @@ class ValueNameWithPopoverDisplay extends Component {
                   issueWeVoteId={oneIssue.issue_we_vote_id}
                   showFollowingButtonText
                   showIssueNameOnFollowButton
-                  lightModeOn
+                  // lightModeOn
                 />
               </FollowValueNameToggleContainer>
               <FollowIfYouCare>
