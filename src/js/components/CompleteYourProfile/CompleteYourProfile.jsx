@@ -30,7 +30,7 @@ class CompleteYourProfile extends Component {
         {
           id: 1,
           title: 'Watch how it works (no sound)',
-          buttonText: 'How We Vote Works',
+          buttonText: 'How We Vote works',
           completed: false,
           description: '',
           icon: (<PlayCircleFilled />),
@@ -39,10 +39,10 @@ class CompleteYourProfile extends Component {
         {
           id: 2,
           title: 'Interests that match your values',
-          buttonText: 'Choose Interests',
+          buttonText: 'Choose interests',
           completed: false,
           description: '',
-          icon: (<img alt="Choose Interests" src={normalizedImagePath('/img/global/svg-icons/issues/climate-change-24.svg')} />),
+          icon: (<img alt="" src={normalizedImagePath('/img/global/svg-icons/issues/climate-change-24.svg')} />),
           onClick: this.openValuesIntroModal,
         },
         // {

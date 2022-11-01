@@ -26,6 +26,7 @@ class PersonalizedScoreIntroBody extends Component {
       explanationTextBottomBlue: null,
       openAdviserMaterialUIPopover: false,
       openSupportOpposeCountDisplayModal: false,
+      personalizedScoreWatched: false,
       supportOpposeCountDisplayModalTutorialOn: true,
       supportOpposeCountDisplayModalTutorialText: null,
       showPersonalizedScoreDownArrow: false,
@@ -247,11 +248,12 @@ class PersonalizedScoreIntroBody extends Component {
 
   closeThisModal = () => {
     const { currentStep } = this.state;
-    const currentStepCompletedThreshold = 2; // Was 7 - Search code for other places we set 'currentStepCompletedThreshold'
+    const currentStepCompletedThreshold = 1; // Was 7 - Search code for other places we set 'currentStepCompletedThreshold'
     // console.log('PersonalizedScoreIntroBody closeThisModal, currentStep:', currentStep);
     if (currentStep >= currentStepCompletedThreshold) {
       // console.log('currentStepCompletedThreshold passed');
       VoterActions.voterUpdateInterfaceStatusFlags(VoterConstants.PERSONALIZED_SCORE_INTRO_COMPLETED);
+      // this.setState({ personalizedScoreWatched: true });
     }
     if (this.props.toggleFunction) {
       this.props.toggleFunction(normalizedHref());
@@ -266,16 +268,15 @@ class PersonalizedScoreIntroBody extends Component {
   };
 
   clickNextStepButton = () => {
-    const {
-      nextStep, personalizedScoreSteps,
-    } = this.state;
+    const { nextStep, personalizedScoreSteps } = this.state;
     // console.log('clickNextStepButton, nextStep:', nextStep);
     // console.log('PersonalizedScoreIntroBody clickNextStepButton, nextStep:', nextStep);
     // After they have seen the 7th step, we can consider the personalized score as complete
-    const currentStepCompletedThreshold = 2; // Was 7 - Search code for other places we set 'currentStepCompletedThreshold'
+    const currentStepCompletedThreshold = 1; // Was 7 - Search code for other places we set 'currentStepCompletedThreshold'
     if (nextStep >= currentStepCompletedThreshold) {
       // console.log('currentStepCompletedThreshold passed');
       VoterActions.voterUpdateInterfaceStatusFlags(VoterConstants.PERSONALIZED_SCORE_INTRO_COMPLETED);
+      // this.setState({ personalizedScoreWatched: true });
       // TODO DALE 2022-11-01 Explore why we need to bring this outside this function
       this.markPersonalizedScoreIntroCompleted();
     }
