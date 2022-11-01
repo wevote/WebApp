@@ -44,14 +44,16 @@ class ValuesIntroModal extends Component {
   }
 
   closeThisModal = () => {
+    // Mark this, so we know to show 'Interests' in CompleteYourProfile as completed
+    VoterActions.voterUpdateInterfaceStatusFlags(VoterConstants.VALUES_INTRO_COMPLETED);
     const { location: { pathname } } = window;
     this.props.toggleFunction(pathname);
   }
 
   valuesIntroCompleted = () => {
-    // Mark this so we know to show 'How it Works' as completed
-    const { location: { pathname } } = window;
+    // Mark this, so we know to show 'Interests' in CompleteYourProfile as completed
     VoterActions.voterUpdateInterfaceStatusFlags(VoterConstants.VALUES_INTRO_COMPLETED);
+    const { location: { pathname } } = window;
     this.props.toggleFunction(pathname);
   }
 

@@ -228,7 +228,7 @@ class HowItWorks extends Component {
 
   handleChangeSlide = (selectedStepIndex) => {
     const { howItWorksWatched } = this.state;
-    const minimumStepIndexForCompletion = 2;
+    const minimumStepIndexForCompletion = 1; // Was 2, but even opening it should get rid of the tickler
     if (!howItWorksWatched && selectedStepIndex >= minimumStepIndexForCompletion) {
       // Mark this, so we know to show 'How it Works' as completed
       VoterActions.voterUpdateInterfaceStatusFlags(VoterConstants.HOW_IT_WORKS_WATCHED);

@@ -26,19 +26,19 @@ class ContactFriendsByMessageType extends Component {
       loading: false,
       onEnterEmailAddressesStep: true,
       onFriendInvitationsSentStep: false,
-      senderEmailAddress: '',
+      // senderEmailAddress: '',
       senderEmailAddressError: false,
-      voterIsSignedIn: false,
+      // voterIsSignedIn: false,
     };
   }
 
   componentDidMount () {
     // console.log('ContactFriendsByMessageType componentDidMount');
     this.onFriendStoreChange();
-    const voterIsSignedIn = VoterStore.getVoterIsSignedIn();
-    this.setState({
-      voterIsSignedIn,
-    });
+    // const voterIsSignedIn = VoterStore.getVoterIsSignedIn();
+    // this.setState({
+    //   voterIsSignedIn,
+    // });
     this.friendStoreListener = FriendStore.addListener(this.onFriendStoreChange.bind(this));
     this.shareStoreListener = ShareStore.addListener(this.onShareStoreChange.bind(this));
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
@@ -91,11 +91,11 @@ class ContactFriendsByMessageType extends Component {
   }
 
   onVoterStoreChange () {
-    const voter = VoterStore.getVoter();
-    const voterIsSignedIn = voter.is_signed_in;
+    // const voter = VoterStore.getVoter();
+    // const voterIsSignedIn = voter.is_signed_in;
     // console.log('ContactFriendsByMessageType onVoterStoreChange voterIsSignedIn:', voterIsSignedIn);
     this.setState({
-      voterIsSignedIn,
+      // voterIsSignedIn,
       loading: false,
     });
   }
@@ -188,7 +188,7 @@ class ContactFriendsByMessageType extends Component {
       friendContactInfoArray: [],
       incomingEmailsOrPhonesString: '',
       emailAddressesError: false,
-      senderEmailAddress: '',
+      // senderEmailAddress: '',
       onEnterEmailAddressesStep: true,
       onFriendInvitationsSentStep: true,
     });
@@ -202,7 +202,7 @@ class ContactFriendsByMessageType extends Component {
       friendContactInfoArray,
       incomingEmailsOrPhonesString, loading,
       numberOfMessagesSent, onEnterEmailAddressesStep, onFriendInvitationsSentStep,
-      senderEmailAddressError, successMessageToShowVoter, voterIsSignedIn,
+      senderEmailAddressError, successMessageToShowVoter, // voterIsSignedIn,
     } = this.state;
 
     if (loading) {
