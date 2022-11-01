@@ -80,6 +80,21 @@ class ShareStore extends ReduceStore {
     return this.getState().emailRecipientListQueuedToSaveSetDict[superShareItemId] || false;
   }
 
+  getErrorMessageToShowVoter () {
+    const { errorMessageToShowVoter } = this.getState();
+    return errorMessageToShowVoter;
+  }
+
+  getNumberOfMessagesSent () {
+    const { numberOfMessagesSent } = this.getState();
+    return numberOfMessagesSent;
+  }
+
+  getSuccessMessageToShowVoter () {
+    const { successMessageToShowVoter } = this.getState();
+    return successMessageToShowVoter;
+  }
+
   getSuperShareItemById (superShareItemId) {
     return this.getState().allCachedSuperShareItems[superShareItemId] || {};
   }
@@ -188,6 +203,15 @@ class ShareStore extends ReduceStore {
           ...state,
           personalizedSubjectQueuedToSaveDict,
           personalizedSubjectQueuedToSaveSetDict,
+        };
+
+      case 'sharedItemListSave':
+        // console.log('ShareStore sharedItemListSave, action.res:', action.res);
+        return {
+          ...state,
+          errorMessageToShowVoter: action.res.error_message_to_show_voter,
+          numberOfMessagesSent: action.res.number_of_messages_sent,
+          successMessageToShowVoter: action.res.success_message_to_show_voter,
         };
 
       case 'sharedItemRetrieve':

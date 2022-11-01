@@ -145,7 +145,7 @@ class RemindContactsStart extends Component {
                     <NextStepButtons
                       classes={classes}
                       desktopMode
-                      nextStepButtonText="Get started" // Choose friends to remind
+                      nextStepButtonText="Choose friends to remind"
                       onClickNextButton={this.goToEditMessage}
                       skipForNowOff
                     />
@@ -168,7 +168,7 @@ class RemindContactsStart extends Component {
                     <NextStepButtons
                       classes={classes}
                       desktopMode
-                      nextStepButtonText="Get started" // Choose friends to remind
+                      nextStepButtonText="Choose friends to remind"
                       onClickNextButton={this.goToEditMessage}
                       skipForNowOff
                     />

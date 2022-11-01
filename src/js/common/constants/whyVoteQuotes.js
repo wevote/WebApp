@@ -12,7 +12,7 @@ const photoPath = normalizedImagePath('/img/global/public-figures/');
 export const publicFigureQuotes = [{
   imageUrl: `${photoPath}Beyonce-100x100.jpeg`,
   testimonial: 'Too many people have died and sacrificed so much for us to have our voice, we have to use it. Get in formation. Use our voices to do something great for our children.',
-  testimonialAuthor: 'Beyonce',
+  testimonialAuthor: 'Beyoncé',
 },
 {
   imageUrl: `${photoPath}Billy_Eilish-100x100.jpeg`,
