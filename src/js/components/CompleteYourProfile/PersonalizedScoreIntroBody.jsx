@@ -26,7 +26,6 @@ class PersonalizedScoreIntroBody extends Component {
       explanationTextBottomBlue: null,
       openAdviserMaterialUIPopover: false,
       openSupportOpposeCountDisplayModal: false,
-      personalizedScoreWatched: false,
       supportOpposeCountDisplayModalTutorialOn: true,
       supportOpposeCountDisplayModalTutorialText: null,
       showPersonalizedScoreDownArrow: false,
@@ -253,7 +252,6 @@ class PersonalizedScoreIntroBody extends Component {
     if (currentStep >= currentStepCompletedThreshold) {
       // console.log('currentStepCompletedThreshold passed');
       VoterActions.voterUpdateInterfaceStatusFlags(VoterConstants.PERSONALIZED_SCORE_INTRO_COMPLETED);
-      // this.setState({ personalizedScoreWatched: true });
     }
     if (this.props.toggleFunction) {
       this.props.toggleFunction(normalizedHref());
@@ -276,7 +274,6 @@ class PersonalizedScoreIntroBody extends Component {
     if (nextStep >= currentStepCompletedThreshold) {
       // console.log('currentStepCompletedThreshold passed');
       VoterActions.voterUpdateInterfaceStatusFlags(VoterConstants.PERSONALIZED_SCORE_INTRO_COMPLETED);
-      // this.setState({ personalizedScoreWatched: true });
       // TODO DALE 2022-11-01 Explore why we need to bring this outside this function
       this.markPersonalizedScoreIntroCompleted();
     }
