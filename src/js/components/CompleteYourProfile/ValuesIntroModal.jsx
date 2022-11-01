@@ -68,11 +68,9 @@ class ValuesIntroModal extends Component {
         onClose={() => { this.props.toggleFunction(pathname); }}
       >
         <ModalTitleAreaType1>
-          <div>
-            <ModalTitleType1>
-              What do you care about?
-            </ModalTitleType1>
-          </div>
+          <ModalTitleType1>
+            {/* What do you care about? */}
+          </ModalTitleType1>
           <IconButton
             aria-label="Close"
             className={classes.closeButton}
@@ -127,7 +125,7 @@ const styles = () => ({
       maxWidth: '600px',
       width: '90%',
       height: 'fit-content',
-      margin: '0 auto',
+      margin: '15px',
       minWidth: 0,
       minHeight: 0,
       transitionDuration: '.25s',
@@ -141,11 +139,11 @@ const styles = () => ({
     margin: '0 0 64px 0',
   },
   dialogContent: {
-    margin: '0 auto',
     paddingBottom: '24px',
     background: 'white',
     display: 'flex',
     justifyContent: 'center',
+    margin: '15px',
   },
   closeButton: {
     marginLeft: 'auto',
@@ -156,6 +154,7 @@ const styles = () => ({
 });
 
 const ValuesListWrapper = styled('div')`
+  margin: 15px;
 `;
 
 export default withTheme(withStyles(styles)(ValuesIntroModal));

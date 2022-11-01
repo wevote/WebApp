@@ -22,7 +22,8 @@ class PersonalizedScoreIntroModal extends Component {
 
   closeThisModal = () => {
     const { currentStep } = this.state;
-    const currentStepCompletedThreshold = 7;
+    const currentStepCompletedThreshold = 2; // Was 7 - Search code for other places we set 'currentStepCompletedThreshold'
+    // console.log('PersonalizedScoreIntroModal closeThisModal, currentStep:', currentStep);
     if (currentStep >= currentStepCompletedThreshold) {
       // console.log('currentStepCompletedThreshold passed');
       VoterActions.voterUpdateInterfaceStatusFlags(VoterConstants.PERSONALIZED_SCORE_INTRO_COMPLETED);
@@ -31,7 +32,7 @@ class PersonalizedScoreIntroModal extends Component {
   };
 
   personalizedScoreIntroCompleted = () => {
-    // Mark this so we know to show 'How it Works' as completed
+    // Mark this, so we know to show 'Personalized Score Modal' as completed
     VoterActions.voterUpdateInterfaceStatusFlags(VoterConstants.PERSONALIZED_SCORE_INTRO_COMPLETED);
     this.props.toggleFunction(normalizedHref());
   };
