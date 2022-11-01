@@ -33,7 +33,7 @@ class RemindEditMessage extends React.Component {
 
   render () {
     renderLog('RemindEditMessage');  // Set LOG_RENDER_EVENTS to log all renders
-    const pigsCanFly = false;
+    const pigsCanFly = true;
     return (
       <StepCenteredWrapper>
         <SetUpAccountTop>
@@ -68,7 +68,7 @@ RemindEditMessage.propTypes = {
 };
 
 const EnterEmailsWrapper = styled('div')`
-  margin-bottom: 24px;
+  // margin-bottom: 24px;
   width: 100%;
 `;
 

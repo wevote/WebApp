@@ -175,7 +175,7 @@ class RemindContactsPreview extends React.Component {
             <SetUpAccountTitle>
               {(contactsWithAccountCount > 0) ? (
                 <>
-                  Thanks Paige, we imported
+                  We imported
                   {' '}
                   {voterContactEmailListCount}
                   {' '}
@@ -198,7 +198,7 @@ class RemindContactsPreview extends React.Component {
                     </>
                   ) : (
                     <>
-                      Thanks Paige, we imported
+                      We imported
                       {' '}
                       {voterContactEmailListCount}
                       {' '}

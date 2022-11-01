@@ -359,7 +359,11 @@ class RemindContactsRoot extends React.Component {
         // } else
         nextButtonText = 'Choose friends to remind'; // 'Send my friends reminders to vote';
         nextStepPath = '/remind/addcontacts';
-        skipForNowPath = '/remind/addcontacts';
+        if (isWebApp()) {
+          skipForNowPath = '/remind/downloadapp';
+        } else {
+          skipForNowPath = '/friends';
+        }
         break;
       case 112: // testsend
         backToLinkPath = '/remind/message';
@@ -501,14 +505,14 @@ class RemindContactsRoot extends React.Component {
         nextButtonText = 'Next';
         reassuranceTextOff = false;
         showDeleteAllContactsOption = false;
-        skipForNowOff = false;
+        skipForNowOff = true;
         if (voterContactEmailListCount > 0) {
           nextStepPath = '/remind/invitecontacts';
         } else if (copyPageTurnedOn) {
           nextStepPath = '/remind/copy';
         } else {
-          nextButtonText = 'Return to friends';
-          nextStepPath = '/friends';
+          nextButtonText = 'Return to ballot';
+          nextStepPath = '/ballot';
         }
         if (copyPageTurnedOn) {
           skipForNowPath = '/remind/copy';
@@ -709,6 +713,10 @@ class RemindContactsRoot extends React.Component {
     historyPush('/remind/addcontacts');
   }
 
+  goToAddEditMessage = () => {
+    historyPush('/remind/message');
+  }
+
   goToImportContacts = () => {
     historyPush('/remind/importcontacts');
   }
@@ -863,13 +871,15 @@ class RemindContactsRoot extends React.Component {
       case 111: // message
         desktopNextButtonHtml = (
           <>
+            {/*
             <SetUpAccountNextButton
               nextButtonAsOutline={nextButtonAsOutline}
               nextButtonDisabled={nextButtonDisabled}
               nextButtonText={nextButtonText}
               onClickNextButton={this.onClickNextButton}
             />
-            <DesktopNextButtonsOuterWrapperUShowDesktopTablet breakValue={desktopInlineButtonsOnBreakValue}>
+            */}
+            <ImportContactsOuterWrapperUShowDesktopTablet breakValue={desktopInlineButtonsOnBreakValue}>
               <DesktopNextButtonsInnerWrapper>
                 <Button
                   classes={{ root: classes.addContactsManuallyLink }}
@@ -878,7 +888,7 @@ class RemindContactsRoot extends React.Component {
                   Or import contacts from Gmail
                 </Button>
               </DesktopNextButtonsInnerWrapper>
-            </DesktopNextButtonsOuterWrapperUShowDesktopTablet>
+            </ImportContactsOuterWrapperUShowDesktopTablet>
           </>
         );
         mobileNextButtonHtml = desktopNextButtonHtml;
@@ -938,7 +948,7 @@ class RemindContactsRoot extends React.Component {
                 <DesktopNextButtonsInnerWrapper>
                   <Button
                     classes={{ root: classes.addContactsManuallyLink }}
-                    onClick={this.goToAddContactsManually}
+                    onClick={this.goToAddEditMessage}
                   >
                     Or add contacts manually
                   </Button>
@@ -1096,5 +1106,18 @@ const DeleteAllContactsAtAnyTimeWrapper = styled('div')`
 const DeleteAllContactsWrapper = styled('div')`
   margin-top: 0;
 `;
+
+const ImportContactsOuterWrapperUShowDesktopTablet = styled('div', {
+  shouldForwardProp: (prop) => !['breakValue'].includes(prop),
+})(({ breakValue, theme }) => ({
+  display: 'flex',
+  justifyContent: 'center',
+  margin: '0 0 0 0',
+  width: '100%',
+  zIndex: 1000,
+  [theme.breakpoints.down(breakValue)]: {
+    display: 'none !important',
+  },
+}));
 
 export default withStyles(styles)(RemindContactsRoot);
