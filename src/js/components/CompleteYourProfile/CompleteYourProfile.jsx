@@ -57,7 +57,7 @@ class CompleteYourProfile extends Component {
         {
           id: 3,
           title: 'Enter your full address to see the correct ballot items.',
-          buttonText: 'Confirm Address',
+          buttonText: 'Confirm address',
           completed: false,
           description: '',
           icon: (<EditLocation />),
@@ -236,7 +236,7 @@ class CompleteYourProfile extends Component {
     this.setState({
       addressIntroCompleted: true,
     });
-    AppObservableStore.setShowSelectBallotModal(true);
+    AppObservableStore.setShowSelectBallotModal(true, true);
     const addressIntroCompletedId = 3;
     this.setItemComplete(addressIntroCompletedId);
   }
@@ -351,8 +351,8 @@ class CompleteYourProfile extends Component {
 
     return (
       <>
-        <div className="card">
-          <div className="card-main">
+        <div>
+          <div>
             <Flex>
               <span>
                 <strong>

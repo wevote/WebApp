@@ -1315,7 +1315,7 @@ class Ballot extends Component {
     let numberOfBallotItemsDisplayed = 0;
     let showLoadingText = true;
     let searchTextString = '';
-    const showCompleteYourProfile = false;
+    const showCompleteYourProfile = isWebApp();
     return (
       <div className="ballot_root">
         <Suspense fallback={<LoadingWheelComp />}>
@@ -1478,11 +1478,11 @@ class Ballot extends Component {
                       </SearchTitle>
                     )}
                     {showCompleteYourProfile && (
-                      <span>
+                      <CompleteYourProfileWrapper>
                         <Suspense fallback={<></>}>
                           <CompleteYourProfile />
                         </Suspense>
-                      </span>
+                      </CompleteYourProfileWrapper>
                     )}
                     <BallotListWrapper>
                       {/* The rest of the ballot items */}
@@ -1760,6 +1760,11 @@ const BallotTitleHeaderWrapper = styled('div', {
   margin-top: ${marginTopOffset};
   transition: ${isWebApp() ? 'all 150ms ease-in' : ''};
 `));
+
+const CompleteYourProfileWrapper = styled('div')`
+  margin-top: 24px;
+  margin-bottom: 36px;
+`;
 
 const EmptyBallotNotice = styled('div')`
   align-items: center;
