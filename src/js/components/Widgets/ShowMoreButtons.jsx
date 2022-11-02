@@ -63,7 +63,7 @@ const ShowMoreButtonsStyled = styled('div')(({ theme }) => (`
   cursor: pointer;
   display: block !important;
   background: #fff !important;
-  font-size: 18px;
+  // font-size: 18px;
   margin-bottom: 0 !important;
   margin-top: 0 !important;
   padding: 0 !important;

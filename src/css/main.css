@@ -58,7 +58,7 @@ html {
 
 body {
   background-color: #fff; /* #ebecee; */
-  color: #212529;
+  color: #000; /* color: #212529; */
   font-family: "Nunito Sans", "Helvetica Neue Light", "Helvetica Neue", "Helvetica", "Arial", sans-serif;
   font-size: 16px;
   font-style: normal;
@@ -1806,7 +1806,7 @@ small, .small {
 .table {
   width: 100%;
   margin-bottom: 1rem;
-  color: #212529;
+  color: #000; /* color: #212529; */
 }
 
 /*.table th, .table td {*/
@@ -2584,7 +2584,7 @@ small, .small {
 .btn {
   display: inline-block;
   font-weight: 400;
-  color: #212529;
+  color: #000; /* color: #212529; */
   text-align: center;
   vertical-align: middle;
   -webkit-user-select: none;
@@ -3260,7 +3260,7 @@ small, .small {
   padding: 0.5rem 0;
   margin: 0.125rem 0 0;
   font-size: 1rem;
-  color: #212529;
+  color: #000; /* color: #212529; */
   text-align: left;
   list-style: none;
   background-color: #fff;
@@ -3431,7 +3431,7 @@ small, .small {
   padding: 0.25rem 1.5rem;
   clear: both;
   font-weight: 400;
-  color: #212529;
+  color: #000; /* color: #212529; */
   text-align: inherit;
   white-space: nowrap;
   background-color: transparent;

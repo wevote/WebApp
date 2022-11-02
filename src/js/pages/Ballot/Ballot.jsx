@@ -1763,7 +1763,7 @@ const BallotTitleHeaderWrapper = styled('div', {
 
 const CompleteYourProfileWrapper = styled('div')`
   margin-top: 24px;
-  margin-bottom: 36px;
+  margin-bottom: 45px;
 `;
 
 const EmptyBallotNotice = styled('div')`
