@@ -8,6 +8,7 @@ import OrganizationActions from '../../actions/OrganizationActions';
 import VoterActions from '../../actions/VoterActions';
 import VoterGuideActions from '../../actions/VoterGuideActions';
 import LoadingWheel from '../../common/components/Widgets/LoadingWheel';
+import arrayContains from '../../common/utils/arrayContains';
 import { convertStateCodeToStateText } from '../../common/utils/addressFunctions';
 import { electionDateTomorrowFormatted, formatDateMMMDoYYYY } from '../../common/utils/dateFormat';
 import historyPush from '../../common/utils/historyPush';
@@ -344,6 +345,8 @@ export default class BallotElectionListWithFilters extends Component {
     } else if (voterGuidesMode) {
       simpleModeItemPhrase = <>voter guides</>;
     }
+    // console.log('renderUpcomingElectionList list:', list);
+    const alreadyRenderedElectionId = [];
     const renderedList = list.map((election) => {
       // console.log('election: ', election);
       if (!election.election_description_text || election.election_description_text === '') return null;
@@ -353,6 +356,11 @@ export default class BallotElectionListWithFilters extends Component {
         electionStateCodeList = election.state_code_list || [];
       }
       const electionId = election.google_civic_election_id || 0;
+      if (arrayContains(electionId, alreadyRenderedElectionId)) {
+        return null;
+      } else {
+        alreadyRenderedElectionId.push(electionId);
+      }
       stateName = convertStateCodeToStateText(election.state_code) || election.state_code;
       return (electionDateTomorrow > currentDate) && (
         <div key={`upcoming-election-${election.google_civic_election_id}`}>
@@ -412,6 +420,7 @@ export default class BallotElectionListWithFilters extends Component {
       return null;
     }
     const { stateToShow } = this.props;
+    const alreadyRenderedElectionId = [];
     const renderedList = list.filter((filterItem) => filterItem.state_code_list && filterItem.state_code_list.includes(stateToShow)).map((election) => {
       // console.log('election.election_description_text: ', election.election_description_text, 'election.election_day_text: ', election.election_day_text);
       if (!election.election_description_text || election.election_description_text === '') return null;
@@ -421,8 +430,13 @@ export default class BallotElectionListWithFilters extends Component {
         electionStateCodeList = election.state_code_list || [];
       }
       const electionId = election.google_civic_election_id || 0;
+      if (arrayContains(electionId, alreadyRenderedElectionId)) {
+        return null;
+      } else {
+        alreadyRenderedElectionId.push(electionId);
+      }
       return electionDateTomorrow > currentDate ? (
-        <div key={`upcoming-election-${electionId}`}>
+        <div key={`upcoming-election-by-state-${electionId}`}>
           <div className="list-unstyled">
             <ElectionButton
               color="primary"
