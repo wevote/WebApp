@@ -1,12 +1,13 @@
-import { CheckCircle, EditLocation, PlayCircleFilled } from '@mui/icons-material';
+import { CheckCircle, PlayCircleFilled, PushPin } from '@mui/icons-material';
 import { Button } from '@mui/material';
-import styled from 'styled-components';
 import withStyles from '@mui/styles/withStyles';
 import withTheme from '@mui/styles/withTheme';
+import PropTypes from 'prop-types';
+import styled from 'styled-components';
 import React, { Component, Suspense } from 'react';
 import Cookies from '../../common/utils/js-cookie/Cookies';
 import { renderLog } from '../../common/utils/logging';
-import normalizedImagePath from '../../common/utils/normalizedImagePath';
+// import normalizedImagePath from '../../common/utils/normalizedImagePath';
 import VoterConstants from '../../constants/VoterConstants';
 import AppObservableStore from '../../stores/AppObservableStore';
 import BallotStore from '../../stores/BallotStore';
@@ -31,10 +32,10 @@ class CompleteYourProfile extends Component {
       personalizedScoreIntroCompleted: false,
       showSignInModal: false,
       stepIdHowItWorks: 1,
-      stepIdValuesIntro: 2,
-      stepIdEnterFullAddress: 3,
-      stepIdPersonalizedScore: 4,
-      stepIdSignInToSave: 5,
+      // stepIdValuesIntro: 2,
+      // stepIdEnterFullAddress: 3,
+      stepIdPersonalizedScore: 2,
+      stepIdSignInToSave: 3,
       steps: [],
       valuesIntroCompleted: false,
       textForMapSearch: '',
@@ -54,6 +55,7 @@ class CompleteYourProfile extends Component {
       ballotRemainingChoicesLength: BallotStore.ballotRemainingChoicesLength,
       goToNextIncompleteStepForced: true,
       textForMapSearch: VoterStore.getTextForMapSearch(),
+      voterIsSignedIn: VoterStore.getVoterIsSignedIn(),
     }, () => this.updateStepsArray());
   }
 
@@ -84,6 +86,7 @@ class CompleteYourProfile extends Component {
     this.setState({
       goToNextIncompleteStepForced: true,
       textForMapSearch: VoterStore.getTextForMapSearch(),
+      voterIsSignedIn: VoterStore.getVoterIsSignedIn(),
     }, () => this.updateStepsArray());
   }
 
@@ -184,21 +187,21 @@ class CompleteYourProfile extends Component {
     // console.log('voterIsSignedIn:, ', voterIsSignedIn, ', voterOpposesListLength:', voterOpposesListLength, ', voterSupportsListLength:', voterSupportsListLength);
     const ballotItemChoicesCount = voterOpposesListLength + voterSupportsListLength;
     let stepIdHowItWorks = 1;
-    let stepIdValuesIntro = 2;
-    let stepIdEnterFullAddress = 3;
-    let stepIdPersonalizedScore = 4;
-    let stepIdSignInToSave = 5;
-    if (ballotItemChoicesCount >= 2 && !voterIsSignedIn) {
+    // let stepIdValuesIntro = 2;
+    // let stepIdEnterFullAddress = 3;
+    let stepIdPersonalizedScore = 2;
+    let stepIdSignInToSave = 3;
+    if (ballotItemChoicesCount >= 4 && !voterIsSignedIn) {
       stepIdSignInToSave = 1;
       stepIdHowItWorks = 2;
-      stepIdValuesIntro = 3;
-      stepIdEnterFullAddress = 4;
-      stepIdPersonalizedScore = 5;
+      // stepIdValuesIntro = 3;
+      // stepIdEnterFullAddress = 4;
+      stepIdPersonalizedScore = 3;
     }
     this.setState({
       stepIdHowItWorks,
-      stepIdValuesIntro,
-      stepIdEnterFullAddress,
+      // stepIdValuesIntro,
+      // stepIdEnterFullAddress,
       stepIdPersonalizedScore,
       stepIdSignInToSave,
       steps: [
@@ -211,15 +214,15 @@ class CompleteYourProfile extends Component {
           icon: (<PlayCircleFilled />),
           onClick: this.openHowItWorksModal,
         },
-        {
-          id: stepIdValuesIntro,
-          title: 'Topics that match your values',
-          buttonText: 'Choose topics',
-          completed: false,
-          description: '',
-          icon: (<img alt="" src={normalizedImagePath('/img/global/svg-icons/issues/climate-change-24.svg')} />),
-          onClick: this.openValuesIntroModal,
-        },
+        // {
+        //   id: stepIdValuesIntro,
+        //   title: 'Topics that match your values',
+        //   buttonText: 'Choose topics',
+        //   completed: false,
+        //   description: '',
+        //   icon: (<img alt="" src={normalizedImagePath('/img/global/svg-icons/issues/climate-change-24.svg')} />),
+        //   onClick: this.openValuesIntroModal,
+        // },
         // {
         //   id: findAdvisorsId,
         //   title: 'Find people and groups you trust',
@@ -229,15 +232,15 @@ class CompleteYourProfile extends Component {
         //   icon: (<ThumbUp />),
         //   onClick: this.openAdviserIntroModal,
         // },
-        {
-          id: stepIdEnterFullAddress,
-          title: 'Enter your full address to see the correct ballot items.',
-          buttonText: 'Confirm address',
-          completed: false,
-          description: '',
-          icon: (<EditLocation />),
-          onClick: this.openAddressIntroModal,
-        },
+        // {
+        //   id: stepIdEnterFullAddress,
+        //   title: 'Enter your full address to see the correct ballot items.',
+        //   buttonText: 'Confirm address',
+        //   completed: false,
+        //   description: '',
+        //   icon: (<EditLocation />),
+        //   onClick: this.openAddressIntroModal,
+        // },
         {
           id: stepIdPersonalizedScore,
           title: 'What\'s a personalized score?',
@@ -258,11 +261,11 @@ class CompleteYourProfile extends Component {
         // },
         {
           id: stepIdSignInToSave,
-          title: 'Sign in to save your ballot choices and settings.',
-          buttonText: 'Save',
+          title: 'Sign in to save your ballot choices and settings',
+          buttonText: 'Sign in to save',
           completed: false,
           description: '',
-          icon: (<EditLocation />),
+          icon: (<PushPin />),
           onClick: this.toggleShowSignInModal,
         },
       ],
@@ -394,24 +397,25 @@ class CompleteYourProfile extends Component {
   render () {
     renderLog('CompleteYourProfile');  // Set LOG_RENDER_EVENTS to log all renders
     // console.log('CompleteYourProfile render');
+    const { classes } = this.props;
     const {
       activeStep, addressIntroCompleted, ballotLength, ballotRemainingChoicesLength,
       // firstPositionIntroCompleted,
       howItWorksWatched, personalizedScoreIntroCompleted,
       showSignInModal,
       stepIdEnterFullAddress, steps,
-      textForMapSearch, valuesIntroCompleted,
+      textForMapSearch, valuesIntroCompleted, voterIsSignedIn,
     } = this.state;
     const addressIntroCompletedByCookie = Cookies.get('location_guess_closed');
     // console.log('activeStep: ', activeStep);
     // console.log('steps: ', steps);
 
-    // If we have completed all of the steps, don't render this component
+    // If we have completed all the steps, don't render this component
     const showCompleteYourProfileForDebugging = false;
     if (showCompleteYourProfileForDebugging) {
       // Pass by this OFF switch so we render this component
-    } else if ((addressIntroCompleted || addressIntroCompletedByCookie) && howItWorksWatched && personalizedScoreIntroCompleted && valuesIntroCompleted) {
-      // If we have done all of the steps, do not render CompleteYourProfile // OFF FOR NOW: adviserIntroCompleted && firstPositionIntroCompleted &&
+    } else if ((addressIntroCompleted || addressIntroCompletedByCookie) && howItWorksWatched && personalizedScoreIntroCompleted && valuesIntroCompleted && voterIsSignedIn) {
+      // If we have done all the steps, do not render CompleteYourProfile // OFF FOR NOW: adviserIntroCompleted && firstPositionIntroCompleted &&
       return null;
     } else if (ballotLength > 0 && ballotRemainingChoicesLength === 0) {
       return null;
@@ -495,6 +499,7 @@ class CompleteYourProfile extends Component {
                   </TitleFlex>
                   {step.description}
                 </TitleArea>
+                {/*
                 <TabletActionButton>
                   <Button
                     className="u-no-break"
@@ -519,17 +524,30 @@ class CompleteYourProfile extends Component {
                     {step.buttonText}
                   </Button>
                 </MobileActionButton>
+                */}
                 <NavButtons>
                   <NavButton>
                     {index !== 0 && (
-                      <Button id="completeYourProfilePreviousButton" onClick={this.previousStep} className="u-no-break" color="primary">
+                      <Button
+                        classes={{ root: classes.navigationButton }}
+                        className="u-no-break"
+                        id="completeYourProfilePreviousButton"
+                        onClick={this.previousStep}
+                        color="primary"
+                      >
                         {'< Previous'}
                       </Button>
                     )}
                   </NavButton>
                   <NavButton>
                     {index < (steps.length - 1) ? (
-                      <Button id="completeYourProfileNextButton" onClick={this.nextStep} className="u-no-break" color="primary">
+                      <Button
+                        classes={{ root: classes.navigationButton }}
+                        className="u-no-break"
+                        color="primary"
+                        id="completeYourProfileNextButton"
+                        onClick={this.nextStep}
+                      >
                         {'Next >'}
                       </Button>
                     ) : (
@@ -547,7 +565,14 @@ class CompleteYourProfile extends Component {
     );
   }
 }
+CompleteYourProfile.propTypes = {
+  classes: PropTypes.object,
+};
 const styles = () => ({
+  navigationButton: {
+    opacity: '0.8',
+    fontWeight: 400,
+  },
 });
 
 const BestGuess = styled('span')`
@@ -622,15 +647,15 @@ const Info = styled('span')`
   }
 `;
 
-const MobileActionButton = styled('div')`
-  border-bottom: 1px solid #e1e1e1;
-  margin-bottom: 0;
-  margin-top: 8px;
-  padding-bottom: 8px;
-  @media (min-width: 576px) {
-    display: none;
-  }
-`;
+// const MobileActionButton = styled('div')`
+//   border-bottom: 1px solid #e1e1e1;
+//   margin-bottom: 0;
+//   margin-top: 8px;
+//   padding-bottom: 8px;
+//   @media (min-width: 576px) {
+//     display: none;
+//   }
+// `;
 
 const NavButton = styled('div')`
   * {
@@ -678,21 +703,23 @@ const Separator = styled('div')`
   height: 1px;
 `;
 
-const TabletActionButton = styled('div')`
-  display: none;
-  @media(min-width: 576px) {
-    display: block;
-    margin-left: auto;
-  }
-  @media(min-width: 769px) {
-    margin-left: 12px;
-  }
-`;
+// const TabletActionButton = styled('div')`
+//   display: none;
+//   @media(min-width: 576px) {
+//     display: block;
+//     margin-left: auto;
+//   }
+//   @media(min-width: 769px) {
+//     margin-left: 12px;
+//   }
+// `;
 
 const Title = styled('h2')`
+  color: #4371CC;
   display: inline-block;
-  font-weight: 600;
   margin: 0;
+  text-decoration: underline;
+  text-decoration-color: #ccc;
 `;
 
 const TitleArea = styled('div')`
