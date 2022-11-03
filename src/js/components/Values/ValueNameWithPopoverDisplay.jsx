@@ -132,7 +132,7 @@ class ValueNameWithPopoverDisplay extends Component {
                   issueWeVoteId={oneIssue.issue_we_vote_id}
                   showFollowingButtonText
                   showIssueNameOnFollowButton
-                  lightModeOn
+                  // lightModeOn
                 />
               </FollowValueNameToggleContainer>
               <FollowIfYouCare>
@@ -288,6 +288,10 @@ const RenderedOrganizationsWrapper = styled('div')`
 `;
 
 const WordWrapper = styled('span')`
+  color: #000;
+  opacity: 0.6;
+  text-decoration: underline;
+  text-decoration-color: #ccc;
   &:hover {
     text-decoration: underline;
   }

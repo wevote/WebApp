@@ -5,16 +5,11 @@ import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import SuggestedContactList from './SuggestedContactList';
 import SearchBar from '../Search/SearchBar';
-import FriendActions from '../../actions/FriendActions';
 import VoterActions from '../../actions/VoterActions';
 import apiCalming from '../../common/utils/apiCalming';
-import daysUntil from '../../common/utils/daysUntil';
-import { formatDateMMMDoYYYY } from '../../common/utils/dateFormat';
 import { renderLog } from '../../common/utils/logging';
 import stringContains from '../../common/utils/stringContains';
-import FriendStore from '../../stores/FriendStore';
 import VoterStore from '../../stores/VoterStore';
-import BallotStore from '../../stores/BallotStore';
 import { SectionDescription } from '../Style/friendStyles';
 
 const MessageToFriendInputField = React.lazy(() => import(/* webpackChunkName: 'MessageToFriendInputField' */ './MessageToFriendInputField'));
@@ -34,8 +29,6 @@ class SuggestedContactListWithController extends React.Component {
 
   componentDidMount () {
     window.scrollTo(0, 0);
-    this.setElectionDateInformation();
-    this.ballotStoreListener = BallotStore.addListener(this.onBallotStoreChange.bind(this));
     this.onVoterStoreChange();
     if (apiCalming('voterContactListRetrieve', 20000)) {
       VoterActions.voterContactListRetrieve();
@@ -49,14 +42,8 @@ class SuggestedContactListWithController extends React.Component {
 
   componentWillUnmount () {
     if (this.timer) clearTimeout(this.timer);
-    if (this.setMessageTimer) clearTimeout(this.setMessageTimer);
-    this.ballotStoreListener.remove();
     this.voterStoreListener.remove();
     window.removeEventListener('scroll', this.onScroll);
-  }
-
-  onBallotStoreChange () {
-    this.setElectionDateInformation();
   }
 
   onVoterStoreChange () {
@@ -198,67 +185,6 @@ class SuggestedContactListWithController extends React.Component {
     }
   }
 
-  createMessageToFriendDefault = () => {
-    const { messageToFriendsInputOff } = this.props;
-    if (!messageToFriendsInputOff) {
-      const { electionDateInFutureFormatted } = this.state;
-      let messageToFriendDefault = '';
-      // const electionDayText = ElectionStore.getElectionDayText(VoterStore.electionId());
-      const electionDayText = BallotStore.currentBallotElectionDate;
-      let electionDateFound = false;
-      if (electionDayText !== undefined && electionDateInFutureFormatted) {
-        const daysUntilElection = daysUntil(electionDayText);
-        if (daysUntilElection === 0) {
-          messageToFriendDefault += "I'm getting ready to vote today.";
-          electionDateFound = true;
-        } else if (daysUntilElection > 0) {
-          messageToFriendDefault += `I'm getting ready for the election on ${electionDateInFutureFormatted}.`;
-          electionDateFound = true;
-        }
-      }
-      if (!electionDateFound) {
-        messageToFriendDefault += "I'm getting ready to vote.";
-      }
-      messageToFriendDefault += ' Would you like to join me in deciding how to vote?';
-      this.setState({
-        messageToFriendDefault,
-      }, () => this.setMessageToFriendQueuedToSave());
-    }
-  }
-
-  setMessageToFriendQueuedToSave = () => {
-    if (this.setMessageTimer) clearTimeout(this.setMessageTimer);
-    this.setMessageTimer = setTimeout(() => {
-      const { messageToFriendDefault } = this.state;
-      const messageToFriendQueuedToSave = FriendStore.getMessageToFriendQueuedToSave();
-      if (messageToFriendDefault !== messageToFriendQueuedToSave) {
-        // If voter hasn't changed this, update this.
-        FriendActions.messageToFriendQueuedToSave(messageToFriendDefault);
-      }
-    }, 500);
-  }
-
-  setElectionDateInformation = () => {
-    // const electionDayText = ElectionStore.getElectionDayText(VoterStore.electionId());
-    const electionDayText = BallotStore.currentBallotElectionDate;
-    const electionDateFormatted = formatDateMMMDoYYYY(electionDayText);
-    let electionDateInFutureFormatted = '';
-    // let electionDateIsToday = false;
-    if (electionDayText !== undefined && electionDateFormatted) {
-      const daysUntilElection = daysUntil(electionDayText);
-      if (daysUntilElection === 0) {
-        electionDateInFutureFormatted = electionDateFormatted;
-        // electionDateIsToday = true;
-      } else if (daysUntilElection > 0) {
-        electionDateInFutureFormatted = electionDateFormatted;
-      }
-    }
-    this.setState({
-      electionDateInFutureFormatted,
-      // electionDateIsToday,
-    }, () => this.createMessageToFriendDefault());
-  }
-
   clearSearch = () => {
     this.setState({
       searchFilterOn: false,
@@ -269,9 +195,9 @@ class SuggestedContactListWithController extends React.Component {
 
   render () {
     renderLog('SuggestedContactListWithController');  // Set LOG_RENDER_EVENTS to log all renders
-    const { askMode, messageToFriendsInputOff } = this.props;
+    const { askMode, messageToFriendsInputOff, remindMode } = this.props;
     const {
-      contactsWithAccountCount, currentFriendListFilteredBySearch, // messageToFriendDefault,
+      contactsWithAccountCount, currentFriendListFilteredBySearch,
       numberOfItemsToDisplay, searchFilterOn, searchTerm,
       voterContactEmailListCount,
     } = this.state;
@@ -280,14 +206,34 @@ class SuggestedContactListWithController extends React.Component {
     if (searchFilterOn) {
       voterContactEmailList = currentFriendListFilteredBySearch;
     }
+    let sectionDescription;
+    if (askMode) {
+      sectionDescription = 'Asking a contact will send the message above and an invitation to be your friend on We Vote.';
+    } else if (remindMode) {
+      sectionDescription = (
+        <>
+          {/*
+          {voterContactEmailListCount}
+          {' '}
+          friends found. Your reminder could help your friend use their vote!
+          */}
+        </>
+      );
+    }
+    let messageToFriendType = 'inviteFriend'; // default
+    if (askMode) {
+      messageToFriendType = 'askFriend';
+    } else if (remindMode) {
+      messageToFriendType = 'remindContacts';
+    }
     // console.log('voterContactEmailList:', voterContactEmailList);
     return (
       <SuggestedContactListControllerWrapper>
         {voterContactEmailListCount > 0 ? (
           <ContactListWrapper>
-            {askMode ? (
+            {(askMode || remindMode) ? (
               <SectionDescription>
-                Asking a contact will send the message above and an invitation to be your friend on We Vote.
+                {sectionDescription}
               </SectionDescription>
             ) : (
               <ContactsFoundText>
@@ -343,7 +289,7 @@ class SuggestedContactListWithController extends React.Component {
             {(!messageToFriendsInputOff && voterContactEmailListCount > 0) && (
               <MessageToSendWrapper>
                 <Suspense fallback={<></>}>
-                  <MessageToFriendInputField />
+                  <MessageToFriendInputField messageToFriendType={messageToFriendType} />
                 </Suspense>
               </MessageToSendWrapper>
             )}
@@ -351,6 +297,7 @@ class SuggestedContactListWithController extends React.Component {
               <SuggestedContactList
                 askMode={askMode}
                 numberOfItemsToDisplay={numberOfItemsToDisplay}
+                remindMode={remindMode}
                 voterContactEmailList={voterContactEmailList}
               />
             </SuggestedContactListOuterWrapper>
@@ -373,6 +320,7 @@ class SuggestedContactListWithController extends React.Component {
 SuggestedContactListWithController.propTypes = {
   askMode: PropTypes.bool,
   messageToFriendsInputOff: PropTypes.bool,
+  remindMode: PropTypes.bool,
 };
 
 const ContactListEmptyWrapper = styled('div')`

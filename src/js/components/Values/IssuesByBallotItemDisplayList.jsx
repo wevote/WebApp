@@ -289,8 +289,11 @@ const IssueListWrapper = styled('ul')`
 `;
 
 const MoreWrapper = styled('span')`
-  color: #4371cc;
+  color: #000;
+  opacity: 0.6;
   cursor: pointer;
+  text-decoration: underline;
+  text-decoration-color: #ccc;
   &:hover {
     text-decoration: underline;
   }

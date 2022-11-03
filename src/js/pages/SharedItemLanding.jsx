@@ -4,7 +4,9 @@ import historyPush from '../common/utils/historyPush';
 import LoadingWheel from '../common/components/Widgets/LoadingWheel';
 import { renderLog } from '../common/utils/logging';
 import ShareActions from '../common/actions/ShareActions';
+import VoterActions from '../actions/VoterActions';
 import ShareStore from '../common/stores/ShareStore';
+import VoterStore from '../stores/VoterStore';
 
 const BallotShared = React.lazy(() => import(/* webpackChunkName: 'BallotShared' */ './BallotShared/BallotShared'));
 
@@ -15,12 +17,16 @@ export default class SharedItemLanding extends Component {
       componentDidMount: false,
       customLinkString: '',
       destinationFullUrl: '',
+      destinationFullUrlOverride: '',
       sharedItemCodeIncoming: '',
       sharedItemCodeRetrieved: false,
+      waitForVoterDeviceId: false,
     };
   }
 
   componentDidMount () {
+    this.shareStoreListener = ShareStore.addListener(this.onShareStoreChange.bind(this));
+    this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
     const { match: { params } } = this.props;
     // console.log('SharedItemLanding componentDidMount, params.shared_item_code: ', params.shared_item_code);
     const customLinkString = params.custom_link_string;
@@ -36,11 +42,11 @@ export default class SharedItemLanding extends Component {
     } else {
       ShareActions.sharedItemRetrieveByCode(sharedItemCodeIncoming);
     }
-    this.shareStoreListener = ShareStore.addListener(this.onShareStoreChange.bind(this));
   }
 
   componentWillUnmount () {
     this.shareStoreListener.remove();
+    this.voterStoreListener.remove();
   }
 
   onShareStoreChange () {
@@ -58,22 +64,59 @@ export default class SharedItemLanding extends Component {
       // console.log('sharedItem:', sharedItem);
       const {
         destination_full_url: destinationFullUrl,
+        destination_full_url_override: destinationFullUrlOverride,
+        email_secret_key: emailSecretKey,
         is_ballot_share: isBallotShare,
         shared_item_code_all_opinions: sharedItemCodeAllOpinions,
+        other_voter_display_name: voterDisplayName,
+        other_voter_first_name: voterFirstName,
+        other_voter_last_name: voterLastName,
       } = sharedItem;
+      // console.log('SharedItemLanding emailSecretKey:', emailSecretKey);
+      let waitForVoterDeviceId = false;
+      if (emailSecretKey) {
+        if (VoterStore.voterDeviceId()) {
+          // We trigger this here (instead of on the API server with ShareActions.sharedItemRetrieveByCode)
+          //  to reduce delay around first page display
+          //  If the email hasn't been previously verified, this verifies it and attaches it to this account
+          // console.log('SharedItemLanding firstName:', voterFirstName, ', lastName:', voterLastName, ', fullName:', voterDisplayName);
+          VoterActions.voterEmailAddressVerify(emailSecretKey, voterFirstName, voterLastName, voterDisplayName);
+          // VoterActions.voterFullNameSoftSave(voterFirstName, voterLastName, voterDisplayName);
+        } else {
+          waitForVoterDeviceId = true;
+        }
+      }
       this.setState({
         destinationFullUrl,
+        destinationFullUrlOverride,
         isBallotShare,
         sharedItemCodeAllOpinions,
         sharedItemCodeRetrieved: true,
+        waitForVoterDeviceId,
       });
+    }
+  }
+
+  onVoterStoreChange () {
+    this.onShareStoreChange();
+  }
+
+  localHistoryPush = (routePath) => {
+    const { waitForVoterDeviceId } = this.state;
+    if (!waitForVoterDeviceId) {
+      historyPush(routePath);
     }
   }
 
   render () {
     renderLog('SharedItemLanding');  // Set LOG_RENDER_EVENTS to log all renders
-    const { componentDidMount, destinationFullUrl, isBallotShare, sharedItemCodeAllOpinions, sharedItemCodeIncoming, sharedItemCodeRetrieved } = this.state;
+    const { componentDidMount, isBallotShare, destinationFullUrlOverride, sharedItemCodeAllOpinions, sharedItemCodeIncoming, sharedItemCodeRetrieved } = this.state;
+    let { destinationFullUrl } = this.state;
     // console.log('sharedItemCodeIncoming:', sharedItemCodeIncoming, 'sharedItemCodeAllOpinions:', sharedItemCodeAllOpinions);
+    // console.log('destinationFullUrl:', destinationFullUrl, 'destinationFullUrlOverride:', destinationFullUrlOverride);
+    if (destinationFullUrlOverride) {
+      destinationFullUrl = destinationFullUrlOverride;
+    }
     if (!componentDidMount) {
       // console.log('SharedItemLanding componentDidMount not true yet');
       return LoadingWheel;
@@ -82,7 +125,7 @@ export default class SharedItemLanding extends Component {
       return LoadingWheel;
     } else if (sharedItemCodeRetrieved && (destinationFullUrl === undefined || destinationFullUrl === '')) {
       // console.log('SharedItemLanding destinationFullUrl undefined');
-      historyPush('/ready');
+      this.localHistoryPush('/ready');
       return LoadingWheel;
     } else {
       // console.log('destinationFullUrl:', destinationFullUrl);
@@ -97,13 +140,13 @@ export default class SharedItemLanding extends Component {
       } else if (destinationFullUrl && destinationFullUrl.startsWith(hrefHostname)) {
         let destinationLocalUrl = destinationFullUrl.replace(hrefHostname, '');
         destinationLocalUrl = destinationLocalUrl.replace(':3000', ''); // For local development machines
-        historyPush(destinationLocalUrl);
+        this.localHistoryPush(destinationLocalUrl);
         // const destinationLocalUrlWithModal = `${destinationLocalUrl}/modal/sic/${sharedItemCodeIncoming}`;
         // // console.log('*** WILL Direct to LOCAL destinationLocalUrlWithModal:', destinationLocalUrlWithModal);
         // historyPush(destinationLocalUrlWithModal);
         return LoadingWheel;
       } else {
-        historyPush(destinationFullUrl);
+        this.localHistoryPush(destinationFullUrl);
         // const destinationFullUrlWithModal = `${destinationFullUrl}/modal/sic/${sharedItemCodeIncoming}`;
         // // console.log('*** WILL Direct to EXTERNAL destinationFullUrlWithModal:', destinationFullUrlWithModal);
         // window.location.href = destinationFullUrlWithModal;

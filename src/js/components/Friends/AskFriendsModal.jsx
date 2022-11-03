@@ -10,6 +10,8 @@ import withStyles from '@mui/styles/withStyles';
 import withTheme from '@mui/styles/withTheme';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
+import SearchBar from '../Search/SearchBar';
+import FriendList from './FriendList';
 import FriendActions from '../../actions/FriendActions';
 import apiCalming from '../../common/utils/apiCalming';
 import { formatDateMMMDoYYYY } from '../../common/utils/dateFormat';
@@ -20,8 +22,6 @@ import { ModalTitleType1 } from '../Style/ModalType1Styles';
 import BallotStore from '../../stores/BallotStore';
 import FriendStore from '../../stores/FriendStore';
 import sortFriendListByMutualFriends from '../../utils/friendFunctions';
-import SearchBar from '../Search/SearchBar';
-import FriendList from './FriendList';
 
 const MessageToFriendInputField = React.lazy(() => import(/* webpackChunkName: 'MessageToFriendInputField' */ './MessageToFriendInputField'));
 const SuggestedContacts = React.lazy(() => import(/* webpackChunkName: 'SuggestedContacts' */ './SuggestedContacts'));
@@ -34,7 +34,6 @@ class AskFriendsModal extends Component {
       currentFriendListFilteredBySearch: [],
       electionDateInFutureFormatted: '',
       electionDateIsToday: false,
-      messageToFriendDefault: '',
       numberOfIncreases: 0,
       numberOfItemsToDisplay: 20,
       searchFilterOn: false,
@@ -118,43 +117,6 @@ class AskFriendsModal extends Component {
     }, 250);
   }
 
-  createMessageToFriendDefault = () => {
-    const { electionDateInFutureFormatted } = this.state;
-    let messageToFriendDefault = '';
-    // const electionDayText = ElectionStore.getElectionDayText(VoterStore.electionId());
-    const electionDayText = BallotStore.currentBallotElectionDate;
-    let electionDateFound = false;
-    if (electionDayText !== undefined && electionDateInFutureFormatted) {
-      const daysUntilElection = daysUntil(electionDayText);
-      if (daysUntilElection === 0) {
-        messageToFriendDefault += "I'm getting ready to vote today.";
-        electionDateFound = true;
-      } else if (daysUntilElection > 0) {
-        messageToFriendDefault += `I'm getting ready for the election on ${electionDateInFutureFormatted}.`;
-        electionDateFound = true;
-      }
-    }
-    if (!electionDateFound) {
-      messageToFriendDefault += "I'm getting ready to vote.";
-    }
-    messageToFriendDefault += ' Would you like to compare notes about how to vote?';
-    this.setState({
-      messageToFriendDefault,
-    }, () => this.setMessageToFriendQueuedToSave());
-  }
-
-  setMessageToFriendQueuedToSave = () => {
-    if (this.setMessageTimer) clearTimeout(this.setMessageTimer);
-    this.setMessageTimer = setTimeout(() => {
-      const { messageToFriendDefault } = this.state;
-      const messageToFriendQueuedToSave = FriendStore.getMessageToFriendQueuedToSave();
-      if (messageToFriendDefault !== messageToFriendQueuedToSave) {
-        // If voter hasn't changed this, update this.
-        FriendActions.messageToFriendQueuedToSave(messageToFriendDefault);
-      }
-    }, 500);
-  }
-
   setElectionDateInformation = () => {
     // const electionDayText = ElectionStore.getElectionDayText(VoterStore.electionId());
     const electionDayText = BallotStore.currentBallotElectionDate;
@@ -173,7 +135,7 @@ class AskFriendsModal extends Component {
     this.setState({
       electionDateInFutureFormatted,
       electionDateIsToday,
-    }, () => this.createMessageToFriendDefault());
+    });
   }
 
   searchFriends = (searchTerm) => {
@@ -222,8 +184,7 @@ class AskFriendsModal extends Component {
     if (searchFilterOn) {
       currentFriendList = currentFriendListFilteredBySearch;
     }
-    const messageToFriend = FriendStore.getMessageToFriendQueuedToSave();
-
+    const messageToFriendType = 'askFriend';
     return (
       <Dialog
         classes={{ paper: classes.dialogPaper }}
@@ -256,7 +217,7 @@ class AskFriendsModal extends Component {
           <div className="full-width">
             {totalCurrentFriendListCount > 0 && (
               <Suspense fallback={<></>}>
-                <MessageToFriendInputField />
+                <MessageToFriendInputField messageToFriendType={messageToFriendType} />
               </Suspense>
             )}
           </div>
@@ -291,7 +252,7 @@ class AskFriendsModal extends Component {
                 friendToggleOff
                 increaseNumberOfItemsToDisplay={this.increaseNumberOfItemsToDisplay}
                 messageToFriendButtonOn
-                messageToFriendDefault={messageToFriend}
+                messageToFriendType={messageToFriendType}
                 numberOfItemsToDisplay={numberOfItemsToDisplay}
               />
             </FriendListExternalWrapper>

@@ -18,7 +18,7 @@ export default class FriendList extends Component {
     renderLog('FriendList');  // Set LOG_RENDER_EVENTS to log all renders
     const {
       electionDateInFutureFormatted, electionDateIsToday, friendList,
-      friendToggleOff, messageToFriendButtonOn, messageToFriendDefault,
+      friendToggleOff, messageToFriendButtonOn, messageToFriendType,
       numberOfItemsToDisplay, previewMode,
     } = this.props;
     // console.log('friendList:', friendList);
@@ -51,7 +51,7 @@ export default class FriendList extends Component {
               key={`friendDisplay-${friend.voter_we_vote_id}`}
               linkedOrganizationWeVoteId={friend.linked_organization_we_vote_id}
               messageToFriendButtonOn={messageToFriendButtonOn}
-              messageToFriendDefault={messageToFriendDefault}
+              messageToFriendType={messageToFriendType}
               mutualFriendCount={friend.mutual_friend_count}
               mutualFriendPreviewList={friend.mutual_friend_preview_list}
               positionsTaken={friend.positions_taken}
@@ -87,7 +87,7 @@ FriendList.propTypes = {
   friendToggleOff: PropTypes.bool,
   increaseNumberOfItemsToDisplay: PropTypes.func,
   messageToFriendButtonOn: PropTypes.bool,
-  messageToFriendDefault: PropTypes.string,
+  messageToFriendType: PropTypes.string,
   numberOfItemsToDisplay: PropTypes.number,
   previewMode: PropTypes.bool,
 };

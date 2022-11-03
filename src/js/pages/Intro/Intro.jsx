@@ -87,6 +87,9 @@ export default class Intro extends Component {
             This is our best guess - feel free to change.
           </span>
           <AddressBox
+            introductionHtml={(
+              <></>
+            )}
             saveUrl="/ballot"
           />
           <br />

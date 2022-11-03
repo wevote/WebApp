@@ -12,12 +12,19 @@ const FriendButtonsWrapper = styled('div')(({ theme }) => (`
   align-items: center;
   display: flex;
   justify-content: flex-end;
-  // margin-left: 24px;
   ${theme.breakpoints.down('sm')} {
     margin: 4px 0 0;
   }
   width: fit-content;
 `));
+
+const FriendButtonWithStatsWrapper = styled('div')`
+  align-items: flex-start;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  width: 100%;
+`;
 
 const FriendColumnWithoutButtons = styled('div')`
   align-items: flex-start;
@@ -164,6 +171,7 @@ function smallButtonIfNeeded () {
 
 export {
   CancelButtonWrapper,
+  FriendButtonWithStatsWrapper,
   FriendButtonsWrapper,
   FriendColumnWithoutButtons,
   FriendDetailsLine,

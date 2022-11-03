@@ -49,7 +49,7 @@ export default class FriendsCurrentPreview extends Component {
 
     const FRIENDS_TO_SHOW = 3;
     const currentFriendListLimited = currentFriendList.slice(0, FRIENDS_TO_SHOW);
-
+    const messageToFriendType = 'remindContacts';
     return ((currentFriendListLimited && currentFriendListLimited.length > 0) && (
       <YourFriendsPreviewWrapper>
         <section>
@@ -65,6 +65,7 @@ export default class FriendsCurrentPreview extends Component {
               <FriendList
                 friendList={currentFriendListLimited}
                 friendToggleOff
+                messageToFriendType={messageToFriendType}
                 previewMode
               />
               {currentFriendList.length > FRIENDS_TO_SHOW && <Link to="/friends/current">See All</Link>}

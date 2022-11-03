@@ -80,11 +80,13 @@ class EditAddressInPlace extends Component {
     if (editingAddress) {
       return (
         <span>
-          <div>
-            Please enter your full street address with house number for your correct ballot.
-          </div>
           <AddressBox
             editingAddress
+            introductionHtml={(
+              <div className="row">
+                Please enter your full street address with house number for your correct ballot.
+              </div>
+            )}
             returnNewTextForMapSearch={this.localTextForMapSearchUpdate}
             saveUrl={ballotBaseUrl}
             showCancelEditAddressButton

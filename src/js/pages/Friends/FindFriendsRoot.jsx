@@ -166,24 +166,6 @@ class FindFriendsRoot extends React.Component {
     this.voterStoreListener.remove();
   }
 
-  // onBallotStoreChange () {
-  //   const nextElectionDayText = BallotStore.currentBallotElectionDate;
-  //   // console.log('nextElectionDayText:', nextElectionDayText);
-  //   if (nextElectionDayText) {
-  //     const daysUntilNextElection = daysUntil(nextElectionDayText);
-  //     if (daysUntilNextElection >= 0) {
-  //       this.setState({
-  //         electionDataExistsForUpcomingElection: true,
-  //       });
-  //     } else {
-  //       // Election was yesterday or earlier
-  //       this.setState({
-  //         electionDataExistsForUpcomingElection: false,
-  //       });
-  //     }
-  //   }
-  // }
-
   onFriendStoreChange () {
     const friendInvitationsSentToMe = FriendStore.friendInvitationsSentToMe();
     const suggestedFriendList = FriendStore.suggestedFriendList();
@@ -205,14 +187,20 @@ class FindFriendsRoot extends React.Component {
     const voterPhotoUrlLarge = VoterStore.getVoterPhotoUrlLarge();
     // const voterContactEmailGoogleCount = VoterStore.getVoterContactEmailGoogleCount();
     // console.log('onVoterStoreChange voterContactEmailGoogleCount:', voterContactEmailGoogleCount, ', voterContactEmailListCount:', voterContactEmailListCount);
-    this.setState({
-      displayStep,
+    let revisedState = {
       // voterContactEmailGoogleCount,
       voterContactEmailListCount,
       voterFirstName,
       // voterIsSignedIn: VoterStore.getVoterIsSignedIn(),
       voterPhotoUrlLarge,
-    }, () => this.setNextStepVariables());
+    };
+    if (setUpPagePath) {
+      revisedState = {
+        ...revisedState,
+        displayStep,
+      };
+    }
+    this.setState(revisedState, () => this.setNextStepVariables());
   }
 
   convertSetUpPagePathToDisplayStep = (setUpPagePath) => {

@@ -92,12 +92,13 @@ module.exports = (env, argv) => ({
     filename: isWebApp ? '[name].[contenthash].js' : 'bundle.js',
     publicPath: isWebApp ? '/' : undefined,
   },
-  devtool: false,
+  // source-map is for OpenReplay
+  devtool: 'source-map',
   plugins: [
     new CleanWebpackPlugin(),
     new ESLintPlugin({ failOnError: false, failOnWarning: false  }),
     new HtmlWebpackPlugin({
-      title: 'We Vote Web App',
+      title: 'We Vote Sample Ballot',
       template: path.resolve(__dirname, `./${source}/index.html`),
     }),
     ...(bundleAnalysis ? [

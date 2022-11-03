@@ -35,7 +35,7 @@ const SetUpAccountTitle = styled('div')`
   color: #2E3C5D;
   font-size: 28px;
   font-weight: 600;
-  line-height: 100%;
+  line-height: 136%;
   margin-bottom: 12px;
   padding: 0 36px;
   text-align: center;

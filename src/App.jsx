@@ -1,4 +1,5 @@
 import { StyledEngineProvider, ThemeProvider } from '@mui/material/styles';
+import Tracker from '@openreplay/tracker';
 import React, { Component, Suspense } from 'react';
 import FullStory from 'react-fullstory';
 import ReactGA from 'react-ga';
@@ -72,6 +73,7 @@ const ReadyLight = React.lazy(() => import(/* webpackChunkName: 'ReadyLight' */ 
 const ReadyRedirect = React.lazy(() => import(/* webpackChunkName: 'ReadyRedirect' */ './js/pages/ReadyRedirect'));
 const Register = React.lazy(() => import(/* webpackChunkName: 'Register' */ './js/pages/Register'));
 const RegisterToVote = React.lazy(() => import(/* webpackChunkName: 'RegisterToVote' */ './js/pages/More/RegisterToVote'));
+const RemindContactsRoot = React.lazy(() => import(/* webpackChunkName: 'RemindContactsRoot' */ './js/pages/Remind/RemindContactsRoot'));
 const SampleBallot = React.lazy(() => import(/* webpackChunkName: 'SampleBallot' */ './js/pages/Intro/SampleBallot'));
 const SearchPage = React.lazy(() => import(/* webpackChunkName: 'SearchPage' */ './js/pages/More/SearchPage'));
 const SettingsDashboard = React.lazy(() => import(/* webpackChunkName: 'SettingsDashboard' */ './js/pages/Settings/SettingsDashboard'));
@@ -173,6 +175,36 @@ class App extends Component {
           AppObservableStore.setGoogleAnalyticsPending(false);
         } else {
           console.log('Google Analytics did not receive a trackingID, NOT ENABLED');
+        }
+      }, 3000);
+    }
+    if (!AppObservableStore.getOpenReplayEnabled() && !AppObservableStore.getOpenReplayPending()) {
+      AppObservableStore.setOpenReplayPending(true);
+      setTimeout(() => {
+        // const chosenProjectKey = AppObservableStore.getChosenOpenReplayTrackingID();
+        const weVoteOpenReplayProjectKey = webAppConfig.OPEN_REPLAY_PROJECT_KEY;
+        const weVoteOpenReplayIngestPoint = webAppConfig.OPEN_REPLAY_INGEST_POINT;
+        // const openReplayProjectKey = chosenProjectKey || weVoteOpenReplayProjectKey;
+        const openReplayProjectKey = weVoteOpenReplayProjectKey || '';
+        const openReplayIngestPoint = weVoteOpenReplayIngestPoint || false;
+        if (openReplayProjectKey) {
+          console.log('OpenReplay ENABLED');
+          if (openReplayIngestPoint) {
+            const tracker1 = new Tracker({
+              projectKey: openReplayProjectKey,
+              ingestPoint: openReplayIngestPoint,
+            });
+            tracker1.start();
+          } else {
+            const tracker2 = new Tracker({
+              projectKey: openReplayProjectKey,
+            });
+            tracker2.start();
+          }
+          AppObservableStore.setOpenReplayEnabled(true);
+          AppObservableStore.setOpenReplayPending(false);
+        } else {
+          console.log('OpenReplay did not receive a projectKey, NOT ENABLED');
         }
       }, 3000);
     }
@@ -334,6 +366,8 @@ class App extends Component {
                     <Route path="/ready/modal/:modal_to_show/:shared_item_code" exact render={(props) => (<RouterV5SendMatch componentName="Ready" {...props} />)} />
                     <Route path="/ready/modal/:modal_to_show" exact render={(props) => (<RouterV5SendMatch componentName="Ready" {...props} />)} />
                     <Route path="/register" component={Register} />
+                    <Route path="/remind/:set_up_page" exact component={RemindContactsRoot} />
+                    <Route path="/remind" exact><RemindContactsRoot /></Route>
                     <Route path="/settings" exact component={SettingsDashboard} />
                     <Route path="/settings/claim" exact component={ClaimYourPage} />
                     <Route path="/settings/hamburger" exact component={HamburgerMenu} />

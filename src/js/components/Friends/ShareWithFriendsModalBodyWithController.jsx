@@ -168,7 +168,7 @@ class ShareWithFriendsModalBodyWithController extends Component {
     if (searchFilterOn) {
       currentFriendList = currentFriendListFilteredBySearch;
     }
-    const messageToFriend = FriendStore.getMessageToFriendQueuedToSave();
+    const messageToFriendType = 'shareWithFriend';
 
     return (
       <ShareWithFriendsModalBody>
@@ -201,7 +201,7 @@ class ShareWithFriendsModalBodyWithController extends Component {
               friendToggleOff
               increaseNumberOfItemsToDisplay={this.increaseNumberOfItemsToDisplay}
               messageToFriendButtonOn
-              messageToFriendDefault={messageToFriend}
+              messageToFriendType={messageToFriendType}
               numberOfItemsToDisplay={numberOfItemsToDisplay}
             />
           </FriendListExternalWrapper>

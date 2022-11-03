@@ -26,7 +26,7 @@ class FriendDisplayForList extends Component {
       electionDateIsToday,
       friendToggleOff,
       messageToFriendButtonOn,
-      messageToFriendDefault,
+      messageToFriendType,
       mutualFriendCount,
       mutualFriendPreviewList,
       positionsTaken,
@@ -69,7 +69,7 @@ class FriendDisplayForList extends Component {
               <MessageToFriendButton
                 electionDateInFutureFormatted={electionDateInFutureFormatted}
                 electionDateIsToday={electionDateIsToday}
-                messageToFriendDefault={messageToFriendDefault}
+                messageToFriendType={messageToFriendType}
                 otherVoterWeVoteId={voterWeVoteId}
                 voterEmailAddressMissing={!voterEmailAddress}
               />
@@ -146,7 +146,7 @@ FriendDisplayForList.propTypes = {
   friendToggleOff: PropTypes.bool,
   linkedOrganizationWeVoteId: PropTypes.string,
   messageToFriendButtonOn: PropTypes.bool,
-  messageToFriendDefault: PropTypes.string,
+  messageToFriendType: PropTypes.string,
   mutualFriendCount: PropTypes.number,
   mutualFriendPreviewList: PropTypes.array,
   positionsTaken: PropTypes.number,

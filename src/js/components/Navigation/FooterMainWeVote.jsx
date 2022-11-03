@@ -6,10 +6,35 @@ import styled from 'styled-components';
 import OpenExternalWebSite from '../../common/components/Widgets/OpenExternalWebSite';
 import { isWebApp } from '../../common/utils/isCordovaOrWebApp';
 import AppObservableStore from '../../stores/AppObservableStore';
+import VoterStore from '../../stores/VoterStore';
 
 const BallotElectionListWithFilters = React.lazy(() => import(/* webpackChunkName: 'BallotElectionListWithFilters' */ '../Ballot/BallotElectionListWithFilters'));
+const DeleteAllContactsButton = React.lazy(() => import(/* webpackChunkName: 'DeleteAllContactsButton' */ '../SetUpAccount/DeleteAllContactsButton'));
 
 class FooterMainWeVote extends Component {
+  constructor (props) {
+    super(props);
+    this.state = {
+      voterContactEmailListCount: 0,
+    };
+  }
+
+  componentDidMount () {
+    this.onVoterStoreChange();
+    this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
+  }
+
+  componentWillUnmount () {
+    this.voterStoreListener.remove();
+  }
+
+  onVoterStoreChange () {
+    const voterContactEmailListCount = VoterStore.getVoterContactEmailListCount();
+    this.setState({
+      voterContactEmailListCount,
+    });
+  }
+
   openHowItWorksModal = () => {
     // console.log('Opening modal');
     AppObservableStore.setShowHowItWorksModal(true);
@@ -17,9 +42,50 @@ class FooterMainWeVote extends Component {
 
   render () {
     const { classes } = this.props;
-
+    const { voterContactEmailListCount } = this.state;
     return (
       <Wrapper>
+        {isWebApp() && (
+          <SearchEngineOptimizationSection>
+            <SearchEngineOptimizationRow>
+              <SearchEngineOptimizationColumn>
+                <Suspense fallback={<></>}>
+                  <BallotElectionListWithFilters
+                    ballotBaseUrl="/ballot"
+                    hideUpcomingElectionTitle
+                    showSimpleDisplay
+                    showSimpleModeTitle
+                    stateToShow="all"
+                  />
+                </Suspense>
+              </SearchEngineOptimizationColumn>
+              <SearchEngineOptimizationColumn className="u-show-desktop-tablet">
+                <Suspense fallback={<></>}>
+                  <BallotElectionListWithFilters
+                    ballotBaseUrl="/ballot"
+                    candidatesMode
+                    hideUpcomingElectionTitle
+                    showSimpleDisplay
+                    showSimpleModeTitle
+                    stateToShow="all"
+                  />
+                </Suspense>
+              </SearchEngineOptimizationColumn>
+              <SearchEngineOptimizationColumn className="u-show-desktop-tablet">
+                <Suspense fallback={<></>}>
+                  <BallotElectionListWithFilters
+                    ballotBaseUrl="/ballot"
+                    hideUpcomingElectionTitle
+                    showSimpleDisplay
+                    showSimpleModeTitle
+                    stateToShow="all"
+                    voterGuidesMode
+                  />
+                </Suspense>
+              </SearchEngineOptimizationColumn>
+            </SearchEngineOptimizationRow>
+          </SearchEngineOptimizationSection>
+        )}
         <TopSectionOuterWrapper>
           <TopSectionInnerWrapper>
             <OneRow>
@@ -90,20 +156,16 @@ class FooterMainWeVote extends Component {
             <br />
             We do not support or oppose any political party or candidate.
           </Text>
+          <>
+            {(voterContactEmailListCount > 0) && (
+              <DeleteAllContactsWrapper>
+                <Suspense fallback={<></>}>
+                  <DeleteAllContactsButton textSizeSmall />
+                </Suspense>
+              </DeleteAllContactsWrapper>
+            )}
+          </>
         </BottomSection>
-        {isWebApp() && (
-          <SearchEngineOptimizationSection>
-            <Suspense fallback={<></>}>
-              <BallotElectionListWithFilters
-                ballotBaseUrl="/ballot"
-                hideUpcomingElectionTitle
-                showSimpleDisplay
-                showWhatIsOnBallotTitle
-                stateToShow="all"
-              />
-            </Suspense>
-          </SearchEngineOptimizationSection>
-        )}
       </Wrapper>
     );
   }
@@ -144,10 +206,14 @@ const BottomSection = styled('div')`
   align-items: center;
 `;
 
+const DeleteAllContactsWrapper = styled('div')`
+  margin-top: 0;
+`;
+
 const OneRow = styled('div')`
   color: #808080;
   display: flex;
-  font-size: 13px;
+  // font-size: 13px;
   justify-content: center;
   margin-bottom: 15px;
 `;
@@ -156,10 +222,19 @@ const RowSpacer = styled('div')`
   margin-right: 15px;
 `;
 
+const SearchEngineOptimizationColumn = styled('div')`
+  margin-right: 12px;
+`;
+
+const SearchEngineOptimizationRow = styled('div')`
+  display: flex;
+  justify-content: space-evenly;
+`;
+
 const SearchEngineOptimizationSection = styled('div')`
   display: flex;
   flex-flow: column;
-  margin-top: 42px;
+  margin-bottom: 84px;
   align-items: center;
 `;
 

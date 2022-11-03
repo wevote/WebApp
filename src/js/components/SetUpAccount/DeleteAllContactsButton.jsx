@@ -78,7 +78,7 @@ class DeleteAllContactsButton extends React.Component {
               You can
               {' '}
               <span className="u-link-color u-link-color-on-hover">
-                delete contact information
+                delete your contact information
               </span>
               {' '}
               at any time.
@@ -110,7 +110,7 @@ const styles = () => ({
   },
   deleteAllContactsLink: {
     boxShadow: 'none !important',
-    color: '#999',
+    color: '#808080',
     marginTop: 0,
     padding: 0,
     textTransform: 'none',

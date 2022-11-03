@@ -139,6 +139,7 @@ class SelectBallotModal extends Component {
                   ballotBaseUrl={ballotBaseUrl}
                   defaultIsEditingAddress={editingAddress}
                   toggleEditingAddress={this.toggleEditingAddress}
+                  toggleFunction={this.props.closeSelectBallotModal}
                 />
               </EditContainer>
               {!editingAddress && (

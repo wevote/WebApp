@@ -20,7 +20,7 @@ class AddFriendsByEmail extends Component {
   constructor (props) {
     super(props);
     this.state = {
-      addFriendsMessage: 'I\'m getting ready to vote. Would you like to join me in deciding how to vote?',
+      messageToFriend: 'I\'m getting ready to vote. Would you like to join me in deciding how to vote?',
       emailAddressesError: false,
       emailsOrPhonesBrokenString: '',
       friendContactInfoArray: [],
@@ -99,7 +99,7 @@ class AddFriendsByEmail extends Component {
 
   cacheAddFriendsByEmailMessage = (e) => {
     this.setState({
-      addFriendsMessage: e.target.value,
+      messageToFriend: e.target.value,
     });
   };
 
@@ -176,7 +176,7 @@ class AddFriendsByEmail extends Component {
     e.preventDefault();
     // console.log('friendInvitationByEmailSend');
     const {
-      addFriendsMessage, friendContactInfoArray,
+      messageToFriend, friendContactInfoArray,
       friendFirstName, friendLastName,
       senderEmailAddress,
     } = this.state;
@@ -201,7 +201,7 @@ class AddFriendsByEmail extends Component {
     // console.log('lastNameArray: ', lastNameArray);
     FriendActions.clearErrorMessageToShowVoter();
     FriendActions.friendInvitationByEmailSend(emailAddressArray, firstNameArray,
-      lastNameArray, '', addFriendsMessage,
+      lastNameArray, '', messageToFriend,
       senderEmailAddress);
     // After calling the API, reset the form
     this.setState({
@@ -221,10 +221,11 @@ class AddFriendsByEmail extends Component {
     renderLog('AddFriendsByEmail');  // Set LOG_RENDER_EVENTS to log all renders
     const { classes, inSideColumn, uniqueExternalId } = this.props;
     const {
-      addFriendsMessage, emailAddressesError, emailsOrPhonesBrokenString, errorMessage, errorMessageToShowVoter,
+      emailAddressesError, emailsOrPhonesBrokenString, errorMessage, errorMessageToShowVoter,
       friendContactInfoArray,
       friendFirstName, friendInvitationsWaitingForVerification, friendLastName,
       incomingEmailsOrPhonesString, invitationEmailsAlreadyScheduledStepFromApi, loading,
+      messageToFriend,
       numberOfMessagesSent, onEnterEmailAddressesStep, onFriendInvitationsSentStep,
       senderEmailAddressError, successMessageToShowVoter, voterIsSignedIn,
     } = this.state;
@@ -378,9 +379,9 @@ class AddFriendsByEmail extends Component {
                             onChange={this.cacheAddFriendsByEmailMessage}
                             onFocus={() => focusTextFieldAndroid('AddFriendsByEmail')}
                             onBlur={blurTextFieldAndroid}
-                            placeholder={addFriendsMessage}
+                            placeholder={messageToFriend}
                             type="text"
-                            value={addFriendsMessage}
+                            value={messageToFriend}
                             variant="outlined"
                           />
                         </>

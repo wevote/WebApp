@@ -176,6 +176,14 @@ export default {
     });
   },
 
+  voterContactStopIgnoring (emailAddressText, otherVoterWeVoteId = '') {
+    Dispatcher.loadEndpoint('voterContactSave', {
+      email_address_text: emailAddressText,
+      stop_ignoring_voter_contact: true,
+      other_voter_we_vote_id: otherVoterWeVoteId,
+    });
+  },
+
   voterContactListAugmentWithLocation (augmentWithLocation = false) {
     Dispatcher.loadEndpoint('voterContactListSave', {
       augment_voter_contact_emails_with_location: augmentWithLocation,
@@ -200,7 +208,7 @@ export default {
 
   voterContactListSave (contacts, fromGooglePeopleApi = false) {
     const contactsString = JSON.stringify(contacts);
-    console.log('voterContactListSave contacts: ', contactsString);
+    // console.log('voterContactListSave contacts: ', contactsString);
     Dispatcher.loadEndpoint('voterContactListSave', {
       contacts: contactsString,
       from_google_people_api: fromGooglePeopleApi,
@@ -235,9 +243,16 @@ export default {
     });
   },
 
-  voterEmailAddressVerify (emailSecretKey) {
+  voterEmailAddressVerify (emailSecretKey, firstName = '', lastName = '', fullName = '') {
     Dispatcher.loadEndpoint('voterEmailAddressVerify', {
       email_secret_key: emailSecretKey,
+      first_name: firstName,
+      first_name_changed: firstName && firstName !== '',
+      last_name: lastName,
+      last_name_changed: lastName && lastName !== '',
+      full_name: fullName,
+      full_name_changed: fullName && fullName !== '',
+      name_save_only_if_no_existing_names: true,
     });
   },
 
@@ -280,9 +295,10 @@ export default {
     Dispatcher.dispatch({ type: 'voterLastNameQueuedToSave', payload: lastName });
   },
 
-  voterMergeTwoAccountsByEmailKey (emailSecretKey) {
+  voterMergeTwoAccountsByEmailKey (emailSecretKey, doNotMergeIfCurrentlySignedIn = false) {
     Dispatcher.loadEndpoint('voterMergeTwoAccounts',
       {
+        do_not_merge_if_currently_signed_in: doNotMergeIfCurrentlySignedIn,
         email_secret_key: emailSecretKey,
         facebook_secret_key: '',
         incoming_voter_device_id: '',

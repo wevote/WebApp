@@ -80,6 +80,21 @@ class ShareStore extends ReduceStore {
     return this.getState().emailRecipientListQueuedToSaveSetDict[superShareItemId] || false;
   }
 
+  getErrorMessageToShowVoter () {
+    const { errorMessageToShowVoter } = this.getState();
+    return errorMessageToShowVoter;
+  }
+
+  getNumberOfMessagesSent () {
+    const { numberOfMessagesSent } = this.getState();
+    return numberOfMessagesSent;
+  }
+
+  getSuccessMessageToShowVoter () {
+    const { successMessageToShowVoter } = this.getState();
+    return successMessageToShowVoter;
+  }
+
   getSuperShareItemById (superShareItemId) {
     return this.getState().allCachedSuperShareItems[superShareItemId] || {};
   }
@@ -190,6 +205,15 @@ class ShareStore extends ReduceStore {
           personalizedSubjectQueuedToSaveSetDict,
         };
 
+      case 'sharedItemListSave':
+        // console.log('ShareStore sharedItemListSave, action.res:', action.res);
+        return {
+          ...state,
+          errorMessageToShowVoter: action.res.error_message_to_show_voter,
+          numberOfMessagesSent: action.res.number_of_messages_sent,
+          successMessageToShowVoter: action.res.success_message_to_show_voter,
+        };
+
       case 'sharedItemRetrieve':
         // console.log('ShareStore sharedItemRetrieve, action.res:', action.res);
         sharedItem = action.res || {};
@@ -201,6 +225,12 @@ class ShareStore extends ReduceStore {
         }
         if (action.res.shared_item_code_all_opinions) {
           allCachedSharedItemsBySharedItemCode[action.res.shared_item_code_all_opinions] = sharedItem;
+        }
+        if (action.res.shared_item_code_ready) {
+          allCachedSharedItemsBySharedItemCode[action.res.shared_item_code_ready] = sharedItem;
+        }
+        if (action.res.shared_item_code_remind_contacts) {
+          allCachedSharedItemsBySharedItemCode[action.res.shared_item_code_remind_contacts] = sharedItem;
         }
         return {
           ...state,

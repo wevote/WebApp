@@ -6,13 +6,15 @@ import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import FriendActions from '../../actions/FriendActions';
 import VoterActions from '../../actions/VoterActions';
+import ShareActions from '../../common/actions/ShareActions';
 import { renderLog } from '../../common/utils/logging';
+import AppObservableStore from '../../stores/AppObservableStore';
 import FriendStore from '../../stores/FriendStore';
 import VoterStore from '../../stores/VoterStore';
 import { removeTwitterNameFromDescription } from '../../utils/textFormat';
 import Avatar from '../Style/avatarStyles';
 import {
-  CancelButtonWrapper, FriendButtonsWrapper, FriendColumnWithoutButtons,
+  CancelButtonWrapper, FriendButtonWithStatsWrapper, FriendButtonsWrapper, FriendColumnWithoutButtons,
   FriendDisplayDesktopButtonsWrapper, FriendDisplayOuterWrapper, smallButtonIfNeeded,
   ToRightOfPhotoContentBlock, ToRightOfPhotoTopRow, ToRightOfPhotoWrapper,
 } from '../Style/friendStyles';
@@ -33,14 +35,47 @@ class SuggestedFriendDisplayForList extends Component {
     };
   }
 
-  friendInvitationByEmailSend (emailAddresses) {
+  friendInvitationByEmailSend = () => {
+    const { askMode, emailAddressForDisplay, remindMode } = this.props;
+    let messageToFriendType = 'inviteFriend'; // default
+    if (askMode) {
+      messageToFriendType = 'askFriend';
+    } else if (remindMode) {
+      messageToFriendType = 'remindContacts';
+    }
     // console.log('SuggestedFriendDisplayForList friendInvitationByEmailSend');
     const emailAddressArray = '';
     const firstNameArray = '';
     const lastNameArray = '';
-    const invitationMessage = FriendStore.getMessageToFriendQueuedToSave();
+    const invitationMessage = FriendStore.getMessageToFriendQueuedToSave(messageToFriendType);
     const senderEmailAddress = VoterStore.getVoterEmail();
-    FriendActions.friendInvitationByEmailSend(emailAddressArray, firstNameArray, lastNameArray, emailAddresses, invitationMessage, senderEmailAddress);
+    FriendActions.friendInvitationByEmailSend(emailAddressArray, firstNameArray, lastNameArray, emailAddressForDisplay, invitationMessage, senderEmailAddress);
+    this.setState({
+      friendInvitationByEmailSent: true,
+    });
+  }
+
+  primaryActionSend = () => {
+    const { emailAddressForDisplay, remindMode } = this.props;
+    if (remindMode) {
+      this.contactReminderSend();
+    } else if (emailAddressForDisplay) {
+      this.friendInvitationByEmailSend();
+    }
+  }
+
+  contactReminderSend () {
+    const {
+      emailAddressForDisplay: emailAddressText,
+      voterDisplayName: otherVoterDisplayName,
+      voterFirstName: otherVoterFirstName,
+      voterLastName: otherVoterLastName,
+      voterWeVoteId: otherVoterWeVoteId,
+    } = this.props;
+    const hostname = AppObservableStore.getHostname();
+    const destinationFullUrl = `https://${hostname}/`; // We must provide a destinationFullUrl, so we know what hostname to use in sharedItemRetrieve
+    const sharedMessage = FriendStore.getMessageToFriendQueuedToSave('remindContacts');
+    ShareActions.sharedItemSaveRemindContact(destinationFullUrl, emailAddressText, otherVoterWeVoteId, sharedMessage, otherVoterDisplayName, otherVoterFirstName, otherVoterLastName);
     this.setState({
       friendInvitationByEmailSent: true,
     });
@@ -57,6 +92,15 @@ class SuggestedFriendDisplayForList extends Component {
     VoterActions.voterContactIgnore(emailAddressText, voterWeVoteId);
     this.setState({
       ignoreVoterContactSent: true,
+      stopIgnoringVoterContactSent: false,
+    });
+  }
+
+  stopIgnoringVoterContact (emailAddressText, voterWeVoteId = '') {
+    VoterActions.voterContactStopIgnoring(emailAddressText, voterWeVoteId);
+    this.setState({
+      ignoreVoterContactSent: false,
+      stopIgnoringVoterContactSent: true,
     });
   }
 
@@ -74,6 +118,7 @@ class SuggestedFriendDisplayForList extends Component {
       mutualFriendPreviewList,
       positionsTaken,
       previewMode,
+      remindMode,
       stateCodeForDisplay,
       voterContactIgnored,
       voterDisplayName,
@@ -84,7 +129,7 @@ class SuggestedFriendDisplayForList extends Component {
       voterTwitterDescription,
       voterTwitterHandle,
     } = this.props;
-    const { friendInvitationByEmailSent, ignoreSuggestedFriendSent, ignoreVoterContactSent } = this.state;
+    const { friendInvitationByEmailSent, ignoreSuggestedFriendSent, ignoreVoterContactSent, stopIgnoringVoterContactSent } = this.state;
 
     const twitterDescription = voterTwitterDescription || '';
     // If the voterDisplayName is in the voterTwitterDescription, remove it
@@ -102,6 +147,7 @@ class SuggestedFriendDisplayForList extends Component {
         mutualFriendCount={mutualFriendCount}
         mutualFriendPreviewList={mutualFriendPreviewList}
         positionsTaken={positionsTaken}
+        remindMode={remindMode}
         twitterDescriptionMinusName={twitterDescriptionMinusName}
         voterDisplayName={voterDisplayName}
         voterEmailAddress={voterEmailAddress}
@@ -110,62 +156,86 @@ class SuggestedFriendDisplayForList extends Component {
       />
     );
     const friendButtonsExist = true;
+    const useSimpleLinkForIgnore = true;
+    const voterContactIsIgnored = (ignoreVoterContactSent || voterContactIgnored) && !stopIgnoringVoterContactSent;
     const friendButtonsWrapperHtml = (
       <FriendButtonsWrapper inSideColumn={inSideColumn}>
         <SuggestedFriendSettingsWrapper>
-          {otherVoterWeVoteId ? (
-            <SuggestedFriendToggle askMode={askMode} inSideColumn={inSideColumn} otherVoterWeVoteId={otherVoterWeVoteId} />
+          {(otherVoterWeVoteId && !remindMode) ? (
+            <SuggestedFriendToggle
+              askMode={askMode}
+              inSideColumn={inSideColumn}
+              otherVoterWeVoteId={otherVoterWeVoteId}
+            />
           ) : (
             <Button
               color="primary"
-              disabled={friendInvitationByEmailSent}
+              disabled={friendInvitationByEmailSent || voterContactIsIgnored}
               fullWidth
-              onClick={() => this.friendInvitationByEmailSend(emailAddressForDisplay)}
+              onClick={() => this.primaryActionSend()}
               type="button"
-              variant="contained"
+              variant={(voterContactIsIgnored) ? 'outlined' : 'contained'}
             >
               {askMode ? (
                 <span className="u-no-break">
                   {friendInvitationByEmailSent ? 'Sent' : 'Ask'}
                 </span>
               ) : (
-                <span className="u-no-break">
-                  {friendInvitationByEmailSent ? 'Invite sent' : 'Add friend'}
-                </span>
+                <>
+                  {remindMode ? (
+                    <span className="u-no-break">
+                      {friendInvitationByEmailSent ? 'Reminder sent' : 'Send reminder'}
+                    </span>
+                  ) : (
+                    <span className="u-no-break">
+                      {friendInvitationByEmailSent ? 'Invite sent' : 'Add friend'}
+                    </span>
+                  )}
+                </>
               )}
             </Button>
           )}
         </SuggestedFriendSettingsWrapper>
         <CancelButtonWrapper inSideColumn={inSideColumn}>
-          {otherVoterWeVoteId ? (
+          {(otherVoterWeVoteId && !remindMode) ? (
             <Button
-              classes={{ root: classes.ignoreButton }}
+              classes={useSimpleLinkForIgnore ? { root: classes.simpleLink } : { root: classes.ignoreButton }}
               color="primary"
-              disabled={ignoreSuggestedFriendSent}
               fullWidth
               onClick={() => this.ignoreSuggestedFriend(otherVoterWeVoteId)}
               type="button"
-              variant="outlined"
+              variant={useSimpleLinkForIgnore ? undefined : 'outlined'}
               style={smallButtonIfNeeded()}
             >
               {ignoreSuggestedFriendSent ? 'Ignored' : 'Ignore'}
             </Button>
           ) : (
             <Button
-              classes={{ root: classes.ignoreButton }}
+              classes={useSimpleLinkForIgnore ? { root: classes.simpleLink } : { root: classes.ignoreButton }}
               color="primary"
-              disabled={ignoreVoterContactSent || voterContactIgnored}
               fullWidth
-              onClick={() => this.ignoreVoterContact(emailAddressForDisplay, otherVoterWeVoteId)}
+              onClick={(voterContactIsIgnored) ? () => this.stopIgnoringVoterContact(emailAddressForDisplay, otherVoterWeVoteId) : () => this.ignoreVoterContact(emailAddressForDisplay, otherVoterWeVoteId)}
               type="button"
-              variant="outlined"
+              variant={useSimpleLinkForIgnore ? undefined : 'outlined'}
               style={smallButtonIfNeeded()}
             >
-              {(ignoreVoterContactSent || voterContactIgnored) ? 'Ignored' : 'Ignore'}
+              {(voterContactIsIgnored) ? 'Ignored' : 'Ignore'}
             </Button>
           )}
         </CancelButtonWrapper>
       </FriendButtonsWrapper>
+    );
+    const friendButtonsWithStatsHtml = (
+      <FriendButtonWithStatsWrapper>
+        <div>
+          {friendButtonsWrapperHtml}
+        </div>
+        {/*
+        <ReminderSentText>
+          Reminder sent 10 days ago
+        </ReminderSentText>
+        */}
+      </FriendButtonWithStatsWrapper>
     );
 
     const suggestedFriendHtml = (
@@ -205,14 +275,14 @@ class SuggestedFriendDisplayForList extends Component {
             </ToRightOfPhotoTopRow>
             {friendButtonsExist && (
               <div className="u-show-mobile">
-                {friendButtonsWrapperHtml}
+                {friendButtonsWithStatsHtml}
               </div>
             )}
           </ToRightOfPhotoWrapper>
         </FriendColumnWithoutButtons>
         {friendButtonsExist && (
           <FriendDisplayDesktopButtonsWrapper className="u-show-desktop-tablet">
-            {friendButtonsWrapperHtml}
+            {friendButtonsWithStatsHtml}
           </FriendDisplayDesktopButtonsWrapper>
         )}
       </FriendDisplayOuterWrapper>
@@ -241,10 +311,13 @@ SuggestedFriendDisplayForList.propTypes = {
   mutualFriendPreviewList: PropTypes.array,
   positionsTaken: PropTypes.number,
   previewMode: PropTypes.bool,
+  remindMode: PropTypes.bool,
   stateCodeForDisplay: PropTypes.string,
   voterContactIgnored: PropTypes.bool,
   voterDisplayName: PropTypes.string,
   voterEmailAddress: PropTypes.string,
+  voterFirstName: PropTypes.string,
+  voterLastName: PropTypes.string,
   voterGuideLinkOn: PropTypes.bool,
   voterPhotoUrlLarge: PropTypes.string,
   voterTwitterDescription: PropTypes.string,
@@ -256,7 +329,22 @@ const styles = {
   ignoreButton: {
     minWidth: 92,
   },
+  simpleLink: {
+    boxShadow: 'none !important',
+    color: '#4371cc',
+    textTransform: 'none',
+    width: 64,
+    '&:hover': {
+      textDecoration: 'underline',
+    },
+  },
 };
+
+// const ReminderSentText = styled('div')`
+//   // color: #808080;
+//   // font-weight: bold;
+//   margin-top: 4px;
+// `;
 
 const SuggestedFriendDisplayForListWrapper = styled('div')`
   width: 100%;

@@ -67,6 +67,28 @@ export default {
     });
   },
 
+  sharedItemListSaveRemindContact (destinationFullUrl, emailAddressArray = '', sharedMessage = '') {
+    return Dispatcher.loadEndpoint('sharedItemListSave', {
+      destination_full_url: destinationFullUrl, // We must provide a destinationFullUrl, so we know what hostname to use in sharedItemRetrieve
+      is_remind_contact_share: true,
+      other_voter_email_address_array: emailAddressArray,
+      shared_message: sharedMessage,
+    });
+  },
+
+  sharedItemSaveRemindContact (destinationFullUrl, emailAddressText = '', otherVoterWeVoteId = '', sharedMessage = '', otherVoterDisplayName = '', otherVoterFirstName = '', otherVoterLastName = '') {
+    return Dispatcher.loadEndpoint('sharedItemSave', {
+      destination_full_url: destinationFullUrl, // We must provide a destinationFullUrl, so we know what hostname to use in sharedItemRetrieve
+      is_remind_contact_share: true,
+      other_voter_display_name: otherVoterDisplayName,
+      other_voter_first_name: otherVoterFirstName,
+      other_voter_last_name: otherVoterLastName,
+      other_voter_email_address_text: emailAddressText,
+      other_voter_we_vote_id: otherVoterWeVoteId,
+      shared_message: sharedMessage,
+    });
+  },
+
   superShareItemRetrieve (
     campaignXWeVoteId,
     superShareItemId = 0,

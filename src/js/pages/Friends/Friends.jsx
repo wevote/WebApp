@@ -13,13 +13,11 @@ import VoterActions from '../../actions/VoterActions';
 import LoadingWheel from '../../common/components/Widgets/LoadingWheel';
 import apiCalming from '../../common/utils/apiCalming';
 import historyPush from '../../common/utils/historyPush';
-import { isCordova } from '../../common/utils/isCordovaOrWebApp';
 import { renderLog } from '../../common/utils/logging';
 import normalizedImagePath from '../../common/utils/normalizedImagePath';
 import FacebookSignInCard from '../../components/Facebook/FacebookSignInCard';
 import AddFriendsByEmail from '../../components/Friends/AddFriendsByEmail';
 import FriendInvitationsSentByMePreview from '../../components/Friends/FriendInvitationsSentByMePreview';
-import SuggestedContacts from '../../components/Friends/SuggestedContacts';
 import FriendInvitationsSentToMe from '../../components/Friends/FriendInvitationsSentToMe';
 import FriendsPromoBox from '../../components/Friends/FriendsPromoBox';
 import SuggestedFriends from '../../components/Friends/SuggestedFriends';
@@ -40,10 +38,10 @@ import { SectionDescription } from '../../components/Style/friendStyles';
 
 const AddContactsFromGoogleButton = React.lazy(() => import(/* webpackChunkName: 'AddContactsFromGoogleButton' */ '../../components/SetUpAccount/AddContactsFromGoogleButton'));
 const FirstAndLastNameRequiredAlert = React.lazy(() => import(/* webpackChunkName: 'FirstAndLastNameRequiredAlert' */ '../../components/Widgets/FirstAndLastNameRequiredAlert'));
-const SignInOptionsPanel = React.lazy(() => import(/* webpackChunkName: 'SignInOptionsPanel' */ '../../components/SignIn/SignInOptionsPanel'));
+const RemindContactsStart = React.lazy(() => import(/* webpackChunkName: 'RemindContactsStart' */ '../../components/Remind/RemindContactsStart'));
+const SuggestedContacts = React.lazy(() => import(/* webpackChunkName: 'SuggestedContacts' */ '../../components/Friends/SuggestedContacts'));
 
 const testimonialPhoto = '../../../img/global/photos/Dale_McGrew-48x48.jpg';
-
 const testimonialAuthor = 'Dale M., Oakland, California';
 const imageUrl = normalizedImagePath(testimonialPhoto);
 const testimonial = 'Instead of searching through emails and social media for recommendations, I can see how my friends are voting on We Vote.';
@@ -84,6 +82,10 @@ class Friends extends Component {
     this.onVoterStoreChange();
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
     this.friendStoreListener = FriendStore.addListener(this.onFriendStoreChange.bind(this));
+    const { location: { pathname: currentPathname } } = window;
+    AppObservableStore.setSetUpAccountBackLinkPath(currentPathname);
+    const { setUpAccountEntryPath } = this.state;
+    AppObservableStore.setSetUpAccountEntryPath(setUpAccountEntryPath);
     if (apiCalming('friendListsAll', 30000)) {
       FriendActions.friendListsAll();
     }
@@ -123,8 +125,10 @@ class Friends extends Component {
     if (voter && voter.is_signed_in) {
       voterIsSignedIn = voter.is_signed_in;
     }
+    const voterContactEmailListCount = VoterStore.getVoterContactEmailListCount();
     this.setState({
       voter,
+      voterContactEmailListCount,
       voterIsSignedIn,
     });
   }
@@ -169,7 +173,7 @@ class Friends extends Component {
     } else if (friendInvitationsSentByMe && friendInvitationsSentByMe.length > 0) {
       defaultTabItem = 'sent-requests';
     } else {
-      defaultTabItem = 'requests';
+      defaultTabItem = 'remind';
     }
     this.setState({ defaultTabItem });
     // console.log('resetDefaultTabForMobile defaultTabItem:', defaultTabItem, ', tabItem:', tabItem);
@@ -183,7 +187,8 @@ class Friends extends Component {
     renderLog('Friends');  // Set LOG_RENDER_EVENTS to log all renders
     const {
       currentFriendList, friendActivityExists, friendInvitationsSentByMe,
-      friendInvitationsSentToMe, suggestedFriendList, voter, voterIsSignedIn,
+      friendInvitationsSentToMe, suggestedFriendList,
+      voter, voterContactEmailListCount, voterIsSignedIn,
     } = this.state;
     const { /* classes, */ match: { params: { tabItem } } } = this.props;
 
@@ -193,196 +198,87 @@ class Friends extends Component {
       return LoadingWheel;
     }
 
-    const expandSideMarginsIfCordova = isCordova() ? { marginRight: 23, marginLeft: 23 } : {};
+    // const expandSideMarginsIfCordova = isCordova() ? { marginRight: 23, marginLeft: 23 } : {};
     let mobileContentToDisplay;
     let desktopContentToDisplay;
     // console.log('friendActivityExists:', friendActivityExists, ', voterIsSignedIn:', voterIsSignedIn);
 
     // Generate ContentToDisplay
-    switch (tabItem) {
-      case 'suggested':
-        desktopContentToDisplay = (
-          <SuggestedFriends displayedOnDedicatedPage />
-        );
-        mobileContentToDisplay = (
-          <>
-            {suggestedFriendList.length > 0 ? (
-              <>
-                {voterIsSignedIn && (
-                  <Suspense fallback={<></>}>
-                    <FirstAndLastNameRequiredAlert />
-                  </Suspense>
-                )}
-                <SuggestedFriends />
-              </>
-            ) : (
-              <>
-                {friendInvitationsSentToMe.length > 0 ? (
-                  <MessageCard
-                    mainText="Check out your incoming friend requests!"
-                    buttonText="View Requests"
-                    buttonURL="/friends/requests"
-                  />
-                ) : (
-                  <MessageCard
-                    mainText="Invite your friends to connect!"
-                    buttonText="Invite Friends"
-                    buttonURL="/friends/invite"
-                  />
-                )}
-              </>
-            )}
-          </>
-        );
-        break;
-      case 'invite':
-        desktopContentToDisplay = (
-          <div className="row">
-            <div className="col-sm-12 col-md-8">
-              <>
-                {voterIsSignedIn && (
-                  <Suspense fallback={<></>}>
-                    <FirstAndLastNameRequiredAlert />
-                  </Suspense>
-                )}
-                <FindYourContactsWrapper>
-                  <SectionTitle>
-                    Find Your Friends on We Vote
-                  </SectionTitle>
-                  <SectionDescription>
-                    Importing your contacts helps you find your friends on We Vote. You can delete your contact information at any time.
-                  </SectionDescription>
-                  <div>
-                    <Suspense fallback={<></>}>
-                      <AddContactsFromGoogleButton darkButton />
-                    </Suspense>
-                  </div>
-                </FindYourContactsWrapper>
-                <InviteByEmail />
-              </>
-            </div>
-            <div className="col-sm-12 col-md-4">
-              <SignInOptionsWrapper>
-                {voter.signed_in_twitter ? null : (
-                  <TwitterSignInWrapper>
-                    <TwitterSignInCard />
-                  </TwitterSignInWrapper>
-                )}
-                {voter.signed_in_facebook ? null : (
-                  <FacebookSignInWrapper>
-                    <FacebookSignInCard />
-                  </FacebookSignInWrapper>
-                )}
-              </SignInOptionsWrapper>
-              <FriendsPromoBox
-                imageUrl={imageUrl}
-                testimonialAuthor={testimonialAuthor}
-                testimonial={testimonial}
-              />
-            </div>
-          </div>
-        );
-        mobileContentToDisplay = (
-          <>
-            {voterIsSignedIn && (
-              <Suspense fallback={<></>}>
-                <FirstAndLastNameRequiredAlert />
-              </Suspense>
-            )}
-            <FindYourContactsWrapper>
-              <SectionTitle>
-                Find Your Friends on We Vote
-              </SectionTitle>
-              <SectionDescription>
-                Importing your contacts helps you find your friends on We Vote. You can delete your contact information at any time.
-              </SectionDescription>
-              <div>
+    if (voterIsSignedIn) {
+      switch (tabItem) {
+        case 'remind':
+        default:
+          desktopContentToDisplay = (
+            <RemindOuterWrapper>
+              <RemindContactsWrapper>
                 <Suspense fallback={<></>}>
-                  <AddContactsFromGoogleButton darkButton />
+                  <RemindContactsStart />
                 </Suspense>
-              </div>
-            </FindYourContactsWrapper>
-            <InviteByEmail />
-            <SignInOptionsWrapper>
-              {voter.signed_in_twitter ? null : (
-                <TwitterSignInWrapper>
-                  <TwitterSignInCard />
-                </TwitterSignInWrapper>
+              </RemindContactsWrapper>
+            </RemindOuterWrapper>
+          );
+          mobileContentToDisplay = (
+            <>
+              <Suspense fallback={<></>}>
+                <RemindContactsStart />
+              </Suspense>
+            </>
+          );
+          break;
+        case 'suggested':
+          desktopContentToDisplay = (
+            <>
+              {voterIsSignedIn && (
+                <Suspense fallback={<></>}>
+                  <FirstAndLastNameRequiredAlert />
+                </Suspense>
               )}
-              {voter.signed_in_facebook ? null : (
-                <FacebookSignInWrapper>
-                  <FacebookSignInCard />
-                </FacebookSignInWrapper>
+              <SuggestedFriends displayedOnDedicatedPage />
+              <Suspense fallback={<></>}>
+                <SuggestedContacts />
+              </Suspense>
+            </>
+          );
+          mobileContentToDisplay = (
+            <>
+              {voterIsSignedIn && (
+                <Suspense fallback={<></>}>
+                  <FirstAndLastNameRequiredAlert />
+                </Suspense>
               )}
-            </SignInOptionsWrapper>
-            <FriendsPromoBox
-              imageUrl={imageUrl}
-              testimonialAuthor={testimonialAuthor}
-              testimonial={testimonial}
-              isMobile
-            />
-          </>
-        );
-        break;
-      case 'current':
-        desktopContentToDisplay = (
-          <>
-            <FriendsCurrent />
-            <FriendInvitationsSentByMePreview />
-          </>
-        );
-        mobileContentToDisplay = (
-          <>
-            {currentFriendList.length > 0 ? (
-              <>
-                <FriendsCurrent />
-                <FriendInvitationsSentByMePreview />
-              </>
-            ) : (
-              <>
-                {friendInvitationsSentToMe.length > 0 ? (
-                  <MessageCard
-                    mainText="You have friend requests. Check them out!"
-                    buttonText="View Requests"
-                    buttonURL="/friends/requests"
-                  />
-                ) : (
-                  <MessageCard
-                    mainText="Invite your friends to connect!"
-                    buttonText="Invite Friends"
-                    buttonURL="/friends/invite"
-                  />
-                )}
-              </>
-            )}
-          </>
-        );
-        break;
-      case 'sent-requests':
-        desktopContentToDisplay = (
-          <FriendInvitationsSentByMe />
-        );
-        mobileContentToDisplay = (
-          <>
-            {friendInvitationsSentByMe.length > 0 ? (
-              <FriendInvitationsSentByMe />
-            ) : (
-              <MessageCard
-                mainText="Invite more friends now!"
-                buttonText="Invite Friends"
-                buttonURL="/friends/invite"
-              />
-            )}
-          </>
-        );
-        break;
-      case 'all':
-      case 'requests':
-      default:
-        desktopContentToDisplay = (
-          <>
-            <Helmet title="Friends - We Vote" />
-            <BrowserPushMessage incomingProps={this.props} />
+              {suggestedFriendList.length > 0 ? (
+                <>
+                  <SuggestedFriends />
+                </>
+              ) : (
+                <>
+                  {friendInvitationsSentToMe.length > 0 ? (
+                    <MessageCard
+                      mainText="Check out your incoming friend requests!"
+                      buttonText="View Requests"
+                      buttonURL="/friends/requests"
+                    />
+                  ) : (
+                    <>
+                      {voterContactEmailListCount === 0 && (
+                        <MessageCard
+                          mainText="Invite your friends to connect!"
+                          buttonText="Invite Friends"
+                          buttonURL="/friends/invite"
+                        />
+                      )}
+                    </>
+                  )}
+                  <Suspense fallback={<></>}>
+                    <SuggestedContacts />
+                  </Suspense>
+                </>
+              )}
+            </>
+          );
+          break;
+        case 'invite':
+          desktopContentToDisplay = (
             <div className="row">
               <div className="col-sm-12 col-md-8">
                 <>
@@ -391,26 +287,24 @@ class Friends extends Component {
                       <FirstAndLastNameRequiredAlert />
                     </Suspense>
                   )}
-                  {!!(!voterIsSignedIn || !friendActivityExists) && (
-                    <InviteByEmail />
-                  )}
-                  <FriendInvitationsSentToMe />
-                  <SuggestedFriendsPreview />
-                  <SuggestedContacts />
+                  <FindYourContactsWrapper>
+                    <SectionTitle>
+                      Find Your Friends on We Vote
+                    </SectionTitle>
+                    <SectionDescription>
+                      Importing your contacts helps you find your friends on We
+                      Vote. You can delete your contact information at any time.
+                    </SectionDescription>
+                    <div>
+                      <Suspense fallback={<></>}>
+                        <AddContactsFromGoogleButton darkButton />
+                      </Suspense>
+                    </div>
+                  </FindYourContactsWrapper>
+                  <InviteByEmail />
                 </>
               </div>
               <div className="col-sm-12 col-md-4">
-                {!!(voterIsSignedIn && friendActivityExists) && (
-                  <div>
-                    <div>
-                      <SectionTitle>
-                        Invite Friends
-                      </SectionTitle>
-                      <TooltipIcon title="These friends will see what you support and oppose." />
-                      <AddFriendsByEmail inSideColumn />
-                    </div>
-                  </div>
-                )}
                 <SignInOptionsWrapper>
                   {voter.signed_in_twitter ? null : (
                     <TwitterSignInWrapper>
@@ -430,47 +324,223 @@ class Friends extends Component {
                 />
               </div>
             </div>
-          </>
-        );
-        mobileContentToDisplay = (
-          <>
+          );
+          mobileContentToDisplay = (
             <>
               {voterIsSignedIn && (
                 <Suspense fallback={<></>}>
                   <FirstAndLastNameRequiredAlert />
                 </Suspense>
               )}
-              <FriendInvitationsSentToMe />
-              <SuggestedFriends />
-              <InviteFriendsMobileWrapper>
+              <FindYourContactsWrapper>
                 <SectionTitle>
-                  Invite Friends
+                  Find Your Friends on We Vote
                 </SectionTitle>
-                <TooltipIcon title="These friends will see what you support and oppose." />
-                <AddFriendsByEmail inSideColumn />
-              </InviteFriendsMobileWrapper>
+                <SectionDescription>
+                  Importing your contacts helps you find your friends on We
+                  Vote. You can delete your contact information at any time.
+                </SectionDescription>
+                <div>
+                  <Suspense fallback={<></>}>
+                    <AddContactsFromGoogleButton darkButton />
+                  </Suspense>
+                </div>
+              </FindYourContactsWrapper>
+              <InviteByEmail />
+              <SignInOptionsWrapper>
+                {voter.signed_in_twitter ? null : (
+                  <TwitterSignInWrapper>
+                    <TwitterSignInCard />
+                  </TwitterSignInWrapper>
+                )}
+                {voter.signed_in_facebook ? null : (
+                  <FacebookSignInWrapper>
+                    <FacebookSignInCard />
+                  </FacebookSignInWrapper>
+                )}
+              </SignInOptionsWrapper>
+              <FriendsPromoBox
+                imageUrl={imageUrl}
+                testimonialAuthor={testimonialAuthor}
+                testimonial={testimonial}
+                isMobile
+              />
             </>
-            <SignInOptionsWrapper>
-              {voter.signed_in_twitter ? null : (
-                <TwitterSignInWrapper>
-                  <TwitterSignInCard />
-                </TwitterSignInWrapper>
+          );
+          break;
+        case 'current':
+          desktopContentToDisplay = (
+            <>
+              <FriendsCurrent />
+              <FindYourContactsWrapper>
+                <SectionTitle>
+                  Find Your Friends on We Vote
+                </SectionTitle>
+                <SectionDescription>
+                  Importing your contacts helps you find your friends on We
+                  Vote. You can delete your contact information at any time.
+                </SectionDescription>
+                <div>
+                  <Suspense fallback={<></>}>
+                    <AddContactsFromGoogleButton darkButton />
+                  </Suspense>
+                </div>
+              </FindYourContactsWrapper>
+              <InviteByEmail />
+              <FriendInvitationsSentByMePreview />
+            </>
+          );
+          mobileContentToDisplay = (
+            <>
+              {currentFriendList.length > 0 ? (
+                <>
+                  <FriendsCurrent />
+                  <FriendInvitationsSentByMePreview />
+                </>
+              ) : (
+                <>
+                  {friendInvitationsSentToMe.length > 0 ? (
+                    <MessageCard
+                      mainText="You have friend requests. Check them out!"
+                      buttonText="View Requests"
+                      buttonURL="/friends/requests"
+                    />
+                  ) : (
+                    <>
+                      <FindYourContactsWrapper>
+                        <SectionTitle>
+                          Find Your Friends on We Vote
+                        </SectionTitle>
+                        <SectionDescription>
+                          Importing your contacts helps you find your friends on We
+                          Vote. You can delete your contact information at any time.
+                        </SectionDescription>
+                        <div>
+                          <Suspense fallback={<></>}>
+                            <AddContactsFromGoogleButton darkButton />
+                          </Suspense>
+                        </div>
+                      </FindYourContactsWrapper>
+                    </>
+                  )}
+                </>
               )}
-              {voter.signed_in_facebook ? null : (
-                <FacebookSignInWrapper>
-                  <FacebookSignInCard />
-                </FacebookSignInWrapper>
+            </>
+          );
+          break;
+        case 'sent-requests':
+          desktopContentToDisplay = (
+            <FriendInvitationsSentByMe />
+          );
+          mobileContentToDisplay = (
+            <>
+              {friendInvitationsSentByMe.length > 0 ? (
+                <FriendInvitationsSentByMe />
+              ) : (
+                <MessageCard
+                  mainText="Invite more friends now!"
+                  buttonText="Invite Friends"
+                  buttonURL="/friends/invite"
+                />
               )}
-            </SignInOptionsWrapper>
-            <FriendsPromoBox
-              imageUrl={imageUrl}
-              testimonialAuthor={testimonialAuthor}
-              testimonial={testimonial}
-            />
-            <SuggestedContacts />
-          </>
-        );
-        break;
+            </>
+          );
+          break;
+        case 'all':
+        case 'requests':
+          desktopContentToDisplay = (
+            <>
+              <Helmet title="Friends - We Vote" />
+              <BrowserPushMessage incomingProps={this.props} />
+              <div className="row">
+                <div className="col-sm-12 col-md-8">
+                  <>
+                    {voterIsSignedIn && (
+                      <Suspense fallback={<></>}>
+                        <FirstAndLastNameRequiredAlert />
+                      </Suspense>
+                    )}
+                    {!!(!voterIsSignedIn || !friendActivityExists) && (
+                      <InviteByEmail />
+                    )}
+                    <FriendInvitationsSentToMe />
+                    <SuggestedFriendsPreview />
+                  </>
+                </div>
+                <div className="col-sm-12 col-md-4">
+                  {!!(voterIsSignedIn && friendActivityExists) && (
+                    <div>
+                      <div>
+                        <SectionTitle>
+                          Invite Friends
+                        </SectionTitle>
+                        <TooltipIcon title="These friends will see what you support and oppose." />
+                        <AddFriendsByEmail inSideColumn />
+                      </div>
+                    </div>
+                  )}
+                  <SignInOptionsWrapper>
+                    {voter.signed_in_twitter ? null : (
+                      <TwitterSignInWrapper>
+                        <TwitterSignInCard />
+                      </TwitterSignInWrapper>
+                    )}
+                    {voter.signed_in_facebook ? null : (
+                      <FacebookSignInWrapper>
+                        <FacebookSignInCard />
+                      </FacebookSignInWrapper>
+                    )}
+                  </SignInOptionsWrapper>
+                  <FriendsPromoBox
+                    imageUrl={imageUrl}
+                    testimonialAuthor={testimonialAuthor}
+                    testimonial={testimonial}
+                  />
+                </div>
+              </div>
+            </>
+          );
+          mobileContentToDisplay = (
+            <>
+              <>
+                {voterIsSignedIn && (
+                  <Suspense fallback={<></>}>
+                    <FirstAndLastNameRequiredAlert />
+                  </Suspense>
+                )}
+                <FriendInvitationsSentToMe />
+                <SuggestedFriends />
+                <InviteFriendsMobileWrapper>
+                  <SectionTitle>
+                    Invite Friends
+                  </SectionTitle>
+                  <TooltipIcon title="These friends will see what you support and oppose." />
+                  <AddFriendsByEmail inSideColumn />
+                </InviteFriendsMobileWrapper>
+              </>
+              <SignInOptionsWrapper>
+                {voter.signed_in_twitter ? null : (
+                  <TwitterSignInWrapper>
+                    <TwitterSignInCard />
+                  </TwitterSignInWrapper>
+                )}
+                {voter.signed_in_facebook ? null : (
+                  <FacebookSignInWrapper>
+                    <FacebookSignInCard />
+                  </FacebookSignInWrapper>
+                )}
+              </SignInOptionsWrapper>
+              <FriendsPromoBox
+                imageUrl={imageUrl}
+                testimonialAuthor={testimonialAuthor}
+                testimonial={testimonial}
+              />
+            </>
+          );
+          break;
+      }
+    } else {
+      // NOT voterIsSignedIn
     }
 
     return (
@@ -479,13 +549,11 @@ class Friends extends Component {
         {voterIsSignedIn ? (
           <>
             {displayFriendsTabs() ? (
-              <FriendsHeading>
-                <div className="container-fluid debugStyleBottom">
-                  <div className="FriendsWrapper" style={cordovaFriendsWrapper()}>
-                    {mobileContentToDisplay}
-                  </div>
+              <div className="container-fluid debugStyleBottom">
+                <div className="FriendsWrapper" style={cordovaFriendsWrapper()}>
+                  {mobileContentToDisplay}
                 </div>
-              </FriendsHeading>
+              </div>
             ) : (
               <div className="container-fluid">
                 <div className="container-main">
@@ -495,18 +563,14 @@ class Friends extends Component {
             )}
           </>
         ) : (
-          // <DelayedLoad waitBeforeShow={1000}>
-          <OuterSignInOptionsWrapper>
-            <InnerSignInOptionsWrapper style={expandSideMarginsIfCordova}>
+          <RemindOuterWrapper>
+            <Helmet title="Remind Your Friends - We Vote" />
+            <RemindContactsWrapper>
               <Suspense fallback={<></>}>
-                <SignInOptionsPanel
-                  pleaseSignInTitle="Sign In to Find Your Friends"
-                  pleaseSignInSubTitle="We Vote is a community of friends who care about voting and democracy."
-                />
+                <RemindContactsStart />
               </Suspense>
-            </InnerSignInOptionsWrapper>
-          </OuterSignInOptionsWrapper>
-          // </DelayedLoad>
+            </RemindContactsWrapper>
+          </RemindOuterWrapper>
         )}
       </PageContentContainer>
     );
@@ -535,26 +599,17 @@ const FindYourContactsWrapper = styled('div')`
   margin-bottom: 48px;
 `;
 
-const FriendsHeading = styled('div')`
-  // width: 100%;
-  // background-color: #fff;
-  // border-bottom: 1px solid #aaa;
-  // // overflow: hidden;
-  // // position: fixed;
-  // z-index: 1;
-  // left: 0;
-  // padding-top: 50px;
-  // // transform: translate3d(0, -53px, 0);
-  // // transition: all 100ms ease-in-out 0s;
-  // box-shadow: {standardBoxShadow('wide')};
-`;
-
 const InviteFriendsMobileWrapper = styled('div')`
   margin-bottom: 42px;
 `;
 
-const OuterSignInOptionsWrapper = styled('div')`
+const RemindContactsWrapper = styled('div')`
+  max-width: 660px;
+`;
+
+const RemindOuterWrapper = styled('div')`
   display: flex;
+  flex-direction: row;
   justify-content: center;
 `;
 
@@ -565,13 +620,6 @@ const SectionTitle = styled('h2')`
   margin-bottom: 4px;
   display: inline;
 `;
-
-const InnerSignInOptionsWrapper = styled('div')(({ theme }) => (`
-  max-width: 500px;
-  ${theme.breakpoints.down('sm')} {
-    margin: 0 12px;
-  }
-`));
 
 const SignInOptionsWrapper = styled('div')`
   display: flex;

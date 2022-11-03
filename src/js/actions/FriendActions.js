@@ -171,8 +171,8 @@ export default {
     });
   },
 
-  messageToFriendQueuedToSave (messageToFriend) {
-    Dispatcher.dispatch({ type: 'messageToFriendQueuedToSave', payload: messageToFriend });
+  messageToFriendQueuedToSave (messageToFriend, messageToFriendType) {
+    Dispatcher.dispatch({ type: 'messageToFriendQueuedToSave', messageToFriend, messageToFriendType });
   },
 
   messageToFriendSend (otherVoterWeVoteId, messageToFriend, electionDateInFutureFormatted, electionDateIsToday) {
