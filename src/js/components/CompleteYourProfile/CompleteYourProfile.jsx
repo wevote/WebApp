@@ -208,7 +208,7 @@ class CompleteYourProfile extends Component {
         {
           id: stepIdHowItWorks,
           title: 'Watch how it works (no sound)',
-          buttonText: 'How We Vote works',
+          buttonText: '',
           completed: false,
           description: '',
           icon: (<PlayCircleFilled />),
@@ -244,7 +244,7 @@ class CompleteYourProfile extends Component {
         {
           id: stepIdPersonalizedScore,
           title: 'What\'s a personalized score?',
-          buttonText: 'Learn more',
+          buttonText: '',
           completed: false,
           description: '',
           icon: (<PersonalizedScorePlusOne>+1</PersonalizedScorePlusOne>),
@@ -261,8 +261,8 @@ class CompleteYourProfile extends Component {
         // },
         {
           id: stepIdSignInToSave,
-          title: 'Sign in to save your ballot choices and settings',
-          buttonText: 'Sign in to save',
+          title: 'Sign in or sign up to save your ballot choices and settings',
+          buttonText: 'Sign up to save',
           completed: false,
           description: '',
           icon: (<PushPin />),
@@ -499,32 +499,34 @@ class CompleteYourProfile extends Component {
                   </TitleFlex>
                   {step.description}
                 </TitleArea>
-                {/*
-                <TabletActionButton>
-                  <Button
-                    className="u-no-break"
-                    id="completeYourProfileDesktopButton"
-                    color="primary"
-                    fullWidth
-                    onClick={() => { step.onClick(); }}
-                    variant="contained"
-                  >
-                    {step.buttonText}
-                  </Button>
-                </TabletActionButton>
-                <MobileActionButton>
-                  <Button
-                    className="u-no-break"
-                    id="completeYourProfileMobileButton"
-                    color="primary"
-                    fullWidth
-                    onClick={() => { step.onClick(); }}
-                    variant="contained"
-                  >
-                    {step.buttonText}
-                  </Button>
-                </MobileActionButton>
-                */}
+                {step.buttonText && (
+                  <>
+                    <TabletActionButton>
+                      <Button
+                        className="u-no-break"
+                        id="completeYourProfileDesktopButton"
+                        color="primary"
+                        fullWidth
+                        onClick={() => { step.onClick(); }}
+                        variant="contained"
+                      >
+                        {step.buttonText}
+                      </Button>
+                    </TabletActionButton>
+                    <MobileActionButton>
+                      <Button
+                        className="u-no-break"
+                        id="completeYourProfileMobileButton"
+                        color="primary"
+                        fullWidth
+                        onClick={() => { step.onClick(); }}
+                        variant="contained"
+                      >
+                        {step.buttonText}
+                      </Button>
+                    </MobileActionButton>
+                  </>
+                )}
                 <NavButtons>
                   <NavButton>
                     {index !== 0 && (
@@ -647,15 +649,15 @@ const Info = styled('span')`
   }
 `;
 
-// const MobileActionButton = styled('div')`
-//   border-bottom: 1px solid #e1e1e1;
-//   margin-bottom: 0;
-//   margin-top: 8px;
-//   padding-bottom: 8px;
-//   @media (min-width: 576px) {
-//     display: none;
-//   }
-// `;
+const MobileActionButton = styled('div')`
+  border-bottom: 1px solid #e1e1e1;
+  margin-bottom: 0;
+  margin-top: 8px;
+  padding-bottom: 8px;
+  @media (min-width: 576px) {
+    display: none;
+  }
+`;
 
 const NavButton = styled('div')`
   * {
@@ -703,16 +705,16 @@ const Separator = styled('div')`
   height: 1px;
 `;
 
-// const TabletActionButton = styled('div')`
-//   display: none;
-//   @media(min-width: 576px) {
-//     display: block;
-//     margin-left: auto;
-//   }
-//   @media(min-width: 769px) {
-//     margin-left: 12px;
-//   }
-// `;
+const TabletActionButton = styled('div')`
+  display: none;
+  @media(min-width: 576px) {
+    display: block;
+    margin-left: auto;
+  }
+  @media(min-width: 769px) {
+    margin-left: 12px;
+  }
+`;
 
 const Title = styled('h2')`
   color: #4371CC;

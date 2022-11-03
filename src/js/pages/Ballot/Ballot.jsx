@@ -104,6 +104,7 @@ class Ballot extends Component {
       raceLevelFilterType: '',
       scrolledDown: false,
       showFilterTabs: false,
+      showLoadingBallotMessage: false,
       totalNumberOfBallotItems: 0,
       voterBallotItemsRetrieveHasReturned: false,
       voterBallotList: [],
@@ -298,6 +299,18 @@ class Ballot extends Component {
       raceLevelFilterType: BallotStore.getRaceLevelFilterTypeSaved() || 'All',
       voterBallotItemsRetrieveHasReturned: BallotStore.voterBallotItemsRetrieveHasReturned(),
     });
+    if (googleCivicElectionIdFromUrl) {
+      window.scrollTo(0, 0);
+      this.setState({
+        showLoadingBallotMessage: true,
+      });
+      const delayBeforeShowingBallot = 3500;
+      this.showLoadingBallotMessageTimer = setTimeout(() => {
+        this.setState({
+          showLoadingBallotMessage: false,
+        });
+      }, delayBeforeShowingBallot);
+    }
 
     if (hash) {
       // this.hashLinkScroll();
@@ -526,8 +539,8 @@ class Ballot extends Component {
     clearTimeout(this.ballotItemTimer);
     clearTimeout(this.modalOpenTimer);   // In componentDidMount
     clearTimeout(this.hashLinkTimer);
+    clearTimeout(this.showLoadingBallotMessageTimer);
     clearTimeout(this.twitterSignInTimer);
-    clearTimeout(this.googleAutoCompleteDelayTimer);
     window.removeEventListener('scroll', this.onScroll);
   }
 
@@ -1132,7 +1145,7 @@ class Ballot extends Component {
       ballotSearchResults, ballotWithAllItems, ballotWithItemsFromCompletionFilterType,
       completionLevelFilterType, doubleFilteredBallotItemsLength,
       isSearching, loadingMoreItems, numberOfBallotItemsToDisplay,
-      scrolledDown, searchText, showFilterTabs, totalNumberOfBallotItems,
+      scrolledDown, searchText, showFilterTabs, showLoadingBallotMessage, totalNumberOfBallotItems,
     } = this.state;
     let { raceLevelFilterType } = this.state;
     if (!raceLevelFilterType) {
@@ -1142,6 +1155,32 @@ class Ballot extends Component {
     // console.log('window.innerWidth:', window.innerWidth);
     const textForMapSearch = VoterStore.getTextForMapSearch();
     // console.log('Ballot VoterStore.getTextForMapSearch(): ', textForMapSearch);
+
+    if (showLoadingBallotMessage) {
+      return (
+        <div className="ballot container-fluid well u-stack--md u-inset--md" style={{ marginBottom: `${isIPhone6p1in() ? '800px' : '625px'}` }}>
+          <div className="ballot__header" style={{ marginTop: `${isCordova() ? '100px' : 'undefined'}` }}>
+            <BallotLoadingWrapper>
+              <LoadingItemsWheel>
+                <CircularProgress />
+              </LoadingItemsWheel>
+              <div style={{ marginTop: 48 }}>
+                Loading your ballot...
+              </div>
+              <div style={{ marginTop: 24 }}>
+                <Suspense fallback={<></>}>
+                  <DelayedLoad waitBeforeShow={1750}>
+                    <span>
+                      Almost ready...
+                    </span>
+                  </DelayedLoad>
+                </Suspense>
+              </div>
+            </BallotLoadingWrapper>
+          </div>
+        </div>
+      );
+    }
 
     let padBallotWindowBottomForCordova = '';
     if (isCordova()) {
@@ -1253,11 +1292,13 @@ class Ballot extends Component {
     ) : (
       <div className="container-fluid well u-stack--md u-inset--md">
         <Helmet title="Enter Your Address - We Vote" />
-        <h3 className="h3">
-          Enter address where you are registered to vote
-        </h3>
         <div>
           <AddressBox
+            introductionHtml={(
+              <h3 className="h3 row">
+                Enter address where you are registered to vote
+              </h3>
+            )}
             // classes={this.props.classes}
             saveUrl={ballotBaseUrl}
           />
