@@ -7,6 +7,7 @@ import React, { Component, Suspense } from 'react';
 import styled from 'styled-components';
 import VoterActions from '../../actions/VoterActions';
 import LoadingWheel from '../../common/components/Widgets/LoadingWheel';
+import apiCalming from '../../common/utils/apiCalming';
 import { blurTextFieldAndroid, isIPad } from '../../common/utils/cordovaUtils';
 import { isCordova, isWebApp } from '../../common/utils/isCordovaOrWebApp';
 import isMobileScreenSize from '../../common/utils/isMobileScreenSize';
@@ -15,7 +16,6 @@ import VoterStore from '../../stores/VoterStore';
 import { FirstRowPhoneOrEmail, SecondRowPhoneOrEmail, TrashCan } from '../Style/pageLayoutStyles';
 import { ButtonContainerHorizontal } from '../Welcome/sectionStyles';
 import SettingsVerifySecretCode from './SettingsVerifySecretCode';
-import apiCalming from "../../common/utils/apiCalming";
 
 const OpenExternalWebSite = React.lazy(() => import(/* webpackChunkName: 'OpenExternalWebSite' */ '../../common/components/Widgets/OpenExternalWebSite'));
 
