@@ -1,15 +1,15 @@
 import { Facebook, Twitter } from '@mui/icons-material';
-import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import Button from 'react-bootstrap/Button';
+import styled from 'styled-components';
 import AnalyticsActions from '../../actions/AnalyticsActions';
 import FacebookActions from '../../actions/FacebookActions';
 import TwitterActions from '../../actions/TwitterActions';
 import VoterActions from '../../actions/VoterActions';
 import VoterSessionActions from '../../actions/VoterSessionActions';
 import LoadingWheel from '../../common/components/Widgets/LoadingWheel';
-import { isIPhone4in, isIPhone4p7in, restoreStylesAfterCordovaKeyboard } from '../../common/utils/cordovaUtils';
+import { isAndroid, restoreStylesAfterCordovaKeyboard } from '../../common/utils/cordovaUtils';
 import historyPush from '../../common/utils/historyPush';
 import { normalizedHref } from '../../common/utils/hrefUtils';
 import { isCordova, isWebApp } from '../../common/utils/isCordovaOrWebApp';
@@ -22,13 +22,12 @@ import VoterStore from '../../stores/VoterStore';
 import initializeAppleSDK from '../../utils/initializeAppleSDK';
 import AppleSignIn from '../Apple/AppleSignIn';
 import FacebookSignIn from '../Facebook/FacebookSignIn';
+import VoterEmailAddressEntry from '../Settings/VoterEmailAddressEntry';
+import VoterPhoneVerificationEntry from '../Settings/VoterPhoneVerificationEntry';
 import TwitterSignIn from '../Twitter/TwitterSignIn';
 import BrowserPushMessage from '../Widgets/BrowserPushMessage';
 import signInModalGlobalState from '../Widgets/signInModalGlobalState';
 import SnackNotifier, { openSnackbar } from '../Widgets/SnackNotifier';
-import VoterEmailAddressEntry from '../Settings/VoterEmailAddressEntry';
-import VoterPhoneEmailCordovaEntryModal from '../Settings/VoterPhoneEmailCordovaEntryModal';
-import VoterPhoneVerificationEntry from '../Settings/VoterPhoneVerificationEntry';
 
 
 /* global $ */
@@ -177,30 +176,31 @@ export default class SignInOptionsPanel extends Component {
   }
 
   componentDidUpdate () {
-    if (isCordova()) {
-      const sendButtonSMS = $('#voterPhoneSendSMS');
-      const sendButtonEmail = $('#voterEmailAddressEntrySendCode');
-      const cont = $('.MuiDialog-container');
-      const styleWorking = cont.length ? $(cont).attr('style') : '';
-      const translate = isIPhone4in() || isIPhone4p7in() ? 'transform: translateY(10%); height: unset;' : 'transform: translateY(40%); height: unset;';
-
-      // The VoterPhoneEmailCordovaEntryModal dialog gets pushed out of the way when the virtual keyboard appears,
-      // so we wait for it to be rendered, then move it into place
-
-      if (sendButtonSMS.length) {
-        console.log('SignInOptionsPanel componentDidUpdate SEND CODE was rendered. sendButtonSMS:', sendButtonSMS);
-      } else if ((sendButtonSMS.length)) {
-        console.log('SignInOptionsPanel componentDidUpdate SEND CODE was rendered. sendButtonEmail:', sendButtonEmail);
-      }
-      if (sendButtonSMS.length || sendButtonSMS.length) {
-        if (styleWorking && !stringContains(translate, styleWorking)) {
-          $(cont).attr('style', `${styleWorking} ${translate}`);
-          console.log(`SignInOptionsPanel componentDidUpdate was rendered. NEW style: ${$(cont).attr('style')}`);
-        } else {
-          console.log(`SignInOptionsPanel componentDidUpdate was rendered. transform was already there. style: ${$(cont).attr('style')}`);
-        }
-      }
-    }
+    // NOTE October 2022:  This file has lots of commented out code, do not remove until there has been an iOS release
+    // if (isCordova()) {
+    //   const sendButtonSMS = $('#voterPhoneSendSMS');
+    //   const sendButtonEmail = $('#voterEmailAddressEntrySendCode');
+    //   const cont = $('.MuiDialog-container');
+    //   const styleWorking = cont.length ? $(cont).attr('style') : '';
+    //   const translate = isIPhone4in() || isIPhone4p7in() ? 'transform: translateY(10%); height: unset;' : 'transform: translateY(40%); height: unset;';
+    //
+    //   // The VoterPhoneEmailCordovaEntryModal dialog gets pushed out of the way when the virtual keyboard appears,
+    //   // so we wait for it to be rendered, then move it into place
+    //
+    //   if (sendButtonSMS.length) {
+    //     console.log('SignInOptionsPanel componentDidUpdate SEND CODE was rendered. sendButtonSMS:', sendButtonSMS);
+    //   } else if ((sendButtonSMS.length)) {
+    //     console.log('SignInOptionsPanel componentDidUpdate SEND CODE was rendered. sendButtonEmail:', sendButtonEmail);
+    //   }
+    //   if (sendButtonSMS.length || sendButtonSMS.length) {
+    //     if (styleWorking && !stringContains(translate, styleWorking)) {
+    //       $(cont).attr('style', `${styleWorking} ${translate}`);
+    //       console.log(`SignInOptionsPanel componentDidUpdate was rendered. NEW style: ${$(cont).attr('style')}`);
+    //     } else {
+    //       console.log(`SignInOptionsPanel componentDidUpdate was rendered. transform was already there. style: ${$(cont).attr('style')}`);
+    //     }
+    //   }
+    // }
     if (AppObservableStore.isSnackMessagePending()) openSnackbar({});
   }
 
@@ -277,7 +277,7 @@ export default class SignInOptionsPanel extends Component {
       isInternetExplorer,
     } = this.state;
     this.setState({
-      hideAppleSignInButton: isInternetExplorer,
+      hideAppleSignInButton: isInternetExplorer || isAndroid(),
       hideFacebookSignInButton: false,
       hideTwitterSignInButton: false,
       hideVoterEmailAddressEntry: false,
@@ -402,8 +402,8 @@ export default class SignInOptionsPanel extends Component {
       twitter_screen_name: twitterScreenName,
     } = voter;
     // console.log("SignInOptionsPanel.jsx facebookAuthResponse:", facebookAuthResponse);
+    // console.log('SignInOptionsPanel hide Apple:', hideAppleSignInButton, ' Facebook: ', hideFacebookSignInButton, ' Twitter: ', hideTwitterSignInButton, ' Email: ', hideVoterEmailAddressEntry, ' Phone: ', hideVoterPhoneEntry);
     // console.log("SignInOptionsPanel.jsx voter:", voter);
-    // console.log('SignInOptionsPanel.jsx hideDialogForCordova:', hideDialogForCordova);
     if (!voterIsSignedInFacebook && facebookAuthResponse && facebookAuthResponse.length && facebookAuthResponse.facebook_retrieve_attempted) {
       // console.log('SignInOptionsPanel.jsx facebook_retrieve_attempted');
       oAuthLog('SignInOptionsPanel facebook_retrieve_attempted');
@@ -565,23 +565,21 @@ export default class SignInOptionsPanel extends Component {
                 )}
               </div>
             ) : null}
-            {isWebApp() && (
-              <VoterPhoneVerificationEntry
-                closeSignInModal={this.closeSignInModalLocalFromEmailOrPhone}
-                closeVerifyModal={this.closeVerifyModalLocal}
-                doNotRender={hideVoterPhoneEntry}
-                hideSignInWithPhoneForm={isCordova()}
-                showAllSignInOptions={this.showAllSignInOptions}
-                showPhoneOnlySignIn={this.showPhoneOnlySignIn}
-              />
-            )}
-            {isCordova() && (
-              <VoterPhoneEmailCordovaEntryModal
-                doNotRender={hideVoterPhoneEntry}
-                isPhone
-                hideDialogForCordova={this.hideDialogForCordovaLocal}
-              />
-            )}
+            <VoterPhoneVerificationEntry
+              closeSignInModal={this.closeSignInModalLocalFromEmailOrPhone}
+              closeVerifyModal={this.closeVerifyModalLocal}
+              doNotRender={hideVoterPhoneEntry}
+              // hideSignInWithPhoneForm={isCordova()}
+              showAllSignInOptions={this.showAllSignInOptions}
+              showPhoneOnlySignIn={this.showPhoneOnlySignIn}
+            />
+            {/* {isCordova() && ( */}
+            {/*  <VoterPhoneEmailCordovaEntryModal */}
+            {/*    doNotRender={hideVoterPhoneEntry} */}
+            {/*    isPhone */}
+            {/*    hideDialogForCordova={this.hideDialogForCordovaLocal} */}
+            {/*  />* /}
+            {/* )} */}
             {(!hideVoterPhoneEntry && !hideVoterEmailAddressEntry && isWebApp()) && (
               <OrWrapper>
                 &mdash;
@@ -589,24 +587,22 @@ export default class SignInOptionsPanel extends Component {
                 &mdash;
               </OrWrapper>
             )}
-            {isWebApp() && (
-              <VoterEmailAddressEntry
-                closeSignInModal={this.closeSignInModalLocalFromEmailOrPhone}
-                closeVerifyModal={this.closeVerifyModalLocal}
-                doNotRender={hideVoterEmailAddressEntry}
-                hideSignInWithEmailForm={isCordova()}
-                showAllSignInOptions={this.showAllSignInOptions}
-                // toggleOtherSignInOptions={this.toggleNonEmailSignInOptions}
-                showEmailOnlySignIn={this.showEmailOnlySignIn}
-              />
-            )}
-            {isCordova() && (
-              <VoterPhoneEmailCordovaEntryModal
-                doNotRender={hideVoterEmailAddressEntry}
-                isPhone={false}
-                hideDialogForCordova={this.hideDialogForCordovaLocal}
-              />
-            )}
+            <VoterEmailAddressEntry
+              closeSignInModal={this.closeSignInModalLocalFromEmailOrPhone}
+              closeVerifyModal={this.closeVerifyModalLocal}
+              doNotRender={hideVoterEmailAddressEntry}
+              // hideSignInWithEmailForm={isCordova()}
+              showAllSignInOptions={this.showAllSignInOptions}
+              // toggleOtherSignInOptions={this.toggleNonEmailSignInOptions}
+              showEmailOnlySignIn={this.showEmailOnlySignIn}
+            />
+            {/* {isCordova() && ( */}
+            {/*  <VoterPhoneEmailCordovaEntryModal */}
+            {/*    doNotRender={hideVoterEmailAddressEntry} */}
+            {/*    isPhone={false} */}
+            {/*    hideDialogForCordova={this.hideDialogForCordovaLocal} */}
+            {/*  /> */}
+            {/* )} */}
             {debugMode && (
             <div className="text-center">
               is_signed_in:

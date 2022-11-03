@@ -81,7 +81,7 @@ export default class SearchBar extends Component {
           value={searchString}
           onKeyDown={this.handleKeyPress}
           onChange={this.updateResults}
-          onFocus={focusTextFieldAndroid}
+          onFocus={() => focusTextFieldAndroid('SearchBar')}
           onBlur={blurTextFieldAndroid}
         />
         <div className="search-bar-options">
