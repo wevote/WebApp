@@ -62,6 +62,7 @@ class AddressBox extends Component {
   componentWillUnmount () {
     this.voterStoreListener.remove();
     this.ballotStoreListener.remove();
+    clearTimeout(this.closeModalTimer);
     restoreStylesAfterCordovaKeyboard('AddressBox');
   }
 
@@ -92,6 +93,7 @@ class AddressBox extends Component {
     // console.log('AddressBox, onBallotStoreChange, this.state:', this.state);
     this.setState({
       ballotCaveat: BallotStore.getBallotCaveat(),
+      loading: false,
     });
   }
 
@@ -120,9 +122,13 @@ class AddressBox extends Component {
     });
     // New June 2021, once they save we want to go back to the original view with the map
     this.returnNewTextForMapSearchLocal(textForMapSearch);
-    const { toggleEditingAddress } = this.props;
-    if (toggleEditingAddress) {
-      toggleEditingAddress();
+    const { toggleSelectAddressModal } = this.props;
+    if (toggleSelectAddressModal) {
+      // console.log('In AddressBox where we normally toggleEditingAddress');
+      const delayBeforeClosingModal = 4000;
+      this.closeModalTimer = setTimeout(() => {
+        toggleSelectAddressModal();
+      }, delayBeforeClosingModal);
     } else {
       console.log('AddressBox did not receive a toggleEditingAddress() function');
     }
@@ -151,7 +157,7 @@ class AddressBox extends Component {
     renderLog('AddressBox');  // Set LOG_RENDER_EVENTS to log all renders
     // console.log('AddressBox render');
     let { waitingMessage } = this.props;
-    const { classes, externalUniqueId, showCancelEditAddressButton, toggleEditingAddress } = this.props;
+    const { classes, externalUniqueId, introductionHtml, showCancelEditAddressButton, toggleEditingAddress } = this.props;
 
     const { ballotCaveat, loading } = this.state;
     if (loading) {
@@ -167,6 +173,7 @@ class AddressBox extends Component {
 
     return (
       <div className="container">
+        {introductionHtml}
         <div className="row" style={{ paddingTop: 10 }}>
           <GoogleAutoComplete
             id="entryBox"
@@ -206,6 +213,7 @@ class AddressBox extends Component {
 AddressBox.propTypes = {
   classes: PropTypes.object,
   externalUniqueId: PropTypes.string,
+  introductionHtml: PropTypes.node,
   returnNewTextForMapSearch: PropTypes.func,
   saveUrl: PropTypes.string.isRequired,
   showCancelEditAddressButton: PropTypes.bool,

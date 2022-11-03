@@ -153,7 +153,7 @@ class BallotTitleHeader extends Component {
                       {(substitutedState && (substitutedState !== '')) ? (
                         <ElectionStateLabel
                           centerText={centerText}
-                          className="u-cursor--pointer"
+                          className={linksOff ? '' : 'u-cursor--pointer'}
                           onClick={this.showSelectBallotModalChooseElection}
                         >
                           {!electionNameContainsState && (
@@ -171,7 +171,7 @@ class BallotTitleHeader extends Component {
                       ) : (
                         <ElectionStateLabel
                           centerText={centerText}
-                          className="u-cursor--pointer"
+                          className={linksOff ? '' : 'u-cursor--pointer'}
                           onClick={this.showSelectBallotModalChooseElection}
                         >
                           {!electionNameContainsState && (
@@ -189,7 +189,7 @@ class BallotTitleHeader extends Component {
                       )}
                       <ElectionNameH1
                         centerText={centerText}
-                        className="u-cursor--pointer"
+                        className={linksOff ? '' : 'u-cursor--pointer'}
                         onClick={this.showSelectBallotModalChooseElection}
                       >
                         {electionName}
@@ -198,7 +198,7 @@ class BallotTitleHeader extends Component {
                         <BallotAddress
                           allowTextWrap={allowTextWrap}
                           centerText={centerText}
-                          className="u-cursor--pointer"
+                          className={linksOff ? '' : 'u-cursor--pointer'}
                           onClick={this.showSelectBallotModalEditAddress}
                         >
                           {ballotCaveat && (
@@ -211,7 +211,7 @@ class BallotTitleHeader extends Component {
                             <BallotAddress
                               allowTextWrap={allowTextWrap}
                               centerText={centerText}
-                              className="u-cursor--pointer"
+                              className={linksOff ? '' : 'u-cursor--pointer'}
                               onClick={this.showSelectBallotModalEditAddress}
                             >
                               Ballot for
@@ -219,7 +219,7 @@ class BallotTitleHeader extends Component {
                               <span className={linksOff ? '' : 'u-link-color'}>
                                 {substitutedAddress}
                               </span>
-                              {editIconStyled}
+                              {linksOff ? <></> : editIconStyled}
                             </BallotAddress>
                           ) : (
                             <>
@@ -227,7 +227,7 @@ class BallotTitleHeader extends Component {
                                 <BallotAddress
                                   allowTextWrap={allowTextWrap}
                                   centerText={centerText}
-                                  className="u-cursor--pointer"
+                                  className={linksOff ? '' : 'u-cursor--pointer'}
                                   onClick={this.showSelectBallotModalEditAddress}
                                 >
                                   Ballot for
@@ -235,19 +235,19 @@ class BallotTitleHeader extends Component {
                                   <span className={linksOff ? '' : 'u-link-color'}>
                                     {(textForMapSearch && textForMapSearch !== '') ? textForMapSearch : originalTextAddress}
                                   </span>
-                                  {editIconStyled}
+                                  {linksOff ? <></> : editIconStyled}
                                 </BallotAddress>
                               ) : (
                                 <BallotAddress
                                   allowTextWrap={allowTextWrap}
                                   centerText={centerText}
-                                  className="u-cursor--pointer"
+                                  className={linksOff ? '' : 'u-cursor--pointer'}
                                   onClick={this.showSelectBallotModalEditAddress}
                                 >
                                   <span className={linksOff ? '' : 'u-link-color'}>
                                     Click to enter your address
                                   </span>
-                                  {editIconStyled}
+                                  {linksOff ? <></> : editIconStyled}
                                 </BallotAddress>
                               )}
                             </>

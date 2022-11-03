@@ -117,7 +117,7 @@ class BallotTitleHeaderNationalPlaceholder extends Component {
                       {(substitutedState && (substitutedState !== '')) ? (
                         <ElectionStateLabel
                           centerText={centerText}
-                          className="u-cursor--pointer"
+                          className={linksOff ? '' : 'u-cursor--pointer'}
                           onClick={this.showSelectBallotModalChooseElection}
                         >
                           {!electionNameContainsState && (
@@ -135,7 +135,7 @@ class BallotTitleHeaderNationalPlaceholder extends Component {
                       ) : (
                         <ElectionStateLabel
                           centerText={centerText}
-                          className="u-cursor--pointer"
+                          className={linksOff ? '' : 'u-cursor--pointer'}
                           onClick={this.showSelectBallotModalChooseElection}
                         >
                           {!electionNameContainsState && (
@@ -153,7 +153,7 @@ class BallotTitleHeaderNationalPlaceholder extends Component {
                       )}
                       <ElectionNameH1
                         centerText={centerText}
-                        className="u-cursor--pointer"
+                        className={linksOff ? '' : 'u-cursor--pointer'}
                         onClick={this.showSelectBallotModalChooseElection}
                       >
                         {electionName}
@@ -161,7 +161,7 @@ class BallotTitleHeaderNationalPlaceholder extends Component {
                       {(textForMapSearch && textForMapSearch !== '' && textForMapSearch.length > 1) ? (
                         <BallotAddress
                           centerText={centerText}
-                          className="u-cursor--pointer"
+                          className={linksOff ? '' : 'u-cursor--pointer'}
                           onClick={this.showSelectBallotModalEditAddress}
                         >
                           Ballot for
@@ -174,13 +174,13 @@ class BallotTitleHeaderNationalPlaceholder extends Component {
                         <BallotAddress
                           allowTextWrap={allowTextWrap}
                           centerText={centerText}
-                          className="u-cursor--pointer"
+                          className={linksOff ? '' : 'u-cursor--pointer'}
                           onClick={this.showSelectBallotModalEditAddress}
                         >
                           <span className={linksOff ? '' : 'u-link-color'}>
                             Click to enter your address
                           </span>
-                          {editIconStyled}
+                          {linksOff ? <></> : editIconStyled}
                         </BallotAddress>
                       )}
                       {(!turnOffVoteByBelow && !!(electionDateMDY)) && (

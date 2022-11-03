@@ -81,11 +81,13 @@ export default class Location extends Component {
         <div className="container-fluid well u-stack--md u-inset--md">
           <Helmet title="Enter Your Address - We Vote" />
           <BrowserPushMessage incomingProps={this.props} />
-          <h3 className="h3">
-            Enter address where you are registered to vote
-          </h3>
           <div>
             <AddressBox
+              introductionHtml={(
+                <h3 className="h3 row">
+                  Enter address where you are registered to vote
+                </h3>
+              )}
               saveUrl="/ballot"
             />
           </div>
