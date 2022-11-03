@@ -206,7 +206,7 @@ export default class SignInOptionsPanel extends Component {
 
   componentDidCatch (error, info) {
     // We should get this information to Splunk!
-    console.error('SignIn caught error: ', `${error} with info: `, info);
+    console.error('SignInOptionsPanel caught error: ', `${error} with info: `, info);
   }
 
   componentWillUnmount () {

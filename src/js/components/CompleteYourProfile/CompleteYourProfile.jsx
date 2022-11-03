@@ -5,7 +5,6 @@ import withTheme from '@mui/styles/withTheme';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import React, { Component, Suspense } from 'react';
-import Cookies from '../../common/utils/js-cookie/Cookies';
 import { renderLog } from '../../common/utils/logging';
 // import normalizedImagePath from '../../common/utils/normalizedImagePath';
 import VoterConstants from '../../constants/VoterConstants';
@@ -24,7 +23,7 @@ class CompleteYourProfile extends Component {
     super(props);
     this.state = {
       activeStep: 1,
-      addressIntroCompleted: false,
+      // addressIntroCompleted: false,
       ballotRemainingChoicesLength: 0, // If there aren't any remaining ballot choices, hide the onboarding.
       // firstPositionIntroCompleted: false,
       goToNextIncompleteStepForced: false,
@@ -37,8 +36,8 @@ class CompleteYourProfile extends Component {
       stepIdPersonalizedScore: 2,
       stepIdSignInToSave: 3,
       steps: [],
-      valuesIntroCompleted: false,
-      textForMapSearch: '',
+      // valuesIntroCompleted: false,
+      // textForMapSearch: '',
     };
 
     this.previousStep = this.previousStep.bind(this);
@@ -54,7 +53,7 @@ class CompleteYourProfile extends Component {
       ballotLength: BallotStore.ballotLength,
       ballotRemainingChoicesLength: BallotStore.ballotRemainingChoicesLength,
       goToNextIncompleteStepForced: true,
-      textForMapSearch: VoterStore.getTextForMapSearch(),
+      // textForMapSearch: VoterStore.getTextForMapSearch(),
       voterIsSignedIn: VoterStore.getVoterIsSignedIn(),
     }, () => this.updateStepsArray());
   }
@@ -85,38 +84,38 @@ class CompleteYourProfile extends Component {
     // console.log('CompleteYourProfile onVoterStoreChange');
     this.setState({
       goToNextIncompleteStepForced: true,
-      textForMapSearch: VoterStore.getTextForMapSearch(),
+      // textForMapSearch: VoterStore.getTextForMapSearch(),
       voterIsSignedIn: VoterStore.getVoterIsSignedIn(),
     }, () => this.updateStepsArray());
   }
 
   setCompletedStatus = () => {
-    const { stepIdEnterFullAddress, stepIdHowItWorks, stepIdPersonalizedScore, stepIdSignInToSave, stepIdValuesIntro } = this.state;
+    const { stepIdHowItWorks, stepIdPersonalizedScore, stepIdSignInToSave } = this.state; // stepIdEnterFullAddress, stepIdValuesIntro
     const howItWorksWatched = VoterStore.getInterfaceFlagState(VoterConstants.HOW_IT_WORKS_WATCHED);
     if (howItWorksWatched) {
       this.setItemComplete(stepIdHowItWorks);
     } else {
       this.setItemNotComplete(stepIdHowItWorks);
     }
-    const valuesIntroCompleted = VoterStore.getInterfaceFlagState(VoterConstants.VALUES_INTRO_COMPLETED);
-    if (valuesIntroCompleted) {
-      this.setItemComplete(stepIdValuesIntro);
-    } else {
-      this.setItemNotComplete(stepIdValuesIntro);
-    }
+    // const valuesIntroCompleted = VoterStore.getInterfaceFlagState(VoterConstants.VALUES_INTRO_COMPLETED);
+    // if (valuesIntroCompleted) {
+    //   this.setItemComplete(stepIdValuesIntro);
+    // } else {
+    //   this.setItemNotComplete(stepIdValuesIntro);
+    // }
     // const adviserIntroCompleted = VoterStore.getInterfaceFlagState(VoterConstants.BALLOT_INTRO_ORGANIZATIONS_COMPLETED);
     // if (adviserIntroCompleted) {
     //   this.setItemComplete(findAdvisorsId);
     // } else {
     //   this.setItemNotComplete(findAdvisorsId);
     // }
-    const addressIntroCompletedByCookie = Cookies.get('location_guess_closed');
-    const { addressIntroCompleted } = this.state;
-    if (addressIntroCompleted || addressIntroCompletedByCookie) {
-      this.setItemComplete(stepIdEnterFullAddress);
-    } else {
-      this.setItemNotComplete(stepIdEnterFullAddress);
-    }
+    // const addressIntroCompletedByCookie = Cookies.get('location_guess_closed');
+    // const { addressIntroCompleted } = this.state;
+    // if (addressIntroCompleted || addressIntroCompletedByCookie) {
+    //   this.setItemComplete(stepIdEnterFullAddress);
+    // } else {
+    //   this.setItemNotComplete(stepIdEnterFullAddress);
+    // }
     const personalizedScoreIntroCompleted = VoterStore.getInterfaceFlagState(VoterConstants.PERSONALIZED_SCORE_INTRO_COMPLETED);
     if (personalizedScoreIntroCompleted) {
       this.setItemComplete(stepIdPersonalizedScore);
@@ -141,7 +140,7 @@ class CompleteYourProfile extends Component {
       // firstPositionIntroCompleted,
       howItWorksWatched,
       personalizedScoreIntroCompleted,
-      valuesIntroCompleted,
+      // valuesIntroCompleted,
     }, () => this.sortSteps());
   }
 
@@ -277,20 +276,20 @@ class CompleteYourProfile extends Component {
     AppObservableStore.setShowHowItWorksModal(true);
   }
 
-  openValuesIntroModal = () => {
-    // console.log('Opening modal');
-    AppObservableStore.setShowValuesIntroModal(true);
-  }
+  // openValuesIntroModal = () => {
+  //   // console.log('Opening modal');
+  //   AppObservableStore.setShowValuesIntroModal(true);
+  // }
 
-  openAddressIntroModal = () => {
-    const { stepIdEnterFullAddress } = this.state;
-    Cookies.set('location_guess_closed', '1', { expires: 31, path: '/' });
-    this.setState({
-      addressIntroCompleted: true,
-    });
-    AppObservableStore.setShowSelectBallotModal(true, true);
-    this.setItemComplete(stepIdEnterFullAddress);
-  }
+  // openAddressIntroModal = () => {
+  //   const { stepIdEnterFullAddress } = this.state;
+  //   Cookies.set('location_guess_closed', '1', { expires: 31, path: '/' });
+  //   this.setState({
+  //     addressIntroCompleted: true,
+  //   });
+  //   AppObservableStore.setShowSelectBallotModal(true, true);
+  //   this.setItemComplete(stepIdEnterFullAddress);
+  // }
 
   // openAdviserIntroModal = () => {
   //   // console.log('Opening modal');
@@ -399,22 +398,24 @@ class CompleteYourProfile extends Component {
     // console.log('CompleteYourProfile render');
     const { classes } = this.props;
     const {
-      activeStep, addressIntroCompleted, ballotLength, ballotRemainingChoicesLength,
-      // firstPositionIntroCompleted,
+      activeStep, ballotLength, ballotRemainingChoicesLength,
+      // addressIntroCompleted, firstPositionIntroCompleted, valuesIntroCompleted
       howItWorksWatched, personalizedScoreIntroCompleted,
       showSignInModal,
-      stepIdEnterFullAddress, steps,
-      textForMapSearch, valuesIntroCompleted, voterIsSignedIn,
+      steps, // stepIdEnterFullAddress, textForMapSearch
+      voterIsSignedIn,
     } = this.state;
-    const addressIntroCompletedByCookie = Cookies.get('location_guess_closed');
+    // const addressIntroCompletedByCookie = Cookies.get('location_guess_closed');
     // console.log('activeStep: ', activeStep);
     // console.log('steps: ', steps);
 
     // If we have completed all the steps, don't render this component
+    const allStepsHaveBeenCompleted = howItWorksWatched && personalizedScoreIntroCompleted && voterIsSignedIn;
+    // Prior: (addressIntroCompleted || addressIntroCompletedByCookie) && howItWorksWatched && personalizedScoreIntroCompleted && valuesIntroCompleted && voterIsSignedIn
     const showCompleteYourProfileForDebugging = false;
     if (showCompleteYourProfileForDebugging) {
       // Pass by this OFF switch so we render this component
-    } else if ((addressIntroCompleted || addressIntroCompletedByCookie) && howItWorksWatched && personalizedScoreIntroCompleted && valuesIntroCompleted && voterIsSignedIn) {
+    } else if (allStepsHaveBeenCompleted) {
       // If we have done all the steps, do not render CompleteYourProfile // OFF FOR NOW: adviserIntroCompleted && firstPositionIntroCompleted &&
       return null;
     } else if (ballotLength > 0 && ballotRemainingChoicesLength === 0) {
@@ -474,7 +475,7 @@ class CompleteYourProfile extends Component {
                     <Title>
                       {step.title}
                     </Title>
-                    {textForMapSearch && step.id === stepIdEnterFullAddress &&
+                    {/* textForMapSearch && step.id === stepIdEnterFullAddress &&
                       (
                         <YourLocation>
                           {' '}
@@ -488,7 +489,7 @@ class CompleteYourProfile extends Component {
                           .
                           {' '}
                         </YourLocation>
-                      )}
+                      ) */}
                     {step.completed && (
                       <Completed>
                         <CheckCircle />
@@ -577,9 +578,9 @@ const styles = () => ({
   },
 });
 
-const BestGuess = styled('span')`
-  font-weight: bold;
-`;
+// const BestGuess = styled('span')`
+//   font-weight: bold;
+// `;
 
 const Completed = styled('div')`
   color: green;
@@ -741,7 +742,7 @@ const TitleFlex = styled('div')`
   margin-right: 8px;
 `;
 
-const YourLocation = styled('span')`
-`;
+// const YourLocation = styled('span')`
+// `;
 
 export default withTheme(withStyles(styles)(CompleteYourProfile));

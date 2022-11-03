@@ -195,11 +195,13 @@ class App extends Component {
               ingestPoint: openReplayIngestPoint,
             });
             tracker1.start();
+            AppObservableStore.setOpenReplayTracker(tracker1);
           } else {
             const tracker2 = new Tracker({
               projectKey: openReplayProjectKey,
             });
             tracker2.start();
+            AppObservableStore.setOpenReplayTracker(tracker2);
           }
           AppObservableStore.setOpenReplayEnabled(true);
           AppObservableStore.setOpenReplayPending(false);

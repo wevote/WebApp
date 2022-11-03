@@ -120,6 +120,16 @@ export default {
     messageService.sendMessage('state updated openReplayPending');
   },
 
+  setOpenReplayTracker (tracker) {
+    nonFluxState.openReplayTracker = tracker;
+    messageService.sendMessage('state updated openReplayTracker');
+  },
+
+  setOpenReplayVoterWeVoteId (value) {
+    nonFluxState.openReplayVoterWeVoteId = value;
+    messageService.sendMessage('state updated openReplayVoterWeVoteId');
+  },
+
   setGetStartedMode (getStartedMode) {
     nonFluxState.getStartedMode = getStartedMode;
     messageService.sendMessage('state updated getStartedMode');
@@ -387,6 +397,14 @@ export default {
 
   getOpenReplayPending () {
     return nonFluxState.openReplayPending;
+  },
+
+  getOpenReplayTracker () {
+    return nonFluxState.openReplayTracker;
+  },
+
+  getOpenReplayVoterWeVoteId () {
+    return nonFluxState.openReplayVoterWeVoteId;
   },
 
   getHideWeVoteLogo () {

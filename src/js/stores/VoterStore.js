@@ -1123,6 +1123,17 @@ class VoterStore extends ReduceStore {
         //     incomingVoter.voter_photo_url_medium = 'https://wevote.us/img/global/logos/Apple_logo_grey.svg';  // TODO: Switch over to wevote.us once live server is updated
         //   }
         // }
+        if (incomingVoter && incomingVoter.we_vote_id) {
+          if (incomingVoter.we_vote_id !== AppObservableStore.getOpenReplayVoterWeVoteId()) {
+            // console.log('tracker.setUserId:', incomingVoter.we_vote_id);
+            const tracker = AppObservableStore.getOpenReplayTracker();
+            if (tracker) {
+              console.log('OpenReplay setting id: ', incomingVoter.we_vote_id);
+              AppObservableStore.setOpenReplayVoterWeVoteId(incomingVoter.we_vote_id);
+              tracker.setUserID(incomingVoter.we_vote_id);
+            }
+          }
+        }
         revisedState = state;
         revisedState = {
           ...revisedState,
