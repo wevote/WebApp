@@ -15,6 +15,7 @@ import VoterStore from '../../stores/VoterStore';
 import { FirstRowPhoneOrEmail, SecondRowPhoneOrEmail, TrashCan } from '../Style/pageLayoutStyles';
 import { ButtonContainerHorizontal } from '../Welcome/sectionStyles';
 import SettingsVerifySecretCode from './SettingsVerifySecretCode';
+import apiCalming from "../../common/utils/apiCalming";
 
 const OpenExternalWebSite = React.lazy(() => import(/* webpackChunkName: 'OpenExternalWebSite' */ '../../common/components/Widgets/OpenExternalWebSite'));
 
@@ -64,6 +65,7 @@ class VoterEmailAddressEntry extends Component {
     const inputFld = $('#enterVoterEmailAddress');
     console.log('enterVoterEmailAddress ', $(inputFld));
     $(inputFld).blur();
+    this._isMounted = true;
   }
 
   componentDidUpdate () {
@@ -80,6 +82,7 @@ class VoterEmailAddressEntry extends Component {
 
   componentWillUnmount () {
     this.voterStoreListener.remove();
+    this._isMounted = false;
   }
 
   onVoterStoreChange () {
@@ -88,15 +91,26 @@ class VoterEmailAddressEntry extends Component {
     const secretCodeVerificationStatus = VoterStore.getSecretCodeVerificationStatus();
     const { secretCodeVerified } = secretCodeVerificationStatus;
     // console.log('onVoterStoreChange emailAddressStatus:', emailAddressStatus);
+    const voter = VoterStore.getVoter();
+    const { is_signed_in: isSignedIn } = voter;
+    if (secretCodeVerified && !isSignedIn) {
+      console.log('VoterEmailAddressEntry onVoterStoreChange secretCodeVerified && !isSignedIn, VoterActions.voterRetrieve()');
+      if (apiCalming('voterRetrieve', 500)) {
+        VoterActions.voterRetrieve();
+      }
+      this.closeSignInModalLocal();
+    }
 
+    const newState = {};  // Don't set state twice in the same function
+    // console.log(`VoterEmailAddressEntry onVoterStoreChange isSignedIn: ${isSignedIn}, signedInWithSmsPhoneNumber: ${signedInWithSmsPhoneNumber}`);
     if (secretCodeVerified) {
-      this.setState({
+      Object.assign(newState, {
         displayEmailVerificationButton: false,
         showVerifyModal: false,
         voterEmailAddress: '',
       });
     } else if (emailAddressStatus.sign_in_code_email_sent) {
-      this.setState({
+      Object.assign(newState, {
         displayEmailVerificationButton: false,
         emailAddressStatus: {
           sign_in_code_email_sent: false,
@@ -104,20 +118,20 @@ class VoterEmailAddressEntry extends Component {
         showVerifyModal: true,
       });
     } else if (emailAddressStatus.email_address_already_owned_by_this_voter) {
-      this.setState({
+      Object.assign(newState, {
         displayEmailVerificationButton: false,
         emailAddressStatus,
         showVerifyModal: false,
       });
     } else {
-      this.setState({
+      Object.assign(newState, {
         emailAddressStatus,
       });
     }
     const voterEmailAddressList = VoterStore.getEmailAddressList();
     const voterEmailAddressListCount = voterEmailAddressList.length;
     // const voterEmailAddressesVerifiedCount = VoterStore.getEmailAddressesVerifiedCount();
-    this.setState({
+    Object.assign(newState, {
       loading: false,
       secretCodeSystemLocked,
       voter: VoterStore.getVoter(),
@@ -125,6 +139,9 @@ class VoterEmailAddressEntry extends Component {
       voterEmailAddressListCount,
       // voterEmailAddressesVerifiedCount,
     });
+    if (this._isMounted) {
+      this.setState(newState);
+    }
   }
 
   setAsPrimaryEmailAddress (emailWeVoteId) {
@@ -230,12 +247,12 @@ class VoterEmailAddressEntry extends Component {
   };
 
   onFocus = () => {
-    // this.setState({
-    //   displayEmailVerificationButton: true,
-    // });
-    // if (isCordova() || isMobileScreenSize()) {
-    //   this.showEmailOnlySignInLocal();
-    // }
+    this.setState({
+      displayEmailVerificationButton: true,
+    });
+    if (isCordova() || isMobileScreenSize()) {
+      this.showEmailOnlySignInLocal();
+    }
     // focusTextFieldAndroid(); // This refers to caller string AddFriendsByEmail. Correct?
   };
 

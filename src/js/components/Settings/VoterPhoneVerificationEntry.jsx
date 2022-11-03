@@ -8,6 +8,7 @@ import { isValidPhoneNumber } from 'react-phone-number-input';
 import styled from 'styled-components';
 import VoterActions from '../../actions/VoterActions';
 import LoadingWheel from '../../common/components/Widgets/LoadingWheel';
+import apiCalming from '../../common/utils/apiCalming';
 import { blurTextFieldAndroid } from '../../common/utils/cordovaUtils';
 import { isCordova, isWebApp } from '../../common/utils/isCordovaOrWebApp';
 import isMobileScreenSize from '../../common/utils/isMobileScreenSize';
@@ -75,7 +76,13 @@ class VoterPhoneVerificationEntry extends Component {
     // }
   }
 
+  componentDidCatch (error, info) {
+    // We should get this information to Splunk!
+    console.error('VoterPhoneVerificationEntry caught error: ', `${error} with info: `, info);
+  }
+
   componentWillUnmount () {
+    clearTimeout(this.clearPhoneTimer);
     this.voterStoreListener.remove();
     this._isMounted = false;
   }
@@ -93,11 +100,11 @@ class VoterPhoneVerificationEntry extends Component {
     const voter = VoterStore.getVoter();
     const { is_signed_in: isSignedIn, signed_in_with_sms_phone_number: signedInWithSmsPhoneNumber } = voter;
     if (secretCodeVerified && !isSignedIn) {
-      // VoterActions.voterRetrieve(); // Dale 2022-10-16 I think this was causing problems -- monitor to make sure bugs aren't introduced by commenting this out
-      console.log('onVoterStoreChange secretCodeVerified && !isSignedIn, VoterActions.voterRetrieve() commented out');
-      // New Nov 5, 2021: this should be the end of the line for this dialog, we have fired off a voterRetrieve that should
-      // return is_signed_in true and signed_in_with_sms_phone_number true
-      this.closeSignInModalLocal();  // Nov 2022, don't think we ever get there, I think the closeVerifyModal() is doing the job
+      console.log('VoterPhoneVerificationEntry onVoterStoreChange secretCodeVerified && !isSignedIn, VoterActions.voterRetrieve()');
+      if (apiCalming('voterRetrieve', 500)) {
+        VoterActions.voterRetrieve();
+      }
+      this.closeSignInModalLocal();
     }
 
     const newState = {};  // Don't set state twice in the same function
@@ -194,7 +201,10 @@ class VoterPhoneVerificationEntry extends Component {
 
   closeSignInModalFromVerifySecretCode = () => {
     // console.log('VoterPhoneVerificationEntry closeSignInModalFromVerifySecretCode');
-    VoterActions.clearSecretCodeVerificationStatusAndPhone();
+    const delayBeforeClearingPhoneStatus = 500;
+    this.clearPhoneTimer = setTimeout(() => {
+      VoterActions.clearSecretCodeVerificationStatusAndPhone();
+    }, delayBeforeClearingPhoneStatus);
     this.closeSignInModalLocal();
   }
 
@@ -271,12 +281,12 @@ class VoterPhoneVerificationEntry extends Component {
   };
 
   onFocus = () => {
-    // this.setState({
-    //   displayPhoneVerificationButton: true,
-    // });
-    // if (isCordova() || isMobileScreenSize()) {
-    //   this.showPhoneOnlySignInLocal();
-    // }
+    this.setState({
+      displayPhoneVerificationButton: true,
+    });
+    if (isCordova() || isMobileScreenSize()) {
+      this.showPhoneOnlySignInLocal();
+    }
     // focusTextFieldAndroid(); // This refers to caller string AddFriendsByEmail. Correct?
   };
 
