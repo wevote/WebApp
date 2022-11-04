@@ -3,7 +3,7 @@ export const reassuranceTextRemindContacts = [
   {
     page: 1,
     headline: '',
-    text: 'Information about your contacts, including names, emails, and phone numbers, will be securely stored by We Vote. You can delete this information at any time.',
+    text: 'Information about your contacts, including names, emails, and phone numbers, will be stored securely for your use only. You can completely delete this information from We Vote at any time.',
   },
   {
     page: 111,
