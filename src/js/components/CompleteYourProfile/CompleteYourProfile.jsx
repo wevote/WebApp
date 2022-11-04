@@ -212,6 +212,7 @@ class CompleteYourProfile extends Component {
           description: '',
           icon: (<PlayCircleFilled />),
           onClick: this.openHowItWorksModal,
+          titleCanBeClicked: true,
         },
         // {
         //   id: stepIdValuesIntro,
@@ -221,6 +222,7 @@ class CompleteYourProfile extends Component {
         //   description: '',
         //   icon: (<img alt="" src={normalizedImagePath('/img/global/svg-icons/issues/climate-change-24.svg')} />),
         //   onClick: this.openValuesIntroModal,
+        //   titleCanBeClicked: true,
         // },
         // {
         //   id: findAdvisorsId,
@@ -230,6 +232,7 @@ class CompleteYourProfile extends Component {
         //   description: '',
         //   icon: (<ThumbUp />),
         //   onClick: this.openAdviserIntroModal,
+        //   titleCanBeClicked: true,
         // },
         // {
         //   id: stepIdEnterFullAddress,
@@ -239,6 +242,7 @@ class CompleteYourProfile extends Component {
         //   description: '',
         //   icon: (<EditLocation />),
         //   onClick: this.openAddressIntroModal,
+        //   titleCanBeClicked: true,
         // },
         {
           id: stepIdPersonalizedScore,
@@ -248,6 +252,7 @@ class CompleteYourProfile extends Component {
           description: '',
           icon: (<PersonalizedScorePlusOne>+1</PersonalizedScorePlusOne>),
           onClick: this.openPersonalizedScoreIntroModal,
+          titleCanBeClicked: true,
         },
         // {
         //   id: 5,
@@ -257,15 +262,17 @@ class CompleteYourProfile extends Component {
         //   description: '',
         //   icon: (<BallotIcon />),
         //   onClick: this.openFirstPositionIntroModal,
+        //   titleCanBeClicked: true,
         // },
         {
           id: stepIdSignInToSave,
-          title: 'Sign in or sign up to save your ballot choices and settings',
-          buttonText: 'Sign up to save',
+          title: voterIsSignedIn ? 'Your ballot choices and settings are saved' : 'Sign in or sign up to save your ballot choices and settings',
+          buttonText: voterIsSignedIn ? '' : 'Sign up to save choices',
           completed: false,
           description: '',
           icon: (<PushPin />),
           onClick: this.toggleShowSignInModal,
+          titleCanBeClicked: !voterIsSignedIn,
         },
       ],
     }, () => this.setCompletedStatus());
@@ -464,15 +471,16 @@ class CompleteYourProfile extends Component {
           if (step.id === activeStep) {
             return (
               <Description key={`completeYourProfileDescription-${step.id}`}>
-                <Icon className="u-show-desktop-tablet" id="completeYourProfileDescriptionIcon" onClick={() => { step.onClick(); }}>
-                  {step.icon}
-                </Icon>
-                <TitleArea id="completeYourProfileTitleArea" onClick={() => { step.onClick(); }}>
-                  <Icon className="u-show-mobile">
+                <TitleArea
+                  id="completeYourProfileTitleArea"
+                  onClick={() => { step.onClick(); }}
+                  titleCanBeClicked={step.titleCanBeClicked}
+                >
+                  <Icon>
                     {step.icon}
                   </Icon>
                   <TitleFlex>
-                    <Title>
+                    <Title titleCanBeClicked={step.titleCanBeClicked}>
                       {step.title}
                     </Title>
                     {/* textForMapSearch && step.id === stepIdEnterFullAddress &&
@@ -594,7 +602,7 @@ const Completed = styled('div')`
 `;
 
 const Description = styled('div')`
-  @media (min-width: 769px) {
+  @media (min-width: 576px) {
     display: flex;
     align-items: flex-start;
     justify-content: space-between;
@@ -607,21 +615,24 @@ const Flex = styled('div')`
   justify-content: space-between;
 `;
 
-const Icon = styled('div')`
-  cursor: pointer;
-  display: inline-block;
+const Icon = styled('div', {
+  shouldForwardProp: (prop) => !['titleCanBeClicked'].includes(prop),
+})(({ titleCanBeClicked }) => (`
+  // display: inline-block;
   width: 35px;
   height: 35px;
-  @media (min-width: 576px) and (max-width: 769px) {
-    margin-bottom: 12px;
-  }
+  // @media (min-width: 576px) and (max-width: 769px) {
+  //   margin-bottom: 12px;
+  // }
   margin-right: 8px;
+  margin-top: 0px !important;
   * {
     height: 35px !important;
     width: 35px !important;
     fill: #2E3C5D;
   }
-`;
+  ${titleCanBeClicked ? 'cursor: pointer;' : ''}
+`));
 
 const Indicators = styled('div')`
   align-items: center;
@@ -717,24 +728,29 @@ const TabletActionButton = styled('div')`
   }
 `;
 
-const Title = styled('h2')`
-  color: #4371CC;
-  display: inline-block;
-  margin: 0;
-  text-decoration: underline;
-  text-decoration-color: #ccc;
-`;
-
-const TitleArea = styled('div')`
+const Title = styled('h2', {
+  shouldForwardProp: (prop) => !['titleCanBeClicked'].includes(prop),
+})(({ titleCanBeClicked }) => (`
   align-items: center;
-  cursor: pointer;
+  display: flex;
+  margin: 0;
+  ${titleCanBeClicked ? 'color: #4371CC;' : ''}
+  ${titleCanBeClicked ? 'text-decoration: underline;' : ''}
+  ${titleCanBeClicked ? 'text-decoration-color: #ccc;' : ''}
+`));
+
+const TitleArea = styled('div', {
+  shouldForwardProp: (prop) => !['titleCanBeClicked'].includes(prop),
+})(({ titleCanBeClicked }) => (`
+  align-items: flex-start;
   display: flex;
   justify-content: flex-start;
   @media (min-width: 576px) {
-    display: inline-block;
+    // display: inline-block;
     margin: auto 0;
   }
-`;
+  ${titleCanBeClicked ? 'cursor: pointer;' : ''}
+`));
 
 const TitleFlex = styled('div')`
   display: inline-block;

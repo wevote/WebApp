@@ -345,7 +345,7 @@ class RemindContactsRoot extends React.Component {
         mobileFixedButtonsOff = true;
         reassuranceTextOff = false;
         showDeleteAllContactsOption = false;
-        skipForNowOff = false;
+        skipForNowOff = true;
         // if (!voterFirstName) {
         //   nextButtonText = 'Next';
         //   nextStepPath = '/remind/editname';
@@ -416,7 +416,7 @@ class RemindContactsRoot extends React.Component {
         mobileFixedButtonsOff = true;
         reassuranceTextOff = false;
         showDeleteAllContactsOption = false;
-        skipForNowOff = false;
+        skipForNowOff = true;
         // if (!voterFirstName) {
         //   nextButtonText = 'Next';
         //   nextStepPath = '/remind/editname';
@@ -717,6 +717,10 @@ class RemindContactsRoot extends React.Component {
     historyPush('/remind/message');
   }
 
+  goToDownloadApp = () => {
+    historyPush('/remind/downloadapp');
+  }
+
   goToImportContacts = () => {
     historyPush('/remind/importcontacts');
   }
@@ -889,6 +893,18 @@ class RemindContactsRoot extends React.Component {
                 </Button>
               </DesktopNextButtonsInnerWrapper>
             </ImportContactsOuterWrapperUShowDesktopTablet>
+            {isWebApp() && (
+              <ImportContactsOuterWrapperUShowDesktopTablet breakValue={desktopInlineButtonsOnBreakValue}>
+                <DesktopNextButtonsInnerWrapper>
+                  <Button
+                    classes={{ root: classes.addContactsManuallyLink }}
+                    onClick={this.goToDownloadApp}
+                  >
+                    Import contacts from We Vote App
+                  </Button>
+                </DesktopNextButtonsInnerWrapper>
+              </ImportContactsOuterWrapperUShowDesktopTablet>
+            )}
           </>
         );
         mobileNextButtonHtml = desktopNextButtonHtml;
@@ -954,6 +970,18 @@ class RemindContactsRoot extends React.Component {
                   </Button>
                 </DesktopNextButtonsInnerWrapper>
               </DesktopNextButtonsOuterWrapperUShowDesktopTablet>
+              {isWebApp() && (
+                <DesktopNextButtonsOuterWrapperUShowDesktopTablet breakValue={desktopInlineButtonsOnBreakValue}>
+                  <DesktopNextButtonsInnerWrapper>
+                    <Button
+                      classes={{ root: classes.addContactsManuallyLink }}
+                      onClick={this.goToDownloadApp}
+                    >
+                      Import contacts from We Vote App
+                    </Button>
+                  </DesktopNextButtonsInnerWrapper>
+                </DesktopNextButtonsOuterWrapperUShowDesktopTablet>
+              )}
             </>
           );
           mobileNextButtonHtml = desktopNextButtonHtml;
