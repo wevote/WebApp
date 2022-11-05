@@ -781,7 +781,7 @@ class VoterStore extends ReduceStore {
         return state;
 
       case 'voterContactListRetrieve':
-        // console.log('VoterStore voterContactListRetrieve action:', action);
+        console.log('VoterStore voterContactListRetrieve action:', action);
         if (action.res.success) {
           const {
             voter_contact_email_google_count: voterContactEmailGoogleCount,
@@ -793,12 +793,12 @@ class VoterStore extends ReduceStore {
             voterContactEmailList,
           };
         } else {
-          // console.log('response voterContactListRetrieve was not successful');
+          console.log('response voterContactListRetrieve was not successful');
           return state;
         }
 
       case 'voterContactListSave':
-        // console.log('VoterStore voterContactListSave action:', action);
+        console.log('VoterStore voterContactListSave action.res:', action.res);
         if (action.res.success) {
           ({ voterContactEmailAugmentWithWeVoteDataComplete } = state);
           const {

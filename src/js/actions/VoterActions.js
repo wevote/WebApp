@@ -208,7 +208,7 @@ export default {
 
   voterContactListSave (contacts, fromGooglePeopleApi = false) {
     const contactsString = JSON.stringify(contacts);
-    // console.log('voterContactListSave contacts: ', contactsString);
+    console.log('voterContactListSave contacts: ', contactsString);
     Dispatcher.loadEndpoint('voterContactListSave', {
       contacts: contactsString,
       from_google_people_api: fromGooglePeopleApi,
