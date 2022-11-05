@@ -345,7 +345,7 @@ class ShareModal extends Component {
                       id="shareModalAllOpinionsRadioButton"
                       value="AllOpinions"
                       // label={voterIsSignedIn ? 'Share my voter guide' : 'Sign in to share my voter guide'}
-                      label="Share my voter guide (coming soon)"
+                      label="Share my voter guide (coming in 2023)"
                       labelPlacement="end"
                       control={
                         (

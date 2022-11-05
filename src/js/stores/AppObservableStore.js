@@ -36,6 +36,11 @@ const nonFluxState = {
   hostname: '',
   observableUpdateCounter: 0,
   organizationModalBallotItemWeVoteId: '',
+  openReplayEnabled: false,
+  openReplayPending: false,
+  openReplayTracker: undefined,
+  openReplayVoterIsSignedIn: '',
+  openReplayVoterWeVoteId: '',
   pendingSnackMessage: '',
   pendingSnackSeverity: '',
   scrolledDown: false,
@@ -123,6 +128,11 @@ export default {
   setOpenReplayTracker (tracker) {
     nonFluxState.openReplayTracker = tracker;
     messageService.sendMessage('state updated openReplayTracker');
+  },
+
+  setOpenReplayVoterIsSignedIn (value) {
+    nonFluxState.openReplayVoterIsSignedIn = value;
+    messageService.sendMessage('state updated openReplayVoterIsSignedIn');
   },
 
   setOpenReplayVoterWeVoteId (value) {
@@ -401,6 +411,10 @@ export default {
 
   getOpenReplayTracker () {
     return nonFluxState.openReplayTracker;
+  },
+
+  getOpenReplayVoterIsSignedIn () {
+    return nonFluxState.openReplayVoterIsSignedIn;
   },
 
   getOpenReplayVoterWeVoteId () {

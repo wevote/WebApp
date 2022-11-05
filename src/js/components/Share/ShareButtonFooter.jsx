@@ -38,7 +38,7 @@ class ShareButtonFooter extends Component {
       candidateShare: false,
       chosenPreventSharingOpinions: false,
       currentFullUrlToShare: '',
-      hideShareButtonFooter: false,
+      // hideShareButtonFooter: false,
       measureShare: false,
       officeShare: false,
       openShareButtonDrawer: false,
@@ -123,10 +123,10 @@ class ShareButtonFooter extends Component {
   }
 
   onAppObservableStoreChange () {
-    const { openShareButtonDrawer } = this.state;
+    // const { openShareButtonDrawer } = this.state;
     const chosenPreventSharingOpinions = AppObservableStore.getChosenPreventSharingOpinions();
-    const scrolledDown = AppObservableStore.getScrolledDown();
-    const hideShareButtonFooter = scrolledDown && !openShareButtonDrawer;
+    // const scrolledDown = AppObservableStore.getScrolledDown();
+    // const hideShareButtonFooter = scrolledDown && !openShareButtonDrawer;
     // console.log('onAppObservableStoreChange scrolledDown:', scrolledDown, ', hideShareButtonFooter:', hideShareButtonFooter);
     const showingOneCompleteYourProfileModal = AppObservableStore.showingOneCompleteYourProfileModal();
     const showShareModal = AppObservableStore.showShareModal();
@@ -134,7 +134,7 @@ class ShareButtonFooter extends Component {
     const showVoterPlanModal = AppObservableStore.showVoterPlanModal();
     this.setState({
       chosenPreventSharingOpinions,
-      hideShareButtonFooter,
+      // hideShareButtonFooter,
       showingOneCompleteYourProfileModal,
       showShareModal,
       showSignInModal,
@@ -432,7 +432,7 @@ class ShareButtonFooter extends Component {
     const { location: { pathname } } = window;
     const {
       candidateShare, chosenPreventSharingOpinions, currentFullUrlToShare,
-      friendsModalTitle, hideShareButtonFooter, measureShare, officeShare,
+      friendsModalTitle, measureShare, officeShare, // , hideShareButtonFooter
       openShareButtonDrawer, organizationShare, readyShare,
       shareFooterStep, shareModalTitle, shareWithFriendsNow, showingOneCompleteYourProfileModal, showShareButton,
       showShareModal, showSignInModal, showVoterPlanModal,
@@ -442,10 +442,10 @@ class ShareButtonFooter extends Component {
     const { showFooterBar } = getApplicationViewBooleans(pathname);
 
     // Hide if scrolled down the page
-    if (hideShareButtonFooter) {
-      // console.log('hideShareButtonFooter is TRUE. ShareButtonFooter HIDDEN');
-      return null;
-    }
+    // if (hideShareButtonFooter) {
+    //   // console.log('hideShareButtonFooter is TRUE. ShareButtonFooter HIDDEN');
+    //   return null;
+    // }
 
     if (!VoterStore.getVoterWeVoteId()) {
       // console.log('ShareButtonFooter, waiting for voterRetrieve to complete');
@@ -646,7 +646,7 @@ class ShareButtonFooter extends Component {
                             id="shareModalAllOpinionsRadioButton"
                             value="AllOpinions"
                             // label={voterIsSignedIn ? 'Share my voter guide' : 'Sign in to share my voter guide'}
-                            label="Share my voter guide (coming soon)"
+                            label="Share my voter guide (coming in 2023)"
                             labelPlacement="end"
                             control={
                               (
