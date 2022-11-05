@@ -448,14 +448,15 @@ class HeaderBar extends Component {
     let donateValue;
     let donateVisible;
     let howItWorksValue;
-    let howItWorksVisible;
+    // let howItWorksVisible;
+    const howItWorksVisible = false;
     if (isCordova() || inPrivateLabelMode) {
       discussValue = 3;
       discussVisible = true;
       donateValue = 99; // Donate not used in Cordova
       donateVisible = false;
       howItWorksValue = 4;
-      howItWorksVisible = true;
+      // howItWorksVisible = true;
     } else if (voterIsSignedIn) {
       // If not Cordova and signed in, turn Donate & Discuss on, and How It Works off
       discussValue = 3;
@@ -463,7 +464,7 @@ class HeaderBar extends Component {
       donateValue = 4;
       donateVisible = true;
       howItWorksValue = 99;
-      howItWorksVisible = false;
+      // howItWorksVisible = false;
     } else {
       // If not Cordova, and NOT signed in, turn Discuss off, Donate on & How It Works on
       discussValue = 99; // Not offered prior to sign in
@@ -471,7 +472,7 @@ class HeaderBar extends Component {
       donateValue = 3;
       donateVisible = true;
       howItWorksValue = 4;
-      howItWorksVisible = true;
+      // howItWorksVisible = true;
     }
     // console.log('HeaderBar !isMobileScreenSize()', displayMenu);
     return (

@@ -17,10 +17,10 @@ import { isWebApp } from '../../common/utils/isCordovaOrWebApp'; // isCordova
 import { renderLog } from '../../common/utils/logging';
 import normalizedImagePath from '../../common/utils/normalizedImagePath';
 import stringContains from '../../common/utils/stringContains';
-import webAppConfig from '../../config';
 import AppObservableStore from '../../stores/AppObservableStore'; // , { messageService }
 import FriendStore from '../../stores/FriendStore';
 import VoterStore from '../../stores/VoterStore';
+import createMessageToFriendDefaults from '../../utils/createMessageToFriendDefaults';
 import sortFriendListByMutualFriends from '../../utils/friendFunctions';
 import MessageCard from '../Widgets/MessageCard';
 import { androidFacebookClickHandler, androidTwitterClickHandler } from './shareButtonCommon'; // cordovaSocialSharingByEmail
@@ -30,7 +30,6 @@ const OpenExternalWebSite = React.lazy(() => import(/* webpackChunkName: 'OpenEx
 const ShareWithFriendsModalBodyWithController = React.lazy(() => import(/* webpackChunkName: 'ShareWithFriendsModalBodyWithController' */ '../Friends/ShareWithFriendsModalBodyWithController'));
 const ShareWithFriendsModalTitleWithController = React.lazy(() => import(/* webpackChunkName: 'ShareWithFriendsModalTitleWithController' */ '../Friends/ShareWithFriendsModalTitleWithController'));
 
-const nextReleaseFeaturesEnabled = webAppConfig.ENABLE_NEXT_RELEASE_FEATURES === undefined ? false : webAppConfig.ENABLE_NEXT_RELEASE_FEATURES;
 
 class ShareModal extends Component {
   constructor (props) {
@@ -46,14 +45,13 @@ class ShareModal extends Component {
       shareWithFriendsNow: false,
       urlWithSharedItemCode: '',
       urlWithSharedItemCodeAllOpinions: '',
-      voterIsSignedIn: false,
     };
   }
 
   // Steps: ballotShareOptions, friends
 
   componentDidMount () {
-    const { shareModalStep, voterIsSignedIn } = this.props;
+    const { shareModalStep } = this.props;
     // console.log('shareModalStep componentDidMount this.props:', shareModalStep);
 
     // this.appStateSubscription = messageService.getMessage().subscribe(() => this.onAppObservableStoreChange());
@@ -64,9 +62,9 @@ class ShareModal extends Component {
     this.shareStoreListener = ShareStore.addListener(this.onShareStoreChange.bind(this));
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
     // const chosenPreventSharingOpinions = AppObservableStore.getChosenPreventSharingOpinions();
-    const currentFullUrl = cordovaLinkToBeSharedFixes(window.location.href || '');
-    const currentFullUrlToShare = currentFullUrl.replace('/modal/share', '').toLowerCase();
-    const urlWithSharedItemCode = ShareStore.getUrlWithSharedItemCodeByFullUrl(currentFullUrlToShare);
+    const currentFullUrlAdjusted = cordovaLinkToBeSharedFixes(window.location.href || '');
+    const currentFullUrlToShare = currentFullUrlAdjusted.replace('/modal/share', '').toLowerCase();
+    const urlWithSharedItemCode = ShareStore.getUrlWithSharedItemCodeByFullUrl(currentFullUrlToShare, false);
     const urlWithSharedItemCodeAllOpinions = ShareStore.getUrlWithSharedItemCodeByFullUrl(currentFullUrlToShare, true);
     // console.log('ShareModal componentDidMount urlWithSharedItemCode:', urlWithSharedItemCode, ', urlWithSharedItemCodeAllOpinions:', urlWithSharedItemCodeAllOpinions);
     if (!urlWithSharedItemCode || !urlWithSharedItemCodeAllOpinions) {
@@ -84,7 +82,6 @@ class ShareModal extends Component {
       shareModalTitle: returnShareModalTitle(shareModalStepModified),
       urlWithSharedItemCode,
       urlWithSharedItemCodeAllOpinions,
-      voterIsSignedIn,
     });
     // this.openSignInModalIfWeShould(shareModalStep, voterIsSignedIn);
     AnalyticsActions.saveActionModalShare(VoterStore.electionId());
@@ -115,9 +112,9 @@ class ShareModal extends Component {
 
   onShareStoreChange () {
     // console.log('SharedModal onShareStoreChange');
-    const currentFullUrl = window.location.href || '';
-    const currentFullUrlToShare = currentFullUrl.replace('/modal/share', '').toLowerCase();
-    const urlWithSharedItemCode = ShareStore.getUrlWithSharedItemCodeByFullUrl(currentFullUrlToShare);
+    const currentFullUrlAdjusted = cordovaLinkToBeSharedFixes(window.location.href || '');
+    const currentFullUrlToShare = currentFullUrlAdjusted.replace('/modal/share', '').toLowerCase();
+    const urlWithSharedItemCode = ShareStore.getUrlWithSharedItemCodeByFullUrl(currentFullUrlToShare, false);
     const urlWithSharedItemCodeAllOpinions = ShareStore.getUrlWithSharedItemCodeByFullUrl(currentFullUrlToShare, true);
     // console.log('SharedModal onShareStoreChange urlWithSharedItemCode:', urlWithSharedItemCode, ', urlWithSharedItemCodeAllOpinions:', urlWithSharedItemCodeAllOpinions);
     this.setState({
@@ -128,11 +125,10 @@ class ShareModal extends Component {
   }
 
   onVoterStoreChange () {
-    const voter = VoterStore.getVoter();
-    const voterIsSignedIn = voter.is_signed_in;
-    const currentFullUrl = window.location.href || '';
-    const currentFullUrlToShare = currentFullUrl.replace('/modal/share', '').toLowerCase();
-    const urlWithSharedItemCode = ShareStore.getUrlWithSharedItemCodeByFullUrl(currentFullUrlToShare);
+    const currentFullUrlAdjusted = cordovaLinkToBeSharedFixes(window.location.href || '');
+    const currentFullUrlToShare = currentFullUrlAdjusted.replace('/modal/share', '').toLowerCase();
+    const urlWithSharedItemCode = ShareStore.getUrlWithSharedItemCodeByFullUrl(currentFullUrlToShare, false);
+    // console.log('onVoterStoreChange urlWithSharedItemCode:', urlWithSharedItemCode);
     const urlWithSharedItemCodeAllOpinions = ShareStore.getUrlWithSharedItemCodeByFullUrl(currentFullUrlToShare, true);
     if (!urlWithSharedItemCode || !urlWithSharedItemCodeAllOpinions) {
       ShareActions.sharedItemRetrieveByFullUrl(currentFullUrlToShare);
@@ -141,7 +137,6 @@ class ShareModal extends Component {
       currentFullUrlToShare,
       urlWithSharedItemCode,
       urlWithSharedItemCodeAllOpinions,
-      voterIsSignedIn,
     });
   }
 
@@ -152,7 +147,7 @@ class ShareModal extends Component {
   }
 
   setStep = (shareModalStep, voterIsSignedInIncoming = null) => {
-    let { voterIsSignedIn } = this.state;
+    let voterIsSignedIn = VoterStore.getVoterIsSignedIn();
     if (voterIsSignedInIncoming !== null) {
       voterIsSignedIn = voterIsSignedInIncoming;
     }
@@ -186,7 +181,7 @@ class ShareModal extends Component {
   }
 
   saveActionShareButtonFriends = () => {
-    const { voterIsSignedIn } = this.state;
+    const voterIsSignedIn = VoterStore.getVoterIsSignedIn();
     // console.log('saveActionShareButtonFriends voterIsSignedIn:', voterIsSignedIn);
     if (voterIsSignedIn) {
       this.setState({
@@ -240,8 +235,8 @@ class ShareModal extends Component {
     const {
       currentFullUrlToShare, friendsModalTitle, shareModalStep, shareModalTitle, // chosenPreventSharingOpinions
       shareWithFriendsNow, urlWithSharedItemCode, urlWithSharedItemCodeAllOpinions,
-      voterIsSignedIn,
     } = this.state;
+    const voterIsSignedIn = VoterStore.getVoterIsSignedIn();
     let shareModalHtml = (
       <>Loading...</>
     );
@@ -249,12 +244,16 @@ class ShareModal extends Component {
     if ((!shareModalStep) || (shareModalStep === '')) {
       return shareModalHtml;
     }
-    const titleText = 'This is a website I am using to get ready to vote.';
+    const messageToFriendType = 'remindContacts';
+    const results = createMessageToFriendDefaults(messageToFriendType);
+    const { messageToFriendDefault } = results;
+    const titleText = messageToFriendDefault;
 
     // let emailSubjectEncoded = '';
     // let emailBodyEncoded = '';
     let linkToBeShared = '';
     let linkToBeSharedUrlEncoded = '';
+    // console.log('shareModalStep: ', shareModalStep);
     if (stringContains('AllOpinions', shareModalStep)) {
       if (urlWithSharedItemCodeAllOpinions) {
         linkToBeShared = urlWithSharedItemCodeAllOpinions;
@@ -341,10 +340,12 @@ class ShareModal extends Component {
                   <RadioItem>
                     <FormControlLabel
                       classes={{ label: classes.radioLabel }}
-                      disabled={!voterIsSignedIn}
+                      // disabled={!voterIsSignedIn}
+                      disabled
                       id="shareModalAllOpinionsRadioButton"
                       value="AllOpinions"
-                      label={voterIsSignedIn ? 'Share my voter guide' : 'Sign in to share my voter guide'}
+                      // label={voterIsSignedIn ? 'Share my voter guide' : 'Sign in to share my voter guide'}
+                      label="Share my voter guide (coming soon)"
                       labelPlacement="end"
                       control={
                         (
@@ -392,18 +393,16 @@ class ShareModal extends Component {
           <DialogContent classes={{ root: classes.dialogContent }}>
             <div className="full-width">
               <Flex>
-                {nextReleaseFeaturesEnabled && (
-                  <ShareModalOption
-                    backgroundColor="#0834cd"
-                    icon={<img src={normalizedImagePath('../../../img/global/svg-icons/we-vote-icon-square-color.svg')} alt="" />}
-                    id="shareWithFriends"
-                    noLink
-                    onClickFunction={this.saveActionShareButtonFriends}
-                    title="We Vote Friends"
-                    uniqueExternalId="shareModalOption-shareWithFriends"
-                    // urlToShare={linkToBeShared}
-                  />
-                )}
+                <ShareModalOption
+                  backgroundColor="#0834cd"
+                  icon={<img src={normalizedImagePath('../../../img/global/svg-icons/we-vote-icon-square-color.svg')} alt="" />}
+                  id="shareWithFriends"
+                  noLink
+                  onClickFunction={this.saveActionShareButtonFriends}
+                  title="We Vote friends"
+                  uniqueExternalId="shareModalOption-shareWithFriends"
+                  // urlToShare={linkToBeShared}
+                />
               </Flex>
             </div>
             <div className="full-width">
@@ -502,7 +501,7 @@ class ShareModal extends Component {
                   id="copyShareLink"
                   urlToShare={linkToBeShared}
                   onClickFunction={this.saveActionShareButtonCopy}
-                  title="Copy Link"
+                  title="Copy link"
                   uniqueExternalId="shareModalOption-copyShareLink"
                 />
               </Flex>
@@ -573,7 +572,6 @@ class ShareModal extends Component {
 }
 ShareModal.propTypes = {
   classes: PropTypes.object,
-  voterIsSignedIn: PropTypes.bool,
   show: PropTypes.bool,
   shareModalStep: PropTypes.string,
   closeShareModal: PropTypes.func.isRequired,

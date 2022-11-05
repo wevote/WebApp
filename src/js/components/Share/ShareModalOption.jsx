@@ -76,7 +76,8 @@ class ShareModalOption extends Component {
     const { copyLinkCopied } = this.state;
     let urlToBeShared = '';
     if (urlToShare) {
-      urlToBeShared = urlToShare.replace(/https:\/\/file:.*?\/|https:\/\/localhost.*?\//, 'https://wevote.us/');
+      // urlToBeShared = urlToShare.replace(/https:\/\/file:.*?\/|https:\/\/localhost.*?\//, 'https://wevote.us/');
+      urlToBeShared = urlToShare.replace(/https:\/\/file:.*?\//, 'https://wevote.us/'); // Want to leave localhost URL in place
     }
     // console.log('ShareModalOption copyLink:', copyLink, ', noLink:', noLink, 'urlToShare:', urlToShare, ', urlToBeShared:', urlToBeShared);
     return (
