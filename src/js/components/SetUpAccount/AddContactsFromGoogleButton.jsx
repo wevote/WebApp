@@ -145,8 +145,10 @@ class AddContactsFromGoogleButton extends Component {
     // console.log('processGooglePeopleMeResponse');
     if (result && result.names && result.names[0]) {
       const { displayName: fullName, familyName: lastName, givenName: firstName } = result.names[0];
-      // console.log('firstName:', firstName, ', lastName:', lastName, ', fullName:', fullName);
+      console.log('firstName:', firstName, ', lastName:', lastName, ', fullName:', fullName);
       VoterActions.voterFullNameSoftSave(firstName, lastName, fullName);
+    } else {
+      console.log('processGooglePeopleMeResponse no names found');
     }
   }
 
@@ -163,7 +165,7 @@ class AddContactsFromGoogleButton extends Component {
       personFields: 'metadata,names,emailAddresses',
     }).then((response) => {
       // const others = response.result.otherContacts;
-      // console.log('people/me response:', response);
+      console.log('people/me name request response.result:', response.result);
       this.processGooglePeopleMeResponse(response.result);
     }, (error) => {
       console.error('people.me error');
@@ -177,6 +179,7 @@ class AddContactsFromGoogleButton extends Component {
     }).then((response) => {
       this.setState({ addContactsState: AddContactConsts.receivedContacts  });
       const others = response.result.otherContacts;
+      console.log('people.otherContacts response received');
       // console.log('otherContacts:', response);
       for (let i = 0; i < others.length; i++) {
         const other = others[i];
@@ -222,7 +225,11 @@ class AddContactsFromGoogleButton extends Component {
             arrayOfSelectedContacts.push(contact);
           }
         });
-        // console.log('arrayOfSelectedContacts:', arrayOfSelectedContacts);
+        if (arrayOfSelectedContacts) {
+          console.log('arrayOfSelectedContacts length:', arrayOfSelectedContacts.length);
+        } else {
+          console.log('arrayOfSelectedContacts undefined');
+        }
         const fromGooglePeopleApi = true;
         if (arrayOfSelectedContacts.length > 0) {
           VoterActions.voterContactListSave(arrayOfSelectedContacts, fromGooglePeopleApi);
@@ -231,13 +238,13 @@ class AddContactsFromGoogleButton extends Component {
           });
         }
       } else if (contacts.size === 0) {
-        // console.log('noContactsFound, contacts.size === 0');
+        console.log('noContactsFound, contacts.size === 0');
         this.setState({
           addContactsState: AddContactConsts.noContactsFound,
         });
       }
     }, (error) => {
-      console.error('getOtherConnections error trapping');
+      console.error('people.otherContacts getOtherConnections error trapping');
       console.error(JSON.stringify(error, null, 2));
       this.setState({
         addContactsState: AddContactConsts.permissionDenied,

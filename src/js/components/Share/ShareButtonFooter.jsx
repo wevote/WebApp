@@ -1,4 +1,4 @@
-import { ArrowBackIos, Close, Comment, FileCopyOutlined, Info, Reply } from '@mui/icons-material';
+import { ArrowBackIos, Close, Comment, FileCopyOutlined, Info, IosShare, Reply, Share } from '@mui/icons-material';
 import { Button, Drawer, FormControl, FormControlLabel, IconButton, MenuItem, Radio } from '@mui/material';
 import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
@@ -10,7 +10,9 @@ import ShareModalOption from './ShareModalOption';
 import { returnFriendsModalTitle, returnShareModalTitle } from './ShareModalText';
 import AnalyticsActions from '../../actions/AnalyticsActions';
 import ShareActions from '../../common/actions/ShareActions';
+import VoterActions from '../../actions/VoterActions';
 import ShareStore from '../../common/stores/ShareStore';
+import apiCalming from '../../common/utils/apiCalming';
 import { cordovaLinkToBeSharedFixes, isAndroid, isAndroidSizeMD } from '../../common/utils/cordovaUtils';
 import historyPush from '../../common/utils/historyPush';
 import { normalizedHref } from '../../common/utils/hrefUtils';
@@ -324,6 +326,13 @@ class ShareButtonFooter extends Component {
       AnalyticsActions.saveActionShareBallot(VoterStore.electionId());
     }
     this.setStep(shareFooterStep);
+    // Make sure we have We Vote friends data
+    if (apiCalming('voterContactListRetrieve', 20000)) {
+      VoterActions.voterContactListRetrieve();
+    }
+    if (apiCalming('voterContactListSave', 60000)) {
+      VoterActions.voterContactListAugmentWithWeVoteData(true);
+    }
   }
 
   // openSignInModalIfWeShould = (shareFooterStep) => {
@@ -532,7 +541,6 @@ class ShareButtonFooter extends Component {
 
     const hideFooterBehindModal = showingOneCompleteYourProfileModal || showShareModal || showSignInModal || showVoterPlanModal;
     // console.log('ShareButtonFooter render showShareButton: ', showShareButton, ', linkToBeShared:', linkToBeShared, ', showFooterBar:', showFooterBar, ', hideFooterBehindModal:', hideFooterBehindModal);
-    const developmentFeatureTurnedOn = true;
 
     let drawerHtml;
     if (shareWithFriendsNow) {
@@ -690,48 +698,20 @@ class ShareButtonFooter extends Component {
                       <Close />
                     </IconButton>
                   </ModalTitleArea>
-                  {(developmentFeatureTurnedOn && isMobile() && navigator.share) ? (
+                  <>
                     <Flex>
                       <ShareModalOption
                         backgroundColor="#0834cd"
                         icon={<img src="../../../img/global/svg-icons/we-vote-icon-square-color.svg" alt="" />}
+                        // urlToShare={linkToBeShared}
                         noLink
                         onClickFunction={this.saveActionShareButtonFriends}
                         title="We Vote friends"
                         uniqueExternalId="shareButtonFooter-Friends"
                       />
-                      <ShareModalOption
-                        backgroundColor="#2E3C5D"
-                        copyLink
-                        icon={<FileCopyOutlined />}
-                        link={linkToBeShared}
-                        onClickFunction={this.saveActionShareButtonCopy}
-                        title="Copy link"
-                        uniqueExternalId="shareButtonFooter-CopyLink"
-                      />
-                      <ShareModalOption
-                        backgroundColor="#2E3C5D"
-                        icon={<Reply />}
-                        noLink
-                        onClickFunction={() => this.openNativeShare(linkToBeShared, 'Open Share')}
-                        title="Share"
-                        uniqueExternalId="shareButtonFooter-NativeShare"
-                      />
                     </Flex>
-                  ) : (
-                    <>
-                      <Flex>
-                        <ShareModalOption
-                          backgroundColor="#0834cd"
-                          icon={<img src="../../../img/global/svg-icons/we-vote-icon-square-color.svg" alt="" />}
-                          // urlToShare={linkToBeShared}
-                          noLink
-                          onClickFunction={this.saveActionShareButtonFriends}
-                          title="We Vote friends"
-                          uniqueExternalId="shareButtonFooter-Friends"
-                        />
-                      </Flex>
-                      <Flex>
+                    <Flex>
+                      {!(isMobile() && navigator.share) && (
                         <ShareWrapper>
                           <div id="androidFacebook"
                                onClick={() => isAndroid() &&
@@ -759,6 +739,8 @@ class ShareButtonFooter extends Component {
                             </FacebookShareButton>
                           </div>
                         </ShareWrapper>
+                      )}
+                      {!(isMobile() && navigator.share) && (
                         <ShareWrapper>
                           <div id="androidTwitter"
                                onClick={() => isAndroid() &&
@@ -786,54 +768,34 @@ class ShareButtonFooter extends Component {
                             </TwitterShareButton>
                           </div>
                         </ShareWrapper>
-                        {/*
-                        <ShareWrapper>
-                          {/* The EmailShareButton works in Cordova, but ONLY if an email client is configured, so it doesn't work in a simulator
-                          <div id="cordovaEmail"
-                               onClick={() => isCordova() &&
-                                 cordovaSocialSharingByEmail('Ready to vote?', linkToBeShared, this.handleCloseShareButtonDrawer)}
-                          >
-                            <EmailShareButton
-                              body={`${titleText} ${linkToBeShared}`}
-                              className="no-decoration"
-                              id="shareFooterEmailButton"
-                              beforeOnClick={this.saveActionShareButtonEmail}
-                              openShareDialogOnClick
-                              subject="Ready to vote?"
-                              url={`${linkToBeShared}`}
-                              windowWidth={750}
-                              windowHeight={600}
-                              disabled={isCordova()}
-                              disabledStyle={isCordova() ? { opacity: 1 } : {}}
-                            >
-                              <EmailIcon
-                                bgStyle={{ fill: '#2E3C5D' }}
-                                round="True"
-                                size={68}
-                              />
-                              <Text>
-                                Email
-                              </Text>
-                            </EmailShareButton>
-                          </div>
-                        </ShareWrapper>
-                        */}
-                        <ShareWrapper>
-                          <div>
-                            <ShareModalOption
-                              backgroundColor="#2E3C5D"
-                              copyLink
-                              icon={<FileCopyOutlined />}
-                              urlToShare={linkToBeShared}
-                              onClickFunction={this.saveActionShareButtonCopy}
-                              title="Copy link"
-                              uniqueExternalId="shareButtonFooter-CopyLink"
-                            />
-                          </div>
-                        </ShareWrapper>
+                      )}
+                      <ShareWrapper>
+                        <div>
+                          <ShareModalOption
+                            backgroundColor="#2E3C5D"
+                            copyLink
+                            icon={<FileCopyOutlined />}
+                            urlToShare={linkToBeShared}
+                            onClickFunction={this.saveActionShareButtonCopy}
+                            title="Copy link"
+                            uniqueExternalId="shareButtonFooter-CopyLink"
+                          />
+                        </div>
+                      </ShareWrapper>
+                    </Flex>
+                    {(isMobile() && navigator.share) && (
+                      <Flex>
+                        <ShareModalOption
+                          backgroundColor="#2E3C5D"
+                          icon={isAndroid() ? <Share /> : <IosShare />}
+                          noLink
+                          onClickFunction={() => this.openNativeShare(linkToBeShared, 'Open Share')}
+                          title="Share options on your device"
+                          uniqueExternalId="shareButtonFooter-NativeShare"
+                        />
                       </Flex>
-                    </>
-                  )}
+                    )}
+                  </>
                   {(isWebApp() && (stringContains('AllOpinions', shareFooterStep) && voterIsSignedIn)) && (  // This has many problems in Cordova
                     <Suspense fallback={<></>}>
                       <OpenExternalWebSite

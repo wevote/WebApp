@@ -10,6 +10,7 @@ import { returnFriendsModalTitle, returnShareModalTitle } from './ShareModalText
 import AnalyticsActions from '../../actions/AnalyticsActions';
 import FriendActions from '../../actions/FriendActions';
 import ShareActions from '../../common/actions/ShareActions';
+import VoterActions from '../../actions/VoterActions';
 import ShareStore from '../../common/stores/ShareStore';
 import apiCalming from '../../common/utils/apiCalming';
 import { cordovaLinkToBeSharedFixes, hasIPhoneNotch, isAndroid, isAndroidSizeMD } from '../../common/utils/cordovaUtils';
@@ -85,6 +86,14 @@ class ShareModal extends Component {
     });
     // this.openSignInModalIfWeShould(shareModalStep, voterIsSignedIn);
     AnalyticsActions.saveActionModalShare(VoterStore.electionId());
+
+    // Make sure we have We Vote friends data
+    if (apiCalming('voterContactListRetrieve', 20000)) {
+      VoterActions.voterContactListRetrieve();
+    }
+    if (apiCalming('voterContactListSave', 60000)) {
+      VoterActions.voterContactListAugmentWithWeVoteData(true);
+    }
   }
 
   componentWillUnmount () {
@@ -461,39 +470,6 @@ class ShareModal extends Component {
                     </TwitterShareButton>
                   </div>
                 </Wrapper>
-                {/*
-                <Wrapper>
-                  {/* The EmailShareButton works in Cordova, but ONLY if an email client is configured, so it doesn't work in a simulator
-                  <div id="cordovaEmail"
-                       onClick={() => isCordova() &&
-                         cordovaSocialSharingByEmail('Ready to vote?',
-                           linkToBeShared, this.props.closeShareModal)}
-                  >
-                    <EmailShareButton
-                      body={`${titleText}`}
-                      className="no-decoration"
-                      id="shareModalEmailButton"
-                      beforeOnClick={this.saveActionShareButtonEmail}
-                      openShareDialogOnClick
-                      subject="Ready to vote?"
-                      url={`${linkToBeShared}`}
-                      windowWidth={750}
-                      windowHeight={600}
-                      disabled={isCordova()}
-                      disabledStyle={isCordova() ? { opacity: 1 } : {}}
-                    >
-                      <EmailIcon
-                        bgStyle={{ fill: '#2E3C5D' }}
-                        round="True"
-                        size={68}
-                      />
-                      <Text>
-                        Email
-                      </Text>
-                    </EmailShareButton>
-                  </div>
-                </Wrapper>
-                */}
                 <ShareModalOption
                   backgroundColor="#2E3C5D"
                   copyLink
