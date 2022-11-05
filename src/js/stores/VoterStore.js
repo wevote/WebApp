@@ -1133,6 +1133,14 @@ class VoterStore extends ReduceStore {
               tracker.setUserID(incomingVoter.we_vote_id);
             }
           }
+          if (incomingVoter.is_signed_in && !AppObservableStore.getOpenReplayVoterIsSignedIn()) {
+            const tracker = AppObservableStore.getOpenReplayTracker();
+            if (tracker) {
+              console.log('OpenReplay setting voterIsSignedIn');
+              AppObservableStore.setOpenReplayVoterIsSignedIn(true);
+              tracker.setMetadata('voterIsSignedIn', 'true');
+            }
+          }
         }
         revisedState = state;
         revisedState = {
