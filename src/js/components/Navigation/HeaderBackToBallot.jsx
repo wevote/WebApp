@@ -816,7 +816,6 @@ class HeaderBackToBallot extends Component {
           {showShareModal && (
             <Suspense fallback={<></>}>
               <ShareModal
-                voterIsSignedIn={voterIsSignedIn}
                 show={showShareModal}
                 shareModalStep={shareModalStep}
                 closeShareModal={this.closeShareModal}

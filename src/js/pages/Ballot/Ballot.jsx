@@ -68,7 +68,6 @@ const appleSiliconDebug = false;
 const BALLOT_ITEM_FILTER_TYPES = ['All', 'Federal', 'State', 'Measure', 'Local'];
 const delayBeforeVoterRefreshCall = 1000;
 
-// const nextReleaseFeaturesEnabled = webAppConfig.ENABLE_NEXT_RELEASE_FEATURES === undefined ? false : webAppConfig.ENABLE_NEXT_RELEASE_FEATURES;
 
 class Ballot extends Component {
   constructor (props) {
@@ -1502,6 +1501,13 @@ class Ballot extends Component {
                 {/* eslint-disable-next-line no-nested-ternary */}
                 <div className={showBallotDecisionsTabs() ? 'row ballot__body' : isWebApp() || twoColumnDisplay ? 'row ballot__body__no-decision-tabs' : undefined}>
                   <div className="col-12">
+                    {showCompleteYourProfile && (
+                      <CompleteYourProfileWrapper>
+                        <Suspense fallback={<></>}>
+                          <CompleteYourProfile />
+                        </Suspense>
+                      </CompleteYourProfileWrapper>
+                    )}
                     {emptyBallot}
                   </div>
                   {ballotWithItemsFromCompletionFilterType.length > 0 ? (
@@ -1517,13 +1523,6 @@ class Ballot extends Component {
                         {searchText}
                         &quot;
                       </SearchTitle>
-                    )}
-                    {showCompleteYourProfile && (
-                      <CompleteYourProfileWrapper>
-                        <Suspense fallback={<></>}>
-                          <CompleteYourProfile />
-                        </Suspense>
-                      </CompleteYourProfileWrapper>
                     )}
                     <BallotListWrapper>
                       {/* The rest of the ballot items */}

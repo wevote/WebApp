@@ -17,11 +17,11 @@ import { normalizedHref } from '../../common/utils/hrefUtils';
 import { isCordova, isWebApp } from '../../common/utils/isCordovaOrWebApp';
 import { renderLog } from '../../common/utils/logging';
 import stringContains from '../../common/utils/stringContains';
-import webAppConfig from '../../config';
 import AppObservableStore, { messageService } from '../../stores/AppObservableStore';
 import VoterStore from '../../stores/VoterStore';
 import { getApplicationViewBooleans } from '../../utils/applicationUtils';
 import { shareBottomOffset } from '../../utils/cordovaOffsets';
+import createMessageToFriendDefaults from '../../utils/createMessageToFriendDefaults';
 import isMobile from '../../utils/isMobile';
 import { openSnackbar } from '../Widgets/SnackNotifier';
 
@@ -30,7 +30,6 @@ const ReadMore = React.lazy(() => import(/* webpackChunkName: 'ReadMore' */ '../
 const ShareWithFriendsModalBodyWithController = React.lazy(() => import(/* webpackChunkName: 'ShareWithFriendsModalBodyWithController' */ '../Friends/ShareWithFriendsModalBodyWithController'));
 const ShareWithFriendsModalTitleWithController = React.lazy(() => import(/* webpackChunkName: 'ShareWithFriendsModalTitleWithController' */ '../Friends/ShareWithFriendsModalTitleWithController'));
 
-const nextReleaseFeaturesEnabled = webAppConfig.ENABLE_NEXT_RELEASE_FEATURES === undefined ? false : webAppConfig.ENABLE_NEXT_RELEASE_FEATURES;
 
 class ShareButtonFooter extends Component {
   constructor (props) {
@@ -52,7 +51,6 @@ class ShareButtonFooter extends Component {
       showShareModal: false,
       showSignInModal: false,
       showVoterPlanModal: false,
-      voterIsSignedIn: false,
     };
   }
 
@@ -67,8 +65,9 @@ class ShareButtonFooter extends Component {
     const showSignInModal = AppObservableStore.showSignInModal();
     const showVoterPlanModal = AppObservableStore.showVoterPlanModal();
     const chosenPreventSharingOpinions = AppObservableStore.getChosenPreventSharingOpinions();
-    const currentFullUrlAdjusted = this.getCurrentFullUrl();
-    const currentFullUrlToShare = currentFullUrlAdjusted.replace('/modal/share', '');
+    // const currentFullUrlAdjusted = this.getCurrentFullUrl();
+    const currentFullUrlAdjusted = cordovaLinkToBeSharedFixes(window.location.href || '');
+    const currentFullUrlToShare = currentFullUrlAdjusted.replace('/modal/share', '').toLowerCase();
 
     const ballotShare = typeof pathname !== 'undefined' && pathname && pathname.startsWith('/ballot');
     const candidateShare = typeof pathname !== 'undefined' && pathname && pathname.startsWith('/candidate');
@@ -77,7 +76,7 @@ class ShareButtonFooter extends Component {
     const readyShare = typeof pathname !== 'undefined' && pathname && pathname.startsWith('/ready');
     const organizationShare = !ballotShare && !candidateShare && !measureShare && !officeShare && !readyShare;
 
-    const urlWithSharedItemCode = ShareStore.getUrlWithSharedItemCodeByFullUrl(currentFullUrlToShare);
+    const urlWithSharedItemCode = ShareStore.getUrlWithSharedItemCodeByFullUrl(currentFullUrlToShare, false);
     const urlWithSharedItemCodeAllOpinions = ShareStore.getUrlWithSharedItemCodeByFullUrl(currentFullUrlToShare, true);
     // console.log('ShareButtonFooter componentDidMount urlWithSharedItemCode:', urlWithSharedItemCode, ', urlWithSharedItemCodeAllOpinions:', urlWithSharedItemCodeAllOpinions);
     if (!urlWithSharedItemCode || !urlWithSharedItemCodeAllOpinions) {
@@ -97,8 +96,6 @@ class ShareButtonFooter extends Component {
       }
       ShareActions.sharedItemSave(currentFullUrlToShare, kindOfShare);
     }
-    const voter = VoterStore.getVoter();
-    const voterIsSignedIn = voter.is_signed_in;
     this.setState({
       candidateShare,
       chosenPreventSharingOpinions,
@@ -116,7 +113,6 @@ class ShareButtonFooter extends Component {
       showVoterPlanModal,
       urlWithSharedItemCode,
       urlWithSharedItemCodeAllOpinions,
-      voterIsSignedIn,
     });
   }
 
@@ -148,9 +144,10 @@ class ShareButtonFooter extends Component {
 
   onShareStoreChange () {
     // console.log('SharedModal onShareStoreChange');
-    const currentFullUrlAdjusted = this.getCurrentFullUrl();
+    // const currentFullUrlAdjusted = this.getCurrentFullUrl();
+    const currentFullUrlAdjusted = cordovaLinkToBeSharedFixes(window.location.href || '');
     const currentFullUrlToShare = currentFullUrlAdjusted.replace('/modal/share', '').toLowerCase();
-    const urlWithSharedItemCode = ShareStore.getUrlWithSharedItemCodeByFullUrl(currentFullUrlToShare);
+    const urlWithSharedItemCode = ShareStore.getUrlWithSharedItemCodeByFullUrl(currentFullUrlToShare, false);
     const urlWithSharedItemCodeAllOpinions = ShareStore.getUrlWithSharedItemCodeByFullUrl(currentFullUrlToShare, true);
     // console.log('SharedModal onShareStoreChange urlWithSharedItemCode:', urlWithSharedItemCode, ', urlWithSharedItemCodeAllOpinions:', urlWithSharedItemCodeAllOpinions);
     const showSignInModal = AppObservableStore.showSignInModal();
@@ -166,12 +163,11 @@ class ShareButtonFooter extends Component {
   }
 
   onVoterStoreChange () {
-    const voter = VoterStore.getVoter();
     // console.log('ShareButtonFooter, onVoterStoreChange voter: ', VoterStore.getVoter());
-    const voterIsSignedIn = voter.is_signed_in;
-    const currentFullUrlAdjusted = this.getCurrentFullUrl();
+    // const currentFullUrlAdjusted = this.getCurrentFullUrl();
+    const currentFullUrlAdjusted = cordovaLinkToBeSharedFixes(window.location.href || '');
     const currentFullUrlToShare = currentFullUrlAdjusted.replace('/modal/share', '').toLowerCase();
-    const urlWithSharedItemCode = ShareStore.getUrlWithSharedItemCodeByFullUrl(currentFullUrlToShare);
+    const urlWithSharedItemCode = ShareStore.getUrlWithSharedItemCodeByFullUrl(currentFullUrlToShare, false);
     const urlWithSharedItemCodeAllOpinions = ShareStore.getUrlWithSharedItemCodeByFullUrl(currentFullUrlToShare, true);
     if (!urlWithSharedItemCode || !urlWithSharedItemCodeAllOpinions) {
       ShareActions.sharedItemRetrieveByFullUrl(currentFullUrlToShare);
@@ -183,26 +179,27 @@ class ShareButtonFooter extends Component {
       showSignInModal,
       urlWithSharedItemCode,
       urlWithSharedItemCodeAllOpinions,
-      voterIsSignedIn,
     });
   }
 
-  getCurrentFullUrl () {
-    const { location: { href } } = window;
-    let currentFullUrl = href || ''; // We intentionally don't use normalizedHref() here
-    // Handles localhost and Cordova, always builds url to wevote.us
-    if (currentFullUrl.startsWith('https://localhost')) {
-      currentFullUrl = currentFullUrl.replace(/https:\/\/localhost.*?\//, 'https://wevote.us/');
-      // console.log(`currentFullUrl adjusted for localhost: ${currentFullUrl}`);
-    } else if (currentFullUrl.startsWith('file:///')) {
-      currentFullUrl = currentFullUrl.replace(/file:.*?android_asset\/www\/index.html#\//, 'https://wevote.us/');
-      // console.log(`currentFullUrl adjusted for Cordova android: ${currentFullUrl}`);
-    } else if (currentFullUrl.startsWith('file://')) {
-      currentFullUrl = currentFullUrl.replace(/file:\/\/.*?Vote.app\/www\/index.html#\//, 'https://wevote.us/');
-      // console.log(`currentFullUrl adjusted for Cordova ios: ${currentFullUrl}`);
-    }
-    return currentFullUrl;
-  }
+  // This has been replaced with cordovaLinkToBeSharedFixes in /src/js/common/utils/cordovaUtils.js
+  //  but needs to be tested in Cordova
+  // getCurrentFullUrl () {
+  //   const { location: { href } } = window;
+  //   let currentFullUrl = href || ''; // We intentionally don't use normalizedHref() here
+  //   // Handles localhost and Cordova, always builds url to wevote.us
+  //   if (currentFullUrl.startsWith('https://localhost')) {
+  //     currentFullUrl = currentFullUrl.replace(/https:\/\/localhost.*?\//, 'https://wevote.us/');
+  //     // console.log(`currentFullUrl adjusted for localhost: ${currentFullUrl}`);
+  //   } else if (currentFullUrl.startsWith('file:///')) {
+  //     currentFullUrl = currentFullUrl.replace(/file:.*?android_asset\/www\/index.html#\//, 'https://wevote.us/');
+  //     // console.log(`currentFullUrl adjusted for Cordova android: ${currentFullUrl}`);
+  //   } else if (currentFullUrl.startsWith('file://')) {
+  //     currentFullUrl = currentFullUrl.replace(/file:\/\/.*?Vote.app\/www\/index.html#\//, 'https://wevote.us/');
+  //     // console.log(`currentFullUrl adjusted for Cordova ios: ${currentFullUrl}`);
+  //   }
+  //   return currentFullUrl;
+  // }
 
   setStep (shareFooterStep) {
     AppObservableStore.setShareModalStep(shareFooterStep);
@@ -219,7 +216,7 @@ class ShareButtonFooter extends Component {
   handleShareButtonClick = () => {
     const pathname = normalizedHref();
     const { currentFullUrlAdjusted } = this.state;
-    const currentFullUrlToShare = currentFullUrlAdjusted.replace('/modal/share', '');
+    const currentFullUrlToShare = currentFullUrlAdjusted.replace('/modal/share', '').toLowerCase();
 
     const ballotShare = typeof pathname !== 'undefined' && pathname && pathname.startsWith('/ballot');
     const candidateShare = typeof pathname !== 'undefined' && pathname && pathname.startsWith('/candidate');
@@ -243,6 +240,9 @@ class ShareButtonFooter extends Component {
       kindOfShare = 'BALLOT';
     }
     ShareActions.sharedItemSave(currentFullUrlAdjusted, kindOfShare);
+    const voterIsSignedIn = VoterStore.getVoterIsSignedIn();
+    const pigsCanFly = false;
+    const defaultToAllOpinions = voterIsSignedIn && pigsCanFly;
     this.setState({
       candidateShare,
       currentFullUrlAdjusted,
@@ -254,7 +254,7 @@ class ShareButtonFooter extends Component {
       readyShare,
       shareFooterStep: '',
       showShareButton: false,
-    }, () => this.openShareOptions(true)); // openShareOptions advances directly to share
+    }, () => this.openShareOptions(defaultToAllOpinions)); // openShareOptions advances directly to share
   }
 
   handleCloseShareButtonDrawer = () => {
@@ -327,7 +327,7 @@ class ShareButtonFooter extends Component {
   }
 
   // openSignInModalIfWeShould = (shareFooterStep) => {
-  //   const { voterIsSignedIn } = this.state;
+  //   const voterIsSignedIn = VoterStore.getVoterIsSignedIn();
   //   // console.log('ShareButtonFooter openSignInModalIfWeShould, shareFooterStep:', shareFooterStep, ', voterIsSignedIn:', voterIsSignedIn);
   //   if (stringContains('AllOpinions', shareFooterStep)) {
   //     if (!voterIsSignedIn) {
@@ -353,7 +353,7 @@ class ShareButtonFooter extends Component {
   }
 
   saveActionShareButtonFriends = () => {
-    const { voterIsSignedIn } = this.state;
+    const voterIsSignedIn = VoterStore.getVoterIsSignedIn();
     if (voterIsSignedIn) {
       this.setState({
         shareWithFriendsNow: true,
@@ -387,7 +387,7 @@ class ShareButtonFooter extends Component {
   }
 
   includeOpinions (shareFooterStep) {
-    const { voterIsSignedIn } = this.state;
+    const voterIsSignedIn = VoterStore.getVoterIsSignedIn();
     // console.log('ShareButtonFooter includeOpinions shareFooterStep:', shareFooterStep, ', voterIsSignedIn:', voterIsSignedIn);
     if (!stringContains('AllOpinions', shareFooterStep)) {
       if (voterIsSignedIn) {
@@ -435,9 +435,10 @@ class ShareButtonFooter extends Component {
       friendsModalTitle, hideShareButtonFooter, measureShare, officeShare,
       openShareButtonDrawer, organizationShare, readyShare,
       shareFooterStep, shareModalTitle, shareWithFriendsNow, showingOneCompleteYourProfileModal, showShareButton,
-      showShareModal, showSignInModal, showVoterPlanModal, voterIsSignedIn,
+      showShareModal, showSignInModal, showVoterPlanModal,
       urlWithSharedItemCode, urlWithSharedItemCodeAllOpinions,
     } = this.state;
+    const voterIsSignedIn = VoterStore.getVoterIsSignedIn();
     const { showFooterBar } = getApplicationViewBooleans(pathname);
 
     // Hide if scrolled down the page
@@ -451,10 +452,14 @@ class ShareButtonFooter extends Component {
       return null;
     }
 
-    const titleText = 'This is a website I am using to get ready to vote.';
+    const messageToFriendType = 'remindContacts';
+    const results = createMessageToFriendDefaults(messageToFriendType);
+    const { messageToFriendDefault } = results;
+    const titleText = messageToFriendDefault;
     // let emailSubjectEncoded = '';
     // let emailBodyEncoded = '';
     let linkToBeShared = '';
+    // console.log('shareFooterStep:', shareFooterStep);
     if (stringContains('AllOpinions', shareFooterStep)) {
       if (urlWithSharedItemCodeAllOpinions) {
         linkToBeShared = urlWithSharedItemCodeAllOpinions;
@@ -636,10 +641,12 @@ class ShareButtonFooter extends Component {
                         <RadioItem>
                           <FormControlLabel
                             classes={{ label: classes.radioLabel }}
-                            disabled={!voterIsSignedIn}
+                            // disabled={!voterIsSignedIn}
+                            disabled
                             id="shareModalAllOpinionsRadioButton"
                             value="AllOpinions"
-                            label={voterIsSignedIn ? 'Share my voter guide' : 'Sign in to share my voter guide'}
+                            // label={voterIsSignedIn ? 'Share my voter guide' : 'Sign in to share my voter guide'}
+                            label="Share my voter guide (coming soon)"
                             labelPlacement="end"
                             control={
                               (
@@ -685,23 +692,21 @@ class ShareButtonFooter extends Component {
                   </ModalTitleArea>
                   {(developmentFeatureTurnedOn && isMobile() && navigator.share) ? (
                     <Flex>
-                      {nextReleaseFeaturesEnabled && (
-                        <ShareModalOption
-                          backgroundColor="#0834cd"
-                          icon={<img src="../../../img/global/svg-icons/we-vote-icon-square-color.svg" alt="" />}
-                          noLink
-                          onClickFunction={this.saveActionShareButtonFriends}
-                          title="We Vote Friends"
-                          uniqueExternalId="shareButtonFooter-Friends"
-                        />
-                      )}
+                      <ShareModalOption
+                        backgroundColor="#0834cd"
+                        icon={<img src="../../../img/global/svg-icons/we-vote-icon-square-color.svg" alt="" />}
+                        noLink
+                        onClickFunction={this.saveActionShareButtonFriends}
+                        title="We Vote friends"
+                        uniqueExternalId="shareButtonFooter-Friends"
+                      />
                       <ShareModalOption
                         backgroundColor="#2E3C5D"
                         copyLink
                         icon={<FileCopyOutlined />}
                         link={linkToBeShared}
                         onClickFunction={this.saveActionShareButtonCopy}
-                        title="Copy Link"
+                        title="Copy link"
                         uniqueExternalId="shareButtonFooter-CopyLink"
                       />
                       <ShareModalOption
@@ -716,17 +721,15 @@ class ShareButtonFooter extends Component {
                   ) : (
                     <>
                       <Flex>
-                        {nextReleaseFeaturesEnabled && (
-                          <ShareModalOption
-                            backgroundColor="#0834cd"
-                            icon={<img src="../../../img/global/svg-icons/we-vote-icon-square-color.svg" alt="" />}
-                            // urlToShare={linkToBeShared}
-                            noLink
-                            onClickFunction={this.saveActionShareButtonFriends}
-                            title="We Vote Friends"
-                            uniqueExternalId="shareButtonFooter-Friends"
-                          />
-                        )}
+                        <ShareModalOption
+                          backgroundColor="#0834cd"
+                          icon={<img src="../../../img/global/svg-icons/we-vote-icon-square-color.svg" alt="" />}
+                          // urlToShare={linkToBeShared}
+                          noLink
+                          onClickFunction={this.saveActionShareButtonFriends}
+                          title="We Vote friends"
+                          uniqueExternalId="shareButtonFooter-Friends"
+                        />
                       </Flex>
                       <Flex>
                         <ShareWrapper>
@@ -823,7 +826,7 @@ class ShareButtonFooter extends Component {
                               icon={<FileCopyOutlined />}
                               urlToShare={linkToBeShared}
                               onClickFunction={this.saveActionShareButtonCopy}
-                              title="Copy Link"
+                              title="Copy link"
                               uniqueExternalId="shareButtonFooter-CopyLink"
                             />
                           </div>

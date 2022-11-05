@@ -29,7 +29,7 @@ class ShareWithFriendsModalTitleWithController extends Component {
   }
 
   componentDidMount () {
-    console.log('ShareWithFriendsModalTitleWithController componentDidMount');
+    // console.log('ShareWithFriendsModalTitleWithController componentDidMount');
     // We expect this API call from ShareWithFriendsModalBodyWithController
     // if (apiCalming('friendListsAll', 5000)) {
     //   FriendActions.friendListsAll();

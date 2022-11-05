@@ -174,20 +174,21 @@ class FooterBar extends React.Component {
     // If NOT signed in, turn Discuss off and How It Works on
     let discussVisible;
     let donateVisible;
-    let howItWorksVisible;
+    // let howItWorksVisible;
+    const howItWorksVisible = false;
     if (isCordova() || inPrivateLabelMode) {
       discussVisible = true;
       donateVisible = false;
-      howItWorksVisible = true;
+      // howItWorksVisible = true;
     } else if (voterIsSignedIn) {
       // If signed in, turn Discuss on, and How It Works off
       discussVisible = true;
       donateVisible = true;
-      howItWorksVisible = false;
+      // howItWorksVisible = false;
     } else {
       discussVisible = false;
       donateVisible = true;
-      howItWorksVisible = true;
+      // howItWorksVisible = true;
     }
     return (
       <FooterBarWrapper>

@@ -12,7 +12,6 @@ import { isIPad } from '../../common/utils/cordovaUtils';
 import historyPush from '../../common/utils/historyPush';
 import { isWebApp } from '../../common/utils/isCordovaOrWebApp';
 import { renderLog } from '../../common/utils/logging';
-import webAppConfig from '../../config';
 import FriendToggle from '../../components/Friends/FriendToggle';
 import ShareButtonDesktopTablet from '../../components/Share/ShareButtonDesktopTablet';
 import { PageContentContainer } from '../../components/Style/pageLayoutStyles';
@@ -29,7 +28,7 @@ const DelayedLoad = React.lazy(() => import(/* webpackChunkName: 'DelayedLoad' *
 const FollowToggle = React.lazy(() => import(/* webpackChunkName: 'FollowToggle' */ '../../components/Widgets/FollowToggle'));
 
 const AUTO_FOLLOW = 'af';
-const nextReleaseFeaturesEnabled = webAppConfig.ENABLE_NEXT_RELEASE_FEATURES === undefined ? false : webAppConfig.ENABLE_NEXT_RELEASE_FEATURES;
+
 
 export default class OrganizationVoterGuide extends Component {
   constructor (props) {
@@ -336,12 +335,10 @@ export default class OrganizationVoterGuide extends Component {
             <BannerOverlayDesktopInnerWrapper>
               <BannerOverlayDesktopShareButtonWrapper>
                 <BannerOverlayDesktopShareButtonInnerWrapper>
-                  {nextReleaseFeaturesEnabled && (
-                    <ShareButtonDesktopTablet
-                      organizationShare
-                      organizationWeVoteId={organizationWeVoteId}
-                    />
-                  )}
+                  <ShareButtonDesktopTablet
+                    organizationShare
+                    organizationWeVoteId={organizationWeVoteId}
+                  />
                 </BannerOverlayDesktopShareButtonInnerWrapper>
               </BannerOverlayDesktopShareButtonWrapper>
               <BannerContainerDesktop>

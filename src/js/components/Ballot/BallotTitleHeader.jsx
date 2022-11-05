@@ -10,7 +10,6 @@ import daysUntil from '../../common/utils/daysUntil';
 import initializeMoment from '../../common/utils/initializeMoment';
 import { renderLog } from '../../common/utils/logging';
 import stringContains from '../../common/utils/stringContains';
-import webAppConfig from '../../config';
 import ShareButtonDesktopTablet from '../Share/ShareButtonDesktopTablet';
 import AppObservableStore from '../../stores/AppObservableStore';
 import BallotStore from '../../stores/BallotStore';
@@ -125,7 +124,6 @@ class BallotTitleHeader extends Component {
 
   render () {
     renderLog('BallotTitleHeader');  // Set LOG_RENDER_EVENTS to log all renders
-    const nextReleaseFeaturesEnabled = webAppConfig.ENABLE_NEXT_RELEASE_FEATURES === undefined ? false : webAppConfig.ENABLE_NEXT_RELEASE_FEATURES;
     const { allowTextWrap, centerText, electionDateBelow, linksOff, showBallotCaveat, showShareButton, turnOffVoteByBelow } = this.props;
     const {
       ballotCaveat, daysUntilElection, electionDayTextObject,
@@ -299,7 +297,7 @@ class BallotTitleHeader extends Component {
                 </ElectionDateRight>
               </VoteByRightWrapper>
             )}
-            {(showShareButton && nextReleaseFeaturesEnabled) && (
+            {showShareButton && (
               <BallotShareWrapper className="u-show-desktop-tablet">
                 <ShareButtonDesktopTablet />
               </BallotShareWrapper>
