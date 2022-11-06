@@ -291,7 +291,7 @@ export default class SignInOptionsPanel extends Component {
   };
 
   showEmailOnlySignIn = () => {
-    console.log('SignInOptionsPanel showEmailOnlySignIn ');
+    console.log('SignInOptionsPanel showEmailOnlySignIn');
     this.setState({
       hideAppleSignInButton: true,
       hideCurrentlySignedInHeader: true,
@@ -309,7 +309,7 @@ export default class SignInOptionsPanel extends Component {
   };
 
   showPhoneOnlySignIn = () => {
-    console.log('SignInOptionsPanel showPhoneOnlySignIn ');
+    console.log('SignInOptionsPanel showPhoneOnlySignIn');
     this.setState({
       hideAppleSignInButton: true,
       hideCurrentlySignedInHeader: true,
