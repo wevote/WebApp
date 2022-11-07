@@ -10,6 +10,7 @@ import { oAuthLog, renderLog } from '../../common/utils/logging';
 import { messageService } from '../../stores/AppObservableStore';
 import FacebookStore from '../../stores/FacebookStore';
 import VoterStore from '../../stores/VoterStore';
+import initializeFacebookSDK from '../../utils/initializeFacebookSDK';
 import signInModalGlobalState from '../Widgets/signInModalGlobalState';
 
 
@@ -122,7 +123,22 @@ class FacebookSignIn extends Component {
       facebookSignInSequenceStarted: true,
     });
     signInModalGlobalState.set('startFacebookSignInSequence', true);
-    FacebookActions.login();
+    let { FB } = window;
+    if (FB) {
+      FacebookActions.login();
+    } else {
+      // Initialize Facebook SDK again, and then start login
+      console.log('Trying to initializeFacebookSDK again');
+      initializeFacebookSDK();
+      this.timer = setTimeout(() => {
+        ({ FB } = window);
+        if (FB) {
+          FacebookActions.login();
+        } else {
+          console.log('Could not initializeFacebookSDK in 750 milliseconds');
+        }
+      }, 750);
+    }
   };
 
   closeSignInModalLocal = () => {
