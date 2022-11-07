@@ -280,27 +280,32 @@ export default {
     // as a result of this call is blocked. A solution to this problem would be to to specify status: true in the
     // options object of FB.init and you need to be confident that login status has already loaded.
     oAuthLog('FacebookActions this.facebookApi().login');
-
     if (this.facebookApi()) {
       const innerThis = this;
-      this.facebookApi().getLoginStatus(
-        (response) => {
-          oAuthLog('FacebookActions this.facebookApi().getLoginStatus response: ', response);
-          dumpObjProps('facebookApi().getLoginStatus()', response);
-          if (response.status === 'connected') {
-            Dispatcher.dispatch({
-              type: FacebookConstants.FACEBOOK_LOGGED_IN,
-              data: response,
-            });
-          } else {
-            if (isWebApp()) { // eslint-disable-line no-lonely-if
-              window.FB.login(innerThis.loginSuccess, innerThis.loginFailure, innerThis.getPermissions());
+      try {
+        this.facebookApi().getLoginStatus(
+          (response) => {
+            oAuthLog('FacebookActions this.facebookApi().getLoginStatus() response: ', response);
+            dumpObjProps('FacebookActions facebookApi().getLoginStatus() response:', response);
+            if (response.status === 'connected') {
+              Dispatcher.dispatch({
+                type: FacebookConstants.FACEBOOK_LOGGED_IN,
+                data: response,
+              });
             } else {
-              window.facebookConnectPlugin.login(innerThis.getPermissions(), innerThis.loginSuccess, innerThis.loginFailure);
+              if (isWebApp()) { // eslint-disable-line no-lonely-if
+                console.log('Trying again with innerThis values, window.FB.login()');
+                window.FB.login(innerThis.loginSuccess, innerThis.loginFailure, innerThis.getPermissions());
+              } else {
+                console.log('Trying again with innerThis values, window.facebookConnectPlugin.login()');
+                window.facebookConnectPlugin.login(innerThis.getPermissions(), innerThis.loginSuccess, innerThis.loginFailure);
+              }
             }
-          }
-        },
-      );
+          },
+        );
+      } catch (error) {
+        console.log('FacebookActions.login() try/catch error: ', error);
+      }
     } else {
       console.log('FacebookActions.login was not invoked, this.facebookApi() undefined');
     }

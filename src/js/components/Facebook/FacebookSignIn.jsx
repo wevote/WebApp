@@ -123,21 +123,29 @@ class FacebookSignIn extends Component {
       facebookSignInSequenceStarted: true,
     });
     signInModalGlobalState.set('startFacebookSignInSequence', true);
-    let { FB } = window;
+    let { FB, facebookConnectPlugin } = window;
     if (FB) {
+      console.log('FB FacebookActions.login, first try');
+      FacebookActions.login();
+    } else if (facebookConnectPlugin) {
+      console.log('facebookConnectPlugin FacebookActions.login, first try');
       FacebookActions.login();
     } else {
       // Initialize Facebook SDK again, and then start login
-      console.log('Trying to initializeFacebookSDK again');
+      console.log('Trying to initializeFacebookSDK again - 1500 millisecond pause');
       initializeFacebookSDK();
       this.timer = setTimeout(() => {
-        ({ FB } = window);
+        ({ FB, facebookConnectPlugin } = window);
         if (FB) {
+          console.log('FB FacebookActions.login, second try');
+          FacebookActions.login();
+        } else if (facebookConnectPlugin) {
+          console.log('facebookConnectPlugin FacebookActions.login, second try');
           FacebookActions.login();
         } else {
           console.log('Could not initializeFacebookSDK in 750 milliseconds');
         }
-      }, 750);
+      }, 1500);
     }
   };
 

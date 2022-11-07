@@ -30,11 +30,15 @@ class AddContactsFromGoogleButton extends Component {
     this.onVoterStoreChange();
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
     if (isWebApp()) {
-      loadGapiInsideDOM().then(() => {
-        // console.log('AddContactsFromGoogleButton loadGapiInsideDOM onload:');
-        window.gapi.load('client:auth2', this.initClient.bind(this));
-        // console.log('AddContactsFromGoogleButton loadGapiInsideDOM after onload window.gapi:', window.gapi);
-      });
+      try {
+        loadGapiInsideDOM().then(() => {
+          // console.log('AddContactsFromGoogleButton loadGapiInsideDOM onload:');
+          window.gapi.load('client:auth2', this.initClient.bind(this));
+          // console.log('AddContactsFromGoogleButton loadGapiInsideDOM after onload window.gapi:', window.gapi);
+        });
+      } catch (error) {
+        console.log('loadGapiInsideDOM try/catch error: ', error);
+      }
     }
   }
 
@@ -112,16 +116,20 @@ class AddContactsFromGoogleButton extends Component {
     // const { addContactsState, setOfContacts } = this.state;
     const { gapi } = window;
     // 2022-06-23 We always want to give the voter a chance to choose another account to import from
-    const isSignedIn = gapi.auth2.getAuthInstance().isSignedIn.get();
-    // console.log('onButtonClickWebApp isSignedIn:', isSignedIn);
-    if (isSignedIn) {
-      // console.log('Getting contacts from Google on button click, since we were logged into Google');
-      this.getOtherConnections();
-      this.setState({ addContactsState: AddContactConsts.requestingContacts });
-    } else {
-      // console.log('Getting Auth from Google on button click, since we were not logged into Google');
-      gapi.auth2.getAuthInstance().signIn();
-      this.setState({ addContactsState: AddContactConsts.requestingSignIn });
+    try {
+      const isSignedIn = gapi.auth2.getAuthInstance().isSignedIn.get();
+      // console.log('onButtonClickWebApp isSignedIn:', isSignedIn);
+      if (isSignedIn) {
+        // console.log('Getting contacts from Google on button click, since we were logged into Google');
+        this.getOtherConnections();
+        this.setState({ addContactsState: AddContactConsts.requestingContacts });
+      } else {
+        // console.log('Getting Auth from Google on button click, since we were not logged into Google');
+        gapi.auth2.getAuthInstance().signIn();
+        this.setState({ addContactsState: AddContactConsts.requestingSignIn });
+      }
+    } catch (error) {
+      console.log('onButtonClickWebApp try/catch error: ', error);
     }
   }
 
@@ -274,30 +282,37 @@ class AddContactsFromGoogleButton extends Component {
     const DISCOVERY_DOCS = ['https://www.googleapis.com/discovery/v1/apis/people/v1/rest'];
     const SCOPES = 'https://www.googleapis.com/auth/contacts.other.readonly';
 
-    gapi.client.init({
-      apiKey: GOOGLE_PEOPLE_API_KEY,
-      clientId: GOOGLE_PEOPLE_API_CLIENT_ID,
-      discoveryDocs: DISCOVERY_DOCS,
-      scope: SCOPES,
-    }).then(() => {
-      // Listen for sign-in state changes.
-      this.googleSignInListener = gapi.auth2.getAuthInstance().isSignedIn.listen(this.onGoogleSignIn);
-      const signedIn = gapi.auth2.getAuthInstance().isSignedIn.get();
-      if (signedIn) {
-        if (addContactsState !== AddContactConsts.initializedSignedIn) {
-          this.setState({ addContactsState: AddContactConsts.initializedSignedIn });
+    try {
+      gapi.client.init({
+        apiKey: GOOGLE_PEOPLE_API_KEY,
+        clientId: GOOGLE_PEOPLE_API_CLIENT_ID,
+        discoveryDocs: DISCOVERY_DOCS,
+        scope: SCOPES,
+      }).then(() => {
+        // Listen for sign-in state changes.
+        this.googleSignInListener = gapi.auth2.getAuthInstance().isSignedIn.listen(this.onGoogleSignIn);
+        const signedIn = gapi.auth2.getAuthInstance().isSignedIn.get();
+        if (signedIn) {
+          if (addContactsState !== AddContactConsts.initializedSignedIn) {
+            this.setState({ addContactsState: AddContactConsts.initializedSignedIn });
+          }
+        } else if (addContactsState !== AddContactConsts.initializedSignedOut) {
+          this.setState({ addContactsState: AddContactConsts.initializedSignedOut });
         }
-      } else if (addContactsState !== AddContactConsts.initializedSignedOut) {
-        this.setState({ addContactsState: AddContactConsts.initializedSignedOut });
+      }, (error) => {
+        console.error('initClient gapi.client.init error trapping');
+        console.error(JSON.stringify(error, null, 2));
+        if (error.message) {
+          errorMessageFromGoogle += error.message;
+        }
+        gapi.auth2.getAuthInstance().signOut();
+      });
+    } catch (error) {
+      console.log('initClient try/catch error: ', error);
+      if (error) {
+        errorMessageFromGoogle += `Error from Google: ${error}`;
       }
-    }, (error) => {
-      console.error('initClient error trapping');
-      console.error(JSON.stringify(error, null, 2));
-      if (error.message) {
-        errorMessageFromGoogle += error.message;
-      }
-      gapi.auth2.getAuthInstance().signOut();
-    });
+    }
     this.setState({
       errorMessageFromGoogle,
     });
