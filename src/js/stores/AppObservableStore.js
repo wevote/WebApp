@@ -501,6 +501,10 @@ export default {
 
   isOnWeVoteRootUrl () {
     const weVoteURL = nonFluxState.onWeVoteRootUrl || false;
+    console.log('AppObservableStore nonFluxState.onWeVoteRootUrl: ', nonFluxState.onWeVoteRootUrl,
+      ', isOnWeVoteRootUrl weVoteURL: ', weVoteURL,
+      ', isCordovaLocal(): ', isCordovaLocal(),
+      ', is localhost: ', stringContains('localhost:', window.location.href));
     return weVoteURL || isCordovaLocal() || stringContains('localhost:', window.location.href) || stringContains('ngrok.io', window.location.href);
   },
 
@@ -629,7 +633,7 @@ export default {
       endpoint: 'siteConfigurationRetrieve',
       data: { hostname, refresh_string },
       success: (res) => {
-        // console.log('AppObservableStore siteConfigurationRetrieve success, res:', res);
+        console.log('AppObservableStore siteConfigurationRetrieve success, res:', res);
         const {
           status: apiStatus,
           success: apiSuccess,
@@ -643,6 +647,7 @@ export default {
           chosen_ready_introduction_text: chosenReadyIntroductionText,
           chosen_ready_introduction_title: chosenReadyIntroductionTitle,
         } = res;
+        console.log('AppObservableStore siteConfigurationRetrieve, hostname as seen from api server:', hostFromApi);
         let newHostname = hostFromApi;
         if (apiSuccess) {
           let onWeVoteRootUrl = false;
@@ -654,8 +659,8 @@ export default {
             newHostname = webAppConfig.WE_VOTE_HOSTNAME;
           }
 
-          // console.log('siteConfigurationRetrieve hostname:', hostname);
-          if (newHostname === 'wevote.us' || newHostname === 'quality.wevote.us' || newHostname === 'localhost') {
+          console.log('AppObservableStore siteConfigurationRetrieve hostname:', hostname);
+          if (newHostname === 'wevote.us' || newHostname === 'www.wevote.us' || newHostname === 'quality.wevote.us' || newHostname === 'localhost') {
             onWeVoteRootUrl = true;
           } else if (stringContains('wevote.us', newHostname)) {
             onWeVoteSubdomainUrl = true;
