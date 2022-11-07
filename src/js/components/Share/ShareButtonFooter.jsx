@@ -118,6 +118,11 @@ class ShareButtonFooter extends Component {
     });
   }
 
+  componentDidCatch (error, info) {
+    // We should get this information to Splunk!
+    console.error('ShareButtonFooter caught error: ', `${error} with info: `, info);
+  }
+
   componentWillUnmount () {
     this.appStateSubscription.unsubscribe();
     this.shareStoreListener.remove();

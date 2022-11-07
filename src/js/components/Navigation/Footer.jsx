@@ -38,6 +38,11 @@ class Footer extends Component {
     this.updateCachedSiteVars();
   }
 
+  componentDidCatch (error, info) {
+    // We should get this information to Splunk!
+    console.error('Footer caught error: ', `${error} with info: `, info);
+  }
+
   componentWillUnmount () {
     this.appStateSubscription.unsubscribe();
     window.removeEventListener('scroll', this.handleWindowScroll);
