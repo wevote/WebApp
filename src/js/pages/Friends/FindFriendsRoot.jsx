@@ -12,6 +12,7 @@ import { isCordovaWide } from '../../common/utils/cordovaUtils';
 import historyPush from '../../common/utils/historyPush';
 import { renderLog } from '../../common/utils/logging';
 import normalizedImagePath from '../../common/utils/normalizedImagePath';
+import stringContains from '../../common/utils/stringContains';
 import HeaderBackToButton from '../../components/Navigation/HeaderBackToButton';
 import DeleteAllContactsButton from '../../components/SetUpAccount/DeleteAllContactsButton';
 import SetUpAccountNextButton from '../../components/SetUpAccount/SetUpAccountNextButton';
@@ -30,6 +31,7 @@ import {
   WeVoteLogo,
   WeVoteLogoWrapper,
 } from '../../components/Style/SimpleProcessStyles';
+import AppObservableStore from '../../stores/AppObservableStore';
 import FriendStore from '../../stores/FriendStore';
 import VoterStore from '../../stores/VoterStore';
 import Reassurance from '../../components/SetUpAccount/Reassurance';
@@ -83,6 +85,8 @@ class FindFriendsRoot extends React.Component {
     const displayStep = this.convertSetUpPagePathToDisplayStep(setUpPagePath);
     this.shouldNextButtonBeDisabled();
     this.setState({
+      setUpAccountBackLinkPath: AppObservableStore.getSetUpAccountBackLinkPath(),
+      setUpAccountEntryPath: AppObservableStore.getSetUpAccountEntryPath(),
       displayStep,
       setUpPagePath,
     });
@@ -267,6 +271,7 @@ class FindFriendsRoot extends React.Component {
     const {
       addPhotoNextButtonDisabled, displayStep, editNameNextButtonDisabled,
       friendConnectionActionAvailable,
+      setUpAccountBackLinkPath, setUpAccountEntryPath,
       signInNextButtonDisabled,
       voterContactEmailListCount, voterFirstName, voterPhotoUrlLarge,
     } = this.state;
@@ -288,8 +293,8 @@ class FindFriendsRoot extends React.Component {
     switch (displayStep) {
       default:
       case 1: // importcontacts
-        backToLinkPath = '';
-        backButtonOn = true;
+        backToLinkPath = setUpAccountBackLinkPath || '';
+        backButtonOn = !!(setUpAccountBackLinkPath);
         desktopFixedButtonsOn = false;
         desktopInlineButtonsOnInMobile = true;
         mobileFixedButtonsOff = true;
@@ -336,8 +341,13 @@ class FindFriendsRoot extends React.Component {
         }
         break;
       case 2: // signin
+        // console.log('setUpAccountEntryPath:', setUpAccountEntryPath, ', setUpAccountBackLinkPath:', setUpAccountBackLinkPath);
+        if (stringContains('importcontacts', setUpAccountEntryPath) || stringContains('signin', setUpAccountEntryPath)) {
+          backToLinkPath = setUpAccountBackLinkPath;
+        } else {
+          backToLinkPath = '/findfriends/importcontacts';
+        }
         backButtonOn = true;
-        backToLinkPath = '/findfriends/importcontacts';
         desktopFixedButtonsOn = false;
         desktopInlineButtonsOnInMobile = true;
         mobileFixedButtonsOff = true;

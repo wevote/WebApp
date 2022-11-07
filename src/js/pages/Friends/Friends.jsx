@@ -39,6 +39,7 @@ import sortFriendListByMutualFriends from '../../utils/friendFunctions';
 import { SectionDescription } from '../../components/Style/friendStyles';
 
 const AddContactsFromGoogleButton = React.lazy(() => import(/* webpackChunkName: 'AddContactsFromGoogleButton' */ '../../components/SetUpAccount/AddContactsFromGoogleButton'));
+const FindFriendsStart = React.lazy(() => import(/* webpackChunkName: 'FindFriendsStart' */ '../../components/Friends/FindFriendsStart'));
 const FirstAndLastNameRequiredAlert = React.lazy(() => import(/* webpackChunkName: 'FirstAndLastNameRequiredAlert' */ '../../components/Widgets/FirstAndLastNameRequiredAlert'));
 const RemindContactsStart = React.lazy(() => import(/* webpackChunkName: 'RemindContactsStart' */ '../../components/Remind/RemindContactsStart'));
 const SuggestedContacts = React.lazy(() => import(/* webpackChunkName: 'SuggestedContacts' */ '../../components/Friends/SuggestedContacts'));
@@ -97,7 +98,7 @@ class Friends extends Component {
     if (apiCalming('voterContactListSave', 60000)) {
       VoterActions.voterContactListAugmentWithWeVoteData(true);
     }
-    this.resetDefaultTabForMobile(FriendStore.friendInvitationsSentToMe(), FriendStore.suggestedFriendList(), FriendStore.friendInvitationsSentByMe());
+    this.resetDefaultTabForMobile();
     if (apiCalming('activityNoticeListRetrieve', 10000)) {
       ActivityActions.activityNoticeListRetrieve();
     }
@@ -162,7 +163,12 @@ class Friends extends Component {
 
   handleNavigation = (to) => historyPush(to);
 
-  resetDefaultTabForMobile (friendInvitationsSentToMe, suggestedFriendList, friendInvitationsSentByMe) {
+  resetDefaultTabForMobile () {
+    const friendInvitationsSentToMe = FriendStore.friendInvitationsSentToMe();
+    const suggestedFriendList = FriendStore.suggestedFriendList();
+    const friendInvitationsSentByMe = FriendStore.friendInvitationsSentByMe();
+    const voterContactEmailListCount = VoterStore.getVoterContactEmailListCount();
+
     const { match: { params: { tabItem } } } = this.props;
     let defaultTabItem;
     if (tabItem) {
@@ -170,12 +176,12 @@ class Friends extends Component {
       defaultTabItem = tabItem;
     } else if (friendInvitationsSentToMe && friendInvitationsSentToMe.length > 0) {
       defaultTabItem = 'requests';
-    } else if (suggestedFriendList && suggestedFriendList.length > 0) {
+    } else if ((suggestedFriendList && suggestedFriendList.length > 0) || (voterContactEmailListCount > 0)) {
       defaultTabItem = 'suggested';
     } else if (friendInvitationsSentByMe && friendInvitationsSentByMe.length > 0) {
       defaultTabItem = 'sent-requests';
     } else {
-      defaultTabItem = 'remind';
+      defaultTabItem = 'requests';
     }
     this.setState({ defaultTabItem });
     // console.log('resetDefaultTabForMobile defaultTabItem:', defaultTabItem, ', tabItem:', tabItem);
@@ -200,6 +206,7 @@ class Friends extends Component {
       return LoadingWheel;
     }
 
+    const findFriendsOn = true;
     // const expandSideMarginsIfCordova = isCordova() ? { marginRight: 23, marginLeft: 23 } : {};
     let mobileContentToDisplay;
     let desktopContentToDisplay;
@@ -209,7 +216,6 @@ class Friends extends Component {
     if (voterIsSignedIn) {
       switch (tabItem) {
         case 'remind':
-        default:
           desktopContentToDisplay = (
             <RemindOuterWrapper>
               <RemindContactsWrapper>
@@ -271,11 +277,11 @@ class Friends extends Component {
                       )}
                     </>
                   )}
-                  <Suspense fallback={<></>}>
-                    <SuggestedContacts />
-                  </Suspense>
                 </>
               )}
+              <Suspense fallback={<></>}>
+                <SuggestedContacts />
+              </Suspense>
             </>
           );
           break;
@@ -451,6 +457,7 @@ class Friends extends Component {
           break;
         case 'all':
         case 'requests':
+        default:
           desktopContentToDisplay = (
             <>
               <Helmet title="Friends - We Vote" />
@@ -574,14 +581,27 @@ class Friends extends Component {
             )}
           </>
         ) : (
-          <RemindOuterWrapper>
-            <Helmet title="Remind Your Friends - We Vote" />
-            <RemindContactsWrapper>
-              <Suspense fallback={<></>}>
-                <RemindContactsStart />
-              </Suspense>
-            </RemindContactsWrapper>
-          </RemindOuterWrapper>
+          <>
+            {findFriendsOn ? (
+              <RemindOuterWrapper>
+                <Helmet title="Find Your Friends - We Vote" />
+                <RemindContactsWrapper>
+                  <Suspense fallback={<></>}>
+                    <FindFriendsStart />
+                  </Suspense>
+                </RemindContactsWrapper>
+              </RemindOuterWrapper>
+            ) : (
+              <RemindOuterWrapper>
+                <Helmet title="Remind Your Friends - We Vote" />
+                <RemindContactsWrapper>
+                  <Suspense fallback={<></>}>
+                    <RemindContactsStart />
+                  </Suspense>
+                </RemindContactsWrapper>
+              </RemindOuterWrapper>
+            )}
+          </>
         )}
       </PageContentContainer>
     );
