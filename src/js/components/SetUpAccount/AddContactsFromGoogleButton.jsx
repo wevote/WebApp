@@ -21,6 +21,7 @@ class AddContactsFromGoogleButton extends Component {
 
     this.state = {
       addContactsState: AddContactConsts.uninitialized,
+      errorMessageFromGoogle: '',
       // setOfContacts: new Set(),
     };
   }
@@ -155,6 +156,7 @@ class AddContactsFromGoogleButton extends Component {
   getOtherConnections = () => {
     // console.log('AddContactsFromGoogleButton getOtherConnections');
     const { gapi } = window;
+    let { errorMessageFromGoogle } = this.state;
     const setEmail = new Set();
     const contacts = new Set();
     // console.log('gapi:', gapi);
@@ -168,8 +170,11 @@ class AddContactsFromGoogleButton extends Component {
       console.log('people/me name request response.result:', response.result);
       this.processGooglePeopleMeResponse(response.result);
     }, (error) => {
-      console.error('people.me error');
+      console.error('people.me error:');
       console.error(JSON.stringify(error, null, 2));
+      if (error.message) {
+        errorMessageFromGoogle += error.message;
+      }
     });
 
     // Get "Other Contacts" list
@@ -244,18 +249,25 @@ class AddContactsFromGoogleButton extends Component {
         });
       }
     }, (error) => {
-      console.error('people.otherContacts getOtherConnections error trapping');
+      console.error('people.otherContacts getOtherConnections error trapping:');
       console.error(JSON.stringify(error, null, 2));
+      if (error.message) {
+        errorMessageFromGoogle += error.message;
+      }
       this.setState({
         addContactsState: AddContactConsts.permissionDenied,
       });
     });
     // Sign out so the voter has the option to choose another account
     gapi.auth2.getAuthInstance().signOut();
+    this.setState({
+      errorMessageFromGoogle,
+    });
   }
 
   initClient () {
     const { addContactsState } = this.state;
+    let { errorMessageFromGoogle } = this.state;
     const { gapi } = window;
     const GOOGLE_PEOPLE_API_CLIENT_ID = webAppConfig.GOOGLE_PEOPLE_API_CLIENT_ID || '';
     const GOOGLE_PEOPLE_API_KEY = webAppConfig.GOOGLE_PEOPLE_API_KEY || '';
@@ -281,7 +293,13 @@ class AddContactsFromGoogleButton extends Component {
     }, (error) => {
       console.error('initClient error trapping');
       console.error(JSON.stringify(error, null, 2));
+      if (error.message) {
+        errorMessageFromGoogle += error.message;
+      }
       gapi.auth2.getAuthInstance().signOut();
+    });
+    this.setState({
+      errorMessageFromGoogle,
     });
   }
 
@@ -289,7 +307,7 @@ class AddContactsFromGoogleButton extends Component {
     renderLog('AddContactsFromGoogleButton');  // Set LOG_RENDER_EVENTS to log all renders
     const { darkButton, labelText } = this.props; // labelText
     const label = labelText || isWebApp() ? 'Import contacts from Gmail' : 'Import contacts from this phone';
-    const { addContactsState } = this.state;
+    const { addContactsState, errorMessageFromGoogle } = this.state;
     // console.log('render in AddContactsFromGoogleButton, addContactsState: ', addContactsState);
     const waitingForImportsActionToFinish = (addContactsState === AddContactConsts.requestingContacts) || (addContactsState === AddContactConsts.sendingContacts) || (addContactsState === AddContactConsts.receivedContacts);
     // const waitingForImportsActionToFinish = true;
@@ -320,6 +338,10 @@ class AddContactsFromGoogleButton extends Component {
                 </strong>
                 <br />
                 (You may need to check the box on the right.)
+                <br />
+                Error message from Google:
+                {' '}
+                {errorMessageFromGoogle}
               </PermissionDeniedText>
             </>
           )}

@@ -790,7 +790,7 @@ class ShareButtonFooter extends Component {
                           icon={isAndroid() ? <Share /> : <IosShare />}
                           noLink
                           onClickFunction={() => this.openNativeShare(linkToBeShared, 'Open Share')}
-                          title="Share options on your device"
+                          title="Device share options"
                           uniqueExternalId="shareButtonFooter-NativeShare"
                         />
                       </Flex>

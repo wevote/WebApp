@@ -201,9 +201,9 @@ class SetUpAccountInviteContactsSignIn extends React.Component {
             </SetUpAccountTitle>
           ) : (
             <SetUpAccountTitle>
-              Be the first of your friends to join
+              Be the first of your friends
               {' '}
-              <span className="u-no-break">We Vote</span>
+              <span className="u-no-break">to join We Vote</span>
             </SetUpAccountTitle>
           )}
           {(voterContactEmailListCount > 0) && (
@@ -239,7 +239,7 @@ class SetUpAccountInviteContactsSignIn extends React.Component {
           <Suspense fallback={<></>}>
             <SignInOptionsPanel
               pleaseSignInTitle={(contactsWithAccountCount > 0) ? 'Sign in to connect with your friends' : ''}
-              pleaseSignInSubTitle="&nbsp;"
+              pleaseSignInSubTitle={(contactsWithAccountCount > 0) ? 'After you sign in, you will be able to choose which friends to collaborate with.' : ''}
             />
           </Suspense>
         </SignInOptionsPanelWrapper>
