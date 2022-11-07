@@ -660,7 +660,12 @@ export default {
           }
 
           console.log('AppObservableStore siteConfigurationRetrieve hostname:', hostname);
-          if (newHostname === 'wevote.us' || newHostname === 'www.wevote.us' || newHostname === 'quality.wevote.us' || newHostname === 'localhost') {
+          if (newHostname === 'localhost' ||
+              newHostname === 'quality.wevote.us' ||
+              newHostname === 'wevote.org' ||
+              newHostname === 'wevote.us' ||
+              newHostname === 'www.wevote.us' ||
+              newHostname === 'www.wevote.org') {
             onWeVoteRootUrl = true;
           } else if (stringContains('wevote.us', newHostname)) {
             onWeVoteSubdomainUrl = true;
@@ -668,7 +673,13 @@ export default {
             onChosenFullDomainUrl = true;
           }
           // May 2021: This code doesn't need an API call to generate an answer, abandoning querying the store to get the answer
-          if (newHostname === 'wevote.us' || newHostname === 'quality.wevote.us' || newHostname === 'localhost' || isCordovaLocal()) {
+          if (newHostname === 'localhost' ||
+              newHostname === 'quality.wevote.us' ||
+              newHostname === 'wevote.org' ||
+              newHostname === 'wevote.us' ||
+              newHostname === 'www.wevote.org' ||
+              newHostname === 'www.wevote.us' ||
+              isCordovaLocal()) {
             // We should move this to the server if we can't change the Facebook sign in root url
             onFacebookSupportedDomainUrl = true;
           }

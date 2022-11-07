@@ -229,7 +229,7 @@ class App extends Component {
     // console.log('App.js:  enableFullStory: ', enableFullStory);
     let { hostname } = window.location;
     hostname = hostname || '';
-    const weVoteSites = ['wevote.us', 'quality.wevote.us', 'localhost', 'silicon', ''];   // localhost on Cordova is a ''
+    const weVoteSites = ['wevote.org', 'www.wevote.org', 'wevote.us', 'quality.wevote.us', 'www.wevote.us', 'localhost', 'silicon', ''];   // localhost on Cordova is a ''
     const isWeVoteMarketingSite = weVoteSites.includes(String(hostname));
     const isNotWeVoteMarketingSite = !isWeVoteMarketingSite;
     // const firstVisit = !cookies.getItem('voter_device_id');
