@@ -648,7 +648,7 @@ export default {
           chosen_ready_introduction_title: chosenReadyIntroductionTitle,
         } = res;
         console.log('AppObservableStore siteConfigurationRetrieve, hostname as seen from api server:', hostFromApi);
-        let newHostname = hostFromApi;
+        let newHostname = hostFromApi ? hostFromApi.replace('www.', '') : hostname.replace('www.', '');
         if (apiSuccess) {
           let onWeVoteRootUrl = false;
           let onWeVoteSubdomainUrl = false;
@@ -659,13 +659,11 @@ export default {
             newHostname = webAppConfig.WE_VOTE_HOSTNAME;
           }
 
-          console.log('AppObservableStore siteConfigurationRetrieve hostname:', hostname);
+          console.log('AppObservableStore siteConfigurationRetrieve hostname, newHostname:', hostname, newHostname);
           if (newHostname === 'localhost' ||
               newHostname === 'quality.wevote.us' ||
               newHostname === 'wevote.org' ||
-              newHostname === 'wevote.us' ||
-              newHostname === 'www.wevote.us' ||
-              newHostname === 'www.wevote.org') {
+              newHostname === 'wevote.us') {
             onWeVoteRootUrl = true;
           } else if (stringContains('wevote.us', newHostname)) {
             onWeVoteSubdomainUrl = true;
@@ -677,12 +675,10 @@ export default {
               newHostname === 'quality.wevote.us' ||
               newHostname === 'wevote.org' ||
               newHostname === 'wevote.us' ||
-              newHostname === 'www.wevote.org' ||
-              newHostname === 'www.wevote.us' ||
               isCordovaLocal()) {
-            // We should move this to the server if we can't change the Facebook sign in root url
             onFacebookSupportedDomainUrl = true;
           }
+          console.log('AppObservableStore siteConfigurationRetrieve onFacebookSupportedDomainUrl:', onFacebookSupportedDomainUrl);
           // console.log('AppObservableStore externalVoterId:', externalVoterId, ', siteOwnerOrganizationWeVoteId:', siteOwnerOrganizationWeVoteId);
           const { voterExternalIdHasBeenSavedOnce } = nonFluxState;
           if (externalVoterId && siteOwnerOrganizationWeVoteId) {

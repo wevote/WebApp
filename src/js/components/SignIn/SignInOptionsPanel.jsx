@@ -83,7 +83,7 @@ export default class SignInOptionsPanel extends Component {
     }
     let pathname = '';
     const { hostname } = window.location;
-    const isOnFacebookSupportedDomainUrl = hostname === 'wevote.us' || hostname === 'quality.wevote.us' || hostname === 'localhost' || isCordova() || window.location.href.includes('ngrok');
+    const isOnFacebookSupportedDomainUrl = hostname.replace('www.', '') === 'wevote.us' || hostname === 'quality.wevote.us' || hostname === 'localhost' || isCordova() || window.location.href.includes('ngrok');
 
     const getStartedMode = AppObservableStore.getStartedMode();
     AnalyticsActions.saveActionAccountPage(VoterStore.electionId());
@@ -423,11 +423,11 @@ export default class SignInOptionsPanel extends Component {
       }
     }
 
-    console.log('SignInOptionsPanel voterIsSignedIn', voterIsSignedIn, '\nsignedInTwitter', voterIsSignedInTwitter, 'signedInFacebook', voterIsSignedInFacebook,
-      'signedInWithApple', voterIsSignedInWithApple, '\nhideDialogForCordova', hideDialogForCordova, 'hideCurrentlySignedInHeader', hideCurrentlySignedInHeader,
+    console.log('SignInOptionsPanel voterIsSignedIn', voterIsSignedIn, 'signedInTwitter', voterIsSignedInTwitter, 'signedInFacebook', voterIsSignedInFacebook,
+      'signedInWithApple', voterIsSignedInWithApple, 'hideDialogForCordova', hideDialogForCordova, 'hideCurrentlySignedInHeader', hideCurrentlySignedInHeader,
       'hideTwitterSignInButton', hideTwitterSignInButton,
       'hideFacebookSignInButton', hideFacebookSignInButton, 'hideDialogForCordova', hideDialogForCordova,
-      'isOnFacebookSupportedDomainUrl', isOnFacebookSupportedDomainUrl, 'isOnWeVoteRootUrl', isOnWeVoteRootUrl);
+      '\nisOnFacebookSupportedDomainUrl', isOnFacebookSupportedDomainUrl, 'isOnWeVoteRootUrl', isOnWeVoteRootUrl);
 
     return (
       <>
