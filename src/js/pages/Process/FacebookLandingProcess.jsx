@@ -69,7 +69,7 @@ export default class FacebookLandingProcess extends Component {
 
     console.log('Got voter', this.state.voter);
     if (!this.state.voter.signed_in_facebook) {
-      console.log('Voter is not logged in through facebook');
+      console.log('Voter is not logged in through facebook, FacebookActions.login()');
       FacebookActions.login();
       return LoadingWheel;
     } else {
