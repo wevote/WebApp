@@ -221,7 +221,7 @@ class BallotStatusMessage extends Component {
     } else {
       let messageInPastString;
       if (electionDayText) {
-        messageInPastString = `This election was held on ${dateText}.`;
+        messageInPastString = `Election day: ${dateText}.`;
       } else {
         messageInPastString = ''; // Was "This election has passed." but it showed up inaccurately.
       }

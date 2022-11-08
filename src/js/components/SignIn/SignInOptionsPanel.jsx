@@ -20,6 +20,7 @@ import AppObservableStore, { messageService } from '../../stores/AppObservableSt
 import FacebookStore from '../../stores/FacebookStore';
 import VoterStore from '../../stores/VoterStore';
 import initializeAppleSDK from '../../utils/initializeAppleSDK';
+import initializeFacebookSDK from '../../utils/initializeFacebookSDK';
 import AppleSignIn from '../Apple/AppleSignIn';
 import FacebookSignIn from '../Facebook/FacebookSignIn';
 import VoterEmailAddressEntry from '../Settings/VoterEmailAddressEntry';
@@ -71,7 +72,14 @@ export default class SignInOptionsPanel extends Component {
   // componentWillMount is used in WebApp
   componentDidMount () {
     // console.log("SignInOptionsPanel componentDidMount");
-    initializeAppleSDK(null);
+    // initializeAppleSDK(null);
+    const { FB, AppleID } = window;
+    if (!FB) {
+      initializeFacebookSDK();
+    }
+    if (!AppleID) {
+      initializeAppleSDK();
+    }
     this.onVoterStoreChange();
     this.appStateSubscription = messageService.getMessage().subscribe(() => this.onAppObservableStoreChange());
     this.facebookStoreListener = FacebookStore.addListener(this.onFacebookChange.bind(this));
