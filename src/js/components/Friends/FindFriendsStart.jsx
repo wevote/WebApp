@@ -30,12 +30,10 @@ import {
 } from '../Style/SetUpAccountStyles';
 
 const AddContactsFromGoogleButton = React.lazy(() => import(/* webpackChunkName: 'AddContactsFromGoogleButton' */ '../SetUpAccount/AddContactsFromGoogleButton'));
+const ContactsImportedPreview = React.lazy(() => import(/* webpackChunkName: 'ContactsImportedPreview' */ './ContactsImportedPreview'));
 const SignInOptionsPanel = React.lazy(() => import(/* webpackChunkName: 'SignInOptionsPanel' */ '../SignIn/SignInOptionsPanel'));
 
 const addressBookSVG = '../../../img/get-started/address-book.svg';
-
-const NUMBER_OF_CONTACTS_WITH_ACCOUNT_NAMES_TO_SHOW = 7; // Maximum available coming from API server is currently 5
-const NUMBER_OF_CONTACTS_WITH_ACCOUNT_IMAGES_TO_SHOW = 7; // Maximum available coming from API server is currently 5
 
 
 class FindFriendsStart extends Component {
@@ -71,7 +69,6 @@ class FindFriendsStart extends Component {
     const contactsWithAccountCount = contactsWithAccountList.length;
     this.setState({
       contactsWithAccountCount,
-      contactsWithAccountList,
       voterContactEmailAugmentSequenceHasNextStep: VoterStore.getVoterContactEmailAugmentSequenceHasNextStep(),
       voterContactEmailListCount,
     });
@@ -88,7 +85,7 @@ class FindFriendsStart extends Component {
   render () {
     renderLog('FindFriendsStart');  // Set LOG_RENDER_EVENTS to log all renders
     const { classes } = this.props;
-    const { contactsWithAccountCount, contactsWithAccountList, voterContactEmailAugmentSequenceHasNextStep, voterContactEmailListCount } = this.state;
+    const { contactsWithAccountCount, voterContactEmailAugmentSequenceHasNextStep, voterContactEmailListCount } = this.state;
     const addressBookSVGSrc = normalizedImagePath(addressBookSVG);
 
     const desktopInlineButtonsOnInMobile = true;
@@ -97,78 +94,6 @@ class FindFriendsStart extends Component {
       desktopInlineButtonsOnBreakValue = 1;
     } else {
       desktopInlineButtonsOnBreakValue = isCordovaWide() ? 1000 : 'sm';
-    }
-    let isFirst;
-    let contactWithAccountImageCount = 0;
-    let contactWithAccountNameCount = 0;
-    let contactsWithAccountNameList = <></>;
-    let contactsWithAccountTotalNumber = 0;
-    if (contactsWithAccountList) {
-      contactsWithAccountTotalNumber = contactsWithAccountList.length;
-    }
-    let contactsImageHtmlArray = <></>;
-    if (contactsWithAccountList) {
-      const contactsWithAccountListSorted = contactsWithAccountList.sort(this.orderByPhotoExists);
-      contactsWithAccountNameList = (
-        <FriendNamesWrapper>
-          {contactsWithAccountListSorted.map((contactWithAccount) => {
-            // console.log('organization:', organization);
-            if (contactWithAccount.display_name) {
-              contactWithAccountNameCount += 1;
-              if (contactWithAccountNameCount <= NUMBER_OF_CONTACTS_WITH_ACCOUNT_NAMES_TO_SHOW) {
-                return (
-                  <OneFriendName key={`ContactWithAccountImage-${contactWithAccount.voter_we_vote_id}-${contactWithAccountNameCount}`}>
-                    {((contactWithAccountNameCount > 1) && (contactWithAccountNameCount === contactsWithAccountTotalNumber)) && (
-                      <> and </>
-                    )}
-                    {contactWithAccount.display_name}
-                    {(contactWithAccountNameCount < (contactsWithAccountTotalNumber - 1)) && (
-                      <>, </>
-                    )}
-                  </OneFriendName>
-                );
-              } else if (contactWithAccountNameCount === (NUMBER_OF_CONTACTS_WITH_ACCOUNT_NAMES_TO_SHOW + 1)) {
-                return (
-                  <span className="u-no-break" key={`ContactWithAccountImage-${contactWithAccount.voter_we_vote_id}-${contactWithAccountNameCount}`}>
-                    and
-                    {' '}
-                    {contactsWithAccountTotalNumber - contactWithAccountNameCount + 1}
-                    {' '}
-                    more.
-                  </span>
-                );
-              } else {
-                return null;
-              }
-            } else {
-              return null;
-            }
-          })}
-        </FriendNamesWrapper>
-      );
-      contactsImageHtmlArray = contactsWithAccountList.map((contactWithAccount) => {
-        isFirst = contactWithAccountImageCount === 0;
-        // console.log('organization:', organization);
-        if (contactWithAccount.we_vote_hosted_profile_image_url_medium) {
-          contactWithAccountImageCount += 1;
-          if (contactWithAccountImageCount <= NUMBER_OF_CONTACTS_WITH_ACCOUNT_IMAGES_TO_SHOW) {
-            return (
-              <ContactWithAccountImage
-                alt=""
-                isFirst={isFirst}
-                key={`ContactWithAccountImage-${contactWithAccountImageCount}`}
-                contactWithAccountImageCount={contactWithAccountImageCount}
-                src={contactWithAccount.we_vote_hosted_profile_image_url_medium}
-                title={contactWithAccount.display_name}
-              />
-            );
-          } else {
-            return null;
-          }
-        } else {
-          return null;
-        }
-      });
     }
     const pigsCanFly = false;
     return (
@@ -221,18 +146,9 @@ class FindFriendsStart extends Component {
                 </SetUpAccountContactsText>
               </SetUpAccountContactsTextWrapper>
             </SetUpAccountTop>
-            {(contactsWithAccountCount > 0) && (
-              <ContactsWithAccountWrapper>
-                <ContactWithAccountsBlockWrapper>
-                  {(contactWithAccountImageCount > 0) && (
-                    <ContactWithAccountPreviewListImages>
-                      {contactsImageHtmlArray.map((contactWithAccountImageHtml) => contactWithAccountImageHtml)}
-                    </ContactWithAccountPreviewListImages>
-                  )}
-                  {contactsWithAccountNameList}
-                </ContactWithAccountsBlockWrapper>
-              </ContactsWithAccountWrapper>
-            )}
+            <Suspense fallback={<></>}>
+              <ContactsImportedPreview showOnlyContactsWithAccounts />
+            </Suspense>
             <SignInOptionsPanelWrapper>
               <Suspense fallback={<></>}>
                 <SignInOptionsPanel
@@ -314,46 +230,6 @@ const styles = () => ({
     },
   },
 });
-
-const ContactsWithAccountWrapper = styled('div')`
-`;
-
-const ContactWithAccountPreviewListImages = styled('div')`
-  align-items: center;
-  display: flex;
-  justify-content: start;
-  margin-right: 2px;
-`;
-
-const ContactWithAccountsBlockWrapper = styled('div')`
-  align-items: center;
-  display: flex;
-  flex-wrap: wrap;
-  font-size: 14px;
-  justify-content: center;
-  margin-top: -3px;
-`;
-
-const ContactWithAccountImage = styled('img', {
-  shouldForwardProp: (prop) => !['isFirst', 'contactWithAccountImageCount'].includes(prop),
-})(({ isFirst, contactWithAccountImageCount }) => (`
-  border: 2px solid #fff;
-  border-radius: 24px;
-  height: 48px;
-  margin-top: 3px;
-  ${!isFirst ? 'margin-left: -8px;' : ''}
-  width: 48px;
-  z-index: ${200 - contactWithAccountImageCount};
-`));
-
-const FriendNamesWrapper = styled('div')`
-  color: #2E3C5D;
-  font-size: 20px;
-  text-align: center;
-`;
-
-const OneFriendName = styled('span')`
-`;
 
 const MainImageWrapper = styled('div')`
   display: flex;

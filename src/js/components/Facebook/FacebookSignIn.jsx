@@ -47,6 +47,10 @@ class FacebookSignIn extends Component {
     }
 
     if (this.failedSignInTimer) clearTimeout(this.failedSignInTimer);
+    const { FB } = window;
+    if (!FB) {
+      initializeFacebookSDK();
+    }
   }
 
   componentWillUnmount () {
@@ -132,7 +136,7 @@ class FacebookSignIn extends Component {
       FacebookActions.login();
     } else {
       // Initialize Facebook SDK again, and then start login
-      console.log('Trying to initializeFacebookSDK again - 1500 millisecond pause');
+      console.log('window.FB missing. Trying to initializeFacebookSDK again - 1500 millisecond pause');
       initializeFacebookSDK();
       this.timer = setTimeout(() => {
         ({ FB, facebookConnectPlugin } = window);
@@ -143,7 +147,7 @@ class FacebookSignIn extends Component {
           console.log('facebookConnectPlugin FacebookActions.login, second try');
           FacebookActions.login();
         } else {
-          console.log('Could not initializeFacebookSDK in 750 milliseconds');
+          console.log('Could not initializeFacebookSDK in 1500 milliseconds');
         }
       }, 1500);
     }
