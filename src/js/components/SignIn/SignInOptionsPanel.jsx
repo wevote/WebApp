@@ -280,7 +280,7 @@ export default class SignInOptionsPanel extends Component {
   };
 
   showAllSignInOptions = () => {
-    console.log('SignInOptionsPanel showAllSignInOptions');
+    // console.log('SignInOptionsPanel showAllSignInOptions');
     const {
       isInternetExplorer,
     } = this.state;
@@ -299,7 +299,7 @@ export default class SignInOptionsPanel extends Component {
   };
 
   showEmailOnlySignIn = () => {
-    console.log('SignInOptionsPanel showEmailOnlySignIn');
+    // console.log('SignInOptionsPanel showEmailOnlySignIn');
     this.setState({
       hideAppleSignInButton: true,
       hideCurrentlySignedInHeader: true,
@@ -317,7 +317,7 @@ export default class SignInOptionsPanel extends Component {
   };
 
   showPhoneOnlySignIn = () => {
-    console.log('SignInOptionsPanel showPhoneOnlySignIn');
+    // console.log('SignInOptionsPanel showPhoneOnlySignIn');
     this.setState({
       hideAppleSignInButton: true,
       hideCurrentlySignedInHeader: true,
@@ -410,7 +410,7 @@ export default class SignInOptionsPanel extends Component {
       twitter_screen_name: twitterScreenName,
     } = voter;
     // console.log("SignInOptionsPanel.jsx facebookAuthResponse:", facebookAuthResponse);
-    console.log('SignInOptionsPanel hide Apple:', hideAppleSignInButton, ' Facebook: ', hideFacebookSignInButton, ' Twitter: ', hideTwitterSignInButton, ' Email: ', hideVoterEmailAddressEntry, ' Phone: ', hideVoterPhoneEntry);
+    // console.log('SignInOptionsPanel hide Apple:', hideAppleSignInButton, ' Facebook: ', hideFacebookSignInButton, ' Twitter: ', hideTwitterSignInButton, ' Email: ', hideVoterEmailAddressEntry, ' Phone: ', hideVoterPhoneEntry);
     // console.log("SignInOptionsPanel.jsx voter:", voter);
     if (!voterIsSignedInFacebook && facebookAuthResponse && facebookAuthResponse.length && facebookAuthResponse.facebook_retrieve_attempted) {
       // console.log('SignInOptionsPanel.jsx facebook_retrieve_attempted');
@@ -431,11 +431,11 @@ export default class SignInOptionsPanel extends Component {
       }
     }
 
-    console.log('SignInOptionsPanel voterIsSignedIn', voterIsSignedIn, 'signedInTwitter', voterIsSignedInTwitter, 'signedInFacebook', voterIsSignedInFacebook,
-      'signedInWithApple', voterIsSignedInWithApple, 'hideDialogForCordova', hideDialogForCordova, 'hideCurrentlySignedInHeader', hideCurrentlySignedInHeader,
-      'hideTwitterSignInButton', hideTwitterSignInButton,
-      'hideFacebookSignInButton', hideFacebookSignInButton, 'hideDialogForCordova', hideDialogForCordova,
-      '\nisOnFacebookSupportedDomainUrl', isOnFacebookSupportedDomainUrl, 'isOnWeVoteRootUrl', isOnWeVoteRootUrl);
+    // console.log('SignInOptionsPanel voterIsSignedIn', voterIsSignedIn, 'signedInTwitter', voterIsSignedInTwitter, 'signedInFacebook', voterIsSignedInFacebook,
+    //   'signedInWithApple', voterIsSignedInWithApple, 'hideDialogForCordova', hideDialogForCordova, 'hideCurrentlySignedInHeader', hideCurrentlySignedInHeader,
+    //   'hideTwitterSignInButton', hideTwitterSignInButton,
+    //   'hideFacebookSignInButton', hideFacebookSignInButton, 'hideDialogForCordova', hideDialogForCordova,
+    //   '\nisOnFacebookSupportedDomainUrl', isOnFacebookSupportedDomainUrl, 'isOnWeVoteRootUrl', isOnWeVoteRootUrl);
 
     return (
       <>
