@@ -1,10 +1,10 @@
 import { Facebook } from '@mui/icons-material';
+import { CircularProgress } from '@mui/material';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import FacebookActions from '../../actions/FacebookActions';
 import VoterActions from '../../actions/VoterActions';
-import LoadingWheelComp from '../../common/components/Widgets/LoadingWheelComp';
 import SplitIconButton from '../../common/components/Widgets/SplitIconButton';
 import { oAuthLog, renderLog } from '../../common/utils/logging';
 import { messageService } from '../../stores/AppObservableStore';
@@ -21,6 +21,7 @@ class FacebookSignIn extends Component {
       buttonSubmittedText: '',
       deferredFacebookSignInRetrieve: false,
       facebookAuthResponse: {},
+      facebookConnectionInitialized: false,
       facebookSignInSequenceStarted: false,
       mergingTwoAccounts: false,
       redirectInProgress: false,
@@ -48,8 +49,15 @@ class FacebookSignIn extends Component {
 
     if (this.failedSignInTimer) clearTimeout(this.failedSignInTimer);
     const { FB } = window;
-    if (!FB) {
-      initializeFacebookSDK();
+    try {
+      FB.getLoginStatus((response) => {
+        console.log('FacebookSignIn FB.getLoginStatus response:', response);
+        this.setState({
+          facebookConnectionInitialized: true,
+        });
+      });
+    } catch (error) {
+      console.log('FacebookSignIn FB.getLoginStatus error:', error);
     }
   }
 
@@ -181,7 +189,11 @@ class FacebookSignIn extends Component {
   render () {
     renderLog('FacebookSignIn');  // Set LOG_RENDER_EVENTS to log all renders
     const { buttonText } = this.props;
-    const { buttonSubmittedText, facebookAuthResponse, facebookSignInSequenceStarted, mergingTwoAccounts, redirectInProgress, waitingForMergeTwoAccounts } = this.state;
+    const { buttonSubmittedText, facebookAuthResponse, facebookConnectionInitialized, facebookSignInSequenceStarted, mergingTwoAccounts, redirectInProgress, waitingForMergeTwoAccounts } = this.state;
+    if (!facebookConnectionInitialized) {
+      console.error('FacebookSignIn: Do not offer Facebook button if we aren\'t getting status back');
+      return null;
+    }
     if (redirectInProgress) {
       return null;
     }
@@ -199,8 +211,8 @@ class FacebookSignIn extends Component {
       //   '!facebookAuthResponse', !facebookAuthResponse, 'signInModalGlobalState.getBool(waitingForFacebookApiCompletion)', signInModalGlobalState.getBool('waitingForFacebookApiCompletion'));
       statusMessage = 'Waiting for a response from Facebook...';
     } else if (facebookAuthResponse.facebook_sign_in_failed) {
-      oAuthLog('facebookAuthResponse.facebook_sign_in_failed , setting "Facebook sign in process." message.');
-      statusMessage = 'Facebook sign in process.';
+      oAuthLog('facebookAuthResponse.facebook_sign_in_failed , setting "Facebook sign in process starting..." message.');
+      statusMessage = 'Facebook sign in process starting...';
     } else if (waitingForMergeTwoAccounts) {
       statusMessage = 'Loading your account information...';
     } else if (!facebookAuthResponse.facebook_sign_in_found) {
@@ -242,7 +254,9 @@ class FacebookSignIn extends Component {
               {statusMessage}
             </div>
             { showWheel ? (
-              <LoadingWheelComp />
+              <div style={{ padding: '30px' }}>
+                <CircularProgress />
+              </div>
             ) : null}
           </FacebookErrorContainer>
         ) : null}

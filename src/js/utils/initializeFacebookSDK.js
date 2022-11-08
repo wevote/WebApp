@@ -13,6 +13,13 @@ const initializeFacebookSDK = () => {
         status: true, // set this status to true, this will fix the popup blocker issue
       });
       console.log('initializeFacebookSDK FB.init has been called');
+      try {
+        FB.getLoginStatus((response) => {
+          console.log('initializeFacebookSDK FB.getLoginStatus response:', response);
+        });
+      } catch (error) {
+        console.log('initializeFacebookSDK FB.getLoginStatus error:', error);
+      }
     };
 
     (function (d, s, id) { // eslint-disable-line

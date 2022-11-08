@@ -5,6 +5,7 @@ import styled from 'styled-components';
 import daysUntil from '../../common/utils/daysUntil';
 import historyPush from '../../common/utils/historyPush';
 import { renderLog } from '../../common/utils/logging';
+import AppObservableStore from '../../stores/AppObservableStore';
 import BallotStore from '../../stores/BallotStore';
 import VoterStore from '../../stores/VoterStore';
 import VoterActions from '../../actions/VoterActions';
@@ -67,19 +68,24 @@ class ViewUpcomingBallotButton extends React.Component {
 
   goToFindFriends = () => {
     const { voterContactEmailListCount, voterFirstName, voterPhotoUrlLarge } = this.state;
+    let setUpAccountEntryPath = '';
     if (voterContactEmailListCount > 0) {
       if (!VoterStore.getVoterIsSignedIn()) {
-        historyPush('/findfriends/signin');
+        setUpAccountEntryPath = '/findfriends/signin';
       } else if (!voterFirstName) {
-        historyPush('/findfriends/editname');
+        setUpAccountEntryPath = '/findfriends/editname';
       } else if (!voterPhotoUrlLarge) {
-        historyPush('/findfriends/addphoto');
+        setUpAccountEntryPath = '/findfriends/addphoto';
       } else {
-        historyPush('/findfriends/invitecontacts');
+        setUpAccountEntryPath = '/findfriends/invitecontacts';
       }
     } else {
-      historyPush('/findfriends/importcontacts');
+      setUpAccountEntryPath = '/findfriends/importcontacts';
     }
+    const { location: { pathname: currentPathname } } = window;
+    AppObservableStore.setSetUpAccountBackLinkPath(currentPathname);
+    AppObservableStore.setSetUpAccountEntryPath(setUpAccountEntryPath);
+    historyPush(setUpAccountEntryPath);
   }
 
   render () {
