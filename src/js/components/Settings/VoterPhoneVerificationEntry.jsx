@@ -59,7 +59,7 @@ class VoterPhoneVerificationEntry extends Component {
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
     VoterActions.voterSMSPhoneNumberRetrieve();
     const inputFld = $('#enterVoterPhone');
-    console.log('enterVoterPhone ', $(inputFld));
+    // console.log('enterVoterPhone ', $(inputFld));
     $(inputFld).blur();
     this._isMounted = true;
   }
