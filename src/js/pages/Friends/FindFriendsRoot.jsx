@@ -31,7 +31,7 @@ import {
   WeVoteLogo,
   WeVoteLogoWrapper,
 } from '../../components/Style/SimpleProcessStyles';
-import AppObservableStore from '../../stores/AppObservableStore';
+import AppObservableStore, { messageService } from '../../stores/AppObservableStore';
 import FriendStore from '../../stores/FriendStore';
 import VoterStore from '../../stores/VoterStore';
 import Reassurance from '../../components/SetUpAccount/Reassurance';
@@ -85,14 +85,14 @@ class FindFriendsRoot extends React.Component {
     const displayStep = this.convertSetUpPagePathToDisplayStep(setUpPagePath);
     this.shouldNextButtonBeDisabled();
     this.setState({
-      setUpAccountBackLinkPath: AppObservableStore.getSetUpAccountBackLinkPath(),
-      setUpAccountEntryPath: AppObservableStore.getSetUpAccountEntryPath(),
       displayStep,
       setUpPagePath,
     });
     // this.onBallotStoreChange();
     // this.ballotStoreListener = BallotStore.addListener(this.onBallotStoreChange.bind(this));
+    this.onAppObservableStoreChange();
     this.onFriendStoreChange();
+    this.appStateSubscription = messageService.getMessage().subscribe(() => this.onAppObservableStoreChange());
     this.friendStoreListener = FriendStore.addListener(this.onFriendStoreChange.bind(this));
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
     if (apiCalming('friendListsAll', 30000)) {
@@ -165,9 +165,17 @@ class FindFriendsRoot extends React.Component {
   }
 
   componentWillUnmount () {
+    this.appStateSubscription.unsubscribe();
     // this.ballotStoreListener.remove();
     this.friendStoreListener.remove();
     this.voterStoreListener.remove();
+  }
+
+  onAppObservableStoreChange () {
+    this.setState({
+      setUpAccountBackLinkPath: AppObservableStore.getSetUpAccountBackLinkPath(),
+      setUpAccountEntryPath: AppObservableStore.getSetUpAccountEntryPath(),
+    });
   }
 
   onFriendStoreChange () {
@@ -258,6 +266,8 @@ class FindFriendsRoot extends React.Component {
     // console.log('FindFriendsRoot goToSkipForNow skipForNowPath:', skipForNowPath);
     if (skipForNowPath) {
       historyPush(skipForNowPath);
+    } else {
+      historyPush('/ready');
     }
   }
 

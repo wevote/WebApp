@@ -1,4 +1,5 @@
 import withStyles from '@mui/styles/withStyles';
+import { filter } from 'lodash-es';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
 import Helmet from 'react-helmet';
@@ -33,12 +34,14 @@ import TooltipIcon from '../../components/Widgets/TooltipIcon';
 import AppObservableStore from '../../stores/AppObservableStore';
 import FriendStore from '../../stores/FriendStore';
 import VoterStore from '../../stores/VoterStore';
+import { SetUpAccountTitle } from '../../components/Style/SetUpAccountStyles';
 import { cordovaFriendsWrapper } from '../../utils/cordovaOffsets';
 import displayFriendsTabs from '../../utils/displayFriendsTabs';
 import sortFriendListByMutualFriends from '../../utils/friendFunctions';
 import { SectionDescription } from '../../components/Style/friendStyles';
 
 const AddContactsFromGoogleButton = React.lazy(() => import(/* webpackChunkName: 'AddContactsFromGoogleButton' */ '../../components/SetUpAccount/AddContactsFromGoogleButton'));
+const ContactsImportedPreview = React.lazy(() => import(/* webpackChunkName: 'ContactsImportedPreview' */ '../../components/Friends/ContactsImportedPreview'));
 const FindFriendsStart = React.lazy(() => import(/* webpackChunkName: 'FindFriendsStart' */ '../../components/Friends/FindFriendsStart'));
 const FirstAndLastNameRequiredAlert = React.lazy(() => import(/* webpackChunkName: 'FirstAndLastNameRequiredAlert' */ '../../components/Widgets/FirstAndLastNameRequiredAlert'));
 const RemindContactsStart = React.lazy(() => import(/* webpackChunkName: 'RemindContactsStart' */ '../../components/Remind/RemindContactsStart'));
@@ -128,8 +131,12 @@ class Friends extends Component {
     if (voter && voter.is_signed_in) {
       voterIsSignedIn = voter.is_signed_in;
     }
+    const voterContactEmailList = VoterStore.getVoterContactEmailList();
     const voterContactEmailListCount = VoterStore.getVoterContactEmailListCount();
+    const contactsWithAccountList = filter(voterContactEmailList, (contact) => contact.voter_we_vote_id);
+    const contactsWithAccountCount = contactsWithAccountList.length;
     this.setState({
+      contactsWithAccountCount,
       voter,
       voterContactEmailListCount,
       voterIsSignedIn,
@@ -194,6 +201,7 @@ class Friends extends Component {
   render () {
     renderLog('Friends');  // Set LOG_RENDER_EVENTS to log all renders
     const {
+      contactsWithAccountCount,
       friendActivityExists, friendInvitationsSentByMe,
       friendInvitationsSentToMe, suggestedFriendList,
       voter, voterContactEmailListCount, voterIsSignedIn,
@@ -465,6 +473,29 @@ class Friends extends Component {
               <div className="row">
                 <div className="col-sm-12 col-md-8">
                   <>
+                    {(!friendActivityExists && contactsWithAccountCount) && (
+                      <ContactsImportedPreviewOuterWrapper>
+                        <SetUpAccountTitle>
+                          {contactsWithAccountCount}
+                          {' '}
+                          of your friends
+                          {' '}
+                          {contactsWithAccountCount === 1 ? 'is' : 'are'}
+                          {' '}
+                          already on We Vote
+                          {' '}
+                        </SetUpAccountTitle>
+                        <Suspense fallback={<></>}>
+                          <ContactsImportedPreview showOnlyContactsWithAccounts />
+                        </Suspense>
+                        <MessageCard
+                          inShareModal
+                          mainText=""
+                          buttonText="Choose friends to add"
+                          buttonURL="/friends/suggested"
+                        />
+                      </ContactsImportedPreviewOuterWrapper>
+                    )}
                     {voterIsSignedIn && (
                       <Suspense fallback={<></>}>
                         <FirstAndLastNameRequiredAlert />
@@ -475,7 +506,7 @@ class Friends extends Component {
                     )}
                     <FriendInvitationsSentToMe />
                     <SuggestedFriendsPreview />
-                    {(voterContactEmailListCount > 0) && (
+                    {((voterContactEmailListCount > 0) && !(!friendActivityExists && contactsWithAccountCount)) && (
                       <>
                         <MessageCard
                           mainText="Add friends from your contacts"
@@ -521,6 +552,29 @@ class Friends extends Component {
           );
           mobileContentToDisplay = (
             <>
+              {(!friendActivityExists && contactsWithAccountCount) && (
+                <ContactsImportedPreviewOuterWrapper>
+                  <SetUpAccountTitle>
+                    {contactsWithAccountCount}
+                    {' '}
+                    of your friends
+                    {' '}
+                    {contactsWithAccountCount === 1 ? 'is' : 'are'}
+                    {' '}
+                    already on We Vote
+                    {' '}
+                  </SetUpAccountTitle>
+                  <Suspense fallback={<></>}>
+                    <ContactsImportedPreview showOnlyContactsWithAccounts />
+                  </Suspense>
+                  <MessageCard
+                    inShareModal
+                    mainText=""
+                    buttonText="Choose friends to add"
+                    buttonURL="/friends/suggested"
+                  />
+                </ContactsImportedPreviewOuterWrapper>
+              )}
               <>
                 {voterIsSignedIn && (
                   <Suspense fallback={<></>}>
@@ -617,6 +671,11 @@ const styles = () => ({
     display: 'inline !important',
   },
 });
+
+const ContactsImportedPreviewOuterWrapper = styled('div')`
+  margin-top: 12px;
+  margin-bottom: 42px;
+`;
 
 const FacebookSignInWrapper = styled('div')`
   flex: 1;
