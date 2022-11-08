@@ -7,6 +7,15 @@ import { isAndroid } from './js/common/utils/cordovaUtils';
 // The following line is rewritten to true by the buildSrcCordova.js node script
 const isIndexCordova = false;
 
+function redirectIfWww () {
+  if (window && window.location && window.location.href && window.location.href.includes('//www.')) {
+    const oldURL = window.location.href;
+    const newURL = oldURL.replace('//www.', '//');
+    console.log(`index.jsx redirectIfWww, redirecting from ${oldURL} to ${newURL}`);
+    window.location.href = newURL;
+  }
+}
+
 function startReact () {
   ReactDOM.render(
     <App />,
@@ -28,6 +37,7 @@ function startReact () {
 if (isIndexCordova) {
   // initializeCordovaToken -- Do not remove this line!
 } else {
+  redirectIfWww();
   startReact();
 }
 
