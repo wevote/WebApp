@@ -49,12 +49,16 @@ class FacebookSignIn extends Component {
 
     if (this.failedSignInTimer) clearTimeout(this.failedSignInTimer);
     const { FB } = window;
+    // NOTE 2022-11-08 Dale: I Haven't seen proof this is working
+    FB.Event.subscribe('auth.statusChange', this.onFacebookStatusChange);
     try {
       FB.getLoginStatus((response) => {
         console.log('FacebookSignIn FB.getLoginStatus response:', response);
-        this.setState({
-          facebookConnectionInitialized: true,
-        });
+        if (response.status === 'connected') {
+          this.setState({
+            facebookConnectionInitialized: true,
+          });
+        }
       });
     } catch (error) {
       console.log('FacebookSignIn FB.getLoginStatus error:', error);
@@ -62,6 +66,8 @@ class FacebookSignIn extends Component {
   }
 
   componentWillUnmount () {
+    const { FB } = window;
+    FB.Event.unsubscribe('auth.statusChange', this.onFacebookStatusChange);
     this.facebookStoreListener.remove();
     this.voterStoreListener.remove();
     this.appStateSubscription.unsubscribe();
@@ -75,6 +81,16 @@ class FacebookSignIn extends Component {
         deferredFacebookSignInRetrieve: false,
       });
       this.voterFacebookSignInRetrieve();
+    }
+  }
+
+  onFacebookStatusChange = (response) => {
+    // NOTE 2022-11-08 Dale: I Haven't seen proof this is working
+    console.log('onFacebookStatusChange, response:', response);
+    if (response.status === 'connected') {
+      this.setState({
+        facebookConnectionInitialized: true,
+      });
     }
   }
 
@@ -191,7 +207,7 @@ class FacebookSignIn extends Component {
     const { buttonText } = this.props;
     const { buttonSubmittedText, facebookAuthResponse, facebookConnectionInitialized, facebookSignInSequenceStarted, mergingTwoAccounts, redirectInProgress, waitingForMergeTwoAccounts } = this.state;
     if (!facebookConnectionInitialized) {
-      console.error('FacebookSignIn: Do not offer Facebook button if we aren\'t getting status back');
+      console.log('FacebookSignIn: Do not offer Facebook button if we aren\'t getting status back');
       return null;
     }
     if (redirectInProgress) {
