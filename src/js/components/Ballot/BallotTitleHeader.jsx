@@ -66,7 +66,7 @@ class BallotTitleHeader extends Component {
     const electionDayText = BallotStore.currentBallotElectionDate;
     const electionDayTextFormatted = electionDayText && window.moment ? window.moment(electionDayText).format('MMM Do, YYYY') : '';
     const electionDayTextObject = electionDayText && window.moment ? <span>{electionDayTextFormatted}</span> : null;
-    const nextNationalElectionDayText = `${BallotStore.nextNationalElectionDayText || '2022-11-08'}`;
+    const nextNationalElectionDayText = `${BallotStore.nextNationalElectionDayText || '2024-11-05'}`;
     // console.log('nextNationalElectionDayText:', nextNationalElectionDayText);
     initializeMoment(() => {
       const { moment } = window;
