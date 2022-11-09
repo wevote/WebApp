@@ -9,16 +9,11 @@ const isIndexCordova = false;
 
 function redirectToStandardizedWeVoteUrl () {
   if (window && window.location && window.location.href) {
-    console.log(window.location);
+    // console.log(window.location);
     const oldURL = window.location.href;
     let changeFound = false;
     // hostname we can take down to all lower case, but we don't want to take href down to all lower case
     let newHostname = window.location.hostname.toLowerCase();
-    // For testing
-    // if (window.location.hostname.toLowerCase().includes('localhost')) {
-    //   newHostname = newHostname.replace('localhost', 'localhost2');
-    //   changeFound = true;
-    // }
     if (window.location.hostname.toLowerCase().includes('//www.')) {
       newHostname = newHostname.replace('//www.', '//');
       changeFound = true;
