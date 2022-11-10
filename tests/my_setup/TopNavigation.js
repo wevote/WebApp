@@ -2,7 +2,7 @@ const { Builder, By, until } = require('selenium-webdriver');
 const chrome = require('selenium-webdriver/chrome');
 
 const localPathToDriver = '/Users/newuser/Downloads/chromedriver';
-const service = new chrome.ServiceBuilder(localPathToDriver);
+const service = new chrome.ServiceBuilder();
 
 var assert = require('assert');
 
@@ -13,7 +13,7 @@ async function openWeVoteHomeLogoTest() {
       .setChromeService(service)
       .build();
 
-   await driver.manage().setTimeouts({ implicit: 6000 });
+  await driver.manage().setTimeouts({ implicit: 6000 });
 
   // Helper function to test that the WeVote Logo navigates to the ready page
   const testLogoNavigationFromPage = async (url) => {
