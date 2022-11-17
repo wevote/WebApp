@@ -1141,6 +1141,15 @@ class VoterStore extends ReduceStore {
               tracker.setMetadata('voterIsSignedIn', 'true');
             }
           }
+          if (incomingVoter.state_code_from_ip_address && !AppObservableStore.getOpenReplayStateCodeFromIpAddress()) {
+            const tracker = AppObservableStore.getOpenReplayTracker();
+            const stateCodeFromIpAddress = incomingVoter.state_code_from_ip_address.toUpperCase();
+            if (tracker && stateCodeFromIpAddress) {
+              console.log('OpenReplay setting stateCodeFromIpAddress');
+              AppObservableStore.setOpenReplayStateCodeFromIpAddress(stateCodeFromIpAddress);
+              tracker.setMetadata('stateCodeFromIpAddress', stateCodeFromIpAddress);
+            }
+          }
         }
         revisedState = state;
         revisedState = {

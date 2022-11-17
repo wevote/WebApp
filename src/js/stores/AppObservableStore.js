@@ -125,6 +125,11 @@ export default {
     messageService.sendMessage('state updated openReplayPending');
   },
 
+  setOpenReplayStateCodeFromIpAddress (stateCodeFromIpAddress) {
+    nonFluxState.stateCodeFromIpAddress = stateCodeFromIpAddress;
+    messageService.sendMessage('state updated stateCodeFromIpAddress');
+  },
+
   setOpenReplayTracker (tracker) {
     nonFluxState.openReplayTracker = tracker;
     messageService.sendMessage('state updated openReplayTracker');
@@ -407,6 +412,10 @@ export default {
 
   getOpenReplayPending () {
     return nonFluxState.openReplayPending;
+  },
+
+  getOpenReplayStateCodeFromIpAddress () {
+    return nonFluxState.stateCodeFromIpAddress;
   },
 
   getOpenReplayTracker () {
