@@ -49,25 +49,29 @@ class FacebookSignIn extends Component {
 
     if (this.failedSignInTimer) clearTimeout(this.failedSignInTimer);
     const { FB } = window;
-    // NOTE 2022-11-08 Dale: I Haven't seen proof this is working
-    FB.Event.subscribe('auth.statusChange', this.onFacebookStatusChange);
-    try {
-      FB.getLoginStatus((response) => {
-        console.log('FacebookSignIn FB.getLoginStatus response:', response);
-        if (response.status === 'connected') {
-          this.setState({
-            facebookConnectionInitialized: true,
-          });
-        }
-      });
-    } catch (error) {
-      console.log('FacebookSignIn FB.getLoginStatus error:', error);
+    if (FB) {
+      // NOTE 2022-11-08 Dale: I Haven't seen proof this is working
+      FB.Event.subscribe('auth.statusChange', this.onFacebookStatusChange);
+      try {
+        FB.getLoginStatus((response) => {
+          console.log('FacebookSignIn FB.getLoginStatus response:', response);
+          if (response.status === 'connected') {
+            this.setState({
+              facebookConnectionInitialized: true,
+            });
+          }
+        });
+      } catch (error) {
+        console.log('FacebookSignIn FB.getLoginStatus error:', error);
+      }
     }
   }
 
   componentWillUnmount () {
     const { FB } = window;
-    FB.Event.unsubscribe('auth.statusChange', this.onFacebookStatusChange);
+    if (FB) {
+      FB.Event.unsubscribe('auth.statusChange', this.onFacebookStatusChange);
+    }
     this.facebookStoreListener.remove();
     this.voterStoreListener.remove();
     this.appStateSubscription.unsubscribe();
