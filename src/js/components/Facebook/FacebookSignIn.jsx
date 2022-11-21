@@ -1,8 +1,8 @@
 import { Facebook } from '@mui/icons-material';
 import { CircularProgress } from '@mui/material';
-import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
+import styled from 'styled-components';
 import FacebookActions from '../../actions/FacebookActions';
 import VoterActions from '../../actions/VoterActions';
 import SplitIconButton from '../../common/components/Widgets/SplitIconButton';
@@ -54,7 +54,8 @@ class FacebookSignIn extends Component {
       FB.Event.subscribe('auth.statusChange', this.onFacebookStatusChange);
       try {
         FB.getLoginStatus((response) => {
-          console.log('FacebookSignIn FB.getLoginStatus response:', response);
+          const { authResponse, status } = response;
+          console.log(`FacebookSignIn FB.getLoginStatus response: ${authResponse}, status: ${status}`);
           if (response.status === 'connected') {
             this.setState({
               facebookConnectionInitialized: true,
