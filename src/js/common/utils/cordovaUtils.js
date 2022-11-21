@@ -371,10 +371,10 @@ export function isIPad11in () {
   return false;
 }
 
-export function hasiPhone14SizeHeader () {
+export function hasDynamicIsland () {
   if (isIOS() && !isIOSAppOnMac() &&
-    ['iPhone14,8', 'iPhone15,2', 'iPhone15,3'].includes(window.device.model)) {
-    logMatch('iPhone 14 Sized Header', true);
+    ['iPhone15,2', 'iPhone15,3'].includes(window.device.model)) {
+    logMatch('iPhone 14 Pro Dynamic Island Sized Header', true);
     return true;
   }
   return false;

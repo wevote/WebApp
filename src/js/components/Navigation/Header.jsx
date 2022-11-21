@@ -204,7 +204,7 @@ export default class Header extends Component {
 
     if (isCordova()) {
       console.log('Header, cordova device model', window.device.model);
-      // console.log('Header, hasiPhone14SizeHeader', hasiPhone14SizeHeader());
+      // console.log('Header, hasDynamicIsland', hasDynamicIsland());
     }
 
     const { params } = this.props;

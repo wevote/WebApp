@@ -7,7 +7,7 @@ import OrganizationActions from '../../actions/OrganizationActions';
 import VoterGuideActions from '../../actions/VoterGuideActions';
 import LazyImage from '../../common/components/LazyImage';
 import apiCalming from '../../common/utils/apiCalming';
-import { hasiPhone14SizeHeader, isIOS, isIOSAppOnMac, isIPad } from '../../common/utils/cordovaUtils';
+import { hasDynamicIsland, isIOS, isIOSAppOnMac, isIPad } from '../../common/utils/cordovaUtils';
 import historyPush from '../../common/utils/historyPush';
 import { normalizedHref } from '../../common/utils/hrefUtils';
 import { isCordova, isWebApp } from '../../common/utils/isCordovaOrWebApp';
@@ -200,7 +200,7 @@ class HeaderBackTo extends Component {
     const pathname = normalizedHref();
     const shareButtonInHeader = pathname && stringContains('/office', pathname.toLowerCase());
     let pad = isIOS() ? '34px 15px 0 0' : '0 15px 0 0';
-    if (hasiPhone14SizeHeader()) {
+    if (hasDynamicIsland()) {
       pad = '56px 15px 0 0';
     }
     const cordovaStyles = {

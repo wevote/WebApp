@@ -1,19 +1,17 @@
-import { ArrowBackIos, Close, FileCopyOutlined, People } from '@mui/icons-material';
-import { Button, Dialog, DialogContent, FormControl, FormControlLabel, IconButton, Radio } from '@mui/material';
+import { ArrowBackIos, Close, People } from '@mui/icons-material';
+import { Button, Dialog, DialogContent, IconButton } from '@mui/material';
 import withStyles from '@mui/styles/withStyles';
 import withTheme from '@mui/styles/withTheme';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
-import { FacebookIcon, FacebookShareButton, TwitterIcon, TwitterShareButton } from 'react-share'; // EmailIcon, EmailShareButton,
 import styled from 'styled-components';
-import { returnFriendsModalTitle, returnShareModalTitle } from './ShareModalText';
 import AnalyticsActions from '../../actions/AnalyticsActions';
 import FriendActions from '../../actions/FriendActions';
-import ShareActions from '../../common/actions/ShareActions';
 import VoterActions from '../../actions/VoterActions';
+import ShareActions from '../../common/actions/ShareActions';
 import ShareStore from '../../common/stores/ShareStore';
 import apiCalming from '../../common/utils/apiCalming';
-import { cordovaLinkToBeSharedFixes, hasIPhoneNotch, isAndroid, isAndroidSizeMD } from '../../common/utils/cordovaUtils';
+import { cordovaLinkToBeSharedFixes } from '../../common/utils/cordovaUtils';
 import { isWebApp } from '../../common/utils/isCordovaOrWebApp'; // isCordova
 import { renderLog } from '../../common/utils/logging';
 import normalizedImagePath from '../../common/utils/normalizedImagePath';
@@ -24,10 +22,11 @@ import VoterStore from '../../stores/VoterStore';
 import createMessageToFriendDefaults from '../../utils/createMessageToFriendDefaults';
 import sortFriendListByMutualFriends from '../../utils/friendFunctions';
 import MessageCard from '../Widgets/MessageCard';
-import { androidFacebookClickHandler, androidTwitterClickHandler } from './shareButtonCommon'; // cordovaSocialSharingByEmail
+import { ShareFacebook, SharePreviewFriends, shareStyles, ShareTwitterAndCopy } from './shareButtonCommon'; // cordovaSocialSharingByEmail
 import ShareModalOption from './ShareModalOption';
+import { returnFriendsModalTitle, returnShareModalTitle } from './ShareModalText';
+import ShareModalTitleArea from './ShareModalTitleArea';
 
-const OpenExternalWebSite = React.lazy(() => import(/* webpackChunkName: 'OpenExternalWebSite' */ '../../common/components/Widgets/OpenExternalWebSite'));
 const ShareWithFriendsModalBodyWithController = React.lazy(() => import(/* webpackChunkName: 'ShareWithFriendsModalBodyWithController' */ '../Friends/ShareWithFriendsModalBodyWithController'));
 const ShareWithFriendsModalTitleWithController = React.lazy(() => import(/* webpackChunkName: 'ShareWithFriendsModalTitleWithController' */ '../Friends/ShareWithFriendsModalTitleWithController'));
 
@@ -285,7 +284,7 @@ class ShareModal extends Component {
           open={this.props.show}
           onClose={() => { this.props.closeShareModal(pathname); }}
         >
-          <ModalTitleArea>
+          <ModalTitleAreaMini>
             <div>
               <Button className={classes.backButton} color="primary" onClick={() => { this.onClickGoBack(); }}>
                 <ArrowBackIos className={classes.backButtonIcon} />
@@ -308,7 +307,7 @@ class ShareModal extends Component {
                 urlToShare={linkToBeShared}
               />
             </Suspense>
-          </ModalTitleArea>
+          </ModalTitleAreaMini>
           <DialogContent classes={{ root: classes.dialogContent }}>
             <div className="full-width">
               <Suspense fallback={<></>}>
@@ -337,68 +336,14 @@ class ShareModal extends Component {
           open={this.props.show}
           onClose={() => { this.props.closeShareModal(pathname); }}
         >
-          <ModalTitleArea firstSlide>
-            <div>
-              <ShareModalTitle>
-                {shareModalTitle}
-              </ShareModalTitle>
-              <FormControl classes={{ root: classes.formControl }}>
-                <RadioGroup
-                  onChange={this.handleShareAllOpinionsToggle}
-                >
-                  <RadioItem>
-                    <FormControlLabel
-                      classes={{ label: classes.radioLabel }}
-                      // disabled={!voterIsSignedIn}
-                      disabled
-                      id="shareModalAllOpinionsRadioButton"
-                      value="AllOpinions"
-                      // label={voterIsSignedIn ? 'Share my voter guide' : 'Sign in to share my voter guide'}
-                      label="Share my voter guide (coming in 2023)"
-                      labelPlacement="end"
-                      control={
-                        (
-                          <Radio
-                            classes={{ colorPrimary: classes.radioPrimary }}
-                            color="primary"
-                            checked={voterIsSignedIn && stringContains('AllOpinions', shareModalStep)}
-                          />
-                        )
-                      }
-                      style={{ marginRight: `${isAndroidSizeMD() ? '10px' : ''}` }}
-                    />
-                  </RadioItem>
-                  <RadioItem>
-                    <FormControlLabel
-                      id="shareModalBallotOnlyRadioButton"
-                      classes={{ label: classes.radioLabel }}
-                      value="BallotOnly"
-                      label="Ballot only"
-                      labelPlacement="end"
-                      control={
-                        (
-                          <Radio
-                            classes={{ colorPrimary: classes.radioPrimary }}
-                            color="primary"
-                            checked={!voterIsSignedIn || !stringContains('AllOpinions', shareModalStep)}
-                          />
-                        )
-                      }
-                    />
-                  </RadioItem>
-                </RadioGroup>
-              </FormControl>
-            </div>
-            <IconButton
-              aria-label="Close"
-              className={classes.closeButtonAbsolute}
-              onClick={this.closeShareModal}
-              id="closeShareModal"
-              size="large"
-            >
-              <Close />
-            </IconButton>
-          </ModalTitleArea>
+          <ShareModalTitleArea
+            firstSlide
+            shareFooterStep={shareModalStep}
+            shareModalTitle={shareModalTitle}
+            handleShareAllOpinionsToggle={this.handleShareAllOpinionsToggle}
+            handleCloseShareButtonDrawer={this.closeShareModal}
+          />
+
           <DialogContent classes={{ root: classes.dialogContent }}>
             <div className="full-width">
               <Flex>
@@ -416,86 +361,11 @@ class ShareModal extends Component {
             </div>
             <div className="full-width">
               <Flex>
-                <Wrapper>
-                  <div id="androidFacebook"
-                       onClick={() => isAndroid() &&
-                         androidFacebookClickHandler(`${linkToBeSharedUrlEncoded}&t=WeVote`)}
-                  >
-                    <FacebookShareButton
-                      className="no-decoration"
-                      id="shareModalFacebookButton"
-                      onClick={this.saveActionShareButtonFacebook}
-                      quote={titleText}
-                      url={`${linkToBeSharedUrlEncoded}`}
-                      windowWidth={750}
-                      windowHeight={600}
-                      disabled={isAndroid()}
-                      disabledStyle={isAndroid() ? { opacity: 1 } : {}}
-                    >
-                      <FacebookIcon
-                        bgStyle={{ background: '#3b5998' }}
-                        round="True"
-                        size={68}
-                      />
-                      <Text>
-                        Facebook
-                      </Text>
-                    </FacebookShareButton>
-                  </div>
-                </Wrapper>
-                <Wrapper>
-                  <div id="androidTwitter"
-                       onClick={() => isAndroid() &&
-                         androidTwitterClickHandler(linkToBeSharedUrlEncoded)}
-                  >
-                    <TwitterShareButton
-                      className="no-decoration"
-                      id="shareModalTwitterButton"
-                      onClick={this.saveActionShareButtonTwitter}
-                      title={titleText}
-                      url={`${linkToBeSharedUrlEncoded}`}
-                      windowWidth={750}
-                      windowHeight={600}
-                      disabled={isAndroid()}
-                      disabledStyle={isAndroid() ? { opacity: 1 } : {}}
-                    >
-                      <TwitterIcon
-                        bgStyle={{ background: '#38A1F3' }}
-                        round="True"
-                        size={68}
-                      />
-                      <Text>
-                        Twitter
-                      </Text>
-                    </TwitterShareButton>
-                  </div>
-                </Wrapper>
-                <ShareModalOption
-                  backgroundColor="#2E3C5D"
-                  copyLink
-                  icon={<FileCopyOutlined />}
-                  id="copyShareLink"
-                  urlToShare={linkToBeShared}
-                  onClickFunction={this.saveActionShareButtonCopy}
-                  title="Copy link"
-                  uniqueExternalId="shareModalOption-copyShareLink"
-                />
+                <ShareFacebook titleText={titleText} saveActionShareButtonFacebook={this.saveActionShareButtonFacebook} linkToBeShared={linkToBeSharedUrlEncoded} />
+                <ShareTwitterAndCopy titleText={titleText} saveActionShareButtonTwitter={this.saveActionShareButtonTwitter} saveActionShareButtonCopy={this.saveActionShareButtonCopy} linkToBeSharedTwitter={linkToBeSharedUrlEncoded} linkToBeSharedCopy={linkToBeShared} />
               </Flex>
-              {(isWebApp() && stringContains('AllOpinions', shareModalStep) && voterIsSignedIn) && (  // This has many problems in Cordova
-                <Suspense fallback={<></>}>
-                  <OpenExternalWebSite
-                    linkIdAttribute="allOpinions"
-                    url={linkToBeShared}
-                    target="_blank"
-                    // title={this.props.title}
-                    className="u-no-underline"
-                    body={(
-                      <Button className={classes.previewButton} variant="outlined" fullWidth color="primary">
-                        Preview what your friends will see
-                      </Button>
-                    )}
-                  />
-                </Suspense>
+              {(isWebApp() && stringContains('AllOpinions', shareModalStep) && voterIsSignedIn) && (
+                <SharePreviewFriends classes={classes} linkToBeShared={linkToBeShared} />
               )}
             </div>
           </DialogContent>
@@ -508,7 +378,7 @@ class ShareModal extends Component {
           open={this.props.show}
           onClose={() => { this.props.closeShareModal(pathname); }}
         >
-          <ModalTitleArea>
+          <ModalTitleAreaMini>
             <Button className={classes.backButton} color="primary" onClick={() => { this.setStep('ballotShareOptions'); }}>
               <ArrowBackIos className={classes.backButtonIcon} />
               Back
@@ -522,7 +392,7 @@ class ShareModal extends Component {
             >
               <Close />
             </IconButton>
-          </ModalTitleArea>
+          </ModalTitleAreaMini>
           <DialogContent classes={{ root: classes.dialogContent }}>
             <MessageCard
               mainText="You haven't added any friends yet."
@@ -553,63 +423,8 @@ ShareModal.propTypes = {
   closeShareModal: PropTypes.func.isRequired,
 };
 
-const styles = () => ({
-  dialogPaper: {
-    marginTop: hasIPhoneNotch() ? 68 : 48,
-    '@media (min-width: 576px)': {
-      maxWidth: '600px',
-      width: '90%',
-      height: 'fit-content',
-      margin: '0 auto',
-      minWidth: 0,
-      minHeight: 0,
-      transitionDuration: '.25s',
-    },
-    minWidth: '100%',
-    maxWidth: '100%',
-    width: '100%',
-    minHeight: '100%',
-    maxHeight: '100%',
-    height: '100%',
-    margin: '0 auto',
-  },
-  dialogContent: {
-    padding: '0px 24px 36px 24px',
-    background: 'white',
-    height: 'fit-content',
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    justifyContent: 'center',
-    '@media(max-width: 576px)': {
-      justifyContent: 'flex-start !important',
-    },
-  },
-  backButton: {
-    // marginBottom: 6,
-    // marginLeft: -8,
-    paddingTop: 0,
-    paddingBottom: 0,
-  },
-  backButtonIcon: {
-    fontSize: 14,
-    fontWeight: 'bold',
-  },
-  closeButton: {
-    marginLeft: 'auto',
-  },
-  closeButtonAbsolute: {
-    position: 'absolute',
-    right: 5,
-    top: 3,
-  },
-  previewButton: {
-    marginTop: 0,
-  },
-});
-
 /* eslint no-nested-ternary: ["off"] */
-const ModalTitleArea = styled('div', {
+const  ModalTitleAreaMini = styled('div', {
   shouldForwardProp: (prop) => !['firstSlide', 'onSignInSlide'].includes(prop),
 })(({ firstSlide, onSignInSlide }) => (`
   justify-content: flex-start;
@@ -630,87 +445,4 @@ const Flex = styled('div')`
   padding-top: 16px;
 `;
 
-const RadioGroup = styled('div', {
-  shouldForwardProp: (prop) => !['preventStackedButtons'].includes(prop),
-})(({ preventStackedButtons, theme }) => (`
-  display: flex;
-  flex-flow: column;
-  width: 100%;
-  ${theme.breakpoints.down('md')} {
-    margin-bottom: -10px;
-  }
-  ${theme.breakpoints.down('xs')} {
-    ${preventStackedButtons ? '' : 'flex-flow: row wrap;'}
-    margin-bottom: 0;
-  }
-`));
-
-const RadioItem = styled('div', {
-  shouldForwardProp: (prop) => !['preventStackedButtons'].includes(prop),
-})(({ preventStackedButtons, theme }) => (`
-  ${!preventStackedButtons && theme.breakpoints.down('xs') ? (`
-      // width: 100% !important;
-      // min-width: 100% !important;
-      // margin-bottom: -6px;
-  `) : ''}
-`));
-
-const ShareModalTitle = styled('h3', {
-  shouldForwardProp: (prop) => !['onSignInSlide'].includes(prop),
-})(({ left, onSignInSlide }) => (`
-  font-size: 30px;
-  color: black;
-  margin: ${onSignInSlide ? '0 auto' : '0'};
-  margin-top: 0;
-  margin-bottom: 0;
-  font-weight: bold;
-  text-align: ${left && 'left'};
-`));
-
-// const SubTitle = styled('div', {
-//   shouldForwardProp: (prop) => !['larger', 'left'].includes(prop),
-// })(({ larger, left }) => (`
-//   margin-top: 0;
-//   font-size: ${larger ? '18px' : '14px'};
-//   width: 100%;
-//   text-align: ${left && 'left'};
-//   @media(min-width: 420px) {
-//     // width: 80%;
-//   }
-// `));
-
-const Text = styled('h3')`
-  font-weight: normal;
-  font-size: 16px;
-  color: black !important;
-  padding: 6px;
-`;
-
-const Wrapper = styled('div')`
-  cursor: pointer;
-  display: block !important;
-  margin-bottom: 12px;
-  @media (min-width: 600px) {
-    flex: 1 1 0;
-  }
-  height: 100%;
-  text-align: center;
-  text-decoration: none !important;
-  color: black !important;
-  transition-duration: .25s;
-  &:hover {
-    text-decoration: none !important;
-    color: black !important;
-    transform: scale(1.05);
-    transition-duration: .25s;
-  }
-  @media (max-width: 600px) {
-    width: 33.333%;
-  }
-  @media (max-width: 476px) {
-    width: 50%;
-  }
-`;
-
-
-export default withTheme(withStyles(styles)(ShareModal));
+export default withTheme(withStyles(shareStyles)(ShareModal));

@@ -8,6 +8,7 @@ import styled from 'styled-components';
 import MeasureActions from '../../actions/MeasureActions';
 import extractNumber from '../../common/utils/extractNumber';
 import historyPush from '../../common/utils/historyPush';
+import { isCordova } from '../../common/utils/isCordovaOrWebApp';
 import { renderLog } from '../../common/utils/logging';
 import shortenText from '../../common/utils/shortenText';
 import toTitleCase from '../../common/utils/toTitleCase';
@@ -522,6 +523,10 @@ const MeasureTitle = styled('h1')`
   margin-top: 0;
   white-space: nowrap;
   width: 100%;
+  ${() => (isCordova() ? {
+    marginLeft: '80px',
+    marginRight: '80px',
+  } : {})};
 `;
 
 const MeasureWrapper = styled('div')`
