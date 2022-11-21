@@ -51,6 +51,8 @@ const ElectionNameH1 = styled('h1', {
   line-height: 1;
   margin: 0px;
   ${centerText ? 'text-align: center;' : ''}
+  word-wrap: break-word;    // e.g 'District of Columbia General Election' in mobile/Cordova
+  white-space: normal;
 `));
 
 const ElectionNameScrollContent = styled('div')`
