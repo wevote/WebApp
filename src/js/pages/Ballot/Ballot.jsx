@@ -1391,7 +1391,7 @@ class Ballot extends Component {
                                 <hr className="ballot-header-divider" />
                               </>
                             )}
-                            <BallotFilterRow/* showFilterTabs={showFilterTabs} */>
+                            <BallotFilterRow id="BallotFilterRow"/* showFilterTabs={showFilterTabs} */>
                               <BallotFilterTabs ref={(chips) => { this.chipContainer = chips; }}>
                                 { ballotWithItemsFromCompletionFilterType.length ? (
                                   <>
@@ -1449,7 +1449,7 @@ class Ballot extends Component {
                                             />
                                           );
                                           return (
-                                            <div key={oneTypeOfBallotItem}>
+                                            <div id={`BallotButtonOuterWrapper-${window.performance.now()}`} key={oneTypeOfBallotItem + window.performance.now()}>
                                               <div className="u-show-mobile">
                                                 <div
                                                   className="ballot_filter_btns"
@@ -1561,44 +1561,46 @@ class Ballot extends Component {
                             }
                             isFirstBallotItem = numberOfBallotItemsDisplayed === 1;
                             return (
-                              <Suspense fallback={<></>} key={key}>
-                                <DelayedLoad
-                                  showLoadingText={showLoadingText}
-                                  waitBeforeShow={500}
-                                >
-                                  <>
-                                    {!!(isSearching && searchTextString && item.foundInArray && item.foundInArray.length) && (
-                                      <SearchResultsFoundInExplanation>
-                                        {searchTextString}
-                                        {' '}
-                                        found in
-                                        {' '}
-                                        {item.foundInArray.map((oneItem) => {
-                                          const foundInStringItem = (
-                                            <span key={foundInItemsAlreadyShown}>
-                                              {foundInItemsAlreadyShown ? ', ' : ''}
-                                              {oneItem}
-                                            </span>
-                                          );
-                                          foundInItemsAlreadyShown += 1;
-                                          return foundInStringItem;
-                                        })}
-                                      </SearchResultsFoundInExplanation>
-                                    )}
-                                    <BallotItemCompressed
-                                      ballotItemDisplayName={item.ballot_item_display_name}
-                                      candidateList={item.candidate_list}
-                                      candidatesToShowForSearchResults={item.candidatesToShowForSearchResults}
-                                      id={chipLabelText(item.ballot_item_display_name)}
-                                      isFirstBallotItem={isFirstBallotItem}
-                                      isMeasure={item.kind_of_ballot_item === TYPES.MEASURE}
-                                      totalNumberOfBallotItems={totalNumberOfBallotItems}
-                                      weVoteId={item.we_vote_id}
-                                      key={item.we_vote_id}
-                                    />
-                                  </>
-                                </DelayedLoad>
-                              </Suspense>
+                              <div className="keyInsertionDiv" key={key}>
+                                <Suspense fallback={<></>}>
+                                  <DelayedLoad
+                                    showLoadingText={showLoadingText}
+                                    waitBeforeShow={500}
+                                  >
+                                    <>
+                                      {!!(isSearching && searchTextString && item.foundInArray && item.foundInArray.length) && (
+                                        <SearchResultsFoundInExplanation>
+                                          {searchTextString}
+                                          {' '}
+                                          found in
+                                          {' '}
+                                          {item.foundInArray.map((oneItem) => {
+                                            const foundInStringItem = (
+                                              <span key={foundInItemsAlreadyShown}>
+                                                {foundInItemsAlreadyShown ? ', ' : ''}
+                                                {oneItem}
+                                              </span>
+                                            );
+                                            foundInItemsAlreadyShown += 1;
+                                            return foundInStringItem;
+                                          })}
+                                        </SearchResultsFoundInExplanation>
+                                      )}
+                                      <BallotItemCompressed
+                                        ballotItemDisplayName={item.ballot_item_display_name}
+                                        candidateList={item.candidate_list}
+                                        candidatesToShowForSearchResults={item.candidatesToShowForSearchResults}
+                                        id={chipLabelText(item.ballot_item_display_name)}
+                                        isFirstBallotItem={isFirstBallotItem}
+                                        isMeasure={item.kind_of_ballot_item === TYPES.MEASURE}
+                                        totalNumberOfBallotItems={totalNumberOfBallotItems}
+                                        weVoteId={item.we_vote_id}
+                                        key={key}
+                                      />
+                                    </>
+                                  </DelayedLoad>
+                                </Suspense>
+                              </div>
                             );
                           } else {
                             return null;
@@ -1737,7 +1739,6 @@ const styles = (theme) => ({
 const BallotBottomWrapper = styled('div', {
   shouldForwardProp: (prop) => !['scrolledDown'].includes(prop),
 })(({ scrolledDown, theme }) => (`
-  ${isCordova() ? 'margin-top: 18px;' : ''}
   ${isWebApp() ? (scrolledDown || showBallotDecisionsTabs() ? 'margin-top: 4px;' : 'margin-top: 38px;') : ''}
   ${showBallotDecisionsTabs() ? '' : ''}
   ${isWebApp() ? 'transition: all 150ms ease-in;' : ''}

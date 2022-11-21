@@ -137,13 +137,11 @@ class Footer extends Component {
           </FooterMainWrapper>
         )}
         {showShareButtonFooter && (
-          <ShareButtonFooterWrapper>
-            <Suspense fallback={<span>&nbsp;</span>}>
-              <DelayedLoad waitBeforeShow={3000}>
-                <ShareButtonFooter />
-              </DelayedLoad>
-            </Suspense>
-          </ShareButtonFooterWrapper>
+          <Suspense fallback={<span>&nbsp;</span>}>
+            <DelayedLoad waitBeforeShow={3000}>
+              <ShareButtonFooter />
+            </DelayedLoad>
+          </Suspense>
         )}
         {showFooterBar && (
           <FooterBarWrapper className={isWebApp() ? 'footroom-wrapper' : 'footroom-wrapper-cordova'}>
@@ -167,9 +165,6 @@ const FooterMainWrapper = styled('div')`
 `;
 
 const FooterWrapper = styled('div')`
-`;
-
-const ShareButtonFooterWrapper = styled('div')`
 `;
 
 export default withStyles(styles)(Footer);

@@ -356,6 +356,19 @@ export function cordovaSignInModalTopPosition (collapsed) {
   return '';
 }
 
+function measureFooterContainer () {
+  try {
+    const { $ } = window;
+    const footerContainer = $('div[class*=\'footer-container\']');
+    const rect = footerContainer[0].getBoundingClientRect();
+    // console.log('rect = ', rect, rect.height);
+    return rect.height;
+  } catch (error) {
+    console.log('measureFooterContainer returned default 66 due to try/catch error: ', error);
+    return 66;
+  }
+}
+
 export function shareBottomOffset (pinToBottom) {
   if (pinToBottom) return '0px';
 
@@ -363,14 +376,14 @@ export function shareBottomOffset (pinToBottom) {
 
   if (isIOS()) {
     if (hasIPhoneNotch()) {
-      return showFooterBar ? '66px' : '18px';
+      return showFooterBar ? `${measureFooterContainer()}px` : '18px';
     } else if (isIPhone4p7in() || isIPhone5p5inEarly()) {
-      return showFooterBar ? '56px' : '0px';
+      return showFooterBar ? `${measureFooterContainer()}px` : '0px';
     }
   } else if (isAndroid()) {
-    return showFooterBar ? '57px' : '0px';
+    return showFooterBar ? `${measureFooterContainer()}px` : '0px';
   } else if (showFooterBar) {
-    return '57px';
+    return `${measureFooterContainer()}px`;
   }
 
   // Default for all other devices, including desktop and mobile browsers

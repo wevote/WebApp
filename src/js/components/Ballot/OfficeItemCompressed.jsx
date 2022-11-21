@@ -282,6 +282,7 @@ class OfficeItemCompressed extends Component {
     const candidatesToRenderLength = candidatesToRender.length;
     const hideCandidateDetails = false; // supportedCandidatesList.length;
     let candidateCount = 0;
+
     return (
       <CandidatesContainer>
         { candidatesToRender.slice(0, limitNumberOfCandidatesShownToThisNumber)
@@ -293,6 +294,8 @@ class OfficeItemCompressed extends Component {
             const candidatePartyText = oneCandidate.party && oneCandidate.party.length ? `${oneCandidate.party}` : '';
             const avatarCompressed = 'card-main__avatar-compressed';
             const avatarBackgroundImage = normalizedImagePath('../img/global/svg-icons/avatar-generic.svg');
+            const uniqueKey = `candidate_preview-${oneCandidate.we_vote_id}-${window.performance.now()}`;
+            // console.log('ScrollingOuterContainer: ', uniqueKey);
             const scoreExplanationTooltip = (
               <Tooltip className="u-z-index-9020" id={`scoreDescription-${oneCandidate.we_vote_id}`}>
                 Your personalized score
@@ -309,7 +312,7 @@ class OfficeItemCompressed extends Component {
               </Tooltip>
             );
             return (
-              <ScrollingOuterContainer key={`candidate_preview-${oneCandidate.we_vote_id}-${externalUniqueId}`}>
+              <ScrollingOuterContainer key={uniqueKey}>
                 <HorizontallyScrollingContainer>
                   <CandidateContainer>
                     <CandidateWrapper>

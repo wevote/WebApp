@@ -1,6 +1,6 @@
 import { AppBar } from '@mui/material';
 import styled from 'styled-components';
-import { hasiPhone14SizeHeader, hasIPhoneNotch, isAndroid, isAndroidSizeMD, isAndroidSizeWide, isAndroidSizeXL, isIOSAppOnMac, isIPad, isIPad11in, isIPhone4p7in, isIPhone5p5inEarly, isIPhone5p5inMini, isIPhone6p1in, isIPhone6p5in } from '../../common/utils/cordovaUtils';
+import { hasDynamicIsland, hasIPhoneNotch, isAndroid, isAndroidSizeMD, isAndroidSizeWide, isAndroidSizeXL, isIOSAppOnMac, isIPad, isIPad11in, isIPhone4p7in, isIPhone5p5inEarly, isIPhone5p5inMini, isIPhone6p1in, isIPhone6p5in } from '../../common/utils/cordovaUtils';
 import { normalizedHrefPage } from '../../common/utils/hrefUtils';
 import { isCordova, isWebApp } from '../../common/utils/isCordovaOrWebApp';
 import isMobileScreenSize, { isTablet } from '../../common/utils/isMobileScreenSize';
@@ -16,8 +16,8 @@ import { pageEnumeration } from '../../utils/cordovaUtilsPageEnumeration';
 export const IOSNotchedSpacer = styled('div')`
   height: ${() => {
     if (isIPhone5p5inMini())      return '40px';
-    if (hasiPhone14SizeHeader())  return '52px';
-    return                               '36px';
+    if (hasDynamicIsland())       return '52px';
+    return                        '36px';
   }};
   top: 0;
   position: fixed;
@@ -134,8 +134,8 @@ export const DualHeaderContainer = styled('div', {
 export const HeadroomWrapper = styled('div')`
   position: fixed;
   top: ${() => {
-    if (hasiPhone14SizeHeader())  return '22px';
-    return                               '0px';
+    if (hasDynamicIsland())  return '22px';
+    return                          '0px';
   }};
   left: 0;
   width: 100%;
