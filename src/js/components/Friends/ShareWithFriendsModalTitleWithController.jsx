@@ -29,7 +29,7 @@ class ShareWithFriendsModalTitleWithController extends Component {
   }
 
   componentDidMount () {
-    console.log('ShareWithFriendsModalTitleWithController componentDidMount');
+    // console.log('ShareWithFriendsModalTitleWithController componentDidMount');
     // We expect this API call from ShareWithFriendsModalBodyWithController
     // if (apiCalming('friendListsAll', 5000)) {
     //   FriendActions.friendListsAll();
@@ -52,12 +52,7 @@ class ShareWithFriendsModalTitleWithController extends Component {
   }
 
   onFriendStoreChange () {
-    const currentFriendListUnsorted = FriendStore.currentFriends();
-    // console.log('onFriendStoreChange currentFriendListUnsorted:', currentFriendListUnsorted);
-    const totalCurrentFriendListCount = currentFriendListUnsorted.length;
-    this.setState({
-      totalCurrentFriendListCount,
-    });
+    this.setState({});
   }
 
   copyLink = () => {
@@ -166,7 +161,7 @@ class ShareWithFriendsModalTitleWithController extends Component {
   render () {
     renderLog('ShareWithFriendsModalTitleWithController');  // Set LOG_RENDER_EVENTS to log all renders
     const { friendsModalTitle, urlToShare } = this.props;
-    const { copyLinkCopied, messageToFriendType, totalCurrentFriendListCount } = this.state;
+    const { copyLinkCopied, messageToFriendType } = this.state;
 
     return (
       <ShareWithFriendsModalTitle>
@@ -179,11 +174,9 @@ class ShareWithFriendsModalTitleWithController extends Component {
         </ShareWithFriendsTop>
         <ShareWithFriendsTitleBottom>
           <div className="full-width">
-            {totalCurrentFriendListCount > 0 && (
-              <Suspense fallback={<></>}>
-                <MessageToFriendInputField messageToFriendType={messageToFriendType} />
-              </Suspense>
-            )}
+            <Suspense fallback={<></>}>
+              <MessageToFriendInputField messageToFriendType={messageToFriendType} />
+            </Suspense>
             {(urlToShare) && (
               <UrlToShareWrapper>
                 <CopyToClipboard text={urlToShare} onCopy={this.copyLink}>

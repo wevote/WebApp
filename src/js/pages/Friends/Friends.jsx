@@ -1,4 +1,5 @@
 import withStyles from '@mui/styles/withStyles';
+import { filter } from 'lodash-es';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
 import Helmet from 'react-helmet';
@@ -11,6 +12,7 @@ import AnalyticsActions from '../../actions/AnalyticsActions';
 import FriendActions from '../../actions/FriendActions';
 import VoterActions from '../../actions/VoterActions';
 import LoadingWheel from '../../common/components/Widgets/LoadingWheel';
+import { publicFigureQuotes } from '../../common/constants/whyVoteQuotes';
 import apiCalming from '../../common/utils/apiCalming';
 import historyPush from '../../common/utils/historyPush';
 import { renderLog } from '../../common/utils/logging';
@@ -22,6 +24,7 @@ import FriendInvitationsSentToMe from '../../components/Friends/FriendInvitation
 import FriendsPromoBox from '../../components/Friends/FriendsPromoBox';
 import SuggestedFriends from '../../components/Friends/SuggestedFriends';
 import SuggestedFriendsPreview from '../../components/Friends/SuggestedFriendsPreview';
+import WhyVoteQuote from '../../components/Remind/WhyVoteQuote';
 import { PageContentContainer } from '../../components/Style/pageLayoutStyles';
 import TwitterSignInCard from '../../components/Twitter/TwitterSignInCard';
 import BrowserPushMessage from '../../components/Widgets/BrowserPushMessage';
@@ -31,12 +34,15 @@ import TooltipIcon from '../../components/Widgets/TooltipIcon';
 import AppObservableStore from '../../stores/AppObservableStore';
 import FriendStore from '../../stores/FriendStore';
 import VoterStore from '../../stores/VoterStore';
+import { SetUpAccountTitle } from '../../components/Style/SetUpAccountStyles';
 import { cordovaFriendsWrapper } from '../../utils/cordovaOffsets';
 import displayFriendsTabs from '../../utils/displayFriendsTabs';
 import sortFriendListByMutualFriends from '../../utils/friendFunctions';
 import { SectionDescription } from '../../components/Style/friendStyles';
 
 const AddContactsFromGoogleButton = React.lazy(() => import(/* webpackChunkName: 'AddContactsFromGoogleButton' */ '../../components/SetUpAccount/AddContactsFromGoogleButton'));
+const ContactsImportedPreview = React.lazy(() => import(/* webpackChunkName: 'ContactsImportedPreview' */ '../../components/Friends/ContactsImportedPreview'));
+const FindFriendsStart = React.lazy(() => import(/* webpackChunkName: 'FindFriendsStart' */ '../../components/Friends/FindFriendsStart'));
 const FirstAndLastNameRequiredAlert = React.lazy(() => import(/* webpackChunkName: 'FirstAndLastNameRequiredAlert' */ '../../components/Widgets/FirstAndLastNameRequiredAlert'));
 const RemindContactsStart = React.lazy(() => import(/* webpackChunkName: 'RemindContactsStart' */ '../../components/Remind/RemindContactsStart'));
 const SuggestedContacts = React.lazy(() => import(/* webpackChunkName: 'SuggestedContacts' */ '../../components/Friends/SuggestedContacts'));
@@ -62,7 +68,7 @@ class Friends extends Component {
   constructor (props) {
     super(props);
     this.state = {
-      currentFriendList: [],
+      // currentFriendList: [],
       defaultTabItem: '',
       friendActivityExists: false,
       friendInvitationsSentByMe: [],
@@ -95,7 +101,7 @@ class Friends extends Component {
     if (apiCalming('voterContactListSave', 60000)) {
       VoterActions.voterContactListAugmentWithWeVoteData(true);
     }
-    this.resetDefaultTabForMobile(FriendStore.friendInvitationsSentToMe(), FriendStore.suggestedFriendList(), FriendStore.friendInvitationsSentByMe());
+    this.resetDefaultTabForMobile();
     if (apiCalming('activityNoticeListRetrieve', 10000)) {
       ActivityActions.activityNoticeListRetrieve();
     }
@@ -125,8 +131,12 @@ class Friends extends Component {
     if (voter && voter.is_signed_in) {
       voterIsSignedIn = voter.is_signed_in;
     }
+    const voterContactEmailList = VoterStore.getVoterContactEmailList();
     const voterContactEmailListCount = VoterStore.getVoterContactEmailListCount();
+    const contactsWithAccountList = filter(voterContactEmailList, (contact) => contact.voter_we_vote_id);
+    const contactsWithAccountCount = contactsWithAccountList.length;
     this.setState({
+      contactsWithAccountCount,
       voter,
       voterContactEmailListCount,
       voterIsSignedIn,
@@ -142,7 +152,7 @@ class Friends extends Component {
     const suggestedFriendListUnsorted = FriendStore.suggestedFriendList();
     const suggestedFriendList = sortFriendListByMutualFriends(suggestedFriendListUnsorted);
     this.setState({
-      currentFriendList,
+      // currentFriendList,
       friendInvitationsSentByMe,
       friendInvitationsSentToMe,
       suggestedFriendList,
@@ -160,7 +170,12 @@ class Friends extends Component {
 
   handleNavigation = (to) => historyPush(to);
 
-  resetDefaultTabForMobile (friendInvitationsSentToMe, suggestedFriendList, friendInvitationsSentByMe) {
+  resetDefaultTabForMobile () {
+    const friendInvitationsSentToMe = FriendStore.friendInvitationsSentToMe();
+    const suggestedFriendList = FriendStore.suggestedFriendList();
+    const friendInvitationsSentByMe = FriendStore.friendInvitationsSentByMe();
+    const voterContactEmailListCount = VoterStore.getVoterContactEmailListCount();
+
     const { match: { params: { tabItem } } } = this.props;
     let defaultTabItem;
     if (tabItem) {
@@ -168,12 +183,12 @@ class Friends extends Component {
       defaultTabItem = tabItem;
     } else if (friendInvitationsSentToMe && friendInvitationsSentToMe.length > 0) {
       defaultTabItem = 'requests';
-    } else if (suggestedFriendList && suggestedFriendList.length > 0) {
+    } else if ((suggestedFriendList && suggestedFriendList.length > 0) || (voterContactEmailListCount > 0)) {
       defaultTabItem = 'suggested';
     } else if (friendInvitationsSentByMe && friendInvitationsSentByMe.length > 0) {
       defaultTabItem = 'sent-requests';
     } else {
-      defaultTabItem = 'remind';
+      defaultTabItem = 'requests';
     }
     this.setState({ defaultTabItem });
     // console.log('resetDefaultTabForMobile defaultTabItem:', defaultTabItem, ', tabItem:', tabItem);
@@ -186,7 +201,8 @@ class Friends extends Component {
   render () {
     renderLog('Friends');  // Set LOG_RENDER_EVENTS to log all renders
     const {
-      currentFriendList, friendActivityExists, friendInvitationsSentByMe,
+      contactsWithAccountCount,
+      friendActivityExists, friendInvitationsSentByMe,
       friendInvitationsSentToMe, suggestedFriendList,
       voter, voterContactEmailListCount, voterIsSignedIn,
     } = this.state;
@@ -198,6 +214,7 @@ class Friends extends Component {
       return LoadingWheel;
     }
 
+    const findFriendsOn = true;
     // const expandSideMarginsIfCordova = isCordova() ? { marginRight: 23, marginLeft: 23 } : {};
     let mobileContentToDisplay;
     let desktopContentToDisplay;
@@ -207,7 +224,6 @@ class Friends extends Component {
     if (voterIsSignedIn) {
       switch (tabItem) {
         case 'remind':
-        default:
           desktopContentToDisplay = (
             <RemindOuterWrapper>
               <RemindContactsWrapper>
@@ -269,11 +285,11 @@ class Friends extends Component {
                       )}
                     </>
                   )}
-                  <Suspense fallback={<></>}>
-                    <SuggestedContacts />
-                  </Suspense>
                 </>
               )}
+              <Suspense fallback={<></>}>
+                <SuggestedContacts />
+              </Suspense>
             </>
           );
           break;
@@ -369,63 +385,64 @@ class Friends extends Component {
           );
           break;
         case 'current':
-          desktopContentToDisplay = (
-            <>
-              <FriendsCurrent />
-              <FindYourContactsWrapper>
-                <SectionTitle>
-                  Find Your Friends on We Vote
-                </SectionTitle>
-                <SectionDescription>
-                  Importing your contacts helps you find your friends on We
-                  Vote. You can delete your contact information at any time.
-                </SectionDescription>
-                <div>
-                  <Suspense fallback={<></>}>
-                    <AddContactsFromGoogleButton darkButton />
-                  </Suspense>
-                </div>
-              </FindYourContactsWrapper>
-              <InviteByEmail />
-              <FriendInvitationsSentByMePreview />
-            </>
-          );
           mobileContentToDisplay = (
             <>
-              {currentFriendList.length > 0 ? (
-                <>
-                  <FriendsCurrent />
-                  <FriendInvitationsSentByMePreview />
-                </>
+              <FriendsCurrent />
+              <FriendInvitationsSentByMePreview />
+              <InviteByEmail />
+              {friendInvitationsSentToMe.length > 0 ? (
+                <MessageCard
+                  mainText="You have friend requests. Check them out!"
+                  buttonText="View Requests"
+                  buttonURL="/friends/requests"
+                />
               ) : (
                 <>
-                  {friendInvitationsSentToMe.length > 0 ? (
-                    <MessageCard
-                      mainText="You have friend requests. Check them out!"
-                      buttonText="View Requests"
-                      buttonURL="/friends/requests"
-                    />
-                  ) : (
+                  {(voterContactEmailListCount > 0) && (
                     <>
-                      <FindYourContactsWrapper>
-                        <SectionTitle>
-                          Find Your Friends on We Vote
-                        </SectionTitle>
-                        <SectionDescription>
-                          Importing your contacts helps you find your friends on We
-                          Vote. You can delete your contact information at any time.
-                        </SectionDescription>
-                        <div>
-                          <Suspense fallback={<></>}>
-                            <AddContactsFromGoogleButton darkButton />
-                          </Suspense>
-                        </div>
-                      </FindYourContactsWrapper>
+                      <MessageCard
+                        mainText="Add friends from your contacts"
+                        buttonText="Choose friends to add"
+                        buttonURL="/friends/suggested"
+                      />
                     </>
                   )}
                 </>
               )}
+              <div className="u-show-mobile">
+                <WhyVoteQuoteBlockOuterWrapper>
+                  <WhyVoteQuoteBlock>
+                    {publicFigureQuotes.map((oneQuote) => (
+                      <WhyVoteQuote
+                        key={`whyVoteQuote-${oneQuote.testimonialAuthor}`}
+                        imageUrl={oneQuote.imageUrl}
+                        testimonial={oneQuote.testimonial}
+                        testimonialAuthor={oneQuote.testimonialAuthor}
+                      />
+                    ))}
+                  </WhyVoteQuoteBlock>
+                </WhyVoteQuoteBlockOuterWrapper>
+              </div>
             </>
+          );
+          desktopContentToDisplay = (
+            <div className="row">
+              <div className="col-sm-12 col-md-8">
+                {mobileContentToDisplay}
+              </div>
+              <div className="col-md-4">
+                <WhyVoteQuoteBlock>
+                  {publicFigureQuotes.map((oneQuote) => (
+                    <WhyVoteQuote
+                      key={`whyVoteQuote-${oneQuote.testimonialAuthor}`}
+                      imageUrl={oneQuote.imageUrl}
+                      testimonial={oneQuote.testimonial}
+                      testimonialAuthor={oneQuote.testimonialAuthor}
+                    />
+                  ))}
+                </WhyVoteQuoteBlock>
+              </div>
+            </div>
           );
           break;
         case 'sent-requests':
@@ -448,6 +465,7 @@ class Friends extends Component {
           break;
         case 'all':
         case 'requests':
+        default:
           desktopContentToDisplay = (
             <>
               <Helmet title="Friends - We Vote" />
@@ -455,6 +473,29 @@ class Friends extends Component {
               <div className="row">
                 <div className="col-sm-12 col-md-8">
                   <>
+                    {(!friendActivityExists && contactsWithAccountCount) && (
+                      <ContactsImportedPreviewOuterWrapper>
+                        <SetUpAccountTitle>
+                          {contactsWithAccountCount}
+                          {' '}
+                          of your friends
+                          {' '}
+                          {contactsWithAccountCount === 1 ? 'is' : 'are'}
+                          {' '}
+                          already on We Vote
+                          {' '}
+                        </SetUpAccountTitle>
+                        <Suspense fallback={<></>}>
+                          <ContactsImportedPreview showOnlyContactsWithAccounts />
+                        </Suspense>
+                        <MessageCard
+                          inShareModal
+                          mainText=""
+                          buttonText="Choose friends to add"
+                          buttonURL="/friends/suggested"
+                        />
+                      </ContactsImportedPreviewOuterWrapper>
+                    )}
                     {voterIsSignedIn && (
                       <Suspense fallback={<></>}>
                         <FirstAndLastNameRequiredAlert />
@@ -465,6 +506,15 @@ class Friends extends Component {
                     )}
                     <FriendInvitationsSentToMe />
                     <SuggestedFriendsPreview />
+                    {((voterContactEmailListCount > 0) && !(!friendActivityExists && contactsWithAccountCount)) && (
+                      <>
+                        <MessageCard
+                          mainText="Add friends from your contacts"
+                          buttonText="Choose friends to add"
+                          buttonURL="/friends/suggested"
+                        />
+                      </>
+                    )}
                   </>
                 </div>
                 <div className="col-sm-12 col-md-4">
@@ -473,8 +523,8 @@ class Friends extends Component {
                       <div>
                         <SectionTitle>
                           Invite Friends
+                          <TooltipIcon title="These friends will see what you support and oppose." />
                         </SectionTitle>
-                        <TooltipIcon title="These friends will see what you support and oppose." />
                         <AddFriendsByEmail inSideColumn />
                       </div>
                     </div>
@@ -502,6 +552,29 @@ class Friends extends Component {
           );
           mobileContentToDisplay = (
             <>
+              {(!friendActivityExists && contactsWithAccountCount) && (
+                <ContactsImportedPreviewOuterWrapper>
+                  <SetUpAccountTitle>
+                    {contactsWithAccountCount}
+                    {' '}
+                    of your friends
+                    {' '}
+                    {contactsWithAccountCount === 1 ? 'is' : 'are'}
+                    {' '}
+                    already on We Vote
+                    {' '}
+                  </SetUpAccountTitle>
+                  <Suspense fallback={<></>}>
+                    <ContactsImportedPreview showOnlyContactsWithAccounts />
+                  </Suspense>
+                  <MessageCard
+                    inShareModal
+                    mainText=""
+                    buttonText="Choose friends to add"
+                    buttonURL="/friends/suggested"
+                  />
+                </ContactsImportedPreviewOuterWrapper>
+              )}
               <>
                 {voterIsSignedIn && (
                   <Suspense fallback={<></>}>
@@ -514,7 +587,6 @@ class Friends extends Component {
                   <SectionTitle>
                     Invite Friends
                   </SectionTitle>
-                  <TooltipIcon title="These friends will see what you support and oppose." />
                   <AddFriendsByEmail inSideColumn />
                 </InviteFriendsMobileWrapper>
               </>
@@ -563,14 +635,27 @@ class Friends extends Component {
             )}
           </>
         ) : (
-          <RemindOuterWrapper>
-            <Helmet title="Remind Your Friends - We Vote" />
-            <RemindContactsWrapper>
-              <Suspense fallback={<></>}>
-                <RemindContactsStart />
-              </Suspense>
-            </RemindContactsWrapper>
-          </RemindOuterWrapper>
+          <>
+            {findFriendsOn ? (
+              <RemindOuterWrapper>
+                <Helmet title="Find Your Friends - We Vote" />
+                <RemindContactsWrapper>
+                  <Suspense fallback={<></>}>
+                    <FindFriendsStart />
+                  </Suspense>
+                </RemindContactsWrapper>
+              </RemindOuterWrapper>
+            ) : (
+              <RemindOuterWrapper>
+                <Helmet title="Remind Your Friends - We Vote" />
+                <RemindContactsWrapper>
+                  <Suspense fallback={<></>}>
+                    <RemindContactsStart />
+                  </Suspense>
+                </RemindContactsWrapper>
+              </RemindOuterWrapper>
+            )}
+          </>
         )}
       </PageContentContainer>
     );
@@ -586,6 +671,11 @@ const styles = () => ({
     display: 'inline !important',
   },
 });
+
+const ContactsImportedPreviewOuterWrapper = styled('div')`
+  margin-top: 12px;
+  margin-bottom: 42px;
+`;
 
 const FacebookSignInWrapper = styled('div')`
   flex: 1;
@@ -634,6 +724,18 @@ const TwitterSignInWrapper = styled('div')`
   @media (min-width: 614px) and (max-width: 991px) {
     padding-right: 8px;
   }
+`;
+
+const WhyVoteQuoteBlock = styled('div')`
+  max-width: 450px;
+`;
+
+const WhyVoteQuoteBlockOuterWrapper = styled('div')`
+  display: flex;
+  justify-content: center;
+  margin-bottom: 48px;
+  margin-top: 36px;
+  width: 100%;
 `;
 
 export default withStyles(styles)(Friends);

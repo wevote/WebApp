@@ -16,6 +16,7 @@ import Header from './js/components/Navigation/Header';
 import HeaderBarSuspense from './js/components/Navigation/HeaderBarSuspense';
 import webAppConfig from './js/config';
 import AppObservableStore, { messageService } from './js/stores/AppObservableStore';
+import initializeFacebookSDK from './js/utils/initializeFacebookSDK';
 import initializejQuery from './js/utils/initializejQuery';
 import RouterV5SendMatch from './js/utils/RouterV5SendMatch';
 // importRemoveCordovaListenersToken1  -- Do not remove this line!
@@ -149,6 +150,10 @@ class App extends Component {
         }, 3000);
       }
     }
+    setTimeout(() => {
+      // We need to start this initialization early since there is a delay getting the FB object in place
+      initializeFacebookSDK();
+    }, 4000);
   }
 
   componentDidCatch (error, info) {
@@ -195,11 +200,13 @@ class App extends Component {
               ingestPoint: openReplayIngestPoint,
             });
             tracker1.start();
+            AppObservableStore.setOpenReplayTracker(tracker1);
           } else {
             const tracker2 = new Tracker({
               projectKey: openReplayProjectKey,
             });
             tracker2.start();
+            AppObservableStore.setOpenReplayTracker(tracker2);
           }
           AppObservableStore.setOpenReplayEnabled(true);
           AppObservableStore.setOpenReplayPending(false);
@@ -227,7 +234,7 @@ class App extends Component {
     // console.log('App.js:  enableFullStory: ', enableFullStory);
     let { hostname } = window.location;
     hostname = hostname || '';
-    const weVoteSites = ['wevote.us', 'quality.wevote.us', 'localhost', 'silicon', ''];   // localhost on Cordova is a ''
+    const weVoteSites = ['wevote.org', 'www.wevote.org', 'wevote.us', 'quality.wevote.us', 'www.wevote.us', 'localhost', 'silicon', ''];   // localhost on Cordova is a ''
     const isWeVoteMarketingSite = weVoteSites.includes(String(hostname));
     const isNotWeVoteMarketingSite = !isWeVoteMarketingSite;
     // const firstVisit = !cookies.getItem('voter_device_id');

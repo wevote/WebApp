@@ -8,14 +8,14 @@ import { isValidPhoneNumber } from 'react-phone-number-input';
 import styled from 'styled-components';
 import VoterActions from '../../actions/VoterActions';
 import LoadingWheel from '../../common/components/Widgets/LoadingWheel';
-import { blurTextFieldAndroid, focusTextFieldAndroid } from '../../common/utils/cordovaUtils';
+import apiCalming from '../../common/utils/apiCalming';
+import { blurTextFieldAndroid } from '../../common/utils/cordovaUtils';
 import { isCordova, isWebApp } from '../../common/utils/isCordovaOrWebApp';
 import isMobileScreenSize from '../../common/utils/isMobileScreenSize';
 import { renderLog } from '../../common/utils/logging';
 import VoterStore from '../../stores/VoterStore';
 import { FirstRowPhoneOrEmail, SecondRowPhoneOrEmail, TrashCan } from '../Style/pageLayoutStyles';
 import { ButtonContainerHorizontal } from '../Welcome/sectionStyles';
-import signInModalGlobalState from '../Widgets/signInModalGlobalState';
 import SettingsVerifySecretCode from './SettingsVerifySecretCode';
 
 const OpenExternalWebSite = React.lazy(() => import(/* webpackChunkName: 'OpenExternalWebSite' */ '../../common/components/Widgets/OpenExternalWebSite'));
@@ -31,7 +31,7 @@ class VoterPhoneVerificationEntry extends Component {
       displayPhoneVerificationButton: false,
       hideExistingPhoneNumbers: false,
       loading: false,
-      movedInitialFocus: false,
+      // movedInitialFocus: false,
       secretCodeSystemLocked: false,
       showVerifyModal: false,
       showError: false,
@@ -48,32 +48,43 @@ class VoterPhoneVerificationEntry extends Component {
     this.sendSignInCodeSMS = this.sendSignInCodeSMS.bind(this);
     this.closeVerifyModalFromVerifySecretCode = this.closeVerifyModalFromVerifySecretCode.bind(this);
     this.removeVoterSMSPhoneNumber = this.removeVoterSMSPhoneNumber.bind(this);
-
-    if (isCordova()) {
-      signInModalGlobalState.set('textOrEmailSignInInProcess', true);
-    }
+    // NOTE October 2022:  This file has lots of commented out code, do not remove until there has been an iOS release
+    // if (isCordova()) {
+    //   signInModalGlobalState.set('textOrEmailSignInInProcess', true);
+    // }
   }
 
   componentDidMount () {
     this.onVoterStoreChange();
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
     VoterActions.voterSMSPhoneNumberRetrieve();
+    const inputFld = $('#enterVoterPhone');
+    // console.log('enterVoterPhone ', $(inputFld));
+    $(inputFld).blur();
+    this._isMounted = true;
   }
 
   componentDidUpdate () {
-    const { movedInitialFocus } = this.state;
-    if (isCordova() && !movedInitialFocus) {
-      const inputFld = $('#enterVoterPhone');
-      // console.log('enterVoterEmailAddress ', $(inputFld));
-      $(inputFld).focus();
-      if ($(inputFld).is(':focus')) {
-        this.setState({ movedInitialFocus: true });
-      }
-    }
+    // const { movedInitialFocus } = this.state;
+    // if (isCordova() && !movedInitialFocus) {
+    //   const inputFld = $('#enterVoterPhone');
+    //   console.log('voterPhoneVerificationEntry componentDidUpdate ', $(inputFld));
+    //   $(inputFld).focus();
+    //   if ($(inputFld).is(':focus')) {
+    //     this.setState({ movedInitialFocus: true });
+    //   }
+    // }
+  }
+
+  componentDidCatch (error, info) {
+    // We should get this information to Splunk!
+    console.error('VoterPhoneVerificationEntry caught error: ', `${error} with info: `, info);
   }
 
   componentWillUnmount () {
+    clearTimeout(this.clearPhoneTimer);
     this.voterStoreListener.remove();
+    this._isMounted = false;
   }
 
   onVoterStoreChange () {
@@ -89,23 +100,24 @@ class VoterPhoneVerificationEntry extends Component {
     const voter = VoterStore.getVoter();
     const { is_signed_in: isSignedIn, signed_in_with_sms_phone_number: signedInWithSmsPhoneNumber } = voter;
     if (secretCodeVerified && !isSignedIn) {
-      // VoterActions.voterRetrieve(); // Dale 2022-10-16 I think this was causing problems -- monitor to make sure bugs aren't introduced by commenting this out
-      console.log('onVoterStoreChange secretCodeVerified && !isSignedIn, VoterActions.voterRetrieve() commented out');
-      // New Nov 5, 2021: this should be the end of the line for this dialog, we have fired off a voterRetrieve that should
-      // return is_signed_in true and signed_in_with_sms_phone_number true
-      this.closeSignInModalLocal();  // Nov 2022, don't think we ever get there, I think the closeVerifyModal() is doing the job
+      console.log('VoterPhoneVerificationEntry onVoterStoreChange secretCodeVerified && !isSignedIn, VoterActions.voterRetrieve()');
+      if (apiCalming('voterRetrieve', 500)) {
+        VoterActions.voterRetrieve();
+      }
+      this.closeSignInModalLocal();
     }
+
+    const newState = {};  // Don't set state twice in the same function
     // console.log(`VoterEmailAddressEntry onVoterStoreChange isSignedIn: ${isSignedIn}, signedInWithSmsPhoneNumber: ${signedInWithSmsPhoneNumber}`);
     if (secretCodeVerified) {
-      this.setState({
+      Object.assign(newState, {
         displayPhoneVerificationButton: false,
         showVerifyModal: false,
         signInCodeSMSSentAndWaitingForResponse: false,
         voterSMSPhoneNumber: '',
       });
     } else if (signInCodeSMSSent) {
-      // console.log('smsPhoneNumberStatus.sign_in_code_sms_sent signInCodeSMSSent:', signInCodeSMSSent);
-      this.setState({
+      Object.assign(newState, {
         displayPhoneVerificationButton: false,
         smsPhoneNumberStatus: {
           sign_in_code_sms_sent: false,
@@ -114,33 +126,32 @@ class VoterPhoneVerificationEntry extends Component {
         signInCodeSMSSentAndWaitingForResponse: false,
       });
     } else if (smsPhoneNumberStatus.sms_phone_number_already_owned_by_this_voter) {
-      this.setState({
+      Object.assign(newState, {
         displayPhoneVerificationButton: false,
         smsPhoneNumberStatus,
         showVerifyModal: false,
         signInCodeSMSSentAndWaitingForResponse: false,
       });
     } else if (signedInWithSmsPhoneNumber) {
-      // console.log('VoterEmailAddressEntry onVoterStoreChange signedInWithSmsPhoneNumber so doing a fallback close ===================');
       this.closeSignInModalLocal();
-      this.setState({
+      Object.assign(newState, {
         smsPhoneNumberStatus,
       });
     } else if (smsPhoneNumberStatus.sms_phone_number && !smsPhoneNumberStatus.sign_in_code_sms_sent) {
-      this.setState({
+      Object.assign(newState, {
         displayPhoneVerificationButton: true,
         smsPhoneNumberStatus,
         signInCodeSMSSentAndWaitingForResponse: false,
       });
     } else {
-      this.setState({
+      Object.assign(newState, {
         smsPhoneNumberStatus,
       });
     }
     const smsPhoneNumberList = VoterStore.getSMSPhoneNumberList();
     const smsPhoneNumberListCount = smsPhoneNumberList.length;
     // const voterSMSPhoneNumbersVerifiedCount = VoterStore.getSMSPhoneNumbersVerifiedCount();
-    this.setState({
+    Object.assign(newState, {
       loading: false,
       secretCodeSystemLocked,
       smsPhoneNumberList,
@@ -148,6 +159,11 @@ class VoterPhoneVerificationEntry extends Component {
       voter: VoterStore.getVoter(),
       // voterSMSPhoneNumbersVerifiedCount,
     });
+    // console.log('VoterEmailAddressEntry onVoterStoreChange before remaining setstate');
+    if (this._isMounted) {
+      // console.log('VoterEmailAddressEntry onVoterStoreChange before remaining setstate AND _isMounted');
+      this.setState(newState);
+    }
   }
 
   setAsPrimarySMSPhoneNumber (smsWeVoteId) {
@@ -185,7 +201,10 @@ class VoterPhoneVerificationEntry extends Component {
 
   closeSignInModalFromVerifySecretCode = () => {
     // console.log('VoterPhoneVerificationEntry closeSignInModalFromVerifySecretCode');
-    VoterActions.clearSecretCodeVerificationStatusAndPhone();
+    const delayBeforeClearingPhoneStatus = 500;
+    this.clearPhoneTimer = setTimeout(() => {
+      VoterActions.clearSecretCodeVerificationStatusAndPhone();
+    }, delayBeforeClearingPhoneStatus);
     this.closeSignInModalLocal();
   }
 
@@ -198,10 +217,14 @@ class VoterPhoneVerificationEntry extends Component {
       },
       showVerifyModal: false,
       signInCodeSMSSentAndWaitingForResponse: false,
-    }, () => VoterActions.clearSecretCodeVerificationStatusAndPhone());
-    if (isCordova()) {
-      this.closeSignInModalLocal();
-    }
+    });
+    setTimeout(() => {
+      // A timer hack to prevent a "React state update on an unmounted component"
+      VoterActions.clearSecretCodeVerificationStatusAndPhone();
+    }, 1000);
+    // if (isCordova()) {
+    //   this.closeSignInModalLocal();
+    // }
     if (this.props.closeVerifyModal) {
       this.props.closeVerifyModal();
     }
@@ -240,15 +263,20 @@ class VoterPhoneVerificationEntry extends Component {
       displayPhoneVerificationButton: false,
       signInCodeSMSSentAndWaitingForResponse: false,
       voterSMSPhoneNumber: '', // Clearing voterSMSPhoneNumber variable does not always clear number in form
-    }, () => VoterActions.clearSecretCodeVerificationStatusAndPhone());
+    });
+    setTimeout(() => {
+      // A timer hack to prevent a "React state update on an unmounted component"
+      VoterActions.clearSecretCodeVerificationStatusAndPhone();
+    }, 1000);
+
     const { cancelShouldCloseModal } = this.props;
     // console.log('cancelShouldCloseModal:', cancelShouldCloseModal);
     if (cancelShouldCloseModal) {
       this.closeSignInModalLocal();
     } else if (isCordova() || isMobileScreenSize()) {
-      if (this.props.showAllSignInOptions) {
-        this.props.showAllSignInOptions();
-      }
+      // if (this.props.showAllSignInOptions) {
+      //   this.props.showAllSignInOptions();
+      // }
     }
   };
 
@@ -259,23 +287,23 @@ class VoterPhoneVerificationEntry extends Component {
     if (isCordova() || isMobileScreenSize()) {
       this.showPhoneOnlySignInLocal();
     }
-    focusTextFieldAndroid(); // This refers to caller string AddFriendsByEmail. Correct?
+    // focusTextFieldAndroid(); // This refers to caller string AddFriendsByEmail. Correct?
   };
 
   onAnimationEndCancel = () => {
     // In Cordova when the virtual keyboard goes away, the on-click doesn't happen, but the onAnimation does.
     // This allows us to react to the first click.
-    if (isCordova()) {
-      // console.log('VoterPhoneVerificationEntry onAnimationEndCancel calling onCancel');
-      this.onCancel();
-    }
+    // if (isCordova()) {
+    //   // console.log('VoterPhoneVerificationEntry onAnimationEndCancel calling onCancel');
+    //   this.onCancel();
+    // }
   };
 
   onAnimationEndSend = () => {
-    if (isCordova()) {
-      // console.log('VoterPhoneVerificationEntry onAnimationEndSend calling sendSignInCodeSMS');
-      this.sendSignInCodeSMS();
-    }
+    // if (isCordova()) {
+    //   // console.log('VoterPhoneVerificationEntry onAnimationEndSend calling sendSignInCodeSMS');
+    //   this.sendSignInCodeSMS();
+    // }
   };
 
   onKeyDown = (event) => {
@@ -309,12 +337,13 @@ class VoterPhoneVerificationEntry extends Component {
       event.preventDefault();
     }
     if (voterSMSPhoneNumberIsValid && displayPhoneVerificationButton) {
-      VoterActions.sendSignInCodeSMS(voterSMSPhoneNumber);
       this.setState({
         signInCodeSMSSentAndWaitingForResponse: true,
         smsPhoneNumberStatus: {
           sms_phone_number_already_owned_by_other_voter: false,
         },
+      }, () => {
+        VoterActions.sendSignInCodeSMS(voterSMSPhoneNumber);
       });
     } else {
       this.setState({ showError: true });
@@ -643,7 +672,7 @@ VoterPhoneVerificationEntry.propTypes = {
   hideEverythingButSignInWithPhoneForm: PropTypes.bool,
   hideSignInWithPhoneForm: PropTypes.bool,
   lockOpenPhoneVerificationButton: PropTypes.bool,
-  showAllSignInOptions: PropTypes.func,
+  // showAllSignInOptions: PropTypes.func,
   showPhoneOnlySignIn: PropTypes.func,
 };
 

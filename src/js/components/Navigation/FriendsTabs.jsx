@@ -22,7 +22,7 @@ class FriendsTabs extends Component {
     super(props);
     this.state = {
       currentFriendList: [],
-      defaultTabItem: 'remind',
+      defaultTabItem: 'requests',
       friendInvitationsSentByMe: [],
       friendInvitationsSentToMe: [],
       suggestedFriendList: [],
@@ -102,7 +102,7 @@ class FriendsTabs extends Component {
 
     if (selectedTab === 'request') selectedTab = 'sent-requests';   /// Hack Oct 17, 2021
     if (selectedTab === 'sent-requests') selectedTab = 'requests';
-    if (selectedTab === 'all') selectedTab = 'remind';
+    if (selectedTab === 'all') selectedTab = 'requests';
 
     // console.log('getSelectedTab tabItem:', tabItem, ', defaultTabItem:', defaultTabItem, ', selectedTab:', selectedTab);
     return selectedTab;
@@ -115,7 +115,7 @@ class FriendsTabs extends Component {
     // console.log('------------ in FriendsTabs getPageFromUrl', href);
     if (href === '/friends') {
       // console.log('------------ in FriendsTabs tabItem: invite');
-      return 'remind';
+      return 'requests';
     }
     return href.replace('/friends/', '');
   }
@@ -128,7 +128,7 @@ class FriendsTabs extends Component {
       // If the voter is directed to a friends tab, make that the default
       defaultTabItem = tabItem;
     } else {
-      defaultTabItem = 'remind';
+      defaultTabItem = 'requests';
     }
     this.setState({ defaultTabItem });
     // console.log('resetDefaultTabForMobile defaultTabItem:', defaultTabItem, ', tabItem:', tabItem);
@@ -155,21 +155,6 @@ class FriendsTabs extends Component {
             scrollButtons="auto"
             aria-label="scrollable auto tabs example"
           >
-            <FriendsNavTab
-              value="remind"
-              label={isMobileScreenSize() ? (
-                <>
-                  Remind
-                </>
-              ) : (
-                <span className="u-no-break">
-                  Remind Contacts
-                </span>
-              )}
-              onClick={() => {
-                this.handleNavigation('/friends/remind');
-              }}
-            />
             <RequestsNavTab
               value="requests"
               label={(
@@ -203,7 +188,15 @@ class FriendsTabs extends Component {
             {this.getSelectedTab() === 'invite' && (
               <FriendsNavTab
                 value="invite"
-                label={isMobileScreenSize() ? 'Invite' : 'Invite Friends'}
+                label={isMobileScreenSize() ? (
+                  <>
+                    Invite
+                  </>
+                ) : (
+                  <span className="u-no-break">
+                    Invite Friends
+                  </span>
+                )}
                 onClick={() => {
                   this.handleNavigation('/friends/invite');
                 }}
@@ -211,9 +204,32 @@ class FriendsTabs extends Component {
             )}
             <FriendsNavTab
               value="current"
-              label="Friends"
+              label={isMobileScreenSize() ? (
+                <>
+                  Friends
+                </>
+              ) : (
+                <span className="u-no-break">
+                  Your Friends
+                </span>
+              )}
               onClick={() => {
                 this.handleNavigation('/friends/current');
+              }}
+            />
+            <FriendsNavTab
+              value="remind"
+              label={isMobileScreenSize() ? (
+                <>
+                  Remind
+                </>
+              ) : (
+                <span className="u-no-break">
+                  Remind Contacts
+                </span>
+              )}
+              onClick={() => {
+                this.handleNavigation('/friends/remind');
               }}
             />
           </Tabs>

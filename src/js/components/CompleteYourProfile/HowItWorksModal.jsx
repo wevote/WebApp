@@ -5,9 +5,11 @@ import withTheme from '@mui/styles/withTheme';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
 import styled from 'styled-components';
+import VoterActions from '../../actions/VoterActions';
 import { hasIPhoneNotch } from '../../common/utils/cordovaUtils';
 import isMobileScreenSize from '../../common/utils/isMobileScreenSize';
 import { renderLog } from '../../common/utils/logging';
+import VoterConstants from '../../constants/VoterConstants';
 
 const HowItWorks = React.lazy(() => import(/* webpackChunkName: 'HowItWorks' */ '../../pages/HowItWorks'));
 
@@ -21,6 +23,14 @@ class HowItWorksModal extends Component {
   }
 
   closeHowItWorksModal () {
+    // const { howItWorksWatched } = this.state;
+    // const minimumStepIndexForCompletion = 1; // Was 2, but even opening it should get rid of the tickler
+    const alwaysMarkedWatched = true;
+    if (alwaysMarkedWatched) {
+      // Mark this, so we know to show 'How it Works' as completed
+      VoterActions.voterUpdateInterfaceStatusFlags(VoterConstants.HOW_IT_WORKS_WATCHED);
+      // this.setState({ howItWorksWatched: true });
+    }
     const { location: { pathname } } = window;
     this.props.toggleFunction(pathname);
   }

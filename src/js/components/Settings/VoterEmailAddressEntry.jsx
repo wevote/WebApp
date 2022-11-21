@@ -7,14 +7,14 @@ import React, { Component, Suspense } from 'react';
 import styled from 'styled-components';
 import VoterActions from '../../actions/VoterActions';
 import LoadingWheel from '../../common/components/Widgets/LoadingWheel';
-import { blurTextFieldAndroid, focusTextFieldAndroid, isIPad } from '../../common/utils/cordovaUtils';
+import apiCalming from '../../common/utils/apiCalming';
+import { blurTextFieldAndroid, isIPad } from '../../common/utils/cordovaUtils';
 import { isCordova, isWebApp } from '../../common/utils/isCordovaOrWebApp';
 import isMobileScreenSize from '../../common/utils/isMobileScreenSize';
 import { renderLog } from '../../common/utils/logging';
 import VoterStore from '../../stores/VoterStore';
 import { FirstRowPhoneOrEmail, SecondRowPhoneOrEmail, TrashCan } from '../Style/pageLayoutStyles';
 import { ButtonContainerHorizontal } from '../Welcome/sectionStyles';
-import signInModalGlobalState from '../Widgets/signInModalGlobalState';
 import SettingsVerifySecretCode from './SettingsVerifySecretCode';
 
 const OpenExternalWebSite = React.lazy(() => import(/* webpackChunkName: 'OpenExternalWebSite' */ '../../common/components/Widgets/OpenExternalWebSite'));
@@ -41,7 +41,7 @@ class VoterEmailAddressEntry extends Component {
       },
       hideExistingEmailAddresses: false,
       loading: false,
-      movedInitialFocus: false,
+      // movedInitialFocus: false,
       secretCodeSystemLocked: false,
       showVerifyModal: false,
       voter: VoterStore.getVoter(),
@@ -51,31 +51,38 @@ class VoterEmailAddressEntry extends Component {
       voterEmailAddressListCount: 0,
       // voterEmailAddressesVerifiedCount: 0,
     };
-    if (isCordova()) {
-      signInModalGlobalState.set('textOrEmailSignInInProcess', true);
-    }
+
+    // NOTE October 2022:  This file has lots of commented out code, do not remove until there has been an iOS release
+    // if (isCordova()) {
+    //   signInModalGlobalState.set('textOrEmailSignInInProcess', true);
+    // }
   }
 
   componentDidMount () {
     this.onVoterStoreChange();
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
     VoterActions.voterEmailAddressRetrieve();
+    const inputFld = $('#enterVoterEmailAddress');
+    console.log('enterVoterEmailAddress ', $(inputFld));
+    $(inputFld).blur();
+    this._isMounted = true;
   }
 
   componentDidUpdate () {
-    const { movedInitialFocus } = this.state;
-    if (isCordova() && !movedInitialFocus) {
-      const inputFld = $('#enterVoterEmailAddress');
-      // console.log('enterVoterEmailAddress ', $(inputFld));
-      $(inputFld).focus();
-      if ($(inputFld).is(':focus')) {
-        this.setState({ movedInitialFocus: true });
-      }
-    }
+    // const { movedInitialFocus } = this.state;
+    // if (isCordova() && !movedInitialFocus) {
+    //   const inputFld = $('#enterVoterEmailAddress');
+    //   // console.log('enterVoterEmailAddress ', $(inputFld));
+    //   $(inputFld).focus();
+    //   if ($(inputFld).is(':focus')) {
+    //     this.setState({ movedInitialFocus: true });
+    //   }
+    // }
   }
 
   componentWillUnmount () {
     this.voterStoreListener.remove();
+    this._isMounted = false;
   }
 
   onVoterStoreChange () {
@@ -84,15 +91,26 @@ class VoterEmailAddressEntry extends Component {
     const secretCodeVerificationStatus = VoterStore.getSecretCodeVerificationStatus();
     const { secretCodeVerified } = secretCodeVerificationStatus;
     // console.log('onVoterStoreChange emailAddressStatus:', emailAddressStatus);
+    const voter = VoterStore.getVoter();
+    const { is_signed_in: isSignedIn } = voter;
+    if (secretCodeVerified && !isSignedIn) {
+      console.log('VoterEmailAddressEntry onVoterStoreChange secretCodeVerified && !isSignedIn, VoterActions.voterRetrieve()');
+      if (apiCalming('voterRetrieve', 500)) {
+        VoterActions.voterRetrieve();
+      }
+      this.closeSignInModalLocal();
+    }
 
+    const newState = {};  // Don't set state twice in the same function
+    // console.log(`VoterEmailAddressEntry onVoterStoreChange isSignedIn: ${isSignedIn}, signedInWithSmsPhoneNumber: ${signedInWithSmsPhoneNumber}`);
     if (secretCodeVerified) {
-      this.setState({
+      Object.assign(newState, {
         displayEmailVerificationButton: false,
         showVerifyModal: false,
         voterEmailAddress: '',
       });
     } else if (emailAddressStatus.sign_in_code_email_sent) {
-      this.setState({
+      Object.assign(newState, {
         displayEmailVerificationButton: false,
         emailAddressStatus: {
           sign_in_code_email_sent: false,
@@ -100,20 +118,20 @@ class VoterEmailAddressEntry extends Component {
         showVerifyModal: true,
       });
     } else if (emailAddressStatus.email_address_already_owned_by_this_voter) {
-      this.setState({
+      Object.assign(newState, {
         displayEmailVerificationButton: false,
         emailAddressStatus,
         showVerifyModal: false,
       });
     } else {
-      this.setState({
+      Object.assign(newState, {
         emailAddressStatus,
       });
     }
     const voterEmailAddressList = VoterStore.getEmailAddressList();
     const voterEmailAddressListCount = voterEmailAddressList.length;
     // const voterEmailAddressesVerifiedCount = VoterStore.getEmailAddressesVerifiedCount();
-    this.setState({
+    Object.assign(newState, {
       loading: false,
       secretCodeSystemLocked,
       voter: VoterStore.getVoter(),
@@ -121,6 +139,9 @@ class VoterEmailAddressEntry extends Component {
       voterEmailAddressListCount,
       // voterEmailAddressesVerifiedCount,
     });
+    if (this._isMounted) {
+      this.setState(newState);
+    }
   }
 
   setAsPrimaryEmailAddress (emailWeVoteId) {
@@ -177,9 +198,9 @@ class VoterEmailAddressEntry extends Component {
     setTimeout(() => {
       // A timer hack to prevent a "React state update on an unmounted component"
       VoterActions.clearSecretCodeVerificationStatusAndEmail();
-      if (isCordova()) {
-        this.closeSignInModalLocal();
-      }
+      // if (isCordova()) {
+      //   this.closeSignInModalLocal();
+      // }
     }, 1000);
     if (this.props.closeVerifyModal) {
       this.props.closeVerifyModal();
@@ -232,16 +253,16 @@ class VoterEmailAddressEntry extends Component {
     if (isCordova() || isMobileScreenSize()) {
       this.showEmailOnlySignInLocal();
     }
-    focusTextFieldAndroid(); // This refers to caller string AddFriendsByEmail. Correct?
+    // focusTextFieldAndroid(); // This refers to caller string AddFriendsByEmail. Correct?
   };
 
   onAnimationEndCancel = () => {
     // In Cordova when the virtual keyboard goes away, the on-click doesn't happen, but the onAnimation does.
     // This allows us to react to the first click.
-    if (isCordova()) {
-      // console.log('VoterEmailAddressEntry onAnimationEndCancel calling onCancel');
-      this.onCancel();
-    }
+    // if (isCordova()) {
+    //   console.log('VoterEmailAddressEntry onAnimationEndCancel calling onCancel');
+    //   this.onCancel();
+    // }
   };
 
   onAnimationEndSend = () => {
@@ -403,6 +424,7 @@ class VoterEmailAddressEntry extends Component {
               onKeyDown={this.onKeyDown}
               placeholder="Type email here..."
               value={voterEmailAddress}
+              autoFocus={false}
             />
           </Paper>
           {(displayEmailVerificationButton || lockOpenEmailVerificationButton) && (

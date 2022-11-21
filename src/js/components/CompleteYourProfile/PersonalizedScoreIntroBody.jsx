@@ -247,7 +247,8 @@ class PersonalizedScoreIntroBody extends Component {
 
   closeThisModal = () => {
     const { currentStep } = this.state;
-    const currentStepCompletedThreshold = 7;
+    const currentStepCompletedThreshold = 1; // Was 7 - Search code for other places we set 'currentStepCompletedThreshold'
+    // console.log('PersonalizedScoreIntroBody closeThisModal, currentStep:', currentStep);
     if (currentStep >= currentStepCompletedThreshold) {
       // console.log('currentStepCompletedThreshold passed');
       VoterActions.voterUpdateInterfaceStatusFlags(VoterConstants.PERSONALIZED_SCORE_INTRO_COMPLETED);
@@ -258,20 +259,22 @@ class PersonalizedScoreIntroBody extends Component {
   };
 
   markPersonalizedScoreIntroCompleted = () => {
-    // Mark this so we know to show 'How it Works' as completed
+    // Mark this, so we know to show 'Personalized Score Modal' as completed
     if (this.props.markPersonalizedScoreIntroCompleted) {
       this.props.markPersonalizedScoreIntroCompleted();
     }
   };
 
   clickNextStepButton = () => {
-    const {
-      nextStep, personalizedScoreSteps,
-    } = this.state;
+    const { nextStep, personalizedScoreSteps } = this.state;
     // console.log('clickNextStepButton, nextStep:', nextStep);
+    // console.log('PersonalizedScoreIntroBody clickNextStepButton, nextStep:', nextStep);
     // After they have seen the 7th step, we can consider the personalized score as complete
-    const currentStepCompletedThreshold = 7;
+    const currentStepCompletedThreshold = 1; // Was 7 - Search code for other places we set 'currentStepCompletedThreshold'
     if (nextStep >= currentStepCompletedThreshold) {
+      // console.log('currentStepCompletedThreshold passed');
+      VoterActions.voterUpdateInterfaceStatusFlags(VoterConstants.PERSONALIZED_SCORE_INTRO_COMPLETED);
+      // TODO DALE 2022-11-01 Explore why we need to bring this outside this function
       this.markPersonalizedScoreIntroCompleted();
     }
     if (nextStep) {
@@ -474,7 +477,7 @@ const PersonalizedScoreIntroBodyWrapper = styled('div')`
 `;
 
 const ScrollableContentWrapper = styled('div')`
-  padding-bottom: 15px;
+  padding: 15px;
   overflow-y: auto;
 `;
 
@@ -484,7 +487,7 @@ const TwoButtonsWrapper = styled('div', {
   align-items: center;
   display: flex;
   ${inModal ? 'justify-content: space-between;' : 'justify-content: center;'}
-  margin: 0;
+  margin: 10px;
   padding: 4px 0 0 0;
   width: 100%;
 `));

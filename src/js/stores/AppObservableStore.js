@@ -36,6 +36,11 @@ const nonFluxState = {
   hostname: '',
   observableUpdateCounter: 0,
   organizationModalBallotItemWeVoteId: '',
+  openReplayEnabled: false,
+  openReplayPending: false,
+  openReplayTracker: undefined,
+  openReplayVoterIsSignedIn: '',
+  openReplayVoterWeVoteId: '',
   pendingSnackMessage: '',
   pendingSnackSeverity: '',
   scrolledDown: false,
@@ -118,6 +123,26 @@ export default {
   setOpenReplayPending (enabled) {
     nonFluxState.openReplayPending = enabled;
     messageService.sendMessage('state updated openReplayPending');
+  },
+
+  setOpenReplayStateCodeFromIpAddress (stateCodeFromIpAddress) {
+    nonFluxState.stateCodeFromIpAddress = stateCodeFromIpAddress;
+    messageService.sendMessage('state updated stateCodeFromIpAddress');
+  },
+
+  setOpenReplayTracker (tracker) {
+    nonFluxState.openReplayTracker = tracker;
+    messageService.sendMessage('state updated openReplayTracker');
+  },
+
+  setOpenReplayVoterIsSignedIn (value) {
+    nonFluxState.openReplayVoterIsSignedIn = value;
+    messageService.sendMessage('state updated openReplayVoterIsSignedIn');
+  },
+
+  setOpenReplayVoterWeVoteId (value) {
+    nonFluxState.openReplayVoterWeVoteId = value;
+    messageService.sendMessage('state updated openReplayVoterWeVoteId');
   },
 
   setGetStartedMode (getStartedMode) {
@@ -389,6 +414,22 @@ export default {
     return nonFluxState.openReplayPending;
   },
 
+  getOpenReplayStateCodeFromIpAddress () {
+    return nonFluxState.stateCodeFromIpAddress;
+  },
+
+  getOpenReplayTracker () {
+    return nonFluxState.openReplayTracker;
+  },
+
+  getOpenReplayVoterIsSignedIn () {
+    return nonFluxState.openReplayVoterIsSignedIn;
+  },
+
+  getOpenReplayVoterWeVoteId () {
+    return nonFluxState.openReplayVoterWeVoteId;
+  },
+
   getHideWeVoteLogo () {
     return nonFluxState.hideWeVoteLogo;
   },
@@ -469,6 +510,10 @@ export default {
 
   isOnWeVoteRootUrl () {
     const weVoteURL = nonFluxState.onWeVoteRootUrl || false;
+    // console.log('AppObservableStore nonFluxState.onWeVoteRootUrl: ', nonFluxState.onWeVoteRootUrl,
+    //   ', isOnWeVoteRootUrl weVoteURL: ', weVoteURL,
+    //   ', isCordovaLocal(): ', isCordovaLocal(),
+    //   ', is localhost: ', stringContains('localhost:', window.location.href));
     return weVoteURL || isCordovaLocal() || stringContains('localhost:', window.location.href) || stringContains('ngrok.io', window.location.href);
   },
 
@@ -611,7 +656,7 @@ export default {
           chosen_ready_introduction_text: chosenReadyIntroductionText,
           chosen_ready_introduction_title: chosenReadyIntroductionTitle,
         } = res;
-        let newHostname = hostFromApi;
+        let newHostname = hostFromApi ? hostFromApi.replace('www.', '') : hostname.replace('www.', '');
         if (apiSuccess) {
           let onWeVoteRootUrl = false;
           let onWeVoteSubdomainUrl = false;
@@ -622,8 +667,11 @@ export default {
             newHostname = webAppConfig.WE_VOTE_HOSTNAME;
           }
 
-          // console.log('siteConfigurationRetrieve hostname:', hostname);
-          if (newHostname === 'wevote.us' || newHostname === 'quality.wevote.us' || newHostname === 'localhost') {
+          // console.log('AppObservableStore siteConfigurationRetrieve hostname, newHostname:', hostname, newHostname);
+          if (newHostname === 'localhost' ||
+              newHostname === 'quality.wevote.us' ||
+              newHostname === 'wevote.org' ||
+              newHostname === 'wevote.us') {
             onWeVoteRootUrl = true;
           } else if (stringContains('wevote.us', newHostname)) {
             onWeVoteSubdomainUrl = true;
@@ -631,10 +679,14 @@ export default {
             onChosenFullDomainUrl = true;
           }
           // May 2021: This code doesn't need an API call to generate an answer, abandoning querying the store to get the answer
-          if (newHostname === 'wevote.us' || newHostname === 'quality.wevote.us' || newHostname === 'localhost' || isCordovaLocal()) {
-            // We should move this to the server if we can't change the Facebook sign in root url
+          if (newHostname === 'localhost' ||
+              newHostname === 'quality.wevote.us' ||
+              newHostname === 'wevote.org' ||
+              newHostname === 'wevote.us' ||
+              isCordovaLocal()) {
             onFacebookSupportedDomainUrl = true;
           }
+          // console.log('AppObservableStore siteConfigurationRetrieve onFacebookSupportedDomainUrl:', onFacebookSupportedDomainUrl);
           // console.log('AppObservableStore externalVoterId:', externalVoterId, ', siteOwnerOrganizationWeVoteId:', siteOwnerOrganizationWeVoteId);
           const { voterExternalIdHasBeenSavedOnce } = nonFluxState;
           if (externalVoterId && siteOwnerOrganizationWeVoteId) {

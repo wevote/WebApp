@@ -31,11 +31,13 @@ export default class SettingsAddress extends Component {
           <BrowserPushMessage incomingProps={this.props} />
           <div className="card">
             <div className="card-main">
-              <h3 className="h3">
-                Enter address where you are registered to vote
-              </h3>
               <div className={isWebApp() ? 'u-padding-bottom--md' : 'SettingsCardBottomCordova'}>
                 <AddressBox
+                  introductionHtml={(
+                    <h3 className="h3 row">
+                      Enter address where you are registered to vote
+                    </h3>
+                  )}
                   saveUrl="/ballot"
                 />
               </div>

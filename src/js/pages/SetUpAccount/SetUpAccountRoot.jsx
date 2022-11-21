@@ -21,7 +21,7 @@ import { reassuranceText } from '../../components/SetUpAccount/reassuranceText';
 import SetUpAccountNextButton from '../../components/SetUpAccount/SetUpAccountNextButton';
 import { DesktopNextButtonsInnerWrapper, DesktopNextButtonsOuterWrapperUShowDesktopTablet, DesktopStaticNextButtonsOuterWrapper, MobileStaticNextButtonsInnerWrapper, MobileStaticNextButtonsOuterWrapperUShowMobile } from '../../components/Style/NextButtonStyles';
 import { AccountSetUpRootWrapper, BackToButtonSpacer, BackWrapper, PageContentContainerAccountSetUp, StepHtmlWrapper, WeVoteLogo, WeVoteLogoWrapper } from '../../components/Style/SimpleProcessStyles';
-import AppObservableStore from '../../stores/AppObservableStore';
+import AppObservableStore, { messageService } from '../../stores/AppObservableStore';
 import BallotStore from '../../stores/BallotStore';
 import FriendStore from '../../stores/FriendStore';
 import VoterStore from '../../stores/VoterStore';
@@ -78,11 +78,11 @@ class SetUpAccountRoot extends React.Component {
     const displayStep = this.convertSetUpPagePathToDisplayStep(setUpPagePath);
     this.shouldNextButtonBeDisabled();
     this.setState({
-      setUpAccountBackLinkPath: AppObservableStore.getSetUpAccountBackLinkPath(),
-      setUpAccountEntryPath: AppObservableStore.getSetUpAccountEntryPath(),
       displayStep,
       setUpPagePath,
     });
+    this.onAppObservableStoreChange();
+    this.appStateSubscription = messageService.getMessage().subscribe(() => this.onAppObservableStoreChange());
     this.onBallotStoreChange();
     this.ballotStoreListener = BallotStore.addListener(this.onBallotStoreChange.bind(this));
     this.onFriendStoreChange();
@@ -138,9 +138,17 @@ class SetUpAccountRoot extends React.Component {
   }
 
   componentWillUnmount () {
+    this.appStateSubscription.unsubscribe();
     this.ballotStoreListener.remove();
     this.friendStoreListener.remove();
     this.voterStoreListener.remove();
+  }
+
+  onAppObservableStoreChange () {
+    this.setState({
+      setUpAccountBackLinkPath: AppObservableStore.getSetUpAccountBackLinkPath(),
+      setUpAccountEntryPath: AppObservableStore.getSetUpAccountEntryPath(),
+    });
   }
 
   onBallotStoreChange () {

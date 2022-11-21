@@ -137,7 +137,7 @@ class BallotStore extends ReduceStore {
   }
 
   get nextNationalElectionDayText () {
-    return this.getState().nextNationalElectionDayText || '2022-11-08';
+    return this.getState().nextNationalElectionDayText || '2024-11-05';
   }
 
   get currentBallotGoogleCivicElectionId () {

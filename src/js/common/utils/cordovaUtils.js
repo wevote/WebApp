@@ -654,9 +654,9 @@ export function setGlobalScreenSize (result) {
   window.pbakondyScreenSize = result;
 }
 
-export function focusTextFieldAndroid () {
+export function focusTextFieldAndroid (clue) {
   if (isAndroid()) {
-    prepareForCordovaKeyboard('AddFriendsByEmail');
+    prepareForCordovaKeyboard(clue);
   }
 }
 
@@ -785,6 +785,24 @@ export function cordovaLinkToBeSharedFixes (link) {
   linkToBeShared = linkToBeShared.replace('app://localhost/index.html#/', 'https://wevote.us/');  // Cordova iOS Nov 2021
   return linkToBeShared;
 }
+// ////////////////////////
+// this was used in ShareButtonFooter before I started using cordovaLinkToBeSharedFixes above
+// getCurrentFullUrl () {
+//   const { location: { href } } = window;
+//   let currentFullUrl = href || ''; // We intentionally don't use normalizedHref() here
+//   // Handles localhost and Cordova, always builds url to wevote.us
+//   if (currentFullUrl.startsWith('https://localhost')) {
+//     currentFullUrl = currentFullUrl.replace(/https:\/\/localhost.*?\//, 'https://wevote.us/');
+//     // console.log(`currentFullUrl adjusted for localhost: ${currentFullUrl}`);
+//   } else if (currentFullUrl.startsWith('file:///')) {
+//     currentFullUrl = currentFullUrl.replace(/file:.*?android_asset\/www\/index.html#\//, 'https://wevote.us/');
+//     // console.log(`currentFullUrl adjusted for Cordova android: ${currentFullUrl}`);
+//   } else if (currentFullUrl.startsWith('file://')) {
+//     currentFullUrl = currentFullUrl.replace(/file:\/\/.*?Vote.app\/www\/index.html#\//, 'https://wevote.us/');
+//     // console.log(`currentFullUrl adjusted for Cordova ios: ${currentFullUrl}`);
+//   }
+//   return currentFullUrl;
+// }
 
 // In-line
 polyfillFixes('cordovaUtils.js'); // Possibly redundant, but its need was confirmed in the debugger.  This has to run, before any polyfill is needed.

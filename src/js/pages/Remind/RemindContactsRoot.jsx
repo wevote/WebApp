@@ -34,7 +34,7 @@ import {
   WeVoteLogo,
   WeVoteLogoWrapper,
 } from '../../components/Style/SimpleProcessStyles';
-import AppObservableStore from '../../stores/AppObservableStore';
+import AppObservableStore, { messageService } from '../../stores/AppObservableStore';
 import BallotStore from '../../stores/BallotStore';
 import FriendStore from '../../stores/FriendStore';
 import VoterStore from '../../stores/VoterStore';
@@ -95,11 +95,11 @@ class RemindContactsRoot extends React.Component {
     // console.log('componentDidMount setUpPagePath:', setUpPagePath, ', displayStep:', displayStep);
     this.shouldNextButtonBeDisabled();
     this.setState({
-      setUpAccountBackLinkPath: AppObservableStore.getSetUpAccountBackLinkPath(),
-      setUpAccountEntryPath: AppObservableStore.getSetUpAccountEntryPath(),
       displayStep,
       setUpPagePath,
     });
+    this.onAppObservableStoreChange();
+    this.appStateSubscription = messageService.getMessage().subscribe(() => this.onAppObservableStoreChange());
     this.onBallotStoreChange();
     this.ballotStoreListener = BallotStore.addListener(this.onBallotStoreChange.bind(this));
     this.friendStoreListener = FriendStore.addListener(this.onFriendStoreChange.bind(this));
@@ -177,9 +177,17 @@ class RemindContactsRoot extends React.Component {
   }
 
   componentWillUnmount () {
+    this.appStateSubscription.unsubscribe();
     this.ballotStoreListener.remove();
     this.friendStoreListener.remove();
     this.voterStoreListener.remove();
+  }
+
+  onAppObservableStoreChange () {
+    this.setState({
+      setUpAccountBackLinkPath: AppObservableStore.getSetUpAccountBackLinkPath(),
+      setUpAccountEntryPath: AppObservableStore.getSetUpAccountEntryPath(),
+    });
   }
 
   onBallotStoreChange () {
@@ -345,7 +353,7 @@ class RemindContactsRoot extends React.Component {
         mobileFixedButtonsOff = true;
         reassuranceTextOff = false;
         showDeleteAllContactsOption = false;
-        skipForNowOff = false;
+        skipForNowOff = true;
         // if (!voterFirstName) {
         //   nextButtonText = 'Next';
         //   nextStepPath = '/remind/editname';
@@ -359,7 +367,11 @@ class RemindContactsRoot extends React.Component {
         // } else
         nextButtonText = 'Choose friends to remind'; // 'Send my friends reminders to vote';
         nextStepPath = '/remind/addcontacts';
-        skipForNowPath = '/remind/addcontacts';
+        if (isWebApp()) {
+          skipForNowPath = '/remind/downloadapp';
+        } else {
+          skipForNowPath = '/friends';
+        }
         break;
       case 112: // testsend
         backToLinkPath = '/remind/message';
@@ -412,7 +424,7 @@ class RemindContactsRoot extends React.Component {
         mobileFixedButtonsOff = true;
         reassuranceTextOff = false;
         showDeleteAllContactsOption = false;
-        skipForNowOff = false;
+        skipForNowOff = true;
         // if (!voterFirstName) {
         //   nextButtonText = 'Next';
         //   nextStepPath = '/remind/editname';
@@ -501,14 +513,14 @@ class RemindContactsRoot extends React.Component {
         nextButtonText = 'Next';
         reassuranceTextOff = false;
         showDeleteAllContactsOption = false;
-        skipForNowOff = false;
+        skipForNowOff = true;
         if (voterContactEmailListCount > 0) {
           nextStepPath = '/remind/invitecontacts';
         } else if (copyPageTurnedOn) {
           nextStepPath = '/remind/copy';
         } else {
-          nextButtonText = 'Return to friends';
-          nextStepPath = '/friends';
+          nextButtonText = 'Return to ballot';
+          nextStepPath = '/ballot';
         }
         if (copyPageTurnedOn) {
           skipForNowPath = '/remind/copy';
@@ -709,6 +721,14 @@ class RemindContactsRoot extends React.Component {
     historyPush('/remind/addcontacts');
   }
 
+  goToAddEditMessage = () => {
+    historyPush('/remind/message');
+  }
+
+  goToDownloadApp = () => {
+    historyPush('/remind/downloadapp');
+  }
+
   goToImportContacts = () => {
     historyPush('/remind/importcontacts');
   }
@@ -863,13 +883,15 @@ class RemindContactsRoot extends React.Component {
       case 111: // message
         desktopNextButtonHtml = (
           <>
+            {/*
             <SetUpAccountNextButton
               nextButtonAsOutline={nextButtonAsOutline}
               nextButtonDisabled={nextButtonDisabled}
               nextButtonText={nextButtonText}
               onClickNextButton={this.onClickNextButton}
             />
-            <DesktopNextButtonsOuterWrapperUShowDesktopTablet breakValue={desktopInlineButtonsOnBreakValue}>
+            */}
+            <ImportContactsOuterWrapperUShowDesktopTablet breakValue={desktopInlineButtonsOnBreakValue}>
               <DesktopNextButtonsInnerWrapper>
                 <Button
                   classes={{ root: classes.addContactsManuallyLink }}
@@ -878,7 +900,19 @@ class RemindContactsRoot extends React.Component {
                   Or import contacts from Gmail
                 </Button>
               </DesktopNextButtonsInnerWrapper>
-            </DesktopNextButtonsOuterWrapperUShowDesktopTablet>
+            </ImportContactsOuterWrapperUShowDesktopTablet>
+            {isWebApp() && (
+              <ImportContactsOuterWrapperUShowDesktopTablet breakValue={desktopInlineButtonsOnBreakValue}>
+                <DesktopNextButtonsInnerWrapper>
+                  <Button
+                    classes={{ root: classes.addContactsManuallyLink }}
+                    onClick={this.goToDownloadApp}
+                  >
+                    Import contacts from We Vote App
+                  </Button>
+                </DesktopNextButtonsInnerWrapper>
+              </ImportContactsOuterWrapperUShowDesktopTablet>
+            )}
           </>
         );
         mobileNextButtonHtml = desktopNextButtonHtml;
@@ -938,12 +972,24 @@ class RemindContactsRoot extends React.Component {
                 <DesktopNextButtonsInnerWrapper>
                   <Button
                     classes={{ root: classes.addContactsManuallyLink }}
-                    onClick={this.goToAddContactsManually}
+                    onClick={this.goToAddEditMessage}
                   >
                     Or add contacts manually
                   </Button>
                 </DesktopNextButtonsInnerWrapper>
               </DesktopNextButtonsOuterWrapperUShowDesktopTablet>
+              {isWebApp() && (
+                <DesktopNextButtonsOuterWrapperUShowDesktopTablet breakValue={desktopInlineButtonsOnBreakValue}>
+                  <DesktopNextButtonsInnerWrapper>
+                    <Button
+                      classes={{ root: classes.addContactsManuallyLink }}
+                      onClick={this.goToDownloadApp}
+                    >
+                      Import contacts from We Vote App
+                    </Button>
+                  </DesktopNextButtonsInnerWrapper>
+                </DesktopNextButtonsOuterWrapperUShowDesktopTablet>
+              )}
             </>
           );
           mobileNextButtonHtml = desktopNextButtonHtml;
@@ -1096,5 +1142,18 @@ const DeleteAllContactsAtAnyTimeWrapper = styled('div')`
 const DeleteAllContactsWrapper = styled('div')`
   margin-top: 0;
 `;
+
+const ImportContactsOuterWrapperUShowDesktopTablet = styled('div', {
+  shouldForwardProp: (prop) => !['breakValue'].includes(prop),
+})(({ breakValue, theme }) => ({
+  display: 'flex',
+  justifyContent: 'center',
+  margin: '0 0 0 0',
+  width: '100%',
+  zIndex: 1000,
+  [theme.breakpoints.down(breakValue)]: {
+    display: 'none !important',
+  },
+}));
 
 export default withStyles(styles)(RemindContactsRoot);

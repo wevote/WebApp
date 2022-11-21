@@ -6,7 +6,6 @@ import { loadStripe } from '@stripe/stripe-js';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import Helmet from 'react-helmet';
-import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import AnalyticsActions from '../../actions/AnalyticsActions';
 import DonateActions from '../../common/actions/DonateActions';
@@ -108,13 +107,9 @@ class Donate extends Component {
   preDonateDescription = () => (
     <Section noTopMargin>
       <DonateDescriptionContainer>
-        We Vote is a nonprofit technology startup,
+        For every $7 donated, we reach 50 Americans.
         {' '}
-        <Link to="/more/about" style={{ color: '#4371cc' }}>
-          built by volunteers
-        </Link>
-        {' '}
-        to strengthen American democracy. Please join us with a monthly donation!
+        Please join us with a monthly donation.
         {' '}
         <OpenExternalWebSite
           linkIdAttribute="annualBudget"
@@ -134,7 +129,7 @@ class Donate extends Component {
             </span>
           )}
         />
-        , so every donation helps us pay for critical services, like servers and data fees.
+        , so every donation helps us reach more voters, and pay for critical services, like servers and data fees.
       </DonateDescriptionContainer>
     </Section>
   );
@@ -161,7 +156,7 @@ class Donate extends Component {
         <Wrapper>
           <Helmet title="Donate - We Vote" />
           <ContentTitle>
-            {preDonation ? 'Donate to Support We Vote' : 'Thank you for your donation!'}
+            {preDonation ? 'Want to make sure more Americans vote?' : 'Thank you for your donation!'}
           </ContentTitle>
           <InnerWrapper>
             {preDonation ? this.preDonateDescription() : this.postDonationDescription()}

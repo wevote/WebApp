@@ -103,8 +103,8 @@ class RemindContactsStart extends Component {
       desktopInlineButtonsOnBreakValue = isCordovaWide() ? 1000 : 'sm';
     }
     const pigsCanFly = false;
-    const startWithImportContacts = false;
-    const testQuotes = true;
+    const startWithImportContacts = true;
+    const testQuotes = false;
     return (
       <>
         {(voterContactEmailListCount > 0) ? (
@@ -145,7 +145,7 @@ class RemindContactsStart extends Component {
                     <NextStepButtons
                       classes={classes}
                       desktopMode
-                      nextStepButtonText="Get started" // Choose friends to remind
+                      nextStepButtonText="Choose friends to remind"
                       onClickNextButton={this.goToEditMessage}
                       skipForNowOff
                     />
@@ -168,7 +168,7 @@ class RemindContactsStart extends Component {
                     <NextStepButtons
                       classes={classes}
                       desktopMode
-                      nextStepButtonText="Get started" // Choose friends to remind
+                      nextStepButtonText="Choose friends to remind"
                       onClickNextButton={this.goToEditMessage}
                       skipForNowOff
                     />
@@ -218,7 +218,7 @@ class RemindContactsStart extends Component {
                       <DesktopNextButtonsInnerWrapper>
                         <Button
                           classes={{ root: classes.addContactsManuallyLink }}
-                          onClick={this.goToAddContactsManually}
+                          onClick={this.goToEditMessage}
                         >
                           Or add contacts manually
                         </Button>

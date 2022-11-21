@@ -793,12 +793,12 @@ class VoterStore extends ReduceStore {
             voterContactEmailList,
           };
         } else {
-          // console.log('response voterContactListRetrieve was not successful');
+          console.log('response voterContactListRetrieve was not successful');
           return state;
         }
 
       case 'voterContactListSave':
-        // console.log('VoterStore voterContactListSave action:', action);
+        // console.log('VoterStore voterContactListSave action.res:', action.res);
         if (action.res.success) {
           ({ voterContactEmailAugmentWithWeVoteDataComplete } = state);
           const {
@@ -1123,6 +1123,34 @@ class VoterStore extends ReduceStore {
         //     incomingVoter.voter_photo_url_medium = 'https://wevote.us/img/global/logos/Apple_logo_grey.svg';  // TODO: Switch over to wevote.us once live server is updated
         //   }
         // }
+        if (incomingVoter && incomingVoter.we_vote_id) {
+          if (incomingVoter.we_vote_id !== AppObservableStore.getOpenReplayVoterWeVoteId()) {
+            // console.log('tracker.setUserId:', incomingVoter.we_vote_id);
+            const tracker = AppObservableStore.getOpenReplayTracker();
+            if (tracker) {
+              console.log('OpenReplay setting id: ', incomingVoter.we_vote_id);
+              AppObservableStore.setOpenReplayVoterWeVoteId(incomingVoter.we_vote_id);
+              tracker.setUserID(incomingVoter.we_vote_id);
+            }
+          }
+          if (incomingVoter.is_signed_in && !AppObservableStore.getOpenReplayVoterIsSignedIn()) {
+            const tracker = AppObservableStore.getOpenReplayTracker();
+            if (tracker) {
+              console.log('OpenReplay setting voterIsSignedIn');
+              AppObservableStore.setOpenReplayVoterIsSignedIn(true);
+              tracker.setMetadata('voterIsSignedIn', 'true');
+            }
+          }
+          if (incomingVoter.state_code_from_ip_address && !AppObservableStore.getOpenReplayStateCodeFromIpAddress()) {
+            const tracker = AppObservableStore.getOpenReplayTracker();
+            const stateCodeFromIpAddress = incomingVoter.state_code_from_ip_address.toUpperCase();
+            if (tracker && stateCodeFromIpAddress) {
+              console.log('OpenReplay setting stateCodeFromIpAddress');
+              AppObservableStore.setOpenReplayStateCodeFromIpAddress(stateCodeFromIpAddress);
+              tracker.setMetadata('stateCodeFromIpAddress', stateCodeFromIpAddress);
+            }
+          }
+        }
         revisedState = state;
         revisedState = {
           ...revisedState,

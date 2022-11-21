@@ -40,6 +40,7 @@ export default function createMessageToFriendDefaults (messageToFriendType) {
   if (!electionDateFound) {
     messageToFriendDefaultAsk += "I'm getting ready to vote.";
     messageToFriendDefaultInviteFriend += "I'm getting ready to vote.";
+    messageToFriendDefaultRemind += 'Please join me and vote.';
   }
   messageToFriendDefaultAsk += ' Would you like to join me in deciding how to vote?';
   messageToFriendDefaultInviteFriend += ' Would you like to join me in deciding how to vote?';

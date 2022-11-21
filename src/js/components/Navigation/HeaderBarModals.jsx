@@ -10,7 +10,6 @@ import stringContains from '../../common/utils/stringContains';
 import BallotActions from '../../actions/BallotActions';
 import VoterActions from '../../actions/VoterActions';
 import AppObservableStore, { messageService } from '../../stores/AppObservableStore';
-import VoterStore from '../../stores/VoterStore';
 
 const AdviserIntroModal = React.lazy(() => import(/* webpackChunkName: 'AdviserIntroModal' */ '../CompleteYourProfile/AdviserIntroModal'));
 const AskFriendsModal = React.lazy(() => import(/* webpackChunkName: 'AskFriendsModal' */ '../Friends/AskFriendsModal'));
@@ -171,8 +170,6 @@ class HeaderBarModals extends Component {
     } = this.state;
 
     const ballotBaseUrl = ['ready'].includes(normalizedHrefPage()) ? '/ready' : '/ballot';
-    const voter = VoterStore.getVoter();
-    const voterIsSignedIn = voter && voter.is_signed_in;
     const shareModalStep = AppObservableStore.getShareModalStep();
 
     // renderLog(`HeaderBarModals`);
@@ -280,7 +277,6 @@ class HeaderBarModals extends Component {
       shareModalHtml = (
         <Suspense fallback={<></>}>
           <ShareModal
-            voterIsSignedIn={voterIsSignedIn}
             show={showShareModal}
             shareModalStep={shareModalStep}
             closeShareModal={this.closeShareModal}

@@ -4,7 +4,6 @@ import styled from 'styled-components';
 import { normalizedHref } from '../../common/utils/hrefUtils';
 import { isWebApp } from '../../common/utils/isCordovaOrWebApp';
 import { handleResize } from '../../common/utils/isMobileScreenSize';
-import webAppConfig from '../../config';
 import AppObservableStore, { messageService } from '../../stores/AppObservableStore';
 import { getApplicationViewBooleans } from '../../utils/applicationUtils';
 // importRemoveCordovaListenersToken2  -- Do not remove this line!
@@ -15,7 +14,6 @@ const FooterBar = React.lazy(() => import(/* webpackChunkName: 'FooterBar' */ '.
 const FooterMain = React.lazy(() => import(/* webpackChunkName: 'FooterMain' */ './FooterMain'));
 const ShareButtonFooter = React.lazy(() => import(/* webpackChunkName: 'ShareButtonFooter' */ '../Share/ShareButtonFooter'));
 
-const nextReleaseFeaturesEnabled = webAppConfig.ENABLE_NEXT_RELEASE_FEATURES === undefined ? false : webAppConfig.ENABLE_NEXT_RELEASE_FEATURES;
 
 
 // Wrapper component for all footers
@@ -38,6 +36,11 @@ class Footer extends Component {
     window.addEventListener('scroll', this.handleWindowScroll);
     window.addEventListener('resize', this.handleResizeLocal);
     this.updateCachedSiteVars();
+  }
+
+  componentDidCatch (error, info) {
+    // We should get this information to Splunk!
+    console.error('Footer caught error: ', `${error} with info: `, info);
   }
 
   componentWillUnmount () {
@@ -133,7 +136,7 @@ class Footer extends Component {
             </Suspense>
           </FooterMainWrapper>
         )}
-        {(showShareButtonFooter && nextReleaseFeaturesEnabled) && (
+        {showShareButtonFooter && (
           <ShareButtonFooterWrapper>
             <Suspense fallback={<span>&nbsp;</span>}>
               <DelayedLoad waitBeforeShow={3000}>

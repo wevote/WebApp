@@ -48,7 +48,7 @@ The install for procedure using WebStorm is the same as what you see here. WebSt
 
 8. If you see a red "Git is not installed", "Download and Install" button, click it, and wait for the install to complete.
    ![ScreenShot](images/WindowsInstallGit.png)
-9. (Explanation only step:) The step after this one clones the fork of your repository.
+9. (Explanation only step): The step after this one clones the fork of your repository.
 
    What this means, is that in GitHub you have created a copy of the WebApp code in your account. Cloning from your account, downloads
    a copy of that copy to your PC.  This will be a working copy of the latest code in the repository.
@@ -233,7 +233,7 @@ The install for procedure using WebStorm is the same as what you see here. WebSt
     ```
     linebreak-style: 0,
     ```
-    Putting configuration lines like this in alphabetical order is a good practice.  (Peek at the first screen shot in the next section to see what the edited file looks like.)
+    Putting configuration lines like this in alphabetical order is a good practice.  (Peek at the first screenshot in the next section to see what the edited file looks like.)
 
     This configuration line, disables Windows vs Linux "lint" line break checking, and allows you to run the WebApp you compile on your Windows PC.
 

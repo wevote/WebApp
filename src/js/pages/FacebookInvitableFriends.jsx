@@ -214,6 +214,7 @@ export default class FacebookInvitableFriends extends Component {
   }
 
   facebookLogin () {
+    console.log('FacebookInvitableFriends facebookLogin FacebookActions.login()');
     FacebookActions.login();
   }
 

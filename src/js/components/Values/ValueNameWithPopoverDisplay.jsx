@@ -288,6 +288,10 @@ const RenderedOrganizationsWrapper = styled('div')`
 `;
 
 const WordWrapper = styled('span')`
+  color: #000;
+  opacity: 0.6;
+  text-decoration: underline;
+  text-decoration-color: #ccc;
   &:hover {
     text-decoration: underline;
   }

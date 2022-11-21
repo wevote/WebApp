@@ -89,7 +89,6 @@ class BallotTitleHeaderNationalPlaceholder extends Component {
 
   render () {
     renderLog('BallotTitleHeaderNationalPlaceholder');  // Set LOG_RENDER_EVENTS to log all renders
-    // const nextReleaseFeaturesEnabled = webAppConfig.ENABLE_NEXT_RELEASE_FEATURES === undefined ? false : webAppConfig.ENABLE_NEXT_RELEASE_FEATURES;
     const { centerText, electionDateBelow, electionDateMDY, electionName, linksOff, turnOffVoteByBelow } = this.props;
     const {
       daysUntilElection,
@@ -117,7 +116,7 @@ class BallotTitleHeaderNationalPlaceholder extends Component {
                       {(substitutedState && (substitutedState !== '')) ? (
                         <ElectionStateLabel
                           centerText={centerText}
-                          className="u-cursor--pointer"
+                          className={linksOff ? '' : 'u-cursor--pointer'}
                           onClick={this.showSelectBallotModalChooseElection}
                         >
                           {!electionNameContainsState && (
@@ -135,7 +134,7 @@ class BallotTitleHeaderNationalPlaceholder extends Component {
                       ) : (
                         <ElectionStateLabel
                           centerText={centerText}
-                          className="u-cursor--pointer"
+                          className={linksOff ? '' : 'u-cursor--pointer'}
                           onClick={this.showSelectBallotModalChooseElection}
                         >
                           {!electionNameContainsState && (
@@ -153,7 +152,7 @@ class BallotTitleHeaderNationalPlaceholder extends Component {
                       )}
                       <ElectionNameH1
                         centerText={centerText}
-                        className="u-cursor--pointer"
+                        className={linksOff ? '' : 'u-cursor--pointer'}
                         onClick={this.showSelectBallotModalChooseElection}
                       >
                         {electionName}
@@ -161,7 +160,7 @@ class BallotTitleHeaderNationalPlaceholder extends Component {
                       {(textForMapSearch && textForMapSearch !== '' && textForMapSearch.length > 1) ? (
                         <BallotAddress
                           centerText={centerText}
-                          className="u-cursor--pointer"
+                          className={linksOff ? '' : 'u-cursor--pointer'}
                           onClick={this.showSelectBallotModalEditAddress}
                         >
                           Ballot for
@@ -174,13 +173,13 @@ class BallotTitleHeaderNationalPlaceholder extends Component {
                         <BallotAddress
                           allowTextWrap={allowTextWrap}
                           centerText={centerText}
-                          className="u-cursor--pointer"
+                          className={linksOff ? '' : 'u-cursor--pointer'}
                           onClick={this.showSelectBallotModalEditAddress}
                         >
                           <span className={linksOff ? '' : 'u-link-color'}>
                             Click to enter your address
                           </span>
-                          {editIconStyled}
+                          {linksOff ? <></> : editIconStyled}
                         </BallotAddress>
                       )}
                       {(!turnOffVoteByBelow && !!(electionDateMDY)) && (

@@ -33,7 +33,6 @@ class RemindEditMessage extends React.Component {
 
   render () {
     renderLog('RemindEditMessage');  // Set LOG_RENDER_EVENTS to log all renders
-    const pigsCanFly = false;
     return (
       <StepCenteredWrapper>
         <SetUpAccountTop>
@@ -51,13 +50,11 @@ class RemindEditMessage extends React.Component {
             <MessageToFriendInputField messageToFriendType="remindContacts" />
           </Suspense>
         </MessageToSendWrapper>
-        {pigsCanFly && (
-          <EnterEmailsWrapper>
-            <Suspense fallback={<></>}>
-              <ContactFriendsByMessageType messageToFriendType="remindContacts" />
-            </Suspense>
-          </EnterEmailsWrapper>
-        )}
+        <EnterEmailsWrapper>
+          <Suspense fallback={<></>}>
+            <ContactFriendsByMessageType messageToFriendType="remindContacts" />
+          </Suspense>
+        </EnterEmailsWrapper>
       </StepCenteredWrapper>
     );
   }
@@ -68,7 +65,7 @@ RemindEditMessage.propTypes = {
 };
 
 const EnterEmailsWrapper = styled('div')`
-  margin-bottom: 24px;
+  // margin-bottom: 24px;
   width: 100%;
 `;
 

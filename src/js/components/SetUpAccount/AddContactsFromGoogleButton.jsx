@@ -21,6 +21,7 @@ class AddContactsFromGoogleButton extends Component {
 
     this.state = {
       addContactsState: AddContactConsts.uninitialized,
+      errorMessageFromGoogle: '',
       // setOfContacts: new Set(),
     };
   }
@@ -29,11 +30,15 @@ class AddContactsFromGoogleButton extends Component {
     this.onVoterStoreChange();
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
     if (isWebApp()) {
-      loadGapiInsideDOM().then(() => {
-        // console.log('AddContactsFromGoogleButton loadGapiInsideDOM onload:');
-        window.gapi.load('client:auth2', this.initClient.bind(this));
-        // console.log('AddContactsFromGoogleButton loadGapiInsideDOM after onload window.gapi:', window.gapi);
-      });
+      try {
+        loadGapiInsideDOM().then(() => {
+          // console.log('AddContactsFromGoogleButton loadGapiInsideDOM onload:');
+          window.gapi.load('client:auth2', this.initClient.bind(this));
+          // console.log('AddContactsFromGoogleButton loadGapiInsideDOM after onload window.gapi:', window.gapi);
+        });
+      } catch (error) {
+        console.log('loadGapiInsideDOM try/catch error: ', error);
+      }
     }
   }
 
@@ -111,16 +116,20 @@ class AddContactsFromGoogleButton extends Component {
     // const { addContactsState, setOfContacts } = this.state;
     const { gapi } = window;
     // 2022-06-23 We always want to give the voter a chance to choose another account to import from
-    const isSignedIn = gapi.auth2.getAuthInstance().isSignedIn.get();
-    // console.log('onButtonClickWebApp isSignedIn:', isSignedIn);
-    if (isSignedIn) {
-      // console.log('Getting contacts from Google on button click, since we were logged into Google');
-      this.getOtherConnections();
-      this.setState({ addContactsState: AddContactConsts.requestingContacts });
-    } else {
-      // console.log('Getting Auth from Google on button click, since we were not logged into Google');
-      gapi.auth2.getAuthInstance().signIn();
-      this.setState({ addContactsState: AddContactConsts.requestingSignIn });
+    try {
+      const isSignedIn = gapi.auth2.getAuthInstance().isSignedIn.get();
+      // console.log('onButtonClickWebApp isSignedIn:', isSignedIn);
+      if (isSignedIn) {
+        // console.log('Getting contacts from Google on button click, since we were logged into Google');
+        this.getOtherConnections();
+        this.setState({ addContactsState: AddContactConsts.requestingContacts });
+      } else {
+        // console.log('Getting Auth from Google on button click, since we were not logged into Google');
+        gapi.auth2.getAuthInstance().signIn();
+        this.setState({ addContactsState: AddContactConsts.requestingSignIn });
+      }
+    } catch (error) {
+      console.log('onButtonClickWebApp try/catch error: ', error);
     }
   }
 
@@ -145,14 +154,17 @@ class AddContactsFromGoogleButton extends Component {
     // console.log('processGooglePeopleMeResponse');
     if (result && result.names && result.names[0]) {
       const { displayName: fullName, familyName: lastName, givenName: firstName } = result.names[0];
-      // console.log('firstName:', firstName, ', lastName:', lastName, ', fullName:', fullName);
+      console.log('firstName:', firstName, ', lastName:', lastName, ', fullName:', fullName);
       VoterActions.voterFullNameSoftSave(firstName, lastName, fullName);
+    } else {
+      console.log('processGooglePeopleMeResponse no names found');
     }
   }
 
   getOtherConnections = () => {
     // console.log('AddContactsFromGoogleButton getOtherConnections');
     const { gapi } = window;
+    let { errorMessageFromGoogle } = this.state;
     const setEmail = new Set();
     const contacts = new Set();
     // console.log('gapi:', gapi);
@@ -163,11 +175,14 @@ class AddContactsFromGoogleButton extends Component {
       personFields: 'metadata,names,emailAddresses',
     }).then((response) => {
       // const others = response.result.otherContacts;
-      // console.log('people/me response:', response);
+      console.log('people/me name request response.result:', response.result);
       this.processGooglePeopleMeResponse(response.result);
     }, (error) => {
-      console.error('people.me error');
+      console.error('people.me error:');
       console.error(JSON.stringify(error, null, 2));
+      if (error.message) {
+        errorMessageFromGoogle += error.message;
+      }
     });
 
     // Get "Other Contacts" list
@@ -177,6 +192,7 @@ class AddContactsFromGoogleButton extends Component {
     }).then((response) => {
       this.setState({ addContactsState: AddContactConsts.receivedContacts  });
       const others = response.result.otherContacts;
+      console.log('people.otherContacts response received');
       // console.log('otherContacts:', response);
       for (let i = 0; i < others.length; i++) {
         const other = others[i];
@@ -222,7 +238,11 @@ class AddContactsFromGoogleButton extends Component {
             arrayOfSelectedContacts.push(contact);
           }
         });
-        // console.log('arrayOfSelectedContacts:', arrayOfSelectedContacts);
+        if (arrayOfSelectedContacts) {
+          console.log('arrayOfSelectedContacts length:', arrayOfSelectedContacts.length);
+        } else {
+          console.log('arrayOfSelectedContacts undefined');
+        }
         const fromGooglePeopleApi = true;
         if (arrayOfSelectedContacts.length > 0) {
           VoterActions.voterContactListSave(arrayOfSelectedContacts, fromGooglePeopleApi);
@@ -231,50 +251,70 @@ class AddContactsFromGoogleButton extends Component {
           });
         }
       } else if (contacts.size === 0) {
-        // console.log('noContactsFound, contacts.size === 0');
+        console.log('noContactsFound, contacts.size === 0');
         this.setState({
           addContactsState: AddContactConsts.noContactsFound,
         });
       }
     }, (error) => {
-      console.error('getOtherConnections error trapping');
+      console.error('people.otherContacts getOtherConnections error trapping:');
       console.error(JSON.stringify(error, null, 2));
+      if (error.message) {
+        errorMessageFromGoogle += error.message;
+      }
       this.setState({
         addContactsState: AddContactConsts.permissionDenied,
       });
     });
     // Sign out so the voter has the option to choose another account
     gapi.auth2.getAuthInstance().signOut();
+    this.setState({
+      errorMessageFromGoogle,
+    });
   }
 
   initClient () {
     const { addContactsState } = this.state;
+    let { errorMessageFromGoogle } = this.state;
     const { gapi } = window;
     const GOOGLE_PEOPLE_API_CLIENT_ID = webAppConfig.GOOGLE_PEOPLE_API_CLIENT_ID || '';
     const GOOGLE_PEOPLE_API_KEY = webAppConfig.GOOGLE_PEOPLE_API_KEY || '';
     const DISCOVERY_DOCS = ['https://www.googleapis.com/discovery/v1/apis/people/v1/rest'];
     const SCOPES = 'https://www.googleapis.com/auth/contacts.other.readonly';
 
-    gapi.client.init({
-      apiKey: GOOGLE_PEOPLE_API_KEY,
-      clientId: GOOGLE_PEOPLE_API_CLIENT_ID,
-      discoveryDocs: DISCOVERY_DOCS,
-      scope: SCOPES,
-    }).then(() => {
-      // Listen for sign-in state changes.
-      this.googleSignInListener = gapi.auth2.getAuthInstance().isSignedIn.listen(this.onGoogleSignIn);
-      const signedIn = gapi.auth2.getAuthInstance().isSignedIn.get();
-      if (signedIn) {
-        if (addContactsState !== AddContactConsts.initializedSignedIn) {
-          this.setState({ addContactsState: AddContactConsts.initializedSignedIn });
+    try {
+      gapi.client.init({
+        apiKey: GOOGLE_PEOPLE_API_KEY,
+        clientId: GOOGLE_PEOPLE_API_CLIENT_ID,
+        discoveryDocs: DISCOVERY_DOCS,
+        scope: SCOPES,
+      }).then(() => {
+        // Listen for sign-in state changes.
+        this.googleSignInListener = gapi.auth2.getAuthInstance().isSignedIn.listen(this.onGoogleSignIn);
+        const signedIn = gapi.auth2.getAuthInstance().isSignedIn.get();
+        if (signedIn) {
+          if (addContactsState !== AddContactConsts.initializedSignedIn) {
+            this.setState({ addContactsState: AddContactConsts.initializedSignedIn });
+          }
+        } else if (addContactsState !== AddContactConsts.initializedSignedOut) {
+          this.setState({ addContactsState: AddContactConsts.initializedSignedOut });
         }
-      } else if (addContactsState !== AddContactConsts.initializedSignedOut) {
-        this.setState({ addContactsState: AddContactConsts.initializedSignedOut });
+      }, (error) => {
+        console.error('initClient gapi.client.init error trapping');
+        console.error(JSON.stringify(error, null, 2));
+        if (error.message) {
+          errorMessageFromGoogle += error.message;
+        }
+        gapi.auth2.getAuthInstance().signOut();
+      });
+    } catch (error) {
+      console.log('initClient try/catch error: ', error);
+      if (error) {
+        errorMessageFromGoogle += `Error from Google: ${error}`;
       }
-    }, (error) => {
-      console.error('initClient error trapping');
-      console.error(JSON.stringify(error, null, 2));
-      gapi.auth2.getAuthInstance().signOut();
+    }
+    this.setState({
+      errorMessageFromGoogle,
     });
   }
 
@@ -282,7 +322,7 @@ class AddContactsFromGoogleButton extends Component {
     renderLog('AddContactsFromGoogleButton');  // Set LOG_RENDER_EVENTS to log all renders
     const { darkButton, labelText } = this.props; // labelText
     const label = labelText || isWebApp() ? 'Import contacts from Gmail' : 'Import contacts from this phone';
-    const { addContactsState } = this.state;
+    const { addContactsState, errorMessageFromGoogle } = this.state;
     // console.log('render in AddContactsFromGoogleButton, addContactsState: ', addContactsState);
     const waitingForImportsActionToFinish = (addContactsState === AddContactConsts.requestingContacts) || (addContactsState === AddContactConsts.sendingContacts) || (addContactsState === AddContactConsts.receivedContacts);
     // const waitingForImportsActionToFinish = true;
@@ -313,6 +353,10 @@ class AddContactsFromGoogleButton extends Component {
                 </strong>
                 <br />
                 (You may need to check the box on the right.)
+                <br />
+                Error message from Google:
+                {' '}
+                {errorMessageFromGoogle}
               </PermissionDeniedText>
             </>
           )}

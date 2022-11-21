@@ -200,7 +200,8 @@ export function cordovaSimplePageContainerTopOffset (isSignedIn) {
         const page = getPageKey();
         const superSimplePage = (AppObservableStore.getShowTwitterLandingPage() ||
           (['measure', 'more/faq'].includes(page) && !isIPad() && !isIOSAppOnMac() && !isAndroid()));
-        const decorativeUiWhitespaceSimple = superSimplePage && !isAndroid() ? -30 : 20;
+        let decorativeUiWhitespaceSimple = superSimplePage && !isAndroid() ? -30 : 20;
+        if (isAndroidSizeWide()) decorativeUiWhitespaceSimple = 0;
         const topOffsetValue = height + decorativeUiWhitespaceSimple + notchHeight;
         setCordovaSimplePageContainerTopOffsetValue(topOffsetValue);
 

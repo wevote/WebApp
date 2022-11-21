@@ -60,7 +60,8 @@ const CandidateNameH4 = styled('h4')`
 `;
 
 const CandidateParty = styled('div')`
-  color: #555;
+  opacity: 0.8;
+  white-space: normal;
 `;
 
 const CandidateTopRow = styled('div')`
