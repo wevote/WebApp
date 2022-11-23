@@ -18,6 +18,7 @@
     "lintCordova": "eslint --format stylish --ext .jsx --ext .js srcCordova/js",
     "prod": "node node/buildDateFile.js && MINIMIZED=1 webpack --mode production",
     "run-prod-local": "node server-prod-local.js",
+    "selenium-TopNavigation": "node ./tests/my_setup/TopNavigation.js",
     "start": "node node/buildDateFile.js && PROTOCOL=HTTP webpack serve --mode development",
     "start-win": "node node/buildDateFile.js && webpack serve --mode development",
     "start-https": "node node/buildDateFile.js && PROTOCOL=HTTPS webpack serve --mode development",
@@ -48,6 +49,7 @@
     "babel-eslint": "^10.1.0",
     "babel-loader": "^8.2.2",
     "babel-plugin-styled-components": "^2.0.6",
+    "chai": "^4.3.7",
     "chromedriver": "^101.0.0",
     "clean-webpack-plugin": "^3.0.0",
     "copy-webpack-plugin": "^7.0.0",
@@ -66,7 +68,7 @@
     "html-webpack-plugin": "^5.3.1",
     "jsdom": "^16.5.3",
     "mini-css-extract-plugin": "^1.6.0",
-    "mocha": "^9.2.0",
+    "mocha": "^9.2.2",
     "moment-locales-webpack-plugin": "^1.2.0",
     "pre-commit": "^1.2.2",
     "react-hot-loader": "^4.13.0",
@@ -93,6 +95,7 @@
     "@openreplay/tracker": "^4.1.5",
     "@stripe/react-stripe-js": "^1.3.0",
     "@stripe/stripe-js": "^1.13.0",
+    "@wdio/browserstack-service": "^7.25.4",
     "classnames": "^2.3.1",
     "clsx": "^1.1.1",
     "d3-geo": "^2.0.1",
@@ -128,9 +131,10 @@
     "react-text-truncate": "^0.17.0",
     "react-toastify": "^7.0.4",
     "rxjs": "^6.6.7",
-    "selenium-webdriver": "^4.1.2",
+    "selenium-webdriver": "^4.5.0",
     "styled-components": "~5.3.3",
     "topojson-client": "^3.1.0",
-    "wdio": "^6.0.1"
+    "wdio": "^6.0.1",
+    "webdriverio": "^7.25.4"
   }
 }
