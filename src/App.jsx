@@ -150,10 +150,12 @@ class App extends Component {
         }, 3000);
       }
     }
-    setTimeout(() => {
-      // We need to start this initialization early since there is a delay getting the FB object in place
-      initializeFacebookSDK();
-    }, 4000);
+    if (!webAppConfig.ENABLE_FACEBOOK) {
+      setTimeout(() => {
+        // Does this message make any sense anymore? ... We need to start this initialization early since there is a delay getting the FB object in place
+        initializeFacebookSDK();
+      }, 4000);
+    }
   }
 
   componentDidCatch (error, info) {

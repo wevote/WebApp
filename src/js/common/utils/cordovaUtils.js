@@ -569,7 +569,12 @@ export function isWebAppHeight737to896 () {
 }
 
 export function isAndroidSimulator () {
-  return window.location.href.startsWith('file:///android');
+  const { device } = window;
+  if (device) {
+    return device.isVirtual; // return window.location.href.startsWith('file:///android');
+  } else {
+    return false;
+  }
 }
 
 export function isCordovaButNotATablet () {
@@ -577,7 +582,14 @@ export function isCordovaButNotATablet () {
 }
 
 export function isIOsSimulator () {
-  return window.location.href.startsWith('file:///Users') || window.location.href.startsWith('app://localhost');
+  // const { device: { isVirtual } } = window;
+  // return isVirtual; // window.location.href.startsWith('file:///Users') || window.location.href.startsWith('app://localhost');
+  const { device } = window;
+  if (device) {
+    return device.isVirtual; // return window.location.href.startsWith('file:///android');
+  } else {
+    return false;
+  }
 }
 
 export function isSimulator () {

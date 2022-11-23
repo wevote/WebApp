@@ -16,13 +16,13 @@ import SupportActions from '../../actions/SupportActions';
 import VoterActions from '../../actions/VoterActions';
 import LoadingWheelComp from '../../common/components/Widgets/LoadingWheelComp';
 import apiCalming from '../../common/utils/apiCalming';
-import { chipLabelText, isAndroid, isAndroidSizeWide, isIOS, isIOSAppOnMac, isIPad, isIPadGiantSize, isIPhone6p1in } from '../../common/utils/cordovaUtils';
+import { chipLabelText, isAndroidSizeWide, isIOSAppOnMac, isIPadGiantSize, isIPhone6p1in } from '../../common/utils/cordovaUtils';
 import getBooleanValue from '../../common/utils/getBooleanValue';
 import historyPush from '../../common/utils/historyPush';
 import { isCordova, isWebApp } from '../../common/utils/isCordovaOrWebApp';
 import isMobileScreenSize from '../../common/utils/isMobileScreenSize';
 import Cookies from '../../common/utils/js-cookie/Cookies';
-import { renderLog } from '../../common/utils/logging';
+import { cordovaOffsetLog, renderLog } from '../../common/utils/logging';
 import AddressBox from '../../components/AddressBox';
 import BallotItemCompressed from '../../components/Ballot/BallotItemCompressed';
 import BallotStatusMessage from '../../components/Ballot/BallotStatusMessage';
@@ -41,7 +41,8 @@ import TwitterStore from '../../stores/TwitterStore';
 import VoterGuideStore from '../../stores/VoterGuideStore';
 import VoterStore from '../../stores/VoterStore';
 import { dumpCssFromId } from '../../utils/appleSiliconUtils';
-import { setBallotDualHeaderContentContainerTopOffset } from '../../utils/cordovaCalculatedOffsets';
+import { headroomWrapperOffset, setBallotDualHeaderContentContainerTopOffset } from '../../utils/cordovaCalculatedOffsets';
+import { getPageKey } from '../../utils/cordovaPageUtils';
 import isMobile from '../../utils/isMobile';
 // Lint is not smart enough to know that lazyPreloadPages will not attempt to preload/reload this page
 // eslint-disable-next-line import/no-cycle
@@ -1099,28 +1100,30 @@ class Ballot extends Component {
 
   marginTopOffset () {
     const { scrolledDown } = this.state;
-    if (isIOSAppOnMac()) {
-      return '44px';
-    } else if (isIPad()) {
-      return '12px';
-    } else if (isIOS()) {
-      return '85px';
-    } else if (isWebApp() && isMobileScreenSize()) {
-      if (scrolledDown) {
-        return '54px';
-      } else {
-        return '64px';
-      }
-    } else if (isWebApp()) {
+    // if (isIOSAppOnMac()) {
+    //   return '44px';
+    // } else if (isIPad()) {
+    //   return '12px';
+    // } else if (isIOS()) {
+    //   return '85px';
+    // } else if (isWebApp() && isMobileScreenSize()) {
+    //   if (scrolledDown) {
+    //     return '54px';
+    //   } else {
+    //     return '64px';
+    //   }
+    if (isWebApp()) {
       if (scrolledDown) {
         return '64px';
       } else {
         return '110px';
       }
-    } else if (isAndroid()) {
-      const { $ } = window;
-      const headroomWrapper = $('div[class*=\'HeadroomWrapper\']');
-      return `${headroomWrapper.height()}px`;
+    } else if (isCordova()) {
+      // Calculated approach Nov 2022
+      const offset = `${headroomWrapperOffset()}px`;
+      cordovaOffsetLog(`BallotTitleHeaderContainer HeadroomWrapper offset: ${offset}, page: ${getPageKey()}`);
+      return offset;
+      // end calculated approach
     }
     return 0;
   }
@@ -1368,12 +1371,12 @@ class Ballot extends Component {
                     <div className="col-md-12">
                       <Helmet title="Ballot - We Vote" />
                       <header className="ballot__header__group">
-                        <BallotTitleHeaderWrapper marginTopOffset={this.marginTopOffset()}>
+                        <BallotTitleHeaderContainer marginTopOffset={this.marginTopOffset()}>
                           <BallotTitleHeader
                             showShareButton
                             toggleSelectBallotModal={this.toggleSelectBallotModal}
                           />
-                        </BallotTitleHeaderWrapper>
+                        </BallotTitleHeaderContainer>
                       </header>
                       <BallotBottomWrapper scrolledDown={scrolledDown}>
                         { textForMapSearch || ballotWithItemsFromCompletionFilterType.length > 0 ? (
@@ -1516,7 +1519,7 @@ class Ballot extends Component {
                       googleCivicElectionId={this.state.googleCivicElectionId}
                     />
                   ) : null}
-                  <BallotOverflowWrapper className="col-12" id="ballotRoute-topOfBallot">
+                  <BallotOverflowWrapper className="col-12" id="ballotRoute-topOfBallot" style={isCordova() ? { paddingLeft: 0, paddingRight: 0 } : {}}>
                     {(isSearching && searchText) && (
                       <SearchTitle>
                         Searching for &quot;
@@ -1795,7 +1798,7 @@ const BallotFilterRow = styled('div')`
   // margin-left: {() => (isWebApp() && !isMobileScreenSize() ? 'calc((100vw - 975px)/2)' : '')};
 `;
 
-const BallotTitleHeaderWrapper = styled('div', {
+const BallotTitleHeaderContainer = styled('div', {
   shouldForwardProp: (prop) => !['marginTopOffset'].includes(prop),
 })(({ marginTopOffset }) => (`
   margin-top: ${marginTopOffset};
