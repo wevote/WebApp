@@ -8,7 +8,6 @@ import styled from 'styled-components';
 import MeasureActions from '../../actions/MeasureActions';
 import extractNumber from '../../common/utils/extractNumber';
 import historyPush from '../../common/utils/historyPush';
-import { isCordova } from '../../common/utils/isCordovaOrWebApp';
 import { renderLog } from '../../common/utils/logging';
 import shortenText from '../../common/utils/shortenText';
 import toTitleCase from '../../common/utils/toTitleCase';
@@ -237,9 +236,9 @@ class MeasureItemCompressed extends Component {
 
     return (
       <MeasureItemCompressedWrapper>
-        <MeasureTitle onClick={this.onClickShowOrganizationModalWithBallotItemInfoAndPositions}>
+        <MeasureTitleItem onClick={this.onClickShowOrganizationModalWithBallotItemInfoAndPositions}>
           {ballotDisplay[0]}
-        </MeasureTitle>
+        </MeasureTitleItem>
         <SubTitle>{measureSubtitleCapitalized}</SubTitle>
         <MeasureContainer>
           <MeasureWrapper>
@@ -514,7 +513,7 @@ const MeasureText = styled('div')`
   ${constrainedTextMobileStyles}
 `;
 
-const MeasureTitle = styled('h1')`
+const MeasureTitleItem = styled('h1')`
   color: #4371cc;
   cursor: pointer;
   font-weight: 400;
@@ -523,12 +522,12 @@ const MeasureTitle = styled('h1')`
   margin-top: 0;
   white-space: nowrap;
   width: 100%;
-  ${() => (isCordova() ? {
-    marginLeft: '80px',
-    marginRight: '80px',
-  } : {})};
 `;
-
+// ${() => (isCordova() ? {
+//   marginLeft: '80px',
+//   marginRight: '80px',
+// } : {})};
+// `;
 const MeasureWrapper = styled('div')`
 `;
 

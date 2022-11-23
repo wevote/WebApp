@@ -233,7 +233,7 @@ export default class Header extends Component {
       pageHeaderClasses = '';   // Abandoning the main.css styles if cordova 10/2/2021
     }
     // Non-functional class, to provide a reminder about how to debug top margins
-    pageHeaderClasses += ' cordovaTopHeaderTopMargin';
+    pageHeaderClasses += pageHeaderClasses.length ? ' cordovaTopHeaderTopMargin' : 'cordovaTopHeaderTopMargin';
 
     // if (!displayTopMenuShadow()) {
     //   pageHeaderClasses += ' header-shadow';

@@ -1,7 +1,10 @@
-import { hasIPhoneNotch, isAndroid, isAndroidSizeMD, isAndroidSizeWide, isAndroidSizeXL, isIOSAppOnMac, isIPad } from '../common/utils/cordovaUtils';
-import { normalizedHref, normalizedHrefPage } from '../common/utils/hrefUtils';
-import { isWebApp } from '../common/utils/isCordovaOrWebApp';
+import { hasIPhoneNotch, isAndroid, isAndroidSizeMD, isAndroidSizeWide, isAndroidSizeXL, isIOS, isIOSAppOnMac, isIPad } from '../common/utils/cordovaUtils';
+import { normalizedHrefPage } from '../common/utils/hrefUtils';
+import { isCordova, isWebApp } from '../common/utils/isCordovaOrWebApp';
+import { cordovaOffsetLog } from '../common/utils/logging';
 import AppObservableStore from '../stores/AppObservableStore';
+import { getPageKey } from './cordovaPageUtils';
+import { decorativeSpacing } from './cordovaTopHeaderTopMargin';
 
 /* global $ */
 
@@ -20,16 +23,6 @@ function debugLogging (string) {
   if (DEBUG_LOGGING) {
     console.log(string);
   }
-}
-
-function getPageKey () {
-  const useLongerPath = ['settings', 'more'];
-  let page = normalizedHrefPage() || 'ready';
-  if (useLongerPath.includes(page)) {
-    page = normalizedHref();
-  }
-  debugLogging(`getPageKey page: ${page}`);
-  return page;
 }
 
 // Simple Header
@@ -107,15 +100,27 @@ export function cordovaComplexHeaderPageContainerTopOffset () {
   if (isWebApp()) return '';
   const iOSNotchedSpacer = $('div[class*=\'IOSNotchedSpacer\']');
   const headroomWrapper = $('div[class*=\'HeadroomWrapper\']');
-  const dualHeaderCont = $('div[class*=\'DualHeaderContainer\']');
+  const dualHeaderContainer = $('div[class*=\'DualHeaderContainer\']');
   let hrHeight = 0;
-  if (hasIPhoneNotch()) {
-    if (getPageKey() === 'friends') {
-      hrHeight = headroomWrapper.height();
-    } else if (getPageKey() === 'ballot' && isIPad()) {
-      hrHeight = 0;
-    } else {
-      hrHeight = iOSNotchedSpacer.height();
+
+  if (isIOS()) {
+    // Calculated approach Nov 2022
+    if (dualHeaderContainer.length) {
+      const calculated = dualHeaderContainer.outerHeight();
+      const decoration = decorativeSpacing();
+      cordovaOffsetLog(`cordovaTopHeaderTopMargin .dualHeaderContainer outerHeight: ${calculated}, decoration: ${decoration}, page: ${getPageKey()}`);
+      return `${calculated + decoration}px`;
+    }
+    // end calculated approach
+
+    if (hasIPhoneNotch()) {
+      if (getPageKey() === 'friends') {
+        hrHeight = headroomWrapper.height();
+      } else if (getPageKey() === 'ballot' && isIPad()) {
+        hrHeight = 0;
+      } else {
+        hrHeight = iOSNotchedSpacer.height();
+      }
     }
   }
 
@@ -134,7 +139,7 @@ export function cordovaComplexHeaderPageContainerTopOffset () {
     }
   }
 
-  const dhcHeight = dualHeaderCont.height() || 0;   // No dualHeaderCont for Friends when signed in
+  const dhcHeight = dualHeaderContainer.height() || 0;   // No dualHeaderCont for Friends when signed in
   const topOffsetValue = hrHeight + dhcHeight;
 
   if ($.isNumeric(topOffsetValue)) {
@@ -160,57 +165,66 @@ function getCordovaSimplePageContainerTopOffsetValue (isSignedIn = false) {
   return topOffsets[normalizedHrefPage()] || 0;
 }
 
+export function headroomWrapperOffset (includePosition) {
+  let offset = 0;
+  if (isCordova()) {
+    const { $ } = window;
+    const headroomWrapper = $('div[class*=\'HeadroomWrapper\']');
+    const outerHeight = headroomWrapper.outerHeight();
+    const position = includePosition ? headroomWrapper.position().top : 0;
+    offset = outerHeight + position;
+    cordovaOffsetLog(`headroomWrapperOffset HeadroomWrapper outerHeight+top: ${outerHeight + position}, new offset: ${offset}, page: ${getPageKey()}`);
+  }
+  return offset;
+}
+
 export function cordovaSimplePageContainerTopOffset (isSignedIn) {
   if (isWebApp()) return;
   pageData.previousPage = normalizedHrefPage();
-  const storedTopOffsetValue = getCordovaSimplePageContainerTopOffsetValue(isSignedIn);
-  if (storedTopOffsetValue > 50) {  // was 100, does this need to be page sensitive since it is now only for complex pages?
+  // const storedTopOffsetValue = getCordovaSimplePageContainerTopOffsetValue(isSignedIn);
+  // if (storedTopOffsetValue > 50) {  // was 100, does this need to be page sensitive since it is now only for complex pages?
+  //   const pageContentContainer = $('div[class*=\'PageContentContainer\']');
+  //   pageContentContainer.css('padding-top', `${storedTopOffsetValue}px`);
+  // } else {
+  setTimeout(() => {
+    const headroomWrapper = $('div[class*=\'HeadroomWrapper\']');
     const pageContentContainer = $('div[class*=\'PageContentContainer\']');
-    pageContentContainer.css('padding-top', `${storedTopOffsetValue}px`);
-  } else {
-    setTimeout(() => {
-      const headroomWrapper = $('div[class*=\'HeadroomWrapper\']');
-      const iosSpacerElem = $('div[class*=\'IOSNotchedSpacer\']');
-      const iosNoNotchSpacerElem = $('div[class*=\'IOSNoNotchSpacer\']');
-      let notchHeight = 0;
-      if (iosSpacerElem.length > 0) {
-        notchHeight = iosSpacerElem.height();
-      } else if (iosNoNotchSpacerElem.length > 0) {
-        notchHeight = iosNoNotchSpacerElem.height();
-      }
+    let height = headroomWrapper.height();  // 11/21/22 now includes the notch height (Value if not backTo)
+    let                 appBar = $('#headerBackToBallotAppBar');
+    if (!appBar.length) appBar = $('#headerBackToAppBar');
+    if (!appBar.length) appBar = $('#headerBackToVoterGuidesAppBar');
+    if (appBar.length) {
+      height = appBar.outerHeight();
+      // const paddingTop =  parseInt(appBar.css('padding').split(' ')[0]);  Not needed for headerBackToBallotAppBar
+      // height += paddingTop;
+      cordovaOffsetLog(`cordovaSimplePageContainerTopOffset appBar.outerHeight() + paddingTop: ${height}, page: ${getPageKey()}`);
+      pageContentContainer.css('padding-top', `${height}px`);
+    } else if (AppObservableStore.getShowTwitterLandingPage()) {
+      height = headroomWrapperOffset(true);
+      pageContentContainer.css('padding-top', `${height}px`);
+      return;
+    }
 
-      let height = headroomWrapper.height();
-      if (!height) {
-        let                 appBar = $('#headerBackToBallotAppBar');
-        if (!appBar.length) appBar = $('#headerBackToAppBar');
-        if (!appBar.length) appBar = $('#headerBackToVoterGuidesAppBar');
-        if (appBar.length) {
-          height = appBar.height();
-        }
-      }
+    debugLogging(`cordovaSimplePageContainerTopOffset isSignedIn: ${isSignedIn}, HeadRoomWrapper height: ${height}, page: ${getPageKey()}`);
 
-      debugLogging(`cordovaSimplePageContainerTopOffset isSignedIn: ${isSignedIn}, HeadRoomWrapper height: ${height}, page: ${getPageKey()}`);
+    if (isAndroid() && AppObservableStore.getShowTwitterLandingPage()) {
+      pageContentContainer.css('padding-top', `${height}px`);
+    }
 
-      const pageContentContainer = $('div[class*=\'PageContentContainer\']');
-      if (isAndroid() && AppObservableStore.getShowTwitterLandingPage()) {
-        pageContentContainer.css('padding-top', `${height}px`);
-      }
+    if (height !== undefined && height > 0 && getCordovaSimplePageContainerTopOffsetValue() === 0) {
+      const page = getPageKey();
+      const superSimplePage = (AppObservableStore.getShowTwitterLandingPage() ||
+        (['measure', 'more/faq'].includes(page) && !isIPad() && !isIOSAppOnMac() && !isAndroid()));
+      let decorativeUiWhitespaceSimple = superSimplePage && !isAndroid() ? -30 : 20;
+      if (isAndroidSizeWide()) decorativeUiWhitespaceSimple = 0;
+      const topOffsetValue = height + decorativeUiWhitespaceSimple;  // 11/21/22 now notch height is included in headroom wrapper // + notchHeight;
+      setCordovaSimplePageContainerTopOffsetValue(topOffsetValue);
 
-      if (height !== undefined && height > 0 && getCordovaSimplePageContainerTopOffsetValue() === 0) {
-        const page = getPageKey();
-        const superSimplePage = (AppObservableStore.getShowTwitterLandingPage() ||
-          (['measure', 'more/faq'].includes(page) && !isIPad() && !isIOSAppOnMac() && !isAndroid()));
-        let decorativeUiWhitespaceSimple = superSimplePage && !isAndroid() ? -30 : 20;
-        if (isAndroidSizeWide()) decorativeUiWhitespaceSimple = 0;
-        const topOffsetValue = height + decorativeUiWhitespaceSimple + notchHeight;
-        setCordovaSimplePageContainerTopOffsetValue(topOffsetValue);
+      debugLogging(`cordovaSimplePageContainerTopOffset setting padding-top in PageContentContainer: ${topOffsetValue}`);
 
-        debugLogging(`cordovaSimplePageContainerTopOffset setting padding-top in PageContentContainer: ${topOffsetValue}`);
-
-        pageContentContainer.css('padding-top', `${topOffsetValue}px`);
-      } else {
-        debugLogging('cordovaSimplePageContainerTopOffset getCordovaSimplePageContainerTopOffsetValue > 0 or height === 0');
-      }
-    }, 100);
-  }
+      pageContentContainer.css('padding-top', `${topOffsetValue}px`);
+    } else {
+      debugLogging('cordovaSimplePageContainerTopOffset getCordovaSimplePageContainerTopOffsetValue > 0 or height === 0');
+    }
+  }, 100);
 }

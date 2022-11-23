@@ -4,6 +4,7 @@ import { hasDynamicIsland, hasIPhoneNotch, isAndroid, isAndroidSizeMD, isAndroid
 import { normalizedHrefPage } from '../../common/utils/hrefUtils';
 import { isCordova, isWebApp } from '../../common/utils/isCordovaOrWebApp';
 import isMobileScreenSize, { isTablet } from '../../common/utils/isMobileScreenSize';
+import { cordovaOffsetLog } from '../../common/utils/logging';
 import CordovaPageConstants from '../../constants/CordovaPageConstants';
 import AppObservableStore from '../../stores/AppObservableStore';
 import VoterStore from '../../stores/VoterStore';
@@ -231,6 +232,17 @@ export const TopRowTwoRightContainer = styled('div')`
 `;
 
 function getBackToPaddingTop () {
+  // Calculated approach Nov 2022
+  const { $ } = window;
+  const headerBack = $('#headerBackToBallotAppBar');
+  if (headerBack.length) {
+    const iOSNotchedSpacer = $('div[class*=\'IOSNotchedSpacer\']');
+    const height = iOSNotchedSpacer.outerHeight();
+    cordovaOffsetLog(`getBackToPaddingTop #headerBackToBallotAppBar iOSNotchedSpacer.outerHeight(): ${height}, page: ${pageEnumeration()}`);
+    return `${height}px`;
+  }
+  // end calculated approach
+
   // IMPORTANT: This is a last chance way to adjust the height, to be used only if cordovaScrollablePaneTopPadding can't do it!
   if ([CordovaPageConstants.candidateWild,
     CordovaPageConstants.officeWild,
