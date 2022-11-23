@@ -3,12 +3,15 @@ import { styled as muiStyled } from '@mui/styles';
 import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
+import styled from 'styled-components';
 import ActivityActions from '../../actions/ActivityActions';
 import AnalyticsActions from '../../actions/AnalyticsActions';
 import FriendActions from '../../actions/FriendActions';
 import apiCalming from '../../common/utils/apiCalming';
+import { isIPhoneMiniOrSmaller } from '../../common/utils/cordovaUtils';
 import historyPush from '../../common/utils/historyPush';
 import { normalizedHref } from '../../common/utils/hrefUtils';
+import { isWebApp } from '../../common/utils/isCordovaOrWebApp';
 import isMobileScreenSize from '../../common/utils/isMobileScreenSize';
 import { renderLog } from '../../common/utils/logging';
 import FriendStore from '../../stores/FriendStore';
@@ -167,7 +170,7 @@ class FriendsTabs extends Component {
                       max={9}
                     >
                       Requests
-                      &nbsp;&nbsp;
+                      {isWebApp() && '&nbsp;&nbsp;'}
                     </Badge>
                   ) : (
                     <>Requests</>
@@ -251,18 +254,33 @@ const styles = () => ({
   },
 });
 
+/* eslint-disable no-nested-ternary */
+const FriendsNavTab = styled(Tab)`
+  min-width: 0 !important;
+  height: 40px !important;
+  max-height: 40px !important;
+  width: ${() => (isIPhoneMiniOrSmaller() ? '80px !important' : (isMobileScreenSize() ? '90px !important' : 'fit-content !important'))};
+`;
+
+
 // Styled Mui Component, Tab example:
-const FriendsNavTab = muiStyled(Tab)(isMobileScreenSize() ? {
-  minWidth: '0px !important',
-  width: '90px !important',
-  height: '40px !important',
-  maxHeight: '40px !important',
-} : {
-  minWidth: '0px !important',
-  width: 'fit-content !important',
-  height: '40px !important',
-  maxHeight: '40px !important',
-});
+// eslint-disable-next-line no-nested-ternary
+// const FriendsNavTab = muiStyled(Tab)(isIPhoneMiniOrSmaller() ? {
+//   minWidth: '0px !important',
+//   width: '80px !important',
+//   height: '40px !important',
+//   maxHeight: '40px !important',
+// } : (isMobileScreenSize() ? {
+//   minWidth: '0px !important',
+//   width: '90px !important',
+//   height: '40px !important',
+//   maxHeight: '40px !important',
+// } : {
+//   minWidth: '0px !important',
+//   width: 'fit-content !important',
+//   height: '40px !important',
+//   maxHeight: '40px !important',
+// }));
 
 const RequestsNavTab = muiStyled(Tab)({
   minWidth: '0px !important',

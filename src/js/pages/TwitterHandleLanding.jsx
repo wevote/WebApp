@@ -185,6 +185,7 @@ export default class TwitterHandleLanding extends Component {
     if (kindOfOwner === 'CANDIDATE') {
       // Is this supposed to be this.props.param.candidate_we_vote_id
       params.candidate_we_vote_id = ownerWeVoteId;
+      // console.log('TwitterHandleLanding Candidate');
       return (
         <Candidate
           candidate_we_vote_id
@@ -194,8 +195,10 @@ export default class TwitterHandleLanding extends Component {
     } else if (kindOfOwner === 'ORGANIZATION') {
       params.organization_we_vote_id = ownerWeVoteId;
       if (lookingAtPositionsForFriendsOnly) {
+        // console.log('TwitterHandleLanding PositionListForFriends');
         return <PositionListForFriends params={params} />;
       } else {
+        // console.log('TwitterHandleLanding OrganizationVoterGuide');
         return (
           <OrganizationVoterGuide
             activeRoute={this.props.activeRoute}

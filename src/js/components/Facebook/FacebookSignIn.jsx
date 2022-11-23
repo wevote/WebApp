@@ -6,7 +6,9 @@ import styled from 'styled-components';
 import FacebookActions from '../../actions/FacebookActions';
 import VoterActions from '../../actions/VoterActions';
 import SplitIconButton from '../../common/components/Widgets/SplitIconButton';
+import { isWebApp } from '../../common/utils/isCordovaOrWebApp';
 import { oAuthLog, renderLog } from '../../common/utils/logging';
+import webAppConfig from '../../config';
 import { messageService } from '../../stores/AppObservableStore';
 import FacebookStore from '../../stores/FacebookStore';
 import VoterStore from '../../stores/VoterStore';
@@ -48,29 +50,31 @@ class FacebookSignIn extends Component {
     }
 
     if (this.failedSignInTimer) clearTimeout(this.failedSignInTimer);
-    const { FB } = window;
-    if (FB) {
-      // NOTE 2022-11-08 Dale: I Haven't seen proof this is working
-      FB.Event.subscribe('auth.statusChange', this.onFacebookStatusChange);
-      try {
-        FB.getLoginStatus((response) => {
-          const { authResponse, status } = response;
-          console.log(`FacebookSignIn FB.getLoginStatus response: ${authResponse}, status: ${status}`);
-          if (response.status === 'connected') {
-            this.setState({
-              facebookConnectionInitialized: true,
-            });
-          }
-        });
-      } catch (error) {
-        console.log('FacebookSignIn FB.getLoginStatus error:', error);
+    if (!webAppConfig.ENABLE_FACEBOOK) {
+      const { FB } = window;
+      if (FB) {
+        // NOTE 2022-11-08 Dale: I Haven't seen proof this is working
+        FB.Event.subscribe('auth.statusChange', this.onFacebookStatusChange);
+        try {
+          FB.getLoginStatus((response) => {
+            const { authResponse, status } = response;
+            console.log(`FacebookSignIn FB.getLoginStatus response: ${authResponse}, status: ${status}`);
+            if (response.status === 'connected') {
+              this.setState({
+                facebookConnectionInitialized: true,
+              });
+            }
+          });
+        } catch (error) {
+          console.log('FacebookSignIn FB.getLoginStatus error:', error);
+        }
       }
     }
   }
 
   componentWillUnmount () {
     const { FB } = window;
-    if (FB) {
+    if (FB && webAppConfig.ENABLE_FACEBOOK) {
       FB.Event.unsubscribe('auth.statusChange', this.onFacebookStatusChange);
     }
     this.facebookStoreListener.remove();
@@ -211,7 +215,7 @@ class FacebookSignIn extends Component {
     renderLog('FacebookSignIn');  // Set LOG_RENDER_EVENTS to log all renders
     const { buttonText } = this.props;
     const { buttonSubmittedText, facebookAuthResponse, facebookConnectionInitialized, facebookSignInSequenceStarted, mergingTwoAccounts, redirectInProgress, waitingForMergeTwoAccounts } = this.state;
-    if (!facebookConnectionInitialized) {
+    if (isWebApp() && !facebookConnectionInitialized) {
       console.log('FacebookSignIn: Do not offer Facebook button if we aren\'t getting status back');
       return null;
     }

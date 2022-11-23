@@ -289,7 +289,7 @@ export function cordovaVoteMiniHeader () {
 }
 
 
-// <Wrapper cordovaPaddingTop={cordovaStickyHeaderPaddingTop()}>
+// <MeasureStickyHeaderWrapper styled>
 export function cordovaStickyHeaderPaddingTop () {
   if (isIOS()) {
     if (isIPhone4p7in()) {
@@ -299,11 +299,11 @@ export function cordovaStickyHeaderPaddingTop () {
     } else if (isIPhone5p5inMini()) {
       return '83px';
     } else if (isIPhone5p8in()) {
-      return '81px';
+      return '100px';
     } else if (isIPhone6p1in()) {
       return '81px';
     } else if (isIPhone6p5in()) {
-      return '81px';
+      return '100px';
     } else if (hasIPhoneNotch()) {
       return '76px';
     } else if (isIPad() || isIOSAppOnMac()) {
@@ -391,7 +391,6 @@ export function shareBottomOffset (pinToBottom) {
 }
 
 export function cordovaFriendsWrapper () {
-  // TODO: August 2022, This one could be calculated too!
   if (isIOS()) {
     if (isIPhone5p8in()) {
       return {
@@ -412,7 +411,7 @@ export function cordovaFriendsWrapper () {
         };
       }
       return {
-        paddingTop: '20px',
+        paddingTop: '30px',
         paddingBottom: '90px',
       };
     }

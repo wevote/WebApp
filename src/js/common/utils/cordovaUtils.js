@@ -569,7 +569,8 @@ export function isWebAppHeight737to896 () {
 }
 
 export function isAndroidSimulator () {
-  return window.location.href.startsWith('file:///android');
+  const { device } = window;
+  return device.isVirtual; // return window.location.href.startsWith('file:///android');
 }
 
 export function isCordovaButNotATablet () {
@@ -577,7 +578,8 @@ export function isCordovaButNotATablet () {
 }
 
 export function isIOsSimulator () {
-  return window.location.href.startsWith('file:///Users') || window.location.href.startsWith('app://localhost');
+  const { device: { isVirtual } } = window;
+  return isVirtual; // window.location.href.startsWith('file:///Users') || window.location.href.startsWith('app://localhost');
 }
 
 export function isSimulator () {

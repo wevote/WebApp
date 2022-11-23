@@ -15,7 +15,7 @@ import BallotStore from '../../stores/BallotStore';
 import CandidateStore from '../../stores/CandidateStore';
 import SupportStore from '../../stores/SupportStore';
 import { sortCandidateList } from '../../utils/positionFunctions';
-import { Candidate, CandidateBottomRow, CandidateContainer, CandidateInfo, CandidateNameH4, CandidateParty, CandidateWrapper, CandidateTopRow, HorizontallyScrollingContainer, OfficeNameH2, OfficeItemCompressedWrapper } from '../Style/BallotStyles';
+import { Candidate, CandidateBottomRow, CandidateContainer, CandidateInfo, CandidateNameH4, CandidateParty, CandidateTopRow, CandidateWrapper, HorizontallyScrollingContainer, OfficeItemCompressedWrapper, OfficeNameH2 } from '../Style/BallotStyles';
 import { PositionRowListEmptyWrapper, PositionRowListInnerWrapper, PositionRowListOneWrapper, PositionRowListOuterWrapper, PositionRowListScoreColumn, PositionRowListScoreHeader, PositionRowListScoreSpacer } from '../Style/PositionRowListStyles';
 import InfoCircleIcon from '../Widgets/InfoCircleIcon';
 import signInModalGlobalState from '../Widgets/signInModalGlobalState';
@@ -282,14 +282,14 @@ class OfficeItemCompressed extends Component {
     const candidatesToRenderLength = candidatesToRender.length;
     const hideCandidateDetails = false; // supportedCandidatesList.length;
     let candidateCount = 0;
+    const dedupedCandidates = [];
 
     return (
       <CandidatesContainer>
         { candidatesToRender.slice(0, limitNumberOfCandidatesShownToThisNumber)
           .map((oneCandidate) => {
-            if (!oneCandidate || !oneCandidate.we_vote_id) {
-              return null;
-            }
+            if (!oneCandidate || !oneCandidate.we_vote_id || dedupedCandidates.includes(oneCandidate.we_vote_id)) return null;
+            dedupedCandidates.push(oneCandidate.we_vote_id);
             candidateCount += 1;
             const candidatePartyText = oneCandidate.party && oneCandidate.party.length ? `${oneCandidate.party}` : '';
             const avatarCompressed = 'card-main__avatar-compressed';
