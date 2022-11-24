@@ -1,6 +1,6 @@
 const parallelConfig = {
-  user: 'josephevans_Tl1dVS',
-  key: 'MBfCTeKv7hYraEHusDcA',
+  user: 'dalemcgrew1',
+  key: '8J93xi57VBQbEBpqdMJR',
   hostname: 'hub.browserstack.com',
   capabilities: [
     {

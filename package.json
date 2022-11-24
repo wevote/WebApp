@@ -12,6 +12,7 @@
   },
   "commentMay2021": "'production' forces minified libraries (especially react), and 'MINIFIED' passes all our code through the Terser minifier/mangler/compressor tool.",
   "scripts": {
+    "automation_tests": "./node_modules/.bin/wdio ./tests/browserstack_automation/conf/test.conf.js",
     "build": "node node/buildDateFile.js && webpack --mode production",
     "buildCordova": "node node/buildDateFile.js && node node/buildSrcCordova && CORDOVA=1 && webpack --mode development && node node/logCompileDate.js",
     "lint": "eslint --format stylish --ext .jsx --ext .js src/js",
