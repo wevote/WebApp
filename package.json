@@ -19,7 +19,6 @@
     "lintCordova": "eslint --format stylish --ext .jsx --ext .js srcCordova/js",
     "prod": "node node/buildDateFile.js && MINIMIZED=1 webpack --mode production",
     "run-prod-local": "node server-prod-local.js",
-    "selenium-TopNavigation": "node ./tests/my_setup/TopNavigation.js",
     "start": "node node/buildDateFile.js && PROTOCOL=HTTP webpack serve --mode development",
     "start-win": "node node/buildDateFile.js && webpack serve --mode development",
     "start-https": "node node/buildDateFile.js && PROTOCOL=HTTPS webpack serve --mode development",
