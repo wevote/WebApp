@@ -3,7 +3,9 @@ exports.config = {
   key: process.env.BROWSERSTACK_ACCESS_KEY || 'BROWSERSTACK_ACCESS_KEY',
 
   updateJob: false,
-  specs: ['./tests/specs/test.js'],
+
+  // specs is a list of paths to your test file(s)
+  specs: ['./tests/browserstack_automation/specs/wdioSampleTest.js'],
   exclude: [],
 
   logLevel: 'warn',
@@ -18,6 +20,7 @@ exports.config = {
 
   before: function () {
     var chai = require('chai');
+    global.assert = chai.assert;
     global.expect = chai.expect;
     chai.Should();
   },
