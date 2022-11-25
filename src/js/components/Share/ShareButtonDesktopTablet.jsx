@@ -51,64 +51,64 @@ class ShareButtonDesktopTablet extends Component {
     const { href: destinationFullUrl } = window.location;
     const googleCivicElectionId = 0;
     let kindOfShare = 'BALLOT';
-    let shareModalStep;
+    let whatAndHowMuchToShare;
     if (candidateShare) {
       kindOfShare = 'CANDIDATE';
       if (withOpinionsModified) {
-        shareModalStep = 'candidateShareOptionsAllOpinions';
+        whatAndHowMuchToShare = 'candidateShareOptionsAllOpinions';
         AnalyticsActions.saveActionShareCandidateAllOpinions(VoterStore.electionId());
       } else {
-        shareModalStep = 'candidateShareOptions';
+        whatAndHowMuchToShare = 'candidateShareOptions';
         AnalyticsActions.saveActionShareCandidate(VoterStore.electionId());
       }
     } else if (measureShare) {
       kindOfShare = 'MEASURE';
       if (withOpinionsModified) {
-        shareModalStep = 'measureShareOptionsAllOpinions';
+        whatAndHowMuchToShare = 'measureShareOptionsAllOpinions';
         AnalyticsActions.saveActionShareMeasureAllOpinions(VoterStore.electionId());
       } else {
-        shareModalStep = 'measureShareOptions';
+        whatAndHowMuchToShare = 'measureShareOptions';
         AnalyticsActions.saveActionShareMeasure(VoterStore.electionId());
       }
     } else if (officeShare) {
       kindOfShare = 'OFFICE';
       if (withOpinionsModified) {
-        shareModalStep = 'officeShareOptionsAllOpinions';
+        whatAndHowMuchToShare = 'officeShareOptionsAllOpinions';
         AnalyticsActions.saveActionShareOfficeAllOpinions(VoterStore.electionId());
       } else {
-        shareModalStep = 'officeShareOptions';
+        whatAndHowMuchToShare = 'officeShareOptions';
         AnalyticsActions.saveActionShareOffice(VoterStore.electionId());
       }
     } else if (organizationShare) {
       kindOfShare = 'ORGANIZATION';
       if (withOpinionsModified) {
-        shareModalStep = 'organizationShareOptionsAllOpinions';
+        whatAndHowMuchToShare = 'organizationShareOptionsAllOpinions';
         AnalyticsActions.saveActionShareOrganizationAllOpinions(VoterStore.electionId());
       } else {
-        shareModalStep = 'organizationShareOptions';
+        whatAndHowMuchToShare = 'organizationShareOptions';
         AnalyticsActions.saveActionShareOrganization(VoterStore.electionId());
       }
     } else if (readyShare) {
       kindOfShare = 'READY';
       if (withOpinionsModified) {
-        shareModalStep = 'readyShareOptionsAllOpinions';
+        whatAndHowMuchToShare = 'readyShareOptionsAllOpinions';
         AnalyticsActions.saveActionShareReadyAllOpinions(VoterStore.electionId());
       } else {
-        shareModalStep = 'readyShareOptions';
+        whatAndHowMuchToShare = 'readyShareOptions';
         AnalyticsActions.saveActionShareReady(VoterStore.electionId());
       }
       // Default to ballot
     } else if (withOpinionsModified) {
-      shareModalStep = 'ballotShareOptionsAllOpinions';
+      whatAndHowMuchToShare = 'ballotShareOptionsAllOpinions';
       AnalyticsActions.saveActionShareBallotAllOpinions(VoterStore.electionId());
     } else {
-      shareModalStep = 'ballotShareOptions';
+      whatAndHowMuchToShare = 'ballotShareOptions';
       AnalyticsActions.saveActionShareBallot(VoterStore.electionId());
     }
 
     ShareActions.sharedItemSave(destinationFullUrl, kindOfShare, ballotItemWeVoteId, googleCivicElectionId, organizationWeVoteId);
     AppObservableStore.setShowShareModal(true);
-    AppObservableStore.setShareModalStep(shareModalStep);
+    AppObservableStore.setWhatAndHowMuchToShare(whatAndHowMuchToShare);
     const { pathname } = window.location;
     if (!stringContains('/modal/share', pathname) && isWebApp()) {
       const pathnameWithModalShare = `${pathname}${pathname.endsWith('/') ? '' : '/'}modal/share`;

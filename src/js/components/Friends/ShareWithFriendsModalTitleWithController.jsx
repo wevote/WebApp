@@ -70,9 +70,9 @@ class ShareWithFriendsModalTitleWithController extends Component {
   }
 
   createMessageToFriendDefault = () => {
-    const { shareModalStep } = this.props;
+    const { whatAndHowMuchToShare } = this.props;
     const { electionDateInFutureFormatted } = this.state;
-    const includingAllOpinions = stringContains('AllOpinions', shareModalStep);
+    const includingAllOpinions = stringContains('AllOpinions', whatAndHowMuchToShare);
     let shareBallotOnlyMessage = '';
     let shareWithAllOpinionsMessage = '';
 
@@ -209,7 +209,7 @@ class ShareWithFriendsModalTitleWithController extends Component {
 }
 ShareWithFriendsModalTitleWithController.propTypes = {
   friendsModalTitle: PropTypes.string,
-  shareModalStep: PropTypes.string,
+  whatAndHowMuchToShare: PropTypes.string,
   urlToShare: PropTypes.string,
 };
 

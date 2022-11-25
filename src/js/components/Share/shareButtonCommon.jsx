@@ -1,11 +1,15 @@
 import { FileCopyOutlined } from '@mui/icons-material';
 import { Button } from '@mui/material';
+import PropTypes from 'prop-types';
 import React, { Suspense } from 'react';
 import { FacebookIcon, FacebookShareButton, TwitterIcon, TwitterShareButton } from 'react-share'; // EmailIcon, EmailShareButton,
 import styled from 'styled-components';
+import AnalyticsActions from '../../actions/AnalyticsActions';
 import OpenExternalWebSite from '../../common/components/Widgets/OpenExternalWebSite';
 import { cordovaOpenSafariView, hasDynamicIsland, hasIPhoneNotch, isAndroid } from '../../common/utils/cordovaUtils';
+import { normalizedHref } from '../../common/utils/hrefUtils';
 import { isCordova } from '../../common/utils/isCordovaOrWebApp';
+import VoterStore from '../../stores/VoterStore';
 import { openSnackbar } from '../Widgets/SnackNotifier';
 import ShareModalOption from './ShareModalOption';
 
@@ -129,6 +133,117 @@ export function androidTwitterClickHandler (linkToBeShared) {
   cordovaOpenSafariView(twitURL, null, 50);
 }
 
+export function getKindOfShareFromURL () {
+  const pathname = normalizedHref();
+
+  const ballotShare = typeof pathname !== 'undefined' && pathname && pathname.startsWith('/ballot');
+  const candidateShare = typeof pathname !== 'undefined' && pathname && pathname.startsWith('/candidate');
+  const measureShare = typeof pathname !== 'undefined' && pathname && pathname.startsWith('/measure');
+  const officeShare = typeof pathname !== 'undefined' && pathname && pathname.startsWith('/office');
+  const readyShare = typeof pathname !== 'undefined' && pathname && pathname.startsWith('/ready');
+  const organizationShare = !ballotShare && !candidateShare && !measureShare && !officeShare && !readyShare;
+
+  let kindOfShare;
+  if (candidateShare) {
+    kindOfShare = 'CANDIDATE';
+  } else if (measureShare) {
+    kindOfShare = 'MEASURE';
+  } else if (officeShare) {
+    kindOfShare = 'OFFICE';
+  } else if (organizationShare) {
+    kindOfShare = 'ORGANIZATION';
+  } else if (readyShare) {
+    kindOfShare = 'READY';
+  } else {
+    kindOfShare = 'BALLOT';
+  }
+  return kindOfShare;
+}
+
+export function getWhatAndHowMuchToShareDefault () {
+  const kindOfShare = getKindOfShareFromURL();
+  const voterIsSignedIn = VoterStore.getVoterIsSignedIn();
+  let whatAndHowMuchToShare;
+  if (kindOfShare === 'CANDIDATE') {
+    if (voterIsSignedIn) {
+      whatAndHowMuchToShare = 'candidateShareOptionsAllOpinions';
+    } else {
+      whatAndHowMuchToShare = 'candidateShareOptions';
+    }
+  } else if (kindOfShare === 'MEASURE') {
+    if (voterIsSignedIn) {
+      whatAndHowMuchToShare = 'measureShareOptionsAllOpinions';
+    } else {
+      whatAndHowMuchToShare = 'measureShareOptions';
+    }
+  } else if (kindOfShare === 'OFFICE') {
+    if (voterIsSignedIn) {
+      whatAndHowMuchToShare = 'officeShareOptionsAllOpinions';
+    } else {
+      whatAndHowMuchToShare = 'officeShareOptions';
+    }
+  } else if (kindOfShare === 'ORGANIZATION') {
+    if (voterIsSignedIn) {
+      whatAndHowMuchToShare = 'organizationShareOptionsAllOpinions';
+    } else {
+      whatAndHowMuchToShare = 'organizationShareOptions';
+    }
+  } else if (kindOfShare === 'READY') {
+    if (voterIsSignedIn) {
+      whatAndHowMuchToShare = 'readyShareOptionsAllOpinions';
+    } else {
+      whatAndHowMuchToShare = 'readyShareOptions';
+    }
+    // Default to ballot
+  } else if (voterIsSignedIn) {
+    whatAndHowMuchToShare = 'ballotShareOptionsAllOpinions';
+  } else {
+    whatAndHowMuchToShare = 'ballotShareOptions';
+  }
+  return whatAndHowMuchToShare;
+}
+
+export function saveActionShareAnalytics () {
+  const kindOfShare = getKindOfShareFromURL();
+  const voterIsSignedIn = VoterStore.getVoterIsSignedIn();
+  if (kindOfShare === 'CANDIDATE') {
+    if (voterIsSignedIn) {
+      AnalyticsActions.saveActionShareCandidateAllOpinions(VoterStore.electionId());
+    } else {
+      AnalyticsActions.saveActionShareCandidate(VoterStore.electionId());
+    }
+  } else if (kindOfShare === 'MEASURE') {
+    if (voterIsSignedIn) {
+      AnalyticsActions.saveActionShareMeasureAllOpinions(VoterStore.electionId());
+    } else {
+      AnalyticsActions.saveActionShareMeasure(VoterStore.electionId());
+    }
+  } else if (kindOfShare === 'OFFICE') {
+    if (voterIsSignedIn) {
+      AnalyticsActions.saveActionShareOfficeAllOpinions(VoterStore.electionId());
+    } else {
+      AnalyticsActions.saveActionShareOffice(VoterStore.electionId());
+    }
+  } else if (kindOfShare === 'ORGANIZATION') {
+    if (voterIsSignedIn) {
+      AnalyticsActions.saveActionShareOrganizationAllOpinions(VoterStore.electionId());
+    } else {
+      AnalyticsActions.saveActionShareOrganization(VoterStore.electionId());
+    }
+  } else if (kindOfShare === 'READY') {
+    if (voterIsSignedIn) {
+      AnalyticsActions.saveActionShareReadyAllOpinions(VoterStore.electionId());
+    } else {
+      AnalyticsActions.saveActionShareReady(VoterStore.electionId());
+    }
+    // Default to ballot
+  } else if (voterIsSignedIn) {
+    AnalyticsActions.saveActionShareBallotAllOpinions(VoterStore.electionId());
+  } else {
+    AnalyticsActions.saveActionShareBallot(VoterStore.electionId());
+  }
+}
+
 let close;
 function onEmailSendSuccess () {
   console.log('successfully shared via email');
@@ -160,7 +275,7 @@ export function cordovaSocialSharingByEmail (subject, linkToBeShared, handleClos
     null,               // CC: must be null or an array
     null,               // BCC: must be null or an array
     null,               // FILES: can be null, a string, or an array
-    onEmailSendSuccess, // called when sharing worked, but also when the user cancelled sharing via email. On iOS, the callbacks' boolean result parameter is true when sharing worked, false if cancelled. On Android, this parameter is always true so it can't be used). See section "Notes about the successCallback" below.
+    onEmailSendSuccess, // called when sharing worked, but also when the user cancelled sharing via email. On iOS, the callbacks' boolean result parameter is true when sharing worked, false if cancelled. On Android, this parameter is always true, so it can't be used. See section "Notes about the successCallback" below.
     onEmailSendError,   // called when sh*t hits the fan
   );
 }
@@ -195,7 +310,30 @@ const ShareWrapper = styled('div')`
   }
 `;
 
-/* eslint-disable react/prop-types */
+// React functional component example
+export function CopyLink (props) {
+  const { saveActionShareButtonCopy, linkToBeSharedCopy } = props;
+  return (
+    <>
+      <ShareWrapper>
+        <ShareModalOption
+          backgroundColor="#2E3C5D"
+          copyLink
+          icon={<FileCopyOutlined />}
+          urlToShare={linkToBeSharedCopy}
+          onClickFunction={saveActionShareButtonCopy}
+          title="Copy link"
+          uniqueExternalId="shareButtonFooter-CopyLink"
+        />
+      </ShareWrapper>
+    </>
+  );
+}
+CopyLink.propTypes = {
+  saveActionShareButtonCopy: PropTypes.func,
+  linkToBeSharedCopy: PropTypes.string,
+};
+
 // React functional component example
 export function ShareWeVoteFriends (props) {
   const { onClickFunction } = props;
@@ -211,13 +349,16 @@ export function ShareWeVoteFriends (props) {
     />
   );
 }
+ShareWeVoteFriends.propTypes = {
+  onClickFunction: PropTypes.func,
+};
 
 export function SharePreviewFriends (props) {
   const { classes, linkToBeShared } = props;
   return (
     <Suspense fallback={<></>}>
       <OpenExternalWebSite
-        linkIdAttribute="allOpinions"
+        linkIdAttribute="previewWhatFriendsWillSee"
         url={linkToBeShared}
         target="_blank"
         // title={this.props.title}
@@ -232,6 +373,10 @@ export function SharePreviewFriends (props) {
     </Suspense>
   );
 }
+SharePreviewFriends.propTypes = {
+  classes: PropTypes.object,
+  linkToBeShared: PropTypes.string,
+};
 
 // React functional component example
 export function ShareFacebook (props) {
@@ -265,10 +410,15 @@ export function ShareFacebook (props) {
     </ShareWrapper>
   );
 }
+ShareFacebook.propTypes = {
+  linkToBeShared: PropTypes.string,
+  saveActionShareButtonFacebook: PropTypes.func,
+  titleText: PropTypes.string,
+};
 
 // React functional component example
-export function ShareTwitterAndCopy (props) {
-  const { titleText, saveActionShareButtonTwitter, saveActionShareButtonCopy, linkToBeSharedTwitter, linkToBeSharedCopy } = props;
+export function ShareTwitter (props) {
+  const { titleText, saveActionShareButtonTwitter, linkToBeSharedTwitter } = props;
   return (
     <>
       <ShareWrapper>
@@ -298,17 +448,11 @@ export function ShareTwitterAndCopy (props) {
           </TwitterShareButton>
         </div>
       </ShareWrapper>
-      <ShareWrapper>
-        <ShareModalOption
-          backgroundColor="#2E3C5D"
-          copyLink
-          icon={<FileCopyOutlined />}
-          urlToShare={linkToBeSharedCopy}
-          onClickFunction={saveActionShareButtonCopy}
-          title="Copy link"
-          uniqueExternalId="shareButtonFooter-CopyLink"
-        />
-      </ShareWrapper>
     </>
   );
 }
+ShareTwitter.propTypes = {
+  linkToBeSharedTwitter: PropTypes.string,
+  saveActionShareButtonTwitter: PropTypes.func,
+  titleText: PropTypes.string,
+};

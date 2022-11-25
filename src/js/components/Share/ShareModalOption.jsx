@@ -15,7 +15,7 @@ class ShareModalOption extends Component {
     super(props);
     this.state = {
       copyLinkCopied: false,
-      shareModalStep: '',
+      whatAndHowMuchToShare: '',
     };
   }
 
@@ -31,16 +31,16 @@ class ShareModalOption extends Component {
   }
 
   onAppObservableStoreChange () {
-    const { shareModalStep } = this.state;
-    const newShareModalStep = AppObservableStore.getShareModalStep();
-    if (newShareModalStep !== shareModalStep) {
+    const { whatAndHowMuchToShare } = this.state;
+    const newWhatAndHowMuchToShare = AppObservableStore.getWhatAndHowMuchToShare();
+    if (newWhatAndHowMuchToShare !== whatAndHowMuchToShare) {
       // If we change modes, reset the copy link state
       this.setState({
         copyLinkCopied: false,
       });
     }
     this.setState({
-      shareModalStep: newShareModalStep,
+      whatAndHowMuchToShare: newWhatAndHowMuchToShare,
     });
   }
 
