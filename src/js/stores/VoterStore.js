@@ -217,6 +217,11 @@ class VoterStore extends ReduceStore {
     return verifiedCount;
   }
 
+  getStateCode () {
+    // This defaults to state_code_from_ip_address but is overridden by the address the voter defaults to, or enters in text_for_map_search
+    return this.getState().voter.state_code || '';
+  }
+
   getStateCodeFromIPAddress () {
     return this.getState().voter.state_code_from_ip_address || '';
   }
@@ -1139,6 +1144,16 @@ class VoterStore extends ReduceStore {
               console.log('OpenReplay setting voterIsSignedIn');
               AppObservableStore.setOpenReplayVoterIsSignedIn(true);
               tracker.setMetadata('voterIsSignedIn', 'true');
+            }
+          }
+          if (this.getStateCode() && !AppObservableStore.getOpenReplayStateCode()) {
+            // getStateCode defaults to state_code_from_ip_address but is overridden by the state in text_for_map_search
+            const tracker = AppObservableStore.getOpenReplayTracker();
+            const stateCode = this.getStateCode().toUpperCase();
+            if (tracker && stateCode) {
+              console.log('OpenReplay setting stateCode');
+              AppObservableStore.setOpenReplayStateCode(stateCode);
+              tracker.setMetadata('stateCode', stateCode);
             }
           }
           if (incomingVoter.state_code_from_ip_address && !AppObservableStore.getOpenReplayStateCodeFromIpAddress()) {

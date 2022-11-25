@@ -46,7 +46,7 @@ const nonFluxState = {
   scrolledDown: false,
   setUpAccountBackLinkPath: '',
   setUpAccountEntryPath: '',
-  shareModalStep: '',
+  whatAndHowMuchToShare: '',
   sharedItemCode: '',
   showActivityTidbitDrawer: false,
   showAdviserIntroModal: false,
@@ -125,6 +125,11 @@ export default {
     messageService.sendMessage('state updated openReplayPending');
   },
 
+  setOpenReplayStateCode (stateCode) {
+    nonFluxState.stateCode = stateCode;
+    messageService.sendMessage('state updated stateCode');
+  },
+
   setOpenReplayStateCodeFromIpAddress (stateCodeFromIpAddress) {
     nonFluxState.stateCodeFromIpAddress = stateCodeFromIpAddress;
     messageService.sendMessage('state updated stateCodeFromIpAddress');
@@ -186,21 +191,21 @@ export default {
   },
 
   setSetUpAccountBackLinkPath (backLinkPath) {
-    // console.log('setShareModalStep, step:', step);
+    // console.log('setSetUpAccountBackLinkPath, step:', step);
     nonFluxState.setUpAccountBackLinkPath = backLinkPath;
     messageService.sendMessage('state updated setUpAccountBackLinkPath');
   },
 
   setSetUpAccountEntryPath (entryPath) {
-    // console.log('setShareModalStep, step:', step);
+    // console.log('setSetUpAccountEntryPath, step:', step);
     nonFluxState.setUpAccountEntryPath = entryPath;
     messageService.sendMessage('state updated setSetUpAccountEntryPath');
   },
 
-  setShareModalStep (step) {
-    // console.log('setShareModalStep, step:', step);
-    nonFluxState.shareModalStep = step;
-    messageService.sendMessage('state updated shareModalStep');
+  setWhatAndHowMuchToShare (step) {
+    // console.log('setWhatAndHowMuchToShare, step:', step);
+    nonFluxState.whatAndHowMuchToShare = step;
+    messageService.sendMessage('state updated whatAndHowMuchToShare');
   },
 
   setShowActivityTidbitDrawer (show) {
@@ -414,6 +419,10 @@ export default {
     return nonFluxState.openReplayPending;
   },
 
+  getOpenReplayStateCode () {
+    return nonFluxState.stateCode;
+  },
+
   getOpenReplayStateCodeFromIpAddress () {
     return nonFluxState.stateCodeFromIpAddress;
   },
@@ -466,9 +475,9 @@ export default {
     return nonFluxState.sharedItemCode;
   },
 
-  getShareModalStep () {
-    // console.log('AppObservableStore shareModalStep:', nonFluxState.shareModalStep);
-    return nonFluxState.shareModalStep;
+  getWhatAndHowMuchToShare () {
+    // console.log('getWhatAndHowMuchToShare:', nonFluxState.whatAndHowMuchToShare);
+    return nonFluxState.whatAndHowMuchToShare;
   },
 
   getShowTwitterLandingPage () {

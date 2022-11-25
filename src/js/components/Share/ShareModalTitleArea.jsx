@@ -2,21 +2,137 @@ import { Close } from '@mui/icons-material';
 import { FormControl, FormControlLabel, IconButton, Radio } from '@mui/material';
 import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
-import React, { PureComponent } from 'react';
+import React, { Component, Suspense } from 'react';
 import styled from 'styled-components';
+import { returnShareModalText } from './ShareModalText';
 import { isAndroidSizeMD } from '../../common/utils/cordovaUtils';
 import { isCordova } from '../../common/utils/isCordovaOrWebApp';
 import { renderLog } from '../../common/utils/logging';
+import stringContains from '../../common/utils/stringContains';
+import AppObservableStore, { messageService } from '../../stores/AppObservableStore';
+import VoterStore from '../../stores/VoterStore';
 
 // import { getApplicationViewBooleans } from '../../utils/applicationUtils';
+const SignInModal = React.lazy(() => import(/* webpackChunkName: 'SignInModal' */ '../SignIn/SignInModal'));
 
-class ShareModalTitleArea extends PureComponent {
+class ShareModalTitleArea extends Component {
+  constructor (props) {
+    super(props);
+    this.state = {
+      showSignInModal: false,
+    };
+  }
+
+  componentDidMount () {
+    this.onVoterStoreChange();
+    this.appStateSubscription = messageService.getMessage().subscribe(() => this.onAppObservableStoreChange());
+    this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
+    const whatAndHowMuchToShare = AppObservableStore.getWhatAndHowMuchToShare();
+    const {
+      allOpinionsRadioButtonDescription,
+      allOpinionsRadioButtonText,
+      noOpinionsRadioButtonDescription,
+      noOpinionsRadioButtonText,
+      shareModalDescription,
+      shareModalTitle,
+    } = returnShareModalText(whatAndHowMuchToShare);
+    this.setState({
+      allOpinionsRadioButtonDescription,
+      allOpinionsRadioButtonText,
+      noOpinionsRadioButtonDescription,
+      noOpinionsRadioButtonText,
+      shareModalDescription,
+      shareModalTitle,
+      whatAndHowMuchToShare,
+    });
+  }
+
+  componentWillUnmount () {
+    this.appStateSubscription.unsubscribe();
+    this.voterStoreListener.remove();
+  }
+
+  onAppObservableStoreChange () {
+    const whatAndHowMuchToShare = AppObservableStore.getWhatAndHowMuchToShare();
+    this.setState({
+      whatAndHowMuchToShare,
+    });
+  }
+
+  onVoterStoreChange () {
+    this.setState({});
+  }
+
+  handleShareAllOpinionsToggle = (evt) => {
+    const { whatAndHowMuchToShare } = this.state;
+    const { value } = evt.target;
+    // console.log('handleShareAllOpinionsToggle value:', value, ', whatAndHowMuchToShare:', whatAndHowMuchToShare);
+    if (value === 'AllOpinions') {
+      this.includeOpinions(whatAndHowMuchToShare);
+    } else {
+      this.doNotIncludeOpinions(whatAndHowMuchToShare);
+    }
+  };
+
+  setStep = (whatAndHowMuchToShare) => {
+    const {
+      allOpinionsRadioButtonDescription,
+      allOpinionsRadioButtonText,
+      noOpinionsRadioButtonDescription,
+      noOpinionsRadioButtonText,
+      shareModalTitle,
+    } = returnShareModalText(whatAndHowMuchToShare);
+    this.setState({
+      allOpinionsRadioButtonDescription,
+      allOpinionsRadioButtonText,
+      noOpinionsRadioButtonDescription,
+      noOpinionsRadioButtonText,
+      shareModalTitle,
+      whatAndHowMuchToShare,
+    });
+    AppObservableStore.setWhatAndHowMuchToShare(whatAndHowMuchToShare);
+  }
+
+  toggleShowSignInModal = () => {
+    const { showSignInModal } = this.state;
+    this.setState({
+      showSignInModal: !showSignInModal,
+    });
+  }
+
+  doNotIncludeOpinions (whatAndHowMuchToShare) {
+    // console.log('doNotIncludeOpinions whatAndHowMuchToShare:', whatAndHowMuchToShare);
+    if (stringContains('AllOpinions', whatAndHowMuchToShare)) {
+      const newShareFooterStep = whatAndHowMuchToShare.replace('AllOpinions', '');
+      this.setStep(newShareFooterStep);
+    }
+  }
+
+  includeOpinions (whatAndHowMuchToShare) {
+    const voterIsSignedIn = VoterStore.getVoterIsSignedIn();
+    // console.log('includeOpinions whatAndHowMuchToShare:', whatAndHowMuchToShare, ', voterIsSignedIn:', voterIsSignedIn);
+    if (!stringContains('AllOpinions', whatAndHowMuchToShare)) {
+      if (voterIsSignedIn) {
+        const newShareFooterStep = `${whatAndHowMuchToShare}AllOpinions`;
+        this.setStep(newShareFooterStep);
+      } else {
+        this.setState({
+          showSignInModal: true,
+        });
+      }
+    }
+  }
+
   render () {
     renderLog('ShareModalTitleArea');
-    const { classes, firstSlide, shareModalTitle, handleShareAllOpinionsToggle, handleCloseShareButtonDrawer } = this.props;
+    const { classes, firstSlide, handleCloseShareButtonDrawer } = this.props;
+    const {
+      allOpinionsRadioButtonDescription, allOpinionsRadioButtonText, noOpinionsRadioButtonDescription, noOpinionsRadioButtonText,
+      shareModalDescription, shareModalTitle, showSignInModal, whatAndHowMuchToShare,
+    } = this.state;
     // const { location: { pathname } } = window;
-    // const voterIsSignedIn = VoterStore.getVoterIsSignedIn();
     // const { showFooterBar } = getApplicationViewBooleans(pathname);
+    // console.log('whatAndHowMuchToShare:', whatAndHowMuchToShare);
 
     return (
       <ModalTitleArea firstSlide={firstSlide}>
@@ -24,50 +140,63 @@ class ShareModalTitleArea extends PureComponent {
           <ShareButtonFooterTitle>
             {shareModalTitle}
           </ShareButtonFooterTitle>
+          <ShareDescription>
+            {shareModalDescription}
+          </ShareDescription>
           <FormControl classes={{ root: classes.formControl }}>
             <RadioGroup
-              onChange={handleShareAllOpinionsToggle}
+              onChange={this.handleShareAllOpinionsToggle}
               style={isCordova() ? { display: 'none' } : {}}
             >
               <RadioItem>
                 <FormControlLabel
+                  id="shareModalNoOpinionsRadioButton"
                   classes={{ label: classes.radioLabel }}
-                  // disabled={!voterIsSignedIn}
-                  disabled
-                  id="shareModalAllOpinionsRadioButton"
-                  value="AllOpinions"
-                  // label={voterIsSignedIn ? 'Share my voter guide' : 'Sign in to share my voter guide'}
-                  label="Share my voter guide (coming in 2023)"
+                  value="NoOpinions"
+                  label={noOpinionsRadioButtonText}
                   labelPlacement="end"
                   control={
                     (
                       <Radio
                         classes={{ colorPrimary: classes.radioPrimary }}
                         color="primary"
-                        // checked={voterIsSignedIn} // && stringContains('AllOpinions', shareFooterStep)}
+                        checked={!stringContains('AllOpinions', whatAndHowMuchToShare)}
+                      />
+                    )
+                  }
+                />
+                <RadioButtonText>
+                  {noOpinionsRadioButtonDescription}
+                </RadioButtonText>
+              </RadioItem>
+              <RadioItem>
+                <FormControlLabel
+                  classes={{ label: classes.radioLabel }}
+                  id="shareModalAllOpinionsRadioButton"
+                  value="AllOpinions"
+                  label={(
+                    <>
+                      <div>
+                        {allOpinionsRadioButtonText}
+                      </div>
+                    </>
+                    )}
+                  // label="Share my voter guide (coming in 2023)"
+                  labelPlacement="end"
+                  control={
+                    (
+                      <Radio
+                        classes={{ colorPrimary: classes.radioPrimary }}
+                        color="primary"
+                        checked={stringContains('AllOpinions', whatAndHowMuchToShare)}
                       />
                     )
                   }
                   style={{ marginRight: `${isAndroidSizeMD() ? '10px' : ''}` }}
                 />
-              </RadioItem>
-              <RadioItem>
-                <FormControlLabel
-                  id="shareModalBallotOnlyRadioButton"
-                  classes={{ label: classes.radioLabel }}
-                  value="BallotOnly"
-                  label="Ballot only"
-                  labelPlacement="end"
-                  control={
-                    (
-                      <Radio
-                        classes={{ colorPrimary: classes.radioPrimary }}
-                        color="primary"
-                        checked // and ={!voterIsSignedIn || !stringContains('AllOpinions', shareFooterStep)}
-                      />
-                    )
-                  }
-                />
+                <RadioButtonText>
+                  {allOpinionsRadioButtonDescription}
+                </RadioButtonText>
               </RadioItem>
             </RadioGroup>
           </FormControl>
@@ -81,6 +210,16 @@ class ShareModalTitleArea extends PureComponent {
         >
           <Close />
         </IconButton>
+        {(showSignInModal && !VoterStore.getVoterIsSignedIn()) && (
+          <Suspense fallback={<></>}>
+            <SignInModal
+              signInTitle="Sign in to share your choices"
+              signInSubTitle={shareModalDescription}
+              toggleOnClose={this.toggleShowSignInModal}
+              uponSuccessfulSignIn={this.toggleShowSignInModal}
+            />
+          </Suspense>
+        )}
       </ModalTitleArea>
     );
   }
@@ -89,9 +228,6 @@ ShareModalTitleArea.propTypes = {
   classes: PropTypes.object,
   firstSlide: PropTypes.bool,
   handleCloseShareButtonDrawer: PropTypes.func,
-  handleShareAllOpinionsToggle: PropTypes.func,
-  // shareFooterStep: PropTypes.string,
-  shareModalTitle: PropTypes.string,
 };
 
 const styles = () => ({
@@ -180,24 +316,22 @@ const ModalTitleArea = styled('div', {
   text-align: ${onSignInSlide ? 'center' : 'left'};
 `));
 
-const ShareButtonFooterTitle = styled('h3')(({ theme }) => (`
-  font-weight: bold;
-  font-size: 28px;
-  color: black;
-  margin-top: 0;
-  margin-bottom: 4px;
-  ${theme.breakpoints.down('xs')} {
-    font-size: 17px;
-    margin-bottom: 8px;
-  }
-`));
+const RadioButtonText = styled('div')`
+  color: #808080;
+  margin-left: 32px;
+  margin-top: 4px;
+`;
 
 const RadioGroup = styled('div', {
   shouldForwardProp: (prop) => !['preventStackedButtons'].includes(prop),
 })(({ preventStackedButtons, theme }) => (`
   display: flex;
   flex-flow: column;
+  justify-content: flex-start;
   width: 100%;
+  ${theme.breakpoints.up('sm')} {
+    flex-flow: row;
+  }
   ${theme.breakpoints.down('md')} {
     margin-bottom: -10px;
   }
@@ -210,6 +344,7 @@ const RadioGroup = styled('div', {
 const RadioItem = styled('div', {
   shouldForwardProp: (prop) => !['preventStackedButtons'].includes(prop),
 })(({ preventStackedButtons, theme }) => (`
+  margin-bottom: 20px;
   ${!preventStackedButtons && theme.breakpoints.down('xs') ? (`
       // width: 100% !important;
       // min-width: 100% !important;
@@ -217,18 +352,21 @@ const RadioItem = styled('div', {
   `) : ''}
 `));
 
+const ShareButtonFooterTitle = styled('h3')(({ theme }) => (`
+  font-weight: bold;
+  font-size: 28px;
+  color: black;
+  margin-top: 0;
+  margin-bottom: 4px;
+  ${theme.breakpoints.down('xs')} {
+    font-size: 17px;
+    margin-bottom: 8px;
+  }
+`));
 
-// const SubTitle = styled('div', {
-//   shouldForwardProp: (prop) => !['larger', 'left'].includes(prop),
-// })(({ larger, left }) => (`
-//   margin-top: 0;
-//   font-size: ${larger ? '18px' : '14px'};
-//   width: 100%;
-//   text-align: ${left && 'left'};
-//   @media(min-width: 420px) {
-//     // width: 80%;
-//   }
-// `));
-
+const ShareDescription = styled('div')`
+  color: #808080;
+  margin-bottom: 12px;
+`;
 
 export default withStyles(styles)(ShareModalTitleArea);

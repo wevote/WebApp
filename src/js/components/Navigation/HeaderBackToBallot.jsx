@@ -54,7 +54,6 @@ class HeaderBackToBallot extends Component {
       organization: {},
       organizationHasBeenRetrievedOnce: {},
       organizationWeVoteId: '',
-      shareModalStep: '',
       showShareModal: false,
       showSignInModal: false,
       scrolledDown: false,
@@ -180,7 +179,6 @@ class HeaderBackToBallot extends Component {
     const voterPhotoUrlMedium = voter.voter_photo_url_medium;
     this.setState({
       scrolledDown: AppObservableStore.getScrolledDown(),
-      shareModalStep: AppObservableStore.getShareModalStep(),
       showShareModal: AppObservableStore.showShareModal(),
       showSignInModal: AppObservableStore.showSignInModal(),
       voter,
@@ -297,7 +295,6 @@ class HeaderBackToBallot extends Component {
     const voterIsSignedIn = voter.is_signed_in;
     const voterPhotoUrlMedium = voter.voter_photo_url_medium;
     this.setState({
-      shareModalStep: AppObservableStore.getShareModalStep(),
       showShareModal: AppObservableStore.showShareModal(),
       voter,
       voterIsSignedIn,
@@ -398,7 +395,6 @@ class HeaderBackToBallot extends Component {
   onAppObservableStoreChange () {
     this.setState({
       scrolledDown: AppObservableStore.getScrolledDown(),
-      shareModalStep: AppObservableStore.getShareModalStep(),
       showShareModal: AppObservableStore.showShareModal(),
       showSignInModal: AppObservableStore.showSignInModal(),
     });
@@ -563,7 +559,7 @@ class HeaderBackToBallot extends Component {
 
   closeShareModal = () => {
     AppObservableStore.setShowShareModal(false);
-    AppObservableStore.setShareModalStep('');
+    // AppObservableStore.setWhatAndHowMuchToShare('');
     const pathname = normalizedHref();
 
     if (stringContains('/modal/share', pathname) && isWebApp()) {
@@ -659,7 +655,7 @@ class HeaderBackToBallot extends Component {
       backToCandidateWeVoteId, backToMeasure, backToMeasureWeVoteId, backToVariable,
       candidate, measureName, officeName,
       organization, page, showSignInModal,
-      shareModalStep, showShareModal, voter, voterIsSignedIn,
+      showShareModal, voter, voterIsSignedIn,
     } = this.state;
     const voterPhotoUrlMedium = voterPhoto(voter);
     const { classes } = this.props;
@@ -817,7 +813,6 @@ class HeaderBackToBallot extends Component {
             <Suspense fallback={<></>}>
               <ShareModal
                 show={showShareModal}
-                shareModalStep={shareModalStep}
                 closeShareModal={this.closeShareModal}
               />
             </Suspense>

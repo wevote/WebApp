@@ -54,7 +54,7 @@ class HeaderBar extends Component {
       // showOrganizationModal: false,
       showSignInModal: false,
       // showPositionDrawer: false,
-      // shareModalStep: '',
+      // whatAndHowMuchToShare: '',
       tabsValue: 1,
       // organizationModalBallotItemWeVoteId: '',
       page: 'non-blank-default-value',
@@ -151,7 +151,7 @@ class HeaderBar extends Component {
   //     update = true;
   //   } else if (this.state.scrolledDown !== nextState.scrolledDown) {
   //     update = true;
-  //   } else if (this.state.shareModalStep !== nextState.shareModalStep) {
+  //   } else if (this.state.whatAndHowMuchToShare !== nextState.whatAndHowMuchToShare) {
   //     update = true;
   //   } else if (this.state.organizationModalBallotItemWeVoteId !== nextState.organizationModalBallotItemWeVoteId) {
   //     update = true;
@@ -291,7 +291,7 @@ class HeaderBar extends Component {
       // inPrivateLabelMode: AppObservableStore.getHideWeVoteLogo(), // Using this setting temporarily // setState onAppObservableStoreChange is not working for some reason
       // organizationModalBallotItemWeVoteId: AppObservableStore.getOrganizationModalBallotItemWeVoteId(),
       scrolledDown: AppObservableStore.getScrolledDown(),
-      // shareModalStep: AppObservableStore.getShareModalStep(),
+      // whatAndHowMuchToShare: AppObservableStore.getWhatAndHowMuchToShare(),
       showSignInModal: AppObservableStore.showSignInModal(),
     });
   }

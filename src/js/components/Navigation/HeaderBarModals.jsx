@@ -118,7 +118,7 @@ class HeaderBarModals extends Component {
 
   closeShareModal () {
     AppObservableStore.setShowShareModal(false);
-    AppObservableStore.setShareModalStep('');
+    // AppObservableStore.setWhatAndHowMuchToShare('');
     const pathname = normalizedHref();
     // console.log('HeaderBar closeShareModal pathname:', pathname);
     if (stringContains('/modal/share', pathname) && isWebApp()) {
@@ -170,7 +170,6 @@ class HeaderBarModals extends Component {
     } = this.state;
 
     const ballotBaseUrl = ['ready'].includes(normalizedHrefPage()) ? '/ready' : '/ballot';
-    const shareModalStep = AppObservableStore.getShareModalStep();
 
     // renderLog(`HeaderBarModals`);
     // console.log('HeaderBarModals showSignInModal:', showSignInModal);
@@ -278,7 +277,6 @@ class HeaderBarModals extends Component {
         <Suspense fallback={<></>}>
           <ShareModal
             show={showShareModal}
-            shareModalStep={shareModalStep}
             closeShareModal={this.closeShareModal}
           />
         </Suspense>
