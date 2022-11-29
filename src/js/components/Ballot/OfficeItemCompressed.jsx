@@ -15,7 +15,11 @@ import BallotStore from '../../stores/BallotStore';
 import CandidateStore from '../../stores/CandidateStore';
 import SupportStore from '../../stores/SupportStore';
 import { sortCandidateList } from '../../utils/positionFunctions';
-import { Candidate, CandidateBottomRow, CandidateContainer, CandidateInfo, CandidateNameH4, CandidateParty, CandidateTopRow, CandidateWrapper, HorizontallyScrollingContainer, OfficeItemCompressedWrapper, OfficeNameH2 } from '../Style/BallotStyles';
+import {
+  Candidate, CandidateBottomRow, CandidateContainer, CandidateInfo, CandidateNameH4,
+  CandidatesContainer, CandidateParty, CandidateTopRow, CandidateWrapper,
+  HorizontallyScrollingContainer, OfficeItemCompressedWrapper, OfficeNameH2,
+} from '../Style/BallotStyles';
 import { PositionRowListEmptyWrapper, PositionRowListInnerWrapper, PositionRowListOneWrapper, PositionRowListOuterWrapper, PositionRowListScoreColumn, PositionRowListScoreHeader, PositionRowListScoreSpacer } from '../Style/PositionRowListStyles';
 import InfoCircleIcon from '../Widgets/InfoCircleIcon';
 import signInModalGlobalState from '../Widgets/signInModalGlobalState';
@@ -280,6 +284,7 @@ class OfficeItemCompressed extends Component {
     // If there are supported candidates, then limit what we show to supported and opposed candidates
     const candidatesToRender = (supportedCandidatesList.length && !showAllCandidates) ? supportedAndOpposedCandidatesList : candidateListForDisplay;
     const candidatesToRenderLength = candidatesToRender.length;
+    const hideItemActionBar = false;
     const hideCandidateDetails = false; // supportedCandidatesList.length;
     let candidateCount = 0;
     const dedupedCandidates = [];
@@ -348,7 +353,7 @@ class OfficeItemCompressed extends Component {
                           {!hideCandidateDetails && (
                             <Suspense fallback={<></>}>
                               {/* If there if (pages.includes(page)) {is a quote about the candidate, show that. If not, show issues related to candidate */}
-                              <DelayedLoad showLoadingText waitBeforeShow={500}>
+                              <DelayedLoad waitBeforeShow={500}>
                                 <IssuesByBallotItemDisplayList
                                   ballotItemDisplayName={oneCandidate.ballot_item_display_name}
                                   ballotItemWeVoteId={oneCandidate.we_vote_id}
@@ -357,7 +362,7 @@ class OfficeItemCompressed extends Component {
                               </DelayedLoad>
                             </Suspense>
                           )}
-                          {!hideCandidateDetails && (
+                          {!hideItemActionBar && (
                             <ItemActionBarOutsideWrapper>
                               <Suspense fallback={<></>}>
                                 <ItemActionBar
@@ -578,13 +583,6 @@ const styles = (theme) => ({
     },
   },
 });
-
-const CandidatesContainer = styled('div')`
-  height: 100%;
-  // margin: 0 0 0 -10px;
-  min-width: 0;
-  width: 100%;
-`;
 
 const HrSeparator = styled('hr')`
   width: 95%;

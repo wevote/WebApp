@@ -6,7 +6,7 @@ import stringContains from '../../common/utils/stringContains';
 
 export function generateShareLinks () {
   const currentFullUrlAdjusted = cordovaLinkToBeSharedFixes(window.location.href || '');
-  const currentFullUrlToShare = currentFullUrlAdjusted.replace('/modal/share', '').toLowerCase();
+  const currentFullUrlToShare = currentFullUrlAdjusted.replace('/modal/share', ''); // .toLowerCase(); // toLowerCase messes with shared link codes
   const urlWithSharedItemCode = ShareStore.getUrlWithSharedItemCodeByFullUrl(currentFullUrlToShare, false);
   const urlWithSharedItemCodeAllOpinions = ShareStore.getUrlWithSharedItemCodeByFullUrl(currentFullUrlToShare, true);
   // console.log('generateShareLinks urlWithSharedItemCode:', urlWithSharedItemCode);

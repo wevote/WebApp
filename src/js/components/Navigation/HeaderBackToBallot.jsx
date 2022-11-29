@@ -25,12 +25,12 @@ import OrganizationStore from '../../stores/OrganizationStore';
 import VoterStore from '../../stores/VoterStore';
 import { dumpCssFromId } from '../../utils/appleSiliconUtils';
 import { avatarGeneric } from '../../utils/applicationUtils';
-import ShareButtonDesktopTablet from '../Share/ShareButtonDesktopTablet';
 import { AppBarForBackTo, OfficeShareWrapper, TopOfPageHeader, TopRowOneLeftContainer, TopRowOneMiddleContainer, TopRowOneRightContainer, TopRowTwoLeftContainer, TopRowTwoRightContainer } from '../Style/pageLayoutStyles';
 import SignInButton from '../Widgets/SignInButton';
 import HeaderBackToButton from './HeaderBackToButton';
 
 const HeaderNotificationMenu = React.lazy(() => import(/* webpackChunkName: 'HeaderNotificationMenu' */ './HeaderNotificationMenu'));
+const ShareButtonDesktopTablet = React.lazy(() => import(/* webpackChunkName: 'ShareButtonDesktopTablet' */ '../Share/ShareButtonDesktopTablet'));
 const ShareModal = React.lazy(() => import(/* webpackChunkName: 'ShareModal' */ '../Share/ShareModal'));
 const SignInModal = React.lazy(() => import(/* webpackChunkName: 'SignInModal' */ '../SignIn/SignInModal'));
 
@@ -795,7 +795,9 @@ class HeaderBackToBallot extends Component {
           {(nextReleaseFeaturesEnabled && shareButtonInHeader) && (
           <TopRowTwoRightContainer>
             <OfficeShareWrapper className="u-show-desktop-tablet">
-              <ShareButtonDesktopTablet officeShare />
+              <Suspense fallback={<></>}>
+                <ShareButtonDesktopTablet officeShare />
+              </Suspense>
             </OfficeShareWrapper>
           </TopRowTwoRightContainer>
           )}

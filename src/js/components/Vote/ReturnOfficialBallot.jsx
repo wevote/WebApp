@@ -54,7 +54,7 @@ class ReturnOfficialBallot extends Component {
             </strong>
             .
             {' '}
-            Make sure to return your official ballot!
+            Make sure to return your official ballot to local election registrar.
             {' '}
             <HidePopupWrapper>
               <Suspense fallback={<></>}>
