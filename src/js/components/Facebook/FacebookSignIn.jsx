@@ -54,7 +54,9 @@ class FacebookSignIn extends Component {
       const { FB } = window;
       if (FB) {
         // NOTE 2022-11-08 Dale: I Haven't seen proof this is working
-        FB.Event.subscribe('auth.statusChange', this.onFacebookStatusChange);
+        if (FB.Event) {
+          FB.Event.subscribe('auth.statusChange', this.onFacebookStatusChange);
+        }
         try {
           FB.getLoginStatus((response) => {
             const { authResponse, status } = response;
@@ -75,7 +77,9 @@ class FacebookSignIn extends Component {
   componentWillUnmount () {
     const { FB } = window;
     if (FB && webAppConfig.ENABLE_FACEBOOK) {
-      FB.Event.unsubscribe('auth.statusChange', this.onFacebookStatusChange);
+      if (FB.Event) {
+        FB.Event.unsubscribe('auth.statusChange', this.onFacebookStatusChange);
+      }
     }
     this.facebookStoreListener.remove();
     this.voterStoreListener.remove();
